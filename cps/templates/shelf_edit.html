@@ -1,0 +1,18 @@
+{% extends "layout.html" %}
+{% block body %}
+<div class="discover">
+  <h1>{{title}}</h1>
+  <form role="form" method="POST">
+    <div class="form-group">
+      <label for="title">Title</label>
+      <input type="text" class="form-control" name="title" id="title" value="">
+    </div>
+    <div class="checkbox">
+      <label>
+        <input type="checkbox" name="is_public"> should the shelf be public?
+      </label>
+    </div>
+    <button type="submit" class="btn btn-default">Submit</button>
+  </form>
+</div>
+{% endblock %}

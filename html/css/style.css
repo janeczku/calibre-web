@@ -1,0 +1,17 @@
+@import url(http://fonts.googleapis.com/css?family=Lato:100,300,400,700);
+@import url(http://fonts.googleapis.com/css?family=Montserrat:400,700);
+@import url(http://fonts.googleapis.com/css?family=Lobster:400,700);
+@font-face{font-family:'Gotham-Light';src:url('../fonts/itc/Gotham-Light.eot');src:url('../fonts/itc/Gotham-Light.woff') format('woff'),url('../fonts/itc/Gotham-Light.svg#Gotham-Light') format('svg')}@font-face{font-family:'Gotham-Medium';src:url('../fonts/itc/Gotham-Medium.eot');src:url('../fonts/itc/Gotham-Medium.woff') format('woff'),url('../fonts/itc/Gotham-Medium.svg#Gotham-Medium') format('svg')}@font-face{font-family:'Gotham-Book';src:url('../fonts/itc/Gotham-Book.eot');src:url('../fonts/itc/Gotham-Book.woff') format('woff'),url('../fonts/itc/Gotham-Book.svg#Gotham-Book') format('svg')}
+body{background:#f2f2f2}body h2{font-weight:normal;color:#444}
+.navigation .nav-head{text-transform:uppercase;color:#999;margin:20px 0}.navigation .nav-head:nth-child(1n+2){border-top:1px solid #ccc;padding-top:20px}
+.navigation li a{color:#444;text-decoration:none;display:block;padding:10px}.navigation li a:hover{background:rgba(153,153,153,0.4);border-radius:5px}
+.navigation li a span{margin-right:10px}
+.navigation .create-shelf{margin:30px 0;font-size:12px;text-align:center}.navigation .create-shelf a{color:#fff;background:#45b29d;padding:10px 20px;border-radius:5px;text-decoration:none}
+.container-fluid img{display:block;max-width:100%;height:auto}
+.container-fluid .discover{margin-bottom:50px}
+.container-fluid .new-books{border-top:1px solid #ccc}.container-fluid .new-books h2{margin:50px 0 0 0}
+.container-fluid .book{margin-top:20px}.container-fluid .book .cover{height:250px;position:relative}.container-fluid .book .cover img{border:1px solid #ccc;border-radius:5px;box-sizeing:border-box;max-height:250px;bottom:0;position:absolute}
+.container-fluid .book .meta{margin-top:10px}.container-fluid .book .meta p{margin:0}
+.container-fluid .book .meta .title{font-weight:bold;font-size:16px;color:#444}
+.container-fluid .book .meta .author{font-size:12px;color:#999}
+.container-fluid .book .meta .rating{margin-top:5px}.container-fluid .book .meta .rating .glyphicon-star{color:#999}.container-fluid .book .meta .rating .glyphicon-star.good{color:#45b29d}

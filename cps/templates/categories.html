@@ -1,0 +1,11 @@
+{% extends "layout.html" %}
+{% block body %}
+<div class="discover">
+  <h1>{{title}}</h1>
+  <ul class="list-unstyled">
+    {% for entry in entries %}
+      <li><a href="{{url_for('category', name=entry.name)}}">{{entry.name}}</a></li>
+    {% endfor %}
+  </ul>
+</div>
+{% endblock %}

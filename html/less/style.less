@@ -1,0 +1,125 @@
+@import "fonts";
+@import "colors";
+@import "variables.less";
+@import "mixins";
+
+@spacer: 10px;
+@highlight: #45B29D;
+@grey: #444;
+@lightgrey: #999;
+
+body{
+  background: #f2f2f2;
+
+  h2{
+    font-weight: normal;
+    color: #444
+  }
+}
+
+.navigation{
+  .nav-head{
+    text-transform: uppercase;
+    color: @lightgrey;
+    margin: @spacer*2 0;
+    &:nth-child(1n+2){
+      border-top: 1px solid #ccc;
+      padding-top: @spacer*2;
+    }
+  }
+
+  li{
+    a{
+      color: @grey;
+      text-decoration: none;
+      display: block;
+      padding: @spacer;
+      &:hover{
+        background: fade(@lightgrey, 40%);
+        border-radius: 5px;
+      }
+      span{
+        margin-right: @spacer;
+      }
+    }
+  }
+
+  .create-shelf{
+    margin: @spacer*3 0;
+    font-size: 12px;
+    text-align: center;
+
+    a{
+      color: #fff;
+      background: @highlight;
+      padding: @spacer @spacer*2;
+      border-radius: 5px;
+      text-decoration: none;
+    }
+
+  }
+}
+
+.container-fluid{
+  img{
+    .img-responsive();
+  }
+
+  .discover{
+    margin-bottom: @spacer*5;
+  }
+
+  .new-books{
+    border-top: 1px solid #ccc;
+
+    h2{
+      margin: @spacer*5 0 0 0;
+    }
+  }
+  .book{
+    margin-top: @spacer*2;
+    .cover{
+      height: 250px;
+      position: relative;
+      img {
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-sizeing: border-box;
+        max-height: 250px;
+        bottom: 0;
+        position: absolute;
+      }
+
+    }
+    .meta{
+      margin-top: @spacer;
+
+      p{
+        margin: 0
+      }
+      .title{
+        font-weight: bold;
+        font-size: 16px;
+        color: @grey;
+      }
+      .author{
+        font-size: 12px;
+        color: @lightgrey;
+      }
+
+      .rating{
+        margin-top: @spacer/2;
+        .glyphicon-star{
+          color: @lightgrey;
+          &.good{
+            color: @highlight;
+          }
+        }
+      }
+    }
+  }
+
+
+
+
+}

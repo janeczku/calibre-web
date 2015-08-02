@@ -1,0 +1,27 @@
+{% extends "layout.html" %}
+{% block body %}
+<div class="well col-sm-6 col-sm-offset-2">
+  <h2 style="margin-top: 0">Login</h2>
+  <form method="POST" role="form">
+    <div class="form-group">
+      <label for="username">Username</label>
+      <input type="text" class="form-control" id="username" name="username" placeholder="Username">
+    </div>
+    <div class="form-group">
+      <label for="password">Password</label>
+      <input type="password" class="form-control" id="password" name="password" placeholder="Password">
+    </div>
+    <div class="checkbox">
+      <label>
+        <input type="checkbox" name="remember_me" checked> Remember me
+      </label>
+    </div>
+    <button type="submit" class="btn btn-default">Submit</button>
+  </form>
+</div>
+  {% if error %}
+  <div class="col-sm-6 col-sm-offset-2">
+    <div class="alert alert-danger">{{error}}</div>
+  </div>
+  {% endif %}
+{% endblock %}

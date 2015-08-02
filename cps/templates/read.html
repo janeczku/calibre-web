@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html class="no-js">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>Basic ePubJS Example</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+
+
+        <!-- EPUBJS Renderer -->
+        <script src="{{ url_for('static', filename='js/zip.min.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/inflate.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/epub.min.js') }}"></script>
+        <script src="{{ url_for('static', filename='css/style.css') }}"></script>
+
+        <style type="text/css">
+
+          body {
+            overflow: hidden;
+          }
+          body{background:#f2f2f2}
+          h1, h1 span{font-weight:normal;color:#444 !important}
+
+          .t{
+            color: #444 !important;
+          }
+
+
+          #main {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+          }
+
+          #area {
+            width: 80%;
+            height: 80%;
+            margin: 5% auto;
+            max-width: 1250px;
+          }
+
+          #area iframe {
+            border: none;
+          }
+
+          #prev {
+            left: 40px;
+          }
+
+          #next {
+            right: 40px;
+          }
+
+          .arrow {
+            position: absolute;
+            top: 50%;
+            margin-top: -32px;
+            font-size: 64px;
+            color: #E2E2E2;
+            font-family: arial, sans-serif;
+            font-weight: bold;
+            cursor: pointer;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            user-select: none;
+          }
+
+          .arrow:hover {
+            color: #777;
+          }
+
+          .arrow:active {
+            color: #000;
+          }
+        </style>
+
+         <script>
+            "use strict";
+            EPUBJS.filePath = "{{ url_for('static', filename='js/') }}";
+            EPUBJS.Hooks.register("beforeChapterDisplay").newStyle = function(callback, chapter){
+              EPUBJS.core.addCss("{{ url_for('static', filename='css/colors.css') }}", false, chapter.doc.head);
+               if(callback) callback();
+            }
+
+            EPUBJS.Hooks.register("beforeChapterDisplay").highlight = function(callback, renderer){
+
+    // EPUBJS.core.addScript("js/libs/jquery.highlight.js", null, renderer.doc.head);
+
+    var s = document.createElement("style");
+    s.innerHTML =".highlight { background: yellow; font-weight: normal; }";
+
+    renderer.doc.head.appendChild(s);
+
+    if(callback) callback();
+
+}
+            var Book = ePub("{{ url_for('static', filename=bookid) }}/", { restore: false });
+
+        </script>
+    </head>
+    <body>
+        <div id="main">
+          <select id="toc"></select>
+          <div id="prev" onclick="Book.prevPage();" class="arrow">‹</div>
+          <div id="area"></div>
+          <div id="next" onclick="Book.nextPage();"class="arrow">›</div>
+        </div>
+
+
+<!-- <script src="{{ url_for('static', filename='js/zip.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/inflate.js') }}"></script>
+<script src="{{ url_for('static', filename='js/hooks.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/epub.min.js') }}"></script> -->
+<script>
+
+
+     Book.getMetadata().then(function(meta){
+
+                document.title = meta.bookTitle+" – "+meta.creator;
+
+            });
+
+    Book.getToc().then(function(toc){
+
+              var $select = document.getElementById("toc"),
+                  docfrag = document.createDocumentFragment();
+
+              toc.forEach(function(chapter) {
+                var option = document.createElement("option");
+                option.textContent = chapter.label;
+                option.ref = chapter.href;
+
+                docfrag.appendChild(option);
+              });
+
+              $select.appendChild(docfrag);
+
+              $select.onchange = function(){
+                  var index = $select.selectedIndex,
+                      url = $select.options[index].ref;
+
+                  Book.goto(url);
+                  return false;
+              }
+
+            });
+      Book.renderTo("area");
+      Book.setStyle("padding", "0 40px");
+    // EPUBJS.filePath = "{{ url_for('static', filename='js/') }}";
+    // var Book = ePub("{{ url_for('get_download_link', book_id=bookid, format='epub') }}.epub", { restore: true });
+    // Book.renderTo("area").then(function(){
+    //   Book.setStyle("padding", "0 40px");
+    // });
+</script>
+</body>
+</html>

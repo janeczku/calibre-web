@@ -1,0 +1,15 @@
+@import url(http://fonts.googleapis.com/css?family=Libre+Baskerville:400,700);
+
+
+body{
+	color: #444;
+	line-height: 21px;
+	font-size: 14px;
+
+}
+
+h1, h2, h3, h4, h5, h6{
+	font-family: 'Libre Baskerville';
+	color: #45b29d !important;
+	font-size: 20px !important;
+}

@@ -1,0 +1,28 @@
+{% extends "layout.html" %}
+{% block body %}
+<div class="discover">
+  <h1>{{title}}</h1>
+  <div class="col-sm-10">
+    <div class="btn btn-default"><a href="{{url_for('new_user')}}">create user</a></div>
+  </div>
+  </div>
+  <table class="table table-striped">
+    <tr>
+        <th>nickname</th>
+        <th>email</th>
+        <th>kindle</th>
+        <th>dls</th>
+        <th>admin</th>
+    </tr>
+    {% for user in content %}
+      <tr>
+        <td><a href="{{url_for('edit_user', user_id=user.id)}}">{{user.nickname}}</a></td>
+        <td>{{user.email}}</td>
+        <td>{{user.kindle_mail}}</td>
+        <td>{{user.downloads.count()}}</td>
+        <td>{% if user.role %}<span class="glyphicon glyphicon-ok"></span>{% else %}<span class="glyphicon glyphicon-remove"></span>{% endif %}</td>
+    {% endfor %}
+
+  </tabel>
+</div>
+{% endblock %}

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<OpenSearchDescription xmlns="http://a9.com/-/spec/opensearch/1.1/">
+   <LongName>library</LongName>
+   <ShortName>library</ShortName>
+   <Description>Search the ebook catalog.</Description>
+   <Developer>cytec</Developer>
+   <Contact>iamcytec@googlemail.com</Contact>
+
+   <Url type="text/html"
+        template="{{url_for('search')}}?query={searchTerms}"/>
+
+   <Url type="application/atom+xml"
+        template="{{url_for('feed_search')}}?query={searchTerms}"/>
+
+   <Url type="application/x-suggestions+json"
+  rel="suggestions"
+        template="http://www.gutenberg.org/ebooks/suggest/?query={searchTerms}"/>
+<!--
+   <Url type="application/rss+xml"
+        template="http://example.com/?q={searchTerms}&amp;pw={startPage?}&amp;format=rss"/>
+   <Image height="64" width="64" type="image/png">http://example.com/websearch.png</Image>
+   <Image height="16" width="16" type="image/vnd.microsoft.icon">http://example.com/websearch.ico</Image>
+-->
+
+   <Query role="example" searchTerms="shakespeare hamlet" />
+   <Query role="example" searchTerms="doyle detective" />
+   <Query role="example" searchTerms="love stories" />
+
+   <Attribution>Search Data Copyright 1971-2012, Project Gutenberg, All Rights Reserved.</Attribution>
+   <SyndicationRight>open</SyndicationRight>
+   <Language>de-DE</Language>
+   <OutputEncoding>UTF-8</OutputEncoding>
+   <InputEncoding>UTF-8</InputEncoding>
+</OpenSearchDescription>

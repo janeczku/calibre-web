@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <id>urn:uuid:2853dacf-ed79-42f5-8e8a-a7bb3d1ae6a2</id>
+  <link rel="self"
+        href="{{url_for('feed_index')}}"
+        type="application/atom+xml;profile=opds-catalog;kind=navigation"/>
+  <link rel="start"
+        href="{{url_for('feed_index')}}"
+        type="application/atom+xml;profile=opds-catalog;kind=navigation"/>
+  <link rel="related"
+        href="{{url_for('feed_index')}}"
+        type="application/atom+xml;profile=opds-catalog;kind=acquisition"/>
+  <link rel="up"
+        href="{{url_for('feed_index')}}"
+        type="application/atom+xml;profile=opds-catalog;kind=navigation"/>
+  <link rel="search"
+        href="{{url_for('feed_osd')}}"
+        type="application/opensearchdescription+xml"/>
+  <title>library</title>
+  <updated>2010-01-10T10:03:10Z</updated>
+  <author>
+    <name>Spec Writer</name>
+    <uri>http://opds-spec.org</uri>
+  </author>
+
+
+  <entry>
+    <title>Hot Books</title>
+    <link rel="http://opds-spec.org/sort/popular"
+          href="{{url_for('feed_hot')}}"
+          type="application/atom+xml;profile=opds-catalog;kind=acquisition"/>
+    <updated>2010-01-10T10:01:01Z</updated>
+    <id>urn:uuid:d49e8018-a0e0-499e-9423-7c175fa0c56e</id>
+    <content type="text">Popular publications from this catalog based on Rating.</content>
+  </entry>
+
+  <entry>
+    <title>New Books</title>
+    <link rel="http://opds-spec.org/sort/popular"
+          href="{{url_for('feed_new')}}"
+          type="application/atom+xml;profile=opds-catalog;kind=acquisition"/>
+    <updated>2010-01-10T10:01:01Z</updated>
+    <id>urn:uuid:d49e8018-a0e0-499e-9423-7c175fa0c56e</id>
+    <content type="text">The latest Books</content>
+  </entry>
+
+  <entry>
+    <title>Random Books</title>
+    <link rel="http://opds-spec.org/sort/random"
+          href="{{url_for('feed_discover')}}"
+          type="application/atom+xml;profile=opds-catalog;kind=acquisition"/>
+    <updated>2010-01-10T10:01:01Z</updated>
+    <id>urn:uuid:d49e8018-a0e0-499e-9423-7c175fa0c56e</id>
+    <content type="text">Show Random Books</content>
+  </entry>
+</feed>

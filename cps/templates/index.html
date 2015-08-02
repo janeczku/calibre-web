@@ -1,0 +1,71 @@
+{% extends "layout.html" %}
+{% block body %}
+<div class="discover">
+  <h2>Discover (Random Books)</h2>
+  <div class="row">
+
+    {% for entry in random %}
+    <div class="col-sm-3 col-lg-2 col-xs-6 book">
+      <div class="cover">
+        {% if entry.has_cover is defined %}
+          <a href="{{ url_for('show_book', id=entry.id) }}">
+            <img src="{{ url_for('get_cover', cover_path=entry.path) }}" />
+          </a>
+        {% endif %}
+      </div>
+      <div class="meta">
+        <p class="title">{{entry.title}}</p>
+        <p class="author"><a href="{{url_for('author', name=entry.authors[0].name) }}">{{entry.authors[0].name}}</a></p>
+        {% if entry.ratings.__len__() > 0 %}
+        <div class="rating">
+          {% for number in range((entry.ratings[0].rating/2)|int(2)) %}
+            <span class="glyphicon glyphicon-star good"></span>
+            {% if loop.last and loop.index < 5 %}
+              {% for numer in range(5 - loop.index) %}
+                <span class="glyphicon glyphicon-star"></span>
+              {% endfor %}
+            {% endif %}
+          {% endfor %}
+        </div>
+        {% endif %}
+      </div>
+    </div>
+      <!-- <p><a href="{{ url_for('edit_book', book_id=entry.id) }}">{{entry.authors[0].name}}: {{entry.title}}</a></p> -->
+    {% endfor %}
+  </div>
+</div>
+<div class="discover load-more">
+  <h2>{{title}}</h2>
+  <div class="row">
+
+    {% for entry in entries %}
+    <div class="col-sm-3 col-lg-2 col-xs-6 book">
+      <div class="cover">
+        {% if entry.has_cover is defined %}
+          <a href="{{ url_for('show_book', id=entry.id) }}">
+            <img src="{{ url_for('get_cover', cover_path=entry.path) }}" />
+          </a>
+        {% endif %}
+      </div>
+      <div class="meta">
+        <p class="title">{{entry.title}}</p>
+        <p class="author"><a href="{{url_for('author', name=entry.authors[0].name) }}">{{entry.authors[0].name}}</a></p>
+        {% if entry.ratings.__len__() > 0 %}
+        <div class="rating">
+          {% for number in range((entry.ratings[0].rating/2)|int(2)) %}
+            <span class="glyphicon glyphicon-star good"></span>
+            {% if loop.last and loop.index < 5 %}
+              {% for numer in range(5 - loop.index) %}
+                <span class="glyphicon glyphicon-star"></span>
+              {% endfor %}
+            {% endif %}
+          {% endfor %}
+        </div>
+        {% endif %}
+      </div>
+    </div>
+      <!-- <p><a href="{{ url_for('edit_book', book_id=entry.id) }}">{{entry.authors[0].name}}: {{entry.title}}</a></p> -->
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

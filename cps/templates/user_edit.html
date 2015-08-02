@@ -1,0 +1,47 @@
+{% extends "layout.html" %}
+{% block body %}
+<div class="discover">
+  <h1>{{title}}</h1>
+  <form role="form" method="POST">
+    <div class="form-group">
+      <label for="email">e-mail</label>
+      <input type="email" class="form-control" name="email" id="email" value="{{content.email}}">
+    </div>
+    <div class="form-group">
+      <label for="password">password</label>
+      <input type="password" class="form-control" name="password" id="password" value="">
+    </div>
+    <div class="form-group">
+      <label for="kindle_mail">Kindle E-Mail</label>
+      <input type="text" class="form-control" name="kindle_mail" id="kindle_mail" value="{{content.kindle_mail}}">
+    </div>
+    {% if g.user and g.user.role %}
+    <div class="form-group">
+      <label for="user_role">is admin</label>
+      <input type="text" class="form-control" name="user_role" id="user_role" value="{{content.role}}">
+    </div>
+    <div class="form-group">
+      <label for="nickname">nickname</label>
+      <input type="text" class="form-control" name="nickname" id="nickname" value="{{content.nickname}}">
+    </div>
+    <div class="checkbox">
+      <label>
+        <input type="checkbox" name="delete"> Delete this user
+      </label>
+    </div>
+    {% endif %}
+    <button type="submit" class="btn btn-default">Submit</button>
+  </form>
+
+  {% if downloads %}
+    <h2>Recent Downloads</h2>
+    {% for entry in downloads %}
+      <div class="col-sm-2">
+        <a class="pull-left" href="{{ url_for('show_book', id=entry.id) }}">
+          <img class="media-object" width="100" src="{{ url_for('get_cover', cover_path=entry.path) }}" alt="...">
+        </a>
+      </div>
+    {% endfor %}
+  {% endif %}
+</div>
+{% endblock %}
