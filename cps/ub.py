@@ -21,7 +21,7 @@ class User(Base):
 
 	id = Column(Integer, primary_key = True)
 	nickname = Column(String(64), unique = True)
-	email = Column(String(120), unique = True)
+	email = Column(String(120), unique = True, default = "")
 	role = Column(SmallInteger, default = ROLE_USER)
 	password = Column(String)
 	kindle_mail = Column(String(120), default="")

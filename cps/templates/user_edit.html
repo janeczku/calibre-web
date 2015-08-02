@@ -5,7 +5,7 @@
   <form role="form" method="POST">
     <div class="form-group">
       <label for="email">e-mail</label>
-      <input type="email" class="form-control" name="email" id="email" value="{{content.email}}">
+      <input type="email" class="form-control" name="email" id="email" value="{{ content.email if content.email != None }}"> 
     </div>
     <div class="form-group">
       <label for="password">password</label>
@@ -13,16 +13,16 @@
     </div>
     <div class="form-group">
       <label for="kindle_mail">Kindle E-Mail</label>
-      <input type="text" class="form-control" name="kindle_mail" id="kindle_mail" value="{{content.kindle_mail}}">
+      <input type="text" class="form-control" name="kindle_mail" id="kindle_mail" value="{{ content.kindle_mail if content.kindle_mail != None }}">
     </div>
     {% if g.user and g.user.role %}
     <div class="form-group">
-      <label for="user_role">is admin</label>
-      <input type="text" class="form-control" name="user_role" id="user_role" value="{{content.role}}">
+      <label for="user_role">Admin user? 0 or 1</label>
+      <input type="text" class="form-control" name="user_role" id="user_role" value="{{ content.role if content.role != None }}">
     </div>
     <div class="form-group">
       <label for="nickname">nickname</label>
-      <input type="text" class="form-control" name="nickname" id="nickname" value="{{content.nickname}}">
+      <input type="text" class="form-control" name="nickname" id="nickname" value="{{ content.nickname if content.nickname != None }}">
     </div>
     <div class="checkbox">
       <label>

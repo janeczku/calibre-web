@@ -324,16 +324,16 @@ def logout():
 def send_to_kindle(book_id):
     settings = ub.get_mail_settings()
     if settings.get("mail_server", "mail.example.com") == "mail.example.com":
-        flash("please configure your email account settings first...", category="error")
+        flash("Please configure the SMTP email account first...", category="error")
     elif current_user.kindle_mail:
         x = helper.send_mail(book_id, current_user.kindle_mail)
         if x:
-            flash("mail successfully send to %s" % current_user.kindle_mail, category="success")
+            flash("Mail successfully send to %s" % current_user.kindle_mail, category="success")
             helper.update_download(book_id, int(current_user.id))
         else:
-            flash("there was an error sending this book", category="error")
+            flash("There was an error sending this book", category="error")
     else:
-        flash("please set a kindle mail first...", category="error")
+        flash("Please set a kindle mail first...", category="error")
     return redirect(request.environ["HTTP_REFERER"])
 
 @app.route("/shelf/add/<int:shelf_id>/<int:book_id>")
