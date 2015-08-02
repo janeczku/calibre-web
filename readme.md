@@ -1,4 +1,4 @@
-[![Donate](https://www.paypalobjects.com/de_DE/DE/i/btn/btn_donate_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=Y459WGRLDTQJS) 
+This is an in-progress fork of [calibreserver by Raphael Mutschler](https://bitbucket.org/raphaelmutschler/calibreserver)
 
 library aka CPS
 =====
