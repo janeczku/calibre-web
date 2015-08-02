@@ -1,0 +1,30 @@
+{% extends "layout.html" %}
+{% block body %}
+<div class="discover">
+  <h1>{{title}}</h1>
+  <form role="form" method="POST">
+    <div class="form-group">
+      <label for="mail_server">SMTP hostname</label>
+      <input type="text" class="form-control" name="mail_server" id="mail_server" value="{{content.mail_server}}">
+    </div>
+    <div class="form-group">
+      <label for="mail_port">SMTP port</label>
+      <input type="text" class="form-control" name="mail_port" id="mail_port" value="{{content.mail_port}}">
+    </div>
+    <div class="form-group">
+      <label for="mail_login">SMTP login</label>
+      <input type="text" class="form-control" name="mail_login" id="mail_login" value="{{content.mail_login}}">
+    </div>
+    <div class="form-group">
+      <label for="mail_password">SMTP password</label>
+      <input type="password" class="form-control" name="mail_password" id="mail_password" value="{{content.mail_password}}">
+    </div>
+    <div class="form-group">
+      <label for="mail_from">From e-mail</label>
+      <input type="text" class="form-control" name="mail_from" id="mail_from" value="{{content.mail_from}}">
+    </div>
+    <button type="submit" class="btn btn-default">Submit</button>
+  </form>
+
+</div>
+{% endblock %}

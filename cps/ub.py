@@ -6,6 +6,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import *
 import os
 from cps import config
+from werkzeug.security import generate_password_hash
 
 dbpath = os.path.join(config.MAIN_DIR, "app.db")
 engine = create_engine('sqlite:///{0}'.format(dbpath), echo=False)
@@ -13,6 +14,7 @@ Base = declarative_base()
 
 ROLE_USER = 0
 ROLE_ADMIN = 1
+DEFAULT_PASS = "admin123"
 
 class User(Base):
 	__tablename__ = 'user'
@@ -101,7 +103,61 @@ class Whish(Base):
 	def __repr__(self):
 		return '<Whish %r>' % (self.title)
 
-Base.metadata.create_all(engine)
+class Settings(Base):
+	__tablename__ = 'settings'
+
+	id = Column(Integer, primary_key=True)
+	mail_server = Column(String)
+	mail_port = Column(Integer, default = 25)
+	mail_login = Column(String)
+	mail_password = Column(String)
+	mail_from = Column(String)
+
+	def __repr__(self):
+		#return '<Smtp %r>' % (self.mail_server)
+		pass
+
+def create_default_config():
+	settings = Settings()
+	settings.mail_server = "mail.example.com"
+	settings.mail_port = 25
+	settings.mail_login = "mail@example.com"
+	settings.mail_password = "mypassword"
+	settings.mail_from = "automailer <mail@example.com>"
+
+	session.add(settings)
+	session.commit()
+
+def get_mail_settings():
+	settings = session.query(Settings).first()
+
+	if not settings:
+	  return {}
+
+	data = {
+	  'mail_server': settings.mail_server,
+	  'mail_port': settings.mail_port,
+	  'mail_login': settings.mail_login,
+	  'mail_password': settings.mail_password,
+	  'mail_from': settings.mail_from
+	}
+
+	return data
+
+def create_admin_user():
+	user = User()
+	user.nickname = "admin"
+	user.role = 1
+	user.password = generate_password_hash(DEFAULT_PASS)
+
+	session.add(user)
+	session.commit()
+
 Session = sessionmaker()
 Session.configure(bind=engine)
 session = Session()
+
+if not os.path.exists(dbpath):
+	Base.metadata.create_all(engine)
+	create_default_config()
+	create_admin_user()

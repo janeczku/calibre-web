@@ -25,7 +25,7 @@ def update_download(book_id, user_id):
         ub.session.commit()
 
 def make_mobi(book_id):
-    kindlegen = os.path.join(config.MAIN_DIR, "kindlegen")
+    kindlegen = os.path.join(config.MAIN_DIR, "vendor", "kindlegen")
     if not os.path.exists(kindlegen):
         return False
     book = db.session.query(db.Books).filter(db.Books.id == book_id).first()
@@ -54,9 +54,10 @@ def send_mail(book_id, kindle_mail):
 
     is_mobi = False
     is_epub = False
+    settings = ub.get_mail_settings()
     # create MIME message
     msg = MIMEMultipart()
-    msg['From'] = config.MAIL_FROM
+    msg['From'] = settings["mail_from"]
     msg['To'] = kindle_mail
     msg['Subject'] = 'Sent to Kindle'
     text = 'This email has been automatically sent by library.'
@@ -93,10 +94,10 @@ def send_mail(book_id, kindle_mail):
 
     # send email
     try:
-        mail_server = smtplib.SMTP(host=config.MAIL_SERVER,
-                                      port=config.MAIL_PORT)
-        mail_server.login(config.MAIL_LOGIN, config.MAIL_PASSWORD)
-        mail_server.sendmail(config.MAIL_LOGIN, kindle_mail, msg)
+        mail_server = smtplib.SMTP(host=settings["mail_server"],
+                                      port=settings["mail_port"])
+        mail_server.login(settings["mail_login"], settings["mail_password"])
+        mail_server.sendmail(settings["mail_login"], kindle_mail, msg)
         mail_server.close()
     except smtplib.SMTPException:
         traceback.print_exc()

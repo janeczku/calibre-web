@@ -322,7 +322,10 @@ def logout():
 @app.route('/send/<int:book_id>')
 @login_required
 def send_to_kindle(book_id):
-    if current_user.kindle_mail:
+    settings = ub.get_mail_settings()
+    if settings.get("mail_server", "mail.example.com") == "mail.example.com":
+        flash("please configure your email account settings first...", category="error")
+    elif current_user.kindle_mail:
         x = helper.send_mail(book_id, current_user.kindle_mail)
         if x:
             flash("mail successfully send to %s" % current_user.kindle_mail, category="success")
@@ -404,7 +407,8 @@ def profile():
 @login_required
 def user_list():
     content = ub.session.query(ub.User).all()
-    return render_template("user_list.html", content=content, title="User list")
+    settings = ub.session.query(ub.Settings).first()
+    return render_template("user_list.html", content=content, email=settings, title="User list")
 
 @app.route("/admin/user/new", methods = ["GET", "POST"])
 @login_required
@@ -423,6 +427,24 @@ def new_user():
         except (e):
             flash(e, category="error")
     return render_template("user_edit.html", content=content, title="User list")
+
+@app.route("/admin/user/mailsettings", methods = ["GET", "POST"])
+@login_required
+def edit_mailsettings():
+    content = ub.session.query(ub.Settings).first()
+    if request.method == "POST":
+        to_save = request.form.to_dict()
+        content.mail_server = to_save["mail_server"]
+        content.mail_port = int(to_save["mail_port"])
+        content.mail_login = to_save["mail_login"]
+        content.mail_password = to_save["mail_password"]
+        content.mail_from = to_save["mail_from"]
+        try:
+            ub.session.commit()
+            flash("Mail settings updated", category="success")
+        except (e):
+            flash(e, category="error")
+    return render_template("email_edit.html", content=content, title="Edit mail settings")
 
 @app.route("/admin/user/<int:user_id>", methods = ["GET", "POST"])
 @login_required
