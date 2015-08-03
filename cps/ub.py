@@ -8,7 +8,7 @@ import os
 from cps import config
 from werkzeug.security import generate_password_hash
 
-dbpath = os.path.join(config.MAIN_DIR, "app.db")
+dbpath = os.path.join(config.APP_DB_ROOT, "app.db")
 engine = create_engine('sqlite:///{0}'.format(dbpath), echo=False)
 Base = declarative_base()
 
