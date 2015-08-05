@@ -1,4 +1,6 @@
-This is an in-progress fork of [calibreserver by Raphael Mutschler](https://bitbucket.org/raphaelmutschler/calibreserver)
+This is an in-progress fork of [calibreserver by Raphael Mutschler](https://bitbucket.org/raphaelmutschler/calibreserver).
+
+A working Docker image is available here: [janeczku/calibre-web](https://registry.hub.docker.com/u/janeczku/calibre-web/).
 
 library aka CPS
 =====
