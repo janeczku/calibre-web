@@ -289,7 +289,7 @@ def get_download_link(book_id, format):
     data = db.session.query(db.Data).filter(db.Data.book == book.id).filter(db.Data.format == format.upper()).first()
     helper.update_download(book_id, int(current_user.id))
     response = make_response(send_from_directory(os.path.join(config.DB_ROOT, book.path), data.name + "." +format))
-    response.headers["Content-Disposition"] = "attachment; filename='%s.%s'" % (data.name, format)
+    response.headers["Content-Disposition"] = "attachment; filename=%s.%s" % (data.name, format)
     return response
 
 @app.route('/login', methods = ['GET', 'POST'])
