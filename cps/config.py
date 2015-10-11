@@ -50,11 +50,10 @@ MAIN_DIR = check_setting_str(CFG, 'General', 'MAIN_DIR', os.getcwd())
 PORT = check_setting_int(CFG, 'General', 'PORT', 8083)
 NEWEST_BOOKS = check_setting_str(CFG, 'General', 'NEWEST_BOOKS', 60)
 RANDOM_BOOKS = check_setting_int(CFG, 'General', 'RANDOM_BOOKS', 4)
-ALL_BOOKS = check_setting_str(CFG, 'General', 'ALL_BOOKS', 100)
 
 CheckSection('Advanced')
 TITLE_REGEX = check_setting_str(CFG, 'Advanced', 'TITLE_REGEX', '^(A|The|An|Der|Die|Das|Den|Ein|Eine|Einen|Dem|Des|Einem|Eines)\s+')
-DEVELOPMENT = bool(check_setting_int(CFG, 'Advanced', 'DEVELOPMENT', 1))
+DEVELOPMENT = bool(check_setting_int(CFG, 'Advanced', 'DEVELOPMENT', 0))
 
 SYS_ENCODING="UTF-8"
 
@@ -65,7 +64,6 @@ configval["TEMPLATEDIR"] = TEMPLATEDIR
 configval["MAIN_DIR"] = MAIN_DIR
 configval["PORT"] = PORT
 configval["NEWEST_BOOKS"] = NEWEST_BOOKS
-configval["ALL_BOOKS"] = ALL_BOOKS
 configval["DEVELOPMENT"] = DEVELOPMENT
 configval["TITLE_REGEX"] = TITLE_REGEX
 
@@ -79,7 +77,6 @@ def save_config(configval):
     new_config['General']['MAIN_DIR'] = configval["MAIN_DIR"]
     new_config['General']['PORT'] = configval["PORT"]
     new_config['General']['NEWEST_BOOKS'] = configval["NEWEST_BOOKS"]
-    new_config['General']['ALL_BOOKS'] = configval["ALL_BOOKS"]
     new_config['Advanced'] = {}
     new_config['Advanced']['TITLE_REGEX'] = configval["TITLE_REGEX"]
     new_config['Advanced']['DEVELOPMENT'] = int(configval["DEVELOPMENT"])
