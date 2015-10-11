@@ -53,7 +53,7 @@ RANDOM_BOOKS = check_setting_int(CFG, 'General', 'RANDOM_BOOKS', 4)
 ALL_BOOKS = check_setting_str(CFG, 'General', 'ALL_BOOKS', 100)
 
 CheckSection('Advanced')
-TITLE_REGEX = check_setting_str(CFG, 'Advanced', 'TITLE_REGEX', '^(Der|Die|Das|Ein|Eine)\s+')
+TITLE_REGEX = check_setting_str(CFG, 'Advanced', 'TITLE_REGEX', '^(A|The|An|Der|Die|Das|Den|Ein|Eine|Einen|Dem|Des|Einem|Eines)\s+')
 DEVELOPMENT = bool(check_setting_int(CFG, 'Advanced', 'DEVELOPMENT', 1))
 
 SYS_ENCODING="UTF-8"
