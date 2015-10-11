@@ -40,7 +40,7 @@
 
       {% if entry.comments|length > 0 %}
         <h3>Description:</h3>
-        {{entry.comments[0].text|striptags}}
+        {{entry.comments[0].text|safe}}
       {% endif %}
 
       {% if g.user.is_authenticated() %}

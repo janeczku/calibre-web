@@ -17,3 +17,4 @@ a{color: #45b29d}a:hover{color: #444;}
 .more-stuff{margin-top: 20px; padding-top: 20px; border-top: 1px solid #ccc}
 .more-stuff>li{margin-bottom: 10px;}
 .navbar-collapse.in .navbar-nav{margin: 0;}
+span.glyphicon.glyphicon-tags {padding-right: 5px;}
