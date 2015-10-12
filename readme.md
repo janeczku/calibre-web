@@ -6,6 +6,8 @@ A working Docker image is available here: [janeczku/calibre-web](https://registr
 
 Calibre Web is a Python web app providing a clean interface for browsing, reading and downloading e-books from a Calibre e-book database.
 
+![screenshot](https://raw.githubusercontent.com/janeczku/docker-calibre-web/master/screenshot.png)
+
 ##Features
 - Bootstrap 3 HTML5 interface
 - User management
