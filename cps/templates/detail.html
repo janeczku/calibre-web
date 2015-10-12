@@ -9,11 +9,14 @@
         {% endif %}
       </div>
     </div>
-    <div class="col-lg-7">
+    <div class="col-lg-7 book-meta">
       <h2>{{entry.title}}</h2>
-      <p class="author"><a href="{{url_for('author', name=entry.authors[0].name) }}">{{entry.authors[0].name}}</a></p>
+      <p class="author"><a href="{{url_for('author', name=entry.authors[0].name) }}">{{entry.authors[0].name}}</a>
+      </p>
+
       {% if entry.ratings.__len__() > 0 %}
         <div class="rating">
+        <p>
           {% for number in range((entry.ratings[0].rating/2)|int(2)) %}
             <span class="glyphicon glyphicon-star good"></span>
             {% if loop.last and loop.index < 5 %}
@@ -22,20 +25,33 @@
               {% endfor %}
             {% endif %}
           {% endfor %}
+        </p>
         </div>
       {% endif %}
-
 
       {% if entry.series|length > 0 %}
         <p>Book {{entry.series_index}} of <a href="{{url_for('series', name=entry.series[0].name)}}">{{entry.series[0].name}}</a></p>
       {% endif %}
 
+      {% if entry.languages.__len__() > 0 %}
+       <div class="languages">
+       <p>
+      <span class="label label-default">language: {{entry.languages[0].lang_code}}</span>
+      </p>
+      </div>
+      {% endif %}
+
       {% if entry.tags|length > 0 %}
-        <p><span class="glyphicon glyphicon-tags"></span>
+      <p>
+      <div class="tags">
+        <span class="glyphicon glyphicon-tags"></span>
+        
         {% for tag in entry.tags %}
-          <a href="{{ url_for('category', name=tag.name) }}">{{tag.name}}</a>,
+          <a href="{{ url_for('category', name=tag.name) }}" class="btn btn-xs btn-info" role="button">{{tag.name}}</a>
         {%endfor%}
-        </p>
+
+      </div>
+      </p>
       {% endif %}
 
       {% if entry.comments|length > 0 %}
@@ -44,91 +60,82 @@
       {% endif %}
 
       {% if g.user.is_authenticated() %}
-      <ul class="list-unstyled more-stuff">
+      <div class="more-stuff">
+      <div class="btn-toolbar" role="toolbar">
 
-
-
-        {% if g.user.kindle_mail %}
-          <li><a href="{{url_for('send_to_kindle', book_id=entry.id)}}"><div class="btn btn-info"><span class="glyphicon glyphicon-send"></span> Send to Kindle</div></a></li>
-        {% endif %}
-
-
-
-
-        <!-- <li>
-          <span class="glyphicon glyphicon-cloud-download"></span>
-          {% for format in entry.data %}
-            <a href="{{ url_for('get_download_link', book_id=entry.id, format=format.format|lower) }}">{{format.format}}</a>,
-          {%endfor%}
-        </li> -->
-        <li>
-          <div class="btn-group">
-            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-              <span class="glyphicon glyphicon-download"></span> Download <span class="caret"></span>
-            </button>
-            <ul class="dropdown-menu" role="menu">
-              {% for format in entry.data %}
+        <div class="btn-group" role="group" aria-label="Download, send to Kindle, reading">
+            <div class="btn-group" role="group">
+              <button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <span class="glyphicon glyphicon-download"></span> Download
+                <span class="caret"></span>
+              </button>
+              <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                {% for format in entry.data %}
                 <li><a href="{{ url_for('get_download_link', book_id=entry.id, format=format.format|lower) }}">{{format.format}}</a></li>
-              {%endfor%}
-            </ul>
-          </div>
-        </li>
+                {%endfor%}
+              </ul>
+            </div>
+            {% if g.user.kindle_mail %}
+            <a target="_blank" href="{{url_for('send_to_kindle', book_id=entry.id)}}" class="btn btn-primary" role="button"><span class="glyphicon glyphicon-send"></span> Send to Kindle</a>
+            {% endif %}
+            <a target="_blank" href="{{url_for('read_book', book_id=entry.id)}}" class="btn btn-primary" role="button"><span class="glyphicon glyphicon-eye-open"></span> Read in browser</a>
 
-        <li><a target="_blank" href="{{url_for('read_book', book_id=entry.id)}}"><div class="btn btn-primary"><span class="glyphicon glyphicon-eye-open"></span> Read in Browser</div></a></li>
+        </div> 
+      </div>
+      </br>
 
-        {% if g.user.shelf.all() or g.public_shelfes %}
-        <li>
-          <div class="btn-group">
-            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-              <span class="glyphicon glyphicon-list"></span> Add to shelf <span class="caret"></span>
-            </button>
-            <ul class="dropdown-menu" role="menu">
-              {% for shelf in g.user.shelf %}
-                {% if not shelf.id in books_shelfs and shelf.is_public != 1 %}
-                  <li><a href="{{ url_for('add_to_shelf', book_id=entry.id, shelf_id=shelf.id) }}">{{shelf.name}}</a></li>
-                {% endif %}
-              {% endfor %}
-              {% for shelf in g.public_shelfes %}
-                {% if not shelf.id in books_shelfs %}
-                  <li><a href="{{ url_for('add_to_shelf', book_id=entry.id, shelf_id=shelf.id) }}">{{shelf.name}}</a></li>
-                {% endif %}
-              {% endfor %}
-            </ul>
-          </div>
-        </li>
-        {% endif %}
-
-
+      {% if g.user.shelf.all() or g.public_shelfes %}
+      <div class="btn-toolbar" role="toolbar">
+        <div class="btn-group" role="group" aria-label="Add to shelves">
+              <button id="btnGroupDrop2" type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <span class="glyphicon glyphicon-list"></span> Add to shelf
+                <span class="caret"></span>
+              </button>
+              <ul class="dropdown-menu" aria-labelledby="btnGroupDrop2">
+                {% for shelf in g.user.shelf %}
+                  {% if not shelf.id in books_shelfs and shelf.is_public != 1 %}
+                    <li><a href="{{ url_for('add_to_shelf', book_id=entry.id, shelf_id=shelf.id) }}">{{shelf.name}}</a></li>
+                  {% endif %}
+                {%endfor%}
+                {% for shelf in g.public_shelfes %}
+                  {% if not shelf.id in books_shelfs %}
+                    <li><a href="{{ url_for('add_to_shelf', book_id=entry.id, shelf_id=shelf.id) }}">{{shelf.name}}</a></li>
+                  {% endif %}
+                {%endfor%}
+              </ul>
+        </div> 
         {% if books_shelfs %}
-        <li>
-          <div class="btn-group">
-            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-              <span class="glyphicon glyphicon-list"></span> Remove from shelf <span class="caret"></span>
-            </button>
-            <ul class="dropdown-menu" role="menu">
+        <div class="btn-group" role="group" aria-label="Remove from shelves">
               {% for shelf in g.user.shelf %}
                 {% if shelf.id in books_shelfs and shelf.is_public != 1 %}
-                  <li><a href="{{ url_for('remove_from_shelf', book_id=entry.id, shelf_id=shelf.id) }}">{{shelf.name}}</a></li>
+                  <a href="{{ url_for('remove_from_shelf', book_id=entry.id, shelf_id=shelf.id) }}" class="btn btn-sm btn-default" role="button">
+                    <span class="glyphicon glyphicon-remove"></span> {{shelf.name}}
+                  </a>
                 {% endif %}
-              {% endfor %}
+              {%endfor%}
               {% for shelf in g.public_shelfes %}
                 {% if shelf.id in books_shelfs %}
-                  <li><a href="{{ url_for('remove_from_shelf', book_id=entry.id, shelf_id=shelf.id) }}">{{shelf.name}}</a></li>
+                  <a href="{{ url_for('remove_from_shelf', book_id=entry.id, shelf_id=shelf.id) }}" class="btn btn-sm btn-default" role="button">
+                    <span class="glyphicon glyphicon-remove"></span> {{shelf.name}}
+                  </a>
                 {% endif %}
-              {% endfor %}
-            </ul>
-          </div>
-        </li>
-        {% endif %}
-
-        {% if g.user.role %}
-          <li><a href="{{ url_for('edit_book', book_id=entry.id) }}"><div class="btn btn-xs btn-warning"><span class="glyphicon glyphicon-edit"></span> Edit book</div></a></li>
-          <li><a href="{{ url_for('edit_book', book_id=entry.id) }}"><div class="btn btn-xs btn-danger"><span class="glyphicon glyphicon-trash"></span> Delete book</div></a></li>
-        {% endif %}
+              {%endfor%}
+            {% endif %}
+        </div>
+      </div>
       {% endif %}
-      </ul>
+
+      {% if g.user.role %}
+      </br>
+      <div class="btn-toolbar" role="toolbar">
+        <div class="btn-group" role="group" aria-label="Edit/Delete book">
+          <a href="{{ url_for('edit_book', book_id=entry.id) }}" class="btn btn-sm btn-warning" role="button"><span class="glyphicon glyphicon-edit"></span> Edit metadata</a>
+          <!-- <a href="{{ url_for('edit_book', book_id=entry.id) }}" class="btn btn-sm btn-danger" role="button"><span class="glyphicon glyphicon-trash"></span> Delete</a> -->
+      </div>
+      {% endif %}
+
+      {% endif %}
     </div>
-      <!-- <p><a href="{{ url_for('edit_book', book_id=entry.id) }}">{{entry.authors[0].name}}: {{entry.title}}</a></p> -->
   </div>
 </div>
 {% endblock %}
