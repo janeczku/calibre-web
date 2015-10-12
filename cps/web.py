@@ -206,7 +206,11 @@ def discover(page):
 @app.route("/book/<int:id>")
 def show_book(id):
     entries = db.session.query(db.Books).filter(db.Books.id == id).first()
-    return render_template('detail.html', entry=entries,  title=entries.title)
+    book_in_shelfs = []
+    shelfs = ub.session.query(ub.BookShelf).filter(ub.BookShelf.book_id == id).all()
+    for entry in shelfs:
+        book_in_shelfs.append(entry.shelf)
+    return render_template('detail.html', entry=entries,  title=entries.title, books_shelfs=book_in_shelfs)
 
 @app.route("/category")
 def category_list():
@@ -347,6 +351,27 @@ def add_to_shelf(shelf_id, book_id):
     ins = ub.BookShelf(shelf=shelf.id, book_id=book_id)
     ub.session.add(ins)
     ub.session.commit()
+
+    flash("Book has been added to shelf: %s" % shelf.name, category="success")
+
+    #return redirect(url_for('show_book', id=book_id))
+    return redirect(request.environ["HTTP_REFERER"])
+
+@app.route("/shelf/remove/<int:shelf_id>/<int:book_id>")
+@login_required
+def remove_from_shelf(shelf_id, book_id):
+    shelf = ub.session.query(ub.Shelf).filter(ub.Shelf.id == shelf_id).first()
+    if not shelf.is_public and not shelf.user_id == int(current_user.id):
+        flash("Sorry you are not allowed to remove a book from this shelf: %s" % shelf.name)
+        return redirect(url_for('index'))
+
+    book_shelf = ub.session.query(ub.BookShelf).filter(ub.BookShelf.shelf == shelf_id, ub.BookShelf.book_id == book_id).first()
+
+    #rem = ub.BookShelf(shelf=shelf.id, book_id=book_id)
+    ub.session.delete(book_shelf)
+    ub.session.commit()
+
+    flash("Book has been removed from shelf: %s" % shelf.name, category="success")
 
     return redirect(request.environ["HTTP_REFERER"])
 

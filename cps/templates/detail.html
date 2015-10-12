@@ -47,26 +47,9 @@
       <ul class="list-unstyled more-stuff">
 
 
-        {% if g.user.shelf.all() or g.public_shelfes %}
-        <li>
-          <div class="btn-group">
-            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-              <span class="glyphicon glyphicon-list"></span> add this book to a shelf <span class="caret"></span>
-            </button>
-            <ul class="dropdown-menu" role="menu">
-              {% for shelf in g.user.shelf %}
-                <li><a href="{{ url_for('add_to_shelf', book_id=entry.id, shelf_id=shelf.id) }}">{{shelf.name}}</a></li>
-              {% endfor %}
-              {% for shelf in g.public_shelfes %}
-                <li><a href="{{ url_for('add_to_shelf', book_id=entry.id, shelf_id=shelf.id) }}">{{shelf.name}}</a></li>
-              {% endfor %}
-            </ul>
-          </div>
-        </li>
-        {% endif %}
 
         {% if g.user.kindle_mail %}
-          <li><a href="{{url_for('send_to_kindle', book_id=entry.id)}}"><div class="btn btn-default"><span class="glyphicon glyphicon-send"></span> Send ebook to kindle</div></a></li>
+          <li><a href="{{url_for('send_to_kindle', book_id=entry.id)}}"><div class="btn btn-info"><span class="glyphicon glyphicon-send"></span> Send to Kindle</div></a></li>
         {% endif %}
 
 
@@ -80,8 +63,8 @@
         </li> -->
         <li>
           <div class="btn-group">
-            <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown">
-              <span class="glyphicon glyphicon-download"></span> download this ebook <span class="caret"></span>
+            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+              <span class="glyphicon glyphicon-download"></span> Download <span class="caret"></span>
             </button>
             <ul class="dropdown-menu" role="menu">
               {% for format in entry.data %}
@@ -91,11 +74,56 @@
           </div>
         </li>
 
-        <li><a target="_blank" href="{{url_for('read_book', book_id=entry.id)}}"><div class="btn btn-default"><span class="glyphicon glyphicon-eye-open"></span> read this book online</div></a></li>
+        <li><a target="_blank" href="{{url_for('read_book', book_id=entry.id)}}"><div class="btn btn-primary"><span class="glyphicon glyphicon-eye-open"></span> Read online</div></a></li>
+
+        {% if g.user.shelf.all() or g.public_shelfes %}
+        <li>
+          <div class="btn-group">
+            <button type="button" class="btn btn-sm btn-default dropdown-toggle" data-toggle="dropdown">
+              <span class="glyphicon glyphicon-list"></span> Add to shelf <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" role="menu">
+              {% for shelf in g.user.shelf %}
+                {% if not shelf.id in books_shelfs and shelf.is_public != 1 %}
+                  <li><a href="{{ url_for('add_to_shelf', book_id=entry.id, shelf_id=shelf.id) }}">{{shelf.name}}</a></li>
+                {% endif %}
+              {% endfor %}
+              {% for shelf in g.public_shelfes %}
+                {% if not shelf.id in books_shelfs %}
+                  <li><a href="{{ url_for('add_to_shelf', book_id=entry.id, shelf_id=shelf.id) }}">{{shelf.name}}</a></li>
+                {% endif %}
+              {% endfor %}
+            </ul>
+          </div>
+        </li>
+        {% endif %}
+
+
+        {% if books_shelfs %}
+        <li>
+          <div class="btn-group">
+            <button type="button" class="btn btn-sm btn-default dropdown-toggle" data-toggle="dropdown">
+              <span class="glyphicon glyphicon-list"></span> Remove from shelf <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" role="menu">
+              {% for shelf in g.user.shelf %}
+                {% if shelf.id in books_shelfs and shelf.is_public != 1 %}
+                  <li><a href="{{ url_for('remove_from_shelf', book_id=entry.id, shelf_id=shelf.id) }}">{{shelf.name}}</a></li>
+                {% endif %}
+              {% endfor %}
+              {% for shelf in g.public_shelfes %}
+                {% if shelf.id in books_shelfs %}
+                  <li><a href="{{ url_for('remove_from_shelf', book_id=entry.id, shelf_id=shelf.id) }}">{{shelf.name}}</a></li>
+                {% endif %}
+              {% endfor %}
+            </ul>
+          </div>
+        </li>
+        {% endif %}
 
         {% if g.user.role %}
-          <li><a href="{{ url_for('edit_book', book_id=entry.id) }}"><div class="btn btn-warning"><span class="glyphicon glyphicon-edit"></span> Edit book</div></a></li>
-          <li><a href="{{ url_for('edit_book', book_id=entry.id) }}"><div class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span> Delete book</div></a></li>
+          <li><a href="{{ url_for('edit_book', book_id=entry.id) }}"><div class="btn btn-xs btn-warning"><span class="glyphicon glyphicon-edit"></span> Edit book</div></a></li>
+          <li><a href="{{ url_for('edit_book', book_id=entry.id) }}"><div class="btn btn-xs btn-danger"><span class="glyphicon glyphicon-trash"></span> Delete book</div></a></li>
         {% endif %}
       {% endif %}
       </ul>
