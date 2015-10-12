@@ -185,7 +185,7 @@ def hot_books(page):
         entries.append(db.session.query(db.Books).filter(db.Books.id == book.Downloads.book_id).first())
 
     pagination = Pagination(page, config.NEWEST_BOOKS, len(all_books.all()))
-    return render_template('index.html', random=random, entries=entries, pagination=pagination, title="Hot Books")
+    return render_template('index.html', random=random, entries=entries, pagination=pagination, title="Hot Books (most downloaded)")
 
 @app.route("/stats")
 def stats():

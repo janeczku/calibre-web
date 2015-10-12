@@ -8,7 +8,7 @@ a{color: #45b29d}a:hover{color: #444;}
 .container-fluid img{display:block;max-width:100%;height:auto}
 .container-fluid .discover{margin-bottom:50px}
 .container-fluid .new-books{border-top:1px solid #ccc}.container-fluid .new-books h2{margin:50px 0 0 0}
-.container-fluid .book{margin-top:20px}.container-fluid .book .cover{height:225px;position:relative}.container-fluid .book .cover img{border:1px solid #ccc;border-radius:5px;box-sizeing:border-box;height:100%;width:100%;bottom:0;position:absolute}
+.container-fluid .book{margin-top:20px}.container-fluid .book .cover{height:225px;position:relative}.container-fluid .book .cover img{border:1px solid #ccc;border-radius:5px;box-sizeing:border-box;height:100%;bottom:0;position:absolute}
 .container-fluid .book .meta{margin-top:10px}.container-fluid .book .meta p{margin:0}
 .container-fluid .book .meta .title{font-weight:bold;font-size:16px;color:#444}
 .container-fluid .book .meta .author{font-size:12px;color:#999}
