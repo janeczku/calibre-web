@@ -26,7 +26,7 @@ Calibre Web is a Python web app providing a clean interface for browsing, readin
 1. Execute the command: `python cps.py` (it will throw an error)
 2. Edit config.ini and set DB_ROOT to the path of the folder where your Calibre library (metadata.db) lives
 3. Execute the command: `python cps.py`
-4. Point your browser to `http://localhost:8083`
+4. Point your browser to `http://localhost:8083` or `http://localhost:8083/feed` for the OPDS catalog 
 
 **Default admin login:**    
 *Username:* admin   
