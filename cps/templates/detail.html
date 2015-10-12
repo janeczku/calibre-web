@@ -74,7 +74,7 @@
           </div>
         </li>
 
-        <li><a target="_blank" href="{{url_for('read_book', book_id=entry.id)}}"><div class="btn btn-primary"><span class="glyphicon glyphicon-eye-open"></span> Read online</div></a></li>
+        <li><a target="_blank" href="{{url_for('read_book', book_id=entry.id)}}"><div class="btn btn-primary"><span class="glyphicon glyphicon-eye-open"></span> Read in Browser</div></a></li>
 
         {% if g.user.shelf.all() or g.public_shelfes %}
         <li>
