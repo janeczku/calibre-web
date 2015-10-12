@@ -40,5 +40,3 @@ Optionally, to enable on-the-fly conversion from EPUB to MOBI when using the sen
 
 1. Create a `vendor` folder in the app root
 2. [Download](http://www.amazon.com/gp/feature.html?docId=1000765211) Amazon's KindleGen tool for your platform and place the binary named as `kindlegen` in this folder. 
-
-Calibre Web supports on-the-fly conversion of EPUB ebooks to Kindle format. To enable this feature, download http://www.amazon.com/gp/feature.html?docId=1000765211
