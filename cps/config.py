@@ -45,7 +45,6 @@ def check_setting_int(config, cfg_name, item_name, def_val):
 CheckSection('General')
 DB_ROOT = check_setting_str(CFG, 'General', 'DB_ROOT', os.path.join(os.getcwd(), "Calibre Library"))
 APP_DB_ROOT = check_setting_str(CFG, 'General', 'APP_DB_ROOT', os.getcwd())
-TEMPLATEDIR = check_setting_str(CFG, 'General', 'TEMPLATEDIR', os.path.join(os.getcwd(), "views"))
 MAIN_DIR = check_setting_str(CFG, 'General', 'MAIN_DIR', os.getcwd())
 PORT = check_setting_int(CFG, 'General', 'PORT', 8083)
 NEWEST_BOOKS = check_setting_str(CFG, 'General', 'NEWEST_BOOKS', 60)
@@ -60,7 +59,6 @@ SYS_ENCODING="UTF-8"
 configval={}
 configval["DB_ROOT"] = DB_ROOT
 configval["APP_DB_ROOT"] = APP_DB_ROOT
-configval["TEMPLATEDIR"] = TEMPLATEDIR
 configval["MAIN_DIR"] = MAIN_DIR
 configval["PORT"] = PORT
 configval["NEWEST_BOOKS"] = NEWEST_BOOKS
@@ -73,7 +71,6 @@ def save_config(configval):
     new_config['General'] = {}
     new_config['General']['DB_ROOT'] = configval["DB_ROOT"]
     new_config['General']['APP_DB_ROOT'] = configval["APP_DB_ROOT"]
-    new_config['General']['TEMPLATEDIR'] = configval["TEMPLATEDIR"]
     new_config['General']['MAIN_DIR'] = configval["MAIN_DIR"]
     new_config['General']['PORT'] = configval["PORT"]
     new_config['General']['NEWEST_BOOKS'] = configval["NEWEST_BOOKS"]
