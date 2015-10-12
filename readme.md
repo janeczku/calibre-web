@@ -1,48 +1,35 @@
-This is an in-progress fork of [calibreserver by Raphael Mutschler](https://bitbucket.org/raphaelmutschler/calibreserver).
+This is an in-progress fork of [calibreserver](https://bitbucket.org/raphaelmutschler/calibreserver)  by Raphael Mutschler.
 
 A working Docker image is available here: [janeczku/calibre-web](https://registry.hub.docker.com/u/janeczku/calibre-web/).
 
-library aka CPS
-=====
+##About
 
-*library befindet sich noch in der alpha phase.*
+Calibre Web is a Python web app providing a clean interface for browsing, reading and downloading e-books from a Calibre e-book database.
 
-library ist der versuch einen rein python basierenden eBook Server für alle Geräte zu entwickeln. Die offzielle Server app bietet wesentlich mehr funktionen, diese Version ist lediglich dazu gedacht die mit Calibre verwalteten Bücher (dynamisch) aufzulisten. Es handelt sich also nur um einen reinen Content Server. Ich betreibe CalibreServer auf einer Synology DS211j und als Portable version auf einem Raspberry Pi, diese war auch der Grund wieso ich mit der entwicklung angefangen habe. Der ofizielle Server läuft nur mit vielen Anpassungen auf der DS, ich wollte eine Lösung die einfach funktioniert ohne viele Umstände.
+##Features
+- Bootstrap 3 HTML5 interface
+- User management
+- Admin interface
+- OPDS feed for eBook reader apps
+- Filter and search by titles, authors, tags, series and language
+- Create custom book collection (shelves)
+- Support for editing eBook metadata
+- Support for converting eBooks from EPUB to Kindle format (mobi/azw)
+- Restrict eBook download to logged-in users
+- Send eBooks to Kindle devices with the click of a button
+- Support for reading eBooks directly in the browser
 
-Help translate library aka CPS to your Language:
-Hilf bei der Übersetzung in andere Sprachen:
-https://www.transifex.com/projects/p/library-aka-calibreserver/
+## Quick start
 
-## Features:
-- Einlesen der Calibre Datenbank
-- HTML Interface
-- OPDS Feed support
-- User Management
-- Admin Interface (neue user anlegen/verwalten)
-- Download nur für angemeldete User
-- epub to mobi converter (braucht kindlegen: http://www.amazon.com/gp/feature.html?docId=1000765211)
-- send to kindle
-- Buch online lesen
+1. Execute the command: `python cps.py` (it will throw an error)
+2. Edit config.ini and set DB_ROOT to the path of the folder where your Calibre library (metadata.db) lives
+3. Execute the command: `python cps.py`
+4. Point your browser to `http://localhost:8083`
 
-## ToDo:
-- Setup vereinfachen (setup über webinterface)
+**Default admin login:**    
+*Username:* admin   
+*Password:* admin123
 
-## Setup:
-1. Alle dateien herunterladen
-2. Tool mit "python cps.py" starten (beendet automatisch)
-3. config.ini bearbeiten (siehe unten)
-4. create_admin.py aufrufen
-5. Tool mit "python cps.py" starten
-
-## config.ini
-[General]
-hier muss bei DB_ROOT  der absolute Pfad zum Ordner der Calibre Datenbank eingetragen werden
-Alles andere kann vernachlässigt werden bzw sollte bereits stimmen
-
-[Mail]
-Hier sollten eure SMTP Zugangsdaten für die email die ihr zum versenden nutzen wollt eingetragen werden
-
-
-## Anforderungen
+## Requirements
 
 Python 2.7+
