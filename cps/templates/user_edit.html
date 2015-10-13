@@ -3,27 +3,31 @@
 <div class="discover">
   <h1>{{title}}</h1>
   <form role="form" method="POST">
+    {% if g.user and g.user.role and new_user %}
+    <div class="form-group required">
+      <label for="nickname">Username</label>
+      <input type="text" class="form-control" name="nickname" id="nickname" value="{{ content.nickname if content.nickname != None }}">
+    </div>
+    {% endif %}
     <div class="form-group">
-      <label for="email">e-mail</label>
-      <input type="email" class="form-control" name="email" id="email" value="{{ content.email if content.email != None }}"> 
+      <label for="email">Email address</label>
+      <input type="email" class="form-control" name="email" id="email" value="{{ content.email if content.email != None }}" required> 
     </div>
     <div class="form-group">
-      <label for="password">password</label>
+      <label for="password">Password</label>
       <input type="password" class="form-control" name="password" id="password" value="">
     </div>
     <div class="form-group">
       <label for="kindle_mail">Kindle E-Mail</label>
       <input type="text" class="form-control" name="kindle_mail" id="kindle_mail" value="{{ content.kindle_mail if content.kindle_mail != None }}">
     </div>
-    {% if g.user and g.user.role %}
+    {% if g.user and g.user.role and not profile %}
     <div class="form-group">
-      <label for="user_role">Admin user? 0 or 1</label>
-      <input type="text" class="form-control" name="user_role" id="user_role" value="{{ content.role if content.role != None }}">
+      <label for="user_role">Admin user</label>
+      <input type="checkbox" name="admin_user" id="admin_user" {% if content.role %}checked{% endif %}>
     </div>
-    <div class="form-group">
-      <label for="nickname">nickname</label>
-      <input type="text" class="form-control" name="nickname" id="nickname" value="{{ content.nickname if content.nickname != None }}">
-    </div>
+    {% endif %}
+    {% if g.user and g.user.role and not profile and not new_user %}
     <div class="checkbox">
       <label>
         <input type="checkbox" name="delete"> Delete this user

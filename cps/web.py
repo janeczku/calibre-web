@@ -7,11 +7,13 @@ from flask import Flask, render_template, session, request, redirect, url_for, s
 from cps import db, config, ub, helper
 import os
 from sqlalchemy.sql.expression import func
+from sqlalchemy.exc import IntegrityError
 from math import ceil
 from flask.ext.login import LoginManager, login_user, logout_user, login_required, current_user
 from flask.ext.principal import Principal, Identity, AnonymousIdentity, identity_changed
 import requests, zipfile
 from werkzeug.security import generate_password_hash, check_password_hash
+from functools import wraps
 
 app = (Flask(__name__))
 
@@ -81,6 +83,17 @@ def url_for_other_page(page):
     return url_for(request.endpoint, **args)
 
 app.jinja_env.globals['url_for_other_page'] = url_for_other_page
+
+def admin_required(f):
+    """
+    Checks if current_user.role == 1
+    """
+    @wraps(f)
+    def inner(*args, **kwargs):
+        if int(current_user.role) == 1:
+            return f(*args, **kwargs)
+        abort(403)
+    return inner
 
 @app.before_request
 def before_request():
@@ -236,7 +249,8 @@ def series(name):
 
 @app.route("/admin/")
 def admin():
-    return "Admin ONLY!"
+    #return "Admin ONLY!"
+    abort(403)
 
 
 @app.route("/search", methods=["GET"])
@@ -462,13 +476,20 @@ def profile():
             content.password = generate_password_hash(to_save["password"])
         if to_save["kindle_mail"] and to_save["kindle_mail"] != content.kindle_mail:
             content.kindle_mail = to_save["kindle_mail"]
-        if to_save["user_role"]:
-            content.role = int(to_save["user_role"])
-        ub.session.commit()
-    return render_template("user_edit.html", content=content, downloads=downloads, title="%s's profile" % current_user.nickname)
+        if to_save["email"] and to_save["email"] != content.email:
+            content.email = to_save["email"]
+        try:
+            ub.session.commit()
+        except IntegrityError:
+            ub.session.rollback()
+            flash("Found an existing account for this email address.", category="error")
+            return render_template("user_edit.html", content=content, downloads=downloads, title="%s's profile" % current_user.nickname)
+        flash("Profile updated", category="success")
+    return render_template("user_edit.html", profile=1, content=content, downloads=downloads, title="%s's profile" % current_user.nickname)
 
 @app.route("/admin/user")
 @login_required
+@admin_required
 def user_list():
     content = ub.session.query(ub.User).all()
     settings = ub.session.query(ub.Settings).first()
@@ -476,24 +497,34 @@ def user_list():
 
 @app.route("/admin/user/new", methods = ["GET", "POST"])
 @login_required
+@admin_required
 def new_user():
     content = ub.User()
     if request.method == "POST":
         to_save = request.form.to_dict()
+        if not to_save["nickname"] or not to_save["email"] or not to_save["password"]:
+            flash("Please fill out all fields!", category="error")
+            return render_template("user_edit.html", new_user=1, content=content, title="Add new user")
         content.password = generate_password_hash(to_save["password"])
         content.nickname = to_save["nickname"]
         content.email = to_save["email"]
-        content.role = int(to_save["user_role"])
+        if "admin_user" in to_save:
+            content.role = 1
+        else:
+            content.role = 0
         try:
             ub.session.add(content)
             ub.session.commit()
-            flash("User created", category="success")
-        except (e):
-            flash(e, category="error")
-    return render_template("user_edit.html", content=content, title="User list")
+            flash("User '%s' created" % content.nickname, category="success")
+            return redirect(url_for('user_list'))
+        except IntegrityError:
+            ub.session.rollback()
+            flash("Found an existing account for this email address or nickname.", category="error")
+    return render_template("user_edit.html", new_user=1, content=content, title="Add new user")
 
 @app.route("/admin/user/mailsettings", methods = ["GET", "POST"])
 @login_required
+@admin_required
 def edit_mailsettings():
     content = ub.session.query(ub.Settings).first()
     if request.method == "POST":
@@ -512,6 +543,7 @@ def edit_mailsettings():
 
 @app.route("/admin/user/<int:user_id>", methods = ["GET", "POST"])
 @login_required
+@admin_required
 def edit_user(user_id):
     content = ub.session.query(ub.User).filter(ub.User.id == int(user_id)).first()
     downloads = list()
@@ -521,15 +553,30 @@ def edit_user(user_id):
         to_save = request.form.to_dict()
         if "delete" in to_save:
             ub.session.delete(content)
+            flash("User '%s' deleted" % content.nickname, category="success")
             return redirect(url_for('user_list'))
         else:
-            if "password" in to_save:
+            if to_save["password"]:
                 content.password == generate_password_hash(to_save["password"])
-        ub.session.commit()
-    return render_template("user_edit.html", content=content, downloads=downloads, title="Edit User %s" % current_user.nickname)
+            if "admin_user" in to_save and content.role != 1:
+                content.role = 1
+            elif not "admin_user" in to_save and content.role == 1:
+                content.role = 0
+            if to_save["email"] and to_save["email"] != content.email:
+                content.email = to_save["email"]
+            if to_save["kindle_mail"] and to_save["kindle_mail"] != content.kindle_mail:
+                content.kindle_mail = to_save["kindle_mail"]
+        try:
+            ub.session.commit()
+            flash("User '%s' updated" % content.nickname, category="success")
+        except IntegrityError:
+            ub.session.rollback()
+            flash("An unknown error occured.", category="error")
+    return render_template("user_edit.html", new_user=0, content=content, downloads=downloads, title="Edit User %s" % content.nickname)
 
 @app.route("/admin/book/<int:book_id>", methods=['GET', 'POST'])
 @login_required
+@admin_required
 def edit_book(book_id):
     ## create the function for sorting...
     db.session.connection().connection.connection.create_function("title_sort",1,db.title_sort)
