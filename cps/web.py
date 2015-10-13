@@ -477,12 +477,16 @@ def create_shelf():
             shelf.is_public = 1
         shelf.name = to_save["title"]
         shelf.user_id = int(current_user.id)
-        try:
-            ub.session.add(shelf)
-            ub.session.commit()
-            flash("Shelf %s created" % to_save["title"], category="success")
-        except:
-            flash("there was an error", category="error")
+        existing_shelf = ub.session.query(ub.Shelf).filter(ub.Shelf.name == shelf.name).first()
+        if existing_shelf:
+            flash("A shelf with the name '%s' already exists." % to_save["title"], category="error")
+        else:
+            try:
+                ub.session.add(shelf)
+                ub.session.commit()
+                flash("Shelf %s created" % to_save["title"], category="success")
+            except:
+                flash("There was an error", category="error")
         return render_template('shelf_edit.html', title="create a shelf")
     else:
         return render_template('shelf_edit.html', title="create a shelf")
