@@ -3,7 +3,7 @@
 
 import mimetypes
 mimetypes.add_type('application/xhtml+xml','.xhtml')
-from flask import Flask, render_template, session, request, redirect, url_for, send_from_directory, make_response, g, flash, abort
+from flask import Flask, render_template, session, request, Response, redirect, url_for, send_from_directory, make_response, g, flash, abort
 from cps import db, config, ub, helper
 import os
 from sqlalchemy.sql.expression import func
@@ -14,6 +14,7 @@ from flask.ext.principal import Principal, Identity, AnonymousIdentity, identity
 import requests, zipfile
 from werkzeug.security import generate_password_hash, check_password_hash
 from functools import wraps
+import base64
 
 app = (Flask(__name__))
 
@@ -32,16 +33,42 @@ def load_user(id):
 
 @lm.header_loader
 def load_user_from_header(header_val):
-    print header_val
     if header_val.startswith('Basic '):
         header_val = header_val.replace('Basic ', '', 1)
-        print header_val
     try:
         header_val = base64.b64decode(header_val)
-        print header_val
+        basic_username = header_val.split(':')[0]
+        basic_password = header_val.split(':')[1]
+        #print basic_username
+        #print basic_password
     except TypeError:
         pass
-    return ub.session.query(ub.User).filter(ub.User.password == header_val).first()
+    user = ub.session.query(ub.User).filter(ub.User.nickname == basic_username).first()
+    if user and check_password_hash(user.password, basic_password):
+        return user
+    return
+
+def check_auth(username, password):
+    user = ub.session.query(ub.User).filter(ub.User.nickname == username).first()
+    if user and check_password_hash(user.password, password):
+        return True
+    else:
+        return False
+
+def authenticate():
+    return Response(
+    'Could not verify your access level for that URL.\n'
+    'You have to login with proper credentials', 401,
+    {'WWW-Authenticate': 'Basic realm="Login Required"'})
+
+def requires_basic_auth(f):
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        auth = request.authorization
+        if not auth or not check_auth(auth.username, auth.password):
+            return authenticate()
+        return f(*args, **kwargs)
+    return decorated
 
 #simple pagination for the feed
 class Pagination(object):
@@ -83,6 +110,7 @@ def url_for_other_page(page):
     return url_for(request.endpoint, **args)
 
 app.jinja_env.globals['url_for_other_page'] = url_for_other_page
+
 
 def admin_required(f):
     """
@@ -167,6 +195,17 @@ def feed_hot():
     xml = render_template('feed.xml', entries=entries, next_url="/feed/hot?start_index=%d" % (int(config.NEWEST_BOOKS) + int(off)))
     response= make_response(xml)
     response.headers["Content-Type"] = "application/xml"
+    return response
+
+@app.route("/feed/download/<int:book_id>/<format>")
+@requires_basic_auth
+def get_opds_download_link(book_id, format):
+    format = format.split(".")[0]
+    book = db.session.query(db.Books).filter(db.Books.id == book_id).first()
+    data = db.session.query(db.Data).filter(db.Data.book == book.id).filter(db.Data.format == format.upper()).first()
+    helper.update_download(book_id, int(current_user.id))
+    response = make_response(send_from_directory(os.path.join(config.DB_ROOT, book.path), data.name + "." +format))
+    response.headers["Content-Disposition"] = "attachment; filename=%s.%s" % (data.name, format)
     return response
 
 @app.route("/", defaults={'page': 1})
@@ -471,7 +510,7 @@ def profile():
         downloads.append(db.session.query(db.Books).filter(db.Books.id == book.book_id).first())
     if request.method == "POST":
         to_save = request.form.to_dict()
-        print to_save
+        #print to_save
         if to_save["password"]:
             content.password = generate_password_hash(to_save["password"])
         if to_save["kindle_mail"] and to_save["kindle_mail"] != content.kindle_mail:
@@ -583,8 +622,7 @@ def edit_book(book_id):
     book = db.session.query(db.Books).filter(db.Books.id == book_id).first()
     if request.method == 'POST':
         to_save = request.form.to_dict()
-        print to_save
-        #print title_sort(to_save["book_title"])
+        #print to_save
         book.title = to_save["book_title"]
         book.authors[0].name = to_save["author_name"]
 
@@ -603,7 +641,7 @@ def edit_book(book_id):
 
         for tag in to_save["tags"].split(","):
             if tag.strip():
-                print tag
+                #print tag
                 is_tag = db.session.query(db.Tags).filter(db.Tags.name.like('%' + tag.strip() + '%')).first()
                 if is_tag:
                     book.tags.append(is_tag)

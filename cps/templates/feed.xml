@@ -55,7 +55,7 @@
 
     {% for format in entry.data %}
     <link rel="http://opds-spec.org/acquisition"
-          href="{{ url_for('get_download_link', book_id=entry.id, format=format.format|lower)}}"{% if format.format|lower == "epub" %}
+          href="{{ url_for('get_opds_download_link', book_id=entry.id, format=format.format|lower)}}"{% if format.format|lower == "epub" %}
           type="application/epub+zip"/>
           {% else %}
           type="application/x-mobipocket-ebook"/>
