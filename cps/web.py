@@ -3,7 +3,7 @@
 
 import mimetypes
 mimetypes.add_type('application/xhtml+xml','.xhtml')
-from flask import Flask, render_template, session, request, redirect, url_for, send_from_directory, make_response, g, flash
+from flask import Flask, render_template, session, request, redirect, url_for, send_from_directory, make_response, g, flash, abort
 from cps import db, config, ub, helper
 import os
 from sqlalchemy.sql.expression import func
@@ -86,6 +86,7 @@ app.jinja_env.globals['url_for_other_page'] = url_for_other_page
 def before_request():
     g.user = current_user
     g.public_shelfes = ub.session.query(ub.Shelf).filter(ub.Shelf.is_public == 1).all()
+    g.allow_registration = config.PUBLIC_REG
 
 @app.route("/feed")
 def feed_index():
@@ -296,9 +297,47 @@ def get_download_link(book_id, format):
     response.headers["Content-Disposition"] = "attachment; filename=%s.%s" % (data.name, format)
     return response
 
+@app.route('/register', methods = ['GET', 'POST'])
+def register():
+    error = None
+    if not config.PUBLIC_REG:
+        abort(404)
+    if current_user is not None and current_user.is_authenticated():
+        return redirect(url_for('index'))
+
+    if request.method == "POST":
+        to_save = request.form.to_dict()
+        if not to_save["nickname"] or not to_save["email"] or not to_save["password"]:
+            flash("Please fill out all fields!", category="error")
+            return render_template('register.html', title="register")
+
+        existing_user = ub.session.query(ub.User).filter(ub.User.nickname == to_save["nickname"]).first()
+        existing_email = ub.session.query(ub.User).filter(ub.User.email == to_save["email"]).first()
+        if not existing_user and not existing_email:
+            content = ub.User()
+            content.password = generate_password_hash(to_save["password"])
+            content.nickname = to_save["nickname"]
+            content.email = to_save["email"]
+            content.role = 0
+            try:
+                ub.session.add(content)
+                ub.session.commit()
+            except:
+                ub.session.rollback()
+                flash("An unknown error occured. Please try again later.", category="error")
+                return render_template('register.html', title="register")
+            flash("Your account has been created. Please login.", category="success")
+            return redirect(url_for('login'))
+        else:
+            flash("This username or email address is already in use.", category="error")
+            return render_template('register.html', title="register")
+
+    return render_template('register.html', title="register")
+
 @app.route('/login', methods = ['GET', 'POST'])
 def login():
     error = None
+
     if current_user is not None and current_user.is_authenticated():
         return redirect(url_for('index'))
 

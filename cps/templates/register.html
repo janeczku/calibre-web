@@ -1,0 +1,26 @@
+{% extends "layout.html" %}
+{% block body %}
+<div class="well col-sm-6 col-sm-offset-2">
+  <h2 style="margin-top: 0">Register a new account</h2>
+  <form method="POST" role="form">
+    <div class="form-group">
+      <label for="nickname">Username</label>
+      <input type="text" class="form-control" id="nickname" name="nickname" placeholder="Choose a username">
+    </div>
+    <div class="form-group">
+      <label for="password">Password</label>
+      <input type="password" class="form-control" id="password" name="password" placeholder="Choose a password">
+    </div>
+    <div class="form-group">
+      <label for="email">Email address</label>
+      <input type="email" class="form-control" id="email" name="email" placeholder="Your email address">
+    </div>
+    <button type="submit" class="btn btn-primary">Register</button>
+  </form>
+</div>
+  {% if error %}
+  <div class="col-sm-6 col-sm-offset-2">
+    <div class="alert alert-danger">{{error}}</div>
+  </div>
+  {% endif %}
+{% endblock %}
