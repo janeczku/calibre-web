@@ -212,7 +212,14 @@ def get_opds_download_link(book_id, format):
         file_name = author+'-'+file_name
     file_name = helper.get_valid_filename(file_name)
     response = make_response(send_from_directory(os.path.join(config.DB_ROOT, book.path), data.name + "." +format))
-    response.headers["Content-Disposition"] = "attachment; filename=%s.%s" % (file_name, format)
+    #response.headers["Content-Disposition"] = "attachment; filename=%s.%s" % (data.name, format)
+    response.headers["Content-Disposition"] = \
+        "attachment; " \
+        "filename={utf_filename}.{suffix};" \
+        "filename*=UTF-8''{utf_filename}.{suffix}".format(
+        utf_filename=file_name.encode('utf-8'),
+        suffix=format
+    )
     return response
 
 @app.route("/", defaults={'page': 1})
@@ -363,7 +370,14 @@ def get_download_link(book_id, format):
         file_name = author+'-'+file_name
     file_name = helper.get_valid_filename(file_name)
     response = make_response(send_from_directory(os.path.join(config.DB_ROOT, book.path), data.name + "." +format))
-    response.headers["Content-Disposition"] = "attachment; filename=%s.%s" % (file_name, format)
+    #response.headers["Content-Disposition"] = "attachment; filename=%s.%s" % (file_name, format)
+    response.headers["Content-Disposition"] = \
+        "attachment; " \
+        "filename={utf_filename}.{suffix};" \
+        "filename*=UTF-8''{utf_filename}.{suffix}".format(
+        utf_filename=file_name.encode('utf-8'),
+        suffix=format
+    )
     return response
 
 @app.route('/register', methods = ['GET', 'POST'])
