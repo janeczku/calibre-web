@@ -7,6 +7,7 @@ from flask import Flask, render_template, session, request, Response, redirect, 
 from cps import db, config, ub, helper
 import os
 from sqlalchemy.sql.expression import func
+from sqlalchemy.sql.expression import false
 from sqlalchemy.exc import IntegrityError
 from math import ceil
 from flask.ext.login import LoginManager, login_user, logout_user, login_required, current_user
@@ -15,6 +16,7 @@ import requests, zipfile
 from werkzeug.security import generate_password_hash, check_password_hash
 from functools import wraps
 import base64
+from sqlalchemy.sql import *
 
 app = (Flask(__name__))
 
@@ -179,7 +181,7 @@ def feed_discover():
         entries = db.session.query(db.Books).order_by(func.random()).limit(config.NEWEST_BOOKS)
         off = 0
     xml = render_template('feed.xml', entries=entries, next_url="/feed/discover?start_index=%d" % (int(config.NEWEST_BOOKS) + int(off)))
-    response= make_response(xml)
+    response = make_response(xml)
     response.headers["Content-Type"] = "application/xml"
     return response
 
@@ -204,8 +206,13 @@ def get_opds_download_link(book_id, format):
     book = db.session.query(db.Books).filter(db.Books.id == book_id).first()
     data = db.session.query(db.Data).filter(db.Data.book == book.id).filter(db.Data.format == format.upper()).first()
     helper.update_download(book_id, int(current_user.id))
+    author = helper.get_normalized_author(book.author_sort)
+    file_name = book.title
+    if len(author) > 0:
+        file_name = author+'-'+file_name
+    file_name = helper.get_valid_filename(file_name)
     response = make_response(send_from_directory(os.path.join(config.DB_ROOT, book.path), data.name + "." +format))
-    response.headers["Content-Disposition"] = "attachment; filename=%s.%s" % (data.name, format)
+    response.headers["Content-Disposition"] = "attachment; filename=%s.%s" % (file_name, format)
     return response
 
 @app.route("/", defaults={'page': 1})
@@ -223,7 +230,7 @@ def index(page):
 @app.route("/hot", defaults={'page': 1})
 @app.route('/hot/page/<int:page>')
 def hot_books(page):
-    random = db.session.query(db.Books).order_by(func.random()).limit(config.RANDOM_BOOKS)
+    random = db.session.query(db.Books).filter(false())
     # if page == 1:
     #     entries = db.session.query(db.Books).filter(db.Books.ratings.any(db.Ratings.rating > 9)).order_by(db.Books.last_modified.desc()).limit(config.NEWEST_BOOKS)
     # else:
@@ -236,9 +243,13 @@ def hot_books(page):
     entries = list()
     for book in hot_books:
         entries.append(db.session.query(db.Books).filter(db.Books.id == book.Downloads.book_id).first())
-
-    pagination = Pagination(page, config.NEWEST_BOOKS, len(all_books.all()))
-    return render_template('index.html', random=random, entries=entries, pagination=pagination, title="Hot Books (most downloaded)")
+    numBooks = len(all_books.all())
+    pages = int(ceil(numBooks / float(config.NEWEST_BOOKS)))
+    if pages > 1:
+        pagination = Pagination(page, config.NEWEST_BOOKS, len(all_books.all()))
+        return render_template('index.html', random=random, entries=entries, pagination=pagination, title="Hot Books (most downloaded)")
+    else:
+        return render_template('index.html', random=random, entries=entries, title="Hot Books (most downloaded)")
 
 @app.route("/stats")
 def stats():
@@ -272,7 +283,7 @@ def category_list():
 
 @app.route("/category/<name>")
 def category(name):
-    random = db.session.query(db.Books).order_by(func.random()).limit(config.RANDOM_BOOKS)
+    random = db.session.query(db.Books).filter(false())
     if name != "all":
         entries = db.session.query(db.Books).filter(db.Books.tags.any(db.Tags.name.like("%" +name + "%" ))).order_by(db.Books.last_modified.desc()).all()
     else:
@@ -281,7 +292,7 @@ def category(name):
 
 @app.route("/series/<name>")
 def series(name):
-    random = db.session.query(db.Books).order_by(func.random()).limit(config.RANDOM_BOOKS)
+    random = db.session.query(db.Books).filter(false())
     entries = db.session.query(db.Books).filter(db.Books.series.any(db.Series.name.like("%" +name + "%" ))).order_by(db.Books.series_index).all()
     return render_template('index.html', random=random, entries=entries, title="Series: %s" % name)
 
@@ -309,7 +320,7 @@ def author_list():
 
 @app.route("/author/<name>")
 def author(name):
-    random = db.session.query(db.Books).order_by(func.random()).limit(config.RANDOM_BOOKS)
+    random = db.session.query(db.Books).filter(false())
     entries = db.session.query(db.Books).filter(db.Books.authors.any(db.Authors.name.like("%" +  name + "%"))).all()
     return render_template('index.html', random=random, entries=entries, title="Author: %s" % name)
 
@@ -346,8 +357,13 @@ def get_download_link(book_id, format):
     book = db.session.query(db.Books).filter(db.Books.id == book_id).first()
     data = db.session.query(db.Data).filter(db.Data.book == book.id).filter(db.Data.format == format.upper()).first()
     helper.update_download(book_id, int(current_user.id))
+    author = helper.get_normalized_author(book.author_sort)
+    file_name = book.title
+    if len(author) > 0:
+        file_name = author+'-'+file_name
+    file_name = helper.get_valid_filename(file_name)
     response = make_response(send_from_directory(os.path.join(config.DB_ROOT, book.path), data.name + "." +format))
-    response.headers["Content-Disposition"] = "attachment; filename=%s.%s" % (data.name, format)
+    response.headers["Content-Disposition"] = "attachment; filename=%s.%s" % (file_name, format)
     return response
 
 @app.route('/register', methods = ['GET', 'POST'])

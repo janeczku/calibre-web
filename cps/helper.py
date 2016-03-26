@@ -8,6 +8,8 @@ import smtplib
 import sys
 import os
 import traceback
+import re
+import unicodedata
 from StringIO import StringIO
 from email import encoders
 from email.MIMEBase import MIMEBase
@@ -125,3 +127,25 @@ def get_attachment(file_path):
         message = ('The requested file could not be read. Maybe wrong '
                    'permissions?')
         return None
+
+def get_valid_filename(value):
+    """
+    Returns the given string converted to a string that can be used for a clean
+    filename. Limits num characters to 128 max.
+    """
+    value = value[:128]
+    re_slugify = re.compile('[^\w\s-]', re.UNICODE)
+    value = unicodedata.normalize('NFKD', value)
+    re_slugify = re.compile('[^\w\s-]', re.UNICODE)
+    value = unicode(re_slugify.sub('', value).strip())
+    value = re.sub('[\s]+', '_', value, flags=re.U)
+    return value
+
+def get_normalized_author(value):
+    """
+    Normalizes sorted author name
+    """
+    value = unicodedata.normalize('NFKD', value)
+    value = re.sub('[^\w,\s]', '', value, flags=re.U)
+    value = " ".join(value.split(", ")[::-1])
+    return value

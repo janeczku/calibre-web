@@ -155,6 +155,7 @@ class Books(Base):
 	id = Column(Integer,primary_key=True)
 	title = Column(String)
 	sort = Column(String)
+	author_sort = Column(String)
 	timestamp = Column(String)
 	pubdate = Column(String)
 	series_index = Column(String)
@@ -170,9 +171,10 @@ class Books(Base):
 	ratings = relationship('Ratings', secondary=books_ratings_link, backref='books')
 	languages = relationship('Languages', secondary=books_languages_link, backref='books')
 
-	def __init__(self, title, sort, timestamp, pubdate, series_index, last_modified, path, has_cover, authors, tags):
+	def __init__(self, title, sort, author_sort, timestamp, pubdate, series_index, last_modified, path, has_cover, authors, tags):
 		self.title = title
 		self.sort = sort
+		self.author_sort = author_sort
 		self.timestamp = timestamp
 		self.pubdate = pubdate
 		self.series_index = series_index
@@ -181,11 +183,8 @@ class Books(Base):
 		self.has_cover = has_cover
 		self.tags = tags
 
-
 	def __repr__(self):
-		return u"<Books('{0},{1}{2}{3}{4}{5}{6}{7}')>".format(self.title, self.sort, self.timestamp, self.pubdate, self.series_index, self.last_modified ,self.path, self.has_cover)
-
-
+		return u"<Books('{0},{1}{2}{3}{4}{5}{6}{7}{8}')>".format(self.title, self.sort, self.author_sort, self.timestamp, self.pubdate, self.series_index, self.last_modified ,self.path, self.has_cover)
 
 Base.metadata.create_all(engine)
 Session = sessionmaker()

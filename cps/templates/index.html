@@ -1,5 +1,6 @@
 {% extends "layout.html" %}
 {% block body %}
+{% if random.count() > 0 %}
 <div class="discover">
   <h2>Discover (Random Books)</h2>
   <div class="row">
@@ -34,6 +35,7 @@
     {% endfor %}
   </div>
 </div>
+{% endif %}
 <div class="discover load-more">
   <h2>{{title}}</h2>
   <div class="row">
