@@ -109,6 +109,7 @@ class Settings(Base):
 	id = Column(Integer, primary_key=True)
 	mail_server = Column(String)
 	mail_port = Column(Integer, default = 25)
+	mail_use_ssl = Column(SmallInteger, default = 0)
 	mail_login = Column(String)
 	mail_password = Column(String)
 	mail_from = Column(String)
@@ -121,6 +122,7 @@ def create_default_config():
 	settings = Settings()
 	settings.mail_server = "mail.example.com"
 	settings.mail_port = 25
+	settings.mail_use_ssl = 0
 	settings.mail_login = "mail@example.com"
 	settings.mail_password = "mypassword"
 	settings.mail_from = "automailer <mail@example.com>"
@@ -137,6 +139,7 @@ def get_mail_settings():
 	data = {
 	  'mail_server': settings.mail_server,
 	  'mail_port': settings.mail_port,
+	  'mail_use_ssl': settings.mail_use_ssl,
 	  'mail_login': settings.mail_login,
 	  'mail_password': settings.mail_password,
 	  'mail_from': settings.mail_from

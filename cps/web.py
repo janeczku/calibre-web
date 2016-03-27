@@ -450,16 +450,16 @@ def logout():
 def send_to_kindle(book_id):
     settings = ub.get_mail_settings()
     if settings.get("mail_server", "mail.example.com") == "mail.example.com":
-        flash("Please configure the SMTP email account first...", category="error")
+        flash("Please configure the SMTP mail settings first...", category="error")
     elif current_user.kindle_mail:
-        x = helper.send_mail(book_id, current_user.kindle_mail)
-        if x:
-            flash("Mail successfully send to %s" % current_user.kindle_mail, category="success")
+        result = helper.send_mail(book_id, current_user.kindle_mail)
+        if result is None:
+            flash("Book successfully send to %s" % current_user.kindle_mail, category="success")
             helper.update_download(book_id, int(current_user.id))
         else:
-            flash("There was an error sending this book", category="error")
+            flash("There was an error sending this book: %s" % result, category="error")
     else:
-        flash("Please set a kindle mail first...", category="error")
+        flash("Please configure your kindle email address first...", category="error")
     return redirect(request.environ["HTTP_REFERER"])
 
 @app.route("/shelf/add/<int:shelf_id>/<int:book_id>")
@@ -607,6 +607,10 @@ def edit_mailsettings():
         content.mail_login = to_save["mail_login"]
         content.mail_password = to_save["mail_password"]
         content.mail_from = to_save["mail_from"]
+        if "mail_use_ssl" in to_save:
+            content.mail_use_ssl = 1
+        else:
+            content.mail_use_ssl = 0
         try:
             ub.session.commit()
             flash("Mail settings updated", category="success")

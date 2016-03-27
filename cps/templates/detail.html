@@ -76,7 +76,7 @@
               </ul>
             </div>
             {% if g.user.kindle_mail %}
-            <a target="_blank" href="{{url_for('send_to_kindle', book_id=entry.id)}}" class="btn btn-primary" role="button"><span class="glyphicon glyphicon-send"></span> Send to Kindle</a>
+            <a href="{{url_for('send_to_kindle', book_id=entry.id)}}" id="sendbtn" class="btn btn-primary" role="button"><span class="glyphicon glyphicon-send"></span> Send to Kindle</a>
             {% endif %}
             <a target="_blank" href="{{url_for('read_book', book_id=entry.id)}}" class="btn btn-primary" role="button"><span class="glyphicon glyphicon-eye-open"></span> Read in browser</a>
 

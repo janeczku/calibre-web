@@ -1,5 +1,4 @@
 
-
 $(function() {
     $('.discover .row').isotope({
         // options
@@ -20,6 +19,13 @@ $(function() {
     }, function(data){
         $('.load-more .row').isotope( 'appended', $(data), null );
     });
+
+    $('#sendbtn').click(function(){
+        var $this = $(this);
+        $this.text('Please wait...');
+        $this.addClass('disabled');
+    });
+
 });
 
 $(window).resize(function(event) {
