@@ -1,6 +1,26 @@
 {% extends "layout.html" %}
 {% block body %}
 {% if book %}
+<script type="text/javascript">
+$(document).ready(function(){
+	$('input.typeahead').typeahead({
+		name: 'accounts',
+		source: function (query, process) {
+			$.ajax({
+				url: '{{ url_for('get_authors_json') }} ',
+				type: 'POST',
+				dataType: 'JSON',
+				data: 'query=' + query,
+				success: function(data) {
+					console.log(data);
+					process(data);
+				}
+			});
+		}
+	});
+});  
+</script>
+
 <div class="col-sm-3 col-lg-3 col-xs-12">
   <div class="cover">
     {% if book.has_cover is defined %}
@@ -21,7 +41,7 @@
             <p>{{author.name.join(" & ")}}</p>
           {% endfor %}
         {% endif %}
-      <input type="text" class="form-control" name="author_name" id="bookAuthor" value="{{book.authors[0].name}}">
+      <input type="text" data-provide="typeahead" class="form-control typeahead" name="author_name" id="bookAuthor" autocomplete="off" value="{{book.authors[0].name}}">
     </div>
     <div class="form-group">
       <label for="description">Description</label>

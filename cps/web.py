@@ -17,6 +17,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from functools import wraps
 import base64
 from sqlalchemy.sql import *
+import json
 
 app = (Flask(__name__))
 
@@ -221,6 +222,14 @@ def get_opds_download_link(book_id, format):
         suffix=format
     )
     return response
+    
+@app.route("/get_authors_json", methods = ['GET', 'POST'])
+def get_authors_json():	
+	if request.method == "POST":
+		form = request.form.to_dict()
+		entries = db.session.execute("select name from authors where name like '%" + form['query'] + "%'")
+		return json.dumps([dict(r) for r in entries])
+		
 
 @app.route("/", defaults={'page': 1})
 @app.route('/page/<int:page>')
