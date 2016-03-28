@@ -3,6 +3,7 @@
 
 from cps import db, ub
 from cps import config
+from flask import current_app as app
 
 import smtplib
 import sys
@@ -29,19 +30,17 @@ def update_download(book_id, user_id):
 def make_mobi(book_id):
     kindlegen = os.path.join(config.MAIN_DIR, "vendor", "kindlegen")
     if not os.path.exists(kindlegen):
-        print "make_mobie: kindlegen binary not found in: %s" % kindlegen
+        app.logger.error("make_mobi: kindlegen binary not found in: %s" % kindlegen)
         return None
     book = db.session.query(db.Books).filter(db.Books.id == book_id).first()
     data = db.session.query(db.Data).filter(db.Data.book == book.id).filter(db.Data.format == 'EPUB').first()
     if not data:
-        print "make_mobie: epub format not found for book id: %d" % book_id
+        app.logger.error("make_mobi: epub format not found for book id: %d" % book_id)
         return None
 
     file_path = os.path.join(config.DB_ROOT, book.path, data.name)
 
-    # print os.path.getsize(file_path + ".epub")
     if os.path.exists(file_path + ".epub"):
-        # print u"conversion started for %s" % book.title
         check = subprocess.call([kindlegen, file_path + ".epub"], stdout=subprocess.PIPE)
         if not check or check < 2:
             book.data.append(db.Data(
@@ -53,15 +52,14 @@ def make_mobi(book_id):
             db.session.commit()
             return file_path + ".mobi"
         else:
-            print "make_mobie: kindlegen failed to convert book"
+            app.logger.error("make_mobi: kindlegen failed with error while converting book")
             return None
     else:
-        print "make_mobie: epub not found: " + file_path + ".epub"
+        app.logger.error("make_mobie: epub not found: %s.epub" % file_path)
         return None
 
 def send_mail(book_id, kindle_mail):
     '''Send email with attachments'''
-
     is_mobi = False
     is_azw = False
     is_azw3 = False
@@ -73,13 +71,11 @@ def send_mail(book_id, kindle_mail):
     msg = MIMEMultipart()
     msg['From'] = settings["mail_from"]
     msg['To'] = kindle_mail
-    msg['Subject'] = 'Sent to Kindle'
+    msg['Subject'] = 'Send to Kindle'
     text = 'This email has been sent via calibre web.'
     msg.attach(MIMEText(text))
 
     use_ssl = settings.get('mail_use_ssl', 0)
-
-    print "use ssl: %d" % use_ssl
 
     # attach files
         #msg.attach(self.get_attachment(file_path))
@@ -102,8 +98,7 @@ def send_mail(book_id, kindle_mail):
             formats["pdf"] = os.path.join(config.DB_ROOT, book.path, entry.name + ".pdf")
 
     if len(formats) == 0:
-        print "no formats found"
-        return "Could not find any formats that can be send by email"
+        return "Could not find any formats suitable for sending by email"
 
     if 'azw3' in formats:
         msg.attach(get_attachment(formats['azw3']))
@@ -120,7 +115,7 @@ def send_mail(book_id, kindle_mail):
     elif 'pdf' in formats:
         msg.attach(get_attachment(formats['pdf']))
     else:
-        return "Could not find any formats that can be send by email"
+        return "Could not find any formats suitable for sending by email"
 
     # convert MIME message to string
     fp = StringIO()
@@ -141,9 +136,9 @@ def send_mail(book_id, kindle_mail):
         mailserver.login(settings["mail_login"], settings["mail_password"])
         mailserver.sendmail(settings["mail_login"], kindle_mail, msg)
         mailserver.quit()
-    except smtplib.SMTPException:
-        traceback.print_exc()
-        return "Error communicating with the mail server, please check the logs for details."
+    except (socket.error, smtplib.SMTPRecipientsRefused, smtplib.SMTPException), e:
+        app.logger.error(traceback.print_exc())
+        return "Failed to send mail: %s" % str(e)
 
     return None
 

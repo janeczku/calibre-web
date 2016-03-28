@@ -126,7 +126,6 @@
       {% endif %}
 
       {% if g.user.role %}
-      </br>
       <div class="btn-toolbar" role="toolbar">
         <div class="btn-group" role="group" aria-label="Edit/Delete book">
           <a href="{{ url_for('edit_book', book_id=entry.id) }}" class="btn btn-sm btn-warning" role="button"><span class="glyphicon glyphicon-edit"></span> Edit metadata</a>
