@@ -88,10 +88,6 @@ def send_mail(book_id, kindle_mail):
     for entry in data:
         if entry.format == "MOBI":
             formats["mobi"] = os.path.join(config.DB_ROOT, book.path, entry.name + ".mobi")
-        if entry.format == "AZW":
-            formats["azw"] = os.path.join(config.DB_ROOT, book.path, entry.name + ".azw")
-        if entry.format == "AZW3":
-            formats["azw3"] = os.path.join(config.DB_ROOT, book.path, entry.name + ".azw3")
         if entry.format == "EPUB":
             formats["epub"] = os.path.join(config.DB_ROOT, book.path, entry.name + ".epub")
         if entry.format == "PDF":
@@ -100,11 +96,7 @@ def send_mail(book_id, kindle_mail):
     if len(formats) == 0:
         return "Could not find any formats suitable for sending by email"
 
-    if 'azw3' in formats:
-        msg.attach(get_attachment(formats['azw3']))
-    elif 'azw' in formats:
-        msg.attach(get_attachment(formats['azw']))
-    elif 'mobi' in formats:
+    if 'mobi' in formats:
         msg.attach(get_attachment(formats['mobi']))
     elif 'epub' in formats:
         filepath = make_mobi(book.id)
