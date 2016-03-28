@@ -723,7 +723,7 @@ def edit_book(book_id):
                 new_rating = db.Ratings(rating=int(to_save["rating"].strip()))
                 book.ratings[0] = new_rating
         db.session.commit()
-        if to_save["detail_view"]:
+        if "detail_view" in to_save:
             return redirect(url_for('show_book', id=book.id))
         else:
             return render_template('edit_book.html', book=book)
