@@ -662,7 +662,20 @@ def edit_book(book_id):
         to_save = request.form.to_dict()
         #print to_save
         book.title = to_save["book_title"]
-        book.authors[0].name = to_save["author_name"]
+        
+        is_author = db.session.query(db.Authors).filter(db.Authors.name.like('%' + to_save["author_name"].strip() + '%')).first()
+        if book.authors[0].name not in  ("Unknown", "Unbekannt", "", " "):
+            if is_author:
+                book.authors.append(is_author)
+                book.authors.remove(db.session.query(db.Authors).get(book.authors[0].id))
+            else:
+                book.authors[0].name = to_save["author_name"].strip()
+        else:
+            if is_author:
+                book.authors.append(is_author)
+            else:
+                book.authors.append(db.Authors(to_save["author_name"].strip(), "", ""))
+            book.authors.remove(db.session.query(db.Authors).get(book.authors[0].id))
 
         if to_save["cover_url"] and os.path.splitext(to_save["cover_url"])[1].lower() == ".jpg":
             img = requests.get(to_save["cover_url"])
