@@ -2,6 +2,8 @@
 # -*- coding: utf-8 -*-
 
 import mimetypes
+import logging
+import sys
 mimetypes.add_type('application/xhtml+xml','.xhtml')
 from flask import Flask, render_template, session, request, Response, redirect, url_for, send_from_directory, make_response, g, flash, abort
 from cps import db, config, ub, helper
@@ -20,6 +22,15 @@ from sqlalchemy.sql import *
 import json
 
 app = (Flask(__name__))
+
+# Log only in production mode.
+#if not app.debug:
+file_handler = logging.StreamHandler(sys.stdout)
+file_handler.setLevel(logging.INFO)
+app.logger.addHandler(file_handler)
+app.logger_name = 'calibre web'
+app.logger.setLevel(logging.INFO)
+app.logger.info('Starting Calibre Web...')
 
 Principal(app)
 
@@ -42,8 +53,6 @@ def load_user_from_header(header_val):
         header_val = base64.b64decode(header_val)
         basic_username = header_val.split(':')[0]
         basic_password = header_val.split(':')[1]
-        #print basic_username
-        #print basic_password
     except TypeError:
         pass
     user = ub.session.query(ub.User).filter(ub.User.nickname == basic_username).first()
@@ -213,14 +222,7 @@ def get_opds_download_link(book_id, format):
         file_name = author+'-'+file_name
     file_name = helper.get_valid_filename(file_name)
     response = make_response(send_from_directory(os.path.join(config.DB_ROOT, book.path), data.name + "." +format))
-    #response.headers["Content-Disposition"] = "attachment; filename=%s.%s" % (data.name, format)
-    response.headers["Content-Disposition"] = \
-        "attachment; " \
-        "filename={utf_filename}.{suffix};" \
-        "filename*=UTF-8''{utf_filename}.{suffix}".format(
-        utf_filename=file_name.encode('utf-8'),
-        suffix=format
-    )
+    response.headers["Content-Disposition"] = "attachment; filename=%s.%s" % (data.name, format)
     return response
     
 @app.route("/get_authors_json", methods = ['GET', 'POST'])
@@ -247,12 +249,6 @@ def index(page):
 @app.route('/hot/page/<int:page>')
 def hot_books(page):
     random = db.session.query(db.Books).filter(false())
-    # if page == 1:
-    #     entries = db.session.query(db.Books).filter(db.Books.ratings.any(db.Ratings.rating > 9)).order_by(db.Books.last_modified.desc()).limit(config.NEWEST_BOOKS)
-    # else:
-    #     off = int(int(config.NEWEST_BOOKS) * (page - 1))
-    #     entries = db.session.query(db.Books).filter(db.Books.ratings.any(db.Ratings.rating > 9)).order_by(db.Books.last_modified.desc()).offset(60).limit(config.NEWEST_BOOKS)
-
     off = int(int(6) * (page - 1))
     all_books = ub.session.query(ub.Downloads, ub.func.count(ub.Downloads.book_id)).order_by(ub.func.count(ub.Downloads.book_id).desc()).group_by(ub.Downloads.book_id)
     hot_books = all_books.offset(off).limit(config.NEWEST_BOOKS)
@@ -379,7 +375,6 @@ def get_download_link(book_id, format):
         file_name = author+'-'+file_name
     file_name = helper.get_valid_filename(file_name)
     response = make_response(send_from_directory(os.path.join(config.DB_ROOT, book.path), data.name + "." +format))
-    #response.headers["Content-Disposition"] = "attachment; filename=%s.%s" % (file_name, format)
     response.headers["Content-Disposition"] = \
         "attachment; " \
         "filename={utf_filename}.{suffix};" \
@@ -553,7 +548,6 @@ def profile():
         downloads.append(db.session.query(db.Books).filter(db.Books.id == book.book_id).first())
     if request.method == "POST":
         to_save = request.form.to_dict()
-        #print to_save
         if to_save["password"]:
             content.password = generate_password_hash(to_save["password"])
         if to_save["kindle_mail"] and to_save["kindle_mail"] != content.kindle_mail:
@@ -669,7 +663,6 @@ def edit_book(book_id):
     book = db.session.query(db.Books).filter(db.Books.id == book_id).first()
     if request.method == 'POST':
         to_save = request.form.to_dict()
-        #print to_save
         book.title = to_save["book_title"]
         
         is_author = db.session.query(db.Authors).filter(db.Authors.name.like('%' + to_save["author_name"].strip() + '%')).first()
@@ -701,7 +694,6 @@ def edit_book(book_id):
 
         for tag in to_save["tags"].split(","):
             if tag.strip():
-                #print tag
                 is_tag = db.session.query(db.Tags).filter(db.Tags.name.like('%' + tag.strip() + '%')).first()
                 if is_tag:
                     book.tags.append(is_tag)
@@ -729,11 +721,3 @@ def edit_book(book_id):
             return render_template('edit_book.html', book=book)
     else:
         return render_template('edit_book.html', book=book)
-
-# @app.route('/admin/delete/<int:book_id>')
-# def delete_book(book_id):
-#     to_delete = db.session.query(db.Books).filter(db.Books.id == book_id).first()
-#     print to_delete
-#     db.session.delete(to_delete)
-#     db.session.commit()
-#     return redirect(url_for('index'))
