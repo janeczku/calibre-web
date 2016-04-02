@@ -665,11 +665,16 @@ def edit_book(book_id):
         to_save = request.form.to_dict()
         book.title = to_save["book_title"]
         
+        author_id = book.authors[0].id
+        
         is_author = db.session.query(db.Authors).filter(db.Authors.name.like('%' + to_save["author_name"].strip() + '%')).first()
         if book.authors[0].name not in  ("Unknown", "Unbekannt", "", " "):
             if is_author:
                 book.authors.append(is_author)
                 book.authors.remove(db.session.query(db.Authors).get(book.authors[0].id))
+                authors_books_count = db.session.query(db.Books).filter(db.Books.authors.any(db.Authors.id.is_(author_id))).count()
+                if authors_books_count == 0:
+                    db.session.query(db.Authors).filter(db.Authors.id == author_id).delete()
             else:
                 book.authors[0].name = to_save["author_name"].strip()
         else:
