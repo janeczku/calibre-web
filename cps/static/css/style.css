@@ -8,7 +8,7 @@ a{color: #45b29d}a:hover{color: #444;}
 .container-fluid img{display:block;max-width:100%;height:auto}
 .container-fluid .discover{margin-bottom:50px}
 .container-fluid .new-books{border-top:1px solid #ccc}.container-fluid .new-books h2{margin:50px 0 0 0}
-.container-fluid .book{margin-top:20px}.container-fluid .book .cover{height:225px;position:relative}.container-fluid .book .cover img{border:3px solid #fff;border-radius:5px;box-sizeing:border-box;height:100%;bottom:0;position:absolute;-webkit-box-shadow: 0 5px 8px -6px #777;-moz-box-shadow: 0 5px 8px -6px #777;box-shadow: 0 5px 8px -6px #777;}
+.container-fluid .book{margin-top:20px}.container-fluid .book .cover{height:225px;position:relative}.container-fluid .book .cover img{border:1px solid #fff;/*border-radius:7px;*/box-sizeing:border-box;height:100%;bottom:0;position:absolute;-webkit-box-shadow: 0 5px 8px -6px #777;-moz-box-shadow: 0 5px 8px -6px #777;box-shadow: 0 5px 8px -6px #777;}
 .container-fluid .book .meta{margin-top:10px}.container-fluid .book .meta p{margin:0}
 .container-fluid .book .meta .title{font-weight:bold;font-size:15px;color:#444}
 .container-fluid .book .meta .author{font-size:12px;color:#999}
@@ -21,8 +21,8 @@ span.glyphicon.glyphicon-tags {padding-right: 5px;color: #999;vertical-align: te
 .book-meta {padding-bottom: 20px;}
 .book-meta .tags a {display: inline;}
 .container-fluid .single .cover img {
-    border: 3px solid #fff;
-    border-radius: 5px;
+    border: 1px solid #fff;
+    /*border-radius: 7px;*/
     box-sizeing: border-box;
     -webkit-box-shadow: 0 5px 8px -6px #777;
     -moz-box-shadow: 0 5px 8px -6px #777;

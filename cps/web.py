@@ -4,6 +4,7 @@
 import mimetypes
 import logging
 import sys
+import textwrap
 mimetypes.add_type('application/xhtml+xml','.xhtml')
 from flask import Flask, render_template, session, request, Response, redirect, url_for, send_from_directory, make_response, g, flash, abort
 from cps import db, config, ub, helper
@@ -122,6 +123,14 @@ def url_for_other_page(page):
 
 app.jinja_env.globals['url_for_other_page'] = url_for_other_page
 
+## custom jinja filters
+@app.template_filter('shortentitle')
+def shortentitle_filter(s):
+    if len(s) > 60:
+        s = s.split(':', 1)[0]
+        if len(s) > 60:
+            s = textwrap.wrap(s, 60, break_long_words=False)[0]+' [...]'
+    return s
 
 def admin_required(f):
     """
