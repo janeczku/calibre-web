@@ -14,7 +14,7 @@
         {% endif %}
       </div>
       <div class="meta">
-        <p class="title">{{entry.title}}</p>
+        <p class="title">{{entry.title|shortentitle}}</p>
         <p class="author"><a href="{{url_for('author', name=entry.authors[0].name) }}">{{entry.authors[0].name}}</a></p>
         {% if entry.ratings.__len__() > 0 %}
         <div class="rating">
