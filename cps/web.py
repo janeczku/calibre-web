@@ -667,7 +667,7 @@ def edit_book(book_id):
         
         author_id = book.authors[0].id
         
-        is_author = db.session.query(db.Authors).filter(db.Authors.name.like('%' + to_save["author_name"].strip() + '%')).first()
+        is_author = db.session.query(db.Authors).filter(db.Authors.name == to_save["author_name"].strip()).first()
         if book.authors[0].name not in  ("Unknown", "Unbekannt", "", " "):
             if is_author:
                 book.authors.append(is_author)
