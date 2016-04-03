@@ -88,7 +88,7 @@ class Authors(Base):
 	def __init__(self, name, sort, link):
 		self.name = name
 		self.sort = sort
-		self.sort = link
+		self.link = link
 
 	def __repr__(self):
 		return u"<Authors('{0},{1}{2}')>".format(self.name, self.sort, self.link)

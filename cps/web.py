@@ -19,6 +19,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from functools import wraps
 import base64
 from sqlalchemy.sql import *
+import json
 
 app = (Flask(__name__))
 
@@ -223,6 +224,14 @@ def get_opds_download_link(book_id, format):
     response = make_response(send_from_directory(os.path.join(config.DB_ROOT, book.path), data.name + "." +format))
     response.headers["Content-Disposition"] = "attachment; filename=%s.%s" % (data.name, format)
     return response
+    
+@app.route("/get_authors_json", methods = ['GET', 'POST'])
+def get_authors_json():	
+	if request.method == "POST":
+		form = request.form.to_dict()
+		entries = db.session.execute("select name from authors where name like '%" + form['query'] + "%'")
+		return json.dumps([dict(r) for r in entries])
+		
 
 @app.route("/", defaults={'page': 1})
 @app.route('/page/<int:page>')
@@ -628,7 +637,7 @@ def edit_user(user_id):
             return redirect(url_for('user_list'))
         else:
             if to_save["password"]:
-                content.password == generate_password_hash(to_save["password"])
+                content.password = generate_password_hash(to_save["password"])
             if "admin_user" in to_save and content.role != 1:
                 content.role = 1
             elif not "admin_user" in to_save and content.role == 1:
@@ -655,7 +664,25 @@ def edit_book(book_id):
     if request.method == 'POST':
         to_save = request.form.to_dict()
         book.title = to_save["book_title"]
-        book.authors[0].name = to_save["author_name"]
+        
+        author_id = book.authors[0].id
+        
+        is_author = db.session.query(db.Authors).filter(db.Authors.name == to_save["author_name"].strip()).first()
+        if book.authors[0].name not in  ("Unknown", "Unbekannt", "", " "):
+            if is_author:
+                book.authors.append(is_author)
+                book.authors.remove(db.session.query(db.Authors).get(book.authors[0].id))
+                authors_books_count = db.session.query(db.Books).filter(db.Books.authors.any(db.Authors.id.is_(author_id))).count()
+                if authors_books_count == 0:
+                    db.session.query(db.Authors).filter(db.Authors.id == author_id).delete()
+            else:
+                book.authors[0].name = to_save["author_name"].strip()
+        else:
+            if is_author:
+                book.authors.append(is_author)
+            else:
+                book.authors.append(db.Authors(to_save["author_name"].strip(), "", ""))
+            book.authors.remove(db.session.query(db.Authors).get(book.authors[0].id))
 
         if to_save["cover_url"] and os.path.splitext(to_save["cover_url"])[1].lower() == ".jpg":
             img = requests.get(to_save["cover_url"])
@@ -693,7 +720,7 @@ def edit_book(book_id):
                 new_rating = db.Ratings(rating=int(to_save["rating"].strip()))
                 book.ratings[0] = new_rating
         db.session.commit()
-        if to_save["detail_view"]:
+        if "detail_view" in to_save:
             return redirect(url_for('show_book', id=book.id))
         else:
             return render_template('edit_book.html', book=book)
