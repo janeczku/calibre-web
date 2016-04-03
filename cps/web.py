@@ -637,7 +637,7 @@ def edit_user(user_id):
             return redirect(url_for('user_list'))
         else:
             if to_save["password"]:
-                content.password == generate_password_hash(to_save["password"])
+                content.password = generate_password_hash(to_save["password"])
             if "admin_user" in to_save and content.role != 1:
                 content.role = 1
             elif not "admin_user" in to_save and content.role == 1:
