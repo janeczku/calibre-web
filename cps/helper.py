@@ -154,7 +154,7 @@ def get_attachment(file_path):
                    'permissions?')
         return None
 
-def get_valid_filename(value):
+def get_valid_filename(value, replace_whitespace=True):
     """
     Returns the given string converted to a string that can be used for a clean
     filename. Limits num characters to 128 max.
@@ -164,7 +164,9 @@ def get_valid_filename(value):
     value = unicodedata.normalize('NFKD', value)
     re_slugify = re.compile('[^\w\s-]', re.UNICODE)
     value = unicode(re_slugify.sub('', value).strip())
-    value = re.sub('[\s]+', '_', value, flags=re.U)
+    if replace_whitespace:
+        value = re.sub('[\s]+', '_', value, flags=re.U)
+    value = value.replace(u"\u00DF", "ss")
     return value
 
 def get_normalized_author(value):
@@ -175,3 +177,23 @@ def get_normalized_author(value):
     value = re.sub('[^\w,\s]', '', value, flags=re.U)
     value = " ".join(value.split(", ")[::-1])
     return value
+    
+def update_dir_stucture(book_id):
+    db.session.connection().connection.connection.create_function("title_sort",1,db.title_sort)
+    book = db.session.query(db.Books).filter(db.Books.id == book_id).first()
+    path = os.path.join(config.DB_ROOT, book.path)
+    
+    authordir = book.path.split("/")[0]
+    new_authordir=get_valid_filename(book.authors[0].name, False)
+    titledir = book.path.split("/")[1]
+    new_titledir = get_valid_filename(book.title, False) + " (" + str(book_id) + ")"
+    
+    if titledir != new_titledir:
+        os.rename(path, os.path.join(os.path.dirname(path), new_titledir))
+        path = os.path.join(os.path.dirname(path), new_titledir)
+        book.path = book.path.split("/")[0] + "/" + new_titledir
+    
+    if authordir != new_authordir:
+        os.renames(path, os.path.join(os.path.join(config.DB_ROOT, new_authordir), os.path.basename(path)))
+        book.path = new_authordir + "/" + book.path.split("/")[1]
+    db.session.commit()

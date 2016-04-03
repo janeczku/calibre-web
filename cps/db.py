@@ -25,99 +25,99 @@ conn.connection.create_function('title_sort', 1, title_sort)
 Base = declarative_base()
 
 books_authors_link = Table('books_authors_link', Base.metadata,
-	Column('book', Integer, ForeignKey('books.id'), primary_key=True),
-	Column('author', Integer, ForeignKey('authors.id'), primary_key=True)
-	)
+    Column('book', Integer, ForeignKey('books.id'), primary_key=True),
+    Column('author', Integer, ForeignKey('authors.id'), primary_key=True)
+    )
 
 books_tags_link = Table('books_tags_link', Base.metadata,
-	Column('book', Integer, ForeignKey('books.id'), primary_key=True),
-	Column('tag', Integer, ForeignKey('tags.id'), primary_key=True)
-	)
+    Column('book', Integer, ForeignKey('books.id'), primary_key=True),
+    Column('tag', Integer, ForeignKey('tags.id'), primary_key=True)
+    )
 
 books_series_link = Table('books_series_link', Base.metadata,
-	Column('book', Integer, ForeignKey('books.id'), primary_key=True),
-	Column('series', Integer, ForeignKey('series.id'), primary_key=True)
-	)
+    Column('book', Integer, ForeignKey('books.id'), primary_key=True),
+    Column('series', Integer, ForeignKey('series.id'), primary_key=True)
+    )
 
 books_ratings_link = Table('books_ratings_link', Base.metadata,
-	Column('book', Integer, ForeignKey('books.id'), primary_key=True),
-	Column('rating', Integer, ForeignKey('ratings.id'), primary_key=True)
-	)
+    Column('book', Integer, ForeignKey('books.id'), primary_key=True),
+    Column('rating', Integer, ForeignKey('ratings.id'), primary_key=True)
+    )
 
 books_languages_link = Table('books_languages_link', Base.metadata,
-	Column('book', Integer, ForeignKey('books.id'), primary_key=True),
-	Column('lang_code', Integer, ForeignKey('languages.id'), primary_key=True)
-	)
+    Column('book', Integer, ForeignKey('books.id'), primary_key=True),
+    Column('lang_code', Integer, ForeignKey('languages.id'), primary_key=True)
+    )
 
 
 class Comments(Base):
-	__tablename__ = 'comments'
+    __tablename__ = 'comments'
 
-	id = Column(Integer, primary_key=True)
-	text = Column(String)
-	book = Column(Integer, ForeignKey('books.id'))
+    id = Column(Integer, primary_key=True)
+    text = Column(String)
+    book = Column(Integer, ForeignKey('books.id'))
 
-	def __init__(self, text, book):
-		self.text = text
-		self.book = book
+    def __init__(self, text, book):
+        self.text = text
+        self.book = book
 
-	def __repr__(self):
-		return u"<Comments({0})>".format(self.text)
+    def __repr__(self):
+        return u"<Comments({0})>".format(self.text)
 
 
 class Tags(Base):
-	__tablename__ = 'tags'
+    __tablename__ = 'tags'
 
-	id = Column(Integer, primary_key=True, autoincrement=True)
-	name = Column(String)
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    name = Column(String)
 
-	def __init__(self, name):
-		self.name = name
+    def __init__(self, name):
+        self.name = name
 
-	def __repr__(self):
-		return u"<Tags('{0})>".format(self.name)
+    def __repr__(self):
+        return u"<Tags('{0})>".format(self.name)
 
 class Authors(Base):
-	__tablename__ = 'authors'
+    __tablename__ = 'authors'
 
-	id = Column(Integer, primary_key=True)
-	name = Column(String)
-	sort = Column(String)
-	link = Column(String)
+    id = Column(Integer, primary_key=True)
+    name = Column(String)
+    sort = Column(String)
+    link = Column(String)
 
-	def __init__(self, name, sort, link):
-		self.name = name
-		self.sort = sort
-		self.link = link
+    def __init__(self, name, sort, link):
+        self.name = name
+        self.sort = sort
+        self.link = link
 
-	def __repr__(self):
-		return u"<Authors('{0},{1}{2}')>".format(self.name, self.sort, self.link)
+    def __repr__(self):
+        return u"<Authors('{0},{1}{2}')>".format(self.name, self.sort, self.link)
 
 class Series(Base):
-	__tablename__ = 'series'
+    __tablename__ = 'series'
 
-	id = Column(Integer, primary_key=True)
-	name = Column(String)
-	sort = Column(String)
+    id = Column(Integer, primary_key=True)
+    name = Column(String)
+    sort = Column(String)
 
-	def __init__(self, name, sort):
-		self.name = name
-		self.sort = sort
+    def __init__(self, name, sort):
+        self.name = name
+        self.sort = sort
 
-	def __repr__(self):
-		return u"<Series('{0},{1}')>".format(self.name, self.sort)
+    def __repr__(self):
+        return u"<Series('{0},{1}')>".format(self.name, self.sort)
 
 class Ratings(Base):
-	__tablename__ = 'ratings'
+    __tablename__ = 'ratings'
 
-	id = Column(Integer, primary_key=True)
-	rating = Column(Integer)
+    id = Column(Integer, primary_key=True)
+    rating = Column(Integer)
 
-	def __init__(self,rating):
-		self.rating = rating
+    def __init__(self,rating):
+        self.rating = rating
 
-	def __repr__(self):
-		return u"<Ratings('{0}')>".format(self.rating)
+    def __repr__(self):
+        return u"<Ratings('{0}')>".format(self.rating)
 
 class Languages(Base):
     __tablename__ = 'languages'
@@ -132,59 +132,58 @@ class Languages(Base):
         return u"<Languages('{0}')>".format(self.lang_code)
 
 class Data(Base):
-	__tablename__ = 'data'
+    __tablename__ = 'data'
 
-	id = Column(Integer, primary_key=True)
-	book = Column(Integer, ForeignKey('books.id'))
-	format = Column(String)
-	uncompressed_size = Column(Integer)
-	name = Column(String)
+    id = Column(Integer, primary_key=True)
+    book = Column(Integer, ForeignKey('books.id'))
+    format = Column(String)
+    uncompressed_size = Column(Integer)
+    name = Column(String)
 
-	def __init__(self, book, format, uncompressed_size, name):
-		self.book = book
-		self.format = format
-		self.uncompressed_size = uncompressed_size
-		self.name = name
+    def __init__(self, book, format, uncompressed_size, name):
+        self.book = book
+        self.format = format
+        self.uncompressed_size = uncompressed_size
+        self.name = name
 
-	def __repr__(self):
-		return u"<Data('{0},{1}{2}{3}')>".format(self.book, self.format, self.uncompressed_size, self.name)
+    def __repr__(self):
+        return u"<Data('{0},{1}{2}{3}')>".format(self.book, self.format, self.uncompressed_size, self.name)
 
 class Books(Base):
-	__tablename__ = 'books'
+    __tablename__ = 'books'
 
-	id = Column(Integer,primary_key=True)
-	title = Column(String)
-	sort = Column(String)
-	author_sort = Column(String)
-	timestamp = Column(String)
-	pubdate = Column(String)
-	series_index = Column(String)
-	last_modified = Column(String)
-	path = Column(String)
-	has_cover = Column(Integer)
+    id = Column(Integer,primary_key=True)
+    title = Column(String)
+    sort = Column(String)
+    author_sort = Column(String)
+    timestamp = Column(String)
+    pubdate = Column(String)
+    series_index = Column(String)
+    last_modified = Column(String)
+    path = Column(String)
+    has_cover = Column(Integer)
 
-	authors = relationship('Authors', secondary=books_authors_link, backref='books')
-	tags = relationship('Tags', secondary=books_tags_link, backref='books')
-	comments = relationship('Comments', backref='books')
-	data = relationship('Data', backref='books')
-	series = relationship('Series', secondary=books_series_link, backref='books')
-	ratings = relationship('Ratings', secondary=books_ratings_link, backref='books')
-	languages = relationship('Languages', secondary=books_languages_link, backref='books')
+    authors = relationship('Authors', secondary=books_authors_link, backref='books')
+    tags = relationship('Tags', secondary=books_tags_link, backref='books')
+    comments = relationship('Comments', backref='books')
+    data = relationship('Data', backref='books')
+    series = relationship('Series', secondary=books_series_link, backref='books')
+    ratings = relationship('Ratings', secondary=books_ratings_link, backref='books')
+    languages = relationship('Languages', secondary=books_languages_link, backref='books')
 
-	def __init__(self, title, sort, author_sort, timestamp, pubdate, series_index, last_modified, path, has_cover, authors, tags):
-		self.title = title
-		self.sort = sort
-		self.author_sort = author_sort
-		self.timestamp = timestamp
-		self.pubdate = pubdate
-		self.series_index = series_index
-		self.last_modified = last_modified
-		self.path = path
-		self.has_cover = has_cover
-		self.tags = tags
+    def __init__(self, title, sort, author_sort, timestamp, pubdate, series_index, last_modified, path, has_cover, authors, tags):
+        self.title = title
+        self.sort = sort
+        self.author_sort = author_sort
+        self.timestamp = timestamp
+        self.pubdate = pubdate
+        self.series_index = series_index
+        self.last_modified = last_modified
+        self.path = path
+        self.has_cover = has_cover
 
-	def __repr__(self):
-		return u"<Books('{0},{1}{2}{3}{4}{5}{6}{7}{8}')>".format(self.title, self.sort, self.author_sort, self.timestamp, self.pubdate, self.series_index, self.last_modified ,self.path, self.has_cover)
+    def __repr__(self):
+        return u"<Books('{0},{1}{2}{3}{4}{5}{6}{7}{8}')>".format(self.title, self.sort, self.author_sort, self.timestamp, self.pubdate, self.series_index, self.last_modified ,self.path, self.has_cover)
 
 Base.metadata.create_all(engine)
 Session = sessionmaker()

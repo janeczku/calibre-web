@@ -20,6 +20,9 @@ from functools import wraps
 import base64
 from sqlalchemy.sql import *
 import json
+from wand.image import Image
+import datetime
+from uuid import uuid4
 
 app = (Flask(__name__))
 
@@ -226,12 +229,12 @@ def get_opds_download_link(book_id, format):
     return response
     
 @app.route("/get_authors_json", methods = ['GET', 'POST'])
-def get_authors_json():	
-	if request.method == "POST":
-		form = request.form.to_dict()
-		entries = db.session.execute("select name from authors where name like '%" + form['query'] + "%'")
-		return json.dumps([dict(r) for r in entries])
-		
+def get_authors_json(): 
+    if request.method == "POST":
+        form = request.form.to_dict()
+        entries = db.session.execute("select name from authors where name like '%" + form['query'] + "%'")
+        return json.dumps([dict(r) for r in entries])
+        
 
 @app.route("/", defaults={'page': 1})
 @app.route('/page/<int:page>')
@@ -662,28 +665,34 @@ def edit_book(book_id):
     db.session.connection().connection.connection.create_function("title_sort",1,db.title_sort)
     book = db.session.query(db.Books).filter(db.Books.id == book_id).first()
     if request.method == 'POST':
+        edited_books_id = set()
         to_save = request.form.to_dict()
-        book.title = to_save["book_title"]
-        
-        author_id = book.authors[0].id
-        
-        is_author = db.session.query(db.Authors).filter(db.Authors.name == to_save["author_name"].strip()).first()
-        if book.authors[0].name not in  ("Unknown", "Unbekannt", "", " "):
-            if is_author:
-                book.authors.append(is_author)
+        if book.title != to_save["book_title"]:
+            book.title = to_save["book_title"]
+            edited_books_id.add(book.id)
+ 
+        author_id = book.authors[0].id               
+        if book.authors[0].name != to_save["author_name"].strip():
+            is_author = db.session.query(db.Authors).filter(db.Authors.name == to_save["author_name"].strip()).first()
+            edited_books_id.add(book.id)
+            if book.authors[0].name not in  ("Unknown", "Unbekannt", "", " "):
+                if is_author:
+                    book.authors.append(is_author)
+                    book.authors.remove(db.session.query(db.Authors).get(book.authors[0].id))
+                    authors_books_count = db.session.query(db.Books).filter(db.Books.authors.any(db.Authors.id.is_(author_id))).count()
+                    if authors_books_count == 0:
+                        db.session.query(db.Authors).filter(db.Authors.id == author_id).delete()
+                else:
+                    book.authors[0].name = to_save["author_name"].strip()
+                    for linked_book in db.session.query(db.Books).filter(db.Books.authors.any(db.Authors.id.is_(author_id))).all():
+                        edited_books_id.add(linked_book.id)
+            else:
+                if is_author:
+                    book.authors.append(is_author)
+                else:
+                    book.authors.append(db.Authors(to_save["author_name"].strip(), "", ""))
                 book.authors.remove(db.session.query(db.Authors).get(book.authors[0].id))
-                authors_books_count = db.session.query(db.Books).filter(db.Books.authors.any(db.Authors.id.is_(author_id))).count()
-                if authors_books_count == 0:
-                    db.session.query(db.Authors).filter(db.Authors.id == author_id).delete()
-            else:
-                book.authors[0].name = to_save["author_name"].strip()
-        else:
-            if is_author:
-                book.authors.append(is_author)
-            else:
-                book.authors.append(db.Authors(to_save["author_name"].strip(), "", ""))
-            book.authors.remove(db.session.query(db.Authors).get(book.authors[0].id))
-
+        
         if to_save["cover_url"] and os.path.splitext(to_save["cover_url"])[1].lower() == ".jpg":
             img = requests.get(to_save["cover_url"])
             f = open(os.path.join(config.DB_ROOT, book.path, "cover.jpg"), "wb")
@@ -720,9 +729,44 @@ def edit_book(book_id):
                 new_rating = db.Ratings(rating=int(to_save["rating"].strip()))
                 book.ratings[0] = new_rating
         db.session.commit()
+        for b in edited_books_id:
+            helper.update_dir_stucture(b)
         if "detail_view" in to_save:
             return redirect(url_for('show_book', id=book.id))
         else:
             return render_template('edit_book.html', book=book)
     else:
         return render_template('edit_book.html', book=book)
+
+@app.route("/upload", methods = ["GET", "POST"])
+@login_required
+def upload():
+    ## create the function for sorting...
+    db.session.connection().connection.connection.create_function("title_sort",1,db.title_sort)
+    db.session.connection().connection.connection.create_function('uuid4', 0, lambda : str(uuid4()))
+    if request.method == 'POST' and 'btn-upload' in request.files:
+        file = request.files['btn-upload']
+        filename = file.filename
+        filename_root, fileextension = os.path.splitext(filename)
+        title_dir = helper.get_valid_filename(filename_root, False)
+        filepath = config.DB_ROOT + "/Unknown/" + title_dir
+        print filepath
+        if not os.path.exists(filepath):
+            os.makedirs(filepath)
+        file.save(os.path.join(filepath, filename))
+        with Image(filename=os.path.join(filepath, filename)+"[0]", resolution=150) as img:
+            img.compression_quality = 88
+            img.save(filename=os.path.join(filepath, "cover.jpg"))
+        is_author = db.session.query(db.Authors).filter(db.Authors.name.like("Unknown")).first()
+        if is_author:
+            db_author = is_author
+        else:
+            db_author = db.Authors("Unknown", "", "")
+            db.session.add(db_author)
+        db_book = db.Books(filename_root, "", "", datetime.datetime.now(), "", 1, datetime.datetime(101, 01,01), "Unknown/" + title_dir, 1, db_author, [])
+        db_book.authors.append(db_author)
+        #todo append data,...
+        db.session.add(db_book)
+        db.session.commit()
+        print filename
+    return render_template('search.html', searchterm="")
