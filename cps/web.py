@@ -757,25 +757,36 @@ def upload():
         file = request.files['btn-upload']
         filename = file.filename
         filename_root, fileextension = os.path.splitext(filename)
-        title_dir = helper.get_valid_filename(filename_root, False)
-        filepath = config.DB_ROOT + "/Unknown/" + title_dir
-        print filepath
+        if fileextension.upper() == ".PDF":
+            title = filename_root
+            author = "Unknown"
+        
+        title_dir = helper.get_valid_filename(title, False)
+        author_dir = helper.get_valid_filename(author.decode('utf-8'), False)
+        data_name = title_dir
+        filepath = config.DB_ROOT + "/" + author_dir + "/" + title_dir
+        saved_filename = filepath + "/" + data_name + fileextension
         if not os.path.exists(filepath):
             os.makedirs(filepath)
-        file.save(os.path.join(filepath, filename))
-        with Image(filename=os.path.join(filepath, filename)+"[0]", resolution=150) as img:
-            img.compression_quality = 88
-            img.save(filename=os.path.join(filepath, "cover.jpg"))
-        is_author = db.session.query(db.Authors).filter(db.Authors.name.like("Unknown")).first()
+        file.save(saved_filename)
+        file_size = os.path.getsize(saved_filename)
+        has_cover = 0
+        if fileextension.upper() == ".PDF":
+            with Image(filename=saved_filename + "[0]", resolution=150) as img:
+                img.compression_quality = 88
+                img.save(filename=os.path.join(filepath, "cover.jpg"))
+                has_cover = 1
+        is_author = db.session.query(db.Authors).filter(db.Authors.name == author).first()
         if is_author:
             db_author = is_author
         else:
-            db_author = db.Authors("Unknown", "", "")
+            db_author = db.Authors(author, "", "")
             db.session.add(db_author)
-        db_book = db.Books(filename_root, "", "", datetime.datetime.now(), "", 1, datetime.datetime(101, 01,01), "Unknown/" + title_dir, 1, db_author, [])
+        db_book = db.Books(title, "", "", datetime.datetime.now(), "", 1, datetime.datetime(101, 01,01), author_dir + "/" + title_dir, has_cover, db_author, [])
         db_book.authors.append(db_author)
-        #todo append data,...
+        db_data = db.Data(db_book, fileextension.upper()[1:], file_size, data_name)
+        db_book.data.append(db_data)
+        
         db.session.add(db_book)
         db.session.commit()
-        print filename
-    return render_template('search.html', searchterm="")
+    return render_template('edit_book.html', book=db_book)
