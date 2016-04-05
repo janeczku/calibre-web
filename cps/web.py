@@ -760,6 +760,9 @@ def upload():
         if fileextension.upper() == ".PDF":
             title = filename_root
             author = "Unknown"
+        else: 
+            flash("Upload is only available for PDF files", category="error")
+            return redirect(url_for('index'))
         
         title_dir = helper.get_valid_filename(title, False)
         author_dir = helper.get_valid_filename(author.decode('utf-8'), False)

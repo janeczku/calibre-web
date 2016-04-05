@@ -189,11 +189,13 @@ def update_dir_stucture(book_id):
     new_titledir = get_valid_filename(book.title, False) + " (" + str(book_id) + ")"
     
     if titledir != new_titledir:
-        os.rename(path, os.path.join(os.path.dirname(path), new_titledir))
-        path = os.path.join(os.path.dirname(path), new_titledir)
+        new_title_path = os.path.join(os.path.dirname(path), new_titledir)
+        os.rename(path, new_title_path)
+        path = new_title_path
         book.path = book.path.split("/")[0] + "/" + new_titledir
     
     if authordir != new_authordir:
-        os.renames(path, os.path.join(os.path.join(config.DB_ROOT, new_authordir), os.path.basename(path)))
+        new_author_path = os.path.join(os.path.join(config.DB_ROOT, new_authordir), os.path.basename(path))
+        os.renames(path, new_author_path)
         book.path = new_authordir + "/" + book.path.split("/")[1]
     db.session.commit()
