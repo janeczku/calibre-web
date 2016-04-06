@@ -786,7 +786,7 @@ def upload():
         else:
             db_author = db.Authors(author, "", "")
             db.session.add(db_author)
-        db_book = db.Books(title, "", "", datetime.datetime.now(), "", 1, datetime.datetime(101, 01,01), author_dir + "/" + title_dir, has_cover, db_author, [])
+        db_book = db.Books(title, "", "", datetime.datetime.now(), datetime.datetime(101, 01,01), 1, datetime.datetime.now(), author_dir + "/" + title_dir, has_cover, db_author, [])
         db_book.authors.append(db_author)
         db_data = db.Data(db_book, fileextension.upper()[1:], file_size, data_name)
         db_book.data.append(db_data)
