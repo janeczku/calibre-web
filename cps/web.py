@@ -749,6 +749,7 @@ def edit_book(book_id):
 
 @app.route("/upload", methods = ["GET", "POST"])
 @login_required
+@admin_required
 def upload():
     ## create the function for sorting...
     db.session.connection().connection.connection.create_function("title_sort",1,db.title_sort)

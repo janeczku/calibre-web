@@ -63,13 +63,15 @@
           </ul>
           <ul class="nav navbar-nav navbar-right" id="main-nav">
             {% if g.user.is_authenticated() %}
-              <li>
-                <form id="form-upload" class="navbar-form" action="{{ url_for('upload') }}" method="post" enctype="multipart/form-data">
-                  <div class="form-group">
-                    <span class="btn btn-default btn-file">Upload <input id="btn-upload" name="btn-upload" type="file"></span>
-                  </div>
-                </form>
-              </li>
+              {% if g.user.role %}
+                  <li>
+                    <form id="form-upload" class="navbar-form" action="{{ url_for('upload') }}" method="post" enctype="multipart/form-data">
+                      <div class="form-group">
+                        <span class="btn btn-default btn-file">Upload <input id="btn-upload" name="btn-upload" type="file"></span>
+                      </div>
+                    </form>
+                  </li>
+              {% endif %}
               {% if g.user.role %}
                 <li><a href="{{url_for('user_list')}}"><span class="glyphicon glyphicon-dashboard"></span> Admin</a></li>
               {% endif %}
