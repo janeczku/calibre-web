@@ -21,9 +21,14 @@ from functools import wraps
 import base64
 from sqlalchemy.sql import *
 import json
-from wand.image import Image
 import datetime
 from uuid import uuid4
+try:
+    from wand.image import Image
+    use_generic_pdf_cover = False
+except ImportError, e:
+    use_generic_pdf_cover = True
+from shutil import copyfile
 
 app = (Flask(__name__))
 
@@ -776,10 +781,15 @@ def upload():
         file_size = os.path.getsize(saved_filename)
         has_cover = 0
         if fileextension.upper() == ".PDF":
-            with Image(filename=saved_filename + "[0]", resolution=150) as img:
-                img.compression_quality = 88
-                img.save(filename=os.path.join(filepath, "cover.jpg"))
-                has_cover = 1
+            if use_generic_pdf_cover:
+                basedir = os.path.dirname(__file__)
+                print basedir
+                copyfile(os.path.join(basedir, "static/generic_cover.jpg"), os.path.join(filepath, "cover.jpg"))
+            else:
+                with Image(filename=saved_filename + "[0]", resolution=150) as img:
+                    img.compression_quality = 88
+                    img.save(filename=os.path.join(filepath, "cover.jpg"))
+                    has_cover = 1
         is_author = db.session.query(db.Authors).filter(db.Authors.name == author).first()
         if is_author:
             db_author = is_author
