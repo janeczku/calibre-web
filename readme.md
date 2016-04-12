@@ -2,7 +2,7 @@
 
 Calibre Web is a Python web app providing a clean interface for browsing, reading and downloading e-books from a Calibre e-book database.
 
-This was originally forked from [calibreserver](https://bitbucket.org/raphaelmutschler/calibreserver) and now includes additional features and bugfixes.
+This was originally forked from [calibreserver](https://bitbucket.org/raphaelmutschler/calibreserver) and now includes additional features as well as many bugfixes.
 
 Also available as [Docker image](https://registry.hub.docker.com/u/janeczku/calibre-web/).
 
@@ -21,6 +21,7 @@ Also available as [Docker image](https://registry.hub.docker.com/u/janeczku/cali
 - Support for public user registration
 - Send eBooks to Kindle devices with the click of a button
 - Support for reading eBooks directly in the browser
+- Upload new books in PDF format
 
 ## Quick start
 
