@@ -3,6 +3,7 @@
 
 import mimetypes
 import logging
+from logging.handlers import RotatingFileHandler
 import sys
 import textwrap
 mimetypes.add_type('application/xhtml+xml','.xhtml')
@@ -32,13 +33,12 @@ from shutil import copyfile
 
 app = (Flask(__name__))
 
-# Log only in production mode.
-#if not app.debug:
-file_handler = logging.StreamHandler(sys.stdout)
+formatter = logging.Formatter(
+    "[%(asctime)s] {%(pathname)s:%(lineno)d} %(levelname)s - %(message)s")
+file_handler = RotatingFileHandler(os.path.join(config.LOG_DIR, "calibre-web.log"), maxBytes=10000, backupCount=1)
 file_handler.setLevel(logging.INFO)
+file_handler.setFormatter(formatter)
 app.logger.addHandler(file_handler)
-app.logger_name = 'calibre web'
-app.logger.setLevel(logging.INFO)
 app.logger.info('Starting Calibre Web...')
 
 Principal(app)

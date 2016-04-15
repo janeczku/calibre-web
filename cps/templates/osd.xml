@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <OpenSearchDescription xmlns="http://a9.com/-/spec/opensearch/1.1/">
-   <LongName>library</LongName>
-   <ShortName>library</ShortName>
-   <Description>Search the ebook catalog.</Description>
-   <Developer>cytec</Developer>
-   <Contact>iamcytec@googlemail.com</Contact>
+   <LongName>Calibre Web</LongName>
+   <ShortName>Calibre Web</ShortName>
+   <Description>Calibre Web ebook catalog</Description>
+   <Developer>janeczku</Developer>
+   <Contact>https://github.com/janeczku/calibre-web</Contact>
 
    <Url type="text/html"
         template="{{url_for('search')}}?query={searchTerms}"/>

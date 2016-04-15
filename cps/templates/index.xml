@@ -16,11 +16,11 @@
   <link rel="search"
         href="{{url_for('feed_osd')}}"
         type="application/opensearchdescription+xml"/>
-  <title>library</title>
+  <title>Calibre Web</title>
   <updated>2010-01-10T10:03:10Z</updated>
   <author>
-    <name>Spec Writer</name>
-    <uri>http://opds-spec.org</uri>
+    <name>Calibre Web</name>
+    <uri>https://github.com/janeczku/calibre-web</uri>
   </author>
 
 
