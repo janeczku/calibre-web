@@ -244,11 +244,27 @@ def get_opds_download_link(book_id, format):
     
 @app.route("/get_authors_json", methods = ['GET', 'POST'])
 def get_authors_json(): 
-    if request.method == "POST":
-        form = request.form.to_dict()
-        entries = db.session.execute("select name from authors where name like '%" + form['query'] + "%'")
-        return json.dumps([dict(r) for r in entries])
+    if request.method == "GET":
+        query = request.args.get('q')
+        entries = db.session.execute("select name from authors where name like '%" + query + "%'")
+        json_dumps = json.dumps([dict(r) for r in entries])
+        return json_dumps
+
+@app.route("/get_tags_json", methods = ['GET', 'POST'])
+def get_tags_json(): 
+    if request.method == "GET":
+        query = request.args.get('q')
+        entries = db.session.execute("select name from tags where name like '%" + query + "%'")
+        json_dumps = json.dumps([dict(r) for r in entries])
+        return json_dumps
         
+@app.route("/get_series_json", methods = ['GET', 'POST'])
+def get_series_json(): 
+    if request.method == "GET":
+        query = request.args.get('q')
+        entries = db.session.execute("select name from series where name like '%" + query + "%'")
+        json_dumps = json.dumps([dict(r) for r in entries])
+        return json_dumps
 
 @app.route("/", defaults={'page': 1})
 @app.route('/page/<int:page>')
@@ -678,34 +694,61 @@ def edit_book(book_id):
     ## create the function for sorting...
     db.session.connection().connection.connection.create_function("title_sort",1,db.title_sort)
     book = db.session.query(db.Books).filter(db.Books.id == book_id).first()
+    author_names = []
+    for author in book.authors:
+        author_names.append(author.name)
     if request.method == 'POST':
         edited_books_id = set()
         to_save = request.form.to_dict()
         if book.title != to_save["book_title"]:
             book.title = to_save["book_title"]
             edited_books_id.add(book.id)
- 
-        author_id = book.authors[0].id               
-        if book.authors[0].name != to_save["author_name"].strip():
-            is_author = db.session.query(db.Authors).filter(db.Authors.name == to_save["author_name"].strip()).first()
+        input_authors = to_save["author_name"].split('&')
+        input_authors = map(lambda it: it.strip(), input_authors)
+        # we have all author names now
+        author0_before_edit = book.authors[0].name
+        # 1. search for authors to remove
+        del_authors = []
+        for c_author in book.authors:
+            found = False
+            for inp_author in input_authors:
+                if inp_author == c_author.name:
+                    found = True
+                    break;
+            # if the author was not found in the new list, add him to remove list
+            if not found:
+                del_authors.append(c_author)
+        # 2. search for authors that need to be added
+        add_authors = []
+        for inp_author in input_authors:
+            found = False
+            for c_author in book.authors:
+                if inp_author == c_author.name:
+                    found = True
+                    break;
+            if not found:
+                add_authors.append(inp_author)
+        # if there are authors to remove, we remove them now
+        if len(del_authors) > 0:
+            for del_author in del_authors:
+                book.authors.remove(del_author)
+                authors_books_count = db.session.query(db.Books).filter(db.Books.authors.any(db.Authors.id.is_(del_author.id))).count()
+                if authors_books_count == 0:
+                    db.session.query(db.Authors).filter(db.Authors.id == del_author.id).delete()
+        # if there are authors to add, we add them now!
+        if len(add_authors) > 0:
+            for add_author in add_authors:
+                # check if an author with that name exists
+                t_author = db.session.query(db.Authors).filter(db.Authors.name == add_author).first();
+                # if no author is found add it
+                if t_author == None:
+                    new_author = db.Authors(add_author, add_author, "")
+                    db.session.add(new_author)
+                    t_author = db.session.query(db.Authors).filter(db.Authors.name == add_author).first();
+                # add author to book
+                book.authors.append(t_author)       
+        if author0_before_edit != book.authors[0].name:
             edited_books_id.add(book.id)
-            if book.authors[0].name not in  ("Unknown", "Unbekannt", "", " "):
-                if is_author:
-                    book.authors.append(is_author)
-                    book.authors.remove(db.session.query(db.Authors).get(book.authors[0].id))
-                    authors_books_count = db.session.query(db.Books).filter(db.Books.authors.any(db.Authors.id.is_(author_id))).count()
-                    if authors_books_count == 0:
-                        db.session.query(db.Authors).filter(db.Authors.id == author_id).delete()
-                else:
-                    book.authors[0].name = to_save["author_name"].strip()
-                    for linked_book in db.session.query(db.Books).filter(db.Books.authors.any(db.Authors.id.is_(author_id))).all():
-                        edited_books_id.add(linked_book.id)
-            else:
-                if is_author:
-                    book.authors.append(is_author)
-                else:
-                    book.authors.append(db.Authors(to_save["author_name"].strip(), "", ""))
-                book.authors.remove(db.session.query(db.Authors).get(book.authors[0].id))
         
         if to_save["cover_url"] and os.path.splitext(to_save["cover_url"])[1].lower() == ".jpg":
             img = requests.get(to_save["cover_url"])
@@ -720,14 +763,50 @@ def edit_book(book_id):
         else:
             book.comments.append(db.Comments(text=to_save["description"], book=book.id))
 
-        for tag in to_save["tags"].split(","):
-            if tag.strip():
-                is_tag = db.session.query(db.Tags).filter(db.Tags.name.like('%' + tag.strip() + '%')).first()
-                if is_tag:
-                    book.tags.append(is_tag)
-                else:
-                    new_tag = db.Tags(name=tag.strip())
-                    book.tags.append(new_tag)
+        input_tags = to_save["tags"].split(',')
+        input_tags = map(lambda it: it.strip(), input_tags)
+        input_tags = [x for x in input_tags if x != '']
+        # we have all author names now
+        # 1. search for tags to remove
+        del_tags = []
+        for c_tag in book.tags:
+            found = False
+            for inp_tag in input_tags:
+                if inp_tag == c_tag.name:
+                    found = True
+                    break;
+            # if the tag was not found in the new list, add him to remove list
+            if not found:
+                del_tags.append(c_tag)
+        # 2. search for tags that need to be added
+        add_tags = []
+        for inp_tag in input_tags:
+            found = False
+            for c_tag in book.tags:
+                if inp_tag == c_tag.name:
+                    found = True
+                    break;
+            if not found:
+                add_tags.append(inp_tag)
+        # if there are tags to remove, we remove them now
+        if len(del_tags) > 0:
+            for del_tag in del_tags:
+                book.tags.remove(del_tag)
+                if len(del_tag.books) == 0:
+                    db.session.delete(del_tag)
+        # if there are tags to add, we add them now!
+        if len(add_tags) > 0:
+            for add_tag in add_tags:
+                # check if a tag with that name exists
+                new_tag = db.session.query(db.Tags).filter(db.Tags.name == add_tag).first();
+                # if no tag is found add it
+                if new_tag == None:
+                    new_tag = db.Tags(add_tag)
+                    db.session.add(new_tag)
+                    new_tag = db.session.query(db.Tags).filter(db.Tags.name == add_tag).first();
+                # add tag to book
+                book.tags.append(new_tag) 
+        
         if to_save["series"].strip():
             is_series = db.session.query(db.Series).filter(db.Series.name.like('%' + to_save["series"].strip() + '%')).first()
             if is_series:
@@ -743,14 +822,17 @@ def edit_book(book_id):
                 new_rating = db.Ratings(rating=int(to_save["rating"].strip()))
                 book.ratings[0] = new_rating
         db.session.commit()
+        author_names = []
+        for author in book.authors:
+            author_names.append(author.name)
         for b in edited_books_id:
             helper.update_dir_stucture(b)
         if "detail_view" in to_save:
             return redirect(url_for('show_book', id=book.id))
         else:
-            return render_template('edit_book.html', book=book)
+            return render_template('edit_book.html', book=book, authors=author_names)
     else:
-        return render_template('edit_book.html', book=book)
+        return render_template('edit_book.html', book=book, authors=author_names)
 
 @app.route("/upload", methods = ["GET", "POST"])
 @login_required
