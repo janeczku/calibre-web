@@ -26,7 +26,8 @@ Also available as [Docker image](https://registry.hub.docker.com/u/janeczku/cali
 ## Quick start
 
 1. Open config.ini and set DB_ROOT to the path of the folder where your Calibre library (metadata.db) lives
-3. To enable public user registration set PUBLIC_REG to 1
+2. To enable public user registration set PUBLIC_REG to 1
+3. To enable uploading of PDF books set UPLOADING to 1
 4. Execute the command: `python cps.py`
 5. Point your browser to `http://localhost:8083` or `http://localhost:8083/feed` for the OPDS catalog 
 

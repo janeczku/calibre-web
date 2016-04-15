@@ -59,6 +59,7 @@ CheckSection('Advanced')
 TITLE_REGEX = check_setting_str(CFG, 'Advanced', 'TITLE_REGEX', '^(A|The|An|Der|Die|Das|Den|Ein|Eine|Einen|Dem|Des|Einem|Eines)\s+')
 DEVELOPMENT = bool(check_setting_int(CFG, 'Advanced', 'DEVELOPMENT', 0))
 PUBLIC_REG = bool(check_setting_int(CFG, 'Advanced', 'PUBLIC_REG', 0))
+UPLOADING = bool(check_setting_int(CFG, 'Advanced', 'UPLOADING', 0))
 
 SYS_ENCODING="UTF-8"
 
@@ -76,6 +77,7 @@ configval["NEWEST_BOOKS"] = NEWEST_BOOKS
 configval["DEVELOPMENT"] = DEVELOPMENT
 configval["TITLE_REGEX"] = TITLE_REGEX
 configval["PUBLIC_REG"] = PUBLIC_REG
+configval["UPLOADING"] = UPLOADING
 
 def save_config(configval):
     new_config = ConfigObj()
@@ -91,6 +93,7 @@ def save_config(configval):
     new_config['Advanced']['TITLE_REGEX'] = configval["TITLE_REGEX"]
     new_config['Advanced']['DEVELOPMENT'] = int(configval["DEVELOPMENT"])
     new_config['Advanced']['PUBLIC_REG'] = int(configval["PUBLIC_REG"])
+    new_config['Advanced']['UPLOADING'] = int(configval["UPLOADING"])
     new_config.write()
     return "Saved"
 

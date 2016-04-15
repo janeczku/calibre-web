@@ -157,6 +157,7 @@ def before_request():
     g.user = current_user
     g.public_shelfes = ub.session.query(ub.Shelf).filter(ub.Shelf.is_public == 1).all()
     g.allow_registration = config.PUBLIC_REG
+    g.allow_upload = config.UPLOADING
 
 @app.route("/feed")
 def feed_index():
@@ -756,6 +757,8 @@ def edit_book(book_id):
 @login_required
 @admin_required
 def upload():
+    if not config.UPLOADING:
+        abort(404)
     ## create the function for sorting...
     db.session.connection().connection.connection.create_function("title_sort",1,db.title_sort)
     db.session.connection().connection.connection.create_function('uuid4', 0, lambda : str(uuid4()))
