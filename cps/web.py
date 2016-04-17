@@ -316,6 +316,7 @@ def discover(page):
 @app.route("/book/<int:id>")
 def show_book(id):
     entries = db.session.query(db.Books).filter(db.Books.id == id).first()
+    helper.get_custom_columns(entries.id)
     book_in_shelfs = []
     shelfs = ub.session.query(ub.BookShelf).filter(ub.BookShelf.book_id == id).all()
     for entry in shelfs:

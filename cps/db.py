@@ -49,6 +49,17 @@ books_languages_link = Table('books_languages_link', Base.metadata,
     Column('lang_code', Integer, ForeignKey('languages.id'), primary_key=True)
     )
 
+#cc = conn.execute("SELECT id FROM custom_columns")
+#cc_ids = []
+#books_custom_column_links = {}
+#for row in cc:
+#    cc_link=Table('books_custom_column_' + str(row.id) + '_link', Base.metadata,
+#        Column('book', Integer, ForeignKey('books.id'), primary_key=True),
+#        Column('custom_column', Integer, ForeignKey('custom_column_' + str(row.id) + '.id'), primary_key=True)
+#        )
+#    books_custom_column_links[row.id] = cc_link
+#    cc_ids.append(row.id)
+
 
 class Comments(Base):
     __tablename__ = 'comments'
@@ -170,6 +181,16 @@ class Books(Base):
     series = relationship('Series', secondary=books_series_link, backref='books')
     ratings = relationship('Ratings', secondary=books_ratings_link, backref='books')
     languages = relationship('Languages', secondary=books_languages_link, backref='books')
+    #custom_columns = {}
+    #for id in cc_ids:
+    #    print id
+    #    custom_columns[id] = relationship(cc_classes[id], secondary=books_custom_column_links[id], backref='books')
+    #custom_columns[1] = relationship(cc_classes[1], secondary=books_custom_column_links[1], backref='books')
+    #custom_columns[2] = relationship(cc_classes[2], secondary=books_custom_column_links[2], backref='books')
+    #custom_columns[3] = relationship(cc_classes[3], secondary=books_custom_column_links[3], backref='books')
+    
+
+
 
     def __init__(self, title, sort, author_sort, timestamp, pubdate, series_index, last_modified, path, has_cover, authors, tags):
         self.title = title
@@ -184,8 +205,44 @@ class Books(Base):
 
     def __repr__(self):
         return u"<Books('{0},{1}{2}{3}{4}{5}{6}{7}{8}')>".format(self.title, self.sort, self.author_sort, self.timestamp, self.pubdate, self.series_index, self.last_modified ,self.path, self.has_cover)
+        
+class Custom_Columns(Base):
+    __tablename__ = 'custom_columns'
+    
+    id = Column(Integer,primary_key=True)
+    label = Column(String)
+    name = Column(String)
+    datatype = Column(String)
+    mark_for_delete = Column(Boolean)
+    editable = Column(Boolean)
+    display = Column(String)
+    is_multiple = Column(Boolean)
+    normalized = Column(Boolean)
+    
+#class Custom_Column(object):
+#    def __init__(self, value):
+#        self.value = value
+    
+#def get_cc_table(id):
+#    custom_column = Custom_Column
+#    table_name = 'custom_column_' + str(id)
+#    table_object = Table(table_name, Base.metadata,
+#        Column('id', Integer, primary_key=True, autoincrement=True),
+#        Column('value', String)
+#    )
+#    clear_mappers()
+#    mapper(custom_column, table_object, properties={'books' + str(id): relationship(Books, secondary=books_custom_column_links[id] , backref='custom_column_' + str(id))})
+#    return custom_column
+
+#cc_classes={}
+#for id in cc_ids:
+#    cc_classes[id] = get_cc_table(id)
+#print cc_classes
+    
 
 Base.metadata.create_all(engine)
 Session = sessionmaker()
 Session.configure(bind=engine)
 session = Session()
+
+
