@@ -861,8 +861,16 @@ def upload():
         filepath = config.DB_ROOT + "/" + author_dir + "/" + title_dir
         saved_filename = filepath + "/" + data_name + fileextension
         if not os.path.exists(filepath):
-            os.makedirs(filepath)
-        file.save(saved_filename)
+            try:
+                os.makedirs(filepath)
+            except OSError:
+                flash("Failed to create path %s (Permission denied)." % filepath, category="error")
+                return redirect(url_for('index'))
+        try:
+            file.save(saved_filename)
+        except OSError:
+            flash("Failed to store file %s (Permission denied)." % saved_filename, category="error")
+            return redirect(url_for('index'))
         file_size = os.path.getsize(saved_filename)
         has_cover = 0
         if fileextension.upper() == ".PDF":
