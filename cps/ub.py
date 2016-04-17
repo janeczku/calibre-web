@@ -161,6 +161,10 @@ Session.configure(bind=engine)
 session = Session()
 
 if not os.path.exists(dbpath):
-	Base.metadata.create_all(engine)
-	create_default_config()
-	create_admin_user()
+	try:
+		Base.metadata.create_all(engine)
+		create_default_config()
+		create_admin_user()
+	except Exception:
+		pass
+
