@@ -43,6 +43,25 @@
         <label for="cover_url">Cover URL (jpg)</label>
         <input type="text" class="form-control" name="cover_url" id="cover_url" value="">
       </div>
+      {% if cc|length > 0 %}
+        {% for c in cc %}
+          <div class="form-group">
+            <label for="{{ 'custom_column_' ~ c.id }}">{{ c.name }}</label>
+            <input type="text" class="form-control" name="{{ 'custom_column_' ~ c.id}} " id="{{ 'custom_column_' ~ c.id }}"
+            {% if book['custom_column_' ~ c.id]|length > 0 %}
+              {% for column in book['custom_column_' ~ c.id] %}
+                value="{{ column.value }} {% if not loop.last %}, {% endif %}
+              {% endfor %}
+              "
+            {% endif %}
+            >
+          <br />
+        {% endfor %}
+        </div>
+        </p>
+      {% endif %}  
+      
+      
     <div class="checkbox">
       <label>
         <input name="detail_view" type="checkbox" checked> view book after edit

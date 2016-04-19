@@ -316,12 +316,14 @@ def discover(page):
 @app.route("/book/<int:id>")
 def show_book(id):
     entries = db.session.query(db.Books).filter(db.Books.id == id).first()
-    helper.get_custom_columns(entries.id)
+    cc = db.session.query(db.Custom_Columns).all()
+    #print entries.custom_column_1
+    #helper.get_custom_columns(entries.id)
     book_in_shelfs = []
     shelfs = ub.session.query(ub.BookShelf).filter(ub.BookShelf.book_id == id).all()
     for entry in shelfs:
         book_in_shelfs.append(entry.shelf)
-    return render_template('detail.html', entry=entries,  title=entries.title, books_shelfs=book_in_shelfs)
+    return render_template('detail.html', entry=entries,  cc=cc, title=entries.title, books_shelfs=book_in_shelfs)
 
 @app.route("/category")
 def category_list():
@@ -695,6 +697,7 @@ def edit_user(user_id):
 def edit_book(book_id):
     ## create the function for sorting...
     db.session.connection().connection.connection.create_function("title_sort",1,db.title_sort)
+    cc = db.session.query(db.Custom_Columns).all()
     book = db.session.query(db.Books).filter(db.Books.id == book_id).first()
     author_names = []
     for author in book.authors:
@@ -832,9 +835,9 @@ def edit_book(book_id):
         if "detail_view" in to_save:
             return redirect(url_for('show_book', id=book.id))
         else:
-            return render_template('edit_book.html', book=book, authors=author_names)
+            return render_template('edit_book.html', book=book, authors=author_names, cc=cc)
     else:
-        return render_template('edit_book.html', book=book, authors=author_names)
+        return render_template('edit_book.html', book=book, authors=author_names, cc=cc)
 
 @app.route("/upload", methods = ["GET", "POST"])
 @login_required
@@ -877,7 +880,6 @@ def upload():
         if fileextension.upper() == ".PDF":
             if use_generic_pdf_cover:
                 basedir = os.path.dirname(__file__)
-                print basedir
                 copyfile(os.path.join(basedir, "static/generic_cover.jpg"), os.path.join(filepath, "cover.jpg"))
             else:
                 with Image(filename=saved_filename + "[0]", resolution=150) as img:
@@ -885,12 +887,15 @@ def upload():
                     img.save(filename=os.path.join(filepath, "cover.jpg"))
                     has_cover = 1
         is_author = db.session.query(db.Authors).filter(db.Authors.name == author).first()
+        print is_author
         if is_author:
+            print 'Unknown is known Author'
             db_author = is_author
         else:
             db_author = db.Authors(author, "", "")
             db.session.add(db_author)
-        db_book = db.Books(title, "", "", datetime.datetime.now(), datetime.datetime(101, 01,01), 1, datetime.datetime.now(), author_dir + "/" + title_dir, has_cover, db_author, [])
+        path = os.path.join(author_dir, title_dir)
+        db_book = db.Books(title, "", "", datetime.datetime.now(), datetime.datetime(101, 01,01), 1, datetime.datetime.now(), path, has_cover, db_author, [])
         db_book.authors.append(db_author)
         db_data = db.Data(db_book, fileextension.upper()[1:], file_size, data_name)
         db_book.data.append(db_data)
