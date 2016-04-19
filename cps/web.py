@@ -896,4 +896,8 @@ def upload():
         
         db.session.add(db_book)
         db.session.commit()
-    return render_template('edit_book.html', book=db_book)
+        author_names = []
+        for author in db_book.authors:
+            author_names.append(author.name)
+        
+    return render_template('edit_book.html', book=db_book, authors=author_names)
