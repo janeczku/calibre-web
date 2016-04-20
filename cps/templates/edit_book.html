@@ -47,18 +47,41 @@
         {% for c in cc %}
           <div class="form-group">
             <label for="{{ 'custom_column_' ~ c.id }}">{{ c.name }}</label>
-            <input type="text" class="form-control" name="{{ 'custom_column_' ~ c.id}} " id="{{ 'custom_column_' ~ c.id }}"
-            {% if book['custom_column_' ~ c.id]|length > 0 %}
-              {% for column in book['custom_column_' ~ c.id] %}
-                value="{{ column.value }} {% if not loop.last %}, {% endif %}
-              {% endfor %}
-              "
+            {% if c.datatype in ['text', 'series'] %}
+              <input type="text" class="form-control" name="{{ 'custom_column_' ~ c.id }}" id="{{ 'custom_column_' ~ c.id }}"
+              {% if book['custom_column_' ~ c.id]|length > 0 %}
+                {% for column in book['custom_column_' ~ c.id] %}
+                  value="{{ column.value }}{% if not loop.last %}, {% endif %}{% endfor %}"{% endif %}>
             {% endif %}
-            >
-          <br />
+            
+            {% if c.datatype == 'enumeration' %}
+              <select class="form-control" name="{{ 'custom_column_' ~ c.id }}" id="{{ 'custom_column_' ~ c.id }}">
+                  <option></option>
+                  {% for opt in c.get_display_dict().enum_values %}
+                    <option 
+                      {% if book['custom_column_' ~ c.id]|length > 0 %}
+                        {% if book['custom_column_' ~ c.id][0].value == opt %}selected="selected"{% endif %}
+                      {% endif %}
+                      >{{ opt }}</option>
+                  {% endfor %}
+              </select>
+            {% endif %}
+            
+            {% if c.datatype == ('rating' or 'float' or 'int') %}
+              <input type="number"
+                {% if c.datatype == 'rating'%}
+                  min="1" max="5"
+                {% endif %}
+                {% if c.datatype != 'float' %}
+                  step="1"
+                {% endif %}
+                class="form-control" name="{{ 'custom_column_' ~ c.id }}" id="{{ 'custom_column_' ~ c.id }}"
+                {% if book['custom_column_' ~ c.id]|length > 0 %}
+                  {% for column in book['custom_column_' ~ c.id] %}
+                    value="{{ column.value }}{% if not loop.last %}, {% endif %}{% endfor %}"{% endif %}>
+            {% endif %}
+          </div>
         {% endfor %}
-        </div>
-        </p>
       {% endif %}  
       
       

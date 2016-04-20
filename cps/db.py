@@ -7,6 +7,7 @@ from sqlalchemy.orm import *
 import os
 from cps import config
 import re
+import ast
 
 #calibre sort stuff
 title_pat = re.compile(config.TITLE_REGEX, re.IGNORECASE)
@@ -49,17 +50,18 @@ books_languages_link = Table('books_languages_link', Base.metadata,
     Column('lang_code', Integer, ForeignKey('languages.id'), primary_key=True)
     )
 
-cc = conn.execute("SELECT id FROM custom_columns")
+cc = conn.execute("SELECT id, datatype FROM custom_columns")
 cc_ids = []
-
+cc_exceptions = ['bool', 'datetime', 'int', 'comments', 'float', ]
 books_custom_column_links = {}
 for row in cc:
-    books_custom_column_links[row.id] = Table('books_custom_column_' + str(row.id) + '_link', Base.metadata,
-        Column('book', Integer, ForeignKey('books.id'), primary_key=True),
-        Column('value', Integer, ForeignKey('custom_column_' + str(row.id) + '.id'), primary_key=True)
-        )
-    #books_custom_column_links[row.id]=
-    cc_ids.append(row.id)
+    if row.datatype not in cc_exceptions:
+        books_custom_column_links[row.id] = Table('books_custom_column_' + str(row.id) + '_link', Base.metadata,
+            Column('book', Integer, ForeignKey('books.id'), primary_key=True),
+            Column('value', Integer, ForeignKey('custom_column_' + str(row.id) + '.id'), primary_key=True)
+            )
+        #books_custom_column_links[row.id]=
+        cc_ids.append(row.id)
 
 cc_classes = {}
 for id in cc_ids:
@@ -216,7 +218,11 @@ class Custom_Columns(Base):
     editable = Column(Boolean)
     display = Column(String)
     is_multiple = Column(Boolean)
-    normalized = Column(Boolean)    
+    normalized = Column(Boolean)
+    
+    def get_display_dict(self):
+        display_dict = ast.literal_eval(self.display)
+        return display_dict
 
 #Base.metadata.create_all(engine)
 Session = sessionmaker()
