@@ -200,8 +200,3 @@ def update_dir_stucture(book_id):
         book.path = new_authordir + "/" + book.path.split("/")[1]
     db.session.commit()
     
-#def get_custom_columns(id):
-#    cc = db.session.query(db.Custom_Columns).all()
-#    for c in cc:
-#        print c.name
-    

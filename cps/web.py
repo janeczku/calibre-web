@@ -317,10 +317,6 @@ def discover(page):
 def show_book(id):
     entries = db.session.query(db.Books).filter(db.Books.id == id).first()
     cc = db.session.query(db.Custom_Columns).filter(db.Custom_Columns.datatype.notin_(db.cc_exceptions)).all()
-    for c in cc:
-        print c.name
-    #print entries.custom_column_1
-    #helper.get_custom_columns(entries.id)
     book_in_shelfs = []
     shelfs = ub.session.query(ub.BookShelf).filter(ub.BookShelf.book_id == id).all()
     for entry in shelfs:
@@ -700,8 +696,6 @@ def edit_book(book_id):
     ## create the function for sorting...
     db.session.connection().connection.connection.create_function("title_sort",1,db.title_sort)
     cc = db.session.query(db.Custom_Columns).filter(db.Custom_Columns.datatype.notin_(db.cc_exceptions)).all()
-    for c in cc:
-        print c.name
     book = db.session.query(db.Books).filter(db.Books.id == book_id).first()
     author_names = []
     for author in book.authors:
@@ -923,9 +917,7 @@ def upload():
                     img.save(filename=os.path.join(filepath, "cover.jpg"))
                     has_cover = 1
         is_author = db.session.query(db.Authors).filter(db.Authors.name == author).first()
-        print is_author
         if is_author:
-            print 'Unknown is known Author'
             db_author = is_author
         else:
             db_author = db.Authors(author, "", "")
