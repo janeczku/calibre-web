@@ -1,5 +1,5 @@
 [General]
-DB_ROOT = test
+DB_ROOT =
 APP_DB_ROOT =
 MAIN_DIR =
 LOG_DIR =
