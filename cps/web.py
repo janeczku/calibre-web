@@ -840,37 +840,83 @@ def edit_book(book_id):
         
         for c in cc:
             cc_string = "custom_column_" + str(c.id)
-            if len(getattr(book, cc_string)) > 0:
-                cc_db_value = getattr(book, cc_string)[0].value
-            else:
-                cc_db_value = None
-            if to_save[cc_string].strip():
-                if c.datatype == 'rating':
-                    to_save[cc_string] = str(int(float(to_save[cc_string]) *2))
-                    print to_save[cc_string]
-                if to_save[cc_string].strip() != cc_db_value:
+            if not c.is_multiple:
+                if len(getattr(book, cc_string)) > 0:
+                    cc_db_value = getattr(book, cc_string)[0].value
+                else:
+                    cc_db_value = None
+                if to_save[cc_string].strip():
+                    if c.datatype == 'rating':
+                        to_save[cc_string] = str(int(float(to_save[cc_string]) *2))
+                        print to_save[cc_string]
+                    if to_save[cc_string].strip() != cc_db_value:
+                        if cc_db_value != None:
+                            #remove old cc_val
+                            del_cc = getattr(book, cc_string)[0]
+                            getattr(book, cc_string).remove(del_cc)
+                            if len(del_cc.books) == 0:
+                                db.session.delete(del_cc)
+                        cc_class = db.cc_classes[c.id]
+                        new_cc = db.session.query(cc_class).filter(cc_class.value == to_save[cc_string].strip()).first()
+                        # if no cc val is found add it
+                        if new_cc == None:
+                            new_cc = cc_class(value=to_save[cc_string].strip())
+                            db.session.add(new_cc)
+                            new_cc = db.session.query(cc_class).filter(cc_class.value == to_save[cc_string].strip()).first()
+                        # add cc value to book
+                        getattr(book, cc_string).append(new_cc)
+                else:
                     if cc_db_value != None:
                         #remove old cc_val
                         del_cc = getattr(book, cc_string)[0]
                         getattr(book, cc_string).remove(del_cc)
                         if len(del_cc.books) == 0:
                             db.session.delete(del_cc)
-                    cc_class = db.cc_classes[c.id]
-                    new_cc = db.session.query(cc_class).filter(cc_class.value == to_save[cc_string].strip()).first()
-                    # if no cc val is found add it
-                    if new_cc == None:
-                        new_cc = cc_class(value=to_save[cc_string].strip())
-                        db.session.add(new_cc)
-                        new_cc = db.session.query(cc_class).filter(cc_class.value == to_save[cc_string].strip()).first()
-                    # add cc value to book
-                    getattr(book, cc_string).append(new_cc)
             else:
-                if cc_db_value != None:
-                    #remove old cc_val
-                    del_cc = getattr(book, cc_string)[0]
-                    getattr(book, cc_string).remove(del_cc)
-                    if len(del_cc.books) == 0:
-                        db.session.delete(del_cc)
+                input_tags = to_save[cc_string].split(',')
+                input_tags = map(lambda it: it.strip(), input_tags)
+                input_tags = [x for x in input_tags if x != '']
+                # we have all author names now
+                # 1. search for tags to remove
+                del_tags = []
+                for c_tag in getattr(book, cc_string):
+                    found = False
+                    for inp_tag in input_tags:
+                        if inp_tag == c_tag.value:
+                            found = True
+                            break;
+                    # if the tag was not found in the new list, add him to remove list
+                    if not found:
+                        del_tags.append(c_tag)
+                # 2. search for tags that need to be added
+                add_tags = []
+                for inp_tag in input_tags:
+                    found = False
+                    for c_tag in getattr(book, cc_string):
+                        if inp_tag == c_tag.value:
+                            found = True
+                            break;
+                    if not found:
+                        add_tags.append(inp_tag)
+                # if there are tags to remove, we remove them now
+                if len(del_tags) > 0:
+                    for del_tag in del_tags:
+                        getattr(book, cc_string).remove(del_tag)
+                        if len(del_tag.books) == 0:
+                            db.session.delete(del_tag)
+                # if there are tags to add, we add them now!
+                if len(add_tags) > 0:
+                    for add_tag in add_tags:
+                        # check if a tag with that name exists
+                        new_tag = db.session.query(db.cc_classes[c.id]).filter(db.cc_classes[c.id].value == add_tag).first()
+                        # if no tag is found add it
+                        if new_tag == None:
+                            print add_tag
+                            new_tag = db.cc_classes[c.id](value=add_tag)
+                            db.session.add(new_tag)
+                            new_tag = db.session.query(db.cc_classes[c.id]).filter(db.cc_classes[c.id].value == add_tag).first()
+                        # add tag to book
+                        getattr(book, cc_string).append(new_tag)
 
         db.session.commit()
         author_names = []

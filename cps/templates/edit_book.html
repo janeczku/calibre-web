@@ -47,11 +47,17 @@
         {% for c in cc %}
           <div class="form-group">
             <label for="{{ 'custom_column_' ~ c.id }}">{{ c.name }}</label>
-            {% if c.datatype in ['text', 'series'] %}
+            {% if c.datatype in ['text', 'series'] and not c.is_multiple %}
               <input type="text" class="form-control" name="{{ 'custom_column_' ~ c.id }}" id="{{ 'custom_column_' ~ c.id }}"
               {% if book['custom_column_' ~ c.id]|length > 0 %}
-                {% for column in book['custom_column_' ~ c.id] %}
-                  value="{{ column.value }}{% if not loop.last %}, {% endif %}{% endfor %}"{% endif %}>
+                value="{{ book['custom_column_' ~ c.id][0].value }}"
+              {% endif %}>
+            {% endif %}
+
+            {% if c.datatype in ['text', 'series'] and c.is_multiple %}
+              <input type="text" class="form-control" name="{{ 'custom_column_' ~ c.id }}" id="{{ 'custom_column_' ~ c.id }}"
+              {% if book['custom_column_' ~ c.id]|length > 0 %}
+              value="{% for column in book['custom_column_' ~ c.id] %}{{ column.value.strip() }}{% if not loop.last %}, {% endif %}{% endfor %}"{% endif %}>
             {% endif %}
             
             {% if c.datatype == 'enumeration' %}
