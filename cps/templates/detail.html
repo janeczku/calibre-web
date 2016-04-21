@@ -69,7 +69,7 @@
               {% if c.datatype == 'rating' %}
                 {{ '%d' % (column.value / 2) }}
               {% else %}
-                {{ '%d' % (column.value / 2) }}
+                {{ column.value }}
               {% endif %}
             {% endfor %}
             <br />
