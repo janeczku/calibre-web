@@ -817,13 +817,25 @@ def edit_book(book_id):
             else:
                 new_series = db.Series(name=to_save["series"].strip(), sort=to_save["series"].strip())
                 book.series.append(new_series)
+        
         if to_save["rating"].strip():
-            is_rating = db.session.query(db.Ratings).filter(db.Ratings.rating == int(to_save["rating"].strip())).first()
-            if is_rating:
-                book.ratings[0] = is_rating
-            else:
-                new_rating = db.Ratings(rating=int(to_save["rating"].strip()))
-                book.ratings[0] = new_rating
+            old_rating = False
+            if len(book.ratings) > 0:
+                old_rating = book.ratings[0].rating
+            ratingx2 = int(to_save["rating"]) *2
+            if ratingx2 != old_rating:
+                is_rating = db.session.query(db.Ratings).filter(db.Ratings.rating == ratingx2).first()
+                if is_rating:
+                    book.ratings.append(is_rating)
+                else:
+                    new_rating = db.Ratings(rating=ratingx2)
+                    book.ratings.append(new_rating)
+                if old_rating:
+                    book.ratings.remove(book.ratings[0])
+        else:
+            if len(book.ratings) > 0:
+                book.ratings.remove(book.ratings[0])
+                
         
         for c in cc:
             cc_string = "custom_column_" + str(c.id)
