@@ -66,7 +66,11 @@
           {% if entry['custom_column_' ~ c.id]|length > 0 %}
             {{ c.name }}: 
             {% for column in entry['custom_column_' ~ c.id] %}
-              {{ column.value }}
+              {% if c.datatype == 'rating' %}
+                {{ '%d' % (column.value / 2) }}
+              {% else %}
+                {{ '%d' % (column.value / 2) }}
+              {% endif %}
             {% endfor %}
             <br />
           {% endif %}

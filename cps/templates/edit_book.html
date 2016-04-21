@@ -70,7 +70,7 @@
             {% if c.datatype == 'rating' %}
               <input type="number" min="1" max="5" step="1" class="form-control" name="{{ 'custom_column_' ~ c.id }}" id="{{ 'custom_column_' ~ c.id }}"
                 {% if book['custom_column_' ~ c.id]|length > 0 %}
-                    value="{{ book['custom_column_' ~ c.id][0].value / 2 }}"
+                    value="{{ '%d' %  (book['custom_column_' ~ c.id][0].value / 2) }}"
                 {% endif %}>
             {% endif %}
           </div>
