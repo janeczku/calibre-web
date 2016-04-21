@@ -7,6 +7,7 @@ from sqlalchemy.orm import *
 import os
 from cps import config
 import re
+import ast
 
 #calibre sort stuff
 title_pat = re.compile(config.TITLE_REGEX, re.IGNORECASE)
@@ -49,6 +50,25 @@ books_languages_link = Table('books_languages_link', Base.metadata,
     Column('lang_code', Integer, ForeignKey('languages.id'), primary_key=True)
     )
 
+cc = conn.execute("SELECT id, datatype FROM custom_columns")
+cc_ids = []
+cc_exceptions = ['bool', 'datetime', 'int', 'comments', 'float', ]
+books_custom_column_links = {}
+for row in cc:
+    if row.datatype not in cc_exceptions:
+        books_custom_column_links[row.id] = Table('books_custom_column_' + str(row.id) + '_link', Base.metadata,
+            Column('book', Integer, ForeignKey('books.id'), primary_key=True),
+            Column('value', Integer, ForeignKey('custom_column_' + str(row.id) + '.id'), primary_key=True)
+            )
+        #books_custom_column_links[row.id]=
+        cc_ids.append(row.id)
+
+cc_classes = {}
+for id in cc_ids:
+    ccdict={'__tablename__':'custom_column_' + str(id),
+        'id':Column(Integer, primary_key=True),
+        'value':Column(String)}
+    cc_classes[id] = type('Custom_Column_' + str(id), (Base,), ccdict)
 
 class Comments(Base):
     __tablename__ = 'comments'
@@ -152,7 +172,7 @@ class Data(Base):
 class Books(Base):
     __tablename__ = 'books'
 
-    id = Column(Integer,primary_key=True)
+    id = Column(Integer, primary_key=True)
     title = Column(String)
     sort = Column(String)
     author_sort = Column(String)
@@ -170,7 +190,7 @@ class Books(Base):
     series = relationship('Series', secondary=books_series_link, backref='books')
     ratings = relationship('Ratings', secondary=books_ratings_link, backref='books')
     languages = relationship('Languages', secondary=books_languages_link, backref='books')
-
+    
     def __init__(self, title, sort, author_sort, timestamp, pubdate, series_index, last_modified, path, has_cover, authors, tags):
         self.title = title
         self.sort = sort
@@ -184,8 +204,29 @@ class Books(Base):
 
     def __repr__(self):
         return u"<Books('{0},{1}{2}{3}{4}{5}{6}{7}{8}')>".format(self.title, self.sort, self.author_sort, self.timestamp, self.pubdate, self.series_index, self.last_modified ,self.path, self.has_cover)
+for id in cc_ids:
+    setattr(Books, 'custom_column_' + str(id), relationship(cc_classes[id], secondary=books_custom_column_links[id], backref='books'))
 
-Base.metadata.create_all(engine)
+class Custom_Columns(Base):
+    __tablename__ = 'custom_columns'
+    
+    id = Column(Integer,primary_key=True)
+    label = Column(String)
+    name = Column(String)
+    datatype = Column(String)
+    mark_for_delete = Column(Boolean)
+    editable = Column(Boolean)
+    display = Column(String)
+    is_multiple = Column(Boolean)
+    normalized = Column(Boolean)
+    
+    def get_display_dict(self):
+        display_dict = ast.literal_eval(self.display)
+        return display_dict
+
+#Base.metadata.create_all(engine)
 Session = sessionmaker()
 Session.configure(bind=engine)
 session = Session()
+
+

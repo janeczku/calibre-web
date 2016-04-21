@@ -58,6 +58,27 @@
       </div>
       </p>
       {% endif %}
+      
+      {% if cc|length > 0 %}
+        <p>
+        <div class="custom_columns">
+        {% for c in cc %}
+          {% if entry['custom_column_' ~ c.id]|length > 0 %}
+            {{ c.name }}: 
+            {% for column in entry['custom_column_' ~ c.id] %}
+              {% if c.datatype == 'rating' %}
+                {{ '%d' % (column.value / 2) }}
+              {% else %}
+                {{ column.value }}
+              {% endif %}
+            {% endfor %}
+            <br />
+          {% endif %}
+        {% endfor %}
+        </div>
+        </p>
+      {% endif %}  
+        
 
       {% if entry.comments|length > 0 %}
         <h3>Description:</h3>

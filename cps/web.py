@@ -316,11 +316,12 @@ def discover(page):
 @app.route("/book/<int:id>")
 def show_book(id):
     entries = db.session.query(db.Books).filter(db.Books.id == id).first()
+    cc = db.session.query(db.Custom_Columns).filter(db.Custom_Columns.datatype.notin_(db.cc_exceptions)).all()
     book_in_shelfs = []
     shelfs = ub.session.query(ub.BookShelf).filter(ub.BookShelf.book_id == id).all()
     for entry in shelfs:
         book_in_shelfs.append(entry.shelf)
-    return render_template('detail.html', entry=entries,  title=entries.title, books_shelfs=book_in_shelfs)
+    return render_template('detail.html', entry=entries,  cc=cc, title=entries.title, books_shelfs=book_in_shelfs)
 
 @app.route("/category")
 def category_list():
@@ -694,6 +695,7 @@ def edit_user(user_id):
 def edit_book(book_id):
     ## create the function for sorting...
     db.session.connection().connection.connection.create_function("title_sort",1,db.title_sort)
+    cc = db.session.query(db.Custom_Columns).filter(db.Custom_Columns.datatype.notin_(db.cc_exceptions)).all()
     book = db.session.query(db.Books).filter(db.Books.id == book_id).first()
     author_names = []
     for author in book.authors:
@@ -740,12 +742,12 @@ def edit_book(book_id):
         if len(add_authors) > 0:
             for add_author in add_authors:
                 # check if an author with that name exists
-                t_author = db.session.query(db.Authors).filter(db.Authors.name == add_author).first();
+                t_author = db.session.query(db.Authors).filter(db.Authors.name == add_author).first()
                 # if no author is found add it
                 if t_author == None:
                     new_author = db.Authors(add_author, add_author, "")
                     db.session.add(new_author)
-                    t_author = db.session.query(db.Authors).filter(db.Authors.name == add_author).first();
+                    t_author = db.session.query(db.Authors).filter(db.Authors.name == add_author).first()
                 # add author to book
                 book.authors.append(t_author)       
         if author0_before_edit != book.authors[0].name:
@@ -799,14 +801,14 @@ def edit_book(book_id):
         if len(add_tags) > 0:
             for add_tag in add_tags:
                 # check if a tag with that name exists
-                new_tag = db.session.query(db.Tags).filter(db.Tags.name == add_tag).first();
+                new_tag = db.session.query(db.Tags).filter(db.Tags.name == add_tag).first()
                 # if no tag is found add it
                 if new_tag == None:
                     new_tag = db.Tags(add_tag)
                     db.session.add(new_tag)
-                    new_tag = db.session.query(db.Tags).filter(db.Tags.name == add_tag).first();
+                    new_tag = db.session.query(db.Tags).filter(db.Tags.name == add_tag).first()
                 # add tag to book
-                book.tags.append(new_tag) 
+                book.tags.append(new_tag)
         
         if to_save["series"].strip():
             is_series = db.session.query(db.Series).filter(db.Series.name.like('%' + to_save["series"].strip() + '%')).first()
@@ -815,13 +817,107 @@ def edit_book(book_id):
             else:
                 new_series = db.Series(name=to_save["series"].strip(), sort=to_save["series"].strip())
                 book.series.append(new_series)
+        
         if to_save["rating"].strip():
-            is_rating = db.session.query(db.Ratings).filter(db.Ratings.rating == int(to_save["rating"].strip())).first()
-            if is_rating:
-                book.ratings[0] = is_rating
+            old_rating = False
+            if len(book.ratings) > 0:
+                old_rating = book.ratings[0].rating
+            ratingx2 = int(float(to_save["rating"]) *2)
+            print ratingx2
+            if ratingx2 != old_rating:
+                is_rating = db.session.query(db.Ratings).filter(db.Ratings.rating == ratingx2).first()
+                if is_rating:
+                    book.ratings.append(is_rating)
+                else:
+                    new_rating = db.Ratings(rating=ratingx2)
+                    book.ratings.append(new_rating)
+                if old_rating:
+                    book.ratings.remove(book.ratings[0])
+        else:
+            if len(book.ratings) > 0:
+                book.ratings.remove(book.ratings[0])
+                
+        
+        for c in cc:
+            cc_string = "custom_column_" + str(c.id)
+            if not c.is_multiple:
+                if len(getattr(book, cc_string)) > 0:
+                    cc_db_value = getattr(book, cc_string)[0].value
+                else:
+                    cc_db_value = None
+                if to_save[cc_string].strip():
+                    if c.datatype == 'rating':
+                        to_save[cc_string] = str(int(float(to_save[cc_string]) *2))
+                        print to_save[cc_string]
+                    if to_save[cc_string].strip() != cc_db_value:
+                        if cc_db_value != None:
+                            #remove old cc_val
+                            del_cc = getattr(book, cc_string)[0]
+                            getattr(book, cc_string).remove(del_cc)
+                            if len(del_cc.books) == 0:
+                                db.session.delete(del_cc)
+                        cc_class = db.cc_classes[c.id]
+                        new_cc = db.session.query(cc_class).filter(cc_class.value == to_save[cc_string].strip()).first()
+                        # if no cc val is found add it
+                        if new_cc == None:
+                            new_cc = cc_class(value=to_save[cc_string].strip())
+                            db.session.add(new_cc)
+                            new_cc = db.session.query(cc_class).filter(cc_class.value == to_save[cc_string].strip()).first()
+                        # add cc value to book
+                        getattr(book, cc_string).append(new_cc)
+                else:
+                    if cc_db_value != None:
+                        #remove old cc_val
+                        del_cc = getattr(book, cc_string)[0]
+                        getattr(book, cc_string).remove(del_cc)
+                        if len(del_cc.books) == 0:
+                            db.session.delete(del_cc)
             else:
-                new_rating = db.Ratings(rating=int(to_save["rating"].strip()))
-                book.ratings[0] = new_rating
+                input_tags = to_save[cc_string].split(',')
+                input_tags = map(lambda it: it.strip(), input_tags)
+                input_tags = [x for x in input_tags if x != '']
+                # we have all author names now
+                # 1. search for tags to remove
+                del_tags = []
+                for c_tag in getattr(book, cc_string):
+                    found = False
+                    for inp_tag in input_tags:
+                        if inp_tag == c_tag.value:
+                            found = True
+                            break;
+                    # if the tag was not found in the new list, add him to remove list
+                    if not found:
+                        del_tags.append(c_tag)
+                # 2. search for tags that need to be added
+                add_tags = []
+                for inp_tag in input_tags:
+                    found = False
+                    for c_tag in getattr(book, cc_string):
+                        if inp_tag == c_tag.value:
+                            found = True
+                            break;
+                    if not found:
+                        add_tags.append(inp_tag)
+                # if there are tags to remove, we remove them now
+                if len(del_tags) > 0:
+                    for del_tag in del_tags:
+                        getattr(book, cc_string).remove(del_tag)
+                        if len(del_tag.books) == 0:
+                            db.session.delete(del_tag)
+                # if there are tags to add, we add them now!
+                if len(add_tags) > 0:
+                    for add_tag in add_tags:
+                        # check if a tag with that name exists
+                        new_tag = db.session.query(db.cc_classes[c.id]).filter(db.cc_classes[c.id].value == add_tag).first()
+                        # if no tag is found add it
+                        if new_tag == None:
+                            print add_tag
+                            new_tag = db.cc_classes[c.id](value=add_tag)
+                            db.session.add(new_tag)
+                            new_tag = db.session.query(db.cc_classes[c.id]).filter(db.cc_classes[c.id].value == add_tag).first()
+                        # add tag to book
+                        getattr(book, cc_string).append(new_tag)
+
         db.session.commit()
         author_names = []
         for author in book.authors:
@@ -831,9 +927,9 @@ def edit_book(book_id):
         if "detail_view" in to_save:
             return redirect(url_for('show_book', id=book.id))
         else:
-            return render_template('edit_book.html', book=book, authors=author_names)
+            return render_template('edit_book.html', book=book, authors=author_names, cc=cc)
     else:
-        return render_template('edit_book.html', book=book, authors=author_names)
+        return render_template('edit_book.html', book=book, authors=author_names, cc=cc)
 
 @app.route("/upload", methods = ["GET", "POST"])
 @login_required
@@ -876,7 +972,6 @@ def upload():
         if fileextension.upper() == ".PDF":
             if use_generic_pdf_cover:
                 basedir = os.path.dirname(__file__)
-                print basedir
                 copyfile(os.path.join(basedir, "static/generic_cover.jpg"), os.path.join(filepath, "cover.jpg"))
             else:
                 with Image(filename=saved_filename + "[0]", resolution=150) as img:
@@ -889,11 +984,16 @@ def upload():
         else:
             db_author = db.Authors(author, "", "")
             db.session.add(db_author)
-        db_book = db.Books(title, "", "", datetime.datetime.now(), datetime.datetime(101, 01,01), 1, datetime.datetime.now(), author_dir + "/" + title_dir, has_cover, db_author, [])
+        path = os.path.join(author_dir, title_dir)
+        db_book = db.Books(title, "", "", datetime.datetime.now(), datetime.datetime(101, 01,01), 1, datetime.datetime.now(), path, has_cover, db_author, [])
         db_book.authors.append(db_author)
         db_data = db.Data(db_book, fileextension.upper()[1:], file_size, data_name)
         db_book.data.append(db_data)
         
         db.session.add(db_book)
         db.session.commit()
-    return render_template('edit_book.html', book=db_book)
+        author_names = []
+        for author in db_book.authors:
+            author_names.append(author.name)
+    cc = db.session.query(db.Custom_Columns).filter(db.Custom_Columns.datatype.notin_(db.cc_exceptions)).all()
+    return render_template('edit_book.html', book=db_book, authors=author_names, cc=cc)
