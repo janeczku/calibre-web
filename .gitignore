@@ -1,0 +1,20 @@
+### Python ###
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Distribution / packaging
+.Python
+env/
+eggs/
+.eggs/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# calibre-web
+*.db
+*.log
+config.ini
+
