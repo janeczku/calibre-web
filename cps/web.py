@@ -822,7 +822,8 @@ def edit_book(book_id):
             old_rating = False
             if len(book.ratings) > 0:
                 old_rating = book.ratings[0].rating
-            ratingx2 = int(to_save["rating"]) *2
+            ratingx2 = int(float(to_save["rating"]) *2)
+            print ratingx2
             if ratingx2 != old_rating:
                 is_rating = db.session.query(db.Ratings).filter(db.Ratings.rating == ratingx2).first()
                 if is_rating:
@@ -844,6 +845,9 @@ def edit_book(book_id):
             else:
                 cc_db_value = None
             if to_save[cc_string].strip():
+                if c.datatype == 'rating':
+                    to_save[cc_string] = str(int(float(to_save[cc_string]) *2))
+                    print to_save[cc_string]
                 if to_save[cc_string].strip() != cc_db_value:
                     if cc_db_value != None:
                         #remove old cc_val
