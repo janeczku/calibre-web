@@ -25,7 +25,7 @@ Also available as [Docker image](https://registry.hub.docker.com/u/janeczku/cali
 
 ## Quick start
 
-1. Open config.ini and set DB_ROOT to the path of the folder where your Calibre library (metadata.db) lives
+1. Rename `config.ini.example` to `config.ini` and set DB_ROOT to the path of the folder where your Calibre library (metadata.db) lives
 2. To enable public user registration set PUBLIC_REG to 1
 3. To enable uploading of PDF books set UPLOADING to 1
 4. Execute the command: `python cps.py`
