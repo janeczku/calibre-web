@@ -40,8 +40,7 @@ Python 2.7+
      
 Optionally, to enable on-the-fly conversion from EPUB to MOBI when using the send-to-kindle feature:     
 
-1. Create a `vendor` folder in the app root
-2. [Download](http://www.amazon.com/gp/feature.html?docId=1000765211) Amazon's KindleGen tool for your platform and place the binary named as `kindlegen` in this folder. 
+[Download](http://www.amazon.com/gp/feature.html?docId=1000765211) Amazon's KindleGen tool for your platform and place the binary named as `kindlegen` in the `vendor` folder. 
 
 ## Docker image
 
