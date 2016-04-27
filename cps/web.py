@@ -96,12 +96,13 @@ def authenticate():
     'You have to login with proper credentials', 401,
     {'WWW-Authenticate': 'Basic realm="Login Required"'})
 
-def requires_basic_auth(f):
+def requires_basic_auth_if_no_ano(f):
     @wraps(f)
     def decorated(*args, **kwargs):
         auth = request.authorization
-        if not auth or not check_auth(auth.username, auth.password):
-            return authenticate()
+        if config.ANO_SHOW_BOOKS != 1:
+            if not auth or not check_auth(auth.username, auth.password):
+                return authenticate()
         return f(*args, **kwargs)
     return decorated
 
@@ -201,7 +202,7 @@ def before_request():
     g.allow_upload = config.UPLOADING
 
 @app.route("/feed")
-@login_required_if_no_ano
+@requires_basic_auth_if_no_ano
 def feed_index():
     xml = render_template('index.xml')
     response= make_response(xml)
@@ -209,7 +210,7 @@ def feed_index():
     return response
 
 @app.route("/feed/osd")
-@login_required_if_no_ano
+@requires_basic_auth_if_no_ano
 def feed_osd():
     xml = render_template('osd.xml')
     response= make_response(xml)
@@ -217,7 +218,7 @@ def feed_osd():
     return response
 
 @app.route("/feed/search", methods=["GET"])
-@login_required_if_no_ano
+@requires_basic_auth_if_no_ano
 def feed_search():
     term = request.args.get("query")
     if term:
@@ -231,7 +232,7 @@ def feed_search():
     return response
 
 @app.route("/feed/new")
-@login_required_if_no_ano
+@requires_basic_auth_if_no_ano
 def feed_new():
     off = request.args.get("start_index")
     if off:
@@ -246,7 +247,7 @@ def feed_new():
 
 
 @app.route("/feed/discover")
-@login_required_if_no_ano
+@requires_basic_auth_if_no_ano
 def feed_discover():
     off = request.args.get("start_index")
     if off:
@@ -260,7 +261,7 @@ def feed_discover():
     return response
 
 @app.route("/feed/hot")
-@login_required_if_no_ano
+@requires_basic_auth_if_no_ano
 def feed_hot():
     off = request.args.get("start_index")
     if off:
@@ -275,7 +276,7 @@ def feed_hot():
     return response
 
 @app.route("/feed/download/<int:book_id>/<format>")
-@login_required
+@requires_basic_auth_if_no_ano
 @download_required
 def get_opds_download_link(book_id, format):
     format = format.split(".")[0]
