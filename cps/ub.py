@@ -179,7 +179,7 @@ def get_mail_settings():
 def create_admin_user():
     user = User()
     user.nickname = "admin"
-    user.role = 1
+    user.role = ROLE_USER + ROLE_ADMIN + ROLE_DOWNLOAD + ROLE_UPLOAD + ROLE_EDIT + ROLE_PASSWD
     user.password = generate_password_hash(DEFAULT_PASS)
 
     session.add(user)
