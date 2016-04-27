@@ -23,8 +23,20 @@
     </div>
     {% if g.user and g.user.role and not profile %}
     <div class="form-group">
-      <label for="user_role">Admin user</label>
-      <input type="checkbox" name="admin_user" id="admin_user" {% if content.role %}checked{% endif %}>
+      <label for="admin_role">Admin user</label>
+      <input type="checkbox" name="admin_role" id="admin_role" {% if content.role_admin() %}checked{% endif %}>
+    </div>
+    <div class="form-group">
+      <label for="download_role">Allow Downloads</label>
+      <input type="checkbox" name="download_role" id="download_role" {% if content.role_download() %}checked{% endif %}>
+    </div>
+    <div class="form-group">
+      <label for="upload_role">Allow Uploads</label>
+      <input type="checkbox" name="upload_role" id="upload_role" {% if content.role_upload() %}checked{% endif %}>
+    </div>
+    <div class="form-group">
+      <label for="edit_role">Allow Edit</label>
+      <input type="checkbox" name="edit_role" id="edit_role" {% if content.role_edit() %}checked{% endif %}>
     </div>
     {% endif %}
     {% if g.user and g.user.role and not profile and not new_user %}

@@ -63,7 +63,7 @@
           </ul>
           <ul class="nav navbar-nav navbar-right" id="main-nav">
             {% if g.user.is_authenticated() %}
-              {% if g.user.role %}
+              {% if g.user.role_upload() or g.user.role_admin()%}
               {% if g.allow_upload %}
                   <li>
                     <form id="form-upload" class="navbar-form" action="{{ url_for('upload') }}" method="post" enctype="multipart/form-data">
@@ -74,7 +74,7 @@
                   </li>
               {% endif %}
               {% endif %}
-              {% if g.user.role %}
+              {% if g.user.role_admin() %}
                 <li><a href="{{url_for('user_list')}}"><span class="glyphicon glyphicon-dashboard"></span> Admin</a></li>
               {% endif %}
               <li><a href="{{url_for('profile')}}"><span class="glyphicon glyphicon-user"></span> {{g.user.nickname}}</a></li>
