@@ -1,6 +1,6 @@
 ##About
 
-Calibre Web is a Python web app providing a clean interface for browsing, reading and downloading e-books from a Calibre e-book database.
+Calibre Web is a web app providing a clean interface for browsing, reading and downloading eBooks using an existing [Calibre](https://calibre-ebook.com) database.
 
 *This software is a fork of [library](https://github.com/mutschler/calibreserver) and licensed under the GPL v3 License.*
 
@@ -20,6 +20,7 @@ Calibre Web is a Python web app providing a clean interface for browsing, readin
 - Send eBooks to Kindle devices with the click of a button
 - Support for reading eBooks directly in the browser
 - Upload new books in PDF format
+- Support for Calibre custom columns
 
 ## Quick start
 
