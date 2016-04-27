@@ -17,6 +17,7 @@ ROLE_ADMIN = 1
 ROLE_DOWNLOAD = 2
 ROLE_UPLOAD = 4 
 ROLE_EDIT = 8
+ROLE_PASSWD = 16
 DEFAULT_PASS = "admin123"
 
 class User(Base):
@@ -52,6 +53,11 @@ class User(Base):
     def role_edit(self):
         if self.role is not None:
             return True if self.role & ROLE_EDIT == ROLE_EDIT else False
+        else:
+            return False
+    def role_passwd(self):
+        if self.role is not None:
+            return True if self.role & ROLE_PASSWD == ROLE_PASSWD else False
         else:
             return False
 

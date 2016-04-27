@@ -13,10 +13,12 @@
       <label for="email">Email address</label>
       <input type="email" class="form-control" name="email" id="email" value="{{ content.email if content.email != None }}" required> 
     </div>
+    {% if g.user and g.user.role_passwd() or g.user.role_admin()%}
     <div class="form-group">
       <label for="password">Password</label>
       <input type="password" class="form-control" name="password" id="password" value="">
     </div>
+    {% endif %}
     <div class="form-group">
       <label for="kindle_mail">Kindle E-Mail</label>
       <input type="text" class="form-control" name="kindle_mail" id="kindle_mail" value="{{ content.kindle_mail if content.kindle_mail != None }}">
@@ -37,6 +39,10 @@
     <div class="form-group">
       <label for="edit_role">Allow Edit</label>
       <input type="checkbox" name="edit_role" id="edit_role" {% if content.role_edit() %}checked{% endif %}>
+    </div>
+    <div class="form-group">
+      <label for="passwd_role">Allow Changing Password</label>
+      <input type="checkbox" name="passwd_role" id="passwd_role" {% if content.role_passwd() %}checked{% endif %}>
     </div>
     {% endif %}
     {% if g.user and g.user.role_admin() and not profile and not new_user %}

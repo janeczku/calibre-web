@@ -649,8 +649,9 @@ def profile():
         downloads.append(db.session.query(db.Books).filter(db.Books.id == book.book_id).first())
     if request.method == "POST":
         to_save = request.form.to_dict()
-        if to_save["password"]:
-            content.password = generate_password_hash(to_save["password"])
+        if current_user.role_passwd() or current_user.role_admin():
+            if to_save["password"]:
+                content.password = generate_password_hash(to_save["password"])
         if to_save["kindle_mail"] and to_save["kindle_mail"] != content.kindle_mail:
             content.kindle_mail = to_save["kindle_mail"]
         if to_save["email"] and to_save["email"] != content.email:
@@ -694,6 +695,8 @@ def new_user():
             content.role = content.role + ub.ROLE_UPLOAD
         if "edit_role" in to_save:
             content.role = content.role + ub.ROLE_EDIT
+        if "passwd_role" in to_save:
+            content.role = content.role + ub.ROLE_PASSWD
         try:
             ub.session.add(content)
             ub.session.commit()
@@ -764,7 +767,11 @@ def edit_user(user_id):
                 content.role = content.role + ub.ROLE_EDIT
             elif not "edit_role" in to_save and content.role_edit():
                 content.role = content.role - ub.ROLE_EDIT
-           
+            
+            if "passwd_role" in to_save and not content.role_passwd():
+                content.role = content.role + ub.ROLE_PASSWD
+            elif not "passwd_role" in to_save and content.role_passwd():
+                content.role = content.role - ub.ROLE_PASSWD
            
             if to_save["email"] and to_save["email"] != content.email:
                 content.email = to_save["email"]
