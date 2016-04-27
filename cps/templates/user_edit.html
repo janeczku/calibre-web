@@ -3,7 +3,7 @@
 <div class="discover">
   <h1>{{title}}</h1>
   <form role="form" method="POST">
-    {% if g.user and g.user.role and new_user %}
+    {% if g.user and g.user.role_admin() and new_user %}
     <div class="form-group required">
       <label for="nickname">Username</label>
       <input type="text" class="form-control" name="nickname" id="nickname" value="{{ content.nickname if content.nickname != None }}">
@@ -21,7 +21,7 @@
       <label for="kindle_mail">Kindle E-Mail</label>
       <input type="text" class="form-control" name="kindle_mail" id="kindle_mail" value="{{ content.kindle_mail if content.kindle_mail != None }}">
     </div>
-    {% if g.user and g.user.role and not profile %}
+    {% if g.user and g.user.role_admin() and not profile %}
     <div class="form-group">
       <label for="admin_role">Admin user</label>
       <input type="checkbox" name="admin_role" id="admin_role" {% if content.role_admin() %}checked{% endif %}>
@@ -39,7 +39,7 @@
       <input type="checkbox" name="edit_role" id="edit_role" {% if content.role_edit() %}checked{% endif %}>
     </div>
     {% endif %}
-    {% if g.user and g.user.role and not profile and not new_user %}
+    {% if g.user and g.user.role_admin() and not profile and not new_user %}
     <div class="checkbox">
       <label>
         <input type="checkbox" name="delete"> Delete this user
