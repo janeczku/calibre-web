@@ -60,7 +60,7 @@ TITLE_REGEX = check_setting_str(CFG, 'Advanced', 'TITLE_REGEX', '^(A|The|An|Der|
 DEVELOPMENT = bool(check_setting_int(CFG, 'Advanced', 'DEVELOPMENT', 0))
 PUBLIC_REG = bool(check_setting_int(CFG, 'Advanced', 'PUBLIC_REG', 0))
 UPLOADING = bool(check_setting_int(CFG, 'Advanced', 'UPLOADING', 0))
-ANO_SHOW_BOOKS = bool(check_setting_int(CFG, 'Advanced', 'ANO_SHOW_BOOKS', 0))
+ANON_BROWSE = bool(check_setting_int(CFG, 'Advanced', 'ANON_BROWSE', 0))
 
 SYS_ENCODING="UTF-8"
 
@@ -79,8 +79,7 @@ configval["DEVELOPMENT"] = DEVELOPMENT
 configval["TITLE_REGEX"] = TITLE_REGEX
 configval["PUBLIC_REG"] = PUBLIC_REG
 configval["UPLOADING"] = UPLOADING
-configval["ANO_SHOW_BOOKS"] = ANO_SHOW_BOOKS
-
+configval["ANON_BROWSE"] = ANON_BROWSE
 
 def save_config(configval):
     new_config = ConfigObj()
@@ -97,7 +96,7 @@ def save_config(configval):
     new_config['Advanced']['DEVELOPMENT'] = int(configval["DEVELOPMENT"])
     new_config['Advanced']['PUBLIC_REG'] = int(configval["PUBLIC_REG"])
     new_config['Advanced']['UPLOADING'] = int(configval["UPLOADING"])
-    new_config['Advanced']['ANO_SHOW_BOOKS'] = int(configval["ANO_SHOW_BOOKS"])
+    new_config['Advanced']['ANON_BROWSE'] = int(configval["ANON_BROWSE"])
     new_config.write()
     return "Saved"
 

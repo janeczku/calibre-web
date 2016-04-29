@@ -10,3 +10,4 @@ TITLE_REGEX = ^(A|The|An|Der|Die|Das|Den|Ein|Eine|Einen|Dem|Des|Einem|Eines)\s+
 DEVELOPMENT = 0
 PUBLIC_REG = 0
 UPLOADING = 0
+ANON_BROWSE = 0

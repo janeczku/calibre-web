@@ -21,18 +21,26 @@ Calibre Web is a web app providing a clean interface for browsing, reading and d
 - Support for reading eBooks directly in the browser
 - Upload new books in PDF format
 - Support for Calibre custom columns
+- Fine grained per-user permissions
 
 ## Quick start
 
-1. Rename `config.ini.example` to `config.ini` and set DB_ROOT to the path of the folder where your Calibre library (metadata.db) lives
-2. To enable public user registration set PUBLIC_REG to 1
-3. To enable uploading of PDF books set UPLOADING to 1
-4. Execute the command: `python cps.py`
-5. Point your browser to `http://localhost:8083` or `http://localhost:8083/feed` for the OPDS catalog 
+1. Rename `config.ini.example` to `config.ini` and set `DB_ROOT` to the path of the folder where your Calibre library (metadata.db) lives
+2. Execute the command: `python cps.py`
+3. Point your browser to `http://localhost:8083` or `http://localhost:8083/feed` for the OPDS catalog 
 
 **Default admin login:**    
 *Username:* admin   
 *Password:* admin123
+
+## Runtime Configuration Options
+
+`PUBLIC_REG`    
+Set to 1 to enable public user registration.    
+`ANON_BROWSE`    
+Set to 1 to allow not logged in users to browse the catalog.    
+`UPLOADING`    
+Set to 1 to enable PDF uploading. This requires the imagemagick library to be installed.    
 
 ## Requirements
 

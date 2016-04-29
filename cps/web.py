@@ -100,7 +100,7 @@ def requires_basic_auth_if_no_ano(f):
     @wraps(f)
     def decorated(*args, **kwargs):
         auth = request.authorization
-        if config.ANO_SHOW_BOOKS != 1:
+        if config.ANON_BROWSE != 1:
             if not auth or not check_auth(auth.username, auth.password):
                 return authenticate()
         return f(*args, **kwargs)
@@ -148,7 +148,7 @@ def url_for_other_page(page):
 app.jinja_env.globals['url_for_other_page'] = url_for_other_page
 
 def login_required_if_no_ano(func):
-    if config.ANO_SHOW_BOOKS == 1:
+    if config.ANON_BROWSE == 1:
         return func
     return login_required(func)
 
