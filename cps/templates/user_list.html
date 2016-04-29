@@ -9,6 +9,11 @@
         <th>Kindle</th>
         <th>DLS</th>
         <th>Admin</th>
+        <th>Download</th>
+        <th>Upload</th>
+        <th>Edit</th>
+        <th>Passwd</th>
+
     </tr>
     {% for user in content %}
       <tr>
@@ -16,7 +21,12 @@
         <td>{{user.email}}</td>
         <td>{{user.kindle_mail}}</td>
         <td>{{user.downloads.count()}}</td>
-        <td>{% if user.role %}<span class="glyphicon glyphicon-ok"></span>{% else %}<span class="glyphicon glyphicon-remove"></span>{% endif %}</td>
+        <td>{% if user.role_admin() %}<span class="glyphicon glyphicon-ok"></span>{% else %}<span class="glyphicon glyphicon-remove"></span>{% endif %}</td>
+        <td>{% if user.role_download() %}<span class="glyphicon glyphicon-ok"></span>{% else %}<span class="glyphicon glyphicon-remove"></span>{% endif %}</td>
+        <td>{% if user.role_upload() %}<span class="glyphicon glyphicon-ok"></span>{% else %}<span class="glyphicon glyphicon-remove"></span>{% endif %}</td>
+        <td>{% if user.role_edit() %}<span class="glyphicon glyphicon-ok"></span>{% else %}<span class="glyphicon glyphicon-remove"></span>{% endif %}</td>
+        <td>{% if user.role_passwd() %}<span class="glyphicon glyphicon-ok"></span>{% else %}<span class="glyphicon glyphicon-remove"></span>{% endif %}</td>
+
     {% endfor %}
   </table>
     <div class="btn btn-default"><a href="{{url_for('new_user')}}">Add new user</a></div>

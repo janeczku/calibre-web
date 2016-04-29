@@ -14,7 +14,7 @@ from sqlalchemy.sql.expression import func
 from sqlalchemy.sql.expression import false
 from sqlalchemy.exc import IntegrityError
 from math import ceil
-from flask.ext.login import LoginManager, login_user, logout_user, login_required, current_user
+from flask.ext.login import LoginManager, login_user, logout_user, login_required, current_user, AnonymousUserMixin
 from flask.ext.principal import Principal, Identity, AnonymousIdentity, identity_changed
 import requests, zipfile
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -43,9 +43,23 @@ app.logger.info('Starting Calibre Web...')
 
 Principal(app)
 
+class Anonymous(AnonymousUserMixin):
+    def __init__(self):
+        self.nickname = 'Guest'
+        self.role = -1
+    def role_admin(self):
+        return False
+    def role_download(self):
+        return False
+    def role_upload(self):
+        return False
+    def role_edit(self):
+        return False
+
 lm = LoginManager(app)
 lm.init_app(app)
 lm.login_view = 'login'
+lm.anonymous_user = Anonymous
 
 app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
 
@@ -82,12 +96,13 @@ def authenticate():
     'You have to login with proper credentials', 401,
     {'WWW-Authenticate': 'Basic realm="Login Required"'})
 
-def requires_basic_auth(f):
+def requires_basic_auth_if_no_ano(f):
     @wraps(f)
     def decorated(*args, **kwargs):
         auth = request.authorization
-        if not auth or not check_auth(auth.username, auth.password):
-            return authenticate()
+        if config.ANO_SHOW_BOOKS != 1:
+            if not auth or not check_auth(auth.username, auth.password):
+                return authenticate()
         return f(*args, **kwargs)
     return decorated
 
@@ -132,6 +147,11 @@ def url_for_other_page(page):
 
 app.jinja_env.globals['url_for_other_page'] = url_for_other_page
 
+def login_required_if_no_ano(func):
+    if config.ANO_SHOW_BOOKS == 1:
+        return func
+    return login_required(func)
+
 ## custom jinja filters
 @app.template_filter('shortentitle')
 def shortentitle_filter(s):
@@ -147,7 +167,29 @@ def admin_required(f):
     """
     @wraps(f)
     def inner(*args, **kwargs):
-        if int(current_user.role) == 1:
+        if current_user.role_admin():
+            return f(*args, **kwargs)
+        abort(403)
+    return inner
+
+def download_required(f):
+    @wraps(f)
+    def inner(*args, **kwargs):
+        if current_user.role_download() or current_user.role_admin():
+            return f(*args, **kwargs)
+        abort(403)
+    return inner
+def upload_required(f):
+    @wraps(f)
+    def inner(*args, **kwargs):
+        if current_user.role_upload() or current_user.role_admin():
+            return f(*args, **kwargs)
+        abort(403)
+    return inner
+def edit_required(f):
+    @wraps(f)
+    def inner(*args, **kwargs):
+        if current_user.role_edit() or current_user.role_admin():
             return f(*args, **kwargs)
         abort(403)
     return inner
@@ -160,6 +202,7 @@ def before_request():
     g.allow_upload = config.UPLOADING
 
 @app.route("/feed")
+@requires_basic_auth_if_no_ano
 def feed_index():
     xml = render_template('index.xml')
     response= make_response(xml)
@@ -167,6 +210,7 @@ def feed_index():
     return response
 
 @app.route("/feed/osd")
+@requires_basic_auth_if_no_ano
 def feed_osd():
     xml = render_template('osd.xml')
     response= make_response(xml)
@@ -174,6 +218,7 @@ def feed_osd():
     return response
 
 @app.route("/feed/search", methods=["GET"])
+@requires_basic_auth_if_no_ano
 def feed_search():
     term = request.args.get("query")
     if term:
@@ -187,6 +232,7 @@ def feed_search():
     return response
 
 @app.route("/feed/new")
+@requires_basic_auth_if_no_ano
 def feed_new():
     off = request.args.get("start_index")
     if off:
@@ -201,6 +247,7 @@ def feed_new():
 
 
 @app.route("/feed/discover")
+@requires_basic_auth_if_no_ano
 def feed_discover():
     off = request.args.get("start_index")
     if off:
@@ -214,6 +261,7 @@ def feed_discover():
     return response
 
 @app.route("/feed/hot")
+@requires_basic_auth_if_no_ano
 def feed_hot():
     off = request.args.get("start_index")
     if off:
@@ -228,7 +276,8 @@ def feed_hot():
     return response
 
 @app.route("/feed/download/<int:book_id>/<format>")
-@requires_basic_auth
+@requires_basic_auth_if_no_ano
+@download_required
 def get_opds_download_link(book_id, format):
     format = format.split(".")[0]
     book = db.session.query(db.Books).filter(db.Books.id == book_id).first()
@@ -244,6 +293,7 @@ def get_opds_download_link(book_id, format):
     return response
     
 @app.route("/get_authors_json", methods = ['GET', 'POST'])
+@login_required_if_no_ano
 def get_authors_json(): 
     if request.method == "GET":
         query = request.args.get('q')
@@ -252,6 +302,7 @@ def get_authors_json():
         return json_dumps
 
 @app.route("/get_tags_json", methods = ['GET', 'POST'])
+@login_required_if_no_ano
 def get_tags_json(): 
     if request.method == "GET":
         query = request.args.get('q')
@@ -260,6 +311,7 @@ def get_tags_json():
         return json_dumps
         
 @app.route("/get_series_json", methods = ['GET', 'POST'])
+@login_required_if_no_ano
 def get_series_json(): 
     if request.method == "GET":
         query = request.args.get('q')
@@ -269,6 +321,7 @@ def get_series_json():
 
 @app.route("/", defaults={'page': 1})
 @app.route('/page/<int:page>')
+@login_required_if_no_ano
 def index(page):
     random = db.session.query(db.Books).order_by(func.random()).limit(config.RANDOM_BOOKS)
     if page == 1:
@@ -281,6 +334,7 @@ def index(page):
 
 @app.route("/hot", defaults={'page': 1})
 @app.route('/hot/page/<int:page>')
+@login_required_if_no_ano
 def hot_books(page):
     random = db.session.query(db.Books).filter(false())
     off = int(int(6) * (page - 1))
@@ -298,12 +352,14 @@ def hot_books(page):
         return render_template('index.html', random=random, entries=entries, title="Hot Books (most downloaded)")
 
 @app.route("/stats")
+@login_required
 def stats():
     counter = len(db.session.query(db.Books).all())
     return render_template('stats.html', counter=counter, title="Statistics")
 
 @app.route("/discover", defaults={'page': 1})
 @app.route('/discover/page/<int:page>')
+@login_required_if_no_ano
 def discover(page):
     if page == 1:
         entries = db.session.query(db.Books).order_by(func.randomblob(2)).limit(config.NEWEST_BOOKS)
@@ -314,6 +370,7 @@ def discover(page):
     return render_template('discover.html', entries=entries, pagination=pagination, title="Random Books")
 
 @app.route("/book/<int:id>")
+@login_required_if_no_ano
 def show_book(id):
     entries = db.session.query(db.Books).filter(db.Books.id == id).first()
     cc = db.session.query(db.Custom_Columns).filter(db.Custom_Columns.datatype.notin_(db.cc_exceptions)).all()
@@ -324,11 +381,13 @@ def show_book(id):
     return render_template('detail.html', entry=entries,  cc=cc, title=entries.title, books_shelfs=book_in_shelfs)
 
 @app.route("/category")
+@login_required_if_no_ano
 def category_list():
     entries = db.session.query(db.Tags).order_by(db.Tags.name).all()
     return render_template('categories.html', entries=entries, title="Category list")
 
 @app.route("/category/<name>")
+@login_required_if_no_ano
 def category(name):
     random = db.session.query(db.Books).filter(false())
     if name != "all":
@@ -338,6 +397,7 @@ def category(name):
     return render_template('index.html', random=random, entries=entries, title="Category: %s" % name)
 
 @app.route("/series/<name>")
+@login_required_if_no_ano
 def series(name):
     random = db.session.query(db.Books).filter(false())
     entries = db.session.query(db.Books).filter(db.Books.series.any(db.Series.name.like("%" +name + "%" ))).order_by(db.Books.series_index).all()
@@ -345,12 +405,14 @@ def series(name):
 
 
 @app.route("/admin/")
+@login_required
 def admin():
     #return "Admin ONLY!"
     abort(403)
 
 
 @app.route("/search", methods=["GET"])
+@login_required_if_no_ano
 def search():
     term = request.args.get("query")
     if term:
@@ -361,17 +423,20 @@ def search():
         return render_template('search.html', searchterm="")
 
 @app.route("/author")
+@login_required_if_no_ano
 def author_list():
     entries = db.session.query(db.Authors).order_by(db.Authors.sort).all()
     return render_template('authors.html', entries=entries, title="Author list")
 
 @app.route("/author/<name>")
+@login_required_if_no_ano
 def author(name):
     random = db.session.query(db.Books).filter(false())
     entries = db.session.query(db.Books).filter(db.Books.authors.any(db.Authors.name.like("%" +  name + "%"))).all()
     return render_template('index.html', random=random, entries=entries, title="Author: %s" % name)
 
 @app.route("/cover/<path:cover_path>")
+@login_required_if_no_ano
 def get_cover(cover_path):
     return send_from_directory(os.path.join(config.DB_ROOT, cover_path), "cover.jpg")
 
@@ -399,6 +464,7 @@ def read_book(book_id):
 
 @app.route("/download/<int:book_id>/<format>")
 @login_required
+@download_required
 def get_download_link(book_id, format):
     format = format.split(".")[0]
     book = db.session.query(db.Books).filter(db.Books.id == book_id).first()
@@ -486,6 +552,7 @@ def logout():
 
 @app.route('/send/<int:book_id>')
 @login_required
+@download_required
 def send_to_kindle(book_id):
     settings = ub.get_mail_settings()
     if settings.get("mail_server", "mail.example.com") == "mail.example.com":
@@ -583,8 +650,9 @@ def profile():
         downloads.append(db.session.query(db.Books).filter(db.Books.id == book.book_id).first())
     if request.method == "POST":
         to_save = request.form.to_dict()
-        if to_save["password"]:
-            content.password = generate_password_hash(to_save["password"])
+        if current_user.role_passwd() or current_user.role_admin():
+            if to_save["password"]:
+                content.password = generate_password_hash(to_save["password"])
         if to_save["kindle_mail"] and to_save["kindle_mail"] != content.kindle_mail:
             content.kindle_mail = to_save["kindle_mail"]
         if to_save["email"] and to_save["email"] != content.email:
@@ -619,10 +687,17 @@ def new_user():
         content.password = generate_password_hash(to_save["password"])
         content.nickname = to_save["nickname"]
         content.email = to_save["email"]
-        if "admin_user" in to_save:
-            content.role = 1
-        else:
-            content.role = 0
+        content.role = 0
+        if "admin_role" in to_save:
+            content.role = content.role + ub.ROLE_ADMIN
+        if "download_role" in to_save:
+            content.role = content.role + ub.ROLE_DOWNLOAD
+        if "upload_role" in to_save:
+            content.role = content.role + ub.ROLE_UPLOAD
+        if "edit_role" in to_save:
+            content.role = content.role + ub.ROLE_EDIT
+        if "passwd_role" in to_save:
+            content.role = content.role + ub.ROLE_PASSWD
         try:
             ub.session.add(content)
             ub.session.commit()
@@ -673,10 +748,32 @@ def edit_user(user_id):
         else:
             if to_save["password"]:
                 content.password = generate_password_hash(to_save["password"])
-            if "admin_user" in to_save and content.role != 1:
-                content.role = 1
-            elif not "admin_user" in to_save and content.role == 1:
-                content.role = 0
+           
+            if "admin_role" in to_save and not content.role_admin():
+                content.role = content.role + ub.ROLE_ADMIN
+            elif not "admin_role" in to_save and content.role_admin():
+                content.role = content.role - ub.ROLE_ADMIN
+            
+            if "download_role" in to_save and not content.role_download():
+                content.role = content.role + ub.ROLE_DOWNLOAD
+            elif not "download_role" in to_save and content.role_download():
+                content.role = content.role - ub.ROLE_DOWNLOAD
+            
+            if "upload_role" in to_save and not content.role_upload():
+                content.role = content.role + ub.ROLE_UPLOAD
+            elif not "upload_role" in to_save and content.role_upload():
+                content.role = content.role - ub.ROLE_UPLOAD
+            
+            if "edit_role" in to_save and not content.role_edit():
+                content.role = content.role + ub.ROLE_EDIT
+            elif not "edit_role" in to_save and content.role_edit():
+                content.role = content.role - ub.ROLE_EDIT
+            
+            if "passwd_role" in to_save and not content.role_passwd():
+                content.role = content.role + ub.ROLE_PASSWD
+            elif not "passwd_role" in to_save and content.role_passwd():
+                content.role = content.role - ub.ROLE_PASSWD
+           
             if to_save["email"] and to_save["email"] != content.email:
                 content.email = to_save["email"]
             if to_save["kindle_mail"] and to_save["kindle_mail"] != content.kindle_mail:
@@ -691,7 +788,7 @@ def edit_user(user_id):
 
 @app.route("/admin/book/<int:book_id>", methods=['GET', 'POST'])
 @login_required
-@admin_required
+@edit_required
 def edit_book(book_id):
     ## create the function for sorting...
     db.session.connection().connection.connection.create_function("title_sort",1,db.title_sort)
@@ -933,7 +1030,7 @@ def edit_book(book_id):
 
 @app.route("/upload", methods = ["GET", "POST"])
 @login_required
-@admin_required
+@upload_required
 def upload():
     if not config.UPLOADING:
         abort(404)
@@ -996,4 +1093,7 @@ def upload():
         for author in db_book.authors:
             author_names.append(author.name)
     cc = db.session.query(db.Custom_Columns).filter(db.Custom_Columns.datatype.notin_(db.cc_exceptions)).all()
-    return render_template('edit_book.html', book=db_book, authors=author_names, cc=cc)
+    if current_user.role_edit() or current_user.role_admin():
+        return render_template('edit_book.html', book=db_book, authors=author_names, cc=cc)
+    book_in_shelfs = []
+    return render_template('detail.html', entry=db_book,  cc=cc, title=db_book.title, books_shelfs=book_in_shelfs)
