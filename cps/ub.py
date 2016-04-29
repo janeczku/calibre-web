@@ -183,7 +183,11 @@ def create_admin_user():
     user.password = generate_password_hash(DEFAULT_PASS)
 
     session.add(user)
-    session.commit()
+    try:
+        session.commit()
+    except:
+        session.rollback()
+        pass
 
 Session = sessionmaker()
 Session.configure(bind=engine)
