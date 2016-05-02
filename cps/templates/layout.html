@@ -57,9 +57,10 @@
                 <div class="form-group">
                   <input type="text" class="form-control" name="query" placeholder="Search">
                 </div>
-                <button type="submit" class="btn btn-default">Submit</button>
+                <button type="submit" class="btn btn-default">Go!</button>
               </form>
             </li>
+            <li><a href="{{url_for('advanced_search')}}"><span class="glyphicon glyphicon-search"></span> Advanced Search</a></li>
           </ul>
           <ul class="nav navbar-nav navbar-right" id="main-nav">
             {% if g.user.is_authenticated() %}

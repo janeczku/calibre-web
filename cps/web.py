@@ -318,6 +318,26 @@ def get_series_json():
         entries = db.session.execute("select name from series where name like '%" + query + "%'")
         json_dumps = json.dumps([dict(r) for r in entries])
         return json_dumps
+        
+@app.route("/get_matching_tags", methods = ['GET', 'POST'])
+@login_required_if_no_ano
+def get_matching_tags(): 
+    tag_dict = {'tags': []}
+    if request.method == "GET":
+        q = db.session.query(db.Books)
+        author_input = request.args.get('author_name')
+        title_input = request.args.get('book_title')
+        tag_inputs = request.args.getlist('tag')
+        q = q.filter(db.Books.authors.any(db.Authors.name.like("%" +  author_input + "%")), db.Books.title.like("%"+title_input+"%"))
+        if len(tag_inputs) > 0:
+            for tag in tag_inputs:
+                q = q.filter(db.Books.tags.any(db.Tags.id == tag))
+        for book in q:
+            for tag in book.tags:
+                if tag.id not in tag_dict['tags']:
+                    tag_dict['tags'].append(tag.id)
+    json_dumps = json.dumps(tag_dict)
+    return json_dumps
 
 @app.route("/", defaults={'page': 1})
 @app.route('/page/<int:page>')
@@ -421,6 +441,25 @@ def search():
         return render_template('search.html', searchterm=term, entries=entries)
     else:
         return render_template('search.html', searchterm="")
+        
+@app.route("/advanced_search", methods=["GET"])
+@login_required_if_no_ano
+def advanced_search():
+    if request.method == 'GET':
+        print "GETTTTTTTTTTTT"
+        q = db.session.query(db.Books)
+        tag_inputs = request.args.getlist('tag')
+        author_name = request.args.get("author_name")
+        book_title = request.args.get("book_title")
+        if tag_inputs or author_name or book_title:
+            q = q.filter(db.Books.authors.any(db.Authors.name.like("%" +  author_name + "%")), db.Books.title.like("%"+book_title+"%"))
+            random = db.session.query(db.Books).order_by(func.random()).limit(config.RANDOM_BOOKS)
+            for tag in tag_inputs:
+                q = q.filter(db.Books.tags.any(db.Tags.id == tag))
+            q = q.all()
+            return render_template('search.html', searchterm="tags", entries=q)
+    tags = db.session.query(db.Tags).order_by(db.Tags.name).all()
+    return render_template('search_form.html', tags=tags)
 
 @app.route("/author")
 @login_required_if_no_ano
