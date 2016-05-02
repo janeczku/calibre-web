@@ -446,7 +446,6 @@ def search():
 @login_required_if_no_ano
 def advanced_search():
     if request.method == 'GET':
-        print "GETTTTTTTTTTTT"
         q = db.session.query(db.Books)
         tag_inputs = request.args.getlist('tag')
         author_name = request.args.get("author_name")
