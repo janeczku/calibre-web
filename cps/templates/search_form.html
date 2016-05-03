@@ -29,11 +29,10 @@
 <script src="{{ url_for('static', filename='js/typeahead.bundle.js') }}"></script>
 <script src="{{ url_for('static', filename='js/edit_books.js') }}"></script>
 <script>
-  $('form').on('change input', function() {
+  $('form').on('change input typeahead:selected', function() {
     form = $('form').serialize();
     $.getJSON( "{{ url_for('get_matching_tags') }}", form, function( data ) {
       $('.tag_click').each(function() {
-        console.log(data.tags);
         if ($.inArray(parseInt($(this).children('input').first().val(), 10), data.tags) == -1 ) {
           $(this).addClass('disabled');
         }

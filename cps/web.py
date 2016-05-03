@@ -451,12 +451,17 @@ def advanced_search():
         author_name = request.args.get("author_name")
         book_title = request.args.get("book_title")
         if tag_inputs or author_name or book_title:
+            searchterm = []
+            searchterm.extend((author_name, book_title))
+            tag_names = db.session.query(db.Tags).filter(db.Tags.id.in_(tag_inputs)).all()
+            searchterm.extend(tag.name for tag in tag_names)
+            searchterm = " + ".join(filter(None, searchterm))
             q = q.filter(db.Books.authors.any(db.Authors.name.like("%" +  author_name + "%")), db.Books.title.like("%"+book_title+"%"))
             random = db.session.query(db.Books).order_by(func.random()).limit(config.RANDOM_BOOKS)
             for tag in tag_inputs:
                 q = q.filter(db.Books.tags.any(db.Tags.id == tag))
             q = q.all()
-            return render_template('search.html', searchterm="tags", entries=q)
+            return render_template('search.html', searchterm=searchterm, entries=q)
     tags = db.session.query(db.Tags).order_by(db.Tags.name).all()
     return render_template('search_form.html', tags=tags)
 
@@ -958,7 +963,6 @@ def edit_book(book_id):
             if len(book.ratings) > 0:
                 old_rating = book.ratings[0].rating
             ratingx2 = int(float(to_save["rating"]) *2)
-            print ratingx2
             if ratingx2 != old_rating:
                 is_rating = db.session.query(db.Ratings).filter(db.Ratings.rating == ratingx2).first()
                 if is_rating:
@@ -983,7 +987,6 @@ def edit_book(book_id):
                 if to_save[cc_string].strip():
                     if c.datatype == 'rating':
                         to_save[cc_string] = str(int(float(to_save[cc_string]) *2))
-                        print to_save[cc_string]
                     if to_save[cc_string].strip() != cc_db_value:
                         if cc_db_value != None:
                             #remove old cc_val
@@ -1046,7 +1049,6 @@ def edit_book(book_id):
                         new_tag = db.session.query(db.cc_classes[c.id]).filter(db.cc_classes[c.id].value == add_tag).first()
                         # if no tag is found add it
                         if new_tag == None:
-                            print add_tag
                             new_tag = db.cc_classes[c.id](value=add_tag)
                             db.session.add(new_tag)
                             new_tag = db.session.query(db.cc_classes[c.id]).filter(db.cc_classes[c.id].value == add_tag).first()
