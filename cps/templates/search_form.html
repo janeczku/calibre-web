@@ -10,12 +10,22 @@
       <label for="bookAuthor">Author</label>
       <input type="text" class="form-control typeahead" name="author_name" id="bookAuthor" value="" autocomplete="off">
     </div>
-    <label for="Tags">Select Tags</label>
+    <label for="Tags">Include Tags</label>
     <div class="form-group">
       <div class="btn-toolbar btn-toolbar-lg" data-toggle="buttons">
         {% for tag in tags %}
-          <label id="tag_{{tag.id}}" class="btn btn-primary tag_click">
-            <input type="checkbox" autocomplete="off" name="tag" value="{{tag.id}}">{{tag.name}}</input>
+          <label id="tag_{{tag.id}}" class="btn btn-primary tags_click">
+            <input type="checkbox" autocomplete="off" name="include_tag" value="{{tag.id}}">{{tag.name}}</input>
+          </label>
+        {% endfor %}
+      </div>
+    </div>
+    <label for="Tags">Exclude Tags</label>
+    <div class="form-group">
+      <div class="btn-toolbar btn-toolbar-lg" data-toggle="buttons">
+        {% for tag in tags %}
+          <label id="tag_{{tag.id}}" class="btn btn-danger tags_click">
+            <input type="checkbox" autocomplete="off" name="exclude_tag" value="{{tag.id}}">{{tag.name}}</input>
           </label>
         {% endfor %}
       </div>
@@ -32,9 +42,11 @@
   $('form').on('change input typeahead:selected', function() {
     form = $('form').serialize();
     $.getJSON( "{{ url_for('get_matching_tags') }}", form, function( data ) {
-      $('.tag_click').each(function() {
+      $('.tags_click').each(function() {
         if ($.inArray(parseInt($(this).children('input').first().val(), 10), data.tags) == -1 ) {
-          $(this).addClass('disabled');
+          if (!($(this).hasClass('active'))) {
+            $(this).addClass('disabled');
+          }
         }
         else {
           $(this).removeClass('disabled');

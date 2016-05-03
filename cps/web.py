@@ -327,11 +327,15 @@ def get_matching_tags():
         q = db.session.query(db.Books)
         author_input = request.args.get('author_name')
         title_input = request.args.get('book_title')
-        tag_inputs = request.args.getlist('tag')
+        include_tag_inputs = request.args.getlist('include_tag')
+        exclude_tag_inputs = request.args.getlist('exclude_tag')
         q = q.filter(db.Books.authors.any(db.Authors.name.like("%" +  author_input + "%")), db.Books.title.like("%"+title_input+"%"))
-        if len(tag_inputs) > 0:
-            for tag in tag_inputs:
+        if len(include_tag_inputs) > 0:
+            for tag in include_tag_inputs:
                 q = q.filter(db.Books.tags.any(db.Tags.id == tag))
+        if len(exclude_tag_inputs) > 0:
+            for tag in exclude_tag_inputs:
+                q = q.filter(not_(db.Books.tags.any(db.Tags.id == tag)))
         for book in q:
             for tag in book.tags:
                 if tag.id not in tag_dict['tags']:
@@ -447,19 +451,22 @@ def search():
 def advanced_search():
     if request.method == 'GET':
         q = db.session.query(db.Books)
-        tag_inputs = request.args.getlist('tag')
+        include_tag_inputs = request.args.getlist('include_tag')
+        exclude_tag_inputs = request.args.getlist('exclude_tag')
         author_name = request.args.get("author_name")
         book_title = request.args.get("book_title")
-        if tag_inputs or author_name or book_title:
+        if include_tag_inputs or exclude_tag_inputs or author_name or book_title:
             searchterm = []
             searchterm.extend((author_name, book_title))
-            tag_names = db.session.query(db.Tags).filter(db.Tags.id.in_(tag_inputs)).all()
+            tag_names = db.session.query(db.Tags).filter(db.Tags.id.in_(include_tag_inputs)).all()
             searchterm.extend(tag.name for tag in tag_names)
             searchterm = " + ".join(filter(None, searchterm))
             q = q.filter(db.Books.authors.any(db.Authors.name.like("%" +  author_name + "%")), db.Books.title.like("%"+book_title+"%"))
             random = db.session.query(db.Books).order_by(func.random()).limit(config.RANDOM_BOOKS)
-            for tag in tag_inputs:
+            for tag in include_tag_inputs:
                 q = q.filter(db.Books.tags.any(db.Tags.id == tag))
+            for tag in exclude_tag_inputs:
+                q = q.filter(not_(db.Books.tags.any(db.Tags.id == tag)))
             q = q.all()
             return render_template('search.html', searchterm=searchterm, entries=q)
     tags = db.session.query(db.Tags).order_by(db.Tags.name).all()
