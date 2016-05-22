@@ -318,6 +318,30 @@ def get_series_json():
         entries = db.session.execute("select name from series where name like '%" + query + "%'")
         json_dumps = json.dumps([dict(r) for r in entries])
         return json_dumps
+        
+@app.route("/get_matching_tags", methods = ['GET', 'POST'])
+@login_required_if_no_ano
+def get_matching_tags(): 
+    tag_dict = {'tags': []}
+    if request.method == "GET":
+        q = db.session.query(db.Books)
+        author_input = request.args.get('author_name')
+        title_input = request.args.get('book_title')
+        include_tag_inputs = request.args.getlist('include_tag')
+        exclude_tag_inputs = request.args.getlist('exclude_tag')
+        q = q.filter(db.Books.authors.any(db.Authors.name.like("%" +  author_input + "%")), db.Books.title.like("%"+title_input+"%"))
+        if len(include_tag_inputs) > 0:
+            for tag in include_tag_inputs:
+                q = q.filter(db.Books.tags.any(db.Tags.id == tag))
+        if len(exclude_tag_inputs) > 0:
+            for tag in exclude_tag_inputs:
+                q = q.filter(not_(db.Books.tags.any(db.Tags.id == tag)))
+        for book in q:
+            for tag in book.tags:
+                if tag.id not in tag_dict['tags']:
+                    tag_dict['tags'].append(tag.id)
+    json_dumps = json.dumps(tag_dict)
+    return json_dumps
 
 @app.route("/", defaults={'page': 1})
 @app.route('/page/<int:page>')
@@ -421,6 +445,32 @@ def search():
         return render_template('search.html', searchterm=term, entries=entries)
     else:
         return render_template('search.html', searchterm="")
+        
+@app.route("/advanced_search", methods=["GET"])
+@login_required_if_no_ano
+def advanced_search():
+    if request.method == 'GET':
+        q = db.session.query(db.Books)
+        include_tag_inputs = request.args.getlist('include_tag')
+        exclude_tag_inputs = request.args.getlist('exclude_tag')
+        author_name = request.args.get("author_name")
+        book_title = request.args.get("book_title")
+        if include_tag_inputs or exclude_tag_inputs or author_name or book_title:
+            searchterm = []
+            searchterm.extend((author_name, book_title))
+            tag_names = db.session.query(db.Tags).filter(db.Tags.id.in_(include_tag_inputs)).all()
+            searchterm.extend(tag.name for tag in tag_names)
+            searchterm = " + ".join(filter(None, searchterm))
+            q = q.filter(db.Books.authors.any(db.Authors.name.like("%" +  author_name + "%")), db.Books.title.like("%"+book_title+"%"))
+            random = db.session.query(db.Books).order_by(func.random()).limit(config.RANDOM_BOOKS)
+            for tag in include_tag_inputs:
+                q = q.filter(db.Books.tags.any(db.Tags.id == tag))
+            for tag in exclude_tag_inputs:
+                q = q.filter(not_(db.Books.tags.any(db.Tags.id == tag)))
+            q = q.all()
+            return render_template('search.html', searchterm=searchterm, entries=q)
+    tags = db.session.query(db.Tags).order_by(db.Tags.name).all()
+    return render_template('search_form.html', tags=tags)
 
 @app.route("/author")
 @login_required_if_no_ano
@@ -920,7 +970,6 @@ def edit_book(book_id):
             if len(book.ratings) > 0:
                 old_rating = book.ratings[0].rating
             ratingx2 = int(float(to_save["rating"]) *2)
-            print ratingx2
             if ratingx2 != old_rating:
                 is_rating = db.session.query(db.Ratings).filter(db.Ratings.rating == ratingx2).first()
                 if is_rating:
@@ -945,7 +994,6 @@ def edit_book(book_id):
                 if to_save[cc_string].strip():
                     if c.datatype == 'rating':
                         to_save[cc_string] = str(int(float(to_save[cc_string]) *2))
-                        print to_save[cc_string]
                     if to_save[cc_string].strip() != cc_db_value:
                         if cc_db_value != None:
                             #remove old cc_val
@@ -1008,7 +1056,6 @@ def edit_book(book_id):
                         new_tag = db.session.query(db.cc_classes[c.id]).filter(db.cc_classes[c.id].value == add_tag).first()
                         # if no tag is found add it
                         if new_tag == None:
-                            print add_tag
                             new_tag = db.cc_classes[c.id](value=add_tag)
                             db.session.add(new_tag)
                             new_tag = db.session.query(db.cc_classes[c.id]).filter(db.cc_classes[c.id].value == add_tag).first()
