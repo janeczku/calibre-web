@@ -1105,7 +1105,7 @@ def upload():
                 flash("Failed to create path %s (Permission denied)." % filepath, category="error")
                 return redirect(url_for('index'))
         try:
-            move(meta.file_path, saved_filename) #remove as well
+            move(meta.file_path, saved_filename)
         except OSError:
             flash("Failed to store file %s (Permission denied)." % saved_filename, category="error")
             return redirect(url_for('index'))
