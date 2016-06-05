@@ -9,19 +9,33 @@ try:
     from wand.image import Image
     use_generic_pdf_cover = False
 except ImportError, e:
-    logger.warning('cannot import Image, generating pdf covers for pdf uploads will not work')
+    logger.warning('cannot import Image, generating pdf covers for pdf uploads will not work: %s', e)
     use_generic_pdf_cover = True
 try:
     from PyPDF2 import PdfFileReader
     use_pdf_meta = True
 except ImportError, e:
-    logger.warning('cannot import PyPDF2, extracting pdf metadata will not work')
+    logger.warning('cannot import PyPDF2, extracting pdf metadata will not work: %s', e)
     use_pdf_meta = False
 
+try:
+    import epub
+    use_epub_meta = True
+except ImportError, e:
+    logger.warning('cannot import PyPDF2, extracting pdf metadata will not work: %s', e)
+    use_epub_meta = False
+
+
 def process(tmp_file_path, original_file_name, original_file_extension):
-    if (".PDF" == original_file_extension.upper()):
-        return pdf_meta(tmp_file_path, original_file_name, original_file_extension)
-    else: return default_meta(tmp_file_path, original_file_name, original_file_extension)
+    try:
+        if ".PDF" == original_file_extension.upper():
+            return pdf_meta(tmp_file_path, original_file_name, original_file_extension)
+        if ".EPUB" == original_file_extension.upper() and use_pdf_meta == True:
+            return epub.get_epub_info(tmp_file_path, original_file_name, original_file_extension)
+    except Exception, e:
+        logger.warning('cannot parse metadata, using default: %s', e)
+
+    return default_meta(tmp_file_path, original_file_name, original_file_extension)
 
 
 
