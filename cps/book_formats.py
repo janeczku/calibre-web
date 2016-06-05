@@ -21,7 +21,21 @@ except ImportError, e:
 def process(tmp_file_path, original_file_name, original_file_extension):
     if (".PDF" == original_file_extension.upper()):
         return pdf_meta(tmp_file_path, original_file_name, original_file_extension)
-    else: return None
+    else: return default_meta(tmp_file_path, original_file_name, original_file_extension)
+
+
+
+def default_meta(tmp_file_path, original_file_name, original_file_extension):
+    return uploader.BookMeta(
+        file_path = tmp_file_path,
+        extension = original_file_extension,
+        title = original_file_name,
+        author = "Unknown",
+        cover = None,
+        description = "",
+        tags = "",
+        series = "",
+        series_id="")
 
 
 def pdf_meta(tmp_file_path, original_file_name, original_file_extension):
