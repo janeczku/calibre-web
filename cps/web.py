@@ -23,13 +23,7 @@ import base64
 from sqlalchemy.sql import *
 import json
 import datetime
-import book_formats
 from uuid import uuid4
-try:
-    from wand.image import Image
-    use_generic_pdf_cover = False
-except ImportError, e:
-    use_generic_pdf_cover = True
 from shutil import copyfile
 
 app = (Flask(__name__))
@@ -41,6 +35,9 @@ file_handler.setLevel(logging.INFO)
 file_handler.setFormatter(formatter)
 app.logger.addHandler(file_handler)
 app.logger.info('Starting Calibre Web...')
+logging.getLogger("book_formats").addHandler(file_handler)
+logging.getLogger("book_formats").setLevel(logging.INFO)
+
 
 Principal(app)
 
@@ -1077,6 +1074,7 @@ def edit_book(book_id):
         return render_template('edit_book.html', book=book, authors=author_names, cc=cc)
 
 import uploader
+from shutil import move
 
 @app.route("/upload", methods = ["GET", "POST"])
 @login_required
@@ -1107,7 +1105,7 @@ def upload():
                 flash("Failed to create path %s (Permission denied)." % filepath, category="error")
                 return redirect(url_for('index'))
         try:
-            copyfile(meta.file_path, saved_filename) #remove as well
+            move(meta.file_path, saved_filename) #remove as well
         except OSError:
             flash("Failed to store file %s (Permission denied)." % saved_filename, category="error")
             return redirect(url_for('index'))
@@ -1119,7 +1117,7 @@ def upload():
             copyfile(os.path.join(basedir, "static/generic_cover.jpg"), os.path.join(filepath, "cover.jpg"))
         else:
             has_cover = 1
-            copyfile(meta.cover, os.path.join(filepath, "cover.jpg"))
+            move(meta.cover, os.path.join(filepath, "cover.jpg"))
 
         is_author = db.session.query(db.Authors).filter(db.Authors.name == author).first()
         if is_author:

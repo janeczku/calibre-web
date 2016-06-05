@@ -1,12 +1,22 @@
 __author__ = 'lemmsh'
 
+import logging
+logger = logging.getLogger("book_formats")
+
 import uploader
 import os
 try:
     from wand.image import Image
     use_generic_pdf_cover = False
 except ImportError, e:
+    logger.warning('cannot import Image, generating pdf covers for pdf uploads will not work')
     use_generic_pdf_cover = True
+try:
+    from PyPDF2 import PdfFileReader
+    use_pdf_meta = True
+except ImportError, e:
+    logger.warning('cannot import PyPDF2, extracting pdf metadata will not work')
+    use_pdf_meta = False
 
 def process(tmp_file_path, original_file_name, original_file_extension):
     if (".PDF" == original_file_extension.upper()):
@@ -15,11 +25,13 @@ def process(tmp_file_path, original_file_name, original_file_extension):
 
 
 def pdf_meta(tmp_file_path, original_file_name, original_file_extension):
-    from PyPDF2 import PdfFileReader
-    pdf = PdfFileReader(open(tmp_file_path, 'rb'))
-    doc_info = pdf.getDocumentInfo()
-    print("!!!!!!!!!!!!!!")
-    print(doc_info.producer)
+
+    if (use_pdf_meta):
+        pdf = PdfFileReader(open(tmp_file_path, 'rb'))
+        doc_info = pdf.getDocumentInfo()
+    else:
+        doc_info = None
+
     if (doc_info is not None):
         author = doc_info.author
         title = doc_info.title
