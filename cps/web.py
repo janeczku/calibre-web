@@ -10,6 +10,7 @@ mimetypes.add_type('application/xhtml+xml','.xhtml')
 from flask import Flask, render_template, session, request, Response, redirect, url_for, send_from_directory, make_response, g, flash, abort
 from cps import db, config, ub, helper
 import os
+import errno
 from sqlalchemy.sql.expression import func
 from sqlalchemy.sql.expression import false
 from sqlalchemy.exc import IntegrityError
@@ -504,7 +505,13 @@ def read_book(book_id):
                     (dirName, fileName) = os.path.split(name)
                     newDir = os.path.join(book_dir, dirName)
                     if not os.path.exists(newDir):
-                        os.mkdir(newDir)
+                        try:
+                            os.makedirs(newDir)
+                        except OSError as exception:
+                            if exception.errno == errno.EEXIST:
+                                pass
+                            else:
+                                raise
                     if fileName:
                         fd = open(os.path.join(newDir, fileName), "wb")
                         fd.write(zfile.read(name))
