@@ -2,21 +2,21 @@
 {% block body %}
 <div class="discover">
   <h1>{{title}}</h1>
-  <form role="form" method="POST">
+  <form role="form" method="POST" autocomplete="off">
     {% if g.user and g.user.role_admin() and new_user %}
     <div class="form-group required">
       <label for="nickname">Username</label>
-      <input type="text" class="form-control" name="nickname" id="nickname" value="{{ content.nickname if content.nickname != None }}">
+      <input type="text" class="form-control" name="nickname" id="nickname" value="{{ content.nickname if content.nickname != None }}" autocomplete="off">
     </div>
     {% endif %}
     <div class="form-group">
       <label for="email">Email address</label>
-      <input type="email" class="form-control" name="email" id="email" value="{{ content.email if content.email != None }}" required> 
+      <input type="email" class="form-control" name="email" id="email" value="{{ content.email if content.email != None }}" autocomplete="off" required> 
     </div>
     {% if g.user and g.user.role_passwd() or g.user.role_admin()%}
     <div class="form-group">
       <label for="password">Password</label>
-      <input type="password" class="form-control" name="password" id="password" value="">
+      <input type="password" class="form-control" name="password" id="password" value="" autocomplete="off">
     </div>
     {% endif %}
     <div class="form-group">
