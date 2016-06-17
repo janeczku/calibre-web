@@ -500,7 +500,11 @@ def read_book(book_id):
         os.mkdir(book_dir)
         for data in book.data:
             if data.format.lower() == "epub":
-                zfile = zipfile.ZipFile(os.path.join(config.DB_ROOT, book.path, data.name) + ".epub")
+                epub_file = os.path.join(config.DB_ROOT, book.path, data.name) + ".epub"
+                if not os.path.isfile(epub_file):
+                    flash("Error opening eBook. File does not exist: %s" % epub_file, category="error")
+                    return redirect(request.environ["HTTP_REFERER"])
+                zfile = zipfile.ZipFile(epub_file)
                 for name in zfile.namelist():
                     (dirName, fileName) = os.path.split(name)
                     newDir = os.path.join(book_dir, dirName)
@@ -517,6 +521,7 @@ def read_book(book_id):
                         fd.write(zfile.read(name))
                         fd.close()
                 zfile.close()
+                break
     return render_template('read.html', bookid=book_id, title="Read a Book")
 
 @app.route("/download/<int:book_id>/<format>")
