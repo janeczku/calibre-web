@@ -126,7 +126,8 @@ def send_mail(book_id, kindle_mail):
             mailserver.starttls()
             mailserver.ehlo()
 
-        mailserver.login(settings["mail_login"], settings["mail_password"])
+        if settings["mail_password"]:
+            mailserver.login(settings["mail_login"], settings["mail_password"])
         mailserver.sendmail(settings["mail_login"], kindle_mail, msg)
         mailserver.quit()
     except (socket.error, smtplib.SMTPRecipientsRefused, smtplib.SMTPException), e:
