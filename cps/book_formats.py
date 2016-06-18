@@ -22,16 +22,25 @@ try:
     import epub
     use_epub_meta = True
 except ImportError, e:
-    logger.warning('cannot import PyPDF2, extracting pdf metadata will not work: %s', e)
+    logger.warning('cannot import PyPDF2, extracting epub metadata will not work: %s', e)
     use_epub_meta = False
+
+try:
+    import fb2
+    use_fb2_meta = True
+except ImportError, e:
+    logger.warning('cannot import lxml, extracting fb2 metadata will not work: %s', e)
+    use_fb2_meta = False
 
 
 def process(tmp_file_path, original_file_name, original_file_extension):
     try:
         if ".PDF" == original_file_extension.upper():
             return pdf_meta(tmp_file_path, original_file_name, original_file_extension)
-        if ".EPUB" == original_file_extension.upper() and use_pdf_meta == True:
+        if ".EPUB" == original_file_extension.upper() and use_epub_meta == True:
             return epub.get_epub_info(tmp_file_path, original_file_name, original_file_extension)
+        if ".FB2" == original_file_extension.upper() and use_fb2_meta == True:
+            return fb2.get_fb2_info(tmp_file_path, original_file_name, original_file_extension)
     except Exception, e:
         logger.warning('cannot parse metadata, using default: %s', e)
 
