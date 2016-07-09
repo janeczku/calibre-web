@@ -23,6 +23,7 @@ from functools import wraps
 import base64
 from sqlalchemy.sql import *
 import json
+import urllib
 import datetime
 from uuid import uuid4
 try:
@@ -520,8 +521,20 @@ def read_book(book_id):
                         fd.write(zfile.read(name))
                         fd.close()
                 zfile.close()
-                break
-    return render_template('read.html', bookid=book_id, title="Read a Book")
+                return render_template('read.html', bookid=book_id, title="Read a Book")
+            elif data.format.lower() == "pdf":
+                pdf_file =  os.path.join(config.DB_ROOT, book.path, data.name) + ".pdf"
+                tmp_file = os.path.join(book_dir,urllib.quote(data.name)) + ".pdf"
+                copyfile(pdf_file,tmp_file)
+                all_name = str(book_id) +"/"+ urllib.quote(data.name) +".pdf"
+                return render_template('readpdf.html', pdffile=all_name, title="Read a Book")
+    else:
+        for data in book.data:
+            if data.format.lower() == "epub":
+                return render_template('read.html', bookid=book_id, title="Read a Book")
+            elif data.format.lower() == "pdf":
+                all_name = str(book_id) +"/"+ urllib.quote(data.name) +".pdf"
+                return render_template('readpdf.html', pdffile=all_name, title="Read a Book")
 
 @app.route("/download/<int:book_id>/<format>")
 @login_required

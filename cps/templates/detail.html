@@ -104,7 +104,7 @@
             {% if g.user.kindle_mail %}
             <a href="{{url_for('send_to_kindle', book_id=entry.id)}}" id="sendbtn" class="btn btn-primary" role="button"><span class="glyphicon glyphicon-send"></span> Send to Kindle</a>
             {% endif %}
-            {% for format in entry.data if format.format|lower == 'epub' %}
+            {% for format in entry.data if format.format|lower == 'epub' or format.format|lower == 'pdf' %}
               <a target="_blank" href="{{url_for('read_book', book_id=entry.id)}}" class="btn btn-primary" role="button"><span class="glyphicon glyphicon-eye-open"></span> Read in browser</a>
             {%endfor%}
             
