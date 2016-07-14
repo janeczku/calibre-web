@@ -56,8 +56,8 @@ class ReverseProxied(object):
         script_name = environ.get('HTTP_X_SCRIPT_NAME', '')
         if script_name:
             environ['SCRIPT_NAME'] = script_name
-            path_info = environ['PATH_INFO']
-            if path_info.startswith(script_name):
+            path_info = environ.get('PATH_INFO', '')
+            if path_info and path_info.startswith(script_name):
                 environ['PATH_INFO'] = path_info[len(script_name):]
 
         scheme = environ.get('HTTP_X_SCHEME', '')
@@ -589,7 +589,7 @@ def register():
     if not config.PUBLIC_REG:
         abort(404)
     if current_user is not None and current_user.is_authenticated():
-        return redirect(url_for('index'))
+        return redirect(url_for('index', _external=True))
 
     if request.method == "POST":
         to_save = request.form.to_dict()
@@ -613,7 +613,7 @@ def register():
                 flash("An unknown error occured. Please try again later.", category="error")
                 return render_template('register.html', title="register")
             flash("Your account has been created. Please login.", category="success")
-            return redirect(url_for('login'))
+            return redirect(url_for('login', _external=True))
         else:
             flash("This username or email address is already in use.", category="error")
             return render_template('register.html', title="register")
@@ -625,7 +625,7 @@ def login():
     error = None
 
     if current_user is not None and current_user.is_authenticated():
-        return redirect(url_for('index'))
+        return redirect(url_for('index', _external=True))
 
     if request.method == "POST":
         form = request.form.to_dict()
@@ -634,7 +634,7 @@ def login():
         if user and check_password_hash(user.password, form['password']):
             login_user(user, remember = True)
             flash("you are now logged in as: '%s'" % user.nickname, category="success")
-            return redirect(request.args.get("next") or url_for("index"))
+            return redirect(request.args.get("next") or url_for("index", _external=True))
         else:
             flash("Wrong Username or Password", category="error")
 
@@ -645,7 +645,7 @@ def login():
 def logout():
     if current_user is not None and current_user.is_authenticated():
         logout_user()
-    return redirect(request.args.get("next") or url_for("index"))
+    return redirect(request.args.get("next") or url_for("index", _external=True))
 
 
 @app.route('/send/<int:book_id>')
@@ -672,7 +672,7 @@ def add_to_shelf(shelf_id, book_id):
     shelf = ub.session.query(ub.Shelf).filter(ub.Shelf.id == shelf_id).first()
     if not shelf.is_public and not shelf.user_id == int(current_user.id):
         flash("Sorry you are not allowed to add a book to the the shelf: %s" % shelf.name)
-        return redirect(url_for('index'))
+        return redirect(url_for('index', _external=True))
 
     ins = ub.BookShelf(shelf=shelf.id, book_id=book_id)
     ub.session.add(ins)
@@ -689,7 +689,7 @@ def remove_from_shelf(shelf_id, book_id):
     shelf = ub.session.query(ub.Shelf).filter(ub.Shelf.id == shelf_id).first()
     if not shelf.is_public and not shelf.user_id == int(current_user.id):
         flash("Sorry you are not allowed to remove a book from this shelf: %s" % shelf.name)
-        return redirect(url_for('index'))
+        return redirect(url_for('index', _external=True))
 
     book_shelf = ub.session.query(ub.BookShelf).filter(ub.BookShelf.shelf == shelf_id, ub.BookShelf.book_id == book_id).first()
 
@@ -800,7 +800,7 @@ def new_user():
             ub.session.add(content)
             ub.session.commit()
             flash("User '%s' created" % content.nickname, category="success")
-            return redirect(url_for('user_list'))
+            return redirect(url_for('user_list', _external=True))
         except IntegrityError:
             ub.session.rollback()
             flash("Found an existing account for this email address or nickname.", category="error")
@@ -842,7 +842,7 @@ def edit_user(user_id):
         if "delete" in to_save:
             ub.session.delete(content)
             flash("User '%s' deleted" % content.nickname, category="success")
-            return redirect(url_for('user_list'))
+            return redirect(url_for('user_list', _external=True))
         else:
             if to_save["password"]:
                 content.password = generate_password_hash(to_save["password"])
@@ -1117,7 +1117,7 @@ def edit_book(book_id):
         for b in edited_books_id:
             helper.update_dir_stucture(b)
         if "detail_view" in to_save:
-            return redirect(url_for('show_book', id=book.id))
+            return redirect(url_for('show_book', id=book.id, _external=True))
         else:
             return render_template('edit_book.html', book=book, authors=author_names, cc=cc)
     else:
@@ -1141,7 +1141,7 @@ def upload():
             author = "Unknown"
         else: 
             flash("Upload is only available for PDF files", category="error")
-            return redirect(url_for('index'))
+            return redirect(url_for('index', _external=True))
         
         title_dir = helper.get_valid_filename(title, False)
         author_dir = helper.get_valid_filename(author.decode('utf-8'), False)
@@ -1153,12 +1153,12 @@ def upload():
                 os.makedirs(filepath)
             except OSError:
                 flash("Failed to create path %s (Permission denied)." % filepath, category="error")
-                return redirect(url_for('index'))
+                return redirect(url_for('index', _external=True))
         try:
             file.save(saved_filename)
         except OSError:
             flash("Failed to store file %s (Permission denied)." % saved_filename, category="error")
-            return redirect(url_for('index'))
+            return redirect(url_for('index', _external=True))
         file_size = os.path.getsize(saved_filename)
         has_cover = 0
         if fileextension.upper() == ".PDF":
