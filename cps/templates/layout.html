@@ -79,9 +79,9 @@
                 <li><a href="{{url_for('user_list')}}"><span class="glyphicon glyphicon-dashboard"></span> Admin</a></li>
               {% endif %}
               <li><a href="{{url_for('profile')}}"><span class="glyphicon glyphicon-user"></span> {{g.user.nickname}}</a></li>
-              <li><a href="{{url_for('logout', next=request.path)}}"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+              <li><a href="{{url_for('logout', next='%s%s' % (request.script_root, request.path))}}"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
             {% else %}
-              <li><a href="{{url_for('login', next=request.path)}}"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+              <li><a href="{{url_for('login', next='%s%s' % (request.script_root, request.path))}}"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
               {% if g.allow_registration %}
               <li><a href="{{url_for('register')}}"><span class="glyphicon glyphicon-user"></span> Register</a></li>
               {% endif %}
