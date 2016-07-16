@@ -24,6 +24,15 @@
                 // fileStorage.filePath = EPUBJS.filePath;
 
                 window.reader = ePubReader("{{ url_for('static', filename=bookid) }}/");
+                //keybind
+                $(document).keydown(function(event){ 
+                  if(event.keyCode == 37){
+                    window.reader.book.prevPage();
+                  }
+                  if(event.keyCode == 39){
+                    window.reader.book.nextPage();
+                  }
+                });
               }
             };
 

@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html class="no-js">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>Basic txt Reader</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+
+
+        <!-- EPUBJS Renderer -->
+        <!--<script src="../build/epub.js"></script>-->
+        <script src="{{ url_for('static', filename='js/libs/jquery.min.js') }}"></script>
+
+        <style type="text/css">
+
+          body {
+            overflow: hidden;
+          }
+
+          #main {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+          }
+
+          #area {
+            width: 80%;
+            height: 80%;
+            margin: 5% auto;
+            max-width: 1250px;
+          }
+
+          #area iframe {
+            border: none;
+          }
+
+          #prev {
+            left: 40px;
+          }
+
+          #next {
+            right: 40px;
+          }
+
+          .arrow {
+            position: absolute;
+            top: 50%;
+            margin-top: -32px;
+            font-size: 64px;
+            color: #E2E2E2;
+            font-family: arial, sans-serif;
+            font-weight: bold;
+            cursor: pointer;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            user-select: none;
+          }
+
+          .arrow:hover {
+            color: #777;
+          }
+
+          .arrow:active {
+            color: #000;
+          }
+          xmp, pre, plaintext {
+            display: block;
+            font-family: -moz-fixed;
+            white-space: pre;
+            margin: 1em 0;
+          }
+          #area{
+            overflow:hidden;
+          }
+          pre {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            font-family: -moz-fixed;
+            column-count:2;
+            -webkit-columns:2;
+            -moz-columns:2;
+            column-gap:20px;
+            -moz-column-gap:20px;
+            -webkit-column-gap:20px;
+            position:relative;
+          }
+        </style>
+
+         <script>
+            "use strict";
+
+            //var Book = ePub("https://s3.amazonaws.com/moby-dick/");
+
+        </script>
+    </head>
+    <body>
+        <div id="main">
+          <div id="prev" class="arrow" onclick="prevPage();">‹</div>
+          <div id="area"><pre id="content" class="content"></pre></div>
+          <div id="next" class="arrow" onclick="nextPage();">›</div>
+        </div>
+
+        <script>
+
+        $(document).ready(function() {
+          //to int
+          $("#area").width($("#area").width());
+          $("#content").width($("#content").width());
+          //bind text
+          $("#content").load("{{ url_for('static', filename=txtfile) }}",function(textStr) {
+           $(this).height($(this).parent().height()*0.95);
+           $(this).text(textStr);
+          });
+          //keybind
+          $(document).keydown(function(event){ 
+            if(event.keyCode == 37){
+              prevPage();
+            }
+            if(event.keyCode == 39){
+              nextPage();
+            }
+          });
+          //bind mouse
+          $(window).bind('mousewheel', function(event) {
+              if (event.originalEvent.wheelDelta >= 0) {
+                  prevPage();
+              }
+              else {
+                  nextPage();
+              }
+          });
+          //page animate
+          var origwidth = $("#content")[0].getBoundingClientRect().width;
+          var gap = 20;
+          function prevPage(){
+            if($("#content").offset().left > 0){ return;}
+            leftoff = $("#content").offset().left;
+            leftoff = leftoff+origwidth+gap;
+            $("#content").offset({left:leftoff});
+          }
+          function nextPage(){
+            leftoff = $("#content").offset().left;
+            leftoff = leftoff-origwidth-gap;
+            $("#content").offset({left:leftoff});
+          }
+        });
+
+        </script>
+    </body>
+</html>

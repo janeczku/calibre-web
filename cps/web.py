@@ -26,13 +26,16 @@ import json
 import urllib
 import datetime
 from uuid import uuid4
+import os.path
+import shutil
+import re
 try:
     from wand.image import Image
     use_generic_pdf_cover = False
 except ImportError, e:
     use_generic_pdf_cover = True
 from shutil import copyfile
-
+from cgi import escape
 app = (Flask(__name__))
 
 formatter = logging.Formatter(
@@ -492,49 +495,65 @@ def author(name):
 def get_cover(cover_path):
     return send_from_directory(os.path.join(config.DB_ROOT, cover_path), "cover.jpg")
 
-@app.route("/read/<int:book_id>")
+@app.route("/read/<int:book_id>/<format>")
 @login_required
-def read_book(book_id):
+def read_book(book_id,format):
     book = db.session.query(db.Books).filter(db.Books.id == book_id).first()
     book_dir = os.path.join(config.MAIN_DIR, "cps","static", str(book_id))
     if not os.path.exists(book_dir):
         os.mkdir(book_dir)
-        for data in book.data:
-            if data.format.lower() == "epub":
-                epub_file = os.path.join(config.DB_ROOT, book.path, data.name) + ".epub"
-                if not os.path.isfile(epub_file):
-                    raise ValueError('Error opening eBook. File does not exist: ', epub_file)
-                zfile = zipfile.ZipFile(epub_file)
-                for name in zfile.namelist():
-                    (dirName, fileName) = os.path.split(name)
-                    newDir = os.path.join(book_dir, dirName)
-                    if not os.path.exists(newDir):
-                        try:
-                            os.makedirs(newDir)
-                        except OSError as exception:
-                            if exception.errno == errno.EEXIST:
-                                pass
-                            else:
-                                raise
-                    if fileName:
-                        fd = open(os.path.join(newDir, fileName), "wb")
-                        fd.write(zfile.read(name))
-                        fd.close()
-                zfile.close()
-                return render_template('read.html', bookid=book_id, title="Read a Book")
-            elif data.format.lower() == "pdf":
-                pdf_file =  os.path.join(config.DB_ROOT, book.path, data.name) + ".pdf"
-                tmp_file = os.path.join(book_dir,urllib.quote(data.name)) + ".pdf"
-                copyfile(pdf_file,tmp_file)
-                all_name = str(book_id) +"/"+ urllib.quote(data.name) +".pdf"
-                return render_template('readpdf.html', pdffile=all_name, title="Read a Book")
+        if format.lower() == "epub":
+            epub_file = os.path.join(config.DB_ROOT, book.path, book.data[0].name) + ".epub"
+            if not os.path.isfile(epub_file):
+                raise ValueError('Error opening eBook. File does not exist: ', epub_file)
+            zfile = zipfile.ZipFile(epub_file)
+            for name in zfile.namelist():
+                (dirName, fileName) = os.path.split(name)
+                newDir = os.path.join(book_dir, dirName)
+                if not os.path.exists(newDir):
+                    try:
+                        os.makedirs(newDir)
+                    except OSError as exception:
+                        if exception.errno == errno.EEXIST:
+                            pass
+                        else:
+                            raise
+                if fileName:
+                    fd = open(os.path.join(newDir, fileName), "wb")
+                    fd.write(zfile.read(name))
+                    fd.close()
+            zfile.close()
+            return render_template('read.html', bookid=book_id, title="Read a Book")
+        elif format.lower() == "pdf":
+            pdf_file =  os.path.join(config.DB_ROOT, book.path, book.data[0].name) + ".pdf"
+            tmp_file = os.path.join(book_dir,urllib.quote(book.data[0].name)) + ".pdf"
+            copyfile(pdf_file,tmp_file)
+            all_name = str(book_id) +"/"+ urllib.quote(book.data[0].name) +".pdf"
+            return render_template('readpdf.html', pdffile=all_name, title="Read a Book")
+        elif format.lower() == "txt":
+            #change txt to epub
+            txt_file =  os.path.join(config.DB_ROOT, book.path, book.data[0].name) + ".txt"
+            tmp_file = os.path.join(book_dir,urllib.quote(book.data[0].name)) + ".txt"
+            copyfile(txt_file,tmp_file)
+            all_name = str(book_id) +"/"+ urllib.quote(book.data[0].name) +".txt"
+            return render_template('readtxt.html', txtfile=all_name, title="Read a Book")
     else:
-        for data in book.data:
-            if data.format.lower() == "epub":
-                return render_template('read.html', bookid=book_id, title="Read a Book")
-            elif data.format.lower() == "pdf":
-                all_name = str(book_id) +"/"+ urllib.quote(data.name) +".pdf"
-                return render_template('readpdf.html', pdffile=all_name, title="Read a Book")
+        if format.lower() == "epub":
+            return render_template('read.html', bookid=book_id, title="Read a Book")
+        elif format.lower() == "pdf":
+            all_name = str(book_id) +"/"+ urllib.quote(book.data[0].name) +".pdf"
+            tmp_file = os.path.join(book_dir,urllib.quote(book.data[0].name)) + ".pdf"
+            if os.path.exists(tmp_file) == False:
+                pdf_file =  os.path.join(config.DB_ROOT, book.path, book.data[0].name) + ".pdf"
+                copyfile(pdf_file,tmp_file)
+            return render_template('readpdf.html', pdffile=all_name, title="Read a Book")
+        elif  format.lower() == "txt":
+            all_name = str(book_id) +"/"+ urllib.quote(book.data[0].name) +".txt"
+            tmp_file = os.path.join(book_dir,urllib.quote(book.data[0].name)) + ".txt"
+            if os.path.exists(all_name) == False:
+                txt_file =  os.path.join(config.DB_ROOT, book.path, book.data[0].name) + ".txt"
+                copyfile(txt_file,tmp_file)
+            return render_template('readtxt.html', txtfile=all_name, title="Read a Book")
 
 @app.route("/download/<int:book_id>/<format>")
 @login_required
