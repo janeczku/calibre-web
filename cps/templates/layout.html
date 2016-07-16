@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>{{_('calibre web')}} | {{title}}</title>
+    <title>calibre web | {{title}}</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
@@ -9,8 +9,8 @@
 
     <!-- Bootstrap -->
     <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
-    <link href="{{ url_for('static', filename='css/bootstrap.min.css')}}" rel="stylesheet" media="screen">
-    <link href="{{ url_for('static', filename='css/style.css')}}" rel="stylesheet" media="screen">
+    <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet" media="screen">
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet" media="screen">
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -79,9 +79,9 @@
                 <li><a href="{{url_for('user_list')}}"><span class="glyphicon glyphicon-dashboard"></span> {{_('Admin')}}</a></li>
               {% endif %}
               <li><a href="{{url_for('profile')}}"><span class="glyphicon glyphicon-user"></span> {{g.user.nickname}}</a></li>
-              <li><a href="{{url_for('logout', next=request.path)}}"><span class="glyphicon glyphicon-log-out"></span> {{_('Logout')}}</a></li>
+              <li><a href="{{url_for('logout', next='%s%s' % (request.script_root, request.path))}}"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
             {% else %}
-              <li><a href="{{url_for('login', next=request.path)}}"><span class="glyphicon glyphicon-log-in"></span> {{_('Login')}}</a></li>
+              <li><a href="{{url_for('login', next='%s%s' % (request.script_root, request.path))}}"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
               {% if g.allow_registration %}
               <li><a href="{{url_for('register')}}"><span class="glyphicon glyphicon-user"></span> {{_('Register')}}</a></li>
               {% endif %}

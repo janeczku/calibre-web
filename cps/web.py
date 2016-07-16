@@ -34,7 +34,44 @@ except ImportError, e:
     use_generic_pdf_cover = True
 from shutil import copyfile
 
+class ReverseProxied(object):
+    '''Wrap the application in this middleware and configure the 
+    front-end server to add these headers, to let you quietly bind 
+    this to a URL other than / and to an HTTP scheme that is 
+    different than what is used locally.
+
+    Code courtesy of: http://flask.pocoo.org/snippets/35/
+
+    In nginx:
+    location /myprefix {
+        proxy_pass http://127.0.0.1:8083;
+        proxy_set_header Host $host;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Scheme $scheme;
+        proxy_set_header X-Script-Name /myprefix;
+        }
+    '''
+    def __init__(self, app):
+        self.app = app
+
+    def __call__(self, environ, start_response):
+        script_name = environ.get('HTTP_X_SCRIPT_NAME', '')
+        if script_name:
+            environ['SCRIPT_NAME'] = script_name
+            path_info = environ.get('PATH_INFO', '')
+            if path_info and path_info.startswith(script_name):
+                environ['PATH_INFO'] = path_info[len(script_name):]
+
+        scheme = environ.get('HTTP_X_SCHEME', '')
+        if scheme:
+            environ['wsgi.url_scheme'] = scheme
+        server = environ.get('HTTP_X_FORWARDED_SERVER', '')
+        if server:
+            environ['HTTP_HOST'] = server
+        return self.app(environ, start_response)
+
 app = (Flask(__name__))
+app.wsgi_app = ReverseProxied(app.wsgi_app)
 
 formatter = logging.Formatter(
     "[%(asctime)s] {%(pathname)s:%(lineno)d} %(levelname)s - %(message)s")
@@ -50,7 +87,6 @@ babel = Babel(app)
 
 
 class Anonymous(AnonymousUserMixin):
-
     def __init__(self):
         self.nickname = 'Guest'
         self.role = -1
@@ -316,7 +352,7 @@ def get_opds_download_link(book_id, format):
     response = make_response(send_from_directory(os.path.join(config.DB_ROOT, book.path), data.name + "." +format))
     response.headers["Content-Disposition"] = "attachment; filename=%s.%s" % (data.name, format)
     return response
-
+    
 @app.route("/get_authors_json", methods = ['GET', 'POST'])
 @login_required_if_no_ano
 def get_authors_json():
@@ -620,7 +656,7 @@ def register():
     if not config.PUBLIC_REG:
         abort(404)
     if current_user is not None and current_user.is_authenticated():
-        return redirect(url_for('index'))
+        return redirect(url_for('index', _external=True))
 
     if request.method == "POST":
         to_save = request.form.to_dict()
@@ -643,8 +679,8 @@ def register():
                 ub.session.rollback()
                 flash(_(u"An unknown error occured. Please try again later."), category="error")
                 return render_template('register.html', title="register")
-            flash(_(u"Your account has been created. Please login."), category="success")
-            return redirect(url_for('login'))
+            flash("Your account has been created. Please login.", category="success")
+            return redirect(url_for('login', _external=True))
         else:
             flash(_(u"This username or email address is already in use."), category="error")
             return render_template('register.html', title="register")
@@ -656,7 +692,7 @@ def login():
     error = None
 
     if current_user is not None and current_user.is_authenticated():
-        return redirect(url_for('index'))
+        return redirect(url_for('index', _external=True))
 
     if request.method == "POST":
         form = request.form.to_dict()
@@ -664,8 +700,8 @@ def login():
 
         if user and check_password_hash(user.password, form['password']):
             login_user(user, remember = True)
-            flash(_(u'"you are now logged in as: %(nickname)s"',nickname=user.nickname), category="success")
-            return redirect(request.args.get("next") or url_for("index"))
+            flash("you are now logged in as: '%s'" % user.nickname, category="success")
+            return redirect(request.args.get("next") or url_for("index", _external=True))
         else:
             flash(_(u"Wrong Username or Password"), category="error")
 
@@ -676,7 +712,7 @@ def login():
 def logout():
     if current_user is not None and current_user.is_authenticated():
         logout_user()
-    return redirect(request.args.get("next") or url_for("index"))
+    return redirect(request.args.get("next") or url_for("index", _external=True))
 
 
 @app.route('/send/<int:book_id>')
@@ -702,8 +738,8 @@ def send_to_kindle(book_id):
 def add_to_shelf(shelf_id, book_id):
     shelf = ub.session.query(ub.Shelf).filter(ub.Shelf.id == shelf_id).first()
     if not shelf.is_public and not shelf.user_id == int(current_user.id):
-        flash(_(u"Sorry you are not allowed to add a book to the the shelf: %(sname)s",sname=shelf.name))
-        return redirect(url_for('index'))
+        flash("Sorry you are not allowed to add a book to the the shelf: %s" % shelf.name)
+        return redirect(url_for('index', _external=True))
 
     ins = ub.BookShelf(shelf=shelf.id, book_id=book_id)
     ub.session.add(ins)
@@ -719,8 +755,8 @@ def add_to_shelf(shelf_id, book_id):
 def remove_from_shelf(shelf_id, book_id):
     shelf = ub.session.query(ub.Shelf).filter(ub.Shelf.id == shelf_id).first()
     if not shelf.is_public and not shelf.user_id == int(current_user.id):
-        flash(_(u"Sorry you are not allowed to remove a book from this shelf: %(sname)s",sname=shelf.name))
-        return redirect(url_for('index'))
+        flash("Sorry you are not allowed to remove a book from this shelf: %s" % shelf.name)
+        return redirect(url_for('index', _external=True))
 
     book_shelf = ub.session.query(ub.BookShelf).filter(ub.BookShelf.shelf == shelf_id, ub.BookShelf.book_id == book_id).first()
 
@@ -856,7 +892,7 @@ def new_user():
             ub.session.add(content)
             ub.session.commit()
             flash("User '%s' created" % content.nickname, category="success")
-            return redirect(url_for('user_list'))
+            return redirect(url_for('user_list', _external=True))
         except IntegrityError:
             ub.session.rollback()
             flash(_(u"Found an existing account for this email address or nickname."), category="error")
@@ -897,32 +933,32 @@ def edit_user(user_id):
         to_save = request.form.to_dict()
         if "delete" in to_save:
             ub.session.delete(content)
-            flash(_(u"User '%(nick)s' deleted",nick=content.nickname), category="success")
-            return redirect(url_for('user_list'))
+            flash("User '%s' deleted" % content.nickname, category="success")
+            return redirect(url_for('user_list', _external=True))
         else:
             if to_save["password"]:
                 content.password = generate_password_hash(to_save["password"])
-
+           
             if "admin_role" in to_save and not content.role_admin():
                 content.role = content.role + ub.ROLE_ADMIN
             elif not "admin_role" in to_save and content.role_admin():
                 content.role = content.role - ub.ROLE_ADMIN
-
+            
             if "download_role" in to_save and not content.role_download():
                 content.role = content.role + ub.ROLE_DOWNLOAD
             elif not "download_role" in to_save and content.role_download():
                 content.role = content.role - ub.ROLE_DOWNLOAD
-
+            
             if "upload_role" in to_save and not content.role_upload():
                 content.role = content.role + ub.ROLE_UPLOAD
             elif not "upload_role" in to_save and content.role_upload():
                 content.role = content.role - ub.ROLE_UPLOAD
-
+            
             if "edit_role" in to_save and not content.role_edit():
                 content.role = content.role + ub.ROLE_EDIT
             elif not "edit_role" in to_save and content.role_edit():
                 content.role = content.role - ub.ROLE_EDIT
-
+            
             if "passwd_role" in to_save and not content.role_passwd():
                 content.role = content.role + ub.ROLE_PASSWD
             elif not "passwd_role" in to_save and content.role_passwd():
@@ -1010,7 +1046,7 @@ def edit_book(book_id):
                 book.authors.append(t_author)
         if author0_before_edit != book.authors[0].name:
             edited_books_id.add(book.id)
-
+        
         if to_save["cover_url"] and os.path.splitext(to_save["cover_url"])[1].lower() == ".jpg":
             img = requests.get(to_save["cover_url"])
             f = open(os.path.join(config.DB_ROOT, book.path, "cover.jpg"), "wb")
@@ -1067,7 +1103,7 @@ def edit_book(book_id):
                     new_tag = db.session.query(db.Tags).filter(db.Tags.name == add_tag).first()
                 # add tag to book
                 book.tags.append(new_tag)
-
+        
         if to_save["series"].strip():
             is_series = db.session.query(db.Series).filter(db.Series.name.like('%' + to_save["series"].strip() + '%')).first()
             if is_series:
@@ -1075,7 +1111,7 @@ def edit_book(book_id):
             else:
                 new_series = db.Series(name=to_save["series"].strip(), sort=to_save["series"].strip())
                 book.series.append(new_series)
-
+        
         if to_save["rating"].strip():
             old_rating = False
             if len(book.ratings) > 0:
@@ -1093,8 +1129,8 @@ def edit_book(book_id):
         else:
             if len(book.ratings) > 0:
                 book.ratings.remove(book.ratings[0])
-
-
+                
+        
         for c in cc:
             cc_string = "custom_column_" + str(c.id)
             if not c.is_multiple:
@@ -1180,7 +1216,7 @@ def edit_book(book_id):
         for b in edited_books_id:
             helper.update_dir_stucture(b)
         if "detail_view" in to_save:
-            return redirect(url_for('show_book', id=book.id))
+            return redirect(url_for('show_book', id=book.id, _external=True))
         else:
             return render_template('edit_book.html', showrandom=current_user.random_books, book=book, authors=author_names, cc=cc)
     else:
@@ -1202,10 +1238,10 @@ def upload():
         if fileextension.upper() == ".PDF":
             title = filename_root
             author = "Unknown"
-        else:
-            flash(_(u"Upload is only available for PDF files"), category="error")
-            return redirect(url_for('index'))
-
+        else: 
+            flash("Upload is only available for PDF files", category="error")
+            return redirect(url_for('index', _external=True))
+        
         title_dir = helper.get_valid_filename(title, False)
         author_dir = helper.get_valid_filename(author.decode('utf-8'), False)
         data_name = title_dir
@@ -1215,13 +1251,13 @@ def upload():
             try:
                 os.makedirs(filepath)
             except OSError:
-                flash(_(u"Failed to create path %(path)s (Permission denied).", path=filepath), category="error")
-                return redirect(url_for('index'))
+                flash("Failed to create path %s (Permission denied)." % filepath, category="error")
+                return redirect(url_for('index', _external=True))
         try:
             file.save(saved_filename)
         except OSError:
-            flash(_(u"Failed to store file %(path)s (Permission denied).", path=saved_filename), category="error")
-            return redirect(url_for('index'))
+            flash("Failed to store file %s (Permission denied)." % saved_filename, category="error")
+            return redirect(url_for('index', _external=True))
         file_size = os.path.getsize(saved_filename)
         has_cover = 0
         if fileextension.upper() == ".PDF":
@@ -1244,7 +1280,7 @@ def upload():
         db_book.authors.append(db_author)
         db_data = db.Data(db_book, fileextension.upper()[1:], file_size, data_name)
         db_book.data.append(db_data)
-
+        
         db.session.add(db_book)
         db.session.commit()
         author_names = []
