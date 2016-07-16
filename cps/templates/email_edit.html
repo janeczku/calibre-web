@@ -4,30 +4,30 @@
   <h1>{{title}}</h1>
   <form role="form" method="POST">
     <div class="form-group">
-      <label for="mail_server">SMTP hostname</label>
+      <label for="mail_server">{{_('SMTP hostname')}}</label>
       <input type="text" class="form-control" name="mail_server" id="mail_server" value="{{content.mail_server}}">
     </div>
     <div class="form-group">
-      <label for="mail_port">SMTP port (usually 25 for plain SMTP and 587 for SSL)</label>
+      <label for="mail_port">{{_('SMTP port (usually 25 for plain SMTP and 587 for SSL)')}}</label>
       <input type="text" class="form-control" name="mail_port" id="mail_port" value="{{content.mail_port}}">
     </div>
     <div class="form-group">
-      <label for="mail_use_ssl">Server uses SSL (StartTLS)</label>
+      <label for="mail_use_ssl">{{_('Server uses SSL (StartTLS)')}}</label>
       <input type="checkbox" name="mail_use_ssl" id="mail_use_ssl" {% if content.mail_use_ssl %}checked{% endif %}>
     </div>
     <div class="form-group">
-      <label for="mail_login">SMTP login</label>
+      <label for="mail_login">{{_('SMTP login')}}</label>
       <input type="text" class="form-control" name="mail_login" id="mail_login" value="{{content.mail_login}}">
     </div>
     <div class="form-group">
-      <label for="mail_password">SMTP password</label>
+      <label for="mail_password">{{_('SMTP password')}}</label>
       <input type="password" class="form-control" name="mail_password" id="mail_password" value="{{content.mail_password}}">
     </div>
     <div class="form-group">
-      <label for="mail_from">From e-mail</label>
+      <label for="mail_from">{{_('From e-mail')}}</label>
       <input type="text" class="form-control" name="mail_from" id="mail_from" value="{{content.mail_from}}">
     </div>
-    <button type="submit" class="btn btn-default">Submit</button>
+    <button type="submit" class="btn btn-default">{{_('Submit')}}</button>
   </form>
 
 </div>

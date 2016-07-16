@@ -45,7 +45,7 @@
   </entry>
 
   <entry>
-    <title>Random Books</title>
+    <title>{{_('Random Books')}}</title>
     <link rel="http://opds-spec.org/sort/random"
           href="{{url_for('feed_discover')}}"
           type="application/atom+xml;profile=opds-catalog;kind=acquisition"/>

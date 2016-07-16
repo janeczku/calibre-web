@@ -41,7 +41,7 @@
       {% if entry.languages.__len__() > 0 %}
        <div class="languages">
        <p>
-      <span class="label label-default">language: {{entry.languages[0].lang_code}}</span>
+      <span class="label label-default">{{_('language')}}: {{entry.languages[0].lang_code}}</span>
       </p>
       </div>
       {% endif %}
@@ -81,7 +81,7 @@
         
 
       {% if entry.comments|length > 0 %}
-        <h3>Description:</h3>
+        <h3>{{_('Description:')}}</h3>
         {{entry.comments[0].text|safe}}
       {% endif %}
 
@@ -92,7 +92,7 @@
         <div class="btn-group" role="group" aria-label="Download, send to Kindle, reading">
             <div class="btn-group" role="group">
               <button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <span class="glyphicon glyphicon-download"></span> Download
+                <span class="glyphicon glyphicon-download"></span> {{_('Download')}}
                 <span class="caret"></span>
               </button>
               <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
@@ -102,10 +102,10 @@
               </ul>
             </div>
             {% if g.user.kindle_mail %}
-            <a href="{{url_for('send_to_kindle', book_id=entry.id)}}" id="sendbtn" class="btn btn-primary" role="button"><span class="glyphicon glyphicon-send"></span> Send to Kindle</a>
+            <a href="{{url_for('send_to_kindle', book_id=entry.id)}}" id="sendbtn" class="btn btn-primary" role="button"><span class="glyphicon glyphicon-send"></span> {{_('Send to Kindle')}}</a>
             {% endif %}
             {% for format in entry.data if format.format|lower == 'epub' %}
-              <a target="_blank" href="{{url_for('read_book', book_id=entry.id)}}" class="btn btn-primary" role="button"><span class="glyphicon glyphicon-eye-open"></span> Read in browser</a>
+              <a target="_blank" href="{{url_for('read_book', book_id=entry.id)}}" class="btn btn-primary" role="button"><span class="glyphicon glyphicon-eye-open"></span> {{_('Read in browser')}}</a>
             {%endfor%}
             
 
@@ -117,7 +117,7 @@
       <div class="btn-toolbar" role="toolbar">
         <div class="btn-group" role="group" aria-label="Add to shelves">
               <button id="btnGroupDrop2" type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <span class="glyphicon glyphicon-list"></span> Add to shelf
+                <span class="glyphicon glyphicon-list"></span> {{_('Add to shelf')}}
                 <span class="caret"></span>
               </button>
               <ul class="dropdown-menu" aria-labelledby="btnGroupDrop2">
@@ -157,7 +157,7 @@
       {% if g.user.role_edit() %}
       <div class="btn-toolbar" role="toolbar">
         <div class="btn-group" role="group" aria-label="Edit/Delete book">
-          <a href="{{ url_for('edit_book', book_id=entry.id) }}" class="btn btn-sm btn-warning" role="button"><span class="glyphicon glyphicon-edit"></span> Edit metadata</a>
+          <a href="{{ url_for('edit_book', book_id=entry.id) }}" class="btn btn-sm btn-warning" role="button"><span class="glyphicon glyphicon-edit"></span> {{_('Edit metadata')}}</a>
           <!-- <a href="{{ url_for('edit_book', book_id=entry.id) }}" class="btn btn-sm btn-danger" role="button"><span class="glyphicon glyphicon-trash"></span> Delete</a> -->
       </div>
       {% endif %}

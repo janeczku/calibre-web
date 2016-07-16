@@ -2,9 +2,11 @@
 {% block body %}
 <div class="discover">
   <h2>{{title}}</h2>
+  <a href=" {{ url_for('delete_shelf', shelf_id=shelf.id) }} " class="btn btn-danger">{{ _('Delete this Shelf') }} </a>
   <div class="row">
 
     {% for entry in entries %}
+
     <div class="col-sm-3 col-lg-2 col-xs-6 book">
       <div class="cover">
         {% if entry.has_cover is defined %}

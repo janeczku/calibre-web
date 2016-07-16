@@ -3,10 +3,10 @@
 <div class="discover">
 
     {% if entries|length < 1 %}
-      <h2>No Results for: {{searchterm}}</h2>
-      <p>Please try a diffrent Search</p>
+      <h2>{{_('No Results for:')}} {{searchterm}}</h2>
+      <p>{{_('Please try a diffrent Search')}}</p>
     {% else %}
-      <h2>{{entries|length}} Results for: {{searchterm}}</h2>
+      <h2>{{entries|length}} {{_('Results for:')}} {{searchterm}}</h2>
     {%endif%}
 
   <div class="row">

@@ -2456,6 +2456,10 @@ input[type="button"].btn-block {
   content: "\e008";
 }
 
+.glyphicon-flag:before {
+  content: "\e008";  
+}
+
 .glyphicon-film:before {
   content: "\e009";
 }
