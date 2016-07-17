@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2016-07-16 20:33+0200\n"
+"POT-Creation-Date: 2016-07-17 13:44+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,204 +17,180 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.3.4\n"
 
-#: cps/web.py:386
+#: cps/web.py:430
 msgid "Latest Books"
 msgstr ""
 
-#: cps/web.py:407 cps/web.py:409
+#: cps/web.py:451 cps/web.py:453
 msgid "Hot Books (most downloaded)"
 msgstr ""
 
-#: cps/web.py:415
+#: cps/web.py:459
 msgid "Statistics"
 msgstr ""
 
-#: cps/web.py:427
+#: cps/web.py:471
 msgid "Random Books"
 msgstr ""
 
-#: cps/web.py:438
+#: cps/web.py:482
 msgid "Available languages"
 msgstr ""
 
-#: cps/web.py:451
+#: cps/web.py:495
 #, python-format
 msgid "Language: %(name)s"
 msgstr ""
 
-#: cps/web.py:468
+#: cps/web.py:512
 msgid "Category list"
 msgstr ""
 
-#: cps/web.py:482
+#: cps/web.py:526
 #, python-format
 msgid "Category: %(nam)s"
 msgstr ""
 
-#: cps/web.py:544
+#: cps/web.py:588
 msgid "Author list"
 msgstr ""
 
-#: cps/web.py:555
+#: cps/web.py:599
 #, python-format
 msgid "Author: %(nam)s"
 msgstr ""
 
-#: cps/web.py:573
+#: cps/web.py:617
 msgid "Error opening eBook. File does not exist: "
 msgstr ""
 
-#: cps/web.py:592
+#: cps/web.py:636
 msgid "Read a Book"
 msgstr ""
 
-#: cps/web.py:628 cps/web.py:839
+#: cps/web.py:672 cps/web.py:884
 msgid "Please fill out all fields!"
 msgstr ""
 
-#: cps/web.py:644
+#: cps/web.py:688
 msgid "An unknown error occured. Please try again later."
 msgstr ""
 
-#: cps/web.py:646
-msgid "Your account has been created. Please login."
-msgstr ""
-
-#: cps/web.py:649
+#: cps/web.py:693
 msgid "This username or email address is already in use."
 msgstr ""
 
-#: cps/web.py:667
+#: cps/web.py:711
 #, python-format
-msgid "\"you are now logged in as: %(nickname)s\""
+msgid "you are now logged in as: '%(nickname)s'"
 msgstr ""
 
-#: cps/web.py:670
+#: cps/web.py:714
 msgid "Wrong Username or Password"
 msgstr ""
 
-#: cps/web.py:688
+#: cps/web.py:732
 msgid "Please configure the SMTP mail settings first..."
 msgstr ""
 
-#: cps/web.py:692
+#: cps/web.py:736
 #, python-format
 msgid "Book successfully send to %(kindlemail)s"
 msgstr ""
 
-#: cps/web.py:695
+#: cps/web.py:739
 #, python-format
 msgid "There was an error sending this book: %(res)s"
 msgstr ""
 
-#: cps/web.py:697
+#: cps/web.py:741
 msgid "Please configure your kindle email address first..."
 msgstr ""
 
-#: cps/web.py:705
-#, python-format
-msgid "Sorry you are not allowed to add a book to the the shelf: %(sname)s"
-msgstr ""
-
-#: cps/web.py:712
+#: cps/web.py:756
 #, python-format
 msgid "Book has been added to shelf: %(sname)s"
 msgstr ""
 
-#: cps/web.py:722
-#, python-format
-msgid "Sorry you are not allowed to remove a book from this shelf: %(sname)s"
-msgstr ""
-
-#: cps/web.py:731
+#: cps/web.py:775
 #, python-format
 msgid "Book has been removed from shelf: %(sname)s"
 msgstr ""
 
-#: cps/web.py:747
+#: cps/web.py:791
 #, python-format
 msgid "A shelf with the name '%(title)s' already exists."
 msgstr ""
 
-#: cps/web.py:752
+#: cps/web.py:796
 #, python-format
 msgid "Shelf %(title)s created"
 msgstr ""
 
-#: cps/web.py:754
+#: cps/web.py:798
 msgid "There was an error"
 msgstr ""
 
-#: cps/web.py:755 cps/web.py:757
+#: cps/web.py:799 cps/web.py:801
 msgid "create a shelf"
 msgstr ""
 
-#: cps/web.py:774
+#: cps/web.py:818
 #, python-format
 msgid "successfully deleted shelf %(name)s"
 msgstr ""
 
-#: cps/web.py:788
+#: cps/web.py:832
 #, python-format
 msgid "Shelf: '%(name)s'"
 msgstr ""
 
-#: cps/web.py:818
+#: cps/web.py:863
 msgid "Found an existing account for this email address."
 msgstr ""
 
-#: cps/web.py:819 cps/web.py:821
+#: cps/web.py:864 cps/web.py:866
 #, python-format
 msgid "%(name)s's profile"
 msgstr ""
 
-#: cps/web.py:820
+#: cps/web.py:865
 msgid "Profile updated"
 msgstr ""
 
-#: cps/web.py:829
+#: cps/web.py:874
 msgid "User list"
 msgstr ""
 
-#: cps/web.py:862
+#: cps/web.py:903
+#, python-format
+msgid "User '%(user)s' created"
+msgstr ""
+
+#: cps/web.py:907
 msgid "Found an existing account for this email address or nickname."
 msgstr ""
 
-#: cps/web.py:883
+#: cps/web.py:928
 msgid "Mail settings updated"
 msgstr ""
 
-#: cps/web.py:900
-#, python-format
-msgid "User '%(nick)s' deleted"
+#: cps/web.py:931
+msgid "Edit mail settings"
 msgstr ""
 
-#: cps/web.py:944
+#: cps/web.py:989
 #, python-format
 msgid "User '%(nick)s' updated"
 msgstr ""
 
-#: cps/web.py:947
+#: cps/web.py:992
 msgid "An unknown error occured."
 msgstr ""
 
-#: cps/web.py:948
+#: cps/web.py:993
 #, python-format
 msgid "Edit User %(nick)s"
-msgstr ""
-
-#: cps/web.py:1206
-msgid "Upload is only available for PDF files"
-msgstr ""
-
-#: cps/web.py:1218
-#, python-format
-msgid "Failed to create path %(path)s (Permission denied)."
-msgstr ""
-
-#: cps/web.py:1223
-#, python-format
-msgid "Failed to store file %(path)s (Permission denied)."
 msgstr ""
 
 #: cps/templates/detail.html:44
@@ -283,7 +259,7 @@ msgstr ""
 
 #: cps/templates/edit_book.html:92 cps/templates/email_edit.html:30
 #: cps/templates/login.html:19 cps/templates/search_form.html:33
-#: cps/templates/shelf_edit.html:15 cps/templates/user_edit.html:85
+#: cps/templates/shelf_edit.html:15 cps/templates/user_edit.html:83
 msgid "Submit"
 msgstr ""
 
@@ -315,10 +291,6 @@ msgstr ""
 msgid "Discover (Random Books)"
 msgstr ""
 
-#: cps/templates/layout.html:4
-msgid "calibre web"
-msgstr ""
-
 #: cps/templates/layout.html:46
 msgid "Toggle navigation"
 msgstr ""
@@ -345,14 +317,6 @@ msgstr ""
 
 #: cps/templates/layout.html:79 cps/templates/user_list.html:11
 msgid "Admin"
-msgstr ""
-
-#: cps/templates/layout.html:82
-msgid "Logout"
-msgstr ""
-
-#: cps/templates/layout.html:84 cps/templates/login.html:4
-msgid "Login"
 msgstr ""
 
 #: cps/templates/layout.html:86 cps/templates/register.html:18
@@ -397,6 +361,10 @@ msgstr ""
 
 #: cps/templates/layout.html:134
 msgid "Create a Shelf"
+msgstr ""
+
+#: cps/templates/login.html:4
+msgid "Login"
 msgstr ""
 
 #: cps/templates/login.html:7 cps/templates/login.html:8
@@ -489,39 +457,39 @@ msgstr ""
 msgid "Show books with language"
 msgstr ""
 
-#: cps/templates/user_edit.html:45
+#: cps/templates/user_edit.html:42
 msgid "Show all"
 msgstr ""
 
-#: cps/templates/user_edit.html:53
+#: cps/templates/user_edit.html:51
 msgid "Show random books"
 msgstr ""
 
-#: cps/templates/user_edit.html:58
+#: cps/templates/user_edit.html:56
 msgid "Admin user"
 msgstr ""
 
-#: cps/templates/user_edit.html:62
+#: cps/templates/user_edit.html:60
 msgid "Allow Downloads"
 msgstr ""
 
-#: cps/templates/user_edit.html:66
+#: cps/templates/user_edit.html:64
 msgid "Allow Uploads"
 msgstr ""
 
-#: cps/templates/user_edit.html:71
+#: cps/templates/user_edit.html:69
 msgid "Allow Edit"
 msgstr ""
 
-#: cps/templates/user_edit.html:75
+#: cps/templates/user_edit.html:73
 msgid "Allow Changing Password"
 msgstr ""
 
-#: cps/templates/user_edit.html:81
+#: cps/templates/user_edit.html:79
 msgid "Delete this user"
 msgstr ""
 
-#: cps/templates/user_edit.html:88
+#: cps/templates/user_edit.html:86
 msgid "Recent Downloads"
 msgstr ""
 

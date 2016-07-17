@@ -26,26 +26,24 @@
     <div class="form-group">
     <label for="locale">{{_('Language')}}</label>
         <select name="locale" id="locale" class="form-control">
-            {%  if content.locale %}
+            <!-- {%  if content.locale %}
                 <option value="{{ content.locale }}">{{ content.locale }}</option>
             {% else %}
                 <option value="">{{ _('Select a language') }}</option>
-            {% endif %}
-            <option value="de">de</option>
-            <option value="en">en</option>
-            <option value="lt">1337 (en)</option>
+            {% endif %}-->
+            {%  for translation in translations %}
+                <option value="{{translation.language}}" {% if translation.language == content.locale %}selected{% endif %}>{{ translation.display_name }}</option>
+            {% endfor %}
         </select>
     </div>
     <div class="form-group">
       <label for="default_language">{{_('Show books with language')}}</label>
         <select name="default_language" id="default_language" class="form-control">
-            {% if content.default_language %}
-                <option value="{{ content.default_language }}">{{ content.default_language }}</option>
-            {% endif %}
             <option value="all" >{{ _('Show all') }}</option>
             {%  for language in languages %}
-            <option value="{{ language.lang_code }}">{{ language.lang_code }}</option>
+            <option value="{{ language.lang_code }}" {% if content.default_language == language.lang_code %}selected{% endif %}>{{ language.lang_code }}</option>
             {% endfor %}
+            selected
         </select>
     </div>
     <div class="form-group">

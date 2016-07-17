@@ -5,6 +5,7 @@ import mimetypes
 import logging
 from logging.handlers import RotatingFileHandler
 import textwrap
+import locale
 mimetypes.add_type('application/xhtml+xml','.xhtml')
 from flask import Flask, render_template, session, request, Response, redirect, url_for, send_from_directory, make_response, g, flash, abort
 from cps import db, config, ub, helper
@@ -21,6 +22,7 @@ from flask_babel import gettext as _
 import requests, zipfile
 from werkzeug.security import generate_password_hash, check_password_hash
 from babel import Locale as LC
+from babel import negotiate_locale
 from functools import wraps
 import base64
 from sqlalchemy.sql import *
@@ -106,6 +108,10 @@ lm.anonymous_user = Anonymous
 
 app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
 
+LANGUAGES = {
+    'en': 'English',
+    'de': 'Deutsch'
+}
 
 @babel.localeselector
 def get_locale():
@@ -113,10 +119,8 @@ def get_locale():
     user = getattr(g, 'user', None)
     if user is not None and hasattr(user, "locale"):
          return user.locale
-    # otherwise try to guess the language from the user accept
-    # header the browser transmits.  We support de/fr/en in this
-    # example.  The best match wins.
-    return request.accept_languages.best_match(['de', "en"])
+    preferred = [x.replace('-', '_') for x in request.accept_languages.values()]
+    return negotiate_locale(preferred, LANGUAGES.keys())
 
 @babel.timezoneselector
 def get_timezone():
@@ -412,9 +416,13 @@ def index(page):
         random = db.session.query(db.Books).order_by(func.random()).limit(config.RANDOM_BOOKS)
     else :
         random = false
-
+    content = ub.session.query(ub.User).filter(ub.User.id == int(current_user.id)).first()
+    if content.default_language!="all" :
+        filter=db.Books.languages.any(db.Languages.lang_code == content.default_language)
+    else:
+        filter=db.Books.languages.any()
     if page == 1:
-        entries = db.session.query(db.Books).order_by(db.Books.last_modified.desc()).limit(config.NEWEST_BOOKS)
+        entries = db.session.query(db.Books).filter(filter).order_by(db.Books.last_modified.desc()).limit(config.NEWEST_BOOKS)
     else:
         off = int(int(config.NEWEST_BOOKS) * (page - 1))
         entries = db.session.query(db.Books).order_by(db.Books.last_modified.desc()).offset(off).limit(config.NEWEST_BOOKS)
@@ -700,8 +708,8 @@ def login():
 
         if user and check_password_hash(user.password, form['password']):
             login_user(user, remember = True)
-            flash("you are now logged in as: '%s'" % user.nickname, category="success")
-            return redirect(request.args.get("next") or url_for("index", _external=True))
+            flash(_(u"you are now logged in as: '%(nickname)s'", nickname=user.nickname), category="success")
+            return redirect('/' or url_for("index", _external=True))
         else:
             flash(_(u"Wrong Username or Password"), category="error")
 
@@ -829,6 +837,7 @@ def profile():
     content = ub.session.query(ub.User).filter(ub.User.id == int(current_user.id)).first()
     downloads = list()
     languages = db.session.query(db.Languages).all()
+    translations=babel.list_translations()+[LC('en')]
     for book in content.downloads:
         downloads.append(db.session.query(db.Books).filter(db.Books.id == book.book_id).first())
     if request.method == "POST":
@@ -854,7 +863,7 @@ def profile():
             flash(_(u"Found an existing account for this email address."), category="error")
             return render_template("user_edit.html", showrandom=current_user.random_books, content=content, downloads=downloads, title=_(u"%(name)s's profile", name=current_user.nickname))
         flash(_(u"Profile updated"), category="success")
-    return render_template("user_edit.html", showrandom=current_user.random_books, profile=1, content=content, downloads=downloads, title=_(u"%(name)s's profile", name=current_user.nickname))
+    return render_template("user_edit.html", translations=translations, showrandom=current_user.random_books, profile=1, languages=languages, content=content, downloads=downloads, title=_(u"%(name)s's profile", name=current_user.nickname))
 
 @app.route("/admin/user")
 @login_required
@@ -891,7 +900,7 @@ def new_user():
         try:
             ub.session.add(content)
             ub.session.commit()
-            flash("User '%s' created" % content.nickname, category="success")
+            flash(_("User '%(user)s' created" , user=content.nickname), category="success")
             return redirect(url_for('user_list', _external=True))
         except IntegrityError:
             ub.session.rollback()
@@ -919,7 +928,7 @@ def edit_mailsettings():
             flash(_(u"Mail settings updated"), category="success")
         except (e):
             flash(e, category="error")
-    return render_template("email_edit.html", showrandom=current_user.random_books, content=content, title="Edit mail settings")
+    return render_template("email_edit.html", showrandom=current_user.random_books, content=content, title=_("Edit mail settings"))
 
 @app.route("/admin/user/<int:user_id>", methods = ["GET", "POST"])
 @login_required
