@@ -97,9 +97,9 @@
     </head>
     <body>
         <div id="main">
-          <div id="prev" class="arrow" onclick="prevPage();">‹</div>
+          <div id="prev" class="arrow" >‹</div>
           <div id="area"><pre id="content" class="content"></pre></div>
-          <div id="next" class="arrow" onclick="nextPage();">›</div>
+          <div id="next" class="arrow">›</div>
         </div>
 
         <script>
@@ -122,9 +122,22 @@
               nextPage();
             }
           });
+          //click
+          $( "#prev" ).click(function() {
+            prevPage();
+          });
+          $( "#next" ).click(function() {
+            nextPage();
+          });
           //bind mouse
-          $(window).bind('mousewheel', function(event) {
-              if (event.originalEvent.wheelDelta >= 0) {
+          $(window).bind('DOMMouseScroll mousewheel', function(event) {
+            var delta = 0;
+            if (event.originalEvent.wheelDelta) {
+              delta = event.originalEvent.wheelDelta;
+            }else if (event.originalEvent.detail) {
+              delta = event.originalEvent.detail*-1;
+            }
+            if (delta >= 0) {
                   prevPage();
               }
               else {

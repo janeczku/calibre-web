@@ -85,7 +85,7 @@
         {{entry.comments[0].text|safe}}
       {% endif %}
 
-      {% if g.user.is_authenticated() %}
+      {% if g.user.is_authenticated %}
       <div class="more-stuff">
       <div class="btn-toolbar" role="toolbar">
 
@@ -104,8 +104,6 @@
             {% if g.user.kindle_mail %}
             <a href="{{url_for('send_to_kindle', book_id=entry.id)}}" id="sendbtn" class="btn btn-primary" role="button"><span class="glyphicon glyphicon-send"></span> Send to Kindle</a>
             {% endif %}
-            {% for format in entry.data %} 
-              {%if format.format|lower == 'epub' or format.format|lower == 'txt' or format.format|lower == 'pdf' %}
               <div class="btn-group" role="group">
                 <button id="btnGroupDrop2" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   <span class="glyphicon glyphicon-eye-open"></span>Read in browser
@@ -119,11 +117,6 @@
                   {%endfor%}
                 </ul>
               </div>
-              {% break %}
-              {% endif %}
-            {%endfor%}
-            
-
         </div> 
       </div>
       </br>

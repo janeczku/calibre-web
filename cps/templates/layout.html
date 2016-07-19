@@ -63,7 +63,7 @@
             <li><a href="{{url_for('advanced_search')}}"><span class="glyphicon glyphicon-search"></span> Advanced Search</a></li>
           </ul>
           <ul class="nav navbar-nav navbar-right" id="main-nav">
-            {% if g.user.is_authenticated() %}
+            {% if g.user.is_authenticated %}
               {% if g.user.role_upload() or g.user.role_admin()%}
               {% if g.allow_upload %}
                   <li>
@@ -119,7 +119,7 @@
               <li><a href="{{url_for('category_list')}}"><span class="glyphicon glyphicon-inbox"></span> Categories</a></li>
               <li><a href="{{url_for('author_list')}}"><span class="glyphicon glyphicon-user"></span> Authors</a></li>
 
-              {% if g.user.is_authenticated() %}
+              {% if g.user.is_authenticated %}
                 <li class="nav-head hidden-xs">Public Shelves</li>
                 {% for shelf in g.public_shelfes %}
                   <li><a href="{{url_for('show_shelf', shelf_id=shelf.id)}}"><span class="glyphicon glyphicon-list"></span> {{shelf.name}}</a></li>

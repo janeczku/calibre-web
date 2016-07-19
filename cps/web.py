@@ -540,7 +540,10 @@ def read_book(book_id,format):
     book_dir = os.path.join(config.MAIN_DIR, "cps","static", str(book_id))
     if not os.path.exists(book_dir):
         os.mkdir(book_dir)
-        if format.lower() == "epub":
+    if format.lower() == "epub":
+        #check if mimetype file is exists
+        mime_file = str(book_id) +"/mimetype"
+        if os.path.exists(mime_file) == False:
             epub_file = os.path.join(config.DB_ROOT, book.path, book.data[0].name) + ".epub"
             if not os.path.isfile(epub_file):
                 raise ValueError('Error opening eBook. File does not exist: ', epub_file)
@@ -561,37 +564,21 @@ def read_book(book_id,format):
                     fd.write(zfile.read(name))
                     fd.close()
             zfile.close()
-            return render_template('read.html', bookid=book_id, title="Read a Book")
-        elif format.lower() == "pdf":
+        return render_template('read.html', bookid=book_id, title="Read a Book")
+    elif format.lower() == "pdf":
+        all_name = str(book_id) +"/"+ urllib.quote(book.data[0].name) +".pdf"
+        tmp_file = os.path.join(book_dir,urllib.quote(book.data[0].name)) + ".pdf"
+        if os.path.exists(tmp_file) == False:
             pdf_file =  os.path.join(config.DB_ROOT, book.path, book.data[0].name) + ".pdf"
-            tmp_file = os.path.join(book_dir,urllib.quote(book.data[0].name)) + ".pdf"
             copyfile(pdf_file,tmp_file)
-            all_name = str(book_id) +"/"+ urllib.quote(book.data[0].name) +".pdf"
-            return render_template('readpdf.html', pdffile=all_name, title="Read a Book")
-        elif format.lower() == "txt":
-            #change txt to epub
+        return render_template('readpdf.html', pdffile=all_name, title="Read a Book")
+    elif  format.lower() == "txt":
+        all_name = str(book_id) +"/"+ urllib.quote(book.data[0].name) +".txt"
+        tmp_file = os.path.join(book_dir,urllib.quote(book.data[0].name)) + ".txt"
+        if os.path.exists(all_name) == False:
             txt_file =  os.path.join(config.DB_ROOT, book.path, book.data[0].name) + ".txt"
-            tmp_file = os.path.join(book_dir,urllib.quote(book.data[0].name)) + ".txt"
             copyfile(txt_file,tmp_file)
-            all_name = str(book_id) +"/"+ urllib.quote(book.data[0].name) +".txt"
-            return render_template('readtxt.html', txtfile=all_name, title="Read a Book")
-    else:
-        if format.lower() == "epub":
-            return render_template('read.html', bookid=book_id, title="Read a Book")
-        elif format.lower() == "pdf":
-            all_name = str(book_id) +"/"+ urllib.quote(book.data[0].name) +".pdf"
-            tmp_file = os.path.join(book_dir,urllib.quote(book.data[0].name)) + ".pdf"
-            if os.path.exists(tmp_file) == False:
-                pdf_file =  os.path.join(config.DB_ROOT, book.path, book.data[0].name) + ".pdf"
-                copyfile(pdf_file,tmp_file)
-            return render_template('readpdf.html', pdffile=all_name, title="Read a Book")
-        elif  format.lower() == "txt":
-            all_name = str(book_id) +"/"+ urllib.quote(book.data[0].name) +".txt"
-            tmp_file = os.path.join(book_dir,urllib.quote(book.data[0].name)) + ".txt"
-            if os.path.exists(all_name) == False:
-                txt_file =  os.path.join(config.DB_ROOT, book.path, book.data[0].name) + ".txt"
-                copyfile(txt_file,tmp_file)
-            return render_template('readtxt.html', txtfile=all_name, title="Read a Book")
+        return render_template('readtxt.html', txtfile=all_name, title="Read a Book")
 
 @app.route("/download/<int:book_id>/<format>")
 @login_required
@@ -621,7 +608,7 @@ def register():
     error = None
     if not config.PUBLIC_REG:
         abort(404)
-    if current_user is not None and current_user.is_authenticated():
+    if current_user is not None and current_user.is_authenticated:
         return redirect(url_for('index', _external=True))
 
     if request.method == "POST":
@@ -657,7 +644,7 @@ def register():
 def login():
     error = None
 
-    if current_user is not None and current_user.is_authenticated():
+    if current_user is not None and current_user.is_authenticated:
         return redirect(url_for('index', _external=True))
 
     if request.method == "POST":
@@ -676,7 +663,7 @@ def login():
 @app.route('/logout')
 @login_required
 def logout():
-    if current_user is not None and current_user.is_authenticated():
+    if current_user is not None and current_user.is_authenticated:
         logout_user()
     return redirect(request.args.get("next") or url_for("index", _external=True))
 
