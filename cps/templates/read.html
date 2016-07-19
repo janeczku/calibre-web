@@ -19,9 +19,8 @@
 
             document.onreadystatechange = function () {
               if (document.readyState == "complete") {
-                EPUBJS.filePath = "{{ url_for('static', filename='js/libs/') }}";//"js/libs/";
-                EPUBJS.cssPath = "{{ url_for('static', filename='css/') }}";//window.location.href.replace(window.location.hash, '').replace('read.html', '') + "css/";
-                // fileStorage.filePath = EPUBJS.filePath;
+                EPUBJS.filePath = "{{ url_for('static', filename='js/libs/') }}";
+                EPUBJS.cssPath = "{{ url_for('static', filename='css/') }}";
 
                 window.reader = ePubReader("{{ url_for('static', filename=bookid) }}/");
                 //keybind
@@ -30,6 +29,21 @@
                     window.reader.book.prevPage();
                   }
                   if(event.keyCode == 39){
+                    window.reader.book.nextPage();
+                  }
+                });
+                //bind mouse
+                $(window).bind('DOMMouseScroll mousewheel', function(event) {
+                  var delta = 0;
+                  if (event.originalEvent.wheelDelta) {
+                    delta = event.originalEvent.wheelDelta;
+                  }else if (event.originalEvent.detail) {
+                    delta = event.originalEvent.detail*-1;
+                  }
+                  if (delta >= 0) {
+                    window.reader.book.prevPage();
+                  }
+                  else {
                     window.reader.book.nextPage();
                   }
                 });
