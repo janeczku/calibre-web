@@ -51,6 +51,7 @@
           <a class="navbar-brand" href="{{url_for('index')}}">{{_('Calibre Web')}}</a>
         </div>
         <div class="navbar-collapse collapse">
+          {% if g.user.is_authenticated() %}
           <ul class="nav navbar-nav ">
             <li>
               <form class="navbar-form navbar-left" role="search" action="/search" method="GET">
@@ -62,8 +63,8 @@
             </li>
             <li><a href="{{url_for('advanced_search')}}"><span class="glyphicon glyphicon-search"></span> {{_('Advanced Search')}}</a></li>
           </ul>
+
           <ul class="nav navbar-nav navbar-right" id="main-nav">
-            {% if g.user.is_authenticated() %}
               {% if g.user.role_upload() or g.user.role_admin()%}
               {% if g.allow_upload %}
                   <li>
@@ -81,12 +82,13 @@
               <li><a href="{{url_for('profile')}}"><span class="glyphicon glyphicon-user"></span> {{g.user.nickname}}</a></li>
               <li><a href="{{url_for('logout', next='%s%s' % (request.script_root, request.path))}}"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
             {% else %}
-              <li><a href="{{url_for('login', next='%s%s' % (request.script_root, request.path))}}"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+              <!--li><a href="{{url_for('login', next='%s%s' % (request.script_root, request.path))}}"><span class="glyphicon glyphicon-log-in"></span> Login</a></li-->
               {% if g.allow_registration %}
               <li><a href="{{url_for('register')}}"><span class="glyphicon glyphicon-user"></span> {{_('Register')}}</a></li>
               {% endif %}
-            {% endif %}
+
           </ul>
+          {% endif %}
         </div><!--/.nav-collapse -->
       </div>
     </div>
@@ -109,6 +111,7 @@
     {% endfor %}
     <div class="container-fluid">
       <div class="row-fluid">
+        {% if g.user.is_authenticated() %}
         <div class="col-sm-2">
           <nav class="navigation">
             <ul class="list-unstyled" id="scnd-nav" intent in-standard-append="nav.navigation" in-mobile-after="#main-nav" in-mobile-class="nav navbar-nav">
@@ -136,6 +139,7 @@
             </ul>
           </nav>
         </div>
+        {% endif %}
         <div class="col-sm-10">
           {% block body %}{% endblock %}
           {% if pagination %}
