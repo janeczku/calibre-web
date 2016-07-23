@@ -52,7 +52,7 @@ books_languages_link = Table('books_languages_link', Base.metadata,
 
 cc = conn.execute("SELECT id, datatype FROM custom_columns")
 cc_ids = []
-cc_exceptions = ['bool', 'datetime', 'int', 'comments', 'float', ]
+cc_exceptions = [ 'bool', 'datetime', 'int', 'comments', 'float', ]
 books_custom_column_links = {}
 for row in cc:
     if row.datatype not in cc_exceptions:
@@ -64,7 +64,7 @@ for row in cc:
         cc_ids.append(row.id)
 
 cc_classes = {}
-for id in cc_ids:
+for id in cc_ids:           # ToDo: Develop return value for bool values
     ccdict={'__tablename__':'custom_column_' + str(id),
         'id':Column(Integer, primary_key=True),
         'value':Column(String)}

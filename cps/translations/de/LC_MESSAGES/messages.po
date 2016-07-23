@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2016-07-17 13:44+0200\n"
+"POT-Creation-Date: 2016-07-23 21:58+0200\n"
 "PO-Revision-Date: 2016-07-12 19:54+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: de\n"
@@ -18,183 +18,200 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.3.4\n"
 
-#: cps/web.py:430
+#: cps/web.py:431
 msgid "Latest Books"
 msgstr "Letzte Bücher"
 
-#: cps/web.py:451 cps/web.py:453
+#: cps/web.py:458 cps/web.py:460
 msgid "Hot Books (most downloaded)"
 msgstr "Beliebte Bücher (die meisten Downloads)"
 
-#: cps/web.py:459
+#: cps/web.py:466
 msgid "Statistics"
 msgstr "Statistiken"
 
-#: cps/web.py:471
+#: cps/web.py:486
 msgid "Random Books"
 msgstr "Zufällige Bücher"
 
-#: cps/web.py:482
+#: cps/web.py:502
 msgid "Available languages"
 msgstr "Verfügbare Sprachen"
 
-#: cps/web.py:495
+#: cps/web.py:522
 #, python-format
 msgid "Language: %(name)s"
 msgstr "Sprache: %(name)s"
 
-#: cps/web.py:512
+#: cps/web.py:541 cps/web.py:590 cps/web.py:685 cps/web.py:1310
+msgid "Error opening eBook. File does not exist: "
+msgstr "Buchs öffnen fehlgeschlagen. Datei existiert nicht."
+
+#: cps/web.py:547 cps/web.py:570
+msgid "all"
+msgstr "Alle"
+
+#: cps/web.py:551
 msgid "Category list"
 msgstr "Kategorieliste"
 
-#: cps/web.py:526
+#: cps/web.py:571
 #, python-format
 msgid "Category: %(nam)s"
 msgstr "Kategorie: %(nam)s"
 
 #: cps/web.py:588
+#, python-format
+msgid "Series: %(serie)s"
+msgstr "Serie: %(serie)s"
+
+#: cps/web.py:651
 msgid "Author list"
 msgstr "Autorenliste"
 
-#: cps/web.py:599
+#: cps/web.py:667
 #, python-format
 msgid "Author: %(nam)s"
 msgstr "Autor: %(nam)s"
 
-#: cps/web.py:617
-msgid "Error opening eBook. File does not exist: "
-msgstr "Fehler beim Buch öffnen. Datei existiert nicht: "
-
-#: cps/web.py:636
+#: cps/web.py:704
 msgid "Read a Book"
 msgstr "Lese ein Buch"
 
-#: cps/web.py:672 cps/web.py:884
+#: cps/web.py:740 cps/web.py:952
 msgid "Please fill out all fields!"
 msgstr "Bitte alle Felder ausfüllen!"
 
-#: cps/web.py:688
+#: cps/web.py:756
 msgid "An unknown error occured. Please try again later."
 msgstr "Es ist ein unbekannter Fehler aufgetreten. Bitte später erneut versuchen."
 
-#: cps/web.py:693
+#: cps/web.py:761
 msgid "This username or email address is already in use."
 msgstr "Der Benutzername oder die E-Mailadresse ist in bereits in Benutzung."
 
-#: cps/web.py:711
+#: cps/web.py:779
 #, python-format
 msgid "you are now logged in as: '%(nickname)s'"
 msgstr "Du bist nun eingeloggt als '%(nickname)s'"
 
-#: cps/web.py:714
+#: cps/web.py:782
 msgid "Wrong Username or Password"
 msgstr "Flascher Benutzername oder Passwort"
 
-#: cps/web.py:732
+#: cps/web.py:800
 msgid "Please configure the SMTP mail settings first..."
 msgstr "Bitte zuerst die SMTP Mail Einstellung konfigurieren ..."
 
-#: cps/web.py:736
+#: cps/web.py:804
 #, python-format
 msgid "Book successfully send to %(kindlemail)s"
 msgstr "Buch erfolgreich versand an %(kindlemail)s"
 
-#: cps/web.py:739
+#: cps/web.py:807
 #, python-format
 msgid "There was an error sending this book: %(res)s"
 msgstr "Beim Senden des Buchs trat ein Fehler auf: %(res)s"
 
-#: cps/web.py:741
+#: cps/web.py:809
 msgid "Please configure your kindle email address first..."
 msgstr "Bitte die Kindle E-Mail Adresse zuuerst konfigurieren..."
 
-#: cps/web.py:756
+#: cps/web.py:824
 #, python-format
 msgid "Book has been added to shelf: %(sname)s"
 msgstr "Das Buch wurde dem Bücherregal: %(sname)s hinzugefügt"
 
-#: cps/web.py:775
+#: cps/web.py:843
 #, python-format
 msgid "Book has been removed from shelf: %(sname)s"
 msgstr "Das Buch wurde aus dem Bücherregal: %(sname)s entfernt"
 
-#: cps/web.py:791
+#: cps/web.py:859
 #, python-format
 msgid "A shelf with the name '%(title)s' already exists."
 msgstr "Es existiert bereits ein Bücheregal mit dem Titel '%(title)s'"
 
-#: cps/web.py:796
+#: cps/web.py:864
 #, python-format
 msgid "Shelf %(title)s created"
 msgstr "Bücherregal %(title)s erzeugt"
 
-#: cps/web.py:798
+#: cps/web.py:866
 msgid "There was an error"
 msgstr "Es trat ein Fehler auf"
 
-#: cps/web.py:799 cps/web.py:801
+#: cps/web.py:867 cps/web.py:869
 msgid "create a shelf"
 msgstr "Bücherregal erzeugen"
 
-#: cps/web.py:818
+#: cps/web.py:886
 #, python-format
 msgid "successfully deleted shelf %(name)s"
 msgstr "Bücherregal %(name)s erfolgreich gelöscht"
 
-#: cps/web.py:832
+#: cps/web.py:900
 #, python-format
 msgid "Shelf: '%(name)s'"
 msgstr "Bücherregal: '%(name)s'"
 
-#: cps/web.py:863
+#: cps/web.py:931
 msgid "Found an existing account for this email address."
 msgstr "Es existiert ein Benutzerkonto für diese E-Mailadresse"
 
-#: cps/web.py:864 cps/web.py:866
+#: cps/web.py:932 cps/web.py:934
 #, python-format
 msgid "%(name)s's profile"
 msgstr "%(name)s's Profil"
 
-#: cps/web.py:865
+#: cps/web.py:933
 msgid "Profile updated"
 msgstr "Profil aktualisiert"
 
-#: cps/web.py:874
+#: cps/web.py:942
 msgid "User list"
 msgstr "Benutzerliste"
 
-#: cps/web.py:903
+#: cps/web.py:971
 #, python-format
 msgid "User '%(user)s' created"
 msgstr "Benutzer '%(user)s' angelegt"
 
-#: cps/web.py:907
+#: cps/web.py:975
 msgid "Found an existing account for this email address or nickname."
 msgstr ""
 "Es existiert ein Benutzerkonto für diese Emailadresse oder den "
 "Benutzernamen"
 
-#: cps/web.py:928
+#: cps/web.py:996
 msgid "Mail settings updated"
 msgstr "E-Mail Einstellungen aktualisiert"
 
-#: cps/web.py:931
+#: cps/web.py:999
 msgid "Edit mail settings"
 msgstr "E-Mail Einstellungen editieren"
 
-#: cps/web.py:989
+#: cps/web.py:1059
 #, python-format
 msgid "User '%(nick)s' updated"
 msgstr "Benutzer '%(nick)s' aktualisiert"
 
-#: cps/web.py:992
+#: cps/web.py:1062
 msgid "An unknown error occured."
 msgstr "Es ist ein unbekanter Fehler aufgetreten"
 
-#: cps/web.py:993
+#: cps/web.py:1063
 #, python-format
 msgid "Edit User %(nick)s"
 msgstr "Benutzer %(nick)s bearbeiten"
+
+#: cps/templates/detail.html:38
+msgid "Book"
+msgstr "Buch"
+
+#: cps/templates/detail.html:38
+msgid "of"
+msgstr "von"
 
 #: cps/templates/detail.html:44
 msgid "language"
@@ -302,67 +319,67 @@ msgstr "Nagivation umschalten"
 msgid "Calibre Web"
 msgstr "Calibre Web"
 
-#: cps/templates/layout.html:58
+#: cps/templates/layout.html:59
 msgid "Search"
 msgstr "Suche"
 
-#: cps/templates/layout.html:60
+#: cps/templates/layout.html:61
 msgid "Go!"
 msgstr "Los!"
 
-#: cps/templates/layout.html:63
+#: cps/templates/layout.html:64
 msgid "Advanced Search"
 msgstr "Erweiterte Suche"
 
-#: cps/templates/layout.html:72 cps/templates/user_list.html:13
+#: cps/templates/layout.html:73 cps/templates/user_list.html:13
 msgid "Upload"
 msgstr "Hochladen"
 
-#: cps/templates/layout.html:79 cps/templates/user_list.html:11
+#: cps/templates/layout.html:80 cps/templates/user_list.html:11
 msgid "Admin"
 msgstr "Admin"
 
-#: cps/templates/layout.html:86 cps/templates/register.html:18
+#: cps/templates/layout.html:87 cps/templates/register.html:18
 msgid "Register"
 msgstr "Registrieren"
 
-#: cps/templates/layout.html:115
+#: cps/templates/layout.html:118
 msgid "Browse"
 msgstr "Browsen"
 
-#: cps/templates/layout.html:116
+#: cps/templates/layout.html:119
 msgid "New Books"
 msgstr "Neue Bücher"
 
-#: cps/templates/layout.html:117
+#: cps/templates/layout.html:120
 msgid "Hot Books"
 msgstr "Beliebte Bücher"
 
-#: cps/templates/layout.html:119
+#: cps/templates/layout.html:122
 msgid "Discover"
 msgstr "Entdecke"
 
-#: cps/templates/layout.html:121
+#: cps/templates/layout.html:124
 msgid "Categories"
 msgstr "Kategorien"
 
-#: cps/templates/layout.html:122
+#: cps/templates/layout.html:125
 msgid "Authors"
 msgstr "Autoren"
 
-#: cps/templates/layout.html:123
+#: cps/templates/layout.html:126
 msgid "Languages"
 msgstr "Sprachen"
 
-#: cps/templates/layout.html:126
+#: cps/templates/layout.html:129
 msgid "Public Shelves"
 msgstr "Öffentiche Bücherregale"
 
-#: cps/templates/layout.html:130
+#: cps/templates/layout.html:133
 msgid "Your Shelves"
 msgstr "Deine Bücherregale"
 
-#: cps/templates/layout.html:134
+#: cps/templates/layout.html:137
 msgid "Create a Shelf"
 msgstr "Bücherregal erzeugen"
 
@@ -549,15 +566,9 @@ msgstr "SMTP Einstellungen ändern"
 
 #~ msgid "Sorry you are not allowed to add a book to the the shelf: %(sname)s"
 #~ msgstr ""
-#~ "Es ist Dir nicht gestattet ein "
-#~ "Buch zum Bücherregal: %(sname)s hinzuzufügen"
 
 #~ msgid "Sorry you are not allowed to remove a book from this shelf: %(sname)s"
 #~ msgstr ""
-#~ "Es ist Dir nicht gestattet ein "
-#~ "Buch aus dem Bücherregal: %(sname)s zu"
-#~ " entfernen"
-
 
 #~ msgid "Upload is only available for PDF files"
 #~ msgstr "Nur Pdf Dateien können hochgeladen werden"

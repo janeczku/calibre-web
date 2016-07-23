@@ -35,7 +35,7 @@
       {% endif %}
 
       {% if entry.series|length > 0 %}
-        <p>Book {{entry.series_index}} of <a href="{{url_for('series', name=entry.series[0].name)}}">{{entry.series[0].name}}</a></p>
+        <p>{{_('Book')}} {{entry.series_index}} {{_('of')}} <a href="{{url_for('series', name=entry.series[0].name)}}">{{entry.series[0].name}}</a></p>
       {% endif %}
 
       {% if entry.languages.__len__() > 0 %}

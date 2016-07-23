@@ -416,7 +416,7 @@ def index(page):
     if content.default_language != "all":
         filter = db.Books.languages.any(db.Languages.lang_code == content.default_language)
     else:
-        filter = db.Books.languages.any()
+        filter= True
     if current_user.random_books:
         random = db.session.query(db.Books).filter(filter).order_by(func.random()).limit(config.RANDOM_BOOKS)
     else :
@@ -438,7 +438,7 @@ def hot_books(page):
     if content.default_language != "all":
         filter = db.Books.languages.any(db.Languages.lang_code == content.default_language)
     else:
-        filter = db.Books.languages.any()
+        filter = True
 
     if current_user.random_books:
         random = db.session.query(db.Books).filter(filter).order_by(func.random()).limit(config.RANDOM_BOOKS)
@@ -454,7 +454,7 @@ def hot_books(page):
     numBooks = len(all_books.all())
     pages = int(ceil(numBooks / float(config.NEWEST_BOOKS)))
     if pages > 1:
-        pagination = Pagination(page, config.NEWEST_BOOKS, len(all_books.all()))                # bug
+        pagination = Pagination(page, config.NEWEST_BOOKS, len(all_books.all()))                # ToDo: Is this right
         return render_template('index.html', showrandom=current_user.random_books, random=random, entries=entries, pagination=pagination, title=_(u"Hot Books (most downloaded)"))
     else:
         return render_template('index.html', showrandom=current_user.random_books, random=random, entries=entries, title=_(u"Hot Books (most downloaded)"))
@@ -473,7 +473,7 @@ def discover(page):
     if content.default_language != "all":
         filter = db.Books.languages.any(db.Languages.lang_code == content.default_language)
     else:
-        filter = db.Books.languages.any()
+        filter = True
 
     if page == 1:
         entries = db.session.query(db.Books).filter(filter).order_by(func.randomblob(2)).limit(config.NEWEST_BOOKS)
@@ -509,7 +509,7 @@ def language(name):
     if content.default_language != "all":
         filter = db.Books.languages.any(db.Languages.lang_code == content.default_language)
     else:
-        filter = db.Books.languages.any()
+        filter = True
 
     if current_user.random_books:
         random = db.session.query(db.Books).filter(filter).order_by(func.random()).limit(config.RANDOM_BOOKS)
@@ -523,46 +523,72 @@ def language(name):
 
 @app.route("/book/<int:id>")
 @login_required_if_no_ano
-def show_book(id):
-    entries = db.session.query(db.Books).filter(db.Books.id == id).first()
+def show_book(id):                          # ToDo: Hide book if language not selected
+    content = ub.session.query(ub.User).filter(ub.User.id == int(current_user.id)).first()
+    if content.default_language != "all":
+        filter = db.Books.languages.any(db.Languages.lang_code == content.default_language)
+    else:
+        filter = True
+    entries = db.session.query(db.Books).filter(db.Books.id == id).filter(filter).first()
     cc = db.session.query(db.Custom_Columns).filter(db.Custom_Columns.datatype.notin_(db.cc_exceptions)).all()
     book_in_shelfs = []
     shelfs = ub.session.query(ub.BookShelf).filter(ub.BookShelf.book_id == id).all()
     for entry in shelfs:
         book_in_shelfs.append(entry.shelf)
-    return render_template('detail.html', showrandom=current_user.random_books, entry=entries,  cc=cc, title=entries.title, books_shelfs=book_in_shelfs)
+    if entries :
+        return render_template('detail.html', showrandom=current_user.random_books, entry=entries,  cc=cc, title=entries.title, books_shelfs=book_in_shelfs)
+    else :
+        flash(_(u"Error opening eBook. File does not exist: "), category="error")
+        return redirect('/' or url_for("index", _external=True))
 
 @app.route("/category")
 @login_required_if_no_ano
 def category_list():
+    value=[[_(u"all"),'all']]                                       # ToDo: Not so beautyfull
     entries = db.session.query(db.Tags).order_by(db.Tags.name).all()
-    return render_template('categories.html', showrandom=current_user.random_books, entries=entries, title=_(u"Category list"))
+    for entry in entries :
+        value.append([entry.name,entry.name])
+    return render_template('categories.html', showrandom=current_user.random_books, entries=value, title=_(u"Category list"))
 
 @app.route("/category/<name>")
 @login_required_if_no_ano
 def category(name):
+    content = ub.session.query(ub.User).filter(ub.User.id == int(current_user.id)).first()
+    if content.default_language != "all":
+        filter = db.Books.languages.any(db.Languages.lang_code == content.default_language)
+    else:
+        filter = True
     if current_user.random_books:
         random = db.session.query(db.Books).order_by(func.random()).limit(config.RANDOM_BOOKS)
     else :
         random = false
 
     if name != "all":
-        entries = db.session.query(db.Books).filter(db.Books.tags.any(db.Tags.name.like("%" +name + "%" ))).order_by(db.Books.last_modified.desc()).all()
+        entries = db.session.query(db.Books).filter(db.Books.tags.any(db.Tags.name.like("%" +name + "%" ))).order_by(db.Books.last_modified.desc()).filter(filter).all()
     else:
-        entries = db.session.query(db.Books).all()
+        entries = db.session.query(db.Books).filter(filter).all()
+        name=_(u"all")
     return render_template('index.html', showrandom=current_user.random_books, random=random, entries=entries, title=_(u"Category: %(nam)s",nam=name))
 
 @app.route("/series/<name>")
 @login_required_if_no_ano
 def series(name):
+    content = ub.session.query(ub.User).filter(ub.User.id == int(current_user.id)).first()
+    if content.default_language != "all":
+        filter = db.Books.languages.any(db.Languages.lang_code == content.default_language)
+    else:
+        filter = True
     if current_user.random_books:
-        random = db.session.query(db.Books).order_by(func.random()).limit(config.RANDOM_BOOKS)
+        random = db.session.query(db.Books).filter(filter).order_by(func.random()).limit(config.RANDOM_BOOKS)
     else :
         random = false
 
-    entries = db.session.query(db.Books).filter(db.Books.series.any(db.Series.name.like("%" +name + "%" ))).order_by(db.Books.series_index).all()
-    return render_template('index.html', showrandom=current_user.random_books, random=random, entries=entries, title="Series: %s" % name)
-
+    entries = db.session.query(db.Books).filter(db.Books.series.any(db.Series.name.like("%" +name + "%" ))).filter(filter).order_by(db.Books.series_index).all()
+    if entries :
+        return render_template('index.html', showrandom=current_user.random_books, random=random, entries=entries, title=_(u"Series: %(serie)s",serie=name))
+    else :
+        flash(_(u"Error opening eBook. File does not exist: "), category="error")
+        return redirect('/' or url_for("index", _external=True))
 
 @app.route("/admin/")
 @login_required
@@ -576,8 +602,12 @@ def admin():
 def search():
     term = request.args.get("query")
     if term:
-        random = db.session.query(db.Books).order_by(func.random()).limit(config.RANDOM_BOOKS)
-        entries = db.session.query(db.Books).filter(db.or_(db.Books.tags.any(db.Tags.name.like("%"+term+"%")),db.Books.series.any(db.Series.name.like("%"+term+"%")),db.Books.authors.any(db.Authors.name.like("%"+term+"%")),db.Books.title.like("%"+term+"%"))).all()
+        content = ub.session.query(ub.User).filter(ub.User.id == int(current_user.id)).first()
+        if content.default_language != "all":
+            filter = db.Books.languages.any(db.Languages.lang_code == content.default_language)
+        else:
+            filter = True
+        entries = db.session.query(db.Books).filter(db.or_(db.Books.tags.any(db.Tags.name.like("%"+term+"%")),db.Books.series.any(db.Series.name.like("%"+term+"%")),db.Books.authors.any(db.Authors.name.like("%"+term+"%")),db.Books.title.like("%"+term+"%"))).filter(filter).all()
         return render_template('search.html', showrandom=current_user.random_books, searchterm=term, entries=entries)
     else:
         return render_template('search.html', showrandom=current_user.random_books, searchterm="")
@@ -591,6 +621,8 @@ def advanced_search():
         exclude_tag_inputs = request.args.getlist('exclude_tag')
         author_name = request.args.get("author_name")
         book_title = request.args.get("book_title")
+
+
         if include_tag_inputs or exclude_tag_inputs or author_name or book_title:
             searchterm = []
             searchterm.extend((author_name, book_title))
@@ -598,11 +630,15 @@ def advanced_search():
             searchterm.extend(tag.name for tag in tag_names)
             searchterm = " + ".join(filter(None, searchterm))
             q = q.filter(db.Books.authors.any(db.Authors.name.like("%" +  author_name + "%")), db.Books.title.like("%"+book_title+"%"))
-            random = db.session.query(db.Books).order_by(func.random()).limit(config.RANDOM_BOOKS)
+            # random = db.session.query(db.Books).order_by(func.random()).limit(config.RANDOM_BOOKS)
             for tag in include_tag_inputs:
                 q = q.filter(db.Books.tags.any(db.Tags.id == tag))
             for tag in exclude_tag_inputs:
                 q = q.filter(not_(db.Books.tags.any(db.Tags.id == tag)))
+
+            content = ub.session.query(ub.User).filter(ub.User.id == int(current_user.id)).first()
+            if content.default_language != "all":
+                q = q.filter(db.Books.languages.any(db.Languages.lang_code == content.default_language))
             q = q.all()
             return render_template('search.html', showrandom=current_user.random_books, searchterm=searchterm, entries=q)
     tags = db.session.query(db.Tags).order_by(db.Tags.name).all()
@@ -611,18 +647,23 @@ def advanced_search():
 @app.route("/author")
 @login_required_if_no_ano
 def author_list():
-    entries = db.session.query(db.Authors).order_by(db.Authors.sort).all()
+    entries = db.session.query(db.Authors).order_by(db.Authors.sort).all()  # ToDo: Exclude Authors only with hidden languages
     return render_template('authors.html', showrandom=current_user.random_books, entries=entries, title=_(u"Author list"))
 
 @app.route("/author/<name>")
 @login_required_if_no_ano
 def author(name):
+    content = ub.session.query(ub.User).filter(ub.User.id == int(current_user.id)).first()
+    if content.default_language != "all":
+        filter = db.Books.languages.any(db.Languages.lang_code == content.default_language)
+    else:
+        filter = True
     if current_user.random_books:
-        random = db.session.query(db.Books).order_by(func.random()).limit(config.RANDOM_BOOKS)
+        random = db.session.query(db.Books).filter(filter).order_by(func.random()).limit(config.RANDOM_BOOKS)
     else:
         random = false
 
-    entries = db.session.query(db.Books).filter(db.Books.authors.any(db.Authors.name.like("%" +  name + "%"))).all()
+    entries = db.session.query(db.Books).filter(db.Books.authors.any(db.Authors.name.like("%" +  name + "%"))).filter(filter).all()
     return render_template('index.html', showrandom=current_user.random_books, random=random, entries=entries, title=_(u"Author: %(nam)s",nam=name))
 
 @app.route("/cover/<path:cover_path>")
@@ -635,7 +676,7 @@ def get_cover(cover_path):
 def read_book(book_id):
     book = db.session.query(db.Books).filter(db.Books.id == book_id).first()
     book_dir = os.path.join(config.MAIN_DIR, "cps","static", str(book_id))
-    if not os.path.exists(book_dir):
+    if not os.path.exists(book_dir):        # To Do if book not exists runs to a server error
         os.mkdir(book_dir)
         for data in book.data:
             if data.format.lower() == "epub":
@@ -1028,237 +1069,246 @@ def edit_book(book_id):
     ## create the function for sorting...
     db.session.connection().connection.connection.create_function("title_sort",1,db.title_sort)
     cc = db.session.query(db.Custom_Columns).filter(db.Custom_Columns.datatype.notin_(db.cc_exceptions)).all()
-    book = db.session.query(db.Books).filter(db.Books.id == book_id).first()
+    content = ub.session.query(ub.User).filter(ub.User.id == int(current_user.id)).first()
+    if content.default_language != "all":
+        filter = db.Books.languages.any(db.Languages.lang_code == content.default_language)
+    else:
+        filter = True
+    book = db.session.query(db.Books).filter(db.Books.id == book_id).filter(filter).first()
     author_names = []
-    for author in book.authors:
-        author_names.append(author.name)
-    if request.method == 'POST':
-        edited_books_id = set()
-        to_save = request.form.to_dict()
-        if book.title != to_save["book_title"]:
-            book.title = to_save["book_title"]
-            edited_books_id.add(book.id)
-        input_authors = to_save["author_name"].split('&')
-        input_authors = map(lambda it: it.strip(), input_authors)
-        # we have all author names now
-        author0_before_edit = book.authors[0].name
-        # 1. search for authors to remove
-        del_authors = []
-        for c_author in book.authors:
-            found = False
-            for inp_author in input_authors:
-                if inp_author == c_author.name:
-                    found = True
-                    break;
-            # if the author was not found in the new list, add him to remove list
-            if not found:
-                del_authors.append(c_author)
-        # 2. search for authors that need to be added
-        add_authors = []
-        for inp_author in input_authors:
-            found = False
+    if book :
+        for author in book.authors:
+            author_names.append(author.name)
+        if request.method == 'POST':
+            edited_books_id = set()
+            to_save = request.form.to_dict()
+            if book.title != to_save["book_title"]:
+                book.title = to_save["book_title"]
+                edited_books_id.add(book.id)
+            input_authors = to_save["author_name"].split('&')
+            input_authors = map(lambda it: it.strip(), input_authors)
+            # we have all author names now
+            author0_before_edit = book.authors[0].name
+            # 1. search for authors to remove
+            del_authors = []
             for c_author in book.authors:
-                if inp_author == c_author.name:
-                    found = True
-                    break;
-            if not found:
-                add_authors.append(inp_author)
-        # if there are authors to remove, we remove them now
-        if len(del_authors) > 0:
-            for del_author in del_authors:
-                book.authors.remove(del_author)
-                authors_books_count = db.session.query(db.Books).filter(db.Books.authors.any(db.Authors.id.is_(del_author.id))).count()
-                if authors_books_count == 0:
-                    db.session.query(db.Authors).filter(db.Authors.id == del_author.id).delete()
-        # if there are authors to add, we add them now!
-        if len(add_authors) > 0:
-            for add_author in add_authors:
-                # check if an author with that name exists
-                t_author = db.session.query(db.Authors).filter(db.Authors.name == add_author).first()
-                # if no author is found add it
-                if t_author == None:
-                    new_author = db.Authors(add_author, add_author, "")
-                    db.session.add(new_author)
+                found = False
+                for inp_author in input_authors:
+                    if inp_author == c_author.name:
+                        found = True
+                        break;
+                # if the author was not found in the new list, add him to remove list
+                if not found:
+                    del_authors.append(c_author)
+            # 2. search for authors that need to be added
+            add_authors = []
+            for inp_author in input_authors:
+                found = False
+                for c_author in book.authors:
+                    if inp_author == c_author.name:
+                        found = True
+                        break;
+                if not found:
+                    add_authors.append(inp_author)
+            # if there are authors to remove, we remove them now
+            if len(del_authors) > 0:
+                for del_author in del_authors:
+                    book.authors.remove(del_author)
+                    authors_books_count = db.session.query(db.Books).filter(db.Books.authors.any(db.Authors.id.is_(del_author.id))).count()
+                    if authors_books_count == 0:
+                        db.session.query(db.Authors).filter(db.Authors.id == del_author.id).delete()
+            # if there are authors to add, we add them now!
+            if len(add_authors) > 0:
+                for add_author in add_authors:
+                    # check if an author with that name exists
                     t_author = db.session.query(db.Authors).filter(db.Authors.name == add_author).first()
-                # add author to book
-                book.authors.append(t_author)
-        if author0_before_edit != book.authors[0].name:
-            edited_books_id.add(book.id)
-        
-        if to_save["cover_url"] and os.path.splitext(to_save["cover_url"])[1].lower() == ".jpg":
-            img = requests.get(to_save["cover_url"])
-            f = open(os.path.join(config.DB_ROOT, book.path, "cover.jpg"), "wb")
-            f.write(img.content)
-            f.close()
+                    # if no author is found add it
+                    if t_author == None:
+                        new_author = db.Authors(add_author, add_author, "")
+                        db.session.add(new_author)
+                        t_author = db.session.query(db.Authors).filter(db.Authors.name == add_author).first()
+                    # add author to book
+                    book.authors.append(t_author)
+            if author0_before_edit != book.authors[0].name:
+                edited_books_id.add(book.id)
 
-        if book.series_index != to_save["series_index"]:
-            book.series_index = to_save["series_index"]
-        if len(book.comments):
-            book.comments[0].text = to_save["description"]
-        else:
-            book.comments.append(db.Comments(text=to_save["description"], book=book.id))
+            if to_save["cover_url"] and os.path.splitext(to_save["cover_url"])[1].lower() == ".jpg":
+                img = requests.get(to_save["cover_url"])
+                f = open(os.path.join(config.DB_ROOT, book.path, "cover.jpg"), "wb")
+                f.write(img.content)
+                f.close()
 
-        input_tags = to_save["tags"].split(',')
-        input_tags = map(lambda it: it.strip(), input_tags)
-        input_tags = [x for x in input_tags if x != '']
-        # we have all author names now
-        # 1. search for tags to remove
-        del_tags = []
-        for c_tag in book.tags:
-            found = False
-            for inp_tag in input_tags:
-                if inp_tag == c_tag.name:
-                    found = True
-                    break;
-            # if the tag was not found in the new list, add him to remove list
-            if not found:
-                del_tags.append(c_tag)
-        # 2. search for tags that need to be added
-        add_tags = []
-        for inp_tag in input_tags:
-            found = False
-            for c_tag in book.tags:
-                if inp_tag == c_tag.name:
-                    found = True
-                    break;
-            if not found:
-                add_tags.append(inp_tag)
-        # if there are tags to remove, we remove them now
-        if len(del_tags) > 0:
-            for del_tag in del_tags:
-                book.tags.remove(del_tag)
-                if len(del_tag.books) == 0:
-                    db.session.delete(del_tag)
-        # if there are tags to add, we add them now!
-        if len(add_tags) > 0:
-            for add_tag in add_tags:
-                # check if a tag with that name exists
-                new_tag = db.session.query(db.Tags).filter(db.Tags.name == add_tag).first()
-                # if no tag is found add it
-                if new_tag == None:
-                    new_tag = db.Tags(add_tag)
-                    db.session.add(new_tag)
-                    new_tag = db.session.query(db.Tags).filter(db.Tags.name == add_tag).first()
-                # add tag to book
-                book.tags.append(new_tag)
-        
-        if to_save["series"].strip():
-            is_series = db.session.query(db.Series).filter(db.Series.name.like('%' + to_save["series"].strip() + '%')).first()
-            if is_series:
-                book.series.append(is_series)
+            if book.series_index != to_save["series_index"]:
+                book.series_index = to_save["series_index"]
+            if len(book.comments):
+                book.comments[0].text = to_save["description"]
             else:
-                new_series = db.Series(name=to_save["series"].strip(), sort=to_save["series"].strip())
-                book.series.append(new_series)
-        
-        if to_save["rating"].strip():
-            old_rating = False
-            if len(book.ratings) > 0:
-                old_rating = book.ratings[0].rating
-            ratingx2 = int(float(to_save["rating"]) *2)
-            if ratingx2 != old_rating:
-                is_rating = db.session.query(db.Ratings).filter(db.Ratings.rating == ratingx2).first()
-                if is_rating:
-                    book.ratings.append(is_rating)
+                book.comments.append(db.Comments(text=to_save["description"], book=book.id))
+
+            input_tags = to_save["tags"].split(',')
+            input_tags = map(lambda it: it.strip(), input_tags)
+            input_tags = [x for x in input_tags if x != '']
+            # we have all author names now
+            # 1. search for tags to remove
+            del_tags = []
+            for c_tag in book.tags:
+                found = False
+                for inp_tag in input_tags:
+                    if inp_tag == c_tag.name:
+                        found = True
+                        break;
+                # if the tag was not found in the new list, add him to remove list
+                if not found:
+                    del_tags.append(c_tag)
+            # 2. search for tags that need to be added
+            add_tags = []
+            for inp_tag in input_tags:
+                found = False
+                for c_tag in book.tags:
+                    if inp_tag == c_tag.name:
+                        found = True
+                        break;
+                if not found:
+                    add_tags.append(inp_tag)
+            # if there are tags to remove, we remove them now
+            if len(del_tags) > 0:
+                for del_tag in del_tags:
+                    book.tags.remove(del_tag)
+                    if len(del_tag.books) == 0:
+                        db.session.delete(del_tag)
+            # if there are tags to add, we add them now!
+            if len(add_tags) > 0:
+                for add_tag in add_tags:
+                    # check if a tag with that name exists
+                    new_tag = db.session.query(db.Tags).filter(db.Tags.name == add_tag).first()
+                    # if no tag is found add it
+                    if new_tag == None:
+                        new_tag = db.Tags(add_tag)
+                        db.session.add(new_tag)
+                        new_tag = db.session.query(db.Tags).filter(db.Tags.name == add_tag).first()
+                    # add tag to book
+                    book.tags.append(new_tag)
+
+            if to_save["series"].strip():
+                is_series = db.session.query(db.Series).filter(db.Series.name.like('%' + to_save["series"].strip() + '%')).first()
+                if is_series:
+                    book.series.append(is_series)
                 else:
-                    new_rating = db.Ratings(rating=ratingx2)
-                    book.ratings.append(new_rating)
-                if old_rating:
+                    new_series = db.Series(name=to_save["series"].strip(), sort=to_save["series"].strip())
+                    book.series.append(new_series)
+
+            if to_save["rating"].strip():
+                old_rating = False
+                if len(book.ratings) > 0:
+                    old_rating = book.ratings[0].rating
+                ratingx2 = int(float(to_save["rating"]) *2)
+                if ratingx2 != old_rating:
+                    is_rating = db.session.query(db.Ratings).filter(db.Ratings.rating == ratingx2).first()
+                    if is_rating:
+                        book.ratings.append(is_rating)
+                    else:
+                        new_rating = db.Ratings(rating=ratingx2)
+                        book.ratings.append(new_rating)
+                    if old_rating:
+                        book.ratings.remove(book.ratings[0])
+            else:
+                if len(book.ratings) > 0:
                     book.ratings.remove(book.ratings[0])
-        else:
-            if len(book.ratings) > 0:
-                book.ratings.remove(book.ratings[0])
-                
-        
-        for c in cc:
-            cc_string = "custom_column_" + str(c.id)
-            if not c.is_multiple:
-                if len(getattr(book, cc_string)) > 0:
-                    cc_db_value = getattr(book, cc_string)[0].value
-                else:
-                    cc_db_value = None
-                if to_save[cc_string].strip():
-                    if c.datatype == 'rating':
-                        to_save[cc_string] = str(int(float(to_save[cc_string]) *2))
-                    if to_save[cc_string].strip() != cc_db_value:
+
+
+            for c in cc:
+                cc_string = "custom_column_" + str(c.id)
+                if not c.is_multiple:
+                    if len(getattr(book, cc_string)) > 0:
+                        cc_db_value = getattr(book, cc_string)[0].value
+                    else:
+                        cc_db_value = None
+                    if to_save[cc_string].strip():
+                        if c.datatype == 'rating':
+                            to_save[cc_string] = str(int(float(to_save[cc_string]) *2))
+                        if to_save[cc_string].strip() != cc_db_value:
+                            if cc_db_value != None:
+                                #remove old cc_val
+                                del_cc = getattr(book, cc_string)[0]
+                                getattr(book, cc_string).remove(del_cc)
+                                if len(del_cc.books) == 0:
+                                    db.session.delete(del_cc)
+                            cc_class = db.cc_classes[c.id]
+                            new_cc = db.session.query(cc_class).filter(cc_class.value == to_save[cc_string].strip()).first()
+                            # if no cc val is found add it
+                            if new_cc == None:
+                                new_cc = cc_class(value=to_save[cc_string].strip())
+                                db.session.add(new_cc)
+                                new_cc = db.session.query(cc_class).filter(cc_class.value == to_save[cc_string].strip()).first()
+                            # add cc value to book
+                            getattr(book, cc_string).append(new_cc)
+                    else:
                         if cc_db_value != None:
                             #remove old cc_val
                             del_cc = getattr(book, cc_string)[0]
                             getattr(book, cc_string).remove(del_cc)
                             if len(del_cc.books) == 0:
                                 db.session.delete(del_cc)
-                        cc_class = db.cc_classes[c.id]
-                        new_cc = db.session.query(cc_class).filter(cc_class.value == to_save[cc_string].strip()).first()
-                        # if no cc val is found add it
-                        if new_cc == None:
-                            new_cc = cc_class(value=to_save[cc_string].strip())
-                            db.session.add(new_cc)
-                            new_cc = db.session.query(cc_class).filter(cc_class.value == to_save[cc_string].strip()).first()
-                        # add cc value to book
-                        getattr(book, cc_string).append(new_cc)
                 else:
-                    if cc_db_value != None:
-                        #remove old cc_val
-                        del_cc = getattr(book, cc_string)[0]
-                        getattr(book, cc_string).remove(del_cc)
-                        if len(del_cc.books) == 0:
-                            db.session.delete(del_cc)
-            else:
-                input_tags = to_save[cc_string].split(',')
-                input_tags = map(lambda it: it.strip(), input_tags)
-                input_tags = [x for x in input_tags if x != '']
-                # we have all author names now
-                # 1. search for tags to remove
-                del_tags = []
-                for c_tag in getattr(book, cc_string):
-                    found = False
-                    for inp_tag in input_tags:
-                        if inp_tag == c_tag.value:
-                            found = True
-                            break;
-                    # if the tag was not found in the new list, add him to remove list
-                    if not found:
-                        del_tags.append(c_tag)
-                # 2. search for tags that need to be added
-                add_tags = []
-                for inp_tag in input_tags:
-                    found = False
+                    input_tags = to_save[cc_string].split(',')
+                    input_tags = map(lambda it: it.strip(), input_tags)
+                    input_tags = [x for x in input_tags if x != '']
+                    # we have all author names now
+                    # 1. search for tags to remove
+                    del_tags = []
                     for c_tag in getattr(book, cc_string):
-                        if inp_tag == c_tag.value:
-                            found = True
-                            break;
-                    if not found:
-                        add_tags.append(inp_tag)
-                # if there are tags to remove, we remove them now
-                if len(del_tags) > 0:
-                    for del_tag in del_tags:
-                        getattr(book, cc_string).remove(del_tag)
-                        if len(del_tag.books) == 0:
-                            db.session.delete(del_tag)
-                # if there are tags to add, we add them now!
-                if len(add_tags) > 0:
-                    for add_tag in add_tags:
-                        # check if a tag with that name exists
-                        new_tag = db.session.query(db.cc_classes[c.id]).filter(db.cc_classes[c.id].value == add_tag).first()
-                        # if no tag is found add it
-                        if new_tag == None:
-                            new_tag = db.cc_classes[c.id](value=add_tag)
-                            db.session.add(new_tag)
+                        found = False
+                        for inp_tag in input_tags:
+                            if inp_tag == c_tag.value:
+                                found = True
+                                break;
+                        # if the tag was not found in the new list, add him to remove list
+                        if not found:
+                            del_tags.append(c_tag)
+                    # 2. search for tags that need to be added
+                    add_tags = []
+                    for inp_tag in input_tags:
+                        found = False
+                        for c_tag in getattr(book, cc_string):
+                            if inp_tag == c_tag.value:
+                                found = True
+                                break;
+                        if not found:
+                            add_tags.append(inp_tag)
+                    # if there are tags to remove, we remove them now
+                    if len(del_tags) > 0:
+                        for del_tag in del_tags:
+                            getattr(book, cc_string).remove(del_tag)
+                            if len(del_tag.books) == 0:
+                                db.session.delete(del_tag)
+                    # if there are tags to add, we add them now!
+                    if len(add_tags) > 0:
+                        for add_tag in add_tags:
+                            # check if a tag with that name exists
                             new_tag = db.session.query(db.cc_classes[c.id]).filter(db.cc_classes[c.id].value == add_tag).first()
-                        # add tag to book
-                        getattr(book, cc_string).append(new_tag)
+                            # if no tag is found add it
+                            if new_tag == None:
+                                new_tag = db.cc_classes[c.id](value=add_tag)
+                                db.session.add(new_tag)
+                                new_tag = db.session.query(db.cc_classes[c.id]).filter(db.cc_classes[c.id].value == add_tag).first()
+                            # add tag to book
+                            getattr(book, cc_string).append(new_tag)
 
-        db.session.commit()
-        author_names = []
-        for author in book.authors:
-            author_names.append(author.name)
-        for b in edited_books_id:
-            helper.update_dir_stucture(b)
-        if "detail_view" in to_save:
-            return redirect(url_for('show_book', id=book.id, _external=True))
+            db.session.commit()
+            author_names = []
+            for author in book.authors:
+                author_names.append(author.name)
+            for b in edited_books_id:
+                helper.update_dir_stucture(b)
+            if "detail_view" in to_save:
+                return redirect(url_for('show_book', showrandom=current_user.random_books, id=book.id, _external=True))
+            else:
+                return render_template('edit_book.html', showrandom=current_user.random_books, book=book, authors=author_names, cc=cc)
         else:
             return render_template('edit_book.html', showrandom=current_user.random_books, book=book, authors=author_names, cc=cc)
     else:
-        return render_template('edit_book.html', showrandom=current_user.random_books, book=book, authors=author_names, cc=cc)
+        flash(_(u"Error opening eBook. File does not exist: "), category="error")
+        return redirect('/' or url_for("index", _external=True))
 
 @app.route("/upload", methods = ["GET", "POST"])
 @login_required
