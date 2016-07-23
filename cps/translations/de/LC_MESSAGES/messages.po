@@ -518,7 +518,7 @@ msgstr "Editieren"
 
 #: cps/templates/user_list.html:15
 msgid "Passwd"
-msgstr "Passwrt"
+msgstr "Passwort"
 
 #: cps/templates/user_list.html:32
 msgid "Add new user"
