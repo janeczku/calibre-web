@@ -73,6 +73,12 @@ class User(Base):
     def get_id(self):
         return unicode(self.id)
 
+    def filter_language(self):
+        return self.default_language
+
+    def show_random_books(self):
+        return self.random_books
+
     def __repr__(self):
         return '<User %r>' % (self.nickname)
 
