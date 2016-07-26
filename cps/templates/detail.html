@@ -69,7 +69,15 @@
               {% if c.datatype == 'rating' %}
                 {{ '%d' % (column.value / 2) }}
               {% else %}
-                {{ column.value }}
+                {% if c.datatype == 'bool' %}
+                  {% if column.value == true %}
+                    <span class="glyphicon glyphicon-ok"></span>
+                  {% else %}
+                    <span class="glyphicon glyphicon-remove"></span>
+                  {% endif %}
+                {% else %}
+                  {{ column.value }}
+                {% endif %}
               {% endif %}
             {% endfor %}
             <br />
