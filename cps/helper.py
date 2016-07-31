@@ -185,21 +185,21 @@ def update_dir_stucture(book_id):
     book = db.session.query(db.Books).filter(db.Books.id == book_id).first()
     path = os.path.join(config.DB_ROOT, book.path)
     
-    authordir = book.path.split(os.sep)[0]
+    authordir = book.path.split('/')[0]
     new_authordir=get_valid_filename(book.authors[0].name, False)
-    titledir = book.path.split(os.sep)[1]
+    titledir = book.path.split('/')[1]
     new_titledir = get_valid_filename(book.title, False) + " (" + str(book_id) + ")"
     
     if titledir != new_titledir:
         new_title_path = os.path.join(os.path.dirname(path), new_titledir)
         os.rename(path, new_title_path)
         path = new_title_path
-        book.path = book.path.split(os.sep)[0] + os.sep + new_titledir
+        book.path = book.path.split('/')[0] + '/ + new_titledir
     
     if authordir != new_authordir:
         new_author_path = os.path.join(os.path.join(config.DB_ROOT, new_authordir), os.path.basename(path))
         os.renames(path, new_author_path)
-        book.path = new_authordir + os.sep + book.path.split(os.sep)[1]
+        book.path = new_authordir + '/' + book.path.split('/')[1]
     # To Do authorsort is not set or checked
     db.session.commit()
     
