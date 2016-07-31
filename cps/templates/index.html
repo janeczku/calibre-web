@@ -1,8 +1,8 @@
 {% extends "layout.html" %}
 {% block body %}
-{% if random.count() > 0 %}
+{% if showrandom > 0 %}
 <div class="discover">
-  <h2>Discover (Random Books)</h2>
+  <h2>{{_('Discover (Random Books)')}}</h2>
   <div class="row">
 
     {% for entry in random %}

@@ -1,0 +1,11 @@
+{% extends "layout.html" %}
+{% block body %}
+<div class="discover">
+  <h1>{{title}}</h1>
+  <ul class="list-unstyled">
+    {% for lang in languages %}
+      <li><a href="{{url_for('language', name=lang.lang_code)}}">{{lang.name}}</a></li>
+    {% endfor %}
+  </ul>
+</div>
+{% endblock %}

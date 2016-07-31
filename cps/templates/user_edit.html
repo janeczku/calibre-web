@@ -5,58 +5,85 @@
   <form role="form" method="POST" autocomplete="off">
     {% if g.user and g.user.role_admin() and new_user %}
     <div class="form-group required">
-      <label for="nickname">Username</label>
+      <label for="nickname">{{_('Username')}}</label>
       <input type="text" class="form-control" name="nickname" id="nickname" value="{{ content.nickname if content.nickname != None }}" autocomplete="off">
     </div>
     {% endif %}
     <div class="form-group">
-      <label for="email">Email address</label>
+      <label for="email">{{_('Email address')}}</label>
       <input type="email" class="form-control" name="email" id="email" value="{{ content.email if content.email != None }}" autocomplete="off" required> 
     </div>
     {% if g.user and g.user.role_passwd() or g.user.role_admin()%}
     <div class="form-group">
-      <label for="password">Password</label>
+      <label for="password">{{_('Password')}}</label>
       <input type="password" class="form-control" name="password" id="password" value="" autocomplete="off">
     </div>
     {% endif %}
     <div class="form-group">
-      <label for="kindle_mail">Kindle E-Mail</label>
+      <label for="kindle_mail">{{_('Kindle E-Mail')}}</label>
       <input type="text" class="form-control" name="kindle_mail" id="kindle_mail" value="{{ content.kindle_mail if content.kindle_mail != None }}">
+    </div>
+    <div class="form-group">
+    <label for="locale">{{_('Language')}}</label>
+        <select name="locale" id="locale" class="form-control">
+            <!-- {%  if content.locale %}
+                <option value="{{ content.locale }}">{{ content.locale }}</option>
+            {% else %}
+                <option value="">{{ _('Select a language') }}</option>
+            {% endif %}-->
+            {%  for translation in translations %}
+                <option value="{{translation.language}}" {% if translation.language == content.locale %}selected{% endif %}>{{ translation.display_name }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="form-group">
+      <label for="default_language">{{_('Show books with language')}}</label>
+        <select name="default_language" id="default_language" class="form-control">
+            <option value="all" >{{ _('Show all') }}</option>
+            {%  for language in languages %}
+            <option value="{{ language.lang_code }}" {% if content.default_language == language.lang_code %}selected{% endif %}>{{ language.lang_code }}</option>
+            {% endfor %}
+            selected
+        </select>
+    </div>
+    <div class="form-group">
+        <input type="checkbox" name="show_random" {% if content.random_books %}checked{% endif %}>
+        <label for="show_random">{{_('Show random books')}}</label>
     </div>
     {% if g.user and g.user.role_admin() and not profile %}
     <div class="form-group">
-      <label for="admin_role">Admin user</label>
       <input type="checkbox" name="admin_role" id="admin_role" {% if content.role_admin() %}checked{% endif %}>
+      <label for="admin_role">{{_('Admin user')}}</label>
     </div>
     <div class="form-group">
-      <label for="download_role">Allow Downloads</label>
       <input type="checkbox" name="download_role" id="download_role" {% if content.role_download() %}checked{% endif %}>
+      <label for="download_role">{{_('Allow Downloads')}}</label>
     </div>
     <div class="form-group">
-      <label for="upload_role">Allow Uploads</label>
       <input type="checkbox" name="upload_role" id="upload_role" {% if content.role_upload() %}checked{% endif %}>
+      <label for="upload_role">{{_('Allow Uploads')}}</label>
     </div>
+
     <div class="form-group">
-      <label for="edit_role">Allow Edit</label>
       <input type="checkbox" name="edit_role" id="edit_role" {% if content.role_edit() %}checked{% endif %}>
+      <label for="edit_role">{{_('Allow Edit')}}</label>
     </div>
     <div class="form-group">
-      <label for="passwd_role">Allow Changing Password</label>
       <input type="checkbox" name="passwd_role" id="passwd_role" {% if content.role_passwd() %}checked{% endif %}>
+      <label for="passwd_role">{{_('Allow Changing Password')}}</label>
     </div>
     {% endif %}
     {% if g.user and g.user.role_admin() and not profile and not new_user %}
     <div class="checkbox">
       <label>
-        <input type="checkbox" name="delete"> Delete this user
+        <input type="checkbox" name="delete"> {{_('Delete this user')}}
       </label>
     </div>
     {% endif %}
-    <button type="submit" class="btn btn-default">Submit</button>
+    <button type="submit" class="btn btn-default">{{_('Submit')}}</button>
   </form>
-
   {% if downloads %}
-    <h2>Recent Downloads</h2>
+    <h2>{{_('Recent Downloads')}}</h2>
     {% for entry in downloads %}
       <div class="col-sm-2">
         <a class="pull-left" href="{{ url_for('show_book', id=entry.id) }}">

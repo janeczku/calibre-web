@@ -4,7 +4,7 @@
   <h1>{{title}}</h1>
   <ul class="list-unstyled">
     {% for entry in entries %}
-      <li><a href="{{url_for('category', name=entry.name)}}">{{entry.name}}</a></li>
+      <li><a href="{{url_for('category', name=entry[1])}}">{{entry[0]}}</a></li>
     {% endfor %}
   </ul>
 </div>

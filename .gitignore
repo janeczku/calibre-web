@@ -18,3 +18,11 @@ eggs/
 *.log
 config.ini
 
+
+.idea/calibre-web.iml
+.idea/encodings.xml
+.idea/misc.xml
+.idea/modules.xml
+.idea/vcs.xml
+.idea/workspace.xml
+translation.bat
