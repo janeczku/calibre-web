@@ -185,6 +185,7 @@ class Books(Base):
     last_modified = Column(String)
     path = Column(String)
     has_cover = Column(Integer)
+    uuid = Column(String)
 
     authors = relationship('Authors', secondary=books_authors_link, backref='books')
     tags = relationship('Tags', secondary=books_tags_link, backref='books')

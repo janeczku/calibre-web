@@ -269,7 +269,9 @@ def before_request():
 @app.route("/feed")
 @requires_basic_auth_if_no_ano
 def feed_index():
-    xml = render_template('index.xml')
+
+    Last_Updated = db.session.query(db.Books,func.max(db.Books.last_modified).label("last_modified")).first()
+    xml = render_template('index.xml',Last_Updated=Last_Updated)
     response= make_response(xml)
     response.headers["Content-Type"] = "application/xml"
     return response
@@ -286,12 +288,12 @@ def feed_osd():
 @requires_basic_auth_if_no_ano
 def feed_search():
     term = request.args.get("query")
+    Last_Updated = db.session.query(db.Books, func.max(db.Books.last_modified).label("last_modified")).first()
     if term:
-        random = db.session.query(db.Books).order_by(func.random()).limit(config.RANDOM_BOOKS)
         entries = db.session.query(db.Books).filter(db.or_(db.Books.tags.any(db.Tags.name.like("%"+term+"%")),db.Books.authors.any(db.Authors.name.like("%"+term+"%")),db.Books.title.like("%"+term+"%"))).all()
-        xml = render_template('feed.xml', searchterm=term, entries=entries)
+        xml = render_template('feed.xml', searchterm=term, entries=entries, Last_Updated=Last_Updated)
     else:
-        xml = render_template('feed.xml', searchterm="")
+        xml = render_template('feed.xml', searchterm="",Last_Updated=Last_Updated)
     response= make_response(xml)
     response.headers["Content-Type"] = "application/xml"
     return response
@@ -300,12 +302,13 @@ def feed_search():
 @requires_basic_auth_if_no_ano
 def feed_new():
     off = request.args.get("start_index")
+    Last_Updated = db.session.query(db.Books, func.max(db.Books.last_modified).label("last_modified")).first()
     if off:
         entries = db.session.query(db.Books).order_by(db.Books.last_modified.desc()).offset(off).limit(config.NEWEST_BOOKS)
     else:
         entries = db.session.query(db.Books).order_by(db.Books.last_modified.desc()).limit(config.NEWEST_BOOKS)
         off = 0
-    xml = render_template('feed.xml', entries=entries, next_url="/feed/new?start_index=%d" % (int(config.NEWEST_BOOKS) + int(off)))
+    xml = render_template('feed.xml', entries=entries, Last_Updated=Last_Updated, next_url="/feed/new?start_index=%d" % (int(config.NEWEST_BOOKS) + int(off)))
     response= make_response(xml)
     response.headers["Content-Type"] = "application/xml"
     return response
@@ -315,12 +318,13 @@ def feed_new():
 @requires_basic_auth_if_no_ano
 def feed_discover():
     off = request.args.get("start_index")
+    Last_Updated = db.session.query(db.Books, func.max(db.Books.last_modified).label("last_modified")).first()
     if off:
         entries = db.session.query(db.Books).order_by(func.random()).offset(off).limit(config.NEWEST_BOOKS)
     else:
         entries = db.session.query(db.Books).order_by(func.random()).limit(config.NEWEST_BOOKS)
         off = 0
-    xml = render_template('feed.xml', entries=entries, next_url="/feed/discover?start_index=%d" % (int(config.NEWEST_BOOKS) + int(off)))
+    xml = render_template('feed.xml', entries=entries, Last_Updated=Last_Updated, next_url="/feed/discover?start_index=%d" % (int(config.NEWEST_BOOKS) + int(off)))
     response = make_response(xml)
     response.headers["Content-Type"] = "application/xml"
     return response
@@ -329,13 +333,14 @@ def feed_discover():
 @requires_basic_auth_if_no_ano
 def feed_hot():
     off = request.args.get("start_index")
+    Last_Updated = db.session.query(db.Books, func.max(db.Books.last_modified).label("last_modified")).first()
     if off:
         entries = db.session.query(db.Books).filter(db.Books.ratings.any(db.Ratings.rating > 9)).offset(off).limit(config.NEWEST_BOOKS)
     else:
         entries = db.session.query(db.Books).filter(db.Books.ratings.any(db.Ratings.rating > 9)).limit(config.NEWEST_BOOKS)
         off = 0
 
-    xml = render_template('feed.xml', entries=entries, next_url="/feed/hot?start_index=%d" % (int(config.NEWEST_BOOKS) + int(off)))
+    xml = render_template('feed.xml', entries=entries, Last_Updated=Last_Updated, next_url="/feed/hot?start_index=%d" % (int(config.NEWEST_BOOKS) + int(off)))
     response= make_response(xml)
     response.headers["Content-Type"] = "application/xml"
     return response
@@ -555,6 +560,11 @@ def author(name):
 def get_cover(cover_path):
     return send_from_directory(os.path.join(config.DB_ROOT, cover_path), "cover.jpg")
 
+@app.route("/feed/cover/<path:cover_path>")
+@requires_basic_auth_if_no_ano
+def feed_get_cover(cover_path):
+    return send_from_directory(os.path.join(config.DB_ROOT, cover_path), "cover.jpg")
+
 @app.route("/read/<int:book_id>")
 @login_required
 def read_book(book_id):
@@ -645,7 +655,7 @@ def register():
             flash(_(u"This username or email address is already in use."), category="error")
             return render_template('register.html', title="register")
 
-    return render_template('register.html', title="register")
+    return render_template('register.html', title=_(u"register"))
 
 @app.route('/login', methods = ['GET', 'POST'])
 def login():
@@ -665,7 +675,7 @@ def login():
         else:
             flash(_(u"Wrong Username or Password"), category="error")
 
-    return render_template('login.html', title="login")
+    return render_template('login.html', title=_(u"login"))
 
 @app.route('/logout')
 @login_required
@@ -854,7 +864,7 @@ def edit_mailsettings():
             content.mail_use_ssl = 0
         try:
             ub.session.commit()
-            flash("Mail settings updated", category="success")
+            flash(_(u"Mail settings updated"), category="success")
         except (e):
             flash(e, category="error")
     return render_template("email_edit.html", content=content, title=_("Edit mail settings"))
@@ -1176,7 +1186,7 @@ def edit_book(book_id):
             return render_template('edit_book.html', book=book, authors=author_names, cc=cc)
     else:
         flash(_(u"Error opening eBook. File does not exist: "), category="error")
-        return redirect('/' or url_for("index", _external=True))            
+        return redirect('/' or url_for("index", _external=True))
 
 @app.route("/upload", methods = ["GET", "POST"])
 @login_required
