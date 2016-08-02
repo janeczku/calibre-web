@@ -33,7 +33,8 @@ class User(Base):
     whislist = relationship('Whislist', backref = 'user', lazy = 'dynamic')
     downloads = relationship('Downloads', backref= 'user', lazy = 'dynamic')
     locale = Column(String(2), default="en")
-
+    random_books = Column(Integer, default=1)
+    default_language = Column(String(3), default="all")
 
     def is_authenticated(self):
         return True
@@ -71,6 +72,12 @@ class User(Base):
 
     def get_id(self):
         return unicode(self.id)
+
+    def filter_language(self):
+        return self.default_language
+
+    def show_random_books(self):
+        return self.random_books
 
     def __repr__(self):
         return '<User %r>' % (self.nickname)

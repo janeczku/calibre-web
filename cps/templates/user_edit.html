@@ -36,6 +36,19 @@
             {% endfor %}
         </select>
     </div>
+    <div class="form-group">
+      <label for="default_language">{{_('Show books with language')}}</label>
+        <select name="default_language" id="default_language" class="form-control">
+            <option value="all" >{{ _('Show all') }}</option>
+            {%  for language in languages %}
+            <option value="{{ language.lang_code }}" {% if content.default_language == language.lang_code %}selected{% endif %}>{{ language.lang_code }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="form-group">
+        <input type="checkbox" name="show_random" {% if content.random_books %}checked{% endif %}>
+        <label for="show_random">{{_('Show random books')}}</label>
+    </div>
     {% if g.user and g.user.role_admin() and not profile %}
     <div class="form-group">
       <input type="checkbox" name="admin_role" id="admin_role" {% if content.role_admin() %}checked{% endif %}>

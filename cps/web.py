@@ -100,6 +100,13 @@ class Anonymous(AnonymousUserMixin):
         return False
     def role_edit(self):
         return False
+    def filter_language(self):
+        return 'all'
+    def show_random_books(self):
+        return True
+    def is_anonymous(self):
+        return config.ANON_BROWSE
+
 
 lm = LoginManager(app)
 lm.init_app(app)
@@ -269,8 +276,11 @@ def before_request():
 @app.route("/feed")
 @requires_basic_auth_if_no_ano
 def feed_index():
-
-    Last_Updated = db.session.query(db.Books,func.max(db.Books.last_modified).label("last_modified")).first()
+    if current_user.filter_language() != "all":
+        filter = db.Books.languages.any(db.Languages.lang_code == current_user.filter_language())
+    else:
+        filter = True
+    Last_Updated = db.session.query(db.Books,func.max(db.Books.last_modified).label("last_modified")).filter(filter).first()
     xml = render_template('index.xml',Last_Updated=Last_Updated)
     response= make_response(xml)
     response.headers["Content-Type"] = "application/xml"
@@ -288,9 +298,14 @@ def feed_osd():
 @requires_basic_auth_if_no_ano
 def feed_search():
     term = request.args.get("query")
-    Last_Updated = db.session.query(db.Books, func.max(db.Books.last_modified).label("last_modified")).first()
+    if current_user.filter_language() != "all":
+        filter = db.Books.languages.any(db.Languages.lang_code == current_user.filter_language())
+    else:
+        filter = True
+    Last_Updated = db.session.query(db.Books, func.max(db.Books.last_modified).label("last_modified")).filter(filter).first()
     if term:
-        entries = db.session.query(db.Books).filter(db.or_(db.Books.tags.any(db.Tags.name.like("%"+term+"%")),db.Books.authors.any(db.Authors.name.like("%"+term+"%")),db.Books.title.like("%"+term+"%"))).all()
+        entries = db.session.query(db.Books).filter(db.or_(db.Books.tags.any(db.Tags.name.like("%"+term+"%")),db.Books.authors.any(db.Authors.name.like("%"+term+"%")),db.Books.title.like("%"+term+"%"))).filter(filter).all()
+
         xml = render_template('feed.xml', searchterm=term, entries=entries, Last_Updated=Last_Updated)
     else:
         xml = render_template('feed.xml', searchterm="",Last_Updated=Last_Updated)
@@ -302,11 +317,15 @@ def feed_search():
 @requires_basic_auth_if_no_ano
 def feed_new():
     off = request.args.get("start_index")
-    Last_Updated = db.session.query(db.Books, func.max(db.Books.last_modified).label("last_modified")).first()
-    if off:
-        entries = db.session.query(db.Books).order_by(db.Books.last_modified.desc()).offset(off).limit(config.NEWEST_BOOKS)
+    if current_user.filter_language() != "all":
+        filter = db.Books.languages.any(db.Languages.lang_code == current_user.filter_language())
     else:
-        entries = db.session.query(db.Books).order_by(db.Books.last_modified.desc()).limit(config.NEWEST_BOOKS)
+        filter= True
+    Last_Updated = db.session.query(db.Books, func.max(db.Books.last_modified).label("last_modified")).filter(filter).first()
+    if off:
+        entries = db.session.query(db.Books).filter(filter).order_by(db.Books.last_modified.desc()).offset(off).limit(config.NEWEST_BOOKS)
+    else:
+        entries = db.session.query(db.Books).filter(filter).order_by(db.Books.last_modified.desc()).limit(config.NEWEST_BOOKS)
         off = 0
     xml = render_template('feed.xml', entries=entries, Last_Updated=Last_Updated, next_url="/feed/new?start_index=%d" % (int(config.NEWEST_BOOKS) + int(off)))
     response= make_response(xml)
@@ -318,11 +337,15 @@ def feed_new():
 @requires_basic_auth_if_no_ano
 def feed_discover():
     off = request.args.get("start_index")
-    Last_Updated = db.session.query(db.Books, func.max(db.Books.last_modified).label("last_modified")).first()
-    if off:
-        entries = db.session.query(db.Books).order_by(func.random()).offset(off).limit(config.NEWEST_BOOKS)
+    if current_user.filter_language() != "all":
+        filter = db.Books.languages.any(db.Languages.lang_code == current_user.filter_language())
     else:
-        entries = db.session.query(db.Books).order_by(func.random()).limit(config.NEWEST_BOOKS)
+        filter = True
+    Last_Updated = db.session.query(db.Books, func.max(db.Books.last_modified).label("last_modified")).filter(filter).first()
+    if off:
+        entries = db.session.query(db.Books).filter(filter).order_by(func.random()).offset(off).limit(config.NEWEST_BOOKS)
+    else:
+        entries = db.session.query(db.Books).filter(filter).order_by(func.random()).limit(config.NEWEST_BOOKS)
         off = 0
     xml = render_template('feed.xml', entries=entries, Last_Updated=Last_Updated, next_url="/feed/discover?start_index=%d" % (int(config.NEWEST_BOOKS) + int(off)))
     response = make_response(xml)
@@ -333,11 +356,15 @@ def feed_discover():
 @requires_basic_auth_if_no_ano
 def feed_hot():
     off = request.args.get("start_index")
-    Last_Updated = db.session.query(db.Books, func.max(db.Books.last_modified).label("last_modified")).first()
-    if off:
-        entries = db.session.query(db.Books).filter(db.Books.ratings.any(db.Ratings.rating > 9)).offset(off).limit(config.NEWEST_BOOKS)
+    if current_user.filter_language() != "all":
+        filter = db.Books.languages.any(db.Languages.lang_code == current_user.filter_language())
     else:
-        entries = db.session.query(db.Books).filter(db.Books.ratings.any(db.Ratings.rating > 9)).limit(config.NEWEST_BOOKS)
+        filter = True
+    Last_Updated = db.session.query(db.Books, func.max(db.Books.last_modified).label("last_modified")).filter(filter).first()
+    if off:
+        entries = db.session.query(db.Books).filter(filter).filter(db.Books.ratings.any(db.Ratings.rating > 9)).offset(off).limit(config.NEWEST_BOOKS)
+    else:
+        entries = db.session.query(db.Books).filter(filter).filter(db.Books.ratings.any(db.Ratings.rating > 9)).limit(config.NEWEST_BOOKS)
         off = 0
 
     xml = render_template('feed.xml', entries=entries, Last_Updated=Last_Updated, next_url="/feed/hot?start_index=%d" % (int(config.NEWEST_BOOKS) + int(off)))
@@ -417,86 +444,165 @@ def get_matching_tags():
 @app.route('/page/<int:page>')
 @login_required_if_no_ano
 def index(page):
-    random = db.session.query(db.Books).order_by(func.random()).limit(config.RANDOM_BOOKS)
+    if current_user.filter_language() != "all":
+        filter = db.Books.languages.any(db.Languages.lang_code == current_user.filter_language())
+    else:
+        filter= True
+    if current_user.show_random_books():
+        random = db.session.query(db.Books).filter(filter).order_by(func.random()).limit(config.RANDOM_BOOKS)
+    else :
+        random = false
     if page == 1:
-        entries = db.session.query(db.Books).order_by(db.Books.last_modified.desc()).limit(config.NEWEST_BOOKS)
+        entries = db.session.query(db.Books).filter(filter).order_by(db.Books.last_modified.desc()).limit(config.NEWEST_BOOKS)
     else:
         off = int(int(config.NEWEST_BOOKS) * (page - 1))
         entries = db.session.query(db.Books).order_by(db.Books.last_modified.desc()).offset(off).limit(config.NEWEST_BOOKS)
     pagination = Pagination(page, config.NEWEST_BOOKS, len(db.session.query(db.Books).all()))
-    return render_template('index.html', random=random, entries=entries, pagination=pagination, title=_("Latest Books"))
+    return render_template('index.html', showrandom=current_user.show_random_books(), random=random, entries=entries, pagination=pagination, title=_("Latest Books"))
 
 @app.route("/hot", defaults={'page': 1})
 @app.route('/hot/page/<int:page>')
 @login_required_if_no_ano
 def hot_books(page):
-    random = db.session.query(db.Books).filter(false())
+    if current_user.filter_language() != "all":
+        filter = db.Books.languages.any(db.Languages.lang_code == current_user.filter_language())
+    else:
+        filter = True
+    if current_user.show_random_books():
+        random = db.session.query(db.Books).filter(filter).order_by(func.random()).limit(config.RANDOM_BOOKS)
+    else :
+        random = false
     off = int(int(6) * (page - 1))
     all_books = ub.session.query(ub.Downloads, ub.func.count(ub.Downloads.book_id)).order_by(ub.func.count(ub.Downloads.book_id).desc()).group_by(ub.Downloads.book_id)
     hot_books = all_books.offset(off).limit(config.NEWEST_BOOKS)
     entries = list()
     for book in hot_books:
-        entries.append(db.session.query(db.Books).filter(db.Books.id == book.Downloads.book_id).first())
+        entries.append(db.session.query(db.Books).filter(filter).filter(db.Books.id == book.Downloads.book_id).first())
     numBooks = len(all_books.all())
     pages = int(ceil(numBooks / float(config.NEWEST_BOOKS)))
     if pages > 1:
-        pagination = Pagination(page, config.NEWEST_BOOKS, len(all_books.all()))
-        return render_template('index.html', random=random, entries=entries, pagination=pagination, title=_(u"Hot Books (most downloaded)"))
+        pagination = Pagination(page, config.NEWEST_BOOKS, len(all_books.all()))                # ToDo: Is this right?
+        return render_template('index.html', showrandom=current_user.show_random_books(), random=random, entries=entries, pagination=pagination, title=_(u"Hot Books (most downloaded)"))
     else:
-        return render_template('index.html', random=random, entries=entries, title=_(u"Hot Books (most downloaded)"))
+        return render_template('index.html', showrandom=current_user.show_random_books(), random=random, entries=entries, title=_(u"Hot Books (most downloaded)"))
 
 @app.route("/stats")
 @login_required
 def stats():
     counter = len(db.session.query(db.Books).all())
-    return render_template('stats.html', counter=counter, title=_(u"Statistics"))
+    return render_template('stats.html', showrandom=current_user.show_random_books(), counter=counter, title=_(u"Statistics"))
 
 @app.route("/discover", defaults={'page': 1})
 @app.route('/discover/page/<int:page>')
 @login_required_if_no_ano
 def discover(page):
+    if current_user.filter_language() != "all":
+        filter = db.Books.languages.any(db.Languages.lang_code == current_user.filter_language())
+    else:
+        filter = True
     if page == 1:
-        entries = db.session.query(db.Books).order_by(func.randomblob(2)).limit(config.NEWEST_BOOKS)
+        entries = db.session.query(db.Books).filter(filter).order_by(func.randomblob(2)).limit(config.NEWEST_BOOKS)
     else:
         off = int(int(config.NEWEST_BOOKS) * (page - 1))
-        entries = db.session.query(db.Books).order_by(func.randomblob(2)).offset(off).limit(config.NEWEST_BOOKS)
+        entries = db.session.query(db.Books).filter(filter).order_by(func.randomblob(2)).offset(off).limit(config.NEWEST_BOOKS)
     pagination = Pagination(page, config.NEWEST_BOOKS, len(db.session.query(db.Books).all()))
-    return render_template('discover.html', entries=entries, pagination=pagination, title=_(u"Random Books"))
+    return render_template('discover.html', showrandom=current_user.show_random_books(), entries=entries, pagination=pagination, title=_(u"Random Books"))
+
+@app.route("/language")
+@login_required_if_no_ano
+def language_overview():
+    if current_user.filter_language() == u"all":
+        languages = db.session.query(db.Languages).all()
+        for lang in languages:
+            cur_l = LC.parse(lang.lang_code)
+            lang.name = cur_l.get_language_name(get_locale())
+    else :
+        cur_l = LC.parse(current_user.filter_language())
+        languages = db.session.query(db.Languages).filter(db.Languages.lang_code == current_user.filter_language()).all()
+        languages[0].name = cur_l.get_language_name(get_locale())
+
+    return render_template('languages.html', showrandom=current_user.show_random_books(), languages=languages,  title=_(u"Available languages"))
+
+@app.route("/language/<name>")
+@login_required_if_no_ano
+def language(name):
+    if current_user.filter_language() != "all":
+        filter = db.Books.languages.any(db.Languages.lang_code == current_user.filter_language())
+    else:
+        filter = True
+
+    if current_user.show_random_books():
+        random = db.session.query(db.Books).filter(filter).order_by(func.random()).limit(config.RANDOM_BOOKS)
+    else :
+        random = false
+
+    entries = db.session.query(db.Books).filter(db.Books.languages.any(db.Languages.lang_code == name )).order_by(db.Books.last_modified.desc()).all()
+    cur_l = LC.parse(name)
+    name = cur_l.get_language_name(get_locale())
+    return render_template('index.html', showrandom=current_user.show_random_books(), random=random, entries=entries, title=_(u"Language: %(name)s", name=name))
 
 @app.route("/book/<int:id>")
 @login_required_if_no_ano
 def show_book(id):
-    entries = db.session.query(db.Books).filter(db.Books.id == id).first()
+    if current_user.filter_language() != "all":
+        filter = db.Books.languages.any(db.Languages.lang_code == current_user.filter_language())
+    else:
+        filter = True
+    entries = db.session.query(db.Books).filter(db.Books.id == id).filter(filter).first()
     cc = db.session.query(db.Custom_Columns).filter(db.Custom_Columns.datatype.notin_(db.cc_exceptions)).all()
     book_in_shelfs = []
     shelfs = ub.session.query(ub.BookShelf).filter(ub.BookShelf.book_id == id).all()
     for entry in shelfs:
         book_in_shelfs.append(entry.shelf)
-    return render_template('detail.html', entry=entries,  cc=cc, title=entries.title, books_shelfs=book_in_shelfs)
+    if entries :
+        return render_template('detail.html', showrandom=current_user.show_random_books(), entry=entries,  cc=cc, title=entries.title, books_shelfs=book_in_shelfs)
+    else :
+        flash(_(u"Error opening eBook. File does not exist: "), category="error")
+        return redirect('/' or url_for("index", _external=True))
 
 @app.route("/category")
 @login_required_if_no_ano
 def category_list():
     entries = db.session.query(db.Tags).order_by(db.Tags.name).all()
-    return render_template('categories.html', entries=entries, title=_(u"Category list"))
+    return render_template('categories.html', showrandom=current_user.show_random_books(), entries=entries, title=_(u"Category list"))
 
 @app.route("/category/<name>")
 @login_required_if_no_ano
 def category(name):
-    random = db.session.query(db.Books).filter(false())
-    if name != "all":
-        entries = db.session.query(db.Books).filter(db.Books.tags.any(db.Tags.name.like("%" +name + "%" ))).order_by(db.Books.last_modified.desc()).all()
+    if current_user.filter_language() != "all":
+        filter = db.Books.languages.any(db.Languages.lang_code == current_user.filter_language())
     else:
-        entries = db.session.query(db.Books).all()
-    return render_template('index.html', random=random, entries=entries, title=_(u"Category: %(name)s",name=name))
+        filter = True
+    if current_user.show_random_books():
+        random = db.session.query(db.Books).order_by(func.random()).limit(config.RANDOM_BOOKS)
+    else :
+        random = false
+
+    if name != "all":
+        entries = db.session.query(db.Books).filter(db.Books.tags.any(db.Tags.name.like("%" +name + "%" ))).order_by(db.Books.last_modified.desc()).filter(filter).all()
+    else:
+        entries = db.session.query(db.Books).filter(filter).all()
+        name=_(u"all")
+    return render_template('index.html', showrandom=current_user.show_random_books(), random=random, entries=entries, title=_(u"Category: %(name)s",name=name))
 
 @app.route("/series/<name>")
 @login_required_if_no_ano
 def series(name):
-    random = db.session.query(db.Books).filter(false())
-    entries = db.session.query(db.Books).filter(db.Books.series.any(db.Series.name.like("%" +name + "%" ))).order_by(db.Books.series_index).all()
-    return render_template('index.html', random=random, entries=entries, title=_(u"Series: %(serie)s",serie=name))
+    if current_user.filter_language() != "all":
+        filter = db.Books.languages.any(db.Languages.lang_code == current_user.filter_language())
+    else:
+        filter = True
+    if current_user.show_random_books():
+        random = db.session.query(db.Books).filter(filter).order_by(func.random()).limit(config.RANDOM_BOOKS)
+    else :
+        random = false
 
+    entries = db.session.query(db.Books).filter(db.Books.series.any(db.Series.name.like("%" +name + "%" ))).filter(filter).order_by(db.Books.series_index).all()
+    if entries :
+        return render_template('index.html', showrandom=current_user.show_random_books(), random=random, entries=entries, title=_(u"Series: %(serie)s",serie=name))
+    else :
+        flash(_(u"Error opening eBook. File does not exist: "), category="error")
+        return redirect('/' or url_for("index", _external=True))
 
 @app.route("/admin/")
 @login_required
@@ -510,12 +616,15 @@ def admin():
 def search():
     term = request.args.get("query")
     if term:
-        random = db.session.query(db.Books).order_by(func.random()).limit(config.RANDOM_BOOKS)
-        entries = db.session.query(db.Books).filter(db.or_(db.Books.tags.any(db.Tags.name.like("%"+term+"%")),db.Books.series.any(db.Series.name.like("%"+term+"%")),db.Books.authors.any(db.Authors.name.like("%"+term+"%")),db.Books.title.like("%"+term+"%"))).all()
-        return render_template('search.html', searchterm=term, entries=entries)
+        if current_user.filter_language() != "all":
+            filter = db.Books.languages.any(db.Languages.lang_code == current_user.filter_language())
+        else:
+            filter = True
+        entries = db.session.query(db.Books).filter(db.or_(db.Books.tags.any(db.Tags.name.like("%"+term+"%")),db.Books.series.any(db.Series.name.like("%"+term+"%")),db.Books.authors.any(db.Authors.name.like("%"+term+"%")),db.Books.title.like("%"+term+"%"))).filter(filter).all()
+        return render_template('search.html', showrandom=current_user.show_random_books(), searchterm=term, entries=entries)
     else:
-        return render_template('search.html', searchterm="")
-        
+        return render_template('search.html', showrandom=current_user.show_random_books(), searchterm="")
+
 @app.route("/advanced_search", methods=["GET"])
 @login_required_if_no_ano
 def advanced_search():
@@ -537,23 +646,34 @@ def advanced_search():
                 q = q.filter(db.Books.tags.any(db.Tags.id == tag))
             for tag in exclude_tag_inputs:
                 q = q.filter(not_(db.Books.tags.any(db.Tags.id == tag)))
+            if current_user.filter_language() != "all":
+                q = q.filter(db.Books.languages.any(db.Languages.lang_code == current_user.filter_language()))
             q = q.all()
-            return render_template('search.html', searchterm=searchterm, entries=q)
+            return render_template('search.html', showrandom=current_user.show_random_books(), searchterm=searchterm, entries=q)
     tags = db.session.query(db.Tags).order_by(db.Tags.name).all()
-    return render_template('search_form.html', tags=tags)
+    return render_template('search_form.html', showrandom=current_user.show_random_books(), tags=tags)
 
 @app.route("/author")
 @login_required_if_no_ano
 def author_list():
-    entries = db.session.query(db.Authors).order_by(db.Authors.sort).all()
-    return render_template('authors.html', entries=entries, title=_(u"Author list"))
+    entries = db.session.query(db.Authors).order_by(db.Authors.sort).all()  # ToDo: Exclude Authors only entries with hidden languages
+    return render_template('authors.html', showrandom=current_user.show_random_books(), entries=entries, title=_(u"Author list"))
 
 @app.route("/author/<name>")
 @login_required_if_no_ano
 def author(name):
-    random = db.session.query(db.Books).filter(false())
-    entries = db.session.query(db.Books).filter(db.Books.authors.any(db.Authors.name.like("%" +  name + "%"))).all()
-    return render_template('index.html', random=random, entries=entries, title=_(u"Author: %(name)s",name=name))
+    if current_user.filter_language() != "all":
+        filter = db.Books.languages.any(db.Languages.lang_code == current_user.filter_language())
+    else:
+        filter = True
+    if current_user.show_random_books():
+        random = db.session.query(db.Books).filter(filter).order_by(func.random()).limit(config.RANDOM_BOOKS)
+    else:
+        random = false
+
+    entries = db.session.query(db.Books).filter(db.Books.authors.any(db.Authors.name.like("%" +  name + "%"))).filter(filter).all()
+    return render_template('index.html', showrandom=current_user.show_random_books(), random=random, entries=entries, title=_(u"Author: %(nam)s",nam=name))
+
 
 @app.route("/cover/<path:cover_path>")
 @login_required_if_no_ano
@@ -595,7 +715,7 @@ def read_book(book_id):
                         fd.close()
                 zfile.close()
                 break
-    return render_template('read.html', bookid=book_id, title=_(u"Read a Book"))
+    return render_template('read.html', showrandom=current_user.show_random_books(), bookid=book_id, title=_(u"Read a Book"))
 
 @app.route("/download/<int:book_id>/<format>")
 @login_required
@@ -671,7 +791,7 @@ def login():
         if user and check_password_hash(user.password, form['password']):
             login_user(user, remember = True)
             flash(_(u"you are now logged in as: '%(nickname)s'", nickname=user.nickname), category="success")
-            return redirect(request.args.get("next") or url_for("index", _external=True))
+            return redirect('/' or url_for("index", _external=True))
         else:
             flash(_(u"Wrong Username or Password"), category="error")
 
@@ -758,15 +878,19 @@ def create_shelf():
                 flash(_(u"Shelf %(title)s created",title=to_save["title"]), category="success")
             except:
                 flash(_(u"There was an error"), category="error")
-        return render_template('shelf_edit.html', title=_(u"create a shelf"))
+        return render_template('shelf_edit.html',showrandom=current_user.show_random_books(), title=_(u"create a shelf"))
     else:
-        return render_template('shelf_edit.html', title=_(u"create a shelf"))
+        return render_template('shelf_edit.html',showrandom=current_user.show_random_books(), title=_(u"create a shelf"))
+
 
 
 @app.route("/shelf/<int:shelf_id>")
-@login_required
+@login_required_if_no_ano
 def show_shelf(shelf_id):
-    shelf = ub.session.query(ub.Shelf).filter(ub.or_(ub.and_(ub.Shelf.user_id == int(current_user.id), ub.Shelf.id == shelf_id), ub.and_(ub.Shelf.is_public == 1, ub.Shelf.id == shelf_id))).first()
+    if current_user.is_anonymous():
+        shelf = ub.session.query(ub.Shelf).filter(ub.Shelf.is_public == 1, ub.Shelf.id == shelf_id).first()
+    else :
+        shelf = ub.session.query(ub.Shelf).filter(ub.or_(ub.and_(ub.Shelf.user_id == int(current_user.id), ub.Shelf.id == shelf_id), ub.and_(ub.Shelf.is_public == 1, ub.Shelf.id == shelf_id))).first()
     result = list()
     if shelf:
         books_in_shelf = ub.session.query(ub.BookShelf).filter(ub.BookShelf.shelf == shelf_id).all()
@@ -774,18 +898,20 @@ def show_shelf(shelf_id):
             cur_book = db.session.query(db.Books).filter(db.Books.id == book.book_id).first()
             result.append(cur_book)
 
-    return render_template('shelf.html', entries=result, title=_(u"Shelf: '%(name)s'" ,name=shelf.name))
+    return render_template('shelf.html', showrandom=current_user.show_random_books(), entries=result, title=_(u"Shelf: '%(name)s'" ,name=shelf.name), shelf=shelf)
 
 @app.route("/me", methods = ["GET", "POST"])
 @login_required
 def profile():
     content = ub.session.query(ub.User).filter(ub.User.id == int(current_user.id)).first()
     downloads = list()
+    languages = db.session.query(db.Languages).all()
     translations=babel.list_translations()+[LC('en')]
     for book in content.downloads:
         downloads.append(db.session.query(db.Books).filter(db.Books.id == book.book_id).first())
     if request.method == "POST":
         to_save = request.form.to_dict()
+        content.random_books = 0
         if current_user.role_passwd() or current_user.role_admin():
             if to_save["password"]:
                 content.password = generate_password_hash(to_save["password"])
@@ -793,6 +919,10 @@ def profile():
             content.kindle_mail = to_save["kindle_mail"]
         if to_save["email"] and to_save["email"] != content.email:
             content.email = to_save["email"]
+        if "show_random" in to_save and to_save["show_random"] == "on":
+            content.random_books = 1
+        if "default_language" in to_save:
+            content.default_language = to_save["default_language"]
         if to_save["locale"]:
             content.locale = to_save["locale"]
         try:
@@ -800,9 +930,9 @@ def profile():
         except IntegrityError:
             ub.session.rollback()
             flash(_(u"Found an existing account for this email address."), category="error")
-            return render_template("user_edit.html", content=content, downloads=downloads, title=_(u"%(name)s's profile", name=current_user.nickname))
+            return render_template("user_edit.html", showrandom=current_user.show_random_books(), content=content, downloads=downloads, title=_(u"%(name)s's profile", name=current_user.nickname))
         flash(_(u"Profile updated"), category="success")
-    return render_template("user_edit.html",translations=translations, profile=1, content=content, downloads=downloads, title=_(u"%(name)s's profile", name=current_user.nickname))
+    return render_template("user_edit.html", translations=translations, showrandom=current_user.show_random_books(), profile=1, languages=languages, content=content, downloads=downloads, title=_(u"%(name)s's profile", name=current_user.nickname))
 
 @app.route("/admin/user")
 @login_required
@@ -810,7 +940,7 @@ def profile():
 def user_list():
     content = ub.session.query(ub.User).all()
     settings = ub.session.query(ub.Settings).first()
-    return render_template("user_list.html", content=content, email=settings, title=_(u"User list"))
+    return render_template("user_list.html", showrandom=current_user.show_random_books(), content=content, email=settings, title=_(u"User list"))
 
 @app.route("/admin/user/new", methods = ["GET", "POST"])
 @login_required
@@ -821,7 +951,7 @@ def new_user():
         to_save = request.form.to_dict()
         if not to_save["nickname"] or not to_save["email"] or not to_save["password"]:
             flash(_(u"Please fill out all fields!"), category="error")
-            return render_template("user_edit.html", new_user=1, content=content, title=_(u"Add new user"))
+            return render_template("user_edit.html", showrandom=current_user.show_random_books(), new_user=1, content=content, title=_(u"Add new user"))
         content.password = generate_password_hash(to_save["password"])
         content.nickname = to_save["nickname"]
         content.email = to_save["email"]
@@ -844,7 +974,7 @@ def new_user():
         except IntegrityError:
             ub.session.rollback()
             flash(_(u"Found an existing account for this email address or nickname."), category="error")
-    return render_template("user_edit.html", new_user=1, content=content, title=_(u"Add new user"))
+    return render_template("user_edit.html", showrandom=current_user.show_random_books(), new_user=1, content=content, title="Add new user")
 
 @app.route("/admin/user/mailsettings", methods = ["GET", "POST"])
 @login_required
@@ -867,7 +997,7 @@ def edit_mailsettings():
             flash(_(u"Mail settings updated"), category="success")
         except (e):
             flash(e, category="error")
-    return render_template("email_edit.html", content=content, title=_("Edit mail settings"))
+    return render_template("email_edit.html", showrandom=current_user.show_random_books(), content=content, title=_("Edit mail settings"))
 
 @app.route("/admin/user/<int:user_id>", methods = ["GET", "POST"])
 @login_required
@@ -875,6 +1005,7 @@ def edit_mailsettings():
 def edit_user(user_id):
     content = ub.session.query(ub.User).filter(ub.User.id == int(user_id)).first()
     downloads = list()
+    languages = db.session.query(db.Languages).all()
     translations = babel.list_translations() + [LC('en')]
     for book in content.downloads:
         downloads.append(db.session.query(db.Books).filter(db.Books.id == book.book_id).first())
@@ -912,7 +1043,11 @@ def edit_user(user_id):
                 content.role = content.role + ub.ROLE_PASSWD
             elif not "passwd_role" in to_save and content.role_passwd():
                 content.role = content.role - ub.ROLE_PASSWD
-           
+            content.random_books = 0
+            if "show_random" in to_save and to_save["show_random"] == "on":
+                content.random_books = 1
+            if "default_language" in to_save:
+                content.default_language = to_save["default_language"]
             if to_save["locale"]:
                 content.locale = to_save["locale"]
             if to_save["email"] and to_save["email"] != content.email:
@@ -925,7 +1060,7 @@ def edit_user(user_id):
         except IntegrityError:
             ub.session.rollback()
             flash(_(u"An unknown error occured."), category="error")
-    return render_template("user_edit.html", translations=translations, new_user=0, content=content, downloads=downloads, title=_(u"Edit User %(nick)s",nick=content.nickname))
+    return render_template("user_edit.html", translations=translations, languages=languages, showrandom=current_user.show_random_books(), new_user=0, content=content, downloads=downloads, title=_(u"Edit User %(nick)s",nick=content.nickname))
 
 @app.route("/admin/book/<int:book_id>", methods=['GET', 'POST'])
 @login_required
@@ -934,7 +1069,11 @@ def edit_book(book_id):
     ## create the function for sorting...
     db.session.connection().connection.connection.create_function("title_sort",1,db.title_sort)
     cc = db.session.query(db.Custom_Columns).filter(db.Custom_Columns.datatype.notin_(db.cc_exceptions)).all()
-    book = db.session.query(db.Books).filter(db.Books.id == book_id).first()
+    if current_user.filter_language() != "all":
+        filter = db.Books.languages.any(db.Languages.lang_code == current_user.filter_language())
+    else:
+        filter = True
+    book = db.session.query(db.Books).filter(db.Books.id == book_id).filter(filter).first()
     author_names = []
     if book:
         for author in book.authors:
@@ -1179,11 +1318,11 @@ def edit_book(book_id):
             for b in edited_books_id:
                 helper.update_dir_stucture(b)
             if "detail_view" in to_save:
-                return redirect(url_for('show_book', id=book.id, _external=True))
+                return redirect(url_for('show_book', showrandom=current_user.show_random_books(), id=book.id, _external=True))
             else:
-                return render_template('edit_book.html', book=book, authors=author_names, cc=cc)
+                return render_template('edit_book.html', showrandom=current_user.show_random_books(), book=book, authors=author_names, cc=cc)
         else:
-            return render_template('edit_book.html', book=book, authors=author_names, cc=cc)
+            return render_template('edit_book.html', showrandom=current_user.show_random_books(), book=book, authors=author_names, cc=cc)
     else:
         flash(_(u"Error opening eBook. File does not exist: "), category="error")
         return redirect('/' or url_for("index", _external=True))
@@ -1254,6 +1393,6 @@ def upload():
             author_names.append(author.name)
     cc = db.session.query(db.Custom_Columns).filter(db.Custom_Columns.datatype.notin_(db.cc_exceptions)).all()
     if current_user.role_edit() or current_user.role_admin():
-        return render_template('edit_book.html', book=db_book, authors=author_names, cc=cc)
+        return render_template('edit_book.html', showrandom=current_user.show_random_books(), book=db_book, authors=author_names, cc=cc)
     book_in_shelfs = []
-    return render_template('detail.html', entry=db_book,  cc=cc, title=db_book.title, books_shelfs=book_in_shelfs)
+    return render_template('detail.html', showrandom=current_user.show_random_books(), entry=db_book,  cc=cc, title=db_book.title, books_shelfs=book_in_shelfs)
