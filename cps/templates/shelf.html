@@ -2,6 +2,9 @@
 {% block body %}
 <div class="discover">
   <h2>{{title}}</h2>
+  {% if g.user.is_authenticated() %}
+  <a href=" {{ url_for('delete_shelf', shelf_id=shelf.id) }} " class="btn btn-danger">{{ _('Delete this Shelf') }} </a>
+  {% endif %}
   <div class="row">
 
     {% for entry in entries %}

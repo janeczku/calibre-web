@@ -882,7 +882,22 @@ def create_shelf():
     else:
         return render_template('shelf_edit.html',showrandom=current_user.show_random_books(), title=_(u"create a shelf"))
 
+@app.route("/shelf/delete/<int:shelf_id>")
+@login_required
+def delete_shelf(shelf_id):
+    cur_shelf = ub.session.query(ub.Shelf).filter(ub.Shelf.id == shelf_id).first()
+    deleted = 0
+    if current_user.role == ub.ROLE_ADMIN:
+        deleted = ub.session.query(ub.Shelf).filter(ub.Shelf.id == shelf_id).delete()
 
+    else:
+        deleted = ub.session.query(ub.Shelf).filter(ub.or_(ub.and_(ub.Shelf.user_id == int(current_user.id), ub.Shelf.id == shelf_id), ub.and_(ub.Shelf.is_public == 1, ub.Shelf.id == shelf_id))).delete()
+
+    if deleted:
+        ub.session.query(ub.BookShelf).filter(ub.BookShelf.shelf == shelf_id).delete()
+        ub.session.commit()
+        flash( _("successfully deleted shelf %(name)s", name=cur_shelf.name, category="success") )
+    return redirect(url_for('index'))
 
 @app.route("/shelf/<int:shelf_id>")
 @login_required_if_no_ano
