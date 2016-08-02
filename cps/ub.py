@@ -32,6 +32,8 @@ class User(Base):
     shelf = relationship('Shelf', backref = 'user', lazy = 'dynamic')
     whislist = relationship('Whislist', backref = 'user', lazy = 'dynamic')
     downloads = relationship('Downloads', backref= 'user', lazy = 'dynamic')
+    locale = Column(String(2), default="en")
+
 
     def is_authenticated(self):
         return True

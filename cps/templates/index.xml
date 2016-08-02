@@ -5,6 +5,7 @@
         href="{{url_for('feed_index')}}"
         type="application/atom+xml;profile=opds-catalog;kind=navigation"/>
   <link rel="start"
+        title="{{_('Start')}}"
         href="{{url_for('feed_index')}}"
         type="application/atom+xml;profile=opds-catalog;kind=navigation"/>
   <link rel="related"
@@ -14,6 +15,7 @@
         href="{{url_for('feed_index')}}"
         type="application/atom+xml;profile=opds-catalog;kind=navigation"/>
   <link rel="search"
+        title="{{_('Search')}}"
         href="{{url_for('feed_osd')}}"
         type="application/opensearchdescription+xml"/>
   <title>Calibre Web</title>
@@ -25,32 +27,32 @@
 
 
   <entry>
-    <title>Hot Books</title>
+    <title>{{_('Hot Books')}}</title>
     <link rel="http://opds-spec.org/sort/popular"
           href="{{url_for('feed_hot')}}"
           type="application/atom+xml;profile=opds-catalog;kind=acquisition"/>
     <updated>2010-01-10T10:01:01Z</updated>
     <id>urn:uuid:d49e8018-a0e0-499e-9423-7c175fa0c56e</id>
-    <content type="text">Popular publications from this catalog based on Rating.</content>
+	<content type="text">{{_('Popular publications from this catalog based on Rating.')}}</content>
   </entry>
 
   <entry>
-    <title>New Books</title>
+    <title>{{_('New Books')}}</title>
     <link rel="http://opds-spec.org/sort/popular"
           href="{{url_for('feed_new')}}"
           type="application/atom+xml;profile=opds-catalog;kind=acquisition"/>
     <updated>2010-01-10T10:01:01Z</updated>
     <id>urn:uuid:d49e8018-a0e0-499e-9423-7c175fa0c56e</id>
-    <content type="text">The latest Books</content>
+    <content type="text">{{_('The latest Books')}}</content>
   </entry>
 
   <entry>
-    <title>Random Books</title>
+    <title>{{_('Random Books')}}</title>
     <link rel="http://opds-spec.org/sort/random"
           href="{{url_for('feed_discover')}}"
           type="application/atom+xml;profile=opds-catalog;kind=acquisition"/>
     <updated>2010-01-10T10:01:01Z</updated>
     <id>urn:uuid:d49e8018-a0e0-499e-9423-7c175fa0c56e</id>
-    <content type="text">Show Random Books</content>
+    <content type="text">{{_('Show Random Books')}}</content>
   </entry>
 </feed>

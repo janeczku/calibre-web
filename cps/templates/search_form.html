@@ -3,14 +3,14 @@
 <div class="col-sm-8">
   <form role="form" action="{{ url_for('advanced_search') }}" method="GET">
     <div class="form-group">
-      <label for="book_title">Book Title</label>
+      <label for="book_title">{{_('Book Title')}}</label>
       <input type="text" class="form-control" name="book_title" id="book_title" value="">
     </div>
     <div class="form-group">
-      <label for="bookAuthor">Author</label>
+      <label for="bookAuthor">{{_('Author')}}</label>
       <input type="text" class="form-control typeahead" name="author_name" id="bookAuthor" value="" autocomplete="off">
     </div>
-    <label for="Tags">Include Tags</label>
+    <label for="Tags">{{_('Include Tags')}}</label>
     <div class="form-group">
       <div class="btn-toolbar btn-toolbar-lg" data-toggle="buttons">
         {% for tag in tags %}
@@ -20,7 +20,7 @@
         {% endfor %}
       </div>
     </div>
-    <label for="Tags">Exclude Tags</label>
+    <label for="Tags">{{_('Exclude Tags')}}</label>
     <div class="form-group">
       <div class="btn-toolbar btn-toolbar-lg" data-toggle="buttons">
         {% for tag in tags %}
@@ -30,7 +30,7 @@
         {% endfor %}
       </div>
     </div>
-    <button type="submit" class="btn btn-default">Submit</button>
+    <button type="submit" class="btn btn-default">{{_('Submit')}}</button>
   </form>
 </div>
 {% endblock %}
@@ -39,8 +39,8 @@
 <script src="{{ url_for('static', filename='js/typeahead.bundle.js') }}"></script>
 <script src="{{ url_for('static', filename='js/edit_books.js') }}"></script>
 <script>
-  $('form').on('change input typeahead:selected', function() {
-    form = $('form').serialize();
+  $('form')}}.on('change input typeahead:selected', function() {
+    form = $('form')}}.serialize();
     $.getJSON( "{{ url_for('get_matching_tags') }}", form, function( data ) {
       $('.tags_click').each(function() {
         if ($.inArray(parseInt($(this).children('input').first().val(), 10), data.tags) == -1 ) {

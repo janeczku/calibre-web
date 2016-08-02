@@ -23,9 +23,9 @@
    <Image height="16" width="16" type="image/vnd.microsoft.icon">http://example.com/websearch.ico</Image>
 -->
 
-   <Query role="example" searchTerms="shakespeare hamlet" />
+   <!--Query role="example" searchTerms="shakespeare hamlet" />
    <Query role="example" searchTerms="doyle detective" />
-   <Query role="example" searchTerms="love stories" />
+   <Query role="example" searchTerms="love stories" /-->
 
    <Attribution>Search Data Copyright 1971-2012, Project Gutenberg, All Rights Reserved.</Attribution>
    <SyndicationRight>open</SyndicationRight>
