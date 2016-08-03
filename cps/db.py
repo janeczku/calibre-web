@@ -20,7 +20,7 @@ def title_sort(title):
 
 
 dbpath = os.path.join(config.DB_ROOT, "metadata.db")
-engine = create_engine('sqlite:///{0}'.format(dbpath), echo=False)
+engine = create_engine('sqlite:///{0}'.format(dbpath.encode('utf-8')), echo=False)
 conn = engine.connect()
 conn.connection.create_function('title_sort', 1, title_sort)
 Base = declarative_base()
