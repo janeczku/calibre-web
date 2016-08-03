@@ -6,7 +6,7 @@ import sys
 from configobj import ConfigObj
 
 
-CONFIG_FILE= os.path.join(os.getcwd(), "config.ini")
+CONFIG_FILE= os.path.join(os.path.dirname(os.path.realpath(__file__))+"\\..\\", "config.ini")
 CFG = ConfigObj(CONFIG_FILE)
 
 def CheckSection(sec):
