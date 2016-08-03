@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from sqlalchemy import *
+from sqlalchemy import exc
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import *
 import os
@@ -156,6 +157,15 @@ class Settings(Base):
         #return '<Smtp %r>' % (self.mail_server)
         pass
 
+def migrate_Database():
+    try:
+        session.query(exists().where(User.random_books)).scalar()
+    except exc.OperationalError: # Database is not compatible, some rows are missing
+        conn=engine.connect()
+        conn.execute("ALTER TABLE user ADD column random_books INTEGER DEFAULT 1")
+        conn.execute("ALTER TABLE user ADD column locale String(2) DEFAULT 'en'")
+        conn.execute("ALTER TABLE user ADD column default_language String(3) DEFAULT 'all'")
+
 def create_default_config():
     settings = Settings()
     settings.mail_server = "mail.example.com"
@@ -209,4 +219,6 @@ if not os.path.exists(dbpath):
         create_admin_user()
     except Exception:
         pass
+else:
+    migrate_Database()
 
