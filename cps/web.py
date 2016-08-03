@@ -1271,7 +1271,7 @@ def edit_book(book_id):
                                 if new_cc == None:
                                     new_cc = cc_class(value=to_save[cc_string].strip())
                                     db.session.add(new_cc)
-                                    new_cc = db.session.update(cc_class).filter(cc_class.value == to_save[cc_string].strip()).first()
+                                    new_cc = db.session.query(cc_class).filter(cc_class.value == to_save[cc_string].strip()).first()
                                 # add cc value to book
                                 getattr(book, cc_string).append(new_cc)
                     else:
