@@ -43,7 +43,7 @@
       <div class="container-fluid">
         <div class="navbar-header">
           <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-            <span class="sr-only">Toggle navigation</span>
+            <span class="sr-only">{{_('Toggle navigation')}}</span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
@@ -51,40 +51,43 @@
           <a class="navbar-brand" href="{{url_for('index')}}">Calibre Web</a>
         </div>
         <div class="navbar-collapse collapse">
+          {% if g.user.is_authenticated() or g.user.is_anonymous() %}
           <ul class="nav navbar-nav ">
             <li>
               <form class="navbar-form navbar-left" role="search" action="/search" method="GET">
                 <div class="form-group">
-                  <input type="text" class="form-control" name="query" placeholder="Search">
+                  <input type="text" class="form-control" name="query" placeholder="{{_('Search')}}">
                 </div>
-                <button type="submit" class="btn btn-default">Go!</button>
+                <button type="submit" class="btn btn-default">{{_('Go!')}}</button>
               </form>
             </li>
-            <li><a href="{{url_for('advanced_search')}}"><span class="glyphicon glyphicon-search"></span> Advanced Search</a></li>
+            <li><a href="{{url_for('advanced_search')}}"><span class="glyphicon glyphicon-search"></span> {{_('Advanced Search')}}</a></li>
           </ul>
+          {% endif %}
           <ul class="nav navbar-nav navbar-right" id="main-nav">
-            {% if g.user.is_authenticated() %}
+            {% if g.user.is_authenticated() or g.user.is_anonymous() %}
               {% if g.user.role_upload() or g.user.role_admin()%}
-              {% if g.allow_upload %}
-                  <li>
-                    <form id="form-upload" class="navbar-form" action="{{ url_for('upload') }}" method="post" enctype="multipart/form-data">
-                      <div class="form-group">
-                        <span class="btn btn-default btn-file">Upload <input id="btn-upload" name="btn-upload" type="file"></span>
-                      </div>
-                    </form>
-                  </li>
-              {% endif %}
+                {% if g.allow_upload %}
+                    <li>
+                      <form id="form-upload" class="navbar-form" action="{{ url_for('upload') }}" method="post" enctype="multipart/form-data">
+                        <div class="form-group">
+                          <span class="btn btn-default btn-file">{{_('Upload')}} <input id="btn-upload" name="btn-upload" type="file"></span>
+                        </div>
+                      </form>
+                    </li>
+                {% endif %}
               {% endif %}
               {% if g.user.role_admin() %}
-                <li><a href="{{url_for('user_list')}}"><span class="glyphicon glyphicon-dashboard"></span> Admin</a></li>
+                <li><a href="{{url_for('user_list')}}"><span class="glyphicon glyphicon-dashboard"></span> {{_('Admin')}}</a></li>
               {% endif %}
               <li><a href="{{url_for('profile')}}"><span class="glyphicon glyphicon-user"></span> {{g.user.nickname}}</a></li>
-              <li><a href="{{url_for('logout', next='%s%s' % (request.script_root, request.path))}}"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
-            {% else %}
-              <li><a href="{{url_for('login', next='%s%s' % (request.script_root, request.path))}}"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
-              {% if g.allow_registration %}
-              <li><a href="{{url_for('register')}}"><span class="glyphicon glyphicon-user"></span> Register</a></li>
+              {% if not g.user.is_anonymous() %}
+              <li><a href="{{url_for('logout', next='%s%s' % (request.script_root, request.path))}}"><span class="glyphicon glyphicon-log-out"></span> {{_('Logout')}}</a></li>
               {% endif %}
+            {% endif %}
+            {% if g.allow_registration and not g.user.is_authenticated() %}
+            <li><a href="{{url_for('login', next='%s%s' % (request.script_root, request.path))}}"><span class="glyphicon glyphicon-log-in"></span> {{_('Login')}}</a></li>
+            <li><a href="{{url_for('register')}}"><span class="glyphicon glyphicon-user"></span> {{_('Register')}}</a></li>
             {% endif %}
           </ul>
         </div><!--/.nav-collapse -->
@@ -109,30 +112,37 @@
     {% endfor %}
     <div class="container-fluid">
       <div class="row-fluid">
+        {% if g.user.is_authenticated() or g.user.is_anonymous() %}
         <div class="col-sm-2">
           <nav class="navigation">
             <ul class="list-unstyled" id="scnd-nav" intent in-standard-append="nav.navigation" in-mobile-after="#main-nav" in-mobile-class="nav navbar-nav">
-              <li class="nav-head hidden-xs">Browse</li>
-              <li><a href="{{url_for('index')}}"><span class="glyphicon glyphicon-book"></span> New Books</a></li>
-              <li><a href="{{url_for('hot_books')}}"><span class="glyphicon glyphicon-fire"></span> Hot Books</a></li>
-              <li><a href="{{url_for('discover')}}"><span class="glyphicon glyphicon-random"></span> Discover</a></li>
-              <li><a href="{{url_for('category_list')}}"><span class="glyphicon glyphicon-inbox"></span> Categories</a></li>
-              <li><a href="{{url_for('author_list')}}"><span class="glyphicon glyphicon-user"></span> Authors</a></li>
+              <li class="nav-head hidden-xs">{{_('Browse')}}</li>
+              <li><a href="{{url_for('index')}}"><span class="glyphicon glyphicon-book"></span> {{_('New Books')}}</a></li>
+              <li><a href="{{url_for('hot_books')}}"><span class="glyphicon glyphicon-fire"></span> {{_('Hot Books')}}</a></li>
+              {% if showrandom > 0 %}              
+              <li><a href="{{url_for('discover')}}"><span class="glyphicon glyphicon-random"></span> {{_('Discover')}}</a></li>
+              {%endif%}
+              <li><a href="{{url_for('category_list')}}"><span class="glyphicon glyphicon-inbox"></span> {{_('Categories')}}</a></li>
+              <li><a href="{{url_for('author_list')}}"><span class="glyphicon glyphicon-user"></span> {{_('Authors')}}</a></li>
+              <li><a href="{{url_for('language_overview')}}"><span class="glyphicon glyphicon-flag"></span> {{_('Languages')}} </a></li>
 
-              {% if g.user.is_authenticated() %}
-                <li class="nav-head hidden-xs">Public Shelves</li>
+              {% if g.user.is_authenticated() or g.user.is_anonymous() %}
+                <li class="nav-head hidden-xs">{{_('Public Shelves')}}</li>
                 {% for shelf in g.public_shelfes %}
                   <li><a href="{{url_for('show_shelf', shelf_id=shelf.id)}}"><span class="glyphicon glyphicon-list"></span> {{shelf.name}}</a></li>
                 {% endfor %}
-                <li class="nav-head hidden-xs">Your Shelves</li>
+                <li class="nav-head hidden-xs">{{_('Your Shelves')}}</li>
                 {% for shelf in g.user.shelf %}
                   <li><a href="{{url_for('show_shelf', shelf_id=shelf.id)}}"><span class="glyphicon glyphicon-list"></span> {{shelf.name}}</a></li>
                 {% endfor %}
-                <li class="create-shelf"><a href="{{url_for('create_shelf')}}">Create a Shelf</a></li>
+              {% if not g.user.is_anonymous() %}
+                <li class="create-shelf"><a href="{{url_for('create_shelf')}}">{{_('Create a Shelf')}}</a></li>
+              {% endif %}
               {% endif %}
             </ul>
           </nav>
         </div>
+        {% endif %}
         <div class="col-sm-10">
           {% block body %}{% endblock %}
           {% if pagination %}

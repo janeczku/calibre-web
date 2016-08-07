@@ -11,42 +11,49 @@
 <div class="col-sm-8">
   <form role="form" action="{{ url_for('edit_book', book_id=book.id) }}" method="post">
     <div class="form-group">
-      <label for="book_title">Book Title</label>
+      <label for="book_title">{{_('Book Title')}}</label>
       <input type="text" class="form-control" name="book_title" id="book_title" value="{{book.title}}">
     </div>
     <div class="form-group">
-      <label for="bookAuthor">Author</label>
+      <label for="bookAuthor">{{_('Author')}}</label>
       <input type="text" class="form-control typeahead" name="author_name" id="bookAuthor" value="{{' & '.join(authors)}}" autocomplete="off">
     </div>
     <div class="form-group">
-      <label for="description">Description</label>
+      <label for="description">{{_('Description')}}</label>
       <textarea class="form-control" name="description" id="description" rows="7">{% if book.comments %}{{book.comments[0].text}}{%endif%}</textarea>
     </div>
     <div class="form-group">
-      <label for="tags">Tags</label>
+      <label for="tags">{{_('Tags')}}</label>
       <input type="text" class="form-control" name="tags" id="tags" value="{% for tag in book.tags %}{{tag.name.strip()}}, {% endfor %}">
     </div>
 
       <div class="form-group">
-        <label for="series">Series</label>
+        <label for="series">{{_('Series')}}</label>
         <input type="text" class="form-control" name="series" id="series" value="{% if book.series %}{{book.series[0].name}}{% endif %}">
       </div>
       <div class="form-group">
-        <label for="series_index">Series id</label>
+        <label for="series_index">{{_('Series id')}}</label>
         <input type="text" class="form-control" name="series_index" id="series_index" value="{{book.series_index}}">
       </div>
       <div class="form-group">
-        <label for="rating">Rating</label>
+        <label for="rating">{{_('Rating')}}</label>
         <input type="number" min="1" max="5" step="1" class="form-control" name="rating" id="rating" value="{% if book.ratings %}{{book.ratings[0].rating / 2}}{% endif %}">
       </div>
       <div class="form-group">
-        <label for="cover_url">Cover URL (jpg)</label>
+        <label for="cover_url">{{_('Cover URL (jpg)')}}</label>
         <input type="text" class="form-control" name="cover_url" id="cover_url" value="">
       </div>
       {% if cc|length > 0 %}
         {% for c in cc %}
           <div class="form-group">
             <label for="{{ 'custom_column_' ~ c.id }}">{{ c.name }}</label>
+            {% if c.datatype == 'bool' %}
+              <select name="{{ 'custom_column_' ~ c.id }}" id="{{ 'custom_column_' ~ c.id }}" class="form-control">
+                <option value="None" {% if book['custom_column_' ~ c.id]|length == 0 %} selected {% endif %}></option>
+                <option value="True"  {% if book['custom_column_' ~ c.id]|length > 0 %}{% if book['custom_column_' ~ c.id][0].value ==true %}selected{% endif %}{% endif %} >{{_('Yes')}}</option>
+                <option value="False"  {% if book['custom_column_' ~ c.id]|length > 0 %}{% if book['custom_column_' ~ c.id][0].value ==false %}selected{% endif %}{% endif %}>{{_('No')}}</option>
+              </select>
+            {% endif %}
             {% if c.datatype in ['text', 'series'] and not c.is_multiple %}
               <input type="text" class="form-control" name="{{ 'custom_column_' ~ c.id }}" id="{{ 'custom_column_' ~ c.id }}"
               {% if book['custom_column_' ~ c.id]|length > 0 %}
@@ -72,7 +79,7 @@
                   {% endfor %}
               </select>
             {% endif %}
-            
+
             {% if c.datatype == 'rating' %}
               <input type="number" min="1" max="5" step="1" class="form-control" name="{{ 'custom_column_' ~ c.id }}" id="{{ 'custom_column_' ~ c.id }}"
                 {% if book['custom_column_' ~ c.id]|length > 0 %}
@@ -86,10 +93,10 @@
       
     <div class="checkbox">
       <label>
-        <input name="detail_view" type="checkbox" checked> view book after edit
+        <input name="detail_view" type="checkbox" checked> {{_('view book after edit')}}
       </label>
     </div>
-    <button type="submit" class="btn btn-default">Submit</button>
+    <button type="submit" class="btn btn-default">{{_('Submit')}}</button>
   </form>
 </div>
 {% endif %}

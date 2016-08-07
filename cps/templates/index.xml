@@ -5,19 +5,15 @@
         href="{{url_for('feed_index')}}"
         type="application/atom+xml;profile=opds-catalog;kind=navigation"/>
   <link rel="start"
-        href="{{url_for('feed_index')}}"
-        type="application/atom+xml;profile=opds-catalog;kind=navigation"/>
-  <link rel="related"
-        href="{{url_for('feed_index')}}"
-        type="application/atom+xml;profile=opds-catalog;kind=acquisition"/>
-  <link rel="up"
+        title="{{_('Start')}}"
         href="{{url_for('feed_index')}}"
         type="application/atom+xml;profile=opds-catalog;kind=navigation"/>
   <link rel="search"
+        title="{{_('Search')}}"
         href="{{url_for('feed_osd')}}"
         type="application/opensearchdescription+xml"/>
   <title>Calibre Web</title>
-  <updated>2010-01-10T10:03:10Z</updated>
+  <updated>{{Last_Updated.last_modified}}</updated>
   <author>
     <name>Calibre Web</name>
     <uri>https://github.com/janeczku/calibre-web</uri>
@@ -25,32 +21,32 @@
 
 
   <entry>
-    <title>Hot Books</title>
+    <title>{{_('Hot Books')}}</title>
     <link rel="http://opds-spec.org/sort/popular"
           href="{{url_for('feed_hot')}}"
           type="application/atom+xml;profile=opds-catalog;kind=acquisition"/>
-    <updated>2010-01-10T10:01:01Z</updated>
-    <id>urn:uuid:d49e8018-a0e0-499e-9423-7c175fa0c56e</id>
-    <content type="text">Popular publications from this catalog based on Rating.</content>
+    <updated>{{Last_Updated.last_modified}}</updated>
+    <id>{{url_for('feed_hot')}}</id>
+    <content type="text">{{_('Popular publications from this catalog based on Rating.')}}</content>
   </entry>
 
   <entry>
-    <title>New Books</title>
-    <link rel="http://opds-spec.org/sort/popular"
+    <title>{{_('New Books')}}</title>
+    <link rel="http://opds-spec.org/sort/new"
           href="{{url_for('feed_new')}}"
           type="application/atom+xml;profile=opds-catalog;kind=acquisition"/>
-    <updated>2010-01-10T10:01:01Z</updated>
-    <id>urn:uuid:d49e8018-a0e0-499e-9423-7c175fa0c56e</id>
-    <content type="text">The latest Books</content>
+    <updated>{{Last_Updated.last_modified}}</updated>
+    <id>{{url_for('feed_new')}}</id>
+    <content type="text">{{_('The latest Books')}}</content>
   </entry>
 
   <entry>
-    <title>Random Books</title>
-    <link rel="http://opds-spec.org/sort/random"
+    <title>{{_('Random Books')}}</title>
+    <link rel="http://opds-spec.org/featured"
           href="{{url_for('feed_discover')}}"
           type="application/atom+xml;profile=opds-catalog;kind=acquisition"/>
-    <updated>2010-01-10T10:01:01Z</updated>
-    <id>urn:uuid:d49e8018-a0e0-499e-9423-7c175fa0c56e</id>
-    <content type="text">Show Random Books</content>
+    <updated>{{Last_Updated.last_modified}}</updated>
+    <id>{{url_for('feed_discover')}}</id>
+    <content type="text">{{_('Show Random Books')}}</content>
   </entry>
 </feed>

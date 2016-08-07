@@ -7,17 +7,18 @@
   <link rel="start"
         href="{{url_for('feed_index')}}"
         type="application/atom+xml;profile=opds-catalog;kind=navigation"/>
-  <link rel="related"
-        href="{{url_for('feed_index')}}"
-        type="application/atom+xml;profile=opds-catalog;kind=acquisition"/>
   <link rel="up"
         href="{{url_for('feed_index')}}"
+        type="application/atom+xml;profile=opds-catalog;kind=navigation"/>
+  <link rel="next"
+        title="{{_('Next')}}"
+        href="{{ next_url }}"
         type="application/atom+xml;profile=opds-catalog;kind=navigation"/>
   <link rel="search"
         href="{{url_for('feed_osd')}}"
         type="application/opensearchdescription+xml"/>
   <title>Calibre Web</title>
-  <updated>2010-01-10T10:03:10Z</updated>
+  <updated>{{Last_Updated.last_modified}}</updated>
   <author>
     <name>Calibre Web</name>
     <uri>https://github.com/janeczku/calibre-web</uri>
@@ -27,7 +28,7 @@
   <entry>
     <title>{{entry.title}}</title>
     <id>{{entry.uuid}}</id>
-    <updated>{{entry.last_modified}}</updated>
+    <updated>{{entry.timestamp}}</updated>
     <author>
       <name>{{entry.authors[0].name}}</name>
       <uri>{{entry.authors[0].name}}</uri>
@@ -41,17 +42,12 @@
     <summary>{% if entry.comments[0] %}{{entry.comments[0].text|striptags}}{% endif %}</summary>
     {% if entry.has_cover %}
     <link rel="http://opds-spec.org/image"
-          href="{{ url_for('get_cover', cover_path=entry.path) }}"
+          href="{{ url_for('feed_get_cover', cover_path=entry.path) }}"
           type="image/jpg"/>
     <link rel="http://opds-spec.org/image/thumbnail"
-          href="{{ url_for('get_cover', cover_path=entry.path) }}"
+          href="{{ url_for('feed_get_cover', cover_path=entry.path) }}"
           type="image/jpg"/>
     {% endif %}
-
-    <link rel="alternate"
-          href="/opds-catalogs/entries/4571.complete.xml"
-          type="application/atom+xml;type=entry;profile=opds-catalog"
-          title="Complete Catalog Entry for Bob, Son of Bob"/>
 
     {% for format in entry.data %}
     <link rel="http://opds-spec.org/acquisition"
