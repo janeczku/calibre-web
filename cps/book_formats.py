@@ -70,8 +70,9 @@ def pdf_meta(tmp_file_path, original_file_name, original_file_extension):
         doc_info = None
 
     if (doc_info is not None):
-        author = doc_info.author
-        title = doc_info.title
+        print doc_info
+        author = doc_info.author if doc_info.author is not None else "Unknown"
+        title = doc_info.title if doc_info.title is not None else original_file_name
         subject = doc_info.subject
     else:
         author = "Unknown"
