@@ -25,11 +25,6 @@ from sqlalchemy.sql import *
 import json
 import datetime
 from uuid import uuid4
-try:
-    from wand.image import Image
-    use_generic_pdf_cover = False
-except ImportError, e:
-    use_generic_pdf_cover = True
 from shutil import copyfile
 
 class ReverseProxied(object):
@@ -78,6 +73,9 @@ file_handler.setLevel(logging.INFO)
 file_handler.setFormatter(formatter)
 app.logger.addHandler(file_handler)
 app.logger.info('Starting Calibre Web...')
+logging.getLogger("book_formats").addHandler(file_handler)
+logging.getLogger("book_formats").setLevel(logging.INFO)
+
 
 Principal(app)
 
@@ -1123,6 +1121,9 @@ def edit_book(book_id):
     else:
         return render_template('edit_book.html', book=book, authors=author_names, cc=cc)
 
+import uploader
+from shutil import move
+
 @app.route("/upload", methods = ["GET", "POST"])
 @login_required
 @upload_required
@@ -1134,20 +1135,16 @@ def upload():
     db.session.connection().connection.connection.create_function('uuid4', 0, lambda : str(uuid4()))
     if request.method == 'POST' and 'btn-upload' in request.files:
         file = request.files['btn-upload']
-        filename = file.filename
-        filename_root, fileextension = os.path.splitext(filename)
-        if fileextension.upper() == ".PDF":
-            title = filename_root
-            author = "Unknown"
-        else: 
-            flash("Upload is only available for PDF files", category="error")
-            return redirect(url_for('index', _external=True))
-        
+        meta = uploader.upload(file)
+
+        title = meta.title
+        author = meta.author
+
         title_dir = helper.get_valid_filename(title, False)
         author_dir = helper.get_valid_filename(author.decode('utf-8'), False)
         data_name = title_dir
         filepath = config.DB_ROOT + "/" + author_dir + "/" + title_dir
-        saved_filename = filepath + "/" + data_name + fileextension
+        saved_filename = filepath + "/" + data_name + meta.extension
         if not os.path.exists(filepath):
             try:
                 os.makedirs(filepath)
@@ -1155,21 +1152,20 @@ def upload():
                 flash("Failed to create path %s (Permission denied)." % filepath, category="error")
                 return redirect(url_for('index', _external=True))
         try:
-            file.save(saved_filename)
+            move(meta.file_path, saved_filename)
         except OSError:
             flash("Failed to store file %s (Permission denied)." % saved_filename, category="error")
             return redirect(url_for('index', _external=True))
+
         file_size = os.path.getsize(saved_filename)
-        has_cover = 0
-        if fileextension.upper() == ".PDF":
-            if use_generic_pdf_cover:
-                basedir = os.path.dirname(__file__)
-                copyfile(os.path.join(basedir, "static/generic_cover.jpg"), os.path.join(filepath, "cover.jpg"))
-            else:
-                with Image(filename=saved_filename + "[0]", resolution=150) as img:
-                    img.compression_quality = 88
-                    img.save(filename=os.path.join(filepath, "cover.jpg"))
-                    has_cover = 1
+        if meta.cover is None:
+            has_cover = 0
+            basedir = os.path.dirname(__file__)
+            copyfile(os.path.join(basedir, "static/generic_cover.jpg"), os.path.join(filepath, "cover.jpg"))
+        else:
+            has_cover = 1
+            move(meta.cover, os.path.join(filepath, "cover.jpg"))
+
         is_author = db.session.query(db.Authors).filter(db.Authors.name == author).first()
         if is_author:
             db_author = is_author
@@ -1179,7 +1175,7 @@ def upload():
         path = os.path.join(author_dir, title_dir)
         db_book = db.Books(title, "", "", datetime.datetime.now(), datetime.datetime(101, 01,01), 1, datetime.datetime.now(), path, has_cover, db_author, [])
         db_book.authors.append(db_author)
-        db_data = db.Data(db_book, fileextension.upper()[1:], file_size, data_name)
+        db_data = db.Data(db_book, meta.extension.upper()[1:], file_size, data_name)
         db_book.data.append(db_data)
         
         db.session.add(db_book)
