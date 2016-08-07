@@ -1140,7 +1140,7 @@ def upload():
         title = meta.title
         author = meta.author
 
-        title_dir = helper.get_valid_filename(title, False)
+        title_dir = helper.get_valid_filename(title.decode('utf-8'), False)
         author_dir = helper.get_valid_filename(author.decode('utf-8'), False)
         data_name = title_dir
         filepath = config.DB_ROOT + "/" + author_dir + "/" + title_dir
