@@ -8,7 +8,7 @@ import sys
 import textwrap
 mimetypes.add_type('application/xhtml+xml','.xhtml')
 from flask import Flask, render_template, session, request, Response, redirect, url_for, send_from_directory, make_response, g, flash, abort
-from cps import db, config, ub, helper
+import db, config, ub, helper
 import os
 import errno
 from sqlalchemy.sql.expression import func

@@ -5,8 +5,7 @@ import os
 import sys
 from configobj import ConfigObj
 
-
-CONFIG_FILE= os.path.join(os.getcwd(), "config.ini")
+CONFIG_FILE= os.path.join(os.path.normpath(os.path.dirname(os.path.realpath(__file__))+os.sep+".."+os.sep), "config.ini")
 CFG = ConfigObj(CONFIG_FILE)
 CFG.encoding='UTF-8'
 
