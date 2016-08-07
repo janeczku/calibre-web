@@ -52,7 +52,7 @@ books_languages_link = Table('books_languages_link', Base.metadata,
 
 cc = conn.execute("SELECT id, datatype FROM custom_columns")
 cc_ids = []
-cc_exceptions = ['bool', 'datetime', 'int', 'comments', 'float', ]
+cc_exceptions = ['bool', 'datetime', 'int', 'comments', 'float', 'composite','series' ]
 books_custom_column_links = {}
 for row in cc:
     if row.datatype not in cc_exceptions:
