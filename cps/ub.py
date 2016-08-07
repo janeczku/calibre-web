@@ -5,7 +5,7 @@ from sqlalchemy import *
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import *
 import os
-from cps import config
+import config
 from werkzeug.security import generate_password_hash
 
 dbpath = os.path.join(config.APP_DB_ROOT, "app.db")
