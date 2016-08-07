@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from cps import db, ub
-from cps import config
+import db, ub
+import config
 from flask import current_app as app
 
 import smtplib
