@@ -8,6 +8,7 @@ from configobj import ConfigObj
 
 CONFIG_FILE= os.path.join(os.getcwd(), "config.ini")
 CFG = ConfigObj(CONFIG_FILE)
+CFG.encoding='UTF-8'
 
 def CheckSection(sec):
     """ Check if INI section exists, if not create it """
@@ -20,8 +21,8 @@ def CheckSection(sec):
 
 def check_setting_str(config, cfg_name, item_name, def_val, log=True):
     try:
-        my_val = config[cfg_name][item_name]
-        if my_val == "":
+        my_val = config[cfg_name][item_name].decode('UTF-8')
+        if my_val == u"":
             my_val = def_val
             config[cfg_name][item_name] = my_val
     except:
@@ -82,7 +83,7 @@ configval["UPLOADING"] = UPLOADING
 configval["ANON_BROWSE"] = ANON_BROWSE
 
 def save_config(configval):
-    new_config = ConfigObj()
+    new_config = ConfigObj(encoding='UTF-8')
     new_config.filename = CONFIG_FILE
     new_config['General'] = {}
     new_config['General']['DB_ROOT'] = configval["DB_ROOT"]
