@@ -749,7 +749,7 @@ def profile():
         if current_user.role_passwd() or current_user.role_admin():
             if to_save["password"]:
                 content.password = generate_password_hash(to_save["password"])
-        if to_save["kindle_mail"] and to_save["kindle_mail"] != content.kindle_mail:
+        if "kindle_mail" in to_save and to_save["kindle_mail"] != content.kindle_mail:
             content.kindle_mail = to_save["kindle_mail"]
         if to_save["email"] and to_save["email"] != content.email:
             content.email = to_save["email"]
@@ -870,10 +870,13 @@ def edit_user(user_id):
             elif not "passwd_role" in to_save and content.role_passwd():
                 content.role = content.role - ub.ROLE_PASSWD
            
+            print content.role
+            
             if to_save["email"] and to_save["email"] != content.email:
                 content.email = to_save["email"]
-            if to_save["kindle_mail"] and to_save["kindle_mail"] != content.kindle_mail:
+            if "kindle_mail" in to_save and to_save["kindle_mail"] != content.kindle_mail:
                 content.kindle_mail = to_save["kindle_mail"]
+
         try:
             ub.session.commit()
             flash("User '%s' updated" % content.nickname, category="success")
