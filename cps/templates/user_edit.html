@@ -21,7 +21,7 @@
     {% endif %}
     <div class="form-group">
       <label for="kindle_mail">Kindle E-Mail</label>
-      <input type="text" class="form-control" name="kindle_mail" id="kindle_mail" value="{{ content.kindle_mail if content.kindle_mail != None }}">
+      <input type="email" class="form-control" name="kindle_mail" id="kindle_mail" value="{{ content.kindle_mail if content.kindle_mail != None }}">
     </div>
     {% if g.user and g.user.role_admin() and not profile %}
     <div class="form-group">
