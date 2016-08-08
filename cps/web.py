@@ -869,8 +869,6 @@ def edit_user(user_id):
                 content.role = content.role + ub.ROLE_PASSWD
             elif not "passwd_role" in to_save and content.role_passwd():
                 content.role = content.role - ub.ROLE_PASSWD
-           
-            print content.role
             
             if to_save["email"] and to_save["email"] != content.email:
                 content.email = to_save["email"]
