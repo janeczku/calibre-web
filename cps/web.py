@@ -256,7 +256,7 @@ def feed_osd():
 @app.route("/feed/search", methods=["GET"])
 @requires_basic_auth_if_no_ano
 def feed_search():
-    term = request.args.get("query")
+    term = request.args.get("query").strip()
     if term:
         random = db.session.query(db.Books).order_by(func.random()).limit(config.RANDOM_BOOKS)
         entries = db.session.query(db.Books).filter(db.or_(db.Books.tags.any(db.Tags.name.like("%"+term+"%")),db.Books.authors.any(db.Authors.name.like("%"+term+"%")),db.Books.title.like("%"+term+"%"))).all()
@@ -474,7 +474,7 @@ def admin():
 @app.route("/search", methods=["GET"])
 @login_required_if_no_ano
 def search():
-    term = request.args.get("query")
+    term = request.args.get("query").strip()
     if term:
         random = db.session.query(db.Books).order_by(func.random()).limit(config.RANDOM_BOOKS)
         entries = db.session.query(db.Books).filter(db.or_(db.Books.tags.any(db.Tags.name.like("%"+term+"%")),db.Books.series.any(db.Series.name.like("%"+term+"%")),db.Books.authors.any(db.Authors.name.like("%"+term+"%")),db.Books.title.like("%"+term+"%"))).all()
@@ -489,8 +489,8 @@ def advanced_search():
         q = db.session.query(db.Books)
         include_tag_inputs = request.args.getlist('include_tag')
         exclude_tag_inputs = request.args.getlist('exclude_tag')
-        author_name = request.args.get("author_name")
-        book_title = request.args.get("book_title")
+        author_name = request.args.get("author_name").strip()
+        book_title = request.args.get("book_title").strip()
         if include_tag_inputs or exclude_tag_inputs or author_name or book_title:
             searchterm = []
             searchterm.extend((author_name, book_title))
