@@ -103,6 +103,8 @@ def send_mail(book_id, kindle_mail):
         filepath = make_mobi(book.id)
         if filepath is not None:
             msg.attach(get_attachment(filepath))
+        elif filepath is None:
+            return "Could not convert epub to mobi"
         elif 'pdf' in formats:
             msg.attach(get_attachment(formats['pdf']))
     elif 'pdf' in formats:
