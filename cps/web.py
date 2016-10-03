@@ -489,8 +489,10 @@ def advanced_search():
         q = db.session.query(db.Books)
         include_tag_inputs = request.args.getlist('include_tag')
         exclude_tag_inputs = request.args.getlist('exclude_tag')
-        author_name = request.args.get("author_name").strip()
-        book_title = request.args.get("book_title").strip()
+        author_name = request.args.get("author_name")
+        book_title = request.args.get("book_title")
+        if author_name: author_name=author_name.strip()
+        if book_title : book_title=book_title.strip()
         if include_tag_inputs or exclude_tag_inputs or author_name or book_title:
             searchterm = []
             searchterm.extend((author_name, book_title))
