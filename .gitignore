@@ -18,3 +18,4 @@ eggs/
 *.log
 config.ini
 
+.idea/

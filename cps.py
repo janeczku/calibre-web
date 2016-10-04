@@ -5,7 +5,7 @@ import sys
 base_path = os.path.dirname(os.path.abspath(__file__))
 
 # Insert local directories into path
-sys.path.append(os.path.join(base_path, 'vendor'))
+sys.path.insert(0,os.path.join(base_path, 'vendor'))
 
 from cps import web
 from cps import config
