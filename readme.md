@@ -53,3 +53,50 @@ Optionally, to enable on-the-fly conversion from EPUB to MOBI when using the sen
 ## Docker image
 
 Calibre Web can be run as Docker container. The latest image is available on [Docker Hub](https://registry.hub.docker.com/u/janeczku/calibre-web/).
+
+## Reverse Proxy
+
+Reverse proxy configuration examples for apache and nginx to use calibre-web:
+
+nginx configuration for a local server listening on port 8080, mapping calibre web to /calibre:
+
+```
+http {
+    upstream calibre {
+        server  127.0.0.1:8083;
+    }
+    server {
+            location /calibre {
+                proxy_bind              $server_addr;
+                proxy_pass              http://127.0.0.1:8080;
+                proxy_set_header        Host            $http_host;
+                proxy_set_header        X-Forwarded-For $proxy_add_x_forwarded_for;
+                proxy_set_header        X-Scheme        $scheme;
+                proxy_set_header        X-Script-Name   /calibre;
+        }
+    }
+}
+```
+
+Apache 2.4 configuration for a local server listening on port 443, mapping calibre web to /calibre-web:
+
+The following modules have to be activated: headers, proxy, proxy_html, proxy_http, rewrite, xml2enc.
+```
+Listen 443
+
+<VirtualHost *:443>
+    SSLEngine on
+    SSLProxyEngine on
+    SSLCipherSuite ALL:!ADH:!EXPORT56:RC4+RSA:+HIGH:+MEDIUM:+LOW:+SSLv2:+EXP:+eNULL
+    SSLCertificateFile "C:\Apache24\conf\ssl\test.crt"
+    SSLCertificateKeyFile "C:\Apache24\conf\ssl\test.key"
+    
+    <Location /calibre-web>       
+           ProxyHTMLEnable On
+           ProxyPass            http://127.0.0.1:8083/
+           ProxyPassReverse     http://127.0.0.1:8083/  
+           Header edit Location "^http://(.*?)/" "https://$1/calibre-web/"
+           ProxyHTMLURLMap      /  /calibre-web/       
+    </Location>
+</VirtualHost>
+```
