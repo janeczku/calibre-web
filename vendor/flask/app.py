@@ -265,7 +265,7 @@ class Flask(_PackageBoundObject):
 
     #: Options that are passed directly to the Jinja2 environment.
     jinja_options = ImmutableDict(
-        extensions=['jinja2.ext.autoescape', 'jinja2.ext.with_']
+        extensions=['jinja2.ext.autoescape', 'jinja2.ext.with_','jinja2.ext.loopcontrols']
     )
 
     #: Default configuration parameters.

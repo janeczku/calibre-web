@@ -104,11 +104,19 @@
             {% if g.user.kindle_mail %}
             <a href="{{url_for('send_to_kindle', book_id=entry.id)}}" id="sendbtn" class="btn btn-primary" role="button"><span class="glyphicon glyphicon-send"></span> Send to Kindle</a>
             {% endif %}
-            {% for format in entry.data if format.format|lower == 'epub' %}
-              <a target="_blank" href="{{url_for('read_book', book_id=entry.id)}}" class="btn btn-primary" role="button"><span class="glyphicon glyphicon-eye-open"></span> Read in browser</a>
-            {%endfor%}
-            
-
+              <div class="btn-group" role="group">
+                <button id="btnGroupDrop2" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <span class="glyphicon glyphicon-eye-open"></span>Read in browser
+                  <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="btnGroupDrop2">
+                  {% for format in entry.data %}
+                  {%if format.format|lower == 'epub' or format.format|lower == 'txt' or format.format|lower == 'pdf' %}
+                  <li><a target="_blank" href="{{ url_for('read_book', book_id=entry.id, format=format.format|lower) }}">{{format.format}}</a></li>
+                  {% endif %}
+                  {%endfor%}
+                </ul>
+              </div>
         </div> 
       </div>
       </br>

@@ -1,0 +1,96 @@
+/* http://davidwalsh.name/css-tooltips */
+/* base CSS element */
+.popup {
+  background: #eee;
+  border: 1px solid #ccc;
+  padding: 10px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  position: fixed;
+  max-width: 300px;
+  font-size: 12px;
+  
+  display: none;
+  margin-left: 2px;
+  
+  margin-top: 30px;
+}
+
+.popup.above {
+  margin-top: -10px;
+}
+
+.popup.left {
+  margin-left: -20px;
+}
+
+.popup.right {
+  margin-left: 40px;
+}
+
+.pop_content {
+  max-height: 225px;
+  overflow-y: auto;
+}
+
+.pop_content > p {
+  margin-top: 0;
+}
+
+/* below */
+.popup:before {
+  position: absolute;
+  display: inline-block;
+  border-bottom: 10px solid #eee;
+  border-right: 10px solid transparent;
+  border-left: 10px solid transparent;
+  border-bottom-color: rgba(0, 0, 0, 0.2);
+  left: 50%;
+  top: -10px;
+  margin-left: -6px;
+  content: '';
+}
+
+.popup:after {
+  position: absolute;
+  display: inline-block;
+  border-bottom: 9px solid #eee;
+  border-right: 9px solid transparent;
+  border-left: 9px solid transparent;
+  left: 50%;
+  top: -9px;
+  margin-left: -5px;
+  content: '';
+}
+
+/* above */
+.popup.above:before {
+  border-bottom: none;
+  border-top: 10px solid #eee;
+  border-top-color: rgba(0, 0, 0, 0.2);
+  top: 100%;
+}
+
+.popup.above:after {
+  border-bottom: none;
+  border-top: 9px solid #eee;
+  top: 100%;
+}
+
+.popup.left:before,
+.popup.left:after
+{
+  left: 20px;
+}
+
+.popup.right:before,
+.popup.right:after
+{
+  left: auto;
+  right: 20px;
+}
+
+
+.popup.show, .popup.on {
+  display: block;
+}
