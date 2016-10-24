@@ -19,3 +19,4 @@ eggs/
 config.ini
 
 .idea/
+*.bak

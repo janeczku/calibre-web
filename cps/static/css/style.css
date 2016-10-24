@@ -1,4 +1,10 @@
-@import url(https://fonts.googleapis.com/css?family=Grand+Hotel);
+@font-face {
+  font-family: 'Grand Hotel';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Grand Hotel'), local('GrandHotel-Regular'), url("../fonts/GrandHotel-Regular.ttf") format('truetype');
+}
+
 body{background:#f2f2f2}body h2{font-weight:normal;color:#444}
 a{color: #45b29d}a:hover{color: #444;}
 .navigation .nav-head{text-transform:uppercase;color:#999;margin:20px 0}.navigation .nav-head:nth-child(1n+2){border-top:1px solid #ccc;padding-top:20px}
