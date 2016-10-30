@@ -544,48 +544,53 @@ def get_cover(cover_path):
 @login_required
 def read_book(book_id,format):
     book = db.session.query(db.Books).filter(db.Books.id == book_id).first()
-    book_dir = os.path.join(config.MAIN_DIR, "cps","static", str(book_id))
-    if not os.path.exists(book_dir):
-        os.mkdir(book_dir)
-    if format.lower() == "epub":
-        #check if mimetype file is exists
-        mime_file = str(book_id) +"/mimetype"
-        if os.path.exists(mime_file) == False:
-            epub_file = os.path.join(config.DB_ROOT, book.path, book.data[0].name) + ".epub"
-            if not os.path.isfile(epub_file):
-                raise ValueError('Error opening eBook. File does not exist: ', epub_file)
-            zfile = zipfile.ZipFile(epub_file)
-            for name in zfile.namelist():
-                (dirName, fileName) = os.path.split(name)
-                newDir = os.path.join(book_dir, dirName)
-                if not os.path.exists(newDir):
-                    try:
-                        os.makedirs(newDir)
-                    except OSError as exception:
-                        if exception.errno == errno.EEXIST:
-                            pass
-                        else:
-                            raise
-                if fileName:
-                    fd = open(os.path.join(newDir, fileName), "wb")
-                    fd.write(zfile.read(name))
-                    fd.close()
-            zfile.close()
-        return render_template('read.html', bookid=book_id, title="Read a Book")
-    elif format.lower() == "pdf":
-        all_name = str(book_id) +"/"+ urllib.quote(book.data[0].name) +".pdf"
-        tmp_file = os.path.join(book_dir,urllib.quote(book.data[0].name)) + ".pdf"
-        if os.path.exists(tmp_file) == False:
-            pdf_file =  os.path.join(config.DB_ROOT, book.path, book.data[0].name) + ".pdf"
-            copyfile(pdf_file,tmp_file)
-        return render_template('readpdf.html', pdffile=all_name, title="Read a Book")
-    elif  format.lower() == "txt":
-        all_name = str(book_id) +"/"+ urllib.quote(book.data[0].name) +".txt"
-        tmp_file = os.path.join(book_dir,urllib.quote(book.data[0].name)) + ".txt"
-        if os.path.exists(all_name) == False:
-            txt_file =  os.path.join(config.DB_ROOT, book.path, book.data[0].name) + ".txt"
-            copyfile(txt_file,tmp_file)
-        return render_template('readtxt.html', txtfile=all_name, title="Read a Book")
+    if book :
+        book_dir = os.path.join(config.MAIN_DIR, "cps","static", str(book_id))
+        if not os.path.exists(book_dir):
+            os.mkdir(book_dir)
+	    if format.lower() == "epub":
+	        #check if mimetype file is exists
+	        mime_file = str(book_id) +"/mimetype"
+	        if os.path.exists(mime_file) == False:
+	            epub_file = os.path.join(config.DB_ROOT, book.path, book.data[0].name) + ".epub"
+	            if not os.path.isfile(epub_file):
+	                raise ValueError('Error opening eBook. File does not exist: ', epub_file)
+	            zfile = zipfile.ZipFile(epub_file)
+	            for name in zfile.namelist():
+	                (dirName, fileName) = os.path.split(name)
+	                newDir = os.path.join(book_dir, dirName)
+	                if not os.path.exists(newDir):
+	                    try:
+	                        os.makedirs(newDir)
+	                    except OSError as exception:
+	                        if exception.errno == errno.EEXIST:
+	                            pass
+	                        else:
+	                            raise
+	                if fileName:
+	                    fd = open(os.path.join(newDir, fileName), "wb")
+	                    fd.write(zfile.read(name))
+	                    fd.close()
+	            zfile.close()
+	        return render_template('read.html', bookid=book_id, title="Read a Book")
+	    elif format.lower() == "pdf":
+	        all_name = str(book_id) +"/"+ urllib.quote(book.data[0].name) +".pdf"
+	        tmp_file = os.path.join(book_dir,urllib.quote(book.data[0].name)) + ".pdf"
+	        if os.path.exists(tmp_file) == False:
+	            pdf_file =  os.path.join(config.DB_ROOT, book.path, book.data[0].name) + ".pdf"
+	            copyfile(pdf_file,tmp_file)
+	        return render_template('readpdf.html', pdffile=all_name, title="Read a Book")
+	    elif  format.lower() == "txt":
+	        all_name = str(book_id) +"/"+ urllib.quote(book.data[0].name) +".txt"
+	        tmp_file = os.path.join(book_dir,urllib.quote(book.data[0].name)) + ".txt"
+	        if os.path.exists(all_name) == False:
+	            txt_file =  os.path.join(config.DB_ROOT, book.path, book.data[0].name) + ".txt"
+	            copyfile(txt_file,tmp_file)
+	        return render_template('readtxt.html', txtfile=all_name, title="Read a Book")
+    else :
+        flash("Error opening eBook. File does not exist or file is not accessible:", category="error")
+        return redirect('/' or url_for("index", _external=True))
+
 
 @app.route("/download/<int:book_id>/<format>")
 @login_required
@@ -1167,14 +1172,15 @@ def upload():
         file = request.files['btn-upload']
         meta = uploader.upload(file)
 
-        title = meta.title
-        author = meta.author
+        title = meta.title.encode('utf-8')
+        author = meta.author.encode('utf-8')
 
         title_dir = helper.get_valid_filename(title.decode('utf-8'), False)
         author_dir = helper.get_valid_filename(author.decode('utf-8'), False)
         data_name = title_dir
-        filepath = config.DB_ROOT + "/" + author_dir + "/" + title_dir
-        saved_filename = filepath + "/" + data_name + meta.extension
+        filepath = config.DB_ROOT + os.sep + author_dir + os.sep + title_dir
+        saved_filename = filepath + os.sep + data_name + meta.extension
+
         if not os.path.exists(filepath):
             try:
                 os.makedirs(filepath)
@@ -1182,10 +1188,14 @@ def upload():
                 flash("Failed to create path %s (Permission denied)." % filepath, category="error")
                 return redirect(url_for('index', _external=True))
         try:
-            move(meta.file_path, saved_filename)
-        except OSError:
+            copyfile(meta.file_path, saved_filename)
+        except OSError, e:
             flash("Failed to store file %s (Permission denied)." % saved_filename, category="error")
             return redirect(url_for('index', _external=True))
+        try:
+            os.unlink(meta.file_path)
+        except OSError, e:
+            flash("Failed to delete file %s (Permission denied)." % meta.file_path, category="warning")
 
         file_size = os.path.getsize(saved_filename)
         if meta.cover is None:
