@@ -5,9 +5,10 @@
 
     This module implements context-local objects.
 
-    :copyright: (c) 2013 by the Werkzeug Team, see AUTHORS for more details.
+    :copyright: (c) 2014 by the Werkzeug Team, see AUTHORS for more details.
     :license: BSD, see LICENSE for more details.
 """
+import copy
 from functools import update_wrapper
 from werkzeug.wsgi import ClosingIterator
 from werkzeug._compat import PY2, implements_bool
@@ -37,7 +38,7 @@ def release_local(local):
         False
 
     With this function one can release :class:`Local` objects as well
-    as :class:`StackLocal` objects.  However it is not possible to
+    as :class:`LocalStack` objects.  However it is not possible to
     release data held by proxies that way, one always has to retain
     a reference to the underlying local object in order to be able
     to release it.
@@ -86,6 +87,7 @@ class Local(object):
 
 
 class LocalStack(object):
+
     """This class works similar to a :class:`Local` but keeps a stack
     of objects instead.  This is best explained with an example::
 
@@ -120,6 +122,7 @@ class LocalStack(object):
 
     def _get__ident_func__(self):
         return self._local.__ident_func__
+
     def _set__ident_func__(self, value):
         object.__setattr__(self._local, '__ident_func__', value)
     __ident_func__ = property(_get__ident_func__, _set__ident_func__)
@@ -166,6 +169,7 @@ class LocalStack(object):
 
 
 class LocalManager(object):
+
     """Local objects cannot manage themselves. For that you need a local
     manager.  You can pass a local manager multiple locals or add them later
     by appending them to `manager.locals`.  Everytime the manager cleans up
@@ -203,7 +207,7 @@ class LocalManager(object):
         scoped sessions) to the Werkzeug locals.
 
         .. versionchanged:: 0.7
-           Yu can pass a different ident function to the local manager that
+           You can pass a different ident function to the local manager that
            will then be propagated to all the locals passed to the
            constructor.
         """
@@ -248,6 +252,7 @@ class LocalManager(object):
 
 @implements_bool
 class LocalProxy(object):
+
     """Acts as a proxy for a werkzeug local.  Forwards all operations to
     a proxied object.  The only operations not supported for forwarding
     are right handed operands and any kind of assignment.
@@ -322,7 +327,7 @@ class LocalProxy(object):
 
     def __unicode__(self):
         try:
-            return unicode(self._get_current_object())
+            return unicode(self._get_current_object())  # noqa
         except RuntimeError:
             return repr(self)
 
@@ -361,7 +366,7 @@ class LocalProxy(object):
     __ne__ = lambda x, o: x._get_current_object() != o
     __gt__ = lambda x, o: x._get_current_object() > o
     __ge__ = lambda x, o: x._get_current_object() >= o
-    __cmp__ = lambda x, o: cmp(x._get_current_object(), o)
+    __cmp__ = lambda x, o: cmp(x._get_current_object(), o)  # noqa
     __hash__ = lambda x: hash(x._get_current_object())
     __call__ = lambda x, *a, **kw: x._get_current_object()(*a, **kw)
     __len__ = lambda x: len(x._get_current_object())
@@ -388,7 +393,7 @@ class LocalProxy(object):
     __invert__ = lambda x: ~(x._get_current_object())
     __complex__ = lambda x: complex(x._get_current_object())
     __int__ = lambda x: int(x._get_current_object())
-    __long__ = lambda x: long(x._get_current_object())
+    __long__ = lambda x: long(x._get_current_object())  # noqa
     __float__ = lambda x: float(x._get_current_object())
     __oct__ = lambda x: oct(x._get_current_object())
     __hex__ = lambda x: hex(x._get_current_object())
@@ -407,3 +412,5 @@ class LocalProxy(object):
     __rfloordiv__ = lambda x, o: o // x._get_current_object()
     __rmod__ = lambda x, o: o % x._get_current_object()
     __rdivmod__ = lambda x, o: x._get_current_object().__rdivmod__(o)
+    __copy__ = lambda x: copy.copy(x._get_current_object())
+    __deepcopy__ = lambda x, memo: copy.deepcopy(x._get_current_object(), memo)

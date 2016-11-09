@@ -11,7 +11,7 @@
     library.
 
 
-    :copyright: (c) 2013 by the Werkzeug Team, see AUTHORS for more details.
+    :copyright: (c) 2014 by the Werkzeug Team, see AUTHORS for more details.
     :license: BSD, see LICENSE for more details.
 """
 from types import ModuleType
@@ -20,7 +20,7 @@ import sys
 from werkzeug._compat import iteritems
 
 # the version.  Usually set automatically by a script.
-__version__ = '0.9.1'
+__version__ = '0.11.11-dev'
 
 
 # This import magic raises concerns quite often which is why the implementation
@@ -39,66 +39,63 @@ __version__ = '0.9.1'
 
 # import mapping to objects in other modules
 all_by_module = {
-    'werkzeug.debug':       ['DebuggedApplication'],
-    'werkzeug.local':       ['Local', 'LocalManager', 'LocalProxy',
-                             'LocalStack', 'release_local'],
-    'werkzeug.serving':     ['run_simple'],
-    'werkzeug.test':        ['Client', 'EnvironBuilder', 'create_environ',
-                             'run_wsgi_app'],
-    'werkzeug.testapp':     ['test_app'],
-    'werkzeug.exceptions':  ['abort', 'Aborter'],
-    'werkzeug.urls':        ['url_decode', 'url_encode', 'url_quote',
-                             'url_quote_plus', 'url_unquote',
-                             'url_unquote_plus', 'url_fix', 'Href',
-                             'iri_to_uri', 'uri_to_iri'],
-    'werkzeug.formparser':  ['parse_form_data'],
-    'werkzeug.utils':       ['escape', 'environ_property',
-                             'append_slash_redirect', 'redirect',
-                             'cached_property', 'import_string',
-                             'dump_cookie', 'parse_cookie', 'unescape',
-                             'format_string', 'find_modules', 'header_property',
-                             'html', 'xhtml', 'HTMLBuilder',
-                             'validate_arguments', 'ArgumentValidationError',
-                             'bind_arguments', 'secure_filename'],
-    'werkzeug.wsgi':        ['get_current_url', 'get_host', 'pop_path_info',
-                             'peek_path_info', 'SharedDataMiddleware',
-                             'DispatcherMiddleware', 'ClosingIterator',
-                             'FileWrapper', 'make_line_iter', 'LimitedStream',
-                             'responder', 'wrap_file', 'extract_path_info'],
+    'werkzeug.debug': ['DebuggedApplication'],
+    'werkzeug.local': ['Local', 'LocalManager', 'LocalProxy', 'LocalStack',
+                       'release_local'],
+    'werkzeug.serving': ['run_simple'],
+    'werkzeug.test': ['Client', 'EnvironBuilder', 'create_environ',
+                      'run_wsgi_app'],
+    'werkzeug.testapp': ['test_app'],
+    'werkzeug.exceptions': ['abort', 'Aborter'],
+    'werkzeug.urls': ['url_decode', 'url_encode', 'url_quote',
+                      'url_quote_plus', 'url_unquote', 'url_unquote_plus',
+                      'url_fix', 'Href', 'iri_to_uri', 'uri_to_iri'],
+    'werkzeug.formparser': ['parse_form_data'],
+    'werkzeug.utils': ['escape', 'environ_property', 'append_slash_redirect',
+                       'redirect', 'cached_property', 'import_string',
+                       'dump_cookie', 'parse_cookie', 'unescape',
+                       'format_string', 'find_modules', 'header_property',
+                       'html', 'xhtml', 'HTMLBuilder', 'validate_arguments',
+                       'ArgumentValidationError', 'bind_arguments',
+                       'secure_filename'],
+    'werkzeug.wsgi': ['get_current_url', 'get_host', 'pop_path_info',
+                      'peek_path_info', 'SharedDataMiddleware',
+                      'DispatcherMiddleware', 'ClosingIterator', 'FileWrapper',
+                      'make_line_iter', 'LimitedStream', 'responder',
+                      'wrap_file', 'extract_path_info'],
     'werkzeug.datastructures': ['MultiDict', 'CombinedMultiDict', 'Headers',
-                             'EnvironHeaders', 'ImmutableList',
-                             'ImmutableDict', 'ImmutableMultiDict',
-                             'TypeConversionDict', 'ImmutableTypeConversionDict',
-                             'Accept', 'MIMEAccept', 'CharsetAccept',
-                             'LanguageAccept', 'RequestCacheControl',
-                             'ResponseCacheControl', 'ETags', 'HeaderSet',
-                             'WWWAuthenticate', 'Authorization',
-                             'FileMultiDict', 'CallbackDict', 'FileStorage',
-                             'OrderedMultiDict', 'ImmutableOrderedMultiDict'],
+                                'EnvironHeaders', 'ImmutableList',
+                                'ImmutableDict', 'ImmutableMultiDict',
+                                'TypeConversionDict',
+                                'ImmutableTypeConversionDict', 'Accept',
+                                'MIMEAccept', 'CharsetAccept',
+                                'LanguageAccept', 'RequestCacheControl',
+                                'ResponseCacheControl', 'ETags', 'HeaderSet',
+                                'WWWAuthenticate', 'Authorization',
+                                'FileMultiDict', 'CallbackDict', 'FileStorage',
+                                'OrderedMultiDict', 'ImmutableOrderedMultiDict'
+                                ],
     'werkzeug.useragents':  ['UserAgent'],
-    'werkzeug.http':        ['parse_etags', 'parse_date', 'http_date',
-                             'cookie_date', 'parse_cache_control_header',
-                             'is_resource_modified', 'parse_accept_header',
-                             'parse_set_header', 'quote_etag', 'unquote_etag',
-                             'generate_etag', 'dump_header',
-                             'parse_list_header', 'parse_dict_header',
-                             'parse_authorization_header',
-                             'parse_www_authenticate_header',
-                             'remove_entity_headers', 'is_entity_header',
-                             'remove_hop_by_hop_headers', 'parse_options_header',
-                             'dump_options_header', 'is_hop_by_hop_header',
-                             'unquote_header_value',
-                             'quote_header_value', 'HTTP_STATUS_CODES'],
-    'werkzeug.wrappers':    ['BaseResponse', 'BaseRequest', 'Request',
-                             'Response', 'AcceptMixin', 'ETagRequestMixin',
-                             'ETagResponseMixin', 'ResponseStreamMixin',
-                             'CommonResponseDescriptorsMixin',
-                             'UserAgentMixin', 'AuthorizationMixin',
-                             'WWWAuthenticateMixin',
-                             'CommonRequestDescriptorsMixin'],
-    'werkzeug.security':    ['generate_password_hash', 'check_password_hash'],
+    'werkzeug.http': ['parse_etags', 'parse_date', 'http_date', 'cookie_date',
+                      'parse_cache_control_header', 'is_resource_modified',
+                      'parse_accept_header', 'parse_set_header', 'quote_etag',
+                      'unquote_etag', 'generate_etag', 'dump_header',
+                      'parse_list_header', 'parse_dict_header',
+                      'parse_authorization_header',
+                      'parse_www_authenticate_header', 'remove_entity_headers',
+                      'is_entity_header', 'remove_hop_by_hop_headers',
+                      'parse_options_header', 'dump_options_header',
+                      'is_hop_by_hop_header', 'unquote_header_value',
+                      'quote_header_value', 'HTTP_STATUS_CODES'],
+    'werkzeug.wrappers': ['BaseResponse', 'BaseRequest', 'Request', 'Response',
+                          'AcceptMixin', 'ETagRequestMixin',
+                          'ETagResponseMixin', 'ResponseStreamMixin',
+                          'CommonResponseDescriptorsMixin', 'UserAgentMixin',
+                          'AuthorizationMixin', 'WWWAuthenticateMixin',
+                          'CommonRequestDescriptorsMixin'],
+    'werkzeug.security': ['generate_password_hash', 'check_password_hash'],
     # the undocumented easteregg ;-)
-    'werkzeug._internal':   ['_easteregg']
+    'werkzeug._internal': ['_easteregg']
 }
 
 # modules that should be imported when accessed as attributes of werkzeug
@@ -112,6 +109,7 @@ for module, items in iteritems(all_by_module):
 
 
 class module(ModuleType):
+
     """Automatically import objects from the modules."""
 
     def __getattr__(self, name):

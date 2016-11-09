@@ -1,21 +1,21 @@
 {% extends "layout.html" %}
 {% block body %}
 <div class="well col-sm-6 col-sm-offset-2">
-  <h2 style="margin-top: 0">Register a new account</h2>
+  <h2 style="margin-top: 0">{{_('Register a new account')}}</h2>
   <form method="POST" role="form">
     <div class="form-group required">
-      <label for="nickname">Username</label>
-      <input type="text" class="form-control" id="nickname" name="nickname" placeholder="Choose a username" required>
+      <label for="nickname">{{_('Username')}}</label>
+      <input type="text" class="form-control" id="nickname" name="nickname" placeholder="{{_('Choose a username')}}" required>
     </div>
     <div class="form-group required">
-      <label for="password">Password</label>
-      <input type="password" class="form-control" id="password" name="password" placeholder="Choose a password" required>
+      <label for="password">{{_('Password')}}</label>
+      <input type="password" class="form-control" id="password" name="password" placeholder="{{_('Choose a password')}}" required>
     </div>
     <div class="form-group required">
-      <label for="email">Email address</label>
-      <input type="email" class="form-control" id="email" name="email" placeholder="Your email address" required>
+      <label for="email">{{_('Email address')}}</label>
+      <input type="email" class="form-control" id="email" name="email" placeholder="{{_('Your email address')}}" required>
     </div>
-    <button type="submit" class="btn btn-primary">Register</button>
+    <button type="submit" class="btn btn-primary">{{_('Register')}}</button>
   </form>
 </div>
   {% if error %}

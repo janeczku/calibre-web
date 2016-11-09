@@ -14,7 +14,7 @@ r"""
     This module was introduced in 0.6.1 and is not a public interface.
     It might become one in later versions of Werkzeug.
 
-    :copyright: (c) 2013 by the Werkzeug Team, see AUTHORS for more details.
+    :copyright: (c) 2014 by the Werkzeug Team, see AUTHORS for more details.
     :license: BSD, see LICENSE for more details.
 """
 import sys
@@ -23,9 +23,12 @@ import errno
 import time
 import random
 
+from ._compat import to_unicode
+from .filesystem import get_filesystem_encoding
+
 
 can_rename_open_file = False
-if os.name == 'nt': # pragma: no cover
+if os.name == 'nt':  # pragma: no cover
     _rename = lambda src, dst: False
     _rename_atomic = lambda src, dst: False
 
@@ -37,17 +40,15 @@ if os.name == 'nt': # pragma: no cover
         _MoveFileEx = ctypes.windll.kernel32.MoveFileExW
 
         def _rename(src, dst):
-            if not isinstance(src, unicode):
-                src = unicode(src, sys.getfilesystemencoding())
-            if not isinstance(dst, unicode):
-                dst = unicode(dst, sys.getfilesystemencoding())
+            src = to_unicode(src, get_filesystem_encoding())
+            dst = to_unicode(dst, get_filesystem_encoding())
             if _rename_atomic(src, dst):
                 return True
             retry = 0
             rv = False
             while not rv and retry < 100:
                 rv = _MoveFileEx(src, dst, _MOVEFILE_REPLACE_EXISTING |
-                                           _MOVEFILE_WRITE_THROUGH)
+                                 _MOVEFILE_WRITE_THROUGH)
                 if not rv:
                     time.sleep(0.001)
                     retry += 1

@@ -10,7 +10,7 @@
     Together with the CSS and JavaScript files of the debugger this gives
     a colorful and more compact output.
 
-    :copyright: (c) 2013 by the Werkzeug Team, see AUTHORS for more details.
+    :copyright: (c) 2014 by the Werkzeug Team, see AUTHORS for more details.
     :license: BSD.
 """
 import sys
@@ -19,7 +19,7 @@ import codecs
 from traceback import format_exception_only
 try:
     from collections import deque
-except ImportError: # pragma: no cover
+except ImportError:  # pragma: no cover
     deque = None
 from werkzeug.utils import escape
 from werkzeug._compat import iteritems, PY2, text_type, integer_types, \
@@ -64,6 +64,7 @@ def dump(obj=missing):
 
 
 class _Helper(object):
+
     """Displays an HTML version of the normal help, for the interactive
     debugger only because it requires a patched sys.stdout.
     """
@@ -84,7 +85,7 @@ class _Helper(object):
         if len(paragraphs) > 1:
             title = paragraphs[0]
             text = '\n\n'.join(paragraphs[1:])
-        else: # pragma: no cover
+        else:  # pragma: no cover
             title = 'Help'
             text = paragraphs[0]
         sys.stdout._write(HELP_HTML % {'title': title, 'text': text})
@@ -218,7 +219,7 @@ class DebugReprGenerator(object):
     def fallback_repr(self):
         try:
             info = ''.join(format_exception_only(*sys.exc_info()[:2]))
-        except Exception: # pragma: no cover
+        except Exception:  # pragma: no cover
             info = '?'
         if PY2:
             info = info.decode('utf-8', 'ignore')

@@ -1,0 +1,54 @@
+Werkzeug is written and maintained by the Werkzeug Team and various
+contributors:
+
+Project Leader / Developer:
+
+- Armin Ronacher <armin.ronacher@active-4.com>
+
+- Georg Brandl
+- Leif K-Brooks <eurleif@gmail.com>
+- Thomas Johansson
+- Marian Sigler
+- Ronny Pfannschmidt
+- Noah Slater <nslater@tumbolia.org>
+- Alec Thomas
+- Shannon Behrens
+- Christoph Rauch
+- Clemens Hermann
+- Jason Kirtland
+- Ali Afshar
+- Christopher Grebs <cg@webshox.org>
+- Sean Cazzell <seancazzell@gmail.com>
+- Florent Xicluna
+- Kyle Dawkins
+- Pedro Algarvio
+- Zahari Petkov
+- Ludvig Ericson
+- Kenneth Reitz
+- Daniel Neuhäuser
+- Markus Unterwaditzer
+- Joe Esposito <joe@joeyespo.com>
+- Cédric Krier
+- Lars Holm Nielsen
+
+Contributors of code for werkzeug/examples are:
+
+- Itay Neeman <itay@neeman.net>
+
+The SSL related parts of the Werkzeug development server are partially
+taken from Paste.  Same thing is true for the range support which comes
+from WebOb which is a Paste project.  The original code is MIT licensed which
+is largely compatible with the modfied BSD license.  The following copyrights
+apply:
+
+- (c) 2005 Ian Bicking and contributors
+- (c) 2005 Clark C. Evans
+
+The rename() function from the posixemulation was taken almost unmodified
+from the Trac project's utility module.  The original code is BSD licensed
+with the following copyrights from that module:
+
+- (c) 2003-2009 Edgewall Software
+- (c) 2003-2006 Jonas Borgström <jonas@edgewall.com>
+- (c) 2006 Matthew Good <trac@matt-good.net>
+- (c) 2005-2006 Christian Boos <cboos@neuf.fr>

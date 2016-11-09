@@ -56,6 +56,18 @@ We support `datetimes <datetime.datetime>`, `timedeltas
 the top-level functions in this module (`define`, `parse_command_line`, etc)
 simply call methods on it.  You may create additional `OptionParser`
 instances to define isolated sets of options, such as for subcommands.
+
+.. note::
+
+   By default, several options are defined that will configure the
+   standard `logging` module when `parse_command_line` or `parse_config_file`
+   are called.  If you want Tornado to leave the logging configuration
+   alone so you can manage it yourself, either pass ``--logging=none``
+   on the command line or do the following to disable it in code::
+
+       from tornado.options import options, parse_command_line
+       options.logging = None
+       parse_command_line()
 """
 
 from __future__ import absolute_import, division, print_function, with_statement
@@ -67,7 +79,7 @@ import sys
 import os
 import textwrap
 
-from tornado.escape import _unicode
+from tornado.escape import _unicode, native_str
 from tornado.log import define_logging_options
 from tornado import stack_context
 from tornado.util import basestring_type, exec_in
@@ -192,6 +204,13 @@ class OptionParser(object):
                         (name, self._options[name].file_name))
         frame = sys._getframe(0)
         options_file = frame.f_code.co_filename
+
+        # Can be called directly, or through top level define() fn, in which
+        # case, step up above that frame to look for real caller.
+        if (frame.f_back.f_code.co_filename == options_file and
+                frame.f_back.f_code.co_name == 'define'):
+            frame = frame.f_back
+
         file_name = frame.f_back.f_code.co_filename
         if file_name == options_file:
             file_name = ""
@@ -259,10 +278,14 @@ class OptionParser(object):
         If ``final`` is ``False``, parse callbacks will not be run.
         This is useful for applications that wish to combine configurations
         from multiple sources.
+
+        .. versionchanged:: 4.1
+           Config files are now always interpreted as utf-8 instead of
+           the system default encoding.
         """
         config = {}
-        with open(path) as f:
-            exec_in(f.read(), config, config)
+        with open(path, 'rb') as f:
+            exec_in(native_str(f.read()), config, config)
         for name in config:
             if name in self._options:
                 self._options[name].set(config[name])
@@ -360,6 +383,8 @@ class _Mockable(object):
 
 
 class _Option(object):
+    UNSET = object()
+
     def __init__(self, name, default=None, type=basestring_type, help=None,
                  metavar=None, multiple=False, file_name=None, group_name=None,
                  callback=None):
@@ -374,10 +399,10 @@ class _Option(object):
         self.group_name = group_name
         self.callback = callback
         self.default = default
-        self._value = None
+        self._value = _Option.UNSET
 
     def value(self):
-        return self.default if self._value is None else self._value
+        return self.default if self._value is _Option.UNSET else self._value
 
     def parse(self, value):
         _parse = {

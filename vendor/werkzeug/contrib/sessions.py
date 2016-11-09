@@ -48,12 +48,11 @@ r"""
                 response.set_cookie('cookie_name', request.session.sid)
             return response(environ, start_response)
 
-    :copyright: (c) 2013 by the Werkzeug Team, see AUTHORS for more details.
+    :copyright: (c) 2014 by the Werkzeug Team, see AUTHORS for more details.
     :license: BSD, see LICENSE for more details.
 """
 import re
 import os
-import sys
 import tempfile
 from os import path
 from time import time
@@ -66,6 +65,7 @@ from werkzeug.utils import dump_cookie, parse_cookie
 from werkzeug.wsgi import ClosingIterator
 from werkzeug.posixemulation import rename
 from werkzeug._compat import PY2, text_type
+from werkzeug.filesystem import get_filesystem_encoding
 
 
 _sha1_re = re.compile(r'^[a-f0-9]{40}$')
@@ -74,7 +74,7 @@ _sha1_re = re.compile(r'^[a-f0-9]{40}$')
 def _urandom():
     if hasattr(os, 'urandom'):
         return os.urandom(30)
-    return random()
+    return text_type(random()).encode('ascii')
 
 
 def generate_key(salt=None):
@@ -112,6 +112,7 @@ class ModificationTrackingDict(CallbackDict):
 
 
 class Session(ModificationTrackingDict):
+
     """Subclass of a dict that keeps track of direct object changes.  Changes
     in mutable structures are not tracked, for those you have to set
     `modified` to `True` by hand.
@@ -142,6 +143,7 @@ class Session(ModificationTrackingDict):
 
 
 class SessionStore(object):
+
     """Baseclass for all session stores.  The Werkzeug contrib module does not
     implement any useful stores besides the filesystem store, application
     developers are encouraged to create their own stores.
@@ -191,6 +193,7 @@ _fs_transaction_suffix = '.__wz_sess'
 
 
 class FilesystemSessionStore(SessionStore):
+
     """Simple example session store that saves sessions on the filesystem.
     This store works best on POSIX systems and Windows Vista / Windows
     Server 2008 and newer.
@@ -220,7 +223,7 @@ class FilesystemSessionStore(SessionStore):
         self.path = path
         if isinstance(filename_template, text_type) and PY2:
             filename_template = filename_template.encode(
-                sys.getfilesystemencoding() or 'utf-8')
+                get_filesystem_encoding())
         assert not filename_template.endswith(_fs_transaction_suffix), \
             'filename templates may not end with %s' % _fs_transaction_suffix
         self.filename_template = filename_template
@@ -232,7 +235,7 @@ class FilesystemSessionStore(SessionStore):
         # you might reconfigure the session object to have a more
         # arbitrary string.
         if isinstance(sid, text_type) and PY2:
-            sid = sid.encode(sys.getfilesystemencoding() or 'utf-8')
+            sid = sid.encode(get_filesystem_encoding())
         return path.join(self.path, self.filename_template % sid)
 
     def save(self, session):
@@ -296,6 +299,7 @@ class FilesystemSessionStore(SessionStore):
 
 
 class SessionMiddleware(object):
+
     """A simple middleware that puts the session object of a store provided
     into the WSGI environ.  It automatically sets cookies and restores
     sessions.
@@ -339,10 +343,10 @@ class SessionMiddleware(object):
             if session.should_save:
                 self.store.save(session)
                 headers.append(('Set-Cookie', dump_cookie(self.cookie_name,
-                                session.sid, self.cookie_age,
-                                self.cookie_expires, self.cookie_path,
-                                self.cookie_domain, self.cookie_secure,
-                                self.cookie_httponly)))
+                                                          session.sid, self.cookie_age,
+                                                          self.cookie_expires, self.cookie_path,
+                                                          self.cookie_domain, self.cookie_secure,
+                                                          self.cookie_httponly)))
             return start_response(status, headers, exc_info)
         return ClosingIterator(self.app(environ, injecting_start_response),
                                lambda: self.store.save_if_modified(session))

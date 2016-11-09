@@ -5,7 +5,7 @@
 
     Implements various helpers.
 
-    :copyright: (c) 2011 by Armin Ronacher.
+    :copyright: (c) 2015 by Armin Ronacher.
     :license: BSD, see LICENSE for more details.
 """
 
@@ -26,7 +26,7 @@ except ImportError:
     from urlparse import quote as url_quote
 
 from werkzeug.datastructures import Headers
-from werkzeug.exceptions import NotFound
+from werkzeug.exceptions import BadRequest, NotFound
 
 # this was moved in 0.7
 try:
@@ -51,6 +51,13 @@ _missing = object()
 # able to access files from outside the filesystem.
 _os_alt_seps = list(sep for sep in [os.path.sep, os.path.altsep]
                     if sep not in (None, '/'))
+
+
+def get_debug_flag(default=None):
+    val = os.environ.get('FLASK_DEBUG')
+    if not val:
+        return default
+    return val not in ('0', 'false', 'no')
 
 
 def _endpoint_from_view_func(view_func):
@@ -100,7 +107,7 @@ def stream_with_context(generator_or_function):
         gen = iter(generator_or_function)
     except TypeError:
         def decorator(*args, **kwargs):
-            gen = generator_or_function()
+            gen = generator_or_function(*args, **kwargs)
             return stream_with_context(gen)
         return update_wrapper(decorator, generator_or_function)
 
@@ -188,7 +195,7 @@ def url_for(endpoint, **values):
 
     Variable arguments that are unknown to the target endpoint are appended
     to the generated URL as query arguments.  If the value of a query argument
-    is `None`, the whole pair is skipped.  In case blueprints are active
+    is ``None``, the whole pair is skipped.  In case blueprints are active
     you can shortcut references to the same blueprint by prefixing the
     local endpoint with a dot (``.``).
 
@@ -199,16 +206,16 @@ def url_for(endpoint, **values):
     For more information, head over to the :ref:`Quickstart <url-building>`.
 
     To integrate applications, :class:`Flask` has a hook to intercept URL build
-    errors through :attr:`Flask.build_error_handler`.  The `url_for` function
-    results in a :exc:`~werkzeug.routing.BuildError` when the current app does
-    not have a URL for the given endpoint and values.  When it does, the
-    :data:`~flask.current_app` calls its :attr:`~Flask.build_error_handler` if
-    it is not `None`, which can return a string to use as the result of
+    errors through :attr:`Flask.url_build_error_handlers`.  The `url_for`
+    function results in a :exc:`~werkzeug.routing.BuildError` when the current
+    app does not have a URL for the given endpoint and values.  When it does, the
+    :data:`~flask.current_app` calls its :attr:`~Flask.url_build_error_handlers` if
+    it is not ``None``, which can return a string to use as the result of
     `url_for` (instead of `url_for`'s default to raise the
     :exc:`~werkzeug.routing.BuildError` exception) or re-raise the exception.
     An example::
 
-        def external_url_handler(error, endpoint, **values):
+        def external_url_handler(error, endpoint, values):
             "Looks up an external URL when `url_for` cannot build a URL."
             # This is an example of hooking the build_error_handler.
             # Here, lookup_url is some utility function you've built
@@ -225,10 +232,10 @@ def url_for(endpoint, **values):
             # url_for will use this result, instead of raising BuildError.
             return url
 
-        app.build_error_handler = external_url_handler
+        app.url_build_error_handlers.append(external_url_handler)
 
     Here, `error` is the instance of :exc:`~werkzeug.routing.BuildError`, and
-    `endpoint` and `**values` are the arguments passed into `url_for`.  Note
+    `endpoint` and `values` are the arguments passed into `url_for`.  Note
     that this is for building URLs outside the current application, and not for
     handling 404 NotFound errors.
 
@@ -244,11 +251,15 @@ def url_for(endpoint, **values):
 
     :param endpoint: the endpoint of the URL (name of the function)
     :param values: the variable arguments of the URL rule
-    :param _external: if set to `True`, an absolute URL is generated. Server
-      address can be changed via `SERVER_NAME` configuration variable which
+    :param _external: if set to ``True``, an absolute URL is generated. Server
+      address can be changed via ``SERVER_NAME`` configuration variable which
       defaults to `localhost`.
     :param _scheme: a string specifying the desired URL scheme. The `_external`
-      parameter must be set to `True` or a `ValueError` is raised.
+      parameter must be set to ``True`` or a :exc:`ValueError` is raised. The default
+      behavior uses the same scheme as the current request, or
+      ``PREFERRED_URL_SCHEME`` from the :ref:`app configuration <config>` if no
+      request context is available. As of Werkzeug 0.10, this also can be set
+      to an empty string to build protocol-relative URLs.
     :param _anchor: if provided this is added as anchor to the URL.
     :param _method: if provided this explicitly specifies an HTTP method.
     """
@@ -260,7 +271,7 @@ def url_for(endpoint, **values):
                            'executed when application context is available.')
 
     # If request specific information is available we have some extra
-    # features that support "relative" urls.
+    # features that support "relative" URLs.
     if reqctx is not None:
         url_adapter = reqctx.url_adapter
         blueprint_name = request.blueprint
@@ -280,7 +291,7 @@ def url_for(endpoint, **values):
         external = values.pop('_external', False)
 
     # Otherwise go with the url adapter from the appctx and make
-    # the urls external by default.
+    # the URLs external by default.
     else:
         url_adapter = appctx.url_adapter
         if url_adapter is None:
@@ -295,14 +306,23 @@ def url_for(endpoint, **values):
     scheme = values.pop('_scheme', None)
     appctx.app.inject_url_defaults(endpoint, values)
 
+    # This is not the best way to deal with this but currently the
+    # underlying Werkzeug router does not support overriding the scheme on
+    # a per build call basis.
+    old_scheme = None
     if scheme is not None:
         if not external:
             raise ValueError('When specifying _scheme, _external must be True')
+        old_scheme = url_adapter.url_scheme
         url_adapter.url_scheme = scheme
 
     try:
-        rv = url_adapter.build(endpoint, values, method=method,
-                               force_external=external)
+        try:
+            rv = url_adapter.build(endpoint, values, method=method,
+                                   force_external=external)
+        finally:
+            if old_scheme is not None:
+                url_adapter.url_scheme = old_scheme
     except BuildError as error:
         # We need to inject the values again so that the app callback can
         # deal with that sort of stuff.
@@ -319,7 +339,7 @@ def url_for(endpoint, **values):
 def get_template_attribute(template_name, attribute):
     """Loads a macro (or variable) a template exports.  This can be used to
     invoke a macro from within Python code.  If you for example have a
-    template named `_cider.html` with the following contents:
+    template named :file:`_cider.html` with the following contents:
 
     .. sourcecode:: html+jinja
 
@@ -359,7 +379,7 @@ def flash(message, category='message'):
     #     session.setdefault('_flashes', []).append((category, message))
     #
     # This assumed that changes made to mutable structures in the session are
-    # are always in sync with the sess on object, which is not true for session
+    # are always in sync with the session object, which is not true for session
     # implementations that use external storage for keeping their keys/values.
     flashes = session.get('_flashes', [])
     flashes.append((category, message))
@@ -372,7 +392,7 @@ def get_flashed_messages(with_categories=False, category_filter=[]):
     """Pulls all flashed messages from the session and returns them.
     Further calls in the same request to the function will return
     the same messages.  By default just the messages are returned,
-    but when `with_categories` is set to `True`, the return value will
+    but when `with_categories` is set to ``True``, the return value will
     be a list of tuples in the form ``(category, message)`` instead.
 
     Filter the flashed messages to one or more categories by providing those
@@ -381,7 +401,7 @@ def get_flashed_messages(with_categories=False, category_filter=[]):
     arguments are distinct:
 
     * `with_categories` controls whether categories are returned with message
-      text (`True` gives a tuple, where `False` gives just the message text).
+      text (``True`` gives a tuple, where ``False`` gives just the message text).
     * `category_filter` filters the messages down to only those matching the
       provided categories.
 
@@ -393,7 +413,7 @@ def get_flashed_messages(with_categories=False, category_filter=[]):
     .. versionchanged:: 0.9
         `category_filter` parameter added.
 
-    :param with_categories: set to `True` to also receive categories.
+    :param with_categories: set to ``True`` to also receive categories.
     :param category_filter: whitelist of categories to limit return values
     """
     flashes = _request_ctx_stack.top.flashes
@@ -414,8 +434,8 @@ def send_file(filename_or_fp, mimetype=None, as_attachment=False,
     most efficient method available and configured.  By default it will
     try to use the WSGI server's file_wrapper support.  Alternatively
     you can set the application's :attr:`~Flask.use_x_sendfile` attribute
-    to ``True`` to directly emit an `X-Sendfile` header.  This however
-    requires support of the underlying webserver for `X-Sendfile`.
+    to ``True`` to directly emit an ``X-Sendfile`` header.  This however
+    requires support of the underlying webserver for ``X-Sendfile``.
 
     By default it will try to guess the mimetype for you, but you can
     also explicitly provide one.  For extra security you probably want
@@ -423,12 +443,8 @@ def send_file(filename_or_fp, mimetype=None, as_attachment=False,
     guessing requires a `filename` or an `attachment_filename` to be
     provided.
 
-    Please never pass filenames to this function from user sources without
-    checking them first.  Something like this is usually sufficient to
-    avoid security problems::
-
-        if '..' in filename or filename.startswith('/'):
-            abort(404)
+    Please never pass filenames to this function from user sources;
+    you should use :func:`send_from_directory` instead.
 
     .. versionadded:: 0.2
 
@@ -445,24 +461,24 @@ def send_file(filename_or_fp, mimetype=None, as_attachment=False,
     .. versionchanged:: 0.9
        cache_timeout pulls its default from application config, when None.
 
-    :param filename_or_fp: the filename of the file to send.  This is
-                           relative to the :attr:`~Flask.root_path` if a
-                           relative path is specified.
-                           Alternatively a file object might be provided
-                           in which case `X-Sendfile` might not work and
-                           fall back to the traditional method.  Make sure
-                           that the file pointer is positioned at the start
-                           of data to send before calling :func:`send_file`.
+    :param filename_or_fp: the filename of the file to send in `latin-1`.
+                           This is relative to the :attr:`~Flask.root_path`
+                           if a relative path is specified.
+                           Alternatively a file object might be provided in
+                           which case ``X-Sendfile`` might not work and fall
+                           back to the traditional method.  Make sure that the
+                           file pointer is positioned at the start of data to
+                           send before calling :func:`send_file`.
     :param mimetype: the mimetype of the file if provided, otherwise
                      auto detection happens.
-    :param as_attachment: set to `True` if you want to send this file with
+    :param as_attachment: set to ``True`` if you want to send this file with
                           a ``Content-Disposition: attachment`` header.
     :param attachment_filename: the filename for the attachment if it
                                 differs from the file's filename.
-    :param add_etags: set to `False` to disable attaching of etags.
-    :param conditional: set to `True` to enable conditional responses.
+    :param add_etags: set to ``False`` to disable attaching of etags.
+    :param conditional: set to ``True`` to enable conditional responses.
 
-    :param cache_timeout: the timeout in seconds for the headers. When `None`
+    :param cache_timeout: the timeout in seconds for the headers. When ``None``
                           (default), this value is set by
                           :meth:`~Flask.get_send_file_max_age` of
                           :data:`~flask.current_app`.
@@ -525,7 +541,7 @@ def send_file(filename_or_fp, mimetype=None, as_attachment=False,
     rv = current_app.response_class(data, mimetype=mimetype, headers=headers,
                                     direct_passthrough=True)
 
-    # if we know the file modification date, we can store it as the
+    # if we know the file modification date, we can store it as
     # the time of the last modification.
     if mtime is not None:
         rv.last_modified = int(mtime)
@@ -538,14 +554,19 @@ def send_file(filename_or_fp, mimetype=None, as_attachment=False,
         rv.expires = int(time() + cache_timeout)
 
     if add_etags and filename is not None:
-        rv.set_etag('flask-%s-%s-%s' % (
-            os.path.getmtime(filename),
-            os.path.getsize(filename),
-            adler32(
-                filename.encode('utf-8') if isinstance(filename, text_type)
-                else filename
-            ) & 0xffffffff
-        ))
+        try:
+            rv.set_etag('%s-%s-%s' % (
+                os.path.getmtime(filename),
+                os.path.getsize(filename),
+                adler32(
+                    filename.encode('utf-8') if isinstance(filename, text_type)
+                    else filename
+                ) & 0xffffffff
+            ))
+        except OSError:
+            warn('Access %s failed, maybe it does not exist, so ignore etags in '
+                 'headers' % filename, stacklevel=2)
+
         if conditional:
             rv = rv.make_conditional(request)
             # make sure we don't send x-sendfile for servers that
@@ -564,7 +585,7 @@ def safe_join(directory, filename):
         def wiki_page(filename):
             filename = safe_join(app.config['WIKI_FOLDER'], filename)
             with open(filename, 'rb') as fd:
-                content = fd.read() # Read and process the file content...
+                content = fd.read()  # Read and process the file content...
 
     :param directory: the base directory.
     :param filename: the untrusted filename relative to that directory.
@@ -596,7 +617,7 @@ def send_from_directory(directory, filename, **options):
 
     .. admonition:: Sending files and Performance
 
-       It is strongly recommended to activate either `X-Sendfile` support in
+       It is strongly recommended to activate either ``X-Sendfile`` support in
        your webserver or (if no authentication happens) to tell the webserver
        to serve files for the given path on its own without calling into the
        web application for improved performance.
@@ -610,8 +631,13 @@ def send_from_directory(directory, filename, **options):
                     forwarded to :func:`send_file`.
     """
     filename = safe_join(directory, filename)
-    if not os.path.isfile(filename):
-        raise NotFound()
+    if not os.path.isabs(filename):
+        filename = os.path.join(current_app.root_path, filename)
+    try:
+        if not os.path.isfile(filename):
+            raise NotFound()
+    except (TypeError, ValueError):
+        raise BadRequest()
     options.setdefault('conditional', True)
     return send_file(filename, **options)
 
@@ -643,10 +669,46 @@ def get_root_path(import_name):
     else:
         # Fall back to imports.
         __import__(import_name)
-        filepath = sys.modules[import_name].__file__
+        mod = sys.modules[import_name]
+        filepath = getattr(mod, '__file__', None)
+
+        # If we don't have a filepath it might be because we are a
+        # namespace package.  In this case we pick the root path from the
+        # first module that is contained in our package.
+        if filepath is None:
+            raise RuntimeError('No root path can be found for the provided '
+                               'module "%s".  This can happen because the '
+                               'module came from an import hook that does '
+                               'not provide file name information or because '
+                               'it\'s a namespace package.  In this case '
+                               'the root path needs to be explicitly '
+                               'provided.' % import_name)
 
     # filepath is import_name.py for a module, or __init__.py for a package.
     return os.path.dirname(os.path.abspath(filepath))
+
+
+def _matching_loader_thinks_module_is_package(loader, mod_name):
+    """Given the loader that loaded a module and the module this function
+    attempts to figure out if the given module is actually a package.
+    """
+    # If the loader can tell us if something is a package, we can
+    # directly ask the loader.
+    if hasattr(loader, 'is_package'):
+        return loader.is_package(mod_name)
+    # importlib's namespace loaders do not have this functionality but
+    # all the modules it loads are packages, so we can take advantage of
+    # this information.
+    elif (loader.__class__.__module__ == '_frozen_importlib' and
+          loader.__class__.__name__ == 'NamespaceLoader'):
+        return True
+    # Otherwise we need to fail with an error that explains what went
+    # wrong.
+    raise AttributeError(
+        ('%s.is_package() method is missing but is required by Flask of '
+         'PEP 302 import hooks.  If you do not use import hooks and '
+         'you encounter this error please file a bug against Flask.') %
+        loader.__class__.__name__)
 
 
 def find_package(import_name):
@@ -678,8 +740,12 @@ def find_package(import_name):
             __import__(import_name)
             filename = sys.modules[import_name].__file__
         package_path = os.path.abspath(os.path.dirname(filename))
-        # package_path ends with __init__.py for a package
-        if loader.is_package(root_mod_name):
+
+        # In case the root module is a package we need to chop of the
+        # rightmost part.  This needs to go through a helper function
+        # because of python 3.3 namespace packages.
+        if _matching_loader_thinks_module_is_package(
+                loader, root_mod_name):
             package_path = os.path.dirname(package_path)
 
     site_parent, site_folder = os.path.split(package_path)
@@ -728,17 +794,20 @@ class locked_cached_property(object):
 
 class _PackageBoundObject(object):
 
-    def __init__(self, import_name, template_folder=None):
+    def __init__(self, import_name, template_folder=None, root_path=None):
         #: The name of the package or module.  Do not change this once
         #: it was set by the constructor.
         self.import_name = import_name
 
-        #: location of the templates.  `None` if templates should not be
+        #: location of the templates.  ``None`` if templates should not be
         #: exposed.
         self.template_folder = template_folder
 
+        if root_path is None:
+            root_path = get_root_path(self.import_name)
+
         #: Where is the app root located?
-        self.root_path = get_root_path(self.import_name)
+        self.root_path = root_path
 
         self._static_folder = None
         self._static_url_path = None
@@ -748,15 +817,16 @@ class _PackageBoundObject(object):
             return os.path.join(self.root_path, self._static_folder)
     def _set_static_folder(self, value):
         self._static_folder = value
-    static_folder = property(_get_static_folder, _set_static_folder)
+    static_folder = property(_get_static_folder, _set_static_folder, doc='''
+    The absolute path to the configured static folder.
+    ''')
     del _get_static_folder, _set_static_folder
 
     def _get_static_url_path(self):
-        if self._static_url_path is None:
-            if self.static_folder is None:
-                return None
+        if self._static_url_path is not None:
+            return self._static_url_path
+        if self.static_folder is not None:
             return '/' + os.path.basename(self.static_folder)
-        return self._static_url_path
     def _set_static_url_path(self, value):
         self._static_url_path = value
     static_url_path = property(_get_static_url_path, _set_static_url_path)
@@ -764,8 +834,8 @@ class _PackageBoundObject(object):
 
     @property
     def has_static_folder(self):
-        """This is `True` if the package bound object's container has a
-        folder named ``'static'``.
+        """This is ``True`` if the package bound object's container has a
+        folder for static files.
 
         .. versionadded:: 0.5
         """
@@ -789,7 +859,7 @@ class _PackageBoundObject(object):
 
         Static file functions such as :func:`send_from_directory` use this
         function, and :func:`send_file` calls this function on
-        :data:`~flask.current_app` when the given cache_timeout is `None`. If a
+        :data:`~flask.current_app` when the given cache_timeout is ``None``. If a
         cache_timeout is given in :func:`send_file`, that timeout is used;
         otherwise, this method is called.
 
@@ -805,7 +875,7 @@ class _PackageBoundObject(object):
 
         .. versionadded:: 0.9
         """
-        return current_app.config['SEND_FILE_MAX_AGE_DEFAULT']
+        return total_seconds(current_app.send_file_max_age_default)
 
     def send_static_file(self, filename):
         """Function used internally to send static files from the static
@@ -833,7 +903,7 @@ class _PackageBoundObject(object):
                 /layout.html
                 /index.html
 
-        If you want to open the `schema.sql` file you would do the
+        If you want to open the :file:`schema.sql` file you would do the
         following::
 
             with app.open_resource('schema.sql') as f:
@@ -847,3 +917,14 @@ class _PackageBoundObject(object):
         if mode not in ('r', 'rb'):
             raise ValueError('Resources can only be opened for reading')
         return open(os.path.join(self.root_path, resource), mode)
+
+
+def total_seconds(td):
+    """Returns the total seconds from a timedelta object.
+
+    :param timedelta td: the timedelta to be converted in seconds
+
+    :returns: number of seconds
+    :rtype: int
+    """
+    return td.days * 60 * 60 * 24 + td.seconds

@@ -5,7 +5,7 @@
 
     Interactive console support.
 
-    :copyright: (c) 2013 by the Werkzeug Team, see AUTHORS for more details.
+    :copyright: (c) 2014 by the Werkzeug Team, see AUTHORS for more details.
     :license: BSD.
 """
 import sys
@@ -21,6 +21,7 @@ _local = Local()
 
 
 class HTMLStringO(object):
+
     """A StringO version that HTML escapes on write."""
 
     def __init__(self):
@@ -63,6 +64,7 @@ class HTMLStringO(object):
 
 
 class ThreadedStream(object):
+
     """Thread-local wrapper for sys.stdout for the interactive console."""
 
     def push():
@@ -136,6 +138,7 @@ class _ConsoleLoader(object):
 
 def _wrap_compiler(console):
     compile = console.compile
+
     def func(source, filename, symbol):
         code = compile(source, filename, symbol)
         console.loader.register(code, source)
@@ -162,7 +165,7 @@ class _InteractiveConsole(code.InteractiveInterpreter):
         try:
             source_to_eval = ''.join(self.buffer + [source])
             if code.InteractiveInterpreter.runsource(self,
-               source_to_eval, '<debugger>', 'single'):
+                                                     source_to_eval, '<debugger>', 'single'):
                 self.more = True
                 self.buffer.append(source)
             else:
@@ -193,6 +196,7 @@ class _InteractiveConsole(code.InteractiveInterpreter):
 
 
 class Console(object):
+
     """An interactive console."""
 
     def __init__(self, globals=None, locals=None):

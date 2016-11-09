@@ -13,40 +13,58 @@
     module.
 
 
-    :copyright: (c) 2013 by the Werkzeug Team, see AUTHORS for more details.
+    :copyright: (c) 2014 by the Werkzeug Team, see AUTHORS for more details.
     :license: BSD, see LICENSE for more details.
 """
 import re
 from time import time, gmtime
 try:
     from email.utils import parsedate_tz
-except ImportError: # pragma: no cover
+except ImportError:  # pragma: no cover
     from email.Utils import parsedate_tz
 try:
     from urllib2 import parse_http_list as _parse_list_header
-except ImportError: # pragma: no cover
+except ImportError:  # pragma: no cover
     from urllib.request import parse_http_list as _parse_list_header
 from datetime import datetime, timedelta
 from hashlib import md5
 import base64
 
 from werkzeug._internal import _cookie_quote, _make_cookie_domain, \
-     _cookie_parse_impl
+    _cookie_parse_impl
 from werkzeug._compat import to_unicode, iteritems, text_type, \
-     string_types, try_coerce_native, to_bytes, PY2, \
-     integer_types
+    string_types, try_coerce_native, to_bytes, PY2, \
+    integer_types
 
 
-# incorrect
 _cookie_charset = 'latin1'
-_accept_re = re.compile(r'([^\s;,]+)(?:[^,]*?;\s*q=(\d*(?:\.\d+)?))?')
+# for explanation of "media-range", etc. see Sections 5.3.{1,2} of RFC 7231
+_accept_re = re.compile(
+    r'''(                       # media-range capturing-parenthesis
+              [^\s;,]+              # type/subtype
+              (?:[ \t]*;[ \t]*      # ";"
+                (?:                 # parameter non-capturing-parenthesis
+                  [^\s;,q][^\s;,]*  # token that doesn't start with "q"
+                |                   # or
+                  q[^\s;,=][^\s;,]* # token that is more than just "q"
+                )
+              )*                    # zero or more parameters
+            )                       # end of media-range
+            (?:[ \t]*;[ \t]*q=      # weight is a "q" parameter
+              (\d*(?:\.\d+)?)       # qvalue capturing-parentheses
+              [^,]*                 # "extension" accept params: who cares?
+            )?                      # accept params are optional
+        ''', re.VERBOSE)
 _token_chars = frozenset("!#$%&'*+-.0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
                          '^_`abcdefghijklmnopqrstuvwxyz|~')
 _etag_re = re.compile(r'([Ww]/)?(?:"(.*?)"|(.*?))(?:\s*,\s*|$)')
 _unsafe_header_chars = set('()<>@,;:\"/[]?={} \t')
 _quoted_string_re = r'"[^"\\]*(?:\\.[^"\\]*)*"'
-_option_header_piece_re = re.compile(r';\s*(%s|[^\s;=]+)\s*(?:=\s*(%s|[^;]+))?\s*' %
-    (_quoted_string_re, _quoted_string_re))
+_option_header_piece_re = re.compile(
+    r';\s*(%s|[^\s;,=]+)\s*(?:=\s*(%s|[^;,]+)?)?\s*' %
+    (_quoted_string_re, _quoted_string_re)
+)
+_option_header_start_mime_type = re.compile(r',\s*([^;,\s]+)([;,]\s*.+)?')
 
 _entity_headers = frozenset([
     'allow', 'content-encoding', 'content-language', 'content-length',
@@ -98,15 +116,15 @@ HTTP_STATUS_CODES = {
     415:    'Unsupported Media Type',
     416:    'Requested Range Not Satisfiable',
     417:    'Expectation Failed',
-    418:    'I\'m a teapot',        # see RFC 2324
+    418:    'I\'m a teapot',  # see RFC 2324
     422:    'Unprocessable Entity',
     423:    'Locked',
     424:    'Failed Dependency',
     426:    'Upgrade Required',
-    428:    'Precondition Required', # see RFC 6585
+    428:    'Precondition Required',  # see RFC 6585
     429:    'Too Many Requests',
     431:    'Request Header Fields Too Large',
-    449:    'Retry With',           # proprietary MS extension
+    449:    'Retry With',  # proprietary MS extension
     500:    'Internal Server Error',
     501:    'Not Implemented',
     502:    'Bad Gateway',
@@ -124,7 +142,7 @@ def wsgi_to_bytes(data):
     """
     if isinstance(data, bytes):
         return data
-    return data.encode('latin1') #XXX: utf8 fallback?
+    return data.encode('latin1')  # XXX: utf8 fallback?
 
 
 def bytes_to_wsgi(data):
@@ -287,7 +305,7 @@ def parse_dict_header(value, cls=dict):
     """
     result = cls()
     if not isinstance(value, text_type):
-        #XXX: validate
+        # XXX: validate
         value = bytes_to_wsgi(value)
     for item in _parse_list_header(value):
         if '=' not in item:
@@ -300,7 +318,7 @@ def parse_dict_header(value, cls=dict):
     return result
 
 
-def parse_options_header(value):
+def parse_options_header(value, multiple=False):
     """Parse a ``Content-Type`` like header into a tuple with the content
     type and the options:
 
@@ -314,23 +332,42 @@ def parse_options_header(value):
     .. versionadded:: 0.5
 
     :param value: the header to parse.
-    :return: (str, options)
+    :param multiple: Whether try to parse and return multiple MIME types
+    :return: (mimetype, options) or (mimetype, options, mimetype, options, …)
+             if multiple=True
     """
-    def _tokenize(string):
-        for match in _option_header_piece_re.finditer(string):
-            key, value = match.groups()
-            key = unquote_header_value(key)
-            if value is not None:
-                value = unquote_header_value(value, key == 'filename')
-            yield key, value
-
     if not value:
         return '', {}
 
-    parts = _tokenize(';' + value)
-    name = next(parts)[0]
-    extra = dict(parts)
-    return name, extra
+    result = []
+
+    value = "," + value.replace("\n", ",")
+    while value:
+        match = _option_header_start_mime_type.match(value)
+        if not match:
+            break
+        result.append(match.group(1))  # mimetype
+        options = {}
+        # Parse options
+        rest = match.group(2)
+        while rest:
+            optmatch = _option_header_piece_re.match(rest)
+            if not optmatch:
+                break
+            option, option_value = optmatch.groups()
+            option = unquote_header_value(option)
+            if option_value is not None:
+                option_value = unquote_header_value(
+                    option_value,
+                    option == 'filename')
+            options[option] = option_value
+            rest = rest[optmatch.end():]
+        result.append(options)
+        if multiple is False:
+            return tuple(result)
+        value = rest
+
+    return tuple(result) if result else ('', {})
 
 
 def parse_accept_header(value, cls=None):
@@ -440,14 +477,14 @@ def parse_authorization_header(value):
     if auth_type == b'basic':
         try:
             username, password = base64.b64decode(auth_info).split(b':', 1)
-        except Exception as e:
+        except Exception:
             return
         return Authorization('basic', {'username':  bytes_to_wsgi(username),
                                        'password': bytes_to_wsgi(password)})
     elif auth_type == b'digest':
         auth_map = parse_dict_header(auth_info)
         for key in 'username', 'realm', 'nonce', 'uri', 'response':
-            if not key in auth_map:
+            if key not in auth_map:
                 return
         if 'qop' in auth_map:
             if not auth_map.get('nc') or not auth_map.get('cnonce'):
@@ -589,14 +626,14 @@ def quote_etag(etag, weak=False):
         raise ValueError('invalid etag')
     etag = '"%s"' % etag
     if weak:
-        etag = 'w/' + etag
+        etag = 'W/' + etag
     return etag
 
 
 def unquote_etag(etag):
     """Unquote a single etag:
 
-    >>> unquote_etag('w/"bar"')
+    >>> unquote_etag('W/"bar"')
     ('bar', True)
     >>> unquote_etag('"bar"')
     ('bar', False)
@@ -608,7 +645,7 @@ def unquote_etag(etag):
         return None, None
     etag = etag.strip()
     weak = False
-    if etag[:2] in ('w/', 'W/'):
+    if etag.startswith(('W/', 'w/')):
         weak = True
         etag = etag[2:]
     if etag[:1] == etag[-1:] == '"':
@@ -678,7 +715,7 @@ def parse_date(value):
                 elif year >= 69 and year <= 99:
                     year += 1900
                 return datetime(*((year,) + t[1:7])) - \
-                       timedelta(seconds=t[-1] or 0)
+                    timedelta(seconds=t[-1] or 0)
             except (ValueError, OverflowError):
                 return None
 
@@ -762,7 +799,11 @@ def is_resource_modified(environ, etag=None, data=None, last_modified=None):
     if etag:
         if_none_match = parse_etags(environ.get('HTTP_IF_NONE_MATCH'))
         if if_none_match:
-            unmodified = if_none_match.contains_raw(etag)
+            # http://tools.ietf.org/html/rfc7232#section-3.2
+            # "A recipient MUST use the weak comparison function when comparing
+            # entity-tags for If-None-Match"
+            etag, _ = unquote_etag(etag)
+            unmodified = if_none_match.contains_weak(etag)
 
     return not unmodified
 
@@ -969,12 +1010,13 @@ def is_byte_range_valid(start, stop, length):
 
 # circular dependency fun
 from werkzeug.datastructures import Accept, HeaderSet, ETags, Authorization, \
-     WWWAuthenticate, TypeConversionDict, IfRange, Range, ContentRange, \
-     RequestCacheControl
+    WWWAuthenticate, TypeConversionDict, IfRange, Range, ContentRange, \
+    RequestCacheControl
 
 
 # DEPRECATED
 # backwards compatible imports
-from werkzeug.datastructures import MIMEAccept, CharsetAccept, \
-     LanguageAccept, Headers
+from werkzeug.datastructures import (  # noqa
+    MIMEAccept, CharsetAccept, LanguageAccept, Headers
+)
 from werkzeug.urls import iri_to_uri

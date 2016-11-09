@@ -10,15 +10,16 @@
     :license: MIT/X11, see LICENSE for more details.
 '''
 
-__version_info__ = ('0', '2', '7')
+__version_info__ = ('0', '3', '2')
 __version__ = '.'.join(__version_info__)
 __author__ = 'Matthew Frazier'
+__maintainer__ = 'Max Countryman'
 __license__ = 'MIT/X11'
 __copyright__ = '(c) 2011 by Matthew Frazier'
 __all__ = ['LoginManager']
 
 from flask import (_request_ctx_stack, abort, current_app, flash, redirect,
-                   request, session, url_for)
+                   request, session, url_for, has_request_context)
 from flask.signals import Namespace
 
 from werkzeug.local import LocalProxy
@@ -27,7 +28,7 @@ from werkzeug.urls import url_decode, url_encode
 
 from datetime import datetime, timedelta
 from functools import wraps
-from hashlib import sha1, md5
+from hashlib import sha512
 
 import hmac
 import warnings
@@ -43,8 +44,7 @@ _signals = Namespace()
 
 #: A proxy for the current user. If no user is logged in, this will be an
 #: anonymous user
-current_user = LocalProxy(lambda: _get_user() or
-                          current_app.login_manager.anonymous_user())
+current_user = LocalProxy(lambda: _get_user())
 
 #: The default name of the "remember me" cookie (``remember_token``)
 COOKIE_NAME = 'remember_token'
@@ -77,6 +77,10 @@ ID_ATTRIBUTE = 'get_id'
 #: Default name of the auth header (``Authorization``)
 AUTH_HEADER_NAME = 'Authorization'
 
+# A set of session keys that are populated by Flask-Login. Use this set to
+# purge keys safely and accurately.
+SESSION_KEYS = set(['user_id', 'remember', '_id', '_fresh'])
+
 
 class LoginManager(object):
     '''
@@ -94,6 +98,11 @@ class LoginManager(object):
         #: (This can be an absolute URL as well, if your authentication
         #: machinery is external to your application.)
         self.login_view = None
+
+        #: Names of views to redirect to when the user needs to log in,
+        #: per blueprint. If the key value is set to None the value of
+        #: :attr:`login_view` will be used instead.
+        self.blueprint_login_views = {}
 
         #: The message to flash when a user is redirected to the login page.
         self.login_message = LOGIN_MESSAGE
@@ -119,6 +128,10 @@ class LoginManager(object):
         #: it.
         self.session_protection = 'basic'
 
+        #: If present, used to translate flash messages ``self.login_message``
+        #: and ``self.needs_refresh_message``
+        self.localize_callback = None
+
         self.token_callback = None
 
         self.user_callback = None
@@ -130,6 +143,8 @@ class LoginManager(object):
         self.id_attribute = ID_ATTRIBUTE
 
         self.header_callback = None
+
+        self.request_callback = None
 
         if app is not None:
             self.init_app(app, add_context_processor)
@@ -158,8 +173,7 @@ class LoginManager(object):
         app.login_manager = self
         app.after_request(self._update_remember_cookie)
 
-        self._login_disabled = app.config.get('LOGIN_DISABLED',
-                                              app.config.get('TESTING', False))
+        self._login_disabled = app.config.get('LOGIN_DISABLED', False)
 
         if add_context_processor:
             app.context_processor(_user_context_processor)
@@ -172,9 +186,14 @@ class LoginManager(object):
 
             - Flash :attr:`LoginManager.login_message` to the user.
 
-            - Redirect the user to `login_view`. (The page they were attempting
-              to access will be passed in the ``next`` query string variable,
-              so you can redirect there if present instead of the homepage.)
+            - If the app is using blueprints find the login view for
+              the current blueprint using `blueprint_login_views`. If the app
+              is not using blueprints or the login view for the current
+              blueprint is not specified use the value of `login_view`.
+              Redirect the user to the login view. (The page they were
+              attempting to access will be passed in the ``next`` query
+              string variable, so you can redirect there if present instead
+              of the homepage.)
 
         If :attr:`LoginManager.login_view` is not defined, then it will simply
         raise a HTTP 401 (Unauthorized) error instead.
@@ -187,13 +206,22 @@ class LoginManager(object):
         if self.unauthorized_callback:
             return self.unauthorized_callback()
 
-        if not self.login_view:
+        if request.blueprint in self.blueprint_login_views:
+            login_view = self.blueprint_login_views[request.blueprint]
+        else:
+            login_view = self.login_view
+
+        if not login_view:
             abort(401)
 
         if self.login_message:
-            flash(self.login_message, category=self.login_message_category)
+            if self.localize_callback is not None:
+                flash(self.localize_callback(self.login_message),
+                      category=self.login_message_category)
+            else:
+                flash(self.login_message, category=self.login_message_category)
 
-        return redirect(login_url(self.login_view, request.url))
+        return redirect(login_url(login_view, request.url))
 
     def user_loader(self, callback):
         '''
@@ -202,7 +230,7 @@ class LoginManager(object):
         user object, or ``None`` if the user does not exist.
 
         :param callback: The callback for retrieving a user object.
-        :type callback: unicode
+        :type callback: callable
         '''
         self.user_callback = callback
         return callback
@@ -214,8 +242,21 @@ class LoginManager(object):
         return a user object, or `None` if the user does not exist.
 
         :param callback: The callback for retrieving a user object.
+        :type callback: callable
         '''
         self.header_callback = callback
+        return callback
+
+    def request_loader(self, callback):
+        '''
+        This sets the callback for loading a user from a Flask request.
+        The function you set should take Flask request object and
+        return a user object, or `None` if the user does not exist.
+
+        :param callback: The callback for retrieving a user object.
+        :type callback: callable
+        '''
+        self.request_callback = callback
         return callback
 
     def token_loader(self, callback):
@@ -226,7 +267,7 @@ class LoginManager(object):
         return a user object, or ``None`` if the user does not exist.
 
         :param callback: The callback for retrieving a user object.
-        :type callback: unicode
+        :type callback: callable
         '''
         self.token_callback = callback
         return callback
@@ -239,7 +280,7 @@ class LoginManager(object):
         normal view.
 
         :param callback: The callback for unauthorized users.
-        :type callback: function
+        :type callback: callable
         '''
         self.unauthorized_callback = callback
         return callback
@@ -252,7 +293,7 @@ class LoginManager(object):
         normal view.
 
         :param callback: The callback for unauthorized users.
-        :type callback: function
+        :type callback: callable
         '''
         self.needs_refresh_callback = callback
         return callback
@@ -272,7 +313,7 @@ class LoginManager(object):
               instead of the homepage.)
 
         If :attr:`LoginManager.refresh_view` is not defined, then it will
-        simply raise a HTTP 403 (Forbidden) error instead.
+        simply raise a HTTP 401 (Unauthorized) error instead.
 
         This should be returned from a view or before/after_request function,
         otherwise the redirect will have no effect.
@@ -283,10 +324,14 @@ class LoginManager(object):
             return self.needs_refresh_callback()
 
         if not self.refresh_view:
-            abort(403)
+            abort(401)
 
-        flash(self.needs_refresh_message,
-              category=self.needs_refresh_message_category)
+        if self.localize_callback is not None:
+            flash(self.localize_callback(self.needs_refresh_message),
+                  category=self.needs_refresh_message_category)
+        else:
+            flash(self.needs_refresh_message,
+                  category=self.needs_refresh_message_category)
 
         return redirect(login_url(self.refresh_view, request.url))
 
@@ -296,11 +341,16 @@ class LoginManager(object):
         if user is None:
             user_id = session.get('user_id')
             if user_id is None:
-                ctx.user = None
+                ctx.user = self.anonymous_user()
             else:
+                if self.user_callback is None:
+                    raise Exception(
+                        "No user_loader has been installed for this "
+                        "LoginManager. Add one with the "
+                        "'LoginManager.user_loader' decorator.")
                 user = self.user_callback(user_id)
                 if user is None:
-                    logout_user()
+                    ctx.user = self.anonymous_user()
                 else:
                     ctx.user = user
         else:
@@ -320,8 +370,8 @@ class LoginManager(object):
         # If a remember cookie is set, and the session is not, move the
         # cookie user ID to the session.
         #
-        # However, if the session may have been set if the user has been
-        # logged out on this request,'remember' would be set to clear,
+        # However, the session may have been set if the user has been
+        # logged out on this request, 'remember' would be set to clear,
         # so we should check for that and not restore the session.
         is_missing_user_id = 'user_id' not in session
         if is_missing_user_id:
@@ -331,10 +381,11 @@ class LoginManager(object):
                           session.get('remember') != 'clear')
             if has_cookie:
                 return self._load_from_cookie(request.cookies[cookie_name])
+            elif self.request_callback:
+                return self._load_from_request(request)
             elif header_name in request.headers:
                 return self._load_from_header(request.headers[header_name])
 
-        # default reload_user
         return self.reload_user()
 
     def _session_protection(self):
@@ -344,22 +395,18 @@ class LoginManager(object):
         app = current_app._get_current_object()
         mode = app.config.get('SESSION_PROTECTION', self.session_protection)
 
-        # if there is no '_id', that should just count as miss?
-        # if '_id' not in sess:
-        #     sess['_id'] = ident
+        # if the sess is empty, it's an anonymous user or just logged out
+        # so we can skip this
 
-        # if the sess is empty, it's an anonymous user, or just logged out
-        #  so we can skip this, unless 'strong' protection is active,
-        #  in which case we need to double check for the remember me token
-        check_protection = sess or mode == 'strong'
-
-        if check_protection and ident != sess.get('_id', None):
+        if sess and ident != sess.get('_id', None):
             if mode == 'basic' or sess.permanent:
                 sess['_fresh'] = False
                 session_protected.send(app)
                 return False
             elif mode == 'strong':
-                sess.clear()
+                for k in SESSION_KEYS:
+                    sess.pop(k, None)
+
                 sess['remember'] = 'clear'
                 session_protected.send(app)
                 return True
@@ -398,6 +445,17 @@ class LoginManager(object):
         else:
             self.reload_user()
 
+    def _load_from_request(self, request):
+        user = None
+        if self.request_callback:
+            user = self.request_callback(request)
+        if user is not None:
+            self.reload_user(user=user)
+            app = current_app._get_current_object()
+            user_loaded_from_request.send(app, user=_get_user())
+        else:
+            self.reload_user()
+
     def _update_remember_cookie(self, response):
         # Don't modify the session unless there's something to do.
         if 'remember' in session:
@@ -416,6 +474,7 @@ class LoginManager(object):
         cookie_name = config.get('REMEMBER_COOKIE_NAME', COOKIE_NAME)
         duration = config.get('REMEMBER_COOKIE_DURATION', COOKIE_DURATION)
         domain = config.get('REMEMBER_COOKIE_DOMAIN')
+        path = config.get('REMEMBER_COOKIE_PATH', '/')
 
         secure = config.get('REMEMBER_COOKIE_SECURE', COOKIE_SECURE)
         httponly = config.get('REMEMBER_COOKIE_HTTPONLY', COOKIE_HTTPONLY)
@@ -424,7 +483,7 @@ class LoginManager(object):
         if self.token_callback:
             data = current_user.get_auth_token()
         else:
-            data = encode_cookie(str(session['user_id']))
+            data = encode_cookie(unicode(session['user_id']))
         expires = datetime.utcnow() + duration
 
         # actually set it
@@ -432,6 +491,7 @@ class LoginManager(object):
                             value=data,
                             expires=expires,
                             domain=domain,
+                            path=path,
                             secure=secure,
                             httponly=httponly)
 
@@ -439,7 +499,8 @@ class LoginManager(object):
         config = current_app.config
         cookie_name = config.get('REMEMBER_COOKIE_NAME', COOKIE_NAME)
         domain = config.get('REMEMBER_COOKIE_DOMAIN')
-        response.delete_cookie(cookie_name, domain=domain)
+        path = config.get('REMEMBER_COOKIE_PATH', '/')
+        response.delete_cookie(cookie_name, domain=domain, path=path)
 
 
 class UserMixin(object):
@@ -447,12 +508,15 @@ class UserMixin(object):
     This provides default implementations for the methods that Flask-Login
     expects user objects to have.
     '''
+    @property
     def is_active(self):
         return True
 
+    @property
     def is_authenticated(self):
         return True
 
+    @property
     def is_anonymous(self):
         return False
 
@@ -479,17 +543,25 @@ class UserMixin(object):
             return NotImplemented
         return not equal
 
+    if sys.version_info[0] != 2:  # pragma: no cover
+        # Python 3 implicitly set __hash__ to None if we override __eq__
+        # We set it back to its default implementation
+        __hash__ = object.__hash__
+
 
 class AnonymousUserMixin(object):
     '''
     This is the default object for representing an anonymous user.
     '''
+    @property
     def is_authenticated(self):
         return False
 
+    @property
     def is_active(self):
         return False
 
+    @property
     def is_anonymous(self):
         return True
 
@@ -519,7 +591,7 @@ def decode_cookie(cookie):
     try:
         payload, digest = cookie.rsplit(u'|', 1)
         if hasattr(digest, 'decode'):
-            digest = digest.decode('ascii')
+            digest = digest.decode('ascii')  # pragma: no cover
     except ValueError:
         return
 
@@ -598,7 +670,7 @@ def make_secure_token(*args, **options):
 
     payload = b'\0'.join(l)
 
-    token_value = hmac.new(key, payload, sha1).hexdigest()
+    token_value = hmac.new(key, payload, sha512).hexdigest()
 
     if hasattr(token_value, 'decode'):  # pragma: no cover
         token_value = token_value.decode('utf-8')  # ensure bytes
@@ -613,10 +685,10 @@ def login_fresh():
     return session.get('_fresh', False)
 
 
-def login_user(user, remember=False, force=False):
+def login_user(user, remember=False, force=False, fresh=True):
     '''
     Logs a user in. You should pass the actual user object to this. If the
-    user's `is_active` method returns ``False``, they will not be logged in
+    user's `is_active` property is ``False``, they will not be logged in
     unless `force` is ``True``.
 
     This will return ``True`` if the log in attempt succeeds, and ``False`` if
@@ -630,13 +702,16 @@ def login_user(user, remember=False, force=False):
     :param force: If the user is inactive, setting this to ``True`` will log
         them in regardless. Defaults to ``False``.
     :type force: bool
+    :param fresh: setting this to ``False`` will log in the user with a session
+    marked as not "fresh". Defaults to ``True``.
+    :type fresh: bool
     '''
-    if not force and not user.is_active():
+    if not force and not user.is_active:
         return False
 
     user_id = getattr(user, current_app.login_manager.id_attribute)()
     session['user_id'] = user_id
-    session['_fresh'] = True
+    session['_fresh'] = fresh
     session['_id'] = _create_identifier()
 
     if remember:
@@ -652,6 +727,9 @@ def logout_user():
     Logs a user out. (You do not need to pass the actual user.) This will
     also clean up the remember me cookie if it exists.
     '''
+
+    user = _get_user()
+
     if 'user_id' in session:
         session.pop('user_id')
 
@@ -662,9 +740,7 @@ def logout_user():
     if cookie_name in request.cookies:
         session['remember'] = 'clear'
 
-    user = _get_user()
-    if user and not user.is_anonymous():
-        user_logged_out.send(current_app._get_current_object(), user=user)
+    user_logged_out.send(current_app._get_current_object(), user=user)
 
     current_app.login_manager.reload_user()
     return True
@@ -695,15 +771,14 @@ def login_required(func):
     If there are only certain times you need to require that your user is
     logged in, you can do so with::
 
-        if not current_user.is_authenticated():
+        if not current_user.is_authenticated:
             return current_app.login_manager.unauthorized()
 
     ...which is essentially the code that this function adds to your views.
 
-    It can be convenient to globally turn off authentication when unit
-    testing. To enable this, if either of the application
-    configuration variables `LOGIN_DISABLED` or `TESTING` is set to
-    `True`, this decorator will be ignored.
+    It can be convenient to globally turn off authentication when unit testing.
+    To enable this, if the application configuration variable `LOGIN_DISABLED`
+    is set to `True`, this decorator will be ignored.
 
     :param func: The view function to decorate.
     :type func: function
@@ -712,7 +787,7 @@ def login_required(func):
     def decorated_view(*args, **kwargs):
         if current_app.login_manager._login_disabled:
             return func(*args, **kwargs)
-        elif not current_user.is_authenticated():
+        elif not current_user.is_authenticated:
             return current_app.login_manager.unauthorized()
         return func(*args, **kwargs)
     return decorated_view
@@ -740,7 +815,7 @@ def fresh_login_required(func):
     def decorated_view(*args, **kwargs):
         if current_app.login_manager._login_disabled:
             return func(*args, **kwargs)
-        elif not current_user.is_authenticated():
+        elif not current_user.is_authenticated:
             return current_app.login_manager.unauthorized()
         elif not login_fresh():
             return current_app.login_manager.needs_refresh()
@@ -748,8 +823,38 @@ def fresh_login_required(func):
     return decorated_view
 
 
+def set_login_view(login_view, blueprint=None):
+    '''
+    Sets the login view for the app or blueprint. If a blueprint is passed,
+    the login view is set for this blueprint on ``blueprint_login_views``.
+
+    :param login_view: The user object to log in.
+    :type login_view: str
+    :param blueprint: The blueprint which this login view should be set on.
+        Defaults to ``None``.
+    :type blueprint: object
+    '''
+
+    num_login_views = len(current_app.login_manager.blueprint_login_views)
+    if blueprint is not None or num_login_views != 0:
+
+        (current_app.login_manager
+            .blueprint_login_views[blueprint.name]) = login_view
+
+        if (current_app.login_manager.login_view is not None and
+                None not in current_app.login_manager.blueprint_login_views):
+
+            (current_app.login_manager
+                .blueprint_login_views[None]) = (current_app.login_manager
+                                                 .login_view)
+
+        current_app.login_manager.login_view = None
+    else:
+        current_app.login_manager.login_view = login_view
+
+
 def _get_user():
-    if not hasattr(_request_ctx_stack.top, 'user'):
+    if has_request_context() and not hasattr(_request_ctx_stack.top, 'user'):
         current_app.login_manager._load_user()
 
     return getattr(_request_ctx_stack.top, 'user', None)
@@ -758,13 +863,15 @@ def _get_user():
 def _cookie_digest(payload, key=None):
     key = _secret_key(key)
 
-    return hmac.new(key, payload.encode('utf-8'), sha1).hexdigest()
+    return hmac.new(key, payload.encode('utf-8'), sha512).hexdigest()
 
 
 def _get_remote_addr():
     address = request.headers.get('X-Forwarded-For', request.remote_addr)
     if address is not None:
-        address = address.encode('utf-8')
+        # An 'X-Forwarded-For' header includes a comma separated list of the
+        # addresses, the first address being the actual remote address.
+        address = address.encode('utf-8').split(b',')[0].strip()
     return address
 
 
@@ -774,8 +881,8 @@ def _create_identifier():
         user_agent = user_agent.encode('utf-8')
     base = '{0}|{1}'.format(_get_remote_addr(), user_agent)
     if str is bytes:
-        base = unicode(base, 'utf-8', errors='replace')
-    h = md5()
+        base = unicode(base, 'utf-8', errors='replace')  # pragma: no cover
+    h = sha512()
     h.update(base.encode('utf8'))
     return h.hexdigest()
 
@@ -811,6 +918,10 @@ user_loaded_from_cookie = _signals.signal('loaded-from-cookie')
 #: Sent when the user is loaded from the header. In addition to the app (which
 #: is the #: sender), it is passed `user`, which is the user being reloaded.
 user_loaded_from_header = _signals.signal('loaded-from-header')
+
+#: Sent when the user is loaded from the request. In addition to the app (which
+#: is the #: sender), it is passed `user`, which is the user being reloaded.
+user_loaded_from_request = _signals.signal('loaded-from-request')
 
 #: Sent when a user's login is confirmed, marking it as fresh. (It is not
 #: called for a normal login.)

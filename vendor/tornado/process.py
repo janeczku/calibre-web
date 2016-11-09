@@ -21,7 +21,6 @@ the server into multiple processes and managing subprocesses.
 from __future__ import absolute_import, division, print_function, with_statement
 
 import errno
-import multiprocessing
 import os
 import signal
 import subprocess
@@ -35,6 +34,13 @@ from tornado.iostream import PipeIOStream
 from tornado.log import gen_log
 from tornado.platform.auto import set_close_exec
 from tornado import stack_context
+from tornado.util import errno_from_exception
+
+try:
+    import multiprocessing
+except ImportError:
+    # Multiprocessing is not available on Google App Engine.
+    multiprocessing = None
 
 try:
     long  # py2
@@ -44,6 +50,8 @@ except NameError:
 
 def cpu_count():
     """Returns the number of processors on this machine."""
+    if multiprocessing is None:
+        return 1
     try:
         return multiprocessing.cpu_count()
     except NotImplementedError:
@@ -92,7 +100,8 @@ def fork_processes(num_processes, max_restarts=100):
     between any server code.
 
     Note that multiple processes are not compatible with the autoreload
-    module (or the debug=True option to `tornado.web.Application`).
+    module (or the ``autoreload=True`` option to `tornado.web.Application`
+    which defaults to True when ``debug=True``).
     When using multiple processes, no IOLoops can be created or
     referenced until after the call to ``fork_processes``.
 
@@ -135,7 +144,7 @@ def fork_processes(num_processes, max_restarts=100):
         try:
             pid, status = os.wait()
         except OSError as e:
-            if e.errno == errno.EINTR:
+            if errno_from_exception(e) == errno.EINTR:
                 continue
             raise
         if pid not in children:
@@ -182,6 +191,9 @@ class Subprocess(object):
       ``tornado.process.Subprocess.STREAM``, which will make the corresponding
       attribute of the resulting Subprocess a `.PipeIOStream`.
     * A new keyword argument ``io_loop`` may be used to pass in an IOLoop.
+
+    .. versionchanged:: 4.1
+       The ``io_loop`` argument is deprecated.
     """
     STREAM = object()
 
@@ -190,23 +202,34 @@ class Subprocess(object):
 
     def __init__(self, *args, **kwargs):
         self.io_loop = kwargs.pop('io_loop', None) or ioloop.IOLoop.current()
+        # All FDs we create should be closed on error; those in to_close
+        # should be closed in the parent process on success.
+        pipe_fds = []
         to_close = []
         if kwargs.get('stdin') is Subprocess.STREAM:
             in_r, in_w = _pipe_cloexec()
             kwargs['stdin'] = in_r
+            pipe_fds.extend((in_r, in_w))
             to_close.append(in_r)
             self.stdin = PipeIOStream(in_w, io_loop=self.io_loop)
         if kwargs.get('stdout') is Subprocess.STREAM:
             out_r, out_w = _pipe_cloexec()
             kwargs['stdout'] = out_w
+            pipe_fds.extend((out_r, out_w))
             to_close.append(out_w)
             self.stdout = PipeIOStream(out_r, io_loop=self.io_loop)
         if kwargs.get('stderr') is Subprocess.STREAM:
             err_r, err_w = _pipe_cloexec()
             kwargs['stderr'] = err_w
+            pipe_fds.extend((err_r, err_w))
             to_close.append(err_w)
             self.stderr = PipeIOStream(err_r, io_loop=self.io_loop)
-        self.proc = subprocess.Popen(*args, **kwargs)
+        try:
+            self.proc = subprocess.Popen(*args, **kwargs)
+        except:
+            for fd in pipe_fds:
+                os.close(fd)
+            raise
         for fd in to_close:
             os.close(fd)
         for attr in ['stdin', 'stdout', 'stderr', 'pid']:
@@ -220,7 +243,7 @@ class Subprocess(object):
 
         The callback takes one argument, the return code of the process.
 
-        This method uses a ``SIGCHILD`` handler, which is a global setting
+        This method uses a ``SIGCHLD`` handler, which is a global setting
         and may conflict if you have other libraries trying to handle the
         same signal.  If you are using more than one ``IOLoop`` it may
         be necessary to call `Subprocess.initialize` first to designate
@@ -237,12 +260,15 @@ class Subprocess(object):
 
     @classmethod
     def initialize(cls, io_loop=None):
-        """Initializes the ``SIGCHILD`` handler.
+        """Initializes the ``SIGCHLD`` handler.
 
         The signal handler is run on an `.IOLoop` to avoid locking issues.
         Note that the `.IOLoop` used for signal handling need not be the
         same one used by individual Subprocess objects (as long as the
         ``IOLoops`` are each running in separate threads).
+
+        .. versionchanged:: 4.1
+           The ``io_loop`` argument is deprecated.
         """
         if cls._initialized:
             return
@@ -255,7 +281,7 @@ class Subprocess(object):
 
     @classmethod
     def uninitialize(cls):
-        """Removes the ``SIGCHILD`` handler."""
+        """Removes the ``SIGCHLD`` handler."""
         if not cls._initialized:
             return
         signal.signal(signal.SIGCHLD, cls._old_sigchld)
@@ -271,7 +297,7 @@ class Subprocess(object):
         try:
             ret_pid, status = os.waitpid(pid, os.WNOHANG)
         except OSError as e:
-            if e.args[0] == errno.ECHILD:
+            if errno_from_exception(e) == errno.ECHILD:
                 return
         if ret_pid == 0:
             return

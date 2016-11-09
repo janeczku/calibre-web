@@ -17,7 +17,7 @@
     Afterwards this request object provides the extra functionality of the
     :class:`JSONRequestMixin`.
 
-    :copyright: (c) 2013 by the Werkzeug Team, see AUTHORS for more details.
+    :copyright: (c) 2014 by the Werkzeug Team, see AUTHORS for more details.
     :license: BSD, see LICENSE for more details.
 """
 import codecs
@@ -42,6 +42,7 @@ def is_known_charset(charset):
 
 
 class JSONRequestMixin(object):
+
     """Add json method to a request object.  This will parse the input data
     through simplejson if possible.
 
@@ -55,12 +56,13 @@ class JSONRequestMixin(object):
         if 'json' not in self.environ.get('CONTENT_TYPE', ''):
             raise BadRequest('Not a JSON request')
         try:
-            return loads(self.data)
+            return loads(self.data.decode(self.charset, self.encoding_errors))
         except Exception:
             raise BadRequest('Unable to read JSON request')
 
 
 class ProtobufRequestMixin(object):
+
     """Add protobuf parsing method to a request object.  This will parse the
     input data through `protobuf`_ if possible.
 
@@ -95,6 +97,7 @@ class ProtobufRequestMixin(object):
 
 
 class RoutingArgsRequestMixin(object):
+
     """This request mixin adds support for the wsgiorg routing args
     `specification`_.
 
@@ -137,6 +140,7 @@ class RoutingArgsRequestMixin(object):
 
 
 class ReverseSlashBehaviorRequestMixin(object):
+
     """This mixin reverses the trailing slash behavior of :attr:`script_root`
     and :attr:`path`.  This makes it possible to use :func:`~urlparse.urljoin`
     directly on the paths.
@@ -177,6 +181,7 @@ class ReverseSlashBehaviorRequestMixin(object):
 
 
 class DynamicCharsetRequestMixin(object):
+
     """"If this mixin is mixed into a request class it will provide
     a dynamic `charset` attribute.  This means that if the charset is
     transmitted in the content type headers it's used from there.
@@ -233,6 +238,7 @@ class DynamicCharsetRequestMixin(object):
 
 
 class DynamicCharsetResponseMixin(object):
+
     """If this mixin is mixed into a response class it will provide
     a dynamic `charset` attribute.  This means that if the charset is
     looked up and stored in the `Content-Type` header and updates

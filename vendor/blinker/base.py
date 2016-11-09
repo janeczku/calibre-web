@@ -229,8 +229,8 @@ class Signal(object):
         .. versionadded:: 0.9
 
         .. versionchanged:: 1.1
-          Renamed to :meth:`connected_to`.  ``temporarily_connected_to``
-          was deprecated in 1.2 and removed in a subsequent version.
+          Renamed to :meth:`connected_to`.  ``temporarily_connected_to`` was
+          deprecated in 1.2 and will be removed in a subsequent version.
 
         """
         warn("temporarily_connected_to is deprecated; "
@@ -334,6 +334,7 @@ class Signal(object):
             self.receivers.pop(receiver_id, None)
         else:
             self._by_sender[sender_id].discard(receiver_id)
+            self._by_receiver[receiver_id].discard(sender_id)
 
     def _cleanup_receiver(self, receiver_ref):
         """Disconnect a receiver from all senders."""
@@ -346,6 +347,32 @@ class Signal(object):
         self._weak_senders.pop(sender_id, None)
         for receiver_id in self._by_sender.pop(sender_id, ()):
             self._by_receiver[receiver_id].discard(sender_id)
+
+    def _cleanup_bookkeeping(self):
+        """Prune unused sender/receiver bookeeping. Not threadsafe.
+
+        Connecting & disconnecting leave behind a small amount of bookeeping
+        for the receiver and sender values. Typical workloads using Blinker,
+        for example in most web apps, Flask, CLI scripts, etc., are not
+        adversely affected by this bookkeeping.
+
+        With a long-running Python process performing dynamic signal routing
+        with high volume- e.g. connecting to function closures, "senders" are
+        all unique object instances, and doing all of this over and over- you
+        may see memory usage will grow due to extraneous bookeeping. (An empty
+        set() for each stale sender/receiver pair.)
+
+        This method will prune that bookeeping away, with the caveat that such
+        pruning is not threadsafe. The risk is that cleanup of a fully
+        disconnected receiver/sender pair occurs while another thread is
+        connecting that same pair. If you are in the highly dynamic, unique
+        receiver/sender situation that has lead you to this method, that
+        failure mode is perhaps not a big deal for you.
+        """
+        for mapping in (self._by_sender, self._by_receiver):
+            for _id, bucket in list(mapping.items()):
+                if not bucket:
+                    mapping.pop(_id, None)
 
     def _clear_state(self):
         """Throw away all signal state.  Useful for unit tests."""
@@ -408,6 +435,8 @@ class WeakNamespace(WeakValueDictionary):
     Automatically cleans up unused Signals when the last reference goes out
     of scope.  This namespace implementation exists for a measure of legacy
     compatibility with Blinker <= 1.2, and may be dropped in the future.
+
+    .. versionadded:: 1.3
 
     """
 

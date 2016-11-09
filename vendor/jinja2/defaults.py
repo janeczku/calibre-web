@@ -32,7 +32,7 @@ from jinja2.filters import FILTERS as DEFAULT_FILTERS
 from jinja2.tests import TESTS as DEFAULT_TESTS
 DEFAULT_NAMESPACE = {
     'range':        range_type,
-    'dict':         lambda **kw: kw,
+    'dict':         dict,
     'lipsum':       generate_lorem_ipsum,
     'cycler':       Cycler,
     'joiner':       Joiner

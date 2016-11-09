@@ -6,6 +6,7 @@
 }
 
 body{background:#f2f2f2}body h2{font-weight:normal;color:#444}
+body { margin-bottom: 40px;}
 a{color: #45b29d}a:hover{color: #444;}
 .navigation .nav-head{text-transform:uppercase;color:#999;margin:20px 0}.navigation .nav-head:nth-child(1n+2){border-top:1px solid #ccc;padding-top:20px}
 .navigation li a{color:#444;text-decoration:none;display:block;padding:10px}.navigation li a:hover{background:rgba(153,153,153,0.4);border-radius:5px}

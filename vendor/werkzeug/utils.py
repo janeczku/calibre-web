@@ -7,7 +7,7 @@
     them are used by the request and response wrappers but especially for
     middleware development it makes sense to use them without the wrappers.
 
-    :copyright: (c) 2013 by the Werkzeug Team, see AUTHORS for more details.
+    :copyright: (c) 2014 by the Werkzeug Team, see AUTHORS for more details.
     :license: BSD, see LICENSE for more details.
 """
 import re
@@ -22,7 +22,7 @@ except ImportError:
 from werkzeug._compat import unichr, text_type, string_types, iteritems, \
     reraise, PY2
 from werkzeug._internal import _DictAccessorProperty, \
-     _parse_signature, _missing
+    _parse_signature, _missing
 
 
 _format_re = re.compile(r'\$(?:(%s)|\{(%s)\})' % (('[a-zA-Z_][a-zA-Z0-9_]*',) * 2))
@@ -32,7 +32,8 @@ _windows_device_files = ('CON', 'AUX', 'COM1', 'COM2', 'COM3', 'COM4', 'LPT1',
                          'LPT2', 'LPT3', 'PRN', 'NUL')
 
 
-class cached_property(object):
+class cached_property(property):
+
     """A decorator that converts a function into a lazy property.  The
     function wrapped is called the first time to retrieve the result
     and then that calculated result is used the next time you access
@@ -49,19 +50,20 @@ class cached_property(object):
     work.
     """
 
-    # implementation detail: this property is implemented as non-data
-    # descriptor.  non-data descriptors are only invoked if there is
-    # no entry with the same name in the instance's __dict__.
-    # this allows us to completely get rid of the access function call
-    # overhead.  If one choses to invoke __get__ by hand the property
-    # will still work as expected because the lookup logic is replicated
-    # in __get__ for manual invocation.
+    # implementation detail: A subclass of python's builtin property
+    # decorator, we override __get__ to check for a cached value. If one
+    # choses to invoke __get__ by hand the property will still work as
+    # expected because the lookup logic is replicated in __get__ for
+    # manual invocation.
 
     def __init__(self, func, name=None, doc=None):
         self.__name__ = name or func.__name__
         self.__module__ = func.__module__
         self.__doc__ = doc or func.__doc__
         self.func = func
+
+    def __set__(self, obj, value):
+        obj.__dict__[self.__name__] = value
 
     def __get__(self, obj, type=None):
         if obj is None:
@@ -74,6 +76,7 @@ class cached_property(object):
 
 
 class environ_property(_DictAccessorProperty):
+
     """Maps request attributes to environment variables. This works not only
     for the Werzeug request object, but also any other class with an
     environ attribute:
@@ -101,6 +104,7 @@ class environ_property(_DictAccessorProperty):
 
 
 class header_property(_DictAccessorProperty):
+
     """Like `environ_property` but for headers."""
 
     def lookup(self, obj):
@@ -108,6 +112,7 @@ class header_property(_DictAccessorProperty):
 
 
 class HTMLBuilder(object):
+
     """Helper object for HTML generation.
 
     Per default there are two instances of that class.  The `html` one, and
@@ -157,6 +162,7 @@ class HTMLBuilder(object):
     def __getattr__(self, tag):
         if tag[:2] == '__':
             raise AttributeError(tag)
+
         def proxy(*children, **arguments):
             buffer = '<' + tag
             for key, value in iteritems(arguments):
@@ -183,7 +189,7 @@ class HTMLBuilder(object):
             buffer += '>'
 
             children_as_string = ''.join([text_type(x) for x in children
-                                         if x is not None])
+                                          if x is not None])
 
             if children_as_string:
                 if tag in self._plaintext_elements:
@@ -207,7 +213,7 @@ xhtml = HTMLBuilder('xhtml')
 
 
 def get_content_type(mimetype, charset):
-    """Return the full content type string with charset for a mimetype.
+    """Returns the full content type string with charset for a mimetype.
 
     If the mimetype represents text the charset will be appended as charset
     parameter, otherwise the mimetype is returned unchanged.
@@ -219,7 +225,7 @@ def get_content_type(mimetype, charset):
     if mimetype.startswith('text/') or \
        mimetype == 'application/xml' or \
        (mimetype.startswith('application/') and
-        mimetype.endswith('+xml')):
+            mimetype.endswith('+xml')):
         mimetype += '; charset=' + charset
     return mimetype
 
@@ -250,7 +256,7 @@ def secure_filename(filename):
     to :func:`os.path.join`.  The filename returned is an ASCII only string
     for maximum portability.
 
-    On windows system the function also makes sure that the file is not
+    On windows systems the function also makes sure that the file is not
     named after one of the special device files.
 
     >>> secure_filename("My cool movie.mov")
@@ -335,8 +341,8 @@ def unescape(s):
     return _entity_re.sub(handle_match, s)
 
 
-def redirect(location, code=302):
-    """Return a response object (a WSGI application) that, if called,
+def redirect(location, code=302, Response=None):
+    """Returns a response object (a WSGI application) that, if called,
     redirects the client to the target location.  Supported codes are 301,
     302, 303, 305, and 307.  300 is not supported because it's not a real
     redirect and 304 because it's the answer for a request with a request
@@ -346,14 +352,24 @@ def redirect(location, code=302):
        The location can now be a unicode string that is encoded using
        the :func:`iri_to_uri` function.
 
+    .. versionadded:: 0.10
+        The class used for the Response object can now be passed in.
+
     :param location: the location the response should redirect to.
     :param code: the redirect status code. defaults to 302.
+    :param class Response: a Response class to use when instantiating a
+        response. The default is :class:`werkzeug.wrappers.Response` if
+        unspecified.
     """
-    from werkzeug.wrappers import Response
+    if Response is None:
+        from werkzeug.wrappers import Response
+
     display_location = escape(location)
     if isinstance(location, text_type):
+        # Safe conversion is necessary here as we might redirect
+        # to a broken URI scheme (for instance itms-services).
         from werkzeug.urls import iri_to_uri
-        location = iri_to_uri(location)
+        location = iri_to_uri(location, safe_conversion=True)
     response = Response(
         '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">\n'
         '<title>Redirecting...</title>\n'
@@ -366,7 +382,7 @@ def redirect(location, code=302):
 
 
 def append_slash_redirect(environ, code=301):
-    """Redirect to the same URL but with a slash appended.  The behavior
+    """Redirects to the same URL but with a slash appended.  The behavior
     of this function is undefined if the path ends with a slash already.
 
     :param environ: the WSGI environment for the request that triggers
@@ -393,29 +409,32 @@ def import_string(import_name, silent=False):
                    `None` is returned instead.
     :return: imported object
     """
-    #XXX: py3 review needed
-    assert isinstance(import_name, string_types)
     # force the import name to automatically convert to strings
-    import_name = str(import_name)
+    # __import__ is not able to handle unicode strings in the fromlist
+    # if the module is a package
+    import_name = str(import_name).replace(':', '.')
     try:
-        if ':' in import_name:
-            module, obj = import_name.split(':', 1)
-        elif '.' in import_name:
-            module, obj = import_name.rsplit('.', 1)
-        else:
-            return __import__(import_name)
-        # __import__ is not able to handle unicode strings in the fromlist
-        # if the module is a package
-        if PY2 and isinstance(obj, unicode):
-            obj = obj.encode('utf-8')
         try:
-            return getattr(__import__(module, None, None, [obj]), obj)
-        except (ImportError, AttributeError):
+            __import__(import_name)
+        except ImportError:
+            if '.' not in import_name:
+                raise
+        else:
+            return sys.modules[import_name]
+
+        module_name, obj_name = import_name.rsplit('.', 1)
+        try:
+            module = __import__(module_name, None, None, [obj_name])
+        except ImportError:
             # support importing modules not yet set up by the parent module
             # (or package for that matter)
-            modname = module + '.' + obj
-            __import__(modname)
-            return sys.modules[modname]
+            module = import_string(module_name)
+
+        try:
+            return getattr(module, obj_name)
+        except AttributeError as e:
+            raise ImportError(e)
+
     except ImportError as e:
         if not silent:
             reraise(
@@ -425,7 +444,7 @@ def import_string(import_name, silent=False):
 
 
 def find_modules(import_path, include_packages=False, recursive=False):
-    """Find all the modules below a package.  This can be useful to
+    """Finds all the modules below a package.  This can be useful to
     automatically import all views / controllers so that their metaclasses /
     function decorators have a chance to register themselves on the
     application.
@@ -457,7 +476,7 @@ def find_modules(import_path, include_packages=False, recursive=False):
 
 
 def validate_arguments(func, args, kwargs, drop_extra=True):
-    """Check if the function accepts the arguments and keyword arguments.
+    """Checks if the function accepts the arguments and keyword arguments.
     Returns a new ``(args, kwargs)`` tuple that can safely be passed to
     the function without causing a `TypeError` because the function signature
     is incompatible.  If `drop_extra` is set to `True` (which is the default)
@@ -543,6 +562,7 @@ def bind_arguments(func, args, kwargs):
 
 
 class ArgumentValidationError(ValueError):
+
     """Raised if :func:`validate_arguments` fails to validate"""
 
     def __init__(self, missing=None, extra=None, extra_positional=None):
@@ -551,12 +571,13 @@ class ArgumentValidationError(ValueError):
         self.extra_positional = extra_positional or []
         ValueError.__init__(self, 'function arguments invalid.  ('
                             '%d missing, %d additional)' % (
-            len(self.missing),
-            len(self.extra) + len(self.extra_positional)
-        ))
+                                len(self.missing),
+                                len(self.extra) + len(self.extra_positional)
+                            ))
 
 
 class ImportStringError(ImportError):
+
     """Provides information about a failed :func:`import_string` attempt."""
 
     #: String in dotted notation that failed to be imported.
@@ -599,13 +620,9 @@ class ImportStringError(ImportError):
                                  self.exception)
 
 
-# circular dependencies
-from werkzeug.http import quote_header_value, unquote_header_value, \
-     cookie_date
-
 # DEPRECATED
 # these objects were previously in this module as well.  we import
 # them here for backwards compatibility with old pickles.
-from werkzeug.datastructures import MultiDict, CombinedMultiDict, \
-     Headers, EnvironHeaders
-from werkzeug.http import parse_cookie, dump_cookie
+from werkzeug.datastructures import (  # noqa
+    MultiDict, CombinedMultiDict, Headers, EnvironHeaders)
+from werkzeug.http import parse_cookie, dump_cookie  # noqa

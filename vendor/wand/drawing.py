@@ -888,8 +888,8 @@ class Drawing(Resource):
         if not isinstance(value, string_type):
             raise TypeError('expected a string, not ' + repr(value))
         elif value not in GRAVITY_TYPES:
-            raise ValueError('expected a string from GRAVITY_TYPES, not '
-                             + repr(value))
+            raise ValueError('expected a string from GRAVITY_TYPES, not ' +
+                             repr(value))
         library.DrawSetGravity(self.resource, GRAVITY_TYPES.index(value))
 
     def clear(self):
@@ -912,8 +912,8 @@ class Drawing(Resource):
 
         """
         if not isinstance(image, Image):
-            raise TypeError('image must be a wand.image.Image instance, not '
-                            + repr(image))
+            raise TypeError('image must be a wand.image.Image instance, not ' +
+                            repr(image))
         res = library.MagickDrawImage(image.wand, self.resource)
         if not res:
             self.raise_exception()
@@ -1012,8 +1012,10 @@ class Drawing(Resource):
         if not isinstance(paint_method, string_type):
             raise TypeError('expected a string, not ' + repr(paint_method))
         elif paint_method not in PAINT_METHOD_TYPES:
-            raise ValueError('expected a string from PAINT_METHOD_TYPES, not '
-                             + repr(paint_method))
+            raise ValueError(
+                'expected a string from PAINT_METHOD_TYPES, not ' +
+                repr(paint_method)
+            )
         library.DrawColor(self.resource, float(x), float(y),
                           PAINT_METHOD_TYPES.index(paint_method))
 
@@ -1140,8 +1142,10 @@ class Drawing(Resource):
         if not isinstance(paint_method, string_type):
             raise TypeError('expected a string, not ' + repr(paint_method))
         elif paint_method not in PAINT_METHOD_TYPES:
-            raise ValueError('expected a string from PAINT_METHOD_TYPES, not '
-                             + repr(paint_method))
+            raise ValueError(
+                'expected a string from PAINT_METHOD_TYPES, not ' +
+                repr(paint_method)
+            )
         library.DrawMatte(self.resource, float(x), float(y),
                           PAINT_METHOD_TYPES.index(paint_method))
 
@@ -1909,8 +1913,8 @@ class Drawing(Resource):
 
         """
         if not isinstance(image, Image):
-            raise TypeError('image must be a wand.image.Image instance, not '
-                            + repr(image))
+            raise TypeError('image must be a wand.image.Image instance, not ' +
+                            repr(image))
         if not isinstance(text, string_type):
             raise TypeError('text must be a string, not ' + repr(text))
         if multiline:

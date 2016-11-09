@@ -8,16 +8,18 @@
     browsers.
 
 
-    :copyright: (c) 2013 by the Werkzeug Team, see AUTHORS for more details.
+    :copyright: (c) 2014 by the Werkzeug Team, see AUTHORS for more details.
     :license: BSD, see LICENSE for more details.
 """
 import re
 
 
 class UserAgentParser(object):
+
     """A simple user agent parser.  Used by the `UserAgent`."""
 
     platforms = (
+        ('cros', 'chromeos'),
         ('iphone|ios', 'iphone'),
         ('ipad', 'ipad'),
         (r'darwin|mac|os\s*x', 'macos'),
@@ -32,7 +34,8 @@ class UserAgentParser(object):
         ('sco|unix_sv', 'sco'),
         ('bsd', 'bsd'),
         ('amiga', 'amiga'),
-        ('blackberry|playbook', 'blackberry')
+        ('blackberry|playbook', 'blackberry'),
+        ('symbian', 'symbian')
     )
     browsers = (
         ('googlebot', 'google'),
@@ -44,13 +47,13 @@ class UserAgentParser(object):
         ('chrome', 'chrome'),
         ('firefox|firebird|phoenix|iceweasel', 'firefox'),
         ('galeon', 'galeon'),
-        ('safari', 'safari'),
+        ('safari|version', 'safari'),
         ('webkit', 'webkit'),
         ('camino', 'camino'),
         ('konqueror', 'konqueror'),
         ('k-meleon', 'kmeleon'),
         ('netscape', 'netscape'),
-        (r'msie|microsoft\s+internet\s+explorer', 'msie'),
+        (r'msie|microsoft\s+internet\s+explorer|trident/.+? rv:', 'msie'),
         ('lynx', 'lynx'),
         ('links', 'links'),
         ('seamonkey|mozilla', 'seamonkey')
@@ -90,6 +93,7 @@ class UserAgentParser(object):
 
 
 class UserAgent(object):
+
     """Represents a user agent.  Pass it a WSGI environment or a user agent
     string and you can inspect some of the details from the user agent
     string via the attributes.  The following attributes exist:
@@ -107,6 +111,7 @@ class UserAgent(object):
        -   `amiga`
        -   `android`
        -   `bsd`
+       -   `chromeos`
        -   `hpux`
        -   `iphone`
        -   `ipad`
@@ -187,4 +192,4 @@ class UserAgent(object):
 # it afterwards.  The class itself has the module set to this module so
 # pickle, inspect and similar modules treat the object as if it was really
 # implemented here.
-from werkzeug.wrappers import UserAgentMixin
+from werkzeug.wrappers import UserAgentMixin  # noqa

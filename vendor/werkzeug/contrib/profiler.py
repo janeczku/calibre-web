@@ -13,10 +13,12 @@
         from werkzeug.contrib.profiler import ProfilerMiddleware
         app = ProfilerMiddleware(app)
 
-    :copyright: (c) 2013 by the Werkzeug Team, see AUTHORS for more details.
+    :copyright: (c) 2014 by the Werkzeug Team, see AUTHORS for more details.
     :license: BSD, see LICENSE for more details.
 """
-import sys, time, os.path
+import sys
+import time
+import os.path
 try:
     try:
         from cProfile import Profile
@@ -29,6 +31,7 @@ except ImportError:
 
 
 class MergeStream(object):
+
     """An object that redirects `write` calls to multiple streams.
     Use this to log to both `sys.stdout` and a file::
 
@@ -48,6 +51,7 @@ class MergeStream(object):
 
 
 class ProfilerMiddleware(object):
+
     """Simple profiler middleware.  Wraps a WSGI application and profiles
     a request.  This intentionally buffers the response so that timings are
     more exact.
@@ -97,17 +101,18 @@ class ProfilerMiddleware(object):
         p = Profile()
         start = time.time()
         p.runcall(runapp)
-        body = ''.join(response_body)
+        body = b''.join(response_body)
         elapsed = time.time() - start
 
         if self._profile_dir is not None:
             prof_filename = os.path.join(self._profile_dir,
-                    '%s.%s.%06dms.%d.prof' % (
-                environ['REQUEST_METHOD'],
-                environ.get('PATH_INFO').strip('/').replace('/', '.') or 'root',
-                elapsed * 1000.0,
-                time.time()
-            ))
+                                         '%s.%s.%06dms.%d.prof' % (
+                                             environ['REQUEST_METHOD'],
+                                             environ.get('PATH_INFO').strip(
+                                                 '/').replace('/', '.') or 'root',
+                                             elapsed * 1000.0,
+                                             time.time()
+                                         ))
             p.dump_stats(prof_filename)
 
         else:

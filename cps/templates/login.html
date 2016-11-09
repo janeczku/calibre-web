@@ -1,22 +1,22 @@
 {% extends "layout.html" %}
 {% block body %}
 <div class="well col-sm-6 col-sm-offset-2">
-  <h2 style="margin-top: 0">Login</h2>
+  <h2 style="margin-top: 0">{{_('Login')}}</h2>
   <form method="POST" role="form">
     <div class="form-group">
-      <label for="username">Username</label>
-      <input type="text" class="form-control" id="username" name="username" placeholder="Username">
+      <label for="username">{{_('Username')}}</label>
+      <input type="text" class="form-control" id="username" name="username" placeholder="{{_('Username')}}">
     </div>
     <div class="form-group">
-      <label for="password">Password</label>
-      <input type="password" class="form-control" id="password" name="password" placeholder="Password">
+      <label for="password">{{_('Password')}}</label>
+      <input type="password" class="form-control" id="password" name="password" placeholder="{{_('Password')}}">
     </div>
     <div class="checkbox">
       <label>
-        <input type="checkbox" name="remember_me" checked> Remember me
+        <input type="checkbox" name="remember_me" checked> {{_('Remember me')}}
       </label>
     </div>
-    <button type="submit" class="btn btn-default">Submit</button>
+    <button type="submit" class="btn btn-default">{{_('Submit')}}</button>
   </form>
 </div>
   {% if error %}

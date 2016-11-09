@@ -6,7 +6,7 @@
     This module implements the form parsing.  It supports url-encoded forms
     as well as non-nested multipart uploads.
 
-    :copyright: (c) 2013 by the Werkzeug Team, see AUTHORS for more details.
+    :copyright: (c) 2014 by the Werkzeug Team, see AUTHORS for more details.
     :license: BSD, see LICENSE for more details.
 """
 import re
@@ -19,7 +19,7 @@ from functools import update_wrapper
 from werkzeug._compat import to_native, text_type
 from werkzeug.urls import url_decode_stream
 from werkzeug.wsgi import make_line_iter, \
-     get_input_stream, get_content_length
+    get_input_stream, get_content_length
 from werkzeug.datastructures import Headers, FileStorage, MultiDict
 from werkzeug.http import parse_options_header
 
@@ -94,6 +94,7 @@ def parse_form_data(environ, stream_factory=None, charset='utf-8',
 
 def exhaust_stream(f):
     """Helper decorator for methods that exhausts the stream on return."""
+
     def wrapper(self, stream, *args, **kwargs):
         try:
             return f(self, stream, *args, **kwargs)
@@ -110,6 +111,7 @@ def exhaust_stream(f):
 
 
 class FormDataParser(object):
+
     """This class implements parsing of form data for Werkzeug.  By itself
     it can parse multipart and url encoded form data.  It can be subclassed
     and extended but for most mimetypes it is a better idea to use the
@@ -203,6 +205,8 @@ class FormDataParser(object):
                                  max_form_memory_size=self.max_form_memory_size,
                                  cls=self.cls)
         boundary = options.get('boundary')
+        if boundary is None:
+            raise ValueError('Missing boundary')
         if isinstance(boundary, text_type):
             boundary = boundary.encode('ascii')
         form, files = parser.parse(stream, boundary, content_length)
@@ -361,14 +365,14 @@ class MultiPartParser(object):
             self.fail('Missing boundary')
         if not is_valid_multipart_boundary(boundary):
             self.fail('Invalid boundary: %s' % boundary)
-        if len(boundary) > self.buffer_size: # pragma: no cover
+        if len(boundary) > self.buffer_size:  # pragma: no cover
             # this should never happen because we check for a minimum size
             # of 1024 and boundaries may not be longer than 200.  The only
             # situation when this happens is for non debug builds where
             # the assert is skipped.
             self.fail('Boundary longer than buffer size')
 
-    def parse_lines(self, file, boundary, content_length):
+    def parse_lines(self, file, boundary, content_length, cap_at_buffer=True):
         """Generate parts of
         ``('begin_form', (headers, name))``
         ``('begin_file', (headers, name, filename))``
@@ -383,7 +387,8 @@ class MultiPartParser(object):
         last_part = next_part + b'--'
 
         iterator = chain(make_line_iter(file, limit=content_length,
-                                        buffer_size=self.buffer_size),
+                                        buffer_size=self.buffer_size,
+                                        cap_at_buffer=cap_at_buffer),
                          _empty_string_iter)
 
         terminator = self._find_terminator(iterator)
@@ -455,7 +460,7 @@ class MultiPartParser(object):
                     cutoff = -1
                 yield _cont, line[:cutoff]
 
-            else: # pragma: no cover
+            else:  # pragma: no cover
                 raise ValueError('unexpected end of part')
 
             # if we have a leftover in the buffer that is not a newline
@@ -508,7 +513,7 @@ class MultiPartParser(object):
                     part_charset = self.get_part_charset(headers)
                     yield ('form',
                            (name, b''.join(container).decode(
-                                part_charset, self.errors)))
+                               part_charset, self.errors)))
 
     def parse(self, file, boundary, content_length):
         formstream, filestream = tee(

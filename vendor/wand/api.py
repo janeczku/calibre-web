@@ -78,7 +78,8 @@ def library_paths():
             # filter DLLs are in the same directory
             pass
 
-    magick_path = lambda dir: os.path.join(magick_home, *dir)
+    def magick_path(path):
+        return os.path.join(magick_home, *path)
     combinations = itertools.product(versions, options)
     for suffix in (version + option for version, option in combinations):
         # On Windows, the API is split between two libs. On other platforms,
@@ -440,6 +441,10 @@ try:
     library.MagickBorderImage.argtypes = [ctypes.c_void_p, ctypes.c_void_p,
                                           ctypes.c_size_t, ctypes.c_size_t]
 
+    library.MagickMergeImageLayers.argtypes = [ctypes.c_void_p,  # wand
+                                               ctypes.c_int]  # method
+    library.MagickMergeImageLayers.restype = ctypes.c_void_p
+
     library.MagickResetIterator.argtypes = [ctypes.c_void_p]
 
     library.MagickSetLastIterator.argtypes = [ctypes.c_void_p]
@@ -590,6 +595,11 @@ try:
                                                  ctypes.c_double,  # black
                                                  ctypes.c_double]  # white
 
+    library.MagickCompareImages.argtypes = [ctypes.c_void_p, ctypes.c_void_p,
+                                            ctypes.c_int,
+                                            ctypes.POINTER(ctypes.c_double)]
+    library.MagickCompareImages.restype = ctypes.c_void_p
+
     library.MagickCompositeImage.argtypes = [ctypes.c_void_p, ctypes.c_void_p,
                                              ctypes.c_int, ctypes.c_ssize_t,
                                              ctypes.c_ssize_t]
@@ -668,6 +678,20 @@ try:
                                       ctypes.POINTER(ctypes.c_uint),
                                       ctypes.POINTER(ctypes.c_uint)]
     library.MagickGetSize.restype = ctypes.c_int
+
+    library.MagickGetImagePage.argtypes = [ctypes.c_void_p,
+                                           ctypes.POINTER(ctypes.c_uint),
+                                           ctypes.POINTER(ctypes.c_uint),
+                                           ctypes.POINTER(ctypes.c_int),
+                                           ctypes.POINTER(ctypes.c_int)]
+    library.MagickGetImagePage.restype = ctypes.c_int
+
+    library.MagickSetImagePage.argtypes = [ctypes.c_void_p,
+                                           ctypes.c_size_t,
+                                           ctypes.c_size_t,
+                                           ctypes.c_ssize_t,
+                                           ctypes.c_ssize_t]
+    library.MagickSetImagePage.restype = ctypes.c_int
 
     library.MagickSetSize.argtypes = [ctypes.c_void_p,
                                       ctypes.c_uint,
@@ -1389,7 +1413,11 @@ if platform.system() == 'Windows':
         libc = ctypes.CDLL(msvcrt)
 else:
     if platform.system() == 'Darwin':
-        libc = ctypes.cdll.LoadLibrary('libc.dylib')
+        try:
+            libc = ctypes.cdll.LoadLibrary('libc.dylib')
+        except OSError:
+            # In case of El Capitan SIP
+            libc = ctypes.cdll.LoadLibrary('/usr/lib/libc.dylib')
     elif platform.system() == 'FreeBSD':
         libc = ctypes.cdll.LoadLibrary(ctypes.util.find_library('c'))
     else:

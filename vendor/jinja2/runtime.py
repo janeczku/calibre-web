@@ -8,13 +8,15 @@
     :copyright: (c) 2010 by the Jinja Team.
     :license: BSD.
 """
+import sys
+
 from itertools import chain
 from jinja2.nodes import EvalContext, _context_function_types
 from jinja2.utils import Markup, soft_unicode, escape, missing, concat, \
      internalcode, object_type_repr
 from jinja2.exceptions import UndefinedError, TemplateRuntimeError, \
      TemplateNotFound
-from jinja2._compat import next, imap, text_type, iteritems, \
+from jinja2._compat import imap, text_type, iteritems, \
      implements_iterator, implements_to_string, string_types, PY2
 
 
@@ -22,7 +24,7 @@ from jinja2._compat import next, imap, text_type, iteritems, \
 __all__ = ['LoopContext', 'TemplateReference', 'Macro', 'Markup',
            'TemplateRuntimeError', 'missing', 'concat', 'escape',
            'markup_join', 'unicode_join', 'to_string', 'identity',
-           'TemplateNotFound']
+           'TemplateNotFound', 'make_logging_undefined']
 
 #: the name of the function that is used to convert something into
 #: a string.  We can just use the text type here.
@@ -67,7 +69,8 @@ def new_context(environment, template_name, blocks, vars=None,
         for key, value in iteritems(locals):
             if key[:2] == 'l_' and value is not missing:
                 parent[key[2:]] = value
-    return Context(environment, parent, template_name, blocks)
+    return environment.context_class(environment, parent, template_name,
+                                     blocks)
 
 
 class TemplateReference(object):
@@ -171,7 +174,7 @@ class Context(object):
         :func:`environmentfunction`.
         """
         if __debug__:
-            __traceback_hide__ = True
+            __traceback_hide__ = True  # noqa
 
         # Allow callable classes to take a context
         fn = __obj.__call__
@@ -339,10 +342,11 @@ class LoopContext(object):
             # if was not possible to get the length of the iterator when
             # the loop context was created (ie: iterating over a generator)
             # we have to convert the iterable into a sequence and use the
-            # length of that.
+            # length of that + the number of iterations so far.
             iterable = tuple(self._iterator)
             self._iterator = iter(iterable)
-            self._length = len(iterable) + self.index0 + 1
+            iterations_done = self.index0 + 2
+            self._length = len(iterable) + iterations_done
         return self._length
 
     def __repr__(self):
@@ -441,7 +445,7 @@ class Macro(object):
 @implements_to_string
 class Undefined(object):
     """The default undefined type.  This undefined type can be printed and
-    iterated over, but every other access will raise an :exc:`UndefinedError`:
+    iterated over, but every other access will raise an :exc:`jinja2.exceptions.UndefinedError`:
 
     >>> foo = Undefined(name='foo')
     >>> str(foo)
@@ -451,7 +455,7 @@ class Undefined(object):
     >>> foo + 42
     Traceback (most recent call last):
       ...
-    UndefinedError: 'foo' is undefined
+    jinja2.exceptions.UndefinedError: 'foo' is undefined
     """
     __slots__ = ('_undefined_hint', '_undefined_obj', '_undefined_name',
                  '_undefined_exception')
@@ -465,7 +469,7 @@ class Undefined(object):
     @internalcode
     def _fail_with_undefined_error(self, *args, **kwargs):
         """Regular callback function for undefined objects that raises an
-        `UndefinedError` on call.
+        `jinja2.exceptions.UndefinedError` on call.
         """
         if self._undefined_hint is None:
             if self._undefined_obj is missing:
@@ -491,11 +495,20 @@ class Undefined(object):
         return self._fail_with_undefined_error()
 
     __add__ = __radd__ = __mul__ = __rmul__ = __div__ = __rdiv__ = \
-    __truediv__ = __rtruediv__ = __floordiv__ = __rfloordiv__ = \
-    __mod__ = __rmod__ = __pos__ = __neg__ = __call__ = \
-    __getitem__ = __lt__ = __le__ = __gt__ = __ge__ = __int__ = \
-    __float__ = __complex__ = __pow__ = __rpow__ = \
+        __truediv__ = __rtruediv__ = __floordiv__ = __rfloordiv__ = \
+        __mod__ = __rmod__ = __pos__ = __neg__ = __call__ = \
+        __getitem__ = __lt__ = __le__ = __gt__ = __ge__ = __int__ = \
+        __float__ = __complex__ = __pow__ = __rpow__ = \
         _fail_with_undefined_error
+
+    def __eq__(self, other):
+        return type(self) is type(other)
+
+    def __ne__(self, other):
+        return not self.__eq__(other)
+
+    def __hash__(self):
+        return id(type(self))
 
     def __str__(self):
         return u''
@@ -509,9 +522,91 @@ class Undefined(object):
 
     def __nonzero__(self):
         return False
+    __bool__ = __nonzero__
 
     def __repr__(self):
         return 'Undefined'
+
+
+def make_logging_undefined(logger=None, base=None):
+    """Given a logger object this returns a new undefined class that will
+    log certain failures.  It will log iterations and printing.  If no
+    logger is given a default logger is created.
+
+    Example::
+
+        logger = logging.getLogger(__name__)
+        LoggingUndefined = make_logging_undefined(
+            logger=logger,
+            base=Undefined
+        )
+
+    .. versionadded:: 2.8
+
+    :param logger: the logger to use.  If not provided, a default logger
+                   is created.
+    :param base: the base class to add logging functionality to.  This
+                 defaults to :class:`Undefined`.
+    """
+    if logger is None:
+        import logging
+        logger = logging.getLogger(__name__)
+        logger.addHandler(logging.StreamHandler(sys.stderr))
+    if base is None:
+        base = Undefined
+
+    def _log_message(undef):
+        if undef._undefined_hint is None:
+            if undef._undefined_obj is missing:
+                hint = '%s is undefined' % undef._undefined_name
+            elif not isinstance(undef._undefined_name, string_types):
+                hint = '%s has no element %s' % (
+                    object_type_repr(undef._undefined_obj),
+                    undef._undefined_name)
+            else:
+                hint = '%s has no attribute %s' % (
+                    object_type_repr(undef._undefined_obj),
+                    undef._undefined_name)
+        else:
+            hint = undef._undefined_hint
+        logger.warning('Template variable warning: %s', hint)
+
+    class LoggingUndefined(base):
+
+        def _fail_with_undefined_error(self, *args, **kwargs):
+            try:
+                return base._fail_with_undefined_error(self, *args, **kwargs)
+            except self._undefined_exception as e:
+                logger.error('Template variable error: %s', str(e))
+                raise e
+
+        def __str__(self):
+            rv = base.__str__(self)
+            _log_message(self)
+            return rv
+
+        def __iter__(self):
+            rv = base.__iter__(self)
+            _log_message(self)
+            return rv
+
+        if PY2:
+            def __nonzero__(self):
+                rv = base.__nonzero__(self)
+                _log_message(self)
+                return rv
+
+            def __unicode__(self):
+                rv = base.__unicode__(self)
+                _log_message(self)
+                return rv
+        else:
+            def __bool__(self):
+                rv = base.__bool__(self)
+                _log_message(self)
+                return rv
+
+    return LoggingUndefined
 
 
 @implements_to_string
@@ -526,7 +621,7 @@ class DebugUndefined(Undefined):
     >>> foo + 42
     Traceback (most recent call last):
       ...
-    UndefinedError: 'foo' is undefined
+    jinja2.exceptions.UndefinedError: 'foo' is undefined
     """
     __slots__ = ()
 
@@ -551,19 +646,20 @@ class StrictUndefined(Undefined):
     >>> str(foo)
     Traceback (most recent call last):
       ...
-    UndefinedError: 'foo' is undefined
+    jinja2.exceptions.UndefinedError: 'foo' is undefined
     >>> not foo
     Traceback (most recent call last):
       ...
-    UndefinedError: 'foo' is undefined
+    jinja2.exceptions.UndefinedError: 'foo' is undefined
     >>> foo + 42
     Traceback (most recent call last):
       ...
-    UndefinedError: 'foo' is undefined
+    jinja2.exceptions.UndefinedError: 'foo' is undefined
     """
     __slots__ = ()
     __iter__ = __str__ = __len__ = __nonzero__ = __eq__ = \
-        __ne__ = __bool__ = Undefined._fail_with_undefined_error
+        __ne__ = __bool__ = __hash__ = \
+        Undefined._fail_with_undefined_error
 
 
 # remove remaining slots attributes, after the metaclass did the magic they

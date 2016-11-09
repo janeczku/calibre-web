@@ -36,7 +36,7 @@ r"""
 
     .. _greenlet: http://codespeak.net/py/dist/greenlet.html
 
-    :copyright: (c) 2013 by the Werkzeug Team, see AUTHORS for more details.
+    :copyright: (c) 2014 by the Werkzeug Team, see AUTHORS for more details.
     :license: BSD, see LICENSE for more details.
 """
 try:
@@ -64,6 +64,7 @@ def _newline(reference_string):
 
 @implements_iterator
 class IterIO(object):
+
     """Instances of this object implement an interface compatible with the
     standard Python :class:`file` object.  Streams are either read-only or
     write-only depending on how the object is created.
@@ -160,6 +161,7 @@ class IterIO(object):
 
 
 class IterI(IterIO):
+
     """Convert an stream into an iterator."""
 
     def __new__(cls, func, sentinel=''):
@@ -214,6 +216,7 @@ class IterI(IterIO):
 
 
 class IterO(IterIO):
+
     """Iter output.  Wrap an iterator and give it a stream like interface."""
 
     def __new__(cls, gen, sentinel=''):
@@ -305,7 +308,10 @@ class IterO(IterIO):
             nl_pos = self._buf.find(_newline(self._buf), self.pos)
         buf = []
         try:
-            pos = self.pos
+            if self._buf is None:
+                pos = self.pos
+            else:
+                pos = len(self._buf)
             while nl_pos < 0:
                 item = next(self._gen)
                 local_pos = item.find(_newline(item))
