@@ -5,7 +5,7 @@
 
     This module provides internally used helpers and constants.
 
-    :copyright: (c) 2013 by the Werkzeug Team, see AUTHORS for more details.
+    :copyright: (c) 2014 by the Werkzeug Team, see AUTHORS for more details.
     :license: BSD, see LICENSE for more details.
 """
 import re
@@ -16,7 +16,7 @@ from datetime import datetime, date
 from itertools import chain
 
 from werkzeug._compat import iter_bytes, text_type, BytesIO, int_to_byte, \
-     range_type, to_native
+    range_type, integer_types
 
 
 _logger = None
@@ -31,10 +31,10 @@ _legal_cookie_chars = (string.ascii_letters +
                        u"!#$%&'*+-.^_`|~:").encode('ascii')
 
 _cookie_quoting_map = {
-    b',' : b'\\054',
-    b';' : b'\\073',
-    b'"' : b'\\"',
-    b'\\' : b'\\\\',
+    b',': b'\\054',
+    b';': b'\\073',
+    b'"': b'\\"',
+    b'\\': b'\\\\',
 }
 for _i in chain(range_type(32), range_type(127, 256)):
     _cookie_quoting_map[int_to_byte(_i)] = ('\\%03o' % _i).encode('latin1')
@@ -141,12 +141,12 @@ def _parse_signature(func):
         if vararg_var is not None:
             new_args.extend(extra_positional)
             extra_positional = ()
-        if kwargs and not kwarg_var is not None:
+        if kwargs and kwarg_var is None:
             extra.update(kwargs)
             kwargs = {}
 
         return new_args, kwargs, missing, extra, extra_positional, \
-               arguments, vararg_var, kwarg_var
+            arguments, vararg_var, kwarg_var
     _signature_cache[func] = parse
     return parse
 
@@ -157,7 +157,7 @@ def _date_to_unix(arg):
     """
     if isinstance(arg, datetime):
         arg = arg.utctimetuple()
-    elif isinstance(arg, (int, long, float)):
+    elif isinstance(arg, integer_types + (float,)):
         return int(arg)
     year, month, day, hour, minute, second = arg[:6]
     days = date(year, month, 1).toordinal() - _epoch_ord + day - 1
@@ -168,6 +168,7 @@ def _date_to_unix(arg):
 
 
 class _DictAccessorProperty(object):
+
     """Baseclass for `environ_property` and `header_property`."""
     read_only = False
 
@@ -257,7 +258,7 @@ def _cookie_unquote(b):
             k = q_match.start(0)
         if q_match and (not o_match or k < j):
             _push(b[i:k])
-            _push(b[k + 1])
+            _push(b[k + 1:k + 2])
             i = k + 2
         else:
             _push(b[i:j])
@@ -337,8 +338,8 @@ def _make_cookie_domain(domain):
     if b'.' in domain:
         return domain
     raise ValueError(
-        'Setting \'domain\' for a cookie on a server running localy (ex: '
-        'localhost) is not supportted by complying browsers. You should '
+        'Setting \'domain\' for a cookie on a server running locally (ex: '
+        'localhost) is not supported by complying browsers. You should '
         'have something like: \'127.0.0.1 localhost dev.localhost\' on '
         'your hosts file and then point your server to run on '
         '\'dev.localhost\' and also set \'domain\' for \'dev.localhost\''
@@ -383,6 +384,7 @@ krEDuNoJCHNlZYhKpvw4mspVWxqo415n8cD62N9+EfHrAvqQnINStetek7RY2Urv8nxsnGaZfRr/
 nhXbJ6m/yl1LzYqscDZA9QHLNbdaSTTr+kFg3bC0iYbX/eQy0Bv3h4B50/SGYzKAXkCeOLI3bcAt
 mj2Z/FM1vQWgDynsRwNvrWnJHlespkrp8+vO1jNaibm+PhqXPPv30YwDZ6jApe3wUjFQobghvW9p
 7f2zLkGNv8b191cD/3vs9Q833z8t''').splitlines()])
+
     def easteregged(environ, start_response):
         def injecting_start_response(status, headers, exc_info=None):
             headers.append(('X-Powered-By', 'Werkzeug'))

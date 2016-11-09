@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import gc
+import sys
 import unittest
 from markupsafe import Markup, escape, escape_silent
 from markupsafe._compat import text_type
@@ -42,7 +43,7 @@ class MarkupTestCase(unittest.TestCase):
             __str__ = __unicode__
         assert Markup(Foo()) == '<em>awesome</em>'
         assert Markup('<strong>%s</strong>') % Foo() == \
-               '<strong><em>awesome</em></strong>'
+            '<strong><em>awesome</em></strong>'
 
     def test_tuple_interpol(self):
         self.assertEqual(Markup('<em>%s:%s</em>') % (
@@ -64,6 +65,60 @@ class MarkupTestCase(unittest.TestCase):
         assert escape('"<>&\'') == '&#34;&lt;&gt;&amp;&#39;'
         assert Markup("<em>Foo &amp; Bar</em>").striptags() == "Foo & Bar"
         assert Markup("&lt;test&gt;").unescape() == "<test>"
+
+    def test_formatting(self):
+        for actual, expected in (
+            (Markup('%i') % 3.14, '3'),
+            (Markup('%.2f') % 3.14159, '3.14'),
+            (Markup('%s %s %s') % ('<', 123, '>'), '&lt; 123 &gt;'),
+            (Markup('<em>{awesome}</em>').format(awesome='<awesome>'),
+             '<em>&lt;awesome&gt;</em>'),
+            (Markup('{0[1][bar]}').format([0, {'bar': '<bar/>'}]),
+             '&lt;bar/&gt;'),
+            (Markup('{0[1][bar]}').format([0, {'bar': Markup('<bar/>')}]),
+             '<bar/>')):
+            assert actual == expected, "%r should be %r!" % (actual, expected)
+
+    # This is new in 2.7
+    if sys.version_info >= (2, 7):
+        def test_formatting_empty(self):
+            formatted = Markup('{}').format(0)
+            assert formatted == Markup('0')
+
+    def test_custom_formatting(self):
+        class HasHTMLOnly(object):
+            def __html__(self):
+                return Markup('<foo>')
+
+        class HasHTMLAndFormat(object):
+            def __html__(self):
+                return Markup('<foo>')
+            def __html_format__(self, spec):
+                return Markup('<FORMAT>')
+
+        assert Markup('{0}').format(HasHTMLOnly()) == Markup('<foo>')
+        assert Markup('{0}').format(HasHTMLAndFormat()) == Markup('<FORMAT>')
+
+    def test_complex_custom_formatting(self):
+        class User(object):
+            def __init__(self, id, username):
+                self.id = id
+                self.username = username
+            def __html_format__(self, format_spec):
+                if format_spec == 'link':
+                    return Markup('<a href="/user/{0}">{1}</a>').format(
+                        self.id,
+                        self.__html__(),
+                    )
+                elif format_spec:
+                    raise ValueError('Invalid format spec')
+                return self.__html__()
+            def __html__(self):
+                return Markup('<span class=user>{0}</span>').format(self.username)
+
+        user = User(1, 'foo')
+        assert Markup('<p>User: {0:link}').format(user) == \
+            Markup('<p>User: <a href="/user/1"><span class=user>foo</span></a>')
 
     def test_all_set(self):
         import markupsafe as markup

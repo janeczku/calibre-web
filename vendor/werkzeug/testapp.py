@@ -6,7 +6,7 @@
     Provide a small test application that can be used to test a WSGI server
     and check it for WSGI compliance.
 
-    :copyright: (c) 2013 by the Werkzeug Team, see AUTHORS for more details.
+    :copyright: (c) 2014 by the Werkzeug Team, see AUTHORS for more details.
     :license: BSD, see LICENSE for more details.
 """
 import os
@@ -17,8 +17,8 @@ from werkzeug.wrappers import BaseRequest as Request, BaseResponse as Response
 from werkzeug.utils import escape
 import base64
 
-logo = Response(base64.b64decode(
-'''R0lGODlhoACgAOMIAAEDACwpAEpCAGdgAJaKAM28AOnVAP3rAP/////////
+logo = Response(base64.b64decode('''
+R0lGODlhoACgAOMIAAEDACwpAEpCAGdgAJaKAM28AOnVAP3rAP/////////
 //////////////////////yH5BAEKAAgALAAAAACgAKAAAAT+EMlJq704680R+F0ojmRpnuj0rWnrv
 nB8rbRs33gu0bzu/0AObxgsGn3D5HHJbCUFyqZ0ukkSDlAidctNFg7gbI9LZlrBaHGtzAae0eloe25
 7w9EDOX2fst/xenyCIn5/gFqDiVVDV4aGeYiKkhSFjnCQY5OTlZaXgZp8nJ2ekaB0SQOjqphrpnOiq
@@ -147,7 +147,7 @@ def iter_sys_path():
     for item in sys.path:
         path = os.path.join(cwd, item or os.path.curdir)
         yield strip(os.path.normpath(path)), \
-              not os.path.isdir(path), path != item
+            not os.path.isdir(path), path != item
 
 
 def render_testapp(req):

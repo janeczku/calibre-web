@@ -6,7 +6,7 @@
     Implements test support helpers.  This module is lazily imported
     and usually not used in production environments.
 
-    :copyright: (c) 2011 by Armin Ronacher.
+    :copyright: (c) 2015 by Armin Ronacher.
     :license: BSD, see LICENSE for more details.
 """
 
@@ -31,14 +31,17 @@ def make_test_environ_builder(app, path='/', base_url=None, *args, **kwargs):
             base_url += app_root.lstrip('/')
         if url.netloc:
             path = url.path
+            if url.query:
+                path += '?' + url.query
     return EnvironBuilder(path, base_url, *args, **kwargs)
 
 
 class FlaskClient(Client):
     """Works like a regular Werkzeug test client but has some knowledge about
     how Flask works to defer the cleanup of the request context stack to the
-    end of a with body when used in a with statement.  For general information
-    about how to use this class refer to :class:`werkzeug.test.Client`.
+    end of a ``with`` body when used in a ``with`` statement.  For general
+    information about how to use this class refer to
+    :class:`werkzeug.test.Client`.
 
     Basic usage is outlined in the :ref:`testing` chapter.
     """
@@ -47,10 +50,12 @@ class FlaskClient(Client):
 
     @contextmanager
     def session_transaction(self, *args, **kwargs):
-        """When used in combination with a with statement this opens a
+        """When used in combination with a ``with`` statement this opens a
         session transaction.  This can be used to modify the session that
-        the test client uses.  Once the with block is left the session is
+        the test client uses.  Once the ``with`` block is left the session is
         stored back.
+
+        ::
 
             with client.session_transaction() as session:
                 session['value'] = 42

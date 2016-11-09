@@ -1,8 +1,8 @@
 {% extends "layout.html" %}
 {% block body %}
-{% if random.count() > 0 %}
+{% if g.user.show_random_books() %}
 <div class="discover">
-  <h2>Discover (Random Books)</h2>
+  <h2>{{_('Discover (Random Books)')}}</h2>
   <div class="row">
 
     {% for entry in random %}
@@ -31,7 +31,6 @@
         {% endif %}
       </div>
     </div>
-      <!-- <p><a href="{{ url_for('edit_book', book_id=entry.id) }}">{{entry.authors[0].name}}: {{entry.title}}</a></p> -->
     {% endfor %}
   </div>
 </div>
@@ -72,7 +71,6 @@
         {% endif %}
       </div>
     </div>
-      <!-- <p><a href="{{ url_for('edit_book', book_id=entry.id) }}">{{entry.authors[0].name}}: {{entry.title}}</a></p> -->
     {% endfor %}
   </div>
 </div>

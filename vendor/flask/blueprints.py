@@ -6,7 +6,7 @@
     Blueprints are the recommended way to implement larger or more
     pluggable applications in Flask 0.7 and later.
 
-    :copyright: (c) 2011 by Armin Ronacher.
+    :copyright: (c) 2015 by Armin Ronacher.
     :license: BSD, see LICENSE for more details.
 """
 from functools import update_wrapper
@@ -42,7 +42,7 @@ class BlueprintSetupState(object):
         if subdomain is None:
             subdomain = self.blueprint.subdomain
 
-        #: The subdomain that the blueprint should be active for, `None`
+        #: The subdomain that the blueprint should be active for, ``None``
         #: otherwise.
         self.subdomain = subdomain
 
@@ -79,7 +79,7 @@ class BlueprintSetupState(object):
 class Blueprint(_PackageBoundObject):
     """Represents a blueprint.  A blueprint is an object that records
     functions that will be called with the
-    :class:`~flask.blueprint.BlueprintSetupState` later to register functions
+    :class:`~flask.blueprints.BlueprintSetupState` later to register functions
     or other things on the main application.  See :ref:`blueprints` for more
     information.
 
@@ -91,15 +91,16 @@ class Blueprint(_PackageBoundObject):
 
     def __init__(self, name, import_name, static_folder=None,
                  static_url_path=None, template_folder=None,
-                 url_prefix=None, subdomain=None, url_defaults=None):
-        _PackageBoundObject.__init__(self, import_name, template_folder)
+                 url_prefix=None, subdomain=None, url_defaults=None,
+                 root_path=None):
+        _PackageBoundObject.__init__(self, import_name, template_folder,
+                                     root_path=root_path)
         self.name = name
         self.url_prefix = url_prefix
         self.subdomain = subdomain
         self.static_folder = static_folder
         self.static_url_path = static_url_path
         self.deferred_functions = []
-        self.view_functions = {}
         if url_defaults is None:
             url_defaults = {}
         self.url_values_defaults = url_defaults
@@ -167,7 +168,7 @@ class Blueprint(_PackageBoundObject):
         the :func:`url_for` function is prefixed with the name of the blueprint.
         """
         if endpoint:
-            assert '.' not in endpoint, "Blueprint endpoint's should not contain dot's"
+            assert '.' not in endpoint, "Blueprint endpoints should not contain dots"
         self.record(lambda s:
             s.add_url_rule(rule, endpoint, view_func, **options))
 
@@ -399,3 +400,14 @@ class Blueprint(_PackageBoundObject):
                 self.name, code_or_exception, f))
             return f
         return decorator
+
+    def register_error_handler(self, code_or_exception, f):
+        """Non-decorator version of the :meth:`errorhandler` error attach
+        function, akin to the :meth:`~flask.Flask.register_error_handler`
+        application-wide function of the :class:`~flask.Flask` object but
+        for error handlers limited to this blueprint.
+
+        .. versionadded:: 0.11
+        """
+        self.record_once(lambda s: s.app._register_error_handler(
+            self.name, code_or_exception, f))

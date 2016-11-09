@@ -12,30 +12,31 @@
     :copyright: (c) 2010 by the Jinja Team.
     :license: BSD.
 """
+import types
 import operator
 from jinja2.environment import Environment
 from jinja2.exceptions import SecurityError
-from jinja2._compat import string_types, function_type, method_type, \
-     traceback_type, code_type, frame_type, generator_type, PY2
+from jinja2._compat import string_types, PY2
 
 
 #: maximum number of items a range may produce
 MAX_RANGE = 100000
 
 #: attributes of function objects that are considered unsafe.
-UNSAFE_FUNCTION_ATTRIBUTES = set(['func_closure', 'func_code', 'func_dict',
-                                  'func_defaults', 'func_globals'])
+if PY2:
+    UNSAFE_FUNCTION_ATTRIBUTES = set(['func_closure', 'func_code', 'func_dict',
+                                      'func_defaults', 'func_globals'])
+else:
+    # On versions > python 2 the special attributes on functions are gone,
+    # but they remain on methods and generators for whatever reason.
+    UNSAFE_FUNCTION_ATTRIBUTES = set()
+
 
 #: unsafe method attributes.  function attributes are unsafe for methods too
 UNSAFE_METHOD_ATTRIBUTES = set(['im_class', 'im_func', 'im_self'])
 
 #: unsafe generator attirbutes.
 UNSAFE_GENERATOR_ATTRIBUTES = set(['gi_frame', 'gi_code'])
-
-# On versions > python 2 the special attributes on functions are gone,
-# but they remain on methods and generators for whatever reason.
-if not PY2:
-    UNSAFE_FUNCTION_ATTRIBUTES = set()
 
 import warnings
 
@@ -124,26 +125,24 @@ def is_internal_attribute(obj, attr):
     :meth:`~SandboxedEnvironment.is_safe_attribute` is overridden.
 
     >>> from jinja2.sandbox import is_internal_attribute
-    >>> is_internal_attribute(lambda: None, "func_code")
-    True
-    >>> is_internal_attribute((lambda x:x).func_code, 'co_code')
+    >>> is_internal_attribute(str, "mro")
     True
     >>> is_internal_attribute(str, "upper")
     False
     """
-    if isinstance(obj, function_type):
+    if isinstance(obj, types.FunctionType):
         if attr in UNSAFE_FUNCTION_ATTRIBUTES:
             return True
-    elif isinstance(obj, method_type):
+    elif isinstance(obj, types.MethodType):
         if attr in UNSAFE_FUNCTION_ATTRIBUTES or \
            attr in UNSAFE_METHOD_ATTRIBUTES:
             return True
     elif isinstance(obj, type):
         if attr == 'mro':
             return True
-    elif isinstance(obj, (code_type, traceback_type, frame_type)):
+    elif isinstance(obj, (types.CodeType, types.TracebackType, types.FrameType)):
         return True
-    elif isinstance(obj, generator_type):
+    elif isinstance(obj, types.GeneratorType):
         if attr in UNSAFE_GENERATOR_ATTRIBUTES:
             return True
     return attr.startswith('__')

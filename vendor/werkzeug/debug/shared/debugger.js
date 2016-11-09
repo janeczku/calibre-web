@@ -1,5 +1,7 @@
 $(function() {
-  var sourceView = null;
+  if (!EVALEX_TRUSTED) {
+    initPinBox();
+  }
 
   /**
    * if we are in console mode, show the console.
@@ -10,17 +12,18 @@ $(function() {
 
   $('div.traceback div.frame').each(function() {
     var
-      target = $('pre', this)
-        .click(function() {
-          sourceButton.click();
-        }),
-      consoleNode = null, source = null,
+      target = $('pre', this),
+      consoleNode = null,
       frameID = this.id.substring(6);
+
+    target.click(function() {
+      $(this).parent().toggleClass('expanded');
+    });
 
     /**
      * Add an interactive console to the frames
      */
-    if (EVALEX)
+    if (EVALEX && target.is('.current')) {
       $('<img src="?__debugger__=yes&cmd=resource&f=console.png">')
         .attr('title', 'Open an interactive python shell in this frame')
         .click(function() {
@@ -28,36 +31,7 @@ $(function() {
           return false;
         })
         .prependTo(target);
-
-    /**
-     * Show sourcecode
-     */
-    var sourceButton = $('<img src="?__debugger__=yes&cmd=resource&f=source.png">')
-      .attr('title', 'Display the sourcecode for this frame')
-      .click(function() {
-        if (!sourceView)
-          $('h2', sourceView =
-            $('<div class="box"><h2>View Source</h2><div class="sourceview">' +
-              '<table></table></div>')
-              .insertBefore('div.explanation'))
-            .css('cursor', 'pointer')
-            .click(function() {
-              sourceView.slideUp('fast');
-            });
-        $.get('', {__debugger__: 'yes', cmd:
-            'source', frm: frameID, s: SECRET}, function(data) {
-          $('table', sourceView)
-            .replaceWith(data);
-          if (!sourceView.is(':visible'))
-            sourceView.slideDown('fast', function() {
-              focusSourceBlock();
-            });
-          else
-            focusSourceBlock();
-        });
-        return false;
-      })
-      .prependTo(target);
+    }
   });
 
   /**
@@ -118,11 +92,57 @@ $(function() {
   plainTraceback.replaceWith($('<pre>').text(plainTraceback.text()));
 });
 
+function initPinBox() {
+  $('.pin-prompt form').submit(function(evt) {
+    evt.preventDefault();
+    var pin = this.pin.value;
+    var btn = this.btn;
+    btn.disabled = true;
+    $.ajax({
+      dataType: 'json',
+      url: document.location.pathname,
+      data: {__debugger__: 'yes', cmd: 'pinauth', pin: pin,
+             s: SECRET},
+      success: function(data) {
+        btn.disabled = false;
+        if (data.auth) {
+          EVALEX_TRUSTED = true;
+          $('.pin-prompt').fadeOut();
+        } else {
+          if (data.exhausted) {
+            alert('Error: too many attempts.  Restart server to retry.');
+          } else {
+            alert('Error: incorrect pin');
+          }
+        }
+        console.log(data);
+      },
+      error: function() {
+        btn.disabled = false;
+        alert('Error: Could not verify PIN.  Network error?');
+      }
+    });
+  });
+}
+
+function promptForPin() {
+  if (!EVALEX_TRUSTED) {
+    $.ajax({
+      url: document.location.pathname,
+      data: {__debugger__: 'yes', cmd: 'printpin', s: SECRET}
+    });
+    $('.pin-prompt').fadeIn(function() {
+      $('.pin-prompt input[name="pin"]').focus();
+    });
+  }
+}
+
 
 /**
  * Helper function for shell initialization
  */
 function openShell(consoleNode, target, frameID) {
+  promptForPin();
   if (consoleNode)
     return consoleNode.slideToggle('fast');
   consoleNode = $('<pre class="console">')
@@ -182,20 +202,4 @@ function openShell(consoleNode, target, frameID) {
   return consoleNode.slideDown('fast', function() {
     command.focus();
   });
-}
-
-/**
- * Focus the current block in the source view.
- */
-function focusSourceBlock() {
-  var tmp, line = $('table.source tr.current');
-  for (var i = 0; i < 7; i++) {
-    tmp = line.prev();
-    if (!(tmp && tmp.is('.in-frame')))
-      break
-    line = tmp;
-  }
-  var container = $('div.sourceview');
-
-  container.scrollTop(line.offset().top - container.offset().top + container.scrollTop());
 }

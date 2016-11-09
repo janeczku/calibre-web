@@ -18,6 +18,7 @@ from email.MIMEBase import MIMEBase
 from email.MIMEMultipart import MIMEMultipart
 from email.MIMEText import MIMEText
 from email.generator import Generator
+from flask_babel import gettext as _
 import subprocess
 
 def update_download(book_id, user_id):
@@ -72,8 +73,8 @@ def send_mail(book_id, kindle_mail):
     msg = MIMEMultipart()
     msg['From'] = settings["mail_from"]
     msg['To'] = kindle_mail
-    msg['Subject'] = 'Send to Kindle'
-    text = 'This email has been sent via calibre web.'
+    msg['Subject'] = _('Send to Kindle')
+    text = _('This email has been sent via calibre web.')
     msg.attach(MIMEText(text))
 
     use_ssl = settings.get('mail_use_ssl', 0)
@@ -95,7 +96,7 @@ def send_mail(book_id, kindle_mail):
             formats["pdf"] = os.path.join(config.DB_ROOT, book.path, entry.name + ".pdf")
 
     if len(formats) == 0:
-        return "Could not find any formats suitable for sending by email"
+        return _("Could not find any formats suitable for sending by email")
 
     if 'mobi' in formats:
         msg.attach(get_attachment(formats['mobi']))
@@ -104,13 +105,13 @@ def send_mail(book_id, kindle_mail):
         if filepath is not None:
             msg.attach(get_attachment(filepath))
         elif filepath is None:
-            return "Could not convert epub to mobi"
+            return _("Could not convert epub to mobi")
         elif 'pdf' in formats:
             msg.attach(get_attachment(formats['pdf']))
     elif 'pdf' in formats:
         msg.attach(get_attachment(formats['pdf']))
     else:
-        return "Could not find any formats suitable for sending by email"
+        return _("Could not find any formats suitable for sending by email")
 
     # convert MIME message to string
     fp = StringIO()
@@ -134,7 +135,7 @@ def send_mail(book_id, kindle_mail):
         mailserver.quit()
     except (socket.error, smtplib.SMTPRecipientsRefused, smtplib.SMTPException), e:
         app.logger.error(traceback.print_exc())
-        return "Failed to send mail: %s" % str(e)
+        return _("Failed to send mail: %s" % str(e))
 
     return None
 
@@ -154,8 +155,8 @@ def get_attachment(file_path):
         return attachment
     except IOError:
         traceback.print_exc()
-        message = ('The requested file could not be read. Maybe wrong '
-                   'permissions?')
+        message = (_('The requested file could not be read. Maybe wrong '\
+                   'permissions?'))
         return None
 
 def get_valid_filename(value, replace_whitespace=True):

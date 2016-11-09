@@ -9,9 +9,10 @@
     :license: BSD, see LICENSE for more details.
 """
 import re
+from collections import Mapping
 from jinja2.runtime import Undefined
-from jinja2._compat import text_type, string_types, mapping_types
-
+from jinja2._compat import text_type, string_types, integer_types
+import decimal
 
 number_re = re.compile(r'^-?\d+(\.\d+)?$')
 regex_type = type(number_re)
@@ -82,12 +83,12 @@ def test_mapping(value):
 
     .. versionadded:: 2.6
     """
-    return isinstance(value, mapping_types)
+    return isinstance(value, Mapping)
 
 
 def test_number(value):
     """Return true if the variable is a number."""
-    return isinstance(value, (int, float, complex))
+    return isinstance(value, integer_types + (float, complex, decimal.Decimal))
 
 
 def test_sequence(value):
@@ -100,6 +101,28 @@ def test_sequence(value):
     except:
         return False
     return True
+
+
+def test_equalto(value, other):
+    """Check if an object has the same value as another object:
+
+    .. sourcecode:: jinja
+
+        {% if foo.expression is equalto 42 %}
+            the foo attribute evaluates to the constant 42
+        {% endif %}
+
+    This appears to be a useless test as it does exactly the same as the
+    ``==`` operator, but it can be useful when used together with the
+    `selectattr` function:
+
+    .. sourcecode:: jinja
+
+        {{ users|selectattr("email", "equalto", "foo@bar.invalid") }}
+
+    .. versionadded:: 2.8
+    """
+    return value == other
 
 
 def test_sameas(value, other):
@@ -145,5 +168,6 @@ TESTS = {
     'iterable':         test_iterable,
     'callable':         test_callable,
     'sameas':           test_sameas,
+    'equalto':          test_equalto,
     'escaped':          test_escaped
 }

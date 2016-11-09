@@ -22,11 +22,13 @@ except ImportError:
     from urllib.parse import unquote
 
 from werkzeug.http import parse_options_header, parse_cache_control_header, \
-     parse_set_header
+    parse_set_header
 from werkzeug.useragents import UserAgent
 from werkzeug.datastructures import Headers, ResponseCacheControl
 
+
 class CGIRootFix(object):
+
     """Wrap the application in this middleware if you are using FastCGI or CGI
     and you have problems with your app root being set to the cgi script's path
     instead of the path users are going to visit
@@ -52,7 +54,7 @@ class CGIRootFix(object):
         if 'SERVER_SOFTWARE' not in environ or \
            environ['SERVER_SOFTWARE'] < 'lighttpd/1.4.28':
             environ['PATH_INFO'] = environ.get('SCRIPT_NAME', '') + \
-                                   environ.get('PATH_INFO', '')
+                environ.get('PATH_INFO', '')
         environ['SCRIPT_NAME'] = self.app_root.strip('/')
         return self.app(environ, start_response)
 
@@ -61,6 +63,7 @@ LighttpdCGIRootFix = CGIRootFix
 
 
 class PathInfoFromRequestUriFix(object):
+
     """On windows environment variables are limited to the system charset
     which makes it impossible to store the `PATH_INFO` variable in the
     environment without loss of information on some systems.
@@ -92,9 +95,14 @@ class PathInfoFromRequestUriFix(object):
 
 
 class ProxyFix(object):
+
     """This middleware can be applied to add HTTP proxy support to an
     application that was not designed with HTTP proxies in mind.  It
-    sets `REMOTE_ADDR`, `HTTP_HOST` from `X-Forwarded` headers.
+    sets `REMOTE_ADDR`, `HTTP_HOST` from `X-Forwarded` headers.  While
+    Werkzeug-based applications already can use
+    :py:func:`werkzeug.wsgi.get_host` to retrieve the current host even if
+    behind proxy setups, this middleware can be used for applications which
+    access the WSGI environment directly.
 
     If you have more than one proxy server in front of your app, set
     `num_proxies` accordingly.
@@ -145,6 +153,7 @@ class ProxyFix(object):
 
 
 class HeaderRewriterFix(object):
+
     """This middleware can remove response headers and add others.  This
     is for example useful to remove the `Date` header from responses if you
     are using a server that adds that header, no matter if it's present or
@@ -177,6 +186,7 @@ class HeaderRewriterFix(object):
 
 
 class InternetExplorerFix(object):
+
     """This middleware fixes a couple of bugs with Microsoft Internet
     Explorer.  Currently the following fixes are applied:
 

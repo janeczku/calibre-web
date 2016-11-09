@@ -131,3 +131,49 @@
                 }
         )
     });
+
+    var languages = new Bloodhound({
+        name: 'languages',
+        datumTokenizer: function(datum) {
+            return [datum.name];
+        },
+        queryTokenizer: function(query) {
+            return [query];
+        },
+        remote: {
+            url: '/get_languages_json?q=',
+            replace: function(url, query) {
+                url_query = url+encodeURIComponent(query);
+                return url_query;
+            }
+        }
+    });
+
+    function language_source(query, cb) {
+        var bh_adapter = languages.ttAdapter();
+
+        var tokens = query.split(",");
+        var current_language = tokens[tokens.length-1].trim();
+
+        tokens.splice(tokens.length-1, 1); // remove last element
+        var prefix = "";
+        for (var i = 0; i < tokens.length; i++) {
+            var tag = tokens[i].trim();
+            prefix += tag + ", ";
+        }
+
+        prefixed_source(prefix, current_language, cb, bh_adapter);
+    }
+
+    var promise = languages.initialize();
+    promise.done(function(){
+        $("#languages").typeahead(
+                {
+                    highlight: true, minLength: 0,
+                    hint: true
+                }, {
+                    name: 'languages', displayKey: 'name',
+                    source: language_source
+                }
+        )
+    });

@@ -9,7 +9,7 @@
     .. _Trac: http://trac.edgewall.org/
     .. _Django: http://www.djangoproject.com/
 
-    :copyright: (c) 2013 by the Werkzeug Team, see AUTHORS for more details.
+    :copyright: (c) 2014 by the Werkzeug Team, see AUTHORS for more details.
     :license: BSD, see LICENSE for more details.
 """
 from warnings import warn
@@ -18,6 +18,7 @@ from werkzeug.wsgi import LimitedStream
 
 
 class StreamLimitMiddleware(object):
+
     """Limits the input stream to a given number of bytes.  This is useful if
     you have a WSGI application that reads form data into memory (django for
     example) and you don't want users to harm the server by uploading tons of

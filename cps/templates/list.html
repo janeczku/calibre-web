@@ -1,0 +1,12 @@
+{% extends "layout.html" %}
+{% block body %}
+<h1>{{title}}</h1>
+  <div class="container">
+    {% for entry in entries %}
+      <div class="row">
+        <div class="col-xs-1" align="left"><span class="badge">{{entry.count}}</span></div>
+        <div class="col-xs-6"><a href="{{url_for(folder, name=entry[0].name)}}">{{entry[0].name}}</a></div>
+      </div>
+    {% endfor %}
+  </div>
+{% endblock %}

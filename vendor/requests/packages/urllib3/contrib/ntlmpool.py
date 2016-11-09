@@ -1,14 +1,9 @@
-# urllib3/contrib/ntlmpool.py
-# Copyright 2008-2013 Andrey Petrov and contributors (see CONTRIBUTORS.txt)
-#
-# This module is part of urllib3 and is released under
-# the MIT License: http://www.opensource.org/licenses/mit-license.php
-
 """
 NTLM authenticating pool, contributed by erikcederstran
 
 Issue #10, see: http://code.google.com/p/urllib3/issues/detail?id=10
 """
+from __future__ import absolute_import
 
 try:
     from http.client import HTTPSConnection
@@ -48,8 +43,8 @@ class NTLMConnectionPool(HTTPSConnectionPool):
         # Performs the NTLM handshake that secures the connection. The socket
         # must be kept open while requests are performed.
         self.num_connections += 1
-        log.debug('Starting NTLM HTTPS connection no. %d: https://%s%s' %
-                  (self.num_connections, self.host, self.authurl))
+        log.debug('Starting NTLM HTTPS connection no. %d: https://%s%s',
+                  self.num_connections, self.host, self.authurl)
 
         headers = {}
         headers['Connection'] = 'Keep-Alive'
@@ -61,13 +56,13 @@ class NTLMConnectionPool(HTTPSConnectionPool):
         # Send negotiation message
         headers[req_header] = (
             'NTLM %s' % ntlm.create_NTLM_NEGOTIATE_MESSAGE(self.rawuser))
-        log.debug('Request headers: %s' % headers)
+        log.debug('Request headers: %s', headers)
         conn.request('GET', self.authurl, None, headers)
         res = conn.getresponse()
         reshdr = dict(res.getheaders())
-        log.debug('Response status: %s %s' % (res.status, res.reason))
-        log.debug('Response headers: %s' % reshdr)
-        log.debug('Response data: %s [...]' % res.read(100))
+        log.debug('Response status: %s %s', res.status, res.reason)
+        log.debug('Response headers: %s', reshdr)
+        log.debug('Response data: %s [...]', res.read(100))
 
         # Remove the reference to the socket, so that it can not be closed by
         # the response object (we want to keep the socket open)
@@ -92,12 +87,12 @@ class NTLMConnectionPool(HTTPSConnectionPool):
                                                          self.pw,
                                                          NegotiateFlags)
         headers[req_header] = 'NTLM %s' % auth_msg
-        log.debug('Request headers: %s' % headers)
+        log.debug('Request headers: %s', headers)
         conn.request('GET', self.authurl, None, headers)
         res = conn.getresponse()
-        log.debug('Response status: %s %s' % (res.status, res.reason))
-        log.debug('Response headers: %s' % dict(res.getheaders()))
-        log.debug('Response data: %s [...]' % res.read()[:100])
+        log.debug('Response status: %s %s', res.status, res.reason)
+        log.debug('Response headers: %s', dict(res.getheaders()))
+        log.debug('Response data: %s [...]', res.read()[:100])
         if res.status != 200:
             if res.status == 401:
                 raise Exception('Server rejected request: wrong '

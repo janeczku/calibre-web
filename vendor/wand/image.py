@@ -27,7 +27,7 @@ from .font import Font
 
 
 __all__ = ('ALPHA_CHANNEL_TYPES', 'CHANNELS', 'COLORSPACE_TYPES',
-           'COMPOSITE_OPERATORS', 'COMPRESSION_TYPES',
+           'COMPARE_METRICS', 'COMPOSITE_OPERATORS', 'COMPRESSION_TYPES',
            'EVALUATE_OPS', 'FILTER_TYPES',
            'GRAVITY_TYPES', 'IMAGE_TYPES', 'ORIENTATION_TYPES', 'UNIT_TYPES',
            'FUNCTION_TYPES',
@@ -83,6 +83,31 @@ FILTER_TYPES = ('undefined', 'point', 'box', 'triangle', 'hermite', 'hanning',
                 'welsh', 'parzen', 'bohman', 'bartlett', 'lagrange', 'lanczos',
                 'lanczossharp', 'lanczos2', 'lanczos2sharp', 'robidoux',
                 'robidouxsharp', 'cosine', 'spline', 'sentinel')
+
+#: (:class:`tuple`) The list of compare metric types
+#:
+#: - ``'undefined'``
+#: - ``'absolute'``
+#: - ``'mean_absolute'``
+#: - ``'mean_error_per_pixel'``
+#: - ``'mean_squared'``
+#: - ``'normalized_cross_correlation'``
+#: - ``'peak_absolute'``
+#: - ``'peak_signal_to_noise_ratio'``
+#: - ``'perceptual_hash'``
+#: - ``'root_mean_square'``
+#: .. seealso::
+#:
+#:    `ImageMagick Compare Operations`__
+#:
+#:    __ http://www.imagemagick.org/Usage/compare/
+#:
+#: .. versionadded:: 0.4.3
+COMPARE_METRICS = ('undefined', 'absolute',
+                   'mean_absolute', 'mean_error_per_pixel',
+                   'mean_squared', 'normalized_cross_correlation',
+                   'peak_absolute', 'peak_signal_to_noise_ratio',
+                   'perceptual_hash', 'root_mean_square')
 
 #: (:class:`tuple`) The list of composition operators
 #:
@@ -485,6 +510,32 @@ VIRTUAL_PIXEL_METHOD = ('undefined', 'background', 'constant', 'dither',
                         'vertical_tile_edge', 'checker_tile')
 
 
+#: (:class:`tuple`) The list of :attr:`~BaseImage.layer_method` types.
+#: - ``'undefined'``
+#: - ``'coalesce'``
+#: - ``'compareany'``
+#: - ``'compareclear'``
+#: - ``'compareoverlay'``
+#: - ``'dispose'``
+#: - ``'optimize'``
+#: - ``'optimizeimage'``
+#: - ``'optimizeplus'``
+#: - ``'optimizetrans'``
+#: - ``'removedups'``
+#: - ``'removezero'``
+#: - ``'composite'``
+#: - ``'merge'``
+#: - ``'flatten'``
+#: - ``'mosaic'``
+#: - ``'trimbounds'``
+#: .. versionadded:: 0.4.3
+IMAGE_LAYER_METHOD = ('undefined', 'coalesce', 'compareany', 'compareclear',
+                      'compareoverlay', 'dispose', 'optimize', 'optimizeimage',
+                      'optimizeplus', 'optimizetrans', 'removedups',
+                      'removezero', 'composite', 'merge', 'flatten', 'mosaic',
+                      'trimbounds')
+
+
 def manipulative(function):
     """Mark the operation manipulating itself instead of returning new one."""
     @functools.wraps(function)
@@ -698,8 +749,8 @@ class BaseImage(Resource):
         if not isinstance(value, string_type):
             raise TypeError('expected a string, not ' + repr(value))
         if value not in GRAVITY_TYPES:
-            raise ValueError('expected a string from GRAVITY_TYPES, not '
-                             + repr(value))
+            raise ValueError('expected a string from GRAVITY_TYPES, not ' +
+                             repr(value))
         library.MagickSetGravity(self.wand, GRAVITY_TYPES.index(value))
 
     @property
@@ -765,6 +816,102 @@ class BaseImage(Resource):
         self.font_antialias = font.antialias
 
     @property
+    def page(self):
+        """The dimensions and offset of this Wand's page as a 4-tuple:
+        ``(width, height, x, y)``.
+
+        Note that since it is based on the virtual canvas, it may not equal the
+        dimensions of an image. See the ImageMagick documentation on the
+        virtual canvas for more information.
+
+        .. versionadded:: 0.4.3
+
+        """
+        w = ctypes.c_uint()
+        h = ctypes.c_uint()
+        x = ctypes.c_int()
+        y = ctypes.c_int()
+        r = library.MagickGetImagePage(self.wand, w, h, x, y)
+        if not r:
+            self.raise_exception()
+        return int(w.value), int(h.value), int(x.value), int(y.value)
+
+    @page.setter
+    @manipulative
+    def page(self, newpage):
+        if isinstance(newpage, collections.Sequence):
+            w, h, x, y = newpage
+        else:
+            raise TypeError("page layout must be 4-tuple")
+        r = library.MagickSetImagePage(self.wand, w, h, x, y)
+        if not r:
+            self.raise_exception()
+
+    @property
+    def page_width(self):
+        """(:class:`numbers.Integral`) The width of the page for this wand.
+
+        .. versionadded:: 0.4.3
+
+        """
+        return self.page[0]
+
+    @page_width.setter
+    @manipulative
+    def page_width(self, width):
+        newpage = list(self.page)
+        newpage[0] = width
+        self.page = newpage
+
+    @property
+    def page_height(self):
+        """(:class:`numbers.Integral`) The height of the page for this wand.
+
+        .. versionadded:: 0.4.3
+
+        """
+        return self.page[1]
+
+    @page_height.setter
+    @manipulative
+    def page_height(self, height):
+        newpage = list(self.page)
+        newpage[1] = height
+        self.page = newpage
+
+    @property
+    def page_x(self):
+        """(:class:`numbers.Integral`) The X-offset of the page for this wand.
+
+        .. versionadded:: 0.4.3
+
+        """
+        return self.page[2]
+
+    @page_x.setter
+    @manipulative
+    def page_x(self, x):
+        newpage = list(self.page)
+        newpage[2] = x
+        self.page = newpage
+
+    @property
+    def page_y(self):
+        """(:class:`numbers.Integral`) The Y-offset of the page for this wand.
+
+        .. versionadded:: 0.4.3
+
+        """
+        return self.page[3]
+
+    @page_y.setter
+    @manipulative
+    def page_y(self, y):
+        newpage = list(self.page)
+        newpage[3] = y
+        self.page = newpage
+
+    @property
     def width(self):
         """(:class:`numbers.Integral`) The width of this image."""
         return library.MagickGetImageWidth(self.wand)
@@ -805,8 +952,8 @@ class BaseImage(Resource):
         if not isinstance(value, string_type):
             raise TypeError('expected a string, not ' + repr(value))
         if value not in ORIENTATION_TYPES:
-            raise ValueError('expected a string from ORIENTATION_TYPES, not '
-                             + repr(value))
+            raise ValueError('expected a string from ORIENTATION_TYPES, not ' +
+                             repr(value))
         index = ORIENTATION_TYPES.index(value)
         library.MagickSetImageOrientation(self.wand, index)
 
@@ -865,9 +1012,14 @@ class BaseImage(Resource):
             width = self.width - left
         if height is None:
             height = self.height - top
+        if not font:
+            try:
+                font = self.font
+            except TypeError:
+                raise TypeError('font must be specified or existing in image')
         with Image() as textboard:
             library.MagickSetSize(textboard.wand, width, height)
-            textboard.font = font or self.font
+            textboard.font = font
             textboard.gravity = gravity or self.gravity
             with Color('transparent') as background_color:
                 library.MagickSetBackgroundColor(textboard.wand,
@@ -1315,8 +1467,8 @@ class BaseImage(Resource):
                     'both width and height must be defined with gravity'
                 )
             if gravity not in GRAVITY_TYPES:
-                raise ValueError('expected a string from GRAVITY_TYPES, not '
-                                 + repr(gravity))
+                raise ValueError('expected a string from GRAVITY_TYPES, not ' +
+                                 repr(gravity))
             # Set `top` based on given gravity
             if gravity in ('north_west', 'north', 'north_east'):
                 top = 0
@@ -1994,6 +2146,30 @@ class BaseImage(Resource):
                                             alpha, fuzz, invert)
         self.raise_exception()
 
+    def compare(self, image, metric='undefined'):
+        """Compares an image to a reconstructed image.
+
+        :param image: The reference image
+        :type image: :class:`wand.image.Image`
+        :param metric: The metric type to use for comparing.
+        :type metric: :class:`basestring`
+        :returns: The difference image(:class:`wand.image.Image`),
+                  the computed distortion between the images
+                  (:class:`numbers.Integral`)
+        :rtype: :class:`tuple`
+
+        ..versionadded:: 0.4.3
+        """
+        if not isinstance(metric, string_type):
+            raise TypeError('metric must be a string, not ' + repr(metric))
+
+        metric = COMPARE_METRICS.index(metric)
+        distortion = ctypes.c_double()
+        compared_image = library.MagickCompareImages(self.wand, image.wand,
+                                                     metric,
+                                                     ctypes.byref(distortion))
+        return Image(BaseImage(compared_image)), distortion.value
+
     @manipulative
     def composite(self, image, left, top):
         """Places the supplied ``image`` over the current image, with the top
@@ -2113,6 +2289,34 @@ class BaseImage(Resource):
         )
         if not r:
             self.raise_exception()
+
+    @manipulative
+    def merge_layers(self, method):
+        """Composes all the image layers from the current given image onward
+        to produce a single image of the merged layers.
+
+        The inital canvas's size depends on the given ImageLayerMethod, and is
+        initialized using the first images background color.  The images
+        are then compositied onto that image in sequence using the given
+        composition that has been assigned to each individual image.
+        The method must be set with a value from :const:`IMAGE_LAYER_METHOD`
+        that is acceptable to this operation. (See ImageMagick documentation
+        for more details.)
+
+        :param method: the method of selecting the size of the initial canvas.
+        :type method: :class:`basestring`
+
+        .. versionadded:: 0.4.3
+
+        """
+        if method not in ['merge', 'flatten', 'mosaic']:
+            raise TypeError('method must be one of: merge, flatten, mosaic')
+
+        m = IMAGE_LAYER_METHOD.index(method)
+        r = library.MagickMergeImageLayers(self.wand, m)
+        if not r:
+            self.raise_exception()
+        self.wand = r
 
     @manipulative
     def threshold(self, threshold=0.5, channel=None):
@@ -2362,13 +2566,19 @@ class BaseImage(Resource):
         if not r:
             self.raise_exception()
 
-    def __repr__(self):
+    def __repr__(self, extra_format=' ({self.width}x{self.height})'):
         cls = type(self)
+        typename = '{0}.{1}'.format(
+            cls.__module__,
+            getattr(cls, '__qualname__', cls.__name__)
+        )
         if getattr(self, 'c_resource', None) is None:
-            return '<{0}.{1}: (closed)>'.format(cls.__module__, cls.__name__)
-        return '<{0}.{1}: {2} ({3}x{4})>'.format(
-            cls.__module__, cls.__name__,
-            self.signature[:7], self.width, self.height
+            return '<{0}: (closed)>'.format(typename)
+        sig = self.signature
+        if not sig:
+            return '<{0}: (empty)>'.format(typename)
+        return '<{0}: {1}{2}>'.format(
+            typename, sig[:7], extra_format.format(self=self)
         )
 
 
@@ -2730,8 +2940,8 @@ class Image(BaseImage):
 
     @property
     def animation(self):
-        return (self.mimetype in ('image/gif', 'image/x-gif')
-                and len(self.sequence) > 1)
+        return (self.mimetype in ('image/gif', 'image/x-gif') and
+                len(self.sequence) > 1)
 
     @property
     def compression(self):
@@ -2750,8 +2960,8 @@ class Image(BaseImage):
         if not isinstance(value, string_type):
             raise TypeError('expected a string, not ' + repr(value))
         if value not in COMPRESSION_TYPES:
-            raise ValueError('expected a string from COMPRESSION_TYPES, not '
-                             + repr(value))
+            raise ValueError('expected a string from COMPRESSION_TYPES, not ' +
+                             repr(value))
         library.MagickSetImageCompression(
             self.wand,
             COMPRESSION_TYPES.index(value)
@@ -3154,12 +3364,8 @@ class Image(BaseImage):
             return cloned.make_blob()
 
     def __repr__(self):
-        cls = type(self)
-        if getattr(self, 'c_resource', None) is None:
-            return '<{0}.{1}: (closed)>'.format(cls.__module__, cls.__name__)
-        return '<{0}.{1}: {2} {3!r} ({4}x{5})>'.format(
-            cls.__module__, cls.__name__,
-            self.signature[:7], self.format, self.width, self.height
+        return super(Image, self).__repr__(
+            extra_format=' {self.format!r} ({self.width}x{self.height})'
         )
 
 

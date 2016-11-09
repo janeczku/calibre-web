@@ -4,15 +4,15 @@
   <h2>{{title}}</h2>
   <table class="table table-striped">
     <tr>
-        <th>Nickname</th>
-        <th>Email</th>
-        <th>Kindle</th>
-        <th>DLS</th>
-        <th>Admin</th>
-        <th>Download</th>
-        <th>Upload</th>
-        <th>Edit</th>
-        <th>Passwd</th>
+        <th>{{_('Nickname')}}</th>
+        <th>{{_('Email')}}</th>
+        <th>{{_('Kindle')}}</th>
+        <th>{{_('DLS')}}</th>
+        <th>{{_('Admin')}}</th>
+        <th>{{_('Download')}}</th>
+        <th>{{_('Upload')}}</th>
+        <th>{{_('Edit')}}</th>
+        <th>{{_('Passwd')}}</th>
 
     </tr>
     {% for user in content %}
@@ -29,16 +29,16 @@
 
     {% endfor %}
   </table>
-    <div class="btn btn-default"><a href="{{url_for('new_user')}}">Add new user</a></div>
-  <h2>SMTP mail settings</h2>
+    <div class="btn btn-default"><a href="{{url_for('new_user')}}">{{_('Add new user')}}</a></div>
+  <h2>{{_('SMTP mail settings')}}</h2>
   <table class="table table-striped">
     <tr>
-        <th>SMTP hostname</th>
-        <th>SMTP port</th>
-        <th>SSL</th>
-        <th>SMTP login</th>
-        <th>SMTP password</th>
-        <th>From mail</th>
+        <th>{{_('SMTP hostname')}}</th>
+        <th>{{_('SMTP port')}}</th>
+        <th>{{_('SSL')}}</th>
+        <th>{{_('SMTP login')}}</th>
+        <th>{{_('SMTP password')}}</th>
+        <th>{{_('From mail')}}</th>
     </tr>
       <tr>
         <td>{{email.mail_server}}</td>
@@ -50,7 +50,7 @@
 
   </table>
 
-    <div class="btn btn-default"><a href="{{url_for('edit_mailsettings')}}">Change SMTP settings</a></div>
+    <div class="btn btn-default"><a href="{{url_for('edit_mailsettings')}}">{{_('Change SMTP settings')}}</a></div>
 
 </div>
 {% endblock %}

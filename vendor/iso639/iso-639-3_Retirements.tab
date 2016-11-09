@@ -1,0 +1,271 @@
+Id	Ref_Name	Ret_Reason	Change_To	Ret_Remedy	Effective
+fri	Western Frisian	C	fry		2007-02-01
+auv	Auvergnat	M	oci		2007-03-14
+gsc	Gascon	M	oci		2007-03-14
+lms	Limousin	M	oci		2007-03-14
+lnc	Languedocien	M	oci		2007-03-14
+prv	Provençal	M	oci		2007-03-14
+amd	Amapá Creole	N			2007-07-18
+bgh	Bogan	D	bbh		2007-07-18
+bnh	Banawá	M	jaa		2007-07-18
+bvs	Belgian Sign Language	S		Split into Langue des signes de Belgique Francophone [sfb], and Vlaamse Gebarentaal [vgt]	2007-07-18
+ccy	Southern Zhuang	S		Split into five languages: Nong Zhuang [zhn];  Yang Zhuang [zyg]; Yongnan Zhuang [zyn]; Zuojiang Zhuang [zzj]; Dai Zhuang [zhd].	2007-07-18
+cit	Chittagonian	S		Split into Rohingya [rhg], and Chittagonian (new identifier [ctg])	2007-07-18
+flm	Falam Chin	S		Split into Ranglong [rnl], and Falam Chin (new identifier [cfm]).	2007-07-18
+jap	Jaruára	M	jaa		2007-07-18
+kob	Kohoroxitari	M	xsu		2007-07-18
+mob	Moinba	S		Split into five languages: Chug [cvg]; Lish [lsh];  Kalaktang Monpa [kkf]; Tawang Monpa [twm]; Sartang [onp]	2007-07-18
+mzf	Aiku	S		Split into four languages: Ambrak [aag]; Yangum Dey [yde]; Yangum Gel [ygl]; Yangum Mon [ymo]	2007-07-18
+nhj	Tlalitzlipa Nahuatl	M	nhi		2007-07-18
+nhs	Southeastern Puebla Nahuatl	S		Split into Sierra Negra Nahuatl [nsu] and Southeastern Puebla Nahuatl [npl]	2007-07-18
+occ	Occidental	D	ile		2007-07-18
+tmx	Tomyang	M	ybi		2007-07-18
+tot	Patla-Chicontla Totonac	S		Split into Upper Necaxa Totonac [tku] and Tecpatlán Totonac [tcw]	2007-07-18
+xmi	Miarrã	N			2007-07-18
+yib	Yinglish	M	eng		2007-07-18
+ztc	Lachirioag Zapotec	M	zty		2007-07-18
+atf	Atuence	N			2007-08-10
+bqe	Navarro-Labourdin Basque	M	eus		2007-08-10
+bsz	Souletin Basque	M	eus		2007-08-10
+aex	Amerax	M	eng		2008-01-14
+ahe	Ahe	M	knx		2008-01-14
+aiz	Aari	S		Split into Aari [aiw] (new identifier) and Gayil [gyl]	2008-01-14
+akn	Amikoana	N			2008-01-14
+arf	Arafundi	S		Split into three languages: Andai [afd]; Nanubae [afk]; Tapei [afp]	2008-01-14
+azr	Adzera	S		Split into three languages: Adzera [adz] (new identifier), Sukurum [zsu] and Sarasira [zsa]	2008-01-14
+bcx	Pamona	S		Split into Pamona [pmf] (new identifier) and Batui [zbt]	2008-01-14
+bii	Bisu	S		Split into Bisu [bzi] (new identifier) and Laomian [lwm]	2008-01-14
+bke	Bengkulu	M	pse		2008-01-14
+blu	Hmong Njua	S		Split into four languages: Hmong Njua [hnj] (new identifier); Chuanqiandian Cluster Miao [cqd]; Horned Miao [hrm]; Small Flowery Miao [sfm]	2008-01-14
+boc	Bakung Kenyah	M	xkl		2008-01-14
+bsd	Sarawak Bisaya	M	bsb		2008-01-14
+bwv	Bahau River Kenyah	N			2008-01-14
+bxt	Buxinhua	D	bgk		2008-01-14
+byu	Buyang	S		Split into three languages: E'ma Buyang [yzg]; Langnian Buyang [yln]; Baha Buyang [yha]	2008-01-14
+ccx	Northern Zhuang	S		Split into ten languages: Guibian Zh [zgn]; Liujiang Zh [zlj]; Qiubei Zh [zqe]; Guibei Zh [zgb]; Youjiang Zh [zyj]; Central Hongshuihe Zh [zch]; Eastern Hongshuihe Zh [zeh]; Liuqian Zh [zlq]; Yongbei Zh [zyb]; Lianshan Zh [zln].	2008-01-14
+cru	Carútana	M	bwi		2008-01-14
+dat	Darang Deng	D	mhu		2008-01-14
+dyk	Land Dayak	N			2008-01-14
+eni	Enim	M	pse		2008-01-14
+fiz	Izere	S		Split into Ganang [gne] and Izere [izr] (new identifier)	2008-01-14
+gen	Geman Deng	D	mxj		2008-01-14
+ggh	Garreh-Ajuran	S		Split between Borana [gax] and Somali [som]	2008-01-14
+itu	Itutang	M	mzu		2008-01-14
+kds	Lahu Shi	S		Split into Kucong [lkc] and Lahu Shi [lhi] (new identifier)	2008-01-14
+knh	Kayan River Kenyah	N			2008-01-14
+krg	North Korowai	M	khe		2008-01-14
+krq	Krui	M	ljp		2008-01-14
+kxg	Katingan	M	nij		2008-01-14
+lmt	Lematang	M	mui		2008-01-14
+lnt	Lintang	M	pse		2008-01-14
+lod	Berawan	S		Split into three languages: West Berawan [zbw], Central Berawan [zbc], and East Berawan [zbe]	2008-01-14
+mbg	Northern Nambikuára	S		Split into six languages: Alapmunte [apv]; Lakondê [lkd]; Latundê [ltn]; Mamaindé [wmd]; Tawandê [xtw]; Yalakalore [xyl]	2008-01-14
+mdo	Southwest Gbaya	S		Split into Southwest Gbaya [gso] (new identifier) and Gbaya-Mbodomo [gmm]	2008-01-14
+mhv	Arakanese	S		Split into Marma [rmz] and Rakhine [rki]	2008-01-14
+miv	Mimi	M	amj		2008-01-14
+mqd	Madang	M	xkl		2008-01-14
+nky	Khiamniungan Naga	S		Split into three languages: Khiamniungan Naga [kix] (new identifier); Para Naga [pzn]; Makuri Naga [jmn]	2008-01-14
+nxj	Nyadu	M	byd		2008-01-14
+ogn	Ogan	M	pse		2008-01-14
+ork	Orokaiva	S		Split into Orokaiva [okv] (new identifier), Aeka [aez] and Hunjara-Kaina Ke [hkk]	2008-01-14
+paj	Ipeka-Tapuia	M	kpc		2008-01-14
+pec	Southern Pesisir	M	ljp		2008-01-14
+pen	Penesak	M	mui		2008-01-14
+plm	Palembang	M	mui		2008-01-14
+poj	Lower Pokomo	M	pkb		2008-01-14
+pun	Pubian	M	ljp		2008-01-14
+rae	Ranau	M	ljp		2008-01-14
+rjb	Rajbanshi	S		Split into Kamta (India) / Rangpuri (Bangladesh) [rkt] and Rajbanshi (Nepal) [rjs]	2008-01-14
+rws	Rawas	M	mui		2008-01-14
+sdd	Semendo	M	pse		2008-01-14
+sdi	Sindang Kelingi	M	liw		2008-01-14
+skl	Selako	M	knx		2008-01-14
+slb	Kahumamahon Saluan	M	loe		2008-01-14
+srj	Serawai	M	pse		2008-01-14
+suf	Tarpia	S		Split into Tarpia [tpf] (new identifier) and Kaptiau [kbi]	2008-01-14
+suh	Suba	S		Split into Suba [sxb] (Kenya) and Suba-Simbita [ssc] (Tanzania)	2008-01-14
+suu	Sungkai	M	ljp		2008-01-14
+szk	Sizaki	M	ikz		2008-01-14
+tle	Southern Marakwet	M	enb		2008-01-14
+tnj	Tanjong	M	kxn		2008-01-14
+ttx	Tutong 1	M	bsb		2008-01-14
+ubm	Upper Baram Kenyah	N			2008-01-14
+vky	Kayu Agung	M	kge		2008-01-14
+vmo	Muko-Muko	M	min		2008-01-14
+wre	Ware	N			2008-01-14
+xah	Kahayan	M	nij		2008-01-14
+xkm	Mahakam Kenyah	N			2008-01-14
+xuf	Kunfal	M	awn		2008-01-14
+yio	Dayao Yi	M	lpo		2008-01-14
+ymj	Muji Yi	S		Split into five languages: Muji, Southern [ymc], Mojii [ymi], Qila Muji [ymq], Northern Muji [ymx], and Muzi [ymz]	2008-01-14
+ypl	Pula Yi	S		Split into three languages: Phola [ypg], Phala [ypa] and Alo Phola [ypo]	2008-01-14
+ypw	Puwa Yi	S		Split into three languages: Hlepho Phowa [yhl], Labo Phowa [ypb], and Ani Phowa [ypn]	2008-01-14
+ywm	Wumeng Yi	M	ywu		2008-01-14
+yym	Yuanjiang-Mojiang Yi	S		Split into Southern Nisu [nsd] and Southwestern Nisu [nsv]	2008-01-14
+mly	Malay (individual language)	S		Split into four languages: Standard Malay [zsm], Haji [hji], Papuan Malay [pmy] and Malay (individual language) [zlm]	2008-02-18
+muw	Mundari	S		Split into Munda [unx] and Mundari [unr] (new identifier)	2008-02-18
+xst	Silt'e	S		Split into Wolane [wle] and Silt'e [stv] (new identifier)	2008-02-28
+ope	Old Persian	D	peo		2008-04-18
+scc	Serbian	D	srp		2008-06-28
+scr	Croatian	D	hrv		2008-06-28
+xsk	Sakan	D	kho		2008-10-23
+mol	Moldavian	M	ron		2008-11-03
+aay	Aariya	N			2009-01-16
+acc	Cubulco Achí	M	acr		2009-01-16
+cbm	Yepocapa Southwestern Cakchiquel	M	cak		2009-01-16
+chs	Chumash	S		Chumash is actually a family name, not a language name. Language family members already have code elements: Barbareño [boi], Cruzeño [crz], Ineseño [inz], Obispeño [obi], Purisimeño [puy], and Ventureño [veo]	2009-01-16
+ckc	Northern Cakchiquel	M	cak		2009-01-16
+ckd	South Central Cakchiquel	M	cak		2009-01-16
+cke	Eastern Cakchiquel	M	cak		2009-01-16
+ckf	Southern Cakchiquel	M	cak		2009-01-16
+cki	Santa María De Jesús Cakchiquel	M	cak		2009-01-16
+ckj	Santo Domingo Xenacoj Cakchiquel	M	cak		2009-01-16
+ckk	Acatenango Southwestern Cakchiquel	M	cak		2009-01-16
+ckw	Western Cakchiquel	M	cak		2009-01-16
+cnm	Ixtatán Chuj	M	cac		2009-01-16
+cti	Tila Chol	M	ctu		2009-01-16
+cun	Cunén Quiché	M	quc		2009-01-16
+eml	Emiliano-Romagnolo	S		Split into Emilian [egl] and Romagnol [rgn]	2009-01-16
+eur	Europanto	N			2009-01-16
+gmo	Gamo-Gofa-Dawro	S		Split into three languages: Gamo [gmv], Gofa [gof], and Dawro [dwr]	2009-01-16
+hsf	Southeastern Huastec	M	hus		2009-01-16
+hva	San Luís Potosí Huastec	M	hus		2009-01-16
+ixi	Nebaj Ixil	M	ixl		2009-01-16
+ixj	Chajul Ixil	M	ixl		2009-01-16
+jai	Western Jacalteco	M	jac		2009-01-16
+mms	Southern Mam	M	mam		2009-01-16
+mpf	Tajumulco Mam	M	mam		2009-01-16
+mtz	Tacanec	M	mam		2009-01-16
+mvc	Central Mam	M	mam		2009-01-16
+mvj	Todos Santos Cuchumatán Mam	M	mam		2009-01-16
+poa	Eastern Pokomam	M	poc		2009-01-16
+pob	Western Pokomchí	M	poh		2009-01-16
+pou	Southern Pokomam	M	poc		2009-01-16
+ppv	Papavô	N			2009-01-16
+quj	Joyabaj Quiché	M	quc		2009-01-16
+qut	West Central Quiché	M	quc		2009-01-16
+quu	Eastern Quiché	M	quc		2009-01-16
+qxi	San Andrés Quiché	M	quc		2009-01-16
+sic	Malinguat	S		Split into Keak [keh] and Sos Kundi [sdk]	2009-01-16
+stc	Santa Cruz	S		Split into Natügu [ntu] and Nalögo [nlz]	2009-01-16
+tlz	Toala'	M	rob		2009-01-16
+tzb	Bachajón Tzeltal	M	tzh		2009-01-16
+tzc	Chamula Tzotzil	M	tzo		2009-01-16
+tze	Chenalhó Tzotzil	M	tzo		2009-01-16
+tzs	San Andrés Larrainzar Tzotzil	M	tzo		2009-01-16
+tzt	Western Tzutujil	M	tzj		2009-01-16
+tzu	Huixtán Tzotzil	M	tzo		2009-01-16
+tzz	Zinacantán Tzotzil	M	tzo		2009-01-16
+vlr	Vatrata	S		Split into Vera'a [vra] and Lemerig [lrz]	2009-01-16
+yus	Chan Santa Cruz Maya	M	yua		2009-01-16
+nfg	Nyeng	M	nfd		2009-01-26
+nfk	Shakara	M	nfd		2009-01-26
+agp	Paranan	S		Split into Pahanan Agta [apf] and Paranan [prf] (new identifier)	2010-01-18
+bhk	Albay Bicolano	S		Split into Buhi'non Bikol [ubl]; Libon Bikol [lbl]; Miraya Bikol [rbl]; West Albay Bikol [fbl]	2010-01-18
+bkb	Finallig	S		Split into Eastern Bontok [ebk] and Southern Bontok [obk]	2010-01-18
+btb	Beti (Cameroon)	S		Beti is a group name, not an individual language name. Member languages are Bebele [beb], Bebil [bxp], Bulu [bum], Eton [eto], Ewondo [ewo], Fang [fan], and Mengisa [mct], all of which already have their own code elements.	2010-01-18
+cjr	Chorotega	M	mom		2010-01-18
+cmk	Chimakum	D	xch		2010-01-18
+drh	Darkhat	M	khk		2010-01-18
+drw	Darwazi	M	prs		2010-01-18
+gav	Gabutamon	M	dev		2010-01-18
+mof	Mohegan-Montauk-Narragansett	S		split into Mohegan-Pequot [xpq] and Narragansett [xnt]	2010-01-18
+mst	Cataelano Mandaya	M	mry		2010-01-18
+myt	Sangab Mandaya	M	mry		2010-01-18
+rmr	Caló	S		split into Caló [rmq] and Erromintxela [emx]	2010-01-18
+sgl	Sanglechi-Ishkashimi	S		split into Sanglechi [sgy] and Ishkashimi [isk]	2010-01-18
+sul	Surigaonon	S		Split into Tandaganon [tgn] and Surigaonon [sgd] (new identifier)	2010-01-18
+sum	Sumo-Mayangna	S		Split into Mayangna [yan] and Ulwa [ulw]	2010-01-18
+tnf	Tangshewi	M	prs		2010-01-18
+wgw	Wagawaga	S		Split into Yaleba [ylb] and Wagawaga [wgb] (new identifier)	2010-01-18
+ayx	Ayi (China)	D	nun		2011-05-18
+bjq	Southern Betsimisaraka Malagasy	S		split into Southern Betsimisaraka [bzc] and Tesaka Malagasy [tkg]	2011-05-18
+dha	Dhanwar (India)	N			2011-05-18
+dkl	Kolum So Dogon	S		split into Ampari Dogon [aqd] and Mombo Dogon [dmb]	2011-05-18
+mja	Mahei	N			2011-05-18
+nbf	Naxi	S		split into Naxi [nxq] and Narua [nru]	2011-05-18
+noo	Nootka	S		Split into [dtd] Ditidaht and [nuk] Nuu-chah-nulth	2011-05-18
+tie	Tingal	M	ras		2011-05-18
+tkk	Takpa	D	twm		2011-05-18
+baz	Tunen	S		Split Tunen [baz]  into Tunen [tvu] and Nyokon [nvo]	2012-02-03
+bjd	Bandjigali	M	drl		2012-02-03
+ccq	Chaungtha	M	rki		2012-02-03
+cka	Khumi Awa Chin	M	cmr		2012-02-03
+dap	Nisi (India)	S		Split into Nyishi [njz] and Tagin [tgj]	2012-02-03
+dwl	Walo Kumbe Dogon	S		Split into Dogon, Bankan Tey (Walo) [dbw]  and Dogon, Ben Tey (Beni) [dbt]	2012-02-03
+elp	Elpaputih	N			2012-02-03
+gbc	Garawa	S		Split into Garrwa [wrk] and Wanyi [wny]	2012-02-03
+gio	Gelao	S		split into Qau [gqu] and A'ou [aou] with some going to Green Gelao [gig], some to Red Gelao [gir], and some to White Gelao [giw]	2012-02-03
+hrr	Horuru	M	jal		2012-02-03
+ibi	Ibilo	M	opa		2012-02-03
+jar	Jarawa (Nigeria)	S		split into Gwak [jgk] and Bankal [jjr]	2012-02-03
+kdv	Kado	S		split into Kadu [zkd] and Kanan [zkn]	2012-02-03
+kgh	Upper Tanudan Kalinga	M	kml		2012-02-03
+kpp	Paku Karen	S		Split into Paku Karen [jkp] and Mobwa Karen [jkm]	2012-02-03
+kzh	Kenuzi-Dongola	S		Split into Andaandi (Dongolawi) [dgl] and Kenzi (Mattoki) [xnz]	2012-02-03
+lcq	Luhu	M	ppr		2012-02-03
+mgx	Omati	S		Split into Barikewa [jbk] and Mouwase [jmw]	2012-02-03
+nln	Durango Nahuatl	S		Split into Eastern Durango Nahuatl [azd] and Western Durango Nahuatl [azn]	2012-02-03
+pbz	Palu	N			2012-02-03
+pgy	Pongyong	N			2012-02-03
+sca	Sansu	M	hle		2012-02-03
+tlw	South Wemale	M	weo		2012-02-03
+unp	Worora	S		Split into Worrorra [wro] and Unggumi [xgu].	2012-02-03
+wiw	Wirangu	S		Split into Wirangu [wgu] and Nauo [nwo]	2012-02-03
+ybd	Yangbye	M	rki		2012-02-03
+yen	Yendang	S		Split into Yendang [ynq] and Yotti [yot]	2012-02-03
+yma	Yamphe	M	lrr		2012-02-03
+daf	Dan	S		Split into Dan [dnj] and Kla-Dan [lda]	2013-01-23
+djl	Djiwarli	S		Split into Djiwarli [dze] and Thiin [iin]	2013-01-23
+ggr	Aghu Tharnggalu	S		Split into Aghu-Tharnggala [gtu], Gugu-Mini [ggm], and Ikarranggal [ikr]	2013-01-23
+ilw	Talur	M	gal		2013-01-23
+izi	Izi-Ezaa-Ikwo-Mgbo	S		Split into Izii [izz], Ezaa [eza], Ikwo [iqw], Mgbolizhia [gmz]	2013-01-23
+meg	Mea	M	cir		2013-01-23
+mld	Malakhel	N			2013-01-23
+mnt	Maykulan	S		Split into Mayi-Kulan [xyk], Mayi-Thakurti [xyt], Mayi-Yapi [xyj], and Wunumara [wnn]	2013-01-23
+mwd	Mudbura	S		Split into Karranga [xrq] and Mudburra [dmw]	2013-01-23
+myq	Forest Maninka	N			2013-01-23
+nbx	Ngura	S		Split into Eastern Karnic [ekc], Garlali [gll], Punthamara [xpt], Wangkumara [xwk], and Badjiri [jbi]	2013-01-23
+nlr	Ngarla	S		Split into Ngarla [nrk] and Yinhawangka [ywg]	2013-01-23
+pcr	Panang	M	adx		2013-01-23
+ppr	Piru				2013-01-23
+tgg	Tangga	S		Split into Fanamaket [bjp], Niwer Mil [hrc], and Warwar Feni [hrw]	2013-01-23
+wit	Wintu	S		Split into Wintu [wnw], Nomlaki [nol], and Patwin [pwi]	2013-01-23
+xia	Xiandao	M	acn		2013-01-23
+yiy	Yir Yoront	S		Split into Yir Yoront [yyr] and Yirrk-Mel [yrm]	2013-01-23
+yos	Yos	M	zom		2013-01-23
+emo	Emok	N			2014-02-03
+ggm	Gugu Mini	N			2014-02-03
+leg	Lengua	S		Split into Enlhet [enl] and Enxet [enx]	2014-02-03
+lmm	Lamam	M	rmx		2014-02-03
+mhh	Maskoy Pidgin	N			2014-02-03
+puz	Purum Naga	M	pub		2014-02-03
+sap	Sanapaná	S		Split into Sanapaná [spn] and Angaité [aqt]	2014-02-03
+yuu	Yugh	M	yug		2014-02-03
+aam	Aramanik	M	aas		2015-01-12
+adp	Adap	M	dzo		2015-01-12
+aue	=/Kx'au//'ein	D	ktz		2015-01-12
+bmy	Bemba (Democratic Republic of Congo)	N			2015-01-12
+bxx	Borna (Democratic Republic of Congo)	N			2015-01-12
+byy	Buya	N			2015-01-12
+dzd	Daza	N			2015-01-12
+gfx	Mangetti Dune !Xung	M	vaj		2015-01-12
+gti	Gbati-ri	M	nyc		2015-01-12
+ime	Imeraguen	N			2015-01-12
+kbf	Kakauhua	N			2015-01-12
+koj	Sara Dunjo	M	kwv		2015-01-12
+kwq	Kwak	M	yam		2015-01-12
+kxe	Kakihum	M	tvd		2015-01-12
+lii	Lingkhim	M	raq		2015-01-12
+mwj	Maligo	M	vaj		2015-01-12
+nnx	Ngong	M	ngv		2015-01-12
+oun	!O!ung	M	vaj		2015-01-12
+pmu	Mirpur Panjabi	M	phr		2015-01-12
+sgo	Songa	N			2015-01-12
+thx	The	D	oyb		2015-01-12
+tsf	Southwestern Tamang	M	taj		2015-01-12
+uok	Uokha	M	ema		2015-01-12
+xsj	Subi	D	suj		2015-01-12
+yds	Yiddish Sign Language				2015-01-12
+ymt	Mator-Taygi-Karagas	D	ymt		2015-01-12
+ynh	Yangho	N			2015-01-12

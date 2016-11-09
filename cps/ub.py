@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from sqlalchemy import *
+from sqlalchemy import exc
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import *
 import os
@@ -32,6 +33,13 @@ class User(Base):
     shelf = relationship('Shelf', backref = 'user', lazy = 'dynamic')
     whislist = relationship('Whislist', backref = 'user', lazy = 'dynamic')
     downloads = relationship('Downloads', backref= 'user', lazy = 'dynamic')
+    locale = Column(String(2), default="en")
+    random_books = Column(Integer, default=1)
+    language_books = Column(Integer, default=1)
+    series_books = Column(Integer, default=1)
+    category_books = Column(Integer, default=1)
+    hot_books = Column(Integer, default=1)
+    default_language = Column(String(3), default="all")
 
     def is_authenticated(self):
         return True
@@ -69,6 +77,25 @@ class User(Base):
 
     def get_id(self):
         return unicode(self.id)
+
+    def filter_language(self):
+        return self.default_language
+
+    def show_random_books(self):
+        return self.random_books
+
+    def show_language(self):
+        return self.language_books
+
+    def show_hot_books(self):
+        return self.hot_books
+
+    def show_series(self):
+        return self.series_books
+
+    def show_category(self):
+        return self.category_books
+
 
     def __repr__(self):
         return '<User %r>' % (self.nickname)
@@ -147,6 +174,28 @@ class Settings(Base):
         #return '<Smtp %r>' % (self.mail_server)
         pass
 
+def migrate_Database():
+    try:
+        session.query(exists().where(User.random_books)).scalar()
+        session.commit()
+    except exc.OperationalError: # Database is not compatible, some rows are missing
+        conn=engine.connect()
+        conn.execute("ALTER TABLE user ADD column random_books INTEGER DEFAULT 1")
+        conn.execute("ALTER TABLE user ADD column locale String(2) DEFAULT 'en'")
+        conn.execute("ALTER TABLE user ADD column default_language String(3) DEFAULT 'all'")
+        session.commit()
+    try:
+        session.query(exists().where(User.language_books)).scalar()
+        session.commit()
+    except exc.OperationalError:  # Database is not compatible, some rows are missing
+        conn = engine.connect()
+        conn.execute("ALTER TABLE user ADD column language_books INTEGER DEFAULT 1")
+        conn.execute("ALTER TABLE user ADD column series_books INTEGER DEFAULT 1")
+        conn.execute("ALTER TABLE user ADD column category_books INTEGER DEFAULT 1")
+        conn.execute("ALTER TABLE user ADD column hot_books INTEGER DEFAULT 1")
+        session.commit()
+
+
 def create_default_config():
     settings = Settings()
     settings.mail_server = "mail.example.com"
@@ -200,4 +249,6 @@ if not os.path.exists(dbpath):
         create_admin_user()
     except Exception:
         pass
+else:
+    migrate_Database()
 

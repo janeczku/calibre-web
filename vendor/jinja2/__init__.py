@@ -27,7 +27,7 @@
     :license: BSD, see LICENSE for more details.
 """
 __docformat__ = 'restructuredtext en'
-__version__ = '2.7'
+__version__ = '2.8'
 
 # high level interface
 from jinja2.environment import Environment, Template
@@ -42,7 +42,8 @@ from jinja2.bccache import BytecodeCache, FileSystemBytecodeCache, \
      MemcachedBytecodeCache
 
 # undefined types
-from jinja2.runtime import Undefined, DebugUndefined, StrictUndefined
+from jinja2.runtime import Undefined, DebugUndefined, StrictUndefined, \
+     make_logging_undefined
 
 # exceptions
 from jinja2.exceptions import TemplateError, UndefinedError, \
@@ -65,5 +66,5 @@ __all__ = [
     'TemplatesNotFound', 'TemplateSyntaxError', 'TemplateAssertionError',
     'ModuleLoader', 'environmentfilter', 'contextfilter', 'Markup', 'escape',
     'environmentfunction', 'contextfunction', 'clear_caches', 'is_undefined',
-    'evalcontextfilter', 'evalcontextfunction'
+    'evalcontextfilter', 'evalcontextfunction', 'make_logging_undefined',
 ]

@@ -20,8 +20,8 @@ from operator import itemgetter
 from collections import deque
 from jinja2.exceptions import TemplateSyntaxError
 from jinja2.utils import LRUCache
-from jinja2._compat import next, iteritems, implements_iterator, text_type, \
-     intern
+from jinja2._compat import iteritems, implements_iterator, text_type, \
+     intern, PY2
 
 
 # cache for the lexers. Exists in order to be able to have multiple
@@ -136,8 +136,8 @@ operator_re = re.compile('(%s)' % '|'.join(re.escape(x) for x in
 
 ignored_tokens = frozenset([TOKEN_COMMENT_BEGIN, TOKEN_COMMENT,
                             TOKEN_COMMENT_END, TOKEN_WHITESPACE,
-                            TOKEN_WHITESPACE, TOKEN_LINECOMMENT_BEGIN,
-                            TOKEN_LINECOMMENT_END, TOKEN_LINECOMMENT])
+                            TOKEN_LINECOMMENT_BEGIN, TOKEN_LINECOMMENT_END,
+                            TOKEN_LINECOMMENT])
 ignore_if_empty = frozenset([TOKEN_WHITESPACE, TOKEN_DATA,
                              TOKEN_COMMENT, TOKEN_LINECOMMENT])
 
@@ -578,10 +578,11 @@ class Lexer(object):
                 # we do that for support of semi broken APIs
                 # as datetime.datetime.strftime.  On python 3 this
                 # call becomes a noop thanks to 2to3
-                try:
-                    value = str(value)
-                except UnicodeError:
-                    pass
+                if PY2:
+                    try:
+                        value = value.encode('ascii')
+                    except UnicodeError:
+                        pass
             elif token == 'integer':
                 value = int(value)
             elif token == 'float':

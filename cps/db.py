@@ -52,23 +52,26 @@ books_languages_link = Table('books_languages_link', Base.metadata,
 
 cc = conn.execute("SELECT id, datatype FROM custom_columns")
 cc_ids = []
-cc_exceptions = ['bool', 'datetime', 'int', 'comments', 'float', 'composite','series' ]
+cc_exceptions = [ 'datetime', 'int', 'comments', 'float', 'composite','series' ]
 books_custom_column_links = {}
+cc_classes = {}
 for row in cc:
     if row.datatype not in cc_exceptions:
         books_custom_column_links[row.id] = Table('books_custom_column_' + str(row.id) + '_link', Base.metadata,
             Column('book', Integer, ForeignKey('books.id'), primary_key=True),
             Column('value', Integer, ForeignKey('custom_column_' + str(row.id) + '.id'), primary_key=True)
             )
-        #books_custom_column_links[row.id]=
-        cc_ids.append(row.id)
-
-cc_classes = {}
-for id in cc_ids:
-    ccdict={'__tablename__':'custom_column_' + str(id),
-        'id':Column(Integer, primary_key=True),
-        'value':Column(String)}
-    cc_classes[id] = type('Custom_Column_' + str(id), (Base,), ccdict)
+        cc_ids.append([row.id,row.datatype])
+        if row.datatype == 'bool':
+            ccdict = {'__tablename__': 'custom_column_' + str(row.id),
+                      'id': Column(Integer, primary_key=True),
+                      'book': Column(Integer,ForeignKey('books.id')),
+                      'value': Column(Boolean)}
+        else:
+            ccdict={'__tablename__':'custom_column_' + str(row.id),
+                'id':Column(Integer, primary_key=True),
+                'value':Column(String)}
+        cc_classes[row.id] = type('Custom_Column_' + str(row.id), (Base,), ccdict)
 
 class Comments(Base):
     __tablename__ = 'comments'
@@ -182,6 +185,7 @@ class Books(Base):
     last_modified = Column(String)
     path = Column(String)
     has_cover = Column(Integer)
+    uuid = Column(String)
 
     authors = relationship('Authors', secondary=books_authors_link, backref='books')
     tags = relationship('Tags', secondary=books_tags_link, backref='books')
@@ -205,7 +209,10 @@ class Books(Base):
     def __repr__(self):
         return u"<Books('{0},{1}{2}{3}{4}{5}{6}{7}{8}')>".format(self.title, self.sort, self.author_sort, self.timestamp, self.pubdate, self.series_index, self.last_modified ,self.path, self.has_cover)
 for id in cc_ids:
-    setattr(Books, 'custom_column_' + str(id), relationship(cc_classes[id], secondary=books_custom_column_links[id], backref='books'))
+    if id[1] == 'bool':
+        setattr(Books, 'custom_column_' + str(id[0]), relationship(cc_classes[id[0]], primaryjoin=(Books.id==cc_classes[id[0]].book), backref='books'))
+    else:
+        setattr(Books, 'custom_column_' + str(id[0]), relationship(cc_classes[id[0]], secondary=books_custom_column_links[id[0]], backref='books'))
 
 class Custom_Columns(Base):
     __tablename__ = 'custom_columns'
