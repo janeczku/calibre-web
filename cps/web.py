@@ -983,7 +983,7 @@ def login():
 
     if request.method == "POST":
         form = request.form.to_dict()
-        user = ub.session.query(ub.User).filter(ub.User.nickname == form['username']).first()
+        user = ub.session.query(ub.User).filter(ub.User.nickname == form['username'].strip()).first()
 
         if user and check_password_hash(user.password, form['password']):
             login_user(user, remember = True)
