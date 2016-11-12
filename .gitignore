@@ -20,3 +20,4 @@ config.ini
 
 .idea/
 *.bak
+*.log.*

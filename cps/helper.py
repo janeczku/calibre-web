@@ -30,7 +30,10 @@ def update_download(book_id, user_id):
         ub.session.commit()
 
 def make_mobi(book_id):
-    kindlegen = os.path.join(config.MAIN_DIR, "vendor", "kindlegen")
+    if sys.platform =="win32":
+        kindlegen = os.path.join(config.MAIN_DIR, "vendor", u"kindlegen.exe")
+    else:
+        kindlegen = os.path.join(config.MAIN_DIR, "vendor", u"kindlegen")
     if not os.path.exists(kindlegen):
         app.logger.error("make_mobi: kindlegen binary not found in: %s" % kindlegen)
         return None
@@ -41,9 +44,10 @@ def make_mobi(book_id):
         return None
 
     file_path = os.path.join(config.DB_ROOT, book.path, data.name)
-
-    if os.path.exists(file_path + ".epub"):
-        check = subprocess.call([kindlegen, file_path + ".epub"], stdout=subprocess.PIPE)
+    if os.path.exists(file_path + u".epub"):
+        p = subprocess.Popen((kindlegen + " \"" + file_path + u".epub\" ").encode(sys.getfilesystemencoding()), shell=True, stdout=subprocess.PIPE,
+                             stderr=subprocess.PIPE, stdin=subprocess.PIPE)
+        check = p.wait()
         if not check or check < 2:
             book.data.append(db.Data(
                     name=book.data[0].name,
