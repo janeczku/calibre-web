@@ -103,6 +103,7 @@
       </label>
     </div>
     <button type="submit" class="btn btn-default">{{_('Submit')}}</button>
+    <a href="{{ url_for('show_book',id=book.id) }}" class="btn btn-default">{{_('Back')}}</a>
   </form>
 </div>
 {% endif %}
