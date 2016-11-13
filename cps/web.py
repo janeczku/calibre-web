@@ -134,7 +134,8 @@ app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
 
 LANGUAGES = {
     'en': 'English',
-    'de': 'Deutsch'
+    'de': 'Deutsch',
+    'fr': 'Français'
 }
 
 @babel.localeselector
