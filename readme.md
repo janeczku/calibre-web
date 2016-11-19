@@ -100,3 +100,25 @@ Listen 443
     </Location>
 </VirtualHost>
 ```
+
+## Use calibre-web as Daemon under Linux
+
+Create a file "cps.service" as root in the folder /etc/systemd/system with the following content:
+
+```[Unit]
+Description=Calibre-web
+
+[Service]
+Type=simple
+User=[Username]
+ExecStart=[path to python] [/PATH/TO/cps.py]
+
+[Install]
+WantedBy=multi-user.target
+```
+
+Replace the user and ExecStart with your user and foldernames.
+
+`sudo systemctl enable cps.service`
+
+enables the service. 
