@@ -101,7 +101,7 @@ Listen 443
 </VirtualHost>
 ```
 
-## Use calibre-web as Daemon under Linux
+## Start calibre-web as service under Linux
 
 Create a file "cps.service" as root in the folder /etc/systemd/system with the following content:
 
