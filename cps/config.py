@@ -5,9 +5,10 @@ import os
 import sys
 from configobj import ConfigObj
 
-CONFIG_FILE= os.path.join(os.path.normpath(os.path.dirname(os.path.realpath(__file__))+os.sep+".."+os.sep), "config.ini")
+CONFIG_FILE = os.path.join(os.path.normpath(os.path.dirname(os.path.realpath(__file__))+os.sep+".."+os.sep), "config.ini")
 CFG = ConfigObj(CONFIG_FILE)
-CFG.encoding='UTF-8'
+CFG.encoding = 'UTF-8'
+
 
 def CheckSection(sec):
     """ Check if INI section exists, if not create it """
@@ -17,6 +18,7 @@ def CheckSection(sec):
     except:
         CFG[sec] = {}
         return False
+
 
 def check_setting_str(config, cfg_name, item_name, def_val, log=True):
     try:
@@ -62,24 +64,16 @@ PUBLIC_REG = bool(check_setting_int(CFG, 'Advanced', 'PUBLIC_REG', 0))
 UPLOADING = bool(check_setting_int(CFG, 'Advanced', 'UPLOADING', 0))
 ANON_BROWSE = bool(check_setting_int(CFG, 'Advanced', 'ANON_BROWSE', 0))
 
-SYS_ENCODING="UTF-8"
+SYS_ENCODING = "UTF-8"
 
 if DB_ROOT == "":
     print "Calibre database directory (DB_ROOT) is not configured"
     sys.exit(1)
 
-configval={}
-configval["DB_ROOT"] = DB_ROOT
-configval["APP_DB_ROOT"] = APP_DB_ROOT
-configval["MAIN_DIR"] = MAIN_DIR
-configval["LOG_DIR"] = LOG_DIR
-configval["PORT"] = PORT
-configval["NEWEST_BOOKS"] = NEWEST_BOOKS
-configval["DEVELOPMENT"] = DEVELOPMENT
-configval["TITLE_REGEX"] = TITLE_REGEX
-configval["PUBLIC_REG"] = PUBLIC_REG
-configval["UPLOADING"] = UPLOADING
-configval["ANON_BROWSE"] = ANON_BROWSE
+configval = {"DB_ROOT": DB_ROOT, "APP_DB_ROOT": APP_DB_ROOT, "MAIN_DIR": MAIN_DIR, "LOG_DIR": LOG_DIR, "PORT": PORT,
+            "NEWEST_BOOKS": NEWEST_BOOKS, "DEVELOPMENT": DEVELOPMENT, "TITLE_REGEX": TITLE_REGEX,
+            "PUBLIC_REG": PUBLIC_REG, "UPLOADING": UPLOADING, "ANON_BROWSE": ANON_BROWSE}
+
 
 def save_config(configval):
     new_config = ConfigObj(encoding='UTF-8')

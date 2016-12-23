@@ -40,7 +40,6 @@
             {% endfor %}
         </select>
     </div>
-    {% if g.user and g.user.role_admin() and not profile %}
     <div class="form-group">
         <input type="checkbox" name="show_random" {% if content.random_books %}checked{% endif %}>
         <label for="show_random">{{_('Show random books')}}</label>
@@ -61,6 +60,8 @@
         <input type="checkbox" name="show_category" {% if content.category_books %}checked{% endif %}>
         <label for="show_category">{{_('Show category selection')}}</label>
     </div>
+
+    {% if g.user and g.user.role_admin() and not profile %}
 
     <div class="form-group">
       <input type="checkbox" name="admin_role" id="admin_role" {% if content.role_admin() %}checked{% endif %}>
