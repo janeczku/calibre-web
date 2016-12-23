@@ -9,8 +9,10 @@ import config
 import re
 import ast
 
-#calibre sort stuff
+# calibre sort stuff
 title_pat = re.compile(config.TITLE_REGEX, re.IGNORECASE)
+
+
 def title_sort(title):
     match = title_pat.search(title)
     if match:
@@ -52,7 +54,7 @@ books_languages_link = Table('books_languages_link', Base.metadata,
 
 cc = conn.execute("SELECT id, datatype FROM custom_columns")
 cc_ids = []
-cc_exceptions = [ 'datetime', 'int', 'comments', 'float', 'composite','series' ]
+cc_exceptions = ['datetime', 'int', 'comments', 'float', 'composite', 'series']
 books_custom_column_links = {}
 cc_classes = {}
 for row in cc:
@@ -61,17 +63,18 @@ for row in cc:
             Column('book', Integer, ForeignKey('books.id'), primary_key=True),
             Column('value', Integer, ForeignKey('custom_column_' + str(row.id) + '.id'), primary_key=True)
             )
-        cc_ids.append([row.id,row.datatype])
+        cc_ids.append([row.id, row.datatype])
         if row.datatype == 'bool':
             ccdict = {'__tablename__': 'custom_column_' + str(row.id),
                       'id': Column(Integer, primary_key=True),
-                      'book': Column(Integer,ForeignKey('books.id')),
+                      'book': Column(Integer, ForeignKey('books.id')),
                       'value': Column(Boolean)}
         else:
-            ccdict={'__tablename__':'custom_column_' + str(row.id),
-                'id':Column(Integer, primary_key=True),
-                'value':Column(String)}
+            ccdict = {'__tablename__': 'custom_column_' + str(row.id),
+                'id': Column(Integer, primary_key=True),
+                'value': Column(String)}
         cc_classes[row.id] = type('Custom_Column_' + str(row.id), (Base,), ccdict)
+
 
 class Comments(Base):
     __tablename__ = 'comments'
@@ -100,6 +103,7 @@ class Tags(Base):
     def __repr__(self):
         return u"<Tags('{0})>".format(self.name)
 
+
 class Authors(Base):
     __tablename__ = 'authors'
 
@@ -116,6 +120,7 @@ class Authors(Base):
     def __repr__(self):
         return u"<Authors('{0},{1}{2}')>".format(self.name, self.sort, self.link)
 
+
 class Series(Base):
     __tablename__ = 'series'
 
@@ -130,17 +135,19 @@ class Series(Base):
     def __repr__(self):
         return u"<Series('{0},{1}')>".format(self.name, self.sort)
 
+
 class Ratings(Base):
     __tablename__ = 'ratings'
 
     id = Column(Integer, primary_key=True)
     rating = Column(Integer)
 
-    def __init__(self,rating):
+    def __init__(self, rating):
         self.rating = rating
 
     def __repr__(self):
         return u"<Ratings('{0}')>".format(self.rating)
+
 
 class Languages(Base):
     __tablename__ = 'languages'
@@ -148,11 +155,12 @@ class Languages(Base):
     id = Column(Integer, primary_key=True)
     lang_code = Column(String)
 
-    def __init__(self,lang_code):
+    def __init__(self, lang_code):
         self.lang_code = lang_code
 
     def __repr__(self):
         return u"<Languages('{0}')>".format(self.lang_code)
+
 
 class Data(Base):
     __tablename__ = 'data'
@@ -171,6 +179,7 @@ class Data(Base):
 
     def __repr__(self):
         return u"<Data('{0},{1}{2}{3}')>".format(self.book, self.format, self.uncompressed_size, self.name)
+
 
 class Books(Base):
     __tablename__ = 'books'
@@ -207,17 +216,24 @@ class Books(Base):
         self.has_cover = has_cover
 
     def __repr__(self):
-        return u"<Books('{0},{1}{2}{3}{4}{5}{6}{7}{8}')>".format(self.title, self.sort, self.author_sort, self.timestamp, self.pubdate, self.series_index, self.last_modified ,self.path, self.has_cover)
+        return u"<Books('{0},{1}{2}{3}{4}{5}{6}{7}{8}')>".format(self.title, self.sort, self.author_sort,
+                                                                 self.timestamp, self.pubdate, self.series_index,
+                                                                 self.last_modified, self.path, self.has_cover)
 for id in cc_ids:
     if id[1] == 'bool':
-        setattr(Books, 'custom_column_' + str(id[0]), relationship(cc_classes[id[0]], primaryjoin=(Books.id==cc_classes[id[0]].book), backref='books'))
+        setattr(Books, 'custom_column_' + str(id[0]), relationship(cc_classes[id[0]],
+                                                                   primaryjoin=(Books.id == cc_classes[id[0]].book),
+                                                                   backref='books'))
     else:
-        setattr(Books, 'custom_column_' + str(id[0]), relationship(cc_classes[id[0]], secondary=books_custom_column_links[id[0]], backref='books'))
+        setattr(Books, 'custom_column_' + str(id[0]), relationship(cc_classes[id[0]],
+                                                                   secondary = books_custom_column_links[id[0]],
+                                                                   backref='books'))
+
 
 class Custom_Columns(Base):
     __tablename__ = 'custom_columns'
     
-    id = Column(Integer,primary_key=True)
+    id = Column(Integer, primary_key=True)
     label = Column(String)
     name = Column(String)
     datatype = Column(String)
@@ -231,9 +247,7 @@ class Custom_Columns(Base):
         display_dict = ast.literal_eval(self.display)
         return display_dict
 
-#Base.metadata.create_all(engine)
+# Base.metadata.create_all(engine)
 Session = sessionmaker()
 Session.configure(bind=engine)
 session = Session()
-
-

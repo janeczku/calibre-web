@@ -17,6 +17,7 @@ eggs/
 *.db
 *.log
 config.ini
+cps/static/[0-9]*
 
 .idea/
 *.bak

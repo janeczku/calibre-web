@@ -4,8 +4,10 @@
 import db, ub
 import config
 from flask import current_app as app
+import logging
 
 import smtplib
+import tempfile
 import socket
 import sys
 import os
@@ -21,16 +23,19 @@ from email.generator import Generator
 from flask_babel import gettext as _
 import subprocess
 
+
 def update_download(book_id, user_id):
-    check = ub.session.query(ub.Downloads).filter(ub.Downloads.user_id == user_id).filter(ub.Downloads.book_id == book_id).first()
+    check = ub.session.query(ub.Downloads).filter(ub.Downloads.user_id == user_id).filter(ub.Downloads.book_id ==
+                                                                                          book_id).first()
 
     if not check:
         new_download = ub.Downloads(user_id=user_id, book_id=book_id)
         ub.session.add(new_download)
         ub.session.commit()
 
+
 def make_mobi(book_id):
-    if sys.platform =="win32":
+    if sys.platform == "win32":
         kindlegen = os.path.join(config.MAIN_DIR, "vendor", u"kindlegen.exe")
     else:
         kindlegen = os.path.join(config.MAIN_DIR, "vendor", u"kindlegen")
@@ -45,9 +50,17 @@ def make_mobi(book_id):
 
     file_path = os.path.join(config.DB_ROOT, book.path, data.name)
     if os.path.exists(file_path + u".epub"):
-        p = subprocess.Popen((kindlegen + " \"" + file_path + u".epub\" ").encode(sys.getfilesystemencoding()), shell=True, stdout=subprocess.PIPE,
-                             stderr=subprocess.PIPE, stdin=subprocess.PIPE)
-        check = p.wait()
+        p = subprocess.Popen((kindlegen + " \"" + file_path + u".epub\" ").encode(sys.getfilesystemencoding()),
+                             shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE)
+        # Poll process for new output until finished
+        while True:
+            nextline = p.stdout.readline()
+            if nextline == '' and p.poll() is not None:
+                break
+            if nextline != "\r\n":
+                app.logger.debug(nextline.strip('\r\n'))
+
+        check = p.returncode
         if not check or check < 2:
             book.data.append(db.Data(
                     name=book.data[0].name,
@@ -64,8 +77,67 @@ def make_mobi(book_id):
         app.logger.error("make_mobie: epub not found: %s.epub" % file_path)
         return None
 
+
+class StderrLogger(object):
+
+    buffer=''
+    def __init__(self):
+        self.logger = logging.getLogger('cps.web')
+
+    def write(self, message):
+        if message=='\n':
+            self.logger.debug(self.buffer)
+            self.buffer=''
+        else:
+            self.buffer=self.buffer+message
+
+def send_test_mail(kindle_mail):
+    settings = ub.get_mail_settings()
+    msg = MIMEMultipart()
+    msg['From'] = settings["mail_from"]
+    msg['To'] = kindle_mail
+    msg['Subject'] = _('Calibre-web test email')
+    text = _('This email has been sent via calibre web.')
+
+    use_ssl = settings.get('mail_use_ssl', 0)
+
+    # convert MIME message to string
+    fp = StringIO()
+    gen = Generator(fp, mangle_from_=False)
+    gen.flatten(msg)
+    msg = fp.getvalue()
+
+    # send email
+    try:
+        timeout=600     # set timeout to 5mins
+
+        org_stderr = smtplib.stderr
+        smtplib.stderr = StderrLogger()
+
+        mailserver = smtplib.SMTP(settings["mail_server"], settings["mail_port"],timeout)
+        mailserver.set_debuglevel(1)
+
+        if int(use_ssl) == 1:
+            mailserver.ehlo()
+            mailserver.starttls()
+            mailserver.ehlo()
+
+        if settings["mail_password"]:
+            mailserver.login(settings["mail_login"], settings["mail_password"])
+        mailserver.sendmail(settings["mail_login"], kindle_mail, msg)
+        mailserver.quit()
+
+        smtplib.stderr = org_stderr
+
+    except (socket.error, smtplib.SMTPRecipientsRefused, smtplib.SMTPException), e:
+        app.logger.error(traceback.print_exc())
+        return _("Failed to send mail: %s" % str(e))
+
+    return None
+
+
 def send_mail(book_id, kindle_mail):
-    '''Send email with attachments'''
+    """Send email with attachments"""
     is_mobi = False
     is_azw = False
     is_azw3 = False
@@ -84,7 +156,7 @@ def send_mail(book_id, kindle_mail):
     use_ssl = settings.get('mail_use_ssl', 0)
 
     # attach files
-        #msg.attach(self.get_attachment(file_path))
+    # msg.attach(self.get_attachment(file_path))
 
     book = db.session.query(db.Books).filter(db.Books.id == book_id).first()
     data = db.session.query(db.Data).filter(db.Data.book == book.id)
@@ -125,8 +197,13 @@ def send_mail(book_id, kindle_mail):
 
     # send email
     try:
-        mailserver = smtplib.SMTP(settings["mail_server"],settings["mail_port"])
-        mailserver.set_debuglevel(0)
+        timeout=600     # set timeout to 5mins
+
+        org_stderr = smtplib.stderr
+        smtplib.stderr = StderrLogger()
+
+        mailserver = smtplib.SMTP(settings["mail_server"], settings["mail_port"],timeout)
+        mailserver.set_debuglevel(1)
 
         if int(use_ssl) == 1:
             mailserver.ehlo()
@@ -137,6 +214,9 @@ def send_mail(book_id, kindle_mail):
             mailserver.login(settings["mail_login"], settings["mail_password"])
         mailserver.sendmail(settings["mail_login"], kindle_mail, msg)
         mailserver.quit()
+
+        smtplib.stderr = org_stderr
+
     except (socket.error, smtplib.SMTPRecipientsRefused, smtplib.SMTPException), e:
         app.logger.error(traceback.print_exc())
         return _("Failed to send mail: %s" % str(e))
@@ -145,7 +225,7 @@ def send_mail(book_id, kindle_mail):
 
 
 def get_attachment(file_path):
-    '''Get file as MIMEBase message'''
+    """Get file as MIMEBase message"""
 
     try:
         file_ = open(file_path, 'rb')
@@ -163,6 +243,7 @@ def get_attachment(file_path):
                    'permissions?'))
         return None
 
+
 def get_valid_filename(value, replace_whitespace=True):
     """
     Returns the given string converted to a string that can be used for a clean
@@ -178,6 +259,7 @@ def get_valid_filename(value, replace_whitespace=True):
     value = value.replace(u"\u00DF", "ss")
     return value
 
+
 def get_normalized_author(value):
     """
     Normalizes sorted author name
@@ -187,13 +269,14 @@ def get_normalized_author(value):
     value = " ".join(value.split(", ")[::-1])
     return value
     
+
 def update_dir_stucture(book_id):
-    db.session.connection().connection.connection.create_function("title_sort",1,db.title_sort)
+    db.session.connection().connection.connection.create_function("title_sort", 1, db.title_sort)
     book = db.session.query(db.Books).filter(db.Books.id == book_id).first()
     path = os.path.join(config.DB_ROOT, book.path)
     
     authordir = book.path.split(os.sep)[0]
-    new_authordir=get_valid_filename(book.authors[0].name, False)
+    new_authordir = get_valid_filename(book.authors[0].name, False)
     titledir = book.path.split(os.sep)[1]
     new_titledir = get_valid_filename(book.title, False) + " (" + str(book_id) + ")"
     
@@ -208,4 +291,3 @@ def update_dir_stucture(book_id):
         os.renames(path, new_author_path)
         book.path = new_authordir + os.sep + book.path.split(os.sep)[1]
     db.session.commit()
-    

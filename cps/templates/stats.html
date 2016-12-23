@@ -1,7 +1,45 @@
 {% extends "layout.html" %}
 {% block body %}
-<div class="discover">
-  <h2>{{bookcounter}} {{_('Books in this Library')}}</h2>
-  <h2>{{authorcounter}} {{_('Authors in this Library')}}</h2>
-</div>
+  <h3>{{_('Linked libraries')}}</h3>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>{{_('Program library')}}</th>
+      <th>{{_('Installed Version')}}</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Python</th>
+      <td>{{Versions['PythonVersion']}}</td>
+    </tr>
+    <tr>
+      <th>Kindlegen</th>
+      <td>{{Versions['KindlegenVersion']}}</td>
+    </tr>
+    <tr>
+      <th>ImageMagick</th>
+      <td>{{Versions['ImageVersion']}}</td>
+    </tr>
+    <tr>
+      <th>PyPDF2</th>
+      <td>{{Versions['PyPdfVersion']}}</td>
+    </tr>
+  </tbody>
+</table>
+
+  <h3>{{_('Calibre library statistics')}}</h3>
+<table class="table">
+  <tbody>
+    <tr>
+      <th>{{bookcounter}}</th>
+      <td>{{_('Books in this Library')}}</td>
+    </tr>
+    <tr>
+      <th>{{authorcounter}}</th>
+      <td>{{_('Authors in this Library')}}</td>
+    </tr>
+  </tbody>
+</table>
 {% endblock %}

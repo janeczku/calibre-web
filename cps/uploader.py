@@ -9,6 +9,8 @@ BookMeta = namedtuple('BookMeta', 'file_path, extension, title, author, cover, d
 """
  :rtype: BookMeta
 """
+
+
 def upload(file):
     tmp_dir = os.path.join(gettempdir(), 'calibre_web')
 
@@ -23,7 +25,3 @@ def upload(file):
     file.save(tmp_file_path)
     meta = book_formats.process(tmp_file_path, filename_root, file_extension)
     return meta
-
-
-
-
