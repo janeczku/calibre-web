@@ -5,7 +5,6 @@ import db, ub
 import config
 from flask import current_app as app
 import logging
-
 import smtplib
 import tempfile
 import socket

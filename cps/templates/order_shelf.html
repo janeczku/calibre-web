@@ -1,0 +1,20 @@
+{% extends "layout.html" %}
+{% block body %}
+  <div class="col-sm-6 col-lg-6 col-xs-6">
+    <h2>{{title}}</h2>
+      <div id="sortTrue" class="list-group">
+        {% for entry in entries %}
+          <div id="{{entry.id}}" class="list-group-item">{{entry.title}}</div>
+        {% endfor %}
+      </div>
+        <button onclick="sendData('{{ url_for('order_shelf', shelf_id=shelf.id) }}')" class="btn btn-default" id="ChangeOrder">{{_('Change order')}}</button>
+        <a href="{{ url_for('show_shelf', shelf_id=shelf.id) }}" class="btn btn-default">{{_('Back')}}</a>
+  </div>
+{% endblock %}
+
+{% block js %}
+<script src="{{ url_for('static', filename='js/shelforder.js') }}"></script>
+{% endblock %}
+
+
+

@@ -20,7 +20,8 @@
     <![endif]-->
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="https://code.jquery.com/jquery.js"></script>
+    <!--script src="https://code.jquery.com/jquery.js"></script-->
+    <script src="{{ url_for('static', filename='js/libs/jquery.min.js') }}"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/underscore.min.js') }}"></script>
@@ -28,7 +29,9 @@
     <script src="{{ url_for('static', filename='js/context.js') }}"></script>
     <script src="{{ url_for('static', filename='js/plugins.js') }}"></script>
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
-        {% block header %}{% endblock %}
+    <script src="{{ url_for('static', filename='js/Sortable.min.js') }}"></script>
+
+    {% block header %}{% endblock %}
   </head>
   <body>
     <script>
