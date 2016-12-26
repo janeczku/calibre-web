@@ -1184,8 +1184,12 @@ def add_to_shelf(shelf_id, book_id):
     if not shelf.is_public and not shelf.user_id == int(current_user.id):
         flash("Sorry you are not allowed to add a book to the the shelf: %s" % shelf.name)
         return redirect(url_for('index', _external=True))
-
-    ins = ub.BookShelf(shelf=shelf.id, book_id=book_id)
+    maxO = ub.session.query(func.max(ub.BookShelf.order)).filter(ub.BookShelf.shelf == shelf_id).first()
+    if maxO[0] is None:
+        maxOrder = 0
+    else:
+        maxOrder = maxO[0]
+    ins = ub.BookShelf(shelf=shelf.id, book_id=book_id, order=maxOrder+1)
     ub.session.add(ins)
     ub.session.commit()
 
@@ -1235,9 +1239,34 @@ def create_shelf():
                 flash(_(u"Shelf %(title)s created", title=to_save["title"]), category="success")
             except:
                 flash(_(u"There was an error"), category="error")
-        return render_template('shelf_edit.html', title=_(u"create a shelf"))
+        return render_template('shelf_edit.html', shelf=shelf, title=_(u"create a shelf"))
     else:
-        return render_template('shelf_edit.html', title=_(u"create a shelf"))
+        return render_template('shelf_edit.html', shelf=shelf, title=_(u"create a shelf"))
+
+@app.route("/shelf/edit/<int:shelf_id>", methods=["GET", "POST"])
+@login_required
+def edit_shelf(shelf_id):
+    shelf = ub.session.query(ub.Shelf).filter(ub.Shelf.id == shelf_id).first()
+    if request.method == "POST":
+        to_save = request.form.to_dict()
+        existing_shelf = ub.session.query(ub.Shelf).filter(ub.Shelf.name == to_save["title"]).first()
+        if existing_shelf and existing_shelf.id != shelf_id:
+            flash(_(u"A shelf with the name '%(title)s' already exists.",title=to_save["title"]), category="error")
+        else:
+            shelf.name = to_save["title"]
+            if "is_public" in to_save:
+                shelf.is_public = 1
+            else:
+                shelf.is_public = 0
+            try:
+                ub.session.commit()
+                flash(_(u"Shelf %(title)s changed",title=to_save["title"]), category="success")
+            except:
+                flash(_(u"There was an error"), category="error")
+        return render_template('shelf_edit.html', shelf=shelf, title=_(u"Edit a shelf"))
+    else:
+        return render_template('shelf_edit.html', shelf=shelf, title=_(u"Edit a shelf"))
+
 
 
 @app.route("/shelf/delete/<int:shelf_id>")
@@ -1273,12 +1302,40 @@ def show_shelf(shelf_id):
                                                                  ub.Shelf.id == shelf_id))).first()
     result = list()
     if shelf:
-        books_in_shelf = ub.session.query(ub.BookShelf).filter(ub.BookShelf.shelf == shelf_id).all()
+        books_in_shelf = ub.session.query(ub.BookShelf).filter(ub.BookShelf.shelf == shelf_id).order_by(ub.BookShelf.order.asc()).all()
         for book in books_in_shelf:
             cur_book = db.session.query(db.Books).filter(db.Books.id == book.book_id).first()
             result.append(cur_book)
 
     return render_template('shelf.html', entries=result, title=_(u"Shelf: '%(name)s'", name=shelf.name), shelf=shelf)
+
+
+@app.route("/shelf/order/<int:shelf_id>", methods=["GET", "POST"])
+@login_required_if_no_ano
+def order_shelf(shelf_id):
+    if request.method == "POST":
+        to_save = request.form.to_dict()
+        books_in_shelf = ub.session.query(ub.BookShelf).filter(ub.BookShelf.shelf == shelf_id).order_by(
+            ub.BookShelf.order.asc()).all()
+        counter=0
+        for book in books_in_shelf:
+            setattr(book, 'order', to_save[str(book.book_id)])
+            counter+=1
+        ub.session.commit()
+    if current_user.is_anonymous():
+        shelf = ub.session.query(ub.Shelf).filter(ub.Shelf.is_public == 1, ub.Shelf.id == shelf_id).first()
+    else:
+        shelf = ub.session.query(ub.Shelf).filter(ub.or_(ub.and_(ub.Shelf.user_id == int(current_user.id),
+                                                                 ub.Shelf.id == shelf_id),
+                                                         ub.and_(ub.Shelf.is_public == 1,
+                                                                 ub.Shelf.id == shelf_id))).first()
+    result = list()
+    if shelf:
+        books_in_shelf2 = ub.session.query(ub.BookShelf).filter(ub.BookShelf.shelf == shelf_id).order_by(ub.BookShelf.order.asc()).all()
+        for book in books_in_shelf2:
+            cur_book = db.session.query(db.Books).filter(db.Books.id == book.book_id).first()
+            result.append(cur_book)
+    return render_template('order_shelf.html', entries=result, title=_(u"Change order of Shelf: '%(name)s'", name=shelf.name), shelf=shelf)
 
 
 @app.route("/me", methods=["GET", "POST"])
