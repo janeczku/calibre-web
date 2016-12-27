@@ -30,6 +30,48 @@
         {% endfor %}
       </div>
     </div>
+    <label for="Series">{{_('Series')}}</label>
+    <div class="form-group">
+      <div class="btn-toolbar btn-toolbar-lg" data-toggle="buttons">
+        {% for serie in series %}
+          <label id="serie_{{serie.id}}" class="btn btn-primary serie_click">
+            <input type="checkbox" autocomplete="off" name="include_serie" value="{{serie.id}}">{{serie.name}}</input>
+          </label>
+        {% endfor %}
+      </div>
+    </div>
+    <label for="Tags">{{_('Exclude Series')}}</label>
+    <div class="form-group">
+      <div class="btn-toolbar btn-toolbar-lg" data-toggle="buttons">
+        {% for serie in series %}
+          <label id="serie_{{serie.id}}" class="btn btn-danger serie_click">
+            <input type="checkbox" autocomplete="off" name="exclude_serie" value="{{serie.id}}">{{serie.name}}</input>
+          </label>
+        {% endfor %}
+      </div>
+    </div>
+   {% if languages %}
+      <label for="Languages">{{_('Languages')}}</label>
+      <div class="form-group">
+        <div class="btn-toolbar btn-toolbar-lg" data-toggle="buttons">
+          {% for language in languages %}
+            <label id="language_{{language.id}}" class="btn btn-primary serie_click">
+              <input type="checkbox" autocomplete="off" name="include_language" value="{{language.id}}">{{language.name}}</input>
+            </label>
+          {% endfor %}
+        </div>
+      </div>
+      <label for="Languages">{{_('Exclude Languages')}}</label>
+      <div class="form-group">
+        <div class="btn-toolbar btn-toolbar-lg" data-toggle="buttons">
+          {% for language in languages %}
+            <label id="language_{{language.id}}" class="btn btn-danger language_click">
+              <input type="checkbox" autocomplete="off" name="exclude_language" value="{{language.id}}">{{language.name}}</input>
+            </label>
+          {% endfor %}
+        </div>
+      </div>
+   {% endif%}
     <button type="submit" class="btn btn-default">{{_('Submit')}}</button>
   </form>
 </div>
