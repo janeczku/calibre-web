@@ -174,6 +174,13 @@ def migrate_Database():
         conn.execute("ALTER TABLE user ADD column category_books INTEGER DEFAULT 1")
         conn.execute("ALTER TABLE user ADD column hot_books INTEGER DEFAULT 1")
         session.commit()
+    try:
+        session.query(exists().where(BookShelf.order)).scalar()
+        session.commit()
+    except exc.OperationalError:  # Database is not compatible, some rows are missing
+        conn = engine.connect()
+        conn.execute("ALTER TABLE book_shelf_link ADD column order INTEGER DEFAULT 1")
+        session.commit()
 
 
 def create_default_config():
