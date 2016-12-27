@@ -46,6 +46,17 @@
       </div>
       {% endif %}
 
+      {% if entry.identifiers|length > 0 %}
+      <div class="identifiers">
+        <span class="glyphicon glyphicon-link"></span>
+        {% for identifier in entry.identifiers %}
+          <a href="{{identifier}}" target="_blank" class="btn btn-xs btn-success" role="button">{{identifier.formatType()}}</a>
+        {%endfor%}
+      </div>
+      </p>
+      {% endif %}
+
+
       {% if entry.tags|length > 0 %}
       <p>
       <div class="tags">

@@ -76,6 +76,40 @@ for row in cc:
         cc_classes[row.id] = type('Custom_Column_' + str(row.id), (Base,), ccdict)
 
 
+class Identifiers(Base):
+    __tablename__ = 'identifiers'
+
+    id = Column(Integer, primary_key=True)
+    type = Column(String)
+    val = Column(String)
+    book = Column(Integer, ForeignKey('books.id'))
+
+    def __init__(self, val, type, book):
+        self.val = val
+        self.type = type
+        self.book = book
+
+    def formatType(self):
+        if self.type == "amazon":
+            return u"Amazon"
+        elif self.type == "isbn":
+            return u"ISBN"
+        elif self.type == "doi":
+            return u"DOI"
+        else:
+            return self.type
+
+    def __repr__(self):
+        if self.type == "amazon":
+            return u"https://amzn.com/{0}".format(self.val)
+        elif self.type == "isbn":
+            return u"http://http://www.worldcat.org/isbn/{0}".format(self.val)
+        elif self.type == "doi":
+            return u"http://dx.doi.org/{0}".format(self.val)
+        else:
+            return u""
+
+
 class Comments(Base):
     __tablename__ = 'comments'
 
@@ -203,7 +237,8 @@ class Books(Base):
     series = relationship('Series', secondary=books_series_link, backref='books')
     ratings = relationship('Ratings', secondary=books_ratings_link, backref='books')
     languages = relationship('Languages', secondary=books_languages_link, backref='books')
-    
+    identifiers=relationship('Identifiers', backref='books')
+
     def __init__(self, title, sort, author_sort, timestamp, pubdate, series_index, last_modified, path, has_cover, authors, tags):
         self.title = title
         self.sort = sort
