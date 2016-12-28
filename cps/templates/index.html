@@ -10,7 +10,7 @@
       <div class="cover">
         {% if entry.has_cover is defined %}
           <a href="{{ url_for('show_book', id=entry.id) }}">
-            <img src="{{ url_for('get_cover', cover_path=entry.path) }}" />
+            <img src="{{ url_for('get_cover', cover_path=entry.path.replace('\\','/')) }}" />
           </a>
         {% endif %}
       </div>
@@ -43,7 +43,7 @@
       <div class="cover">
         {% if entry.has_cover is defined %}
           <a href="{{ url_for('show_book', id=entry.id) }}">
-            <img src="{{ url_for('get_cover', cover_path=entry.path) }}" />
+            <img src="{{ url_for('get_cover', cover_path=entry.path.replace('\\','/')) }}" />
           </a>
         {% endif %}
       </div>

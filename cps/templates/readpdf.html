@@ -51,8 +51,10 @@ See https://github.com/adobe-type-tools/cmap-resources
     <!--<script src="debugger.js"></script>-->
     <script type="text/javascript">
       var DEFAULT_URL = "{{ url_for('static', filename=pdffile) }}";
-  //PDFViewerApplication.open("{{ url_for('static', filename=pdffile) }}");/
-</script>
+      var PDFWORKER_LOCATION="{{ url_for('static', filename='js/pdf.worker.js') }}";
+      var PDFWORKER_LOCATION_JS="{{ url_for('static', filename='js/pdf.worker') }}";
+
+    </script>
     <script src="{{ url_for('static', filename='js/viewer.js') }}"></script>
     <!--<script src="viewer.js"></script>-->
 
