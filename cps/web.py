@@ -416,7 +416,7 @@ def before_request():
     g.allow_upload = config.UPLOADING
 
 
-@app.route("/feed")
+@app.route("/opds")
 @requires_basic_auth_if_no_ano
 def feed_index():
     if current_user.filter_language() != "all":
@@ -429,7 +429,7 @@ def feed_index():
     return response
 
 
-@app.route("/feed/osd")
+@app.route("/opds/osd")
 @requires_basic_auth_if_no_ano
 def feed_osd():
     xml = render_template('osd.xml')
@@ -438,7 +438,7 @@ def feed_osd():
     return response
 
 
-@app.route("/feed/search", methods=["GET"])
+@app.route("/opds/search", methods=["GET"])
 @requires_basic_auth_if_no_ano
 def feed_search():
     term = request.args.get("query").strip()
@@ -459,7 +459,7 @@ def feed_search():
     return response
 
 
-@app.route("/feed/new")
+@app.route("/opds/new")
 @requires_basic_auth_if_no_ano
 def feed_new():
     off = request.args.get("start_index")
@@ -472,13 +472,13 @@ def feed_new():
     entries = db.session.query(db.Books).filter(filter).order_by(db.Books.timestamp.desc()).offset(off).limit(
         config.NEWEST_BOOKS)
     xml = render_template('feed.xml', entries=entries,
-                          next_url="/feed/new?start_index=%d" % (int(config.NEWEST_BOOKS) + int(off)))
+                          next_url="/opds/new?start_index=%d" % (int(config.NEWEST_BOOKS) + int(off)))
     response = make_response(xml)
     response.headers["Content-Type"] = "application/xml"
     return response
 
 
-@app.route("/feed/discover")
+@app.route("/opds/discover")
 @requires_basic_auth_if_no_ano
 def feed_discover():
     off = request.args.get("start_index")
@@ -490,13 +490,13 @@ def feed_discover():
         off = 0
     entries = db.session.query(db.Books).filter(filter).order_by(func.random()).offset(off).limit(config.NEWEST_BOOKS)
     xml = render_template('feed.xml', entries=entries,
-                          next_url="/feed/discover?start_index=%d" % (int(config.NEWEST_BOOKS) + int(off)))
+                          next_url="/opds/discover?start_index=%d" % (int(config.NEWEST_BOOKS) + int(off)))
     response = make_response(xml)
     response.headers["Content-Type"] = "application/xml"
     return response
 
 
-@app.route("/feed/hot")
+@app.route("/opds/hot")
 @requires_basic_auth_if_no_ano
 def feed_hot():
     off = request.args.get("start_index")
@@ -510,13 +510,13 @@ def feed_hot():
         off).limit(config.NEWEST_BOOKS)
 
     xml = render_template('feed.xml', entries=entries,
-                          next_url="/feed/hot?start_index=%d" % (int(config.NEWEST_BOOKS) + int(off)))
+                          next_url="/opds/hot?start_index=%d" % (int(config.NEWEST_BOOKS) + int(off)))
     response = make_response(xml)
     response.headers["Content-Type"] = "application/xml"
     return response
 
 
-@app.route("/feed/author")
+@app.route("/opds/author")
 @requires_basic_auth_if_no_ano
 def feed_authorindex():
     off = request.args.get("start_index")
@@ -528,13 +528,13 @@ def feed_authorindex():
         off = 0
     authors = db.session.query(db.Authors).order_by(db.Authors.sort).offset(off).limit(config.NEWEST_BOOKS)
     xml = render_template('feed.xml', authors=authors,
-                          next_url="/feed/author?start_index=%d" % (int(config.NEWEST_BOOKS) + int(off)))
+                          next_url="/opds/author?start_index=%d" % (int(config.NEWEST_BOOKS) + int(off)))
     response = make_response(xml)
     response.headers["Content-Type"] = "application/xml"
     return response
 
 
-@app.route("/feed/author/<name>")
+@app.route("/opds/author/<name>")
 @requires_basic_auth_if_no_ano
 def feed_author(name):
     off = request.args.get("start_index")
@@ -547,13 +547,13 @@ def feed_author(name):
     entries = db.session.query(db.Books).filter(db.Books.authors.any(db.Authors.name.like("%" + name + "%"))).filter(
         filter).offset(off).limit(config.NEWEST_BOOKS)
     xml = render_template('feed.xml', entries=entries,
-                          next_url="/feed/author?start_index=%d" % (int(config.NEWEST_BOOKS) + int(off)))
+                          next_url="/opds/author?start_index=%d" % (int(config.NEWEST_BOOKS) + int(off)))
     response = make_response(xml)
     response.headers["Content-Type"] = "application/xml"
     return response
 
 
-@app.route("/feed/category")
+@app.route("/opds/category")
 @requires_basic_auth_if_no_ano
 def feed_categoryindex():
     off = request.args.get("start_index")
@@ -561,13 +561,13 @@ def feed_categoryindex():
         off = 0
     entries = db.session.query(db.Tags).order_by(db.Tags.name).offset(off).limit(config.NEWEST_BOOKS)
     xml = render_template('feed.xml', categorys=entries,
-                          next_url="/feed/category?start_index=%d" % (int(config.NEWEST_BOOKS) + int(off)))
+                          next_url="/opds/category?start_index=%d" % (int(config.NEWEST_BOOKS) + int(off)))
     response = make_response(xml)
     response.headers["Content-Type"] = "application/xml"
     return response
 
 
-@app.route("/feed/category/<name>")
+@app.route("/opds/category/<name>")
 @requires_basic_auth_if_no_ano
 def feed_category(name):
     off = request.args.get("start_index")
@@ -580,13 +580,13 @@ def feed_category(name):
     entries = db.session.query(db.Books).filter(db.Books.tags.any(db.Tags.name.like("%" + name + "%"))).order_by(
         db.Books.timestamp.desc()).filter(filter).offset(off).limit(config.NEWEST_BOOKS)
     xml = render_template('feed.xml', entries=entries,
-                          next_url="/feed/category?start_index=%d" % (int(config.NEWEST_BOOKS) + int(off)))
+                          next_url="/opds/category?start_index=%d" % (int(config.NEWEST_BOOKS) + int(off)))
     response = make_response(xml)
     response.headers["Content-Type"] = "application/xml"
     return response
 
 
-@app.route("/feed/series")
+@app.route("/opds/series")
 @requires_basic_auth_if_no_ano
 def feed_seriesindex():
     off = request.args.get("start_index")
@@ -594,13 +594,13 @@ def feed_seriesindex():
         off = 0
     entries = db.session.query(db.Series).order_by(db.Series.name).offset(off).limit(config.NEWEST_BOOKS)
     xml = render_template('feed.xml', series=entries,
-                          next_url="/feed/series?start_index=%d" % (int(config.NEWEST_BOOKS) + int(off)))
+                          next_url="/opds/series?start_index=%d" % (int(config.NEWEST_BOOKS) + int(off)))
     response = make_response(xml)
     response.headers["Content-Type"] = "application/xml"
     return response
 
 
-@app.route("/feed/series/<name>")
+@app.route("/opds/series/<name>")
 @requires_basic_auth_if_no_ano
 def feed_series(name):
     off = request.args.get("start_index")
@@ -613,13 +613,13 @@ def feed_series(name):
     entries = db.session.query(db.Books).filter(db.Books.series.any(db.Series.name.like("%" + name + "%"))).order_by(
         db.Books.timestamp.desc()).filter(filter).offset(off).limit(config.NEWEST_BOOKS)
     xml = render_template('feed.xml', entries=entries,
-                          next_url="/feed/series?start_index=%d" % (int(config.NEWEST_BOOKS) + int(off)))
+                          next_url="/opds/series?start_index=%d" % (int(config.NEWEST_BOOKS) + int(off)))
     response = make_response(xml)
     response.headers["Content-Type"] = "application/xml"
     return response
 
 
-@app.route("/feed/download/<int:book_id>/<format>")
+@app.route("/opds/download/<int:book_id>/<format>")
 @requires_basic_auth_if_no_ano
 @download_required
 def get_opds_download_link(book_id, format):
@@ -1036,7 +1036,7 @@ def get_cover(cover_path):
     return send_from_directory(os.path.join(config.DB_ROOT, cover_path), "cover.jpg")
 
 
-@app.route("/feed/cover/<path:cover_path>")
+@app.route("/opds/cover/<path:cover_path>")
 @requires_basic_auth_if_no_ano
 def feed_get_cover(cover_path):
     return send_from_directory(os.path.join(config.DB_ROOT, cover_path), "cover.jpg")

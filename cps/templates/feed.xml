@@ -61,23 +61,25 @@
   {% for author in authors %}
   <entry>
     <title>{{author.name}}</title>
-    <!--content type="text">{{author.name}}</content-->
     <id>{{ url_for('feed_author', name=author.name) }}</id>
-    <link href="{{ url_for('feed_author', name=author.name)}}" type="application/atom+xml;profile=opds-catalog;kind=navigation" rel="subsection"/>
+    <link type="application/atom+xml;profile=opds-catalog;type=feed;kind=acquisition" href="{{url_for('feed_author', name=author.name)}}" />
+    <link type="application/atom+xml" href="{{url_for('feed_author', name=author.name)}}" rel="subsection"/>
   </entry>
   {% endfor %}
   {% for entry in categorys %}
   <entry>
     <title>{{entry.name}}</title>
     <id>{{ url_for('feed_category', name=entry.name) }}</id>
-    <link href="{{ url_for('feed_category', name=entry.name)}}" type="application/atom+xml;profile=opds-catalog;kind=navigation" rel="subsection"/>
+    <link type="application/atom+xml;profile=opds-catalog;type=feed;kind=acquisition" href="{{url_for('feed_category', name=entry.name)}}" />
+    <link type="application/atom+xml" href="{{url_for('feed_category', name=entry.name)}}" rel="subsection"/>
  </entry>
   {% endfor %}
   {% for entry in series %}
   <entry>
     <title>{{entry.name}}</title>
     <id>{{ url_for('feed_series', name=entry.name) }}</id>
-    <link href="{{ url_for('feed_series', name=entry.name)}}" type="application/atom+xml;profile=opds-catalog;kind=navigation" rel="subsection"/>
- </entry>
+    <link type="application/atom+xml;profile=opds-catalog;type=feed;kind=acquisition" href="{{url_for('feed_series', name=entry.name)}}" />
+    <link type="application/atom+xml" href="{{url_for('feed_series', name=entry.name)}}" rel="subsection"/>
+  </entry>
   {% endfor %}
 </feed>

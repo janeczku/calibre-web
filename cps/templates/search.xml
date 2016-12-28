@@ -13,17 +13,6 @@
    <Url type="application/atom+xml"
         template="{{url_for('feed_search')}}?query={searchTerms}"/>
 
-<!--
-   <Url type="application/rss+xml"
-        template="http://example.com/?q={searchTerms}&amp;pw={startPage?}&amp;format=rss"/>
-   <Image height="64" width="64" type="image/png">http://example.com/websearch.png</Image>
-   <Image height="16" width="16" type="image/vnd.microsoft.icon">http://example.com/websearch.ico</Image>
--->
-
-   <Query role="example" searchTerms="shakespeare hamlet" />
-   <Query role="example" searchTerms="doyle detective" />
-   <Query role="example" searchTerms="love stories" />
-
    <SyndicationRight>open</SyndicationRight>
    <Language>de-DE</Language>
    <OutputEncoding>UTF-8</OutputEncoding>
