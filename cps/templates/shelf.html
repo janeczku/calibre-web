@@ -3,9 +3,10 @@
 <div class="discover">
   <h2>{{title}}</h2>
   {% if g.user.is_authenticated %}
-  <a href=" {{ url_for('delete_shelf', shelf_id=shelf.id) }} " class="btn btn-danger">{{ _('Delete this Shelf') }} </a>
-  <a href=" {{ url_for('edit_shelf', shelf_id=shelf.id) }} " class="btn btn-primary">{{ _('Edit Shelf name') }} </a>
-  <a href=" {{ url_for('order_shelf', shelf_id=shelf.id) }} " class="btn btn-primary">{{ _('change order') }} </a>
+  <a href="{{ url_for('delete_shelf', shelf_id=shelf.id) }}" class="btn btn-danger">{{ _('Delete this Shelf') }} </a>
+  <a href="{{ url_for('edit_shelf', shelf_id=shelf.id) }}" class="btn btn-primary">{{ _('Edit Shelf name') }} </a>
+  <a href="{{ url_for('order_shelf', shelf_id=shelf.id) }}" class="btn btn-primary">{{ _('change order') }} </a>
+  
   {% endif %}
   <div class="row">
 
