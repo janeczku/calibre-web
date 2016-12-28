@@ -10,7 +10,8 @@ Calibre Web is a web app providing a clean interface for browsing, reading and d
 - Bootstrap 3 HTML5 interface
 - User management
 - Admin interface
-- OPDS feed for eBook reader apps
+- User Interface in english, german and french
+- OPDS feed for eBook reader apps 
 - Filter and search by titles, authors, tags, series and language
 - Create custom book collection (shelves)
 - Support for editing eBook metadata
@@ -18,7 +19,7 @@ Calibre Web is a web app providing a clean interface for browsing, reading and d
 - Restrict eBook download to logged-in users
 - Support for public user registration
 - Send eBooks to Kindle devices with the click of a button
-- Support for reading eBooks directly in the browser
+- Support for reading eBooks directly in the browser (.txt, .epub, .pdf)
 - Upload new books in PDF format
 - Support for Calibre custom columns
 - Fine grained per-user permissions
@@ -27,7 +28,7 @@ Calibre Web is a web app providing a clean interface for browsing, reading and d
 
 1. Rename `config.ini.example` to `config.ini` and set `DB_ROOT` to the path of the folder where your Calibre library (metadata.db) lives
 2. Execute the command: `python cps.py`
-3. Point your browser to `http://localhost:8083` or `http://localhost:8083/feed` for the OPDS catalog 
+3. Point your browser to `http://localhost:8083` or `http://localhost:8083/opds` for the OPDS catalog 
 
 **Default admin login:**    
 *Username:* admin   
