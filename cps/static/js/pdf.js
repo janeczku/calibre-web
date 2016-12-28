@@ -8608,16 +8608,16 @@ if (typeof __webpack_require__ !== 'undefined') {
   useRequireEnsure = true;
 }
 if (typeof requirejs !== 'undefined' && requirejs.toUrl) {
-  workerSrc = requirejs.toUrl('/static/js/pdf.worker.js');
+  workerSrc = requirejs.toUrl(PDFWORKER_LOCATION);
 }
 var dynamicLoaderSupported = typeof requirejs !== 'undefined' && requirejs.load;
 var fakeWorkerFilesLoader = useRequireEnsure ? (function (callback) {
   require.ensure([], function () {
-    var worker = require('/static/js/pdf.worker.js');
+    var worker = require(PDFWORKER_LOCATION);
     callback(worker.WorkerMessageHandler);
   });
 }) : dynamicLoaderSupported ? (function (callback) {
-  requirejs(['/static/js/pdf.worker'], function (worker) {
+  requirejs(['PDFWORKER_LOCATION_JS'], function (worker) {
     callback(worker.WorkerMessageHandler);
   });
 }) : null;
