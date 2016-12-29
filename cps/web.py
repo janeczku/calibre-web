@@ -452,7 +452,7 @@ def feed_search():
                                                            db.Books.authors.any(db.Authors.name.like("%" + term + "%")),
                                                            db.Books.title.like("%" + term + "%"))).filter(filter).all()
 
-        xml = render_template('feed.xml', searchterm=term, entries=entries, Last_Updated=Last_Updated)
+        xml = render_template('feed.xml', searchterm=term, entries=entries)
     else:
         xml = render_template('feed.xml', searchterm="")
     response = make_response(xml)

@@ -40,17 +40,14 @@
     {% endfor %}
     <summary>{% if entry.comments[0] %}{{entry.comments[0].text|striptags}}{% endif %}</summary>
     {% if entry.has_cover %}
-    <link rel="http://opds-spec.org/image"
-          href="{{ url_for('feed_get_cover', cover_path=entry.path) }}"
-          type="image/jpg"/>
-    <link rel="http://opds-spec.org/image/thumbnail"
-          href="{{ url_for('feed_get_cover', cover_path=entry.path) }}"
-          type="image/jpg"/>
+    <link rel="http://opds-spec.org/image" href="{{ url_for('feed_get_cover', cover_path=entry.path) }}" type="image/jpg"/>
+    <link rel="http://opds-spec.org/cover"  href="{{ url_for('feed_get_cover', cover_path=entry.path) }}" type="image/jpg"/>
+    <link rel="http://opds-spec.org/image/thumbnail" href="{{ url_for('feed_get_cover', cover_path=entry.path) }}" type="image/jpg"/>
     {% endif %}
-
     {% for format in entry.data %}
-    <link rel="http://opds-spec.org/acquisition"
-          href="{{ url_for('get_opds_download_link', book_id=entry.id, format=format.format|lower)}}"{% if format.format|lower == "epub" %}
+    <link rel="http://opds-spec.org/acquisition" href="{{ url_for('get_opds_download_link', book_id=entry.id, format=format.format|lower)}}"
+          length="{{format.uncompressed_size}}" mtime="{{entry.timestamp}}"
+          {% if format.format|lower == "epub" %}
           type="application/epub+zip"/>
           {% else %}
           type="application/x-mobipocket-ebook"/>
