@@ -164,7 +164,8 @@ app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
 LANGUAGES = {
     'en': 'English',
     'de': 'Deutsch',
-    'fr': 'Français'
+    'fr': 'Français',
+    'es': 'Español'
 }
 
 
@@ -1190,7 +1191,7 @@ def login():
 def logout():
     if current_user is not None and current_user.is_authenticated:
         logout_user()
-    return redirect(url_for("index", _external=True))
+    return redirect('/login' or url_for("login", _external=True))
 
 
 @app.route('/send/<int:book_id>')
