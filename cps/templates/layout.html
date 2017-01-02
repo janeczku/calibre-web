@@ -81,15 +81,15 @@
                 {% endif %}
               {% endif %}
               {% if g.user.role_admin() %}
-                <li><a href="{{url_for('user_list')}}"><span class="glyphicon glyphicon-dashboard"></span> {{_('Admin')}}</a></li>
+                <li><a href="{{url_for('admin')}}"><span class="glyphicon glyphicon-dashboard"></span> {{_('Admin')}}</a></li>
               {% endif %}
               <li><a href="{{url_for('profile')}}"><span class="glyphicon glyphicon-user"></span> {{g.user.nickname}}</a></li>
               {% if not g.user.is_anonymous() %}
-              <li><a href="{{url_for('logout', next='%s%s' % (request.script_root, request.path))}}"><span class="glyphicon glyphicon-log-out"></span> {{_('Logout')}}</a></li>
+              <li><a href="{{url_for('logout')}}"><span class="glyphicon glyphicon-log-out"></span> {{_('Logout')}}</a></li>
               {% endif %}
             {% endif %}
             {% if g.allow_registration and not g.user.is_authenticated %}
-            <li><a href="{{url_for('login', next='%s%s' % (request.script_root, request.path))}}"><span class="glyphicon glyphicon-log-in"></span> {{_('Login')}}</a></li>
+            <li><a href="{{url_for('login')}}"><span class="glyphicon glyphicon-log-in"></span> {{_('Login')}}</a></li>
             <li><a href="{{url_for('register')}}"><span class="glyphicon glyphicon-user"></span> {{_('Register')}}</a></li>
             {% endif %}
           </ul>
