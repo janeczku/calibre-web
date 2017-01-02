@@ -809,7 +809,7 @@ def series(name, page):
                                title=_(u"Series: %(serie)s", serie=name))
     else:
         flash(_(u"Error opening eBook. File does not exist or file is not accessible:"), category="error")
-        return redirect('/' or url_for("index", _external=True))
+        return redirect(url_for("index"))
 
 
 @app.route("/language")
@@ -905,13 +905,13 @@ def show_book(id):
         return render_template('detail.html', entry=entries, cc=cc, title=entries.title, books_shelfs=book_in_shelfs)
     else:
         flash(_(u"Error opening eBook. File does not exist or file is not accessible:"), category="error")
-        return redirect('/' or url_for("index", _external=True))
+        return redirect(url_for("index"))
 
 
-@app.route("/admin/")
+@app.route("/admin")
 @login_required
-def admin():
-    # return "Admin ONLY!"
+def admin_forbidden():
+    return "Admin ONLY!"
     abort(403)
 
 
@@ -938,11 +938,11 @@ def stats():
 
 @app.route("/shutdown")
 def shutdown():
-    logout_user()
+    # logout_user()
     # add restart command to queue
     global_queue.put("something")
     flash(_(u"Server restarts"), category="info")
-    return redirect('/' or url_for("index", _external=True))
+    return redirect(url_for("index", _external=True))
 
 
 @app.route("/search", methods=["GET"])
@@ -1100,7 +1100,7 @@ def read_book(book_id, format):
 
     else:
         flash(_(u"Error opening eBook. File does not exist or file is not accessible:"), category="error")
-        return redirect('/' or url_for("index", _external=True))
+        return redirect(url_for("index"))
 
 
 @app.route("/download/<int:book_id>/<format>")
@@ -1133,7 +1133,7 @@ def register():
     if not config.PUBLIC_REG:
         abort(404)
     if current_user is not None and current_user.is_authenticated:
-        return redirect(url_for('index', _external=True))
+        return redirect(url_for('index'))
 
     if request.method == "POST":
         to_save = request.form.to_dict()
@@ -1157,7 +1157,7 @@ def register():
                 flash(_(u"An unknown error occured. Please try again later."), category="error")
                 return render_template('register.html', title="register")
             flash("Your account has been created. Please login.", category="success")
-            return redirect(url_for('login', _external=True))
+            return redirect(url_for('login'))
         else:
             flash(_(u"This username or email address is already in use."), category="error")
             return render_template('register.html', title="register")
@@ -1170,7 +1170,7 @@ def login():
     error = None
 
     if current_user is not None and current_user.is_authenticated:
-        return redirect(url_for('index', _external=True))
+        return redirect(url_for('index'))
 
     if request.method == "POST":
         form = request.form.to_dict()
@@ -1179,7 +1179,8 @@ def login():
         if user and check_password_hash(user.password, form['password']):
             login_user(user, remember=True)
             flash(_(u"you are now logged in as: '%(nickname)s'", nickname=user.nickname), category="success")
-            return redirect('/' or url_for("index", _external=True))
+            # test=
+            return redirect(url_for("index"))
         else:
             flash(_(u"Wrong Username or Password"), category="error")
 
@@ -1191,7 +1192,7 @@ def login():
 def logout():
     if current_user is not None and current_user.is_authenticated:
         logout_user()
-    return redirect('/login' or url_for("login", _external=True))
+    return redirect(url_for('login'))
 
 
 @app.route('/send/<int:book_id>')
@@ -1220,7 +1221,7 @@ def add_to_shelf(shelf_id, book_id):
     shelf = ub.session.query(ub.Shelf).filter(ub.Shelf.id == shelf_id).first()
     if not shelf.is_public and not shelf.user_id == int(current_user.id):
         flash("Sorry you are not allowed to add a book to the the shelf: %s" % shelf.name)
-        return redirect(url_for('index', _external=True))
+        return redirect(url_for('index'))
     maxO = ub.session.query(func.max(ub.BookShelf.order)).filter(ub.BookShelf.shelf == shelf_id).first()
     if maxO[0] is None:
         maxOrder = 0
@@ -1435,13 +1436,21 @@ def profile():
                            downloads=downloads, title=_(u"%(name)s's profile", name=current_user.nickname))
 
 
-@app.route("/admin/user")
+@app.route("/admin/view")
 @login_required
 @admin_required
-def user_list():
+def admin():
     content = ub.session.query(ub.User).all()
     settings = ub.session.query(ub.Settings).first()
-    return render_template("user_list.html", content=content, email=settings, title=_(u"User list"))
+    return render_template("admin.html", content=content, email=settings, config=config, title=_(u"Admin page"))
+
+@app.route("/admin/config")
+@login_required
+@admin_required
+def configuration():
+    content = ub.session.query(ub.User).all()
+    settings = ub.session.query(ub.Settings).first()
+    return render_template("admin.html", content=content, email=settings, config=config, title=_(u"Admin page"))
 
 
 @app.route("/admin/user/new", methods=["GET", "POST"])
@@ -1456,7 +1465,7 @@ def new_user():
             lang.name = cur_l.get_language_name(get_locale())
         except:
             lang.name = _(isoLanguages.get(part3=lang.lang_code).name)
-    translations = babel.list_translations() + [LC('en')]
+    translations = [LC('en')] + babel.list_translations()
     if request.method == "POST":
         to_save = request.form.to_dict()
         if not to_save["nickname"] or not to_save["email"] or not to_save["password"]:
@@ -1495,7 +1504,7 @@ def new_user():
             ub.session.add(content)
             ub.session.commit()
             flash(_("User '%(user)s' created", user=content.nickname), category="success")
-            return redirect(url_for('user_list', _external=True))
+            return redirect(url_for('admin', _external=True))
         except IntegrityError:
             ub.session.rollback()
             flash(_(u"Found an existing account for this email address or nickname."), category="error")
@@ -1503,7 +1512,7 @@ def new_user():
                            languages=languages, title="Add new user")
 
 
-@app.route("/admin/user/mailsettings", methods=["GET", "POST"])
+@app.route("/admin/mailsettings", methods=["GET", "POST"])
 @login_required
 @admin_required
 def edit_mailsettings():
@@ -1557,7 +1566,7 @@ def edit_user(user_id):
         if "delete" in to_save:
             ub.session.delete(content)
             flash(_(u"User '%(nick)s' deleted", nick=content.nickname), category="success")
-            return redirect(url_for('user_list', _external=True))
+            return redirect(url_for('admin', _external=True))
         else:
             if to_save["password"]:
                 content.password = generate_password_hash(to_save["password"])
@@ -1825,7 +1834,7 @@ def edit_book(book_id):
             return render_template('edit_book.html', book=book, authors=author_names, cc=cc)
     else:
         flash(_(u"Error opening eBook. File does not exist or file is not accessible:"), category="error")
-        return redirect('/' or url_for("index", _external=True))
+        return redirect(url_for("index", _external=True))
 
 
 @app.route("/upload", methods=["GET", "POST"])

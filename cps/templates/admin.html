@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
 {% block body %}
 <div class="discover">
-  <h2>{{title}}</h2>
+  <h2>{{_('User list')}}</h2>
   <table class="table table-striped">
     <tr>
         <th>{{_('Nickname')}}</th>
@@ -52,5 +52,29 @@
 
     <div class="btn btn-default"><a href="{{url_for('edit_mailsettings')}}">{{_('Change SMTP settings')}}</a></div>
 
+  <h2>{{_('Configuration')}}</h2>
+  <table class="table table-striped">
+    <tr>
+        <th>{{_('Log File')}}</th>
+        <th>{{_('Log Level')}}</th>
+        <th>{{_('Port')}}</th>
+        <th>{{_('Books per page')}}</th>
+        <th>{{_('Uploading')}}</th>
+        <th>{{_('Public registration')}}</th>
+        <th>{{_('Anonymous browsing')}}</th>
+    </tr>
+      <tr>
+        <td>{{config.LOG_DIR}}</td>
+        <td>{{config.LOG_DIR}}</td>
+        <td>{{config.PORT}}</td>
+        <td>{{config.NEWEST_BOOKS}}</td>
+        <td>{% if config.UPLOADING %}<span class="glyphicon glyphicon-ok"></span>{% else %}<span class="glyphicon glyphicon-remove"></span>{% endif %}</td>
+        <td>{% if config.PUBLIC_REG %}<span class="glyphicon glyphicon-ok"></span>{% else %}<span class="glyphicon glyphicon-remove"></span>{% endif %}</td>
+        <td>{% if config.ANON_BROWSE %}<span class="glyphicon glyphicon-ok"></span>{% else %}<span class="glyphicon glyphicon-remove"></span>{% endif %}</td>
+  </table>
+  <h2>{{_('Administration')}}</h2>
+      {% if not config.DEVELOPMENT %}
+        <div class="btn btn-default"><a href="{{url_for('shutdown')}}">{{_('Restart Calibre-web')}}</a></div>
+      {% endif %}
 </div>
 {% endblock %}

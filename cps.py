@@ -20,10 +20,6 @@ from tornado.ioloop import IOLoop
 global title_sort
 
 
-def title_sort(title):
-    return title
-
-
 def start_calibreweb(messagequeue):
     web.global_queue = messagequeue
     if config.DEVELOPMENT:
