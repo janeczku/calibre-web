@@ -1,3 +1,7 @@
+document.ontouchmove = function(e){
+    return true;
+};
+
 Sortable.create(sortTrue, {
   group: "sorting",
   sort: true

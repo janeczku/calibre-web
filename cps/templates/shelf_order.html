@@ -2,6 +2,7 @@
 {% block body %}
   <div class="col-sm-6 col-lg-6 col-xs-6">
     <h2>{{title}}</h2>
+    <div>{{_('Drag \'n drop to rearrange order')}}</div>
       <div id="sortTrue" class="list-group">
         {% for entry in entries %}
           <div id="{{entry.id}}" class="list-group-item">{{entry.title}}</div>
@@ -13,6 +14,7 @@
 {% endblock %}
 
 {% block js %}
+<script src="{{ url_for('static', filename='js/Sortable.min.js') }}"></script>
 <script src="{{ url_for('static', filename='js/shelforder.js') }}"></script>
 {% endblock %}
 
