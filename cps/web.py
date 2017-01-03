@@ -1375,7 +1375,7 @@ def order_shelf(shelf_id):
         for book in books_in_shelf2:
             cur_book = db.session.query(db.Books).filter(db.Books.id == book.book_id).first()
             result.append(cur_book)
-    return render_template('order_shelf.html', entries=result, title=_(u"Change order of Shelf: '%(name)s'", name=shelf.name), shelf=shelf)
+    return render_template('shelf_order.html', entries=result, title=_(u"Change order of Shelf: '%(name)s'", name=shelf.name), shelf=shelf)
 
 
 @app.route("/me", methods=["GET", "POST"])
