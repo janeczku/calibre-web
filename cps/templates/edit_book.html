@@ -37,7 +37,7 @@
       </div>
       <div class="form-group">
         <label for="rating">{{_('Rating')}}</label>
-        <input type="number" min="1" max="5" step="1" class="form-control" name="rating" id="rating" value="{% if book.ratings %}{{book.ratings[0].rating / 2}}{% endif %}">
+        <input type="number" min="0" max="5" step="1" class="form-control" name="rating" id="rating" value="{% if book.ratings %}{{book.ratings[0].rating / 2}}{% endif %}">
       </div>
       <div class="form-group">
         <label for="cover_url">{{_('Cover URL (jpg)')}}</label>
