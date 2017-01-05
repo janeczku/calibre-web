@@ -96,6 +96,8 @@ class Identifiers(Base):
             return u"ISBN"
         elif self.type == "doi":
             return u"DOI"
+        elif self.type == "goodreads":
+            return u"Goodreads"
         else:
             return self.type
 
@@ -106,6 +108,8 @@ class Identifiers(Base):
             return u"http://http://www.worldcat.org/isbn/{0}".format(self.val)
         elif self.type == "doi":
             return u"http://dx.doi.org/{0}".format(self.val)
+        elif self.type == "goodreads":
+            return u"http://www.goodreads.com/book/show/{0}".format(self.val)
         else:
             return u""
 
