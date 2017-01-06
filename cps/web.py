@@ -1535,15 +1535,13 @@ def edit_mailsettings():
             flash(_(u"Mail settings updated"), category="success")
         except e:
             flash(e, category="error")
-        if to_save["test"]:
+        if "test" in to_save and to_save["test"]:
             result=helper.send_test_mail(current_user.kindle_mail)
             if result is None:
                 flash(_(u"Test E-Mail successfully send to %(kindlemail)s", kindlemail=current_user.kindle_mail),
                       category="success")
             else:
                 flash(_(u"There was an error sending the Test E-Mail: %(res)s", res=result), category="error")
-        else:
-            flash(_(u"Mail settings updated"), category="success")
     return render_template("email_edit.html", content=content, title=_("Edit mail settings"))
 
 
