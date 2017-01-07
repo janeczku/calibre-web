@@ -1,4 +1,4 @@
-##About
+## About
 
 Calibre Web is a web app providing a clean interface for browsing, reading and downloading eBooks using an existing [Calibre](https://calibre-ebook.com) database.
 
@@ -6,12 +6,13 @@ Calibre Web is a web app providing a clean interface for browsing, reading and d
 
 ![screenshot](https://raw.githubusercontent.com/janeczku/docker-calibre-web/master/screenshot.png)
 
-##Features
+## Features
+
 - Bootstrap 3 HTML5 interface
 - User management
 - Admin interface
 - User Interface in english, german and french
-- OPDS feed for eBook reader apps 
+- OPDS feed for eBook reader apps
 - Filter and search by titles, authors, tags, series and language
 - Create custom book collection (shelves)
 - Support for editing eBook metadata
@@ -28,28 +29,35 @@ Calibre Web is a web app providing a clean interface for browsing, reading and d
 
 1. Rename `config.ini.example` to `config.ini` and set `DB_ROOT` to the path of the folder where your Calibre library (metadata.db) lives
 2. Execute the command: `python cps.py`
-3. Point your browser to `http://localhost:8083` or `http://localhost:8083/opds` for the OPDS catalog 
+3. Point your browser to `http://localhost:8083` or `http://localhost:8083/opds` for the OPDS catalog
 
-**Default admin login:**    
-*Username:* admin   
+**Default admin login:**
+*Username:* admin
 *Password:* admin123
 
-## Runtime Configuration Options
+## Configuration Options
 
-`PUBLIC_REG`    
-Set to 1 to enable public user registration.    
-`ANON_BROWSE`    
-Set to 1 to allow not logged in users to browse the catalog.    
-`UPLOADING`    
-Set to 1 to enable PDF uploading. This requires the imagemagick library to be installed.    
+`PUBLIC_REG`
+Set to 1 to enable public user registration.
+
+`ANON_BROWSE`
+Set to 1 to allow not logged in users to browse the catalog.
+
+`UPLOADING`
+Set to 1 to enable PDF uploading. This requires the imagemagick library to be installed.
+
+`DEFAULT_PASS`
+Default password for user `admin`
+
+> See `config.ini.example` for all available options. You can also use environment variables to override them.
 
 ## Requirements
 
 Python 2.7+
-     
-Optionally, to enable on-the-fly conversion from EPUB to MOBI when using the send-to-kindle feature:     
 
-[Download](http://www.amazon.com/gp/feature.html?docId=1000765211) Amazon's KindleGen tool for your platform and place the binary named as `kindlegen` in the `vendor` folder. 
+Optionally, to enable on-the-fly conversion from EPUB to MOBI when using the send-to-kindle feature:
+
+[Download](http://www.amazon.com/gp/feature.html?docId=1000765211) Amazon's KindleGen tool for your platform and place the binary named as `kindlegen` in the `vendor` folder.
 
 ## Docker image
 
@@ -82,6 +90,7 @@ http {
 Apache 2.4 configuration for a local server listening on port 443, mapping calibre web to /calibre-web:
 
 The following modules have to be activated: headers, proxy, proxy_html, proxy_http, rewrite, xml2enc.
+
 ```
 Listen 443
 
@@ -91,13 +100,13 @@ Listen 443
     SSLCipherSuite ALL:!ADH:!EXPORT56:RC4+RSA:+HIGH:+MEDIUM:+LOW:+SSLv2:+EXP:+eNULL
     SSLCertificateFile "C:\Apache24\conf\ssl\test.crt"
     SSLCertificateKeyFile "C:\Apache24\conf\ssl\test.key"
-    
-    <Location /calibre-web>       
+
+    <Location /calibre-web>
            ProxyHTMLEnable On
            ProxyPass            http://127.0.0.1:8083/
-           ProxyPassReverse     http://127.0.0.1:8083/  
+           ProxyPassReverse     http://127.0.0.1:8083/
            Header edit Location "^http://(.*?)/" "https://$1/calibre-web/"
-           ProxyHTMLURLMap      /  /calibre-web/       
+           ProxyHTMLURLMap      /  /calibre-web/
     </Location>
 </VirtualHost>
 ```
@@ -122,4 +131,4 @@ Replace the user and ExecStart with your user and foldernames.
 
 `sudo systemctl enable cps.service`
 
-enables the service. 
+enables the service.

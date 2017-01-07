@@ -55,8 +55,9 @@ APP_DB_ROOT = check_setting_str(CFG, 'General', 'APP_DB_ROOT', os.getcwd())
 MAIN_DIR = check_setting_str(CFG, 'General', 'MAIN_DIR', os.getcwd())
 LOG_DIR = check_setting_str(CFG, 'General', 'LOG_DIR', os.getcwd())
 PORT = check_setting_int(CFG, 'General', 'PORT', 8083)
-NEWEST_BOOKS = check_setting_str(CFG, 'General', 'NEWEST_BOOKS', 60)
+NEWEST_BOOKS = check_setting_int(CFG, 'General', 'NEWEST_BOOKS', 60)
 RANDOM_BOOKS = check_setting_int(CFG, 'General', 'RANDOM_BOOKS', 4)
+DEFAULT_PASS = check_setting_str(CFG, 'General', 'DEFAULT_PASS', 'admin123')
 # override from environment variables, if any
 DB_ROOT = env.get('DB_ROOT', DB_ROOT)
 APP_DB_ROOT = env.get('APP_DB_ROOT', APP_DB_ROOT)
@@ -65,6 +66,7 @@ LOG_DIR = env.get('LOG_DIR', LOG_DIR)
 PORT = int(env.get('PORT', PORT))
 NEWEST_BOOKS = int(env.get('NEWEST_BOOKS', NEWEST_BOOKS))
 RANDOM_BOOKS = int(env.get('RANDOM_BOOKS', RANDOM_BOOKS))
+DEFAULT_PASS = env.get('DEFAULT_PASS', DEFAULT_PASS)
 
 
 CheckSection('Advanced')

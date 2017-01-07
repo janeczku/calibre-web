@@ -7,7 +7,6 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import *
 import os
 import config
-from os import environ as env
 from werkzeug.security import generate_password_hash
 
 dbpath = os.path.join(config.APP_DB_ROOT, "app.db")
@@ -20,7 +19,7 @@ ROLE_DOWNLOAD = 2
 ROLE_UPLOAD = 4
 ROLE_EDIT = 8
 ROLE_PASSWD = 16
-DEFAULT_PASS = env.get("DEFAULT_PASS", "admin123")
+DEFAULT_PASS = config.DEFAULT_PASS
 
 
 class User(Base):
