@@ -472,7 +472,9 @@ def feed_new():
         off = 0
     entries = db.session.query(db.Books).filter(filter).order_by(db.Books.timestamp.desc()).offset(off).limit(
         config.NEWEST_BOOKS)
-    xml = render_template('feed.xml', entries=entries,
+    pagination = Pagination((int(off)/(int(config.NEWEST_BOOKS))+1), config.NEWEST_BOOKS,
+                            len(db.session.query(db.Books).filter(filter).all()))
+    xml = render_template('feed.xml', entries=entries, pagination=pagination,
                           next_url="/opds/new?start_index=%d" % (int(config.NEWEST_BOOKS) + int(off)))
     response = make_response(xml)
     response.headers["Content-Type"] = "application/xml"
@@ -482,16 +484,17 @@ def feed_new():
 @app.route("/opds/discover")
 @requires_basic_auth_if_no_ano
 def feed_discover():
-    off = request.args.get("start_index")
+    # off = request.args.get("start_index")
     if current_user.filter_language() != "all":
         filter = db.Books.languages.any(db.Languages.lang_code == current_user.filter_language())
     else:
         filter = True
-    if not off:
-        off = 0
-    entries = db.session.query(db.Books).filter(filter).order_by(func.random()).offset(off).limit(config.NEWEST_BOOKS)
-    xml = render_template('feed.xml', entries=entries,
-                          next_url="/opds/discover?start_index=%d" % (int(config.NEWEST_BOOKS) + int(off)))
+    # if not off:
+    # off = 0
+    entries = db.session.query(db.Books).filter(filter).order_by(func.random()).limit(config.NEWEST_BOOKS)
+    pagination = Pagination(1, config.NEWEST_BOOKS,int(config.NEWEST_BOOKS))
+    xml = render_template('feed.xml', entries=entries, pagination=pagination,
+                          next_url="/opds/discover")
     response = make_response(xml)
     response.headers["Content-Type"] = "application/xml"
     return response
@@ -509,8 +512,9 @@ def feed_hot():
         off = 0
     entries = db.session.query(db.Books).filter(filter).filter(db.Books.ratings.any(db.Ratings.rating > 9)).offset(
         off).limit(config.NEWEST_BOOKS)
-
-    xml = render_template('feed.xml', entries=entries,
+    pagination = Pagination((int(off)/(int(config.NEWEST_BOOKS))+1), config.NEWEST_BOOKS,
+                            len(db.session.query(db.Books).filter(filter).filter(db.Books.ratings.any(db.Ratings.rating > 9)).all()))
+    xml = render_template('feed.xml', entries=entries, pagination=pagination,
                           next_url="/opds/hot?start_index=%d" % (int(config.NEWEST_BOOKS) + int(off)))
     response = make_response(xml)
     response.headers["Content-Type"] = "application/xml"
@@ -521,6 +525,7 @@ def feed_hot():
 @requires_basic_auth_if_no_ano
 def feed_authorindex():
     off = request.args.get("start_index")
+    # ToDo: Language filter not working
     if current_user.filter_language() != "all":
         filter = db.Books.languages.any(db.Languages.lang_code == current_user.filter_language())
     else:
@@ -528,7 +533,9 @@ def feed_authorindex():
     if not off:
         off = 0
     authors = db.session.query(db.Authors).order_by(db.Authors.sort).offset(off).limit(config.NEWEST_BOOKS)
-    xml = render_template('feed.xml', authors=authors,
+    pagination = Pagination((int(off)/(int(config.NEWEST_BOOKS))+1), config.NEWEST_BOOKS,
+                            len(db.session.query(db.Authors).all()))
+    xml = render_template('feed.xml', authors=authors, pagination=pagination,
                           next_url="/opds/author?start_index=%d" % (int(config.NEWEST_BOOKS) + int(off)))
     response = make_response(xml)
     response.headers["Content-Type"] = "application/xml"
@@ -547,7 +554,9 @@ def feed_author(name):
         off = 0
     entries = db.session.query(db.Books).filter(db.Books.authors.any(db.Authors.name.like("%" + name + "%"))).filter(
         filter).offset(off).limit(config.NEWEST_BOOKS)
-    xml = render_template('feed.xml', entries=entries,
+    pagination = Pagination((int(off)/(int(config.NEWEST_BOOKS))+1), config.NEWEST_BOOKS,
+                            len(db.session.query(db.Books).filter(db.Books.authors.any(db.Authors.name.like("%" + name + "%"))).filter(filter).all()))
+    xml = render_template('feed.xml', entries=entries, pagination=pagination,
                           next_url="/opds/author?start_index=%d" % (int(config.NEWEST_BOOKS) + int(off)))
     response = make_response(xml)
     response.headers["Content-Type"] = "application/xml"
@@ -561,7 +570,9 @@ def feed_categoryindex():
     if not off:
         off = 0
     entries = db.session.query(db.Tags).order_by(db.Tags.name).offset(off).limit(config.NEWEST_BOOKS)
-    xml = render_template('feed.xml', categorys=entries,
+    pagination = Pagination((int(off)/(int(config.NEWEST_BOOKS))+1), config.NEWEST_BOOKS,
+                            len(db.session.query(db.Tags).all()))
+    xml = render_template('feed.xml', categorys=entries, pagination=pagination,
                           next_url="/opds/category?start_index=%d" % (int(config.NEWEST_BOOKS) + int(off)))
     response = make_response(xml)
     response.headers["Content-Type"] = "application/xml"
@@ -580,7 +591,9 @@ def feed_category(name):
         off = 0
     entries = db.session.query(db.Books).filter(db.Books.tags.any(db.Tags.name.like("%" + name + "%"))).order_by(
         db.Books.timestamp.desc()).filter(filter).offset(off).limit(config.NEWEST_BOOKS)
-    xml = render_template('feed.xml', entries=entries,
+    pagination = Pagination((int(off)/(int(config.NEWEST_BOOKS))+1), config.NEWEST_BOOKS,
+                            len(db.session.query(db.Books).filter(db.Books.tags.any(db.Tags.name.like("%" + name + "%"))).filter(filter).all()))
+    xml = render_template('feed.xml', entries=entries, pagination=pagination,
                           next_url="/opds/category?start_index=%d" % (int(config.NEWEST_BOOKS) + int(off)))
     response = make_response(xml)
     response.headers["Content-Type"] = "application/xml"
@@ -591,10 +604,16 @@ def feed_category(name):
 @requires_basic_auth_if_no_ano
 def feed_seriesindex():
     off = request.args.get("start_index")
+    if current_user.filter_language() != "all":
+        filter = db.Books.languages.any(db.Languages.lang_code == current_user.filter_language())
+    else:
+        filter = True
     if not off:
         off = 0
     entries = db.session.query(db.Series).order_by(db.Series.name).offset(off).limit(config.NEWEST_BOOKS)
-    xml = render_template('feed.xml', series=entries,
+    pagination = Pagination((int(off)/(int(config.NEWEST_BOOKS))+1), config.NEWEST_BOOKS,
+                            len(db.session.query(db.Series).all()))
+    xml = render_template('feed.xml', series=entries, pagination=pagination,
                           next_url="/opds/series?start_index=%d" % (int(config.NEWEST_BOOKS) + int(off)))
     response = make_response(xml)
     response.headers["Content-Type"] = "application/xml"
@@ -613,7 +632,9 @@ def feed_series(name):
         off = 0
     entries = db.session.query(db.Books).filter(db.Books.series.any(db.Series.name.like("%" + name + "%"))).order_by(
         db.Books.timestamp.desc()).filter(filter).offset(off).limit(config.NEWEST_BOOKS)
-    xml = render_template('feed.xml', entries=entries,
+    pagination = Pagination((int(off)/(int(config.NEWEST_BOOKS))+1), config.NEWEST_BOOKS,
+                            len(db.session.query(db.Books).filter(db.Books.series.any(db.Series.name.like("%" + name + "%"))).filter(filter).all()))
+    xml = render_template('feed.xml', entries=entries, pagination=pagination,
                           next_url="/opds/series?start_index=%d" % (int(config.NEWEST_BOOKS) + int(off)))
     response = make_response(xml)
     response.headers["Content-Type"] = "application/xml"
@@ -1037,10 +1058,11 @@ def get_cover(cover_path):
     return send_from_directory(os.path.join(config.DB_ROOT, cover_path), "cover.jpg")
 
 
-@app.route("/opds/cover/<path:cover_path>")
+@app.route("/opds/cover/<path:book_id>")
 @requires_basic_auth_if_no_ano
-def feed_get_cover(cover_path):
-    return send_from_directory(os.path.join(config.DB_ROOT, cover_path), "cover.jpg")
+def feed_get_cover(book_id):
+    book = db.session.query(db.Books).filter(db.Books.id == book_id).first()
+    return send_from_directory(os.path.join(config.DB_ROOT, book.path), "cover.jpg")
 
 
 @app.route("/read/<int:book_id>/<format>")
