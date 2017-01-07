@@ -3,6 +3,7 @@
 
 import os
 import sys
+from os import environ as env
 from configobj import ConfigObj
 
 CONFIG_FILE = os.path.join(os.path.normpath(os.path.dirname(os.path.realpath(__file__))+os.sep+".."+os.sep), "config.ini")
@@ -54,8 +55,19 @@ APP_DB_ROOT = check_setting_str(CFG, 'General', 'APP_DB_ROOT', os.getcwd())
 MAIN_DIR = check_setting_str(CFG, 'General', 'MAIN_DIR', os.getcwd())
 LOG_DIR = check_setting_str(CFG, 'General', 'LOG_DIR', os.getcwd())
 PORT = check_setting_int(CFG, 'General', 'PORT', 8083)
-NEWEST_BOOKS = check_setting_str(CFG, 'General', 'NEWEST_BOOKS', 60)
+NEWEST_BOOKS = check_setting_int(CFG, 'General', 'NEWEST_BOOKS', 60)
 RANDOM_BOOKS = check_setting_int(CFG, 'General', 'RANDOM_BOOKS', 4)
+DEFAULT_PASS = check_setting_str(CFG, 'General', 'DEFAULT_PASS', 'admin123')
+# override from environment variables, if any
+DB_ROOT = env.get('DB_ROOT', DB_ROOT)
+APP_DB_ROOT = env.get('APP_DB_ROOT', APP_DB_ROOT)
+MAIN_DIR = env.get('MAIN_DIR', MAIN_DIR)
+LOG_DIR = env.get('LOG_DIR', LOG_DIR)
+PORT = int(env.get('PORT', PORT))
+NEWEST_BOOKS = int(env.get('NEWEST_BOOKS', NEWEST_BOOKS))
+RANDOM_BOOKS = int(env.get('RANDOM_BOOKS', RANDOM_BOOKS))
+DEFAULT_PASS = env.get('DEFAULT_PASS', DEFAULT_PASS)
+
 
 CheckSection('Advanced')
 TITLE_REGEX = check_setting_str(CFG, 'Advanced', 'TITLE_REGEX', '^(A|The|An|Der|Die|Das|Den|Ein|Eine|Einen|Dem|Des|Einem|Eines)\s+')
@@ -63,6 +75,12 @@ DEVELOPMENT = bool(check_setting_int(CFG, 'Advanced', 'DEVELOPMENT', 0))
 PUBLIC_REG = bool(check_setting_int(CFG, 'Advanced', 'PUBLIC_REG', 0))
 UPLOADING = bool(check_setting_int(CFG, 'Advanced', 'UPLOADING', 0))
 ANON_BROWSE = bool(check_setting_int(CFG, 'Advanced', 'ANON_BROWSE', 0))
+# override from environment variables, if any
+TITLE_REGEX = env.get('TITLE_REGEX', TITLE_REGEX)
+DEVELOPMENT = bool(env.get('DEVELOPMENT', DEVELOPMENT))
+PUBLIC_REG = bool(env.get('PUBLIC_REG', PUBLIC_REG))
+UPLOADING = bool(env.get('UPLOADING', UPLOADING))
+ANON_BROWSE = bool(env.get('ANON_BROWSE', ANON_BROWSE))
 
 SYS_ENCODING = "UTF-8"
 
