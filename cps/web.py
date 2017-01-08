@@ -475,7 +475,7 @@ def feed_new():
     pagination = Pagination((int(off)/(int(config.NEWEST_BOOKS))+1), config.NEWEST_BOOKS,
                             len(db.session.query(db.Books).filter(filter).all()))
     xml = render_template('feed.xml', entries=entries, pagination=pagination,
-                          next_url="/opds/new?start_index=%d" % (int(config.NEWEST_BOOKS) + int(off)))
+                          next_url=url_for("feed_new")+"?start_index=%d" % (int(config.NEWEST_BOOKS) + int(off)))
     response = make_response(xml)
     response.headers["Content-Type"] = "application/xml"
     return response
@@ -494,7 +494,7 @@ def feed_discover():
     entries = db.session.query(db.Books).filter(filter).order_by(func.random()).limit(config.NEWEST_BOOKS)
     pagination = Pagination(1, config.NEWEST_BOOKS,int(config.NEWEST_BOOKS))
     xml = render_template('feed.xml', entries=entries, pagination=pagination,
-                          next_url="/opds/discover")
+                          next_url=url_for("feed_discover"))
     response = make_response(xml)
     response.headers["Content-Type"] = "application/xml"
     return response
@@ -515,7 +515,7 @@ def feed_hot():
     pagination = Pagination((int(off)/(int(config.NEWEST_BOOKS))+1), config.NEWEST_BOOKS,
                             len(db.session.query(db.Books).filter(filter).filter(db.Books.ratings.any(db.Ratings.rating > 9)).all()))
     xml = render_template('feed.xml', entries=entries, pagination=pagination,
-                          next_url="/opds/hot?start_index=%d" % (int(config.NEWEST_BOOKS) + int(off)))
+                          next_url=url_for("feed_hot")+"?start_index=%d" % (int(config.NEWEST_BOOKS) + int(off)))
     response = make_response(xml)
     response.headers["Content-Type"] = "application/xml"
     return response
@@ -536,7 +536,7 @@ def feed_authorindex():
     pagination = Pagination((int(off)/(int(config.NEWEST_BOOKS))+1), config.NEWEST_BOOKS,
                             len(db.session.query(db.Authors).all()))
     xml = render_template('feed.xml', authors=authors, pagination=pagination,
-                          next_url="/opds/author?start_index=%d" % (int(config.NEWEST_BOOKS) + int(off)))
+                          next_url=url_for("feed_authorindex")+"?start_index=%d" % (int(config.NEWEST_BOOKS) + int(off)))
     response = make_response(xml)
     response.headers["Content-Type"] = "application/xml"
     return response
@@ -557,7 +557,7 @@ def feed_author(name):
     pagination = Pagination((int(off)/(int(config.NEWEST_BOOKS))+1), config.NEWEST_BOOKS,
                             len(db.session.query(db.Books).filter(db.Books.authors.any(db.Authors.name.like("%" + name + "%"))).filter(filter).all()))
     xml = render_template('feed.xml', entries=entries, pagination=pagination,
-                          next_url="/opds/author?start_index=%d" % (int(config.NEWEST_BOOKS) + int(off)))
+                          next_url=url_for("feed_author",name=name)+"?start_index=%d" % (int(config.NEWEST_BOOKS) + int(off)))
     response = make_response(xml)
     response.headers["Content-Type"] = "application/xml"
     return response
@@ -573,7 +573,7 @@ def feed_categoryindex():
     pagination = Pagination((int(off)/(int(config.NEWEST_BOOKS))+1), config.NEWEST_BOOKS,
                             len(db.session.query(db.Tags).all()))
     xml = render_template('feed.xml', categorys=entries, pagination=pagination,
-                          next_url="/opds/category?start_index=%d" % (int(config.NEWEST_BOOKS) + int(off)))
+                          next_url=url_for("feed_categoryindex")+"?start_index=%d" % (int(config.NEWEST_BOOKS) + int(off)))
     response = make_response(xml)
     response.headers["Content-Type"] = "application/xml"
     return response
@@ -594,7 +594,7 @@ def feed_category(name):
     pagination = Pagination((int(off)/(int(config.NEWEST_BOOKS))+1), config.NEWEST_BOOKS,
                             len(db.session.query(db.Books).filter(db.Books.tags.any(db.Tags.name.like("%" + name + "%"))).filter(filter).all()))
     xml = render_template('feed.xml', entries=entries, pagination=pagination,
-                          next_url="/opds/category?start_index=%d" % (int(config.NEWEST_BOOKS) + int(off)))
+                          next_url=url_for("feed_category",name=name)+"?start_index=%d" % (int(config.NEWEST_BOOKS) + int(off)))
     response = make_response(xml)
     response.headers["Content-Type"] = "application/xml"
     return response
@@ -614,7 +614,7 @@ def feed_seriesindex():
     pagination = Pagination((int(off)/(int(config.NEWEST_BOOKS))+1), config.NEWEST_BOOKS,
                             len(db.session.query(db.Series).all()))
     xml = render_template('feed.xml', series=entries, pagination=pagination,
-                          next_url="/opds/series?start_index=%d" % (int(config.NEWEST_BOOKS) + int(off)))
+                          next_url=url_for("feed_seriesindex")+"?start_index=%d" % (int(config.NEWEST_BOOKS) + int(off)))
     response = make_response(xml)
     response.headers["Content-Type"] = "application/xml"
     return response
@@ -635,7 +635,7 @@ def feed_series(name):
     pagination = Pagination((int(off)/(int(config.NEWEST_BOOKS))+1), config.NEWEST_BOOKS,
                             len(db.session.query(db.Books).filter(db.Books.series.any(db.Series.name.like("%" + name + "%"))).filter(filter).all()))
     xml = render_template('feed.xml', entries=entries, pagination=pagination,
-                          next_url="/opds/series?start_index=%d" % (int(config.NEWEST_BOOKS) + int(off)))
+                          next_url=url_for("feed_series",name=name)+"?start_index=%d" % (int(config.NEWEST_BOOKS) + int(off)))
     response = make_response(xml)
     response.headers["Content-Type"] = "application/xml"
     return response
@@ -1265,7 +1265,7 @@ def remove_from_shelf(shelf_id, book_id):
     shelf = ub.session.query(ub.Shelf).filter(ub.Shelf.id == shelf_id).first()
     if not shelf.is_public and not shelf.user_id == int(current_user.id):
         flash("Sorry you are not allowed to remove a book from this shelf: %s" % shelf.name)
-        return redirect(url_for('index', _external=True))
+        return redirect(url_for('index'))
 
     book_shelf = ub.session.query(ub.BookShelf).filter(ub.BookShelf.shelf == shelf_id,
                                                        ub.BookShelf.book_id == book_id).first()
@@ -1528,7 +1528,7 @@ def new_user():
             ub.session.add(content)
             ub.session.commit()
             flash(_("User '%(user)s' created", user=content.nickname), category="success")
-            return redirect(url_for('admin', _external=True))
+            return redirect(url_for('admin'))
         except IntegrityError:
             ub.session.rollback()
             flash(_(u"Found an existing account for this email address or nickname."), category="error")
@@ -1588,7 +1588,7 @@ def edit_user(user_id):
         if "delete" in to_save:
             ub.session.delete(content)
             flash(_(u"User '%(nick)s' deleted", nick=content.nickname), category="success")
-            return redirect(url_for('admin', _external=True))
+            return redirect(url_for('admin'))
         else:
             if to_save["password"]:
                 content.password = generate_password_hash(to_save["password"])
@@ -1849,14 +1849,14 @@ def edit_book(book_id):
             for b in edited_books_id:
                 helper.update_dir_stucture(b)
             if "detail_view" in to_save:
-                return redirect(url_for('show_book', id=book.id, _external=True))
+                return redirect(url_for('show_book', id=book.id))
             else:
                 return render_template('edit_book.html', book=book, authors=author_names, cc=cc)
         else:
             return render_template('edit_book.html', book=book, authors=author_names, cc=cc)
     else:
         flash(_(u"Error opening eBook. File does not exist or file is not accessible:"), category="error")
-        return redirect(url_for("index", _external=True))
+        return redirect(url_for("index"))
 
 
 @app.route("/upload", methods=["GET", "POST"])
@@ -1886,12 +1886,12 @@ def upload():
                 os.makedirs(filepath)
             except OSError:
                 flash(_(u"Failed to create path %s (Permission denied)." % filepath), category="error")
-                return redirect(url_for('index', _external=True))
+                return redirect(url_for('index'))
         try:
             copyfile(meta.file_path, saved_filename)
         except OSError, e:
             flash(_(u"Failed to store file %s (Permission denied)." % saved_filename), category="error")
-            return redirect(url_for('index', _external=True))
+            return redirect(url_for('index'))
         try:
             os.unlink(meta.file_path)
         except OSError, e:
