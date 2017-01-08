@@ -81,7 +81,7 @@ http {
 
 Apache 2.4 configuration for a local server listening on port 443, mapping calibre web to /calibre-web:
 
-The following modules have to be activated: headers, proxy, proxy_html, proxy_http, rewrite, xml2enc.
+The following modules have to be activated: headers, proxy, rewrite.
 ```
 Listen 443
 
@@ -92,12 +92,11 @@ Listen 443
     SSLCertificateFile "C:\Apache24\conf\ssl\test.crt"
     SSLCertificateKeyFile "C:\Apache24\conf\ssl\test.key"
     
-    <Location /calibre-web>       
-           ProxyHTMLEnable On
-           ProxyPass            http://127.0.0.1:8083/
-           ProxyPassReverse     http://127.0.0.1:8083/  
-           Header edit Location "^http://(.*?)/" "https://$1/calibre-web/"
-           ProxyHTMLURLMap      /  /calibre-web/       
+    <Location "/calibre-web" >
+        RequestHeader set X-SCRIPT-NAME /calibre-web
+        RequestHeader set X-SCHEME https
+        ProxyPass http://localhost:8083/
+        ProxyPassReverse http://localhost:8083/
     </Location>
 </VirtualHost>
 ```
