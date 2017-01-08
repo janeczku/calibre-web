@@ -1058,6 +1058,7 @@ def get_cover(cover_path):
     return send_from_directory(os.path.join(config.DB_ROOT, cover_path), "cover.jpg")
 
 
+@app.route("/opds/cover_90_90/<path:book_id>")
 @app.route("/opds/cover/<path:book_id>")
 @requires_basic_auth_if_no_ano
 def feed_get_cover(book_id):
