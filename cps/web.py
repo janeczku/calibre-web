@@ -165,7 +165,8 @@ LANGUAGES = {
     'en': 'English',
     'de': 'Deutsch',
     'fr': 'Français',
-    'es': 'Español'
+    'es': 'Español',
+    'zh_Hans_CN': '简体中文'
 }
 
 
@@ -173,9 +174,14 @@ LANGUAGES = {
 def get_locale():
     # if a user is logged in, use the locale from the user settings
     user = getattr(g, 'user', None)
+    translations = babel.list_translations() + [LC('en')]
     if user is not None and hasattr(user, "locale"):
+        if user.locale == 'zh':
+            return 'zh_Hans_CN'
         return user.locale
     preferred = [x.replace('-', '_') for x in request.accept_languages.values()]
+    if config.DEFAULT_LANG:
+        return config.DEFAULT_LANG
     return negotiate_locale(preferred, LANGUAGES.keys())
 
 
