@@ -664,6 +664,17 @@ def get_opds_download_link(book_id, format):
     response.headers["Content-Disposition"] = "attachment; filename=%s.%s" % (data.name, format)
     return response
 
+@app.route("/ajax/book/<string:uuid>")
+@login_required_if_no_ano
+def get_metadata_calibre_companion(uuid):
+    entry = db.session.query(db.Books).filter(db.Books.uuid.like("%"+uuid+"%")).first()
+    if entry is not None :
+        js = render_template('json.txt',entry=entry)
+        response = make_response(js)
+        response.headers["Content-Type"] = "application/json"
+        return response
+    else:
+        return ""
 
 @app.route("/get_authors_json", methods=['GET', 'POST'])
 @login_required_if_no_ano
@@ -1064,6 +1075,7 @@ def get_cover(cover_path):
     return send_from_directory(os.path.join(config.DB_ROOT, cover_path), "cover.jpg")
 
 @app.route("/opds/thumb_240_240/<path:book_id>")
+@app.route("/opds/cover_240_240/<path:book_id>")
 @app.route("/opds/cover_90_90/<path:book_id>")
 @app.route("/opds/cover/<path:book_id>")
 @requires_basic_auth_if_no_ano
