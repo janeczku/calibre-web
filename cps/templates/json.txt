@@ -1,0 +1,49 @@
+{
+  "pubdate": "{{entry.pubdate}}", 
+  "title": "{{entry.title}}", 
+  "format_metadata": {
+  {% for format in entry.data %}  
+    "{{format.format}}": {
+      "mtime": "{{entry.last_modified}}", 
+      "size": {{format.uncompressed_size}}, 
+      "path": "/mnt/share/Data/alte_ebooks/Cornelia Ziegler/111 Orte auf Kreta die man gesehen haben muss (391)/111 Orte auf Kreta die man gesehen haben m - Cornelia Ziegler.epub"
+    }{% if not loop.last %},{% endif %}
+    {% endfor %}
+  }, 
+  "formats": [
+  {% for format in entry.data %}  
+    "{{format.format}}"{% if not loop.last %},{% endif %}
+  {% endfor %}    
+  ], 
+  "series": null, 
+  "cover": "/opds/cover/{{entry.id}}", 
+  "languages": [
+  {% for lang in entry.languages %}  
+    "{{lang.lang_code}}"{% if not loop.last %},{% endif %}
+  {% endfor %}
+  ], 
+  "comments": "{% if entry.comments|length > 0 %}{{entry.comments[0].text|safe}}{% endif %}", 
+  "tags": [
+  {% for tag in entry.tags %}
+    "{{tag.name}}"{% if not loop.last %},{% endif %}
+  {% endfor %}    
+  ], 
+  "application_id": {{entry.id}}, 
+  "series_index": {% if entry.series|length > 0 %}"{{entry.series_index}}"{% else %}null{% endif %}, 
+  "last_modified": "{{entry.last_modified}}", 
+  "author_sort": "{{entry.author_sort}}", 
+  "uuid": "{{entry.uuid}}", 
+  "timestamp": "{{entry.timestamp}}", 
+  "thumbnail": "/opds/cover/{{entry.id}}", 
+  "main_format": {
+    "epub": "/get/epub/391"
+  }, 
+  "rating": 0.0, 
+  "authors": [
+  {% for author in entry.authors %}
+    "{{author.name}}"{% if not loop.last %},{% endif %}
+  {% endfor %}       
+  ], 
+  "other_formats": {}, 
+  "title_sort": "{{entry.sort}}"
+}
