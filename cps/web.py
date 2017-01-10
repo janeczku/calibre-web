@@ -1433,7 +1433,12 @@ def profile():
             lang.name = _(isoLanguages.get(part3=lang.lang_code).name)
     translations = babel.list_translations() + [LC('en')]
     for book in content.downloads:
-        downloads.append(db.session.query(db.Books).filter(db.Books.id == book.book_id).first())
+        downloadBook=db.session.query(db.Books).filter(db.Books.id == book.book_id).first()
+        if downloadBook:
+            downloads.append(db.session.query(db.Books).filter(db.Books.id == book.book_id).first())
+        else:
+            ub.session.query(ub.Downloads).filter(book.book_id == ub.Downloads.book_id).delete()
+            ub.session.commit()
     if request.method == "POST":
         to_save = request.form.to_dict()
         content.random_books = 0
@@ -1601,7 +1606,12 @@ def edit_user(user_id):
             lang.name = _(isoLanguages.get(part3=lang.lang_code).name)
     translations = babel.list_translations() + [LC('en')]
     for book in content.downloads:
-        downloads.append(db.session.query(db.Books).filter(db.Books.id == book.book_id).first())
+        downloadBook=db.session.query(db.Books).filter(db.Books.id == book.book_id).first()
+        if downloadBook:
+            downloads.append(db.session.query(db.Books).filter(db.Books.id == book.book_id).first())
+        else:
+            ub.session.query(ub.Downloads).filter(book.book_id == ub.Downloads.book_id).delete()
+            ub.session.commit()
     if request.method == "POST":
         to_save = request.form.to_dict()
         if "delete" in to_save:
