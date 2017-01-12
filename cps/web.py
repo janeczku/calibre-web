@@ -14,7 +14,7 @@ from sqlalchemy.sql.expression import func
 from sqlalchemy.sql.expression import false
 from sqlalchemy.exc import IntegrityError
 from math import ceil
-from flask_login import LoginManager, login_user, logout_user, login_required, current_user, AnonymousUserMixin
+from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 from flask_principal import Principal, Identity, AnonymousIdentity, identity_changed
 from flask_babel import Babel
 from flask_babel import gettext as _
@@ -115,49 +115,10 @@ global global_queue
 global_queue = None
 
 
-class Anonymous(AnonymousUserMixin):
-    def __init__(self):
-        self.nickname = 'Guest'
-        self.role = -1
-
-    def role_admin(self):
-        return False
-
-    def role_download(self):
-        return False
-
-    def role_upload(self):
-        return False
-
-    def role_edit(self):
-        return False
-
-    def filter_language(self):
-        return 'all'
-
-    def show_random_books(self):
-        return True
-
-    def show_hot_books(self):
-        return True
-
-    def show_series(self):
-        return True
-
-    def show_category(self):
-        return True
-
-    def show_language(self):
-        return True
-
-    def is_anonymous(self):
-        return config.ANON_BROWSE
-
-
 lm = LoginManager(app)
 lm.init_app(app)
 lm.login_view = 'login'
-lm.anonymous_user = Anonymous
+lm.anonymous_user = ub.Anonymous
 
 app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
 
@@ -237,9 +198,9 @@ def requires_basic_auth_if_no_ano(f):
 # simple pagination for the feed
 class Pagination(object):
     def __init__(self, page, per_page, total_count):
-        self.page = page
-        self.per_page = per_page
-        self.total_count = total_count
+        self.page = int(page)
+        self.per_page = int(per_page)
+        self.total_count = int(total_count)
 
     @property
     def next_offset(self):
@@ -247,7 +208,7 @@ class Pagination(object):
 
     @property
     def previous_offset(self):
-        return int((self.page-1) * self.per_page)
+        return int((self.page-2) * self.per_page)
 
     @property
     def last_offset(self):
@@ -453,11 +414,17 @@ def feed_osd():
     response.headers["Content-Type"] = "application/xml"
     return response
 
+@app.route("/opds/search/<query>")
+def feed_cc_search(query):
+    return feed_search(query.strip())
+
 
 @app.route("/opds/search", methods=["GET"])
 @requires_basic_auth_if_no_ano
-def feed_search():
-    term = request.args.get("query").strip()
+def feed_normal_search():
+    return feed_search(request.args.get("query").strip())
+
+def feed_search(term):
     if current_user.filter_language() != "all":
         filter = db.Books.languages.any(db.Languages.lang_code == current_user.filter_language())
     else:
@@ -466,8 +433,8 @@ def feed_search():
         entries = db.session.query(db.Books).filter(db.or_(db.Books.tags.any(db.Tags.name.like("%" + term + "%")),
                                                            db.Books.authors.any(db.Authors.name.like("%" + term + "%")),
                                                            db.Books.title.like("%" + term + "%"))).filter(filter).all()
-
-        xml = render_template('feed.xml', searchterm=term, entries=entries)
+        pagination = Pagination( 1,len(entries),len(entries))
+        xml = render_template('feed.xml', searchterm=term, entries=entries, pagination=pagination)
     else:
         xml = render_template('feed.xml', searchterm="")
     response = make_response(xml)
@@ -1145,13 +1112,14 @@ def read_book(book_id, format):
 
 
 @app.route("/download/<int:book_id>/<format>")
-@login_required
+@login_required_if_no_ano
 @download_required
 def get_download_link(book_id, format):
     format = format.split(".")[0]
     book = db.session.query(db.Books).filter(db.Books.id == book_id).first()
     data = db.session.query(db.Data).filter(db.Data.book == book.id).filter(db.Data.format == format.upper()).first()
-    helper.update_download(book_id, int(current_user.id))
+    if current_user.is_authenticated:         # collect downloaded books only for registered user and not for anonymous user
+        helper.update_download(book_id, int(current_user.id))
     author = helper.get_normalized_author(book.author_sort)
     file_name = book.title
     if len(author) > 0:
@@ -1392,7 +1360,7 @@ def show_shelf(shelf_id):
 
 
 @app.route("/shelf/order/<int:shelf_id>", methods=["GET", "POST"])
-@login_required_if_no_ano
+@login_required
 def order_shelf(shelf_id):
     if request.method == "POST":
         to_save = request.form.to_dict()
@@ -1619,7 +1587,7 @@ def edit_user(user_id):
             flash(_(u"User '%(nick)s' deleted", nick=content.nickname), category="success")
             return redirect(url_for('admin'))
         else:
-            if to_save["password"]:
+            if "password" in to_save and to_save["password"]:
                 content.password = generate_password_hash(to_save["password"])
 
             if "admin_role" in to_save and not content.role_admin():
@@ -1663,7 +1631,7 @@ def edit_user(user_id):
                 content.hot_books = 1
             if "default_language" in to_save:
                 content.default_language = to_save["default_language"]
-            if to_save["locale"]:
+            if "locale" in to_save and to_save["locale"]:
                 content.locale = to_save["locale"]
             if to_save["email"] and to_save["email"] != content.email:
                 content.email = to_save["email"]
@@ -1680,7 +1648,7 @@ def edit_user(user_id):
 
 
 @app.route("/admin/book/<int:book_id>", methods=['GET', 'POST'])
-@login_required
+@login_required_if_no_ano
 @edit_required
 def edit_book(book_id):
     # create the function for sorting...
@@ -1889,7 +1857,7 @@ def edit_book(book_id):
 
 
 @app.route("/upload", methods=["GET", "POST"])
-@login_required
+@login_required_if_no_ano
 @upload_required
 def upload():
     if not config.UPLOADING:

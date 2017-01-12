@@ -10,12 +10,11 @@
   <link rel="up"
         href="{{url_for('feed_index')}}"
         type="application/atom+xml;profile=opds-catalog;type=feed;kind=navigation"/>
+{% if pagination.has_prev %}
   <link rel="first"
         href="{{request.script_root + request.path}}"
         type="application/atom+xml;profile=opds-catalog;type=feed;kind=navigation"/>
-  <link rel="last"
-        href="{{request.script_root + request.path}}?offset={{ pagination.last_offset }}"
-        type="application/atom+xml;profile=opds-catalog;type=feed;kind=navigation"/>
+{% endif %}
 {% if pagination.has_next %}
   <link rel="next"
         title="{{_('Next')}}"

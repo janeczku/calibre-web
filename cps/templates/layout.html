@@ -146,10 +146,11 @@
                   <li><a href="{{url_for('show_shelf', shelf_id=shelf.id)}}"><span class="glyphicon glyphicon-list"></span> {{shelf.name}}</a></li>
                 {% endfor %}
               {% if not g.user.is_anonymous() %}
-                <li class="create-shelf"><a href="{{url_for('create_shelf')}}">{{_('Create a Shelf')}}</a></li>
+                <li id="nav_createshelf" class="create-shelf"><a href="{{url_for('create_shelf')}}">{{_('Create a Shelf')}}</a></li>
+                <li id="nav_about"><a href="{{url_for('stats')}}"><span class="glyphicon glyphicon-info-sign"></span> {{_('About')}}</a></li>
               {% endif %}
               {% endif %}
-              <li><a href="{{url_for('stats')}}"><span class="glyphicon glyphicon-info-sign"></span> {{_('About')}}</a></li>
+
             </ul>
           </nav>
         </div>
