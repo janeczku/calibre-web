@@ -6,7 +6,7 @@
     "{{format.format}}": {
       "mtime": "{{entry.last_modified}}", 
       "size": {{format.uncompressed_size}}, 
-      "path": "/mnt/share/Data/alte_ebooks/Cornelia Ziegler/111 Orte auf Kreta die man gesehen haben muss (391)/111 Orte auf Kreta die man gesehen haben m - Cornelia Ziegler.epub"
+      "path": ""
     }{% if not loop.last %},{% endif %}
     {% endfor %}
   }, 
@@ -36,9 +36,8 @@
   "timestamp": "{{entry.timestamp}}", 
   "thumbnail": "/opds/cover/{{entry.id}}", 
   "main_format": {
-    "epub": "/get/epub/391"
-  }, 
-  "rating": 0.0, 
+    "{{entry.data[0].format|lower}}": "/download/{{entry.id}}/{{entry.data[0].format|lower}}"
+  },
   "authors": [
   {% for author in entry.authors %}
     "{{author.name}}"{% if not loop.last %},{% endif %}
