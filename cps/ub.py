@@ -5,9 +5,12 @@ from sqlalchemy import *
 from sqlalchemy import exc
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import *
+from flask_login import AnonymousUserMixin
 import os
 import config
+import traceback
 from werkzeug.security import generate_password_hash
+from flask_babel import gettext as _
 
 dbpath = os.path.join(config.APP_DB_ROOT, "app.db")
 engine = create_engine('sqlite:///{0}'.format(dbpath), echo=False)
@@ -19,28 +22,11 @@ ROLE_DOWNLOAD = 2
 ROLE_UPLOAD = 4 
 ROLE_EDIT = 8
 ROLE_PASSWD = 16
+ROLE_ANONYMOUS = 32
 DEFAULT_PASS = "admin123"
 
 
-class User(Base):
-    __tablename__ = 'user'
-
-    id = Column(Integer, primary_key=True)
-    nickname = Column(String(64), unique=True)
-    email = Column(String(120), unique=True, default="")
-    role = Column(SmallInteger, default=ROLE_USER)
-    password = Column(String)
-    kindle_mail = Column(String(120), default="")
-    shelf = relationship('Shelf', backref='user', lazy='dynamic')
-    downloads = relationship('Downloads', backref='user', lazy='dynamic')
-    locale = Column(String(2), default="en")
-    random_books = Column(Integer, default=1)
-    language_books = Column(Integer, default=1)
-    series_books = Column(Integer, default=1)
-    category_books = Column(Integer, default=1)
-    hot_books = Column(Integer, default=1)
-    default_language = Column(String(3), default="all")
-
+class UserBase():
     def is_authenticated(self):
         return True
 
@@ -74,6 +60,12 @@ class User(Base):
         else:
             return False
 
+    def role_anonymous(self):
+        if self.role is not None:
+            return True if self.role & ROLE_ANONYMOUS == ROLE_ANONYMOUS else False
+        else:
+            return False
+
     def is_active(self):
         return True
 
@@ -103,6 +95,52 @@ class User(Base):
 
     def __repr__(self):
         return '<User %r>' % self.nickname
+
+
+class User(UserBase,Base):
+    __tablename__ = 'user'
+
+    id = Column(Integer, primary_key=True)
+    nickname = Column(String(64), unique=True)
+    email = Column(String(120), unique=True, default="")
+    role = Column(SmallInteger, default=ROLE_USER)
+    password = Column(String)
+    kindle_mail = Column(String(120), default="")
+    shelf = relationship('Shelf', backref='user', lazy='dynamic')
+    downloads = relationship('Downloads', backref='user', lazy='dynamic')
+    locale = Column(String(2), default="en")
+    random_books = Column(Integer, default=1)
+    language_books = Column(Integer, default=1)
+    series_books = Column(Integer, default=1)
+    category_books = Column(Integer, default=1)
+    hot_books = Column(Integer, default=1)
+    default_language = Column(String(3), default="all")
+
+
+class Anonymous(AnonymousUserMixin,UserBase):
+    def __init__(self):
+        self.loadSettings()
+
+    def loadSettings(self):
+        data=session.query(User).filter(User.role.op('&')(ROLE_ANONYMOUS) == ROLE_ANONYMOUS).first()
+        self.nickname = data.nickname
+        self.role = data.role
+        self.random_books = data.random_books
+        self.default_language = data.default_language
+        self.language_books = data.language_books
+        self.series_books = data.series_books
+        self.category_books = data.category_books
+        self.hot_books = data.hot_books
+        self.default_language = data.default_language
+
+    def role_admin(self):
+        return False
+
+    def is_active(self):
+        return False
+
+    def is_anonymous(self):
+        return config.ANON_BROWSE
 
 
 class Shelf(Base):
@@ -155,6 +193,8 @@ class Settings(Base):
 
 
 def migrate_Database():
+    if session.query(User).filter(User.role.op('&')(ROLE_ANONYMOUS) == ROLE_ANONYMOUS).first() is None:
+        create_anonymous_user()
     try:
         session.query(exists().where(User.random_books)).scalar()
         session.commit()
@@ -213,6 +253,20 @@ def get_mail_settings():
 
     return data
 
+def create_anonymous_user():
+    user = User()
+    user.nickname = _("Guest")
+    user.email='no@email'
+    user.role = ROLE_ANONYMOUS
+    user.password = generate_password_hash('1')
+
+    session.add(user)
+    try:
+        session.commit()
+    except:
+        session.rollback()
+        pass
+
 
 def create_admin_user():
     user = User()
@@ -236,6 +290,7 @@ if not os.path.exists(dbpath):
         Base.metadata.create_all(engine)
         create_default_config()
         create_admin_user()
+        create_anonymous_user()
     except Exception:
         pass
 else:
