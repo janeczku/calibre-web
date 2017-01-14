@@ -122,13 +122,6 @@ lm.anonymous_user = ub.Anonymous
 
 app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
 
-LANGUAGES = {
-    'en': 'English',
-    'de': 'Deutsch',
-    'fr': 'Français',
-    'es': 'Español'
-}
-
 
 @babel.localeselector
 def get_locale():
@@ -136,8 +129,9 @@ def get_locale():
     user = getattr(g, 'user', None)
     if user is not None and hasattr(user, "locale"):
         return user.locale
+    translations=[item.language for item in babel.list_translations()]+ ['en']
     preferred = [x.replace('-', '_') for x in request.accept_languages.values()]
-    return negotiate_locale(preferred, LANGUAGES.keys())
+    return negotiate_locale(preferred, translations)
 
 
 @babel.timezoneselector

@@ -132,6 +132,7 @@ class Anonymous(AnonymousUserMixin,UserBase):
         self.category_books = data.category_books
         self.hot_books = data.hot_books
         self.default_language = data.default_language
+        self.locale = data.locale
 
     def role_admin(self):
         return False
