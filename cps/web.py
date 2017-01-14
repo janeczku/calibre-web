@@ -638,7 +638,7 @@ def get_metadata_calibre_companion(uuid):
     if entry is not None :
         js = render_template('json.txt',entry=entry)
         response = make_response(js)
-        response.headers["Content-Type"] = "application/json"
+        response.headers["Content-Type"] = "application/json; charset=utf-8"
         return response
     else:
         return ""
