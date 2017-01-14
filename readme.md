@@ -10,7 +10,7 @@ Calibre Web is a web app providing a clean interface for browsing, reading and d
 - Bootstrap 3 HTML5 interface
 - User management
 - Admin interface
-- User Interface in english, german and french
+- User Interface in english, french, german, simplified chinese, spanish
 - OPDS feed for eBook reader apps 
 - Filter and search by titles, authors, tags, series and language
 - Create custom book collection (shelves)
@@ -20,7 +20,7 @@ Calibre Web is a web app providing a clean interface for browsing, reading and d
 - Support for public user registration
 - Send eBooks to Kindle devices with the click of a button
 - Support for reading eBooks directly in the browser (.txt, .epub, .pdf)
-- Upload new books in PDF format
+- Upload new books in PDF, epub, fb2 format
 - Support for Calibre custom columns
 - Fine grained per-user permissions
 
@@ -67,13 +67,13 @@ http {
         server  127.0.0.1:8083;
     }
     server {
-            location /calibre {
+            location /calibre-web {
                 proxy_bind              $server_addr;
                 proxy_pass              http://127.0.0.1:8083;
                 proxy_set_header        Host            $http_host;
                 proxy_set_header        X-Forwarded-For $proxy_add_x_forwarded_for;
                 proxy_set_header        X-Scheme        $scheme;
-                proxy_set_header        X-Script-Name   /calibre;
+                proxy_set_header        X-Script-Name   /calibre-web;
         }
     }
 }
