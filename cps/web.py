@@ -608,25 +608,26 @@ def feed_series(id):
     return response
 
 
-@app.route("/opds/download/<int:book_id>/<format>")
+@app.route("/opds/download/<book_id>/<format>/")
 @requires_basic_auth_if_no_ano
 @download_required
 def get_opds_download_link(book_id, format):
     format = format.split(".")[0]
     book = db.session.query(db.Books).filter(db.Books.id == book_id).first()
     data = db.session.query(db.Data).filter(db.Data.book == book.id).filter(db.Data.format == format.upper()).first()
-    helper.update_download(book_id, int(current_user.id))
+    if current_user.is_authenticated:
+        helper.update_download(book_id, int(current_user.id))
     author = helper.get_normalized_author(book.author_sort)
     file_name = book.title
     if len(author) > 0:
         file_name = author + '-' + file_name
     file_name = helper.get_valid_filename(file_name)
     response = make_response(send_from_directory(os.path.join(config.DB_ROOT, book.path), data.name + "." + format))
-    response.headers["Content-Disposition"] = "attachment; filename=%s.%s" % (data.name, format)
+    response.headers["Content-Disposition"] = "attachment; filename=\"%s.%s\"" % (data.name, format)
     return response
 
 @app.route("/ajax/book/<string:uuid>")
-@login_required_if_no_ano
+@requires_basic_auth_if_no_ano
 def get_metadata_calibre_companion(uuid):
     entry = db.session.query(db.Books).filter(db.Books.uuid.like("%"+uuid+"%")).first()
     if entry is not None :
