@@ -435,6 +435,7 @@ def feed_cc_search(query):
 def feed_normal_search():
     return feed_search(request.args.get("query").strip())
 
+
 def feed_search(term):
     if current_user.filter_language() != "all":
         filter = db.Books.languages.any(db.Languages.lang_code == current_user.filter_language())
@@ -444,7 +445,8 @@ def feed_search(term):
         entries = db.session.query(db.Books).filter(db.or_(db.Books.tags.any(db.Tags.name.like("%" + term + "%")),
                                                            db.Books.authors.any(db.Authors.name.like("%" + term + "%")),
                                                            db.Books.title.like("%" + term + "%"))).filter(filter).all()
-        pagination = Pagination( 1,len(entries),len(entries))
+        entriescount = len(entries) if len(entries) > 0 else 1
+        pagination = Pagination( 1,entriescount,entriescount)
         xml = render_template('feed.xml', searchterm=term, entries=entries, pagination=pagination)
     else:
         xml = render_template('feed.xml', searchterm="")
