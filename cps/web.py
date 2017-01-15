@@ -47,7 +47,16 @@ except ImportError, e:
 from shutil import copyfile
 from cgi import escape
 
+mimetypes.init()
 mimetypes.add_type('application/xhtml+xml', '.xhtml')
+mimetypes.add_type('application/epub+zip', '.epub')
+mimetypes.add_type('application/x-mobipocket-ebook', '.mobi')
+mimetypes.add_type('application/x-mobipocket-ebook', '.prc')
+mimetypes.add_type('application/vnd.amazon.ebook', '.azw')
+mimetypes.add_type('application/x-cbr', '.cbr')
+mimetypes.add_type('application/x-cbz', '.cbz')
+mimetypes.add_type('application/x-cbt', '.cbt')
+mimetypes.add_type('image/vnd.djvu', '.djvu')
 
 
 class ReverseProxied(object):
@@ -260,6 +269,14 @@ def shortentitle_filter(s):
         s = s.split(':', 1)[0]
         if len(s) > 60:
             s = textwrap.wrap(s, 60, break_long_words=False)[0] + ' [...]'
+    return s
+
+@app.template_filter('mimetype')
+def mimetype_filter(val):
+    try:
+        s = mimetypes.types_map['.'+val]
+    except:
+        s= 'application/octet-stream'
     return s
 
 
@@ -1113,23 +1130,29 @@ def get_download_link(book_id, format):
     format = format.split(".")[0]
     book = db.session.query(db.Books).filter(db.Books.id == book_id).first()
     data = db.session.query(db.Data).filter(db.Data.book == book.id).filter(db.Data.format == format.upper()).first()
-    if current_user.is_authenticated:         # collect downloaded books only for registered user and not for anonymous user
-        helper.update_download(book_id, int(current_user.id))
-    author = helper.get_normalized_author(book.author_sort)
-    file_name = book.title
-    if len(author) > 0:
-        file_name = author + '-' + file_name
-    file_name = helper.get_valid_filename(file_name)
-    response = make_response(send_from_directory(os.path.join(config.DB_ROOT, book.path), data.name + "." + format))
-    response.headers["Content-Disposition"] = \
-        "attachment; " \
-        "filename={utf_filename}.{suffix};" \
-        "filename*=UTF-8''{utf_filename}.{suffix}".format(
-            utf_filename=file_name.encode('utf-8'),
-            suffix=format
-        )
-    return response
-
+    if data:
+        if current_user.is_authenticated:         # collect downloaded books only for registered user and not for anonymous user
+            helper.update_download(book_id, int(current_user.id))
+        author = helper.get_normalized_author(book.author_sort)
+        file_name = book.title
+        if len(author) > 0:
+            file_name = author + '-' + file_name
+        file_name = helper.get_valid_filename(file_name)
+        response = make_response(send_from_directory(os.path.join(config.DB_ROOT, book.path), data.name + "." + format))
+        try:
+            response.headers["Content-Type"]=mimetypes.types_map['.'+format]
+        except:
+            pass
+        response.headers["Content-Disposition"] = \
+            "attachment; " \
+            "filename={utf_filename}.{suffix};" \
+            "filename*=UTF-8''{utf_filename}.{suffix}".format(
+                utf_filename=file_name.encode('utf-8'),
+                suffix=format
+            )
+        return response
+    else:
+        abort(404)
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():

@@ -56,22 +56,7 @@
     {% endif %}
     {% for format in entry.data %}
     <link rel="http://opds-spec.org/acquisition" href="{{ url_for('get_opds_download_link', book_id=entry.id, format=format.format|lower)}}"
-          length="{{format.uncompressed_size}}" mtime="{{entry.timestamp}}"
-          {% if format.format|lower == "epub" %}
-            type="application/epub+zip"/>
-          {% elif format.format|lower == "cbr" %}
-            type="application/x-cbr"/>
-          {% elif format.format|lower == "mobi" %}
-            type="application/x-mobipocket-ebook"/>
-          {% elif format.format|lower == "pdf" %}
-            type="application/pdf"/>
-          {% elif format.format|lower == "rtf" %}
-            type="text/rtf"/>
-          {% elif format.format|lower == "txt" %}
-            type="text/plain"/>
-          {% elif format.format|lower == "doc" %}
-            type="application/msword"/>
-          {% endif %}
+          length="{{format.uncompressed_size}}" mtime="{{entry.timestamp}}" type="{{format.format|lower|mimetype}}"/>
     {% endfor %}
   </entry>
   {% endfor %}
