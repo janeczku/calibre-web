@@ -113,13 +113,16 @@ def send_test_mail(kindle_mail):
         org_stderr = smtplib.stderr
         smtplib.stderr = StderrLogger()
 
-        mailserver = smtplib.SMTP(settings["mail_server"], settings["mail_port"],timeout)
+        if int(use_ssl) == 1:
+            mailserver = smtplib.SMTP_SSL(settings["mail_server"], settings["mail_port"], timeout)
+        else:
+            mailserver = smtplib.SMTP(settings["mail_server"], settings["mail_port"], timeout)
         mailserver.set_debuglevel(1)
 
-        if int(use_ssl) == 1:
-            mailserver.ehlo()
-            mailserver.starttls()
-            mailserver.ehlo()
+        # if int(use_ssl) == 1:
+        #     mailserver.ehlo()
+        #     mailserver.starttls()
+        #     mailserver.ehlo()
 
         if settings["mail_password"]:
             mailserver.login(settings["mail_login"], settings["mail_password"])
@@ -150,7 +153,7 @@ def send_mail(book_id, kindle_mail):
     msg['To'] = kindle_mail
     msg['Subject'] = _('Send to Kindle')
     text = _('This email has been sent via calibre web.')
-    msg.attach(MIMEText(text))
+    msg.attach(MIMEText(text.encode('UTF-8'), 'plain', 'UTF-8'))
 
     use_ssl = settings.get('mail_use_ssl', 0)
 
@@ -201,13 +204,16 @@ def send_mail(book_id, kindle_mail):
         org_stderr = smtplib.stderr
         smtplib.stderr = StderrLogger()
 
-        mailserver = smtplib.SMTP(settings["mail_server"], settings["mail_port"],timeout)
+        if int(use_ssl) == 1:
+            mailserver = smtplib.SMTP_SSL(settings["mail_server"], settings["mail_port"],timeout)
+        else:
+            mailserver = smtplib.SMTP(settings["mail_server"], settings["mail_port"],timeout)
         mailserver.set_debuglevel(1)
 
-        if int(use_ssl) == 1:
-            mailserver.ehlo()
-            mailserver.starttls()
-            mailserver.ehlo()
+        # if int(use_ssl) == 1:
+        #     mailserver.ehlo()
+        #     mailserver.starttls()
+        #     mailserver.ehlo()
 
         if settings["mail_password"]:
             mailserver.login(settings["mail_login"], settings["mail_password"])
