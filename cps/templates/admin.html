@@ -13,9 +13,9 @@
         <th>{{_('Upload')}}</th>
         <th>{{_('Edit')}}</th>
         <th>{{_('Passwd')}}</th>
-
     </tr>
     {% for user in content %}
+      {% if not user.role_anonymous() or config.ANON_BROWSE %}
       <tr>
         <td><a href="{{url_for('edit_user', user_id=user.id)}}">{{user.nickname}}</a></td>
         <td>{{user.email}}</td>
@@ -26,7 +26,8 @@
         <td>{% if user.role_upload() %}<span class="glyphicon glyphicon-ok"></span>{% else %}<span class="glyphicon glyphicon-remove"></span>{% endif %}</td>
         <td>{% if user.role_edit() %}<span class="glyphicon glyphicon-ok"></span>{% else %}<span class="glyphicon glyphicon-remove"></span>{% endif %}</td>
         <td>{% if user.role_passwd() %}<span class="glyphicon glyphicon-ok"></span>{% else %}<span class="glyphicon glyphicon-remove"></span>{% endif %}</td>
-
+      </tr>
+      {% endif %}
     {% endfor %}
   </table>
     <div class="btn btn-default"><a href="{{url_for('new_user')}}">{{_('Add new user')}}</a></div>

@@ -14,7 +14,7 @@ from sqlalchemy.sql.expression import func
 from sqlalchemy.sql.expression import false
 from sqlalchemy.exc import IntegrityError
 from math import ceil
-from flask_login import LoginManager, login_user, logout_user, login_required, current_user, AnonymousUserMixin
+from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 from flask_principal import Principal, Identity, AnonymousIdentity, identity_changed
 from flask_babel import Babel
 from flask_babel import gettext as _
@@ -47,7 +47,16 @@ except ImportError, e:
 from shutil import copyfile
 from cgi import escape
 
+mimetypes.init()
 mimetypes.add_type('application/xhtml+xml', '.xhtml')
+mimetypes.add_type('application/epub+zip', '.epub')
+mimetypes.add_type('application/x-mobipocket-ebook', '.mobi')
+mimetypes.add_type('application/x-mobipocket-ebook', '.prc')
+mimetypes.add_type('application/vnd.amazon.ebook', '.azw')
+mimetypes.add_type('application/x-cbr', '.cbr')
+mimetypes.add_type('application/x-cbz', '.cbz')
+mimetypes.add_type('application/x-cbt', '.cbt')
+mimetypes.add_type('image/vnd.djvu', '.djvu')
 
 
 class ReverseProxied(object):
@@ -115,74 +124,23 @@ global global_queue
 global_queue = None
 
 
-class Anonymous(AnonymousUserMixin):
-    def __init__(self):
-        self.nickname = 'Guest'
-        self.role = -1
-
-    def role_admin(self):
-        return False
-
-    def role_download(self):
-        return False
-
-    def role_upload(self):
-        return False
-
-    def role_edit(self):
-        return False
-
-    def filter_language(self):
-        return 'all'
-
-    def show_random_books(self):
-        return True
-
-    def show_hot_books(self):
-        return True
-
-    def show_series(self):
-        return True
-
-    def show_category(self):
-        return True
-
-    def show_language(self):
-        return True
-
-    def is_anonymous(self):
-        return config.ANON_BROWSE
-
-
 lm = LoginManager(app)
 lm.init_app(app)
 lm.login_view = 'login'
-lm.anonymous_user = Anonymous
+lm.anonymous_user = ub.Anonymous
 
 app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
-
-LANGUAGES = {
-    'en': 'English',
-    'de': 'Deutsch',
-    'fr': 'Français',
-    'es': 'Español',
-    'zh_Hans_CN': '简体中文'
-}
 
 
 @babel.localeselector
 def get_locale():
     # if a user is logged in, use the locale from the user settings
     user = getattr(g, 'user', None)
-    translations = babel.list_translations() + [LC('en')]
     if user is not None and hasattr(user, "locale"):
-        if user.locale == 'zh':
-            return 'zh_Hans_CN'
         return user.locale
+    translations=[item.language for item in babel.list_translations()]+ ['en']
     preferred = [x.replace('-', '_') for x in request.accept_languages.values()]
-    if config.DEFAULT_LANG:
-        return config.DEFAULT_LANG
-    return negotiate_locale(preferred, LANGUAGES.keys())
+    return negotiate_locale(preferred, translations)
 
 
 @babel.timezoneselector
@@ -243,9 +201,24 @@ def requires_basic_auth_if_no_ano(f):
 # simple pagination for the feed
 class Pagination(object):
     def __init__(self, page, per_page, total_count):
-        self.page = page
-        self.per_page = per_page
-        self.total_count = total_count
+        self.page = int(page)
+        self.per_page = int(per_page)
+        self.total_count = int(total_count)
+
+    @property
+    def next_offset(self):
+        return int(self.page * self.per_page)
+
+    @property
+    def previous_offset(self):
+        return int((self.page-2) * self.per_page)
+
+    @property
+    def last_offset(self):
+        last = int(self.total_count) - int(self.per_page)
+        if last < 0:
+            last = 0
+        return int(last)
 
     @property
     def pages(self):
@@ -296,6 +269,14 @@ def shortentitle_filter(s):
         s = s.split(':', 1)[0]
         if len(s) > 60:
             s = textwrap.wrap(s, 60, break_long_words=False)[0] + ' [...]'
+    return s
+
+@app.template_filter('mimetype')
+def mimetype_filter(val):
+    try:
+        s = mimetypes.types_map['.'+val]
+    except:
+        s= 'application/octet-stream'
     return s
 
 
@@ -444,11 +425,18 @@ def feed_osd():
     response.headers["Content-Type"] = "application/xml"
     return response
 
+@app.route("/opds/search/<query>")
+def feed_cc_search(query):
+    return feed_search(query.strip())
+
 
 @app.route("/opds/search", methods=["GET"])
 @requires_basic_auth_if_no_ano
-def feed_search():
-    term = request.args.get("query").strip()
+def feed_normal_search():
+    return feed_search(request.args.get("query").strip())
+
+
+def feed_search(term):
     if current_user.filter_language() != "all":
         filter = db.Books.languages.any(db.Languages.lang_code == current_user.filter_language())
     else:
@@ -457,8 +445,9 @@ def feed_search():
         entries = db.session.query(db.Books).filter(db.or_(db.Books.tags.any(db.Tags.name.like("%" + term + "%")),
                                                            db.Books.authors.any(db.Authors.name.like("%" + term + "%")),
                                                            db.Books.title.like("%" + term + "%"))).filter(filter).all()
-
-        xml = render_template('feed.xml', searchterm=term, entries=entries)
+        entriescount = len(entries) if len(entries) > 0 else 1
+        pagination = Pagination( 1,entriescount,entriescount)
+        xml = render_template('feed.xml', searchterm=term, entries=entries, pagination=pagination)
     else:
         xml = render_template('feed.xml', searchterm="")
     response = make_response(xml)
@@ -469,7 +458,7 @@ def feed_search():
 @app.route("/opds/new")
 @requires_basic_auth_if_no_ano
 def feed_new():
-    off = request.args.get("start_index")
+    off = request.args.get("offset")
     if current_user.filter_language() != "all":
         filter = db.Books.languages.any(db.Languages.lang_code == current_user.filter_language())
     else:
@@ -478,8 +467,9 @@ def feed_new():
         off = 0
     entries = db.session.query(db.Books).filter(filter).order_by(db.Books.timestamp.desc()).offset(off).limit(
         config.NEWEST_BOOKS)
-    xml = render_template('feed.xml', entries=entries,
-                          next_url="/opds/new?start_index=%d" % (int(config.NEWEST_BOOKS) + int(off)))
+    pagination = Pagination((int(off)/(int(config.NEWEST_BOOKS))+1), config.NEWEST_BOOKS,
+                            len(db.session.query(db.Books).filter(filter).all()))
+    xml = render_template('feed.xml', entries=entries, pagination=pagination)
     response = make_response(xml)
     response.headers["Content-Type"] = "application/xml"
     return response
@@ -488,16 +478,16 @@ def feed_new():
 @app.route("/opds/discover")
 @requires_basic_auth_if_no_ano
 def feed_discover():
-    off = request.args.get("start_index")
+    # off = request.args.get("start_index")
     if current_user.filter_language() != "all":
         filter = db.Books.languages.any(db.Languages.lang_code == current_user.filter_language())
     else:
         filter = True
-    if not off:
-        off = 0
-    entries = db.session.query(db.Books).filter(filter).order_by(func.random()).offset(off).limit(config.NEWEST_BOOKS)
-    xml = render_template('feed.xml', entries=entries,
-                          next_url="/opds/discover?start_index=%d" % (int(config.NEWEST_BOOKS) + int(off)))
+    # if not off:
+    # off = 0
+    entries = db.session.query(db.Books).filter(filter).order_by(func.random()).limit(config.NEWEST_BOOKS)
+    pagination = Pagination(1, config.NEWEST_BOOKS,int(config.NEWEST_BOOKS))
+    xml = render_template('feed.xml', entries=entries, pagination=pagination)
     response = make_response(xml)
     response.headers["Content-Type"] = "application/xml"
     return response
@@ -506,7 +496,7 @@ def feed_discover():
 @app.route("/opds/hot")
 @requires_basic_auth_if_no_ano
 def feed_hot():
-    off = request.args.get("start_index")
+    off = request.args.get("offset")
     if current_user.filter_language() != "all":
         filter = db.Books.languages.any(db.Languages.lang_code == current_user.filter_language())
     else:
@@ -515,9 +505,9 @@ def feed_hot():
         off = 0
     entries = db.session.query(db.Books).filter(filter).filter(db.Books.ratings.any(db.Ratings.rating > 9)).offset(
         off).limit(config.NEWEST_BOOKS)
-
-    xml = render_template('feed.xml', entries=entries,
-                          next_url="/opds/hot?start_index=%d" % (int(config.NEWEST_BOOKS) + int(off)))
+    pagination = Pagination((int(off)/(int(config.NEWEST_BOOKS))+1), config.NEWEST_BOOKS,
+                            len(db.session.query(db.Books).filter(filter).filter(db.Books.ratings.any(db.Ratings.rating > 9)).all()))
+    xml = render_template('feed.xml', entries=entries, pagination=pagination)
     response = make_response(xml)
     response.headers["Content-Type"] = "application/xml"
     return response
@@ -526,7 +516,8 @@ def feed_hot():
 @app.route("/opds/author")
 @requires_basic_auth_if_no_ano
 def feed_authorindex():
-    off = request.args.get("start_index")
+    off = request.args.get("offset")
+    # ToDo: Language filter not working
     if current_user.filter_language() != "all":
         filter = db.Books.languages.any(db.Languages.lang_code == current_user.filter_language())
     else:
@@ -534,27 +525,29 @@ def feed_authorindex():
     if not off:
         off = 0
     authors = db.session.query(db.Authors).order_by(db.Authors.sort).offset(off).limit(config.NEWEST_BOOKS)
-    xml = render_template('feed.xml', authors=authors,
-                          next_url="/opds/author?start_index=%d" % (int(config.NEWEST_BOOKS) + int(off)))
+    pagination = Pagination((int(off)/(int(config.NEWEST_BOOKS))+1), config.NEWEST_BOOKS,
+                            len(db.session.query(db.Authors).all()))
+    xml = render_template('feed.xml', authors=authors, pagination=pagination)
     response = make_response(xml)
     response.headers["Content-Type"] = "application/xml"
     return response
 
 
-@app.route("/opds/author/<name>")
+@app.route("/opds/author/<int:id>")
 @requires_basic_auth_if_no_ano
-def feed_author(name):
-    off = request.args.get("start_index")
+def feed_author(id):
+    off = request.args.get("offset")
     if current_user.filter_language() != "all":
         filter = db.Books.languages.any(db.Languages.lang_code == current_user.filter_language())
     else:
         filter = True
     if not off:
         off = 0
-    entries = db.session.query(db.Books).filter(db.Books.authors.any(db.Authors.name.like("%" + name + "%"))).filter(
+    entries = db.session.query(db.Books).filter(db.Books.authors.any(db.Authors.id == id )).filter(
         filter).offset(off).limit(config.NEWEST_BOOKS)
-    xml = render_template('feed.xml', entries=entries,
-                          next_url="/opds/author?start_index=%d" % (int(config.NEWEST_BOOKS) + int(off)))
+    pagination = Pagination((int(off)/(int(config.NEWEST_BOOKS))+1), config.NEWEST_BOOKS,
+                            len(db.session.query(db.Books).filter(db.Books.authors.any(db.Authors.id == id )).filter(filter).all()))
+    xml = render_template('feed.xml', entries=entries, pagination=pagination)
     response = make_response(xml)
     response.headers["Content-Type"] = "application/xml"
     return response
@@ -563,31 +556,33 @@ def feed_author(name):
 @app.route("/opds/category")
 @requires_basic_auth_if_no_ano
 def feed_categoryindex():
-    off = request.args.get("start_index")
+    off = request.args.get("offset")
     if not off:
         off = 0
     entries = db.session.query(db.Tags).order_by(db.Tags.name).offset(off).limit(config.NEWEST_BOOKS)
-    xml = render_template('feed.xml', categorys=entries,
-                          next_url="/opds/category?start_index=%d" % (int(config.NEWEST_BOOKS) + int(off)))
+    pagination = Pagination((int(off)/(int(config.NEWEST_BOOKS))+1), config.NEWEST_BOOKS,
+                            len(db.session.query(db.Tags).all()))
+    xml = render_template('feed.xml', categorys=entries, pagination=pagination)
     response = make_response(xml)
     response.headers["Content-Type"] = "application/xml"
     return response
 
 
-@app.route("/opds/category/<name>")
+@app.route("/opds/category/<int:id>")
 @requires_basic_auth_if_no_ano
-def feed_category(name):
-    off = request.args.get("start_index")
+def feed_category(id):
+    off = request.args.get("offset")
     if current_user.filter_language() != "all":
         filter = db.Books.languages.any(db.Languages.lang_code == current_user.filter_language())
     else:
         filter = True
     if not off:
         off = 0
-    entries = db.session.query(db.Books).filter(db.Books.tags.any(db.Tags.name.like("%" + name + "%"))).order_by(
+    entries = db.session.query(db.Books).filter(db.Books.tags.any(db.Tags.id==id)).order_by(
         db.Books.timestamp.desc()).filter(filter).offset(off).limit(config.NEWEST_BOOKS)
-    xml = render_template('feed.xml', entries=entries,
-                          next_url="/opds/category?start_index=%d" % (int(config.NEWEST_BOOKS) + int(off)))
+    pagination = Pagination((int(off)/(int(config.NEWEST_BOOKS))+1), config.NEWEST_BOOKS,
+                            len(db.session.query(db.Books).filter(db.Books.tags.any(db.Tags.id==id)).filter(filter).all()))
+    xml = render_template('feed.xml', entries=entries, pagination=pagination)
     response = make_response(xml)
     response.headers["Content-Type"] = "application/xml"
     return response
@@ -596,53 +591,71 @@ def feed_category(name):
 @app.route("/opds/series")
 @requires_basic_auth_if_no_ano
 def feed_seriesindex():
-    off = request.args.get("start_index")
-    if not off:
-        off = 0
-    entries = db.session.query(db.Series).order_by(db.Series.name).offset(off).limit(config.NEWEST_BOOKS)
-    xml = render_template('feed.xml', series=entries,
-                          next_url="/opds/series?start_index=%d" % (int(config.NEWEST_BOOKS) + int(off)))
-    response = make_response(xml)
-    response.headers["Content-Type"] = "application/xml"
-    return response
-
-
-@app.route("/opds/series/<name>")
-@requires_basic_auth_if_no_ano
-def feed_series(name):
-    off = request.args.get("start_index")
+    off = request.args.get("offset")
     if current_user.filter_language() != "all":
         filter = db.Books.languages.any(db.Languages.lang_code == current_user.filter_language())
     else:
         filter = True
     if not off:
         off = 0
-    entries = db.session.query(db.Books).filter(db.Books.series.any(db.Series.name.like("%" + name + "%"))).order_by(
-        db.Books.timestamp.desc()).filter(filter).offset(off).limit(config.NEWEST_BOOKS)
-    xml = render_template('feed.xml', entries=entries,
-                          next_url="/opds/series?start_index=%d" % (int(config.NEWEST_BOOKS) + int(off)))
+    entries = db.session.query(db.Series).order_by(db.Series.name).offset(off).limit(config.NEWEST_BOOKS)
+    pagination = Pagination((int(off)/(int(config.NEWEST_BOOKS))+1), config.NEWEST_BOOKS,
+                            len(db.session.query(db.Series).all()))
+    xml = render_template('feed.xml', series=entries, pagination=pagination)
     response = make_response(xml)
     response.headers["Content-Type"] = "application/xml"
     return response
 
 
-@app.route("/opds/download/<int:book_id>/<format>")
+@app.route("/opds/series/<int:id>")
+@requires_basic_auth_if_no_ano
+def feed_series(id):
+    off = request.args.get("offset")
+    if current_user.filter_language() != "all":
+        filter = db.Books.languages.any(db.Languages.lang_code == current_user.filter_language())
+    else:
+        filter = True
+    if not off:
+        off = 0
+    entries = db.session.query(db.Books).filter(db.Books.series.any(db.Series.id == id)).order_by(
+        db.Books.timestamp.desc()).filter(filter).offset(off).limit(config.NEWEST_BOOKS)
+    pagination = Pagination((int(off)/(int(config.NEWEST_BOOKS))+1), config.NEWEST_BOOKS,
+                            len(db.session.query(db.Books).filter(db.Books.series.any(db.Series.id == id)).filter(filter).all()))
+    xml = render_template('feed.xml', entries=entries, pagination=pagination)
+    response = make_response(xml)
+    response.headers["Content-Type"] = "application/xml"
+    return response
+
+
+@app.route("/opds/download/<book_id>/<format>/")
 @requires_basic_auth_if_no_ano
 @download_required
 def get_opds_download_link(book_id, format):
     format = format.split(".")[0]
     book = db.session.query(db.Books).filter(db.Books.id == book_id).first()
     data = db.session.query(db.Data).filter(db.Data.book == book.id).filter(db.Data.format == format.upper()).first()
-    helper.update_download(book_id, int(current_user.id))
+    if current_user.is_authenticated:
+        helper.update_download(book_id, int(current_user.id))
     author = helper.get_normalized_author(book.author_sort)
     file_name = book.title
     if len(author) > 0:
         file_name = author + '-' + file_name
     file_name = helper.get_valid_filename(file_name)
     response = make_response(send_from_directory(os.path.join(config.DB_ROOT, book.path), data.name + "." + format))
-    response.headers["Content-Disposition"] = "attachment; filename=%s.%s" % (data.name, format)
+    response.headers["Content-Disposition"] = "attachment; filename=\"%s.%s\"" % (data.name, format)
     return response
 
+@app.route("/ajax/book/<string:uuid>")
+@requires_basic_auth_if_no_ano
+def get_metadata_calibre_companion(uuid):
+    entry = db.session.query(db.Books).filter(db.Books.uuid.like("%"+uuid+"%")).first()
+    if entry is not None :
+        js = render_template('json.txt',entry=entry)
+        response = make_response(js)
+        response.headers["Content-Type"] = "application/json; charset=utf-8"
+        return response
+    else:
+        return ""
 
 @app.route("/get_authors_json", methods=['GET', 'POST'])
 @login_required_if_no_ano
@@ -1042,11 +1055,14 @@ def advanced_search():
 def get_cover(cover_path):
     return send_from_directory(os.path.join(config.DB_ROOT, cover_path), "cover.jpg")
 
-
-@app.route("/opds/cover/<path:cover_path>")
+@app.route("/opds/thumb_240_240/<path:book_id>")
+@app.route("/opds/cover_240_240/<path:book_id>")
+@app.route("/opds/cover_90_90/<path:book_id>")
+@app.route("/opds/cover/<path:book_id>")
 @requires_basic_auth_if_no_ano
-def feed_get_cover(cover_path):
-    return send_from_directory(os.path.join(config.DB_ROOT, cover_path), "cover.jpg")
+def feed_get_cover(book_id):
+    book = db.session.query(db.Books).filter(db.Books.id == book_id).first()
+    return send_from_directory(os.path.join(config.DB_ROOT, book.path), "cover.jpg")
 
 
 @app.route("/read/<int:book_id>/<format>")
@@ -1110,28 +1126,35 @@ def read_book(book_id, format):
 
 
 @app.route("/download/<int:book_id>/<format>")
-@login_required
+@login_required_if_no_ano
 @download_required
 def get_download_link(book_id, format):
     format = format.split(".")[0]
     book = db.session.query(db.Books).filter(db.Books.id == book_id).first()
     data = db.session.query(db.Data).filter(db.Data.book == book.id).filter(db.Data.format == format.upper()).first()
-    helper.update_download(book_id, int(current_user.id))
-    author = helper.get_normalized_author(book.author_sort)
-    file_name = book.title
-    if len(author) > 0:
-        file_name = author + '-' + file_name
-    file_name = helper.get_valid_filename(file_name)
-    response = make_response(send_from_directory(os.path.join(config.DB_ROOT, book.path), data.name + "." + format))
-    response.headers["Content-Disposition"] = \
-        "attachment; " \
-        "filename={utf_filename}.{suffix};" \
-        "filename*=UTF-8''{utf_filename}.{suffix}".format(
-            utf_filename=file_name.encode('utf-8'),
-            suffix=format
-        )
-    return response
-
+    if data:
+        if current_user.is_authenticated:         # collect downloaded books only for registered user and not for anonymous user
+            helper.update_download(book_id, int(current_user.id))
+        author = helper.get_normalized_author(book.author_sort)
+        file_name = book.title
+        if len(author) > 0:
+            file_name = author + '-' + file_name
+        file_name = helper.get_valid_filename(file_name)
+        response = make_response(send_from_directory(os.path.join(config.DB_ROOT, book.path), data.name + "." + format))
+        try:
+            response.headers["Content-Type"]=mimetypes.types_map['.'+format]
+        except:
+            pass
+        response.headers["Content-Disposition"] = \
+            "attachment; " \
+            "filename={utf_filename}.{suffix};" \
+            "filename*=UTF-8''{utf_filename}.{suffix}".format(
+                utf_filename=file_name.encode('utf-8'),
+                suffix=format
+            )
+        return response
+    else:
+        abort(404)
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -1249,7 +1272,7 @@ def remove_from_shelf(shelf_id, book_id):
     shelf = ub.session.query(ub.Shelf).filter(ub.Shelf.id == shelf_id).first()
     if not shelf.is_public and not shelf.user_id == int(current_user.id):
         flash("Sorry you are not allowed to remove a book from this shelf: %s" % shelf.name)
-        return redirect(url_for('index', _external=True))
+        return redirect(url_for('index'))
 
     book_shelf = ub.session.query(ub.BookShelf).filter(ub.BookShelf.shelf == shelf_id,
                                                        ub.BookShelf.book_id == book_id).first()
@@ -1357,7 +1380,7 @@ def show_shelf(shelf_id):
 
 
 @app.route("/shelf/order/<int:shelf_id>", methods=["GET", "POST"])
-@login_required_if_no_ano
+@login_required
 def order_shelf(shelf_id):
     if request.method == "POST":
         to_save = request.form.to_dict()
@@ -1398,7 +1421,12 @@ def profile():
             lang.name = _(isoLanguages.get(part3=lang.lang_code).name)
     translations = babel.list_translations() + [LC('en')]
     for book in content.downloads:
-        downloads.append(db.session.query(db.Books).filter(db.Books.id == book.book_id).first())
+        downloadBook=db.session.query(db.Books).filter(db.Books.id == book.book_id).first()
+        if downloadBook:
+            downloads.append(db.session.query(db.Books).filter(db.Books.id == book.book_id).first())
+        else:
+            ub.session.query(ub.Downloads).filter(book.book_id == ub.Downloads.book_id).delete()
+            ub.session.commit()
     if request.method == "POST":
         to_save = request.form.to_dict()
         content.random_books = 0
@@ -1512,7 +1540,7 @@ def new_user():
             ub.session.add(content)
             ub.session.commit()
             flash(_("User '%(user)s' created", user=content.nickname), category="success")
-            return redirect(url_for('admin', _external=True))
+            return redirect(url_for('admin'))
         except IntegrityError:
             ub.session.rollback()
             flash(_(u"Found an existing account for this email address or nickname."), category="error")
@@ -1541,15 +1569,13 @@ def edit_mailsettings():
             flash(_(u"Mail settings updated"), category="success")
         except e:
             flash(e, category="error")
-        if to_save["test"]:
+        if "test" in to_save and to_save["test"]:
             result=helper.send_test_mail(current_user.kindle_mail)
             if result is None:
                 flash(_(u"Test E-Mail successfully send to %(kindlemail)s", kindlemail=current_user.kindle_mail),
                       category="success")
             else:
                 flash(_(u"There was an error sending the Test E-Mail: %(res)s", res=result), category="error")
-        else:
-            flash(_(u"Mail settings updated"), category="success")
     return render_template("email_edit.html", content=content, title=_("Edit mail settings"))
 
 
@@ -1568,15 +1594,20 @@ def edit_user(user_id):
             lang.name = _(isoLanguages.get(part3=lang.lang_code).name)
     translations = babel.list_translations() + [LC('en')]
     for book in content.downloads:
-        downloads.append(db.session.query(db.Books).filter(db.Books.id == book.book_id).first())
+        downloadBook=db.session.query(db.Books).filter(db.Books.id == book.book_id).first()
+        if downloadBook:
+            downloads.append(db.session.query(db.Books).filter(db.Books.id == book.book_id).first())
+        else:
+            ub.session.query(ub.Downloads).filter(book.book_id == ub.Downloads.book_id).delete()
+            ub.session.commit()
     if request.method == "POST":
         to_save = request.form.to_dict()
         if "delete" in to_save:
             ub.session.delete(content)
             flash(_(u"User '%(nick)s' deleted", nick=content.nickname), category="success")
-            return redirect(url_for('admin', _external=True))
+            return redirect(url_for('admin'))
         else:
-            if to_save["password"]:
+            if "password" in to_save and to_save["password"]:
                 content.password = generate_password_hash(to_save["password"])
 
             if "admin_role" in to_save and not content.role_admin():
@@ -1620,7 +1651,7 @@ def edit_user(user_id):
                 content.hot_books = 1
             if "default_language" in to_save:
                 content.default_language = to_save["default_language"]
-            if to_save["locale"]:
+            if "locale" in to_save and to_save["locale"]:
                 content.locale = to_save["locale"]
             if to_save["email"] and to_save["email"] != content.email:
                 content.email = to_save["email"]
@@ -1637,7 +1668,7 @@ def edit_user(user_id):
 
 
 @app.route("/admin/book/<int:book_id>", methods=['GET', 'POST'])
-@login_required
+@login_required_if_no_ano
 @edit_required
 def edit_book(book_id):
     # create the function for sorting...
@@ -1835,18 +1866,18 @@ def edit_book(book_id):
             for b in edited_books_id:
                 helper.update_dir_stucture(b)
             if "detail_view" in to_save:
-                return redirect(url_for('show_book', id=book.id, _external=True))
+                return redirect(url_for('show_book', id=book.id))
             else:
                 return render_template('edit_book.html', book=book, authors=author_names, cc=cc)
         else:
             return render_template('edit_book.html', book=book, authors=author_names, cc=cc)
     else:
         flash(_(u"Error opening eBook. File does not exist or file is not accessible:"), category="error")
-        return redirect(url_for("index", _external=True))
+        return redirect(url_for("index"))
 
 
 @app.route("/upload", methods=["GET", "POST"])
-@login_required
+@login_required_if_no_ano
 @upload_required
 def upload():
     if not config.UPLOADING:
@@ -1872,12 +1903,12 @@ def upload():
                 os.makedirs(filepath)
             except OSError:
                 flash(_(u"Failed to create path %s (Permission denied)." % filepath), category="error")
-                return redirect(url_for('index', _external=True))
+                return redirect(url_for('index'))
         try:
             copyfile(meta.file_path, saved_filename)
         except OSError, e:
             flash(_(u"Failed to store file %s (Permission denied)." % saved_filename), category="error")
-            return redirect(url_for('index', _external=True))
+            return redirect(url_for('index'))
         try:
             os.unlink(meta.file_path)
         except OSError, e:
