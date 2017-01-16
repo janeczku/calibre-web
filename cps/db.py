@@ -110,6 +110,8 @@ class Identifiers(Base):
             return u"http://dx.doi.org/{0}".format(self.val)
         elif self.type == "goodreads":
             return u"http://www.goodreads.com/book/show/{0}".format(self.val)
+        elif self.type == "douban":
+            return u"https://book.douban.com/subject/{0}".format(self.val)
         else:
             return u""
 
