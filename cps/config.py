@@ -53,10 +53,9 @@ DB_ROOT = check_setting_str(CFG, 'General', 'DB_ROOT', "")
 APP_DB_ROOT = check_setting_str(CFG, 'General', 'APP_DB_ROOT', os.getcwd())
 MAIN_DIR = check_setting_str(CFG, 'General', 'MAIN_DIR', os.getcwd())
 LOG_DIR = check_setting_str(CFG, 'General', 'LOG_DIR', os.getcwd())
-PORT = check_setting_int(CFG,  'General', 'PORT', 8083)
+PORT = check_setting_int(CFG, 'General', 'PORT', 8083)
 NEWEST_BOOKS = check_setting_str(CFG, 'General', 'NEWEST_BOOKS', 60)
 RANDOM_BOOKS = check_setting_int(CFG, 'General', 'RANDOM_BOOKS', 4)
-DEFAULT_LANG = check_setting_str(CFG, 'General', 'DEFAULT_LANG', "")
 
 CheckSection('Advanced')
 TITLE_REGEX = check_setting_str(CFG, 'Advanced', 'TITLE_REGEX', '^(A|The|An|Der|Die|Das|Den|Ein|Eine|Einen|Dem|Des|Einem|Eines)\s+')
@@ -73,7 +72,7 @@ if DB_ROOT == "":
 
 configval = {"DB_ROOT": DB_ROOT, "APP_DB_ROOT": APP_DB_ROOT, "MAIN_DIR": MAIN_DIR, "LOG_DIR": LOG_DIR, "PORT": PORT,
             "NEWEST_BOOKS": NEWEST_BOOKS, "DEVELOPMENT": DEVELOPMENT, "TITLE_REGEX": TITLE_REGEX,
-            "PUBLIC_REG": PUBLIC_REG, "UPLOADING": UPLOADING, "ANON_BROWSE": ANON_BROWSE, "DEFAULT_LANG": DEFAULT_LANG}
+            "PUBLIC_REG": PUBLIC_REG, "UPLOADING": UPLOADING, "ANON_BROWSE": ANON_BROWSE}
 
 
 def save_config(configval):
@@ -86,7 +85,6 @@ def save_config(configval):
     new_config['General']['LOG_DIR'] = configval["LOG_DIR"]
     new_config['General']['PORT'] = configval["PORT"]
     new_config['General']['NEWEST_BOOKS'] = configval["NEWEST_BOOKS"]
-    new_config['General']['DEFAULT_LANG'] = configval["DEFAULT_LANG"]
     new_config['Advanced'] = {}
     new_config['Advanced']['TITLE_REGEX'] = configval["TITLE_REGEX"]
     new_config['Advanced']['DEVELOPMENT'] = int(configval["DEVELOPMENT"])

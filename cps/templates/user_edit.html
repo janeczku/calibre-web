@@ -13,7 +13,7 @@
       <label for="email">{{_('Email address')}}</label>
       <input type="email" class="form-control" name="email" id="email" value="{{ content.email if content.email != None }}" autocomplete="off" required> 
     </div>
-    {% if g.user and g.user.role_passwd() or g.user.role_admin()%}
+    {% if ( g.user and g.user.role_passwd() or g.user.role_admin() ) and not content.role_anonymous() %}
     <div class="form-group">
       <label for="password">{{_('Password')}}</label>
       <input type="password" class="form-control" name="password" id="password" value="" autocomplete="off">
@@ -27,7 +27,7 @@
     <label for="locale">{{_('Language')}}</label>
         <select name="locale" id="locale" class="form-control">
             {%  for translation in translations %}
-                <option value="{{translation.language}}" {% if translation.language == content.locale %}selected{% endif %}>{{ translation.display_name }}</option>
+                <option value="{{translation}}" {% if translation|string == content.locale %}selected{% endif %}>{{ translation.display_name }}</option>
             {% endfor %}
         </select>
     </div>
@@ -62,11 +62,12 @@
     </div>
 
     {% if g.user and g.user.role_admin() and not profile %}
-
+    {% if not content.role_anonymous() %}
     <div class="form-group">
       <input type="checkbox" name="admin_role" id="admin_role" {% if content.role_admin() %}checked{% endif %}>
       <label for="admin_role">{{_('Admin user')}}</label>
     </div>
+    {% endif %}
     <div class="form-group">
       <input type="checkbox" name="download_role" id="download_role" {% if content.role_download() %}checked{% endif %}>
       <label for="download_role">{{_('Allow Downloads')}}</label>
@@ -79,19 +80,21 @@
       <input type="checkbox" name="edit_role" id="edit_role" {% if content.role_edit() %}checked{% endif %}>
       <label for="edit_role">{{_('Allow Edit')}}</label>
     </div>
-    <div class="form-group">
-      <input type="checkbox" name="passwd_role" id="passwd_role" {% if content.role_passwd() %}checked{% endif %}>
-      <label for="passwd_role">{{_('Allow Changing Password')}}</label>
-    </div>
+      {% if not content.role_anonymous() %}
+        <div class="form-group">
+          <input type="checkbox" name="passwd_role" id="passwd_role" {% if content.role_passwd() %}checked{% endif %}>
+          <label for="passwd_role">{{_('Allow Changing Password')}}</label>
+        </div>
+      {% endif %}
     {% endif %}
-    {% if g.user and g.user.role_admin() and not profile and not new_user %}
-    <div class="checkbox">
-      <label>
-        <input type="checkbox" name="delete"> {{_('Delete this user')}}
-      </label>
-    </div>
+    {% if g.user and g.user.role_admin() and not profile and not new_user and not content.role_anonymous() %}
+      <div class="checkbox">
+        <label>
+          <input type="checkbox" name="delete"> {{_('Delete this user')}}
+        </label>
+      </div>
     {% endif %}
-    <button type="submit" class="btn btn-default">{{_('Submit')}}</button>
+    <button type="submit" id="submit" class="btn btn-default">{{_('Submit')}}</button>
     {% if not profile %}
       <a href="{{ url_for('admin') }}" class="btn btn-default">{{_('Back')}}</a>
     {% endif %}

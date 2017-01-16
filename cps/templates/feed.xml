@@ -2,18 +2,30 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
   <id>urn:uuid:2853dacf-ed79-42f5-8e8a-a7bb3d1ae6a2</id>
   <link rel="self"
-        href="{{url_for('feed_index')}}"
-        type="application/atom+xml;profile=opds-catalog;kind=navigation"/>
+        href="{{request.script_root + request.full_path}}"
+        type="application/atom+xml;profile=opds-catalog;type=feed;kind=navigation"/>
   <link rel="start"
         href="{{url_for('feed_index')}}"
-        type="application/atom+xml;profile=opds-catalog;kind=navigation"/>
+        type="application/atom+xml;profile=opds-catalog;type=feed;kind=navigation"/>
   <link rel="up"
         href="{{url_for('feed_index')}}"
-        type="application/atom+xml;profile=opds-catalog;kind=navigation"/>
+        type="application/atom+xml;profile=opds-catalog;type=feed;kind=navigation"/>
+{% if pagination.has_prev %}
+  <link rel="first"
+        href="{{request.script_root + request.path}}"
+        type="application/atom+xml;profile=opds-catalog;type=feed;kind=navigation"/>
+{% endif %}
+{% if pagination.has_next %}
   <link rel="next"
         title="{{_('Next')}}"
-        href="{{ next_url }}"
-        type="application/atom+xml;profile=opds-catalog;kind=navigation"/>
+        href="{{ request.script_root + request.path }}?offset={{ pagination.next_offset }}"
+        type="application/atom+xml;profile=opds-catalog;type=feed;kind=navigation"/>
+{% endif %}
+{% if pagination.has_prev %}
+  <link rel="previous"
+        href="{{request.script_root + request.path}}?offset={{ pagination.previous_offset }}"
+        type="application/atom+xml;profile=opds-catalog;type=feed;kind=navigation"/>
+{% endif %}
   <link rel="search"
         href="{{url_for('feed_osd')}}"
         type="application/opensearchdescription+xml"/>
@@ -30,7 +42,6 @@
     <updated>{{entry.timestamp}}</updated>
     <author>
       <name>{{entry.authors[0].name}}</name>
-      <uri>{{entry.authors[0].name}}</uri>
     </author>
     <language>{{entry.language}}</language>
     {% for tag in entry.tags %}
@@ -38,45 +49,39 @@
               term="{{tag.name}}"
               label="{{tag.name}}"/>
     {% endfor %}
-    <summary>{% if entry.comments[0] %}{{entry.comments[0].text|striptags}}{% endif %}</summary>
+    {% if entry.comments[0] %}<summary>{{entry.comments[0].text|striptags}}</summary>{% endif %}
     {% if entry.has_cover %}
-    <link rel="http://opds-spec.org/image" href="{{ url_for('feed_get_cover', cover_path=entry.path) }}" type="image/jpg"/>
-    <link rel="http://opds-spec.org/cover"  href="{{ url_for('feed_get_cover', cover_path=entry.path) }}" type="image/jpg"/>
-    <link rel="http://opds-spec.org/image/thumbnail" href="{{ url_for('feed_get_cover', cover_path=entry.path) }}" type="image/jpg"/>
+    <link type="image/jpeg" href="{{url_for('feed_get_cover', book_id=entry.id)}}" rel="http://opds-spec.org/image"/>
+    <link type="image/jpeg" href="{{url_for('feed_get_cover', book_id=entry.id)}}" rel="http://opds-spec.org/image/thumbnail"/>
     {% endif %}
     {% for format in entry.data %}
     <link rel="http://opds-spec.org/acquisition" href="{{ url_for('get_opds_download_link', book_id=entry.id, format=format.format|lower)}}"
-          length="{{format.uncompressed_size}}" mtime="{{entry.timestamp}}"
-          {% if format.format|lower == "epub" %}
-          type="application/epub+zip"/>
-          {% else %}
-          type="application/x-mobipocket-ebook"/>
-          {% endif %}
+          length="{{format.uncompressed_size}}" mtime="{{entry.timestamp}}" type="{{format.format|lower|mimetype}}"/>
     {% endfor %}
   </entry>
   {% endfor %}
   {% for author in authors %}
   <entry>
     <title>{{author.name}}</title>
-    <id>{{ url_for('feed_author', name=author.name) }}</id>
-    <link type="application/atom+xml;profile=opds-catalog;type=feed;kind=acquisition" href="{{url_for('feed_author', name=author.name)}}" />
-    <link type="application/atom+xml" href="{{url_for('feed_author', name=author.name)}}" rel="subsection"/>
+    <id>{{ url_for('feed_author', id=author.id) }}</id>
+    <link type="application/atom+xml;profile=opds-catalog;type=feed;kind=acquisition" href="{{url_for('feed_author', id=author.id)}}"/>
+    <link type="application/atom+xml" href="{{url_for('feed_author', id=author.id)}}" rel="subsection"/>
   </entry>
   {% endfor %}
   {% for entry in categorys %}
   <entry>
     <title>{{entry.name}}</title>
-    <id>{{ url_for('feed_category', name=entry.name) }}</id>
-    <link type="application/atom+xml;profile=opds-catalog;type=feed;kind=acquisition" href="{{url_for('feed_category', name=entry.name)}}" />
-    <link type="application/atom+xml" href="{{url_for('feed_category', name=entry.name)}}" rel="subsection"/>
+    <id>{{ url_for('feed_category', id=entry.id) }}</id>
+    <link type="application/atom+xml;profile=opds-catalog;type=feed;kind=acquisition" href="{{url_for('feed_category', id=entry.id)}}"/>
+    <link type="application/atom+xml" href="{{url_for('feed_category', id=entry.id)}}" rel="subsection"/>
  </entry>
   {% endfor %}
   {% for entry in series %}
   <entry>
     <title>{{entry.name}}</title>
-    <id>{{ url_for('feed_series', name=entry.name) }}</id>
-    <link type="application/atom+xml;profile=opds-catalog;type=feed;kind=acquisition" href="{{url_for('feed_series', name=entry.name)}}" />
-    <link type="application/atom+xml" href="{{url_for('feed_series', name=entry.name)}}" rel="subsection"/>
+    <id>{{ url_for('feed_series', id=entry.id) }}</id>
+    <link type="application/atom+xml;profile=opds-catalog;type=feed;kind=acquisition" href="{{url_for('feed_series', id=entry.id)}}" />
+    <link type="application/atom+xml" href="{{url_for('feed_series', id=entry.id)}}" rel="subsection"/>
   </entry>
   {% endfor %}
 </feed>

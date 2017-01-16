@@ -24,7 +24,7 @@
     <script src="{{ url_for('static', filename='js/libs/jquery.min.js') }}"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/underscore.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/underscore-min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/intention.js') }}"></script>
     <script src="{{ url_for('static', filename='js/context.js') }}"></script>
     <script src="{{ url_for('static', filename='js/plugins.js') }}"></script>
@@ -146,10 +146,11 @@
                   <li><a href="{{url_for('show_shelf', shelf_id=shelf.id)}}"><span class="glyphicon glyphicon-list"></span> {{shelf.name}}</a></li>
                 {% endfor %}
               {% if not g.user.is_anonymous() %}
-                <li class="create-shelf"><a href="{{url_for('create_shelf')}}">{{_('Create a Shelf')}}</a></li>
+                <li id="nav_createshelf" class="create-shelf"><a href="{{url_for('create_shelf')}}">{{_('Create a Shelf')}}</a></li>
+                <li id="nav_about"><a href="{{url_for('stats')}}"><span class="glyphicon glyphicon-info-sign"></span> {{_('About')}}</a></li>
               {% endif %}
               {% endif %}
-              <li><a href="{{url_for('stats')}}"><span class="glyphicon glyphicon-info-sign"></span> {{_('About')}}</a></li>
+
             </ul>
           </nav>
         </div>
