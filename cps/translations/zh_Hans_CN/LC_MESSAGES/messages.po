@@ -41,7 +41,7 @@ msgstr "发送到Kindle"
 
 #: cps/helper.py:174 cps/helper.py:189
 msgid "Could not find any formats suitable for sending by email"
-msgstr "无法适合邮件发送的格式"
+msgstr "无法找到适合邮件发送的格式"
 
 #: cps/helper.py:183
 msgid "Could not convert epub to mobi"
@@ -156,7 +156,7 @@ msgstr "此书已被成功发给 %(kindlemail)s"
 #: cps/web.py:1212
 #, python-format
 msgid "There was an error sending this book: %(res)s"
-msgstr "发送 %(res)s 这本书的时候出现错误"
+msgstr "发送这本书的时候出现错误: %(res)s"
 
 #: cps/web.py:1214
 msgid "Please configure your kindle email address first..."
