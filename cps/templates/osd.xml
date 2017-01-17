@@ -8,7 +8,7 @@
    <Url type="text/html"
         template="{{url_for('search')}}?query={searchTerms}"/>
    <Url type="application/atom+xml"
-        template="{{url_for('feed_search')}}?query={searchTerms}"/>
+        template="{{url_for('feed_normal_search')}}?query={searchTerms}"/>
    <SyndicationRight>open</SyndicationRight>
    <Language>de-DE</Language>
    <OutputEncoding>UTF-8</OutputEncoding>
