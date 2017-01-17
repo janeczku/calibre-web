@@ -250,7 +250,7 @@ class Pagination(object):
 def url_for_other_page(page):
     args = request.view_args.copy()
     args['page'] = page
-    return url_for(request.endpoint, _external=True, **args)
+    return url_for(request.endpoint, **args)
 
 
 app.jinja_env.globals['url_for_other_page'] = url_for_other_page
@@ -828,7 +828,7 @@ def series(name, page):
                                title=_(u"Series: %(serie)s", serie=name))
     else:
         flash(_(u"Error opening eBook. File does not exist or file is not accessible:"), category="error")
-        return redirect(url_for("index", _external=True))
+        return redirect(url_for("index"))
 
 
 @app.route("/language")
@@ -924,7 +924,7 @@ def show_book(id):
         return render_template('detail.html', entry=entries, cc=cc, title=entries.title, books_shelfs=book_in_shelfs)
     else:
         flash(_(u"Error opening eBook. File does not exist or file is not accessible:"), category="error")
-        return redirect(url_for("index", _external=True))
+        return redirect(url_for("index"))
 
 
 @app.route("/admin")
@@ -961,7 +961,7 @@ def shutdown():
     # add restart command to queue
     global_queue.put("something")
     flash(_(u"Server restarts"), category="info")
-    return redirect(url_for("index", _external=True))
+    return redirect(url_for("index"))
 
 
 @app.route("/search", methods=["GET"])
@@ -1162,7 +1162,7 @@ def register():
     if not config.PUBLIC_REG:
         abort(404)
     if current_user is not None and current_user.is_authenticated:
-        return redirect(url_for('index', _external=True))
+        return redirect(url_for('index'))
 
     if request.method == "POST":
         to_save = request.form.to_dict()
@@ -1186,7 +1186,7 @@ def register():
                 flash(_(u"An unknown error occured. Please try again later."), category="error")
                 return render_template('register.html', title="register")
             flash("Your account has been created. Please login.", category="success")
-            return redirect(url_for('login', _external=True))
+            return redirect(url_for('login'))
         else:
             flash(_(u"This username or email address is already in use."), category="error")
             return render_template('register.html', title="register")
@@ -1199,7 +1199,7 @@ def login():
     error = None
 
     if current_user is not None and current_user.is_authenticated:
-        return redirect(url_for('index', _external=True))
+        return redirect(url_for('index'))
 
     if request.method == "POST":
         form = request.form.to_dict()
@@ -1209,7 +1209,7 @@ def login():
             login_user(user, remember=True)
             flash(_(u"you are now logged in as: '%(nickname)s'", nickname=user.nickname), category="success")
             # test=
-            return redirect(url_for("index", _external=True))
+            return redirect(url_for("index"))
         else:
             flash(_(u"Wrong Username or Password"), category="error")
 
@@ -1221,7 +1221,7 @@ def login():
 def logout():
     if current_user is not None and current_user.is_authenticated:
         logout_user()
-    return redirect(url_for('login', _external=True))
+    return redirect(url_for('login'))
 
 
 @app.route('/send/<int:book_id>')
@@ -1250,7 +1250,7 @@ def add_to_shelf(shelf_id, book_id):
     shelf = ub.session.query(ub.Shelf).filter(ub.Shelf.id == shelf_id).first()
     if not shelf.is_public and not shelf.user_id == int(current_user.id):
         flash("Sorry you are not allowed to add a book to the the shelf: %s" % shelf.name)
-        return redirect(url_for('index', _external=True))
+        return redirect(url_for('index'))
     maxO = ub.session.query(func.max(ub.BookShelf.order)).filter(ub.BookShelf.shelf == shelf_id).first()
     if maxO[0] is None:
         maxOrder = 0
@@ -1272,7 +1272,7 @@ def remove_from_shelf(shelf_id, book_id):
     shelf = ub.session.query(ub.Shelf).filter(ub.Shelf.id == shelf_id).first()
     if not shelf.is_public and not shelf.user_id == int(current_user.id):
         flash("Sorry you are not allowed to remove a book from this shelf: %s" % shelf.name)
-        return redirect(url_for('index', _external=True))
+        return redirect(url_for('index'))
 
     book_shelf = ub.session.query(ub.BookShelf).filter(ub.BookShelf.shelf == shelf_id,
                                                        ub.BookShelf.book_id == book_id).first()
@@ -1356,7 +1356,7 @@ def delete_shelf(shelf_id):
         ub.session.query(ub.BookShelf).filter(ub.BookShelf.shelf == shelf_id).delete()
         ub.session.commit()
         flash(_("successfully deleted shelf %(name)s", name=cur_shelf.name, category="success"))
-    return redirect(url_for('index', _external=True))
+    return redirect(url_for('index'))
 
 
 @app.route("/shelf/<int:shelf_id>")
@@ -1540,7 +1540,7 @@ def new_user():
             ub.session.add(content)
             ub.session.commit()
             flash(_("User '%(user)s' created", user=content.nickname), category="success")
-            return redirect(url_for('admin', _external=True))
+            return redirect(url_for('admin'))
         except IntegrityError:
             ub.session.rollback()
             flash(_(u"Found an existing account for this email address or nickname."), category="error")
@@ -1605,7 +1605,7 @@ def edit_user(user_id):
         if "delete" in to_save:
             ub.session.delete(content)
             flash(_(u"User '%(nick)s' deleted", nick=content.nickname), category="success")
-            return redirect(url_for('admin', _external=True))
+            return redirect(url_for('admin'))
         else:
             if "password" in to_save and to_save["password"]:
                 content.password = generate_password_hash(to_save["password"])
@@ -1866,14 +1866,14 @@ def edit_book(book_id):
             for b in edited_books_id:
                 helper.update_dir_stucture(b)
             if "detail_view" in to_save:
-                return redirect(url_for('show_book', id=book.id, _external=True))
+                return redirect(url_for('show_book', id=book.id))
             else:
                 return render_template('edit_book.html', book=book, authors=author_names, cc=cc)
         else:
             return render_template('edit_book.html', book=book, authors=author_names, cc=cc)
     else:
         flash(_(u"Error opening eBook. File does not exist or file is not accessible:"), category="error")
-        return redirect(url_for("index", _external=True))
+        return redirect(url_for("index"))
 
 
 @app.route("/upload", methods=["GET", "POST"])
@@ -1903,12 +1903,12 @@ def upload():
                 os.makedirs(filepath)
             except OSError:
                 flash(_(u"Failed to create path %s (Permission denied)." % filepath), category="error")
-                return redirect(url_for('index', _external=True))
+                return redirect(url_for('index'))
         try:
             copyfile(meta.file_path, saved_filename)
         except OSError, e:
             flash(_(u"Failed to store file %s (Permission denied)." % saved_filename), category="error")
-            return redirect(url_for('index', _external=True))
+            return redirect(url_for('index'))
         try:
             os.unlink(meta.file_path)
         except OSError, e:
