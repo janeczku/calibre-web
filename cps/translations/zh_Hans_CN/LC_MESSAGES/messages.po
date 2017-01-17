@@ -28,7 +28,7 @@ msgstr "Calibre-web 测试邮件"
 
 #: cps/helper.py:99 cps/helper.py:152
 msgid "This email has been sent via calibre web."
-msgstr "此邮件已通过calibre web发送"
+msgstr "此邮件由calibre web发送"
 
 #: cps/helper.py:133 cps/helper.py:221
 #, python-format
