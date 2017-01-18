@@ -426,6 +426,7 @@ def feed_osd():
     return response
 
 @app.route("/opds/search/<query>")
+@requires_basic_auth_if_no_ano
 def feed_cc_search(query):
     return feed_search(query.strip())
 
@@ -956,6 +957,7 @@ def stats():
 
 
 @app.route("/shutdown")
+@login_required
 def shutdown():
     # logout_user()
     # add restart command to queue
