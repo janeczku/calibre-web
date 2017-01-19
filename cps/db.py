@@ -105,7 +105,7 @@ class Identifiers(Base):
         if self.type == "amazon":
             return u"https://amzn.com/{0}".format(self.val)
         elif self.type == "isbn":
-            return u"http://http://www.worldcat.org/isbn/{0}".format(self.val)
+            return u"http://www.worldcat.org/isbn/{0}".format(self.val)
         elif self.type == "doi":
             return u"http://dx.doi.org/{0}".format(self.val)
         elif self.type == "goodreads":
