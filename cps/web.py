@@ -426,6 +426,7 @@ def feed_osd():
     return response
 
 @app.route("/opds/search/<query>")
+@requires_basic_auth_if_no_ano
 def feed_cc_search(query):
     return feed_search(query.strip())
 
@@ -956,6 +957,7 @@ def stats():
 
 
 @app.route("/shutdown")
+@login_required
 def shutdown():
     # logout_user()
     # add restart command to queue
@@ -1560,10 +1562,7 @@ def edit_mailsettings():
         content.mail_login = to_save["mail_login"]
         content.mail_password = to_save["mail_password"]
         content.mail_from = to_save["mail_from"]
-        if "mail_use_ssl" in to_save:
-            content.mail_use_ssl = 1
-        else:
-            content.mail_use_ssl = 0
+        content.mail_use_ssl = int(to_save["mail_use_ssl"])
         try:
             ub.session.commit()
             flash(_(u"Mail settings updated"), category="success")
