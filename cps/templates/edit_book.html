@@ -3,8 +3,10 @@
 {% if book %}
 <div class="col-sm-3 col-lg-3 col-xs-12">
   <div class="cover">
-    {% if book.has_cover is defined %}
+    {% if book.has_cover %}
       <img src="{{ url_for('get_cover', cover_path=book.path) }}" />
+    {% else %}
+      <img src="{{ url_for('static', filename='generic_cover.jpg') }}" />
     {% endif %}
   </div>
 </div>
