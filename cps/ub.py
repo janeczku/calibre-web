@@ -7,7 +7,6 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import *
 from flask_login import AnonymousUserMixin
 import os
-# import config
 import traceback
 from werkzeug.security import generate_password_hash
 from flask_babel import gettext as _
@@ -98,6 +97,9 @@ class UserBase():
 
 class Config():
     def __init__(self):
+        self.config_main_dir=os.path.join(os.path.normpath(os.path.dirname(
+            os.path.realpath(__file__)) + os.sep + ".." + os.sep))
+        self.db_configured=None
         self.loadSettings()
 
     def loadSettings(self):
@@ -112,6 +114,18 @@ class Config():
         self.config_uploading = data.config_uploading
         self.config_anonbrowse = data.config_anonbrowse
         self.config_public_reg = data.config_public_reg
+        if self.config_calibre_dir is not None and (self.db_configured is None or self.db_configured is True):
+            self.db_configured=True
+        else:
+            self.db_configured = False
+
+    @property
+    def get_main_dir(self):
+        return self.config_main_dir
+
+    @property
+    def is_Calibre_Configured(self):
+        return self.db_configured
 
 
 class User(UserBase,Base):
@@ -135,7 +149,7 @@ class User(UserBase,Base):
 
 
 class Anonymous(AnonymousUserMixin,UserBase):
-    anon_browse = None
+    # anon_browse = None
 
     def __init__(self):
         self.loadSettings()

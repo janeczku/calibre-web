@@ -255,7 +255,7 @@ def update_dir_stucture(book_id,calibrepath):
         book.path = book.path.split(os.sep)[0] + os.sep + new_titledir
     
     if authordir != new_authordir:
-        new_author_path = os.path.join(os.path.join(config.DB_ROOT, new_authordir), os.path.basename(path))
+        new_author_path = os.path.join(os.path.join(calibrepath, new_authordir), os.path.basename(path))
         os.renames(path, new_author_path)
         book.path = new_authordir + os.sep + book.path.split(os.sep)[1]
     db.session.commit()
