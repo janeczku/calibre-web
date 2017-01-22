@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import db, ub
-import config
+# import config
 from flask import current_app as app
 import logging
 import smtplib
@@ -33,11 +33,12 @@ def update_download(book_id, user_id):
         ub.session.commit()
 
 
-def make_mobi(book_id):
+def make_mobi(book_id,calibrepath):
+    vendorpath = os.path.join(os.path.normpath(os.path.dirname(os.path.realpath(__file__)) + os.sep + "../vendor" + os.sep))
     if sys.platform == "win32":
-        kindlegen = os.path.join(config.MAIN_DIR, "vendor", u"kindlegen.exe")
+        kindlegen = os.path.join(vendorpath, u"kindlegen.exe")
     else:
-        kindlegen = os.path.join(config.MAIN_DIR, "vendor", u"kindlegen")
+        kindlegen = os.path.join(vendorpath, u"kindlegen")
     if not os.path.exists(kindlegen):
         app.logger.error("make_mobi: kindlegen binary not found in: %s" % kindlegen)
         return None
@@ -47,7 +48,7 @@ def make_mobi(book_id):
         app.logger.error("make_mobi: epub format not found for book id: %d" % book_id)
         return None
 
-    file_path = os.path.join(config.DB_ROOT, book.path, data.name)
+    file_path = os.path.join(calibrepath, book.path, data.name)
     if os.path.exists(file_path + u".epub"):
         p = subprocess.Popen((kindlegen + " \"" + file_path + u".epub\" ").encode(sys.getfilesystemencoding()),
                              shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE)
@@ -90,15 +91,13 @@ class StderrLogger(object):
         else:
             self.buffer=self.buffer+message
 
-def send_test_mail(kindle_mail):
+def send_raw_email(kindle_mail,msg):
     settings = ub.get_mail_settings()
-    msg = MIMEMultipart()
+
     msg['From'] = settings["mail_from"]
     msg['To'] = kindle_mail
-    msg['Subject'] = _('Calibre-web test email')
-    text = _('This email has been sent via calibre web.')
 
-    use_ssl = settings.get('mail_use_ssl', 0)
+    use_ssl = int(settings.get('mail_use_ssl', 0))
 
     # convert MIME message to string
     fp = StringIO()
@@ -113,16 +112,14 @@ def send_test_mail(kindle_mail):
         org_stderr = smtplib.stderr
         smtplib.stderr = StderrLogger()
 
-        if int(use_ssl) == 2:
+        if use_ssl == 2:
             mailserver = smtplib.SMTP_SSL(settings["mail_server"], settings["mail_port"], timeout)
         else:
             mailserver = smtplib.SMTP(settings["mail_server"], settings["mail_port"], timeout)
         mailserver.set_debuglevel(1)
 
-        if int(use_ssl) == 1:
-            #mailserver.ehlo()
+        if use_ssl == 1:
             mailserver.starttls()
-            #mailserver.ehlo()
 
         if settings["mail_password"]:
             mailserver.login(settings["mail_login"], settings["mail_password"])
@@ -138,7 +135,15 @@ def send_test_mail(kindle_mail):
     return None
 
 
-def send_mail(book_id, kindle_mail):
+def send_test_mail(kindle_mail):
+    msg = MIMEMultipart()
+    msg['Subject'] = _(u'Calibre-web test email')
+    text = _(u'This email has been sent via calibre web.')
+    msg.attach(MIMEText(text.encode('UTF-8'), 'plain', 'UTF-8'))
+    return send_raw_email(kindle_mail,msg)
+
+
+def send_mail(book_id, kindle_mail,calibrepath):
     """Send email with attachments"""
     is_mobi = False
     is_azw = False
@@ -149,16 +154,9 @@ def send_mail(book_id, kindle_mail):
     settings = ub.get_mail_settings()
     # create MIME message
     msg = MIMEMultipart()
-    msg['From'] = settings["mail_from"]
-    msg['To'] = kindle_mail
     msg['Subject'] = _(u'Send to Kindle')
     text = _(u'This email has been sent via calibre web.')
     msg.attach(MIMEText(text.encode('UTF-8'), 'plain', 'UTF-8'))
-
-    use_ssl = settings.get('mail_use_ssl', 0)
-
-    # attach files
-    # msg.attach(self.get_attachment(file_path))
 
     book = db.session.query(db.Books).filter(db.Books.id == book_id).first()
     data = db.session.query(db.Data).filter(db.Data.book == book.id)
@@ -167,11 +165,11 @@ def send_mail(book_id, kindle_mail):
 
     for entry in data:
         if entry.format == "MOBI":
-            formats["mobi"] = os.path.join(config.DB_ROOT, book.path, entry.name + ".mobi")
+            formats["mobi"] = os.path.join(calibrepath, book.path, entry.name + ".mobi")
         if entry.format == "EPUB":
-            formats["epub"] = os.path.join(config.DB_ROOT, book.path, entry.name + ".epub")
+            formats["epub"] = os.path.join(calibrepath, book.path, entry.name + ".epub")
         if entry.format == "PDF":
-            formats["pdf"] = os.path.join(config.DB_ROOT, book.path, entry.name + ".pdf")
+            formats["pdf"] = os.path.join(calibrepath, book.path, entry.name + ".pdf")
 
     if len(formats) == 0:
         return _("Could not find any formats suitable for sending by email")
@@ -179,7 +177,7 @@ def send_mail(book_id, kindle_mail):
     if 'mobi' in formats:
         msg.attach(get_attachment(formats['mobi']))
     elif 'epub' in formats:
-        filepath = make_mobi(book.id)
+        filepath = make_mobi(book.id,calibrepath)
         if filepath is not None:
             msg.attach(get_attachment(filepath))
         elif filepath is None:
@@ -191,40 +189,7 @@ def send_mail(book_id, kindle_mail):
     else:
         return _("Could not find any formats suitable for sending by email")
 
-    # convert MIME message to string
-    fp = StringIO()
-    gen = Generator(fp, mangle_from_=False)
-    gen.flatten(msg)
-    msg = fp.getvalue()
-
-    # send email
-    try:
-        timeout=600     # set timeout to 5mins
-
-        org_stderr = smtplib.stderr
-        smtplib.stderr = StderrLogger()
-
-        if int(use_ssl) == 2:
-            mailserver = smtplib.SMTP_SSL(settings["mail_server"], settings["mail_port"], timeout)
-        else:
-            mailserver = smtplib.SMTP(settings["mail_server"], settings["mail_port"], timeout)
-        mailserver.set_debuglevel(1)
-
-        if int(use_ssl) == 1:
-            mailserver.starttls()
-
-        if settings["mail_password"]:
-            mailserver.login(settings["mail_login"], settings["mail_password"])
-        mailserver.sendmail(settings["mail_login"], kindle_mail, msg)
-        mailserver.quit()
-
-        smtplib.stderr = org_stderr
-
-    except (socket.error, smtplib.SMTPRecipientsRefused, smtplib.SMTPException), e:
-        app.logger.error(traceback.print_exc())
-        return _("Failed to send mail: %s" % str(e))
-
-    return None
+    return send_raw_email(kindle_mail, msg)
 
 
 def get_attachment(file_path):
@@ -273,10 +238,10 @@ def get_normalized_author(value):
     return value
     
 
-def update_dir_stucture(book_id):
+def update_dir_stucture(book_id,calibrepath):
     db.session.connection().connection.connection.create_function("title_sort", 1, db.title_sort)
     book = db.session.query(db.Books).filter(db.Books.id == book_id).first()
-    path = os.path.join(config.DB_ROOT, book.path)
+    path = os.path.join(calibrepath, book.path)
     
     authordir = book.path.split(os.sep)[0]
     new_authordir = get_valid_filename(book.authors[0].name, False)

@@ -7,12 +7,12 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import *
 from flask_login import AnonymousUserMixin
 import os
-import config
+# import config
 import traceback
 from werkzeug.security import generate_password_hash
 from flask_babel import gettext as _
 
-dbpath = os.path.join(config.APP_DB_ROOT, "app.db")
+dbpath = os.path.join(os.path.normpath(os.path.dirname(os.path.realpath(__file__))+os.sep+".."+os.sep), "app.db")
 engine = create_engine('sqlite:///{0}'.format(dbpath), echo=False)
 Base = declarative_base()
 
@@ -96,6 +96,23 @@ class UserBase():
     def __repr__(self):
         return '<User %r>' % self.nickname
 
+class Config():
+    def __init__(self):
+        self.loadSettings()
+
+    def loadSettings(self):
+        data=session.query(Settings).first()
+        self.config_calibre_dir = data.config_calibre_dir
+        self.config_port = data.config_port
+        self.config_calibre_web_title = data.config_calibre_web_title
+        self.config_books_per_page = data.config_books_per_page
+        self.config_random_books = data.config_random_books
+        self.config_title_regex = data.config_title_regex
+        self.config_log_level = data.config_log_level
+        self.config_uploading = data.config_uploading
+        self.config_anonbrowse = data.config_anonbrowse
+        self.config_public_reg = data.config_public_reg
+
 
 class User(UserBase,Base):
     __tablename__ = 'user'
@@ -118,11 +135,14 @@ class User(UserBase,Base):
 
 
 class Anonymous(AnonymousUserMixin,UserBase):
+    anon_browse = None
+
     def __init__(self):
         self.loadSettings()
 
     def loadSettings(self):
         data=session.query(User).filter(User.role.op('&')(ROLE_ANONYMOUS) == ROLE_ANONYMOUS).first()
+        settings=session.query(Settings).first()
         self.nickname = data.nickname
         self.role = data.role
         self.random_books = data.random_books
@@ -133,6 +153,7 @@ class Anonymous(AnonymousUserMixin,UserBase):
         self.hot_books = data.hot_books
         self.default_language = data.default_language
         self.locale = data.locale
+        self.anon_browse = settings.config_anonbrowse
 
     def role_admin(self):
         return False
@@ -141,7 +162,7 @@ class Anonymous(AnonymousUserMixin,UserBase):
         return False
 
     def is_anonymous(self):
-        return config.ANON_BROWSE
+        return self.anon_browse
 
 
 class Shelf(Base):
@@ -187,6 +208,16 @@ class Settings(Base):
     mail_login = Column(String)
     mail_password = Column(String)
     mail_from = Column(String)
+    config_calibre_dir = Column(String)
+    config_port = Column(Integer, default = 8083)
+    config_calibre_web_title = Column(String,default = u'Calibre-web')
+    config_books_per_page = Column(Integer, default = 60)
+    config_random_books = Column(Integer, default = 4)
+    config_title_regex = Column(String,default=u'^(A|The|An|Der|Die|Das|Den|Ein|Eine|Einen|Dem|Des|Einem|Eines)\s+')
+    config_log_level = Column(String, default=u'INFO')
+    config_uploading = Column(SmallInteger, default = 0)
+    config_anonbrowse = Column(SmallInteger, default = 0)
+    config_public_reg = Column(SmallInteger, default = 0)
 
     def __repr__(self):
         #return '<Smtp %r>' % (self.mail_server)
@@ -216,13 +247,21 @@ def migrate_Database():
         conn.execute("ALTER TABLE user ADD column hot_books INTEGER DEFAULT 1")
         session.commit()
     try:
-        session.query(exists().where(BookShelf.order)).scalar()
+        session.query(exists().where(Settings.config_calibre_dir)).scalar()
         session.commit()
     except exc.OperationalError:  # Database is not compatible, some rows are missing
         conn = engine.connect()
-        conn.execute("ALTER TABLE book_shelf_link ADD column `order` INTEGER DEFAULT 1")
+        conn.execute("ALTER TABLE Settings ADD column `config_calibre_dir` String")
+        conn.execute("ALTER TABLE Settings ADD column `config_port` INTEGER DEFAULT 8083")
+        conn.execute("ALTER TABLE Settings ADD column `config_calibre_web_title` String DEFAULT 'Calibre-web'")
+        conn.execute("ALTER TABLE Settings ADD column `config_books_per_page` INTEGER DEFAULT 60")
+        conn.execute("ALTER TABLE Settings ADD column `config_random_books` INTEGER DEFAULT 4")
+        conn.execute("ALTER TABLE Settings ADD column `config_title_regex` String DEFAULT '^(A|The|An|Der|Die|Das|Den|Ein|Eine|Einen|Dem|Des|Einem|Eines)\s+'")
+        conn.execute("ALTER TABLE Settings ADD column `config_log_level` String DEFAULT 'INFO'")
+        conn.execute("ALTER TABLE Settings ADD column `config_uploading` SmallInteger DEFAULT 0")
+        conn.execute("ALTER TABLE Settings ADD column `config_anonbrowse` SmallInteger DEFAULT 0")
+        conn.execute("ALTER TABLE Settings ADD column `config_public_reg` SmallInteger DEFAULT 0")
         session.commit()
-
 
 def create_default_config():
     settings = Settings()

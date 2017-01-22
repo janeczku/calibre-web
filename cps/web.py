@@ -7,7 +7,7 @@ from logging.handlers import RotatingFileHandler
 import textwrap
 from flask import Flask, render_template, session, request, Response, redirect, url_for, send_from_directory, \
     make_response, g, flash, abort
-import db, config, ub, helper
+import ub, helper
 import os
 import errno
 from sqlalchemy.sql.expression import func
@@ -33,32 +33,24 @@ from uuid import uuid4
 import os.path
 import sys
 import subprocess
-import shutil
 import re
-from shutil import move
+import db
+from shutil import move, copyfile
+from tornado.ioloop import IOLoop
 
 try:
     from wand.image import Image
-
     use_generic_pdf_cover = False
 except ImportError, e:
     use_generic_pdf_cover = True
-
-from shutil import copyfile
 from cgi import escape
 
-mimetypes.init()
-mimetypes.add_type('application/xhtml+xml', '.xhtml')
-mimetypes.add_type('application/epub+zip', '.epub')
-mimetypes.add_type('application/x-mobipocket-ebook', '.mobi')
-mimetypes.add_type('application/x-mobipocket-ebook', '.prc')
-mimetypes.add_type('application/vnd.amazon.ebook', '.azw')
-mimetypes.add_type('application/x-cbr', '.cbr')
-mimetypes.add_type('application/x-cbz', '.cbz')
-mimetypes.add_type('application/x-cbt', '.cbt')
-mimetypes.add_type('image/vnd.djvu', '.djvu')
+########################################## Global variables ########################################################
+global global_task
+global_task = None
 
 
+########################################## Proxy Helper class ######################################################
 class ReverseProxied(object):
     """Wrap the application in this middleware and configure the
     front-end server to add these headers, to let you quietly bind 
@@ -96,11 +88,23 @@ class ReverseProxied(object):
             environ['HTTP_HOST'] = server
         return self.app(environ, start_response)
 
+########################################## Main code ##############################################################
+mimetypes.init()
+mimetypes.add_type('application/xhtml+xml', '.xhtml')
+mimetypes.add_type('application/epub+zip', '.epub')
+mimetypes.add_type('application/x-mobipocket-ebook', '.mobi')
+mimetypes.add_type('application/x-mobipocket-ebook', '.prc')
+mimetypes.add_type('application/vnd.amazon.ebook', '.azw')
+mimetypes.add_type('application/x-cbr', '.cbr')
+mimetypes.add_type('application/x-cbz', '.cbz')
+mimetypes.add_type('application/x-cbt', '.cbt')
+mimetypes.add_type('image/vnd.djvu', '.djvu')
+
 
 app = (Flask(__name__))
 app.wsgi_app = ReverseProxied(app.wsgi_app)
 
-formatter = logging.Formatter(
+'''formatter = logging.Formatter(
     "[%(asctime)s] {%(pathname)s:%(lineno)d} %(levelname)s - %(message)s")
 file_handler = RotatingFileHandler(os.path.join(config.LOG_DIR, "calibre-web.log"), maxBytes=50000, backupCount=1)
 file_handler.setFormatter(formatter)
@@ -112,7 +116,7 @@ else:
 
 app.logger.info('Starting Calibre Web...')
 logging.getLogger("book_formats").addHandler(file_handler)
-logging.getLogger("book_formats").setLevel(logging.INFO)
+logging.getLogger("book_formats").setLevel(logging.INFO)'''
 
 Principal(app)
 
@@ -120,16 +124,16 @@ babel = Babel(app)
 
 import uploader
 
-global global_queue
-global_queue = None
-
-
 lm = LoginManager(app)
 lm.init_app(app)
 lm.login_view = 'login'
 lm.anonymous_user = ub.Anonymous
 
 app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
+
+# establish connection to calibre-db
+config=ub.Config()
+db.setup_db(config)
 
 
 @babel.localeselector
@@ -190,7 +194,7 @@ def requires_basic_auth_if_no_ano(f):
     @wraps(f)
     def decorated(*args, **kwargs):
         auth = request.authorization
-        if config.ANON_BROWSE != 1:
+        if config.config_anonbrowse != 1:
             if not auth or not check_auth(auth.username, auth.password):
                 return authenticate()
         return f(*args, **kwargs)
@@ -257,7 +261,7 @@ app.jinja_env.globals['url_for_other_page'] = url_for_other_page
 
 
 def login_required_if_no_ano(func):
-    if config.ANON_BROWSE == 1:
+    if config.config_anonbrowse == 1:
         return func
     return login_required(func)
 
@@ -284,10 +288,21 @@ def admin_required(f):
     """
     Checks if current_user.role == 1
     """
-
     @wraps(f)
     def inner(*args, **kwargs):
         if current_user.role_admin():
+            return f(*args, **kwargs)
+        abort(403)
+
+    return inner
+
+def unconfigured(f):
+    """
+    Checks if current_user.role == 1
+    """
+    @wraps(f)
+    def inner(*args, **kwargs):
+        if not config.config_calibre_dir:
             return f(*args, **kwargs)
         abort(403)
 
@@ -331,14 +346,14 @@ def fill_indexpage(page, database, db_filter, order):
     else:
         filter = True
     if current_user.show_random_books():
-        random = db.session.query(db.Books).filter(filter).order_by(func.random()).limit(config.RANDOM_BOOKS)
+        random = db.session.query(db.Books).filter(filter).order_by(func.random()).limit(config.config_random_books)
     else:
         random = false
-    off = int(int(config.NEWEST_BOOKS) * (page - 1))
-    pagination = Pagination(page, config.NEWEST_BOOKS,
+    off = int(int(config.config_books_per_page) * (page - 1))
+    pagination = Pagination(page, config.config_books_per_page,
                             len(db.session.query(database).filter(db_filter).filter(filter).all()))
     entries = db.session.query(database).filter(db_filter).filter(filter).order_by(order).offset(off).limit(
-        config.NEWEST_BOOKS)
+        config.config_books_per_page)
     return entries, random, pagination
 
 
@@ -400,9 +415,12 @@ def modify_database_object(input_elements, db_book_object, db_object, db_session
 def before_request():
     g.user = current_user
     g.public_shelfes = ub.session.query(ub.Shelf).filter(ub.Shelf.is_public == 1).all()
-    g.allow_registration = config.PUBLIC_REG
-    g.allow_upload = config.UPLOADING
+    g.allow_registration = config.config_public_reg
+    g.allow_upload = config.config_uploading
 
+'''#################################################################################################################
+########################################## Routing functions #######################################################
+#################################################################################################################'''
 
 @app.route("/opds")
 @requires_basic_auth_if_no_ano
@@ -467,8 +485,8 @@ def feed_new():
     if not off:
         off = 0
     entries = db.session.query(db.Books).filter(filter).order_by(db.Books.timestamp.desc()).offset(off).limit(
-        config.NEWEST_BOOKS)
-    pagination = Pagination((int(off)/(int(config.NEWEST_BOOKS))+1), config.NEWEST_BOOKS,
+        config.config_books_per_page)
+    pagination = Pagination((int(off)/(int(config.config_books_per_page))+1), config.config_books_per_page,
                             len(db.session.query(db.Books).filter(filter).all()))
     xml = render_template('feed.xml', entries=entries, pagination=pagination)
     response = make_response(xml)
@@ -486,8 +504,8 @@ def feed_discover():
         filter = True
     # if not off:
     # off = 0
-    entries = db.session.query(db.Books).filter(filter).order_by(func.random()).limit(config.NEWEST_BOOKS)
-    pagination = Pagination(1, config.NEWEST_BOOKS,int(config.NEWEST_BOOKS))
+    entries = db.session.query(db.Books).filter(filter).order_by(func.random()).limit(config.config_books_per_page)
+    pagination = Pagination(1, config.config_books_per_page,int(config.config_books_per_page))
     xml = render_template('feed.xml', entries=entries, pagination=pagination)
     response = make_response(xml)
     response.headers["Content-Type"] = "application/xml"
@@ -505,8 +523,8 @@ def feed_hot():
     if not off:
         off = 0
     entries = db.session.query(db.Books).filter(filter).filter(db.Books.ratings.any(db.Ratings.rating > 9)).offset(
-        off).limit(config.NEWEST_BOOKS)
-    pagination = Pagination((int(off)/(int(config.NEWEST_BOOKS))+1), config.NEWEST_BOOKS,
+        off).limit(config.config_books_per_page)
+    pagination = Pagination((int(off)/(int(config.config_books_per_page))+1), config.config_books_per_page,
                             len(db.session.query(db.Books).filter(filter).filter(db.Books.ratings.any(db.Ratings.rating > 9)).all()))
     xml = render_template('feed.xml', entries=entries, pagination=pagination)
     response = make_response(xml)
@@ -525,8 +543,8 @@ def feed_authorindex():
         filter = True
     if not off:
         off = 0
-    authors = db.session.query(db.Authors).order_by(db.Authors.sort).offset(off).limit(config.NEWEST_BOOKS)
-    pagination = Pagination((int(off)/(int(config.NEWEST_BOOKS))+1), config.NEWEST_BOOKS,
+    authors = db.session.query(db.Authors).order_by(db.Authors.sort).offset(off).limit(config.config_books_per_page)
+    pagination = Pagination((int(off)/(int(config.config_books_per_page))+1), config.config_books_per_page,
                             len(db.session.query(db.Authors).all()))
     xml = render_template('feed.xml', authors=authors, pagination=pagination)
     response = make_response(xml)
@@ -545,8 +563,8 @@ def feed_author(id):
     if not off:
         off = 0
     entries = db.session.query(db.Books).filter(db.Books.authors.any(db.Authors.id == id )).filter(
-        filter).offset(off).limit(config.NEWEST_BOOKS)
-    pagination = Pagination((int(off)/(int(config.NEWEST_BOOKS))+1), config.NEWEST_BOOKS,
+        filter).offset(off).limit(config.config_books_per_page)
+    pagination = Pagination((int(off)/(int(config.config_books_per_page))+1), config.config_books_per_page,
                             len(db.session.query(db.Books).filter(db.Books.authors.any(db.Authors.id == id )).filter(filter).all()))
     xml = render_template('feed.xml', entries=entries, pagination=pagination)
     response = make_response(xml)
@@ -560,8 +578,8 @@ def feed_categoryindex():
     off = request.args.get("offset")
     if not off:
         off = 0
-    entries = db.session.query(db.Tags).order_by(db.Tags.name).offset(off).limit(config.NEWEST_BOOKS)
-    pagination = Pagination((int(off)/(int(config.NEWEST_BOOKS))+1), config.NEWEST_BOOKS,
+    entries = db.session.query(db.Tags).order_by(db.Tags.name).offset(off).limit(config.config_books_per_page)
+    pagination = Pagination((int(off)/(int(config.config_books_per_page))+1), config.config_books_per_page,
                             len(db.session.query(db.Tags).all()))
     xml = render_template('feed.xml', categorys=entries, pagination=pagination)
     response = make_response(xml)
@@ -580,8 +598,8 @@ def feed_category(id):
     if not off:
         off = 0
     entries = db.session.query(db.Books).filter(db.Books.tags.any(db.Tags.id==id)).order_by(
-        db.Books.timestamp.desc()).filter(filter).offset(off).limit(config.NEWEST_BOOKS)
-    pagination = Pagination((int(off)/(int(config.NEWEST_BOOKS))+1), config.NEWEST_BOOKS,
+        db.Books.timestamp.desc()).filter(filter).offset(off).limit(config.config_books_per_page)
+    pagination = Pagination((int(off)/(int(config.config_books_per_page))+1), config.config_books_per_page,
                             len(db.session.query(db.Books).filter(db.Books.tags.any(db.Tags.id==id)).filter(filter).all()))
     xml = render_template('feed.xml', entries=entries, pagination=pagination)
     response = make_response(xml)
@@ -599,8 +617,8 @@ def feed_seriesindex():
         filter = True
     if not off:
         off = 0
-    entries = db.session.query(db.Series).order_by(db.Series.name).offset(off).limit(config.NEWEST_BOOKS)
-    pagination = Pagination((int(off)/(int(config.NEWEST_BOOKS))+1), config.NEWEST_BOOKS,
+    entries = db.session.query(db.Series).order_by(db.Series.name).offset(off).limit(config.config_books_per_page)
+    pagination = Pagination((int(off)/(int(config.config_books_per_page))+1), config.config_books_per_page,
                             len(db.session.query(db.Series).all()))
     xml = render_template('feed.xml', series=entries, pagination=pagination)
     response = make_response(xml)
@@ -619,8 +637,8 @@ def feed_series(id):
     if not off:
         off = 0
     entries = db.session.query(db.Books).filter(db.Books.series.any(db.Series.id == id)).order_by(
-        db.Books.timestamp.desc()).filter(filter).offset(off).limit(config.NEWEST_BOOKS)
-    pagination = Pagination((int(off)/(int(config.NEWEST_BOOKS))+1), config.NEWEST_BOOKS,
+        db.Books.timestamp.desc()).filter(filter).offset(off).limit(config.config_books_per_page)
+    pagination = Pagination((int(off)/(int(config.config_books_per_page))+1), config.config_books_per_page,
                             len(db.session.query(db.Books).filter(db.Books.series.any(db.Series.id == id)).filter(filter).all()))
     xml = render_template('feed.xml', entries=entries, pagination=pagination)
     response = make_response(xml)
@@ -754,15 +772,15 @@ def hot_books(page):
         random = db.session.query(db.Books).filter(filter).order_by(func.random()).limit(config.RANDOM_BOOKS)
     else:
         random = false
-    off = int(int(config.NEWEST_BOOKS) * (page - 1))
+    off = int(int(config.config_books_per_page) * (page - 1))
     all_books = ub.session.query(ub.Downloads, ub.func.count(ub.Downloads.book_id)).order_by(
         ub.func.count(ub.Downloads.book_id).desc()).group_by(ub.Downloads.book_id)
-    hot_books = all_books.offset(off).limit(config.NEWEST_BOOKS)
+    hot_books = all_books.offset(off).limit(config.config_books_per_page)
     entries = list()
     for book in hot_books:
         entries.append(db.session.query(db.Books).filter(filter).filter(db.Books.id == book.Downloads.book_id).first())
     numBooks = entries.__len__()
-    pagination = Pagination(page, config.NEWEST_BOOKS, numBooks)
+    pagination = Pagination(page, config.config_books_per_page, numBooks)
     return render_template('index.html', random=random, entries=entries, pagination=pagination,
                            title=_(u"Hot Books (most downloaded)"))
 
@@ -958,13 +976,27 @@ def stats():
 
 @app.route("/shutdown")
 @login_required
+@admin_required
 def shutdown():
-    # logout_user()
-    # add restart command to queue
-    global_queue.put("something")
-    flash(_(u"Server restarts"), category="info")
-    return redirect(url_for("index"))
-
+    global global_task
+    task = int(request.args.get("parameter").strip())
+    global_task = task
+    if task == 1 or task == 0:      # valid commandos received
+        # close all database connections
+        db.session.close()
+        db.engine.dispose()
+        ub.session.close()
+        ub.engine.dispose()
+        # stop tornado server
+        server=IOLoop.instance()
+        server.add_callback(server.stop)
+        if task == 0:
+            text['text']=_(u'Performing Restart, please reload page')
+        else:
+            text['text']= _(u'Performing shutdown of server, please close window')
+        return json.dumps(text)
+    else:
+        abort(404)
 
 @app.route("/search", methods=["GET"])
 @login_required_if_no_ano
@@ -1200,6 +1232,9 @@ def register():
 def login():
     error = None
 
+    if config.config_calibre_dir == None:
+        return redirect(url_for('basic_configuration'))
+
     if current_user is not None and current_user.is_authenticated:
         return redirect(url_for('index'))
 
@@ -1234,7 +1269,7 @@ def send_to_kindle(book_id):
     if settings.get("mail_server", "mail.example.com") == "mail.example.com":
         flash(_(u"Please configure the SMTP mail settings first..."), category="error")
     elif current_user.kindle_mail:
-        result = helper.send_mail(book_id, current_user.kindle_mail)
+        result = helper.send_mail(book_id, current_user.kindle_mail,config.config_calibre_dir)
         if result is None:
             flash(_(u"Book successfully send to %(kindlemail)s", kindlemail=current_user.kindle_mail),
                   category="success")
@@ -1357,7 +1392,7 @@ def delete_shelf(shelf_id):
     if deleted:
         ub.session.query(ub.BookShelf).filter(ub.BookShelf.shelf == shelf_id).delete()
         ub.session.commit()
-        flash(_("successfully deleted shelf %(name)s", name=cur_shelf.name, category="success"))
+        flash(_(u"successfully deleted shelf %(name)s", name=cur_shelf.name, category="success"))
     return redirect(url_for('index'))
 
 
@@ -1486,9 +1521,56 @@ def admin():
 @login_required
 @admin_required
 def configuration():
-    content = ub.session.query(ub.User).all()
-    settings = ub.session.query(ub.Settings).first()
-    return render_template("admin.html", content=content, email=settings, config=config, title=_(u"Admin page"))
+    return render_template("config_edit.html", content=config, title=_(u"Basic Configuration"))
+
+@app.route("/config", methods=["GET", "POST"] )
+@unconfigured
+def basic_configuration():
+    global global_task
+    if request.method == "POST":
+        to_save = request.form.to_dict()
+        content = ub.session.query(ub.Settings).first()
+        if "config_calibre_dir" in to_save:
+            content.config_calibre_dir = to_save["config_calibre_dir"]
+        if "config_port" in to_save:
+            content.config_port = to_save["config_port"]
+        if "config_calibre_web_title" in to_save:
+            content.config_calibre_web_title = to_save["config_calibre_web_title"]
+        if "config_calibre_web_title" in to_save:
+            content.config_calibre_web_title = to_save["config_calibre_web_title"]
+        if "config_title_regex" in to_save:
+            content.config_title_regex = to_save["config_title_regex"]
+        if "config_log_level" in to_save:
+            content.config_log_level = to_save["config_log_level"]
+        if "config_random_books" in to_save:
+            content.config_random_books = int(to_save["config_random_books"])
+        if "config_books_per_page" in to_save:
+            content.config_books_per_page = int(to_save["config_books_per_page"])
+        content.config_uploading = 0
+        content.config_anonbrowse = 0
+        content.config_public_reg = 0
+        if "config_uploading" in to_save and to_save["config_uploading"] == "on":
+                content.config_uploading = 1
+        if "config_anonbrowse" in to_save and to_save["config_anonbrowse"] == "on":
+                content.config_anonbrowse = 1
+        if "config_public_reg" in to_save and to_save["config_public_reg"] == "on":
+                content.config_public_reg = 1
+        try:
+            ub.session.commit()
+            flash(_(u"Calibre-web configuration updated"), category="success")
+            config.loadSettings()
+        except e:
+            flash(e, category="error")
+            return render_template("config_edit.html", content=config, title=_(u"Basic Configuration"))
+
+        ub.session.close()
+        ub.engine.dispose()
+        # stop tornado server
+        server = IOLoop.instance()
+        server.add_callback(server.stop)
+        global_task = 0
+
+    return render_template("config_edit.html", content=config, title=_(u"Basic Configuration"))
 
 
 @app.route("/admin/user/new", methods=["GET", "POST"])
@@ -1513,6 +1595,7 @@ def new_user():
         content.nickname = to_save["nickname"]
         content.email = to_save["email"]
         content.default_language = to_save["default_language"]
+        if "locale" in to_save:
             content.locale = to_save["locale"]
         content.random_books = 0
         content.language_books = 0
@@ -1541,13 +1624,13 @@ def new_user():
         try:
             ub.session.add(content)
             ub.session.commit()
-            flash(_("User '%(user)s' created", user=content.nickname), category="success")
+            flash(_(u"User '%(user)s' created", user=content.nickname), category="success")
             return redirect(url_for('admin'))
         except IntegrityError:
             ub.session.rollback()
             flash(_(u"Found an existing account for this email address or nickname."), category="error")
     return render_template("user_edit.html", new_user=1, content=content, translations=translations,
-                           languages=languages, title=_("Add new user"))
+                           languages=languages, title=_(u"Add new user"))
 
 
 @app.route("/admin/mailsettings", methods=["GET", "POST"])
@@ -1575,7 +1658,7 @@ def edit_mailsettings():
                       category="success")
             else:
                 flash(_(u"There was an error sending the Test E-Mail: %(res)s", res=result), category="error")
-    return render_template("email_edit.html", content=content, title=_("Edit mail settings"))
+    return render_template("email_edit.html", content=content, title=_(u"Edit mail settings"))
 
 
 @app.route("/admin/user/<int:user_id>", methods=["GET", "POST"])
@@ -1863,13 +1946,13 @@ def edit_book(book_id):
             for author in book.authors:
                 author_names.append(author.name)
             for b in edited_books_id:
-                helper.update_dir_stucture(b)
+                helper.update_dir_stucture(b,config.config_calibre_dir)
             if "detail_view" in to_save:
                 return redirect(url_for('show_book', id=book.id))
             else:
-                return render_template('edit_book.html', book=book, authors=author_names, cc=cc)
+                return render_template('book_edit.html', book=book, authors=author_names, cc=cc)
         else:
-            return render_template('edit_book.html', book=book, authors=author_names, cc=cc)
+            return render_template('book_edit.html', book=book, authors=author_names, cc=cc)
     else:
         flash(_(u"Error opening eBook. File does not exist or file is not accessible:"), category="error")
         return redirect(url_for("index"))
@@ -1942,6 +2025,6 @@ def upload():
             author_names.append(author.name)
     cc = db.session.query(db.Custom_Columns).filter(db.Custom_Columns.datatype.notin_(db.cc_exceptions)).all()
     if current_user.role_edit() or current_user.role_admin():
-        return render_template('edit_book.html', book=db_book, authors=author_names, cc=cc)
+        return render_template('book_edit.html', book=db_book, authors=author_names, cc=cc)
     book_in_shelfs = []
     return render_template('detail.html', entry=db_book, cc=cc, title=db_book.title, books_shelfs=book_in_shelfs)
