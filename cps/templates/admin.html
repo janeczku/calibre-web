@@ -73,9 +73,66 @@
         <td>{% if config.PUBLIC_REG %}<span class="glyphicon glyphicon-ok"></span>{% else %}<span class="glyphicon glyphicon-remove"></span>{% endif %}</td>
         <td>{% if config.ANON_BROWSE %}<span class="glyphicon glyphicon-ok"></span>{% else %}<span class="glyphicon glyphicon-remove"></span>{% endif %}</td>
   </table>
+  <div class="btn btn-default"><a href="{{url_for('configuration')}}">{{_('Configuration')}}</a></div>
   <h2>{{_('Administration')}}</h2>
       {% if not config.DEVELOPMENT %}
-        <div class="btn btn-default"><a href="{{url_for('shutdown')}}">{{_('Restart Calibre-web')}}</a></div>
+        <div class="btn btn-default" data-toggle="modal" data-target="#RestartDialog">{{_('Restart Calibre-web')}}</a></div>
+        <div class="btn btn-default" data-toggle="modal" data-target="#ShutdownDialog">{{_('Stop Calibre-web')}}</a></div>
       {% endif %}
 </div>
+<!-- Modal -->
+<div id="RestartDialog" class="modal fade" role="dialog">
+  <div class="modal-dialog modal-sm">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header bg-info">
+      </div>
+      <div class="modal-body text-center">
+        <p>{{_('Do you really want to restart Calibre-web?')}}</p>
+        <button type="button" class="btn btn-default" id="restart" data-dismiss="modal">{{_('Ok')}}</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">{{_('Back')}}</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+<div id="ShutdownDialog" class="modal fade" role="dialog">
+  <div class="modal-dialog modal-sm">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header bg-info">
+      </div>
+      <div class="modal-body text-center">
+        <p>{{_('Do you really want to stop Calibre-web?')}}</p>
+        <button type="button" class="btn btn-default" id="shutdown" data-dismiss="modal">{{_('Ok')}}</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">{{_('Back')}}</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+{% endblock %}
+{% block js %}
+<script type="text/javascript">
+    $("#restart").click(function() {
+        $.ajax({
+            dataType: 'json',
+            url: "{{url_for('shutdown')}}",
+            data: {"parameter":0},
+            //data: data,
+            success: function(data) {
+                return alert(data.text);}
+        });
+    });
+    $("#shutdown").click(function() {
+        $.ajax({
+            dataType: 'json',
+            url: "{{url_for('shutdown')}}",
+            data: {"parameter":1},
+            success: function(data) {
+                return alert(data.text);}
+        });
+    });
+</script>
 {% endblock %}
