@@ -5,13 +5,15 @@ from sqlalchemy import *
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import *
 import os
-# import config
 import re
 import ast
+from ub import Config
 
-global session
-
+# user defined sort function for calibre databases (Series, etc.)
 def title_sort(title):
+    # calibre sort stuff
+    config=Config()
+    title_pat = re.compile(config.config_title_regex, re.IGNORECASE)
     match = title_pat.search(title)
     if match:
         prep = match.group(1)
@@ -250,20 +252,24 @@ class Custom_Columns(Base):
         display_dict = ast.literal_eval(self.display)
         return display_dict
 
+
 def setup_db(config):
     global session
-    # calibre sort stuff
-    title_pat = re.compile(config.config_title_regex, re.IGNORECASE)
+    global cc_exceptions
+    global cc_classes
+    global cc_ids
+    global books_custom_column_links
 
     if config.config_calibre_dir is None:
         return
+
     dbpath = os.path.join(config.config_calibre_dir, "metadata.db")
     engine = create_engine('sqlite:///{0}'.format(dbpath.encode('utf-8')), echo=False)
     conn = engine.connect()
     conn.connection.create_function('title_sort', 1, title_sort)
 
-
     cc = conn.execute("SELECT id, datatype FROM custom_columns")
+
     cc_ids = []
     cc_exceptions = ['datetime', 'int', 'comments', 'float', 'composite', 'series']
     books_custom_column_links = {}
