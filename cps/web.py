@@ -1513,7 +1513,7 @@ def new_user():
         content.nickname = to_save["nickname"]
         content.email = to_save["email"]
         content.default_language = to_save["default_language"]
-        content.locale = to_save["locale"]
+            content.locale = to_save["locale"]
         content.random_books = 0
         content.language_books = 0
         content.series_books = 0
@@ -1547,7 +1547,7 @@ def new_user():
             ub.session.rollback()
             flash(_(u"Found an existing account for this email address or nickname."), category="error")
     return render_template("user_edit.html", new_user=1, content=content, translations=translations,
-                           languages=languages, title="Add new user")
+                           languages=languages, title=_("Add new user"))
 
 
 @app.route("/admin/mailsettings", methods=["GET", "POST"])
