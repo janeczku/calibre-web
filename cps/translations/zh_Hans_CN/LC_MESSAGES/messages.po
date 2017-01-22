@@ -49,11 +49,11 @@ msgstr "无法转换epub到mobi"
 
 #: cps/helper.py:245
 msgid "The requested file could not be read. Maybe wrong permissions?"
-msgstr "无法读取所请求的文件。可能是错误权限不对？"
+msgstr "无法读取所请求的文件。可能是权限不对？"
 
 #: cps/ub.py:259
 msgid "Guest"
-msgstr ""
+msgstr "游客"
 
 #: cps/web.py:742
 msgid "Latest Books"
@@ -503,15 +503,15 @@ msgstr "后退"
 
 #: cps/templates/email_edit.html:11
 msgid "SMTP port (usually 25 for plain SMTP and 465 for SSL and 587 for STARTTLS)"
-msgstr ""
+msgstr "SMTP端口(明文SMTP通常是25, SSL加密的是465, STARTTLS的是587)"
 
 #: cps/templates/email_edit.html:15
 msgid "Encryption"
-msgstr ""
+msgstr "加密方式"
 
 #: cps/templates/email_edit.html:17
 msgid "None"
-msgstr ""
+msgstr "无"
 
 #: cps/templates/email_edit.html:18
 msgid "STARTTLS"
@@ -555,7 +555,7 @@ msgstr "热门书籍"
 
 #: cps/templates/index.xml:19
 msgid "Popular publications from this catalog based on Rating."
-msgstr ""
+msgstr "此目录中的书籍是基于评分的热门出版物。"
 
 #: cps/templates/index.xml:22 cps/templates/layout.html:122
 msgid "New Books"
@@ -575,19 +575,19 @@ msgstr "作者"
 
 #: cps/templates/index.xml:40
 msgid "Books ordered by Author"
-msgstr "书籍按作者排序"
+msgstr "书籍按作者组织"
 
 #: cps/templates/index.xml:47
 msgid "Books ordered by category"
-msgstr "书籍按分类排序"
+msgstr "书籍按分类组织"
 
 #: cps/templates/index.xml:54
 msgid "Books ordered by series"
-msgstr "书籍按丛书排序"
+msgstr "书籍按丛书组织"
 
 #: cps/templates/layout.html:48
 msgid "Toggle navigation"
-msgstr ""
+msgstr "切换导航"
 
 #: cps/templates/layout.html:63
 msgid "Go!"
@@ -661,11 +661,11 @@ msgstr ""
 
 #: cps/templates/readpdf.html:29
 msgid "PDF.js viewer"
-msgstr ""
+msgstr "PDF.js查看器"
 
 #: cps/templates/readtxt.html:6
 msgid "Basic txt Reader"
-msgstr ""
+msgstr "简单的txt阅读器"
 
 #: cps/templates/register.html:4
 msgid "Register a new account"
@@ -725,7 +725,7 @@ msgstr "修改顺序"
 
 #: cps/templates/shelf_edit.html:7
 msgid "Title"
-msgstr ""
+msgstr "标题"
 
 #: cps/templates/shelf_edit.html:12
 msgid "should the shelf be public?"
@@ -733,7 +733,7 @@ msgstr "要公开此书架吗？"
 
 #: cps/templates/shelf_order.html:5
 msgid "Drag 'n drop to rearrange order"
-msgstr ""
+msgstr "通过拖拽进行重新排序"
 
 #: cps/templates/stats.html:3
 msgid "Linked libraries"
