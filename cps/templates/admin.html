@@ -75,7 +75,7 @@
   </table>
   <div class="btn btn-default"><a href="{{url_for('configuration')}}">{{_('Configuration')}}</a></div>
   <h2>{{_('Administration')}}</h2>
-      {% if not config.DEVELOPMENT %}
+      {% if not development %}
         <div class="btn btn-default" data-toggle="modal" data-target="#RestartDialog">{{_('Restart Calibre-web')}}</a></div>
         <div class="btn btn-default" data-toggle="modal" data-target="#ShutdownDialog">{{_('Stop Calibre-web')}}</a></div>
       {% endif %}

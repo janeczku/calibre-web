@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import db, ub
-# import config
+import db
+import ub
 from flask import current_app as app
 import logging
 import smtplib
@@ -33,8 +33,9 @@ def update_download(book_id, user_id):
         ub.session.commit()
 
 
-def make_mobi(book_id,calibrepath):
-    vendorpath = os.path.join(os.path.normpath(os.path.dirname(os.path.realpath(__file__)) + os.sep + "../vendor" + os.sep))
+def make_mobi(book_id, calibrepath):
+    vendorpath = os.path.join(os.path.normpath(os.path.dirname(os.path.realpath(__file__)) +
+                                               os.sep + "../vendor" + os.sep))
     if sys.platform == "win32":
         kindlegen = os.path.join(vendorpath, u"kindlegen.exe")
     else:
@@ -80,18 +81,20 @@ def make_mobi(book_id,calibrepath):
 
 class StderrLogger(object):
 
-    buffer=''
+    buffer = ''
+
     def __init__(self):
         self.logger = logging.getLogger('cps.web')
 
     def write(self, message):
-        if message=='\n':
+        if message == '\n':
             self.logger.debug(self.buffer)
-            self.buffer=''
+            self.buffer = ''
         else:
-            self.buffer=self.buffer+message
+            self.buffer += message
 
-def send_raw_email(kindle_mail,msg):
+
+def send_raw_email(kindle_mail, msg):
     settings = ub.get_mail_settings()
 
     msg['From'] = settings["mail_from"]
@@ -107,7 +110,7 @@ def send_raw_email(kindle_mail,msg):
 
     # send email
     try:
-        timeout=600     # set timeout to 5mins
+        timeout = 600     # set timeout to 5mins
 
         org_stderr = smtplib.stderr
         smtplib.stderr = StderrLogger()
@@ -140,18 +143,11 @@ def send_test_mail(kindle_mail):
     msg['Subject'] = _(u'Calibre-web test email')
     text = _(u'This email has been sent via calibre web.')
     msg.attach(MIMEText(text.encode('UTF-8'), 'plain', 'UTF-8'))
-    return send_raw_email(kindle_mail,msg)
+    return send_raw_email(kindle_mail, msg)
 
 
-def send_mail(book_id, kindle_mail,calibrepath):
+def send_mail(book_id, kindle_mail, calibrepath):
     """Send email with attachments"""
-    is_mobi = False
-    is_azw = False
-    is_azw3 = False
-    is_epub = False
-    is_pdf = False
-    file_path = None
-    settings = ub.get_mail_settings()
     # create MIME message
     msg = MIMEMultipart()
     msg['Subject'] = _(u'Send to Kindle')
@@ -177,7 +173,7 @@ def send_mail(book_id, kindle_mail,calibrepath):
     if 'mobi' in formats:
         msg.attach(get_attachment(formats['mobi']))
     elif 'epub' in formats:
-        filepath = make_mobi(book.id,calibrepath)
+        filepath = make_mobi(book.id, calibrepath)
         if filepath is not None:
             msg.attach(get_attachment(filepath))
         elif filepath is None:
@@ -207,8 +203,7 @@ def get_attachment(file_path):
         return attachment
     except IOError:
         traceback.print_exc()
-        message = (_('The requested file could not be read. Maybe wrong '\
-                   'permissions?'))
+        message = (_('The requested file could not be read. Maybe wrong permissions?'))  # ToDo: What is this?
         return None
 
 
@@ -218,7 +213,7 @@ def get_valid_filename(value, replace_whitespace=True):
     filename. Limits num characters to 128 max.
     """
     value = value[:128]
-    re_slugify = re.compile('[^\w\s-]', re.UNICODE)
+    # re_slugify = re.compile('[^\w\s-]', re.UNICODE)
     value = unicodedata.normalize('NFKD', value)
     re_slugify = re.compile('[^\w\s-]', re.UNICODE)
     value = unicode(re_slugify.sub('', value).strip())
@@ -238,7 +233,7 @@ def get_normalized_author(value):
     return value
     
 
-def update_dir_stucture(book_id,calibrepath):
+def update_dir_stucture(book_id, calibrepath):
     db.session.connection().connection.connection.create_function("title_sort", 1, db.title_sort)
     book = db.session.query(db.Books).filter(db.Books.id == book_id).first()
     path = os.path.join(calibrepath, book.path)

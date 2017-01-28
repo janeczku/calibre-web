@@ -7,12 +7,21 @@ from sqlalchemy.orm import *
 import os
 import re
 import ast
-from ub import Config
+from ub import config
+import ub
+
+session = None
+cc_exceptions = None
+cc_classes = None
+cc_ids = None
+books_custom_column_links = None
+engine = None
+
 
 # user defined sort function for calibre databases (Series, etc.)
 def title_sort(title):
     # calibre sort stuff
-    config=Config()
+    # config=Config()
     title_pat = re.compile(config.config_title_regex, re.IGNORECASE)
     match = title_pat.search(title)
     if match:
@@ -216,9 +225,10 @@ class Books(Base):
     series = relationship('Series', secondary=books_series_link, backref='books')
     ratings = relationship('Ratings', secondary=books_ratings_link, backref='books')
     languages = relationship('Languages', secondary=books_languages_link, backref='books')
-    identifiers=relationship('Identifiers', backref='books')
+    identifiers = relationship('Identifiers', backref='books')
 
-    def __init__(self, title, sort, author_sort, timestamp, pubdate, series_index, last_modified, path, has_cover, authors, tags):
+    def __init__(self, title, sort, author_sort, timestamp, pubdate, series_index, last_modified, path, has_cover,
+                 authors, tags):  # ToDO check Authors and tags necessary
         self.title = title
         self.sort = sort
         self.author_sort = author_sort
@@ -253,19 +263,33 @@ class Custom_Columns(Base):
         return display_dict
 
 
-def setup_db(config):
+def setup_db():
     global session
     global cc_exceptions
     global cc_classes
     global cc_ids
     global books_custom_column_links
+    global engine
 
-    if config.config_calibre_dir is None:
-        return
+    if config.config_calibre_dir is None or config.config_calibre_dir ==  u'':
+        return False
 
     dbpath = os.path.join(config.config_calibre_dir, "metadata.db")
     engine = create_engine('sqlite:///{0}'.format(dbpath.encode('utf-8')), echo=False)
-    conn = engine.connect()
+    try:
+        conn = engine.connect()
+
+    except:
+        content = ub.session.query(ub.Settings).first()
+        content.config_calibre_dir = None
+        content.db_configured = False
+        ub.session.commit()
+        config.loadSettings()
+        return False
+    content = ub.session.query(ub.Settings).first()
+    content.db_configured = True
+    ub.session.commit()
+    config.loadSettings()
     conn.connection.create_function('title_sort', 1, title_sort)
 
     cc = conn.execute("SELECT id, datatype FROM custom_columns")
@@ -310,3 +334,4 @@ def setup_db(config):
     Session = sessionmaker()
     Session.configure(bind=engine)
     session = Session()
+    return True

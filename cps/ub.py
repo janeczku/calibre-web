@@ -8,24 +8,41 @@ from sqlalchemy.orm import *
 from flask_login import AnonymousUserMixin
 import os
 import traceback
+import logging
 from werkzeug.security import generate_password_hash
 from flask_babel import gettext as _
 
-dbpath = os.path.join(os.path.normpath(os.path.dirname(os.path.realpath(__file__))+os.sep+".."+os.sep), "app.db")
+dbpath = os.path.join(os.path.normpath(os.path.dirname(os.path.realpath(__file__)) + os.sep + ".." + os.sep), "app.db")
 engine = create_engine('sqlite:///{0}'.format(dbpath), echo=False)
 Base = declarative_base()
 
 ROLE_USER = 0
 ROLE_ADMIN = 1
 ROLE_DOWNLOAD = 2
-ROLE_UPLOAD = 4 
+ROLE_UPLOAD = 4
 ROLE_EDIT = 8
 ROLE_PASSWD = 16
 ROLE_ANONYMOUS = 32
+
+DETAIL_RANDOM = 1
+SIDEBAR_LANGUAGE = 2
+SIDEBAR_SERIES = 4
+SIDEBAR_CATEGORY = 8
+SIDEBAR_HOT = 16
+SIDEBAR_RANDOM = 32
+SIDEBAR_AUTHOR = 64
+
 DEFAULT_PASS = "admin123"
 
 
-class UserBase():
+
+DEVELOPMENT = False
+
+
+
+
+class UserBase:
+    @staticmethod
     def is_authenticated(self):
         return True
 
@@ -78,57 +95,55 @@ class UserBase():
         return self.default_language
 
     def show_random_books(self):
-        return self.random_books
+        if self.sidebar_view is not None:
+            return True if self.sidebar_view & SIDEBAR_RANDOM == SIDEBAR_RANDOM else False
+        else:
+            return False
 
     def show_language(self):
-        return self.language_books
+        if self.sidebar_view is not None:
+            return True if self.sidebar_view & SIDEBAR_LANGUAGE == SIDEBAR_LANGUAGE else False
+        else:
+            return False
 
     def show_hot_books(self):
-        return self.hot_books
+        if self.sidebar_view is not None:
+            return True if self.sidebar_view & SIDEBAR_HOT == SIDEBAR_HOT else False
+        else:
+            return False
 
     def show_series(self):
-        return self.series_books
+        if self.sidebar_view is not None:
+            return True if self.sidebar_view & SIDEBAR_SERIES == SIDEBAR_SERIES else False
+        else:
+            return False
 
     def show_category(self):
-        return self.category_books
+        if self.sidebar_view is not None:
+            return True if self.sidebar_view & SIDEBAR_CATEGORY == SIDEBAR_CATEGORY else False
+        else:
+            return False
+
+    def show_author(self):
+        if self.sidebar_view is not None:
+            return True if self.sidebar_view & SIDEBAR_AUTHOR == SIDEBAR_AUTHOR else False
+        else:
+            return False
+
+    def show_detail_random(self):
+        if self.sidebar_view is not None:
+            return True if self.sidebar_view & DETAIL_RANDOM == DETAIL_RANDOM else False
+        else:
+            return False
+
 
     def __repr__(self):
         return '<User %r>' % self.nickname
 
-class Config():
-    def __init__(self):
-        self.config_main_dir=os.path.join(os.path.normpath(os.path.dirname(
-            os.path.realpath(__file__)) + os.sep + ".." + os.sep))
-        self.db_configured=None
-        self.loadSettings()
 
-    def loadSettings(self):
-        data=session.query(Settings).first()
-        self.config_calibre_dir = data.config_calibre_dir
-        self.config_port = data.config_port
-        self.config_calibre_web_title = data.config_calibre_web_title
-        self.config_books_per_page = data.config_books_per_page
-        self.config_random_books = data.config_random_books
-        self.config_title_regex = data.config_title_regex
-        self.config_log_level = data.config_log_level
-        self.config_uploading = data.config_uploading
-        self.config_anonbrowse = data.config_anonbrowse
-        self.config_public_reg = data.config_public_reg
-        if self.config_calibre_dir is not None and (self.db_configured is None or self.db_configured is True):
-            self.db_configured=True
-        else:
-            self.db_configured = False
-
-    @property
-    def get_main_dir(self):
-        return self.config_main_dir
-
-    @property
-    def is_Calibre_Configured(self):
-        return self.db_configured
-
-
-class User(UserBase,Base):
+# Baseclass for Users in Calibre-web, settings which are depending on certain users are stored here. It is derived from
+# User Base (all access methods are declared there)
+class User(UserBase, Base):
     __tablename__ = 'user'
 
     id = Column(Integer, primary_key=True)
@@ -140,31 +155,31 @@ class User(UserBase,Base):
     shelf = relationship('Shelf', backref='user', lazy='dynamic')
     downloads = relationship('Downloads', backref='user', lazy='dynamic')
     locale = Column(String(2), default="en")
-    random_books = Column(Integer, default=1)
-    language_books = Column(Integer, default=1)
-    series_books = Column(Integer, default=1)
-    category_books = Column(Integer, default=1)
-    hot_books = Column(Integer, default=1)
+    sidebar_view = Column(Integer, default=1)
+    #language_books = Column(Integer, default=1)
+    #series_books = Column(Integer, default=1)
+    #category_books = Column(Integer, default=1)
+    #hot_books = Column(Integer, default=1)
     default_language = Column(String(3), default="all")
 
 
-class Anonymous(AnonymousUserMixin,UserBase):
-    # anon_browse = None
-
+# Class for anonymous user is derived from User base and complets overrides methods and properties for the
+# anonymous user
+class Anonymous(AnonymousUserMixin, UserBase):
     def __init__(self):
         self.loadSettings()
 
     def loadSettings(self):
-        data=session.query(User).filter(User.role.op('&')(ROLE_ANONYMOUS) == ROLE_ANONYMOUS).first()
-        settings=session.query(Settings).first()
+        data = session.query(User).filter(User.role.op('&')(ROLE_ANONYMOUS) == ROLE_ANONYMOUS).first()
+        settings = session.query(Settings).first()
         self.nickname = data.nickname
         self.role = data.role
-        self.random_books = data.random_books
+        self.sidebar_view = data.sidebar_view
         self.default_language = data.default_language
-        self.language_books = data.language_books
-        self.series_books = data.series_books
-        self.category_books = data.category_books
-        self.hot_books = data.hot_books
+        #self.language_books = data.language_books
+        #self.series_books = data.series_books
+        #self.category_books = data.category_books
+        #self.hot_books = data.hot_books
         self.default_language = data.default_language
         self.locale = data.locale
         self.anon_browse = settings.config_anonbrowse
@@ -179,6 +194,7 @@ class Anonymous(AnonymousUserMixin,UserBase):
         return self.anon_browse
 
 
+# Baseclass representing Shelfs in calibre-web inapp.db
 class Shelf(Base):
     __tablename__ = 'shelf'
 
@@ -190,6 +206,8 @@ class Shelf(Base):
     def __repr__(self):
         return '<Shelf %r>' % self.name
 
+
+# Baseclass representing Relationship between books and Shelfs in Calibre-web in app.db (N:M)
 class BookShelf(Base):
     __tablename__ = 'book_shelf_link'
 
@@ -202,6 +220,7 @@ class BookShelf(Base):
         return '<Book %r>' % self.id
 
 
+# Baseclass representing Downloads from calibre-web in app.db
 class Downloads(Base):
     __tablename__ = 'downloads'
 
@@ -212,53 +231,78 @@ class Downloads(Base):
     def __repr__(self):
         return '<Download %r' % self.book_id
 
+
+# Baseclass for representing settings in app.db with email server settings and Calibre database settings
+# (application settings)
 class Settings(Base):
     __tablename__ = 'settings'
 
     id = Column(Integer, primary_key=True)
     mail_server = Column(String)
-    mail_port = Column(Integer, default = 25)
-    mail_use_ssl = Column(SmallInteger, default = 0)
+    mail_port = Column(Integer, default=25)
+    mail_use_ssl = Column(SmallInteger, default=0)
     mail_login = Column(String)
     mail_password = Column(String)
     mail_from = Column(String)
     config_calibre_dir = Column(String)
-    config_port = Column(Integer, default = 8083)
-    config_calibre_web_title = Column(String,default = u'Calibre-web')
-    config_books_per_page = Column(Integer, default = 60)
-    config_random_books = Column(Integer, default = 4)
-    config_title_regex = Column(String,default=u'^(A|The|An|Der|Die|Das|Den|Ein|Eine|Einen|Dem|Des|Einem|Eines)\s+')
-    config_log_level = Column(String, default=u'INFO')
-    config_uploading = Column(SmallInteger, default = 0)
-    config_anonbrowse = Column(SmallInteger, default = 0)
-    config_public_reg = Column(SmallInteger, default = 0)
+    config_port = Column(Integer, default=8083)
+    config_calibre_web_title = Column(String, default=u'Calibre-web')
+    config_books_per_page = Column(Integer, default=60)
+    config_random_books = Column(Integer, default=4)
+    config_title_regex = Column(String, default=u'^(A|The|An|Der|Die|Das|Den|Ein|Eine|Einen|Dem|Des|Einem|Eines)\s+')
+    config_log_level = Column(SmallInteger, default=logging.INFO)
+    config_uploading = Column(SmallInteger, default=0)
+    config_anonbrowse = Column(SmallInteger, default=0)
+    config_public_reg = Column(SmallInteger, default=0)
 
     def __repr__(self):
-        #return '<Smtp %r>' % (self.mail_server)
         pass
 
 
+# Class holds all application specific settings in calibre-web
+class Config:
+    def __init__(self):
+        self.config_main_dir = os.path.join(os.path.normpath(os.path.dirname(
+            os.path.realpath(__file__)) + os.sep + ".." + os.sep))
+        self.db_configured = None
+        self.loadSettings()
+
+    def loadSettings(self):
+        data = session.query(Settings).first()
+        self.config_calibre_dir = data.config_calibre_dir
+        self.config_port = data.config_port
+        self.config_calibre_web_title = data.config_calibre_web_title
+        self.config_books_per_page = data.config_books_per_page
+        self.config_random_books = data.config_random_books
+        self.config_title_regex = data.config_title_regex
+        self.config_log_level = data.config_log_level
+        self.config_uploading = data.config_uploading
+        self.config_anonbrowse = data.config_anonbrowse
+        self.config_public_reg = data.config_public_reg
+        if self.config_calibre_dir is not None: # and (self.db_configured is None or self.db_configured is True):
+            self.db_configured = True
+        else:
+            self.db_configured = False
+
+    @property
+    def get_main_dir(self):
+        return self.config_main_dir
+
+    #def is_Calibre_Configured(self):
+    #    return self.db_configured
+
+
+# Migrate database to current version, has to be updated after every database change. Currently migration from
+# everywhere to curent should work. Migration is done by checking if relevant coloums are existing, and than adding
+# rows with SQL commands
 def migrate_Database():
-    if session.query(User).filter(User.role.op('&')(ROLE_ANONYMOUS) == ROLE_ANONYMOUS).first() is None:
-        create_anonymous_user()
     try:
-        session.query(exists().where(User.random_books)).scalar()
+        session.query(exists().where(User.locale)).scalar()
         session.commit()
     except exc.OperationalError:  # Database is not compatible, some rows are missing
         conn = engine.connect()
-        conn.execute("ALTER TABLE user ADD column random_books INTEGER DEFAULT 1")
         conn.execute("ALTER TABLE user ADD column locale String(2) DEFAULT 'en'")
         conn.execute("ALTER TABLE user ADD column default_language String(3) DEFAULT 'all'")
-        session.commit()
-    try:
-        session.query(exists().where(User.language_books)).scalar()
-        session.commit()
-    except exc.OperationalError:  # Database is not compatible, some rows are missing
-        conn = engine.connect()
-        conn.execute("ALTER TABLE user ADD column language_books INTEGER DEFAULT 1")
-        conn.execute("ALTER TABLE user ADD column series_books INTEGER DEFAULT 1")
-        conn.execute("ALTER TABLE user ADD column category_books INTEGER DEFAULT 1")
-        conn.execute("ALTER TABLE user ADD column hot_books INTEGER DEFAULT 1")
         session.commit()
     try:
         session.query(exists().where(Settings.config_calibre_dir)).scalar()
@@ -270,12 +314,34 @@ def migrate_Database():
         conn.execute("ALTER TABLE Settings ADD column `config_calibre_web_title` String DEFAULT 'Calibre-web'")
         conn.execute("ALTER TABLE Settings ADD column `config_books_per_page` INTEGER DEFAULT 60")
         conn.execute("ALTER TABLE Settings ADD column `config_random_books` INTEGER DEFAULT 4")
-        conn.execute("ALTER TABLE Settings ADD column `config_title_regex` String DEFAULT '^(A|The|An|Der|Die|Das|Den|Ein|Eine|Einen|Dem|Des|Einem|Eines)\s+'")
-        conn.execute("ALTER TABLE Settings ADD column `config_log_level` String DEFAULT 'INFO'")
+        conn.execute("ALTER TABLE Settings ADD column `config_title_regex` String DEFAULT "
+            "'^(A|The|An|Der|Die|Das|Den|Ein|Eine|Einen|Dem|Des|Einem|Eines)\s+'")
+        conn.execute("ALTER TABLE Settings ADD column `config_log_level` SmallInteger DEFAULT '" + logging.INFO + "'")
         conn.execute("ALTER TABLE Settings ADD column `config_uploading` SmallInteger DEFAULT 0")
         conn.execute("ALTER TABLE Settings ADD column `config_anonbrowse` SmallInteger DEFAULT 0")
         conn.execute("ALTER TABLE Settings ADD column `config_public_reg` SmallInteger DEFAULT 0")
         session.commit()
+    try:
+        create = False
+        session.query(exists().where(User.sidebar_view)).scalar()
+        session.commit()
+    except exc.OperationalError:  # Database is not compatible, some rows are missing
+        conn = engine.connect()
+        conn.execute("ALTER TABLE user ADD column `sidebar_view` Integer DEFAULT 1")
+        session.commit()
+        create=True
+    try:
+        if create:
+            conn.execute("SELET language_books FROM user")
+            session.commit()
+    except exc.OperationalError:
+        conn = engine.connect()
+        conn.execute("UPDATE user SET 'sidebar_view' = (random_books*"+str(SIDEBAR_RANDOM)+"+ language_books *"+
+                     str(SIDEBAR_LANGUAGE)+"+ series_books *"+str(SIDEBAR_SERIES)+"+ category_books *"+str(SIDEBAR_CATEGORY)+
+                     "+ hot_books *"+str(SIDEBAR_HOT)+"+"+str(SIDEBAR_AUTHOR)+"+"+str(DETAIL_RANDOM)+")")
+        session.commit()
+    if session.query(User).filter(User.role.op('&')(ROLE_ANONYMOUS) == ROLE_ANONYMOUS).first() is None:
+        create_anonymous_user()
 
 def create_default_config():
     settings = Settings()
@@ -307,10 +373,12 @@ def get_mail_settings():
 
     return data
 
+
+# Generate user Guest (translated text), as anoymous user, no rights
 def create_anonymous_user():
     user = User()
     user.nickname = _("Guest")
-    user.email='no@email'
+    user.email = 'no@email'
     user.role = ROLE_ANONYMOUS
     user.password = generate_password_hash('1')
 
@@ -322,10 +390,14 @@ def create_anonymous_user():
         pass
 
 
+# Generate User admin with admin123 password, and access to everything
 def create_admin_user():
     user = User()
     user.nickname = "admin"
     user.role = ROLE_USER + ROLE_ADMIN + ROLE_DOWNLOAD + ROLE_UPLOAD + ROLE_EDIT + ROLE_PASSWD
+    user.sidebar_view = DETAIL_RANDOM + SIDEBAR_LANGUAGE + SIDEBAR_SERIES + SIDEBAR_CATEGORY + SIDEBAR_HOT + \
+        SIDEBAR_RANDOM + SIDEBAR_AUTHOR
+
     user.password = generate_password_hash(DEFAULT_PASS)
 
     session.add(user)
@@ -335,10 +407,13 @@ def create_admin_user():
         session.rollback()
         pass
 
+
+# Open session for database connection
 Session = sessionmaker()
 Session.configure(bind=engine)
 session = Session()
 
+# generate database and admin and guest user, if no database is existing
 if not os.path.exists(dbpath):
     try:
         Base.metadata.create_all(engine)
@@ -349,3 +424,6 @@ if not os.path.exists(dbpath):
         pass
 else:
     migrate_Database()
+
+# Generate global Settings Object accecable from every file
+config = Config()
