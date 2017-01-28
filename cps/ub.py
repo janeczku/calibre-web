@@ -288,8 +288,17 @@ class Config:
     def get_main_dir(self):
         return self.config_main_dir
 
-    #def is_Calibre_Configured(self):
-    #    return self.db_configured
+    def get_Log_Level(self):
+        ret_value=""
+        if self.config_log_level == logging.INFO:
+            ret_value='INFO'
+        elif self.config_log_level == logging.DEBUG:
+            ret_value='DEBUG'
+        elif self.config_log_level == logging.WARNING:
+            ret_value='WARNING'
+        elif self.config_log_level == logging.ERROR:
+            ret_value='ERROR'
+        return ret_value
 
 
 # Migrate database to current version, has to be updated after every database change. Currently migration from

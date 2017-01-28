@@ -973,6 +973,8 @@ def admin_forbidden():
 def stats():
     counter = len(db.session.query(db.Books).all())
     authors = len(db.session.query(db.Authors).all())
+    categorys = len(db.session.query(db.Tags).all())
+    series = len(db.session.query(db.Series).all())
     versions = uploader.book_formats.get_versions()
     vendorpath = os.path.join(config.get_main_dir + "vendor" + os.sep)
     if sys.platform == "win32":
@@ -989,7 +991,7 @@ def stats():
                 versions['KindlegenVersion'] = lines
     versions['PythonVersion'] = sys.version
     return render_title_template('stats.html', bookcounter=counter, authorcounter=authors, versions=versions,
-                                 title=_(u"Statistics"))
+                                 categorycounter=categorys, seriecounter=series, title=_(u"Statistics"))
 
 
 @app.route("/shutdown")
