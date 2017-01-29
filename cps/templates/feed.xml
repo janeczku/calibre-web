@@ -29,9 +29,9 @@
   <link rel="search"
         href="{{url_for('feed_osd')}}"
         type="application/opensearchdescription+xml"/>
-  <title>Calibre Web</title>
+  <title>{{instance}}</title>
   <author>
-    <name>Calibre Web</name>
+    <name>{{instance}}</name>
     <uri>https://github.com/janeczku/calibre-web</uri>
   </author>
 
