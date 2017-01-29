@@ -106,7 +106,7 @@ mimetypes.add_type('image/vnd.djvu', '.djvu')
 app = (Flask(__name__))
 app.wsgi_app = ReverseProxied(app.wsgi_app)
 
-'''formatter = logging.Formatter(
+formatter = logging.Formatter(
     "[%(asctime)s] {%(pathname)s:%(lineno)d} %(levelname)s - %(message)s")
 file_handler = RotatingFileHandler(os.path.join(config.get_main_dir, "calibre-web.log"), maxBytes=50000, backupCount=1)
 file_handler.setFormatter(formatter)
@@ -115,7 +115,7 @@ app.logger.setLevel(config.config_log_level)
 
 app.logger.info('Starting Calibre Web...')
 logging.getLogger("book_formats").addHandler(file_handler)
-logging.getLogger("book_formats").setLevel(config.config_log_level)'''
+logging.getLogger("book_formats").setLevel(config.config_log_level)
 
 Principal(app)
 
@@ -434,7 +434,7 @@ def feed_index():
         filter = db.Books.languages.any(db.Languages.lang_code == current_user.filter_language())
     else:
         filter = True
-    xml = render_template('index.xml')
+    xml = render_title_template('index.xml')
     response = make_response(xml)
     response.headers["Content-Type"] = "application/xml"
     return response
@@ -443,7 +443,7 @@ def feed_index():
 @app.route("/opds/osd")
 @requires_basic_auth_if_no_ano
 def feed_osd():
-    xml = render_template('osd.xml')
+    xml = render_title_template('osd.xml',lang='de-DE')
     response = make_response(xml)
     response.headers["Content-Type"] = "application/xml"
     return response
@@ -472,9 +472,9 @@ def feed_search(term):
                                                            db.Books.title.like("%" + term + "%"))).filter(filter).all()
         entriescount = len(entries) if len(entries) > 0 else 1
         pagination = Pagination(1, entriescount, entriescount)
-        xml = render_template('feed.xml', searchterm=term, entries=entries, pagination=pagination)
+        xml = render_title_template('feed.xml', searchterm=term, entries=entries, pagination=pagination)
     else:
-        xml = render_template('feed.xml', searchterm="")
+        xml = render_title_template('feed.xml', searchterm="")
     response = make_response(xml)
     response.headers["Content-Type"] = "application/xml"
     return response
@@ -494,7 +494,7 @@ def feed_new():
         config.config_books_per_page)
     pagination = Pagination((int(off) / (int(config.config_books_per_page)) + 1), config.config_books_per_page,
                             len(db.session.query(db.Books).filter(filter).all()))
-    xml = render_template('feed.xml', entries=entries, pagination=pagination)
+    xml = render_title_template('feed.xml', entries=entries, pagination=pagination)
     response = make_response(xml)
     response.headers["Content-Type"] = "application/xml"
     return response
@@ -512,7 +512,7 @@ def feed_discover():
     # off = 0
     entries = db.session.query(db.Books).filter(filter).order_by(func.random()).limit(config.config_books_per_page)
     pagination = Pagination(1, config.config_books_per_page, int(config.config_books_per_page))
-    xml = render_template('feed.xml', entries=entries, pagination=pagination)
+    xml = render_title_template('feed.xml', entries=entries, pagination=pagination)
     response = make_response(xml)
     response.headers["Content-Type"] = "application/xml"
     return response
@@ -533,7 +533,7 @@ def feed_hot():
     pagination = Pagination((int(off) / (int(config.config_books_per_page)) + 1), config.config_books_per_page,
                             len(db.session.query(db.Books).filter(filter).filter(
                                 db.Books.ratings.any(db.Ratings.rating > 9)).all()))
-    xml = render_template('feed.xml', entries=entries, pagination=pagination)
+    xml = render_title_template('feed.xml', entries=entries, pagination=pagination)
     response = make_response(xml)
     response.headers["Content-Type"] = "application/xml"
     return response
@@ -553,7 +553,7 @@ def feed_authorindex():
     authors = db.session.query(db.Authors).order_by(db.Authors.sort).offset(off).limit(config.config_books_per_page)
     pagination = Pagination((int(off) / (int(config.config_books_per_page)) + 1), config.config_books_per_page,
                             len(db.session.query(db.Authors).all()))
-    xml = render_template('feed.xml', authors=authors, pagination=pagination)
+    xml = render_title_template('feed.xml', authors=authors, pagination=pagination)
     response = make_response(xml)
     response.headers["Content-Type"] = "application/xml"
     return response
@@ -574,7 +574,7 @@ def feed_author(id):
     pagination = Pagination((int(off) / (int(config.config_books_per_page)) + 1), config.config_books_per_page,
                             len(db.session.query(db.Books).filter(db.Books.authors.any(db.Authors.id == id)).filter(
                                 filter).all()))
-    xml = render_template('feed.xml', entries=entries, pagination=pagination)
+    xml = render_title_template('feed.xml', entries=entries, pagination=pagination)
     response = make_response(xml)
     response.headers["Content-Type"] = "application/xml"
     return response
@@ -589,7 +589,7 @@ def feed_categoryindex():
     entries = db.session.query(db.Tags).order_by(db.Tags.name).offset(off).limit(config.config_books_per_page)
     pagination = Pagination((int(off) / (int(config.config_books_per_page)) + 1), config.config_books_per_page,
                             len(db.session.query(db.Tags).all()))
-    xml = render_template('feed.xml', categorys=entries, pagination=pagination)
+    xml = render_title_template('feed.xml', categorys=entries, pagination=pagination)
     response = make_response(xml)
     response.headers["Content-Type"] = "application/xml"
     return response
@@ -610,7 +610,7 @@ def feed_category(id):
     pagination = Pagination((int(off) / (int(config.config_books_per_page)) + 1), config.config_books_per_page,
                             len(db.session.query(db.Books).filter(db.Books.tags.any(db.Tags.id == id)).filter(
                                 filter).all()))
-    xml = render_template('feed.xml', entries=entries, pagination=pagination)
+    xml = render_title_template('feed.xml', entries=entries, pagination=pagination)
     response = make_response(xml)
     response.headers["Content-Type"] = "application/xml"
     return response
@@ -629,7 +629,7 @@ def feed_seriesindex():
     entries = db.session.query(db.Series).order_by(db.Series.name).offset(off).limit(config.config_books_per_page)
     pagination = Pagination((int(off) / (int(config.config_books_per_page)) + 1), config.config_books_per_page,
                             len(db.session.query(db.Series).all()))
-    xml = render_template('feed.xml', series=entries, pagination=pagination)
+    xml = render_title_template('feed.xml', series=entries, pagination=pagination)
     response = make_response(xml)
     response.headers["Content-Type"] = "application/xml"
     return response
@@ -650,7 +650,7 @@ def feed_series(id):
     pagination = Pagination((int(off) / (int(config.config_books_per_page)) + 1), config.config_books_per_page,
                             len(db.session.query(db.Books).filter(db.Books.series.any(db.Series.id == id)).filter(
                                 filter).all()))
-    xml = render_template('feed.xml', entries=entries, pagination=pagination)
+    xml = render_title_template('feed.xml', entries=entries, pagination=pagination)
     response = make_response(xml)
     response.headers["Content-Type"] = "application/xml"
     return response
@@ -670,7 +670,7 @@ def get_opds_download_link(book_id, format):
     if len(author) > 0:
         file_name = author + '-' + file_name
     file_name = helper.get_valid_filename(file_name)
-    response = make_response(send_from_directory(os.path.join(config.DB_ROOT, book.path), data.name + "." + format))
+    response = make_response(send_from_directory(os.path.join(config.config_calibre_dir, book.path), data.name + "." + format))
     response.headers["Content-Disposition"] = "attachment; filename=\"%s.%s\"" % (data.name, format)
     return response
 
