@@ -290,9 +290,9 @@ def reduce_files(remove_items, exclude_items):
     return rf
 
 def moveallfiles(root_src_dir, root_dst_dir):
-    change_permissions = False
+    change_permissions = True
     if sys.platform == "win32" or sys.platform == "darwin":
-        change_permissions=True
+        change_permissions=False
     else:
         app.logger.debug('OS-System : '+sys.platform )
     new_permissions=os.stat(root_dst_dir)
