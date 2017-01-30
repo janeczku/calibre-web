@@ -3,6 +3,7 @@
 import mimetypes
 import logging
 from logging.handlers import RotatingFileHandler
+from tempfile import gettempdir
 import textwrap
 from flask import Flask, render_template, session, request, Response, redirect, url_for, send_from_directory, \
     make_response, g, flash, abort
@@ -39,6 +40,7 @@ import re
 import db
 from shutil import move, copyfile
 from tornado.ioloop import IOLoop
+import StringIO
 
 try:
     from wand.image import Image
@@ -108,7 +110,7 @@ app.wsgi_app = ReverseProxied(app.wsgi_app)
 
 formatter = logging.Formatter(
     "[%(asctime)s] {%(pathname)s:%(lineno)d} %(levelname)s - %(message)s")
-file_handler = RotatingFileHandler(os.path.join(config.get_main_dir, "calibre-web.log"), maxBytes=50000, backupCount=1)
+file_handler = RotatingFileHandler(os.path.join(config.get_main_dir, "calibre-web.log"), maxBytes=50000, backupCount=2)
 file_handler.setFormatter(formatter)
 app.logger.addHandler(file_handler)
 app.logger.setLevel(config.config_log_level)
@@ -707,6 +709,20 @@ def get_tags_json():
         json_dumps = json.dumps([dict(r) for r in entries])
         return json_dumps
 
+@app.route("/get_update_status", methods=['GET'])
+@login_required_if_no_ano
+def get_update_status():
+    status = {}
+    if request.method == "GET":
+        commit_id = '$Id$'
+        commit = requests.get('https://api.github.com/repos/janeczku/calibre-web/git/refs/heads/master').json()
+        if "object" in commit and commit['object']['sha'] != commit_id[5:-2]:
+            status['status'] = True
+        else:
+            status['status'] = False
+    return json.dumps(status)
+
+
 
 @app.route("/get_languages_json", methods=['GET', 'POST'])
 @login_required_if_no_ano
@@ -1019,6 +1035,27 @@ def shutdown():
     else:
         abort(404)
 
+@app.route("/update")
+@login_required
+@admin_required
+def update():
+    global global_task
+    r = requests.get('https://api.github.com/repos/janeczku/calibre-web/zipball/master', stream=True)
+    fname = re.findall("filename=(.+)", r.headers['content-disposition'])[0]
+    z = zipfile.ZipFile(StringIO.StringIO(r.content))
+    tmp_dir = gettempdir()
+    z.extractall(tmp_dir)
+    helper.update_source(os.path.join(tmp_dir,os.path.splitext(fname)[0]),config.get_main_dir)
+    global_task = 0
+    db.session.close()
+    db.engine.dispose()
+    ub.session.close()
+    ub.engine.dispose()
+    # stop tornado server
+    server = IOLoop.instance()
+    server.add_callback(server.stop)
+    flash(_(u"Update done"), category="info")
+    return logout()
 
 @app.route("/search", methods=["GET"])
 @login_required_if_no_ano
@@ -1269,6 +1306,7 @@ def login():
             # test=
             return redirect(url_for("index"))
         else:
+            app.logger.info('Login failed for user "'+form['username']+'"')
             flash(_(u"Wrong Username or Password"), category="error")
 
     return render_title_template('login.html', title=_(u"login"))

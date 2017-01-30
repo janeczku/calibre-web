@@ -78,6 +78,8 @@
       {% if not development %}
         <div class="btn btn-default" data-toggle="modal" data-target="#RestartDialog">{{_('Restart Calibre-web')}}</a></div>
         <div class="btn btn-default" data-toggle="modal" data-target="#ShutdownDialog">{{_('Stop Calibre-web')}}</a></div>
+        <div class="btn btn-default" id="check_for_update">{{_('Check for update')}}</a></div>
+        <a href="{{url_for('update')}}" class="btn btn-default hidden" id="perform_update">{{_('Perform Update')}}</a>
       {% endif %}
 </div>
 <!-- Modal -->
@@ -132,6 +134,20 @@
             data: {"parameter":1},
             success: function(data) {
                 return alert(data.text);}
+        });
+    });
+    $("#check_for_update").click(function() {
+        $("#check_for_update").html('Checking...');
+        $.ajax({
+            dataType: 'json',
+            url: "{{url_for('get_update_status')}}",
+            success: function(data) {
+            if (data.status == true) {
+                $("#check_for_update").addClass('hidden');
+                $("#perform_update").removeClass('hidden');
+            }else{
+                $("#check_for_update").html('{{_('Check for update')}}');
+            };}
         });
     });
 </script>

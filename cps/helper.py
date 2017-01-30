@@ -21,7 +21,7 @@ from email.MIMEText import MIMEText
 from email.generator import Generator
 from flask_babel import gettext as _
 import subprocess
-
+import shutil
 
 def update_download(book_id, user_id):
     check = ub.session.query(ub.Downloads).filter(ub.Downloads.user_id == user_id).filter(ub.Downloads.book_id ==
@@ -254,3 +254,105 @@ def update_dir_stucture(book_id, calibrepath):
         os.renames(path, new_author_path)
         book.path = new_authordir + os.sep + book.path.split(os.sep)[1]
     db.session.commit()
+
+
+def file_to_list(file):
+    return [x.strip() for x in open(file, 'r') if not x.startswith('#EXT')]
+
+def one_minus_two(one, two):
+    return [x for x in one if x not in set(two)]
+
+def reduce_dirs(delete_files, new_list):
+    new_delete = []
+    for file in delete_files:
+        parts = file.split(os.sep)
+        sub = ''
+        for i in range(len(parts)):
+            sub = os.path.join(sub, parts[i])
+            if sub == '':
+                sub = os.sep
+            count = 0
+            for song in new_list:
+                if song.startswith(sub):
+                    count += 1
+                    break
+            if count == 0:
+                if sub != '\\':
+                    new_delete.append(sub)
+                break
+    return list(set(new_delete))
+
+def reduce_files(remove_items, exclude_items):
+    rf = []
+    for item in remove_items:
+        if not item in exclude_items:
+            rf.append(item)
+    return rf
+
+def moveallfiles(root_src_dir, root_dst_dir):
+    change_permissions = False
+    if sys.platform == "win32" or sys.platform == "darwin":
+        change_permissions=True
+    else:
+        app.logger.debug('OS-System : '+sys.platform )
+    new_permissions=os.stat(root_dst_dir)
+    for src_dir, dirs, files in os.walk(root_src_dir):
+        dst_dir = src_dir.replace(root_src_dir, root_dst_dir, 1)
+        if not os.path.exists(dst_dir):
+            os.makedirs(dst_dir)
+            if change_permissions:
+                os.chown(dst_dir,new_permissions.ST_UID,new_permissions.ST_GID)
+        for file_ in files:
+            src_file = os.path.join(src_dir, file_)
+            dst_file = os.path.join(dst_dir, file_)
+            if change_permissions:
+                permission=os.stat(dst_file)
+            if os.path.exists(dst_file):
+                os.remove(dst_file)
+            shutil.move(src_file, dst_dir)
+            if change_permissions:
+                os.chown(dst_file, permission.ST_UID, permission.ST_GID)
+    return
+
+
+def update_source(source,destination):
+    # destination files
+    old_list=list()
+    exclude = (['vendor' + os.sep + 'kindlegen.exe','vendor' + os.sep + 'kindlegen','/app.db','vendor','/update.py'])
+    for root, dirs, files in os.walk(destination, topdown=True):
+        for name in files:
+            old_list.append(os.path.join(root, name).replace(destination, ''))
+        for name in dirs:
+            old_list.append(os.path.join(root, name).replace(destination, ''))
+    # source files
+    new_list = list()
+    for root, dirs, files in os.walk(source, topdown=True):
+        for name in files:
+            new_list.append(os.path.join(root, name).replace(source, ''))
+        for name in dirs:
+            new_list.append(os.path.join(root, name).replace(source, ''))
+
+    delete_files = one_minus_two(old_list, new_list)
+    print('raw delete list', delete_files)
+
+    rf= reduce_files(delete_files, exclude)
+    print('reduced delete list', rf)
+
+    remove_items = reduce_dirs(rf, new_list)
+    print('delete files', remove_items)
+
+    moveallfiles(source, destination)
+
+    for item in remove_items:
+        item_path = os.path.join(destination, item[1:])
+        if os.path.isdir(item_path):
+            # app.logger.info("Delete dir "+ item_path)
+            print("Delete dir "+ item_path)
+            #shutil.rmtree(item_path)
+        else:
+            try:
+                print("Delete file "+ item_path)
+                #os.remove(item_path)
+            except:
+                print("Could not remove:"+item_path)
+    shutil.rmtree(source, ignore_errors=True)
