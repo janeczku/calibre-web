@@ -305,13 +305,19 @@ def moveallfiles(root_src_dir, root_dst_dir):
         for file_ in files:
             src_file = os.path.join(src_dir, file_)
             dst_file = os.path.join(dst_dir, file_)
-            if change_permissions:
-                permission=os.stat(dst_file)
             if os.path.exists(dst_file):
+                if change_permissions:
+                    permission=os.stat(dst_file)
                 os.remove(dst_file)
+            else:
+                if change_permissions:            
+                    permission=new_permissions                
             shutil.move(src_file, dst_dir)
             if change_permissions:
-                os.chown(dst_file, permission.ST_UID, permission.ST_GID)
+                try:
+                    os.chown(dst_file, permission.ST_UID, permission.ST_GID)
+                except:
+                    pass
     return
 
 
