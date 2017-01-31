@@ -292,32 +292,40 @@ def reduce_files(remove_items, exclude_items):
 def moveallfiles(root_src_dir, root_dst_dir):
     change_permissions = True
     if sys.platform == "win32" or sys.platform == "darwin":
-        change_permissions=False
+        change_permissions=False        
     else:
-        app.logger.debug('OS-System : '+sys.platform )
-    new_permissions=os.stat(root_dst_dir)
+        app.logger.debug('Update on OS-System : '+sys.platform )
+        #print('OS-System: '+sys.platform )
+        new_permissions=os.stat(root_dst_dir)
+        #print new_permissions
     for src_dir, dirs, files in os.walk(root_src_dir):
         dst_dir = src_dir.replace(root_src_dir, root_dst_dir, 1)
         if not os.path.exists(dst_dir):
             os.makedirs(dst_dir)
+            #print('Create-Dir: '+dst_dir)
             if change_permissions:
-                os.chown(dst_dir,new_permissions.ST_UID,new_permissions.ST_GID)
+                #print('Permissions: User '+str(new_permissions.st_uid)+' Group '+str(new_permissions.st_uid))            
+                os.chown(dst_dir,new_permissions.st_uid,new_permissions.st_gid)
         for file_ in files:
             src_file = os.path.join(src_dir, file_)
             dst_file = os.path.join(dst_dir, file_)
             if os.path.exists(dst_file):
                 if change_permissions:
                     permission=os.stat(dst_file)
+                #print('Remove file before copy: '+dst_file)                                                                               
                 os.remove(dst_file)
             else:
                 if change_permissions:            
                     permission=new_permissions                
             shutil.move(src_file, dst_dir)
+            #print('Move File '+src_file+' to '+dst_dir)                                                            
             if change_permissions:
                 try:
-                    os.chown(dst_file, permission.ST_UID, permission.ST_GID)
+                    os.chown(dst_file, permission.st_uid, permission.st_uid)
+                    #print('Permissions: User '+str(new_permissions.st_uid)+' Group '+str(new_permissions.st_uid))
                 except:
-                    pass
+                    e = sys.exc_info()
+                    #print('Fail '+str(dst_file)+' error: '+str(e))
     return
 
 
@@ -339,26 +347,25 @@ def update_source(source,destination):
             new_list.append(os.path.join(root, name).replace(source, ''))
 
     delete_files = one_minus_two(old_list, new_list)
-    print('raw delete list', delete_files)
+    #print('raw delete list', delete_files)
 
     rf= reduce_files(delete_files, exclude)
-    print('reduced delete list', rf)
+    #print('reduced delete list', rf)
 
     remove_items = reduce_dirs(rf, new_list)
-    print('delete files', remove_items)
+    #print('delete files', remove_items)
 
     moveallfiles(source, destination)
 
     for item in remove_items:
         item_path = os.path.join(destination, item[1:])
         if os.path.isdir(item_path):
-            # app.logger.info("Delete dir "+ item_path)
             print("Delete dir "+ item_path)
-            #shutil.rmtree(item_path)
+            shutil.rmtree(item_path)
         else:
             try:
                 print("Delete file "+ item_path)
-                #os.remove(item_path)
+                os.remove(item_path)
             except:
                 print("Could not remove:"+item_path)
-    shutil.rmtree(source, ignore_errors=True)
+    #shutil.rmtree(source, ignore_errors=True)

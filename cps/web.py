@@ -713,9 +713,9 @@ def get_update_status():
     status = {}
     if request.method == "GET":
         # should be automatically replaced by git with current commit hash
-        commit_id = '$Id$'
+        commit_id = '$Format:%H$'
         commit = requests.get('https://api.github.com/repos/janeczku/calibre-web/git/refs/heads/master').json()
-        if "object" in commit and commit['object']['sha'] != commit_id[5:-2]:
+        if "object" in commit and commit['object']['sha'] != commit_id:
             status['status'] = True
         else:
             status['status'] = False
