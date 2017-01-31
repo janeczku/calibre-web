@@ -325,7 +325,7 @@ def migrate_Database():
         conn.execute("ALTER TABLE Settings ADD column `config_random_books` INTEGER DEFAULT 4")
         conn.execute("ALTER TABLE Settings ADD column `config_title_regex` String DEFAULT "
             "'^(A|The|An|Der|Die|Das|Den|Ein|Eine|Einen|Dem|Des|Einem|Eines)\s+'")
-        conn.execute("ALTER TABLE Settings ADD column `config_log_level` SmallInteger DEFAULT '" + logging.INFO + "'")
+        conn.execute("ALTER TABLE Settings ADD column `config_log_level` SmallInteger DEFAULT " + str(logging.INFO))
         conn.execute("ALTER TABLE Settings ADD column `config_uploading` SmallInteger DEFAULT 0")
         conn.execute("ALTER TABLE Settings ADD column `config_anonbrowse` SmallInteger DEFAULT 0")
         conn.execute("ALTER TABLE Settings ADD column `config_public_reg` SmallInteger DEFAULT 0")

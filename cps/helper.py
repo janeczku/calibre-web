@@ -368,4 +368,4 @@ def update_source(source,destination):
                 os.remove(item_path)
             except:
                 print("Could not remove:"+item_path)
-    #shutil.rmtree(source, ignore_errors=True)
+    shutil.rmtree(source, ignore_errors=True)
