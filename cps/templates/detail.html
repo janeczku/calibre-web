@@ -15,7 +15,7 @@
       <h2>{{entry.title}}</h2>
       <p class="author">
           {% for author in entry.authors %}
-            <a href="{{url_for('author', name=author.name) }}">{{author.name}}</a>
+            <a href="{{url_for('author', name=author.name | urlencode) }}">{{author.name}}</a>
             {% if not loop.last %}
               &amp;
             {% endif %}
@@ -65,7 +65,7 @@
         <span class="glyphicon glyphicon-tags"></span>
         
         {% for tag in entry.tags %}
-          <a href="{{ url_for('category', name=tag.name) }}" class="btn btn-xs btn-info" role="button">{{tag.name}}</a>
+          <a href="{{ url_for('category', name=tag.name | urlencode) }}" class="btn btn-xs btn-info" role="button">{{tag.name}}</a>
         {%endfor%}
 
       </div>

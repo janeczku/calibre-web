@@ -55,7 +55,7 @@
         <p class="title">{{entry.title|shortentitle}}</p>
         <p class="author">
           {% for author in entry.authors %}
-            <a href="{{url_for('author', name=author.name) }}">{{author.name}}</a>
+            <a href="{{url_for('author', name=author.name | urlencode) }}">{{author.name}}</a>
             {% if not loop.last %}
               &amp;
             {% endif %}
