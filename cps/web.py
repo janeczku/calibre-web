@@ -797,7 +797,7 @@ def hot_books(page):
         filter = db.Books.languages.any(db.Languages.lang_code == current_user.filter_language())
     else:
         filter = True
-    if current_user.show_random_books():
+    if current_user.show_detail_random():
         random = db.session.query(db.Books).filter(filter).order_by(func.random()).limit(config.config_random_books)
     else:
         random = false
@@ -839,11 +839,12 @@ def author_list():
 @app.route("/author/<name>")
 @login_required_if_no_ano
 def author(name):
+    name=requests.utils.unquote(name)
     if current_user.filter_language() != "all":
         filter = db.Books.languages.any(db.Languages.lang_code == current_user.filter_language())
     else:
         filter = True
-    if current_user.show_random_books():
+    if current_user.show_detail_random():
         random = db.session.query(db.Books).filter(filter).order_by(func.random()).limit(config.config_random_books)
     else:
         random = false
@@ -870,6 +871,7 @@ def series_list():
 @app.route("/series/<name>/<int:page>'")
 @login_required_if_no_ano
 def series(name, page):
+    name = requests.utils.unquote(name)
     entries, random, pagination = fill_indexpage(page, db.Books, db.Books.series.any(db.Series.name == name),
                                                  db.Books.series_index)
     if entries:
@@ -942,6 +944,7 @@ def category_list():
 @app.route('/category/<name>/<int:page>')
 @login_required_if_no_ano
 def category(name, page):
+    name = requests.utils.unquote(name)
     entries, random, pagination = fill_indexpage(page, db.Books, db.Books.tags.any(db.Tags.name == name),
                                                  db.Books.timestamp.desc())
     return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
