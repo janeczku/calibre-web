@@ -484,16 +484,10 @@ def feed_search(term):
 @requires_basic_auth_if_no_ano
 def feed_new():
     off = request.args.get("offset")
-    if current_user.filter_language() != "all":
-        filter = db.Books.languages.any(db.Languages.lang_code == current_user.filter_language())
-    else:
-        filter = True
     if not off:
         off = 0
-    entries = db.session.query(db.Books).filter(filter).order_by(db.Books.timestamp.desc()).offset(off).limit(
-        config.config_books_per_page)
-    pagination = Pagination((int(off) / (int(config.config_books_per_page)) + 1), config.config_books_per_page,
-                            len(db.session.query(db.Books).filter(filter).all()))
+    entries, random, pagination = fill_indexpage((int(off) / (int(config.config_books_per_page)) + 1),
+                                                 db.Books, True, db.Books.timestamp.desc())
     xml = render_title_template('feed.xml', entries=entries, pagination=pagination)
     response = make_response(xml)
     response.headers["Content-Type"] = "application/xml"
@@ -503,13 +497,10 @@ def feed_new():
 @app.route("/opds/discover")
 @requires_basic_auth_if_no_ano
 def feed_discover():
-    # off = request.args.get("start_index")
     if current_user.filter_language() != "all":
         filter = db.Books.languages.any(db.Languages.lang_code == current_user.filter_language())
     else:
         filter = True
-    # if not off:
-    # off = 0
     entries = db.session.query(db.Books).filter(filter).order_by(func.random()).limit(config.config_books_per_page)
     pagination = Pagination(1, config.config_books_per_page, int(config.config_books_per_page))
     xml = render_title_template('feed.xml', entries=entries, pagination=pagination)
@@ -522,17 +513,10 @@ def feed_discover():
 @requires_basic_auth_if_no_ano
 def feed_hot():
     off = request.args.get("offset")
-    if current_user.filter_language() != "all":
-        filter = db.Books.languages.any(db.Languages.lang_code == current_user.filter_language())
-    else:
-        filter = True
     if not off:
         off = 0
-    entries = db.session.query(db.Books).filter(filter).filter(db.Books.ratings.any(db.Ratings.rating > 9)).offset(
-        off).limit(config.config_books_per_page)
-    pagination = Pagination((int(off) / (int(config.config_books_per_page)) + 1), config.config_books_per_page,
-                            len(db.session.query(db.Books).filter(filter).filter(
-                                db.Books.ratings.any(db.Ratings.rating > 9)).all()))
+    entries, random, pagination = fill_indexpage((int(off) / (int(config.config_books_per_page)) + 1),
+                    db.Books, db.Books.ratings.any(db.Ratings.rating > 9), db.Books.timestamp.desc())
     xml = render_title_template('feed.xml', entries=entries, pagination=pagination)
     response = make_response(xml)
     response.headers["Content-Type"] = "application/xml"
@@ -543,17 +527,17 @@ def feed_hot():
 @requires_basic_auth_if_no_ano
 def feed_authorindex():
     off = request.args.get("offset")
-    # ToDo: Language filter not working
+    if not off:
+        off = 0
     if current_user.filter_language() != "all":
         filter = db.Books.languages.any(db.Languages.lang_code == current_user.filter_language())
     else:
         filter = True
-    if not off:
-        off = 0
-    authors = db.session.query(db.Authors).order_by(db.Authors.sort).offset(off).limit(config.config_books_per_page)
+    entries = db.session.query(db.Authors).join(db.books_authors_link).join(db.Books).filter(filter)\
+        .group_by('books_authors_link.author').order_by(db.Authors.sort).limit(config.config_books_per_page).offset(off)
     pagination = Pagination((int(off) / (int(config.config_books_per_page)) + 1), config.config_books_per_page,
                             len(db.session.query(db.Authors).all()))
-    xml = render_title_template('feed.xml', authors=authors, pagination=pagination)
+    xml = render_title_template('feed.xml', listelements=entries, folder='feed_author', pagination=pagination)
     response = make_response(xml)
     response.headers["Content-Type"] = "application/xml"
     return response
@@ -563,17 +547,10 @@ def feed_authorindex():
 @requires_basic_auth_if_no_ano
 def feed_author(id):
     off = request.args.get("offset")
-    if current_user.filter_language() != "all":
-        filter = db.Books.languages.any(db.Languages.lang_code == current_user.filter_language())
-    else:
-        filter = True
     if not off:
         off = 0
-    entries = db.session.query(db.Books).filter(db.Books.authors.any(db.Authors.id == id)).filter(
-        filter).offset(off).limit(config.config_books_per_page)
-    pagination = Pagination((int(off) / (int(config.config_books_per_page)) + 1), config.config_books_per_page,
-                            len(db.session.query(db.Books).filter(db.Books.authors.any(db.Authors.id == id)).filter(
-                                filter).all()))
+    entries, random, pagination = fill_indexpage((int(off) / (int(config.config_books_per_page)) + 1),
+                    db.Books, db.Books.authors.any(db.Authors.id == id), db.Books.timestamp.desc())
     xml = render_title_template('feed.xml', entries=entries, pagination=pagination)
     response = make_response(xml)
     response.headers["Content-Type"] = "application/xml"
@@ -586,10 +563,15 @@ def feed_categoryindex():
     off = request.args.get("offset")
     if not off:
         off = 0
-    entries = db.session.query(db.Tags).order_by(db.Tags.name).offset(off).limit(config.config_books_per_page)
+    if current_user.filter_language() != "all":
+        filter = db.Books.languages.any(db.Languages.lang_code == current_user.filter_language())
+    else:
+        filter = True
+    entries = db.session.query(db.Tags).join(db.books_tags_link).join(db.Books).filter(filter).\
+        group_by('books_tags_link.tag').order_by(db.Tags.name).offset(off).limit(config.config_books_per_page)
     pagination = Pagination((int(off) / (int(config.config_books_per_page)) + 1), config.config_books_per_page,
                             len(db.session.query(db.Tags).all()))
-    xml = render_title_template('feed.xml', categorys=entries, pagination=pagination)
+    xml = render_title_template('feed.xml', listelements=entries, folder='feed_category', pagination=pagination)
     response = make_response(xml)
     response.headers["Content-Type"] = "application/xml"
     return response
@@ -599,17 +581,10 @@ def feed_categoryindex():
 @requires_basic_auth_if_no_ano
 def feed_category(id):
     off = request.args.get("offset")
-    if current_user.filter_language() != "all":
-        filter = db.Books.languages.any(db.Languages.lang_code == current_user.filter_language())
-    else:
-        filter = True
     if not off:
         off = 0
-    entries = db.session.query(db.Books).filter(db.Books.tags.any(db.Tags.id == id)).order_by(
-        db.Books.timestamp.desc()).filter(filter).offset(off).limit(config.config_books_per_page)
-    pagination = Pagination((int(off) / (int(config.config_books_per_page)) + 1), config.config_books_per_page,
-                            len(db.session.query(db.Books).filter(db.Books.tags.any(db.Tags.id == id)).filter(
-                                filter).all()))
+    entries, random, pagination = fill_indexpage((int(off) / (int(config.config_books_per_page)) + 1),
+                    db.Books, db.Books.tags.any(db.Tags.id == id), db.Books.timestamp.desc())
     xml = render_title_template('feed.xml', entries=entries, pagination=pagination)
     response = make_response(xml)
     response.headers["Content-Type"] = "application/xml"
@@ -620,16 +595,17 @@ def feed_category(id):
 @requires_basic_auth_if_no_ano
 def feed_seriesindex():
     off = request.args.get("offset")
+    if not off:
+        off = 0
     if current_user.filter_language() != "all":
         filter = db.Books.languages.any(db.Languages.lang_code == current_user.filter_language())
     else:
         filter = True
-    if not off:
-        off = 0
-    entries = db.session.query(db.Series).order_by(db.Series.name).offset(off).limit(config.config_books_per_page)
+    entries = db.session.query(db.Series).join(db.books_series_link).join(db.Books).filter(filter).\
+        group_by('books_series_link.series').order_by(db.Series.sort).offset(off).all()
     pagination = Pagination((int(off) / (int(config.config_books_per_page)) + 1), config.config_books_per_page,
                             len(db.session.query(db.Series).all()))
-    xml = render_title_template('feed.xml', series=entries, pagination=pagination)
+    xml = render_title_template('feed.xml', listelements=entries, folder='feed_series', pagination=pagination)
     response = make_response(xml)
     response.headers["Content-Type"] = "application/xml"
     return response
@@ -639,17 +615,10 @@ def feed_seriesindex():
 @requires_basic_auth_if_no_ano
 def feed_series(id):
     off = request.args.get("offset")
-    if current_user.filter_language() != "all":
-        filter = db.Books.languages.any(db.Languages.lang_code == current_user.filter_language())
-    else:
-        filter = True
     if not off:
         off = 0
-    entries = db.session.query(db.Books).filter(db.Books.series.any(db.Series.id == id)).order_by(
-        db.Books.timestamp.desc()).filter(filter).offset(off).limit(config.config_books_per_page)
-    pagination = Pagination((int(off) / (int(config.config_books_per_page)) + 1), config.config_books_per_page,
-                            len(db.session.query(db.Books).filter(db.Books.series.any(db.Series.id == id)).filter(
-                                filter).all()))
+    entries, random, pagination = fill_indexpage((int(off) / (int(config.config_books_per_page)) + 1),
+                    db.Books, db.Books.series.any(db.Series.id == id),db.Books.series_index)
     xml = render_title_template('feed.xml', entries=entries, pagination=pagination)
     response = make_response(xml)
     response.headers["Content-Type"] = "application/xml"
@@ -728,7 +697,6 @@ def get_update_status():
 def get_languages_json():
     if request.method == "GET":
         query = request.args.get('q').lower()
-        # entries = db.session.execute("select lang_code from languages where lang_code like '%" + query + "%'")
         languages = db.session.query(db.Languages).all()
         for lang in languages:
             try:
@@ -736,7 +704,6 @@ def get_languages_json():
                 lang.name = cur_l.get_language_name(get_locale())
             except:
                 lang.name = _(isoLanguages.get(part3=lang.lang_code).name)
-
         entries = [s for s in languages if query in s.name.lower()]
         json_dumps = json.dumps([dict(name=r.name) for r in entries])
         return json_dumps
@@ -782,8 +749,6 @@ def get_matching_tags():
 @app.route('/page/<int:page>')
 @login_required_if_no_ano
 def index(page):
-    #if not config.db_configured:
-    #    return redirect(url_for('basic_configuration'))
     entries, random, pagination = fill_indexpage(page, db.Books, True, db.Books.timestamp.desc())
     return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
                                  title=_(u"Latest Books"))
@@ -836,22 +801,18 @@ def author_list():
     return render_title_template('list.html', entries=entries, folder='author', title=_(u"Author list"))
 
 
-@app.route("/author/<name>")
+@app.route("/author/<int:id>", defaults={'page': 1})
+@app.route("/author/<int:id>/<int:page>'")
 @login_required_if_no_ano
-def author(name):
-    name=requests.utils.unquote(name)
-    if current_user.filter_language() != "all":
-        filter = db.Books.languages.any(db.Languages.lang_code == current_user.filter_language())
+def author(id,page):
+    entries, random, pagination = fill_indexpage(page, db.Books, db.Books.authors.any(db.Authors.id == id),
+                                                 db.Books.timestamp.desc())
+    name = db.session.query(db.Authors).filter(db.Authors.id == id).first().name
+    if entries:
+        return render_title_template('index.html', random=random, entries=entries, title=_(u"Author: %(name)s", name=name))
     else:
-        filter = True
-    if current_user.show_detail_random():
-        random = db.session.query(db.Books).filter(filter).order_by(func.random()).limit(config.config_random_books)
-    else:
-        random = false
-
-    entries = db.session.query(db.Books).filter(db.Books.authors.any(db.Authors.name.like("%" + name + "%"))).filter(
-        filter).all()
-    return render_title_template('index.html', random=random, entries=entries, title=_(u"Author: %(nam)s", nam=name))
+        flash(_(u"Error opening eBook. File does not exist or file is not accessible:"), category="error")
+        return redirect(url_for("index"))
 
 
 @app.route("/series")
@@ -867,13 +828,13 @@ def series_list():
     return render_title_template('list.html', entries=entries, folder='series', title=_(u"Series list"))
 
 
-@app.route("/series/<name>/", defaults={'page': 1})
-@app.route("/series/<name>/<int:page>'")
+@app.route("/series/<int:id>/", defaults={'page': 1})
+@app.route("/series/<int:id>/<int:page>'")
 @login_required_if_no_ano
-def series(name, page):
-    name = requests.utils.unquote(name)
-    entries, random, pagination = fill_indexpage(page, db.Books, db.Books.series.any(db.Series.name == name),
+def series(id, page):
+    entries, random, pagination = fill_indexpage(page, db.Books, db.Books.series.any(db.Series.id == id),
                                                  db.Books.series_index)
+    name=db.session.query(db.Series).filter(db.Series.id == id).first().name
     if entries:
         return render_title_template('index.html', random=random, pagination=pagination, entries=entries,
                                      title=_(u"Series: %(serie)s", serie=name))
@@ -940,13 +901,14 @@ def category_list():
     return render_title_template('list.html', entries=entries, folder='category', title=_(u"Category list"))
 
 
-@app.route("/category/<name>", defaults={'page': 1})
-@app.route('/category/<name>/<int:page>')
+@app.route("/category/<int:id>", defaults={'page': 1})
+@app.route('/category/<int:id>/<int:page>')
 @login_required_if_no_ano
-def category(name, page):
-    name = requests.utils.unquote(name)
-    entries, random, pagination = fill_indexpage(page, db.Books, db.Books.tags.any(db.Tags.name == name),
+def category(id, page):
+    entries, random, pagination = fill_indexpage(page, db.Books, db.Books.tags.any(db.Tags.id == id),
                                                  db.Books.timestamp.desc())
+
+    name=db.session.query(db.Tags).filter(db.Tags.id == id).first().name
     return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
                                  title=_(u"Category: %(name)s", name=name))
 
