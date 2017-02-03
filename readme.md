@@ -24,6 +24,7 @@ Calibre Web is a web app providing a clean interface for browsing, reading and d
 - Upload new books in PDF, epub, fb2 format
 - Support for Calibre custom columns
 - Fine grained per-user permissions
+- Self update capability
 
 ## Quick start
 
@@ -42,10 +43,13 @@ The configuration can be changed as admin in the admin panel under "Configuratio
 
 Server Port:
 Changes the port calibre-web is listening, changes take effect after pressing submit button
+
 Enable public registration:    
-Tick to enable public user registration.    
+Tick to enable public user registration.
+
 Enable anonymous browsing:    
-Tick to allow not logged in users to browse the catalog, anonymous user permissions can be set as admin ("Guest" user)    
+Tick to allow not logged in users to browse the catalog, anonymous user permissions can be set as admin ("Guest" user)
+
 Enable uploading:
 Tick to enable uploading of PDF, epub, FB2. This requires the imagemagick library to be installed.    
 
