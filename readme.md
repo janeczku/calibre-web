@@ -8,6 +8,7 @@ Calibre Web is a web app providing a clean interface for browsing, reading and d
 
 ##Features
 - Bootstrap 3 HTML5 interface
+- full graphical setup
 - User management
 - Admin interface
 - User Interface in english, french, german, simplified chinese, spanish
@@ -23,12 +24,14 @@ Calibre Web is a web app providing a clean interface for browsing, reading and d
 - Upload new books in PDF, epub, fb2 format
 - Support for Calibre custom columns
 - Fine grained per-user permissions
+- Self update capability
 
 ## Quick start
 
-1. Rename `config.ini.example` to `config.ini` and set `DB_ROOT` to the path of the folder where your Calibre library (metadata.db) lives
-2. Execute the command: `python cps.py`
-3. Point your browser to `http://localhost:8083` or `http://localhost:8083/opds` for the OPDS catalog 
+1. Execute the command: `python cps.py`
+2. Point your browser to `http://localhost:8083` or `http://localhost:8083/opds` for the OPDS catalog 
+3. Set `Location of Calibre database` to the path of the folder where your Calibre library (metadata.db) lives, push "submit" button
+4. Go to Login page
 
 **Default admin login:**    
 *Username:* admin   
@@ -36,12 +39,19 @@ Calibre Web is a web app providing a clean interface for browsing, reading and d
 
 ## Runtime Configuration Options
 
-`PUBLIC_REG`    
-Set to 1 to enable public user registration.    
-`ANON_BROWSE`    
-Set to 1 to allow not logged in users to browse the catalog.    
-`UPLOADING`    
-Set to 1 to enable PDF uploading. This requires the imagemagick library to be installed.    
+The configuration can be changed as admin in the admin panel under "Configuration"
+
+Server Port:
+Changes the port calibre-web is listening, changes take effect after pressing submit button
+
+Enable public registration:    
+Tick to enable public user registration.
+
+Enable anonymous browsing:    
+Tick to allow not logged in users to browse the catalog, anonymous user permissions can be set as admin ("Guest" user)
+
+Enable uploading:
+Tick to enable uploading of PDF, epub, FB2. This requires the imagemagick library to be installed.    
 
 ## Requirements
 

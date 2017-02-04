@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import db, ub
-import config
+import db
+import ub
 from flask import current_app as app
 import logging
 import smtplib
@@ -21,7 +21,7 @@ from email.MIMEText import MIMEText
 from email.generator import Generator
 from flask_babel import gettext as _
 import subprocess
-
+import shutil
 
 def update_download(book_id, user_id):
     check = ub.session.query(ub.Downloads).filter(ub.Downloads.user_id == user_id).filter(ub.Downloads.book_id ==
@@ -33,11 +33,13 @@ def update_download(book_id, user_id):
         ub.session.commit()
 
 
-def make_mobi(book_id):
+def make_mobi(book_id, calibrepath):
+    vendorpath = os.path.join(os.path.normpath(os.path.dirname(os.path.realpath(__file__)) +
+                                               os.sep + "../vendor" + os.sep))
     if sys.platform == "win32":
-        kindlegen = os.path.join(config.MAIN_DIR, "vendor", u"kindlegen.exe")
+        kindlegen = os.path.join(vendorpath, u"kindlegen.exe")
     else:
-        kindlegen = os.path.join(config.MAIN_DIR, "vendor", u"kindlegen")
+        kindlegen = os.path.join(vendorpath, u"kindlegen")
     if not os.path.exists(kindlegen):
         app.logger.error("make_mobi: kindlegen binary not found in: %s" % kindlegen)
         return None
@@ -47,7 +49,7 @@ def make_mobi(book_id):
         app.logger.error("make_mobi: epub format not found for book id: %d" % book_id)
         return None
 
-    file_path = os.path.join(config.DB_ROOT, book.path, data.name)
+    file_path = os.path.join(calibrepath, book.path, data.name)
     if os.path.exists(file_path + u".epub"):
         p = subprocess.Popen((kindlegen + " \"" + file_path + u".epub\" ").encode(sys.getfilesystemencoding()),
                              shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE)
@@ -79,26 +81,26 @@ def make_mobi(book_id):
 
 class StderrLogger(object):
 
-    buffer=''
+    buffer = ''
+
     def __init__(self):
         self.logger = logging.getLogger('cps.web')
 
     def write(self, message):
-        if message=='\n':
+        if message == '\n':
             self.logger.debug(self.buffer)
-            self.buffer=''
+            self.buffer = ''
         else:
-            self.buffer=self.buffer+message
+            self.buffer += message
 
-def send_test_mail(kindle_mail):
+
+def send_raw_email(kindle_mail, msg):
     settings = ub.get_mail_settings()
-    msg = MIMEMultipart()
+
     msg['From'] = settings["mail_from"]
     msg['To'] = kindle_mail
-    msg['Subject'] = _('Calibre-web test email')
-    text = _('This email has been sent via calibre web.')
 
-    use_ssl = settings.get('mail_use_ssl', 0)
+    use_ssl = int(settings.get('mail_use_ssl', 0))
 
     # convert MIME message to string
     fp = StringIO()
@@ -108,21 +110,19 @@ def send_test_mail(kindle_mail):
 
     # send email
     try:
-        timeout=600     # set timeout to 5mins
+        timeout = 600     # set timeout to 5mins
 
         org_stderr = smtplib.stderr
         smtplib.stderr = StderrLogger()
 
-        if int(use_ssl) == 2:
+        if use_ssl == 2:
             mailserver = smtplib.SMTP_SSL(settings["mail_server"], settings["mail_port"], timeout)
         else:
             mailserver = smtplib.SMTP(settings["mail_server"], settings["mail_port"], timeout)
         mailserver.set_debuglevel(1)
 
-        if int(use_ssl) == 1:
-            #mailserver.ehlo()
+        if use_ssl == 1:
             mailserver.starttls()
-            #mailserver.ehlo()
 
         if settings["mail_password"]:
             mailserver.login(settings["mail_login"], settings["mail_password"])
@@ -138,27 +138,21 @@ def send_test_mail(kindle_mail):
     return None
 
 
-def send_mail(book_id, kindle_mail):
+def send_test_mail(kindle_mail):
+    msg = MIMEMultipart()
+    msg['Subject'] = _(u'Calibre-web test email')
+    text = _(u'This email has been sent via calibre web.')
+    msg.attach(MIMEText(text.encode('UTF-8'), 'plain', 'UTF-8'))
+    return send_raw_email(kindle_mail, msg)
+
+
+def send_mail(book_id, kindle_mail, calibrepath):
     """Send email with attachments"""
-    is_mobi = False
-    is_azw = False
-    is_azw3 = False
-    is_epub = False
-    is_pdf = False
-    file_path = None
-    settings = ub.get_mail_settings()
     # create MIME message
     msg = MIMEMultipart()
-    msg['From'] = settings["mail_from"]
-    msg['To'] = kindle_mail
     msg['Subject'] = _(u'Send to Kindle')
     text = _(u'This email has been sent via calibre web.')
     msg.attach(MIMEText(text.encode('UTF-8'), 'plain', 'UTF-8'))
-
-    use_ssl = settings.get('mail_use_ssl', 0)
-
-    # attach files
-    # msg.attach(self.get_attachment(file_path))
 
     book = db.session.query(db.Books).filter(db.Books.id == book_id).first()
     data = db.session.query(db.Data).filter(db.Data.book == book.id)
@@ -167,11 +161,11 @@ def send_mail(book_id, kindle_mail):
 
     for entry in data:
         if entry.format == "MOBI":
-            formats["mobi"] = os.path.join(config.DB_ROOT, book.path, entry.name + ".mobi")
+            formats["mobi"] = os.path.join(calibrepath, book.path, entry.name + ".mobi")
         if entry.format == "EPUB":
-            formats["epub"] = os.path.join(config.DB_ROOT, book.path, entry.name + ".epub")
+            formats["epub"] = os.path.join(calibrepath, book.path, entry.name + ".epub")
         if entry.format == "PDF":
-            formats["pdf"] = os.path.join(config.DB_ROOT, book.path, entry.name + ".pdf")
+            formats["pdf"] = os.path.join(calibrepath, book.path, entry.name + ".pdf")
 
     if len(formats) == 0:
         return _("Could not find any formats suitable for sending by email")
@@ -179,7 +173,7 @@ def send_mail(book_id, kindle_mail):
     if 'mobi' in formats:
         msg.attach(get_attachment(formats['mobi']))
     elif 'epub' in formats:
-        filepath = make_mobi(book.id)
+        filepath = make_mobi(book.id, calibrepath)
         if filepath is not None:
             msg.attach(get_attachment(filepath))
         elif filepath is None:
@@ -191,40 +185,7 @@ def send_mail(book_id, kindle_mail):
     else:
         return _("Could not find any formats suitable for sending by email")
 
-    # convert MIME message to string
-    fp = StringIO()
-    gen = Generator(fp, mangle_from_=False)
-    gen.flatten(msg)
-    msg = fp.getvalue()
-
-    # send email
-    try:
-        timeout=600     # set timeout to 5mins
-
-        org_stderr = smtplib.stderr
-        smtplib.stderr = StderrLogger()
-
-        if int(use_ssl) == 2:
-            mailserver = smtplib.SMTP_SSL(settings["mail_server"], settings["mail_port"], timeout)
-        else:
-            mailserver = smtplib.SMTP(settings["mail_server"], settings["mail_port"], timeout)
-        mailserver.set_debuglevel(1)
-
-        if int(use_ssl) == 1:
-            mailserver.starttls()
-
-        if settings["mail_password"]:
-            mailserver.login(settings["mail_login"], settings["mail_password"])
-        mailserver.sendmail(settings["mail_login"], kindle_mail, msg)
-        mailserver.quit()
-
-        smtplib.stderr = org_stderr
-
-    except (socket.error, smtplib.SMTPRecipientsRefused, smtplib.SMTPException), e:
-        app.logger.error(traceback.print_exc())
-        return _("Failed to send mail: %s" % str(e))
-
-    return None
+    return send_raw_email(kindle_mail, msg)
 
 
 def get_attachment(file_path):
@@ -242,8 +203,7 @@ def get_attachment(file_path):
         return attachment
     except IOError:
         traceback.print_exc()
-        message = (_('The requested file could not be read. Maybe wrong '\
-                   'permissions?'))
+        message = (_('The requested file could not be read. Maybe wrong permissions?'))  # ToDo: What is this?
         return None
 
 
@@ -253,7 +213,7 @@ def get_valid_filename(value, replace_whitespace=True):
     filename. Limits num characters to 128 max.
     """
     value = value[:128]
-    re_slugify = re.compile('[^\w\s-]', re.UNICODE)
+    # re_slugify = re.compile('[^\w\s-]', re.UNICODE)
     value = unicodedata.normalize('NFKD', value)
     re_slugify = re.compile('[^\w\s-]', re.UNICODE)
     value = unicode(re_slugify.sub('', value).strip())
@@ -273,10 +233,10 @@ def get_normalized_author(value):
     return value
     
 
-def update_dir_stucture(book_id):
+def update_dir_stucture(book_id, calibrepath):
     db.session.connection().connection.connection.create_function("title_sort", 1, db.title_sort)
     book = db.session.query(db.Books).filter(db.Books.id == book_id).first()
-    path = os.path.join(config.DB_ROOT, book.path)
+    path = os.path.join(calibrepath, book.path)
     
     authordir = book.path.split(os.sep)[0]
     new_authordir = get_valid_filename(book.authors[0].name, False)
@@ -290,7 +250,122 @@ def update_dir_stucture(book_id):
         book.path = book.path.split(os.sep)[0] + os.sep + new_titledir
     
     if authordir != new_authordir:
-        new_author_path = os.path.join(os.path.join(config.DB_ROOT, new_authordir), os.path.basename(path))
+        new_author_path = os.path.join(os.path.join(calibrepath, new_authordir), os.path.basename(path))
         os.renames(path, new_author_path)
         book.path = new_authordir + os.sep + book.path.split(os.sep)[1]
     db.session.commit()
+
+
+def file_to_list(file):
+    return [x.strip() for x in open(file, 'r') if not x.startswith('#EXT')]
+
+def one_minus_two(one, two):
+    return [x for x in one if x not in set(two)]
+
+def reduce_dirs(delete_files, new_list):
+    new_delete = []
+    for file in delete_files:
+        parts = file.split(os.sep)
+        sub = ''
+        for i in range(len(parts)):
+            sub = os.path.join(sub, parts[i])
+            if sub == '':
+                sub = os.sep
+            count = 0
+            for song in new_list:
+                if song.startswith(sub):
+                    count += 1
+                    break
+            if count == 0:
+                if sub != '\\':
+                    new_delete.append(sub)
+                break
+    return list(set(new_delete))
+
+def reduce_files(remove_items, exclude_items):
+    rf = []
+    for item in remove_items:
+        if not item in exclude_items:
+            rf.append(item)
+    return rf
+
+def moveallfiles(root_src_dir, root_dst_dir):
+    change_permissions = True
+    if sys.platform == "win32" or sys.platform == "darwin":
+        change_permissions=False        
+    else:
+        app.logger.debug('Update on OS-System : '+sys.platform )
+        #print('OS-System: '+sys.platform )
+        new_permissions=os.stat(root_dst_dir)
+        #print new_permissions
+    for src_dir, dirs, files in os.walk(root_src_dir):
+        dst_dir = src_dir.replace(root_src_dir, root_dst_dir, 1)
+        if not os.path.exists(dst_dir):
+            os.makedirs(dst_dir)
+            #print('Create-Dir: '+dst_dir)
+            if change_permissions:
+                #print('Permissions: User '+str(new_permissions.st_uid)+' Group '+str(new_permissions.st_uid))            
+                os.chown(dst_dir,new_permissions.st_uid,new_permissions.st_gid)
+        for file_ in files:
+            src_file = os.path.join(src_dir, file_)
+            dst_file = os.path.join(dst_dir, file_)
+            if os.path.exists(dst_file):
+                if change_permissions:
+                    permission=os.stat(dst_file)
+                #print('Remove file before copy: '+dst_file)                                                                               
+                os.remove(dst_file)
+            else:
+                if change_permissions:            
+                    permission=new_permissions                
+            shutil.move(src_file, dst_dir)
+            #print('Move File '+src_file+' to '+dst_dir)                                                            
+            if change_permissions:
+                try:
+                    os.chown(dst_file, permission.st_uid, permission.st_uid)
+                    #print('Permissions: User '+str(new_permissions.st_uid)+' Group '+str(new_permissions.st_uid))
+                except:
+                    e = sys.exc_info()
+                    #print('Fail '+str(dst_file)+' error: '+str(e))
+    return
+
+
+def update_source(source,destination):
+    # destination files
+    old_list=list()
+    exclude = (['vendor' + os.sep + 'kindlegen.exe','vendor' + os.sep + 'kindlegen','/app.db','vendor','/update.py'])
+    for root, dirs, files in os.walk(destination, topdown=True):
+        for name in files:
+            old_list.append(os.path.join(root, name).replace(destination, ''))
+        for name in dirs:
+            old_list.append(os.path.join(root, name).replace(destination, ''))
+    # source files
+    new_list = list()
+    for root, dirs, files in os.walk(source, topdown=True):
+        for name in files:
+            new_list.append(os.path.join(root, name).replace(source, ''))
+        for name in dirs:
+            new_list.append(os.path.join(root, name).replace(source, ''))
+
+    delete_files = one_minus_two(old_list, new_list)
+    #print('raw delete list', delete_files)
+
+    rf= reduce_files(delete_files, exclude)
+    #print('reduced delete list', rf)
+
+    remove_items = reduce_dirs(rf, new_list)
+    #print('delete files', remove_items)
+
+    moveallfiles(source, destination)
+
+    for item in remove_items:
+        item_path = os.path.join(destination, item[1:])
+        if os.path.isdir(item_path):
+            print("Delete dir "+ item_path)
+            shutil.rmtree(item_path)
+        else:
+            try:
+                print("Delete file "+ item_path)
+                os.remove(item_path)
+            except:
+                print("Could not remove:"+item_path)
+    shutil.rmtree(source, ignore_errors=True)
