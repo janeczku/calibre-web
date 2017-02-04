@@ -509,14 +509,37 @@ def feed_discover():
     return response
 
 
+@app.route("/opds/rated")
+@requires_basic_auth_if_no_ano
+def feed_best_rated():
+    off = request.args.get("offset")
+    if not off:
+        off = 0
+    entries, random, pagination = fill_indexpage((int(off) / (int(config.config_books_per_page)) + 1),
+                    db.Books, db.Books.ratings.any(db.Ratings.rating > 9), db.Books.timestamp.desc())
+    xml = render_title_template('feed.xml', entries=entries, pagination=pagination)
+    response = make_response(xml)
+    response.headers["Content-Type"] = "application/xml"
+    return response
+
 @app.route("/opds/hot")
 @requires_basic_auth_if_no_ano
 def feed_hot():
     off = request.args.get("offset")
     if not off:
         off = 0
-    entries, random, pagination = fill_indexpage((int(off) / (int(config.config_books_per_page)) + 1),
-                    db.Books, db.Books.ratings.any(db.Ratings.rating > 9), db.Books.timestamp.desc())
+    if current_user.filter_language() != "all":
+        filter = db.Books.languages.any(db.Languages.lang_code == current_user.filter_language())
+    else:
+        filter = True
+    all_books = ub.session.query(ub.Downloads, ub.func.count(ub.Downloads.book_id)).order_by(
+        ub.func.count(ub.Downloads.book_id).desc()).group_by(ub.Downloads.book_id)
+    hot_books = all_books.offset(off).limit(config.config_books_per_page)
+    entries = list()
+    for book in hot_books:
+        entries.append(db.session.query(db.Books).filter(filter).filter(db.Books.id == book.Downloads.book_id).first())
+    numBooks = entries.__len__()
+    pagination = Pagination((int(off) / (int(config.config_books_per_page)) + 1), config.config_books_per_page, numBooks)
     xml = render_title_template('feed.xml', entries=entries, pagination=pagination)
     response = make_response(xml)
     response.headers["Content-Type"] = "application/xml"
@@ -777,6 +800,16 @@ def hot_books(page):
     pagination = Pagination(page, config.config_books_per_page, numBooks)
     return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
                                  title=_(u"Hot Books (most downloaded)"))
+
+
+@app.route("/rated", defaults={'page': 1})
+@app.route('/rated/page/<int:page>')
+@login_required_if_no_ano
+def best_rated_books(page):
+    entries, random, pagination = fill_indexpage(page, db.Books, db.Books.ratings.any(db.Ratings.rating > 9),
+                                                 db.Books.timestamp.desc())
+    return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
+                                 title=_(u"Best rated books"))
 
 
 @app.route("/discover", defaults={'page': 1})
@@ -1519,6 +1552,8 @@ def profile():
             content.sidebar_view += ub.SIDEBAR_CATEGORY
         if "show_hot" in to_save:
             content.sidebar_view += ub.SIDEBAR_HOT
+        if "show_best_rated" in to_save:
+            content.sidebar_view += ub.SIDEBAR_BEST_RATED
         if "show_author" in to_save:
             content.sidebar_view += ub.SIDEBAR_AUTHOR
         if "show_detail_random" in to_save:
@@ -1670,6 +1705,8 @@ def new_user():
             content.sidebar_view += ub.SIDEBAR_CATEGORY
         if "show_hot" in to_save:
             content.sidebar_view += ub.SIDEBAR_HOT
+        if "show_best_rated" in to_save:
+            content.sidebar_view += ub.SIDEBAR_BEST_RATED
         if "show_author" in to_save:
             content.sidebar_view += ub.SIDEBAR_AUTHOR
         if "show_detail_random" in to_save:
@@ -1806,6 +1843,11 @@ def edit_user(user_id):
             elif "show_hot" not in to_save and content.show_hot_books():
                 content.sidebar_view -= ub.SIDEBAR_HOT
 
+            if "show_best_rated" in to_save and not content.show_best_rated_books():
+                content.sidebar_view += ub.SIDEBAR_BEST_RATED
+            elif "show_best_rated" not in to_save and content.show_best_rated_books():
+                content.sidebar_view -= ub.SIDEBAR_BEST_RATED
+
             if "show_author" in to_save and not content.show_author():
                 content.sidebar_view += ub.SIDEBAR_AUTHOR
             elif "show_author" not in to_save and content.show_author():
@@ -1870,6 +1912,7 @@ def edit_book(book_id):
             modify_database_object(input_authors, book.authors, db.Authors, db.session, 'author')
             if author0_before_edit != book.authors[0].name:
                 edited_books_id.add(book.id)
+                book.author_sort=helper.get_normalized_author(input_authors[0]) # ToDo: wrong sorting
 
             if to_save["cover_url"] and os.path.splitext(to_save["cover_url"])[1].lower() == ".jpg":
                 img = requests.get(to_save["cover_url"])
@@ -2059,11 +2102,11 @@ def upload():
         file = request.files['btn-upload']
         meta = uploader.upload(file)
 
-        title = meta.title.encode('utf-8')
-        author = meta.author.encode('utf-8')
+        title = meta.title
+        author = meta.author
 
-        title_dir = helper.get_valid_filename(title.decode('utf-8'), False)
-        author_dir = helper.get_valid_filename(author.decode('utf-8'), False)
+        title_dir = helper.get_valid_filename(title, False)
+        author_dir = helper.get_valid_filename(author, False)
         data_name = title_dir
         filepath = config.config_calibre_dir + os.sep + author_dir + os.sep + title_dir
         saved_filename = filepath + os.sep + data_name + meta.extension
@@ -2097,10 +2140,10 @@ def upload():
         if is_author:
             db_author = is_author
         else:
-            db_author = db.Authors(author, "", "")
+            db_author = db.Authors(author, helper.get_normalized_author(author), "") # TODO: WRONG Sorting Author function
             db.session.add(db_author)
         path = os.path.join(author_dir, title_dir)
-        db_book = db.Books(title, "", "", datetime.datetime.now(), datetime.datetime(101, 01, 01), 1,
+        db_book = db.Books(title, "", db_author.sort, datetime.datetime.now(), datetime.datetime(101, 01, 01), 1,
                            datetime.datetime.now(), path, has_cover, db_author, [])
         db_book.authors.append(db_author)
         db_data = db.Data(db_book, meta.extension.upper()[1:], file_size, data_name)
