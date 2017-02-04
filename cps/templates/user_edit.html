@@ -49,6 +49,10 @@
         <label for="show_hot">{{_('Show hot books')}}</label>
     </div>
     <div class="form-group">
+        <input type="checkbox" name="show_best_rated" id="show_best_rated" {% if content.show_best_rated_books() %}checked{% endif %}>
+        <label for="show_best_rated">{{_('Show best rated books')}}</label>
+    </div>
+    <div class="form-group">
         <input type="checkbox" name="show_language" id="show_language" {% if content.show_language() %}checked{% endif %}>
         <label for="show_language">{{_('Show language selection')}}</label>
     </div>

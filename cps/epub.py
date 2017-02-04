@@ -59,8 +59,8 @@ def get_epub_info(tmp_file_path, original_file_name, original_file_extension):
     return uploader.BookMeta(
         file_path=tmp_file_path,
         extension=original_file_extension,
-        title=title,
-        author=epub_metadata['creator'],
+        title=title.encode('utf-8').decode('utf-8'),
+        author=epub_metadata['creator'].encode('utf-8').decode('utf-8'),
         cover=coverfile,
         description=epub_metadata['description'],
         tags="",

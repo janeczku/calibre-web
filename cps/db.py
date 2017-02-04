@@ -21,7 +21,6 @@ engine = None
 # user defined sort function for calibre databases (Series, etc.)
 def title_sort(title):
     # calibre sort stuff
-    # config=Config()
     title_pat = re.compile(config.config_title_regex, re.IGNORECASE)
     match = title_pat.search(title)
     if match:
