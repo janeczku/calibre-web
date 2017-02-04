@@ -21,7 +21,7 @@
       </div>
       <div class="meta">
         <p class="title">{{entry.title|shortentitle}}</p>
-        <p class="author"><a href="{{url_for('author', name=entry.authors[0].name | urlencode) }}">{{entry.authors[0].name}}</a></p>
+        <p class="author"><a href="{{url_for('author', id=entry.authors[0].id) }}">{{entry.authors[0].name}}</a></p>
         {% if entry.ratings.__len__() > 0 %}
         <div class="rating">
           {% for number in range((entry.ratings[0].rating/2)|int(2)) %}
