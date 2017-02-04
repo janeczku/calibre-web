@@ -1,0 +1,61 @@
+{% extends "layout.html" %}
+{% block body %}
+<div class="discover">
+  <h1>{{title}}</h1>
+  <form role="form" method="POST" autocomplete="off">
+    <div class="form-group required">
+      <label for="config_calibre_dir">{{_('Location of Calibre database')}}</label>
+      <input type="text" class="form-control" name="config_calibre_dir" id="config_calibre_dir" value="{% if content.config_calibre_dir != None %}{{ content.config_calibre_dir }}{% endif %}" autocomplete="off">
+    </div>
+    <div class="form-group">
+      <label for="config_port">{{_('Server Port')}}</label>
+      <input type="number" min="1" max="65535" class="form-control" name="config_port" id="config_port" value="{% if content.config_port != None %}{{ content.config_port }}{% endif %}" autocomplete="off" required>
+    </div>
+    <div class="form-group">
+      <label for="config_calibre_web_title">{{_('Title')}}</label>
+      <input type="text" class="form-control" name="config_calibre_web_title" id="config_calibre_web_title" value="{% if content.config_calibre_web_title != None %}{{ content.config_calibre_web_title }}{% endif %}" autocomplete="off" required>
+    </div>    
+    <div class="form-group">
+      <label for="config_books_per_page">{{_('Books per page')}}</label>
+      <input type="number" min="1" max="200" class="form-control" name="config_books_per_page" id="config_books_per_page" value="{% if content.config_books_per_page != None %}{{ content.config_books_per_page }}{% endif %}" autocomplete="off">
+    </div>
+    <div class="form-group">
+      <label for="config_random_books">{{_('No. of random books to show')}}</label>
+      <input type="number" min="1" max="30" class="form-control" name="config_random_books" id="config_random_books" value="{% if content.config_random_books != None %}{{ content.config_random_books }}{% endif %}" autocomplete="off">
+    </div>
+    
+    <div class="form-group">
+      <label for="config_title_regex">{{_('Regular expression for title sorting')}}</label>
+      <input type="text" class="form-control" name="config_title_regex" id="config_title_regex" value="{% if content.config_title_regex != None %}{{ content.config_title_regex }}{% endif %}" autocomplete="off">
+    </div>
+    <div class="form-group">
+    <label for="config_log_level">{{_('Log Level')}}</label>
+        <select name="config_log_level" id="config_log_level" class="form-control">
+                <option value="10" {% if content.config_log_level == 10 %}selected{% endif %}>DEBUG</option>
+                <option value="20" {% if content.config_log_level == 20 or content.config_log_level == None %}selected{% endif %}>INFO</option>
+                <option value="30" {% if content.config_log_level == 30 %}selected{% endif %}>WARNING</option>
+                <option value="40" {% if content.config_log_level == 40 %}selected{% endif %}>ERROR</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <input type="checkbox" id="config_uploading" name="config_uploading" {% if content.config_uploading %}checked{% endif %}>
+        <label for="config_uploading">{{_('Enable uploading')}}</label>
+    </div>
+    <div class="form-group">
+        <input type="checkbox" id="config_anonbrowse" name="config_anonbrowse" {% if content.config_anonbrowse %}checked{% endif %}>
+        <label for="config_anonbrowse">{{_('Enable anonymous browsing')}}</label>
+    </div>
+    <div class="form-group">
+        <input type="checkbox" id="config_public_reg" name="config_public_reg" {% if content.config_public_reg %}checked{% endif %}>
+        <label for="config_public_reg">{{_('Enable public registration')}}</label>
+    </div>
+    <button type="submit" class="btn btn-default">{{_('Submit')}}</button>
+    {% if not origin %}
+      <a href="{{ url_for('admin') }}" class="btn btn-default">{{_('Back')}}</a>
+    {% endif %}
+    {% if success %}
+      <a href="{{ url_for('login') }}" class="btn btn-default">{{_('Login')}}</a>
+    {% endif %}
+  </form>
+</div>
+{% endblock %}

@@ -1,9 +1,11 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
 from lxml import etree
 import os
 import uploader
 
-
+# ToDo: Check usage of original_file_name
 def get_fb2_info(tmp_file_path, original_file_name, original_file_extension):
 
     ns = {

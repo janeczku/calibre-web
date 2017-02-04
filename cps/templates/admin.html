@@ -15,7 +15,7 @@
         <th>{{_('Passwd')}}</th>
     </tr>
     {% for user in content %}
-      {% if not user.role_anonymous() or config.ANON_BROWSE %}
+      {% if not user.role_anonymous() or config.config_anonbrowse %}
       <tr>
         <td><a href="{{url_for('edit_user', user_id=user.id)}}">{{user.nickname}}</a></td>
         <td>{{user.email}}</td>
@@ -56,7 +56,7 @@
   <h2>{{_('Configuration')}}</h2>
   <table class="table table-striped">
     <tr>
-        <th>{{_('Log File')}}</th>
+        <th>{{_('Calibre DB dir')}}</th>
         <th>{{_('Log Level')}}</th>
         <th>{{_('Port')}}</th>
         <th>{{_('Books per page')}}</th>
@@ -65,17 +65,90 @@
         <th>{{_('Anonymous browsing')}}</th>
     </tr>
       <tr>
-        <td>{{config.LOG_DIR}}</td>
-        <td>{{config.LOG_DIR}}</td>
-        <td>{{config.PORT}}</td>
-        <td>{{config.NEWEST_BOOKS}}</td>
-        <td>{% if config.UPLOADING %}<span class="glyphicon glyphicon-ok"></span>{% else %}<span class="glyphicon glyphicon-remove"></span>{% endif %}</td>
-        <td>{% if config.PUBLIC_REG %}<span class="glyphicon glyphicon-ok"></span>{% else %}<span class="glyphicon glyphicon-remove"></span>{% endif %}</td>
-        <td>{% if config.ANON_BROWSE %}<span class="glyphicon glyphicon-ok"></span>{% else %}<span class="glyphicon glyphicon-remove"></span>{% endif %}</td>
+        <td>{{config.config_calibre_dir}}</td>
+        <td>{{config.get_Log_Level()}}</td>
+        <td>{{config.config_port}}</td>
+        <td>{{config.config_books_per_page}}</td>
+        <td>{% if config.config_uploading %}<span class="glyphicon glyphicon-ok"></span>{% else %}<span class="glyphicon glyphicon-remove"></span>{% endif %}</td>
+        <td>{% if config.config_public_reg %}<span class="glyphicon glyphicon-ok"></span>{% else %}<span class="glyphicon glyphicon-remove"></span>{% endif %}</td>
+        <td>{% if config.config_anonbrowse %}<span class="glyphicon glyphicon-ok"></span>{% else %}<span class="glyphicon glyphicon-remove"></span>{% endif %}</td>
   </table>
+  <div class="btn btn-default"><a href="{{url_for('configuration')}}">{{_('Configuration')}}</a></div>
   <h2>{{_('Administration')}}</h2>
-      {% if not config.DEVELOPMENT %}
-        <div class="btn btn-default"><a href="{{url_for('shutdown')}}">{{_('Restart Calibre-web')}}</a></div>
+      {% if not development %}
+        <div class="btn btn-default" data-toggle="modal" data-target="#RestartDialog">{{_('Restart Calibre-web')}}</a></div>
+        <div class="btn btn-default" data-toggle="modal" data-target="#ShutdownDialog">{{_('Stop Calibre-web')}}</a></div>
+        <div class="btn btn-default" id="check_for_update">{{_('Check for update')}}</a></div>
+        <a href="{{url_for('update')}}" class="btn btn-default hidden" id="perform_update">{{_('Perform Update')}}</a>
       {% endif %}
 </div>
+<!-- Modal -->
+<div id="RestartDialog" class="modal fade" role="dialog">
+  <div class="modal-dialog modal-sm">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header bg-info">
+      </div>
+      <div class="modal-body text-center">
+        <p>{{_('Do you really want to restart Calibre-web?')}}</p>
+        <button type="button" class="btn btn-default" id="restart" data-dismiss="modal">{{_('Ok')}}</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">{{_('Back')}}</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+<div id="ShutdownDialog" class="modal fade" role="dialog">
+  <div class="modal-dialog modal-sm">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header bg-info">
+      </div>
+      <div class="modal-body text-center">
+        <p>{{_('Do you really want to stop Calibre-web?')}}</p>
+        <button type="button" class="btn btn-default" id="shutdown" data-dismiss="modal">{{_('Ok')}}</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">{{_('Back')}}</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+{% endblock %}
+{% block js %}
+<script type="text/javascript">
+    $("#restart").click(function() {
+        $.ajax({
+            dataType: 'json',
+            url: "{{url_for('shutdown')}}",
+            data: {"parameter":0},
+            //data: data,
+            success: function(data) {
+                return alert(data.text);}
+        });
+    });
+    $("#shutdown").click(function() {
+        $.ajax({
+            dataType: 'json',
+            url: "{{url_for('shutdown')}}",
+            data: {"parameter":1},
+            success: function(data) {
+                return alert(data.text);}
+        });
+    });
+    $("#check_for_update").click(function() {
+        $("#check_for_update").html('Checking...');
+        $.ajax({
+            dataType: 'json',
+            url: "{{url_for('get_update_status')}}",
+            success: function(data) {
+            if (data.status == true) {
+                $("#check_for_update").addClass('hidden');
+                $("#perform_update").removeClass('hidden');
+            }else{
+                $("#check_for_update").html('{{_('Check for update')}}');
+            };}
+        });
+    });
+</script>
 {% endblock %}

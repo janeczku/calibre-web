@@ -15,7 +15,7 @@
       <h2>{{entry.title}}</h2>
       <p class="author">
           {% for author in entry.authors %}
-            <a href="{{url_for('author', name=author.name) }}">{{author.name}}</a>
+            <a href="{{url_for('author', id=author.id ) }}">{{author.name}}</a>
             {% if not loop.last %}
               &amp;
             {% endif %}
@@ -37,7 +37,7 @@
       {% endif %}
 
       {% if entry.series|length > 0 %}
-        <p>{{_('Book')}} {{entry.series_index}} {{_('of')}} <a href="{{url_for('series', name=entry.series[0].name)}}">{{entry.series[0].name}}</a></p>
+        <p>{{_('Book')}} {{entry.series_index}} {{_('of')}} <a href="{{url_for('series', id=entry.series[0].id)}}">{{entry.series[0].name}}</a></p>
       {% endif %}
 
       {% if entry.languages.__len__() > 0 %}
@@ -58,20 +58,21 @@
       </p>
       {% endif %}
 
-
       {% if entry.tags|length > 0 %}
       <p>
       <div class="tags">
         <span class="glyphicon glyphicon-tags"></span>
         
         {% for tag in entry.tags %}
-          <a href="{{ url_for('category', name=tag.name) }}" class="btn btn-xs btn-info" role="button">{{tag.name}}</a>
+          <a href="{{ url_for('category', id=tag.id) }}" class="btn btn-xs btn-info" role="button">{{tag.name}}</a>
         {%endfor%}
 
       </div>
       </p>
       {% endif %}
-      
+      {% if entry.pubdate != '0101-01-01 00:00:00' %}
+        <p>{{_('Publishing date')}}: {{entry.pubdate[:10]}} </p>
+      {% endif %}
       {% if cc|length > 0 %}
         <p>
         <div class="custom_columns">
@@ -101,7 +102,7 @@
       {% endif %}  
         
 
-      {% if entry.comments|length > 0 %}
+      {% if entry.comments|length > 0 and entry.comments[0].text|length > 0%}
         <h3>{{_('Description:')}}</h3>
         {{entry.comments[0].text|safe}}
       {% endif %}
@@ -191,7 +192,6 @@
       <div class="btn-toolbar" role="toolbar">
         <div class="btn-group" role="group" aria-label="Edit/Delete book">
           <a href="{{ url_for('edit_book', book_id=entry.id) }}" class="btn btn-sm btn-warning" role="button"><span class="glyphicon glyphicon-edit"></span> {{_('Edit metadata')}}</a>
-          <!-- <a href="{{ url_for('edit_book', book_id=entry.id) }}" class="btn btn-sm btn-danger" role="button"><span class="glyphicon glyphicon-trash"></span> Delete</a> -->
       </div>
       {% endif %}
 

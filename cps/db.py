@@ -5,15 +5,24 @@ from sqlalchemy import *
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import *
 import os
-import config
 import re
 import ast
+from ub import config
+import ub
 
-# calibre sort stuff
-title_pat = re.compile(config.TITLE_REGEX, re.IGNORECASE)
+session = None
+cc_exceptions = None
+cc_classes = None
+cc_ids = None
+books_custom_column_links = None
+engine = None
 
 
+# user defined sort function for calibre databases (Series, etc.)
 def title_sort(title):
+    # calibre sort stuff
+    # config=Config()
+    title_pat = re.compile(config.config_title_regex, re.IGNORECASE)
     match = title_pat.search(title)
     if match:
         prep = match.group(1)
@@ -21,59 +30,32 @@ def title_sort(title):
     return title.strip()
 
 
-dbpath = os.path.join(config.DB_ROOT, "metadata.db")
-engine = create_engine('sqlite:///{0}'.format(dbpath.encode('utf-8')), echo=False)
-conn = engine.connect()
-conn.connection.create_function('title_sort', 1, title_sort)
 Base = declarative_base()
 
 books_authors_link = Table('books_authors_link', Base.metadata,
-    Column('book', Integer, ForeignKey('books.id'), primary_key=True),
-    Column('author', Integer, ForeignKey('authors.id'), primary_key=True)
-    )
+                           Column('book', Integer, ForeignKey('books.id'), primary_key=True),
+                           Column('author', Integer, ForeignKey('authors.id'), primary_key=True)
+                           )
 
 books_tags_link = Table('books_tags_link', Base.metadata,
-    Column('book', Integer, ForeignKey('books.id'), primary_key=True),
-    Column('tag', Integer, ForeignKey('tags.id'), primary_key=True)
-    )
+                        Column('book', Integer, ForeignKey('books.id'), primary_key=True),
+                        Column('tag', Integer, ForeignKey('tags.id'), primary_key=True)
+                        )
 
 books_series_link = Table('books_series_link', Base.metadata,
-    Column('book', Integer, ForeignKey('books.id'), primary_key=True),
-    Column('series', Integer, ForeignKey('series.id'), primary_key=True)
-    )
+                          Column('book', Integer, ForeignKey('books.id'), primary_key=True),
+                          Column('series', Integer, ForeignKey('series.id'), primary_key=True)
+                          )
 
 books_ratings_link = Table('books_ratings_link', Base.metadata,
-    Column('book', Integer, ForeignKey('books.id'), primary_key=True),
-    Column('rating', Integer, ForeignKey('ratings.id'), primary_key=True)
-    )
+                           Column('book', Integer, ForeignKey('books.id'), primary_key=True),
+                           Column('rating', Integer, ForeignKey('ratings.id'), primary_key=True)
+                           )
 
 books_languages_link = Table('books_languages_link', Base.metadata,
-    Column('book', Integer, ForeignKey('books.id'), primary_key=True),
-    Column('lang_code', Integer, ForeignKey('languages.id'), primary_key=True)
-    )
-
-cc = conn.execute("SELECT id, datatype FROM custom_columns")
-cc_ids = []
-cc_exceptions = ['datetime', 'int', 'comments', 'float', 'composite', 'series']
-books_custom_column_links = {}
-cc_classes = {}
-for row in cc:
-    if row.datatype not in cc_exceptions:
-        books_custom_column_links[row.id] = Table('books_custom_column_' + str(row.id) + '_link', Base.metadata,
-            Column('book', Integer, ForeignKey('books.id'), primary_key=True),
-            Column('value', Integer, ForeignKey('custom_column_' + str(row.id) + '.id'), primary_key=True)
-            )
-        cc_ids.append([row.id, row.datatype])
-        if row.datatype == 'bool':
-            ccdict = {'__tablename__': 'custom_column_' + str(row.id),
-                      'id': Column(Integer, primary_key=True),
-                      'book': Column(Integer, ForeignKey('books.id')),
-                      'value': Column(Boolean)}
-        else:
-            ccdict = {'__tablename__': 'custom_column_' + str(row.id),
-                'id': Column(Integer, primary_key=True),
-                'value': Column(String)}
-        cc_classes[row.id] = type('Custom_Column_' + str(row.id), (Base,), ccdict)
+                             Column('book', Integer, ForeignKey('books.id'), primary_key=True),
+                             Column('lang_code', Integer, ForeignKey('languages.id'), primary_key=True)
+                             )
 
 
 class Identifiers(Base):
@@ -243,9 +225,10 @@ class Books(Base):
     series = relationship('Series', secondary=books_series_link, backref='books')
     ratings = relationship('Ratings', secondary=books_ratings_link, backref='books')
     languages = relationship('Languages', secondary=books_languages_link, backref='books')
-    identifiers=relationship('Identifiers', backref='books')
+    identifiers = relationship('Identifiers', backref='books')
 
-    def __init__(self, title, sort, author_sort, timestamp, pubdate, series_index, last_modified, path, has_cover, authors, tags):
+    def __init__(self, title, sort, author_sort, timestamp, pubdate, series_index, last_modified, path, has_cover,
+                 authors, tags):  # ToDO check Authors and tags necessary
         self.title = title
         self.sort = sort
         self.author_sort = author_sort
@@ -260,15 +243,6 @@ class Books(Base):
         return u"<Books('{0},{1}{2}{3}{4}{5}{6}{7}{8}')>".format(self.title, self.sort, self.author_sort,
                                                                  self.timestamp, self.pubdate, self.series_index,
                                                                  self.last_modified, self.path, self.has_cover)
-for id in cc_ids:
-    if id[1] == 'bool':
-        setattr(Books, 'custom_column_' + str(id[0]), relationship(cc_classes[id[0]],
-                                                                   primaryjoin=(Books.id == cc_classes[id[0]].book),
-                                                                   backref='books'))
-    else:
-        setattr(Books, 'custom_column_' + str(id[0]), relationship(cc_classes[id[0]],
-                                                                   secondary = books_custom_column_links[id[0]],
-                                                                   backref='books'))
 
 
 class Custom_Columns(Base):
@@ -288,7 +262,76 @@ class Custom_Columns(Base):
         display_dict = ast.literal_eval(self.display)
         return display_dict
 
-# Base.metadata.create_all(engine)
-Session = sessionmaker()
-Session.configure(bind=engine)
-session = Session()
+
+def setup_db():
+    global session
+    global cc_exceptions
+    global cc_classes
+    global cc_ids
+    global books_custom_column_links
+    global engine
+
+    if config.config_calibre_dir is None or config.config_calibre_dir ==  u'':
+        return False
+
+    dbpath = os.path.join(config.config_calibre_dir, "metadata.db")
+    engine = create_engine('sqlite:///{0}'.format(dbpath.encode('utf-8')), echo=False)
+    try:
+        conn = engine.connect()
+
+    except:
+        content = ub.session.query(ub.Settings).first()
+        content.config_calibre_dir = None
+        content.db_configured = False
+        ub.session.commit()
+        config.loadSettings()
+        return False
+    content = ub.session.query(ub.Settings).first()
+    content.db_configured = True
+    ub.session.commit()
+    config.loadSettings()
+    conn.connection.create_function('title_sort', 1, title_sort)
+
+    cc = conn.execute("SELECT id, datatype FROM custom_columns")
+
+    cc_ids = []
+    cc_exceptions = ['datetime', 'int', 'comments', 'float', 'composite', 'series']
+    books_custom_column_links = {}
+    cc_classes = {}
+    for row in cc:
+        if row.datatype not in cc_exceptions:
+            books_custom_column_links[row.id] = Table('books_custom_column_' + str(row.id) + '_link', Base.metadata,
+                                                      Column('book', Integer, ForeignKey('books.id'),
+                                                             primary_key=True),
+                                                      Column('value', Integer,
+                                                             ForeignKey('custom_column_' + str(row.id) + '.id'),
+                                                             primary_key=True)
+                                                      )
+            cc_ids.append([row.id, row.datatype])
+            if row.datatype == 'bool':
+                ccdict = {'__tablename__': 'custom_column_' + str(row.id),
+                          'id': Column(Integer, primary_key=True),
+                          'book': Column(Integer, ForeignKey('books.id')),
+                          'value': Column(Boolean)}
+            else:
+                ccdict = {'__tablename__': 'custom_column_' + str(row.id),
+                          'id': Column(Integer, primary_key=True),
+                          'value': Column(String)}
+            cc_classes[row.id] = type('Custom_Column_' + str(row.id), (Base,), ccdict)
+
+    for id in cc_ids:
+        if id[1] == 'bool':
+            setattr(Books, 'custom_column_' + str(id[0]), relationship(cc_classes[id[0]],
+                                                                       primaryjoin=(
+                                                                       Books.id == cc_classes[id[0]].book),
+                                                                       backref='books'))
+        else:
+            setattr(Books, 'custom_column_' + str(id[0]), relationship(cc_classes[id[0]],
+                                                                       secondary=books_custom_column_links[id[0]],
+                                                                       backref='books'))
+
+    # Base.metadata.create_all(engine)
+    Session = sessionmaker()
+    Session.configure(bind=engine)
+    session = Session()
+    return True
