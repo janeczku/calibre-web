@@ -47,10 +47,9 @@ def process(tmp_file_path, original_file_name, original_file_extension):
         if ".EPUB" == original_file_extension.upper() and use_epub_meta is True:
             return epub.get_epub_info(tmp_file_path, original_file_name, original_file_extension)
         if ".FB2" == original_file_extension.upper() and use_fb2_meta is True:
-            return fb2.get_fb2_info(tmp_file_path, original_file_name, original_file_extension)
+            return fb2.get_fb2_info(tmp_file_path, original_file_extension)
     except Exception, e:
         logger.warning('cannot parse metadata, using default: %s', e)
-
     return default_meta(tmp_file_path, original_file_name, original_file_extension)
 
 
@@ -59,7 +58,7 @@ def default_meta(tmp_file_path, original_file_name, original_file_extension):
         file_path=tmp_file_path,
         extension=original_file_extension,
         title=original_file_name,
-        author="Unknown",
+        author=u"Unknown",
         cover=None,
         description="",
         tags="",
@@ -76,11 +75,11 @@ def pdf_meta(tmp_file_path, original_file_name, original_file_extension):
         doc_info = None
 
     if doc_info is not None:
-        author = doc_info.author if doc_info.author is not None else "Unknown"
+        author = doc_info.author if doc_info.author is not None else u"Unknown"
         title = doc_info.title if doc_info.title is not None else original_file_name
         subject = doc_info.subject
     else:
-        author = "Unknown"
+        author = u"Unknown"
         title = original_file_name
         subject = ""
     return uploader.BookMeta(
@@ -100,7 +99,7 @@ def pdf_preview(tmp_file_path, tmp_dir):
         return None
     else:
         cover_file_name = os.path.splitext(tmp_file_path)[0] + ".cover.jpg"
-        with Image(filename=tmp_file_path + "[0]", resolution=150) as img:
+        with Image(filename=tmp_file_path +"[0]", resolution=150) as img:
             img.compression_quality = 88
             img.save(filename=os.path.join(tmp_dir, cover_file_name))
         return cover_file_name
@@ -109,9 +108,9 @@ def get_versions():
     if not use_generic_pdf_cover:
         IVersion=ImageVersion.MAGICK_VERSION
     else:
-        IVersion=_('not installed')
+        IVersion=_(u'not installed')
     if use_pdf_meta:
         PVersion=PyPdfVersion
     else:
-        PVersion=_('not installed')
+        PVersion=_(u'not installed')
     return {'ImageVersion':IVersion,'PyPdfVersion':PVersion}
