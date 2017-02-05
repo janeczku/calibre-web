@@ -31,6 +31,7 @@ SIDEBAR_CATEGORY = 8
 SIDEBAR_HOT = 16
 SIDEBAR_RANDOM = 32
 SIDEBAR_AUTHOR = 64
+SIDEBAR_BEST_RATED = 128
 
 DEFAULT_PASS = "admin123"
 
@@ -127,6 +128,12 @@ class UserBase:
     def show_author(self):
         if self.sidebar_view is not None:
             return True if self.sidebar_view & SIDEBAR_AUTHOR == SIDEBAR_AUTHOR else False
+        else:
+            return False
+
+    def show_best_rated_books(self):
+        if self.sidebar_view is not None:
+            return True if self.sidebar_view & SIDEBAR_BEST_RATED == SIDEBAR_BEST_RATED else False
         else:
             return False
 
@@ -412,7 +419,7 @@ def create_admin_user():
     user.nickname = "admin"
     user.role = ROLE_USER + ROLE_ADMIN + ROLE_DOWNLOAD + ROLE_UPLOAD + ROLE_EDIT + ROLE_PASSWD
     user.sidebar_view = DETAIL_RANDOM + SIDEBAR_LANGUAGE + SIDEBAR_SERIES + SIDEBAR_CATEGORY + SIDEBAR_HOT + \
-        SIDEBAR_RANDOM + SIDEBAR_AUTHOR
+        SIDEBAR_RANDOM + SIDEBAR_AUTHOR + SIEDBAR_BEST_RATED
 
     user.password = generate_password_hash(DEFAULT_PASS)
 

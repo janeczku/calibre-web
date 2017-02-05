@@ -16,6 +16,13 @@
     <link type="application/atom+xml;profile=opds-catalog;type=feed;kind=acquisition" href="{{url_for('feed_hot')}}" />
     <link type="application/atom+xml" href="{{url_for('feed_hot')}}" rel="http://opds-spec.org/sort/popular"/>
     <id>{{url_for('feed_hot')}}</id>
+    <content type="text">{{_('Popular publications from this catalog based on Downloads.')}}</content>
+  </entry>
+  <entry>
+    <title>{{_('Best rated Books')}}</title>
+    <link type="application/atom+xml;profile=opds-catalog;type=feed;kind=acquisition" href="{{url_for('feed_best_rated')}}" />
+    <link type="application/atom+xml" href="{{url_for('feed_best_rated')}}" rel="http://opds-spec.org/recommended"/>
+    <id>{{url_for('feed_best_rated')}}</id>
     <content type="text">{{_('Popular publications from this catalog based on Rating.')}}</content>
   </entry>
   <entry>

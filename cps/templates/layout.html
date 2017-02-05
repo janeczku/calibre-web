@@ -123,6 +123,9 @@
               {% if g.user.show_hot_books() %}
               <li><a href="{{url_for('hot_books')}}"><span class="glyphicon glyphicon-fire"></span> {{_('Hot Books')}}</a></li>
               {%endif%}
+              {% if g.user.show_best_rated_books() %}
+              <li><a href="{{url_for('best_rated_books')}}"><span class="glyphicon glyphicon-star"></span> {{_('Best rated Books')}}</a></li>
+              {%endif%}
               {% if g.user.show_random_books() %}
               <li><a href="{{url_for('discover')}}"><span class="glyphicon glyphicon-random"></span> {{_('Discover')}}</a></li>
               {%endif%}
