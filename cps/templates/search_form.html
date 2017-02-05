@@ -40,7 +40,7 @@
         {% endfor %}
       </div>
     </div>
-    <label for="Tags">{{_('Exclude Series')}}</label>
+    <label for="Series">{{_('Exclude Series')}}</label>
     <div class="form-group">
       <div class="btn-toolbar btn-toolbar-lg" data-toggle="buttons">
         {% for serie in series %}
@@ -81,21 +81,6 @@
 <script src="{{ url_for('static', filename='js/typeahead.bundle.js') }}"></script>
 <script src="{{ url_for('static', filename='js/edit_books.js') }}"></script>
 <script>
-  $('form')}}.on('change input typeahead:selected', function() {
-    form = $('form')}}.serialize();
-    $.getJSON( "{{ url_for('get_matching_tags') }}", form, function( data ) {
-      $('.tags_click').each(function() {
-        if ($.inArray(parseInt($(this).children('input').first().val(), 10), data.tags) == -1 ) {
-          if (!($(this).hasClass('active'))) {
-            $(this).addClass('disabled');
-          }
-        }
-        else {
-          $(this).removeClass('disabled');
-        }
-      });
-    });
-  });
 </script>
 {% endblock %}
 {% block header %}
