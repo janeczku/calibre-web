@@ -419,7 +419,7 @@ def create_admin_user():
     user.nickname = "admin"
     user.role = ROLE_USER + ROLE_ADMIN + ROLE_DOWNLOAD + ROLE_UPLOAD + ROLE_EDIT + ROLE_PASSWD
     user.sidebar_view = DETAIL_RANDOM + SIDEBAR_LANGUAGE + SIDEBAR_SERIES + SIDEBAR_CATEGORY + SIDEBAR_HOT + \
-        SIDEBAR_RANDOM + SIDEBAR_AUTHOR + SIEDBAR_BEST_RATED
+        SIDEBAR_RANDOM + SIDEBAR_AUTHOR + SIDEBAR_BEST_RATED
 
     user.password = generate_password_hash(DEFAULT_PASS)
 
@@ -444,7 +444,7 @@ if not os.path.exists(dbpath):
         create_admin_user()
         create_anonymous_user()
     except Exception:
-        pass
+        raise
 else:
     migrate_Database()
 
