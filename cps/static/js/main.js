@@ -25,6 +25,39 @@ $(function() {
         $this.text('Please wait...');
         $this.addClass('disabled');
     });
+    $("#restart").click(function() {
+        $.ajax({
+            dataType: 'json',
+            url: window.location.pathname+"/../../shutdown",
+            data: {"parameter":0},
+            success: function(data) {
+                return alert(data.text);}
+        });
+    });
+    $("#shutdown").click(function() {
+        $.ajax({
+            dataType: 'json',
+            url: window.location.pathname+"/../../shutdown",
+            data: {"parameter":1},
+            success: function(data) {
+                return alert(data.text);}
+        });
+    });
+    $("#check_for_update").click(function() {
+        var button_text = $("#check_for_update").html();
+        $("#check_for_update").html('Checking...');
+        $.ajax({
+            dataType: 'json',
+            url: window.location.pathname+"/../../get_update_status",
+            success: function(data) {
+            if (data.status == true) {
+                $("#check_for_update").addClass('hidden');
+                $("#perform_update").removeClass('hidden');
+            }else{
+                $("#check_for_update").html(button_text);
+            };}
+        });
+    });
 
 });
 
