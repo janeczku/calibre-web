@@ -34,6 +34,7 @@ SIDEBAR_AUTHOR = 64
 SIDEBAR_BEST_RATED = 128
 
 DEFAULT_PASS = "admin123"
+DEFAULT_PORT = int(os.environ.get("CALIBRE_PORT", 8083))
 
 
 
@@ -252,7 +253,7 @@ class Settings(Base):
     mail_password = Column(String)
     mail_from = Column(String)
     config_calibre_dir = Column(String)
-    config_port = Column(Integer, default=8083)
+    config_port = Column(Integer, default=DEFAULT_PORT)
     config_calibre_web_title = Column(String, default=u'Calibre-web')
     config_books_per_page = Column(Integer, default=60)
     config_random_books = Column(Integer, default=4)
