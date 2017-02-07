@@ -34,6 +34,7 @@ SIDEBAR_AUTHOR = 64
 SIDEBAR_BEST_RATED = 128
 
 DEFAULT_PASS = "admin123"
+DEFAULT_PORT = int(os.environ.get("CALIBRE_PORT", 8083))
 
 
 
@@ -252,7 +253,7 @@ class Settings(Base):
     mail_password = Column(String)
     mail_from = Column(String)
     config_calibre_dir = Column(String)
-    config_port = Column(Integer, default=8083)
+    config_port = Column(Integer, default=DEFAULT_PORT)
     config_calibre_web_title = Column(String, default=u'Calibre-web')
     config_books_per_page = Column(Integer, default=60)
     config_random_books = Column(Integer, default=4)
@@ -419,7 +420,7 @@ def create_admin_user():
     user.nickname = "admin"
     user.role = ROLE_USER + ROLE_ADMIN + ROLE_DOWNLOAD + ROLE_UPLOAD + ROLE_EDIT + ROLE_PASSWD
     user.sidebar_view = DETAIL_RANDOM + SIDEBAR_LANGUAGE + SIDEBAR_SERIES + SIDEBAR_CATEGORY + SIDEBAR_HOT + \
-        SIDEBAR_RANDOM + SIDEBAR_AUTHOR + SIEDBAR_BEST_RATED
+        SIDEBAR_RANDOM + SIDEBAR_AUTHOR + SIDEBAR_BEST_RATED
 
     user.password = generate_password_hash(DEFAULT_PASS)
 
@@ -444,7 +445,7 @@ if not os.path.exists(dbpath):
         create_admin_user()
         create_anonymous_user()
     except Exception:
-        pass
+        raise
 else:
     migrate_Database()
 
