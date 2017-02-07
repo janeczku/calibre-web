@@ -29,10 +29,10 @@ See https://github.com/adobe-type-tools/cmap-resources
     <title>{{_('PDF.js viewer')}}</title>
 
 
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/viewer.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/libs/viewer.css') }}">
     <!--<link rel="stylesheet" href="viewer.css">-->
 
-    <script src="{{ url_for('static', filename='js/compatibility.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/libs/compatibility.js') }}"></script>
     <!--<script src="compatibility.js"></script>-->
 
 
@@ -40,22 +40,22 @@ See https://github.com/adobe-type-tools/cmap-resources
 <!-- This snippet is used in production (included from viewer.html) -->
 <!--<link rel="resource" type="application/l10n" href="locale/locale.properties">-->
 <link rel="resource" type="application/l10n" href="{{ url_for('static', filename='locale/locale.properties') }}">
-<script src="{{ url_for('static', filename='js/l10n.js') }}"></script>
+<script src="{{ url_for('static', filename='js/libs/l10n.js') }}"></script>
 <!--<script src="l10n.js"></script>-->
-<script src="{{ url_for('static', filename='js/pdf.js') }}"></script>
+<script src="{{ url_for('static', filename='js/libs/pdf.js') }}"></script>
 <!--<script src="pdf.js"></script>-->
 
 
 
-    <script src="{{ url_for('static', filename='js/debugger.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/libs/debugger.js') }}"></script>
     <!--<script src="debugger.js"></script>-->
     <script type="text/javascript">
       var DEFAULT_URL = "{{ url_for('static', filename=pdffile) }}";
-      var PDFWORKER_LOCATION="{{ url_for('static', filename='js/pdf.worker.js') }}";
-      var PDFWORKER_LOCATION_JS="{{ url_for('static', filename='js/pdf.worker') }}";
+      var PDFWORKER_LOCATION="{{ url_for('static', filename='js/libs/pdf.worker.js') }}";
+      var PDFWORKER_LOCATION_JS="{{ url_for('static', filename='js/libs/pdf.worker') }}";
 
     </script>
-    <script src="{{ url_for('static', filename='js/viewer.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/libs/viewer.js') }}"></script>
     <!--<script src="viewer.js"></script>-->
 
   </head>

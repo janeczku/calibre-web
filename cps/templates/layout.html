@@ -9,7 +9,7 @@
 
     <!-- Bootstrap -->
     <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
-    <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet" media="screen">
+    <link href="{{ url_for('static', filename='css/libs/bootstrap.min.css') }}" rel="stylesheet" media="screen">
     <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet" media="screen">
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -23,11 +23,11 @@
     <!--script src="https://code.jquery.com/jquery.js"></script-->
     <script src="{{ url_for('static', filename='js/libs/jquery.min.js') }}"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/underscore-min.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/intention.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/context.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/plugins.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/libs/bootstrap.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/libs/underscore-min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/libs/intention.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/libs/context.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/libs/plugins.js') }}"></script>
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
 
     {% block header %}{% endblock %}
