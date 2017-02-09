@@ -1,0 +1,824 @@
+# Translations template for PROJECT.
+# Copyright (C) 2017 ORGANIZATION
+# This file is distributed under the same license as the PROJECT project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2017.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2017-02-09 22:50+0100\n"
+"PO-Revision-Date: 2017-02-10 00:10+0100\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.3.4\n"
+"X-Generator: Poedit 1.8.11\n"
+"Last-Translator: Radosław Kierznowski <radek.kierznowski@outlook.com>\n"
+"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"Language: pl\n"
+
+#: cps/book_formats.py:109 cps/book_formats.py:113 cps/web.py:928
+msgid "not installed"
+msgstr "nie zainstalowane"
+
+#: cps/helper.py:98
+msgid "Calibre-web test email"
+msgstr "Calibre-web testowy email"
+
+#: cps/helper.py:99 cps/helper.py:152
+msgid "This email has been sent via calibre web."
+msgstr "Ten e-mail został wysłany za pośrednictwem calibre web."
+
+#: cps/helper.py:133 cps/helper.py:221
+#, python-format
+msgid "Failed to send mail: %s"
+msgstr "Nie można wysłać poczty: %s"
+
+#: cps/helper.py:151 cps/templates/detail.html:124
+msgid "Send to Kindle"
+msgstr "Wyślij do Kindle"
+
+#: cps/helper.py:174 cps/helper.py:189
+msgid "Could not find any formats suitable for sending by email"
+msgstr "Nie można znaleźć żadnych formatów przystosowane do wysyłania pocztą e-mail"
+
+#: cps/helper.py:183
+msgid "Could not convert epub to mobi"
+msgstr "Nie można konwertować epub do mobi"
+
+#: cps/helper.py:241
+msgid "The requested file could not be read. Maybe wrong permissions?"
+msgstr "Żądany plik nie może być odczytany. Może złe uprawnienia?"
+
+#: cps/web.py:722
+msgid "Latest Books"
+msgstr "Najnowsze książki"
+
+#: cps/web.py:747
+msgid "Hot Books (most downloaded)"
+msgstr "Najpopularniejsze książki (najczęściej pobierane)"
+
+#: cps/templates/index.xml:29 cps/web.py:755
+msgid "Random Books"
+msgstr "Losowe książki"
+
+#: cps/web.py:768
+msgid "Author list"
+msgstr "Lista autorów"
+
+#: cps/web.py:785
+#, python-format
+msgid "Author: %(nam)s"
+msgstr "Autor: %(nam)s"
+
+#: cps/templates/index.xml:50 cps/web.py:798
+msgid "Series list"
+msgstr "Lista serii"
+
+#: cps/web.py:809
+#, python-format
+msgid "Series: %(serie)s"
+msgstr "Serie: %(serie)s"
+
+#: cps/web.py:811 cps/web.py:907 cps/web.py:1102 cps/web.py:1838
+msgid "Error opening eBook. File does not exist or file is not accessible:"
+msgstr "Błąd otwierania e-booka. Plik nie istnieje lub plik nie jest dostępny:"
+
+#: cps/web.py:842
+msgid "Available languages"
+msgstr "Dostępne języki"
+
+#: cps/web.py:857
+#, python-format
+msgid "Language: %(name)s"
+msgstr "Język: %(name)s"
+
+#: cps/templates/index.xml:43 cps/web.py:870
+msgid "Category list"
+msgstr "Lista kategorii"
+
+#: cps/web.py:880
+#, python-format
+msgid "Category: %(name)s"
+msgstr "Kategoria: %(name)s"
+
+#: cps/web.py:936
+msgid "Statistics"
+msgstr "Statystyki"
+
+#: cps/web.py:944
+msgid "Server restarts"
+msgstr "Serwer zrestartowany"
+
+#: cps/web.py:1078 cps/web.py:1085 cps/web.py:1092 cps/web.py:1099
+msgid "Read a Book"
+msgstr "Czytaj książkę"
+
+#: cps/web.py:1141 cps/web.py:1474
+msgid "Please fill out all fields!"
+msgstr "Proszę wypełnić wszystkie pola!"
+
+#: cps/web.py:1157
+msgid "An unknown error occured. Please try again later."
+msgstr ""
+
+#: cps/web.py:1162
+msgid "This username or email address is already in use."
+msgstr "Nazwa użytkownika lub adres e-mail jest już w użyciu."
+
+#: cps/web.py:1165
+msgid "register"
+msgstr "rejestracja"
+
+#: cps/web.py:1181
+#, python-format
+msgid "you are now logged in as: '%(nickname)s'"
+msgstr "Zalogowałeś się jako: '%(nickname)s'"
+
+#: cps/web.py:1185
+msgid "Wrong Username or Password"
+msgstr "Błędna nazwa użytkownika lub hasło"
+
+#: cps/web.py:1187
+msgid "login"
+msgstr "logowanie"
+
+#: cps/web.py:1204
+msgid "Please configure the SMTP mail settings first..."
+msgstr "Proszę najpierw skonfigurować ustawienia SMTP poczty e-mail..."
+
+#: cps/web.py:1208
+#, python-format
+msgid "Book successfully send to %(kindlemail)s"
+msgstr "Książka została pomyślnie wysłana do %(kindlemail)s"
+
+#: cps/web.py:1212
+#, python-format
+msgid "There was an error sending this book: %(res)s"
+msgstr ""
+
+#: cps/web.py:1214
+msgid "Please configure your kindle email address first..."
+msgstr "Proszę najpierw skonfigurować adres e-mail swojego kindla..."
+
+#: cps/web.py:1234
+#, python-format
+msgid "Book has been added to shelf: %(sname)s"
+msgstr "Książka została dodana do półki: %(sname)s"
+
+#: cps/web.py:1255
+#, python-format
+msgid "Book has been removed from shelf: %(sname)s"
+msgstr "Książka została usunięta z półki: %(sname)s"
+
+#: cps/web.py:1273 cps/web.py:1294
+#, python-format
+msgid "A shelf with the name '%(title)s' already exists."
+msgstr "Półka o nazwie '%(title)s' już istnieje."
+
+#: cps/web.py:1278
+#, python-format
+msgid "Shelf %(title)s created"
+msgstr "Półka %(title)s została utworzona"
+
+#: cps/web.py:1280 cps/web.py:1305
+msgid "There was an error"
+msgstr ""
+
+#: cps/web.py:1281 cps/web.py:1283
+msgid "create a shelf"
+msgstr "utwórz półkę"
+
+#: cps/web.py:1303
+#, python-format
+msgid "Shelf %(title)s changed"
+msgstr "Półka %(title)s została zmieniona"
+
+#: cps/web.py:1306 cps/web.py:1308
+msgid "Edit a shelf"
+msgstr "Edytuj półkę"
+
+#: cps/web.py:1329
+#, python-format
+msgid "successfully deleted shelf %(name)s"
+msgstr "pomyślnie usunięto półkę %(name)s"
+
+#: cps/web.py:1350
+#, python-format
+msgid "Shelf: '%(name)s'"
+msgstr "Półka: '%(name)s'"
+
+#: cps/web.py:1378
+#, python-format
+msgid "Change order of Shelf: '%(name)s'"
+msgstr "Zmieniono kolejność półki: '%(name)s'"
+
+#: cps/web.py:1433
+msgid "Found an existing account for this email address."
+msgstr "Znaleziono istniejące konto dla tego adresu e-mail."
+
+#: cps/web.py:1435 cps/web.py:1438
+#, python-format
+msgid "%(name)s's profile"
+msgstr "%(name)s's profil"
+
+#: cps/web.py:1436
+msgid "Profile updated"
+msgstr "Zaktualizowano profil"
+
+#: cps/web.py:1447 cps/web.py:1455
+msgid "Admin page"
+msgstr "Portal administracyjny"
+
+#: cps/templates/admin.html:32 cps/web.py:1475
+msgid "Add new user"
+msgstr "Dodaj nowego użytkownika"
+
+#: cps/web.py:1508
+#, python-format
+msgid "User '%(user)s' created"
+msgstr "Użytkownik '%(user)s' został utworzony"
+
+#: cps/web.py:1512
+msgid "Found an existing account for this email address or nickname."
+msgstr "Znaleziono istniejące konto dla tego adresu e-mail lub nazwy użytkownika."
+
+#: cps/web.py:1535 cps/web.py:1546
+msgid "Mail settings updated"
+msgstr "Zaktualizowano ustawienia poczty e-mail"
+
+#: cps/web.py:1541
+#, python-format
+msgid "Test E-Mail successfully send to %(kindlemail)s"
+msgstr "Testowy e-mail pomyślnie wysłany do %(kindlemail)s"
+
+#: cps/web.py:1544
+#, python-format
+msgid "There was an error sending the Test E-Mail: %(res)s"
+msgstr ""
+
+#: cps/web.py:1547
+msgid "Edit mail settings"
+msgstr "Edytuj ustawienia poczty e-mail"
+
+#: cps/web.py:1570
+#, python-format
+msgid "User '%(nick)s' deleted"
+msgstr "Użytkownik '%(nick)s' został usunięty"
+
+#: cps/web.py:1625
+#, python-format
+msgid "User '%(nick)s' updated"
+msgstr "Użytkownik '%(nick)s' został zaktualizowany"
+
+#: cps/web.py:1628
+msgid "An unknown error occured."
+msgstr ""
+
+#: cps/web.py:1630
+#, python-format
+msgid "Edit User %(nick)s"
+msgstr "Edytuj użytkownika %(nick)s"
+
+#: cps/web.py:1868
+#, python-format
+msgid "Failed to create path %s (Permission denied)."
+msgstr ""
+
+#: cps/web.py:1873
+#, python-format
+msgid "Failed to store file %s (Permission denied)."
+msgstr ""
+
+#: cps/web.py:1878
+#, python-format
+msgid "Failed to delete file %s (Permission denied)."
+msgstr ""
+
+#: cps/templates/admin.html:4
+msgid "User list"
+msgstr "Lista użytkowników"
+
+#: cps/templates/admin.html:7
+msgid "Nickname"
+msgstr "Nazwa użytkownika"
+
+#: cps/templates/admin.html:8
+msgid "Email"
+msgstr "Email"
+
+#: cps/templates/admin.html:9
+msgid "Kindle"
+msgstr "Kindle"
+
+#: cps/templates/admin.html:10
+msgid "DLS"
+msgstr "DLS"
+
+#: cps/templates/admin.html:11 cps/templates/layout.html:83
+msgid "Admin"
+msgstr "Administrator"
+
+#: cps/templates/admin.html:12 cps/templates/detail.html:114
+msgid "Download"
+msgstr "Pobieranie"
+
+#: cps/templates/admin.html:13 cps/templates/layout.html:76
+msgid "Upload"
+msgstr "Wysyłanie"
+
+#: cps/templates/admin.html:14
+msgid "Edit"
+msgstr "Edycja"
+
+#: cps/templates/admin.html:15
+msgid "Passwd"
+msgstr "Zmiana hasła"
+
+#: cps/templates/admin.html:33
+msgid "SMTP mail settings"
+msgstr "Ustawienia poczty SMTP"
+
+#: cps/templates/admin.html:36 cps/templates/email_edit.html:7
+msgid "SMTP hostname"
+msgstr "Adres serwera SMTP"
+
+#: cps/templates/admin.html:37
+msgid "SMTP port"
+msgstr "Port serwera SMTP"
+
+#: cps/templates/admin.html:38
+msgid "SSL"
+msgstr "SSL"
+
+#: cps/templates/admin.html:39 cps/templates/email_edit.html:19
+msgid "SMTP login"
+msgstr "Nazwa użytkownika SMTP"
+
+#: cps/templates/admin.html:40 cps/templates/email_edit.html:23
+msgid "SMTP password"
+msgstr "Hasło SMTP"
+
+#: cps/templates/admin.html:41
+msgid "From mail"
+msgstr "Z adresu e-mail"
+
+#: cps/templates/admin.html:53
+msgid "Change SMTP settings"
+msgstr "Zmień ustawienia SMTP"
+
+#: cps/templates/admin.html:55
+msgid "Configuration"
+msgstr "Konfiguracja"
+
+#: cps/templates/admin.html:58
+msgid "Log File"
+msgstr "Plik logów"
+
+#: cps/templates/admin.html:59
+msgid "Log Level"
+msgstr "Poziom logów"
+
+#: cps/templates/admin.html:60
+msgid "Port"
+msgstr "Port"
+
+#: cps/templates/admin.html:61
+msgid "Books per page"
+msgstr "Książek na stronę"
+
+#: cps/templates/admin.html:62
+msgid "Uploading"
+msgstr "Wysyłanie"
+
+#: cps/templates/admin.html:63
+msgid "Public registration"
+msgstr "Publiczna rejestracja"
+
+#: cps/templates/admin.html:64
+msgid "Anonymous browsing"
+msgstr "Anonimowe przeglądanie"
+
+#: cps/templates/admin.html:75
+msgid "Administration"
+msgstr "Administracja"
+
+#: cps/templates/admin.html:77
+msgid "Restart Calibre-web"
+msgstr "Uruchom ponownie Calibre-web"
+
+#: cps/templates/detail.html:38
+msgid "Book"
+msgstr "Książka"
+
+#: cps/templates/detail.html:38
+msgid "of"
+msgstr "z"
+
+#: cps/templates/detail.html:44
+msgid "language"
+msgstr "język"
+
+#: cps/templates/detail.html:103
+msgid "Description:"
+msgstr "Opis:"
+
+#: cps/templates/detail.html:128
+msgid "Read in browser"
+msgstr "Czytaj w przeglądarce"
+
+#: cps/templates/detail.html:147
+msgid "Add to shelf"
+msgstr "Dodaj do półki"
+
+#: cps/templates/detail.html:187
+msgid "Edit metadata"
+msgstr "Edytuj metadane"
+
+#: cps/templates/edit_book.html:14 cps/templates/search_form.html:6
+msgid "Book Title"
+msgstr "Tytuł książki"
+
+#: cps/templates/edit_book.html:18 cps/templates/search_form.html:10
+msgid "Author"
+msgstr "Autor"
+
+#: cps/templates/edit_book.html:22
+msgid "Description"
+msgstr "Opis"
+
+#: cps/templates/edit_book.html:26 cps/templates/search_form.html:13
+msgid "Tags"
+msgstr "Tagi"
+
+#: cps/templates/edit_book.html:31 cps/templates/layout.html:133
+#: cps/templates/search_form.html:33
+msgid "Series"
+msgstr "Serie"
+
+#: cps/templates/edit_book.html:35
+msgid "Series id"
+msgstr "ID serii"
+
+#: cps/templates/edit_book.html:39
+msgid "Rating"
+msgstr "Ocena"
+
+#: cps/templates/edit_book.html:43
+msgid "Cover URL (jpg)"
+msgstr "Adres URL okładki (jpg)"
+
+#: cps/templates/edit_book.html:48 cps/templates/user_edit.html:27
+msgid "Language"
+msgstr "Język"
+
+#: cps/templates/edit_book.html:59
+msgid "Yes"
+msgstr "Tak"
+
+#: cps/templates/edit_book.html:60
+msgid "No"
+msgstr "Nie"
+
+#: cps/templates/edit_book.html:102
+msgid "view book after edit"
+msgstr "wyświetl książkę po edycji"
+
+#: cps/templates/edit_book.html:105 cps/templates/login.html:19
+#: cps/templates/search_form.html:75 cps/templates/shelf_edit.html:15
+#: cps/templates/user_edit.html:94
+msgid "Submit"
+msgstr "Wyślij"
+
+#: cps/templates/edit_book.html:106 cps/templates/email_edit.html:32
+#: cps/templates/shelf_edit.html:17 cps/templates/shelf_order.html:12
+#: cps/templates/user_edit.html:96
+msgid "Back"
+msgstr "Wróć"
+
+#: cps/templates/email_edit.html:11
+msgid "SMTP port (usually 25 for plain SMTP and 587 for SSL)"
+msgstr "Port serwera SMTP (używane 25 dla jawnego SMTP i 587 dla połączenia SSL)"
+
+#: cps/templates/email_edit.html:15
+msgid "Server uses SSL (StartTLS)"
+msgstr "Serwer korzysta z szyfrowania SSL (StartTLS)"
+
+#: cps/templates/email_edit.html:27
+msgid "From e-mail"
+msgstr "Z adresu e-mail"
+
+#: cps/templates/email_edit.html:30
+msgid "Save settings"
+msgstr "Zapisz ustawienia"
+
+#: cps/templates/email_edit.html:31
+msgid "Save settings and send Test E-Mail"
+msgstr "Zapisz ustawienia i wyślij testową wiadomość e-mail"
+
+#: cps/templates/feed.xml:14
+msgid "Next"
+msgstr "Dalej"
+
+#: cps/templates/index.html:5
+msgid "Discover (Random Books)"
+msgstr "Odkrywaj (losowe książki)"
+
+#: cps/templates/index.xml:5
+msgid "Start"
+msgstr "Rozpocznij"
+
+#: cps/templates/index.xml:7 cps/templates/layout.html:61
+msgid "Search"
+msgstr "Szukaj"
+
+#: cps/templates/index.xml:15 cps/templates/layout.html:124
+msgid "Hot Books"
+msgstr "Najpopularniejsze książki"
+
+#: cps/templates/index.xml:19
+msgid "Popular publications from this catalog based on Rating."
+msgstr "Popularne publikacje z tego katalogu bazujące na ocenach."
+
+#: cps/templates/index.xml:22 cps/templates/layout.html:122
+msgid "New Books"
+msgstr "Nowe książki"
+
+#: cps/templates/index.xml:26
+msgid "The latest Books"
+msgstr "Ostatnie książki"
+
+#: cps/templates/index.xml:33
+msgid "Show Random Books"
+msgstr "Pokazuj losowe książki"
+
+#: cps/templates/index.xml:36 cps/templates/layout.html:135
+msgid "Authors"
+msgstr "Autorzy"
+
+#: cps/templates/index.xml:40
+msgid "Books ordered by Author"
+msgstr "Książki sortowane według autorów"
+
+#: cps/templates/index.xml:47
+msgid "Books ordered by category"
+msgstr "Książki sortowane według kategorii"
+
+#: cps/templates/index.xml:54
+msgid "Books ordered by series"
+msgstr "Książki sortowane według serii"
+
+#: cps/templates/layout.html:48
+msgid "Toggle navigation"
+msgstr ""
+
+#: cps/templates/layout.html:63
+msgid "Go!"
+msgstr "Ruszaj!"
+
+#: cps/templates/layout.html:66
+msgid "Advanced Search"
+msgstr "Zaawansowane wyszukiwanie"
+
+#: cps/templates/layout.html:87
+msgid "Logout"
+msgstr "Wyloguj się"
+
+#: cps/templates/layout.html:91 cps/templates/login.html:4
+msgid "Login"
+msgstr "Zaloguj się"
+
+#: cps/templates/layout.html:92 cps/templates/register.html:18
+msgid "Register"
+msgstr "Zarejestruj się"
+
+#: cps/templates/layout.html:121
+msgid "Browse"
+msgstr "Przeglądaj"
+
+#: cps/templates/layout.html:127
+msgid "Discover"
+msgstr "Odkrywaj"
+
+#: cps/templates/layout.html:130
+msgid "Categories"
+msgstr "Kategorie"
+
+#: cps/templates/layout.html:137 cps/templates/search_form.html:54
+msgid "Languages"
+msgstr "Języki"
+
+#: cps/templates/layout.html:140
+msgid "Public Shelves"
+msgstr "Publiczne półki"
+
+#: cps/templates/layout.html:144
+msgid "Your Shelves"
+msgstr "Twoje półki"
+
+#: cps/templates/layout.html:149
+msgid "Create a Shelf"
+msgstr "Utwórz półkę"
+
+#: cps/templates/layout.html:152
+msgid "About"
+msgstr "O programie"
+
+#: cps/templates/login.html:7 cps/templates/login.html:8
+#: cps/templates/register.html:7 cps/templates/user_edit.html:8
+msgid "Username"
+msgstr "Nazwa użytkownika"
+
+#: cps/templates/login.html:11 cps/templates/login.html:12
+#: cps/templates/register.html:11 cps/templates/user_edit.html:18
+msgid "Password"
+msgstr "Hasło"
+
+#: cps/templates/login.html:16
+msgid "Remember me"
+msgstr "Zapamiętaj mnie"
+
+#: cps/templates/read.html:136
+msgid "Reflow text when sidebars are open."
+msgstr ""
+
+#: cps/templates/readpdf.html:29
+msgid "PDF.js viewer"
+msgstr "PDF.js viewer"
+
+#: cps/templates/readtxt.html:6
+msgid "Basic txt Reader"
+msgstr "Podstawowy czytnik txt"
+
+#: cps/templates/register.html:4
+msgid "Register a new account"
+msgstr "Zarejestruj nowe konto"
+
+#: cps/templates/register.html:8
+msgid "Choose a username"
+msgstr "Wybierz nazwę użytkownika"
+
+#: cps/templates/register.html:12
+msgid "Choose a password"
+msgstr "Wybierz hasło"
+
+#: cps/templates/register.html:15 cps/templates/user_edit.html:13
+msgid "Email address"
+msgstr "Adres e-mail"
+
+#: cps/templates/register.html:16
+msgid "Your email address"
+msgstr "Twój adres e-mail"
+
+#: cps/templates/search.html:6
+msgid "No Results for:"
+msgstr "Brak wyników dla:"
+
+#: cps/templates/search.html:7
+msgid "Please try a diffrent Search"
+msgstr "Proszę wypróbować podobne wyszukiwanie"
+
+#: cps/templates/search.html:9
+msgid "Results for:"
+msgstr "Wyniki dla:"
+
+#: cps/templates/search_form.html:23
+msgid "Exclude Tags"
+msgstr "Wyklucz tagi"
+
+#: cps/templates/search_form.html:43
+msgid "Exclude Series"
+msgstr "Wyklucz serie"
+
+#: cps/templates/search_form.html:64
+msgid "Exclude Languages"
+msgstr "Wyklucz języki"
+
+#: cps/templates/shelf.html:6
+msgid "Delete this Shelf"
+msgstr "Usuń tą półkę"
+
+#: cps/templates/shelf.html:7
+msgid "Edit Shelf name"
+msgstr "Edytuj nazwę półki"
+
+#: cps/templates/shelf.html:8
+msgid "change order"
+msgstr "zmień sortowanie"
+
+#: cps/templates/shelf_edit.html:7
+msgid "Title"
+msgstr "Tytuł"
+
+#: cps/templates/shelf_edit.html:12
+msgid "should the shelf be public?"
+msgstr ""
+
+#: cps/templates/shelf_order.html:5
+msgid "Drag 'n drop to rearrange order"
+msgstr ""
+
+#: cps/templates/shelf_order.html:11
+msgid "Change order"
+msgstr "Zmień sortowanie"
+
+#: cps/templates/stats.html:3
+msgid "Linked libraries"
+msgstr "Połączono biblioteki"
+
+#: cps/templates/stats.html:8
+msgid "Program library"
+msgstr "Biblioteka programu"
+
+#: cps/templates/stats.html:9
+msgid "Installed Version"
+msgstr "Zainstalowana wersja"
+
+#: cps/templates/stats.html:36
+msgid "Calibre library statistics"
+msgstr "Statystyki biblioteki Calibre"
+
+#: cps/templates/stats.html:41
+msgid "Books in this Library"
+msgstr "Książki w tej bibliotece"
+
+#: cps/templates/stats.html:45
+msgid "Authors in this Library"
+msgstr "Autorzy w tej bibliotece"
+
+#: cps/templates/stats.html:49
+msgid "Series in this Library"
+msgstr "Serie w tej bibliotece"
+
+#: cps/templates/stats.html:53
+msgid "Tags in this Library"
+msgstr "Tagi w tej bibliotece"
+
+#: cps/templates/stats.html:57
+msgid "Usercount for calibre web"
+msgstr "Licznik użytkowników dla calibre web"
+
+#: cps/templates/user_edit.html:23
+msgid "Kindle E-Mail"
+msgstr "Adres e-mail Kindle"
+
+#: cps/templates/user_edit.html:35
+msgid "Show books with language"
+msgstr "Pokaż książki w języku"
+
+#: cps/templates/user_edit.html:37
+msgid "Show all"
+msgstr "Pokaż wszystko"
+
+#: cps/templates/user_edit.html:45
+msgid "Show random books"
+msgstr "Pokaż losowe książki"
+
+#: cps/templates/user_edit.html:49
+msgid "Show hot books"
+msgstr "Pokaż najpopularniejsze książki"
+
+#: cps/templates/user_edit.html:53
+msgid "Show language selection"
+msgstr "Pokaż wybór języka"
+
+#: cps/templates/user_edit.html:57
+msgid "Show series selection"
+msgstr "Pokaż wybór serii"
+
+#: cps/templates/user_edit.html:61
+msgid "Show category selection"
+msgstr "Pokaż wybór kategorii"
+
+#: cps/templates/user_edit.html:68
+msgid "Admin user"
+msgstr "Użytkownik z uprawnieniami administratora"
+
+#: cps/templates/user_edit.html:72
+msgid "Allow Downloads"
+msgstr "Zezwalaj na pobieranie"
+
+#: cps/templates/user_edit.html:76
+msgid "Allow Uploads"
+msgstr "Zezwalaj na wysyłanie"
+
+#: cps/templates/user_edit.html:80
+msgid "Allow Edit"
+msgstr "Zezwalaj na edycję"
+
+#: cps/templates/user_edit.html:84
+msgid "Allow Changing Password"
+msgstr "Zezwalaj na zmianę hasła"
+
+#: cps/templates/user_edit.html:90
+msgid "Delete this user"
+msgstr "Usuń tego użytkownika"
+
+#: cps/templates/user_edit.html:101
+msgid "Recent Downloads"
+msgstr ""
+
+msgid "Latin"
+msgstr "Latin"
