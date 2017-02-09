@@ -1271,7 +1271,7 @@ def register():
             content.password = generate_password_hash(to_save["password"])
             content.nickname = to_save["nickname"]
             content.email = to_save["email"]
-            content.role = 0
+            content.role = config.config_default_role
             try:
                 ub.session.add(content)
                 ub.session.commit()
@@ -1635,6 +1635,18 @@ def configuration_helper(origin):
             content.config_anonbrowse = 1
         if "config_public_reg" in to_save and to_save["config_public_reg"] == "on":
             content.config_public_reg = 1
+
+        content.config_default_role = 0
+        if "admin_role" in to_save:
+            content.config_default_role = content.config_default_role + ub.ROLE_ADMIN
+        if "download_role" in to_save:
+            content.config_default_role = content.config_default_role + ub.ROLE_DOWNLOAD
+        if "upload_role" in to_save:
+            content.config_default_role = content.config_default_role + ub.ROLE_UPLOAD
+        if "edit_role" in to_save:
+            content.config_default_role = content.config_default_role + ub.ROLE_EDIT
+        if "passwd_role" in to_save:
+            content.config_default_role = content.config_default_role + ub.ROLE_PASSWD
         try:
             if db_change:
                 if config.db_configured:

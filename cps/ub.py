@@ -262,6 +262,7 @@ class Settings(Base):
     config_uploading = Column(SmallInteger, default=0)
     config_anonbrowse = Column(SmallInteger, default=0)
     config_public_reg = Column(SmallInteger, default=0)
+    config_default_role = Column(SmallInteger, default=0)
 
     def __repr__(self):
         pass
@@ -287,6 +288,7 @@ class Config:
         self.config_uploading = data.config_uploading
         self.config_anonbrowse = data.config_anonbrowse
         self.config_public_reg = data.config_public_reg
+        self.config_default_role = data.config_default_role
         if self.config_calibre_dir is not None: # and (self.db_configured is None or self.db_configured is True):
             self.db_configured = True
         else:
@@ -295,6 +297,36 @@ class Config:
     @property
     def get_main_dir(self):
         return self.config_main_dir
+
+    def role_admin(self):
+        if self.config_default_role is not None:
+            return True if self.config_default_role & ROLE_ADMIN == ROLE_ADMIN else False
+        else:
+            return False
+
+    def role_download(self):
+        if self.config_default_role is not None:
+            return True if self.config_default_role & ROLE_DOWNLOAD == ROLE_DOWNLOAD else False
+        else:
+            return False
+
+    def role_upload(self):
+        if self.config_default_role is not None:
+            return True if self.config_default_role & ROLE_UPLOAD == ROLE_UPLOAD else False
+        else:
+            return False
+
+    def role_edit(self):
+        if self.config_default_role is not None:
+            return True if self.config_default_role & ROLE_EDIT == ROLE_EDIT else False
+        else:
+            return False
+
+    def role_passwd(self):
+        if self.config_default_role is not None:
+            return True if self.config_default_role & ROLE_PASSWD == ROLE_PASSWD else False
+        else:
+            return False
 
     def get_Log_Level(self):
         ret_value=""
@@ -337,6 +369,7 @@ def migrate_Database():
         conn.execute("ALTER TABLE Settings ADD column `config_uploading` SmallInteger DEFAULT 0")
         conn.execute("ALTER TABLE Settings ADD column `config_anonbrowse` SmallInteger DEFAULT 0")
         conn.execute("ALTER TABLE Settings ADD column `config_public_reg` SmallInteger DEFAULT 0")
+        conn.execute("ALTER TABLE Settings ADD column `config_default_role` SmallInteger DEFAULT 0")
         session.commit()
     try:
         session.query(exists().where(BookShelf.order)).scalar()

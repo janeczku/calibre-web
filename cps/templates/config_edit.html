@@ -49,6 +49,26 @@
         <input type="checkbox" id="config_public_reg" name="config_public_reg" {% if content.config_public_reg %}checked{% endif %}>
         <label for="config_public_reg">{{_('Enable public registration')}}</label>
     </div>
+    <div class="form-group">
+      <input type="checkbox" name="admin_role" id="admin_role" {% if content.role_admin() %}checked{% endif %}>
+      <label for="admin_role">{{_('Admin user')}}</label>
+    </div>
+    <div class="form-group">
+      <input type="checkbox" name="download_role" id="download_role" {% if content.role_download() %}checked{% endif %}>
+      <label for="download_role">{{_('Allow Downloads')}}</label>
+    </div>
+    <div class="form-group">
+      <input type="checkbox" name="upload_role" id="upload_role" {% if content.role_upload() %}checked{% endif %}>
+      <label for="upload_role">{{_('Allow Uploads')}}</label>
+    </div>
+    <div class="form-group">
+      <input type="checkbox" name="edit_role" id="edit_role" {% if content.role_edit() %}checked{% endif %}>
+      <label for="edit_role">{{_('Allow Edit')}}</label>
+    </div>
+    <div class="form-group">
+      <input type="checkbox" name="passwd_role" id="passwd_role" {% if content.role_passwd() %}checked{% endif %}>
+      <label for="passwd_role">{{_('Allow Changing Password')}}</label>
+    </div>
     <button type="submit" class="btn btn-default">{{_('Submit')}}</button>
     {% if not origin %}
       <a href="{{ url_for('admin') }}" class="btn btn-default">{{_('Back')}}</a>
