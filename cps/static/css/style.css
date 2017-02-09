@@ -2,7 +2,7 @@
   font-family: 'Grand Hotel';
   font-style: normal;
   font-weight: 400;
-  src: local('Grand Hotel'), local('GrandHotel-Regular'), url("../fonts/GrandHotel-Regular.ttf") format('truetype');
+  src: local('Grand Hotel'), local('GrandHotel-Regular'), url("fonts/GrandHotel-Regular.ttf") format('truetype');
 }
 
 body{background:#f2f2f2}body h2{font-weight:normal;color:#444}
