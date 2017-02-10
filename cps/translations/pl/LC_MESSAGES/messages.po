@@ -5,10 +5,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: PROJECT VERSION\n"
+"Project-Id-Version: Calibre Web - polski\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2017-02-09 22:50+0100\n"
-"PO-Revision-Date: 2017-02-10 00:10+0100\n"
+"PO-Revision-Date: 2017-02-10 12:31+0100\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -222,7 +222,7 @@ msgstr "Znaleziono istniejące konto dla tego adresu e-mail."
 #: cps/web.py:1435 cps/web.py:1438
 #, python-format
 msgid "%(name)s's profile"
-msgstr "%(name)s's profil"
+msgstr "Profil użytkownika %(name)s"
 
 #: cps/web.py:1436
 msgid "Profile updated"
@@ -319,7 +319,7 @@ msgstr "DLS"
 
 #: cps/templates/admin.html:11 cps/templates/layout.html:83
 msgid "Admin"
-msgstr "Administrator"
+msgstr "Portal administracyjny"
 
 #: cps/templates/admin.html:12 cps/templates/detail.html:114
 msgid "Download"
@@ -327,7 +327,7 @@ msgstr "Pobieranie"
 
 #: cps/templates/admin.html:13 cps/templates/layout.html:76
 msgid "Upload"
-msgstr "Wysyłanie"
+msgstr "Wyślij"
 
 #: cps/templates/admin.html:14
 msgid "Edit"
@@ -363,7 +363,7 @@ msgstr "Hasło SMTP"
 
 #: cps/templates/admin.html:41
 msgid "From mail"
-msgstr "Z adresu e-mail"
+msgstr "Wyślij z adresu e-mail"
 
 #: cps/templates/admin.html:53
 msgid "Change SMTP settings"
@@ -387,7 +387,7 @@ msgstr "Port"
 
 #: cps/templates/admin.html:61
 msgid "Books per page"
-msgstr "Książek na stronę"
+msgstr "Ilość książek na stronie"
 
 #: cps/templates/admin.html:62
 msgid "Uploading"
@@ -403,7 +403,7 @@ msgstr "Anonimowe przeglądanie"
 
 #: cps/templates/admin.html:75
 msgid "Administration"
-msgstr "Administracja"
+msgstr "Zarządzanie"
 
 #: cps/templates/admin.html:77
 msgid "Restart Calibre-web"
@@ -576,7 +576,7 @@ msgstr ""
 
 #: cps/templates/layout.html:63
 msgid "Go!"
-msgstr "Ruszaj!"
+msgstr "Idź!"
 
 #: cps/templates/layout.html:66
 msgid "Advanced Search"
@@ -726,7 +726,7 @@ msgstr "Zmień sortowanie"
 
 #: cps/templates/stats.html:3
 msgid "Linked libraries"
-msgstr "Połączono biblioteki"
+msgstr "Załączone biblioteki"
 
 #: cps/templates/stats.html:8
 msgid "Program library"
@@ -742,11 +742,11 @@ msgstr "Statystyki biblioteki Calibre"
 
 #: cps/templates/stats.html:41
 msgid "Books in this Library"
-msgstr "Książki w tej bibliotece"
+msgstr "Książek w bibliotece"
 
 #: cps/templates/stats.html:45
 msgid "Authors in this Library"
-msgstr "Autorzy w tej bibliotece"
+msgstr "Autorów w bibliotece"
 
 #: cps/templates/stats.html:49
 msgid "Series in this Library"
