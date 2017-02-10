@@ -14,7 +14,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/calibre-web\n"
-"POT-Creation-Date: 2017-02-10 19:55+0100\n"
+"POT-Creation-Date: 2017-02-10 20:17+0100\n"
 "PO-Revision-Date: 2016-11-13 18:35+0100\n"
 "Last-Translator: Juan F. Villa <juan.villa@paisdelconocimiento.org>\n"
 "Language: es\n"
@@ -58,7 +58,7 @@ msgstr "No fue posible convertir de epub a mobi"
 msgid "The requested file could not be read. Maybe wrong permissions?"
 msgstr "El fichero solicitado no puede ser leido. Problema de permisos?"
 
-#: cps/ub.py:404
+#: cps/ub.py:443
 msgid "Guest"
 msgstr ""
 
@@ -87,7 +87,7 @@ msgstr "Lista de Autores"
 msgid "Author: %(name)s"
 msgstr ""
 
-#: cps/web.py:848 cps/web.py:876 cps/web.py:975 cps/web.py:1216 cps/web.py:2089
+#: cps/web.py:848 cps/web.py:876 cps/web.py:975 cps/web.py:1216 cps/web.py:2103
 msgid "Error opening eBook. File does not exist or file is not accessible:"
 msgstr "Error en apertura del Objeto. El archivo no existe o no es accesible"
 
@@ -142,7 +142,7 @@ msgstr ""
 msgid "Read a Book"
 msgstr "Leer un Libro"
 
-#: cps/web.py:1264 cps/web.py:1689
+#: cps/web.py:1264 cps/web.py:1701
 msgid "Please fill out all fields!"
 msgstr "Por favor llenar todos los campos!"
 
@@ -258,83 +258,83 @@ msgstr "Perfil actualizado"
 msgid "Admin page"
 msgstr ""
 
-#: cps/web.py:1644
+#: cps/web.py:1656
 msgid "Calibre-web configuration updated"
 msgstr ""
 
-#: cps/web.py:1651 cps/web.py:1657 cps/web.py:1670
+#: cps/web.py:1663 cps/web.py:1669 cps/web.py:1682
 msgid "Basic Configuration"
 msgstr ""
 
-#: cps/web.py:1655
+#: cps/web.py:1667
 msgid "DB location is not valid, please enter correct path"
 msgstr ""
 
-#: cps/templates/admin.html:33 cps/web.py:1691 cps/web.py:1735
+#: cps/templates/admin.html:33 cps/web.py:1703 cps/web.py:1749
 msgid "Add new user"
 msgstr "Agregar un nuevo usuario"
 
-#: cps/web.py:1729
+#: cps/web.py:1741
 #, python-format
 msgid "User '%(user)s' created"
 msgstr "Usuario '%(user)s' creado"
 
-#: cps/web.py:1733
+#: cps/web.py:1745
 msgid "Found an existing account for this email address or nickname."
 msgstr "Se ha encontrado una cuenta vinculada a esta cuenta de correo o usuario."
 
-#: cps/web.py:1753
+#: cps/web.py:1767
 msgid "Mail settings updated"
 msgstr "Parametros de correo actualizados"
 
-#: cps/web.py:1759
+#: cps/web.py:1773
 #, python-format
 msgid "Test E-Mail successfully send to %(kindlemail)s"
 msgstr "Exito al realizar envio de prueba a %(kindlemail)s"
 
-#: cps/web.py:1762
+#: cps/web.py:1776
 #, python-format
 msgid "There was an error sending the Test E-Mail: %(res)s"
 msgstr "Error al realizar envio de prueba a E-Mail: %(res)s"
 
-#: cps/web.py:1763
+#: cps/web.py:1777
 msgid "Edit mail settings"
 msgstr "Editar parametros de correo"
 
-#: cps/web.py:1791
+#: cps/web.py:1805
 #, python-format
 msgid "User '%(nick)s' deleted"
 msgstr "Usuario '%(nick)s' borrado"
 
-#: cps/web.py:1872
+#: cps/web.py:1886
 #, python-format
 msgid "User '%(nick)s' updated"
 msgstr "Usuario '%(nick)s'  Actualizado"
 
-#: cps/web.py:1875
+#: cps/web.py:1889
 msgid "An unknown error occured."
 msgstr "Oups ! Error inesperado."
 
-#: cps/web.py:1878
+#: cps/web.py:1892
 #, python-format
 msgid "Edit User %(nick)s"
 msgstr "Editar Usuario %(nick)s"
 
-#: cps/web.py:2084 cps/web.py:2087 cps/web.py:2161
+#: cps/web.py:2098 cps/web.py:2101 cps/web.py:2175
 msgid "edit metadata"
 msgstr ""
 
-#: cps/web.py:2119
+#: cps/web.py:2133
 #, python-format
 msgid "Failed to create path %s (Permission denied)."
 msgstr "Fallo al crear la ruta %s (permiso negado)"
 
-#: cps/web.py:2124
+#: cps/web.py:2138
 #, python-format
 msgid "Failed to store file %s (Permission denied)."
 msgstr "Fallo al almacenar el archivo %s (permiso negado)"
 
-#: cps/web.py:2129
+#: cps/web.py:2143
 #, python-format
 msgid "Failed to delete file %s (Permission denied)."
 msgstr "Fallo al borrar el archivo %s (permiso negado)"
@@ -472,7 +472,7 @@ msgid "Ok"
 msgstr ""
 
 #: cps/templates/admin.html:95 cps/templates/admin.html:110
-#: cps/templates/book_edit.html:108 cps/templates/config_edit.html:54
+#: cps/templates/book_edit.html:108 cps/templates/config_edit.html:75
 #: cps/templates/email_edit.html:36 cps/templates/shelf_edit.html:17
 #: cps/templates/shelf_order.html:12 cps/templates/user_edit.html:111
 msgid "Back"
@@ -531,7 +531,7 @@ msgstr "No"
 msgid "view book after edit"
 msgstr "Ver libro tras la edicion"
 
-#: cps/templates/book_edit.html:107 cps/templates/config_edit.html:52
+#: cps/templates/book_edit.html:107 cps/templates/config_edit.html:73
 #: cps/templates/login.html:19 cps/templates/search_form.html:75
 #: cps/templates/shelf_edit.html:15 cps/templates/user_edit.html:109
 msgid "Submit"
@@ -569,7 +569,31 @@ msgstr ""
 msgid "Enable public registration"
 msgstr ""
 
-#: cps/templates/config_edit.html:57 cps/templates/layout.html:91
+#: cps/templates/config_edit.html:52
+msgid "Default Settings for new users"
+msgstr ""
+
+#: cps/templates/config_edit.html:55 cps/templates/user_edit.html:80
+msgid "Admin user"
+msgstr "Usuario Administrador"
+
+#: cps/templates/config_edit.html:59 cps/templates/user_edit.html:85
+msgid "Allow Downloads"
+msgstr "Permitir descargas"
+
+#: cps/templates/config_edit.html:63 cps/templates/user_edit.html:89
+msgid "Allow Uploads"
+msgstr "Permitir subidas de archivos"
+
+#: cps/templates/config_edit.html:67 cps/templates/user_edit.html:93
+msgid "Allow Edit"
+msgstr "Permitir editar"
+
+#: cps/templates/config_edit.html:71 cps/templates/user_edit.html:98
+msgid "Allow Changing Password"
+msgstr "Permitir cambiar la clave"
+
+#: cps/templates/config_edit.html:78 cps/templates/layout.html:91
 #: cps/templates/login.html:4
 msgid "Login"
 msgstr "Inicio de Sesion"
@@ -919,26 +943,6 @@ msgstr ""
 #: cps/templates/user_edit.html:73
 msgid "Show random books in detail view"
 msgstr ""
-
-#: cps/templates/user_edit.html:80
-msgid "Admin user"
-msgstr "Usuario Administrador"
-
-#: cps/templates/user_edit.html:85
-msgid "Allow Downloads"
-msgstr "Permitir descargas"
-
-#: cps/templates/user_edit.html:89
-msgid "Allow Uploads"
-msgstr "Permitir subidas de archivos"
-
-#: cps/templates/user_edit.html:93
-msgid "Allow Edit"
-msgstr "Permitir editar"
-
-#: cps/templates/user_edit.html:98
-msgid "Allow Changing Password"
-msgstr "Permitir cambiar la clave"
 
 #: cps/templates/user_edit.html:105
 msgid "Delete this user"
