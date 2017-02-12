@@ -6,10 +6,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Calibre Web - polski\n"
+"Project-Id-Version: Calibre Web - polski (170210.2017)\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2017-02-10 20:17+0100\n"
-"PO-Revision-Date: 2017-02-10 12:31+0100\n"
+"POT-Creation-Date: 2017-02-12 08:13+0100\n"
+"PO-Revision-Date: 2017-02-11 15:56+0100\n"
 "Last-Translator: Radosław Kierznowski <radek.kierznowski@outlook.com>\n"
 "Language: pl\n"
 "Language-Team: \n"
@@ -57,7 +57,7 @@ msgstr "Żądany plik nie może być odczytany. Może złe uprawnienia?"
 
 #: cps/ub.py:443
 msgid "Guest"
-msgstr ""
+msgstr "Gość"
 
 #: cps/web.py:778
 msgid "Latest Books"
@@ -69,7 +69,7 @@ msgstr "Najpopularniejsze książki (najczęściej pobierane)"
 
 #: cps/web.py:813
 msgid "Best rated books"
-msgstr ""
+msgstr "Najlepiej oceniane książki"
 
 #: cps/templates/index.xml:36 cps/web.py:822
 msgid "Random Books"
@@ -82,7 +82,7 @@ msgstr "Lista autorów"
 #: cps/web.py:846
 #, python-format
 msgid "Author: %(name)s"
-msgstr ""
+msgstr "Autor: %(name)s"
 
 #: cps/web.py:848 cps/web.py:876 cps/web.py:975 cps/web.py:1216 cps/web.py:2103
 msgid "Error opening eBook. File does not exist or file is not accessible:"
@@ -121,19 +121,19 @@ msgstr "Statystyki"
 
 #: cps/web.py:1029
 msgid "Performing Restart, please reload page"
-msgstr ""
+msgstr "Wykonano ponowne uruchomienie, proszę odświeżyć stronę"
 
 #: cps/web.py:1031
 msgid "Performing shutdown of server, please close window"
-msgstr ""
+msgstr "Wykonano wyłączenie serwera, proszę zamknąć okno"
 
 #: cps/web.py:1055
 msgid "Update done"
-msgstr ""
+msgstr "Aktualizacja zakończona"
 
 #: cps/web.py:1128 cps/web.py:1141
 msgid "search"
-msgstr ""
+msgstr "szukaj"
 
 #: cps/web.py:1192 cps/web.py:1199 cps/web.py:1206 cps/web.py:1213
 msgid "Read a Book"
@@ -149,7 +149,7 @@ msgstr "rejestracja"
 
 #: cps/web.py:1280
 msgid "An unknown error occured. Please try again later."
-msgstr ""
+msgstr "Wystąpił nieznany błąd. Spróbuj ponownie później."
 
 #: cps/web.py:1285
 msgid "This username or email address is already in use."
@@ -180,7 +180,7 @@ msgstr "Książka została pomyślnie wysłana do %(kindlemail)s"
 #: cps/web.py:1335
 #, python-format
 msgid "There was an error sending this book: %(res)s"
-msgstr ""
+msgstr "Wystąpił błąd podczas wysyłania tej książki: %(res)s"
 
 #: cps/web.py:1337
 msgid "Please configure your kindle email address first..."
@@ -208,7 +208,7 @@ msgstr "Półka %(title)s została utworzona"
 
 #: cps/web.py:1404 cps/web.py:1432
 msgid "There was an error"
-msgstr ""
+msgstr "Wystąpił błąd"
 
 #: cps/web.py:1405 cps/web.py:1407
 msgid "create a shelf"
@@ -257,15 +257,15 @@ msgstr "Portal administracyjny"
 
 #: cps/web.py:1656
 msgid "Calibre-web configuration updated"
-msgstr ""
+msgstr "Konfiguracja Calibre-web została zaktualizowana"
 
 #: cps/web.py:1663 cps/web.py:1669 cps/web.py:1682
 msgid "Basic Configuration"
-msgstr ""
+msgstr "Podstawowa konfiguracja"
 
 #: cps/web.py:1667
 msgid "DB location is not valid, please enter correct path"
-msgstr ""
+msgstr "Lokalizacja bazy danych nie jest prawidłowa, wpisz poprawną ścieżkę"
 
 #: cps/templates/admin.html:33 cps/web.py:1703 cps/web.py:1749
 msgid "Add new user"
@@ -292,7 +292,7 @@ msgstr "Testowy e-mail pomyślnie wysłany do %(kindlemail)s"
 #: cps/web.py:1776
 #, python-format
 msgid "There was an error sending the Test E-Mail: %(res)s"
-msgstr ""
+msgstr "Wystąpił błąd podczas wysyłania testowej wiadomości e-mail: %(res)s"
 
 #: cps/web.py:1777
 msgid "Edit mail settings"
@@ -310,7 +310,7 @@ msgstr "Użytkownik '%(nick)s' został zaktualizowany"
 
 #: cps/web.py:1889
 msgid "An unknown error occured."
-msgstr ""
+msgstr "Wystąpił nieznany błąd."
 
 #: cps/web.py:1892
 #, python-format
@@ -319,22 +319,22 @@ msgstr "Edytuj użytkownika %(nick)s"
 
 #: cps/web.py:2098 cps/web.py:2101 cps/web.py:2175
 msgid "edit metadata"
-msgstr ""
+msgstr "edytuj metadane"
 
 #: cps/web.py:2133
 #, python-format
 msgid "Failed to create path %s (Permission denied)."
-msgstr ""
+msgstr "Nie udało się utworzyć łącza %s (Odmowa dostępu)."
 
 #: cps/web.py:2138
 #, python-format
 msgid "Failed to store file %s (Permission denied)."
-msgstr ""
+msgstr "Nie można przechowywać pliku %s (Odmowa dostępu)."
 
 #: cps/web.py:2143
 #, python-format
 msgid "Failed to delete file %s (Permission denied)."
-msgstr ""
+msgstr "Nie udało się usunąć pliku %s (Odmowa dostępu)."
 
 #: cps/templates/admin.html:4
 msgid "User list"
@@ -362,7 +362,7 @@ msgstr "Portal administracyjny"
 
 #: cps/templates/admin.html:12 cps/templates/detail.html:117
 msgid "Download"
-msgstr "Pobieranie"
+msgstr "Pobierz"
 
 #: cps/templates/admin.html:13 cps/templates/layout.html:76
 msgid "Upload"
@@ -414,7 +414,7 @@ msgstr "Konfiguracja"
 
 #: cps/templates/admin.html:59
 msgid "Calibre DB dir"
-msgstr ""
+msgstr "Folder bazy danych Calibre"
 
 #: cps/templates/admin.html:60 cps/templates/config_edit.html:32
 msgid "Log Level"
@@ -450,23 +450,23 @@ msgstr "Uruchom ponownie Calibre-web"
 
 #: cps/templates/admin.html:80
 msgid "Stop Calibre-web"
-msgstr ""
+msgstr "Zatrzymaj Calibre-web"
 
 #: cps/templates/admin.html:81
 msgid "Check for update"
-msgstr ""
+msgstr "Sprawdź aktualizacje"
 
 #: cps/templates/admin.html:82
 msgid "Perform Update"
-msgstr ""
+msgstr "Wykonaj aktualizację"
 
 #: cps/templates/admin.html:93
 msgid "Do you really want to restart Calibre-web?"
-msgstr ""
+msgstr "Na pewno chcesz uruchomić ponownie Calibre-web?"
 
 #: cps/templates/admin.html:94 cps/templates/admin.html:109
 msgid "Ok"
-msgstr ""
+msgstr "Ok"
 
 #: cps/templates/admin.html:95 cps/templates/admin.html:110
 #: cps/templates/book_edit.html:108 cps/templates/config_edit.html:75
@@ -477,7 +477,7 @@ msgstr "Wróć"
 
 #: cps/templates/admin.html:108
 msgid "Do you really want to stop Calibre-web?"
-msgstr ""
+msgstr "Na pewno chcesz zatrzymać Calibre-web?"
 
 #: cps/templates/book_edit.html:16 cps/templates/search_form.html:6
 msgid "Book Title"
@@ -536,11 +536,11 @@ msgstr "Wyślij"
 
 #: cps/templates/config_edit.html:7
 msgid "Location of Calibre database"
-msgstr ""
+msgstr "Lokalizacja bazy danych Calibre"
 
 #: cps/templates/config_edit.html:11
 msgid "Server Port"
-msgstr ""
+msgstr "Port serwera"
 
 #: cps/templates/config_edit.html:15 cps/templates/shelf_edit.html:7
 msgid "Title"
@@ -548,27 +548,27 @@ msgstr "Tytuł"
 
 #: cps/templates/config_edit.html:23
 msgid "No. of random books to show"
-msgstr ""
+msgstr "Liczba losowych książek do pokazania"
 
 #: cps/templates/config_edit.html:28
 msgid "Regular expression for title sorting"
-msgstr ""
+msgstr "Wyrażenie regularne dla tytułu sortującego"
 
 #: cps/templates/config_edit.html:42
 msgid "Enable uploading"
-msgstr ""
+msgstr "Włącz wysyłanie"
 
 #: cps/templates/config_edit.html:46
 msgid "Enable anonymous browsing"
-msgstr ""
+msgstr "Włącz anonimowe przeglądanie"
 
 #: cps/templates/config_edit.html:50
 msgid "Enable public registration"
-msgstr ""
+msgstr "Włącz publiczną rejestrację"
 
 #: cps/templates/config_edit.html:52
 msgid "Default Settings for new users"
-msgstr ""
+msgstr "Domyślne ustawienia dla nowych użytkowników"
 
 #: cps/templates/config_edit.html:55 cps/templates/user_edit.html:80
 msgid "Admin user"
@@ -609,7 +609,7 @@ msgstr "język"
 
 #: cps/templates/detail.html:74
 msgid "Publishing date"
-msgstr ""
+msgstr "Data publikacji"
 
 #: cps/templates/detail.html:106
 msgid "Description:"
@@ -630,22 +630,24 @@ msgstr "Edytuj metadane"
 #: cps/templates/email_edit.html:11
 msgid "SMTP port (usually 25 for plain SMTP and 465 for SSL and 587 for STARTTLS)"
 msgstr ""
+"Port serwera SMTP (używane 25 dla jawnego SMTP i 465 dla połączenia SSL i"
+" 587 dla połączenia STARTTLS)"
 
 #: cps/templates/email_edit.html:15
 msgid "Encryption"
-msgstr ""
+msgstr "Szyfrowanie"
 
 #: cps/templates/email_edit.html:17
 msgid "None"
-msgstr ""
+msgstr "Nic"
 
 #: cps/templates/email_edit.html:18
 msgid "STARTTLS"
-msgstr ""
+msgstr "STARTTLS"
 
 #: cps/templates/email_edit.html:19
 msgid "SSL/TLS"
-msgstr ""
+msgstr "SSL/TLS"
 
 #: cps/templates/email_edit.html:31
 msgid "From e-mail"
@@ -681,11 +683,11 @@ msgstr "Najpopularniejsze książki"
 
 #: cps/templates/index.xml:19
 msgid "Popular publications from this catalog based on Downloads."
-msgstr ""
+msgstr "Popularne publikacje z tego katalogu bazujące na pobieraniach."
 
 #: cps/templates/index.xml:22 cps/templates/layout.html:127
 msgid "Best rated Books"
-msgstr ""
+msgstr "Najlepiej ocenione książki"
 
 #: cps/templates/index.xml:26
 msgid "Popular publications from this catalog based on Rating."
@@ -721,7 +723,7 @@ msgstr "Książki sortowane według serii"
 
 #: cps/templates/layout.html:48
 msgid "Toggle navigation"
-msgstr ""
+msgstr "Przełącz nawigację"
 
 #: cps/templates/layout.html:63
 msgid "Go!"
@@ -859,11 +861,11 @@ msgstr "Zmień sortowanie"
 
 #: cps/templates/shelf_edit.html:12
 msgid "should the shelf be public?"
-msgstr ""
+msgstr "półka powinna być publiczna?"
 
 #: cps/templates/shelf_order.html:5
 msgid "Drag 'n drop to rearrange order"
-msgstr ""
+msgstr "Przeciągnij i upuść, aby zmienić kolejność"
 
 #: cps/templates/stats.html:3
 msgid "Linked libraries"
@@ -891,7 +893,7 @@ msgstr "Autorów w bibliotece"
 
 #: cps/templates/stats.html:45
 msgid "Categories in this Library"
-msgstr ""
+msgstr "Kategorii w bibliotece"
 
 #: cps/templates/stats.html:49
 msgid "Series in this Library"
@@ -919,7 +921,7 @@ msgstr "Pokaż najpopularniejsze książki"
 
 #: cps/templates/user_edit.html:53
 msgid "Show best rated books"
-msgstr ""
+msgstr "Pokaż najlepiej ocenione książki"
 
 #: cps/templates/user_edit.html:57
 msgid "Show language selection"
@@ -935,11 +937,11 @@ msgstr "Pokaż wybór kategorii"
 
 #: cps/templates/user_edit.html:69
 msgid "Show author selection"
-msgstr ""
+msgstr "Pokaż wybór autora"
 
 #: cps/templates/user_edit.html:73
 msgid "Show random books in detail view"
-msgstr ""
+msgstr "Pokaz losowe książki w widoku szczegółowym"
 
 #: cps/templates/user_edit.html:105
 msgid "Delete this user"
@@ -947,7 +949,7 @@ msgstr "Usuń tego użytkownika"
 
 #: cps/templates/user_edit.html:116
 msgid "Recent Downloads"
-msgstr ""
+msgstr "Ostatnio pobierane"
 
 #. name for aaa
 msgid "Ghotuo"
