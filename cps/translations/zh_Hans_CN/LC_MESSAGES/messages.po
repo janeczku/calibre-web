@@ -73,7 +73,7 @@ msgstr "热门书籍(最多下载)"
 
 #: cps/web.py:813
 msgid "Best rated books"
-msgstr ""
+msgstr "最高评分书籍"
 
 #: cps/templates/index.xml:36 cps/web.py:822
 msgid "Random Books"
@@ -86,7 +86,7 @@ msgstr "作者列表"
 #: cps/web.py:846
 #, python-format
 msgid "Author: %(name)s"
-msgstr ""
+msgstr "作者: %(name)s"
 
 #: cps/web.py:848 cps/web.py:876 cps/web.py:975 cps/web.py:1216 cps/web.py:2103
 msgid "Error opening eBook. File does not exist or file is not accessible:"
@@ -133,7 +133,7 @@ msgstr "正在关闭服务器，请关闭窗口"
 
 #: cps/web.py:1055
 msgid "Update done"
-msgstr ""
+msgstr "更新完成"
 
 #: cps/web.py:1128 cps/web.py:1141
 msgid "search"
@@ -458,11 +458,11 @@ msgstr "停止 Calibre-web"
 
 #: cps/templates/admin.html:81
 msgid "Check for update"
-msgstr ""
+msgstr "检查更新"
 
 #: cps/templates/admin.html:82
 msgid "Perform Update"
-msgstr ""
+msgstr "执行更新"
 
 #: cps/templates/admin.html:93
 msgid "Do you really want to restart Calibre-web?"
@@ -572,7 +572,7 @@ msgstr "启用注册"
 
 #: cps/templates/config_edit.html:52
 msgid "Default Settings for new users"
-msgstr ""
+msgstr "新用户的默认设置"
 
 #: cps/templates/config_edit.html:55 cps/templates/user_edit.html:80
 msgid "Admin user"
@@ -613,7 +613,7 @@ msgstr "语言"
 
 #: cps/templates/detail.html:74
 msgid "Publishing date"
-msgstr ""
+msgstr "出版日期"
 
 #: cps/templates/detail.html:106
 msgid "Description:"
@@ -685,11 +685,11 @@ msgstr "热门书籍"
 
 #: cps/templates/index.xml:19
 msgid "Popular publications from this catalog based on Downloads."
-msgstr ""
+msgstr "基于下载数的热门书籍"
 
 #: cps/templates/index.xml:22 cps/templates/layout.html:127
 msgid "Best rated Books"
-msgstr ""
+msgstr "最高评分书籍"
 
 #: cps/templates/index.xml:26
 msgid "Popular publications from this catalog based on Rating."
@@ -895,11 +895,11 @@ msgstr "个作者在此书库"
 
 #: cps/templates/stats.html:45
 msgid "Categories in this Library"
-msgstr ""
+msgstr "个分类在此书库"
 
 #: cps/templates/stats.html:49
 msgid "Series in this Library"
-msgstr ""
+msgstr "个丛书在此书库"
 
 #: cps/templates/user_edit.html:23
 msgid "Kindle E-Mail"
@@ -923,7 +923,7 @@ msgstr "显示热门书籍"
 
 #: cps/templates/user_edit.html:53
 msgid "Show best rated books"
-msgstr ""
+msgstr "显示最高评分书籍"
 
 #: cps/templates/user_edit.html:57
 msgid "Show language selection"
