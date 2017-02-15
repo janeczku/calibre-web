@@ -6,7 +6,7 @@ import os
 import uploader
 import StringIO
 
-# ToDo: Check usage of original_file_name
+
 def get_fb2_info(tmp_file_path, original_file_extension):
 
     ns = {
@@ -20,37 +20,35 @@ def get_fb2_info(tmp_file_path, original_file_extension):
     authors = tree.xpath('/fb:FictionBook/fb:description/fb:title-info/fb:author', namespaces=ns)
 
     def get_author(element):
-        last_name=element.xpath('fb:last-name/text()', namespaces=ns)
+        last_name = element.xpath('fb:last-name/text()', namespaces=ns)
         if len(last_name):
-            last_name=last_name[0]
+            last_name = last_name[0]
         else:
-            last_name=u''
-        middle_name=element.xpath('fb:middle-name/text()', namespaces=ns)
+            last_name = u''
+        middle_name = element.xpath('fb:middle-name/text()', namespaces=ns)
         if len(middle_name):
-            middle_name=middle_name[0]
+            middle_name = middle_name[0]
         else:
-            middle_name=u''
-        first_name=element.xpath('fb:first-name/text()', namespaces=ns)
+            middle_name = u''
+        first_name = element.xpath('fb:first-name/text()', namespaces=ns)
         if len(first_name):
-            first_name=first_name[0]
+            first_name = first_name[0]
         else:
-            first_name=u''
-        return  first_name + ' ' + middle_name + ' ' + last_name
+            first_name = u''
+        return first_name + ' ' + middle_name + ' ' + last_name
 
     author = unicode(", ".join(map(get_author, authors)))
 
     title = tree.xpath('/fb:FictionBook/fb:description/fb:title-info/fb:book-title/text()', namespaces=ns)
     if len(title):
-        title=unicode(title[0])
+        title = unicode(title[0])
     else:
-        title=u''
+        title = u''
     description = tree.xpath('/fb:FictionBook/fb:description/fb:publish-info/fb:book-name/text()', namespaces=ns)
     if len(description):
-        description=unicode(description[0])
+        description = unicode(description[0])
     else:
-        description=u''
-
-
+        description = u''
 
     return uploader.BookMeta(
         file_path=tmp_file_path,

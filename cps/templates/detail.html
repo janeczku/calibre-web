@@ -70,8 +70,8 @@
       </div>
       </p>
       {% endif %}
-      {% if entry.pubdate != '0101-01-01 00:00:00' %}
-        <p>{{_('Publishing date')}}: {{entry.pubdate[:10]}} </p>
+      {% if entry.pubdate[:10] != '0101-01-01' %}
+        <p>{{_('Publishing date')}}: {{entry.pubdate|formatdate}} </p>
       {% endif %}
       {% if cc|length > 0 %}
         <p>
