@@ -1577,9 +1577,10 @@ def profile():
 @login_required
 @admin_required
 def admin():
+    commit = '$Format:%cI$'
     content = ub.session.query(ub.User).all()
     settings = ub.session.query(ub.Settings).first()
-    return render_title_template("admin.html", content=content, email=settings, config=config,
+    return render_title_template("admin.html", content=content, email=settings, config=config, commit=commit,
                                  development=ub.DEVELOPMENT, title=_(u"Admin page"))
 
 
@@ -1598,7 +1599,6 @@ def basic_configuration():
 
 def configuration_helper(origin):
     global global_task
-    commit='$Format:%cI$'
     reboot_required = False
     db_change = False
     success = False
@@ -1659,13 +1659,13 @@ def configuration_helper(origin):
             logging.getLogger("book_formats").setLevel(config.config_log_level)
         except e:
             flash(e, category="error")
-            return render_title_template("config_edit.html", content=config, origin=origin, commit=commit,
+            return render_title_template("config_edit.html", content=config, origin=origin,
                                          title=_(u"Basic Configuration"))
         if db_change:
             reload(db)
             if not db.setup_db():
                 flash(_(u'DB location is not valid, please enter correct path'), category="error")
-                return render_title_template("config_edit.html", content=config, origin=origin, commit=commit,
+                return render_title_template("config_edit.html", content=config, origin=origin,
                                              title=_(u"Basic Configuration"))
         if reboot_required:
             # db.engine.dispose() # ToDo verify correct
@@ -1678,7 +1678,7 @@ def configuration_helper(origin):
             app.logger.info('Reboot required, restarting')
         if origin:
             success = True
-    return render_title_template("config_edit.html", origin=origin, success=success, content=config, commit=commit,
+    return render_title_template("config_edit.html", origin=origin, success=success, content=config,
                                  title=_(u"Basic Configuration"))
 
 
