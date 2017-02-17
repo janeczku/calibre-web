@@ -81,7 +81,7 @@ msgstr "Beliebte Bücher (die meisten Downloads)"
 
 #: cps/web.py:813
 msgid "Best rated books"
-msgstr ""
+msgstr "Best bewertete Bücher"
 
 #: cps/templates/index.xml:36 cps/web.py:822
 msgid "Random Books"
@@ -94,7 +94,7 @@ msgstr "Autorenliste"
 #: cps/web.py:846
 #, python-format
 msgid "Author: %(name)s"
-msgstr ""
+msgstr "Autor: %(name)s"
 
 #: cps/web.py:848 cps/web.py:876 cps/web.py:975 cps/web.py:1216 cps/web.py:2103
 msgid "Error opening eBook. File does not exist or file is not accessible:"
@@ -143,7 +143,7 @@ msgstr "Server wird runtergefahren, bitte Fenster schließen"
 
 #: cps/web.py:1055
 msgid "Update done"
-msgstr ""
+msgstr "Update durchgeführt"
 
 #: cps/web.py:1128 cps/web.py:1141
 msgid "search"
@@ -470,11 +470,11 @@ msgstr "Stoppe Calibre-web"
 
 #: cps/templates/admin.html:81
 msgid "Check for update"
-msgstr ""
+msgstr "Suche nach Update"
 
 #: cps/templates/admin.html:82
 msgid "Perform Update"
-msgstr ""
+msgstr "Update durchführen"
 
 #: cps/templates/admin.html:93
 msgid "Do you really want to restart Calibre-web?"
@@ -584,7 +584,7 @@ msgstr "Öffentliche Registrierung aktivieren"
 
 #: cps/templates/config_edit.html:52
 msgid "Default Settings for new users"
-msgstr ""
+msgstr "Default Einstellungen für neue Benutzer"
 
 #: cps/templates/config_edit.html:55 cps/templates/user_edit.html:80
 msgid "Admin user"
@@ -625,7 +625,7 @@ msgstr "Sprache"
 
 #: cps/templates/detail.html:74
 msgid "Publishing date"
-msgstr ""
+msgstr "Herausgabedatum"
 
 #: cps/templates/detail.html:106
 msgid "Description:"
@@ -699,11 +699,11 @@ msgstr "Beliebte Bücher"
 
 #: cps/templates/index.xml:19
 msgid "Popular publications from this catalog based on Downloads."
-msgstr ""
+msgstr "Beliebte Publikationen aus dieser Bibliothek basierend auf Downloadzahlen"
 
 #: cps/templates/index.xml:22 cps/templates/layout.html:127
 msgid "Best rated Books"
-msgstr ""
+msgstr "Best bewertete Bücher"
 
 #: cps/templates/index.xml:26
 msgid "Popular publications from this catalog based on Rating."
@@ -804,8 +804,8 @@ msgid "Remember me"
 msgstr "Merken"
 
 #: cps/templates/osd.xml:5
-msgid "instanceCalibre Web ebook catalog"
-msgstr ""
+msgid "Calibre Web ebook catalog"
+msgstr "Calibre Web Ebook Katalog"
 
 #: cps/templates/read.html:136
 msgid "Reflow text when sidebars are open."
@@ -909,11 +909,11 @@ msgstr "Autoren in dieser Bibliothek"
 
 #: cps/templates/stats.html:45
 msgid "Categories in this Library"
-msgstr ""
+msgstr "Kategorien in dieser Bibliothek"
 
 #: cps/templates/stats.html:49
 msgid "Series in this Library"
-msgstr ""
+msgstr "Serien in dieser Bibliothek"
 
 #: cps/templates/user_edit.html:23
 msgid "Kindle E-Mail"
@@ -937,7 +937,7 @@ msgstr "Zeige Auswahl Beliebte Bücher"
 
 #: cps/templates/user_edit.html:53
 msgid "Show best rated books"
-msgstr ""
+msgstr "Zeige am besten bewertete Bücher"
 
 #: cps/templates/user_edit.html:57
 msgid "Show language selection"
