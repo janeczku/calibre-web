@@ -144,7 +144,6 @@ class UserBase:
         else:
             return False
 
-
     def __repr__(self):
         return '<User %r>' % self.nickname
 
@@ -164,10 +163,6 @@ class User(UserBase, Base):
     downloads = relationship('Downloads', backref='user', lazy='dynamic')
     locale = Column(String(2), default="en")
     sidebar_view = Column(Integer, default=1)
-    #language_books = Column(Integer, default=1)
-    #series_books = Column(Integer, default=1)
-    #category_books = Column(Integer, default=1)
-    #hot_books = Column(Integer, default=1)
     default_language = Column(String(3), default="all")
 
 
@@ -184,10 +179,6 @@ class Anonymous(AnonymousUserMixin, UserBase):
         self.role = data.role
         self.sidebar_view = data.sidebar_view
         self.default_language = data.default_language
-        #self.language_books = data.language_books
-        #self.series_books = data.series_books
-        #self.category_books = data.category_books
-        #self.hot_books = data.hot_books
         self.default_language = data.default_language
         self.locale = data.locale
         self.anon_browse = settings.config_anonbrowse
