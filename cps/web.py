@@ -52,7 +52,7 @@ from cgi import escape
 
 # Global variables
 global_task = None
-ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'epub', 'mobi', 'azw', 'azw3', 'cbr', 'cbz', 'cbt', 'djvu', 'prc', 'doc', 'docx'])
+ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'epub', 'mobi', 'azw', 'azw3', 'cbr', 'cbz', 'cbt', 'djvu', 'prc', 'doc', 'docx', 'fb2'])
 
 
 # Proxy Helper class
@@ -2116,12 +2116,17 @@ def upload():
     db.session.connection().connection.connection.create_function('uuid4', 0, lambda: str(uuid4()))
     if request.method == 'POST' and 'btn-upload' in request.files:
         file = request.files['btn-upload']
-        if not ('.' in file.filename and file.filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS):
-            flash(
-                _('File extension "%s" is not allowed to be uploaded to this server' % 
-                file.filename.rsplit('.', 1)[1].lower()),
-                category="error"
-            )
+        if '.' in file.filename:
+            file_ext = file.filename.rsplit('.', 1)[-1].lower()
+            if file_ext not in ALLOWED_EXTENSIONS:
+                flash(
+                    _('File extension "%s" is not allowed to be uploaded to this server' % 
+                    file_ext),
+                    category="error"
+                )
+                return redirect(url_for('index'))
+        else:
+            flash(_('File to be uploaded must have an extension'), category="error")
             return redirect(url_for('index'))
         meta = uploader.upload(file)
 
