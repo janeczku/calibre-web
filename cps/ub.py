@@ -144,7 +144,6 @@ class UserBase:
         else:
             return False
 
-
     def __repr__(self):
         return '<User %r>' % self.nickname
 
@@ -164,10 +163,6 @@ class User(UserBase, Base):
     downloads = relationship('Downloads', backref='user', lazy='dynamic')
     locale = Column(String(2), default="en")
     sidebar_view = Column(Integer, default=1)
-    #language_books = Column(Integer, default=1)
-    #series_books = Column(Integer, default=1)
-    #category_books = Column(Integer, default=1)
-    #hot_books = Column(Integer, default=1)
     default_language = Column(String(3), default="all")
 
 
@@ -184,10 +179,6 @@ class Anonymous(AnonymousUserMixin, UserBase):
         self.role = data.role
         self.sidebar_view = data.sidebar_view
         self.default_language = data.default_language
-        #self.language_books = data.language_books
-        #self.series_books = data.series_books
-        #self.category_books = data.category_books
-        #self.hot_books = data.hot_books
         self.default_language = data.default_language
         self.locale = data.locale
         self.anon_browse = settings.config_anonbrowse
@@ -262,6 +253,7 @@ class Settings(Base):
     config_uploading = Column(SmallInteger, default=0)
     config_anonbrowse = Column(SmallInteger, default=0)
     config_public_reg = Column(SmallInteger, default=0)
+    config_default_role = Column(SmallInteger, default=0)
 
     def __repr__(self):
         pass
@@ -287,7 +279,8 @@ class Config:
         self.config_uploading = data.config_uploading
         self.config_anonbrowse = data.config_anonbrowse
         self.config_public_reg = data.config_public_reg
-        if self.config_calibre_dir is not None: # and (self.db_configured is None or self.db_configured is True):
+        self.config_default_role = data.config_default_role
+        if self.config_calibre_dir is not None:
             self.db_configured = True
         else:
             self.db_configured = False
@@ -295,6 +288,36 @@ class Config:
     @property
     def get_main_dir(self):
         return self.config_main_dir
+
+    def role_admin(self):
+        if self.config_default_role is not None:
+            return True if self.config_default_role & ROLE_ADMIN == ROLE_ADMIN else False
+        else:
+            return False
+
+    def role_download(self):
+        if self.config_default_role is not None:
+            return True if self.config_default_role & ROLE_DOWNLOAD == ROLE_DOWNLOAD else False
+        else:
+            return False
+
+    def role_upload(self):
+        if self.config_default_role is not None:
+            return True if self.config_default_role & ROLE_UPLOAD == ROLE_UPLOAD else False
+        else:
+            return False
+
+    def role_edit(self):
+        if self.config_default_role is not None:
+            return True if self.config_default_role & ROLE_EDIT == ROLE_EDIT else False
+        else:
+            return False
+
+    def role_passwd(self):
+        if self.config_default_role is not None:
+            return True if self.config_default_role & ROLE_PASSWD == ROLE_PASSWD else False
+        else:
+            return False
 
     def get_Log_Level(self):
         ret_value=""
@@ -337,6 +360,13 @@ def migrate_Database():
         conn.execute("ALTER TABLE Settings ADD column `config_uploading` SmallInteger DEFAULT 0")
         conn.execute("ALTER TABLE Settings ADD column `config_anonbrowse` SmallInteger DEFAULT 0")
         conn.execute("ALTER TABLE Settings ADD column `config_public_reg` SmallInteger DEFAULT 0")
+        session.commit()
+    try:
+        session.query(exists().where(Settings.config_default_role)).scalar()
+        session.commit()
+    except exc.OperationalError:  # Database is not compatible, some rows are missing
+        conn = engine.connect()
+        conn.execute("ALTER TABLE Settings ADD column `config_default_role` SmallInteger DEFAULT 0")
         session.commit()
     try:
         session.query(exists().where(BookShelf.order)).scalar()

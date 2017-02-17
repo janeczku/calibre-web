@@ -27,7 +27,7 @@
     <label for="locale">{{_('Language')}}</label>
         <select name="locale" id="locale" class="form-control">
             {%  for translation in translations %}
-                <option value="{{translation}}" {% if translation.language == content.locale %}selected{% endif %} {% if new_user == 1 and loop.first %}selected{% endif %}>{{ translation.display_name }}</option>
+                <option value="{{translation}}" {% if translation|string == content.locale %}selected{% endif %} {% if new_user == 1 and loop.first %}selected{% endif %}>{{ translation.display_name }}</option>
             {% endfor %}
         </select>
     </div>
@@ -108,7 +108,7 @@
     {% endif %}
     <button type="submit" id="submit" class="btn btn-default">{{_('Submit')}}</button>
     {% if not profile %}
-      <a href="{{ url_for('admin') }}" class="btn btn-default">{{_('Back')}}</a>
+      <a href="{{ url_for('admin') }}" id="back" class="btn btn-default">{{_('Back')}}</a>
     {% endif %}
   </form>
 

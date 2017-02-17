@@ -25,6 +25,7 @@ import zipfile
 from werkzeug.security import generate_password_hash, check_password_hash
 from babel import Locale as LC
 from babel import negotiate_locale
+from babel.dates import format_date
 from functools import wraps
 import base64
 from sqlalchemy.sql import *
@@ -278,6 +279,12 @@ def mimetype_filter(val):
     except:
         s = 'application/octet-stream'
     return s
+
+@app.template_filter('formatdate')
+def formatdate(val):
+    conformed_timestamp = re.sub(r"[:]|([-](?!((\d{2}[:]\d{2})|(\d{4}))$))", '', val)
+    formatdate = datetime.datetime.strptime(conformed_timestamp[:-5], "%Y%m%d %H%M%S")
+    return format_date(formatdate, format='medium',locale=get_locale())
 
 
 def admin_required(f):
@@ -658,10 +665,9 @@ def get_opds_download_link(book_id, format):
     data = db.session.query(db.Data).filter(db.Data.book == book.id).filter(db.Data.format == format.upper()).first()
     if current_user.is_authenticated:
         helper.update_download(book_id, int(current_user.id))
-    author = helper.get_normalized_author(book.author_sort)
     file_name = book.title
-    if len(author) > 0:
-        file_name = author + '-' + file_name
+    if len(book.authors) > 0:
+        file_name = book.authors[0].name + '-' + file_name
     file_name = helper.get_valid_filename(file_name)
     response = make_response(send_from_directory(os.path.join(config.config_calibre_dir, book.path), data.name + "." + format))
     response.headers["Content-Disposition"] = "attachment; filename=\"%s.%s\"" % (data.name, format)
@@ -1228,10 +1234,9 @@ def get_download_link(book_id, format):
         # collect downloaded books only for registered user and not for anonymous user
         if current_user.is_authenticated:
             helper.update_download(book_id, int(current_user.id))
-        author = helper.get_normalized_author(book.author_sort)
         file_name = book.title
-        if len(author) > 0:
-            file_name = author + '-' + file_name
+        if len(book.authors) > 0:
+            file_name = book.authors[0].name + '-' + file_name
         file_name = helper.get_valid_filename(file_name)
         response = make_response(
             send_from_directory(os.path.join(config.config_calibre_dir, book.path), data.name + "." + format))
@@ -1239,13 +1244,7 @@ def get_download_link(book_id, format):
             response.headers["Content-Type"] = mimetypes.types_map['.' + format]
         except:
             pass
-        response.headers["Content-Disposition"] = \
-            "attachment; " \
-            "filename={utf_filename}.{suffix};" \
-            "filename*=UTF-8''{utf_filename}.{suffix}".format(
-                utf_filename=file_name.encode('utf-8'),
-                suffix=format
-            )
+        response.headers["Content-Disposition"] = "attachment; filename=\"%s.%s\"" % (file_name.encode('utf-8'), format)
         return response
     else:
         abort(404)
@@ -1271,7 +1270,7 @@ def register():
             content.password = generate_password_hash(to_save["password"])
             content.nickname = to_save["nickname"]
             content.email = to_save["email"]
-            content.role = 0
+            content.role = config.config_default_role
             try:
                 ub.session.add(content)
                 ub.session.commit()
@@ -1578,9 +1577,10 @@ def profile():
 @login_required
 @admin_required
 def admin():
+    commit = '$Format:%cI$'
     content = ub.session.query(ub.User).all()
     settings = ub.session.query(ub.Settings).first()
-    return render_title_template("admin.html", content=content, email=settings, config=config,
+    return render_title_template("admin.html", content=content, email=settings, config=config, commit=commit,
                                  development=ub.DEVELOPMENT, title=_(u"Admin page"))
 
 
@@ -1635,6 +1635,18 @@ def configuration_helper(origin):
             content.config_anonbrowse = 1
         if "config_public_reg" in to_save and to_save["config_public_reg"] == "on":
             content.config_public_reg = 1
+
+        content.config_default_role = 0
+        if "admin_role" in to_save:
+            content.config_default_role = content.config_default_role + ub.ROLE_ADMIN
+        if "download_role" in to_save:
+            content.config_default_role = content.config_default_role + ub.ROLE_DOWNLOAD
+        if "upload_role" in to_save:
+            content.config_default_role = content.config_default_role + ub.ROLE_UPLOAD
+        if "edit_role" in to_save:
+            content.config_default_role = content.config_default_role + ub.ROLE_EDIT
+        if "passwd_role" in to_save:
+            content.config_default_role = content.config_default_role + ub.ROLE_PASSWD
         try:
             if db_change:
                 if config.db_configured:
@@ -1656,7 +1668,7 @@ def configuration_helper(origin):
                 return render_title_template("config_edit.html", content=config, origin=origin,
                                              title=_(u"Basic Configuration"))
         if reboot_required:
-                # db.engine.dispose() # ToDo verify correct
+            # db.engine.dispose() # ToDo verify correct
             ub.session.close()
             ub.engine.dispose()
             # stop tornado server
@@ -1731,6 +1743,8 @@ def new_user():
         except IntegrityError:
             ub.session.rollback()
             flash(_(u"Found an existing account for this email address or nickname."), category="error")
+    else:
+        content.role=config.config_default_role
     return render_title_template("user_edit.html", new_user=1, content=content, translations=translations,
                                  languages=languages, title=_(u"Add new user"))
 
@@ -1913,7 +1927,7 @@ def edit_book(book_id):
             modify_database_object(input_authors, book.authors, db.Authors, db.session, 'author')
             if author0_before_edit != book.authors[0].name:
                 edited_books_id.add(book.id)
-                book.author_sort=helper.get_normalized_author(input_authors[0]) # ToDo: wrong sorting
+                book.author_sort=helper.get_sorted_author(input_authors[0]) 
 
             if to_save["cover_url"] and os.path.splitext(to_save["cover_url"])[1].lower() == ".jpg":
                 img = requests.get(to_save["cover_url"])
@@ -2141,9 +2155,10 @@ def upload():
         if is_author:
             db_author = is_author
         else:
-            db_author = db.Authors(author, helper.get_normalized_author(author), "") # TODO: WRONG Sorting Author function
+            db_author = db.Authors(author, helper.get_sorted_author(author), "") 
             db.session.add(db_author)
-        path = os.path.join(author_dir, title_dir)
+        # combine path and normalize path from windows systems
+        path = os.path.join(author_dir, title_dir).replace('\\','/')
         db_book = db.Books(title, "", db_author.sort, datetime.datetime.now(), datetime.datetime(101, 01, 01), 1,
                            datetime.datetime.now(), path, has_cover, db_author, [])
         db_book.authors.append(db_author)
