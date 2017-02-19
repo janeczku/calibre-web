@@ -1,3 +1,11 @@
+##About my fork
+
+I have been messing around with calibre-web in a few different ways and thought I would share them. I am currently working on a couple of features: - 
+
+1. Marking books as read/unread. In the Book View, there is now a row that says whether or not a book is read. If you click it, it will toggle. Further down the line, I plan on adding goodreads support, which if the book has a goodreads link, it will automatically move the book to the "to read" and "read" bookshelves.
+
+2. Google drive support. In my local version, I currently have this working, but it is essentially to make the website have all the books / covers / metadata.db served directly from google drive. I am currently, still optimising a bit of code, and will hopefully have this on GitHub ASAP. 
+
 ##About
 
 Calibre Web is a web app providing a clean interface for browsing, reading and downloading eBooks using an existing [Calibre](https://calibre-ebook.com) database.
