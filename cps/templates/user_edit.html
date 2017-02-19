@@ -69,6 +69,10 @@
         <label for="show_author">{{_('Show author selection')}}</label>
     </div>
     <div class="form-group">
+        <input type="checkbox" name="show_read_and_unread" id="show_read_and_unread" {% if content.show_read_and_unread() %}checked{% endif %}>
+        <label for="show_read_and_unread">{{_('Show read and unread')}}</label>
+    </div>
+    <div class="form-group">
         <input type="checkbox" name="show_detail_random" id="show_detail_random" {% if content.show_detail_random() %}checked{% endif %}>
         <label for="show_detail_random">{{_('Show random books in detail view')}}</label>
     </div>

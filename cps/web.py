@@ -953,6 +953,23 @@ def category(id, page):
                                  title=_(u"Category: %(name)s", name=name))
 
 
+@app.route("/ajax/toggleread/<int:id>", methods=['POST'])
+@login_required
+def toggle_read(id):
+    book = ub.session.query(ub.ReadBook).filter(ub.and_(ub.ReadBook.user_id == int(current_user.id),
+                                                                   ub.ReadBook.book_id == id)).first()
+    if book:
+        book.is_read=not book.is_read
+    else:
+        readBook=ub.ReadBook()
+        readBook.user_id=int(current_user.id)
+        readBook.book_id = id
+        readBook.is_read=True
+        book=readBook
+    ub.session.merge(book)
+    ub.session.commit()
+    return ""
+
 @app.route("/book/<int:id>")
 @login_required_if_no_ano
 def show_book(id):
@@ -975,8 +992,14 @@ def show_book(id):
         for entry in shelfs:
             book_in_shelfs.append(entry.shelf)
 
+        #return render_title_template('detail.html', entry=entries, cc=cc,
+                                    # title=entries.title, books_shelfs=book_in_shelfs)
+        matching_have_read_book=ub.session.query(ub.ReadBook).filter(ub.and_(ub.ReadBook.user_id == int(current_user.id),
+                                                                   ub.ReadBook.book_id == id)).all()
+        have_read=len(matching_have_read_book) > 0 and matching_have_read_book[0].is_read
+
         return render_title_template('detail.html', entry=entries, cc=cc,
-                                     title=entries.title, books_shelfs=book_in_shelfs)
+                                     title=entries.title, books_shelfs=book_in_shelfs, have_read=have_read)
     else:
         flash(_(u"Error opening eBook. File does not exist or file is not accessible:"), category="error")
         return redirect(url_for("index"))
@@ -1160,8 +1183,61 @@ def get_cover(cover_path):
 @requires_basic_auth_if_no_ano
 def feed_get_cover(book_id):
     book = db.session.query(db.Books).filter(db.Books.id == book_id).first()
-    return send_from_directory(os.path.join(config.config_calibre_dir, book.path), "cover.jpg")
+    #return send_from_directory(os.path.join(config.config_calibre_dir, book.path), "cover.jpg")
+    df=gdriveutils.getFileFromEbooksFolder(book.path, 'cover.jpg', Gdrive.Instance().drive)
+    download_url = df.metadata.get('downloadUrl')
+    resp, content = df.auth.Get_Http_Object().request(download_url)
+    resp=make_response(content)
+    resp.headers['Content-Type']='image/jpeg'
+    return resp
 
+def render_read_books(page, are_read, as_xml=False):
+    readBooks=ub.session.query(ub.ReadBook).filter(ub.ReadBook.user_id == int(current_user.id)).filter(ub.ReadBook.is_read == True).all()
+    readBookIds=[x.book_id for x in readBooks]
+    if are_read:
+        db_filter = db.Books.id.in_(readBookIds)
+    else:
+        db_filter = ~db.Books.id.in_(readBookIds)
+
+    entries, random, pagination = fill_indexpage(page, db.Books, 
+        db_filter, db.Books.timestamp.desc())
+    if as_xml:    
+        xml = render_title_template('feed.xml', entries=entries, pagination=pagination)
+        response = make_response(xml)
+        response.headers["Content-Type"] = "application/xml"
+        return response
+    else:
+        name=u'Read Books' if are_read else u'Unread Books'
+        return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
+                                 title=_(name, name=name))
+
+@app.route("/opds/readbooks/")
+@login_required_if_no_ano
+def feed_read_books():
+    off = request.args.get("offset")
+    if not off:
+        off = 0
+    return render_read_books(int(off) / (int(config.config_books_per_page)) + 1, True, True)
+
+@app.route("/readbooks/", defaults={'page': 1})
+@app.route("/readbooks/<int:page>'")
+@login_required_if_no_ano
+def read_books(page):
+    return render_read_books(page, True)
+
+@app.route("/opds/unreadbooks/")
+@login_required_if_no_ano
+def feed_unread_books():
+    off = request.args.get("offset")
+    if not off:
+        off = 0
+    return render_read_books(int(off) / (int(config.config_books_per_page)) + 1, False, True)
+
+@app.route("/unreadbooks/", defaults={'page': 1})
+@app.route("/unreadbooks/<int:page>'")
+@login_required_if_no_ano
+def unread_books(page):
+    return render_read_books(page, False)
 
 @app.route("/read/<int:book_id>/<format>")
 @login_required
@@ -1240,6 +1316,10 @@ def get_download_link(book_id, format):
         file_name = helper.get_valid_filename(file_name)
         response = make_response(
             send_from_directory(os.path.join(config.config_calibre_dir, book.path), data.name + "." + format))
+        df=gdriveutils.getFileFromEbooksFolder(book.path, '%s.%s' % (data.name, format), Gdrive.Instance().drive)
+        download_url = df.metadata.get('downloadUrl')
+        resp, content = df.auth.Get_Http_Object().request(download_url)
+        #response=make_response(content)
         try:
             response.headers["Content-Type"] = mimetypes.types_map['.' + format]
         except:
@@ -1556,6 +1636,8 @@ def profile():
             content.sidebar_view += ub.SIDEBAR_BEST_RATED
         if "show_author" in to_save:
             content.sidebar_view += ub.SIDEBAR_AUTHOR
+        if "show_read_and_unread" in to_save:
+            content.sidebar_view += ub.SIDEBAR_READ_AND_UNREAD
         if "show_detail_random" in to_save:
             content.sidebar_view += ub.DETAIL_RANDOM
         if "default_language" in to_save:
