@@ -1183,13 +1183,7 @@ def get_cover(cover_path):
 @requires_basic_auth_if_no_ano
 def feed_get_cover(book_id):
     book = db.session.query(db.Books).filter(db.Books.id == book_id).first()
-    #return send_from_directory(os.path.join(config.config_calibre_dir, book.path), "cover.jpg")
-    df=gdriveutils.getFileFromEbooksFolder(book.path, 'cover.jpg', Gdrive.Instance().drive)
-    download_url = df.metadata.get('downloadUrl')
-    resp, content = df.auth.Get_Http_Object().request(download_url)
-    resp=make_response(content)
-    resp.headers['Content-Type']='image/jpeg'
-    return resp
+    return send_from_directory(os.path.join(config.config_calibre_dir, book.path), "cover.jpg")
 
 def render_read_books(page, are_read, as_xml=False):
     readBooks=ub.session.query(ub.ReadBook).filter(ub.ReadBook.user_id == int(current_user.id)).filter(ub.ReadBook.is_read == True).all()
@@ -1316,10 +1310,6 @@ def get_download_link(book_id, format):
         file_name = helper.get_valid_filename(file_name)
         response = make_response(
             send_from_directory(os.path.join(config.config_calibre_dir, book.path), data.name + "." + format))
-        df=gdriveutils.getFileFromEbooksFolder(book.path, '%s.%s' % (data.name, format), Gdrive.Instance().drive)
-        download_url = df.metadata.get('downloadUrl')
-        resp, content = df.auth.Get_Http_Object().request(download_url)
-        #response=make_response(content)
         try:
             response.headers["Content-Type"] = mimetypes.types_map['.' + format]
         except:
