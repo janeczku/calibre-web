@@ -222,14 +222,14 @@ def get_valid_filename(value, replace_whitespace=True):
     if use_unidecode:
         value=(unidecode.unidecode(value)).strip()
     else:
-        value=value.replace('§','SS')
-        value=value.replace('ß','ss')
+        value=value.replace(u'§',u'SS')
+        value=value.replace(u'ß',u'ss')
         value = unicodedata.normalize('NFKD', value)
         re_slugify = re.compile('[\W\s-]', re.UNICODE)
         value = unicode(re_slugify.sub('', value).strip())
     if replace_whitespace:
         #*+:\"/<>? werden durch _ ersetzt
-        value = re.sub('[\*\+:\\\"/<>\?]+', '_', value, flags=re.U)
+        value = re.sub('[\*\+:\\\"/<>\?]+', u'_', value, flags=re.U)
 
     value = value[:128]
     return value
@@ -263,7 +263,7 @@ def update_dir_stucture(book_id, calibrepath):
     
     if authordir != new_authordir:
         new_author_path = os.path.join(os.path.join(calibrepath, new_authordir), os.path.basename(path))
-        os.rename(path, new_author_path)
+        os.renames(path, new_author_path)
         book.path = new_authordir + '/' + book.path.split('/')[1]
     db.session.commit()
 

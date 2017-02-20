@@ -57,7 +57,7 @@ __all__ = ('VERSION', 'VERSION_INFO', 'MAGICK_VERSION',
 #:
 #: .. versionchanged:: 0.1.9
 #:    Becomes :class:`tuple`.  (It was string before.)
-VERSION_INFO = (0, 4, 3)
+VERSION_INFO = (0, 4, 4)
 
 #: (:class:`basestring`) The version string e.g. ``'0.1.2'``.
 #:
@@ -94,20 +94,20 @@ if libmagick:
     #: .. versionadded:: 0.2.1
     MAGICK_VERSION_INFO = tuple(int(v or 0) for v in _match.groups())
 
-    #: (:class:`datetime.date`) The release date of the linked ImageMagick
-    #: library.  The same to the result of :c:func:`GetMagickReleaseDate`
-    #: function.
-    #:
-    #: .. versionadded:: 0.2.1
-    MAGICK_RELEASE_DATE_STRING = text(libmagick.GetMagickReleaseDate())
-
     #: (:class:`basestring`) The date string e.g. ``'2012-06-03'`` of
     #: :const:`MAGICK_RELEASE_DATE_STRING`.  This value is the exactly same
     #: string to the result of :c:func:`GetMagickReleaseDate` function.
     #:
     #: .. versionadded:: 0.2.1
-    MAGICK_RELEASE_DATE = datetime.date(
-        *map(int, MAGICK_RELEASE_DATE_STRING.split('-')))
+    MAGICK_RELEASE_DATE_STRING = text(libmagick.GetMagickReleaseDate())
+
+    _match = re.match(r'^(\d{4})-?(\d\d)-?(\d\d)$', MAGICK_RELEASE_DATE_STRING)
+    #: (:class:`datetime.date`) The release date of the linked ImageMagick
+    #: library.  Equivalent to the result of :c:func:`GetMagickReleaseDate`
+    #: function.
+    #:
+    #: .. versionadded:: 0.2.1
+    MAGICK_RELEASE_DATE = datetime.date(*map(int, _match.groups()))
 
     c_quantum_depth = ctypes.c_size_t()
     libmagick.GetMagickQuantumDepth(ctypes.byref(c_quantum_depth))

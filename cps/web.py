@@ -284,7 +284,7 @@ def mimetype_filter(val):
 @app.template_filter('formatdate')
 def formatdate(val):
     conformed_timestamp = re.sub(r"[:]|([-](?!((\d{2}[:]\d{2})|(\d{4}))$))", '', val)
-    formatdate = datetime.datetime.strptime(conformed_timestamp[:-5], "%Y%m%d %H%M%S")
+    formatdate = datetime.datetime.strptime(conformed_timestamp[:15], "%Y%m%d %H%M%S")
     return format_date(formatdate, format='medium',locale=get_locale())
 
 
