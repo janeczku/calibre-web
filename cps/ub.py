@@ -11,6 +11,7 @@ import traceback
 import logging
 from werkzeug.security import generate_password_hash
 from flask_babel import gettext as _
+import json
 
 dbpath = os.path.join(os.path.normpath(os.path.dirname(os.path.realpath(__file__)) + os.sep + ".." + os.sep), "app.db")
 engine = create_engine('sqlite:///{0}'.format(dbpath), echo=False)
@@ -269,6 +270,12 @@ class Settings(Base):
     config_anonbrowse = Column(SmallInteger, default=0)
     config_public_reg = Column(SmallInteger, default=0)
     config_default_role = Column(SmallInteger, default=0)
+    config_use_google_drive = Column(Boolean)
+    config_google_drive_client_id = Column(String)
+    config_google_drive_client_secret = Column(String)
+    config_google_drive_folder = Column(String)
+    config_google_drive_calibre_url_base = Column(String)
+    config_google_drive_watch_changes_response = Column(String)
 
     def __repr__(self):
         pass
@@ -295,6 +302,16 @@ class Config:
         self.config_anonbrowse = data.config_anonbrowse
         self.config_public_reg = data.config_public_reg
         self.config_default_role = data.config_default_role
+        self.config_use_google_drive = data.config_use_google_drive
+        self.config_google_drive_client_id = data.config_google_drive_client_id
+        self.config_google_drive_client_secret = data.config_google_drive_client_secret
+        self.config_google_drive_calibre_url_base = data.config_google_drive_calibre_url_base
+        self.config_google_drive_folder = data.config_google_drive_folder
+        if data.config_google_drive_watch_changes_response:
+            self.config_google_drive_watch_changes_response = json.loads(data.config_google_drive_watch_changes_response)
+        else:
+            self.config_google_drive_watch_changes_response=None
+
         if self.config_calibre_dir is not None:
             self.db_configured = True
         else:
@@ -379,6 +396,17 @@ def migrate_Database():
         conn.execute("ALTER TABLE Settings ADD column `config_anonbrowse` SmallInteger DEFAULT 0")
         conn.execute("ALTER TABLE Settings ADD column `config_public_reg` SmallInteger DEFAULT 0")
         session.commit()
+
+    try:
+        session.query(exists().where(Settings.config_use_google_drive)).scalar()
+    except exc.OperationalError:
+        conn = engine.connect()
+        conn.execute("ALTER TABLE Settings ADD column `config_use_google_drive` INTEGER DEFAULT 0")
+        conn.execute("ALTER TABLE Settings ADD column `config_google_drive_client_id` String DEFAULT ''")
+        conn.execute("ALTER TABLE Settings ADD column `config_google_drive_client_secret` String DEFAULT ''")
+        conn.execute("ALTER TABLE Settings ADD column `config_google_drive_calibre_url_base` INTEGER DEFAULT 0")
+        conn.execute("ALTER TABLE Settings ADD column `config_google_drive_folder` String DEFAULT ''")
+        conn.execute("ALTER TABLE Settings ADD column `config_google_drive_watch_changes_response` String DEFAULT ''")
     try:
         session.query(exists().where(Settings.config_default_role)).scalar()
         session.commit()
