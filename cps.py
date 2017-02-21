@@ -3,7 +3,6 @@
 
 import os
 import sys
-import time
 
 base_path = os.path.dirname(os.path.abspath(__file__))
 # Insert local directories into path
@@ -22,7 +21,7 @@ if __name__ == '__main__':
         http_server.listen(web.ub.config.config_port)
         IOLoop.instance().start()
 
-    if web.global_task == 0:
+    if web.helper.global_task == 0:
         print("Performing restart of Calibre-web")
         os.execl(sys.executable, sys.executable, *sys.argv)
     else:
