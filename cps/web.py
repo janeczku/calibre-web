@@ -744,7 +744,10 @@ def get_updater_status():
             helper.updater_thread.start()
             status['status']=helper.updater_thread.get_update_status()
     elif request.method == "GET":
-        status['status']=helper.updater_thread.get_update_status()
+        try:
+            status['status']=helper.updater_thread.get_update_status()
+        except:
+            status['status'] = 7
     return json.dumps(status)
 
 
@@ -1044,9 +1047,9 @@ def stats():
 @login_required
 @admin_required
 def shutdown():
-    global global_task
+    # global global_task
     task = int(request.args.get("parameter").strip())
-    global_task = task
+    helper.global_task = task
     if task == 1 or task == 0:  # valid commandos received
         # close all database connections
         db.session.close()
@@ -1611,7 +1614,7 @@ def basic_configuration():
 
 
 def configuration_helper(origin):
-    global global_task
+    # global global_task
     reboot_required = False
     db_change = False
     success = False
@@ -1686,7 +1689,7 @@ def configuration_helper(origin):
             # stop tornado server
             server = IOLoop.instance()
             server.add_callback(server.stop)
-            global_task = 0
+            helper.global_task = 0
             app.logger.info('Reboot required, restarting')
         if origin:
             success = True

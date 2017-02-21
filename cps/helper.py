@@ -338,7 +338,7 @@ class Updater(threading.Thread):
     def reduce_files(self, remove_items, exclude_items):
         rf = []
         for item in remove_items:
-            if not item in exclude_items:
+            if not item.startswith(exclude_items):
                 rf.append(item)
         return rf
 
@@ -347,15 +347,14 @@ class Updater(threading.Thread):
         if sys.platform == "win32" or sys.platform == "darwin":
             change_permissions = False
         else:
-            app.logger.debug('Update on OS-System : ' + sys.platform)
-            # print('OS-System: '+sys.platform )
+            logging.getLogger('cps.web').debug('Update on OS-System : ' + sys.platform)
             new_permissions = os.stat(root_dst_dir)
             # print new_permissions
         for src_dir, dirs, files in os.walk(root_src_dir):
             dst_dir = src_dir.replace(root_src_dir, root_dst_dir, 1)
             if not os.path.exists(dst_dir):
                 os.makedirs(dst_dir)
-                # print('Create-Dir: '+dst_dir)
+                logging.getLogger('cps.web').debug('Create-Dir: '+dst_dir)
                 if change_permissions:
                     # print('Permissions: User '+str(new_permissions.st_uid)+' Group '+str(new_permissions.st_uid))
                     os.chown(dst_dir, new_permissions.st_uid, new_permissions.st_gid)
@@ -365,27 +364,28 @@ class Updater(threading.Thread):
                 if os.path.exists(dst_file):
                     if change_permissions:
                         permission = os.stat(dst_file)
-                    # print('Remove file before copy: '+dst_file)
+                    logging.getLogger('cps.web').debug('Remove file before copy: '+dst_file)
                     os.remove(dst_file)
                 else:
                     if change_permissions:
                         permission = new_permissions
                 shutil.move(src_file, dst_dir)
-                # print('Move File '+src_file+' to '+dst_dir)
+                logging.getLogger('cps.web').debug('Move File '+src_file+' to '+dst_dir)
                 if change_permissions:
                     try:
                         os.chown(dst_file, permission.st_uid, permission.st_uid)
                         # print('Permissions: User '+str(new_permissions.st_uid)+' Group '+str(new_permissions.st_uid))
                     except:
                         e = sys.exc_info()
-                        # print('Fail '+str(dst_file)+' error: '+str(e))
+                        logging.getLogger('cps.web').debug('Fail '+str(dst_file)+' error: '+str(e))
         return
 
     def update_source(self, source, destination):
         # destination files
         old_list = list()
         exclude = (
-        ['vendor' + os.sep + 'kindlegen.exe', 'vendor' + os.sep + 'kindlegen', '/app.db', 'vendor', '/update.py'])
+        'vendor' + os.sep + 'kindlegen.exe', 'vendor' + os.sep + 'kindlegen', os.sep + 'app.db',
+            os.sep + 'vendor',os.sep + 'calibre-web.log')
         for root, dirs, files in os.walk(destination, topdown=True):
             for name in files:
                 old_list.append(os.path.join(root, name).replace(destination, ''))
@@ -410,12 +410,14 @@ class Updater(threading.Thread):
         for item in remove_items:
             item_path = os.path.join(destination, item[1:])
             if os.path.isdir(item_path):
-                app.logger.debug("Delete dir " + item_path)
+                logging.getLogger('cps.web').debug("Delete dir " + item_path)
                 shutil.rmtree(item_path)
             else:
                 try:
-                    app.logger.debug("Delete file " + item_path)
+                    logging.getLogger('cps.web').debug("Delete file " + item_path)
+                    log_from_thread("Delete file " + item_path)
                     os.remove(item_path)
                 except:
-                    app.logger.debug("Could not remove:" + item_path)
+                    logging.getLogger('cps.web').debug("Could not remove:" + item_path)
         shutil.rmtree(source, ignore_errors=True)
+
