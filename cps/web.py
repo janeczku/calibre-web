@@ -1,12 +1,14 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+from pydrive.auth import GoogleAuth
+
 import mimetypes
 import logging
 from logging.handlers import RotatingFileHandler
 from tempfile import gettempdir
 import textwrap
 from flask import Flask, render_template, session, request, Response, redirect, url_for, send_from_directory, \
-    make_response, g, flash, abort
+        make_response, g, flash, abort, send_file
 import ub
 from ub import config
 import helper
@@ -41,7 +43,17 @@ import re
 import db
 from shutil import move, copyfile
 from tornado.ioloop import IOLoop
+import shutil
 import StringIO
+from shutil import move
+import gdriveutils
+import io
+import hashlib
+import threading
+
+import time
+
+current_milli_time = lambda: int(round(time.time() * 1000))
 
 try:
     from wand.image import Image
@@ -52,13 +64,67 @@ except ImportError, e:
 from cgi import escape
 
 # Global variables
+gdrive_watch_callback_token='target=calibreweb-watch_files'
 global_task = None
 
+def md5(fname):
+    hash_md5 = hashlib.md5()
+    with open(fname, "rb") as f:
+        for chunk in iter(lambda: f.read(4096), b""):
+            hash_md5.update(chunk)
+    return hash_md5.hexdigest()
 
-# Proxy Helper class
+class Singleton:
+    """
+    A non-thread-safe helper class to ease implementing singletons.
+    This should be used as a decorator -- not a metaclass -- to the
+    class that should be a singleton.
+
+    The decorated class can define one `__init__` function that
+    takes only the `self` argument. Also, the decorated class cannot be
+    inherited from. Other than that, there are no restrictions that apply
+    to the decorated class.
+
+    To get the singleton instance, use the `Instance` method. Trying
+    to use `__call__` will result in a `TypeError` being raised.
+
+    """
+
+    def __init__(self, decorated):
+        self._decorated = decorated
+
+    def Instance(self):
+        """
+        Returns the singleton instance. Upon its first call, it creates a
+        new instance of the decorated class and calls its `__init__` method.
+        On all subsequent calls, the already created instance is returned.
+
+        """
+        try:
+            return self._instance
+        except AttributeError:
+            self._instance = self._decorated()
+            return self._instance
+
+    def __call__(self):
+        raise TypeError('Singletons must be accessed through `Instance()`.')
+
+    def __instancecheck__(self, inst):
+        return isinstance(inst, self._decorated)
+
+@Singleton
+class Gauth:
+    def __init__(self):
+        self.auth=GoogleAuth(settings_file='settings.yaml')
+
+@Singleton
+class Gdrive:
+    def __init__(self):
+        self.drive=gdriveutils.getDrive(Gauth.Instance().auth)
+
 class ReverseProxied(object):
     """Wrap the application in this middleware and configure the
-    front-end server to add these headers, to let you quietly bind 
+    front-end server to add these headers, to let you quietly bind
     this to a URL other than / and to an HTTP scheme that is 
     different than what is used locally.
 
@@ -133,6 +199,9 @@ lm.anonymous_user = ub.Anonymous
 app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
 db.setup_db()
 
+def is_gdrive_ready():
+    return os.path.exists('settings.yaml') and os.path.exists('gdrive_credentials')
+
 @babel.localeselector
 def get_locale():
     # if a user is logged in, use the locale from the user settings
@@ -187,6 +256,12 @@ def authenticate():
         'You have to login with proper credentials', 401,
         {'WWW-Authenticate': 'Basic realm="Login Required"'})
 
+def updateGdriveCalibreFromLocal():
+    gdriveutils.backupCalibreDbAndOptionalDownload(Gdrive.Instance().drive)
+    gdriveutils.copyToDrive(Gdrive.Instance().drive, config.config_calibre_dir, False, True)
+    for x in os.listdir(config.config_calibre_dir):
+        if os.path.isdir(os.path.join(config.config_calibre_dir,x)):
+            shutil.rmtree(os.path.join(config.config_calibre_dir,x))
 
 def requires_basic_auth_if_no_ano(f):
     @wraps(f)
@@ -286,6 +361,17 @@ def formatdate(val):
     formatdate = datetime.datetime.strptime(conformed_timestamp[:15], "%Y%m%d %H%M%S")
     return format_date(formatdate, format='medium',locale=get_locale())
 
+@app.template_filter('strftime')
+def timestamptodate(date, fmt=None):
+    date=datetime.datetime.fromtimestamp(
+        int(date)/1000
+    )
+    native = date.replace(tzinfo=None)
+    if fmt:
+        format=fmt
+    else:
+        format='%d %m %Y - %H:%S'
+    return native.strftime(format)
 
 def admin_required(f):
     """
@@ -668,8 +754,15 @@ def get_opds_download_link(book_id, format):
     file_name = book.title
     if len(book.authors) > 0:
         file_name = book.authors[0].name + '-' + file_name
-    file_name = helper.get_valid_filename(file_name)
-    response = make_response(send_from_directory(os.path.join(config.config_calibre_dir, book.path), data.name + "." + format))
+
+    if config.config_use_google_drive:
+        df=gdriveutils.getFileFromEbooksFolder(Gdrive.Instance().drive, book.path, '%s.%s' % (data.name, format))
+        download_url = df.metadata.get('downloadUrl')
+        resp, content = df.auth.Get_Http_Object().request(download_url)
+        response=send_file(io.BytesIO(content))
+    else:
+        file_name = helper.get_valid_filename(file_name)
+        response = make_response(send_from_directory(os.path.join(config.config_calibre_dir, book.path), data.name + "." + format))
     response.headers["Content-Disposition"] = "attachment; filename=\"%s.%s\"" % (data.name, format)
     return response
 
@@ -802,7 +895,9 @@ def hot_books(page):
     hot_books = all_books.offset(off).limit(config.config_books_per_page)
     entries = list()
     for book in hot_books:
-        entries.append(db.session.query(db.Books).filter(filter).filter(db.Books.id == book.Downloads.book_id).first())
+        entry=db.session.query(db.Books).filter(filter).filter(db.Books.id == book.Downloads.book_id).first()
+        if entry:
+            entries.append(entry)
     numBooks = entries.__len__()
     pagination = Pagination(page, config.config_books_per_page, numBooks)
     return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
@@ -1037,6 +1132,99 @@ def stats():
                                  categorycounter=categorys, seriecounter=series, title=_(u"Statistics"))
 
 
+#@app.route("/load_gdrive")
+#@login_required
+#@admin_required
+#def load_all_gdrive_folder_ids():
+#    books=db.session.query(db.Books).all()
+#    for book in books:
+#        gdriveutils.getFolderId(book.path, Gdrive.Instance().drive)
+#    return 
+
+@app.route("/gdrive/authenticate")
+@login_required
+@admin_required
+def authenticate_google_drive():
+    authUrl=Gauth.Instance().auth.GetAuthUrl()
+    return redirect(authUrl)
+
+@app.route("/gdrive/callback")
+def google_drive_callback():
+    auth_code = request.args.get('code')
+    credentials = Gauth.Instance().auth.flow.step2_exchange(auth_code)
+    with open('gdrive_credentials' ,'w') as f:
+        f.write(credentials.to_json())
+    return redirect(url_for('configuration'))
+
+@app.route("/gdrive/watch/subscribe")
+@login_required
+@admin_required
+def watch_gdrive():
+    if not config.config_google_drive_watch_changes_response:
+        address = '%scalibre-web/gdrive/watch/callback' % config.config_google_drive_calibre_url_base
+        notification_id=str(uuid4())
+        result = gdriveutils.watchChange(Gdrive.Instance().drive, notification_id,
+                               'web_hook', address, gdrive_watch_callback_token, current_milli_time() + 604800*1000)
+        print (result)
+        settings = ub.session.query(ub.Settings).first()
+        settings.config_google_drive_watch_changes_response=json.dumps(result)
+        ub.session.merge(settings)
+        ub.session.commit()
+        settings = ub.session.query(ub.Settings).first()
+        config.loadSettings()
+
+        print (settings.config_google_drive_watch_changes_response)
+
+    return redirect(url_for('configuration'))
+
+@app.route("/gdrive/watch/revoke")
+@login_required
+@admin_required
+def revoke_watch_gdrive():
+    last_watch_response=config.config_google_drive_watch_changes_response
+    if last_watch_response:
+        response=gdriveutils.stopChannel(Gdrive.Instance().drive, last_watch_response['id'], last_watch_response['resourceId'])
+        settings = ub.session.query(ub.Settings).first()
+        settings.config_google_drive_watch_changes_response=None
+        ub.session.merge(settings)
+        ub.session.commit()
+        config.loadSettings()
+    return redirect(url_for('configuration'))
+
+@app.route("/gdrive/watch/callback", methods=['GET', 'POST'])
+def on_received_watch_confirmation():
+    app.logger.info (request.headers)
+    if request.headers.get('X-Goog-Channel-Token') == gdrive_watch_callback_token \
+        and request.headers.get('X-Goog-Resource-State') == 'change' \
+        and request.data:
+
+        data=request.data
+
+        def updateMetaData():
+            app.logger.info ('Change received from gdrive')
+            app.logger.info (data) 
+            try:
+                j=json.loads(data)
+                app.logger.info ('Getting change details') 
+                response=gdriveutils.getChangeById(Gdrive.Instance().drive, j['id'])
+                app.logger.info (response)
+                if response:
+                    dbpath = os.path.join(config.config_calibre_dir, "metadata.db")
+                    if not response['deleted'] and response['file']['title'] == 'metadata.db' and response['file']['md5Checksum'] != md5(dbpath):
+                        app.logger.info ('Database file updated')
+                        copyfile (dbpath, config.config_calibre_dir + "/metadata.db_" + str(current_milli_time()))
+                        app.logger.info ('Backing up existing and downloading updated metadata.db')
+                        gdriveutils.downloadFile(Gdrive.Instance().drive, None, "metadata.db", config.config_calibre_dir + "/tmp_metadata.db")
+                        app.logger.info ('Setting up new DB')
+                        os.rename(config.config_calibre_dir + "/tmp_metadata.db", dbpath)
+                        db.setup_db()
+            except Exception, e:
+                app.logger.exception(e)
+
+        updateMetaData()
+    return ''
+
+
 @app.route("/shutdown")
 @login_required
 @admin_required
@@ -1173,8 +1361,15 @@ def advanced_search():
 @app.route("/cover/<path:cover_path>")
 @login_required_if_no_ano
 def get_cover(cover_path):
-    return send_from_directory(os.path.join(config.config_calibre_dir, cover_path), "cover.jpg")
+    if config.config_use_google_drive:
+        df=gdriveutils.getFileFromEbooksFolder(Gdrive.Instance().drive, cover_path, 'cover.jpg')
+        download_url = df.metadata.get('webContentLink')
+        return redirect(download_url)
+    else:
+        return send_from_directory(os.path.join(config.config_calibre_dir, cover_path), "cover.jpg")
+    resp.headers['Content-Type']='image/jpeg'
 
+    return resp
 
 @app.route("/opds/thumb_240_240/<path:book_id>")
 @app.route("/opds/cover_240_240/<path:book_id>")
@@ -1183,7 +1378,12 @@ def get_cover(cover_path):
 @requires_basic_auth_if_no_ano
 def feed_get_cover(book_id):
     book = db.session.query(db.Books).filter(db.Books.id == book_id).first()
-    return send_from_directory(os.path.join(config.config_calibre_dir, book.path), "cover.jpg")
+    if config.config_use_google_drive:
+        df=gdriveutils.getFileFromEbooksFolder(Gdrive.Instance().drive, cover_path, 'cover.jpg')
+        download_url = df.metadata.get('webContentLink')
+        return redirect(download_url)
+    else:
+        return send_from_directory(os.path.join(config.config_calibre_dir, cover_path), "cover.jpg")
 
 def render_read_books(page, are_read, as_xml=False):
     readBooks=ub.session.query(ub.ReadBook).filter(ub.ReadBook.user_id == int(current_user.id)).filter(ub.ReadBook.is_read == True).all()
@@ -1308,8 +1508,13 @@ def get_download_link(book_id, format):
         if len(book.authors) > 0:
             file_name = book.authors[0].name + '-' + file_name
         file_name = helper.get_valid_filename(file_name)
-        response = make_response(
-            send_from_directory(os.path.join(config.config_calibre_dir, book.path), data.name + "." + format))
+        if config.config_use_google_drive:
+            df=gdriveutils.getFileFromEbooksFolder(Gdrive.Instance().drive, book.path, '%s.%s' % (data.name, format))
+            download_url = df.metadata.get('downloadUrl')
+            resp, content = df.auth.Get_Http_Object().request(download_url)
+            response=send_file(io.BytesIO(content))
+        else:
+            response = make_response(send_from_directory(os.path.join(config.config_calibre_dir, book.path), data.name + "." + format))
         try:
             response.headers["Content-Type"] = mimetypes.types_map['.' + format]
         except:
@@ -1682,6 +1887,35 @@ def configuration_helper(origin):
             if content.config_calibre_dir != to_save["config_calibre_dir"]:
                 content.config_calibre_dir = to_save["config_calibre_dir"]
                 db_change = True
+        ##Google drive setup
+        create_new_yaml=False
+        if "config_google_drive_client_id" in to_save:
+            if content.config_google_drive_client_id != to_save["config_google_drive_client_id"]:
+                content.config_google_drive_client_id = to_save["config_google_drive_client_id"]
+                create_new_yaml=True
+        if "config_google_drive_client_secret" in to_save:
+            if content.config_google_drive_client_secret != to_save["config_google_drive_client_secret"]:
+                content.config_google_drive_client_secret = to_save["config_google_drive_client_secret"]
+                create_new_yaml=True
+        if "config_google_drive_calibre_url_base" in to_save:
+            if content.config_google_drive_calibre_url_base != to_save["config_google_drive_calibre_url_base"]:
+                content.config_google_drive_calibre_url_base = to_save["config_google_drive_calibre_url_base"]
+                create_new_yaml=True
+        if ("config_use_google_drive" in to_save and not content.config_use_google_drive) or ("config_use_google_drive" not in to_save and content.config_use_google_drive):
+            content.config_use_google_drive = "config_use_google_drive" in to_save
+            db_change = True
+            if not content.config_use_google_drive:
+                create_new_yaml=False
+        if create_new_yaml:
+            with open('settings.yaml', 'w') as f:
+                with open('gdrive_template.yaml' ,'r') as t:
+                    f.write(t.read() % {'client_id' : content.config_google_drive_client_id, 'client_secret' : content.config_google_drive_client_secret,
+                     "redirect_uri" : content.config_google_drive_calibre_url_base + 'gdrive/callback'})
+        if "config_google_drive_folder" in to_save:
+            if content.config_google_drive_folder != to_save["config_google_drive_folder"]:
+                content.config_google_drive_folder = to_save["config_google_drive_folder"]
+                db_change = True
+        ##
         if "config_port" in to_save:
             if content.config_port != int(to_save["config_port"]):
                 content.config_port = int(to_save["config_port"])
@@ -1720,6 +1954,8 @@ def configuration_helper(origin):
         if "passwd_role" in to_save:
             content.config_default_role = content.config_default_role + ub.ROLE_PASSWD
         try:
+            if content.config_use_google_drive and is_gdrive_ready() and not os.path.exists(config.config_calibre_dir + "/metadata.db"): 
+                    gdriveutils.downloadFile(Gdrive.Instance().drive, None, "metadata.db", config.config_calibre_dir + "/metadata.db")
             if db_change:
                 if config.db_configured:
                     db.session.close()
@@ -1751,6 +1987,7 @@ def configuration_helper(origin):
         if origin:
             success = True
     return render_title_template("config_edit.html", origin=origin, success=success, content=config,
+                                 show_authenticate_google_drive=not is_gdrive_ready(),
                                  title=_(u"Basic Configuration"))
 
 
@@ -1999,7 +2236,7 @@ def edit_book(book_id):
             modify_database_object(input_authors, book.authors, db.Authors, db.session, 'author')
             if author0_before_edit != book.authors[0].name:
                 edited_books_id.add(book.id)
-                book.author_sort=helper.get_sorted_author(input_authors[0]) 
+                book.author_sort=helper.get_sorted_author(input_authors[0])
 
             if to_save["cover_url"] and os.path.splitext(to_save["cover_url"])[1].lower() == ".jpg":
                 img = requests.get(to_save["cover_url"])
@@ -2163,6 +2400,8 @@ def edit_book(book_id):
                 author_names.append(author.name)
             for b in edited_books_id:
                 helper.update_dir_stucture(b, config.config_calibre_dir)
+            if config.config_use_google_drive:
+                updateGdriveCalibreFromLocal()
             if "detail_view" in to_save:
                 return redirect(url_for('show_book', id=book.id))
             else:
@@ -2227,7 +2466,7 @@ def upload():
         if is_author:
             db_author = is_author
         else:
-            db_author = db.Authors(author, helper.get_sorted_author(author), "") 
+            db_author = db.Authors(author, helper.get_sorted_author(author), "")
             db.session.add(db_author)
         # combine path and normalize path from windows systems
         path = os.path.join(author_dir, title_dir).replace('\\','/')
@@ -2242,6 +2481,9 @@ def upload():
         author_names = []
         for author in db_book.authors:
             author_names.append(author.name)
+        if config.config_use_google_drive:
+            if not current_user.role_edit() and not current_user.role_admin():
+                updateGdriveCalibreFromLocal()
     cc = db.session.query(db.Custom_Columns).filter(db.Custom_Columns.datatype.notin_(db.cc_exceptions)).all()
     if current_user.role_edit() or current_user.role_admin():
         return render_title_template('book_edit.html', book=db_book, authors=author_names, cc=cc,
