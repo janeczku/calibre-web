@@ -5,7 +5,6 @@ from pydrive.auth import GoogleAuth
 import mimetypes
 import logging
 from logging.handlers import RotatingFileHandler
-from tempfile import gettempdir
 import textwrap
 from flask import Flask, render_template, session, request, Response, redirect, url_for, send_from_directory, \
         make_response, g, flash, abort, send_file
@@ -41,11 +40,11 @@ import sys
 import subprocess
 import re
 import db
+import thread
 from shutil import move, copyfile
 from tornado.ioloop import IOLoop
 import shutil
 import StringIO
-from shutil import move
 import gdriveutils
 import io
 import hashlib
@@ -124,7 +123,7 @@ class Gdrive:
 
 class ReverseProxied(object):
     """Wrap the application in this middleware and configure the
-    front-end server to add these headers, to let you quietly bind
+    front-end server to add these headers, to let you quietly bind 
     this to a URL other than / and to an HTTP scheme that is 
     different than what is used locally.
 
@@ -562,8 +561,10 @@ def feed_search(term):
         filter = True
     if term:
         entries = db.session.query(db.Books).filter(db.or_(db.Books.tags.any(db.Tags.name.like("%" + term + "%")),
-                                                           db.Books.authors.any(db.Authors.name.like("%" + term + "%")),
-                                                           db.Books.title.like("%" + term + "%"))).filter(filter).all()
+                                                    db.Books.series.any(db.Series.name.like("%" + term + "%")),
+                                                    db.Books.authors.any(db.Authors.name.like("%" + term + "%")),
+                                                    db.Books.publishers.any(db.Publishers.name.like("%" + term + "%")),
+                                                    db.Books.title.like("%" + term + "%"))).filter(filter).all()
         entriescount = len(entries) if len(entries) > 0 else 1
         pagination = Pagination(1, entriescount, entriescount)
         xml = render_title_template('feed.xml', searchterm=term, entries=entries, pagination=pagination)
@@ -761,8 +762,9 @@ def get_opds_download_link(book_id, format):
         resp, content = df.auth.Get_Http_Object().request(download_url)
         response=send_file(io.BytesIO(content))
     else:
-        file_name = helper.get_valid_filename(file_name)
+        # file_name = helper.get_valid_filename(file_name)
         response = make_response(send_from_directory(os.path.join(config.config_calibre_dir, book.path), data.name + "." + format))
+    response = make_response(send_from_directory(os.path.join(config.config_calibre_dir, book.path), data.name + "." + format))
     response.headers["Content-Disposition"] = "attachment; filename=\"%s.%s\"" % (data.name, format)
     return response
 
@@ -809,10 +811,42 @@ def get_update_status():
         commit = requests.get('https://api.github.com/repos/janeczku/calibre-web/git/refs/heads/master').json()
         if "object" in commit and commit['object']['sha'] != commit_id:
             status['status'] = True
+            commitdate = requests.get('https://api.github.com/repos/janeczku/calibre-web/git/commits/'+commit['object']['sha']).json()
+            if "committer" in commitdate:
+                status['commit'] = commitdate['committer']['date']
+            else:
+                status['commit'] = u'Unknown'
         else:
             status['status'] = False
     return json.dumps(status)
 
+@app.route("/get_updater_status", methods=['GET','POST'])
+@login_required
+@admin_required
+def get_updater_status():
+    status = {}
+    if request.method == "POST":
+        commit = request.form.to_dict()
+        if "start" in commit and commit['start'] == 'True':
+            text={
+                "1": _(u'Requesting update package'),
+                "2": _(u'Downloading update package'),
+                "3": _(u'Unzipping update package'),
+                "4": _(u'Files are replaced'),
+                "5": _(u'Database connections are closed'),
+                "6": _(u'Server is stopped'),
+                "7": _(u'Update finished, please press okay and reload page')
+            }
+            status['text']=text
+            helper.updater_thread = helper.Updater()
+            helper.updater_thread.start()
+            status['status']=helper.updater_thread.get_update_status()
+    elif request.method == "GET":
+        try:
+            status['status']=helper.updater_thread.get_update_status()
+        except:
+            status['status'] = 7
+    return json.dumps(status)
 
 
 @app.route("/get_languages_json", methods=['GET', 'POST'])
@@ -1139,7 +1173,7 @@ def stats():
 #    books=db.session.query(db.Books).all()
 #    for book in books:
 #        gdriveutils.getFolderId(book.path, Gdrive.Instance().drive)
-#    return 
+#    return
 
 @app.route("/gdrive/authenticate")
 @login_required
@@ -1202,10 +1236,10 @@ def on_received_watch_confirmation():
 
         def updateMetaData():
             app.logger.info ('Change received from gdrive')
-            app.logger.info (data) 
+            app.logger.info (data)
             try:
                 j=json.loads(data)
-                app.logger.info ('Getting change details') 
+                app.logger.info ('Getting change details')
                 response=gdriveutils.getChangeById(Gdrive.Instance().drive, j['id'])
                 app.logger.info (response)
                 if response:
@@ -1229,9 +1263,9 @@ def on_received_watch_confirmation():
 @login_required
 @admin_required
 def shutdown():
-    global global_task
+    # global global_task
     task = int(request.args.get("parameter").strip())
-    global_task = task
+    helper.global_task = task
     if task == 1 or task == 0:  # valid commandos received
         # close all database connections
         db.session.close()
@@ -1243,7 +1277,7 @@ def shutdown():
         server.add_callback(server.stop)
         showtext = {}
         if task == 0:
-            showtext['text'] = _(u'Performing Restart, please reload page')
+            showtext['text'] = _(u'Server restarted, please reload page')
         else:
             showtext['text'] = _(u'Performing shutdown of server, please close window')
         return json.dumps(showtext)
@@ -1254,23 +1288,10 @@ def shutdown():
 @login_required
 @admin_required
 def update():
-    global global_task
-    r = requests.get('https://api.github.com/repos/janeczku/calibre-web/zipball/master', stream=True)
-    fname = re.findall("filename=(.+)", r.headers['content-disposition'])[0]
-    z = zipfile.ZipFile(StringIO.StringIO(r.content))
-    tmp_dir = gettempdir()
-    z.extractall(tmp_dir)
-    helper.update_source(os.path.join(tmp_dir,os.path.splitext(fname)[0]),config.get_main_dir)
-    global_task = 0
-    db.session.close()
-    db.engine.dispose()
-    ub.session.close()
-    ub.engine.dispose()
-    # stop tornado server
-    server = IOLoop.instance()
-    server.add_callback(server.stop)
+    helper.updater_thread = helper.Updater()
     flash(_(u"Update done"), category="info")
-    return logout()
+    return ""
+
 
 @app.route("/search", methods=["GET"])
 @login_required_if_no_ano
@@ -1282,9 +1303,10 @@ def search():
         else:
             filter = True
         entries = db.session.query(db.Books).filter(db.or_(db.Books.tags.any(db.Tags.name.like("%" + term + "%")),
-                                                           db.Books.series.any(db.Series.name.like("%" + term + "%")),
-                                                           db.Books.authors.any(db.Authors.name.like("%" + term + "%")),
-                                                           db.Books.title.like("%" + term + "%"))).filter(filter).all()
+                                                    db.Books.series.any(db.Series.name.like("%" + term + "%")),
+                                                    db.Books.authors.any(db.Authors.name.like("%" + term + "%")),
+                                                    db.Books.publishers.any(db.Publishers.name.like("%" + term + "%")),
+                                                    db.Books.title.like("%" + term + "%"))).filter(filter).all()
         return render_title_template('search.html', searchterm=term, entries=entries)
     else:
         return render_title_template('search.html', searchterm="")
@@ -1304,12 +1326,14 @@ def advanced_search():
 
         author_name = request.args.get("author_name")
         book_title = request.args.get("book_title")
+        publisher = request.args.get("publisher")
         if author_name: author_name = author_name.strip()
         if book_title: book_title = book_title.strip()
+        if publisher: publisher = publisher.strip()
         if include_tag_inputs or exclude_tag_inputs or include_series_inputs or exclude_series_inputs or \
-                include_languages_inputs or exclude_languages_inputs or author_name or book_title:
+                include_languages_inputs or exclude_languages_inputs or author_name or book_title or publisher:
             searchterm = []
-            searchterm.extend((author_name, book_title))
+            searchterm.extend((author_name, book_title, publisher))
             tag_names = db.session.query(db.Tags).filter(db.Tags.id.in_(include_tag_inputs)).all()
             searchterm.extend(tag.name for tag in tag_names)
             # searchterm = " + ".join(filter(None, searchterm))
@@ -1325,7 +1349,8 @@ def advanced_search():
             searchterm.extend(language.name for language in language_names)
             searchterm = " + ".join(filter(None, searchterm))
             q = q.filter(db.Books.authors.any(db.Authors.name.like("%" + author_name + "%")),
-                         db.Books.title.like("%" + book_title + "%"))
+                         db.Books.title.like("%" + book_title + "%"),
+                         db.Books.publishers.any(db.Publishers.name.like("%" + publisher + "%")))
             for tag in include_tag_inputs:
                 q = q.filter(db.Books.tags.any(db.Tags.id == tag))
             for tag in exclude_tag_inputs:
@@ -1367,9 +1392,7 @@ def get_cover(cover_path):
         return redirect(download_url)
     else:
         return send_from_directory(os.path.join(config.config_calibre_dir, cover_path), "cover.jpg")
-    resp.headers['Content-Type']='image/jpeg'
 
-    return resp
 
 @app.route("/opds/thumb_240_240/<path:book_id>")
 @app.route("/opds/cover_240_240/<path:book_id>")
@@ -1393,9 +1416,9 @@ def render_read_books(page, are_read, as_xml=False):
     else:
         db_filter = ~db.Books.id.in_(readBookIds)
 
-    entries, random, pagination = fill_indexpage(page, db.Books, 
+    entries, random, pagination = fill_indexpage(page, db.Books,
         db_filter, db.Books.timestamp.desc())
-    if as_xml:    
+    if as_xml:
         xml = render_title_template('feed.xml', entries=entries, pagination=pagination)
         response = make_response(xml)
         response.headers["Content-Type"] = "application/xml"
@@ -1875,14 +1898,13 @@ def basic_configuration():
 
 
 def configuration_helper(origin):
-    global global_task
+    # global global_task
     reboot_required = False
     db_change = False
     success = False
     if request.method == "POST":
         to_save = request.form.to_dict()
         content = ub.session.query(ub.Settings).first()
-        # ToDo: check lib vaild, and change without restart
         if "config_calibre_dir" in to_save:
             if content.config_calibre_dir != to_save["config_calibre_dir"]:
                 content.config_calibre_dir = to_save["config_calibre_dir"]
@@ -1954,8 +1976,8 @@ def configuration_helper(origin):
         if "passwd_role" in to_save:
             content.config_default_role = content.config_default_role + ub.ROLE_PASSWD
         try:
-            if content.config_use_google_drive and is_gdrive_ready() and not os.path.exists(config.config_calibre_dir + "/metadata.db"): 
-                    gdriveutils.downloadFile(Gdrive.Instance().drive, None, "metadata.db", config.config_calibre_dir + "/metadata.db")
+            if content.config_use_google_drive and is_gdrive_ready() and not os.path.exists(config.config_calibre_dir + "/metadata.db"):
+                gdriveutils.downloadFile(Gdrive.Instance().drive, None, "metadata.db", config.config_calibre_dir + "/metadata.db")
             if db_change:
                 if config.db_configured:
                     db.session.close()
@@ -1982,7 +2004,7 @@ def configuration_helper(origin):
             # stop tornado server
             server = IOLoop.instance()
             server.add_callback(server.stop)
-            global_task = 0
+            helper.global_task = 0
             app.logger.info('Reboot required, restarting')
         if origin:
             success = True
@@ -2236,7 +2258,7 @@ def edit_book(book_id):
             modify_database_object(input_authors, book.authors, db.Authors, db.session, 'author')
             if author0_before_edit != book.authors[0].name:
                 edited_books_id.add(book.id)
-                book.author_sort=helper.get_sorted_author(input_authors[0])
+                book.author_sort=helper.get_sorted_author(input_authors[0]) 
 
             if to_save["cover_url"] and os.path.splitext(to_save["cover_url"])[1].lower() == ".jpg":
                 img = requests.get(to_save["cover_url"])
@@ -2466,7 +2488,7 @@ def upload():
         if is_author:
             db_author = is_author
         else:
-            db_author = db.Authors(author, helper.get_sorted_author(author), "")
+            db_author = db.Authors(author, helper.get_sorted_author(author), "") 
             db.session.add(db_author)
         # combine path and normalize path from windows systems
         path = os.path.join(author_dir, title_dir).replace('\\','/')
