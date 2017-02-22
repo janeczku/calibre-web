@@ -6,7 +6,7 @@ import ub
 from flask import current_app as app
 import logging
 import smtplib
-import tempfile
+from tempfile import gettempdir
 import socket
 import sys
 import os
@@ -21,12 +21,21 @@ from email.MIMEText import MIMEText
 from email.generator import Generator
 from flask_babel import gettext as _
 import subprocess
+import threading
 import shutil
+import requests
+import zipfile
+from tornado.ioloop import IOLoop
+
 try:
     import unidecode
     use_unidecode=True
 except:
     use_unidecode=False
+
+# Global variables
+global_task = None
+updater_thread = None
 
 def update_download(book_id, user_id):
     check = ub.session.query(ub.Downloads).filter(ub.Downloads.user_id == user_id).filter(ub.Downloads.book_id ==
@@ -267,117 +276,148 @@ def update_dir_stucture(book_id, calibrepath):
         book.path = new_authordir + '/' + book.path.split('/')[1]
     db.session.commit()
 
+class Updater(threading.Thread):
 
-def file_to_list(file):
-    return [x.strip() for x in open(file, 'r') if not x.startswith('#EXT')]
+    def __init__(self):
+        threading.Thread.__init__(self)
+        self.status=0
 
-def one_minus_two(one, two):
-    return [x for x in one if x not in set(two)]
+    def run(self):
+        global global_task
+        self.status=1
+        r = requests.get('https://api.github.com/repos/janeczku/calibre-web/zipball/master', stream=True)
+        fname = re.findall("filename=(.+)", r.headers['content-disposition'])[0]
+        self.status=2
+        z = zipfile.ZipFile(StringIO(r.content))
+        self.status=3
+        tmp_dir = gettempdir()
+        z.extractall(tmp_dir)
+        self.status=4
+        self.update_source(os.path.join(tmp_dir,os.path.splitext(fname)[0]),ub.config.get_main_dir)
+        self.status=5
+        global_task = 0
+        db.session.close()
+        db.engine.dispose()
+        ub.session.close()
+        ub.engine.dispose()
+        self.status=6
+        # stop tornado server
+        server = IOLoop.instance()
+        server.add_callback(server.stop)
+        self.status=7
 
-def reduce_dirs(delete_files, new_list):
-    new_delete = []
-    for file in delete_files:
-        parts = file.split(os.sep)
-        sub = ''
-        for i in range(len(parts)):
-            sub = os.path.join(sub, parts[i])
-            if sub == '':
-                sub = os.sep
-            count = 0
-            for song in new_list:
-                if song.startswith(sub):
-                    count += 1
+    def get_update_status(self):
+        return self.status
+
+    def file_to_list(self, file):
+        return [x.strip() for x in open(file, 'r') if not x.startswith('#EXT')]
+
+    def one_minus_two(self, one, two):
+        return [x for x in one if x not in set(two)]
+
+    def reduce_dirs(self, delete_files, new_list):
+        new_delete = []
+        for file in delete_files:
+            parts = file.split(os.sep)
+            sub = ''
+            for i in range(len(parts)):
+                sub = os.path.join(sub, parts[i])
+                if sub == '':
+                    sub = os.sep
+                count = 0
+                for song in new_list:
+                    if song.startswith(sub):
+                        count += 1
+                        break
+                if count == 0:
+                    if sub != '\\':
+                        new_delete.append(sub)
                     break
-            if count == 0:
-                if sub != '\\':
-                    new_delete.append(sub)
-                break
-    return list(set(new_delete))
+        return list(set(new_delete))
 
-def reduce_files(remove_items, exclude_items):
-    rf = []
-    for item in remove_items:
-        if not item in exclude_items:
-            rf.append(item)
-    return rf
+    def reduce_files(self, remove_items, exclude_items):
+        rf = []
+        for item in remove_items:
+            if not item.startswith(exclude_items):
+                rf.append(item)
+        return rf
 
-def moveallfiles(root_src_dir, root_dst_dir):
-    change_permissions = True
-    if sys.platform == "win32" or sys.platform == "darwin":
-        change_permissions=False        
-    else:
-        app.logger.debug('Update on OS-System : '+sys.platform )
-        #print('OS-System: '+sys.platform )
-        new_permissions=os.stat(root_dst_dir)
-        #print new_permissions
-    for src_dir, dirs, files in os.walk(root_src_dir):
-        dst_dir = src_dir.replace(root_src_dir, root_dst_dir, 1)
-        if not os.path.exists(dst_dir):
-            os.makedirs(dst_dir)
-            #print('Create-Dir: '+dst_dir)
-            if change_permissions:
-                #print('Permissions: User '+str(new_permissions.st_uid)+' Group '+str(new_permissions.st_uid))            
-                os.chown(dst_dir,new_permissions.st_uid,new_permissions.st_gid)
-        for file_ in files:
-            src_file = os.path.join(src_dir, file_)
-            dst_file = os.path.join(dst_dir, file_)
-            if os.path.exists(dst_file):
-                if change_permissions:
-                    permission=os.stat(dst_file)
-                #print('Remove file before copy: '+dst_file)                                                                               
-                os.remove(dst_file)
-            else:
-                if change_permissions:            
-                    permission=new_permissions                
-            shutil.move(src_file, dst_dir)
-            #print('Move File '+src_file+' to '+dst_dir)                                                            
-            if change_permissions:
-                try:
-                    os.chown(dst_file, permission.st_uid, permission.st_uid)
-                    #print('Permissions: User '+str(new_permissions.st_uid)+' Group '+str(new_permissions.st_uid))
-                except:
-                    e = sys.exc_info()
-                    #print('Fail '+str(dst_file)+' error: '+str(e))
-    return
-
-
-def update_source(source,destination):
-    # destination files
-    old_list=list()
-    exclude = (['vendor' + os.sep + 'kindlegen.exe','vendor' + os.sep + 'kindlegen','/app.db','vendor','/update.py'])
-    for root, dirs, files in os.walk(destination, topdown=True):
-        for name in files:
-            old_list.append(os.path.join(root, name).replace(destination, ''))
-        for name in dirs:
-            old_list.append(os.path.join(root, name).replace(destination, ''))
-    # source files
-    new_list = list()
-    for root, dirs, files in os.walk(source, topdown=True):
-        for name in files:
-            new_list.append(os.path.join(root, name).replace(source, ''))
-        for name in dirs:
-            new_list.append(os.path.join(root, name).replace(source, ''))
-
-    delete_files = one_minus_two(old_list, new_list)
-    #print('raw delete list', delete_files)
-
-    rf= reduce_files(delete_files, exclude)
-    #print('reduced delete list', rf)
-
-    remove_items = reduce_dirs(rf, new_list)
-    #print('delete files', remove_items)
-
-    moveallfiles(source, destination)
-
-    for item in remove_items:
-        item_path = os.path.join(destination, item[1:])
-        if os.path.isdir(item_path):
-            print("Delete dir "+ item_path)
-            shutil.rmtree(item_path)
+    def moveallfiles(self, root_src_dir, root_dst_dir):
+        change_permissions = True
+        if sys.platform == "win32" or sys.platform == "darwin":
+            change_permissions = False
         else:
-            try:
-                print("Delete file "+ item_path)
-                os.remove(item_path)
-            except:
-                print("Could not remove:"+item_path)
-    shutil.rmtree(source, ignore_errors=True)
+            logging.getLogger('cps.web').debug('Update on OS-System : ' + sys.platform)
+            new_permissions = os.stat(root_dst_dir)
+            # print new_permissions
+        for src_dir, dirs, files in os.walk(root_src_dir):
+            dst_dir = src_dir.replace(root_src_dir, root_dst_dir, 1)
+            if not os.path.exists(dst_dir):
+                os.makedirs(dst_dir)
+                logging.getLogger('cps.web').debug('Create-Dir: '+dst_dir)
+                if change_permissions:
+                    # print('Permissions: User '+str(new_permissions.st_uid)+' Group '+str(new_permissions.st_uid))
+                    os.chown(dst_dir, new_permissions.st_uid, new_permissions.st_gid)
+            for file_ in files:
+                src_file = os.path.join(src_dir, file_)
+                dst_file = os.path.join(dst_dir, file_)
+                if os.path.exists(dst_file):
+                    if change_permissions:
+                        permission = os.stat(dst_file)
+                    logging.getLogger('cps.web').debug('Remove file before copy: '+dst_file)
+                    os.remove(dst_file)
+                else:
+                    if change_permissions:
+                        permission = new_permissions
+                shutil.move(src_file, dst_dir)
+                logging.getLogger('cps.web').debug('Move File '+src_file+' to '+dst_dir)
+                if change_permissions:
+                    try:
+                        os.chown(dst_file, permission.st_uid, permission.st_uid)
+                        # print('Permissions: User '+str(new_permissions.st_uid)+' Group '+str(new_permissions.st_uid))
+                    except:
+                        e = sys.exc_info()
+                        logging.getLogger('cps.web').debug('Fail '+str(dst_file)+' error: '+str(e))
+        return
+
+    def update_source(self, source, destination):
+        # destination files
+        old_list = list()
+        exclude = (
+        'vendor' + os.sep + 'kindlegen.exe', 'vendor' + os.sep + 'kindlegen', os.sep + 'app.db',
+            os.sep + 'vendor',os.sep + 'calibre-web.log')
+        for root, dirs, files in os.walk(destination, topdown=True):
+            for name in files:
+                old_list.append(os.path.join(root, name).replace(destination, ''))
+            for name in dirs:
+                old_list.append(os.path.join(root, name).replace(destination, ''))
+        # source files
+        new_list = list()
+        for root, dirs, files in os.walk(source, topdown=True):
+            for name in files:
+                new_list.append(os.path.join(root, name).replace(source, ''))
+            for name in dirs:
+                new_list.append(os.path.join(root, name).replace(source, ''))
+
+        delete_files = self.one_minus_two(old_list, new_list)
+
+        rf = self.reduce_files(delete_files, exclude)
+
+        remove_items = self.reduce_dirs(rf, new_list)
+
+        self.moveallfiles(source, destination)
+
+        for item in remove_items:
+            item_path = os.path.join(destination, item[1:])
+            if os.path.isdir(item_path):
+                logging.getLogger('cps.web').debug("Delete dir " + item_path)
+                shutil.rmtree(item_path)
+            else:
+                try:
+                    logging.getLogger('cps.web').debug("Delete file " + item_path)
+                    log_from_thread("Delete file " + item_path)
+                    os.remove(item_path)
+                except:
+                    logging.getLogger('cps.web').debug("Could not remove:" + item_path)
+        shutil.rmtree(source, ignore_errors=True)
+

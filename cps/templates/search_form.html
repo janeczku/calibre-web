@@ -10,63 +10,67 @@
       <label for="bookAuthor">{{_('Author')}}</label>
       <input type="text" class="form-control typeahead" name="author_name" id="bookAuthor" value="" autocomplete="off">
     </div>
-    <label for="Tags">{{_('Tags')}}</label>
     <div class="form-group">
+      <label for="Publisher">{{_('Publisher')}}</label>
+      <input type="text" class="form-control" name="publisher" id="publisher" value="">
+    </div>
+    <label for="include_tag">{{_('Tags')}}</label>
+    <div class="form-group" id="test">
       <div class="btn-toolbar btn-toolbar-lg" data-toggle="buttons">
         {% for tag in tags %}
           <label id="tag_{{tag.id}}" class="btn btn-primary tags_click">
-            <input type="checkbox" autocomplete="off" name="include_tag" value="{{tag.id}}">{{tag.name}}</input>
+            <input type="checkbox" autocomplete="off" name="include_tag" id="include_tag" value="{{tag.id}}">{{tag.name}}</input>
           </label>
         {% endfor %}
       </div>
     </div>
-    <label for="Tags">{{_('Exclude Tags')}}</label>
+    <label for="exclude_tag">{{_('Exclude Tags')}}</label>
     <div class="form-group">
       <div class="btn-toolbar btn-toolbar-lg" data-toggle="buttons">
         {% for tag in tags %}
           <label id="tag_{{tag.id}}" class="btn btn-danger tags_click">
-            <input type="checkbox" autocomplete="off" name="exclude_tag" value="{{tag.id}}">{{tag.name}}</input>
+            <input type="checkbox" autocomplete="off" name="exclude_tag" id="exclude_tag" value="{{tag.id}}">{{tag.name}}</input>
           </label>
         {% endfor %}
       </div>
     </div>
-    <label for="Series">{{_('Series')}}</label>
+    <label for="include_serie">{{_('Series')}}</label>
     <div class="form-group">
       <div class="btn-toolbar btn-toolbar-lg" data-toggle="buttons">
         {% for serie in series %}
           <label id="serie_{{serie.id}}" class="btn btn-primary serie_click">
-            <input type="checkbox" autocomplete="off" name="include_serie" value="{{serie.id}}">{{serie.name}}</input>
+            <input type="checkbox" autocomplete="off" name="include_serie" id="include_serie" value="{{serie.id}}">{{serie.name}}</input>
           </label>
         {% endfor %}
       </div>
     </div>
-    <label for="Series">{{_('Exclude Series')}}</label>
+    <label for="exclude_serie">{{_('Exclude Series')}}</label>
     <div class="form-group">
       <div class="btn-toolbar btn-toolbar-lg" data-toggle="buttons">
         {% for serie in series %}
           <label id="serie_{{serie.id}}" class="btn btn-danger serie_click">
-            <input type="checkbox" autocomplete="off" name="exclude_serie" value="{{serie.id}}">{{serie.name}}</input>
+            <input type="checkbox" autocomplete="off" name="exclude_serie" id="exclude_serie" value="{{serie.id}}">{{serie.name}}</input>
           </label>
         {% endfor %}
       </div>
     </div>
    {% if languages %}
-      <label for="Languages">{{_('Languages')}}</label>
+      <label for="include_language">{{_('Languages')}}</label>
       <div class="form-group">
         <div class="btn-toolbar btn-toolbar-lg" data-toggle="buttons">
           {% for language in languages %}
             <label id="language_{{language.id}}" class="btn btn-primary serie_click">
-              <input type="checkbox" autocomplete="off" name="include_language" value="{{language.id}}">{{language.name}}</input>
+              <input type="checkbox" autocomplete="off" name="include_language" id="include_language" value="{{language.id}}">{{language.name}}</input>
             </label>
           {% endfor %}
         </div>
       </div>
-      <label for="Languages">{{_('Exclude Languages')}}</label>
+      <label for="exclude_language">{{_('Exclude Languages')}}</label>
       <div class="form-group">
         <div class="btn-toolbar btn-toolbar-lg" data-toggle="buttons">
           {% for language in languages %}
             <label id="language_{{language.id}}" class="btn btn-danger language_click">
-              <input type="checkbox" autocomplete="off" name="exclude_language" value="{{language.id}}">{{language.name}}</input>
+              <input type="checkbox" autocomplete="off" name="exclude_language" id="exclude_language" value="{{language.id}}">{{language.name}}</input>
             </label>
           {% endfor %}
         </div>
