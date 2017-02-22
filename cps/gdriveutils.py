@@ -204,9 +204,9 @@ def copyToDrive(drive, uploadFile, createRoot, replaceFiles,
         if os.path.basename(uploadFile) not in ignoreFiles:
             existingFiles=drive.ListFile({'q' : "title = '%s' and '%s' in parents and trashed = false" % (os.path.basename(uploadFile), parent['id'])}).GetList()
             if len(existingFiles) > 0:
-                driveFile = drive.CreateFile({'title': os.path.basename(uploadFile), 'parents' : [{"kind": "drive#fileLink", 'id' : parent['id']}], })
-            else:
                 driveFile=existingFiles[0]
+            else:
+                driveFile = drive.CreateFile({'title': os.path.basename(uploadFile), 'parents' : [{"kind": "drive#fileLink", 'id' : parent['id']}], })
             driveFile.SetContentFile(os.path.join(prevDir,uploadFile))
             driveFile.Upload()
 
