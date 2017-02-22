@@ -33,9 +33,10 @@ The Drive API should now be setup and ready to use, so we need to integrate it i
 8. Google Drive should now be connected and be used to get images and download Epubs. The metadata.db is stored in the calibre library location
 
 ###Optional
-If your calibre web is using https (this can be done for free using cloudflare), it is possible to add a "watch" to the drive. This will inform us if the metadata.db file is updated and allow us to update our calibre library accordingly. 
+If your calibre web is using https (this can be done for free using cloudflare), it is possible to add a "watch" to the drive. This will inform us if the metadata.db file is updated and allow us to update our calibre library accordingly.
+
 9. Click enable watch of metadata.db
-10. a) Note that this expires after a week, so will need to be manually refresh (TODO: Add an authenticated call to do this via crontab or something similar or maybe in before_request method)
+     9. Note that this expires after a week, so will need to be manually refresh (TODO: Add an authenticated call to do this via crontab or something similar or maybe in before_request method)
 
 ##About
 
