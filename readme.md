@@ -6,6 +6,38 @@ I have been messing around with calibre-web in a few different ways and thought 
 
 2. Google drive support. In my local version, I currently have this working, but it is essentially to make the website have all the books / covers / metadata.db served directly from google drive. I am currently, still optimising a bit of code, and will hopefully have this on GitHub ASAP. 
 
+##Using Google Drive integration
+
+To use google drive integration, you have to use the google developer console to create a new app. https://console.developers.google.com
+
+Once a project has been created, we need to create a client ID and a client secret that will be used to enable the OAuth request with google, and enable the Drive API. To do this, follow the steps below: -
+
+1. Open project in developer console
+2. Click Enable API, and enable google drive
+3. Now on the sidebar, click Credentials
+4. Click Create Credentials and OAuth Client ID
+5. Select Web Application and then next
+6. Give the Credentials a name and enter your callback, which will be CALIBRE_WEB_URL/gdrive/callback
+7. Finally click save
+
+The Drive API should now be setup and ready to use, so we need to integrate it into Calibre Web. This is done as below: -
+
+1. Open config page
+2. Enter the location that will be used to store the metadata.db file, and to temporary store uploaded books and other temporary files for upload
+2. Tick Use Google Drive
+3. Enter Client Secret and Client Key as provided via previous steps
+4. Enter the folder that is the root of your calibre library
+5. Enter base URL for calibre (used for google callbacks)
+6 Now select Authenticate Google Drive
+7. This should redirect you to google to allow it top use your Drive, and then redirect you back to the config page
+8. Google Drive should now be connected and be used to get images and download Epubs. The metadata.db is stored in the calibre library location
+
+###Optional
+If your calibre web is using https (this can be done for free using cloudflare), it is possible to add a "watch" to the drive. This will inform us if the metadata.db file is updated and allow us to update our calibre library accordingly.
+
+9. Click enable watch of metadata.db
+     9. Note that this expires after a week, so will need to be manually refresh (TODO: Add an authenticated call to do this via crontab or something similar or maybe in before_request method)
+
 ##About
 
 Calibre Web is a web app providing a clean interface for browsing, reading and downloading eBooks using an existing [Calibre](https://calibre-ebook.com) database.
