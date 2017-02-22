@@ -65,7 +65,7 @@
         <div class="navbar-collapse collapse">
           {% if g.user.is_authenticated or g.user.is_anonymous() %}
           <ul class="nav navbar-nav ">
-            <li><a href="{{url_for('advanced_search')}}"><span class="glyphicon glyphicon-search"></span> {{_('Advanced Search')}}</a></li>
+            <li><a href="{{url_for('advanced_search')}}"><span class="glyphicon glyphicon-search"></span><span class="hidden-sm"> {{_('Advanced Search')}}</span></a></li>
           </ul>
           {% endif %}
           <ul class="nav navbar-nav navbar-right" id="main-nav">
