@@ -274,6 +274,8 @@ def setup_db():
         return False
 
     dbpath = os.path.join(config.config_calibre_dir, "metadata.db")
+    if not os.path.exists(dbpath):
+        return False
     engine = create_engine('sqlite:///{0}'.format(dbpath.encode('utf-8')), echo=False)
     try:
         conn = engine.connect()

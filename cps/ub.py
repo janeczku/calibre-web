@@ -312,7 +312,7 @@ class Config:
         else:
             self.config_google_drive_watch_changes_response=None
 
-        if self.config_calibre_dir is not None:
+        if (self.config_calibre_dir is not None and not self.config_use_google_drive) or os.path.exists(self.config_calibre_dir + '/metadata.db'):
             self.db_configured = True
         else:
             self.db_configured = False

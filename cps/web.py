@@ -43,6 +43,7 @@ import re
 import db
 from shutil import move, copyfile
 from tornado.ioloop import IOLoop
+import shutil
 import StringIO
 from shutil import move
 import gdriveutils
@@ -197,6 +198,9 @@ lm.login_view = 'login'
 lm.anonymous_user = ub.Anonymous
 app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
 db.setup_db()
+
+def is_gdrive_ready():
+    return os.path.exists('settings.yaml') and os.path.exists('gdrive_credentials')
 
 @babel.localeselector
 def get_locale():
@@ -1889,17 +1893,14 @@ def configuration_helper(origin):
             if content.config_google_drive_client_id != to_save["config_google_drive_client_id"]:
                 content.config_google_drive_client_id = to_save["config_google_drive_client_id"]
                 create_new_yaml=True
-                db_change = True
         if "config_google_drive_client_secret" in to_save:
             if content.config_google_drive_client_secret != to_save["config_google_drive_client_secret"]:
                 content.config_google_drive_client_secret = to_save["config_google_drive_client_secret"]
                 create_new_yaml=True
-                db_change = True
         if "config_google_drive_calibre_url_base" in to_save:
             if content.config_google_drive_calibre_url_base != to_save["config_google_drive_calibre_url_base"]:
                 content.config_google_drive_calibre_url_base = to_save["config_google_drive_calibre_url_base"]
                 create_new_yaml=True
-                db_change = True
         if ("config_use_google_drive" in to_save and not content.config_use_google_drive) or ("config_use_google_drive" not in to_save and content.config_use_google_drive):
             content.config_use_google_drive = "config_use_google_drive" in to_save
             db_change = True
@@ -1953,6 +1954,8 @@ def configuration_helper(origin):
         if "passwd_role" in to_save:
             content.config_default_role = content.config_default_role + ub.ROLE_PASSWD
         try:
+            if content.config_use_google_drive and is_gdrive_ready() and not os.path.exists(config.config_calibre_dir + "/metadata.db"): 
+                    gdriveutils.downloadFile(Gdrive.Instance().drive, None, "metadata.db", config.config_calibre_dir + "/metadata.db")
             if db_change:
                 if config.db_configured:
                     db.session.close()
@@ -1984,7 +1987,7 @@ def configuration_helper(origin):
         if origin:
             success = True
     return render_title_template("config_edit.html", origin=origin, success=success, content=config,
-                                 show_authenticate_google_drive=not os.path.exists('settings.yaml') or not os.path.exists('gdrive_credentials'),
+                                 show_authenticate_google_drive=not is_gdrive_ready(),
                                  title=_(u"Basic Configuration"))
 
 
