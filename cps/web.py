@@ -473,8 +473,10 @@ def feed_search(term):
         filter = True
     if term:
         entries = db.session.query(db.Books).filter(db.or_(db.Books.tags.any(db.Tags.name.like("%" + term + "%")),
-                                                           db.Books.authors.any(db.Authors.name.like("%" + term + "%")),
-                                                           db.Books.title.like("%" + term + "%"))).filter(filter).all()
+                                                    db.Books.series.any(db.Series.name.like("%" + term + "%")),
+                                                    db.Books.authors.any(db.Authors.name.like("%" + term + "%")),
+                                                    db.Books.publishers.any(db.Publishers.name.like("%" + term + "%")),
+                                                    db.Books.title.like("%" + term + "%"))).filter(filter).all()
         entriescount = len(entries) if len(entries) > 0 else 1
         pagination = Pagination(1, entriescount, entriescount)
         xml = render_title_template('feed.xml', searchterm=term, entries=entries, pagination=pagination)
@@ -744,7 +746,10 @@ def get_updater_status():
             helper.updater_thread.start()
             status['status']=helper.updater_thread.get_update_status()
     elif request.method == "GET":
-        status['status']=helper.updater_thread.get_update_status()
+        try:
+            status['status']=helper.updater_thread.get_update_status()
+        except:
+            status['status'] = 7
     return json.dumps(status)
 
 
@@ -1044,9 +1049,9 @@ def stats():
 @login_required
 @admin_required
 def shutdown():
-    global global_task
+    # global global_task
     task = int(request.args.get("parameter").strip())
-    global_task = task
+    helper.global_task = task
     if task == 1 or task == 0:  # valid commandos received
         # close all database connections
         db.session.close()
@@ -1084,9 +1089,10 @@ def search():
         else:
             filter = True
         entries = db.session.query(db.Books).filter(db.or_(db.Books.tags.any(db.Tags.name.like("%" + term + "%")),
-                                                           db.Books.series.any(db.Series.name.like("%" + term + "%")),
-                                                           db.Books.authors.any(db.Authors.name.like("%" + term + "%")),
-                                                           db.Books.title.like("%" + term + "%"))).filter(filter).all()
+                                                    db.Books.series.any(db.Series.name.like("%" + term + "%")),
+                                                    db.Books.authors.any(db.Authors.name.like("%" + term + "%")),
+                                                    db.Books.publishers.any(db.Publishers.name.like("%" + term + "%")),
+                                                    db.Books.title.like("%" + term + "%"))).filter(filter).all()
         return render_title_template('search.html', searchterm=term, entries=entries)
     else:
         return render_title_template('search.html', searchterm="")
@@ -1106,12 +1112,14 @@ def advanced_search():
 
         author_name = request.args.get("author_name")
         book_title = request.args.get("book_title")
+        publisher = request.args.get("publisher")
         if author_name: author_name = author_name.strip()
         if book_title: book_title = book_title.strip()
+        if publisher: publisher = publisher.strip()
         if include_tag_inputs or exclude_tag_inputs or include_series_inputs or exclude_series_inputs or \
-                include_languages_inputs or exclude_languages_inputs or author_name or book_title:
+                include_languages_inputs or exclude_languages_inputs or author_name or book_title or publisher:
             searchterm = []
-            searchterm.extend((author_name, book_title))
+            searchterm.extend((author_name, book_title, publisher))
             tag_names = db.session.query(db.Tags).filter(db.Tags.id.in_(include_tag_inputs)).all()
             searchterm.extend(tag.name for tag in tag_names)
             # searchterm = " + ".join(filter(None, searchterm))
@@ -1127,7 +1135,8 @@ def advanced_search():
             searchterm.extend(language.name for language in language_names)
             searchterm = " + ".join(filter(None, searchterm))
             q = q.filter(db.Books.authors.any(db.Authors.name.like("%" + author_name + "%")),
-                         db.Books.title.like("%" + book_title + "%"))
+                         db.Books.title.like("%" + book_title + "%"),
+                         db.Books.publishers.any(db.Publishers.name.like("%" + publisher + "%")))
             for tag in include_tag_inputs:
                 q = q.filter(db.Books.tags.any(db.Tags.id == tag))
             for tag in exclude_tag_inputs:
@@ -1611,7 +1620,7 @@ def basic_configuration():
 
 
 def configuration_helper(origin):
-    global global_task
+    # global global_task
     reboot_required = False
     db_change = False
     success = False
@@ -1686,7 +1695,7 @@ def configuration_helper(origin):
             # stop tornado server
             server = IOLoop.instance()
             server.add_callback(server.stop)
-            global_task = 0
+            helper.global_task = 0
             app.logger.info('Reboot required, restarting')
         if origin:
             success = True

@@ -22,8 +22,8 @@ if __name__ == '__main__':
         IOLoop.instance().start()
 
     if web.helper.global_task == 0:
-        print("Performing restart of Calibre-web")
+        web.app.logger.info("Performing restart of Calibre-web")
         os.execl(sys.executable, sys.executable, *sys.argv)
     else:
-        print("Performing shutdown of Calibre-web")
+        web.app.logger.info("Performing shutdown of Calibre-web")
     sys.exit(0)

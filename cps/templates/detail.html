@@ -50,6 +50,7 @@
 
       {% if entry.identifiers|length > 0 %}
       <div class="identifiers">
+        <p>
         <span class="glyphicon glyphicon-link"></span>
         {% for identifier in entry.identifiers %}
           <a href="{{identifier}}" target="_blank" class="btn btn-xs btn-success" role="button">{{identifier.formatType()}}</a>
@@ -66,9 +67,15 @@
         {% for tag in entry.tags %}
           <a href="{{ url_for('category', id=tag.id) }}" class="btn btn-xs btn-info" role="button">{{tag.name}}</a>
         {%endfor%}
-
       </div>
       </p>
+      {% endif %}
+      {% if entry.publishers|length > 0 %}
+      <div class="publishers">
+      <p>
+          <span>{{_('Publisher')}}:{% for publisher in entry.publishers %} {{publisher.name}}{% if not loop.last %},{% endif %}{% endfor %}</span>
+      </p>
+      </div>
       {% endif %}
       {% if entry.pubdate[:10] != '0101-01-01' %}
         <p>{{_('Publishing date')}}: {{entry.pubdate|formatdate}} </p>
