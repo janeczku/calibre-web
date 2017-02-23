@@ -1,7 +1,27 @@
 {% extends "layout.html" %}
 {% block body %}
+  <h3>{{_('Calibre library statistics')}}</h3>
+<table id="stats" class="table">
+  <tbody>
+    <tr>
+      <th>{{bookcounter}}</th>
+      <td>{{_('Books in this Library')}}</td>
+    </tr>
+    <tr>
+      <th>{{authorcounter}}</th>
+      <td>{{_('Authors in this Library')}}</td>
+    </tr>
+    <tr>
+      <th>{{categorycounter}}</th>
+      <td>{{_('Categories in this Library')}}</td>
+    </tr>
+    <tr>
+      <th>{{seriecounter}}</th>
+      <td>{{_('Series in this Library')}}</td>
+    </tr>
+  </tbody>
+</table>
   <h3>{{_('Linked libraries')}}</h3>
-
 <table id="libs" class="table">
   <thead>
     <tr>
@@ -24,30 +44,44 @@
     </tr>
     <tr>
       <th>PyPDF2</th>
-      <td>{{versions['PyPdfVersion']}}</td>
+      <td>v{{versions['PyPdfVersion']}}</td>
     </tr>
+    <tr>
+      <th>Babel</th>
+      <td>v{{versions['babel']}}</td>
+    </tr>
+    <tr>
+      <th>SqlAlchemy</th>
+      <td>v{{versions['sqlalchemy']}}</td>
+    </tr>
+    <tr>
+      <th>Flask</th>
+      <td>v{{versions['flask']}}</td>
+    </tr>
+    <tr>
+      <th>Flask Login</th>
+      <td>v{{versions['flasklogin']}}</td>
+    </tr>
+    <tr>
+      <th>Flask Principal</th>
+      <td>v{{versions['flask_principal']}}</td>
+    </tr>
+    <tr>
+      <th>Tornado web server</th>
+      <td>v{{versions['tornado']}}</td>
+    </tr>
+    <tr>
+      <th>ISO639 Languages</th>
+      <td>v{{versions['iso639']}}</td>
+    </tr>
+    <tr>
+      <th>Requests</th>
+      <td>v{{versions['requests']}}</td>
+    </tr>
+
   </tbody>
 </table>
 
-  <h3>{{_('Calibre library statistics')}}</h3>
-<table id="stats" class="table">
-  <tbody>
-    <tr>
-      <th>{{bookcounter}}</th>
-      <td>{{_('Books in this Library')}}</td>
-    </tr>
-    <tr>
-      <th>{{authorcounter}}</th>
-      <td>{{_('Authors in this Library')}}</td>
-    </tr>
-    <tr>
-      <th>{{categorycounter}}</th>
-      <td>{{_('Categories in this Library')}}</td>
-    </tr>
-    <tr>
-      <th>{{seriecounter}}</th>
-      <td>{{_('Series in this Library')}}</td>
-    </tr>
-  </tbody>
-</table>
 {% endblock %}
+
+

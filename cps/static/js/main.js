@@ -36,7 +36,7 @@ $(function() {
             success: function(data) {
                 $('#spinner').show();
                 displaytext=data.text;
-                window.setTimeout(restartTimer, 3000);}
+                setTimeout(restartTimer, 3000);}
         });
     });
     $("#shutdown").click(function() {
@@ -110,7 +110,8 @@ function updateTimer() {
         $('#UpdateprogressDialog #updateFinished').removeClass('hidden');
         $("#check_for_update").removeClass('hidden');
         $("#perform_update").addClass('hidden');
-        }
+        },
+    timeout:2000
     });
 }
 

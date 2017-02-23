@@ -4,8 +4,9 @@ import mimetypes
 import logging
 from logging.handlers import RotatingFileHandler
 import textwrap
-from flask import Flask, render_template, session, request, Response, redirect, url_for, send_from_directory, \
+from flask import Flask, render_template, request, Response, redirect, url_for, send_from_directory, \
     make_response, g, flash, abort
+from flask import __version__ as flaskVersion
 import ub
 from ub import config
 import helper
@@ -14,9 +15,12 @@ import errno
 from sqlalchemy.sql.expression import func
 from sqlalchemy.sql.expression import false
 from sqlalchemy.exc import IntegrityError
+from sqlalchemy import __version__ as sqlalchemyVersion
 from math import ceil
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
+from flask_login import __version__ as flask_loginVersion
 from flask_principal import Principal, Identity, AnonymousIdentity, identity_changed
+from flask_login import __version__ as flask_principalVersion
 from flask_babel import Babel
 from flask_babel import gettext as _
 import requests
@@ -24,6 +28,7 @@ import zipfile
 from werkzeug.security import generate_password_hash, check_password_hash
 from babel import Locale as LC
 from babel import negotiate_locale
+from babel import __version__ as babelVersion
 from babel.dates import format_date
 from functools import wraps
 import base64
@@ -32,16 +37,16 @@ import json
 import urllib
 import datetime
 from iso639 import languages as isoLanguages
+from iso639 import __version__ as iso639Version
 from uuid import uuid4
 import os.path
 import sys
 import subprocess
 import re
 import db
-import thread
 from shutil import move, copyfile
 from tornado.ioloop import IOLoop
-
+from tornado import version as tornadoVersion
 
 try:
     from wand.image import Image
@@ -1042,6 +1047,15 @@ def stats():
             if re.search('Amazon kindlegen\(', lines):
                 versions['KindlegenVersion'] = lines
     versions['PythonVersion'] = sys.version
+    versions['babel'] = babelVersion
+    versions['sqlalchemy'] = sqlalchemyVersion
+    versions['flask'] = flaskVersion
+    versions['flasklogin'] = flask_loginVersion
+    versions['flask_principal'] = flask_principalVersion
+    versions['tornado'] = tornadoVersion
+    versions['iso639'] = iso639Version
+    versions['requests'] = requests.__version__
+
     return render_title_template('stats.html', bookcounter=counter, authorcounter=authors, versions=versions,
                                  categorycounter=categorys, seriecounter=series, title=_(u"Statistics"))
 
@@ -1796,6 +1810,8 @@ def edit_mailsettings():
                       category="success")
             else:
                 flash(_(u"There was an error sending the Test E-Mail: %(res)s", res=result), category="error")
+        else:
+            flash(_(u"E-Mail settings updated"), category="success")
     return render_title_template("email_edit.html", content=content, title=_(u"Edit mail settings"))
 
 
