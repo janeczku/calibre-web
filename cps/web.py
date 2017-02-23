@@ -1195,7 +1195,7 @@ def google_drive_callback():
 @admin_required
 def watch_gdrive():
     if not config.config_google_drive_watch_changes_response:
-        address = '%scalibre-web/gdrive/watch/callback' % config.config_google_drive_calibre_url_base
+        address = '%sgdrive/watch/callback' % config.config_google_drive_calibre_url_base
         notification_id=str(uuid4())
         result = gdriveutils.watchChange(Gdrive.Instance().drive, notification_id,
                                'web_hook', address, gdrive_watch_callback_token, current_milli_time() + 604800*1000)
