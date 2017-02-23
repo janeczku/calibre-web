@@ -11,7 +11,10 @@ def extractCover(zip, coverFile, tmp_file_name):
     if coverFile is None:
         return None
     else:
-        cf = zip.read("OPS/" + coverFile)
+        try:
+            cf = zip.read("OPS/" + coverFile)
+        except KeyError, e:
+            cf = zip.read(coverFile)
         prefix = os.path.splitext(tmp_file_name)[0]
         tmp_cover_name = prefix + "." + coverFile
         image = open(tmp_cover_name, 'wb')
