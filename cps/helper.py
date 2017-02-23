@@ -19,6 +19,8 @@ from email.MIMEBase import MIMEBase
 from email.MIMEMultipart import MIMEMultipart
 from email.MIMEText import MIMEText
 from email.generator import Generator
+from email.utils import formatdate
+from email.utils import make_msgid
 from flask_babel import gettext as _
 import subprocess
 import threading
@@ -165,6 +167,8 @@ def send_mail(book_id, kindle_mail, calibrepath):
     # create MIME message
     msg = MIMEMultipart()
     msg['Subject'] = _(u'Send to Kindle')
+    msg['Message-Id'] = make_msgid('calibre-web')
+    msg['Date'] = formatdate(localtime=True)
     text = _(u'This email has been sent via calibre web.')
     msg.attach(MIMEText(text.encode('UTF-8'), 'plain', 'UTF-8'))
 
