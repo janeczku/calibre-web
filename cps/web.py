@@ -2137,7 +2137,6 @@ def upload():
     db.session.connection().connection.connection.create_function('uuid4', 0, lambda: str(uuid4()))
     if request.method == 'POST' and 'btn-upload' in request.files:
         file = request.files['btn-upload']
-        file = request.files['btn-upload']
         if '.' in file.filename:
             file_ext = file.filename.rsplit('.', 1)[-1].lower()
             if file_ext not in ALLOWED_EXTENSIONS:
