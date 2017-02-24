@@ -109,28 +109,11 @@
   </form>
 </div>
 {% endif %}
-<div class="modal fade" id="metaModal" tabindex="-1" role="dialog" aria-labelledby="metaModalLabel">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="metaModalLabel">{{_('Get meta data')}}</h4>
-      </div>
-      <div class="modal-body" id="meta-info">
-        {{_("Loading...")}}
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">{{_('Close')}}</button>
-      </div>
-    </div>
-  </div>
-</div>
 {% endblock %}
 
 {% block js %}
 <script src="{{ url_for('static', filename='js/libs/typeahead.bundle.js') }}"></script>
 <script src="{{ url_for('static', filename='js/edit_books.js') }}"></script>
-<script src="{{ url_for('static', filename='js/douban_meta.js') }}"></script>
 {% endblock %}
 {% block header %}
 <link href="{{ url_for('static', filename='css/libs/typeahead.css') }}" rel="stylesheet" media="screen">
