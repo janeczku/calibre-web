@@ -68,6 +68,7 @@ $(document).ready(function () {
                             '</div>' +
                             '</li>';
                         $("#book-list").append(book);
+                        if(i>20){break;}
                     }
                 }
             },
