@@ -1055,6 +1055,8 @@ def stats():
     versions['tornado'] = tornadoVersion
     versions['iso639'] = iso639Version
     versions['requests'] = requests.__version__
+    versions['pysqlite'] = db.engine.dialect.dbapi.version
+    versions['sqlite'] = db.engine.dialect.dbapi.sqlite_version
 
     return render_title_template('stats.html', bookcounter=counter, authorcounter=authors, versions=versions,
                                  categorycounter=categorys, seriecounter=series, title=_(u"Statistics"))
