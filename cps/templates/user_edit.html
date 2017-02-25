@@ -116,11 +116,10 @@
       <a href="{{ url_for('admin') }}" id="back" class="btn btn-default">{{_('Back')}}</a>
     </div>
     {% endif %}
-
-
   </form>
 
   {% if downloads %}
+    <div class="col-sm-12">
     <h2>{{_('Recent Downloads')}}</h2>
     {% for entry in downloads %}
       <div class="col-sm-2">
@@ -129,6 +128,7 @@
         </a>
       </div>
     {% endfor %}
+    </div>
   {% endif %}
 </div>
 {% endblock %}
