@@ -1203,7 +1203,7 @@ def feed_get_cover(book_id):
 
 
 @app.route("/read/<int:book_id>/<format>")
-@login_required
+@login_required_if_no_ano
 def read_book(book_id, format):
     book = db.session.query(db.Books).filter(db.Books.id == book_id).first()
     if book:
