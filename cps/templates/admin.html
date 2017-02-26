@@ -2,6 +2,7 @@
 {% block body %}
 <div class="discover">
   <h2>{{_('User list')}}</h2>
+    <div id="divLoading"></div>
   <table class="table table-striped" id="table_user">
     <tr>
         <th>{{_('Nickname')}}</th>
@@ -76,11 +77,13 @@
   <div class="btn btn-default"><a href="{{url_for('configuration')}}">{{_('Configuration')}}</a></div>
   <h2>{{_('Administration')}}</h2>
       {% if not development %}
-        <p>{{_('Current commit timestamp')}}: {{commit}} </p>
-        <div class="btn btn-default" data-toggle="modal" data-target="#RestartDialog">{{_('Restart Calibre-web')}}</a></div>
-        <div class="btn btn-default" data-toggle="modal" data-target="#ShutdownDialog">{{_('Stop Calibre-web')}}</a></div>
-        <div class="btn btn-default" id="check_for_update">{{_('Check for update')}}</a></div>
-        <a href="{{url_for('update')}}" class="btn btn-default hidden" id="perform_update">{{_('Perform Update')}}</a>
+        <div>{{_('Current commit timestamp')}}: <span>{{commit}} </span></div>
+        <div class="hidden" id="update_info">{{_('Newest commit timestamp')}}: <span></span></div>
+        <p></p>
+        <div class="btn btn-default" data-toggle="modal" data-target="#RestartDialog">{{_('Restart Calibre-web')}}</div>
+        <div class="btn btn-default" data-toggle="modal" data-target="#ShutdownDialog">{{_('Stop Calibre-web')}}</div>
+        <div class="btn btn-default" id="check_for_update">{{_('Check for update')}}</div>
+        <div class="btn btn-default hidden" id="perform_update" data-toggle="modal" data-target="#UpdateprogressDialog">{{_('Perform Update')}}</div>
       {% endif %}
 </div>
 <!-- Modal -->
@@ -88,15 +91,17 @@
   <div class="modal-dialog modal-sm">
     <!-- Modal content-->
     <div class="modal-content">
-      <div class="modal-header bg-info">
-      </div>
+      <div class="modal-header bg-info"></div>
       <div class="modal-body text-center">
         <p>{{_('Do you really want to restart Calibre-web?')}}</p>
-        <button type="button" class="btn btn-default" id="restart" data-dismiss="modal">{{_('Ok')}}</button>
+          <div id="spinner" class="spinner"  style="display:none;">
+                <img id="img-spinner" src="/static/css/images/loading-icon.gif"/>
+          </div>
+          <p></p>
+        <button type="button" class="btn btn-default" id="restart" >{{_('Ok')}}</button>
         <button type="button" class="btn btn-default" data-dismiss="modal">{{_('Back')}}</button>
       </div>
     </div>
-
   </div>
 </div>
 <div id="ShutdownDialog" class="modal fade" role="dialog">
@@ -114,5 +119,23 @@
 
   </div>
 </div>
-
+<div id="UpdateprogressDialog" class="modal fade" role="dialog">
+  <div class="modal-dialog modal-sm">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header bg-info text-center">
+      <span>{{_('Updating, please do not reload page')}}</span>
+      </div>
+      <div class="modal-body text-center">
+          <div id="spinner2" class="spinner2"  style="display:none;">
+                <img id="img-spinner" src="/static/css/images/loading-icon.gif"/>
+          </div>
+          <p></p>
+         <div id="Updatecontent"></div>
+          <p></p>
+        <button type="button" class="btn btn-default hidden" id="updateFinished" data-dismiss="modal">{{_('Ok')}}</button>
+      </div>
+    </div>
+  </div>
+</div>
 {% endblock %}

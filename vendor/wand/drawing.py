@@ -1573,7 +1573,7 @@ class Drawing(Resource):
     def rectangle(self, left=None, top=None, right=None, bottom=None,
                   width=None, height=None, radius=None, xradius=None,
                   yradius=None):
-        """Draws a rectangle using the current :attr:`stoke_color`,
+        """Draws a rectangle using the current :attr:`stroke_color`,
         :attr:`stroke_width`, and :attr:`fill_color`.
 
         .. sourcecode:: text
