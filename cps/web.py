@@ -3,7 +3,6 @@
 import mimetypes
 import logging
 from logging.handlers import RotatingFileHandler
-from tempfile import gettempdir
 import textwrap
 from flask import Flask, render_template, session, request, Response, redirect, url_for, send_from_directory, \
     make_response, g, flash, abort
@@ -39,9 +38,10 @@ import sys
 import subprocess
 import re
 import db
+import thread
 from shutil import move, copyfile
 from tornado.ioloop import IOLoop
-import StringIO
+
 
 try:
     from wand.image import Image
@@ -50,9 +50,6 @@ try:
 except ImportError, e:
     use_generic_pdf_cover = True
 from cgi import escape
-
-# Global variables
-global_task = None
 
 
 # Proxy Helper class
@@ -283,7 +280,7 @@ def mimetype_filter(val):
 @app.template_filter('formatdate')
 def formatdate(val):
     conformed_timestamp = re.sub(r"[:]|([-](?!((\d{2}[:]\d{2})|(\d{4}))$))", '', val)
-    formatdate = datetime.datetime.strptime(conformed_timestamp[:-5], "%Y%m%d %H%M%S")
+    formatdate = datetime.datetime.strptime(conformed_timestamp[:15], "%Y%m%d %H%M%S")
     return format_date(formatdate, format='medium',locale=get_locale())
 
 
@@ -668,7 +665,7 @@ def get_opds_download_link(book_id, format):
     file_name = book.title
     if len(book.authors) > 0:
         file_name = book.authors[0].name + '-' + file_name
-    file_name = helper.get_valid_filename(file_name)
+    # file_name = helper.get_valid_filename(file_name)
     response = make_response(send_from_directory(os.path.join(config.config_calibre_dir, book.path), data.name + "." + format))
     response.headers["Content-Disposition"] = "attachment; filename=\"%s.%s\"" % (data.name, format)
     return response
@@ -716,10 +713,42 @@ def get_update_status():
         commit = requests.get('https://api.github.com/repos/janeczku/calibre-web/git/refs/heads/master').json()
         if "object" in commit and commit['object']['sha'] != commit_id:
             status['status'] = True
+            commitdate = requests.get('https://api.github.com/repos/janeczku/calibre-web/git/commits/'+commit['object']['sha']).json()
+            if "committer" in commitdate:
+                status['commit'] = commitdate['committer']['date']
+            else:
+                status['commit'] = u'Unknown'
         else:
             status['status'] = False
     return json.dumps(status)
 
+@app.route("/get_updater_status", methods=['GET','POST'])
+@login_required
+@admin_required
+def get_updater_status():
+    status = {}
+    if request.method == "POST":
+        commit = request.form.to_dict()
+        if "start" in commit and commit['start'] == 'True':
+            text={
+                "1": _(u'Requesting update package'),
+                "2": _(u'Downloading update package'),
+                "3": _(u'Unzipping update package'),
+                "4": _(u'Files are replaced'),
+                "5": _(u'Database connections are closed'),
+                "6": _(u'Server is stopped'),
+                "7": _(u'Update finished, please press okay and reload page')
+            }
+            status['text']=text
+            helper.updater_thread = helper.Updater()
+            helper.updater_thread.start()
+            status['status']=helper.updater_thread.get_update_status()
+    elif request.method == "GET":
+        try:
+            status['status']=helper.updater_thread.get_update_status()
+        except:
+            status['status'] = 7
+    return json.dumps(status)
 
 
 @app.route("/get_languages_json", methods=['GET', 'POST'])
@@ -1018,9 +1047,9 @@ def stats():
 @login_required
 @admin_required
 def shutdown():
-    global global_task
+    # global global_task
     task = int(request.args.get("parameter").strip())
-    global_task = task
+    helper.global_task = task
     if task == 1 or task == 0:  # valid commandos received
         # close all database connections
         db.session.close()
@@ -1032,7 +1061,7 @@ def shutdown():
         server.add_callback(server.stop)
         showtext = {}
         if task == 0:
-            showtext['text'] = _(u'Performing Restart, please reload page')
+            showtext['text'] = _(u'Server restarted, please reload page')
         else:
             showtext['text'] = _(u'Performing shutdown of server, please close window')
         return json.dumps(showtext)
@@ -1043,23 +1072,10 @@ def shutdown():
 @login_required
 @admin_required
 def update():
-    global global_task
-    r = requests.get('https://api.github.com/repos/janeczku/calibre-web/zipball/master', stream=True)
-    fname = re.findall("filename=(.+)", r.headers['content-disposition'])[0]
-    z = zipfile.ZipFile(StringIO.StringIO(r.content))
-    tmp_dir = gettempdir()
-    z.extractall(tmp_dir)
-    helper.update_source(os.path.join(tmp_dir,os.path.splitext(fname)[0]),config.get_main_dir)
-    global_task = 0
-    db.session.close()
-    db.engine.dispose()
-    ub.session.close()
-    ub.engine.dispose()
-    # stop tornado server
-    server = IOLoop.instance()
-    server.add_callback(server.stop)
+    helper.updater_thread = helper.Updater()
     flash(_(u"Update done"), category="info")
-    return logout()
+    return ""
+
 
 @app.route("/search", methods=["GET"])
 @login_required_if_no_ano
@@ -1598,14 +1614,13 @@ def basic_configuration():
 
 
 def configuration_helper(origin):
-    global global_task
+    # global global_task
     reboot_required = False
     db_change = False
     success = False
     if request.method == "POST":
         to_save = request.form.to_dict()
         content = ub.session.query(ub.Settings).first()
-        # ToDo: check lib vaild, and change without restart
         if "config_calibre_dir" in to_save:
             if content.config_calibre_dir != to_save["config_calibre_dir"]:
                 content.config_calibre_dir = to_save["config_calibre_dir"]
@@ -1674,7 +1689,7 @@ def configuration_helper(origin):
             # stop tornado server
             server = IOLoop.instance()
             server.add_callback(server.stop)
-            global_task = 0
+            helper.global_task = 0
             app.logger.info('Reboot required, restarting')
         if origin:
             success = True
