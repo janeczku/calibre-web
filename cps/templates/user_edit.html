@@ -40,6 +40,8 @@
             {% endfor %}
         </select>
     </div>
+      <div class="col-sm-6">
+
     <div class="form-group">
         <input type="checkbox" name="show_random" id="show_random" {% if content.show_random_books() %}checked{% endif %}>
         <label for="show_random">{{_('Show random books')}}</label>
@@ -72,7 +74,8 @@
         <input type="checkbox" name="show_detail_random" id="show_detail_random" {% if content.show_detail_random() %}checked{% endif %}>
         <label for="show_detail_random">{{_('Show random books in detail view')}}</label>
     </div>
-
+</div>
+      <div class="col-sm-6">
     {% if g.user and g.user.role_admin() and not profile %}
     {% if not content.role_anonymous() %}
     <div class="form-group">
@@ -106,13 +109,17 @@
         </label>
       </div>
     {% endif %}
+    </div>
+      <div class="col-sm-12">
     <button type="submit" id="submit" class="btn btn-default">{{_('Submit')}}</button>
     {% if not profile %}
       <a href="{{ url_for('admin') }}" id="back" class="btn btn-default">{{_('Back')}}</a>
+    </div>
     {% endif %}
   </form>
 
   {% if downloads %}
+    <div class="col-sm-12">
     <h2>{{_('Recent Downloads')}}</h2>
     {% for entry in downloads %}
       <div class="col-sm-2">
@@ -121,6 +128,7 @@
         </a>
       </div>
     {% endfor %}
+    </div>
   {% endif %}
 </div>
 {% endblock %}

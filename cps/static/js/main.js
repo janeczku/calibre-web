@@ -36,7 +36,7 @@ $(function() {
             success: function(data) {
                 $('#spinner').show();
                 displaytext=data.text;
-                window.setTimeout(restartTimer, 3000);}
+                setTimeout(restartTimer, 3000);}
         });
     });
     $("#shutdown").click(function() {
@@ -50,7 +50,7 @@ $(function() {
     });
     $("#check_for_update").click(function() {
         var button_text = $("#check_for_update").html();
-        $("#check_for_update").html('Checking...');
+        $("#check_for_update").html('...');
         $.ajax({
             dataType: 'json',
             url: window.location.pathname+"/../../get_update_status",
@@ -110,7 +110,8 @@ function updateTimer() {
         $('#UpdateprogressDialog #updateFinished').removeClass('hidden');
         $("#check_for_update").removeClass('hidden');
         $("#perform_update").addClass('hidden');
-        }
+        },
+    timeout:2000
     });
 }
 
