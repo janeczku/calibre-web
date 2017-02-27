@@ -9,7 +9,11 @@ msgstr ""
 "Project-Id-Version: Calibre Web - polski (POT: 2017-02-20 19:47)\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2017-02-20 19:47+0100\n"
+<<<<<<< HEAD
 "PO-Revision-Date: 2017-02-27 22:55+0100\n"
+=======
+"PO-Revision-Date: 2017-02-26 18:27+0100\n"
+>>>>>>> origin/master
 "Last-Translator: Radosław Kierznowski <radek.kierznowski@outlook.com>\n"
 "Language-Team: \n"
 "Language: pl\n"
@@ -472,11 +476,19 @@ msgstr "Zarządzanie"
 
 #: cps/templates/admin.html:80
 msgid "Current commit timestamp"
+<<<<<<< HEAD
 msgstr "Znacznik czasowy zainstalowanej wersji"
 
 #: cps/templates/admin.html:81
 msgid "Newest commit timestamp"
 msgstr "Znacznik czasowy nowej wersji"
+=======
+msgstr "Obecny znacznik czasowy wersji"
+
+#: cps/templates/admin.html:81
+msgid "Newest commit timestamp"
+msgstr "Nowy znacznik czasowy wersji"
+>>>>>>> origin/master
 
 #: cps/templates/admin.html:83
 msgid "Restart Calibre-web"
