@@ -7,7 +7,6 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import *
 from flask_login import AnonymousUserMixin
 import os
-import traceback
 import logging
 from werkzeug.security import generate_password_hash
 from flask_babel import gettext as _

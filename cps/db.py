@@ -56,6 +56,10 @@ books_languages_link = Table('books_languages_link', Base.metadata,
     Column('lang_code', Integer, ForeignKey('languages.id'), primary_key=True)
     )
 
+books_publishers_link = Table('books_publishers_link', Base.metadata,
+    Column('book', Integer, ForeignKey('books.id'), primary_key=True),
+    Column('publisher', Integer, ForeignKey('publishers.id'), primary_key=True)
+    )
 
 class Identifiers(Base):
     __tablename__ = 'identifiers'
@@ -182,6 +186,21 @@ class Languages(Base):
     def __repr__(self):
         return u"<Languages('{0}')>".format(self.lang_code)
 
+class Publishers(Base):
+    __tablename__ = 'publishers'
+
+    id = Column(Integer, primary_key=True)
+    name = Column(String)
+    sort = Column(String)
+
+    def __init__(self, name,sort):
+        self.name = name
+        self.sort = sort
+
+    def __repr__(self):
+        return u"<Publishers('{0},{1}')>".format(self.name, self.sort)
+
+
 
 class Data(Base):
     __tablename__ = 'data'
@@ -224,6 +243,7 @@ class Books(Base):
     series = relationship('Series', secondary=books_series_link, backref='books')
     ratings = relationship('Ratings', secondary=books_ratings_link, backref='books')
     languages = relationship('Languages', secondary=books_languages_link, backref='books')
+    publishers = relationship('Publishers', secondary=books_publishers_link, backref='books')
     identifiers = relationship('Identifiers', backref='books')
 
     def __init__(self, title, sort, author_sort, timestamp, pubdate, series_index, last_modified, path, has_cover,
@@ -274,7 +294,7 @@ def setup_db():
         return False
 
     dbpath = os.path.join(config.config_calibre_dir, "metadata.db")
-    engine = create_engine('sqlite:///{0}'.format(dbpath.encode('utf-8')), echo=False)
+    engine = create_engine('sqlite:///{0}'.format(dbpath.encode('utf-8')), echo=False, isolation_level="SERIALIZABLE")
     try:
         conn = engine.connect()
 

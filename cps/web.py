@@ -4,8 +4,9 @@ import mimetypes
 import logging
 from logging.handlers import RotatingFileHandler
 import textwrap
-from flask import Flask, render_template, session, request, Response, redirect, url_for, send_from_directory, \
+from flask import Flask, render_template, request, Response, redirect, url_for, send_from_directory, \
     make_response, g, flash, abort
+from flask import __version__ as flaskVersion
 import ub
 from ub import config
 import helper
@@ -14,9 +15,12 @@ import errno
 from sqlalchemy.sql.expression import func
 from sqlalchemy.sql.expression import false
 from sqlalchemy.exc import IntegrityError
+from sqlalchemy import __version__ as sqlalchemyVersion
 from math import ceil
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
+from flask_login import __version__ as flask_loginVersion
 from flask_principal import Principal, Identity, AnonymousIdentity, identity_changed
+from flask_login import __version__ as flask_principalVersion
 from flask_babel import Babel
 from flask_babel import gettext as _
 import requests
@@ -24,6 +28,7 @@ import zipfile
 from werkzeug.security import generate_password_hash, check_password_hash
 from babel import Locale as LC
 from babel import negotiate_locale
+from babel import __version__ as babelVersion
 from babel.dates import format_date
 from functools import wraps
 import base64
@@ -32,16 +37,16 @@ import json
 import urllib
 import datetime
 from iso639 import languages as isoLanguages
+from iso639 import __version__ as iso639Version
 from uuid import uuid4
 import os.path
 import sys
 import subprocess
 import re
 import db
-import thread
 from shutil import move, copyfile
 from tornado.ioloop import IOLoop
-
+from tornado import version as tornadoVersion
 
 try:
     from wand.image import Image
@@ -51,6 +56,7 @@ except ImportError, e:
     use_generic_pdf_cover = True
 from cgi import escape
 
+ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'epub', 'mobi', 'azw', 'azw3', 'cbr', 'cbz', 'cbt', 'djvu', 'prc', 'doc', 'docx', 'fb2'])
 
 # Proxy Helper class
 class ReverseProxied(object):
@@ -473,8 +479,10 @@ def feed_search(term):
         filter = True
     if term:
         entries = db.session.query(db.Books).filter(db.or_(db.Books.tags.any(db.Tags.name.like("%" + term + "%")),
-                                                           db.Books.authors.any(db.Authors.name.like("%" + term + "%")),
-                                                           db.Books.title.like("%" + term + "%"))).filter(filter).all()
+                                                    db.Books.series.any(db.Series.name.like("%" + term + "%")),
+                                                    db.Books.authors.any(db.Authors.name.like("%" + term + "%")),
+                                                    db.Books.publishers.any(db.Publishers.name.like("%" + term + "%")),
+                                                    db.Books.title.like("%" + term + "%"))).filter(filter).all()
         entriescount = len(entries) if len(entries) > 0 else 1
         pagination = Pagination(1, entriescount, entriescount)
         xml = render_title_template('feed.xml', searchterm=term, entries=entries, pagination=pagination)
@@ -1039,6 +1047,17 @@ def stats():
             if re.search('Amazon kindlegen\(', lines):
                 versions['KindlegenVersion'] = lines
     versions['PythonVersion'] = sys.version
+    versions['babel'] = babelVersion
+    versions['sqlalchemy'] = sqlalchemyVersion
+    versions['flask'] = flaskVersion
+    versions['flasklogin'] = flask_loginVersion
+    versions['flask_principal'] = flask_principalVersion
+    versions['tornado'] = tornadoVersion
+    versions['iso639'] = iso639Version
+    versions['requests'] = requests.__version__
+    versions['pysqlite'] = db.engine.dialect.dbapi.version
+    versions['sqlite'] = db.engine.dialect.dbapi.sqlite_version
+
     return render_title_template('stats.html', bookcounter=counter, authorcounter=authors, versions=versions,
                                  categorycounter=categorys, seriecounter=series, title=_(u"Statistics"))
 
@@ -1087,9 +1106,10 @@ def search():
         else:
             filter = True
         entries = db.session.query(db.Books).filter(db.or_(db.Books.tags.any(db.Tags.name.like("%" + term + "%")),
-                                                           db.Books.series.any(db.Series.name.like("%" + term + "%")),
-                                                           db.Books.authors.any(db.Authors.name.like("%" + term + "%")),
-                                                           db.Books.title.like("%" + term + "%"))).filter(filter).all()
+                                                    db.Books.series.any(db.Series.name.like("%" + term + "%")),
+                                                    db.Books.authors.any(db.Authors.name.like("%" + term + "%")),
+                                                    db.Books.publishers.any(db.Publishers.name.like("%" + term + "%")),
+                                                    db.Books.title.like("%" + term + "%"))).filter(filter).all()
         return render_title_template('search.html', searchterm=term, entries=entries)
     else:
         return render_title_template('search.html', searchterm="")
@@ -1109,12 +1129,14 @@ def advanced_search():
 
         author_name = request.args.get("author_name")
         book_title = request.args.get("book_title")
+        publisher = request.args.get("publisher")
         if author_name: author_name = author_name.strip()
         if book_title: book_title = book_title.strip()
+        if publisher: publisher = publisher.strip()
         if include_tag_inputs or exclude_tag_inputs or include_series_inputs or exclude_series_inputs or \
-                include_languages_inputs or exclude_languages_inputs or author_name or book_title:
+                include_languages_inputs or exclude_languages_inputs or author_name or book_title or publisher:
             searchterm = []
-            searchterm.extend((author_name, book_title))
+            searchterm.extend((author_name, book_title, publisher))
             tag_names = db.session.query(db.Tags).filter(db.Tags.id.in_(include_tag_inputs)).all()
             searchterm.extend(tag.name for tag in tag_names)
             # searchterm = " + ".join(filter(None, searchterm))
@@ -1130,7 +1152,8 @@ def advanced_search():
             searchterm.extend(language.name for language in language_names)
             searchterm = " + ".join(filter(None, searchterm))
             q = q.filter(db.Books.authors.any(db.Authors.name.like("%" + author_name + "%")),
-                         db.Books.title.like("%" + book_title + "%"))
+                         db.Books.title.like("%" + book_title + "%"),
+                         db.Books.publishers.any(db.Publishers.name.like("%" + publisher + "%")))
             for tag in include_tag_inputs:
                 q = q.filter(db.Books.tags.any(db.Tags.id == tag))
             for tag in exclude_tag_inputs:
@@ -1180,7 +1203,7 @@ def feed_get_cover(book_id):
 
 
 @app.route("/read/<int:book_id>/<format>")
-@login_required
+@login_required_if_no_ano
 def read_book(book_id, format):
     book = db.session.query(db.Books).filter(db.Books.id == book_id).first()
     if book:
@@ -1789,6 +1812,8 @@ def edit_mailsettings():
                       category="success")
             else:
                 flash(_(u"There was an error sending the Test E-Mail: %(res)s", res=result), category="error")
+        else:
+            flash(_(u"E-Mail settings updated"), category="success")
     return render_title_template("email_edit.html", content=content, title=_(u"Edit mail settings"))
 
 
@@ -2130,6 +2155,18 @@ def upload():
     db.session.connection().connection.connection.create_function('uuid4', 0, lambda: str(uuid4()))
     if request.method == 'POST' and 'btn-upload' in request.files:
         file = request.files['btn-upload']
+        if '.' in file.filename:
+            file_ext = file.filename.rsplit('.', 1)[-1].lower()
+            if file_ext not in ALLOWED_EXTENSIONS:
+                flash(
+                    _('File extension "%s" is not allowed to be uploaded to this server' % 
+                    file_ext),
+                    category="error"
+                )
+                return redirect(url_for('index'))
+        else:
+            flash(_('File to be uploaded must have an extension'), category="error")
+            return redirect(url_for('index'))
         meta = uploader.upload(file)
 
         title = meta.title
