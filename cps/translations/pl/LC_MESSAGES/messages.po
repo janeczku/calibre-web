@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: Calibre Web - polski (POT: 2017-02-20 19:47)\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2017-02-20 19:47+0100\n"
-"PO-Revision-Date: 2017-02-26 18:27+0100\n"
+"PO-Revision-Date: 2017-02-27 22:55+0100\n"
 "Last-Translator: Radosław Kierznowski <radek.kierznowski@outlook.com>\n"
 "Language-Team: \n"
 "Language: pl\n"
@@ -472,15 +472,15 @@ msgstr "Zarządzanie"
 
 #: cps/templates/admin.html:80
 msgid "Current commit timestamp"
-msgstr "Obecny znacznik czasowy wersji"
+msgstr "Znacznik czasowy zainstalowanej wersji"
 
 #: cps/templates/admin.html:81
 msgid "Newest commit timestamp"
-msgstr "Nowy znacznik czasowy wersji"
+msgstr "Znacznik czasowy nowej wersji"
 
 #: cps/templates/admin.html:83
 msgid "Restart Calibre-web"
-msgstr "Uruchom ponownie Calibre-web"
+msgstr "Zrestartuj Calibre-web"
 
 #: cps/templates/admin.html:84
 msgid "Stop Calibre-web"
@@ -501,14 +501,14 @@ msgstr "Na pewno chcesz uruchomić ponownie Calibre-web?"
 #: cps/templates/admin.html:101 cps/templates/admin.html:115
 #: cps/templates/admin.html:136
 msgid "Ok"
-msgstr "Ok"
+msgstr "OK"
 
 #: cps/templates/admin.html:102 cps/templates/admin.html:116
 #: cps/templates/book_edit.html:108 cps/templates/config_edit.html:75
 #: cps/templates/email_edit.html:36 cps/templates/shelf_edit.html:17
 #: cps/templates/shelf_order.html:12 cps/templates/user_edit.html:111
 msgid "Back"
-msgstr "Wróć"
+msgstr "Cofnij"
 
 #: cps/templates/admin.html:114
 msgid "Do you really want to stop Calibre-web?"
@@ -564,6 +564,7 @@ msgid "No"
 msgstr "Nie"
 
 #: cps/templates/book_edit.html:104
+#, fuzzy
 msgid "view book after edit"
 msgstr "wyświetl książkę po edycji"
 
@@ -832,6 +833,7 @@ msgid "Calibre Web ebook catalog"
 msgstr "Calibre Web katalog ebooków"
 
 #: cps/templates/read.html:136
+#, fuzzy
 msgid "Reflow text when sidebars are open."
 msgstr "Tekst pływający, gdy paski boczne są otwarte."
 
@@ -937,7 +939,7 @@ msgstr "Kategorii w bibliotece"
 
 #: cps/templates/stats.html:49
 msgid "Series in this Library"
-msgstr "Serie w tej bibliotece"
+msgstr "Serii w tej bibliotece"
 
 #: cps/templates/user_edit.html:23
 msgid "Kindle E-Mail"
