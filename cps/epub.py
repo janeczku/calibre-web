@@ -7,13 +7,14 @@ import os
 import uploader
 
 
-def extractCover(zip, coverFile, tmp_file_name):
+def extractCover(zip, coverFile, coverpath, tmp_file_name):
     if coverFile is None:
         return None
     else:
-        cf = zip.read("OPS/" + coverFile)
+        zipCoverPath = os.path.join(coverpath , coverFile).replace('\\','/')
+        cf = zip.read(zipCoverPath)
         prefix = os.path.splitext(tmp_file_name)[0]
-        tmp_cover_name = prefix + "." + coverFile
+        tmp_cover_name = prefix + '.' + os.path.basename(zipCoverPath)
         image = open(tmp_cover_name, 'wb')
         image.write(cf)
         image.close()
@@ -32,9 +33,10 @@ def get_epub_info(tmp_file_path, original_file_name, original_file_extension):
     txt = zip.read('META-INF/container.xml')
     tree = etree.fromstring(txt)
     cfname = tree.xpath('n:rootfiles/n:rootfile/@full-path', namespaces=ns)[0]
-
     cf = zip.read(cfname)
     tree = etree.fromstring(cf)
+
+    coverpath=os.path.dirname(cfname)
 
     p = tree.xpath('/pkg:package/pkg:metadata', namespaces=ns)[0]
 
@@ -46,11 +48,16 @@ def get_epub_info(tmp_file_path, original_file_name, original_file_extension):
         else:
             epub_metadata[s] = "Unknown"
 
-    coversection = tree.xpath("/pkg:package/pkg:manifest/pkg:item[@id='cover']/@href", namespaces=ns)
+    coversection = tree.xpath("/pkg:package/pkg:manifest/pkg:item[@id='cover-image']/@href", namespaces=ns)
     if len(coversection) > 0:
-        coverfile = extractCover(zip, coversection[0], tmp_file_path)
+        coverfile = extractCover(zip, coversection[0], coverpath, tmp_file_path)
     else:
-        coverfile = None
+        coversection = tree.xpath("/pkg:package/pkg:manifest/pkg:item[@id='cover']/@href", namespaces=ns)
+        if len(coversection) > 0:
+            coverfile = extractCover(zip, coversection[0], coverpath, tmp_file_path)
+        else:
+            coverfile = None
+
     if epub_metadata['title'] is None:
         title = original_file_name
     else:
