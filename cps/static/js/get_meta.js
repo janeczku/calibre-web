@@ -24,17 +24,14 @@ $(document).ready(function () {
         return this.replace(new RegExp(s1, "gm"), s2);　　
     }
 
-    $.ajaxSetup({
-        type: "GET",
-        dataType: "jsonp",
-        jsonp: 'callback',
-    });
-
     gg_search_book = function (title) {
         title = title.replaceAll(/\s+/, '+');
         var url = google + gg_search + '?q=' + title;
         $.ajax({
             url: url,
+            type: "GET",
+            dataType: "jsonp",
+            jsonp: 'callback',
             success: function (data) {
                 gg_results = data.items;
             },
@@ -89,6 +86,9 @@ $(document).ready(function () {
         var url = douban + db_search + '?q=' + title + '&fields=all&count=10';
         $.ajax({
             url: url,
+            type: "GET",
+            dataType: "jsonp",
+            jsonp: 'callback',
             success: function (data) {
                 db_results = data.books;
             },
