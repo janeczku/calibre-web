@@ -50,7 +50,7 @@ $(function() {
     });
     $("#check_for_update").click(function() {
         var button_text = $("#check_for_update").html();
-        $("#check_for_update").html('Checking...');
+        $("#check_for_update").html('...');
         $.ajax({
             dataType: 'json',
             url: window.location.pathname+"/../../get_update_status",
