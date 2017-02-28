@@ -113,9 +113,13 @@
     </div>
   </div>
 </div>
-{% endblock %} {% block js %}
+{% endblock %} 
+
+{% block js %}
 <script src="{{ url_for('static', filename='js/libs/typeahead.bundle.js') }}"></script>
 <script src="{{ url_for('static', filename='js/edit_books.js') }}"></script>
 <script src="{{ url_for('static', filename='js/get_meta.js') }}"></script>
-{% endblock %} {% block header %}
-<link href="{{ url_for('static', filename='css/libs/typeahead.css') }}" rel="stylesheet" media="screen"> {% endblock %}
+{% endblock %} 
+{% block header %}
+<link href="{{ url_for('static', filename='css/libs/typeahead.css') }}" rel="stylesheet" media="screen"> 
+{% endblock %}

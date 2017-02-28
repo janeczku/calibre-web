@@ -1055,6 +1055,8 @@ def stats():
     versions['tornado'] = tornadoVersion
     versions['iso639'] = iso639Version
     versions['requests'] = requests.__version__
+    versions['pysqlite'] = db.engine.dialect.dbapi.version
+    versions['sqlite'] = db.engine.dialect.dbapi.sqlite_version
 
     return render_title_template('stats.html', bookcounter=counter, authorcounter=authors, versions=versions,
                                  categorycounter=categorys, seriecounter=series, title=_(u"Statistics"))
@@ -1201,7 +1203,7 @@ def feed_get_cover(book_id):
 
 
 @app.route("/read/<int:book_id>/<format>")
-@login_required
+@login_required_if_no_ano
 def read_book(book_id, format):
     book = db.session.query(db.Books).filter(db.Books.id == book_id).first()
     if book:
