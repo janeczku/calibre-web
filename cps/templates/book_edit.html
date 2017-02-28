@@ -1,13 +1,9 @@
-{% extends "layout.html" %}
-{% block body %}
-{% if book %}
+{% extends "layout.html" %} {% block body %} {% if book %}
 <div class="col-sm-3 col-lg-3 col-xs-12">
   <div class="cover">
     {% if book.has_cover %}
-      <img src="{{ url_for('get_cover', cover_path=book.path.replace('\\','/')) }}" />
-    {% else %}
-      <img src="{{ url_for('static', filename='generic_cover.jpg') }}" />
-    {% endif %}
+    <img src="{{ url_for('get_cover', cover_path=book.path.replace('\\','/')) }}" /> {% else %}
+    <img src="{{ url_for('static', filename='generic_cover.jpg') }}" /> {% endif %}
   </div>
 </div>
 <div class="col-sm-8">
@@ -29,54 +25,43 @@
       <input type="text" class="form-control typeahead" name="tags" id="tags" value="{% for tag in book.tags %}{{tag.name.strip()}}, {% endfor %}">
     </div>
 
-      <div class="form-group">
-        <label for="series">{{_('Series')}}</label>
-        <input type="text" class="form-control typeahead" name="series" id="series" value="{% if book.series %}{{book.series[0].name}}{% endif %}">
-      </div>
-      <div class="form-group">
-        <label for="series_index">{{_('Series id')}}</label>
-        <input type="text" class="form-control" name="series_index" id="series_index" value="{{book.series_index}}">
-      </div>
-      <div class="form-group">
-        <label for="rating">{{_('Rating')}}</label>
-        <input type="number" min="0" max="5" step="1" class="form-control" name="rating" id="rating" value="{% if book.ratings %}{{book.ratings[0].rating / 2}}{% endif %}">
-      </div>
-      <div class="form-group">
-        <label for="cover_url">{{_('Cover URL (jpg)')}}</label>
-        <input type="text" class="form-control" name="cover_url" id="cover_url" value="">
-      </div>
-      
+    <div class="form-group">
+      <label for="series">{{_('Series')}}</label>
+      <input type="text" class="form-control typeahead" name="series" id="series" value="{% if book.series %}{{book.series[0].name}}{% endif %}">
+    </div>
+    <div class="form-group">
+      <label for="series_index">{{_('Series id')}}</label>
+      <input type="text" class="form-control" name="series_index" id="series_index" value="{{book.series_index}}">
+    </div>
+    <div class="form-group">
+      <label for="rating">{{_('Rating')}}</label>
+      <input type="number" min="0" max="5" step="1" class="form-control" name="rating" id="rating" value="{% if book.ratings %}{{book.ratings[0].rating / 2}}{% endif %}">
+    </div>
+    <div class="form-group">
+      <label for="cover_url">{{_('Cover URL (jpg)')}}</label>
+      <input type="text" class="form-control" name="cover_url" id="cover_url" value="">
+    </div>
+
     <div class="form-group">
       <label for="languages">{{_('Language')}}</label>
       <input type="text" class="form-control typeahead" name="languages" id="languages" value="{% for language in book.languages %}{{language.language_name.strip()}}, {% endfor %}">
     </div>
-      
-      {% if cc|length > 0 %}
-        {% for c in cc %}
-          <div class="form-group">
-            <label for="{{ 'custom_column_' ~ c.id }}">{{ c.name }}</label>
-            {% if c.datatype == 'bool' %}
-              <select name="{{ 'custom_column_' ~ c.id }}" id="{{ 'custom_column_' ~ c.id }}" class="form-control">
+
+    {% if cc|length > 0 %} {% for c in cc %}
+    <div class="form-group">
+      <label for="{{ 'custom_column_' ~ c.id }}">{{ c.name }}</label> {% if c.datatype == 'bool' %}
+      <select name="{{ 'custom_column_' ~ c.id }}" id="{{ 'custom_column_' ~ c.id }}" class="form-control">
                 <option value="None" {% if book['custom_column_' ~ c.id]|length == 0 %} selected {% endif %}></option>
                 <option value="True"  {% if book['custom_column_' ~ c.id]|length > 0 %}{% if book['custom_column_' ~ c.id][0].value ==true %}selected{% endif %}{% endif %} >{{_('Yes')}}</option>
                 <option value="False"  {% if book['custom_column_' ~ c.id]|length > 0 %}{% if book['custom_column_' ~ c.id][0].value ==false %}selected{% endif %}{% endif %}>{{_('No')}}</option>
-              </select>
-            {% endif %}
-            {% if c.datatype in ['text', 'series'] and not c.is_multiple %}
-              <input type="text" class="form-control" name="{{ 'custom_column_' ~ c.id }}" id="{{ 'custom_column_' ~ c.id }}"
-              {% if book['custom_column_' ~ c.id]|length > 0 %}
-                value="{{ book['custom_column_' ~ c.id][0].value }}"
-              {% endif %}>
-            {% endif %}
-
-            {% if c.datatype in ['text', 'series'] and c.is_multiple %}
-              <input type="text" class="form-control" name="{{ 'custom_column_' ~ c.id }}" id="{{ 'custom_column_' ~ c.id }}"
-              {% if book['custom_column_' ~ c.id]|length > 0 %}
-              value="{% for column in book['custom_column_' ~ c.id] %}{{ column.value.strip() }}{% if not loop.last %}, {% endif %}{% endfor %}"{% endif %}>
-            {% endif %}
-            
-            {% if c.datatype == 'enumeration' %}
-              <select class="form-control" name="{{ 'custom_column_' ~ c.id }}" id="{{ 'custom_column_' ~ c.id }}">
+              </select> {% endif %} {% if c.datatype in ['text', 'series'] and not c.is_multiple %}
+      <input type="text" class="form-control" name="{{ 'custom_column_' ~ c.id }}" id="{{ 'custom_column_' ~ c.id }}" {% if book[
+        'custom_column_' ~ c.id]|length> 0 %} value="{{ book['custom_column_' ~ c.id][0].value }}" {% endif %}> {% endif %} {% if c.datatype
+      in ['text', 'series'] and c.is_multiple %}
+      <input type="text" class="form-control" name="{{ 'custom_column_' ~ c.id }}" id="{{ 'custom_column_' ~ c.id }}" {% if book[
+        'custom_column_' ~ c.id]|length> 0 %} value="{% for column in book['custom_column_' ~ c.id] %}{{ column.value.strip() }}{% if
+      not loop.last %}, {% endif %}{% endfor %}"{% endif %}> {% endif %} {% if c.datatype == 'enumeration' %}
+      <select class="form-control" name="{{ 'custom_column_' ~ c.id }}" id="{{ 'custom_column_' ~ c.id }}">
                   <option></option>
                   {% for opt in c.get_display_dict().enum_values %}
                     <option 
@@ -85,25 +70,20 @@
                       {% endif %}
                       >{{ opt }}</option>
                   {% endfor %}
-              </select>
-            {% endif %}
+              </select> {% endif %} {% if c.datatype == 'rating' %}
+      <input type="number" min="1" max="5" step="1" class="form-control" name="{{ 'custom_column_' ~ c.id }}" id="{{ 'custom_column_' ~ c.id }}"
+        {% if book[ 'custom_column_' ~ c.id]|length> 0 %} value="{{ '%d' % (book['custom_column_' ~ c.id][0].value /
+      2) }}" {% endif %}> {% endif %}
+    </div>
+    {% endfor %} {% endif %}
 
-            {% if c.datatype == 'rating' %}
-              <input type="number" min="1" max="5" step="1" class="form-control" name="{{ 'custom_column_' ~ c.id }}" id="{{ 'custom_column_' ~ c.id }}"
-                {% if book['custom_column_' ~ c.id]|length > 0 %}
-                    value="{{ '%d' %  (book['custom_column_' ~ c.id][0].value / 2) }}"
-                {% endif %}>
-            {% endif %}
-          </div>
-        {% endfor %}
-      {% endif %}  
-      
-      
+
     <div class="checkbox">
       <label>
         <input name="detail_view" type="checkbox" checked> {{_('view book after edit')}}
       </label>
     </div>
+    <a href="#" id="get_meta" class="btn btn-default" data-toggle="modal" data-target="#metaModal">{{_('Get Meta Data')}}</a>
     <button type="submit" class="btn btn-default">{{_('Submit')}}</button>
     <a href="{{ url_for('show_book',id=book.id) }}" class="btn btn-default">{{_('Back')}}</a>
   </form>
@@ -115,6 +95,14 @@
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title" id="metaModalLabel">{{_('Get meta data')}}</h4>
+        <form class="form-inline">
+          <div class="form-group">
+            <label class="sr-only" for="keyword">Keyword</label>
+            <input type="text" class="form-control" id="keyword" placeholder="{{_(" Search keyword ")}}">
+          </div>
+          <button type="button" class="btn btn-default" id="do-search">{{_("Go!")}}</button>
+          <span>{{_('Click the cover to load meta data to the form')}}</span>
+        </form>
       </div>
       <div class="modal-body" id="meta-info">
         {{_("Loading...")}}
@@ -125,13 +113,9 @@
     </div>
   </div>
 </div>
-{% endblock %}
-
-{% block js %}
+{% endblock %} {% block js %}
 <script src="{{ url_for('static', filename='js/libs/typeahead.bundle.js') }}"></script>
 <script src="{{ url_for('static', filename='js/edit_books.js') }}"></script>
-<script src="{{ url_for('static', filename='js/douban_meta.js') }}"></script>
-{% endblock %}
-{% block header %}
-<link href="{{ url_for('static', filename='css/libs/typeahead.css') }}" rel="stylesheet" media="screen">
-{% endblock %}
+<script src="{{ url_for('static', filename='js/get_meta.js') }}"></script>
+{% endblock %} {% block header %}
+<link href="{{ url_for('static', filename='css/libs/typeahead.css') }}" rel="stylesheet" media="screen"> {% endblock %}
