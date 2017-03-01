@@ -54,7 +54,7 @@ def get_epub_info(tmp_file_path, original_file_name, original_file_extension):
     else:
         coversection = tree.xpath("/pkg:package/pkg:manifest/pkg:item[@id='cover']/@href", namespaces=ns)
         if len(coversection) > 0:
-        filetype = coversection[0].rsplit('.',1)[-1]
+            filetype = coversection[0].rsplit('.',1)[-1]
             if filetype == "xhtml" or filetype == "html": #if cover is (x)html format
                 markup = zip.read(os.path.join(coverpath,coversection[0]))
                 markupTree = etree.fromstring(markup)
@@ -66,7 +66,13 @@ def get_epub_info(tmp_file_path, original_file_name, original_file_extension):
             else:
                 coverfile = extractCover(zip, coversection[0], coverpath, tmp_file_path)
         else:
-            coverfile = None
+            meta_cover = tree.xpath("/pkg:package/pkg:metadata/pkg:meta[@name='cover']/@content", namespaces=ns)
+            if len(meta_cover) > 0:
+                meta_cover_content = tree.xpath("/pkg:package/pkg:manifest/pkg:item[@id='"+meta_cover[0]+"']/@href",namespaces=ns)
+                if len(meta_cover_content) > 0:
+                    coverfile = extractCover(zip, meta_cover_content[0], coverpath, tmp_file_path)
+            else:
+                coverfile = None
 
     if epub_metadata['title'] is None:
         title = original_file_name
