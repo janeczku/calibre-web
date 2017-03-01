@@ -1033,7 +1033,7 @@ def stats():
     categorys = len(db.session.query(db.Tags).all())
     series = len(db.session.query(db.Series).all())
     versions = uploader.book_formats.get_versions()
-    vendorpath = os.path.join(config.get_main_dir + "vendor" + os.sep)
+    vendorpath = os.path.join(config.get_main_dir, "vendor")
     if sys.platform == "win32":
         kindlegen = os.path.join(vendorpath, u"kindlegen.exe")
     else:
