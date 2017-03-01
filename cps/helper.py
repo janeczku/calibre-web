@@ -28,6 +28,8 @@ import shutil
 import requests
 import zipfile
 from tornado.ioloop import IOLoop
+import gdriveutils as gd
+import web
 
 try:
     import unidecode
@@ -278,6 +280,30 @@ def update_dir_stucture(book_id, calibrepath):
         new_author_path = os.path.join(os.path.join(calibrepath, new_authordir), os.path.basename(path))
         os.renames(path, new_author_path)
         book.path = new_authordir + '/' + book.path.split('/')[1]
+    db.session.commit()
+
+def update_dir_structure_gdrive(book_id):
+    db.session.connection().connection.connection.create_function("title_sort", 1, db.title_sort)
+    book = db.session.query(db.Books).filter(db.Books.id == book_id).first()
+    
+    authordir = book.path.split('/')[0]
+    new_authordir = get_valid_filename(book.authors[0].name)
+    titledir = book.path.split('/')[1]
+    new_titledir = get_valid_filename(book.title) + " (" + str(book_id) + ")"
+    
+    if titledir != new_titledir:
+        print (titledir)
+        gFile=gd.getFileFromEbooksFolder(web.Gdrive.Instance().drive,os.path.dirname(book.path),titledir)
+        gFile['title']= new_titledir
+        gFile.Upload()
+        book.path = book.path.split('/')[0] + '/' + new_titledir
+    
+    if authordir != new_authordir:
+        gFile=gd.getFileFromEbooksFolder(web.Gdrive.Instance().drive,None,authordir)
+        gFile['title']= new_authordir
+        gFile.Upload()
+        book.path = new_authordir + '/' + book.path.split('/')[1]
+
     db.session.commit()
 
 class Updater(threading.Thread):
