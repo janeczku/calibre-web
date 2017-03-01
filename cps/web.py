@@ -2454,7 +2454,10 @@ def edit_book(book_id):
             for author in book.authors:
                 author_names.append(author.name)
             for b in edited_books_id:
-                helper.update_dir_stucture(b, config.config_calibre_dir)
+                if config.config_use_google_drive:
+                    helper.update_dir_structure_gdrive(b)
+                else:
+                    helper.update_dir_stucture(b, config.config_calibre_dir)
             if config.config_use_google_drive:
                 updateGdriveCalibreFromLocal()
             if "detail_view" in to_save:
@@ -2549,8 +2552,7 @@ def upload():
         for author in db_book.authors:
             author_names.append(author.name)
         if config.config_use_google_drive:
-            if not current_user.role_edit() and not current_user.role_admin():
-                updateGdriveCalibreFromLocal()
+            updateGdriveCalibreFromLocal()
     cc = db.session.query(db.Custom_Columns).filter(db.Custom_Columns.datatype.notin_(db.cc_exceptions)).all()
     if current_user.role_edit() or current_user.role_admin():
         return render_title_template('book_edit.html', book=db_book, authors=author_names, cc=cc,
