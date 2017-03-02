@@ -51,6 +51,7 @@ def get_epub_info(tmp_file_path, original_file_name, original_file_extension):
     try:#maybe dc:language isn't present, less possible but possible
         lang = p.xpath('dc:language/text()', namespaces=ns)[0]
         lang = lang.split('-', 1)[0]
+        lang.lower()
         if len(lang) == 2:
             epub_metadata['languages'] = isoLanguages.get(part1=lang).name
         elif len(lang) == 3:
