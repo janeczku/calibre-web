@@ -1413,13 +1413,26 @@ def advanced_search():
     return render_title_template('search_form.html', tags=tags, languages=languages, series=series, title=_(u"search"))
 
 
+def get_cover_via_gdrive(cover_path):
+    df=gdriveutils.getFileFromEbooksFolder(Gdrive.Instance().drive, cover_path, 'cover.jpg')
+    if not gdriveutils.session.query(gdriveutils.PermissionAdded).filter(gdriveutils.PermissionAdded.gdrive_id == df['id']).first():
+        permissions=df.GetPermissions()
+        df.InsertPermission({
+                        'type': 'anyone',
+                        'value': 'anyone',
+                        'role': 'reader',
+                        'withLink' : True})
+        permissionAdded=gdriveutils.PermissionAdded()
+        permissionAdded.gdrive_id=df['id']
+        gdriveutils.session.add(permissionAdded)
+        gdriveutils.session.commit()
+    return df.metadata.get('webContentLink')
+
 @app.route("/cover/<path:cover_path>")
 @login_required_if_no_ano
 def get_cover(cover_path):
     if config.config_use_google_drive:
-        df=gdriveutils.getFileFromEbooksFolder(Gdrive.Instance().drive, cover_path, 'cover.jpg')
-        download_url = df.metadata.get('webContentLink')
-        return redirect(download_url)
+        return redirect(get_cover_via_gdrive(cover_path))
     else:
         return send_from_directory(os.path.join(config.config_calibre_dir, cover_path), "cover.jpg")
 
@@ -1432,11 +1445,9 @@ def get_cover(cover_path):
 def feed_get_cover(book_id):
     book = db.session.query(db.Books).filter(db.Books.id == book_id).first()
     if config.config_use_google_drive:
-        df=gdriveutils.getFileFromEbooksFolder(Gdrive.Instance().drive, cover_path, 'cover.jpg')
-        download_url = df.metadata.get('webContentLink')
-        return redirect(download_url)
+        return redirect(get_cover_via_gdrive(book.path))
     else:
-        return send_from_directory(os.path.join(config.config_calibre_dir, cover_path), "cover.jpg")
+        return send_from_directory(os.path.join(config.config_calibre_dir, book.path), "cover.jpg")
 
 def render_read_books(page, are_read, as_xml=False):
     readBooks=ub.session.query(ub.ReadBook).filter(ub.ReadBook.user_id == int(current_user.id)).filter(ub.ReadBook.is_read == True).all()

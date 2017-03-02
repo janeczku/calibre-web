@@ -34,7 +34,18 @@ class GdriveId(Base):
     def __repr__(self):
         return str(self.path)
 
+class PermissionAdded(Base):
+    __tablename__='permissions_added'
+
+    id = Column(Integer, primary_key=True)
+    gdrive_id = Column(Integer, unique=True)
+
+    def __repr__(self):
+        return str(self.gdrive_id)
+
 def migrate():
+    if not engine.dialect.has_table(engine.connect(), "permissions_added"):
+        PermissionAdded.__table__.create(bind = engine)
     for sql in session.execute("select sql from sqlite_master where type='table'"):
         if 'CREATE TABLE gdrive_ids' in sql[0]:
             currUniqueConstraint='UNIQUE (gdrive_id)'
