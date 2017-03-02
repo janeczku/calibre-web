@@ -5,7 +5,7 @@ import zipfile
 from lxml import etree
 import os
 import uploader
-
+from iso639 import languages as isoLanguages
 
 def extractCover(zip, coverFile, coverpath, tmp_file_name):
     if coverFile is None:
@@ -47,6 +47,15 @@ def get_epub_info(tmp_file_path, original_file_name, original_file_extension):
             epub_metadata[s] = p.xpath('dc:%s/text()' % s, namespaces=ns)[0]
         else:
             epub_metadata[s] = "Unknown"
+    #detect lang need futher modification in web.py /upload
+    lang = p.xpath('dc:language/text()', namespaces=ns)[0]
+    lang = lang.split('-', 1)[0]
+    if len(lang) == 2:
+        epub_metadata['languages'] = isoLanguages.get(part1=lang).name
+    elif len(lang) == 3:
+        epub_metadata['languages'] = isoLanguages.get(part3=lang).name
+    else:
+        epub_metadata['languages'] = ""
 
     coversection = tree.xpath("/pkg:package/pkg:manifest/pkg:item[@id='cover-image']/@href", namespaces=ns)
     if len(coversection) > 0:
@@ -59,16 +68,16 @@ def get_epub_info(tmp_file_path, original_file_name, original_file_extension):
                 markup = zip.read(os.path.join(coverpath,coversection[0]))
                 markupTree = etree.fromstring(markup)
                 #no matter xhtml or html with no namespace
-                imgsrc = markupTree.xpath( "//*[local-name() = 'img']/@src")
+                imgsrc = markupTree.xpath("//*[local-name() = 'img']/@src")
                 #imgsrc maybe startwith "../"" so fullpath join then relpath to cwd
-                filename = os.path.relpath(os.path.join(os.path.dirname(os.path.join(coverpath,coversection[0])),imgsrc[0]))
-                coverfile = extractCover(zip, filename, "", tmp_file_path)        
+                filename = os.path.relpath(os.path.join(os.path.dirname(os.path.join(coverpath, coversection[0])), imgsrc[0]))
+                coverfile = extractCover(zip, filename, "", tmp_file_path)
             else:
                 coverfile = extractCover(zip, coversection[0], coverpath, tmp_file_path)
         else:
             meta_cover = tree.xpath("/pkg:package/pkg:metadata/pkg:meta[@name='cover']/@content", namespaces=ns)
             if len(meta_cover) > 0:
-                meta_cover_content = tree.xpath("/pkg:package/pkg:manifest/pkg:item[@id='"+meta_cover[0]+"']/@href",namespaces=ns)
+                meta_cover_content = tree.xpath("/pkg:package/pkg:manifest/pkg:item[@id='"+meta_cover[0]+"']/@href", namespaces=ns)
                 if len(meta_cover_content) > 0:
                     coverfile = extractCover(zip, meta_cover_content[0], coverpath, tmp_file_path)
             else:
@@ -89,4 +98,4 @@ def get_epub_info(tmp_file_path, original_file_name, original_file_extension):
         tags="",
         series="",
         series_id="",
-        languages=None)
+        languages=epub_metadata['languages'])
