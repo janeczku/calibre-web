@@ -1141,9 +1141,12 @@ def show_book(id):
 
         #return render_title_template('detail.html', entry=entries, cc=cc,
                                     # title=entries.title, books_shelfs=book_in_shelfs)
-        matching_have_read_book=ub.session.query(ub.ReadBook).filter(ub.and_(ub.ReadBook.user_id == int(current_user.id),
+        if not current_user.is_anonymous():
+            matching_have_read_book=ub.session.query(ub.ReadBook).filter(ub.and_(ub.ReadBook.user_id == int(current_user.id),
                                                                    ub.ReadBook.book_id == id)).all()
-        have_read=len(matching_have_read_book) > 0 and matching_have_read_book[0].is_read
+            have_read=len(matching_have_read_book) > 0 and matching_have_read_book[0].is_read
+        else:
+            have_read=None
 
         return render_title_template('detail.html', entry=entries, cc=cc,
                                      title=entries.title, books_shelfs=book_in_shelfs, have_read=have_read)

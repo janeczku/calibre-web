@@ -107,6 +107,7 @@
         </div>
         </p>
       {% endif %}  
+      {% if not g.user.is_anonymous() %}
       <p>
         <div class="custom_columns" id="have_read">
           Read
@@ -119,6 +120,7 @@
           </form>
         </div>
       </p>
+      {% endif %}
         
 
       {% if entry.comments|length > 0 and entry.comments[0].text|length > 0%}
