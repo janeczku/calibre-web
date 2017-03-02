@@ -1,3 +1,4 @@
+##Forked from [janeczku/calibre-web](https://github.com/janeczku/calibre-web) [![Build Status](https://travis-ci.org/Kennyl/calibre-web.svg?branch=master)](https://travis-ci.org/Kennyl/calibre-web)
 ##About
 
 Calibre Web is a web app providing a clean interface for browsing, reading and downloading eBooks using an existing [Calibre](https://calibre-ebook.com) database.
