@@ -51,6 +51,7 @@ from tornado.ioloop import IOLoop
 import shutil
 import StringIO
 import gdriveutils
+import tempfile
 import io
 import hashlib
 import threading
@@ -1274,12 +1275,13 @@ def on_received_watch_confirmation():
                 if response:
                     dbpath = os.path.join(config.config_calibre_dir, "metadata.db")
                     if not response['deleted'] and response['file']['title'] == 'metadata.db' and response['file']['md5Checksum'] != md5(dbpath):
+                        tmpDir=tempfile.gettempdir()
                         app.logger.info ('Database file updated')
-                        copyfile (dbpath, config.config_calibre_dir + "/metadata.db_" + str(current_milli_time()))
+                        copyfile (dbpath, tmpDir + "/metadata.db_" + str(current_milli_time()))
                         app.logger.info ('Backing up existing and downloading updated metadata.db')
-                        gdriveutils.downloadFile(Gdrive.Instance().drive, None, "metadata.db", config.config_calibre_dir + "/tmp_metadata.db")
+                        gdriveutils.downloadFile(Gdrive.Instance().drive, None, "metadata.db", tmpDir + "/tmp_metadata.db")
                         app.logger.info ('Setting up new DB')
-                        os.rename(config.config_calibre_dir + "/tmp_metadata.db", dbpath)
+                        os.rename(tmpDir + "/tmp_metadata.db", dbpath)
                         db.setup_db()
             except Exception, e:
                 app.logger.exception(e)
