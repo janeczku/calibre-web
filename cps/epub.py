@@ -48,13 +48,16 @@ def get_epub_info(tmp_file_path, original_file_name, original_file_extension):
         else:
             epub_metadata[s] = "Unknown"
     #detect lang need futher modification in web.py /upload
-    lang = p.xpath('dc:language/text()', namespaces=ns)[0]
-    lang = lang.split('-', 1)[0]
-    if len(lang) == 2:
-        epub_metadata['languages'] = isoLanguages.get(part1=lang).name
-    elif len(lang) == 3:
-        epub_metadata['languages'] = isoLanguages.get(part3=lang).name
-    else:
+    try:#maybe dc:language isn't present, less possible but possible
+        lang = p.xpath('dc:language/text()', namespaces=ns)[0]
+        lang = lang.split('-', 1)[0]
+        if len(lang) == 2:
+            epub_metadata['languages'] = isoLanguages.get(part1=lang).name
+        elif len(lang) == 3:
+            epub_metadata['languages'] = isoLanguages.get(part3=lang).name
+        else:
+            epub_metadata['languages'] = ""
+    except:
         epub_metadata['languages'] = ""
 
     coversection = tree.xpath("/pkg:package/pkg:manifest/pkg:item[@id='cover-image']/@href", namespaces=ns)
