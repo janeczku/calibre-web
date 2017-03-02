@@ -88,4 +88,5 @@ def get_epub_info(tmp_file_path, original_file_name, original_file_extension):
         description=epub_metadata['description'],
         tags="",
         series="",
-        series_id="")
+        series_id="",
+        languages=None)
