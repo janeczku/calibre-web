@@ -5,7 +5,7 @@ import logging
 from logging.handlers import RotatingFileHandler
 import textwrap
 from flask import Flask, render_template, request, Response, redirect, url_for, send_from_directory, \
-    make_response, g, flash, abort
+    make_response, g, flash, abort, Markup
 from flask import __version__ as flaskVersion
 import ub
 from ub import config
@@ -2232,6 +2232,13 @@ def upload():
         db_book.data.append(db_data)
 
         db.session.add(db_book)
+        db.session.flush()# flush content get db_book.id avalible
+       #add comment
+        upload_comment = Markup(meta.comments).unescape()
+        db_comment = None
+        if upload_comment != "":
+            db_comment = db.Comments(upload_comment, db_book.id) 
+            db.session.add(db_comment)
         db.session.commit()
         if db_language is not None: #display Full name instead of iso639.part3
             db_book.languages[0].language_name = meta.languages
