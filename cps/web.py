@@ -2084,6 +2084,8 @@ def new_user():
             content.sidebar_view += ub.SIDEBAR_CATEGORY
         if "show_hot" in to_save:
             content.sidebar_view += ub.SIDEBAR_HOT
+        if "show_read_and_unread" in to_save:
+            content.sidebar_view += ub.SIDEBAR_READ_AND_UNREAD
         if "show_best_rated" in to_save:
             content.sidebar_view += ub.SIDEBAR_BEST_RATED
         if "show_author" in to_save:
@@ -2230,6 +2232,11 @@ def edit_user(user_id):
                 content.sidebar_view += ub.SIDEBAR_BEST_RATED
             elif "show_best_rated" not in to_save and content.show_best_rated_books():
                 content.sidebar_view -= ub.SIDEBAR_BEST_RATED
+
+            if "show_read_and_unread" in to_save:
+                content.sidebar_view += ub.SIDEBAR_READ_AND_UNREAD
+            elif "show_read_and_unread" not in to_save and content.show_read_and_unread():
+                content.sidebar_view += ub.SIDEBAR_READ_AND_UNREAD
 
             if "show_author" in to_save and not content.show_author():
                 content.sidebar_view += ub.SIDEBAR_AUTHOR
