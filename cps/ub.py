@@ -275,7 +275,6 @@ class Settings(Base):
     config_google_drive_folder = Column(String)
     config_google_drive_calibre_url_base = Column(String)
     config_google_drive_watch_changes_response = Column(String)
-    config_columns_to_ignore = Column(String)
 
     def __repr__(self):
         pass
@@ -311,7 +310,7 @@ class Config:
             self.config_google_drive_watch_changes_response = json.loads(data.config_google_drive_watch_changes_response)
         else:
             self.config_google_drive_watch_changes_response=None
-        self.config_columns_to_ignore = data.config_columns_to_ignore
+
         if (self.config_calibre_dir is not None and not self.config_use_google_drive) or os.path.exists(self.config_calibre_dir + '/metadata.db'):
             self.db_configured = True
         else:
@@ -407,12 +406,6 @@ def migrate_Database():
         conn.execute("ALTER TABLE Settings ADD column `config_google_drive_calibre_url_base` INTEGER DEFAULT 0")
         conn.execute("ALTER TABLE Settings ADD column `config_google_drive_folder` String DEFAULT ''")
         conn.execute("ALTER TABLE Settings ADD column `config_google_drive_watch_changes_response` String DEFAULT ''")
-    try:
-        session.query(exists().where(Settings.config_columns_to_ignore)).scalar()
-    except exc.OperationalError:
-        conn = engine.connect()
-        conn.execute("ALTER TABLE Settings ADD column `config_columns_to_ignore` String DEFAULT ''")
-        session.commit()
     try:
         session.query(exists().where(Settings.config_default_role)).scalar()
         session.commit()
