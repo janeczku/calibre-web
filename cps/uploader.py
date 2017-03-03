@@ -7,7 +7,7 @@ import hashlib
 from collections import namedtuple
 import book_formats
 
-BookMeta = namedtuple('BookMeta', 'file_path, extension, title, author, cover, description, tags, series, series_id, languages')
+BookMeta = namedtuple('BookMeta', 'file_path, extension, title, author, cover, description, tags, series, series_id, comments, languages')
 
 """
  :rtype: BookMeta

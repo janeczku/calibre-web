@@ -41,6 +41,12 @@ def get_epub_info(tmp_file_path, original_file_name, original_file_extension):
     p = tree.xpath('/pkg:package/pkg:metadata', namespaces=ns)[0]
 
     epub_metadata = {}
+    try:#maybe description isn't present
+        comments = tree.xpath("//*[local-name() = 'description']/text()")[0]
+        epub_metadata['comments'] = comments
+    except:
+        epub_metadata['comments'] = ""
+
     for s in ['title', 'description', 'creator']:
         tmp = p.xpath('dc:%s/text()' % s, namespaces=ns)
         if len(tmp) > 0:
@@ -62,6 +68,7 @@ def get_epub_info(tmp_file_path, original_file_name, original_file_extension):
         epub_metadata['languages'] = ""
 
     coversection = tree.xpath("/pkg:package/pkg:manifest/pkg:item[@id='cover-image']/@href", namespaces=ns)
+    coverfile = None
     if len(coversection) > 0:
         coverfile = extractCover(zip, coversection[0], coverpath, tmp_file_path)
     else:
@@ -84,9 +91,7 @@ def get_epub_info(tmp_file_path, original_file_name, original_file_extension):
                 meta_cover_content = tree.xpath("/pkg:package/pkg:manifest/pkg:item[@id='"+meta_cover[0]+"']/@href", namespaces=ns)
                 if len(meta_cover_content) > 0:
                     coverfile = extractCover(zip, meta_cover_content[0], coverpath, tmp_file_path)
-            else:
-                coverfile = None
-
+               
     if epub_metadata['title'] is None:
         title = original_file_name
     else:
@@ -102,4 +107,5 @@ def get_epub_info(tmp_file_path, original_file_name, original_file_extension):
         tags="",
         series="",
         series_id="",
+        comments=epub_metadata['comments'],
         languages=epub_metadata['languages'])
