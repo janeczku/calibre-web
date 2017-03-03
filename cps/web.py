@@ -5,7 +5,7 @@ import logging
 from logging.handlers import RotatingFileHandler
 import textwrap
 from flask import Flask, render_template, request, Response, redirect, url_for, send_from_directory, \
-    make_response, g, flash, abort
+    make_response, g, flash, abort, Markup
 from flask import __version__ as flaskVersion
 import ub
 from ub import config
@@ -2209,16 +2209,39 @@ def upload():
         else:
             db_author = db.Authors(author, helper.get_sorted_author(author), "") 
             db.session.add(db_author)
+        
+        #add language actually one value in list
+        input_language = meta.languages
+        db_language = None
+        if input_language != "":
+            input_language = isoLanguages.get(name=input_language).part3
+            hasLanguage = db.session.query(db.Languages).filter(db.Languages.lang_code == input_language).first()
+            if hasLanguage:
+                db_language = hasLanguage
+            else:
+                db_language = db.Languages(input_language) 
+                db.session.add(db_language)
         # combine path and normalize path from windows systems
         path = os.path.join(author_dir, title_dir).replace('\\','/')
         db_book = db.Books(title, "", db_author.sort, datetime.datetime.now(), datetime.datetime(101, 01, 01), 1,
-                           datetime.datetime.now(), path, has_cover, db_author, [])
+                           datetime.datetime.now(), path, has_cover, db_author, [], db_language)
         db_book.authors.append(db_author)
+        if db_language is not None:
+            db_book.languages.append(db_language)
         db_data = db.Data(db_book, meta.extension.upper()[1:], file_size, data_name)
         db_book.data.append(db_data)
 
         db.session.add(db_book)
+        db.session.flush()# flush content get db_book.id avalible
+       #add comment
+        upload_comment = Markup(meta.comments).unescape()
+        db_comment = None
+        if upload_comment != "":
+            db_comment = db.Comments(upload_comment, db_book.id) 
+            db.session.add(db_comment)
         db.session.commit()
+        if db_language is not None: #display Full name instead of iso639.part3
+            db_book.languages[0].language_name = _(meta.languages)
         author_names = []
         for author in db_book.authors:
             author_names.append(author.name)
