@@ -59,4 +59,5 @@ def get_fb2_info(tmp_file_path, original_file_extension):
         description=description,
         tags="",
         series="",
-        series_id="")
+        series_id="",
+        languages="")

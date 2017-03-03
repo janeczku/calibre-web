@@ -63,7 +63,9 @@ def default_meta(tmp_file_path, original_file_name, original_file_extension):
         description="",
         tags="",
         series="",
-        series_id="")
+        series_id="",
+        comments="",
+        languages="")
 
 
 def pdf_meta(tmp_file_path, original_file_name, original_file_extension):
@@ -91,7 +93,9 @@ def pdf_meta(tmp_file_path, original_file_name, original_file_extension):
         description=subject,
         tags="",
         series="",
-        series_id="")
+        series_id="",
+        comments="",
+        languages="")
 
 
 def pdf_preview(tmp_file_path, tmp_dir):
