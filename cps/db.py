@@ -247,7 +247,7 @@ class Books(Base):
     identifiers = relationship('Identifiers', backref='books')
 
     def __init__(self, title, sort, author_sort, timestamp, pubdate, series_index, last_modified, path, has_cover,
-                 authors, tags):
+                 authors, tags, languages = None):
         self.title = title
         self.sort = sort
         self.author_sort = author_sort
