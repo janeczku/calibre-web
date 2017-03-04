@@ -2234,7 +2234,7 @@ def upload():
         db.session.add(db_book)
         db.session.flush()# flush content get db_book.id avalible
        #add comment
-        upload_comment = Markup(meta.comments).unescape()
+        upload_comment = Markup(meta.description).unescape()
         db_comment = None
         if upload_comment != "":
             db_comment = db.Comments(upload_comment, db_book.id) 
