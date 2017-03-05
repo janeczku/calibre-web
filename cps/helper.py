@@ -245,7 +245,10 @@ def get_valid_filename(value, replace_whitespace=True):
         value=value.replace(u'ß',u'ss')
         value = unicodedata.normalize('NFKD', value)
         re_slugify = re.compile('[\W\s-]', re.UNICODE)
-        value = str(re_slugify.sub('', value).strip())
+        try:
+            value = str(re_slugify.sub('', value).strip())
+        except: #will exception on Python2.7
+            value = unicode(re_slugify.sub('', value).strip())
     if replace_whitespace:
         #*+:\"/<>? werden durch _ ersetzt
         value = re.sub('[\*\+:\\\"/<>\?]+', u'_', value, flags=re.U)
