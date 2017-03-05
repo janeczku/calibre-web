@@ -50,10 +50,11 @@ from tornado import version as tornadoVersion
 from builtins import str
 
 try:
+    from urllib.parse import quote   
     from imp import reload
     from past.builtins import xrange
 except:
-    pass
+    from urllib import quote
 
 try:
     from wand.image import Image
@@ -1243,22 +1244,22 @@ def read_book(book_id, format):
                 zfile.close()
             return render_title_template('read.html', bookid=book_id, title=_(u"Read a Book"))
         elif format.lower() == "pdf":
-            all_name = str(book_id) + "/" + urllib.quote(book.data[0].name) + ".pdf"
-            tmp_file = os.path.join(book_dir, urllib.quote(book.data[0].name)) + ".pdf"
+            all_name = str(book_id) + "/" + quote(book.data[0].name) + ".pdf"
+            tmp_file = os.path.join(book_dir, quote(book.data[0].name)) + ".pdf"
             if not os.path.exists(tmp_file):
                 pdf_file = os.path.join(config.config_calibre_dir, book.path, book.data[0].name) + ".pdf"
                 copyfile(pdf_file, tmp_file)
             return render_title_template('readpdf.html', pdffile=all_name, title=_(u"Read a Book"))
         elif format.lower() == "txt":
-            all_name = str(book_id) + "/" + urllib.quote(book.data[0].name) + ".txt"
-            tmp_file = os.path.join(book_dir, urllib.quote(book.data[0].name)) + ".txt"
+            all_name = str(book_id) + "/" + quote(book.data[0].name) + ".txt"
+            tmp_file = os.path.join(book_dir, quote(book.data[0].name)) + ".txt"
             if not os.path.exists(all_name):
                 txt_file = os.path.join(config.config_calibre_dir, book.path, book.data[0].name) + ".txt"
                 copyfile(txt_file, tmp_file)
             return render_title_template('readtxt.html', txtfile=all_name, title=_(u"Read a Book"))
         elif format.lower() == "cbr":
-            all_name = str(book_id) + "/" + urllib.quote(book.data[0].name) + ".cbr"
-            tmp_file = os.path.join(book_dir, urllib.quote(book.data[0].name)) + ".cbr"
+            all_name = str(book_id) + "/" + quote(book.data[0].name) + ".cbr"
+            tmp_file = os.path.join(book_dir, quote(book.data[0].name)) + ".cbr"
             if not os.path.exists(all_name):
                 cbr_file = os.path.join(config.config_calibre_dir, book.path, book.data[0].name) + ".cbr"
                 copyfile(cbr_file, tmp_file)
@@ -1290,7 +1291,7 @@ def get_download_link(book_id, format):
             response.headers["Content-Type"] = mimetypes.types_map['.' + format]
         except:
             pass
-        response.headers["Content-Disposition"] = "attachment; filename=\"%s.%s\"" % (file_name.encode('utf-8'), format)
+        response.headers["Content-Disposition"] = "attachment; filename=\"%s.%s\"" % (quote(file_name.encode('utf-8')), format)
         return response
     else:
         abort(404)
