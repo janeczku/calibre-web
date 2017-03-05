@@ -1283,7 +1283,7 @@ def get_download_link(book_id, format):
             response.headers["Content-Type"] = mimetypes.types_map['.' + format]
         except:
             pass
-        response.headers["Content-Disposition"] = "attachment; filename=\"%s.%s\"" % (file_name.encode('utf-8'), format)
+        response.headers["Content-Disposition"] = "attachment; filename=\"%s.%s\"" % (urllib.quote(file_name.encode('utf-8')), format)
         return response
     else:
         abort(404)
