@@ -47,6 +47,7 @@ import db
 from shutil import move, copyfile
 from tornado.ioloop import IOLoop
 from tornado import version as tornadoVersion
+from builtins import str
 
 try:
     from imp import reload
@@ -1050,8 +1051,8 @@ def stats():
                              stdin=subprocess.PIPE)
         p.wait()
         for lines in p.stdout.readlines():
-            if re.search('Amazon kindlegen\(', lines):
-                versions['KindlegenVersion'] = lines
+            if re.search('Amazon kindlegen\(', str(lines)):
+                versions['KindlegenVersion'] = str(lines)
     versions['PythonVersion'] = sys.version
     versions['babel'] = babelVersion
     versions['sqlalchemy'] = sqlalchemyVersion
