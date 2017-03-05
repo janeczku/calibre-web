@@ -37,16 +37,16 @@ def get_fb2_info(tmp_file_path, original_file_extension):
             first_name = u''
         return first_name + ' ' + middle_name + ' ' + last_name
 
-    author = unicode(", ".join(map(get_author, authors)))
+    author = str(", ".join(map(get_author, authors)))
 
     title = tree.xpath('/fb:FictionBook/fb:description/fb:title-info/fb:book-title/text()', namespaces=ns)
     if len(title):
-        title = unicode(title[0])
+        title = str(title[0])
     else:
         title = u''
     description = tree.xpath('/fb:FictionBook/fb:description/fb:publish-info/fb:book-name/text()', namespaces=ns)
     if len(description):
-        description = unicode(description[0])
+        description = str(description[0])
     else:
         description = u''
 
