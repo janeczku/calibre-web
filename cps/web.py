@@ -47,12 +47,19 @@ import db
 from shutil import move, copyfile
 from tornado.ioloop import IOLoop
 from tornado import version as tornadoVersion
+from builtins import str
+
+try:
+    from imp import reload
+    from past.builtins import xrange
+except:
+    pass
 
 try:
     from wand.image import Image
 
     use_generic_pdf_cover = False
-except ImportError, e:
+except ImportError as e:
     use_generic_pdf_cover = True
 from cgi import escape
 
@@ -1044,8 +1051,8 @@ def stats():
                              stdin=subprocess.PIPE)
         p.wait()
         for lines in p.stdout.readlines():
-            if re.search('Amazon kindlegen\(', lines):
-                versions['KindlegenVersion'] = lines
+            if re.search('Amazon kindlegen\(', str(lines)):
+                versions['KindlegenVersion'] = str(lines)
     versions['PythonVersion'] = sys.version
     versions['babel'] = babelVersion
     versions['sqlalchemy'] = sqlalchemyVersion
@@ -2186,12 +2193,12 @@ def upload():
                 return redirect(url_for('index'))
         try:
             copyfile(meta.file_path, saved_filename)
-        except OSError, e:
+        except OSError as e:
             flash(_(u"Failed to store file %s (Permission denied)." % saved_filename), category="error")
             return redirect(url_for('index'))
         try:
             os.unlink(meta.file_path)
-        except OSError, e:
+        except OSError as e:
             flash(_(u"Failed to delete file %s (Permission denied)." % meta.file_path), category="warning")
 
         file_size = os.path.getsize(saved_filename)
@@ -2223,7 +2230,7 @@ def upload():
                 db.session.add(db_language)
         # combine path and normalize path from windows systems
         path = os.path.join(author_dir, title_dir).replace('\\','/')
-        db_book = db.Books(title, "", db_author.sort, datetime.datetime.now(), datetime.datetime(101, 01, 01), 1,
+        db_book = db.Books(title, "", db_author.sort, datetime.datetime.now(), datetime.datetime(101, 1, 1), 1,
                            datetime.datetime.now(), path, has_cover, db_author, [], db_language)
         db_book.authors.append(db_author)
         if db_language is not None:

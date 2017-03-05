@@ -13,11 +13,17 @@ import os
 import traceback
 import re
 import unicodedata
-from StringIO import StringIO
+try:
+    from StringIO import StringIO
+    from email.MIMEBase import MIMEBase
+    from email.MIMEMultipart import MIMEMultipart
+    from email.MIMEText import MIMEText
+except ImportError:
+    from io import StringIO
+    from email.mime.base import MIMEBase
+    from email.mime.multipart import MIMEMultipart
+    from email.mime.text import MIMEText
 from email import encoders
-from email.MIMEBase import MIMEBase
-from email.MIMEMultipart import MIMEMultipart
-from email.MIMEText import MIMEText
 from email.generator import Generator
 from email.utils import formatdate
 from email.utils import make_msgid
@@ -147,7 +153,7 @@ def send_raw_email(kindle_mail, msg):
 
         smtplib.stderr = org_stderr
 
-    except (socket.error, smtplib.SMTPRecipientsRefused, smtplib.SMTPException), e:
+    except (socket.error, smtplib.SMTPRecipientsRefused, smtplib.SMTPException) as e:
         app.logger.error(traceback.print_exc())
         return _("Failed to send mail: %s" % str(e))
 
@@ -239,7 +245,7 @@ def get_valid_filename(value, replace_whitespace=True):
         value=value.replace(u'ß',u'ss')
         value = unicodedata.normalize('NFKD', value)
         re_slugify = re.compile('[\W\s-]', re.UNICODE)
-        value = unicode(re_slugify.sub('', value).strip())
+        value = str(re_slugify.sub('', value).strip())
     if replace_whitespace:
         #*+:\"/<>? werden durch _ ersetzt
         value = re.sub('[\*\+:\\\"/<>\?]+', u'_', value, flags=re.U)
