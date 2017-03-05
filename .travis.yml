@@ -13,6 +13,13 @@ python:
 #  - "3.7-dev" # 3.7 development branch
 #  - "nightly" # currently points to 3.7-dev
 
+matrix:
+  include:
+    - python: "2.7"
+      env: PVERSION=2
+    - python: "3.6"
+      env: PVERSION=3
+
 install: false
 
 branches:
