@@ -1,2 +1,0 @@
-requirements = None
-db = None
