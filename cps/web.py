@@ -47,7 +47,7 @@ import db
 from shutil import move, copyfile
 from tornado.ioloop import IOLoop
 from tornado import version as tornadoVersion
-from builtins import str
+#from builtins import str
 
 try:
     from urllib.parse import quote   
