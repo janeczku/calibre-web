@@ -26,3 +26,6 @@ tags
 
 settings.yaml
 gdrive_credentials
+
+#kindlegen
+vendor/kindlegen
