@@ -753,6 +753,32 @@ def feed_series(id):
     return response
 
 
+def partial(total_byte_len, part_size_limit):
+    s = []
+    for p in range(0, total_byte_len, part_size_limit):
+        last = min(total_byte_len - 1, p + part_size_limit - 1)
+        s.append([p, last])
+    return s
+
+def do_gdrive_download(df, headers):
+    total_size = int(df.metadata.get('fileSize'))
+    print total_size
+    download_url = df.metadata.get('downloadUrl')
+    s = partial(total_size, 1024 * 100) # I'm downloading BIG files, so 100M chunk size is fine for me
+    def stream():
+        for bytes in s:
+            headers = {"Range" : 'bytes=%s-%s' % (bytes[0], bytes[1])}
+            resp, content = df.auth.Get_Http_Object().request(download_url, headers=headers)
+            if resp.status == 206 :
+                yield content
+            else:
+                print 'An error occurred: %s' % resp
+                return
+            print str(bytes[1])+"..."
+    return Response(stream(), headers=headers)
+
+
+
 @app.route("/opds/download/<book_id>/<format>/")
 @requires_basic_auth_if_no_ano
 @download_required
@@ -760,17 +786,22 @@ def get_opds_download_link(book_id, format):
     format = format.split(".")[0]
     book = db.session.query(db.Books).filter(db.Books.id == book_id).first()
     data = db.session.query(db.Data).filter(db.Data.book == book.id).filter(db.Data.format == format.upper()).first()
+    print (data.name)
     if current_user.is_authenticated:
         helper.update_download(book_id, int(current_user.id))
     file_name = book.title
     if len(book.authors) > 0:
         file_name = book.authors[0].name + '-' + file_name
     file_name = helper.get_valid_filename(file_name)
+    headers={}
+    headers["Content-Disposition"] = "attachment; filename*=UTF-8''%s.%s" % (urllib.quote(file_name.encode('utf8')), format)
     if config.config_use_google_drive:
         df=gdriveutils.getFileFromEbooksFolder(Gdrive.Instance().drive, book.path, data.name + "." + format)
-        download_url = df.metadata.get('downloadUrl')
-        resp, content = df.auth.Get_Http_Object().request(download_url)
-        response=send_file(io.BytesIO(content))
+        #download_url = df.metadata.get('downloadUrl')
+        #resp, content = df.auth.Get_Http_Object().request(download_url)
+        #io.BytesIO(content)
+        #response=send_file(io.BytesIO(content))
+        return do_gdrive_download(df, headers)
     else:
         # file_name = helper.get_valid_filename(file_name)
         response = make_response(send_from_directory(os.path.join(config.config_calibre_dir, book.path), data.name + "." + format))
