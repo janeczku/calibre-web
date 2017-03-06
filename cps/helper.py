@@ -38,7 +38,7 @@ from tornado.ioloop import IOLoop
 try:
     import unidecode
     use_unidecode=True
-except:
+except Exception as e:
     use_unidecode=False
 
 # Global variables
@@ -249,7 +249,6 @@ def get_valid_filename(value, replace_whitespace=True):
             value = str(re_slugify.sub('', value).strip())
         except UnicodeEncodeError as e: #will exception on Python2.7
             value = unicode(re_slugify.sub('', value).strip())
-            raise
     if replace_whitespace:
         #*+:\"/<>? werden durch _ ersetzt
         value = re.sub('[\*\+:\\\"/<>\?]+', u'_', value, flags=re.U)
@@ -389,7 +388,7 @@ class Updater(threading.Thread):
                     try:
                         os.chown(dst_file, permission.st_uid, permission.st_uid)
                         # print('Permissions: User '+str(new_permissions.st_uid)+' Group '+str(new_permissions.st_uid))
-                    except:
+                    except Exception as e:
                         e = sys.exc_info()
                         logging.getLogger('cps.web').debug('Fail '+str(dst_file)+' error: '+str(e))
         return
@@ -431,7 +430,7 @@ class Updater(threading.Thread):
                     logging.getLogger('cps.web').debug("Delete file " + item_path)
                     log_from_thread("Delete file " + item_path)
                     os.remove(item_path)
-                except:
+                except Exception as e:
                     logging.getLogger('cps.web').debug("Could not remove:" + item_path)
         shutil.rmtree(source, ignore_errors=True)
 

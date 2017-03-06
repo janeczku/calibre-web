@@ -439,7 +439,7 @@ def create_anonymous_user():
     session.add(user)
     try:
         session.commit()
-    except:
+    except Exception as e:
         session.rollback()
         pass
 
@@ -457,7 +457,7 @@ def create_admin_user():
     session.add(user)
     try:
         session.commit()
-    except:
+    except Exception as e:
         session.rollback()
         pass
 
