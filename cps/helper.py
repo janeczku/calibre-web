@@ -14,15 +14,15 @@ import traceback
 import re
 import unicodedata
 try:
-    from StringIO import StringIO
-    from email.MIMEBase import MIMEBase
-    from email.MIMEMultipart import MIMEMultipart
-    from email.MIMEText import MIMEText
-except ImportError:
     from io import StringIO
     from email.mime.base import MIMEBase
     from email.mime.multipart import MIMEMultipart
     from email.mime.text import MIMEText
+except ImportError as e:
+    from StringIO import StringIO
+    from email.MIMEBase import MIMEBase
+    from email.MIMEMultipart import MIMEMultipart
+    from email.MIMEText import MIMEText
 from email import encoders
 from email.generator import Generator
 from email.utils import formatdate
@@ -247,8 +247,9 @@ def get_valid_filename(value, replace_whitespace=True):
         re_slugify = re.compile('[\W\s-]', re.UNICODE)
         try:
             value = str(re_slugify.sub('', value).strip())
-        except: #will exception on Python2.7
+        except UnicodeEncodeError as e: #will exception on Python2.7
             value = unicode(re_slugify.sub('', value).strip())
+            raise
     if replace_whitespace:
         #*+:\"/<>? werden durch _ ersetzt
         value = re.sub('[\*\+:\\\"/<>\?]+', u'_', value, flags=re.U)

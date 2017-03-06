@@ -44,7 +44,7 @@ def get_epub_info(tmp_file_path, original_file_name, original_file_extension):
     try:#maybe description isn't present
         comments = tree.xpath("//*[local-name() = 'description']/text()")[0]
         epub_metadata['comments'] = comments
-    except:
+    except IndexError as e:
         epub_metadata['comments'] = ""
 
     for s in ['title', 'description', 'creator']:
@@ -64,7 +64,7 @@ def get_epub_info(tmp_file_path, original_file_name, original_file_extension):
             epub_metadata['languages'] = isoLanguages.get(part3=lang).name
         else:
             epub_metadata['languages'] = ""
-    except:
+    except IndexError as e:
         epub_metadata['languages'] = ""
 
     coversection = tree.xpath("/pkg:package/pkg:manifest/pkg:item[@id='cover-image']/@href", namespaces=ns)
