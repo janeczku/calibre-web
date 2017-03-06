@@ -248,6 +248,8 @@ class Pagination(object):
     def iter_pages(self, left_edge=2, left_current=2,
                    right_current=5, right_edge=2):
         last = 0
+        if sys.version_info.major >= 3:
+            xrange = range        
         for num in xrange(1, self.pages + 1):  # ToDo: can be simplified
             if num <= left_edge or (num > self.page - left_current - 1 and num < self.page + right_current) \
                     or num > self.pages - right_edge:
