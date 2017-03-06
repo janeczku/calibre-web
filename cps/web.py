@@ -53,7 +53,7 @@ try:
     from urllib.parse import quote   
     from imp import reload
     from past.builtins import xrange
-except:
+except ImportError as e:
     from urllib import quote
 
 try:
