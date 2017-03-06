@@ -17,9 +17,7 @@ if __name__ == '__main__':
     if web.ub.DEVELOPMENT:
         web.app.run(host="0.0.0.0", port=web.ub.config.config_port, debug=True)
     else:
-        http_server = HTTPServer(WSGIContainer(web.app))
-        http_server.listen(web.ub.config.config_port)
-        IOLoop.instance().start()
+        web.app.run(host="0.0.0.0", port=web.ub.config.config_port)
 
     if web.helper.global_task == 0:
         web.app.logger.info("Performing restart of Calibre-web")
