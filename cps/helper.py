@@ -238,7 +238,7 @@ def get_valid_filename(value, replace_whitespace=True):
         value=value.replace(u'§',u'SS')
         value=value.replace(u'ß',u'ss')
         value = unicodedata.normalize('NFKD', value)
-        re_slugify = re.compile('[\W\s-]', re.UNICODE)
+        re_slugify = re.compile('[^\w\s-]', re.UNICODE)
         value = unicode(re_slugify.sub('', value).strip())
     if replace_whitespace:
         #*+:\"/<>? werden durch _ ersetzt

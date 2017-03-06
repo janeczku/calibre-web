@@ -23,3 +23,6 @@ cps/static/[0-9]*
 *.bak
 *.log.*
 tags
+
+#kindlegen
+vendor/kindlegen
