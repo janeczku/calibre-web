@@ -299,7 +299,7 @@ def setup_db():
     try:
         conn = engine.connect()
 
-    except:
+    except Exception as e:
         content = ub.session.query(ub.Settings).first()
         content.config_calibre_dir = None
         content.db_configured = False

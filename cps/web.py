@@ -287,7 +287,7 @@ def shortentitle_filter(s):
 def mimetype_filter(val):
     try:
         s = mimetypes.types_map['.' + val]
-    except:
+    except Exception as e:
         s = 'application/octet-stream'
     return s
 
@@ -762,7 +762,7 @@ def get_updater_status():
     elif request.method == "GET":
         try:
             status['status']=helper.updater_thread.get_update_status()
-        except:
+        except Exception as e:
             status['status'] = 7
     return json.dumps(status)
 
@@ -777,7 +777,7 @@ def get_languages_json():
             try:
                 cur_l = LC.parse(lang.lang_code)
                 lang.name = cur_l.get_language_name(get_locale())
-            except:
+            except Exception as e:
                 lang.name = _(isoLanguages.get(part3=lang.lang_code).name)
         entries = [s for s in languages if query in s.name.lower()]
         json_dumps = json.dumps([dict(name=r.name) for r in entries])
@@ -937,13 +937,13 @@ def language_overview():
             try:
                 cur_l = LC.parse(lang.lang_code)
                 lang.name = cur_l.get_language_name(get_locale())
-            except:
+            except Exception as e:
                 lang.name = _(isoLanguages.get(part3=lang.lang_code).name)
     else:
         try:
             langfound = 1
             cur_l = LC.parse(current_user.filter_language())
-        except:
+        except Exception as e:
             langfound = 0
         languages = db.session.query(db.Languages).filter(
             db.Languages.lang_code == current_user.filter_language()).all()
@@ -967,7 +967,7 @@ def language(name, page):
     try:
         cur_l = LC.parse(name)
         name = cur_l.get_language_name(get_locale())
-    except:
+    except Exception as e:
         name = _(isoLanguages.get(part3=name).name)
     return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
                                  title=_(u"Language: %(name)s", name=name))
@@ -1011,7 +1011,7 @@ def show_book(id):
             try:
                 entries.languages[index].language_name = LC.parse(entries.languages[index].lang_code).get_language_name(
                     get_locale())
-            except:
+            except Exception as e:
                 entries.languages[index].language_name = _(
                     isoLanguages.get(part3=entries.languages[index].lang_code).name)
         cc = db.session.query(db.Custom_Columns).filter(db.Custom_Columns.datatype.notin_(db.cc_exceptions)).all()
@@ -1155,7 +1155,7 @@ def advanced_search():
                 try:
                     cur_l = LC.parse(lang.lang_code)
                     lang.name = cur_l.get_language_name(get_locale())
-                except:
+                except Exception as e:
                     lang.name = _(isoLanguages.get(part3=lang.lang_code).name)
             searchterm.extend(language.name for language in language_names)
             searchterm = " + ".join(filter(None, searchterm))
@@ -1187,7 +1187,7 @@ def advanced_search():
             try:
                 cur_l = LC.parse(lang.lang_code)
                 lang.name = cur_l.get_language_name(get_locale())
-            except:
+            except Exception as e:
                 lang.name = _(isoLanguages.get(part3=lang.lang_code).name)
     else:
         languages = None
@@ -1289,7 +1289,7 @@ def get_download_link(book_id, format):
             send_from_directory(os.path.join(config.config_calibre_dir, book.path), data.name + "." + format))
         try:
             response.headers["Content-Type"] = mimetypes.types_map['.' + format]
-        except:
+        except Exception as e:
             pass
         response.headers["Content-Disposition"] = "attachment; filename=\"%s.%s\"" % (quote(file_name.encode('utf-8')), format)
         return response
@@ -1321,7 +1321,7 @@ def register():
             try:
                 ub.session.add(content)
                 ub.session.commit()
-            except:
+            except Exception as e:
                 ub.session.rollback()
                 flash(_(u"An unknown error occured. Please try again later."), category="error")
                 return render_title_template('register.html', title=_(u"register"))
@@ -1446,7 +1446,7 @@ def create_shelf():
                 ub.session.add(shelf)
                 ub.session.commit()
                 flash(_(u"Shelf %(title)s created", title=to_save["title"]), category="success")
-            except:
+            except Exception as e:
                 flash(_(u"There was an error"), category="error")
         return render_title_template('shelf_edit.html', shelf=shelf, title=_(u"create a shelf"))
     else:
@@ -1474,7 +1474,7 @@ def edit_shelf(shelf_id):
             try:
                 ub.session.commit()
                 flash(_(u"Shelf %(title)s changed", title=to_save["title"]), category="success")
-            except:
+            except Exception as e:
                 flash(_(u"There was an error"), category="error")
         return render_title_template('shelf_edit.html', shelf=shelf, title=_(u"Edit a shelf"))
     else:
@@ -1562,7 +1562,7 @@ def profile():
         try:
             cur_l = LC.parse(lang.lang_code)
             lang.name = cur_l.get_language_name(get_locale())
-        except:
+        except Exception as e:
             lang.name = _(isoLanguages.get(part3=lang.lang_code).name)
     translations = babel.list_translations() + [LC('en')]
     for book in content.downloads:
@@ -1738,7 +1738,7 @@ def new_user():
         try:
             cur_l = LC.parse(lang.lang_code)
             lang.name = cur_l.get_language_name(get_locale())
-        except:
+        except Exception as e:
             lang.name = _(isoLanguages.get(part3=lang.lang_code).name)
     translations = [LC('en')] + babel.list_translations()
     if request.method == "POST":
@@ -1836,7 +1836,7 @@ def edit_user(user_id):
         try:
             cur_l = LC.parse(lang.lang_code)
             lang.name = cur_l.get_language_name(get_locale())
-        except:
+        except Exception as e:
             lang.name = _(isoLanguages.get(part3=lang.lang_code).name)
     translations = babel.list_translations() + [LC('en')]
     for book in content.downloads:
@@ -1958,7 +1958,7 @@ def edit_book(book_id):
             try:
                 book.languages[index].language_name = LC.parse(book.languages[index].lang_code).get_language_name(
                     get_locale())
-            except:
+            except Exception as e:
                 book.languages[index].language_name = _(isoLanguages.get(part3=book.languages[index].lang_code).name)
         for author in book.authors:
             author_names.append(author.name)
@@ -2008,7 +2008,7 @@ def edit_book(book_id):
             for lang in languages:
                 try:
                     lang.name = LC.parse(lang.lang_code).get_language_name(get_locale()).lower()
-                except:
+                except Exception as e:
                     lang.name = _(isoLanguages.get(part3=lang.lang_code).name).lower()
                 for inp_lang in input_languages:
                     if inp_lang == lang.name:
