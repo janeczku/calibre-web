@@ -18,9 +18,9 @@ from sqlalchemy.exc import IntegrityError
 from sqlalchemy import __version__ as sqlalchemyVersion
 from math import ceil
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
-from flask_login import __version__ as flask_loginVersion
+from flask_login.__about__ import __version__ as flask_loginVersion
 from flask_principal import Principal, Identity, AnonymousIdentity, identity_changed
-from flask_login import __version__ as flask_principalVersion
+from flask_principal import __version__ as flask_principalVersion
 from flask_babel import Babel
 from flask_babel import gettext as _
 import requests
@@ -47,13 +47,14 @@ import db
 from shutil import move, copyfile
 from tornado.ioloop import IOLoop
 from tornado import version as tornadoVersion
-from builtins import str
+#from builtins import str
 
 try:
+    from urllib.parse import quote   
     from imp import reload
     from past.builtins import xrange
-except:
-    pass
+except ImportError as e:
+    from urllib import quote
 
 try:
     from wand.image import Image
@@ -286,7 +287,7 @@ def shortentitle_filter(s):
 def mimetype_filter(val):
     try:
         s = mimetypes.types_map['.' + val]
-    except:
+    except Exception as e:
         s = 'application/octet-stream'
     return s
 
@@ -761,7 +762,7 @@ def get_updater_status():
     elif request.method == "GET":
         try:
             status['status']=helper.updater_thread.get_update_status()
-        except:
+        except Exception as e:
             status['status'] = 7
     return json.dumps(status)
 
@@ -776,7 +777,7 @@ def get_languages_json():
             try:
                 cur_l = LC.parse(lang.lang_code)
                 lang.name = cur_l.get_language_name(get_locale())
-            except:
+            except Exception as e:
                 lang.name = _(isoLanguages.get(part3=lang.lang_code).name)
         entries = [s for s in languages if query in s.name.lower()]
         json_dumps = json.dumps([dict(name=r.name) for r in entries])
@@ -936,13 +937,13 @@ def language_overview():
             try:
                 cur_l = LC.parse(lang.lang_code)
                 lang.name = cur_l.get_language_name(get_locale())
-            except:
+            except Exception as e:
                 lang.name = _(isoLanguages.get(part3=lang.lang_code).name)
     else:
         try:
             langfound = 1
             cur_l = LC.parse(current_user.filter_language())
-        except:
+        except Exception as e:
             langfound = 0
         languages = db.session.query(db.Languages).filter(
             db.Languages.lang_code == current_user.filter_language()).all()
@@ -966,7 +967,7 @@ def language(name, page):
     try:
         cur_l = LC.parse(name)
         name = cur_l.get_language_name(get_locale())
-    except:
+    except Exception as e:
         name = _(isoLanguages.get(part3=name).name)
     return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
                                  title=_(u"Language: %(name)s", name=name))
@@ -1010,7 +1011,7 @@ def show_book(id):
             try:
                 entries.languages[index].language_name = LC.parse(entries.languages[index].lang_code).get_language_name(
                     get_locale())
-            except:
+            except Exception as e:
                 entries.languages[index].language_name = _(
                     isoLanguages.get(part3=entries.languages[index].lang_code).name)
         cc = db.session.query(db.Custom_Columns).filter(db.Custom_Columns.datatype.notin_(db.cc_exceptions)).all()
@@ -1051,8 +1052,10 @@ def stats():
                              stdin=subprocess.PIPE)
         p.wait()
         for lines in p.stdout.readlines():
-            if re.search('Amazon kindlegen\(', str(lines)):
-                versions['KindlegenVersion'] = str(lines)
+            if type(lines) is bytes:
+                lines = lines.decode('utf-8')
+            if re.search('Amazon kindlegen\(', lines):
+                versions['KindlegenVersion'] = lines
     versions['PythonVersion'] = sys.version
     versions['babel'] = babelVersion
     versions['sqlalchemy'] = sqlalchemyVersion
@@ -1154,7 +1157,7 @@ def advanced_search():
                 try:
                     cur_l = LC.parse(lang.lang_code)
                     lang.name = cur_l.get_language_name(get_locale())
-                except:
+                except Exception as e:
                     lang.name = _(isoLanguages.get(part3=lang.lang_code).name)
             searchterm.extend(language.name for language in language_names)
             searchterm = " + ".join(filter(None, searchterm))
@@ -1186,7 +1189,7 @@ def advanced_search():
             try:
                 cur_l = LC.parse(lang.lang_code)
                 lang.name = cur_l.get_language_name(get_locale())
-            except:
+            except Exception as e:
                 lang.name = _(isoLanguages.get(part3=lang.lang_code).name)
     else:
         languages = None
@@ -1243,22 +1246,22 @@ def read_book(book_id, format):
                 zfile.close()
             return render_title_template('read.html', bookid=book_id, title=_(u"Read a Book"))
         elif format.lower() == "pdf":
-            all_name = str(book_id) + "/" + urllib.quote(book.data[0].name) + ".pdf"
-            tmp_file = os.path.join(book_dir, urllib.quote(book.data[0].name)) + ".pdf"
+            all_name = str(book_id) + "/" + quote(book.data[0].name) + ".pdf"
+            tmp_file = os.path.join(book_dir, quote(book.data[0].name)) + ".pdf"
             if not os.path.exists(tmp_file):
                 pdf_file = os.path.join(config.config_calibre_dir, book.path, book.data[0].name) + ".pdf"
                 copyfile(pdf_file, tmp_file)
             return render_title_template('readpdf.html', pdffile=all_name, title=_(u"Read a Book"))
         elif format.lower() == "txt":
-            all_name = str(book_id) + "/" + urllib.quote(book.data[0].name) + ".txt"
-            tmp_file = os.path.join(book_dir, urllib.quote(book.data[0].name)) + ".txt"
+            all_name = str(book_id) + "/" + quote(book.data[0].name) + ".txt"
+            tmp_file = os.path.join(book_dir, quote(book.data[0].name)) + ".txt"
             if not os.path.exists(all_name):
                 txt_file = os.path.join(config.config_calibre_dir, book.path, book.data[0].name) + ".txt"
                 copyfile(txt_file, tmp_file)
             return render_title_template('readtxt.html', txtfile=all_name, title=_(u"Read a Book"))
         elif format.lower() == "cbr":
-            all_name = str(book_id) + "/" + urllib.quote(book.data[0].name) + ".cbr"
-            tmp_file = os.path.join(book_dir, urllib.quote(book.data[0].name)) + ".cbr"
+            all_name = str(book_id) + "/" + quote(book.data[0].name) + ".cbr"
+            tmp_file = os.path.join(book_dir, quote(book.data[0].name)) + ".cbr"
             if not os.path.exists(all_name):
                 cbr_file = os.path.join(config.config_calibre_dir, book.path, book.data[0].name) + ".cbr"
                 copyfile(cbr_file, tmp_file)
@@ -1288,9 +1291,9 @@ def get_download_link(book_id, format):
             send_from_directory(os.path.join(config.config_calibre_dir, book.path), data.name + "." + format))
         try:
             response.headers["Content-Type"] = mimetypes.types_map['.' + format]
-        except:
+        except Exception as e:
             pass
-        response.headers["Content-Disposition"] = "attachment; filename=\"%s.%s\"" % (urllib.quote(file_name.encode('utf-8')), format)
+        response.headers["Content-Disposition"] = "attachment; filename=\"%s.%s\"" % (quote(file_name.encode('utf-8')), format)
         return response
     else:
         abort(404)
@@ -1320,7 +1323,7 @@ def register():
             try:
                 ub.session.add(content)
                 ub.session.commit()
-            except:
+            except Exception as e:
                 ub.session.rollback()
                 flash(_(u"An unknown error occured. Please try again later."), category="error")
                 return render_title_template('register.html', title=_(u"register"))
@@ -1445,7 +1448,7 @@ def create_shelf():
                 ub.session.add(shelf)
                 ub.session.commit()
                 flash(_(u"Shelf %(title)s created", title=to_save["title"]), category="success")
-            except:
+            except Exception as e:
                 flash(_(u"There was an error"), category="error")
         return render_title_template('shelf_edit.html', shelf=shelf, title=_(u"create a shelf"))
     else:
@@ -1473,7 +1476,7 @@ def edit_shelf(shelf_id):
             try:
                 ub.session.commit()
                 flash(_(u"Shelf %(title)s changed", title=to_save["title"]), category="success")
-            except:
+            except Exception as e:
                 flash(_(u"There was an error"), category="error")
         return render_title_template('shelf_edit.html', shelf=shelf, title=_(u"Edit a shelf"))
     else:
@@ -1561,7 +1564,7 @@ def profile():
         try:
             cur_l = LC.parse(lang.lang_code)
             lang.name = cur_l.get_language_name(get_locale())
-        except:
+        except Exception as e:
             lang.name = _(isoLanguages.get(part3=lang.lang_code).name)
     translations = babel.list_translations() + [LC('en')]
     for book in content.downloads:
@@ -1737,7 +1740,7 @@ def new_user():
         try:
             cur_l = LC.parse(lang.lang_code)
             lang.name = cur_l.get_language_name(get_locale())
-        except:
+        except Exception as e:
             lang.name = _(isoLanguages.get(part3=lang.lang_code).name)
     translations = [LC('en')] + babel.list_translations()
     if request.method == "POST":
@@ -1835,7 +1838,7 @@ def edit_user(user_id):
         try:
             cur_l = LC.parse(lang.lang_code)
             lang.name = cur_l.get_language_name(get_locale())
-        except:
+        except Exception as e:
             lang.name = _(isoLanguages.get(part3=lang.lang_code).name)
     translations = babel.list_translations() + [LC('en')]
     for book in content.downloads:
@@ -1957,7 +1960,7 @@ def edit_book(book_id):
             try:
                 book.languages[index].language_name = LC.parse(book.languages[index].lang_code).get_language_name(
                     get_locale())
-            except:
+            except Exception as e:
                 book.languages[index].language_name = _(isoLanguages.get(part3=book.languages[index].lang_code).name)
         for author in book.authors:
             author_names.append(author.name)
@@ -2007,7 +2010,7 @@ def edit_book(book_id):
             for lang in languages:
                 try:
                     lang.name = LC.parse(lang.lang_code).get_language_name(get_locale()).lower()
-                except:
+                except Exception as e:
                     lang.name = _(isoLanguages.get(part3=lang.lang_code).name).lower()
                 for inp_lang in input_languages:
                     if inp_lang == lang.name:
