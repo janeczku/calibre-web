@@ -761,9 +761,12 @@ def partial(total_byte_len, part_size_limit):
     return s
 
 def do_gdrive_download(df, headers):
+    startTime=time.time()
     total_size = int(df.metadata.get('fileSize'))
-    print total_size
+    app.logger.info (time.time()-startTime)
+    app.logger.info(total_size)
     download_url = df.metadata.get('downloadUrl')
+    app.logger.info (time.time()-startTime)
     s = partial(total_size, 1024 * 100) # I'm downloading BIG files, so 100M chunk size is fine for me
     def stream():
         for bytes in s:
@@ -772,9 +775,10 @@ def do_gdrive_download(df, headers):
             if resp.status == 206 :
                 yield content
             else:
-                print 'An error occurred: %s' % resp
+                app.logger.info('An error occurred: %s' % resp)
                 return
-            print str(bytes[1])+"..."
+            app.logger.info(str(bytes[1])+"...")
+            app.logger.info (time.time()-startTime)
     return Response(stream(), headers=headers)
 
 
@@ -783,10 +787,11 @@ def do_gdrive_download(df, headers):
 @requires_basic_auth_if_no_ano
 @download_required
 def get_opds_download_link(book_id, format):
+    startTime=time.time()
     format = format.split(".")[0]
     book = db.session.query(db.Books).filter(db.Books.id == book_id).first()
     data = db.session.query(db.Data).filter(db.Data.book == book.id).filter(db.Data.format == format.upper()).first()
-    print (data.name)
+    app.logger.info (data.name)
     if current_user.is_authenticated:
         helper.update_download(book_id, int(current_user.id))
     file_name = book.title
@@ -795,8 +800,11 @@ def get_opds_download_link(book_id, format):
     file_name = helper.get_valid_filename(file_name)
     headers={}
     headers["Content-Disposition"] = "attachment; filename*=UTF-8''%s.%s" % (urllib.quote(file_name.encode('utf8')), format)
+    app.logger.info (time.time()-startTime)
+    startTime=time.time()
     if config.config_use_google_drive:
         df=gdriveutils.getFileFromEbooksFolder(Gdrive.Instance().drive, book.path, data.name + "." + format)
+        app.logger.info (time.time()-startTime)
         #download_url = df.metadata.get('downloadUrl')
         #resp, content = df.auth.Get_Http_Object().request(download_url)
         #io.BytesIO(content)
