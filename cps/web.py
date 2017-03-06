@@ -1052,8 +1052,10 @@ def stats():
                              stdin=subprocess.PIPE)
         p.wait()
         for lines in p.stdout.readlines():
-            if re.search('Amazon kindlegen\(', str(lines)):
-                versions['KindlegenVersion'] = str(lines)
+            if type(lines) is bytes:
+                lines = lines.decode('utf-8')
+            if re.search('Amazon kindlegen\(', lines):
+                versions['KindlegenVersion'] = lines
     versions['PythonVersion'] = sys.version
     versions['babel'] = babelVersion
     versions['sqlalchemy'] = sqlalchemyVersion
