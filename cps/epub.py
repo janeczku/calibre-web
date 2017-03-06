@@ -71,9 +71,7 @@ def get_epub_info(tmp_file_path, original_file_name, original_file_extension):
             epub_metadata['language'] = isoLanguages.get(part3=lang).name
         else:
             epub_metadata['language'] = ""
-    except IndexError as e:
-        epub_metadata['language'] = ""
-
+    
     coversection = tree.xpath("/pkg:package/pkg:manifest/pkg:item[@id='cover-image']/@href", namespaces=ns)
     coverfile = None
     if len(coversection) > 0:
