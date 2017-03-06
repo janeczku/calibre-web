@@ -1,5 +1,5 @@
 future
-sqlalchemy
+#sqlalchemy
 
 PyPDF2
 babel
