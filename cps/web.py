@@ -7,7 +7,8 @@ import logging
 from logging.handlers import RotatingFileHandler
 import textwrap
 from flask import Flask, render_template, session, request, Response, redirect, url_for, send_from_directory, \
-        make_response, g, flash, abort, send_file, Markup
+        make_response, g, flash, abort, send_file, Markup, \
+        stream_with_context
 from flask import __version__ as flaskVersion
 import ub
 from ub import config
@@ -767,7 +768,7 @@ def do_gdrive_download(df, headers):
     app.logger.info(total_size)
     download_url = df.metadata.get('downloadUrl')
     app.logger.info (time.time()-startTime)
-    s = partial(total_size, 1024 * 100) # I'm downloading BIG files, so 100M chunk size is fine for me
+    s = partial(total_size, 1024 * 1024) # I'm downloading BIG files, so 100M chunk size is fine for me
     def stream():
         for bytes in s:
             headers = {"Range" : 'bytes=%s-%s' % (bytes[0], bytes[1])}
@@ -777,11 +778,7 @@ def do_gdrive_download(df, headers):
             else:
                 app.logger.info('An error occurred: %s' % resp)
                 return
-            app.logger.info(str(bytes[1])+"...")
-            app.logger.info (time.time()-startTime)
-    return Response(stream(), headers=headers)
-
-
+    return Response(stream_with_context(stream()), headers=headers)
 
 @app.route("/opds/download/<book_id>/<format>/")
 @requires_basic_auth_if_no_ano
