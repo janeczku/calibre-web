@@ -4,8 +4,10 @@
 from lxml import etree
 import os
 import uploader
-import StringIO
-
+try:
+    from io import StringIO
+except ImportError as e:
+    import StringIO
 
 def get_fb2_info(tmp_file_path, original_file_extension):
 
