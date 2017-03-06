@@ -764,10 +764,7 @@ def partial(total_byte_len, part_size_limit):
 def do_gdrive_download(df, headers):
     startTime=time.time()
     total_size = int(df.metadata.get('fileSize'))
-    app.logger.info (time.time()-startTime)
-    app.logger.info(total_size)
     download_url = df.metadata.get('downloadUrl')
-    app.logger.info (time.time()-startTime)
     s = partial(total_size, 1024 * 1024) # I'm downloading BIG files, so 100M chunk size is fine for me
     def stream():
         for bytes in s:
@@ -801,16 +798,11 @@ def get_opds_download_link(book_id, format):
     startTime=time.time()
     if config.config_use_google_drive:
         df=gdriveutils.getFileFromEbooksFolder(Gdrive.Instance().drive, book.path, data.name + "." + format)
-        app.logger.info (time.time()-startTime)
-        #download_url = df.metadata.get('downloadUrl')
-        #resp, content = df.auth.Get_Http_Object().request(download_url)
-        #io.BytesIO(content)
-        #response=send_file(io.BytesIO(content))
         return do_gdrive_download(df, headers)
     else:
         # file_name = helper.get_valid_filename(file_name)
         response = make_response(send_from_directory(os.path.join(config.config_calibre_dir, book.path), data.name + "." + format))
-    response.headers["Content-Disposition"] = "attachment; filename*=UTF-8''%s.%s" % (urllib.quote(file_name.encode('utf8')), format)
+    response.headers=headers
     return response
 
 
@@ -1602,18 +1594,18 @@ def get_download_link(book_id, format):
         if len(book.authors) > 0:
             file_name = book.authors[0].name + '-' + file_name
         file_name = helper.get_valid_filename(file_name)
-        if config.config_use_google_drive:
-            df=gdriveutils.getFileFromEbooksFolder(Gdrive.Instance().drive, book.path, '%s.%s' % (data.name, format))
-            download_url = df.metadata.get('downloadUrl')
-            resp, content = df.auth.Get_Http_Object().request(download_url)
-            response=send_file(io.BytesIO(content))
-        else:
-            response = make_response(send_from_directory(os.path.join(config.config_calibre_dir, book.path), data.name + "." + format))
+        headers={}
         try:
-            response.headers["Content-Type"] = mimetypes.types_map['.' + format]
+            headers["Content-Type"] = mimetypes.types_map['.' + format]
         except:
             pass
-        response.headers["Content-Disposition"] = "attachment; filename*=UTF-8''%s.%s" % (urllib.quote(file_name.encode('utf-8')), format)
+        headers["Content-Disposition"] = "attachment; filename*=UTF-8''%s.%s" % (urllib.quote(file_name.encode('utf-8')), format)
+        if config.config_use_google_drive:
+            df=gdriveutils.getFileFromEbooksFolder(Gdrive.Instance().drive, book.path, '%s.%s' % (data.name, format))
+            return do_gdrive_download(df, headers)
+        else:
+            response = make_response(send_from_directory(os.path.join(config.config_calibre_dir, book.path), data.name + "." + format))
+        response.headers=headers
         return response
     else:
         abort(404)
