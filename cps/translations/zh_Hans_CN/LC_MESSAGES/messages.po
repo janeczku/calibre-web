@@ -325,7 +325,7 @@ msgstr "发送测试邮件时发生错误: %(res)s"
 
 #: cps/web.py:1816
 msgid "E-Mail settings updated"
-msgstr ""
+msgstr "E-Mail 设置已更新"
 
 #: cps/web.py:1817
 msgid "Edit mail settings"
@@ -357,11 +357,11 @@ msgstr "编辑元数据"
 #: cps/web.py:2162
 #, python-format
 msgid "File extension \"%s\" is not allowed to be uploaded to this server"
-msgstr ""
+msgstr "不能上传后缀为　\"%s\"　的文件到此服务器"
 
 #: cps/web.py:2168
 msgid "File to be uploaded must have an extension"
-msgstr ""
+msgstr "要上传的文件必须有一个后缀"
 
 #: cps/web.py:2185
 #, python-format

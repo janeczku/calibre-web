@@ -6,7 +6,9 @@ import sys
 
 base_path = os.path.dirname(os.path.abspath(__file__))
 # Insert local directories into path
-sys.path.insert(0, os.path.join(base_path, 'vendor'))
+sys.path.append(base_path)
+sys.path.append(os.path.join(base_path, 'cps'))
+sys.path.append(os.path.join(base_path, 'vendor'))
 
 from cps import web
 from tornado.wsgi import WSGIContainer
