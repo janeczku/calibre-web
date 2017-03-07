@@ -28,7 +28,7 @@ Calibre Web is a web app providing a clean interface for browsing, reading and d
 
 ## Quick start
 
-1. Execute the command: `python cps.py`
+1. Execute the command: `python cps.py` (or `nohup python cps.py` - recommended if you want to exit the terminal window)
 2. Point your browser to `http://localhost:8083` or `http://localhost:8083/opds` for the OPDS catalog 
 3. Set `Location of Calibre database` to the path of the folder where your Calibre library (metadata.db) lives, push "submit" button
 4. Go to Login page
