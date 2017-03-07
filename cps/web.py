@@ -18,9 +18,8 @@ from sqlalchemy.exc import IntegrityError
 from sqlalchemy import __version__ as sqlalchemyVersion
 from math import ceil
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
-from flask_login import __version__ as flask_loginVersion
 from flask_principal import Principal, Identity, AnonymousIdentity, identity_changed
-from flask_login import __version__ as flask_principalVersion
+from flask_principal import __version__ as flask_principalVersion
 from flask_babel import Babel
 from flask_babel import gettext as _
 import requests
@@ -47,6 +46,11 @@ import db
 from shutil import move, copyfile
 from tornado.ioloop import IOLoop
 from tornado import version as tornadoVersion
+
+try:
+    from flask_login import __version__ as flask_loginVersion
+except ImportError, e:
+    from flask_login.__about__ import __version__ as flask_loginVersion
 
 try:
     from wand.image import Image
