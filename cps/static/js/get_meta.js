@@ -6,6 +6,7 @@
  */
 
 $(document).ready(function () {
+    var msg = i18n_msg;
     var douban = 'https://api.douban.com';
     var db_search = '/v2/book/search';
     var db_get_info = '/v2/book/';
@@ -74,7 +75,7 @@ $(document).ready(function () {
     }
     do_search = function (keyword) {
         show_flag = 0;
-        $('#meta-info').text('Loading...');
+        $('#meta-info').text(msg.loading);
         var keyword = $('#keyword').val();
         if (keyword) {
             db_search_book(keyword);
@@ -93,7 +94,7 @@ $(document).ready(function () {
                 db_results = data.books;
             },
             error: function () {
-                $('#meta-info').html('<p class="text-danger">Search error!</p>');
+                $('#meta-info').html('<p class="text-danger">'+ msg.search_error+'!</p>');
             },
             complete: function () {
                 db_done = true;
@@ -108,8 +109,8 @@ $(document).ready(function () {
             $('#meta-info').html('<ul id="book-list" class="media-list"></ul>');
         }
         if (gg_done && db_done) {
-            if (gg_results.length < 1 && db_results.length < 1) {
-                $('#meta-info').html('<p class="text-danger">No Result! Please try anonther keyword.</p>');
+            if (!gg_results || !db_results) {
+                $('#meta-info').html('<p class="text-danger">'+ msg.no_result +'</p>');
                 return;
             }
         }
@@ -129,10 +130,10 @@ $(document).ready(function () {
                     '<div class="media-body">' +
                     '<h4 class="media-heading"><a href="https://books.google.com/books?id=' +
                     book.id + '"  target="_blank">' + book.volumeInfo.title + '</a></h4>' +
-                    '<p>Author：' + book.volumeInfo.authors + '</p>' +
-                    '<p>Publisher：' + book.volumeInfo.publisher + '</p>' +
-                    '<p>Description:' + book.volumeInfo.description + '</p>' +
-                    '<p>Source:<a href="https://books.google.com" target="_blank">Google Books</a></p>' +
+                    '<p>'+ msg.author +'：' + book.volumeInfo.authors + '</p>' +
+                    '<p>'+ msg.publisher + '：' + book.volumeInfo.publisher + '</p>' +
+                    '<p>'+ msg.description + ':' + book.volumeInfo.description + '</p>' +
+                    '<p>'+ msg.source + ':<a href="https://books.google.com" target="_blank">Google Books</a></p>' +
                     '</div>' +
                     '</li>';
                 $("#book-list").append(book_html);
@@ -149,10 +150,10 @@ $(document).ready(function () {
                     '<div class="media-body">' +
                     '<h4 class="media-heading"><a href="https://book.douban.com/subject/' +
                     book.id + '"  target="_blank">' + book.title + '</a></h4>' +
-                    '<p>Author：' + book.author + '</p>' +
-                    '<p>Publisher：' + book.publisher + '</p>' +
-                    '<p>Description:' + book.summary + '</p>' +
-                    '<p>Source:<a href="https://book.douban.com" target="_blank">Douban Books</a></p>' +
+                    '<p>' + msg.author + '：' + book.author + '</p>' +
+                    '<p>' + msg.publisher + '：' + book.publisher + '</p>' +
+                    '<p>' + msg.description + ':' + book.summary + '</p>' +
+                    '<p>' + msg.source + ':<a href="https://book.douban.com" target="_blank">Douban Books</a></p>' +
                     '</div>' +
                     '</li>';
                 $("#book-list").append(book_html);
