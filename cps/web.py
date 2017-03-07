@@ -685,7 +685,7 @@ def get_opds_download_link(book_id, format):
         file_name = book.authors[0].name + '-' + file_name
     file_name = helper.get_valid_filename(file_name)
     response = make_response(send_from_directory(os.path.join(config.config_calibre_dir, book.path), data.name + "." + format))
-    response.headers["Content-Disposition"] = "attachment; filename=\"%s.%s\"" % (quote(file_name.encode('utf8')), format)
+    response.headers["Content-Disposition"] = "attachment; filename*=UTF-8''%s.%s" % (urllib.quote(file_name.encode('utf8')), format)
     return response
 
 
@@ -1295,7 +1295,7 @@ def get_download_link(book_id, format):
             response.headers["Content-Type"] = mimetypes.types_map['.' + format]
         except Exception as e:
             pass
-        response.headers["Content-Disposition"] = "attachment; filename=\"%s.%s\"" % (quote(file_name.encode('utf-8')), format)
+        response.headers["Content-Disposition"] = "attachment; filename*=UTF-8''%s.%s" % (urllib.quote(file_name.encode('utf-8')), format)
         return response
     else:
         abort(404)
