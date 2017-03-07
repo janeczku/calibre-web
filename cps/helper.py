@@ -13,11 +13,17 @@ import os
 import traceback
 import re
 import unicodedata
-from StringIO import StringIO
+try:
+    from io import StringIO
+    from email.mime.base import MIMEBase
+    from email.mime.multipart import MIMEMultipart
+    from email.mime.text import MIMEText
+except ImportError as e:
+    from StringIO import StringIO
+    from email.MIMEBase import MIMEBase
+    from email.MIMEMultipart import MIMEMultipart
+    from email.MIMEText import MIMEText
 from email import encoders
-from email.MIMEBase import MIMEBase
-from email.MIMEMultipart import MIMEMultipart
-from email.MIMEText import MIMEText
 from email.generator import Generator
 from email.utils import formatdate
 from email.utils import make_msgid
@@ -32,7 +38,7 @@ from tornado.ioloop import IOLoop
 try:
     import unidecode
     use_unidecode=True
-except:
+except Exception as e:
     use_unidecode=False
 
 # Global variables
@@ -147,7 +153,7 @@ def send_raw_email(kindle_mail, msg):
 
         smtplib.stderr = org_stderr
 
-    except (socket.error, smtplib.SMTPRecipientsRefused, smtplib.SMTPException), e:
+    except (socket.error, smtplib.SMTPRecipientsRefused, smtplib.SMTPException) as e:
         app.logger.error(traceback.print_exc())
         return _("Failed to send mail: %s" % str(e))
 
@@ -238,8 +244,11 @@ def get_valid_filename(value, replace_whitespace=True):
         value=value.replace(u'§',u'SS')
         value=value.replace(u'ß',u'ss')
         value = unicodedata.normalize('NFKD', value)
-        re_slugify = re.compile('[^\w\s-]', re.UNICODE)
-        value = unicode(re_slugify.sub('', value).strip())
+        re_slugify = re.compile('[\W\s-]', re.UNICODE)
+        if type(value) is str: #Python3 str, Python2 unicode
+            value = re_slugify.sub('', value).strip()
+        else:
+            value = unicode(re_slugify.sub('', value).strip())
     if replace_whitespace:
         #*+:\"/<>? werden durch _ ersetzt
         value = re.sub('[\*\+:\\\"/<>\?]+', u'_', value, flags=re.U)
@@ -379,7 +388,7 @@ class Updater(threading.Thread):
                     try:
                         os.chown(dst_file, permission.st_uid, permission.st_uid)
                         # print('Permissions: User '+str(new_permissions.st_uid)+' Group '+str(new_permissions.st_uid))
-                    except:
+                    except Exception as e:
                         e = sys.exc_info()
                         logging.getLogger('cps.web').debug('Fail '+str(dst_file)+' error: '+str(e))
         return
@@ -421,7 +430,7 @@ class Updater(threading.Thread):
                     logging.getLogger('cps.web').debug("Delete file " + item_path)
                     log_from_thread("Delete file " + item_path)
                     os.remove(item_path)
-                except:
+                except Exception as e:
                     logging.getLogger('cps.web').debug("Could not remove:" + item_path)
         shutil.rmtree(source, ignore_errors=True)
 

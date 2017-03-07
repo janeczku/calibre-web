@@ -10,6 +10,7 @@ import os
 import logging
 from werkzeug.security import generate_password_hash
 from flask_babel import gettext as _
+#from builtins import str
 
 dbpath = os.path.join(os.path.normpath(os.path.dirname(os.path.realpath(__file__)) + os.sep + ".." + os.sep), "app.db")
 engine = create_engine('sqlite:///{0}'.format(dbpath), echo=False)
@@ -90,7 +91,7 @@ class UserBase:
         return False
 
     def get_id(self):
-        return unicode(self.id)
+        return str(self.id)
 
     def filter_language(self):
         return self.default_language
@@ -438,7 +439,7 @@ def create_anonymous_user():
     session.add(user)
     try:
         session.commit()
-    except:
+    except Exception as e:
         session.rollback()
         pass
 
@@ -456,7 +457,7 @@ def create_admin_user():
     session.add(user)
     try:
         session.commit()
-    except:
+    except Exception as e:
         session.rollback()
         pass
 
