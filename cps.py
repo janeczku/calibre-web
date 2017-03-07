@@ -14,14 +14,19 @@ from cps import web
 from tornado.wsgi import WSGIContainer
 from tornado.httpserver import HTTPServer
 from tornado.ioloop import IOLoop
+from gevent.wsgi import WSGIServer
 
 if __name__ == '__main__':
     if web.ub.DEVELOPMENT:
         web.app.run(host="0.0.0.0", port=web.ub.config.config_port, debug=True)
     else:
-        http_server = HTTPServer(WSGIContainer(web.app))
-        http_server.listen(web.ub.config.config_port)
-        IOLoop.instance().start()
+        if len(sys.argv) > 1 and sys.argv[1] == '-g':
+            http_server = WSGIServer(('', web.ub.config.config_port), web.app)
+            http_server.serve_forever()
+        else:
+            http_server = HTTPServer(WSGIContainer(web.app))
+            http_server.listen(web.ub.config.config_port)
+            IOLoop.instance().start()
 
     if web.helper.global_task == 0:
         web.app.logger.info("Performing restart of Calibre-web")
