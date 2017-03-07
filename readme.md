@@ -1,4 +1,4 @@
-##About
+## About
 
 Calibre Web is a web app providing a clean interface for browsing, reading and downloading eBooks using an existing [Calibre](https://calibre-ebook.com) database.
 
@@ -6,7 +6,8 @@ Calibre Web is a web app providing a clean interface for browsing, reading and d
 
 ![screenshot](https://raw.githubusercontent.com/janeczku/docker-calibre-web/master/screenshot.png)
 
-##Features
+## Features
+
 - Bootstrap 3 HTML5 interface
 - full graphical setup
 - User management
@@ -28,13 +29,14 @@ Calibre Web is a web app providing a clean interface for browsing, reading and d
 
 ## Quick start
 
-1. Execute the command: `python cps.py` (or `nohup python cps.py` - recommended if you want to exit the terminal window)
-2. Point your browser to `http://localhost:8083` or `http://localhost:8083/opds` for the OPDS catalog 
-3. Set `Location of Calibre database` to the path of the folder where your Calibre library (metadata.db) lives, push "submit" button
-4. Go to Login page
+1. Install required dependencies by executing `pip install -r requirements.txt`
+2. Execute the command: `python cps.py` (or `nohup python cps.py` - recommended if you want to exit the terminal window)
+3. Point your browser to `http://localhost:8083` or `http://localhost:8083/opds` for the OPDS catalog 
+4. Set `Location of Calibre database` to the path of the folder where your Calibre library (metadata.db) lives, push "submit" button
+5. Go to Login page
 
-**Default admin login:**    
-*Username:* admin   
+**Default admin login:**
+*Username:* admin
 *Password:* admin123
 
 ## Runtime Configuration Options
@@ -56,10 +58,10 @@ Tick to enable uploading of PDF, epub, FB2. This requires the imagemagick librar
 ## Requirements
 
 Python 2.7+
-     
-Optionally, to enable on-the-fly conversion from EPUB to MOBI when using the send-to-kindle feature:     
 
-[Download](http://www.amazon.com/gp/feature.html?docId=1000765211) Amazon's KindleGen tool for your platform and place the binary named as `kindlegen` in the `vendor` folder. 
+Optionally, to enable on-the-fly conversion from EPUB to MOBI when using the send-to-kindle feature:
+
+[Download](http://www.amazon.com/gp/feature.html?docId=1000765211) Amazon's KindleGen tool for your platform and place the binary named as `kindlegen` in the `vendor` folder.
 
 ## Docker image
 
@@ -131,4 +133,4 @@ Replace the user and ExecStart with your user and foldernames.
 
 `sudo systemctl enable cps.service`
 
-enables the service. 
+enables the service.
