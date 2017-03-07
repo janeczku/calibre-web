@@ -1210,6 +1210,10 @@ def read_book(book_id, format):
         book_dir = os.path.join(config.get_main_dir, "cps", "static", str(book_id))
         if not os.path.exists(book_dir):
             os.mkdir(book_dir)
+        if type(book.data[0].name) is str:
+            book_name = book.data[0].name.encode('utf8')
+        else:
+            book_name = book.data[0].name
         if format.lower() == "epub":
             # check if mimetype file is exists
             mime_file = str(book_id) + "/mimetype"
@@ -1236,22 +1240,22 @@ def read_book(book_id, format):
                 zfile.close()
             return render_title_template('read.html', bookid=book_id, title=_(u"Read a Book"))
         elif format.lower() == "pdf":
-            all_name = str(book_id) + "/" + urllib.quote(book.data[0].name) + ".pdf"
-            tmp_file = os.path.join(book_dir, urllib.quote(book.data[0].name)) + ".pdf"
+            all_name = str(book_id) + "/" + book_name + ".pdf"
+            tmp_file = os.path.join(book_dir, book_name) + ".pdf"
             if not os.path.exists(tmp_file):
                 pdf_file = os.path.join(config.config_calibre_dir, book.path, book.data[0].name) + ".pdf"
                 copyfile(pdf_file, tmp_file)
             return render_title_template('readpdf.html', pdffile=all_name, title=_(u"Read a Book"))
         elif format.lower() == "txt":
-            all_name = str(book_id) + "/" + urllib.quote(book.data[0].name) + ".txt"
-            tmp_file = os.path.join(book_dir, urllib.quote(book.data[0].name)) + ".txt"
+            all_name = str(book_id) + "/" + book_name + ".txt"
+            tmp_file = os.path.join(book_dir, book_name) + ".txt"
             if not os.path.exists(all_name):
                 txt_file = os.path.join(config.config_calibre_dir, book.path, book.data[0].name) + ".txt"
                 copyfile(txt_file, tmp_file)
             return render_title_template('readtxt.html', txtfile=all_name, title=_(u"Read a Book"))
         elif format.lower() == "cbr":
-            all_name = str(book_id) + "/" + urllib.quote(book.data[0].name) + ".cbr"
-            tmp_file = os.path.join(book_dir, urllib.quote(book.data[0].name)) + ".cbr"
+            all_name = str(book_id) + "/" + book_name + ".cbr"
+            tmp_file = os.path.join(book_dir, book_name) + ".cbr"
             if not os.path.exists(all_name):
                 cbr_file = os.path.join(config.config_calibre_dir, book.path, book.data[0].name) + ".cbr"
                 copyfile(cbr_file, tmp_file)
