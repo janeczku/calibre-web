@@ -14,15 +14,16 @@ import traceback
 import re
 import unicodedata
 try:
-    from io import StringIO
-    from email.mime.base import MIMEBase
-    from email.mime.multipart import MIMEMultipart
-    from email.mime.text import MIMEText
-except ImportError as e:
     from StringIO import StringIO
     from email.MIMEBase import MIMEBase
     from email.MIMEMultipart import MIMEMultipart
     from email.MIMEText import MIMEText
+except ImportError as e:
+    from io import StringIO
+    from email.mime.base import MIMEBase
+    from email.mime.multipart import MIMEMultipart
+    from email.mime.text import MIMEText
+
 from email import encoders
 from email.generator import Generator
 from email.utils import formatdate
