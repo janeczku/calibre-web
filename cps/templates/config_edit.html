@@ -23,7 +23,10 @@
       <label for="config_random_books">{{_('No. of random books to show')}}</label>
       <input type="number" min="1" max="30" class="form-control" name="config_random_books" id="config_random_books" value="{% if content.config_random_books != None %}{{ content.config_random_books }}{% endif %}" autocomplete="off">
     </div>
-    
+    <div class="form-group">
+      <label for="config_columns_to_ignore">{{_('Regular expression for ignoring columns')}}</label>
+      <input type="text" class="form-control" name="config_columns_to_ignore" id="config_columns_to_ignore" value="{% if content.config_columns_to_ignore != None %}{{ content.config_columns_to_ignore }}{% endif %}" autocomplete="off">
+    </div>
     <div class="form-group">
       <label for="config_title_regex">{{_('Regular expression for title sorting')}}</label>
       <input type="text" class="form-control" name="config_title_regex" id="config_title_regex" value="{% if content.config_title_regex != None %}{{ content.config_title_regex }}{% endif %}" autocomplete="off">

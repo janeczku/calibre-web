@@ -254,6 +254,7 @@ class Settings(Base):
     config_anonbrowse = Column(SmallInteger, default=0)
     config_public_reg = Column(SmallInteger, default=0)
     config_default_role = Column(SmallInteger, default=0)
+    config_columns_to_ignore = Column(String)
 
     def __repr__(self):
         pass
@@ -280,6 +281,7 @@ class Config:
         self.config_anonbrowse = data.config_anonbrowse
         self.config_public_reg = data.config_public_reg
         self.config_default_role = data.config_default_role
+        self.config_columns_to_ignore = data.config_columns_to_ignore
         if self.config_calibre_dir is not None:
             self.db_configured = True
         else:
@@ -360,6 +362,12 @@ def migrate_Database():
         conn.execute("ALTER TABLE Settings ADD column `config_uploading` SmallInteger DEFAULT 0")
         conn.execute("ALTER TABLE Settings ADD column `config_anonbrowse` SmallInteger DEFAULT 0")
         conn.execute("ALTER TABLE Settings ADD column `config_public_reg` SmallInteger DEFAULT 0")
+        session.commit()
+    try:
+        session.query(exists().where(Settings.config_columns_to_ignore)).scalar()
+    except exc.OperationalError:
+        conn = engine.connect()
+        conn.execute("ALTER TABLE Settings ADD column `config_columns_to_ignore` String DEFAULT ''")
         session.commit()
     try:
         session.query(exists().where(Settings.config_default_role)).scalar()

@@ -1038,7 +1038,16 @@ def show_book(id):
             except Exception as e:
                 entries.languages[index].language_name = _(
                     isoLanguages.get(part3=entries.languages[index].lang_code).name)
-        cc = db.session.query(db.Custom_Columns).filter(db.Custom_Columns.datatype.notin_(db.cc_exceptions)).all()
+        tmpcc = db.session.query(db.Custom_Columns).filter(db.Custom_Columns.datatype.notin_(db.cc_exceptions)).all()
+
+        if config.config_columns_to_ignore:
+            cc=[]
+            for col in tmpcc:
+                r= re.compile(config.config_columns_to_ignore)
+                if r.match(col.label):
+                    cc.append(col)
+        else:
+            cc=tmpcc
         book_in_shelfs = []
         shelfs = ub.session.query(ub.BookShelf).filter(ub.BookShelf.book_id == id).all()
         for entry in shelfs:
@@ -1693,6 +1702,8 @@ def configuration_helper(origin):
                 reboot_required = True
         if "config_calibre_web_title" in to_save:
             content.config_calibre_web_title = to_save["config_calibre_web_title"]
+        if "config_columns_to_ignore" in to_save:
+            content.config_columns_to_ignore = to_save["config_columns_to_ignore"]
         if "config_title_regex" in to_save:
             if content.config_title_regex != to_save["config_title_regex"]:
                 content.config_title_regex = to_save["config_title_regex"]
