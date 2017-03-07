@@ -109,7 +109,7 @@ $(document).ready(function () {
             $('#meta-info').html('<ul id="book-list" class="media-list"></ul>');
         }
         if (gg_done && db_done) {
-            if (!gg_results || !db_results) {
+            if (!gg_results && !db_results) {
                 $('#meta-info').html('<p class="text-danger">'+ msg.no_result +'</p>');
                 return;
             }
