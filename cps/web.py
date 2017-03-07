@@ -683,9 +683,9 @@ def get_opds_download_link(book_id, format):
     file_name = book.title
     if len(book.authors) > 0:
         file_name = book.authors[0].name + '-' + file_name
-    # file_name = helper.get_valid_filename(file_name)
+    file_name = helper.get_valid_filename(file_name)
     response = make_response(send_from_directory(os.path.join(config.config_calibre_dir, book.path), data.name + "." + format))
-    response.headers["Content-Disposition"] = "attachment; filename=\"%s.%s\"" % (data.name, format)
+    response.headers["Content-Disposition"] = "attachment; filename*=UTF-8''%s.%s" % (urllib.quote(file_name.encode('utf8')), format)
     return response
 
 
@@ -1295,7 +1295,7 @@ def get_download_link(book_id, format):
             response.headers["Content-Type"] = mimetypes.types_map['.' + format]
         except Exception as e:
             pass
-        response.headers["Content-Disposition"] = "attachment; filename=\"%s.%s\"" % (quote(file_name.encode('utf-8')), format)
+        response.headers["Content-Disposition"] = "attachment; filename*=UTF-8''%s.%s" % (quote(file_name.encode('utf-8')), format)
         return response
     else:
         abort(404)
@@ -2246,7 +2246,7 @@ def upload():
         db.session.add(db_book)
         db.session.flush()# flush content get db_book.id avalible
        #add comment
-        upload_comment = Markup(meta.comments).unescape()
+        upload_comment = Markup(meta.description).unescape()
         db_comment = None
         if upload_comment != "":
             db_comment = db.Comments(upload_comment, db_book.id) 
