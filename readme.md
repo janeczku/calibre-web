@@ -1,10 +1,10 @@
 ##About my fork
 
-I have been messing around with calibre-web in a few different ways and thought I would share them. I am currently working on a couple of features: - 
+I have been messing around with calibre-web in a few different ways and thought I would share them. I am currently working on a couple of features: -
 
 1. Marking books as read/unread. In the Book View, there is now a row that says whether or not a book is read. If you click it, it will toggle. Further down the line, I plan on adding goodreads support, which if the book has a goodreads link, it will automatically move the book to the "to read" and "read" bookshelves.
 
-2. Google drive support. In my local version, I currently have this working, but it is essentially to make the website have all the books / covers / metadata.db served directly from google drive. I am currently, still optimising a bit of code, and will hopefully have this on GitHub ASAP. 
+2. Google drive support. In my local version, I currently have this working, but it is essentially to make the website have all the books / covers / metadata.db served directly from google drive. I am currently, still optimising a bit of code, and will hopefully have this on GitHub ASAP.
 
 ##Using Google Drive integration
 
@@ -37,7 +37,6 @@ If your calibre web is using https (this can be done for free using cloudflare),
 
 9. Click enable watch of metadata.db
      9. Note that this expires after a week, so will need to be manually refresh (TODO: Add an authenticated call to do this via crontab or something similar or maybe in before_request method)
-
 ##About
 
 Calibre Web is a web app providing a clean interface for browsing, reading and downloading eBooks using an existing [Calibre](https://calibre-ebook.com) database.
@@ -46,7 +45,8 @@ Calibre Web is a web app providing a clean interface for browsing, reading and d
 
 ![screenshot](https://raw.githubusercontent.com/janeczku/docker-calibre-web/master/screenshot.png)
 
-##Features
+## Features
+
 - Bootstrap 3 HTML5 interface
 - full graphical setup
 - User management
@@ -68,13 +68,14 @@ Calibre Web is a web app providing a clean interface for browsing, reading and d
 
 ## Quick start
 
-1. Execute the command: `python cps.py`
-2. Point your browser to `http://localhost:8083` or `http://localhost:8083/opds` for the OPDS catalog 
-3. Set `Location of Calibre database` to the path of the folder where your Calibre library (metadata.db) lives, push "submit" button
-4. Go to Login page
+1. Install required dependencies by executing `pip install -r requirements.txt`
+2. Execute the command: `python cps.py` (or `nohup python cps.py` - recommended if you want to exit the terminal window)
+3. Point your browser to `http://localhost:8083` or `http://localhost:8083/opds` for the OPDS catalog
+4. Set `Location of Calibre database` to the path of the folder where your Calibre library (metadata.db) lives, push "submit" button
+5. Go to Login page
 
-**Default admin login:**    
-*Username:* admin   
+**Default admin login:**
+*Username:* admin
 *Password:* admin123
 
 ## Runtime Configuration Options
@@ -96,10 +97,10 @@ Tick to enable uploading of PDF, epub, FB2. This requires the imagemagick librar
 ## Requirements
 
 Python 2.7+
-     
-Optionally, to enable on-the-fly conversion from EPUB to MOBI when using the send-to-kindle feature:     
 
-[Download](http://www.amazon.com/gp/feature.html?docId=1000765211) Amazon's KindleGen tool for your platform and place the binary named as `kindlegen` in the `vendor` folder. 
+Optionally, to enable on-the-fly conversion from EPUB to MOBI when using the send-to-kindle feature:
+
+[Download](http://www.amazon.com/gp/feature.html?docId=1000765211) Amazon's KindleGen tool for your platform and place the binary named as `kindlegen` in the `vendor` folder.
 
 ## Docker image
 
@@ -171,4 +172,4 @@ Replace the user and ExecStart with your user and foldernames.
 
 `sudo systemctl enable cps.service`
 
-enables the service. 
+enables the service.

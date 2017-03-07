@@ -11,6 +11,7 @@ import logging
 from werkzeug.security import generate_password_hash
 from flask_babel import gettext as _
 import json
+#from builtins import str
 
 dbpath = os.path.join(os.path.normpath(os.path.dirname(os.path.realpath(__file__)) + os.sep + ".." + os.sep), "app.db")
 engine = create_engine('sqlite:///{0}'.format(dbpath), echo=False)
@@ -92,7 +93,7 @@ class UserBase:
         return False
 
     def get_id(self):
-        return unicode(self.id)
+        return str(self.id)
 
     def filter_language(self):
         return self.default_language
@@ -269,6 +270,7 @@ class Settings(Base):
     config_anonbrowse = Column(SmallInteger, default=0)
     config_public_reg = Column(SmallInteger, default=0)
     config_default_role = Column(SmallInteger, default=0)
+    config_columns_to_ignore = Column(String)
     config_use_google_drive = Column(Boolean)
     config_google_drive_client_id = Column(String)
     config_google_drive_client_secret = Column(String)
@@ -302,6 +304,7 @@ class Config:
         self.config_anonbrowse = data.config_anonbrowse
         self.config_public_reg = data.config_public_reg
         self.config_default_role = data.config_default_role
+        self.config_columns_to_ignore = data.config_columns_to_ignore
         self.config_use_google_drive = data.config_use_google_drive
         self.config_google_drive_client_id = data.config_google_drive_client_id
         self.config_google_drive_client_secret = data.config_google_drive_client_secret
@@ -491,7 +494,7 @@ def create_anonymous_user():
     session.add(user)
     try:
         session.commit()
-    except:
+    except Exception as e:
         session.rollback()
         pass
 
@@ -510,7 +513,7 @@ def create_admin_user():
     session.add(user)
     try:
         session.commit()
-    except:
+    except Exception as e:
         session.rollback()
         pass
 
