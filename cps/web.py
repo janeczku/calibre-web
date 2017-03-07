@@ -136,6 +136,15 @@ lm.anonymous_user = ub.Anonymous
 app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
 db.setup_db()
 
+if config.config_log_level == logging.DEBUG :
+    logging.getLogger("sqlalchemy.engine").addHandler(file_handler)
+    logging.getLogger("sqlalchemy.engine").setLevel(logging.INFO)
+    logging.getLogger("sqlalchemy.pool").addHandler(file_handler)
+    logging.getLogger("sqlalchemy.pool").setLevel(config.config_log_level)
+    logging.getLogger("sqlalchemy.orm").addHandler(file_handler)
+    logging.getLogger("sqlalchemy.orm").setLevel(config.config_log_level)
+
+
 @babel.localeselector
 def get_locale():
     # if a user is logged in, use the locale from the user settings
@@ -550,7 +559,13 @@ def feed_hot():
     hot_books = all_books.offset(off).limit(config.config_books_per_page)
     entries = list()
     for book in hot_books:
-        entries.append(db.session.query(db.Books).filter(filter).filter(db.Books.id == book.Downloads.book_id).first())
+        downloadBook = db.session.query(db.Books).filter(db.Books.id == book.Downloads.book_id).first()
+        if downloadBook:
+            entries.append(
+                db.session.query(db.Books).filter(filter).filter(db.Books.id == book.Downloads.book_id).first())
+        else:
+            ub.session.query(ub.Downloads).filter(book.Downloads.book_id == ub.Downloads.book_id).delete()
+            ub.session.commit()
     numBooks = entries.__len__()
     pagination = Pagination((int(off) / (int(config.config_books_per_page)) + 1), config.config_books_per_page, numBooks)
     xml = render_title_template('feed.xml', entries=entries, pagination=pagination)
@@ -839,7 +854,13 @@ def hot_books(page):
     hot_books = all_books.offset(off).limit(config.config_books_per_page)
     entries = list()
     for book in hot_books:
-        entries.append(db.session.query(db.Books).filter(filter).filter(db.Books.id == book.Downloads.book_id).first())
+        downloadBook = db.session.query(db.Books).filter(db.Books.id == book.Downloads.book_id).first()
+        if downloadBook:
+            entries.append(
+                db.session.query(db.Books).filter(filter).filter(db.Books.id == book.Downloads.book_id).first())
+        else:
+            ub.session.query(ub.Downloads).filter(book.Downloads.book_id == ub.Downloads.book_id).delete()
+            ub.session.commit()
     numBooks = entries.__len__()
     pagination = Pagination(page, config.config_books_per_page, numBooks)
     return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
@@ -1085,6 +1106,11 @@ def shutdown():
             showtext['text'] = _(u'Performing shutdown of server, please close window')
         return json.dumps(showtext)
     else:
+        if task == 2:
+            db.session.close()
+            db.engine.dispose()
+            db.setup_db()
+            return json.dumps({})
         abort(404)
 
 @app.route("/update")
