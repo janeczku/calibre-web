@@ -11,10 +11,8 @@ from ub import config
 import ub
 
 session = None
-cc_exceptions = None
-cc_classes = {}
-cc_ids = []
-books_custom_column_links = {}
+cc_exceptions = ['datetime', 'int', 'comments', 'float', 'composite', 'series']
+cc_classes = None
 engine = None
 
 
@@ -283,24 +281,19 @@ class Custom_Columns(Base):
 
 
 def setup_db():
-    global session
-    global cc_exceptions
-    global cc_classes
-    global cc_ids
-    global books_custom_column_links
     global engine
+    global session
+    global cc_classes
 
     if config.config_calibre_dir is None or config.config_calibre_dir ==  u'':
         return False
 
     dbpath = os.path.join(config.config_calibre_dir, "metadata.db")
-    if not os.path.exists(dbpath):
-        return False
-    engine = create_engine('sqlite:///{0}'.format(dbpath.encode('utf-8')), echo=False)
+    #engine = create_engine('sqlite:///{0}'.format(dbpath.encode('utf-8')), echo=False, isolation_level="SERIALIZABLE")
+    engine = create_engine('sqlite:///'+ dbpath, echo=False, isolation_level="SERIALIZABLE")
     try:
         conn = engine.connect()
-
-    except:
+    except Exception as e:
         content = ub.session.query(ub.Settings).first()
         content.config_calibre_dir = None
         content.db_configured = False
@@ -313,19 +306,21 @@ def setup_db():
     config.loadSettings()
     conn.connection.create_function('title_sort', 1, title_sort)
 
-    cc = conn.execute("SELECT id, datatype FROM custom_columns")
+    if not cc_classes:
+        cc = conn.execute("SELECT id, datatype FROM custom_columns")
 
-    cc_exceptions = ['datetime', 'int', 'comments', 'float', 'composite', 'series']
-    for row in cc:
-        if row.datatype not in cc_exceptions:
-            if row.id not in books_custom_column_links:
+        cc_ids = []
+        books_custom_column_links = {}
+        cc_classes = {}
+        for row in cc:
+            if row.datatype not in cc_exceptions:
                 books_custom_column_links[row.id] = Table('books_custom_column_' + str(row.id) + '_link', Base.metadata,
-                                                      Column('book', Integer, ForeignKey('books.id'),
-                                                             primary_key=True),
-                                                      Column('value', Integer,
-                                                             ForeignKey('custom_column_' + str(row.id) + '.id'),
-                                                             primary_key=True)
-                                                      )
+                                                          Column('book', Integer, ForeignKey('books.id'),
+                                                                 primary_key=True),
+                                                          Column('value', Integer,
+                                                                 ForeignKey('custom_column_' + str(row.id) + '.id'),
+                                                                 primary_key=True)
+                                                          )
                 cc_ids.append([row.id, row.datatype])
                 if row.datatype == 'bool':
                     ccdict = {'__tablename__': 'custom_column_' + str(row.id),
@@ -338,8 +333,7 @@ def setup_db():
                               'value': Column(String)}
                 cc_classes[row.id] = type('Custom_Column_' + str(row.id), (Base,), ccdict)
 
-    for id in cc_ids:
-        if not hasattr(Books, 'custom_column_' + str(id[0])):
+        for id in cc_ids:
             if id[1] == 'bool':
                 setattr(Books, 'custom_column_' + str(id[0]), relationship(cc_classes[id[0]],
                                                                            primaryjoin=(
