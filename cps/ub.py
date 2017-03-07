@@ -31,6 +31,7 @@ SIDEBAR_HOT = 16
 SIDEBAR_RANDOM = 32
 SIDEBAR_AUTHOR = 64
 SIDEBAR_BEST_RATED = 128
+SIDEBAR_READ_AND_UNREAD = 256
 
 DEFAULT_PASS = "admin123"
 DEFAULT_PORT = int(os.environ.get("CALIBRE_PORT", 8083))
@@ -137,6 +138,12 @@ class UserBase:
         else:
             return False
 
+    def show_read_and_unread(self):
+        if self.sidebar_view is not None:
+            return True if self.sidebar_view & SIDEBAR_READ_AND_UNREAD == SIDEBAR_READ_AND_UNREAD else False
+        else:
+            return False
+
     def show_detail_random(self):
         if self.sidebar_view is not None:
             return True if self.sidebar_view & DETAIL_RANDOM == DETAIL_RANDOM else False
@@ -216,6 +223,14 @@ class BookShelf(Base):
 
     def __repr__(self):
         return '<Book %r>' % self.id
+
+class ReadBook(Base):
+    __tablename__ = 'book_read_link'
+
+    id=Column(Integer, primary_key=True)
+    book_id = Column(Integer, unique=False)
+    user_id =Column(Integer, ForeignKey('user.id'), unique=False)
+    is_read = Column(Boolean, unique=False)
 
 
 # Baseclass representing Downloads from calibre-web in app.db
@@ -335,6 +350,9 @@ class Config:
 # everywhere to curent should work. Migration is done by checking if relevant coloums are existing, and than adding
 # rows with SQL commands
 def migrate_Database():
+    if not engine.dialect.has_table(engine.connect(), "book_read_link"):
+        ReadBook.__table__.create(bind = engine)
+
     try:
         session.query(exists().where(User.locale)).scalar()
         session.commit()
