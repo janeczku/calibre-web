@@ -18,7 +18,6 @@ from sqlalchemy.exc import IntegrityError
 from sqlalchemy import __version__ as sqlalchemyVersion
 from math import ceil
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
-from flask_login.__about__ import __version__ as flask_loginVersion
 from flask_principal import Principal, Identity, AnonymousIdentity, identity_changed
 from flask_principal import __version__ as flask_principalVersion
 from flask_babel import Babel
@@ -47,7 +46,6 @@ import db
 from shutil import move, copyfile
 from tornado.ioloop import IOLoop
 from tornado import version as tornadoVersion
-#from builtins import str
 
 try:
     from urllib.parse import quote   
@@ -55,6 +53,11 @@ try:
     from past.builtins import xrange
 except ImportError as e:
     from urllib import quote
+
+try:
+    from flask_login import __version__ as flask_loginVersion
+except ImportError, e:
+    from flask_login.__about__ import __version__ as flask_loginVersion
 
 try:
     from wand.image import Image
@@ -143,6 +146,15 @@ lm.login_view = 'login'
 lm.anonymous_user = ub.Anonymous
 app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
 db.setup_db()
+
+if config.config_log_level == logging.DEBUG :
+    logging.getLogger("sqlalchemy.engine").addHandler(file_handler)
+    logging.getLogger("sqlalchemy.engine").setLevel(logging.INFO)
+    logging.getLogger("sqlalchemy.pool").addHandler(file_handler)
+    logging.getLogger("sqlalchemy.pool").setLevel(config.config_log_level)
+    logging.getLogger("sqlalchemy.orm").addHandler(file_handler)
+    logging.getLogger("sqlalchemy.orm").setLevel(config.config_log_level)
+
 
 @babel.localeselector
 def get_locale():
@@ -248,8 +260,6 @@ class Pagination(object):
     def iter_pages(self, left_edge=2, left_current=2,
                    right_current=5, right_edge=2):
         last = 0
-        if sys.version_info.major >= 3:
-            xrange = range        
         for num in xrange(1, self.pages + 1):  # ToDo: can be simplified
             if num <= left_edge or (num > self.page - left_current - 1 and num < self.page + right_current) \
                     or num > self.pages - right_edge:
@@ -560,7 +570,13 @@ def feed_hot():
     hot_books = all_books.offset(off).limit(config.config_books_per_page)
     entries = list()
     for book in hot_books:
-        entries.append(db.session.query(db.Books).filter(filter).filter(db.Books.id == book.Downloads.book_id).first())
+        downloadBook = db.session.query(db.Books).filter(db.Books.id == book.Downloads.book_id).first()
+        if downloadBook:
+            entries.append(
+                db.session.query(db.Books).filter(filter).filter(db.Books.id == book.Downloads.book_id).first())
+        else:
+            ub.session.query(ub.Downloads).filter(book.Downloads.book_id == ub.Downloads.book_id).delete()
+            ub.session.commit()
     numBooks = entries.__len__()
     pagination = Pagination((int(off) / (int(config.config_books_per_page)) + 1), config.config_books_per_page, numBooks)
     xml = render_title_template('feed.xml', entries=entries, pagination=pagination)
@@ -849,7 +865,13 @@ def hot_books(page):
     hot_books = all_books.offset(off).limit(config.config_books_per_page)
     entries = list()
     for book in hot_books:
-        entries.append(db.session.query(db.Books).filter(filter).filter(db.Books.id == book.Downloads.book_id).first())
+        downloadBook = db.session.query(db.Books).filter(db.Books.id == book.Downloads.book_id).first()
+        if downloadBook:
+            entries.append(
+                db.session.query(db.Books).filter(filter).filter(db.Books.id == book.Downloads.book_id).first())
+        else:
+            ub.session.query(ub.Downloads).filter(book.Downloads.book_id == ub.Downloads.book_id).delete()
+            ub.session.commit()
     numBooks = entries.__len__()
     pagination = Pagination(page, config.config_books_per_page, numBooks)
     return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
@@ -1016,7 +1038,16 @@ def show_book(id):
             except Exception as e:
                 entries.languages[index].language_name = _(
                     isoLanguages.get(part3=entries.languages[index].lang_code).name)
-        cc = db.session.query(db.Custom_Columns).filter(db.Custom_Columns.datatype.notin_(db.cc_exceptions)).all()
+        tmpcc = db.session.query(db.Custom_Columns).filter(db.Custom_Columns.datatype.notin_(db.cc_exceptions)).all()
+
+        if config.config_columns_to_ignore:
+            cc=[]
+            for col in tmpcc:
+                r= re.compile(config.config_columns_to_ignore)
+                if r.match(col.label):
+                    cc.append(col)
+        else:
+            cc=tmpcc
         book_in_shelfs = []
         shelfs = ub.session.query(ub.BookShelf).filter(ub.BookShelf.book_id == id).all()
         for entry in shelfs:
@@ -1097,6 +1128,11 @@ def shutdown():
             showtext['text'] = _(u'Performing shutdown of server, please close window')
         return json.dumps(showtext)
     else:
+        if task == 2:
+            db.session.close()
+            db.engine.dispose()
+            db.setup_db()
+            return json.dumps({})
         abort(404)
 
 @app.route("/update")
@@ -1248,22 +1284,22 @@ def read_book(book_id, format):
                 zfile.close()
             return render_title_template('read.html', bookid=book_id, title=_(u"Read a Book"))
         elif format.lower() == "pdf":
-            all_name = str(book_id) + "/" + quote(book.data[0].name) + ".pdf"
-            tmp_file = os.path.join(book_dir, quote(book.data[0].name)) + ".pdf"
+            all_name = str(book_id) + "/" + book.data[0].name + ".pdf"
+            tmp_file = os.path.join(book_dir, book.data[0].name) + ".pdf"
             if not os.path.exists(tmp_file):
                 pdf_file = os.path.join(config.config_calibre_dir, book.path, book.data[0].name) + ".pdf"
                 copyfile(pdf_file, tmp_file)
             return render_title_template('readpdf.html', pdffile=all_name, title=_(u"Read a Book"))
         elif format.lower() == "txt":
-            all_name = str(book_id) + "/" + quote(book.data[0].name) + ".txt"
-            tmp_file = os.path.join(book_dir, quote(book.data[0].name)) + ".txt"
+            all_name = str(book_id) + "/" + book.data[0].name + ".txt"
+            tmp_file = os.path.join(book_dir, book.data[0].name) + ".txt"
             if not os.path.exists(all_name):
                 txt_file = os.path.join(config.config_calibre_dir, book.path, book.data[0].name) + ".txt"
                 copyfile(txt_file, tmp_file)
             return render_title_template('readtxt.html', txtfile=all_name, title=_(u"Read a Book"))
         elif format.lower() == "cbr":
-            all_name = str(book_id) + "/" + quote(book.data[0].name) + ".cbr"
-            tmp_file = os.path.join(book_dir, quote(book.data[0].name)) + ".cbr"
+            all_name = str(book_id) + "/" + book.data[0].name + ".cbr"
+            tmp_file = os.path.join(book_dir, book.data[0].name) + ".cbr"
             if not os.path.exists(all_name):
                 cbr_file = os.path.join(config.config_calibre_dir, book.path, book.data[0].name) + ".cbr"
                 copyfile(cbr_file, tmp_file)
@@ -1295,7 +1331,11 @@ def get_download_link(book_id, format):
             response.headers["Content-Type"] = mimetypes.types_map['.' + format]
         except Exception as e:
             pass
+<<<<<<< HEAD
         response.headers["Content-Disposition"] = "attachment; filename*=UTF-8''%s.%s" % (urllib.quote(file_name.encode('utf-8')), format)
+=======
+        response.headers["Content-Disposition"] = "attachment; filename*=UTF-8''%s.%s" % (quote(file_name.encode('utf-8')), format)
+>>>>>>> master
         return response
     else:
         abort(404)
@@ -1666,6 +1706,8 @@ def configuration_helper(origin):
                 reboot_required = True
         if "config_calibre_web_title" in to_save:
             content.config_calibre_web_title = to_save["config_calibre_web_title"]
+        if "config_columns_to_ignore" in to_save:
+            content.config_columns_to_ignore = to_save["config_columns_to_ignore"]
         if "config_title_regex" in to_save:
             if content.config_title_regex != to_save["config_title_regex"]:
                 content.config_title_regex = to_save["config_title_regex"]

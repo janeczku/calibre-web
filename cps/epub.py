@@ -41,11 +41,14 @@ def get_epub_info(tmp_file_path, original_file_name, original_file_extension):
     p = tree.xpath('/pkg:package/pkg:metadata', namespaces=ns)[0]
 
     epub_metadata = {}
+<<<<<<< HEAD
     try:#maybe description isn't present
         comments = tree.xpath("//*[local-name() = 'description']/text()")[0]
         epub_metadata['comments'] = comments
     except IndexError as e:
         epub_metadata['comments'] = ""
+=======
+>>>>>>> master
 
     for s in ['title', 'description', 'creator', 'language']:
         tmp = p.xpath('dc:%s/text()' % s, namespaces=ns)
@@ -71,7 +74,11 @@ def get_epub_info(tmp_file_path, original_file_name, original_file_extension):
             epub_metadata['language'] = isoLanguages.get(part3=lang).name
         else:
             epub_metadata['language'] = ""
+<<<<<<< HEAD
     
+=======
+
+>>>>>>> master
     coversection = tree.xpath("/pkg:package/pkg:manifest/pkg:item[@id='cover-image']/@href", namespaces=ns)
     coverfile = None
     if len(coversection) > 0:

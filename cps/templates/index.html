@@ -40,6 +40,7 @@
 <div class="discover load-more">
   <h2>{{title}}</h2>
   <div class="row">
+    {% if entries[0] %}
     {% for entry in entries %}
     <div id="books" class="col-sm-3 col-lg-2 col-xs-6 book">
       <div class="cover">
@@ -76,6 +77,7 @@
       </div>
     </div>
     {% endfor %}
+  {% endif %}
   </div>
 </div>
 {% endblock %}
