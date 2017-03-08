@@ -238,6 +238,32 @@ def copyToDrive(drive, uploadFile, createRoot, replaceFiles,
             driveFile.SetContentFile(os.path.join(prevDir,uploadFile))
             driveFile.Upload()
 
+def uploadFileToEbooksFolder(drive, destFile, f):
+    if not drive:
+        drive=getDrive()
+    if drive.auth.access_token_expired:
+        drive.auth.Refresh()
+    parent=getEbooksFolder(drive)
+    splitDir=destFile.split('/')
+    for i, x in enumerate(splitDir):
+        if i == len(splitDir)-1:
+            existingFiles=drive.ListFile({'q' : "title = '%s' and '%s' in parents and trashed = false" % (x, parent['id'])}).GetList()
+            if len(existingFiles) > 0:
+                driveFile=existingFiles[0]
+            else:
+                driveFile = drive.CreateFile({'title': x, 'parents' : [{"kind": "drive#fileLink", 'id' : parent['id']}], })
+            driveFile.SetContentFile(f)
+            driveFile.Upload()
+        else:
+            existingFolder=drive.ListFile({'q' : "title = '%s' and '%s' in parents and trashed = false" % (x, parent['id'])}).GetList()
+            if len(existingFolder) == 0:
+                parent = drive.CreateFile({'title': x, 'parents' : [{"kind": "drive#fileLink", 'id' : parent['id']}], 
+                    "mimeType": "application/vnd.google-apps.folder" })
+                parent.Upload()
+            else:
+                parent=existingFolder[0]
+
+
 def watchChange(drive, channel_id, channel_type, channel_address,
               channel_token=None, expiration=None):
     if not drive:
