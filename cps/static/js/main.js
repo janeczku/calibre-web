@@ -65,6 +65,13 @@ $(function() {
             }
         });
     });
+    $("#restart_database").click(function() {
+        $.ajax({
+            dataType: 'json',
+            url: window.location.pathname+"/../../shutdown",
+            data: {"parameter":2}
+        });
+    });
     $("#perform_update").click(function() {
         $('#spinner2').show();
         $.ajax({

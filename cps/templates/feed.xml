@@ -35,6 +35,7 @@
     <uri>https://github.com/janeczku/calibre-web</uri>
   </author>
 
+  {% if entries[0] %}
   {% for entry in entries %}
   <entry>
     <title>{{entry.title}}</title>
@@ -60,6 +61,7 @@
     {% endfor %}
   </entry>
   {% endfor %}
+  {% endif %}
   {% for entry in listelements %}
   <entry>
     <title>{{entry.name}}</title>
