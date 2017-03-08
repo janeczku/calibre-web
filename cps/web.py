@@ -50,13 +50,12 @@ from tornado import version as tornadoVersion
 try:
     from urllib.parse import quote   
     from imp import reload
-    from past.builtins import xrange
 except ImportError as e:
     from urllib import quote
 
 try:
     from flask_login import __version__ as flask_loginVersion
-except ImportError, e:
+except ImportError as e:
     from flask_login.__about__ import __version__ as flask_loginVersion
 
 try:
@@ -260,6 +259,10 @@ class Pagination(object):
     def iter_pages(self, left_edge=2, left_current=2,
                    right_current=5, right_edge=2):
         last = 0
+        if 'xrange' not in globals():#no xrange in Python3
+            global xrange
+            xrange = range
+
         for num in xrange(1, self.pages + 1):  # ToDo: can be simplified
             if num <= left_edge or (num > self.page - left_current - 1 and num < self.page + right_current) \
                     or num > self.pages - right_edge:
