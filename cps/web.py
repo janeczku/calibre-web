@@ -704,7 +704,7 @@ def get_opds_download_link(book_id, format):
         file_name = book.authors[0].name + '-' + file_name
     file_name = helper.get_valid_filename(file_name)
     response = make_response(send_from_directory(os.path.join(config.config_calibre_dir, book.path), data.name + "." + format))
-    response.headers["Content-Disposition"] = "attachment; filename*=UTF-8''%s.%s" % (urllib.quote(file_name.encode('utf8')), format)
+    response.headers["Content-Disposition"] = "attachment; filename*=UTF-8''%s.%s" % (quote(file_name.encode('utf8')), format)
     return response
 
 
