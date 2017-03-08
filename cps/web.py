@@ -56,7 +56,7 @@ except ImportError as e:
 
 try:
     from flask_login import __version__ as flask_loginVersion
-except ImportError, e:
+except ImportError as e:
     from flask_login.__about__ import __version__ as flask_loginVersion
 
 try:
