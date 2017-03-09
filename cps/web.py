@@ -1309,7 +1309,6 @@ def read_book(book_id, format):
         flash(_(u"Error opening eBook. File does not exist or file is not accessible:"), category="error")
         return redirect(url_for("index"))
 
-
 @app.route("/download/<int:book_id>/<format>")
 @login_required_if_no_ano
 @download_required
@@ -1336,6 +1335,11 @@ def get_download_link(book_id, format):
     else:
         abort(404)
 
+@app.route("/download/<int:book_id>/<format>/<anyname>")
+@login_required_if_no_ano
+@download_required
+def get_download_link_ext(book_id, format, anyname):
+    return get_download_link(book_id, format)
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
