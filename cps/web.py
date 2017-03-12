@@ -51,19 +51,18 @@ try:
     from urllib.parse import quote   
     from imp import reload
     from past.builtins import xrange
-except ImportError as e:
+except ImportError:
     from urllib import quote
 
 try:
     from flask_login import __version__ as flask_loginVersion
-except ImportError, e:
+except ImportError:
     from flask_login.__about__ import __version__ as flask_loginVersion
 
 try:
     from wand.image import Image
-
     use_generic_pdf_cover = False
-except ImportError as e:
+except ImportError:
     use_generic_pdf_cover = True
 from cgi import escape
 
