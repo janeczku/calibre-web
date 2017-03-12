@@ -56,6 +56,8 @@ import io
 import hashlib
 import threading
 
+from googleapiclient.errors import HttpError
+
 from tornado import version as tornadoVersion
 
 try:
@@ -1309,7 +1311,10 @@ def watch_gdrive():
 def revoke_watch_gdrive():
     last_watch_response=config.config_google_drive_watch_changes_response
     if last_watch_response:
-        response=gdriveutils.stopChannel(Gdrive.Instance().drive, last_watch_response['id'], last_watch_response['resourceId'])
+        try:
+            response=gdriveutils.stopChannel(Gdrive.Instance().drive, last_watch_response['id'], last_watch_response['resourceId'])
+        except HttpError, e:
+            pass
         settings = ub.session.query(ub.Settings).first()
         settings.config_google_drive_watch_changes_response=None
         ub.session.merge(settings)
