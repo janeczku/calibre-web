@@ -109,14 +109,10 @@
       {% endif %}  
       {% if not g.user.is_anonymous() %}
       <p>
-        <div class="custom_columns" id="have_read">
-          Read
-          {% if have_read %}
-            <span class="glyphicon glyphicon-ok"></span>
-          {% else %}
-            <span class="glyphicon glyphicon-remove"></span>
-          {% endif %}
+        <div class="custom_columns" id="have_read_container">
           <form id="have_read_form" action="{{ url_for('toggle_read', id=entry.id)}}" method="POST") >
+            <input id="have_read_cb" type="checkbox" {% if have_read %}checked{% endif %} >
+            <label for="have_read_cb">{{_('Read')}}</label>
           </form>
         </div>
       </p>
@@ -229,7 +225,7 @@
     var haveReadForm = $('#have_read_form');
     haveReadForm.ajaxForm();
   });
-  $("#have_read").attr('unselectable','on')
+  $("#have_read_container").attr('unselectable','on')
      .css({'-moz-user-select':'-moz-none',
            '-moz-user-select':'none',
            '-o-user-select':'none',
@@ -238,7 +234,7 @@
            '-ms-user-select':'none',
            'user-select':'none'
      }).bind('selectstart', function(){ return false; });
-  $("#have_read").click(function() {
+  $("#have_read_container").click(function() {
     var haveReadForm = $('#have_read_form');
     if ($("#have_read").find('span').hasClass('glyphicon-ok')) {
       $("#have_read").find('span').removeClass('glyphicon-ok');
