@@ -8,8 +8,8 @@
       <input type="text" class="form-control" name="config_calibre_dir" id="config_calibre_dir" value="{% if content.config_calibre_dir != None %}{{ content.config_calibre_dir }}{% endif %}" autocomplete="off">
     </div>
     <div class="form-group required">
+      <input type="checkbox" id="config_use_google_drive" name="config_use_google_drive" {% if content.config_use_google_drive %}checked{% endif %} >
       <label for="config_use_google_drive">{{_('Use google drive?')}}</label>
-      <input type="checkbox" id="config_use_google_drive" class="form-control" name="config_use_google_drive" id="config_use_google_drive" {% if content.config_use_google_drive %}checked{% endif %} >
     </div>
     <div id="gdrive_settings">
       <div class="form-group required">
