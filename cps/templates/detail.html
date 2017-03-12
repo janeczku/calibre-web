@@ -219,7 +219,7 @@
 {% endblock %}
 
 {% block js %}
-<script src="http://malsup.github.com/jquery.form.js"></script>
+<script src="{{ url_for('static', filename='js/libs/jquery.form.js') }}"></script>
 <script>
   $( document ).ready(function() {
     var haveReadForm = $('#have_read_form');
