@@ -64,12 +64,12 @@ try:
     from urllib.parse import quote
     from imp import reload
     from past.builtins import xrange
-except ImportError as e:
+except ImportError:
     from urllib import quote
 
 try:
     from flask_login import __version__ as flask_loginVersion
-except ImportError, e:
+except ImportError:
     from flask_login.__about__ import __version__ as flask_loginVersion
 
 import time
@@ -78,9 +78,8 @@ current_milli_time = lambda: int(round(time.time() * 1000))
 
 try:
     from wand.image import Image
-
     use_generic_pdf_cover = False
-except ImportError as e:
+except ImportError:
     use_generic_pdf_cover = True
 from cgi import escape
 
@@ -1631,7 +1630,6 @@ def read_book(book_id, format):
         flash(_(u"Error opening eBook. File does not exist or file is not accessible:"), category="error")
         return redirect(url_for("index"))
 
-
 @app.route("/download/<int:book_id>/<format>")
 @login_required_if_no_ano
 @download_required
@@ -1663,6 +1661,11 @@ def get_download_link(book_id, format):
     else:
         abort(404)
 
+@app.route("/download/<int:book_id>/<format>/<anyname>")
+@login_required_if_no_ano
+@download_required
+def get_download_link_ext(book_id, format, anyname):
+    return get_download_link(book_id, format)
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -2219,12 +2222,15 @@ def edit_mailsettings():
         except e:
             flash(e, category="error")
         if "test" in to_save and to_save["test"]:
-            result = helper.send_test_mail(current_user.kindle_mail)
-            if result is None:
-                flash(_(u"Test E-Mail successfully send to %(kindlemail)s", kindlemail=current_user.kindle_mail),
-                      category="success")
+            if current_user.kindle_mail:
+                result = helper.send_test_mail(current_user.kindle_mail)
+                if result is None:
+                    flash(_(u"Test E-Mail successfully send to %(kindlemail)s", kindlemail=current_user.kindle_mail),
+                          category="success")
+                else:
+                    flash(_(u"There was an error sending the Test E-Mail: %(res)s", res=result), category="error")
             else:
-                flash(_(u"There was an error sending the Test E-Mail: %(res)s", res=result), category="error")
+                flash(_(u"Please configure your kindle email address first..."), category="error")
         else:
             flash(_(u"E-Mail settings updated"), category="success")
     return render_title_template("email_edit.html", content=content, title=_(u"Edit mail settings"))

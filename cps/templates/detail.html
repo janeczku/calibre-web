@@ -136,7 +136,7 @@
               </button>
               <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
                 {% for format in entry.data %}
-                <li><a href="{{ url_for('get_download_link', book_id=entry.id, format=format.format|lower) }}">{{format.format}}</a></li>
+                <li><a href="{{ url_for('get_download_link_ext', book_id=entry.id, format=format.format|lower, anyname=entry.id|string+'.'+format.format) }}">{{format.format}}</a></li>
                 {%endfor%}
               </ul>
             </div>
