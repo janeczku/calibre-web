@@ -20,7 +20,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/calibre-web\n"
-"POT-Creation-Date: 2017-03-11 09:09+0100\n"
+"POT-Creation-Date: 2017-03-12 19:10+0100\n"
 "PO-Revision-Date: 2016-11-13 18:35+0100\n"
 "Last-Translator: Nicolas Roudninski <nicoroud@gmail.com>\n"
 "Language: fr\n"
@@ -118,7 +118,7 @@ msgid "Author: %(name)s"
 msgstr ""
 
 #: cps/web.py:923 cps/web.py:951 cps/web.py:1059 cps/web.py:1309
-#: cps/web.py:2193
+#: cps/web.py:2196
 msgid "Error opening eBook. File does not exist or file is not accessible:"
 msgstr ""
 "Erreur d'ouverture du livre numérique. Le fichier n'existe pas ou n'est "
@@ -218,7 +218,7 @@ msgstr "Livres envoyés à %(kindlemail)s avec succès"
 msgid "There was an error sending this book: %(res)s"
 msgstr "Il y a eu une erreur en envoyant ce livre : %(res)s"
 
-#: cps/web.py:1423
+#: cps/web.py:1423 cps/web.py:1867
 msgid "Please configure your kindle email address first..."
 msgstr "Veuillez configurer votre adresse kindle d'abord..."
 
@@ -320,67 +320,67 @@ msgstr "Un compte avec cette adresse de courriel ou ce surnom existe déjà."
 msgid "Mail settings updated"
 msgstr "Paramètres de courriel mis à jour"
 
-#: cps/web.py:1861
+#: cps/web.py:1862
 #, python-format
 msgid "Test E-Mail successfully send to %(kindlemail)s"
 msgstr ""
 
-#: cps/web.py:1864
+#: cps/web.py:1865
 #, python-format
 msgid "There was an error sending the Test E-Mail: %(res)s"
 msgstr ""
 
-#: cps/web.py:1866
+#: cps/web.py:1869
 msgid "E-Mail settings updated"
 msgstr ""
 
-#: cps/web.py:1867
+#: cps/web.py:1870
 msgid "Edit mail settings"
 msgstr "Éditer les paramètres de courriel"
 
-#: cps/web.py:1895
+#: cps/web.py:1898
 #, python-format
 msgid "User '%(nick)s' deleted"
 msgstr "Utilisateur '%(nick)s' supprimé"
 
-#: cps/web.py:1976
+#: cps/web.py:1979
 #, python-format
 msgid "User '%(nick)s' updated"
 msgstr "Utilisateur '%(nick)s'  mis à jour"
 
-#: cps/web.py:1979
+#: cps/web.py:1982
 msgid "An unknown error occured."
 msgstr "Oups ! Une erreur inconnue a eu lieu."
 
-#: cps/web.py:1982
+#: cps/web.py:1985
 #, python-format
 msgid "Edit User %(nick)s"
 msgstr "Éditer l'utilisateur %(nick)s"
 
-#: cps/web.py:2188 cps/web.py:2191 cps/web.py:2301
+#: cps/web.py:2191 cps/web.py:2194 cps/web.py:2304
 msgid "edit metadata"
 msgstr ""
 
-#: cps/web.py:2212
+#: cps/web.py:2215
 #, python-format
 msgid "File extension \"%s\" is not allowed to be uploaded to this server"
 msgstr ""
 
-#: cps/web.py:2218
+#: cps/web.py:2221
 msgid "File to be uploaded must have an extension"
 msgstr ""
 
-#: cps/web.py:2235
+#: cps/web.py:2238
 #, python-format
 msgid "Failed to create path %s (Permission denied)."
 msgstr "Impossible de créer le chemin %s (permission refusée)"
 
-#: cps/web.py:2240
+#: cps/web.py:2243
 #, python-format
 msgid "Failed to store file %s (Permission denied)."
 msgstr "Impossible d'enregistrer le fichier %s (permission refusée)"
 
-#: cps/web.py:2245
+#: cps/web.py:2248
 #, python-format
 msgid "Failed to delete file %s (Permission denied)."
 msgstr "Impossible de supprimer le fichier %s (permission refusée)"
@@ -595,8 +595,8 @@ msgstr "Non"
 msgid "view book after edit"
 msgstr "Voir le livre après l'édition"
 
-#: cps/templates/book_edit.html:107
-msgid "Get Metadata"
+#: cps/templates/book_edit.html:107 cps/templates/book_edit.html:118
+msgid "Get metadata"
 msgstr ""
 
 #: cps/templates/book_edit.html:108 cps/templates/config_edit.html:76
@@ -604,10 +604,6 @@ msgstr ""
 #: cps/templates/shelf_edit.html:15 cps/templates/user_edit.html:114
 msgid "Submit"
 msgstr "Soumettre"
-
-#: cps/templates/book_edit.html:118
-msgid "Get metadata"
-msgstr ""
 
 #: cps/templates/book_edit.html:121
 msgid "Keyword"
