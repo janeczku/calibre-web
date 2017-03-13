@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/calibre-web\n"
-"POT-Creation-Date: 2017-03-11 09:09+0100\n"
+"POT-Creation-Date: 2017-03-12 19:10+0100\n"
 "PO-Revision-Date: 2017-01-06 17:00+0000\n"
 "Last-Translator: dalin <dalin.lin@gmail.com>\n"
 "Language: zh_Hans_CN\n"
@@ -113,7 +113,7 @@ msgid "Author: %(name)s"
 msgstr "作者： %(name)s"
 
 #: cps/web.py:923 cps/web.py:951 cps/web.py:1059 cps/web.py:1309
-#: cps/web.py:2193
+#: cps/web.py:2196
 msgid "Error opening eBook. File does not exist or file is not accessible:"
 msgstr "无法打开电子书。 文件不存在或者文件不可访问:"
 
@@ -211,7 +211,7 @@ msgstr "此书已被成功发给 %(kindlemail)s"
 msgid "There was an error sending this book: %(res)s"
 msgstr "发送这本书的时候出现错误: %(res)s"
 
-#: cps/web.py:1423
+#: cps/web.py:1423 cps/web.py:1867
 msgid "Please configure your kindle email address first..."
 msgstr "请先配置您的kindle电子邮箱地址..."
 
@@ -313,67 +313,67 @@ msgstr "已找到使用此邮箱或昵称的账号。"
 msgid "Mail settings updated"
 msgstr "邮箱设置已更新"
 
-#: cps/web.py:1861
+#: cps/web.py:1862
 #, python-format
 msgid "Test E-Mail successfully send to %(kindlemail)s"
 msgstr "测试邮件已成功发送到 %(kindlemail)s"
 
-#: cps/web.py:1864
+#: cps/web.py:1865
 #, python-format
 msgid "There was an error sending the Test E-Mail: %(res)s"
 msgstr "发送测试邮件时发生错误: %(res)s"
 
-#: cps/web.py:1866
+#: cps/web.py:1869
 msgid "E-Mail settings updated"
 msgstr "E-Mail 设置已更新"
 
-#: cps/web.py:1867
+#: cps/web.py:1870
 msgid "Edit mail settings"
 msgstr "编辑邮箱设置"
 
-#: cps/web.py:1895
+#: cps/web.py:1898
 #, python-format
 msgid "User '%(nick)s' deleted"
 msgstr "用户 '%(nick)s' 已被删除"
 
-#: cps/web.py:1976
+#: cps/web.py:1979
 #, python-format
 msgid "User '%(nick)s' updated"
 msgstr "用户 '%(nick)s' 已被更新"
 
-#: cps/web.py:1979
+#: cps/web.py:1982
 msgid "An unknown error occured."
 msgstr "发生未知错误。"
 
-#: cps/web.py:1982
+#: cps/web.py:1985
 #, python-format
 msgid "Edit User %(nick)s"
 msgstr "编辑用户 %(nick)s"
 
-#: cps/web.py:2188 cps/web.py:2191 cps/web.py:2301
+#: cps/web.py:2191 cps/web.py:2194 cps/web.py:2304
 msgid "edit metadata"
 msgstr "编辑元数据"
 
-#: cps/web.py:2212
+#: cps/web.py:2215
 #, python-format
 msgid "File extension \"%s\" is not allowed to be uploaded to this server"
 msgstr "不能上传后缀为　\"%s\"　的文件到此服务器"
 
-#: cps/web.py:2218
+#: cps/web.py:2221
 msgid "File to be uploaded must have an extension"
 msgstr "要上传的文件必须有一个后缀"
 
-#: cps/web.py:2235
+#: cps/web.py:2238
 #, python-format
 msgid "Failed to create path %s (Permission denied)."
 msgstr "创建路径 %s 失败(权限拒绝)。"
 
-#: cps/web.py:2240
+#: cps/web.py:2243
 #, python-format
 msgid "Failed to store file %s (Permission denied)."
 msgstr "存储文件 %s 失败(权限拒绝)。"
 
-#: cps/web.py:2245
+#: cps/web.py:2248
 #, python-format
 msgid "Failed to delete file %s (Permission denied)."
 msgstr "删除文件 %s 失败(权限拒绝)。"
@@ -588,8 +588,8 @@ msgstr ""
 msgid "view book after edit"
 msgstr "编辑后查看书籍"
 
-#: cps/templates/book_edit.html:107
-msgid "Get Metadata"
+#: cps/templates/book_edit.html:107 cps/templates/book_edit.html:118
+msgid "Get metadata"
 msgstr ""
 
 #: cps/templates/book_edit.html:108 cps/templates/config_edit.html:76
@@ -597,10 +597,6 @@ msgstr ""
 #: cps/templates/shelf_edit.html:15 cps/templates/user_edit.html:114
 msgid "Submit"
 msgstr "提交"
-
-#: cps/templates/book_edit.html:118
-msgid "Get metadata"
-msgstr ""
 
 #: cps/templates/book_edit.html:121
 msgid "Keyword"
