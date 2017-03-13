@@ -198,6 +198,8 @@ mimetypes.add_type('image/vnd.djvu', '.djvu')
 app = (Flask(__name__))
 app.wsgi_app = ReverseProxied(app.wsgi_app)
 
+gevent_server=None
+
 formatter = logging.Formatter(
     "[%(asctime)s] {%(pathname)s:%(lineno)d} %(levelname)s - %(message)s")
 file_handler = RotatingFileHandler(os.path.join(config.get_main_dir, "calibre-web.log"), maxBytes=50000, backupCount=2)
@@ -2683,3 +2685,9 @@ def upload():
     book_in_shelfs = []
     return render_title_template('detail.html', entry=db_book, cc=cc, title=db_book.title,
                                  books_shelfs=book_in_shelfs, )
+
+def start_gevent():
+    from gevent.wsgi import WSGIServer
+    global gevent_server
+    gevent_server = WSGIServer(('', ub.config.config_port), app)
+    gevent_server.serve_forever()

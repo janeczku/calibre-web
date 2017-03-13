@@ -341,9 +341,13 @@ class Updater(threading.Thread):
         ub.session.close()
         ub.engine.dispose()
         self.status=6
-        # stop tornado server
-        server = IOLoop.instance()
-        server.add_callback(server.stop)
+
+        if web.gevent_server:
+            web.gevent_server.stop()
+        else:
+            # stop tornado server            
+            server = IOLoop.instance()
+            server.add_callback(server.stop)
         self.status=7
 
     def get_update_status(self):
