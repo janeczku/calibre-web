@@ -700,7 +700,7 @@ def get_opds_download_link(book_id, format):
         helper.update_download(book_id, int(current_user.id))
     file_name = book.title
     if len(book.authors) > 0:
-        file_name = book.authors[0].name + '-' + file_name
+        file_name = book.authors[0].name + '_' + file_name
     file_name = helper.get_valid_filename(file_name)
     response = make_response(send_from_directory(os.path.join(config.config_calibre_dir, book.path), data.name + "." + format))
     response.headers["Content-Disposition"] = "attachment; filename*=UTF-8''%s.%s" % (quote(file_name.encode('utf8')), format)
@@ -1324,7 +1324,7 @@ def get_download_link(book_id, format):
             helper.update_download(book_id, int(current_user.id))
         file_name = book.title
         if len(book.authors) > 0:
-            file_name = book.authors[0].name + '-' + file_name
+            file_name = book.authors[0].name + '_' + file_name
         file_name = helper.get_valid_filename(file_name)
         response = make_response(
             send_from_directory(os.path.join(config.config_calibre_dir, book.path), data.name + "." + format))
