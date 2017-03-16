@@ -20,10 +20,11 @@ if __name__ == '__main__':
     if web.ub.DEVELOPMENT:
         web.app.run(host="0.0.0.0", port=web.ub.config.config_port, debug=True)
     else:
-        if len(sys.argv) > 1 and sys.argv[1] == '-g':
-            http_server = WSGIServer(('', web.ub.config.config_port), web.app)
-            http_server.serve_forever()
-        else:
+        try:
+            web.app.logger.info('Attempting to start gevent')
+            web.start_gevent()
+        except ImportError:
+            web.app.logger.info('Falling back to Tornado')
             http_server = HTTPServer(WSGIContainer(web.app))
             http_server.listen(web.ub.config.config_port)
             IOLoop.instance().start()
