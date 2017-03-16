@@ -1,6 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from pydrive.auth import GoogleAuth
+try:
+    from pydrive.auth import GoogleAuth
+    from googleapiclient.errors import HttpError
+    gdrive_support= True
+except ImportError:
+    gdrive_support=False
 
 import mimetypes
 import logging
@@ -55,8 +60,6 @@ import tempfile
 import io
 import hashlib
 import threading
-
-from googleapiclient.errors import HttpError
 
 from tornado import version as tornadoVersion
 
