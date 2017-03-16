@@ -1,5 +1,8 @@
-from pydrive.auth import GoogleAuth
-from pydrive.drive import GoogleDrive
+try:
+    from pydrive.auth import GoogleAuth
+    from pydrive.drive import GoogleDrive
+except ImportError:
+    pass
 import os, time
 
 from ub import config

@@ -35,7 +35,10 @@ import shutil
 import requests
 import zipfile
 from tornado.ioloop import IOLoop
-import gdriveutils as gd
+try:
+    import gdriveutils as gd
+except ImportError:
+    pass
 import web
 
 try:
