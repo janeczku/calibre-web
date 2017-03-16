@@ -63,13 +63,12 @@ from tornado import version as tornadoVersion
 try:
     from urllib.parse import quote
     from imp import reload
-    from past.builtins import xrange
-except ImportError:
+except ImportError as e:
     from urllib import quote
 
 try:
     from flask_login import __version__ as flask_loginVersion
-except ImportError:
+except ImportError as e:
     from flask_login.__about__ import __version__ as flask_loginVersion
 
 import time
@@ -345,6 +344,10 @@ class Pagination(object):
     def iter_pages(self, left_edge=2, left_current=2,
                    right_current=5, right_edge=2):
         last = 0
+        if 'xrange' not in globals():#no xrange in Python3
+            global xrange
+            xrange = range
+
         for num in xrange(1, self.pages + 1):  # ToDo: can be simplified
             if num <= left_edge or (num > self.page - left_current - 1 and num < self.page + right_current) \
                     or num > self.pages - right_edge:
@@ -819,10 +822,10 @@ def get_opds_download_link(book_id, format):
         helper.update_download(book_id, int(current_user.id))
     file_name = book.title
     if len(book.authors) > 0:
-        file_name = book.authors[0].name + '-' + file_name
+        file_name = book.authors[0].name + '_' + file_name
     file_name = helper.get_valid_filename(file_name)
     headers={}
-    headers["Content-Disposition"] = "attachment; filename*=UTF-8''%s.%s" % (urllib.quote(file_name.encode('utf8')), format)
+    headers["Content-Disposition"] = "attachment; filename*=UTF-8''%s.%s" % (quote(file_name.encode('utf8')), format)
     app.logger.info (time.time()-startTime)
     startTime=time.time()
     if config.config_use_google_drive:
@@ -1643,7 +1646,7 @@ def get_download_link(book_id, format):
             helper.update_download(book_id, int(current_user.id))
         file_name = book.title
         if len(book.authors) > 0:
-            file_name = book.authors[0].name + '-' + file_name
+            file_name = book.authors[0].name + '_' + file_name
         file_name = helper.get_valid_filename(file_name)
         headers={}
         try:
