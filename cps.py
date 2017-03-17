@@ -22,6 +22,7 @@ if __name__ == '__main__':
         http_server = HTTPServer(WSGIContainer(web.app))
         http_server.listen(web.ub.config.config_port)
         IOLoop.instance().start()
+        IOLoop.instance().close(True)
 
     if web.helper.global_task == 0:
         web.app.logger.info("Performing restart of Calibre-web")
