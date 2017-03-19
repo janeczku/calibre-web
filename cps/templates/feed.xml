@@ -35,7 +35,7 @@
     <uri>https://github.com/janeczku/calibre-web</uri>
   </author>
 
-  {% if entries[0] %}
+  {% if entries and entries[0] %}
   {% for entry in entries %}
   <entry>
     <title>{{entry.title}}</title>
