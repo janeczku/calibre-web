@@ -63,7 +63,7 @@ Optionally, to enable on-the-fly conversion from EPUB to MOBI when using the sen
 
 [Download](http://www.amazon.com/gp/feature.html?docId=1000765211) Amazon's KindleGen tool for your platform and place the binary named as `kindlegen` in the `vendor` folder.
 
-##Using Google Drive integration
+## Using Google Drive integration
 
 Additional optional dependencys are necessary to get this work. Please install all optional  requirements by executing `pip install -r optional-requirements.txt`
 
@@ -91,7 +91,7 @@ The Drive API should now be setup and ready to use, so we need to integrate it i
 7. This should redirect you to google to allow it top use your Drive, and then redirect you back to the config page
 8. Google Drive should now be connected and be used to get images and download Epubs. The metadata.db is stored in the calibre library location
 
-###Optional
+### Optional
 If your calibre web is using https, it is possible to add a "watch" to the drive. This will inform us if the metadata.db file is updated and allow us to update our calibre library accordingly.
 
 9. Click enable watch of metadata.db
