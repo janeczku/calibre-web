@@ -7,6 +7,7 @@
       <label for="config_calibre_dir">{{_('Location of Calibre database')}}</label>
       <input type="text" class="form-control" name="config_calibre_dir" id="config_calibre_dir" value="{% if content.config_calibre_dir != None %}{{ content.config_calibre_dir }}{% endif %}" autocomplete="off">
     </div>
+    {% if gdrive %}
     <div class="form-group required">
       <input type="checkbox" id="config_use_google_drive" name="config_use_google_drive" {% if content.config_use_google_drive %}checked{% endif %} >
       <label for="config_use_google_drive">{{_('Use google drive?')}}</label>
@@ -46,6 +47,7 @@
         </div>
         {% endif %}
     </div>
+    {% endif %}
     <div class="form-group">
       <label for="config_port">{{_('Server Port')}}</label>
       <input type="number" min="1" max="65535" class="form-control" name="config_port" id="config_port" value="{% if content.config_port != None %}{{ content.config_port }}{% endif %}" autocomplete="off" required>

@@ -1,6 +1,7 @@
 try:
     from pydrive.auth import GoogleAuth
     from pydrive.drive import GoogleDrive
+    from apiclient import errors
 except ImportError:
     pass
 import os, time
@@ -12,7 +13,6 @@ from sqlalchemy import exc
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import *
 
-from apiclient import errors
 
 import web
 

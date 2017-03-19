@@ -11,9 +11,8 @@ import mimetypes
 import logging
 from logging.handlers import RotatingFileHandler
 import textwrap
-from flask import Flask, render_template, session, request, Response, redirect, url_for, send_from_directory, \
-        make_response, g, flash, abort, send_file, Markup, \
-        stream_with_context
+from flask import Flask, render_template, request, Response, redirect, url_for, send_from_directory, \
+        make_response, g, flash, abort, Markup, stream_with_context
 from flask import __version__ as flaskVersion
 import ub
 from ub import config
@@ -26,7 +25,7 @@ from sqlalchemy.exc import IntegrityError
 from sqlalchemy import __version__ as sqlalchemyVersion
 from math import ceil
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
-from flask_principal import Principal, Identity, AnonymousIdentity, identity_changed
+from flask_principal import Principal
 from flask_principal import __version__ as flask_principalVersion
 from flask_babel import Babel
 from flask_babel import gettext as _
@@ -1266,16 +1265,6 @@ def stats():
     return render_title_template('stats.html', bookcounter=counter, authorcounter=authors, versions=versions,
                                  categorycounter=categorys, seriecounter=series, title=_(u"Statistics"))
 
-
-#@app.route("/load_gdrive")
-#@login_required
-#@admin_required
-#def load_all_gdrive_folder_ids():
-#    books=db.session.query(db.Books).all()
-#    for book in books:
-#        gdriveutils.getFolderId(book.path, Gdrive.Instance().drive)
-#    return
-
 @app.route("/gdrive/authenticate")
 @login_required
 @admin_required
@@ -1320,7 +1309,7 @@ def revoke_watch_gdrive():
     if last_watch_response:
         try:
             response=gdriveutils.stopChannel(Gdrive.Instance().drive, last_watch_response['id'], last_watch_response['resourceId'])
-        except HttpError, e:
+        except HttpError:
             pass
         settings = ub.session.query(ub.Settings).first()
         settings.config_google_drive_watch_changes_response=None
@@ -2116,13 +2105,13 @@ def configuration_helper(origin):
             logging.getLogger("book_formats").setLevel(config.config_log_level)
         except e:
             flash(e, category="error")
-            return render_title_template("config_edit.html", content=config, origin=origin,
+            return render_title_template("config_edit.html", content=config, origin=origin, gdrive=gdrive_support,
                                          title=_(u"Basic Configuration"))
         if db_change:
             reload(db)
             if not db.setup_db():
                 flash(_(u'DB location is not valid, please enter correct path'), category="error")
-                return render_title_template("config_edit.html", content=config, origin=origin,
+                return render_title_template("config_edit.html", content=config, origin=origin, gdrive=gdrive_support,
                                              title=_(u"Basic Configuration"))
         if reboot_required:
             # db.engine.dispose() # ToDo verify correct
@@ -2136,7 +2125,7 @@ def configuration_helper(origin):
         if origin:
             success = True
     return render_title_template("config_edit.html", origin=origin, success=success, content=config,
-                                 show_authenticate_google_drive=not is_gdrive_ready(),
+                                 show_authenticate_google_drive=not is_gdrive_ready(), gdrive=gdrive_support,
                                  title=_(u"Basic Configuration"))
 
 
@@ -2328,10 +2317,10 @@ def edit_user(user_id):
             elif "show_best_rated" not in to_save and content.show_best_rated_books():
                 content.sidebar_view -= ub.SIDEBAR_BEST_RATED
 
-            if "show_read_and_unread" in to_save:
+            if "show_read_and_unread" in to_save and not content.show_read_and_unread():
                 content.sidebar_view += ub.SIDEBAR_READ_AND_UNREAD
             elif "show_read_and_unread" not in to_save and content.show_read_and_unread():
-                content.sidebar_view += ub.SIDEBAR_READ_AND_UNREAD
+                content.sidebar_view -= ub.SIDEBAR_READ_AND_UNREAD
 
             if "show_author" in to_save and not content.show_author():
                 content.sidebar_view += ub.SIDEBAR_AUTHOR
