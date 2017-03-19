@@ -1754,43 +1754,43 @@ def send_to_kindle(book_id):
 def add_to_shelf(shelf_id, book_id):
     shelf = ub.session.query(ub.Shelf).filter(ub.Shelf.id == shelf_id).first()
     if not shelf.is_public and not shelf.user_id == int(current_user.id):
-        flash("Sorry you are not allowed to add a book to the the shelf: %s" % shelf.name)
+        app.logger.info("Sorry you are not allowed to add a book to the the shelf: %s" % shelf.name)
         return redirect(url_for('index'))
     maxOrder = ub.session.query(func.max(ub.BookShelf.order)).filter(ub.BookShelf.shelf == shelf_id).first()
     book_in_shelf=ub.session.query(ub.BookShelf).filter(ub.BookShelf.shelf == shelf_id,
                                           ub.BookShelf.book_id == book_id).first()
     if book_in_shelf:
-        flash("Book is already part of the shelf: %s" % shelf.name)
+        app.logger.info("Book is already part of the shelf: %s" % shelf.name)
         return redirect(url_for('index'))
     if maxOrder[0] is None:
         maxOrder = 0
     else:
         maxOrder = maxOrder[0]
-    ins = ub.BookShelf(shelf=shelf.id, book_id=book_id, order=maxOrder + 1)
-    ub.session.add(ins)
-    ub.session.commit()
-
-    flash(_(u"Book has been added to shelf: %(sname)s", sname=shelf.name), category="success")
-    return redirect(request.environ["HTTP_REFERER"])
+    if (shelf.is_public and current_user.role_edit_shelfs()) or not shelf.is_public:
+        ins = ub.BookShelf(shelf=shelf.id, book_id=book_id, order=maxOrder + 1)
+        ub.session.add(ins)
+        ub.session.commit()
+        flash(_(u"Book has been added to shelf: %(sname)s", sname=shelf.name), category="success")
+        return redirect(request.environ["HTTP_REFERER"])
+    else:
+        app.logger.info("User is not allowed to edit public shelfs" )
+        return redirect(url_for('index'))
 
 
 @app.route("/shelf/remove/<int:shelf_id>/<int:book_id>")
 @login_required
 def remove_from_shelf(shelf_id, book_id):
     shelf = ub.session.query(ub.Shelf).filter(ub.Shelf.id == shelf_id).first()
-    if not shelf.is_public and not shelf.user_id == int(current_user.id):
-        flash("Sorry you are not allowed to remove a book from this shelf: %s" % shelf.name)
+    if not shelf.is_public and not shelf.user_id == int(current_user.id) \
+            or (shelf.is_public and current_user.role_edit_shelfs()):
+        app.logger.info("Sorry you are not allowed to remove a book from this shelf: %s" % shelf.name)
         return redirect(url_for('index'))
 
     book_shelf = ub.session.query(ub.BookShelf).filter(ub.BookShelf.shelf == shelf_id,
                                                        ub.BookShelf.book_id == book_id).first()
-
-    # rem = ub.BookShelf(shelf=shelf.id, book_id=book_id)
     ub.session.delete(book_shelf)
     ub.session.commit()
-
     flash(_(u"Book has been removed from shelf: %(sname)s", sname=shelf.name), category="success")
-
     return redirect(request.environ["HTTP_REFERER"])
 
 
@@ -1853,10 +1853,12 @@ def edit_shelf(shelf_id):
 @login_required
 def delete_shelf(shelf_id):
     cur_shelf = ub.session.query(ub.Shelf).filter(ub.Shelf.id == shelf_id).first()
-    if current_user.role == ub.ROLE_ADMIN:
+    if current_user.role_admin():
         deleted = ub.session.query(ub.Shelf).filter(ub.Shelf.id == shelf_id).delete()
     else:
-        deleted = ub.session.query(ub.Shelf).filter(ub.or_(ub.and_(ub.Shelf.user_id == int(current_user.id),
+        if not cur_shelf.is_public and not cur_shelf.user_id == int(current_user.id) \
+                or (cur_shelf.is_public and current_user.role_edit_shelfs()):
+            deleted = ub.session.query(ub.Shelf).filter(ub.or_(ub.and_(ub.Shelf.user_id == int(current_user.id),
                                                                    ub.Shelf.id == shelf_id),
                                                            ub.and_(ub.Shelf.is_public == 1,
                                                                    ub.Shelf.id == shelf_id))).delete()
@@ -1864,7 +1866,7 @@ def delete_shelf(shelf_id):
     if deleted:
         ub.session.query(ub.BookShelf).filter(ub.BookShelf.shelf == shelf_id).delete()
         ub.session.commit()
-        flash(_(u"successfully deleted shelf %(name)s", name=cur_shelf.name, category="success"))
+        app.logger.info(_(u"successfully deleted shelf %(name)s", name=cur_shelf.name, category="success"))
     return redirect(url_for('index'))
 
 
@@ -2094,6 +2096,8 @@ def configuration_helper(origin):
             content.config_default_role = content.config_default_role + ub.ROLE_EDIT
         if "passwd_role" in to_save:
             content.config_default_role = content.config_default_role + ub.ROLE_PASSWD
+        if "passwd_role" in to_save:
+            content.config_default_role = content.config_default_role + ub.ROLE_EDIT_SHELFS
         try:
             if content.config_use_google_drive and is_gdrive_ready() and not os.path.exists(config.config_calibre_dir + "/metadata.db"):
                 gdriveutils.downloadFile(Gdrive.Instance().drive, None, "metadata.db", config.config_calibre_dir + "/metadata.db")
@@ -2187,6 +2191,8 @@ def new_user():
             content.role = content.role + ub.ROLE_EDIT
         if "passwd_role" in to_save:
             content.role = content.role + ub.ROLE_PASSWD
+        if "edit_shelf_role" in to_save:
+            content.role = content.role + ub.ROLE_EDIT_SHELFS
         try:
             ub.session.add(content)
             ub.session.commit()
@@ -2289,6 +2295,11 @@ def edit_user(user_id):
                 content.role = content.role + ub.ROLE_PASSWD
             elif "passwd_role" not in to_save and content.role_passwd():
                 content.role = content.role - ub.ROLE_PASSWD
+
+            if "edit_shelf_role" in to_save and not content.role_edit_shelfs():
+                content.role = content.role + ub.ROLE_EDIT_SHELFS
+            elif "edit_shelf_role" not in to_save and content.role_edit_shelfs():
+                content.role = content.role - ub.ROLE_EDIT_SHELFS
 
             if "show_random" in to_save and not content.show_random_books():
                 content.sidebar_view += ub.SIDEBAR_RANDOM
