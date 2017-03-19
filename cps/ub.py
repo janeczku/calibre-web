@@ -24,6 +24,7 @@ ROLE_UPLOAD = 4
 ROLE_EDIT = 8
 ROLE_PASSWD = 16
 ROLE_ANONYMOUS = 32
+ROLE_EDIT_SHELFS = 64
 
 DETAIL_RANDOM = 1
 SIDEBAR_LANGUAGE = 2
@@ -83,6 +84,12 @@ class UserBase:
     def role_anonymous(self):
         if self.role is not None:
             return True if self.role & ROLE_ANONYMOUS == ROLE_ANONYMOUS else False
+        else:
+            return False
+
+    def role_edit_shelfs(self):
+        if self.role is not None:
+            return True if self.role & ROLE_EDIT_SHELFS == ROLE_EDIT_SHELFS else False
         else:
             return False
 
@@ -350,6 +357,12 @@ class Config:
     def role_passwd(self):
         if self.config_default_role is not None:
             return True if self.config_default_role & ROLE_PASSWD == ROLE_PASSWD else False
+        else:
+            return False
+
+    def role_edit_shelfs(self):
+        if self.config_default_role is not None:
+            return True if self.config_default_role & ROLE_EDIT_SHELFS == ROLE_EDIT_SHELFS else False
         else:
             return False
 

@@ -114,6 +114,10 @@
       <input type="checkbox" name="passwd_role" id="passwd_role" {% if content.role_passwd() %}checked{% endif %}>
       <label for="passwd_role">{{_('Allow Changing Password')}}</label>
     </div>
+    <div class="form-group">
+      <input type="checkbox" name="edit_shelf_role" id="edit_shelf_role" {% if content.role_edit_shelfs() %}checked{% endif %}>
+      <label for="passwd_role">{{_('Allow Editing Public Shelfs')}}</label>
+    </div>
     <button type="submit" class="btn btn-default">{{_('Submit')}}</button>
     {% if not origin %}
       <a href="{{ url_for('admin') }}" class="btn btn-default">{{_('Back')}}</a>
