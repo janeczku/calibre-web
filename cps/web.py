@@ -1757,6 +1757,11 @@ def add_to_shelf(shelf_id, book_id):
         flash("Sorry you are not allowed to add a book to the the shelf: %s" % shelf.name)
         return redirect(url_for('index'))
     maxOrder = ub.session.query(func.max(ub.BookShelf.order)).filter(ub.BookShelf.shelf == shelf_id).first()
+    book_in_shelf=ub.session.query(ub.BookShelf).filter(ub.BookShelf.shelf == shelf_id,
+                                          ub.BookShelf.book_id == book_id).first()
+    if book_in_shelf:
+        flash("Book is already part of the shelf: %s" % shelf.name)
+        return redirect(url_for('index'))
     if maxOrder[0] is None:
         maxOrder = 0
     else:
@@ -1766,8 +1771,6 @@ def add_to_shelf(shelf_id, book_id):
     ub.session.commit()
 
     flash(_(u"Book has been added to shelf: %(sname)s", sname=shelf.name), category="success")
-
-    # return redirect(url_for('show_book', id=book_id))
     return redirect(request.environ["HTTP_REFERER"])
 
 
