@@ -187,7 +187,6 @@ class Anonymous(AnonymousUserMixin, UserBase):
         self.role = data.role
         self.sidebar_view = data.sidebar_view
         self.default_language = data.default_language
-        self.default_language = data.default_language
         self.locale = data.locale
         self.anon_browse = settings.config_anonbrowse
 
