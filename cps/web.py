@@ -55,13 +55,9 @@ import db
 from shutil import move, copyfile
 from tornado.ioloop import IOLoop
 import shutil
-import StringIO
 import gdriveutils
 import tempfile
-import io
 import hashlib
-import threading
-
 from tornado import version as tornadoVersion
 
 try:
