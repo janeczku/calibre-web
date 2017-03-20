@@ -10,6 +10,8 @@ import os
 import logging
 from werkzeug.security import generate_password_hash
 from flask_babel import gettext as _
+import json
+#from builtins import str
 
 dbpath = os.path.join(os.path.normpath(os.path.dirname(os.path.realpath(__file__)) + os.sep + ".." + os.sep), "app.db")
 engine = create_engine('sqlite:///{0}'.format(dbpath), echo=False)
@@ -22,6 +24,7 @@ ROLE_UPLOAD = 4
 ROLE_EDIT = 8
 ROLE_PASSWD = 16
 ROLE_ANONYMOUS = 32
+ROLE_EDIT_SHELFS = 64
 
 DETAIL_RANDOM = 1
 SIDEBAR_LANGUAGE = 2
@@ -31,6 +34,7 @@ SIDEBAR_HOT = 16
 SIDEBAR_RANDOM = 32
 SIDEBAR_AUTHOR = 64
 SIDEBAR_BEST_RATED = 128
+SIDEBAR_READ_AND_UNREAD = 256
 
 DEFAULT_PASS = "admin123"
 DEFAULT_PORT = int(os.environ.get("CALIBRE_PORT", 8083))
@@ -83,6 +87,12 @@ class UserBase:
         else:
             return False
 
+    def role_edit_shelfs(self):
+        if self.role is not None:
+            return True if self.role & ROLE_EDIT_SHELFS == ROLE_EDIT_SHELFS else False
+        else:
+            return False
+
     def is_active(self):
         return True
 
@@ -90,7 +100,7 @@ class UserBase:
         return False
 
     def get_id(self):
-        return unicode(self.id)
+        return str(self.id)
 
     def filter_language(self):
         return self.default_language
@@ -137,6 +147,12 @@ class UserBase:
         else:
             return False
 
+    def show_read_and_unread(self):
+        if self.sidebar_view is not None:
+            return True if self.sidebar_view & SIDEBAR_READ_AND_UNREAD == SIDEBAR_READ_AND_UNREAD else False
+        else:
+            return False
+
     def show_detail_random(self):
         if self.sidebar_view is not None:
             return True if self.sidebar_view & DETAIL_RANDOM == DETAIL_RANDOM else False
@@ -178,7 +194,6 @@ class Anonymous(AnonymousUserMixin, UserBase):
         self.role = data.role
         self.sidebar_view = data.sidebar_view
         self.default_language = data.default_language
-        self.default_language = data.default_language
         self.locale = data.locale
         self.anon_browse = settings.config_anonbrowse
 
@@ -217,6 +232,14 @@ class BookShelf(Base):
     def __repr__(self):
         return '<Book %r>' % self.id
 
+class ReadBook(Base):
+    __tablename__ = 'book_read_link'
+
+    id=Column(Integer, primary_key=True)
+    book_id = Column(Integer, unique=False)
+    user_id =Column(Integer, ForeignKey('user.id'), unique=False)
+    is_read = Column(Boolean, unique=False)
+
 
 # Baseclass representing Downloads from calibre-web in app.db
 class Downloads(Base):
@@ -253,6 +276,14 @@ class Settings(Base):
     config_anonbrowse = Column(SmallInteger, default=0)
     config_public_reg = Column(SmallInteger, default=0)
     config_default_role = Column(SmallInteger, default=0)
+    config_columns_to_ignore = Column(String)
+    config_use_google_drive = Column(Boolean)
+    config_google_drive_client_id = Column(String)
+    config_google_drive_client_secret = Column(String)
+    config_google_drive_folder = Column(String)
+    config_google_drive_calibre_url_base = Column(String)
+    config_google_drive_watch_changes_response = Column(String)
+    config_columns_to_ignore = Column(String)
 
     def __repr__(self):
         pass
@@ -279,7 +310,18 @@ class Config:
         self.config_anonbrowse = data.config_anonbrowse
         self.config_public_reg = data.config_public_reg
         self.config_default_role = data.config_default_role
-        if self.config_calibre_dir is not None:
+        self.config_columns_to_ignore = data.config_columns_to_ignore
+        self.config_use_google_drive = data.config_use_google_drive
+        self.config_google_drive_client_id = data.config_google_drive_client_id
+        self.config_google_drive_client_secret = data.config_google_drive_client_secret
+        self.config_google_drive_calibre_url_base = data.config_google_drive_calibre_url_base
+        self.config_google_drive_folder = data.config_google_drive_folder
+        if data.config_google_drive_watch_changes_response:
+            self.config_google_drive_watch_changes_response = json.loads(data.config_google_drive_watch_changes_response)
+        else:
+            self.config_google_drive_watch_changes_response=None
+        self.config_columns_to_ignore = data.config_columns_to_ignore
+        if self.config_calibre_dir is not None and (not self.config_use_google_drive or os.path.exists(self.config_calibre_dir + '/metadata.db')):
             self.db_configured = True
         else:
             self.db_configured = False
@@ -318,6 +360,12 @@ class Config:
         else:
             return False
 
+    def role_edit_shelfs(self):
+        if self.config_default_role is not None:
+            return True if self.config_default_role & ROLE_EDIT_SHELFS == ROLE_EDIT_SHELFS else False
+        else:
+            return False
+
     def get_Log_Level(self):
         ret_value=""
         if self.config_log_level == logging.INFO:
@@ -335,6 +383,9 @@ class Config:
 # everywhere to curent should work. Migration is done by checking if relevant coloums are existing, and than adding
 # rows with SQL commands
 def migrate_Database():
+    if not engine.dialect.has_table(engine.connect(), "book_read_link"):
+        ReadBook.__table__.create(bind = engine)
+
     try:
         session.query(exists().where(User.locale)).scalar()
         session.commit()
@@ -359,6 +410,23 @@ def migrate_Database():
         conn.execute("ALTER TABLE Settings ADD column `config_uploading` SmallInteger DEFAULT 0")
         conn.execute("ALTER TABLE Settings ADD column `config_anonbrowse` SmallInteger DEFAULT 0")
         conn.execute("ALTER TABLE Settings ADD column `config_public_reg` SmallInteger DEFAULT 0")
+        session.commit()
+
+    try:
+        session.query(exists().where(Settings.config_use_google_drive)).scalar()
+    except exc.OperationalError:
+        conn = engine.connect()
+        conn.execute("ALTER TABLE Settings ADD column `config_use_google_drive` INTEGER DEFAULT 0")
+        conn.execute("ALTER TABLE Settings ADD column `config_google_drive_client_id` String DEFAULT ''")
+        conn.execute("ALTER TABLE Settings ADD column `config_google_drive_client_secret` String DEFAULT ''")
+        conn.execute("ALTER TABLE Settings ADD column `config_google_drive_calibre_url_base` INTEGER DEFAULT 0")
+        conn.execute("ALTER TABLE Settings ADD column `config_google_drive_folder` String DEFAULT ''")
+        conn.execute("ALTER TABLE Settings ADD column `config_google_drive_watch_changes_response` String DEFAULT ''")
+    try:
+        session.query(exists().where(Settings.config_columns_to_ignore)).scalar()
+    except exc.OperationalError:
+        conn = engine.connect()
+        conn.execute("ALTER TABLE Settings ADD column `config_columns_to_ignore` String DEFAULT ''")
         session.commit()
     try:
         session.query(exists().where(Settings.config_default_role)).scalar()
@@ -438,7 +506,7 @@ def create_anonymous_user():
     session.add(user)
     try:
         session.commit()
-    except:
+    except Exception as e:
         session.rollback()
         pass
 
@@ -449,14 +517,15 @@ def create_admin_user():
     user.nickname = "admin"
     user.role = ROLE_USER + ROLE_ADMIN + ROLE_DOWNLOAD + ROLE_UPLOAD + ROLE_EDIT + ROLE_PASSWD
     user.sidebar_view = DETAIL_RANDOM + SIDEBAR_LANGUAGE + SIDEBAR_SERIES + SIDEBAR_CATEGORY + SIDEBAR_HOT + \
-        SIDEBAR_RANDOM + SIDEBAR_AUTHOR + SIDEBAR_BEST_RATED
+            SIDEBAR_RANDOM + SIDEBAR_AUTHOR + SIDEBAR_BEST_RATED + SIDEBAR_READ_AND_UNREAD
+
 
     user.password = generate_password_hash(DEFAULT_PASS)
 
     session.add(user)
     try:
         session.commit()
-    except:
+    except Exception as e:
         session.rollback()
         pass
 

@@ -1,0 +1,12 @@
+Babel>=1.3
+Flask-Babel==0.11.1
+Flask-Login>=0.3.2
+Flask-Principal>=0.3.2
+Flask>=0.11
+iso-639>=0.4.5
+PyPDF2==1.26.0
+pytz>=2016.10
+requests>=2.11.1
+SQLAlchemy>=0.8.4
+tornado>=4.1
+Wand>=0.4.4

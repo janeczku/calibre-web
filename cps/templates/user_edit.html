@@ -71,6 +71,10 @@
         <label for="show_author">{{_('Show author selection')}}</label>
     </div>
     <div class="form-group">
+        <input type="checkbox" name="show_read_and_unread" id="show_read_and_unread" {% if content.show_read_and_unread() %}checked{% endif %}>
+        <label for="show_read_and_unread">{{_('Show read and unread')}}</label>
+    </div>
+    <div class="form-group">
         <input type="checkbox" name="show_detail_random" id="show_detail_random" {% if content.show_detail_random() %}checked{% endif %}>
         <label for="show_detail_random">{{_('Show random books in detail view')}}</label>
     </div>
@@ -99,6 +103,10 @@
         <div class="form-group">
           <input type="checkbox" name="passwd_role" id="passwd_role" {% if content.role_passwd() %}checked{% endif %}>
           <label for="passwd_role">{{_('Allow Changing Password')}}</label>
+        </div>
+        <div class="form-group">
+          <input type="checkbox" name="edit_shelf_role" id="edit_shelf_role" {% if content.role_edit_shelfs() %}checked{% endif %}>
+          <label for="passwd_role">{{_('Allow Editing Public Shelfs')}}</label>
         </div>
       {% endif %}
     {% endif %}

@@ -40,6 +40,20 @@
     <content type="text">{{_('Show Random Books')}}</content>
   </entry>
   <entry>
+    <title>{{_('Read Books')}}</title>
+    <link type="application/atom+xml;profile=opds-catalog;type=feed;kind=acquisition" href="{{url_for('feed_read_books')}}" />
+    <link rel="subsection" href="{{url_for('feed_read_books')}}" type="application/atom+xml;profile=opds-catalog;type=feed;kind=acquisition"/>
+    <id>{{url_for('feed_read_books')}}</id>
+    <content type="text">{{_('Read Books')}}</content>
+  </entry>
+  <entry>
+    <title>{{_('Unread Books')}}</title>
+    <link type="application/atom+xml;profile=opds-catalog;type=feed;kind=acquisition" href="{{url_for('feed_unread_books')}}" />
+    <link rel="subsection" href="{{url_for('feed_unread_books')}}" type="application/atom+xml;profile=opds-catalog;type=feed;kind=acquisition"/>
+    <id>{{url_for('feed_unread_books')}}</id>
+    <content type="text">{{_('Unread Books')}}</content>
+  </entry>
+  <entry>
     <title>{{_('Authors')}}</title>
     <link type="application/atom+xml;profile=opds-catalog;type=feed;kind=acquisition" href="{{url_for('feed_authorindex')}}"/>
     <link rel="subsection" href="{{url_for('feed_authorindex')}}" type="application/atom+xml;profile=opds-catalog;type=feed;kind=navigation"/>

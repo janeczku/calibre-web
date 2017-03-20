@@ -13,11 +13,18 @@ import os
 import traceback
 import re
 import unicodedata
-from StringIO import StringIO
+try:
+    from StringIO import StringIO
+    from email.MIMEBase import MIMEBase
+    from email.MIMEMultipart import MIMEMultipart
+    from email.MIMEText import MIMEText
+except ImportError as e:
+    from io import StringIO
+    from email.mime.base import MIMEBase
+    from email.mime.multipart import MIMEMultipart
+    from email.mime.text import MIMEText
+
 from email import encoders
-from email.MIMEBase import MIMEBase
-from email.MIMEMultipart import MIMEMultipart
-from email.MIMEText import MIMEText
 from email.generator import Generator
 from email.utils import formatdate
 from email.utils import make_msgid
@@ -28,11 +35,16 @@ import shutil
 import requests
 import zipfile
 from tornado.ioloop import IOLoop
+try:
+    import gdriveutils as gd
+except ImportError:
+    pass
+import web
 
 try:
     import unidecode
     use_unidecode=True
-except:
+except Exception as e:
     use_unidecode=False
 
 # Global variables
@@ -147,7 +159,7 @@ def send_raw_email(kindle_mail, msg):
 
         smtplib.stderr = org_stderr
 
-    except (socket.error, smtplib.SMTPRecipientsRefused, smtplib.SMTPException), e:
+    except (socket.error, smtplib.SMTPRecipientsRefused, smtplib.SMTPException) as e:
         app.logger.error(traceback.print_exc())
         return _("Failed to send mail: %s" % str(e))
 
@@ -239,7 +251,10 @@ def get_valid_filename(value, replace_whitespace=True):
         value=value.replace(u'ß',u'ss')
         value = unicodedata.normalize('NFKD', value)
         re_slugify = re.compile('[\W\s-]', re.UNICODE)
-        value = unicode(re_slugify.sub('', value).strip())
+        if type(value) is str: #Python3 str, Python2 unicode
+            value = re_slugify.sub('', value).strip()
+        else:
+            value = unicode(re_slugify.sub('', value).strip())
     if replace_whitespace:
         #*+:\"/<>? werden durch _ ersetzt
         value = re.sub('[\*\+:\\\"/<>\?]+', u'_', value, flags=re.U)
@@ -280,6 +295,30 @@ def update_dir_stucture(book_id, calibrepath):
         book.path = new_authordir + '/' + book.path.split('/')[1]
     db.session.commit()
 
+def update_dir_structure_gdrive(book_id):
+    db.session.connection().connection.connection.create_function("title_sort", 1, db.title_sort)
+    book = db.session.query(db.Books).filter(db.Books.id == book_id).first()
+    
+    authordir = book.path.split('/')[0]
+    new_authordir = get_valid_filename(book.authors[0].name)
+    titledir = book.path.split('/')[1]
+    new_titledir = get_valid_filename(book.title) + " (" + str(book_id) + ")"
+    
+    if titledir != new_titledir:
+        print (titledir)
+        gFile=gd.getFileFromEbooksFolder(web.Gdrive.Instance().drive,os.path.dirname(book.path),titledir)
+        gFile['title']= new_titledir
+        gFile.Upload()
+        book.path = book.path.split('/')[0] + '/' + new_titledir
+    
+    if authordir != new_authordir:
+        gFile=gd.getFileFromEbooksFolder(web.Gdrive.Instance().drive,None,authordir)
+        gFile['title']= new_authordir
+        gFile.Upload()
+        book.path = new_authordir + '/' + book.path.split('/')[1]
+
+    db.session.commit()
+
 class Updater(threading.Thread):
 
     def __init__(self):
@@ -305,9 +344,13 @@ class Updater(threading.Thread):
         ub.session.close()
         ub.engine.dispose()
         self.status=6
-        # stop tornado server
-        server = IOLoop.instance()
-        server.add_callback(server.stop)
+
+        if web.gevent_server:
+            web.gevent_server.stop()
+        else:
+            # stop tornado server            
+            server = IOLoop.instance()
+            server.add_callback(server.stop)
         self.status=7
 
     def get_update_status(self):
@@ -379,7 +422,7 @@ class Updater(threading.Thread):
                     try:
                         os.chown(dst_file, permission.st_uid, permission.st_uid)
                         # print('Permissions: User '+str(new_permissions.st_uid)+' Group '+str(new_permissions.st_uid))
-                    except:
+                    except Exception as e:
                         e = sys.exc_info()
                         logging.getLogger('cps.web').debug('Fail '+str(dst_file)+' error: '+str(e))
         return
@@ -421,7 +464,7 @@ class Updater(threading.Thread):
                     logging.getLogger('cps.web').debug("Delete file " + item_path)
                     log_from_thread("Delete file " + item_path)
                     os.remove(item_path)
-                except:
+                except Exception as e:
                     logging.getLogger('cps.web').debug("Could not remove:" + item_path)
         shutil.rmtree(source, ignore_errors=True)
 

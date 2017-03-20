@@ -1,11 +1,18 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+try:
+    from pydrive.auth import GoogleAuth
+    from googleapiclient.errors import HttpError
+    gdrive_support= True
+except ImportError:
+    gdrive_support=False
+
 import mimetypes
 import logging
 from logging.handlers import RotatingFileHandler
 import textwrap
 from flask import Flask, render_template, request, Response, redirect, url_for, send_from_directory, \
-    make_response, g, flash, abort
+        make_response, g, flash, abort, Markup, stream_with_context
 from flask import __version__ as flaskVersion
 import ub
 from ub import config
@@ -18,9 +25,8 @@ from sqlalchemy.exc import IntegrityError
 from sqlalchemy import __version__ as sqlalchemyVersion
 from math import ceil
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
-from flask_login import __version__ as flask_loginVersion
-from flask_principal import Principal, Identity, AnonymousIdentity, identity_changed
-from flask_login import __version__ as flask_principalVersion
+from flask_principal import Principal
+from flask_principal import __version__ as flask_principalVersion
 from flask_babel import Babel
 from flask_babel import gettext as _
 import requests
@@ -46,19 +52,99 @@ import re
 import db
 from shutil import move, copyfile
 from tornado.ioloop import IOLoop
+import shutil
+import StringIO
+import gdriveutils
+import tempfile
+import io
+import hashlib
+import threading
+
 from tornado import version as tornadoVersion
 
 try:
-    from wand.image import Image
+    from urllib.parse import quote
+    from imp import reload
+except ImportError as e:
+    from urllib import quote
 
+try:
+    from flask_login import __version__ as flask_loginVersion
+except ImportError as e:
+    from flask_login.__about__ import __version__ as flask_loginVersion
+
+import time
+
+current_milli_time = lambda: int(round(time.time() * 1000))
+
+try:
+    from wand.image import Image
     use_generic_pdf_cover = False
-except ImportError, e:
+except ImportError:
     use_generic_pdf_cover = True
 from cgi import escape
 
+# Global variables
+gdrive_watch_callback_token='target=calibreweb-watch_files'
+global_task = None
+
 ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'epub', 'mobi', 'azw', 'azw3', 'cbr', 'cbz', 'cbt', 'djvu', 'prc', 'doc', 'docx', 'fb2'])
 
-# Proxy Helper class
+def md5(fname):
+    hash_md5 = hashlib.md5()
+    with open(fname, "rb") as f:
+        for chunk in iter(lambda: f.read(4096), b""):
+            hash_md5.update(chunk)
+    return hash_md5.hexdigest()
+
+class Singleton:
+    """
+    A non-thread-safe helper class to ease implementing singletons.
+    This should be used as a decorator -- not a metaclass -- to the
+    class that should be a singleton.
+
+    The decorated class can define one `__init__` function that
+    takes only the `self` argument. Also, the decorated class cannot be
+    inherited from. Other than that, there are no restrictions that apply
+    to the decorated class.
+
+    To get the singleton instance, use the `Instance` method. Trying
+    to use `__call__` will result in a `TypeError` being raised.
+
+    """
+
+    def __init__(self, decorated):
+        self._decorated = decorated
+
+    def Instance(self):
+        """
+        Returns the singleton instance. Upon its first call, it creates a
+        new instance of the decorated class and calls its `__init__` method.
+        On all subsequent calls, the already created instance is returned.
+
+        """
+        try:
+            return self._instance
+        except AttributeError:
+            self._instance = self._decorated()
+            return self._instance
+
+    def __call__(self):
+        raise TypeError('Singletons must be accessed through `Instance()`.')
+
+    def __instancecheck__(self, inst):
+        return isinstance(inst, self._decorated)
+
+@Singleton
+class Gauth:
+    def __init__(self):
+        self.auth=GoogleAuth(settings_file='settings.yaml')
+
+@Singleton
+class Gdrive:
+    def __init__(self):
+        self.drive=gdriveutils.getDrive(Gauth.Instance().auth)
+
 class ReverseProxied(object):
     """Wrap the application in this middleware and configure the
     front-end server to add these headers, to let you quietly bind 
@@ -112,6 +198,8 @@ mimetypes.add_type('image/vnd.djvu', '.djvu')
 app = (Flask(__name__))
 app.wsgi_app = ReverseProxied(app.wsgi_app)
 
+gevent_server=None
+
 formatter = logging.Formatter(
     "[%(asctime)s] {%(pathname)s:%(lineno)d} %(levelname)s - %(message)s")
 file_handler = RotatingFileHandler(os.path.join(config.get_main_dir, "calibre-web.log"), maxBytes=50000, backupCount=2)
@@ -135,6 +223,18 @@ lm.login_view = 'login'
 lm.anonymous_user = ub.Anonymous
 app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
 db.setup_db()
+
+if config.config_log_level == logging.DEBUG :
+    logging.getLogger("sqlalchemy.engine").addHandler(file_handler)
+    logging.getLogger("sqlalchemy.engine").setLevel(logging.INFO)
+    logging.getLogger("sqlalchemy.pool").addHandler(file_handler)
+    logging.getLogger("sqlalchemy.pool").setLevel(config.config_log_level)
+    logging.getLogger("sqlalchemy.orm").addHandler(file_handler)
+    logging.getLogger("sqlalchemy.orm").setLevel(config.config_log_level)
+
+
+def is_gdrive_ready():
+    return os.path.exists('settings.yaml') and os.path.exists('gdrive_credentials')
 
 @babel.localeselector
 def get_locale():
@@ -190,6 +290,12 @@ def authenticate():
         'You have to login with proper credentials', 401,
         {'WWW-Authenticate': 'Basic realm="Login Required"'})
 
+def updateGdriveCalibreFromLocal():
+    gdriveutils.backupCalibreDbAndOptionalDownload(Gdrive.Instance().drive)
+    gdriveutils.copyToDrive(Gdrive.Instance().drive, config.config_calibre_dir, False, True)
+    for x in os.listdir(config.config_calibre_dir):
+        if os.path.isdir(os.path.join(config.config_calibre_dir,x)):
+            shutil.rmtree(os.path.join(config.config_calibre_dir,x))
 
 def requires_basic_auth_if_no_ano(f):
     @wraps(f)
@@ -240,6 +346,10 @@ class Pagination(object):
     def iter_pages(self, left_edge=2, left_current=2,
                    right_current=5, right_edge=2):
         last = 0
+        if 'xrange' not in globals():#no xrange in Python3
+            global xrange
+            xrange = range
+
         for num in xrange(1, self.pages + 1):  # ToDo: can be simplified
             if num <= left_edge or (num > self.page - left_current - 1 and num < self.page + right_current) \
                     or num > self.pages - right_edge:
@@ -279,7 +389,7 @@ def shortentitle_filter(s):
 def mimetype_filter(val):
     try:
         s = mimetypes.types_map['.' + val]
-    except:
+    except Exception as e:
         s = 'application/octet-stream'
     return s
 
@@ -289,6 +399,17 @@ def formatdate(val):
     formatdate = datetime.datetime.strptime(conformed_timestamp[:15], "%Y%m%d %H%M%S")
     return format_date(formatdate, format='medium',locale=get_locale())
 
+@app.template_filter('strftime')
+def timestamptodate(date, fmt=None):
+    date=datetime.datetime.fromtimestamp(
+        int(date)/1000
+    )
+    native = date.replace(tzinfo=None)
+    if fmt:
+        format=fmt
+    else:
+        format='%d %m %Y - %H:%S'
+    return native.strftime(format)
 
 def admin_required(f):
     """
@@ -550,7 +671,13 @@ def feed_hot():
     hot_books = all_books.offset(off).limit(config.config_books_per_page)
     entries = list()
     for book in hot_books:
-        entries.append(db.session.query(db.Books).filter(filter).filter(db.Books.id == book.Downloads.book_id).first())
+        downloadBook = db.session.query(db.Books).filter(db.Books.id == book.Downloads.book_id).first()
+        if downloadBook:
+            entries.append(
+                db.session.query(db.Books).filter(filter).filter(db.Books.id == book.Downloads.book_id).first())
+        else:
+            ub.session.query(ub.Downloads).filter(book.Downloads.book_id == ub.Downloads.book_id).delete()
+            ub.session.commit()
     numBooks = entries.__len__()
     pagination = Pagination((int(off) / (int(config.config_books_per_page)) + 1), config.config_books_per_page, numBooks)
     xml = render_title_template('feed.xml', entries=entries, pagination=pagination)
@@ -661,21 +788,55 @@ def feed_series(id):
     return response
 
 
+def partial(total_byte_len, part_size_limit):
+    s = []
+    for p in range(0, total_byte_len, part_size_limit):
+        last = min(total_byte_len - 1, p + part_size_limit - 1)
+        s.append([p, last])
+    return s
+
+def do_gdrive_download(df, headers):
+    startTime=time.time()
+    total_size = int(df.metadata.get('fileSize'))
+    download_url = df.metadata.get('downloadUrl')
+    s = partial(total_size, 1024 * 1024) # I'm downloading BIG files, so 100M chunk size is fine for me
+    def stream():
+        for bytes in s:
+            headers = {"Range" : 'bytes=%s-%s' % (bytes[0], bytes[1])}
+            resp, content = df.auth.Get_Http_Object().request(download_url, headers=headers)
+            if resp.status == 206 :
+                yield content
+            else:
+                app.logger.info('An error occurred: %s' % resp)
+                return
+    return Response(stream_with_context(stream()), headers=headers)
+
 @app.route("/opds/download/<book_id>/<format>/")
 @requires_basic_auth_if_no_ano
 @download_required
 def get_opds_download_link(book_id, format):
+    startTime=time.time()
     format = format.split(".")[0]
     book = db.session.query(db.Books).filter(db.Books.id == book_id).first()
     data = db.session.query(db.Data).filter(db.Data.book == book.id).filter(db.Data.format == format.upper()).first()
+    app.logger.info (data.name)
     if current_user.is_authenticated:
         helper.update_download(book_id, int(current_user.id))
     file_name = book.title
     if len(book.authors) > 0:
-        file_name = book.authors[0].name + '-' + file_name
-    # file_name = helper.get_valid_filename(file_name)
-    response = make_response(send_from_directory(os.path.join(config.config_calibre_dir, book.path), data.name + "." + format))
-    response.headers["Content-Disposition"] = "attachment; filename=\"%s.%s\"" % (data.name, format)
+        file_name = book.authors[0].name + '_' + file_name
+    file_name = helper.get_valid_filename(file_name)
+    headers={}
+    headers["Content-Disposition"] = "attachment; filename*=UTF-8''%s.%s" % (quote(file_name.encode('utf8')), format)
+    app.logger.info (time.time()-startTime)
+    startTime=time.time()
+    if config.config_use_google_drive:
+        df=gdriveutils.getFileFromEbooksFolder(Gdrive.Instance().drive, book.path, data.name + "." + format)
+        return do_gdrive_download(df, headers)
+    else:
+        # file_name = helper.get_valid_filename(file_name)
+        response = make_response(send_from_directory(os.path.join(config.config_calibre_dir, book.path), data.name + "." + format))
+    response.headers=headers
     return response
 
 
@@ -754,7 +915,7 @@ def get_updater_status():
     elif request.method == "GET":
         try:
             status['status']=helper.updater_thread.get_update_status()
-        except:
+        except Exception as e:
             status['status'] = 7
     return json.dumps(status)
 
@@ -769,7 +930,7 @@ def get_languages_json():
             try:
                 cur_l = LC.parse(lang.lang_code)
                 lang.name = cur_l.get_language_name(get_locale())
-            except:
+            except Exception as e:
                 lang.name = _(isoLanguages.get(part3=lang.lang_code).name)
         entries = [s for s in languages if query in s.name.lower()]
         json_dumps = json.dumps([dict(name=r.name) for r in entries])
@@ -839,7 +1000,13 @@ def hot_books(page):
     hot_books = all_books.offset(off).limit(config.config_books_per_page)
     entries = list()
     for book in hot_books:
-        entries.append(db.session.query(db.Books).filter(filter).filter(db.Books.id == book.Downloads.book_id).first())
+        downloadBook = db.session.query(db.Books).filter(db.Books.id == book.Downloads.book_id).first()
+        if downloadBook:
+            entries.append(
+                db.session.query(db.Books).filter(filter).filter(db.Books.id == book.Downloads.book_id).first())
+        else:
+            ub.session.query(ub.Downloads).filter(book.Downloads.book_id == ub.Downloads.book_id).delete()
+            ub.session.commit()
     numBooks = entries.__len__()
     pagination = Pagination(page, config.config_books_per_page, numBooks)
     return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
@@ -929,13 +1096,13 @@ def language_overview():
             try:
                 cur_l = LC.parse(lang.lang_code)
                 lang.name = cur_l.get_language_name(get_locale())
-            except:
+            except Exception as e:
                 lang.name = _(isoLanguages.get(part3=lang.lang_code).name)
     else:
         try:
             langfound = 1
             cur_l = LC.parse(current_user.filter_language())
-        except:
+        except Exception as e:
             langfound = 0
         languages = db.session.query(db.Languages).filter(
             db.Languages.lang_code == current_user.filter_language()).all()
@@ -959,7 +1126,7 @@ def language(name, page):
     try:
         cur_l = LC.parse(name)
         name = cur_l.get_language_name(get_locale())
-    except:
+    except Exception as e:
         name = _(isoLanguages.get(part3=name).name)
     return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
                                  title=_(u"Language: %(name)s", name=name))
@@ -990,6 +1157,23 @@ def category(id, page):
                                  title=_(u"Category: %(name)s", name=name))
 
 
+@app.route("/ajax/toggleread/<int:id>", methods=['POST'])
+@login_required
+def toggle_read(id):
+    book = ub.session.query(ub.ReadBook).filter(ub.and_(ub.ReadBook.user_id == int(current_user.id),
+                                                                   ub.ReadBook.book_id == id)).first()
+    if book:
+        book.is_read=not book.is_read
+    else:
+        readBook=ub.ReadBook()
+        readBook.user_id=int(current_user.id)
+        readBook.book_id = id
+        readBook.is_read=True
+        book=readBook
+    ub.session.merge(book)
+    ub.session.commit()
+    return ""
+
 @app.route("/book/<int:id>")
 @login_required_if_no_ano
 def show_book(id):
@@ -1003,17 +1187,35 @@ def show_book(id):
             try:
                 entries.languages[index].language_name = LC.parse(entries.languages[index].lang_code).get_language_name(
                     get_locale())
-            except:
+            except Exception as e:
                 entries.languages[index].language_name = _(
                     isoLanguages.get(part3=entries.languages[index].lang_code).name)
-        cc = db.session.query(db.Custom_Columns).filter(db.Custom_Columns.datatype.notin_(db.cc_exceptions)).all()
+        tmpcc = db.session.query(db.Custom_Columns).filter(db.Custom_Columns.datatype.notin_(db.cc_exceptions)).all()
+
+        if config.config_columns_to_ignore:
+            cc=[]
+            for col in tmpcc:
+                r= re.compile(config.config_columns_to_ignore)
+                if r.match(col.label):
+                    cc.append(col)
+        else:
+            cc=tmpcc
         book_in_shelfs = []
         shelfs = ub.session.query(ub.BookShelf).filter(ub.BookShelf.book_id == id).all()
         for entry in shelfs:
             book_in_shelfs.append(entry.shelf)
 
+        #return render_title_template('detail.html', entry=entries, cc=cc,
+                                    # title=entries.title, books_shelfs=book_in_shelfs)
+        if not current_user.is_anonymous():
+            matching_have_read_book=ub.session.query(ub.ReadBook).filter(ub.and_(ub.ReadBook.user_id == int(current_user.id),
+                                                                   ub.ReadBook.book_id == id)).all()
+            have_read=len(matching_have_read_book) > 0 and matching_have_read_book[0].is_read
+        else:
+            have_read=None
+
         return render_title_template('detail.html', entry=entries, cc=cc,
-                                     title=entries.title, books_shelfs=book_in_shelfs)
+                                     title=entries.title, books_shelfs=book_in_shelfs, have_read=have_read)
     else:
         flash(_(u"Error opening eBook. File does not exist or file is not accessible:"), category="error")
         return redirect(url_for("index"))
@@ -1033,7 +1235,7 @@ def stats():
     categorys = len(db.session.query(db.Tags).all())
     series = len(db.session.query(db.Series).all())
     versions = uploader.book_formats.get_versions()
-    vendorpath = os.path.join(config.get_main_dir + "vendor" + os.sep)
+    vendorpath = os.path.join(config.get_main_dir, "vendor")
     if sys.platform == "win32":
         kindlegen = os.path.join(vendorpath, u"kindlegen.exe")
     else:
@@ -1044,6 +1246,8 @@ def stats():
                              stdin=subprocess.PIPE)
         p.wait()
         for lines in p.stdout.readlines():
+            if type(lines) is bytes:
+                lines = lines.decode('utf-8')
             if re.search('Amazon kindlegen\(', lines):
                 versions['KindlegenVersion'] = lines
     versions['PythonVersion'] = sys.version
@@ -1060,6 +1264,93 @@ def stats():
 
     return render_title_template('stats.html', bookcounter=counter, authorcounter=authors, versions=versions,
                                  categorycounter=categorys, seriecounter=series, title=_(u"Statistics"))
+
+@app.route("/gdrive/authenticate")
+@login_required
+@admin_required
+def authenticate_google_drive():
+    authUrl=Gauth.Instance().auth.GetAuthUrl()
+    return redirect(authUrl)
+
+@app.route("/gdrive/callback")
+def google_drive_callback():
+    auth_code = request.args.get('code')
+    credentials = Gauth.Instance().auth.flow.step2_exchange(auth_code)
+    with open('gdrive_credentials' ,'w') as f:
+        f.write(credentials.to_json())
+    return redirect(url_for('configuration'))
+
+@app.route("/gdrive/watch/subscribe")
+@login_required
+@admin_required
+def watch_gdrive():
+    if not config.config_google_drive_watch_changes_response:
+        address = '%sgdrive/watch/callback' % config.config_google_drive_calibre_url_base
+        notification_id=str(uuid4())
+        result = gdriveutils.watchChange(Gdrive.Instance().drive, notification_id,
+                               'web_hook', address, gdrive_watch_callback_token, current_milli_time() + 604800*1000)
+        print (result)
+        settings = ub.session.query(ub.Settings).first()
+        settings.config_google_drive_watch_changes_response=json.dumps(result)
+        ub.session.merge(settings)
+        ub.session.commit()
+        settings = ub.session.query(ub.Settings).first()
+        config.loadSettings()
+
+        print (settings.config_google_drive_watch_changes_response)
+
+    return redirect(url_for('configuration'))
+
+@app.route("/gdrive/watch/revoke")
+@login_required
+@admin_required
+def revoke_watch_gdrive():
+    last_watch_response=config.config_google_drive_watch_changes_response
+    if last_watch_response:
+        try:
+            response=gdriveutils.stopChannel(Gdrive.Instance().drive, last_watch_response['id'], last_watch_response['resourceId'])
+        except HttpError:
+            pass
+        settings = ub.session.query(ub.Settings).first()
+        settings.config_google_drive_watch_changes_response=None
+        ub.session.merge(settings)
+        ub.session.commit()
+        config.loadSettings()
+    return redirect(url_for('configuration'))
+
+@app.route("/gdrive/watch/callback", methods=['GET', 'POST'])
+def on_received_watch_confirmation():
+    app.logger.info (request.headers)
+    if request.headers.get('X-Goog-Channel-Token') == gdrive_watch_callback_token \
+        and request.headers.get('X-Goog-Resource-State') == 'change' \
+        and request.data:
+
+        data=request.data
+
+        def updateMetaData():
+            app.logger.info ('Change received from gdrive')
+            app.logger.info (data)
+            try:
+                j=json.loads(data)
+                app.logger.info ('Getting change details')
+                response=gdriveutils.getChangeById(Gdrive.Instance().drive, j['id'])
+                app.logger.info (response)
+                if response:
+                    dbpath = os.path.join(config.config_calibre_dir, "metadata.db")
+                    if not response['deleted'] and response['file']['title'] == 'metadata.db' and response['file']['md5Checksum'] != md5(dbpath):
+                        tmpDir=tempfile.gettempdir()
+                        app.logger.info ('Database file updated')
+                        copyfile (dbpath, tmpDir + "/metadata.db_" + str(current_milli_time()))
+                        app.logger.info ('Backing up existing and downloading updated metadata.db')
+                        gdriveutils.downloadFile(Gdrive.Instance().drive, None, "metadata.db", tmpDir + "/tmp_metadata.db")
+                        app.logger.info ('Setting up new DB')
+                        os.rename(tmpDir + "/tmp_metadata.db", dbpath)
+                        db.setup_db()
+            except Exception, e:
+                app.logger.exception(e)
+
+        updateMetaData()
+    return ''
 
 
 @app.route("/shutdown")
@@ -1085,6 +1376,11 @@ def shutdown():
             showtext['text'] = _(u'Performing shutdown of server, please close window')
         return json.dumps(showtext)
     else:
+        if task == 2:
+            db.session.close()
+            db.engine.dispose()
+            db.setup_db()
+            return json.dumps({})
         abort(404)
 
 @app.route("/update")
@@ -1147,7 +1443,7 @@ def advanced_search():
                 try:
                     cur_l = LC.parse(lang.lang_code)
                     lang.name = cur_l.get_language_name(get_locale())
-                except:
+                except Exception as e:
                     lang.name = _(isoLanguages.get(part3=lang.lang_code).name)
             searchterm.extend(language.name for language in language_names)
             searchterm = " + ".join(filter(None, searchterm))
@@ -1179,17 +1475,35 @@ def advanced_search():
             try:
                 cur_l = LC.parse(lang.lang_code)
                 lang.name = cur_l.get_language_name(get_locale())
-            except:
+            except Exception as e:
                 lang.name = _(isoLanguages.get(part3=lang.lang_code).name)
     else:
         languages = None
     return render_title_template('search_form.html', tags=tags, languages=languages, series=series, title=_(u"search"))
 
 
+def get_cover_via_gdrive(cover_path):
+    df=gdriveutils.getFileFromEbooksFolder(Gdrive.Instance().drive, cover_path, 'cover.jpg')
+    if not gdriveutils.session.query(gdriveutils.PermissionAdded).filter(gdriveutils.PermissionAdded.gdrive_id == df['id']).first():
+        permissions=df.GetPermissions()
+        df.InsertPermission({
+                        'type': 'anyone',
+                        'value': 'anyone',
+                        'role': 'reader',
+                        'withLink' : True})
+        permissionAdded=gdriveutils.PermissionAdded()
+        permissionAdded.gdrive_id=df['id']
+        gdriveutils.session.add(permissionAdded)
+        gdriveutils.session.commit()
+    return df.metadata.get('webContentLink')
+
 @app.route("/cover/<path:cover_path>")
 @login_required_if_no_ano
 def get_cover(cover_path):
-    return send_from_directory(os.path.join(config.config_calibre_dir, cover_path), "cover.jpg")
+    if config.config_use_google_drive:
+        return redirect(get_cover_via_gdrive(cover_path))
+    else:
+        return send_from_directory(os.path.join(config.config_calibre_dir, cover_path), "cover.jpg")
 
 
 @app.route("/opds/thumb_240_240/<path:book_id>")
@@ -1199,8 +1513,58 @@ def get_cover(cover_path):
 @requires_basic_auth_if_no_ano
 def feed_get_cover(book_id):
     book = db.session.query(db.Books).filter(db.Books.id == book_id).first()
-    return send_from_directory(os.path.join(config.config_calibre_dir, book.path), "cover.jpg")
+    if config.config_use_google_drive:
+        return redirect(get_cover_via_gdrive(book.path))
+    else:
+        return send_from_directory(os.path.join(config.config_calibre_dir, book.path), "cover.jpg")
 
+def render_read_books(page, are_read, as_xml=False):
+    readBooks=ub.session.query(ub.ReadBook).filter(ub.ReadBook.user_id == int(current_user.id)).filter(ub.ReadBook.is_read == True).all()
+    readBookIds=[x.book_id for x in readBooks]
+    if are_read:
+        db_filter = db.Books.id.in_(readBookIds)
+    else:
+        db_filter = ~db.Books.id.in_(readBookIds)
+
+    entries, random, pagination = fill_indexpage(page, db.Books,
+        db_filter, db.Books.timestamp.desc())
+    if as_xml:
+        xml = render_title_template('feed.xml', entries=entries, pagination=pagination)
+        response = make_response(xml)
+        response.headers["Content-Type"] = "application/xml"
+        return response
+    else:
+        name=u'Read Books' if are_read else u'Unread Books'
+        return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
+                                 title=_(name, name=name))
+
+@app.route("/opds/readbooks/")
+@login_required_if_no_ano
+def feed_read_books():
+    off = request.args.get("offset")
+    if not off:
+        off = 0
+    return render_read_books(int(off) / (int(config.config_books_per_page)) + 1, True, True)
+
+@app.route("/readbooks/", defaults={'page': 1})
+@app.route("/readbooks/<int:page>'")
+@login_required_if_no_ano
+def read_books(page):
+    return render_read_books(page, True)
+
+@app.route("/opds/unreadbooks/")
+@login_required_if_no_ano
+def feed_unread_books():
+    off = request.args.get("offset")
+    if not off:
+        off = 0
+    return render_read_books(int(off) / (int(config.config_books_per_page)) + 1, False, True)
+
+@app.route("/unreadbooks/", defaults={'page': 1})
+@app.route("/unreadbooks/<int:page>'")
+@login_required_if_no_ano
+def unread_books(page):
+    return render_read_books(page, False)
 
 @app.route("/read/<int:book_id>/<format>")
 @login_required_if_no_ano
@@ -1236,22 +1600,22 @@ def read_book(book_id, format):
                 zfile.close()
             return render_title_template('read.html', bookid=book_id, title=_(u"Read a Book"))
         elif format.lower() == "pdf":
-            all_name = str(book_id) + "/" + urllib.quote(book.data[0].name) + ".pdf"
-            tmp_file = os.path.join(book_dir, urllib.quote(book.data[0].name)) + ".pdf"
+            all_name = str(book_id) + "/" + book.data[0].name + ".pdf"
+            tmp_file = os.path.join(book_dir, book.data[0].name) + ".pdf"
             if not os.path.exists(tmp_file):
                 pdf_file = os.path.join(config.config_calibre_dir, book.path, book.data[0].name) + ".pdf"
                 copyfile(pdf_file, tmp_file)
             return render_title_template('readpdf.html', pdffile=all_name, title=_(u"Read a Book"))
         elif format.lower() == "txt":
-            all_name = str(book_id) + "/" + urllib.quote(book.data[0].name) + ".txt"
-            tmp_file = os.path.join(book_dir, urllib.quote(book.data[0].name)) + ".txt"
+            all_name = str(book_id) + "/" + book.data[0].name + ".txt"
+            tmp_file = os.path.join(book_dir, book.data[0].name) + ".txt"
             if not os.path.exists(all_name):
                 txt_file = os.path.join(config.config_calibre_dir, book.path, book.data[0].name) + ".txt"
                 copyfile(txt_file, tmp_file)
             return render_title_template('readtxt.html', txtfile=all_name, title=_(u"Read a Book"))
         elif format.lower() == "cbr":
-            all_name = str(book_id) + "/" + urllib.quote(book.data[0].name) + ".cbr"
-            tmp_file = os.path.join(book_dir, urllib.quote(book.data[0].name)) + ".cbr"
+            all_name = str(book_id) + "/" + book.data[0].name + ".cbr"
+            tmp_file = os.path.join(book_dir, book.data[0].name) + ".cbr"
             if not os.path.exists(all_name):
                 cbr_file = os.path.join(config.config_calibre_dir, book.path, book.data[0].name) + ".cbr"
                 copyfile(cbr_file, tmp_file)
@@ -1260,7 +1624,6 @@ def read_book(book_id, format):
     else:
         flash(_(u"Error opening eBook. File does not exist or file is not accessible:"), category="error")
         return redirect(url_for("index"))
-
 
 @app.route("/download/<int:book_id>/<format>")
 @login_required_if_no_ano
@@ -1275,19 +1638,29 @@ def get_download_link(book_id, format):
             helper.update_download(book_id, int(current_user.id))
         file_name = book.title
         if len(book.authors) > 0:
-            file_name = book.authors[0].name + '-' + file_name
+            file_name = book.authors[0].name + '_' + file_name
         file_name = helper.get_valid_filename(file_name)
-        response = make_response(
-            send_from_directory(os.path.join(config.config_calibre_dir, book.path), data.name + "." + format))
+        headers={}
         try:
-            response.headers["Content-Type"] = mimetypes.types_map['.' + format]
+            headers["Content-Type"] = mimetypes.types_map['.' + format]
         except:
             pass
-        response.headers["Content-Disposition"] = "attachment; filename=\"%s.%s\"" % (file_name.encode('utf-8'), format)
+        headers["Content-Disposition"] = "attachment; filename*=UTF-8''%s.%s" % (urllib.quote(file_name.encode('utf-8')), format)
+        if config.config_use_google_drive:
+            df=gdriveutils.getFileFromEbooksFolder(Gdrive.Instance().drive, book.path, '%s.%s' % (data.name, format))
+            return do_gdrive_download(df, headers)
+        else:
+            response = make_response(send_from_directory(os.path.join(config.config_calibre_dir, book.path), data.name + "." + format))
+        response.headers=headers
         return response
     else:
         abort(404)
 
+@app.route("/download/<int:book_id>/<format>/<anyname>")
+@login_required_if_no_ano
+@download_required
+def get_download_link_ext(book_id, format, anyname):
+    return get_download_link(book_id, format)
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -1313,7 +1686,7 @@ def register():
             try:
                 ub.session.add(content)
                 ub.session.commit()
-            except:
+            except Exception as e:
                 ub.session.rollback()
                 flash(_(u"An unknown error occured. Please try again later."), category="error")
                 return render_title_template('register.html', title=_(u"register"))
@@ -1381,40 +1754,43 @@ def send_to_kindle(book_id):
 def add_to_shelf(shelf_id, book_id):
     shelf = ub.session.query(ub.Shelf).filter(ub.Shelf.id == shelf_id).first()
     if not shelf.is_public and not shelf.user_id == int(current_user.id):
-        flash("Sorry you are not allowed to add a book to the the shelf: %s" % shelf.name)
+        app.logger.info("Sorry you are not allowed to add a book to the the shelf: %s" % shelf.name)
         return redirect(url_for('index'))
     maxOrder = ub.session.query(func.max(ub.BookShelf.order)).filter(ub.BookShelf.shelf == shelf_id).first()
+    book_in_shelf=ub.session.query(ub.BookShelf).filter(ub.BookShelf.shelf == shelf_id,
+                                          ub.BookShelf.book_id == book_id).first()
+    if book_in_shelf:
+        app.logger.info("Book is already part of the shelf: %s" % shelf.name)
+        return redirect(url_for('index'))
     if maxOrder[0] is None:
         maxOrder = 0
     else:
         maxOrder = maxOrder[0]
-    ins = ub.BookShelf(shelf=shelf.id, book_id=book_id, order=maxOrder + 1)
-    ub.session.add(ins)
-    ub.session.commit()
-
-    flash(_(u"Book has been added to shelf: %(sname)s", sname=shelf.name), category="success")
-
-    # return redirect(url_for('show_book', id=book_id))
-    return redirect(request.environ["HTTP_REFERER"])
+    if (shelf.is_public and current_user.role_edit_shelfs()) or not shelf.is_public:
+        ins = ub.BookShelf(shelf=shelf.id, book_id=book_id, order=maxOrder + 1)
+        ub.session.add(ins)
+        ub.session.commit()
+        flash(_(u"Book has been added to shelf: %(sname)s", sname=shelf.name), category="success")
+        return redirect(request.environ["HTTP_REFERER"])
+    else:
+        app.logger.info("User is not allowed to edit public shelfs" )
+        return redirect(url_for('index'))
 
 
 @app.route("/shelf/remove/<int:shelf_id>/<int:book_id>")
 @login_required
 def remove_from_shelf(shelf_id, book_id):
     shelf = ub.session.query(ub.Shelf).filter(ub.Shelf.id == shelf_id).first()
-    if not shelf.is_public and not shelf.user_id == int(current_user.id):
-        flash("Sorry you are not allowed to remove a book from this shelf: %s" % shelf.name)
+    if not shelf.is_public and not shelf.user_id == int(current_user.id) \
+            or (shelf.is_public and current_user.role_edit_shelfs()):
+        app.logger.info("Sorry you are not allowed to remove a book from this shelf: %s" % shelf.name)
         return redirect(url_for('index'))
 
     book_shelf = ub.session.query(ub.BookShelf).filter(ub.BookShelf.shelf == shelf_id,
                                                        ub.BookShelf.book_id == book_id).first()
-
-    # rem = ub.BookShelf(shelf=shelf.id, book_id=book_id)
     ub.session.delete(book_shelf)
     ub.session.commit()
-
     flash(_(u"Book has been removed from shelf: %(sname)s", sname=shelf.name), category="success")
-
     return redirect(request.environ["HTTP_REFERER"])
 
 
@@ -1438,7 +1814,7 @@ def create_shelf():
                 ub.session.add(shelf)
                 ub.session.commit()
                 flash(_(u"Shelf %(title)s created", title=to_save["title"]), category="success")
-            except:
+            except Exception as e:
                 flash(_(u"There was an error"), category="error")
         return render_title_template('shelf_edit.html', shelf=shelf, title=_(u"create a shelf"))
     else:
@@ -1466,7 +1842,7 @@ def edit_shelf(shelf_id):
             try:
                 ub.session.commit()
                 flash(_(u"Shelf %(title)s changed", title=to_save["title"]), category="success")
-            except:
+            except Exception as e:
                 flash(_(u"There was an error"), category="error")
         return render_title_template('shelf_edit.html', shelf=shelf, title=_(u"Edit a shelf"))
     else:
@@ -1477,10 +1853,12 @@ def edit_shelf(shelf_id):
 @login_required
 def delete_shelf(shelf_id):
     cur_shelf = ub.session.query(ub.Shelf).filter(ub.Shelf.id == shelf_id).first()
-    if current_user.role == ub.ROLE_ADMIN:
+    if current_user.role_admin():
         deleted = ub.session.query(ub.Shelf).filter(ub.Shelf.id == shelf_id).delete()
     else:
-        deleted = ub.session.query(ub.Shelf).filter(ub.or_(ub.and_(ub.Shelf.user_id == int(current_user.id),
+        if not cur_shelf.is_public and not cur_shelf.user_id == int(current_user.id) \
+                or (cur_shelf.is_public and current_user.role_edit_shelfs()):
+            deleted = ub.session.query(ub.Shelf).filter(ub.or_(ub.and_(ub.Shelf.user_id == int(current_user.id),
                                                                    ub.Shelf.id == shelf_id),
                                                            ub.and_(ub.Shelf.is_public == 1,
                                                                    ub.Shelf.id == shelf_id))).delete()
@@ -1488,7 +1866,7 @@ def delete_shelf(shelf_id):
     if deleted:
         ub.session.query(ub.BookShelf).filter(ub.BookShelf.shelf == shelf_id).delete()
         ub.session.commit()
-        flash(_(u"successfully deleted shelf %(name)s", name=cur_shelf.name, category="success"))
+        app.logger.info(_(u"successfully deleted shelf %(name)s", name=cur_shelf.name, category="success"))
     return redirect(url_for('index'))
 
 
@@ -1554,7 +1932,7 @@ def profile():
         try:
             cur_l = LC.parse(lang.lang_code)
             lang.name = cur_l.get_language_name(get_locale())
-        except:
+        except Exception as e:
             lang.name = _(isoLanguages.get(part3=lang.lang_code).name)
     translations = babel.list_translations() + [LC('en')]
     for book in content.downloads:
@@ -1595,6 +1973,8 @@ def profile():
             content.sidebar_view += ub.SIDEBAR_BEST_RATED
         if "show_author" in to_save:
             content.sidebar_view += ub.SIDEBAR_AUTHOR
+        if "show_read_and_unread" in to_save:
+            content.sidebar_view += ub.SIDEBAR_READ_AND_UNREAD
         if "show_detail_random" in to_save:
             content.sidebar_view += ub.DETAIL_RANDOM
         if "default_language" in to_save:
@@ -1648,12 +2028,43 @@ def configuration_helper(origin):
             if content.config_calibre_dir != to_save["config_calibre_dir"]:
                 content.config_calibre_dir = to_save["config_calibre_dir"]
                 db_change = True
+        ##Google drive setup
+        create_new_yaml=False
+        if "config_google_drive_client_id" in to_save:
+            if content.config_google_drive_client_id != to_save["config_google_drive_client_id"]:
+                content.config_google_drive_client_id = to_save["config_google_drive_client_id"]
+                create_new_yaml=True
+        if "config_google_drive_client_secret" in to_save:
+            if content.config_google_drive_client_secret != to_save["config_google_drive_client_secret"]:
+                content.config_google_drive_client_secret = to_save["config_google_drive_client_secret"]
+                create_new_yaml=True
+        if "config_google_drive_calibre_url_base" in to_save:
+            if content.config_google_drive_calibre_url_base != to_save["config_google_drive_calibre_url_base"]:
+                content.config_google_drive_calibre_url_base = to_save["config_google_drive_calibre_url_base"]
+                create_new_yaml=True
+        if ("config_use_google_drive" in to_save and not content.config_use_google_drive) or ("config_use_google_drive" not in to_save and content.config_use_google_drive):
+            content.config_use_google_drive = "config_use_google_drive" in to_save
+            db_change = True
+            if not content.config_use_google_drive:
+                create_new_yaml=False
+        if create_new_yaml:
+            with open('settings.yaml', 'w') as f:
+                with open('gdrive_template.yaml' ,'r') as t:
+                    f.write(t.read() % {'client_id' : content.config_google_drive_client_id, 'client_secret' : content.config_google_drive_client_secret,
+                     "redirect_uri" : content.config_google_drive_calibre_url_base + 'gdrive/callback'})
+        if "config_google_drive_folder" in to_save:
+            if content.config_google_drive_folder != to_save["config_google_drive_folder"]:
+                content.config_google_drive_folder = to_save["config_google_drive_folder"]
+                db_change = True
+        ##
         if "config_port" in to_save:
             if content.config_port != int(to_save["config_port"]):
                 content.config_port = int(to_save["config_port"])
                 reboot_required = True
         if "config_calibre_web_title" in to_save:
             content.config_calibre_web_title = to_save["config_calibre_web_title"]
+        if "config_columns_to_ignore" in to_save:
+            content.config_columns_to_ignore = to_save["config_columns_to_ignore"]
         if "config_title_regex" in to_save:
             if content.config_title_regex != to_save["config_title_regex"]:
                 content.config_title_regex = to_save["config_title_regex"]
@@ -1685,7 +2096,11 @@ def configuration_helper(origin):
             content.config_default_role = content.config_default_role + ub.ROLE_EDIT
         if "passwd_role" in to_save:
             content.config_default_role = content.config_default_role + ub.ROLE_PASSWD
+        if "passwd_role" in to_save:
+            content.config_default_role = content.config_default_role + ub.ROLE_EDIT_SHELFS
         try:
+            if content.config_use_google_drive and is_gdrive_ready() and not os.path.exists(config.config_calibre_dir + "/metadata.db"):
+                gdriveutils.downloadFile(Gdrive.Instance().drive, None, "metadata.db", config.config_calibre_dir + "/metadata.db")
             if db_change:
                 if config.db_configured:
                     db.session.close()
@@ -1697,13 +2112,13 @@ def configuration_helper(origin):
             logging.getLogger("book_formats").setLevel(config.config_log_level)
         except e:
             flash(e, category="error")
-            return render_title_template("config_edit.html", content=config, origin=origin,
+            return render_title_template("config_edit.html", content=config, origin=origin, gdrive=gdrive_support,
                                          title=_(u"Basic Configuration"))
         if db_change:
             reload(db)
             if not db.setup_db():
                 flash(_(u'DB location is not valid, please enter correct path'), category="error")
-                return render_title_template("config_edit.html", content=config, origin=origin,
+                return render_title_template("config_edit.html", content=config, origin=origin, gdrive=gdrive_support,
                                              title=_(u"Basic Configuration"))
         if reboot_required:
             # db.engine.dispose() # ToDo verify correct
@@ -1717,6 +2132,7 @@ def configuration_helper(origin):
         if origin:
             success = True
     return render_title_template("config_edit.html", origin=origin, success=success, content=config,
+                                 show_authenticate_google_drive=not is_gdrive_ready(), gdrive=gdrive_support,
                                  title=_(u"Basic Configuration"))
 
 
@@ -1730,7 +2146,7 @@ def new_user():
         try:
             cur_l = LC.parse(lang.lang_code)
             lang.name = cur_l.get_language_name(get_locale())
-        except:
+        except Exception as e:
             lang.name = _(isoLanguages.get(part3=lang.lang_code).name)
     translations = [LC('en')] + babel.list_translations()
     if request.method == "POST":
@@ -1756,6 +2172,8 @@ def new_user():
             content.sidebar_view += ub.SIDEBAR_CATEGORY
         if "show_hot" in to_save:
             content.sidebar_view += ub.SIDEBAR_HOT
+        if "show_read_and_unread" in to_save:
+            content.sidebar_view += ub.SIDEBAR_READ_AND_UNREAD
         if "show_best_rated" in to_save:
             content.sidebar_view += ub.SIDEBAR_BEST_RATED
         if "show_author" in to_save:
@@ -1773,6 +2191,8 @@ def new_user():
             content.role = content.role + ub.ROLE_EDIT
         if "passwd_role" in to_save:
             content.role = content.role + ub.ROLE_PASSWD
+        if "edit_shelf_role" in to_save:
+            content.role = content.role + ub.ROLE_EDIT_SHELFS
         try:
             ub.session.add(content)
             ub.session.commit()
@@ -1806,12 +2226,15 @@ def edit_mailsettings():
         except e:
             flash(e, category="error")
         if "test" in to_save and to_save["test"]:
-            result = helper.send_test_mail(current_user.kindle_mail)
-            if result is None:
-                flash(_(u"Test E-Mail successfully send to %(kindlemail)s", kindlemail=current_user.kindle_mail),
-                      category="success")
+            if current_user.kindle_mail:
+                result = helper.send_test_mail(current_user.kindle_mail)
+                if result is None:
+                    flash(_(u"Test E-Mail successfully send to %(kindlemail)s", kindlemail=current_user.kindle_mail),
+                          category="success")
+                else:
+                    flash(_(u"There was an error sending the Test E-Mail: %(res)s", res=result), category="error")
             else:
-                flash(_(u"There was an error sending the Test E-Mail: %(res)s", res=result), category="error")
+                flash(_(u"Please configure your kindle email address first..."), category="error")
         else:
             flash(_(u"E-Mail settings updated"), category="success")
     return render_title_template("email_edit.html", content=content, title=_(u"Edit mail settings"))
@@ -1828,7 +2251,7 @@ def edit_user(user_id):
         try:
             cur_l = LC.parse(lang.lang_code)
             lang.name = cur_l.get_language_name(get_locale())
-        except:
+        except Exception as e:
             lang.name = _(isoLanguages.get(part3=lang.lang_code).name)
     translations = babel.list_translations() + [LC('en')]
     for book in content.downloads:
@@ -1873,6 +2296,11 @@ def edit_user(user_id):
             elif "passwd_role" not in to_save and content.role_passwd():
                 content.role = content.role - ub.ROLE_PASSWD
 
+            if "edit_shelf_role" in to_save and not content.role_edit_shelfs():
+                content.role = content.role + ub.ROLE_EDIT_SHELFS
+            elif "edit_shelf_role" not in to_save and content.role_edit_shelfs():
+                content.role = content.role - ub.ROLE_EDIT_SHELFS
+
             if "show_random" in to_save and not content.show_random_books():
                 content.sidebar_view += ub.SIDEBAR_RANDOM
             elif "show_random" not in to_save and content.show_random_books():
@@ -1902,6 +2330,11 @@ def edit_user(user_id):
                 content.sidebar_view += ub.SIDEBAR_BEST_RATED
             elif "show_best_rated" not in to_save and content.show_best_rated_books():
                 content.sidebar_view -= ub.SIDEBAR_BEST_RATED
+
+            if "show_read_and_unread" in to_save and not content.show_read_and_unread():
+                content.sidebar_view += ub.SIDEBAR_READ_AND_UNREAD
+            elif "show_read_and_unread" not in to_save and content.show_read_and_unread():
+                content.sidebar_view -= ub.SIDEBAR_READ_AND_UNREAD
 
             if "show_author" in to_save and not content.show_author():
                 content.sidebar_view += ub.SIDEBAR_AUTHOR
@@ -1950,7 +2383,7 @@ def edit_book(book_id):
             try:
                 book.languages[index].language_name = LC.parse(book.languages[index].lang_code).get_language_name(
                     get_locale())
-            except:
+            except Exception as e:
                 book.languages[index].language_name = _(isoLanguages.get(part3=book.languages[index].lang_code).name)
         for author in book.authors:
             author_names.append(author.name)
@@ -1971,9 +2404,17 @@ def edit_book(book_id):
 
             if to_save["cover_url"] and os.path.splitext(to_save["cover_url"])[1].lower() == ".jpg":
                 img = requests.get(to_save["cover_url"])
-                f = open(os.path.join(config.config_calibre_dir, book.path, "cover.jpg"), "wb")
-                f.write(img.content)
-                f.close()
+                if config.config_use_google_drive:
+                    tmpDir=tempfile.gettempdir()
+                    f = open(os.path.join(tmpDir, "uploaded_cover.jpg"), "wb")
+                    f.write(img.content)
+                    f.close()
+                    gdriveutils.uploadFileToEbooksFolder(Gdrive.Instance().drive, os.path.join(book.path, 'cover.jpg'), os.path.join(tmpDir, f.name))
+                else:
+                    f = open(os.path.join(config.config_calibre_dir, book.path, "cover.jpg"), "wb")
+                    f.write(img.content)
+                    f.close()
+                book.has_cover=1
 
             if book.series_index != to_save["series_index"]:
                 book.series_index = to_save["series_index"]
@@ -2000,7 +2441,7 @@ def edit_book(book_id):
             for lang in languages:
                 try:
                     lang.name = LC.parse(lang.lang_code).get_language_name(get_locale()).lower()
-                except:
+                except Exception as e:
                     lang.name = _(isoLanguages.get(part3=lang.lang_code).name).lower()
                 for inp_lang in input_languages:
                     if inp_lang == lang.name:
@@ -2130,7 +2571,12 @@ def edit_book(book_id):
             for author in book.authors:
                 author_names.append(author.name)
             for b in edited_books_id:
-                helper.update_dir_stucture(b, config.config_calibre_dir)
+                if config.config_use_google_drive:
+                    helper.update_dir_structure_gdrive(b)
+                else:
+                    helper.update_dir_stucture(b, config.config_calibre_dir)
+            if config.config_use_google_drive:
+                updateGdriveCalibreFromLocal()
             if "detail_view" in to_save:
                 return redirect(url_for('show_book', id=book.id))
             else:
@@ -2159,7 +2605,7 @@ def upload():
             file_ext = file.filename.rsplit('.', 1)[-1].lower()
             if file_ext not in ALLOWED_EXTENSIONS:
                 flash(
-                    _('File extension "%s" is not allowed to be uploaded to this server' % 
+                    _('File extension "%s" is not allowed to be uploaded to this server' %
                     file_ext),
                     category="error"
                 )
@@ -2186,12 +2632,12 @@ def upload():
                 return redirect(url_for('index'))
         try:
             copyfile(meta.file_path, saved_filename)
-        except OSError, e:
+        except OSError as e:
             flash(_(u"Failed to store file %s (Permission denied)." % saved_filename), category="error")
             return redirect(url_for('index'))
         try:
             os.unlink(meta.file_path)
-        except OSError, e:
+        except OSError as e:
             flash(_(u"Failed to delete file %s (Permission denied)." % meta.file_path), category="warning")
 
         file_size = os.path.getsize(saved_filename)
@@ -2209,19 +2655,44 @@ def upload():
         else:
             db_author = db.Authors(author, helper.get_sorted_author(author), "") 
             db.session.add(db_author)
+
+        #add language actually one value in list
+        input_language = meta.languages
+        db_language = None
+        if input_language != "":
+            input_language = isoLanguages.get(name=input_language).part3
+            hasLanguage = db.session.query(db.Languages).filter(db.Languages.lang_code == input_language).first()
+            if hasLanguage:
+                db_language = hasLanguage
+            else:
+                db_language = db.Languages(input_language)
+                db.session.add(db_language)
         # combine path and normalize path from windows systems
         path = os.path.join(author_dir, title_dir).replace('\\','/')
-        db_book = db.Books(title, "", db_author.sort, datetime.datetime.now(), datetime.datetime(101, 01, 01), 1,
-                           datetime.datetime.now(), path, has_cover, db_author, [])
+        db_book = db.Books(title, "", db_author.sort, datetime.datetime.now(), datetime.datetime(101, 1, 1), 1,
+                           datetime.datetime.now(), path, has_cover, db_author, [], db_language)
         db_book.authors.append(db_author)
+        if db_language is not None:
+            db_book.languages.append(db_language)
         db_data = db.Data(db_book, meta.extension.upper()[1:], file_size, data_name)
         db_book.data.append(db_data)
 
         db.session.add(db_book)
+        db.session.flush()# flush content get db_book.id avalible
+       #add comment
+        upload_comment = Markup(meta.description).unescape()
+        db_comment = None
+        if upload_comment != "":
+            db_comment = db.Comments(upload_comment, db_book.id)
+            db.session.add(db_comment)
         db.session.commit()
+        if db_language is not None: #display Full name instead of iso639.part3
+            db_book.languages[0].language_name = _(meta.languages)
         author_names = []
         for author in db_book.authors:
             author_names.append(author.name)
+        if config.config_use_google_drive:
+            updateGdriveCalibreFromLocal()
     cc = db.session.query(db.Custom_Columns).filter(db.Custom_Columns.datatype.notin_(db.cc_exceptions)).all()
     if current_user.role_edit() or current_user.role_admin():
         return render_title_template('book_edit.html', book=db_book, authors=author_names, cc=cc,
@@ -2229,3 +2700,9 @@ def upload():
     book_in_shelfs = []
     return render_title_template('detail.html', entry=db_book, cc=cc, title=db_book.title,
                                  books_shelfs=book_in_shelfs, )
+
+def start_gevent():
+    from gevent.wsgi import WSGIServer
+    global gevent_server
+    gevent_server = WSGIServer(('', ub.config.config_port), app)
+    gevent_server.serve_forever()
