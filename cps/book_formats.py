@@ -14,28 +14,28 @@ try:
     from wand.image import Image
     from wand import version as ImageVersion
     use_generic_pdf_cover = False
-except ImportError, e:
+except ImportError as e:
     logger.warning('cannot import Image, generating pdf covers for pdf uploads will not work: %s', e)
     use_generic_pdf_cover = True
 try:
     from PyPDF2 import PdfFileReader
     from PyPDF2 import __version__ as PyPdfVersion
     use_pdf_meta = True
-except ImportError, e:
+except ImportError as e:
     logger.warning('cannot import PyPDF2, extracting pdf metadata will not work: %s', e)
     use_pdf_meta = False
 
 try:
     import epub
     use_epub_meta = True
-except ImportError, e:
+except ImportError as e:
     logger.warning('cannot import epub, extracting epub metadata will not work: %s', e)
     use_epub_meta = False
 
 try:
     import fb2
     use_fb2_meta = True
-except ImportError, e:
+except ImportError as e:
     logger.warning('cannot import fb2, extracting fb2 metadata will not work: %s', e)
     use_fb2_meta = False
 
@@ -48,7 +48,7 @@ def process(tmp_file_path, original_file_name, original_file_extension):
             return epub.get_epub_info(tmp_file_path, original_file_name, original_file_extension)
         if ".FB2" == original_file_extension.upper() and use_fb2_meta is True:
             return fb2.get_fb2_info(tmp_file_path, original_file_extension)
-    except Exception, e:
+    except Exception as e:
         logger.warning('cannot parse metadata, using default: %s', e)
     return default_meta(tmp_file_path, original_file_name, original_file_extension)
 
@@ -63,7 +63,8 @@ def default_meta(tmp_file_path, original_file_name, original_file_extension):
         description="",
         tags="",
         series="",
-        series_id="")
+        series_id="",
+        languages="")
 
 
 def pdf_meta(tmp_file_path, original_file_name, original_file_extension):
@@ -91,7 +92,8 @@ def pdf_meta(tmp_file_path, original_file_name, original_file_extension):
         description=subject,
         tags="",
         series="",
-        series_id="")
+        series_id="",
+        languages="")
 
 
 def pdf_preview(tmp_file_path, tmp_dir):

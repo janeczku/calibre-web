@@ -7,11 +7,13 @@
       <label for="title">{{_('Title')}}</label>
       <input type="text" class="form-control" name="title" id="title" value="{{ shelf.name if shelf.name != None }}">
     </div>
-    <div class="checkbox">
-      <label>
-        <input type="checkbox" name="is_public" {% if shelf.is_public == 1 %}checked{% endif %}> {{_('should the shelf be public?')}}
-      </label>
-    </div>
+    {% if g.user.role_edit_shelfs() %}
+      <div class="checkbox">
+        <label>
+          <input type="checkbox" name="is_public" {% if shelf.is_public == 1 %}checked{% endif %}> {{_('should the shelf be public?')}}
+        </label>
+      </div>
+    {% endif %}
     <button type="submit" class="btn btn-default">{{_('Submit')}}</button>
     {% if shelf.id != None %}
       <a href="{{ url_for('show_shelf', shelf_id=shelf.id) }}" class="btn btn-default">{{_('Back')}}</a>
