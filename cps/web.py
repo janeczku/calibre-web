@@ -3453,4 +3453,3 @@ def start_gevent():
     global gevent_server
     gevent_server = WSGIServer(('', ub.config.config_port), app)
     gevent_server.serve_forever()
-    gevent_server.serve_forever()
