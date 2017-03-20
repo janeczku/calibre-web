@@ -43,17 +43,21 @@ import web
 
 try:
     import unidecode
-    use_unidecode=True
+    use_unidecode = True
 except Exception as e:
-    use_unidecode=False
+    use_unidecode = False
 
 # Global variables
 global_task = None
 updater_thread = None
 
+
 def update_download(book_id, user_id):
-    check = ub.session.query(ub.Downloads).filter(ub.Downloads.user_id == user_id).filter(ub.Downloads.book_id ==
-                                                                                          book_id).first()
+    check = ub.session \
+        .query(ub.Downloads) \
+        .filter(ub.Downloads.user_id == user_id) \
+        .filter(ub.Downloads.book_id == book_id) \
+        .first()
 
     if not check:
         new_download = ub.Downloads(user_id=user_id, book_id=book_id)
@@ -62,25 +66,36 @@ def update_download(book_id, user_id):
 
 
 def make_mobi(book_id, calibrepath):
-    vendorpath = os.path.join(os.path.normpath(os.path.dirname(os.path.realpath(__file__)) +
-                                               os.sep + "../vendor" + os.sep))
+    vendorpath = os.path.join(
+        os.path.normpath(
+            os.path.dirname(
+                os.path.realpath(__file__))
+            + os.sep + "../vendor" + os.sep))
+
     if sys.platform == "win32":
         kindlegen = os.path.join(vendorpath, u"kindlegen.exe")
     else:
         kindlegen = os.path.join(vendorpath, u"kindlegen")
     if not os.path.exists(kindlegen):
-        app.logger.error("make_mobi: kindlegen binary not found in: %s" % kindlegen)
+        app.logger.error(
+            "make_mobi: kindlegen binary not found in: %s" % kindlegen)
         return None
     book = db.session.query(db.Books).filter(db.Books.id == book_id).first()
-    data = db.session.query(db.Data).filter(db.Data.book == book.id).filter(db.Data.format == 'EPUB').first()
+    data = db.session.query(db.Data).filter(
+        db.Data.book == book.id).filter(db.Data.format == 'EPUB').first()
     if not data:
-        app.logger.error("make_mobi: epub format not found for book id: %d" % book_id)
+        app.logger.error(
+            "make_mobi: epub format not found for book id: %d" % book_id)
         return None
 
     file_path = os.path.join(calibrepath, book.path, data.name)
     if os.path.exists(file_path + u".epub"):
-        p = subprocess.Popen((kindlegen + " \"" + file_path + u".epub\" ").encode(sys.getfilesystemencoding()),
-                             shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE)
+        p = subprocess.Popen((kindlegen + " \"" + file_path + u".epub\" ")
+                             .encode(sys.getfilesystemencoding()),
+                             shell=True,
+                             stdout=subprocess.PIPE,
+                             stderr=subprocess.PIPE,
+                             stdin=subprocess.PIPE)
         # Poll process for new output until finished
         while True:
             nextline = p.stdout.readline()
@@ -92,15 +107,16 @@ def make_mobi(book_id, calibrepath):
         check = p.returncode
         if not check or check < 2:
             book.data.append(db.Data(
-                    name=book.data[0].name,
-                    format="MOBI",
-                    book=book.id,
-                    uncompressed_size=os.path.getsize(file_path + ".mobi")
-                ))
+                name=book.data[0].name,
+                format="MOBI",
+                book=book.id,
+                uncompressed_size=os.path.getsize(file_path + ".mobi")
+            ))
             db.session.commit()
             return file_path + ".mobi"
         else:
-            app.logger.error("make_mobi: kindlegen failed with error while converting book")
+            app.logger.error(
+                "make_mobi: kindlegen failed with error while converting book")
             return None
     else:
         app.logger.error("make_mobie: epub not found: %s.epub" % file_path)
@@ -144,9 +160,11 @@ def send_raw_email(kindle_mail, msg):
         smtplib.stderr = StderrLogger()
 
         if use_ssl == 2:
-            mailserver = smtplib.SMTP_SSL(settings["mail_server"], settings["mail_port"], timeout)
+            mailserver = smtplib.SMTP_SSL(
+                settings["mail_server"], settings["mail_port"], timeout)
         else:
-            mailserver = smtplib.SMTP(settings["mail_server"], settings["mail_port"], timeout)
+            mailserver = smtplib.SMTP(
+                settings["mail_server"], settings["mail_port"], timeout)
         mailserver.set_debuglevel(1)
 
         if use_ssl == 1:
@@ -159,7 +177,9 @@ def send_raw_email(kindle_mail, msg):
 
         smtplib.stderr = org_stderr
 
-    except (socket.error, smtplib.SMTPRecipientsRefused, smtplib.SMTPException) as e:
+    except (socket.error,
+            smtplib.SMTPRecipientsRefused,
+            smtplib.SMTPException) as e:
         app.logger.error(traceback.print_exc())
         return _("Failed to send mail: %s" % str(e))
 
@@ -191,11 +211,14 @@ def send_mail(book_id, kindle_mail, calibrepath):
 
     for entry in data:
         if entry.format == "MOBI":
-            formats["mobi"] = os.path.join(calibrepath, book.path, entry.name + ".mobi")
+            formats["mobi"] = os.path.join(
+                calibrepath, book.path, entry.name + ".mobi")
         if entry.format == "EPUB":
-            formats["epub"] = os.path.join(calibrepath, book.path, entry.name + ".epub")
+            formats["epub"] = os.path.join(
+                calibrepath, book.path, entry.name + ".epub")
         if entry.format == "PDF":
-            formats["pdf"] = os.path.join(calibrepath, book.path, entry.name + ".pdf")
+            formats["pdf"] = os.path.join(
+                calibrepath, book.path, entry.name + ".pdf")
 
     if len(formats) == 0:
         return _("Could not find any formats suitable for sending by email")
@@ -233,7 +256,8 @@ def get_attachment(file_path):
         return attachment
     except IOError:
         traceback.print_exc()
-        app.logger.error = (u'The requested file could not be read. Maybe wrong permissions?')
+        app.logger.error = (
+            u'The requested file could not be read. Maybe wrong permissions?')
         return None
 
 
@@ -242,16 +266,16 @@ def get_valid_filename(value, replace_whitespace=True):
     Returns the given string converted to a string that can be used for a clean
     filename. Limits num characters to 128 max.
     """
-    if value[-1:] ==u'.':
+    if value[-1:] == u'.':
         value = value[:-1]+u'_'
     if use_unidecode:
-        value=(unidecode.unidecode(value)).strip()
+        value = (unidecode.unidecode(value)).strip()
     else:
-        value=value.replace(u'§',u'SS')
-        value=value.replace(u'ß',u'ss')
+        value = value.replace(u'§', u'SS')
+        value = value.replace(u'ß', u'ss')
         value = unicodedata.normalize('NFKD', value)
         re_slugify = re.compile('[\W\s-]', re.UNICODE)
-        if type(value) is str: #Python3 str, Python2 unicode
+        if type(value) is str:  # Python3 str, Python2 unicode
             value = re_slugify.sub('', value).strip()
         else:
             value = unicode(re_slugify.sub('', value).strip())
@@ -262,11 +286,12 @@ def get_valid_filename(value, replace_whitespace=True):
     value = value[:128]
     return value
 
+
 def get_sorted_author(value):
-    regexes = ["^(JR|SR)\.?$","^I{1,3}\.?$","^IV\.?$"]
+    regexes = ["^(JR|SR)\.?$", "^I{1,3}\.?$", "^IV\.?$"]
     combined = "(" + ")|(".join(regexes) + ")"
     value = value.split(" ")
-    if re.match(combined,value[-1].upper()):
+    if re.match(combined, value[-1].upper()):
         value2 = value[-2] + ", " + " ".join(value[:-2]) + " " + value[-1]
     else:
         value2 = value[-1] + ", " + " ".join(value[:-1])
@@ -274,84 +299,98 @@ def get_sorted_author(value):
 
 
 def update_dir_stucture(book_id, calibrepath):
-    db.session.connection().connection.connection.create_function("title_sort", 1, db.title_sort)
+    db.session.connection().connection.connection.create_function(
+        "title_sort", 1, db.title_sort)
     book = db.session.query(db.Books).filter(db.Books.id == book_id).first()
-    path = os.path.join(calibrepath, book.path)#.replace('/',os.path.sep)).replace('\\',os.path.sep)
-    
+    # .replace('/',os.path.sep)).replace('\\',os.path.sep)
+    path = os.path.join(calibrepath, book.path)
+
     authordir = book.path.split('/')[0]
     new_authordir = get_valid_filename(book.authors[0].name)
     titledir = book.path.split('/')[1]
     new_titledir = get_valid_filename(book.title) + " (" + str(book_id) + ")"
-    
+
     if titledir != new_titledir:
         new_title_path = os.path.join(os.path.dirname(path), new_titledir)
         os.rename(path, new_title_path)
         path = new_title_path
         book.path = book.path.split('/')[0] + '/' + new_titledir
-    
+
     if authordir != new_authordir:
-        new_author_path = os.path.join(os.path.join(calibrepath, new_authordir), os.path.basename(path))
+        new_author_path = os.path.join(
+            os.path.join(calibrepath, new_authordir), os.path.basename(path))
         os.renames(path, new_author_path)
         book.path = new_authordir + '/' + book.path.split('/')[1]
     db.session.commit()
 
+
 def update_dir_structure_gdrive(book_id):
-    db.session.connection().connection.connection.create_function("title_sort", 1, db.title_sort)
+    db.session.connection().connection.connection.create_function(
+        "title_sort", 1, db.title_sort)
     book = db.session.query(db.Books).filter(db.Books.id == book_id).first()
-    
+
     authordir = book.path.split('/')[0]
     new_authordir = get_valid_filename(book.authors[0].name)
     titledir = book.path.split('/')[1]
     new_titledir = get_valid_filename(book.title) + " (" + str(book_id) + ")"
-    
+
     if titledir != new_titledir:
-        print (titledir)
-        gFile=gd.getFileFromEbooksFolder(web.Gdrive.Instance().drive,os.path.dirname(book.path),titledir)
-        gFile['title']= new_titledir
+        print(titledir)
+        gFile = gd.getFileFromEbooksFolder(
+            web.Gdrive.Instance().drive, os.path.dirname(book.path), titledir)
+        gFile['title'] = new_titledir
         gFile.Upload()
         book.path = book.path.split('/')[0] + '/' + new_titledir
-    
+
     if authordir != new_authordir:
-        gFile=gd.getFileFromEbooksFolder(web.Gdrive.Instance().drive,None,authordir)
-        gFile['title']= new_authordir
+        gFile = gd.getFileFromEbooksFolder(
+            web.Gdrive.Instance().drive, None, authordir)
+        gFile['title'] = new_authordir
         gFile.Upload()
         book.path = new_authordir + '/' + book.path.split('/')[1]
 
     db.session.commit()
+
 
 class Updater(threading.Thread):
 
     def __init__(self):
         threading.Thread.__init__(self)
-        self.status=0
+        self.status = 0
 
     def run(self):
         global global_task
-        self.status=1
-        r = requests.get('https://api.github.com/repos/janeczku/calibre-web/zipball/master', stream=True)
-        fname = re.findall("filename=(.+)", r.headers['content-disposition'])[0]
-        self.status=2
+        self.status = 1
+        r = requests.get(
+            'https://api.github.com/repos/janeczku/calibre-web/zipball/master',
+            stream=True)
+        fname = re.findall(
+            "filename=(.+)", r.headers['content-disposition'])[0]
+        self.status = 2
         z = zipfile.ZipFile(StringIO(r.content))
-        self.status=3
+        self.status = 3
         tmp_dir = gettempdir()
         z.extractall(tmp_dir)
-        self.status=4
-        self.update_source(os.path.join(tmp_dir,os.path.splitext(fname)[0]),ub.config.get_main_dir)
-        self.status=5
+        self.status = 4
+        self.update_source(
+            os.path.join(tmp_dir,
+                         os.path.splitext(fname)[0]),
+                         ub.config.get_main_dir)
+        self.status = 5
         global_task = 0
         db.session.close()
         db.engine.dispose()
         ub.session.close()
         ub.engine.dispose()
-        self.status=6
+        self.status = 6
 
         if web.gevent_server:
             web.gevent_server.stop()
         else:
-            # stop tornado server            
+            # stop tornado server
             server = IOLoop.instance()
             server.add_callback(server.stop)
-        self.status=7
+        self.status = 7
 
     def get_update_status(self):
         return self.status
@@ -394,7 +433,8 @@ class Updater(threading.Thread):
         if sys.platform == "win32" or sys.platform == "darwin":
             change_permissions = False
         else:
-            logging.getLogger('cps.web').debug('Update on OS-System : ' + sys.platform)
+            logging.getLogger('cps.web').debug(
+                'Update on OS-System : ' + sys.platform)
             new_permissions = os.stat(root_dst_dir)
             # print new_permissions
         for src_dir, dirs, files in os.walk(root_src_dir):
@@ -403,41 +443,53 @@ class Updater(threading.Thread):
                 os.makedirs(dst_dir)
                 logging.getLogger('cps.web').debug('Create-Dir: '+dst_dir)
                 if change_permissions:
-                    # print('Permissions: User '+str(new_permissions.st_uid)+' Group '+str(new_permissions.st_uid))
-                    os.chown(dst_dir, new_permissions.st_uid, new_permissions.st_gid)
+                    # print('Permissions: User ' + str(new_permissions.st_uid)
+                    #       + ' Group ' + str(new_permissions.st_uid))
+                    os.chown(dst_dir,
+                             new_permissions.st_uid,
+                             new_permissions.st_gid)
             for file_ in files:
                 src_file = os.path.join(src_dir, file_)
                 dst_file = os.path.join(dst_dir, file_)
                 if os.path.exists(dst_file):
                     if change_permissions:
                         permission = os.stat(dst_file)
-                    logging.getLogger('cps.web').debug('Remove file before copy: '+dst_file)
+                    logging.getLogger('cps.web').debug(
+                        'Remove file before copy: '+dst_file)
                     os.remove(dst_file)
                 else:
                     if change_permissions:
                         permission = new_permissions
                 shutil.move(src_file, dst_dir)
-                logging.getLogger('cps.web').debug('Move File '+src_file+' to '+dst_dir)
+                logging.getLogger('cps.web').debug(
+                    'Move File '+src_file+' to '+dst_dir)
                 if change_permissions:
                     try:
-                        os.chown(dst_file, permission.st_uid, permission.st_uid)
-                        # print('Permissions: User '+str(new_permissions.st_uid)+' Group '+str(new_permissions.st_uid))
+                        os.chown(
+                            dst_file, permission.st_uid, permission.st_uid)
+                        # print('Permissions: User '
+                        #       + str(new_permissions.st_uid)
+                        #       + ' Group ' + str(new_permissions.st_uid))
                     except Exception as e:
                         e = sys.exc_info()
-                        logging.getLogger('cps.web').debug('Fail '+str(dst_file)+' error: '+str(e))
+                        logging.getLogger('cps.web').debug(
+                            'Fail '+str(dst_file)+' error: '+str(e))
         return
 
     def update_source(self, source, destination):
         # destination files
         old_list = list()
         exclude = (
-        'vendor' + os.sep + 'kindlegen.exe', 'vendor' + os.sep + 'kindlegen', os.sep + 'app.db',
-            os.sep + 'vendor',os.sep + 'calibre-web.log')
+            'vendor' + os.sep + 'kindlegen.exe', 'vendor' +
+            os.sep + 'kindlegen', os.sep + 'app.db',
+            os.sep + 'vendor', os.sep + 'calibre-web.log')
         for root, dirs, files in os.walk(destination, topdown=True):
             for name in files:
-                old_list.append(os.path.join(root, name).replace(destination, ''))
+                old_list.append(
+                    os.path.join(root, name).replace(destination, ''))
             for name in dirs:
-                old_list.append(os.path.join(root, name).replace(destination, ''))
+                old_list.append(
+                    os.path.join(root, name).replace(destination, ''))
         # source files
         new_list = list()
         for root, dirs, files in os.walk(source, topdown=True):
@@ -461,10 +513,11 @@ class Updater(threading.Thread):
                 shutil.rmtree(item_path)
             else:
                 try:
-                    logging.getLogger('cps.web').debug("Delete file " + item_path)
+                    logging.getLogger('cps.web').debug(
+                        "Delete file " + item_path)
                     log_from_thread("Delete file " + item_path)
                     os.remove(item_path)
                 except Exception as e:
-                    logging.getLogger('cps.web').debug("Could not remove:" + item_path)
+                    logging.getLogger('cps.web').debug(
+                        "Could not remove:" + item_path)
         shutil.rmtree(source, ignore_errors=True)
-

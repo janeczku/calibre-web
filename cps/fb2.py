@@ -2,12 +2,12 @@
 # -*- coding: utf-8 -*-
 
 from lxml import etree
-import os
 import uploader
 try:
     from io import StringIO
 except ImportError as e:
     import StringIO
+
 
 def get_fb2_info(tmp_file_path, original_file_extension):
 
@@ -19,7 +19,8 @@ def get_fb2_info(tmp_file_path, original_file_extension):
     fb2_file = open(tmp_file_path)
     tree = etree.fromstring(fb2_file.read())
 
-    authors = tree.xpath('/fb:FictionBook/fb:description/fb:title-info/fb:author', namespaces=ns)
+    authors = tree.xpath('/fb:FictionBook/fb:description'
+                         '/fb:title-info/fb:author', namespaces=ns)
 
     def get_author(element):
         last_name = element.xpath('fb:last-name/text()', namespaces=ns)
@@ -41,12 +42,15 @@ def get_fb2_info(tmp_file_path, original_file_extension):
 
     author = str(", ".join(map(get_author, authors)))
 
-    title = tree.xpath('/fb:FictionBook/fb:description/fb:title-info/fb:book-title/text()', namespaces=ns)
+    title = tree.xpath('/fb:FictionBook/fb:description'
+                       '/fb:title-info/fb:book-title/text()', namespaces=ns)
     if len(title):
         title = str(title[0])
     else:
         title = u''
-    description = tree.xpath('/fb:FictionBook/fb:description/fb:publish-info/fb:book-name/text()', namespaces=ns)
+    description = tree.xpath('/fb:FictionBook/fb:description'
+                             '/fb:publish-info/fb:book-name/text()',
+                             namespaces=ns)
     if len(description):
         description = str(description[0])
     else:

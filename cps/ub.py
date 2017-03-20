@@ -13,7 +13,12 @@ from flask_babel import gettext as _
 import json
 #from builtins import str
 
-dbpath = os.path.join(os.path.normpath(os.path.dirname(os.path.realpath(__file__)) + os.sep + ".." + os.sep), "app.db")
+dbpath = os.path.join(
+    os.path.normpath(
+        os.path.dirname(
+            os.path.realpath(__file__))
+        + os.sep + ".." + os.sep),
+    "app.db")
 engine = create_engine('sqlite:///{0}'.format(dbpath), echo=False)
 Base = declarative_base()
 
@@ -40,13 +45,11 @@ DEFAULT_PASS = "admin123"
 DEFAULT_PORT = int(os.environ.get("CALIBRE_PORT", 8083))
 
 
-
 DEVELOPMENT = False
 
 
-
-
 class UserBase:
+
     @staticmethod
     def is_authenticated(self):
         return True
@@ -59,7 +62,8 @@ class UserBase:
 
     def role_download(self):
         if self.role is not None:
-            return True if self.role & ROLE_DOWNLOAD == ROLE_DOWNLOAD else False
+            return True \
+                if self.role & ROLE_DOWNLOAD == ROLE_DOWNLOAD else False
         else:
             return False
 
@@ -83,13 +87,15 @@ class UserBase:
 
     def role_anonymous(self):
         if self.role is not None:
-            return True if self.role & ROLE_ANONYMOUS == ROLE_ANONYMOUS else False
+            return True \
+                if self.role & ROLE_ANONYMOUS == ROLE_ANONYMOUS else False
         else:
             return False
 
     def role_edit_shelfs(self):
         if self.role is not None:
-            return True if self.role & ROLE_EDIT_SHELFS == ROLE_EDIT_SHELFS else False
+            return True \
+                if self.role & ROLE_EDIT_SHELFS == ROLE_EDIT_SHELFS else False
         else:
             return False
 
@@ -107,55 +113,75 @@ class UserBase:
 
     def show_random_books(self):
         if self.sidebar_view is not None:
-            return True if self.sidebar_view & SIDEBAR_RANDOM == SIDEBAR_RANDOM else False
+            return True \
+                if self.sidebar_view & SIDEBAR_RANDOM == SIDEBAR_RANDOM \
+                else False
         else:
             return False
 
     def show_language(self):
         if self.sidebar_view is not None:
-            return True if self.sidebar_view & SIDEBAR_LANGUAGE == SIDEBAR_LANGUAGE else False
+            return True \
+                if self.sidebar_view & SIDEBAR_LANGUAGE == SIDEBAR_LANGUAGE \
+                else False
         else:
             return False
 
     def show_hot_books(self):
         if self.sidebar_view is not None:
-            return True if self.sidebar_view & SIDEBAR_HOT == SIDEBAR_HOT else False
+            return True \
+                if self.sidebar_view & SIDEBAR_HOT == SIDEBAR_HOT \
+                else False
         else:
             return False
 
     def show_series(self):
         if self.sidebar_view is not None:
-            return True if self.sidebar_view & SIDEBAR_SERIES == SIDEBAR_SERIES else False
+            return True \
+                if self.sidebar_view & SIDEBAR_SERIES == SIDEBAR_SERIES \
+                else False
         else:
             return False
 
     def show_category(self):
         if self.sidebar_view is not None:
-            return True if self.sidebar_view & SIDEBAR_CATEGORY == SIDEBAR_CATEGORY else False
+            return True \
+                if self.sidebar_view & SIDEBAR_CATEGORY == SIDEBAR_CATEGORY \
+                else False
         else:
             return False
 
     def show_author(self):
         if self.sidebar_view is not None:
-            return True if self.sidebar_view & SIDEBAR_AUTHOR == SIDEBAR_AUTHOR else False
+            return True \
+                if self.sidebar_view & SIDEBAR_AUTHOR == SIDEBAR_AUTHOR \
+                else False
         else:
             return False
 
     def show_best_rated_books(self):
         if self.sidebar_view is not None:
-            return True if self.sidebar_view & SIDEBAR_BEST_RATED == SIDEBAR_BEST_RATED else False
+            return True \
+                if self.sidebar_view \
+                & SIDEBAR_BEST_RATED == SIDEBAR_BEST_RATED \
+                else False
         else:
             return False
 
     def show_read_and_unread(self):
         if self.sidebar_view is not None:
-            return True if self.sidebar_view & SIDEBAR_READ_AND_UNREAD == SIDEBAR_READ_AND_UNREAD else False
+            return True \
+                if self.sidebar_view \
+                & SIDEBAR_READ_AND_UNREAD == SIDEBAR_READ_AND_UNREAD \
+                else False
         else:
             return False
 
     def show_detail_random(self):
         if self.sidebar_view is not None:
-            return True if self.sidebar_view & DETAIL_RANDOM == DETAIL_RANDOM else False
+            return True \
+                if self.sidebar_view & DETAIL_RANDOM == DETAIL_RANDOM \
+                else False
         else:
             return False
 
@@ -163,7 +189,8 @@ class UserBase:
         return '<User %r>' % self.nickname
 
 
-# Baseclass for Users in Calibre-web, settings which are depending on certain users are stored here. It is derived from
+# Baseclass for Users in Calibre-web, settings which are depending on certain
+# users are stored here. It is derived from
 # User Base (all access methods are declared there)
 class User(UserBase, Base):
     __tablename__ = 'user'
@@ -181,14 +208,20 @@ class User(UserBase, Base):
     default_language = Column(String(3), default="all")
 
 
-# Class for anonymous user is derived from User base and complets overrides methods and properties for the
+# Class for anonymous user is derived from User base
+# and complets overrides methods and properties for the
 # anonymous user
 class Anonymous(AnonymousUserMixin, UserBase):
+
     def __init__(self):
         self.loadSettings()
 
     def loadSettings(self):
-        data = session.query(User).filter(User.role.op('&')(ROLE_ANONYMOUS) == ROLE_ANONYMOUS).first()
+        data = session \
+            .query(User) \
+            .filter(
+                User.role.op('&')(ROLE_ANONYMOUS) == ROLE_ANONYMOUS) \
+            .first()
         settings = session.query(Settings).first()
         self.nickname = data.nickname
         self.role = data.role
@@ -220,7 +253,8 @@ class Shelf(Base):
         return '<Shelf %r>' % self.name
 
 
-# Baseclass representing Relationship between books and Shelfs in Calibre-web in app.db (N:M)
+# Baseclass representing Relationship between books
+# and Shelfs in Calibre-web in app.db (N:M)
 class BookShelf(Base):
     __tablename__ = 'book_shelf_link'
 
@@ -232,12 +266,13 @@ class BookShelf(Base):
     def __repr__(self):
         return '<Book %r>' % self.id
 
+
 class ReadBook(Base):
     __tablename__ = 'book_read_link'
 
-    id=Column(Integer, primary_key=True)
+    id = Column(Integer, primary_key=True)
     book_id = Column(Integer, unique=False)
-    user_id =Column(Integer, ForeignKey('user.id'), unique=False)
+    user_id = Column(Integer, ForeignKey('user.id'), unique=False)
     is_read = Column(Boolean, unique=False)
 
 
@@ -253,7 +288,8 @@ class Downloads(Base):
         return '<Download %r' % self.book_id
 
 
-# Baseclass for representing settings in app.db with email server settings and Calibre database settings
+# Baseclass for representing settings in app.db with email server settings
+# and Calibre database settings
 # (application settings)
 class Settings(Base):
     __tablename__ = 'settings'
@@ -270,7 +306,10 @@ class Settings(Base):
     config_calibre_web_title = Column(String, default=u'Calibre-web')
     config_books_per_page = Column(Integer, default=60)
     config_random_books = Column(Integer, default=4)
-    config_title_regex = Column(String, default=u'^(A|The|An|Der|Die|Das|Den|Ein|Eine|Einen|Dem|Des|Einem|Eines)\s+')
+    config_title_regex = Column(
+        String,
+        default=u'^(A|The|An|Der|Die|Das|Den'
+                '|Ein|Eine|Einen|Dem|Des|Einem|Eines)\s+')
     config_log_level = Column(SmallInteger, default=logging.INFO)
     config_uploading = Column(SmallInteger, default=0)
     config_anonbrowse = Column(SmallInteger, default=0)
@@ -291,6 +330,7 @@ class Settings(Base):
 
 # Class holds all application specific settings in calibre-web
 class Config:
+
     def __init__(self):
         self.config_main_dir = os.path.join(os.path.normpath(os.path.dirname(
             os.path.realpath(__file__)) + os.sep + ".." + os.sep))
@@ -313,15 +353,21 @@ class Config:
         self.config_columns_to_ignore = data.config_columns_to_ignore
         self.config_use_google_drive = data.config_use_google_drive
         self.config_google_drive_client_id = data.config_google_drive_client_id
-        self.config_google_drive_client_secret = data.config_google_drive_client_secret
-        self.config_google_drive_calibre_url_base = data.config_google_drive_calibre_url_base
+        self.config_google_drive_client_secret = \
+            data.config_google_drive_client_secret
+        self.config_google_drive_calibre_url_base = \
+            data.config_google_drive_calibre_url_base
         self.config_google_drive_folder = data.config_google_drive_folder
         if data.config_google_drive_watch_changes_response:
-            self.config_google_drive_watch_changes_response = json.loads(data.config_google_drive_watch_changes_response)
+            self.config_google_drive_watch_changes_response = \
+                json.loads(data.config_google_drive_watch_changes_response)
         else:
-            self.config_google_drive_watch_changes_response=None
+            self.config_google_drive_watch_changes_response = None
         self.config_columns_to_ignore = data.config_columns_to_ignore
-        if self.config_calibre_dir is not None and (not self.config_use_google_drive or os.path.exists(self.config_calibre_dir + '/metadata.db')):
+        if self.config_calibre_dir is not None \
+                and (not self.config_use_google_drive
+                     or os.path.exists(
+                         self.config_calibre_dir + '/metadata.db')):
             self.db_configured = True
         else:
             self.db_configured = False
@@ -332,137 +378,206 @@ class Config:
 
     def role_admin(self):
         if self.config_default_role is not None:
-            return True if self.config_default_role & ROLE_ADMIN == ROLE_ADMIN else False
+            return True \
+                if self.config_default_role & ROLE_ADMIN == ROLE_ADMIN \
+                else False
         else:
             return False
 
     def role_download(self):
         if self.config_default_role is not None:
-            return True if self.config_default_role & ROLE_DOWNLOAD == ROLE_DOWNLOAD else False
+            return True \
+                if self.config_default_role & ROLE_DOWNLOAD == ROLE_DOWNLOAD \
+                else False
         else:
             return False
 
     def role_upload(self):
         if self.config_default_role is not None:
-            return True if self.config_default_role & ROLE_UPLOAD == ROLE_UPLOAD else False
+            return True \
+                if self.config_default_role & ROLE_UPLOAD == ROLE_UPLOAD \
+                else False
         else:
             return False
 
     def role_edit(self):
         if self.config_default_role is not None:
-            return True if self.config_default_role & ROLE_EDIT == ROLE_EDIT else False
+            return True \
+                if self.config_default_role & ROLE_EDIT == ROLE_EDIT \
+                else False
         else:
             return False
 
     def role_passwd(self):
         if self.config_default_role is not None:
-            return True if self.config_default_role & ROLE_PASSWD == ROLE_PASSWD else False
+            return True \
+                if self.config_default_role & ROLE_PASSWD == ROLE_PASSWD \
+                else False
         else:
             return False
 
     def role_edit_shelfs(self):
         if self.config_default_role is not None:
-            return True if self.config_default_role & ROLE_EDIT_SHELFS == ROLE_EDIT_SHELFS else False
+            return True \
+                if self.config_default_role \
+                & ROLE_EDIT_SHELFS == ROLE_EDIT_SHELFS \
+                else False
         else:
             return False
 
     def get_Log_Level(self):
-        ret_value=""
+        ret_value = ""
         if self.config_log_level == logging.INFO:
-            ret_value='INFO'
+            ret_value = 'INFO'
         elif self.config_log_level == logging.DEBUG:
-            ret_value='DEBUG'
+            ret_value = 'DEBUG'
         elif self.config_log_level == logging.WARNING:
-            ret_value='WARNING'
+            ret_value = 'WARNING'
         elif self.config_log_level == logging.ERROR:
-            ret_value='ERROR'
+            ret_value = 'ERROR'
         return ret_value
 
 
-# Migrate database to current version, has to be updated after every database change. Currently migration from
-# everywhere to curent should work. Migration is done by checking if relevant coloums are existing, and than adding
+# Migrate database to current version, has to be updated
+# after every database change. Currently migration from
+# everywhere to curent should work. Migration is done by
+# checking if relevant coloums are existing, and than adding
 # rows with SQL commands
 def migrate_Database():
     if not engine.dialect.has_table(engine.connect(), "book_read_link"):
-        ReadBook.__table__.create(bind = engine)
+        ReadBook.__table__.create(bind=engine)
 
     try:
         session.query(exists().where(User.locale)).scalar()
         session.commit()
-    except exc.OperationalError:  # Database is not compatible, some rows are missing
+    except exc.OperationalError:
+        # Database is not compatible, some rows are missing
         conn = engine.connect()
-        conn.execute("ALTER TABLE user ADD column locale String(2) DEFAULT 'en'")
-        conn.execute("ALTER TABLE user ADD column default_language String(3) DEFAULT 'all'")
+        conn.execute("ALTER TABLE user "
+                     "ADD column locale String(2) DEFAULT 'en'")
+        conn.execute("ALTER TABLE user "
+                     "ADD column default_language String(3) DEFAULT 'all'")
         session.commit()
     try:
         session.query(exists().where(Settings.config_calibre_dir)).scalar()
         session.commit()
-    except exc.OperationalError:  # Database is not compatible, some rows are missing
+    except exc.OperationalError:
+        # Database is not compatible, some rows are missing
         conn = engine.connect()
-        conn.execute("ALTER TABLE Settings ADD column `config_calibre_dir` String")
-        conn.execute("ALTER TABLE Settings ADD column `config_port` INTEGER DEFAULT 8083")
-        conn.execute("ALTER TABLE Settings ADD column `config_calibre_web_title` String DEFAULT 'Calibre-web'")
-        conn.execute("ALTER TABLE Settings ADD column `config_books_per_page` INTEGER DEFAULT 60")
-        conn.execute("ALTER TABLE Settings ADD column `config_random_books` INTEGER DEFAULT 4")
-        conn.execute("ALTER TABLE Settings ADD column `config_title_regex` String DEFAULT "
-            "'^(A|The|An|Der|Die|Das|Den|Ein|Eine|Einen|Dem|Des|Einem|Eines)\s+'")
-        conn.execute("ALTER TABLE Settings ADD column `config_log_level` SmallInteger DEFAULT " + str(logging.INFO))
-        conn.execute("ALTER TABLE Settings ADD column `config_uploading` SmallInteger DEFAULT 0")
-        conn.execute("ALTER TABLE Settings ADD column `config_anonbrowse` SmallInteger DEFAULT 0")
-        conn.execute("ALTER TABLE Settings ADD column `config_public_reg` SmallInteger DEFAULT 0")
+        conn.execute("ALTER TABLE Settings "
+                     "ADD column `config_calibre_dir` String")
+        conn.execute("ALTER TABLE Settings "
+                     "ADD column `config_port` INTEGER DEFAULT 8083")
+        conn.execute("ALTER TABLE Settings "
+                     "ADD column `config_calibre_web_title` String "
+                     "DEFAULT 'Calibre-web'")
+        conn.execute("ALTER TABLE Settings "
+                     "ADD column `config_books_per_page` INTEGER DEFAULT 60")
+        conn.execute("ALTER TABLE Settings "
+                     "ADD column `config_random_books` INTEGER DEFAULT 4")
+        conn.execute("ALTER TABLE Settings "
+                     "ADD column `config_title_regex` String DEFAULT "
+                     "'^(A|The|An|Der|Die|Das|Den"
+                     "|Ein|Eine|Einen|Dem|Des|Einem|Eines)\s+'")
+        conn.execute("ALTER TABLE Settings "
+                     "ADD column `config_log_level` SmallInteger DEFAULT "
+                     + str(logging.INFO))
+        conn.execute("ALTER TABLE Settings "
+                     "ADD column `config_uploading` SmallInteger DEFAULT 0")
+        conn.execute("ALTER TABLE Settings "
+                     "ADD column `config_anonbrowse` SmallInteger DEFAULT 0")
+        conn.execute("ALTER TABLE Settings "
+                     "ADD column `config_public_reg` SmallInteger DEFAULT 0")
         session.commit()
 
     try:
-        session.query(exists().where(Settings.config_use_google_drive)).scalar()
+        session \
+            .query(
+                exists()
+                .where(Settings.config_use_google_drive)) \
+            .scalar()
     except exc.OperationalError:
         conn = engine.connect()
-        conn.execute("ALTER TABLE Settings ADD column `config_use_google_drive` INTEGER DEFAULT 0")
-        conn.execute("ALTER TABLE Settings ADD column `config_google_drive_client_id` String DEFAULT ''")
-        conn.execute("ALTER TABLE Settings ADD column `config_google_drive_client_secret` String DEFAULT ''")
-        conn.execute("ALTER TABLE Settings ADD column `config_google_drive_calibre_url_base` INTEGER DEFAULT 0")
-        conn.execute("ALTER TABLE Settings ADD column `config_google_drive_folder` String DEFAULT ''")
-        conn.execute("ALTER TABLE Settings ADD column `config_google_drive_watch_changes_response` String DEFAULT ''")
+        conn.execute("ALTER TABLE Settings "
+                     "ADD column `config_use_google_drive` INTEGER DEFAULT 0")
+        conn.execute("ALTER TABLE Settings "
+                     "ADD column `config_google_drive_client_id` String "
+                     "DEFAULT ''")
+        conn.execute("ALTER TABLE Settings "
+                     "ADD column `config_google_drive_client_secret` String "
+                     "DEFAULT ''")
+        conn.execute("ALTER TABLE Settings "
+                     "ADD column `config_google_drive_calibre_url_base` "
+                     "INTEGER DEFAULT 0")
+        conn.execute("ALTER TABLE Settings "
+                     "ADD column `config_google_drive_folder` String "
+                     "DEFAULT ''")
+        conn.execute("ALTER TABLE Settings "
+                     "ADD column `config_google_drive_watch_changes_response` "
+                     "String DEFAULT ''")
     try:
-        session.query(exists().where(Settings.config_columns_to_ignore)).scalar()
+        session \
+            .query(
+                exists()
+                .where(Settings.config_columns_to_ignore)) \
+            .scalar()
     except exc.OperationalError:
         conn = engine.connect()
-        conn.execute("ALTER TABLE Settings ADD column `config_columns_to_ignore` String DEFAULT ''")
+        conn.execute("ALTER TABLE Settings "
+                     "ADD column `config_columns_to_ignore` String DEFAULT ''")
         session.commit()
     try:
         session.query(exists().where(Settings.config_default_role)).scalar()
         session.commit()
-    except exc.OperationalError:  # Database is not compatible, some rows are missing
+    except exc.OperationalError:
+        # Database is not compatible, some rows are missing
         conn = engine.connect()
-        conn.execute("ALTER TABLE Settings ADD column `config_default_role` SmallInteger DEFAULT 0")
+        conn.execute("ALTER TABLE Settings "
+                     "ADD column `config_default_role` SmallInteger DEFAULT 0")
         session.commit()
     try:
         session.query(exists().where(BookShelf.order)).scalar()
         session.commit()
-    except exc.OperationalError:  # Database is not compatible, some rows are missing
+    except exc.OperationalError:
+        # Database is not compatible, some rows are missing
         conn = engine.connect()
-        conn.execute("ALTER TABLE book_shelf_link ADD column 'order' INTEGER DEFAULT 1")
+        conn.execute("ALTER TABLE book_shelf_link "
+                     "ADD column 'order' INTEGER DEFAULT 1")
         session.commit()
     try:
         create = False
         session.query(exists().where(User.sidebar_view)).scalar()
         session.commit()
-    except exc.OperationalError:  # Database is not compatible, some rows are missing
+    except exc.OperationalError:
+        # Database is not compatible, some rows are missing
         conn = engine.connect()
-        conn.execute("ALTER TABLE user ADD column `sidebar_view` Integer DEFAULT 1")
+        conn.execute("ALTER TABLE user "
+                     "ADD column `sidebar_view` Integer DEFAULT 1")
         session.commit()
-        create=True
+        create = True
     try:
         if create:
             conn.execute("SELET language_books FROM user")
             session.commit()
     except exc.OperationalError:
         conn = engine.connect()
-        conn.execute("UPDATE user SET 'sidebar_view' = (random_books*"+str(SIDEBAR_RANDOM)+"+ language_books *"+
-                     str(SIDEBAR_LANGUAGE)+"+ series_books *"+str(SIDEBAR_SERIES)+"+ category_books *"+str(SIDEBAR_CATEGORY)+
-                     "+ hot_books *"+str(SIDEBAR_HOT)+"+"+str(SIDEBAR_AUTHOR)+"+"+str(DETAIL_RANDOM)+")")
+        conn.execute("UPDATE user "
+                     "SET 'sidebar_view' = " +
+                     "(random_books*" + str(SIDEBAR_RANDOM) +
+                     "+ language_books *" + str(SIDEBAR_LANGUAGE) +
+                     "+ series_books *" + str(SIDEBAR_SERIES) +
+                     "+ category_books *" + str(SIDEBAR_CATEGORY) +
+                     "+ hot_books *" + str(SIDEBAR_HOT) +
+                     "+" + str(SIDEBAR_AUTHOR) +
+                     "+" + str(DETAIL_RANDOM) +
+                     ")")
         session.commit()
-    if session.query(User).filter(User.role.op('&')(ROLE_ANONYMOUS) == ROLE_ANONYMOUS).first() is None:
+    if session \
+            .query(User) \
+            .filter(User.role.op('&')(ROLE_ANONYMOUS) == ROLE_ANONYMOUS) \
+            .first() is None:
         create_anonymous_user()
+
 
 def create_default_config():
     settings = Settings()
@@ -515,10 +630,11 @@ def create_anonymous_user():
 def create_admin_user():
     user = User()
     user.nickname = "admin"
-    user.role = ROLE_USER + ROLE_ADMIN + ROLE_DOWNLOAD + ROLE_UPLOAD + ROLE_EDIT + ROLE_PASSWD
-    user.sidebar_view = DETAIL_RANDOM + SIDEBAR_LANGUAGE + SIDEBAR_SERIES + SIDEBAR_CATEGORY + SIDEBAR_HOT + \
-            SIDEBAR_RANDOM + SIDEBAR_AUTHOR + SIDEBAR_BEST_RATED + SIDEBAR_READ_AND_UNREAD
-
+    user.role = ROLE_USER + ROLE_ADMIN + ROLE_DOWNLOAD + \
+        ROLE_UPLOAD + ROLE_EDIT + ROLE_PASSWD
+    user.sidebar_view = DETAIL_RANDOM + SIDEBAR_LANGUAGE + \
+        SIDEBAR_SERIES + SIDEBAR_CATEGORY + SIDEBAR_HOT + SIDEBAR_RANDOM + \
+        SIDEBAR_AUTHOR + SIDEBAR_BEST_RATED + SIDEBAR_READ_AND_UNREAD
 
     user.password = generate_password_hash(DEFAULT_PASS)
 

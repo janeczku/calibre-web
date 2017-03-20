@@ -3,16 +3,17 @@
 try:
     from pydrive.auth import GoogleAuth
     from googleapiclient.errors import HttpError
-    gdrive_support= True
+    gdrive_support = True
 except ImportError:
-    gdrive_support=False
+    gdrive_support = False
 
 import mimetypes
 import logging
 from logging.handlers import RotatingFileHandler
 import textwrap
-from flask import Flask, render_template, request, Response, redirect, url_for, send_from_directory, \
-        make_response, g, flash, abort, Markup, stream_with_context
+from flask import Flask, render_template, request, Response, \
+    redirect, url_for, send_from_directory, make_response, g, \
+    flash, abort, Markup, stream_with_context
 from flask import __version__ as flaskVersion
 import ub
 from ub import config
@@ -24,7 +25,8 @@ from sqlalchemy.sql.expression import false
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy import __version__ as sqlalchemyVersion
 from math import ceil
-from flask_login import LoginManager, login_user, logout_user, login_required, current_user
+from flask_login import LoginManager, login_user, logout_user, \
+    login_required, current_user
 from flask_principal import Principal
 from flask_principal import __version__ as flask_principalVersion
 from flask_babel import Babel
@@ -85,10 +87,13 @@ except ImportError:
 from cgi import escape
 
 # Global variables
-gdrive_watch_callback_token='target=calibreweb-watch_files'
+gdrive_watch_callback_token = 'target=calibreweb-watch_files'
 global_task = None
 
-ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'epub', 'mobi', 'azw', 'azw3', 'cbr', 'cbz', 'cbt', 'djvu', 'prc', 'doc', 'docx', 'fb2'])
+ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'epub', 'mobi', 'azw',
+                          'azw3', 'cbr', 'cbz', 'cbt', 'djvu',
+                          'prc', 'doc', 'docx', 'fb2'])
+
 
 def md5(fname):
     hash_md5 = hashlib.md5()
@@ -97,7 +102,9 @@ def md5(fname):
             hash_md5.update(chunk)
     return hash_md5.hexdigest()
 
+
 class Singleton:
+
     """
     A non-thread-safe helper class to ease implementing singletons.
     This should be used as a decorator -- not a metaclass -- to the
@@ -135,21 +142,27 @@ class Singleton:
     def __instancecheck__(self, inst):
         return isinstance(inst, self._decorated)
 
+
 @Singleton
 class Gauth:
+
     def __init__(self):
-        self.auth=GoogleAuth(settings_file='settings.yaml')
+        self.auth = GoogleAuth(settings_file='settings.yaml')
+
 
 @Singleton
 class Gdrive:
+
     def __init__(self):
-        self.drive=gdriveutils.getDrive(Gauth.Instance().auth)
+        self.drive = gdriveutils.getDrive(Gauth.Instance().auth)
+
 
 class ReverseProxied(object):
+
     """Wrap the application in this middleware and configure the
-    front-end server to add these headers, to let you quietly bind 
-    this to a URL other than / and to an HTTP scheme that is 
-    different than what is used locally.
+    front-end server to add these headers, to let you quietly
+    bind this to a URL other than / and to an HTTP scheme that
+    is different than what is used locally.
 
     Code courtesy of: http://flask.pocoo.org/snippets/35/
 
@@ -198,11 +211,12 @@ mimetypes.add_type('image/vnd.djvu', '.djvu')
 app = (Flask(__name__))
 app.wsgi_app = ReverseProxied(app.wsgi_app)
 
-gevent_server=None
+gevent_server = None
 
 formatter = logging.Formatter(
     "[%(asctime)s] {%(pathname)s:%(lineno)d} %(levelname)s - %(message)s")
-file_handler = RotatingFileHandler(os.path.join(config.get_main_dir, "calibre-web.log"), maxBytes=50000, backupCount=2)
+file_handler = RotatingFileHandler(os.path.join(
+    config.get_main_dir, "calibre-web.log"), maxBytes=50000, backupCount=2)
 file_handler.setFormatter(formatter)
 app.logger.addHandler(file_handler)
 app.logger.setLevel(config.config_log_level)
@@ -224,7 +238,7 @@ lm.anonymous_user = ub.Anonymous
 app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
 db.setup_db()
 
-if config.config_log_level == logging.DEBUG :
+if config.config_log_level == logging.DEBUG:
     logging.getLogger("sqlalchemy.engine").addHandler(file_handler)
     logging.getLogger("sqlalchemy.engine").setLevel(logging.INFO)
     logging.getLogger("sqlalchemy.pool").addHandler(file_handler)
@@ -234,7 +248,9 @@ if config.config_log_level == logging.DEBUG :
 
 
 def is_gdrive_ready():
-    return os.path.exists('settings.yaml') and os.path.exists('gdrive_credentials')
+    return os.path.exists('settings.yaml') \
+        and os.path.exists('gdrive_credentials')
+
 
 @babel.localeselector
 def get_locale():
@@ -242,8 +258,10 @@ def get_locale():
     user = getattr(g, 'user', None)
     if user is not None and hasattr(user, "locale"):
         return user.locale
-    translations = [item.language for item in babel.list_translations()] + ['en']
-    preferred = [x.replace('-', '_') for x in request.accept_languages.values()]
+    translations = [
+        item.language for item in babel.list_translations()] + ['en']
+    preferred = [x.replace('-', '_')
+                 for x in request.accept_languages.values()]
     return negotiate_locale(preferred, translations)
 
 
@@ -270,14 +288,16 @@ def load_user_from_header(header_val):
         basic_password = header_val.split(':')[1]
     except TypeError:
         pass
-    user = ub.session.query(ub.User).filter(ub.User.nickname == basic_username).first()
+    user = ub.session.query(ub.User).filter(
+        ub.User.nickname == basic_username).first()
     if user and check_password_hash(user.password, basic_password):
         return user
     return
 
 
 def check_auth(username, password):
-    user = ub.session.query(ub.User).filter(ub.User.nickname == username).first()
+    user = ub.session.query(ub.User).filter(
+        ub.User.nickname == username).first()
     if user and check_password_hash(user.password, password):
         return True
     else:
@@ -290,12 +310,15 @@ def authenticate():
         'You have to login with proper credentials', 401,
         {'WWW-Authenticate': 'Basic realm="Login Required"'})
 
+
 def updateGdriveCalibreFromLocal():
     gdriveutils.backupCalibreDbAndOptionalDownload(Gdrive.Instance().drive)
-    gdriveutils.copyToDrive(Gdrive.Instance().drive, config.config_calibre_dir, False, True)
+    gdriveutils.copyToDrive(
+        Gdrive.Instance().drive, config.config_calibre_dir, False, True)
     for x in os.listdir(config.config_calibre_dir):
-        if os.path.isdir(os.path.join(config.config_calibre_dir,x)):
-            shutil.rmtree(os.path.join(config.config_calibre_dir,x))
+        if os.path.isdir(os.path.join(config.config_calibre_dir, x)):
+            shutil.rmtree(os.path.join(config.config_calibre_dir, x))
+
 
 def requires_basic_auth_if_no_ano(f):
     @wraps(f)
@@ -311,6 +334,7 @@ def requires_basic_auth_if_no_ano(f):
 
 # simple pagination for the feed
 class Pagination(object):
+
     def __init__(self, page, per_page, total_count):
         self.page = int(page)
         self.per_page = int(per_page)
@@ -346,12 +370,14 @@ class Pagination(object):
     def iter_pages(self, left_edge=2, left_current=2,
                    right_current=5, right_edge=2):
         last = 0
-        if 'xrange' not in globals():#no xrange in Python3
+        if 'xrange' not in globals():  # no xrange in Python3
             global xrange
             xrange = range
 
         for num in xrange(1, self.pages + 1):  # ToDo: can be simplified
-            if num <= left_edge or (num > self.page - left_current - 1 and num < self.page + right_current) \
+            if num <= left_edge \
+                    or (num > self.page - left_current - 1
+                        and num < self.page + right_current) \
                     or num > self.pages - right_edge:
                 if last + 1 != num:
                     yield None
@@ -393,23 +419,28 @@ def mimetype_filter(val):
         s = 'application/octet-stream'
     return s
 
+
 @app.template_filter('formatdate')
 def formatdate(val):
-    conformed_timestamp = re.sub(r"[:]|([-](?!((\d{2}[:]\d{2})|(\d{4}))$))", '', val)
-    formatdate = datetime.datetime.strptime(conformed_timestamp[:15], "%Y%m%d %H%M%S")
-    return format_date(formatdate, format='medium',locale=get_locale())
+    conformed_timestamp = re.sub(
+        r"[:]|([-](?!((\d{2}[:]\d{2})|(\d{4}))$))", '', val)
+    formatdate = datetime.datetime.strptime(
+        conformed_timestamp[:15], "%Y%m%d %H%M%S")
+    return format_date(formatdate, format='medium', locale=get_locale())
+
 
 @app.template_filter('strftime')
 def timestamptodate(date, fmt=None):
-    date=datetime.datetime.fromtimestamp(
+    date = datetime.datetime.fromtimestamp(
         int(date)/1000
     )
     native = date.replace(tzinfo=None)
     if fmt:
-        format=fmt
+        format = fmt
     else:
-        format='%d %m %Y - %H:%S'
+        format = '%d %m %Y - %H:%S'
     return native.strftime(format)
+
 
 def admin_required(f):
     """
@@ -472,22 +503,35 @@ def edit_required(f):
 # Fill indexpage with all requested data from database
 def fill_indexpage(page, database, db_filter, order):
     if current_user.filter_language() != "all":
-        filter = db.Books.languages.any(db.Languages.lang_code == current_user.filter_language())
+        filter = db.Books.languages.any(
+            db.Languages.lang_code == current_user.filter_language())
     else:
         filter = True
     if current_user.show_detail_random():
-        random = db.session.query(db.Books).filter(filter).order_by(func.random()).limit(config.config_random_books)
+        random = db.session.query(db.Books).filter(filter).order_by(
+            func.random()).limit(config.config_random_books)
     else:
         random = false
     off = int(int(config.config_books_per_page) * (page - 1))
-    pagination = Pagination(page, config.config_books_per_page,
-                            len(db.session.query(database).filter(db_filter).filter(filter).all()))
-    entries = db.session.query(database).filter(db_filter).filter(filter).order_by(order).offset(off).limit(
-        config.config_books_per_page)
+    pagination = Pagination(page,
+                            config.config_books_per_page,
+                            len(db.session
+                                .query(database)
+                                .filter(db_filter)
+                                .filter(filter)
+                                .all()))
+    entries = db.session \
+        .query(database) \
+        .filter(db_filter) \
+        .filter(filter) \
+        .order_by(order) \
+        .offset(off) \
+        .limit(config.config_books_per_page)
     return entries, random, pagination
 
 
-def modify_database_object(input_elements, db_book_object, db_object, db_session, type):
+def modify_database_object(input_elements, db_book_object,
+                           db_object, db_session, type):
     input_elements = [x for x in input_elements if x != '']
     # we have all input element (authors, series, tags) names now
     # 1. search for elements to remove
@@ -525,7 +569,8 @@ def modify_database_object(input_elements, db_book_object, db_object, db_session
             db_filter = db_object.name
         for add_element in add_elements:
             # check if a element with that name exists
-            new_element = db_session.query(db_object).filter(db_filter == add_element).first()
+            new_element = db_session.query(db_object).filter(
+                db_filter == add_element).first()
             # if no element is found add it
             if new_element is None:
                 if type == 'author':
@@ -536,13 +581,16 @@ def modify_database_object(input_elements, db_book_object, db_object, db_session
                     else:  # type should be tag, or languages
                         new_element = db_object(add_element)
                 db_session.add(new_element)
-                new_element = db.session.query(db_object).filter(db_filter == add_element).first()
+                new_element = db.session.query(db_object).filter(
+                    db_filter == add_element).first()
             # add element to book
             db_book_object.append(new_element)
 
 
 def render_title_template(*args, **kwargs):
-    return render_template(instance=config.config_calibre_web_title, *args, **kwargs)
+    return render_template(instance=config.config_calibre_web_title,
+                           *args,
+                           **kwargs)
 
 
 @app.before_request
@@ -552,8 +600,11 @@ def before_request():
     g.user = current_user
     g.allow_registration = config.config_public_reg
     g.allow_upload = config.config_uploading
-    g.public_shelfes = ub.session.query(ub.Shelf).filter(ub.Shelf.is_public == 1).all()
-    if not config.db_configured and request.endpoint not in ('basic_configuration', 'login') and '/static/' not in request.path:
+    g.public_shelfes = ub.session.query(
+        ub.Shelf).filter(ub.Shelf.is_public == 1).all()
+    if not config.db_configured \
+            and request.endpoint not in ('basic_configuration', 'login') \
+            and '/static/' not in request.path:
         return redirect(url_for('basic_configuration'))
 
 
@@ -563,7 +614,8 @@ def before_request():
 @requires_basic_auth_if_no_ano
 def feed_index():
     if current_user.filter_language() != "all":
-        filter = db.Books.languages.any(db.Languages.lang_code == current_user.filter_language())
+        filter = db.Books.languages.any(
+            db.Languages.lang_code == current_user.filter_language())
     else:
         filter = True
     xml = render_title_template('index.xml')
@@ -575,7 +627,7 @@ def feed_index():
 @app.route("/opds/osd")
 @requires_basic_auth_if_no_ano
 def feed_osd():
-    xml = render_title_template('osd.xml',lang='de-DE')
+    xml = render_title_template('osd.xml', lang='de-DE')
     response = make_response(xml)
     response.headers["Content-Type"] = "application/xml"
     return response
@@ -595,18 +647,32 @@ def feed_normal_search():
 
 def feed_search(term):
     if current_user.filter_language() != "all":
-        filter = db.Books.languages.any(db.Languages.lang_code == current_user.filter_language())
+        filter = db.Books.languages.any(
+            db.Languages.lang_code == current_user.filter_language())
     else:
         filter = True
     if term:
-        entries = db.session.query(db.Books).filter(db.or_(db.Books.tags.any(db.Tags.name.like("%" + term + "%")),
-                                                    db.Books.series.any(db.Series.name.like("%" + term + "%")),
-                                                    db.Books.authors.any(db.Authors.name.like("%" + term + "%")),
-                                                    db.Books.publishers.any(db.Publishers.name.like("%" + term + "%")),
-                                                    db.Books.title.like("%" + term + "%"))).filter(filter).all()
+        entries = db.session \
+            .query(db.Books) \
+            .filter(
+                db.or_(
+                    db.Books.tags.any(
+                        db.Tags.name.like("%" + term + "%")),
+                    db.Books.series.any(
+                        db.Series.name.like("%" + term + "%")),
+                    db.Books.authors.any(
+                        db.Authors.name.like("%" + term + "%")),
+                    db.Books.publishers.any(
+                        db.Publishers.name.like("%" + term + "%")),
+                    db.Books.title.like("%" + term + "%"))) \
+            .filter(filter) \
+            .all()
         entriescount = len(entries) if len(entries) > 0 else 1
         pagination = Pagination(1, entriescount, entriescount)
-        xml = render_title_template('feed.xml', searchterm=term, entries=entries, pagination=pagination)
+        xml = render_title_template('feed.xml',
+                                    searchterm=term,
+                                    entries=entries,
+                                    pagination=pagination)
     else:
         xml = render_title_template('feed.xml', searchterm="")
     response = make_response(xml)
@@ -620,9 +686,14 @@ def feed_new():
     off = request.args.get("offset")
     if not off:
         off = 0
-    entries, random, pagination = fill_indexpage((int(off) / (int(config.config_books_per_page)) + 1),
-                                                 db.Books, True, db.Books.timestamp.desc())
-    xml = render_title_template('feed.xml', entries=entries, pagination=pagination)
+    entries, random, pagination = \
+        fill_indexpage(
+            (int(off) / (int(config.config_books_per_page)) + 1),
+            db.Books,
+            True,
+            db.Books.timestamp.desc())
+    xml = render_title_template(
+        'feed.xml', entries=entries, pagination=pagination)
     response = make_response(xml)
     response.headers["Content-Type"] = "application/xml"
     return response
@@ -632,12 +703,16 @@ def feed_new():
 @requires_basic_auth_if_no_ano
 def feed_discover():
     if current_user.filter_language() != "all":
-        filter = db.Books.languages.any(db.Languages.lang_code == current_user.filter_language())
+        filter = db.Books.languages.any(
+            db.Languages.lang_code == current_user.filter_language())
     else:
         filter = True
-    entries = db.session.query(db.Books).filter(filter).order_by(func.random()).limit(config.config_books_per_page)
-    pagination = Pagination(1, config.config_books_per_page, int(config.config_books_per_page))
-    xml = render_title_template('feed.xml', entries=entries, pagination=pagination)
+    entries = db.session.query(db.Books).filter(filter).order_by(
+        func.random()).limit(config.config_books_per_page)
+    pagination = Pagination(
+        1, config.config_books_per_page, int(config.config_books_per_page))
+    xml = render_title_template(
+        'feed.xml', entries=entries, pagination=pagination)
     response = make_response(xml)
     response.headers["Content-Type"] = "application/xml"
     return response
@@ -649,12 +724,18 @@ def feed_best_rated():
     off = request.args.get("offset")
     if not off:
         off = 0
-    entries, random, pagination = fill_indexpage((int(off) / (int(config.config_books_per_page)) + 1),
-                    db.Books, db.Books.ratings.any(db.Ratings.rating > 9), db.Books.timestamp.desc())
-    xml = render_title_template('feed.xml', entries=entries, pagination=pagination)
+    entries, random, pagination = \
+        fill_indexpage(
+            (int(off) / (int(config.config_books_per_page)) + 1),
+            db.Books,
+            db.Books.ratings.any(db.Ratings.rating > 9),
+            db.Books.timestamp.desc())
+    xml = render_title_template(
+        'feed.xml', entries=entries, pagination=pagination)
     response = make_response(xml)
     response.headers["Content-Type"] = "application/xml"
     return response
+
 
 @app.route("/opds/hot")
 @requires_basic_auth_if_no_ano
@@ -663,24 +744,37 @@ def feed_hot():
     if not off:
         off = 0
     if current_user.filter_language() != "all":
-        filter = db.Books.languages.any(db.Languages.lang_code == current_user.filter_language())
+        filter = db.Books.languages.any(
+            db.Languages.lang_code == current_user.filter_language())
     else:
         filter = True
-    all_books = ub.session.query(ub.Downloads, ub.func.count(ub.Downloads.book_id)).order_by(
-        ub.func.count(ub.Downloads.book_id).desc()).group_by(ub.Downloads.book_id)
+    all_books = ub.session \
+        .query(ub.Downloads, ub.func.count(ub.Downloads.book_id)) \
+        .order_by(ub.func.count(ub.Downloads.book_id).desc()) \
+        .group_by(ub.Downloads.book_id)
     hot_books = all_books.offset(off).limit(config.config_books_per_page)
     entries = list()
     for book in hot_books:
-        downloadBook = db.session.query(db.Books).filter(db.Books.id == book.Downloads.book_id).first()
+        downloadBook = db.session.query(db.Books).filter(
+            db.Books.id == book.Downloads.book_id).first()
         if downloadBook:
             entries.append(
-                db.session.query(db.Books).filter(filter).filter(db.Books.id == book.Downloads.book_id).first())
+                db.session
+                .query(db.Books)
+                .filter(filter)
+                .filter(db.Books.id == book.Downloads.book_id)
+                .first())
         else:
-            ub.session.query(ub.Downloads).filter(book.Downloads.book_id == ub.Downloads.book_id).delete()
+            ub.session.query(ub.Downloads).filter(
+                book.Downloads.book_id == ub.Downloads.book_id).delete()
             ub.session.commit()
     numBooks = entries.__len__()
-    pagination = Pagination((int(off) / (int(config.config_books_per_page)) + 1), config.config_books_per_page, numBooks)
-    xml = render_title_template('feed.xml', entries=entries, pagination=pagination)
+    pagination = Pagination(
+        (int(off) / (int(config.config_books_per_page)) + 1),
+        config.config_books_per_page,
+        numBooks)
+    xml = render_title_template(
+        'feed.xml', entries=entries, pagination=pagination)
     response = make_response(xml)
     response.headers["Content-Type"] = "application/xml"
     return response
@@ -693,14 +787,29 @@ def feed_authorindex():
     if not off:
         off = 0
     if current_user.filter_language() != "all":
-        filter = db.Books.languages.any(db.Languages.lang_code == current_user.filter_language())
+        filter = db.Books.languages.any(
+            db.Languages.lang_code == current_user.filter_language())
     else:
         filter = True
-    entries = db.session.query(db.Authors).join(db.books_authors_link).join(db.Books).filter(filter)\
-        .group_by('books_authors_link.author').order_by(db.Authors.sort).limit(config.config_books_per_page).offset(off)
-    pagination = Pagination((int(off) / (int(config.config_books_per_page)) + 1), config.config_books_per_page,
-                            len(db.session.query(db.Authors).all()))
-    xml = render_title_template('feed.xml', listelements=entries, folder='feed_author', pagination=pagination)
+    entries = db.session \
+        .query(db.Authors) \
+        .join(db.books_authors_link) \
+        .join(db.Books) \
+        .filter(filter)\
+        .group_by('books_authors_link.author') \
+        .order_by(db.Authors.sort) \
+        .limit(config.config_books_per_page) \
+        .offset(off)
+    pagination = Pagination(
+        (int(off) / (int(config.config_books_per_page)) + 1),
+        config.config_books_per_page,
+        len(db.session
+            .query(db.Authors)
+            .all()))
+    xml = render_title_template('feed.xml',
+                                listelements=entries,
+                                folder='feed_author',
+                                pagination=pagination)
     response = make_response(xml)
     response.headers["Content-Type"] = "application/xml"
     return response
@@ -712,9 +821,14 @@ def feed_author(id):
     off = request.args.get("offset")
     if not off:
         off = 0
-    entries, random, pagination = fill_indexpage((int(off) / (int(config.config_books_per_page)) + 1),
-                    db.Books, db.Books.authors.any(db.Authors.id == id), db.Books.timestamp.desc())
-    xml = render_title_template('feed.xml', entries=entries, pagination=pagination)
+    entries, random, pagination = \
+        fill_indexpage(
+            (int(off) / (int(config.config_books_per_page)) + 1),
+            db.Books,
+            db.Books.authors.any(db.Authors.id == id),
+            db.Books.timestamp.desc())
+    xml = render_title_template(
+        'feed.xml', entries=entries, pagination=pagination)
     response = make_response(xml)
     response.headers["Content-Type"] = "application/xml"
     return response
@@ -727,14 +841,29 @@ def feed_categoryindex():
     if not off:
         off = 0
     if current_user.filter_language() != "all":
-        filter = db.Books.languages.any(db.Languages.lang_code == current_user.filter_language())
+        filter = db.Books.languages.any(
+            db.Languages.lang_code == current_user.filter_language())
     else:
         filter = True
-    entries = db.session.query(db.Tags).join(db.books_tags_link).join(db.Books).filter(filter).\
-        group_by('books_tags_link.tag').order_by(db.Tags.name).offset(off).limit(config.config_books_per_page)
-    pagination = Pagination((int(off) / (int(config.config_books_per_page)) + 1), config.config_books_per_page,
-                            len(db.session.query(db.Tags).all()))
-    xml = render_title_template('feed.xml', listelements=entries, folder='feed_category', pagination=pagination)
+    entries = db.session \
+        .query(db.Tags) \
+        .join(db.books_tags_link) \
+        .join(db.Books) \
+        .filter(filter) \
+        .group_by('books_tags_link.tag') \
+        .order_by(db.Tags.name) \
+        .offset(off) \
+        .limit(config.config_books_per_page)
+    pagination = Pagination(
+        (int(off) / (int(config.config_books_per_page)) + 1),
+        config.config_books_per_page,
+        len(db.session
+            .query(db.Tags)
+            .all()))
+    xml = render_title_template('feed.xml',
+                                listelements=entries,
+                                folder='feed_category',
+                                pagination=pagination)
     response = make_response(xml)
     response.headers["Content-Type"] = "application/xml"
     return response
@@ -746,9 +875,13 @@ def feed_category(id):
     off = request.args.get("offset")
     if not off:
         off = 0
-    entries, random, pagination = fill_indexpage((int(off) / (int(config.config_books_per_page)) + 1),
-                    db.Books, db.Books.tags.any(db.Tags.id == id), db.Books.timestamp.desc())
-    xml = render_title_template('feed.xml', entries=entries, pagination=pagination)
+    entries, random, pagination = \
+        fill_indexpage((int(off) / (int(config.config_books_per_page)) + 1),
+                       db.Books,
+                       db.Books.tags.any(db.Tags.id == id),
+                       db.Books.timestamp.desc())
+    xml = render_title_template(
+        'feed.xml', entries=entries, pagination=pagination)
     response = make_response(xml)
     response.headers["Content-Type"] = "application/xml"
     return response
@@ -761,14 +894,29 @@ def feed_seriesindex():
     if not off:
         off = 0
     if current_user.filter_language() != "all":
-        filter = db.Books.languages.any(db.Languages.lang_code == current_user.filter_language())
+        filter = db.Books.languages.any(
+            db.Languages.lang_code == current_user.filter_language())
     else:
         filter = True
-    entries = db.session.query(db.Series).join(db.books_series_link).join(db.Books).filter(filter).\
-        group_by('books_series_link.series').order_by(db.Series.sort).offset(off).all()
-    pagination = Pagination((int(off) / (int(config.config_books_per_page)) + 1), config.config_books_per_page,
-                            len(db.session.query(db.Series).all()))
-    xml = render_title_template('feed.xml', listelements=entries, folder='feed_series', pagination=pagination)
+    entries = db.session \
+        .query(db.Series) \
+        .join(db.books_series_link) \
+        .join(db.Books) \
+        .filter(filter) \
+        .group_by('books_series_link.series') \
+        .order_by(db.Series.sort) \
+        .offset(off) \
+        .all()
+    pagination = Pagination(
+        (int(off) / (int(config.config_books_per_page)) + 1),
+        config.config_books_per_page,
+        len(db.session
+            .query(db.Series)
+            .all()))
+    xml = render_title_template('feed.xml',
+                                listelements=entries,
+                                folder='feed_series',
+                                pagination=pagination)
     response = make_response(xml)
     response.headers["Content-Type"] = "application/xml"
     return response
@@ -780,9 +928,13 @@ def feed_series(id):
     off = request.args.get("offset")
     if not off:
         off = 0
-    entries, random, pagination = fill_indexpage((int(off) / (int(config.config_books_per_page)) + 1),
-                    db.Books, db.Books.series.any(db.Series.id == id),db.Books.series_index)
-    xml = render_title_template('feed.xml', entries=entries, pagination=pagination)
+    entries, random, pagination = \
+        fill_indexpage((int(off) / (int(config.config_books_per_page)) + 1),
+                       db.Books,
+                       db.Books.series.any(db.Series.id == id),
+                       db.Books.series_index)
+    xml = render_title_template(
+        'feed.xml', entries=entries, pagination=pagination)
     response = make_response(xml)
     response.headers["Content-Type"] = "application/xml"
     return response
@@ -795,55 +947,67 @@ def partial(total_byte_len, part_size_limit):
         s.append([p, last])
     return s
 
+
 def do_gdrive_download(df, headers):
-    startTime=time.time()
+    startTime = time.time()
     total_size = int(df.metadata.get('fileSize'))
     download_url = df.metadata.get('downloadUrl')
-    s = partial(total_size, 1024 * 1024) # I'm downloading BIG files, so 100M chunk size is fine for me
+    # I'm downloading BIG files, so 100M chunk size is fine for me
+    s = partial(total_size, 1024 * 1024)
+
     def stream():
         for bytes in s:
-            headers = {"Range" : 'bytes=%s-%s' % (bytes[0], bytes[1])}
-            resp, content = df.auth.Get_Http_Object().request(download_url, headers=headers)
-            if resp.status == 206 :
+            headers = {"Range": 'bytes=%s-%s' % (bytes[0], bytes[1])}
+            resp, content = df.auth.Get_Http_Object().request(
+                download_url, headers=headers)
+            if resp.status == 206:
                 yield content
             else:
                 app.logger.info('An error occurred: %s' % resp)
                 return
     return Response(stream_with_context(stream()), headers=headers)
 
+
 @app.route("/opds/download/<book_id>/<format>/")
 @requires_basic_auth_if_no_ano
 @download_required
 def get_opds_download_link(book_id, format):
-    startTime=time.time()
+    startTime = time.time()
     format = format.split(".")[0]
     book = db.session.query(db.Books).filter(db.Books.id == book_id).first()
-    data = db.session.query(db.Data).filter(db.Data.book == book.id).filter(db.Data.format == format.upper()).first()
-    app.logger.info (data.name)
+    data = db.session.query(db.Data).filter(db.Data.book == book.id).filter(
+        db.Data.format == format.upper()).first()
+    app.logger.info(data.name)
     if current_user.is_authenticated:
         helper.update_download(book_id, int(current_user.id))
     file_name = book.title
     if len(book.authors) > 0:
         file_name = book.authors[0].name + '_' + file_name
     file_name = helper.get_valid_filename(file_name)
-    headers={}
-    headers["Content-Disposition"] = "attachment; filename*=UTF-8''%s.%s" % (quote(file_name.encode('utf8')), format)
-    app.logger.info (time.time()-startTime)
-    startTime=time.time()
+    headers = {}
+    headers["Content-Disposition"] = "attachment; filename*=UTF-8''%s.%s" % (
+        quote(file_name.encode('utf8')), format)
+    app.logger.info(time.time()-startTime)
+    startTime = time.time()
     if config.config_use_google_drive:
-        df=gdriveutils.getFileFromEbooksFolder(Gdrive.Instance().drive, book.path, data.name + "." + format)
+        df = gdriveutils.getFileFromEbooksFolder(
+            Gdrive.Instance().drive, book.path, data.name + "." + format)
         return do_gdrive_download(df, headers)
     else:
         # file_name = helper.get_valid_filename(file_name)
-        response = make_response(send_from_directory(os.path.join(config.config_calibre_dir, book.path), data.name + "." + format))
-    response.headers=headers
+        response = make_response(
+            send_from_directory(
+                os.path.join(config.config_calibre_dir, book.path),
+                data.name + "." + format))
+    response.headers = headers
     return response
 
 
 @app.route("/ajax/book/<string:uuid>")
 @requires_basic_auth_if_no_ano
 def get_metadata_calibre_companion(uuid):
-    entry = db.session.query(db.Books).filter(db.Books.uuid.like("%" + uuid + "%")).first()
+    entry = db.session.query(db.Books).filter(
+        db.Books.uuid.like("%" + uuid + "%")).first()
     if entry is not None:
         js = render_template('json.txt', entry=entry)
         response = make_response(js)
@@ -858,7 +1022,8 @@ def get_metadata_calibre_companion(uuid):
 def get_authors_json():
     if request.method == "GET":
         query = request.args.get('q')
-        entries = db.session.execute("select name from authors where name like '%" + query + "%'")
+        entries = db.session.execute(
+            "select name from authors where name like '%" + query + "%'")
         json_dumps = json.dumps([dict(r) for r in entries])
         return json_dumps
 
@@ -868,9 +1033,11 @@ def get_authors_json():
 def get_tags_json():
     if request.method == "GET":
         query = request.args.get('q')
-        entries = db.session.execute("select name from tags where name like '%" + query + "%'")
+        entries = db.session.execute(
+            "select name from tags where name like '%" + query + "%'")
         json_dumps = json.dumps([dict(r) for r in entries])
         return json_dumps
+
 
 @app.route("/get_update_status", methods=['GET'])
 @login_required_if_no_ano
@@ -879,10 +1046,17 @@ def get_update_status():
     if request.method == "GET":
         # should be automatically replaced by git with current commit hash
         commit_id = '$Format:%H$'
-        commit = requests.get('https://api.github.com/repos/janeczku/calibre-web/git/refs/heads/master').json()
+        commit = requests.get(
+            'https://api.github.com/repos/'
+            'janeczku/calibre-web/git/refs/heads/master') \
+            .json()
         if "object" in commit and commit['object']['sha'] != commit_id:
             status['status'] = True
-            commitdate = requests.get('https://api.github.com/repos/janeczku/calibre-web/git/commits/'+commit['object']['sha']).json()
+            commitdate = requests.get(
+                'https://api.github.com/repos/'
+                'janeczku/calibre-web/git/commits/' +
+                commit['object']['sha']) \
+                .json()
             if "committer" in commitdate:
                 status['commit'] = commitdate['committer']['date']
             else:
@@ -891,7 +1065,8 @@ def get_update_status():
             status['status'] = False
     return json.dumps(status)
 
-@app.route("/get_updater_status", methods=['GET','POST'])
+
+@app.route("/get_updater_status", methods=['GET', 'POST'])
 @login_required
 @admin_required
 def get_updater_status():
@@ -899,7 +1074,7 @@ def get_updater_status():
     if request.method == "POST":
         commit = request.form.to_dict()
         if "start" in commit and commit['start'] == 'True':
-            text={
+            text = {
                 "1": _(u'Requesting update package'),
                 "2": _(u'Downloading update package'),
                 "3": _(u'Unzipping update package'),
@@ -908,13 +1083,13 @@ def get_updater_status():
                 "6": _(u'Server is stopped'),
                 "7": _(u'Update finished, please press okay and reload page')
             }
-            status['text']=text
+            status['text'] = text
             helper.updater_thread = helper.Updater()
             helper.updater_thread.start()
-            status['status']=helper.updater_thread.get_update_status()
+            status['status'] = helper.updater_thread.get_update_status()
     elif request.method == "GET":
         try:
-            status['status']=helper.updater_thread.get_update_status()
+            status['status'] = helper.updater_thread.get_update_status()
         except Exception as e:
             status['status'] = 7
     return json.dumps(status)
@@ -942,7 +1117,8 @@ def get_languages_json():
 def get_series_json():
     if request.method == "GET":
         query = request.args.get('q')
-        entries = db.session.execute("select name from series where name like '%" + query + "%'")
+        entries = db.session.execute(
+            "select name from series where name like '%" + query + "%'")
         json_dumps = json.dumps([dict(r) for r in entries])
         return json_dumps
 
@@ -957,7 +1133,8 @@ def get_matching_tags():
         title_input = request.args.get('book_title')
         include_tag_inputs = request.args.getlist('include_tag')
         exclude_tag_inputs = request.args.getlist('exclude_tag')
-        q = q.filter(db.Books.authors.any(db.Authors.name.like("%" + author_input + "%")),
+        q = q.filter(db.Books.authors
+                     .any(db.Authors.name.like("%" + author_input + "%")),
                      db.Books.title.like("%" + title_input + "%"))
         if len(include_tag_inputs) > 0:
             for tag in include_tag_inputs:
@@ -977,8 +1154,12 @@ def get_matching_tags():
 @app.route('/page/<int:page>')
 @login_required_if_no_ano
 def index(page):
-    entries, random, pagination = fill_indexpage(page, db.Books, True, db.Books.timestamp.desc())
-    return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
+    entries, random, pagination = fill_indexpage(
+        page, db.Books, True, db.Books.timestamp.desc())
+    return render_title_template('index.html',
+                                 random=random,
+                                 entries=entries,
+                                 pagination=pagination,
                                  title=_(u"Latest Books"))
 
 
@@ -987,11 +1168,13 @@ def index(page):
 @login_required_if_no_ano
 def hot_books(page):
     if current_user.filter_language() != "all":
-        filter = db.Books.languages.any(db.Languages.lang_code == current_user.filter_language())
+        filter = db.Books.languages.any(
+            db.Languages.lang_code == current_user.filter_language())
     else:
         filter = True
     if current_user.show_detail_random():
-        random = db.session.query(db.Books).filter(filter).order_by(func.random()).limit(config.config_random_books)
+        random = db.session.query(db.Books).filter(filter).order_by(
+            func.random()).limit(config.config_random_books)
     else:
         random = false
     off = int(int(config.config_books_per_page) * (page - 1))
@@ -1000,16 +1183,25 @@ def hot_books(page):
     hot_books = all_books.offset(off).limit(config.config_books_per_page)
     entries = list()
     for book in hot_books:
-        downloadBook = db.session.query(db.Books).filter(db.Books.id == book.Downloads.book_id).first()
+        downloadBook = db.session.query(db.Books).filter(
+            db.Books.id == book.Downloads.book_id).first()
         if downloadBook:
             entries.append(
-                db.session.query(db.Books).filter(filter).filter(db.Books.id == book.Downloads.book_id).first())
+                db.session
+                .query(db.Books)
+                .filter(filter)
+                .filter(db.Books.id == book.Downloads.book_id)
+                .first())
         else:
-            ub.session.query(ub.Downloads).filter(book.Downloads.book_id == ub.Downloads.book_id).delete()
+            ub.session.query(ub.Downloads).filter(
+                book.Downloads.book_id == ub.Downloads.book_id).delete()
             ub.session.commit()
     numBooks = entries.__len__()
     pagination = Pagination(page, config.config_books_per_page, numBooks)
-    return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
+    return render_title_template('index.html',
+                                 random=random,
+                                 entries=entries,
+                                 pagination=pagination,
                                  title=_(u"Hot Books (most downloaded)"))
 
 
@@ -1017,9 +1209,15 @@ def hot_books(page):
 @app.route('/rated/page/<int:page>')
 @login_required_if_no_ano
 def best_rated_books(page):
-    entries, random, pagination = fill_indexpage(page, db.Books, db.Books.ratings.any(db.Ratings.rating > 9),
-                                                 db.Books.timestamp.desc())
-    return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
+    entries, random, pagination = \
+        fill_indexpage(page,
+                       db.Books,
+                       db.Books.ratings.any(db.Ratings.rating > 9),
+                       db.Books.timestamp.desc())
+    return render_title_template('index.html',
+                                 random=random,
+                                 entries=entries,
+                                 pagination=pagination,
                                  title=_(u"Best rated books"))
 
 
@@ -1027,35 +1225,61 @@ def best_rated_books(page):
 @app.route('/discover/page/<int:page>')
 @login_required_if_no_ano
 def discover(page):
-    entries, random, pagination = fill_indexpage(page, db.Books, True, func.randomblob(2))
-    pagination = Pagination(1, config.config_books_per_page,config.config_books_per_page)
-    return render_title_template('discover.html', entries=entries, pagination=pagination, title=_(u"Random Books"))
+    entries, random, pagination = fill_indexpage(
+        page, db.Books, True, func.randomblob(2))
+    pagination = Pagination(
+        1, config.config_books_per_page, config.config_books_per_page)
+    return render_title_template('discover.html',
+                                 entries=entries,
+                                 pagination=pagination,
+                                 title=_(u"Random Books"))
 
 
 @app.route("/author")
 @login_required_if_no_ano
 def author_list():
     if current_user.filter_language() != "all":
-        filter = db.Books.languages.any(db.Languages.lang_code == current_user.filter_language())
+        filter = db.Books.languages.any(
+            db.Languages.lang_code == current_user.filter_language())
     else:
         filter = True
-    entries = db.session.query(db.Authors, func.count('books_authors_link.book').label('count')).join(
-        db.books_authors_link).join(db.Books).filter(
-        filter).group_by('books_authors_link.author').order_by(db.Authors.sort).all()
-    return render_title_template('list.html', entries=entries, folder='author', title=_(u"Author list"))
+    entries = db.session \
+        .query(db.Authors,
+               func.count('books_authors_link.book').label('count')) \
+        .join(db.books_authors_link) \
+        .join(db.Books) \
+        .filter(filter) \
+        .group_by('books_authors_link.author') \
+        .order_by(db.Authors.sort) \
+        .all()
+    return render_title_template('list.html',
+                                 entries=entries,
+                                 folder='author',
+                                 title=_(u"Author list"))
 
 
 @app.route("/author/<int:id>", defaults={'page': 1})
 @app.route("/author/<int:id>/<int:page>'")
 @login_required_if_no_ano
-def author(id,page):
-    entries, random, pagination = fill_indexpage(page, db.Books, db.Books.authors.any(db.Authors.id == id),
-                                                 db.Books.timestamp.desc())
-    name = db.session.query(db.Authors).filter(db.Authors.id == id).first().name
+def author(id, page):
+    entries, random, pagination = \
+        fill_indexpage(page,
+                       db.Books,
+                       db.Books.authors.any(db.Authors.id == id),
+                       db.Books.timestamp.desc())
+    name = db.session.query(db.Authors).filter(
+        db.Authors.id == id).first().name
     if entries:
-        return render_title_template('index.html', random=random, entries=entries, title=_(u"Author: %(name)s", name=name))
+        return render_title_template('index.html',
+                                     random=random,
+                                     entries=entries,
+                                     title=_(u"Author: %(name)s",
+                                             name=name))
     else:
-        flash(_(u"Error opening eBook. File does not exist or file is not accessible:"), category="error")
+        flash(
+            _(u"Error opening eBook. "
+                "File does not exist or file is not accessible:"),
+            category="error")
         return redirect(url_for("index"))
 
 
@@ -1063,27 +1287,49 @@ def author(id,page):
 @login_required_if_no_ano
 def series_list():
     if current_user.filter_language() != "all":
-        filter = db.Books.languages.any(db.Languages.lang_code == current_user.filter_language())
+        filter = db.Books.languages.any(
+            db.Languages.lang_code == current_user.filter_language())
     else:
         filter = True
-    entries = db.session.query(db.Series, func.count('books_series_link.book').label('count')).join(
-        db.books_series_link).join(db.Books).filter(
-        filter).group_by('books_series_link.series').order_by(db.Series.sort).all()
-    return render_title_template('list.html', entries=entries, folder='series', title=_(u"Series list"))
+    entries = db.session \
+        .query(db.Series,
+               func.count('books_series_link.book').label('count')) \
+        .join(db.books_series_link) \
+        .join(db.Books) \
+        .filter(filter) \
+        .group_by('books_series_link.series') \
+        .order_by(db.Series.sort) \
+        .all()
+    return render_title_template('list.html',
+                                 entries=entries,
+                                 folder='series',
+                                 title=_(u"Series list"))
 
 
 @app.route("/series/<int:id>/", defaults={'page': 1})
 @app.route("/series/<int:id>/<int:page>'")
 @login_required_if_no_ano
 def series(id, page):
-    entries, random, pagination = fill_indexpage(page, db.Books, db.Books.series.any(db.Series.id == id),
-                                                 db.Books.series_index)
-    name=db.session.query(db.Series).filter(db.Series.id == id).first().name
+    entries, random, pagination = \
+        fill_indexpage(page,
+                       db.Books,
+                       db.Books.series.any(db.Series.id == id),
+                       db.Books.series_index)
+    name = db.session \
+        .query(db.Series) \
+        .filter(db.Series.id == id) \
+        .first().name
     if entries:
-        return render_title_template('index.html', random=random, pagination=pagination, entries=entries,
+        return render_title_template('index.html',
+                                     random=random,
+                                     pagination=pagination,
+                                     entries=entries,
                                      title=_(u"Series: %(serie)s", serie=name))
     else:
-        flash(_(u"Error opening eBook. File does not exist or file is not accessible:"), category="error")
+        flash(
+            _(u"Error opening eBook. "
+                "File does not exist or file is not accessible:"),
+            category="error")
         return redirect(url_for("index"))
 
 
@@ -1109,11 +1355,16 @@ def language_overview():
         if langfound:
             languages[0].name = cur_l.get_language_name(get_locale())
         else:
-            languages[0].name = _(isoLanguages.get(part3=languages[0].lang_code).name)
-    lang_counter = db.session.query(db.books_languages_link,
-                                    func.count('books_languages_link.book').label('bookcount')).group_by(
-        'books_languages_link.lang_code').all()
-    return render_title_template('languages.html', languages=languages, lang_counter=lang_counter,
+            languages[0].name = _(
+                isoLanguages.get(part3=languages[0].lang_code).name)
+    lang_counter = db.session \
+        .query(db.books_languages_link,
+               func.count('books_languages_link.book').label('bookcount')) \
+        .group_by('books_languages_link.lang_code') \
+        .all()
+    return render_title_template('languages.html',
+                                 languages=languages,
+                                 lang_counter=lang_counter,
                                  title=_(u"Available languages"))
 
 
@@ -1121,14 +1372,20 @@ def language_overview():
 @app.route('/language/<name>/page/<int:page>')
 @login_required_if_no_ano
 def language(name, page):
-    entries, random, pagination = fill_indexpage(page, db.Books, db.Books.languages.any(db.Languages.lang_code == name),
-                                                 db.Books.timestamp.desc())
+    entries, random, pagination = \
+        fill_indexpage(page,
+                       db.Books,
+                       db.Books.languages.any(db.Languages.lang_code == name),
+                       db.Books.timestamp.desc())
     try:
         cur_l = LC.parse(name)
         name = cur_l.get_language_name(get_locale())
     except Exception as e:
         name = _(isoLanguages.get(part3=name).name)
-    return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
+    return render_title_template('index.html',
+                                 random=random,
+                                 entries=entries,
+                                 pagination=pagination,
                                  title=_(u"Language: %(name)s", name=name))
 
 
@@ -1136,88 +1393,125 @@ def language(name, page):
 @login_required_if_no_ano
 def category_list():
     if current_user.filter_language() != "all":
-        filter = db.Books.languages.any(db.Languages.lang_code == current_user.filter_language())
+        filter = db.Books.languages.any(
+            db.Languages.lang_code == current_user.filter_language())
     else:
         filter = True
-    entries = db.session.query(db.Tags, func.count('books_tags_link.book').label('count')).join(
-        db.books_tags_link).join(db.Books).filter(
-        filter).group_by('books_tags_link.tag').all()
-    return render_title_template('list.html', entries=entries, folder='category', title=_(u"Category list"))
+    entries = db.session \
+        .query(db.Tags, func.count('books_tags_link.book').label('count')) \
+        .join(db.books_tags_link) \
+        .join(db.Books) \
+        .filter(filter) \
+        .group_by('books_tags_link.tag') \
+        .all()
+    return render_title_template('list.html',
+                                 entries=entries,
+                                 folder='category',
+                                 title=_(u"Category list"))
 
 
 @app.route("/category/<int:id>", defaults={'page': 1})
 @app.route('/category/<int:id>/<int:page>')
 @login_required_if_no_ano
 def category(id, page):
-    entries, random, pagination = fill_indexpage(page, db.Books, db.Books.tags.any(db.Tags.id == id),
-                                                 db.Books.timestamp.desc())
+    entries, random, pagination = \
+        fill_indexpage(page,
+                       db.Books,
+                       db.Books.tags.any(db.Tags.id == id),
+                       db.Books.timestamp.desc())
 
-    name=db.session.query(db.Tags).filter(db.Tags.id == id).first().name
-    return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
+    name = db.session.query(db.Tags).filter(db.Tags.id == id).first().name
+    return render_title_template('index.html',
+                                 random=random,
+                                 entries=entries,
+                                 pagination=pagination,
                                  title=_(u"Category: %(name)s", name=name))
 
 
 @app.route("/ajax/toggleread/<int:id>", methods=['POST'])
 @login_required
 def toggle_read(id):
-    book = ub.session.query(ub.ReadBook).filter(ub.and_(ub.ReadBook.user_id == int(current_user.id),
-                                                                   ub.ReadBook.book_id == id)).first()
+    book = ub.session \
+        .query(ub.ReadBook) \
+        .filter(
+            ub.and_(ub.ReadBook.user_id == int(current_user.id),
+                    ub.ReadBook.book_id == id)) \
+        .first()
     if book:
-        book.is_read=not book.is_read
+        book.is_read = not book.is_read
     else:
-        readBook=ub.ReadBook()
-        readBook.user_id=int(current_user.id)
+        readBook = ub.ReadBook()
+        readBook.user_id = int(current_user.id)
         readBook.book_id = id
-        readBook.is_read=True
-        book=readBook
+        readBook.is_read = True
+        book = readBook
     ub.session.merge(book)
     ub.session.commit()
     return ""
+
 
 @app.route("/book/<int:id>")
 @login_required_if_no_ano
 def show_book(id):
     if current_user.filter_language() != "all":
-        filter = db.Books.languages.any(db.Languages.lang_code == current_user.filter_language())
+        filter = db.Books.languages.any(
+            db.Languages.lang_code == current_user.filter_language())
     else:
         filter = True
-    entries = db.session.query(db.Books).filter(db.Books.id == id).filter(filter).first()
+    entries = db.session.query(db.Books).filter(
+        db.Books.id == id).filter(filter).first()
     if entries:
         for index in range(0, len(entries.languages)):
             try:
-                entries.languages[index].language_name = LC.parse(entries.languages[index].lang_code).get_language_name(
-                    get_locale())
+                entries.languages[index].language_name = \
+                    LC.parse(entries.languages[index].lang_code) \
+                    .get_language_name(get_locale())
             except Exception as e:
                 entries.languages[index].language_name = _(
-                    isoLanguages.get(part3=entries.languages[index].lang_code).name)
-        tmpcc = db.session.query(db.Custom_Columns).filter(db.Custom_Columns.datatype.notin_(db.cc_exceptions)).all()
+                    isoLanguages.get(
+                        part3=entries.languages[index].lang_code).name)
+        tmpcc = db.session.query(db.Custom_Columns).filter(
+            db.Custom_Columns.datatype.notin_(db.cc_exceptions)).all()
 
         if config.config_columns_to_ignore:
-            cc=[]
+            cc = []
             for col in tmpcc:
-                r= re.compile(config.config_columns_to_ignore)
+                r = re.compile(config.config_columns_to_ignore)
                 if r.match(col.label):
                     cc.append(col)
         else:
-            cc=tmpcc
+            cc = tmpcc
         book_in_shelfs = []
-        shelfs = ub.session.query(ub.BookShelf).filter(ub.BookShelf.book_id == id).all()
+        shelfs = ub.session.query(ub.BookShelf).filter(
+            ub.BookShelf.book_id == id).all()
         for entry in shelfs:
             book_in_shelfs.append(entry.shelf)
 
-        #return render_title_template('detail.html', entry=entries, cc=cc,
-                                    # title=entries.title, books_shelfs=book_in_shelfs)
+        # return render_title_template('detail.html', entry=entries, cc=cc,
+            # title=entries.title, books_shelfs=book_in_shelfs)
         if not current_user.is_anonymous():
-            matching_have_read_book=ub.session.query(ub.ReadBook).filter(ub.and_(ub.ReadBook.user_id == int(current_user.id),
-                                                                   ub.ReadBook.book_id == id)).all()
-            have_read=len(matching_have_read_book) > 0 and matching_have_read_book[0].is_read
+            matching_have_read_book = ub.session \
+                .query(ub.ReadBook) \
+                .filter(
+                    ub.and_(ub.ReadBook.user_id == int(current_user.id),
+                            ub.ReadBook.book_id == id)) \
+                .all()
+            have_read = len(matching_have_read_book) > 0 \
+                and matching_have_read_book[0].is_read
         else:
-            have_read=None
+            have_read = None
 
-        return render_title_template('detail.html', entry=entries, cc=cc,
-                                     title=entries.title, books_shelfs=book_in_shelfs, have_read=have_read)
+        return render_title_template('detail.html',
+                                     entry=entries,
+                                     cc=cc,
+                                     title=entries.title,
+                                     books_shelfs=book_in_shelfs,
+                                     have_read=have_read)
     else:
-        flash(_(u"Error opening eBook. File does not exist or file is not accessible:"), category="error")
+        flash(
+            _(u"Error opening eBook. "
+                "File does not exist or file is not accessible:"),
+            category="error")
         return redirect(url_for("index"))
 
 
@@ -1242,7 +1536,10 @@ def stats():
         kindlegen = os.path.join(vendorpath, u"kindlegen")
     versions['KindlegenVersion'] = _('not installed')
     if os.path.exists(kindlegen):
-        p = subprocess.Popen(kindlegen, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+        p = subprocess.Popen(kindlegen,
+                             shell=True,
+                             stdout=subprocess.PIPE,
+                             stderr=subprocess.PIPE,
                              stdin=subprocess.PIPE)
         p.wait()
         for lines in p.stdout.readlines():
@@ -1262,91 +1559,124 @@ def stats():
     versions['pysqlite'] = db.engine.dialect.dbapi.version
     versions['sqlite'] = db.engine.dialect.dbapi.sqlite_version
 
-    return render_title_template('stats.html', bookcounter=counter, authorcounter=authors, versions=versions,
-                                 categorycounter=categorys, seriecounter=series, title=_(u"Statistics"))
+    return render_title_template('stats.html',
+                                 bookcounter=counter,
+                                 authorcounter=authors,
+                                 versions=versions,
+                                 categorycounter=categorys,
+                                 seriecounter=series,
+                                 title=_(u"Statistics"))
+
 
 @app.route("/gdrive/authenticate")
 @login_required
 @admin_required
 def authenticate_google_drive():
-    authUrl=Gauth.Instance().auth.GetAuthUrl()
+    authUrl = Gauth.Instance().auth.GetAuthUrl()
     return redirect(authUrl)
+
 
 @app.route("/gdrive/callback")
 def google_drive_callback():
     auth_code = request.args.get('code')
     credentials = Gauth.Instance().auth.flow.step2_exchange(auth_code)
-    with open('gdrive_credentials' ,'w') as f:
+    with open('gdrive_credentials', 'w') as f:
         f.write(credentials.to_json())
     return redirect(url_for('configuration'))
+
 
 @app.route("/gdrive/watch/subscribe")
 @login_required
 @admin_required
 def watch_gdrive():
     if not config.config_google_drive_watch_changes_response:
-        address = '%sgdrive/watch/callback' % config.config_google_drive_calibre_url_base
-        notification_id=str(uuid4())
-        result = gdriveutils.watchChange(Gdrive.Instance().drive, notification_id,
-                               'web_hook', address, gdrive_watch_callback_token, current_milli_time() + 604800*1000)
-        print (result)
+        address = '%sgdrive/watch/callback' \
+            % config.config_google_drive_calibre_url_base
+        notification_id = str(uuid4())
+        result = gdriveutils.watchChange(Gdrive.Instance().drive,
+                                         notification_id,
+                                         'web_hook',
+                                         address,
+                                         gdrive_watch_callback_token,
+                                         current_milli_time() + 604800*1000)
+        print(result)
         settings = ub.session.query(ub.Settings).first()
-        settings.config_google_drive_watch_changes_response=json.dumps(result)
+        settings.config_google_drive_watch_changes_response = json.dumps(
+            result)
         ub.session.merge(settings)
         ub.session.commit()
         settings = ub.session.query(ub.Settings).first()
         config.loadSettings()
 
-        print (settings.config_google_drive_watch_changes_response)
+        print(settings.config_google_drive_watch_changes_response)
 
     return redirect(url_for('configuration'))
+
 
 @app.route("/gdrive/watch/revoke")
 @login_required
 @admin_required
 def revoke_watch_gdrive():
-    last_watch_response=config.config_google_drive_watch_changes_response
+    last_watch_response = config.config_google_drive_watch_changes_response
     if last_watch_response:
         try:
-            response=gdriveutils.stopChannel(Gdrive.Instance().drive, last_watch_response['id'], last_watch_response['resourceId'])
+            response = gdriveutils.stopChannel(
+                Gdrive.Instance().drive,
+                last_watch_response['id'],
+                last_watch_response['resourceId'])
         except HttpError:
             pass
         settings = ub.session.query(ub.Settings).first()
-        settings.config_google_drive_watch_changes_response=None
+        settings.config_google_drive_watch_changes_response = None
         ub.session.merge(settings)
         ub.session.commit()
         config.loadSettings()
     return redirect(url_for('configuration'))
 
+
 @app.route("/gdrive/watch/callback", methods=['GET', 'POST'])
 def on_received_watch_confirmation():
-    app.logger.info (request.headers)
-    if request.headers.get('X-Goog-Channel-Token') == gdrive_watch_callback_token \
-        and request.headers.get('X-Goog-Resource-State') == 'change' \
-        and request.data:
+    app.logger.info(request.headers)
+    if request.headers.get('X-Goog-Channel-Token') \
+            == gdrive_watch_callback_token \
+            and request.headers.get('X-Goog-Resource-State') == 'change' \
+            and request.data:
 
-        data=request.data
+        data = request.data
 
         def updateMetaData():
-            app.logger.info ('Change received from gdrive')
-            app.logger.info (data)
+            app.logger.info('Change received from gdrive')
+            app.logger.info(data)
             try:
-                j=json.loads(data)
-                app.logger.info ('Getting change details')
-                response=gdriveutils.getChangeById(Gdrive.Instance().drive, j['id'])
-                app.logger.info (response)
+                j = json.loads(data)
+                app.logger.info('Getting change details')
+                response = gdriveutils.getChangeById(
+                    Gdrive.Instance().drive, j['id'])
+                app.logger.info(response)
                 if response:
-                    dbpath = os.path.join(config.config_calibre_dir, "metadata.db")
-                    if not response['deleted'] and response['file']['title'] == 'metadata.db' and response['file']['md5Checksum'] != md5(dbpath):
-                        tmpDir=tempfile.gettempdir()
-                        app.logger.info ('Database file updated')
-                        copyfile (dbpath, tmpDir + "/metadata.db_" + str(current_milli_time()))
-                        app.logger.info ('Backing up existing and downloading updated metadata.db')
-                        gdriveutils.downloadFile(Gdrive.Instance().drive, None, "metadata.db", tmpDir + "/tmp_metadata.db")
-                        app.logger.info ('Setting up new DB')
+                    dbpath = os.path.join(
+                        config.config_calibre_dir, "metadata.db")
+                    if not response['deleted'] \
+                            and response['file']['title'] == 'metadata.db' \
+                            and response['file']['md5Checksum'] != md5(dbpath):
+                        tmpDir = tempfile.gettempdir()
+                        app.logger.info('Database file updated')
+                        copyfile(
+                            dbpath,
+                            tmpDir + "/metadata.db_"
+                            + str(current_milli_time()))
+                        app.logger.info(
+                            'Backing up existing and '
+                            'downloading updated metadata.db')
+                        gdriveutils.downloadFile(
+                            Gdrive.Instance().drive,
+                            None,
+                            "metadata.db",
+                            tmpDir + "/tmp_metadata.db")
+                        app.logger.info('Setting up new DB')
                         os.rename(tmpDir + "/tmp_metadata.db", dbpath)
                         db.setup_db()
-            except Exception, e:
+            except Exception as e:
                 app.logger.exception(e)
 
         updateMetaData()
@@ -1373,7 +1703,8 @@ def shutdown():
         if task == 0:
             showtext['text'] = _(u'Server restarted, please reload page')
         else:
-            showtext['text'] = _(u'Performing shutdown of server, please close window')
+            showtext['text'] = _(
+                u'Performing shutdown of server, please close window')
         return json.dumps(showtext)
     else:
         if task == 2:
@@ -1382,6 +1713,7 @@ def shutdown():
             db.setup_db()
             return json.dumps({})
         abort(404)
+
 
 @app.route("/update")
 @login_required
@@ -1398,15 +1730,27 @@ def search():
     term = request.args.get("query").strip()
     if term:
         if current_user.filter_language() != "all":
-            filter = db.Books.languages.any(db.Languages.lang_code == current_user.filter_language())
+            filter = db.Books.languages.any(
+                db.Languages.lang_code == current_user.filter_language())
         else:
             filter = True
-        entries = db.session.query(db.Books).filter(db.or_(db.Books.tags.any(db.Tags.name.like("%" + term + "%")),
-                                                    db.Books.series.any(db.Series.name.like("%" + term + "%")),
-                                                    db.Books.authors.any(db.Authors.name.like("%" + term + "%")),
-                                                    db.Books.publishers.any(db.Publishers.name.like("%" + term + "%")),
-                                                    db.Books.title.like("%" + term + "%"))).filter(filter).all()
-        return render_title_template('search.html', searchterm=term, entries=entries)
+        entries = db.session \
+            .query(db.Books) \
+            .filter(
+                db.or_(
+                    db.Books.tags.any(db.Tags.name.like("%" + term + "%")),
+                    db.Books.series.any(
+                        db.Series.name.like("%" + term + "%")),
+                    db.Books.authors.any(
+                        db.Authors.name.like("%" + term + "%")),
+                    db.Books.publishers.any(
+                        db.Publishers.name.like("%" + term + "%")),
+                    db.Books.title.like("%" + term + "%"))) \
+            .filter(filter) \
+            .all()
+        return render_title_template('search.html',
+                                     searchterm=term,
+                                     entries=entries)
     else:
         return render_title_template('search.html', searchterm="")
 
@@ -1426,19 +1770,32 @@ def advanced_search():
         author_name = request.args.get("author_name")
         book_title = request.args.get("book_title")
         publisher = request.args.get("publisher")
-        if author_name: author_name = author_name.strip()
-        if book_title: book_title = book_title.strip()
-        if publisher: publisher = publisher.strip()
-        if include_tag_inputs or exclude_tag_inputs or include_series_inputs or exclude_series_inputs or \
-                include_languages_inputs or exclude_languages_inputs or author_name or book_title or publisher:
+        if author_name:
+            author_name = author_name.strip()
+        if book_title:
+            book_title = book_title.strip()
+        if publisher:
+            publisher = publisher.strip()
+        if include_tag_inputs \
+                or exclude_tag_inputs \
+                or include_series_inputs \
+                or exclude_series_inputs \
+                or include_languages_inputs \
+                or exclude_languages_inputs \
+                or author_name \
+                or book_title \
+                or publisher:
             searchterm = []
             searchterm.extend((author_name, book_title, publisher))
-            tag_names = db.session.query(db.Tags).filter(db.Tags.id.in_(include_tag_inputs)).all()
+            tag_names = db.session.query(db.Tags).filter(
+                db.Tags.id.in_(include_tag_inputs)).all()
             searchterm.extend(tag.name for tag in tag_names)
             # searchterm = " + ".join(filter(None, searchterm))
-            serie_names = db.session.query(db.Series).filter(db.Series.id.in_(include_series_inputs)).all()
+            serie_names = db.session.query(db.Series).filter(
+                db.Series.id.in_(include_series_inputs)).all()
             searchterm.extend(serie.name for serie in serie_names)
-            language_names = db.session.query(db.Languages).filter(db.Languages.id.in_(include_languages_inputs)).all()
+            language_names = db.session.query(db.Languages).filter(
+                db.Languages.id.in_(include_languages_inputs)).all()
             for lang in language_names:
                 try:
                     cur_l = LC.parse(lang.lang_code)
@@ -1447,9 +1804,11 @@ def advanced_search():
                     lang.name = _(isoLanguages.get(part3=lang.lang_code).name)
             searchterm.extend(language.name for language in language_names)
             searchterm = " + ".join(filter(None, searchterm))
-            q = q.filter(db.Books.authors.any(db.Authors.name.like("%" + author_name + "%")),
+            q = q.filter(db.Books.authors
+                         .any(db.Authors.name.like("%" + author_name + "%")),
                          db.Books.title.like("%" + book_title + "%"),
-                         db.Books.publishers.any(db.Publishers.name.like("%" + publisher + "%")))
+                         db.Books.publishers
+                         .any(db.Publishers.name.like("%" + publisher + "%")))
             for tag in include_tag_inputs:
                 q = q.filter(db.Books.tags.any(db.Tags.id == tag))
             for tag in exclude_tag_inputs:
@@ -1459,14 +1818,20 @@ def advanced_search():
             for serie in exclude_series_inputs:
                 q = q.filter(not_(db.Books.series.any(db.Series.id == serie)))
             if current_user.filter_language() != "all":
-                q = q.filter(db.Books.languages.any(db.Languages.lang_code == current_user.filter_language()))
+                q = q.filter(db.Books.languages.any(
+                    db.Languages.lang_code == current_user.filter_language()))
             else:
                 for language in include_languages_inputs:
-                    q = q.filter(db.Books.languages.any(db.Languages.id == language))
+                    q = q.filter(
+                        db.Books.languages.any(db.Languages.id == language))
                 for language in exclude_languages_inputs:
-                    q = q.filter(not_(db.Books.series.any(db.Languages.id == language)))
+                    q = q.filter(
+                        not_(db.Books.series.any(db.Languages.id == language)))
             q = q.all()
-            return render_title_template('search.html', searchterm=searchterm, entries=q, title=_(u"search"))
+            return render_title_template('search.html',
+                                         searchterm=searchterm,
+                                         entries=q,
+                                         title=_(u"search"))
     tags = db.session.query(db.Tags).order_by(db.Tags.name).all()
     series = db.session.query(db.Series).order_by(db.Series.name).all()
     if current_user.filter_language() == u"all":
@@ -1479,23 +1844,32 @@ def advanced_search():
                 lang.name = _(isoLanguages.get(part3=lang.lang_code).name)
     else:
         languages = None
-    return render_title_template('search_form.html', tags=tags, languages=languages, series=series, title=_(u"search"))
+    return render_title_template('search_form.html',
+                                 tags=tags,
+                                 languages=languages,
+                                 series=series,
+                                 title=_(u"search"))
 
 
 def get_cover_via_gdrive(cover_path):
-    df=gdriveutils.getFileFromEbooksFolder(Gdrive.Instance().drive, cover_path, 'cover.jpg')
-    if not gdriveutils.session.query(gdriveutils.PermissionAdded).filter(gdriveutils.PermissionAdded.gdrive_id == df['id']).first():
-        permissions=df.GetPermissions()
+    df = gdriveutils.getFileFromEbooksFolder(
+        Gdrive.Instance().drive, cover_path, 'cover.jpg')
+    if not gdriveutils.session \
+            .query(gdriveutils.PermissionAdded) \
+            .filter(gdriveutils.PermissionAdded.gdrive_id == df['id']) \
+            .first():
+        permissions = df.GetPermissions()
         df.InsertPermission({
-                        'type': 'anyone',
-                        'value': 'anyone',
-                        'role': 'reader',
-                        'withLink' : True})
-        permissionAdded=gdriveutils.PermissionAdded()
-        permissionAdded.gdrive_id=df['id']
+            'type': 'anyone',
+            'value': 'anyone',
+            'role': 'reader',
+            'withLink': True})
+        permissionAdded = gdriveutils.PermissionAdded()
+        permissionAdded.gdrive_id = df['id']
         gdriveutils.session.add(permissionAdded)
         gdriveutils.session.commit()
     return df.metadata.get('webContentLink')
+
 
 @app.route("/cover/<path:cover_path>")
 @login_required_if_no_ano
@@ -1503,7 +1877,9 @@ def get_cover(cover_path):
     if config.config_use_google_drive:
         return redirect(get_cover_via_gdrive(cover_path))
     else:
-        return send_from_directory(os.path.join(config.config_calibre_dir, cover_path), "cover.jpg")
+        return send_from_directory(
+            os.path.join(config.config_calibre_dir, cover_path),
+            "cover.jpg")
 
 
 @app.route("/opds/thumb_240_240/<path:book_id>")
@@ -1516,27 +1892,43 @@ def feed_get_cover(book_id):
     if config.config_use_google_drive:
         return redirect(get_cover_via_gdrive(book.path))
     else:
-        return send_from_directory(os.path.join(config.config_calibre_dir, book.path), "cover.jpg")
+        return send_from_directory(
+            os.path.join(config.config_calibre_dir,
+                         book.path),
+            "cover.jpg")
+
 
 def render_read_books(page, are_read, as_xml=False):
-    readBooks=ub.session.query(ub.ReadBook).filter(ub.ReadBook.user_id == int(current_user.id)).filter(ub.ReadBook.is_read == True).all()
-    readBookIds=[x.book_id for x in readBooks]
+    readBooks = ub.session \
+        .query(ub.ReadBook) \
+        .filter(ub.ReadBook.user_id == int(current_user.id)) \
+        .filter(ub.ReadBook.is_read == True) \
+        .all()
+    readBookIds = [x.book_id for x in readBooks]
     if are_read:
         db_filter = db.Books.id.in_(readBookIds)
     else:
         db_filter = ~db.Books.id.in_(readBookIds)
 
-    entries, random, pagination = fill_indexpage(page, db.Books,
-        db_filter, db.Books.timestamp.desc())
+    entries, random, pagination = \
+        fill_indexpage(page,
+                       db.Books,
+                       db_filter,
+                       db.Books.timestamp.desc())
     if as_xml:
-        xml = render_title_template('feed.xml', entries=entries, pagination=pagination)
+        xml = render_title_template(
+            'feed.xml', entries=entries, pagination=pagination)
         response = make_response(xml)
         response.headers["Content-Type"] = "application/xml"
         return response
     else:
-        name=u'Read Books' if are_read else u'Unread Books'
-        return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
-                                 title=_(name, name=name))
+        name = u'Read Books' if are_read else u'Unread Books'
+        return render_title_template('index.html',
+                                     random=random,
+                                     entries=entries,
+                                     pagination=pagination,
+                                     title=_(name, name=name))
+
 
 @app.route("/opds/readbooks/")
 @login_required_if_no_ano
@@ -1544,7 +1936,11 @@ def feed_read_books():
     off = request.args.get("offset")
     if not off:
         off = 0
-    return render_read_books(int(off) / (int(config.config_books_per_page)) + 1, True, True)
+    return render_read_books(
+        int(off) / (int(config.config_books_per_page)) + 1,
+        True,
+        True)
+
 
 @app.route("/readbooks/", defaults={'page': 1})
 @app.route("/readbooks/<int:page>'")
@@ -1552,13 +1948,18 @@ def feed_read_books():
 def read_books(page):
     return render_read_books(page, True)
 
+
 @app.route("/opds/unreadbooks/")
 @login_required_if_no_ano
 def feed_unread_books():
     off = request.args.get("offset")
     if not off:
         off = 0
-    return render_read_books(int(off) / (int(config.config_books_per_page)) + 1, False, True)
+    return render_read_books(
+        int(off) / (int(config.config_books_per_page)) + 1,
+        False,
+        True)
+
 
 @app.route("/unreadbooks/", defaults={'page': 1})
 @app.route("/unreadbooks/<int:page>'")
@@ -1566,21 +1967,28 @@ def feed_unread_books():
 def unread_books(page):
     return render_read_books(page, False)
 
+
 @app.route("/read/<int:book_id>/<format>")
 @login_required_if_no_ano
 def read_book(book_id, format):
     book = db.session.query(db.Books).filter(db.Books.id == book_id).first()
     if book:
-        book_dir = os.path.join(config.get_main_dir, "cps", "static", str(book_id))
+        book_dir = os.path.join(
+            config.get_main_dir, "cps", "static", str(book_id))
         if not os.path.exists(book_dir):
             os.mkdir(book_dir)
         if format.lower() == "epub":
             # check if mimetype file is exists
             mime_file = str(book_id) + "/mimetype"
             if not os.path.exists(mime_file):
-                epub_file = os.path.join(config.config_calibre_dir, book.path, book.data[0].name) + ".epub"
+                epub_file = os.path.join(
+                    config.config_calibre_dir,
+                    book.path,
+                    book.data[0].name) + ".epub"
                 if not os.path.isfile(epub_file):
-                    raise ValueError('Error opening eBook. File does not exist: ', epub_file)
+                    raise ValueError(
+                        'Error opening eBook. File does not exist: ',
+                        epub_file)
                 zfile = zipfile.ZipFile(epub_file)
                 for name in zfile.namelist():
                     (dirName, fileName) = os.path.split(name)
@@ -1598,32 +2006,53 @@ def read_book(book_id, format):
                         fd.write(zfile.read(name))
                         fd.close()
                 zfile.close()
-            return render_title_template('read.html', bookid=book_id, title=_(u"Read a Book"))
+            return render_title_template('read.html',
+                                         bookid=book_id,
+                                         title=_(u"Read a Book"))
         elif format.lower() == "pdf":
             all_name = str(book_id) + "/" + book.data[0].name + ".pdf"
             tmp_file = os.path.join(book_dir, book.data[0].name) + ".pdf"
             if not os.path.exists(tmp_file):
-                pdf_file = os.path.join(config.config_calibre_dir, book.path, book.data[0].name) + ".pdf"
+                pdf_file = os.path.join(
+                    config.config_calibre_dir,
+                    book.path,
+                    book.data[0].name) + ".pdf"
                 copyfile(pdf_file, tmp_file)
-            return render_title_template('readpdf.html', pdffile=all_name, title=_(u"Read a Book"))
+            return render_title_template('readpdf.html',
+                                         pdffile=all_name,
+                                         title=_(u"Read a Book"))
         elif format.lower() == "txt":
             all_name = str(book_id) + "/" + book.data[0].name + ".txt"
             tmp_file = os.path.join(book_dir, book.data[0].name) + ".txt"
             if not os.path.exists(all_name):
-                txt_file = os.path.join(config.config_calibre_dir, book.path, book.data[0].name) + ".txt"
+                txt_file = os.path.join(
+                    config.config_calibre_dir,
+                    book.path,
+                    book.data[0].name) + ".txt"
                 copyfile(txt_file, tmp_file)
-            return render_title_template('readtxt.html', txtfile=all_name, title=_(u"Read a Book"))
+            return render_title_template('readtxt.html',
+                                         txtfile=all_name,
+                                         title=_(u"Read a Book"))
         elif format.lower() == "cbr":
             all_name = str(book_id) + "/" + book.data[0].name + ".cbr"
             tmp_file = os.path.join(book_dir, book.data[0].name) + ".cbr"
             if not os.path.exists(all_name):
-                cbr_file = os.path.join(config.config_calibre_dir, book.path, book.data[0].name) + ".cbr"
+                cbr_file = os.path.join(
+                    config.config_calibre_dir,
+                    book.path,
+                    book.data[0].name) + ".cbr"
                 copyfile(cbr_file, tmp_file)
-            return render_title_template('readcbr.html', comicfile=all_name, title=_(u"Read a Book"))
+            return render_title_template('readcbr.html',
+                                         comicfile=all_name,
+                                         title=_(u"Read a Book"))
 
     else:
-        flash(_(u"Error opening eBook. File does not exist or file is not accessible:"), category="error")
+        flash(
+            _(u"Error opening eBook. "
+                "File does not exist or file is not accessible:"),
+            category="error")
         return redirect(url_for("index"))
+
 
 @app.route("/download/<int:book_id>/<format>")
 @login_required_if_no_ano
@@ -1631,36 +2060,46 @@ def read_book(book_id, format):
 def get_download_link(book_id, format):
     format = format.split(".")[0]
     book = db.session.query(db.Books).filter(db.Books.id == book_id).first()
-    data = db.session.query(db.Data).filter(db.Data.book == book.id).filter(db.Data.format == format.upper()).first()
+    data = db.session.query(db.Data).filter(db.Data.book == book.id).filter(
+        db.Data.format == format.upper()).first()
     if data:
-        # collect downloaded books only for registered user and not for anonymous user
+        # collect downloaded books only for registered user and not for
+        # anonymous user
         if current_user.is_authenticated:
             helper.update_download(book_id, int(current_user.id))
         file_name = book.title
         if len(book.authors) > 0:
             file_name = book.authors[0].name + '_' + file_name
         file_name = helper.get_valid_filename(file_name)
-        headers={}
+        headers = {}
         try:
             headers["Content-Type"] = mimetypes.types_map['.' + format]
         except:
             pass
-        headers["Content-Disposition"] = "attachment; filename*=UTF-8''%s.%s" % (urllib.quote(file_name.encode('utf-8')), format)
+        headers["Content-Disposition"] = "attachment; filename*=UTF-8''%s.%s" \
+            % (urllib.quote(file_name.encode('utf-8')), format)
         if config.config_use_google_drive:
-            df=gdriveutils.getFileFromEbooksFolder(Gdrive.Instance().drive, book.path, '%s.%s' % (data.name, format))
+            df = gdriveutils.getFileFromEbooksFolder(
+                Gdrive.Instance().drive, book.path, '%s.%s'
+                % (data.name, format))
             return do_gdrive_download(df, headers)
         else:
-            response = make_response(send_from_directory(os.path.join(config.config_calibre_dir, book.path), data.name + "." + format))
-        response.headers=headers
+            response = make_response(send_from_directory(
+                os.path.join(config.config_calibre_dir,
+                             book.path),
+                data.name + "." + format))
+        response.headers = headers
         return response
     else:
         abort(404)
+
 
 @app.route("/download/<int:book_id>/<format>/<anyname>")
 @login_required_if_no_ano
 @download_required
 def get_download_link_ext(book_id, format, anyname):
     return get_download_link(book_id, format)
+
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -1671,12 +2110,16 @@ def register():
 
     if request.method == "POST":
         to_save = request.form.to_dict()
-        if not to_save["nickname"] or not to_save["email"] or not to_save["password"]:
+        if not to_save["nickname"] \
+                or not to_save["email"] \
+                or not to_save["password"]:
             flash(_(u"Please fill out all fields!"), category="error")
             return render_title_template('register.html', title=_(u"register"))
 
-        existing_user = ub.session.query(ub.User).filter(ub.User.nickname == to_save["nickname"]).first()
-        existing_email = ub.session.query(ub.User).filter(ub.User.email == to_save["email"]).first()
+        existing_user = ub.session.query(ub.User).filter(
+            ub.User.nickname == to_save["nickname"]).first()
+        existing_email = ub.session.query(ub.User).filter(
+            ub.User.email == to_save["email"]).first()
         if not existing_user and not existing_email:
             content = ub.User()
             content.password = generate_password_hash(to_save["password"])
@@ -1688,12 +2131,19 @@ def register():
                 ub.session.commit()
             except Exception as e:
                 ub.session.rollback()
-                flash(_(u"An unknown error occured. Please try again later."), category="error")
-                return render_title_template('register.html', title=_(u"register"))
-            flash("Your account has been created. Please login.", category="success")
+                flash(
+                    _(u"An unknown error occured. "
+                        "Please try again later."), category="error")
+                return render_title_template('register.html',
+                                             title=_(u"register"))
+            flash(
+                "Your account has been created. Please login.",
+                category="success")
             return redirect(url_for('login'))
         else:
-            flash(_(u"This username or email address is already in use."), category="error")
+            flash(
+                _(u"This username or email address is already in use."),
+                category="error")
             return render_title_template('register.html', title=_(u"register"))
 
     return render_title_template('register.html', title=_(u"register"))
@@ -1707,11 +2157,13 @@ def login():
         return redirect(url_for('index'))
     if request.method == "POST":
         form = request.form.to_dict()
-        user = ub.session.query(ub.User).filter(ub.User.nickname == form['username'].strip()).first()
+        user = ub.session.query(ub.User).filter(
+            ub.User.nickname == form['username'].strip()).first()
 
         if user and check_password_hash(user.password, form['password']):
             login_user(user, remember=True)
-            flash(_(u"you are now logged in as: '%(nickname)s'", nickname=user.nickname), category="success")
+            flash(_(u"you are now logged in as: '%(nickname)s'",
+                    nickname=user.nickname), category="success")
             # test=
             return redirect(url_for("index"))
         else:
@@ -1735,17 +2187,25 @@ def logout():
 def send_to_kindle(book_id):
     settings = ub.get_mail_settings()
     if settings.get("mail_server", "mail.example.com") == "mail.example.com":
-        flash(_(u"Please configure the SMTP mail settings first..."), category="error")
+        flash(
+            _(u"Please configure the SMTP mail settings first..."),
+            category="error")
     elif current_user.kindle_mail:
-        result = helper.send_mail(book_id, current_user.kindle_mail, config.config_calibre_dir)
+        result = helper.send_mail(
+            book_id, current_user.kindle_mail, config.config_calibre_dir)
         if result is None:
-            flash(_(u"Book successfully send to %(kindlemail)s", kindlemail=current_user.kindle_mail),
+            flash(_(u"Book successfully send to %(kindlemail)s",
+                  kindlemail=current_user.kindle_mail),
                   category="success")
             helper.update_download(book_id, int(current_user.id))
         else:
-            flash(_(u"There was an error sending this book: %(res)s", res=result), category="error")
+            flash(
+                _(u"There was an error sending this book: %(res)s",res=result),
+                category="error")
     else:
-        flash(_(u"Please configure your kindle email address first..."), category="error")
+        flash(
+            _(u"Please configure your kindle email address first..."),
+            category="error")
     return redirect(request.environ["HTTP_REFERER"])
 
 
@@ -1754,11 +2214,17 @@ def send_to_kindle(book_id):
 def add_to_shelf(shelf_id, book_id):
     shelf = ub.session.query(ub.Shelf).filter(ub.Shelf.id == shelf_id).first()
     if not shelf.is_public and not shelf.user_id == int(current_user.id):
-        app.logger.info("Sorry you are not allowed to add a book to the the shelf: %s" % shelf.name)
+        app.logger.info(
+            "Sorry you are not allowed to add a book to the the shelf: %s"
+            % shelf.name)
         return redirect(url_for('index'))
-    maxOrder = ub.session.query(func.max(ub.BookShelf.order)).filter(ub.BookShelf.shelf == shelf_id).first()
-    book_in_shelf=ub.session.query(ub.BookShelf).filter(ub.BookShelf.shelf == shelf_id,
-                                          ub.BookShelf.book_id == book_id).first()
+    maxOrder = ub.session.query(func.max(ub.BookShelf.order)).filter(
+        ub.BookShelf.shelf == shelf_id).first()
+    book_in_shelf = ub.session \
+        .query(ub.BookShelf) \
+        .filter(ub.BookShelf.shelf == shelf_id,
+                ub.BookShelf.book_id == book_id) \
+        .first()
     if book_in_shelf:
         app.logger.info("Book is already part of the shelf: %s" % shelf.name)
         return redirect(url_for('index'))
@@ -1766,14 +2232,16 @@ def add_to_shelf(shelf_id, book_id):
         maxOrder = 0
     else:
         maxOrder = maxOrder[0]
-    if (shelf.is_public and current_user.role_edit_shelfs()) or not shelf.is_public:
+    if (shelf.is_public and current_user.role_edit_shelfs()) \
+            or not shelf.is_public:
         ins = ub.BookShelf(shelf=shelf.id, book_id=book_id, order=maxOrder + 1)
         ub.session.add(ins)
         ub.session.commit()
-        flash(_(u"Book has been added to shelf: %(sname)s", sname=shelf.name), category="success")
+        flash(_(u"Book has been added to shelf: %(sname)s",
+                sname=shelf.name), category="success")
         return redirect(request.environ["HTTP_REFERER"])
     else:
-        app.logger.info("User is not allowed to edit public shelfs" )
+        app.logger.info("User is not allowed to edit public shelfs")
         return redirect(url_for('index'))
 
 
@@ -1783,14 +2251,20 @@ def remove_from_shelf(shelf_id, book_id):
     shelf = ub.session.query(ub.Shelf).filter(ub.Shelf.id == shelf_id).first()
     if not shelf.is_public and not shelf.user_id == int(current_user.id) \
             or (shelf.is_public and current_user.role_edit_shelfs()):
-        app.logger.info("Sorry you are not allowed to remove a book from this shelf: %s" % shelf.name)
+        app.logger.info(
+            "Sorry you are not allowed to remove a book from this shelf: %s"
+            % shelf.name)
         return redirect(url_for('index'))
 
-    book_shelf = ub.session.query(ub.BookShelf).filter(ub.BookShelf.shelf == shelf_id,
-                                                       ub.BookShelf.book_id == book_id).first()
+    book_shelf = ub.session \
+        .query(ub.BookShelf) \
+        .filter(ub.BookShelf.shelf == shelf_id,
+                ub.BookShelf.book_id == book_id) \
+        .first()
     ub.session.delete(book_shelf)
     ub.session.commit()
-    flash(_(u"Book has been removed from shelf: %(sname)s", sname=shelf.name), category="success")
+    flash(_(u"Book has been removed from shelf: %(sname)s",
+            sname=shelf.name), category="success")
     return redirect(request.environ["HTTP_REFERER"])
 
 
@@ -1804,21 +2278,35 @@ def create_shelf():
             shelf.is_public = 1
         shelf.name = to_save["title"]
         shelf.user_id = int(current_user.id)
-        existing_shelf = ub.session.query(ub.Shelf).filter(
-            or_((ub.Shelf.name == to_save["title"]) & (ub.Shelf.is_public == 1),
-                (ub.Shelf.name == to_save["title"]) & (ub.Shelf.user_id == int(current_user.id)))).first()
+        existing_shelf = ub.session \
+            .query(ub.Shelf) \
+            .filter(
+                or_(
+                    (ub.Shelf.name == to_save["title"])
+                    & (ub.Shelf.is_public == 1),
+                    (ub.Shelf.name == to_save["title"])
+                    & (ub.Shelf.user_id == int(current_user.id))
+                    )) \
+            .first()
         if existing_shelf:
-            flash(_(u"A shelf with the name '%(title)s' already exists.", title=to_save["title"]), category="error")
+            flash(_(u"A shelf with the name '%(title)s' already exists.",
+                    title=to_save["title"]), category="error")
         else:
             try:
                 ub.session.add(shelf)
                 ub.session.commit()
-                flash(_(u"Shelf %(title)s created", title=to_save["title"]), category="success")
+                flash(
+                    _(u"Shelf %(title)s created", title=to_save["title"]),
+                    category="success")
             except Exception as e:
                 flash(_(u"There was an error"), category="error")
-        return render_title_template('shelf_edit.html', shelf=shelf, title=_(u"create a shelf"))
+        return render_title_template('shelf_edit.html',
+                                     shelf=shelf,
+                                     title=_(u"create a shelf"))
     else:
-        return render_title_template('shelf_edit.html', shelf=shelf, title=_(u"create a shelf"))
+        return render_title_template('shelf_edit.html',
+                                     shelf=shelf,
+                                     title=_(u"create a shelf"))
 
 
 @app.route("/shelf/edit/<int:shelf_id>", methods=["GET", "POST"])
@@ -1827,12 +2315,20 @@ def edit_shelf(shelf_id):
     shelf = ub.session.query(ub.Shelf).filter(ub.Shelf.id == shelf_id).first()
     if request.method == "POST":
         to_save = request.form.to_dict()
-        existing_shelf = ub.session.query(ub.Shelf).filter(
-            or_((ub.Shelf.name == to_save["title"]) & (ub.Shelf.is_public == 1),
-                (ub.Shelf.name == to_save["title"]) & (ub.Shelf.user_id == int(current_user.id)))).filter(
-            ub.Shelf.id != shelf_id).first()
+        existing_shelf = ub.session \
+            .query(ub.Shelf) \
+            .filter(
+                or_(
+                    (ub.Shelf.name == to_save["title"])
+                    & (ub.Shelf.is_public == 1),
+                    (ub.Shelf.name == to_save["title"])
+                    & (ub.Shelf.user_id == int(current_user.id))
+                    )) \
+            .filter(ub.Shelf.id != shelf_id) \
+            .first()
         if existing_shelf:
-            flash(_(u"A shelf with the name '%(title)s' already exists.", title=to_save["title"]), category="error")
+            flash(_(u"A shelf with the name '%(title)s' already exists.",
+                    title=to_save["title"]), category="error")
         else:
             shelf.name = to_save["title"]
             if "is_public" in to_save:
@@ -1841,32 +2337,51 @@ def edit_shelf(shelf_id):
                 shelf.is_public = 0
             try:
                 ub.session.commit()
-                flash(_(u"Shelf %(title)s changed", title=to_save["title"]), category="success")
+                flash(
+                    _(u"Shelf %(title)s changed", title=to_save["title"]),
+                    category="success")
             except Exception as e:
                 flash(_(u"There was an error"), category="error")
-        return render_title_template('shelf_edit.html', shelf=shelf, title=_(u"Edit a shelf"))
+        return render_title_template('shelf_edit.html',
+                                     shelf=shelf,
+                                     title=_(u"Edit a shelf"))
     else:
-        return render_title_template('shelf_edit.html', shelf=shelf, title=_(u"Edit a shelf"))
+        return render_title_template('shelf_edit.html',
+                                     shelf=shelf,
+                                     title=_(u"Edit a shelf"))
 
 
 @app.route("/shelf/delete/<int:shelf_id>")
 @login_required
 def delete_shelf(shelf_id):
-    cur_shelf = ub.session.query(ub.Shelf).filter(ub.Shelf.id == shelf_id).first()
+    cur_shelf = ub.session.query(ub.Shelf).filter(
+        ub.Shelf.id == shelf_id).first()
     if current_user.role_admin():
-        deleted = ub.session.query(ub.Shelf).filter(ub.Shelf.id == shelf_id).delete()
+        deleted = ub.session.query(ub.Shelf).filter(
+            ub.Shelf.id == shelf_id).delete()
     else:
-        if not cur_shelf.is_public and not cur_shelf.user_id == int(current_user.id) \
+        if not cur_shelf.is_public \
+                and not cur_shelf.user_id == int(current_user.id) \
                 or (cur_shelf.is_public and current_user.role_edit_shelfs()):
-            deleted = ub.session.query(ub.Shelf).filter(ub.or_(ub.and_(ub.Shelf.user_id == int(current_user.id),
-                                                                   ub.Shelf.id == shelf_id),
-                                                           ub.and_(ub.Shelf.is_public == 1,
-                                                                   ub.Shelf.id == shelf_id))).delete()
+            deleted = ub.session \
+                .query(ub.Shelf) \
+                .filter(
+                    ub.or_(
+                        ub.and_(ub.Shelf.user_id == int(current_user.id),
+                                ub.Shelf.id == shelf_id),
+                        ub.and_(ub.Shelf.is_public == 1,
+                                ub.Shelf.id == shelf_id)
+                        )) \
+                .delete()
 
     if deleted:
-        ub.session.query(ub.BookShelf).filter(ub.BookShelf.shelf == shelf_id).delete()
+        ub.session.query(ub.BookShelf).filter(
+            ub.BookShelf.shelf == shelf_id).delete()
         ub.session.commit()
-        app.logger.info(_(u"successfully deleted shelf %(name)s", name=cur_shelf.name, category="success"))
+        app.logger.info(
+            _(u"successfully deleted shelf %(name)s",
+                name=cur_shelf.name,
+                category="success"))
     return redirect(url_for('index'))
 
 
@@ -1874,21 +2389,37 @@ def delete_shelf(shelf_id):
 @login_required_if_no_ano
 def show_shelf(shelf_id):
     if current_user.is_anonymous():
-        shelf = ub.session.query(ub.Shelf).filter(ub.Shelf.is_public == 1, ub.Shelf.id == shelf_id).first()
+        shelf = ub.session.query(ub.Shelf).filter(
+            ub.Shelf.is_public == 1, ub.Shelf.id == shelf_id).first()
     else:
-        shelf = ub.session.query(ub.Shelf).filter(ub.or_(ub.and_(ub.Shelf.user_id == int(current_user.id),
-                                                                 ub.Shelf.id == shelf_id),
-                                                         ub.and_(ub.Shelf.is_public == 1,
-                                                                 ub.Shelf.id == shelf_id))).first()
+        shelf = ub.session \
+            .query(ub.Shelf) \
+            .filter(
+                ub.or_(
+                    ub.and_(ub.Shelf.user_id == int(current_user.id),
+                            ub.Shelf.id == shelf_id),
+                    ub.and_(ub.Shelf.is_public == 1,
+                            ub.Shelf.id == shelf_id)
+                    )) \
+            .first()
     result = list()
     if shelf:
-        books_in_shelf = ub.session.query(ub.BookShelf).filter(ub.BookShelf.shelf == shelf_id).order_by(
-            ub.BookShelf.order.asc()).all()
+        books_in_shelf = ub.session \
+            .query(ub.BookShelf) \
+            .filter(ub.BookShelf.shelf == shelf_id) \
+            .order_by(ub.BookShelf.order.asc()) \
+            .all()
         for book in books_in_shelf:
-            cur_book = db.session.query(db.Books).filter(db.Books.id == book.book_id).first()
+            cur_book = db.session \
+                .query(db.Books) \
+                .filter(db.Books.id == book.book_id) \
+                .first()
             result.append(cur_book)
 
-    return render_title_template('shelf.html', entries=result, title=_(u"Shelf: '%(name)s'", name=shelf.name),
+    return render_title_template('shelf.html',
+                                 entries=result,
+                                 title=_(u"Shelf: '%(name)s'",
+                                         name=shelf.name),
                                  shelf=shelf)
 
 
@@ -1897,35 +2428,55 @@ def show_shelf(shelf_id):
 def order_shelf(shelf_id):
     if request.method == "POST":
         to_save = request.form.to_dict()
-        books_in_shelf = ub.session.query(ub.BookShelf).filter(ub.BookShelf.shelf == shelf_id).order_by(
-            ub.BookShelf.order.asc()).all()
+        books_in_shelf = ub.session \
+            .query(ub.BookShelf) \
+            .filter(ub.BookShelf.shelf == shelf_id) \
+            .order_by(ub.BookShelf.order.asc()) \
+            .all()
         counter = 0
         for book in books_in_shelf:
             setattr(book, 'order', to_save[str(book.book_id)])
             counter += 1
         ub.session.commit()
     if current_user.is_anonymous():
-        shelf = ub.session.query(ub.Shelf).filter(ub.Shelf.is_public == 1, ub.Shelf.id == shelf_id).first()
+        shelf = ub.session.query(ub.Shelf).filter(
+            ub.Shelf.is_public == 1, ub.Shelf.id == shelf_id).first()
     else:
-        shelf = ub.session.query(ub.Shelf).filter(ub.or_(ub.and_(ub.Shelf.user_id == int(current_user.id),
-                                                                 ub.Shelf.id == shelf_id),
-                                                         ub.and_(ub.Shelf.is_public == 1,
-                                                                 ub.Shelf.id == shelf_id))).first()
+        shelf = ub.session \
+            .query(ub.Shelf) \
+            .filter(
+                ub.or_(
+                    ub.and_(ub.Shelf.user_id == int(current_user.id),
+                            ub.Shelf.id == shelf_id),
+                    ub.and_(ub.Shelf.is_public == 1,
+                            ub.Shelf.id == shelf_id)
+                    )) \
+            .first()
     result = list()
     if shelf:
-        books_in_shelf2 = ub.session.query(ub.BookShelf).filter(ub.BookShelf.shelf == shelf_id) \
-            .order_by(ub.BookShelf.order.asc()).all()
+        books_in_shelf2 = ub.session \
+            .query(ub.BookShelf) \
+            .filter(ub.BookShelf.shelf == shelf_id) \
+            .order_by(ub.BookShelf.order.asc()) \
+            .all()
         for book in books_in_shelf2:
-            cur_book = db.session.query(db.Books).filter(db.Books.id == book.book_id).first()
+            cur_book = db.session \
+                .query(db.Books) \
+                .filter(db.Books.id == book.book_id) \
+                .first()
             result.append(cur_book)
-    return render_title_template('shelf_order.html', entries=result,
-                                 title=_(u"Change order of Shelf: '%(name)s'", name=shelf.name), shelf=shelf)
+    return render_title_template('shelf_order.html',
+                                 entries=result,
+                                 title=_(u"Change order of Shelf: '%(name)s'",
+                                         name=shelf.name),
+                                 shelf=shelf)
 
 
 @app.route("/me", methods=["GET", "POST"])
 @login_required
 def profile():
-    content = ub.session.query(ub.User).filter(ub.User.id == int(current_user.id)).first()
+    content = ub.session.query(ub.User).filter(
+        ub.User.id == int(current_user.id)).first()
     downloads = list()
     languages = db.session.query(db.Languages).all()
     for lang in languages:
@@ -1936,11 +2487,17 @@ def profile():
             lang.name = _(isoLanguages.get(part3=lang.lang_code).name)
     translations = babel.list_translations() + [LC('en')]
     for book in content.downloads:
-        downloadBook = db.session.query(db.Books).filter(db.Books.id == book.book_id).first()
+        downloadBook = db.session.query(db.Books).filter(
+            db.Books.id == book.book_id).first()
         if downloadBook:
-            downloads.append(db.session.query(db.Books).filter(db.Books.id == book.book_id).first())
+            downloads.append(
+                db.session
+                    .query(db.Books)
+                    .filter(db.Books.id == book.book_id)
+                    .first())
         else:
-            ub.session.query(ub.Downloads).filter(book.book_id == ub.Downloads.book_id).delete()
+            ub.session.query(ub.Downloads).filter(
+                book.book_id == ub.Downloads.book_id).delete()
             ub.session.commit()
     if request.method == "POST":
         to_save = request.form.to_dict()
@@ -1948,7 +2505,8 @@ def profile():
         if current_user.role_passwd() or current_user.role_admin():
             if to_save["password"]:
                 content.password = generate_password_hash(to_save["password"])
-        if "kindle_mail" in to_save and to_save["kindle_mail"] != content.kindle_mail:
+        if "kindle_mail" in to_save \
+                and to_save["kindle_mail"] != content.kindle_mail:
             content.kindle_mail = to_save["kindle_mail"]
         if to_save["email"] and to_save["email"] != content.email:
             content.email = to_save["email"]
@@ -1983,13 +2541,23 @@ def profile():
             ub.session.commit()
         except IntegrityError:
             ub.session.rollback()
-            flash(_(u"Found an existing account for this email address."), category="error")
-            return render_title_template("user_edit.html", content=content, downloads=downloads,
-                                         title=_(u"%(name)s's profile", name=current_user.nickname))
+            flash(
+                _(u"Found an existing account for this email address."),
+                category="error")
+            return render_title_template("user_edit.html",
+                                         content=content,
+                                         downloads=downloads,
+                                         title=_(u"%(name)s's profile",
+                                                 name=current_user.nickname))
         flash(_(u"Profile updated"), category="success")
-    return render_title_template("user_edit.html", translations=translations, profile=1, languages=languages,
+    return render_title_template("user_edit.html",
+                                 translations=translations,
+                                 profile=1,
+                                 languages=languages,
                                  content=content,
-                                 downloads=downloads, title=_(u"%(name)s's profile", name=current_user.nickname))
+                                 downloads=downloads,
+                                 title=_(u"%(name)s's profile",
+                                         name=current_user.nickname))
 
 
 @app.route("/admin/view")
@@ -1999,8 +2567,13 @@ def admin():
     commit = '$Format:%cI$'
     content = ub.session.query(ub.User).all()
     settings = ub.session.query(ub.Settings).first()
-    return render_title_template("admin.html", content=content, email=settings, config=config, commit=commit,
-                                 development=ub.DEVELOPMENT, title=_(u"Admin page"))
+    return render_title_template("admin.html",
+                                 content=content,
+                                 email=settings,
+                                 config=config,
+                                 commit=commit,
+                                 development=ub.DEVELOPMENT,
+                                 title=_(u"Admin page"))
 
 
 @app.route("/admin/config", methods=["GET", "POST"])
@@ -2028,33 +2601,51 @@ def configuration_helper(origin):
             if content.config_calibre_dir != to_save["config_calibre_dir"]:
                 content.config_calibre_dir = to_save["config_calibre_dir"]
                 db_change = True
-        ##Google drive setup
-        create_new_yaml=False
+        # Google drive setup
+        create_new_yaml = False
         if "config_google_drive_client_id" in to_save:
-            if content.config_google_drive_client_id != to_save["config_google_drive_client_id"]:
-                content.config_google_drive_client_id = to_save["config_google_drive_client_id"]
-                create_new_yaml=True
+            if content.config_google_drive_client_id \
+                    != to_save["config_google_drive_client_id"]:
+                content.config_google_drive_client_id = to_save[
+                    "config_google_drive_client_id"]
+                create_new_yaml = True
         if "config_google_drive_client_secret" in to_save:
-            if content.config_google_drive_client_secret != to_save["config_google_drive_client_secret"]:
-                content.config_google_drive_client_secret = to_save["config_google_drive_client_secret"]
-                create_new_yaml=True
+            if content.config_google_drive_client_secret \
+                    != to_save["config_google_drive_client_secret"]:
+                content.config_google_drive_client_secret = to_save[
+                    "config_google_drive_client_secret"]
+                create_new_yaml = True
         if "config_google_drive_calibre_url_base" in to_save:
-            if content.config_google_drive_calibre_url_base != to_save["config_google_drive_calibre_url_base"]:
-                content.config_google_drive_calibre_url_base = to_save["config_google_drive_calibre_url_base"]
-                create_new_yaml=True
-        if ("config_use_google_drive" in to_save and not content.config_use_google_drive) or ("config_use_google_drive" not in to_save and content.config_use_google_drive):
-            content.config_use_google_drive = "config_use_google_drive" in to_save
+            if content.config_google_drive_calibre_url_base \
+                    != to_save["config_google_drive_calibre_url_base"]:
+                content.config_google_drive_calibre_url_base = to_save[
+                    "config_google_drive_calibre_url_base"]
+                create_new_yaml = True
+        if ("config_use_google_drive" in to_save
+                and not content.config_use_google_drive) \
+                or ("config_use_google_drive" not in to_save
+                    and content.config_use_google_drive):
+            content.config_use_google_drive = \
+                "config_use_google_drive" in to_save
             db_change = True
             if not content.config_use_google_drive:
-                create_new_yaml=False
+                create_new_yaml = False
         if create_new_yaml:
             with open('settings.yaml', 'w') as f:
-                with open('gdrive_template.yaml' ,'r') as t:
-                    f.write(t.read() % {'client_id' : content.config_google_drive_client_id, 'client_secret' : content.config_google_drive_client_secret,
-                     "redirect_uri" : content.config_google_drive_calibre_url_base + 'gdrive/callback'})
+                with open('gdrive_template.yaml', 'r') as t:
+                    f.write(
+                        t.read()
+                        % {'client_id': content.config_google_drive_client_id,
+                           'client_secret':
+                            content.config_google_drive_client_secret,
+                           "redirect_uri":
+                            content.config_google_drive_calibre_url_base
+                            + 'gdrive/callback'})
         if "config_google_drive_folder" in to_save:
-            if content.config_google_drive_folder != to_save["config_google_drive_folder"]:
-                content.config_google_drive_folder = to_save["config_google_drive_folder"]
+            if content.config_google_drive_folder \
+                    != to_save["config_google_drive_folder"]:
+                content.config_google_drive_folder = \
+                    to_save["config_google_drive_folder"]
                 db_change = True
         ##
         if "config_port" in to_save:
@@ -2062,9 +2653,11 @@ def configuration_helper(origin):
                 content.config_port = int(to_save["config_port"])
                 reboot_required = True
         if "config_calibre_web_title" in to_save:
-            content.config_calibre_web_title = to_save["config_calibre_web_title"]
+            content.config_calibre_web_title = to_save[
+                "config_calibre_web_title"]
         if "config_columns_to_ignore" in to_save:
-            content.config_columns_to_ignore = to_save["config_columns_to_ignore"]
+            content.config_columns_to_ignore = to_save[
+                "config_columns_to_ignore"]
         if "config_title_regex" in to_save:
             if content.config_title_regex != to_save["config_title_regex"]:
                 content.config_title_regex = to_save["config_title_regex"]
@@ -2074,33 +2667,50 @@ def configuration_helper(origin):
         if "config_random_books" in to_save:
             content.config_random_books = int(to_save["config_random_books"])
         if "config_books_per_page" in to_save:
-            content.config_books_per_page = int(to_save["config_books_per_page"])
+            content.config_books_per_page = int(
+                to_save["config_books_per_page"])
         content.config_uploading = 0
         content.config_anonbrowse = 0
         content.config_public_reg = 0
-        if "config_uploading" in to_save and to_save["config_uploading"] == "on":
+        if "config_uploading" in to_save \
+                and to_save["config_uploading"] == "on":
             content.config_uploading = 1
-        if "config_anonbrowse" in to_save and to_save["config_anonbrowse"] == "on":
+        if "config_anonbrowse" in to_save \
+                and to_save["config_anonbrowse"] == "on":
             content.config_anonbrowse = 1
-        if "config_public_reg" in to_save and to_save["config_public_reg"] == "on":
+        if "config_public_reg" in to_save \
+                and to_save["config_public_reg"] == "on":
             content.config_public_reg = 1
 
         content.config_default_role = 0
         if "admin_role" in to_save:
-            content.config_default_role = content.config_default_role + ub.ROLE_ADMIN
+            content.config_default_role = content.config_default_role + \
+                ub.ROLE_ADMIN
         if "download_role" in to_save:
-            content.config_default_role = content.config_default_role + ub.ROLE_DOWNLOAD
+            content.config_default_role = content.config_default_role + \
+                ub.ROLE_DOWNLOAD
         if "upload_role" in to_save:
-            content.config_default_role = content.config_default_role + ub.ROLE_UPLOAD
+            content.config_default_role = content.config_default_role + \
+                ub.ROLE_UPLOAD
         if "edit_role" in to_save:
-            content.config_default_role = content.config_default_role + ub.ROLE_EDIT
+            content.config_default_role = content.config_default_role + \
+                ub.ROLE_EDIT
         if "passwd_role" in to_save:
-            content.config_default_role = content.config_default_role + ub.ROLE_PASSWD
+            content.config_default_role = content.config_default_role + \
+                ub.ROLE_PASSWD
         if "passwd_role" in to_save:
-            content.config_default_role = content.config_default_role + ub.ROLE_EDIT_SHELFS
+            content.config_default_role = content.config_default_role + \
+                ub.ROLE_EDIT_SHELFS
         try:
-            if content.config_use_google_drive and is_gdrive_ready() and not os.path.exists(config.config_calibre_dir + "/metadata.db"):
-                gdriveutils.downloadFile(Gdrive.Instance().drive, None, "metadata.db", config.config_calibre_dir + "/metadata.db")
+            if content.config_use_google_drive \
+                    and is_gdrive_ready() \
+                    and not os.path.exists(config.config_calibre_dir
+                                           + "/metadata.db"):
+                gdriveutils.downloadFile(
+                    Gdrive.Instance().drive,
+                    None,
+                    "metadata.db",
+                    config.config_calibre_dir + "/metadata.db")
             if db_change:
                 if config.db_configured:
                     db.session.close()
@@ -2112,13 +2722,21 @@ def configuration_helper(origin):
             logging.getLogger("book_formats").setLevel(config.config_log_level)
         except e:
             flash(e, category="error")
-            return render_title_template("config_edit.html", content=config, origin=origin, gdrive=gdrive_support,
+            return render_title_template("config_edit.html",
+                                         content=config,
+                                         origin=origin,
+                                         gdrive=gdrive_support,
                                          title=_(u"Basic Configuration"))
         if db_change:
             reload(db)
             if not db.setup_db():
-                flash(_(u'DB location is not valid, please enter correct path'), category="error")
-                return render_title_template("config_edit.html", content=config, origin=origin, gdrive=gdrive_support,
+                flash(
+                    _(u'DB location is not valid, please enter correct path'),
+                    category="error")
+                return render_title_template("config_edit.html",
+                                             content=config,
+                                             origin=origin,
+                                             gdrive=gdrive_support,
                                              title=_(u"Basic Configuration"))
         if reboot_required:
             # db.engine.dispose() # ToDo verify correct
@@ -2131,8 +2749,13 @@ def configuration_helper(origin):
             app.logger.info('Reboot required, restarting')
         if origin:
             success = True
-    return render_title_template("config_edit.html", origin=origin, success=success, content=config,
-                                 show_authenticate_google_drive=not is_gdrive_ready(), gdrive=gdrive_support,
+    return render_title_template("config_edit.html",
+                                 origin=origin,
+                                 success=success,
+                                 content=config,
+                                 show_authenticate_google_drive=
+                                 not is_gdrive_ready(),
+                                 gdrive=gdrive_support,
                                  title=_(u"Basic Configuration"))
 
 
@@ -2151,9 +2774,14 @@ def new_user():
     translations = [LC('en')] + babel.list_translations()
     if request.method == "POST":
         to_save = request.form.to_dict()
-        if not to_save["nickname"] or not to_save["email"] or not to_save["password"]:
+        if not to_save["nickname"] \
+                or not to_save["email"] \
+                or not to_save["password"]:
             flash(_(u"Please fill out all fields!"), category="error")
-            return render_title_template("user_edit.html", new_user=1, content=content, translations=translations,
+            return render_title_template("user_edit.html",
+                                         new_user=1,
+                                         content=content,
+                                         translations=translations,
                                          title=_(u"Add new user"))
         content.password = generate_password_hash(to_save["password"])
         content.nickname = to_save["nickname"]
@@ -2196,13 +2824,15 @@ def new_user():
         try:
             ub.session.add(content)
             ub.session.commit()
-            flash(_(u"User '%(user)s' created", user=content.nickname), category="success")
+            flash(
+                _(u"User '%(user)s' created", user=content.nickname), category="success")
             return redirect(url_for('admin'))
         except IntegrityError:
             ub.session.rollback()
-            flash(_(u"Found an existing account for this email address or nickname."), category="error")
+            flash(
+                _(u"Found an existing account for this email address or nickname."), category="error")
     else:
-        content.role=config.config_default_role
+        content.role = config.config_default_role
     return render_title_template("user_edit.html", new_user=1, content=content, translations=translations,
                                  languages=languages, title=_(u"Add new user"))
 
@@ -2229,22 +2859,32 @@ def edit_mailsettings():
             if current_user.kindle_mail:
                 result = helper.send_test_mail(current_user.kindle_mail)
                 if result is None:
-                    flash(_(u"Test E-Mail successfully send to %(kindlemail)s", kindlemail=current_user.kindle_mail),
+                    flash(_(u"Test E-Mail successfully send to %(kindlemail)s",
+                            kindlemail=current_user.kindle_mail),
                           category="success")
                 else:
-                    flash(_(u"There was an error sending the Test E-Mail: %(res)s", res=result), category="error")
+                    flash(
+                        _(u"There was an error sending the "
+                            "Test E-Mail: %(res)s",
+                            res=result),
+                        category="error")
             else:
-                flash(_(u"Please configure your kindle email address first..."), category="error")
+                flash(
+                    _(u"Please configure your kindle email address first..."),
+                    category="error")
         else:
             flash(_(u"E-Mail settings updated"), category="success")
-    return render_title_template("email_edit.html", content=content, title=_(u"Edit mail settings"))
+    return render_title_template("email_edit.html",
+                                 content=content,
+                                 title=_(u"Edit mail settings"))
 
 
 @app.route("/admin/user/<int:user_id>", methods=["GET", "POST"])
 @login_required
 @admin_required
 def edit_user(user_id):
-    content = ub.session.query(ub.User).filter(ub.User.id == int(user_id)).first()
+    content = ub.session.query(ub.User).filter(
+        ub.User.id == int(user_id)).first()
     downloads = list()
     languages = db.session.query(db.Languages).all()
     for lang in languages:
@@ -2255,17 +2895,28 @@ def edit_user(user_id):
             lang.name = _(isoLanguages.get(part3=lang.lang_code).name)
     translations = babel.list_translations() + [LC('en')]
     for book in content.downloads:
-        downloadBook = db.session.query(db.Books).filter(db.Books.id == book.book_id).first()
+        downloadBook = db.session \
+            .query(db.Books) \
+            .filter(db.Books.id == book.book_id) \
+            .first()
         if downloadBook:
-            downloads.append(db.session.query(db.Books).filter(db.Books.id == book.book_id).first())
+            downloads.append(
+                db.session
+                .query(db.Books)
+                .filter(db.Books.id == book.book_id)
+                .first()
+                )
         else:
-            ub.session.query(ub.Downloads).filter(book.book_id == ub.Downloads.book_id).delete()
+            ub.session.query(ub.Downloads).filter(
+                book.book_id == ub.Downloads.book_id).delete()
             ub.session.commit()
     if request.method == "POST":
         to_save = request.form.to_dict()
         if "delete" in to_save:
             ub.session.delete(content)
-            flash(_(u"User '%(nick)s' deleted", nick=content.nickname), category="success")
+            flash(
+                _(u"User '%(nick)s' deleted", nick=content.nickname),
+                category="success")
             return redirect(url_for('admin'))
         else:
             if "password" in to_save and to_save["password"]:
@@ -2298,7 +2949,8 @@ def edit_user(user_id):
 
             if "edit_shelf_role" in to_save and not content.role_edit_shelfs():
                 content.role = content.role + ub.ROLE_EDIT_SHELFS
-            elif "edit_shelf_role" not in to_save and content.role_edit_shelfs():
+            elif "edit_shelf_role" not in to_save \
+                    and content.role_edit_shelfs():
                 content.role = content.role - ub.ROLE_EDIT_SHELFS
 
             if "show_random" in to_save and not content.show_random_books():
@@ -2326,14 +2978,18 @@ def edit_user(user_id):
             elif "show_hot" not in to_save and content.show_hot_books():
                 content.sidebar_view -= ub.SIDEBAR_HOT
 
-            if "show_best_rated" in to_save and not content.show_best_rated_books():
+            if "show_best_rated" in to_save \
+                    and not content.show_best_rated_books():
                 content.sidebar_view += ub.SIDEBAR_BEST_RATED
-            elif "show_best_rated" not in to_save and content.show_best_rated_books():
+            elif "show_best_rated" not in to_save \
+                    and content.show_best_rated_books():
                 content.sidebar_view -= ub.SIDEBAR_BEST_RATED
 
-            if "show_read_and_unread" in to_save and not content.show_read_and_unread():
+            if "show_read_and_unread" in to_save \
+                    and not content.show_read_and_unread():
                 content.sidebar_view += ub.SIDEBAR_READ_AND_UNREAD
-            elif "show_read_and_unread" not in to_save and content.show_read_and_unread():
+            elif "show_read_and_unread" not in to_save \
+                    and content.show_read_and_unread():
                 content.sidebar_view -= ub.SIDEBAR_READ_AND_UNREAD
 
             if "show_author" in to_save and not content.show_author():
@@ -2341,9 +2997,11 @@ def edit_user(user_id):
             elif "show_author" not in to_save and content.show_author():
                 content.sidebar_view -= ub.SIDEBAR_AUTHOR
 
-            if "show_detail_random" in to_save and not content.show_detail_random():
+            if "show_detail_random" in to_save \
+                    and not content.show_detail_random():
                 content.sidebar_view += ub.DETAIL_RANDOM
-            elif "show_detail_random" not in to_save and content.show_detail_random():
+            elif "show_detail_random" not in to_save \
+                    and content.show_detail_random():
                 content.sidebar_view -= ub.DETAIL_RANDOM
 
             if "default_language" in to_save:
@@ -2352,17 +3010,24 @@ def edit_user(user_id):
                 content.locale = to_save["locale"]
             if to_save["email"] and to_save["email"] != content.email:
                 content.email = to_save["email"]
-            if "kindle_mail" in to_save and to_save["kindle_mail"] != content.kindle_mail:
+            if "kindle_mail" in to_save \
+                    and to_save["kindle_mail"] != content.kindle_mail:
                 content.kindle_mail = to_save["kindle_mail"]
         try:
             ub.session.commit()
-            flash(_(u"User '%(nick)s' updated", nick=content.nickname), category="success")
+            flash(_(u"User '%(nick)s' updated", nick=content.nickname),
+                  category="success")
         except IntegrityError:
             ub.session.rollback()
             flash(_(u"An unknown error occured."), category="error")
-    return render_title_template("user_edit.html", translations=translations, languages=languages, new_user=0,
-                                 content=content, downloads=downloads,
-                                 title=_(u"Edit User %(nick)s", nick=content.nickname))
+    return render_title_template("user_edit.html",
+                                 translations=translations,
+                                 languages=languages,
+                                 new_user=0,
+                                 content=content,
+                                 downloads=downloads,
+                                 title=_(u"Edit User %(nick)s",
+                                         nick=content.nickname))
 
 
 @app.route("/admin/book/<int:book_id>", methods=['GET', 'POST'])
@@ -2370,21 +3035,29 @@ def edit_user(user_id):
 @edit_required
 def edit_book(book_id):
     # create the function for sorting...
-    db.session.connection().connection.connection.create_function("title_sort", 1, db.title_sort)
-    cc = db.session.query(db.Custom_Columns).filter(db.Custom_Columns.datatype.notin_(db.cc_exceptions)).all()
+    db.session.connection().connection.connection.create_function(
+        "title_sort", 1, db.title_sort)
+    cc = db.session.query(db.Custom_Columns).filter(
+        db.Custom_Columns.datatype.notin_(db.cc_exceptions)).all()
     if current_user.filter_language() != "all":
-        filter = db.Books.languages.any(db.Languages.lang_code == current_user.filter_language())
+        filter = db.Books.languages.any(
+            db.Languages.lang_code == current_user.filter_language())
     else:
         filter = True
-    book = db.session.query(db.Books).filter(db.Books.id == book_id).filter(filter).first()
+    book = db.session.query(db.Books).filter(
+        db.Books.id == book_id).filter(filter).first()
     author_names = []
     if book:
         for index in range(0, len(book.languages)):
             try:
-                book.languages[index].language_name = LC.parse(book.languages[index].lang_code).get_language_name(
-                    get_locale())
+                book.languages[index].language_name = \
+                    LC.parse(book.languages[index].lang_code) \
+                    .get_language_name(get_locale())
             except Exception as e:
-                book.languages[index].language_name = _(isoLanguages.get(part3=book.languages[index].lang_code).name)
+                book.languages[index].language_name = _(
+                    isoLanguages.get(
+                        part3=book.languages[index].lang_code
+                        ).name)
         for author in book.authors:
             author_names.append(author.name)
         if request.method == 'POST':
@@ -2397,24 +3070,33 @@ def edit_book(book_id):
             input_authors = map(lambda it: it.strip(), input_authors)
             # we have all author names now
             author0_before_edit = book.authors[0].name
-            modify_database_object(input_authors, book.authors, db.Authors, db.session, 'author')
+            modify_database_object(
+                input_authors, book.authors, db.Authors, db.session, 'author')
             if author0_before_edit != book.authors[0].name:
                 edited_books_id.add(book.id)
-                book.author_sort=helper.get_sorted_author(input_authors[0]) 
+                book.author_sort = helper.get_sorted_author(input_authors[0])
 
-            if to_save["cover_url"] and os.path.splitext(to_save["cover_url"])[1].lower() == ".jpg":
+            if to_save["cover_url"] \
+                    and os.path.splitext(to_save["cover_url"])[1].lower() \
+                    == ".jpg":
                 img = requests.get(to_save["cover_url"])
                 if config.config_use_google_drive:
-                    tmpDir=tempfile.gettempdir()
+                    tmpDir = tempfile.gettempdir()
                     f = open(os.path.join(tmpDir, "uploaded_cover.jpg"), "wb")
                     f.write(img.content)
                     f.close()
-                    gdriveutils.uploadFileToEbooksFolder(Gdrive.Instance().drive, os.path.join(book.path, 'cover.jpg'), os.path.join(tmpDir, f.name))
+                    gdriveutils.uploadFileToEbooksFolder(
+                        Gdrive.Instance().drive,
+                        os.path.join(book.path, 'cover.jpg'),
+                        os.path.join(tmpDir, f.name))
                 else:
-                    f = open(os.path.join(config.config_calibre_dir, book.path, "cover.jpg"), "wb")
+                    f = open(os.path.join(config.config_calibre_dir,
+                                          book.path,
+                                          "cover.jpg"),
+                             "wb")
                     f.write(img.content)
                     f.close()
-                book.has_cover=1
+                book.has_cover = 1
 
             if book.series_index != to_save["series_index"]:
                 book.series_index = to_save["series_index"]
@@ -2422,31 +3104,38 @@ def edit_book(book_id):
             if len(book.comments):
                 book.comments[0].text = to_save["description"]
             else:
-                book.comments.append(db.Comments(text=to_save["description"], book=book.id))
+                book.comments.append(
+                    db.Comments(text=to_save["description"], book=book.id))
 
             input_tags = to_save["tags"].split(',')
             input_tags = map(lambda it: it.strip(), input_tags)
-            modify_database_object(input_tags, book.tags, db.Tags, db.session, 'tags')
+            modify_database_object(
+                input_tags, book.tags, db.Tags, db.session, 'tags')
 
             input_series = [to_save["series"].strip()]
             input_series = [x for x in input_series if x != '']
-            modify_database_object(input_series, book.series, db.Series, db.session, 'series')
+            modify_database_object(
+                input_series, book.series, db.Series, db.session, 'series')
 
             input_languages = to_save["languages"].split(',')
-            input_languages = map(lambda it: it.strip().lower(), input_languages)
+            input_languages = map(
+                lambda it: it.strip().lower(), input_languages)
 
             # retranslate displayed text to language codes
             languages = db.session.query(db.Languages).all()
             input_l = []
             for lang in languages:
                 try:
-                    lang.name = LC.parse(lang.lang_code).get_language_name(get_locale()).lower()
+                    lang.name = LC.parse(lang.lang_code).get_language_name(
+                        get_locale()).lower()
                 except Exception as e:
-                    lang.name = _(isoLanguages.get(part3=lang.lang_code).name).lower()
+                    lang.name = _(
+                        isoLanguages.get(part3=lang.lang_code).name).lower()
                 for inp_lang in input_languages:
                     if inp_lang == lang.name:
                         input_l.append(lang.lang_code)
-            modify_database_object(input_l, book.languages, db.Languages, db.session, 'languages')
+            modify_database_object(
+                input_l, book.languages, db.Languages, db.session, 'languages')
 
             if to_save["rating"].strip():
                 old_rating = False
@@ -2454,7 +3143,8 @@ def edit_book(book_id):
                     old_rating = book.ratings[0].rating
                 ratingx2 = int(float(to_save["rating"]) * 2)
                 if ratingx2 != old_rating:
-                    is_rating = db.session.query(db.Ratings).filter(db.Ratings.rating == ratingx2).first()
+                    is_rating = db.session.query(db.Ratings).filter(
+                        db.Ratings.rating == ratingx2).first()
                     if is_rating:
                         book.ratings.append(is_rating)
                     else:
@@ -2478,22 +3168,27 @@ def edit_book(book_id):
                             if to_save[cc_string] == 'None':
                                 to_save[cc_string] = None
                             else:
-                                to_save[cc_string] = 1 if to_save[cc_string] == 'True' else 0
+                                to_save[cc_string] = 1 if to_save[
+                                    cc_string] == 'True' else 0
                             if to_save[cc_string] != cc_db_value:
                                 if cc_db_value is not None:
                                     if to_save[cc_string] is not None:
-                                        setattr(getattr(book, cc_string)[0], 'value', to_save[cc_string])
+                                        setattr(getattr(book, cc_string)[0],
+                                                'value',
+                                                to_save[cc_string])
                                     else:
                                         del_cc = getattr(book, cc_string)[0]
                                         getattr(book, cc_string).remove(del_cc)
                                         db.session.delete(del_cc)
                                 else:
                                     cc_class = db.cc_classes[c.id]
-                                    new_cc = cc_class(value=to_save[cc_string], book=book_id)
+                                    new_cc = cc_class(
+                                        value=to_save[cc_string], book=book_id)
                                     db.session.add(new_cc)
                         else:
                             if c.datatype == 'rating':
-                                to_save[cc_string] = str(int(float(to_save[cc_string]) * 2))
+                                to_save[cc_string] = str(
+                                    int(float(to_save[cc_string]) * 2))
                             if to_save[cc_string].strip() != cc_db_value:
                                 if cc_db_value is not None:
                                     # remove old cc_val
@@ -2502,14 +3197,21 @@ def edit_book(book_id):
                                     if len(del_cc.books) == 0:
                                         db.session.delete(del_cc)
                                 cc_class = db.cc_classes[c.id]
-                                new_cc = db.session.query(cc_class).filter(
-                                    cc_class.value == to_save[cc_string].strip()).first()
+                                new_cc = db.session \
+                                    .query(cc_class) \
+                                    .filter(cc_class.value
+                                            == to_save[cc_string].strip()) \
+                                    .first()
                                 # if no cc val is found add it
                                 if new_cc is None:
-                                    new_cc = cc_class(value=to_save[cc_string].strip())
+                                    new_cc = cc_class(
+                                        value=to_save[cc_string].strip())
                                     db.session.add(new_cc)
-                                    new_cc = db.session.query(cc_class).filter(
-                                        cc_class.value == to_save[cc_string].strip()).first()
+                                    new_cc = db.session \
+                                        .query(cc_class) \
+                                        .filter(cc_class.value
+                                                == to_save[cc_string].strip())\
+                                        .first()
                                 # add cc value to book
                                 getattr(book, cc_string).append(new_cc)
                     else:
@@ -2532,7 +3234,8 @@ def edit_book(book_id):
                             if inp_tag == c_tag.value:
                                 found = True
                                 break
-                        # if the tag was not found in the new list, add him to remove list
+                        # if the tag was not found in the new list, add him to
+                        # remove list
                         if not found:
                             del_tags.append(c_tag)
                     # 2. search for tags that need to be added
@@ -2555,14 +3258,20 @@ def edit_book(book_id):
                     if len(add_tags) > 0:
                         for add_tag in add_tags:
                             # check if a tag with that name exists
-                            new_tag = db.session.query(db.cc_classes[c.id]).filter(
-                                db.cc_classes[c.id].value == add_tag).first()
+                            new_tag = db.session \
+                                .query(db.cc_classes[c.id]) \
+                                .filter(db.cc_classes[c.id].value
+                                        == add_tag) \
+                                .first()
                             # if no tag is found add it
                             if new_tag is None:
                                 new_tag = db.cc_classes[c.id](value=add_tag)
                                 db.session.add(new_tag)
-                                new_tag = db.session.query(db.cc_classes[c.id]).filter(
-                                    db.cc_classes[c.id].value == add_tag).first()
+                                new_tag = db.session \
+                                    .query(db.cc_classes[c.id]) \
+                                    .filter(db.cc_classes[c.id].value
+                                            == add_tag)\
+                                    .first()
                             # add tag to book
                             getattr(book, cc_string).append(new_tag)
 
@@ -2580,13 +3289,21 @@ def edit_book(book_id):
             if "detail_view" in to_save:
                 return redirect(url_for('show_book', id=book.id))
             else:
-                return render_title_template('book_edit.html', book=book, authors=author_names, cc=cc,
+                return render_title_template('book_edit.html',
+                                             book=book,
+                                             authors=author_names,
+                                             cc=cc,
                                              title=_(u"edit metadata"))
         else:
-            return render_title_template('book_edit.html', book=book, authors=author_names, cc=cc,
+            return render_title_template('book_edit.html',
+                                         book=book,
+                                         authors=author_names,
+                                         cc=cc,
                                          title=_(u"edit metadata"))
     else:
-        flash(_(u"Error opening eBook. File does not exist or file is not accessible:"), category="error")
+        flash(_(u"Error opening eBook. "
+                "File does not exist or file is not accessible:"),
+              category="error")
         return redirect(url_for("index"))
 
 
@@ -2597,21 +3314,23 @@ def upload():
     if not config.config_uploading:
         abort(404)
     # create the function for sorting...
-    db.session.connection().connection.connection.create_function("title_sort", 1, db.title_sort)
-    db.session.connection().connection.connection.create_function('uuid4', 0, lambda: str(uuid4()))
+    db.session.connection().connection.connection.create_function(
+        "title_sort", 1, db.title_sort)
+    db.session.connection().connection.connection.create_function(
+        'uuid4', 0, lambda: str(uuid4()))
     if request.method == 'POST' and 'btn-upload' in request.files:
         file = request.files['btn-upload']
         if '.' in file.filename:
             file_ext = file.filename.rsplit('.', 1)[-1].lower()
             if file_ext not in ALLOWED_EXTENSIONS:
-                flash(
-                    _('File extension "%s" is not allowed to be uploaded to this server' %
-                    file_ext),
-                    category="error"
-                )
+                flash(_('File extension "%s" is not allowed '
+                        'to be uploaded to this server'
+                        % file_ext),
+                      category="error")
                 return redirect(url_for('index'))
         else:
-            flash(_('File to be uploaded must have an extension'), category="error")
+            flash(_('File to be uploaded must have an extension'),
+                  category="error")
             return redirect(url_for('index'))
         meta = uploader.upload(file)
 
@@ -2621,88 +3340,117 @@ def upload():
         title_dir = helper.get_valid_filename(title, False)
         author_dir = helper.get_valid_filename(author, False)
         data_name = title_dir
-        filepath = config.config_calibre_dir + os.sep + author_dir + os.sep + title_dir
+        filepath = config.config_calibre_dir + \
+            os.sep + author_dir + os.sep + title_dir
         saved_filename = filepath + os.sep + data_name + meta.extension
 
         if not os.path.exists(filepath):
             try:
                 os.makedirs(filepath)
             except OSError:
-                flash(_(u"Failed to create path %s (Permission denied)." % filepath), category="error")
+                flash(_(u"Failed to create path %s (Permission denied)." %
+                        filepath), category="error")
                 return redirect(url_for('index'))
         try:
             copyfile(meta.file_path, saved_filename)
         except OSError as e:
-            flash(_(u"Failed to store file %s (Permission denied)." % saved_filename), category="error")
+            flash(_(u"Failed to store file %s (Permission denied)." %
+                    saved_filename), category="error")
             return redirect(url_for('index'))
         try:
             os.unlink(meta.file_path)
         except OSError as e:
-            flash(_(u"Failed to delete file %s (Permission denied)." % meta.file_path), category="warning")
+            flash(_(u"Failed to delete file %s (Permission denied)." %
+                    meta.file_path), category="warning")
 
         file_size = os.path.getsize(saved_filename)
         if meta.cover is None:
             has_cover = 0
             basedir = os.path.dirname(__file__)
-            copyfile(os.path.join(basedir, "static/generic_cover.jpg"), os.path.join(filepath, "cover.jpg"))
+            copyfile(os.path.join(basedir, "static/generic_cover.jpg"),
+                     os.path.join(filepath, "cover.jpg"))
         else:
             has_cover = 1
             move(meta.cover, os.path.join(filepath, "cover.jpg"))
 
-        is_author = db.session.query(db.Authors).filter(db.Authors.name == author).first()
+        is_author = db.session.query(db.Authors).filter(
+            db.Authors.name == author).first()
         if is_author:
             db_author = is_author
         else:
-            db_author = db.Authors(author, helper.get_sorted_author(author), "") 
+            db_author = db.Authors(
+                author, helper.get_sorted_author(author), "")
             db.session.add(db_author)
 
-        #add language actually one value in list
+        # add language actually one value in list
         input_language = meta.languages
         db_language = None
         if input_language != "":
             input_language = isoLanguages.get(name=input_language).part3
-            hasLanguage = db.session.query(db.Languages).filter(db.Languages.lang_code == input_language).first()
+            hasLanguage = db.session.query(db.Languages).filter(
+                db.Languages.lang_code == input_language).first()
             if hasLanguage:
                 db_language = hasLanguage
             else:
                 db_language = db.Languages(input_language)
                 db.session.add(db_language)
         # combine path and normalize path from windows systems
-        path = os.path.join(author_dir, title_dir).replace('\\','/')
-        db_book = db.Books(title, "", db_author.sort, datetime.datetime.now(), datetime.datetime(101, 1, 1), 1,
-                           datetime.datetime.now(), path, has_cover, db_author, [], db_language)
+        path = os.path.join(author_dir, title_dir).replace('\\', '/')
+        db_book = db.Books(title,
+                           "",
+                           db_author.sort,
+                           datetime.datetime.now(),
+                           datetime.datetime(101, 1, 1),
+                           1,
+                           datetime.datetime.now(),
+                           path,
+                           has_cover,
+                           db_author,
+                           [],
+                           db_language)
         db_book.authors.append(db_author)
         if db_language is not None:
             db_book.languages.append(db_language)
-        db_data = db.Data(db_book, meta.extension.upper()[1:], file_size, data_name)
+        db_data = db.Data(
+            db_book, meta.extension.upper()[1:], file_size, data_name)
         db_book.data.append(db_data)
 
         db.session.add(db_book)
-        db.session.flush()# flush content get db_book.id avalible
-       #add comment
+        db.session.flush()  # flush content get db_book.id avalible
+       # add comment
         upload_comment = Markup(meta.description).unescape()
         db_comment = None
         if upload_comment != "":
             db_comment = db.Comments(upload_comment, db_book.id)
             db.session.add(db_comment)
         db.session.commit()
-        if db_language is not None: #display Full name instead of iso639.part3
+        # display Full name instead of iso639.part3
+        if db_language is not None:
             db_book.languages[0].language_name = _(meta.languages)
         author_names = []
         for author in db_book.authors:
             author_names.append(author.name)
         if config.config_use_google_drive:
             updateGdriveCalibreFromLocal()
-    cc = db.session.query(db.Custom_Columns).filter(db.Custom_Columns.datatype.notin_(db.cc_exceptions)).all()
+    cc = db.session.query(db.Custom_Columns).filter(
+        db.Custom_Columns.datatype.notin_(db.cc_exceptions)).all()
     if current_user.role_edit() or current_user.role_admin():
-        return render_title_template('book_edit.html', book=db_book, authors=author_names, cc=cc,
+        return render_title_template('book_edit.html',
+                                     book=db_book,
+                                     authors=author_names,
+                                     cc=cc,
                                      title=_(u"edit metadata"))
     book_in_shelfs = []
-    return render_title_template('detail.html', entry=db_book, cc=cc, title=db_book.title,
+    return render_title_template('detail.html',
+                                 entry=db_book,
+                                 cc=cc,
+                                 title=db_book.title,
                                  books_shelfs=book_in_shelfs, )
+
 
 def start_gevent():
     from gevent.wsgi import WSGIServer
     global gevent_server
     gevent_server = WSGIServer(('', ub.config.config_port), app)
+    gevent_server.serve_forever()
     gevent_server.serve_forever()
