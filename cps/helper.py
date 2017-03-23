@@ -13,6 +13,9 @@ import os
 import traceback
 import re
 import unicodedata
+reload(sys)
+sys.setdefaultencoding('utf-8')
+
 try:
     from StringIO import StringIO
     from email.MIMEBase import MIMEBase
