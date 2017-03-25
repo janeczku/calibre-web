@@ -13,7 +13,7 @@ from flask_babel import gettext as _
 import json
 #from builtins import str
 
-dbpath = os.path.join(os.path.normpath(os.path.dirname(os.path.realpath(__file__)) + os.sep + ".." + os.sep), "app.db")
+dbpath = os.path.join(os.path.normpath(os.getenv("CALIBRE_DBPATH", os.path.dirname(os.path.realpath(__file__)) + os.sep + ".." + os.sep)), "app.db")
 engine = create_engine('sqlite:///{0}'.format(dbpath), echo=False)
 Base = declarative_base()
 
