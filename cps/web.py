@@ -40,7 +40,6 @@ from functools import wraps
 import base64
 from sqlalchemy.sql import *
 import json
-import urllib
 import datetime
 from iso639 import languages as isoLanguages
 from iso639 import __version__ as iso639Version
@@ -147,8 +146,8 @@ class Gdrive:
 
 class ReverseProxied(object):
     """Wrap the application in this middleware and configure the
-    front-end server to add these headers, to let you quietly bind 
-    this to a URL other than / and to an HTTP scheme that is 
+    front-end server to add these headers, to let you quietly bind
+    this to a URL other than / and to an HTTP scheme that is
     different than what is used locally.
 
     Code courtesy of: http://flask.pocoo.org/snippets/35/
@@ -836,7 +835,7 @@ def get_opds_download_link(book_id, format):
     else:
         # file_name = helper.get_valid_filename(file_name)
         response = make_response(send_from_directory(os.path.join(config.config_calibre_dir, book.path), data.name + "." + format))
-    response.headers=headers
+    response.headers["Content-Disposition"] = "attachment; filename*=UTF-8''%s.%s" % (quote(file_name.encode('utf8')), format)
     return response
 
 
@@ -1645,13 +1644,13 @@ def get_download_link(book_id, format):
             headers["Content-Type"] = mimetypes.types_map['.' + format]
         except:
             pass
-        headers["Content-Disposition"] = "attachment; filename*=UTF-8''%s.%s" % (urllib.quote(file_name.encode('utf-8')), format)
+        headers["Content-Disposition"] = "attachment; filename*=UTF-8''%s.%s" % (quote(file_name.encode('utf-8')), format)
         if config.config_use_google_drive:
             df=gdriveutils.getFileFromEbooksFolder(Gdrive.Instance().drive, book.path, '%s.%s' % (data.name, format))
             return do_gdrive_download(df, headers)
         else:
             response = make_response(send_from_directory(os.path.join(config.config_calibre_dir, book.path), data.name + "." + format))
-        response.headers=headers
+        response.headers["Content-Disposition"] = "attachment; filename*=UTF-8''%s.%s" % (quote(file_name.encode('utf-8')), format)
         return response
     else:
         abort(404)
@@ -2400,7 +2399,7 @@ def edit_book(book_id):
             modify_database_object(input_authors, book.authors, db.Authors, db.session, 'author')
             if author0_before_edit != book.authors[0].name:
                 edited_books_id.add(book.id)
-                book.author_sort=helper.get_sorted_author(input_authors[0]) 
+                book.author_sort=helper.get_sorted_author(input_authors[0])
 
             if to_save["cover_url"] and os.path.splitext(to_save["cover_url"])[1].lower() == ".jpg":
                 img = requests.get(to_save["cover_url"])
@@ -2653,7 +2652,7 @@ def upload():
         if is_author:
             db_author = is_author
         else:
-            db_author = db.Authors(author, helper.get_sorted_author(author), "") 
+            db_author = db.Authors(author, helper.get_sorted_author(author), "")
             db.session.add(db_author)
 
         #add language actually one value in list
