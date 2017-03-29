@@ -6,8 +6,8 @@
 Takes a prefix, query typeahead callback, Bloodhound typeahead adapter
  and returns the completions it gets from the bloodhound engine prefixed.
  */
-function prefixed_source(prefix, query, cb, bh_adapter) {
-    bh_adapter(query, function(retArray){
+function prefixed_source(prefix, query, cb, bhAdapter) {
+    bhAdapter(query, function(retArray){
         var matches = [];
         for (var i = 0; i < retArray.length; i++) {
             var obj = {name : prefix + retArray[i].name};
@@ -23,7 +23,7 @@ function get_path(){
 }
 
 var authors = new Bloodhound({
-    name: 'authors',
+    name: "authors",
     datumTokenizer: function(datum) {
         return [datum.name];
     },
@@ -34,7 +34,7 @@ var authors = new Bloodhound({
 });
 
 function authors_source(query, cb) {
-    var bh_adapter = authors.ttAdapter();
+    var bhAdapter = authors.ttAdapter();
 
     var tokens = query.split("&");
     var current_author = tokens[tokens.length-1].trim();
@@ -46,7 +46,7 @@ function authors_source(query, cb) {
         prefix += author + " & ";
     }
 
-    prefixed_source(prefix, current_author, cb, bh_adapter);
+    prefixed_source(prefix, current_author, cb, bhAdapter);
 }
 
 
@@ -65,7 +65,7 @@ var promise = authors.initialize();
 });
 
 var series = new Bloodhound({
-    name: 'series',
+    name: "series",
     datumTokenizer: function(datum) {
         return [datum.name];
     },
@@ -94,7 +94,7 @@ var promise = series.initialize();
 });
 
 var tags = new Bloodhound({
-    name: 'tags',
+    name: "tags",
     datumTokenizer: function(datum) {
         return [datum.name];
     },
@@ -104,12 +104,12 @@ var tags = new Bloodhound({
         return tokens
     },
     remote: {
-        url: get_path()+'/get_tags_json?q=%QUERY'
+        url: get_path()+"/get_tags_json?q=%QUERY"
     }
 });
 
 function tag_source(query, cb) {
-    var bh_adapter = tags.ttAdapter();
+    var bhAdapter = tags.ttAdapter();
 
     var tokens = query.split(",");
     var current_tag = tokens[tokens.length-1].trim();
@@ -121,7 +121,7 @@ function tag_source(query, cb) {
         prefix += tag + ", ";
     }
 
-    prefixed_source(prefix, current_tag, cb, bh_adapter);
+    prefixed_source(prefix, current_tag, cb, bhAdapter);
 }
 
 var promise = tags.initialize();
@@ -138,7 +138,7 @@ var promise = tags.initialize();
 });
 
 var languages = new Bloodhound({
-    name: 'languages',
+    name: "languages",
     datumTokenizer: function(datum) {
         return [datum.name];
     },
@@ -155,10 +155,10 @@ var languages = new Bloodhound({
 });
 
 function language_source(query, cb) {
-    var bh_adapter = languages.ttAdapter();
+    var bhAdapter = languages.ttAdapter();
 
     var tokens = query.split(",");
-    var current_language = tokens[tokens.length-1].trim();
+    var currentLanguage = tokens[tokens.length-1].trim();
 
     tokens.splice(tokens.length-1, 1); // remove last element
     var prefix = "";
@@ -167,7 +167,7 @@ function language_source(query, cb) {
         prefix += tag + ", ";
     }
 
-    prefixed_source(prefix, current_language, cb, bh_adapter);
+    prefixed_source(prefix, currentLanguage, cb, bhAdapter);
 }
 
 var promise = languages.initialize();

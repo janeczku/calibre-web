@@ -5,11 +5,11 @@ var updateText;
 $(function() {
     $('.discover .row').isotope({
         // options
-        itemSelector : '.book',
-        layoutMode : 'fitRows'
+        itemSelector : ".book",
+        layoutMode : "fitRows"
     });
 
-    $('.load-more .row').infinitescroll({
+    $(".load-more .row").infinitescroll({
         debug: false,
         navSelector  : ".pagination",
                    // selector for the paged navigation (it will be hidden)
@@ -20,13 +20,13 @@ $(function() {
         extraScrollPx: 300,
                    // selector for all items you'll retrieve
     }, function(data){
-        $('.load-more .row').isotope( 'appended', $(data), null );
+        $(".load-more .row").isotope( 'appended', $(data), null );
     });
 
     $('#sendbtn').click(function(){
         var $this = $(this);
-        $this.text('Please wait...');
-        $this.addClass('disabled');
+        $this.text("Please wait...");
+        $this.addClass("disabled");
     });
     $("#restart").click(function() {
         $.ajax({
@@ -57,10 +57,10 @@ $(function() {
             success: function(data) {
                 $("#check_for_update").html(button_text);
                 if (data.status == true) {
-                    $("#check_for_update").addClass('hidden');
-                    $("#perform_update").removeClass('hidden');
-                    $("#update_info").removeClass('hidden');
-                    $("#update_info").find('span').html(data.commit);
+                    $("#check_for_update").addClass("hidden");
+                    $("#perform_update").removeClass("hidden");
+                    $("#update_info").removeClass("hidden");
+                    $("#update_info").find("span").html(data.commit);
                 }
             }
         });
@@ -73,14 +73,14 @@ $(function() {
         });
     });
     $("#perform_update").click(function() {
-        $('#spinner2').show();
+        $("#spinner2").show();
         $.ajax({
         type: "POST",
         dataType: 'json',
         data: { start: "True"},
         url: window.location.pathname+"/../../get_updater_status",
         success: function(data) {
-            updateText=data.text
+            updateText=data.text;
             $("#UpdateprogressDialog #Updatecontent").html(updateText[data.status]);
             console.log(data.status);
             updateTimerID=setInterval(updateTimer, 2000);}
@@ -90,8 +90,8 @@ $(function() {
 
 
 function restartTimer() {
-    $('#spinner').hide();
-    $('#RestartDialog').modal('hide');
+    $("#spinner").hide();
+    $("#RestartDialog").modal("hide");
 }
 
 function updateTimer() {
@@ -110,13 +110,13 @@ function updateTimer() {
         }
     },
     error: function() {
-        console.log('Done');
+        // console.log('Done');
         clearInterval(updateTimerID);
-        $('#spinner2').hide();
+        $("#spinner2").hide();
         $("#UpdateprogressDialog #Updatecontent").html(updateText[7]);
-        $('#UpdateprogressDialog #updateFinished').removeClass('hidden');
-        $("#check_for_update").removeClass('hidden');
-        $("#perform_update").addClass('hidden');
+        $("#UpdateprogressDialog #updateFinished").removeClass("hidden");
+        $("#check_for_update").removeClass("hidden");
+        $("#perform_update").addClass("hidden");
         },
     timeout:2000
     });
@@ -124,5 +124,5 @@ function updateTimer() {
 
 
 $(window).resize(function(event) {
-    $('.discover .row').isotope('reLayout');
+    $(".discover .row").isotope("reLayout");
 });

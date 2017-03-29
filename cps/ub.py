@@ -506,7 +506,7 @@ def create_anonymous_user():
     session.add(user)
     try:
         session.commit()
-    except Exception as e:
+    except Exception:
         session.rollback()
         pass
 
