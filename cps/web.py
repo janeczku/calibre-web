@@ -385,7 +385,7 @@ def shortentitle_filter(s):
 def mimetype_filter(val):
     try:
         s = mimetypes.types_map['.' + val]
-    except Exception as e:
+    except Exception:
         s = 'application/octet-stream'
     return s
 
@@ -558,10 +558,6 @@ def before_request():
 @app.route("/opds")
 @requires_basic_auth_if_no_ano
 def feed_index():
-    if current_user.filter_language() != "all":
-        filter = db.Books.languages.any(db.Languages.lang_code == current_user.filter_language())
-    else:
-        filter = True
     xml = render_title_template('index.xml')
     response = make_response(xml)
     response.headers["Content-Type"] = "application/xml"
@@ -792,7 +788,6 @@ def partial(total_byte_len, part_size_limit):
     return s
 
 def do_gdrive_download(df, headers):
-    startTime=time.time()
     total_size = int(df.metadata.get('fileSize'))
     download_url = df.metadata.get('downloadUrl')
     s = partial(total_size, 1024 * 1024) # I'm downloading BIG files, so 100M chunk size is fine for me
@@ -832,7 +827,7 @@ def get_opds_download_link(book_id, format):
         return do_gdrive_download(df, headers)
     else:
         response = make_response(send_from_directory(os.path.join(config.config_calibre_dir, book.path), data.name + "." + format))
-        response.headers=headers 
+        response.headers=headers
         return response
 
 
@@ -911,7 +906,7 @@ def get_updater_status():
     elif request.method == "GET":
         try:
             status['status']=helper.updater_thread.get_update_status()
-        except Exception as e:
+        except Exception:
             status['status'] = 7
     return json.dumps(status)
 
@@ -1304,7 +1299,7 @@ def revoke_watch_gdrive():
     last_watch_response=config.config_google_drive_watch_changes_response
     if last_watch_response:
         try:
-            response=gdriveutils.stopChannel(Gdrive.Instance().drive, last_watch_response['id'], last_watch_response['resourceId'])
+            gdriveutils.stopChannel(Gdrive.Instance().drive, last_watch_response['id'], last_watch_response['resourceId'])
         except HttpError:
             pass
         settings = ub.session.query(ub.Settings).first()
@@ -1481,7 +1476,7 @@ def advanced_search():
 def get_cover_via_gdrive(cover_path):
     df=gdriveutils.getFileFromEbooksFolder(Gdrive.Instance().drive, cover_path, 'cover.jpg')
     if not gdriveutils.session.query(gdriveutils.PermissionAdded).filter(gdriveutils.PermissionAdded.gdrive_id == df['id']).first():
-        permissions=df.GetPermissions()
+        df.GetPermissions()
         df.InsertPermission({
                         'type': 'anyone',
                         'value': 'anyone',

@@ -293,7 +293,7 @@ def setup_db():
     engine = create_engine('sqlite:///'+ dbpath, echo=False, isolation_level="SERIALIZABLE")
     try:
         conn = engine.connect()
-    except Exception as e:
+    except Exception:
         content = ub.session.query(ub.Settings).first()
         content.config_calibre_dir = None
         content.db_configured = False

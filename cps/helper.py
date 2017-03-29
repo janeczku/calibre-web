@@ -464,7 +464,7 @@ class Updater(threading.Thread):
                     logging.getLogger('cps.web').debug("Delete file " + item_path)
                     log_from_thread("Delete file " + item_path)
                     os.remove(item_path)
-                except Exception as e:
+                except Exception:
                     logging.getLogger('cps.web').debug("Could not remove:" + item_path)
         shutil.rmtree(source, ignore_errors=True)
 

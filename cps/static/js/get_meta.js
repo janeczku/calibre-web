@@ -7,7 +7,7 @@
 
 $(document).ready(function () {
     var msg = i18n_msg;
-    var douban = 'https://api.douban.com';
+    var douban = "https://api.douban.com";
     var db_search = '/v2/book/search';
     var db_get_info = '/v2/book/';
     var db_get_info_by_isbn = '/v2/book/isbn/ ';
@@ -23,7 +23,7 @@ $(document).ready(function () {
     var show_flag = 0;
     String.prototype.replaceAll = function (s1, s2) {　　
         return this.replace(new RegExp(s1, "gm"), s2);　　
-    }
+    };
 
     gg_search_book = function (title) {
         title = title.replaceAll(/\s+/, '+');
@@ -45,38 +45,38 @@ $(document).ready(function () {
 
     get_meta = function (source, id) {
         var meta;
-        if (source == 'google') {;
+        if (source == "google") {
             meta = gg_results[id];
-            $('#description').val(meta.volumeInfo.description);
-            $('#bookAuthor').val(meta.volumeInfo.authors.join(' & '));
-            $('#book_title').val(meta.volumeInfo.title);
+            $("#description").val(meta.volumeInfo.description);
+            $("#bookAuthor").val(meta.volumeInfo.authors.join(' & '));
+            $("#book_title").val(meta.volumeInfo.title);
             if (meta.volumeInfo.categories) {
                 var tags = meta.volumeInfo.categories.join(',');
-                $('#tags').val(tags);
+                $("#tags").val(tags);
             }
             if (meta.volumeInfo.averageRating) {
-                $('#rating').val(Math.round(meta.volumeInfo.averageRating));
+                $("#rating").val(Math.round(meta.volumeInfo.averageRating));
             }
             return;
         }
-        if (source == 'douban') {
+        if (source == "douban") {
             meta = db_results[id];
-            $('#description').val(meta.summary);
-            $('#bookAuthor').val(meta.author.join(' & '));
-            $('#book_title').val(meta.title);
+            $("#description").val(meta.summary);
+            $("#bookAuthor").val(meta.author.join(' & '));
+            $("#book_title").val(meta.title);
             var tags = '';
             for (var i = 0; i < meta.tags.length; i++) {
                 tags = tags + meta.tags[i].title + ',';
             }
-            $('#tags').val(tags);
-            $('#rating').val(Math.round(meta.rating.average / 2));
+            $("#tags").val(tags);
+            $("#rating").val(Math.round(meta.rating.average / 2));
             return;
         }
     }
     do_search = function (keyword) {
         show_flag = 0;
-        $('#meta-info').text(msg.loading);
-        var keyword = $('#keyword').val();
+        $("#meta-info").text(msg.loading);
+        var keyword = $("#keyword").val();
         if (keyword) {
             db_search_book(keyword);
             gg_search_book(keyword);

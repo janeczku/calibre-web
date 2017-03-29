@@ -4,12 +4,11 @@ try:
     from apiclient import errors
 except ImportError:
     pass
-import os, time
+import os
 
 from ub import config
 
 from sqlalchemy import *
-from sqlalchemy import exc
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import *
 
@@ -165,7 +164,7 @@ def getFileFromEbooksFolder(drive, path, fileName):
     if drive.auth.access_token_expired:
         drive.auth.Refresh()
     if path:
-        sqlCheckPath=path if path[-1] =='/' else path + '/'
+        # sqlCheckPath=path if path[-1] =='/' else path + '/'
         folderId=getFolderId(path, drive)
     else:
         folderId=getEbooksFolderId(drive)
@@ -273,20 +272,19 @@ def watchChange(drive, channel_id, channel_type, channel_address,
         drive=getDrive()
     if drive.auth.access_token_expired:
         drive.auth.Refresh()
-    """Watch for all changes to a user's Drive.
-    Args:
-    service: Drive API service instance.
-    channel_id: Unique string that identifies this channel.
-    channel_type: Type of delivery mechanism used for this channel.
-    channel_address: Address where notifications are delivered.
-    channel_token: An arbitrary string delivered to the target address with
-                   each notification delivered over this channel. Optional.
-    channel_address: Address where notifications are delivered. Optional.
-    Returns:
-    The created channel if successful
-    Raises:
-    apiclient.errors.HttpError: if http request to create channel fails.
-    """
+    # Watch for all changes to a user's Drive.
+    # Args:
+    # service: Drive API service instance.
+    # channel_id: Unique string that identifies this channel.
+    # channel_type: Type of delivery mechanism used for this channel.
+    # channel_address: Address where notifications are delivered.
+    # channel_token: An arbitrary string delivered to the target address with
+    #               each notification delivered over this channel. Optional.
+    # channel_address: Address where notifications are delivered. Optional.
+    # Returns:
+    # The created channel if successful
+    # Raises:
+    # apiclient.errors.HttpError: if http request to create channel fails.
     body = {
     'id': channel_id,
     'type': channel_type,
@@ -344,7 +342,7 @@ def stopChannel(drive, channel_id, resource_id):
         drive=getDrive()
     if drive.auth.access_token_expired:
         drive.auth.Refresh() 
-    service=drive.auth.service
+    # service=drive.auth.service
     body = {
     'id': channel_id,
     'resourceId': resource_id
