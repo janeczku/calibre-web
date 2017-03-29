@@ -32,6 +32,7 @@ from flask_babel import gettext as _
 import requests
 import zipfile
 from werkzeug.security import generate_password_hash, check_password_hash
+from werkzeug.datastructures import Headers
 from babel import Locale as LC
 from babel import negotiate_locale
 from babel import __version__ as babelVersion
@@ -52,12 +53,9 @@ import db
 from shutil import move, copyfile
 from tornado.ioloop import IOLoop
 import shutil
-import StringIO
 import gdriveutils
 import tempfile
-import io
 import hashlib
-import threading
 
 from tornado import version as tornadoVersion
 
@@ -81,7 +79,6 @@ try:
     use_generic_pdf_cover = False
 except ImportError:
     use_generic_pdf_cover = True
-from cgi import escape
 
 # Global variables
 gdrive_watch_callback_token='target=calibreweb-watch_files'
@@ -825,18 +822,18 @@ def get_opds_download_link(book_id, format):
     if len(book.authors) > 0:
         file_name = book.authors[0].name + '_' + file_name
     file_name = helper.get_valid_filename(file_name)
-    headers={}
+    headers = Headers ()
     headers["Content-Disposition"] = "attachment; filename*=UTF-8''%s.%s" % (quote(file_name.encode('utf8')), format)
     app.logger.info (time.time()-startTime)
     startTime=time.time()
     if config.config_use_google_drive:
+        app.logger.info(time.time() - startTime)
         df=gdriveutils.getFileFromEbooksFolder(Gdrive.Instance().drive, book.path, data.name + "." + format)
         return do_gdrive_download(df, headers)
     else:
-        # file_name = helper.get_valid_filename(file_name)
         response = make_response(send_from_directory(os.path.join(config.config_calibre_dir, book.path), data.name + "." + format))
-    response.headers["Content-Disposition"] = "attachment; filename*=UTF-8''%s.%s" % (quote(file_name.encode('utf8')), format)
-    return response
+        response.headers=headers 
+        return response
 
 
 @app.route("/ajax/book/<string:uuid>")
@@ -1388,7 +1385,7 @@ def shutdown():
 def update():
     helper.updater_thread = helper.Updater()
     flash(_(u"Update done"), category="info")
-    return ""
+    return abort(404)
 
 
 @app.route("/search", methods=["GET"])
@@ -1639,7 +1636,7 @@ def get_download_link(book_id, format):
         if len(book.authors) > 0:
             file_name = book.authors[0].name + '_' + file_name
         file_name = helper.get_valid_filename(file_name)
-        headers={}
+        headers = Headers ()
         try:
             headers["Content-Type"] = mimetypes.types_map['.' + format]
         except:
@@ -1650,8 +1647,8 @@ def get_download_link(book_id, format):
             return do_gdrive_download(df, headers)
         else:
             response = make_response(send_from_directory(os.path.join(config.config_calibre_dir, book.path), data.name + "." + format))
-        response.headers["Content-Disposition"] = "attachment; filename*=UTF-8''%s.%s" % (quote(file_name.encode('utf-8')), format)
-        return response
+            response.headers=headers
+            return response
     else:
         abort(404)
 
