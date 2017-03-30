@@ -264,7 +264,7 @@ class Books(Base):
 
 class Custom_Columns(Base):
     __tablename__ = 'custom_columns'
-    
+
     id = Column(Integer, primary_key=True)
     label = Column(String)
     name = Column(String)

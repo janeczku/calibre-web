@@ -508,7 +508,6 @@ def create_anonymous_user():
         session.commit()
     except Exception:
         session.rollback()
-        pass
 
 
 # Generate User admin with admin123 password, and access to everything
@@ -525,7 +524,7 @@ def create_admin_user():
     session.add(user)
     try:
         session.commit()
-    except Exception as e:
+    except Exception:
         session.rollback()
         pass
 

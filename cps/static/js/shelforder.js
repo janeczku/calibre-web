@@ -1,4 +1,4 @@
-Sortable.create(sortTrue, {
+var sortable = Sortable.create(sortTrue, {
   group: "sorting",
   sort: true
 });
@@ -9,7 +9,7 @@ function sendData(path){
     var maxElements;
     var tmp=[];
 
-    elements=Sortable.utils.find(sortTrue,"div");
+    elements=sortable.utils.find(sortTrue,"div");
     maxElements=elements.length;
 
     var form = document.createElement("form");

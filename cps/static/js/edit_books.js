@@ -17,8 +17,8 @@ function prefixed_source(prefix, query, cb, bhAdapter) {
     });
 }
 function get_path(){
-    var jsFileLocation = $('script[src*=edit_books]').attr('src');  // the js file path
-    jsFileLocation = jsFileLocation.replace('/static/js/edit_books.js', '');   // the js folder path
+    var jsFileLocation = $("script[src*=edit_books]").attr("src");  // the js file path
+    jsFileLocation = jsFileLocation.replace("/static/js/edit_books.js", '');   // the js folder path
     return jsFileLocation;
 }
 
@@ -29,7 +29,7 @@ var authors = new Bloodhound({
     },
     queryTokenizer: Bloodhound.tokenizers.whitespace,
     remote: {
-        url: get_path()+'/get_authors_json?q=%QUERY'
+        url: get_path()+"/get_authors_json?q=%QUERY"
     }
 });
 
@@ -58,7 +58,8 @@ var promise = authors.initialize();
                 highlight: true, minLength: 1,
                 hint: true
             }, {
-                name: 'authors', displayKey: 'name',
+                name: "authors",
+                displayKey: "name",
                 source: authors_source
             }
     )
@@ -73,10 +74,9 @@ var series = new Bloodhound({
         return [query];
     },
     remote: {
-        url: get_path()+'/get_series_json?q=',
+        url: get_path()+"/get_series_json?q=",
         replace: function(url, query) {
-            url_query = url+encodeURIComponent(query);
-            return url_query;
+            return url+encodeURIComponent(query);
         }
     }
 });
@@ -87,7 +87,8 @@ var promise = series.initialize();
                 highlight: true, minLength: 0,
                 hint: true
             }, {
-                name: 'series', displayKey: 'name',
+                name: "series",
+                displayKey: "name",
                 source: series.ttAdapter()
             }
     )
@@ -99,9 +100,9 @@ var tags = new Bloodhound({
         return [datum.name];
     },
     queryTokenizer: function(query) {
-        tokens = query.split(",");
+        var tokens = query.split(",");
         tokens = [tokens[tokens.length-1].trim()];
-        return tokens
+        return tokens;
     },
     remote: {
         url: get_path()+"/get_tags_json?q=%QUERY"
@@ -131,7 +132,8 @@ var promise = tags.initialize();
                 highlight: true, minLength: 0,
                 hint: true
             }, {
-                name: 'tags', displayKey: 'name',
+                name: "tags",
+                displayKey: "name",
                 source: tag_source
             }
     )
@@ -146,7 +148,7 @@ var languages = new Bloodhound({
         return [query];
     },
     remote: {
-        url: get_path()+'/get_languages_json?q=',
+        url: get_path()+"/get_languages_json?q=",
         replace: function(url, query) {
             url_query = url+encodeURIComponent(query);
             return url_query;
@@ -177,23 +179,24 @@ var promise = languages.initialize();
                 highlight: true, minLength: 0,
                 hint: true
             }, {
-                name: 'languages', displayKey: 'name',
+                name: "languages",
+                displayKey: "name",
                 source: language_source
             }
     )
 });
 
-$('form').on('change input typeahead:selected', function(data){
-    form = $('form').serialize();
+$("form").on("change input typeahead:selected", function(data){
+    var form = $("form").serialize();
     $.getJSON( get_path()+"/get_matching_tags", form, function( data ) {
-      $('.tags_click').each(function() {
-        if ($.inArray(parseInt($(this).children('input').first().val(), 10), data.tags) == -1 ) {
-          if (!($(this).hasClass('active'))) {
-            $(this).addClass('disabled');
+      $(".tags_click").each(function() {
+        if ($.inArray(parseInt($(this).children("input").first().val(), 10), data.tags) === -1 ) {
+          if (!($(this).hasClass("active"))) {
+            $(this).addClass("disabled");
           }
         }
         else {
-          $(this).removeClass('disabled');
+          $(this).removeClass("disabled");
         }
       });
     });

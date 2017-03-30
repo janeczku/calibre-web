@@ -277,12 +277,12 @@ def update_dir_stucture(book_id, calibrepath):
     db.session.connection().connection.connection.create_function("title_sort", 1, db.title_sort)
     book = db.session.query(db.Books).filter(db.Books.id == book_id).first()
     path = os.path.join(calibrepath, book.path)#.replace('/',os.path.sep)).replace('\\',os.path.sep)
-    
+
     authordir = book.path.split('/')[0]
     new_authordir = get_valid_filename(book.authors[0].name)
     titledir = book.path.split('/')[1]
     new_titledir = get_valid_filename(book.title) + " (" + str(book_id) + ")"
-    
+
     if titledir != new_titledir:
         new_title_path = os.path.join(os.path.dirname(path), new_titledir)
         os.rename(path, new_title_path)
@@ -348,7 +348,7 @@ class Updater(threading.Thread):
         if web.gevent_server:
             web.gevent_server.stop()
         else:
-            # stop tornado server            
+            # stop tornado server
             server = IOLoop.instance()
             server.add_callback(server.stop)
         self.status=7

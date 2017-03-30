@@ -57,7 +57,7 @@ def get_epub_info(tmp_file_path, original_file_name, original_file_extension):
             epub_metadata['description'] = ""
 
     if epub_metadata['language'] == "Unknown":
-        epub_metadata['language'] == ""
+        epub_metadata['language'] = ""
     else:
         lang = epub_metadata['language'].split('-', 1)[0].lower()
         if len(lang) == 2:
@@ -87,7 +87,7 @@ def get_epub_info(tmp_file_path, original_file_name, original_file_extension):
                     coverfile = extractCover(zip, filename, "", tmp_file_path)
                 else:
                     coverfile = extractCover(zip, coversection[0], coverpath, tmp_file_path)
-            
+
     if epub_metadata['title'] is None:
         title = original_file_name
     else:

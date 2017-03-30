@@ -3,7 +3,7 @@ var updateTimerID;
 var updateText;
 
 $(function() {
-    $('.discover .row').isotope({
+    $(".discover .row").isotope({
         // options
         itemSelector : ".book",
         layoutMode : "fitRows"
@@ -20,28 +20,28 @@ $(function() {
         extraScrollPx: 300,
                    // selector for all items you'll retrieve
     }, function(data){
-        $(".load-more .row").isotope( 'appended', $(data), null );
+        $(".load-more .row").isotope( "appended", $(data), null );
     });
 
-    $('#sendbtn').click(function(){
+    $("#sendbtn").click(function(){
         var $this = $(this);
         $this.text("Please wait...");
         $this.addClass("disabled");
     });
     $("#restart").click(function() {
         $.ajax({
-            dataType: 'json',
+            dataType: "json",
             url: window.location.pathname+"/../../shutdown",
             data: {"parameter":0},
             success: function(data) {
-                $('#spinner').show();
+                $("#spinner").show();
                 displaytext=data.text;
                 setTimeout(restartTimer, 3000);}
         });
     });
     $("#shutdown").click(function() {
         $.ajax({
-            dataType: 'json',
+            dataType: "json",
             url: window.location.pathname+"/../../shutdown",
             data: {"parameter":1},
             success: function(data) {
@@ -50,13 +50,13 @@ $(function() {
     });
     $("#check_for_update").click(function() {
         var button_text = $("#check_for_update").html();
-        $("#check_for_update").html('...');
+        $("#check_for_update").html("...");
         $.ajax({
-            dataType: 'json',
+            dataType: "json",
             url: window.location.pathname+"/../../get_update_status",
             success: function(data) {
                 $("#check_for_update").html(button_text);
-                if (data.status == true) {
+                if (data.status === true) {
                     $("#check_for_update").addClass("hidden");
                     $("#perform_update").removeClass("hidden");
                     $("#update_info").removeClass("hidden");
@@ -82,12 +82,11 @@ $(function() {
         success: function(data) {
             updateText=data.text;
             $("#UpdateprogressDialog #Updatecontent").html(updateText[data.status]);
-            console.log(data.status);
+            // console.log(data.status);
             updateTimerID=setInterval(updateTimer, 2000);}
         });
     });
 });
-
 
 function restartTimer() {
     $("#spinner").hide();
@@ -103,10 +102,10 @@ function updateTimer() {
         $("#UpdateprogressDialog #Updatecontent").html(updateText[data.status]);
         if (data.status >6){
             clearInterval(updateTimerID);
-            $('#spinner2').hide();
-            $('#UpdateprogressDialog #updateFinished').removeClass('hidden');
-            $("#check_for_update").removeClass('hidden');
-            $("#perform_update").addClass('hidden');
+            $("#spinner2").hide();
+            $("#UpdateprogressDialog #updateFinished").removeClass("hidden");
+            $("#check_for_update").removeClass("hidden");
+            $("#perform_update").addClass("hidden");
         }
     },
     error: function() {
