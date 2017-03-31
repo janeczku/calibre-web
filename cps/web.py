@@ -131,6 +131,7 @@ class Singleton:
     def __instancecheck__(self, inst):
         return isinstance(inst, self._decorated)
 
+
 @Singleton
 class Gauth:
     def __init__(self):
@@ -567,7 +568,7 @@ def feed_index():
 @app.route("/opds/osd")
 @requires_basic_auth_if_no_ano
 def feed_osd():
-    xml = render_title_template('osd.xml',lang='de-DE')
+    xml = render_title_template('osd.xml', lang='de-DE')
     response = make_response(xml)
     response.headers["Content-Type"] = "application/xml"
     return response
@@ -1466,7 +1467,7 @@ def advanced_search():
             try:
                 cur_l = LC.parse(lang.lang_code)
                 lang.name = cur_l.get_language_name(get_locale())
-            except Exception as e:
+            except Exception:
                 lang.name = _(isoLanguages.get(part3=lang.lang_code).name)
     else:
         languages = None
