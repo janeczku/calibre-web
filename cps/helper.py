@@ -43,9 +43,9 @@ import web
 
 try:
     import unidecode
-    use_unidecode=True
+    use_unidecode = True
 except Exception as e:
-    use_unidecode=False
+    use_unidecode = False
 
 # Global variables
 global_task = None
@@ -242,7 +242,7 @@ def get_valid_filename(value, replace_whitespace=True):
     Returns the given string converted to a string that can be used for a clean
     filename. Limits num characters to 128 max.
     """
-    if value[-1:] ==u'.':
+    if value[-1:] == u'.':
         value = value[:-1]+u'_'
     if use_unidecode:
         value=(unidecode.unidecode(value)).strip()
@@ -266,7 +266,7 @@ def get_sorted_author(value):
     regexes = ["^(JR|SR)\.?$","^I{1,3}\.?$","^IV\.?$"]
     combined = "(" + ")|(".join(regexes) + ")"
     value = value.split(" ")
-    if re.match(combined,value[-1].upper()):
+    if re.match(combined, value[-1].upper()):
         value2 = value[-2] + ", " + " ".join(value[:-2]) + " " + value[-1]
     else:
         value2 = value[-1] + ", " + " ".join(value[:-1])
@@ -295,6 +295,7 @@ def update_dir_stucture(book_id, calibrepath):
         book.path = new_authordir + '/' + book.path.split('/')[1]
     db.session.commit()
 
+
 def update_dir_structure_gdrive(book_id):
     db.session.connection().connection.connection.create_function("title_sort", 1, db.title_sort)
     book = db.session.query(db.Books).filter(db.Books.id == book_id).first()
@@ -313,7 +314,7 @@ def update_dir_structure_gdrive(book_id):
     
     if authordir != new_authordir:
         gFile=gd.getFileFromEbooksFolder(web.Gdrive.Instance().drive,None,authordir)
-        gFile['title']= new_authordir
+        gFile['title'] = new_authordir
         gFile.Upload()
         book.path = new_authordir + '/' + book.path.split('/')[1]
 
@@ -327,23 +328,23 @@ class Updater(threading.Thread):
 
     def run(self):
         global global_task
-        self.status=1
+        self.status = 1
         r = requests.get('https://api.github.com/repos/janeczku/calibre-web/zipball/master', stream=True)
         fname = re.findall("filename=(.+)", r.headers['content-disposition'])[0]
-        self.status=2
+        self.status = 2
         z = zipfile.ZipFile(StringIO(r.content))
-        self.status=3
+        self.status = 3
         tmp_dir = gettempdir()
         z.extractall(tmp_dir)
-        self.status=4
+        self.status = 4
         self.update_source(os.path.join(tmp_dir,os.path.splitext(fname)[0]),ub.config.get_main_dir)
-        self.status=5
+        self.status = 5
         global_task = 0
         db.session.close()
         db.engine.dispose()
         ub.session.close()
         ub.engine.dispose()
-        self.status=6
+        self.status = 6
 
         if web.gevent_server:
             web.gevent_server.stop()
@@ -351,7 +352,7 @@ class Updater(threading.Thread):
             # stop tornado server
             server = IOLoop.instance()
             server.add_callback(server.stop)
-        self.status=7
+        self.status = 7
 
     def get_update_status(self):
         return self.status
@@ -431,8 +432,8 @@ class Updater(threading.Thread):
         # destination files
         old_list = list()
         exclude = (
-        'vendor' + os.sep + 'kindlegen.exe', 'vendor' + os.sep + 'kindlegen', os.sep + 'app.db',
-            os.sep + 'vendor',os.sep + 'calibre-web.log')
+            'vendor' + os.sep + 'kindlegen.exe', 'vendor' + os.sep + 'kindlegen', os.sep + 'app.db',
+            os.sep + 'vendor', os.sep + 'calibre-web.log')
         for root, dirs, files in os.walk(destination, topdown=True):
             for name in files:
                 old_list.append(os.path.join(root, name).replace(destination, ''))
@@ -462,7 +463,7 @@ class Updater(threading.Thread):
             else:
                 try:
                     logging.getLogger('cps.web').debug("Delete file " + item_path)
-                    log_from_thread("Delete file " + item_path)
+                    # log_from_thread("Delete file " + item_path)
                     os.remove(item_path)
                 except Exception:
                     logging.getLogger('cps.web').debug("Could not remove:" + item_path)
