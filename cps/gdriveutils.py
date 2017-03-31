@@ -194,7 +194,6 @@ def downloadFile(drive, path, filename, output):
     f.GetContentFile(output)
 
 def backupCalibreDbAndOptionalDownload(drive, f=None):
-    pass
     if not drive:
         drive=getDrive()
     if drive.auth.access_token_expired:
@@ -354,12 +353,11 @@ def getChangeById (drive, change_id):
         drive=getDrive()
     if drive.auth.access_token_expired:
         drive.auth.Refresh() 
-    """Print a single Change resource information.
-
-    Args:
-    service: Drive API service instance.
-    change_id: ID of the Change resource to retrieve.
-    """
+    # Print a single Change resource information.
+    #
+    # Args:
+    # service: Drive API service instance.
+    # change_id: ID of the Change resource to retrieve.
     try:
         change = drive.auth.service.changes().get(changeId=change_id).execute()
         return change

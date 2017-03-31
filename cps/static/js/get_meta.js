@@ -65,7 +65,7 @@ $(document).ready(function () {
             $("#description").val(meta.summary);
             $("#bookAuthor").val(meta.author.join(" & "));
             $("#book_title").val(meta.title);
-            var tags = '';
+            tags = '';
             for (var i = 0; i < meta.tags.length; i++) {
                 tags = tags + meta.tags[i].title + ',';
             }
@@ -74,7 +74,8 @@ $(document).ready(function () {
             return;
         }
     }
-    do_search = function (keyword) {
+
+    function do_search (keyword) {
         show_flag = 0;
         $("#meta-info").text(msg.loading);
         var keyword = $("#keyword").val();
@@ -82,26 +83,6 @@ $(document).ready(function () {
             db_search_book(keyword);
             gg_search_book(keyword);
         }
-    }
-
-    db_search_book = function (title) {
-        var url = douban + dbSearch + '?q=' + title + '&fields=all&count=10';
-        $.ajax({
-            url: url,
-            type: "GET",
-            dataType: "jsonp",
-            jsonp: 'callback',
-            success: function (data) {
-                db_results = data.books;
-            },
-            error: function () {
-                $('#meta-info').html('<p class="text-danger">'+ msg.search_error+'!</p>');
-            },
-            complete: function () {
-                dbDone = true;
-                show_result();
-            }
-        });
     }
 
     function show_result () {
@@ -161,6 +142,26 @@ $(document).ready(function () {
             }
             dbDone = false;
         }
+    }
+
+    db_search_book = function (title) {
+        var url = douban + dbSearch + '?q=' + title + '&fields=all&count=10';
+        $.ajax({
+            url: url,
+            type: "GET",
+            dataType: "jsonp",
+            jsonp: 'callback',
+            success: function (data) {
+                db_results = data.books;
+            },
+            error: function () {
+                $('#meta-info').html('<p class="text-danger">'+ msg.search_error+'!</p>');
+            },
+            complete: function () {
+                dbDone = true;
+                show_result();
+            }
+        });
     }
 
     $("#do-search").click(function () {
