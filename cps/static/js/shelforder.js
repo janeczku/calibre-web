@@ -1,3 +1,5 @@
+/* global Sortable,sortTrue */
+
 var sortable = Sortable.create(sortTrue, {
   group: "sorting",
   sort: true

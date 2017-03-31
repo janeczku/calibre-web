@@ -62,12 +62,12 @@ from tornado import version as tornadoVersion
 try:
     from urllib.parse import quote
     from imp import reload
-except ImportError as e:
+except ImportError:
     from urllib import quote
 
 try:
     from flask_login import __version__ as flask_loginVersion
-except ImportError as e:
+except ImportError:
     from flask_login.__about__ import __version__ as flask_loginVersion
 
 import time
@@ -613,7 +613,7 @@ def feed_new():
     off = request.args.get("offset")
     if not off:
         off = 0
-    entries, random, pagination = fill_indexpage((int(off) / (int(config.config_books_per_page)) + 1),
+    entries, _, pagination = fill_indexpage((int(off) / (int(config.config_books_per_page)) + 1),
                                                  db.Books, True, db.Books.timestamp.desc())
     xml = render_title_template('feed.xml', entries=entries, pagination=pagination)
     response = make_response(xml)
@@ -850,8 +850,9 @@ def get_metadata_calibre_companion(uuid):
 def get_authors_json():
     if request.method == "GET":
         query = request.args.get('q')
-        entries = db.session.execute("select name from authors where name like '%" + query + "%'")
-        json_dumps = json.dumps([dict(r) for r in entries])
+        # entries = db.session.execute("select name from authors where name like '%" + query + "%'")
+        entries = db.session.query(db.Authors).filter(db.Authors.name.like("%" + query + "%")).all()
+        json_dumps = json.dumps([dict(name=r.name) for r in entries])
         return json_dumps
 
 
@@ -860,8 +861,11 @@ def get_authors_json():
 def get_tags_json():
     if request.method == "GET":
         query = request.args.get('q')
-        entries = db.session.execute("select name from tags where name like '%" + query + "%'")
-        json_dumps = json.dumps([dict(r) for r in entries])
+        # entries = db.session.execute("select name from tags where name like '%" + query + "%'")
+        entries = db.session.query(db.Tags).filter(db.Tags.name.like("%" + query + "%")).all()
+        #for x in entries:
+        #    alfa = dict(name=x.name)
+        json_dumps = json.dumps([dict(name=r.name) for r in entries])
         return json_dumps
 
 @app.route("/get_update_status", methods=['GET'])
@@ -922,7 +926,7 @@ def get_languages_json():
             try:
                 cur_l = LC.parse(lang.lang_code)
                 lang.name = cur_l.get_language_name(get_locale())
-            except Exception as e:
+            except Exception:
                 lang.name = _(isoLanguages.get(part3=lang.lang_code).name)
         entries = [s for s in languages if query in s.name.lower()]
         json_dumps = json.dumps([dict(name=r.name) for r in entries])
@@ -934,8 +938,9 @@ def get_languages_json():
 def get_series_json():
     if request.method == "GET":
         query = request.args.get('q')
-        entries = db.session.execute("select name from series where name like '%" + query + "%'")
-        json_dumps = json.dumps([dict(r) for r in entries])
+        entries = db.session.query(db.Series).filter(db.Series.name.like("%" + query + "%")).all()
+        # entries = db.session.execute("select name from series where name like '%" + query + "%'")
+        json_dumps = json.dumps([dict(name=r.name) for r in entries])
         return json_dumps
 
 
@@ -1088,13 +1093,13 @@ def language_overview():
             try:
                 cur_l = LC.parse(lang.lang_code)
                 lang.name = cur_l.get_language_name(get_locale())
-            except Exception as e:
+            except Exception:
                 lang.name = _(isoLanguages.get(part3=lang.lang_code).name)
     else:
         try:
             langfound = 1
             cur_l = LC.parse(current_user.filter_language())
-        except Exception as e:
+        except Exception:
             langfound = 0
         languages = db.session.query(db.Languages).filter(
             db.Languages.lang_code == current_user.filter_language()).all()
@@ -1118,7 +1123,7 @@ def language(name, page):
     try:
         cur_l = LC.parse(name)
         name = cur_l.get_language_name(get_locale())
-    except Exception as e:
+    except Exception:
         name = _(isoLanguages.get(part3=name).name)
     return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
                                  title=_(u"Language: %(name)s", name=name))
@@ -1179,7 +1184,7 @@ def show_book(id):
             try:
                 entries.languages[index].language_name = LC.parse(entries.languages[index].lang_code).get_language_name(
                     get_locale())
-            except Exception as e:
+            except Exception:
                 entries.languages[index].language_name = _(
                     isoLanguages.get(part3=entries.languages[index].lang_code).name)
         tmpcc = db.session.query(db.Custom_Columns).filter(db.Custom_Columns.datatype.notin_(db.cc_exceptions)).all()
@@ -1234,7 +1239,7 @@ def stats():
         kindlegen = os.path.join(vendorpath, u"kindlegen")
     versions['KindlegenVersion'] = _('not installed')
     if os.path.exists(kindlegen):
-        p = subprocess.Popen(kindlegen, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+        p = subprocess.Popen(kindlegen, shell=False, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
                              stdin=subprocess.PIPE)
         p.wait()
         for lines in p.stdout.readlines():
@@ -1435,7 +1440,7 @@ def advanced_search():
                 try:
                     cur_l = LC.parse(lang.lang_code)
                     lang.name = cur_l.get_language_name(get_locale())
-                except Exception as e:
+                except Exception:
                     lang.name = _(isoLanguages.get(part3=lang.lang_code).name)
             searchterm.extend(language.name for language in language_names)
             searchterm = " + ".join(filter(None, searchterm))
@@ -1678,7 +1683,7 @@ def register():
             try:
                 ub.session.add(content)
                 ub.session.commit()
-            except Exception as e:
+            except Exception:
                 ub.session.rollback()
                 flash(_(u"An unknown error occured. Please try again later."), category="error")
                 return render_title_template('register.html', title=_(u"register"))
@@ -1806,7 +1811,7 @@ def create_shelf():
                 ub.session.add(shelf)
                 ub.session.commit()
                 flash(_(u"Shelf %(title)s created", title=to_save["title"]), category="success")
-            except Exception as e:
+            except Exception:
                 flash(_(u"There was an error"), category="error")
         return render_title_template('shelf_edit.html', shelf=shelf, title=_(u"create a shelf"))
     else:
@@ -1834,7 +1839,7 @@ def edit_shelf(shelf_id):
             try:
                 ub.session.commit()
                 flash(_(u"Shelf %(title)s changed", title=to_save["title"]), category="success")
-            except Exception as e:
+            except Exception:
                 flash(_(u"There was an error"), category="error")
         return render_title_template('shelf_edit.html', shelf=shelf, title=_(u"Edit a shelf"))
     else:
@@ -1924,7 +1929,7 @@ def profile():
         try:
             cur_l = LC.parse(lang.lang_code)
             lang.name = cur_l.get_language_name(get_locale())
-        except Exception as e:
+        except Exception:
             lang.name = _(isoLanguages.get(part3=lang.lang_code).name)
     translations = babel.list_translations() + [LC('en')]
     for book in content.downloads:
@@ -2138,7 +2143,7 @@ def new_user():
         try:
             cur_l = LC.parse(lang.lang_code)
             lang.name = cur_l.get_language_name(get_locale())
-        except Exception as e:
+        except Exception:
             lang.name = _(isoLanguages.get(part3=lang.lang_code).name)
     translations = [LC('en')] + babel.list_translations()
     if request.method == "POST":
@@ -2243,7 +2248,7 @@ def edit_user(user_id):
         try:
             cur_l = LC.parse(lang.lang_code)
             lang.name = cur_l.get_language_name(get_locale())
-        except Exception as e:
+        except Exception:
             lang.name = _(isoLanguages.get(part3=lang.lang_code).name)
     translations = babel.list_translations() + [LC('en')]
     for book in content.downloads:
@@ -2375,7 +2380,7 @@ def edit_book(book_id):
             try:
                 book.languages[index].language_name = LC.parse(book.languages[index].lang_code).get_language_name(
                     get_locale())
-            except Exception as e:
+            except Exception:
                 book.languages[index].language_name = _(isoLanguages.get(part3=book.languages[index].lang_code).name)
         for author in book.authors:
             author_names.append(author.name)
@@ -2433,7 +2438,7 @@ def edit_book(book_id):
             for lang in languages:
                 try:
                     lang.name = LC.parse(lang.lang_code).get_language_name(get_locale()).lower()
-                except Exception as e:
+                except Exception:
                     lang.name = _(isoLanguages.get(part3=lang.lang_code).name).lower()
                 for inp_lang in input_languages:
                     if inp_lang == lang.name:
@@ -2624,12 +2629,12 @@ def upload():
                 return redirect(url_for('index'))
         try:
             copyfile(meta.file_path, saved_filename)
-        except OSError as e:
+        except OSError:
             flash(_(u"Failed to store file %s (Permission denied)." % saved_filename), category="error")
             return redirect(url_for('index'))
         try:
             os.unlink(meta.file_path)
-        except OSError as e:
+        except OSError:
             flash(_(u"Failed to delete file %s (Permission denied)." % meta.file_path), category="warning")
 
         file_size = os.path.getsize(saved_filename)

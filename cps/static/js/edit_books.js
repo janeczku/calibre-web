@@ -1,6 +1,8 @@
 /**
  * Created by SpeedProg on 05.04.2015.
  */
+/* global Bloodhound */
+
 
 /*
 Takes a prefix, query typeahead callback, Bloodhound typeahead adapter
@@ -33,38 +35,6 @@ var authors = new Bloodhound({
     }
 });
 
-function authors_source(query, cb) {
-    var bhAdapter = authors.ttAdapter();
-
-    var tokens = query.split("&");
-    var current_author = tokens[tokens.length-1].trim();
-
-    tokens.splice(tokens.length-1, 1); // remove last element
-    var prefix = "";
-    for (var i = 0; i < tokens.length; i++) {
-        var author = tokens[i].trim();
-        prefix += author + " & ";
-    }
-
-    prefixed_source(prefix, current_author, cb, bhAdapter);
-}
-
-
-
-var promise = authors.initialize();
-    promise.done(function(){
-    $("#bookAuthor").typeahead(
-            {
-                highlight: true, minLength: 1,
-                hint: true
-            }, {
-                name: "authors",
-                displayKey: "name",
-                source: authors_source
-            }
-    )
-});
-
 var series = new Bloodhound({
     name: "series",
     datumTokenizer: function(datum) {
@@ -80,19 +50,7 @@ var series = new Bloodhound({
         }
     }
 });
-var promise = series.initialize();
-    promise.done(function(){
-    $("#series").typeahead(
-            {
-                highlight: true, minLength: 0,
-                hint: true
-            }, {
-                name: "series",
-                displayKey: "name",
-                source: series.ttAdapter()
-            }
-    )
-});
+
 
 var tags = new Bloodhound({
     name: "tags",
@@ -107,36 +65,6 @@ var tags = new Bloodhound({
     remote: {
         url: get_path()+"/get_tags_json?q=%QUERY"
     }
-});
-
-function tag_source(query, cb) {
-    var bhAdapter = tags.ttAdapter();
-
-    var tokens = query.split(",");
-    var current_tag = tokens[tokens.length-1].trim();
-
-    tokens.splice(tokens.length-1, 1); // remove last element
-    var prefix = "";
-    for (var i = 0; i < tokens.length; i++) {
-        var tag = tokens[i].trim();
-        prefix += tag + ", ";
-    }
-
-    prefixed_source(prefix, current_tag, cb, bhAdapter);
-}
-
-var promise = tags.initialize();
-    promise.done(function(){
-    $("#tags").typeahead(
-            {
-                highlight: true, minLength: 0,
-                hint: true
-            }, {
-                name: "tags",
-                displayKey: "name",
-                source: tag_source
-            }
-    )
 });
 
 var languages = new Bloodhound({
@@ -156,24 +84,72 @@ var languages = new Bloodhound({
     }
 });
 
-function language_source(query, cb) {
-    var bhAdapter = languages.ttAdapter();
+function sourceSplit(query, cb, split, source) {
+    var bhAdapter = source.ttAdapter();
 
-    var tokens = query.split(",");
-    var currentLanguage = tokens[tokens.length-1].trim();
+    var tokens = query.split(split);
+    var currentSource = tokens[tokens.length-1].trim();
 
     tokens.splice(tokens.length-1, 1); // remove last element
     var prefix = "";
-    for (var i = 0; i < tokens.length; i++) {
-        var tag = tokens[i].trim();
-        prefix += tag + ", ";
+    var newSplit;
+    if (split === "&"){
+        newSplit = " " + split + " ";
+    }else{
+        newSplit = split + " ";
     }
-
-    prefixed_source(prefix, currentLanguage, cb, bhAdapter);
+    for (var i = 0; i < tokens.length; i++) {
+        prefix += tokens[i].trim() + newSplit;
+    }
+    prefixed_source(prefix, currentSource, cb, bhAdapter);
 }
 
-var promise = languages.initialize();
-    promise.done(function(){
+var promiseAuthors = authors.initialize();
+    promiseAuthors.done(function(){
+    $("#bookAuthor").typeahead(
+            {
+                highlight: true, minLength: 1,
+                hint: true
+            }, {
+                name: "authors",
+                displayKey: "name",
+                source: function(query, cb){
+                    return sourceSplit(query, cb, "&", authors); //sourceSplit //("&")
+            }
+    });
+});
+
+var promiseSeries = series.initialize();
+    promiseSeries.done(function(){
+    $("#series").typeahead(
+            {
+                highlight: true, minLength: 0,
+                hint: true
+            }, {
+                name: "series",
+                displayKey: "name",
+                source: series.ttAdapter()
+            }
+    )
+});
+
+var promiseTags = tags.initialize();
+    promiseTags.done(function(){
+    $("#tags").typeahead(
+            {
+                highlight: true, minLength: 0,
+                hint: true
+            }, {
+                name: "tags",
+                displayKey: "name",
+                source: function(query, cb){
+                    return sourceSplit(query, cb, ",", tags);
+                }
+            });
+    });
+
+var promiseLanguages = languages.initialize();
+    promiseLanguages.done(function(){
     $("#languages").typeahead(
             {
                 highlight: true, minLength: 0,
@@ -181,10 +157,11 @@ var promise = languages.initialize();
             }, {
                 name: "languages",
                 displayKey: "name",
-                source: language_source
-            }
-    )
-});
+                source: function(query, cb){
+                    return sourceSplit(query, cb, ",", languages); //(",")
+                }
+            });
+    });
 
 $("form").on("change input typeahead:selected", function(data){
     var form = $("form").serialize();
