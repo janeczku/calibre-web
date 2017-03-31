@@ -86,42 +86,42 @@ $(function() {
             updateTimerID=setInterval(updateTimer, 2000);}
         });
     });
-});
 
-function restartTimer() {
-    $("#spinner").hide();
-    $("#RestartDialog").modal("hide");
-}
+    function restartTimer() {
+        $("#spinner").addClass("hidden");
+        $("#RestartDialog").modal("hide");
+    }
 
-function updateTimer() {
-    $.ajax({
-    dataType: 'json',
-    url: window.location.pathname+"/../../get_updater_status",
-    success: function(data) {
-        console.log(data.status);
-        $("#UpdateprogressDialog #Updatecontent").html(updateText[data.status]);
-        if (data.status >6){
+    function updateTimer() {
+        $.ajax({
+        dataType: 'json',
+        url: window.location.pathname+"/../../get_updater_status",
+        success: function(data) {
+            console.log(data.status);
+            $("#UpdateprogressDialog #Updatecontent").html(updateText[data.status]);
+            if (data.status >6){
+                clearInterval(updateTimerID);
+                $("#spinner2").hide();
+                $("#UpdateprogressDialog #updateFinished").removeClass("hidden");
+                $("#check_for_update").removeClass("hidden");
+                $("#perform_update").addClass("hidden");
+            }
+        },
+        error: function() {
+            // console.log('Done');
             clearInterval(updateTimerID);
             $("#spinner2").hide();
+            $("#UpdateprogressDialog #Updatecontent").html(updateText[7]);
             $("#UpdateprogressDialog #updateFinished").removeClass("hidden");
             $("#check_for_update").removeClass("hidden");
             $("#perform_update").addClass("hidden");
-        }
-    },
-    error: function() {
-        // console.log('Done');
-        clearInterval(updateTimerID);
-        $("#spinner2").hide();
-        $("#UpdateprogressDialog #Updatecontent").html(updateText[7]);
-        $("#UpdateprogressDialog #updateFinished").removeClass("hidden");
-        $("#check_for_update").removeClass("hidden");
-        $("#perform_update").addClass("hidden");
-        },
-    timeout:2000
+            },
+        timeout:2000
+        });
+    }
+
+
+    $(window).resize(function(event) {
+        $(".discover .row").isotope("reLayout");
     });
-}
-
-
-$(window).resize(function(event) {
-    $(".discover .row").isotope("reLayout");
 });
