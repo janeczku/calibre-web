@@ -478,8 +478,8 @@ def fill_indexpage(page, database, db_filter, order):
         random = false
     off = int(int(config.config_books_per_page) * (page - 1))
     pagination = Pagination(page, config.config_books_per_page,
-                            len(db.session.query(database).filter(db_filter).filter(filter).all()))
-    entries = db.session.query(database).filter(db_filter).filter(filter).order_by(order).offset(off).limit(
+                            len(db.session.query(database).filter(db_filter).filter(lang_filter).all()))
+    entries = db.session.query(database).filter(db_filter).filter(lang_filter).order_by(order).offset(off).limit(
         config.config_books_per_page)
     return entries, random, pagination
 
