@@ -49,13 +49,13 @@ $(function() {
         });
     });
     $("#check_for_update").click(function() {
-        var button_text = $("#check_for_update").html();
+        var buttonText = $("#check_for_update").html();
         $("#check_for_update").html("...");
         $.ajax({
             dataType: "json",
             url: window.location.pathname+"/../../get_update_status",
             success: function(data) {
-                $("#check_for_update").html(button_text);
+                $("#check_for_update").html(buttonText);
                 if (data.status === true) {
                     $("#check_for_update").addClass("hidden");
                     $("#perform_update").removeClass("hidden");
@@ -67,7 +67,7 @@ $(function() {
     });
     $("#restart_database").click(function() {
         $.ajax({
-            dataType: 'json',
+            dataType: "json",
             url: window.location.pathname+"/../../shutdown",
             data: {"parameter":2}
         });
@@ -76,7 +76,7 @@ $(function() {
         $("#spinner2").show();
         $.ajax({
         type: "POST",
-        dataType: 'json',
+        dataType: "json",
         data: { start: "True"},
         url: window.location.pathname+"/../../get_updater_status",
         success: function(data) {
@@ -94,10 +94,10 @@ $(function() {
 
     function updateTimer() {
         $.ajax({
-        dataType: 'json',
+        dataType: "json",
         url: window.location.pathname+"/../../get_updater_status",
         success: function(data) {
-            console.log(data.status);
+            // console.log(data.status);
             $("#UpdateprogressDialog #Updatecontent").html(updateText[data.status]);
             if (data.status >6){
                 clearInterval(updateTimerID);

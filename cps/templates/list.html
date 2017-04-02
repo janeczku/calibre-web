@@ -10,7 +10,7 @@
       {% endif %}
       <div class="row">
         <div class="col-xs-1" align="left"><span class="badge">{{entry.count}}</span></div>
-        <div class="col-xs-6"><a id="list_{{loop.index0}}" href="{{url_for(folder, id=entry[0].id )}}">{{entry[0].name}}</a></div>
+        <div class="col-xs-6"><a id="list_{{loop.index0}}" href="{{url_for(folder, book_id=entry[0].id )}}">{{entry[0].name}}</a></div>
       </div>
     {% endfor %}
   </div>

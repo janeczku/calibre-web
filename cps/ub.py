@@ -93,9 +93,11 @@ class UserBase:
         else:
             return False
 
+    @staticmethod
     def is_active(self):
         return True
 
+    @staticmethod
     def is_anonymous(self):
         return False
 
@@ -526,7 +528,6 @@ def create_admin_user():
         session.commit()
     except Exception:
         session.rollback()
-        pass
 
 
 # Open session for database connection
