@@ -64,10 +64,7 @@ class UserBase:
             return False
 
     def role_upload(self):
-        if self.role is not None:
-            return True if self.role & ROLE_UPLOAD == ROLE_UPLOAD else False
-        else:
-            return False
+        return bool((self.role is not None)and(self.role & ROLE_UPLOAD == ROLE_UPLOAD))
 
     def role_edit(self):
         if self.role is not None:
@@ -93,11 +90,11 @@ class UserBase:
         else:
             return False
 
-    @staticmethod
+    @classmethod
     def is_active(self):
         return True
 
-    @staticmethod
+    @classmethod
     def is_anonymous(self):
         return False
 
@@ -108,58 +105,31 @@ class UserBase:
         return self.default_language
 
     def show_random_books(self):
-        if self.sidebar_view is not None:
-            return True if self.sidebar_view & SIDEBAR_RANDOM == SIDEBAR_RANDOM else False
-        else:
-            return False
+        return bool((self.sidebar_view is not None)and(self.sidebar_view & SIDEBAR_RANDOM == SIDEBAR_RANDOM))
 
     def show_language(self):
-        if self.sidebar_view is not None:
-            return True if self.sidebar_view & SIDEBAR_LANGUAGE == SIDEBAR_LANGUAGE else False
-        else:
-            return False
+        return bool((self.sidebar_view is not None)and(self.sidebar_view & SIDEBAR_LANGUAGE == SIDEBAR_LANGUAGE))
 
     def show_hot_books(self):
-        if self.sidebar_view is not None:
-            return True if self.sidebar_view & SIDEBAR_HOT == SIDEBAR_HOT else False
-        else:
-            return False
+        return bool((self.sidebar_view is not None)and(self.sidebar_view & SIDEBAR_HOT == SIDEBAR_HOT))
 
     def show_series(self):
-        if self.sidebar_view is not None:
-            return True if self.sidebar_view & SIDEBAR_SERIES == SIDEBAR_SERIES else False
-        else:
-            return False
+        return bool((self.sidebar_view is not None)and(self.sidebar_view & SIDEBAR_SERIES == SIDEBAR_SERIES))
 
     def show_category(self):
-        if self.sidebar_view is not None:
-            return True if self.sidebar_view & SIDEBAR_CATEGORY == SIDEBAR_CATEGORY else False
-        else:
-            return False
+        return bool((self.sidebar_view is not None)and(self.sidebar_view & SIDEBAR_CATEGORY == SIDEBAR_CATEGORY))
 
     def show_author(self):
-        if self.sidebar_view is not None:
-            return True if self.sidebar_view & SIDEBAR_AUTHOR == SIDEBAR_AUTHOR else False
-        else:
-            return False
+        return bool((self.sidebar_view is not None)and(self.sidebar_view & SIDEBAR_AUTHOR == SIDEBAR_AUTHOR))
 
     def show_best_rated_books(self):
-        if self.sidebar_view is not None:
-            return True if self.sidebar_view & SIDEBAR_BEST_RATED == SIDEBAR_BEST_RATED else False
-        else:
-            return False
+        return bool((self.sidebar_view is not None)and(self.sidebar_view & SIDEBAR_BEST_RATED == SIDEBAR_BEST_RATED))
 
     def show_read_and_unread(self):
-        if self.sidebar_view is not None:
-            return True if self.sidebar_view & SIDEBAR_READ_AND_UNREAD == SIDEBAR_READ_AND_UNREAD else False
-        else:
-            return False
+        return bool((self.sidebar_view is not None)and(self.sidebar_view & SIDEBAR_READ_AND_UNREAD == SIDEBAR_READ_AND_UNREAD))
 
     def show_detail_random(self):
-        if self.sidebar_view is not None:
-            return True if self.sidebar_view & DETAIL_RANDOM == DETAIL_RANDOM else False
-        else:
-            return False
+        return bool((self.sidebar_view is not None)and(self.sidebar_view & DETAIL_RANDOM == DETAIL_RANDOM))
 
     def __repr__(self):
         return '<User %r>' % self.nickname
