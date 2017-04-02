@@ -8,7 +8,7 @@
 Takes a prefix, query typeahead callback, Bloodhound typeahead adapter
  and returns the completions it gets from the bloodhound engine prefixed.
  */
-function prefixed_source(prefix, query, cb, bhAdapter) {
+function prefixedSource(prefix, query, cb, bhAdapter) {
     bhAdapter(query, function(retArray){
         var matches = [];
         for (var i = 0; i < retArray.length; i++) {
@@ -18,7 +18,7 @@ function prefixed_source(prefix, query, cb, bhAdapter) {
         cb(matches);
     });
 }
-function get_path(){
+function getPath(){
     var jsFileLocation = $("script[src*=edit_books]").attr("src");  // the js file path
     jsFileLocation = jsFileLocation.replace("/static/js/edit_books.js", '');   // the js folder path
     return jsFileLocation;
@@ -31,7 +31,7 @@ var authors = new Bloodhound({
     },
     queryTokenizer: Bloodhound.tokenizers.whitespace,
     remote: {
-        url: get_path()+"/get_authors_json?q=%QUERY"
+        url: getPath()+"/get_authors_json?q=%QUERY"
     }
 });
 
@@ -44,7 +44,7 @@ var series = new Bloodhound({
         return [query];
     },
     remote: {
-        url: get_path()+"/get_series_json?q=",
+        url: getPath()+"/get_series_json?q=",
         replace: function(url, query) {
             return url+encodeURIComponent(query);
         }
@@ -63,7 +63,7 @@ var tags = new Bloodhound({
         return tokens;
     },
     remote: {
-        url: get_path()+"/get_tags_json?q=%QUERY"
+        url: getPath()+"/get_tags_json?q=%QUERY"
     }
 });
 
@@ -76,10 +76,9 @@ var languages = new Bloodhound({
         return [query];
     },
     remote: {
-        url: get_path()+"/get_languages_json?q=",
+        url: getPath()+"/get_languages_json?q=",
         replace: function(url, query) {
-            url_query = url+encodeURIComponent(query);
-            return url_query;
+            return url+encodeURIComponent(query);
         }
     }
 });
@@ -101,7 +100,7 @@ function sourceSplit(query, cb, split, source) {
     for (var i = 0; i < tokens.length; i++) {
         prefix += tokens[i].trim() + newSplit;
     }
-    prefixed_source(prefix, currentSource, cb, bhAdapter);
+    prefixedSource(prefix, currentSource, cb, bhAdapter);
 }
 
 var promiseAuthors = authors.initialize();
@@ -130,7 +129,7 @@ var promiseSeries = series.initialize();
                 displayKey: "name",
                 source: series.ttAdapter()
             }
-    )
+    );
 });
 
 var promiseTags = tags.initialize();
@@ -165,7 +164,7 @@ var promiseLanguages = languages.initialize();
 
 $("form").on("change input typeahead:selected", function(data){
     var form = $("form").serialize();
-    $.getJSON( get_path()+"/get_matching_tags", form, function( data ) {
+    $.getJSON( getPath()+"/get_matching_tags", form, function( data ) {
       $(".tags_click").each(function() {
         if ($.inArray(parseInt($(this).children("input").first().val(), 10), data.tags) === -1 ) {
           if (!($(this).hasClass("active"))) {

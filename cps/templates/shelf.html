@@ -15,14 +15,14 @@
     <div class="col-sm-3 col-lg-2 col-xs-6 book">
       <div class="cover">
         {% if entry.has_cover is defined %}
-          <a href="{{ url_for('show_book', id=entry.id) }}">
+          <a href="{{ url_for('show_book', book_id=entry.id) }}">
             <img src="{{ url_for('get_cover', cover_path=entry.path.replace('\\','/')) }}" />
           </a>
         {% endif %}
       </div>
       <div class="meta">
         <p class="title">{{entry.title|shortentitle}}</p>
-        <p class="author"><a href="{{url_for('author', id=entry.authors[0].id) }}">{{entry.authors[0].name}}</a></p>
+        <p class="author"><a href="{{url_for('author', book_id=entry.authors[0].id) }}">{{entry.authors[0].name}}</a></p>
         {% if entry.ratings.__len__() > 0 %}
         <div class="rating">
           {% for number in range((entry.ratings[0].rating/2)|int(2)) %}
