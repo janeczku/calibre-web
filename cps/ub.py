@@ -293,10 +293,8 @@ class Config:
         else:
             self.config_google_drive_watch_changes_response=None
         self.config_columns_to_ignore = data.config_columns_to_ignore
-        if self.config_calibre_dir is not None and (not self.config_use_google_drive or os.path.exists(self.config_calibre_dir + '/metadata.db')):
-            self.db_configured = True
-        else:
-            self.db_configured = False
+        self.db_configured = bool(self.config_calibre_dir is not None and
+                (not self.config_use_google_drive or os.path.exists(self.config_calibre_dir + '/metadata.db')))
 
     @property
     def get_main_dir(self):

@@ -94,7 +94,7 @@ def make_mobi(book_id, calibrepath):
         if not check or check < 2:
             book.data.append(db.Data(
                     name=book.data[0].name,
-                    format="MOBI",
+                    book_format="MOBI",
                     book=book.id,
                     uncompressed_size=os.path.getsize(file_path + ".mobi")
                 ))
