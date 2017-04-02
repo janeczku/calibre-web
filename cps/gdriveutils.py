@@ -207,9 +207,10 @@ def backupCalibreDbAndOptionalDownload(drive, f=None):
     if f:
         databaseFile.GetContentFile(f)
 
+
 def copyToDrive(drive, uploadFile, createRoot, replaceFiles,
-    ignoreFiles=[],
-    parent=None, prevDir=''):
+        ignoreFiles=[],
+        parent=None, prevDir=''):
     if not drive:
         drive=getDrive()
     if drive.auth.access_token_expired:
