@@ -366,6 +366,7 @@ class Updater(threading.Thread):
     def one_minus_two(self, one, two):
         return [x for x in one if x not in set(two)]
 
+    @classmethod
     def reduce_dirs(self, delete_files, new_list):
         new_delete = []
         for file in delete_files:

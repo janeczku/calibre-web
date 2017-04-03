@@ -484,7 +484,7 @@ def fill_indexpage(page, database, db_filter, order):
     return entries, random, pagination
 
 
-def modify_database_object(input_elements, db_book_object, db_object, db_session, type):
+def modify_database_object(input_elements, db_book_object, db_object, db_session, db_type):
     input_elements = [x for x in input_elements if x != '']
     # we have all input element (authors, series, tags) names now
     # 1. search for elements to remove
@@ -516,7 +516,7 @@ def modify_database_object(input_elements, db_book_object, db_object, db_session
                 db_session.delete(del_element)
     # if there are elements to add, we add them now!
     if len(add_elements) > 0:
-        if type == 'languages':
+        if db_type == 'languages':
             db_filter = db_object.lang_code
         else:
             db_filter = db_object.name
@@ -525,12 +525,12 @@ def modify_database_object(input_elements, db_book_object, db_object, db_session
             new_element = db_session.query(db_object).filter(db_filter == add_element).first()
             # if no element is found add it
             if new_element is None:
-                if type == 'author':
+                if db_type == 'author':
                     new_element = db_object(add_element, add_element, "")
                 else:
-                    if type == 'series':
+                    if db_type == 'series':
                         new_element = db_object(add_element, add_element)
-                    else:  # type should be tag, or languages
+                    else:  # db_type should be tag, or languages
                         new_element = db_object(add_element)
                 db_session.add(new_element)
                 new_element = db.session.query(db_object).filter(db_filter == add_element).first()

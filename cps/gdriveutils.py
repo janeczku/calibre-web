@@ -103,7 +103,7 @@ def getEbooksFolderId(drive=None):
         gDriveId.path='/'
         session.merge(gDriveId)
         session.commit()
-        return 
+        return
 
 def getFolderInFolder(parentId, folderName, drive=None):
     if not drive:
@@ -112,7 +112,7 @@ def getFolderInFolder(parentId, folderName, drive=None):
         drive.auth.Refresh()
     folder= "title = '%s' and '%s' in parents and mimeType = 'application/vnd.google-apps.folder' and trashed = false"  % (folderName.replace("'", "\\'"), parentId)
     fileList = drive.ListFile({'q': folder}).GetList()
-    return fileList[0]    
+    return fileList[0]
 
 def getFile(pathId, fileName, drive=None):
     if not drive:
@@ -168,7 +168,7 @@ def getFileFromEbooksFolder(drive, path, fileName):
         folderId=getFolderId(path, drive)
     else:
         folderId=getEbooksFolderId(drive)
-    
+
     return getFile(folderId, fileName, drive)
 
 def copyDriveFileRemote(drive, origin_file_id, copy_title):
@@ -221,7 +221,7 @@ def copyToDrive(drive, uploadFile, createRoot, replaceFiles,
     if os.path.isdir(os.path.join(prevDir,uploadFile)):
         existingFolder=drive.ListFile({'q' : "title = '%s' and '%s' in parents and trashed = false" % (os.path.basename(uploadFile), parent['id'])}).GetList()
         if len(existingFolder) == 0 and (not isInitial or createRoot):
-            parent = drive.CreateFile({'title': os.path.basename(uploadFile), 'parents' : [{"kind": "drive#fileLink", 'id' : parent['id']}], 
+            parent = drive.CreateFile({'title': os.path.basename(uploadFile), 'parents' : [{"kind": "drive#fileLink", 'id' : parent['id']}],
                 "mimeType": "application/vnd.google-apps.folder" })
             parent.Upload()
         else:
@@ -259,7 +259,7 @@ def uploadFileToEbooksFolder(drive, destFile, f):
         else:
             existingFolder=drive.ListFile({'q' : "title = '%s' and '%s' in parents and trashed = false" % (x, parent['id'])}).GetList()
             if len(existingFolder) == 0:
-                parent = drive.CreateFile({'title': x, 'parents' : [{"kind": "drive#fileLink", 'id' : parent['id']}], 
+                parent = drive.CreateFile({'title': x, 'parents' : [{"kind": "drive#fileLink", 'id' : parent['id']}],
                     "mimeType": "application/vnd.google-apps.folder" })
                 parent.Upload()
             else:
@@ -341,7 +341,7 @@ def stopChannel(drive, channel_id, resource_id):
     if not drive:
         drive=getDrive()
     if drive.auth.access_token_expired:
-        drive.auth.Refresh() 
+        drive.auth.Refresh()
     # service=drive.auth.service
     body = {
     'id': channel_id,
@@ -363,5 +363,5 @@ def getChangeById (drive, change_id):
         change = drive.auth.service.changes().get(changeId=change_id).execute()
         return change
     except errors.HttpError, error:
-        web.app.logger.exception(error) 
+        web.app.logger.exception(error)
         return None
