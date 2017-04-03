@@ -141,7 +141,7 @@ $(document).ready(function () {
     function dbSearchBook (title) {
         var url = douban + dbSearch + "?q=" + title + "&fields=all&count=10";
         $.ajax({
-            url: url,
+            url,
             type: "GET",
             dataType: "jsonp",
             jsonp: "callback",
@@ -149,7 +149,7 @@ $(document).ready(function () {
                 dbResults = data.books;
             },
             error () {
-                $("#meta-info").html('<p class="text-danger">'+ msg.search_error+"!</p>");
+                $("#meta-info").html("<p class=\"text-danger\">"+ msg.search_error+"!</p>");
             },
             complete () {
                 dbDone = true;
