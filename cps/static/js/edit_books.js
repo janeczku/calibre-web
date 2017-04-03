@@ -20,13 +20,13 @@ function prefixedSource(prefix, query, cb, bhAdapter) {
 }
 function getPath(){
     var jsFileLocation = $("script[src*=edit_books]").attr("src");  // the js file path
-    jsFileLocation = jsFileLocation.replace("/static/js/edit_books.js", '');   // the js folder path
+    jsFileLocation = jsFileLocation.replace("/static/js/edit_books.js", "");   // the js folder path
     return jsFileLocation;
 }
 
 var authors = new Bloodhound({
     name: "authors",
-    datumTokenizer: function(datum) {
+    datumTokenizer(datum) {
         return [datum.name];
     },
     queryTokenizer: Bloodhound.tokenizers.whitespace,
@@ -37,15 +37,15 @@ var authors = new Bloodhound({
 
 var series = new Bloodhound({
     name: "series",
-    datumTokenizer: function(datum) {
+    datumTokenizer(datum) {
         return [datum.name];
     },
-    queryTokenizer: function(query) {
+    queryTokenizer(query) {
         return [query];
     },
     remote: {
         url: getPath()+"/get_series_json?q=",
-        replace: function(url, query) {
+        replace(url, query) {
             return url+encodeURIComponent(query);
         }
     }
@@ -54,10 +54,10 @@ var series = new Bloodhound({
 
 var tags = new Bloodhound({
     name: "tags",
-    datumTokenizer: function(datum) {
+    datumTokenizer(datum) {
         return [datum.name];
     },
-    queryTokenizer: function(query) {
+    queryTokenizer(query) {
         var tokens = query.split(",");
         tokens = [tokens[tokens.length-1].trim()];
         return tokens;
@@ -69,15 +69,15 @@ var tags = new Bloodhound({
 
 var languages = new Bloodhound({
     name: "languages",
-    datumTokenizer: function(datum) {
+    datumTokenizer(datum) {
         return [datum.name];
     },
-    queryTokenizer: function(query) {
+    queryTokenizer(query) {
         return [query];
     },
     remote: {
         url: getPath()+"/get_languages_json?q=",
-        replace: function(url, query) {
+        replace(url, query) {
             return url+encodeURIComponent(query);
         }
     }
@@ -112,7 +112,7 @@ var promiseAuthors = authors.initialize();
             }, {
                 name: "authors",
                 displayKey: "name",
-                source: function(query, cb){
+                source(query, cb){
                     return sourceSplit(query, cb, "&", authors); //sourceSplit //("&")
             }
     });
@@ -141,7 +141,7 @@ var promiseTags = tags.initialize();
             }, {
                 name: "tags",
                 displayKey: "name",
-                source: function(query, cb){
+                source(query, cb){
                     return sourceSplit(query, cb, ",", tags);
                 }
             });
@@ -156,7 +156,7 @@ var promiseLanguages = languages.initialize();
             }, {
                 name: "languages",
                 displayKey: "name",
-                source: function(query, cb){
+                source(query, cb){
                     return sourceSplit(query, cb, ",", languages); //(",")
                 }
             });

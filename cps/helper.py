@@ -289,7 +289,7 @@ def update_dir_stucture(book_id, calibrepath):
         os.rename(path, new_title_path)
         path = new_title_path
         book.path = book.path.split('/')[0] + '/' + new_titledir
-    
+
     if authordir != new_authordir:
         new_author_path = os.path.join(os.path.join(calibrepath, new_authordir), os.path.basename(path))
         os.renames(path, new_author_path)
@@ -358,9 +358,11 @@ class Updater(threading.Thread):
     def get_update_status(self):
         return self.status
 
+    @classmethod
     def file_to_list(self, file):
         return [x.strip() for x in open(file, 'r') if not x.startswith('#EXT')]
 
+    @classmethod
     def one_minus_two(self, one, two):
         return [x for x in one if x not in set(two)]
 
@@ -384,6 +386,7 @@ class Updater(threading.Thread):
                     break
         return list(set(new_delete))
 
+    @classmethod
     def reduce_files(self, remove_items, exclude_items):
         rf = []
         for item in remove_items:
@@ -391,6 +394,7 @@ class Updater(threading.Thread):
                 rf.append(item)
         return rf
 
+    @classmethod
     def moveallfiles(self, root_src_dir, root_dst_dir):
         change_permissions = True
         if sys.platform == "win32" or sys.platform == "darwin":
