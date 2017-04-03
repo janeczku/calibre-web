@@ -4,6 +4,7 @@
  * Google Books api document: https://developers.google.com/books/docs/v1/using
  * Douban Books api document: https://developers.douban.com/wiki/?title=book_v2 (Chinese Only)
  */
+ /* global i18nMsg */
 
 $(document).ready(function () {
     var msg = i18nMsg;
@@ -26,36 +27,39 @@ $(document).ready(function () {
     };
 
     function showResult () {
+        var book;
+        var i;
+        var bookHtml;
         showFlag++;
         if (showFlag === 1) {
-            $("#meta-info").html('<ul id="book-list" class="media-list"></ul>');
+            $("#meta-info").html("<ul id=\"book-list\" class=\"media-list\"></ul>");
         }
         if (ggDone && dbDone) {
             if (!ggResults && !dbResults) {
-                $("#meta-info").html('<p class="text-danger">'+ msg.no_result +"</p>");
+                $("#meta-info").html("<p class=\"text-danger\">"+ msg.no_result +"</p>");
                 return;
             }
         }
         if (ggDone && ggResults.length > 0) {
-            for (var i = 0; i < ggResults.length; i++) {
-                var book = ggResults[i];
+            for (i = 0; i < ggResults.length; i++) {
+                book = ggResults[i];
                 var bookCover;
                 if (book.volumeInfo.imageLinks) {
                     bookCover = book.volumeInfo.imageLinks.thumbnail;
                 } else {
                     bookCover = "/static/generic_cover.jpg";
                 }
-                var bookHtml = '<li class="media">' +
-                    '<img class="pull-left img-responsive" data-toggle="modal" data-target="#metaModal" src="' +
-                    bookCover + '" alt="Cover" style="width:100px;height:150px" onclick=\'javascript:get_meta("google",' +
-                    i + ')\'>' +
-                    '<div class="media-body">' +
-                    '<h4 class="media-heading"><a href="https://books.google.com/books?id=' +
-                    book.id + '"  target="_blank">' + book.volumeInfo.title + '</a></h4>' +
+                bookHtml = "<li class=\"media\">" +
+                    "<img class=\"pull-left img-responsive\" data-toggle=\"modal\" data-target=\"#metaModal\" src=\"" +
+                    bookCover + "\" alt=\"Cover\" style=\"width:100px;height:150px\" onclick='javascript:getMeta(\"google\"," +
+                    i + ")\\>\"" +
+                    "<div class=\"media-body\">" +
+                    "<h4 class=\"media-heading\"><a href=\"https://books.google.com/books?id=" +
+                    book.id + "\"  target=\"_blank\">" + book.volumeInfo.title + "</a></h4>" +
                     "<p>"+ msg.author +"：" + book.volumeInfo.authors + "</p>" +
                     "<p>"+ msg.publisher + "：" + book.volumeInfo.publisher + "</p>" +
                     "<p>"+ msg.description + ":" + book.volumeInfo.description + "</p>" +
-                    "<p>"+ msg.source + ':<a href="https://books.google.com" target="_blank">Google Books</a></p>' +
+                    "<p>"+ msg.source + ":<a href=\"https://books.google.com\" target=\"_blank\">Google Books</a></p>" +
                     "</div>" +
                     "</li>";
                 $("#book-list").append(bookHtml);
@@ -63,19 +67,19 @@ $(document).ready(function () {
             ggDone = false;
         }
         if (dbDone && dbResults.length > 0) {
-            for (var i = 0; i < dbResults.length; i++) {
-                var book = dbResults[i];
-                var bookHtml = '<li class="media">' +
-                    '<img class="pull-left img-responsive" data-toggle="modal" data-target="#metaModal" src="' +
-                    book.image + '" alt="Cover" style="width:100px;height: 150px" onclick=\'javascript:get_meta("douban",' +
-                    i + ')\'>' +
-                    '<div class="media-body">' +
-                    '<h4 class="media-heading"><a href="https://book.douban.com/subject/' +
-                    book.id + '"  target="_blank">' + book.title + "</a></h4>" +
+            for (i = 0; i < dbResults.length; i++) {
+                book = dbResults[i];
+                bookHtml = "<li class=\"media\">" +
+                    "<img class=\"pull-left img-responsive\" data-toggle=\"modal\" data-target=\"#metaModal\" src=\"" +
+                    book.image + "\" alt=\"Cover\" style=\"width:100px;height: 150px\" onclick='javascript:getMeta(\"douban\"," +
+                    i + ")\\'>" +
+                    "<div class=\"media-body\">" +
+                    "<h4 class=\"media-heading\"><a href=\"https://book.douban.com/subject/" +
+                    book.id + "\"  target=\"_blank\">" + book.title + "</a></h4>" +
                     "<p>" + msg.author + "：" + book.author + "</p>" +
                     "<p>" + msg.publisher + "：" + book.publisher + "</p>" +
                     "<p>" + msg.description + ":" + book.summary + "</p>" +
-                    "<p>" + msg.source + ':<a href="https://book.douban.com" target="_blank">Douban Books</a></p>' +
+                    "<p>" + msg.source + ":<a href=\"https://book.douban.com\" target=\"_blank\">Douban Books</a></p>" +
                     "</div>" +
                     "</li>";
                 $("#book-list").append(bookHtml);
@@ -92,17 +96,17 @@ $(document).ready(function () {
             type: "GET",
             dataType: "jsonp",
             jsonp: "callback",
-            success: function (data) {
+            success (data) {
                 ggResults = data.items;
             },
-            complete: function () {
+            complete () {
                 ggDone = true;
                 showResult();
             }
         });
     }
 
-    function get_meta (source, id) {
+    function getMeta (source, id) {
         var meta;
         var tags;
         if (source === "google") {
@@ -134,6 +138,26 @@ $(document).ready(function () {
         }
     }
 
+    function dbSearchBook (title) {
+        var url = douban + dbSearch + "?q=" + title + "&fields=all&count=10";
+        $.ajax({
+            url: url,
+            type: "GET",
+            dataType: "jsonp",
+            jsonp: "callback",
+            success (data) {
+                dbResults = data.books;
+            },
+            error () {
+                $("#meta-info").html('<p class="text-danger">'+ msg.search_error+"!</p>");
+            },
+            complete () {
+                dbDone = true;
+                showResult();
+            }
+        });
+    }
+
     function doSearch (keyword) {
         showFlag = 0;
         $("#meta-info").text(msg.loading);
@@ -142,26 +166,6 @@ $(document).ready(function () {
             dbSearchBook(keyword);
             ggSearchBook(keyword);
         }
-    }
-
-    function dbSearchBook (title) {
-        var url = douban + dbSearch + "?q=" + title + "&fields=all&count=10";
-        $.ajax({
-            url: url,
-            type: "GET",
-            dataType: "jsonp",
-            jsonp: "callback",
-            success: function (data) {
-                dbResults = data.books;
-            },
-            error: function () {
-                $("#meta-info").html('<p class="text-danger">'+ msg.search_error+"!</p>");
-            },
-            complete: function () {
-                dbDone = true;
-                showResult();
-            }
-        });
     }
 
     $("#do-search").click(function () {
