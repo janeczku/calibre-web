@@ -2688,13 +2688,15 @@ def upload():
             author_names.append(author.name)
         if config.config_use_google_drive:
             updateGdriveCalibreFromLocal()
-    cc = db.session.query(db.Custom_Columns).filter(db.Custom_Columns.datatype.notin_(db.cc_exceptions)).all()
-    if current_user.role_edit() or current_user.role_admin():
-        return render_title_template('book_edit.html', book=db_book, authors=author_names, cc=cc,
-                                     title=_(u"edit metadata"))
-    book_in_shelfs = []
-    return render_title_template('detail.html', entry=db_book, cc=cc, title=db_book.title,
-                                 books_shelfs=book_in_shelfs, )
+        cc = db.session.query(db.Custom_Columns).filter(db.Custom_Columns.datatype.notin_(db.cc_exceptions)).all()
+        if current_user.role_edit() or current_user.role_admin():
+            return render_title_template('book_edit.html', book=db_book, authors=author_names, cc=cc,
+                                         title=_(u"edit metadata"))
+        book_in_shelfs = []
+        return render_title_template('detail.html', entry=db_book, cc=cc, title=db_book.title,
+                                     books_shelfs=book_in_shelfs, )
+    else:
+        return redirect(url_for("index"))
 
 def start_gevent():
     from gevent.wsgi import WSGIServer
