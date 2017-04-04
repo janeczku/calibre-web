@@ -81,7 +81,7 @@ def make_mobi(book_id, calibrepath):
     file_path = os.path.join(calibrepath, book.path, data.name)
     if os.path.exists(file_path + u".epub"):
         p = subprocess.Popen((kindlegen + " \"" + file_path + u".epub\" ").encode(sys.getfilesystemencoding()),
-                             shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE)
+                             stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         # Poll process for new output until finished
         while True:
             nextline = p.stdout.readline()
@@ -252,7 +252,7 @@ def get_valid_filename(value, replace_whitespace=True):
         value=value.replace(u'ß',u'ss')
         value = unicodedata.normalize('NFKD', value)
         re_slugify = re.compile('[\W\s-]', re.UNICODE)
-        if type(value) is str: #Python3 str, Python2 unicode
+        if isinstance(value, str): #Python3 str, Python2 unicode
             value = re_slugify.sub('', value).strip()
         else:
             value = unicode(re_slugify.sub('', value).strip())
@@ -300,7 +300,7 @@ def update_dir_stucture(book_id, calibrepath):
 def update_dir_structure_gdrive(book_id):
     db.session.connection().connection.connection.create_function("title_sort", 1, db.title_sort)
     book = db.session.query(db.Books).filter(db.Books.id == book_id).first()
-    
+
     authordir = book.path.split('/')[0]
     new_authordir = get_valid_filename(book.authors[0].name)
     titledir = book.path.split('/')[1]

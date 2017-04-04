@@ -272,14 +272,9 @@ def load_user_from_header(header_val):
         return user
     return
 
-
 def check_auth(username, password):
     user = ub.session.query(ub.User).filter(ub.User.nickname == username).first()
-    if user and check_password_hash(user.password, password):
-        return True
-    else:
-        return False
-
+    return bool(user and check_password_hash(user.password, password))
 
 def authenticate():
     return Response(
@@ -1239,11 +1234,10 @@ def stats():
         kindlegen = os.path.join(vendorpath, u"kindlegen")
     versions['KindlegenVersion'] = _('not installed')
     if os.path.exists(kindlegen):
-        p = subprocess.Popen(kindlegen, shell=False, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
-                             stdin=subprocess.PIPE)
+        p = subprocess.Popen(kindlegen, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         p.wait()
         for lines in p.stdout.readlines():
-            if type(lines) is bytes:
+            if isinstance(lines, bytes):
                 lines = lines.decode('utf-8')
             if re.search('Amazon kindlegen\(', lines):
                 versions['KindlegenVersion'] = lines

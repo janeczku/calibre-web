@@ -201,7 +201,7 @@ def backupCalibreDbAndOptionalDownload(drive, f=None):
     metaDataFile="'%s' in parents and title = 'metadata.db' and trashed = false" % getEbooksFolderId()
 
     fileList = drive.ListFile({'q': metaDataFile}).GetList()
- 
+
     databaseFile=fileList[0]
 
     if f:
@@ -353,7 +353,7 @@ def getChangeById (drive, change_id):
     if not drive:
         drive=getDrive()
     if drive.auth.access_token_expired:
-        drive.auth.Refresh() 
+        drive.auth.Refresh()
     # Print a single Change resource information.
     #
     # Args:
