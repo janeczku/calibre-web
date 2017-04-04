@@ -13,7 +13,7 @@ $(function() {
         $.ajax({
         dataType: "json",
         url: window.location.pathname+"/../../get_updater_status",
-        success: function(data) {
+        success(data) {
             // console.log(data.status);
             $("#UpdateprogressDialog #Updatecontent").html(updateText[data.status]);
             if (data.status >6){
