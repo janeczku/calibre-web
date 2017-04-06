@@ -362,6 +362,6 @@ def getChangeById (drive, change_id):
     try:
         change = drive.auth.service.changes().get(changeId=change_id).execute()
         return change
-    except errors.HttpError, error:
+    except (errors.HttpError, error):
         web.app.logger.exception(error)
         return None
