@@ -56,7 +56,7 @@
     <link type="image/jpeg" href="{{url_for('feed_get_cover', book_id=entry.id)}}" rel="http://opds-spec.org/image/thumbnail"/>
     {% endif %}
     {% for format in entry.data %}
-    <link rel="http://opds-spec.org/acquisition" href="{{ url_for('get_opds_download_link', book_id=entry.id, format=format.format|lower)}}"
+    <link rel="http://opds-spec.org/acquisition" href="{{ url_for('get_opds_download_link', book_id=entry.id, book_format=format.format|lower)}}"
           length="{{format.uncompressed_size}}" mtime="{{entry.timestamp}}" type="{{format.format|lower|mimetype}}"/>
     {% endfor %}
   </entry>
@@ -65,9 +65,9 @@
   {% for entry in listelements %}
   <entry>
     <title>{{entry.name}}</title>
-    <id>{{ url_for(folder, id=entry.id) }}</id>
-    <link type="application/atom+xml;profile=opds-catalog;type=feed;kind=acquisition" href="{{url_for(folder, id=entry.id)}}"/>
-    <link type="application/atom+xml" href="{{url_for(folder, id=entry.id)}}" rel="subsection"/>
+    <id>{{ url_for(folder, book_id=entry.id) }}</id>
+    <link type="application/atom+xml;profile=opds-catalog;type=feed;kind=acquisition" href="{{url_for(folder, book_id=entry.id)}}"/>
+    <link type="application/atom+xml" href="{{url_for(folder, book_id=entry.id)}}" rel="subsection"/>
   </entry>
   {% endfor %}
 </feed>

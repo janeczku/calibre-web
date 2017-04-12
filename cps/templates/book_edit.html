@@ -106,7 +106,7 @@
     </div>
     <a href="#" id="get_meta" class="btn btn-default" data-toggle="modal" data-target="#metaModal">{{_('Get metadata')}}</a>
     <button type="submit" class="btn btn-default">{{_('Submit')}}</button>
-    <a href="{{ url_for('show_book',id=book.id) }}" class="btn btn-default">{{_('Back')}}</a>
+    <a href="{{ url_for('show_book', book_id=book.id) }}" class="btn btn-default">{{_('Back')}}</a>
   </form>
 </div>
 {% endif %}
@@ -138,7 +138,7 @@
 
 {% block js %}
 <script>
-  var i18n_msg = {
+  var i18nMsg = {
     'loading': {{_('Loading...')|safe|tojson}},
     'search_error': {{_('Search error!')|safe|tojson}},
     'no_result': {{_('No Result! Please try anonther keyword.')|safe|tojson}},

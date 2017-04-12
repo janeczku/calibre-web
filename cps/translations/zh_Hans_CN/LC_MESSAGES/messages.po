@@ -307,7 +307,7 @@ msgstr "用户 '%(user)s' 已被创建"
 
 #: cps/web.py:2198
 msgid "Found an existing account for this email address or nickname."
-msgstr "已找到使用此邮箱或昵称的账号。"
+msgstr "已存在使用此邮箱或昵称的账号。"
 
 #: cps/web.py:2220
 msgid "Mail settings updated"
@@ -496,7 +496,7 @@ msgstr "最新提交时间戳"
 
 #: cps/templates/admin.html:83
 msgid "Reconnect to Calibre DB"
-msgstr ""
+msgstr "重新连接到Calibre数据库"
 
 #: cps/templates/admin.html:84
 msgid "Restart Calibre-web"
@@ -590,7 +590,7 @@ msgstr "编辑后查看书籍"
 
 #: cps/templates/book_edit.html:107 cps/templates/book_edit.html:118
 msgid "Get metadata"
-msgstr ""
+msgstr "获取元数据"
 
 #: cps/templates/book_edit.html:108 cps/templates/config_edit.html:117
 #: cps/templates/login.html:19 cps/templates/search_form.html:79
@@ -600,11 +600,11 @@ msgstr "提交"
 
 #: cps/templates/book_edit.html:121
 msgid "Keyword"
-msgstr ""
+msgstr "关键字"
 
 #: cps/templates/book_edit.html:122
 msgid " Search keyword "
-msgstr ""
+msgstr "搜索关键字"
 
 #: cps/templates/book_edit.html:124 cps/templates/layout.html:60
 msgid "Go!"
@@ -612,32 +612,32 @@ msgstr "走起！"
 
 #: cps/templates/book_edit.html:125
 msgid "Click the cover to load metadata to the form"
-msgstr ""
+msgstr "点击封面加载元数据到表单"
 
 #: cps/templates/book_edit.html:129 cps/templates/book_edit.html:142
 msgid "Loading..."
-msgstr ""
+msgstr "加载中..."
 
 #: cps/templates/book_edit.html:132
 msgid "Close"
-msgstr ""
+msgstr "关闭"
 
 #: cps/templates/book_edit.html:143
 msgid "Search error!"
-msgstr ""
+msgstr "搜索错误"
 
 #: cps/templates/book_edit.html:144
 msgid "No Result! Please try anonther keyword."
-msgstr ""
+msgstr "没有结果!请尝试别的关键字."
 
 #: cps/templates/book_edit.html:146 cps/templates/detail.html:76
 #: cps/templates/search_form.html:14
 msgid "Publisher"
-msgstr ""
+msgstr "出版社"
 
 #: cps/templates/book_edit.html:148
 msgid "Source"
-msgstr ""
+msgstr "来源"
 
 #: cps/templates/config_edit.html:7
 msgid "Location of Calibre database"
@@ -645,7 +645,7 @@ msgstr "Calibre 数据库位置"
 
 #: cps/templates/config_edit.html:13
 msgid "Use google drive?"
-msgstr ""
+msgstr "是否使用google drive?"
 
 #: cps/templates/config_edit.html:17
 msgid "Client id"
@@ -660,8 +660,8 @@ msgid "Calibre Base URL"
 msgstr ""
 
 #: cps/templates/config_edit.html:29
-msgid "Google drive Calibre folder"
-msgstr ""
+msgid "Google drive Calibre folde"
+msgstr "Google drive Calibre 文件夹"
 
 #: cps/templates/config_edit.html:38
 msgid "Metadata Watch Channel ID"
@@ -843,12 +843,12 @@ msgstr "显示随机书籍"
 #: cps/templates/index.xml:43 cps/templates/index.xml:47
 #: cps/templates/layout.html:132
 msgid "Read Books"
-msgstr ""
+msgstr "已读书籍"
 
 #: cps/templates/index.xml:50 cps/templates/index.xml:54
 #: cps/templates/layout.html:133
 msgid "Unread Books"
-msgstr ""
+msgstr "未读书籍"
 
 #: cps/templates/index.xml:57 cps/templates/layout.html:144
 msgid "Authors"
@@ -1082,7 +1082,7 @@ msgstr "显示作者选择"
 
 #: cps/templates/user_edit.html:75
 msgid "Show read and unread"
-msgstr ""
+msgstr "显示已读和未读"
 
 #: cps/templates/user_edit.html:79
 msgid "Show random books in detail view"

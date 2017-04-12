@@ -67,9 +67,9 @@ class Identifiers(Base):
     val = Column(String)
     book = Column(Integer, ForeignKey('books.id'))
 
-    def __init__(self, val, type, book):
+    def __init__(self, val, id_type, book):
         self.val = val
-        self.type = type
+        self.type = id_type
         self.book = book
 
     def formatType(self):
@@ -209,9 +209,9 @@ class Data(Base):
     uncompressed_size = Column(Integer)
     name = Column(String)
 
-    def __init__(self, book, format, uncompressed_size, name):
+    def __init__(self, book, book_format, uncompressed_size, name):
         self.book = book
-        self.format = format
+        self.format = book_format
         self.uncompressed_size = uncompressed_size
         self.name = name
 
@@ -264,7 +264,7 @@ class Books(Base):
 
 class Custom_Columns(Base):
     __tablename__ = 'custom_columns'
-    
+
     id = Column(Integer, primary_key=True)
     label = Column(String)
     name = Column(String)
@@ -274,7 +274,7 @@ class Custom_Columns(Base):
     display = Column(String)
     is_multiple = Column(Boolean)
     normalized = Column(Boolean)
-    
+
     def get_display_dict(self):
         display_dict = ast.literal_eval(self.display)
         return display_dict
@@ -293,7 +293,7 @@ def setup_db():
     engine = create_engine('sqlite:///'+ dbpath, echo=False, isolation_level="SERIALIZABLE")
     try:
         conn = engine.connect()
-    except Exception as e:
+    except Exception:
         content = ub.session.query(ub.Settings).first()
         content.config_calibre_dir = None
         content.db_configured = False
@@ -333,15 +333,15 @@ def setup_db():
                               'value': Column(String)}
                 cc_classes[row.id] = type('Custom_Column_' + str(row.id), (Base,), ccdict)
 
-        for id in cc_ids:
-            if id[1] == 'bool':
-                setattr(Books, 'custom_column_' + str(id[0]), relationship(cc_classes[id[0]],
+        for cc_id in cc_ids:
+            if cc_id[1] == 'bool':
+                setattr(Books, 'custom_column_' + str(cc_id[0]), relationship(cc_classes[cc_id[0]],
                                                                            primaryjoin=(
-                                                                           Books.id == cc_classes[id[0]].book),
+                                                                           Books.id == cc_classes[cc_id[0]].book),
                                                                            backref='books'))
             else:
-                setattr(Books, 'custom_column_' + str(id[0]), relationship(cc_classes[id[0]],
-                                                                           secondary=books_custom_column_links[id[0]],
+                setattr(Books, 'custom_column_' + str(cc_id[0]), relationship(cc_classes[cc_id[0]],
+                                                                           secondary=books_custom_column_links[cc_id[0]],
                                                                            backref='books'))
 
     # Base.metadata.create_all(engine)

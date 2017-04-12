@@ -4,12 +4,11 @@ try:
     from apiclient import errors
 except ImportError:
     pass
-import os, time
+import os
 
 from ub import config
 
 from sqlalchemy import *
-from sqlalchemy import exc
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import *
 
@@ -104,7 +103,7 @@ def getEbooksFolderId(drive=None):
         gDriveId.path='/'
         session.merge(gDriveId)
         session.commit()
-        return 
+        return
 
 def getFolderInFolder(parentId, folderName, drive=None):
     if not drive:
@@ -113,7 +112,7 @@ def getFolderInFolder(parentId, folderName, drive=None):
         drive.auth.Refresh()
     folder= "title = '%s' and '%s' in parents and mimeType = 'application/vnd.google-apps.folder' and trashed = false"  % (folderName.replace("'", "\\'"), parentId)
     fileList = drive.ListFile({'q': folder}).GetList()
-    return fileList[0]    
+    return fileList[0]
 
 def getFile(pathId, fileName, drive=None):
     if not drive:
@@ -165,11 +164,11 @@ def getFileFromEbooksFolder(drive, path, fileName):
     if drive.auth.access_token_expired:
         drive.auth.Refresh()
     if path:
-        sqlCheckPath=path if path[-1] =='/' else path + '/'
+        # sqlCheckPath=path if path[-1] =='/' else path + '/'
         folderId=getFolderId(path, drive)
     else:
         folderId=getEbooksFolderId(drive)
-    
+
     return getFile(folderId, fileName, drive)
 
 def copyDriveFileRemote(drive, origin_file_id, copy_title):
@@ -195,7 +194,6 @@ def downloadFile(drive, path, filename, output):
     f.GetContentFile(output)
 
 def backupCalibreDbAndOptionalDownload(drive, f=None):
-    pass
     if not drive:
         drive=getDrive()
     if drive.auth.access_token_expired:
@@ -203,15 +201,16 @@ def backupCalibreDbAndOptionalDownload(drive, f=None):
     metaDataFile="'%s' in parents and title = 'metadata.db' and trashed = false" % getEbooksFolderId()
 
     fileList = drive.ListFile({'q': metaDataFile}).GetList()
- 
+
     databaseFile=fileList[0]
 
     if f:
         databaseFile.GetContentFile(f)
 
+
 def copyToDrive(drive, uploadFile, createRoot, replaceFiles,
-    ignoreFiles=[],
-    parent=None, prevDir=''):
+        ignoreFiles=[],
+        parent=None, prevDir=''):
     if not drive:
         drive=getDrive()
     if drive.auth.access_token_expired:
@@ -222,7 +221,7 @@ def copyToDrive(drive, uploadFile, createRoot, replaceFiles,
     if os.path.isdir(os.path.join(prevDir,uploadFile)):
         existingFolder=drive.ListFile({'q' : "title = '%s' and '%s' in parents and trashed = false" % (os.path.basename(uploadFile), parent['id'])}).GetList()
         if len(existingFolder) == 0 and (not isInitial or createRoot):
-            parent = drive.CreateFile({'title': os.path.basename(uploadFile), 'parents' : [{"kind": "drive#fileLink", 'id' : parent['id']}], 
+            parent = drive.CreateFile({'title': os.path.basename(uploadFile), 'parents' : [{"kind": "drive#fileLink", 'id' : parent['id']}],
                 "mimeType": "application/vnd.google-apps.folder" })
             parent.Upload()
         else:
@@ -260,7 +259,7 @@ def uploadFileToEbooksFolder(drive, destFile, f):
         else:
             existingFolder=drive.ListFile({'q' : "title = '%s' and '%s' in parents and trashed = false" % (x, parent['id'])}).GetList()
             if len(existingFolder) == 0:
-                parent = drive.CreateFile({'title': x, 'parents' : [{"kind": "drive#fileLink", 'id' : parent['id']}], 
+                parent = drive.CreateFile({'title': x, 'parents' : [{"kind": "drive#fileLink", 'id' : parent['id']}],
                     "mimeType": "application/vnd.google-apps.folder" })
                 parent.Upload()
             else:
@@ -273,20 +272,19 @@ def watchChange(drive, channel_id, channel_type, channel_address,
         drive=getDrive()
     if drive.auth.access_token_expired:
         drive.auth.Refresh()
-    """Watch for all changes to a user's Drive.
-    Args:
-    service: Drive API service instance.
-    channel_id: Unique string that identifies this channel.
-    channel_type: Type of delivery mechanism used for this channel.
-    channel_address: Address where notifications are delivered.
-    channel_token: An arbitrary string delivered to the target address with
-                   each notification delivered over this channel. Optional.
-    channel_address: Address where notifications are delivered. Optional.
-    Returns:
-    The created channel if successful
-    Raises:
-    apiclient.errors.HttpError: if http request to create channel fails.
-    """
+    # Watch for all changes to a user's Drive.
+    # Args:
+    # service: Drive API service instance.
+    # channel_id: Unique string that identifies this channel.
+    # channel_type: Type of delivery mechanism used for this channel.
+    # channel_address: Address where notifications are delivered.
+    # channel_token: An arbitrary string delivered to the target address with
+    #               each notification delivered over this channel. Optional.
+    # channel_address: Address where notifications are delivered. Optional.
+    # Returns:
+    # The created channel if successful
+    # Raises:
+    # apiclient.errors.HttpError: if http request to create channel fails.
     body = {
     'id': channel_id,
     'type': channel_type,
@@ -343,8 +341,8 @@ def stopChannel(drive, channel_id, resource_id):
     if not drive:
         drive=getDrive()
     if drive.auth.access_token_expired:
-        drive.auth.Refresh() 
-    service=drive.auth.service
+        drive.auth.Refresh()
+    # service=drive.auth.service
     body = {
     'id': channel_id,
     'resourceId': resource_id
@@ -355,16 +353,15 @@ def getChangeById (drive, change_id):
     if not drive:
         drive=getDrive()
     if drive.auth.access_token_expired:
-        drive.auth.Refresh() 
-    """Print a single Change resource information.
-
-    Args:
-    service: Drive API service instance.
-    change_id: ID of the Change resource to retrieve.
-    """
+        drive.auth.Refresh()
+    # Print a single Change resource information.
+    #
+    # Args:
+    # service: Drive API service instance.
+    # change_id: ID of the Change resource to retrieve.
     try:
         change = drive.auth.service.changes().get(changeId=change_id).execute()
         return change
-    except errors.HttpError, error:
-        web.app.logger.exception(error) 
+    except (errors.HttpError, error):
+        web.app.logger.exception(error)
         return None
