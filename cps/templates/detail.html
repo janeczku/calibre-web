@@ -15,7 +15,7 @@
       <h2>{{entry.title}}</h2>
       <p class="author">
           {% for author in entry.authors %}
-            <a href="{{url_for('author', id=author.id ) }}">{{author.name}}</a>
+            <a href="{{url_for('author', book_id=author.id ) }}">{{author.name}}</a>
             {% if not loop.last %}
               &amp;
             {% endif %}
@@ -37,7 +37,7 @@
       {% endif %}
 
       {% if entry.series|length > 0 %}
-        <p>{{_('Book')}} {{entry.series_index}} {{_('of')}} <a href="{{url_for('series', id=entry.series[0].id)}}">{{entry.series[0].name}}</a></p>
+        <p>{{_('Book')}} {{entry.series_index}} {{_('of')}} <a href="{{url_for('series', book_id=entry.series[0].id)}}">{{entry.series[0].name}}</a></p>
       {% endif %}
 
       {% if entry.languages.__len__() > 0 %}
@@ -65,7 +65,7 @@
         <span class="glyphicon glyphicon-tags"></span>
         
         {% for tag in entry.tags %}
-          <a href="{{ url_for('category', id=tag.id) }}" class="btn btn-xs btn-info" role="button">{{tag.name}}</a>
+          <a href="{{ url_for('category', book_id=tag.id) }}" class="btn btn-xs btn-info" role="button">{{tag.name}}</a>
         {%endfor%}
       </div>
       </p>
@@ -110,7 +110,7 @@
       {% if not g.user.is_anonymous() %}
       <p>
         <div class="custom_columns" id="have_read_container">
-          <form id="have_read_form" action="{{ url_for('toggle_read', id=entry.id)}}" method="POST") >
+          <form id="have_read_form" action="{{ url_for('toggle_read', book_id=entry.id)}}" method="POST") >
             <input id="have_read_cb" type="checkbox" {% if have_read %}checked{% endif %} >
             <label for="have_read_cb">{{_('Read')}}</label>
           </form>
@@ -136,7 +136,7 @@
               </button>
               <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
                 {% for format in entry.data %}
-                <li><a href="{{ url_for('get_download_link_ext', book_id=entry.id, format=format.format|lower, anyname=entry.id|string+'.'+format.format) }}">{{format.format}}</a></li>
+                <li><a href="{{ url_for('get_download_link_ext', book_id=entry.id, book_format=format.format|lower, anyname=entry.id|string+'.'+format.format) }}">{{format.format}}</a></li>
                 {%endfor%}
               </ul>
             </div>
@@ -154,7 +154,7 @@
                 <ul class="dropdown-menu" aria-labelledby="btnGroupDrop2">
                   {% for format in entry.data %}
                   {%if format.format|lower == 'epub' or format.format|lower == 'txt' or format.format|lower == 'pdf' or format.format|lower == 'cbr' or format.format|lower == 'cbt' or format.format|lower == 'cbz' %}
-                  <li><a target="_blank" href="{{ url_for('read_book', book_id=entry.id, format=format.format|lower) }}">{{format.format}}</a></li>
+                  <li><a target="_blank" href="{{ url_for('read_book', book_id=entry.id, book_format=format.format|lower) }}">{{format.format}}</a></li>
                   {% endif %}
                   {%endfor%}
                 </ul>

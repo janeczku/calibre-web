@@ -13,6 +13,7 @@ import os
 import traceback
 import re
 import unicodedata
+
 try:
     from StringIO import StringIO
     from email.MIMEBase import MIMEBase
@@ -43,9 +44,9 @@ import web
 
 try:
     import unidecode
-    use_unidecode=True
+    use_unidecode = True
 except Exception as e:
-    use_unidecode=False
+    use_unidecode = False
 
 # Global variables
 global_task = None
@@ -80,7 +81,7 @@ def make_mobi(book_id, calibrepath):
     file_path = os.path.join(calibrepath, book.path, data.name)
     if os.path.exists(file_path + u".epub"):
         p = subprocess.Popen((kindlegen + " \"" + file_path + u".epub\" ").encode(sys.getfilesystemencoding()),
-                             shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE)
+                             stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         # Poll process for new output until finished
         while True:
             nextline = p.stdout.readline()
@@ -93,7 +94,7 @@ def make_mobi(book_id, calibrepath):
         if not check or check < 2:
             book.data.append(db.Data(
                     name=book.data[0].name,
-                    format="MOBI",
+                    book_format="MOBI",
                     book=book.id,
                     uncompressed_size=os.path.getsize(file_path + ".mobi")
                 ))
@@ -242,7 +243,7 @@ def get_valid_filename(value, replace_whitespace=True):
     Returns the given string converted to a string that can be used for a clean
     filename. Limits num characters to 128 max.
     """
-    if value[-1:] ==u'.':
+    if value[-1:] == u'.':
         value = value[:-1]+u'_'
     if use_unidecode:
         value=(unidecode.unidecode(value)).strip()
@@ -251,7 +252,7 @@ def get_valid_filename(value, replace_whitespace=True):
         value=value.replace(u'ß',u'ss')
         value = unicodedata.normalize('NFKD', value)
         re_slugify = re.compile('[\W\s-]', re.UNICODE)
-        if type(value) is str: #Python3 str, Python2 unicode
+        if isinstance(value, str): #Python3 str, Python2 unicode
             value = re_slugify.sub('', value).strip()
         else:
             value = unicode(re_slugify.sub('', value).strip())
@@ -266,7 +267,7 @@ def get_sorted_author(value):
     regexes = ["^(JR|SR)\.?$","^I{1,3}\.?$","^IV\.?$"]
     combined = "(" + ")|(".join(regexes) + ")"
     value = value.split(" ")
-    if re.match(combined,value[-1].upper()):
+    if re.match(combined, value[-1].upper()):
         value2 = value[-2] + ", " + " ".join(value[:-2]) + " " + value[-1]
     else:
         value2 = value[-1] + ", " + " ".join(value[:-1])
@@ -277,28 +278,29 @@ def update_dir_stucture(book_id, calibrepath):
     db.session.connection().connection.connection.create_function("title_sort", 1, db.title_sort)
     book = db.session.query(db.Books).filter(db.Books.id == book_id).first()
     path = os.path.join(calibrepath, book.path)#.replace('/',os.path.sep)).replace('\\',os.path.sep)
-    
+
     authordir = book.path.split('/')[0]
     new_authordir = get_valid_filename(book.authors[0].name)
     titledir = book.path.split('/')[1]
     new_titledir = get_valid_filename(book.title) + " (" + str(book_id) + ")"
-    
+
     if titledir != new_titledir:
         new_title_path = os.path.join(os.path.dirname(path), new_titledir)
         os.rename(path, new_title_path)
         path = new_title_path
         book.path = book.path.split('/')[0] + '/' + new_titledir
-    
+
     if authordir != new_authordir:
         new_author_path = os.path.join(os.path.join(calibrepath, new_authordir), os.path.basename(path))
         os.renames(path, new_author_path)
         book.path = new_authordir + '/' + book.path.split('/')[1]
     db.session.commit()
 
+
 def update_dir_structure_gdrive(book_id):
     db.session.connection().connection.connection.create_function("title_sort", 1, db.title_sort)
     book = db.session.query(db.Books).filter(db.Books.id == book_id).first()
-    
+
     authordir = book.path.split('/')[0]
     new_authordir = get_valid_filename(book.authors[0].name)
     titledir = book.path.split('/')[1]
@@ -313,7 +315,7 @@ def update_dir_structure_gdrive(book_id):
     
     if authordir != new_authordir:
         gFile=gd.getFileFromEbooksFolder(web.Gdrive.Instance().drive,None,authordir)
-        gFile['title']= new_authordir
+        gFile['title'] = new_authordir
         gFile.Upload()
         book.path = new_authordir + '/' + book.path.split('/')[1]
 
@@ -327,41 +329,44 @@ class Updater(threading.Thread):
 
     def run(self):
         global global_task
-        self.status=1
+        self.status = 1
         r = requests.get('https://api.github.com/repos/janeczku/calibre-web/zipball/master', stream=True)
         fname = re.findall("filename=(.+)", r.headers['content-disposition'])[0]
-        self.status=2
+        self.status = 2
         z = zipfile.ZipFile(StringIO(r.content))
-        self.status=3
+        self.status = 3
         tmp_dir = gettempdir()
         z.extractall(tmp_dir)
-        self.status=4
+        self.status = 4
         self.update_source(os.path.join(tmp_dir,os.path.splitext(fname)[0]),ub.config.get_main_dir)
-        self.status=5
+        self.status = 5
         global_task = 0
         db.session.close()
         db.engine.dispose()
         ub.session.close()
         ub.engine.dispose()
-        self.status=6
+        self.status = 6
 
         if web.gevent_server:
             web.gevent_server.stop()
         else:
-            # stop tornado server            
+            # stop tornado server
             server = IOLoop.instance()
             server.add_callback(server.stop)
-        self.status=7
+        self.status = 7
 
     def get_update_status(self):
         return self.status
 
+    @classmethod
     def file_to_list(self, file):
         return [x.strip() for x in open(file, 'r') if not x.startswith('#EXT')]
 
+    @classmethod
     def one_minus_two(self, one, two):
         return [x for x in one if x not in set(two)]
 
+    @classmethod
     def reduce_dirs(self, delete_files, new_list):
         new_delete = []
         for file in delete_files:
@@ -382,6 +387,7 @@ class Updater(threading.Thread):
                     break
         return list(set(new_delete))
 
+    @classmethod
     def reduce_files(self, remove_items, exclude_items):
         rf = []
         for item in remove_items:
@@ -389,6 +395,7 @@ class Updater(threading.Thread):
                 rf.append(item)
         return rf
 
+    @classmethod
     def moveallfiles(self, root_src_dir, root_dst_dir):
         change_permissions = True
         if sys.platform == "win32" or sys.platform == "darwin":
@@ -431,8 +438,8 @@ class Updater(threading.Thread):
         # destination files
         old_list = list()
         exclude = (
-        'vendor' + os.sep + 'kindlegen.exe', 'vendor' + os.sep + 'kindlegen', os.sep + 'app.db',
-            os.sep + 'vendor',os.sep + 'calibre-web.log')
+            'vendor' + os.sep + 'kindlegen.exe', 'vendor' + os.sep + 'kindlegen', os.sep + 'app.db',
+            os.sep + 'vendor', os.sep + 'calibre-web.log')
         for root, dirs, files in os.walk(destination, topdown=True):
             for name in files:
                 old_list.append(os.path.join(root, name).replace(destination, ''))
@@ -462,9 +469,9 @@ class Updater(threading.Thread):
             else:
                 try:
                     logging.getLogger('cps.web').debug("Delete file " + item_path)
-                    log_from_thread("Delete file " + item_path)
+                    # log_from_thread("Delete file " + item_path)
                     os.remove(item_path)
-                except Exception as e:
+                except Exception:
                     logging.getLogger('cps.web').debug("Could not remove:" + item_path)
         shutil.rmtree(source, ignore_errors=True)
 

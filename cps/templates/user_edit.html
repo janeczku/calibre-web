@@ -131,7 +131,7 @@
     <h2>{{_('Recent Downloads')}}</h2>
     {% for entry in downloads %}
       <div class="col-sm-2">
-        <a class="pull-left" href="{{ url_for('show_book', id=entry.id) }}">
+        <a class="pull-left" href="{{ url_for('show_book', book_id=entry.id) }}">
           <img class="media-object" width="100" src="{{ url_for('get_cover', cover_path=entry.path.replace('\\','/')) }}" alt="...">
         </a>
       </div>

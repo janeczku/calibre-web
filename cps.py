@@ -22,7 +22,7 @@ except ImportError:
 
 if __name__ == '__main__':
     if web.ub.DEVELOPMENT:
-        web.app.run(host="0.0.0.0", port=web.ub.config.config_port, debug=True)
+        web.app.run(port=web.ub.config.config_port, debug=True)
     else:
         if gevent_present:
             web.app.logger.info('Attempting to start gevent')
