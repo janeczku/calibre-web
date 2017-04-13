@@ -21,12 +21,13 @@ a{color: #45b29d}a:hover{color: #444;}
 .container-fluid .book .meta .author{font-size:12px;color:#999}
 .container-fluid .book .meta .rating{margin-top:5px}.rating .glyphicon-star{color:#999}.rating .glyphicon-star.good{color:#45b29d}
 .navbar-brand{font-family: 'Grand Hotel', cursive; font-size: 35px; color: #45b29d !important;}
-.more-stuff{margin-top: 20px;padding-top: 20px;border-top: 1px solid #ccc}
-@media all and (min-height: 25em){
+.more-stuff{margin-top: 20px; padding-top: 20px;border-top: 1px solid #ccc}
+@media all and (min-height: 100vh){
   .more-stuff{
     position: fixed;
     bottom: 2em;
     height: 20vh;
+    filter:drop-shadow(1em 1em  1em black);
   }
   body {
     padding-bottom: 20vh;
