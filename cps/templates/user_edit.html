@@ -99,6 +99,10 @@
       <input type="checkbox" name="edit_role" id="edit_role" {% if content.role_edit() %}checked{% endif %}>
       <label for="edit_role">{{_('Allow Edit')}}</label>
     </div>
+    <div class="form-group">
+      <input type="checkbox" name="delete_role" id="delete_role" {% if content.role_delete_books() %}checked{% endif %}>
+      <label for="delete_role">{{_('Allow Delete books')}}</label>
+    </div>
       {% if not content.role_anonymous() %}
         <div class="form-group">
           <input type="checkbox" name="passwd_role" id="passwd_role" {% if content.role_passwd() %}checked{% endif %}>
