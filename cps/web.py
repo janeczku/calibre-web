@@ -3,16 +3,17 @@
 try:
     from pydrive.auth import GoogleAuth
     from googleapiclient.errors import HttpError
-    gdrive_support= True
+    gdrive_support = True
 except ImportError:
-    gdrive_support=False
+    gdrive_support = False
 
 import mimetypes
 import logging
 from logging.handlers import RotatingFileHandler
 import textwrap
-from flask import Flask, render_template, request, Response, redirect, url_for, send_from_directory, \
-        make_response, g, flash, abort, Markup, stream_with_context
+from flask import (Flask, render_template, request, Response, redirect,
+                   url_for, send_from_directory, make_response, g, flash,
+                   abort, Markup, stream_with_context)
 from flask import __version__ as flaskVersion
 import ub
 from ub import config
@@ -24,7 +25,8 @@ from sqlalchemy.sql.expression import false
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy import __version__ as sqlalchemyVersion
 from math import ceil
-from flask_login import LoginManager, login_user, logout_user, login_required, current_user
+from flask_login import (LoginManager, login_user, logout_user,
+                         login_required, current_user)
 from flask_principal import Principal
 from flask_principal import __version__ as flask_principalVersion
 from flask_babel import Babel
@@ -81,7 +83,7 @@ except ImportError:
     use_generic_pdf_cover = True
 
 # Global variables
-gdrive_watch_callback_token='target=calibreweb-watch_files'
+gdrive_watch_callback_token = 'target=calibreweb-watch_files'
 global_task = None
 
 ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'epub', 'mobi', 'azw', 'azw3', 'cbr', 'cbz', 'cbt', 'djvu', 'prc', 'doc', 'docx', 'fb2'])
@@ -195,7 +197,7 @@ mimetypes.add_type('image/vnd.djvu', '.djvu')
 app = (Flask(__name__))
 app.wsgi_app = ReverseProxied(app.wsgi_app)
 
-gevent_server=None
+gevent_server = None
 
 formatter = logging.Formatter(
     "[%(asctime)s] {%(pathname)s:%(lineno)d} %(levelname)s - %(message)s")
@@ -338,11 +340,7 @@ class Pagination(object):
     def iter_pages(self, left_edge=2, left_current=2,
                    right_current=5, right_edge=2):
         last = 0
-        if 'xrange' not in globals():#no xrange in Python3
-            global xrange
-            xrange = range
-
-        for num in xrange(1, self.pages + 1):  # ToDo: can be simplified
+        for num in range(self.pages, (self.pages + 1)):  # ToDo: can be simplified
             if num <= left_edge or (num > self.page - left_current - 1 and num < self.page + right_current) \
                     or num > self.pages - right_edge:
                 if last + 1 != num:
@@ -608,7 +606,7 @@ def feed_new():
     off = request.args.get("offset")
     if not off:
         off = 0
-    entries, _, pagination = fill_indexpage((int(off) / (int(config.config_books_per_page)) + 1),
+    entries, __, pagination = fill_indexpage((int(off) / (int(config.config_books_per_page)) + 1),
                                                  db.Books, True, db.Books.timestamp.desc())
     xml = render_title_template('feed.xml', entries=entries, pagination=pagination)
     response = make_response(xml)
