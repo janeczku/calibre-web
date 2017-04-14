@@ -635,7 +635,7 @@ def feed_best_rated():
     off = request.args.get("offset")
     if not off:
         off = 0
-    entries, random, pagination = fill_indexpage((int(off) / (int(config.config_books_per_page)) + 1),
+    entries, __, pagination = fill_indexpage((int(off) / (int(config.config_books_per_page)) + 1),
                     db.Books, db.Books.ratings.any(db.Ratings.rating > 9), db.Books.timestamp.desc())
     xml = render_title_template('feed.xml', entries=entries, pagination=pagination)
     response = make_response(xml)
@@ -1017,7 +1017,7 @@ def best_rated_books(page):
 @app.route('/discover/page/<int:page>')
 @login_required_if_no_ano
 def discover(page):
-    entries, random, pagination = fill_indexpage(page, db.Books, True, func.randomblob(2))
+    entries, __, pagination = fill_indexpage(page, db.Books, True, func.randomblob(2))
     pagination = Pagination(1, config.config_books_per_page,config.config_books_per_page)
     return render_title_template('discover.html', entries=entries, pagination=pagination, title=_(u"Random Books"))
 
@@ -1043,7 +1043,8 @@ def author(book_id,page):
                                                  db.Books.timestamp.desc())
     name = db.session.query(db.Authors).filter(db.Authors.id == book_id).first().name
     if entries:
-        return render_title_template('index.html', random=random, entries=entries, title=_(u"Author: %(name)s", name=name))
+        return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
+                                     title=_(u"Author: %(name)s", name=name))
     else:
         flash(_(u"Error opening eBook. File does not exist or file is not accessible:"), category="error")
         return redirect(url_for("index"))
