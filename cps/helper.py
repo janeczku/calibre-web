@@ -277,6 +277,9 @@ def delete_book(book, calibrepath):
     path = os.path.join(calibrepath, book.path)#.replace('/',os.path.sep)).replace('\\',os.path.sep)
     shutil.rmtree(path, ignore_errors=True)
 
+def delete_book_gdrive(book):
+    pass
+
 def update_dir_stucture(book_id, calibrepath):
     db.session.connection().connection.connection.create_function("title_sort", 1, db.title_sort)
     book = db.session.query(db.Books).filter(db.Books.id == book_id).first()
