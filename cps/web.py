@@ -1290,6 +1290,7 @@ def delete_book(book_id):
     if current_user.role_delete_books():
         book = db.session.query(db.Books).filter(db.Books.id == book_id).first()
         if book:
+            helper.delete_book(book,config.config_calibre_dir)
             # check if only this book links to:
             # author, language, series, tags, custom columns
             modify_database_object([u''], book.authors, db.Authors, db.session, 'author')
