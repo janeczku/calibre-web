@@ -329,6 +329,13 @@ class Config:
         else:
             return False
 
+    def role_delete_books(self):
+        if self.config_default_role is not None:
+            return True if self.config_default_role & ROLE_DELETE_BOOKS == ROLE_DELETE_BOOKS else False
+        else:
+            return False
+
+
     def role_passwd(self):
         if self.config_default_role is not None:
             return True if self.config_default_role & ROLE_PASSWD == ROLE_PASSWD else False
