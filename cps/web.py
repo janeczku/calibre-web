@@ -1302,19 +1302,20 @@ def delete_book(book_id):
             for c in cc:
                 cc_string = "custom_column_" + str(c.id)
                 if not c.is_multiple:
-                    if c.datatype == 'bool':
-                        del_cc = getattr(book, cc_string)[0]
-                        getattr(book, cc_string).remove(del_cc)
-                        db.session.delete(del_cc)
-                    elif c.datatype == 'rating':
-                        del_cc = getattr(book, cc_string)[0]
-                        getattr(book, cc_string).remove(del_cc)
-                        if len(del_cc.books) == 0:
+                    if len(getattr(book, cc_string)) > 0:
+                        if c.datatype == 'bool':
+                            del_cc = getattr(book, cc_string)[0]
+                            getattr(book, cc_string).remove(del_cc)
                             db.session.delete(del_cc)
-                    else:
-                        del_cc = getattr(book, cc_string)[0]
-                        getattr(book, cc_string).remove(del_cc)
-                        db.session.delete(del_cc)
+                        elif c.datatype == 'rating':
+                            del_cc = getattr(book, cc_string)[0]
+                            getattr(book, cc_string).remove(del_cc)
+                            if len(del_cc.books) == 0:
+                                db.session.delete(del_cc)
+                        else:
+                            del_cc = getattr(book, cc_string)[0]
+                            getattr(book, cc_string).remove(del_cc)
+                            db.session.delete(del_cc)
                 else:
                     modify_database_object([u''], getattr(book, cc_string),db.cc_classes[c.id], db.session, 'custom')
             db.session.query(db.Books).filter(db.Books.id == book_id).delete()
