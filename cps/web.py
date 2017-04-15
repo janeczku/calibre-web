@@ -494,10 +494,12 @@ def modify_database_object(input_elements, db_book_object, db_object, db_session
     del_elements = []
     for c_elements in db_book_object:
         found = False
-        if db_type == 'custom':
-            type_elements=c_elements.value
+        if db_type == 'languages':
+            type_elements = c_elements.lang_code
+        elif db_type == 'custom':
+            type_elements = c_elements.value
         else:
-            type_elements=c_elements.name
+            type_elements = c_elements.name
         for inp_element in input_elements:
             if inp_element == type_elements:
                 found = True
@@ -510,7 +512,9 @@ def modify_database_object(input_elements, db_book_object, db_object, db_session
     for inp_element in input_elements:
         found = False
         for c_elements in db_book_object:
-            if db_type == 'custom':
+            if db_type == 'languages':
+                type_elements = c_elements.lang_code
+            elif db_type == 'custom':
                 type_elements = c_elements.value
             else:
                 type_elements = c_elements.name
@@ -1287,19 +1291,37 @@ def delete_book(book_id):
         book = db.session.query(db.Books).filter(db.Books.id == book_id).first()
         if book:
             # check if only this book links to:
-            # author, language, series, tags,
+            # author, language, series, tags, custom columns
             modify_database_object([u''], book.authors, db.Authors, db.session, 'author')
             modify_database_object([u''], book.tags, db.Tags, db.session, 'tags')
             modify_database_object([u''], book.series, db.Series, db.session, 'series')
             modify_database_object([u''], book.languages, db.Languages, db.session, 'languages')
             modify_database_object([u''], book.publishers, db.Publishers, db.session, 'series')
 
-            # custom colums open
-            ub.session.query(db.Books).filter(db.Books.id == book_id).delete()
-            #return redirect(url_for('index'))
+            cc = db.session.query(db.Custom_Columns).filter(db.Custom_Columns.datatype.notin_(db.cc_exceptions)).all()
+            for c in cc:
+                cc_string = "custom_column_" + str(c.id)
+                if not c.is_multiple:
+                    if c.datatype == 'bool':
+                        del_cc = getattr(book, cc_string)[0]
+                        getattr(book, cc_string).remove(del_cc)
+                        db.session.delete(del_cc)
+                    elif c.datatype == 'rating':
+                        del_cc = getattr(book, cc_string)[0]
+                        getattr(book, cc_string).remove(del_cc)
+                        if len(del_cc.books) == 0:
+                            db.session.delete(del_cc)
+                    else:
+                        del_cc = getattr(book, cc_string)[0]
+                        getattr(book, cc_string).remove(del_cc)
+                        db.session.delete(del_cc)
+                else:
+                    modify_database_object([u''], getattr(book, cc_string),db.cc_classes[c.id], db.session, 'custom')
+            db.session.query(db.Books).filter(db.Books.id == book_id).delete()
+            db.session.commit()
         else:
-            app.logger.info('Book with id "'+book_id+'" could not be deleted')
             # book not found
+            app.logger.info('Book with id "'+book_id+'" could not be deleted')
     return redirect(url_for('index'))
 
 @app.route("/gdrive/authenticate")
@@ -2588,50 +2610,6 @@ def edit_book(book_id):
                     input_tags = to_save[cc_string].split(',')
                     input_tags = map(lambda it: it.strip(), input_tags)
                     modify_database_object(input_tags, getattr(book, cc_string),db.cc_classes[c.id], db.session, 'custom')
-                    '''input_tags = [x for x in input_tags if x != '']
-                    # we have all author names now
-                    # 1. search for tags to remove
-                    del_tags = []
-                    for c_tag in getattr(book, cc_string):
-                        found = False
-                        for inp_tag in input_tags:
-                            if inp_tag == c_tag.value:
-                                found = True
-                                break
-                        # if the tag was not found in the new list, add him to remove list
-                        if not found:
-                            del_tags.append(c_tag)
-                    # 2. search for tags that need to be added
-                    add_tags = []
-                    for inp_tag in input_tags:
-                        found = False
-                        for c_tag in getattr(book, cc_string):
-                            if inp_tag == c_tag.value:
-                                found = True
-                                break
-                        if not found:
-                            add_tags.append(inp_tag)
-                    # if there are tags to remove, we remove them now
-                    if len(del_tags) > 0:
-                        for del_tag in del_tags:
-                            getattr(book, cc_string).remove(del_tag)
-                            if len(del_tag.books) == 0:
-                                db.session.delete(del_tag)
-                    # if there are tags to add, we add them now!
-                    if len(add_tags) > 0:
-                        for add_tag in add_tags:
-                            # check if a tag with that name exists
-                            new_tag = db.session.query(db.cc_classes[c.id]).filter(
-                                db.cc_classes[c.id].value == add_tag).first()
-                            # if no tag is found add it
-                            if new_tag is None:
-                                new_tag = db.cc_classes[c.id](value=add_tag)
-                                db.session.add(new_tag)
-                                new_tag = db.session.query(db.cc_classes[c.id]).filter(
-                                    db.cc_classes[c.id].value == add_tag).first()
-                            # add tag to book
-                            getattr(book, cc_string).append(new_tag)'''
-
             db.session.commit()
             author_names = []
             for author in book.authors:
