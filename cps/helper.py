@@ -273,6 +273,9 @@ def get_sorted_author(value):
         value2 = value[-1] + ", " + " ".join(value[:-1])
     return value2
 
+def delete_book(book, calibrepath):
+    path = os.path.join(calibrepath, book.path)#.replace('/',os.path.sep)).replace('\\',os.path.sep)
+    shutil.rmtree(path, ignore_errors=True)
 
 def update_dir_stucture(book_id, calibrepath):
     db.session.connection().connection.connection.create_function("title_sort", 1, db.title_sort)
