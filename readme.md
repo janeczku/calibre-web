@@ -16,7 +16,7 @@ Calibre Web is a web app providing a clean interface for browsing, reading and d
 - OPDS feed for eBook reader apps 
 - Filter and search by titles, authors, tags, series and language
 - Create custom book collection (shelves)
-- Support for editing eBook metadata
+- Support for editing eBook metadata and deleting eBooks from Calibre library
 - Support for converting eBooks from EPUB to Kindle format (mobi/azw)
 - Restrict eBook download to logged-in users
 - Support for public user registration
