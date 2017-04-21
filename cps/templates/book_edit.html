@@ -117,6 +117,9 @@
 </form>
 
 {% endif %}
+{% endblock %}
+
+{% block modal %}
 {% if g.user.role_delete_books() %}
 <div class="modal fade" id="deleteModal" role="dialog" aria-labelledby="metaDeleteLabel">
   <div class="modal-dialog">
