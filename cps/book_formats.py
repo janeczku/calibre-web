@@ -51,13 +51,11 @@ def process(tmp_file_path, original_file_name, original_file_extension):
             meta = fb2.get_fb2_info(tmp_file_path, original_file_extension)
     except Exception as e:
         logger.warning('cannot parse metadata, using default: %s', e)
-    if meta:
-        if not meta.title:
-            meta.title = original_file_name
-        if not meta.author:
-            meta.author = u"Unknown"
+
+    if meta and meta.title.strip() and meta.author.strip():
         return meta
-    return default_meta(tmp_file_path, original_file_name, original_file_extension)
+    else:
+        return default_meta(tmp_file_path, original_file_name, original_file_extension)
 
 
 def default_meta(tmp_file_path, original_file_name, original_file_extension):
