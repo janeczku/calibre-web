@@ -41,16 +41,21 @@ except ImportError as e:
 
 
 def process(tmp_file_path, original_file_name, original_file_extension):
+    meta = None
     try:
         if ".PDF" == original_file_extension.upper():
-            return pdf_meta(tmp_file_path, original_file_name, original_file_extension)
+            meta = pdf_meta(tmp_file_path, original_file_name, original_file_extension)
         if ".EPUB" == original_file_extension.upper() and use_epub_meta is True:
-            return epub.get_epub_info(tmp_file_path, original_file_name, original_file_extension)
+            meta = epub.get_epub_info(tmp_file_path, original_file_name, original_file_extension)
         if ".FB2" == original_file_extension.upper() and use_fb2_meta is True:
-            return fb2.get_fb2_info(tmp_file_path, original_file_extension)
+            meta = fb2.get_fb2_info(tmp_file_path, original_file_extension)
     except Exception as e:
         logger.warning('cannot parse metadata, using default: %s', e)
-    return default_meta(tmp_file_path, original_file_name, original_file_extension)
+
+    if meta and meta.title.strip() and meta.author.strip():
+        return meta
+    else:
+        return default_meta(tmp_file_path, original_file_name, original_file_extension)
 
 
 def default_meta(tmp_file_path, original_file_name, original_file_extension):
@@ -76,8 +81,8 @@ def pdf_meta(tmp_file_path, original_file_name, original_file_extension):
         doc_info = None
 
     if doc_info is not None:
-        author = doc_info.author if doc_info.author is not None else u"Unknown"
-        title = doc_info.title if doc_info.title is not None else original_file_name
+        author = doc_info.author if doc_info.author else u"Unknown"
+        title = doc_info.title if doc_info.title else original_file_name
         subject = doc_info.subject
     else:
         author = u"Unknown"

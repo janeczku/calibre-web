@@ -261,6 +261,9 @@ def get_valid_filename(value, replace_whitespace=True):
         value = re.sub('[\*\+:\\\"/<>\?]+', u'_', value, flags=re.U)
 
     value = value[:128]
+    if not value:
+        raise ValueError("Filename cannot be empty")
+
     return value
 
 def get_sorted_author(value):
