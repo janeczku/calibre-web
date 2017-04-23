@@ -89,7 +89,7 @@ def get_epub_info(tmp_file_path, original_file_name, original_file_extension):
                 else:
                     coverfile = extractCover(epubZip, coversection[0], coverpath, tmp_file_path)
 
-    if epub_metadata['title'] is None:
+    if not epub_metadata['title']:
         title = original_file_name
     else:
         title = epub_metadata['title']
