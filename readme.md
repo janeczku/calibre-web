@@ -95,7 +95,7 @@ The Drive API should now be setup and ready to use, so we need to integrate it i
 If your calibre web is using https, it is possible to add a "watch" to the drive. This will inform us if the metadata.db file is updated and allow us to update our calibre library accordingly.
 
 9. Click enable watch of metadata.db
-     9. Note that this expires after a week, so will need to be manually refresh 
+10. Note that this expires after a week, so will need to be manually refresh 
 
 ## Docker image
 
