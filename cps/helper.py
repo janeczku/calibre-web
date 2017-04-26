@@ -66,9 +66,9 @@ def make_mobi(book_id, calibrepath):
     vendorpath = os.path.join(os.path.normpath(os.path.dirname(os.path.realpath(__file__)) +
                                                os.sep + "../vendor" + os.sep))
     if sys.platform == "win32":
-        kindlegen = os.path.join(vendorpath, u"kindlegen.exe")
+        kindlegen = (os.path.join(vendorpath, u"kindlegen.exe")).encode(sys.getfilesystemencoding())
     else:
-        kindlegen = os.path.join(vendorpath, u"kindlegen")
+        kindlegen = (os.path.join(vendorpath, u"kindlegen")).encode(sys.getfilesystemencoding())
     if not os.path.exists(kindlegen):
         app.logger.error("make_mobi: kindlegen binary not found in: %s" % kindlegen)
         return None
@@ -80,8 +80,8 @@ def make_mobi(book_id, calibrepath):
 
     file_path = os.path.join(calibrepath, book.path, data.name)
     if os.path.exists(file_path + u".epub"):
-        p = subprocess.Popen((kindlegen + " \"" + file_path + u".epub\"").encode(sys.getfilesystemencoding()),
-                             stdout=subprocess.PIPE, stderr=subprocess.PIPE,shell=True )
+        p = subprocess.Popen([kindlegen, ("\"" + file_path + u".epub\"").encode(sys.getfilesystemencoding())],
+                             stdout=subprocess.PIPE, stderr=subprocess.PIPE )
         # Poll process for new output until finished
         while True:
             nextline = p.stdout.readline()
