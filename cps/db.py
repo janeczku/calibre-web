@@ -286,6 +286,11 @@ def setup_db():
     global cc_classes
 
     if config.config_calibre_dir is None or config.config_calibre_dir ==  u'':
+        content = ub.session.query(ub.Settings).first()
+        content.config_calibre_dir = None
+        content.db_configured = False
+        ub.session.commit()
+        config.loadSettings()
         return False
 
     dbpath = os.path.join(config.config_calibre_dir, "metadata.db")
