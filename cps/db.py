@@ -100,7 +100,7 @@ class Identifiers(Base):
         elif self.type == "douban":
             return u"https://book.douban.com/subject/{0}".format(self.val)
         elif self.type == "google":
-            return u"https://books.google.com.tr/books?id={0}".format(self.val)
+            return u"https://books.google.com/books?id={0}".format(self.val)
         elif self.type == "kobo":
             return u"https://www.kobo.com/ebook/{0}".format(self.val)
         else:
