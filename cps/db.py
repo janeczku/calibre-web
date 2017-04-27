@@ -81,6 +81,10 @@ class Identifiers(Base):
             return u"DOI"
         elif self.type == "goodreads":
             return u"Goodreads"
+        elif self.type == "google":
+            return u"Google Books"
+        elif self.type == "kobo":
+            return u"Kobo"
         else:
             return self.type
 
@@ -95,6 +99,10 @@ class Identifiers(Base):
             return u"http://www.goodreads.com/book/show/{0}".format(self.val)
         elif self.type == "douban":
             return u"https://book.douban.com/subject/{0}".format(self.val)
+        elif self.type == "google":
+            return u"https://books.google.com.tr/books?id={0}".format(self.val)
+        elif self.type == "kobo":
+            return u"https://www.kobo.com/ebook/{0}".format(self.val)
         else:
             return u""
 
