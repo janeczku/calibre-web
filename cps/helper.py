@@ -80,8 +80,8 @@ def make_mobi(book_id, calibrepath):
 
     file_path = os.path.join(calibrepath, book.path, data.name)
     if os.path.exists(file_path + u".epub"):
-        p = subprocess.Popen([kindlegen, ("\"" + file_path + u".epub\"").encode(sys.getfilesystemencoding())],
-                             stdout=subprocess.PIPE, stderr=subprocess.PIPE )
+        p = subprocess.Popen((kindlegen + " \"" + file_path + u".epub\"").encode(sys.getfilesystemencoding()),
+                             stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
         # Poll process for new output until finished
         while True:
             nextline = p.stdout.readline()
