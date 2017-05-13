@@ -42,19 +42,19 @@ See https://github.com/adobe-type-tools/cmap-resources
 <link rel="resource" type="application/l10n" href="{{ url_for('static', filename='locale/locale.properties') }}">
 <script src="{{ url_for('static', filename='js/libs/l10n.js') }}"></script>
 <!--<script src="l10n.js"></script>-->
+<!--script src="{{ url_for('static', filename='js/libs/debugger.js') }}"></script-->
+<!--<script src="debugger.js"></script>-->
 <script src="{{ url_for('static', filename='js/libs/pdf.js') }}"></script>
 <!--<script src="pdf.js"></script>-->
 
+<script type="text/javascript">
+  var DEFAULT_URL = "{{ url_for('static', filename=pdffile) }}";
+  var PDFWORKER_LOCATION="{{ url_for('static', filename='js/libs/pdf.worker.js') }}";
+  // var IMAGE_LOCATION="{{ url_for('static', filename='css/../images') }}";
+  var IMAGE_LOCATION="{{ url_for('static', filename='/images/') }}";
+  var PDFWORKER_LOCATION_JS="{{ url_for('static', filename='js/libs/pdf.worker') }}";
+</script>
 
-
-    <script src="{{ url_for('static', filename='js/libs/debugger.js') }}"></script>
-    <!--<script src="debugger.js"></script>-->
-    <script type="text/javascript">
-      var DEFAULT_URL = "{{ url_for('static', filename=pdffile) }}";
-      var PDFWORKER_LOCATION="{{ url_for('static', filename='js/libs/pdf.worker.js') }}";
-      var PDFWORKER_LOCATION_JS="{{ url_for('static', filename='js/libs/pdf.worker') }}";
-
-    </script>
     <script src="{{ url_for('static', filename='js/libs/viewer.js') }}"></script>
     <!--<script src="viewer.js"></script>-->
 
