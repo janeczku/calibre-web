@@ -1290,6 +1290,12 @@ def delete_book(book_id):
     if current_user.role_delete_books():
         book = db.session.query(db.Books).filter(db.Books.id == book_id).first()
         if book:
+            # delete book from Shelfs, Downloads, Read list
+            ub.session.query(ub.BookShelf).filter(ub.BookShelf.book_id == book_id).delete()
+            ub.session.query(ub.ReadBook).filter(ub.ReadBook.book_id == book_id).delete()
+            ub.session.query(ub.Downloads).filter(ub.Downloads.book_id == book_id).delete()
+            ub.session.commit()
+
             if config.config_use_google_drive:
                 helper.delete_book_gdrive(book) # ToDo really delete file
             else:
