@@ -4,9 +4,10 @@
 from sqlalchemy import *
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import *
+import ast
 import os
 import re
-import ast
+import sys
 from ub import config
 import ub
 
@@ -302,7 +303,10 @@ def setup_db():
         return False
 
     dbpath = os.path.join(config.config_calibre_dir, "metadata.db")
-    #engine = create_engine('sqlite:///{0}'.format(dbpath.encode('utf-8')), echo=False, isolation_level="SERIALIZABLE")
+    if not os.path.exists(dbpath):
+        print "Calibre database not found at %s" % dbpath
+        sys.exit(1)
+    
     engine = create_engine('sqlite:///'+ dbpath, echo=False, isolation_level="SERIALIZABLE")
     try:
         conn = engine.connect()
