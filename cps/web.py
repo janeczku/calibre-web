@@ -2589,6 +2589,22 @@ def edit_book(book_id):
                                     cc_class = db.cc_classes[c.id]
                                     new_cc = cc_class(value=to_save[cc_string], book=book_id)
                                     db.session.add(new_cc)
+                        elif c.datatype == 'int':
+                            if to_save[cc_string] == 'None':
+                                to_save[cc_string] = None
+                            if to_save[cc_string] != cc_db_value:
+                                if cc_db_value is not None:
+                                    if to_save[cc_string] is not None:
+                                        setattr(getattr(book, cc_string)[0], 'value', to_save[cc_string])
+                                    else:
+                                        del_cc = getattr(book, cc_string)[0]
+                                        getattr(book, cc_string).remove(del_cc)
+                                        db.session.delete(del_cc)
+                                else:
+                                    cc_class = db.cc_classes[c.id]
+                                    new_cc = cc_class(value=to_save[cc_string], book=book_id)
+                                    db.session.add(new_cc)
+
                         else:
                             if c.datatype == 'rating':
                                 to_save[cc_string] = str(int(float(to_save[cc_string]) * 2))
