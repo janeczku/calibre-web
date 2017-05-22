@@ -335,8 +335,6 @@ def setup_db():
                                                                  primary_key=True)
                                                           )
                 cc_ids.append([row.id, row.datatype])
-                import sys
-                print >>sys.stderr,row.datatype
                 if row.datatype == 'bool':
                     ccdict = {'__tablename__': 'custom_column_' + str(row.id),
                               'id': Column(Integer, primary_key=True),
