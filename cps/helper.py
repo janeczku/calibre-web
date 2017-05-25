@@ -86,8 +86,14 @@ def make_mobi(book_id, calibrepath):
 
     file_path = os.path.join(calibrepath, book.path, data.name)
     if os.path.exists(file_path + u".epub"):
-        p = subprocess.Popen((kindlegen + " \"" + file_path + u".epub\"").encode(sys.getfilesystemencoding()),
-                             stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+        try:
+            p = subprocess.Popen((kindlegen + " \"" + file_path + u".epub\"").encode(sys.getfilesystemencoding()),
+                                 stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+        except:
+            error_message = _(u"kindlegen failed, no excecution permissions")
+            app.logger.error("make_mobi: "+error_message)
+            return error_message, RET_FAIL
+
         # Poll process for new output until finished
         while True:
             nextline = p.stdout.readline()
@@ -117,7 +123,7 @@ def make_mobi(book_id, calibrepath):
             return file_path + ".mobi", RET_SUCCESS
         else:
             app.logger.error("make_mobi: kindlegen failed with error while converting book")
-            return error_message, RET_FAIL
+            return None, RET_FAIL
     else:
         app.logger.error("make_mobi: epub not found: %s.epub" % file_path)
         return None, RET_FAIL

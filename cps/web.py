@@ -1261,13 +1261,16 @@ def stats():
         kindlegen = os.path.join(vendorpath, u"kindlegen")
     versions['KindlegenVersion'] = _('not installed')
     if os.path.exists(kindlegen):
-        p = subprocess.Popen(kindlegen, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        p.wait()
-        for lines in p.stdout.readlines():
-            if isinstance(lines, bytes):
-                lines = lines.decode('utf-8')
-            if re.search('Amazon kindlegen\(', lines):
-                versions['KindlegenVersion'] = lines
+        try:
+            p = subprocess.Popen(kindlegen, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            p.wait()
+            for lines in p.stdout.readlines():
+                if isinstance(lines, bytes):
+                    lines = lines.decode('utf-8')
+                if re.search('Amazon kindlegen\(', lines):
+                    versions['KindlegenVersion'] = lines
+        except:
+            versions['KindlegenVersion'] = _('Excecution permissions missing')
     versions['PythonVersion'] = sys.version
     versions['babel'] = babelVersion
     versions['sqlalchemy'] = sqlalchemyVersion
