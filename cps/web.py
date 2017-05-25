@@ -2359,7 +2359,8 @@ def edit_user(user_id):
     if request.method == "POST":
         to_save = request.form.to_dict()
         if "delete" in to_save:
-            ub.session.delete(content)
+            ub.session.query(ub.User).filter(ub.User.id == content.id).delete()
+            ub.session.commit()
             flash(_(u"User '%(nick)s' deleted", nick=content.nickname), category="success")
             return redirect(url_for('admin'))
         else:
