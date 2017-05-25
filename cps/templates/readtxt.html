@@ -109,7 +109,7 @@
           $("#area").width($("#area").width());
           $("#content").width($("#content").width());
           //bind text
-          $("#content").load("{{ url_for('static', filename=txtfile) }}",function(textStr) {
+          $("#content").load("{{ url_for('serve_book', book_id=txtfile,book_format='txt') }}",function(textStr) {
            $(this).height($(this).parent().height()*0.95);
            $(this).text(textStr);
           });

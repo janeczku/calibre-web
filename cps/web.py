@@ -1581,6 +1581,24 @@ def get_cover(cover_path):
     else:
         return send_from_directory(os.path.join(config.config_calibre_dir, cover_path), "cover.jpg")
 
+@app.route("/show/<book_id>/<book_format>")
+@login_required_if_no_ano
+def serve_book(book_id,book_format):
+    book_format = book_format.split(".")[0]
+    book = db.session.query(db.Books).filter(db.Books.id == book_id).first()
+    data = db.session.query(db.Data).filter(db.Data.book == book.id).filter(db.Data.format == book_format.upper()).first()
+    app.logger.info(data.name)
+    if config.config_use_google_drive:
+        headers = Headers()
+        try:
+            headers["Content-Type"] = mimetypes.types_map['.' + book_format]
+        except KeyError:
+            headers["Content-Type"] = "application/octet-stream"
+        df = gdriveutils.getFileFromEbooksFolder(Gdrive.Instance().drive, book.path, data.name + "." + book_format)
+        return do_gdrive_download(df, headers)
+    else:
+        return send_from_directory(os.path.join(config.config_calibre_dir, book.path), data.name + "." + book_format)
+
 
 @app.route("/opds/thumb_240_240/<path:book_id>")
 @app.route("/opds/cover_240_240/<path:book_id>")
@@ -1680,19 +1698,9 @@ def read_book(book_id, book_format):
                 zfile.close()
             return render_title_template('read.html', bookid=book_id, title=_(u"Read a Book"))
         elif book_format.lower() == "pdf":
-            all_name = str(book_id) + "/" + book.data[0].name + ".pdf"
-            tmp_file = os.path.join(book_dir, book.data[0].name) + ".pdf"
-            if not os.path.exists(tmp_file):
-                pdf_file = os.path.join(config.config_calibre_dir, book.path, book.data[0].name) + ".pdf"
-                copyfile(pdf_file, tmp_file)
-            return render_title_template('readpdf.html', pdffile=all_name, title=_(u"Read a Book"))
+            return render_title_template('readpdf.html', pdffile=book_id, title=_(u"Read a Book"))
         elif book_format.lower() == "txt":
-            all_name = str(book_id) + "/" + book.data[0].name + ".txt"
-            tmp_file = os.path.join(book_dir, book.data[0].name) + ".txt"
-            if not os.path.exists(all_name):
-                txt_file = os.path.join(config.config_calibre_dir, book.path, book.data[0].name) + ".txt"
-                copyfile(txt_file, tmp_file)
-            return render_title_template('readtxt.html', txtfile=all_name, title=_(u"Read a Book"))
+            return render_title_template('readtxt.html', txtfile=book_id, title=_(u"Read a Book"))
         elif book_format.lower() == "cbr":
             all_name = str(book_id) + "/" + book.data[0].name + ".cbr"
             tmp_file = os.path.join(book_dir, book.data[0].name) + ".cbr"
