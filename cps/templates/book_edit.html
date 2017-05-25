@@ -70,7 +70,7 @@
             {% endif %}
 
             {% if c.datatype == 'int' %}
-              <input type="number" step="1" class="form-control" name="{{ 'custom_column_' ~ c.id }}" id="{{ 'custom_column_' ~ c.id }}" value="{{ book['custom_column_' ~ c.id][0].value }}">
+              <input type="number" step="1" class="form-control" name="{{ 'custom_column_' ~ c.id }}" id="{{ 'custom_column_' ~ c.id }}" value="{% if book['custom_column_' ~ c.id]|length > 0 %}{{ book['custom_column_' ~ c.id][0].value }}{% endif %}">
             {% endif %}
 
             {% if c.datatype in ['text', 'series'] and not c.is_multiple %}
