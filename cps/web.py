@@ -1313,7 +1313,7 @@ def delete_book(book_id):
                 cc_string = "custom_column_" + str(c.id)
                 if not c.is_multiple:
                     if len(getattr(book, cc_string)) > 0:
-                        if c.datatype == 'bool':
+                        if c.datatype == 'bool' or c.datatype == 'integer':
                             del_cc = getattr(book, cc_string)[0]
                             getattr(book, cc_string).remove(del_cc)
                             db.session.delete(del_cc)
