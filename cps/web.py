@@ -1806,10 +1806,10 @@ def login():
         if user and check_password_hash(user.password, form['password']):
             login_user(user, remember=True)
             flash(_(u"you are now logged in as: '%(nickname)s'", nickname=user.nickname), category="success")
-            # test=
             return redirect(url_for("index"))
         else:
-            app.logger.info('Login failed for user "'+form['username']+'"')
+            ipAdress=request.headers.get('X-Forwarded-For', request.remote_addr)
+            app.logger.info('Login failed for user "' + form['username'] + '" IP-adress: ' + ipAdress)
             flash(_(u"Wrong Username or Password"), category="error")
 
     return render_title_template('login.html', title=_(u"login"))
