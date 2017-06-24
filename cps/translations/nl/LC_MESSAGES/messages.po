@@ -5,6 +5,20 @@
 # translation by Ed Driesen 
 # FIRST AUTHOR <ed.driesen@telenet.be>, 2017.
 #
+# Copyright (C) 2011 Kovid Goyal
+# 
+# Translators:
+# Alex, 2016
+# Freek de Kruijf <f.de.kruijf@gmail.com>, 2009-2011
+# Gideon van Melle <translations@gvmelle.com>, 2015
+# Luk Claes <luk.claes@ugent.be>, 2005
+# Mar, 2015
+# Rodolfo_Jadon, 2015
+# Robbie Deighton <deightonrobbie@gmail.com>, 2016
+# Taco Witte <tcwitte@cs.uu.nl>, 2004
+# Toon van Gerwen <translation@vgerwen.nl>, 2015
+# Volluta <volluta@tutanota.com>, 2015-2016
+# W.P.M.E. Hofland <wpme.hofland@gmail.com>, 2015
 msgid ""
 msgstr ""
 "Project-Id-Version: Calibre-web dutch translation by Ed Driesen (GPL V3)\n"
