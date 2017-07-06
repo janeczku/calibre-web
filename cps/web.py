@@ -1261,13 +1261,16 @@ def stats():
         kindlegen = os.path.join(vendorpath, u"kindlegen")
     versions['KindlegenVersion'] = _('not installed')
     if os.path.exists(kindlegen):
-        p = subprocess.Popen(kindlegen, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        p.wait()
-        for lines in p.stdout.readlines():
-            if isinstance(lines, bytes):
-                lines = lines.decode('utf-8')
-            if re.search('Amazon kindlegen\(', lines):
-                versions['KindlegenVersion'] = lines
+        try:
+            p = subprocess.Popen(kindlegen, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            p.wait()
+            for lines in p.stdout.readlines():
+                if isinstance(lines, bytes):
+                    lines = lines.decode('utf-8')
+                if re.search('Amazon kindlegen\(', lines):
+                    versions['KindlegenVersion'] = lines
+        except:
+            versions['KindlegenVersion'] = _('Excecution permissions missing')
     versions['PythonVersion'] = sys.version
     versions['babel'] = babelVersion
     versions['sqlalchemy'] = sqlalchemyVersion
@@ -1290,6 +1293,12 @@ def delete_book(book_id):
     if current_user.role_delete_books():
         book = db.session.query(db.Books).filter(db.Books.id == book_id).first()
         if book:
+            # delete book from Shelfs, Downloads, Read list
+            ub.session.query(ub.BookShelf).filter(ub.BookShelf.book_id == book_id).delete()
+            ub.session.query(ub.ReadBook).filter(ub.ReadBook.book_id == book_id).delete()
+            ub.session.query(ub.Downloads).filter(ub.Downloads.book_id == book_id).delete()
+            ub.session.commit()
+
             if config.config_use_google_drive:
                 helper.delete_book_gdrive(book) # ToDo really delete file
             else:
@@ -1307,7 +1316,7 @@ def delete_book(book_id):
                 cc_string = "custom_column_" + str(c.id)
                 if not c.is_multiple:
                     if len(getattr(book, cc_string)) > 0:
-                        if c.datatype == 'bool':
+                        if c.datatype == 'bool' or c.datatype == 'integer':
                             del_cc = getattr(book, cc_string)[0]
                             getattr(book, cc_string).remove(del_cc)
                             db.session.delete(del_cc)
@@ -1575,6 +1584,24 @@ def get_cover(cover_path):
     else:
         return send_from_directory(os.path.join(config.config_calibre_dir, cover_path), "cover.jpg")
 
+@app.route("/show/<book_id>/<book_format>")
+@login_required_if_no_ano
+def serve_book(book_id,book_format):
+    book_format = book_format.split(".")[0]
+    book = db.session.query(db.Books).filter(db.Books.id == book_id).first()
+    data = db.session.query(db.Data).filter(db.Data.book == book.id).filter(db.Data.format == book_format.upper()).first()
+    app.logger.info(data.name)
+    if config.config_use_google_drive:
+        headers = Headers()
+        try:
+            headers["Content-Type"] = mimetypes.types_map['.' + book_format]
+        except KeyError:
+            headers["Content-Type"] = "application/octet-stream"
+        df = gdriveutils.getFileFromEbooksFolder(Gdrive.Instance().drive, book.path, data.name + "." + book_format)
+        return do_gdrive_download(df, headers)
+    else:
+        return send_from_directory(os.path.join(config.config_calibre_dir, book.path), data.name + "." + book_format)
+
 
 @app.route("/opds/thumb_240_240/<path:book_id>")
 @app.route("/opds/cover_240_240/<path:book_id>")
@@ -1674,19 +1701,9 @@ def read_book(book_id, book_format):
                 zfile.close()
             return render_title_template('read.html', bookid=book_id, title=_(u"Read a Book"))
         elif book_format.lower() == "pdf":
-            all_name = str(book_id) + "/" + book.data[0].name + ".pdf"
-            tmp_file = os.path.join(book_dir, book.data[0].name) + ".pdf"
-            if not os.path.exists(tmp_file):
-                pdf_file = os.path.join(config.config_calibre_dir, book.path, book.data[0].name) + ".pdf"
-                copyfile(pdf_file, tmp_file)
-            return render_title_template('readpdf.html', pdffile=all_name, title=_(u"Read a Book"))
+            return render_title_template('readpdf.html', pdffile=book_id, title=_(u"Read a Book"))
         elif book_format.lower() == "txt":
-            all_name = str(book_id) + "/" + book.data[0].name + ".txt"
-            tmp_file = os.path.join(book_dir, book.data[0].name) + ".txt"
-            if not os.path.exists(all_name):
-                txt_file = os.path.join(config.config_calibre_dir, book.path, book.data[0].name) + ".txt"
-                copyfile(txt_file, tmp_file)
-            return render_title_template('readtxt.html', txtfile=all_name, title=_(u"Read a Book"))
+            return render_title_template('readtxt.html', txtfile=book_id, title=_(u"Read a Book"))
         elif book_format.lower() == "cbr":
             all_name = str(book_id) + "/" + book.data[0].name + ".cbr"
             tmp_file = os.path.join(book_dir, book.data[0].name) + ".cbr"
@@ -1789,10 +1806,10 @@ def login():
         if user and check_password_hash(user.password, form['password']):
             login_user(user, remember=True)
             flash(_(u"you are now logged in as: '%(nickname)s'", nickname=user.nickname), category="success")
-            # test=
             return redirect(url_for("index"))
         else:
-            app.logger.info('Login failed for user "'+form['username']+'"')
+            ipAdress=request.headers.get('X-Forwarded-For', request.remote_addr)
+            app.logger.info('Login failed for user "' + form['username'] + '" IP-adress: ' + ipAdress)
             flash(_(u"Wrong Username or Password"), category="error")
 
     return render_title_template('login.html', title=_(u"login"))
@@ -2345,7 +2362,8 @@ def edit_user(user_id):
     if request.method == "POST":
         to_save = request.form.to_dict()
         if "delete" in to_save:
-            ub.session.delete(content)
+            ub.session.query(ub.User).filter(ub.User.id == content.id).delete()
+            ub.session.commit()
             flash(_(u"User '%(nick)s' deleted", nick=content.nickname), category="success")
             return redirect(url_for('admin'))
         else:
@@ -2583,6 +2601,22 @@ def edit_book(book_id):
                                     cc_class = db.cc_classes[c.id]
                                     new_cc = cc_class(value=to_save[cc_string], book=book_id)
                                     db.session.add(new_cc)
+                        elif c.datatype == 'int':
+                            if to_save[cc_string] == 'None':
+                                to_save[cc_string] = None
+                            if to_save[cc_string] != cc_db_value:
+                                if cc_db_value is not None:
+                                    if to_save[cc_string] is not None:
+                                        setattr(getattr(book, cc_string)[0], 'value', to_save[cc_string])
+                                    else:
+                                        del_cc = getattr(book, cc_string)[0]
+                                        getattr(book, cc_string).remove(del_cc)
+                                        db.session.delete(del_cc)
+                                else:
+                                    cc_class = db.cc_classes[c.id]
+                                    new_cc = cc_class(value=to_save[cc_string], book=book_id)
+                                    db.session.add(new_cc)
+
                         else:
                             if c.datatype == 'rating':
                                 to_save[cc_string] = str(int(float(to_save[cc_string]) * 2))

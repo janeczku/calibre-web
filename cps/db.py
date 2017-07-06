@@ -11,7 +11,7 @@ from ub import config
 import ub
 
 session = None
-cc_exceptions = ['datetime', 'int', 'comments', 'float', 'composite', 'series']
+cc_exceptions = ['datetime', 'comments', 'float', 'composite', 'series']
 cc_classes = None
 engine = None
 
@@ -302,7 +302,6 @@ def setup_db():
         return False
 
     dbpath = os.path.join(config.config_calibre_dir, "metadata.db")
-    #engine = create_engine('sqlite:///{0}'.format(dbpath.encode('utf-8')), echo=False, isolation_level="SERIALIZABLE")
     engine = create_engine('sqlite:///'+ dbpath, echo=False, isolation_level="SERIALIZABLE")
     try:
         conn = engine.connect()
@@ -340,6 +339,11 @@ def setup_db():
                               'id': Column(Integer, primary_key=True),
                               'book': Column(Integer, ForeignKey('books.id')),
                               'value': Column(Boolean)}
+                elif row.datatype == 'int':
+                    ccdict = {'__tablename__': 'custom_column_' + str(row.id),
+                              'id': Column(Integer, primary_key=True),
+                              'book': Column(Integer, ForeignKey('books.id')),
+                              'value': Column(Integer)}
                 else:
                     ccdict = {'__tablename__': 'custom_column_' + str(row.id),
                               'id': Column(Integer, primary_key=True),
@@ -347,7 +351,7 @@ def setup_db():
                 cc_classes[row.id] = type('Custom_Column_' + str(row.id), (Base,), ccdict)
 
         for cc_id in cc_ids:
-            if cc_id[1] == 'bool':
+            if (cc_id[1] == 'bool') or (cc_id[1] == 'int'):
                 setattr(Books, 'custom_column_' + str(cc_id[0]), relationship(cc_classes[cc_id[0]],
                                                                            primaryjoin=(
                                                                            Books.id == cc_classes[cc_id[0]].book),
