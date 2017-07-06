@@ -998,7 +998,43 @@ def get_matching_tags():
 def index(page):
     entries, random, pagination = fill_indexpage(page, db.Books, True, db.Books.timestamp.desc())
     return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
-                                 title=_(u"Latest Books"))
+                                 title=_(u"Recently Added Books"))
+
+
+@app.route('/books/newest', defaults={'page': 1})
+@app.route('/books/newest/page/<int:page>')
+@login_required_if_no_ano
+def newest_books(page):
+    entries, random, pagination = fill_indexpage(page, db.Books, True, db.Books.pubdate.desc())
+    return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
+                                 title=_(u"Newest Books"))
+
+
+@app.route('/books/oldest', defaults={'page': 1})
+@app.route('/books/oldest/page/<int:page>')
+@login_required_if_no_ano
+def oldest_books(page):
+    entries, random, pagination = fill_indexpage(page, db.Books, True, db.Books.pubdate)
+    return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
+                                 title=_(u"Oldest Books"))
+
+
+@app.route('/books/a-z', defaults={'page': 1})
+@app.route('/books/a-z/page/<int:page>')
+@login_required_if_no_ano
+def titles_ascending(page):
+    entries, random, pagination = fill_indexpage(page, db.Books, True, db.Books.sort)
+    return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
+                                 title=_(u"Books (A-Z)"))
+
+
+@app.route('/books/z-a', defaults={'page': 1})
+@app.route('/books/z-a/page/<int:page>')
+@login_required_if_no_ano
+def titles_descending(page):
+    entries, random, pagination = fill_indexpage(page, db.Books, True, db.Books.sort.desc())
+    return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
+                                 title=_(u"Books (Z-A)"))
 
 
 @app.route("/hot", defaults={'page': 1})
