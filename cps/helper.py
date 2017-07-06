@@ -52,6 +52,9 @@ except Exception as e:
 global_task = None
 updater_thread = None
 
+RET_SUCCESS = 1
+RET_FAIL = 0
+
 def update_download(book_id, user_id):
     check = ub.session.query(ub.Downloads).filter(ub.Downloads.user_id == user_id).filter(ub.Downloads.book_id ==
                                                                                           book_id).first()
@@ -63,6 +66,7 @@ def update_download(book_id, user_id):
 
 
 def make_mobi(book_id, calibrepath):
+    error_message = None
     vendorpath = os.path.join(os.path.normpath(os.path.dirname(os.path.realpath(__file__)) +
                                                os.sep + "../vendor" + os.sep))
     if sys.platform == "win32":
@@ -70,24 +74,41 @@ def make_mobi(book_id, calibrepath):
     else:
         kindlegen = (os.path.join(vendorpath, u"kindlegen")).encode(sys.getfilesystemencoding())
     if not os.path.exists(kindlegen):
-        app.logger.error("make_mobi: kindlegen binary not found in: %s" % kindlegen)
-        return None
+        error_message = _(u"kindlegen binary %(kindlepath)s not found", kindlepath=kindlegen)
+        app.logger.error("make_mobi: " + error_message)
+        return error_message, RET_FAIL
     book = db.session.query(db.Books).filter(db.Books.id == book_id).first()
     data = db.session.query(db.Data).filter(db.Data.book == book.id).filter(db.Data.format == 'EPUB').first()
     if not data:
-        app.logger.error("make_mobi: epub format not found for book id: %d" % book_id)
-        return None
+        error_message = _(u"epub format not found for book id: %(book)d", book=book_id)
+        app.logger.error("make_mobi: " + error_message)
+        return error_message, RET_FAIL
 
     file_path = os.path.join(calibrepath, book.path, data.name)
     if os.path.exists(file_path + u".epub"):
-        p = subprocess.Popen((kindlegen + " \"" + file_path + u".epub\"").encode(sys.getfilesystemencoding()),
-                             stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+        try:
+            p = subprocess.Popen((kindlegen + " \"" + file_path + u".epub\"").encode(sys.getfilesystemencoding()),
+                                 stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+        except:
+            error_message = _(u"kindlegen failed, no excecution permissions")
+            app.logger.error("make_mobi: "+error_message)
+            return error_message, RET_FAIL
+
         # Poll process for new output until finished
         while True:
             nextline = p.stdout.readline()
             if nextline == '' and p.poll() is not None:
                 break
             if nextline != "\r\n":
+                # Format of error message (kindlegen translates its output texts):
+                # Error(prcgen):E23006: Language not recognized in metadata.The dc:Language field is mandatory.Aborting.
+                conv_error=re.search(".*\(.*\):(E\d+):\s(.*)",nextline)
+                # If error occoures, log in every case
+                if conv_error:
+                    error_message = _(u"Kindlegen failed with Error %(error)s. Message: %(message)s",
+                                      error=conv_error.group(1), message=conv_error.group(2).decode('utf-8'))
+                    app.logger.info("make_mobi: " + error_message)
+                    app.logger.info(nextline.strip('\r\n'))
                 app.logger.debug(nextline.strip('\r\n'))
 
         check = p.returncode
@@ -99,13 +120,13 @@ def make_mobi(book_id, calibrepath):
                     uncompressed_size=os.path.getsize(file_path + ".mobi")
                 ))
             db.session.commit()
-            return file_path + ".mobi"
+            return file_path + ".mobi", RET_SUCCESS
         else:
             app.logger.error("make_mobi: kindlegen failed with error while converting book")
-            return None
+            return None, RET_FAIL
     else:
-        app.logger.error("make_mobie: epub not found: %s.epub" % file_path)
-        return None
+        app.logger.error("make_mobi: epub not found: %s.epub" % file_path)
+        return None, RET_FAIL
 
 
 class StderrLogger(object):
@@ -204,13 +225,11 @@ def send_mail(book_id, kindle_mail, calibrepath):
     if 'mobi' in formats:
         msg.attach(get_attachment(formats['mobi']))
     elif 'epub' in formats:
-        filepath = make_mobi(book.id, calibrepath)
-        if filepath is not None:
-            msg.attach(get_attachment(filepath))
-        elif filepath is None:
-            return _("Could not convert epub to mobi")
-        elif 'pdf' in formats:
-            msg.attach(get_attachment(formats['pdf']))
+        data, resultCode = make_mobi(book.id, calibrepath)
+        if resultCode == RET_SUCCESS:
+            msg.attach(get_attachment(data))
+        else:
+            return data #_("Could not convert epub to mobi")
     elif 'pdf' in formats:
         msg.attach(get_attachment(formats['pdf']))
     else:
