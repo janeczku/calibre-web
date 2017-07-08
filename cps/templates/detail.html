@@ -160,10 +160,12 @@
       {% endif %}
       {% if not g.user.is_anonymous() %}
       <p>
-        <div class="custom_columns" id="have_read_container">
-          <form id="have_read_form" action="{{ url_for('toggle_read', book_id=entry.id)}}" method="POST") >
-            <input id="have_read_cb" type="checkbox" {% if have_read %}checked{% endif %} >
-            <label for="have_read_cb">{{_('Read')}}</label>
+        <div class="custom_columns">
+          <form id="have_read_form" action="{{ url_for('toggle_read', book_id=entry.id)}}" method="POST">
+            <label class="block-label">
+              <input id="have_read_cb" type="checkbox" {% if have_read %}checked{% endif %} >
+              <span>{{_('Read')}}</span>
+            </label>
           </form>
         </div>
       </p>
@@ -236,28 +238,10 @@
 <script src="{{ url_for('static', filename='js/libs/jquery.form.js') }}"></script>
 <script>
   $( document ).ready(function() {
-    var haveReadForm = $('#have_read_form');
-    haveReadForm.ajaxForm();
+    $('#have_read_form').ajaxForm();
   });
-  $("#have_read_container").attr('unselectable','on')
-     .css({'-moz-user-select':'-moz-none',
-           '-moz-user-select':'none',
-           '-o-user-select':'none',
-           '-khtml-user-select':'none', /* you could also put this in a class */
-           '-webkit-user-select':'none',/* and add the CSS class here instead */
-           '-ms-user-select':'none',
-           'user-select':'none'
-     }).bind('selectstart', function(){ return false; });
-  $("#have_read_container").click(function() {
-    var haveReadForm = $('#have_read_form');
-    if ($("#have_read").find('span').hasClass('glyphicon-ok')) {
-      $("#have_read").find('span').removeClass('glyphicon-ok');
-      $("#have_read").find('span').addClass('glyphicon-remove');
-    } else {
-      $("#have_read").find('span').removeClass('glyphicon-remove');
-      $("#have_read").find('span').addClass('glyphicon-ok');
-    }
-    haveReadForm.submit()
+  $("#have_read_cb").on('change', function() {
+    $(this).closest('form').submit();
   });
 </script>
 {% endblock %}
