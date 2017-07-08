@@ -53,3 +53,6 @@ span.glyphicon.glyphicon-tags {padding-right: 5px;color: #999;vertical-align: te
 .spinner2 {margin:0 41%;}
 
 .block-label {display: block;}
+
+.author-bio img {margin: 0 1em 1em 0;}
+.author-link img {display: inline-block;max-width: 100px;}

@@ -97,6 +97,24 @@
       <input type="checkbox" id="config_remote_login" name="config_remote_login" {% if content.config_remote_login %}checked{% endif %}>
       <label for="config_remote_login">{{_('Enable remote login ("magic link")')}}</label>
     </div>
+    {% if goodreads %}
+    <div class="form-group">
+      <input type="checkbox" id="config_use_goodreads" name="config_use_goodreads" data-control="goodreads-settings" {% if content.config_use_goodreads %}checked{% endif %}>
+      <label for="config_use_goodreads">{{_('Use')}} Goodreads</label>
+      <a href="https://www.goodreads.com/api/keys" target="_blank" style="margin-left: 5px">{{_('Obtain an API Key')}}</a>
+    </div>
+    <div data-related="goodreads-settings">
+      <div class="form-group">
+        <label for="config_goodreads_api_key">{{_('Goodreads API Key')}}</label>
+        <input type="text" class="form-control" id="config_goodreads_api_key" name="config_goodreads_api_key" value="{% if content.config_goodreads_api_key != None %}{{ content.config_goodreads_api_key }}{% endif %}" autocomplete="off">
+      </div>
+      <div class="form-group">
+        <label for="config_goodreads_api_secret">{{_('Goodreads API Secret')}}</label>
+        <input type="text" class="form-control" id="config_goodreads_api_secret" name="config_goodreads_api_secret" value="{% if content.config_goodreads_api_secret != None %}{{ content.config_goodreads_api_secret }}{% endif %}" autocomplete="off">
+      </div>
+    </div>
+    {% endif %}
+
     <h2>{{_('Default Settings for new users')}}</h2>
     <div class="form-group">
       <input type="checkbox" name="admin_role" id="admin_role" {% if content.role_admin() %}checked{% endif %}>

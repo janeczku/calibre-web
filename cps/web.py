@@ -7,6 +7,12 @@ try:
 except ImportError:
     gdrive_support = False
 
+try:
+    from goodreads import client as gr_client
+    goodreads_support = True
+except ImportError:
+    goodreads_support = False
+
 import mimetypes
 import logging
 from logging.handlers import RotatingFileHandler
@@ -1086,10 +1092,16 @@ def author_list():
 def author(book_id, page):
     entries, random, pagination = fill_indexpage(page, db.Books, db.Books.authors.any(db.Authors.id == book_id),
                                                  db.Books.timestamp.desc())
-    name = db.session.query(db.Authors).filter(db.Authors.id == book_id).first().name
     if entries:
-        return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
-                                     title=_(u"Author: %(name)s", name=name))
+        name = db.session.query(db.Authors).filter(db.Authors.id == book_id).first().name
+
+        author_info = None
+        if goodreads_support and config.config_use_goodreads:
+            gc = gr_client.GoodreadsClient(config.config_goodreads_api_key, config.config_goodreads_api_secret)
+            author_info = gc.find_author(author_name=name)
+
+        return render_title_template('author.html', entries=entries, pagination=pagination,
+                                     title=name, author=author_info)
     else:
         flash(_(u"Error opening eBook. File does not exist or file is not accessible:"), category="error")
         return redirect(url_for("index"))
@@ -2289,10 +2301,19 @@ def configuration_helper(origin):
             content.config_anonbrowse = 1
         if "config_public_reg" in to_save and to_save["config_public_reg"] == "on":
             content.config_public_reg = 1
-        content.config_remote_login = ("config_remote_login" in to_save and to_save["config_remote_login"] == "on")
 
+        # Remote login configuration
+        content.config_remote_login = ("config_remote_login" in to_save and to_save["config_remote_login"] == "on")
         if not content.config_remote_login:
             ub.session.query(ub.RemoteAuthToken).delete()
+
+        # Goodreads configuration
+        content.config_use_goodreads = ("config_use_goodreads" in to_save and to_save["config_use_goodreads"] == "on")
+        if "config_goodreads_api_key" in to_save:
+            content.config_goodreads_api_key = to_save["config_goodreads_api_key"]
+        if "config_goodreads_api_secret" in to_save:
+            content.config_goodreads_api_secret = to_save["config_goodreads_api_secret"]
+
 
         content.config_default_role = 0
         if "admin_role" in to_save:
@@ -2324,13 +2345,13 @@ def configuration_helper(origin):
         except e:
             flash(e, category="error")
             return render_title_template("config_edit.html", content=config, origin=origin, gdrive=gdrive_support,
-                                         title=_(u"Basic Configuration"))
+                                         goodreads=goodreads_support, title=_(u"Basic Configuration"))
         if db_change:
             reload(db)
             if not db.setup_db():
                 flash(_(u'DB location is not valid, please enter correct path'), category="error")
                 return render_title_template("config_edit.html", content=config, origin=origin, gdrive=gdrive_support,
-                                             title=_(u"Basic Configuration"))
+                                             goodreads=goodreads_support, title=_(u"Basic Configuration"))
         if reboot_required:
             # db.engine.dispose() # ToDo verify correct
             ub.session.close()
@@ -2344,7 +2365,7 @@ def configuration_helper(origin):
             success = True
     return render_title_template("config_edit.html", origin=origin, success=success, content=config,
                                  show_authenticate_google_drive=not is_gdrive_ready(), gdrive=gdrive_support,
-                                 title=_(u"Basic Configuration"))
+                                 goodreads=goodreads_support, title=_(u"Basic Configuration"))
 
 
 @app.route("/admin/user/new", methods=["GET", "POST"])

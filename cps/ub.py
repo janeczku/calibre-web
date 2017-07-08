@@ -263,6 +263,9 @@ class Settings(Base):
     config_google_drive_watch_changes_response = Column(String)
     config_columns_to_ignore = Column(String)
     config_remote_login = Column(Boolean)
+    config_use_goodreads = Column(Boolean)
+    config_goodreads_api_key = Column(String)
+    config_goodreads_api_secret = Column(String)
 
     def __repr__(self):
         pass
@@ -320,6 +323,9 @@ class Config:
         self.db_configured = bool(self.config_calibre_dir is not None and
                 (not self.config_use_google_drive or os.path.exists(self.config_calibre_dir + '/metadata.db')))
         self.config_remote_login = data.config_remote_login
+        self.config_use_goodreads = data.config_use_goodreads
+        self.config_goodreads_api_key = data.config_goodreads_api_key
+        self.config_goodreads_api_secret = data.config_goodreads_api_secret
 
     @property
     def get_main_dir(self):
@@ -475,6 +481,13 @@ def migrate_Database():
     except exc.OperationalError:
         conn = engine.connect()
         conn.execute("ALTER TABLE Settings ADD column `config_remote_login` INTEGER DEFAULT 0")
+    try:
+        session.query(exists().where(Settings.config_use_goodreads)).scalar()
+    except exc.OperationalError:
+        conn = engine.connect()
+        conn.execute("ALTER TABLE Settings ADD column `config_use_goodreads` INTEGER DEFAULT 0")
+        conn.execute("ALTER TABLE Settings ADD column `config_goodreads_api_key` String DEFAULT ''")
+        conn.execute("ALTER TABLE Settings ADD column `config_goodreads_api_secret` String DEFAULT ''")
 
 def clean_database():
     # Remove expired remote login tokens
