@@ -193,7 +193,8 @@
   tinymce.init({
     selector: '#description',
     branding: false,
-    menubar: 'edit view format'
+    menubar: 'edit view format',
+    language: '{{ g.user.locale }}'
   });
 </script>
 {% endblock %}
