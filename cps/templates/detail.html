@@ -63,7 +63,7 @@
       <p>
       <div class="tags">
         <span class="glyphicon glyphicon-tags"></span>
-        
+
         {% for tag in entry.tags %}
           <a href="{{ url_for('category', book_id=tag.id) }}" class="btn btn-xs btn-info" role="button">{{tag.name}}</a>
         {%endfor%}
@@ -85,7 +85,7 @@
         <div class="custom_columns">
         {% for c in cc %}
           {% if entry['custom_column_' ~ c.id]|length > 0 %}
-            {{ c.name }}: 
+            {{ c.name }}:
             {% for column in entry['custom_column_' ~ c.id] %}
               {% if c.datatype == 'rating' %}
                 {{ '%d' % (column.value / 2) }}
@@ -106,7 +106,7 @@
         {% endfor %}
         </div>
         </p>
-      {% endif %}  
+      {% endif %}
       {% if not g.user.is_anonymous() %}
       <p>
         <div class="custom_columns" id="have_read_container">
@@ -117,7 +117,7 @@
         </div>
       </p>
       {% endif %}
-        
+
 
       {% if entry.comments|length > 0 and entry.comments[0].text|length > 0%}
         <h3>{{_('Description:')}}</h3>
@@ -130,15 +130,18 @@
         <div class="btn-group" role="group" aria-label="Download, send to Kindle, reading">
           {% if g.user.role_download() %}
             <div class="btn-group" role="group">
-              <button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <span class="glyphicon glyphicon-download"></span> {{_('Download')}}
-                <span class="caret"></span>
+              <button id="btnGroupDrop1" type="button" class="btn btn-primary">
+                {{_('Download')}} :
               </button>
-              <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
                 {% for format in entry.data %}
-                <li><a href="{{ url_for('get_download_link_ext', book_id=entry.id, book_format=format.format|lower, anyname=entry.id|string+'.'+format.format) }}">{{format.format}}</a></li>
+                <button id="btnGroupDrop1{{format.format|lower}}" type="button" class="btn btn-primary">
+                  <a href="{{ url_for('get_download_link_ext', book_id=entry.id, book_format=format.format|lower, anyname=entry.id|string+'.'+format.format) }}">
+                  <span class="glyphicon glyphicon-download"></span>
+                    {{format.format}}
+                  <span class="ebook-icon ebook-{{format.format|lower}}"></span>
+                  </a>
+                </button>
                 {%endfor%}
-              </ul>
             </div>
           {% endif %}
 
@@ -160,7 +163,7 @@
                 </ul>
               </div>
           {% endif %}
-        </div> 
+        </div>
       </div>
       </br>
       {% if g.user.is_authenticated %}
@@ -183,7 +186,7 @@
                   {% endif %}
                 {%endfor%}
               </ul>
-        </div> 
+        </div>
         {% if books_shelfs %}
         <div class="btn-group" role="group" aria-label="Remove from shelves">
               {% for shelf in g.user.shelf %}
@@ -247,5 +250,3 @@
   });
 </script>
 {% endblock %}
-
-
