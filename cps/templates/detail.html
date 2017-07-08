@@ -12,6 +12,57 @@
       </div>
     </div>
     <div class="col-sm-9 col-lg-9 book-meta">
+            <div class="more-stuff">
+      <div class="btn-toolbar" role="toolbar">
+        <div class="btn-group" role="group" aria-label="Download, send to Kindle, reading">
+          {% if g.user.role_download() %}
+            <div class="btn-group" role="group">
+            {% if entry.data|length < 3 %}
+              <button id="btnGroupDrop1" type="button" class="btn btn-primary">
+                {{_('Download')}} :
+              </button>
+                {% for format in entry.data %}
+                <button id="btnGroupDrop1{{format.format|lower}}" type="button" class="btn btn-primary">
+                  <a class="button-link" href="{{ url_for('get_download_link_ext', book_id=entry.id, book_format=format.format|lower, anyname=entry.id|string+'.'+format.format) }}">
+                  <span class="glyphicon glyphicon-download"></span>
+                    {{format.format}}
+                  </a>
+                </button>
+                {% endfor %}
+              {% else %}
+                <button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <span class="glyphicon glyphicon-download"></span> {{_('Download')}}
+                  <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                {% for format in entry.data %}
+                  <li><a href="{{ url_for('get_download_link_ext', book_id=entry.id, book_format=format.format|lower, anyname=entry.id|string+'.'+format.format) }}">{{format.format}}</a></li>
+                {% endfor %}
+                </ul>
+              {% endif %}
+            </div>
+          {% endif %}
+
+            {% if g.user.kindle_mail and g.user.is_authenticated %}
+            <a href="{{url_for('send_to_kindle', book_id=entry.id)}}" id="sendbtn" class="btn btn-primary" role="button"><span class="glyphicon glyphicon-send"></span> {{_('Send to Kindle')}}</a>
+            {% endif %}
+          {% if (g.user.role_download() and g.user.is_anonymous()) or g.user.is_authenticated %}
+              <div class="btn-group" role="group">
+                <button id="btnGroupDrop2" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <span class="glyphicon glyphicon-eye-open"></span> {{_('Read in browser')}}
+                  <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="btnGroupDrop2">
+                  {% for format in entry.data %}
+                  {%if format.format|lower == 'epub' or format.format|lower == 'txt' or format.format|lower == 'pdf' or format.format|lower == 'cbr' or format.format|lower == 'cbt' or format.format|lower == 'cbz' %}
+                  <li><a target="_blank" href="{{ url_for('read_book', book_id=entry.id, book_format=format.format|lower) }}">{{format.format}}</a></li>
+                  {% endif %}
+                  {%endfor%}
+                </ul>
+              </div>
+          {% endif %}
+        </div>
+      </div>
       <h2>{{entry.title}}</h2>
       <p class="author">
           {% for author in entry.authors %}
@@ -125,57 +176,6 @@
       {% endif %}
 
 
-      <div class="more-stuff">
-      <div class="btn-toolbar" role="toolbar">
-        <div class="btn-group" role="group" aria-label="Download, send to Kindle, reading">
-          {% if g.user.role_download() %}
-            <div class="btn-group" role="group">
-            {% if entry.data|length < 3 %}
-              <button id="btnGroupDrop1" type="button" class="btn btn-primary">
-                {{_('Download')}} :
-              </button>
-                {% for format in entry.data %}
-                <button id="btnGroupDrop1{{format.format|lower}}" type="button" class="btn btn-primary">
-                  <a class="button-link" href="{{ url_for('get_download_link_ext', book_id=entry.id, book_format=format.format|lower, anyname=entry.id|string+'.'+format.format) }}">
-                  <span class="glyphicon glyphicon-download"></span>
-                    {{format.format}}
-                  </a>
-                </button>
-                {% endfor %}
-              {% else %}
-                <button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  <span class="glyphicon glyphicon-download"></span> {{_('Download')}}
-                  <span class="caret"></span>
-                </button>
-                <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                {% for format in entry.data %}
-                  <li><a href="{{ url_for('get_download_link_ext', book_id=entry.id, book_format=format.format|lower, anyname=entry.id|string+'.'+format.format) }}">{{format.format}}</a></li>
-                {% endfor %}
-                </ul>
-              {% endif %}
-            </div>
-          {% endif %}
-
-            {% if g.user.kindle_mail and g.user.is_authenticated %}
-            <a href="{{url_for('send_to_kindle', book_id=entry.id)}}" id="sendbtn" class="btn btn-primary" role="button"><span class="glyphicon glyphicon-send"></span> {{_('Send to Kindle')}}</a>
-            {% endif %}
-          {% if (g.user.role_download() and g.user.is_anonymous()) or g.user.is_authenticated %}
-              <div class="btn-group" role="group">
-                <button id="btnGroupDrop2" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  <span class="glyphicon glyphicon-eye-open"></span> {{_('Read in browser')}}
-                  <span class="caret"></span>
-                </button>
-                <ul class="dropdown-menu" aria-labelledby="btnGroupDrop2">
-                  {% for format in entry.data %}
-                  {%if format.format|lower == 'epub' or format.format|lower == 'txt' or format.format|lower == 'pdf' or format.format|lower == 'cbr' or format.format|lower == 'cbt' or format.format|lower == 'cbz' %}
-                  <li><a target="_blank" href="{{ url_for('read_book', book_id=entry.id, book_format=format.format|lower) }}">{{format.format}}</a></li>
-                  {% endif %}
-                  {%endfor%}
-                </ul>
-              </div>
-          {% endif %}
-        </div>
-      </div>
       </br>
       {% if g.user.is_authenticated %}
       {% if g.user.shelf.all() or g.public_shelfes %}
