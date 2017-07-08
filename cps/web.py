@@ -1632,7 +1632,11 @@ def render_read_books(page, are_read, as_xml=False):
         response.headers["Content-Type"] = "application/xml"
         return response
     else:
-        name = u'Read Books' if are_read else u'Unread Books'
+        if are_read:
+            name = u'Read Books' + ' (' + str(len(readBookIds)) + ')'
+        else:
+            total_books = db.session.query(func.count(db.Books.id)).scalar()
+            name = u'Unread Books' + ' (' + str(total_books - len(readBookIds)) + ')'
         return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
                                 title=_(name, name=name))
 
