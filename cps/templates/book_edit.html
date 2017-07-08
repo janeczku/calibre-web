@@ -188,6 +188,14 @@
 <script src="{{ url_for('static', filename='js/edit_books.js') }}"></script>
 <script src="{{ url_for('static', filename='js/libs/bootstrap-rating-input.min.js') }}"></script>
 <script src="{{ url_for('static', filename='js/get_meta.js') }}"></script>
+<script src="{{ url_for('static', filename='js/libs/tinymce/tinymce.min.js') }}"></script>
+<script type="text/javascript">
+  tinymce.init({
+    selector: '#description',
+    branding: false,
+    menubar: 'edit view format'
+  });
+</script>
 {% endblock %}
 {% block header %}
 <link href="{{ url_for('static', filename='css/libs/typeahead.css') }}" rel="stylesheet" media="screen">
