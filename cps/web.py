@@ -58,6 +58,7 @@ import shutil
 import gdriveutils
 import tempfile
 import hashlib
+from redirect import redirect_back, is_safe_url
 
 from tornado import version as tornadoVersion
 
@@ -370,6 +371,21 @@ def login_required_if_no_ano(func):
     if config.config_anonbrowse == 1:
         return func
     return login_required(func)
+
+
+def remote_login_required(f):
+    @wraps(f)
+    def inner(*args, **kwargs):
+        if config.config_remote_login:
+            return f(*args, **kwargs)
+        if request.is_xhr:
+            data = {'status': 'error', 'message': 'Forbidden'}
+            response = make_response(json.dumps(data, ensure_ascii=false))
+            response.headers["Content-Type"] = "application/json; charset=utf-8"
+            return response, 403
+        abort(403)
+
+    return inner
 
 
 # custom jinja filters
@@ -1809,14 +1825,20 @@ def login():
 
         if user and check_password_hash(user.password, form['password']):
             login_user(user, remember=True)
+
             flash(_(u"you are now logged in as: '%(nickname)s'", nickname=user.nickname), category="success")
-            return redirect(url_for("index"))
+            return redirect_back(url_for("index"))
         else:
             ipAdress=request.headers.get('X-Forwarded-For', request.remote_addr)
             app.logger.info('Login failed for user "' + form['username'] + '" IP-adress: ' + ipAdress)
             flash(_(u"Wrong Username or Password"), category="error")
 
-    return render_title_template('login.html', title=_(u"login"))
+    next_url = request.args.get('next')
+    if next_url is None or not is_safe_url(next_url):
+        next_url = url_for('index')
+
+    return render_title_template('login.html', title=_(u"login"), next_url=next_url,
+                                 remote_login=config.config_remote_login)
 
 
 @app.route('/logout')
@@ -1825,6 +1847,87 @@ def logout():
     if current_user is not None and current_user.is_authenticated:
         logout_user()
     return redirect(url_for('login'))
+
+
+@app.route('/remote/login')
+@remote_login_required
+def remote_login():
+    auth_token = ub.RemoteAuthToken()
+    ub.session.add(auth_token)
+    ub.session.commit()
+
+    verify_url = url_for('verify_token', token=auth_token.auth_token, _external=true)
+
+    return render_title_template('remote_login.html', title=_(u"login"), token=auth_token.auth_token,
+                                 verify_url=verify_url)
+
+
+@app.route('/verify/<token>')
+@remote_login_required
+@login_required
+def verify_token(token):
+    auth_token = ub.session.query(ub.RemoteAuthToken).filter(ub.RemoteAuthToken.auth_token == token).first()
+
+    # Token not found
+    if auth_token is None:
+        flash(_(u"Token not found"), category="error")
+        return redirect(url_for('index'))
+
+    # Token expired
+    if datetime.datetime.now() > auth_token.expiration:
+        ub.session.delete(auth_token)
+        ub.session.commit()
+
+        flash(_(u"Token has expired"), category="error")
+        return redirect(url_for('index'))
+
+    # Update token with user information
+    auth_token.user_id = current_user.id
+    auth_token.verified = True
+    ub.session.commit()
+
+    flash(_(u"Success! Please return to your device"), category="success")
+    return redirect(url_for('index'))
+
+
+@app.route('/ajax/verify_token', methods=['POST'])
+@remote_login_required
+def token_verified():
+    token = request.form['token']
+    auth_token = ub.session.query(ub.RemoteAuthToken).filter(ub.RemoteAuthToken.auth_token == token).first()
+
+    data = {}
+
+    # Token not found
+    if auth_token is None:
+        data['status'] = 'error'
+        data['message'] = _(u"Token not found")
+
+    # Token expired
+    elif datetime.datetime.now() > auth_token.expiration:
+        ub.session.delete(auth_token)
+        ub.session.commit()
+
+        data['status'] = 'error'
+        data['message'] = _(u"Token has expired")
+
+    elif not auth_token.verified:
+        data['status'] = 'not_verified'
+
+    else:
+        user = ub.session.query(ub.User).filter(ub.User.id == auth_token.user_id).first()
+        login_user(user)
+
+        ub.session.delete(auth_token)
+        ub.session.commit()
+
+        data['status'] = 'success'
+        flash(_(u"you are now logged in as: '%(nickname)s'", nickname=user.nickname), category="success")
+
+    response = make_response(json.dumps(data, ensure_ascii=false))
+    response.headers["Content-Type"] = "application/json; charset=utf-8"
+
+    return response
 
 
 @app.route('/send/<int:book_id>')
@@ -2186,6 +2289,10 @@ def configuration_helper(origin):
             content.config_anonbrowse = 1
         if "config_public_reg" in to_save and to_save["config_public_reg"] == "on":
             content.config_public_reg = 1
+        content.config_remote_login = ("config_remote_login" in to_save and to_save["config_remote_login"] == "on")
+
+        if not content.config_remote_login:
+            ub.session.query(ub.RemoteAuthToken).delete()
 
         content.config_default_role = 0
         if "admin_role" in to_save:
