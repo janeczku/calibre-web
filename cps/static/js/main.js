@@ -121,15 +121,15 @@ $(function() {
         });
     });
 
-    $('#bookDetailsModal')
-      .on('show.bs.modal', function(e) {
-        var $modalBody = $(this).find('.modal-body');
+    $("#bookDetailsModal")
+      .on("show.bs.modal", function(e) {
+        var $modalBody = $(this).find(".modal-body");
         $.get(e.relatedTarget.href).done(function(content) {
           $modalBody.html(content);
         });
       })
-      .on('hidden.bs.modal', function() {
-        $(this).find('.modal-body').html('...');
+      .on("hidden.bs.modal", function() {
+        $(this).find(".modal-body").html("...");
       });
 
     $(window).resize(function(event) {
