@@ -22,7 +22,9 @@
       </div>
       <div class="meta">
         <p class="title">{{entry.title|shortentitle}}</p>
+        {% if entry.authors|length > 0 %}
         <p class="author"><a href="{{url_for('author', book_id=entry.authors[0].id) }}">{{entry.authors[0].name}}</a></p>
+        {% endif %}
         {% if entry.ratings.__len__() > 0 %}
         <div class="rating">
           {% for number in range((entry.ratings[0].rating/2)|int(2)) %}

@@ -130,18 +130,29 @@
         <div class="btn-group" role="group" aria-label="Download, send to Kindle, reading">
           {% if g.user.role_download() %}
             <div class="btn-group" role="group">
+            {% if entry.data|length < 3 %}
               <button id="btnGroupDrop1" type="button" class="btn btn-primary">
                 {{_('Download')}} :
               </button>
                 {% for format in entry.data %}
                 <button id="btnGroupDrop1{{format.format|lower}}" type="button" class="btn btn-primary">
-                  <a href="{{ url_for('get_download_link_ext', book_id=entry.id, book_format=format.format|lower, anyname=entry.id|string+'.'+format.format) }}">
+                  <a class="button-link" href="{{ url_for('get_download_link_ext', book_id=entry.id, book_format=format.format|lower, anyname=entry.id|string+'.'+format.format) }}">
                   <span class="glyphicon glyphicon-download"></span>
                     {{format.format}}
-                  <span class="ebook-icon ebook-{{format.format|lower}}"></span>
                   </a>
                 </button>
-                {%endfor%}
+                {% endfor %}
+              {% else %}
+                <button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <span class="glyphicon glyphicon-download"></span> {{_('Download')}}
+                  <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                {% for format in entry.data %}
+                  <li><a href="{{ url_for('get_download_link_ext', book_id=entry.id, book_format=format.format|lower, anyname=entry.id|string+'.'+format.format) }}">{{format.format}}</a></li>
+                {% endfor %}
+                </ul>
+              {% endif %}
             </div>
           {% endif %}
 
