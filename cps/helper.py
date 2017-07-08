@@ -455,11 +455,13 @@ class Updater(threading.Thread):
                 logging.getLogger('cps.web').debug('Move File '+src_file+' to '+dst_dir)
                 if change_permissions:
                     try:
-                        os.chown(dst_file, permission.st_uid, permission.st_uid)
-                        # print('Permissions: User '+str(new_permissions.st_uid)+' Group '+str(new_permissions.st_uid))
+                        os.chown(dst_file, permission.st_uid, permission.st_gid)
                     except Exception as e:
                         e = sys.exc_info()
-                        logging.getLogger('cps.web').debug('Fail '+str(dst_file)+' error: '+str(e))
+                        old_permissions = os.stat(dst_file)
+                        logging.getLogger('cps.web').debug('Fail change permissions of ' + str(dst_file) + '. Before: '
+                            + str(old_permissions.st_uid) + ':' + str(old_permissions.st_gid) + ' After: '
+                            + str(permission.st_uid) + ':' + str(permission.st_gid) + ' error: '+str(e))
         return
 
     def update_source(self, source, destination):
