@@ -2092,7 +2092,7 @@ def show_shelf(shelf_id):
         return render_title_template('shelf.html', entries=result, title=_(u"Shelf: '%(name)s'", name=shelf.name),
                                  shelf=shelf)
     else:
-        flash(_(u"Error opening shelf. Shelf does not exist or file is not accessible"), category="error")
+        flash(_(u"Error opening shelf. Shelf does not exist or is not accessible"), category="error")
         return redirect(url_for("index"))
 
 
