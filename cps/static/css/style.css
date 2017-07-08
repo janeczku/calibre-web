@@ -21,8 +21,7 @@ a{color: #45b29d}a:hover{color: #444;}
 .container-fluid .book .meta .author{font-size:12px;color:#999}
 .container-fluid .book .meta .rating{margin-top:5px}.rating .glyphicon-star{color:#999}.rating .glyphicon-star.good{color:#45b29d}
 .navbar-brand{font-family: 'Grand Hotel', cursive; font-size: 35px; color: #45b29d !important;}
-.more-stuff{margin-top: 20px; padding-top: 20px;border-top: 1px solid #ccc}
-
+.more-stuff{margin-top: 20px; padding-top: 20px; border-top: 1px solid #ccc}
 .more-stuff>li{margin-bottom: 10px;}
 .navbar-collapse.in .navbar-nav{margin: 0;}
 span.glyphicon.glyphicon-tags {padding-right: 5px;color: #999;vertical-align: text-top;}
@@ -31,6 +30,7 @@ span.glyphicon.glyphicon-tags {padding-right: 5px;color: #999;vertical-align: te
 .book-meta .identifiers a {display: inline;}
 .container-fluid .single .cover img {
     border: 1px solid #fff;
+    /*border-radius: 7px;*/
     box-sizeing: border-box;
     -webkit-box-shadow: 0 5px 8px -6px #777;
     -moz-box-shadow: 0 5px 8px -6px #777;
@@ -52,4 +52,4 @@ span.glyphicon.glyphicon-tags {padding-right: 5px;color: #999;vertical-align: te
 .spinner {margin:0 41%;}
 .spinner2 {margin:0 41%;}
 
-
+.block-label {display: block;}
