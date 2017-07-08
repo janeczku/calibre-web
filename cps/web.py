@@ -1979,15 +1979,19 @@ def show_shelf(shelf_id):
                                                          ub.and_(ub.Shelf.is_public == 1,
                                                                  ub.Shelf.id == shelf_id))).first()
     result = list()
+    # user is allowed to access shelf
     if shelf:
         books_in_shelf = ub.session.query(ub.BookShelf).filter(ub.BookShelf.shelf == shelf_id).order_by(
             ub.BookShelf.order.asc()).all()
         for book in books_in_shelf:
             cur_book = db.session.query(db.Books).filter(db.Books.id == book.book_id).first()
             result.append(cur_book)
-
-    return render_title_template('shelf.html', entries=result, title=_(u"Shelf: '%(name)s'", name=shelf.name),
+        return render_title_template('shelf.html', entries=result, title=_(u"Shelf: '%(name)s'", name=shelf.name),
                                  shelf=shelf)
+    else:
+        flash(_(u"Error opening shelf. Shelf does not exist or file is not accessible"), category="error")
+        return redirect(url_for("index"))
+
 
 
 @app.route("/shelf/order/<int:shelf_id>", methods=["GET", "POST"])
@@ -2673,7 +2677,7 @@ def edit_book(book_id):
             return render_title_template('book_edit.html', book=book, authors=author_names, cc=cc,
                                          title=_(u"edit metadata"))
     else:
-        flash(_(u"Error opening eBook. File does not exist or file is not accessible:"), category="error")
+        flash(_(u"Error opening eBook. File does not exist or file is not accessible"), category="error")
         return redirect(url_for("index"))
 
 
