@@ -412,8 +412,8 @@ def timestamptodate(date, fmt=None):
 
 
 @app.template_filter('yesno')
-def yesno(str, yes, no):
-    return yes if str else no
+def yesno(value, yes, no):
+    return yes if value else no
 
 
 def admin_required(f):
