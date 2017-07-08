@@ -3,6 +3,7 @@
 <div class="well col-sm-6 col-sm-offset-2">
   <h2 style="margin-top: 0">{{_('Login')}}</h2>
   <form method="POST" role="form">
+    <input type="hidden" name="next" value="{{next_url}}">
     <div class="form-group">
       <label for="username">{{_('Username')}}</label>
       <input type="text" class="form-control" id="username" name="username" placeholder="{{_('Username')}}">
@@ -17,6 +18,9 @@
       </label>
     </div>
     <button type="submit" name="submit" class="btn btn-default">{{_('Submit')}}</button>
+    {% if remote_login %}
+    <a href="{{url_for('remote_login')}}" class="pull-right">{{_('Log in with magic link')}}</a>
+    {% endif %}
   </form>
 </div>
   {% if error %}

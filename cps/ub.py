@@ -11,6 +11,8 @@ import logging
 from werkzeug.security import generate_password_hash
 from flask_babel import gettext as _
 import json
+import datetime
+from binascii import hexlify
 
 dbpath = os.path.join(os.path.normpath(os.getenv("CALIBRE_DBPATH", os.path.dirname(os.path.realpath(__file__)) + os.sep + ".." + os.sep)), "app.db")
 engine = create_engine('sqlite:///{0}'.format(dbpath), echo=False)
@@ -260,9 +262,27 @@ class Settings(Base):
     config_google_drive_calibre_url_base = Column(String)
     config_google_drive_watch_changes_response = Column(String)
     config_columns_to_ignore = Column(String)
+    config_remote_login = Column(Boolean)
 
     def __repr__(self):
         pass
+
+
+class RemoteAuthToken(Base):
+    __tablename__ = 'remote_auth_token'
+
+    id = Column(Integer, primary_key=True)
+    auth_token = Column(String(8), unique=True)
+    user_id = Column(Integer, ForeignKey('user.id'))
+    verified = Column(Boolean, default=False)
+    expiration = Column(DateTime)
+
+    def __init__(self):
+        self.auth_token = hexlify(os.urandom(4))
+        self.expiration = datetime.datetime.now() + datetime.timedelta(minutes=10)  # 10 min from now
+
+    def __repr__(self):
+        return '<Token %r>' % self.id
 
 
 # Class holds all application specific settings in calibre-web
@@ -299,6 +319,7 @@ class Config:
         self.config_columns_to_ignore = data.config_columns_to_ignore
         self.db_configured = bool(self.config_calibre_dir is not None and
                 (not self.config_use_google_drive or os.path.exists(self.config_calibre_dir + '/metadata.db')))
+        self.config_remote_login = data.config_remote_login
 
     @property
     def get_main_dir(self):
@@ -449,6 +470,16 @@ def migrate_Database():
         session.commit()
     if session.query(User).filter(User.role.op('&')(ROLE_ANONYMOUS) == ROLE_ANONYMOUS).first() is None:
         create_anonymous_user()
+    try:
+        session.query(exists().where(Settings.config_remote_login)).scalar()
+    except exc.OperationalError:
+        conn = engine.connect()
+        conn.execute("ALTER TABLE Settings ADD column `config_remote_login` INTEGER DEFAULT 0")
+
+def clean_database():
+    # Remove expired remote login tokens
+    now = datetime.datetime.now()
+    session.query(RemoteAuthToken).filter(now > RemoteAuthToken.expiration).delete()
 
 def create_default_config():
     settings = Settings()
@@ -529,7 +560,9 @@ if not os.path.exists(dbpath):
     except Exception:
         raise
 else:
+    Base.metadata.create_all(engine)
     migrate_Database()
+    clean_database()
 
 # Generate global Settings Object accecable from every file
 config = Config()

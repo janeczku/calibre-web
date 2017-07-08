@@ -26,6 +26,7 @@ Calibre Web is a web app providing a clean interface for browsing, reading and d
 - Support for Calibre custom columns
 - Fine grained per-user permissions
 - Self update capability
+- "Magic Link" login to make it easy to log on eReaders
 
 ## Quick start
 
@@ -55,6 +56,9 @@ Tick to allow not logged in users to browse the catalog, anonymous user permissi
 
 Enable uploading:
 Tick to enable uploading of PDF, epub, FB2. This requires the imagemagick library to be installed.    
+
+Enable remote login ("magic link"):
+Tick to enable remote login, i.e. a link that allows user to log in via a different device.
 
 ## Requirements
 

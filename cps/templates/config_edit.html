@@ -93,6 +93,10 @@
         <input type="checkbox" id="config_public_reg" name="config_public_reg" {% if content.config_public_reg %}checked{% endif %}>
         <label for="config_public_reg">{{_('Enable public registration')}}</label>
     </div>
+    <div class="form-group">
+      <input type="checkbox" id="config_remote_login" name="config_remote_login" {% if content.config_remote_login %}checked{% endif %}>
+      <label for="config_remote_login">{{_('Enable remote login ("magic link")')}}</label>
+    </div>
     <h2>{{_('Default Settings for new users')}}</h2>
     <div class="form-group">
       <input type="checkbox" name="admin_role" id="admin_role" {% if content.role_admin() %}checked{% endif %}>
