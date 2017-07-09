@@ -349,13 +349,6 @@ class Config:
         else:
             return False
 
-    def role_delete_books(self):
-        if self.config_default_role is not None:
-            return True if self.config_default_role & ROLE_DELETE_BOOKS == ROLE_DELETE_BOOKS else False
-        else:
-            return False
-
-
     def role_passwd(self):
         if self.config_default_role is not None:
             return True if self.config_default_role & ROLE_PASSWD == ROLE_PASSWD else False
@@ -460,13 +453,16 @@ def migrate_Database():
         create=True
     try:
         if create:
-            conn.execute("SELET language_books FROM user")
+            conn = engine.connect()
+            conn.execute("SELECT language_books FROM user")
             session.commit()
     except exc.OperationalError:
         conn = engine.connect()
-        conn.execute("UPDATE user SET 'sidebar_view' = (random_books*"+str(SIDEBAR_RANDOM)+"+ language_books *"+
-                     str(SIDEBAR_LANGUAGE)+"+ series_books *"+str(SIDEBAR_SERIES)+"+ category_books *"+str(SIDEBAR_CATEGORY)+
-                     "+ hot_books *"+str(SIDEBAR_HOT)+"+"+str(SIDEBAR_AUTHOR)+"+"+str(DETAIL_RANDOM)+")")
+        conn.execute("UPDATE user SET 'sidebar_view' = (random_books* :side_random + language_books * :side_lang "
+            "+ series_books * :side_series + category_books * :side_category + hot_books * "
+            ":side_hot + :side_autor + :detail_random)",{'side_random': SIDEBAR_RANDOM,
+            'side_lang': SIDEBAR_LANGUAGE, 'side_series': SIDEBAR_SERIES, 'side_category': SIDEBAR_CATEGORY,
+            'side_hot': SIDEBAR_HOT, 'side_autor': SIDEBAR_AUTHOR, 'detail_random': DETAIL_RANDOM})
         session.commit()
     if session.query(User).filter(User.role.op('&')(ROLE_ANONYMOUS) == ROLE_ANONYMOUS).first() is None:
         create_anonymous_user()

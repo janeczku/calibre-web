@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2017-07-08 19:46+0200\n"
+"POT-Creation-Date: 2017-07-09 19:16+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -31,33 +31,33 @@ msgstr ""
 msgid "epub format not found for book id: %(book)d"
 msgstr ""
 
-#: cps/helper.py:93
+#: cps/helper.py:90 cps/helper.py:94
 msgid "kindlegen failed, no excecution permissions"
 msgstr ""
 
-#: cps/helper.py:109
+#: cps/helper.py:110
 #, python-format
 msgid "Kindlegen failed with Error %(error)s. Message: %(message)s"
 msgstr ""
 
-#: cps/helper.py:186
+#: cps/helper.py:187
 #, python-format
 msgid "Failed to send mail: %s"
 msgstr ""
 
-#: cps/helper.py:193
+#: cps/helper.py:194
 msgid "Calibre-web test email"
 msgstr ""
 
-#: cps/helper.py:194 cps/helper.py:206
+#: cps/helper.py:195 cps/helper.py:207
 msgid "This email has been sent via calibre web."
 msgstr ""
 
-#: cps/helper.py:203 cps/templates/detail.html:47
+#: cps/helper.py:204 cps/templates/detail.html:43
 msgid "Send to Kindle"
 msgstr ""
 
-#: cps/helper.py:223 cps/helper.py:236
+#: cps/helper.py:224 cps/helper.py:239
 msgid "Could not find any formats suitable for sending by email"
 msgstr ""
 
@@ -445,8 +445,8 @@ msgstr ""
 msgid "Admin"
 msgstr ""
 
-#: cps/templates/admin.html:13 cps/templates/detail.html:22
-#: cps/templates/detail.html:34
+#: cps/templates/admin.html:13 cps/templates/detail.html:21
+#: cps/templates/detail.html:30
 msgid "Download"
 msgstr ""
 
@@ -699,7 +699,7 @@ msgstr ""
 msgid "No Result! Please try anonther keyword."
 msgstr ""
 
-#: cps/templates/book_edit.html:182 cps/templates/detail.html:127
+#: cps/templates/book_edit.html:182 cps/templates/detail.html:126
 #: cps/templates/search_form.html:14
 msgid "Publisher"
 msgstr ""
@@ -809,39 +809,39 @@ msgstr ""
 msgid "Login"
 msgstr ""
 
-#: cps/templates/detail.html:52
+#: cps/templates/detail.html:48
 msgid "Read in browser"
 msgstr ""
 
-#: cps/templates/detail.html:91
+#: cps/templates/detail.html:88
 msgid "Book"
 msgstr ""
 
-#: cps/templates/detail.html:91
+#: cps/templates/detail.html:88
 msgid "of"
 msgstr ""
 
-#: cps/templates/detail.html:97
+#: cps/templates/detail.html:94
 msgid "language"
 msgstr ""
 
-#: cps/templates/detail.html:132
+#: cps/templates/detail.html:131
 msgid "Publishing date"
 msgstr ""
 
-#: cps/templates/detail.html:167
+#: cps/templates/detail.html:168
 msgid "Read"
 msgstr ""
 
-#: cps/templates/detail.html:176
+#: cps/templates/detail.html:177
 msgid "Description:"
 msgstr ""
 
-#: cps/templates/detail.html:187
+#: cps/templates/detail.html:189
 msgid "Add to shelf"
 msgstr ""
 
-#: cps/templates/detail.html:227
+#: cps/templates/detail.html:230
 msgid "Edit metadata"
 msgstr ""
 
@@ -1007,7 +1007,7 @@ msgstr ""
 msgid "Calibre Web ebook catalog"
 msgstr ""
 
-#: cps/templates/read.html:136
+#: cps/templates/read.html:125
 msgid "Reflow text when sidebars are open."
 msgstr ""
 
