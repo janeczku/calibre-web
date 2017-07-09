@@ -14,9 +14,20 @@
         <script src="{{ url_for('static', filename='js/libs/jquery.min.js') }}"></script>
         <script src="{{ url_for('static', filename='js/libs/zip.min.js') }}"></script>
 
+        <!-- Full Screen -->
+        <script src="{{ url_for('static', filename='js/libs/screenfull.min.js') }}"></script>
+
+        <!-- Render -->
+        <script src="{{ url_for('static', filename='js/libs/epub.min.js') }}"></script>
+
+        <!-- Hooks -->
+        <script src="{{ url_for('static', filename='js/libs/hooks.min.js') }}"></script>
+
+        <!-- Reader -->
+        <script src="{{ url_for('static', filename='js/libs/reader.min.js') }}"></script>
+
         <script>
             "use strict";
-
             document.onreadystatechange = function () {
               if (document.readyState == "complete") {
                 EPUBJS.filePath = "{{ url_for('static', filename='js/libs/') }}";
@@ -24,12 +35,14 @@
 
                 window.reader = ePubReader("{{ url_for('static', filename=bookid) }}/");
                 //keybind
-                $(document).keydown(function(event){ 
+                /*$(document).keydown(function(event){
                   if(event.keyCode == 37){
-                    window.reader.book.prevPage();
+                    //window.reader.book.prevPage();
+                    event.preventDefault();
                   }
                   if(event.keyCode == 39){
-                    window.reader.book.nextPage();
+                    //swindow.reader.book.nextPage();
+                    event.preventDefault();
                   }
                 });
                 //bind mouse
@@ -46,34 +59,10 @@
                   else {
                     window.reader.book.nextPage();
                   }
-                });
+                });*/
               }
             };
-
         </script>
-
-        <!-- File Storage -->
-        <!-- <script src="js/libs/localforage.min.js"></script> -->
-
-        <!-- Full Screen -->
-        <!--<script src="js/libs/screenfull.min.js"></script>-->
-        <script src="{{ url_for('static', filename='js/libs/screenfull.min.js') }}"></script>
-
-        <!-- Render -->
-        <!--<script src="js/epub.min.js"></script>-->
-        <script src="{{ url_for('static', filename='js/libs/epub.min.js') }}"></script>
-
-        <!-- Hooks -->
-        <!--<script src="js/hooks.min.js"></script>-->
-        <script src="{{ url_for('static', filename='js/libs/hooks.min.js') }}"></script>
-
-        <!-- Reader -->
-        <!--<script src="js/reader.min.js"></script>-->
-        <script src="{{ url_for('static', filename='js/libs/reader.min.js') }}"></script>
-
-        <!-- Plugins -->
-        <!-- <script src="js/plugins/search.js"></script> -->
-        <!--script src="{{ url_for('static', filename='js/plugins/search.js') }}"></script-->
 
     </head>
     <body>
