@@ -53,6 +53,10 @@
       </div>
 
     <div class="form-group">
+      <label for="pubdate">{{_('Published')}}</label>
+      <input type="date" class="form-control" name="pubdate" id="pubdate" value="{% if book.pubdate %}{{book.pubdate|formatdateinput}}{% endif %}">
+    </div>
+    <div class="form-group">
       <label for="languages">{{_('Language')}}</label>
       <input type="text" class="form-control typeahead" name="languages" id="languages" value="{% for language in book.languages %}{{language.language_name.strip()}}, {% endfor %}">
     </div>
