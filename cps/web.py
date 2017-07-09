@@ -2689,7 +2689,12 @@ def edit_book(book_id):
         lang_filter = True
     book = db.session.query(db.Books).filter(db.Books.id == book_id).filter(lang_filter).first()
     author_names = []
-    if book:
+
+    # Book not found
+    if not book:
+        flash(_(u"Error opening eBook. File does not exist or file is not accessible"), category="error")
+        return redirect(url_for("index"))
+
         for index in range(0, len(book.languages)):
             try:
                 book.languages[index].language_name = LC.parse(book.languages[index].lang_code).get_language_name(
@@ -2698,7 +2703,13 @@ def edit_book(book_id):
                 book.languages[index].language_name = _(isoLanguages.get(part3=book.languages[index].lang_code).name)
         for author in book.authors:
             author_names.append(author.name)
-        if request.method == 'POST':
+
+    # Show form
+    if request.method != 'POST':
+        return render_title_template('book_edit.html', book=book, authors=author_names, cc=cc,
+                                     title=_(u"edit metadata"))
+
+    # Update book
             edited_books_id = set()
             to_save = request.form.to_dict()
             if book.title != to_save["book_title"]:
@@ -2872,12 +2883,6 @@ def edit_book(book_id):
             else:
                 return render_title_template('book_edit.html', book=book, authors=author_names, cc=cc,
                                              title=_(u"edit metadata"))
-        else:
-            return render_title_template('book_edit.html', book=book, authors=author_names, cc=cc,
-                                         title=_(u"edit metadata"))
-    else:
-        flash(_(u"Error opening eBook. File does not exist or file is not accessible"), category="error")
-        return redirect(url_for("index"))
 
 
 @app.route("/upload", methods=["GET", "POST"])
