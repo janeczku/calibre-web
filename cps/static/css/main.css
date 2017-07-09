@@ -100,11 +100,11 @@ body {
 }
 
 #viewer {
-  width: 80%;
+  width: 90%;
   height: 80%;
   /* margin-left: 10%; */
   margin: 0 auto;
-  max-width: 1250px;
+  /* max-width: 1250px; */
   z-index: 2;
   position: relative;
   overflow: hidden;
@@ -752,8 +752,34 @@ input:-ms-placeholder {
         height: 415px;
     }
 }
+
+/* For iPhone 6\6s portrait layouts only */
+
+@media only screen and (min-device-width : 375px) and (max-device-width : 667px) and (orientation: portrait) {
+    #viewer {
+      width: 300px;
+      height: 480px;
+    }
+    #viewer iframe {
+       width: 300px;
+       height: 480px;
+    }
+}
+
+/* For iPhone 6\6s landscape layouts only */
+@media only screen and (min-device-width : 375px) and (max-device-width : 667px) and (orientation: landscape) {
+    #viewer {
+      width: 450px;
+      height: 300px;
+    }
+    #viewer iframe {
+       width: 450px;
+       height: 300px;
+    }
+}
+
 /* For iPhone portrait layouts only */
-@media only screen and (max-device-width: 480px) and (orientation: portrait) {
+@media only screen and (max-device-width: 374px) and (orientation: portrait) {
     #viewer {
       width: 256px;
       height: 432px;
@@ -763,8 +789,9 @@ input:-ms-placeholder {
        height: 432px;
     }
 }
+
 /* For iPhone landscape layouts only */
-@media only screen and (max-device-width: 480px) and (orientation: landscape) {
+@media only screen and (max-device-width: 374px) and (orientation: landscape) {
     #viewer iframe {
         width: 256px;
         height: 124px;
