@@ -77,11 +77,6 @@ import time
 
 current_milli_time = lambda: int(round(time.time() * 1000))
 
-try:
-    from wand.image import Image
-    use_generic_pdf_cover = False
-except ImportError:
-    use_generic_pdf_cover = True
 
 # Global variables
 gdrive_watch_callback_token = 'target=calibreweb-watch_files'
@@ -739,7 +734,7 @@ def feed_author(book_id):
     off = request.args.get("offset")
     if not off:
         off = 0
-    entries, random, pagination = fill_indexpage((int(off) / (int(config.config_books_per_page)) + 1),
+    entries, __, pagination = fill_indexpage((int(off) / (int(config.config_books_per_page)) + 1),
                     db.Books, db.Books.authors.any(db.Authors.id == book_id), db.Books.timestamp.desc())
     xml = render_title_template('feed.xml', entries=entries, pagination=pagination)
     response = make_response(xml)
@@ -1285,8 +1280,8 @@ def stats():
                     lines = lines.decode('utf-8')
                 if re.search('Amazon kindlegen\(', lines):
                     versions['KindlegenVersion'] = lines
-        except:
-            versions['KindlegenVersion'] = _('Excecution permissions missing')
+        except Exception:
+            versions['KindlegenVersion'] = _(u'Excecution permissions missing')
     versions['PythonVersion'] = sys.version
     versions['babel'] = babelVersion
     versions['sqlalchemy'] = sqlalchemyVersion

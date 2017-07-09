@@ -88,10 +88,10 @@ def make_mobi(book_id, calibrepath):
     if os.path.exists(file_path + u".epub"):
         try:
             p = subprocess.Popen((kindlegen + " \"" + file_path + u".epub\"").encode(sys.getfilesystemencoding()),
-                                 stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
-        except:
+                                 stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        except Exception:
             error_message = _(u"kindlegen failed, no excecution permissions")
-            app.logger.error("make_mobi: "+error_message)
+            app.logger.error("make_mobi: " + error_message)
             return error_message, RET_FAIL
 
         # Poll process for new output until finished
@@ -226,9 +226,11 @@ def send_mail(book_id, kindle_mail, calibrepath):
         msg.attach(get_attachment(formats['mobi']))
     elif 'epub' in formats:
         data, resultCode = make_mobi(book.id, calibrepath)
+        app.logger.error = (data)
         if resultCode == RET_SUCCESS:
             msg.attach(get_attachment(data))
         else:
+
             return data #_("Could not convert epub to mobi")
     elif 'pdf' in formats:
         msg.attach(get_attachment(formats['pdf']))
@@ -305,7 +307,7 @@ def delete_book_gdrive(book):
 def update_dir_stucture(book_id, calibrepath):
     db.session.connection().connection.connection.create_function("title_sort", 1, db.title_sort)
     book = db.session.query(db.Books).filter(db.Books.id == book_id).first()
-    path = os.path.join(calibrepath, book.path)#.replace('/',os.path.sep)).replace('\\',os.path.sep)
+    path = os.path.join(calibrepath, book.path)
 
     authordir = book.path.split('/')[0]
     new_authordir = get_valid_filename(book.authors[0].name)
@@ -333,7 +335,7 @@ def update_dir_structure_gdrive(book_id):
     new_authordir = get_valid_filename(book.authors[0].name)
     titledir = book.path.split('/')[1]
     new_titledir = get_valid_filename(book.title) + " (" + str(book_id) + ")"
-    
+
     if titledir != new_titledir:
         print (titledir)
         gFile=gd.getFileFromEbooksFolder(web.Gdrive.Instance().drive,os.path.dirname(book.path),titledir)
@@ -400,8 +402,8 @@ class Updater(threading.Thread):
         for file in delete_files:
             parts = file.split(os.sep)
             sub = ''
-            for i in range(len(parts)):
-                sub = os.path.join(sub, parts[i])
+            for part in parts:
+                sub = os.path.join(sub, part)
                 if sub == '':
                     sub = os.sep
                 count = 0
@@ -432,7 +434,7 @@ class Updater(threading.Thread):
             logging.getLogger('cps.web').debug('Update on OS-System : ' + sys.platform)
             new_permissions = os.stat(root_dst_dir)
             # print new_permissions
-        for src_dir, dirs, files in os.walk(root_src_dir):
+        for src_dir, __, files in os.walk(root_src_dir):
             dst_dir = src_dir.replace(root_src_dir, root_dst_dir, 1)
             if not os.path.exists(dst_dir):
                 os.makedirs(dst_dir)
