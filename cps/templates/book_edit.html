@@ -53,7 +53,7 @@
     </div>
 
     <div class="form-group">
-      <label for="pubdate">{{_('Published')}}</label>
+      <label for="pubdate">{{_('Publishing date')}}</label>
       <input type="date" class="form-control" name="pubdate" id="pubdate" value="{% if book.pubdate %}{{book.pubdate|formatdateinput}}{% endif %}">
     </div>
     <div class="form-group">
@@ -193,6 +193,10 @@
 <script src="{{ url_for('static', filename='js/libs/bootstrap-rating-input.min.js') }}"></script>
 <script src="{{ url_for('static', filename='js/get_meta.js') }}"></script>
 <script src="{{ url_for('static', filename='js/libs/tinymce/tinymce.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/libs/bootstrap-datepicker/bootstrap-datepicker.min.js') }}"></script>
+{% if not g.user.locale == 'en' %}
+<script src="{{ url_for('static', filename='js/libs/bootstrap-datepicker/locales/bootstrap-datepicker.' + g.user.locale + '.min.js') }}" charset="UTF-8"></script>
+{% endif %}
 <script type="text/javascript">
   tinymce.init({
     selector: '#description',
@@ -200,8 +204,16 @@
     menubar: 'edit view format',
     language: '{{ g.user.locale }}'
   });
+
+  if (!Modernizr.inputtypes.date) {
+    $('#pubdate').datepicker({
+      format: 'yyyy-mm-dd',
+      language: '{{ g.user.locale }}'
+    });
+  }
 </script>
 {% endblock %}
 {% block header %}
 <link href="{{ url_for('static', filename='css/libs/typeahead.css') }}" rel="stylesheet" media="screen">
+<link href="{{ url_for('static', filename='css/libs/bootstrap-datepicker3.min.css') }}" rel="stylesheet" media="screen">
 {% endblock %}
