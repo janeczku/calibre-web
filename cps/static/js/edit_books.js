@@ -162,7 +162,7 @@ var promiseLanguages = languages.initialize();
             });
     });
 
-$("form").on("change input typeahead:selected", function(data){
+$("form").on("change", "input.typeahead:selected", function(){
     var form = $("form").serialize();
     $.getJSON( getPath()+"/get_matching_tags", form, function( data ) {
       $(".tags_click").each(function() {
