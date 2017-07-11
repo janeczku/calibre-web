@@ -342,7 +342,7 @@ def update_dir_structure_gdrive(book_id):
         gFile['title']= new_titledir
         gFile.Upload()
         book.path = book.path.split('/')[0] + '/' + new_titledir
-    
+
     if authordir != new_authordir:
         gFile=gd.getFileFromEbooksFolder(web.Gdrive.Instance().drive,None,authordir)
         gFile['title'] = new_authordir
