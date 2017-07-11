@@ -218,7 +218,7 @@ lm = LoginManager(app)
 lm.init_app(app)
 lm.login_view = 'login'
 lm.anonymous_user = ub.Anonymous
-app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
+app.secret_key = os.getenv('SECRET_KEY', 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT')
 db.setup_db()
 
 if config.config_log_level == logging.DEBUG:
