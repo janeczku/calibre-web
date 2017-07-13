@@ -104,7 +104,7 @@ If your calibre web is using https, it is possible to add a "watch" to the drive
 
 ## Docker image
 
-Calibre Web can be run as Docker container. The latest image is available on [Docker Hub](https://registry.hub.docker.com/u/janeczku/calibre-web/).
+Calibre Web can be run as Docker container. Pre-built Docker images based on Alpine Linux are available in this Docker Hub repository: [technosoft2000/calibre-web](https://hub.docker.com/r/technosoft2000/calibre-web/).
 
 ## Reverse Proxy
 
