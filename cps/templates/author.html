@@ -4,7 +4,7 @@
 
 {% if author is not none %}
 <section class="author-bio">
-  {%if author['image_url'] is not none %}
+  {%if author.image_url is not none %}
   <img src="{{author.image_url}}" alt="{{author.name}}" class="author-photo pull-left">
   {% endif %}
 
