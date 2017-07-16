@@ -88,12 +88,11 @@ def make_mobi(book_id, calibrepath):
     if os.path.exists(file_path + u".epub"):
         try:
             p = subprocess.Popen((kindlegen + " \"" + file_path + u".epub\"").encode(sys.getfilesystemencoding()),
-                                 stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+                                 stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
         except Exception:
             error_message = _(u"kindlegen failed, no excecution permissions")
             app.logger.error("make_mobi: " + error_message)
             return error_message, RET_FAIL
-
         # Poll process for new output until finished
         while True:
             nextline = p.stdout.readline()
@@ -122,11 +121,13 @@ def make_mobi(book_id, calibrepath):
             db.session.commit()
             return file_path + ".mobi", RET_SUCCESS
         else:
-            app.logger.error("make_mobi: kindlegen failed with error while converting book")
-            return None, RET_FAIL
+            app.logger.info("make_mobi: kindlegen failed with error while converting book")
+            if not error_message:
+                error_message='kindlegen failed, no excecution permissions'
+            return error_message, RET_FAIL
     else:
-        app.logger.error("make_mobi: epub not found: %s.epub" % file_path)
-        return None, RET_FAIL
+        error_message = "make_mobi: epub not found: %s.epub" % file_path
+        return error_message, RET_FAIL
 
 
 class StderrLogger(object):
@@ -226,11 +227,10 @@ def send_mail(book_id, kindle_mail, calibrepath):
         msg.attach(get_attachment(formats['mobi']))
     elif 'epub' in formats:
         data, resultCode = make_mobi(book.id, calibrepath)
-        app.logger.error = (data)
         if resultCode == RET_SUCCESS:
             msg.attach(get_attachment(data))
         else:
-
+            app.logger.error = (data)
             return data #_("Could not convert epub to mobi")
     elif 'pdf' in formats:
         msg.attach(get_attachment(formats['pdf']))
