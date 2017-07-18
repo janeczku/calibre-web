@@ -1,7 +1,7 @@
 /**
  * Created by SpeedProg on 05.04.2015.
  */
-/* global Bloodhound, language */
+/* global Bloodhound, language, Modernizr, tinymce */
 
 tinymce.init({
     selector: '#description',
@@ -11,19 +11,20 @@ tinymce.init({
 });
 
 if (!Modernizr.inputtypes.date) {
-    $('#pubdate').datepicker({
-        format: 'yyyy-mm-dd',
+    $("#pubdate").datepicker({
+        format: "yyyy-mm-dd",
         language: language
-    }).on('change', function () {
+    }).on("change", function () {
         // Show localized date over top of the standard YYYY-MM-DD date
-        let pubDate, results;
-        if ((results = /(\d{4})[-\/\\](\d{1,2})[-\/\\](\d{1,2})/.exec(this.value))) { // YYYY-MM-DD
+        let pubDate;
+        const results = /(\d{4})[-\/\\](\d{1,2})[-\/\\](\d{1,2})/.exec(this.value); // YYYY-MM-DD
+        if (results) {
             pubDate = new Date(results[1], parseInt(results[2], 10)-1, results[3]) || new Date(this.value);
         }
-        $('#fake_pubdate')
+        $("#fake_pubdate")
             .val(pubDate.toLocaleDateString(language))
-            .removeClass('hidden');
-    }).trigger('change');
+            .removeClass("hidden");
+    }).trigger("change");
 }
 
 /*
