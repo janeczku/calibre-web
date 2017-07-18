@@ -54,7 +54,10 @@
 
     <div class="form-group">
       <label for="pubdate">{{_('Publishing date')}}</label>
-      <input type="date" class="form-control" name="pubdate" id="pubdate" value="{% if book.pubdate %}{{book.pubdate|formatdateinput}}{% endif %}">
+      <div style="position: relative">
+        <input type="date" class="form-control" name="pubdate" id="pubdate" value="{% if book.pubdate %}{{book.pubdate|formatdateinput}}{% endif %}">
+        <input type="text" class="form-control fake-input hidden" id="fake_pubdate" value="{% if book.pubdate %}{{book.pubdate|formatdate}}{% endif %}">
+      </div>
     </div>
     <div class="form-group">
       <label for="languages">{{_('Language')}}</label>
@@ -187,9 +190,9 @@
     'description': {{_('Description')|safe|tojson}},
     'source': {{_('Source')|safe|tojson}},
   };
+  var language = '{{ g.user.locale }}';
 </script>
 <script src="{{ url_for('static', filename='js/libs/typeahead.bundle.js') }}"></script>
-<script src="{{ url_for('static', filename='js/edit_books.js') }}"></script>
 <script src="{{ url_for('static', filename='js/libs/bootstrap-rating-input.min.js') }}"></script>
 <script src="{{ url_for('static', filename='js/get_meta.js') }}"></script>
 <script src="{{ url_for('static', filename='js/libs/tinymce/tinymce.min.js') }}"></script>
@@ -204,14 +207,8 @@
     menubar: 'edit view format',
     language: '{{ g.user.locale }}'
   });
-
-  if (!Modernizr.inputtypes.date) {
-    $('#pubdate').datepicker({
-      format: 'yyyy-mm-dd',
-      language: '{{ g.user.locale }}'
-    });
-  }
 </script>
+<script src="{{ url_for('static', filename='js/edit_books.js') }}"></script>
 {% endblock %}
 {% block header %}
 <link href="{{ url_for('static', filename='css/libs/typeahead.css') }}" rel="stylesheet" media="screen">
