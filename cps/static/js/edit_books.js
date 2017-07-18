@@ -3,6 +3,13 @@
  */
 /* global Bloodhound, language */
 
+tinymce.init({
+    selector: '#description',
+    branding: false,
+    menubar: 'edit view format',
+    language: language
+});
+
 if (!Modernizr.inputtypes.date) {
     $('#pubdate').datepicker({
         format: 'yyyy-mm-dd',
