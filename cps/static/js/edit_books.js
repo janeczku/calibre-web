@@ -4,10 +4,10 @@
 /* global Bloodhound, language, Modernizr, tinymce */
 
 tinymce.init({
-    selector: '#description',
+    selector: "#description",
     branding: false,
-    menubar: 'edit view format',
-    language: language
+    menubar: "edit view format",
+    language
 });
 
 if (!Modernizr.inputtypes.date) {
