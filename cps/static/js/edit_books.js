@@ -13,7 +13,7 @@ tinymce.init({
 if (!Modernizr.inputtypes.date) {
     $("#pubdate").datepicker({
         format: "yyyy-mm-dd",
-        language: language
+        language
     }).on("change", function () {
         // Show localized date over top of the standard YYYY-MM-DD date
         let pubDate;
