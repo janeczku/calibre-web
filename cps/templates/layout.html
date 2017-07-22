@@ -99,17 +99,17 @@
     </div>
     {% for message in get_flashed_messages(with_categories=True) %}
       {%if message[0] == "error" %}
-      <div class="row-fluid" style="margin-top: -20px; text-align: center;">
+      <div class="row-fluid text-center" style="margin-top: -20px;">
         <div id="flash_alert" class="alert alert-danger">{{ message[1] }}</div>
       </div>
       {%endif%}
       {%if message[0] == "info" %}
-      <div class="row-fluid" style="margin-top: -20px; text-align: center;">
+      <div class="row-fluid text-center" style="margin-top: -20px;">
         <div id="flash_info" class="alert alert-info">{{ message[1] }}</div>
       </div>
       {%endif%}
       {%if message[0] == "success" %}
-      <div class="row-fluid" style="margin-top: -20px; text-align: center;">
+      <div class="row-fluid text-center" style="margin-top: -20px;">
         <div id="flash_success" class="alert alert-success">{{ message[1] }}</div>
       </div>
       {%endif%}

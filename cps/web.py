@@ -1949,45 +1949,80 @@ def send_to_kindle(book_id):
 @login_required
 def add_to_shelf(shelf_id, book_id):
     shelf = ub.session.query(ub.Shelf).filter(ub.Shelf.id == shelf_id).first()
+    if shelf is None:
+        app.logger.info("Invalid shelf specified")
+        if not request.is_xhr:
+            return redirect(url_for('index'))
+        return "Invalid shelf specified", 400
+
     if not shelf.is_public and not shelf.user_id == int(current_user.id):
         app.logger.info("Sorry you are not allowed to add a book to the the shelf: %s" % shelf.name)
-        return redirect(url_for('index'))
-    maxOrder = ub.session.query(func.max(ub.BookShelf.order)).filter(ub.BookShelf.shelf == shelf_id).first()
+        if not request.is_xhr:
+            return redirect(url_for('index'))
+        return "Sorry you are not allowed to add a book to the the shelf: %s" % shelf.name, 403
+
+    if shelf.is_public and not current_user.role_edit_shelfs():
+        app.logger.info("User is not allowed to edit public shelves")
+        if not request.is_xhr:
+            return redirect(url_for('index'))
+        return "User is not allowed to edit public shelves", 403
+
     book_in_shelf = ub.session.query(ub.BookShelf).filter(ub.BookShelf.shelf == shelf_id,
                                           ub.BookShelf.book_id == book_id).first()
     if book_in_shelf:
         app.logger.info("Book is already part of the shelf: %s" % shelf.name)
-        return redirect(url_for('index'))
+        if not request.is_xhr:
+            return redirect(url_for('index'))
+        return "Book is already part of the shelf: %s" % shelf.name, 400
+
+    maxOrder = ub.session.query(func.max(ub.BookShelf.order)).filter(ub.BookShelf.shelf == shelf_id).first()
     if maxOrder[0] is None:
         maxOrder = 0
     else:
         maxOrder = maxOrder[0]
-    if (shelf.is_public and current_user.role_edit_shelfs()) or not shelf.is_public:
-        ins = ub.BookShelf(shelf=shelf.id, book_id=book_id, order=maxOrder + 1)
-        ub.session.add(ins)
-        ub.session.commit()
+
+    ins = ub.BookShelf(shelf=shelf.id, book_id=book_id, order=maxOrder + 1)
+    ub.session.add(ins)
+    ub.session.commit()
+    if not request.is_xhr:
         flash(_(u"Book has been added to shelf: %(sname)s", sname=shelf.name), category="success")
         return redirect(request.environ["HTTP_REFERER"])
-    else:
-        app.logger.info("User is not allowed to edit public shelfs")
-        return redirect(url_for('index'))
+    return "", 204
 
 
 @app.route("/shelf/remove/<int:shelf_id>/<int:book_id>")
 @login_required
 def remove_from_shelf(shelf_id, book_id):
     shelf = ub.session.query(ub.Shelf).filter(ub.Shelf.id == shelf_id).first()
+    if shelf is None:
+        app.logger.info("Invalid shelf specified")
+        if not request.is_xhr:
+            return redirect(url_for('index'))
+        return "Invalid shelf specified", 400
+
     if not shelf.is_public and not shelf.user_id == int(current_user.id) \
             or (shelf.is_public and current_user.role_edit_shelfs()):
-        app.logger.info("Sorry you are not allowed to remove a book from this shelf: %s" % shelf.name)
-        return redirect(url_for('index'))
+        if not request.is_xhr:
+            app.logger.info("Sorry you are not allowed to remove a book from this shelf: %s" % shelf.name)
+            return redirect(url_for('index'))
+        return "Sorry you are not allowed to add a book to the the shelf: %s" % shelf.name, 403
 
     book_shelf = ub.session.query(ub.BookShelf).filter(ub.BookShelf.shelf == shelf_id,
                                                        ub.BookShelf.book_id == book_id).first()
+
+    if book_shelf is None:
+        app.logger.info("Book already removed from shelf")
+        if not request.is_xhr:
+            return redirect(url_for('index'))
+        return "Book already removed from shelf", 410
+
     ub.session.delete(book_shelf)
     ub.session.commit()
-    flash(_(u"Book has been removed from shelf: %(sname)s", sname=shelf.name), category="success")
-    return redirect(request.environ["HTTP_REFERER"])
+
+    if not request.is_xhr:
+        flash(_(u"Book has been removed from shelf: %(sname)s", sname=shelf.name), category="success")
+        return redirect(request.environ["HTTP_REFERER"])
+    return "", 204
 
 
 @app.route("/shelf/create", methods=["GET", "POST"])
