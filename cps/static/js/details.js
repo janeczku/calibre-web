@@ -28,7 +28,7 @@ $(document).on("click", "[data-shelf-action]", function (e) {
             }
             this.parentNode.removeChild(this);
         })
-        .fail(xhr => {
+        .fail((xhr) => {
             const $msg = $("<span/>", { "class": "text-danger"}).text(xhr.responseText);
             $("#shelf-action-status").html($msg);
 
