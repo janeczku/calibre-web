@@ -6,7 +6,7 @@ $("#have_read_cb").on("change", function() {
     $(this).closest("form").submit();
 });
 
-$(document).on("click", "[data-shelf-action]", function (e) {
+$("#shelf-actions").on("click", "[data-shelf-action]", function (e) {
     e.preventDefault();
 
     $.get(this.href)
