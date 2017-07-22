@@ -4,6 +4,11 @@ var updateText;
 
 $(function() {
 
+    // Allow ajax prefilters to be added/removed dynamically
+    // eslint-disable-next-line new-cap
+    const preFilters = $.Callbacks();
+    $.ajaxPrefilter(preFilters.fire);
+
     function restartTimer() {
         $("#spinner").addClass("hidden");
         $("#RestartDialog").modal("hide");
@@ -122,15 +127,24 @@ $(function() {
     });
 
     $("#bookDetailsModal")
-      .on("show.bs.modal", function(e) {
-        var $modalBody = $(this).find(".modal-body");
-        $.get(e.relatedTarget.href).done(function(content) {
-          $modalBody.html(content);
+        .on("show.bs.modal", function(e) {
+            const $modalBody = $(this).find(".modal-body");
+
+            // Prevent static assets from loading multiple times
+            const useCache = (options) => {
+                options.async = true;
+                options.cache = true;
+            };
+            preFilters.add(useCache);
+
+            $.get(e.relatedTarget.href).done(function(content) {
+                $modalBody.html(content);
+                preFilters.remove(useCache);
+            });
+        })
+        .on("hidden.bs.modal", function() {
+            $(this).find(".modal-body").html("...");
         });
-      })
-      .on("hidden.bs.modal", function() {
-        $(this).find(".modal-body").html("...");
-      });
 
     $(window).resize(function(event) {
         $(".discover .row").isotope("reLayout");
