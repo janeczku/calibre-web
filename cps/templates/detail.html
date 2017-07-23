@@ -183,43 +183,64 @@
 
       {% if g.user.is_authenticated %}
       {% if g.user.shelf.all() or g.public_shelfes %}
-      <div class="btn-toolbar" role="toolbar">
+      <div id="shelf-actions" class="btn-toolbar" role="toolbar">
         <div class="btn-group" role="group" aria-label="Add to shelves">
-              <button id="btnGroupDrop2" type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <span class="glyphicon glyphicon-list"></span> {{_('Add to shelf')}}
-                <span class="caret"></span>
-              </button>
-              <ul class="dropdown-menu" aria-labelledby="btnGroupDrop2">
-                {% for shelf in g.user.shelf %}
-                  {% if not shelf.id in books_shelfs and shelf.is_public != 1 %}
-                    <li><a href="{{ url_for('add_to_shelf', book_id=entry.id, shelf_id=shelf.id) }}">{{shelf.name}}</a></li>
-                  {% endif %}
-                {%endfor%}
-                {% for shelf in g.public_shelfes %}
-                  {% if not shelf.id in books_shelfs %}
-                    <li><a href="{{ url_for('add_to_shelf', book_id=entry.id, shelf_id=shelf.id) }}">{{shelf.name}}</a></li>
-                  {% endif %}
-                {%endfor%}
-              </ul>
-        </div>
-        {% if books_shelfs %}
-        <div class="btn-group" role="group" aria-label="Remove from shelves">
-              {% for shelf in g.user.shelf %}
-                {% if shelf.id in books_shelfs and shelf.is_public != 1 %}
-                  <a href="{{ url_for('remove_from_shelf', book_id=entry.id, shelf_id=shelf.id) }}" class="btn btn-sm btn-default" role="button">
-                    <span class="glyphicon glyphicon-remove"></span> {{shelf.name}}
+          <button id="btnGroupDrop2" type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <span class="glyphicon glyphicon-list"></span> {{_('Add to shelf')}}
+            <span class="caret"></span>
+          </button>
+          <ul id="add-to-shelves" class="dropdown-menu" aria-labelledby="btnGroupDrop2">
+            {% for shelf in g.user.shelf %}
+              {% if not shelf.id in books_shelfs and shelf.is_public != 1 %}
+                <li>
+                  <a href="{{ url_for('add_to_shelf', book_id=entry.id, shelf_id=shelf.id) }}"
+                     data-remove-href="{{ url_for('remove_from_shelf', book_id=entry.id, shelf_id=shelf.id) }}"
+                     data-shelf-action="add"
+                  >
+                    {{shelf.name}}
                   </a>
-                {% endif %}
-              {%endfor%}
-              {% for shelf in g.public_shelfes %}
-                {% if shelf.id in books_shelfs %}
-                  <a href="{{ url_for('remove_from_shelf', book_id=entry.id, shelf_id=shelf.id) }}" class="btn btn-sm btn-default" role="button">
-                    <span class="glyphicon glyphicon-remove"></span> {{shelf.name}}
+                </li>
+              {% endif %}
+            {%endfor%}
+            {% for shelf in g.public_shelfes %}
+              {% if not shelf.id in books_shelfs %}
+                <li>
+                  <a href="{{ url_for('add_to_shelf', book_id=entry.id, shelf_id=shelf.id) }}"
+                     data-remove-href="{{ url_for('remove_from_shelf', book_id=entry.id, shelf_id=shelf.id) }}"
+                     data-shelf-action="add"
+                  >
+                    {{shelf.name}}
                   </a>
-                {% endif %}
-              {%endfor%}
-            {% endif %}
+                </li>
+              {% endif %}
+            {%endfor%}
+          </ul>
         </div>
+        <div id="remove-from-shelves" class="btn-group" role="group" aria-label="Remove from shelves">
+          {% if books_shelfs %}
+            {% for shelf in g.user.shelf %}
+              {% if shelf.id in books_shelfs and shelf.is_public != 1 %}
+                <a href="{{ url_for('remove_from_shelf', book_id=entry.id, shelf_id=shelf.id) }}"
+                   data-add-href="{{ url_for('add_to_shelf', book_id=entry.id, shelf_id=shelf.id) }}"
+                   class="btn btn-sm btn-default" role="button" data-shelf-action="remove"
+                >
+                  <span class="glyphicon glyphicon-remove"></span> {{shelf.name}}
+                </a>
+              {% endif %}
+            {%endfor%}
+            {% for shelf in g.public_shelfes %}
+              {% if shelf.id in books_shelfs %}
+                <a href="{{ url_for('remove_from_shelf', book_id=entry.id, shelf_id=shelf.id) }}"
+                   data-add-href="{{ url_for('add_to_shelf', book_id=entry.id, shelf_id=shelf.id) }}"
+                   class="btn btn-sm btn-default" role="button" data-shelf-action="remove"
+                >
+                  <span class="glyphicon glyphicon-remove"></span> {{shelf.name}}
+                </a>
+              {% endif %}
+            {%endfor%}
+          {% endif %}
+        </div>
+        <div id="shelf-action-errors" class="pull-left" role="alert"></div>
       </div>
       {% endif %}
 
@@ -233,19 +254,12 @@
       {% endif %}
       </div>
 
-
     </div>
   </div>
+</div>
 {% endblock %}
 
 {% block js %}
 <script src="{{ url_for('static', filename='js/libs/jquery.form.js') }}"></script>
-<script>
-  $( document ).ready(function() {
-    $('#have_read_form').ajaxForm();
-  });
-  $("#have_read_cb").on('change', function() {
-    $(this).closest('form').submit();
-  });
-</script>
+<script src="{{ url_for('static', filename='js/details.js') }}"></script>
 {% endblock %}
