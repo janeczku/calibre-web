@@ -2,6 +2,20 @@ var displaytext;
 var updateTimerID;
 var updateText;
 
+// Generic control/related handler to show/hide fields based on a checkbox' value
+// e.g.
+//  <input type="checkbox" data-control="stuff-to-show">
+//  <div data-related="stuff-to-show">...</div>
+$(document).on("change", "input[type=\"checkbox\"][data-control]", function () {
+    var $this = $(this);
+    var name = $this.data("control");
+    var showOrHide = $this.prop("checked");
+
+    $("[data-related=\""+name+"\"]").each(function () {
+        $(this).toggle(showOrHide);
+    });
+});
+
 $(function() {
 
     function restartTimer() {
@@ -120,6 +134,8 @@ $(function() {
             updateTimerID=setInterval(updateTimer, 2000);}
         });
     });
+
+    $("input[data-control]").trigger("change");
 
     $(window).resize(function(event) {
         $(".discover .row").isotope("reLayout");
