@@ -2333,8 +2333,8 @@ def configuration_helper(origin):
         if ("config_use_google_drive" in to_save and not content.config_use_google_drive) or ("config_use_google_drive" not in to_save and content.config_use_google_drive):
             content.config_use_google_drive = "config_use_google_drive" in to_save
             db_change = True
-            if not content.config_use_google_drive:
-                create_new_yaml = False
+        if not content.config_use_google_drive:
+            create_new_yaml = False
         if create_new_yaml:
             with open('settings.yaml', 'w') as f:
                 with open('gdrive_template.yaml', 'r') as t:
