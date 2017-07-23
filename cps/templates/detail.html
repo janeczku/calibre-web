@@ -1,4 +1,4 @@
-{% extends "layout.html" %}
+{% extends is_xhr|yesno("fragment.html", "layout.html") %}
 {% block body %}
 <div class="single">
   <div class="row">
@@ -59,7 +59,6 @@
           {% endif %}
         </div>
       </div>
-
       <h2>{{entry.title}}</h2>
       <p class="author">
           {% for author in entry.authors %}
@@ -260,6 +259,5 @@
 {% endblock %}
 
 {% block js %}
-<script src="{{ url_for('static', filename='js/libs/jquery.form.js') }}"></script>
 <script src="{{ url_for('static', filename='js/details.js') }}"></script>
 {% endblock %}
