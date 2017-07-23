@@ -428,6 +428,11 @@ def timestamptodate(date, fmt=None):
     return native.strftime(time_format)
 
 
+@app.template_filter('yesno')
+def yesno(value, yes, no):
+    return yes if value else no
+
+
 def admin_required(f):
     """
     Checks if current_user.role == 1
@@ -1292,7 +1297,7 @@ def show_book(book_id):
         else:
             have_read = None
 
-        return render_title_template('detail.html', entry=entries, cc=cc,
+        return render_title_template('detail.html', entry=entries, cc=cc, is_xhr=request.is_xhr,
                                      title=entries.title, books_shelfs=book_in_shelfs, have_read=have_read)
     else:
         flash(_(u"Error opening eBook. File does not exist or file is not accessible:"), category="error")

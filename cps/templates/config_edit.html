@@ -9,10 +9,10 @@
     </div>
     {% if gdrive %}
     <div class="form-group required">
-      <input type="checkbox" id="config_use_google_drive" name="config_use_google_drive" {% if content.config_use_google_drive %}checked{% endif %} >
+      <input type="checkbox" id="config_use_google_drive" name="config_use_google_drive" data-control="gdrive_settings" {% if content.config_use_google_drive %}checked{% endif %} >
       <label for="config_use_google_drive">{{_('Use google drive?')}}</label>
     </div>
-    <div id="gdrive_settings">
+    <div data-related="gdrive_settings">
       <div class="form-group required">
         <label for="config_google_drive_client_id">{{_('Client id')}}</label>
         <input type="text" class="form-control" name="config_google_drive_client_id" id="config_google_drive_client_id" value="{% if content.config_google_drive_client_id %}{{content.config_google_drive_client_id}}{% endif %}" autocomplete="off">
@@ -155,21 +155,9 @@
 </div>
 {% endblock %}
 {% block js %}
-<script>
-$(document).ready(function() {
-  $('#config_use_google_drive').trigger("change");
-});
-$('#config_use_google_drive').change(function(){
-    formInputs=$("#gdrive_settings :input");
-    isChecked=this.checked;
-    formInputs.each(function(formInput) {
-      $(this).prop('required',isChecked);
+<script type="text/javascript">
+    $(document).on('change', '#config_use_google_drive', function() {
+        $('#config_google_drive_folder').prop('required', $(this).prop('checked'));
     });
-    if (this.checked) {
-      $('#gdrive_settings').show();
-    } else {
-      $('#gdrive_settings').hide();
-    }
-});
 </script>
 {% endblock %}
