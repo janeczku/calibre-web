@@ -11,7 +11,7 @@ function sendData(path){
     var maxElements;
     var tmp=[];
 
-    elements=sortable.utils.find(sortTrue,"div");
+    elements=Sortable.utils.find(sortTrue,"div");
     maxElements=elements.length;
 
     var form = document.createElement("form");

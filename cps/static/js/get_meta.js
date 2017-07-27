@@ -4,7 +4,7 @@
  * Google Books api document: https://developers.google.com/books/docs/v1/using
  * Douban Books api document: https://developers.douban.com/wiki/?title=book_v2 (Chinese Only)
  */
- /* global i18nMsg */
+ /* global i18nMsg, tinymce */
 var dbResults = [];
 var ggResults = [];
 
@@ -158,7 +158,7 @@ function getMeta (source, id) {
     var tags;
     if (source === "google") {
         meta = ggResults[id];
-        $("#description").val(meta.volumeInfo.description);
+        tinymce.get("description").setContent(meta.volumeInfo.description);
         $("#bookAuthor").val(meta.volumeInfo.authors.join(" & "));
         $("#book_title").val(meta.volumeInfo.title);
         if (meta.volumeInfo.categories) {
@@ -172,7 +172,7 @@ function getMeta (source, id) {
     }
     if (source === "douban") {
         meta = dbResults[id];
-        $("#description").val(meta.summary);
+        tinymce.get("description").setContent(meta.summary);
         $("#bookAuthor").val(meta.author.join(" & "));
         $("#book_title").val(meta.title);
         tags = "";

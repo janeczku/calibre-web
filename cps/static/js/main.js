@@ -2,7 +2,26 @@ var displaytext;
 var updateTimerID;
 var updateText;
 
+// Generic control/related handler to show/hide fields based on a checkbox' value
+// e.g.
+//  <input type="checkbox" data-control="stuff-to-show">
+//  <div data-related="stuff-to-show">...</div>
+$(document).on("change", "input[type=\"checkbox\"][data-control]", function () {
+    var $this = $(this);
+    var name = $this.data("control");
+    var showOrHide = $this.prop("checked");
+
+    $("[data-related=\""+name+"\"]").each(function () {
+        $(this).toggle(showOrHide);
+    });
+});
+
 $(function() {
+
+    // Allow ajax prefilters to be added/removed dynamically
+    // eslint-disable-next-line new-cap
+    const preFilters = $.Callbacks();
+    $.ajaxPrefilter(preFilters.fire);
 
     function restartTimer() {
         $("#spinner").addClass("hidden");
@@ -120,6 +139,28 @@ $(function() {
             updateTimerID=setInterval(updateTimer, 2000);}
         });
     });
+
+    $("input[data-control]").trigger("change");
+
+    $("#bookDetailsModal")
+        .on("show.bs.modal", function(e) {
+            const $modalBody = $(this).find(".modal-body");
+
+            // Prevent static assets from loading multiple times
+            const useCache = (options) => {
+                options.async = true;
+                options.cache = true;
+            };
+            preFilters.add(useCache);
+
+            $.get(e.relatedTarget.href).done(function(content) {
+                $modalBody.html(content);
+                preFilters.remove(useCache);
+            });
+        })
+        .on("hidden.bs.modal", function() {
+            $(this).find(".modal-body").html("...");
+        });
 
     $(window).resize(function(event) {
         $(".discover .row").isotope("reLayout");

@@ -9,10 +9,10 @@
     </div>
     {% if gdrive %}
     <div class="form-group required">
-      <input type="checkbox" id="config_use_google_drive" name="config_use_google_drive" {% if content.config_use_google_drive %}checked{% endif %} >
+      <input type="checkbox" id="config_use_google_drive" name="config_use_google_drive" data-control="gdrive_settings" {% if content.config_use_google_drive %}checked{% endif %} >
       <label for="config_use_google_drive">{{_('Use google drive?')}}</label>
     </div>
-    <div id="gdrive_settings">
+    <div data-related="gdrive_settings">
       <div class="form-group required">
         <label for="config_google_drive_client_id">{{_('Client id')}}</label>
         <input type="text" class="form-control" name="config_google_drive_client_id" id="config_google_drive_client_id" value="{% if content.config_google_drive_client_id %}{{content.config_google_drive_client_id}}{% endif %}" autocomplete="off">
@@ -93,6 +93,28 @@
         <input type="checkbox" id="config_public_reg" name="config_public_reg" {% if content.config_public_reg %}checked{% endif %}>
         <label for="config_public_reg">{{_('Enable public registration')}}</label>
     </div>
+    <div class="form-group">
+      <input type="checkbox" id="config_remote_login" name="config_remote_login" {% if content.config_remote_login %}checked{% endif %}>
+      <label for="config_remote_login">{{_('Enable remote login ("magic link")')}}</label>
+    </div>
+    {% if goodreads %}
+    <div class="form-group">
+      <input type="checkbox" id="config_use_goodreads" name="config_use_goodreads" data-control="goodreads-settings" {% if content.config_use_goodreads %}checked{% endif %}>
+      <label for="config_use_goodreads">{{_('Use')}} Goodreads</label>
+      <a href="https://www.goodreads.com/api/keys" target="_blank" style="margin-left: 5px">{{_('Obtain an API Key')}}</a>
+    </div>
+    <div data-related="goodreads-settings">
+      <div class="form-group">
+        <label for="config_goodreads_api_key">{{_('Goodreads API Key')}}</label>
+        <input type="text" class="form-control" id="config_goodreads_api_key" name="config_goodreads_api_key" value="{% if content.config_goodreads_api_key != None %}{{ content.config_goodreads_api_key }}{% endif %}" autocomplete="off">
+      </div>
+      <div class="form-group">
+        <label for="config_goodreads_api_secret">{{_('Goodreads API Secret')}}</label>
+        <input type="text" class="form-control" id="config_goodreads_api_secret" name="config_goodreads_api_secret" value="{% if content.config_goodreads_api_secret != None %}{{ content.config_goodreads_api_secret }}{% endif %}" autocomplete="off">
+      </div>
+    </div>
+    {% endif %}
+
     <h2>{{_('Default Settings for new users')}}</h2>
     <div class="form-group">
       <input type="checkbox" name="admin_role" id="admin_role" {% if content.role_admin() %}checked{% endif %}>
@@ -120,7 +142,7 @@
     </div>
     <div class="form-group">
       <input type="checkbox" name="edit_shelf_role" id="edit_shelf_role" {% if content.role_edit_shelfs() %}checked{% endif %}>
-      <label for="passwd_role">{{_('Allow Editing Public Shelfs')}}</label>
+      <label for="edit_shelf_role">{{_('Allow Editing Public Shelfs')}}</label>
     </div>
     <button type="submit" class="btn btn-default">{{_('Submit')}}</button>
     {% if not origin %}
@@ -133,21 +155,9 @@
 </div>
 {% endblock %}
 {% block js %}
-<script>
-$(document).ready(function() {
-  $('#config_use_google_drive').trigger("change");
-});
-$('#config_use_google_drive').change(function(){
-    formInputs=$("#gdrive_settings :input");
-    isChecked=this.checked;
-    formInputs.each(function(formInput) {
-      $(this).prop('required',isChecked);
+<script type="text/javascript">
+    $(document).on('change', '#config_use_google_drive', function() {
+        $('#config_google_drive_folder').prop('required', $(this).prop('checked'));
     });
-    if (this.checked) {
-      $('#gdrive_settings').show();
-    } else {
-      $('#gdrive_settings').hide();
-    }
-});
 </script>
 {% endblock %}

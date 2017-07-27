@@ -89,11 +89,10 @@ def make_mobi(book_id, calibrepath):
         try:
             p = subprocess.Popen((kindlegen + " \"" + file_path + u".epub\"").encode(sys.getfilesystemencoding()),
                                  stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
-        except:
+        except Exception:
             error_message = _(u"kindlegen failed, no excecution permissions")
-            app.logger.error("make_mobi: "+error_message)
+            app.logger.error("make_mobi: " + error_message)
             return error_message, RET_FAIL
-
         # Poll process for new output until finished
         while True:
             nextline = p.stdout.readline()
@@ -122,11 +121,13 @@ def make_mobi(book_id, calibrepath):
             db.session.commit()
             return file_path + ".mobi", RET_SUCCESS
         else:
-            app.logger.error("make_mobi: kindlegen failed with error while converting book")
-            return None, RET_FAIL
+            app.logger.info("make_mobi: kindlegen failed with error while converting book")
+            if not error_message:
+                error_message='kindlegen failed, no excecution permissions'
+            return error_message, RET_FAIL
     else:
-        app.logger.error("make_mobi: epub not found: %s.epub" % file_path)
-        return None, RET_FAIL
+        error_message = "make_mobi: epub not found: %s.epub" % file_path
+        return error_message, RET_FAIL
 
 
 class StderrLogger(object):
@@ -176,7 +177,7 @@ def send_raw_email(kindle_mail, msg):
 
         if settings["mail_password"]:
             mailserver.login(settings["mail_login"], settings["mail_password"])
-        mailserver.sendmail(settings["mail_login"], kindle_mail, msg)
+        mailserver.sendmail(settings["mail_from"], kindle_mail, msg)
         mailserver.quit()
 
         smtplib.stderr = org_stderr
@@ -229,6 +230,7 @@ def send_mail(book_id, kindle_mail, calibrepath):
         if resultCode == RET_SUCCESS:
             msg.attach(get_attachment(data))
         else:
+            app.logger.error = (data)
             return data #_("Could not convert epub to mobi")
     elif 'pdf' in formats:
         msg.attach(get_attachment(formats['pdf']))
@@ -305,7 +307,7 @@ def delete_book_gdrive(book):
 def update_dir_stucture(book_id, calibrepath):
     db.session.connection().connection.connection.create_function("title_sort", 1, db.title_sort)
     book = db.session.query(db.Books).filter(db.Books.id == book_id).first()
-    path = os.path.join(calibrepath, book.path)#.replace('/',os.path.sep)).replace('\\',os.path.sep)
+    path = os.path.join(calibrepath, book.path)
 
     authordir = book.path.split('/')[0]
     new_authordir = get_valid_filename(book.authors[0].name)
@@ -333,14 +335,14 @@ def update_dir_structure_gdrive(book_id):
     new_authordir = get_valid_filename(book.authors[0].name)
     titledir = book.path.split('/')[1]
     new_titledir = get_valid_filename(book.title) + " (" + str(book_id) + ")"
-    
+
     if titledir != new_titledir:
         print (titledir)
         gFile=gd.getFileFromEbooksFolder(web.Gdrive.Instance().drive,os.path.dirname(book.path),titledir)
         gFile['title']= new_titledir
         gFile.Upload()
         book.path = book.path.split('/')[0] + '/' + new_titledir
-    
+
     if authordir != new_authordir:
         gFile=gd.getFileFromEbooksFolder(web.Gdrive.Instance().drive,None,authordir)
         gFile['title'] = new_authordir
@@ -400,8 +402,8 @@ class Updater(threading.Thread):
         for file in delete_files:
             parts = file.split(os.sep)
             sub = ''
-            for i in range(len(parts)):
-                sub = os.path.join(sub, parts[i])
+            for part in parts:
+                sub = os.path.join(sub, part)
                 if sub == '':
                     sub = os.sep
                 count = 0
@@ -432,7 +434,7 @@ class Updater(threading.Thread):
             logging.getLogger('cps.web').debug('Update on OS-System : ' + sys.platform)
             new_permissions = os.stat(root_dst_dir)
             # print new_permissions
-        for src_dir, dirs, files in os.walk(root_src_dir):
+        for src_dir, __, files in os.walk(root_src_dir):
             dst_dir = src_dir.replace(root_src_dir, root_dst_dir, 1)
             if not os.path.exists(dst_dir):
                 os.makedirs(dst_dir)
@@ -455,11 +457,13 @@ class Updater(threading.Thread):
                 logging.getLogger('cps.web').debug('Move File '+src_file+' to '+dst_dir)
                 if change_permissions:
                     try:
-                        os.chown(dst_file, permission.st_uid, permission.st_uid)
-                        # print('Permissions: User '+str(new_permissions.st_uid)+' Group '+str(new_permissions.st_uid))
+                        os.chown(dst_file, permission.st_uid, permission.st_gid)
                     except Exception as e:
                         e = sys.exc_info()
-                        logging.getLogger('cps.web').debug('Fail '+str(dst_file)+' error: '+str(e))
+                        old_permissions = os.stat(dst_file)
+                        logging.getLogger('cps.web').debug('Fail change permissions of ' + str(dst_file) + '. Before: '
+                            + str(old_permissions.st_uid) + ':' + str(old_permissions.st_gid) + ' After: '
+                            + str(permission.st_uid) + ':' + str(permission.st_gid) + ' error: '+str(e))
         return
 
     def update_source(self, source, destination):

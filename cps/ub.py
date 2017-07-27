@@ -11,6 +11,8 @@ import logging
 from werkzeug.security import generate_password_hash
 from flask_babel import gettext as _
 import json
+import datetime
+from binascii import hexlify
 
 dbpath = os.path.join(os.path.normpath(os.getenv("CALIBRE_DBPATH", os.path.dirname(os.path.realpath(__file__)) + os.sep + ".." + os.sep)), "app.db")
 engine = create_engine('sqlite:///{0}'.format(dbpath), echo=False)
@@ -260,9 +262,30 @@ class Settings(Base):
     config_google_drive_calibre_url_base = Column(String)
     config_google_drive_watch_changes_response = Column(String)
     config_columns_to_ignore = Column(String)
+    config_remote_login = Column(Boolean)
+    config_use_goodreads = Column(Boolean)
+    config_goodreads_api_key = Column(String)
+    config_goodreads_api_secret = Column(String)
 
     def __repr__(self):
         pass
+
+
+class RemoteAuthToken(Base):
+    __tablename__ = 'remote_auth_token'
+
+    id = Column(Integer, primary_key=True)
+    auth_token = Column(String(8), unique=True)
+    user_id = Column(Integer, ForeignKey('user.id'))
+    verified = Column(Boolean, default=False)
+    expiration = Column(DateTime)
+
+    def __init__(self):
+        self.auth_token = hexlify(os.urandom(4))
+        self.expiration = datetime.datetime.now() + datetime.timedelta(minutes=10)  # 10 min from now
+
+    def __repr__(self):
+        return '<Token %r>' % self.id
 
 
 # Class holds all application specific settings in calibre-web
@@ -299,6 +322,10 @@ class Config:
         self.config_columns_to_ignore = data.config_columns_to_ignore
         self.db_configured = bool(self.config_calibre_dir is not None and
                 (not self.config_use_google_drive or os.path.exists(self.config_calibre_dir + '/metadata.db')))
+        self.config_remote_login = data.config_remote_login
+        self.config_use_goodreads = data.config_use_goodreads
+        self.config_goodreads_api_key = data.config_goodreads_api_key
+        self.config_goodreads_api_secret = data.config_goodreads_api_secret
 
     @property
     def get_main_dir(self):
@@ -327,13 +354,6 @@ class Config:
             return True if self.config_default_role & ROLE_EDIT == ROLE_EDIT else False
         else:
             return False
-
-    def role_delete_books(self):
-        if self.config_default_role is not None:
-            return True if self.config_default_role & ROLE_DELETE_BOOKS == ROLE_DELETE_BOOKS else False
-        else:
-            return False
-
 
     def role_passwd(self):
         if self.config_default_role is not None:
@@ -439,16 +459,36 @@ def migrate_Database():
         create=True
     try:
         if create:
-            conn.execute("SELET language_books FROM user")
+            conn = engine.connect()
+            conn.execute("SELECT language_books FROM user")
             session.commit()
     except exc.OperationalError:
         conn = engine.connect()
-        conn.execute("UPDATE user SET 'sidebar_view' = (random_books*"+str(SIDEBAR_RANDOM)+"+ language_books *"+
-                     str(SIDEBAR_LANGUAGE)+"+ series_books *"+str(SIDEBAR_SERIES)+"+ category_books *"+str(SIDEBAR_CATEGORY)+
-                     "+ hot_books *"+str(SIDEBAR_HOT)+"+"+str(SIDEBAR_AUTHOR)+"+"+str(DETAIL_RANDOM)+")")
+        conn.execute("UPDATE user SET 'sidebar_view' = (random_books* :side_random + language_books * :side_lang "
+            "+ series_books * :side_series + category_books * :side_category + hot_books * "
+            ":side_hot + :side_autor + :detail_random)",{'side_random': SIDEBAR_RANDOM,
+            'side_lang': SIDEBAR_LANGUAGE, 'side_series': SIDEBAR_SERIES, 'side_category': SIDEBAR_CATEGORY,
+            'side_hot': SIDEBAR_HOT, 'side_autor': SIDEBAR_AUTHOR, 'detail_random': DETAIL_RANDOM})
         session.commit()
     if session.query(User).filter(User.role.op('&')(ROLE_ANONYMOUS) == ROLE_ANONYMOUS).first() is None:
         create_anonymous_user()
+    try:
+        session.query(exists().where(Settings.config_remote_login)).scalar()
+    except exc.OperationalError:
+        conn = engine.connect()
+        conn.execute("ALTER TABLE Settings ADD column `config_remote_login` INTEGER DEFAULT 0")
+    try:
+        session.query(exists().where(Settings.config_use_goodreads)).scalar()
+    except exc.OperationalError:
+        conn = engine.connect()
+        conn.execute("ALTER TABLE Settings ADD column `config_use_goodreads` INTEGER DEFAULT 0")
+        conn.execute("ALTER TABLE Settings ADD column `config_goodreads_api_key` String DEFAULT ''")
+        conn.execute("ALTER TABLE Settings ADD column `config_goodreads_api_secret` String DEFAULT ''")
+
+def clean_database():
+    # Remove expired remote login tokens
+    now = datetime.datetime.now()
+    session.query(RemoteAuthToken).filter(now > RemoteAuthToken.expiration).delete()
 
 def create_default_config():
     settings = Settings()
@@ -529,7 +569,9 @@ if not os.path.exists(dbpath):
     except Exception:
         raise
 else:
+    Base.metadata.create_all(engine)
     migrate_Database()
+    clean_database()
 
 # Generate global Settings Object accecable from every file
 config = Config()

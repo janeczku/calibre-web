@@ -26,6 +26,7 @@ Calibre Web is a web app providing a clean interface for browsing, reading and d
 - Support for Calibre custom columns
 - Fine grained per-user permissions
 - Self update capability
+- "Magic Link" login to make it easy to log on eReaders
 
 ## Quick start
 
@@ -33,6 +34,7 @@ Calibre Web is a web app providing a clean interface for browsing, reading and d
 2. Execute the command: `python cps.py` (or `nohup python cps.py` - recommended if you want to exit the terminal window)
 3. Point your browser to `http://localhost:8083` or `http://localhost:8083/opds` for the OPDS catalog
 4. Set `Location of Calibre database` to the path of the folder where your Calibre library (metadata.db) lives, push "submit" button
+   optionally a google drive can be used to host the calibre library (-> Using Google Drive integration)
 5. Go to Login page
 
 **Default admin login:**
@@ -54,6 +56,9 @@ Tick to allow not logged in users to browse the catalog, anonymous user permissi
 
 Enable uploading:
 Tick to enable uploading of PDF, epub, FB2. This requires the imagemagick library to be installed.    
+
+Enable remote login ("magic link"):
+Tick to enable remote login, i.e. a link that allows user to log in via a different device.
 
 ## Requirements
 
@@ -99,7 +104,7 @@ If your calibre web is using https, it is possible to add a "watch" to the drive
 
 ## Docker image
 
-Calibre Web can be run as Docker container. The latest image is available on [Docker Hub](https://registry.hub.docker.com/u/janeczku/calibre-web/).
+Calibre Web can be run as Docker container. Pre-built Docker images based on Alpine Linux are available in this Docker Hub repository: [technosoft2000/calibre-web](https://hub.docker.com/r/technosoft2000/calibre-web/).
 
 ## Reverse Proxy
 
