@@ -7,6 +7,12 @@ try:
 except ImportError:
     gdrive_support = False
 
+try:
+    from goodreads import client as gr_client
+    goodreads_support = True
+except ImportError:
+    goodreads_support = False
+
 import mimetypes
 import logging
 from logging.handlers import RotatingFileHandler
@@ -58,6 +64,7 @@ import shutil
 import gdriveutils
 import tempfile
 import hashlib
+from redirect import redirect_back, is_safe_url
 
 from tornado import version as tornadoVersion
 
@@ -76,11 +83,6 @@ import time
 
 current_milli_time = lambda: int(round(time.time() * 1000))
 
-try:
-    from wand.image import Image
-    use_generic_pdf_cover = False
-except ImportError:
-    use_generic_pdf_cover = True
 
 # Global variables
 gdrive_watch_callback_token = 'target=calibreweb-watch_files'
@@ -222,7 +224,7 @@ lm = LoginManager(app)
 lm.init_app(app)
 lm.login_view = 'login'
 lm.anonymous_user = ub.Anonymous
-app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
+app.secret_key = os.getenv('SECRET_KEY', 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT')
 db.setup_db()
 
 if config.config_log_level == logging.DEBUG:
@@ -372,6 +374,21 @@ def login_required_if_no_ano(func):
     return login_required(func)
 
 
+def remote_login_required(f):
+    @wraps(f)
+    def inner(*args, **kwargs):
+        if config.config_remote_login:
+            return f(*args, **kwargs)
+        if request.is_xhr:
+            data = {'status': 'error', 'message': 'Forbidden'}
+            response = make_response(json.dumps(data, ensure_ascii=false))
+            response.headers["Content-Type"] = "application/json; charset=utf-8"
+            return response, 403
+        abort(403)
+
+    return inner
+
+
 # custom jinja filters
 @app.template_filter('shortentitle')
 def shortentitle_filter(s):
@@ -409,6 +426,11 @@ def timestamptodate(date, fmt=None):
     else:
         time_format = '%d %m %Y - %H:%S'
     return native.strftime(time_format)
+
+
+@app.template_filter('yesno')
+def yesno(value, yes, no):
+    return yes if value else no
 
 
 def admin_required(f):
@@ -723,7 +745,7 @@ def feed_author(book_id):
     off = request.args.get("offset")
     if not off:
         off = 0
-    entries, random, pagination = fill_indexpage((int(off) / (int(config.config_books_per_page)) + 1),
+    entries, __, pagination = fill_indexpage((int(off) / (int(config.config_books_per_page)) + 1),
                     db.Books, db.Books.authors.any(db.Authors.id == book_id), db.Books.timestamp.desc())
     xml = render_title_template('feed.xml', entries=entries, pagination=pagination)
     response = make_response(xml)
@@ -998,7 +1020,43 @@ def get_matching_tags():
 def index(page):
     entries, random, pagination = fill_indexpage(page, db.Books, True, db.Books.timestamp.desc())
     return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
-                                 title=_(u"Latest Books"))
+                                 title=_(u"Recently Added Books"))
+
+
+@app.route('/books/newest', defaults={'page': 1})
+@app.route('/books/newest/page/<int:page>')
+@login_required_if_no_ano
+def newest_books(page):
+    entries, random, pagination = fill_indexpage(page, db.Books, True, db.Books.pubdate.desc())
+    return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
+                                 title=_(u"Newest Books"))
+
+
+@app.route('/books/oldest', defaults={'page': 1})
+@app.route('/books/oldest/page/<int:page>')
+@login_required_if_no_ano
+def oldest_books(page):
+    entries, random, pagination = fill_indexpage(page, db.Books, True, db.Books.pubdate)
+    return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
+                                 title=_(u"Oldest Books"))
+
+
+@app.route('/books/a-z', defaults={'page': 1})
+@app.route('/books/a-z/page/<int:page>')
+@login_required_if_no_ano
+def titles_ascending(page):
+    entries, random, pagination = fill_indexpage(page, db.Books, True, db.Books.sort)
+    return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
+                                 title=_(u"Books (A-Z)"))
+
+
+@app.route('/books/z-a', defaults={'page': 1})
+@app.route('/books/z-a/page/<int:page>')
+@login_required_if_no_ano
+def titles_descending(page):
+    entries, random, pagination = fill_indexpage(page, db.Books, True, db.Books.sort.desc())
+    return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
+                                 title=_(u"Books (Z-A)"))
 
 
 @app.route("/hot", defaults={'page': 1})
@@ -1070,10 +1128,16 @@ def author_list():
 def author(book_id, page):
     entries, random, pagination = fill_indexpage(page, db.Books, db.Books.authors.any(db.Authors.id == book_id),
                                                  db.Books.timestamp.desc())
-    name = db.session.query(db.Authors).filter(db.Authors.id == book_id).first().name
     if entries:
-        return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
-                                     title=_(u"Author: %(name)s", name=name))
+        name = db.session.query(db.Authors).filter(db.Authors.id == book_id).first().name
+
+        author_info = None
+        if goodreads_support and config.config_use_goodreads:
+            gc = gr_client.GoodreadsClient(config.config_goodreads_api_key, config.config_goodreads_api_secret)
+            author_info = gc.find_author(author_name=name)
+
+        return render_title_template('author.html', entries=entries, pagination=pagination,
+                                     title=name, author=author_info)
     else:
         flash(_(u"Error opening eBook. File does not exist or file is not accessible:"), category="error")
         return redirect(url_for("index"))
@@ -1233,7 +1297,7 @@ def show_book(book_id):
         else:
             have_read = None
 
-        return render_title_template('detail.html', entry=entries, cc=cc,
+        return render_title_template('detail.html', entry=entries, cc=cc, is_xhr=request.is_xhr,
                                      title=entries.title, books_shelfs=book_in_shelfs, have_read=have_read)
     else:
         flash(_(u"Error opening eBook. File does not exist or file is not accessible:"), category="error")
@@ -1269,8 +1333,8 @@ def stats():
                     lines = lines.decode('utf-8')
                 if re.search('Amazon kindlegen\(', lines):
                     versions['KindlegenVersion'] = lines
-        except:
-            versions['KindlegenVersion'] = _('Excecution permissions missing')
+        except Exception:
+            versions['KindlegenVersion'] = _(u'Excecution permissions missing')
     versions['PythonVersion'] = sys.version
     versions['babel'] = babelVersion
     versions['sqlalchemy'] = sqlalchemyVersion
@@ -1632,7 +1696,11 @@ def render_read_books(page, are_read, as_xml=False):
         response.headers["Content-Type"] = "application/xml"
         return response
     else:
-        name = u'Read Books' if are_read else u'Unread Books'
+        if are_read:
+            name = _(u'Read Books') + ' (' + str(len(readBookIds)) + ')'
+        else:
+            total_books = db.session.query(func.count(db.Books.id)).scalar()
+            name = _(u'Unread Books') + ' (' + str(total_books - len(readBookIds)) + ')'
         return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
                                 title=_(name, name=name))
 
@@ -1805,14 +1873,20 @@ def login():
 
         if user and check_password_hash(user.password, form['password']):
             login_user(user, remember=True)
+
             flash(_(u"you are now logged in as: '%(nickname)s'", nickname=user.nickname), category="success")
-            return redirect(url_for("index"))
+            return redirect_back(url_for("index"))
         else:
             ipAdress=request.headers.get('X-Forwarded-For', request.remote_addr)
             app.logger.info('Login failed for user "' + form['username'] + '" IP-adress: ' + ipAdress)
             flash(_(u"Wrong Username or Password"), category="error")
 
-    return render_title_template('login.html', title=_(u"login"))
+    next_url = request.args.get('next')
+    if next_url is None or not is_safe_url(next_url):
+        next_url = url_for('index')
+
+    return render_title_template('login.html', title=_(u"login"), next_url=next_url,
+                                 remote_login=config.config_remote_login)
 
 
 @app.route('/logout')
@@ -1821,6 +1895,87 @@ def logout():
     if current_user is not None and current_user.is_authenticated:
         logout_user()
     return redirect(url_for('login'))
+
+
+@app.route('/remote/login')
+@remote_login_required
+def remote_login():
+    auth_token = ub.RemoteAuthToken()
+    ub.session.add(auth_token)
+    ub.session.commit()
+
+    verify_url = url_for('verify_token', token=auth_token.auth_token, _external=true)
+
+    return render_title_template('remote_login.html', title=_(u"login"), token=auth_token.auth_token,
+                                 verify_url=verify_url)
+
+
+@app.route('/verify/<token>')
+@remote_login_required
+@login_required
+def verify_token(token):
+    auth_token = ub.session.query(ub.RemoteAuthToken).filter(ub.RemoteAuthToken.auth_token == token).first()
+
+    # Token not found
+    if auth_token is None:
+        flash(_(u"Token not found"), category="error")
+        return redirect(url_for('index'))
+
+    # Token expired
+    if datetime.datetime.now() > auth_token.expiration:
+        ub.session.delete(auth_token)
+        ub.session.commit()
+
+        flash(_(u"Token has expired"), category="error")
+        return redirect(url_for('index'))
+
+    # Update token with user information
+    auth_token.user_id = current_user.id
+    auth_token.verified = True
+    ub.session.commit()
+
+    flash(_(u"Success! Please return to your device"), category="success")
+    return redirect(url_for('index'))
+
+
+@app.route('/ajax/verify_token', methods=['POST'])
+@remote_login_required
+def token_verified():
+    token = request.form['token']
+    auth_token = ub.session.query(ub.RemoteAuthToken).filter(ub.RemoteAuthToken.auth_token == token).first()
+
+    data = {}
+
+    # Token not found
+    if auth_token is None:
+        data['status'] = 'error'
+        data['message'] = _(u"Token not found")
+
+    # Token expired
+    elif datetime.datetime.now() > auth_token.expiration:
+        ub.session.delete(auth_token)
+        ub.session.commit()
+
+        data['status'] = 'error'
+        data['message'] = _(u"Token has expired")
+
+    elif not auth_token.verified:
+        data['status'] = 'not_verified'
+
+    else:
+        user = ub.session.query(ub.User).filter(ub.User.id == auth_token.user_id).first()
+        login_user(user)
+
+        ub.session.delete(auth_token)
+        ub.session.commit()
+
+        data['status'] = 'success'
+        flash(_(u"you are now logged in as: '%(nickname)s'", nickname=user.nickname), category="success")
+
+    response = make_response(json.dumps(data, ensure_ascii=false))
+    response.headers["Content-Type"] = "application/json; charset=utf-8"
+
+    return response
 
 
 @app.route('/send/<int:book_id>')
@@ -1847,45 +2002,80 @@ def send_to_kindle(book_id):
 @login_required
 def add_to_shelf(shelf_id, book_id):
     shelf = ub.session.query(ub.Shelf).filter(ub.Shelf.id == shelf_id).first()
+    if shelf is None:
+        app.logger.info("Invalid shelf specified")
+        if not request.is_xhr:
+            return redirect(url_for('index'))
+        return "Invalid shelf specified", 400
+
     if not shelf.is_public and not shelf.user_id == int(current_user.id):
         app.logger.info("Sorry you are not allowed to add a book to the the shelf: %s" % shelf.name)
-        return redirect(url_for('index'))
-    maxOrder = ub.session.query(func.max(ub.BookShelf.order)).filter(ub.BookShelf.shelf == shelf_id).first()
+        if not request.is_xhr:
+            return redirect(url_for('index'))
+        return "Sorry you are not allowed to add a book to the the shelf: %s" % shelf.name, 403
+
+    if shelf.is_public and not current_user.role_edit_shelfs():
+        app.logger.info("User is not allowed to edit public shelves")
+        if not request.is_xhr:
+            return redirect(url_for('index'))
+        return "User is not allowed to edit public shelves", 403
+
     book_in_shelf = ub.session.query(ub.BookShelf).filter(ub.BookShelf.shelf == shelf_id,
                                           ub.BookShelf.book_id == book_id).first()
     if book_in_shelf:
         app.logger.info("Book is already part of the shelf: %s" % shelf.name)
-        return redirect(url_for('index'))
+        if not request.is_xhr:
+            return redirect(url_for('index'))
+        return "Book is already part of the shelf: %s" % shelf.name, 400
+
+    maxOrder = ub.session.query(func.max(ub.BookShelf.order)).filter(ub.BookShelf.shelf == shelf_id).first()
     if maxOrder[0] is None:
         maxOrder = 0
     else:
         maxOrder = maxOrder[0]
-    if (shelf.is_public and current_user.role_edit_shelfs()) or not shelf.is_public:
-        ins = ub.BookShelf(shelf=shelf.id, book_id=book_id, order=maxOrder + 1)
-        ub.session.add(ins)
-        ub.session.commit()
+
+    ins = ub.BookShelf(shelf=shelf.id, book_id=book_id, order=maxOrder + 1)
+    ub.session.add(ins)
+    ub.session.commit()
+    if not request.is_xhr:
         flash(_(u"Book has been added to shelf: %(sname)s", sname=shelf.name), category="success")
         return redirect(request.environ["HTTP_REFERER"])
-    else:
-        app.logger.info("User is not allowed to edit public shelfs")
-        return redirect(url_for('index'))
+    return "", 204
 
 
 @app.route("/shelf/remove/<int:shelf_id>/<int:book_id>")
 @login_required
 def remove_from_shelf(shelf_id, book_id):
     shelf = ub.session.query(ub.Shelf).filter(ub.Shelf.id == shelf_id).first()
+    if shelf is None:
+        app.logger.info("Invalid shelf specified")
+        if not request.is_xhr:
+            return redirect(url_for('index'))
+        return "Invalid shelf specified", 400
+
     if not shelf.is_public and not shelf.user_id == int(current_user.id) \
             or (shelf.is_public and current_user.role_edit_shelfs()):
-        app.logger.info("Sorry you are not allowed to remove a book from this shelf: %s" % shelf.name)
-        return redirect(url_for('index'))
+        if not request.is_xhr:
+            app.logger.info("Sorry you are not allowed to remove a book from this shelf: %s" % shelf.name)
+            return redirect(url_for('index'))
+        return "Sorry you are not allowed to add a book to the the shelf: %s" % shelf.name, 403
 
     book_shelf = ub.session.query(ub.BookShelf).filter(ub.BookShelf.shelf == shelf_id,
                                                        ub.BookShelf.book_id == book_id).first()
+
+    if book_shelf is None:
+        app.logger.info("Book already removed from shelf")
+        if not request.is_xhr:
+            return redirect(url_for('index'))
+        return "Book already removed from shelf", 410
+
     ub.session.delete(book_shelf)
     ub.session.commit()
-    flash(_(u"Book has been removed from shelf: %(sname)s", sname=shelf.name), category="success")
-    return redirect(request.environ["HTTP_REFERER"])
+
+    if not request.is_xhr:
+        flash(_(u"Book has been removed from shelf: %(sname)s", sname=shelf.name), category="success")
+        return redirect(request.environ["HTTP_REFERER"])
+    return "", 204
 
 
 @app.route("/shelf/create", methods=["GET", "POST"])
@@ -1975,15 +2165,19 @@ def show_shelf(shelf_id):
                                                          ub.and_(ub.Shelf.is_public == 1,
                                                                  ub.Shelf.id == shelf_id))).first()
     result = list()
+    # user is allowed to access shelf
     if shelf:
         books_in_shelf = ub.session.query(ub.BookShelf).filter(ub.BookShelf.shelf == shelf_id).order_by(
             ub.BookShelf.order.asc()).all()
         for book in books_in_shelf:
             cur_book = db.session.query(db.Books).filter(db.Books.id == book.book_id).first()
             result.append(cur_book)
-
-    return render_title_template('shelf.html', entries=result, title=_(u"Shelf: '%(name)s'", name=shelf.name),
+        return render_title_template('shelf.html', entries=result, title=_(u"Shelf: '%(name)s'", name=shelf.name),
                                  shelf=shelf)
+    else:
+        flash(_(u"Error opening shelf. Shelf does not exist or is not accessible"), category="error")
+        return redirect(url_for("index"))
+
 
 
 @app.route("/shelf/order/<int:shelf_id>", methods=["GET", "POST"])
@@ -2139,8 +2333,8 @@ def configuration_helper(origin):
         if ("config_use_google_drive" in to_save and not content.config_use_google_drive) or ("config_use_google_drive" not in to_save and content.config_use_google_drive):
             content.config_use_google_drive = "config_use_google_drive" in to_save
             db_change = True
-            if not content.config_use_google_drive:
-                create_new_yaml = False
+        if not content.config_use_google_drive:
+            create_new_yaml = False
         if create_new_yaml:
             with open('settings.yaml', 'w') as f:
                 with open('gdrive_template.yaml', 'r') as t:
@@ -2179,6 +2373,19 @@ def configuration_helper(origin):
         if "config_public_reg" in to_save and to_save["config_public_reg"] == "on":
             content.config_public_reg = 1
 
+        # Remote login configuration
+        content.config_remote_login = ("config_remote_login" in to_save and to_save["config_remote_login"] == "on")
+        if not content.config_remote_login:
+            ub.session.query(ub.RemoteAuthToken).delete()
+
+        # Goodreads configuration
+        content.config_use_goodreads = ("config_use_goodreads" in to_save and to_save["config_use_goodreads"] == "on")
+        if "config_goodreads_api_key" in to_save:
+            content.config_goodreads_api_key = to_save["config_goodreads_api_key"]
+        if "config_goodreads_api_secret" in to_save:
+            content.config_goodreads_api_secret = to_save["config_goodreads_api_secret"]
+
+
         content.config_default_role = 0
         if "admin_role" in to_save:
             content.config_default_role = content.config_default_role + ub.ROLE_ADMIN
@@ -2209,13 +2416,13 @@ def configuration_helper(origin):
         except e:
             flash(e, category="error")
             return render_title_template("config_edit.html", content=config, origin=origin, gdrive=gdrive_support,
-                                         title=_(u"Basic Configuration"))
+                                         goodreads=goodreads_support, title=_(u"Basic Configuration"))
         if db_change:
             reload(db)
             if not db.setup_db():
                 flash(_(u'DB location is not valid, please enter correct path'), category="error")
                 return render_title_template("config_edit.html", content=config, origin=origin, gdrive=gdrive_support,
-                                             title=_(u"Basic Configuration"))
+                                             goodreads=goodreads_support, title=_(u"Basic Configuration"))
         if reboot_required:
             # db.engine.dispose() # ToDo verify correct
             ub.session.close()
@@ -2229,7 +2436,7 @@ def configuration_helper(origin):
             success = True
     return render_title_template("config_edit.html", origin=origin, success=success, content=config,
                                  show_authenticate_google_drive=not is_gdrive_ready(), gdrive=gdrive_support,
-                                 title=_(u"Basic Configuration"))
+                                 goodreads=goodreads_support, title=_(u"Basic Configuration"))
 
 
 @app.route("/admin/user/new", methods=["GET", "POST"])
@@ -2669,7 +2876,7 @@ def edit_book(book_id):
             return render_title_template('book_edit.html', book=book, authors=author_names, cc=cc,
                                          title=_(u"edit metadata"))
     else:
-        flash(_(u"Error opening eBook. File does not exist or file is not accessible:"), category="error")
+        flash(_(u"Error opening eBook. File does not exist or file is not accessible"), category="error")
         return redirect(url_for("index"))
 
 

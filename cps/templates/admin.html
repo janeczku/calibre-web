@@ -64,6 +64,7 @@
         <th>{{_('Uploading')}}</th>
         <th>{{_('Public registration')}}</th>
         <th>{{_('Anonymous browsing')}}</th>
+        <th>{{_('Remote Login')}}</th>
     </tr>
       <tr>
         <td>{{config.config_calibre_dir}}</td>
@@ -73,6 +74,7 @@
         <td>{% if config.config_uploading %}<span class="glyphicon glyphicon-ok"></span>{% else %}<span class="glyphicon glyphicon-remove"></span>{% endif %}</td>
         <td>{% if config.config_public_reg %}<span class="glyphicon glyphicon-ok"></span>{% else %}<span class="glyphicon glyphicon-remove"></span>{% endif %}</td>
         <td>{% if config.config_anonbrowse %}<span class="glyphicon glyphicon-ok"></span>{% else %}<span class="glyphicon glyphicon-remove"></span>{% endif %}</td>
+        <td>{% if config.config_remote_login %}<span class="glyphicon glyphicon-ok"></span>{% else %}<span class="glyphicon glyphicon-remove"></span>{% endif %}</td>
   </table>
   <div class="btn btn-default"><a href="{{url_for('configuration')}}">{{_('Configuration')}}</a></div>
   <h2>{{_('Administration')}}</h2>

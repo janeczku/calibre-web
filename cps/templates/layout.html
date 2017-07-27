@@ -28,6 +28,7 @@
     <script src="{{ url_for('static', filename='js/libs/intention.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/libs/context.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/libs/plugins.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/libs/jquery.form.js') }}"></script>
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
 
     {% block header %}{% endblock %}
@@ -99,17 +100,17 @@
     </div>
     {% for message in get_flashed_messages(with_categories=True) %}
       {%if message[0] == "error" %}
-      <div class="row-fluid" style="margin-top: -20px; text-align: center;">
+      <div class="row-fluid text-center" style="margin-top: -20px;">
         <div id="flash_alert" class="alert alert-danger">{{ message[1] }}</div>
       </div>
       {%endif%}
       {%if message[0] == "info" %}
-      <div class="row-fluid" style="margin-top: -20px; text-align: center;">
+      <div class="row-fluid text-center" style="margin-top: -20px;">
         <div id="flash_info" class="alert alert-info">{{ message[1] }}</div>
       </div>
       {%endif%}
       {%if message[0] == "success" %}
-      <div class="row-fluid" style="margin-top: -20px; text-align: center;">
+      <div class="row-fluid text-center" style="margin-top: -20px;">
         <div id="flash_success" class="alert alert-success">{{ message[1] }}</div>
       </div>
       {%endif%}
@@ -121,7 +122,19 @@
           <nav class="navigation">
             <ul class="list-unstyled" id="scnd-nav" intent in-standard-append="nav.navigation" in-mobile-after="#main-nav" in-mobile-class="nav navbar-nav">
               <li class="nav-head hidden-xs">{{_('Browse')}}</li>
-              <li id="nav_new"><a href="{{url_for('index')}}"><span class="glyphicon glyphicon-book"></span> {{_('New Books')}}</a></li>
+              <li id="nav_new"><a href="{{url_for('index')}}"><span class="glyphicon glyphicon-book"></span> {{_('Recently Added')}}</a></li>
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                  <span class="glyphicon glyphicon-sort-by-attributes"></span> {{_('Sorted Books')}}
+                  <span class="caret"></span>
+                </a>
+                <ul class="dropdown-menu">
+                  <li><a href="{{url_for('newest_books')}}">{{_('Sort By')}} {{_('Newest')}}</a></li>
+                  <li><a href="{{url_for('oldest_books')}}">{{_('Sort By')}} {{_('Oldest')}}</a></li>
+                  <li><a href="{{url_for('titles_ascending')}}">{{_('Sort By')}} {{_('Title')}} ({{_('Ascending')}})</a></li>
+                  <li><a href="{{url_for('titles_descending')}}">{{_('Sort By')}} {{_('Title')}}  ({{_('Descending')}})</a></li>
+                </ul>
+              </li>
               {% if g.user.show_hot_books() %}
               <li id="nav_hot"><a href="{{url_for('hot_books')}}"><span class="glyphicon glyphicon-fire"></span> {{_('Hot Books')}}</a></li>
               {%endif%}
@@ -185,6 +198,20 @@
             {% endif %}
             </div>
           {% endif %}
+        </div>
+      </div>
+    </div>
+    <div class="modal fade" id="bookDetailsModal" tabindex="-1" role="dialog" aria-labelledby="bookDetailsModalLabel">
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="bookDetailsModalLabel">{{_('Book Details')}}</h4>
+          </div>
+          <div class="modal-body">...</div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">{{_('Close')}}</button>
+          </div>
         </div>
       </div>
     </div>
