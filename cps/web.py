@@ -2936,6 +2936,9 @@ def upload():
         filepath = config.config_calibre_dir + os.sep + author_dir + os.sep + title_dir
         saved_filename = filepath + os.sep + data_name + meta.extension
 
+        if series_index == '':
+            series_index = 1
+
         if not os.path.exists(filepath):
             try:
                 os.makedirs(filepath)
