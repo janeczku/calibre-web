@@ -2907,12 +2907,16 @@ def upload():
 
         title = meta.title
         author = meta.author
-
+        series = meta.series
+        series_index = meta.series_id
         title_dir = helper.get_valid_filename(title, False)
         author_dir = helper.get_valid_filename(author, False)
         data_name = title_dir
         filepath = config.config_calibre_dir + os.sep + author_dir + os.sep + title_dir
         saved_filename = filepath + os.sep + data_name + meta.extension
+
+        if series_index == '':
+            series_index = 1
 
         if not os.path.exists(filepath):
             try:
@@ -2946,6 +2950,14 @@ def upload():
             db_author = db.Authors(author, helper.get_sorted_author(author), "")
             db.session.add(db_author)
 
+        db_series = None
+        is_series = db.session.query(db.Series).filter(db.Series.name == series).first()
+        if is_series:
+            db_series = is_series
+        elif series != '':
+            db_series = db.Series(series, "")
+            db.session.add(db_series)
+
         # add language actually one value in list
         input_language = meta.languages
         db_language = None
@@ -2959,9 +2971,11 @@ def upload():
                 db.session.add(db_language)
         # combine path and normalize path from windows systems
         path = os.path.join(author_dir, title_dir).replace('\\', '/')
-        db_book = db.Books(title, "", db_author.sort, datetime.datetime.now(), datetime.datetime(101, 1, 1), 1,
-                           datetime.datetime.now(), path, has_cover, db_author, [], db_language)
+        db_book = db.Books(title, "", db_author.sort, datetime.datetime.now(), datetime.datetime(101, 1, 1),
+                           series_index, datetime.datetime.now(), path, has_cover, db_author, [], db_language)
         db_book.authors.append(db_author)
+        if db_series:
+            db_book.series.append(db_series)
         if db_language is not None:
             db_book.languages.append(db_language)
         db_data = db.Data(db_book, meta.extension.upper()[1:], file_size, data_name)
