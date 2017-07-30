@@ -230,6 +230,8 @@ class Data(Base):
 class Books(Base):
     __tablename__ = 'books'
 
+    DEFAULT_PUBDATE = "0101-01-01 00:00:00+00:00"
+
     id = Column(Integer, primary_key=True)
     title = Column(String)
     sort = Column(String)
