@@ -181,6 +181,10 @@
           {% block body %}{% endblock %}
           {% if pagination and (pagination.has_next or pagination.has_prev) %}
             <div class="pagination">
+              {% if pagination.has_prev %}
+              <a class="previous" href="{{ url_for_other_page(pagination.page - 1)
+                }}">&laquo; {{_('Previous')}}</a>
+              {% endif %}
             {% for page in pagination.iter_pages() %}
               {% if page %}
                 {% if page != pagination.page %}
@@ -194,7 +198,7 @@
             {% endfor %}
             {% if pagination.has_next %}
               <a class="next" href="{{ url_for_other_page(pagination.page + 1)
-                }}">Next &raquo;</a>
+                }}">{{_('Next')}} &raquo;</a>
             {% endif %}
             </div>
           {% endif %}
