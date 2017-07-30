@@ -10,3 +10,4 @@ requests>=2.11.1
 SQLAlchemy>=0.8.4
 tornado>=4.1
 Wand>=0.4.4
+unidecode>=0.04.19
