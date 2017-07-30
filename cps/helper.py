@@ -176,7 +176,7 @@ def send_raw_email(kindle_mail, msg):
             mailserver.starttls()
 
         if settings["mail_password"]:
-            mailserver.login(settings["mail_login"], settings["mail_password"])
+            mailserver.login(str(settings["mail_login"]), str(settings["mail_password"]))
         mailserver.sendmail(settings["mail_from"], kindle_mail, msg)
         mailserver.quit()
 
