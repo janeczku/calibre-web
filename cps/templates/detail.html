@@ -5,9 +5,9 @@
     <div class="col-sm-3 col-lg-3 col-xs-5">
       <div class="cover">
         {% if entry.has_cover %}
-          <img src="{{ url_for('get_cover', cover_path=entry.path.replace('\\','/')) }}" />
+          <img src="{{ url_for('get_cover', cover_path=entry.path.replace('\\','/')) }}" alt="{{ entry.title }}" />
         {% else %}
-          <img src="{{ url_for('static', filename='generic_cover.jpg') }}" />
+          <img src="{{ url_for('static', filename='generic_cover.jpg') }}" alt="{{ entry.title }}" />
         {% endif %}
       </div>
     </div>
@@ -17,7 +17,7 @@
           {% if g.user.role_download() %}
             <div class="btn-group" role="group">
             {% if entry.data|length < 3 %}
-              <button id="btnGroupDrop1" type="button" class="btn btn-primary">
+              <button type="button" class="btn btn-primary">
                 {{_('Download')}} :
               </button>
                 {% for format in entry.data %}
@@ -44,11 +44,11 @@
             {% endif %}
           {% if (g.user.role_download() and g.user.is_anonymous()) or g.user.is_authenticated %}
               <div class="btn-group" role="group">
-                <button id="btnGroupDrop2" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <button id="read-in-browser" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   <span class="glyphicon glyphicon-eye-open"></span> {{_('Read in browser')}}
                   <span class="caret"></span>
                 </button>
-                <ul class="dropdown-menu" aria-labelledby="btnGroupDrop2">
+                <ul class="dropdown-menu" aria-labelledby="read-in-browser">
                   {% for format in entry.data %}
                   {%if format.format|lower == 'epub' or format.format|lower == 'txt' or format.format|lower == 'pdf' or format.format|lower == 'cbr' or format.format|lower == 'cbt' or format.format|lower == 'cbz' %}
                   <li><a target="_blank" href="{{ url_for('read_book', book_id=entry.id, book_format=format.format|lower) }}">{{format.format}}</a></li>
@@ -184,11 +184,11 @@
       {% if g.user.shelf.all() or g.public_shelfes %}
       <div id="shelf-actions" class="btn-toolbar" role="toolbar">
         <div class="btn-group" role="group" aria-label="Add to shelves">
-          <button id="btnGroupDrop2" type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <button id="add-to-shelf" type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <span class="glyphicon glyphicon-list"></span> {{_('Add to shelf')}}
             <span class="caret"></span>
           </button>
-          <ul id="add-to-shelves" class="dropdown-menu" aria-labelledby="btnGroupDrop2">
+          <ul id="add-to-shelves" class="dropdown-menu" aria-labelledby="add-to-shelf">
             {% for shelf in g.user.shelf %}
               {% if not shelf.id in books_shelfs and shelf.is_public != 1 %}
                 <li>
