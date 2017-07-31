@@ -2928,7 +2928,7 @@ def upload():
 
         title = meta.title
         author = meta.author
-
+        tags = meta.tags
         title_dir = helper.get_valid_filename(title, False)
         author_dir = helper.get_valid_filename(author, False)
         data_name = title_dir
@@ -2995,6 +2995,11 @@ def upload():
         if upload_comment != "":
             db.session.add(db.Comments(upload_comment, db_book.id))
         db.session.commit()
+
+        input_tags = tags.split(',')
+        input_tags = map(lambda it: it.strip(), input_tags)
+        modify_database_object(input_tags, db_book.tags, db.Tags, db.session, 'tags')
+
         if db_language is not None:  # display Full name instead of iso639.part3
             db_book.languages[0].language_name = _(meta.languages)
         author_names = []
