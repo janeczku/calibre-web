@@ -62,3 +62,5 @@ span.glyphicon.glyphicon-tags {padding-right: 5px;color: #999;vertical-align: te
 #shelf-action-errors {
     margin-left: 5px;
 }
+
+tags_click, .serie_click, .language_click {margin-right: 5px;}
