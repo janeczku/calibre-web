@@ -2719,6 +2719,35 @@ def edit_book(book_id):
 
     # Update book
     edited_books_id = set()
+
+    # Check and handle Uploaded file
+    if 'btn-upload-format' in request.files and '.' in request.files['btn-upload-format'].filename:
+        requested_file = request.files['btn-upload-format']
+        file_ext = requested_file.filename.rsplit('.', 1)[-1].lower()
+        if file_ext not in ALLOWED_EXTENSIONS:
+            flash(_('File extension "%s" is not allowed to be uploaded to this server' % file_ext), category="error")
+            return redirect(url_for('index'))
+
+        file_name = book.path.rsplit('/', 1)[-1]
+        filepath = config.config_calibre_dir + os.sep + book.path
+        filepath = os.path.normpath(filepath)
+        saved_filename = filepath + os.sep + file_name + '.' + file_ext
+        file_size = os.path.getsize(requested_file.stream.name)
+
+        try:
+            requested_file.save(saved_filename)
+        except OSError:
+            flash(_(u"Failed to store file %s." % saved_filename), category="error")
+            return redirect(url_for('index'))
+
+        is_format = db.session.query(db.Data).filter(db.Data.book == book_id).filter(db.Data.format == file_ext.upper()).first()
+        if is_format:
+            # Format entry already exists, no need to update the database
+            pass
+        else:
+            db_format = db.Data(book_id, file_ext.upper(), file_size, file_name)
+            db.session.add(db_format)
+
     to_save = request.form.to_dict()
     if book.title != to_save["book_title"]:
         book.title = to_save["book_title"]
