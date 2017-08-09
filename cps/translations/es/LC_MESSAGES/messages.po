@@ -480,6 +480,10 @@ msgstr "Descarga"
 msgid "Upload"
 msgstr "Subir archivo"
 
+#: cps/templates/detail.html:14
+msgid "Upload format"
+msgstr "Subir formato"
+
 #: cps/templates/admin.html:15
 msgid "Edit"
 msgstr "Editar"
