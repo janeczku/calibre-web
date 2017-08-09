@@ -2738,18 +2738,7 @@ def edit_book(book_id):
             edited_books_id.add(book.id)
             book.author_sort = helper.get_sorted_author(input_authors[0])
 
-    if to_save["cover_url"] and os.path.splitext(to_save["cover_url"])[1].lower() == ".jpg":
-        img = requests.get(to_save["cover_url"])
-        if config.config_use_google_drive:
-            tmpDir = tempfile.gettempdir()
-            f = open(os.path.join(tmpDir, "uploaded_cover.jpg"), "wb")
-            f.write(img.content)
-            f.close()
-            gdriveutils.uploadFileToEbooksFolder(Gdrive.Instance().drive, os.path.join(book.path, 'cover.jpg'), os.path.join(tmpDir, f.name))
-        else:
-            f = open(os.path.join(config.config_calibre_dir, book.path, "cover.jpg"), "wb")
-            f.write(img.content)
-            f.close()
+    if to_save["cover_url"] and save_cover(to_save["cover_url"], book.path):
         book.has_cover = 1
 
     if book.series_index != to_save["series_index"]:
@@ -2899,6 +2888,25 @@ def edit_book(book_id):
     else:
         return render_title_template('book_edit.html', book=book, authors=author_names, cc=cc,
                                      title=_(u"edit metadata"))
+
+
+def save_cover(url, book_path):
+    img = requests.get(url)
+    if img.headers.get('content-type') != 'image/jpeg':
+        return false
+
+    if config.config_use_google_drive:
+        tmpDir = tempfile.gettempdir()
+        f = open(os.path.join(tmpDir, "uploaded_cover.jpg"), "wb")
+        f.write(img.content)
+        f.close()
+        gdriveutils.uploadFileToEbooksFolder(Gdrive.Instance().drive, os.path.join(book_path, 'cover.jpg'), os.path.join(tmpDir, f.name))
+        return true
+
+    f = open(os.path.join(config.config_calibre_dir, book_path, "cover.jpg"), "wb")
+    f.write(img.content)
+    f.close()
+    return true
 
 
 @app.route("/upload", methods=["GET", "POST"])
