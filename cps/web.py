@@ -2933,7 +2933,7 @@ def upload():
         author_dir = helper.get_valid_filename(author, False)
         data_name = title_dir
         filepath = config.config_calibre_dir + os.sep + author_dir + os.sep + title_dir
-        saved_filename = filepath + os.sep + data_name + meta.extension
+        saved_filename = filepath + os.sep + data_name + meta.extension.lower()
 
         if not os.path.exists(filepath):
             try:
