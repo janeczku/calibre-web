@@ -1,8 +1,31 @@
 /**
  * Created by SpeedProg on 05.04.2015.
  */
-/* global Bloodhound */
+/* global Bloodhound, language, Modernizr, tinymce */
 
+tinymce.init({
+    selector: "#description",
+    branding: false,
+    menubar: "edit view format",
+    language
+});
+
+if (!Modernizr.inputtypes.date) {
+    $("#pubdate").datepicker({
+        format: "yyyy-mm-dd",
+        language
+    }).on("change", function () {
+        // Show localized date over top of the standard YYYY-MM-DD date
+        let pubDate;
+        const results = /(\d{4})[-\/\\](\d{1,2})[-\/\\](\d{1,2})/.exec(this.value); // YYYY-MM-DD
+        if (results) {
+            pubDate = new Date(results[1], parseInt(results[2], 10)-1, results[3]) || new Date(this.value);
+        }
+        $("#fake_pubdate")
+            .val(pubDate.toLocaleDateString(language))
+            .removeClass("hidden");
+    }).trigger("change");
+}
 
 /*
 Takes a prefix, query typeahead callback, Bloodhound typeahead adapter
