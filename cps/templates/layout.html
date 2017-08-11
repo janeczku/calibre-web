@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="{{ g.user.locale }}">
   <head>
     <title>{{instance}} | {{title}}</title>
     <meta charset="utf-8">
@@ -19,28 +19,9 @@
       <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
     <![endif]-->
 
-    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <!--script src="https://code.jquery.com/jquery.js"></script-->
-    <script src="{{ url_for('static', filename='js/libs/jquery.min.js') }}"></script>
-    <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="{{ url_for('static', filename='js/libs/bootstrap.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/libs/underscore-min.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/libs/intention.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/libs/context.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/libs/plugins.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/libs/jquery.form.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
-
     {% block header %}{% endblock %}
   </head>
   <body>
-    <script>
-      $(document).ready(function(){
-        $("#btn-upload").change(function() {
-          $("#form-upload").submit();
-        });
-      });
-    </script>  
     <!-- Static navbar -->
     <div class="navbar navbar-default navbar-static-top" role="navigation">
       <div class="container-fluid">
@@ -56,7 +37,8 @@
         {% if g.user.is_authenticated or g.user.is_anonymous() %}
           <form class="navbar-form navbar-left" role="search" action="{{url_for('search')}}" method="GET">
             <div class="form-group input-group input-group-sm">
-              <input type="text" class="form-control" name="query" placeholder="{{_('Search')}}">
+              <label for="query" class="sr-only">{{_('Search')}}</label>
+              <input type="text" class="form-control" id="query" name="query" placeholder="{{_('Search')}}">
               <span class="input-group-btn">
                 <button type="submit" class="btn btn-default">{{_('Go!')}}</button>
               </span>
@@ -181,6 +163,10 @@
           {% block body %}{% endblock %}
           {% if pagination and (pagination.has_next or pagination.has_prev) %}
             <div class="pagination">
+              {% if pagination.has_prev %}
+              <a class="previous" href="{{ url_for_other_page(pagination.page - 1)
+                }}">&laquo; {{_('Previous')}}</a>
+              {% endif %}
             {% for page in pagination.iter_pages() %}
               {% if page %}
                 {% if page != pagination.page %}
@@ -194,7 +180,7 @@
             {% endfor %}
             {% if pagination.has_next %}
               <a class="next" href="{{ url_for_other_page(pagination.page + 1)
-                }}">Next &raquo;</a>
+                }}">{{_('Next')}} &raquo;</a>
             {% endif %}
             </div>
           {% endif %}
@@ -216,6 +202,26 @@
       </div>
     </div>
     {% block modal %}{% endblock %}
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <!--script src="https://code.jquery.com/jquery.js"></script-->
+    <script src="{{ url_for('static', filename='js/libs/jquery.min.js') }}"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="{{ url_for('static', filename='js/libs/bootstrap.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/libs/underscore-min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/libs/intention.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/libs/context.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/libs/plugins.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/libs/jquery.form.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <script type="text/javascript">
+        $(function() {
+            $("#btn-upload").change(function() {
+                $("#form-upload").submit();
+            });
+        });
+    </script>
+
     {% block js %}{% endblock %}
   </body>
 </html>
