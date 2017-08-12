@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2017-08-12 18:19+0200\n"
+"POT-Creation-Date: 2017-08-12 18:55+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -198,7 +198,7 @@ msgstr ""
 msgid "Read a Book"
 msgstr ""
 
-#: cps/web.py:1888 cps/web.py:2512
+#: cps/web.py:1888 cps/web.py:2513
 msgid "Please fill out all fields!"
 msgstr ""
 
@@ -253,7 +253,7 @@ msgstr ""
 msgid "There was an error sending this book: %(res)s"
 msgstr ""
 
-#: cps/web.py:2048 cps/web.py:2597
+#: cps/web.py:2048 cps/web.py:2598
 msgid "Please configure your kindle email address first..."
 msgstr ""
 
@@ -313,121 +313,121 @@ msgstr ""
 msgid "Change order of Shelf: '%(name)s'"
 msgstr ""
 
-#: cps/web.py:2325
+#: cps/web.py:2326
 msgid "Found an existing account for this email address."
 msgstr ""
 
-#: cps/web.py:2327 cps/web.py:2331
+#: cps/web.py:2328 cps/web.py:2332
 #, python-format
 msgid "%(name)s's profile"
 msgstr ""
 
-#: cps/web.py:2328
+#: cps/web.py:2329
 msgid "Profile updated"
 msgstr ""
 
-#: cps/web.py:2342
+#: cps/web.py:2343
 msgid "Admin page"
 msgstr ""
 
-#: cps/web.py:2466
+#: cps/web.py:2467
 msgid "Calibre-web configuration updated"
 msgstr ""
 
-#: cps/web.py:2473 cps/web.py:2479 cps/web.py:2493
+#: cps/web.py:2474 cps/web.py:2480 cps/web.py:2494
 msgid "Basic Configuration"
 msgstr ""
 
-#: cps/web.py:2477
+#: cps/web.py:2478
 msgid "DB location is not valid, please enter correct path"
 msgstr ""
 
-#: cps/templates/admin.html:34 cps/web.py:2514 cps/web.py:2567
+#: cps/templates/admin.html:34 cps/web.py:2515 cps/web.py:2568
 msgid "Add new user"
 msgstr ""
 
-#: cps/web.py:2559
+#: cps/web.py:2560
 #, python-format
 msgid "User '%(user)s' created"
 msgstr ""
 
-#: cps/web.py:2563
+#: cps/web.py:2564
 msgid "Found an existing account for this email address or nickname."
 msgstr ""
 
-#: cps/web.py:2585
+#: cps/web.py:2586
 msgid "Mail settings updated"
 msgstr ""
 
-#: cps/web.py:2592
+#: cps/web.py:2593
 #, python-format
 msgid "Test E-Mail successfully send to %(kindlemail)s"
 msgstr ""
 
-#: cps/web.py:2595
+#: cps/web.py:2596
 #, python-format
 msgid "There was an error sending the Test E-Mail: %(res)s"
 msgstr ""
 
-#: cps/web.py:2599
+#: cps/web.py:2600
 msgid "E-Mail settings updated"
 msgstr ""
 
-#: cps/web.py:2600
+#: cps/web.py:2601
 msgid "Edit mail settings"
 msgstr ""
 
-#: cps/web.py:2629
+#: cps/web.py:2630
 #, python-format
 msgid "User '%(nick)s' deleted"
 msgstr ""
 
-#: cps/web.py:2727
+#: cps/web.py:2728
 #, python-format
 msgid "User '%(nick)s' updated"
 msgstr ""
 
-#: cps/web.py:2730
+#: cps/web.py:2731
 msgid "An unknown error occured."
 msgstr ""
 
-#: cps/web.py:2733
+#: cps/web.py:2734
 #, python-format
 msgid "Edit User %(nick)s"
 msgstr ""
 
-#: cps/web.py:2755
+#: cps/web.py:2756
 msgid "Error opening eBook. File does not exist or file is not accessible"
 msgstr ""
 
-#: cps/web.py:2770 cps/web.py:2953 cps/web.py:3077
+#: cps/web.py:2771 cps/web.py:2954 cps/web.py:3078
 msgid "edit metadata"
 msgstr ""
 
-#: cps/web.py:2782 cps/web.py:2786
+#: cps/web.py:2783 cps/web.py:2787
 msgid "unknown"
 msgstr ""
 
-#: cps/web.py:2971
+#: cps/web.py:2972
 #, python-format
 msgid "File extension \"%s\" is not allowed to be uploaded to this server"
 msgstr ""
 
-#: cps/web.py:2977
+#: cps/web.py:2978
 msgid "File to be uploaded must have an extension"
 msgstr ""
 
-#: cps/web.py:2996
+#: cps/web.py:2997
 #, python-format
 msgid "Failed to create path %s (Permission denied)."
 msgstr ""
 
-#: cps/web.py:3001
+#: cps/web.py:3002
 #, python-format
 msgid "Failed to store file %s (Permission denied)."
 msgstr ""
 
-#: cps/web.py:3006
+#: cps/web.py:3007
 #, python-format
 msgid "Failed to delete file %s (Permission denied)."
 msgstr ""
