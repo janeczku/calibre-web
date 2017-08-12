@@ -33,21 +33,21 @@ msgstr "未安装"
 #: cps/helper.py:77
 #, python-format
 msgid "kindlegen binary %(kindlepath)s not found"
-msgstr ""
+msgstr "找不到kindlegen二进制 %(kindlepath)s"
 
 #: cps/helper.py:83
 #, python-format
 msgid "epub format not found for book id: %(book)d"
-msgstr ""
+msgstr "没有找到书籍ID %(book)d 的epub格式"
 
 #: cps/helper.py:93
 msgid "kindlegen failed, no excecution permissions"
-msgstr ""
+msgstr "kindlegen失败，没有可执行权限"
 
 #: cps/helper.py:108
 #, python-format
 msgid "Kindlegen failed with Error %(error)s. Message: %(message)s"
-msgstr ""
+msgstr "Kindlegen 因为错误 %(error)s 失败。消息： %(message)s"
 
 #: cps/helper.py:187
 #, python-format
@@ -104,23 +104,23 @@ msgstr "更新完成，请按确定并刷新页面"
 
 #: cps/web.py:1012
 msgid "Recently Added Books"
-msgstr ""
+msgstr "最近添加的书籍"
 
 #: cps/web.py:1021
 msgid "Newest Books"
-msgstr ""
+msgstr "最新书籍"
 
 #: cps/web.py:1030
 msgid "Oldest Books"
-msgstr ""
+msgstr "最旧书籍"
 
 #: cps/web.py:1039
 msgid "Books (A-Z)"
-msgstr ""
+msgstr "书籍 (A-Z)"
 
 #: cps/web.py:1048
 msgid "Books (Z-A)"
-msgstr ""
+msgstr "书籍 (Z-A)"
 
 #: cps/web.py:1079
 msgid "Hot Books (most downloaded)"
@@ -176,7 +176,7 @@ msgstr "分类: %(name)s"
 
 #: cps/web.py:1320
 msgid "Excecution permissions missing"
-msgstr ""
+msgstr "可执行权限缺失"
 
 #: cps/web.py:1334
 msgid "Statistics"
@@ -243,15 +243,15 @@ msgstr "登录"
 
 #: cps/web.py:1904 cps/web.py:1935
 msgid "Token not found"
-msgstr ""
+msgstr "找不到Token"
 
 #: cps/web.py:1912 cps/web.py:1943
 msgid "Token has expired"
-msgstr ""
+msgstr "Token已过期"
 
 #: cps/web.py:1920
 msgid "Success! Please return to your device"
-msgstr ""
+msgstr "成功！请返回您的设备"
 
 #: cps/web.py:1970
 msgid "Please configure the SMTP mail settings first..."
@@ -320,7 +320,7 @@ msgstr "书架: '%(name)s'"
 
 #: cps/web.py:2161
 msgid "Error opening shelf. Shelf does not exist or is not accessible"
-msgstr ""
+msgstr "打开书架出错。书架不存在或不可访问"
 
 #: cps/web.py:2193
 #, python-format
@@ -412,7 +412,7 @@ msgstr "编辑用户 %(nick)s"
 
 #: cps/web.py:2685 cps/web.py:2689
 msgid "unknown"
-msgstr ""
+msgstr "未知"
 
 #: cps/web.py:2848 cps/web.py:2851 cps/web.py:2961
 msgid "edit metadata"
@@ -420,7 +420,7 @@ msgstr "编辑元数据"
 
 #: cps/web.py:2853
 msgid "Error opening eBook. File does not exist or file is not accessible"
-msgstr ""
+msgstr "打开电子书出错。文件不存在或不可访问"
 
 #: cps/web.py:2872
 #, python-format
@@ -553,7 +553,7 @@ msgstr "匿名浏览"
 
 #: cps/templates/admin.html:67 cps/templates/remote_login.html:4
 msgid "Remote Login"
-msgstr ""
+msgstr "远程登录"
 
 #: cps/templates/admin.html:80
 msgid "Administration"
@@ -614,7 +614,7 @@ msgstr "正在更新，请不要刷新页面"
 
 #: cps/templates/book_edit.html:16
 msgid "Delete Book"
-msgstr ""
+msgstr "删除书籍"
 
 #: cps/templates/book_edit.html:22 cps/templates/search_form.html:6
 msgid "Book Title"
@@ -678,11 +678,11 @@ msgstr "提交"
 
 #: cps/templates/book_edit.html:133
 msgid "Are really you sure?"
-msgstr ""
+msgstr "您真的确认？"
 
 #: cps/templates/book_edit.html:136
 msgid "Book will be deleted from Calibre database"
-msgstr ""
+msgstr "书籍会被从Calibre数据库和硬盘中删除"
 
 #: cps/templates/book_edit.html:137
 msgid "and from hard disk"
@@ -690,7 +690,7 @@ msgstr ""
 
 #: cps/templates/book_edit.html:141
 msgid "Delete"
-msgstr ""
+msgstr "删除"
 
 #: cps/templates/book_edit.html:157
 msgid "Keyword"
@@ -776,7 +776,7 @@ msgstr "随机书籍显示数量"
 
 #: cps/templates/config_edit.html:68
 msgid "Regular expression for ignoring columns"
-msgstr ""
+msgstr "忽略列的正则表达式"
 
 #: cps/templates/config_edit.html:72
 msgid "Regular expression for title sorting"
@@ -796,7 +796,7 @@ msgstr "启用注册"
 
 #: cps/templates/config_edit.html:98
 msgid "Enable remote login (\"magic link\")"
-msgstr ""
+msgstr "启用远程登录 (\"魔法链接\")"
 
 #: cps/templates/config_edit.html:100
 msgid "Default Settings for new users"
@@ -820,7 +820,7 @@ msgstr "允许编辑"
 
 #: cps/templates/config_edit.html:119 cps/templates/user_edit.html:104
 msgid "Allow Delete books"
-msgstr ""
+msgstr "允许删除书籍"
 
 #: cps/templates/config_edit.html:123 cps/templates/user_edit.html:109
 msgid "Allow Changing Password"
@@ -828,7 +828,7 @@ msgstr "允许修改密码"
 
 #: cps/templates/config_edit.html:127 cps/templates/user_edit.html:113
 msgid "Allow Editing Public Shelfs"
-msgstr ""
+msgstr "允许编辑公共书架"
 
 #: cps/templates/config_edit.html:134 cps/templates/layout.html:93
 #: cps/templates/login.html:4
@@ -985,32 +985,32 @@ msgstr "浏览"
 
 #: cps/templates/layout.html:124
 msgid "Recently Added"
-msgstr ""
+msgstr "最近添加"
 
 #: cps/templates/layout.html:127
 msgid "Sorted Books"
-msgstr ""
+msgstr "已排序书籍"
 
 #: cps/templates/layout.html:131 cps/templates/layout.html:132
 #: cps/templates/layout.html:133 cps/templates/layout.html:134
 msgid "Sort By"
-msgstr ""
+msgstr "排序"
 
 #: cps/templates/layout.html:131
 msgid "Newest"
-msgstr ""
+msgstr "最新"
 
 #: cps/templates/layout.html:132
 msgid "Oldest"
-msgstr ""
+msgstr "最旧"
 
 #: cps/templates/layout.html:133
 msgid "Ascending"
-msgstr ""
+msgstr "升序"
 
 #: cps/templates/layout.html:134
 msgid "Descending"
-msgstr ""
+msgstr "降序"
 
 #: cps/templates/layout.html:148
 msgid "Discover"
@@ -1056,7 +1056,7 @@ msgstr "记住我"
 
 #: cps/templates/login.html:22
 msgid "Log in with magic link"
-msgstr ""
+msgstr "通过魔法链接登录"
 
 #: cps/templates/osd.xml:5
 msgid "Calibre Web ebook catalog"
@@ -1096,15 +1096,15 @@ msgstr "您的邮箱地址"
 
 #: cps/templates/remote_login.html:6
 msgid "Using your another device, visit"
-msgstr ""
+msgstr "使用您的另一个设备访问"
 
 #: cps/templates/remote_login.html:6
 msgid "and log in"
-msgstr ""
+msgstr "和登录"
 
 #: cps/templates/remote_login.html:9
 msgid "Once you do so, you will automatically get logged in on this device."
-msgstr ""
+msgstr "一旦您这样做了，您在这个设备上会自动登录。"
 
 #: cps/templates/search.html:6
 msgid "No Results for:"
@@ -1144,11 +1144,11 @@ msgstr "修改顺序"
 
 #: cps/templates/shelf.html:54
 msgid "Do you really want to delete the shelf?"
-msgstr ""
+msgstr "您真的想要删除这个书架吗？"
 
 #: cps/templates/shelf.html:57
 msgid "Shelf will be lost for everybody and forever!"
-msgstr ""
+msgstr "书架将会永远丢失！"
 
 #: cps/templates/shelf_edit.html:13
 msgid "should the shelf be public?"
