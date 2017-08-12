@@ -2316,8 +2316,9 @@ def profile():
             content.sidebar_view += ub.SIDEBAR_READ_AND_UNREAD
         if "show_detail_random" in to_save:
             content.sidebar_view += ub.DETAIL_RANDOM
-        if "default_language" in to_save:
-            content.default_language = to_save["default_language"]
+
+        content.mature_content = "show_mature_content" in to_save
+
         try:
             ub.session.commit()
         except IntegrityError:
