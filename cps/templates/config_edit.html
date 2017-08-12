@@ -73,6 +73,13 @@
       <input type="text" class="form-control" name="config_title_regex" id="config_title_regex" value="{% if content.config_title_regex != None %}{{ content.config_title_regex }}{% endif %}" autocomplete="off">
     </div>
     <div class="form-group">
+      <label for="config_mature_content_tags">{{_('Tags for Mature Content')}}</label>
+      <input type="text" class="form-control" name="config_mature_content_tags" id="config_mature_content_tags"
+             value="{% if content.config_mature_content_tags != None%}{{ content.config_mature_content_tags }}{% endif %}"
+             autocomplete="off"
+      >
+    </div>
+    <div class="form-group">
     <label for="config_log_level">{{_('Log Level')}}</label>
         <select name="config_log_level" id="config_log_level" class="form-control">
                 <option value="10" {% if content.config_log_level == 10 %}selected{% endif %}>DEBUG</option>
