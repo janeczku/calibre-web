@@ -375,7 +375,7 @@ class Config:
                     (self.config_default_role & ROLE_DELETE_BOOKS == ROLE_DELETE_BOOKS))
 
     def mature_content_tags(self):
-        return self.config_mature_content_tags.split(",")
+        return list(map(unicode.lstrip, self.config_mature_content_tags.split(",")))
 
     def get_Log_Level(self):
         ret_value=""
