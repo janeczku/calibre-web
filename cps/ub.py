@@ -167,13 +167,14 @@ class Anonymous(AnonymousUserMixin, UserBase):
         self.loadSettings()
 
     def loadSettings(self):
-        data = session.query(User).filter(User.role.op('&')(ROLE_ANONYMOUS) == ROLE_ANONYMOUS).first()
+        data = session.query(User).filter(User.role.op('&')(ROLE_ANONYMOUS) == ROLE_ANONYMOUS).first()  # type: User
         settings = session.query(Settings).first()
         self.nickname = data.nickname
         self.role = data.role
         self.sidebar_view = data.sidebar_view
         self.default_language = data.default_language
         self.locale = data.locale
+        self.mature_content = data.mature_content
         self.anon_browse = settings.config_anonbrowse
 
     def role_admin(self):
