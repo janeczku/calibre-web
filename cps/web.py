@@ -21,6 +21,7 @@ from flask import (Flask, render_template, request, Response, redirect,
                    url_for, send_from_directory, make_response, g, flash,
                    abort, Markup, stream_with_context)
 from flask import __version__ as flaskVersion
+import cache_buster
 import ub
 from ub import config
 import helper
@@ -200,6 +201,7 @@ mimetypes.add_type('image/vnd.djvu', '.djvu')
 
 app = (Flask(__name__))
 app.wsgi_app = ReverseProxied(app.wsgi_app)
+cache_buster.init_cache_busting(app)
 
 gevent_server = None
 
