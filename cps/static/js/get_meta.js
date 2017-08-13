@@ -8,7 +8,7 @@
 var dbResults = [];
 var ggResults = [];
 
-$(document).ready(function () {
+$(function () {
     var msg = i18nMsg;
     var douban = "https://api.douban.com";
     var dbSearch = "/v2/book/search";
@@ -22,9 +22,6 @@ $(document).ready(function () {
     var ggDone = false;
 
     var showFlag = 0;
-    String.prototype.replaceAll = function (s1, s2) {
-        return this.replace(new RegExp(s1, "gm"), s2);
-    };
 
     function showResult () {
         var book;
@@ -32,11 +29,11 @@ $(document).ready(function () {
         var bookHtml;
         showFlag++;
         if (showFlag === 1) {
-            $("#metaModal #meta-info").html("<ul id=\"book-list\" class=\"media-list\"></ul>");
+            $("#meta-info").html("<ul id=\"book-list\" class=\"media-list\"></ul>");
         }
         if (ggDone && dbDone) {
             if (!ggResults && !dbResults) {
-                $("#metaModal #meta-info").html("<p class=\"text-danger\">"+ msg.no_result +"</p>");
+                $("#meta-info").html("<p class=\"text-danger\">"+ msg.no_result +"</p>");
                 return;
             }
         }
@@ -62,7 +59,7 @@ $(document).ready(function () {
                     "<p>"+ msg.source + ":<a href=\"https://books.google.com\" target=\"_blank\">Google Books</a></p>" +
                     "</div>" +
                     "</li>";
-                $("#metaModal #book-list").append(bookHtml);
+                $("#book-list").append(bookHtml);
             }
             ggDone = false;
         }
@@ -82,24 +79,22 @@ $(document).ready(function () {
                     "<p>" + msg.source + ":<a href=\"https://book.douban.com\" target=\"_blank\">Douban Books</a></p>" +
                     "</div>" +
                     "</li>";
-                $("#metaModal #book-list").append(bookHtml);
+                $("#book-list").append(bookHtml);
             }
             dbDone = false;
         }
     }
 
     function ggSearchBook (title) {
-        title = title.replaceAll(/\s+/, "+");
-        var url = google + ggSearch + "?q=" + title;
         $.ajax({
-            url,
+            url: google + ggSearch + "?q=" + title.replace(/\s+/gm, "+"),
             type: "GET",
             dataType: "jsonp",
             jsonp: "callback",
-            success (data) {
+            success: function success(data) {
                 ggResults = data.items;
             },
-            complete () {
+            complete: function complete() {
                 ggDone = true;
                 showResult();
             }
@@ -107,19 +102,18 @@ $(document).ready(function () {
     }
 
     function dbSearchBook (title) {
-        var url = douban + dbSearch + "?q=" + title + "&fields=all&count=10";
         $.ajax({
-            url,
+            url: douban + dbSearch + "?q=" + title + "&fields=all&count=10",
             type: "GET",
             dataType: "jsonp",
             jsonp: "callback",
-            success (data) {
+            success: function success(data) {
                 dbResults = data.books;
             },
-            error () {
-                $("#metaModal #meta-info").html("<p class=\"text-danger\">"+ msg.search_error+"!</p>");
+            error: function error() {
+                $("#meta-info").html("<p class=\"text-danger\">"+ msg.search_error+"!</p>");
             },
-            complete () {
+            complete: function complete() {
                 dbDone = true;
                 showResult();
             }
@@ -128,7 +122,7 @@ $(document).ready(function () {
 
     function doSearch (keyword) {
         showFlag = 0;
-        $("#metaModal #meta-info").text(msg.loading);
+        $("#meta-info").text(msg.loading);
         // var keyword = $("#keyword").val();
         if (keyword) {
             dbSearchBook(keyword);
@@ -153,6 +147,7 @@ $(document).ready(function () {
 
 });
 
+// eslint-disable-next-line no-unused-vars
 function getMeta (source, id) {
     var meta;
     var tags;
@@ -181,6 +176,5 @@ function getMeta (source, id) {
         }
         $("#tags").val(tags);
         $("#rating").val(Math.round(meta.rating.average / 2));
-        return;
     }
 }
