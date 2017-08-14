@@ -60,6 +60,25 @@ $(function() {
         layoutMode : "fitRows"
     });
 
+    function initLazyLoad() {
+        $("img.lazy").each(function() {
+            var $this = $(this).one("unveil", function() {
+                this.$loader = $("<span/>", {
+                    class: "glyphicon glyphicon-refresh glyphicon-refresh-animate loader"
+                });
+                $this.closest(".has-loader").prepend(this.$loader);
+            });
+        }).unveil(200, function() {
+            var $this = $(this).on("load", function() {
+                this.$loader.remove();
+                $this.closest(".has-loader").removeClass("has-loader");
+                $this.removeClass("lazy-not-loaded");
+            });
+        });
+    }
+
+    initLazyLoad();
+
     $(".load-more .row").infinitescroll({
         debug: false,
         navSelector  : ".pagination",
@@ -72,6 +91,8 @@ $(function() {
                    // selector for all items you'll retrieve
     }, function(data) {
         $(".load-more .row").isotope( "appended", $(data), null );
+
+        initLazyLoad();
     });
 
     $("#sendbtn").click(function() {
