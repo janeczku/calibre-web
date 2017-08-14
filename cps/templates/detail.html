@@ -259,5 +259,17 @@
 {% endblock %}
 
 {% block js %}
+<script type="text/template" id="template-shelf-add">
+  <li>
+    <a href="<%= add %>" data-remove-href="<%= remove %>" data-shelf-action="add">
+      <%= content %>
+    </a>
+  </li>
+</script>
+<script type="text/template" id="template-shelf-remove">
+  <a href="<%= remove %>" data-add-href="<%= add %>" class="btn btn-sm btn-default" data-shelf-action="remove">
+    <span class="glyphicon glyphicon-remove"></span> <%= content %>
+  </a>
+</script>
 <script src="{{ url_for('static', filename='js/details.js') }}"></script>
 {% endblock %}
