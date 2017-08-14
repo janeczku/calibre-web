@@ -3,12 +3,14 @@
  */
 /* global Bloodhound, language, Modernizr, tinymce */
 
+if ($("#description").length) {
 tinymce.init({
     selector: "#description",
     branding: false,
     menubar: "edit view format",
     language
 });
+
 
 if (!Modernizr.inputtypes.date) {
     $("#pubdate").datepicker({
@@ -26,7 +28,7 @@ if (!Modernizr.inputtypes.date) {
             .removeClass("hidden");
     }).trigger("change");
 }
-
+}
 /*
 Takes a prefix, query typeahead callback, Bloodhound typeahead adapter
  and returns the completions it gets from the bloodhound engine prefixed.
