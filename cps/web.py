@@ -1134,7 +1134,7 @@ def author(book_id, page):
     name = db.session.query(db.Authors).filter(db.Authors.id == book_id).first().name
 
     author_info = None
-    other_books = None
+    other_books = []
     if goodreads_support and config.config_use_goodreads:
         gc = GoodreadsClient(config.config_goodreads_api_key, config.config_goodreads_api_secret)
         author_info = gc.find_author(author_name=name)
