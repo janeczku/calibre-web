@@ -30,7 +30,7 @@ if __name__ == '__main__':
         else:
             web.app.logger.info('Falling back to Tornado')
             http_server = HTTPServer(WSGIContainer(web.app))
-            http_server.listen(web.ub.config.config_port)
+            http_server.listen(web.ub.config.config_port, '0.0.0.0')
             IOLoop.instance().start()
             IOLoop.instance().close(True)
 
