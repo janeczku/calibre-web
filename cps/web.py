@@ -3094,5 +3094,5 @@ def upload():
 def start_gevent():
     from gevent.wsgi import WSGIServer
     global gevent_server
-    gevent_server = WSGIServer(('', ub.config.config_port), app)
+    gevent_server = WSGIServer(('0.0.0.0', ub.config.config_port), app)
     gevent_server.serve_forever()
