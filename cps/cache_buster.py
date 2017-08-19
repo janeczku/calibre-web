@@ -14,7 +14,7 @@ def init_cache_busting(app):
     because whenever the resource changes, so does its URL.
     """
 
-    static_folder = app.static_folder  # the rooted path to the static file folder
+    static_folder = os.path.join(app.static_folder, '')  # path to the static file folder, with trailing slash
 
     hash_table = {}  # map of file hashes
 
@@ -28,7 +28,8 @@ def init_cache_busting(app):
                 version = hashlib.md5(f.read()).hexdigest()[:7]
 
             # save version to tables
-            file_path = rooted_filename.replace(static_folder + "/", "")
+            file_path = rooted_filename.replace(static_folder, "")
+            file_path = file_path.replace("\\", "/")  # Convert Windows path to web path
             hash_table[file_path] = version
     app.logger.debug('Finished computing cache-busting values')
 
