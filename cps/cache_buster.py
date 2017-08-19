@@ -14,7 +14,7 @@ def init_cache_busting(app):
     because whenever the resource changes, so does its URL.
     """
 
-    static_folder = app.static_folder  # the rooted path to the static file folder
+    static_folder = os.path.join(app.static_folder, '')  # path to the static file folder, with trailing slash
 
     hash_table = {}  # map of file hashes
 
@@ -25,11 +25,12 @@ def init_cache_busting(app):
             # compute version component
             rooted_filename = os.path.join(dirpath, filename)
             with open(rooted_filename, 'r') as f:
-                version = hashlib.md5(f.read()).hexdigest()[:7]
+                file_hash = hashlib.md5(f.read()).hexdigest()[:7]
 
             # save version to tables
-            file_path = rooted_filename.replace(static_folder + "/", "")
-            hash_table[file_path] = version
+            file_path = rooted_filename.replace(static_folder, "")
+            file_path = file_path.replace("\\", "/")  # Convert Windows path to web path
+            hash_table[file_path] = file_hash
     app.logger.debug('Finished computing cache-busting values')
 
     def bust_filename(filename):
@@ -43,8 +44,10 @@ def init_cache_busting(app):
         """
         Make `url_for` produce busted filenames when using the 'static' endpoint.
         """
-        if endpoint == 'static':
-            values["q"] = bust_filename(values['filename'])
+        if endpoint == "static":
+            file_hash = bust_filename(values["filename"])
+            if file_hash:
+                values["q"] = file_hash
 
     def debusting_static_view(filename):
         """
@@ -53,5 +56,5 @@ def init_cache_busting(app):
         return original_static_view(filename=unbust_filename(filename))
 
     # Replace the default static file view with our debusting view.
-    original_static_view = app.view_functions['static']
-    app.view_functions['static'] = debusting_static_view
+    original_static_view = app.view_functions["static"]
+    app.view_functions["static"] = debusting_static_view
