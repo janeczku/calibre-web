@@ -2994,8 +2994,8 @@ def upload():
         tags = meta.tags
         series = meta.series
         series_index = meta.series_id
-        title_dir = helper.get_valid_filename(title, False)
-        author_dir = helper.get_valid_filename(author, False)
+        title_dir = helper.get_valid_filename(title)
+        author_dir = helper.get_valid_filename(author)
         data_name = title_dir
         filepath = config.config_calibre_dir + os.sep + author_dir + os.sep + title_dir
         saved_filename = filepath + os.sep + data_name + meta.extension.lower()
