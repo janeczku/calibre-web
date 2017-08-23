@@ -212,13 +212,24 @@ class BookShelf(Base):
     def __repr__(self):
         return '<Book %r>' % self.id
 
+
 class ReadBook(Base):
     __tablename__ = 'book_read_link'
 
-    id=Column(Integer, primary_key=True)
+    id = Column(Integer, primary_key=True)
     book_id = Column(Integer, unique=False)
-    user_id =Column(Integer, ForeignKey('user.id'), unique=False)
+    user_id = Column(Integer, ForeignKey('user.id'), unique=False)
     is_read = Column(Boolean, unique=False)
+
+
+class Bookmark(Base):
+    __tablename__ = 'bookmark'
+
+    id = Column(Integer, primary_key=True)
+    user_id = Column(Integer, ForeignKey('user.id'))
+    book_id = Column(Integer)
+    format = Column(String(collation='NOCASE'))
+    bookmark_key = Column(String)
 
 
 # Baseclass representing Downloads from calibre-web in app.db
@@ -396,7 +407,9 @@ class Config:
 # rows with SQL commands
 def migrate_Database():
     if not engine.dialect.has_table(engine.connect(), "book_read_link"):
-        ReadBook.__table__.create(bind = engine)
+        ReadBook.__table__.create(bind=engine)
+    if not engine.dialect.has_table(engine.connect(), "bookmark"):
+        Bookmark.__table__.create(bind=engine)
 
     try:
         session.query(exists().where(User.locale)).scalar()
