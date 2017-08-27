@@ -64,6 +64,8 @@ Tick to enable remote login, i.e. a link that allows user to log in via a differ
 
 Python 2.7+
 
+To install dependencies, run `pip install --target vendor -r requirements.txt`. To install optional dependencies, run `pip install --target vendor -r optional-requirements.txt`.
+
 Optionally, to enable on-the-fly conversion from EPUB to MOBI when using the send-to-kindle feature:
 
 [Download](http://www.amazon.com/gp/feature.html?docId=1000765211) Amazon's KindleGen tool for your platform and place the binary named as `kindlegen` in the `vendor` folder.
