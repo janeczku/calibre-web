@@ -8,10 +8,15 @@ except ImportError:
     gdrive_support = False
 
 try:
-    from goodreads import client as gr_client
+    from goodreads.client import GoodreadsClient
     goodreads_support = True
 except ImportError:
     goodreads_support = False
+
+try:
+    from functools import reduce
+except ImportError:
+    pass  # We're not using Python 3
 
 import mimetypes
 import logging
@@ -1169,19 +1174,26 @@ def author_list():
 def author(book_id, page):
     entries, random, pagination = fill_indexpage(page, db.Books, db.Books.authors.any(db.Authors.id == book_id),
                                                  db.Books.timestamp.desc())
-    if entries:
-        name = db.session.query(db.Authors).filter(db.Authors.id == book_id).first().name
-
-        author_info = None
-        if goodreads_support and config.config_use_goodreads:
-            gc = gr_client.GoodreadsClient(config.config_goodreads_api_key, config.config_goodreads_api_secret)
-            author_info = gc.find_author(author_name=name)
-
-        return render_title_template('author.html', entries=entries, pagination=pagination,
-                                     title=name, author=author_info)
-    else:
+    if entries is None:
         flash(_(u"Error opening eBook. File does not exist or file is not accessible:"), category="error")
         return redirect(url_for("index"))
+
+    name = db.session.query(db.Authors).filter(db.Authors.id == book_id).first().name
+
+    author_info = None
+    other_books = None
+    if goodreads_support and config.config_use_goodreads:
+        gc = GoodreadsClient(config.config_goodreads_api_key, config.config_goodreads_api_secret)
+        author_info = gc.find_author(author_name=name)
+
+        # Get all identifiers (ISBN, Goodreads, etc) and filter author's books by that list so we show fewer duplicates
+        # Note: Not all images will be shown, even though they're available on Goodreads.com.
+        #       See https://www.goodreads.com/topic/show/18213769-goodreads-book-images
+        identifiers = reduce(lambda acc, book: acc + map(lambda identifier: identifier.val, book.identifiers), entries.all(), [])
+        other_books = filter(lambda book: book.isbn not in identifiers and book.gid["#text"] not in identifiers, author_info.books)
+
+    return render_title_template('author.html', entries=entries, pagination=pagination,
+                                 title=name, author=author_info, other_books=other_books)
 
 
 @app.route("/series")
