@@ -19,7 +19,9 @@
 {% endif %}
 
 <div class="discover load-more">
-  <h3>{{_("In Library")}}</h3>
+  {% if author is not none %}
+    <h3>{{_("In Library")}}</h3>
+  {% endif %}
   <div class="row">
     {% if entries[0] %}
     {% for entry in entries %}
