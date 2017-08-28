@@ -55,10 +55,38 @@ span.glyphicon.glyphicon-tags {padding-right: 5px;color: #999;vertical-align: te
 .block-label {display: block;}
 .fake-input {position: absolute; pointer-events: none; top: 0;}
 
+input.pill { position: absolute; opacity: 0; }
+input.pill + label {
+    border: 2px solid #45b29d;
+    border-radius: 15px;
+    color: #45b29d;
+    cursor: pointer;
+    display: inline-block;
+    padding: 3px 15px;
+    user-select: none;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+input.pill:checked + label {
+    background-color: #45b29d;
+    border-color: #fff;
+    color: #fff;
+}
+input.pill:not(:checked) + label .glyphicon {
+    display: none;
+}
+
 .author-bio img {margin: 0 1em 1em 0;}
-.author-link img {display: inline-block;max-width: 100px;}
+.author-link {display: inline-block; margin-top: 10px; width: 100px;}
+.author-link img {display: block; height: 100%;}
 
 #remove-from-shelves .btn,
 #shelf-action-errors {
     margin-left: 5px;
 }
+
+.tags_click, .serie_click, .language_click {margin-right: 5px;}
+
+#meta-info img { max-height: 150px; max-width: 100px; cursor: pointer; }
+
+.padded-bottom { margin-bottom: 15px; }

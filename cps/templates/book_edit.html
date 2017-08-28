@@ -139,7 +139,7 @@
       <div class="modal-header bg-danger text-center">
           <span>{{_('Are really you sure?')}}</span>
       </div>
-        <div class="modal-body text-center" id="meta-info">
+        <div class="modal-body text-center">
           <span>{{_('Book will be deleted from Calibre database')}}</span>
           <span>{{_('and from hard disk')}}</span>
         </div>
@@ -154,22 +154,35 @@
 {% endif %}
 
 <div class="modal fade" id="metaModal" tabindex="-1" role="dialog" aria-labelledby="metaModalLabel">
-  <div class="modal-dialog" role="document">
+  <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title" id="metaModalLabel">{{_('Get metadata')}}</h4>
-        <form class="form-inline">
-          <div class="form-group">
+        <form class="padded-bottom" id="meta-search">
+          <div class="input-group">
             <label class="sr-only" for="keyword">{{_('Keyword')}}</label>
-            <input type="text" class="form-control" id="keyword" placeholder="{{_(" Search keyword ")}}">
+            <input type="text" class="form-control" id="keyword" name="keyword" placeholder="{{_(" Search keyword ")}}">
+            <span class="input-group-btn">
+              <button type="submit" class="btn btn-primary" id="do-search">{{_("Go!")}}</button>
+            </span>
           </div>
-          <button type="button" class="btn btn-default" id="do-search">{{_("Go!")}}</button>
-          <span>{{_('Click the cover to load metadata to the form')}}</span>
         </form>
+        <div>{{_('Click the cover to load metadata to the form')}}</div>
       </div>
-      <div class="modal-body" id="meta-info">
-        {{_("Loading...")}}
+      <div class="modal-body">
+        <div class="text-center padded-bottom">
+          <input type="checkbox" id="show-douban" class="pill" data-control="douban" checked>
+          <label for="show-douban">Douban <span class="glyphicon glyphicon-ok"></span></label>
+
+          <input type="checkbox" id="show-google" class="pill" data-control="google" checked>
+          <label for="show-google">Google <span class="glyphicon glyphicon-ok"></span></label>
+        </div>
+
+        <div id="meta-info">
+          {{_("Loading...")}}
+        </div>
+        <ul id="book-list" class="media-list"></ul>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">{{_('Close')}}</button>
@@ -180,6 +193,31 @@
 {% endblock %}
 
 {% block js %}
+<script type="text/template" id="template-book-result">
+  <li class="media" data-related="<%= source.id %>">
+    <img class="pull-left img-responsive"
+         data-toggle="modal"
+         data-target="#metaModal"
+         src="<%= cover %>"
+         alt="Cover"
+    >
+    <div class="media-body">
+      <h4 class="media-heading">
+        <a href="<%= url %>" target="_blank" rel="noopener"><%= title %></a>
+      </h4>
+      <p>{{_('Author')}}：<%= authors.join(" & ") %></p>
+      <% if (publisher) { %>
+        <p>{{_('Publisher')}}：<%= publisher %></p>
+      <% } %>
+      <% if (description) { %>
+        <p>{{_('Description')}}: <%= description %></p>
+      <% } %>
+      <p>{{_('Source')}}:
+        <a href="<%= source.url %>" target="_blank" rel="noopener"><%= source.description %></a>
+      </p>
+    </div>
+  </li>
+</script>
 <script>
   var i18nMsg = {
     'loading': {{_('Loading...')|safe|tojson}},

@@ -1,0 +1,96 @@
+{
+  "env": {
+    "browser": true,
+    "jquery": true
+  },
+  "globals": {
+    "alert": true
+  },
+  "rules": {
+    "arrow-parens": 2,
+    "block-scoped-var": 1,
+    "brace-style": 2,
+    "camelcase": 1,
+    "comma-spacing": 2,
+    "curly": [2, "multi-line", "consistent"],
+    "eqeqeq": 2,
+    "indent": [
+      2,
+      4,
+      {
+        "SwitchCase": 1
+      }
+    ],
+    "keyword-spacing": 2,
+    "linebreak-style": 2,
+    "new-cap": 2,
+    "no-dupe-args": 2,
+    "no-dupe-class-members": 2,
+    "no-dupe-keys": 2,
+    "no-duplicate-case": 2,
+    "no-caller": 2,
+    "no-class-assign": 2,
+    "no-cond-assign": 2,
+    "no-const-assign": 2,
+    "no-console": 2,
+    "no-debugger": 2,
+    "no-delete-var": 2,
+    "no-empty": 2,
+    "no-eval": 2,
+    "no-extend-native": 2,
+    "no-extra-boolean-cast": 2,
+    "no-extra-semi": 2,
+    "no-fallthrough": [
+      2,
+      {
+        "commentPattern": "break[\\s\\w]*omitted"
+      }
+    ],
+    "no-implied-eval": 2,
+    "no-invalid-regexp": 2,
+    "no-irregular-whitespace": 2,
+    "no-iterator": 2,
+    "no-loop-func": 2,
+    "no-mixed-operators": 2,
+    "no-mixed-spaces-and-tabs": 2,
+    "no-multi-str": 2,
+    "no-new": 2,
+    "no-obj-calls": 2,
+    "no-octal": 2,
+    "no-redeclare": 2,
+    "no-regex-spaces": 2,
+    "no-script-url": 2,
+    "no-sparse-arrays": 2,
+    "no-undef": 2,
+    "no-undefined": 2,
+    "no-unreachable": 2,
+    "no-unsafe-negation": 2,
+    "no-unused-vars": 2,
+    "no-use-before-define": [
+      2,
+      {
+        "classes": false,
+        "functions": false
+      }
+    ],
+    "quotes": [
+      2,
+      "double"
+    ],
+    "require-yield": 2,
+    "semi": [
+      2,
+      "always"
+    ],
+    "space-before-blocks": 2,
+    "space-infix-ops": 2,
+    "space-unary-ops": 2,
+    "use-isnan": 2,
+    "valid-typeof": 2,
+    "wrap-iife": [
+      2,
+      "any"
+    ],
+    "yield-star-spacing": 2
+  }
+}

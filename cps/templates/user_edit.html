@@ -40,45 +40,48 @@
             {% endfor %}
         </select>
     </div>
-      <div class="col-sm-6">
-
-    <div class="form-group">
-        <input type="checkbox" name="show_random" id="show_random" {% if content.show_random_books() %}checked{% endif %}>
-        <label for="show_random">{{_('Show random books')}}</label>
+    <div class="col-sm-6">
+      <div class="form-group">
+        <input type="checkbox" name="show_mature_content" id="show_mature_content" {% if content.mature_content %}checked{% endif %}>
+        <label for="show_mature_content">{{_('Show mature content')}}</label>
+      </div>
+      <div class="form-group">
+          <input type="checkbox" name="show_random" id="show_random" {% if content.show_random_books() %}checked{% endif %}>
+          <label for="show_random">{{_('Show random books')}}</label>
+      </div>
+      <div class="form-group">
+          <input type="checkbox" name="show_hot" id="show_hot" {% if content.show_hot_books() %}checked{% endif %}>
+          <label for="show_hot">{{_('Show hot books')}}</label>
+      </div>
+      <div class="form-group">
+          <input type="checkbox" name="show_best_rated" id="show_best_rated" {% if content.show_best_rated_books() %}checked{% endif %}>
+          <label for="show_best_rated">{{_('Show best rated books')}}</label>
+      </div>
+      <div class="form-group">
+          <input type="checkbox" name="show_language" id="show_language" {% if content.show_language() %}checked{% endif %}>
+          <label for="show_language">{{_('Show language selection')}}</label>
+      </div>
+      <div class="form-group">
+          <input type="checkbox" name="show_series" id="show_series" {% if content.show_series() %}checked{% endif %}>
+          <label for="show_series">{{_('Show series selection')}}</label>
+      </div>
+      <div class="form-group">
+          <input type="checkbox" name="show_category" id="show_category" {% if content.show_category() %}checked{% endif %}>
+          <label for="show_category">{{_('Show category selection')}}</label>
+      </div>
+      <div class="form-group">
+          <input type="checkbox" name="show_author" id="show_author" {% if content.show_author() %}checked{% endif %}>
+          <label for="show_author">{{_('Show author selection')}}</label>
+      </div>
+      <div class="form-group">
+          <input type="checkbox" name="show_read_and_unread" id="show_read_and_unread" {% if content.show_read_and_unread() %}checked{% endif %}>
+          <label for="show_read_and_unread">{{_('Show read and unread')}}</label>
+      </div>
+      <div class="form-group">
+          <input type="checkbox" name="show_detail_random" id="show_detail_random" {% if content.show_detail_random() %}checked{% endif %}>
+          <label for="show_detail_random">{{_('Show random books in detail view')}}</label>
+      </div>
     </div>
-    <div class="form-group">
-        <input type="checkbox" name="show_hot" id="show_hot" {% if content.show_hot_books() %}checked{% endif %}>
-        <label for="show_hot">{{_('Show hot books')}}</label>
-    </div>
-    <div class="form-group">
-        <input type="checkbox" name="show_best_rated" id="show_best_rated" {% if content.show_best_rated_books() %}checked{% endif %}>
-        <label for="show_best_rated">{{_('Show best rated books')}}</label>
-    </div>
-    <div class="form-group">
-        <input type="checkbox" name="show_language" id="show_language" {% if content.show_language() %}checked{% endif %}>
-        <label for="show_language">{{_('Show language selection')}}</label>
-    </div>
-    <div class="form-group">
-        <input type="checkbox" name="show_series" id="show_series" {% if content.show_series() %}checked{% endif %}>
-        <label for="show_series">{{_('Show series selection')}}</label>
-    </div>
-    <div class="form-group">
-        <input type="checkbox" name="show_category" id="show_category" {% if content.show_category() %}checked{% endif %}>
-        <label for="show_category">{{_('Show category selection')}}</label>
-    </div>
-    <div class="form-group">
-        <input type="checkbox" name="show_author" id="show_author" {% if content.show_author() %}checked{% endif %}>
-        <label for="show_author">{{_('Show author selection')}}</label>
-    </div>
-    <div class="form-group">
-        <input type="checkbox" name="show_read_and_unread" id="show_read_and_unread" {% if content.show_read_and_unread() %}checked{% endif %}>
-        <label for="show_read_and_unread">{{_('Show read and unread')}}</label>
-    </div>
-    <div class="form-group">
-        <input type="checkbox" name="show_detail_random" id="show_detail_random" {% if content.show_detail_random() %}checked{% endif %}>
-        <label for="show_detail_random">{{_('Show random books in detail view')}}</label>
-    </div>
-</div>
       <div class="col-sm-6">
     {% if g.user and g.user.role_admin() and not profile %}
     {% if not content.role_anonymous() %}
