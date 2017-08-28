@@ -11,16 +11,17 @@
   {%if author.about is not none %}
   <p>{{author.about|safe}}</p>
   {% endif %}
-</section>
 
-<a href="{{author.link}}" class="author-link" target="_blank">
-  <img src="{{ url_for('static', filename='img/goodreads.svg') }}" alt="Goodreads">
-</a>
+  - {{_("via")}} <a href="{{author.link}}" class="author-link" target="_blank" rel="noopener">Goodreads</a>
+</section>
 
 <div class="clearfix"></div>
 {% endif %}
 
 <div class="discover load-more">
+  {% if author is not none %}
+    <h3>{{_("In Library")}}</h3>
+  {% endif %}
   <div class="row">
     {% if entries[0] %}
     {% for entry in entries %}
@@ -62,4 +63,48 @@
     {% endif %}
   </div>
 </div>
+
+{% if other_books is not none %}
+<div class="discover">
+  <h3>{{_("More by")}} {{ author.name|safe }}</h3>
+  <div class="row">
+    {% for entry in other_books %}
+    <div class="col-sm-3 col-lg-2 col-xs-6 book">
+      <div class="cover">
+        <a href="https://www.goodreads.com/book/show/{{ entry.gid['#text'] }}" target="_blank" rel="noopener">
+          <img src="{{ entry.image_url }}" />
+        </a>
+      </div>
+      <div class="meta">
+        <p class="title">{{entry.title|shortentitle}}</p>
+        <p class="author">
+          {% for author in entry.authors %}
+          <a href="https://www.goodreads.com/author/show/{{ author.gid }}" target="_blank" rel="noopener">
+            {{author.name}}
+          </a>
+          {% if not loop.last %}
+          &amp;
+          {% endif %}
+          {% endfor %}
+        </p>
+        <div class="rating">
+          {% for number in range((entry.average_rating)|float|round|int(2)) %}
+          <span class="glyphicon glyphicon-star good"></span>
+          {% if loop.last and loop.index < 5 %}
+          {% for numer in range(5 - loop.index) %}
+          <span class="glyphicon glyphicon-star"></span>
+          {% endfor %}
+          {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+  <a href="{{author.link}}" class="author-link" target="_blank" rel="noopener">
+    <img src="{{ url_for('static', filename='img/goodreads.svg') }}" alt="Goodreads">
+  </a>
+</div>
+{% endif %}
 {% endblock %}

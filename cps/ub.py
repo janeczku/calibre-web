@@ -157,6 +157,7 @@ class User(UserBase, Base):
     locale = Column(String(2), default="en")
     sidebar_view = Column(Integer, default=1)
     default_language = Column(String(3), default="all")
+    mature_content = Column(Boolean, default=True)
 
 
 # Class for anonymous user is derived from User base and complets overrides methods and properties for the
@@ -166,13 +167,14 @@ class Anonymous(AnonymousUserMixin, UserBase):
         self.loadSettings()
 
     def loadSettings(self):
-        data = session.query(User).filter(User.role.op('&')(ROLE_ANONYMOUS) == ROLE_ANONYMOUS).first()
+        data = session.query(User).filter(User.role.op('&')(ROLE_ANONYMOUS) == ROLE_ANONYMOUS).first()  # type: User
         settings = session.query(Settings).first()
         self.nickname = data.nickname
         self.role = data.role
         self.sidebar_view = data.sidebar_view
         self.default_language = data.default_language
         self.locale = data.locale
+        self.mature_content = data.mature_content
         self.anon_browse = settings.config_anonbrowse
 
     def role_admin(self):
@@ -266,6 +268,7 @@ class Settings(Base):
     config_use_goodreads = Column(Boolean)
     config_goodreads_api_key = Column(String)
     config_goodreads_api_secret = Column(String)
+    config_mature_content_tags = Column(String)  # type: str
 
     def __repr__(self):
         pass
@@ -297,7 +300,7 @@ class Config:
         self.loadSettings()
 
     def loadSettings(self):
-        data = session.query(Settings).first()
+        data = session.query(Settings).first()  # type: Settings
         self.config_calibre_dir = data.config_calibre_dir
         self.config_port = data.config_port
         self.config_calibre_web_title = data.config_calibre_web_title
@@ -326,6 +329,7 @@ class Config:
         self.config_use_goodreads = data.config_use_goodreads
         self.config_goodreads_api_key = data.config_goodreads_api_key
         self.config_goodreads_api_secret = data.config_goodreads_api_secret
+        self.config_mature_content_tags = data.config_mature_content_tags
 
     @property
     def get_main_dir(self):
@@ -371,6 +375,8 @@ class Config:
         return bool((self.config_default_role is not None) and
                     (self.config_default_role & ROLE_DELETE_BOOKS == ROLE_DELETE_BOOKS))
 
+    def mature_content_tags(self):
+        return list(map(unicode.lstrip, self.config_mature_content_tags.split(",")))
 
     def get_Log_Level(self):
         ret_value=""
@@ -470,6 +476,11 @@ def migrate_Database():
             'side_lang': SIDEBAR_LANGUAGE, 'side_series': SIDEBAR_SERIES, 'side_category': SIDEBAR_CATEGORY,
             'side_hot': SIDEBAR_HOT, 'side_autor': SIDEBAR_AUTHOR, 'detail_random': DETAIL_RANDOM})
         session.commit()
+    try:
+        session.query(exists().where(User.mature_content)).scalar()
+    except exc.OperationalError:
+        conn = engine.connect()
+        conn.execute("ALTER TABLE user ADD column `mature_content` INTEGER DEFAULT 1")
     if session.query(User).filter(User.role.op('&')(ROLE_ANONYMOUS) == ROLE_ANONYMOUS).first() is None:
         create_anonymous_user()
     try:
@@ -484,6 +495,11 @@ def migrate_Database():
         conn.execute("ALTER TABLE Settings ADD column `config_use_goodreads` INTEGER DEFAULT 0")
         conn.execute("ALTER TABLE Settings ADD column `config_goodreads_api_key` String DEFAULT ''")
         conn.execute("ALTER TABLE Settings ADD column `config_goodreads_api_secret` String DEFAULT ''")
+    try:
+        session.query(exists().where(Settings.config_mature_content_tags)).scalar()
+    except exc.OperationalError:
+        conn = engine.connect()
+        conn.execute("ALTER TABLE Settings ADD column `config_mature_content_tags` String DEFAULT ''")
 
 def clean_database():
     # Remove expired remote login tokens

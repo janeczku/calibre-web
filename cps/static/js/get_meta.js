@@ -4,11 +4,11 @@
  * Google Books api document: https://developers.google.com/books/docs/v1/using
  * Douban Books api document: https://developers.douban.com/wiki/?title=book_v2 (Chinese Only)
  */
- /* global i18nMsg, tinymce */
+ /* global _, i18nMsg, tinymce */
 var dbResults = [];
 var ggResults = [];
 
-$(document).ready(function () {
+$(function () {
     var msg = i18nMsg;
     var douban = "https://api.douban.com";
     var dbSearch = "/v2/book/search";
@@ -22,113 +22,138 @@ $(document).ready(function () {
     var ggDone = false;
 
     var showFlag = 0;
-    String.prototype.replaceAll = function (s1, s2) {
-        return this.replace(new RegExp(s1, "gm"), s2);
+
+    var templates = {
+        bookResult: _.template(
+            $("#template-book-result").html()
+        )
     };
 
+    function populateForm (book) {
+        tinymce.get("description").setContent(book.description);
+        $("#bookAuthor").val(book.authors);
+        $("#book_title").val(book.title);
+        $("#tags").val(book.tags.join(","));
+        $("#rating").data("rating").setValue(Math.round(book.rating));
+        $(".cover img").attr("src", book.cover);
+        $("#cover_url").val(book.cover);
+    }
+
     function showResult () {
-        var book;
-        var i;
-        var bookHtml;
         showFlag++;
         if (showFlag === 1) {
-            $("#metaModal #meta-info").html("<ul id=\"book-list\" class=\"media-list\"></ul>");
+            $("#meta-info").html("<ul id=\"book-list\" class=\"media-list\"></ul>");
         }
         if (ggDone && dbDone) {
             if (!ggResults && !dbResults) {
-                $("#metaModal #meta-info").html("<p class=\"text-danger\">"+ msg.no_result +"</p>");
+                $("#meta-info").html("<p class=\"text-danger\">" + msg.no_result + "</p>");
                 return;
             }
         }
         if (ggDone && ggResults.length > 0) {
-            for (i = 0; i < ggResults.length; i++) {
-                book = ggResults[i];
-                var bookCover;
-                if (book.volumeInfo.imageLinks) {
-                    bookCover = book.volumeInfo.imageLinks.thumbnail;
-                } else {
-                    bookCover = "/static/generic_cover.jpg";
-                }
-                bookHtml = "<li class=\"media\">" +
-                    "<img class=\"pull-left img-responsive\" data-toggle=\"modal\" data-target=\"#metaModal\" src=\"" +
-                    bookCover + "\" alt=\"Cover\" style=\"width:100px;height:150px\" onclick='getMeta(\"google\"," +
-                    i + ")'>" +
-                    "<div class=\"media-body\">" +
-                    "<h4 class=\"media-heading\"><a href=\"https://books.google.com/books?id=" +
-                    book.id + "\"  target=\"_blank\">" + book.volumeInfo.title + "</a></h4>" +
-                    "<p>"+ msg.author +"：" + book.volumeInfo.authors + "</p>" +
-                    "<p>"+ msg.publisher + "：" + book.volumeInfo.publisher + "</p>" +
-                    "<p>"+ msg.description + ":" + book.volumeInfo.description + "</p>" +
-                    "<p>"+ msg.source + ":<a href=\"https://books.google.com\" target=\"_blank\">Google Books</a></p>" +
-                    "</div>" +
-                    "</li>";
-                $("#metaModal #book-list").append(bookHtml);
-            }
+            ggResults.forEach(function(result) {
+                var book = {
+                    id: result.id,
+                    title: result.volumeInfo.title,
+                    authors: result.volumeInfo.authors || [],
+                    description: result.volumeInfo.description || "",
+                    publisher: result.volumeInfo.publisher || "",
+                    publishedDate: result.volumeInfo.publishedDate || "",
+                    tags: result.volumeInfo.categories || [],
+                    rating: result.volumeInfo.averageRating || 0,
+                    cover: result.volumeInfo.imageLinks ?
+                        result.volumeInfo.imageLinks.thumbnail :
+                        "/static/generic_cover.jpg",
+                    url: "https://books.google.com/books?id=" + result.id,
+                    source: {
+                        id: "google",
+                        description: "Google Books",
+                        url: "https://books.google.com/"
+                    }
+                };
+
+                var $book = $(templates.bookResult(book));
+                $book.find("img").on("click", function () {
+                    populateForm(book);
+                });
+
+                $("#book-list").append($book);
+            });
             ggDone = false;
         }
         if (dbDone && dbResults.length > 0) {
-            for (i = 0; i < dbResults.length; i++) {
-                book = dbResults[i];
-                bookHtml = "<li class=\"media\">" +
-                    "<img class=\"pull-left img-responsive\" data-toggle=\"modal\" data-target=\"#metaModal\" src=\"" +
-                    book.image + "\" alt=\"Cover\" style=\"width:100px;height: 150px\" onclick='getMeta(\"douban\"," +
-                    i + ")'>" +
-                    "<div class=\"media-body\">" +
-                    "<h4 class=\"media-heading\"><a href=\"https://book.douban.com/subject/" +
-                    book.id + "\"  target=\"_blank\">" + book.title + "</a></h4>" +
-                    "<p>" + msg.author + "：" + book.author + "</p>" +
-                    "<p>" + msg.publisher + "：" + book.publisher + "</p>" +
-                    "<p>" + msg.description + ":" + book.summary + "</p>" +
-                    "<p>" + msg.source + ":<a href=\"https://book.douban.com\" target=\"_blank\">Douban Books</a></p>" +
-                    "</div>" +
-                    "</li>";
-                $("#metaModal #book-list").append(bookHtml);
-            }
+            dbResults.forEach(function(result) {
+                var book = {
+                    id: result.id,
+                    title: result.title,
+                    authors: result.author || [],
+                    description: result.summary,
+                    publisher: result.publisher || "",
+                    publishedDate: result.pubdate || "",
+                    tags: result.tags.map(function(tag) {
+                        return tag.title;
+                    }),
+                    rating: result.rating.average || 0,
+                    cover: result.image,
+                    url: "https://book.douban.com/subject/" + result.id,
+                    source: {
+                        id: "douban",
+                        description: "Douban Books",
+                        url: "https://book.douban.com/"
+                    }
+                };
+
+                var $book = $(templates.bookResult(book));
+                $book.find("img").on("click", function () {
+                    populateForm(book);
+                });
+
+                $("#book-list").append($book);
+            });
             dbDone = false;
         }
     }
 
     function ggSearchBook (title) {
-        title = title.replaceAll(/\s+/, "+");
-        var url = google + ggSearch + "?q=" + title;
         $.ajax({
-            url,
+            url: google + ggSearch + "?q=" + title.replace(/\s+/gm, "+"),
             type: "GET",
             dataType: "jsonp",
             jsonp: "callback",
-            success (data) {
+            success: function success(data) {
                 ggResults = data.items;
             },
-            complete () {
+            complete: function complete() {
                 ggDone = true;
                 showResult();
+                $("#show-google").trigger("change");
             }
         });
     }
 
     function dbSearchBook (title) {
-        var url = douban + dbSearch + "?q=" + title + "&fields=all&count=10";
         $.ajax({
-            url,
+            url: douban + dbSearch + "?q=" + title + "&fields=all&count=10",
             type: "GET",
             dataType: "jsonp",
             jsonp: "callback",
-            success (data) {
+            success: function success(data) {
                 dbResults = data.books;
             },
-            error () {
-                $("#metaModal #meta-info").html("<p class=\"text-danger\">"+ msg.search_error+"!</p>");
+            error: function error() {
+                $("#meta-info").html("<p class=\"text-danger\">" + msg.search_error + "!</p>");
             },
-            complete () {
+            complete: function complete() {
                 dbDone = true;
                 showResult();
+                $("#show-douban").trigger("change");
             }
         });
     }
 
     function doSearch (keyword) {
         showFlag = 0;
-        $("#metaModal #meta-info").text(msg.loading);
+        $("#meta-info").text(msg.loading);
         // var keyword = $("#keyword").val();
         if (keyword) {
             dbSearchBook(keyword);
@@ -136,7 +161,8 @@ $(document).ready(function () {
         }
     }
 
-    $("#do-search").click(function () {
+    $("#meta-search").on("submit", function (e) {
+        e.preventDefault();
         var keyword = $("#keyword").val();
         if (keyword) {
             doSearch(keyword);
@@ -152,35 +178,3 @@ $(document).ready(function () {
     });
 
 });
-
-function getMeta (source, id) {
-    var meta;
-    var tags;
-    if (source === "google") {
-        meta = ggResults[id];
-        tinymce.get("description").setContent(meta.volumeInfo.description);
-        $("#bookAuthor").val(meta.volumeInfo.authors.join(" & "));
-        $("#book_title").val(meta.volumeInfo.title);
-        if (meta.volumeInfo.categories) {
-            tags = meta.volumeInfo.categories.join(",");
-            $("#tags").val(tags);
-        }
-        if (meta.volumeInfo.averageRating) {
-            $("#rating").val(Math.round(meta.volumeInfo.averageRating));
-        }
-        return;
-    }
-    if (source === "douban") {
-        meta = dbResults[id];
-        tinymce.get("description").setContent(meta.summary);
-        $("#bookAuthor").val(meta.author.join(" & "));
-        $("#book_title").val(meta.title);
-        tags = "";
-        for (var i = 0; i < meta.tags.length; i++) {
-            tags = tags + meta.tags[i].title + ",";
-        }
-        $("#tags").val(tags);
-        $("#rating").val(Math.round(meta.rating.average / 2));
-        return;
-    }
-}
