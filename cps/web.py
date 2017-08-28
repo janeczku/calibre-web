@@ -511,7 +511,7 @@ def common_filters():
     if current_user.filter_language() != "all":
         lang_filter = db.Books.languages.any(db.Languages.lang_code == current_user.filter_language())
     else:
-        lang_filter = True
+        lang_filter = true()
     content_rating_filter = false() if current_user.mature_content else \
         db.Books.tags.any(db.Tags.name.in_(config.mature_content_tags()))
     return and_(lang_filter, ~content_rating_filter)
