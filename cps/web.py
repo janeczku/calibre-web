@@ -14,6 +14,12 @@ except ImportError:
     goodreads_support = False
 
 try:
+    import Levenshtein
+    levenshtein_support = True
+except ImportError:
+    levenshtein_support = False
+
+try:
     from functools import reduce
 except ImportError:
     pass  # We're not using Python 3
@@ -1134,19 +1140,34 @@ def author(book_id, page):
     name = db.session.query(db.Authors).filter(db.Authors.id == book_id).first().name
 
     author_info = None
-    other_books = None
+    other_books = []
     if goodreads_support and config.config_use_goodreads:
         gc = GoodreadsClient(config.config_goodreads_api_key, config.config_goodreads_api_secret)
         author_info = gc.find_author(author_name=name)
-
-        # Get all identifiers (ISBN, Goodreads, etc) and filter author's books by that list so we show fewer duplicates
-        # Note: Not all images will be shown, even though they're available on Goodreads.com.
-        #       See https://www.goodreads.com/topic/show/18213769-goodreads-book-images
-        identifiers = reduce(lambda acc, book: acc + map(lambda identifier: identifier.val, book.identifiers), entries.all(), [])
-        other_books = filter(lambda book: book.isbn not in identifiers and book.gid["#text"] not in identifiers, author_info.books)
+        other_books = get_unique_other_books(entries.all(), author_info.books)
 
     return render_title_template('author.html', entries=entries, pagination=pagination,
                                  title=name, author=author_info, other_books=other_books)
+
+
+def get_unique_other_books(library_books, author_books):
+    # Get all identifiers (ISBN, Goodreads, etc) and filter author's books by that list so we show fewer duplicates
+    # Note: Not all images will be shown, even though they're available on Goodreads.com.
+    #       See https://www.goodreads.com/topic/show/18213769-goodreads-book-images
+    identifiers = reduce(lambda acc, book: acc + map(lambda identifier: identifier.val, book.identifiers), library_books, [])
+    other_books = filter(lambda book: book.isbn not in identifiers and book.gid["#text"] not in identifiers, author_books)
+
+    # Fuzzy match book titles
+    if levenshtein_support:
+        library_titles = reduce(lambda acc, book: acc + [book.title], library_books, [])
+        other_books = filter(lambda author_book: not filter(
+            lambda library_book:
+            Levenshtein.ratio(re.sub(r"\(.*\)", "", author_book.title), library_book) > 0.7,  # Remove items in parentheses before comparing
+            library_titles
+        ), other_books)
+
+    return other_books
+
 
 
 @app.route("/series")
