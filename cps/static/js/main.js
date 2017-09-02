@@ -164,6 +164,31 @@ $(function() {
             $(this).find(".modal-body").html("...");
         });
 
+    $("#form-upload").ajaxForm({
+        beforeSend: function() {
+            // Replace upload button with progress bar
+            $("#upload-bar").width($("#form-upload").width());
+            $("#form-upload").hide();
+            $("#upload-bar").show();
+
+            var percentVal = "0%";
+            $("#upload-bar-val").width(percentVal);
+            $("#upload-bar-val").html(percentVal);
+        },
+        uploadProgress: function(event, position, total, percentComplete) {
+            var percentVal = percentComplete + "%";
+            $("#upload-bar-val").width(percentVal);
+            $("#upload-bar-val").html(percentVal);
+        },
+        error: function() {
+            $("#upload-bar").hide();
+            $("#form-upload").show();
+            alert("Upload failed.");
+        },
+        type: "post",
+        target: "html"
+    });
+
     $(window).resize(function() {
         $(".discover .row").isotope("reLayout");
     });

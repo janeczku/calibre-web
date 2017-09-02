@@ -56,6 +56,11 @@
               {% if g.user.role_upload() or g.user.role_admin()%}
                 {% if g.allow_upload %}
                     <li>
+                      <div id="upload-bar" class="navbar-text progress" style="display: none;">
+                          <div id="upload-bar-val" class="progress-bar">
+                              0%
+                          </div>
+                      </div>
                       <form id="form-upload" class="navbar-form" action="{{ url_for('upload') }}" method="post" enctype="multipart/form-data">
                         <div class="form-group">
                           <span class="btn btn-default btn-file">{{_('Upload')}} <input id="btn-upload" name="btn-upload" type="file"></span>
