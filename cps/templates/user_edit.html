@@ -42,10 +42,6 @@
     </div>
     <div class="col-sm-6">
       <div class="form-group">
-        <input type="checkbox" name="show_mature_content" id="show_mature_content" {% if content.mature_content %}checked{% endif %}>
-        <label for="show_mature_content">{{_('Show mature content')}}</label>
-      </div>
-      <div class="form-group">
           <input type="checkbox" name="show_random" id="show_random" {% if content.show_random_books() %}checked{% endif %}>
           <label for="show_random">{{_('Show random books')}}</label>
       </div>
@@ -88,6 +84,10 @@
     <div class="form-group">
       <input type="checkbox" name="admin_role" id="admin_role" {% if content.role_admin() %}checked{% endif %}>
       <label for="admin_role">{{_('Admin user')}}</label>
+    </div>  
+    <div class="form-group">
+        <input type="checkbox" name="show_mature_content" id="show_mature_content" {% if content.mature_content %}checked{% endif %}>
+        <label for="show_mature_content">{{_('Show mature content')}}</label>
     </div>
     {% endif %}
     <div class="form-group">
