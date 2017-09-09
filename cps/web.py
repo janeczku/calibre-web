@@ -1084,12 +1084,9 @@ def hot_books(page):
     hot_books = all_books.offset(off).limit(config.config_books_per_page)
     entries = list()
     for book in hot_books:
-        downloadBook = db.session.query(db.Books).filter(db.Books.id == book.Downloads.book_id).first()
+        downloadBook = db.session.query(db.Books).filter(common_filters()).filter(db.Books.id == book.Downloads.book_id).first()
         if downloadBook:
-            entries.append(
-                db.session.query(db.Books).filter(common_filters())
-                .filter(db.Books.id == book.Downloads.book_id).first()
-            )
+            entries.append(downloadBook)
         else:
             ub.session.query(ub.Downloads).filter(book.Downloads.book_id == ub.Downloads.book_id).delete()
             ub.session.commit()
