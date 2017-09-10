@@ -11,59 +11,6 @@
         <link rel="stylesheet" href="{{ url_for('static', filename='css/libs/normalize.css') }}">
         <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
         <link rel="stylesheet" href="{{ url_for('static', filename='css/popup.css') }}">
-        <script src="{{ url_for('static', filename='js/libs/jquery.min.js') }}"></script>
-        <script src="{{ url_for('static', filename='js/libs/zip.min.js') }}"></script>
-
-        <!-- Full Screen -->
-        <script src="{{ url_for('static', filename='js/libs/screenfull.min.js') }}"></script>
-
-        <!-- Render -->
-        <script src="{{ url_for('static', filename='js/libs/epub.min.js') }}"></script>
-
-        <!-- Hooks -->
-        <script src="{{ url_for('static', filename='js/libs/hooks.min.js') }}"></script>
-
-        <!-- Reader -->
-        <script src="{{ url_for('static', filename='js/libs/reader.min.js') }}"></script>
-
-        <script>
-            "use strict";
-            document.onreadystatechange = function () {
-              if (document.readyState == "complete") {
-                EPUBJS.filePath = "{{ url_for('static', filename='js/libs/') }}";
-                EPUBJS.cssPath = "{{ url_for('static', filename='css/') }}";
-
-                window.reader = ePubReader("{{ url_for('static', filename=bookid) }}/");
-                //keybind
-                /*$(document).keydown(function(event){
-                  if(event.keyCode == 37){
-                    //window.reader.book.prevPage();
-                    event.preventDefault();
-                  }
-                  if(event.keyCode == 39){
-                    //swindow.reader.book.nextPage();
-                    event.preventDefault();
-                  }
-                });
-                //bind mouse
-                $(window).bind('DOMMouseScroll mousewheel', function(event) {
-                  var delta = 0;
-                  if (event.originalEvent.wheelDelta) {
-                    delta = event.originalEvent.wheelDelta;
-                  }else if (event.originalEvent.detail) {
-                    delta = event.originalEvent.detail*-1;
-                  }
-                  if (delta >= 0) {
-                    window.reader.book.prevPage();
-                  }
-                  else {
-                    window.reader.book.nextPage();
-                  }
-                });*/
-              }
-            };
-        </script>
-
     </head>
     <body>
       <div id="sidebar">
@@ -129,5 +76,22 @@
           </div>
       </div>
       <div class="overlay"></div>
+
+      <script type="text/javascript">
+          window.calibre = {
+              filePath: "{{ url_for('static', filename='js/libs/') }}",
+              cssPath: "{{ url_for('static', filename='css/') }}",
+              bookUrl: "{{ url_for('static', filename=bookid) }}/",
+              bookmarkUrl: "{{ url_for('bookmark', book_id=bookid, book_format='EPUB') }}",
+              bookmark: "{{ bookmark.bookmark_key if bookmark != None }}"
+          };
+      </script>
+      <script src="{{ url_for('static', filename='js/libs/jquery.min.js') }}"></script>
+      <script src="{{ url_for('static', filename='js/libs/zip.min.js') }}"></script>
+      <script src="{{ url_for('static', filename='js/libs/screenfull.min.js') }}"></script>
+      <script src="{{ url_for('static', filename='js/libs/epub.min.js') }}"></script>
+      <script src="{{ url_for('static', filename='js/libs/hooks.min.js') }}"></script>
+      <script src="{{ url_for('static', filename='js/libs/reader.min.js') }}"></script>
+      <script src="{{ url_for('static', filename='js/reading/epub.js') }}"></script>
     </body>
 </html>

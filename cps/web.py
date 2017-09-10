@@ -1316,6 +1316,26 @@ def show_book(book_id):
         return redirect(url_for("index"))
 
 
+@app.route("/ajax/bookmark/<int:book_id>/<book_format>", methods=['POST'])
+@login_required
+def bookmark(book_id, book_format):
+    bookmark_key = request.form["bookmark"]
+    ub.session.query(ub.Bookmark).filter(ub.and_(ub.Bookmark.user_id == int(current_user.id),
+                                                 ub.Bookmark.book_id == book_id,
+                                                 ub.Bookmark.format == book_format)).delete()
+    if not bookmark_key:
+        ub.session.commit()
+        return "", 204
+
+    bookmark = ub.Bookmark(user_id=current_user.id,
+                           book_id=book_id,
+                           format=book_format,
+                           bookmark_key=bookmark_key)
+    ub.session.merge(bookmark)
+    ub.session.commit()
+    return "", 201
+
+
 @app.route("/admin")
 @login_required
 def admin_forbidden():
@@ -1750,48 +1770,50 @@ def unread_books(page):
 @login_required_if_no_ano
 def read_book(book_id, book_format):
     book = db.session.query(db.Books).filter(db.Books.id == book_id).first()
-    if book:
-        book_dir = os.path.join(config.get_main_dir, "cps", "static", str(book_id))
-        if not os.path.exists(book_dir):
-            os.mkdir(book_dir)
-        if book_format.lower() == "epub":
-            # check if mimetype file is exists
-            mime_file = str(book_id) + "/mimetype"
-            if not os.path.exists(mime_file):
-                epub_file = os.path.join(config.config_calibre_dir, book.path, book.data[0].name) + ".epub"
-                if not os.path.isfile(epub_file):
-                    raise ValueError('Error opening eBook. File does not exist: ', epub_file)
-                zfile = zipfile.ZipFile(epub_file)
-                for name in zfile.namelist():
-                    (dirName, fileName) = os.path.split(name)
-                    newDir = os.path.join(book_dir, dirName)
-                    if not os.path.exists(newDir):
-                        try:
-                            os.makedirs(newDir)
-                        except OSError as exception:
-                            if not exception.errno == errno.EEXIST:
-                                raise
-                    if fileName:
-                        fd = open(os.path.join(newDir, fileName), "wb")
-                        fd.write(zfile.read(name))
-                        fd.close()
-                zfile.close()
-            return render_title_template('read.html', bookid=book_id, title=_(u"Read a Book"))
-        elif book_format.lower() == "pdf":
-            return render_title_template('readpdf.html', pdffile=book_id, title=_(u"Read a Book"))
-        elif book_format.lower() == "txt":
-            return render_title_template('readtxt.html', txtfile=book_id, title=_(u"Read a Book"))
-        elif book_format.lower() == "cbr":
-            all_name = str(book_id) + "/" + book.data[0].name + ".cbr"
-            tmp_file = os.path.join(book_dir, book.data[0].name) + ".cbr"
-            if not os.path.exists(all_name):
-                cbr_file = os.path.join(config.config_calibre_dir, book.path, book.data[0].name) + ".cbr"
-                copyfile(cbr_file, tmp_file)
-            return render_title_template('readcbr.html', comicfile=all_name, title=_(u"Read a Book"))
-
-    else:
+    if not book:
         flash(_(u"Error opening eBook. File does not exist or file is not accessible:"), category="error")
         return redirect(url_for("index"))
+
+    book_dir = os.path.join(config.get_main_dir, "cps", "static", str(book_id))
+    if not os.path.exists(book_dir):
+        os.mkdir(book_dir)
+    bookmark = ub.session.query(ub.Bookmark).filter(ub.and_(ub.Bookmark.user_id == int(current_user.id),
+                                                            ub.Bookmark.book_id == book_id,
+                                                            ub.Bookmark.format == book_format.upper())).first()
+    if book_format.lower() == "epub":
+        # check if mimetype file is exists
+        mime_file = str(book_id) + "/mimetype"
+        if not os.path.exists(mime_file):
+            epub_file = os.path.join(config.config_calibre_dir, book.path, book.data[0].name) + ".epub"
+            if not os.path.isfile(epub_file):
+                raise ValueError('Error opening eBook. File does not exist: ', epub_file)
+            zfile = zipfile.ZipFile(epub_file)
+            for name in zfile.namelist():
+                (dirName, fileName) = os.path.split(name)
+                newDir = os.path.join(book_dir, dirName)
+                if not os.path.exists(newDir):
+                    try:
+                        os.makedirs(newDir)
+                    except OSError as exception:
+                        if not exception.errno == errno.EEXIST:
+                            raise
+                if fileName:
+                    fd = open(os.path.join(newDir, fileName), "wb")
+                    fd.write(zfile.read(name))
+                    fd.close()
+            zfile.close()
+        return render_title_template('read.html', bookid=book_id, title=_(u"Read a Book"), bookmark=bookmark)
+    elif book_format.lower() == "pdf":
+        return render_title_template('readpdf.html', pdffile=book_id, title=_(u"Read a Book"))
+    elif book_format.lower() == "txt":
+        return render_title_template('readtxt.html', txtfile=book_id, title=_(u"Read a Book"))
+    elif book_format.lower() == "cbr":
+        all_name = str(book_id) + "/" + book.data[0].name + ".cbr"
+        tmp_file = os.path.join(book_dir, book.data[0].name) + ".cbr"
+        if not os.path.exists(all_name):
+            cbr_file = os.path.join(config.config_calibre_dir, book.path, book.data[0].name) + ".cbr"
+            copyfile(cbr_file, tmp_file)
+        return render_title_template('readcbr.html', comicfile=all_name, title=_(u"Read a Book"))
 
 
 @app.route("/download/<int:book_id>/<book_format>")
