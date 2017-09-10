@@ -8,7 +8,7 @@
 
     var reader = ePubReader(calibre.bookUrl, {
         restore: true,
-        bookmarks: [calibre.bookmark]
+        bookmarks: calibre.bookmark ? [calibre.bookmark] : []
     });
     reader.on("reader:bookmarked", updateBookmark.bind(reader, "add"));
     reader.on("reader:unbookmarked", updateBookmark.bind(reader, "remove"));
@@ -21,7 +21,7 @@
         // Remove other bookmarks (there can only be one)
         if (action === "add") {
             this.settings.bookmarks.filter(function (bookmark) {
-                return bookmark !== location;
+                return bookmark && bookmark !== location;
             }).map(function (bookmark) {
                 this.removeBookmark(bookmark);
             }.bind(this));
