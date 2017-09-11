@@ -208,7 +208,7 @@ $("#search").on("change input.typeahead:selected", function() {
 
 $("#btn-upload-format").on("change", function () {
     var filename = $(this).val();
-    if (filename.substring(3,11) === "fakepath") {
+    if (filename.substring(3, 11) === "fakepath") {
         filename = filename.substring(12);
     } // Remove c:\fake at beginning from localhost chrome
     $("#upload-format").html(filename);
