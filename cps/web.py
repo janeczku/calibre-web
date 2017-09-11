@@ -2737,7 +2737,7 @@ def edit_book(book_id):
         filepath = config.config_calibre_dir + os.sep + book.path
         filepath = os.path.normpath(filepath)
         saved_filename = filepath + os.sep + file_name + '.' + file_ext
-        file_size = os.path.getsize(requested_file.stream.name)
+        file_size = os.path.getsize(saved_filename)
 
         try:
             requested_file.save(saved_filename)
