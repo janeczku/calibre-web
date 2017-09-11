@@ -103,6 +103,10 @@ $(function () {
                     }
                 };
 
+                if (book.rating > 0) {
+                    book.rating /= 2;
+                }
+
                 var $book = $(templates.bookResult(book));
                 $book.find("img").on("click", function () {
                     populateForm(book);
