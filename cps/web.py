@@ -1204,13 +1204,12 @@ def language_overview():
                 lang.name = _(isoLanguages.get(part3=lang.lang_code).name)
     else:
         try:
-            langfound = 1
             cur_l = LC.parse(current_user.filter_language())
         except Exception:
-            langfound = 0
+            cur_l = None
         languages = db.session.query(db.Languages).filter(
             db.Languages.lang_code == current_user.filter_language()).all()
-        if langfound:
+        if cur_l:
             languages[0].name = cur_l.get_language_name(get_locale())
         else:
             languages[0].name = _(isoLanguages.get(part3=languages[0].lang_code).name)
@@ -2146,6 +2145,7 @@ def edit_shelf(shelf_id):
 @login_required
 def delete_shelf(shelf_id):
     cur_shelf = ub.session.query(ub.Shelf).filter(ub.Shelf.id == shelf_id).first()
+    deleted = false
     if current_user.role_admin():
         deleted = ub.session.query(ub.Shelf).filter(ub.Shelf.id == shelf_id).delete()
     else:
