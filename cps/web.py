@@ -2737,7 +2737,6 @@ def edit_book(book_id):
         filepath = config.config_calibre_dir + os.sep + book.path
         filepath = os.path.normpath(filepath)
         saved_filename = filepath + os.sep + file_name + '.' + file_ext
-        file_size = os.path.getsize(saved_filename)
 
         try:
             requested_file.save(saved_filename)
@@ -2745,6 +2744,7 @@ def edit_book(book_id):
             flash(_(u"Failed to store file %s." % saved_filename), category="error")
             return redirect(url_for('index'))
 
+        file_size = os.path.getsize(saved_filename)
         is_format = db.session.query(db.Data).filter(db.Data.book == book_id).filter(db.Data.format == file_ext.upper()).first()
         if is_format:
             # Format entry already exists, no need to update the database
