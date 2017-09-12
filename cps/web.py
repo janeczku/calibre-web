@@ -3048,6 +3048,9 @@ def start_gevent():
     global gevent_server
     try:
         gevent_server = WSGIServer(('', ub.config.config_port), app)
+        gevent_server.serve_forever()
     except socket.error:
+        app.logger.info('Unable to listen on \'\', trying on IPv4 only...')
         gevent_server = WSGIServer(('0.0.0.0', ub.config.config_port), app)
-    gevent_server.serve_forever()
+        gevent_server.serve_forever()
+
