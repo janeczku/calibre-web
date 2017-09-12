@@ -77,7 +77,8 @@ input.pill:not(:checked) + label .glyphicon {
 }
 
 .author-bio img {margin: 0 1em 1em 0;}
-.author-link img {display: inline-block;max-width: 100px;}
+.author-link {display: inline-block; margin-top: 10px; width: 100px;}
+.author-link img {display: block; height: 100%;}
 
 #remove-from-shelves .btn,
 #shelf-action-errors {

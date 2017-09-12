@@ -8,10 +8,21 @@ except ImportError:
     gdrive_support = False
 
 try:
-    from goodreads import client as gr_client
+    from goodreads.client import GoodreadsClient
     goodreads_support = True
 except ImportError:
     goodreads_support = False
+
+try:
+    import Levenshtein
+    levenshtein_support = True
+except ImportError:
+    levenshtein_support = False
+
+try:
+    from functools import reduce
+except ImportError:
+    pass  # We're not using Python 3
 
 import mimetypes
 import logging
@@ -21,6 +32,7 @@ from flask import (Flask, render_template, request, Response, redirect,
                    url_for, send_from_directory, make_response, g, flash,
                    abort, Markup, stream_with_context)
 from flask import __version__ as flaskVersion
+import cache_buster
 import ub
 from ub import config
 import helper
@@ -200,6 +212,7 @@ mimetypes.add_type('image/vnd.djvu', '.djvu')
 
 app = (Flask(__name__))
 app.wsgi_app = ReverseProxied(app.wsgi_app)
+cache_buster.init_cache_busting(app)
 
 gevent_server = None
 
@@ -499,24 +512,29 @@ def edit_required(f):
     return inner
 
 
-# Fill indexpage with all requested data from database
-def fill_indexpage(page, database, db_filter, order):
+# Language and content filters
+def common_filters():
     if current_user.filter_language() != "all":
         lang_filter = db.Books.languages.any(db.Languages.lang_code == current_user.filter_language())
     else:
-        lang_filter = True
+        lang_filter = true()
     content_rating_filter = false() if current_user.mature_content else \
         db.Books.tags.any(db.Tags.name.in_(config.mature_content_tags()))
+    return and_(lang_filter, ~content_rating_filter)
+
+
+# Fill indexpage with all requested data from database
+def fill_indexpage(page, database, db_filter, order):
     if current_user.show_detail_random():
-        random = db.session.query(db.Books).filter(lang_filter).filter(~content_rating_filter)\
+        random = db.session.query(db.Books).filter(common_filters())\
             .order_by(func.random()).limit(config.config_random_books)
     else:
         random = false
     off = int(int(config.config_books_per_page) * (page - 1))
     pagination = Pagination(page, config.config_books_per_page,
                             len(db.session.query(database)
-                                .filter(db_filter).filter(lang_filter).filter(~content_rating_filter).all()))
-    entries = db.session.query(database).filter(db_filter).filter(lang_filter).filter(~content_rating_filter)\
+                                .filter(db_filter).filter(common_filters()).all()))
+    entries = db.session.query(database).filter(db_filter).filter(common_filters())\
         .order_by(order).offset(off).limit(config.config_books_per_page)
     return entries, random, pagination
 
@@ -638,19 +656,13 @@ def feed_normal_search():
 
 
 def feed_search(term):
-    if current_user.filter_language() != "all":
-        lang_filter = db.Books.languages.any(db.Languages.lang_code == current_user.filter_language())
-    else:
-        lang_filter = True
-    content_rating_filter = false() if current_user.mature_content else \
-        db.Books.tags.any(db.Tags.name.in_(config.mature_content_tags()))
     if term:
         entries = db.session.query(db.Books).filter(db.or_(db.Books.tags.any(db.Tags.name.like("%" + term + "%")),
                                                     db.Books.series.any(db.Series.name.like("%" + term + "%")),
                                                     db.Books.authors.any(db.Authors.name.like("%" + term + "%")),
                                                     db.Books.publishers.any(db.Publishers.name.like("%" + term + "%")),
                                                     db.Books.title.like("%" + term + "%")))\
-            .filter(lang_filter).filter(~content_rating_filter).all()
+            .filter(common_filters()).all()
         entriescount = len(entries) if len(entries) > 0 else 1
         pagination = Pagination(1, entriescount, entriescount)
         xml = render_title_template('feed.xml', searchterm=term, entries=entries, pagination=pagination)
@@ -678,13 +690,7 @@ def feed_new():
 @app.route("/opds/discover")
 @requires_basic_auth_if_no_ano
 def feed_discover():
-    if current_user.filter_language() != "all":
-        lang_filter = db.Books.languages.any(db.Languages.lang_code == current_user.filter_language())
-    else:
-        lang_filter = True
-    content_rating_filter = false() if current_user.mature_content else \
-        db.Books.tags.any(db.Tags.name.in_(config.mature_content_tags()))
-    entries = db.session.query(db.Books).filter(lang_filter).filter(~content_rating_filter).order_by(func.random())\
+    entries = db.session.query(db.Books).filter(common_filters()).order_by(func.random())\
         .limit(config.config_books_per_page)
     pagination = Pagination(1, config.config_books_per_page, int(config.config_books_per_page))
     xml = render_title_template('feed.xml', entries=entries, pagination=pagination)
@@ -713,12 +719,6 @@ def feed_hot():
     off = request.args.get("offset")
     if not off:
         off = 0
-    if current_user.filter_language() != "all":
-        lang_filter = db.Books.languages.any(db.Languages.lang_code == current_user.filter_language())
-    else:
-        lang_filter = True
-    content_rating_filter = false() if current_user.mature_content else \
-        db.Books.tags.any(db.Tags.name.in_(config.mature_content_tags()))
     all_books = ub.session.query(ub.Downloads, ub.func.count(ub.Downloads.book_id)).order_by(
         ub.func.count(ub.Downloads.book_id).desc()).group_by(ub.Downloads.book_id)
     hot_books = all_books.offset(off).limit(config.config_books_per_page)
@@ -727,8 +727,8 @@ def feed_hot():
         downloadBook = db.session.query(db.Books).filter(db.Books.id == book.Downloads.book_id).first()
         if downloadBook:
             entries.append(
-                db.session.query(db.Books).filter(lang_filter).filter(~content_rating_filter)
-                    .filter(db.Books.id == book.Downloads.book_id).first()
+                db.session.query(db.Books).filter(common_filters())
+                .filter(db.Books.id == book.Downloads.book_id).first()
             )
         else:
             ub.session.query(ub.Downloads).filter(book.Downloads.book_id == ub.Downloads.book_id).delete()
@@ -747,14 +747,7 @@ def feed_authorindex():
     off = request.args.get("offset")
     if not off:
         off = 0
-    if current_user.filter_language() != "all":
-        lang_filter = db.Books.languages.any(db.Languages.lang_code == current_user.filter_language())
-    else:
-        lang_filter = True
-    content_rating_filter = false() if current_user.mature_content else \
-        db.Books.tags.any(db.Tags.name.in_(config.mature_content_tags()))
-    entries = db.session.query(db.Authors).join(db.books_authors_link).join(db.Books)\
-        .filter(lang_filter).filter(~content_rating_filter)\
+    entries = db.session.query(db.Authors).join(db.books_authors_link).join(db.Books).filter(common_filters())\
         .group_by('books_authors_link.author').order_by(db.Authors.sort).limit(config.config_books_per_page).offset(off)
     pagination = Pagination((int(off) / (int(config.config_books_per_page)) + 1), config.config_books_per_page,
                             len(db.session.query(db.Authors).all()))
@@ -784,14 +777,7 @@ def feed_categoryindex():
     off = request.args.get("offset")
     if not off:
         off = 0
-    if current_user.filter_language() != "all":
-        lang_filter = db.Books.languages.any(db.Languages.lang_code == current_user.filter_language())
-    else:
-        lang_filter = True
-    content_rating_filter = false() if current_user.mature_content else \
-        db.Books.tags.any(db.Tags.name.in_(config.mature_content_tags()))
-    entries = db.session.query(db.Tags).join(db.books_tags_link).join(db.Books)\
-        .filter(lang_filter).filter(~content_rating_filter)\
+    entries = db.session.query(db.Tags).join(db.books_tags_link).join(db.Books).filter(common_filters())\
         .group_by('books_tags_link.tag').order_by(db.Tags.name).offset(off).limit(config.config_books_per_page)
     pagination = Pagination((int(off) / (int(config.config_books_per_page)) + 1), config.config_books_per_page,
                             len(db.session.query(db.Tags).all()))
@@ -821,14 +807,7 @@ def feed_seriesindex():
     off = request.args.get("offset")
     if not off:
         off = 0
-    if current_user.filter_language() != "all":
-        lang_filter = db.Books.languages.any(db.Languages.lang_code == current_user.filter_language())
-    else:
-        lang_filter = True
-    content_rating_filter = false() if current_user.mature_content else \
-        db.Books.tags.any(db.Tags.name.in_(config.mature_content_tags()))
-    entries = db.session.query(db.Series).join(db.books_series_link).join(db.Books)\
-        .filter(lang_filter).filter(~content_rating_filter)\
+    entries = db.session.query(db.Series).join(db.books_series_link).join(db.Books).filter(common_filters())\
         .group_by('books_series_link.series').order_by(db.Series.sort).offset(off).all()
     pagination = Pagination((int(off) / (int(config.config_books_per_page)) + 1), config.config_books_per_page,
                             len(db.session.query(db.Series).all()))
@@ -1094,14 +1073,8 @@ def titles_descending(page):
 @app.route('/hot/page/<int:page>')
 @login_required_if_no_ano
 def hot_books(page):
-    if current_user.filter_language() != "all":
-        lang_filter = db.Books.languages.any(db.Languages.lang_code == current_user.filter_language())
-    else:
-        lang_filter = True
-    content_rating_filter = false() if current_user.mature_content else \
-        db.Books.tags.any(db.Tags.name.in_(config.mature_content_tags()))
     if current_user.show_detail_random():
-        random = db.session.query(db.Books).filter(lang_filter).filter(~content_rating_filter)\
+        random = db.session.query(db.Books).filter(common_filters())\
             .order_by(func.random()).limit(config.config_random_books)
     else:
         random = false
@@ -1111,12 +1084,9 @@ def hot_books(page):
     hot_books = all_books.offset(off).limit(config.config_books_per_page)
     entries = list()
     for book in hot_books:
-        downloadBook = db.session.query(db.Books).filter(db.Books.id == book.Downloads.book_id).first()
+        downloadBook = db.session.query(db.Books).filter(common_filters()).filter(db.Books.id == book.Downloads.book_id).first()
         if downloadBook:
-            entries.append(
-                db.session.query(db.Books).filter(lang_filter).filter(~content_rating_filter)
-                    .filter(db.Books.id == book.Downloads.book_id).first()
-            )
+            entries.append(downloadBook)
         else:
             ub.session.query(ub.Downloads).filter(book.Downloads.book_id == ub.Downloads.book_id).delete()
             ub.session.commit()
@@ -1148,15 +1118,8 @@ def discover(page):
 @app.route("/author")
 @login_required_if_no_ano
 def author_list():
-    if current_user.filter_language() != "all":
-        lang_filter = db.Books.languages.any(db.Languages.lang_code == current_user.filter_language())
-    else:
-        lang_filter = True
-    content_rating_filter = false() if current_user.mature_content else \
-        db.Books.tags.any(db.Tags.name.in_(config.mature_content_tags()))
     entries = db.session.query(db.Authors, func.count('books_authors_link.book').label('count'))\
-        .join(db.books_authors_link).join(db.Books)\
-        .filter(lang_filter).filter(~content_rating_filter)\
+        .join(db.books_authors_link).join(db.Books).filter(common_filters())\
         .group_by('books_authors_link.author').order_by(db.Authors.sort).all()
     return render_title_template('list.html', entries=entries, folder='author', title=_(u"Author list"))
 
@@ -1167,33 +1130,48 @@ def author_list():
 def author(book_id, page):
     entries, random, pagination = fill_indexpage(page, db.Books, db.Books.authors.any(db.Authors.id == book_id),
                                                  db.Books.timestamp.desc())
-    if entries:
-        name = db.session.query(db.Authors).filter(db.Authors.id == book_id).first().name
-
-        author_info = None
-        if goodreads_support and config.config_use_goodreads:
-            gc = gr_client.GoodreadsClient(config.config_goodreads_api_key, config.config_goodreads_api_secret)
-            author_info = gc.find_author(author_name=name)
-
-        return render_title_template('author.html', entries=entries, pagination=pagination,
-                                     title=name, author=author_info)
-    else:
+    if entries is None:
         flash(_(u"Error opening eBook. File does not exist or file is not accessible:"), category="error")
         return redirect(url_for("index"))
+
+    name = db.session.query(db.Authors).filter(db.Authors.id == book_id).first().name
+
+    author_info = None
+    other_books = []
+    if goodreads_support and config.config_use_goodreads:
+        gc = GoodreadsClient(config.config_goodreads_api_key, config.config_goodreads_api_secret)
+        author_info = gc.find_author(author_name=name)
+        other_books = get_unique_other_books(entries.all(), author_info.books)
+
+    return render_title_template('author.html', entries=entries, pagination=pagination,
+                                 title=name, author=author_info, other_books=other_books)
+
+
+def get_unique_other_books(library_books, author_books):
+    # Get all identifiers (ISBN, Goodreads, etc) and filter author's books by that list so we show fewer duplicates
+    # Note: Not all images will be shown, even though they're available on Goodreads.com.
+    #       See https://www.goodreads.com/topic/show/18213769-goodreads-book-images
+    identifiers = reduce(lambda acc, book: acc + map(lambda identifier: identifier.val, book.identifiers), library_books, [])
+    other_books = filter(lambda book: book.isbn not in identifiers and book.gid["#text"] not in identifiers, author_books)
+
+    # Fuzzy match book titles
+    if levenshtein_support:
+        library_titles = reduce(lambda acc, book: acc + [book.title], library_books, [])
+        other_books = filter(lambda author_book: not filter(
+            lambda library_book:
+            Levenshtein.ratio(re.sub(r"\(.*\)", "", author_book.title), library_book) > 0.7,  # Remove items in parentheses before comparing
+            library_titles
+        ), other_books)
+
+    return other_books
+
 
 
 @app.route("/series")
 @login_required_if_no_ano
 def series_list():
-    if current_user.filter_language() != "all":
-        lang_filter = db.Books.languages.any(db.Languages.lang_code == current_user.filter_language())
-    else:
-        lang_filter = True
-    content_rating_filter = false() if current_user.mature_content else \
-        db.Books.tags.any(db.Tags.name.in_(config.mature_content_tags()))
     entries = db.session.query(db.Series, func.count('books_series_link.book').label('count'))\
-        .join(db.books_series_link).join(db.Books)\
-        .filter(lang_filter).filter(~content_rating_filter)\
+        .join(db.books_series_link).join(db.Books).filter(common_filters())\
         .group_by('books_series_link.series').order_by(db.Series.sort).all()
     return render_title_template('list.html', entries=entries, folder='series', title=_(u"Series list"))
 
@@ -1261,15 +1239,8 @@ def language(name, page):
 @app.route("/category")
 @login_required_if_no_ano
 def category_list():
-    if current_user.filter_language() != "all":
-        lang_filter = db.Books.languages.any(db.Languages.lang_code == current_user.filter_language())
-    else:
-        lang_filter = True
-    content_rating_filter = false() if current_user.mature_content else \
-        db.Books.tags.any(db.Tags.name.in_(config.mature_content_tags()))
     entries = db.session.query(db.Tags, func.count('books_tags_link.book').label('count'))\
-        .join(db.books_tags_link).join(db.Books)\
-        .filter(lang_filter).filter(~content_rating_filter)\
+        .join(db.books_tags_link).join(db.Books).filter(common_filters())\
         .group_by('books_tags_link.tag').all()
     return render_title_template('list.html', entries=entries, folder='category', title=_(u"Category list"))
 
@@ -1307,14 +1278,7 @@ def toggle_read(book_id):
 @app.route("/book/<int:book_id>")
 @login_required_if_no_ano
 def show_book(book_id):
-    if current_user.filter_language() != "all":
-        lang_filter = db.Books.languages.any(db.Languages.lang_code == current_user.filter_language())
-    else:
-        lang_filter = True
-    content_rating_filter = false() if current_user.mature_content else \
-        db.Books.tags.any(db.Tags.name.in_(config.mature_content_tags()))
-    entries = db.session.query(db.Books)\
-        .filter(db.Books.id == book_id).filter(lang_filter).filter(~content_rating_filter).first()
+    entries = db.session.query(db.Books).filter(db.Books.id == book_id).filter(common_filters()).first()
     if entries:
         for index in range(0, len(entries.languages)):
             try:
@@ -1587,18 +1551,12 @@ def update():
 def search():
     term = request.args.get("query").strip()
     if term:
-        if current_user.filter_language() != "all":
-            lang_filter = db.Books.languages.any(db.Languages.lang_code == current_user.filter_language())
-        else:
-            lang_filter = True
-        content_rating_filter = false() if current_user.mature_content else \
-            db.Books.tags.any(db.Tags.name.in_(config.mature_content_tags()))
         entries = db.session.query(db.Books).filter(db.or_(db.Books.tags.any(db.Tags.name.like("%" + term + "%")),
                                                     db.Books.series.any(db.Series.name.like("%" + term + "%")),
                                                     db.Books.authors.any(db.Authors.name.like("%" + term + "%")),
                                                     db.Books.publishers.any(db.Publishers.name.like("%" + term + "%")),
                                                     db.Books.title.like("%" + term + "%")))\
-            .filter(lang_filter).filter(~content_rating_filter).all()
+            .filter(common_filters()).all()
         return render_title_template('search.html', searchterm=term, entries=entries)
     else:
         return render_title_template('search.html', searchterm="")
@@ -2741,14 +2699,8 @@ def edit_book(book_id):
     # create the function for sorting...
     db.session.connection().connection.connection.create_function("title_sort", 1, db.title_sort)
     cc = db.session.query(db.Custom_Columns).filter(db.Custom_Columns.datatype.notin_(db.cc_exceptions)).all()
-    if current_user.filter_language() != "all":
-        lang_filter = db.Books.languages.any(db.Languages.lang_code == current_user.filter_language())
-    else:
-        lang_filter = True
-    content_rating_filter = false() if current_user.mature_content else \
-        db.Books.tags.any(db.Tags.name.in_(config.mature_content_tags()))
     book = db.session.query(db.Books)\
-        .filter(db.Books.id == book_id).filter(lang_filter).filter(~content_rating_filter).first()
+        .filter(db.Books.id == book_id).filter(common_filters()).first()
     author_names = []
 
     # Book not found
@@ -2992,8 +2944,8 @@ def upload():
         tags = meta.tags
         series = meta.series
         series_index = meta.series_id
-        title_dir = helper.get_valid_filename(title, False)
-        author_dir = helper.get_valid_filename(author, False)
+        title_dir = helper.get_valid_filename(title)
+        author_dir = helper.get_valid_filename(author)
         data_name = title_dir
         filepath = config.config_calibre_dir + os.sep + author_dir + os.sep + title_dir
         saved_filename = filepath + os.sep + data_name + meta.extension.lower()
