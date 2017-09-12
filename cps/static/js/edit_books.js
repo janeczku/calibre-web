@@ -4,31 +4,31 @@
 /* global Bloodhound, language, Modernizr, tinymce */
 
 if ($("#description").length) {
-tinymce.init({
-    selector: "#description",
-    branding: false,
-    menubar: "edit view format",
-    language
-});
+    tinymce.init({
+        selector: "#description",
+        branding: false,
+        menubar: "edit view format",
+        language: language
+    });
 
+    if (!Modernizr.inputtypes.date) {
+        $("#pubdate").datepicker({
+            format: "yyyy-mm-dd",
+            language: language
+        }).on("change", function () {
+            // Show localized date over top of the standard YYYY-MM-DD date
+            var pubDate;
+            var results = /(\d{4})[-\/\\](\d{1,2})[-\/\\](\d{1,2})/.exec(this.value); // YYYY-MM-DD
+            if (results) {
+                pubDate = new Date(results[1], parseInt(results[2], 10) - 1, results[3]) || new Date(this.value);
+            }
+            $("#fake_pubdate")
+                .val(pubDate.toLocaleDateString(language))
+                .removeClass("hidden");
+        }).trigger("change");
+    }
+}
 
-if (!Modernizr.inputtypes.date) {
-    $("#pubdate").datepicker({
-        format: "yyyy-mm-dd",
-        language
-    }).on("change", function () {
-        // Show localized date over top of the standard YYYY-MM-DD date
-        let pubDate;
-        const results = /(\d{4})[-\/\\](\d{1,2})[-\/\\](\d{1,2})/.exec(this.value); // YYYY-MM-DD
-        if (results) {
-            pubDate = new Date(results[1], parseInt(results[2], 10)-1, results[3]) || new Date(this.value);
-        }
-        $("#fake_pubdate")
-            .val(pubDate.toLocaleDateString(language))
-            .removeClass("hidden");
-    }).trigger("change");
-}
-}
 /*
 Takes a prefix, query typeahead callback, Bloodhound typeahead adapter
  and returns the completions it gets from the bloodhound engine prefixed.
@@ -43,6 +43,7 @@ function prefixedSource(prefix, query, cb, bhAdapter) {
         cb(matches);
     });
 }
+
 function getPath() {
     var jsFileLocation = $("script[src*=edit_books]").attr("src");  // the js file path
     jsFileLocation = jsFileLocation.replace("/static/js/edit_books.js", "");   // the js folder path
@@ -56,7 +57,7 @@ var authors = new Bloodhound({
     },
     queryTokenizer: Bloodhound.tokenizers.whitespace,
     remote: {
-        url: getPath()+"/get_authors_json?q=%QUERY"
+        url: getPath() + "/get_authors_json?q=%QUERY"
     }
 });
 
@@ -69,9 +70,9 @@ var series = new Bloodhound({
         return [query];
     },
     remote: {
-        url: getPath()+"/get_series_json?q=",
+        url: getPath() + "/get_series_json?q=",
         replace: function replace(url, query) {
-            return url+encodeURIComponent(query);
+            return url + encodeURIComponent(query);
         }
     }
 });
@@ -84,11 +85,11 @@ var tags = new Bloodhound({
     },
     queryTokenizer: function queryTokenizer(query) {
         var tokens = query.split(",");
-        tokens = [tokens[tokens.length-1].trim()];
+        tokens = [tokens[tokens.length - 1].trim()];
         return tokens;
     },
     remote: {
-        url: getPath()+"/get_tags_json?q=%QUERY"
+        url: getPath() + "/get_tags_json?q=%QUERY"
     }
 });
 
@@ -101,9 +102,9 @@ var languages = new Bloodhound({
         return [query];
     },
     remote: {
-        url: getPath()+"/get_languages_json?q=",
+        url: getPath() + "/get_languages_json?q=",
         replace: function replace(url, query) {
-            return url+encodeURIComponent(query);
+            return url + encodeURIComponent(query);
         }
     }
 });
@@ -112,9 +113,9 @@ function sourceSplit(query, cb, split, source) {
     var bhAdapter = source.ttAdapter();
 
     var tokens = query.split(split);
-    var currentSource = tokens[tokens.length-1].trim();
+    var currentSource = tokens[tokens.length - 1].trim();
 
-    tokens.splice(tokens.length-1, 1); // remove last element
+    tokens.splice(tokens.length - 1, 1); // remove last element
     var prefix = "";
     var newSplit;
     if (split === "&") {
@@ -192,7 +193,7 @@ promiseLanguages.done(function() {
 
 $("#search").on("change input.typeahead:selected", function() {
     var form = $("form").serialize();
-    $.getJSON( getPath()+"/get_matching_tags", form, function( data ) {
+    $.getJSON( getPath() + "/get_matching_tags", form, function( data ) {
         $(".tags_click").each(function() {
             if ($.inArray(parseInt($(this).children("input").first().val(), 10), data.tags) === -1 ) {
                 if (!($(this).hasClass("active"))) {

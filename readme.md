@@ -30,7 +30,7 @@ Calibre Web is a web app providing a clean interface for browsing, reading and d
 
 ## Quick start
 
-1. Install required dependencies by executing `pip install -r requirements.txt`
+1. Install dependencies by running `pip install --target vendor -r requirements.txt`. 
 2. Execute the command: `python cps.py` (or `nohup python cps.py` - recommended if you want to exit the terminal window)
 3. Point your browser to `http://localhost:8083` or `http://localhost:8083/opds` for the OPDS catalog
 4. Set `Location of Calibre database` to the path of the folder where your Calibre library (metadata.db) lives, push "submit" button
@@ -70,7 +70,7 @@ Optionally, to enable on-the-fly conversion from EPUB to MOBI when using the sen
 
 ## Using Google Drive integration
 
-Additional optional dependencys are necessary to get this work. Please install all optional  requirements by executing `pip install -r optional-requirements.txt`
+Additional optional dependencys are necessary to get this work. Please install all optional  requirements by executing `pip install --target vendor -r optional-requirements.txt`
 
 To use google drive integration, you have to use the google developer console to create a new app. https://console.developers.google.com
 
