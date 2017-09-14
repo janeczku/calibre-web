@@ -111,23 +111,23 @@ msgstr "Update voltooid, klik op ok en herlaad de pagina"
 
 #: cps/web.py:1033
 msgid "Recently Added Books"
-msgstr ""
+msgstr "Recent toegevoegde boeken"
 
 #: cps/web.py:1042
 msgid "Newest Books"
-msgstr ""
+msgstr "Nieuwste boeken"
 
 #: cps/web.py:1051
 msgid "Oldest Books"
-msgstr ""
+msgstr "Oudste boeken"
 
 #: cps/web.py:1060
 msgid "Books (A-Z)"
-msgstr ""
+msgstr "Boeken (A-Z)"
 
 #: cps/web.py:1069
 msgid "Books (Z-A)"
-msgstr ""
+msgstr "Boeken (A-Z)"
 
 #: cps/web.py:1099
 msgid "Hot Books (most downloaded)"
@@ -153,12 +153,12 @@ msgstr ""
 
 #: cps/templates/index.xml:70 cps/web.py:1179
 msgid "Series list"
-msgstr "Series lijst"
+msgstr "Serie lijst"
 
 #: cps/web.py:1191
 #, python-format
 msgid "Series: %(serie)s"
-msgstr "Series: %(serie)s"
+msgstr "Serie: %(serie)s"
 
 #: cps/web.py:1224
 msgid "Available languages"
@@ -192,7 +192,7 @@ msgstr "Server herstart, gelieve de pagina herladen"
 
 #: cps/web.py:1532
 msgid "Performing shutdown of server, please close window"
-msgstr "Bezig met het stoppen vande server, gelieve venster afsluiten"
+msgstr "Bezig met het stoppen van de server, gelieve venster te sluiten"
 
 #: cps/web.py:1548
 msgid "Update done"
@@ -205,7 +205,7 @@ msgstr "zoek"
 #: cps/templates/index.xml:42 cps/templates/index.xml:46
 #: cps/templates/layout.html:127 cps/web.py:1712
 msgid "Read Books"
-msgstr "Lees Boeken"
+msgstr "Gelezen Boeken"
 
 #: cps/templates/index.xml:49 cps/templates/index.xml:53
 #: cps/templates/layout.html:128 cps/web.py:1715
@@ -230,7 +230,7 @@ msgstr "Een onbekende fout deed zich voor. Gelieve later nog eens te proberen."
 
 #: cps/web.py:1870
 msgid "This username or email address is already in use."
-msgstr "Deze gebruikersnaam of email adres is reeds in gebruik."
+msgstr "Deze gebruikersnaam of dit emailadres is reeds in gebruik."
 
 #: cps/web.py:1889 cps/web.py:1985
 #, python-format
@@ -247,19 +247,19 @@ msgstr "login"
 
 #: cps/web.py:1933 cps/web.py:1964
 msgid "Token not found"
-msgstr ""
+msgstr "Token niet gevonden"
 
 #: cps/web.py:1941 cps/web.py:1972
 msgid "Token has expired"
-msgstr ""
+msgstr "Token is verlopen"
 
 #: cps/web.py:1949
 msgid "Success! Please return to your device"
-msgstr ""
+msgstr "Gelukt! Ga terug naar je apparaat"
 
 #: cps/web.py:1999
 msgid "Please configure the SMTP mail settings first..."
-msgstr "Gelieve de SMTP mail instellingen eerstte configureren..."
+msgstr "Gelieve de SMTP mail instellingen eerst te configureren..."
 
 #: cps/web.py:2003
 #, python-format
@@ -315,7 +315,7 @@ msgstr "Bewerk een boekenplank"
 #: cps/web.py:2165
 #, python-format
 msgid "successfully deleted shelf %(name)s"
-msgstr "Succesvol boekenplank %(name)s gewist"
+msgstr "Boekenplank %(name)s succesvol gewist"
 
 #: cps/web.py:2187
 #, python-format
@@ -324,7 +324,7 @@ msgstr "Boekenplank: '%(name)s'"
 
 #: cps/web.py:2190
 msgid "Error opening shelf. Shelf does not exist or is not accessible"
-msgstr ""
+msgstr "Fout bij openen boekenplank. Boekenplank bestaat niet of is niet toegankelijk"
 
 #: cps/web.py:2222
 #, python-format
@@ -371,7 +371,7 @@ msgstr "Gebruiker '%(user)s' aangemaakt"
 
 #: cps/web.py:2525
 msgid "Found an existing account for this email address or nickname."
-msgstr "Een bestaand gebruiker gevonden voor dit email adres of gebruikersnaam."
+msgstr "Een bestaande gebruiker gevonden voor dit emailadres of gebruikersnaam."
 
 #: cps/web.py:2547
 msgid "Mail settings updated"
@@ -416,7 +416,7 @@ msgstr "Bewerk gebruiker '%(nick)s'"
 
 #: cps/web.py:2711
 msgid "Error opening eBook. File does not exist or file is not accessible"
-msgstr ""
+msgstr "Fout bij openen eBook. Het bestand bestaat niet of is niet toegankelijk"
 
 #: cps/web.py:2726 cps/web.py:2898 cps/web.py:3041
 msgid "edit metadata"
@@ -433,26 +433,26 @@ msgstr "Het uploaden van bestandsextensie \"%s\" is niet toegestaan op deze serv
 
 #: cps/web.py:2941
 msgid "File to be uploaded must have an extension"
-msgstr "Up te loaden bestanden dienen een extentie te hebben"
+msgstr "Up te loaden bestanden dienen een extensie te hebben"
 
 #: cps/web.py:2960
 #, python-format
 msgid "Failed to create path %s (Permission denied)."
-msgstr "Het pad %s aanmaken gefaald (Geen toestemming)."
+msgstr "Het pad %s aanmaken mislukt (Geen toestemming)."
 
 #: cps/web.py:2965
 #, python-format
 msgid "Failed to store file %s (Permission denied)."
-msgstr "Bestand %s opslaan gefaald (Geen toestemming)."
+msgstr "Bestand %s opslaan mislukt (Geen toestemming)."
 
 #: cps/web.py:2970
 #, python-format
 msgid "Failed to delete file %s (Permission denied)."
-msgstr "Bestand %s wissen gefaald (Geen toestemming)."
+msgstr "Bestand %s wissen mislukt (Geen toestemming)."
 
 #: cps/templates/admin.html:4
 msgid "User list"
-msgstr "Gebruikers lijst"
+msgstr "Gebruikerslijst"
 
 #: cps/templates/admin.html:8
 msgid "Nickname"
@@ -557,7 +557,7 @@ msgstr "Anoniem verkennen"
 
 #: cps/templates/admin.html:67 cps/templates/remote_login.html:4
 msgid "Remote Login"
-msgstr ""
+msgstr "Login op afstand"
 
 #: cps/templates/admin.html:80
 msgid "Administration"
