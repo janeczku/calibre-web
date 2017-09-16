@@ -90,3 +90,9 @@ input.pill:not(:checked) + label .glyphicon {
 #meta-info img { max-height: 150px; max-width: 100px; cursor: pointer; }
 
 .padded-bottom { margin-bottom: 15px; }
+
+.upload-format-input-text {display: initial;}
+#btn-upload-format {display: none;}
+
+.upload-format-input-text {display: initial;}
+#btn-upload-format {display: none;}

@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
 {% block body %}
 {% if book %}
-<form role="form" action="{{ url_for('edit_book', book_id=book.id) }}" method="post">
+<form role="form" action="{{ url_for('edit_book', book_id=book.id) }}" method="post" enctype="multipart/form-data">
 
   <div class="col-sm-3 col-lg-3 col-xs-12">
     <div class="cover">
@@ -115,7 +115,15 @@
           </div>
         {% endfor %}
       {% endif %}
-
+      {% if g.user.role_upload() or g.user.role_admin()%}
+        {% if g.allow_upload %}
+          <div role="group" aria-label="Upload new book format">
+            <label class="btn btn-default btn-file" for="btn-upload-format">{{ _('Upload format') }}</label>
+            <div class="upload-format-input-text" id="upload-format"></div>
+            <input id="btn-upload-format" name="btn-upload-format" type="file">
+          </div>
+        {% endif %}
+      {% endif %}
 
     <div class="checkbox">
       <label>
