@@ -79,6 +79,7 @@ import hashlib
 from redirect import redirect_back, is_safe_url
 
 from tornado import version as tornadoVersion
+from socket import error as SocketError
 
 try:
     from urllib.parse import quote
@@ -3097,5 +3098,11 @@ def upload():
 def start_gevent():
     from gevent.wsgi import WSGIServer
     global gevent_server
-    gevent_server = WSGIServer(('', ub.config.config_port), app)
-    gevent_server.serve_forever()
+    try:
+        gevent_server = WSGIServer(('', ub.config.config_port), app)
+        gevent_server.serve_forever()
+    except SocketError:
+        app.logger.info('Unable to listen on \'\', trying on IPv4 only...')
+        gevent_server = WSGIServer(('0.0.0.0', ub.config.config_port), app)
+        gevent_server.serve_forever()
+
