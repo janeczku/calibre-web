@@ -3,8 +3,8 @@
  * Created by idalin<dalin.lin@gmail.com>
  * Google Books api document: https://developers.google.com/books/docs/v1/using
  * Douban Books api document: https://developers.douban.com/wiki/?title=book_v2 (Chinese Only)
- */
- /* global _, i18nMsg, tinymce */
+*/
+/* global _, i18nMsg, tinymce */
 var dbResults = [];
 var ggResults = [];
 

@@ -158,7 +158,7 @@ class Gauth:
 @Singleton
 class Gdrive:
     def __init__(self):
-        self.drive = gdriveutils.getDrive(Gauth.Instance().auth)
+        self.drive = gdriveutils.getDrive(gauth=Gauth.Instance().auth)
 
 
 class ReverseProxied(object):
@@ -794,7 +794,7 @@ def feed_category(book_id):
     off = request.args.get("offset")
     if not off:
         off = 0
-    entries, random, pagination = fill_indexpage((int(off) / (int(config.config_books_per_page)) + 1),
+    entries, __, pagination = fill_indexpage((int(off) / (int(config.config_books_per_page)) + 1),
                     db.Books, db.Books.tags.any(db.Tags.id == book_id), db.Books.timestamp.desc())
     xml = render_title_template('feed.xml', entries=entries, pagination=pagination)
     response = make_response(xml)
@@ -1129,7 +1129,7 @@ def author_list():
 @app.route("/author/<int:book_id>/<int:page>'")
 @login_required_if_no_ano
 def author(book_id, page):
-    entries, random, pagination = fill_indexpage(page, db.Books, db.Books.authors.any(db.Authors.id == book_id),
+    entries, __, pagination = fill_indexpage(page, db.Books, db.Books.authors.any(db.Authors.id == book_id),
                                                  db.Books.timestamp.desc())
     if entries is None:
         flash(_(u"Error opening eBook. File does not exist or file is not accessible:"), category="error")
@@ -2172,7 +2172,7 @@ def delete_shelf(shelf_id):
     if current_user.role_admin():
         deleted = ub.session.query(ub.Shelf).filter(ub.Shelf.id == shelf_id).delete()
     else:
-        if not cur_shelf.is_public and not cur_shelf.user_id == int(current_user.id) \
+        if (not cur_shelf.is_public and cur_shelf.user_id == int(current_user.id)) \
                 or (cur_shelf.is_public and current_user.role_edit_shelfs()):
             deleted = ub.session.query(ub.Shelf).filter(ub.or_(ub.and_(ub.Shelf.user_id == int(current_user.id),
                                                                    ub.Shelf.id == shelf_id),
