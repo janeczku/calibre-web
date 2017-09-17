@@ -417,14 +417,14 @@ bitjs.io = bitjs.io || {};
      */
     bitjs.io.ByteBuffer.prototype.writeNumber = function(num, numBytes) {
         if (numBytes < 1) {
-            throw 'Trying to write into too few bytes: ' + numBytes;
+            throw "Trying to write into too few bytes: " + numBytes;
         }
         if (num < 0) {
-            throw 'Trying to write a negative number (' + num +
-                ') as an unsigned number to an ArrayBuffer';
+            throw "Trying to write a negative number (" + num +
+                ") as an unsigned number to an ArrayBuffer";
         }
         if (num > (Math.pow(2, numBytes * 8) - 1)) {
-            throw 'Trying to write ' + num + ' into only ' + numBytes + ' bytes';
+            throw "Trying to write " + num + " into only " + numBytes + " bytes";
         }
 
         // Roll 8-bits at a time into an array of bytes.

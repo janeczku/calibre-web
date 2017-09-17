@@ -17,8 +17,12 @@
 */
 
 if (window.opera) {
-    window.console.log = function(str) {opera.postError(str);};
+    window.console.log = function(str) {
+        opera.postError(str);
+    };
 }
+
+var kthoom;
 
 // gets the element with the given id
 function getElem(id) {
@@ -31,7 +35,7 @@ function getElem(id) {
 }
 
 if (window.kthoom === undefined) {
-    var kthoom = {};
+    kthoom = {};
 }
 
 // key codes
@@ -58,27 +62,23 @@ var imageFiles = [];
 var imageFilenames = [];
 var totalImages = 0;
 var lastCompletion = 0;
-var library = {
-        allBooks: [],
-        currentBookNum: 0,
-};
-  
+
 var hflip = false, vflip = false, fitMode = kthoom.Key.B;
 var canKeyNext = true, canKeyPrev = true;
 
 kthoom.saveSettings = function() {
-    localStorage.kthoom_settings = JSON.stringify({
+    localStorage.kthoomSettings = JSON.stringify({
         rotateTimes: kthoom.rotateTimes,
         hflip: hflip,
         vflip: vflip,
         fitMode: fitMode
     });
-}
+};
 
 kthoom.loadSettings = function() {
     try {
-        if (localStorage.kthoom_settings.length < 10) return;
-        var s = JSON.parse(localStorage.kthoom_settings);
+        if (localStorage.kthoomSettings.length < 10) return;
+        var s = JSON.parse(localStorage.kthoomSettings);
         kthoom.rotateTimes = s.rotateTimes;
         hflip = s.hflip;
         vflip = s.vflip;
@@ -88,6 +88,36 @@ kthoom.loadSettings = function() {
     }
 }
 
+var createURLFromArray = function(array, mimeType) {
+    var offset = array.byteOffset, len = array.byteLength;
+    var bb, url;
+    var blob;
+
+    // TODO: Move all this browser support testing to a common place
+    //     and do it just once.
+
+    // Blob constructor, see http://dev.w3.org/2006/webapi/FileAPI/#dfn-Blob.
+    if (typeof Blob == "function") {
+        blob = new Blob([array], {type: mimeType});
+    } else {
+        throw "Browser support for Blobs is missing."
+    }
+
+    if (blob.slice) {
+        blob = blob.slice(offset, offset + len, mimeType);
+    } else {
+        throw "Browser support for Blobs is missing."
+    }
+
+    if ((typeof URL != "function" && typeof URL != "object") ||
+      typeof URL.createObjectURL != "function") {
+        throw "Browser support for Object URLs is missing";
+    }
+
+    return URL.createObjectURL(blob);
+}
+
+
 // Stores an image filename and its data: URI.
 // TODO: investigate if we really need to store as base64 (leave off ;base64 and just
 //       non-safe URL characters are encoded as %xx ?)
@@ -95,9 +125,9 @@ kthoom.loadSettings = function() {
 kthoom.ImageFile = function(file) {
     this.filename = file.filename;
     var fileExtension = file.filename.split(".").pop().toLowerCase();
-    var mimeType = fileExtension =="png" ? "image/png" :
+    var mimeType = fileExtension === "png" ? "image/png" :
         (fileExtension === "jpg" || fileExtension === "jpeg") ? "image/jpeg" :
-        fileExtension === "gif" ? "image/gif" : undefined;
+            fileExtension === "gif" ? "image/gif" : null;
     this.dataURI = createURLFromArray(file.fileData, mimeType);
     this.data = file;
 };
@@ -189,52 +219,51 @@ kthoom.initProgressMeter = function() {
     pdiv.appendChild(svg);
   
     svg.onclick = function(e) {
-        for (var x = pdiv, l = 0; x != document.documentElement; x = x.parentNode) l += x.offsetLeft;
-        var page = Math.max(1, Math.ceil(((e.clientX - l)/pdiv.offsetWidth) * totalImages)) - 1;
+        for (var x = pdiv, l = 0; x !== document.documentElement; x = x.parentNode) l += x.offsetLeft;
+        var page = Math.max(1, Math.ceil(((e.clientX - l) / pdiv.offsetWidth) * totalImages)) - 1;
         currentImage = page;
         updatePage();
     };
 }
 
-kthoom.setProgressMeter = function(pct, opt_label) {
-    var pct = (pct*100);
-    var part = 1/totalImages;
-    var remain = ((pct - lastCompletion)/100)/part;
+kthoom.setProgressMeter = function(pct, optLabel) {
+    pct = (pct * 100);
+    var part = 1 / totalImages;
+    var remain = ((pct - lastCompletion) / 100) / part;
     var fract = Math.min(1, remain);
-    var smartpct = ((imageFiles.length/totalImages) + fract * part )* 100;
-    if (totalImages == 0) smartpct = pct;
+    var smartpct = ((imageFiles.length / totalImages) + (fract * part))* 100;
+    if (totalImages === 0) smartpct = pct;
   
-      // + Math.min((pct - lastCompletion), 100/totalImages * 0.9 + (pct - lastCompletion - 100/totalImages)/2, 100/totalImages);
-      var oldval = parseFloat(getElem("meter").getAttribute("width"));
-      if (isNaN(oldval)) oldval = 0;
-      var weight = 0.5;
-      smartpct = (weight * smartpct + (1-weight) * oldval);
-      if (pct == 100) smartpct = 100;
-    
-      if (!isNaN(smartpct)) {
+    // + Math.min((pct - lastCompletion), 100/totalImages * 0.9 + (pct - lastCompletion - 100/totalImages)/2, 100/totalImages);
+    var oldval = parseFloat(getElem("meter").getAttribute("width"));
+    if (isNaN(oldval)) oldval = 0;
+    var weight = 0.5;
+    smartpct = ((weight * smartpct) + ((1 - weight) * oldval));
+    if (pct == 100) smartpct = 100;
+
+    if (!isNaN(smartpct)) {
         getElem("meter").setAttribute("width", smartpct + "%");
-      }
-      var title = getElem("progress_title");
-      while (title.firstChild) title.removeChild(title.firstChild);
+    }
+    var title = getElem("progress_title");
+    while (title.firstChild) title.removeChild(title.firstChild);
 
-      var labelText = pct.toFixed(2) + "% " + imageFiles.length + "/" + totalImages + "";
-      if (opt_label) {
-        labelText = opt_label + " " + labelText;
-      }
-      title.appendChild(document.createTextNode(labelText));
+    var labelText = pct.toFixed(2) + "% " + imageFiles.length + "/" + totalImages + "";
+    if (optLabel) {
+        labelText = optLabel + " " + labelText;
+    }
+    title.appendChild(document.createTextNode(labelText));
 
-      getElem("meter2").setAttribute("width",
-          100 * (totalImages == 0 ? 0 : ((currentImage+1)/totalImages)) + "%");
-  
-      var title = getElem("page");
-      while (title.firstChild) title.removeChild(title.firstChild);
-      title.appendChild(document.createTextNode( (currentImage+1) + '/' + totalImages ));
-  
-  
-      if (pct > 0) {
+    getElem("meter2").setAttribute("width",
+        100 * (totalImages == 0 ? 0 : ((currentImage+1) / totalImages)) + "%");
+
+    var title = getElem("page");
+    while (title.firstChild) title.removeChild(title.firstChild);
+    title.appendChild(document.createTextNode( (currentImage+1) + '/' + totalImages ));
+
+    if (pct > 0) {
         //getElem('nav').className = '';
         getElem("progress").className = '';
-      }
+    }
 }
 
 function loadFromArrayBuffer(ab) {
@@ -275,42 +304,14 @@ function loadFromArrayBuffer(ab) {
                 }
             });
         unarchiver.addEventListener(bitjs.archive.UnarchiveEvent.Type.FINISH,
-        function(e) {
-            var diff = ((new Date).getTime() - start)/1000;
-            console.log("Unarchiving done in " + diff + "s");
-        });
+            function(e) {
+                var diff = ((new Date).getTime() - start)/1000;
+                console.log("Unarchiving done in " + diff + "s");
+            });
         unarchiver.start();
     } else {
         alert("Some error");
     }
-}
-var createURLFromArray = function(array, mimeType) {
-    var offset = array.byteOffset, len = array.byteLength;
-    var bb, url;
-    var blob;
-
-    // TODO: Move all this browser support testing to a common place
-    //     and do it just once.
-
-    // Blob constructor, see http://dev.w3.org/2006/webapi/FileAPI/#dfn-Blob.
-    if (typeof Blob == "function") {
-        blob = new Blob([array], {type: mimeType});
-    } else {
-        throw "Browser support for Blobs is missing."
-    }
-
-    if (blob.slice) {
-        blob = blob.slice(offset, offset + len, mimeType);
-    } else {
-        throw "Browser support for Blobs is missing."
-    }
-
-    if ((typeof URL != "function" && typeof URL != "object") ||
-      typeof URL.createObjectURL != "function") {
-        throw "Browser support for Object URLs is missing";
-    }
-
-    return URL.createObjectURL(blob);
 }
 
 
@@ -319,8 +320,8 @@ function updatePage() {
     while (title.firstChild) title.removeChild(title.firstChild);
     title.appendChild(document.createTextNode( (currentImage+1) + "/" + totalImages ));
 
-    getElem("meter2").setAttribute("width",
-      100 * (totalImages == 0 ? 0 : ((currentImage+1)/totalImages)) + "%");
+    getElem('meter2').setAttribute('width',
+    	100 * (totalImages == 0 ? 0 : ((currentImage+1)/totalImages)) + "%");
     if (imageFiles[currentImage]) {
         setImage(imageFiles[currentImage].dataURI);
     } else {
@@ -414,56 +415,42 @@ function setImage(url) {
 
 function showPrevPage() {
     currentImage--;
-
     if (currentImage < 0) {
-        if (library.allBooks.length == 1) {
-            currentImage = imageFiles.length - 1;
-        } else if (library.currentBookNum > 0) {
-            loadPrevBook();
-        } else {
-            // Freeze on the current page.
-            currentImage++;
-            return;
-        }
+        // Freeze on the current page.
+        currentImage++;
+    } else {
+        updatePage();
     }
-    updatePage();
 }
 
 function showNextPage() {
     currentImage++;
-  
     if (currentImage >= Math.max(totalImages, imageFiles.length)) {
-        if (library.allBooks.length == 1) {
-            currentImage = 0;
-        } else if (library.currentBookNum < library.allBooks.length - 1) {
-            loadNextBook();
-        } else {
-            // Freeze on the current page.
-            currentImage--;
-            return;
-        }
+        // Freeze on the current page.
+        currentImage--;
+    } else {
+        updatePage();
     }
-    updatePage();
 }
 
 function updateScale(clear) {
-    var mainImageStyle = getElem("mainImage").style;
-    mainImageStyle.width = "";
-    mainImageStyle.height = "";
-    mainImageStyle.maxWidth = "";
-    mainImageStyle.maxHeight = "";
+  var mainImageStyle = getElem('mainImage').style;
+  mainImageStyle.width = '';
+  mainImageStyle.height = '';
+  mainImageStyle.maxWidth = '';
+  mainImageStyle.maxHeight = '';
     var maxheight = innerHeight - 15;
-    if (!/main/.test(getElem("titlebar").className)) {
+  if (!/main/.test(getElem('titlebar').className)) {
         maxheight -= 25;
     }
     if (clear || fitMode == kthoom.Key.N) {
     } else if (fitMode == kthoom.Key.B) {
-        mainImageStyle.maxWidth = "100%";
-        mainImageStyle.maxHeight = maxheight + "px";
+    mainImageStyle.maxWidth = '100%';
+    mainImageStyle.maxHeight = maxheight + 'px';
     } else if (fitMode == kthoom.Key.H) {
-        mainImageStyle.height = maxheight + "px";
+    mainImageStyle.height = maxheight + 'px';
     } else if (fitMode == kthoom.Key.W) {
-        mainImageStyle.width = "100%";
+    mainImageStyle.width = '100%';
     }
     kthoom.saveSettings();
 }
@@ -471,8 +458,9 @@ function updateScale(clear) {
 function keyHandler(evt) {
     var code = evt.keyCode;
 
-    if (getComputedStyle(getElem("progress")).display == "none") return;
-    canKeyNext = ((document.body.offsetWidth+document.body.scrollLeft)/ document.body.scrollWidth) >= 1;
+    if ($("#progress").css('display') == "none")
+        return;
+    canKeyNext = (($("body").css("offsetWidth")+$("body").css("scrollLeft"))/ $("body").css("scrollWidth")) >= 1;
     canKeyPrev = (scrollX <= 0);
 
     if (evt.ctrlKey || evt.shiftKey || evt.metaKey) return;
@@ -561,8 +549,8 @@ function init(filename) {
         $("#mainImage").click(function(evt) {
             // Firefox does not support offsetX/Y so we have to manually calculate
             // where the user clicked in the image.
-            var mainContentWidth = getElem("mainContent").clientWidth;
-            var mainContentHeight = getElem("mainContent").clientHeight;
+            var mainContentWidth = $("#mainContent").width();
+            var mainContentHeight = $("#mainContent").height();
             var comicWidth = evt.target.clientWidth;
             var comicHeight = evt.target.clientHeight;
             var offsetX = (mainContentWidth - comicWidth) / 2;
@@ -588,9 +576,9 @@ function init(filename) {
               break;
             }
             if (clickedPrev) {
-            showPrevPage();
+                showPrevPage();
             } else {
-            showNextPage();
+                showNextPage();
             }
         });
     }

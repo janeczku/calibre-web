@@ -42,7 +42,7 @@ var postProgress = function() {
 var readCleanString = function(bstr, numBytes) {
     var str = bstr.readString(numBytes);
     var zIndex = str.indexOf(String.fromCharCode(0));
-    return zIndex != -1 ? str.substr(0, zIndex) : str;
+    return zIndex !== -1 ? str.substr(0, zIndex) : str;
 };
 
 // takes a ByteStream and parses out the local file information
@@ -61,7 +61,7 @@ var TarLocalFile = function(bstream) {
     this.linkname = readCleanString(bstream, 100);
     this.maybeMagic = readCleanString(bstream, 6);
 
-    if (this.maybeMagic == "ustar") {
+    if (this.maybeMagic === "ustar") {
         this.version = readCleanString(bstream, 2);
         this.uname = readCleanString(bstream, 32);
         this.gname = readCleanString(bstream, 32);
@@ -71,10 +71,10 @@ var TarLocalFile = function(bstream) {
 
         if (this.prefix.length) {
             this.name = this.prefix + this.name;
-  	    }
-  	    bstream.readBytes(12); // 512 - 500
+        }
+        bstream.readBytes(12); // 512 - 500
     } else {
-      	bstream.readBytes(255); // 512 - 257
+        bstream.readBytes(255); // 512 - 257
     }
   
     // Done header, now rest of blocks are the file contents.
@@ -86,7 +86,7 @@ var TarLocalFile = function(bstream) {
     info("  typeflag = " + this.typeflag);
 
     // A regular file.
-    if (this.typeflag == 0) {
+    if (this.typeflag === 0) {
         info("  This is a regular file.");
         var sizeInBytes = parseInt(this.size);
         this.fileData = new Uint8Array(bstream.bytes.buffer, bstream.ptr, this.size);
@@ -101,8 +101,8 @@ var TarLocalFile = function(bstream) {
         if (remaining > 0 && remaining < 512) {
             bstream.readBytes(remaining);
         }
-    } else if (this.typeflag == 5) {
-        info("  This is a directory.")
+    } else if (this.typeflag === 5) {
+        info("  This is a directory.");
     }
 };
 
@@ -122,7 +122,7 @@ var untar = function(arrayBuffer) {
     var localFiles = [];
 
     // While we don't encounter an empty block, keep making TarLocalFiles.
-    while (bstream.peekNumber(4) != 0) {
+    while (bstream.peekNumber(4) !== 0) {
         var oneLocalFile = new TarLocalFile(bstream);
         if (oneLocalFile && oneLocalFile.isValid) {
             localFiles.push(oneLocalFile);
@@ -132,7 +132,7 @@ var untar = function(arrayBuffer) {
     totalFilesInArchive = localFiles.length;
 
     // got all local files, now sort them
-    localFiles.sort(function(a,b) {
+    localFiles.sort(function(a, b) {
         var aname = a.filename.toLowerCase();
         var bname = b.filename.toLowerCase();
         return aname > bname ? 1 : -1;
