@@ -1808,12 +1808,12 @@ def read_book(book_id, book_format):
     elif book_format.lower() == "txt":
         return render_title_template('readtxt.html', txtfile=book_id, title=_(u"Read a Book"))
     else:
-        for format in ["cbr","cbt","cbz"]:
-            if book_format.lower() == format:
-                all_name = str(book_id) + "/" + book.data[0].name + "." + format
-                tmp_file = os.path.join(book_dir, book.data[0].name) + "." + format
+        for fileext in ["cbr","cbt","cbz"]:
+            if book_format.lower() == fileext:
+                all_name = str(book_id) + "/" + book.data[0].name + "." + fileext
+                tmp_file = os.path.join(book_dir, book.data[0].name) + "." + fileext
                 if not os.path.exists(all_name):
-                    cbr_file = os.path.join(config.config_calibre_dir, book.path, book.data[0].name) + "." + format
+                    cbr_file = os.path.join(config.config_calibre_dir, book.path, book.data[0].name) + "." + fileext
                     copyfile(cbr_file, tmp_file)
                 return render_title_template('readcbr.html', comicfile=all_name, title=_(u"Read a Book"))
 

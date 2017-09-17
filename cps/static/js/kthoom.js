@@ -16,28 +16,22 @@
 
 */
 
-if (!window.console) {
-    window.console = {};
-    window.console.log = function(str) {};
-    window.console.dir = function(str) {};
-}
 if (window.opera) {
     window.console.log = function(str) {opera.postError(str);};
-    window.console.dir = function(str) {};
 }
 
 // gets the element with the given id
 function getElem(id) {
     if (document.documentElement.querySelector) {
         // querySelector lookup
-        return document.body.querySelector('#' + id);
+        return document.body.querySelector("#" + id);
     }
     // getElementById lookup
     return document.getElementById(id);
 }
 
-if (window.kthoom == undefined) {
-    window.kthoom = {};
+if (window.kthoom === undefined) {
+    var kthoom = {};
 }
 
 // key codes
@@ -89,7 +83,8 @@ kthoom.loadSettings = function() {
         hflip = s.hflip;
         vflip = s.vflip;
         fitMode = s.fitMode;
-    } catch(err) {
+    } catch (err) {
+        alert("Error load settings");
     }
 }
 
@@ -99,38 +94,38 @@ kthoom.loadSettings = function() {
 //       This would save 25% on memory since base64-encoded strings are 4/3 the size of the binary
 kthoom.ImageFile = function(file) {
     this.filename = file.filename;
-    var fileExtension = file.filename.split('.').pop().toLowerCase();
-    var mimeType = fileExtension == 'png' ? 'image/png' :
-        (fileExtension == 'jpg' || fileExtension == 'jpeg') ? 'image/jpeg' :
-        fileExtension == 'gif' ? 'image/gif' : undefined;
+    var fileExtension = file.filename.split(".").pop().toLowerCase();
+    var mimeType = fileExtension =="png" ? "image/png" :
+        (fileExtension === "jpg" || fileExtension === "jpeg") ? "image/jpeg" :
+        fileExtension === "gif" ? "image/gif" : undefined;
     this.dataURI = createURLFromArray(file.fileData, mimeType);
     this.data = file;
 };
 
 
 kthoom.initProgressMeter = function() {
-    var svgns = 'http://www.w3.org/2000/svg';
-    var pdiv = $('#progress')[0]; // document.getElementById('progress');
-    var svg = document.createElementNS(svgns, 'svg');
-    svg.style.width = '100%';
-    svg.style.height = '100%';
+    var svgns = "http://www.w3.org/2000/svg";
+    var pdiv = $("#progress")[0]; 
+    var svg = document.createElementNS(svgns, "svg");
+    svg.style.width = "100%";
+    svg.style.height = "100%";
 
-    var defs = document.createElementNS(svgns, 'defs');
+    var defs = document.createElementNS(svgns, "defs");
 
-    var patt = document.createElementNS(svgns, 'pattern');
-    patt.id = 'progress_pattern';
-    patt.setAttribute('width', '30');
-    patt.setAttribute('height', '20');
-    patt.setAttribute('patternUnits', 'userSpaceOnUse');
+    var patt = document.createElementNS(svgns, "pattern");
+    patt.id = "progress_pattern";
+    patt.setAttribute("width", "30");
+    patt.setAttribute("height", "20");
+    patt.setAttribute("patternUnits", "userSpaceOnUse");
 
-    var rect = document.createElementNS(svgns, 'rect');
-    rect.setAttribute('width', '100%');
-    rect.setAttribute('height', '100%');
-    rect.setAttribute('fill', '#cc2929');
+    var rect = document.createElementNS(svgns, "rect");
+    rect.setAttribute("width", "100%");
+    rect.setAttribute("height", "100%");
+    rect.setAttribute("fill", "#cc2929");
 
-    var poly = document.createElementNS(svgns, 'polygon');
-    poly.setAttribute('fill', 'yellow');
-    poly.setAttribute('points', '15,0 30,0 15,20 0,20');
+    var poly = document.createElementNS(svgns, "polygon");
+    poly.setAttribute("fill", "yellow");
+    poly.setAttribute("points", "15,0 30,0 15,20 0,20");
 
     patt.appendChild(rect);
     patt.appendChild(poly);
@@ -138,55 +133,55 @@ kthoom.initProgressMeter = function() {
 
     svg.appendChild(defs);
 
-    var g = document.createElementNS(svgns, 'g');
+    var g = document.createElementNS(svgns, "g");
 
-    var outline = document.createElementNS(svgns, 'rect');
-    outline.setAttribute('y', '1');
-    outline.setAttribute('width', '100%');
-    outline.setAttribute('height', '15');
-    outline.setAttribute('fill', '#777');
-    outline.setAttribute('stroke', 'white');
-    outline.setAttribute('rx', '5');
-    outline.setAttribute('ry', '5');
+    var outline = document.createElementNS(svgns, "rect");
+    outline.setAttribute("y", "1");
+    outline.setAttribute("width", "100%");
+    outline.setAttribute("height", "15");
+    outline.setAttribute("fill", "#777");
+    outline.setAttribute("stroke", "white");
+    outline.setAttribute("rx", "5");
+    outline.setAttribute("ry", "5");
     g.appendChild(outline);
 
-    var title = document.createElementNS(svgns, 'text');
-    title.id = 'progress_title';
-    title.appendChild(document.createTextNode('0%'));
-    title.setAttribute('y', '13');
-    title.setAttribute('x', '99.5%');
-    title.setAttribute('fill', 'white');
-    title.setAttribute('font-size', '12px');
-    title.setAttribute('text-anchor', 'end');
+    var title = document.createElementNS(svgns, "text");
+    title.id = "progress_title";
+    title.appendChild(document.createTextNode("0%"));
+    title.setAttribute("y", "13");
+    title.setAttribute("x", "99.5%");
+    title.setAttribute("fill", "white");
+    title.setAttribute("font-size", "12px");
+    title.setAttribute("text-anchor", "end");
     g.appendChild(title);
 
-    var meter = document.createElementNS(svgns, 'rect');
-    meter.id = 'meter';
-    meter.setAttribute('width', '0%');
-    meter.setAttribute('height', '17');
-    meter.setAttribute('fill', 'url(#progress_pattern)');
-    meter.setAttribute('rx', '5');
-    meter.setAttribute('ry', '5');
+    var meter = document.createElementNS(svgns, "rect");
+    meter.id = "meter";
+    meter.setAttribute("width", "0%");
+    meter.setAttribute("height", "17");
+    meter.setAttribute("fill", "url(#progress_pattern)");
+    meter.setAttribute("rx", "5");
+    meter.setAttribute("ry", "5");
 
-    var meter2 = document.createElementNS(svgns, 'rect');
-    meter2.id = 'meter2';
-    meter2.setAttribute('width', '0%');
-    meter2.setAttribute('height', '17');
-    meter2.setAttribute('opacity', '0.8');
-    meter2.setAttribute('fill', '#007fff');
-    meter2.setAttribute('rx', '5');
-    meter2.setAttribute('ry', '5');
+    var meter2 = document.createElementNS(svgns, "rect");
+    meter2.id = "meter2";
+    meter2.setAttribute("width", "0%");
+    meter2.setAttribute("height", "17");
+    meter2.setAttribute("opacity", "0.8");
+    meter2.setAttribute("fill", "#007fff");
+    meter2.setAttribute("rx", "5");
+    meter2.setAttribute("ry", "5");
 
     g.appendChild(meter);
     g.appendChild(meter2);
 
-    var page = document.createElementNS(svgns, 'text');
-    page.id = 'page';
-    page.appendChild(document.createTextNode('0/0'));
-    page.setAttribute('y', '13');
-    page.setAttribute('x', '0.5%');
-    page.setAttribute('fill', 'white');
-    page.setAttribute('font-size', '12px');
+    var page = document.createElementNS(svgns, "text");
+    page.id = "page";
+    page.appendChild(document.createTextNode("0/0"));
+    page.setAttribute("y", "13");
+    page.setAttribute("x", "0.5%");
+    page.setAttribute("fill", "white");
+    page.setAttribute("font-size", "12px");
     g.appendChild(page);
   
   
@@ -210,42 +205,42 @@ kthoom.setProgressMeter = function(pct, opt_label) {
     if (totalImages == 0) smartpct = pct;
   
       // + Math.min((pct - lastCompletion), 100/totalImages * 0.9 + (pct - lastCompletion - 100/totalImages)/2, 100/totalImages);
-      var oldval = parseFloat(getElem('meter').getAttribute('width'));
+      var oldval = parseFloat(getElem("meter").getAttribute("width"));
       if (isNaN(oldval)) oldval = 0;
       var weight = 0.5;
       smartpct = (weight * smartpct + (1-weight) * oldval);
       if (pct == 100) smartpct = 100;
     
       if (!isNaN(smartpct)) {
-        getElem('meter').setAttribute('width', smartpct + '%');
+        getElem("meter").setAttribute("width", smartpct + "%");
       }
-      var title = getElem('progress_title');
+      var title = getElem("progress_title");
       while (title.firstChild) title.removeChild(title.firstChild);
 
-      var labelText = pct.toFixed(2) + '% ' + imageFiles.length + '/' + totalImages + '';
+      var labelText = pct.toFixed(2) + "% " + imageFiles.length + "/" + totalImages + "";
       if (opt_label) {
-        labelText = opt_label + ' ' + labelText;
+        labelText = opt_label + " " + labelText;
       }
       title.appendChild(document.createTextNode(labelText));
 
-      getElem('meter2').setAttribute('width',
-          100 * (totalImages == 0 ? 0 : ((currentImage+1)/totalImages)) + '%');
+      getElem("meter2").setAttribute("width",
+          100 * (totalImages == 0 ? 0 : ((currentImage+1)/totalImages)) + "%");
   
-      var title = getElem('page');
+      var title = getElem("page");
       while (title.firstChild) title.removeChild(title.firstChild);
       title.appendChild(document.createTextNode( (currentImage+1) + '/' + totalImages ));
   
   
       if (pct > 0) {
         //getElem('nav').className = '';
-        getElem('progress').className = '';
+        getElem("progress").className = '';
       }
 }
 
 function loadFromArrayBuffer(ab) {
     var start = (new Date).getTime();
     var h = new Uint8Array(ab, 0, 10);
-    var pathToBitJS = '../../static/js/';
+    var pathToBitJS = "../../static/js/";
     if (h[0] == 0x52 && h[1] == 0x61 && h[2] == 0x72 && h[3] == 0x21) { //Rar!
         unarchiver = new bitjs.archive.Unrarrer(ab, pathToBitJS);
     } else if (h[0] == 80 && h[1] == 75) { //PK (Zip)
@@ -259,7 +254,7 @@ function loadFromArrayBuffer(ab) {
             function(e) {
                 var percentage = e.currentBytesUnarchived / e.totalUncompressedBytesInArchive;
                 totalImages = e.totalFilesInArchive;
-                kthoom.setProgressMeter(percentage, 'Unzipping');
+                kthoom.setProgressMeter(percentage, "Unzipping");
                 // display nav
                 lastCompletion = percentage * 100;
             });
@@ -282,11 +277,11 @@ function loadFromArrayBuffer(ab) {
         unarchiver.addEventListener(bitjs.archive.UnarchiveEvent.Type.FINISH,
         function(e) {
             var diff = ((new Date).getTime() - start)/1000;
-            console.log('Unarchiving done in ' + diff + 's');
+            console.log("Unarchiving done in " + diff + "s");
         });
         unarchiver.start();
     } else {
-        alert('Some error');
+        alert("Some error");
     }
 }
 var createURLFromArray = function(array, mimeType) {
@@ -298,21 +293,21 @@ var createURLFromArray = function(array, mimeType) {
     //     and do it just once.
 
     // Blob constructor, see http://dev.w3.org/2006/webapi/FileAPI/#dfn-Blob.
-    if (typeof Blob == 'function') {
+    if (typeof Blob == "function") {
         blob = new Blob([array], {type: mimeType});
     } else {
-        throw 'Browser support for Blobs is missing.'
+        throw "Browser support for Blobs is missing."
     }
 
     if (blob.slice) {
         blob = blob.slice(offset, offset + len, mimeType);
     } else {
-        throw 'Browser support for Blobs is missing.'
+        throw "Browser support for Blobs is missing."
     }
 
-    if ((typeof URL != 'function' && typeof URL != 'object') ||
-      typeof URL.createObjectURL != 'function') {
-        throw 'Browser support for Object URLs is missing';
+    if ((typeof URL != "function" && typeof URL != "object") ||
+      typeof URL.createObjectURL != "function") {
+        throw "Browser support for Object URLs is missing";
     }
 
     return URL.createObjectURL(blob);
@@ -320,34 +315,34 @@ var createURLFromArray = function(array, mimeType) {
 
 
 function updatePage() {
-    var title = getElem('page');
+    var title = getElem("page");
     while (title.firstChild) title.removeChild(title.firstChild);
-    title.appendChild(document.createTextNode( (currentImage+1) + '/' + totalImages ));
+    title.appendChild(document.createTextNode( (currentImage+1) + "/" + totalImages ));
 
-    getElem('meter2').setAttribute('width',
-      100 * (totalImages == 0 ? 0 : ((currentImage+1)/totalImages)) + '%');
+    getElem("meter2").setAttribute("width",
+      100 * (totalImages == 0 ? 0 : ((currentImage+1)/totalImages)) + "%");
     if (imageFiles[currentImage]) {
         setImage(imageFiles[currentImage].dataURI);
     } else {
-        setImage('loading');
+        setImage("loading");
     }
 }
 
 function setImage(url) {
     var canvas = $("#mainImage")[0];
-    var x = $("#mainImage")[0].getContext('2d');
-    $('#mainText').hide();
-    if (url == 'loading') {
+    var x = $("#mainImage")[0].getContext("2d");
+    $("#mainText").hide();
+    if (url == "loading") {
         updateScale(true);
         canvas.width = innerWidth - 100;
         canvas.height = 200;
-        x.fillStyle = 'red';
-        x.font = '50px sans-serif';
-        x.strokeStyle = 'black';
-        x.fillText('Loading Page #' + (currentImage + 1), 100, 100)
+        x.fillStyle = "red";
+        x.font = "50px sans-serif";
+        x.strokeStyle = "black";
+        x.fillText("Loading Page #" + (currentImage + 1), 100, 100)
     } else {
-        if ($('body').css('scrollHeight')/innerHeight > 1) {
-            $('body').css('overflowY', 'scroll');
+        if ($("body").css("scrollHeight")/innerHeight > 1) {
+            $("body").css("overflowY", "scroll");
         }
 
         var img = new Image();
@@ -355,26 +350,26 @@ function setImage(url) {
             canvas.width = innerWidth - 100;
             canvas.height = 300;
             updateScale(true);
-            x.fillStyle = 'orange';
-            x.font = '50px sans-serif';
-            x.strokeStyle = 'black';
-            x.fillText('Page #' + (currentImage+1) + ' (' +
-              imageFiles[currentImage].filename + ')', 100, 100)
-            x.fillStyle = 'red';
-            x.fillText('Is corrupt or not an image', 100, 200);
+            x.fillStyle = "orange";
+            x.font = "50px sans-serif";
+            x.strokeStyle = "black";
+            x.fillText("Page #" + (currentImage+1) + " (" +
+              imageFiles[currentImage].filename + ")", 100, 100)
+            x.fillStyle = "red";
+            x.fillText("Is corrupt or not an image", 100, 200);
 
             if (/(html|htm)$/.test(imageFiles[currentImage].filename)) {
                 var xhr = new XMLHttpRequest();
-                xhr.open('GET', url, true);
+                xhr.open("GET", url, true);
                 xhr.onload = function() {
                     //document.getElementById('mainText').style.display = '';
                     $("#mainText").css("display", "");
-                    $("#mainText").innerHTML('<iframe style="width:100%;height:700px;border:0" src="data:text/html,'+escape(xhr.responseText)+'"></iframe>');
+                    $("#mainText").innerHTML("<iframe style=\"width:100%;height:700px;border:0\" src=\"data:text/html,"+escape(xhr.responseText)+"\"></iframe>");
                 }
                 xhr.send(null);
             } else if (!/(jpg|jpeg|png|gif)$/.test(imageFiles[currentImage].filename) && imageFiles[currentImage].data.uncompressedSize < 10*1024) {
                 var xhr = new XMLHttpRequest();
-                xhr.open('GET', url, true);
+                xhr.open("GET", url, true);
                 xhr.onload = function() {
                     $("#mainText").css("display", "");
                     $("#mainText").innerText(xhr.responseText);
@@ -403,7 +398,7 @@ function setImage(url) {
                 x.scale(-1, 1)
                 x.translate(-w, 0);
             }
-            canvas.style.display = 'none';
+            canvas.style.display = "none";
             scrollTo(0,0);
             x.drawImage(img, 0, 0);
 
@@ -452,23 +447,23 @@ function showNextPage() {
 }
 
 function updateScale(clear) {
-    var mainImageStyle = getElem('mainImage').style;
-    mainImageStyle.width = '';
-    mainImageStyle.height = '';
-    mainImageStyle.maxWidth = '';
-    mainImageStyle.maxHeight = '';
+    var mainImageStyle = getElem("mainImage").style;
+    mainImageStyle.width = "";
+    mainImageStyle.height = "";
+    mainImageStyle.maxWidth = "";
+    mainImageStyle.maxHeight = "";
     var maxheight = innerHeight - 15;
-    if (!/main/.test(getElem('titlebar').className)) {
+    if (!/main/.test(getElem("titlebar").className)) {
         maxheight -= 25;
     }
     if (clear || fitMode == kthoom.Key.N) {
     } else if (fitMode == kthoom.Key.B) {
-        mainImageStyle.maxWidth = '100%';
-        mainImageStyle.maxHeight = maxheight + 'px';
+        mainImageStyle.maxWidth = "100%";
+        mainImageStyle.maxHeight = maxheight + "px";
     } else if (fitMode == kthoom.Key.H) {
-        mainImageStyle.height = maxheight + 'px';
+        mainImageStyle.height = maxheight + "px";
     } else if (fitMode == kthoom.Key.W) {
-        mainImageStyle.width = '100%';
+        mainImageStyle.width = "100%";
     }
     kthoom.saveSettings();
 }
@@ -476,7 +471,7 @@ function updateScale(clear) {
 function keyHandler(evt) {
     var code = evt.keyCode;
 
-    if (getComputedStyle(getElem('progress')).display == 'none') return;
+    if (getComputedStyle(getElem("progress")).display == "none") return;
     canKeyNext = ((document.body.offsetWidth+document.body.scrollLeft)/ document.body.scrollWidth) >= 1;
     canKeyPrev = (scrollX <= 0);
 
@@ -537,14 +532,14 @@ function keyHandler(evt) {
 
 function init(filename) {
     if (!window.FileReader) {
-        alert('Sorry, kthoom will not work with your browser because it does not support the File API.  Please try kthoom with Chrome 12+ or Firefox 7+');
+        alert("Sorry, kthoom will not work with your browser because it does not support the File API.  Please try kthoom with Chrome 12+ or Firefox 7+");
     } else {
         var request = new XMLHttpRequest();
         request.open("GET",filename);
         request.responseType="arraybuffer";
         request.setRequestHeader("X-Test","test1");
         request.setRequestHeader("X-Test","test2");
-        request.addEventListener('load', function(event) {
+        request.addEventListener("load", function(event) {
             if (request.status >= 200 && request.status < 300) {
                 loadFromArrayBuffer(request.response);
             } else {
@@ -553,21 +548,21 @@ function init(filename) {
         });
         request.send();
         kthoom.initProgressMeter();
-        document.body.className += /AppleWebKit/.test(navigator.userAgent) ? ' webkit' : '';
+        document.body.className += /AppleWebKit/.test(navigator.userAgent) ? " webkit" : "";
         kthoom.loadSettings();
         $(document).keydown(keyHandler);
 
         $(window).resize(function() {
             var f = (screen.width - innerWidth < 4 && screen.height - innerHeight < 4);
-            getElem('titlebar').className = f ? 'main' : '';
+            getElem("titlebar").className = f ? "main" : "";
             updateScale();
         });
 
-        $('#mainImage').click(function(evt) {
+        $("#mainImage").click(function(evt) {
             // Firefox does not support offsetX/Y so we have to manually calculate
             // where the user clicked in the image.
-            var mainContentWidth = getElem('mainContent').clientWidth;
-            var mainContentHeight = getElem('mainContent').clientHeight;
+            var mainContentWidth = getElem("mainContent").clientWidth;
+            var mainContentHeight = getElem("mainContent").clientHeight;
             var comicWidth = evt.target.clientWidth;
             var comicHeight = evt.target.clientHeight;
             var offsetX = (mainContentWidth - comicWidth) / 2;

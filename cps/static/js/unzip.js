@@ -9,10 +9,11 @@
  * ZIP format: http://www.pkware.com/documents/casestudies/APPNOTE.TXT
  * DEFLATE format: http://tools.ietf.org/html/rfc1951
  */
+/* global bitjs */ 
 
 // This file expects to be invoked as a Worker (see onmessage below).
-importScripts('io.js');
-importScripts('archive.js');
+importScripts("io.js");
+importScripts("archive.js");
 
 // Progress variables.
 var currentFilename = "";
