@@ -7,10 +7,11 @@
  *
  * TAR format: http://www.gnu.org/software/automake/manual/tar/Standard.html
  */
+/* global bitjs */
 
 // This file expects to be invoked as a Worker (see onmessage below).
-importScripts('io.js');
-importScripts('archive.js');
+importScripts("io.js");
+importScripts("archive.js");
 
 // Progress variables.
 var currentFilename = "";
