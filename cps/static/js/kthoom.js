@@ -110,7 +110,7 @@ kthoom.ImageFile = function(file) {
 
 kthoom.initProgressMeter = function() {
   var svgns = 'http://www.w3.org/2000/svg';
-  var pdiv = document.getElementById('progress');
+  var pdiv = $('#progress')[0]; // document.getElementById('progress');
   var svg = document.createElementNS(svgns, 'svg');
   svg.style.width = '100%';
   svg.style.height = '100%';
@@ -337,9 +337,9 @@ function updatePage() {
 }
 
 function setImage(url) {
-  var canvas = getElem('mainImage');
-  var x = canvas.getContext('2d');
-  document.getElementById('mainText').style.display = 'none';
+  var canvas = $("#mainImage")[0];
+  var x = $("#mainImage")[0].getContext('2d');
+  $('#mainText').hide();
   if (url == 'loading') {
     updateScale(true);
     canvas.width = innerWidth - 100;
@@ -349,8 +349,8 @@ function setImage(url) {
     x.strokeStyle = 'black';
     x.fillText('Loading Page #' + (currentImage + 1), 100, 100)
   } else {
-    if (document.body.scrollHeight/innerHeight > 1) {
-      document.body.style.overflowY = 'scroll';
+    if ($('body').css('scrollHeight')/innerHeight > 1) {
+        $('body').css('overflowY', 'scroll');
     }
     
     var img = new Image();
@@ -370,16 +370,17 @@ function setImage(url) {
         var xhr = new XMLHttpRequest();
         xhr.open('GET', url, true);
         xhr.onload = function() {
-          document.getElementById('mainText').style.display = '';
-          document.getElementById('mainText').innerHTML = '<iframe style="width:100%;height:700px;border:0" src="data:text/html,'+escape(xhr.responseText)+'"></iframe>';
+          //document.getElementById('mainText').style.display = '';
+          $("#mainText").css("display", "");
+          $("#mainText").innerHTML('<iframe style="width:100%;height:700px;border:0" src="data:text/html,'+escape(xhr.responseText)+'"></iframe>');
         }
         xhr.send(null);
       } else if (!/(jpg|jpeg|png|gif)$/.test(imageFiles[currentImage].filename) && imageFiles[currentImage].data.uncompressedSize < 10*1024) {
         var xhr = new XMLHttpRequest();
         xhr.open('GET', url, true);
         xhr.onload = function() {
-          document.getElementById('mainText').style.display = '';
-          document.getElementById('mainText').innerText = xhr.responseText;
+          $("#mainText").css("display", "");
+          $("#mainText").innerText(xhr.responseText);
         };
         xhr.send(null);
       }
@@ -412,7 +413,7 @@ function setImage(url) {
       updateScale();
         
       canvas.style.display = '';
-      document.body.style.overflowY = '';
+      $("body").css("overflowY", "");
       x.restore();
     };
     img.src = url;
@@ -480,42 +481,17 @@ function updateScale(clear) {
 function keyHandler(evt) {
   var code = evt.keyCode;
 
-  // If the overlay is shown, the only keystroke we handle is closing it.
-  var overlayStyle = getElem('overlay').style;
-  var overlayShown = (overlayStyle.display != 'none');
-  if (overlayShown) {
-    if (code == kthoom.Key.QUESTION_MARK || code == kthoom.Key.ESCAPE) {
-      getElem('menu').classList.remove('opened');
-      overlayStyle.display = 'none';
-    }
-    return;
-  }
-
-
   if (getComputedStyle(getElem('progress')).display == 'none') return;
   canKeyNext = ((document.body.offsetWidth+document.body.scrollLeft)/ document.body.scrollWidth) >= 1;
   canKeyPrev = (scrollX <= 0);
 
   if (evt.ctrlKey || evt.shiftKey || evt.metaKey) return;
   switch(code) {
-    case kthoom.Key.X:
-      toggleToolbar();
-      break;
     case kthoom.Key.LEFT:
       if (canKeyPrev) showPrevPage();
       break;
     case kthoom.Key.RIGHT:
       if (canKeyNext) showNextPage();
-      break;
-    case kthoom.Key.LEFT_SQUARE_BRACKET:
-      if (library.currentBookNum > 0) {
-        loadPrevBook();
-      }
-      break;
-    case kthoom.Key.RIGHT_SQUARE_BRACKET:
-      if (library.currentBookNum < library.allBooks.length - 1) {
-        loadNextBook();
-      }
       break;
     case kthoom.Key.L:
       kthoom.rotateTimes--;
@@ -585,28 +561,30 @@ function init(filename) {
     document.body.className += /AppleWebKit/.test(navigator.userAgent) ? ' webkit' : '';
     //kthoom.resetFileUploader();
     kthoom.loadSettings();
-    document.addEventListener('keydown', keyHandler, false);
-    window.addEventListener('resize', function() {
-      var f = (screen.width - innerWidth < 4 && screen.height - innerHeight < 4);
-      getElem('titlebar').className = f ? 'main' : '';
-      updateScale();
-    }, false);
-    getElem('mainImage').addEventListener('click', function(evt) {
-      // Firefox does not support offsetX/Y so we have to manually calculate
-      // where the user clicked in the image.
-      var mainContentWidth = getElem('mainContent').clientWidth;
-      var mainContentHeight = getElem('mainContent').clientHeight;
-      var comicWidth = evt.target.clientWidth;
-      var comicHeight = evt.target.clientHeight;
-      var offsetX = (mainContentWidth - comicWidth) / 2;
-      var offsetY = (mainContentHeight - comicHeight) / 2;
-      var clickX = !!evt.offsetX ? evt.offsetX : (evt.clientX - offsetX);
-      var clickY = !!evt.offsetY ? evt.offsetY : (evt.clientY - offsetY);
+    $(document).keydown(keyHandler);
 
-      // Determine if the user clicked/tapped the left side or the
-      // right side of the page.
-      var clickedPrev = false;
-      switch (kthoom.rotateTimes) {
+    $(window).resize(function() {
+        var f = (screen.width - innerWidth < 4 && screen.height - innerHeight < 4);
+        getElem('titlebar').className = f ? 'main' : '';
+        updateScale();
+    });
+
+    $('#mainImage').click(function(evt) {
+        // Firefox does not support offsetX/Y so we have to manually calculate
+        // where the user clicked in the image.
+        var mainContentWidth = getElem('mainContent').clientWidth;
+        var mainContentHeight = getElem('mainContent').clientHeight;
+        var comicWidth = evt.target.clientWidth;
+        var comicHeight = evt.target.clientHeight;
+        var offsetX = (mainContentWidth - comicWidth) / 2;
+        var offsetY = (mainContentHeight - comicHeight) / 2;
+        var clickX = !!evt.offsetX ? evt.offsetX : (evt.clientX - offsetX);
+        var clickY = !!evt.offsetY ? evt.offsetY : (evt.clientY - offsetY);
+
+        // Determine if the user clicked/tapped the left side or the
+        // right side of the page.
+        var clickedPrev = false;
+        switch (kthoom.rotateTimes) {
         case 0:
           clickedPrev = clickX < (comicWidth / 2);
           break;
@@ -619,12 +597,12 @@ function init(filename) {
         case 3:
           clickedPrev = clickY > (comicHeight / 2);
           break;
-      }
-      if (clickedPrev) {
+        }
+        if (clickedPrev) {
         showPrevPage();
-      } else {
+        } else {
         showNextPage();
-      }
-    }, false);
+        }
+    });
   }
 }
