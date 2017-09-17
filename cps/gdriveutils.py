@@ -201,8 +201,9 @@ def backupCalibreDbAndOptionalDownload(drive, f=None):
 
 
 def copyToDrive(drive, uploadFile, createRoot, replaceFiles,
-        ignoreFiles= ignoreFiles or [],
+        ignoreFiles=None,
         parent=None, prevDir=''):
+    ignoreFiles = ignoreFiles or []
     drive = getDrive(drive)
     isInitial = not bool(parent)
     if not parent:
