@@ -20,7 +20,7 @@ def init_cache_busting(app):
 
     app.logger.debug('Computing cache-busting values...')
     # compute file hashes
-    for dirpath, dirnames, filenames in os.walk(static_folder):
+    for dirpath, __, filenames in os.walk(static_folder):
         for filename in filenames:
             # compute version component
             rooted_filename = os.path.join(dirpath, filename)
