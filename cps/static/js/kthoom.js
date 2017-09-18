@@ -15,6 +15,7 @@
   * Typed Arrays: http://www.khronos.org/registry/typedarray/specs/latest/#6
 
 */
+/* global bitjs */
 
 if (window.opera) {
     window.console.log = function(str) {
@@ -77,7 +78,8 @@ kthoom.saveSettings = function() {
 
 kthoom.loadSettings = function() {
     try {
-        if (localStorage.kthoomSettings.length < 10) return;
+        if (localStorage.kthoomSettings.length < 10)
+            return;
         var s = JSON.parse(localStorage.kthoomSettings);
         kthoom.rotateTimes = s.rotateTimes;
         hflip = s.hflip;
@@ -86,31 +88,31 @@ kthoom.loadSettings = function() {
     } catch (err) {
         alert("Error load settings");
     }
-}
+};
 
 var createURLFromArray = function(array, mimeType) {
     var offset = array.byteOffset, len = array.byteLength;
-    var bb, url;
+    var url;
     var blob;
 
     // TODO: Move all this browser support testing to a common place
     //     and do it just once.
 
     // Blob constructor, see http://dev.w3.org/2006/webapi/FileAPI/#dfn-Blob.
-    if (typeof Blob == "function") {
+    if (typeof Blob === "function") {
         blob = new Blob([array], {type: mimeType});
     } else {
-        throw "Browser support for Blobs is missing."
+        throw "Browser support for Blobs is missing.";
     }
 
     if (blob.slice) {
         blob = blob.slice(offset, offset + len, mimeType);
     } else {
-        throw "Browser support for Blobs is missing."
+        throw "Browser support for Blobs is missing.";
     }
 
-    if ((typeof URL != "function" && typeof URL != "object") ||
-      typeof URL.createObjectURL != "function") {
+    if ((typeof URL !== "function" && typeof URL != "object") ||
+      typeof URL.createObjectURL !== "function") {
         throw "Browser support for Object URLs is missing";
     }
 
@@ -217,7 +219,7 @@ kthoom.initProgressMeter = function() {
   
     svg.appendChild(g);
     pdiv.appendChild(svg);
-  
+    var l;
     svg.onclick = function(e) {
         for (var x = pdiv, l = 0; x !== document.documentElement; x = x.parentNode) l += x.offsetLeft;
         var page = Math.max(1, Math.ceil(((e.clientX - l) / pdiv.offsetWidth) * totalImages)) - 1;
@@ -231,7 +233,7 @@ kthoom.setProgressMeter = function(pct, optLabel) {
     var part = 1 / totalImages;
     var remain = ((pct - lastCompletion) / 100) / part;
     var fract = Math.min(1, remain);
-    var smartpct = ((imageFiles.length / totalImages) + (fract * part))* 100;
+    var smartpct = ((imageFiles.length / totalImages) + (fract * part)) * 100;
     if (totalImages === 0) smartpct = pct;
   
     // + Math.min((pct - lastCompletion), 100/totalImages * 0.9 + (pct - lastCompletion - 100/totalImages)/2, 100/totalImages);
@@ -239,7 +241,7 @@ kthoom.setProgressMeter = function(pct, optLabel) {
     if (isNaN(oldval)) oldval = 0;
     var weight = 0.5;
     smartpct = ((weight * smartpct) + ((1 - weight) * oldval));
-    if (pct == 100) smartpct = 100;
+    if (pct === 100) smartpct = 100;
 
     if (!isNaN(smartpct)) {
         getElem("meter").setAttribute("width", smartpct + "%");
@@ -254,15 +256,15 @@ kthoom.setProgressMeter = function(pct, optLabel) {
     title.appendChild(document.createTextNode(labelText));
 
     getElem("meter2").setAttribute("width",
-        100 * (totalImages == 0 ? 0 : ((currentImage+1) / totalImages)) + "%");
+        100 * (totalImages === 0 ? 0 : ((currentImage + 1) / totalImages)) + "%");
 
-    var title = getElem("page");
-    while (title.firstChild) title.removeChild(title.firstChild);
-    title.appendChild(document.createTextNode( (currentImage+1) + '/' + totalImages ));
+    var titlePage = getElem("page");
+    while (titlePage.firstChild) titlePage.removeChild(titlePage.firstChild);
+    titlePage.appendChild(document.createTextNode( (currentImage + 1) + "/" + totalImages ));
 
     if (pct > 0) {
         //getElem('nav').className = '';
-        getElem("progress").className = '';
+        getElem("progress").className = "";
     }
 }
 
@@ -270,9 +272,9 @@ function loadFromArrayBuffer(ab) {
     var start = (new Date).getTime();
     var h = new Uint8Array(ab, 0, 10);
     var pathToBitJS = "../../static/js/";
-    if (h[0] == 0x52 && h[1] == 0x61 && h[2] == 0x72 && h[3] == 0x21) { //Rar!
+    if (h[0] === 0x52 && h[1] === 0x61 && h[2] === 0x72 && h[3] === 0x21) { //Rar!
         unarchiver = new bitjs.archive.Unrarrer(ab, pathToBitJS);
-    } else if (h[0] == 80 && h[1] == 75) { //PK (Zip)
+    } else if (h[0] === 80 && h[1] === 75) { //PK (Zip)
         unarchiver = new bitjs.archive.Unzipper(ab, pathToBitJS);
     } else { // Try with tar
         unarchiver = new bitjs.archive.Untarrer(ab, pathToBitJS);
@@ -293,7 +295,7 @@ function loadFromArrayBuffer(ab) {
                 if (e.unarchivedFile) {
                     var f = e.unarchivedFile;
                     // add any new pages based on the filename
-                    if (imageFilenames.indexOf(f.filename) == -1) {
+                    if (imageFilenames.indexOf(f.filename) === -1) {
                         imageFilenames.push(f.filename);
                         imageFiles.push(new kthoom.ImageFile(f));
                     }
@@ -304,8 +306,8 @@ function loadFromArrayBuffer(ab) {
                 }
             });
         unarchiver.addEventListener(bitjs.archive.UnarchiveEvent.Type.FINISH,
-            function(e) {
-                var diff = ((new Date).getTime() - start)/1000;
+            function() {
+                var diff = ((new Date).getTime() - start) / 1000;
                 console.log("Unarchiving done in " + diff + "s");
             });
         unarchiver.start();
@@ -318,10 +320,10 @@ function loadFromArrayBuffer(ab) {
 function updatePage() {
     var title = getElem("page");
     while (title.firstChild) title.removeChild(title.firstChild);
-    title.appendChild(document.createTextNode( (currentImage+1) + "/" + totalImages ));
+    title.appendChild(document.createTextNode( (currentImage +1 ) + "/" + totalImages ));
 
-    getElem('meter2').setAttribute('width',
-    	100 * (totalImages == 0 ? 0 : ((currentImage+1)/totalImages)) + "%");
+    getElem("meter2").setAttribute("width",
+    	100 * (totalImages == 0 ? 0 : ((currentImage +1 ) / totalImages)) + "%");
     if (imageFiles[currentImage]) {
         setImage(imageFiles[currentImage].dataURI);
     } else {
@@ -333,43 +335,42 @@ function setImage(url) {
     var canvas = $("#mainImage")[0];
     var x = $("#mainImage")[0].getContext("2d");
     $("#mainText").hide();
-    if (url == "loading") {
+    if (url === "loading") {
         updateScale(true);
         canvas.width = innerWidth - 100;
         canvas.height = 200;
         x.fillStyle = "red";
         x.font = "50px sans-serif";
         x.strokeStyle = "black";
-        x.fillText("Loading Page #" + (currentImage + 1), 100, 100)
+        x.fillText("Loading Page #" + (currentImage + 1), 100, 100);
     } else {
         if ($("body").css("scrollHeight")/innerHeight > 1) {
             $("body").css("overflowY", "scroll");
         }
 
         var img = new Image();
-        img.onerror = function(e) {
+        img.onerror = function() {
             canvas.width = innerWidth - 100;
             canvas.height = 300;
             updateScale(true);
             x.fillStyle = "orange";
             x.font = "50px sans-serif";
             x.strokeStyle = "black";
-            x.fillText("Page #" + (currentImage+1) + " (" +
-              imageFiles[currentImage].filename + ")", 100, 100)
+            x.fillText("Page #" + (currentImage + 1) + " (" +
+              imageFiles[currentImage].filename + ")", 100, 100);
             x.fillStyle = "red";
             x.fillText("Is corrupt or not an image", 100, 200);
 
+            var xhr = new XMLHttpRequest();
             if (/(html|htm)$/.test(imageFiles[currentImage].filename)) {
-                var xhr = new XMLHttpRequest();
                 xhr.open("GET", url, true);
                 xhr.onload = function() {
                     //document.getElementById('mainText').style.display = '';
                     $("#mainText").css("display", "");
-                    $("#mainText").innerHTML("<iframe style=\"width:100%;height:700px;border:0\" src=\"data:text/html,"+escape(xhr.responseText)+"\"></iframe>");
+                    $("#mainText").innerHTML("<iframe style=\"width:100%;height:700px;border:0\" src=\"data:text/html," + escape(xhr.responseText) + "\"></iframe>");
                 }
                 xhr.send(null);
-            } else if (!/(jpg|jpeg|png|gif)$/.test(imageFiles[currentImage].filename) && imageFiles[currentImage].data.uncompressedSize < 10*1024) {
-                var xhr = new XMLHttpRequest();
+            } else if (!/(jpg|jpeg|png|gif)$/.test(imageFiles[currentImage].filename) && imageFiles[currentImage].data.uncompressedSize < 10 * 1024) {
                 xhr.open("GET", url, true);
                 xhr.onload = function() {
                     $("#mainText").css("display", "");
@@ -392,20 +393,20 @@ function setImage(url) {
             x.rotate(Math.PI/2 * kthoom.rotateTimes);
             x.translate(-w/2, -h/2);
             if (vflip) {
-                x.scale(1, -1)
+                x.scale(1, -1);
                 x.translate(0, -h);
-              }
+            }
             if (hflip) {
-                x.scale(-1, 1)
+                x.scale(-1, 1);
                 x.translate(-w, 0);
             }
             canvas.style.display = "none";
-            scrollTo(0,0);
+            scrollTo(0, 0);
             x.drawImage(img, 0, 0);
 
             updateScale();
 
-            canvas.style.display = '';
+            canvas.style.display = "";
             $("body").css("overflowY", "");
             x.restore();
         };
@@ -434,23 +435,23 @@ function showNextPage() {
 }
 
 function updateScale(clear) {
-  var mainImageStyle = getElem('mainImage').style;
-  mainImageStyle.width = '';
-  mainImageStyle.height = '';
-  mainImageStyle.maxWidth = '';
-  mainImageStyle.maxHeight = '';
+  var mainImageStyle = getElem("mainImage").style;
+  mainImageStyle.width = "";
+  mainImageStyle.height = "";
+  mainImageStyle.maxWidth = "";
+  mainImageStyle.maxHeight = "";
     var maxheight = innerHeight - 15;
-  if (!/main/.test(getElem('titlebar').className)) {
+  if (!/main/.test(getElem("titlebar").className)) {
         maxheight -= 25;
     }
     if (clear || fitMode == kthoom.Key.N) {
     } else if (fitMode == kthoom.Key.B) {
-    mainImageStyle.maxWidth = '100%';
-    mainImageStyle.maxHeight = maxheight + 'px';
+    mainImageStyle.maxWidth = "100%";
+    mainImageStyle.maxHeight = maxheight + "px";
     } else if (fitMode == kthoom.Key.H) {
-    mainImageStyle.height = maxheight + 'px';
+    mainImageStyle.height = maxheight + "px";
     } else if (fitMode == kthoom.Key.W) {
-    mainImageStyle.width = '100%';
+    mainImageStyle.width = "100%";
     }
     kthoom.saveSettings();
 }
@@ -458,9 +459,9 @@ function updateScale(clear) {
 function keyHandler(evt) {
     var code = evt.keyCode;
 
-    if ($("#progress").css('display') == "none")
+    if ($("#progress").css("display") == "none")
         return;
-    canKeyNext = (($("body").css("offsetWidth")+$("body").css("scrollLeft"))/ $("body").css("scrollWidth")) >= 1;
+    canKeyNext = (($("body").css("offsetWidth")+$("body").css("scrollLeft")) / $("body").css("scrollWidth")) >= 1;
     canKeyPrev = (scrollX <= 0);
 
     if (evt.ctrlKey || evt.shiftKey || evt.metaKey) return;
@@ -537,6 +538,7 @@ function init(filename) {
         request.send();
         kthoom.initProgressMeter();
         document.body.className += /AppleWebKit/.test(navigator.userAgent) ? " webkit" : "";
+        updateScale(true);
         kthoom.loadSettings();
         $(document).keydown(keyHandler);
 
