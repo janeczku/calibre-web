@@ -78,8 +78,9 @@ kthoom.saveSettings = function() {
 
 kthoom.loadSettings = function() {
     try {
-        if (localStorage.kthoomSettings.length < 10)
+        if (localStorage.kthoomSettings.length < 10){
             return;
+        }
         var s = JSON.parse(localStorage.kthoomSettings);
         kthoom.rotateTimes = s.rotateTimes;
         hflip = s.hflip;
@@ -111,13 +112,13 @@ var createURLFromArray = function(array, mimeType) {
         throw "Browser support for Blobs is missing.";
     }
 
-    if ((typeof URL !== "function" && typeof URL != "object") ||
+    if ((typeof URL !== "function" && typeof URL !== "object") ||
       typeof URL.createObjectURL !== "function") {
         throw "Browser support for Object URLs is missing";
     }
 
     return URL.createObjectURL(blob);
-}
+};
 
 
 // Stores an image filename and its data: URI.
@@ -301,7 +302,7 @@ function loadFromArrayBuffer(ab) {
                     }
                 }
                 // display first page if we haven't yet
-                if (imageFiles.length == currentImage + 1) {
+                if (imageFiles.length === currentImage + 1) {
                     updatePage();
                 }
             });
@@ -320,10 +321,10 @@ function loadFromArrayBuffer(ab) {
 function updatePage() {
     var title = getElem("page");
     while (title.firstChild) title.removeChild(title.firstChild);
-    title.appendChild(document.createTextNode( (currentImage +1 ) + "/" + totalImages ));
+    title.appendChild(document.createTextNode( (currentImage + 1 ) + "/" + totalImages ));
 
     getElem("meter2").setAttribute("width",
-    	100 * (totalImages == 0 ? 0 : ((currentImage +1 ) / totalImages)) + "%");
+        100 * (totalImages === 0 ? 0 : ((currentImage + 1 ) / totalImages)) + "%");
     if (imageFiles[currentImage]) {
         setImage(imageFiles[currentImage].dataURI);
     } else {
@@ -344,7 +345,7 @@ function setImage(url) {
         x.strokeStyle = "black";
         x.fillText("Loading Page #" + (currentImage + 1), 100, 100);
     } else {
-        if ($("body").css("scrollHeight")/innerHeight > 1) {
+        if ($("body").css("scrollHeight") / innerHeight > 1) {
             $("body").css("overflowY", "scroll");
         }
 
@@ -386,12 +387,15 @@ function setImage(url) {
                 sh = h;
             kthoom.rotateTimes =  (4 + kthoom.rotateTimes) % 4;
             x.save();
-            if (kthoom.rotateTimes % 2 == 1) { sh = w; sw = h;}
+            if (kthoom.rotateTimes % 2 === 1) {
+                sh = w;
+                sw = h;
+            }
             canvas.height = sh;
             canvas.width = sw;
-            x.translate(sw/2, sh/2);
-            x.rotate(Math.PI/2 * kthoom.rotateTimes);
-            x.translate(-w/2, -h/2);
+            x.translate(sw / 2, sh / 2);
+            x.rotate(Math.PI / 2 * kthoom.rotateTimes);
+            x.translate(-w / 2, -h / 2);
             if (vflip) {
                 x.scale(1, -1);
                 x.translate(0, -h);
@@ -435,23 +439,23 @@ function showNextPage() {
 }
 
 function updateScale(clear) {
-  var mainImageStyle = getElem("mainImage").style;
-  mainImageStyle.width = "";
-  mainImageStyle.height = "";
-  mainImageStyle.maxWidth = "";
-  mainImageStyle.maxHeight = "";
+    var mainImageStyle = getElem("mainImage").style;
+    mainImageStyle.width = "";
+    mainImageStyle.height = "";
+    mainImageStyle.maxWidth = "";
+    mainImageStyle.maxHeight = "";
     var maxheight = innerHeight - 15;
-  if (!/main/.test(getElem("titlebar").className)) {
+    if (!/main/.test(getElem("titlebar").className)) {
         maxheight -= 25;
     }
-    if (clear || fitMode == kthoom.Key.N) {
-    } else if (fitMode == kthoom.Key.B) {
-    mainImageStyle.maxWidth = "100%";
-    mainImageStyle.maxHeight = maxheight + "px";
-    } else if (fitMode == kthoom.Key.H) {
-    mainImageStyle.height = maxheight + "px";
-    } else if (fitMode == kthoom.Key.W) {
-    mainImageStyle.width = "100%";
+    if (clear || fitMode === kthoom.Key.N) {
+    } else if (fitMode === kthoom.Key.B) {
+        mainImageStyle.maxWidth = "100%";
+        mainImageStyle.maxHeight = maxheight + "px";
+    } else if (fitMode === kthoom.Key.H) {
+        mainImageStyle.height = maxheight + "px";
+    } else if (fitMode === kthoom.Key.W) {
+        mainImageStyle.width = "100%";
     }
     kthoom.saveSettings();
 }
@@ -459,13 +463,14 @@ function updateScale(clear) {
 function keyHandler(evt) {
     var code = evt.keyCode;
 
-    if ($("#progress").css("display") == "none")
+    if ($("#progress").css("display") === "none"){
         return;
-    canKeyNext = (($("body").css("offsetWidth")+$("body").css("scrollLeft")) / $("body").css("scrollWidth")) >= 1;
+    }
+    canKeyNext = (($("body").css("offsetWidth") + $("body").css("scrollLeft")) / $("body").css("scrollWidth")) >= 1;
     canKeyPrev = (scrollX <= 0);
 
     if (evt.ctrlKey || evt.shiftKey || evt.metaKey) return;
-    switch(code) {
+    switch (code) {
         case kthoom.Key.LEFT:
             if (canKeyPrev) showPrevPage();
             break;
@@ -489,10 +494,10 @@ function keyHandler(evt) {
         case kthoom.Key.F:
             if (!hflip && !vflip) {
                 hflip = true;
-            } else if(hflip == true) {
+            } else if (hflip === true) {
                 vflip = true;
                 hflip = false;
-            } else if(vflip == true) {
+            } else if (vflip === true) {
                 vflip = false;
             }
             updatePage();
@@ -524,10 +529,10 @@ function init(filename) {
         alert("Sorry, kthoom will not work with your browser because it does not support the File API.  Please try kthoom with Chrome 12+ or Firefox 7+");
     } else {
         var request = new XMLHttpRequest();
-        request.open("GET",filename);
-        request.responseType="arraybuffer";
-        request.setRequestHeader("X-Test","test1");
-        request.setRequestHeader("X-Test","test2");
+        request.open("GET", filename);
+        request.responseType = "arraybuffer";
+        request.setRequestHeader("X-Test", "test1");
+        request.setRequestHeader("X-Test", "test2");
         request.addEventListener("load", function(event) {
             if (request.status >= 200 && request.status < 300) {
                 loadFromArrayBuffer(request.response);
