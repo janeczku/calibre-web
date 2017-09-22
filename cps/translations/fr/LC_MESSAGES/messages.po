@@ -21,15 +21,16 @@ msgstr ""
 "Project-Id-Version:  Calibre-web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/calibre-web\n"
 "POT-Creation-Date: 2017-09-16 07:48+0200\n"
-"PO-Revision-Date: 2017-09-14 12:02+0200\n"
+"PO-Revision-Date: 2017-09-21 12:25+0200\n"
 "Last-Translator: Nicolas Roudninski <nicoroud@gmail.com>\n"
 "Language: fr\n"
 "Language-Team: \n"
-"Plural-Forms: nplurals=2; plural=(n > 1)\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.4.0\n"
+"X-Generator: Poedit 2.0.3\n"
 
 #: cps/book_formats.py:118 cps/book_formats.py:122 cps/web.py:1358
 msgid "not installed"
@@ -109,7 +110,7 @@ msgstr "Mise à jour terminée, merci d’appuyer sur okay et de rafraîchir la 
 
 #: cps/web.py:1033
 msgid "Recently Added Books"
-msgstr "Livres récemment ajoutés"
+msgstr "Ajouts récents"
 
 #: cps/web.py:1042
 msgid "Newest Books"
@@ -146,8 +147,8 @@ msgstr "Liste des auteurs"
 #: cps/web.py:1134 cps/web.py:1190 cps/web.py:1315 cps/web.py:1774
 msgid "Error opening eBook. File does not exist or file is not accessible:"
 msgstr ""
-"Erreur d'ouverture du livre numérique. Le fichier n'existe pas ou n'est "
-"pas accessible :"
+"Erreur d'ouverture du livre numérique. Le fichier n'existe pas ou n'est pas "
+"accessible :"
 
 #: cps/templates/index.xml:70 cps/web.py:1176
 msgid "Series list"
@@ -415,8 +416,7 @@ msgstr "Éditer l'utilisateur %(nick)s"
 #: cps/web.py:2730
 msgid "Error opening eBook. File does not exist or file is not accessible"
 msgstr ""
-"Erreur à l’ouverture du livre. Le fichier n’existe pas ou n’est pas "
-"accessible"
+"Erreur à l’ouverture du livre. Le fichier n’existe pas ou n’est pas accessible"
 
 #: cps/web.py:2745 cps/web.py:2917 cps/web.py:3060
 msgid "edit metadata"
@@ -545,7 +545,7 @@ msgstr "Livres par page"
 
 #: cps/templates/admin.html:64
 msgid "Uploading"
-msgstr "Envoi"
+msgstr "Téléversement"
 
 #: cps/templates/admin.html:65
 msgid "Public registration"
@@ -748,7 +748,7 @@ msgstr "Source"
 
 #: cps/templates/book_edit.html:224
 msgid "Search error!"
-msgstr ""
+msgstr "Rechercher les erreur!"
 
 #: cps/templates/book_edit.html:225
 msgid "No Result! Please try anonther keyword."
@@ -776,7 +776,7 @@ msgstr ""
 
 #: cps/templates/config_edit.html:29
 msgid "Google drive Calibre folder"
-msgstr ""
+msgstr "Dossier Calibre de Google Drive"
 
 #: cps/templates/config_edit.html:38
 msgid "Metadata Watch Channel ID"
@@ -805,7 +805,7 @@ msgstr ""
 
 #: cps/templates/config_edit.html:76
 msgid "Tags for Mature Content"
-msgstr ""
+msgstr "Mots clés pour contenue pour adulte"
 
 #: cps/templates/config_edit.html:93
 msgid "Enable uploading"
@@ -911,8 +911,8 @@ msgstr "Éditer les métadonnées"
 #: cps/templates/email_edit.html:11
 msgid "SMTP port (usually 25 for plain SMTP and 465 for SSL and 587 for STARTTLS)"
 msgstr ""
-"SMTP port (habituellement 25 pour strict SMTP et 465 pour SSL et 587 pour"
-" STARTTLS)"
+"SMTP port (habituellement 25 pour strict SMTP et 465 pour SSL et 587 pour "
+"STARTTLS)"
 
 #: cps/templates/email_edit.html:15
 msgid "Encryption"
@@ -966,8 +966,7 @@ msgstr "Livres populaires"
 #: cps/templates/index.xml:18
 msgid "Popular publications from this catalog based on Downloads."
 msgstr ""
-"Publications populaires depuis le catalogue basées sur les "
-"téléchargements."
+"Publications populaires depuis le catalogue basées sur les téléchargements."
 
 #: cps/templates/index.xml:21 cps/templates/layout.html:124
 msgid "Best rated Books"
@@ -1031,12 +1030,12 @@ msgstr "Livres récemment ajoutés"
 
 #: cps/templates/layout.html:110
 msgid "Sorted Books"
-msgstr ""
+msgstr "Classer les livres"
 
 #: cps/templates/layout.html:114 cps/templates/layout.html:115
 #: cps/templates/layout.html:116 cps/templates/layout.html:117
 msgid "Sort By"
-msgstr "Ranger par"
+msgstr "Classer par"
 
 #: cps/templates/layout.html:114
 msgid "Newest"
@@ -1080,7 +1079,7 @@ msgstr "Créer une étagère"
 
 #: cps/templates/layout.html:154
 msgid "About"
-msgstr "À popos"
+msgstr "À propos"
 
 #: cps/templates/layout.html:168
 msgid "Previous"
@@ -1114,7 +1113,7 @@ msgstr "Catalogue de livre Calibre Web"
 
 #: cps/templates/read.html:69
 msgid "Settings"
-msgstr ""
+msgstr "Paramètres"
 
 #: cps/templates/read.html:72
 msgid "Reflow text when sidebars are open."
@@ -1198,7 +1197,7 @@ msgstr "Modifier l’ordre"
 
 #: cps/templates/shelf.html:54
 msgid "Do you really want to delete the shelf?"
-msgstr "Voulez-Vous vraiment supprimer l’étagère?"
+msgstr "Voulez-vous vraiment supprimer l’étagère?"
 
 #: cps/templates/shelf.html:57
 msgid "Shelf will be lost for everybody and forever!"
@@ -1238,7 +1237,7 @@ msgstr "Librairies liées"
 
 #: cps/templates/stats.html:28
 msgid "Program library"
-msgstr ""
+msgstr "Bibliothèque logiciel"
 
 #: cps/templates/stats.html:29
 msgid "Installed Version"
@@ -1270,15 +1269,15 @@ msgstr "Montrer les livres les mieux notés"
 
 #: cps/templates/user_edit.html:58
 msgid "Show language selection"
-msgstr "Montrer la sélection de la langue"
+msgstr "Montrer la sélection par langue"
 
 #: cps/templates/user_edit.html:62
 msgid "Show series selection"
-msgstr "Montrer la sélection des séries"
+msgstr "Montrer la sélection par séries"
 
 #: cps/templates/user_edit.html:66
 msgid "Show category selection"
-msgstr "Montrer la sélection des catégories"
+msgstr "Montrer la sélection par catégories"
 
 #: cps/templates/user_edit.html:70
 msgid "Show author selection"
@@ -2686,7 +2685,7 @@ msgstr "akuntsu"
 
 #. name for ara
 msgid "Arabic"
-msgstr "arabe"
+msgstr "Arabe"
 
 #. name for arb
 msgid "Arabic; Standard"
@@ -8970,7 +8969,7 @@ msgstr "fas"
 
 #. name for fra
 msgid "French"
-msgstr "français"
+msgstr "Français"
 
 #. name for frc
 msgid "French; Cajun"
@@ -11694,7 +11693,7 @@ msgstr "isu (Division de Menchum)"
 
 #. name for ita
 msgid "Italian"
-msgstr "italien"
+msgstr "Italien"
 
 #. name for itb
 msgid "Itneg; Binongan"
@@ -23618,7 +23617,7 @@ msgstr "roumain; Megleno"
 
 #. name for rus
 msgid "Russian"
-msgstr "russe"
+msgstr "Russe"
 
 #. name for rut
 msgid "Rutul"
@@ -24958,7 +24957,7 @@ msgstr "temi"
 
 #. name for spa
 msgid "Spanish"
-msgstr "espagnol"
+msgstr "Espagnol"
 
 #. name for spb
 msgid "Sepa (Indonesia)"
@@ -32131,4 +32130,3 @@ msgstr "zaza"
 #. name for zzj
 msgid "Zhuang; Zuojiang"
 msgstr "zhuang; Zuojiang"
-
