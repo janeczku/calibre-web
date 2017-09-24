@@ -452,7 +452,7 @@ bitjs.io = bitjs.io || {};
 
         var HALF = Math.pow(2, (numBytes * 8) - 1);
         if (num >= HALF || num < -HALF) {
-            throw "Trying to write " + num + "" into only " + numBytes + " bytes";
+            throw "Trying to write " + num + " into only " + numBytes + " bytes";
         }
 
         // Roll 8-bits at a time into an array of bytes.
