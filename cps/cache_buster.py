@@ -24,7 +24,7 @@ def init_cache_busting(app):
         for filename in filenames:
             # compute version component
             rooted_filename = os.path.join(dirpath, filename)
-            with open(rooted_filename, 'r') as f:
+            with open(rooted_filename, 'rb') as f:
                 file_hash = hashlib.md5(f.read()).hexdigest()[:7]
 
             # save version to tables
