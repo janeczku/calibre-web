@@ -10,8 +10,13 @@
         restore: true,
         bookmarks: calibre.bookmark ? [calibre.bookmark] : []
     });
-    reader.on("reader:bookmarked", updateBookmark.bind(reader, "add"));
-    reader.on("reader:unbookmarked", updateBookmark.bind(reader, "remove"));
+
+    if (calibre.useBookmarks) {
+        reader.on("reader:bookmarked", updateBookmark.bind(reader, "add"));
+        reader.on("reader:unbookmarked", updateBookmark.bind(reader, "remove"));
+    } else {
+        $("#bookmark, #show-Bookmarks").remove();
+    }
 
     /**
      * @param {string} action - Add or remove bookmark
