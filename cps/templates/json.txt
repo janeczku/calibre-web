@@ -41,7 +41,7 @@
   "rating":{% if entry.ratings.__len__() > 0 %} "{{entry.ratings[0].rating}}.0"{% else %}0.0{% endif %},
   "authors": [
   {% for author in entry.authors %}
-    "{{author.name}}"{% if not loop.last %},{% endif %}
+    "{{author.name.replace('|',',')}}"{% if not loop.last %},{% endif %}
   {% endfor %}       
   ], 
   "other_formats": {

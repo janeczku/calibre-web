@@ -39,7 +39,7 @@
         <p class="title">{{entry.title|shortentitle}}</p>
         <p class="author">
           {% for author in entry.authors %}
-          <a href="{{url_for('author', book_id=author.id) }}">{{author.name}}</a>
+          <a href="{{url_for('author', book_id=author.id) }}">{{author.name.replace('|',',')}}</a>
           {% if not loop.last %}
           &amp;
           {% endif %}
@@ -66,7 +66,7 @@
 
 {% if other_books %}
 <div class="discover">
-  <h3>{{_("More by")}} {{ author.name|safe }}</h3>
+  <h3>{{_("More by")}} {{ author.name.replace('|',',')|safe }}</h3>
   <div class="row">
     {% for entry in other_books %}
     <div class="col-sm-3 col-lg-2 col-xs-6 book">
@@ -80,7 +80,7 @@
         <p class="author">
           {% for author in entry.authors %}
           <a href="https://www.goodreads.com/author/show/{{ author.gid }}" target="_blank" rel="noopener">
-            {{author.name}}
+            {{author.name.replace('|',',')}}
           </a>
           {% if not loop.last %}
           &amp;

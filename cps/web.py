@@ -1122,6 +1122,8 @@ def author_list():
     entries = db.session.query(db.Authors, func.count('books_authors_link.book').label('count'))\
         .join(db.books_authors_link).join(db.Books).filter(common_filters())\
         .group_by('books_authors_link.author').order_by(db.Authors.sort).all()
+    for entry in entries:
+        entry.Authors.name=entry.Authors.name.replace('|',',')
     return render_title_template('list.html', entries=entries, folder='author', title=_(u"Author list"))
 
 
@@ -1135,7 +1137,7 @@ def author(book_id, page):
         flash(_(u"Error opening eBook. File does not exist or file is not accessible:"), category="error")
         return redirect(url_for("index"))
 
-    name = db.session.query(db.Authors).filter(db.Authors.id == book_id).first().name
+    name = (db.session.query(db.Authors).filter(db.Authors.id == book_id).first().name).replace('|',',')
 
     author_info = None
     other_books = []
@@ -2740,7 +2742,7 @@ def edit_book(book_id):
         except Exception:
             book.languages[index].language_name = _(isoLanguages.get(part3=book.languages[index].lang_code).name)
     for author in book.authors:
-        author_names.append(author.name)
+        author_names.append(author.name.replace('|',','))
 
     # Show form
     if request.method != 'POST':
@@ -2783,7 +2785,7 @@ def edit_book(book_id):
         book.title = to_save["book_title"]
         edited_books_id.add(book.id)
     input_authors = to_save["author_name"].split('&')
-    input_authors = map(lambda it: it.strip(), input_authors)
+    input_authors = map(lambda it: it.strip().replace(',','|'), input_authors)
     # we have all author names now
     if input_authors == ['']:
         input_authors = [_(u'unknown')]  # prevent empty Author
