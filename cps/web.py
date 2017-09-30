@@ -1779,7 +1779,9 @@ def read_book(book_id, book_format):
     book_dir = os.path.join(config.get_main_dir, "cps", "static", str(book_id))
     if not os.path.exists(book_dir):
         os.mkdir(book_dir)
-    bookmark = ub.session.query(ub.Bookmark).filter(ub.and_(ub.Bookmark.user_id == int(current_user.id),
+    bookmark = None
+    if current_user.is_authenticated:
+        bookmark = ub.session.query(ub.Bookmark).filter(ub.and_(ub.Bookmark.user_id == int(current_user.id),
                                                             ub.Bookmark.book_id == book_id,
                                                             ub.Bookmark.format == book_format.upper())).first()
     if book_format.lower() == "epub":
