@@ -34,6 +34,7 @@
     <id>{{url_for('feed_discover')}}</id>
     <content type="text">{{_('Show Random Books')}}</content>
   </entry>
+{% if not current_user.is_anonymous() %}
   <entry>
     <title>{{_('Read Books')}}</title>
     <link rel="subsection" href="{{url_for('feed_read_books')}}" type="application/atom+xml;profile=opds-catalog"/>
@@ -46,6 +47,7 @@
     <id>{{url_for('feed_unread_books')}}</id>
     <content type="text">{{_('Unread Books')}}</content>
   </entry>
+{% endif %}
   <entry>
     <title>{{_('Authors')}}</title>
     <link rel="subsection" href="{{url_for('feed_authorindex')}}" type="application/atom+xml;profile=opds-catalog"/>
