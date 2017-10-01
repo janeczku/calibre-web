@@ -874,7 +874,11 @@ def get_opds_download_link(book_id, book_format):
     file_name = helper.get_valid_filename(file_name)
     headers = Headers()
     headers["Content-Disposition"] = "attachment; filename*=UTF-8''%s.%s" % (quote(file_name.encode('utf8')), book_format)
-    app.logger.info(time.time()-startTime)
+    try:
+        headers["Content-Type"] = mimetypes.types_map['.' + book_format]
+    except KeyError:
+        headers["Content-Type"] = "application/octet-stream"
+    app.logger.info(time.time() - startTime)
     startTime = time.time()
     if config.config_use_google_drive:
         app.logger.info(time.time() - startTime)
