@@ -6,6 +6,7 @@ from sqlalchemy import exc
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import *
 from flask_login import AnonymousUserMixin
+import sys
 import os
 import logging
 from werkzeug.security import generate_password_hash
@@ -387,7 +388,11 @@ class Config:
                     (self.config_default_role & ROLE_DELETE_BOOKS == ROLE_DELETE_BOOKS))
 
     def mature_content_tags(self):
-        return list(map(unicode.lstrip, self.config_mature_content_tags.split(",")))
+        if (sys.version_info > (3, 0)): #Python3 str, Python2 unicode
+            lstrip = str.lstrip
+        else:
+            lstrip = unicode.lstrip
+        return list(map(lstrip, self.config_mature_content_tags.split(",")))
 
     def get_Log_Level(self):
         ret_value=""
