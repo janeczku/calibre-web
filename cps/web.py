@@ -1713,15 +1713,21 @@ def feed_get_cover(book_id):
 
 
 def render_read_books(page, are_read, as_xml=False):
-    readBooks = ub.session.query(ub.ReadBook).filter(ub.ReadBook.user_id == int(current_user.id)).filter(ub.ReadBook.is_read == True).all()
-    readBookIds = [x.book_id for x in readBooks]
-    if are_read:
-        db_filter = db.Books.id.in_(readBookIds)
-    else:
-        db_filter = ~db.Books.id.in_(readBookIds)
+    if not current_user.is_anonymous():
+        readBooks = ub.session.query(ub.ReadBook).filter(ub.ReadBook.user_id == int(current_user.id)).filter(ub.ReadBook.is_read == True).all()
+        readBookIds = [x.book_id for x in readBooks]
+        if are_read:
+            db_filter = db.Books.id.in_(readBookIds)
+        else:
+            db_filter = ~db.Books.id.in_(readBookIds)
 
-    entries, random, pagination = fill_indexpage(page, db.Books,
-        db_filter, db.Books.timestamp.desc())
+        entries, random, pagination = fill_indexpage(page, db.Books,
+            db_filter, db.Books.timestamp.desc())
+    else:
+        entries = []
+        random = False
+        pagination = Pagination(page, 1, 0)
+
     if as_xml:
         xml = render_title_template('feed.xml', entries=entries, pagination=pagination)
         response = make_response(xml)
