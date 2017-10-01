@@ -632,7 +632,7 @@ def before_request():
 def feed_index():
     xml = render_title_template('index.xml')
     response = make_response(xml)
-    response.headers["Content-Type"] = "application/xml"
+    response.headers["Content-Type"] = "application/atom+xml; charset=utf-8"
     return response
 
 
@@ -641,7 +641,7 @@ def feed_index():
 def feed_osd():
     xml = render_title_template('osd.xml', lang='de-DE')
     response = make_response(xml)
-    response.headers["Content-Type"] = "application/xml"
+    response.headers["Content-Type"] = "application/xml; charset=utf-8"
     return response
 
 
@@ -671,7 +671,7 @@ def feed_search(term):
     else:
         xml = render_title_template('feed.xml', searchterm="")
     response = make_response(xml)
-    response.headers["Content-Type"] = "application/xml"
+    response.headers["Content-Type"] = "application/atom+xml; charset=utf-8"
     return response
 
 
@@ -685,7 +685,7 @@ def feed_new():
                                                  db.Books, True, db.Books.timestamp.desc())
     xml = render_title_template('feed.xml', entries=entries, pagination=pagination)
     response = make_response(xml)
-    response.headers["Content-Type"] = "application/xml"
+    response.headers["Content-Type"] = "application/atom+xml; charset=utf-8"
     return response
 
 
@@ -697,7 +697,7 @@ def feed_discover():
     pagination = Pagination(1, config.config_books_per_page, int(config.config_books_per_page))
     xml = render_title_template('feed.xml', entries=entries, pagination=pagination)
     response = make_response(xml)
-    response.headers["Content-Type"] = "application/xml"
+    response.headers["Content-Type"] = "application/atom+xml; charset=utf-8"
     return response
 
 
@@ -711,7 +711,7 @@ def feed_best_rated():
                     db.Books, db.Books.ratings.any(db.Ratings.rating > 9), db.Books.timestamp.desc())
     xml = render_title_template('feed.xml', entries=entries, pagination=pagination)
     response = make_response(xml)
-    response.headers["Content-Type"] = "application/xml"
+    response.headers["Content-Type"] = "application/atom+xml; charset=utf-8"
     return response
 
 
@@ -739,7 +739,7 @@ def feed_hot():
     pagination = Pagination((int(off) / (int(config.config_books_per_page)) + 1), config.config_books_per_page, numBooks)
     xml = render_title_template('feed.xml', entries=entries, pagination=pagination)
     response = make_response(xml)
-    response.headers["Content-Type"] = "application/xml"
+    response.headers["Content-Type"] = "application/atom+xml; charset=utf-8"
     return response
 
 
@@ -755,7 +755,7 @@ def feed_authorindex():
                             len(db.session.query(db.Authors).all()))
     xml = render_title_template('feed.xml', listelements=entries, folder='feed_author', pagination=pagination)
     response = make_response(xml)
-    response.headers["Content-Type"] = "application/xml"
+    response.headers["Content-Type"] = "application/atom+xml; charset=utf-8"
     return response
 
 
@@ -769,7 +769,7 @@ def feed_author(book_id):
                     db.Books, db.Books.authors.any(db.Authors.id == book_id), db.Books.timestamp.desc())
     xml = render_title_template('feed.xml', entries=entries, pagination=pagination)
     response = make_response(xml)
-    response.headers["Content-Type"] = "application/xml"
+    response.headers["Content-Type"] = "application/atom+xml; charset=utf-8"
     return response
 
 
@@ -785,7 +785,7 @@ def feed_categoryindex():
                             len(db.session.query(db.Tags).all()))
     xml = render_title_template('feed.xml', listelements=entries, folder='feed_category', pagination=pagination)
     response = make_response(xml)
-    response.headers["Content-Type"] = "application/xml"
+    response.headers["Content-Type"] = "application/atom+xml; charset=utf-8"
     return response
 
 
@@ -799,7 +799,7 @@ def feed_category(book_id):
                     db.Books, db.Books.tags.any(db.Tags.id == book_id), db.Books.timestamp.desc())
     xml = render_title_template('feed.xml', entries=entries, pagination=pagination)
     response = make_response(xml)
-    response.headers["Content-Type"] = "application/xml"
+    response.headers["Content-Type"] = "application/atom+xml; charset=utf-8"
     return response
 
 
@@ -815,7 +815,7 @@ def feed_seriesindex():
                             len(db.session.query(db.Series).all()))
     xml = render_title_template('feed.xml', listelements=entries, folder='feed_series', pagination=pagination)
     response = make_response(xml)
-    response.headers["Content-Type"] = "application/xml"
+    response.headers["Content-Type"] = "application/atom+xml; charset=utf-8"
     return response
 
 
@@ -829,7 +829,7 @@ def feed_series(book_id):
                     db.Books, db.Books.series.any(db.Series.id == book_id),db.Books.series_index)
     xml = render_title_template('feed.xml', entries=entries, pagination=pagination)
     response = make_response(xml)
-    response.headers["Content-Type"] = "application/xml"
+    response.headers["Content-Type"] = "application/atom+xml; charset=utf-8"
     return response
 
 
