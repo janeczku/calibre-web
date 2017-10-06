@@ -12,64 +12,57 @@
   </author>
   <entry>
     <title>{{_('Hot Books')}}</title>
-    <link type="application/atom+xml;profile=opds-catalog;type=feed;kind=acquisition" href="{{url_for('feed_hot')}}" />
-    <link type="application/atom+xml" href="{{url_for('feed_hot')}}" rel="http://opds-spec.org/sort/popular"/>
+    <link rel="http://opds-spec.org/sort/popular" href="{{url_for('feed_hot')}}" type="application/atom+xml;profile=opds-catalog"/>
     <id>{{url_for('feed_hot')}}</id>
     <content type="text">{{_('Popular publications from this catalog based on Downloads.')}}</content>
   </entry>
   <entry>
     <title>{{_('Best rated Books')}}</title>
-    <link type="application/atom+xml;profile=opds-catalog;type=feed;kind=acquisition" href="{{url_for('feed_best_rated')}}" />
-    <link type="application/atom+xml" href="{{url_for('feed_best_rated')}}" rel="http://opds-spec.org/recommended"/>
+    <link rel="http://opds-spec.org/recommended" href="{{url_for('feed_best_rated')}}" type="application/atom+xml;profile=opds-catalog"/>
     <id>{{url_for('feed_best_rated')}}</id>
     <content type="text">{{_('Popular publications from this catalog based on Rating.')}}</content>
   </entry>
   <entry>
     <title>{{_('New Books')}}</title>
-    <link type="application/atom+xml;profile=opds-catalog;type=feed;kind=acquisition" href="{{url_for('feed_new')}}" />
-    <link rel="http://opds-spec.org/sort/new" href="{{url_for('feed_new')}}" type="application/atom+xml;profile=opds-catalog;type=feed;kind=acquisition"/>
+    <link rel="http://opds-spec.org/sort/new" href="{{url_for('feed_new')}}" type="application/atom+xml;profile=opds-catalog"/>
     <id>{{url_for('feed_new')}}</id>
     <content type="text">{{_('The latest Books')}}</content>
   </entry>
   <entry>
     <title>{{_('Random Books')}}</title>
-    <link type="application/atom+xml;profile=opds-catalog;type=feed;kind=acquisition" href="{{url_for('feed_discover')}}"/>
-    <link rel="http://opds-spec.org/featured" href="{{url_for('feed_discover')}}" type="application/atom+xml;profile=opds-catalog;type=feed;kind=acquisition"/>
+    <link rel="http://opds-spec.org/featured" href="{{url_for('feed_discover')}}" type="application/atom+xml;profile=opds-catalog"/>
     <id>{{url_for('feed_discover')}}</id>
     <content type="text">{{_('Show Random Books')}}</content>
   </entry>
+{% if not current_user.is_anonymous() %}
   <entry>
     <title>{{_('Read Books')}}</title>
-    <link type="application/atom+xml;profile=opds-catalog;type=feed;kind=acquisition" href="{{url_for('feed_read_books')}}" />
-    <link rel="subsection" href="{{url_for('feed_read_books')}}" type="application/atom+xml;profile=opds-catalog;type=feed;kind=acquisition"/>
+    <link rel="subsection" href="{{url_for('feed_read_books')}}" type="application/atom+xml;profile=opds-catalog"/>
     <id>{{url_for('feed_read_books')}}</id>
     <content type="text">{{_('Read Books')}}</content>
   </entry>
   <entry>
     <title>{{_('Unread Books')}}</title>
-    <link type="application/atom+xml;profile=opds-catalog;type=feed;kind=acquisition" href="{{url_for('feed_unread_books')}}" />
-    <link rel="subsection" href="{{url_for('feed_unread_books')}}" type="application/atom+xml;profile=opds-catalog;type=feed;kind=acquisition"/>
+    <link rel="subsection" href="{{url_for('feed_unread_books')}}" type="application/atom+xml;profile=opds-catalog"/>
     <id>{{url_for('feed_unread_books')}}</id>
     <content type="text">{{_('Unread Books')}}</content>
   </entry>
+{% endif %}
   <entry>
     <title>{{_('Authors')}}</title>
-    <link type="application/atom+xml;profile=opds-catalog;type=feed;kind=acquisition" href="{{url_for('feed_authorindex')}}"/>
-    <link rel="subsection" href="{{url_for('feed_authorindex')}}" type="application/atom+xml;profile=opds-catalog;type=feed;kind=navigation"/>
+    <link rel="subsection" href="{{url_for('feed_authorindex')}}" type="application/atom+xml;profile=opds-catalog"/>
     <id>{{url_for('feed_authorindex')}}</id>
     <content type="text">{{_('Books ordered by Author')}}</content>
    </entry>
    <entry>
     <title>{{_('Category list')}}</title>
-    <link type="application/atom+xml;profile=opds-catalog;type=feed;kind=acquisition" href="{{url_for('feed_categoryindex')}}"/>
-    <link rel="subsection" href="{{url_for('feed_categoryindex')}}" type="application/atom+xml;profile=opds-catalog;type=feed;kind=navigation"/>
+    <link rel="subsection" href="{{url_for('feed_categoryindex')}}" type="application/atom+xml;profile=opds-catalog"/>
     <id>{{url_for('feed_categoryindex')}}</id>
     <content type="text">{{_('Books ordered by category')}}</content>
    </entry>
    <entry>
     <title>{{_('Series list')}}</title>
-    <link type="application/atom+xml;profile=opds-catalog;type=feed;kind=acquisition" href="{{url_for('feed_seriesindex')}}"/>
-    <link rel="subsection" href="{{url_for('feed_seriesindex')}}" type="application/atom+xml;profile=opds-catalog;type=feed;kind=navigation"/>
+    <link rel="subsection" href="{{url_for('feed_seriesindex')}}" type="application/atom+xml;profile=opds-catalog"/>
     <id>{{url_for('feed_seriesindex')}}</id>
     <content type="text">{{_('Books ordered by series')}}</content>
    </entry>
