@@ -203,6 +203,7 @@ class ReverseProxied(object):
 mimetypes.init()
 mimetypes.add_type('application/xhtml+xml', '.xhtml')
 mimetypes.add_type('application/epub+zip', '.epub')
+mimetypes.add_type('application/fb2+zip', '.fb2')
 mimetypes.add_type('application/x-mobipocket-ebook', '.mobi')
 mimetypes.add_type('application/x-mobipocket-ebook', '.prc')
 mimetypes.add_type('application/vnd.amazon.ebook', '.azw')
@@ -631,7 +632,7 @@ def before_request():
 def feed_index():
     xml = render_title_template('index.xml')
     response = make_response(xml)
-    response.headers["Content-Type"] = "application/xml"
+    response.headers["Content-Type"] = "application/atom+xml; charset=utf-8"
     return response
 
 
@@ -640,7 +641,7 @@ def feed_index():
 def feed_osd():
     xml = render_title_template('osd.xml', lang='de-DE')
     response = make_response(xml)
-    response.headers["Content-Type"] = "application/xml"
+    response.headers["Content-Type"] = "application/xml; charset=utf-8"
     return response
 
 
@@ -670,7 +671,7 @@ def feed_search(term):
     else:
         xml = render_title_template('feed.xml', searchterm="")
     response = make_response(xml)
-    response.headers["Content-Type"] = "application/xml"
+    response.headers["Content-Type"] = "application/atom+xml; charset=utf-8"
     return response
 
 
@@ -684,7 +685,7 @@ def feed_new():
                                                  db.Books, True, db.Books.timestamp.desc())
     xml = render_title_template('feed.xml', entries=entries, pagination=pagination)
     response = make_response(xml)
-    response.headers["Content-Type"] = "application/xml"
+    response.headers["Content-Type"] = "application/atom+xml; charset=utf-8"
     return response
 
 
@@ -696,7 +697,7 @@ def feed_discover():
     pagination = Pagination(1, config.config_books_per_page, int(config.config_books_per_page))
     xml = render_title_template('feed.xml', entries=entries, pagination=pagination)
     response = make_response(xml)
-    response.headers["Content-Type"] = "application/xml"
+    response.headers["Content-Type"] = "application/atom+xml; charset=utf-8"
     return response
 
 
@@ -710,7 +711,7 @@ def feed_best_rated():
                     db.Books, db.Books.ratings.any(db.Ratings.rating > 9), db.Books.timestamp.desc())
     xml = render_title_template('feed.xml', entries=entries, pagination=pagination)
     response = make_response(xml)
-    response.headers["Content-Type"] = "application/xml"
+    response.headers["Content-Type"] = "application/atom+xml; charset=utf-8"
     return response
 
 
@@ -738,7 +739,7 @@ def feed_hot():
     pagination = Pagination((int(off) / (int(config.config_books_per_page)) + 1), config.config_books_per_page, numBooks)
     xml = render_title_template('feed.xml', entries=entries, pagination=pagination)
     response = make_response(xml)
-    response.headers["Content-Type"] = "application/xml"
+    response.headers["Content-Type"] = "application/atom+xml; charset=utf-8"
     return response
 
 
@@ -754,7 +755,7 @@ def feed_authorindex():
                             len(db.session.query(db.Authors).all()))
     xml = render_title_template('feed.xml', listelements=entries, folder='feed_author', pagination=pagination)
     response = make_response(xml)
-    response.headers["Content-Type"] = "application/xml"
+    response.headers["Content-Type"] = "application/atom+xml; charset=utf-8"
     return response
 
 
@@ -768,7 +769,7 @@ def feed_author(book_id):
                     db.Books, db.Books.authors.any(db.Authors.id == book_id), db.Books.timestamp.desc())
     xml = render_title_template('feed.xml', entries=entries, pagination=pagination)
     response = make_response(xml)
-    response.headers["Content-Type"] = "application/xml"
+    response.headers["Content-Type"] = "application/atom+xml; charset=utf-8"
     return response
 
 
@@ -784,7 +785,7 @@ def feed_categoryindex():
                             len(db.session.query(db.Tags).all()))
     xml = render_title_template('feed.xml', listelements=entries, folder='feed_category', pagination=pagination)
     response = make_response(xml)
-    response.headers["Content-Type"] = "application/xml"
+    response.headers["Content-Type"] = "application/atom+xml; charset=utf-8"
     return response
 
 
@@ -798,7 +799,7 @@ def feed_category(book_id):
                     db.Books, db.Books.tags.any(db.Tags.id == book_id), db.Books.timestamp.desc())
     xml = render_title_template('feed.xml', entries=entries, pagination=pagination)
     response = make_response(xml)
-    response.headers["Content-Type"] = "application/xml"
+    response.headers["Content-Type"] = "application/atom+xml; charset=utf-8"
     return response
 
 
@@ -814,7 +815,7 @@ def feed_seriesindex():
                             len(db.session.query(db.Series).all()))
     xml = render_title_template('feed.xml', listelements=entries, folder='feed_series', pagination=pagination)
     response = make_response(xml)
-    response.headers["Content-Type"] = "application/xml"
+    response.headers["Content-Type"] = "application/atom+xml; charset=utf-8"
     return response
 
 
@@ -828,7 +829,7 @@ def feed_series(book_id):
                     db.Books, db.Books.series.any(db.Series.id == book_id),db.Books.series_index)
     xml = render_title_template('feed.xml', entries=entries, pagination=pagination)
     response = make_response(xml)
-    response.headers["Content-Type"] = "application/xml"
+    response.headers["Content-Type"] = "application/atom+xml; charset=utf-8"
     return response
 
 
@@ -873,7 +874,11 @@ def get_opds_download_link(book_id, book_format):
     file_name = helper.get_valid_filename(file_name)
     headers = Headers()
     headers["Content-Disposition"] = "attachment; filename*=UTF-8''%s.%s" % (quote(file_name.encode('utf8')), book_format)
-    app.logger.info(time.time()-startTime)
+    try:
+        headers["Content-Type"] = mimetypes.types_map['.' + book_format]
+    except KeyError:
+        headers["Content-Type"] = "application/octet-stream"
+    app.logger.info(time.time() - startTime)
     startTime = time.time()
     if config.config_use_google_drive:
         app.logger.info(time.time() - startTime)
@@ -1712,15 +1717,21 @@ def feed_get_cover(book_id):
 
 
 def render_read_books(page, are_read, as_xml=False):
-    readBooks = ub.session.query(ub.ReadBook).filter(ub.ReadBook.user_id == int(current_user.id)).filter(ub.ReadBook.is_read == True).all()
-    readBookIds = [x.book_id for x in readBooks]
-    if are_read:
-        db_filter = db.Books.id.in_(readBookIds)
-    else:
-        db_filter = ~db.Books.id.in_(readBookIds)
+    if not current_user.is_anonymous():
+        readBooks = ub.session.query(ub.ReadBook).filter(ub.ReadBook.user_id == int(current_user.id)).filter(ub.ReadBook.is_read == True).all()
+        readBookIds = [x.book_id for x in readBooks]
+        if are_read:
+            db_filter = db.Books.id.in_(readBookIds)
+        else:
+            db_filter = ~db.Books.id.in_(readBookIds)
 
-    entries, random, pagination = fill_indexpage(page, db.Books,
-        db_filter, db.Books.timestamp.desc())
+        entries, random, pagination = fill_indexpage(page, db.Books,
+            db_filter, db.Books.timestamp.desc())
+    else:
+        entries = []
+        random = False
+        pagination = Pagination(page, 1, 0)
+
     if as_xml:
         xml = render_title_template('feed.xml', entries=entries, pagination=pagination)
         response = make_response(xml)
