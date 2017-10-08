@@ -6,7 +6,7 @@
   <div class="row">
 
     {% for entry in random %}
-    <div class="col-sm-3 col-lg-2 col-xs-6 book">
+    <div class="col-sm-3 col-lg-2 col-xs-6 book" id="books_rand">
       <div class="cover">
           <a href="{{ url_for('show_book', book_id=entry.id) }}" data-toggle="modal" data-target="#bookDetailsModal" data-remote="false">
             {% if entry.has_cover %}
@@ -42,7 +42,7 @@
   <div class="row">
     {% if entries[0] %}
     {% for entry in entries %}
-    <div class="col-sm-3 col-lg-2 col-xs-6 book">
+    <div class="col-sm-3 col-lg-2 col-xs-6 book" id="books">
       <div class="cover">
           <a href="{{ url_for('show_book', book_id=entry.id) }}" data-toggle="modal" data-target="#bookDetailsModal" data-remote="false">
             {% if entry.has_cover %}
