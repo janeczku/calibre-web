@@ -8,6 +8,8 @@
  * Copyright(c) 2011 Google Inc.
  */
 
+/* global bitjs */
+
 var bitjs = bitjs || {};
 bitjs.archive = bitjs.archive || {};
 
@@ -15,7 +17,7 @@ bitjs.archive = bitjs.archive || {};
 
     // ===========================================================================
     // Stolen from Closure because it's the best way to do Java-like inheritance.
-    bitjs.base = function(me, optMethodName, var_args) {
+    bitjs.base = function(me, optMethodName, varArgs) {
         var caller = arguments.callee.caller;
         if (caller.superClass_) {
             // This is a constructor. Call the superclass constructor.
@@ -48,10 +50,10 @@ bitjs.archive = bitjs.archive || {};
     };
     bitjs.inherits = function(childCtor, parentCtor) {
         /** @constructor */
-        function tempCtor() {};
-        tempCtor.prototype = parentCtor.prototype;
+        function TempCtor() {}
+        TempCtor.prototype = parentCtor.prototype;
         childCtor.superClass_ = parentCtor.prototype;
-        childCtor.prototype = new tempCtor();
+        childCtor.prototype = new TempCtor();
         childCtor.prototype.constructor = childCtor;
     };
     // ===========================================================================
@@ -141,12 +143,12 @@ bitjs.archive = bitjs.archive || {};
      * Progress event.
      */
     bitjs.archive.UnarchiveProgressEvent = function(
-        currentFilename,
-        currentFileNumber,
-        currentBytesUnarchivedInFile,
-        currentBytesUnarchived,
-        totalUncompressedBytesInArchive,
-        totalFilesInArchive)
+            currentFilename,
+            currentFileNumber,
+            currentBytesUnarchivedInFile,
+            currentBytesUnarchived,
+            totalUncompressedBytesInArchive,
+            totalFilesInArchive)
     {
         bitjs.base(this, bitjs.archive.UnarchiveEvent.Type.PROGRESS);
 
@@ -296,7 +298,7 @@ bitjs.archive = bitjs.archive || {};
             };
 
             this.worker_.onmessage = function(e) {
-                if (typeof e.data == "string") {
+                if (typeof e.data === "string") {
                     // Just log any strings the workers pump our way.
                     console.log(e.data);
                 } else {
