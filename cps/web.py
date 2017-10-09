@@ -866,7 +866,7 @@ def get_opds_download_link(book_id, book_format):
     book = db.session.query(db.Books).filter(db.Books.id == book_id).first()
     data = db.session.query(db.Data).filter(db.Data.book == book.id).filter(db.Data.format == book_format.upper()).first()
     app.logger.info(data.name)
-    if current_user.is_authenticated:
+    if current_user.is_authenticated():
         helper.update_download(book_id, int(current_user.id))
     file_name = book.title
     if len(book.authors) > 0:
@@ -1791,7 +1791,7 @@ def read_book(book_id, book_format):
     if not os.path.exists(book_dir):
         os.mkdir(book_dir)
     bookmark = None
-    if current_user.is_authenticated:
+    if current_user.is_authenticated():
         bookmark = ub.session.query(ub.Bookmark).filter(ub.and_(ub.Bookmark.user_id == int(current_user.id),
                                                             ub.Bookmark.book_id == book_id,
                                                             ub.Bookmark.format == book_format.upper())).first()
@@ -1842,7 +1842,7 @@ def get_download_link(book_id, book_format):
     data = db.session.query(db.Data).filter(db.Data.book == book.id).filter(db.Data.format == book_format.upper()).first()
     if data:
         # collect downloaded books only for registered user and not for anonymous user
-        if current_user.is_authenticated:
+        if current_user.is_authenticated():
             helper.update_download(book_id, int(current_user.id))
         file_name = book.title
         if len(book.authors) > 0:
@@ -1876,7 +1876,7 @@ def get_download_link_ext(book_id, book_format, anyname):
 def register():
     if not config.config_public_reg:
         abort(404)
-    if current_user is not None and current_user.is_authenticated:
+    if current_user is not None and current_user.is_authenticated():
         return redirect(url_for('index'))
 
     if request.method == "POST":
@@ -1913,7 +1913,7 @@ def register():
 def login():
     if not config.db_configured:
         return redirect(url_for('basic_configuration'))
-    if current_user is not None and current_user.is_authenticated:
+    if current_user is not None and current_user.is_authenticated():
         return redirect(url_for('index'))
     if request.method == "POST":
         form = request.form.to_dict()
@@ -1940,7 +1940,7 @@ def login():
 @app.route('/logout')
 @login_required
 def logout():
-    if current_user is not None and current_user.is_authenticated:
+    if current_user is not None and current_user.is_authenticated():
         logout_user()
     return redirect(url_for('login'))
 
