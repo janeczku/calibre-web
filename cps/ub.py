@@ -51,7 +51,7 @@ DEVELOPMENT = False
 
 
 class UserBase:
-    @staticmethod
+    @classmethod
     def is_authenticated(self):
         return True
 
@@ -172,6 +172,7 @@ class Anonymous(AnonymousUserMixin, UserBase):
         settings = session.query(Settings).first()
         self.nickname = data.nickname
         self.role = data.role
+        self.id=data.id
         self.sidebar_view = data.sidebar_view
         self.default_language = data.default_language
         self.locale = data.locale
@@ -187,6 +188,8 @@ class Anonymous(AnonymousUserMixin, UserBase):
     def is_anonymous(self):
         return self.anon_browse
 
+    def is_authenticated(self):
+        return False
 
 # Baseclass representing Shelfs in calibre-web inapp.db
 class Shelf(Base):
