@@ -266,6 +266,7 @@ def get_valid_filename(value, replace_whitespace=True):
     """
     if value[-1:] == u'.':
         value = value[:-1]+u'_'
+    value = value.replace("/", "_").replace(":", "_").strip('\0')
     if use_unidecode:
         value=(unidecode.unidecode(value)).strip()
     else:

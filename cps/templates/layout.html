@@ -32,9 +32,9 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="{{url_for('index')}}">Calibre Web</a>
+          <a class="navbar-brand" href="{{url_for('index')}}">{{instance}}</a>
         </div>
-        {% if g.user.is_authenticated or g.user.is_anonymous() %}
+        {% if g.user.is_authenticated() or g.user.is_anonymous() %}
           <form class="navbar-form navbar-left" role="search" action="{{url_for('search')}}" method="GET">
             <div class="form-group input-group input-group-sm">
               <label for="query" class="sr-only">{{_('Search')}}</label>
@@ -46,13 +46,13 @@
           </form>
         {% endif %}
         <div class="navbar-collapse collapse">
-          {% if g.user.is_authenticated or g.user.is_anonymous() %}
+          {% if g.user.is_authenticated() or g.user.is_anonymous() %}
           <ul class="nav navbar-nav ">
             <li><a href="{{url_for('advanced_search')}}"><span class="glyphicon glyphicon-search"></span><span class="hidden-sm"> {{_('Advanced Search')}}</span></a></li>
           </ul>
           {% endif %}
           <ul class="nav navbar-nav navbar-right" id="main-nav">
-            {% if g.user.is_authenticated or g.user.is_anonymous() %}
+            {% if g.user.is_authenticated() or g.user.is_anonymous() %}
               {% if g.user.role_upload() or g.user.role_admin()%}
                 {% if g.allow_upload %}
                     <li>
@@ -72,8 +72,10 @@
               <li><a id="logout" href="{{url_for('logout')}}"><span class="glyphicon glyphicon-log-out"></span><span class="hidden-sm"> {{_('Logout')}}</span></a></li>
               {% endif %}
             {% endif %}
-            {% if g.allow_registration and not g.user.is_authenticated %}
+            {% if not g.user.is_authenticated() %}
             <li><a id="login" href="{{url_for('login')}}"><span class="glyphicon glyphicon-log-in"></span> {{_('Login')}}</a></li>
+            {% endif %}
+            {% if g.allow_registration and not g.user.is_authenticated() %}
             <li><a id="register" href="{{url_for('register')}}"><span class="glyphicon glyphicon-user"></span> {{_('Register')}}</a></li>
             {% endif %}
           </ul>
@@ -99,7 +101,7 @@
     {% endfor %}
     <div class="container-fluid">
       <div class="row-fluid">
-        {% if g.user.is_authenticated or g.user.is_anonymous() %}
+        {% if g.user.is_authenticated() or g.user.is_anonymous() %}
         <div class="col-sm-2">
           <nav class="navigation">
             <ul class="list-unstyled" id="scnd-nav" intent in-standard-append="nav.navigation" in-mobile-after="#main-nav" in-mobile-class="nav navbar-nav">
@@ -140,7 +142,7 @@
               {% if g.user.filter_language() == 'all' and g.user.show_language() %}
                 <li id="nav_lang"><a href="{{url_for('language_overview')}}"><span class="glyphicon glyphicon-flag"></span> {{_('Languages')}} </a></li>
               {%endif%}
-              {% if g.user.is_authenticated or g.user.is_anonymous() %}
+              {% if g.user.is_authenticated() or g.user.is_anonymous() %}
                 <li class="nav-head hidden-xs">{{_('Public Shelves')}}</li>
                 {% for shelf in g.public_shelfes %}
                   <li><a href="{{url_for('show_shelf', shelf_id=shelf.id)}}"><span class="glyphicon glyphicon-list"></span> {{shelf.name}}</a></li>

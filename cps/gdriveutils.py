@@ -73,26 +73,27 @@ if not os.path.exists(dbpath):
 migrate()
 
 
-def getDrive(gauth=None):
-    if not gauth:
-        gauth = GoogleAuth(settings_file='settings.yaml')
-    # Try to load saved client credentials
-    gauth.LoadCredentialsFile("gdrive_credentials")
-    if gauth.access_token_expired:
-        # Refresh them if expired
-        gauth.Refresh()
-    else:
-        # Initialize the saved creds
-        gauth.Authorize()
-    # Save the current credentials to a file
-    return GoogleDrive(gauth)
+def getDrive(drive=None, gauth=None):
+    if not drive:
+        if not gauth:
+            gauth = GoogleAuth(settings_file='settings.yaml')
+        # Try to load saved client credentials
+        gauth.LoadCredentialsFile("gdrive_credentials")
+        if gauth.access_token_expired:
+            # Refresh them if expired
+            gauth.Refresh()
+        else:
+            # Initialize the saved creds
+            gauth.Authorize()
+        # Save the current credentials to a file
+        return GoogleDrive(gauth)
+    if drive.auth.access_token_expired:
+        drive.auth.Refresh()
+    return drive
 
 
 def getEbooksFolder(drive=None):
-    if not drive:
-        drive = getDrive()
-    if drive.auth.access_token_expired:
-        drive.auth.Refresh()
+    drive = getDrive(drive)
     ebooksFolder = "title = '%s' and 'root' in parents and mimeType = 'application/vnd.google-apps.folder' and trashed = false" % config.config_google_drive_folder
 
     fileList = drive.ListFile({'q': ebooksFolder}).GetList()
@@ -113,20 +114,14 @@ def getEbooksFolderId(drive=None):
 
 
 def getFolderInFolder(parentId, folderName, drive=None):
-    if not drive:
-        drive = getDrive()
-    if drive.auth.access_token_expired:
-        drive.auth.Refresh()
+    drive = getDrive(drive)
     folder = "title = '%s' and '%s' in parents and mimeType = 'application/vnd.google-apps.folder' and trashed = false" % (folderName.replace("'", "\\'"), parentId)
     fileList = drive.ListFile({'q': folder}).GetList()
     return fileList[0]
 
 
 def getFile(pathId, fileName, drive=None):
-    if not drive:
-        drive = getDrive()
-    if drive.auth.access_token_expired:
-        drive.auth.Refresh()
+    drive = getDrive(drive)
     metaDataFile = "'%s' in parents and trashed = false and title = '%s'" % (pathId, fileName.replace("'", "\\'"))
 
     fileList = drive.ListFile({'q': metaDataFile}).GetList()
@@ -134,10 +129,7 @@ def getFile(pathId, fileName, drive=None):
 
 
 def getFolderId(path, drive=None):
-    if not drive:
-        drive = getDrive()
-    if drive.auth.access_token_expired:
-        drive.auth.Refresh()
+    drive = getDrive(drive)
     currentFolderId = getEbooksFolderId(drive)
     sqlCheckPath = path if path[-1] == '/' else path + '/'
     storedPathName = session.query(GdriveId).filter(GdriveId.path == sqlCheckPath).first()
@@ -168,10 +160,7 @@ def getFolderId(path, drive=None):
 
 
 def getFileFromEbooksFolder(drive, path, fileName):
-    if not drive:
-        drive = getDrive()
-    if drive.auth.access_token_expired:
-        drive.auth.Refresh()
+    drive = getDrive(drive)
     if path:
         # sqlCheckPath=path if path[-1] =='/' else path + '/'
         folderId = getFolderId(path, drive)
@@ -182,10 +171,7 @@ def getFileFromEbooksFolder(drive, path, fileName):
 
 
 def copyDriveFileRemote(drive, origin_file_id, copy_title):
-    if not drive:
-        drive = getDrive()
-    if drive.auth.access_token_expired:
-        drive.auth.Refresh()
+    drive = getDrive(drive)
     copied_file = {'title': copy_title}
     try:
         file_data = drive.auth.service.files().copy(
@@ -197,19 +183,13 @@ def copyDriveFileRemote(drive, origin_file_id, copy_title):
 
 
 def downloadFile(drive, path, filename, output):
-    if not drive:
-        drive = getDrive()
-    if drive.auth.access_token_expired:
-        drive.auth.Refresh()
+    drive = getDrive(drive)
     f = getFileFromEbooksFolder(drive, path, filename)
     f.GetContentFile(output)
 
 
 def backupCalibreDbAndOptionalDownload(drive, f=None):
-    if not drive:
-        drive = getDrive()
-    if drive.auth.access_token_expired:
-        drive.auth.Refresh()
+    drive = getDrive(drive)
     metaDataFile = "'%s' in parents and title = 'metadata.db' and trashed = false" % getEbooksFolderId()
 
     fileList = drive.ListFile({'q': metaDataFile}).GetList()
@@ -221,12 +201,10 @@ def backupCalibreDbAndOptionalDownload(drive, f=None):
 
 
 def copyToDrive(drive, uploadFile, createRoot, replaceFiles,
-        ignoreFiles=[],
+        ignoreFiles=None,
         parent=None, prevDir=''):
-    if not drive:
-        drive = getDrive()
-    if drive.auth.access_token_expired:
-        drive.auth.Refresh()
+    ignoreFiles = ignoreFiles or []
+    drive = getDrive(drive)
     isInitial = not bool(parent)
     if not parent:
         parent = getEbooksFolder(drive)
@@ -254,10 +232,7 @@ def copyToDrive(drive, uploadFile, createRoot, replaceFiles,
 
 
 def uploadFileToEbooksFolder(drive, destFile, f):
-    if not drive:
-        drive = getDrive()
-    if drive.auth.access_token_expired:
-        drive.auth.Refresh()
+    drive = getDrive(drive)
     parent = getEbooksFolder(drive)
     splitDir = destFile.split('/')
     for i, x in enumerate(splitDir):
@@ -281,10 +256,7 @@ def uploadFileToEbooksFolder(drive, destFile, f):
 
 def watchChange(drive, channel_id, channel_type, channel_address,
               channel_token=None, expiration=None):
-    if not drive:
-        drive = getDrive()
-    if drive.auth.access_token_expired:
-        drive.auth.Refresh()
+    drive = getDrive(drive)
     # Watch for all changes to a user's Drive.
     # Args:
     # service: Drive API service instance.
@@ -327,10 +299,7 @@ def watchFile(drive, file_id, channel_id, channel_type, channel_address,
     Raises:
     apiclient.errors.HttpError: if http request to create channel fails.
     """
-    if not drive:
-        drive = getDrive()
-    if drive.auth.access_token_expired:
-        drive.auth.Refresh()
+    drive = getDrive(drive)
 
     body = {
         'id': channel_id,
@@ -353,10 +322,7 @@ def stopChannel(drive, channel_id, resource_id):
     Raises:
     apiclient.errors.HttpError: if http request to create channel fails.
     """
-    if not drive:
-        drive = getDrive()
-    if drive.auth.access_token_expired:
-        drive.auth.Refresh()
+    drive = getDrive(drive)
     # service=drive.auth.service
     body = {
         'id': channel_id,
@@ -366,10 +332,7 @@ def stopChannel(drive, channel_id, resource_id):
 
 
 def getChangeById (drive, change_id):
-    if not drive:
-        drive = getDrive()
-    if drive.auth.access_token_expired:
-        drive.auth.Refresh()
+    drive = getDrive(drive)
     # Print a single Change resource information.
     #
     # Args:

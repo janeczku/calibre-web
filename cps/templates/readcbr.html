@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  	<meta charset="utf-8">
+  	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Comic Reader</title>
+    <meta name="description" content="">
+	<meta name="viewport" content="width=device-width, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/kthoom.css') }}" type="text/css"/>
+    <link href="{{ url_for('static', filename='css/libs/bootstrap.min.css') }}" rel="stylesheet" media="screen">
+    <script src="{{ url_for('static', filename='js/libs/jquery.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/libs/bootstrap.min.js') }}"></script>
+
+	<script src="{{ url_for('static', filename='js/kthoom.js') }}"></script>
+	<script src="{{ url_for('static', filename='js/archive.js') }}"></script>
+    <script>
+            document.onreadystatechange = function () {
+              if (document.readyState == "complete") {
+                init("{{ url_for('static', filename=comicfile) }}");
+                }                
+            };
+    </script>    
+  </head>
+  <body>
+    <div class="main" id="main">
+	    <div id="titlebar">
+	      <div id="progress" class="hide"></div>
+             <div class="progress2" style="display:none">
+              <div class="progress-bar" role="progressbar" aria-valuenow="70"
+                  aria-valuemin="0" aria-valuemax="100" style="width:70%">
+                70%
+              </div>
+        </div>
+	    </div>
+	    <div id="mainContent">
+	      <div id="mainText" style="display:none"></div>
+      	<canvas id="mainImage"></canvas>
+	    </div>
+          <div id="prev" class="arrow" onclick="showPrevPage()">‹</div>
+          <div id="next" class="arrow" onclick="showNextPage()">›</div>
+    </div>
+  </body>
+</html>

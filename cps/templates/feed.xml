@@ -64,8 +64,7 @@
   <entry>
     <title>{{entry.name}}</title>
     <id>{{ url_for(folder, book_id=entry.id) }}</id>
-    <link type="application/atom+xml;profile=opds-catalog;type=feed;kind=acquisition" href="{{url_for(folder, book_id=entry.id)}}"/>
-    <link type="application/atom+xml" href="{{url_for(folder, book_id=entry.id)}}" rel="subsection"/>
+    <link rel="subsection" type="application/atom+xml;profile=opds-catalog" href="{{url_for(folder, book_id=entry.id)}}"/>
   </entry>
   {% endfor %}
 </feed>
