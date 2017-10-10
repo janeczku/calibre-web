@@ -384,9 +384,12 @@ app.jinja_env.globals['url_for_other_page'] = url_for_other_page
 
 
 def login_required_if_no_ano(func):
-    if config.config_anonbrowse == 1:
-        return func
-    return login_required(func)
+    @wraps(func)
+    def decorated_view(*args, **kwargs):
+        if config.config_anonbrowse == 1:
+            return func(*args, **kwargs)
+        return login_required(func)(*args, **kwargs)
+    return decorated_view
 
 
 def remote_login_required(f):
