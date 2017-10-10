@@ -2,7 +2,7 @@
 {% block body %}
 <div class="discover">
   <h2>{{title}}</h2>
-  {% if g.user.is_authenticated %}
+  {% if g.user.is_authenticated() %}
     {% if (g.user.role_edit_shelfs() and shelf.is_public ) or not shelf.is_public  %}
       <div data-toggle="modal" data-target="#DeleteShelfDialog" class="btn btn-danger">{{ _('Delete this Shelf') }} </div>
       <a href="{{ url_for('edit_shelf', shelf_id=shelf.id) }}" class="btn btn-primary">{{ _('Edit Shelf name') }} </a>
@@ -24,7 +24,7 @@
         <p class="title">{{entry.title|shortentitle}}</p>
         <p class="author">
           {% for author in entry.authors %}
-            <a href="{{url_for('author', book_id=author.id) }}">{{author.name}}</a>
+            <a href="{{url_for('author', book_id=author.id) }}">{{author.name.replace('|',',')}}</a>
             {% if not loop.last %}
               &amp;
             {% endif %}
