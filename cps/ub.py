@@ -182,12 +182,15 @@ class Anonymous(AnonymousUserMixin, UserBase):
     def role_admin(self):
         return False
 
+    @property
     def is_active(self):
         return False
 
+    @property
     def is_anonymous(self):
         return self.anon_browse
 
+    @property
     def is_authenticated(self):
         return False
 
