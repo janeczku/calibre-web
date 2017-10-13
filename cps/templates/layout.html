@@ -72,10 +72,8 @@
               <li><a id="logout" href="{{url_for('logout')}}"><span class="glyphicon glyphicon-log-out"></span><span class="hidden-sm"> {{_('Logout')}}</span></a></li>
               {% endif %}
             {% endif %}
-            {% if not g.user.is_authenticated %}
-            <li><a id="login" href="{{url_for('login')}}"><span class="glyphicon glyphicon-log-in"></span> {{_('Login')}}</a></li>
-            {% endif %}
             {% if g.allow_registration and not g.user.is_authenticated %}
+            <li><a id="login" href="{{url_for('login')}}"><span class="glyphicon glyphicon-log-in"></span> {{_('Login')}}</a></li>
             <li><a id="register" href="{{url_for('register')}}"><span class="glyphicon glyphicon-user"></span> {{_('Register')}}</a></li>
             {% endif %}
           </ul>
@@ -138,7 +136,9 @@
               {% if g.user.show_series() %}
               <li id="nav_serie"><a href="{{url_for('series_list')}}"><span class="glyphicon glyphicon-bookmark"></span> {{_('Series')}}</a></li>
               {%endif%}
+              {% if g.user.show_author() %}
               <li id="nav_author"><a href="{{url_for('author_list')}}"><span class="glyphicon glyphicon-user"></span> {{_('Authors')}}</a></li>
+              {%endif%}
               {% if g.user.filter_language() == 'all' and g.user.show_language() %}
                 <li id="nav_lang"><a href="{{url_for('language_overview')}}"><span class="glyphicon glyphicon-flag"></span> {{_('Languages')}} </a></li>
               {%endif%}
