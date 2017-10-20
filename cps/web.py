@@ -659,11 +659,11 @@ def feed_normal_search():
 
 def feed_search(term):
     if term:
-        entries = db.session.query(db.Books).filter(db.or_(db.Books.tags.any(db.Tags.name.like("%" + term + "%")),
-                                                    db.Books.series.any(db.Series.name.like("%" + term + "%")),
-                                                    db.Books.authors.any(db.Authors.name.like("%" + term + "%")),
-                                                    db.Books.publishers.any(db.Publishers.name.like("%" + term + "%")),
-                                                    db.Books.title.like("%" + term + "%")))\
+        entries = db.session.query(db.Books).filter(db.or_(db.Books.tags.any(db.Tags.name.ilike("%" + term + "%")),
+                                                    db.Books.series.any(db.Series.name.ilike("%" + term + "%")),
+                                                    db.Books.authors.any(db.Authors.name.ilike("%" + term + "%")),
+                                                    db.Books.publishers.any(db.Publishers.name.ilike("%" + term + "%")),
+                                                    db.Books.title.ilike("%" + term + "%")))\
             .filter(common_filters()).all()
         entriescount = len(entries) if len(entries) > 0 else 1
         pagination = Pagination(1, entriescount, entriescount)
@@ -909,7 +909,7 @@ def get_authors_json():
     if request.method == "GET":
         query = request.args.get('q')
         # entries = db.session.execute("select name from authors where name like '%" + query + "%'")
-        entries = db.session.query(db.Authors).filter(db.Authors.name.like("%" + query + "%")).all()
+        entries = db.session.query(db.Authors).filter(db.Authors.name.ilike("%" + query + "%")).all()
         json_dumps = json.dumps([dict(name=r.name) for r in entries])
         return json_dumps
 
@@ -920,7 +920,7 @@ def get_tags_json():
     if request.method == "GET":
         query = request.args.get('q')
         # entries = db.session.execute("select name from tags where name like '%" + query + "%'")
-        entries = db.session.query(db.Tags).filter(db.Tags.name.like("%" + query + "%")).all()
+        entries = db.session.query(db.Tags).filter(db.Tags.iname.ilike("%" + query + "%")).all()
         # for x in entries:
         #    alfa = dict(name=x.name)
         json_dumps = json.dumps([dict(name=r.name) for r in entries])
@@ -998,7 +998,7 @@ def get_languages_json():
 def get_series_json():
     if request.method == "GET":
         query = request.args.get('q')
-        entries = db.session.query(db.Series).filter(db.Series.name.like("%" + query + "%")).all()
+        entries = db.session.query(db.Series).filter(db.Series.name.ilike("%" + query + "%")).all()
         # entries = db.session.execute("select name from series where name like '%" + query + "%'")
         json_dumps = json.dumps([dict(name=r.name) for r in entries])
         return json_dumps
@@ -1014,8 +1014,8 @@ def get_matching_tags():
         title_input = request.args.get('book_title')
         include_tag_inputs = request.args.getlist('include_tag')
         exclude_tag_inputs = request.args.getlist('exclude_tag')
-        q = q.filter(db.Books.authors.any(db.Authors.name.like("%" + author_input + "%")),
-                     db.Books.title.like("%" + title_input + "%"))
+        q = q.filter(db.Books.authors.any(db.Authors.name.ilike("%" + author_input + "%")),
+                     db.Books.title.ilike("%" + title_input + "%"))
         if len(include_tag_inputs) > 0:
             for tag in include_tag_inputs:
                 q = q.filter(db.Books.tags.any(db.Tags.id == tag))
@@ -1577,13 +1577,18 @@ def update():
 @login_required_if_no_ano
 def search():
     term = request.args.get("query").strip()
+
     if term:
-        entries = db.session.query(db.Books).filter(db.or_(db.Books.tags.any(db.Tags.name.like("%" + term + "%")),
-                                                    db.Books.series.any(db.Series.name.like("%" + term + "%")),
-                                                    db.Books.authors.any(db.Authors.name.like("%" + term + "%")),
-                                                    db.Books.publishers.any(db.Publishers.name.like("%" + term + "%")),
-                                                    db.Books.title.like("%" + term + "%")))\
+        entries = db.session.query(db.Books).filter(db.or_(db.Books.tags.any(db.Tags.name.ilike("%" + term + "%")),
+                                                    db.Books.series.any(db.Series.name.ilike("%" + term + "%")),
+                                                    db.Books.authors.any(db.Authors.name.ilike("%" + term + "%")),
+                                                    db.Books.publishers.any(db.Publishers.name.ilike("%" + term + "%")),
+                                                    db.Books.title.ilike("%" + term + "%")))\
             .filter(common_filters()).all()
+#        entries = db.session.query(db.Books).with_entities(db.Books.title).filter(db.Books.title.ilike("%" + term + "%")).all()
+        #result = db.session.execute("select name from authors where lower(name) like '%" + term.lower() + "%'")
+        #entries = result.fetchall()
+        #result.close()
         return render_title_template('search.html', searchterm=term, entries=entries)
     else:
         return render_title_template('search.html', searchterm="")
@@ -1625,9 +1630,9 @@ def advanced_search():
                     lang.name = _(isoLanguages.get(part3=lang.lang_code).name)
             searchterm.extend(language.name for language in language_names)
             searchterm = " + ".join(filter(None, searchterm))
-            q = q.filter(db.Books.authors.any(db.Authors.name.like("%" + author_name + "%")),
-                         db.Books.title.like("%" + book_title + "%"),
-                         db.Books.publishers.any(db.Publishers.name.like("%" + publisher + "%")))
+            q = q.filter(db.Books.authors.any(db.Authors.name.ilike("%" + author_name + "%")),
+                         db.Books.title.ilike("%" + book_title + "%"),
+                         db.Books.publishers.any(db.Publishers.name.ilike("%" + publisher + "%")))
             for tag in include_tag_inputs:
                 q = q.filter(db.Books.tags.any(db.Tags.id == tag))
             for tag in exclude_tag_inputs:

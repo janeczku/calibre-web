@@ -12,4 +12,4 @@ rsa==3.4.2
 six==1.10.0
 uritemplate==3.0.0
 goodreads>=0.3.2
-python-Levenshtein>=0.12.0
+#python-Levenshtein>=0.12.0
