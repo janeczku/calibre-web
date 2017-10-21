@@ -659,6 +659,7 @@ def feed_normal_search():
 
 def feed_search(term):
     if term:
+        db.session.connection().connection.connection.create_function("lower", 1, db.lcase)
         entries = db.session.query(db.Books).filter(db.or_(db.Books.tags.any(db.Tags.name.ilike("%" + term + "%")),
                                                     db.Books.series.any(db.Series.name.ilike("%" + term + "%")),
                                                     db.Books.authors.any(db.Authors.name.ilike("%" + term + "%")),
@@ -1576,9 +1577,10 @@ def update():
 @app.route("/search", methods=["GET"])
 @login_required_if_no_ano
 def search():
-    term = request.args.get("query").strip()
+    term = request.args.get("query").strip().lower()
 
     if term:
+        db.session.connection().connection.connection.create_function("lower", 1, db.lcase)
         entries = db.session.query(db.Books).filter(db.or_(db.Books.tags.any(db.Tags.name.ilike("%" + term + "%")),
                                                     db.Books.series.any(db.Series.name.ilike("%" + term + "%")),
                                                     db.Books.authors.any(db.Authors.name.ilike("%" + term + "%")),
@@ -1598,6 +1600,7 @@ def search():
 @login_required_if_no_ano
 def advanced_search():
     if request.method == 'GET':
+        db.session.connection().connection.connection.create_function("lower", 1, db.lcase)
         q = db.session.query(db.Books)
         include_tag_inputs = request.args.getlist('include_tag')
         exclude_tag_inputs = request.args.getlist('exclude_tag')
