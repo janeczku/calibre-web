@@ -659,6 +659,7 @@ def feed_normal_search():
 
 def feed_search(term):
     if term:
+        term = term.strip().lower()
         db.session.connection().connection.connection.create_function("lower", 1, db.lcase)
         entries = db.session.query(db.Books).filter(db.or_(db.Books.tags.any(db.Tags.name.ilike("%" + term + "%")),
                                                     db.Books.series.any(db.Series.name.ilike("%" + term + "%")),
@@ -1612,9 +1613,9 @@ def advanced_search():
         author_name = request.args.get("author_name")
         book_title = request.args.get("book_title")
         publisher = request.args.get("publisher")
-        if author_name: author_name = author_name.strip()
-        if book_title: book_title = book_title.strip()
-        if publisher: publisher = publisher.strip()
+        if author_name: author_name = author_name.strip().lower()
+        if book_title: book_title = book_title.strip().lower()
+        if publisher: publisher = publisher.strip().lower()
         if include_tag_inputs or exclude_tag_inputs or include_series_inputs or exclude_series_inputs or \
                 include_languages_inputs or exclude_languages_inputs or author_name or book_title or publisher:
             searchterm = []
