@@ -26,45 +26,48 @@ def title_sort(title):
         title = title.replace(prep, '') + ', ' + prep
     return title.strip()
 
-def lowercase(string):
-    return string.lower()
+def lcase(s):
+    return s.lower()
+
+def ucase(s):
+    return s.upper()
 
 Base = declarative_base()
 
 books_authors_link = Table('books_authors_link', Base.metadata,
-    Column('book', Integer, ForeignKey('books.id'), primary_key = True),
-    Column('author', Integer, ForeignKey('authors.id'), primary_key = True)
+    Column('book', Integer, ForeignKey('books.id'), primary_key=True),
+    Column('author', Integer, ForeignKey('authors.id'), primary_key=True)
     )
 
 books_tags_link = Table('books_tags_link', Base.metadata,
-    Column('book', Integer, ForeignKey('books.id'), primary_key = True),
-    Column('tag', Integer, ForeignKey('tags.id'), primary_key = True)
+    Column('book', Integer, ForeignKey('books.id'), primary_key=True),
+    Column('tag', Integer, ForeignKey('tags.id'), primary_key=True)
     )
 
 books_series_link = Table('books_series_link', Base.metadata,
-    Column('book', Integer, ForeignKey('books.id'), primary_key = True),
-    Column('series', Integer, ForeignKey('series.id'), primary_key = True)
+    Column('book', Integer, ForeignKey('books.id'), primary_key=True),
+    Column('series', Integer, ForeignKey('series.id'), primary_key=True)
     )
 
 books_ratings_link = Table('books_ratings_link', Base.metadata,
-    Column('book', Integer, ForeignKey('books.id'), primary_key = True),
-    Column('rating', Integer, ForeignKey('ratings.id'), primary_key = True)
+    Column('book', Integer, ForeignKey('books.id'), primary_key=True),
+    Column('rating', Integer, ForeignKey('ratings.id'), primary_key=True)
     )
 
 books_languages_link = Table('books_languages_link', Base.metadata,
-    Column('book', Integer, ForeignKey('books.id'), primary_key = True),
-    Column('lang_code', Integer, ForeignKey('languages.id'), primary_key = True)
+    Column('book', Integer, ForeignKey('books.id'), primary_key=True),
+    Column('lang_code', Integer, ForeignKey('languages.id'), primary_key=True)
     )
 
 books_publishers_link = Table('books_publishers_link', Base.metadata,
-    Column('book', Integer, ForeignKey('books.id'), primary_key = True),
-    Column('publisher', Integer, ForeignKey('publishers.id'), primary_key = True)
+    Column('book', Integer, ForeignKey('books.id'), primary_key=True),
+    Column('publisher', Integer, ForeignKey('publishers.id'), primary_key=True)
     )
 
 class Identifiers(Base):
     __tablename__ = 'identifiers'
 
-    id = Column(Integer, primary_key = True)
+    id = Column(Integer, primary_key=True)
     type = Column(String)
     val = Column(String)
     book = Column(Integer, ForeignKey('books.id'))
@@ -112,7 +115,7 @@ class Identifiers(Base):
 class Comments(Base):
     __tablename__ = 'comments'
 
-    id = Column(Integer, primary_key = True)
+    id = Column(Integer, primary_key=True)
     text = Column(String)
     book = Column(Integer, ForeignKey('books.id'))
 
@@ -127,8 +130,8 @@ class Comments(Base):
 class Tags(Base):
     __tablename__ = 'tags'
 
-    id = Column(Integer, primary_key = True, autoincrement = True)
-    name = Column(String(collation = 'NOCASE'))
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    name = Column(String)
 
     def __init__(self, name):
         self.name = name
@@ -140,8 +143,8 @@ class Tags(Base):
 class Authors(Base):
     __tablename__ = 'authors'
 
-    id = Column(Integer, primary_key = True)
-    name = Column(String(collation = 'U_NOCASE'))
+    id = Column(Integer, primary_key=True)
+    name = Column(String)
     sort = Column(String)
     link = Column(String)
 
@@ -157,8 +160,8 @@ class Authors(Base):
 class Series(Base):
     __tablename__ = 'series'
 
-    id = Column(Integer, primary_key = True)
-    name = Column(String(collation = 'U_NOCASE'))
+    id = Column(Integer, primary_key=True)
+    name = Column(String)
     sort = Column(String)
 
     def __init__(self, name, sort):
@@ -172,7 +175,7 @@ class Series(Base):
 class Ratings(Base):
     __tablename__ = 'ratings'
 
-    id = Column(Integer, primary_key = True)
+    id = Column(Integer, primary_key=True)
     rating = Column(Integer)
 
     def __init__(self, rating):
@@ -185,7 +188,7 @@ class Ratings(Base):
 class Languages(Base):
     __tablename__ = 'languages'
 
-    id = Column(Integer, primary_key = True)
+    id = Column(Integer, primary_key=True)
     lang_code = Column(String)
 
     def __init__(self, lang_code):
@@ -197,8 +200,8 @@ class Languages(Base):
 class Publishers(Base):
     __tablename__ = 'publishers'
 
-    id = Column(Integer, primary_key = True)
-    name = Column(String(collation = 'U_NOCASE'))
+    id = Column(Integer, primary_key=True)
+    name = Column(String)
     sort = Column(String)
 
     def __init__(self, name,sort):
@@ -213,7 +216,7 @@ class Publishers(Base):
 class Data(Base):
     __tablename__ = 'data'
 
-    id = Column(Integer, primary_key = True)
+    id = Column(Integer, primary_key=True)
     book = Column(Integer, ForeignKey('books.id'))
     format = Column(String)
     uncompressed_size = Column(Integer)
@@ -234,8 +237,8 @@ class Books(Base):
 
     DEFAULT_PUBDATE = "0101-01-01 00:00:00+00:00"
 
-    id = Column(Integer, primary_key = True)
-    title = Column(String(collation = 'U_NOCASE'))
+    id = Column(Integer, primary_key=True)
+    title = Column(String)
     sort = Column(String)
     author_sort = Column(String)
     timestamp = Column(String)
@@ -277,7 +280,7 @@ class Books(Base):
 class Custom_Columns(Base):
     __tablename__ = 'custom_columns'
 
-    id = Column(Integer, primary_key = True)
+    id = Column(Integer, primary_key=True)
     label = Column(String)
     name = Column(String)
     datatype = Column(String)
@@ -296,7 +299,6 @@ def setup_db():
     global engine
     global session
     global cc_classes
-    global conn
 
     if config.config_calibre_dir is None or config.config_calibre_dir ==  u'':
         content = ub.session.query(ub.Settings).first()
@@ -322,7 +324,8 @@ def setup_db():
     ub.session.commit()
     config.loadSettings()
     conn.connection.create_function('title_sort', 1, title_sort)
-    conn.connection.create_function('lower', 1, lowercase)
+    conn.connection.create_function('lower', 1, lcase)
+    conn.connection.create_function('upper', 1, ucase)
 
     if not cc_classes:
         cc = conn.execute("SELECT id, datatype FROM custom_columns")
@@ -369,6 +372,6 @@ def setup_db():
 
     # Base.metadata.create_all(engine)
     Session = sessionmaker()
-    Session.configure(bind=conn)
+    Session.configure(bind=engine)
     session = Session()
     return True
