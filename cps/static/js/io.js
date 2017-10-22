@@ -9,6 +9,8 @@
  * Copyright(c) 2011 antimatter15
  */
 
+/* global bitjs, Uint8Array */
+
 var bitjs = bitjs || {};
 bitjs.io = bitjs.io || {};
 
@@ -58,16 +60,16 @@ bitjs.io = bitjs.io || {};
      * @return {number} The peeked bits, as an unsigned number.
      */
     bitjs.io.BitStream.prototype.peekBitsLtr = function(n, movePointers) {
-        if (n <= 0 || typeof n != typeof 1) {
+        if (n <= 0 || typeof n !== typeof 1) {
             return 0;
         }
 
-        movePointers = movePointers || false,
-            bytePtr = this.bytePtr,
-            bitPtr = this.bitPtr,
-            result = 0,
-            bitsIn = 0,
-            bytes = this.bytes;
+        var movePointers = movePointers || false;
+        var bytePtr = this.bytePtr;
+        var bitPtr = this.bitPtr;
+        var result = 0;
+        var bitsIn = 0;
+        var bytes = this.bytes;
 
         // keep going until we have no more bits left to peek at
         // TODO: Consider putting all bits from bytes we will need into a variable and then
@@ -123,11 +125,11 @@ bitjs.io = bitjs.io || {};
             return 0;
         }
 
-        var movePointers = movePointers || false,
-            bytePtr = this.bytePtr,
-            bitPtr = this.bitPtr,
-            result = 0,
-            bytes = this.bytes;
+        var movePointers = movePointers || false;
+        var bytePtr = this.bytePtr;
+        var bitPtr = this.bitPtr;
+        var result = 0;
+        var bytes = this.bytes;
 
         // keep going until we have no more bits left to peek at
         // TODO: Consider putting all bits from bytes we will need into a variable and then
@@ -138,7 +140,7 @@ bitjs.io = bitjs.io || {};
             if (bytePtr >= bytes.length) {
                 throw "Error!  Overflowed the bit stream! n=" + n + ", bytePtr=" + bytePtr + ", bytes.length=" +
                     bytes.length + ", bitPtr=" + bitPtr;
-                return -1;
+                // return -1;
             }
 
             var numBitsLeftInThisByte = (8 - bitPtr);
@@ -207,8 +209,8 @@ bitjs.io = bitjs.io || {};
         }
 
         movePointers = movePointers || false;
-        var bytePtr = this.bytePtr,
-            bitPtr = this.bitPtr;
+        var bytePtr = this.bytePtr;
+        // var bitPtr = this.bitPtr;
 
         var result = this.bytes.subarray(bytePtr, bytePtr + n);
 
@@ -255,7 +257,7 @@ bitjs.io = bitjs.io || {};
      */
     bitjs.io.ByteStream.prototype.peekNumber = function(n) {
         // TODO: return error if n would go past the end of the stream?
-        if (n <= 0 || typeof n !== typeof 1){
+        if (n <= 0 || typeof n !== typeof 1) {
             return -1;
         }
 

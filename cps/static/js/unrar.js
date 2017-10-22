@@ -8,7 +8,7 @@
  *
  * http://kthoom.googlecode.com/hg/docs/unrar.html
  */
-/* global bitjs */
+/* global bitjs, importScripts */
 
 // This file expects to be invoked as a Worker (see onmessage below).
 importScripts("io.js");
@@ -42,23 +42,23 @@ var postProgress = function() {
 // shows a byte value as its hex representation
 var nibble = "0123456789ABCDEF";
 var byteValueToHexString = function(num) {
-    return nibble[num>>4] + nibble[num&0xF];
+    return nibble[num>>4] + nibble[num & 0xF];
 };
 var twoByteValueToHexString = function(num) {
-    return nibble[(num>>12)&0xF] + nibble[(num>>8)&0xF] + nibble[(num>>4)&0xF] + nibble[num&0xF];
+    return nibble[(num>>12) & 0xF] + nibble[(num>>8) & 0xF] + nibble[(num>>4) & 0xF] + nibble[num & 0xF];
 };
 
 
 // Volume Types
-var MARK_HEAD      = 0x72,
-    MAIN_HEAD      = 0x73,
+// MARK_HEAD      = 0x72;
+var MAIN_HEAD      = 0x73,
     FILE_HEAD      = 0x74,
-    COMM_HEAD      = 0x75,
-    AV_HEAD        = 0x76,
-    SUB_HEAD       = 0x77,
-    PROTECT_HEAD   = 0x78,
-    SIGN_HEAD      = 0x79,
-    NEWSUB_HEAD    = 0x7a,
+    // COMM_HEAD      = 0x75,
+    // AV_HEAD        = 0x76,
+    // SUB_HEAD       = 0x77,
+    // PROTECT_HEAD   = 0x78,
+    // SIGN_HEAD      = 0x79,
+    // NEWSUB_HEAD    = 0x7a,
     ENDARC_HEAD    = 0x7b;
 
 // bstream is a bit stream
@@ -66,7 +66,7 @@ var RarVolumeHeader = function(bstream) {
 
     var headPos = bstream.bytePtr;
     // byte 1,2
-    info("Rar Volume Header @"+bstream.bytePtr);
+    info("Rar Volume Header @" + bstream.bytePtr);
 
     this.crc = bstream.readBits(16);
     info("  crc=" + this.crc);
@@ -147,7 +147,7 @@ var RarVolumeHeader = function(bstream) {
                 this.HighPackSize = 0;
                 this.HighUnpSize = 0;
                 if (this.unpackedSize == 0xffffffff) {
-                    this.HighUnpSize = 0x7fffffff
+                    this.HighUnpSize = 0x7fffffff;
                     this.unpackedSize = 0xffffffff;
                 }
             }
@@ -160,7 +160,7 @@ var RarVolumeHeader = function(bstream) {
             // read in filename
 
             this.filename = bstream.readBytes(this.nameSize);
-            for (var _i = 0, _s = ''; _i < this.filename.length; _i++) {
+            for (var _i = 0, _s = ""; _i < this.filename.length ; _i++) {
                 _s += String.fromCharCode(this.filename[_i]);
             }
 
@@ -177,14 +177,16 @@ var RarVolumeHeader = function(bstream) {
 
                 // this is adapted straight out of arcread.cpp, Archive::ReadHeader()
                 for (var I = 0; I < 4; ++I) {
-                    var rmode = extTimeFlags >> ((3-I)*4);
+                    var rmode = extTimeFlags >> ((3 - I) * 4);
                     if ((rmode & 8)==0)
                         continue;
-                    if (I!=0)
+                    if (I!=0) {
                         bstream.readBits(16);
-                        var count = (rmode&3);
-                        for (var J = 0; J < count; ++J)
-                            bstream.readBits(8);
+                    }
+                    var count = (rmode & 3);
+                    for (var J = 0; J < count; ++J) {
+                        bstream.readBits(8);
+                    }
                 }
             }
 
@@ -193,7 +195,7 @@ var RarVolumeHeader = function(bstream) {
             }
 
 
-            while(headPos + this.headSize > bstream.bytePtr) bstream.readBits(1);
+            while (headPos + this.headSize > bstream.bytePtr) bstream.readBits(1);
 
             info("Found FILE_HEAD with packSize=" + this.packSize + ", unpackedSize= " + this.unpackedSize + ", hostOS=" + this.hostOS + ", unpVer=" + this.unpVer + ", method=" + this.method + ", filename=" + this.filename);
 
@@ -206,24 +208,24 @@ var RarVolumeHeader = function(bstream) {
     }
 };
 
-var BLOCK_LZ  = 0,
-    BLOCK_PPM = 1;
+var BLOCK_LZ  = 0;
+    // BLOCK_PPM = 1;
 
-var rLDecode = [0,1,2,3,4,5,6,7,8,10,12,14,16,20,24,28,32,40,48,56,64,80,96,112,128,160,192,224],
-    rLBits = [0,0,0,0,0,0,0,0,1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4,  4,  5,  5,  5,  5],
-    rDBitLengthCounts = [4,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,14,0,12],
-    rSDDecode = [0,4,8,16,32,64,128,192],
+var rLDecode = [0, 1, 2, 3, 4, 5, 6, 7, 8, 10, 12, 14, 16, 20, 24, 28, 32, 40, 48, 56, 64, 80, 96, 112, 128, 160, 192, 224], 
+    rLBits = [0, 0, 0, 0, 0, 0, 0, 0, 1,  1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4,  4,  5,  5,  5,  5],
+    rDBitLengthCounts = [4, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 14, 0, 12],
+    rSDDecode = [0, 4, 8, 16, 32, 64, 128, 192],
     rSDBits = [2,2,3, 4, 5, 6,  6,  6];
   
 var rDDecode = [0, 1, 2, 3, 4, 6, 8, 12, 16, 24, 32,
-			48, 64, 96, 128, 192, 256, 384, 512, 768, 1024, 1536, 2048, 3072,
-			4096, 6144, 8192, 12288, 16384, 24576, 32768, 49152, 65536, 98304,
-			131072, 196608, 262144, 327680, 393216, 458752, 524288, 589824,
-			655360, 720896, 786432, 851968, 917504, 983040];
+    48, 64, 96, 128, 192, 256, 384, 512, 768, 1024, 1536, 2048, 3072,
+    4096, 6144, 8192, 12288, 16384, 24576, 32768, 49152, 65536, 98304,
+    131072, 196608, 262144, 327680, 393216, 458752, 524288, 589824,
+    655360, 720896, 786432, 851968, 917504, 983040];
 
 var rDBits = [0, 0, 0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5,
-			5, 6, 6, 7, 7, 8, 8, 9, 9, 10, 10, 11, 11, 12, 12, 13, 13, 14, 14,
-			15, 15, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16];
+    5, 6, 6, 7, 7, 8, 8, 9, 9, 10, 10, 11, 11, 12, 12, 13, 13, 14, 14,
+    15, 15, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16];
 
 var rLOW_DIST_REP_COUNT = 16;
 
@@ -232,35 +234,35 @@ var rNC = 299,
     rLDC = 17,
     rRC = 28,
     rBC = 20,
-    rHUFF_TABLE_SIZE = (rNC+rDC+rRC+rLDC);
+    rHUFF_TABLE_SIZE = (rNC + rDC + rRC + rLDC);
 
 var UnpBlockType = BLOCK_LZ;
 var UnpOldTable = new Array(rHUFF_TABLE_SIZE);
 
 var BD = { //bitdecode
-  DecodeLen: new Array(16),
-  DecodePos: new Array(16),
-  DecodeNum: new Array(rBC)
+    DecodeLen: new Array(16),
+    DecodePos: new Array(16),
+    DecodeNum: new Array(rBC)
 };
 var LD = { //litdecode
-  DecodeLen: new Array(16),
-  DecodePos: new Array(16),
-  DecodeNum: new Array(rNC)
+    DecodeLen: new Array(16),
+    DecodePos: new Array(16),
+    DecodeNum: new Array(rNC)
 };
 var DD = { //distdecode
-  DecodeLen: new Array(16),
-  DecodePos: new Array(16),
-  DecodeNum: new Array(rDC)
+    DecodeLen: new Array(16),
+    DecodePos: new Array(16),
+    DecodeNum: new Array(rDC)
 };
 var LDD = { //low dist decode
-  DecodeLen: new Array(16),
-  DecodePos: new Array(16),
-  DecodeNum: new Array(rLDC)
+    DecodeLen: new Array(16),
+    DecodePos: new Array(16),
+    DecodeNum: new Array(rLDC)
 };
 var RD = { //rep decode
-  DecodeLen: new Array(16),
-  DecodePos: new Array(16),
-  DecodeNum: new Array(rRC)
+    DecodeLen: new Array(16),
+    DecodePos: new Array(16),
+    DecodeNum: new Array(rRC)
 };
 
 var rBuffer;
@@ -742,7 +744,7 @@ function unpack(v) {
   
     rBuffer = new bitjs.io.ByteBuffer(v.header.unpackedSize);
 
-    info("Unpacking "+v.filename+" RAR v"+Ver);
+    info("Unpacking " + v.filename+" RAR v" + Ver);
     
     switch(Ver) {
         case 15: // rar 1.5 compression
@@ -816,7 +818,7 @@ var unrar = function(arrayBuffer) {
 
     postMessage(new bitjs.archive.UnarchiveStartEvent());
     var bstream = new bitjs.io.BitStream(arrayBuffer, false /* rtl */);
-  
+
     var header = new RarVolumeHeader(bstream);
     if (header.crc == 0x6152 &&
         header.headType == 0x72 &&

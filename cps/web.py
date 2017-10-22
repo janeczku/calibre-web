@@ -384,9 +384,12 @@ app.jinja_env.globals['url_for_other_page'] = url_for_other_page
 
 
 def login_required_if_no_ano(func):
-    if config.config_anonbrowse == 1:
-        return func
-    return login_required(func)
+    @wraps(func)
+    def decorated_view(*args, **kwargs):
+        if config.config_anonbrowse == 1:
+            return func(*args, **kwargs)
+        return login_required(func)(*args, **kwargs)
+    return decorated_view
 
 
 def remote_login_required(f):
@@ -1311,7 +1314,7 @@ def show_book(book_id):
         for entry in shelfs:
             book_in_shelfs.append(entry.shelf)
 
-        if not current_user.is_anonymous():
+        if not current_user.is_anonymous:
             matching_have_read_book = ub.session.query(ub.ReadBook).filter(ub.and_(ub.ReadBook.user_id == int(current_user.id),
                                                                    ub.ReadBook.book_id == book_id)).all()
             have_read = len(matching_have_read_book) > 0 and matching_have_read_book[0].is_read
@@ -1726,7 +1729,7 @@ def feed_get_cover(book_id):
 
 
 def render_read_books(page, are_read, as_xml=False):
-    if not current_user.is_anonymous():
+    if not current_user.is_anonymous:
         readBooks = ub.session.query(ub.ReadBook).filter(ub.ReadBook.user_id == int(current_user.id)).filter(ub.ReadBook.is_read == True).all()
         readBookIds = [x.book_id for x in readBooks]
         if are_read:
@@ -1799,7 +1802,9 @@ def read_book(book_id, book_format):
     book_dir = os.path.join(config.get_main_dir, "cps", "static", str(book_id))
     if not os.path.exists(book_dir):
         os.mkdir(book_dir)
-    bookmark = ub.session.query(ub.Bookmark).filter(ub.and_(ub.Bookmark.user_id == int(current_user.id),
+    bookmark = None
+    if current_user.is_authenticated:
+        bookmark = ub.session.query(ub.Bookmark).filter(ub.and_(ub.Bookmark.user_id == int(current_user.id),
                                                             ub.Bookmark.book_id == book_id,
                                                             ub.Bookmark.format == book_format.upper())).first()
     if book_format.lower() == "epub":
@@ -2213,7 +2218,7 @@ def delete_shelf(shelf_id):
 @app.route("/shelf/<int:shelf_id>")
 @login_required_if_no_ano
 def show_shelf(shelf_id):
-    if current_user.is_anonymous():
+    if current_user.is_anonymous:
         shelf = ub.session.query(ub.Shelf).filter(ub.Shelf.is_public == 1, ub.Shelf.id == shelf_id).first()
     else:
         shelf = ub.session.query(ub.Shelf).filter(ub.or_(ub.and_(ub.Shelf.user_id == int(current_user.id),
@@ -2248,7 +2253,7 @@ def order_shelf(shelf_id):
             setattr(book, 'order', to_save[str(book.book_id)])
             counter += 1
         ub.session.commit()
-    if current_user.is_anonymous():
+    if current_user.is_anonymous:
         shelf = ub.session.query(ub.Shelf).filter(ub.Shelf.is_public == 1, ub.Shelf.id == shelf_id).first()
     else:
         shelf = ub.session.query(ub.Shelf).filter(ub.or_(ub.and_(ub.Shelf.user_id == int(current_user.id),

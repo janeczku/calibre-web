@@ -51,7 +51,7 @@ DEVELOPMENT = False
 
 
 class UserBase:
-    @staticmethod
+    @property
     def is_authenticated(self):
         return True
 
@@ -97,11 +97,11 @@ class UserBase:
     def role_delete_books(self):
         return bool((self.role is not None)and(self.role & ROLE_DELETE_BOOKS == ROLE_DELETE_BOOKS))
 
-    @classmethod
+    @property
     def is_active(self):
         return True
 
-    @classmethod
+    @property
     def is_anonymous(self):
         return False
 
@@ -172,6 +172,7 @@ class Anonymous(AnonymousUserMixin, UserBase):
         settings = session.query(Settings).first()
         self.nickname = data.nickname
         self.role = data.role
+        self.id=data.id
         self.sidebar_view = data.sidebar_view
         self.default_language = data.default_language
         self.locale = data.locale
@@ -181,12 +182,17 @@ class Anonymous(AnonymousUserMixin, UserBase):
     def role_admin(self):
         return False
 
+    @property
     def is_active(self):
         return False
 
+    @property
     def is_anonymous(self):
         return self.anon_browse
 
+    @property
+    def is_authenticated(self):
+        return False
 
 # Baseclass representing Shelfs in calibre-web inapp.db
 class Shelf(Base):

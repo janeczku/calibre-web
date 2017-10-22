@@ -34,7 +34,7 @@
           </button>
           <a class="navbar-brand" href="{{url_for('index')}}">{{instance}}</a>
         </div>
-        {% if g.user.is_authenticated or g.user.is_anonymous() %}
+        {% if g.user.is_authenticated or g.user.is_anonymous %}
           <form class="navbar-form navbar-left" role="search" action="{{url_for('search')}}" method="GET">
             <div class="form-group input-group input-group-sm">
               <label for="query" class="sr-only">{{_('Search')}}</label>
@@ -46,13 +46,13 @@
           </form>
         {% endif %}
         <div class="navbar-collapse collapse">
-          {% if g.user.is_authenticated or g.user.is_anonymous() %}
+          {% if g.user.is_authenticated or g.user.is_anonymous %}
           <ul class="nav navbar-nav ">
             <li><a href="{{url_for('advanced_search')}}"><span class="glyphicon glyphicon-search"></span><span class="hidden-sm"> {{_('Advanced Search')}}</span></a></li>
           </ul>
           {% endif %}
           <ul class="nav navbar-nav navbar-right" id="main-nav">
-            {% if g.user.is_authenticated or g.user.is_anonymous() %}
+            {% if g.user.is_authenticated or g.user.is_anonymous %}
               {% if g.user.role_upload() or g.user.role_admin()%}
                 {% if g.allow_upload %}
                     <li>
@@ -68,7 +68,7 @@
                 <li><a id="top_admin" href="{{url_for('admin')}}"><span class="glyphicon glyphicon-dashboard"></span><span class="hidden-sm"> {{_('Admin')}}</span></a></li>
               {% endif %}
               <li><a id="top_user" href="{{url_for('profile')}}"><span class="glyphicon glyphicon-user"></span><span class="hidden-sm"> {{g.user.nickname}}</span></a></li>
-              {% if not g.user.is_anonymous() %}
+              {% if not g.user.is_anonymous %}
               <li><a id="logout" href="{{url_for('logout')}}"><span class="glyphicon glyphicon-log-out"></span><span class="hidden-sm"> {{_('Logout')}}</span></a></li>
               {% endif %}
             {% endif %}
@@ -99,7 +99,7 @@
     {% endfor %}
     <div class="container-fluid">
       <div class="row-fluid">
-        {% if g.user.is_authenticated or g.user.is_anonymous() %}
+        {% if g.user.is_authenticated or g.user.is_anonymous %}
         <div class="col-sm-2">
           <nav class="navigation">
             <ul class="list-unstyled" id="scnd-nav" intent in-standard-append="nav.navigation" in-mobile-after="#main-nav" in-mobile-class="nav navbar-nav">
@@ -136,11 +136,13 @@
               {% if g.user.show_series() %}
               <li id="nav_serie"><a href="{{url_for('series_list')}}"><span class="glyphicon glyphicon-bookmark"></span> {{_('Series')}}</a></li>
               {%endif%}
+              {% if g.user.show_author() %}
               <li id="nav_author"><a href="{{url_for('author_list')}}"><span class="glyphicon glyphicon-user"></span> {{_('Authors')}}</a></li>
+              {%endif%}
               {% if g.user.filter_language() == 'all' and g.user.show_language() %}
                 <li id="nav_lang"><a href="{{url_for('language_overview')}}"><span class="glyphicon glyphicon-flag"></span> {{_('Languages')}} </a></li>
               {%endif%}
-              {% if g.user.is_authenticated or g.user.is_anonymous() %}
+              {% if g.user.is_authenticated or g.user.is_anonymous %}
                 <li class="nav-head hidden-xs">{{_('Public Shelves')}}</li>
                 {% for shelf in g.public_shelfes %}
                   <li><a href="{{url_for('show_shelf', shelf_id=shelf.id)}}"><span class="glyphicon glyphicon-list"></span> {{shelf.name}}</a></li>
@@ -149,7 +151,7 @@
                 {% for shelf in g.user.shelf %}
                   <li><a href="{{url_for('show_shelf', shelf_id=shelf.id)}}"><span class="glyphicon glyphicon-list"></span> {{shelf.name}}</a></li>
                 {% endfor %}
-              {% if not g.user.is_anonymous() %}
+              {% if not g.user.is_anonymous %}
                 <li id="nav_createshelf" class="create-shelf"><a href="{{url_for('create_shelf')}}">{{_('Create a Shelf')}}</a></li>
                 <li id="nav_about"><a href="{{url_for('stats')}}"><span class="glyphicon glyphicon-info-sign"></span> {{_('About')}}</a></li>
               {% endif %}
