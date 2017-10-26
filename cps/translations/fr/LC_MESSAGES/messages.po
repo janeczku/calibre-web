@@ -18,10 +18,10 @@
 # Xotes <alois.glibert@gmail.com>, 2014
 msgid ""
 msgstr ""
-"Project-Id-Version:  Calibre-web\n"
+"Project-Id-Version: Calibre-web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/calibre-web\n"
 "POT-Creation-Date: 2017-09-16 07:48+0200\n"
-"PO-Revision-Date: 2017-09-21 12:25+0200\n"
+"PO-Revision-Date: 2017-10-26 22:42+0200\n"
 "Last-Translator: Nicolas Roudninski <nicoroud@gmail.com>\n"
 "Language: fr\n"
 "Language-Team: \n"
@@ -30,7 +30,7 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.4.0\n"
-"X-Generator: Poedit 2.0.3\n"
+"X-Generator: Poedit 2.0.4\n"
 
 #: cps/book_formats.py:118 cps/book_formats.py:122 cps/web.py:1358
 msgid "not installed"
@@ -70,7 +70,7 @@ msgstr "Ce message a été envoyé depuis calibre web."
 
 #: cps/helper.py:204 cps/templates/detail.html:43
 msgid "Send to Kindle"
-msgstr "Envoyer ver Kindle"
+msgstr "Envoyer vers Kindle"
 
 #: cps/helper.py:224 cps/helper.py:238
 msgid "Could not find any formats suitable for sending by email"
@@ -234,7 +234,7 @@ msgstr "Ce nom d'utilisateur ou cette adresse de courriel est déjà utilisée."
 #: cps/web.py:1908 cps/web.py:2004
 #, python-format
 msgid "you are now logged in as: '%(nickname)s'"
-msgstr "vous êtes maintenant connecté sous : '%(nickname)s'"
+msgstr "Vous êtes maintenant connecté sous : '%(nickname)s'"
 
 #: cps/web.py:1913
 msgid "Wrong Username or Password"
@@ -452,7 +452,7 @@ msgstr "Impossible de supprimer le fichier %s (permission refusée)"
 
 #: cps/templates/admin.html:4
 msgid "User list"
-msgstr "Liste des ustilisateurs"
+msgstr "Liste des utilisateurs"
 
 #: cps/templates/admin.html:8
 msgid "Nickname"
@@ -1026,7 +1026,7 @@ msgstr "Explorer"
 
 #: cps/templates/layout.html:107
 msgid "Recently Added"
-msgstr "Livres récemment ajoutés"
+msgstr "Ajouts récents"
 
 #: cps/templates/layout.html:110
 msgid "Sorted Books"
