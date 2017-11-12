@@ -46,6 +46,14 @@
           <label for="show_random">{{_('Show random books')}}</label>
       </div>
       <div class="form-group">
+          <input type="checkbox" name="show_recent" id="show_recent" {% if content.show_recent() %}checked{% endif %}>
+          <label for="show_recent">{{_('Show recent books')}}</label>
+      </div>
+      <div class="form-group">
+          <input type="checkbox" name="show_sorted" id="show_sorted" {% if content.show_sorted() %}checked{% endif %}>
+          <label for="show_sorted">{{_('Show sorted books')}}</label>
+      </div>
+      <div class="form-group">
           <input type="checkbox" name="show_hot" id="show_hot" {% if content.show_hot_books() %}checked{% endif %}>
           <label for="show_hot">{{_('Show hot books')}}</label>
       </div>

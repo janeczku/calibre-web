@@ -104,7 +104,10 @@
           <nav class="navigation">
             <ul class="list-unstyled" id="scnd-nav" intent in-standard-append="nav.navigation" in-mobile-after="#main-nav" in-mobile-class="nav navbar-nav">
               <li class="nav-head hidden-xs">{{_('Browse')}}</li>
+              {% if g.user.show_recent() %}
               <li id="nav_new"><a href="{{url_for('index')}}"><span class="glyphicon glyphicon-book"></span> {{_('Recently Added')}}</a></li>
+              {%endif%}
+              {% if g.user.show_sorted() %}
               <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                   <span class="glyphicon glyphicon-sort-by-attributes"></span> {{_('Sorted Books')}}
@@ -117,6 +120,7 @@
                   <li><a href="{{url_for('titles_descending')}}">{{_('Sort By')}} {{_('Title')}}  ({{_('Descending')}})</a></li>
                 </ul>
               </li>
+              {%endif%}
               {% if g.user.show_hot_books() %}
               <li id="nav_hot"><a href="{{url_for('hot_books')}}"><span class="glyphicon glyphicon-fire"></span> {{_('Hot Books')}}</a></li>
               {%endif%}
