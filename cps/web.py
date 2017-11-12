@@ -2141,8 +2141,10 @@ def remove_from_shelf(shelf_id, book_id):
             return redirect(url_for('index'))
         return "Invalid shelf specified", 400
 
-    if not shelf.is_public and not shelf.user_id == int(current_user.id) \
-            or (shelf.is_public and current_user.role_edit_shelfs()):
+    # if shelf is public and use is allowed to edit shelfs, or if shelf is private and user is owner
+    # allow editing shelfs
+    if (not shelf.is_public and not shelf.user_id == int(current_user.id)) \
+            or not (shelf.is_public and current_user.role_edit_shelfs()):
         if not request.is_xhr:
             app.logger.info("Sorry you are not allowed to remove a book from this shelf: %s" % shelf.name)
             return redirect(url_for('index'))
