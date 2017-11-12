@@ -40,21 +40,21 @@ msgstr "niet geïnstalleerd"
 #: cps/helper.py:77
 #, python-format
 msgid "kindlegen binary %(kindlepath)s not found"
-msgstr ""
+msgstr "kindlegen binary %(kindlepath)s niet gevonden"
 
 #: cps/helper.py:83
 #, python-format
 msgid "epub format not found for book id: %(book)d"
-msgstr ""
+msgstr "epub type niet gevonden voor boek met id: %(book)d"
 
 #: cps/helper.py:93
 msgid "kindlegen failed, no excecution permissions"
-msgstr ""
+msgstr "kindlegen gefaald, geen rechten om uit te voeren"
 
 #: cps/helper.py:108
 #, python-format
 msgid "Kindlegen failed with Error %(error)s. Message: %(message)s"
-msgstr ""
+msgstr "Kindlegen gefaald met Error %(error)s. Bericht: %(message)s"
 
 #: cps/helper.py:187
 #, python-format
@@ -147,9 +147,7 @@ msgstr "Auteur lijst"
 
 #: cps/web.py:1145 cps/web.py:1201 cps/web.py:1325 cps/web.py:1790
 msgid "Error opening eBook. File does not exist or file is not accessible:"
-msgstr ""
-"Fout bij openen van het boek. Bestand bestaat niet of is niet "
-"toegankelijk:"
+msgstr "Fout bij openen van het boek. Bestand bestaat niet of is niet toegankelijk:"
 
 #: cps/templates/index.xml:64 cps/web.py:1187
 msgid "Series list"
@@ -180,7 +178,7 @@ msgstr "Categorie: %(name)s"
 
 #: cps/web.py:1379
 msgid "Excecution permissions missing"
-msgstr ""
+msgstr "Rechten om uit te voeren ontbreken"
 
 #: cps/web.py:1393
 msgid "Statistics"
@@ -324,9 +322,7 @@ msgstr "Boekenplank: '%(name)s'"
 
 #: cps/web.py:2230
 msgid "Error opening shelf. Shelf does not exist or is not accessible"
-msgstr ""
-"Fout bij openen boekenplank. Boekenplank bestaat niet of is niet "
-"toegankelijk"
+msgstr "Fout bij openen boekenplank. Boekenplank bestaat niet of is niet toegankelijk"
 
 #: cps/web.py:2262
 #, python-format
@@ -432,7 +428,7 @@ msgstr "Het uploaden van bestandsextensie \"%s\" is niet toegestaan op deze serv
 #: cps/web.py:2787
 #, python-format
 msgid "Failed to store file %s."
-msgstr ""
+msgstr "Bestand opslaan niet gelukt voor %s."
 
 #: cps/web.py:2807 cps/web.py:2811
 msgid "unknown"
@@ -625,15 +621,15 @@ msgstr "Aan het updaten, gelieve de pagina niet te herladen"
 
 #: cps/templates/author.html:15
 msgid "via"
-msgstr ""
+msgstr "via"
 
 #: cps/templates/author.html:23
 msgid "In Library"
-msgstr ""
+msgstr "In Bibliotheek"
 
 #: cps/templates/author.html:69
 msgid "More by"
-msgstr ""
+msgstr "Meer van"
 
 #: cps/templates/book_edit.html:16
 msgid "Delete Book"
@@ -692,7 +688,7 @@ msgstr "Nee"
 
 #: cps/templates/book_edit.html:121
 msgid "Upload format"
-msgstr ""
+msgstr "Upload type"
 
 #: cps/templates/book_edit.html:130
 msgid "view book after edit"
@@ -816,7 +812,7 @@ msgstr "Rguliere expressie op titels te sorteren"
 
 #: cps/templates/config_edit.html:76
 msgid "Tags for Mature Content"
-msgstr ""
+msgstr "Tags voor Volwassen Inhoud"
 
 #: cps/templates/config_edit.html:93
 msgid "Enable uploading"
@@ -832,23 +828,23 @@ msgstr "Publieke registratie aanzetten"
 
 #: cps/templates/config_edit.html:105
 msgid "Enable remote login (\"magic link\")"
-msgstr ""
+msgstr "Maak op afstand ionloggen mogelijk (\"magic link\")"
 
 #: cps/templates/config_edit.html:110
 msgid "Use"
-msgstr ""
+msgstr "Gebruik"
 
 #: cps/templates/config_edit.html:111
 msgid "Obtain an API Key"
-msgstr ""
+msgstr "Verkrijg een API sleutel"
 
 #: cps/templates/config_edit.html:115
 msgid "Goodreads API Key"
-msgstr ""
+msgstr "Goodreads API sleutel"
 
 #: cps/templates/config_edit.html:119
 msgid "Goodreads API Secret"
-msgstr ""
+msgstr "Goodreads API geheim"
 
 #: cps/templates/config_edit.html:125
 msgid "Default Settings for new users"
@@ -921,9 +917,7 @@ msgstr "Bewerk metadata"
 
 #: cps/templates/email_edit.html:11
 msgid "SMTP port (usually 25 for plain SMTP and 465 for SSL and 587 for STARTTLS)"
-msgstr ""
-"SMTP poort (meestal 25 voor normale SMTP en 465 voor SSL en 587 voor "
-"STARTTLS)"
+msgstr "SMTP poort (meestal 25 voor normale SMTP en 465 voor SSL en 587 voor STARTTLS)"
 
 #: cps/templates/email_edit.html:15
 msgid "Encryption"
@@ -1036,32 +1030,32 @@ msgstr "Verkennen"
 
 #: cps/templates/layout.html:107
 msgid "Recently Added"
-msgstr ""
+msgstr "Recent Toegevoegd"
 
 #: cps/templates/layout.html:110
 msgid "Sorted Books"
-msgstr ""
+msgstr "Gesorteerde Boeken"
 
 #: cps/templates/layout.html:114 cps/templates/layout.html:115
 #: cps/templates/layout.html:116 cps/templates/layout.html:117
 msgid "Sort By"
-msgstr ""
+msgstr "Sorteren op"
 
 #: cps/templates/layout.html:114
 msgid "Newest"
-msgstr ""
+msgstr "Nieuwste"
 
 #: cps/templates/layout.html:115
 msgid "Oldest"
-msgstr ""
+msgstr "Oudste"
 
 #: cps/templates/layout.html:116
 msgid "Ascending"
-msgstr ""
+msgstr "Oplopend"
 
 #: cps/templates/layout.html:117
 msgid "Descending"
-msgstr ""
+msgstr "Aflopend"
 
 #: cps/templates/layout.html:131
 msgid "Discover"
@@ -1093,11 +1087,11 @@ msgstr "Over"
 
 #: cps/templates/layout.html:170
 msgid "Previous"
-msgstr ""
+msgstr "Vorige"
 
 #: cps/templates/layout.html:197
 msgid "Book Details"
-msgstr ""
+msgstr "Boek Details"
 
 #: cps/templates/login.html:8 cps/templates/login.html:9
 #: cps/templates/register.html:7 cps/templates/user_edit.html:8
@@ -1115,7 +1109,7 @@ msgstr "Onthoumij"
 
 #: cps/templates/login.html:22
 msgid "Log in with magic link"
-msgstr ""
+msgstr "Inloggen met magische koppeling"
 
 #: cps/templates/osd.xml:5
 msgid "Calibre Web ebook catalog"
@@ -1123,7 +1117,7 @@ msgstr "Calible web ebook cataloog"
 
 #: cps/templates/read.html:69
 msgid "Settings"
-msgstr ""
+msgstr "Instellingen"
 
 #: cps/templates/read.html:72
 msgid "Reflow text when sidebars are open."
@@ -1159,15 +1153,15 @@ msgstr "Jou email adres"
 
 #: cps/templates/remote_login.html:6
 msgid "Using your another device, visit"
-msgstr ""
+msgstr "Bezoek met je andere apparaat"
 
 #: cps/templates/remote_login.html:6
 msgid "and log in"
-msgstr ""
+msgstr "en log in"
 
 #: cps/templates/remote_login.html:9
 msgid "Once you do so, you will automatically get logged in on this device."
-msgstr ""
+msgstr "Eenmaal gedaan wordt je automagisch op dit apparaat ingelogd."
 
 #: cps/templates/search.html:6
 msgid "No Results for:"
@@ -1303,7 +1297,7 @@ msgstr "Toon willekeurige boeken in gedetailleerd zicht"
 
 #: cps/templates/user_edit.html:90
 msgid "Show mature content"
-msgstr ""
+msgstr "Toon Volwassen Inhoud"
 
 #: cps/templates/user_edit.html:123
 msgid "Delete this user"
