@@ -289,14 +289,14 @@ def load_user_from_header(header_val):
         basic_password = header_val.split(':')[1]
     except TypeError:
         pass
-    user = ub.session.query(ub.User).filter(ub.User.nickname == basic_username).first()
+    user = ub.session.query(ub.User).filter(func.lower(ub.User.nickname) == basic_username.lower()).first()
     if user and check_password_hash(user.password, basic_password):
         return user
     return
 
 
 def check_auth(username, password):
-    user = ub.session.query(ub.User).filter(ub.User.nickname == username).first()
+    user = ub.session.query(ub.User).filter(func.lower(ub.User.nickname) == username.lower()).first()
     return bool(user and check_password_hash(user.password, password))
 
 
@@ -1916,7 +1916,7 @@ def register():
             flash(_(u"Please fill out all fields!"), category="error")
             return render_title_template('register.html', title=_(u"register"))
 
-        existing_user = ub.session.query(ub.User).filter(ub.User.nickname == to_save["nickname"]).first()
+        existing_user = ub.session.query(ub.User).filter(func.lower(ub.User.nickname) == to_save["nickname"].lower()).first()
         existing_email = ub.session.query(ub.User).filter(ub.User.email == to_save["email"]).first()
         if not existing_user and not existing_email:
             content = ub.User()
@@ -1948,7 +1948,7 @@ def login():
         return redirect(url_for('index'))
     if request.method == "POST":
         form = request.form.to_dict()
-        user = ub.session.query(ub.User).filter(ub.User.nickname == form['username'].strip()).first()
+        user = ub.session.query(ub.User).filter(func.lower(ub.User.nickname) == form['username'].strip().lower()).first()
 
         if user and check_password_hash(user.password, form['password']):
             login_user(user, remember=True)
