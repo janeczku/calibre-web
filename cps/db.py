@@ -26,6 +26,11 @@ def title_sort(title):
         title = title.replace(prep, '') + ', ' + prep
     return title.strip()
 
+def lcase(s):
+    return s.lower()
+
+def ucase(s):
+    return s.upper()
 
 Base = declarative_base()
 
@@ -319,6 +324,8 @@ def setup_db():
     ub.session.commit()
     config.loadSettings()
     conn.connection.create_function('title_sort', 1, title_sort)
+    conn.connection.create_function('lower', 1, lcase)
+    conn.connection.create_function('upper', 1, ucase)
 
     if not cc_classes:
         cc = conn.execute("SELECT id, datatype FROM custom_columns")
