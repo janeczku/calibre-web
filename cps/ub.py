@@ -39,6 +39,9 @@ SIDEBAR_RANDOM = 32
 SIDEBAR_AUTHOR = 64
 SIDEBAR_BEST_RATED = 128
 SIDEBAR_READ_AND_UNREAD = 256
+SIDEBAR_RECENT = 512
+SIDEBAR_SORTED = 1024
+
 
 DEFAULT_PASS = "admin123"
 DEFAULT_PORT = int(os.environ.get("CALIBRE_PORT", 8083))
@@ -119,6 +122,12 @@ class UserBase:
 
     def show_hot_books(self):
         return bool((self.sidebar_view is not None)and(self.sidebar_view & SIDEBAR_HOT == SIDEBAR_HOT))
+
+    def show_recent(self):
+        return bool((self.sidebar_view is not None)and(self.sidebar_view & SIDEBAR_RECENT == SIDEBAR_RECENT))
+
+    def show_sorted(self):
+        return bool((self.sidebar_view is not None)and(self.sidebar_view & SIDEBAR_SORTED == SIDEBAR_SORTED))
 
     def show_series(self):
         return bool((self.sidebar_view is not None)and(self.sidebar_view & SIDEBAR_SERIES == SIDEBAR_SERIES))
@@ -496,9 +505,10 @@ def migrate_Database():
         conn = engine.connect()
         conn.execute("UPDATE user SET 'sidebar_view' = (random_books* :side_random + language_books * :side_lang "
             "+ series_books * :side_series + category_books * :side_category + hot_books * "
-            ":side_hot + :side_autor + :detail_random)",{'side_random': SIDEBAR_RANDOM,
-            'side_lang': SIDEBAR_LANGUAGE, 'side_series': SIDEBAR_SERIES, 'side_category': SIDEBAR_CATEGORY,
-            'side_hot': SIDEBAR_HOT, 'side_autor': SIDEBAR_AUTHOR, 'detail_random': DETAIL_RANDOM})
+            ":side_hot + :side_autor + :detail_random)"
+            ,{'side_random': SIDEBAR_RANDOM, 'side_lang': SIDEBAR_LANGUAGE, 'side_series': SIDEBAR_SERIES,
+            'side_category': SIDEBAR_CATEGORY, 'side_hot': SIDEBAR_HOT, 'side_autor': SIDEBAR_AUTHOR,
+            'detail_random': DETAIL_RANDOM})
         session.commit()
     try:
         session.query(exists().where(User.mature_content)).scalar()
@@ -582,8 +592,8 @@ def create_admin_user():
     user.nickname = "admin"
     user.role = ROLE_USER + ROLE_ADMIN + ROLE_DOWNLOAD + ROLE_UPLOAD + ROLE_EDIT + ROLE_DELETE_BOOKS + ROLE_PASSWD
     user.sidebar_view = DETAIL_RANDOM + SIDEBAR_LANGUAGE + SIDEBAR_SERIES + SIDEBAR_CATEGORY + SIDEBAR_HOT + \
-            SIDEBAR_RANDOM + SIDEBAR_AUTHOR + SIDEBAR_BEST_RATED + SIDEBAR_READ_AND_UNREAD
-
+            SIDEBAR_RANDOM + SIDEBAR_AUTHOR + SIDEBAR_BEST_RATED + SIDEBAR_READ_AND_UNREAD + SIDEBAR_RECENT + \
+            SIDEBAR_SORTED
 
     user.password = generate_password_hash(DEFAULT_PASS)
 

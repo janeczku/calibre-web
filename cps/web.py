@@ -1046,27 +1046,35 @@ def index(page):
 @app.route('/books/newest/page/<int:page>')
 @login_required_if_no_ano
 def newest_books(page):
-    entries, random, pagination = fill_indexpage(page, db.Books, True, db.Books.pubdate.desc())
-    return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
-                                 title=_(u"Newest Books"))
-
+    if current_cuser.show_sorted():
+        entries, random, pagination = fill_indexpage(page, db.Books, True, db.Books.pubdate.desc())
+        return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
+                                     title=_(u"Newest Books"))
+    else:
+        abort(404)
 
 @app.route('/books/oldest', defaults={'page': 1})
 @app.route('/books/oldest/page/<int:page>')
 @login_required_if_no_ano
 def oldest_books(page):
-    entries, random, pagination = fill_indexpage(page, db.Books, True, db.Books.pubdate)
-    return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
-                                 title=_(u"Oldest Books"))
+    if current_cuser.show_sorted():
+        entries, random, pagination = fill_indexpage(page, db.Books, True, db.Books.pubdate)
+        return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
+                                     title=_(u"Oldest Books"))
+    else:
+        abort(404)
 
 
 @app.route('/books/a-z', defaults={'page': 1})
 @app.route('/books/a-z/page/<int:page>')
 @login_required_if_no_ano
 def titles_ascending(page):
-    entries, random, pagination = fill_indexpage(page, db.Books, True, db.Books.sort)
-    return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
-                                 title=_(u"Books (A-Z)"))
+    if current_cuser.show_sorted():
+        entries, random, pagination = fill_indexpage(page, db.Books, True, db.Books.sort)
+        return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
+                                     title=_(u"Books (A-Z)"))
+    else:
+        abort(404)
 
 
 @app.route('/books/z-a', defaults={'page': 1})
@@ -1082,57 +1090,68 @@ def titles_descending(page):
 @app.route('/hot/page/<int:page>')
 @login_required_if_no_ano
 def hot_books(page):
-    if current_user.show_detail_random():
-        random = db.session.query(db.Books).filter(common_filters())\
-            .order_by(func.random()).limit(config.config_random_books)
-    else:
-        random = false
-    off = int(int(config.config_books_per_page) * (page - 1))
-    all_books = ub.session.query(ub.Downloads, ub.func.count(ub.Downloads.book_id)).order_by(
-        ub.func.count(ub.Downloads.book_id).desc()).group_by(ub.Downloads.book_id)
-    hot_books = all_books.offset(off).limit(config.config_books_per_page)
-    entries = list()
-    for book in hot_books:
-        downloadBook = db.session.query(db.Books).filter(common_filters()).filter(db.Books.id == book.Downloads.book_id).first()
-        if downloadBook:
-            entries.append(downloadBook)
+    if current_user.show_hot_books():
+        if current_user.show_detail_random():
+            random = db.session.query(db.Books).filter(common_filters())\
+                .order_by(func.random()).limit(config.config_random_books)
         else:
-            ub.session.query(ub.Downloads).filter(book.Downloads.book_id == ub.Downloads.book_id).delete()
-            ub.session.commit()
-    numBooks = entries.__len__()
-    pagination = Pagination(page, config.config_books_per_page, numBooks)
-    return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
-                                 title=_(u"Hot Books (most downloaded)"))
+            random = false
+        off = int(int(config.config_books_per_page) * (page - 1))
+        all_books = ub.session.query(ub.Downloads, ub.func.count(ub.Downloads.book_id)).order_by(
+            ub.func.count(ub.Downloads.book_id).desc()).group_by(ub.Downloads.book_id)
+        hot_books = all_books.offset(off).limit(config.config_books_per_page)
+        entries = list()
+        for book in hot_books:
+            downloadBook = db.session.query(db.Books).filter(common_filters()).filter(db.Books.id == book.Downloads.book_id).first()
+            if downloadBook:
+                entries.append(downloadBook)
+            else:
+                ub.session.query(ub.Downloads).filter(book.Downloads.book_id == ub.Downloads.book_id).delete()
+                ub.session.commit()
+        numBooks = entries.__len__()
+        pagination = Pagination(page, config.config_books_per_page, numBooks)
+        return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
+                                     title=_(u"Hot Books (most downloaded)"))
+    else:
+       abort(404)
 
 
 @app.route("/rated", defaults={'page': 1})
 @app.route('/rated/page/<int:page>')
 @login_required_if_no_ano
 def best_rated_books(page):
-    entries, random, pagination = fill_indexpage(page, db.Books, db.Books.ratings.any(db.Ratings.rating > 9),
-                                                 db.Books.timestamp.desc())
-    return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
-                                 title=_(u"Best rated books"))
+    if current_user.show_best_rated_books():
+        entries, random, pagination = fill_indexpage(page, db.Books, db.Books.ratings.any(db.Ratings.rating > 9),
+                                                     db.Books.timestamp.desc())
+        return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
+                                     title=_(u"Best rated books"))
+    abort(404)
 
 
 @app.route("/discover", defaults={'page': 1})
 @app.route('/discover/page/<int:page>')
 @login_required_if_no_ano
 def discover(page):
-    entries, __, pagination = fill_indexpage(page, db.Books, True, func.randomblob(2))
-    pagination = Pagination(1, config.config_books_per_page,config.config_books_per_page)
-    return render_title_template('discover.html', entries=entries, pagination=pagination, title=_(u"Random Books"))
+    if current_user.show_random_books():
+        entries, __, pagination = fill_indexpage(page, db.Books, True, func.randomblob(2))
+        pagination = Pagination(1, config.config_books_per_page,config.config_books_per_page)
+        return render_title_template('discover.html', entries=entries, pagination=pagination, title=_(u"Random Books"))
+    else:
+        abort(404)
 
 
 @app.route("/author")
 @login_required_if_no_ano
 def author_list():
-    entries = db.session.query(db.Authors, func.count('books_authors_link.book').label('count'))\
-        .join(db.books_authors_link).join(db.Books).filter(common_filters())\
-        .group_by('books_authors_link.author').order_by(db.Authors.sort).all()
-    for entry in entries:
-        entry.Authors.name=entry.Authors.name.replace('|',',')
-    return render_title_template('list.html', entries=entries, folder='author', title=_(u"Author list"))
+    if current_user.show_author():
+        entries = db.session.query(db.Authors, func.count('books_authors_link.book').label('count'))\
+            .join(db.books_authors_link).join(db.Books).filter(common_filters())\
+            .group_by('books_authors_link.author').order_by(db.Authors.sort).all()
+        for entry in entries:
+            entry.Authors.name=entry.Authors.name.replace('|',',')
+        return render_title_template('list.html', entries=entries, folder='author', title=_(u"Author list"))
+    else:
+        abort(404)
 
 
 @app.route("/author/<int:book_id>", defaults={'page': 1})
@@ -1181,10 +1200,13 @@ def get_unique_other_books(library_books, author_books):
 @app.route("/series")
 @login_required_if_no_ano
 def series_list():
-    entries = db.session.query(db.Series, func.count('books_series_link.book').label('count'))\
-        .join(db.books_series_link).join(db.Books).filter(common_filters())\
-        .group_by('books_series_link.series').order_by(db.Series.sort).all()
-    return render_title_template('list.html', entries=entries, folder='series', title=_(u"Series list"))
+    if current_user.show_series():
+        entries = db.session.query(db.Series, func.count('books_series_link.book').label('count'))\
+            .join(db.books_series_link).join(db.Books).filter(common_filters())\
+            .group_by('books_series_link.series').order_by(db.Series.sort).all()
+        return render_title_template('list.html', entries=entries, folder='series', title=_(u"Series list"))
+    else:
+        abort(404)
 
 
 @app.route("/series/<int:book_id>/", defaults={'page': 1})
@@ -1205,30 +1227,33 @@ def series(book_id, page):
 @app.route("/language")
 @login_required_if_no_ano
 def language_overview():
-    if current_user.filter_language() == u"all":
-        languages = db.session.query(db.Languages).all()
-        for lang in languages:
-            try:
-                cur_l = LC.parse(lang.lang_code)
-                lang.name = cur_l.get_language_name(get_locale())
-            except Exception:
-                lang.name = _(isoLanguages.get(part3=lang.lang_code).name)
-    else:
-        try:
-            cur_l = LC.parse(current_user.filter_language())
-        except Exception:
-            cur_l = None
-        languages = db.session.query(db.Languages).filter(
-            db.Languages.lang_code == current_user.filter_language()).all()
-        if cur_l:
-            languages[0].name = cur_l.get_language_name(get_locale())
+    if current_user.show_language():
+        if current_user.filter_language() == u"all":
+            languages = db.session.query(db.Languages).all()
+            for lang in languages:
+                try:
+                    cur_l = LC.parse(lang.lang_code)
+                    lang.name = cur_l.get_language_name(get_locale())
+                except Exception:
+                    lang.name = _(isoLanguages.get(part3=lang.lang_code).name)
         else:
-            languages[0].name = _(isoLanguages.get(part3=languages[0].lang_code).name)
-    lang_counter = db.session.query(db.books_languages_link,
-                                    func.count('books_languages_link.book').label('bookcount')).group_by(
-        'books_languages_link.lang_code').all()
-    return render_title_template('languages.html', languages=languages, lang_counter=lang_counter,
-                                 title=_(u"Available languages"))
+            try:
+                cur_l = LC.parse(current_user.filter_language())
+            except Exception:
+                cur_l = None
+            languages = db.session.query(db.Languages).filter(
+                db.Languages.lang_code == current_user.filter_language()).all()
+            if cur_l:
+                languages[0].name = cur_l.get_language_name(get_locale())
+            else:
+                languages[0].name = _(isoLanguages.get(part3=languages[0].lang_code).name)
+        lang_counter = db.session.query(db.books_languages_link,
+                                        func.count('books_languages_link.book').label('bookcount')).group_by(
+            'books_languages_link.lang_code').all()
+        return render_title_template('languages.html', languages=languages, lang_counter=lang_counter,
+                                     title=_(u"Available languages"))
+    else:
+        abort(404)
 
 
 @app.route("/language/<name>", defaults={'page': 1})
@@ -1249,10 +1274,13 @@ def language(name, page):
 @app.route("/category")
 @login_required_if_no_ano
 def category_list():
-    entries = db.session.query(db.Tags, func.count('books_tags_link.book').label('count'))\
-        .join(db.books_tags_link).join(db.Books).order_by(db.Tags.name).filter(common_filters())\
-        .group_by('books_tags_link.tag').all()
-    return render_title_template('list.html', entries=entries, folder='category', title=_(u"Category list"))
+    if current_user.show_category():
+        entries = db.session.query(db.Tags, func.count('books_tags_link.book').label('count'))\
+            .join(db.books_tags_link).join(db.Books).order_by(db.Tags.name).filter(common_filters())\
+            .group_by('books_tags_link.tag').all()
+        return render_title_template('list.html', entries=entries, folder='category', title=_(u"Category list"))
+    else:
+        abort(404)
 
 
 @app.route("/category/<int:book_id>", defaults={'page': 1})
@@ -2307,6 +2335,10 @@ def profile():
             content.sidebar_view += ub.SIDEBAR_SERIES
         if "show_category" in to_save:
             content.sidebar_view += ub.SIDEBAR_CATEGORY
+        if "show_recent" in to_save:
+            content.sidebar_view += ub.SIDEBAR_RECENT
+        if "show_sorted" in to_save:
+            content.sidebar_view += ub.SIDEBAR_SORTED
         if "show_hot" in to_save:
             content.sidebar_view += ub.SIDEBAR_HOT
         if "show_best_rated" in to_save:
@@ -2688,6 +2720,16 @@ def edit_user(user_id):
                 content.sidebar_view += ub.SIDEBAR_CATEGORY
             elif "show_category" not in to_save and content.show_category():
                 content.sidebar_view -= ub.SIDEBAR_CATEGORY
+
+            if "show_recent" in to_save and not content.show_recent():
+                content.sidebar_view += ub.SIDEBAR_RECENT
+            elif "show_recent" not in to_save and content.show_recent():
+                content.sidebar_view -= ub.SIDEBAR_RECENT
+
+            if "show_sorted" in to_save and not content.show_sorted():
+                content.sidebar_view += ub.SIDEBAR_SORTED
+            elif "show_sorted" not in to_save and content.show_sorted():
+                content.sidebar_view -= ub.SIDEBAR_SORTED
 
             if "show_hot" in to_save and not content.show_hot_books():
                 content.sidebar_view += ub.SIDEBAR_HOT
