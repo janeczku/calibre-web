@@ -1470,8 +1470,8 @@ def delete_book(book_id):
             db.session.query(db.Books).filter(db.Books.id == book_id).delete()
             db.session.commit()
         else:
-            # book not found
-            app.logger.info('Book with id "'+book_id+'" could not be deleted')
+            # book not foundß
+            app.logger.info('Book with id "'+str(book_id)+'" could not be deleted')
     return redirect(url_for('index'))
 
 @app.route("/gdrive/authenticate")
