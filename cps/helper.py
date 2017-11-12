@@ -90,7 +90,7 @@ def make_mobi(book_id, calibrepath):
             p = subprocess.Popen((kindlegen + " \"" + file_path + u".epub\"").encode(sys.getfilesystemencoding()),
                                  stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
         except Exception:
-            error_message = _(u"kindlegen failed, no excecution permissions")
+            error_message = _(u"kindlegen failed, no execution permissions")
             app.logger.error("make_mobi: " + error_message)
             return error_message, RET_FAIL
         # Poll process for new output until finished
