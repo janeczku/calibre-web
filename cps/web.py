@@ -925,7 +925,7 @@ def get_tags_json():
     if request.method == "GET":
         query = request.args.get('q')
         # entries = db.session.execute("select name from tags where name like '%" + query + "%'")
-        entries = db.session.query(db.Tags).filter(db.Tags.iname.ilike("%" + query + "%")).all()
+        entries = db.session.query(db.Tags).filter(db.Tags.name.ilike("%" + query + "%")).all()
         # for x in entries:
         #    alfa = dict(name=x.name)
         json_dumps = json.dumps([dict(name=r.name) for r in entries])
