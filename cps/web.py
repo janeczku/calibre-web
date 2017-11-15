@@ -1048,7 +1048,7 @@ def index(page):
 @app.route('/books/newest/page/<int:page>')
 @login_required_if_no_ano
 def newest_books(page):
-    if current_cuser.show_sorted():
+    if current_user.show_sorted():
         entries, random, pagination = fill_indexpage(page, db.Books, True, db.Books.pubdate.desc())
         return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
                                      title=_(u"Newest Books"))
@@ -1059,7 +1059,7 @@ def newest_books(page):
 @app.route('/books/oldest/page/<int:page>')
 @login_required_if_no_ano
 def oldest_books(page):
-    if current_cuser.show_sorted():
+    if current_user.show_sorted():
         entries, random, pagination = fill_indexpage(page, db.Books, True, db.Books.pubdate)
         return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
                                      title=_(u"Oldest Books"))
@@ -1071,7 +1071,7 @@ def oldest_books(page):
 @app.route('/books/a-z/page/<int:page>')
 @login_required_if_no_ano
 def titles_ascending(page):
-    if current_cuser.show_sorted():
+    if current_user.show_sorted():
         entries, random, pagination = fill_indexpage(page, db.Books, True, db.Books.sort)
         return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
                                      title=_(u"Books (A-Z)"))
