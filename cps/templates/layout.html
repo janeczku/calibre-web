@@ -128,8 +128,10 @@
               <li><a href="{{url_for('best_rated_books')}}"><span class="glyphicon glyphicon-star"></span> {{_('Best rated Books')}}</a></li>
               {%endif%}
               {% if g.user.show_read_and_unread() %}
-              <li><a href="{{url_for('read_books')}}"><span class="glyphicon glyphicon-eye-open"></span> {{_('Read Books')}}</a></li>
-              <li><a href="{{url_for('unread_books')}}"><span class="glyphicon glyphicon-eye-close"></span> {{_('Unread Books')}}</a></li>
+                {% if not g.user.is_anonymous %}
+                  <li><a href="{{url_for('read_books')}}"><span class="glyphicon glyphicon-eye-open"></span> {{_('Read Books')}}</a></li>
+                {%endif%}
+                <li><a href="{{url_for('unread_books')}}"><span class="glyphicon glyphicon-eye-close"></span> {{_('Unread Books')}}</a></li>
               {%endif%}
               {% if g.user.show_random_books() %}
               <li id="nav_rand"><a href="{{url_for('discover')}}"><span class="glyphicon glyphicon-random"></span> {{_('Discover')}}</a></li>

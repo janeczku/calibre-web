@@ -41,13 +41,13 @@
     <id>{{url_for('feed_read_books')}}</id>
     <content type="text">{{_('Read Books')}}</content>
   </entry>
+{% endif %}
   <entry>
     <title>{{_('Unread Books')}}</title>
     <link rel="subsection" href="{{url_for('feed_unread_books')}}" type="application/atom+xml;profile=opds-catalog"/>
     <id>{{url_for('feed_unread_books')}}</id>
     <content type="text">{{_('Unread Books')}}</content>
   </entry>
-{% endif %}
   <entry>
     <title>{{_('Authors')}}</title>
     <link rel="subsection" href="{{url_for('feed_authorindex')}}" type="application/atom+xml;profile=opds-catalog"/>
