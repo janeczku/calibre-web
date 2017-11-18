@@ -76,8 +76,7 @@
       <label for="config_mature_content_tags">{{_('Tags for Mature Content')}}</label>
       <input type="text" class="form-control" name="config_mature_content_tags" id="config_mature_content_tags"
              value="{% if content.config_mature_content_tags != None%}{{ content.config_mature_content_tags }}{% endif %}"
-             autocomplete="off"
-      >
+             autocomplete="off">
     </div>
     <div class="form-group">
     <label for="config_log_level">{{_('Log Level')}}</label>
@@ -88,6 +87,12 @@
                 <option value="40" {% if content.config_log_level == 40 %}selected{% endif %}>ERROR</option>
         </select>
     </div>
+    {% if rarfile_support %}
+    <div class="form-group">
+      <label for="config_rarfile_location">{{_('Location of Unrar binary')}}</label>
+      <input type="text" class="form-control" name="config_rarfile_location" id="config_rarfile_location" value="{% if content.config_rarfile_location != None %}{{ content.config_rarfile_location }}{% endif %}" autocomplete="off">
+    </div>
+    {% endif %}
     <div class="form-group">
         <input type="checkbox" id="config_uploading" name="config_uploading" {% if content.config_uploading %}checked{% endif %}>
         <label for="config_uploading">{{_('Enable uploading')}}</label>
