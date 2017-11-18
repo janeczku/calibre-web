@@ -13,11 +13,11 @@
     <script src="{{ url_for('static', filename='js/libs/bootstrap.min.js') }}"></script>
 
 	<script src="{{ url_for('static', filename='js/kthoom.js') }}"></script>
-	<script src="{{ url_for('static', filename='js/archive.js') }}"></script>
+	<!--script src="{{ url_for('static', filename='js/archive.js') }}"></script-->
     <script>
             document.onreadystatechange = function () {
               if (document.readyState == "complete") {
-                init("{{ url_for('static', filename=comicfile) }}");
+                init("{{ url_for('get_comic_book', book_id=comicfile, book_format=extension, page=0) }}");
                 }                
             };
     </script>    

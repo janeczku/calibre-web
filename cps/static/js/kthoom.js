@@ -17,6 +17,8 @@
 */
 /* global bitjs */
 
+var start=0;
+
 if (window.opera) {
     window.console.log = function(str) {
         opera.postError(str);
@@ -127,11 +129,11 @@ var createURLFromArray = function(array, mimeType) {
 //       This would save 25% on memory since base64-encoded strings are 4/3 the size of the binary
 kthoom.ImageFile = function(file) {
     this.filename = file.filename;
-    var fileExtension = file.filename.split(".").pop().toLowerCase();
+    /*var fileExtension = file.filename.split(".").pop().toLowerCase();
     var mimeType = fileExtension === "png" ? "image/png" :
         (fileExtension === "jpg" || fileExtension === "jpeg") ? "image/jpeg" :
-            fileExtension === "gif" ? "image/gif" : null;
-    this.dataURI = createURLFromArray(file.fileData, mimeType);
+            fileExtension === "gif" ? "image/gif" : null;*/
+    this.dataURI = file.fileData; // createURLFromArray(file.fileData, mimeType);
     this.data = file;
 };
 
@@ -270,50 +272,22 @@ kthoom.setProgressMeter = function(pct, optLabel) {
 }
 
 function loadFromArrayBuffer(ab) {
-    var start = (new Date).getTime();
-    var h = new Uint8Array(ab, 0, 10);
-    var pathToBitJS = "../../static/js/";
-    if (h[0] === 0x52 && h[1] === 0x61 && h[2] === 0x72 && h[3] === 0x21) { //Rar!
-        unarchiver = new bitjs.archive.Unrarrer(ab, pathToBitJS);
-    } else if (h[0] === 80 && h[1] === 75) { //PK (Zip)
-        unarchiver = new bitjs.archive.Unzipper(ab, pathToBitJS);
-    } else { // Try with tar
-        unarchiver = new bitjs.archive.Untarrer(ab, pathToBitJS);
+    var f=[];
+    f.fileData=ab.content;
+    f.filename=ab.name;
+    // add any new pages based on the filename
+    if (imageFilenames.indexOf(f.filename) === -1) {
+        imageFilenames.push(f.filename);
+        imageFiles.push(new kthoom.ImageFile(f));
     }
-    // Listen for UnarchiveEvents.
-    if (unarchiver) {
-        unarchiver.addEventListener(bitjs.archive.UnarchiveEvent.Type.PROGRESS,
-            function(e) {
-                var percentage = e.currentBytesUnarchived / e.totalUncompressedBytesInArchive;
-                totalImages = e.totalFilesInArchive;
-                kthoom.setProgressMeter(percentage, "Unzipping");
-                // display nav
-                lastCompletion = percentage * 100;
-            });
-        unarchiver.addEventListener(bitjs.archive.UnarchiveEvent.Type.EXTRACT,
-            function(e) {
-            // convert DecompressedFile into a bunch of ImageFiles
-                if (e.unarchivedFile) {
-                    var f = e.unarchivedFile;
-                    // add any new pages based on the filename
-                    if (imageFilenames.indexOf(f.filename) === -1) {
-                        imageFilenames.push(f.filename);
-                        imageFiles.push(new kthoom.ImageFile(f));
-                    }
-                }
-                // display first page if we haven't yet
-                if (imageFiles.length === currentImage + 1) {
-                    updatePage();
-                }
-            });
-        unarchiver.addEventListener(bitjs.archive.UnarchiveEvent.Type.FINISH,
-            function() {
-                var diff = ((new Date).getTime() - start) / 1000;
-                console.log("Unarchiving done in " + diff + "s");
-            });
-        unarchiver.start();
-    } else {
-        alert("Some error");
+    var percentage = (ab.page+1) / (ab.last+1);
+    totalImages = ab.last+1;
+    kthoom.setProgressMeter(percentage, "Unzipping");
+    lastCompletion = percentage * 100;
+
+    // display first page if we haven't yet
+    if (imageFiles.length === currentImage + 1) {
+        updatePage();
     }
 }
 
@@ -524,69 +498,90 @@ function keyHandler(evt) {
     }
 }
 
-function init(filename) {
-    if (!window.FileReader) {
-        alert("Sorry, kthoom will not work with your browser because it does not support the File API.  Please try kthoom with Chrome 12+ or Firefox 7+");
-    } else {
-        var request = new XMLHttpRequest();
-        request.open("GET", filename);
-        request.responseType = "arraybuffer";
-        request.setRequestHeader("X-Test", "test1");
-        request.setRequestHeader("X-Test", "test2");
-        request.addEventListener("load", function(event) {
-            if (request.status >= 200 && request.status < 300) {
-                loadFromArrayBuffer(request.response);
-            } else {
-                console.warn(request.statusText, request.responseText);
-            }
-        });
-        request.send();
-        kthoom.initProgressMeter();
-        document.body.className += /AppleWebKit/.test(navigator.userAgent) ? " webkit" : "";
-        updateScale(true);
-        kthoom.loadSettings();
-        $(document).keydown(keyHandler);
-
-        $(window).resize(function() {
-            var f = (screen.width - innerWidth < 4 && screen.height - innerHeight < 4);
-            getElem("titlebar").className = f ? "main" : "";
-            updateScale();
-        });
-
-        $("#mainImage").click(function(evt) {
-            // Firefox does not support offsetX/Y so we have to manually calculate
-            // where the user clicked in the image.
-            var mainContentWidth = $("#mainContent").width();
-            var mainContentHeight = $("#mainContent").height();
-            var comicWidth = evt.target.clientWidth;
-            var comicHeight = evt.target.clientHeight;
-            var offsetX = (mainContentWidth - comicWidth) / 2;
-            var offsetY = (mainContentHeight - comicHeight) / 2;
-            var clickX = !!evt.offsetX ? evt.offsetX : (evt.clientX - offsetX);
-            var clickY = !!evt.offsetY ? evt.offsetY : (evt.clientY - offsetY);
-
-            // Determine if the user clicked/tapped the left side or the
-            // right side of the page.
-            var clickedPrev = false;
-            switch (kthoom.rotateTimes) {
-            case 0:
-              clickedPrev = clickX < (comicWidth / 2);
-              break;
-            case 1:
-              clickedPrev = clickY < (comicHeight / 2);
-              break;
-            case 2:
-              clickedPrev = clickX > (comicWidth / 2);
-              break;
-            case 3:
-              clickedPrev = clickY > (comicHeight / 2);
-              break;
-            }
-            if (clickedPrev) {
-                showPrevPage();
-            } else {
-                showNextPage();
-            }
-        });
+function ImageLoadCallback(event) {
+    var jso=this.response;
+    if (jso.page !== jso.last)
+    {
+        // var secRequest = new XMLHttpRequest();
+        this.open("GET", this.fileid + "/"+(jso.page+1));
+        this.addEventListener("load",ImageLoadCallback);
+        this.send();
     }
+    else
+    {
+        var diff = ((new Date).getTime() - start)/1000;
+        console.log('Transfer done in ' + diff + 's');
+    }
+    loadFromArrayBuffer(jso);
+}
+function init(fileid) {
+    start = (new Date).getTime();
+    var request = new XMLHttpRequest();
+    request.open("GET", fileid);
+    request.responseType = "json";
+    request.fileid=fileid.substring(0,fileid.length - 2);
+    request.addEventListener("load",ImageLoadCallback);/* function(event) {
+        var jso=request.response;
+        if (jso.page!=jso.length)
+        {
+            // var secRequest = new XMLHttpRequest();
+            request.open("GET", fileid + "/../"+(jso.page+1));
+            request.send();
+            //secRequest.responseType = "json";
+            //finished;
+        }
+        loadFromArrayBuffer(jso);
+
+        // var byteArray = new Uint8Array(request.response);
+        // if you want to access the bytes:
+    });*/
+    request.send();
+
+    kthoom.initProgressMeter();
+    document.body.className += /AppleWebKit/.test(navigator.userAgent) ? " webkit" : "";
+    updateScale(true);
+    kthoom.loadSettings();
+    $(document).keydown(keyHandler);
+
+    $(window).resize(function() {
+        var f = (screen.width - innerWidth < 4 && screen.height - innerHeight < 4);
+        getElem("titlebar").className = f ? "main" : "";
+        updateScale();
+    });
+
+    $("#mainImage").click(function(evt) {
+        // Firefox does not support offsetX/Y so we have to manually calculate
+        // where the user clicked in the image.
+        var mainContentWidth = $("#mainContent").width();
+        var mainContentHeight = $("#mainContent").height();
+        var comicWidth = evt.target.clientWidth;
+        var comicHeight = evt.target.clientHeight;
+        var offsetX = (mainContentWidth - comicWidth) / 2;
+        var offsetY = (mainContentHeight - comicHeight) / 2;
+        var clickX = !!evt.offsetX ? evt.offsetX : (evt.clientX - offsetX);
+        var clickY = !!evt.offsetY ? evt.offsetY : (evt.clientY - offsetY);
+
+        // Determine if the user clicked/tapped the left side or the
+        // right side of the page.
+        var clickedPrev = false;
+        switch (kthoom.rotateTimes) {
+        case 0:
+          clickedPrev = clickX < (comicWidth / 2);
+          break;
+        case 1:
+          clickedPrev = clickY < (comicHeight / 2);
+          break;
+        case 2:
+          clickedPrev = clickX > (comicWidth / 2);
+          break;
+        case 3:
+          clickedPrev = clickY > (comicHeight / 2);
+          break;
+        }
+        if (clickedPrev) {
+            showPrevPage();
+        } else {
+            showNextPage();
+        }
+    });
 }

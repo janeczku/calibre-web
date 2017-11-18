@@ -296,6 +296,7 @@ class Settings(Base):
     config_goodreads_api_key = Column(String)
     config_goodreads_api_secret = Column(String)
     config_mature_content_tags = Column(String)  # type: str
+    config_rarfile_location = Column(String)
 
     def __repr__(self):
         pass
@@ -357,6 +358,7 @@ class Config:
         self.config_goodreads_api_key = data.config_goodreads_api_key
         self.config_goodreads_api_secret = data.config_goodreads_api_secret
         self.config_mature_content_tags = data.config_mature_content_tags
+        self.config_rarfile_location = data.config_rarfile_location
 
     @property
     def get_main_dir(self):
@@ -486,6 +488,13 @@ def migrate_Database():
     except exc.OperationalError:  # Database is not compatible, some rows are missing
         conn = engine.connect()
         conn.execute("ALTER TABLE book_shelf_link ADD column 'order' INTEGER DEFAULT 1")
+        session.commit()
+    try:
+        session.query(exists().where(Settings.config_rarfile_location)).scalar()
+        session.commit()
+    except exc.OperationalError:  # Database is not compatible, some rows are missing
+        conn = engine.connect()
+        conn.execute("ALTER TABLE Settings ADD column `config_rarfile_location` String DEFAULT ''")
         session.commit()
     try:
         create = False

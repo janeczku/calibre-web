@@ -24,6 +24,12 @@ try:
 except ImportError:
     pass  # We're not using Python 3
 
+try:
+    import rarfile
+    rar_support=True
+except ImportError:
+    rar_support=False
+
 import mimetypes
 import logging
 from logging.handlers import RotatingFileHandler
@@ -51,6 +57,7 @@ from flask_babel import Babel
 from flask_babel import gettext as _
 import requests
 import zipfile
+import tarfile
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.datastructures import Headers
 from babel import Locale as LC
@@ -908,6 +915,122 @@ def get_metadata_calibre_companion(uuid):
         return ""
 
 
+@app.route("/ajax/getcomic/<int:book_id>/<book_format>/<int:page>")
+@login_required
+def get_comic_book(book_id, book_format, page):
+    book = db.session.query(db.Books).filter(db.Books.id == book_id).first()
+    if not book:
+        return ""
+    else:
+        for bookformat in book.data:
+            if bookformat.format.lower() == book_format.lower():
+                cbr_file = os.path.join(config.config_calibre_dir, book.path, bookformat.name) + "." + book_format
+                if book_format == "cbr":
+                    if rar_support == True:
+                        rarfile.UNRAR_TOOL = config.config_rarfile_location
+                        try:
+                            rf = rarfile.RarFile(cbr_file)
+                            rarNames = rf.namelist()
+                            extractedfile="data:image/png;base64," + (rf.read(rarNames[page])).encode('base64')
+                            fileData={"name": rarNames[page],"page":page, "last":rarNames.__len__()-1, "content": extractedfile}
+                        except:
+                            return ""
+                            # rarfile not valid
+                            # ToDo: error handling
+                    else:
+                        # no support means return nothing
+                        return ""
+                if book_format == "cbz":
+                    zf = zipfile.ZipFile(cbr_file)
+                    zipNames=zf.namelist()
+                    extractedfile="data:image/png;base64," + (zf.read(zipNames[page])).encode('base64')
+                    fileData={"name": zipNames[page],"page":page, "last":zipNames.__len__()-1, "content": extractedfile}
+
+                if book_format == "cbt":
+                    tf = tarfile.TarFile(u'D:\\zip\\test.cbt')
+                    tarNames=tf.getnames()
+                    extractedfile="data:image/png;base64," + (tf.extractfile(tarNames[page]).read()).encode('base64')
+                    fileData={"name": tarNames[page],"page":page, "last":tarNames.__len__()-1, "content": extractedfile}
+                return make_response(json.dumps(fileData))
+
+@app.route("/ajax/toggleread/<int:book_id>", methods=['POST'])
+@login_required
+def toggle_read(book_id):
+    book = ub.session.query(ub.ReadBook).filter(ub.and_(ub.ReadBook.user_id == int(current_user.id),
+                                                        ub.ReadBook.book_id == book_id)).first()
+    if book:
+        book.is_read = not book.is_read
+    else:
+        readBook = ub.ReadBook()
+        readBook.user_id = int(current_user.id)
+        readBook.book_id = book_id
+        readBook.is_read = True
+        book = readBook
+    ub.session.merge(book)
+    ub.session.commit()
+    return ""
+
+
+@app.route('/ajax/verify_token', methods=['POST'])
+@remote_login_required
+def token_verified():
+    token = request.form['token']
+    auth_token = ub.session.query(ub.RemoteAuthToken).filter(ub.RemoteAuthToken.auth_token == token).first()
+
+    data = {}
+
+    # Token not found
+    if auth_token is None:
+        data['status'] = 'error'
+        data['message'] = _(u"Token not found")
+
+    # Token expired
+    elif datetime.datetime.now() > auth_token.expiration:
+        ub.session.delete(auth_token)
+        ub.session.commit()
+
+        data['status'] = 'error'
+        data['message'] = _(u"Token has expired")
+
+    elif not auth_token.verified:
+        data['status'] = 'not_verified'
+
+    else:
+        user = ub.session.query(ub.User).filter(ub.User.id == auth_token.user_id).first()
+        login_user(user)
+
+        ub.session.delete(auth_token)
+        ub.session.commit()
+
+        data['status'] = 'success'
+        flash(_(u"you are now logged in as: '%(nickname)s'", nickname=user.nickname), category="success")
+
+    response = make_response(json.dumps(data, ensure_ascii=false))
+    response.headers["Content-Type"] = "application/json; charset=utf-8"
+
+    return response
+
+
+@app.route("/ajax/bookmark/<int:book_id>/<book_format>", methods=['POST'])
+@login_required
+def bookmark(book_id, book_format):
+    bookmark_key = request.form["bookmark"]
+    ub.session.query(ub.Bookmark).filter(ub.and_(ub.Bookmark.user_id == int(current_user.id),
+                                                 ub.Bookmark.book_id == book_id,
+                                                 ub.Bookmark.format == book_format)).delete()
+    if not bookmark_key:
+        ub.session.commit()
+        return "", 204
+
+    bookmark = ub.Bookmark(user_id=current_user.id,
+                           book_id=book_id,
+                           format=book_format,
+                           bookmark_key=bookmark_key)
+    ub.session.merge(bookmark)
+    ub.session.commit()
+    return "", 201
+
+
 @app.route("/get_authors_json", methods=['GET', 'POST'])
 @login_required_if_no_ano
 def get_authors_json():
@@ -1297,22 +1420,6 @@ def category(book_id, page):
                                  title=_(u"Category: %(name)s", name=name))
 
 
-@app.route("/ajax/toggleread/<int:book_id>", methods=['POST'])
-@login_required
-def toggle_read(book_id):
-    book = ub.session.query(ub.ReadBook).filter(ub.and_(ub.ReadBook.user_id == int(current_user.id),
-                                                                   ub.ReadBook.book_id == book_id)).first()
-    if book:
-        book.is_read = not book.is_read
-    else:
-        readBook = ub.ReadBook()
-        readBook.user_id = int(current_user.id)
-        readBook.book_id = book_id
-        readBook.is_read = True
-        book = readBook
-    ub.session.merge(book)
-    ub.session.commit()
-    return ""
 
 
 @app.route("/book/<int:book_id>")
@@ -1356,24 +1463,6 @@ def show_book(book_id):
         return redirect(url_for("index"))
 
 
-@app.route("/ajax/bookmark/<int:book_id>/<book_format>", methods=['POST'])
-@login_required
-def bookmark(book_id, book_format):
-    bookmark_key = request.form["bookmark"]
-    ub.session.query(ub.Bookmark).filter(ub.and_(ub.Bookmark.user_id == int(current_user.id),
-                                                 ub.Bookmark.book_id == book_id,
-                                                 ub.Bookmark.format == book_format)).delete()
-    if not bookmark_key:
-        ub.session.commit()
-        return "", 204
-
-    bookmark = ub.Bookmark(user_id=current_user.id,
-                           book_id=book_id,
-                           format=book_format,
-                           bookmark_key=bookmark_key)
-    ub.session.merge(bookmark)
-    ub.session.commit()
-    return "", 201
 
 
 @app.route("/admin")
@@ -1858,14 +1947,15 @@ def read_book(book_id, book_format):
     elif book_format.lower() == "txt":
         return render_title_template('readtxt.html', txtfile=book_id, title=_(u"Read a Book"))
     else:
-        for fileext in ["cbr","cbt","cbz"]:
+        if rar_support == True:
+            extensionList = ["cbr","cbt","cbz"]
+        else:
+            extensionList = ["cbt","cbz"]
+        for fileext in extensionList:
             if book_format.lower() == fileext:
-                all_name = str(book_id) + "/" + book.data[0].name + "." + fileext
-                tmp_file = os.path.join(book_dir, book.data[0].name) + "." + fileext
-                if not os.path.exists(all_name):
-                    cbr_file = os.path.join(config.config_calibre_dir, book.path, book.data[0].name) + "." + fileext
-                    copyfile(cbr_file, tmp_file)
-                return render_title_template('readcbr.html', comicfile=all_name, title=_(u"Read a Book"))
+                return render_title_template('readcbr.html', comicfile=book_id, extension=fileext, title=_(u"Read a Book"))
+            else:
+                flash(_(u"Error opening eBook. File does not exist or file is not accessible:"), category="error")
 
 
 @app.route("/download/<int:book_id>/<book_format>")
@@ -2021,44 +2111,6 @@ def verify_token(token):
     return redirect(url_for('index'))
 
 
-@app.route('/ajax/verify_token', methods=['POST'])
-@remote_login_required
-def token_verified():
-    token = request.form['token']
-    auth_token = ub.session.query(ub.RemoteAuthToken).filter(ub.RemoteAuthToken.auth_token == token).first()
-
-    data = {}
-
-    # Token not found
-    if auth_token is None:
-        data['status'] = 'error'
-        data['message'] = _(u"Token not found")
-
-    # Token expired
-    elif datetime.datetime.now() > auth_token.expiration:
-        ub.session.delete(auth_token)
-        ub.session.commit()
-
-        data['status'] = 'error'
-        data['message'] = _(u"Token has expired")
-
-    elif not auth_token.verified:
-        data['status'] = 'not_verified'
-
-    else:
-        user = ub.session.query(ub.User).filter(ub.User.id == auth_token.user_id).first()
-        login_user(user)
-
-        ub.session.delete(auth_token)
-        ub.session.commit()
-
-        data['status'] = 'success'
-        flash(_(u"you are now logged in as: '%(nickname)s'", nickname=user.nickname), category="success")
-
-    response = make_response(json.dumps(data, ensure_ascii=false))
-    response.headers["Content-Type"] = "application/json; charset=utf-8"
-
-    return response
 
 
 @app.route('/send/<int:book_id>')
@@ -2480,6 +2532,12 @@ def configuration_helper(origin):
         if "config_mature_content_tags" in to_save:
             content.config_mature_content_tags = to_save["config_mature_content_tags"].strip()
 
+        # Rarfile Content configuration
+        # ToDo check: location valid
+        if "config_rarfile_location" in to_save:
+            content.config_rarfile_location = to_save["config_rarfile_location"].strip()
+
+
         content.config_default_role = 0
         if "admin_role" in to_save:
             content.config_default_role = content.config_default_role + ub.ROLE_ADMIN
@@ -2510,13 +2568,15 @@ def configuration_helper(origin):
         except e:
             flash(e, category="error")
             return render_title_template("config_edit.html", content=config, origin=origin, gdrive=gdrive_support,
-                                         goodreads=goodreads_support, title=_(u"Basic Configuration"))
+                                         goodreads=goodreads_support, rarfile_support=rar_support,
+                                         title=_(u"Basic Configuration"))
         if db_change:
             reload(db)
             if not db.setup_db():
                 flash(_(u'DB location is not valid, please enter correct path'), category="error")
                 return render_title_template("config_edit.html", content=config, origin=origin, gdrive=gdrive_support,
-                                             goodreads=goodreads_support, title=_(u"Basic Configuration"))
+                                             goodreads=goodreads_support, rarfile_support=rar_support,
+                                             title=_(u"Basic Configuration"))
         if reboot_required:
             # db.engine.dispose() # ToDo verify correct
             ub.session.close()
@@ -2530,7 +2590,8 @@ def configuration_helper(origin):
             success = True
     return render_title_template("config_edit.html", origin=origin, success=success, content=config,
                                  show_authenticate_google_drive=not is_gdrive_ready(), gdrive=gdrive_support,
-                                 goodreads=goodreads_support, title=_(u"Basic Configuration"))
+                                 goodreads=goodreads_support, rarfile_support=rar_support,
+                                 title=_(u"Basic Configuration"))
 
 
 @app.route("/admin/user/new", methods=["GET", "POST"])
