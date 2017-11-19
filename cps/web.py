@@ -920,7 +920,7 @@ def get_metadata_calibre_companion(uuid):
 def get_comic_book(book_id, book_format, page):
     book = db.session.query(db.Books).filter(db.Books.id == book_id).first()
     if not book:
-        return ""
+        return "", 204
     else:
         for bookformat in book.data:
             if bookformat.format.lower() == book_format.lower():
@@ -935,12 +935,12 @@ def get_comic_book(book_id, book_format, page):
                             fileData={"name": rarNames[page],"page":page, "last":rarNames.__len__()-1, "content": extractedfile}
                         except:
                             # rarfile not valid
-                            app.logger.error('Unrar binary not found unable to decompress file ' + cbr_file)
-                            return ""
+                            app.logger.error('Unrar binary not found, or unable to decompress file ' + cbr_file)
+                            return "", 204
                     else:
                         app.logger.info('Unrar is not supported please install python rarfile extension')
                         # no support means return nothing
-                        return ""
+                        return "", 204
                 if book_format == "cbz":
                     zf = zipfile.ZipFile(cbr_file)
                     zipNames=zf.namelist()
@@ -1961,9 +1961,8 @@ def read_book(book_id, book_format):
         for fileext in extensionList:
             if book_format.lower() == fileext:
                 return render_title_template('readcbr.html', comicfile=book_id, extension=fileext, title=_(u"Read a Book"))
-            else:
-                flash(_(u"Error opening eBook. File does not exist or file is not accessible:"), category="error")
-
+        flash(_(u"Error opening eBook. File does not exist or file is not accessible."), category="error")
+        return redirect(url_for("index"))
 
 @app.route("/download/<int:book_id>/<book_format>")
 @login_required_if_no_ano
