@@ -55,9 +55,6 @@ kthoom.Key = {
     RIGHT_SQUARE_BRACKET: 221
 };
 
-// The rotation orientation of the comic.
-kthoom.rotateTimes = 0;
-
 // global variables
 var unarchiver = null;
 var currentImage = 0;
@@ -66,31 +63,43 @@ var imageFilenames = [];
 var totalImages = 0;
 var lastCompletion = 0;
 
-var hflip = false, vflip = false, fitMode = kthoom.Key.B;
+var settings = {
+    hflip: false, 
+    vflip: false, 
+    rotateTimes: 0,
+    fitMode: kthoom.Key.B,
+    theme: 'light'
+};
+
 var canKeyNext = true, canKeyPrev = true;
 
 kthoom.saveSettings = function() {
-    localStorage.kthoomSettings = JSON.stringify({
-        rotateTimes: kthoom.rotateTimes,
-        hflip: hflip,
-        vflip: vflip,
-        fitMode: fitMode
-    });
+    localStorage.kthoomSettings = JSON.stringify(settings);
 };
 
 kthoom.loadSettings = function() {
     try {
-        if (localStorage.kthoomSettings.length < 10){
+        if (!localStorage.kthoomSettings){
             return;
         }
-        var s = JSON.parse(localStorage.kthoomSettings);
-        kthoom.rotateTimes = s.rotateTimes;
-        hflip = s.hflip;
-        vflip = s.vflip;
-        fitMode = s.fitMode;
+
+        $.extend(settings, JSON.parse(localStorage.kthoomSettings));
+
+        kthoom.setSettings();
     } catch (err) {
         alert("Error load settings");
     }
+};
+
+kthoom.setSettings = function() {
+    // Set settings control values
+    $.each(settings, function(key, value) {
+        if (typeof value === "boolean") {
+            $('input[name='+key+']').prop('checked', value);
+        } else {
+            $('input[name='+key+']').val([value]);
+        }
+    });
 };
 
 var createURLFromArray = function(array, mimeType) {
@@ -279,6 +288,17 @@ function loadFromArrayBuffer(ab) {
     if (imageFilenames.indexOf(f.filename) === -1) {
         imageFilenames.push(f.filename);
         imageFiles.push(new kthoom.ImageFile(f));
+                        
+                        // add thumbnails to the TOC list
+                        $('#thumbnails').append(
+                            "<li> \
+                                <a data-page='"+ imageFiles.length +"'> \
+                                    <img src='"+ imageFiles[imageFiles.length - 1].dataURI +"' /> \
+                                    <span>"+ imageFiles.length +"</span> \
+                                </a> \
+                            </li>"
+                        );
+                    //}
     }
     var percentage = (ab.page+1) / (ab.last+1);
     totalImages = ab.last+1;
@@ -304,6 +324,11 @@ function updatePage() {
     } else {
         setImage("loading");
     }
+
+    $('body').toggleClass('dark-theme', settings.theme === 'dark');
+
+    kthoom.setSettings();
+    kthoom.saveSettings();
 }
 
 function setImage(url) {
@@ -359,22 +384,22 @@ function setImage(url) {
                 w = img.width,
                 sw = w,
                 sh = h;
-            kthoom.rotateTimes =  (4 + kthoom.rotateTimes) % 4;
+            settings.rotateTimes =  (4 + settings.rotateTimes) % 4;
             x.save();
-            if (kthoom.rotateTimes % 2 === 1) {
+            if (settings.rotateTimes % 2 === 1) {
                 sh = w;
                 sw = h;
             }
             canvas.height = sh;
             canvas.width = sw;
             x.translate(sw / 2, sh / 2);
-            x.rotate(Math.PI / 2 * kthoom.rotateTimes);
+            x.rotate(Math.PI / 2 * settings.rotateTimes);
             x.translate(-w / 2, -h / 2);
-            if (vflip) {
+            if (settings.vflip) {
                 x.scale(1, -1);
                 x.translate(0, -h);
             }
-            if (hflip) {
+            if (settings.hflip) {
                 x.scale(-1, 1);
                 x.translate(-w, 0);
             }
@@ -418,19 +443,19 @@ function updateScale(clear) {
     mainImageStyle.height = "";
     mainImageStyle.maxWidth = "";
     mainImageStyle.maxHeight = "";
-    var maxheight = innerHeight - 15;
-    if (!/main/.test(getElem("titlebar").className)) {
-        maxheight -= 25;
-    }
-    if (clear || fitMode === kthoom.Key.N) {
-    } else if (fitMode === kthoom.Key.B) {
+    var maxheight = innerHeight - 50;
+
+    if (clear || settings.fitMode === kthoom.Key.N) {
+    } else if (settings.fitMode === kthoom.Key.B) {
         mainImageStyle.maxWidth = "100%";
         mainImageStyle.maxHeight = maxheight + "px";
-    } else if (fitMode === kthoom.Key.H) {
+    } else if (settings.fitMode === kthoom.Key.H) {
         mainImageStyle.height = maxheight + "px";
-    } else if (fitMode === kthoom.Key.W) {
+    } else if (settings.fitMode === kthoom.Key.W) {
         mainImageStyle.width = "100%";
     }
+    $('#mainContent').css({maxHeight: maxheight + 5});
+    kthoom.setSettings();
     kthoom.saveSettings();
 }
 
@@ -446,50 +471,53 @@ function keyHandler(evt) {
     if (evt.ctrlKey || evt.shiftKey || evt.metaKey) return;
     switch (code) {
         case kthoom.Key.LEFT:
-            if (canKeyPrev) showPrevPage();
+            showPrevPage();
             break;
         case kthoom.Key.RIGHT:
-            if (canKeyNext) showNextPage();
+            showNextPage();
             break;
         case kthoom.Key.L:
-            kthoom.rotateTimes--;
-            if (kthoom.rotateTimes < 0) {
-                kthoom.rotateTimes = 3;
+            settings.rotateTimes--;
+            if (settings.rotateTimes < 0) {
+                settings.rotateTimes = 3;
             }
             updatePage();
             break;
         case kthoom.Key.R:
-            kthoom.rotateTimes++;
-            if (kthoom.rotateTimes > 3) {
-                kthoom.rotateTimes = 0;
+            settings.rotateTimes++;
+            if (settings.rotateTimes > 3) {
+                settings.rotateTimes = 0;
             }
             updatePage();
             break;
         case kthoom.Key.F:
-            if (!hflip && !vflip) {
-                hflip = true;
-            } else if (hflip === true) {
-                vflip = true;
-                hflip = false;
-            } else if (vflip === true) {
-                vflip = false;
+            if (!settings.hflip && !settings.vflip) {
+                settings.hflip = true;
+            } else if (settings.hflip === true && settings.vflip === true) {
+                settings.vflip = false;
+                settings.hflip = false;
+            } else if (settings.hflip === true) {
+                settings.vflip = true;
+                settings.hflip = false;
+            } else if (settings.vflip === true) {
+                settings.hflip = true;
             }
             updatePage();
             break;
         case kthoom.Key.W:
-            fitMode = kthoom.Key.W;
+            settings.fitMode = kthoom.Key.W;
             updateScale();
             break;
         case kthoom.Key.H:
-            fitMode = kthoom.Key.H;
+            settings.fitMode = kthoom.Key.H;
             updateScale();
             break;
         case kthoom.Key.B:
-            fitMode = kthoom.Key.B;
+            settings.fitMode = kthoom.Key.B;
             updateScale();
             break;
         case kthoom.Key.N:
-            fitMode = kthoom.Key.N;
+            settings.fitMode = kthoom.Key.N;
             updateScale();
             break;
         default:
@@ -520,34 +548,69 @@ function init(fileid) {
     request.open("GET", fileid);
     request.responseType = "json";
     request.fileid=fileid.substring(0,fileid.length - 2);
-    request.addEventListener("load",ImageLoadCallback);/* function(event) {
-        var jso=request.response;
-        if (jso.page!=jso.length)
-        {
-            // var secRequest = new XMLHttpRequest();
-            request.open("GET", fileid + "/../"+(jso.page+1));
-            request.send();
-            //secRequest.responseType = "json";
-            //finished;
-        }
-        loadFromArrayBuffer(jso);
-
-        // var byteArray = new Uint8Array(request.response);
-        // if you want to access the bytes:
-    });*/
+    request.addEventListener("load",ImageLoadCallback);
     request.send();
-
     kthoom.initProgressMeter();
     document.body.className += /AppleWebKit/.test(navigator.userAgent) ? " webkit" : "";
-    updateScale(true);
     kthoom.loadSettings();
+        updateScale(true);
     $(document).keydown(keyHandler);
 
     $(window).resize(function() {
-        var f = (screen.width - innerWidth < 4 && screen.height - innerHeight < 4);
-        getElem("titlebar").className = f ? "main" : "";
         updateScale();
     });
+
+        // Open TOC menu
+        $("#slider").click(function(evt) {
+            $('#sidebar').toggleClass('open');
+            $('#main').toggleClass('closed');
+            $(this).toggleClass('icon-menu icon-right');
+        });
+
+        // Open Settings modal
+        $("#setting").click(function(evt) {
+            $("#settings-modal").toggleClass('md-show');
+        });
+
+        // On Settings input change
+        $("#settings input").on("change", function(evt){
+            // Get either the checked boolean or the assigned value
+            var value = this.type === 'checkbox' ? this.checked : this.value;
+
+            // If it's purely numeric, parse it to an integer
+            value = /^\d+$/.test(value) ? parseInt(value) : value;
+            
+            settings[this.name] = value;
+            updatePage();
+            updateScale();            
+        });
+
+        // Close modal
+        $(".closer, .overlay").click(function(evt) {
+            $(".md-show").removeClass('md-show');
+        });
+
+        // TOC thumbnail pagination
+        $('#thumbnails').on("click", "a", function(evt) {
+            currentImage = $(this).data('page') - 1;
+            updatePage();
+        });
+
+        // Fullscreen mode
+        if (typeof screenfull !== "undefined") {
+            $('#fullscreen').click(function(evt) {
+                screenfull.toggle($("#container")[0])
+            });
+
+            if (screenfull.raw) {
+                var $button = $('#fullscreen');
+                document.addEventListener(screenfull.raw.fullscreenchange,function(){
+                    screenfull.isFullscreen 
+                    ? $button.addClass("icon-resize-small").removeClass("icon-resize-full")
+                    : $button.addClass("icon-resize-full").removeClass("icon-resize-small")
+                });
+            }
+        }
 
     $("#mainImage").click(function(evt) {
         // Firefox does not support offsetX/Y so we have to manually calculate
@@ -564,7 +627,7 @@ function init(fileid) {
         // Determine if the user clicked/tapped the left side or the
         // right side of the page.
         var clickedPrev = false;
-        switch (kthoom.rotateTimes) {
+            switch (settings.rotateTimes) {
         case 0:
           clickedPrev = clickX < (comicWidth / 2);
           break;
