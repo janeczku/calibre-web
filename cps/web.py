@@ -99,6 +99,9 @@ try:
 except ImportError:
     from flask_login.__about__ import __version__ as flask_loginVersion
 
+if sys.version_info.major >= 3:
+    import codecs
+
 import time
 
 current_milli_time = lambda: int(round(time.time() * 1000))
@@ -931,25 +934,38 @@ def get_comic_book(book_id, book_format, page):
                         try:
                             rf = rarfile.RarFile(cbr_file)
                             rarNames = rf.namelist()
-                            extractedfile="data:image/png;base64," + (rf.read(rarNames[page])).encode('base64')
+                            if sys.version_info.major >= 3:
+                                b64 = codecs.encode(rf.read(rarNames[page]), 'base64').decode()
+                            else:
+                                b64 = rf.read(rarNames[page]).encode('base64')
+                            extractedfile="data:image/png;base64," + b64
                             fileData={"name": rarNames[page],"page":page, "last":rarNames.__len__()-1, "content": extractedfile}
                         except:
                             return ""
                             # rarfile not valid
                             # ToDo: error handling
                     else:
+
                         # no support means return nothing
                         return ""
                 if book_format == "cbz":
                     zf = zipfile.ZipFile(cbr_file)
                     zipNames=zf.namelist()
-                    extractedfile="data:image/png;base64," + (zf.read(zipNames[page])).encode('base64')
+                    if sys.version_info.major >= 3:
+                        b64 = codecs.encode(zf.read(zipNames[page]), 'base64').decode()
+                    else:
+                        b64 = zf.read(zipNames[page]).encode('base64')
+                    extractedfile="data:image/png;base64," + b64
                     fileData={"name": zipNames[page],"page":page, "last":zipNames.__len__()-1, "content": extractedfile}
 
                 if book_format == "cbt":
                     tf = tarfile.TarFile(u'D:\\zip\\test.cbt')
                     tarNames=tf.getnames()
-                    extractedfile="data:image/png;base64," + (tf.extractfile(tarNames[page]).read()).encode('base64')
+                    if sys.version_info.major >= 3:
+                        b64 = codecs.encode(tf.extractfile(tarNames[page]).read(), 'base64').decode()
+                    else:
+                        b64 = (tf.extractfile(tarNames[page]).read()).encode('base64')
+                    extractedfile="data:image/png;base64," + bs
                     fileData={"name": tarNames[page],"page":page, "last":tarNames.__len__()-1, "content": extractedfile}
                 return make_response(json.dumps(fileData))
 
