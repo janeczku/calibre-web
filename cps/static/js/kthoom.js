@@ -289,16 +289,15 @@ function loadFromArrayBuffer(ab) {
         imageFilenames.push(f.filename);
         imageFiles.push(new kthoom.ImageFile(f));
                         
-                        // add thumbnails to the TOC list
-                        $('#thumbnails').append(
-                            "<li> \
-                                <a data-page='"+ imageFiles.length +"'> \
-                                    <img src='"+ imageFiles[imageFiles.length - 1].dataURI +"' /> \
-                                    <span>"+ imageFiles.length +"</span> \
-                                </a> \
-                            </li>"
-                        );
-                    //}
+        // add thumbnails to the TOC list
+        $('#thumbnails').append(
+            "<li> \
+                <a data-page='"+ imageFiles.length +"'> \
+                    <img src='"+ imageFiles[imageFiles.length - 1].dataURI +"' /> \
+                    <span>"+ imageFiles.length +"</span> \
+                </a> \
+            </li>"
+        );
     }
     var percentage = (ab.page+1) / (ab.last+1);
     totalImages = ab.last+1;
@@ -339,81 +338,93 @@ function setImage(url) {
         updateScale(true);
         canvas.width = innerWidth - 100;
         canvas.height = 200;
-        x.fillStyle = "red";
-        x.font = "50px sans-serif";
+        x.fillStyle = "black";
+        x.textAlign="center";
+        x.font = "24px sans-serif";
         x.strokeStyle = "black";
-        x.fillText("Loading Page #" + (currentImage + 1), 100, 100);
+        x.fillText("Loading Page #" + (currentImage + 1), innerWidth/2, 100);
     } else {
-        if ($("body").css("scrollHeight") / innerHeight > 1) {
-            $("body").css("overflowY", "scroll");
-        }
-
-        var img = new Image();
-        img.onerror = function() {
-            canvas.width = innerWidth - 100;
-            canvas.height = 300;
+        if (url === "error") {
             updateScale(true);
-            x.fillStyle = "orange";
-            x.font = "50px sans-serif";
+            canvas.width = innerWidth - 100;
+            canvas.height = 200;
+            x.fillStyle = "black";
+            x.textAlign="center";
+            x.font = "24px sans-serif";
             x.strokeStyle = "black";
-            x.fillText("Page #" + (currentImage + 1) + " (" +
-              imageFiles[currentImage].filename + ")", 100, 100);
-            x.fillStyle = "red";
-            x.fillText("Is corrupt or not an image", 100, 200);
+            x.fillText("Unable to decompress image #" + (currentImage + 1), innerWidth/2, 100);
+        } else {
+            if ($("body").css("scrollHeight") / innerHeight > 1) {
+                $("body").css("overflowY", "scroll");
+            }
 
-            var xhr = new XMLHttpRequest();
-            if (/(html|htm)$/.test(imageFiles[currentImage].filename)) {
-                xhr.open("GET", url, true);
-                xhr.onload = function() {
-                    //document.getElementById('mainText').style.display = '';
-                    $("#mainText").css("display", "");
-                    $("#mainText").innerHTML("<iframe style=\"width:100%;height:700px;border:0\" src=\"data:text/html," + escape(xhr.responseText) + "\"></iframe>");
+            var img = new Image();
+            img.onerror = function() {
+                canvas.width = innerWidth - 100;
+                canvas.height = 300;
+                updateScale(true);
+                x.fillStyle = "black";
+                x.font = "50px sans-serif";
+                x.strokeStyle = "black";
+                x.fillText("Page #" + (currentImage + 1) + " (" +
+                  imageFiles[currentImage].filename + ")", innerWidth/2, 100);
+                x.fillStyle = "black";
+                x.fillText("Is corrupt or not an image", innerWidth/2, 200);
+
+                var xhr = new XMLHttpRequest();
+                if (/(html|htm)$/.test(imageFiles[currentImage].filename)) {
+                    xhr.open("GET", url, true);
+                    xhr.onload = function() {
+                        //document.getElementById('mainText').style.display = '';
+                        $("#mainText").css("display", "");
+                        $("#mainText").innerHTML("<iframe style=\"width:100%;height:700px;border:0\" src=\"data:text/html," + escape(xhr.responseText) + "\"></iframe>");
+                    }
+                    xhr.send(null);
+                } else if (!/(jpg|jpeg|png|gif)$/.test(imageFiles[currentImage].filename) && imageFiles[currentImage].data.uncompressedSize < 10 * 1024) {
+                    xhr.open("GET", url, true);
+                    xhr.onload = function() {
+                        $("#mainText").css("display", "");
+                        $("#mainText").innerText(xhr.responseText);
+                    };
+                    xhr.send(null);
                 }
-                xhr.send(null);
-            } else if (!/(jpg|jpeg|png|gif)$/.test(imageFiles[currentImage].filename) && imageFiles[currentImage].data.uncompressedSize < 10 * 1024) {
-                xhr.open("GET", url, true);
-                xhr.onload = function() {
-                    $("#mainText").css("display", "");
-                    $("#mainText").innerText(xhr.responseText);
-                };
-                xhr.send(null);
-            }
-        };
-        img.onload = function() {
-            var h = img.height,
-                w = img.width,
-                sw = w,
-                sh = h;
-            settings.rotateTimes =  (4 + settings.rotateTimes) % 4;
-            x.save();
-            if (settings.rotateTimes % 2 === 1) {
-                sh = w;
-                sw = h;
-            }
-            canvas.height = sh;
-            canvas.width = sw;
-            x.translate(sw / 2, sh / 2);
-            x.rotate(Math.PI / 2 * settings.rotateTimes);
-            x.translate(-w / 2, -h / 2);
-            if (settings.vflip) {
-                x.scale(1, -1);
-                x.translate(0, -h);
-            }
-            if (settings.hflip) {
-                x.scale(-1, 1);
-                x.translate(-w, 0);
-            }
-            canvas.style.display = "none";
-            scrollTo(0, 0);
-            x.drawImage(img, 0, 0);
+            };
+            img.onload = function() {
+                var h = img.height,
+                    w = img.width,
+                    sw = w,
+                    sh = h;
+                settings.rotateTimes =  (4 + settings.rotateTimes) % 4;
+                x.save();
+                if (settings.rotateTimes % 2 === 1) {
+                    sh = w;
+                    sw = h;
+                }
+                canvas.height = sh;
+                canvas.width = sw;
+                x.translate(sw / 2, sh / 2);
+                x.rotate(Math.PI / 2 * settings.rotateTimes);
+                x.translate(-w / 2, -h / 2);
+                if (settings.vflip) {
+                    x.scale(1, -1);
+                    x.translate(0, -h);
+                }
+                if (settings.hflip) {
+                    x.scale(-1, 1);
+                    x.translate(-w, 0);
+                }
+                canvas.style.display = "none";
+                scrollTo(0, 0);
+                x.drawImage(img, 0, 0);
 
-            updateScale();
+                updateScale();
 
-            canvas.style.display = "";
-            $("body").css("overflowY", "");
-            x.restore();
-        };
-        img.src = url;
+                canvas.style.display = "";
+                $("body").css("overflowY", "");
+                x.restore();
+            };
+            img.src = url;
+        }
     }
 }
 
@@ -528,19 +539,26 @@ function keyHandler(evt) {
 
 function ImageLoadCallback(event) {
     var jso=this.response;
-    if (jso.page !== jso.last)
-    {
-        // var secRequest = new XMLHttpRequest();
-        this.open("GET", this.fileid + "/"+(jso.page+1));
-        this.addEventListener("load",ImageLoadCallback);
-        this.send();
+    // Unable to decompress file, or no response from server
+    if (jso === null){
+        setImage("error");
     }
     else
     {
-        var diff = ((new Date).getTime() - start)/1000;
-        console.log('Transfer done in ' + diff + 's');
+        if (jso.page !== jso.last)
+        {
+            // var secRequest = new XMLHttpRequest();
+            this.open("GET", this.fileid + "/"+(jso.page+1));
+            this.addEventListener("load",ImageLoadCallback);
+            this.send();
+        }
+        else
+        {
+            var diff = ((new Date).getTime() - start)/1000;
+            console.log('Transfer done in ' + diff + 's');
+        }
+        loadFromArrayBuffer(jso);
     }
-    loadFromArrayBuffer(jso);
 }
 function init(fileid) {
     start = (new Date).getTime();
