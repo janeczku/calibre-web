@@ -941,11 +941,11 @@ def get_comic_book(book_id, book_format, page):
                             extractedfile="data:image/png;base64," + b64
                             fileData={"name": rarNames[page],"page":page, "last":rarNames.__len__()-1, "content": extractedfile}
                         except:
-                            return ""
                             # rarfile not valid
-                            # ToDo: error handling
+                            app.logger.error('Unrar binary not found unable to decompress file ' + cbr_file)
+                            return ""
                     else:
-
+                        app.logger.info('Unrar is not supported please install python rarfile extension')
                         # no support means return nothing
                         return ""
                 if book_format == "cbz":
@@ -1523,7 +1523,13 @@ def stats():
     versions['requests'] = requests.__version__
     versions['pysqlite'] = db.engine.dialect.dbapi.version
     versions['sqlite'] = db.engine.dialect.dbapi.sqlite_version
-
+    if rar_support:
+        rarVersion = helper.check_unrar(config.config_rarfile_location)
+        if not rarVersion[0]:
+            versions['unrarVersion'] = rarVersion[1]
+        else:
+            versions['unrarVersion'] = _('not installed')
+            app.logger.info(rarVersion[1])
     return render_title_template('stats.html', bookcounter=counter, authorcounter=authors, versions=versions,
                                  categorycounter=categorys, seriecounter=series, title=_(u"Statistics"))
 
@@ -2551,8 +2557,14 @@ def configuration_helper(origin):
         # Rarfile Content configuration
         # ToDo check: location valid
         if "config_rarfile_location" in to_save:
-            content.config_rarfile_location = to_save["config_rarfile_location"].strip()
-
+            check = helper.check_unrar(to_save["config_rarfile_location"].strip())
+            if not check[0] :
+                content.config_rarfile_location = to_save["config_rarfile_location"].strip()
+            else:
+                flash(check[1], category="error")
+                return render_title_template("config_edit.html", content=config, origin=origin, gdrive=gdrive_support,
+                                         goodreads=goodreads_support, rarfile_support=rar_support,
+                                         title=_(u"Basic Configuration"))
 
         content.config_default_role = 0
         if "admin_role" in to_save:
