@@ -508,3 +508,22 @@ class Updater(threading.Thread):
                     logging.getLogger('cps.web').debug("Could not remove:" + item_path)
         shutil.rmtree(source, ignore_errors=True)
 
+def check_unrar(unrarLocation):
+    error = False
+    if os.path.exists(unrarLocation):
+        try:
+            p = subprocess.Popen(unrarLocation, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            p.wait()
+            for lines in p.stdout.readlines():
+                if isinstance(lines, bytes):
+                    lines = lines.decode('utf-8')
+                value=re.search('UNRAR (.*) freeware', lines)
+                if value:
+                    version = value.group(1)
+        except Exception:
+            error = True
+            version=_(u'Excecution permissions missing')
+    else:
+        version = _(u'Unrar binary file not found')
+        error=True
+    return (error, version)
