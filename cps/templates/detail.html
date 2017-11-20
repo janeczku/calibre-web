@@ -21,9 +21,9 @@
                 {{_('Download')}} :
               </button>
                 {% for format in entry.data %}
-                <a href="{{ url_for('get_download_link_ext', book_id=entry.id, book_format=format.format|lower, anyname=entry.id|string+'.'+format.format) }}" id="btnGroupDrop1{{format.format|lower}}" class="btn btn-primary" role="button">
-                  <span class="glyphicon glyphicon-download"></span>{{format.format}} ({{ format.uncompressed_size|filesizeformat }})
-                </a>
+                    <a href="{{ url_for('get_download_link_ext', book_id=entry.id, book_format=format.format|lower, anyname=entry.id|string+'.'+format.format) }}" id="btnGroupDrop1{{format.format|lower}}" class="btn btn-primary" role="button">
+                      <span class="glyphicon glyphicon-download"></span>{{format.format}} ({{ format.uncompressed_size|filesizeformat }})
+                    </a>
                 {% endfor %}
               {% else %}
                 <button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -32,7 +32,7 @@
                 </button>
                 <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
                 {% for format in entry.data %}
-                  <li><a href="{{ url_for('get_download_link_ext', book_id=entry.id, book_format=format.format|lower, anyname=entry.id|string+'.'+format.format) }}">{{format.format}} ({{ format.uncompressed_size|filesizeformat }})</a></li>
+                    <li><a href="{{ url_for('get_download_link_ext', book_id=entry.id, book_format=format.format|lower, anyname=entry.id|string+'.'+format.format) }}">{{format.format}} ({{ format.uncompressed_size|filesizeformat }})</a></li>
                 {% endfor %}
                 </ul>
               {% endif %}
@@ -50,9 +50,9 @@
                 </button>
                 <ul class="dropdown-menu" aria-labelledby="read-in-browser">
                   {% for format in entry.data %}
-                  {%if format.format|lower == 'epub' or format.format|lower == 'txt' or format.format|lower == 'pdf' or format.format|lower == 'cbr' or format.format|lower == 'cbt' or format.format|lower == 'cbz' %}
-                  <li><a target="_blank" href="{{ url_for('read_book', book_id=entry.id, book_format=format.format|lower) }}">{{format.format}}</a></li>
-                  {% endif %}
+                    {%if format.format|lower == 'epub' or format.format|lower == 'txt' or format.format|lower == 'pdf' or ( format.format|lower == 'cbr' and rarsupport ) or format.format|lower == 'cbt' or format.format|lower == 'cbz' %}
+                      <li><a target="_blank" href="{{ url_for('read_book', book_id=entry.id, book_format=format.format|lower) }}">{{format.format}}</a></li>
+                    {% endif %}
                   {%endfor%}
                 </ul>
               </div>
