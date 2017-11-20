@@ -99,6 +99,7 @@ try:
 except ImportError:
     from flask_login.__about__ import __version__ as flask_loginVersion
 
+import codecs
 import time
 
 current_milli_time = lambda: int(round(time.time() * 1000))
@@ -931,7 +932,8 @@ def get_comic_book(book_id, book_format, page):
                         try:
                             rf = rarfile.RarFile(cbr_file)
                             rarNames = rf.namelist()
-                            extractedfile="data:image/png;base64," + (rf.read(rarNames[page])).encode('base64')
+                            b64 = codecs.encode(rf.read(rarNames[page]), 'base64').decode()
+                            extractedfile="data:image/png;base64," + b64
                             fileData={"name": rarNames[page],"page":page, "last":rarNames.__len__()-1, "content": extractedfile}
                         except:
                             # rarfile not valid
@@ -944,15 +946,24 @@ def get_comic_book(book_id, book_format, page):
                 if book_format == "cbz":
                     zf = zipfile.ZipFile(cbr_file)
                     zipNames=zf.namelist()
-                    extractedfile="data:image/png;base64," + (zf.read(zipNames[page])).encode('base64')
+                    if sys.version_info.major >= 3:
+                        b64 = codecs.encode(zf.read(zipNames[page]), 'base64').decode()
+                    else:
+                        b64 = zf.read(zipNames[page]).encode('base64')
+                    extractedfile="data:image/png;base64," + b64
                     fileData={"name": zipNames[page],"page":page, "last":zipNames.__len__()-1, "content": extractedfile}
 
                 if book_format == "cbt":
                     tf = tarfile.TarFile(u'D:\\zip\\test.cbt')
                     tarNames=tf.getnames()
-                    extractedfile="data:image/png;base64," + (tf.extractfile(tarNames[page]).read()).encode('base64')
+                    if sys.version_info.major >= 3:
+                        b64 = codecs.encode(tf.extractfile(tarNames[page]).read(), 'base64').decode()
+                    else:
+                        b64 = (tf.extractfile(tarNames[page]).read()).encode('base64')
+                    extractedfile="data:image/png;base64," + bs
                     fileData={"name": tarNames[page],"page":page, "last":tarNames.__len__()-1, "content": extractedfile}
                 return make_response(json.dumps(fileData))
+        return "", 204
 
 @app.route("/ajax/toggleread/<int:book_id>", methods=['POST'])
 @login_required
@@ -1458,7 +1469,8 @@ def show_book(book_id):
             have_read = None
 
         return render_title_template('detail.html', entry=entries, cc=cc, is_xhr=request.is_xhr,
-                                     title=entries.title, books_shelfs=book_in_shelfs, have_read=have_read)
+                                     title=entries.title, books_shelfs=book_in_shelfs, have_read=have_read,
+                                     rarsupport=rar_support)
     else:
         flash(_(u"Error opening eBook. File does not exist or file is not accessible:"), category="error")
         return redirect(url_for("index"))
@@ -3231,7 +3243,7 @@ def upload():
                                          title=_(u"edit metadata"))
         book_in_shelfs = []
         return render_title_template('detail.html', entry=db_book, cc=cc, title=db_book.title,
-                                     books_shelfs=book_in_shelfs, )
+                                     books_shelfs=book_in_shelfs, rarsupport=rar_support )
     else:
         return redirect(url_for("index"))
 
