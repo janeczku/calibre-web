@@ -15,9 +15,8 @@
   * Typed Arrays: http://www.khronos.org/registry/typedarray/specs/latest/#6
 
 */
-/* global bitjs */
 
-var start=0;
+var start = 0;
 
 if (window.opera) {
     window.console.log = function(str) {
@@ -56,7 +55,7 @@ kthoom.Key = {
 };
 
 // global variables
-var unarchiver = null;
+// var unarchiver = null;
 var currentImage = 0;
 var imageFiles = [];
 var imageFilenames = [];
@@ -68,10 +67,10 @@ var settings = {
     vflip: false, 
     rotateTimes: 0,
     fitMode: kthoom.Key.B,
-    theme: 'light'
+    theme: "light"
 };
 
-var canKeyNext = true, canKeyPrev = true;
+// var canKeyNext = true, canKeyPrev = true;
 
 kthoom.saveSettings = function() {
     localStorage.kthoomSettings = JSON.stringify(settings);
@@ -79,7 +78,7 @@ kthoom.saveSettings = function() {
 
 kthoom.loadSettings = function() {
     try {
-        if (!localStorage.kthoomSettings){
+        if (!localStorage.kthoomSettings) {
             return;
         }
 
@@ -95,14 +94,14 @@ kthoom.setSettings = function() {
     // Set settings control values
     $.each(settings, function(key, value) {
         if (typeof value === "boolean") {
-            $('input[name='+key+']').prop('checked', value);
+            $("input[name=" + key + "]").prop("checked", value);
         } else {
-            $('input[name='+key+']').val([value]);
+            $("input[name=" + key + "]").val([value]);
         }
     });
 };
 
-var createURLFromArray = function(array, mimeType) {
+/* var createURLFromArray = function(array, mimeType) {
     var offset = array.byteOffset, len = array.byteLength;
     var url;
     var blob;
@@ -129,20 +128,13 @@ var createURLFromArray = function(array, mimeType) {
     }
 
     return URL.createObjectURL(blob);
-};
+};*/
 
 
 // Stores an image filename and its data: URI.
-// TODO: investigate if we really need to store as base64 (leave off ;base64 and just
-//       non-safe URL characters are encoded as %xx ?)
-//       This would save 25% on memory since base64-encoded strings are 4/3 the size of the binary
 kthoom.ImageFile = function(file) {
     this.filename = file.filename;
-    /*var fileExtension = file.filename.split(".").pop().toLowerCase();
-    var mimeType = fileExtension === "png" ? "image/png" :
-        (fileExtension === "jpg" || fileExtension === "jpeg") ? "image/jpeg" :
-            fileExtension === "gif" ? "image/gif" : null;*/
-    this.dataURI = file.fileData; // createURLFromArray(file.fileData, mimeType);
+    this.dataURI = file.fileData;
     this.data = file;
 };
 
@@ -231,14 +223,14 @@ kthoom.initProgressMeter = function() {
   
     svg.appendChild(g);
     pdiv.appendChild(svg);
-    var l;
+    var l = 0;
     svg.onclick = function(e) {
-        for (var x = pdiv, l = 0; x !== document.documentElement; x = x.parentNode) l += x.offsetLeft;
+        for (var x = pdiv; x !== document.documentElement; x = x.parentNode) l += x.offsetLeft;
         var page = Math.max(1, Math.ceil(((e.clientX - l) / pdiv.offsetWidth) * totalImages)) - 1;
         currentImage = page;
         updatePage();
     };
-}
+};
 
 kthoom.setProgressMeter = function(pct, optLabel) {
     pct = (pct * 100);
@@ -281,26 +273,26 @@ kthoom.setProgressMeter = function(pct, optLabel) {
 }
 
 function loadFromArrayBuffer(ab) {
-    var f=[];
-    f.fileData=ab.content;
-    f.filename=ab.name;
+    var f = [];
+    f.fileData = ab.content;
+    f.filename = ab.name;
     // add any new pages based on the filename
     if (imageFilenames.indexOf(f.filename) === -1) {
         imageFilenames.push(f.filename);
         imageFiles.push(new kthoom.ImageFile(f));
                         
         // add thumbnails to the TOC list
-        $('#thumbnails').append(
-            "<li> \
-                <a data-page='"+ imageFiles.length +"'> \
-                    <img src='"+ imageFiles[imageFiles.length - 1].dataURI +"' /> \
-                    <span>"+ imageFiles.length +"</span> \
-                </a> \
-            </li>"
+        $("#thumbnails").append(
+            "<li>" +
+                "<a data-page='" + imageFiles.length + "'>" +
+                    "<img src='" + imageFiles[imageFiles.length - 1].dataURI + "'/>" +
+                    "<span>" + imageFiles.length + "</span>" +
+                "</a>" +
+            "</li>"
         );
     }
-    var percentage = (ab.page+1) / (ab.last+1);
-    totalImages = ab.last+1;
+    var percentage = (ab.page + 1) / (ab.last + 1);
+    totalImages = ab.last + 1;
     kthoom.setProgressMeter(percentage, "Unzipping");
     lastCompletion = percentage * 100;
 
@@ -324,7 +316,7 @@ function updatePage() {
         setImage("loading");
     }
 
-    $('body').toggleClass('dark-theme', settings.theme === 'dark');
+    $("body").toggleClass("dark-theme", settings.theme === "dark");
 
     kthoom.setSettings();
     kthoom.saveSettings();
@@ -339,20 +331,20 @@ function setImage(url) {
         canvas.width = innerWidth - 100;
         canvas.height = 200;
         x.fillStyle = "black";
-        x.textAlign="center";
+        x.textAlign = "center";
         x.font = "24px sans-serif";
         x.strokeStyle = "black";
-        x.fillText("Loading Page #" + (currentImage + 1), innerWidth/2, 100);
+        x.fillText("Loading Page #" + (currentImage + 1), innerWidth / 2, 100);
     } else {
         if (url === "error") {
             updateScale(true);
             canvas.width = innerWidth - 100;
             canvas.height = 200;
             x.fillStyle = "black";
-            x.textAlign="center";
+            x.textAlign = "center";
             x.font = "24px sans-serif";
             x.strokeStyle = "black";
-            x.fillText("Unable to decompress image #" + (currentImage + 1), innerWidth/2, 100);
+            x.fillText("Unable to decompress image #" + (currentImage + 1), innerWidth / 2, 100);
         } else {
             if ($("body").css("scrollHeight") / innerHeight > 1) {
                 $("body").css("overflowY", "scroll");
@@ -367,15 +359,14 @@ function setImage(url) {
                 x.font = "50px sans-serif";
                 x.strokeStyle = "black";
                 x.fillText("Page #" + (currentImage + 1) + " (" +
-                  imageFiles[currentImage].filename + ")", innerWidth/2, 100);
+                  imageFiles[currentImage].filename + ")", innerWidth / 2, 100);
                 x.fillStyle = "black";
-                x.fillText("Is corrupt or not an image", innerWidth/2, 200);
+                x.fillText("Is corrupt or not an image", innerWidth / 2, 200);
 
                 var xhr = new XMLHttpRequest();
                 if (/(html|htm)$/.test(imageFiles[currentImage].filename)) {
                     xhr.open("GET", url, true);
                     xhr.onload = function() {
-                        //document.getElementById('mainText').style.display = '';
                         $("#mainText").css("display", "");
                         $("#mainText").innerHTML("<iframe style=\"width:100%;height:700px;border:0\" src=\"data:text/html," + escape(xhr.responseText) + "\"></iframe>");
                     }
@@ -465,7 +456,7 @@ function updateScale(clear) {
     } else if (settings.fitMode === kthoom.Key.W) {
         mainImageStyle.width = "100%";
     }
-    $('#mainContent').css({maxHeight: maxheight + 5});
+    $("#mainContent").css({maxHeight: maxheight + 5});
     kthoom.setSettings();
     kthoom.saveSettings();
 }
@@ -473,11 +464,11 @@ function updateScale(clear) {
 function keyHandler(evt) {
     var code = evt.keyCode;
 
-    if ($("#progress").css("display") === "none"){
+    if ($("#progress").css("display") === "none") {
         return;
     }
-    canKeyNext = (($("body").css("offsetWidth") + $("body").css("scrollLeft")) / $("body").css("scrollWidth")) >= 1;
-    canKeyPrev = (scrollX <= 0);
+    // canKeyNext = (($("body").css("offsetWidth") + $("body").css("scrollLeft")) / $("body").css("scrollWidth")) >= 1;
+    // canKeyPrev = (scrollX <= 0);
 
     if (evt.ctrlKey || evt.shiftKey || evt.metaKey) return;
     switch (code) {
@@ -540,7 +531,7 @@ function keyHandler(evt) {
 function ImageLoadCallback(event) {
     var jso=this.response;
     // Unable to decompress file, or no response from server
-    if (jso === null){
+    if (jso === null) {
         setImage("error");
     }
     else
@@ -554,8 +545,8 @@ function ImageLoadCallback(event) {
         }
         else
         {
-            var diff = ((new Date).getTime() - start)/1000;
-            console.log('Transfer done in ' + diff + 's');
+            var diff = ((new Date).getTime() - start) / 1000;
+            console.log("Transfer done in " + diff + "s");
         }
         loadFromArrayBuffer(jso);
     }
@@ -571,64 +562,64 @@ function init(fileid) {
     kthoom.initProgressMeter();
     document.body.className += /AppleWebKit/.test(navigator.userAgent) ? " webkit" : "";
     kthoom.loadSettings();
-        updateScale(true);
+    updateScale(true);
     $(document).keydown(keyHandler);
 
     $(window).resize(function() {
         updateScale();
     });
 
-        // Open TOC menu
-        $("#slider").click(function(evt) {
-            $('#sidebar').toggleClass('open');
-            $('#main').toggleClass('closed');
-            $(this).toggleClass('icon-menu icon-right');
+    // Open TOC menu
+    $("#slider").click(function(evt) {
+        $("#sidebar").toggleClass("open");
+        $("#main").toggleClass("closed");
+        $(this).toggleClass("icon-menu icon-right");
+    });
+
+    // Open Settings modal
+    $("#setting").click(function(evt) {
+        $("#settings-modal").toggleClass("md-show");
+    });
+
+    // On Settings input change
+    $("#settings input").on("change", function(evt) {
+        // Get either the checked boolean or the assigned value
+        var value = this.type === "checkbox" ? this.checked : this.value;
+
+        // If it's purely numeric, parse it to an integer
+        value = /^\d+$/.test(value) ? parseInt(value) : value;
+
+        settings[this.name] = value;
+        updatePage();
+        updateScale();
+    });
+
+    // Close modal
+    $(".closer, .overlay").click(function(evt) {
+        $(".md-show").removeClass("md-show");
+    });
+
+    // TOC thumbnail pagination
+    $("#thumbnails").on("click", "a", function(evt) {
+        currentImage = $(this).data("page") - 1;
+        updatePage();
+    });
+
+    // Fullscreen mode
+    if (typeof screenfull !== "undefined") {
+        $('#fullscreen').click(function(evt) {
+            screenfull.toggle($("#container")[0])
         });
 
-        // Open Settings modal
-        $("#setting").click(function(evt) {
-            $("#settings-modal").toggleClass('md-show');
-        });
-
-        // On Settings input change
-        $("#settings input").on("change", function(evt){
-            // Get either the checked boolean or the assigned value
-            var value = this.type === 'checkbox' ? this.checked : this.value;
-
-            // If it's purely numeric, parse it to an integer
-            value = /^\d+$/.test(value) ? parseInt(value) : value;
-            
-            settings[this.name] = value;
-            updatePage();
-            updateScale();            
-        });
-
-        // Close modal
-        $(".closer, .overlay").click(function(evt) {
-            $(".md-show").removeClass('md-show');
-        });
-
-        // TOC thumbnail pagination
-        $('#thumbnails').on("click", "a", function(evt) {
-            currentImage = $(this).data('page') - 1;
-            updatePage();
-        });
-
-        // Fullscreen mode
-        if (typeof screenfull !== "undefined") {
-            $('#fullscreen').click(function(evt) {
-                screenfull.toggle($("#container")[0])
+        if (screenfull.raw) {
+            var $button = $("#fullscreen");
+            document.addEventListener(screenfull.raw.fullscreenchange,function() {
+                screenfull.isFullscreen
+                ? $button.addClass("icon-resize-small").removeClass("icon-resize-full")
+                : $button.addClass("icon-resize-full").removeClass("icon-resize-small")
             });
-
-            if (screenfull.raw) {
-                var $button = $('#fullscreen');
-                document.addEventListener(screenfull.raw.fullscreenchange,function(){
-                    screenfull.isFullscreen 
-                    ? $button.addClass("icon-resize-small").removeClass("icon-resize-full")
-                    : $button.addClass("icon-resize-full").removeClass("icon-resize-small")
-                });
-            }
         }
+    }
 
     $("#mainImage").click(function(evt) {
         // Firefox does not support offsetX/Y so we have to manually calculate
@@ -639,25 +630,25 @@ function init(fileid) {
         var comicHeight = evt.target.clientHeight;
         var offsetX = (mainContentWidth - comicWidth) / 2;
         var offsetY = (mainContentHeight - comicHeight) / 2;
-        var clickX = !!evt.offsetX ? evt.offsetX : (evt.clientX - offsetX);
-        var clickY = !!evt.offsetY ? evt.offsetY : (evt.clientY - offsetY);
+        var clickX = evt.offsetX ? evt.offsetX : (evt.clientX - offsetX);
+        var clickY = evt.offsetY ? evt.offsetY : (evt.clientY - offsetY);
 
         // Determine if the user clicked/tapped the left side or the
         // right side of the page.
         var clickedPrev = false;
-            switch (settings.rotateTimes) {
-        case 0:
-          clickedPrev = clickX < (comicWidth / 2);
-          break;
-        case 1:
-          clickedPrev = clickY < (comicHeight / 2);
-          break;
-        case 2:
-          clickedPrev = clickX > (comicWidth / 2);
-          break;
-        case 3:
-          clickedPrev = clickY > (comicHeight / 2);
-          break;
+        switch (settings.rotateTimes) {
+            case 0:
+                clickedPrev = clickX < (comicWidth / 2);
+                break;
+            case 1:
+                clickedPrev = clickY < (comicHeight / 2);
+                break;
+            case 2:
+                clickedPrev = clickX > (comicWidth / 2);
+                break;
+            case 3:
+                clickedPrev = clickY > (comicHeight / 2);
+                break;
         }
         if (clickedPrev) {
             showPrevPage();
