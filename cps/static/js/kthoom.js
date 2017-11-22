@@ -17,7 +17,7 @@
 */
 /* global screenfull */
 
-var start = 0;
+// var start = 0;
 
 if (window.opera) {
     window.console.log = function(str) {
@@ -271,7 +271,7 @@ kthoom.setProgressMeter = function(pct, optLabel) {
         //getElem('nav').className = '';
         getElem("progress").className = "";
     }
-}
+};
 
 function loadFromArrayBuffer(ab) {
     var f = [];
@@ -301,7 +301,7 @@ function loadFromArrayBuffer(ab) {
     if (imageFiles.length === currentImage + 1) {
         updatePage();
     }
-};
+}
 
 
 function updatePage() {
@@ -449,7 +449,7 @@ function updateScale(clear) {
     var maxheight = innerHeight - 50;
 
     if (!clear) {
-        switch(settings.fitMode) {
+        switch (settings.fitMode) {
             case kthoom.Key.B:
                 mainImageStyle.maxWidth = "100%";
                 mainImageStyle.maxHeight = maxheight + "px";
@@ -556,7 +556,7 @@ function ImageLoadCallback() {
     }
 }
 function init(fileid) {
-    start = (new Date).getTime();
+    // start = (new Date).getTime();
     var request = new XMLHttpRequest();
     request.open("GET", fileid);
     request.responseType = "json";
@@ -611,7 +611,7 @@ function init(fileid) {
 
     // Fullscreen mode
     if (typeof screenfull !== "undefined") {
-        $("#fullscreen").click(function(evt) {
+        $("#fullscreen").click(function() {
             screenfull.toggle($("#container")[0]);
         });
 
@@ -634,8 +634,8 @@ function init(fileid) {
         var comicHeight = evt.target.clientHeight;
         var offsetX = (mainContentWidth - comicWidth) / 2;
         var offsetY = (mainContentHeight - comicHeight) / 2;
-        var clickX = !!evt.offsetX ? evt.offsetX : (evt.clientX - offsetX);
-        var clickY = !!evt.offsetY ? evt.offsetY : (evt.clientY - offsetY);
+        var clickX = evt.offsetX ? evt.offsetX : (evt.clientX - offsetX);
+        var clickY = evt.offsetY ? evt.offsetY : (evt.clientY - offsetY);
 
         // Determine if the user clicked/tapped the left side or the
         // right side of the page.
