@@ -838,7 +838,7 @@ def feed_series(book_id):
     off = request.args.get("offset")
     if not off:
         off = 0
-    entries, random, pagination = fill_indexpage((int(off) / (int(config.config_books_per_page)) + 1),
+    entries, __, pagination = fill_indexpage((int(off) / (int(config.config_books_per_page)) + 1),
                     db.Books, db.Books.series.any(db.Series.id == book_id),db.Books.series_index)
     xml = render_title_template('feed.xml', entries=entries, pagination=pagination)
     response = make_response(xml)
