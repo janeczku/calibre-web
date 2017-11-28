@@ -600,7 +600,7 @@ def modify_database_object(input_elements, db_book_object, db_object, db_session
             # if no element is found add it
             if new_element is None:
                 if db_type == 'author':
-                    new_element = db_object(add_element, add_element, "")
+                    new_element = db_object(add_element, add_element.replace('|',','), "")
                 elif db_type == 'series':
                     new_element = db_object(add_element, add_element)
                 elif db_type == 'custom':
