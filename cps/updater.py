@@ -28,13 +28,14 @@ from io import BytesIO
 import os
 import sys
 import shutil
-from ub import config, UPDATE_STABLE
+from ub import config
 from tempfile import gettempdir
 import datetime
 import json
 from flask_babel import gettext as _
 from babel.dates import format_datetime
 import web
+import constants
 
 
 def is_sha1(sha1):
@@ -55,13 +56,13 @@ class Updater(threading.Thread):
         self.updateIndex = None
 
     def get_current_version_info(self):
-        if config.get_update_channel == UPDATE_STABLE:
+        if config.get_update_channel == constants.UPDATE_STABLE:
             return self._stable_version_info()
         else:
             return self._nightly_version_info()
 
     def get_available_updates(self, request_method):
-        if config.get_update_channel == UPDATE_STABLE:
+        if config.get_update_channel == constants.UPDATE_STABLE:
             return self._stable_available_updates(request_method)
         else:
             return self._nightly_available_updates(request_method)
@@ -473,7 +474,7 @@ class Updater(threading.Thread):
         return json.dumps(status)
 
     def _get_request_path(self):
-        if config.get_update_channel == UPDATE_STABLE:
+        if config.get_update_channel == constants.UPDATE_STABLE:
             return self.updateFile
         else:
             return 'https://api.github.com/repos/janeczku/calibre-web/zipball/master'

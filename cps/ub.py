@@ -32,46 +32,11 @@ import datetime
 from binascii import hexlify
 import cli
 
+import constants
+
 engine = create_engine('sqlite:///{0}'.format(cli.settingspath), echo=False)
 Base = declarative_base()
 
-ROLE_USER = 0
-ROLE_ADMIN = 1
-ROLE_DOWNLOAD = 2
-ROLE_UPLOAD = 4
-ROLE_EDIT = 8
-ROLE_PASSWD = 16
-ROLE_ANONYMOUS = 32
-ROLE_EDIT_SHELFS = 64
-ROLE_DELETE_BOOKS = 128
-
-
-DETAIL_RANDOM = 1
-SIDEBAR_LANGUAGE = 2
-SIDEBAR_SERIES = 4
-SIDEBAR_CATEGORY = 8
-SIDEBAR_HOT = 16
-SIDEBAR_RANDOM = 32
-SIDEBAR_AUTHOR = 64
-SIDEBAR_BEST_RATED = 128
-SIDEBAR_READ_AND_UNREAD = 256
-SIDEBAR_RECENT = 512
-SIDEBAR_SORTED = 1024
-MATURE_CONTENT = 2048
-SIDEBAR_PUBLISHER = 4096
-
-DEFAULT_PASS = "admin123"
-try:
-    DEFAULT_PORT = int(os.environ.get("CALIBRE_PORT", 8083))
-except ValueError:
-    print ('Environmentvariable CALIBRE_PORT is set to an invalid value: ' +
-           os.environ.get("CALIBRE_PORT", 8083) + ', faling back to default (8083)')
-    DEFAULT_PORT = 8083
-
-UPDATE_STABLE = 0
-AUTO_UPDATE_STABLE = 1
-UPDATE_NIGHTLY = 2
-AUTO_UPDATE_NIGHTLY = 4
 
 class UserBase:
 
@@ -79,47 +44,32 @@ class UserBase:
     def is_authenticated(self):
         return True
 
+    def _has_role(self, role_flag):
+        return constants.has_flag(self.role, role_flag)
+
     def role_admin(self):
-        if self.role is not None:
-            return True if self.role & ROLE_ADMIN == ROLE_ADMIN else False
-        else:
-            return False
+        return self._has_role(constants.ROLE_ADMIN)
 
     def role_download(self):
-        if self.role is not None:
-            return True if self.role & ROLE_DOWNLOAD == ROLE_DOWNLOAD else False
-        else:
-            return False
+        return self._has_role(constants.ROLE_DOWNLOAD)
 
     def role_upload(self):
-        return bool((self.role is not None)and(self.role & ROLE_UPLOAD == ROLE_UPLOAD))
+        return self._has_role(constants.ROLE_UPLOAD)
 
     def role_edit(self):
-        if self.role is not None:
-            return True if self.role & ROLE_EDIT == ROLE_EDIT else False
-        else:
-            return False
+        return self._has_role(constants.ROLE_EDIT)
 
     def role_passwd(self):
-        if self.role is not None:
-            return True if self.role & ROLE_PASSWD == ROLE_PASSWD else False
-        else:
-            return False
+        return self._has_role(constants.ROLE_PASSWD)
 
     def role_anonymous(self):
-        if self.role is not None:
-            return True if self.role & ROLE_ANONYMOUS == ROLE_ANONYMOUS else False
-        else:
-            return False
+        return self._has_role(constants.ROLE_ANONYMOUS)
 
     def role_edit_shelfs(self):
-        if self.role is not None:
-            return True if self.role & ROLE_EDIT_SHELFS == ROLE_EDIT_SHELFS else False
-        else:
-            return False
+        return self._has_role(constants.ROLE_EDIT_SHELFS)
 
     def role_delete_books(self):
-        return bool((self.role is not None)and(self.role & ROLE_DELETE_BOOKS == ROLE_DELETE_BOOKS))
+        return self._has_role(constants.ROLE_DELETE_BOOKS)
 
     @property
     def is_active(self):
@@ -135,41 +85,44 @@ class UserBase:
     def filter_language(self):
         return self.default_language
 
+    def _show_sidebar(self, sidebar_flag):
+        return constants.has_flag(self.sidebar_view, sidebar_flag)
+
     def show_random_books(self):
-        return bool((self.sidebar_view is not None)and(self.sidebar_view & SIDEBAR_RANDOM == SIDEBAR_RANDOM))
+        return self._show_sidebar(constants.SIDEBAR_RANDOM)
 
     def show_language(self):
-        return bool((self.sidebar_view is not None)and(self.sidebar_view & SIDEBAR_LANGUAGE == SIDEBAR_LANGUAGE))
+        return self._show_sidebar(constants.SIDEBAR_LANGUAGE)
 
     def show_hot_books(self):
-        return bool((self.sidebar_view is not None)and(self.sidebar_view & SIDEBAR_HOT == SIDEBAR_HOT))
+        return self._show_sidebar(constants.SIDEBAR_HOT)
 
     def show_recent(self):
-        return bool((self.sidebar_view is not None)and(self.sidebar_view & SIDEBAR_RECENT == SIDEBAR_RECENT))
+        return self._show_sidebar(constants.SIDEBAR_RECENT)
 
     def show_sorted(self):
-        return bool((self.sidebar_view is not None)and(self.sidebar_view & SIDEBAR_SORTED == SIDEBAR_SORTED))
+        return self._show_sidebar(constants.SIDEBAR_SORTED)
 
     def show_series(self):
-        return bool((self.sidebar_view is not None)and(self.sidebar_view & SIDEBAR_SERIES == SIDEBAR_SERIES))
+        return self._show_sidebar(constants.SIDEBAR_SERIES)
 
     def show_category(self):
-        return bool((self.sidebar_view is not None)and(self.sidebar_view & SIDEBAR_CATEGORY == SIDEBAR_CATEGORY))
+        return self._show_sidebar(constants.SIDEBAR_CATEGORY)
 
     def show_author(self):
-        return bool((self.sidebar_view is not None)and(self.sidebar_view & SIDEBAR_AUTHOR == SIDEBAR_AUTHOR))
+        return self._show_sidebar(constants.SIDEBAR_AUTHOR)
 
     def show_publisher(self):
-        return bool((self.sidebar_view is not None)and(self.sidebar_view & SIDEBAR_PUBLISHER == SIDEBAR_PUBLISHER))
+        return self._show_sidebar(constants.SIDEBAR_PUBLISHER)
 
     def show_best_rated_books(self):
-        return bool((self.sidebar_view is not None)and(self.sidebar_view & SIDEBAR_BEST_RATED == SIDEBAR_BEST_RATED))
+        return self._show_sidebar(constants.SIDEBAR_BEST_RATED)
 
     def show_read_and_unread(self):
-        return bool((self.sidebar_view is not None)and(self.sidebar_view & SIDEBAR_READ_AND_UNREAD == SIDEBAR_READ_AND_UNREAD))
+        return self._show_sidebar(constants.SIDEBAR_READ_AND_UNREAD)
 
     def show_detail_random(self):
-        return bool((self.sidebar_view is not None)and(self.sidebar_view & DETAIL_RANDOM == DETAIL_RANDOM))
+        return self._show_sidebar(constants.DETAIL_RANDOM)
 
     def __repr__(self):
         return '<User %r>' % self.nickname
@@ -183,7 +136,7 @@ class User(UserBase, Base):
     id = Column(Integer, primary_key=True)
     nickname = Column(String(64), unique=True)
     email = Column(String(120), unique=True, default="")
-    role = Column(SmallInteger, default=ROLE_USER)
+    role = Column(SmallInteger, default=constants.ROLE_USER)
     password = Column(String)
     kindle_mail = Column(String(120), default="")
     shelf = relationship('Shelf', backref='user', lazy='dynamic', order_by='Shelf.name')
@@ -201,11 +154,11 @@ class Anonymous(AnonymousUserMixin, UserBase):
         self.loadSettings()
 
     def loadSettings(self):
-        data = session.query(User).filter(User.role.op('&')(ROLE_ANONYMOUS) == ROLE_ANONYMOUS).first()  # type: User
+        data = session.query(User).filter(User.role.op('&')(constants.ROLE_ANONYMOUS) == constants.ROLE_ANONYMOUS).first()  # type: User
         settings = session.query(Settings).first()
         self.nickname = data.nickname
         self.role = data.role
-        self.id=data.id
+        self.id = data.id
         self.sidebar_view = data.sidebar_view
         self.default_language = data.default_language
         self.locale = data.locale
@@ -310,7 +263,7 @@ class Settings(Base):
     mail_password = Column(String)
     mail_from = Column(String)
     config_calibre_dir = Column(String)
-    config_port = Column(Integer, default=DEFAULT_PORT)
+    config_port = Column(Integer, default=constants.DEFAULT_PORT)
     config_certfile = Column(String)
     config_keyfile = Column(String)
     config_calibre_web_title = Column(String, default=u'Calibre-Web')
@@ -319,7 +272,7 @@ class Settings(Base):
     config_authors_max = Column(Integer, default=0)
     config_read_column = Column(Integer, default=0)
     config_title_regex = Column(String, default=u'^(A|The|An|Der|Die|Das|Den|Ein|Eine|Einen|Dem|Des|Einem|Eines)\s+')
-    config_log_level = Column(SmallInteger, default=logging.INFO)
+    config_log_level = Column(SmallInteger, default=constants.DEFAULT_LOG_LEVEL)
     config_uploading = Column(SmallInteger, default=0)
     config_anonbrowse = Column(SmallInteger, default=0)
     config_public_reg = Column(SmallInteger, default=0)
@@ -400,7 +353,7 @@ class Config:
         if data.config_google_drive_watch_changes_response:
             self.config_google_drive_watch_changes_response = json.loads(data.config_google_drive_watch_changes_response)
         else:
-            self.config_google_drive_watch_changes_response=None
+            self.config_google_drive_watch_changes_response = None
         self.config_columns_to_ignore = data.config_columns_to_ignore
         self.db_configured = bool(self.config_calibre_dir is not None and
                 (not self.config_use_google_drive or os.path.exists(self.config_calibre_dir + '/metadata.db')))
@@ -453,97 +406,71 @@ class Config:
             else:
                 return os.path.join(self.get_main_dir, self.config_logfile)
 
+    def _has_role(self, role_flag):
+        return constants.has_flag(self.config_default_role, role_flag)
+
     def role_admin(self):
-        if self.config_default_role is not None:
-            return True if self.config_default_role & ROLE_ADMIN == ROLE_ADMIN else False
-        else:
-            return False
+        return self._has_role(constants.ROLE_ADMIN)
 
     def role_download(self):
-        if self.config_default_role is not None:
-            return True if self.config_default_role & ROLE_DOWNLOAD == ROLE_DOWNLOAD else False
-        else:
-            return False
+        return self._has_role(constants.ROLE_DOWNLOAD)
 
     def role_upload(self):
-        if self.config_default_role is not None:
-            return True if self.config_default_role & ROLE_UPLOAD == ROLE_UPLOAD else False
-        else:
-            return False
+        return self._has_role(constants.ROLE_UPLOAD)
 
     def role_edit(self):
-        if self.config_default_role is not None:
-            return True if self.config_default_role & ROLE_EDIT == ROLE_EDIT else False
-        else:
-            return False
+        return self._has_role(constants.ROLE_EDIT)
 
     def role_passwd(self):
-        if self.config_default_role is not None:
-            return True if self.config_default_role & ROLE_PASSWD == ROLE_PASSWD else False
-        else:
-            return False
+        return self._has_role(constants.ROLE_PASSWD)
 
     def role_edit_shelfs(self):
-        if self.config_default_role is not None:
-            return True if self.config_default_role & ROLE_EDIT_SHELFS == ROLE_EDIT_SHELFS else False
-        else:
-            return False
+        return self._has_role(constants.ROLE_EDIT_SHELFS)
 
     def role_delete_books(self):
-        return bool((self.config_default_role is not None) and
-                    (self.config_default_role & ROLE_DELETE_BOOKS == ROLE_DELETE_BOOKS))
+        return self._has_role(constants.ROLE_DELETE_BOOKS)
+
+    def _has_show_flag(self, show_flag):
+        return constants.has_flag(self.config_default_show, show_flag)
 
     def show_detail_random(self):
-        return bool((self.config_default_show is not None) and
-                    (self.config_default_show & DETAIL_RANDOM == DETAIL_RANDOM))
+        return self._has_show_flag(constants.DETAIL_RANDOM)
 
     def show_language(self):
-        return bool((self.config_default_show is not None) and
-                    (self.config_default_show & SIDEBAR_LANGUAGE == SIDEBAR_LANGUAGE))
+        return self._has_show_flag(constants.SIDEBAR_LANGUAGE)
 
     def show_series(self):
-        return bool((self.config_default_show is not None) and
-                    (self.config_default_show & SIDEBAR_SERIES == SIDEBAR_SERIES))
+        return self._has_show_flag(constants.SIDEBAR_SERIES)
 
     def show_category(self):
-        return bool((self.config_default_show is not None) and
-                    (self.config_default_show & SIDEBAR_CATEGORY == SIDEBAR_CATEGORY))
+        return self._has_show_flag(constants.SIDEBAR_CATEGORY)
 
     def show_hot_books(self):
-        return bool((self.config_default_show is not None) and
-                    (self.config_default_show & SIDEBAR_HOT == SIDEBAR_HOT))
+        return self._has_show_flag(constants.SIDEBAR_HOT)
 
     def show_random_books(self):
-        return bool((self.config_default_show is not None) and
-                    (self.config_default_show & SIDEBAR_RANDOM == SIDEBAR_RANDOM))
+        return self._has_show_flag(constants.SIDEBAR_RANDOM)
 
     def show_author(self):
-        return bool((self.config_default_show is not None) and
-                    (self.config_default_show & SIDEBAR_AUTHOR == SIDEBAR_AUTHOR))
+        return self._has_show_flag(constants.SIDEBAR_AUTHOR)
 
     def show_publisher(self):
-        return bool((self.config_default_show is not None) and
-                    (self.config_default_show & SIDEBAR_PUBLISHER == SIDEBAR_PUBLISHER))
+        return self._has_show_flag(constants.SIDEBAR_PUBLISHER)
 
     def show_best_rated_books(self):
-        return bool((self.config_default_show is not None) and
-                    (self.config_default_show & SIDEBAR_BEST_RATED == SIDEBAR_BEST_RATED))
+        return self._has_show_flag(constants.SIDEBAR_BEST_RATED)
 
     def show_read_and_unread(self):
-        return bool((self.config_default_show is not None) and
-                    (self.config_default_show & SIDEBAR_READ_AND_UNREAD == SIDEBAR_READ_AND_UNREAD))
+        return self._has_show_flag(constants.SIDEBAR_READ_AND_UNREAD)
 
     def show_recent(self):
-        return bool((self.config_default_show is not None) and
-                    (self.config_default_show & SIDEBAR_RECENT == SIDEBAR_RECENT))
+        return self._has_show_flag(constants.SIDEBAR_RECENT)
 
     def show_sorted(self):
-        return bool((self.config_default_show is not None) and
-                    (self.config_default_show & SIDEBAR_SORTED == SIDEBAR_SORTED))
+        return self._has_show_flag(constants.SIDEBAR_SORTED)
 
     def show_mature_content(self):
-        return bool((self.config_default_show is not None) and
-                    (self.config_default_show & MATURE_CONTENT == MATURE_CONTENT))
+        return self._has_show_flag(constants.MATURE_CONTENT)
 
     def mature_content_tags(self):
         if sys.version_info > (3, 0): # Python3 str, Python2 unicode
@@ -641,9 +568,9 @@ def migrate_Database():
         conn.execute("UPDATE user SET 'sidebar_view' = (random_books* :side_random + language_books * :side_lang "
             "+ series_books * :side_series + category_books * :side_category + hot_books * "
             ":side_hot + :side_autor + :detail_random)"
-            ,{'side_random': SIDEBAR_RANDOM, 'side_lang': SIDEBAR_LANGUAGE, 'side_series': SIDEBAR_SERIES,
-            'side_category': SIDEBAR_CATEGORY, 'side_hot': SIDEBAR_HOT, 'side_autor': SIDEBAR_AUTHOR,
-            'detail_random': DETAIL_RANDOM})
+            ,{'side_random': constants.SIDEBAR_RANDOM, 'side_lang': constants.SIDEBAR_LANGUAGE, 'side_series': constants.SIDEBAR_SERIES,
+            'side_category': constants.SIDEBAR_CATEGORY, 'side_hot': constants.SIDEBAR_HOT, 'side_autor': constants.SIDEBAR_AUTHOR,
+            'detail_random': constants.DETAIL_RANDOM})
         session.commit()
     try:
         session.query(exists().where(User.mature_content)).scalar()
@@ -651,7 +578,7 @@ def migrate_Database():
         conn = engine.connect()
         conn.execute("ALTER TABLE user ADD column `mature_content` INTEGER DEFAULT 1")
 
-    if session.query(User).filter(User.role.op('&')(ROLE_ANONYMOUS) == ROLE_ANONYMOUS).first() is None:
+    if session.query(User).filter(User.role.op('&')(constants.ROLE_ANONYMOUS) == constants.ROLE_ANONYMOUS).first() is None:
         create_anonymous_user()
     try:
         session.query(exists().where(Settings.config_remote_login)).scalar()
@@ -779,7 +706,7 @@ def create_anonymous_user():
     user = User()
     user.nickname = "Guest"
     user.email = 'no@email'
-    user.role = ROLE_ANONYMOUS
+    user.role = constants.ROLE_ANONYMOUS
     user.password = ''
 
     session.add(user)
@@ -793,12 +720,9 @@ def create_anonymous_user():
 def create_admin_user():
     user = User()
     user.nickname = "admin"
-    user.role = ROLE_USER + ROLE_ADMIN + ROLE_DOWNLOAD + ROLE_UPLOAD + ROLE_EDIT + ROLE_DELETE_BOOKS + ROLE_PASSWD
-    user.sidebar_view = DETAIL_RANDOM + SIDEBAR_LANGUAGE + SIDEBAR_SERIES + SIDEBAR_CATEGORY + SIDEBAR_HOT + \
-            SIDEBAR_RANDOM + SIDEBAR_AUTHOR + SIDEBAR_BEST_RATED + SIDEBAR_READ_AND_UNREAD + SIDEBAR_RECENT + \
-            SIDEBAR_SORTED + MATURE_CONTENT + SIDEBAR_PUBLISHER
-
-    user.password = generate_password_hash(DEFAULT_PASS)
+    user.role = constants.ADMIN_USER_ROLES
+    user.sidebar_view = constants.ADMIN_USER_SIDEBAR
+    user.password = generate_password_hash(constants.DEFAULT_PASSWORD)
 
     session.add(user)
     try:

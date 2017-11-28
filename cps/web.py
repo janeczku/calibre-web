@@ -129,6 +129,8 @@ try:
 except ImportError:
     from flask_login.__about__ import __version__ as flask_loginVersion
 
+import constants
+
 
 # Global variables
 current_milli_time = lambda: int(round(time.time() * 1000))
@@ -136,9 +138,6 @@ gdrive_watch_callback_token = 'target=calibreweb-watch_files'
 # ToDo: Somehow caused by circular import under python3 refactor
 py3_gevent_link = None
 py3_restart_Typ = False
-EXTENSIONS_UPLOAD = {'txt', 'pdf', 'epub', 'mobi', 'azw', 'azw3', 'cbr', 'cbz', 'cbt', 'djvu', 'prc', 'doc', 'docx',
-                      'fb2', 'html', 'rtf', 'odt'}
-EXTENSIONS_CONVERT = {'pdf', 'epub', 'mobi', 'azw3', 'docx', 'rtf', 'fb2', 'lit', 'lrf', 'txt', 'htmlz'}
 
 
 # Main code
@@ -447,7 +446,7 @@ def yesno(value, yes, no):
 def canread(ext):
     if isinstance(ext, db.Data):
         ext = ext.format
-    return ext.lower() in EXTENSIONS_READER'''
+    return ext.lower() in constants.EXTENSIONS_READER'''
 
 
 def admin_required(f):
@@ -712,7 +711,7 @@ def render_xml_template(*args, **kwargs):
 
 # Returns the template for redering and includes the instance name
 def render_title_template(*args, **kwargs):
-    return render_template(instance=config.config_calibre_web_title, accept=EXTENSIONS_UPLOAD, *args, **kwargs)
+    return render_template(instance=config.config_calibre_web_title, accept=constants.EXTENSIONS_UPLOAD, *args, **kwargs)
 
 
 @app.before_request
@@ -2192,7 +2191,7 @@ def read_book(book_id, book_format):
             extensionList = ["cbt","cbz"]
         for fileext in extensionList:
             if book_format.lower() == fileext:
-                return render_title_template('readcbr.html', comicfile=book_id, 
+                return render_title_template('readcbr.html', comicfile=book_id,
                 extension=fileext, title=_(u"Read a Book"), book=book)
         flash(_(u"Error opening eBook. File does not exist or file is not accessible."), category="error")
         return redirect(url_for("index"))'''
@@ -2261,7 +2260,7 @@ def register():
                 content.password = generate_password_hash(password)
                 content.role = config.config_default_role
                 content.sidebar_view = config.config_default_show
-                content.mature_content = bool(config.config_default_show & ub.MATURE_CONTENT)
+                content.mature_content = bool(config.config_default_show & constants.MATURE_CONTENT)
                 try:
                     ub.session.add(content)
                     ub.session.commit()
@@ -2747,29 +2746,29 @@ def profile():
             content.locale = to_save["locale"]
         content.sidebar_view = 0
         if "show_random" in to_save:
-            content.sidebar_view += ub.SIDEBAR_RANDOM
+            content.sidebar_view += constants.SIDEBAR_RANDOM
         if "show_language" in to_save:
-            content.sidebar_view += ub.SIDEBAR_LANGUAGE
+            content.sidebar_view += constants.SIDEBAR_LANGUAGE
         if "show_series" in to_save:
-            content.sidebar_view += ub.SIDEBAR_SERIES
+            content.sidebar_view += constants.SIDEBAR_SERIES
         if "show_category" in to_save:
-            content.sidebar_view += ub.SIDEBAR_CATEGORY
+            content.sidebar_view += constants.SIDEBAR_CATEGORY
         if "show_recent" in to_save:
-            content.sidebar_view += ub.SIDEBAR_RECENT
+            content.sidebar_view += constants.SIDEBAR_RECENT
         if "show_sorted" in to_save:
-            content.sidebar_view += ub.SIDEBAR_SORTED
+            content.sidebar_view += constants.SIDEBAR_SORTED
         if "show_hot" in to_save:
-            content.sidebar_view += ub.SIDEBAR_HOT
+            content.sidebar_view += constants.SIDEBAR_HOT
         if "show_best_rated" in to_save:
-            content.sidebar_view += ub.SIDEBAR_BEST_RATED
+            content.sidebar_view += constants.SIDEBAR_BEST_RATED
         if "show_author" in to_save:
-            content.sidebar_view += ub.SIDEBAR_AUTHOR
+            content.sidebar_view += constants.SIDEBAR_AUTHOR
         if "show_publisher" in to_save:
-            content.sidebar_view += ub.SIDEBAR_PUBLISHER
+            content.sidebar_view += constants.SIDEBAR_PUBLISHER
         if "show_read_and_unread" in to_save:
-            content.sidebar_view += ub.SIDEBAR_READ_AND_UNREAD
+            content.sidebar_view += constants.SIDEBAR_READ_AND_UNREAD
         if "show_detail_random" in to_save:
-            content.sidebar_view += ub.DETAIL_RANDOM
+            content.sidebar_view += constants.DETAIL_RANDOM
 
         content.mature_content = "show_mature_content" in to_save
 
@@ -2855,46 +2854,46 @@ def view_configuration():
         # Default user configuration
         content.config_default_role = 0
         if "admin_role" in to_save:
-            content.config_default_role = content.config_default_role + ub.ROLE_ADMIN
+            content.config_default_role = content.config_default_role + constants.ROLE_ADMIN
         if "download_role" in to_save:
-            content.config_default_role = content.config_default_role + ub.ROLE_DOWNLOAD
+            content.config_default_role = content.config_default_role + constants.ROLE_DOWNLOAD
         if "upload_role" in to_save:
-            content.config_default_role = content.config_default_role + ub.ROLE_UPLOAD
+            content.config_default_role = content.config_default_role + constants.ROLE_UPLOAD
         if "edit_role" in to_save:
-            content.config_default_role = content.config_default_role + ub.ROLE_EDIT
+            content.config_default_role = content.config_default_role + constants.ROLE_EDIT
         if "delete_role" in to_save:
-            content.config_default_role = content.config_default_role + ub.ROLE_DELETE_BOOKS
+            content.config_default_role = content.config_default_role + constants.ROLE_DELETE_BOOKS
         if "passwd_role" in to_save:
-            content.config_default_role = content.config_default_role + ub.ROLE_PASSWD
+            content.config_default_role = content.config_default_role + constants.ROLE_PASSWD
         if "edit_shelf_role" in to_save:
-            content.config_default_role = content.config_default_role + ub.ROLE_EDIT_SHELFS
+            content.config_default_role = content.config_default_role + constants.ROLE_EDIT_SHELFS
         content.config_default_show = 0
         if "show_detail_random" in to_save:
-            content.config_default_show = content.config_default_show + ub.DETAIL_RANDOM
+            content.config_default_show = content.config_default_show + constants.DETAIL_RANDOM
         if "show_language" in to_save:
-            content.config_default_show = content.config_default_show + ub.SIDEBAR_LANGUAGE
+            content.config_default_show = content.config_default_show + constants.SIDEBAR_LANGUAGE
         if "show_series" in to_save:
-            content.config_default_show = content.config_default_show + ub.SIDEBAR_SERIES
+            content.config_default_show = content.config_default_show + constants.SIDEBAR_SERIES
         if "show_category" in to_save:
-            content.config_default_show = content.config_default_show + ub.SIDEBAR_CATEGORY
+            content.config_default_show = content.config_default_show + constants.SIDEBAR_CATEGORY
         if "show_hot" in to_save:
-            content.config_default_show = content.config_default_show + ub.SIDEBAR_HOT
+            content.config_default_show = content.config_default_show + constants.SIDEBAR_HOT
         if "show_random" in to_save:
-            content.config_default_show = content.config_default_show + ub.SIDEBAR_RANDOM
+            content.config_default_show = content.config_default_show + constants.SIDEBAR_RANDOM
         if "show_author" in to_save:
-            content.config_default_show = content.config_default_show + ub.SIDEBAR_AUTHOR
+            content.config_default_show = content.config_default_show + constants.SIDEBAR_AUTHOR
         if "show_publisher" in to_save:
-            content.config_default_show = content.config_default_show + ub.SIDEBAR_PUBLISHER
+            content.config_default_show = content.config_default_show + constants.SIDEBAR_PUBLISHER
         if "show_best_rated" in to_save:
-            content.config_default_show = content.config_default_show + ub.SIDEBAR_BEST_RATED
+            content.config_default_show = content.config_default_show + constants.SIDEBAR_BEST_RATED
         if "show_read_and_unread" in to_save:
-            content.config_default_show = content.config_default_show + ub.SIDEBAR_READ_AND_UNREAD
+            content.config_default_show = content.config_default_show + constants.SIDEBAR_READ_AND_UNREAD
         if "show_recent" in to_save:
-            content.config_default_show = content.config_default_show + ub.SIDEBAR_RECENT
+            content.config_default_show = content.config_default_show + constants.SIDEBAR_RECENT
         if "show_sorted" in to_save:
-            content.config_default_show = content.config_default_show + ub.SIDEBAR_SORTED
+            content.config_default_show = content.config_default_show + constants.SIDEBAR_SORTED
         if "show_mature_content" in to_save:
-            content.config_default_show = content.config_default_show + ub.MATURE_CONTENT
+            content.config_default_show = content.config_default_show + constants.MATURE_CONTENT
         ub.session.commit()
         flash(_(u"Calibre-Web configuration updated"), category="success")
         config.loadSettings()
@@ -3127,45 +3126,45 @@ def new_user():
             content.locale = to_save["locale"]
         content.sidebar_view = 0
         if "show_random" in to_save:
-            content.sidebar_view += ub.SIDEBAR_RANDOM
+            content.sidebar_view += constants.SIDEBAR_RANDOM
         if "show_language" in to_save:
-            content.sidebar_view += ub.SIDEBAR_LANGUAGE
+            content.sidebar_view += constants.SIDEBAR_LANGUAGE
         if "show_series" in to_save:
-            content.sidebar_view += ub.SIDEBAR_SERIES
+            content.sidebar_view += constants.SIDEBAR_SERIES
         if "show_category" in to_save:
-            content.sidebar_view += ub.SIDEBAR_CATEGORY
+            content.sidebar_view += constants.SIDEBAR_CATEGORY
         if "show_hot" in to_save:
-            content.sidebar_view += ub.SIDEBAR_HOT
+            content.sidebar_view += constants.SIDEBAR_HOT
         if "show_read_and_unread" in to_save:
-            content.sidebar_view += ub.SIDEBAR_READ_AND_UNREAD
+            content.sidebar_view += constants.SIDEBAR_READ_AND_UNREAD
         if "show_best_rated" in to_save:
-            content.sidebar_view += ub.SIDEBAR_BEST_RATED
+            content.sidebar_view += constants.SIDEBAR_BEST_RATED
         if "show_author" in to_save:
-            content.sidebar_view += ub.SIDEBAR_AUTHOR
+            content.sidebar_view += constants.SIDEBAR_AUTHOR
         if "show_publisher" in to_save:
-            content.sidebar_view += ub.SIDEBAR_PUBLISHER
+            content.sidebar_view += constants.SIDEBAR_PUBLISHER
         if "show_detail_random" in to_save:
-            content.sidebar_view += ub.DETAIL_RANDOM
+            content.sidebar_view += constants.DETAIL_RANDOM
         if "show_sorted" in to_save:
-            content.sidebar_view += ub.SIDEBAR_SORTED
+            content.sidebar_view += constants.SIDEBAR_SORTED
         if "show_recent" in to_save:
-            content.sidebar_view += ub.SIDEBAR_RECENT
+            content.sidebar_view += constants.SIDEBAR_RECENT
 
         content.role = 0
         if "admin_role" in to_save:
-            content.role = content.role + ub.ROLE_ADMIN
+            content.role = content.role + constants.ROLE_ADMIN
         if "download_role" in to_save:
-            content.role = content.role + ub.ROLE_DOWNLOAD
+            content.role = content.role + constants.ROLE_DOWNLOAD
         if "upload_role" in to_save:
-            content.role = content.role + ub.ROLE_UPLOAD
+            content.role = content.role + constants.ROLE_UPLOAD
         if "edit_role" in to_save:
-            content.role = content.role + ub.ROLE_EDIT
+            content.role = content.role + constants.ROLE_EDIT
         if "delete_role" in to_save:
-            content.role = content.role + ub.ROLE_DELETE_BOOKS
+            content.role = content.role + constants.ROLE_DELETE_BOOKS
         if "passwd_role" in to_save:
-            content.role = content.role + ub.ROLE_PASSWD
+            content.role = content.role + constants.ROLE_PASSWD
         if "edit_shelf_role" in to_save:
-            content.role = content.role + ub.ROLE_EDIT_SHELFS
+            content.role = content.role + constants.ROLE_EDIT_SHELFS
         if not to_save["nickname"] or not to_save["email"] or not to_save["password"]:
             flash(_(u"Please fill out all fields!"), category="error")
             return render_title_template("user_edit.html", new_user=1, content=content, translations=translations,
@@ -3189,7 +3188,7 @@ def new_user():
     else:
         content.role = config.config_default_role
         content.sidebar_view = config.config_default_show
-        content.mature_content = bool(config.config_default_show & ub.MATURE_CONTENT)
+        content.mature_content = bool(config.config_default_show & constants.MATURE_CONTENT)
     return render_title_template("user_edit.html", new_user=1, content=content, translations=translations,
                                  languages=languages, title=_(u"Add new user"), page="newuser")
 
@@ -3255,99 +3254,99 @@ def edit_user(user_id):
                 content.password = generate_password_hash(to_save["password"])
 
             if "admin_role" in to_save and not content.role_admin():
-                content.role = content.role + ub.ROLE_ADMIN
+                content.role = content.role + constants.ROLE_ADMIN
             elif "admin_role" not in to_save and content.role_admin():
-                content.role = content.role - ub.ROLE_ADMIN
+                content.role = content.role - constants.ROLE_ADMIN
 
             if "download_role" in to_save and not content.role_download():
-                content.role = content.role + ub.ROLE_DOWNLOAD
+                content.role = content.role + constants.ROLE_DOWNLOAD
             elif "download_role" not in to_save and content.role_download():
-                content.role = content.role - ub.ROLE_DOWNLOAD
+                content.role = content.role - constants.ROLE_DOWNLOAD
 
             if "upload_role" in to_save and not content.role_upload():
-                content.role = content.role + ub.ROLE_UPLOAD
+                content.role = content.role + constants.ROLE_UPLOAD
             elif "upload_role" not in to_save and content.role_upload():
-                content.role = content.role - ub.ROLE_UPLOAD
+                content.role = content.role - constants.ROLE_UPLOAD
 
             if "edit_role" in to_save and not content.role_edit():
-                content.role = content.role + ub.ROLE_EDIT
+                content.role = content.role + constants.ROLE_EDIT
             elif "edit_role" not in to_save and content.role_edit():
-                content.role = content.role - ub.ROLE_EDIT
+                content.role = content.role - constants.ROLE_EDIT
 
             if "delete_role" in to_save and not content.role_delete_books():
-                content.role = content.role + ub.ROLE_DELETE_BOOKS
+                content.role = content.role + constants.ROLE_DELETE_BOOKS
             elif "delete_role" not in to_save and content.role_delete_books():
-                content.role = content.role - ub.ROLE_DELETE_BOOKS
+                content.role = content.role - constants.ROLE_DELETE_BOOKS
 
             if "passwd_role" in to_save and not content.role_passwd():
-                content.role = content.role + ub.ROLE_PASSWD
+                content.role = content.role + constants.ROLE_PASSWD
             elif "passwd_role" not in to_save and content.role_passwd():
-                content.role = content.role - ub.ROLE_PASSWD
+                content.role = content.role - constants.ROLE_PASSWD
 
             if "edit_shelf_role" in to_save and not content.role_edit_shelfs():
-                content.role = content.role + ub.ROLE_EDIT_SHELFS
+                content.role = content.role + constants.ROLE_EDIT_SHELFS
             elif "edit_shelf_role" not in to_save and content.role_edit_shelfs():
-                content.role = content.role - ub.ROLE_EDIT_SHELFS
+                content.role = content.role - constants.ROLE_EDIT_SHELFS
 
             if "show_random" in to_save and not content.show_random_books():
-                content.sidebar_view += ub.SIDEBAR_RANDOM
+                content.sidebar_view += constants.SIDEBAR_RANDOM
             elif "show_random" not in to_save and content.show_random_books():
-                content.sidebar_view -= ub.SIDEBAR_RANDOM
+                content.sidebar_view -= constants.SIDEBAR_RANDOM
 
             if "show_language" in to_save and not content.show_language():
-                content.sidebar_view += ub.SIDEBAR_LANGUAGE
+                content.sidebar_view += constants.SIDEBAR_LANGUAGE
             elif "show_language" not in to_save and content.show_language():
-                content.sidebar_view -= ub.SIDEBAR_LANGUAGE
+                content.sidebar_view -= constants.SIDEBAR_LANGUAGE
 
             if "show_series" in to_save and not content.show_series():
-                content.sidebar_view += ub.SIDEBAR_SERIES
+                content.sidebar_view += constants.SIDEBAR_SERIES
             elif "show_series" not in to_save and content.show_series():
-                content.sidebar_view -= ub.SIDEBAR_SERIES
+                content.sidebar_view -= constants.SIDEBAR_SERIES
 
             if "show_category" in to_save and not content.show_category():
-                content.sidebar_view += ub.SIDEBAR_CATEGORY
+                content.sidebar_view += constants.SIDEBAR_CATEGORY
             elif "show_category" not in to_save and content.show_category():
-                content.sidebar_view -= ub.SIDEBAR_CATEGORY
+                content.sidebar_view -= constants.SIDEBAR_CATEGORY
 
             if "show_recent" in to_save and not content.show_recent():
-                content.sidebar_view += ub.SIDEBAR_RECENT
+                content.sidebar_view += constants.SIDEBAR_RECENT
             elif "show_recent" not in to_save and content.show_recent():
-                content.sidebar_view -= ub.SIDEBAR_RECENT
+                content.sidebar_view -= constants.SIDEBAR_RECENT
 
             if "show_sorted" in to_save and not content.show_sorted():
-                content.sidebar_view += ub.SIDEBAR_SORTED
+                content.sidebar_view += constants.SIDEBAR_SORTED
             elif "show_sorted" not in to_save and content.show_sorted():
-                content.sidebar_view -= ub.SIDEBAR_SORTED
+                content.sidebar_view -= constants.SIDEBAR_SORTED
 
             if "show_publisher" in to_save and not content.show_publisher():
-                content.sidebar_view += ub.SIDEBAR_PUBLISHER
+                content.sidebar_view += constants.SIDEBAR_PUBLISHER
             elif "show_publisher" not in to_save and content.show_publisher():
-                content.sidebar_view -= ub.SIDEBAR_PUBLISHER
+                content.sidebar_view -= constants.SIDEBAR_PUBLISHER
 
             if "show_hot" in to_save and not content.show_hot_books():
-                content.sidebar_view += ub.SIDEBAR_HOT
+                content.sidebar_view += constants.SIDEBAR_HOT
             elif "show_hot" not in to_save and content.show_hot_books():
-                content.sidebar_view -= ub.SIDEBAR_HOT
+                content.sidebar_view -= constants.SIDEBAR_HOT
 
             if "show_best_rated" in to_save and not content.show_best_rated_books():
-                content.sidebar_view += ub.SIDEBAR_BEST_RATED
+                content.sidebar_view += constants.SIDEBAR_BEST_RATED
             elif "show_best_rated" not in to_save and content.show_best_rated_books():
-                content.sidebar_view -= ub.SIDEBAR_BEST_RATED
+                content.sidebar_view -= constants.SIDEBAR_BEST_RATED
 
             if "show_read_and_unread" in to_save and not content.show_read_and_unread():
-                content.sidebar_view += ub.SIDEBAR_READ_AND_UNREAD
+                content.sidebar_view += constants.SIDEBAR_READ_AND_UNREAD
             elif "show_read_and_unread" not in to_save and content.show_read_and_unread():
-                content.sidebar_view -= ub.SIDEBAR_READ_AND_UNREAD
+                content.sidebar_view -= constants.SIDEBAR_READ_AND_UNREAD
 
             if "show_author" in to_save and not content.show_author():
-                content.sidebar_view += ub.SIDEBAR_AUTHOR
+                content.sidebar_view += constants.SIDEBAR_AUTHOR
             elif "show_author" not in to_save and content.show_author():
-                content.sidebar_view -= ub.SIDEBAR_AUTHOR
+                content.sidebar_view -= constants.SIDEBAR_AUTHOR
 
             if "show_detail_random" in to_save and not content.show_detail_random():
-                content.sidebar_view += ub.DETAIL_RANDOM
+                content.sidebar_view += constants.DETAIL_RANDOM
             elif "show_detail_random" not in to_save and content.show_detail_random():
-                content.sidebar_view -= ub.DETAIL_RANDOM
+                content.sidebar_view -= constants.DETAIL_RANDOM
 
             content.mature_content = "show_mature_content" in to_save
 
@@ -3413,11 +3412,11 @@ def render_edit_book(book_id):
     valid_source_formats=list()
     if config.config_ebookconverter == 2:
         for file in book.data:
-            if file.format.lower() in EXTENSIONS_CONVERT:
+            if file.format.lower() in constants.EXTENSIONS_CONVERT:
                 valid_source_formats.append(file.format.lower())
 
     # Determine what formats don't already exist
-    allowed_conversion_formats = EXTENSIONS_CONVERT.copy()
+    allowed_conversion_formats = constants.EXTENSIONS_CONVERT.copy()
     for file in book.data:
         try:
             allowed_conversion_formats.remove(file.format.lower())
@@ -3517,7 +3516,7 @@ def upload_single_file(request, book, book_id):
         if requested_file.filename != '':
             if '.' in requested_file.filename:
                 file_ext = requested_file.filename.rsplit('.', 1)[-1].lower()
-                if file_ext not in EXTENSIONS_UPLOAD:
+                if file_ext not in constants.EXTENSIONS_UPLOAD:
                     flash(_("File extension '%(ext)s' is not allowed to be uploaded to this server", ext=file_ext),
                           category="error")
                     return redirect(url_for('show_book', book_id=book.id))
@@ -3750,7 +3749,7 @@ def upload():
             # check if file extension is correct
             if '.' in requested_file.filename:
                 file_ext = requested_file.filename.rsplit('.', 1)[-1].lower()
-                if file_ext not in EXTENSIONS_UPLOAD:
+                if file_ext not in constants.EXTENSIONS_UPLOAD:
                     return Response(_("File extension '%(ext)s' is not allowed to be uploaded to this server",
                           ext=file_ext)), 422
             else:
