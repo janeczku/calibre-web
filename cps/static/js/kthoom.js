@@ -56,12 +56,10 @@ kthoom.Key = {
 };
 
 // global variables
-// var unarchiver = null;
 var currentImage = 0;
 var imageFiles = [];
 var imageFilenames = [];
 var totalImages = 0;
-var lastCompletion = 0;
 
 var settings = {
     hflip: false, 
@@ -70,8 +68,6 @@ var settings = {
     fitMode: kthoom.Key.B,
     theme: "light"
 };
-
-// var canKeyNext = true, canKeyPrev = true;
 
 kthoom.saveSettings = function() {
     localStorage.kthoomSettings = JSON.stringify(settings);
@@ -102,35 +98,6 @@ kthoom.setSettings = function() {
     });
 };
 
-/* var createURLFromArray = function(array, mimeType) {
-    var offset = array.byteOffset, len = array.byteLength;
-    var url;
-    var blob;
-
-    // TODO: Move all this browser support testing to a common place
-    //     and do it just once.
-
-    // Blob constructor, see http://dev.w3.org/2006/webapi/FileAPI/#dfn-Blob.
-    if (typeof Blob === "function") {
-        blob = new Blob([array], {type: mimeType});
-    } else {
-        throw "Browser support for Blobs is missing.";
-    }
-
-    if (blob.slice) {
-        blob = blob.slice(offset, offset + len, mimeType);
-    } else {
-        throw "Browser support for Blobs is missing.";
-    }
-
-    if ((typeof URL !== "function" && typeof URL !== "object") ||
-      typeof URL.createObjectURL !== "function") {
-        throw "Browser support for Object URLs is missing";
-    }
-
-    return URL.createObjectURL(blob);
-};*/
-
 
 // Stores an image filename and its data: URI.
 kthoom.ImageFile = function(file) {
@@ -141,136 +108,32 @@ kthoom.ImageFile = function(file) {
 
 
 kthoom.initProgressMeter = function() {
-    var svgns = "http://www.w3.org/2000/svg";
-    var pdiv = $("#progress")[0]; 
-    var svg = document.createElementNS(svgns, "svg");
-    svg.style.width = "100%";
-    svg.style.height = "100%";
-
-    var defs = document.createElementNS(svgns, "defs");
-
-    var patt = document.createElementNS(svgns, "pattern");
-    patt.id = "progress_pattern";
-    patt.setAttribute("width", "30");
-    patt.setAttribute("height", "20");
-    patt.setAttribute("patternUnits", "userSpaceOnUse");
-
-    var rect = document.createElementNS(svgns, "rect");
-    rect.setAttribute("width", "100%");
-    rect.setAttribute("height", "100%");
-    rect.setAttribute("fill", "#cc2929");
-
-    var poly = document.createElementNS(svgns, "polygon");
-    poly.setAttribute("fill", "yellow");
-    poly.setAttribute("points", "15,0 30,0 15,20 0,20");
-
-    patt.appendChild(rect);
-    patt.appendChild(poly);
-    defs.appendChild(patt);
-
-    svg.appendChild(defs);
-
-    var g = document.createElementNS(svgns, "g");
-
-    var outline = document.createElementNS(svgns, "rect");
-    outline.setAttribute("y", "1");
-    outline.setAttribute("width", "100%");
-    outline.setAttribute("height", "15");
-    outline.setAttribute("fill", "#777");
-    outline.setAttribute("stroke", "white");
-    outline.setAttribute("rx", "5");
-    outline.setAttribute("ry", "5");
-    g.appendChild(outline);
-
-    var title = document.createElementNS(svgns, "text");
-    title.id = "progress_title";
-    title.appendChild(document.createTextNode("0%"));
-    title.setAttribute("y", "13");
-    title.setAttribute("x", "99.5%");
-    title.setAttribute("fill", "white");
-    title.setAttribute("font-size", "12px");
-    title.setAttribute("text-anchor", "end");
-    g.appendChild(title);
-
-    var meter = document.createElementNS(svgns, "rect");
-    meter.id = "meter";
-    meter.setAttribute("width", "0%");
-    meter.setAttribute("height", "17");
-    meter.setAttribute("fill", "url(#progress_pattern)");
-    meter.setAttribute("rx", "5");
-    meter.setAttribute("ry", "5");
-
-    var meter2 = document.createElementNS(svgns, "rect");
-    meter2.id = "meter2";
-    meter2.setAttribute("width", "0%");
-    meter2.setAttribute("height", "17");
-    meter2.setAttribute("opacity", "0.8");
-    meter2.setAttribute("fill", "#007fff");
-    meter2.setAttribute("rx", "5");
-    meter2.setAttribute("ry", "5");
-
-    g.appendChild(meter);
-    g.appendChild(meter2);
-
-    var page = document.createElementNS(svgns, "text");
-    page.id = "page";
-    page.appendChild(document.createTextNode("0/0"));
-    page.setAttribute("y", "13");
-    page.setAttribute("x", "0.5%");
-    page.setAttribute("fill", "white");
-    page.setAttribute("font-size", "12px");
-    g.appendChild(page);
-  
-  
-    svg.appendChild(g);
-    pdiv.appendChild(svg);
-    svg.onclick = function(e) {
-        var l = 0;
-        for (var x = pdiv; x !== document.documentElement; x = x.parentNode) l += x.offsetLeft;
-        var page = Math.max(1, Math.ceil(((e.clientX - l) / pdiv.offsetWidth) * totalImages)) - 1;
+    $("#Progress").removeClass("hide");
+    $("#Progress").click(function(e) {
+        var page = Math.max(1, Math.ceil((e.offsetX / $(this).width()) * totalImages)) - 1;
         currentImage = page;
         updatePage();
-    };
+    });
 };
 
-kthoom.setProgressMeter = function(pct, optLabel) {
-    pct = (pct * 100);
-    var part = 1 / totalImages;
-    var remain = ((pct - lastCompletion) / 100) / part;
-    var fract = Math.min(1, remain);
-    var smartpct = ((imageFiles.length / totalImages) + (fract * part)) * 100;
-    if (totalImages === 0) smartpct = pct;
-  
-    // + Math.min((pct - lastCompletion), 100/totalImages * 0.9 + (pct - lastCompletion - 100/totalImages)/2, 100/totalImages);
-    var oldval = parseFloat(getElem("meter").getAttribute("width"));
-    if (isNaN(oldval)) oldval = 0;
-    var weight = 0.5;
-    smartpct = ((weight * smartpct) + ((1 - weight) * oldval));
-    if (pct === 100) smartpct = 100;
-
-    if (!isNaN(smartpct)) {
-        getElem("meter").setAttribute("width", smartpct + "%");
+kthoom.setProgressMeter = function(optLabel) {
+    var pct = imageFiles.length / totalImages * 100;
+    if (pct === 100) {
+        //smartpct = 100;
+        getElem("progress_title").innerHTML = "Complete";
+    } else {
+        var labelText = pct.toFixed(2) + "% " + imageFiles.length + "/" + totalImages + "";
+        if (optLabel) {
+            labelText = optLabel + " " + labelText;
+        }
+        getElem("progress_title").innerHTML=labelText;
     }
-    var title = getElem("progress_title");
-    while (title.firstChild) title.removeChild(title.firstChild);
-
-    var labelText = pct.toFixed(2) + "% " + imageFiles.length + "/" + totalImages + "";
-    if (optLabel) {
-        labelText = optLabel + " " + labelText;
+    if (!isNaN(pct)) {
+        getElem("meter").style.width = pct + "%";
     }
-    title.appendChild(document.createTextNode(labelText));
 
-    getElem("meter2").setAttribute("width",
-        100 * (totalImages === 0 ? 0 : ((currentImage + 1) / totalImages)) + "%");
-
-    var titlePage = getElem("page");
-    while (titlePage.firstChild) titlePage.removeChild(titlePage.firstChild);
-    titlePage.appendChild(document.createTextNode( (currentImage + 1) + "/" + totalImages ));
-
-    if (pct > 0) {
-        //getElem('nav').className = '';
-        getElem("progress").className = "";
-    }
+    getElem("meter2").style.width= 100 * (totalImages === 0 ? 0 : ((currentImage + 1) / totalImages)) + "%";
+    getElem("page").innerHTML=(currentImage + 1) + "/" + totalImages ;
 };
 
 function loadFromArrayBuffer(ab) {
@@ -292,10 +155,10 @@ function loadFromArrayBuffer(ab) {
             "</li>"
         );
     }
-    var percentage = (ab.page + 1) / (ab.last + 1);
+    // var percentage = (ab.page + 1) / (ab.last + 1);
     totalImages = ab.last + 1;
-    kthoom.setProgressMeter(percentage, "Unzipping");
-    lastCompletion = percentage * 100;
+    kthoom.setProgressMeter("Unzipping");
+    // lastCompletion = percentage * 100;
 
     // display first page if we haven't yet
     if (imageFiles.length === currentImage + 1) {
@@ -305,12 +168,8 @@ function loadFromArrayBuffer(ab) {
 
 
 function updatePage() {
-    var title = getElem("page");
-    while (title.firstChild) title.removeChild(title.firstChild);
-    title.appendChild(document.createTextNode( (currentImage + 1 ) + "/" + totalImages ));
-
-    getElem("meter2").setAttribute("width",
-        100 * (totalImages === 0 ? 0 : ((currentImage + 1 ) / totalImages)) + "%");
+    getElem("page").innerHTML=(currentImage + 1) + "/" + totalImages ;
+    getElem("meter2").style.width= 100 * (totalImages === 0 ? 0 : ((currentImage + 1) / totalImages)) + "%";
     if (imageFiles[currentImage]) {
         setImage(imageFiles[currentImage].dataURI);
     } else {

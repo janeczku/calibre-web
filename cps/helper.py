@@ -281,7 +281,8 @@ def get_valid_filename(value, replace_whitespace=True):
     if replace_whitespace:
         #*+:\"/<>? are replaced by _
         value = re.sub(r'[\*\+:\\\"/<>\?]+', u'_', value, flags=re.U)
-
+        # pipe has to be replaced with comma
+        value = re.sub(r'[\|]+', u',', value, flags=re.U)
     value = value[:128]
     if not value:
         raise ValueError("Filename cannot be empty")
