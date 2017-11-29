@@ -179,3 +179,40 @@ th {
 .dark-theme .overlay {
   background-color: rgba(0,0,0,0.8);
 }
+
+.view {
+    padding-top:0px;
+}
+
+#Progress {
+  margin: auto;
+  width: 80%;
+  background-color: #ddd;
+  display: inline-block;
+  margin-top: 5px;
+}
+
+#meter {
+  width: 0%;
+  height: 5px;
+  background-color: #1C5484;
+}
+
+#meter2 {
+  width: 0%;
+  height: 15px;
+  background-color: #028138;
+}
+
+#page {
+  text-align:left;
+  margin-top:-20px;
+  font-size:80%;
+  width: 0%;
+}
+
+#progress_title {
+  text-align:right;
+  margin-top:-15px;
+  font-size:80%;
+}
