@@ -1933,6 +1933,7 @@ def register():
             content.nickname = to_save["nickname"]
             content.email = to_save["email"]
             content.role = config.config_default_role
+            content.sidebar_view = config.config_default_show
             try:
                 ub.session.add(content)
                 ub.session.commit()
@@ -2484,6 +2485,7 @@ def configuration_helper(origin):
         if "config_mature_content_tags" in to_save:
             content.config_mature_content_tags = to_save["config_mature_content_tags"].strip()
 
+        # Default user configuration
         content.config_default_role = 0
         if "admin_role" in to_save:
             content.config_default_role = content.config_default_role + ub.ROLE_ADMIN
@@ -2499,6 +2501,30 @@ def configuration_helper(origin):
             content.config_default_role = content.config_default_role + ub.ROLE_PASSWD
         if "passwd_role" in to_save:
             content.config_default_role = content.config_default_role + ub.ROLE_EDIT_SHELFS
+        content.config_default_show = 0
+        if "show_detail_random" in to_save:
+            content.config_default_show = content.config_default_show + ub.DETAIL_RANDOM
+        if "show_language" in to_save:
+            content.config_default_show = content.config_default_show + ub.SIDEBAR_LANGUAGE
+        if "show_series" in to_save:
+            content.config_default_show = content.config_default_show + ub.SIDEBAR_SERIES
+        if "show_category" in to_save:
+            content.config_default_show = content.config_default_show + ub.SIDEBAR_CATEGORY
+        if "show_hot" in to_save:
+            content.config_default_show = content.config_default_show + ub.SIDEBAR_HOT
+        if "show_random" in to_save:
+            content.config_default_show = content.config_default_show + ub.SIDEBAR_RANDOM
+        if "show_author" in to_save:
+            content.config_default_show = content.config_default_show + ub.SIDEBAR_AUTHOR
+        if "show_best_rated" in to_save:
+            content.config_default_show = content.config_default_show + ub.SIDEBAR_BEST_RATED
+        if "show_read_and_unread" in to_save:
+            content.config_default_show = content.config_default_show + ub.SIDEBAR_READ_AND_UNREAD
+        if "show_recent" in to_save:
+            content.config_default_show = content.config_default_show + ub.SIDEBAR_RECENT
+        if "show_sorted" in to_save:
+            content.config_default_show = content.config_default_show + ub.SIDEBAR_SORTED
+
         try:
             if content.config_use_google_drive and is_gdrive_ready() and not os.path.exists(config.config_calibre_dir + "/metadata.db"):
                 gdriveutils.downloadFile(Gdrive.Instance().drive, None, "metadata.db", config.config_calibre_dir + "/metadata.db")
@@ -2607,6 +2633,7 @@ def new_user():
             flash(_(u"Found an existing account for this email address or nickname."), category="error")
     else:
         content.role = config.config_default_role
+        content.sidebar_view = config.config_default_show
     return render_title_template("user_edit.html", new_user=1, content=content, translations=translations,
                                  languages=languages, title=_(u"Add new user"))
 
