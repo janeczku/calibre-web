@@ -1284,7 +1284,7 @@ msgstr "Zeige Zufällige Bücher"
 
 #: cps/templates/user_edit.html:50
 msgid "Show recent books"
-msgstr " kürzlich hinzugefügte Bücher"
+msgstr "Zeige kürzlich hinzugefügte Bücher"
 
 #: cps/templates/user_edit.html:54
 msgid "Show sorted books"
