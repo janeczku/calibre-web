@@ -45,7 +45,7 @@ import web
 try:
     import unidecode
     use_unidecode = True
-except Exception as e:
+except ImportError:
     use_unidecode = False
 
 # Global variables
@@ -54,6 +54,7 @@ updater_thread = None
 
 RET_SUCCESS = 1
 RET_FAIL = 0
+
 
 def update_download(book_id, user_id):
     check = ub.session.query(ub.Downloads).filter(ub.Downloads.user_id == user_id).filter(ub.Downloads.book_id ==
@@ -101,7 +102,7 @@ def make_mobi(book_id, calibrepath):
             if nextline != "\r\n":
                 # Format of error message (kindlegen translates its output texts):
                 # Error(prcgen):E23006: Language not recognized in metadata.The dc:Language field is mandatory.Aborting.
-                conv_error=re.search(".*\(.*\):(E\d+):\s(.*)",nextline)
+                conv_error = re.search(".*\(.*\):(E\d+):\s(.*)", nextline)
                 # If error occoures, log in every case
                 if conv_error:
                     error_message = _(u"Kindlegen failed with Error %(error)s. Message: %(message)s",
@@ -123,7 +124,7 @@ def make_mobi(book_id, calibrepath):
         else:
             app.logger.info("make_mobi: kindlegen failed with error while converting book")
             if not error_message:
-                error_message='kindlegen failed, no excecution permissions'
+                error_message = 'kindlegen failed, no excecution permissions'
             return error_message, RET_FAIL
     else:
         error_message = "make_mobi: epub not found: %s.epub" % file_path
@@ -182,9 +183,9 @@ def send_raw_email(kindle_mail, msg):
 
         smtplib.stderr = org_stderr
 
-    except (socket.error, smtplib.SMTPRecipientsRefused, smtplib.SMTPException) as e:
+    except (socket.error, smtplib.SMTPRecipientsRefused, smtplib.SMTPException) as ex:
         app.logger.error(traceback.print_exc())
-        return _("Failed to send mail: %s" % str(e))
+        return _("Failed to send mail: %s" % str(ex))
 
     return None
 
@@ -230,8 +231,8 @@ def send_mail(book_id, kindle_mail, calibrepath):
         if resultCode == RET_SUCCESS:
             msg.attach(get_attachment(data))
         else:
-            app.logger.error = (data)
-            return data #_("Could not convert epub to mobi")
+            app.logger.error = data
+            return data  # _("Could not convert epub to mobi")
     elif 'pdf' in formats:
         msg.attach(get_attachment(formats['pdf']))
     else:
@@ -255,7 +256,7 @@ def get_attachment(file_path):
         return attachment
     except IOError:
         traceback.print_exc()
-        app.logger.error = (u'The requested file could not be read. Maybe wrong permissions?')
+        app.logger.error = u'The requested file could not be read. Maybe wrong permissions?'
         return None
 
 
@@ -268,18 +269,18 @@ def get_valid_filename(value, replace_whitespace=True):
         value = value[:-1]+u'_'
     value = value.replace("/", "_").replace(":", "_").strip('\0')
     if use_unidecode:
-        value=(unidecode.unidecode(value)).strip()
+        value = (unidecode.unidecode(value)).strip()
     else:
-        value=value.replace(u'§',u'SS')
-        value=value.replace(u'ß',u'ss')
+        value = value.replace(u'§', u'SS')
+        value = value.replace(u'ß', u'ss')
         value = unicodedata.normalize('NFKD', value)
         re_slugify = re.compile('[\W\s-]', re.UNICODE)
-        if isinstance(value, str): #Python3 str, Python2 unicode
+        if isinstance(value, str):  # Python3 str, Python2 unicode
             value = re_slugify.sub('', value).strip()
         else:
             value = unicode(re_slugify.sub('', value).strip())
     if replace_whitespace:
-        #*+:\"/<>? are replaced by _
+        #  *+:\"/<>? are replaced by _
         value = re.sub(r'[\*\+:\\\"/<>\?]+', u'_', value, flags=re.U)
         # pipe has to be replaced with comma
         value = re.sub(r'[\|]+', u',', value, flags=re.U)
@@ -289,48 +290,66 @@ def get_valid_filename(value, replace_whitespace=True):
 
     return value
 
+
 def get_sorted_author(value):
-    regexes = ["^(JR|SR)\.?$","^I{1,3}\.?$","^IV\.?$"]
+    regexes = ["^(JR|SR)\.?$", "^I{1,3}\.?$", "^IV\.?$"]
     combined = "(" + ")|(".join(regexes) + ")"
-    value = value.split(" ")
-    if re.match(combined, value[-1].upper()):
-        value2 = value[-2] + ", " + " ".join(value[:-2]) + " " + value[-1]
-    else:
-        value2 = value[-1] + ", " + " ".join(value[:-1])
+    try:
+        value = value.split(" ")
+        if re.match(combined, value[-1].upper()):
+            value2 = value[-2] + ", " + " ".join(value[:-2]) + " " + value[-1]
+        else:
+            value2 = value[-1] + ", " + " ".join(value[:-1])
+    except Exception:
+        logging.getLogger('cps.web').error("Sorting author " + str(value) + "failed")
+        value2 = value
     return value2
 
+
 def delete_book(book, calibrepath):
-    path = os.path.join(calibrepath, book.path)#.replace('/',os.path.sep)).replace('\\',os.path.sep)
+    path = os.path.join(calibrepath, book.path)  # .replace('/',os.path.sep)).replace('\\',os.path.sep)
     shutil.rmtree(path, ignore_errors=True)
 
+
+# ToDo: Implement delete book on gdrive
 def delete_book_gdrive(book):
     pass
 
-def update_dir_stucture(book_id, calibrepath):
-    db.session.connection().connection.connection.create_function("title_sort", 1, db.title_sort)
-    book = db.session.query(db.Books).filter(db.Books.id == book_id).first()
-    path = os.path.join(calibrepath, book.path)
 
-    authordir = book.path.split('/')[0]
-    new_authordir = get_valid_filename(book.authors[0].name)
-    titledir = book.path.split('/')[1]
-    new_titledir = get_valid_filename(book.title) + " (" + str(book_id) + ")"
+def update_dir_stucture(book_id, calibrepath):
+    localbook = db.session.query(db.Books).filter(db.Books.id == book_id).first()
+    path = os.path.join(calibrepath, localbook.path)
+
+    authordir = localbook.path.split('/')[0]
+    new_authordir = get_valid_filename(localbook.authors[0].name)
+
+    titledir = localbook.path.split('/')[1]
+    new_titledir = get_valid_filename(localbook.title) + " (" + str(book_id) + ")"
 
     if titledir != new_titledir:
-        new_title_path = os.path.join(os.path.dirname(path), new_titledir)
-        os.rename(path, new_title_path)
-        path = new_title_path
-        book.path = book.path.split('/')[0] + '/' + new_titledir
-
+        try:
+            new_title_path = os.path.join(os.path.dirname(path), new_titledir)
+            os.renames(path, new_title_path)
+            path = new_title_path
+            localbook.path = localbook.path.split('/')[0] + '/' + new_titledir
+        except OSError as ex:
+            logging.getLogger('cps.web').error("Rename title from: " + path + " to " + new_title_path)
+            logging.getLogger('cps.web').error(ex, exc_info=True)
+            return _('Rename title from: "%s" to "%s" failed with error: %s' % (path, new_title_path, str(ex)))
     if authordir != new_authordir:
-        new_author_path = os.path.join(os.path.join(calibrepath, new_authordir), os.path.basename(path))
-        os.renames(path, new_author_path)
-        book.path = new_authordir + '/' + book.path.split('/')[1]
-    db.session.commit()
+        try:
+            new_author_path = os.path.join(os.path.join(calibrepath, new_authordir), os.path.basename(path))
+            os.renames(path, new_author_path)
+            localbook.path = new_authordir + '/' + localbook.path.split('/')[1]
+        except OSError as ex:
+            logging.getLogger('cps.web').error("Rename author from: " + path + " to " + new_author_path)
+            logging.getLogger('cps.web').error(ex, exc_info=True)
+            return _('Rename author from: "%s" to "%s" failed with error: %s' % (path, new_title_path, str(ex)))
+    return False
 
 
 def update_dir_structure_gdrive(book_id):
-    db.session.connection().connection.connection.create_function("title_sort", 1, db.title_sort)
+    error = False
     book = db.session.query(db.Books).filter(db.Books.id == book_id).first()
 
     authordir = book.path.split('/')[0]
@@ -340,24 +359,24 @@ def update_dir_structure_gdrive(book_id):
 
     if titledir != new_titledir:
         print (titledir)
-        gFile=gd.getFileFromEbooksFolder(web.Gdrive.Instance().drive,os.path.dirname(book.path),titledir)
-        gFile['title']= new_titledir
+        gFile = gd.getFileFromEbooksFolder(web.Gdrive.Instance().drive, os.path.dirname(book.path), titledir)
+        gFile['title'] = new_titledir
         gFile.Upload()
         book.path = book.path.split('/')[0] + '/' + new_titledir
 
     if authordir != new_authordir:
-        gFile=gd.getFileFromEbooksFolder(web.Gdrive.Instance().drive,None,authordir)
+        gFile = gd.getFileFromEbooksFolder(web.Gdrive.Instance().drive, None, authordir)
         gFile['title'] = new_authordir
         gFile.Upload()
         book.path = new_authordir + '/' + book.path.split('/')[1]
+    return error
 
-    db.session.commit()
 
 class Updater(threading.Thread):
 
     def __init__(self):
         threading.Thread.__init__(self)
-        self.status=0
+        self.status = 0
 
     def run(self):
         global global_task
@@ -370,7 +389,7 @@ class Updater(threading.Thread):
         tmp_dir = gettempdir()
         z.extractall(tmp_dir)
         self.status = 4
-        self.update_source(os.path.join(tmp_dir,os.path.splitext(fname)[0]),ub.config.get_main_dir)
+        self.update_source(os.path.join(tmp_dir, os.path.splitext(fname)[0]), ub.config.get_main_dir)
         self.status = 5
         global_task = 0
         db.session.close()
@@ -391,8 +410,8 @@ class Updater(threading.Thread):
         return self.status
 
     @classmethod
-    def file_to_list(self, file):
-        return [x.strip() for x in open(file, 'r') if not x.startswith('#EXT')]
+    def file_to_list(self, filelist):
+        return [x.strip() for x in open(filelist, 'r') if not x.startswith('#EXT')]
 
     @classmethod
     def one_minus_two(self, one, two):
@@ -401,8 +420,8 @@ class Updater(threading.Thread):
     @classmethod
     def reduce_dirs(self, delete_files, new_list):
         new_delete = []
-        for file in delete_files:
-            parts = file.split(os.sep)
+        for filename in delete_files:
+            parts = filename.split(os.sep)
             sub = ''
             for part in parts:
                 sub = os.path.join(sub, part)
@@ -460,8 +479,8 @@ class Updater(threading.Thread):
                 if change_permissions:
                     try:
                         os.chown(dst_file, permission.st_uid, permission.st_gid)
-                    except Exception as e:
-                        e = sys.exc_info()
+                    except Exception:
+                        # ex = sys.exc_info()
                         old_permissions = os.stat(dst_file)
                         logging.getLogger('cps.web').debug('Fail change permissions of ' + str(dst_file) + '. Before: '
                             + str(old_permissions.st_uid) + ':' + str(old_permissions.st_gid) + ' After: '
@@ -508,4 +527,3 @@ class Updater(threading.Thread):
                 except Exception:
                     logging.getLogger('cps.web').debug("Could not remove:" + item_path)
         shutil.rmtree(source, ignore_errors=True)
-

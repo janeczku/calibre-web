@@ -26,11 +26,14 @@ def title_sort(title):
         title = title.replace(prep, '') + ', ' + prep
     return title.strip()
 
+
 def lcase(s):
     return s.lower()
 
+
 def ucase(s):
     return s.upper()
+
 
 Base = declarative_base()
 
@@ -63,6 +66,7 @@ books_publishers_link = Table('books_publishers_link', Base.metadata,
     Column('book', Integer, ForeignKey('books.id'), primary_key=True),
     Column('publisher', Integer, ForeignKey('publishers.id'), primary_key=True)
     )
+
 
 class Identifiers(Base):
     __tablename__ = 'identifiers'
@@ -197,6 +201,7 @@ class Languages(Base):
     def __repr__(self):
         return u"<Languages('{0}')>".format(self.lang_code)
 
+
 class Publishers(Base):
     __tablename__ = 'publishers'
 
@@ -204,13 +209,12 @@ class Publishers(Base):
     name = Column(String)
     sort = Column(String)
 
-    def __init__(self, name,sort):
+    def __init__(self, name, sort):
         self.name = name
         self.sort = sort
 
     def __repr__(self):
         return u"<Publishers('{0},{1}')>".format(self.name, self.sort)
-
 
 
 class Data(Base):
@@ -260,7 +264,7 @@ class Books(Base):
     identifiers = relationship('Identifiers', backref='books')
 
     def __init__(self, title, sort, author_sort, timestamp, pubdate, series_index, last_modified, path, has_cover,
-                 authors, tags, languages = None):
+                 authors, tags, languages=None):
         self.title = title
         self.sort = sort
         self.author_sort = author_sort
@@ -300,7 +304,7 @@ def setup_db():
     global session
     global cc_classes
 
-    if config.config_calibre_dir is None or config.config_calibre_dir ==  u'':
+    if config.config_calibre_dir is None or config.config_calibre_dir == u'':
         content = ub.session.query(ub.Settings).first()
         content.config_calibre_dir = None
         content.db_configured = False
@@ -309,7 +313,7 @@ def setup_db():
         return False
 
     dbpath = os.path.join(config.config_calibre_dir, "metadata.db")
-    engine = create_engine('sqlite:///'+ dbpath, echo=False, isolation_level="SERIALIZABLE")
+    engine = create_engine('sqlite:///' + dbpath, echo=False, isolation_level="SERIALIZABLE")
     try:
         conn = engine.connect()
     except Exception:

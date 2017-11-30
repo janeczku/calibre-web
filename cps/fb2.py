@@ -3,10 +3,7 @@
 
 from lxml import etree
 import uploader
-#try:
-#    from io import StringIO
-#except ImportError:
-#    import StringIO
+
 
 def get_fb2_info(tmp_file_path, original_file_extension):
 
