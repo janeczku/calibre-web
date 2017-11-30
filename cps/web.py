@@ -103,12 +103,14 @@ global_task = None
 
 ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'epub', 'mobi', 'azw', 'azw3', 'cbr', 'cbz', 'cbt', 'djvu', 'prc', 'doc', 'docx', 'fb2'])
 
+
 def md5(fname):
     hash_md5 = hashlib.md5()
     with open(fname, "rb") as f:
         for chunk in iter(lambda: f.read(4096), b""):
             hash_md5.update(chunk)
     return hash_md5.hexdigest()
+
 
 class Singleton:
     """
@@ -437,7 +439,7 @@ def formatdate(val):
 def format_date_input(val):
     conformed_timestamp = re.sub(r"[:]|([-](?!((\d{2}[:]\d{2})|(\d{4}))$))", '', val)
     date_obj = datetime.datetime.strptime(conformed_timestamp[:15], "%Y%m%d %H%M%S")
-    input_date = date_obj.isoformat().split('T', 1)[0] # Hack to support dates <1900
+    input_date = date_obj.isoformat().split('T', 1)[0]  # Hack to support dates <1900
     return '' if input_date == "0101-01-01" else input_date
 
 
@@ -600,7 +602,7 @@ def modify_database_object(input_elements, db_book_object, db_object, db_session
             # if no element is found add it
             if new_element is None:
                 if db_type == 'author':
-                    new_element = db_object(add_element, add_element.replace('|',','), "")
+                    new_element = db_object(add_element, add_element.replace('|', ','), "")
                 elif db_type == 'series':
                     new_element = db_object(add_element, add_element)
                 elif db_type == 'custom':
@@ -831,7 +833,7 @@ def feed_series(book_id):
     if not off:
         off = 0
     entries, random, pagination = fill_indexpage((int(off) / (int(config.config_books_per_page)) + 1),
-                    db.Books, db.Books.series.any(db.Series.id == book_id),db.Books.series_index)
+                    db.Books, db.Books.series.any(db.Series.id == book_id), db.Books.series_index)
     xml = render_title_template('feed.xml', entries=entries, pagination=pagination)
     response = make_response(xml)
     response.headers["Content-Type"] = "application/atom+xml; charset=utf-8"
@@ -850,6 +852,7 @@ def do_gdrive_download(df, headers):
     total_size = int(df.metadata.get('fileSize'))
     download_url = df.metadata.get('downloadUrl')
     s = partial(total_size, 1024 * 1024)  # I'm downloading BIG files, so 100M chunk size is fine for me
+
     def stream():
         for byte in s:
             headers = {"Range": 'bytes=%s-%s' % (byte[0], byte[1])}
@@ -969,13 +972,13 @@ def get_updater_status():
                 "6": _(u'Server is stopped'),
                 "7": _(u'Update finished, please press okay and reload page')
             }
-            status['text']=text
+            status['text'] = text
             helper.updater_thread = helper.Updater()
             helper.updater_thread.start()
-            status['status']=helper.updater_thread.get_update_status()
+            status['status'] = helper.updater_thread.get_update_status()
     elif request.method == "GET":
         try:
-            status['status']=helper.updater_thread.get_update_status()
+            status['status'] = helper.updater_thread.get_update_status()
         except Exception:
             status['status'] = 7
     return json.dumps(status)
@@ -1054,6 +1057,7 @@ def newest_books(page):
                                      title=_(u"Newest Books"))
     else:
         abort(404)
+
 
 @app.route('/books/oldest', defaults={'page': 1})
 @app.route('/books/oldest/page/<int:page>')
@@ -1136,7 +1140,7 @@ def best_rated_books(page):
 def discover(page):
     if current_user.show_random_books():
         entries, __, pagination = fill_indexpage(page, db.Books, True, func.randomblob(2))
-        pagination = Pagination(1, config.config_books_per_page,config.config_books_per_page)
+        pagination = Pagination(1, config.config_books_per_page, config.config_books_per_page)
         return render_title_template('discover.html', entries=entries, pagination=pagination, title=_(u"Random Books"))
     else:
         abort(404)
@@ -1150,7 +1154,7 @@ def author_list():
             .join(db.books_authors_link).join(db.Books).filter(common_filters())\
             .group_by('books_authors_link.author').order_by(db.Authors.sort).all()
         for entry in entries:
-            entry.Authors.name=entry.Authors.name.replace('|',',')
+            entry.Authors.name = entry.Authors.name.replace('|', ',')
         return render_title_template('list.html', entries=entries, folder='author', title=_(u"Author list"))
     else:
         abort(404)
@@ -1166,7 +1170,7 @@ def author(book_id, page):
         flash(_(u"Error opening eBook. File does not exist or file is not accessible:"), category="error")
         return redirect(url_for("index"))
 
-    name = (db.session.query(db.Authors).filter(db.Authors.id == book_id).first().name).replace('|',',')
+    name = (db.session.query(db.Authors).filter(db.Authors.id == book_id).first().name).replace('|', ',')
 
     author_info = None
     other_books = []
@@ -1196,7 +1200,6 @@ def get_unique_other_books(library_books, author_books):
         ), other_books)
 
     return other_books
-
 
 
 @app.route("/series")
@@ -1436,9 +1439,9 @@ def delete_book(book_id):
             ub.session.commit()
 
             if config.config_use_google_drive:
-                helper.delete_book_gdrive(book) # ToDo really delete file
+                helper.delete_book_gdrive(book)  # ToDo really delete file
             else:
-                helper.delete_book(book,config.config_calibre_dir)
+                helper.delete_book(book, config.config_calibre_dir)
             # check if only this book links to:
             # author, language, series, tags, custom columns
             modify_database_object([u''], book.authors, db.Authors, db.session, 'author')
@@ -1466,13 +1469,14 @@ def delete_book(book_id):
                             getattr(book, cc_string).remove(del_cc)
                             db.session.delete(del_cc)
                 else:
-                    modify_database_object([u''], getattr(book, cc_string),db.cc_classes[c.id], db.session, 'custom')
+                    modify_database_object([u''], getattr(book, cc_string), db.cc_classes[c.id], db.session, 'custom')
             db.session.query(db.Books).filter(db.Books.id == book_id).delete()
             db.session.commit()
         else:
             # book not foundß
             app.logger.info('Book with id "'+str(book_id)+'" could not be deleted')
     return redirect(url_for('index'))
+
 
 @app.route("/gdrive/authenticate")
 @login_required
@@ -1619,10 +1623,10 @@ def search():
                                                     db.Books.publishers.any(db.Publishers.name.ilike("%" + term + "%")),
                                                     db.Books.title.ilike("%" + term + "%")))\
             .filter(common_filters()).all()
-#        entries = db.session.query(db.Books).with_entities(db.Books.title).filter(db.Books.title.ilike("%" + term + "%")).all()
-        #result = db.session.execute("select name from authors where lower(name) like '%" + term.lower() + "%'")
-        #entries = result.fetchall()
-        #result.close()
+        # entries = db.session.query(db.Books).with_entities(db.Books.title).filter(db.Books.title.ilike("%" + term + "%")).all()
+        # result = db.session.execute("select name from authors where lower(name) like '%" + term.lower() + "%'")
+        # entries = result.fetchall()
+        # result.close()
         return render_title_template('search.html', searchterm=term, entries=entries)
     else:
         return render_title_template('search.html', searchterm="")
@@ -1724,9 +1728,10 @@ def get_cover(cover_path):
     else:
         return send_from_directory(os.path.join(config.config_calibre_dir, cover_path), "cover.jpg")
 
+
 @app.route("/show/<book_id>/<book_format>")
 @login_required_if_no_ano
-def serve_book(book_id,book_format):
+def serve_book(book_id, book_format):
     book_format = book_format.split(".")[0]
     book = db.session.query(db.Books).filter(db.Books.id == book_id).first()
     data = db.session.query(db.Data).filter(db.Data.book == book.id).filter(db.Data.format == book_format.upper()).first()
@@ -1858,7 +1863,7 @@ def read_book(book_id, book_format):
     elif book_format.lower() == "txt":
         return render_title_template('readtxt.html', txtfile=book_id, title=_(u"Read a Book"))
     else:
-        for fileext in ["cbr","cbt","cbz"]:
+        for fileext in ["cbr", "cbt", "cbz"]:
             if book_format.lower() == fileext:
                 all_name = str(book_id) + "/" + book.data[0].name + "." + fileext
                 tmp_file = os.path.join(book_dir, book.data[0].name) + "." + fileext
@@ -1960,7 +1965,7 @@ def login():
             flash(_(u"you are now logged in as: '%(nickname)s'", nickname=user.nickname), category="success")
             return redirect_back(url_for("index"))
         else:
-            ipAdress=request.headers.get('X-Forwarded-For', request.remote_addr)
+            ipAdress = request.headers.get('X-Forwarded-For', request.remote_addr)
             app.logger.info('Login failed for user "' + form['username'] + '" IP-adress: ' + ipAdress)
             flash(_(u"Wrong Username or Password"), category="error")
 
@@ -2265,7 +2270,6 @@ def show_shelf(shelf_id):
         return redirect(url_for("index"))
 
 
-
 @app.route("/shelf/order/<int:shelf_id>", methods=["GET", "POST"])
 @login_required
 def order_shelf(shelf_id):
@@ -2402,7 +2406,7 @@ def configuration_helper(origin):
     success = False
     if request.method == "POST":
         to_save = request.form.to_dict()
-        content = ub.session.query(ub.Settings).first() # type: ub.Settings
+        content = ub.session.query(ub.Settings).first()  # type: ub.Settings
         if "config_calibre_dir" in to_save:
             if content.config_calibre_dir != to_save["config_calibre_dir"]:
                 content.config_calibre_dir = to_save["config_calibre_dir"]
@@ -2806,7 +2810,7 @@ def edit_book(book_id):
         except Exception:
             book.languages[index].language_name = _(isoLanguages.get(part3=book.languages[index].lang_code).name)
     for author in book.authors:
-        author_names.append(author.name.replace('|',','))
+        author_names.append(author.name.replace('|', ','))
 
     # Show form
     if request.method != 'POST':
@@ -2845,172 +2849,184 @@ def edit_book(book_id):
             db.session.add(db_format)
 
     to_save = request.form.to_dict()
+
     if book.title != to_save["book_title"]:
         book.title = to_save["book_title"]
         edited_books_id.add(book.id)
+
     input_authors = to_save["author_name"].split('&')
-    input_authors = map(lambda it: it.strip().replace(',','|'), input_authors)
+    input_authors = map(lambda it: it.strip().replace(',', '|'), input_authors)
     # we have all author names now
     if input_authors == ['']:
         input_authors = [_(u'unknown')]  # prevent empty Author
     if book.authors:
         author0_before_edit = book.authors[0].name
     else:
-        author0_before_edit = db.Authors(_(u'unknown'),'',0)
+        author0_before_edit = db.Authors(_(u'unknown'), '', 0)
     modify_database_object(input_authors, book.authors, db.Authors, db.session, 'author')
     if book.authors:
         if author0_before_edit != book.authors[0].name:
             edited_books_id.add(book.id)
             book.author_sort = helper.get_sorted_author(input_authors[0])
 
-    if to_save["cover_url"] and save_cover(to_save["cover_url"], book.path):
-        book.has_cover = 1
-
-    if book.series_index != to_save["series_index"]:
-        book.series_index = to_save["series_index"]
-
-    if len(book.comments):
-        book.comments[0].text = to_save["description"]
-    else:
-        book.comments.append(db.Comments(text=to_save["description"], book=book.id))
-
-    input_tags = to_save["tags"].split(',')
-    input_tags = map(lambda it: it.strip(), input_tags)
-    modify_database_object(input_tags, book.tags, db.Tags, db.session, 'tags')
-
-    input_series = [to_save["series"].strip()]
-    input_series = [x for x in input_series if x != '']
-    modify_database_object(input_series, book.series, db.Series, db.session, 'series')
-
-    input_languages = to_save["languages"].split(',')
-    input_languages = map(lambda it: it.strip().lower(), input_languages)
-
-    if to_save["pubdate"]:
-        try:
-            book.pubdate = datetime.datetime.strptime(to_save["pubdate"], "%Y-%m-%d")
-        except ValueError:
-            book.pubdate = db.Books.DEFAULT_PUBDATE
-    else:
-        book.pubdate = db.Books.DEFAULT_PUBDATE
-
-    # retranslate displayed text to language codes
-    languages = db.session.query(db.Languages).all()
-    input_l = []
-    for lang in languages:
-        try:
-            lang.name = LC.parse(lang.lang_code).get_language_name(get_locale()).lower()
-        except Exception:
-            lang.name = _(isoLanguages.get(part3=lang.lang_code).name).lower()
-        for inp_lang in input_languages:
-            if inp_lang == lang.name:
-                input_l.append(lang.lang_code)
-    modify_database_object(input_l, book.languages, db.Languages, db.session, 'languages')
-
-    if to_save["rating"].strip():
-        old_rating = False
-        if len(book.ratings) > 0:
-            old_rating = book.ratings[0].rating
-        ratingx2 = int(float(to_save["rating"]) * 2)
-        if ratingx2 != old_rating:
-            is_rating = db.session.query(db.Ratings).filter(db.Ratings.rating == ratingx2).first()
-            if is_rating:
-                book.ratings.append(is_rating)
-            else:
-                new_rating = db.Ratings(rating=ratingx2)
-                book.ratings.append(new_rating)
-            if old_rating:
-                book.ratings.remove(book.ratings[0])
-    else:
-        if len(book.ratings) > 0:
-            book.ratings.remove(book.ratings[0])
-
-    for c in cc:
-        cc_string = "custom_column_" + str(c.id)
-        if not c.is_multiple:
-            if len(getattr(book, cc_string)) > 0:
-                cc_db_value = getattr(book, cc_string)[0].value
-            else:
-                cc_db_value = None
-            if to_save[cc_string].strip():
-                if c.datatype == 'bool':
-                    if to_save[cc_string] == 'None':
-                        to_save[cc_string] = None
-                    else:
-                        to_save[cc_string] = 1 if to_save[cc_string] == 'True' else 0
-                    if to_save[cc_string] != cc_db_value:
-                        if cc_db_value is not None:
-                            if to_save[cc_string] is not None:
-                                setattr(getattr(book, cc_string)[0], 'value', to_save[cc_string])
-                            else:
-                                del_cc = getattr(book, cc_string)[0]
-                                getattr(book, cc_string).remove(del_cc)
-                                db.session.delete(del_cc)
-                        else:
-                            cc_class = db.cc_classes[c.id]
-                            new_cc = cc_class(value=to_save[cc_string], book=book_id)
-                            db.session.add(new_cc)
-                elif c.datatype == 'int':
-                    if to_save[cc_string] == 'None':
-                        to_save[cc_string] = None
-                    if to_save[cc_string] != cc_db_value:
-                        if cc_db_value is not None:
-                            if to_save[cc_string] is not None:
-                                setattr(getattr(book, cc_string)[0], 'value', to_save[cc_string])
-                            else:
-                                del_cc = getattr(book, cc_string)[0]
-                                getattr(book, cc_string).remove(del_cc)
-                                db.session.delete(del_cc)
-                        else:
-                            cc_class = db.cc_classes[c.id]
-                            new_cc = cc_class(value=to_save[cc_string], book=book_id)
-                            db.session.add(new_cc)
-
-                else:
-                    if c.datatype == 'rating':
-                        to_save[cc_string] = str(int(float(to_save[cc_string]) * 2))
-                    if to_save[cc_string].strip() != cc_db_value:
-                        if cc_db_value is not None:
-                            # remove old cc_val
-                            del_cc = getattr(book, cc_string)[0]
-                            getattr(book, cc_string).remove(del_cc)
-                            if len(del_cc.books) == 0:
-                                db.session.delete(del_cc)
-                        cc_class = db.cc_classes[c.id]
-                        new_cc = db.session.query(cc_class).filter(
-                            cc_class.value == to_save[cc_string].strip()).first()
-                        # if no cc val is found add it
-                        if new_cc is None:
-                            new_cc = cc_class(value=to_save[cc_string].strip())
-                            db.session.add(new_cc)
-                            new_cc = db.session.query(cc_class).filter(
-                                cc_class.value == to_save[cc_string].strip()).first()
-                        # add cc value to book
-                        getattr(book, cc_string).append(new_cc)
-            else:
-                if cc_db_value is not None:
-                    # remove old cc_val
-                    del_cc = getattr(book, cc_string)[0]
-                    getattr(book, cc_string).remove(del_cc)
-                    if len(del_cc.books) == 0:
-                        db.session.delete(del_cc)
-        else:
-            input_tags = to_save[cc_string].split(',')
-            input_tags = map(lambda it: it.strip(), input_tags)
-            modify_database_object(input_tags, getattr(book, cc_string),db.cc_classes[c.id], db.session, 'custom')
-    db.session.commit()
-    author_names = []
-    for author in book.authors:
-        author_names.append(author.name)
+    error = False
     for b in edited_books_id:
         if config.config_use_google_drive:
-            helper.update_dir_structure_gdrive(b)
+            error = helper.update_dir_structure_gdrive(b)
         else:
-            helper.update_dir_stucture(b, config.config_calibre_dir)
+            error = helper.update_dir_stucture(b, config.config_calibre_dir)
+        if error:   # stop on error
+            break
     if config.config_use_google_drive:
         updateGdriveCalibreFromLocal()
-    if "detail_view" in to_save:
-        return redirect(url_for('show_book', book_id=book.id))
+
+    if not error:
+        if to_save["cover_url"] and save_cover(to_save["cover_url"], book.path):
+            book.has_cover = 1
+
+        if book.series_index != to_save["series_index"]:
+            book.series_index = to_save["series_index"]
+
+        if len(book.comments):
+            book.comments[0].text = to_save["description"]
+        else:
+            book.comments.append(db.Comments(text=to_save["description"], book=book.id))
+
+        input_tags = to_save["tags"].split(',')
+        input_tags = map(lambda it: it.strip(), input_tags)
+        modify_database_object(input_tags, book.tags, db.Tags, db.session, 'tags')
+
+        input_series = [to_save["series"].strip()]
+        input_series = [x for x in input_series if x != '']
+        modify_database_object(input_series, book.series, db.Series, db.session, 'series')
+
+        input_languages = to_save["languages"].split(',')
+        input_languages = map(lambda it: it.strip().lower(), input_languages)
+
+        if to_save["pubdate"]:
+            try:
+                book.pubdate = datetime.datetime.strptime(to_save["pubdate"], "%Y-%m-%d")
+            except ValueError:
+                book.pubdate = db.Books.DEFAULT_PUBDATE
+        else:
+            book.pubdate = db.Books.DEFAULT_PUBDATE
+
+        # retranslate displayed text to language codes
+        languages = db.session.query(db.Languages).all()
+        input_l = []
+        for lang in languages:
+            try:
+                lang.name = LC.parse(lang.lang_code).get_language_name(get_locale()).lower()
+            except Exception:
+                lang.name = _(isoLanguages.get(part3=lang.lang_code).name).lower()
+            for inp_lang in input_languages:
+                if inp_lang == lang.name:
+                    input_l.append(lang.lang_code)
+        modify_database_object(input_l, book.languages, db.Languages, db.session, 'languages')
+
+        if to_save["rating"].strip():
+            old_rating = False
+            if len(book.ratings) > 0:
+                old_rating = book.ratings[0].rating
+            ratingx2 = int(float(to_save["rating"]) * 2)
+            if ratingx2 != old_rating:
+                is_rating = db.session.query(db.Ratings).filter(db.Ratings.rating == ratingx2).first()
+                if is_rating:
+                    book.ratings.append(is_rating)
+                else:
+                    new_rating = db.Ratings(rating=ratingx2)
+                    book.ratings.append(new_rating)
+                if old_rating:
+                    book.ratings.remove(book.ratings[0])
+        else:
+            if len(book.ratings) > 0:
+                book.ratings.remove(book.ratings[0])
+
+        for c in cc:
+            cc_string = "custom_column_" + str(c.id)
+            if not c.is_multiple:
+                if len(getattr(book, cc_string)) > 0:
+                    cc_db_value = getattr(book, cc_string)[0].value
+                else:
+                    cc_db_value = None
+                if to_save[cc_string].strip():
+                    if c.datatype == 'bool':
+                        if to_save[cc_string] == 'None':
+                            to_save[cc_string] = None
+                        else:
+                            to_save[cc_string] = 1 if to_save[cc_string] == 'True' else 0
+                        if to_save[cc_string] != cc_db_value:
+                            if cc_db_value is not None:
+                                if to_save[cc_string] is not None:
+                                    setattr(getattr(book, cc_string)[0], 'value', to_save[cc_string])
+                                else:
+                                    del_cc = getattr(book, cc_string)[0]
+                                    getattr(book, cc_string).remove(del_cc)
+                                    db.session.delete(del_cc)
+                            else:
+                                cc_class = db.cc_classes[c.id]
+                                new_cc = cc_class(value=to_save[cc_string], book=book_id)
+                                db.session.add(new_cc)
+                    elif c.datatype == 'int':
+                        if to_save[cc_string] == 'None':
+                            to_save[cc_string] = None
+                        if to_save[cc_string] != cc_db_value:
+                            if cc_db_value is not None:
+                                if to_save[cc_string] is not None:
+                                    setattr(getattr(book, cc_string)[0], 'value', to_save[cc_string])
+                                else:
+                                    del_cc = getattr(book, cc_string)[0]
+                                    getattr(book, cc_string).remove(del_cc)
+                                    db.session.delete(del_cc)
+                            else:
+                                cc_class = db.cc_classes[c.id]
+                                new_cc = cc_class(value=to_save[cc_string], book=book_id)
+                                db.session.add(new_cc)
+
+                    else:
+                        if c.datatype == 'rating':
+                            to_save[cc_string] = str(int(float(to_save[cc_string]) * 2))
+                        if to_save[cc_string].strip() != cc_db_value:
+                            if cc_db_value is not None:
+                                # remove old cc_val
+                                del_cc = getattr(book, cc_string)[0]
+                                getattr(book, cc_string).remove(del_cc)
+                                if len(del_cc.books) == 0:
+                                    db.session.delete(del_cc)
+                            cc_class = db.cc_classes[c.id]
+                            new_cc = db.session.query(cc_class).filter(
+                                cc_class.value == to_save[cc_string].strip()).first()
+                            # if no cc val is found add it
+                            if new_cc is None:
+                                new_cc = cc_class(value=to_save[cc_string].strip())
+                                db.session.add(new_cc)
+                                new_cc = db.session.query(cc_class).filter(
+                                    cc_class.value == to_save[cc_string].strip()).first()
+                            # add cc value to book
+                            getattr(book, cc_string).append(new_cc)
+                else:
+                    if cc_db_value is not None:
+                        # remove old cc_val
+                        del_cc = getattr(book, cc_string)[0]
+                        getattr(book, cc_string).remove(del_cc)
+                        if len(del_cc.books) == 0:
+                            db.session.delete(del_cc)
+            else:
+                input_tags = to_save[cc_string].split(',')
+                input_tags = map(lambda it: it.strip(), input_tags)
+                modify_database_object(input_tags, getattr(book, cc_string), db.cc_classes[c.id], db.session, 'custom')
+        db.session.commit()
+        author_names = []
+        for author in book.authors:
+            author_names.append(author.name)
+        if "detail_view" in to_save:
+            return redirect(url_for('show_book', book_id=book.id))
+        else:
+            return render_title_template('book_edit.html', book=book, authors=author_names, cc=cc,
+                                         title=_(u"edit metadata"))
     else:
+        db.session.rollback()
+        flash( error, category="error")
         return render_title_template('book_edit.html', book=book, authors=author_names, cc=cc,
                                      title=_(u"edit metadata"))
 
@@ -3173,4 +3189,3 @@ def start_gevent():
         app.logger.info('Unable to listen on \'\', trying on IPv4 only...')
         gevent_server = WSGIServer(('0.0.0.0', ub.config.config_port), app)
         gevent_server.serve_forever()
-
