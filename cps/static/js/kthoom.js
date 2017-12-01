@@ -138,6 +138,9 @@ kthoom.setProgressMeter = function(optLabel) {
 
 function loadFromArrayBuffer(ab) {
     var f = [];
+    if (typeof ab !== "object") {
+        ab = JSON.parse(ab);
+    }
     f.fileData = ab.content;
     f.filename = ab.name;
     // add any new pages based on the filename
