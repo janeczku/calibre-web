@@ -66,4 +66,18 @@
     <id>{{url_for('feed_seriesindex')}}</id>
     <content type="text">{{_('Books ordered by series')}}</content>
    </entry>
+   <entry>
+    <title>{{_('Public Shelves')}}</title>
+    <link rel="subsection" href="{{url_for('feed_shelfindex', public="public")}}" type="application/atom+xml;profile=opds-catalog"/>
+    <id>{{url_for('feed_shelfindex', public="public")}}</id>
+    <content type="text">{{_('Books organized in public shelfs, visible to everyone')}}</content>
+   </entry>
+   {% if not current_user.is_anonymous %}
+   <entry>
+    <title>{{_('Your Shelves')}}</title>
+    <link rel="subsection" href="{{url_for('feed_shelfindex')}}" type="application/atom+xml;profile=opds-catalog"/>
+    <id>{{url_for('feed_shelfindex')}}</id>
+    <content type="text">{{_("User's own shelfs, only visible to the current user himself")}}</content>
+   </entry>
+   {% endif %}
 </feed>

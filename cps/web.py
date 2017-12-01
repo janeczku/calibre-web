@@ -840,6 +840,55 @@ def feed_series(book_id):
     return response
 
 
+@app.route("/opds/shelfindex/", defaults={'public': 0})
+@app.route("/opds/shelfindex/<string:public>")
+@requires_basic_auth_if_no_ano
+def feed_shelfindex(public):
+    off = request.args.get("offset")
+    if not off:
+        off = 0
+    if public is not 0:
+        shelf = g.public_shelfes
+        number = len(shelf)
+    else:
+        shelf = g.user.shelf
+        number = shelf.count()
+    pagination = Pagination((int(off) / (int(config.config_books_per_page)) + 1), config.config_books_per_page,
+                            number)
+    xml = render_title_template('feed.xml', listelements=shelf, folder='feed_shelf', pagination=pagination)
+    response = make_response(xml)
+    response.headers["Content-Type"] = "application/atom+xml; charset=utf-8"
+    return response
+
+
+@app.route("/opds/shelf/<int:book_id>")
+@requires_basic_auth_if_no_ano
+def feed_shelf(book_id):
+    off = request.args.get("offset")
+    if not off:
+        off = 0
+    if current_user.is_anonymous:
+        shelf = ub.session.query(ub.Shelf).filter(ub.Shelf.is_public == 1, ub.Shelf.id == book_id).first()
+    else:
+        shelf = ub.session.query(ub.Shelf).filter(ub.or_(ub.and_(ub.Shelf.user_id == int(current_user.id),
+                                                                 ub.Shelf.id == book_id),
+                                                         ub.and_(ub.Shelf.is_public == 1,
+                                                                 ub.Shelf.id == book_id))).first()
+    result = list()
+    # user is allowed to access shelf
+    if shelf:
+        books_in_shelf = ub.session.query(ub.BookShelf).filter(ub.BookShelf.shelf == book_id).order_by(
+            ub.BookShelf.order.asc()).all()
+        for book in books_in_shelf:
+            cur_book = db.session.query(db.Books).filter(db.Books.id == book.book_id).first()
+            result.append(cur_book)
+        pagination = Pagination((int(off) / (int(config.config_books_per_page)) + 1), config.config_books_per_page,
+                                len(result))
+        xml = render_title_template('feed.xml', entries=result, pagination=pagination)
+        response = make_response(xml)
+        response.headers["Content-Type"] = "application/atom+xml; charset=utf-8"
+        return response
+
 def partial(total_byte_len, part_size_limit):
     s = []
     for p in range(0, total_byte_len, part_size_limit):
