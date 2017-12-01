@@ -1090,7 +1090,7 @@ msgstr "Sprachen"
 
 #: cps/templates/layout.html:152
 msgid "Public Shelves"
-msgstr "Öffentiche Bücherregale"
+msgstr "Öffentliche Bücherregale"
 
 #: cps/templates/layout.html:156
 msgid "Your Shelves"
