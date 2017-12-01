@@ -2931,7 +2931,7 @@ def edit_book(book_id):
         edited_books_id.add(book.id)
 
     input_authors = to_save["author_name"].split('&')
-    input_authors = map(lambda it: it.strip().replace(',', '|'), input_authors)
+    input_authors = list(map(lambda it: it.strip().replace(',', '|'), input_authors))
     # we have all author names now
     if input_authors == ['']:
         input_authors = [_(u'unknown')]  # prevent empty Author
@@ -2969,7 +2969,7 @@ def edit_book(book_id):
             book.comments.append(db.Comments(text=to_save["description"], book=book.id))
 
         input_tags = to_save["tags"].split(',')
-        input_tags = map(lambda it: it.strip(), input_tags)
+        input_tags = list(map(lambda it: it.strip(), input_tags))
         modify_database_object(input_tags, book.tags, db.Tags, db.session, 'tags')
 
         input_series = [to_save["series"].strip()]
@@ -2977,7 +2977,7 @@ def edit_book(book_id):
         modify_database_object(input_series, book.series, db.Series, db.session, 'series')
 
         input_languages = to_save["languages"].split(',')
-        input_languages = map(lambda it: it.strip().lower(), input_languages)
+        input_languages = list(map(lambda it: it.strip().lower(), input_languages))
 
         if to_save["pubdate"]:
             try:
@@ -3089,7 +3089,7 @@ def edit_book(book_id):
                             db.session.delete(del_cc)
             else:
                 input_tags = to_save[cc_string].split(',')
-                input_tags = map(lambda it: it.strip(), input_tags)
+                input_tags = list(map(lambda it: it.strip(), input_tags))
                 modify_database_object(input_tags, getattr(book, cc_string), db.cc_classes[c.id], db.session, 'custom')
         db.session.commit()
         author_names = []
@@ -3234,7 +3234,7 @@ def upload():
         db.session.commit()
 
         input_tags = tags.split(',')
-        input_tags = map(lambda it: it.strip(), input_tags)
+        input_tags = list(map(lambda it: it.strip(), input_tags))
         modify_database_object(input_tags, db_book.tags, db.Tags, db.session, 'tags')
 
         if db_language is not None:  # display Full name instead of iso639.part3

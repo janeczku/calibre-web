@@ -292,9 +292,9 @@ def get_valid_filename(value, replace_whitespace=True):
 
 
 def get_sorted_author(value):
-    regexes = ["^(JR|SR)\.?$", "^I{1,3}\.?$", "^IV\.?$"]
-    combined = "(" + ")|(".join(regexes) + ")"
     try:
+        regexes = ["^(JR|SR)\.?$", "^I{1,3}\.?$", "^IV\.?$"]
+        combined = "(" + ")|(".join(regexes) + ")"
         value = value.split(" ")
         if re.match(combined, value[-1].upper()):
             value2 = value[-2] + ", " + " ".join(value[:-2]) + " " + value[-1]
