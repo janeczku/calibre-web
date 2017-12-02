@@ -5,6 +5,7 @@ import logging
 import uploader
 import os
 from flask_babel import gettext as _
+import comic
 
 __author__ = 'lemmsh'
 
@@ -49,6 +50,9 @@ def process(tmp_file_path, original_file_name, original_file_extension):
             meta = epub.get_epub_info(tmp_file_path, original_file_name, original_file_extension)
         if ".FB2" == original_file_extension.upper() and use_fb2_meta is True:
             meta = fb2.get_fb2_info(tmp_file_path, original_file_extension)
+        if original_file_extension.upper() in ['.CBZ', '.CBT']:
+            meta = comic.get_comic_info(tmp_file_path, original_file_name, original_file_extension)
+
     except Exception as ex:
         logger.warning('cannot parse metadata, using default: %s', ex)
 
