@@ -42,7 +42,6 @@
             {% if g.user.kindle_mail and g.user.is_authenticated %}
             <a href="{{url_for('send_to_kindle', book_id=entry.id)}}" id="sendbtn" class="btn btn-primary" role="button"><span class="glyphicon glyphicon-send"></span> {{_('Send to Kindle')}}</a>
             {% endif %}
-          {% if (g.user.role_download() and g.user.is_anonymous) or g.user.is_authenticated %}
               <div class="btn-group" role="group">
                 <button id="read-in-browser" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   <span class="glyphicon glyphicon-eye-open"></span> {{_('Read in browser')}}
@@ -56,7 +55,6 @@
                   {%endfor%}
                 </ul>
               </div>
-          {% endif %}
         </div>
       </div>
       <h2>{{entry.title}}</h2>
