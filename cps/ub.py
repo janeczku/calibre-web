@@ -14,9 +14,9 @@ from flask_babel import gettext as _
 import json
 import datetime
 from binascii import hexlify
+import cli
 
-dbpath = os.path.join(os.path.normpath(os.getenv("CALIBRE_DBPATH", os.path.dirname(os.path.realpath(__file__)) + os.sep + ".." + os.sep)), "app.db")
-engine = create_engine('sqlite:///{0}'.format(dbpath), echo=False)
+engine = create_engine('sqlite:///{0}'.format(cli.settingspath), echo=False)
 Base = declarative_base()
 
 ROLE_USER = 0
@@ -294,6 +294,7 @@ class Settings(Base):
     config_goodreads_api_key = Column(String)
     config_goodreads_api_secret = Column(String)
     config_mature_content_tags = Column(String)  # type: str
+    config_logfile = Column(String)
 
     def __repr__(self):
         pass
@@ -322,6 +323,7 @@ class Config:
         self.config_main_dir = os.path.join(os.path.normpath(os.path.dirname(
             os.path.realpath(__file__)) + os.sep + ".." + os.sep))
         self.db_configured = None
+        self.config_logfile = None
         self.loadSettings()
 
     def loadSettings(self):
@@ -356,10 +358,21 @@ class Config:
         self.config_goodreads_api_key = data.config_goodreads_api_key
         self.config_goodreads_api_secret = data.config_goodreads_api_secret
         self.config_mature_content_tags = data.config_mature_content_tags
+        if data.config_logfile:
+            self.config_logfile = data.config_logfile
 
     @property
     def get_main_dir(self):
         return self.config_main_dir
+
+    def get_config_logfile(self):
+        if not self.config_logfile:
+            return os.path.join(self.get_main_dir, "calibre-web.log")
+        else:
+            if os.path.dirname(self.config_logfile):
+                return self.config_logfile
+            else:
+                return os.path.join(self.get_main_dir, self.config_logfile)
 
     def role_admin(self):
         if self.config_default_role is not None:
@@ -584,6 +597,13 @@ def migrate_Database():
         conn = engine.connect()
         conn.execute("ALTER TABLE Settings ADD column `config_default_show` SmallInteger DEFAULT 2047")
         session.commit()
+    try:
+        session.query(exists().where(Settings.config_logfile)).scalar()
+        session.commit()
+    except exc.OperationalError:  # Database is not compatible, some rows are missing
+        conn = engine.connect()
+        conn.execute("ALTER TABLE Settings ADD column `config_logfile` String DEFAULT ''")
+        session.commit()
 
 
 def clean_database():
@@ -662,7 +682,7 @@ Session.configure(bind=engine)
 session = Session()
 
 # generate database and admin and guest user, if no database is existing
-if not os.path.exists(dbpath):
+if not os.path.exists(cli.settingspath):
     try:
         Base.metadata.create_all(engine)
         create_default_config()
