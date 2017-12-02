@@ -56,7 +56,7 @@ from werkzeug.datastructures import Headers
 from babel import Locale as LC
 from babel import negotiate_locale
 from babel import __version__ as babelVersion
-from babel.dates import format_date
+from babel.dates import format_date, format_datetime
 from functools import wraps
 import base64
 from sqlalchemy.sql import *
@@ -429,7 +429,7 @@ def mimetype_filter(val):
 
 
 @app.template_filter('formatdate')
-def formatdate(val):
+def formatdate_filter(val):
     conformed_timestamp = re.sub(r"[:]|([-](?!((\d{2}[:]\d{2})|(\d{4}))$))", '', val)
     formatdate = datetime.datetime.strptime(conformed_timestamp[:15], "%Y%m%d %H%M%S")
     return format_date(formatdate, format='medium', locale=get_locale())
@@ -996,7 +996,8 @@ def get_update_status():
             status['status'] = True
             commitdate = requests.get('https://api.github.com/repos/janeczku/calibre-web/git/commits/'+commit['object']['sha']).json()
             if "committer" in commitdate:
-                status['commit'] = commitdate['committer']['date']
+                form_date=datetime.datetime.strptime(commitdate['committer']['date'],"%Y-%m-%dT%H:%M:%SZ")
+                status['commit'] = format_datetime(form_date, format='short', locale=get_locale())
             else:
                 status['commit'] = u'Unknown'
         else:
@@ -2430,6 +2431,17 @@ def profile():
 @admin_required
 def admin():
     commit = '$Format:%cI$'
+    if commit.startswith("$"):
+        commit = _(u'Unknown')
+    else:
+        form_date = datetime.datetime.strptime(commit[:19], "%Y-%m-%dT%H:%M:%S")
+        if len(commit) > 19:    # check if string has timezone
+            if commit[19] == '+':
+                form_date -= datetime.timedelta(hours=int(commit[20:22]), minutes=int(commit[23:]))
+            elif commit[19] == '-':
+                form_date += datetime.timedelta(hours=int(commit[20:22]), minutes=int(commit[23:]))
+        commit = format_datetime(form_date, format='short', locale=get_locale())
+
     content = ub.session.query(ub.User).all()
     settings = ub.session.query(ub.Settings).first()
     return render_title_template("admin.html", content=content, email=settings, config=config, commit=commit,
