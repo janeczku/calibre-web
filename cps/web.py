@@ -222,7 +222,7 @@ gevent_server = None
 
 formatter = logging.Formatter(
     "[%(asctime)s] {%(pathname)s:%(lineno)d} %(levelname)s - %(message)s")
-file_handler = RotatingFileHandler(os.path.join(config.get_main_dir, "calibre-web.log"), maxBytes=50000, backupCount=2)
+file_handler = RotatingFileHandler(config.get_config_logfile(), maxBytes=50000, backupCount=2)
 file_handler.setFormatter(formatter)
 app.logger.addHandler(file_handler)
 app.logger.setLevel(config.config_log_level)
@@ -2573,7 +2573,20 @@ def configuration_helper(origin):
             content.config_default_show = content.config_default_show + ub.SIDEBAR_RECENT
         if "show_sorted" in to_save:
             content.config_default_show = content.config_default_show + ub.SIDEBAR_SORTED
-
+        if content.config_logfile != to_save["config_logfile"]:
+            # check valid path, only path or file
+            if os.path.dirname(to_save["config_logfile"]):
+                if os.path.exists(os.path.dirname(to_save["config_log_level"])):
+                    content.config_logfile = to_save["config_logfile"]
+                else:
+                    ub.session.commit()
+                    flash(_(u'Logfile location is not valid, please enter correct path'), category="error")
+                    return render_title_template("config_edit.html", content=config, origin=origin,
+                                                 gdrive=gdrive_support,
+                                                 goodreads=goodreads_support, title=_(u"Basic Configuration"))
+            else:
+                content.config_logfile = to_save["config_logfile"]
+            reboot_required = True
         try:
             if content.config_use_google_drive and is_gdrive_ready() and not os.path.exists(config.config_calibre_dir + "/metadata.db"):
                 gdriveutils.downloadFile(Gdrive.Instance().drive, None, "metadata.db", config.config_calibre_dir + "/metadata.db")

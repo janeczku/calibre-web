@@ -88,6 +88,10 @@
                 <option value="40" {% if content.config_log_level == 40 %}selected{% endif %}>ERROR</option>
         </select>
     </div>
+    <div class="form-group">
+      <label for="config_logfile">{{_('Location and name of logfile (calibre-web.log for no entry)')}}</label>
+      <input type="text" class="form-control" name="config_logfile" id="config_logfile" value="{% if content.config_logfile != None %}{{ content.config_logfile }}{% endif %}" autocomplete="off">
+    </div>
     <div class="col-sm-6">
     <div class="form-group">
         <input type="checkbox" id="config_uploading" name="config_uploading" {% if content.config_uploading %}checked{% endif %}>

@@ -7,6 +7,7 @@ except ImportError:
 import os
 
 from ub import config
+import cli
 
 from sqlalchemy import *
 from sqlalchemy.ext.declarative import declarative_base
@@ -15,9 +16,7 @@ from sqlalchemy.orm import *
 
 import web
 
-
-dbpath = os.path.join(os.path.normpath(os.path.dirname(os.path.realpath(__file__)) + os.sep + ".." + os.sep), "gdrive.db")
-engine = create_engine('sqlite:///{0}'.format(dbpath), echo=False)
+engine = create_engine('sqlite:///{0}'.format(cli.gdpath), echo=False)
 Base = declarative_base()
 
 # Open session for database connection
@@ -64,7 +63,7 @@ def migrate():
                 session.execute('ALTER TABLE gdrive_ids2 RENAME to gdrive_ids')
             break
 
-if not os.path.exists(dbpath):
+if not os.path.exists(cli.gdpath):
     try:
         Base.metadata.create_all(engine)
     except Exception:
