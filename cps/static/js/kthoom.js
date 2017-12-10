@@ -105,6 +105,14 @@ kthoom.ImageFile = function(file) {
     this.data = file;
 };
 
+
+function initProgressClick() {
+    $("#progress").click(function(e) {
+        var page = Math.max(1, Math.ceil((e.offsetX / $(this).width()) * totalImages)) - 1;
+        currentImage = page;
+        updatePage();
+    });
+};
 function loadFromArrayBuffer(ab) {
     var f = [];
 
@@ -443,6 +451,7 @@ function init(fileid) {
     request.fileid = fileid.substring(0, fileid.length - 2);
     request.addEventListener("load", ImageLoadCallback);
     request.send();
+    initProgressClick();
     document.body.className += /AppleWebKit/.test(navigator.userAgent) ? " webkit" : "";
     kthoom.loadSettings();
     updateScale(true);
