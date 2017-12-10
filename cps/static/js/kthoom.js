@@ -17,8 +17,6 @@
 */
 /* global screenfull */
 
-// var start = 0;
-
 if (window.opera) {
     window.console.log = function(str) {
         opera.postError(str);
@@ -44,11 +42,12 @@ if (typeof window.kthoom === "undefined" ) {
 // key codes
 kthoom.Key = {
     ESCAPE: 27,
+    SPACE: 32,
     LEFT: 37,
     UP: 38,
     RIGHT: 39,
-    DOWN: 40, 
-    A: 65, B: 66, C: 67, D: 68, E: 69, F: 70, G: 71, H: 72, I: 73, J: 74, K: 75, L: 76, M: 77, 
+    DOWN: 40,
+    A: 65, B: 66, C: 67, D: 68, E: 69, F: 70, G: 71, H: 72, I: 73, J: 74, K: 75, L: 76, M: 77,
     N: 78, O: 79, P: 80, Q: 81, R: 82, S: 83, T: 84, U: 85, V: 86, W: 87, X: 88, Y: 89, Z: 90,
     QUESTION_MARK: 191,
     LEFT_SQUARE_BRACKET: 219,
@@ -62,8 +61,8 @@ var imageFilenames = [];
 var totalImages = 0;
 
 var settings = {
-    hflip: false, 
-    vflip: false, 
+    hflip: false,
+    vflip: false,
     rotateTimes: 0,
     fitMode: kthoom.Key.B,
     theme: "light"
@@ -106,48 +105,16 @@ kthoom.ImageFile = function(file) {
     this.data = file;
 };
 
-
-kthoom.initProgressMeter = function() {
-    $("#Progress").removeClass("hide");
-    $("#Progress").click(function(e) {
-        var page = Math.max(1, Math.ceil((e.offsetX / $(this).width()) * totalImages)) - 1;
-        currentImage = page;
-        updatePage();
-    });
-};
-
-kthoom.setProgressMeter = function(optLabel) {
-    var pct = imageFiles.length / totalImages * 100;
-    if (pct === 100) {
-        //smartpct = 100;
-        getElem("progress_title").innerHTML = "Complete";
-    } else {
-        var labelText = pct.toFixed(2) + "% " + imageFiles.length + "/" + totalImages + "";
-        if (optLabel) {
-            labelText = optLabel + " " + labelText;
-        }
-        getElem("progress_title").innerHTML=labelText;
-    }
-    if (!isNaN(pct)) {
-        getElem("meter").style.width = pct + "%";
-    }
-
-    getElem("meter2").style.width= 100 * (totalImages === 0 ? 0 : ((currentImage + 1) / totalImages)) + "%";
-    getElem("page").innerHTML=(currentImage + 1) + "/" + totalImages ;
-};
-
 function loadFromArrayBuffer(ab) {
     var f = [];
-    if (typeof ab !== "object") {
-        ab = JSON.parse(ab);
-    }
+
     f.fileData = ab.content;
     f.filename = ab.name;
     // add any new pages based on the filename
     if (imageFilenames.indexOf(f.filename) === -1) {
         imageFilenames.push(f.filename);
         imageFiles.push(new kthoom.ImageFile(f));
-                        
+
         // add thumbnails to the TOC list
         $("#thumbnails").append(
             "<li>" +
@@ -158,10 +125,10 @@ function loadFromArrayBuffer(ab) {
             "</li>"
         );
     }
-    // var percentage = (ab.page + 1) / (ab.last + 1);
+    var percentage = ((ab.page + 1) / (ab.last + 1)) * 100;
+    updateProgress(percentage);
+
     totalImages = ab.last + 1;
-    kthoom.setProgressMeter("Unzipping");
-    // lastCompletion = percentage * 100;
 
     // display first page if we haven't yet
     if (imageFiles.length === currentImage + 1) {
@@ -169,10 +136,28 @@ function loadFromArrayBuffer(ab) {
     }
 }
 
+function scrollTocToActive() {
+    // Scroll to the thumbnail in the TOC on page change
+    $('#tocView').stop().animate({
+        scrollTop: $('#tocView a.active').position().top
+    }, 200);
+}
 
 function updatePage() {
-    getElem("page").innerHTML=(currentImage + 1) + "/" + totalImages ;
-    getElem("meter2").style.width= 100 * (totalImages === 0 ? 0 : ((currentImage + 1) / totalImages)) + "%";
+    $('.page').text((currentImage + 1 ) + "/" + totalImages);
+
+    // Mark the current page in the TOC
+    $('#tocView a[data-page]')
+    // Remove the currently active thumbnail
+        .removeClass('active')
+        // Find the new one
+        .filter('[data-page='+ (currentImage + 1) +']')
+        // Set it to active
+        .addClass('active');
+
+    scrollTocToActive();
+    updateProgress();
+
     if (imageFiles[currentImage]) {
         setImage(imageFiles[currentImage].dataURI);
     } else {
@@ -183,6 +168,22 @@ function updatePage() {
 
     kthoom.setSettings();
     kthoom.saveSettings();
+}
+
+function updateProgress(loadPercentage) {
+    // Set the load/unzip progress if it's passed in
+    if (loadPercentage) {
+        $("#progress .bar-load").css({ width: loadPercentage + "%" });
+
+        if (loadPercentage === 100) {
+            $("#progress")
+                .removeClass('loading')
+                .find(".load").text('');
+        }
+    }
+
+    // Set page progress bar
+    $("#progress .bar-read").css({ width: totalImages === 0 ? 0 : Math.round((currentImage + 1) / totalImages * 100) + "%"});
 }
 
 function setImage(url) {
@@ -332,23 +333,18 @@ function updateScale(clear) {
 }
 
 function keyHandler(evt) {
-    var code = evt.keyCode;
-
-    if ($("#progress").css("display") === "none") {
-        return;
-    }
-    // canKeyNext = (($("body").css("offsetWidth") + $("body").css("scrollLeft")) / $("body").css("scrollWidth")) >= 1;
-    // canKeyPrev = (scrollX <= 0);
-
-    if (evt.ctrlKey || evt.shiftKey || evt.metaKey) return;
-    switch (code) {
+    var hasModifier = evt.ctrlKey || evt.shiftKey || evt.metaKey;
+    switch (evt.keyCode) {
         case kthoom.Key.LEFT:
+            if (hasModifier) break;
             showPrevPage();
             break;
         case kthoom.Key.RIGHT:
+            if (hasModifier) break;
             showNextPage();
             break;
         case kthoom.Key.L:
+            if (hasModifier) break;
             settings.rotateTimes--;
             if (settings.rotateTimes < 0) {
                 settings.rotateTimes = 3;
@@ -356,6 +352,7 @@ function keyHandler(evt) {
             updatePage();
             break;
         case kthoom.Key.R:
+            if (hasModifier) break;
             settings.rotateTimes++;
             if (settings.rotateTimes > 3) {
                 settings.rotateTimes = 0;
@@ -363,6 +360,7 @@ function keyHandler(evt) {
             updatePage();
             break;
         case kthoom.Key.F:
+            if (hasModifier) break;
             if (!settings.hflip && !settings.vflip) {
                 settings.hflip = true;
             } else if (settings.hflip === true && settings.vflip === true) {
@@ -377,23 +375,43 @@ function keyHandler(evt) {
             updatePage();
             break;
         case kthoom.Key.W:
+            if (hasModifier) break;
             settings.fitMode = kthoom.Key.W;
             updateScale(false);
             break;
         case kthoom.Key.H:
+            if (hasModifier) break;
             settings.fitMode = kthoom.Key.H;
             updateScale(false);
             break;
         case kthoom.Key.B:
+            if (hasModifier) break;
             settings.fitMode = kthoom.Key.B;
             updateScale(false);
             break;
         case kthoom.Key.N:
+            if (hasModifier) break;
             settings.fitMode = kthoom.Key.N;
             updateScale(false);
             break;
+        case kthoom.Key.SPACE:
+            var container = $('#mainContent');
+            var atTop = container.scrollTop() === 0;
+            var atBottom = container.scrollTop() >= container[0].scrollHeight - container.height();
+
+            if (evt.shiftKey && atTop) {
+                evt.preventDefault();
+                // If it's Shift + Space and the container is at the top of the page
+                showPrevPage();
+            } else if (!evt.shiftKey && atBottom) {
+                evt.preventDefault();
+                // If you're at the bottom of the page and you only pressed space
+                showNextPage();
+                container.scrollTop(0);
+            }
+            break;
         default:
-            //console.log('KeyCode = ' + code);
+            //console.log('KeyCode', evt.keyCode);
             break;
     }
 }
@@ -404,31 +422,31 @@ function ImageLoadCallback() {
     if (jso === null) {
         setImage("error");
     } else {
+        // IE 11 sometimes sees the response as a string
+        if (typeof jso !== "object") {
+            jso = JSON.parse(jso);
+        }
+
         if (jso.page !== jso.last) {
             this.open("GET", this.fileid + "/" + (jso.page + 1));
             this.addEventListener("load", ImageLoadCallback);
             this.send();
         }
-        /*else
-        {
-            var diff = ((new Date).getTime() - start) / 1000;
-            console.log("Transfer done in " + diff + "s");
-        }*/
+
         loadFromArrayBuffer(jso);
     }
 }
 function init(fileid) {
-    // start = (new Date).getTime();
     var request = new XMLHttpRequest();
     request.open("GET", fileid);
     request.responseType = "json";
     request.fileid = fileid.substring(0, fileid.length - 2);
     request.addEventListener("load", ImageLoadCallback);
     request.send();
-    kthoom.initProgressMeter();
     document.body.className += /AppleWebKit/.test(navigator.userAgent) ? " webkit" : "";
     kthoom.loadSettings();
     updateScale(true);
+
     $(document).keydown(keyHandler);
 
     $(window).resize(function() {
@@ -440,6 +458,13 @@ function init(fileid) {
         $("#sidebar").toggleClass("open");
         $("#main").toggleClass("closed");
         $(this).toggleClass("icon-menu icon-right");
+
+        // We need this in a timeout because if we call it during the CSS transition, IE11 shakes the page ¯\_(ツ)_/¯
+        setTimeout(function(){
+            // Focus on the TOC or the main content area, depending on which is open
+            $('#main:not(.closed) #mainContent, #sidebar.open #tocView').focus();
+            scrollTocToActive();
+        }, 500);
     });
 
     // Open Settings modal
@@ -486,6 +511,9 @@ function init(fileid) {
             });
         }
     }
+
+    // Focus the scrollable area so that keyboard scrolling work as expected
+    $('#mainContent').focus();
 
     $("#mainImage").click(function(evt) {
         // Firefox does not support offsetX/Y so we have to manually calculate

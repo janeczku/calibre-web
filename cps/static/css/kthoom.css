@@ -1,15 +1,19 @@
 body {
-	background: #444;
+  background: #444;
   overflow-x: hidden;
   overflow-y: auto;
-	color: white;
-	font-family: sans-serif;
-	margin: 0px;
+  color: white;
+  font-family: sans-serif;
+  margin: 0px;
 }
 
 #main {
-	text-align: center;
+  text-align: center;
   z-index: 2;
+}
+
+.view {
+  padding-top:0px;
 }
 
 #sidebar a,
@@ -20,10 +24,28 @@ body {
   text-align: center;
 }
 
+#sidebar ul {
+  position: relative;
+}
+
 #sidebar a {
   display: inline-block;
   position: relative;
   cursor: pointer;
+  padding: 4px;
+
+  transition: all .2s ease;
+}
+
+#sidebar a:hover,
+#sidebar a:focus {
+  outline: none;
+  box-shadow: 0px 2px 8px 1px black;
+}
+
+#sidebar a.active,
+#sidebar a.active img + span {
+  background-color:  #45B29D;
 }
 
 #sidebar li img {
@@ -47,21 +69,65 @@ body {
 }
 
 #progress {
-	position: absolute;
-	display: inline;
-  left: 20%;
-  right: 20%;
-	height: 20px;
-  margin-top: 4px;
-	text-align: right;
+  position: absolute;
+  display: inline;
+  top: 0;
+  left: 0;
+  right: 0;
+  min-height: 4px;
+  font-family: sans-serif;
+  font-size: 10px;
+  line-height: 10px;
+  text-align: right;
+
+  transition: min-height 150ms ease-in-out;
+}
+
+#progress .bar-load,
+#progress .bar-read {
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+
+  transition: width 150ms ease-in-out;
+}
+
+#progress .bar-load {
+  color: #000;
+  background-color: #CCC;
+}
+
+#progress .bar-read  {
+  color: #FFF;
+  background-color: #45B29D;
+}
+
+#progress .text {
+  display: none;
+  padding: 0 5px;
+}
+
+#progress.loading,
+#titlebar:hover #progress {
+  min-height: 10px;
+}
+
+#progress.loading .text,
+#titlebar:hover #progress .text {
+  display: inline-block;
 }
 
 .hide {
-	display: none !important;
+  display: none !important;
 }
 
 #mainContent {
   overflow: auto;
+  outline: none;
 }
 
 #mainText {
@@ -80,6 +146,10 @@ body {
 #titlebar {
   min-height: 25px;
   height: auto;
+}
+
+#metainfo {
+  max-width: 70%;
 }
 
 #prev {
@@ -176,43 +246,11 @@ th {
   color: #FFF;
 }
 
+.dark-theme #progress .bar-read {
+  background-color: red;
+}
+
+
 .dark-theme .overlay {
   background-color: rgba(0,0,0,0.8);
-}
-
-.view {
-    padding-top:0px;
-}
-
-#Progress {
-  margin: auto;
-  width: 80%;
-  background-color: #ddd;
-  display: inline-block;
-  margin-top: 5px;
-}
-
-#meter {
-  width: 0%;
-  height: 5px;
-  background-color: #1C5484;
-}
-
-#meter2 {
-  width: 0%;
-  height: 15px;
-  background-color: #028138;
-}
-
-#page {
-  text-align:left;
-  margin-top:-20px;
-  font-size:80%;
-  width: 0%;
-}
-
-#progress_title {
-  text-align:right;
-  margin-top:-15px;
-  font-size:80%;
 }
