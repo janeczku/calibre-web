@@ -30,6 +30,12 @@ try:
 except ImportError:
     rar_support=False
 
+try:
+    from natsort import natsorted as sorted
+except ImportError:
+    pass  # Just use regular sort then
+          #   may cause issues with badly named pages in cbz/cbr files
+
 import mimetypes
 import logging
 from logging.handlers import RotatingFileHandler
@@ -931,7 +937,7 @@ def get_comic_book(book_id, book_format, page):
                         rarfile.UNRAR_TOOL = config.config_rarfile_location
                         try:
                             rf = rarfile.RarFile(cbr_file)
-                            rarNames = rf.namelist()
+                            rarNames = sorted(rf.namelist())
                             b64 = codecs.encode(rf.read(rarNames[page]), 'base64').decode()
                             extractedfile="data:image/png;base64," + b64
                             fileData={"name": rarNames[page],"page":page, "last":rarNames.__len__()-1, "content": extractedfile}
@@ -945,7 +951,7 @@ def get_comic_book(book_id, book_format, page):
                         return "", 204
                 if book_format == "cbz":
                     zf = zipfile.ZipFile(cbr_file)
-                    zipNames=zf.namelist()
+                    zipNames=sorted(zf.namelist())
                     if sys.version_info.major >= 3:
                         b64 = codecs.encode(zf.read(zipNames[page]), 'base64').decode()
                     else:
@@ -955,7 +961,7 @@ def get_comic_book(book_id, book_format, page):
 
                 if book_format == "cbt":
                     tf = tarfile.TarFile(u'D:\\zip\\test.cbt')
-                    tarNames=tf.getnames()
+                    tarNames=sorted(tf.getnames())
                     if sys.version_info.major >= 3:
                         b64 = codecs.encode(tf.extractfile(tarNames[page]).read(), 'base64').decode()
                     else:
