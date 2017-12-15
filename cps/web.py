@@ -932,7 +932,7 @@ def get_comic_book(book_id, book_format, page):
         for bookformat in book.data:
             if bookformat.format.lower() == book_format.lower():
                 cbr_file = os.path.join(config.config_calibre_dir, book.path, bookformat.name) + "." + book_format
-                if book_format == "cbr":
+                if book_format in ("cbr", "rar"):
                     if rar_support == True:
                         rarfile.UNRAR_TOOL = config.config_rarfile_location
                         try:
@@ -949,7 +949,7 @@ def get_comic_book(book_id, book_format, page):
                         app.logger.info('Unrar is not supported please install python rarfile extension')
                         # no support means return nothing
                         return "", 204
-                if book_format == "cbz":
+                if book_format in ("cbz", "zip"):
                     zf = zipfile.ZipFile(cbr_file)
                     zipNames=sorted(zf.namelist())
                     if sys.version_info.major >= 3:
@@ -959,8 +959,8 @@ def get_comic_book(book_id, book_format, page):
                     extractedfile="data:image/png;base64," + b64
                     fileData={"name": zipNames[page],"page":page, "last":zipNames.__len__()-1, "content": extractedfile}
 
-                if book_format == "cbt":
-                    tf = tarfile.TarFile(u'D:\\zip\\test.cbt')
+                if book_format in ("cbt", "tar"):
+                    tf = tarfile.TarFile(cbr_file)
                     tarNames=sorted(tf.getnames())
                     if sys.version_info.major >= 3:
                         b64 = codecs.encode(tf.extractfile(tarNames[page]).read(), 'base64').decode()
