@@ -307,9 +307,11 @@ def get_sorted_author(value):
 
 
 def delete_book(book, calibrepath):
-    path = os.path.join(calibrepath, book.path)  # .replace('/',os.path.sep)).replace('\\',os.path.sep)
-    shutil.rmtree(path, ignore_errors=True)
-
+    if "/" in book.path:
+        path = os.path.join(calibrepath, book.path)
+        shutil.rmtree(path, ignore_errors=True)
+    else:
+        logging.getLogger('cps.web').error("Deleting book " + str(book.id) + " failed, book path value: "+ book.path)
 
 # ToDo: Implement delete book on gdrive
 def delete_book_gdrive(book):
