@@ -116,6 +116,7 @@ gdrive_watch_callback_token = 'target=calibreweb-watch_files'
 global_task = None
 
 ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'epub', 'mobi', 'azw', 'azw3', 'cbr', 'cbz', 'cbt', 'djvu', 'prc', 'doc', 'docx', 'fb2'])
+READER_EXTENSIONS = set(['txt', 'pdf', 'epub', 'zip', 'cbz', 'tar', 'cbt'] + (['rar','cbr'] if rar_support else []))
 
 def md5(fname):
     hash_md5 = hashlib.md5()
@@ -471,6 +472,14 @@ def timestamptodate(date, fmt=None):
 @app.template_filter('yesno')
 def yesno(value, yes, no):
     return yes if value else no
+
+
+@app.template_filter('canread')
+@app.template_test('canread')
+def canread(ext):
+    if type(ext) == db.Data:
+        ext = ext.format
+    return ext.lower() in READER_EXTENSIONS
 
 
 def admin_required(f):
@@ -937,10 +946,8 @@ def get_comic_book(book_id, book_format, page):
                         rarfile.UNRAR_TOOL = config.config_rarfile_location
                         try:
                             rf = rarfile.RarFile(cbr_file)
-                            rarNames = sort(rf.namelist())
-                            b64 = codecs.encode(rf.read(rarNames[page]), 'base64').decode()
-                            extractedfile="data:image/png;base64," + b64
-                            fileData={"name": rarNames[page],"page":page, "last":rarNames.__len__()-1, "content": extractedfile}
+                            names = sort(rf.namelist())
+                            extract = lambda page: rf.read(names[page])
                         except:
                             # rarfile not valid
                             app.logger.error('Unrar binary not found, or unable to decompress file ' + cbr_file)
@@ -949,25 +956,27 @@ def get_comic_book(book_id, book_format, page):
                         app.logger.info('Unrar is not supported please install python rarfile extension')
                         # no support means return nothing
                         return "", 204
-                if book_format in ("cbz", "zip"):
+                elif book_format in ("cbz", "zip"):
                     zf = zipfile.ZipFile(cbr_file)
-                    zipNames=sort(zf.namelist())
-                    if sys.version_info.major >= 3:
-                        b64 = codecs.encode(zf.read(zipNames[page]), 'base64').decode()
-                    else:
-                        b64 = zf.read(zipNames[page]).encode('base64')
-                    extractedfile="data:image/png;base64," + b64
-                    fileData={"name": zipNames[page],"page":page, "last":zipNames.__len__()-1, "content": extractedfile}
-
-                if book_format in ("cbt", "tar"):
+                    names=sort(zf.namelist())
+                    extract = lambda page: zf.read(names[page])
+                elif book_format in ("cbt", "tar"):
                     tf = tarfile.TarFile(cbr_file)
-                    tarNames=sort(tf.getnames())
-                    if sys.version_info.major >= 3:
-                        b64 = codecs.encode(tf.extractfile(tarNames[page]).read(), 'base64').decode()
-                    else:
-                        b64 = (tf.extractfile(tarNames[page]).read()).encode('base64')
-                    extractedfile="data:image/png;base64," + bs
-                    fileData={"name": tarNames[page],"page":page, "last":tarNames.__len__()-1, "content": extractedfile}
+                    names=sort(tf.getnames())
+                    extract = lambda page: tf.extractfile(names[page]).read()
+                else:
+                    app.logger.error('unsupported comic format')
+                    return "", 204
+
+                if sys.version_info.major >= 3:
+                    b64 = codecs.encode(extract(page), 'base64').decode()
+                else:
+                    b64 = extract(page).encode('base64')
+                ext = names[page].rpartition('.')[-1]
+                if ext not in ('png', 'gif', 'jpg', 'jpeg'):
+                    ext = 'png'
+                extractedfile="data:image/" + ext + ";base64," + b64
+                fileData={"name": names[page], "page":page, "last":len(names)-1, "content": extractedfile}
                 return make_response(json.dumps(fileData))
         return "", 204
 
@@ -3264,4 +3273,3 @@ def start_gevent():
         app.logger.info('Unable to listen on \'\', trying on IPv4 only...')
         gevent_server = WSGIServer(('0.0.0.0', ub.config.config_port), app)
         gevent_server.serve_forever()
-
