@@ -164,8 +164,8 @@ def send_raw_email(kindle_mail, msg):
     try:
         timeout = 600     # set timeout to 5mins
 
-        org_stderr = smtplib.stderr
-        smtplib.stderr = StderrLogger()
+        org_stderr = sys.stderr
+        sys.stderr = StderrLogger()
 
         if use_ssl == 2:
             mailserver = smtplib.SMTP_SSL(settings["mail_server"], settings["mail_port"], timeout)
