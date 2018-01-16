@@ -477,7 +477,7 @@ def yesno(value, yes, no):
 @app.template_filter('canread')
 @app.template_test('canread')
 def canread(ext):
-    if type(ext) == db.Data:
+    if isinstance(ext, db.Data):
         ext = ext.format
     return ext.lower() in READER_EXTENSIONS
 
