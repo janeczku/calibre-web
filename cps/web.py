@@ -1550,7 +1550,7 @@ def google_drive_callback():
 @admin_required
 def watch_gdrive():
     if not config.config_google_drive_watch_changes_response:
-        address = '%sgdrive/watch/callback' % config.config_google_drive_calibre_url_base
+        address = '%s/gdrive/watch/callback' % config.config_google_drive_calibre_url_base
         notification_id = str(uuid4())
         result = gdriveutils.watchChange(Gdrive.Instance().drive, notification_id,
                                'web_hook', address, gdrive_watch_callback_token, current_milli_time() + 604800*1000)
@@ -2492,6 +2492,8 @@ def configuration_helper(origin):
                 content.config_google_drive_client_secret = to_save["config_google_drive_client_secret"]
                 create_new_yaml = True
         if "config_google_drive_calibre_url_base" in to_save:
+            if to_save['config_google_drive_calibre_url_base'].endswith('/'):
+                to_save['config_google_drive_calibre_url_base'] = to_save['config_google_drive_calibre_url_base'][:-1]
             if content.config_google_drive_calibre_url_base != to_save["config_google_drive_calibre_url_base"]:
                 content.config_google_drive_calibre_url_base = to_save["config_google_drive_calibre_url_base"]
                 create_new_yaml = True
@@ -2503,8 +2505,9 @@ def configuration_helper(origin):
         if create_new_yaml:
             with open('settings.yaml', 'w') as f:
                 with open('gdrive_template.yaml', 'r') as t:
-                    f.write(t.read() % {'client_id': content.config_google_drive_client_id, 'client_secret': content.config_google_drive_client_secret,
-                     "redirect_uri": content.config_google_drive_calibre_url_base + 'gdrive/callback'})
+                    f.write(t.read() % {'client_id': content.config_google_drive_client_id,
+                            'client_secret': content.config_google_drive_client_secret,
+                            "redirect_uri": content.config_google_drive_calibre_url_base + '/gdrive/callback'})
         if "config_google_drive_folder" in to_save:
             if content.config_google_drive_folder != to_save["config_google_drive_folder"]:
                 content.config_google_drive_folder = to_save["config_google_drive_folder"]
@@ -3298,3 +3301,5 @@ def start_gevent():
         app.logger.info('Unable to listen on \'\', trying on IPv4 only...')
         gevent_server = WSGIServer(('0.0.0.0', ub.config.config_port), app)
         gevent_server.serve_forever()
+    except:
+        pass
