@@ -15,7 +15,14 @@
       </div>
       <div class="meta">
         <p class="title">{{entry.title|shortentitle}}</p>
-        <p class="author"><a href="{{url_for('author', book_id=entry.authors[0].id) }}">{{entry.authors[0].name}}</a></p>
+        <p class="author">
+          {% for author in entry.authors %}
+            <a href="{{url_for('author', book_id=author.id) }}">{{author.name.replace('|',',')}}</a>
+            {% if not loop.last %}
+              &amp;
+            {% endif %}
+          {% endfor %}
+        </p>
         {% if entry.ratings.__len__() > 0 %}
         <div class="rating">
           {% for number in range((entry.ratings[0].rating/2)|int(2)) %}
