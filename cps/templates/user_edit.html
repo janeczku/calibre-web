@@ -92,12 +92,12 @@
     <div class="form-group">
       <input type="checkbox" name="admin_role" id="admin_role" {% if content.role_admin() %}checked{% endif %}>
       <label for="admin_role">{{_('Admin user')}}</label>
-    </div>  
+    </div>
+    {% endif %}
     <div class="form-group">
         <input type="checkbox" name="show_mature_content" id="show_mature_content" {% if content.mature_content %}checked{% endif %}>
         <label for="show_mature_content">{{_('Show mature content')}}</label>
     </div>
-    {% endif %}
     <div class="form-group">
       <input type="checkbox" name="download_role" id="download_role" {% if content.role_download() %}checked{% endif %}>
       <label for="download_role">{{_('Allow Downloads')}}</label>
