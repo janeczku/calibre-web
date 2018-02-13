@@ -14,7 +14,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/calibre-web\n"
-"POT-Creation-Date: 2017-12-02 11:12+0100\n"
+"POT-Creation-Date: 2018-02-13 16:39+0100\n"
 "PO-Revision-Date: 2017-04-04 15:09+0200\n"
 "Last-Translator: Juan F. Villa <juan.villa@paisdelconocimiento.org>\n"
 "Language: es\n"
@@ -25,7 +25,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.5.1\n"
 
-#: cps/book_formats.py:119 cps/book_formats.py:123 cps/web.py:1450
+#: cps/book_formats.py:123 cps/book_formats.py:127 cps/web.py:1451
 msgid "not installed"
 msgstr "No instalado"
 
@@ -61,7 +61,7 @@ msgstr "Prueba de Correo Calibre-web"
 msgid "This email has been sent via calibre web."
 msgstr "Este mensaje ha sido enviado via Calibre Web."
 
-#: cps/helper.py:205 cps/templates/detail.html:43
+#: cps/helper.py:205 cps/templates/detail.html:44
 msgid "Send to Kindle"
 msgstr "Enviar a Kindle"
 
@@ -69,12 +69,12 @@ msgstr "Enviar a Kindle"
 msgid "Could not find any formats suitable for sending by email"
 msgstr "Formato no compatible para enviar por correo electronico"
 
-#: cps/helper.py:338
+#: cps/helper.py:340
 #, python-format
 msgid "Rename title from: \"%s\" to \"%s\" failed with error: %s"
 msgstr ""
 
-#: cps/helper.py:347
+#: cps/helper.py:349
 #, python-format
 msgid "Rename author from: \"%s\" to \"%s\" failed with error: %s"
 msgstr ""
@@ -83,380 +83,389 @@ msgstr ""
 msgid "Guest"
 msgstr "Invitado"
 
-#: cps/web.py:1016
+#: cps/web.py:1017
 msgid "Requesting update package"
 msgstr "Solicitando paquete de actualización"
 
-#: cps/web.py:1017
+#: cps/web.py:1018
 msgid "Downloading update package"
 msgstr "Descargando paquete de actualización"
 
-#: cps/web.py:1018
+#: cps/web.py:1019
 msgid "Unzipping update package"
 msgstr "Descomprimiendo paquete de actualización"
 
-#: cps/web.py:1019
+#: cps/web.py:1020
 msgid "Files are replaced"
 msgstr "Ficheros sustituidos"
 
-#: cps/web.py:1020
+#: cps/web.py:1021
 msgid "Database connections are closed"
 msgstr "Los conexiones de base datos están cerradas"
 
-#: cps/web.py:1021
+#: cps/web.py:1022
 msgid "Server is stopped"
 msgstr "El servidor está detenido"
 
-#: cps/web.py:1022
+#: cps/web.py:1023
 msgid "Update finished, please press okay and reload page"
 msgstr "Actualización finalizada. Por favor, pulse OK y recargue la página"
 
-#: cps/web.py:1096
+#: cps/web.py:1097
 msgid "Recently Added Books"
 msgstr ""
 
-#: cps/web.py:1106
+#: cps/web.py:1107
 msgid "Newest Books"
 msgstr ""
 
-#: cps/web.py:1118
+#: cps/web.py:1119
 msgid "Oldest Books"
 msgstr ""
 
-#: cps/web.py:1130
+#: cps/web.py:1131
 msgid "Books (A-Z)"
 msgstr ""
 
-#: cps/web.py:1141
+#: cps/web.py:1142
 msgid "Books (Z-A)"
 msgstr ""
 
-#: cps/web.py:1169
+#: cps/web.py:1170
 msgid "Hot Books (most downloaded)"
 msgstr "Libros populares (los mas descargados)"
 
-#: cps/web.py:1182
+#: cps/web.py:1183
 msgid "Best rated books"
 msgstr "Libros mejor valorados"
 
-#: cps/templates/index.xml:32 cps/web.py:1193
+#: cps/templates/index.xml:32 cps/web.py:1194
 msgid "Random Books"
 msgstr "Libros al azar"
 
-#: cps/web.py:1207
+#: cps/web.py:1208
 msgid "Author list"
 msgstr "Lista de autores"
 
-#: cps/web.py:1219 cps/web.py:1277 cps/web.py:1407 cps/web.py:1876
+#: cps/web.py:1220 cps/web.py:1278 cps/web.py:1408 cps/web.py:1877
 msgid "Error opening eBook. File does not exist or file is not accessible:"
 msgstr "Error en la apertura del eBook. El archivo no existe o no es accesible:"
 
-#: cps/templates/index.xml:64 cps/web.py:1261
+#: cps/templates/index.xml:64 cps/web.py:1262
 msgid "Series list"
 msgstr "Lista de series"
 
-#: cps/web.py:1275
+#: cps/web.py:1276
 #, python-format
 msgid "Series: %(serie)s"
 msgstr "Series : %(serie)s"
 
-#: cps/web.py:1308
+#: cps/web.py:1309
 msgid "Available languages"
 msgstr "Lenguajes disponibles"
 
-#: cps/web.py:1325
+#: cps/web.py:1326
 #, python-format
 msgid "Language: %(name)s"
 msgstr "Lenguaje: %(name)s"
 
-#: cps/templates/index.xml:58 cps/web.py:1335
+#: cps/templates/index.xml:58 cps/web.py:1336
 msgid "Category list"
 msgstr "Lista de categorias"
 
-#: cps/web.py:1349
+#: cps/web.py:1350
 #, python-format
 msgid "Category: %(name)s"
 msgstr "Categoría : %(name)s"
 
-#: cps/web.py:1461
+#: cps/web.py:1462
 msgid "Excecution permissions missing"
 msgstr ""
 
-#: cps/web.py:1475
+#: cps/web.py:1476
 msgid "Statistics"
 msgstr "Estadisticas"
 
-#: cps/web.py:1640
+#: cps/web.py:1641
 msgid "Server restarted, please reload page"
 msgstr "Servidor reiniciado. Por favor, recargue la página"
 
-#: cps/web.py:1642
+#: cps/web.py:1643
 msgid "Performing shutdown of server, please close window"
 msgstr "Servidor en proceso de apagado. Por favor, cierre la ventana."
 
-#: cps/web.py:1658
+#: cps/web.py:1659
 msgid "Update done"
 msgstr "Actualización realizada"
 
-#: cps/web.py:1740 cps/web.py:1753
+#: cps/web.py:1741 cps/web.py:1754
 msgid "search"
 msgstr "búsqueda"
 
 #: cps/templates/index.xml:39 cps/templates/index.xml:42
-#: cps/templates/layout.html:132 cps/web.py:1831
+#: cps/templates/layout.html:133 cps/web.py:1832
 msgid "Read Books"
 msgstr "Libros leídos"
 
 #: cps/templates/index.xml:46 cps/templates/index.xml:49
-#: cps/templates/layout.html:134 cps/web.py:1834
+#: cps/templates/layout.html:135 cps/web.py:1835
 msgid "Unread Books"
 msgstr "Libros no leídos"
 
-#: cps/web.py:1909 cps/web.py:1911 cps/web.py:1913 cps/web.py:1922
+#: cps/web.py:1910 cps/web.py:1912 cps/web.py:1914 cps/web.py:1923
 msgid "Read a Book"
 msgstr "Leer un libro"
 
-#: cps/web.py:1974 cps/web.py:2644
+#: cps/web.py:1975 cps/web.py:2667
 msgid "Please fill out all fields!"
 msgstr "¡Por favor completar todos los campos!"
 
-#: cps/web.py:1975 cps/web.py:1992 cps/web.py:1997 cps/web.py:1999
+#: cps/web.py:1976 cps/web.py:1993 cps/web.py:1998 cps/web.py:2000
 msgid "register"
 msgstr "registrarse"
 
-#: cps/web.py:1991
+#: cps/web.py:1992
 msgid "An unknown error occured. Please try again later."
 msgstr "Error desconocido. Por favor, inténtelo de nuevo mas tarde."
 
-#: cps/web.py:1996
+#: cps/web.py:1997
 msgid "This username or email address is already in use."
 msgstr "Usuario o dirección de correo en uso."
 
-#: cps/web.py:2015 cps/web.py:2111
+#: cps/web.py:2016 cps/web.py:2112
 #, python-format
 msgid "you are now logged in as: '%(nickname)s'"
 msgstr "Sesion iniciada como : '%(nickname)s'"
 
-#: cps/web.py:2020
+#: cps/web.py:2021
 msgid "Wrong Username or Password"
 msgstr "Usuario o contraseña invalido"
 
-#: cps/web.py:2026 cps/web.py:2047
+#: cps/web.py:2027 cps/web.py:2048
 msgid "login"
 msgstr "Iniciar sesión"
 
-#: cps/web.py:2059 cps/web.py:2090
+#: cps/web.py:2060 cps/web.py:2091
 msgid "Token not found"
 msgstr ""
 
-#: cps/web.py:2067 cps/web.py:2098
+#: cps/web.py:2068 cps/web.py:2099
 msgid "Token has expired"
 msgstr ""
 
-#: cps/web.py:2075
+#: cps/web.py:2076
 msgid "Success! Please return to your device"
 msgstr ""
 
-#: cps/web.py:2125
+#: cps/web.py:2126
 msgid "Please configure the SMTP mail settings first..."
 msgstr "Configurar primero los parametros SMTP por favor..."
 
-#: cps/web.py:2129
+#: cps/web.py:2130
 #, python-format
 msgid "Book successfully send to %(kindlemail)s"
 msgstr "Envio de Libro a %(kindlemail)s correctamente"
 
-#: cps/web.py:2133
+#: cps/web.py:2134
 #, python-format
 msgid "There was an error sending this book: %(res)s"
 msgstr "Ha sucedido un error en el envio del Libro: %(res)s"
 
-#: cps/web.py:2135 cps/web.py:2730
+#: cps/web.py:2136 cps/web.py:2753
 msgid "Please configure your kindle email address first..."
 msgstr "Configurar primero la dirección de correo Kindle por favor..."
 
-#: cps/web.py:2179
+#: cps/web.py:2180
 #, python-format
 msgid "Book has been added to shelf: %(sname)s"
 msgstr "El libro fue agregado a el estante: %(sname)s"
 
-#: cps/web.py:2216
+#: cps/web.py:2218
 #, python-format
 msgid "Book has been removed from shelf: %(sname)s"
 msgstr "El libro fue removido del estante: %(sname)s"
 
-#: cps/web.py:2235 cps/web.py:2259
+#: cps/web.py:2224
+#, python-format
+msgid "Sorry you are not allowed to remove a book from this shelf: %(sname)s"
+msgstr ""
+
+#: cps/web.py:2244 cps/web.py:2268
 #, python-format
 msgid "A shelf with the name '%(title)s' already exists."
 msgstr "Une étagère de ce nom '%(title)s' existe déjà."
 
-#: cps/web.py:2240
+#: cps/web.py:2249
 #, python-format
 msgid "Shelf %(title)s created"
 msgstr "Estante %(title)s creado"
 
-#: cps/web.py:2242 cps/web.py:2270
+#: cps/web.py:2251 cps/web.py:2279
 msgid "There was an error"
 msgstr "Ha sucedido un error"
 
-#: cps/web.py:2243 cps/web.py:2245
+#: cps/web.py:2252 cps/web.py:2254
 msgid "create a shelf"
 msgstr "crear un estante"
 
-#: cps/web.py:2268
+#: cps/web.py:2277
 #, python-format
 msgid "Shelf %(title)s changed"
 msgstr "Estante %(title)s cambiado"
 
-#: cps/web.py:2271 cps/web.py:2273
+#: cps/web.py:2280 cps/web.py:2282
 msgid "Edit a shelf"
 msgstr "Editar un estante"
 
-#: cps/web.py:2294
+#: cps/web.py:2303
 #, python-format
 msgid "successfully deleted shelf %(name)s"
 msgstr "Estante %(name)s fue borrado correctamente"
 
-#: cps/web.py:2316
+#: cps/web.py:2325
 #, python-format
 msgid "Shelf: '%(name)s'"
 msgstr "Estante: '%(name)s'"
 
-#: cps/web.py:2319
+#: cps/web.py:2328
 msgid "Error opening shelf. Shelf does not exist or is not accessible"
 msgstr ""
 
-#: cps/web.py:2350
+#: cps/web.py:2359
 #, python-format
 msgid "Change order of Shelf: '%(name)s'"
 msgstr "Cambiar orden del estante: '%(name)s'"
 
-#: cps/web.py:2419
+#: cps/web.py:2428
 msgid "Found an existing account for this email address."
 msgstr "Existe una cuenta vinculada a esta dirección de correo."
 
-#: cps/web.py:2421 cps/web.py:2425
+#: cps/web.py:2430 cps/web.py:2434
 #, python-format
 msgid "%(name)s's profile"
 msgstr "Perfil de %(name)s"
 
-#: cps/web.py:2422
+#: cps/web.py:2431
 msgid "Profile updated"
 msgstr "Perfil actualizado"
 
-#: cps/web.py:2436
+#: cps/web.py:2443
+msgid "Unknown"
+msgstr ""
+
+#: cps/web.py:2456
 msgid "Admin page"
 msgstr "Página de administración"
 
-#: cps/web.py:2583
+#: cps/web.py:2606
 msgid "Logfile location is not valid, please enter correct path"
 msgstr ""
 
-#: cps/web.py:2586 cps/web.py:2605 cps/web.py:2611 cps/web.py:2625
+#: cps/web.py:2609 cps/web.py:2628 cps/web.py:2634 cps/web.py:2648
 msgid "Basic Configuration"
 msgstr "Configuración básica"
 
-#: cps/web.py:2598
+#: cps/web.py:2621
 msgid "Calibre-web configuration updated"
 msgstr "Configuración de Calibre-web actualizada"
 
-#: cps/web.py:2609
+#: cps/web.py:2632
 msgid "DB location is not valid, please enter correct path"
 msgstr "Localicación de la BD inválida. Por favor, introduzca la ruta correcta."
 
-#: cps/templates/admin.html:34 cps/web.py:2646 cps/web.py:2700
+#: cps/templates/admin.html:34 cps/web.py:2669 cps/web.py:2723
 msgid "Add new user"
 msgstr "Agregar un nuevo usuario"
 
-#: cps/web.py:2691
+#: cps/web.py:2714
 #, python-format
 msgid "User '%(user)s' created"
 msgstr "Usuario '%(user)s' creado"
 
-#: cps/web.py:2695
+#: cps/web.py:2718
 msgid "Found an existing account for this email address or nickname."
 msgstr ""
 "Se ha encontrado una cuenta vinculada a esta dirección de correo o nombre"
 " de usuario."
 
-#: cps/web.py:2718
+#: cps/web.py:2741
 msgid "Mail settings updated"
 msgstr "Parámetros de correo actualizados"
 
-#: cps/web.py:2725
+#: cps/web.py:2748
 #, python-format
 msgid "Test E-Mail successfully send to %(kindlemail)s"
 msgstr "Exito al realizar envio de prueba a %(kindlemail)s"
 
-#: cps/web.py:2728
+#: cps/web.py:2751
 #, python-format
 msgid "There was an error sending the Test E-Mail: %(res)s"
 msgstr "Error al realizar envio de prueba a E-Mail: %(res)s"
 
-#: cps/web.py:2732
+#: cps/web.py:2755
 msgid "E-Mail settings updated"
 msgstr "Ajustes de correo electrónico actualizados"
 
-#: cps/web.py:2733
+#: cps/web.py:2756
 msgid "Edit mail settings"
 msgstr "Editar parametros de correo"
 
-#: cps/web.py:2762
+#: cps/web.py:2785
 #, python-format
 msgid "User '%(nick)s' deleted"
 msgstr "Usuario '%(nick)s' borrado"
 
-#: cps/web.py:2870
+#: cps/web.py:2893
 #, python-format
 msgid "User '%(nick)s' updated"
 msgstr "Usuario '%(nick)s'  actualizado"
 
-#: cps/web.py:2873
+#: cps/web.py:2896
 msgid "An unknown error occured."
 msgstr "Error inesperado."
 
-#: cps/web.py:2876
+#: cps/web.py:2899
 #, python-format
 msgid "Edit User %(nick)s"
 msgstr "Editar Usuario %(nick)s"
 
-#: cps/web.py:2892
+#: cps/web.py:2915
 msgid "Error opening eBook. File does not exist or file is not accessible"
 msgstr ""
 
-#: cps/web.py:2907 cps/web.py:3115 cps/web.py:3120 cps/web.py:3263
+#: cps/web.py:2930 cps/web.py:3138 cps/web.py:3143 cps/web.py:3286
 msgid "edit metadata"
 msgstr "editar metainformación"
 
-#: cps/web.py:2917 cps/web.py:3157
+#: cps/web.py:2940 cps/web.py:3180
 #, python-format
 msgid "File extension \"%s\" is not allowed to be uploaded to this server"
 msgstr "No se permite subir archivos con la extensión \"%s\" a este servidor"
 
-#: cps/web.py:2928
+#: cps/web.py:2951
 #, python-format
 msgid "Failed to store file %s."
 msgstr ""
 
-#: cps/web.py:2950 cps/web.py:2954
+#: cps/web.py:2973 cps/web.py:2977
 msgid "unknown"
 msgstr ""
 
-#: cps/web.py:3163
+#: cps/web.py:3186
 msgid "File to be uploaded must have an extension"
 msgstr "El archivo a subir debe tener una extensión"
 
-#: cps/web.py:3182
+#: cps/web.py:3205
 #, python-format
 msgid "Failed to create path %s (Permission denied)."
 msgstr "Fallo al crear la ruta %s (permiso negado)"
 
-#: cps/web.py:3187
+#: cps/web.py:3210
 #, python-format
 msgid "Failed to store file %s (Permission denied)."
 msgstr "Fallo al almacenar el archivo %s (permiso negado)"
 
-#: cps/web.py:3192
+#: cps/web.py:3215
 #, python-format
 msgid "Failed to delete file %s (Permission denied)."
 msgstr "Fallo al borrar el archivo %s (permiso negado)"
@@ -481,16 +490,16 @@ msgstr "Kindle"
 msgid "DLS"
 msgstr "DLS"
 
-#: cps/templates/admin.html:12 cps/templates/layout.html:68
+#: cps/templates/admin.html:12 cps/templates/layout.html:69
 msgid "Admin"
 msgstr "Administración"
 
-#: cps/templates/admin.html:13 cps/templates/detail.html:21
-#: cps/templates/detail.html:30
+#: cps/templates/admin.html:13 cps/templates/detail.html:22
+#: cps/templates/detail.html:31
 msgid "Download"
 msgstr "Descarga"
 
-#: cps/templates/admin.html:14 cps/templates/layout.html:61
+#: cps/templates/admin.html:14 cps/templates/layout.html:62
 msgid "Upload"
 msgstr "Subir archivo"
 
@@ -661,7 +670,7 @@ msgstr "Descripcion"
 msgid "Tags"
 msgstr "Etiqueta"
 
-#: cps/templates/book_edit.html:39 cps/templates/layout.html:143
+#: cps/templates/book_edit.html:39 cps/templates/layout.html:144
 #: cps/templates/search_form.html:37
 msgid "Series"
 msgstr "Series"
@@ -678,7 +687,7 @@ msgstr "Puntaje"
 msgid "Cover URL (jpg)"
 msgstr "URL de la Cubierta (jpg)"
 
-#: cps/templates/book_edit.html:56 cps/templates/detail.html:130
+#: cps/templates/book_edit.html:56 cps/templates/detail.html:131
 msgid "Publishing date"
 msgstr "Fecha de publicación"
 
@@ -736,7 +745,7 @@ msgstr "Palabra clave"
 msgid " Search keyword "
 msgstr "Buscar palabras clave"
 
-#: cps/templates/book_edit.html:175 cps/templates/layout.html:43
+#: cps/templates/book_edit.html:175 cps/templates/layout.html:44
 msgid "Go!"
 msgstr "¡Vamos!"
 
@@ -748,12 +757,12 @@ msgstr "Haga clic en la portada para cargar la metainformación en el formulario
 msgid "Loading..."
 msgstr "Cargando..."
 
-#: cps/templates/book_edit.html:196 cps/templates/layout.html:207
+#: cps/templates/book_edit.html:196 cps/templates/layout.html:208
 msgid "Close"
 msgstr "Cerrar"
 
 #: cps/templates/book_edit.html:218 cps/templates/book_edit.html:235
-#: cps/templates/detail.html:125 cps/templates/search_form.html:14
+#: cps/templates/detail.html:126 cps/templates/search_form.html:14
 msgid "Publisher"
 msgstr "Editor"
 
@@ -801,8 +810,8 @@ msgstr "Metadata Watch Channel ID"
 msgid "Server Port"
 msgstr "Puerto del servidor"
 
-#: cps/templates/config_edit.html:56 cps/templates/layout.html:119
-#: cps/templates/layout.html:120 cps/templates/shelf_edit.html:7
+#: cps/templates/config_edit.html:56 cps/templates/layout.html:120
+#: cps/templates/layout.html:121 cps/templates/shelf_edit.html:7
 msgid "Title"
 msgstr "Titulo"
 
@@ -938,40 +947,40 @@ msgstr "Mostrar leídos y no leídos"
 msgid "Show random books in detail view"
 msgstr "Mostrar libro aleatorios con vista detallada"
 
-#: cps/templates/config_edit.html:214 cps/templates/layout.html:76
+#: cps/templates/config_edit.html:214 cps/templates/layout.html:77
 #: cps/templates/login.html:4
 msgid "Login"
 msgstr "Inicio de Sesion"
 
-#: cps/templates/detail.html:48
+#: cps/templates/detail.html:49
 msgid "Read in browser"
 msgstr "Ver en el navegador"
 
-#: cps/templates/detail.html:87
+#: cps/templates/detail.html:88
 msgid "Book"
 msgstr "Libro"
 
-#: cps/templates/detail.html:87
+#: cps/templates/detail.html:88
 msgid "of"
 msgstr "de"
 
-#: cps/templates/detail.html:93
+#: cps/templates/detail.html:94
 msgid "language"
 msgstr "Lenguaje"
 
-#: cps/templates/detail.html:167
+#: cps/templates/detail.html:168
 msgid "Read"
 msgstr "Leer"
 
-#: cps/templates/detail.html:176
+#: cps/templates/detail.html:177
 msgid "Description:"
 msgstr "Descripcion :"
 
-#: cps/templates/detail.html:188
+#: cps/templates/detail.html:189
 msgid "Add to shelf"
 msgstr "Agregar al estante"
 
-#: cps/templates/detail.html:250
+#: cps/templates/detail.html:251
 msgid "Edit metadata"
 msgstr "Editar la metadata"
 
@@ -1009,12 +1018,12 @@ msgstr "Guardar cambios"
 msgid "Save settings and send Test E-Mail"
 msgstr "Guardar cambios y enviar un correo de prueba"
 
-#: cps/templates/feed.xml:20 cps/templates/layout.html:191
+#: cps/templates/feed.xml:20 cps/templates/layout.html:192
 msgid "Next"
 msgstr "Siguiente"
 
 #: cps/templates/feed.xml:29 cps/templates/index.xml:7
-#: cps/templates/layout.html:40 cps/templates/layout.html:41
+#: cps/templates/layout.html:41 cps/templates/layout.html:42
 msgid "Search"
 msgstr "Buscar"
 
@@ -1026,7 +1035,7 @@ msgstr "Descubrir (Libros al azar)"
 msgid "Start"
 msgstr "Iniciar"
 
-#: cps/templates/index.xml:14 cps/templates/layout.html:125
+#: cps/templates/index.xml:14 cps/templates/layout.html:126
 msgid "Hot Books"
 msgstr "Libros Populares"
 
@@ -1034,7 +1043,7 @@ msgstr "Libros Populares"
 msgid "Popular publications from this catalog based on Downloads."
 msgstr "Publicaciones mas populares para este catálogo basadas en las descargas."
 
-#: cps/templates/index.xml:20 cps/templates/layout.html:128
+#: cps/templates/index.xml:20 cps/templates/layout.html:129
 msgid "Best rated Books"
 msgstr "Libros mejor valorados"
 
@@ -1054,7 +1063,7 @@ msgstr "Libros recientes"
 msgid "Show Random Books"
 msgstr "Mostrar libros al azar"
 
-#: cps/templates/index.xml:52 cps/templates/layout.html:146
+#: cps/templates/index.xml:52 cps/templates/layout.html:147
 msgid "Authors"
 msgstr "Autores"
 
@@ -1070,7 +1079,7 @@ msgstr "Libros ordenados por Categorias"
 msgid "Books ordered by series"
 msgstr "Libros ordenados por Series"
 
-#: cps/templates/index.xml:70 cps/templates/layout.html:152
+#: cps/templates/index.xml:70 cps/templates/layout.html:153
 msgid "Public Shelves"
 msgstr "Estantes públicos"
 
@@ -1078,7 +1087,7 @@ msgstr "Estantes públicos"
 msgid "Books organized in public shelfs, visible to everyone"
 msgstr ""
 
-#: cps/templates/index.xml:77 cps/templates/layout.html:156
+#: cps/templates/index.xml:77 cps/templates/layout.html:157
 msgid "Your Shelves"
 msgstr "Sus estantes"
 
@@ -1086,80 +1095,80 @@ msgstr "Sus estantes"
 msgid "User's own shelfs, only visible to the current user himself"
 msgstr ""
 
-#: cps/templates/layout.html:30
+#: cps/templates/layout.html:31
 msgid "Toggle navigation"
 msgstr "Alternar navegación"
 
-#: cps/templates/layout.html:51
+#: cps/templates/layout.html:52
 msgid "Advanced Search"
 msgstr "Busqueda avanzada"
 
-#: cps/templates/layout.html:72
+#: cps/templates/layout.html:73
 msgid "Logout"
 msgstr "Cerrar sesión"
 
-#: cps/templates/layout.html:77 cps/templates/register.html:18
+#: cps/templates/layout.html:78 cps/templates/register.html:18
 msgid "Register"
 msgstr "Registro"
 
-#: cps/templates/layout.html:106
+#: cps/templates/layout.html:107
 msgid "Browse"
 msgstr "Explorar"
 
-#: cps/templates/layout.html:108
+#: cps/templates/layout.html:109
 msgid "Recently Added"
 msgstr ""
 
-#: cps/templates/layout.html:113
+#: cps/templates/layout.html:114
 msgid "Sorted Books"
 msgstr ""
 
-#: cps/templates/layout.html:117 cps/templates/layout.html:118
-#: cps/templates/layout.html:119 cps/templates/layout.html:120
+#: cps/templates/layout.html:118 cps/templates/layout.html:119
+#: cps/templates/layout.html:120 cps/templates/layout.html:121
 msgid "Sort By"
 msgstr ""
 
-#: cps/templates/layout.html:117
+#: cps/templates/layout.html:118
 msgid "Newest"
 msgstr ""
 
-#: cps/templates/layout.html:118
+#: cps/templates/layout.html:119
 msgid "Oldest"
 msgstr ""
 
-#: cps/templates/layout.html:119
+#: cps/templates/layout.html:120
 msgid "Ascending"
 msgstr ""
 
-#: cps/templates/layout.html:120
+#: cps/templates/layout.html:121
 msgid "Descending"
 msgstr ""
 
-#: cps/templates/layout.html:137
+#: cps/templates/layout.html:138
 msgid "Discover"
 msgstr "Descubrir"
 
-#: cps/templates/layout.html:140
+#: cps/templates/layout.html:141
 msgid "Categories"
 msgstr "Categoria"
 
-#: cps/templates/layout.html:149 cps/templates/search_form.html:58
+#: cps/templates/layout.html:150 cps/templates/search_form.html:58
 msgid "Languages"
 msgstr "Lenguaje"
 
-#: cps/templates/layout.html:161
+#: cps/templates/layout.html:162
 msgid "Create a Shelf"
 msgstr "Crear un estante"
 
-#: cps/templates/layout.html:162 cps/templates/stats.html:3
+#: cps/templates/layout.html:163 cps/templates/stats.html:3
 msgid "About"
 msgstr "Acerca de"
 
-#: cps/templates/layout.html:176
+#: cps/templates/layout.html:177
 msgid "Previous"
 msgstr ""
 
-#: cps/templates/layout.html:203
+#: cps/templates/layout.html:204
 msgid "Book Details"
 msgstr ""
 
@@ -1329,7 +1338,7 @@ msgstr "Mostrar lenguaje de los libros"
 msgid "Show all"
 msgstr "Mostrar Todo"
 
-#: cps/templates/user_edit.html:98
+#: cps/templates/user_edit.html:99
 msgid "Show mature content"
 msgstr ""
 
