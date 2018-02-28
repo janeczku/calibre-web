@@ -1191,7 +1191,7 @@ def get_matching_tags():
 def index(page):
     entries, random, pagination = fill_indexpage(page, db.Books, True, db.Books.timestamp.desc())
     return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
-                                 title=_(u"Recently Added Books"))
+                                 title=_(u"Recently Added Issues"))
 
 
 @app.route('/books/newest', defaults={'page': 1})
@@ -1201,7 +1201,7 @@ def newest_books(page):
     if current_user.show_sorted():
         entries, random, pagination = fill_indexpage(page, db.Books, True, db.Books.pubdate.desc())
         return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
-                                     title=_(u"Newest Books"))
+                                     title=_(u"Newest Issues"))
     else:
         abort(404)
 
@@ -1212,7 +1212,7 @@ def oldest_books(page):
     if current_user.show_sorted():
         entries, random, pagination = fill_indexpage(page, db.Books, True, db.Books.pubdate)
         return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
-                                     title=_(u"Oldest Books"))
+                                     title=_(u"Oldest Issues"))
     else:
         abort(404)
 
@@ -1224,7 +1224,7 @@ def titles_ascending(page):
     if current_user.show_sorted():
         entries, random, pagination = fill_indexpage(page, db.Books, True, db.Books.sort)
         return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
-                                     title=_(u"Books (A-Z)"))
+                                     title=_(u"Issues (A-Z)"))
     else:
         abort(404)
 
@@ -1235,7 +1235,7 @@ def titles_ascending(page):
 def titles_descending(page):
     entries, random, pagination = fill_indexpage(page, db.Books, True, db.Books.sort.desc())
     return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
-                                 title=_(u"Books (Z-A)"))
+                                 title=_(u"Issues (Z-A)"))
 
 
 @app.route("/hot", defaults={'page': 1})
@@ -1263,7 +1263,7 @@ def hot_books(page):
         numBooks = entries.__len__()
         pagination = Pagination(page, config.config_books_per_page, numBooks)
         return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
-                                     title=_(u"Hot Books (most downloaded)"))
+                                     title=_(u"Hot Issues (most downloaded)"))
     else:
        abort(404)
 
@@ -1276,7 +1276,7 @@ def best_rated_books(page):
         entries, random, pagination = fill_indexpage(page, db.Books, db.Books.ratings.any(db.Ratings.rating > 9),
                                                      db.Books.timestamp.desc())
         return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
-                                     title=_(u"Best rated books"))
+                                     title=_(u"Best Rated Issues"))
     abort(404)
 
 
@@ -1287,7 +1287,7 @@ def discover(page):
     if current_user.show_random_books():
         entries, __, pagination = fill_indexpage(page, db.Books, True, func.randomblob(2))
         pagination = Pagination(1, config.config_books_per_page,config.config_books_per_page)
-        return render_title_template('discover.html', entries=entries, pagination=pagination, title=_(u"Random Books"))
+        return render_title_template('discover.html', entries=entries, pagination=pagination, title=_(u"Random Issues"))
     else:
         abort(404)
 
@@ -1301,7 +1301,7 @@ def author_list():
             .group_by('books_authors_link.author').order_by(db.Authors.sort).all()
         for entry in entries:
             entry.Authors.name=entry.Authors.name.replace('|',',')
-        return render_title_template('list.html', entries=entries, folder='author', title=_(u"Author list"))
+        return render_title_template('list.html', entries=entries, folder='author', title=_(u"Publisher list"))
     else:
         abort(404)
 
@@ -1356,7 +1356,7 @@ def series_list():
         entries = db.session.query(db.Series, func.count('books_series_link.book').label('count'))\
             .join(db.books_series_link).join(db.Books).filter(common_filters())\
             .group_by('books_series_link.series').order_by(db.Series.sort).all()
-        return render_title_template('list.html', entries=entries, folder='series', title=_(u"Series list"))
+        return render_title_template('list.html', entries=entries, folder='series', title=_(u"Comics list"))
     else:
         abort(404)
 
@@ -1370,9 +1370,9 @@ def series(book_id, page):
     name = db.session.query(db.Series).filter(db.Series.id == book_id).first().name
     if entries:
         return render_title_template('index.html', random=random, pagination=pagination, entries=entries,
-                                     title=_(u"Series: %(serie)s", serie=name))
+                                     title=_(u"Comics: %(serie)s", serie=name))
     else:
-        flash(_(u"Error opening eBook. File does not exist or file is not accessible:"), category="error")
+        flash(_(u"Error opening Issue. File does not exist or file is not accessible:"), category="error")
         return redirect(url_for("index"))
 
 
@@ -1975,11 +1975,11 @@ def read_book(book_id, book_format):
                     fd.write(zfile.read(name))
                     fd.close()
             zfile.close()
-        return render_title_template('read.html', bookid=book_id, title=_(u"Read a Book"), bookmark=bookmark)
+        return render_title_template('read.html', bookid=book_id, title=_(u"Read an Issue"), bookmark=bookmark)
     elif book_format.lower() == "pdf":
-        return render_title_template('readpdf.html', pdffile=book_id, title=_(u"Read a Book"))
+        return render_title_template('readpdf.html', pdffile=book_id, title=_(u"Read an Issue"))
     elif book_format.lower() == "txt":
-        return render_title_template('readtxt.html', txtfile=book_id, title=_(u"Read a Book"))
+        return render_title_template('readtxt.html', txtfile=book_id, title=_(u"Read an Issue"))
     else:
         if rar_support == True:
             extensionList = ["cbr","cbt","cbz"]
@@ -1987,7 +1987,7 @@ def read_book(book_id, book_format):
             extensionList = ["cbt","cbz"]
         for fileext in extensionList:
             if book_format.lower() == fileext:
-                return render_title_template('readcbr.html', comicfile=book_id, extension=fileext, title=_(u"Read a Book"), book=book)
+                return render_title_template('readcbr.html', comicfile=book_id, extension=fileext, title=_(u"Read an Issue"), book=book)
         flash(_(u"Error opening eBook. File does not exist or file is not accessible."), category="error")
         return redirect(url_for("index"))
 
