@@ -2,7 +2,7 @@
 {% block body %}
 {% if g.user.show_detail_random() %}
 <div class="discover">
-  <h2>{{_('Discover (Random Books)')}}</h2>
+  <h2>{{_('Discover (Random Issues)')}}</h2>
   <div class="row">
 
     {% for entry in random %}
@@ -17,8 +17,10 @@
           </a>
       </div>
       <div class="meta">
-        <p class="title">{{entry.title|shortentitle}}</p>
-        <p class="author"><a href="{{url_for('author', book_id=entry.authors[0].id) }}">{{entry.authors[0].name}}</a></p>
+        <p class="title"><a href="{{url_for('series', book_id=entry.series[0].id)}}">{{entry.series[0].name}}</a> {{_('#')}}{{entry.series_index}}</p>
+          {% if entry.series|length > 0 %}
+        <p class="author">{{entry.title|shortentitle}}</p>
+          {% endif %}
         {% if entry.ratings.__len__() > 0 %}
         <div class="rating">
           {% for number in range((entry.ratings[0].rating/2)|int(2)) %}
@@ -52,29 +54,24 @@
             {% endif %}
           </a>
       </div>
-      <div class="meta">
-        <p class="title">{{entry.title|shortentitle}}</p>
-        <p class="author">
-          {% for author in entry.authors %}
-            <a href="{{url_for('author', book_id=author.id) }}">{{author.name.replace('|',',')}}</a>
-            {% if not loop.last %}
-              &amp;
+        <div class="meta">
+            <p class="title"><a href="{{url_for('series', book_id=entry.series[0].id)}}">{{entry.series[0].name}}</a> {{_('#')}}{{entry.series_index}}</p>
+            {% if entry.series|length > 0 %}
+            <p class="author">{{entry.title|shortentitle}}</p>
             {% endif %}
-          {% endfor %}
-        </p>
-        {% if entry.ratings.__len__() > 0 %}
-        <div class="rating">
-          {% for number in range((entry.ratings[0].rating/2)|int(2)) %}
-            <span class="glyphicon glyphicon-star good"></span>
-            {% if loop.last and loop.index < 5 %}
-              {% for numer in range(5 - loop.index) %}
+            {% if entry.ratings.__len__() > 0 %}
+            <div class="rating">
+                {% for number in range((entry.ratings[0].rating/2)|int(2)) %}
+                <span class="glyphicon glyphicon-star good"></span>
+                {% if loop.last and loop.index < 5 %}
+                {% for numer in range(5 - loop.index) %}
                 <span class="glyphicon glyphicon-star"></span>
-              {% endfor %}
+                {% endfor %}
+                {% endif %}
+                {% endfor %}
+            </div>
             {% endif %}
-          {% endfor %}
         </div>
-        {% endif %}
-      </div>
     </div>
     {% endfor %}
   {% endif %}

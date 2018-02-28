@@ -102,15 +102,15 @@ msgid "Update finished, please press okay and reload page"
 msgstr "Actualización finalizada. Por favor, pulse OK y recargue la página"
 
 #: cps/web.py:1044
-msgid "Recently Added Books"
+msgid "Recently Added Issues"
 msgstr ""
 
 #: cps/web.py:1054
-msgid "Newest Books"
+msgid "Newest Issues"
 msgstr ""
 
 #: cps/web.py:1065
-msgid "Oldest Books"
+msgid "Oldest Issues"
 msgstr ""
 
 #: cps/web.py:1077
@@ -122,19 +122,19 @@ msgid "Books (Z-A)"
 msgstr ""
 
 #: cps/web.py:1116
-msgid "Hot Books (most downloaded)"
+msgid "Hot Issues (most downloaded)"
 msgstr "Libros populares (los mas descargados)"
 
 #: cps/web.py:1129
-msgid "Best rated books"
+msgid "Best Rated Issues"
 msgstr "Libros mejor valorados"
 
 #: cps/templates/index.xml:32 cps/web.py:1140
-msgid "Random Books"
+msgid "Random Issues"
 msgstr "Libros al azar"
 
 #: cps/web.py:1154
-msgid "Author list"
+msgid "Publisher list"
 msgstr "Lista de autores"
 
 #: cps/web.py:1166 cps/web.py:1225 cps/web.py:1355 cps/web.py:1827
@@ -142,7 +142,7 @@ msgid "Error opening eBook. File does not exist or file is not accessible:"
 msgstr "Error en la apertura del eBook. El archivo no existe o no es accesible:"
 
 #: cps/templates/index.xml:64 cps/web.py:1209
-msgid "Series list"
+msgid "Comics list"
 msgstr "Lista de series"
 
 #: cps/web.py:1223
@@ -194,12 +194,12 @@ msgstr "búsqueda"
 
 #: cps/templates/index.xml:39 cps/templates/index.xml:42
 #: cps/templates/layout.html:131 cps/web.py:1782
-msgid "Read Books"
+msgid "Read Issues"
 msgstr "Libros leídos"
 
 #: cps/templates/index.xml:45 cps/templates/index.xml:48
 #: cps/templates/layout.html:132 cps/web.py:1785
-msgid "Unread Books"
+msgid "Unread Issues"
 msgstr "Libros no leídos"
 
 #: cps/web.py:1860 cps/web.py:1862 cps/web.py:1864 cps/web.py:1873
@@ -953,7 +953,7 @@ msgid "Search"
 msgstr "Buscar"
 
 #: cps/templates/index.html:5
-msgid "Discover (Random Books)"
+msgid "Discover (Random Issues)"
 msgstr "Descubrir (Libros al azar)"
 
 #: cps/templates/index.xml:5
@@ -961,7 +961,7 @@ msgid "Start"
 msgstr "Iniciar"
 
 #: cps/templates/index.xml:14 cps/templates/layout.html:125
-msgid "Hot Books"
+msgid "Hot Issues"
 msgstr "Libros Populares"
 
 #: cps/templates/index.xml:17
@@ -985,7 +985,7 @@ msgid "The latest Books"
 msgstr "Libros recientes"
 
 #: cps/templates/index.xml:35
-msgid "Show Random Books"
+msgid "Show Random Issues"
 msgstr "Mostrar libros al azar"
 
 #: cps/templates/index.xml:52 cps/templates/layout.html:144

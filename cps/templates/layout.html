@@ -110,7 +110,7 @@
               {% if g.user.show_sorted() %}
               <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                  <span class="glyphicon glyphicon-sort-by-attributes"></span> {{_('Sorted Books')}}
+                  <span class="glyphicon glyphicon-sort-by-attributes"></span> {{_('Sorted Issues')}}
                   <span class="caret"></span>
                 </a>
                 <ul class="dropdown-menu">
@@ -122,16 +122,16 @@
               </li>
               {%endif%}
               {% if g.user.show_hot_books() %}
-              <li id="nav_hot"><a href="{{url_for('hot_books')}}"><span class="glyphicon glyphicon-fire"></span> {{_('Hot Books')}}</a></li>
+              <li id="nav_hot"><a href="{{url_for('hot_books')}}"><span class="glyphicon glyphicon-fire"></span> {{_('Hot Issues')}}</a></li>
               {%endif%}
               {% if g.user.show_best_rated_books() %}
-              <li><a href="{{url_for('best_rated_books')}}"><span class="glyphicon glyphicon-star"></span> {{_('Best rated Books')}}</a></li>
+              <li><a href="{{url_for('best_rated_books')}}"><span class="glyphicon glyphicon-star"></span> {{_('Best rated Issues')}}</a></li>
               {%endif%}
               {% if g.user.show_read_and_unread() %}
                 {% if not g.user.is_anonymous %}
-                  <li><a href="{{url_for('read_books')}}"><span class="glyphicon glyphicon-eye-open"></span> {{_('Read Books')}}</a></li>
+                  <li><a href="{{url_for('read_books')}}"><span class="glyphicon glyphicon-eye-open"></span> {{_('Read Issues')}}</a></li>
                 {%endif%}
-                <li><a href="{{url_for('unread_books')}}"><span class="glyphicon glyphicon-eye-close"></span> {{_('Unread Books')}}</a></li>
+                <li><a href="{{url_for('unread_books')}}"><span class="glyphicon glyphicon-eye-close"></span> {{_('Unread Issues')}}</a></li>
               {%endif%}
               {% if g.user.show_random_books() %}
               <li id="nav_rand"><a href="{{url_for('discover')}}"><span class="glyphicon glyphicon-random"></span> {{_('Discover')}}</a></li>
@@ -140,10 +140,10 @@
               <li id="nav_cat"><a href="{{url_for('category_list')}}"><span class="glyphicon glyphicon-inbox"></span> {{_('Categories')}}</a></li>
               {%endif%}
               {% if g.user.show_series() %}
-              <li id="nav_serie"><a href="{{url_for('series_list')}}"><span class="glyphicon glyphicon-bookmark"></span> {{_('Series')}}</a></li>
+              <li id="nav_serie"><a href="{{url_for('series_list')}}"><span class="glyphicon glyphicon-bookmark"></span> {{_('Comics')}}</a></li>
               {%endif%}
               {% if g.user.show_author() %}
-              <li id="nav_author"><a href="{{url_for('author_list')}}"><span class="glyphicon glyphicon-user"></span> {{_('Authors')}}</a></li>
+              <li id="nav_author"><a href="{{url_for('author_list')}}"><span class="glyphicon glyphicon-user"></span> {{_('Publishers')}}</a></li>
               {%endif%}
               {% if g.user.filter_language() == 'all' and g.user.show_language() %}
                 <li id="nav_lang"><a href="{{url_for('language_overview')}}"><span class="glyphicon glyphicon-flag"></span> {{_('Languages')}} </a></li>

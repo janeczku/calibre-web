@@ -57,7 +57,7 @@
       <input type="text" class="form-control" name="config_calibre_web_title" id="config_calibre_web_title" value="{% if content.config_calibre_web_title != None %}{{ content.config_calibre_web_title }}{% endif %}" autocomplete="off" required>
     </div>    
     <div class="form-group">
-      <label for="config_books_per_page">{{_('Books per page')}}</label>
+      <label for="config_books_per_page">{{_('Issues per page')}}</label>
       <input type="number" min="1" max="200" class="form-control" name="config_books_per_page" id="config_books_per_page" value="{% if content.config_books_per_page != None %}{{ content.config_books_per_page }}{% endif %}" autocomplete="off">
     </div>
     <div class="form-group">
@@ -146,7 +146,7 @@
     </div>
     <div class="form-group">
       <input type="checkbox" name="delete_role" id="delete_role" {% if content.role_delete_books() %}checked{% endif %}>
-      <label for="delete_role">{{_('Allow Delete books')}}</label>
+      <label for="delete_role">{{_('Allow Delete issues')}}</label>
     </div>
     <div class="form-group">
       <input type="checkbox" name="passwd_role" id="passwd_role" {% if content.role_passwd() %}checked{% endif %}>

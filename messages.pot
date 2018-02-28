@@ -126,7 +126,7 @@ msgid "Random Books"
 msgstr ""
 
 #: cps/web.py:1154
-msgid "Author list"
+msgid "Publisher list"
 msgstr ""
 
 #: cps/web.py:1166 cps/web.py:1225 cps/web.py:1355 cps/web.py:1827
