@@ -52,7 +52,7 @@
     <title>{{_('Authors')}}</title>
     <link rel="subsection" href="{{url_for('feed_authorindex')}}" type="application/atom+xml;profile=opds-catalog"/>
     <id>{{url_for('feed_authorindex')}}</id>
-    <content type="text">{{_('Issues ordered by Author')}}</content>
+    <content type="text">{{_('Issues ordered by publisher')}}</content>
    </entry>
    <entry>
     <title>{{_('Category list')}}</title>
@@ -64,6 +64,6 @@
     <title>{{_('Comics list')}}</title>
     <link rel="subsection" href="{{url_for('feed_seriesindex')}}" type="application/atom+xml;profile=opds-catalog"/>
     <id>{{url_for('feed_seriesindex')}}</id>
-    <content type="text">{{_('Issues ordered by series')}}</content>
+    <content type="text">{{_('Issues ordered by comics')}}</content>
    </entry>
 </feed>

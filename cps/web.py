@@ -771,7 +771,7 @@ def feed_hot():
     return response
 
 
-@app.route("/opds/author")
+@app.route("/opds/publisher")
 @requires_basic_auth_if_no_ano
 def feed_authorindex():
     off = request.args.get("offset")
@@ -787,7 +787,7 @@ def feed_authorindex():
     return response
 
 
-@app.route("/opds/author/<int:book_id>")
+@app.route("/opds/publisher/<int:book_id>")
 @requires_basic_auth_if_no_ano
 def feed_author(book_id):
     off = request.args.get("offset")
@@ -831,7 +831,7 @@ def feed_category(book_id):
     return response
 
 
-@app.route("/opds/series")
+@app.route("/opds/comics")
 @requires_basic_auth_if_no_ano
 def feed_seriesindex():
     off = request.args.get("offset")
@@ -847,7 +847,7 @@ def feed_seriesindex():
     return response
 
 
-@app.route("/opds/series/<int:book_id>")
+@app.route("/opds/comics/<int:book_id>")
 @requires_basic_auth_if_no_ano
 def feed_series(book_id):
     off = request.args.get("offset")
@@ -918,7 +918,7 @@ def get_opds_download_link(book_id, book_format):
         return response
 
 
-@app.route("/ajax/book/<string:uuid>")
+@app.route("/ajax/issue/<string:uuid>")
 @requires_basic_auth_if_no_ano
 def get_metadata_calibre_companion(uuid):
     entry = db.session.query(db.Books).filter(db.Books.uuid.like("%" + uuid + "%")).first()
@@ -1058,7 +1058,7 @@ def bookmark(book_id, book_format):
     return "", 201
 
 
-@app.route("/get_authors_json", methods=['GET', 'POST'])
+@app.route("/get_publishers_json", methods=['GET', 'POST'])
 @login_required_if_no_ano
 def get_authors_json():
     if request.method == "GET":
@@ -1148,7 +1148,7 @@ def get_languages_json():
         return json_dumps
 
 
-@app.route("/get_series_json", methods=['GET', 'POST'])
+@app.route("/get_comics_json", methods=['GET', 'POST'])
 @login_required_if_no_ano
 def get_series_json():
     if request.method == "GET":
@@ -1194,8 +1194,8 @@ def index(page):
                                  title=_(u"Recently Added Issues"))
 
 
-@app.route('/books/newest', defaults={'page': 1})
-@app.route('/books/newest/page/<int:page>')
+@app.route('/issues/newest', defaults={'page': 1})
+@app.route('/issues/newest/page/<int:page>')
 @login_required_if_no_ano
 def newest_books(page):
     if current_user.show_sorted():
@@ -1205,8 +1205,8 @@ def newest_books(page):
     else:
         abort(404)
 
-@app.route('/books/oldest', defaults={'page': 1})
-@app.route('/books/oldest/page/<int:page>')
+@app.route('/issues/oldest', defaults={'page': 1})
+@app.route('/issues/oldest/page/<int:page>')
 @login_required_if_no_ano
 def oldest_books(page):
     if current_user.show_sorted():
@@ -1217,8 +1217,8 @@ def oldest_books(page):
         abort(404)
 
 
-@app.route('/books/a-z', defaults={'page': 1})
-@app.route('/books/a-z/page/<int:page>')
+@app.route('/issues/a-z', defaults={'page': 1})
+@app.route('/issues/a-z/page/<int:page>')
 @login_required_if_no_ano
 def titles_ascending(page):
     if current_user.show_sorted():
@@ -1229,8 +1229,8 @@ def titles_ascending(page):
         abort(404)
 
 
-@app.route('/books/z-a', defaults={'page': 1})
-@app.route('/books/z-a/page/<int:page>')
+@app.route('/issues/z-a', defaults={'page': 1})
+@app.route('/issues/z-a/page/<int:page>')
 @login_required_if_no_ano
 def titles_descending(page):
     entries, random, pagination = fill_indexpage(page, db.Books, True, db.Books.sort.desc())
@@ -1292,7 +1292,7 @@ def discover(page):
         abort(404)
 
 
-@app.route("/author")
+@app.route("/publisher")
 @login_required_if_no_ano
 def author_list():
     if current_user.show_author():
@@ -1306,8 +1306,8 @@ def author_list():
         abort(404)
 
 
-@app.route("/author/<int:book_id>", defaults={'page': 1})
-@app.route("/author/<int:book_id>/<int:page>'")
+@app.route("/publisher/<int:book_id>", defaults={'page': 1})
+@app.route("/publisher/<int:book_id>/<int:page>'")
 @login_required_if_no_ano
 def author(book_id, page):
     entries, __, pagination = fill_indexpage(page, db.Books, db.Books.authors.any(db.Authors.id == book_id),
@@ -1329,7 +1329,7 @@ def author(book_id, page):
                                  title=name, author=author_info, other_books=other_books)
 
 
-def get_unique_other_books(library_books, author_books):
+def get_unique_other_issues(library_books, author_books):
     # Get all identifiers (ISBN, Goodreads, etc) and filter author's books by that list so we show fewer duplicates
     # Note: Not all images will be shown, even though they're available on Goodreads.com.
     #       See https://www.goodreads.com/topic/show/18213769-goodreads-book-images
@@ -1349,7 +1349,7 @@ def get_unique_other_books(library_books, author_books):
 
 
 
-@app.route("/series")
+@app.route("/comics")
 @login_required_if_no_ano
 def series_list():
     if current_user.show_series():
@@ -1361,8 +1361,8 @@ def series_list():
         abort(404)
 
 
-@app.route("/series/<int:book_id>/", defaults={'page': 1})
-@app.route("/series/<int:book_id>/<int:page>'")
+@app.route("/comics/<int:book_id>/", defaults={'page': 1})
+@app.route("/comics/<int:book_id>/<int:page>'")
 @login_required_if_no_ano
 def series(book_id, page):
     entries, random, pagination = fill_indexpage(page, db.Books, db.Books.series.any(db.Series.id == book_id),
@@ -1449,7 +1449,7 @@ def category(book_id, page):
 
 
 
-@app.route("/book/<int:book_id>")
+@app.route("/issue/<int:book_id>")
 @login_required_if_no_ano
 def show_book(book_id):
     entries = db.session.query(db.Books).filter(db.Books.id == book_id).filter(common_filters()).first()
@@ -1897,15 +1897,15 @@ def render_read_books(page, are_read, as_xml=False):
         return response
     else:
         if are_read:
-            name = _(u'Read Books') + ' (' + str(len(readBookIds)) + ')'
+            name = _(u'Read Issues') + ' (' + str(len(readBookIds)) + ')'
         else:
             total_books = db.session.query(func.count(db.Books.id)).scalar()
-            name = _(u'Unread Books') + ' (' + str(total_books - len(readBookIds)) + ')'
+            name = _(u'Unread Issues') + ' (' + str(total_books - len(readBookIds)) + ')'
         return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
                                 title=_(name, name=name))
 
 
-@app.route("/opds/readbooks/")
+@app.route("/opds/readissues/")
 @login_required_if_no_ano
 def feed_read_books():
     off = request.args.get("offset")
@@ -1914,14 +1914,14 @@ def feed_read_books():
     return render_read_books(int(off) / (int(config.config_books_per_page)) + 1, True, True)
 
 
-@app.route("/readbooks/", defaults={'page': 1})
-@app.route("/readbooks/<int:page>'")
+@app.route("/readissues/", defaults={'page': 1})
+@app.route("/readissues/<int:page>'")
 @login_required_if_no_ano
 def read_books(page):
     return render_read_books(page, True)
 
 
-@app.route("/opds/unreadbooks/")
+@app.route("/opds/unreadissues/")
 @login_required_if_no_ano
 def feed_unread_books():
     off = request.args.get("offset")
@@ -1930,8 +1930,8 @@ def feed_unread_books():
     return render_read_books(int(off) / (int(config.config_books_per_page)) + 1, False, True)
 
 
-@app.route("/unreadbooks/", defaults={'page': 1})
-@app.route("/unreadbooks/<int:page>'")
+@app.route("/unreadissues/", defaults={'page': 1})
+@app.route("/unreadissues/<int:page>'")
 @login_required_if_no_ano
 def unread_books(page):
     return render_read_books(page, False)
@@ -2664,7 +2664,7 @@ def new_user():
             content.sidebar_view += ub.SIDEBAR_RANDOM
         if "show_language" in to_save:
             content.sidebar_view += ub.SIDEBAR_LANGUAGE
-        if "show_series" in to_save:
+        if "show_comics" in to_save:
             content.sidebar_view += ub.SIDEBAR_SERIES
         if "show_category" in to_save:
             content.sidebar_view += ub.SIDEBAR_CATEGORY
@@ -2674,7 +2674,7 @@ def new_user():
             content.sidebar_view += ub.SIDEBAR_READ_AND_UNREAD
         if "show_best_rated" in to_save:
             content.sidebar_view += ub.SIDEBAR_BEST_RATED
-        if "show_author" in to_save:
+        if "show_publisher" in to_save:
             content.sidebar_view += ub.SIDEBAR_AUTHOR
         if "show_detail_random" in to_save:
             content.sidebar_view += ub.DETAIL_RANDOM
@@ -2883,7 +2883,7 @@ def edit_user(user_id):
                                  title=_(u"Edit User %(nick)s", nick=content.nickname))
 
 
-@app.route("/admin/book/<int:book_id>", methods=['GET', 'POST'])
+@app.route("/admin/issue/<int:book_id>", methods=['GET', 'POST'])
 @login_required_if_no_ano
 @edit_required
 def edit_book(book_id):
