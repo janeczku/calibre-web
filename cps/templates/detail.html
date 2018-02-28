@@ -71,14 +71,7 @@
         </div>
       </div>
       <h2>{{entry.title}}</h2>
-      <p class="author">
-          {% for author in entry.authors %}
-            <a href="{{url_for('author', book_id=author.id ) }}">{{author.name.replace('|',',')}}</a>
-            {% if not loop.last %}
-              &amp;
-            {% endif %}
-          {% endfor %}
-        </p>
+
       {% if entry.ratings.__len__() > 0 %}
         <div class="rating">
         <p>
