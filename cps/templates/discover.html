@@ -3,23 +3,32 @@
 <div class="discover load-more">
     <h2>{{title}}</h2>
     <div class="row">
-
         {% for entry in entries %}
-        <div class="col-sm-3 col-lg-2 col-xs-6 book">
+        {% if entry.series_index == 1.0 %}
+        <div id="books" class="col-sm-3 col-lg-2 col-xs-6 book">
             <div class="cover">
-                {% if entry.has_cover is defined %}
-                <a href="{{url_for('series', book_id=entry.id)}}">
-                    <img src="{{ url_for('get_cover', cover_path=entry.book[0].path.replace('\\','/')) }}"
-                         alt="{{ entry.title }}"/>
+                <a href="{{url_for('series', book_id=entry.series[0].id)}}">
+                    <img src="{{ url_for('get_cover', cover_path=entry.path.replace('\\','/')) }}" alt="{{ entry.title }}" />
                 </a>
-                {% endif %}
             </div>
             <div class="meta">
-                <p class="title"><a href="{{url_for('series', book_id=entry.id)}}">{{entry.name}}</a></p>
+                <p class="title"><a href="{{url_for('series', book_id=entry.series[0].id)}}">{{entry.series[0].name}}</a></p>
+                {% if entry.ratings.__len__() > 0 %}
+                <div class="rating">
+                    {% for number in range((entry.ratings[0].rating/2)|int(2)) %}
+                    <span class="glyphicon glyphicon-star good"></span>
+                    {% if loop.last and loop.index < 5 %}
+                    {% for numer in range(5 - loop.index) %}
+                    <span class="glyphicon glyphicon-star"></span>
+                    {% endfor %}
+                    {% endif %}
+                    {% endfor %}
+                </div>
+                {% endif %}
             </div>
         </div>
+        {% endif %}
         {% endfor %}
-
     </div>
 </div>
 {% endblock %}

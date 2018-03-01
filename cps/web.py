@@ -1285,7 +1285,7 @@ def best_rated_books(page):
 @login_required_if_no_ano
 def discover(page):
     if current_user.show_random_books():
-        entries, __, pagination = fill_indexpage(page, db.Series, True, func.randomblob(2))
+        entries, __, pagination = fill_indexpage(page, db.Books, True, func.randomblob(2))
         pagination = Pagination(1, config.config_books_per_page,config.config_books_per_page)
         return render_title_template('discover.html', entries=entries, pagination=pagination, title=_(u"Random Comics"))
     else:
@@ -1313,7 +1313,7 @@ def publisher(book_id, page):
     entries, __, pagination = fill_indexpage(page, db.Books, db.Books.publishers.any(db.Publishers.id == book_id),
                                                  db.Books.timestamp.desc())
     if entries is None:
-        flash(_(u"Error opening eBook. File does not exist or file is not accessible:"), category="error")
+        flash(_(u"Error opening comic. File does not exist or file is not accessible:"), category="error")
         return redirect(url_for("index"))
 
     name = (db.session.query(db.Publishers).filter(db.Publishers.id == book_id).first().name).replace('|',',')
@@ -1370,7 +1370,7 @@ def series(book_id, page):
     name = db.session.query(db.Series).filter(db.Series.id == book_id).first().name
     if entries:
         return render_title_template('index.html', random=random, pagination=pagination, entries=entries,
-                                     title=_(u"Comics: %(serie)s", serie=name))
+                                     title=_(u"Issues for the comic: %(serie)s", serie=name))
     else:
         flash(_(u"Error opening Issue. File does not exist or file is not accessible:"), category="error")
         return redirect(url_for("index"))

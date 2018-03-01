@@ -44,14 +44,7 @@
           {% endif %}
           {% if (g.user.role_download() and g.user.is_anonymous) or g.user.is_authenticated %}
             {% with formats = entry.data|select('canread')|list %}
-              {% if formats|length == 1 %}
                 {% set format = formats|first %}
-                <div class="btn-group" role="group">
-                  <a target="_blank" class="btn btn-primary" href="{{ url_for('read_book', book_id=entry.id, book_format=format.format|lower) }}">{{format.format}}
-                    <span class="glyphicon glyphicon-eye-open"></span> {{_('Read in browser')}}
-                  </a>
-                </div>
-              {% elif formats|length > 1 %}
                 <div class="btn-group" role="group">
                   <button id="read-in-browser" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <span class="glyphicon glyphicon-eye-open"></span> {{_('Read in browser')}}
@@ -65,13 +58,11 @@
                     {%endfor%}
                   </ul>
                 </div>
-              {%endif%}
             {%endwith%}
           {%endif%}
         </div>
       </div>
       <h2>{{entry.title}}</h2>
-
       {% if entry.ratings.__len__() > 0 %}
         <div class="rating">
         <p>

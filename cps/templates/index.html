@@ -17,10 +17,10 @@
           </a>
       </div>
       <div class="meta">
-        <p class="title"><a href="{{url_for('series', book_id=entry.series[0].id)}}">{{entry.series[0].name}}</a> {{_('#')}}{{entry.series_index}}</p>
           {% if entry.series|length > 0 %}
-        <p class="author">{{entry.title|shortentitle}}</p>
+          <p class="title">{{entry.title|shortentitle}}</p>
           {% endif %}
+        <p class="author"><a href="{{url_for('series', book_id=entry.series[0].id)}}">{{entry.series[0].name}}</a> {{_('#')}}{{entry.series_index}}</p>
         {% if entry.ratings.__len__() > 0 %}
         <div class="rating">
           {% for number in range((entry.ratings[0].rating/2)|int(2)) %}
@@ -55,10 +55,10 @@
           </a>
       </div>
         <div class="meta">
-            <p class="title"><a href="{{url_for('series', book_id=entry.series[0].id)}}">{{entry.series[0].name}}</a> {{_('#')}}{{entry.series_index}}</p>
             {% if entry.series|length > 0 %}
-            <p class="author">{{entry.title|shortentitle}}</p>
+            <p class="title">{{entry.title|shortentitle}}</p>
             {% endif %}
+            <p class="author"><a href="{{url_for('series', book_id=entry.series[0].id)}}">{{entry.series[0].name}}</a> {{_('#')}}{{entry.series_index}}</p>
             {% if entry.ratings.__len__() > 0 %}
             <div class="rating">
                 {% for number in range((entry.ratings[0].rating/2)|int(2)) %}
