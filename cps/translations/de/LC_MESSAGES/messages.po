@@ -111,15 +111,15 @@ msgid "Update finished, please press okay and reload page"
 msgstr "Update abgeschlossen, bitte okay drücken und Seite neu laden"
 
 #: cps/web.py:1044
-msgid "Recently Added Books"
+msgid "Recently Added Issues"
 msgstr "Kürzlich hinzugefügte Bücher"
 
 #: cps/web.py:1054
-msgid "Newest Books"
+msgid "Newest Issues"
 msgstr "Neueste Bücher"
 
 #: cps/web.py:1065
-msgid "Oldest Books"
+msgid "Oldest Issues"
 msgstr "Älteste Bücher"
 
 #: cps/web.py:1077
@@ -131,19 +131,19 @@ msgid "Books (Z-A)"
 msgstr "Bücher (Z-A)"
 
 #: cps/web.py:1116
-msgid "Hot Books (most downloaded)"
+msgid "Hot Issues (most downloaded)"
 msgstr "Beliebte Bücher (die meisten Downloads)"
 
 #: cps/web.py:1129
-msgid "Best rated books"
+msgid "Best Rated Issues"
 msgstr "Best bewertete Bücher"
 
 #: cps/templates/index.xml:32 cps/web.py:1140
-msgid "Random Books"
+msgid "Random Issues"
 msgstr "Zufällige Bücher"
 
 #: cps/web.py:1154
-msgid "Author list"
+msgid "Publisher list"
 msgstr "Autorenliste"
 
 #: cps/web.py:1166 cps/web.py:1225 cps/web.py:1355 cps/web.py:1827
@@ -153,7 +153,7 @@ msgstr ""
 "zugänglich."
 
 #: cps/templates/index.xml:64 cps/web.py:1209
-msgid "Series list"
+msgid "Comics list"
 msgstr "Liste Serien"
 
 #: cps/web.py:1223
@@ -205,12 +205,12 @@ msgstr "Suche"
 
 #: cps/templates/index.xml:39 cps/templates/index.xml:42
 #: cps/templates/layout.html:131 cps/web.py:1782
-msgid "Read Books"
+msgid "Read Issues"
 msgstr "Gelesene Bücher"
 
 #: cps/templates/index.xml:45 cps/templates/index.xml:48
 #: cps/templates/layout.html:132 cps/web.py:1785
-msgid "Unread Books"
+msgid "Unread Issues"
 msgstr "Ungelesene Bücher"
 
 #: cps/web.py:1860 cps/web.py:1862 cps/web.py:1864 cps/web.py:1873
@@ -966,7 +966,7 @@ msgid "Search"
 msgstr "Suche"
 
 #: cps/templates/index.html:5
-msgid "Discover (Random Books)"
+msgid "Discover (Random Issues)"
 msgstr "Entdecke (Zufälliges Buch)"
 
 #: cps/templates/index.xml:5
@@ -974,7 +974,7 @@ msgid "Start"
 msgstr "Start"
 
 #: cps/templates/index.xml:14 cps/templates/layout.html:125
-msgid "Hot Books"
+msgid "Hot Issues"
 msgstr "Beliebte Bücher"
 
 #: cps/templates/index.xml:17
@@ -998,7 +998,7 @@ msgid "The latest Books"
 msgstr "Die neuesten Bücher"
 
 #: cps/templates/index.xml:35
-msgid "Show Random Books"
+msgid "Show Random Issues"
 msgstr "Zeige zufällige Bücher"
 
 #: cps/templates/index.xml:52 cps/templates/layout.html:144

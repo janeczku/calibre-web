@@ -1,0 +1,98 @@
+{% extends "layout.html" %}
+{% block body %}
+<h2>{{title}}</h2>
+
+{% if publisher is not none %}
+<section class="publisher-bio">
+  {%if publisher.image_url is not none %}
+  <img src="{{publisher.image_url}}" alt="{{publisher.name|safe}}" class="publisher-photo pull-left">
+  {% endif %}
+
+  {%if publisher.about is not none %}
+  <p>{{publisher.about|safe}}</p>
+  {% endif %}
+
+  - {{_("via")}} <a href="{{publisher.link}}" class="publisher-link" target="_blank" rel="noopener">Goodreads</a>
+</section>
+
+<div class="clearfix"></div>
+{% endif %}
+
+<div class="discover load-more">
+  {% if publisher is not none %}
+    <h3>{{_("In Library")}}</h3>
+  {% endif %}
+  <div class="row">
+    {% if entries[0] %}
+    {% for entry in entries %}
+    <div id="books" class="col-sm-3 col-lg-2 col-xs-6 book">
+      <div class="cover">
+          <a href="{{url_for('series', book_id=entry.series[0].id)}}">
+              <img src="{{ url_for('get_cover', cover_path=entry.path.replace('\\','/')) }}" alt="{{ entry.title }}" />
+          </a>
+      </div>
+      <div class="meta">
+          <p class="title"><a href="{{url_for('series', book_id=entry.series[0].id)}}">{{entry.series[0].name}}</a></p>
+        {% if entry.ratings.__len__() > 0 %}
+        <div class="rating">
+          {% for number in range((entry.ratings[0].rating/2)|int(2)) %}
+          <span class="glyphicon glyphicon-star good"></span>
+          {% if loop.last and loop.index < 5 %}
+          {% for numer in range(5 - loop.index) %}
+          <span class="glyphicon glyphicon-star"></span>
+          {% endfor %}
+          {% endif %}
+          {% endfor %}
+        </div>
+        {% endif %}
+      </div>
+    </div>
+    {% endfor %}
+    {% endif %}
+  </div>
+</div>
+
+{% if other_books %}
+<div class="discover">
+  <h3>{{_("More by")}} {{ publisher.name.replace('|',',')|safe }}</h3>
+  <div class="row">
+    {% for entry in other_books %}
+    <div class="col-sm-3 col-lg-2 col-xs-6 book">
+      <div class="cover">
+        <a href="https://www.goodreads.com/book/show/{{ entry.gid['#text'] }}" target="_blank" rel="noopener">
+          <img src="{{ entry.image_url }}" />
+        </a>
+      </div>
+      <div class="meta">
+        <p class="title">{{entry.title|shortentitle}}</p>
+        <p class="publisher">
+          {% for publisher in entry.publishers %}
+          <a href="https://www.goodreads.com/publisher/show/{{ publisher.gid }}" target="_blank" rel="noopener">
+            {{publisher.name.replace('|',',')}}
+          </a>
+          {% if not loop.last %}
+          &amp;
+          {% endif %}
+          {% endfor %}
+        </p>
+        <div class="rating">
+          {% for number in range((entry.average_rating)|float|round|int(2)) %}
+          <span class="glyphicon glyphicon-star good"></span>
+          {% if loop.last and loop.index < 5 %}
+          {% for numer in range(5 - loop.index) %}
+          <span class="glyphicon glyphicon-star"></span>
+          {% endfor %}
+          {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+  <a href="{{publisher.link}}" class="publisher-link" target="_blank" rel="noopener">
+    <img src="{{ url_for('static', filename='img/goodreads.svg') }}" alt="Goodreads">
+  </a>
+</div>
+{% endif %}
+{% endblock %}

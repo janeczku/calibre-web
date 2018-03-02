@@ -135,7 +135,7 @@ class UserBase:
     def show_category(self):
         return bool((self.sidebar_view is not None)and(self.sidebar_view & SIDEBAR_CATEGORY == SIDEBAR_CATEGORY))
 
-    def show_author(self):
+    def show_publisher(self):
         return bool((self.sidebar_view is not None)and(self.sidebar_view & SIDEBAR_AUTHOR == SIDEBAR_AUTHOR))
 
     def show_best_rated_books(self):

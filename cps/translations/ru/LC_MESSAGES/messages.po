@@ -103,15 +103,15 @@ msgid "Update finished, please press okay and reload page"
 msgstr "Обновления установлены, нажмите okay и перезагрузите страницу"
 
 #: cps/web.py:1044
-msgid "Recently Added Books"
+msgid "Recently Added Issues"
 msgstr ""
 
 #: cps/web.py:1054
-msgid "Newest Books"
+msgid "Newest Issues"
 msgstr ""
 
 #: cps/web.py:1065
-msgid "Oldest Books"
+msgid "Oldest Issues"
 msgstr ""
 
 #: cps/web.py:1077
@@ -123,19 +123,19 @@ msgid "Books (Z-A)"
 msgstr ""
 
 #: cps/web.py:1116
-msgid "Hot Books (most downloaded)"
+msgid "Hot Issues (most downloaded)"
 msgstr "Популярные книги (часто загружаемые)"
 
 #: cps/web.py:1129
-msgid "Best rated books"
+msgid "Best Rated Issues"
 msgstr "Книги с наивысшим рейтингом"
 
 #: cps/templates/index.xml:32 cps/web.py:1140
-msgid "Random Books"
+msgid "Random Issues"
 msgstr "Случайный выбор"
 
 #: cps/web.py:1154
-msgid "Author list"
+msgid "Publisher list"
 msgstr "Авторы"
 
 #: cps/web.py:1166 cps/web.py:1225 cps/web.py:1355 cps/web.py:1827
@@ -143,7 +143,7 @@ msgid "Error opening eBook. File does not exist or file is not accessible:"
 msgstr "Невозможно открыть книгу. Файл не существует или недоступен."
 
 #: cps/templates/index.xml:64 cps/web.py:1209
-msgid "Series list"
+msgid "Comics list"
 msgstr "Серии"
 
 #: cps/web.py:1223
@@ -195,12 +195,12 @@ msgstr "поиск"
 
 #: cps/templates/index.xml:39 cps/templates/index.xml:42
 #: cps/templates/layout.html:131 cps/web.py:1782
-msgid "Read Books"
+msgid "Read Issues"
 msgstr "Прочитанные"
 
 #: cps/templates/index.xml:45 cps/templates/index.xml:48
 #: cps/templates/layout.html:132 cps/web.py:1785
-msgid "Unread Books"
+msgid "Unread Issues"
 msgstr "Непрочитанные"
 
 #: cps/web.py:1860 cps/web.py:1862 cps/web.py:1864 cps/web.py:1873
@@ -950,7 +950,7 @@ msgid "Search"
 msgstr "Поиск"
 
 #: cps/templates/index.html:5
-msgid "Discover (Random Books)"
+msgid "Discover (Random Issues)"
 msgstr "Обзор (случайные книги)"
 
 #: cps/templates/index.xml:5
@@ -958,7 +958,7 @@ msgid "Start"
 msgstr "Старт"
 
 #: cps/templates/index.xml:14 cps/templates/layout.html:125
-msgid "Hot Books"
+msgid "Hot Issues"
 msgstr "Популярные книги"
 
 #: cps/templates/index.xml:17
@@ -982,7 +982,7 @@ msgid "The latest Books"
 msgstr "Последние поступления"
 
 #: cps/templates/index.xml:35
-msgid "Show Random Books"
+msgid "Show Random Issues"
 msgstr "Показывать случайные книги"
 
 #: cps/templates/index.xml:52 cps/templates/layout.html:144

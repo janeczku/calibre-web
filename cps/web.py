@@ -771,7 +771,7 @@ def feed_hot():
     return response
 
 
-@app.route("/opds/author")
+@app.route("/opds/publisher")
 @requires_basic_auth_if_no_ano
 def feed_authorindex():
     off = request.args.get("offset")
@@ -787,7 +787,7 @@ def feed_authorindex():
     return response
 
 
-@app.route("/opds/author/<int:book_id>")
+@app.route("/opds/publisher/<int:book_id>")
 @requires_basic_auth_if_no_ano
 def feed_author(book_id):
     off = request.args.get("offset")
@@ -831,7 +831,7 @@ def feed_category(book_id):
     return response
 
 
-@app.route("/opds/series")
+@app.route("/opds/comics")
 @requires_basic_auth_if_no_ano
 def feed_seriesindex():
     off = request.args.get("offset")
@@ -847,7 +847,7 @@ def feed_seriesindex():
     return response
 
 
-@app.route("/opds/series/<int:book_id>")
+@app.route("/opds/comics/<int:book_id>")
 @requires_basic_auth_if_no_ano
 def feed_series(book_id):
     off = request.args.get("offset")
@@ -918,7 +918,7 @@ def get_opds_download_link(book_id, book_format):
         return response
 
 
-@app.route("/ajax/book/<string:uuid>")
+@app.route("/ajax/issue/<string:uuid>")
 @requires_basic_auth_if_no_ano
 def get_metadata_calibre_companion(uuid):
     entry = db.session.query(db.Books).filter(db.Books.uuid.like("%" + uuid + "%")).first()
@@ -1058,7 +1058,7 @@ def bookmark(book_id, book_format):
     return "", 201
 
 
-@app.route("/get_authors_json", methods=['GET', 'POST'])
+@app.route("/get_publishers_json", methods=['GET', 'POST'])
 @login_required_if_no_ano
 def get_authors_json():
     if request.method == "GET":
@@ -1148,7 +1148,7 @@ def get_languages_json():
         return json_dumps
 
 
-@app.route("/get_series_json", methods=['GET', 'POST'])
+@app.route("/get_comics_json", methods=['GET', 'POST'])
 @login_required_if_no_ano
 def get_series_json():
     if request.method == "GET":
@@ -1191,51 +1191,51 @@ def get_matching_tags():
 def index(page):
     entries, random, pagination = fill_indexpage(page, db.Books, True, db.Books.timestamp.desc())
     return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
-                                 title=_(u"Recently Added Books"))
+                                 title=_(u"Recently Added Issues"))
 
 
-@app.route('/books/newest', defaults={'page': 1})
-@app.route('/books/newest/page/<int:page>')
+@app.route('/issues/newest', defaults={'page': 1})
+@app.route('/issues/newest/page/<int:page>')
 @login_required_if_no_ano
 def newest_books(page):
     if current_user.show_sorted():
         entries, random, pagination = fill_indexpage(page, db.Books, True, db.Books.pubdate.desc())
         return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
-                                     title=_(u"Newest Books"))
+                                     title=_(u"Newest Issues"))
     else:
         abort(404)
 
-@app.route('/books/oldest', defaults={'page': 1})
-@app.route('/books/oldest/page/<int:page>')
+@app.route('/issues/oldest', defaults={'page': 1})
+@app.route('/issues/oldest/page/<int:page>')
 @login_required_if_no_ano
 def oldest_books(page):
     if current_user.show_sorted():
         entries, random, pagination = fill_indexpage(page, db.Books, True, db.Books.pubdate)
         return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
-                                     title=_(u"Oldest Books"))
+                                     title=_(u"Oldest Issues"))
     else:
         abort(404)
 
 
-@app.route('/books/a-z', defaults={'page': 1})
-@app.route('/books/a-z/page/<int:page>')
+@app.route('/issues/a-z', defaults={'page': 1})
+@app.route('/issues/a-z/page/<int:page>')
 @login_required_if_no_ano
 def titles_ascending(page):
     if current_user.show_sorted():
         entries, random, pagination = fill_indexpage(page, db.Books, True, db.Books.sort)
         return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
-                                     title=_(u"Books (A-Z)"))
+                                     title=_(u"Issues (A-Z)"))
     else:
         abort(404)
 
 
-@app.route('/books/z-a', defaults={'page': 1})
-@app.route('/books/z-a/page/<int:page>')
+@app.route('/issues/z-a', defaults={'page': 1})
+@app.route('/issues/z-a/page/<int:page>')
 @login_required_if_no_ano
 def titles_descending(page):
     entries, random, pagination = fill_indexpage(page, db.Books, True, db.Books.sort.desc())
     return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
-                                 title=_(u"Books (Z-A)"))
+                                 title=_(u"Issues (Z-A)"))
 
 
 @app.route("/hot", defaults={'page': 1})
@@ -1263,7 +1263,7 @@ def hot_books(page):
         numBooks = entries.__len__()
         pagination = Pagination(page, config.config_books_per_page, numBooks)
         return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
-                                     title=_(u"Hot Books (most downloaded)"))
+                                     title=_(u"Hot Issues (most downloaded)"))
     else:
        abort(404)
 
@@ -1276,7 +1276,7 @@ def best_rated_books(page):
         entries, random, pagination = fill_indexpage(page, db.Books, db.Books.ratings.any(db.Ratings.rating > 9),
                                                      db.Books.timestamp.desc())
         return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
-                                     title=_(u"Best rated books"))
+                                     title=_(u"Best Rated Issues"))
     abort(404)
 
 
@@ -1287,49 +1287,49 @@ def discover(page):
     if current_user.show_random_books():
         entries, __, pagination = fill_indexpage(page, db.Books, True, func.randomblob(2))
         pagination = Pagination(1, config.config_books_per_page,config.config_books_per_page)
-        return render_title_template('discover.html', entries=entries, pagination=pagination, title=_(u"Random Books"))
+        return render_title_template('discover.html', entries=entries, pagination=pagination, title=_(u"Random Comics"))
     else:
         abort(404)
 
 
-@app.route("/author")
+@app.route("/publisher")
 @login_required_if_no_ano
-def author_list():
-    if current_user.show_author():
-        entries = db.session.query(db.Authors, func.count('books_authors_link.book').label('count'))\
-            .join(db.books_authors_link).join(db.Books).filter(common_filters())\
-            .group_by('books_authors_link.author').order_by(db.Authors.sort).all()
+def publisher_list():
+    if current_user.show_publisher():
+        entries = db.session.query(db.Publishers, func.count('books_publishers_link.book').label('count'))\
+            .join(db.books_publishers_link).join(db.Books).filter(common_filters())\
+            .group_by('books_publishers_link.publisher').order_by(db.Publishers.sort).all()
         for entry in entries:
-            entry.Authors.name=entry.Authors.name.replace('|',',')
-        return render_title_template('list.html', entries=entries, folder='author', title=_(u"Author list"))
+            entry.Publishers.name=entry.Publishers.name.replace('|',',')
+        return render_title_template('list.html', entries=entries, folder='publisher', title=_(u"Publisher list"))
     else:
         abort(404)
 
 
-@app.route("/author/<int:book_id>", defaults={'page': 1})
-@app.route("/author/<int:book_id>/<int:page>'")
+@app.route("/publisher/<int:book_id>", defaults={'page': 1})
+@app.route("/publisher/<int:book_id>/<int:page>'")
 @login_required_if_no_ano
-def author(book_id, page):
-    entries, __, pagination = fill_indexpage(page, db.Books, db.Books.authors.any(db.Authors.id == book_id),
+def publisher(book_id, page):
+    entries, __, pagination = fill_indexpage(page, db.Books, db.Books.publishers.any(db.Publishers.id == book_id),
                                                  db.Books.timestamp.desc())
     if entries is None:
-        flash(_(u"Error opening eBook. File does not exist or file is not accessible:"), category="error")
+        flash(_(u"Error opening comic. File does not exist or file is not accessible:"), category="error")
         return redirect(url_for("index"))
 
-    name = (db.session.query(db.Authors).filter(db.Authors.id == book_id).first().name).replace('|',',')
+    name = (db.session.query(db.Publishers).filter(db.Publishers.id == book_id).first().name).replace('|',',')
 
-    author_info = None
+    publisher_info = None
     other_books = []
     if goodreads_support and config.config_use_goodreads:
         gc = GoodreadsClient(config.config_goodreads_api_key, config.config_goodreads_api_secret)
-        author_info = gc.find_author(author_name=name)
-        other_books = get_unique_other_books(entries.all(), author_info.books)
+        publisher_info = gc.find_publisher(publisher_name=name)
+        other_books = get_unique_other_books(entries.all(), publisher_info.books)
 
-    return render_title_template('author.html', entries=entries, pagination=pagination,
-                                 title=name, author=author_info, other_books=other_books)
+    return render_title_template('publisher.html', entries=entries, pagination=pagination,
+                                 title=name, publisher=publisher_info, other_books=other_books)
 
 
-def get_unique_other_books(library_books, author_books):
+def get_unique_other_issues(library_books, author_books):
     # Get all identifiers (ISBN, Goodreads, etc) and filter author's books by that list so we show fewer duplicates
     # Note: Not all images will be shown, even though they're available on Goodreads.com.
     #       See https://www.goodreads.com/topic/show/18213769-goodreads-book-images
@@ -1349,20 +1349,20 @@ def get_unique_other_books(library_books, author_books):
 
 
 
-@app.route("/series")
+@app.route("/comics")
 @login_required_if_no_ano
 def series_list():
     if current_user.show_series():
         entries = db.session.query(db.Series, func.count('books_series_link.book').label('count'))\
             .join(db.books_series_link).join(db.Books).filter(common_filters())\
             .group_by('books_series_link.series').order_by(db.Series.sort).all()
-        return render_title_template('list.html', entries=entries, folder='series', title=_(u"Series list"))
+        return render_title_template('list.html', entries=entries, folder='series', title=_(u"Comics list"))
     else:
         abort(404)
 
 
-@app.route("/series/<int:book_id>/", defaults={'page': 1})
-@app.route("/series/<int:book_id>/<int:page>'")
+@app.route("/comics/<int:book_id>/", defaults={'page': 1})
+@app.route("/comics/<int:book_id>/<int:page>'")
 @login_required_if_no_ano
 def series(book_id, page):
     entries, random, pagination = fill_indexpage(page, db.Books, db.Books.series.any(db.Series.id == book_id),
@@ -1370,9 +1370,9 @@ def series(book_id, page):
     name = db.session.query(db.Series).filter(db.Series.id == book_id).first().name
     if entries:
         return render_title_template('index.html', random=random, pagination=pagination, entries=entries,
-                                     title=_(u"Series: %(serie)s", serie=name))
+                                     title=_(u"Issues for the comic: %(serie)s", serie=name))
     else:
-        flash(_(u"Error opening eBook. File does not exist or file is not accessible:"), category="error")
+        flash(_(u"Error opening Issue. File does not exist or file is not accessible:"), category="error")
         return redirect(url_for("index"))
 
 
@@ -1449,7 +1449,7 @@ def category(book_id, page):
 
 
 
-@app.route("/book/<int:book_id>")
+@app.route("/issue/<int:book_id>")
 @login_required_if_no_ano
 def show_book(book_id):
     entries = db.session.query(db.Books).filter(db.Books.id == book_id).filter(common_filters()).first()
@@ -1897,15 +1897,15 @@ def render_read_books(page, are_read, as_xml=False):
         return response
     else:
         if are_read:
-            name = _(u'Read Books') + ' (' + str(len(readBookIds)) + ')'
+            name = _(u'Read Issues') + ' (' + str(len(readBookIds)) + ')'
         else:
             total_books = db.session.query(func.count(db.Books.id)).scalar()
-            name = _(u'Unread Books') + ' (' + str(total_books - len(readBookIds)) + ')'
+            name = _(u'Unread Issues') + ' (' + str(total_books - len(readBookIds)) + ')'
         return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
                                 title=_(name, name=name))
 
 
-@app.route("/opds/readbooks/")
+@app.route("/opds/readissues/")
 @login_required_if_no_ano
 def feed_read_books():
     off = request.args.get("offset")
@@ -1975,11 +1975,11 @@ def read_book(book_id, book_format):
                     fd.write(zfile.read(name))
                     fd.close()
             zfile.close()
-        return render_title_template('read.html', bookid=book_id, title=_(u"Read a Book"), bookmark=bookmark)
+        return render_title_template('read.html', bookid=book_id, title=_(u"Read an Issue"), bookmark=bookmark)
     elif book_format.lower() == "pdf":
-        return render_title_template('readpdf.html', pdffile=book_id, title=_(u"Read a Book"))
+        return render_title_template('readpdf.html', pdffile=book_id, title=_(u"Read an Issue"))
     elif book_format.lower() == "txt":
-        return render_title_template('readtxt.html', txtfile=book_id, title=_(u"Read a Book"))
+        return render_title_template('readtxt.html', txtfile=book_id, title=_(u"Read an Issue"))
     else:
         if rar_support == True:
             extensionList = ["cbr","cbt","cbz"]
@@ -1987,7 +1987,7 @@ def read_book(book_id, book_format):
             extensionList = ["cbt","cbz"]
         for fileext in extensionList:
             if book_format.lower() == fileext:
-                return render_title_template('readcbr.html', comicfile=book_id, extension=fileext, title=_(u"Read a Book"), book=book)
+                return render_title_template('readcbr.html', comicfile=book_id, extension=fileext, title=_(u"Read an Issue"), book=book)
         flash(_(u"Error opening eBook. File does not exist or file is not accessible."), category="error")
         return redirect(url_for("index"))
 
@@ -2434,7 +2434,7 @@ def profile():
             content.sidebar_view += ub.SIDEBAR_HOT
         if "show_best_rated" in to_save:
             content.sidebar_view += ub.SIDEBAR_BEST_RATED
-        if "show_author" in to_save:
+        if "show_publisher" in to_save:
             content.sidebar_view += ub.SIDEBAR_AUTHOR
         if "show_read_and_unread" in to_save:
             content.sidebar_view += ub.SIDEBAR_READ_AND_UNREAD
@@ -2674,7 +2674,7 @@ def new_user():
             content.sidebar_view += ub.SIDEBAR_READ_AND_UNREAD
         if "show_best_rated" in to_save:
             content.sidebar_view += ub.SIDEBAR_BEST_RATED
-        if "show_author" in to_save:
+        if "show_publisher" in to_save:
             content.sidebar_view += ub.SIDEBAR_AUTHOR
         if "show_detail_random" in to_save:
             content.sidebar_view += ub.DETAIL_RANDOM
@@ -2852,9 +2852,9 @@ def edit_user(user_id):
             elif "show_read_and_unread" not in to_save and content.show_read_and_unread():
                 content.sidebar_view -= ub.SIDEBAR_READ_AND_UNREAD
 
-            if "show_author" in to_save and not content.show_author():
+            if "show_publisher" in to_save and not content.show_publisher():
                 content.sidebar_view += ub.SIDEBAR_AUTHOR
-            elif "show_author" not in to_save and content.show_author():
+            elif "show_publisher" not in to_save and content.show_publisher():
                 content.sidebar_view -= ub.SIDEBAR_AUTHOR
 
             if "show_detail_random" in to_save and not content.show_detail_random():
