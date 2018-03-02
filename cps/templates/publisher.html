@@ -25,7 +25,7 @@
   <div class="row">
     {% if entries[0] %}
     {% for entry in entries %}
-      {% for series_index in entry[:1] %}
+      {% if entry.series_index[:1] %}
     <div id="books" class="col-sm-3 col-lg-2 col-xs-6 book">
       <div class="cover">
           <a href="{{url_for('series', book_id=entry.series[0].id)}}">
@@ -48,7 +48,7 @@
         {% endif %}
       </div>
     </div>
-      {% endfor %}
+      {% endif %}
     {% endfor %}
     {% endif %}
   </div>
