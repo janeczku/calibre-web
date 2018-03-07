@@ -3169,139 +3169,8 @@ def upload():
     if not config.config_uploading:
         abort(404)
     # create the function for sorting...
-    db.session.connection().connection.connection.create_function("title_sort", 1, db.title_sort)
-    db.session.connection().connection.connection.create_function('uuid4', 0, lambda: str(uuid4()))
     if request.method == 'POST' and 'btn-upload' in request.files:
-        requested_file = request.files['btn-upload']
-        if '.' in requested_file.filename:
-            file_ext = requested_file.filename.rsplit('.', 1)[-1].lower()
-            if file_ext not in ALLOWED_EXTENSIONS:
-                flash(
-                    _('File extension "%s" is not allowed to be uploaded to this server' %
-                    file_ext),
-                    category="error"
-                )
-                return redirect(url_for('index'))
-        else:
-            flash(_('File to be uploaded must have an extension'), category="error")
-            return redirect(url_for('index'))
-        meta = uploader.upload(requested_file)
-
-        title = meta.title
-        author = meta.author
-        tags = meta.tags
-        series = meta.series
-        series_index = meta.series_id
-        title_dir = helper.get_valid_filename(title)
-        author_dir = helper.get_valid_filename(author)
-        data_name = title_dir
-        filepath = config.config_calibre_dir + os.sep + author_dir + os.sep + title_dir
-        saved_filename = filepath + os.sep + data_name + meta.extension.lower()
-
-        if not os.path.exists(filepath):
-            try:
-                os.makedirs(filepath)
-            except OSError:
-                flash(_(u"Failed to create path %s (Permission denied)." % filepath), category="error")
-                return redirect(url_for('index'))
-        try:
-            copyfile(meta.file_path, saved_filename)
-        except OSError:
-            flash(_(u"Failed to store file %s (Permission denied)." % saved_filename), category="error")
-            return redirect(url_for('index'))
-        try:
-            os.unlink(meta.file_path)
-        except OSError:
-            flash(_(u"Failed to delete file %s (Permission denied)." % meta.file_path), category="warning")
-
-        file_size = os.path.getsize(saved_filename)
-        if meta.cover is None:
-            has_cover = 0
-            basedir = os.path.dirname(__file__)
-            copyfile(os.path.join(basedir, "static/generic_cover.jpg"), os.path.join(filepath, "cover.jpg"))
-        else:
-            has_cover = 1
-            move(meta.cover, os.path.join(filepath, "cover.jpg"))
-
-        is_author = db.session.query(db.Authors).filter(db.Authors.name == author).first()
-        if is_author:
-            db_author = is_author
-        else:
-            db_author = db.Authors(author, helper.get_sorted_author(author), "")
-            db.session.add(db_author)
-
-        db_series = None
-        is_series = db.session.query(db.Series).filter(db.Series.name == series).first()
-        if is_series:
-            db_series = is_series
-        elif series != '':
-            db_series = db.Series(series, "")
-            db.session.add(db_series)
-
-        # add language actually one value in list
-        input_language = meta.languages
-        db_language = None
-        if input_language != "":
-            input_language = isoLanguages.get(name=input_language).part3
-            hasLanguage = db.session.query(db.Languages).filter(db.Languages.lang_code == input_language).first()
-            if hasLanguage:
-                db_language = hasLanguage
-            else:
-                db_language = db.Languages(input_language)
-                db.session.add(db_language)
-        # combine path and normalize path from windows systems
-        path = os.path.join(author_dir, title_dir).replace('\\', '/')
-        db_book = db.Books(title, "", db_author.sort, datetime.datetime.now(), datetime.datetime(101, 1, 1),
-                           series_index, datetime.datetime.now(), path, has_cover, db_author, [], db_language)
-        db_book.authors.append(db_author)
-        if db_series:
-            db_book.series.append(db_series)
-        if db_language is not None:
-            db_book.languages.append(db_language)
-        db_data = db.Data(db_book, meta.extension.upper()[1:], file_size, data_name)
-        db_book.data.append(db_data)
-
-        db.session.add(db_book)
-        db.session.flush()  # flush content get db_book.id avalible
-        # add comment
-        upload_comment = Markup(meta.description).unescape()
-        if upload_comment != "":
-            db.session.add(db.Comments(upload_comment, db_book.id))
-        db.session.commit()
-
-        input_tags = tags.split(',')
-        input_tags = list(map(lambda it: it.strip(), input_tags))
-        modify_database_object(input_tags, db_book.tags, db.Tags, db.session, 'tags')
-
-        if db_language is not None:  # display Full name instead of iso639.part3
-            db_book.languages[0].language_name = _(meta.languages)
-        author_names = []
-        for author in db_book.authors:
-            author_names.append(author.name)
-        if config.config_use_google_drive:
-            updateGdriveCalibreFromLocal()
-        cc = db.session.query(db.Custom_Columns).filter(db.Custom_Columns.datatype.notin_(db.cc_exceptions)).all()
-        if current_user.role_edit() or current_user.role_admin():
-            return render_title_template('book_edit.html', book=db_book, authors=author_names, cc=cc,
-                                         title=_(u"edit metadata"))
-        book_in_shelfs = []
-        return render_title_template('detail.html', entry=db_book, cc=cc, title=db_book.title,
-                                     books_shelfs=book_in_shelfs, )
-    else:
-        return redirect(url_for("index"))
-
-
-@app.route("/upload_multi", methods=["GET", "POST"])
-@login_required_if_no_ano
-@upload_required
-def upload_multi():
-    if not config.config_uploading:
-        abort(404)
-    # create the function for sorting...
-    if request.method == 'POST' and 'btn-upload' in request.files:
-        #requested_file = request.files['btn-upload']
         for requested_file in request.files.getlist("btn-upload"):
-            print(requested_file.filename);
             db.session.connection().connection.connection.create_function("title_sort", 1, db.title_sort)
             db.session.connection().connection.connection.create_function('uuid4', 0, lambda: str(uuid4()))
             if '.' in requested_file.filename:
@@ -3411,11 +3280,15 @@ def upload_multi():
                 author_names.append(author.name)
             if config.config_use_google_drive:
                 updateGdriveCalibreFromLocal()
+            if len(request.files.getlist("btn-upload")) < 2:
+                cc = db.session.query(db.Custom_Columns).filter(db.Custom_Columns.datatype.notin_(db.cc_exceptions)).all()
+                if current_user.role_edit() or current_user.role_admin():
+                    return render_title_template('book_edit.html', book=db_book, authors=author_names, cc=cc,title=_(u"edit metadata"))
+                book_in_shelfs = []
+                return render_title_template('detail.html', entry=db_book, cc=cc, title=db_book.title, books_shelfs=book_in_shelfs, )
         return redirect(url_for("index"))
     else:
         return redirect(url_for("index"))
-
-
 
 def start_gevent():
     from gevent.wsgi import WSGIServer
