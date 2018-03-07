@@ -3411,7 +3411,6 @@ def upload_multi():
                 author_names.append(author.name)
             if config.config_use_google_drive:
                 updateGdriveCalibreFromLocal()
-            cc = db.session.query(db.Custom_Columns).filter(db.Custom_Columns.datatype.notin_(db.cc_exceptions)).all()
         return redirect(url_for("index"))
     else:
         return redirect(url_for("index"))
