@@ -666,12 +666,12 @@ def feed_search(term):
     if term:
         term = term.strip().lower()
         db.session.connection().connection.connection.create_function("lower", 1, db.lcase)
-        entries = db.session.query(db.Books).filter(db.or_(db.Books.tags.any(db.Tags.name.ilike("%" + term + "%")),
-                                                    db.Books.series.any(db.Series.name.ilike("%" + term + "%")),
-                                                    db.Books.authors.any(db.Authors.name.ilike("%" + term + "%")),
-                                                    db.Books.publishers.any(db.Publishers.name.ilike("%" + term + "%")),
-                                                    db.Books.title.ilike("%" + term + "%")))\
-            .filter(common_filters()).all()
+        entries = db.session.query(db.Books).filter(common_filters()).filter(
+            db.or_(db.Books.tags.any(db.Tags.name.ilike("%" + term + "%")),
+            db.Books.series.any(db.Series.name.ilike("%" + term + "%")),
+            db.Books.authors.any(db.Authors.name.ilike("%" + term + "%")),
+            db.Books.publishers.any(db.Publishers.name.ilike("%" + term + "%")),
+            db.Books.title.ilike("%" + term + "%"))).all()
         entriescount = len(entries) if len(entries) > 0 else 1
         pagination = Pagination(1, entriescount, entriescount)
         xml = render_title_template('feed.xml', searchterm=term, entries=entries, pagination=pagination)
@@ -1667,12 +1667,13 @@ def search():
 
     if term:
         db.session.connection().connection.connection.create_function("lower", 1, db.lcase)
-        entries = db.session.query(db.Books).filter(db.or_(db.Books.tags.any(db.Tags.name.ilike("%" + term + "%")),
-                                                    db.Books.series.any(db.Series.name.ilike("%" + term + "%")),
-                                                    db.Books.authors.any(db.Authors.name.ilike("%" + term + "%")),
-                                                    db.Books.publishers.any(db.Publishers.name.ilike("%" + term + "%")),
-                                                    db.Books.title.ilike("%" + term + "%")))\
-            .filter(common_filters()).all()
+        entries = db.session.query(db.Books).filter(common_filters()).filter(
+            db.or_(db.Books.tags.any(db.Tags.name.ilike("%" + term + "%")),
+            db.Books.series.any(db.Series.name.ilike("%" + term + "%")),
+            db.Books.authors.any(db.Authors.name.ilike("%" + term + "%")),
+            db.Books.publishers.any(db.Publishers.name.ilike("%" + term + "%")),
+            db.Books.title.ilike("%" + term + "%"))).all()
+
         # entries = db.session.query(db.Books).with_entities(db.Books.title).filter(db.Books.title.ilike("%" + term + "%")).all()
         # result = db.session.execute("select name from authors where lower(name) like '%" + term.lower() + "%'")
         # entries = result.fetchall()
@@ -1719,9 +1720,13 @@ def advanced_search():
                     lang.name = _(isoLanguages.get(part3=lang.lang_code).name)
             searchterm.extend(language.name for language in language_names)
             searchterm = " + ".join(filter(None, searchterm))
-            q = q.filter(db.Books.authors.any(db.Authors.name.ilike("%" + author_name + "%")),
-                         db.Books.title.ilike("%" + book_title + "%"),
-                         db.Books.publishers.any(db.Publishers.name.ilike("%" + publisher + "%")))
+            q = q.filter()
+            if author_name:
+                q = q.filter(db.Books.authors.any(db.Authors.name.ilike("%" + author_name + "%")))
+            if book_title:
+                q = q.filter(db.Books.title.ilike("%" + book_title + "%"))
+            if publisher:
+                q = q.filter(db.Books.publishers.any(db.Publishers.name.ilike("%" + publisher + "%")))
             for tag in include_tag_inputs:
                 q = q.filter(db.Books.tags.any(db.Tags.id == tag))
             for tag in exclude_tag_inputs:
