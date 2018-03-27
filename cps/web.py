@@ -2601,6 +2601,9 @@ def configuration_helper(origin):
             content.config_default_show = content.config_default_show + ub.SIDEBAR_RECENT
         if "show_sorted" in to_save:
             content.config_default_show = content.config_default_show + ub.SIDEBAR_SORTED
+        if "show_mature_content" in to_save:
+            content.config_default_show = content.config_default_show + ub.MATURE_CONTENT
+
         if content.config_logfile != to_save["config_logfile"]:
             # check valid path, only path or file
             if os.path.dirname(to_save["config_logfile"]):
@@ -2724,6 +2727,7 @@ def new_user():
     else:
         content.role = config.config_default_role
         content.sidebar_view = config.config_default_show
+        content.mature_content = bool(config.config_default_show & ub.MATURE_CONTENT)
     return render_title_template("user_edit.html", new_user=1, content=content, translations=translations,
                                  languages=languages, title=_(u"Add new user"))
 
