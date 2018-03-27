@@ -82,7 +82,8 @@ Once a project has been created, we need to create a client ID and a client secr
 4. Click Create Credentials and OAuth Client ID
 5. Select Web Application and then next
 6. Give the Credentials a name and enter your callback, which will be CALIBRE_WEB_URL/gdrive/callback
-7. Finally click save
+7. Click save
+8. Download json file and place it in `calibre-web/cps` directory, with the name `client_secrets.json`  
 
 The Drive API should now be setup and ready to use, so we need to integrate it into Calibre-Web. This is done as below: -
 
@@ -92,15 +93,17 @@ The Drive API should now be setup and ready to use, so we need to integrate it i
 3. Enter Client Secret and Client Key as provided via previous steps
 4. Enter the folder that is the root of your calibre library
 5. Enter base URL for calibre (used for google callbacks)
-6. Now select Authenticate Google Drive
-7. This should redirect you to google to allow it top use your Drive, and then redirect you back to the config page
-8. Google Drive should now be connected and be used to get images and download Epubs. The metadata.db is stored in the calibre library location
+6. Click the "Submit" button
+7. Come back to the configuration form
+8. Now select Authenticate Google Drive
+9. This should redirect you to google to allow it top use your Drive, and then redirect you back to the config page
+10. Google Drive should now be connected and be used to get images and download Epubs. The metadata.db is stored in the calibre library location
 
 ### Optional
 If your calibre web is using https, it is possible to add a "watch" to the drive. This will inform us if the metadata.db file is updated and allow us to update our calibre library accordingly.
 
-9. Click enable watch of metadata.db
-10. Note that this expires after a week, so will need to be manually refresh 
+11. Click enable watch of metadata.db
+12. Note that this expires after a week, so will need to be manually refresh 
 
 ## Docker image
 
