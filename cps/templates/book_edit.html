@@ -48,7 +48,7 @@
       <input type="number"  name="rating" id="rating" class="rating input-lg" data-clearable="" value="{% if book.ratings %}{{(book.ratings[0].rating / 2)|int}}{% endif %}">
     </div>
     <div class="form-group">
-      <label for="cover_url">{{_('Cover URL (jpg)')}}</label>
+      <label for="cover_url">{{_('Cover URL (jpg, cover is downloaded and stored in database, field is afterwards empty again)')}}</label>
       <input type="text" class="form-control" name="cover_url" id="cover_url" value="">
     </div>
 

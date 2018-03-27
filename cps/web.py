@@ -3002,8 +3002,11 @@ def edit_book(book_id):
         updateGdriveCalibreFromLocal()
 
     if not error:
-        if to_save["cover_url"] and save_cover(to_save["cover_url"], book.path):
-            book.has_cover = 1
+        if to_save["cover_url"]:
+            if save_cover(to_save["cover_url"], book.path) is true:
+                book.has_cover = 1
+            else:
+                flash(_(u"Cover is not a jpg file, can't save"), category="error")
 
         if book.series_index != to_save["series_index"]:
             book.series_index = to_save["series_index"]
@@ -3155,6 +3158,7 @@ def edit_book(book_id):
 def save_cover(url, book_path):
     img = requests.get(url)
     if img.headers.get('content-type') != 'image/jpeg':
+        app.logger.error("Cover is no jpg file, can't save")
         return false
 
     if config.config_use_google_drive:
@@ -3163,11 +3167,13 @@ def save_cover(url, book_path):
         f.write(img.content)
         f.close()
         gdriveutils.uploadFileToEbooksFolder(Gdrive.Instance().drive, os.path.join(book_path, 'cover.jpg'), os.path.join(tmpDir, f.name))
+        app.logger.info("Cover is saved on gdrive")
         return true
 
     f = open(os.path.join(config.config_calibre_dir, book_path, "cover.jpg"), "wb")
     f.write(img.content)
     f.close()
+    app.logger.info("Cover is saved")
     return true
 
 
