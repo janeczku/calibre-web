@@ -203,6 +203,10 @@
           <input type="checkbox" name="show_detail_random" id="show_detail_random" {% if content.show_detail_random() %}checked{% endif %}>
           <label for="show_detail_random">{{_('Show random books in detail view')}}</label>
       </div>
+      <div class="form-group">
+          <input type="checkbox" name="show_mature_content" id="show_mature_content" {% if content.show_mature_content() %}checked{% endif %}>
+          <label for="show_mature_content">{{_('Show mature content')}}</label>
+      </div>
     </div>
     </div>
     <div class="col-sm-12">

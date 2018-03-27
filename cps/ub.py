@@ -41,7 +41,7 @@ SIDEBAR_BEST_RATED = 128
 SIDEBAR_READ_AND_UNREAD = 256
 SIDEBAR_RECENT = 512
 SIDEBAR_SORTED = 1024
-
+MATURE_CONTENT = 2048
 
 DEFAULT_PASS = "admin123"
 DEFAULT_PORT = int(os.environ.get("CALIBRE_PORT", 8083))
@@ -458,6 +458,10 @@ class Config:
         return bool((self.config_default_show is not None) and
                     (self.config_default_show & SIDEBAR_SORTED == SIDEBAR_SORTED))
 
+    def show_mature_content(self):
+        return bool((self.config_default_show is not None) and
+                    (self.config_default_show & MATURE_CONTENT == MATURE_CONTENT))
+
     def mature_content_tags(self):
         if sys.version_info > (3, 0): # Python3 str, Python2 unicode
             lstrip = str.lstrip
@@ -665,7 +669,7 @@ def create_admin_user():
     user.role = ROLE_USER + ROLE_ADMIN + ROLE_DOWNLOAD + ROLE_UPLOAD + ROLE_EDIT + ROLE_DELETE_BOOKS + ROLE_PASSWD
     user.sidebar_view = DETAIL_RANDOM + SIDEBAR_LANGUAGE + SIDEBAR_SERIES + SIDEBAR_CATEGORY + SIDEBAR_HOT + \
             SIDEBAR_RANDOM + SIDEBAR_AUTHOR + SIDEBAR_BEST_RATED + SIDEBAR_READ_AND_UNREAD + SIDEBAR_RECENT + \
-            SIDEBAR_SORTED
+            SIDEBAR_SORTED + MATURE_CONTENT
 
     user.password = generate_password_hash(DEFAULT_PASS)
 
