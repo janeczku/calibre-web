@@ -155,6 +155,14 @@ Listen 443
 </VirtualHost>
 ```
 
+## (Optional) SSL Configuration
+
+For configuration of calibre-web as SSL Server go to the Config page in the Admin section. Enter the certfile- and keyfile-location, optionally change port to 443 and press submit. 
+Afterwards the server can only be accessed via SSL. In case of a misconfiguration (wrong/invalid files) both files can be overridden via command line options 
+-c [certfile location] -k [keyfile location]
+By using "" as file locations the server runs as non SSL server again. The correct file path can than be entered on the Config page. After the next restart without command line options the changed file paths are applied.
+
+
 ## Start Calibre-Web as service under Linux
 
 Create a file "cps.service" as root in the folder /etc/systemd/system with the following content:
@@ -183,5 +191,6 @@ Starting the script with `-h` lists all supported command line options
 Currently supported are 2 options, which are both useful for running multiple instances of Calibre-Web
 
 `"-p path"` allows to specify the location of the settings database 
-`"-p path"` allows to specify the location of the google-drive database 
-
+`"-g path"` allows to specify the location of the google-drive database 
+`"-c path"` allows to specify the location of SSL certfile, works only in combination with keyfile 
+`"-k path"` allows to specify the location of SSL keyfile, works only in combination with certfile 

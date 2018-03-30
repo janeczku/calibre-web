@@ -272,6 +272,8 @@ class Settings(Base):
     mail_from = Column(String)
     config_calibre_dir = Column(String)
     config_port = Column(Integer, default=DEFAULT_PORT)
+    config_certfile = Column(String)
+    config_keyfile = Column(String)
     config_calibre_web_title = Column(String, default=u'Calibre-web')
     config_books_per_page = Column(Integer, default=60)
     config_random_books = Column(Integer, default=4)
@@ -328,8 +330,11 @@ class Config:
 
     def loadSettings(self):
         data = session.query(Settings).first()  # type: Settings
+
         self.config_calibre_dir = data.config_calibre_dir
         self.config_port = data.config_port
+        self.config_certfile = data.config_certfile
+        self.config_keyfile  = data.config_keyfile
         self.config_calibre_web_title = data.config_calibre_web_title
         self.config_books_per_page = data.config_books_per_page
         self.config_random_books = data.config_random_books
@@ -364,6 +369,24 @@ class Config:
     @property
     def get_main_dir(self):
         return self.config_main_dir
+
+    def get_config_certfile(self):
+        if cli.certfilepath:
+            return cli.certfilepath
+        else:
+            if cli.certfilepath is "":
+                return None
+            else:
+                return self.config_certfile
+
+    def get_config_keyfile(self):
+        if cli.keyfilepath:
+            return cli.keyfilepath
+        else:
+            if cli.certfilepath is "":
+                return None
+            else:
+                return self.config_keyfile
 
     def get_config_logfile(self):
         if not self.config_logfile:
@@ -607,6 +630,14 @@ def migrate_Database():
     except exc.OperationalError:  # Database is not compatible, some rows are missing
         conn = engine.connect()
         conn.execute("ALTER TABLE Settings ADD column `config_logfile` String DEFAULT ''")
+        session.commit()
+    try:
+        session.query(exists().where(Settings.config_certfile)).scalar()
+        session.commit()
+    except exc.OperationalError:  # Database is not compatible, some rows are missing
+        conn = engine.connect()
+        conn.execute("ALTER TABLE Settings ADD column `config_certfile` String DEFAULT ''")
+        conn.execute("ALTER TABLE Settings ADD column `config_keyfile` String DEFAULT ''")
         session.commit()
 
 

@@ -2522,6 +2522,28 @@ def configuration_helper(origin):
             if content.config_port != int(to_save["config_port"]):
                 content.config_port = int(to_save["config_port"])
                 reboot_required = True
+        if "config_keyfile" in to_save:
+            if content.config_keyfile != to_save["config_keyfile"]:
+                if os.path.isfile(to_save["config_keyfile"]) or to_save["config_keyfile"] is u"":
+                    content.config_keyfile = to_save["config_keyfile"]
+                    reboot_required = True
+                else:
+                    ub.session.commit()
+                    flash(_(u'Keyfile location is not valid, please enter correct path'), category="error")
+                    return render_title_template("config_edit.html", content=config, origin=origin,
+                                                 gdrive=gdrive_support,
+                                                 goodreads=goodreads_support, title=_(u"Basic Configuration"))
+        if "config_certfile" in to_save:
+            if content.config_certfile != to_save["config_certfile"]:
+                if os.path.isfile(to_save["config_certfile"]) or to_save["config_certfile"] is u"":
+                    content.config_certfile = to_save["config_certfile"]
+                    reboot_required = True
+                else:
+                    ub.session.commit()
+                    flash(_(u'Certfile location is not valid, please enter correct path'), category="error")
+                    return render_title_template("config_edit.html", content=config, origin=origin,
+                                                 gdrive=gdrive_support,
+                                                 goodreads=goodreads_support, title=_(u"Basic Configuration"))
         if "config_calibre_web_title" in to_save:
             content.config_calibre_web_title = to_save["config_calibre_web_title"]
         if "config_columns_to_ignore" in to_save:
@@ -3309,11 +3331,21 @@ def start_gevent():
     from gevent.wsgi import WSGIServer
     global gevent_server
     try:
-        gevent_server = WSGIServer(('', ub.config.config_port), app)
+        if ub.config.get_config_certfile() and ub.get_config_keyfile():
+            keyfile = ub.config.get_config_certfile()
+            certfile = ub.config.get_config_keyfile()
+        else:
+            keyfile = None
+            certfile = None
+        gevent_server = WSGIServer(('', ub.config.config_port), app,
+                                   keyfile = keyfile,
+                                   certfile = certfile)
         gevent_server.serve_forever()
     except SocketError:
         app.logger.info('Unable to listen on \'\', trying on IPv4 only...')
-        gevent_server = WSGIServer(('0.0.0.0', ub.config.config_port), app)
+        gevent_server = WSGIServer(('0.0.0.0', ub.config.config_port), app,
+                                   keyfile = keyfile,
+                                   certfile = certfile)
         gevent_server.serve_forever()
     except:
         pass
