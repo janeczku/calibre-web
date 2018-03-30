@@ -29,7 +29,8 @@ if __name__ == '__main__':
             web.start_gevent()
         else:
             web.app.logger.info('Falling back to Tornado')
-            http_server = HTTPServer(WSGIContainer(web.app))
+            # Max Buffersize set to 200MB
+            http_server = HTTPServer(WSGIContainer(web.app),max_buffer_size = 209700000)
             http_server.listen(web.ub.config.config_port)
             IOLoop.instance().start()
             IOLoop.instance().close(True)
