@@ -15,7 +15,7 @@ try:
     from wand.image import Image
     from wand import version as ImageVersion
     use_generic_pdf_cover = False
-except ImportError as e:
+except (ImportError, RuntimeError) as e:
     logger.warning('cannot import Image, generating pdf covers for pdf uploads will not work: %s', e)
     use_generic_pdf_cover = True
 try:
