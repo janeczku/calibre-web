@@ -100,8 +100,8 @@
     {% endfor %}
     <div id="loader" hidden="true">
       <center>
-        <h3>_('Uploading...')</h3>
-        <span>_('please don't refresh the page')</span>.
+        <h3>{{_('Uploading...')}}</h3>
+        <span>{{_('please don't refresh the page')}}</span>.
         <br />
         <img src="{{ url_for('static', filename='img/loader.gif') }}">
       </center>
