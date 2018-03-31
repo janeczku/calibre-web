@@ -96,6 +96,11 @@ var createURLFromArray = function(array, mimeType) {
     var url;
     var blob;
 
+    if (mimeType === 'image/xml+svg') {
+        const xmlStr = new TextDecoder('utf-8').decode(array);
+        return 'data:image/svg+xml;UTF-8,' + encodeURIComponent(xmlStr);
+  }
+
     // TODO: Move all this browser support testing to a common place
     //     and do it just once.
 
@@ -130,7 +135,7 @@ kthoom.ImageFile = function(file) {
     var fileExtension = file.filename.split(".").pop().toLowerCase();
     var mimeType = fileExtension === "png" ? "image/png" :
         (fileExtension === "jpg" || fileExtension === "jpeg") ? "image/jpeg" :
-            fileExtension === "gif" ? "image/gif" : null;
+            fileExtension === "gif" ? "image/gif" : fileExtension == 'svg' ? 'image/xml+svg' : undefined;
     this.dataURI = createURLFromArray(file.fileData, mimeType);
     this.data = file;
 };
