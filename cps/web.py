@@ -3331,21 +3331,15 @@ def start_gevent():
     from gevent.wsgi import WSGIServer
     global gevent_server
     try:
-        if ub.config.get_config_certfile() and ub.get_config_keyfile():
-            keyfile = ub.config.get_config_certfile()
-            certfile = ub.config.get_config_keyfile()
-        else:
-            keyfile = None
-            certfile = None
-        gevent_server = WSGIServer(('', ub.config.config_port), app,
-                                   keyfile = keyfile,
-                                   certfile = certfile)
+        ssl_args=dict()
+        if ub.config.get_config_certfile() and ub.config.get_config_keyfile():
+            ssl_args = {"certfile": ub.config.get_config_certfile(),
+                        "keyfile": ub.config.get_config_keyfile()}
+        gevent_server = WSGIServer(('', ub.config.config_port), app, **ssl_args)
         gevent_server.serve_forever()
     except SocketError:
         app.logger.info('Unable to listen on \'\', trying on IPv4 only...')
-        gevent_server = WSGIServer(('0.0.0.0', ub.config.config_port), app,
-                                   keyfile = keyfile,
-                                   certfile = certfile)
+        gevent_server = WSGIServer(('0.0.0.0', ub.config.config_port), app, **ssl_args)
         gevent_server.serve_forever()
     except:
         pass
