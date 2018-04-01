@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/calibre-web\n"
-"POT-Creation-Date: 2018-03-30 21:08+0200\n"
+"POT-Creation-Date: 2018-04-01 19:27+0200\n"
 "PO-Revision-Date: 2018-02-07 02:20-0500\n"
 "Last-Translator: white <space_white@yahoo.com>\n"
 "Language: ja\n"
@@ -74,7 +74,7 @@ msgstr "タイトルを\"%s\"から\"%s\"の改名は失敗しました。エー
 msgid "Rename author from: \"%s\" to \"%s\" failed with error: %s"
 msgstr "著者を\"%s\"から\"%s\"の改名は失敗しました。エーラ：%s"
 
-#: cps/ub.py:685
+#: cps/ub.py:684
 msgid "Guest"
 msgstr "ゲスト"
 
@@ -142,7 +142,7 @@ msgstr "任意の本"
 msgid "Author list"
 msgstr "著者リスト"
 
-#: cps/web.py:1220 cps/web.py:1278 cps/web.py:1408 cps/web.py:1882
+#: cps/web.py:1220 cps/web.py:1278 cps/web.py:1408 cps/web.py:1903
 msgid "Error opening eBook. File does not exist or file is not accessible:"
 msgstr "電子本を開けません。ファイルは存在しないまたはアクセスできません"
 
@@ -193,285 +193,294 @@ msgstr "サーバをシャットダウンします、ページを閉じてくだ
 msgid "Update done"
 msgstr "更新完了"
 
-#: cps/web.py:1746 cps/web.py:1759
+#: cps/web.py:1716
+#, python-format
+msgid "Published after %s"
+msgstr ""
+
+#: cps/web.py:1721
+msgid "Published before "
+msgstr ""
+
+#: cps/web.py:1767 cps/web.py:1780
 msgid "search"
 msgstr "検索"
 
 #: cps/templates/index.xml:39 cps/templates/index.xml:42
-#: cps/templates/layout.html:141 cps/web.py:1837
+#: cps/templates/layout.html:141 cps/web.py:1858
 msgid "Read Books"
 msgstr "既読の本"
 
 #: cps/templates/index.xml:46 cps/templates/index.xml:49
-#: cps/templates/layout.html:143 cps/web.py:1840
+#: cps/templates/layout.html:143 cps/web.py:1861
 msgid "Unread Books"
 msgstr "未読の本"
 
-#: cps/web.py:1915 cps/web.py:1917 cps/web.py:1919 cps/web.py:1928
+#: cps/web.py:1936 cps/web.py:1938 cps/web.py:1940 cps/web.py:1949
 msgid "Read a Book"
 msgstr "本を読む"
 
-#: cps/web.py:1980 cps/web.py:2697
+#: cps/web.py:2001 cps/web.py:2718
 msgid "Please fill out all fields!"
 msgstr "全ての項目を入力してください"
 
-#: cps/web.py:1981 cps/web.py:1998 cps/web.py:2003 cps/web.py:2005
+#: cps/web.py:2002 cps/web.py:2019 cps/web.py:2024 cps/web.py:2026
 msgid "register"
 msgstr "登録"
 
-#: cps/web.py:1997
+#: cps/web.py:2018
 msgid "An unknown error occured. Please try again later."
 msgstr "未知のエーラが発生しました、再度試してください"
 
-#: cps/web.py:2002
+#: cps/web.py:2023
 msgid "This username or email address is already in use."
 msgstr "ユーザ名またはメールアドレスは使われました"
 
-#: cps/web.py:2021 cps/web.py:2117
+#: cps/web.py:2042 cps/web.py:2138
 #, python-format
 msgid "you are now logged in as: '%(nickname)s'"
 msgstr "%(nickname)s としてログインします"
 
-#: cps/web.py:2026
+#: cps/web.py:2047
 msgid "Wrong Username or Password"
 msgstr "ユーザ名またはパスワードは間違いました"
 
-#: cps/web.py:2032 cps/web.py:2053
+#: cps/web.py:2053 cps/web.py:2074
 msgid "login"
 msgstr "ログイン"
 
-#: cps/web.py:2065 cps/web.py:2096
+#: cps/web.py:2086 cps/web.py:2117
 msgid "Token not found"
 msgstr "トークンは見つかりません"
 
-#: cps/web.py:2073 cps/web.py:2104
+#: cps/web.py:2094 cps/web.py:2125
 msgid "Token has expired"
 msgstr "トークンは失効されました"
 
-#: cps/web.py:2081
+#: cps/web.py:2102
 msgid "Success! Please return to your device"
 msgstr "成功しまた！端末に戻ってください"
 
-#: cps/web.py:2131
+#: cps/web.py:2152
 msgid "Please configure the SMTP mail settings first..."
 msgstr "SMTPメールをまず設定してください"
 
-#: cps/web.py:2135
+#: cps/web.py:2156
 #, python-format
 msgid "Book successfully send to %(kindlemail)s"
 msgstr "本を %(kindlemail)s に送信しました"
 
-#: cps/web.py:2139
+#: cps/web.py:2160
 #, python-format
 msgid "There was an error sending this book: %(res)s"
 msgstr "%(res)s を送信する際にエーラが発生しました"
 
-#: cps/web.py:2141 cps/web.py:2784
+#: cps/web.py:2162 cps/web.py:2805
 msgid "Please configure your kindle email address first..."
 msgstr "Kindleのメールアドレスをまず設定してください"
 
-#: cps/web.py:2185
+#: cps/web.py:2206
 #, python-format
 msgid "Book has been added to shelf: %(sname)s"
 msgstr "本 %(sname)s を書架に追加されました"
 
-#: cps/web.py:2223
+#: cps/web.py:2244
 #, python-format
 msgid "Book has been removed from shelf: %(sname)s"
 msgstr "本 %(sname)s を書架から除去されました"
 
-#: cps/web.py:2229
+#: cps/web.py:2250
 #, python-format
 msgid "Sorry you are not allowed to remove a book from this shelf: %(sname)s"
 msgstr ""
 
-#: cps/web.py:2249 cps/web.py:2273
+#: cps/web.py:2270 cps/web.py:2294
 #, python-format
 msgid "A shelf with the name '%(title)s' already exists."
 msgstr "名前を使った書架 '%(title)s'　は既に存在しました"
 
-#: cps/web.py:2254
+#: cps/web.py:2275
 #, python-format
 msgid "Shelf %(title)s created"
 msgstr "書架%(title)s は作成されました"
 
-#: cps/web.py:2256 cps/web.py:2284
+#: cps/web.py:2277 cps/web.py:2305
 msgid "There was an error"
 msgstr "エーラが発生しました"
 
-#: cps/web.py:2257 cps/web.py:2259
+#: cps/web.py:2278 cps/web.py:2280
 msgid "create a shelf"
 msgstr "書架を作成する"
 
-#: cps/web.py:2282
+#: cps/web.py:2303
 #, python-format
 msgid "Shelf %(title)s changed"
 msgstr "書架 %(title)s 変わりました"
 
-#: cps/web.py:2285 cps/web.py:2287
+#: cps/web.py:2306 cps/web.py:2308
 msgid "Edit a shelf"
 msgstr "書架を編集する"
 
-#: cps/web.py:2308
+#: cps/web.py:2329
 #, python-format
 msgid "successfully deleted shelf %(name)s"
 msgstr "%(name)s の書架を削除されました"
 
-#: cps/web.py:2330
+#: cps/web.py:2351
 #, python-format
 msgid "Shelf: '%(name)s'"
 msgstr "書架: '%(name)s'"
 
-#: cps/web.py:2333
+#: cps/web.py:2354
 msgid "Error opening shelf. Shelf does not exist or is not accessible"
 msgstr "書架を開けません。書架は存在しないまたはアクセスできません"
 
-#: cps/web.py:2364
+#: cps/web.py:2385
 #, python-format
 msgid "Change order of Shelf: '%(name)s'"
 msgstr "'%(name)s' の書架の順番を入れ替える"
 
-#: cps/web.py:2433
+#: cps/web.py:2454
 msgid "Found an existing account for this email address."
 msgstr "このメールアドレスを使ったアカウント名は既に存在します"
 
-#: cps/web.py:2435 cps/web.py:2439
+#: cps/web.py:2456 cps/web.py:2460
 #, python-format
 msgid "%(name)s's profile"
 msgstr "%(name)sのプロファイル"
 
-#: cps/web.py:2436
+#: cps/web.py:2457
 msgid "Profile updated"
 msgstr "プロファイルが更新されました"
 
-#: cps/web.py:2448
+#: cps/web.py:2469
 msgid "Unknown"
 msgstr ""
 
-#: cps/web.py:2461
+#: cps/web.py:2482
 msgid "Admin page"
 msgstr "管理者ページ"
 
-#: cps/web.py:2532
+#: cps/web.py:2553
 msgid "Keyfile location is not valid, please enter correct path"
 msgstr ""
 
-#: cps/web.py:2535 cps/web.py:2546 cps/web.py:2639 cps/web.py:2658
-#: cps/web.py:2664 cps/web.py:2678
+#: cps/web.py:2556 cps/web.py:2567 cps/web.py:2660 cps/web.py:2679
+#: cps/web.py:2685 cps/web.py:2699
 msgid "Basic Configuration"
 msgstr "基本設定"
 
-#: cps/web.py:2543
+#: cps/web.py:2564
 msgid "Certfile location is not valid, please enter correct path"
 msgstr ""
 
-#: cps/web.py:2636
+#: cps/web.py:2657
 msgid "Logfile location is not valid, please enter correct path"
 msgstr "ログファイルの場所は不適切です。正しい場所を入力してください"
 
-#: cps/web.py:2651
+#: cps/web.py:2672
 msgid "Calibre-web configuration updated"
 msgstr "Calibre-web 設定を更新されました"
 
-#: cps/web.py:2662
+#: cps/web.py:2683
 msgid "DB location is not valid, please enter correct path"
 msgstr "データベースの場所は不適切です。正しい場所を入力してください"
 
-#: cps/templates/admin.html:34 cps/web.py:2699 cps/web.py:2754
+#: cps/templates/admin.html:34 cps/web.py:2720 cps/web.py:2775
 msgid "Add new user"
 msgstr "新規ユーザ追加"
 
-#: cps/web.py:2744
+#: cps/web.py:2765
 #, python-format
 msgid "User '%(user)s' created"
 msgstr "ユーザ　'%(user)s' が作成されました"
 
-#: cps/web.py:2748
+#: cps/web.py:2769
 msgid "Found an existing account for this email address or nickname."
 msgstr "同じメールアドレスまたは通所は既に存在しました"
 
-#: cps/web.py:2772
+#: cps/web.py:2793
 msgid "Mail settings updated"
 msgstr "メール設定が更新されました"
 
-#: cps/web.py:2779
+#: cps/web.py:2800
 #, python-format
 msgid "Test E-Mail successfully send to %(kindlemail)s"
 msgstr "テストメールから%(kindlemail)sまでの送信は完了しました"
 
-#: cps/web.py:2782
+#: cps/web.py:2803
 #, python-format
 msgid "There was an error sending the Test E-Mail: %(res)s"
 msgstr "テストメールに送信するエラーが発生しました: %(res)s"
 
-#: cps/web.py:2786
+#: cps/web.py:2807
 msgid "E-Mail settings updated"
 msgstr "メール設定更新されました"
 
-#: cps/web.py:2787
+#: cps/web.py:2808
 msgid "Edit mail settings"
 msgstr "メール編集設定"
 
-#: cps/web.py:2816
+#: cps/web.py:2837
 #, python-format
 msgid "User '%(nick)s' deleted"
 msgstr "ユーザ '%(nick)s' 削除されました"
 
-#: cps/web.py:2924
+#: cps/web.py:2945
 #, python-format
 msgid "User '%(nick)s' updated"
 msgstr "ユーザ '%(nick)s' 更新されました"
 
-#: cps/web.py:2927
+#: cps/web.py:2948
 msgid "An unknown error occured."
 msgstr "不明のエーラが発生しました"
 
-#: cps/web.py:2930
+#: cps/web.py:2951
 #, python-format
 msgid "Edit User %(nick)s"
 msgstr "ユーザ編集 %(nick)s"
 
-#: cps/web.py:2946
+#: cps/web.py:2967
 msgid "Error opening eBook. File does not exist or file is not accessible"
 msgstr "電子本を開けません。ファイルは存在しないまたはアクセスできません"
 
-#: cps/web.py:2961 cps/web.py:3172 cps/web.py:3177 cps/web.py:3323
+#: cps/web.py:2982 cps/web.py:3193 cps/web.py:3198 cps/web.py:3344
 msgid "edit metadata"
 msgstr "メタデータを編集します"
 
-#: cps/web.py:2971 cps/web.py:3217
+#: cps/web.py:2992 cps/web.py:3238
 #, python-format
 msgid "File extension \"%s\" is not allowed to be uploaded to this server"
 msgstr "ファイル拡張子 \"%s\" をこのサーバにアップロードする許可はありません"
 
-#: cps/web.py:2982
+#: cps/web.py:3003
 #, python-format
 msgid "Failed to store file %s."
 msgstr "フアイル %s の保存を失敗しました"
 
-#: cps/web.py:3004 cps/web.py:3008
+#: cps/web.py:3025 cps/web.py:3029
 msgid "unknown"
 msgstr "不明"
 
-#: cps/web.py:3031
+#: cps/web.py:3052
 msgid "Cover is not a jpg file, can't save"
 msgstr ""
 
-#: cps/web.py:3223
+#: cps/web.py:3244
 msgid "File to be uploaded must have an extension"
 msgstr "ファイルをアップロードするために拡張子が必要です"
 
-#: cps/web.py:3242
+#: cps/web.py:3263
 #, python-format
 msgid "Failed to create path %s (Permission denied)."
 msgstr "場所 %s の作成を失敗しました (許可拒否)"
 
-#: cps/web.py:3247
+#: cps/web.py:3268
 #, python-format
 msgid "Failed to store file %s (Permission denied)."
 msgstr "ファイル %s の保存を失敗しました (許可拒否)"
 
-#: cps/web.py:3252
+#: cps/web.py:3273
 #, python-format
 msgid "Failed to delete file %s (Permission denied)."
 msgstr "ファイル %s の削除を失敗しました (許可拒否)"
@@ -672,12 +681,12 @@ msgstr "著者"
 msgid "Description"
 msgstr "詳細"
 
-#: cps/templates/book_edit.html:34 cps/templates/search_form.html:17
+#: cps/templates/book_edit.html:34 cps/templates/search_form.html:34
 msgid "Tags"
 msgstr "タグ"
 
 #: cps/templates/book_edit.html:39 cps/templates/layout.html:152
-#: cps/templates/search_form.html:37
+#: cps/templates/search_form.html:54
 msgid "Series"
 msgstr "叢書"
 
@@ -724,7 +733,7 @@ msgid "Get metadata"
 msgstr "メタデータを取得します"
 
 #: cps/templates/book_edit.html:134 cps/templates/config_edit.html:221
-#: cps/templates/login.html:20 cps/templates/search_form.html:79
+#: cps/templates/login.html:20 cps/templates/search_form.html:96
 #: cps/templates/shelf_edit.html:17 cps/templates/user_edit.html:137
 msgid "Submit"
 msgstr "提出"
@@ -1129,6 +1138,14 @@ msgstr "ロクアウト"
 msgid "Register"
 msgstr "登録"
 
+#: cps/templates/layout.html:103
+msgid "Uploading..."
+msgstr ""
+
+#: cps/templates/layout.html:104
+msgid "please don't refresh the page"
+msgstr ""
+
 #: cps/templates/layout.html:115
 msgid "Browse"
 msgstr "ブラウズ"
@@ -1170,7 +1187,7 @@ msgstr "発見"
 msgid "Categories"
 msgstr "カテゴリー"
 
-#: cps/templates/layout.html:158 cps/templates/search_form.html:58
+#: cps/templates/layout.html:158 cps/templates/search_form.html:75
 msgid "Languages"
 msgstr "言語"
 
@@ -1272,15 +1289,23 @@ msgstr "他の検索を試してくだい"
 msgid "Results for:"
 msgstr "結果:"
 
+#: cps/templates/search_form.html:20
+msgid "Publishing date from"
+msgstr ""
+
 #: cps/templates/search_form.html:27
+msgid "Publishing date to"
+msgstr ""
+
+#: cps/templates/search_form.html:44
 msgid "Exclude Tags"
 msgstr "タグを除外"
 
-#: cps/templates/search_form.html:47
+#: cps/templates/search_form.html:64
 msgid "Exclude Series"
 msgstr "叢書を除外"
 
-#: cps/templates/search_form.html:68
+#: cps/templates/search_form.html:85
 msgid "Exclude Languages"
 msgstr "言語を除外"
 

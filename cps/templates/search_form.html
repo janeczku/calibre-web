@@ -14,6 +14,23 @@
       <label for="Publisher">{{_('Publisher')}}</label>
       <input type="text" class="form-control" name="publisher" id="publisher" value="">
     </div>
+    <!--div class="form-group"-->
+        <div class="row">
+            <div class="form-group col-sm-6">
+              <label for="Publishstart">{{_('Publishing date from')}}</label>
+              <div style="position: relative">
+                <input type="date" class="form-control" name="Publishstart" id="Publishstart" value="">
+                <input type="text" class="form-control fake-input hidden" id="fake_Publishstart" value="">
+              </div>
+            </div>
+            <div class="form-group col-sm-6">
+              <label for="Publishend">{{_('Publishing date to')}}</label>
+              <div style="position: relative">
+                <input type="date" class="form-control" name="Publishend" id="Publishend" value="">
+                <input type="text" class="form-control fake-input hidden" id="fake_Publishend" value="">
+              </div>
+            </div>
+    </div>
     <label for="include_tag">{{_('Tags')}}</label>
     <div class="form-group" id="test">
       <div class="btn-toolbar btn-toolbar-lg" data-toggle="buttons">
@@ -82,6 +99,14 @@
 {% endblock %}
 
 {% block js %}
+<script>
+  var language = '{{ g.user.locale }}';
+</script>
+
+<script src="{{ url_for('static', filename='js/libs/bootstrap-datepicker/bootstrap-datepicker.min.js') }}"></script>
+{% if not g.user.locale == 'en' %}
+<script src="{{ url_for('static', filename='js/libs/bootstrap-datepicker/locales/bootstrap-datepicker.' + g.user.locale + '.min.js') }}" charset="UTF-8"></script>
+{% endif %}
 <script src="{{ url_for('static', filename='js/libs/typeahead.bundle.js') }}"></script>
 <script src="{{ url_for('static', filename='js/edit_books.js') }}"></script>
 <script>
@@ -89,4 +114,5 @@
 {% endblock %}
 {% block header %}
 <link href="{{ url_for('static', filename='css/libs/typeahead.css') }}" rel="stylesheet" media="screen">
+<link href="{{ url_for('static', filename='css/libs/bootstrap-datepicker3.min.css') }}" rel="stylesheet" media="screen">
 {% endblock %}
