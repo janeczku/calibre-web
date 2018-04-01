@@ -1699,13 +1699,30 @@ def advanced_search():
         author_name = request.args.get("author_name")
         book_title = request.args.get("book_title")
         publisher = request.args.get("publisher")
+        pub_start = request.args.get("Publishstart")
+        pub_end = request.args.get("Publishend")
         if author_name: author_name = author_name.strip().lower()
         if book_title: book_title = book_title.strip().lower()
         if publisher: publisher = publisher.strip().lower()
         if include_tag_inputs or exclude_tag_inputs or include_series_inputs or exclude_series_inputs or \
-                include_languages_inputs or exclude_languages_inputs or author_name or book_title or publisher:
+                include_languages_inputs or exclude_languages_inputs or author_name or book_title or \
+                publisher or pub_start or pub_end:
             searchterm = []
             searchterm.extend((author_name, book_title, publisher))
+            if pub_start:
+                try:
+                    searchterm.extend([_(u"Published after %s" %
+                                   format_date(datetime.datetime.strptime(pub_start,"%Y-%m-%d"),
+                                               format='medium', locale=get_locale()))])
+                except ValueError:
+                    pub_start = u""
+            if pub_end:
+                try:
+                    searchterm.extend([_(u"Published before ") +
+                                   format_date(datetime.datetime.strptime(pub_end,"%Y-%m-%d"),
+                                               format='medium', locale=get_locale())])
+                except ValueError:
+                    pub_start = u""
             tag_names = db.session.query(db.Tags).filter(db.Tags.id.in_(include_tag_inputs)).all()
             searchterm.extend(tag.name for tag in tag_names)
             # searchterm = " + ".join(filter(None, searchterm))
@@ -1725,6 +1742,10 @@ def advanced_search():
                 q = q.filter(db.Books.authors.any(db.Authors.name.ilike("%" + author_name + "%")))
             if book_title:
                 q = q.filter(db.Books.title.ilike("%" + book_title + "%"))
+            if pub_start:
+                q = q.filter(db.Books.pubdate >= pub_start)
+            if pub_end:
+                q = q.filter(db.Books.pubdate <= pub_end)
             if publisher:
                 q = q.filter(db.Books.publishers.any(db.Publishers.name.ilike("%" + publisher + "%")))
             for tag in include_tag_inputs:
@@ -2025,9 +2046,9 @@ def login():
             app.logger.info('Login failed for user "' + form['username'] + '" IP-adress: ' + ipAdress)
             flash(_(u"Wrong Username or Password"), category="error")
 
-    next_url = request.args.get('next')
-    if next_url is None or not is_safe_url(next_url):
-        next_url = url_for('index')
+    # next_url = request.args.get('next')
+    # if next_url is None or not is_safe_url(next_url):
+    next_url = url_for('index')
 
     return render_title_template('login.html', title=_(u"login"), next_url=next_url,
                                  remote_login=config.config_remote_login)
