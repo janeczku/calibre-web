@@ -105,6 +105,10 @@ class UserBase:
     def is_anonymous(self):
         return False
 
+    @property
+    def get_theme(self):
+        return self.theme
+
     def get_id(self):
         return str(self.id)
 
@@ -165,6 +169,7 @@ class User(UserBase, Base):
     sidebar_view = Column(Integer, default=1)
     default_language = Column(String(3), default="all")
     mature_content = Column(Boolean, default=True)
+    theme = Column(Integer, default=0)
 
 
 # Class for anonymous user is derived from User base and complets overrides methods and properties for the
@@ -598,6 +603,11 @@ def migrate_Database():
     except exc.OperationalError:
         conn = engine.connect()
         conn.execute("ALTER TABLE user ADD column `mature_content` INTEGER DEFAULT 1")
+    try:
+        session.query(exists().where(User.theme)).scalar()
+    except exc.OperationalError:
+        conn = engine.connect()
+        conn.execute("ALTER TABLE user ADD column `theme` INTEGER DEFAULT 0")
     if session.query(User).filter(User.role.op('&')(ROLE_ANONYMOUS) == ROLE_ANONYMOUS).first() is None:
         create_anonymous_user()
     try:
