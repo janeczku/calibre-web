@@ -21,7 +21,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/calibre-web\n"
-"POT-Creation-Date: 2018-04-01 19:27+0200\n"
+"POT-Creation-Date: 2018-04-02 09:35+0200\n"
 "PO-Revision-Date: 2016-07-12 19:54+0200\n"
 "Last-Translator: Ozzie Isaacs\n"
 "Language: de\n"
@@ -1166,11 +1166,11 @@ msgstr "Registrieren"
 
 #: cps/templates/layout.html:103
 msgid "Uploading..."
-msgstr ""
+msgstr "Hochladen..."
 
 #: cps/templates/layout.html:104
 msgid "please don't refresh the page"
-msgstr ""
+msgstr "Bitte die Seite nicht neu laden"
 
 #: cps/templates/layout.html:115
 msgid "Browse"
@@ -1317,11 +1317,11 @@ msgstr "Ergebnisse für:"
 
 #: cps/templates/search_form.html:20
 msgid "Publishing date from"
-msgstr ""
+msgstr "Herausgabedatum von"
 
 #: cps/templates/search_form.html:27
 msgid "Publishing date to"
-msgstr ""
+msgstr "Herausgabedatum bis"
 
 #: cps/templates/search_form.html:44
 msgid "Exclude Tags"

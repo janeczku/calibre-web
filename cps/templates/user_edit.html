@@ -32,6 +32,14 @@
         </select>
     </div>
     <div class="form-group">
+    <label for="theme">{{_('Theme')}}</label>
+        <select name="theme" id="theme" class="form-control">
+            <option value="0" {% if content.get_theme == 0 %}selected{% endif %}>{{ _("Standard Theme") }}</option>
+            <option value="1" {% if content.get_theme == 1 %}selected{% endif %}>{{ _("caliBlur! Dark Theme (Beta)") }}</option>
+        </select>
+    </div>
+
+    <div class="form-group">
       <label for="default_language">{{_('Show books with language')}}</label>
         <select name="default_language" id="default_language" class="form-control">
             <option value="all" {% if new_user == 1 %}selected{% endif %}>{{ _('Show all') }}</option>

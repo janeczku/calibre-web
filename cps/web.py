@@ -2446,6 +2446,7 @@ def profile():
             content.sidebar_view += ub.DETAIL_RANDOM
 
         content.mature_content = "show_mature_content" in to_save
+        content.theme = int(to_save["theme"])
 
         try:
             ub.session.commit()
@@ -2723,6 +2724,7 @@ def new_user():
         content.email = to_save["email"]
         content.default_language = to_save["default_language"]
         content.mature_content = "show_mature_content" in to_save
+        content.theme = int(to_save["theme"])
         if "locale" in to_save:
             content.locale = to_save["locale"]
         content.sidebar_view = 0
@@ -2931,6 +2933,7 @@ def edit_user(user_id):
                 content.sidebar_view -= ub.DETAIL_RANDOM
 
             content.mature_content = "show_mature_content" in to_save
+            content.theme = int(to_save["theme"])
 
             if "default_language" in to_save:
                 content.default_language = to_save["default_language"]
