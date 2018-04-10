@@ -13,6 +13,7 @@ import os
 import traceback
 import re
 import unicodedata
+from io import BytesIO
 
 try:
     from StringIO import StringIO
@@ -386,7 +387,7 @@ class Updater(threading.Thread):
         r = requests.get('https://api.github.com/repos/janeczku/calibre-web/zipball/master', stream=True)
         fname = re.findall("filename=(.+)", r.headers['content-disposition'])[0]
         self.status = 2
-        z = zipfile.ZipFile(StringIO(r.content))
+        z = zipfile.ZipFile(BytesIO(r.content))
         self.status = 3
         tmp_dir = gettempdir()
         z.extractall(tmp_dir)
@@ -481,7 +482,7 @@ class Updater(threading.Thread):
                 if change_permissions:
                     try:
                         os.chown(dst_file, permission.st_uid, permission.st_gid)
-                    except Exception:
+                    except (Exception) as e:
                         # ex = sys.exc_info()
                         old_permissions = os.stat(dst_file)
                         logging.getLogger('cps.web').debug('Fail change permissions of ' + str(dst_file) + '. Before: '
