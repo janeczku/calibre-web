@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html class="no-js">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>{{ entry.title }}</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+
+  <script src="{{ url_for('static', filename='js/libs/jquery.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/libs/soundmanager2.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/libs/bar-ui.js') }}"></script>
+
+  <link rel="apple-touch-icon" sizes="140x140" href="{{ url_for('static', filename='favicon.ico') }}">
+  <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+  <link href="{{ url_for('static', filename='css/libs/bootstrap.min.css') }}" rel="stylesheet" media="screen">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/libs/bar-ui.css') }}" />
+
+  <!-- <link rel="stylesheet" href="{{ url_for('static', filename='css/libs/normalize.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/popup.css') }}"> -->
+
+  <style type="text/css">
+    .sm2-bar-ui {
+      font-size: 20px;
+    }
+
+    .sm2-bar-ui.compact {
+      max-width: 90%;
+    }
+
+    .sm2-progress .sm2-progress-ball {
+      width: .5333em;
+      height: 1.9333em;
+      border-radius: 0em;
+    }
+
+    .sm2-progress .sm2-progress-track {
+      height: 0.15em;
+      background: white;
+    }
+
+    .sm2-bar-ui .sm2-main-controls,
+    .sm2-bar-ui .sm2-playlist-drawer {
+      background-color: transparent;
+    }
+
+    .sm2-bar-ui .sm2-inline-texture {
+      background: transparent;
+    }
+
+    .rating .glyphicon-star {
+      color: gray;
+    }
+
+    .rating .glyphicon-star.good {
+      color: white;
+    }
+
+    body {
+      overflow: hidden;
+      background: #272B30;
+      color: #aaa;
+    }
+
+    #main {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+    }
+
+    #area {
+      width: 80%;
+      height: 80%;
+      margin: 5% auto;
+      max-width: 1250px;
+    }
+
+    #area iframe {
+      border: none;
+    }
+
+    #prev {
+      left: 40px;
+    }
+
+    #next {
+      right: 40px;
+    }
+
+    .arrow {
+      position: absolute;
+      top: 50%;
+      margin-top: -32px;
+      font-size: 64px;
+      color: #E2E2E2;
+      font-family: arial, sans-serif;
+      font-weight: bold;
+      cursor: pointer;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      user-select: none;
+    }
+
+    .arrow:hover {
+      color: #777;
+    }
+
+    .arrow:active {
+      color: #000;
+    }
+
+    xmp,
+    pre,
+    plaintext {
+      display: block;
+      font-family: -moz-fixed;
+      white-space: pre;
+      margin: 1em 0;
+    }
+
+    #area {
+      overflow: hidden;
+    }
+
+    pre {
+      white-space: pre-wrap;
+      word-wrap: break-word;
+      font-family: -moz-fixed;
+      column-count: 2;
+      -webkit-columns: 2;
+      -moz-columns: 2;
+      column-gap: 20px;
+      -moz-column-gap: 20px;
+      -webkit-column-gap: 20px;
+      position: relative;
+    }
+  </style>
+
+  <script>
+    "use strict";
+  </script>
+
+</head>
+
+<body>
+  <div id="main">
+    <div class="content">
+      <h2>{{ entry.title }}</h2>
+
+      <div class="cover">
+        {% if entry.has_cover %}
+        <img src="{{ url_for('get_cover', cover_path=entry.path.replace('\\','/')) }}" alt="{{ entry.title }}" /> {% else %}
+        <img src="{{ url_for('static', filename='generic_cover.jpg') }}" alt="{{ entry.title }}" /> {% endif %}
+      </div>
+
+      {% if entry.ratings.__len__() > 0 %}
+      <div class="rating">
+        <p>
+          {% for number in range((entry.ratings[0].rating/2)|int(2)) %}
+          <span class="glyphicon glyphicon-star good"></span>
+          {% if loop.last and loop.index
+          < 5 %} {% for numer in range(5 - loop.index) %} <span class="glyphicon glyphicon-star">
+            </span>
+            {% endfor %} {% endif %} {% endfor %}
+        </p>
+      </div>
+      {% endif %}
+
+      <h3>{{_('Description:')}}</h3>
+      {{entry.comments[0].text|safe}}
+    </div>
+
+    <div class="sm2-bar-ui compact flat">
+
+      <div class="bd sm2-main-controls">
+
+        <div class="sm2-inline-texture"></div>
+        <div class="sm2-inline-gradient"></div>
+
+        <div class="sm2-inline-element sm2-button-element">
+          <div class="sm2-button-bd">
+            <a href="#play" class="sm2-inline-button sm2-icon-play-pause">Play / pause</a>
+          </div>
+        </div>
+
+        <div class="sm2-inline-element sm2-inline-status">
+
+          <div class="sm2-playlist">
+            <div class="sm2-playlist-target">
+              <!-- playlist <ul> + <li> markup will be injected here -->
+              <!-- if you want default / non-JS content, you can put that here. -->
+              <noscript>
+                <p>JavaScript is required.</p>
+              </noscript>
+            </div>
+          </div>
+
+          <div class="sm2-progress">
+            <div class="sm2-row">
+              <div class="sm2-inline-time">0:00</div>
+              <div class="sm2-progress-bd">
+                <div class="sm2-progress-track">
+                  <div class="sm2-progress-bar"></div>
+                  <div class="sm2-progress-ball">
+                    <div class="icon-overlay"></div>
+                  </div>
+                </div>
+              </div>
+              <div class="sm2-inline-duration">0:00</div>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="sm2-inline-element sm2-button-element sm2-volume">
+          <div class="sm2-button-bd">
+            <span class="sm2-inline-button sm2-volume-control volume-shade"></span>
+            <a href="#volume" class="sm2-inline-button sm2-volume-control">volume</a>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="bd sm2-playlist-drawer sm2-element">
+
+        <div class="sm2-inline-texture">
+          <div class="sm2-box-shadow"></div>
+        </div>
+
+        <!-- playlist content is mirrored here -->
+
+        <div class="sm2-playlist-wrapper">
+          <ul class="sm2-playlist-bd">
+            <li>
+              <a href="{{ url_for('serve_book', book_id=mp3file,book_format='mp3') }}"></a>
+            </li>
+          </ul>
+        </div>
+
+      </div>
+
+    </div>
+
+    <script>
+      window.calibre = {
+        filePath: "{{ url_for('static', filename='js/libs/') }}",
+        cssPath: "{{ url_for('static', filename='css/') }}",
+        bookUrl: "{{ url_for('static', filename=mp3file) }}/",
+        bookmarkUrl: "{{ url_for('bookmark', book_id=mp3file, book_format='MP3') }}",
+        bookmark: "{{ bookmark.bookmark_key if bookmark != None }}",
+        useBookmarks: {{ g.user.is_authenticated | tojson }}
+            };
+    </script>
+
+</body>
+
+</html>

@@ -101,7 +101,7 @@ current_milli_time = lambda: int(round(time.time() * 1000))
 gdrive_watch_callback_token = 'target=calibreweb-watch_files'
 global_task = None
 
-ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'epub', 'mobi', 'azw', 'azw3', 'cbr', 'cbz', 'cbt', 'djvu', 'prc', 'doc', 'docx', 'fb2'])
+ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'epub', 'mobi', 'azw', 'azw3', 'cbr', 'cbz', 'cbt', 'djvu', 'prc', 'doc', 'docx', 'fb2', 'mp3', 'aax', 'm4a'])
 
 
 def md5(fname):
@@ -213,6 +213,7 @@ mimetypes.add_type('application/x-cbr', '.cbr')
 mimetypes.add_type('application/x-cbz', '.cbz')
 mimetypes.add_type('application/x-cbt', '.cbt')
 mimetypes.add_type('image/vnd.djvu', '.djvu')
+mimetypes.add_type('audio/mpeg', '.mpeg')
 
 app = (Flask(__name__))
 app.wsgi_app = ReverseProxied(app.wsgi_app)
@@ -990,7 +991,7 @@ def get_update_status():
     status = {}
     if request.method == "GET":
         # should be automatically replaced by git with current commit hash
-        commit_id = '$Format:%H$'
+        commit_id = '66c1966b44454828b0dd431c2d07c5b71c064598'
         commit = requests.get('https://api.github.com/repos/janeczku/calibre-web/git/refs/heads/master').json()
         if "object" in commit and commit['object']['sha'] != commit_id:
             status['status'] = True
@@ -1938,6 +1939,9 @@ def read_book(book_id, book_format):
         return render_title_template('readpdf.html', pdffile=book_id, title=_(u"Read a Book"))
     elif book_format.lower() == "txt":
         return render_title_template('readtxt.html', txtfile=book_id, title=_(u"Read a Book"))
+    elif book_format.lower() == "mp3":
+        entries = db.session.query(db.Books).filter(db.Books.id == book_id).filter(common_filters()).first()
+        return render_title_template('listenmp3.html', mp3file=book_id, title=_(u"Read a Book"), entry=entries, bookmark=bookmark)
     else:
         for fileext in ["cbr", "cbt", "cbz"]:
             if book_format.lower() == fileext:
@@ -2465,7 +2469,7 @@ def profile():
 @login_required
 @admin_required
 def admin():
-    commit = '$Format:%cI$'
+    commit = '2018-04-13T21:16:37+02:00'
     if commit.startswith("$"):
         commit = _(u'Unknown')
     else:
