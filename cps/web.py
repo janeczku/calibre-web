@@ -1483,6 +1483,8 @@ def show_book(book_id):
         else:
             have_read = None
 
+        entries.tags = sort(entries.tags, key = lambda tag: tag.name)
+
         return render_title_template('detail.html', entry=entries, cc=cc, is_xhr=request.is_xhr,
                                      title=entries.title, books_shelfs=book_in_shelfs, have_read=have_read,
                                      rarsupport=rar_support)
