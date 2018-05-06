@@ -92,7 +92,7 @@ The Drive API should now be setup and ready to use, so we need to integrate it i
 2. Tick Use Google Drive
 3. Enter Client Secret and Client Key as provided via previous steps
 4. Enter the folder that is the root of your calibre library
-5. Enter base URL for calibre (used for google callbacks)
+5. Enter base URL for calibre-web (used for google callbacks)
 6. Click the "Submit" button
 7. Come back to the configuration form
 8. Now select Authenticate Google Drive
