@@ -36,6 +36,7 @@
         <select name="theme" id="theme" class="form-control">
             <option value="0" {% if content.get_theme == 0 %}selected{% endif %}>{{ _("Standard Theme") }}</option>
             <option value="1" {% if content.get_theme == 1 %}selected{% endif %}>{{ _("caliBlur! Dark Theme (Beta)") }}</option>
+            <option value="2" {% if content.get_theme == 2 %}selected{% endif %}>{{ _("Simple Theme") }}</option>
         </select>
     </div>
 

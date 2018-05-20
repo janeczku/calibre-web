@@ -26,17 +26,50 @@
     {% if entries[0] %}
     {% for entry in entries %}
     <div id="books" class="col-sm-3 col-lg-2 col-xs-6 book">
-      <div class="cover">
-        <a href="{{ url_for('show_book', book_id=entry.id) }}">
-          {% if entry.has_cover %}
-          <img src="{{ url_for('get_cover', cover_path=entry.path.replace('\\','/')) }}" />
-          {% else %}
-          <img src="{{ url_for('static', filename='generic_cover.jpg') }}" />
-          {% endif %}
-        </a>
-      </div>
+      {% if g.user.get_theme != 2 %}
+        <div class="cover">
+          <a href="{{ url_for('show_book', book_id=entry.id) }}">
+            {% if entry.has_cover %}
+            <img src="{{ url_for('get_cover', cover_path=entry.path.replace('\\','/')) }}" />
+            {% else %}
+            <img src="{{ url_for('static', filename='generic_cover.jpg') }}" />
+            {% endif %}
+          </a>
+        </div>
+      {% endif %}
       <div class="meta">
-        <p class="title">{{entry.title|shortentitle}}</p>
+        {% if g.user.get_theme == 2 %}
+          {% if g.user.role_download() %}
+            {% if entry.data|length %}
+              <div class="btn-group" role="group">
+                {% if entry.data|length < 3 %}
+                  {% for format in entry.data %}
+                  <a href="{{ url_for('get_download_link_ext', book_id=entry.id, book_format=format.format|lower, anyname=entry.id|string+'.'+format.format|lower) }}" id="btnGroupDrop1{{format.format|lower}}" class="btn btn-primary" role="button">
+                    <span class="glyphicon glyphicon-download"></span>{{format.format}}
+                  </a>
+                  {% endfor %}
+                {% else %}
+                  <button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <span class="glyphicon glyphicon-download"></span> {{_('Download')}}
+                    <span class="caret"></span>
+                  </button>
+                  <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                    {% for format in entry.data %}
+                    <li><a href="{{ url_for('get_download_link_ext', book_id=entry.id, book_format=format.format|lower, anyname=entry.id|string+'.'+format.format|lower) }}">{{format.format}}</a></li>
+                    {% endfor %}
+                  </ul>
+                {% endif %}
+              </div>
+              {% endif %}
+          {% endif %}
+          <p class="title">
+            <a href="{{ url_for('show_book', book_id=entry.id) }}" data-toggle="modal" data-target="#bookDetailsModal" data-remote="false">
+              {{entry.title|shortentitle}}
+            </a>
+          </p>
+        {% else %}
+          <p class="title">{{entry.title|shortentitle}}</p>
+        {% endif %}
         <p class="author">
           {% for author in entry.authors %}
           <a href="{{url_for('author', book_id=author.id) }}">{{author.name.replace('|',',')}}</a>
