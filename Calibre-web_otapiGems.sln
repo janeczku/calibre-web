@@ -1,0 +1,23 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27428.2037
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "Calibre-web_otapiGems", "Calibre-web_otapiGems.pyproj", "{5080A0DB-6DFB-437C-A2C1-7B285B5EDDEE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5080A0DB-6DFB-437C-A2C1-7B285B5EDDEE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5080A0DB-6DFB-437C-A2C1-7B285B5EDDEE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {0796723D-5578-47D7-AE57-29BE83112245}
+	EndGlobalSection
+EndGlobal
