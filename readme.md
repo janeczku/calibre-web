@@ -2,9 +2,12 @@
 
 Calibre Web is a web app providing a clean interface for browsing, reading and downloading eBooks using an existing [Calibre](https://calibre-ebook.com) database.
 
-*This software is a fork of [library](https://github.com/mutschler/calibreserver) and licensed under the GPL v3 License.*
+*This software is a fork of [library](https://github.com/janeczku/calibre-web) and licensed under the GPL v3 License.*
 
 ![screenshot](https://raw.githubusercontent.com/janeczku/docker-calibre-web/master/screenshot.png)
+
+## Extra Features above Janeczku's repo
+- Simple Theme: The Standard Theme without cover images and added download link buttons in listviews - handful for e-ink devices or on slow connection. Book Details (with cover image) can be opened via link of the titles.
 
 ## Features
 
