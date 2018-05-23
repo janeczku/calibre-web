@@ -1,0 +1,272 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Build">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{5080a0db-6dfb-437c-a2c1-7b285b5eddee}</ProjectGuid>
+    <ProjectHome />
+    <StartupFile>cps.py</StartupFile>
+    <SearchPath />
+    <WorkingDirectory>.</WorkingDirectory>
+    <OutputPath>.</OutputPath>
+    <ProjectTypeGuids>{888888a0-9f3d-457c-b088-3a5042f75d52}</ProjectTypeGuids>
+    <LaunchProvider>Standard Python launcher</LaunchProvider>
+    <InterpreterId>Global|PythonCore|3.6</InterpreterId>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug'" />
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'" />
+  <PropertyGroup>
+    <VisualStudioVersion Condition=" '$(VisualStudioVersion)' == '' ">10.0</VisualStudioVersion>
+  </PropertyGroup>
+  <ItemGroup>
+    <Content Include="cps\static\css\caliBlur-style.css" />
+    <Content Include="cps\static\css\fonts\fontello.svg" />
+    <Content Include="cps\static\css\fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="cps\static\css\images\annotation-check.svg" />
+    <Content Include="cps\static\css\images\annotation-comment.svg" />
+    <Content Include="cps\static\css\images\annotation-help.svg" />
+    <Content Include="cps\static\css\images\annotation-insert.svg" />
+    <Content Include="cps\static\css\images\annotation-key.svg" />
+    <Content Include="cps\static\css\images\annotation-newparagraph.svg" />
+    <Content Include="cps\static\css\images\annotation-noicon.svg" />
+    <Content Include="cps\static\css\images\annotation-note.svg" />
+    <Content Include="cps\static\css\images\annotation-paragraph.svg" />
+    <Content Include="cps\static\css\images\findbarButton-next%402x.png" />
+    <Content Include="cps\static\css\images\findbarButton-next-rtl%402x.png" />
+    <Content Include="cps\static\css\images\findbarButton-next-rtl.png" />
+    <Content Include="cps\static\css\images\findbarButton-next.png" />
+    <Content Include="cps\static\css\images\findbarButton-previous%402x.png" />
+    <Content Include="cps\static\css\images\findbarButton-previous-rtl%402x.png" />
+    <Content Include="cps\static\css\images\findbarButton-previous-rtl.png" />
+    <Content Include="cps\static\css\images\findbarButton-previous.png" />
+    <Content Include="cps\static\css\images\loading-icon.gif" />
+    <Content Include="cps\static\css\images\loading-small%402x.png" />
+    <Content Include="cps\static\css\images\loading-small.png" />
+    <Content Include="cps\static\css\images\secondaryToolbarButton-documentProperties%402x.png" />
+    <Content Include="cps\static\css\images\secondaryToolbarButton-documentProperties.png" />
+    <Content Include="cps\static\css\images\secondaryToolbarButton-firstPage%402x.png" />
+    <Content Include="cps\static\css\images\secondaryToolbarButton-firstPage.png" />
+    <Content Include="cps\static\css\images\secondaryToolbarButton-handTool%402x.png" />
+    <Content Include="cps\static\css\images\secondaryToolbarButton-handTool.png" />
+    <Content Include="cps\static\css\images\secondaryToolbarButton-lastPage%402x.png" />
+    <Content Include="cps\static\css\images\secondaryToolbarButton-lastPage.png" />
+    <Content Include="cps\static\css\images\secondaryToolbarButton-rotateCcw%402x.png" />
+    <Content Include="cps\static\css\images\secondaryToolbarButton-rotateCcw.png" />
+    <Content Include="cps\static\css\images\secondaryToolbarButton-rotateCw%402x.png" />
+    <Content Include="cps\static\css\images\secondaryToolbarButton-rotateCw.png" />
+    <Content Include="cps\static\css\images\shadow.png" />
+    <Content Include="cps\static\css\images\texture.png" />
+    <Content Include="cps\static\css\images\toolbarButton-bookmark%402x.png" />
+    <Content Include="cps\static\css\images\toolbarButton-bookmark.png" />
+    <Content Include="cps\static\css\images\toolbarButton-download%402x.png" />
+    <Content Include="cps\static\css\images\toolbarButton-download.png" />
+    <Content Include="cps\static\css\images\toolbarButton-menuArrows%402x.png" />
+    <Content Include="cps\static\css\images\toolbarButton-menuArrows.png" />
+    <Content Include="cps\static\css\images\toolbarButton-openFile%402x.png" />
+    <Content Include="cps\static\css\images\toolbarButton-openFile.png" />
+    <Content Include="cps\static\css\images\toolbarButton-pageDown%402x.png" />
+    <Content Include="cps\static\css\images\toolbarButton-pageDown-rtl%402x.png" />
+    <Content Include="cps\static\css\images\toolbarButton-pageDown-rtl.png" />
+    <Content Include="cps\static\css\images\toolbarButton-pageDown.png" />
+    <Content Include="cps\static\css\images\toolbarButton-pageUp%402x.png" />
+    <Content Include="cps\static\css\images\toolbarButton-pageUp-rtl%402x.png" />
+    <Content Include="cps\static\css\images\toolbarButton-pageUp-rtl.png" />
+    <Content Include="cps\static\css\images\toolbarButton-pageUp.png" />
+    <Content Include="cps\static\css\images\toolbarButton-presentationMode%402x.png" />
+    <Content Include="cps\static\css\images\toolbarButton-presentationMode.png" />
+    <Content Include="cps\static\css\images\toolbarButton-print%402x.png" />
+    <Content Include="cps\static\css\images\toolbarButton-print.png" />
+    <Content Include="cps\static\css\images\toolbarButton-search%402x.png" />
+    <Content Include="cps\static\css\images\toolbarButton-search.png" />
+    <Content Include="cps\static\css\images\toolbarButton-secondaryToolbarToggle%402x.png" />
+    <Content Include="cps\static\css\images\toolbarButton-secondaryToolbarToggle-rtl%402x.png" />
+    <Content Include="cps\static\css\images\toolbarButton-secondaryToolbarToggle-rtl.png" />
+    <Content Include="cps\static\css\images\toolbarButton-secondaryToolbarToggle.png" />
+    <Content Include="cps\static\css\images\toolbarButton-sidebarToggle%402x.png" />
+    <Content Include="cps\static\css\images\toolbarButton-sidebarToggle-rtl%402x.png" />
+    <Content Include="cps\static\css\images\toolbarButton-sidebarToggle-rtl.png" />
+    <Content Include="cps\static\css\images\toolbarButton-sidebarToggle.png" />
+    <Content Include="cps\static\css\images\toolbarButton-viewAttachments%402x.png" />
+    <Content Include="cps\static\css\images\toolbarButton-viewAttachments.png" />
+    <Content Include="cps\static\css\images\toolbarButton-viewOutline%402x.png" />
+    <Content Include="cps\static\css\images\toolbarButton-viewOutline-rtl%402x.png" />
+    <Content Include="cps\static\css\images\toolbarButton-viewOutline-rtl.png" />
+    <Content Include="cps\static\css\images\toolbarButton-viewOutline.png" />
+    <Content Include="cps\static\css\images\toolbarButton-viewThumbnail%402x.png" />
+    <Content Include="cps\static\css\images\toolbarButton-viewThumbnail.png" />
+    <Content Include="cps\static\css\images\toolbarButton-zoomIn%402x.png" />
+    <Content Include="cps\static\css\images\toolbarButton-zoomIn.png" />
+    <Content Include="cps\static\css\images\toolbarButton-zoomOut%402x.png" />
+    <Content Include="cps\static\css\images\toolbarButton-zoomOut.png" />
+    <Content Include="cps\static\css\images\treeitem-collapsed%402x.png" />
+    <Content Include="cps\static\css\images\treeitem-collapsed-rtl%402x.png" />
+    <Content Include="cps\static\css\images\treeitem-collapsed-rtl.png" />
+    <Content Include="cps\static\css\images\treeitem-collapsed.png" />
+    <Content Include="cps\static\css\images\treeitem-expanded%402x.png" />
+    <Content Include="cps\static\css\images\treeitem-expanded.png" />
+    <Content Include="cps\static\css\kthoom.css" />
+    <Content Include="cps\static\css\libs\bootstrap-datepicker3.min.css" />
+    <Content Include="cps\static\css\libs\bootstrap-theme.min.css" />
+    <Content Include="cps\static\css\libs\bootstrap.min.css" />
+    <Content Include="cps\static\css\libs\normalize.css" />
+    <Content Include="cps\static\css\libs\typeahead.css" />
+    <Content Include="cps\static\css\libs\viewer.css" />
+    <Content Include="cps\static\css\main.css" />
+    <Content Include="cps\static\css\popup.css" />
+    <Content Include="cps\static\css\style.css" />
+    <Content Include="cps\static\favicon.ico" />
+    <Content Include="cps\static\generic_cover.jpg" />
+    <Content Include="cps\static\img\annotator-glyph-sprite.png" />
+    <Content Include="cps\static\img\annotator-icon-sprite.png" />
+    <Content Include="cps\static\img\apple-touch-icon.png" />
+    <Content Include="cps\static\img\cancelfullscreen.png" />
+    <Content Include="cps\static\img\close.png" />
+    <Content Include="cps\static\img\fullscreen.png" />
+    <Content Include="cps\static\img\goodreads.svg" />
+    <Content Include="cps\static\img\loader.gif" />
+    <Content Include="cps\static\img\menu-icon.png" />
+    <Content Include="cps\static\img\save.png" />
+    <Content Include="cps\static\img\saved.png" />
+    <Content Include="cps\static\img\settings-s.png" />
+    <Content Include="cps\static\img\settings.png" />
+    <Content Include="cps\static\img\star.png" />
+    <Content Include="cps\static\js\archive.js" />
+    <Content Include="cps\static\js\details.js" />
+    <Content Include="cps\static\js\edit_books.js" />
+    <Content Include="cps\static\js\get_meta.js" />
+    <Content Include="cps\static\js\io.js" />
+    <Content Include="cps\static\js\kthoom.js" />
+    <Content Include="cps\static\js\libs\bootstrap-datepicker\bootstrap-datepicker.min.js" />
+    <Content Include="cps\static\js\libs\bootstrap-datepicker\locales\bootstrap-datepicker.de.min.js" />
+    <Content Include="cps\static\js\libs\bootstrap-datepicker\locales\bootstrap-datepicker.es.min.js" />
+    <Content Include="cps\static\js\libs\bootstrap-datepicker\locales\bootstrap-datepicker.fr.min.js" />
+    <Content Include="cps\static\js\libs\bootstrap-datepicker\locales\bootstrap-datepicker.it.min.js" />
+    <Content Include="cps\static\js\libs\bootstrap-datepicker\locales\bootstrap-datepicker.nl.min.js" />
+    <Content Include="cps\static\js\libs\bootstrap-datepicker\locales\bootstrap-datepicker.pl.min.js" />
+    <Content Include="cps\static\js\libs\bootstrap-datepicker\locales\bootstrap-datepicker.ru.min.js" />
+    <Content Include="cps\static\js\libs\bootstrap-datepicker\locales\bootstrap-datepicker.zh-CN.min.js" />
+    <Content Include="cps\static\js\libs\bootstrap-rating-input.min.js" />
+    <Content Include="cps\static\js\libs\bootstrap.min.js" />
+    <Content Include="cps\static\js\libs\compatibility.js" />
+    <Content Include="cps\static\js\libs\context.js" />
+    <Content Include="cps\static\js\libs\context.min.js" />
+    <Content Include="cps\static\js\libs\debugger.js" />
+    <Content Include="cps\static\js\libs\epub.min.js" />
+    <Content Include="cps\static\js\libs\hooks.min.js" />
+    <Content Include="cps\static\js\libs\intention.js" />
+    <Content Include="cps\static\js\libs\intention.min.js" />
+    <Content Include="cps\static\js\libs\jquery.form.js" />
+    <Content Include="cps\static\js\libs\jquery.min.js" />
+    <Content Include="cps\static\js\libs\l10n.js" />
+    <Content Include="cps\static\js\libs\pdf.js" />
+    <Content Include="cps\static\js\libs\pdf.worker.js" />
+    <Content Include="cps\static\js\libs\plugins.js" />
+    <Content Include="cps\static\js\libs\reader.min.js" />
+    <Content Include="cps\static\js\libs\screenfull.min.js" />
+    <Content Include="cps\static\js\libs\Sortable.min.js" />
+    <Content Include="cps\static\js\libs\tinymce\langs\de.js" />
+    <Content Include="cps\static\js\libs\tinymce\langs\es.js" />
+    <Content Include="cps\static\js\libs\tinymce\langs\fr.js" />
+    <Content Include="cps\static\js\libs\tinymce\langs\nl.js" />
+    <Content Include="cps\static\js\libs\tinymce\langs\pl.js" />
+    <Content Include="cps\static\js\libs\tinymce\langs\ru.js" />
+    <Content Include="cps\static\js\libs\tinymce\langs\zh_Hans_CN.js" />
+    <Content Include="cps\static\js\libs\tinymce\license.txt" />
+    <Content Include="cps\static\js\libs\tinymce\skins\lightgray\content.inline.min.css" />
+    <Content Include="cps\static\js\libs\tinymce\skins\lightgray\content.min.css" />
+    <Content Include="cps\static\js\libs\tinymce\skins\lightgray\fonts\tinymce-small.svg" />
+    <Content Include="cps\static\js\libs\tinymce\skins\lightgray\fonts\tinymce.svg" />
+    <Content Include="cps\static\js\libs\tinymce\skins\lightgray\img\anchor.gif" />
+    <Content Include="cps\static\js\libs\tinymce\skins\lightgray\img\loader.gif" />
+    <Content Include="cps\static\js\libs\tinymce\skins\lightgray\img\object.gif" />
+    <Content Include="cps\static\js\libs\tinymce\skins\lightgray\img\trans.gif" />
+    <Content Include="cps\static\js\libs\tinymce\skins\lightgray\skin.min.css" />
+    <Content Include="cps\static\js\libs\tinymce\themes\inlite\theme.min.js" />
+    <Content Include="cps\static\js\libs\tinymce\themes\modern\theme.min.js" />
+    <Content Include="cps\static\js\libs\tinymce\tinymce.min.js" />
+    <Content Include="cps\static\js\libs\typeahead.bundle.js" />
+    <Content Include="cps\static\js\libs\underscore-min.js" />
+    <Content Include="cps\static\js\libs\viewer.js" />
+    <Content Include="cps\static\js\libs\zip.min.js" />
+    <Content Include="cps\static\js\main.js" />
+    <Content Include="cps\static\js\reading\epub.js" />
+    <Content Include="cps\static\js\shelforder.js" />
+    <Content Include="cps\static\js\unrar.js" />
+    <Content Include="cps\static\js\untar.js" />
+    <Content Include="cps\static\js\unzip.js" />
+    <Content Include="cps\templates\admin.html" />
+    <Content Include="cps\templates\author.html" />
+    <Content Include="cps\templates\book_edit.html" />
+    <Content Include="cps\templates\config_edit.html" />
+    <Content Include="cps\templates\detail.html" />
+    <Content Include="cps\templates\discover.html" />
+    <Content Include="cps\templates\email_edit.html" />
+    <Content Include="cps\templates\fragment.html" />
+    <Content Include="cps\templates\index.html" />
+    <Content Include="cps\templates\json.txt" />
+    <Content Include="cps\templates\languages.html" />
+    <Content Include="cps\templates\layout.html" />
+    <Content Include="cps\templates\list.html" />
+    <Content Include="cps\templates\login.html" />
+    <Content Include="cps\templates\read.html" />
+    <Content Include="cps\templates\readcbr.html" />
+    <Content Include="cps\templates\readpdf.html" />
+    <Content Include="cps\templates\readtxt.html" />
+    <Content Include="cps\templates\register.html" />
+    <Content Include="cps\templates\remote_login.html" />
+    <Content Include="cps\templates\search.html" />
+    <Content Include="cps\templates\search_form.html" />
+    <Content Include="cps\templates\shelf.html" />
+    <Content Include="cps\templates\shelf_edit.html" />
+    <Content Include="cps\templates\shelf_order.html" />
+    <Content Include="cps\templates\stats.html" />
+    <Content Include="cps\templates\user_edit.html" />
+    <Content Include="optional-requirements.txt" />
+    <Content Include="requirements.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="cps.py" />
+    <Compile Include="cps\book_formats.py" />
+    <Compile Include="cps\cache_buster.py" />
+    <Compile Include="cps\cli.py" />
+    <Compile Include="cps\comic.py" />
+    <Compile Include="cps\db.py" />
+    <Compile Include="cps\epub.py" />
+    <Compile Include="cps\fb2.py" />
+    <Compile Include="cps\gdriveutils.py" />
+    <Compile Include="cps\helper.py" />
+    <Compile Include="cps\redirect.py" />
+    <Compile Include="cps\ub.py" />
+    <Compile Include="cps\uploader.py" />
+    <Compile Include="cps\web.py" />
+    <Compile Include="cps\__init__.py" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="cps" />
+    <Folder Include="cps\static" />
+    <Folder Include="cps\static\css" />
+    <Folder Include="cps\static\css\fonts" />
+    <Folder Include="cps\static\css\images" />
+    <Folder Include="cps\static\css\libs" />
+    <Folder Include="cps\static\img" />
+    <Folder Include="cps\static\js" />
+    <Folder Include="cps\static\js\libs" />
+    <Folder Include="cps\static\js\libs\bootstrap-datepicker" />
+    <Folder Include="cps\static\js\libs\bootstrap-datepicker\locales" />
+    <Folder Include="cps\static\js\libs\tinymce" />
+    <Folder Include="cps\static\js\libs\tinymce\langs" />
+    <Folder Include="cps\static\js\libs\tinymce\skins\" />
+    <Folder Include="cps\static\js\libs\tinymce\skins\lightgray" />
+    <Folder Include="cps\static\js\libs\tinymce\skins\lightgray\fonts" />
+    <Folder Include="cps\static\js\libs\tinymce\skins\lightgray\img" />
+    <Folder Include="cps\static\js\libs\tinymce\themes\" />
+    <Folder Include="cps\static\js\libs\tinymce\themes\inlite" />
+    <Folder Include="cps\static\js\libs\tinymce\themes\modern" />
+    <Folder Include="cps\static\js\reading" />
+    <Folder Include="cps\templates" />
+  </ItemGroup>
+  <ItemGroup>
+    <InterpreterReference Include="Global|PythonCore|3.6" />
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
+</Project>
