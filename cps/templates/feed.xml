@@ -38,7 +38,7 @@
   <entry>
     <title>{{entry.title}}</title>
     <id>{{entry.uuid}}</id>
-    <updated>{{entry.timestamp}}</updated>
+    <updated>{{entry.atom_timestamp}}</updated>
     <author>
       <name>{{entry.authors[0].name}}</name>
     </author>
@@ -55,7 +55,7 @@
     {% endif %}
     {% for format in entry.data %}
     <link rel="http://opds-spec.org/acquisition" href="{{ url_for('get_opds_download_link', book_id=entry.id, book_format=format.format|lower)}}"
-          length="{{format.uncompressed_size}}" mtime="{{entry.timestamp}}" type="{{format.format|lower|mimetype}}"/>
+          length="{{format.uncompressed_size}}" mtime="{{entry.atom_timestamp}}" type="{{format.format|lower|mimetype}}"/>
     {% endfor %}
   </entry>
   {% endfor %}
