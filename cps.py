@@ -45,7 +45,13 @@ if __name__ == '__main__':
 
     if web.helper.global_task == 0:
         web.app.logger.info("Performing restart of Calibre-web")
-        os.execl(sys.executable, sys.executable, *sys.argv)
+        if os.name == 'nt':
+            arguments = ["\"" + sys.executable + "\""]
+            for e in sys.argv:
+                arguments.append("\"" + e + "\"")
+            os.execv(sys.executable, arguments)
+        else:
+            os.execl(sys.executable, sys.executable, *sys.argv)
     else:
         web.app.logger.info("Performing shutdown of Calibre-web")
     sys.exit(0)
