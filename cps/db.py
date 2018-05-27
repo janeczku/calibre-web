@@ -280,6 +280,9 @@ class Books(Base):
                                                                  self.timestamp, self.pubdate, self.series_index,
                                                                  self.last_modified, self.path, self.has_cover)
 
+    @property
+    def atom_timestamp(self):
+        return (self.timestamp or '').replace(' ', 'T')
 
 class Custom_Columns(Base):
     __tablename__ = 'custom_columns'
