@@ -1225,9 +1225,13 @@ def author(book_id, page):
     author_info = None
     other_books = []
     if goodreads_support and config.config_use_goodreads:
-        gc = GoodreadsClient(config.config_goodreads_api_key, config.config_goodreads_api_secret)
-        author_info = gc.find_author(author_name=name)
-        other_books = get_unique_other_books(entries.all(), author_info.books)
+        try:
+            gc = GoodreadsClient(config.config_goodreads_api_key, config.config_goodreads_api_secret)
+            author_info = gc.find_author(author_name=name)
+            other_books = get_unique_other_books(entries.all(), author_info.books)
+        except:
+            # Skip goodreads, if site is down/inaccessible
+            pass
 
     return render_title_template('author.html', entries=entries, pagination=pagination,
                                  title=name, author=author_info, other_books=other_books)
