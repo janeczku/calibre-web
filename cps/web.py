@@ -3383,7 +3383,7 @@ def upload():
     else:
         return redirect(url_for("index"))
 
-'''def start_gevent():
+def start_gevent():
     from gevent.wsgi import WSGIServer
     global gevent_server
     try:
@@ -3398,4 +3398,4 @@ def upload():
         gevent_server = WSGIServer(('0.0.0.0', ub.config.config_port), app, **ssl_args)
         gevent_server.serve_forever()
     except:
-        pass'''
+        pass
