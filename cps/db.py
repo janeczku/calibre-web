@@ -254,7 +254,7 @@ class Books(Base):
     uuid = Column(String)
 
     authors = relationship('Authors', secondary=books_authors_link, backref='books')
-    tags = relationship('Tags', secondary=books_tags_link, backref='books')
+    tags = relationship('Tags', secondary=books_tags_link, backref='books',order_by="Tags.name")
     comments = relationship('Comments', backref='books')
     data = relationship('Data', backref='books')
     series = relationship('Series', secondary=books_series_link, backref='books')
