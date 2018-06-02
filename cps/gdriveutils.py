@@ -68,7 +68,6 @@ if not os.path.exists(cli.gdpath):
         Base.metadata.create_all(engine)
     except Exception:
         raise
-
 migrate()
 
 
@@ -80,7 +79,10 @@ def getDrive(drive=None, gauth=None):
         gauth.LoadCredentialsFile("gdrive_credentials")
         if gauth.access_token_expired:
             # Refresh them if expired
-            gauth.Refresh()
+            try:
+                gauth.Refresh()
+            except:
+                web.app.logger.error("GDrive gdrive_credentials file not present, reauthenticate in config section")
         else:
             # Initialize the saved creds
             gauth.Authorize()
@@ -90,12 +92,24 @@ def getDrive(drive=None, gauth=None):
         drive.auth.Refresh()
     return drive
 
+def listRootFolders(drive=None):
+    drive = getDrive(drive)
+    folder = "'root' in parents and mimeType = 'application/vnd.google-apps.folder' and trashed = false"
+    fileList = drive.ListFile({'q': folder}).GetList()
+    return fileList
+
 
 def getEbooksFolder(drive=None):
-    drive = getDrive(drive)
-    ebooksFolder = "title = '%s' and 'root' in parents and mimeType = 'application/vnd.google-apps.folder' and trashed = false" % config.config_google_drive_folder
+    return getFolderInFolder('root',config.config_google_drive_folder,drive)
 
-    fileList = drive.ListFile({'q': ebooksFolder}).GetList()
+
+def getFolderInFolder(parentId, folderName,drive=None):
+    drive = getDrive(drive)
+    query=""
+    if folderName:
+        query = "title = '%s' and " % folderName.replace("'", "\\'")
+    folder = query + "'%s' in parents and mimeType = 'application/vnd.google-apps.folder' and trashed = false" % parentId
+    fileList = drive.ListFile({'q': folder}).GetList()
     return fileList[0]
 
 
@@ -105,18 +119,15 @@ def getEbooksFolderId(drive=None):
         return storedPathName.gdrive_id
     else:
         gDriveId = GdriveId()
-        gDriveId.gdrive_id = getEbooksFolder(drive)['id']
+        try:
+            gDriveId.gdrive_id = getEbooksFolder(drive)['id']
+        except:
+            pass
+            # ToDo Path not exisiting
         gDriveId.path = '/'
         session.merge(gDriveId)
         session.commit()
         return
-
-
-def getFolderInFolder(parentId, folderName, drive=None):
-    drive = getDrive(drive)
-    folder = "title = '%s' and '%s' in parents and mimeType = 'application/vnd.google-apps.folder' and trashed = false" % (folderName.replace("'", "\\'"), parentId)
-    fileList = drive.ListFile({'q': folder}).GetList()
-    return fileList[0]
 
 
 def getFile(pathId, fileName, drive=None):
@@ -190,11 +201,8 @@ def downloadFile(drive, path, filename, output):
 def backupCalibreDbAndOptionalDownload(drive, f=None):
     drive = getDrive(drive)
     metaDataFile = "'%s' in parents and title = 'metadata.db' and trashed = false" % getEbooksFolderId()
-
     fileList = drive.ListFile({'q': metaDataFile}).GetList()
-
     databaseFile = fileList[0]
-
     if f:
         databaseFile.GetContentFile(f)
 
@@ -343,3 +351,8 @@ def getChangeById (drive, change_id):
     except (errors.HttpError, error):
         web.app.logger.exception(error)
         return None
+
+# Deletes the local hashes database to force search for new folder names
+def deleteDatabaseOnChange():
+    session.query(GdriveId).delete()
+    session.commit()

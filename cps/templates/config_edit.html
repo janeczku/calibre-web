@@ -7,47 +7,43 @@
       <label for="config_calibre_dir">{{_('Location of Calibre database')}}</label>
       <input type="text" class="form-control" name="config_calibre_dir" id="config_calibre_dir" value="{% if content.config_calibre_dir != None %}{{ content.config_calibre_dir }}{% endif %}" autocomplete="off">
     </div>
-    {% if gdrive %}
     <div class="form-group required">
       <input type="checkbox" id="config_use_google_drive" name="config_use_google_drive" data-control="gdrive_settings" {% if content.config_use_google_drive %}checked{% endif %} >
       <label for="config_use_google_drive">{{_('Use google drive?')}}</label>
     </div>
     <div data-related="gdrive_settings">
-      <div class="form-group required">
-        <label for="config_google_drive_client_id">{{_('Client id')}}</label>
-        <input type="text" class="form-control" name="config_google_drive_client_id" id="config_google_drive_client_id" value="{% if content.config_google_drive_client_id %}{{content.config_google_drive_client_id}}{% endif %}" autocomplete="off">
-      </div>
-      <div class="form-group required">
-        <label for="config_google_drive_client_secret">{{_('Client secret')}}</label>
-        <input type="text" class="form-control" name="config_google_drive_client_secret" id="config_google_drive_client_secret" value="{% if content.config_google_drive_client_secret %}{{content.config_google_drive_client_secret}}{% endif %}" autocomplete="off">
-      </div>
-      <div class="form-group required">
-        <label for="config_google_drive_calibre_url_base">{{_('Calibre-web Base URL')}}</label>
-        <input type="text" class="form-control" name="config_google_drive_calibre_url_base" id="config_google_drive_calibre_url_base" value="{% if content.config_google_drive_calibre_url_base %}{{content.config_google_drive_calibre_url_base}}{% endif %}" autocomplete="off">
-      </div>
-      <div class="form-group required">
-        <label for="config_google_drive_folder">{{_('Google drive Calibre folder')}}</label>
-        <input type="text" class="form-control" name="config_google_drive_folder" id="config_google_drive_folder" value="{% if content.config_google_drive_folder %}{{content.config_google_drive_folder}}{% endif %}" autocomplete="off" required>
-      </div>
-      {% if show_authenticate_google_drive %}
-        <div class="form-group required">
-          <a href="{{ url_for('authenticate_google_drive') }}" class="btn btn-primary">Authenticate Google Drive</a>
+      {% if gdriveError %}
+        <div class="form-group">
+          <label>
+            {{_('Google drive config problem')}}: {{ gdriveError }}
+          </label>
         </div>
       {% else %}
-        {% if content.config_google_drive_watch_changes_response %}
-        <label for="config_google_drive_watch_changes_response">{{_('Metadata Watch Channel ID')}}</label>
-        <div class="form-group input-group required">
-          <input type="text" class="form-control" name="config_google_drive_watch_changes_response" id="config_google_drive_watch_changes_response" value="{{ content.config_google_drive_watch_changes_response['id'] }} expires on {{ content.config_google_drive_watch_changes_response['expiration'] |  strftime }}" autocomplete="off" disabled="">
-          <span class="input-group-btn">
-          <a href="{{ url_for('revoke_watch_gdrive') }}" class="btn btn-primary">Revoke</a>
-          </span>
+        {% if show_authenticate_google_drive %}
+          <div class="form-group required">
+            <a href="{{ url_for('authenticate_google_drive') }}" class="btn btn-primary">{{_('Authenticate Google Drive')}}</a>
+          </div>
+        {% else %}
+          <div class="form-group required">
+            <label for="config_google_drive_folder">{{_('Google drive Calibre folder')}}</label>
+              <select name="config_google_drive_folder" id="config_google_drive_folder" class="form-control">
+                {%  for gdrivefolder in gdrivefolders %}
+                <option value="{{ gdrivefolder.title }}" {% if gdrivefolder.title == content.config_google_drive_folder %}selected{% endif %}>{{ gdrivefolder.title }}</option>
+                {% endfor %}
+              </select>
+          </div>
+          {% if content.config_google_drive_watch_changes_response %}
+            <label for="config_google_drive_watch_changes_response">{{_('Metadata Watch Channel ID')}}</label>
+            <div class="form-group input-group required">
+              <input type="text" class="form-control" name="config_google_drive_watch_changes_response" id="config_google_drive_watch_changes_response" value="{{ content.config_google_drive_watch_changes_response['id'] }} expires on {{ content.config_google_drive_watch_changes_response['expiration'] |  strftime }}" autocomplete="off" disabled="">
+              <span class="input-group-btn"><a href="{{ url_for('revoke_watch_gdrive') }}" class="btn btn-primary">{{_('Revoke')}}</a></span>
+            </div>
           {% else %}
-          <a href="{{ url_for('watch_gdrive') }}" class="btn btn-primary">Enable watch of metadata.db</a>
+            <a href="{{ url_for('watch_gdrive') }}" class="btn btn-primary">Enable watch of metadata.db</a>
           {% endif %}
-        </div>
         {% endif %}
+      {% endif %}
     </div>
-    {% endif %}
     <div class="form-group">
       <label for="config_port">{{_('Server Port')}}</label>
       <input type="number" min="1" max="65535" class="form-control" name="config_port" id="config_port" value="{% if content.config_port != None %}{{ content.config_port }}{% endif %}" autocomplete="off" required>

@@ -1550,19 +1550,29 @@ def google_drive_callback():
 @admin_required
 def watch_gdrive():
     if not config.config_google_drive_watch_changes_response:
-        address = '%s/gdrive/watch/callback' % config.config_google_drive_calibre_url_base
+        with open('client_secret.json', 'r') as settings:
+            filedata = json.load(settings)
+        if filedata['web']['redirect_uris'][0].endswith('/'):
+            filedata['web']['redirect_uris'][0] = filedata['web']['redirect_uris'][0][:-((len('/gdrive/callback')+1))]
+        else:
+            filedata['web']['redirect_uris'][0] = filedata['web']['redirect_uris'][0][:-(len('/gdrive/callback'))]
+        address = '%s/gdrive/watch/callback' % filedata['web']['redirect_uris'][0]
         notification_id = str(uuid4())
-        result = gdriveutils.watchChange(Gdrive.Instance().drive, notification_id,
+        try:
+            result = gdriveutils.watchChange(Gdrive.Instance().drive, notification_id,
                                'web_hook', address, gdrive_watch_callback_token, current_milli_time() + 604800*1000)
-        print (result)
-        settings = ub.session.query(ub.Settings).first()
-        settings.config_google_drive_watch_changes_response = json.dumps(result)
-        ub.session.merge(settings)
-        ub.session.commit()
-        settings = ub.session.query(ub.Settings).first()
-        config.loadSettings()
-
-        print (settings.config_google_drive_watch_changes_response)
+            settings = ub.session.query(ub.Settings).first()
+            settings.config_google_drive_watch_changes_response = json.dumps(result)
+            ub.session.merge(settings)
+            ub.session.commit()
+            settings = ub.session.query(ub.Settings).first()
+            config.loadSettings()
+        except HttpError as e:
+            reason=json.loads(e.content)['error']['errors'][0]
+            if reason['reason'] == u'push.webhookUrlUnauthorized':
+                flash(_(u'Callback domain is not verified, please follow steps to verify domain in google developer console'), category="error")
+            else:
+                flash(reason['message'], category="error")
 
     return redirect(url_for('configuration'))
 
@@ -1800,7 +1810,11 @@ def get_cover_via_gdrive(cover_path):
 @login_required_if_no_ano
 def get_cover(cover_path):
     if config.config_use_google_drive:
-        return redirect(get_cover_via_gdrive(cover_path))
+        try:
+            return redirect(get_cover_via_gdrive(cover_path))
+        except:
+            app.logger.error(cover_path + '/cover.jpg ' + _('not found on GDrive'))
+            return send_from_directory(os.path.join(os.path.dirname(__file__), "static"),"generic_cover.jpg")
     else:
         return send_from_directory(os.path.join(config.config_calibre_dir, cover_path), "cover.jpg")
 
@@ -2499,8 +2513,20 @@ def basic_configuration():
 def configuration_helper(origin):
     # global global_task
     reboot_required = False
+    gdriveError=None
     db_change = False
     success = False
+    if gdrive_support == False:
+        gdriveError = _('Import of optional GDrive requirements missing')
+    else:
+        if not os.path.isfile('client_secret.json'):
+            gdriveError = _('client_secret.json is missing or not readable')
+        else:
+            with open('client_secret.json', 'r') as settings:
+                filedata=json.load(settings)
+            if not 'web' in filedata:
+                gdriveError = _('client_secret.json is not configured for web application')
+                filedata = None
     if request.method == "POST":
         to_save = request.form.to_dict()
         content = ub.session.query(ub.Settings).first()  # type: ub.Settings
@@ -2509,37 +2535,36 @@ def configuration_helper(origin):
                 content.config_calibre_dir = to_save["config_calibre_dir"]
                 db_change = True
         # Google drive setup
-        create_new_yaml = False
-        if "config_google_drive_client_id" in to_save:
-            if content.config_google_drive_client_id != to_save["config_google_drive_client_id"]:
-                content.config_google_drive_client_id = to_save["config_google_drive_client_id"]
-                create_new_yaml = True
-        if "config_google_drive_client_secret" in to_save:
-            if content.config_google_drive_client_secret != to_save["config_google_drive_client_secret"]:
-                content.config_google_drive_client_secret = to_save["config_google_drive_client_secret"]
-                create_new_yaml = True
-        if "config_google_drive_calibre_url_base" in to_save:
-            if to_save['config_google_drive_calibre_url_base'].endswith('/'):
-                to_save['config_google_drive_calibre_url_base'] = to_save['config_google_drive_calibre_url_base'][:-1]
-            if content.config_google_drive_calibre_url_base != to_save["config_google_drive_calibre_url_base"]:
-                content.config_google_drive_calibre_url_base = to_save["config_google_drive_calibre_url_base"]
-                create_new_yaml = True
-        if ("config_use_google_drive" in to_save and not content.config_use_google_drive) or ("config_use_google_drive" not in to_save and content.config_use_google_drive):
+        if "config_use_google_drive" in to_save and not content.config_use_google_drive and not gdriveError:
+            if filedata:
+                if filedata['web']['redirect_uris'][0].endswith('/'):
+                    filedata['web']['redirect_uris'][0] = filedata['web']['redirect_uris'][0][:-1]
+                with open('settings.yaml', 'w') as f:
+                    yaml = "client_config_backend: settings\nclient_config:\n" \
+                           "  client_id: %(client_id)s\n  client_secret: %(client_secret)s\n" \
+                           "  redirect_uri: %(redirect_uri)s\nsave_credentials: True\n" \
+                           "save_credentials_backend: file\nsave_credentials_file: gdrive_credentials\n" \
+                           "get_refresh_token: True\n\noauth_scope:\n" \
+                           "- https://www.googleapis.com/auth/drive\n"
+                    f.write(yaml % {'client_id': filedata['web']['client_id'],
+                                   'client_secret': filedata['web']['client_secret'],
+                                   'redirect_uri': filedata['web']['redirect_uris'][0]})
+            else:
+                flash(_(u'client_secret.json is not configured for web application'), category="error")
+                return render_title_template("config_edit.html", content=config, origin=origin,
+                                             gdrive=gdrive_support, gdriveError=gdriveError,
+                                             goodreads=goodreads_support, title=_(u"Basic Configuration"))
+        # always show google drive settings, but in case of error deny support
+        if (("config_use_google_drive" in to_save and not content.config_use_google_drive) or
+            ("config_use_google_drive" not in to_save and content.config_use_google_drive)) and not gdriveError:
             content.config_use_google_drive = "config_use_google_drive" in to_save
-            db_change = True
-        if not content.config_use_google_drive:
-            create_new_yaml = False
-        if create_new_yaml:
-            with open('settings.yaml', 'w') as f:
-                with open('gdrive_template.yaml', 'r') as t:
-                    f.write(t.read() % {'client_id': content.config_google_drive_client_id,
-                            'client_secret': content.config_google_drive_client_secret,
-                            "redirect_uri": content.config_google_drive_calibre_url_base + '/gdrive/callback'})
+        else:
+            content.config_use_google_drive = 0
         if "config_google_drive_folder" in to_save:
             if content.config_google_drive_folder != to_save["config_google_drive_folder"]:
                 content.config_google_drive_folder = to_save["config_google_drive_folder"]
-                db_change = True
-        ##
+                gdriveutils.deleteDatabaseOnChange()
+
         if "config_port" in to_save:
             if content.config_port != int(to_save["config_port"]):
                 content.config_port = int(to_save["config_port"])
@@ -2553,7 +2578,7 @@ def configuration_helper(origin):
                     ub.session.commit()
                     flash(_(u'Keyfile location is not valid, please enter correct path'), category="error")
                     return render_title_template("config_edit.html", content=config, origin=origin,
-                                                 gdrive=gdrive_support,
+                                                 gdrive=gdrive_support, gdriveError=gdriveError,
                                                  goodreads=goodreads_support, title=_(u"Basic Configuration"))
         if "config_certfile" in to_save:
             if content.config_certfile != to_save["config_certfile"]:
@@ -2564,7 +2589,7 @@ def configuration_helper(origin):
                     ub.session.commit()
                     flash(_(u'Certfile location is not valid, please enter correct path'), category="error")
                     return render_title_template("config_edit.html", content=config, origin=origin,
-                                                 gdrive=gdrive_support,
+                                                 gdrive=gdrive_support, gdriveError=gdriveError,
                                                  goodreads=goodreads_support, title=_(u"Basic Configuration"))
         if "config_calibre_web_title" in to_save:
             content.config_calibre_web_title = to_save["config_calibre_web_title"]
@@ -2657,7 +2682,7 @@ def configuration_helper(origin):
                     ub.session.commit()
                     flash(_(u'Logfile location is not valid, please enter correct path'), category="error")
                     return render_title_template("config_edit.html", content=config, origin=origin,
-                                                 gdrive=gdrive_support,
+                                                 gdrive=gdrive_support, gdriveError=gdriveError,
                                                  goodreads=goodreads_support, title=_(u"Basic Configuration"))
             else:
                 content.config_logfile = to_save["config_logfile"]
@@ -2677,12 +2702,14 @@ def configuration_helper(origin):
         except e:
             flash(e, category="error")
             return render_title_template("config_edit.html", content=config, origin=origin, gdrive=gdrive_support,
+                                         gdriveError=gdriveError,
                                          goodreads=goodreads_support, title=_(u"Basic Configuration"))
         if db_change:
             reload(db)
             if not db.setup_db():
                 flash(_(u'DB location is not valid, please enter correct path'), category="error")
                 return render_title_template("config_edit.html", content=config, origin=origin, gdrive=gdrive_support,
+                                             gdriveError=gdriveError,
                                              goodreads=goodreads_support, title=_(u"Basic Configuration"))
         if reboot_required:
             # db.engine.dispose() # ToDo verify correct
@@ -2695,8 +2722,13 @@ def configuration_helper(origin):
             app.logger.info('Reboot required, restarting')
         if origin:
             success = True
+    if is_gdrive_ready():
+        gdrivefolders=gdriveutils.listRootFolders()
+    else:
+        gdrivefolders=None
     return render_title_template("config_edit.html", origin=origin, success=success, content=config,
                                  show_authenticate_google_drive=not is_gdrive_ready(), gdrive=gdrive_support,
+                                 gdriveError=gdriveError, gdrivefolders=gdrivefolders,
                                  goodreads=goodreads_support, title=_(u"Basic Configuration"))
 
 
@@ -3351,7 +3383,7 @@ def upload():
     else:
         return redirect(url_for("index"))
 
-def start_gevent():
+'''def start_gevent():
     from gevent.wsgi import WSGIServer
     global gevent_server
     try:
@@ -3366,4 +3398,4 @@ def start_gevent():
         gevent_server = WSGIServer(('0.0.0.0', ub.config.config_port), app, **ssl_args)
         gevent_server.serve_forever()
     except:
-        pass
+        pass'''

@@ -21,27 +21,23 @@ except ImportError:
     gevent_present = False
 
 if __name__ == '__main__':
-    if web.ub.DEVELOPMENT:
-        web.app.run(port=web.ub.config.config_port, debug=True)
+    if gevent_present:
+        web.app.logger.info('Attempting to start gevent')
+        web.start_gevent()
     else:
-        if gevent_present:
-            web.app.logger.info('Attempting to start gevent')
-            web.start_gevent()
+        web.app.logger.info('Starting Tornado webserver')
+        # Max Buffersize set to 200MB
+        if web.ub.config.get_config_certfile() and web.ub.config.get_config_keyfile():
+            ssl={"certfile": web.ub.config.get_config_certfile(),
+                 "keyfile": web.ub.config.get_config_keyfile()}
         else:
-            web.app.logger.info('Falling back to Tornado')
-            # Max Buffersize set to 200MB
-            if web.ub.config.get_config_certfile() and web.ub.config.get_config_keyfile():
-                ssl={"certfile": web.ub.config.get_config_certfile(),
-                     "keyfile": web.ub.config.get_config_keyfile()}
-            else:
-                ssl=None
-            http_server = HTTPServer(WSGIContainer(web.app),
-                            max_buffer_size = 209700000,
-                            ssl_options=ssl)
-            http_server.listen(web.ub.config.config_port)
-            IOLoop.instance().start()
-            IOLoop.instance().close(True)
-
+            ssl=None
+        http_server = HTTPServer(WSGIContainer(web.app),
+                    max_buffer_size = 209700000,
+                    ssl_options=ssl)
+        http_server.listen(web.ub.config.config_port)
+        IOLoop.instance().start()
+        IOLoop.instance().close(True)
 
     if web.helper.global_task == 0:
         web.app.logger.info("Performing restart of Calibre-web")
