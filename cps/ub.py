@@ -291,10 +291,10 @@ class Settings(Base):
     config_default_show = Column(SmallInteger, default=2047)
     config_columns_to_ignore = Column(String)
     config_use_google_drive = Column(Boolean)
-    config_google_drive_client_id = Column(String)
-    config_google_drive_client_secret = Column(String)
+    # config_google_drive_client_id = Column(String)
+    # config_google_drive_client_secret = Column(String)
     config_google_drive_folder = Column(String)
-    config_google_drive_calibre_url_base = Column(String)
+    # config_google_drive_calibre_url_base = Column(String)
     config_google_drive_watch_changes_response = Column(String)
     config_remote_login = Column(Boolean)
     config_use_goodreads = Column(Boolean)
@@ -352,9 +352,9 @@ class Config:
         self.config_default_show = data.config_default_show
         self.config_columns_to_ignore = data.config_columns_to_ignore
         self.config_use_google_drive = data.config_use_google_drive
-        self.config_google_drive_client_id = data.config_google_drive_client_id
-        self.config_google_drive_client_secret = data.config_google_drive_client_secret
-        self.config_google_drive_calibre_url_base = data.config_google_drive_calibre_url_base
+        # self.config_google_drive_client_id = data.config_google_drive_client_id
+        # self.config_google_drive_client_secret = data.config_google_drive_client_secret
+        # self.config_google_drive_calibre_url_base = data.config_google_drive_calibre_url_base
         self.config_google_drive_folder = data.config_google_drive_folder
         if data.config_google_drive_watch_changes_response:
             self.config_google_drive_watch_changes_response = json.loads(data.config_google_drive_watch_changes_response)
@@ -550,9 +550,9 @@ def migrate_Database():
     except exc.OperationalError:
         conn = engine.connect()
         conn.execute("ALTER TABLE Settings ADD column `config_use_google_drive` INTEGER DEFAULT 0")
-        conn.execute("ALTER TABLE Settings ADD column `config_google_drive_client_id` String DEFAULT ''")
-        conn.execute("ALTER TABLE Settings ADD column `config_google_drive_client_secret` String DEFAULT ''")
-        conn.execute("ALTER TABLE Settings ADD column `config_google_drive_calibre_url_base` INTEGER DEFAULT 0")
+        # conn.execute("ALTER TABLE Settings ADD column `config_google_drive_client_id` String DEFAULT ''")
+        # conn.execute("ALTER TABLE Settings ADD column `config_google_drive_client_secret` String DEFAULT ''")
+        # conn.execute("ALTER TABLE Settings ADD column `config_google_drive_calibre_url_base` INTEGER DEFAULT 0")
         conn.execute("ALTER TABLE Settings ADD column `config_google_drive_folder` String DEFAULT ''")
         conn.execute("ALTER TABLE Settings ADD column `config_google_drive_watch_changes_response` String DEFAULT ''")
     try:

@@ -88,22 +88,22 @@ Once a project has been created, we need to create a client ID and a client secr
 The Drive API should now be setup and ready to use, so we need to integrate it into Calibre-Web. This is done as below: -
 
 1. Open config page
-2. Enter the location that will be used to store the metadata.db file, and to temporary store uploaded books and other temporary files for upload
+2. Enter the location that will be used to store the metadata.db file locally, and to temporary store uploaded books and other temporary files for upload ("Location of Calibre database")
 2. Tick Use Google Drive
-3. Enter Client Secret and Client Key as provided via previous steps
-4. Enter the folder that is the root of your calibre library
-5. Enter base URL for calibre-web (used for google callbacks)
-6. Click the "Submit" button
-7. Come back to the configuration form
-8. Now select Authenticate Google Drive
-9. This should redirect you to google to allow it top use your Drive, and then redirect you back to the config page
-10. Google Drive should now be connected and be used to get images and download Epubs. The metadata.db is stored in the calibre library location
+3. Click the "Submit" button
+4. Now select Authenticate Google Drive
+5. This should redirect you to Google to allow it top use your Drive, and then redirect you back to the config page
+6. Select the folder that is the root of your calibre library on Gdrive ("Google drive Calibre folder")
+7. Click the "Submit" button
+8. Google Drive should now be connected and be used to get images and download Epubs. The metadata.db is stored in the calibre library location
 
 ### Optional
 If your calibre web is using https, it is possible to add a "watch" to the drive. This will inform us if the metadata.db file is updated and allow us to update our calibre library accordingly.
+Additionally the public adress your server uses (e.g.https://example.com) has to be verified in the Google developer console. After this is done, please wait a few minutes.
 
-11. Click enable watch of metadata.db
-12. Note that this expires after a week, so will need to be manually refresh 
+9. Open config page
+10. Click enable watch of metadata.db
+11. Note that this expires after a week, so will need to be manually refresh 
 
 ## Docker image
 
