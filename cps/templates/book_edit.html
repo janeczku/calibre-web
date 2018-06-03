@@ -16,12 +16,12 @@
       <button type="button" class="btn btn-danger" id="delete" data-toggle="modal" data-target="#deleteModal">{{_("Delete Book")}}</button>
     </div>
     {% if book.data|length > 1 %}
-      <h3>Book Formats</h3>
+      <h3>{{_('Book Formats')}}</h3>
       <div class="text-center">
       {% for file in book.data %}
         <p>
           <label>{{file.format}} ({{ file.uncompressed_size|filesizeformat }})</label>
-          <a href="{{ url_for('delete_book_format', book_id=book.id, format=file.format) }}" class="btn-sm btn btn-danger" type="button">Delete</a>
+          <a href="{{ url_for('delete_book_format', book_id=book.id, format=file.format) }}" class="btn-sm btn btn-danger" type="button">{{_('Delete')}}</a>
         </p>
       {% endfor %}
       </div>
