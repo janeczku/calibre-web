@@ -1476,6 +1476,21 @@ def stats():
                                  categorycounter=categorys, seriecounter=series, title=_(u"Statistics"))
 
 
+@app.route("/delete/<int:book_id>/<string:format>/")
+@login_required
+def delete_book_format(book_id, format):
+    if current_user.role_delete_books():
+        book = db.session.query(db.Books).filter(db.Books.id == book_id).first()
+        if book:
+            helper.delete_book(book, config.config_calibre_dir, format=format)
+            db.session.query(db.Data).filter(db.Data.book == book.id).filter(db.Data.format == format).delete()
+            db.session.commit()
+        else:
+            # book not found
+            app.logger.info('Book with id "'+str(book_id)+'" could not be deleted')
+    return redirect(url_for('edit_book', book_id=book_id))
+
+
 @app.route("/delete/<int:book_id>/")
 @login_required
 def delete_book(book_id):
@@ -3044,7 +3059,7 @@ def edit_book(book_id):
             # Format entry already exists, no need to update the database
             pass
         else:
-            db_format = db.Data(book_id, file_ext.upper(), file_size, file_name)
+            db_format = db.Data(book_id, file_ext.upper(), file_size, filData.fe_name)
             db.session.add(db_format)
 
     to_save = request.form.to_dict()
