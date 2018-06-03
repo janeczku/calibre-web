@@ -3059,7 +3059,7 @@ def edit_book(book_id):
             # Format entry already exists, no need to update the database
             pass
         else:
-            db_format = db.Data(book_id, file_ext.upper(), file_size, filData.fe_name)
+            db_format = db.Data(book_id, file_ext.upper(), file_size, file_name)
             db.session.add(db_format)
 
     to_save = request.form.to_dict()
