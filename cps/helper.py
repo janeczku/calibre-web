@@ -307,12 +307,12 @@ def get_sorted_author(value):
     return value2
 
 
-def delete_book(book, calibrepath, format=None):
+def delete_book(book, calibrepath, book_format=None):
     if "/" in book.path:
         path = os.path.join(calibrepath, book.path)
-        if format:
+        if book_format:
             for file in os.listdir(path):
-                if file.upper().endswith("."+format):
+                if file.upper().endswith("."+book_format):
                     os.remove(os.path.join(path, file))
         else:
             shutil.rmtree(path, ignore_errors=True)

@@ -1476,14 +1476,14 @@ def stats():
                                  categorycounter=categorys, seriecounter=series, title=_(u"Statistics"))
 
 
-@app.route("/delete/<int:book_id>/<string:format>/")
+@app.route("/delete/<int:book_id>/<string:book_format>/")
 @login_required
-def delete_book_format(book_id, format):
+def delete_book_format(book_id, book_format):
     if current_user.role_delete_books():
         book = db.session.query(db.Books).filter(db.Books.id == book_id).first()
         if book:
-            helper.delete_book(book, config.config_calibre_dir, format=format)
-            db.session.query(db.Data).filter(db.Data.book == book.id).filter(db.Data.format == format).delete()
+            helper.delete_book(book, config.config_calibre_dir, book_format=book_format)
+            db.session.query(db.Data).filter(db.Data.book == book.id).filter(db.Data.format == book_format).delete()
             db.session.commit()
         else:
             # book not found

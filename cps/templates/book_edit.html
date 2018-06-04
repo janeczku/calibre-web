@@ -21,7 +21,7 @@
       {% for file in book.data %}
         <p>
           <label>{{file.format}} ({{ file.uncompressed_size|filesizeformat }})</label>
-          <a href="{{ url_for('delete_book_format', book_id=book.id, format=file.format) }}" class="btn-sm btn btn-danger" type="button">{{_('Delete')}}</a>
+          <a href="{{ url_for('delete_book_format', book_id=book.id, book_format=file.format) }}" class="btn-sm btn btn-danger" type="button">{{_('Delete')}}</a>
         </p>
       {% endfor %}
       </div>
