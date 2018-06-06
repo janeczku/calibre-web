@@ -83,7 +83,7 @@ Once a project has been created, we need to create a client ID and a client secr
 5. Select Web Application and then next
 6. Give the Credentials a name and enter your callback, which will be CALIBRE_WEB_URL/gdrive/callback
 7. Click save
-8. Download json file and place it in `calibre-web/cps` directory, with the name `client_secrets.json`  
+8. Download json file and place it in `calibre-web` directory, with the name `client_secrets.json`  
 
 The Drive API should now be setup and ready to use, so we need to integrate it into Calibre-Web. This is done as below: -
 
