@@ -2542,10 +2542,10 @@ def configuration_helper(origin):
                 with open('settings.yaml', 'w') as f:
                     yaml = "client_config_backend: settings\nclient_config:\n" \
                            "  client_id: %(client_id)s\n  client_secret: %(client_secret)s\n" \
-                           "  redirect_uri: %(redirect_uri)s\nsave_credentials: True\n" \
-                           "save_credentials_backend: file\nsave_credentials_file: gdrive_credentials\n" \
+                           "  redirect_uri: %(redirect_uri)s\n\nsave_credentials: True\n" \
+                           "save_credentials_backend: file\nsave_credentials_file: gdrive_credentials\n\n" \
                            "get_refresh_token: True\n\noauth_scope:\n" \
-                           "- https://www.googleapis.com/auth/drive\n"
+                           "  - https://www.googleapis.com/auth/drive\n"
                     f.write(yaml % {'client_id': filedata['web']['client_id'],
                                    'client_secret': filedata['web']['client_secret'],
                                    'redirect_uri': filedata['web']['redirect_uris'][0]})
