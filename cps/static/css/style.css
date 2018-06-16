@@ -105,3 +105,7 @@ input.pill:not(:checked) + label .glyphicon {
 .div[class="col-sm-3.col-lg-3.col-xs-5"] {
     width: 100%;
 }
+
+.col-xs-5 {
+    width: 100%;
+}
