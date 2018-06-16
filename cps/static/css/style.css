@@ -96,3 +96,17 @@ input.pill:not(:checked) + label .glyphicon {
 
 .upload-format-input-text {display: initial;}
 #btn-upload-format {display: none;}
+
+.div[id="bookDetailsModal"] .container-fluid .book .cover {
+    height: auto;
+    width: 100%;
+}
+
+.div[class="col-sm-3.col-lg-3.col-xs-5"] {
+    width: 100%;
+}
+
+.col-xs-5 {
+    width: 100%;
+}
+
