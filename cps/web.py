@@ -2049,10 +2049,8 @@ def login():
     if request.method == "POST":
         form = request.form.to_dict()
         user = ub.session.query(ub.User).filter(func.lower(ub.User.nickname) == form['username'].strip().lower()).first()
-
-        if user and check_password_hash(user.password, form['password']):
+        if user and check_password_hash(user.password, form['password']) and user.nickname is not "Guest":
             login_user(user, remember=True)
-
             flash(_(u"you are now logged in as: '%(nickname)s'", nickname=user.nickname), category="success")
             return redirect_back(url_for("index"))
         else:

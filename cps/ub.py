@@ -649,6 +649,10 @@ def migrate_Database():
         conn.execute("ALTER TABLE Settings ADD column `config_certfile` String DEFAULT ''")
         conn.execute("ALTER TABLE Settings ADD column `config_keyfile` String DEFAULT ''")
         session.commit()
+    # Remove login capability of user Guest
+    conn = engine.connect()
+    conn.execute("UPDATE user SET password='' where nickname = 'Guest' and password !=''")
+    session.commit()
 
 
 def clean_database():
@@ -691,10 +695,10 @@ def get_mail_settings():
 # Generate user Guest (translated text), as anoymous user, no rights
 def create_anonymous_user():
     user = User()
-    user.nickname = _("Guest")
+    user.nickname = "Guest"
     user.email = 'no@email'
     user.role = ROLE_ANONYMOUS
-    user.password = generate_password_hash('1')
+    user.password = ''
 
     session.add(user)
     try:
