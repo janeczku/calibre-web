@@ -335,6 +335,7 @@ def update_dir_stucture(book_id, calibrepath):
             if not os.path.exists(new_title_path):
                 os.renames(path, new_title_path)
             else:
+                logging.getLogger('cps.web').info("Copying title: " + path + " into existing: " + new_title_path)
                 for dir_name, subdir_list, file_list in os.walk(path):
                     for file in file_list:
                         os.renames(os.path.join(dir_name, file), os.path.join(new_title_path + dir_name[len(path):], file))

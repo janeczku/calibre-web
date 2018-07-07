@@ -1232,7 +1232,7 @@ def author(book_id, page):
             other_books = get_unique_other_books(entries.all(), author_info.books)
         except:
             # Skip goodreads, if site is down/inaccessible
-            pass
+            app.logger.error('Goodreads website is down/inaccessible')
 
     return render_title_template('author.html', entries=entries, pagination=pagination,
                                  title=name, author=author_info, other_books=other_books)
