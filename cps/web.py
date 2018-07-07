@@ -1626,7 +1626,8 @@ def on_received_watch_confirmation():
                         app.logger.info('Backing up existing and downloading updated metadata.db')
                         gdriveutils.downloadFile(Gdrive.Instance().drive, None, "metadata.db", os.path.join(tmpDir, "tmp_metadata.db"))
                         app.logger.info('Setting up new DB')
-                        os.rename(os.path.join(tmpDir, "tmp_metadata.db"), dbpath)
+                        # prevent error on windows, as os.rename does on exisiting files
+                        shutil.move(os.path.join(tmpDir, "tmp_metadata.db"), dbpath)
                         db.setup_db()
             except Exception as e:
                 app.logger.exception(e)
@@ -3351,8 +3352,8 @@ def upload():
 
             input_tags = tags.split(',')
             input_tags = list(map(lambda it: it.strip(), input_tags))
-            modify_database_object(input_tags, db_book.tags, db.Tags, db.session, 'tags')
-
+            if input_tags[0] !="":
+                modify_database_object(input_tags, db_book.tags, db.Tags, db.session, 'tags')
             if db_language is not None:  # display Full name instead of iso639.part3
                 db_book.languages[0].language_name = _(meta.languages)
             author_names = []
