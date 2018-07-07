@@ -12,7 +12,7 @@ sys.path.append(os.path.join(base_path, 'vendor'))
 
 from cps import web
 try:
-    from gevent.wsgi import WSGIServer
+    from gevent.pywsgi import WSGIServer
     gevent_present = True
 except ImportError:
     from tornado.wsgi import WSGIContainer

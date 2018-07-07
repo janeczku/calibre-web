@@ -154,7 +154,7 @@ class Singleton:
 @Singleton
 class Gauth:
     def __init__(self):
-        self.auth = GoogleAuth(settings_file='settings.yaml')
+        self.auth = GoogleAuth(settings_file=os.path.join(config.get_main_dir,'settings.yaml'))
 
 
 @Singleton
@@ -254,7 +254,8 @@ if config.config_log_level == logging.DEBUG:
 
 
 def is_gdrive_ready():
-    return os.path.exists('settings.yaml') and os.path.exists('gdrive_credentials')
+    return os.path.exists(os.path.join(config.get_main_dir,'settings.yaml')) and \
+           os.path.exists(os.path.join(config.get_main_dir,'gdrive_credentials'))
 
 
 @babel.localeselector
@@ -1540,7 +1541,7 @@ def authenticate_google_drive():
 def google_drive_callback():
     auth_code = request.args.get('code')
     credentials = Gauth.Instance().auth.flow.step2_exchange(auth_code)
-    with open('gdrive_credentials', 'w') as f:
+    with open(os.path.join(config.get_main_dir,'gdrive_credentials'), 'w') as f:
         f.write(credentials.to_json())
     return redirect(url_for('configuration'))
 
@@ -1550,7 +1551,7 @@ def google_drive_callback():
 @admin_required
 def watch_gdrive():
     if not config.config_google_drive_watch_changes_response:
-        with open('client_secret.json', 'r') as settings:
+        with open(os.path.join(config.get_main_dir,'client_secrets.json'), 'r') as settings:
             filedata = json.load(settings)
         if filedata['web']['redirect_uris'][0].endswith('/'):
             filedata['web']['redirect_uris'][0] = filedata['web']['redirect_uris'][0][:-((len('/gdrive/callback')+1))]
@@ -2517,13 +2518,13 @@ def configuration_helper(origin):
     if gdrive_support == False:
         gdriveError = _('Import of optional GDrive requirements missing')
     else:
-        if not os.path.isfile('client_secret.json'):
-            gdriveError = _('client_secret.json is missing or not readable')
+        if not os.path.isfile(os.path.join(config.get_main_dir,'client_secrets.json')):
+            gdriveError = _('client_secrets.json is missing or not readable')
         else:
-            with open('client_secret.json', 'r') as settings:
+            with open(os.path.join(config.get_main_dir,'client_secrets.json'), 'r') as settings:
                 filedata=json.load(settings)
             if not 'web' in filedata:
-                gdriveError = _('client_secret.json is not configured for web application')
+                gdriveError = _('client_secrets.json is not configured for web application')
                 filedata = None
     if request.method == "POST":
         to_save = request.form.to_dict()
@@ -2537,18 +2538,21 @@ def configuration_helper(origin):
             if filedata:
                 if filedata['web']['redirect_uris'][0].endswith('/'):
                     filedata['web']['redirect_uris'][0] = filedata['web']['redirect_uris'][0][:-1]
-                with open('settings.yaml', 'w') as f:
-                    yaml = "client_config_backend: settings\nclient_config:\n" \
+                with open(os.path.join(config.get_main_dir,'settings.yaml'), 'w') as f:
+                    yaml = "client_config_backend: settings\nclient_config_file: %(client_file)s\n" \
+                           "client_config:\n" \
                            "  client_id: %(client_id)s\n  client_secret: %(client_secret)s\n" \
                            "  redirect_uri: %(redirect_uri)s\n\nsave_credentials: True\n" \
-                           "save_credentials_backend: file\nsave_credentials_file: gdrive_credentials\n\n" \
+                           "save_credentials_backend: file\nsave_credentials_file: %(credential)s\n\n" \
                            "get_refresh_token: True\n\noauth_scope:\n" \
                            "  - https://www.googleapis.com/auth/drive\n"
-                    f.write(yaml % {'client_id': filedata['web']['client_id'],
+                    f.write(yaml % {'client_file': os.path.join(config.get_main_dir,'client_secrets.json'),
+                                    'client_id': filedata['web']['client_id'],
                                    'client_secret': filedata['web']['client_secret'],
-                                   'redirect_uri': filedata['web']['redirect_uris'][0]})
+                                   'redirect_uri': filedata['web']['redirect_uris'][0],
+                                    'credential': os.path.join(config.get_main_dir,'gdrive_credentials')})
             else:
-                flash(_(u'client_secret.json is not configured for web application'), category="error")
+                flash(_(u'client_secrets.json is not configured for web application'), category="error")
                 return render_title_template("config_edit.html", content=config, origin=origin,
                                              gdrive=gdrive_support, gdriveError=gdriveError,
                                              goodreads=goodreads_support, title=_(u"Basic Configuration"))
@@ -3308,7 +3312,7 @@ def upload():
             file_size = os.path.getsize(saved_filename)
             if meta.cover is None:
                 has_cover = 0
-                basedir = os.path.dirname(__file__)
+                basedir = config.get_main_dir # os.path.dirname(__file__)
                 copyfile(os.path.join(basedir, "static/generic_cover.jpg"), os.path.join(filepath, "cover.jpg"))
             else:
                 has_cover = 1
@@ -3382,14 +3386,17 @@ def upload():
         return redirect(url_for("index"))
 
 def start_gevent():
-    from gevent.wsgi import WSGIServer
+    from gevent.pywsgi import WSGIServer
     global gevent_server
     try:
         ssl_args=dict()
         if ub.config.get_config_certfile() and ub.config.get_config_keyfile():
             ssl_args = {"certfile": ub.config.get_config_certfile(),
                         "keyfile": ub.config.get_config_keyfile()}
-        gevent_server = WSGIServer(('', ub.config.config_port), app, **ssl_args)
+        if os.name == 'nt':
+            gevent_server = WSGIServer(('0.0.0.0', ub.config.config_port), app, **ssl_args)
+        else:
+            gevent_server = WSGIServer(('', ub.config.config_port), app, **ssl_args)
         gevent_server.serve_forever()
     except SocketError:
         app.logger.info('Unable to listen on \'\', trying on IPv4 only...')
