@@ -133,7 +133,7 @@ http {
     server {
             client_max_body_size 20M;
             location /calibre {
-                proxy_bind              http://calibre;
+                proxy_bind              $server_adress;
                 proxy_pass              http://127.0.0.1:8083;
                 proxy_set_header        Host            $http_host;
                 proxy_set_header        X-Forwarded-For $proxy_add_x_forwarded_for;
@@ -143,7 +143,7 @@ http {
     }
 }
 ```
-*Note: If using SSL in your reverse proxy on a non-standard port, the following proxy_redirect line may be required:*
+*Note: If using SSL in your reverse proxy on a non-standard port (e.g.12345), the following proxy_redirect line may be required:*
 ```
 proxy_redirect http://$host/ https://$host:12345/;
 ```
