@@ -74,9 +74,9 @@ migrate()
 def getDrive(drive=None, gauth=None):
     if not drive:
         if not gauth:
-            gauth = GoogleAuth(settings_file='settings.yaml')
+            gauth = GoogleAuth(settings_file=os.path.join(config.get_main_dir,'settings.yaml'))
         # Try to load saved client credentials
-        gauth.LoadCredentialsFile("gdrive_credentials")
+        gauth.LoadCredentialsFile(os.path.join(config.get_main_dir,'gdrive_credentials'))
         if gauth.access_token_expired:
             # Refresh them if expired
             try:
