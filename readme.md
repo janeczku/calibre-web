@@ -189,6 +189,7 @@ Description=Calibre-Web
 Type=simple
 User=[Username]
 ExecStart=[path to python] [/PATH/TO/cps.py]
+WorkingDirectory=[/PATH/TO/cps.py]
 
 [Install]
 WantedBy=multi-user.target
