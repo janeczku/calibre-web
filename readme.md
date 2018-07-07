@@ -92,7 +92,7 @@ The Drive API should now be setup and ready to use, so we need to integrate it i
 2. Tick Use Google Drive
 3. Click the "Submit" button
 4. Now select Authenticate Google Drive
-5. This should redirect you to Google to allow it top use your Drive, and then redirect you back to the config page
+5. This should redirect you to Google. After allowing it to use your Drive, it redirects you back to the config page
 6. Select the folder that is the root of your calibre library on Gdrive ("Google drive Calibre folder")
 7. Click the "Submit" button
 8. Google Drive should now be connected and be used to get images and download Epubs. The metadata.db is stored in the calibre library location

@@ -28,3 +28,4 @@ settings.yaml
 gdrive_credentials
 
 vendor
+client_secrets.json
