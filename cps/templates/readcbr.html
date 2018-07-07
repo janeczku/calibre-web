@@ -17,7 +17,7 @@
     <script>
             document.onreadystatechange = function () {
               if (document.readyState == "complete") {
-                init("{{ url_for('static', filename=comicfile) }}");
+                init("{{ url_for('serve_book', book_id=comicfile, book_format=extension) }}");
                 }                
             };
     </script>    

@@ -1602,7 +1602,7 @@ def revoke_watch_gdrive():
 
 @app.route("/gdrive/watch/callback", methods=['GET', 'POST'])
 def on_received_watch_confirmation():
-    app.logger.info(request.headers)
+    app.logger.debug(request.headers)
     if request.headers.get('X-Goog-Channel-Token') == gdrive_watch_callback_token \
             and request.headers.get('X-Goog-Resource-State') == 'change' \
             and request.data:
@@ -1611,12 +1611,12 @@ def on_received_watch_confirmation():
 
         def updateMetaData():
             app.logger.info('Change received from gdrive')
-            app.logger.info(data)
+            app.logger.debug(data)
             try:
                 j = json.loads(data)
                 app.logger.info('Getting change details')
                 response = gdriveutils.getChangeById(Gdrive.Instance().drive, j['id'])
-                app.logger.info(response)
+                app.logger.debug(response)
                 if response:
                     dbpath = os.path.join(config.config_calibre_dir, "metadata.db")
                     if not response['deleted'] and response['file']['title'] == 'metadata.db' and response['file']['md5Checksum'] != md5(dbpath):
@@ -1818,7 +1818,7 @@ def get_cover(cover_path):
         try:
             return redirect(get_cover_via_gdrive(cover_path))
         except:
-            app.logger.error(cover_path + '/cover.jpg ' + _('not found on GDrive'))
+            app.logger.error(cover_path + '/cover.jpg ' + 'not found on GDrive')
             return send_from_directory(os.path.join(os.path.dirname(__file__), "static"),"generic_cover.jpg")
     else:
         return send_from_directory(os.path.join(config.config_calibre_dir, cover_path), "cover.jpg")
@@ -1922,50 +1922,31 @@ def read_book(book_id, book_format):
         flash(_(u"Error opening eBook. File does not exist or file is not accessible:"), category="error")
         return redirect(url_for("index"))
 
-    book_dir = os.path.join(config.get_main_dir, "cps", "static", str(book_id))
-    if not os.path.exists(book_dir):
-        os.mkdir(book_dir)
+    # check if book was downloaded before
     bookmark = None
     if current_user.is_authenticated:
         bookmark = ub.session.query(ub.Bookmark).filter(ub.and_(ub.Bookmark.user_id == int(current_user.id),
                                                             ub.Bookmark.book_id == book_id,
                                                             ub.Bookmark.format == book_format.upper())).first()
     if book_format.lower() == "epub":
-        # check if mimetype file is exists
-        mime_file = str(book_id) + "/mimetype"
-        if not os.path.exists(mime_file):
-            epub_file = os.path.join(config.config_calibre_dir, book.path, book.data[0].name) + ".epub"
-            if not os.path.isfile(epub_file):
-                raise ValueError('Error opening eBook. File does not exist: ', epub_file)
-            zfile = zipfile.ZipFile(epub_file)
-            for name in zfile.namelist():
-                (dirName, fileName) = os.path.split(name)
-                newDir = os.path.join(book_dir, dirName)
-                if not os.path.exists(newDir):
-                    try:
-                        os.makedirs(newDir)
-                    except OSError as exception:
-                        if not exception.errno == errno.EEXIST:
-                            raise
-                if fileName:
-                    fd = open(os.path.join(newDir, fileName), "wb")
-                    fd.write(zfile.read(name))
-                    fd.close()
-            zfile.close()
         return render_title_template('read.html', bookid=book_id, title=_(u"Read a Book"), bookmark=bookmark)
     elif book_format.lower() == "pdf":
         return render_title_template('readpdf.html', pdffile=book_id, title=_(u"Read a Book"))
     elif book_format.lower() == "txt":
         return render_title_template('readtxt.html', txtfile=book_id, title=_(u"Read a Book"))
     else:
+        book_dir = os.path.join(config.get_main_dir, "cps", "static", str(book_id))
+        if not os.path.exists(book_dir):
+            os.mkdir(book_dir)
         for fileext in ["cbr", "cbt", "cbz"]:
             if book_format.lower() == fileext:
-                all_name = str(book_id) + "/" + book.data[0].name + "." + fileext
-                tmp_file = os.path.join(book_dir, book.data[0].name) + "." + fileext
-                if not os.path.exists(all_name):
-                    cbr_file = os.path.join(config.config_calibre_dir, book.path, book.data[0].name) + "." + fileext
-                    copyfile(cbr_file, tmp_file)
-                return render_title_template('readcbr.html', comicfile=all_name, title=_(u"Read a Book"))
+                all_name = str(book_id) # + "/" + book.data[0].name + "." + fileext
+                #tmp_file = os.path.join(book_dir, book.data[0].name) + "." + fileext
+                #if not os.path.exists(all_name):
+                #    cbr_file = os.path.join(config.config_calibre_dir, book.path, book.data[0].name) + "." + fileext
+                #    copyfile(cbr_file, tmp_file)
+                return render_title_template('readcbr.html', comicfile=all_name, title=_(u"Read a Book"),
+                                             extension=fileext)
 
 
 @app.route("/download/<int:book_id>/<book_format>")
@@ -3317,7 +3298,7 @@ def upload():
             if meta.cover is None:
                 has_cover = 0
                 basedir = config.get_main_dir # os.path.dirname(__file__)
-                copyfile(os.path.join(basedir, "static/generic_cover.jpg"), os.path.join(filepath, "cover.jpg"))
+                copyfile(os.path.join(basedir, "cps/static/generic_cover.jpg"), os.path.join(filepath, "cover.jpg"))
             else:
                 has_cover = 1
                 move(meta.cover, os.path.join(filepath, "cover.jpg"))
