@@ -105,9 +105,19 @@ Additionally the public adress your server uses (e.g.https://example.com) has to
 10. Click enable watch of metadata.db
 11. Note that this expires after a week, so will need to be manually refresh 
 
-## Docker image
+## Docker images
 
-Calibre Web can be run as Docker container. Pre-built Docker images based on Alpine Linux are available in this Docker Hub repository: [technosoft2000/calibre-web](https://hub.docker.com/r/technosoft2000/calibre-web/).
+Pre-built Docker images based on Alpine Linux are available in these Docker Hub repositories:
+
+**x64**
++ **technosoft2000** at [technosoft2000/calibre-web](https://hub.docker.com/r/technosoft2000/calibre-web/)
++ **linuxserver.io** at [linuxserver/calibre-web](https://hub.docker.com/r/linuxserver/calibre-web/)
+
+**armhf**
++ **linuxserver.io** at [lsioarmhf/calibre-web](https://hub.docker.com/r/lsioarmhf/calibre-web/)
+
+**aarch64**
++ **linuxserver.io** at [lsioarmhf/calibre-web-aarch64](https://hub.docker.com/r/lsioarmhf/calibre-web-aarch64)
 
 ## Reverse Proxy
 
