@@ -3353,6 +3353,12 @@ def upload():
 
             db.session.add(db_book)
             db.session.flush()  # flush content get db_book.id avalible
+            # ToDo: Book should be moved to foldername with id in it
+            if config.config_use_google_drive:
+                error = helper.update_dir_structure_gdrive(db_book.id)
+            else:
+                error = helper.update_dir_stucture(db_book.id, config.config_calibre_dir)
+            # ToDo: Handle error
             # add comment
             upload_comment = Markup(meta.description).unescape()
             if upload_comment != "":
