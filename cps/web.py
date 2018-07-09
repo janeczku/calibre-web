@@ -2538,8 +2538,7 @@ def configuration_helper(origin):
                                              gdrive=gdrive_support, gdriveError=gdriveError,
                                              goodreads=goodreads_support, title=_(u"Basic Configuration"))
         # always show google drive settings, but in case of error deny support
-        if (("config_use_google_drive" in to_save and not content.config_use_google_drive) or
-            ("config_use_google_drive" not in to_save and content.config_use_google_drive)) and not gdriveError:
+        if "config_use_google_drive" in to_save and not gdriveError:
             content.config_use_google_drive = "config_use_google_drive" in to_save
         else:
             content.config_use_google_drive = 0
