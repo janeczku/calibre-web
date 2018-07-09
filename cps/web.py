@@ -71,15 +71,12 @@ import subprocess
 import re
 import db
 from shutil import move, copyfile
-from tornado.ioloop import IOLoop
 import shutil
 import gdriveutils
 import tempfile
 import hashlib
 from redirect import redirect_back, is_safe_url
 
-from tornado import version as tornadoVersion
-from socket import error as SocketError
 
 try:
     from urllib.parse import quote
@@ -93,13 +90,13 @@ except ImportError:
     from flask_login.__about__ import __version__ as flask_loginVersion
 
 import time
+import server
 
 current_milli_time = lambda: int(round(time.time() * 1000))
 
 
 # Global variables
 gdrive_watch_callback_token = 'target=calibreweb-watch_files'
-global_task = None
 
 ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'epub', 'mobi', 'azw', 'azw3', 'cbr', 'cbz', 'cbt', 'djvu', 'prc', 'doc', 'docx', 'fb2'])
 
@@ -217,8 +214,6 @@ mimetypes.add_type('image/vnd.djvu', '.djvu')
 app = (Flask(__name__))
 app.wsgi_app = ReverseProxied(app.wsgi_app)
 cache_buster.init_cache_busting(app)
-
-gevent_server = None
 
 formatter = logging.Formatter(
     "[%(asctime)s] {%(pathname)s:%(lineno)d} %(levelname)s - %(message)s")
@@ -1471,7 +1466,8 @@ def stats():
     versions['flask'] = flaskVersion
     versions['flasklogin'] = flask_loginVersion
     versions['flask_principal'] = flask_principalVersion
-    versions['tornado'] = tornadoVersion
+    versions.update(server.Server.getNameVersion())
+    # versions['tornado'] = tornadoVersion
     versions['iso639'] = iso639Version
     versions['requests'] = requests.__version__
     versions['pysqlite'] = db.engine.dialect.dbapi.version
@@ -1640,9 +1636,7 @@ def on_received_watch_confirmation():
 @login_required
 @admin_required
 def shutdown():
-    # global global_task
     task = int(request.args.get("parameter").strip())
-    helper.global_task = task
     if task == 1 or task == 0:  # valid commandos received
         # close all database connections
         db.session.close()
@@ -1650,15 +1644,15 @@ def shutdown():
         ub.session.close()
         ub.engine.dispose()
         # stop gevent server
-        # gevent_server.stop()
-        # stop tornado server
-        server = IOLoop.instance()
-        server.add_callback(server.stop)
+
         showtext = {}
         if task == 0:
             showtext['text'] = _(u'Server restarted, please reload page')
+            server.Server.setRestartTyp(True)
         else:
             showtext['text'] = _(u'Performing shutdown of server, please close window')
+            server.Server.setRestartTyp(False)
+        server.Server.stopServer()
         return json.dumps(showtext)
     else:
         if task == 2:
@@ -2498,7 +2492,6 @@ def basic_configuration():
 
 
 def configuration_helper(origin):
-    # global global_task
     reboot_required = False
     gdriveError=None
     db_change = False
@@ -2705,10 +2698,9 @@ def configuration_helper(origin):
             # db.engine.dispose() # ToDo verify correct
             ub.session.close()
             ub.engine.dispose()
-            # stop tornado server
-            server = IOLoop.instance()
-            server.add_callback(server.stop)
-            helper.global_task = 0
+            # stop Server
+            server.Server.setRestartTyp(True)
+            server.Server.stopServer()
             app.logger.info('Reboot required, restarting')
         if origin:
             success = True
@@ -3386,22 +3378,3 @@ def upload():
     else:
         return redirect(url_for("index"))
 
-def start_gevent():
-    from gevent.pywsgi import WSGIServer
-    global gevent_server
-    try:
-        ssl_args=dict()
-        if ub.config.get_config_certfile() and ub.config.get_config_keyfile():
-            ssl_args = {"certfile": ub.config.get_config_certfile(),
-                        "keyfile": ub.config.get_config_keyfile()}
-        if os.name == 'nt':
-            gevent_server = WSGIServer(('0.0.0.0', ub.config.config_port), app, **ssl_args)
-        else:
-            gevent_server = WSGIServer(('', ub.config.config_port), app, **ssl_args)
-        gevent_server.serve_forever()
-    except SocketError:
-        app.logger.info('Unable to listen on \'\', trying on IPv4 only...')
-        gevent_server = WSGIServer(('0.0.0.0', ub.config.config_port), app, **ssl_args)
-        gevent_server.serve_forever()
-    except:
-        pass
