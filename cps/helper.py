@@ -307,6 +307,7 @@ def get_sorted_author(value):
 
 
 def delete_book(book, calibrepath):
+    # check that path is 2 elements deep, check that target path has no subfolders
     if "/" in book.path:
         path = os.path.join(calibrepath, book.path)
         shutil.rmtree(path, ignore_errors=True)
@@ -315,6 +316,10 @@ def delete_book(book, calibrepath):
 
 # ToDo: Implement delete book on gdrive
 def delete_book_gdrive(book):
+    # delete book and path of book in gdrive.db
+    # delete book and path of book on gdrive
+    #gFile = gd.getFileFromEbooksFolder(web.Gdrive.Instance().drive, os.path.dirname(book.path), titledir)
+    #gFile.Trash()
     pass
 
 
@@ -366,7 +371,7 @@ def update_dir_structure_gdrive(book_id):
     new_titledir = get_valid_filename(book.title) + " (" + str(book_id) + ")"
 
     if titledir != new_titledir:
-        print (titledir)
+        # print (titledir)
         gFile = gd.getFileFromEbooksFolder(web.Gdrive.Instance().drive, os.path.dirname(book.path), titledir)
         gFile['title'] = new_titledir
         gFile.Upload()
