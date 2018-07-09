@@ -36,12 +36,12 @@ import threading
 import shutil
 import requests
 import zipfile
-from tornado.ioloop import IOLoop
 try:
     import gdriveutils as gd
 except ImportError:
     pass
 import web
+import server
 
 try:
     import unidecode
@@ -50,7 +50,6 @@ except ImportError:
     use_unidecode = False
 
 # Global variables
-global_task = None
 updater_thread = None
 
 RET_SUCCESS = 1
@@ -388,7 +387,6 @@ class Updater(threading.Thread):
         self.status = 0
 
     def run(self):
-        global global_task
         self.status = 1
         r = requests.get('https://api.github.com/repos/janeczku/calibre-web/zipball/master', stream=True)
         fname = re.findall("filename=(.+)", r.headers['content-disposition'])[0]
@@ -400,19 +398,13 @@ class Updater(threading.Thread):
         self.status = 4
         self.update_source(os.path.join(tmp_dir, os.path.splitext(fname)[0]), ub.config.get_main_dir)
         self.status = 5
-        global_task = 0
         db.session.close()
         db.engine.dispose()
         ub.session.close()
         ub.engine.dispose()
         self.status = 6
-
-        if web.gevent_server:
-            web.gevent_server.stop()
-        else:
-            # stop tornado server
-            server = IOLoop.instance()
-            server.add_callback(server.stop)
+        server.Server.setRestartTyp(True)
+        server.Server.stopServer()
         self.status = 7
 
     def get_update_status(self):

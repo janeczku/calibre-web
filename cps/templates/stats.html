@@ -38,6 +38,18 @@
       <th>Python</th>
       <td>{{versions['PythonVersion']}}</td>
     </tr>
+    {% if 'tornado' in versions %}
+    <tr>
+      <th>Tornado web server</th>
+      <td>v{{versions['tornado']}}</td>
+    </tr>
+    {% endif %}
+    {% if 'gevent' in versions %}
+    <tr>
+      <th>Gevent web server</th>
+      <td>v{{versions['gevent']}}</td>
+    </tr>
+    {% endif %}
     <tr>
       <th>Kindlegen</th>
       <td>{{versions['KindlegenVersion']}}</td>
@@ -69,10 +81,6 @@
     <tr>
       <th>Flask Principal</th>
       <td>v{{versions['flask_principal']}}</td>
-    </tr>
-    <tr>
-      <th>Tornado web server</th>
-      <td>v{{versions['tornado']}}</td>
     </tr>
     <tr>
       <th>ISO639 Languages</th>

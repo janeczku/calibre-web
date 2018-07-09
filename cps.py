@@ -10,44 +10,12 @@ sys.path.append(base_path)
 sys.path.append(os.path.join(base_path, 'cps'))
 sys.path.append(os.path.join(base_path, 'vendor'))
 
-from cps import web
-try:
-    from gevent.pywsgi import WSGIServer
-    gevent_present = True
-except ImportError:
-    from tornado.wsgi import WSGIContainer
-    from tornado.httpserver import HTTPServer
-    from tornado.ioloop import IOLoop
-    gevent_present = False
+from cps.server import Server
 
 if __name__ == '__main__':
-    if gevent_present:
-        web.app.logger.info('Attempting to start gevent')
-        web.start_gevent()
-    else:
-        web.app.logger.info('Starting Tornado webserver')
-        # Max Buffersize set to 200MB
-        if web.ub.config.get_config_certfile() and web.ub.config.get_config_keyfile():
-            ssl={"certfile": web.ub.config.get_config_certfile(),
-                 "keyfile": web.ub.config.get_config_keyfile()}
-        else:
-            ssl=None
-        http_server = HTTPServer(WSGIContainer(web.app),
-                    max_buffer_size = 209700000,
-                    ssl_options=ssl)
-        http_server.listen(web.ub.config.config_port)
-        IOLoop.instance().start()
-        IOLoop.instance().close(True)
+    Server.startServer()
 
-    if web.helper.global_task == 0:
-        web.app.logger.info("Performing restart of Calibre-web")
-        if os.name == 'nt':
-            arguments = ["\"" + sys.executable + "\""]
-            for e in sys.argv:
-                arguments.append("\"" + e + "\"")
-            os.execv(sys.executable, arguments)
-        else:
-            os.execl(sys.executable, sys.executable, *sys.argv)
-    else:
-        web.app.logger.info("Performing shutdown of Calibre-web")
-    sys.exit(0)
+
+
+
+
