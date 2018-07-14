@@ -56,16 +56,6 @@ RET_SUCCESS = 1
 RET_FAIL = 0
 
 
-def update_download(book_id, user_id):
-    check = ub.session.query(ub.Downloads).filter(ub.Downloads.user_id == user_id).filter(ub.Downloads.book_id ==
-                                                                                          book_id).first()
-
-    if not check:
-        new_download = ub.Downloads(user_id=user_id, book_id=book_id)
-        ub.session.add(new_download)
-        ub.session.commit()
-
-
 def make_mobi(book_id, calibrepath):
     error_message = None
     vendorpath = os.path.join(os.path.normpath(os.path.dirname(os.path.realpath(__file__)) +
@@ -243,7 +233,6 @@ def send_mail(book_id, kindle_mail, calibrepath):
 
 def get_attachment(file_path):
     """Get file as MIMEBase message"""
-
     try:
         file_ = open(file_path, 'rb')
         attachment = MIMEBase('application', 'octet-stream')
@@ -306,7 +295,7 @@ def get_sorted_author(value):
     return value2
 
 
-def delete_book(book, calibrepath):
+def delete_book_file(book, calibrepath):
     # check that path is 2 elements deep, check that target path has no subfolders
     if "/" in book.path:
         path = os.path.join(calibrepath, book.path)
@@ -314,16 +303,8 @@ def delete_book(book, calibrepath):
     else:
         logging.getLogger('cps.web').error("Deleting book " + str(book.id) + " failed, book path value: "+ book.path)
 
-# ToDo: Implement delete book on gdrive
-def delete_book_gdrive(book):
-    # delete book and path of book in gdrive.db
-    # delete book and path of book on gdrive
-    #gFile = gd.getFileFromEbooksFolder(web.Gdrive.Instance().drive, os.path.dirname(book.path), titledir)
-    #gFile.Trash()
-    pass
 
-
-def update_dir_stucture(book_id, calibrepath):
+def update_dir_stucture_file(book_id, calibrepath):
     localbook = db.session.query(db.Books).filter(db.Books.id == book_id).first()
     path = os.path.join(calibrepath, localbook.path)
 
@@ -372,17 +353,63 @@ def update_dir_structure_gdrive(book_id):
 
     if titledir != new_titledir:
         # print (titledir)
-        gFile = gd.getFileFromEbooksFolder(web.Gdrive.Instance().drive, os.path.dirname(book.path), titledir)
-        gFile['title'] = new_titledir
-        gFile.Upload()
-        book.path = book.path.split('/')[0] + '/' + new_titledir
+        gFile = gd.getFileFromEbooksFolder(os.path.dirname(book.path), titledir)
+        if gFile:
+            gFile['title'] = new_titledir
+
+            gFile.Upload()
+            book.path = book.path.split('/')[0] + '/' + new_titledir
+            gd.updateDatabaseOnEdit(gFile['id'], book.path)     # only child folder affected
+        else:
+            error = _(u'File %s not found on gdrive' % book.path) # file not found
 
     if authordir != new_authordir:
-        gFile = gd.getFileFromEbooksFolder(web.Gdrive.Instance().drive, None, authordir)
-        gFile['title'] = new_authordir
-        gFile.Upload()
-        book.path = new_authordir + '/' + book.path.split('/')[1]
+        gFile = gd.getFileFromEbooksFolder(os.path.dirname(book.path), titledir)
+        # gFileDirOrig = gd.getFileFromEbooksFolder(None, authordir)
+        if gFile:
+            # check if authordir exisits
+            gFileDirOrig = gd.getFileFromEbooksFolder(None, authordir)
+            if gFileDirOrig:
+                gFile['parents'].append({"id": gFileDirOrig['id']})
+                gFile.Upload()
+            else:
+                # Folder is not exisiting
+                #parent = drive.CreateFile({'title': authordir, 'parents': [{"kind": "drive#fileLink", 'id': root folder id}],
+                #                           "mimeType": "application/vnd.google-apps.folder"})
+                parent.Upload()
+            # gFile['title'] = new_authordir
+            # gFile.Upload()
+            book.path = new_authordir + '/' + book.path.split('/')[1]
+            gd.updateDatabaseOnEdit(gFile['id'], book.path)
+            # Todo last element from parent folder moved to different folder, what to do with parent folder?
+            # parent folder affected
+        else:
+            error = _(u'File %s not found on gdrive' % authordir) # file not found
     return error
+
+# ToDo: Implement delete book on gdrive
+def delete_book_gdrive(book):
+    # delete book and path of book in gdrive.db
+    # delete book and path of book on gdrive
+    #gFile = gd.getFileFromEbooksFolder(os.path.dirname(book.path), titledir)
+    #gFile.Trash()
+    pass
+
+
+################################## External interface
+
+def update_dir_stucture(book_id, calibrepath):
+    if ub.config.config_use_google_drive:
+        return update_dir_structure_gdrive(book_id)
+    else:
+        return update_dir_stucture_file(book_id, calibrepath)
+
+def delete_book(book, calibrepath):
+    if ub.config.config_use_google_drive:
+        return delete_book_file(book, calibrepath)
+    else:
+        return delete_book_gdrive(book)
+##################################
 
 
 class Updater(threading.Thread):

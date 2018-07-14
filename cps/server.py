@@ -7,7 +7,6 @@ import sys
 import os
 try:
     from gevent.pywsgi import WSGIServer
-    from gevent import monkey
     from gevent.pool import Pool
     from gevent import __version__ as geventVersion
     gevent_present = True
@@ -52,7 +51,6 @@ class server:
         if gevent_present:
             web.app.logger.info('Starting Gevent server')
             # leave subprocess out to allow forking for fetchers and processors
-            monkey.patch_all(subprocess=False)
             self.start_gevent()
         else:
             web.app.logger.info('Starting Tornado server')
