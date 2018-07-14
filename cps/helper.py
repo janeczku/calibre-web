@@ -365,36 +365,24 @@ def update_dir_structure_gdrive(book_id):
 
     if authordir != new_authordir:
         gFile = gd.getFileFromEbooksFolder(os.path.dirname(book.path), titledir)
-        # gFileDirOrig = gd.getFileFromEbooksFolder(None, authordir)
         if gFile:
-            # check if authordir exisits
-            gFileDirOrig = gd.getFileFromEbooksFolder(None, authordir)
-            if gFileDirOrig:
-                gFile['parents'].append({"id": gFileDirOrig['id']})
-                gFile.Upload()
-            else:
-                # Folder is not exisiting
-                #parent = drive.CreateFile({'title': authordir, 'parents': [{"kind": "drive#fileLink", 'id': root folder id}],
-                #                           "mimeType": "application/vnd.google-apps.folder"})
-                parent.Upload()
-            # gFile['title'] = new_authordir
-            # gFile.Upload()
+            gd.moveGdriveFolderRemote(gFile,new_authordir)
             book.path = new_authordir + '/' + book.path.split('/')[1]
             gd.updateDatabaseOnEdit(gFile['id'], book.path)
-            # Todo last element from parent folder moved to different folder, what to do with parent folder?
-            # parent folder affected
         else:
             error = _(u'File %s not found on gdrive' % authordir) # file not found
     return error
 
-# ToDo: Implement delete book on gdrive
-def delete_book_gdrive(book):
-    # delete book and path of book in gdrive.db
-    # delete book and path of book on gdrive
-    #gFile = gd.getFileFromEbooksFolder(os.path.dirname(book.path), titledir)
-    #gFile.Trash()
-    pass
 
+def delete_book_gdrive(book):
+    error= False
+    gFile = gd.getFileFromEbooksFolder(os.path.dirname(book.path),book.path.split('/')[1])
+    if gFile:
+        gd.deleteDatabaseEntry(gFile['id'])
+        gFile.Trash()
+    else:
+        error =_(u'Path %s not found on gdrive' % book.path)  # file not found
+    return error
 
 ################################## External interface
 
@@ -406,9 +394,9 @@ def update_dir_stucture(book_id, calibrepath):
 
 def delete_book(book, calibrepath):
     if ub.config.config_use_google_drive:
-        return delete_book_file(book, calibrepath)
-    else:
         return delete_book_gdrive(book)
+    else:
+        return delete_book_file(book, calibrepath)
 ##################################
 
 

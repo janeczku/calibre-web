@@ -255,9 +255,30 @@ def copyDriveFileRemote(drive, origin_file_id, copy_title):
         print ('An error occurred: %s' % error)
     return None
 
+def moveGdriveFolderRemote(origin_file, target_folder):
+    drive = getDrive(Gdrive.Instance().drive)
+    previous_parents = ",".join([parent["id"] for parent in origin_file.get('parents')])
+    gFileTargetDir = getFileFromEbooksFolder(None, target_folder)
+    if not gFileTargetDir:
+        # Folder is not exisiting, create, and move folder
+        gFileTargetDir = drive.CreateFile(
+            {'title': target_folder, 'parents': [{"kind": "drive#fileLink", 'id': getEbooksFolderId()}],
+             "mimeType": "application/vnd.google-apps.folder"})
+        gFileTargetDir.Upload()
+    # Move the file to the new folder
+    drive.auth.service.files().update(fileId=origin_file['id'],
+                                      addParents=gFileTargetDir['id'],
+                                      removeParents=previous_parents,
+                                      fields='id, parents').execute()
+    # if previous_parents has no childs anymore, delete originfileparent
+    # is not working correctly, because of slow update on gdrive -> could cause trouble in gdrive.db
+    # (nonexisting folder has id)
+    # children = drive.auth.service.children().list(folderId=previous_parents).execute()
+    # if not len(children['items']):
+    #    drive.auth.service.files().delete(fileId=previous_parents).execute()
+
 
 def downloadFile(path, filename, output):
-    # drive = getDrive(drive)
     f = getFileFromEbooksFolder(path, filename)
     f.GetContentFile(output)
 
@@ -413,7 +434,7 @@ def getChangeById (drive, change_id):
         change = drive.auth.service.changes().get(changeId=change_id).execute()
         return change
     except (errors.HttpError) as error:
-        app.logger.info(error.message)
+        web.app.logger.info(error.message)
         return None
 
 # Deletes the local hashes database to force search for new folder names
@@ -434,3 +455,8 @@ def updateDatabaseOnEdit(ID,newPath):
     if storedPathName:
         storedPathName.path = newPath
         session.commit()
+
+# Deletes the hashes in database of deleted book
+def deleteDatabaseEntry(ID):
+    session.query(GdriveId).filter(GdriveId.gdrive_id == ID).delete()
+    session.commit()
