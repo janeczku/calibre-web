@@ -691,6 +691,20 @@ def get_mail_settings():
 
     return data
 
+# Save downloaded books per user in calibre-web's own database
+def update_download(book_id, user_id):
+    check = session.query(Downloads).filter(Downloads.user_id == user_id).filter(Downloads.book_id ==
+                                                                                          book_id).first()
+
+    if not check:
+        new_download = Downloads(user_id=user_id, book_id=book_id)
+        session.add(new_download)
+        session.commit()
+
+# Delete non exisiting downloaded books in calibre-web's own database
+def delete_download(book_id):
+    session.query(Downloads).filter(book_id == Downloads.book_id).delete()
+    session.commit()
 
 # Generate user Guest (translated text), as anoymous user, no rights
 def create_anonymous_user():
