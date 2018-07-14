@@ -1568,7 +1568,7 @@ def on_received_watch_confirmation():
                         db.setup_db()
             except Exception as e:
                 app.logger.info(e.message)
-                # app.logger.exception(e)
+                app.logger.exception(e)
         updateMetaData()
     return ''
 
@@ -3293,40 +3293,50 @@ def upload():
             if db_language is not None:
                 db_book.languages.append(db_language)
             db_data = db.Data(db_book, meta.extension.upper()[1:], file_size, data_name)
+
+            input_tags = tags.split(',')
+            input_tags = list(map(lambda it: it.strip(), input_tags))
+            if input_tags[0] !="":
+                modify_database_object(input_tags, db_book.tags, db.Tags, db.session, 'tags')
+
             db_book.data.append(db_data)
 
             db.session.add(db_book)
             db.session.flush()  # flush content get db_book.id avalible
 
             # add comment
+            book_id = db_book.id
             upload_comment = Markup(meta.description).unescape()
             if upload_comment != "":
-                db.session.add(db.Comments(upload_comment, db_book.id))
-            input_tags = tags.split(',')
-            input_tags = list(map(lambda it: it.strip(), input_tags))
-            if input_tags[0] !="":
-                modify_database_object(input_tags, db_book.tags, db.Tags, db.session, 'tags')
+                db.session.add(db.Comments(upload_comment, book_id))
 
             db.session.commit()
 
+
+            book = db.session.query(db.Books) \
+                .filter(db.Books.id == book_id).filter(common_filters()).first()
+
             if config.config_use_google_drive:
                 gdriveutils.updateGdriveCalibreFromLocal()
-            error = helper.update_dir_stucture(db_book.id, config.config_calibre_dir)
+
+            error = helper.update_dir_stucture(book.id, config.config_calibre_dir)
             # ToDo: Handle error
             if error:
                 pass
 
+
             if db_language is not None:  # display Full name instead of iso639.part3
-                db_book.languages[0].language_name = _(meta.languages)
+                book.languages[0].language_name = _(meta.languages)
             author_names = []
             for author in db_book.authors:
                 author_names.append(author.name)
             if len(request.files.getlist("btn-upload")) < 2:
+                db.session.connection().connection.connection.create_function("title_sort", 1, db.title_sort)
                 cc = db.session.query(db.Custom_Columns).filter(db.Custom_Columns.datatype.notin_(db.cc_exceptions)).all()
                 if current_user.role_edit() or current_user.role_admin():
-                    return render_title_template('book_edit.html', book=db_book, authors=author_names, cc=cc,title=_(u"edit metadata"))
+                    return render_title_template('book_edit.html', book=book, authors=author_names, cc=cc,title=_(u"edit metadata"))
                 book_in_shelfs = []
-                return render_title_template('detail.html', entry=db_book, cc=cc, title=db_book.title, books_shelfs=book_in_shelfs, )
+                return render_title_template('detail.html', entry=book, cc=cc, title=book.title, books_shelfs=book_in_shelfs, )
         return redirect(url_for("index"))
     else:
         return redirect(url_for("index"))
