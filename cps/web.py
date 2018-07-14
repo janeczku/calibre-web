@@ -3311,7 +3311,7 @@ def upload():
                 db.session.add(db.Comments(upload_comment, book_id))
 
             db.session.commit()
-
+            db.session.connection().connection.connection.create_function("title_sort", 1, db.title_sort)
 
             book = db.session.query(db.Books) \
                 .filter(db.Books.id == book_id).filter(common_filters()).first()
@@ -3331,7 +3331,7 @@ def upload():
             for author in db_book.authors:
                 author_names.append(author.name)
             if len(request.files.getlist("btn-upload")) < 2:
-                db.session.connection().connection.connection.create_function("title_sort", 1, db.title_sort)
+                # db.session.connection().connection.connection.create_function("title_sort", 1, db.title_sort)
                 cc = db.session.query(db.Custom_Columns).filter(db.Custom_Columns.datatype.notin_(db.cc_exceptions)).all()
                 if current_user.role_edit() or current_user.role_admin():
                     return render_title_template('book_edit.html', book=book, authors=author_names, cc=cc,title=_(u"edit metadata"))

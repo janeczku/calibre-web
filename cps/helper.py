@@ -299,12 +299,16 @@ def delete_book_file(book, calibrepath):
     # check that path is 2 elements deep, check that target path has no subfolders
     if book.path.count('/') == 1:
         path = os.path.join(calibrepath, book.path)
-        if len(next(os.walk(path))[1]):
-            web.app.logger.error(
-                "Deleting book " + str(book.id) + " failed, path has subfolders: " + book.path)
+        if os.path.isdir(path):
+            if len(next(os.walk(path))[1]):
+                web.app.logger.error(
+                    "Deleting book " + str(book.id) + " failed, path has subfolders: " + book.path)
+                return False
+            shutil.rmtree(path, ignore_errors=True)
+            return True
+        else:
+            web.app.logger.error("Deleting book " + str(book.id) + " failed, book path not valid: " + book.path)
             return False
-        shutil.rmtree(path, ignore_errors=True)
-        return True
     else:
         web.app.logger.error("Deleting book " + str(book.id) + " failed, book path value: "+ book.path)
         return False
