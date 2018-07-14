@@ -290,18 +290,24 @@ def get_sorted_author(value):
         else:
             value2 = value[-1] + ", " + " ".join(value[:-1])
     except Exception:
-        logging.getLogger('cps.web').error("Sorting author " + str(value) + "failed")
+        web.app.logger.error("Sorting author " + str(value) + "failed")
         value2 = value
     return value2
 
-
+# Deletes a book fro the local filestorage, returns True if deleting is successfull, otherwise false
 def delete_book_file(book, calibrepath):
     # check that path is 2 elements deep, check that target path has no subfolders
-    if "/" in book.path:
+    if book.path.count('/') == 1:
         path = os.path.join(calibrepath, book.path)
+        if len(next(os.walk(path))[1]):
+            web.app.logger.error(
+                "Deleting book " + str(book.id) + " failed, path has subfolders: " + book.path)
+            return False
         shutil.rmtree(path, ignore_errors=True)
+        return True
     else:
-        logging.getLogger('cps.web').error("Deleting book " + str(book.id) + " failed, book path value: "+ book.path)
+        web.app.logger.error("Deleting book " + str(book.id) + " failed, book path value: "+ book.path)
+        return False
 
 
 def update_dir_stucture_file(book_id, calibrepath):
@@ -320,15 +326,15 @@ def update_dir_stucture_file(book_id, calibrepath):
             if not os.path.exists(new_title_path):
                 os.renames(path, new_title_path)
             else:
-                logging.getLogger('cps.web').info("Copying title: " + path + " into existing: " + new_title_path)
+                web.app.logger.info("Copying title: " + path + " into existing: " + new_title_path)
                 for dir_name, subdir_list, file_list in os.walk(path):
                     for file in file_list:
                         os.renames(os.path.join(dir_name, file), os.path.join(new_title_path + dir_name[len(path):], file))
             path = new_title_path
             localbook.path = localbook.path.split('/')[0] + '/' + new_titledir
         except OSError as ex:
-            logging.getLogger('cps.web').error("Rename title from: " + path + " to " + new_title_path)
-            logging.getLogger('cps.web').error(ex, exc_info=True)
+            web.app.logger.error("Rename title from: " + path + " to " + new_title_path)
+            web.app.logger.error(ex, exc_info=True)
             return _('Rename title from: "%s" to "%s" failed with error: %s' % (path, new_title_path, str(ex)))
     if authordir != new_authordir:
         try:
@@ -336,8 +342,8 @@ def update_dir_stucture_file(book_id, calibrepath):
             os.renames(path, new_author_path)
             localbook.path = new_authordir + '/' + localbook.path.split('/')[1]
         except OSError as ex:
-            logging.getLogger('cps.web').error("Rename author from: " + path + " to " + new_author_path)
-            logging.getLogger('cps.web').error(ex, exc_info=True)
+            web.app.logger.error("Rename author from: " + path + " to " + new_author_path)
+            web.app.logger.error(ex, exc_info=True)
             return _('Rename author from: "%s" to "%s" failed with error: %s' % (path, new_title_path, str(ex)))
     return False
 
@@ -381,7 +387,7 @@ def delete_book_gdrive(book):
         gd.deleteDatabaseEntry(gFile['id'])
         gFile.Trash()
     else:
-        error =_(u'Path %s not found on gdrive' % book.path)  # file not found
+        error =_(u'delete_bookPath %s not found on gdrive' % book.path)  # file not found
     return error
 
 ################################## External interface
