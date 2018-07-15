@@ -1413,7 +1413,7 @@ def stats():
     authors = len(db.session.query(db.Authors).all())
     categorys = len(db.session.query(db.Tags).all())
     series = len(db.session.query(db.Series).all())
-    versions = uploader.book_formats.get_versions()
+    config_anonbrowse = uploader.book_formats.get_versions()
     vendorpath = os.path.join(config.get_main_dir, "vendor")
     if sys.platform == "win32":
         kindlegen = os.path.join(vendorpath, u"kindlegen.exe")
@@ -2496,21 +2496,10 @@ def view_configuration():
             if content.config_title_regex != to_save["config_title_regex"]:
                 content.config_title_regex = to_save["config_title_regex"]
                 reboot_required = True
-        if "config_log_level" in to_save:
-            content.config_log_level = int(to_save["config_log_level"])
         if "config_random_books" in to_save:
             content.config_random_books = int(to_save["config_random_books"])
         if "config_books_per_page" in to_save:
             content.config_books_per_page = int(to_save["config_books_per_page"])
-        content.config_uploading = 0
-        content.config_anonbrowse = 0
-        content.config_public_reg = 0
-        if "config_uploading" in to_save and to_save["config_uploading"] == "on":
-            content.config_uploading = 1
-        if "config_anonbrowse" in to_save and to_save["config_anonbrowse"] == "on":
-            content.config_anonbrowse = 1
-        if "config_public_reg" in to_save and to_save["config_public_reg"] == "on":
-            content.config_public_reg = 1
         # Mature Content configuration
         if "config_mature_content_tags" in to_save:
             content.config_mature_content_tags = to_save["config_mature_content_tags"].strip()
@@ -2654,6 +2643,15 @@ def configuration_helper(origin):
                     return render_title_template("config_edit.html", content=config, origin=origin,
                                                  gdrive=gdrive_support, gdriveError=gdriveError,
                                                  goodreads=goodreads_support, title=_(u"Basic Configuration"))
+        content.config_uploading = 0
+        content.config_anonbrowse = 0
+        content.config_public_reg = 0
+        if "config_uploading" in to_save and to_save["config_uploading"] == "on":
+            content.config_uploading = 1
+        if "config_anonbrowse" in to_save and to_save["config_anonbrowse"] == "on":
+            content.config_anonbrowse = 1
+        if "config_public_reg" in to_save and to_save["config_public_reg"] == "on":
+            content.config_public_reg = 1
 
         # Remote login configuration
         content.config_remote_login = ("config_remote_login" in to_save and to_save["config_remote_login"] == "on")
@@ -2667,6 +2665,8 @@ def configuration_helper(origin):
         if "config_goodreads_api_secret" in to_save:
             content.config_goodreads_api_secret = to_save["config_goodreads_api_secret"]
 
+        if "config_log_level" in to_save:
+            content.config_log_level = int(to_save["config_log_level"])
         if content.config_logfile != to_save["config_logfile"]:
             # check valid path, only path or file
             if os.path.dirname(to_save["config_logfile"]):
