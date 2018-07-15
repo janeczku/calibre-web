@@ -1318,7 +1318,7 @@ def toggle_read(book_id):
                 read_status[0].value = not read_status[0].value
                 db.session.commit()
             else:
-                cc_class = db.cc_classes[cc_id]
+                cc_class = db.cc_classes[config.config_read_column]
                 new_cc = cc_class(value=1, book=book_id)
                 db.session.add(new_cc)
                 db.session.commit()
