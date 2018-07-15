@@ -53,7 +53,7 @@
           </a>
       </div>
       <div class="meta">
-        <p class="title">{{entry.title|shortentitle}}</p>
+        <p class="title">{{entry.title|truncate(60)}}</p>
         <p class="author">
           {% for author in entry.authors %}
             <a href="{{url_for('author', book_id=author.id) }}">{{author.name.replace('|',',')}}</a>

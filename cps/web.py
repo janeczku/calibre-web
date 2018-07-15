@@ -1031,7 +1031,7 @@ def get_matching_tags():
 def index(page):
     entries, random, pagination = fill_indexpage(page, db.Books, True, db.Books.timestamp.desc())
     return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
-                                 title=_(u"Recently Added Books"))
+                                 title=_(u"Recently Added Books"), page="root")
 
 
 @app.route('/books/newest', defaults={'page': 1})
@@ -1041,7 +1041,7 @@ def newest_books(page):
     if current_user.show_sorted():
         entries, random, pagination = fill_indexpage(page, db.Books, True, db.Books.pubdate.desc())
         return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
-                                     title=_(u"Newest Books"))
+                                     title=_(u"Newest Books"), page="newest")
     else:
         abort(404)
 
@@ -1053,7 +1053,7 @@ def oldest_books(page):
     if current_user.show_sorted():
         entries, random, pagination = fill_indexpage(page, db.Books, True, db.Books.pubdate)
         return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
-                                     title=_(u"Oldest Books"))
+                                     title=_(u"Oldest Books"), page="oldest")
     else:
         abort(404)
 
@@ -1065,7 +1065,7 @@ def titles_ascending(page):
     if current_user.show_sorted():
         entries, random, pagination = fill_indexpage(page, db.Books, True, db.Books.sort)
         return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
-                                     title=_(u"Books (A-Z)"))
+                                     title=_(u"Books (A-Z)"), page="a-z")
     else:
         abort(404)
 
@@ -1076,7 +1076,7 @@ def titles_ascending(page):
 def titles_descending(page):
     entries, random, pagination = fill_indexpage(page, db.Books, True, db.Books.sort.desc())
     return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
-                                 title=_(u"Books (Z-A)"))
+                                 title=_(u"Books (Z-A)"), page="z-a")
 
 
 @app.route("/hot", defaults={'page': 1})
@@ -1105,7 +1105,7 @@ def hot_books(page):
         numBooks = entries.__len__()
         pagination = Pagination(page, config.config_books_per_page, numBooks)
         return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
-                                     title=_(u"Hot Books (most downloaded)"))
+                                     title=_(u"Hot Books (most downloaded)"), page="hot")
     else:
        abort(404)
 
@@ -1118,7 +1118,7 @@ def best_rated_books(page):
         entries, random, pagination = fill_indexpage(page, db.Books, db.Books.ratings.any(db.Ratings.rating > 9),
                                                      db.Books.timestamp.desc())
         return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
-                                     title=_(u"Best rated books"))
+                                     title=_(u"Best rated books"), page="rated")
     abort(404)
 
 
@@ -1129,7 +1129,8 @@ def discover(page):
     if current_user.show_random_books():
         entries, __, pagination = fill_indexpage(page, db.Books, True, func.randomblob(2))
         pagination = Pagination(1, config.config_books_per_page, config.config_books_per_page)
-        return render_title_template('discover.html', entries=entries, pagination=pagination, title=_(u"Random Books"))
+        return render_title_template('discover.html', entries=entries, pagination=pagination,
+                                     title=_(u"Random Books"), page="discover")
     else:
         abort(404)
 
@@ -1143,7 +1144,8 @@ def author_list():
             .group_by('books_authors_link.author').order_by(db.Authors.sort).all()
         for entry in entries:
             entry.Authors.name = entry.Authors.name.replace('|', ',')
-        return render_title_template('list.html', entries=entries, folder='author', title=_(u"Author list"))
+        return render_title_template('list.html', entries=entries, folder='author',
+                                     title=_(u"Author list"), page="authorlist")
     else:
         abort(404)
 
@@ -1172,7 +1174,7 @@ def author(book_id, page):
             app.logger.error('Goodreads website is down/inaccessible')
 
     return render_title_template('author.html', entries=entries, pagination=pagination,
-                                 title=name, author=author_info, other_books=other_books)
+                                 title=name, author=author_info, other_books=other_books, page="author")
 
 
 def get_unique_other_books(library_books, author_books):
@@ -1201,7 +1203,8 @@ def series_list():
         entries = db.session.query(db.Series, func.count('books_series_link.book').label('count'))\
             .join(db.books_series_link).join(db.Books).filter(common_filters())\
             .group_by('books_series_link.series').order_by(db.Series.sort).all()
-        return render_title_template('list.html', entries=entries, folder='series', title=_(u"Series list"))
+        return render_title_template('list.html', entries=entries, folder='series',
+                                     title=_(u"Series list"), page="serieslist")
     else:
         abort(404)
 
@@ -1215,7 +1218,7 @@ def series(book_id, page):
     name = db.session.query(db.Series).filter(db.Series.id == book_id).first().name
     if entries:
         return render_title_template('index.html', random=random, pagination=pagination, entries=entries,
-                                     title=_(u"Series: %(serie)s", serie=name))
+                                     title=_(u"Series: %(serie)s", serie=name), page="series")
     else:
         flash(_(u"Error opening eBook. File does not exist or file is not accessible:"), category="error")
         return redirect(url_for("index"))
@@ -1248,7 +1251,7 @@ def language_overview():
                                         func.count('books_languages_link.book').label('bookcount')).group_by(
             'books_languages_link.lang_code').all()
         return render_title_template('languages.html', languages=languages, lang_counter=lang_counter,
-                                     title=_(u"Available languages"))
+                                     title=_(u"Available languages"), page="langlist")
     else:
         abort(404)
 
@@ -1265,7 +1268,7 @@ def language(name, page):
     except Exception:
         name = _(isoLanguages.get(part3=name).name)
     return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
-                                 title=_(u"Language: %(name)s", name=name))
+                                 title=_(u"Language: %(name)s", name=name), page="language")
 
 
 @app.route("/category")
@@ -1275,7 +1278,8 @@ def category_list():
         entries = db.session.query(db.Tags, func.count('books_tags_link.book').label('count'))\
             .join(db.books_tags_link).join(db.Books).order_by(db.Tags.name).filter(common_filters())\
             .group_by('books_tags_link.tag').all()
-        return render_title_template('list.html', entries=entries, folder='category', title=_(u"Category list"))
+        return render_title_template('list.html', entries=entries, folder='category',
+                                     title=_(u"Category list"), page="catlist")
     else:
         abort(404)
 
@@ -1289,7 +1293,7 @@ def category(book_id, page):
 
     name = db.session.query(db.Tags).filter(db.Tags.id == book_id).first().name
     return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
-                                 title=_(u"Category: %(name)s", name=name))
+                                 title=_(u"Category: %(name)s", name=name), page="category")
 
 
 @app.route("/ajax/toggleread/<int:book_id>", methods=['POST'])
@@ -1374,7 +1378,8 @@ def show_book(book_id):
             have_read = None
 
         return render_title_template('detail.html', entry=entries, cc=cc, is_xhr=request.is_xhr,
-                                     title=entries.title, books_shelfs=book_in_shelfs, have_read=have_read)
+                                     title=entries.title, books_shelfs=book_in_shelfs,
+                                     have_read=have_read, page="book")
     else:
         flash(_(u"Error opening eBook. File does not exist or file is not accessible:"), category="error")
         return redirect(url_for("index"))
@@ -1413,7 +1418,7 @@ def stats():
     authors = len(db.session.query(db.Authors).all())
     categorys = len(db.session.query(db.Tags).all())
     series = len(db.session.query(db.Series).all())
-    config_anonbrowse = uploader.book_formats.get_versions()
+    versions = uploader.book_formats.get_versions()
     vendorpath = os.path.join(config.get_main_dir, "vendor")
     if sys.platform == "win32":
         kindlegen = os.path.join(vendorpath, u"kindlegen.exe")
@@ -1445,7 +1450,7 @@ def stats():
     versions['sqlite'] = db.engine.dialect.dbapi.sqlite_version
 
     return render_title_template('stats.html', bookcounter=counter, authorcounter=authors, versions=versions,
-                                 categorycounter=categorys, seriecounter=series, title=_(u"Statistics"))
+                                 categorycounter=categorys, seriecounter=series, title=_(u"Statistics"), page="stat")
 
 
 @app.route("/delete/<int:book_id>/")
@@ -1660,9 +1665,9 @@ def search():
         # result = db.session.execute("select name from authors where lower(name) like '%" + term.lower() + "%'")
         # entries = result.fetchall()
         # result.close()
-        return render_title_template('search.html', searchterm=term, entries=entries)
+        return render_title_template('search.html', searchterm=term, entries=entries, page="search")
     else:
-        return render_title_template('search.html', searchterm="")
+        return render_title_template('search.html', searchterm="", page="search")
 
 
 @app.route("/advanced_search", methods=["GET"])
@@ -1746,7 +1751,8 @@ def advanced_search():
                 for language in exclude_languages_inputs:
                     q = q.filter(not_(db.Books.series.any(db.Languages.id == language)))
             q = q.all()
-            return render_title_template('search.html', searchterm=searchterm, entries=q, title=_(u"search"))
+            return render_title_template('search.html', searchterm=searchterm,
+                                         entries=q, title=_(u"search"), page="search")
     tags = db.session.query(db.Tags).order_by(db.Tags.name).all()
     series = db.session.query(db.Series).order_by(db.Series.name).all()
     if current_user.filter_language() == u"all":
@@ -1759,7 +1765,8 @@ def advanced_search():
                 lang.name = _(isoLanguages.get(part3=lang.lang_code).name)
     else:
         languages = None
-    return render_title_template('search_form.html', tags=tags, languages=languages, series=series, title=_(u"search"))
+    return render_title_template('search_form.html', tags=tags, languages=languages,
+                                 series=series, title=_(u"search"), page="advsearch")
 
 
 def get_cover_via_gdrive(cover_path):
@@ -1843,7 +1850,7 @@ def render_read_books(page, are_read, as_xml=False):
                 .filter(db.cc_classes[config.config_read_column].value==True).all()
             readBookIds = [x.book for x in readBooks]
         except KeyError:
-            app.logger.error(u"Custom Column No.%d is not exisiting in calibre database" % config.config_read_column)
+            app.logger.error(u"Custom Column No.%d is not existing in calibre database" % config.config_read_column)
             readBookIds=[]
 
     if are_read:
@@ -1866,7 +1873,7 @@ def render_read_books(page, are_read, as_xml=False):
             total_books = db.session.query(func.count(db.Books.id)).scalar()
             name = _(u'Unread Books') + ' (' + str(total_books - len(readBookIds)) + ')'
         return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
-                                title=_(name, name=name))
+                                title=_(name, name=name), page="read")
 
 
 @app.route("/opds/readbooks/")
@@ -1989,7 +1996,7 @@ def register():
         to_save = request.form.to_dict()
         if not to_save["nickname"] or not to_save["email"] or not to_save["password"]:
             flash(_(u"Please fill out all fields!"), category="error")
-            return render_title_template('register.html', title=_(u"register"))
+            return render_title_template('register.html', title=_(u"register"), page="register")
 
         existing_user = ub.session.query(ub.User).filter(func.lower(ub.User.nickname) == to_save["nickname"].lower()).first()
         existing_email = ub.session.query(ub.User).filter(ub.User.email == to_save["email"]).first()
@@ -2006,14 +2013,14 @@ def register():
             except Exception:
                 ub.session.rollback()
                 flash(_(u"An unknown error occured. Please try again later."), category="error")
-                return render_title_template('register.html', title=_(u"register"))
+                return render_title_template('register.html', title=_(u"register"), page="register")
             flash("Your account has been created. Please login.", category="success")
             return redirect(url_for('login'))
         else:
             flash(_(u"This username or email address is already in use."), category="error")
-            return render_title_template('register.html', title=_(u"register"))
+            return render_title_template('register.html', title=_(u"register"), page="register")
 
-    return render_title_template('register.html', title=_(u"register"))
+    return render_title_template('register.html', title=_(u"register"), page="regsiter")
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -2039,7 +2046,7 @@ def login():
     next_url = url_for('index')
 
     return render_title_template('login.html', title=_(u"login"), next_url=next_url,
-                                 remote_login=config.config_remote_login)
+                                 remote_login=config.config_remote_login, page="login")
 
 
 @app.route('/logout')
@@ -2060,7 +2067,7 @@ def remote_login():
     verify_url = url_for('verify_token', token=auth_token.auth_token, _external=true)
 
     return render_title_template('remote_login.html', title=_(u"login"), token=auth_token.auth_token,
-                                 verify_url=verify_url)
+                                 verify_url=verify_url, page="remotelogin")
 
 
 @app.route('/verify/<token>')
@@ -2263,9 +2270,9 @@ def create_shelf():
                 flash(_(u"Shelf %(title)s created", title=to_save["title"]), category="success")
             except Exception:
                 flash(_(u"There was an error"), category="error")
-        return render_title_template('shelf_edit.html', shelf=shelf, title=_(u"create a shelf"))
+        return render_title_template('shelf_edit.html', shelf=shelf, title=_(u"create a shelf"), page="shelfcreate")
     else:
-        return render_title_template('shelf_edit.html', shelf=shelf, title=_(u"create a shelf"))
+        return render_title_template('shelf_edit.html', shelf=shelf, title=_(u"create a shelf"), page="shelfcreate")
 
 
 @app.route("/shelf/edit/<int:shelf_id>", methods=["GET", "POST"])
@@ -2291,9 +2298,9 @@ def edit_shelf(shelf_id):
                 flash(_(u"Shelf %(title)s changed", title=to_save["title"]), category="success")
             except Exception:
                 flash(_(u"There was an error"), category="error")
-        return render_title_template('shelf_edit.html', shelf=shelf, title=_(u"Edit a shelf"))
+        return render_title_template('shelf_edit.html', shelf=shelf, title=_(u"Edit a shelf"), page="shelfedit")
     else:
-        return render_title_template('shelf_edit.html', shelf=shelf, title=_(u"Edit a shelf"))
+        return render_title_template('shelf_edit.html', shelf=shelf, title=_(u"Edit a shelf"), page="shelfedit")
 
 
 @app.route("/shelf/delete/<int:shelf_id>")
@@ -2337,7 +2344,7 @@ def show_shelf(shelf_id):
             cur_book = db.session.query(db.Books).filter(db.Books.id == book.book_id).first()
             result.append(cur_book)
         return render_title_template('shelf.html', entries=result, title=_(u"Shelf: '%(name)s'", name=shelf.name),
-                                 shelf=shelf)
+                                 shelf=shelf, page="shelf")
     else:
         flash(_(u"Error opening shelf. Shelf does not exist or is not accessible"), category="error")
         return redirect(url_for("index"))
@@ -2370,7 +2377,8 @@ def order_shelf(shelf_id):
             cur_book = db.session.query(db.Books).filter(db.Books.id == book.book_id).first()
             result.append(cur_book)
     return render_title_template('shelf_order.html', entries=result,
-                                 title=_(u"Change order of Shelf: '%(name)s'", name=shelf.name), shelf=shelf)
+                                 title=_(u"Change order of Shelf: '%(name)s'", name=shelf.name),
+                                 shelf=shelf, page="shelforder")
 
 
 @app.route("/me", methods=["GET", "POST"])
@@ -2446,8 +2454,8 @@ def profile():
                                          title=_(u"%(name)s's profile", name=current_user.nickname))
         flash(_(u"Profile updated"), category="success")
     return render_title_template("user_edit.html", translations=translations, profile=1, languages=languages,
-                                 content=content,
-                                 downloads=downloads, title=_(u"%(name)s's profile", name=current_user.nickname))
+                                content=content, downloads=downloads, title=_(u"%(name)s's profile",
+                                name=current_user.nickname), page="me")
 
 
 @app.route("/admin/view")
@@ -2469,7 +2477,7 @@ def admin():
     content = ub.session.query(ub.User).all()
     settings = ub.session.query(ub.Settings).first()
     return render_title_template("admin.html", content=content, email=settings, config=config, commit=commit,
-                                 development=ub.DEVELOPMENT, title=_(u"Admin page"))
+                                 development=ub.DEVELOPMENT, title=_(u"Admin page"), page="admin")
 
 
 @app.route("/admin/config", methods=["GET", "POST"])
@@ -2551,7 +2559,7 @@ def view_configuration():
     readColumn = db.session.query(db.Custom_Columns)\
             .filter(db.and_(db.Custom_Columns.datatype == 'bool',db.Custom_Columns.mark_for_delete == 0)).all()
     return render_title_template("config_view_edit.html", content=config, readColumns=readColumn,
-                                 title=_(u"UI Configuration"))
+                                 title=_(u"UI Configuration"), page="uiconfig")
 
 
 
@@ -2606,7 +2614,8 @@ def configuration_helper(origin):
                 flash(_(u'client_secrets.json is not configured for web application'), category="error")
                 return render_title_template("config_edit.html", content=config, origin=origin,
                                              gdrive=gdrive_support, gdriveError=gdriveError,
-                                             goodreads=goodreads_support, title=_(u"Basic Configuration"))
+                                             goodreads=goodreads_support, title=_(u"Basic Configuration"),
+                                             page="config")
         # always show google drive settings, but in case of error deny support
         if "config_use_google_drive" in to_save and not gdriveError:
             content.config_use_google_drive = "config_use_google_drive" in to_save
@@ -2631,7 +2640,8 @@ def configuration_helper(origin):
                     flash(_(u'Keyfile location is not valid, please enter correct path'), category="error")
                     return render_title_template("config_edit.html", content=config, origin=origin,
                                                  gdrive=gdrive_support, gdriveError=gdriveError,
-                                                 goodreads=goodreads_support, title=_(u"Basic Configuration"))
+                                                 goodreads=goodreads_support, title=_(u"Basic Configuration"),
+                                                 page="config")
         if "config_certfile" in to_save:
             if content.config_certfile != to_save["config_certfile"]:
                 if os.path.isfile(to_save["config_certfile"]) or to_save["config_certfile"] is u"":
@@ -2642,7 +2652,8 @@ def configuration_helper(origin):
                     flash(_(u'Certfile location is not valid, please enter correct path'), category="error")
                     return render_title_template("config_edit.html", content=config, origin=origin,
                                                  gdrive=gdrive_support, gdriveError=gdriveError,
-                                                 goodreads=goodreads_support, title=_(u"Basic Configuration"))
+                                                 goodreads=goodreads_support, title=_(u"Basic Configuration"),
+                                                 page="config")
         content.config_uploading = 0
         content.config_anonbrowse = 0
         content.config_public_reg = 0
@@ -2677,7 +2688,8 @@ def configuration_helper(origin):
                     flash(_(u'Logfile location is not valid, please enter correct path'), category="error")
                     return render_title_template("config_edit.html", content=config, origin=origin,
                                                  gdrive=gdrive_support, gdriveError=gdriveError,
-                                                 goodreads=goodreads_support, title=_(u"Basic Configuration"))
+                                                 goodreads=goodreads_support, title=_(u"Basic Configuration"),
+                                                 page="config")
             else:
                 content.config_logfile = to_save["config_logfile"]
             reboot_required = True
@@ -2696,15 +2708,15 @@ def configuration_helper(origin):
         except e:
             flash(e, category="error")
             return render_title_template("config_edit.html", content=config, origin=origin, gdrive=gdrive_support,
-                                         gdriveError=gdriveError,
-                                         goodreads=goodreads_support, title=_(u"Basic Configuration"))
+                                         gdriveError=gdriveError, goodreads=goodreads_support,
+                                         title=_(u"Basic Configuration"), page="config")
         if db_change:
             reload(db)
             if not db.setup_db():
                 flash(_(u'DB location is not valid, please enter correct path'), category="error")
                 return render_title_template("config_edit.html", content=config, origin=origin, gdrive=gdrive_support,
-                                             gdriveError=gdriveError,
-                                             goodreads=goodreads_support, title=_(u"Basic Configuration"))
+                                             gdriveError=gdriveError, goodreads=goodreads_support,
+                                             title=_(u"Basic Configuration"), page="config")
         if reboot_required:
             # db.engine.dispose() # ToDo verify correct
             ub.session.close()
@@ -2722,7 +2734,7 @@ def configuration_helper(origin):
     return render_title_template("config_edit.html", origin=origin, success=success, content=config,
                                  show_authenticate_google_drive=not is_gdrive_ready(), gdrive=gdrive_support,
                                  gdriveError=gdriveError, gdrivefolders=gdrivefolders,
-                                 goodreads=goodreads_support, title=_(u"Basic Configuration"))
+                                 goodreads=goodreads_support, title=_(u"Basic Configuration"), page="config")
 
 
 @app.route("/admin/user/new", methods=["GET", "POST"])
@@ -2799,7 +2811,7 @@ def new_user():
         content.sidebar_view = config.config_default_show
         content.mature_content = bool(config.config_default_show & ub.MATURE_CONTENT)
     return render_title_template("user_edit.html", new_user=1, content=content, translations=translations,
-                                 languages=languages, title=_(u"Add new user"))
+                                 languages=languages, title=_(u"Add new user"), page="newuser")
 
 
 @app.route("/admin/mailsettings", methods=["GET", "POST"])
@@ -2832,7 +2844,7 @@ def edit_mailsettings():
                 flash(_(u"Please configure your kindle email address first..."), category="error")
         else:
             flash(_(u"E-Mail settings updated"), category="success")
-    return render_title_template("email_edit.html", content=content, title=_(u"Edit mail settings"))
+    return render_title_template("email_edit.html", content=content, title=_(u"Edit mail settings"), page="mailset")
 
 
 @app.route("/admin/user/<int:user_id>", methods=["GET", "POST"])
@@ -2976,8 +2988,8 @@ def edit_user(user_id):
             ub.session.rollback()
             flash(_(u"An unknown error occured."), category="error")
     return render_title_template("user_edit.html", translations=translations, languages=languages, new_user=0,
-                                 content=content, downloads=downloads,
-                                 title=_(u"Edit User %(nick)s", nick=content.nickname))
+                                content=content, downloads=downloads, title=_(u"Edit User %(nick)s",
+                                nick=content.nickname), page="edituser")
 
 
 @app.route("/admin/book/<int:book_id>", methods=['GET', 'POST'])
@@ -3008,7 +3020,7 @@ def edit_book(book_id):
     # Show form
     if request.method != 'POST':
         return render_title_template('book_edit.html', book=book, authors=author_names, cc=cc,
-                                     title=_(u"edit metadata"))
+                                     title=_(u"edit metadata"), page="editbook")
 
     # Update book
     edited_books_id = set()
@@ -3219,12 +3231,12 @@ def edit_book(book_id):
                 return redirect(url_for('show_book', book_id=book.id))
             else:
                 return render_title_template('book_edit.html', book=book, authors=author_names, cc=cc,
-                                             title=_(u"edit metadata"))
+                                             title=_(u"edit metadata"), page="editbook")
         else:
             db.session.rollback()
             flash( error, category="error")
             return render_title_template('book_edit.html', book=book, authors=author_names, cc=cc,
-                                         title=_(u"edit metadata"))
+                                         title=_(u"edit metadata"), page="editbook")
     except Exception as e:
         app.logger.exception(e)
         db.session.rollback()
@@ -3392,9 +3404,11 @@ def upload():
                 # db.session.connection().connection.connection.create_function("title_sort", 1, db.title_sort)
                 cc = db.session.query(db.Custom_Columns).filter(db.Custom_Columns.datatype.notin_(db.cc_exceptions)).all()
                 if current_user.role_edit() or current_user.role_admin():
-                    return render_title_template('book_edit.html', book=book, authors=author_names, cc=cc,title=_(u"edit metadata"))
+                    return render_title_template('book_edit.html', book=book, authors=author_names,
+                                                 cc=cc,title=_(u"edit metadata"), page="upload")
                 book_in_shelfs = []
-                return render_title_template('detail.html', entry=book, cc=cc, title=book.title, books_shelfs=book_in_shelfs, )
+                return render_title_template('detail.html', entry=book, cc=cc,
+                                             title=book.title, books_shelfs=book_in_shelfs, page="upload")
         return redirect(url_for("index"))
     else:
         return redirect(url_for("index"))
