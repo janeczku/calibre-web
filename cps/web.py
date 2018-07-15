@@ -1295,20 +1295,38 @@ def category(book_id, page):
 @app.route("/ajax/toggleread/<int:book_id>", methods=['POST'])
 @login_required
 def toggle_read(book_id):
-    book = ub.session.query(ub.ReadBook).filter(ub.and_(ub.ReadBook.user_id == int(current_user.id),
+    if not config.config_read_column:
+        book = ub.session.query(ub.ReadBook).filter(ub.and_(ub.ReadBook.user_id == int(current_user.id),
                                                                    ub.ReadBook.book_id == book_id)).first()
-    if book:
-        book.is_read = not book.is_read
+        if book:
+            book.is_read = not book.is_read
+        else:
+            readBook = ub.ReadBook()
+            readBook.user_id = int(current_user.id)
+            readBook.book_id = book_id
+            readBook.is_read = True
+            book = readBook
+        ub.session.merge(book)
+        ub.session.commit()
     else:
-        readBook = ub.ReadBook()
-        readBook.user_id = int(current_user.id)
-        readBook.book_id = book_id
-        readBook.is_read = True
-        book = readBook
-    ub.session.merge(book)
-    ub.session.commit()
-    return ""
+        try:
+            db.session.connection().connection.connection.create_function("title_sort", 1, db.title_sort)
+            book = db.session.query(db.Books).filter(db.Books.id == book_id).filter(common_filters()).first()
+            read_status = getattr(book, 'custom_column_' + str(config.config_read_column))
+            if len(read_status):
+                #setattr(getattr(book,'custom_column_' + str(cc_id), 'value', (not read_status))
+                read_status[0].value = not read_status[0].value
+                db.session.commit()
+            else:
+                cc_class = db.cc_classes[cc_id]
+                new_cc = cc_class(value=1, book=book_id)
+                db.session.add(new_cc)
+                db.session.commit()
+        except KeyError:
+            app.logger.error(
+                    u"Custom Column No.%d is not exisiting in calibre database" % config.config_read_column)
 
+    return ""
 
 @app.route("/book/<int:book_id>")
 @login_required_if_no_ano
@@ -1338,9 +1356,20 @@ def show_book(book_id):
             book_in_shelfs.append(entry.shelf)
 
         if not current_user.is_anonymous:
-            matching_have_read_book = ub.session.query(ub.ReadBook).filter(ub.and_(ub.ReadBook.user_id == int(current_user.id),
-                                                                   ub.ReadBook.book_id == book_id)).all()
-            have_read = len(matching_have_read_book) > 0 and matching_have_read_book[0].is_read
+            if not config.config_read_column:
+                matching_have_read_book = ub.session.query(ub.ReadBook)\
+                    .filter(ub.and_(ub.ReadBook.user_id == int(current_user.id),
+                    ub.ReadBook.book_id == book_id)).all()
+                have_read = len(matching_have_read_book) > 0 and matching_have_read_book[0].is_read
+            else:
+                try:
+                    matching_have_read_book = getattr(entries,'custom_column_'+str(config.config_read_column))
+                    have_read = len(matching_have_read_book) > 0 and matching_have_read_book[0].value
+                except KeyError:
+                    app.logger.error(
+                        u"Custom Column No.%d is not exisiting in calibre database" % config.config_read_column)
+                    have_read = None
+
         else:
             have_read = None
 
@@ -1761,7 +1790,7 @@ def get_cover(cover_path):
             if path:
                 return redirect(path)
             else:
-                app.logger.error(cover_path + '/cover.jpg not found on GDrive')
+                app.logger.error(cover_path + '/cover.jpg not found on Google Drive')
                 return send_from_directory(os.path.join(os.path.dirname(__file__), "static"), "generic_cover.jpg")
         except Exception as e:
             app.logger.error("Message "+e.message)
@@ -1804,8 +1833,19 @@ def feed_get_cover(book_id):
 
 
 def render_read_books(page, are_read, as_xml=False):
-    readBooks = ub.session.query(ub.ReadBook).filter(ub.ReadBook.user_id == int(current_user.id)).filter(ub.ReadBook.is_read == True).all()
-    readBookIds = [x.book_id for x in readBooks]
+    if not config.config_read_column:
+        readBooks = ub.session.query(ub.ReadBook).filter(ub.ReadBook.user_id == int(current_user.id))\
+            .filter(ub.ReadBook.is_read == True).all()
+        readBookIds = [x.book_id for x in readBooks]
+    else:
+        try:
+            readBooks = db.session.query(db.cc_classes[config.config_read_column])\
+                .filter(db.cc_classes[config.config_read_column].value==True).all()
+            readBookIds = [x.book for x in readBooks]
+        except KeyError:
+            app.logger.error(u"Custom Column No.%d is not exisiting in calibre database" % config.config_read_column)
+            readBookIds=[]
+
     if are_read:
         db_filter = db.Books.id.in_(readBookIds)
     else:
@@ -2439,6 +2479,93 @@ def configuration():
     return configuration_helper(0)
 
 
+@app.route("/admin/viewconfig", methods=["GET", "POST"])
+@login_required
+@admin_required
+def view_configuration():
+    if request.method == "POST":
+        to_save = request.form.to_dict()
+        content = ub.session.query(ub.Settings).first()
+        if "config_calibre_web_title" in to_save:
+            content.config_calibre_web_title = to_save["config_calibre_web_title"]
+        if "config_columns_to_ignore" in to_save:
+            content.config_columns_to_ignore = to_save["config_columns_to_ignore"]
+        if "config_read_column" in to_save:
+            content.config_read_column = int(to_save["config_read_column"])
+        if "config_title_regex" in to_save:
+            if content.config_title_regex != to_save["config_title_regex"]:
+                content.config_title_regex = to_save["config_title_regex"]
+                reboot_required = True
+        if "config_log_level" in to_save:
+            content.config_log_level = int(to_save["config_log_level"])
+        if "config_random_books" in to_save:
+            content.config_random_books = int(to_save["config_random_books"])
+        if "config_books_per_page" in to_save:
+            content.config_books_per_page = int(to_save["config_books_per_page"])
+        content.config_uploading = 0
+        content.config_anonbrowse = 0
+        content.config_public_reg = 0
+        if "config_uploading" in to_save and to_save["config_uploading"] == "on":
+            content.config_uploading = 1
+        if "config_anonbrowse" in to_save and to_save["config_anonbrowse"] == "on":
+            content.config_anonbrowse = 1
+        if "config_public_reg" in to_save and to_save["config_public_reg"] == "on":
+            content.config_public_reg = 1
+        # Mature Content configuration
+        if "config_mature_content_tags" in to_save:
+            content.config_mature_content_tags = to_save["config_mature_content_tags"].strip()
+
+        # Default user configuration
+        content.config_default_role = 0
+        if "admin_role" in to_save:
+            content.config_default_role = content.config_default_role + ub.ROLE_ADMIN
+        if "download_role" in to_save:
+            content.config_default_role = content.config_default_role + ub.ROLE_DOWNLOAD
+        if "upload_role" in to_save:
+            content.config_default_role = content.config_default_role + ub.ROLE_UPLOAD
+        if "edit_role" in to_save:
+            content.config_default_role = content.config_default_role + ub.ROLE_EDIT
+        if "delete_role" in to_save:
+            content.config_default_role = content.config_default_role + ub.ROLE_DELETE_BOOKS
+        if "passwd_role" in to_save:
+            content.config_default_role = content.config_default_role + ub.ROLE_PASSWD
+        if "passwd_role" in to_save:
+            content.config_default_role = content.config_default_role + ub.ROLE_EDIT_SHELFS
+        content.config_default_show = 0
+        if "show_detail_random" in to_save:
+            content.config_default_show = content.config_default_show + ub.DETAIL_RANDOM
+        if "show_language" in to_save:
+            content.config_default_show = content.config_default_show + ub.SIDEBAR_LANGUAGE
+        if "show_series" in to_save:
+            content.config_default_show = content.config_default_show + ub.SIDEBAR_SERIES
+        if "show_category" in to_save:
+            content.config_default_show = content.config_default_show + ub.SIDEBAR_CATEGORY
+        if "show_hot" in to_save:
+            content.config_default_show = content.config_default_show + ub.SIDEBAR_HOT
+        if "show_random" in to_save:
+            content.config_default_show = content.config_default_show + ub.SIDEBAR_RANDOM
+        if "show_author" in to_save:
+            content.config_default_show = content.config_default_show + ub.SIDEBAR_AUTHOR
+        if "show_best_rated" in to_save:
+            content.config_default_show = content.config_default_show + ub.SIDEBAR_BEST_RATED
+        if "show_read_and_unread" in to_save:
+            content.config_default_show = content.config_default_show + ub.SIDEBAR_READ_AND_UNREAD
+        if "show_recent" in to_save:
+            content.config_default_show = content.config_default_show + ub.SIDEBAR_RECENT
+        if "show_sorted" in to_save:
+            content.config_default_show = content.config_default_show + ub.SIDEBAR_SORTED
+        if "show_mature_content" in to_save:
+            content.config_default_show = content.config_default_show + ub.MATURE_CONTENT
+        ub.session.commit()
+        flash(_(u"Calibre-web configuration updated"), category="success")
+        config.loadSettings()
+    readColumn = db.session.query(db.Custom_Columns)\
+            .filter(db.and_(db.Custom_Columns.datatype == 'bool',db.Custom_Columns.mark_for_delete == 0)).all()
+    return render_title_template("config_view_edit.html", content=config, readColumns=readColumn,
+                                 title=_(u"UI Configuration"))
+
+
+
 @app.route("/config", methods=["GET", "POST"])
 @unconfigured
 def basic_configuration():
@@ -2451,7 +2578,7 @@ def configuration_helper(origin):
     db_change = False
     success = False
     if gdrive_support == False:
-        gdriveError = _('Import of optional GDrive requirements missing')
+        gdriveError = _('Import of optional Google Drive requirements missing')
     else:
         if not os.path.isfile(os.path.join(config.get_main_dir,'client_secrets.json')):
             gdriveError = _('client_secrets.json is missing or not readable')
@@ -2527,29 +2654,6 @@ def configuration_helper(origin):
                     return render_title_template("config_edit.html", content=config, origin=origin,
                                                  gdrive=gdrive_support, gdriveError=gdriveError,
                                                  goodreads=goodreads_support, title=_(u"Basic Configuration"))
-        if "config_calibre_web_title" in to_save:
-            content.config_calibre_web_title = to_save["config_calibre_web_title"]
-        if "config_columns_to_ignore" in to_save:
-            content.config_columns_to_ignore = to_save["config_columns_to_ignore"]
-        if "config_title_regex" in to_save:
-            if content.config_title_regex != to_save["config_title_regex"]:
-                content.config_title_regex = to_save["config_title_regex"]
-                reboot_required = True
-        if "config_log_level" in to_save:
-            content.config_log_level = int(to_save["config_log_level"])
-        if "config_random_books" in to_save:
-            content.config_random_books = int(to_save["config_random_books"])
-        if "config_books_per_page" in to_save:
-            content.config_books_per_page = int(to_save["config_books_per_page"])
-        content.config_uploading = 0
-        content.config_anonbrowse = 0
-        content.config_public_reg = 0
-        if "config_uploading" in to_save and to_save["config_uploading"] == "on":
-            content.config_uploading = 1
-        if "config_anonbrowse" in to_save and to_save["config_anonbrowse"] == "on":
-            content.config_anonbrowse = 1
-        if "config_public_reg" in to_save and to_save["config_public_reg"] == "on":
-            content.config_public_reg = 1
 
         # Remote login configuration
         content.config_remote_login = ("config_remote_login" in to_save and to_save["config_remote_login"] == "on")
@@ -2562,52 +2666,6 @@ def configuration_helper(origin):
             content.config_goodreads_api_key = to_save["config_goodreads_api_key"]
         if "config_goodreads_api_secret" in to_save:
             content.config_goodreads_api_secret = to_save["config_goodreads_api_secret"]
-
-        # Mature Content configuration
-        if "config_mature_content_tags" in to_save:
-            content.config_mature_content_tags = to_save["config_mature_content_tags"].strip()
-
-        # Default user configuration
-        content.config_default_role = 0
-        if "admin_role" in to_save:
-            content.config_default_role = content.config_default_role + ub.ROLE_ADMIN
-        if "download_role" in to_save:
-            content.config_default_role = content.config_default_role + ub.ROLE_DOWNLOAD
-        if "upload_role" in to_save:
-            content.config_default_role = content.config_default_role + ub.ROLE_UPLOAD
-        if "edit_role" in to_save:
-            content.config_default_role = content.config_default_role + ub.ROLE_EDIT
-        if "delete_role" in to_save:
-            content.config_default_role = content.config_default_role + ub.ROLE_DELETE_BOOKS
-        if "passwd_role" in to_save:
-            content.config_default_role = content.config_default_role + ub.ROLE_PASSWD
-        if "passwd_role" in to_save:
-            content.config_default_role = content.config_default_role + ub.ROLE_EDIT_SHELFS
-        content.config_default_show = 0
-        if "show_detail_random" in to_save:
-            content.config_default_show = content.config_default_show + ub.DETAIL_RANDOM
-        if "show_language" in to_save:
-            content.config_default_show = content.config_default_show + ub.SIDEBAR_LANGUAGE
-        if "show_series" in to_save:
-            content.config_default_show = content.config_default_show + ub.SIDEBAR_SERIES
-        if "show_category" in to_save:
-            content.config_default_show = content.config_default_show + ub.SIDEBAR_CATEGORY
-        if "show_hot" in to_save:
-            content.config_default_show = content.config_default_show + ub.SIDEBAR_HOT
-        if "show_random" in to_save:
-            content.config_default_show = content.config_default_show + ub.SIDEBAR_RANDOM
-        if "show_author" in to_save:
-            content.config_default_show = content.config_default_show + ub.SIDEBAR_AUTHOR
-        if "show_best_rated" in to_save:
-            content.config_default_show = content.config_default_show + ub.SIDEBAR_BEST_RATED
-        if "show_read_and_unread" in to_save:
-            content.config_default_show = content.config_default_show + ub.SIDEBAR_READ_AND_UNREAD
-        if "show_recent" in to_save:
-            content.config_default_show = content.config_default_show + ub.SIDEBAR_RECENT
-        if "show_sorted" in to_save:
-            content.config_default_show = content.config_default_show + ub.SIDEBAR_SORTED
-        if "show_mature_content" in to_save:
-            content.config_default_show = content.config_default_show + ub.MATURE_CONTENT
 
         if content.config_logfile != to_save["config_logfile"]:
             # check valid path, only path or file

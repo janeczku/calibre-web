@@ -76,7 +76,8 @@
         <td>{% if config.config_anonbrowse %}<span class="glyphicon glyphicon-ok"></span>{% else %}<span class="glyphicon glyphicon-remove"></span>{% endif %}</td>
         <td>{% if config.config_remote_login %}<span class="glyphicon glyphicon-ok"></span>{% else %}<span class="glyphicon glyphicon-remove"></span>{% endif %}</td>
   </table>
-  <div class="btn btn-default"><a href="{{url_for('configuration')}}">{{_('Configuration')}}</a></div>
+  <div class="btn btn-default"><a href="{{url_for('configuration')}}">{{_('Basic Configuration')}}</a></div>
+  <div class="btn btn-default"><a href="{{url_for('view_configuration')}}">{{_('UI Configuration')}}</a></div>
   <h2>{{_('Administration')}}</h2>
       {% if not development %}
         <div>{{_('Current commit timestamp')}}: <span>{{commit}} </span></div>

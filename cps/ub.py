@@ -282,6 +282,7 @@ class Settings(Base):
     config_calibre_web_title = Column(String, default=u'Calibre-web')
     config_books_per_page = Column(Integer, default=60)
     config_random_books = Column(Integer, default=4)
+    config_read_column = Column(Integer, default=0)
     config_title_regex = Column(String, default=u'^(A|The|An|Der|Die|Das|Den|Ein|Eine|Einen|Dem|Des|Einem|Eines)\s+')
     config_log_level = Column(SmallInteger, default=logging.INFO)
     config_uploading = Column(SmallInteger, default=0)
@@ -344,6 +345,7 @@ class Config:
         self.config_books_per_page = data.config_books_per_page
         self.config_random_books = data.config_random_books
         self.config_title_regex = data.config_title_regex
+        self.config_read_column = data.config_read_column
         self.config_log_level = data.config_log_level
         self.config_uploading = data.config_uploading
         self.config_anonbrowse = data.config_anonbrowse
@@ -352,9 +354,6 @@ class Config:
         self.config_default_show = data.config_default_show
         self.config_columns_to_ignore = data.config_columns_to_ignore
         self.config_use_google_drive = data.config_use_google_drive
-        # self.config_google_drive_client_id = data.config_google_drive_client_id
-        # self.config_google_drive_client_secret = data.config_google_drive_client_secret
-        # self.config_google_drive_calibre_url_base = data.config_google_drive_calibre_url_base
         self.config_google_drive_folder = data.config_google_drive_folder
         if data.config_google_drive_watch_changes_response:
             self.config_google_drive_watch_changes_response = json.loads(data.config_google_drive_watch_changes_response)
@@ -544,7 +543,6 @@ def migrate_Database():
         conn.execute("ALTER TABLE Settings ADD column `config_anonbrowse` SmallInteger DEFAULT 0")
         conn.execute("ALTER TABLE Settings ADD column `config_public_reg` SmallInteger DEFAULT 0")
         session.commit()
-
     try:
         session.query(exists().where(Settings.config_use_google_drive)).scalar()
     except exc.OperationalError:
@@ -648,6 +646,13 @@ def migrate_Database():
         conn = engine.connect()
         conn.execute("ALTER TABLE Settings ADD column `config_certfile` String DEFAULT ''")
         conn.execute("ALTER TABLE Settings ADD column `config_keyfile` String DEFAULT ''")
+        session.commit()
+    try:
+        session.query(exists().where(Settings.config_read_column)).scalar()
+        session.commit()
+    except exc.OperationalError:  # Database is not compatible, some rows are missing
+        conn = engine.connect()
+        conn.execute("ALTER TABLE Settings ADD column `config_read_column` INTEGER DEFAULT 0")
         session.commit()
     # Remove login capability of user Guest
     conn = engine.connect()
