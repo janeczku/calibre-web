@@ -17,7 +17,7 @@
           {% if g.user.role_download() %}
             {% if entry.data|length %}
             <div class="btn-group" role="group">
-                {% if entry.data|length < 3 %}
+                {% if entry.data|length < 2 %}
                   <button type="button" class="btn btn-primary">
                     {{_('Download')}} :
                   </button>
