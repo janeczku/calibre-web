@@ -371,7 +371,7 @@ def update_dir_structure_gdrive(book_id):
             book.path = book.path.split('/')[0] + '/' + new_titledir
             gd.updateDatabaseOnEdit(gFile['id'], book.path)     # only child folder affected
         else:
-            error = _(u'File %s not found on gdrive' % book.path) # file not found
+            error = _(u'File %s not found on Google Drive' % book.path) # file not found
 
     if authordir != new_authordir:
         gFile = gd.getFileFromEbooksFolder(os.path.dirname(book.path), titledir)
@@ -380,7 +380,7 @@ def update_dir_structure_gdrive(book_id):
             book.path = new_authordir + '/' + book.path.split('/')[1]
             gd.updateDatabaseOnEdit(gFile['id'], book.path)
         else:
-            error = _(u'File %s not found on gdrive' % authordir) # file not found
+            error = _(u'File %s not found on Google Drive' % authordir) # file not found
     return error
 
 
@@ -391,7 +391,7 @@ def delete_book_gdrive(book):
         gd.deleteDatabaseEntry(gFile['id'])
         gFile.Trash()
     else:
-        error =_(u'delete_bookPath %s not found on gdrive' % book.path)  # file not found
+        error =_(u'Book path %s not found on Google Drive' % book.path)  # file not found
     return error
 
 ################################## External interface

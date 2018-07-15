@@ -133,7 +133,7 @@ def getDrive(drive=None, gauth=None):
             try:
                 gauth.Refresh()
             except:
-                web.app.logger.error("GDrive gdrive_credentials file not present, reauthenticate in config section")
+                web.app.logger.error("Google Drive gdrive_credentials file not present, reauthenticate in config section")
         else:
             # Initialize the saved creds
             gauth.Authorize()
