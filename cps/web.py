@@ -50,7 +50,6 @@ from flask_principal import __version__ as flask_principalVersion
 from flask_babel import Babel
 from flask_babel import gettext as _
 import requests
-# import zipfile
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.datastructures import Headers
 from babel import Locale as LC
@@ -467,7 +466,7 @@ def common_filters():
 
 
 # Fill indexpage with all requested data from database
-def fill_indexpage(page, database, db_filter, order):
+def fill_indexpage(page, database, db_filter, order, *join):
     if current_user.show_detail_random():
         random = db.session.query(db.Books).filter(common_filters())\
             .order_by(func.random()).limit(config.config_random_books)
@@ -476,9 +475,9 @@ def fill_indexpage(page, database, db_filter, order):
     off = int(int(config.config_books_per_page) * (page - 1))
     pagination = Pagination(page, config.config_books_per_page,
                             len(db.session.query(database)
-                                .filter(db_filter).filter(common_filters()).all()))
-    entries = db.session.query(database).filter(db_filter).filter(common_filters())\
-        .order_by(order).offset(off).limit(config.config_books_per_page)
+                            .filter(db_filter).filter(common_filters()).all()))
+    entries = db.session.query(database).join(*join,isouter=True).filter(db_filter)\
+            .filter(common_filters()).order_by(*order).offset(off).limit(config.config_books_per_page).all()
     return entries, random, pagination
 
 
@@ -625,7 +624,7 @@ def feed_new():
     if not off:
         off = 0
     entries, __, pagination = fill_indexpage((int(off) / (int(config.config_books_per_page)) + 1),
-                                                 db.Books, True, db.Books.timestamp.desc())
+                                                 db.Books, True, [db.Books.timestamp.desc()])
     xml = render_title_template('feed.xml', entries=entries, pagination=pagination)
     response = make_response(xml)
     response.headers["Content-Type"] = "application/atom+xml; charset=utf-8"
@@ -651,7 +650,7 @@ def feed_best_rated():
     if not off:
         off = 0
     entries, __, pagination = fill_indexpage((int(off) / (int(config.config_books_per_page)) + 1),
-                    db.Books, db.Books.ratings.any(db.Ratings.rating > 9), db.Books.timestamp.desc())
+                    db.Books, db.Books.ratings.any(db.Ratings.rating > 9), [db.Books.timestamp.desc()])
     xml = render_title_template('feed.xml', entries=entries, pagination=pagination)
     response = make_response(xml)
     response.headers["Content-Type"] = "application/atom+xml; charset=utf-8"
@@ -710,7 +709,7 @@ def feed_author(book_id):
     if not off:
         off = 0
     entries, __, pagination = fill_indexpage((int(off) / (int(config.config_books_per_page)) + 1),
-                    db.Books, db.Books.authors.any(db.Authors.id == book_id), db.Books.timestamp.desc())
+                    db.Books, db.Books.authors.any(db.Authors.id == book_id), [db.Books.timestamp.desc()])
     xml = render_title_template('feed.xml', entries=entries, pagination=pagination)
     response = make_response(xml)
     response.headers["Content-Type"] = "application/atom+xml; charset=utf-8"
@@ -740,7 +739,7 @@ def feed_category(book_id):
     if not off:
         off = 0
     entries, __, pagination = fill_indexpage((int(off) / (int(config.config_books_per_page)) + 1),
-                    db.Books, db.Books.tags.any(db.Tags.id == book_id), db.Books.timestamp.desc())
+                    db.Books, db.Books.tags.any(db.Tags.id == book_id), [db.Books.timestamp.desc()])
     xml = render_title_template('feed.xml', entries=entries, pagination=pagination)
     response = make_response(xml)
     response.headers["Content-Type"] = "application/atom+xml; charset=utf-8"
@@ -770,7 +769,7 @@ def feed_series(book_id):
     if not off:
         off = 0
     entries, random, pagination = fill_indexpage((int(off) / (int(config.config_books_per_page)) + 1),
-                    db.Books, db.Books.series.any(db.Series.id == book_id), db.Books.series_index)
+                    db.Books, db.Books.series.any(db.Series.id == book_id), [db.Books.series_index])
     xml = render_title_template('feed.xml', entries=entries, pagination=pagination)
     response = make_response(xml)
     response.headers["Content-Type"] = "application/atom+xml; charset=utf-8"
@@ -1029,7 +1028,7 @@ def get_matching_tags():
 @app.route('/page/<int:page>')
 @login_required_if_no_ano
 def index(page):
-    entries, random, pagination = fill_indexpage(page, db.Books, True, db.Books.timestamp.desc())
+    entries, random, pagination = fill_indexpage(page, db.Books, True, [db.Books.timestamp.desc()])
     return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
                                  title=_(u"Recently Added Books"), page="root")
 
@@ -1039,7 +1038,7 @@ def index(page):
 @login_required_if_no_ano
 def newest_books(page):
     if current_user.show_sorted():
-        entries, random, pagination = fill_indexpage(page, db.Books, True, db.Books.pubdate.desc())
+        entries, random, pagination = fill_indexpage(page, db.Books, True, [db.Books.pubdate.desc()])
         return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
                                      title=_(u"Newest Books"), page="newest")
     else:
@@ -1051,7 +1050,7 @@ def newest_books(page):
 @login_required_if_no_ano
 def oldest_books(page):
     if current_user.show_sorted():
-        entries, random, pagination = fill_indexpage(page, db.Books, True, db.Books.pubdate)
+        entries, random, pagination = fill_indexpage(page, db.Books, True, [db.Books.pubdate])
         return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
                                      title=_(u"Oldest Books"), page="oldest")
     else:
@@ -1063,7 +1062,7 @@ def oldest_books(page):
 @login_required_if_no_ano
 def titles_ascending(page):
     if current_user.show_sorted():
-        entries, random, pagination = fill_indexpage(page, db.Books, True, db.Books.sort)
+        entries, random, pagination = fill_indexpage(page, db.Books, True, [db.Books.sort])
         return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
                                      title=_(u"Books (A-Z)"), page="a-z")
     else:
@@ -1074,7 +1073,7 @@ def titles_ascending(page):
 @app.route('/books/z-a/page/<int:page>')
 @login_required_if_no_ano
 def titles_descending(page):
-    entries, random, pagination = fill_indexpage(page, db.Books, True, db.Books.sort.desc())
+    entries, random, pagination = fill_indexpage(page, db.Books, True, [db.Books.sort.desc()])
     return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
                                  title=_(u"Books (Z-A)"), page="z-a")
 
@@ -1116,7 +1115,7 @@ def hot_books(page):
 def best_rated_books(page):
     if current_user.show_best_rated_books():
         entries, random, pagination = fill_indexpage(page, db.Books, db.Books.ratings.any(db.Ratings.rating > 9),
-                                                     db.Books.timestamp.desc())
+                                                     [db.Books.timestamp.desc()])
         return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
                                      title=_(u"Best rated books"), page="rated")
     abort(404)
@@ -1127,7 +1126,7 @@ def best_rated_books(page):
 @login_required_if_no_ano
 def discover(page):
     if current_user.show_random_books():
-        entries, __, pagination = fill_indexpage(page, db.Books, True, func.randomblob(2))
+        entries, __, pagination = fill_indexpage(page, db.Books, True, [func.randomblob(2)])
         pagination = Pagination(1, config.config_books_per_page, config.config_books_per_page)
         return render_title_template('discover.html', entries=entries, pagination=pagination,
                                      title=_(u"Random Books"), page="discover")
@@ -1155,7 +1154,7 @@ def author_list():
 @login_required_if_no_ano
 def author(book_id, page):
     entries, __, pagination = fill_indexpage(page, db.Books, db.Books.authors.any(db.Authors.id == book_id),
-                                                 db.Books.timestamp.desc())
+                                                 [db.Books.timestamp.desc()])
     if entries is None:
         flash(_(u"Error opening eBook. File does not exist or file is not accessible:"), category="error")
         return redirect(url_for("index"))
@@ -1214,7 +1213,7 @@ def series_list():
 @login_required_if_no_ano
 def series(book_id, page):
     entries, random, pagination = fill_indexpage(page, db.Books, db.Books.series.any(db.Series.id == book_id),
-                                                 db.Books.series_index)
+                                                 [db.Books.series_index])
     name = db.session.query(db.Series).filter(db.Series.id == book_id).first().name
     if entries:
         return render_title_template('index.html', random=random, pagination=pagination, entries=entries,
@@ -1261,7 +1260,7 @@ def language_overview():
 @login_required_if_no_ano
 def language(name, page):
     entries, random, pagination = fill_indexpage(page, db.Books, db.Books.languages.any(db.Languages.lang_code == name),
-                                                 db.Books.timestamp.desc())
+                                                 [db.Books.timestamp.desc()])
     try:
         cur_l = LC.parse(name)
         name = cur_l.get_language_name(get_locale())
@@ -1289,7 +1288,7 @@ def category_list():
 @login_required_if_no_ano
 def category(book_id, page):
     entries, random, pagination = fill_indexpage(page, db.Books, db.Books.tags.any(db.Tags.id == book_id),
-                                                 db.Books.timestamp.desc())
+                                                 (db.Series.name, db.Books.series_index),db.books_series_link,db.Series)
 
     name = db.session.query(db.Tags).filter(db.Tags.id == book_id).first().name
     return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
@@ -1859,7 +1858,7 @@ def render_read_books(page, are_read, as_xml=False):
         db_filter = ~db.Books.id.in_(readBookIds)
 
     entries, random, pagination = fill_indexpage(page, db.Books,
-        db_filter, db.Books.timestamp.desc())
+        db_filter, [db.Books.timestamp.desc()])
 
     if as_xml:
         xml = render_title_template('feed.xml', entries=entries, pagination=pagination)
