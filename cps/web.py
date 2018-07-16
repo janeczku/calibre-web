@@ -927,6 +927,7 @@ def get_update_status():
     if request.method == "GET":
         # should be automatically replaced by git with current commit hash
         commit_id = '$Format:%H$'
+        # ToDo: Handle server not reachable -> ValueError:
         commit = requests.get('https://api.github.com/repos/janeczku/calibre-web/git/refs/heads/master').json()
         if "object" in commit and commit['object']['sha'] != commit_id:
             status['status'] = True
@@ -1154,7 +1155,7 @@ def author_list():
 @login_required_if_no_ano
 def author(book_id, page):
     entries, __, pagination = fill_indexpage(page, db.Books, db.Books.authors.any(db.Authors.id == book_id),
-                                                 [db.Books.timestamp.desc()])
+                                                 [db.Series.name, db.Books.series_index],db.books_series_link, db.Series)
     if entries is None:
         flash(_(u"Error opening eBook. File does not exist or file is not accessible:"), category="error")
         return redirect(url_for("index"))
