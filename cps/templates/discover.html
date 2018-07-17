@@ -17,7 +17,7 @@
         <p class="title">{{entry.title|shortentitle}}</p>
         <p class="author">
           {% for author in entry.authors %}
-            <a href="{{url_for('author', book_id=author.id) }}">{{author.name.replace('|',',')}}</a>
+            <a href="{{url_for('author', book_id=author.id) }}">{{author.name.replace('|',',')|shortentitle(30)}}</a>
             {% if not loop.last %}
               &amp;
             {% endif %}
