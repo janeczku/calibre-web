@@ -346,12 +346,28 @@ def remote_login_required(f):
 
 # custom jinja filters
 @app.template_filter('shortentitle')
-def shortentitle_filter(s):
-    if len(s) > 60:
-        s = s.split(':', 1)[0]
-        if len(s) > 60:
-            s = textwrap.wrap(s, 60, break_long_words=False)[0] + ' [...]'
-    return s
+def shortentitle_filter(s,nchar=20):
+    text = s.split()
+    res = ""  # result
+    sum = 0  # overall length
+    for line in text:
+        if sum >= 60:
+            res += '...'
+            break
+        # if word longer than 20 chars truncate line and append '...', otherwise add whole word to result
+        # string, and summarize total length to stop at 60 chars
+        if len(line) > nchar:
+            res += line[:(nchar-3)] + '[..] '
+            sum += nchar+3
+        else:
+            res += line + ' '
+            sum += len(line) + 1
+    return res.strip()
+    #if len(s) > 20:
+    #    s = s.split(':', 1)[0]
+    #    if len(s) > 20:
+    #        s = textwrap.wrap(s, 20, break_long_words=True)[0] + ' ...'
+    #return s
 
 
 @app.template_filter('mimetype')
