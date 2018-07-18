@@ -301,8 +301,11 @@ class Settings(Base):
     config_use_goodreads = Column(Boolean)
     config_goodreads_api_key = Column(String)
     config_goodreads_api_secret = Column(String)
-    config_mature_content_tags = Column(String)  # type: str
+    config_mature_content_tags = Column(String)
     config_logfile = Column(String)
+    config_ebookconverter = Column(Integer, default=0)
+    config_converterpath = Column(String)
+    config_calibre = Column(String)
 
     def __repr__(self):
         pass
@@ -355,6 +358,9 @@ class Config:
         self.config_columns_to_ignore = data.config_columns_to_ignore
         self.config_use_google_drive = data.config_use_google_drive
         self.config_google_drive_folder = data.config_google_drive_folder
+        self.config_ebookconverter = data.config_ebookconverter
+        self.config_converterpath = data.config_converterpath
+        self.config_calibre = data.config_calibre
         if data.config_google_drive_watch_changes_response:
             self.config_google_drive_watch_changes_response = json.loads(data.config_google_drive_watch_changes_response)
         else:
@@ -657,6 +663,16 @@ def migrate_Database():
         conn = engine.connect()
         conn.execute("ALTER TABLE Settings ADD column `config_read_column` INTEGER DEFAULT 0")
         session.commit()
+    try:
+        session.query(exists().where(Settings.config_ebookconverter)).scalar()
+        session.commit()
+    except exc.OperationalError:  # Database is not compatible, some rows are missing
+        conn = engine.connect()
+        conn.execute("ALTER TABLE Settings ADD column `config_ebookconverter` INTEGER DEFAULT 0")
+        conn.execute("ALTER TABLE Settings ADD column `config_converterpath` String DEFAULT ''")
+        conn.execute("ALTER TABLE Settings ADD column `config_calibre` String DEFAULT ''")
+        session.commit()
+
     # Remove login capability of user Guest
     conn = engine.connect()
     conn.execute("UPDATE user SET password='' where nickname = 'Guest' and password !=''")

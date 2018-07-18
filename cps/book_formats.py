@@ -127,11 +127,11 @@ def get_versions():
     else:
         IVersion = _(u'not installed')
     if use_pdf_meta:
-        PVersion=PyPdfVersion
+        PVersion='v'+PyPdfVersion
     else:
         PVersion=_(u'not installed')
     if lxmlversion:
-        XVersion = '.'.join(map(str, lxmlversion))
+        XVersion = 'v'+'.'.join(map(str, lxmlversion))
     else:
         XVersion = _(u'not installed')
-    return {'ImageVersion': IVersion, 'PyPdfVersion': PVersion, 'LxmlVersion':XVersion}
+    return {'Image Magick': IVersion, 'PyPdf': PVersion, 'lxml':XVersion}

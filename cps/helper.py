@@ -14,6 +14,7 @@ import traceback
 import re
 import unicodedata
 from io import BytesIO
+import converter
 
 try:
     from StringIO import StringIO
@@ -57,17 +58,6 @@ RET_FAIL = 0
 
 
 def make_mobi(book_id, calibrepath):
-    error_message = None
-    vendorpath = os.path.join(os.path.normpath(os.path.dirname(os.path.realpath(__file__)) +
-                                               os.sep + "../vendor" + os.sep))
-    if sys.platform == "win32":
-        kindlegen = (os.path.join(vendorpath, u"kindlegen.exe")).encode(sys.getfilesystemencoding())
-    else:
-        kindlegen = (os.path.join(vendorpath, u"kindlegen")).encode(sys.getfilesystemencoding())
-    if not os.path.exists(kindlegen):
-        error_message = _(u"kindlegen binary %(kindlepath)s not found", kindlepath=kindlegen)
-        app.logger.error("make_mobi: " + error_message)
-        return error_message, RET_FAIL
     book = db.session.query(db.Books).filter(db.Books.id == book_id).first()
     data = db.session.query(db.Data).filter(db.Data.book == book.id).filter(db.Data.format == 'EPUB').first()
     if not data:
@@ -77,45 +67,7 @@ def make_mobi(book_id, calibrepath):
 
     file_path = os.path.join(calibrepath, book.path, data.name)
     if os.path.exists(file_path + u".epub"):
-        try:
-            p = subprocess.Popen((kindlegen + " \"" + file_path + u".epub\"").encode(sys.getfilesystemencoding()),
-                                 stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
-        except Exception:
-            error_message = _(u"kindlegen failed, no execution permissions")
-            app.logger.error("make_mobi: " + error_message)
-            return error_message, RET_FAIL
-        # Poll process for new output until finished
-        while True:
-            nextline = p.stdout.readline()
-            if nextline == '' and p.poll() is not None:
-                break
-            if nextline != "\r\n":
-                # Format of error message (kindlegen translates its output texts):
-                # Error(prcgen):E23006: Language not recognized in metadata.The dc:Language field is mandatory.Aborting.
-                conv_error = re.search(".*\(.*\):(E\d+):\s(.*)", nextline)
-                # If error occoures, log in every case
-                if conv_error:
-                    error_message = _(u"Kindlegen failed with Error %(error)s. Message: %(message)s",
-                                      error=conv_error.group(1), message=conv_error.group(2).decode('utf-8'))
-                    app.logger.info("make_mobi: " + error_message)
-                    app.logger.info(nextline.strip('\r\n'))
-                app.logger.debug(nextline.strip('\r\n'))
-
-        check = p.returncode
-        if not check or check < 2:
-            book.data.append(db.Data(
-                    name=book.data[0].name,
-                    book_format="MOBI",
-                    book=book.id,
-                    uncompressed_size=os.path.getsize(file_path + ".mobi")
-                ))
-            db.session.commit()
-            return file_path + ".mobi", RET_SUCCESS
-        else:
-            app.logger.info("make_mobi: kindlegen failed with error while converting book")
-            if not error_message:
-                error_message = 'kindlegen failed, no excecution permissions'
-            return error_message, RET_FAIL
+        return converter.convert_mobi(file_path, book)
     else:
         error_message = "make_mobi: epub not found: %s.epub" % file_path
         return error_message, RET_FAIL

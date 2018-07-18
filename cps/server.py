@@ -92,9 +92,9 @@ class server:
 
     def getNameVersion(self):
         if gevent_present:
-            return {'gevent':geventVersion}
+            return {'Gevent':'v'+geventVersion}
         else:
-            return {'tornado':tornadoVersion}
+            return {'Tornado':'v'+tornadoVersion}
 
 
 # Start Instance of Server

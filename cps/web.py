@@ -66,15 +66,16 @@ from iso639 import __version__ as iso639Version
 from uuid import uuid4
 import os.path
 import sys
-import subprocess
+
 import re
 import db
 from shutil import move, copyfile
 import shutil
 import gdriveutils
+import converter
 import tempfile
 import hashlib
-from redirect import redirect_back, is_safe_url
+from redirect import redirect_back
 
 try:
     from urllib.parse import quote
@@ -1430,40 +1431,23 @@ def admin_forbidden():
 @app.route("/stats")
 @login_required
 def stats():
-    counter = len(db.session.query(db.Books).all())
-    authors = len(db.session.query(db.Authors).all())
-    categorys = len(db.session.query(db.Tags).all())
-    series = len(db.session.query(db.Series).all())
+    counter = db.session.query(db.Books).count()
+    authors = db.session.query(db.Authors).count()
+    categorys = db.session.query(db.Tags).count()
+    series = db.session.query(db.Series).count()
     versions = uploader.book_formats.get_versions()
-    vendorpath = os.path.join(config.get_main_dir, "vendor")
-    if sys.platform == "win32":
-        kindlegen = os.path.join(vendorpath, u"kindlegen.exe")
-    else:
-        kindlegen = os.path.join(vendorpath, u"kindlegen")
-    versions['KindlegenVersion'] = _('not installed')
-    if os.path.exists(kindlegen):
-        try:
-            p = subprocess.Popen(kindlegen, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-            p.wait()
-            for lines in p.stdout.readlines():
-                if isinstance(lines, bytes):
-                    lines = lines.decode('utf-8')
-                if re.search('Amazon kindlegen\(', lines):
-                    versions['KindlegenVersion'] = lines
-        except Exception:
-            versions['KindlegenVersion'] = _(u'Excecution permissions missing')
-    versions['PythonVersion'] = sys.version
-    versions['babel'] = babelVersion
-    versions['sqlalchemy'] = sqlalchemyVersion
-    versions['flask'] = flaskVersion
-    versions['flasklogin'] = flask_loginVersion
-    versions['flask_principal'] = flask_principalVersion
+    versions['Babel'] = 'v'+babelVersion
+    versions['Sqlalchemy'] = 'v'+sqlalchemyVersion
+    versions['Flask'] = 'v'+flaskVersion
+    versions['Flask Login'] = 'v'+flask_loginVersion
+    versions['Flask Principal'] = 'v'+flask_principalVersion
+    versions['Iso 639'] = 'v'+iso639Version
+    versions['Requests'] = 'v'+requests.__version__
+    versions['pySqlite'] = 'v'+db.engine.dialect.dbapi.version
+    versions['Sqlite'] = 'v'+db.engine.dialect.dbapi.sqlite_version
+    versions.update(converter.versioncheck())
     versions.update(server.Server.getNameVersion())
-    # versions['tornado'] = tornadoVersion
-    versions['iso639'] = iso639Version
-    versions['requests'] = requests.__version__
-    versions['pysqlite'] = db.engine.dialect.dbapi.version
-    versions['sqlite'] = db.engine.dialect.dbapi.sqlite_version
+    versions['Python'] = sys.version
 
     return render_title_template('stats.html', bookcounter=counter, authorcounter=authors, versions=versions,
                                  categorycounter=categorys, seriecounter=series, title=_(u"Statistics"), page="stat")
@@ -2572,6 +2556,14 @@ def view_configuration():
         ub.session.commit()
         flash(_(u"Calibre-web configuration updated"), category="success")
         config.loadSettings()
+        if reboot_required:
+            # db.engine.dispose() # ToDo verify correct
+            ub.session.close()
+            ub.engine.dispose()
+            # stop Server
+            server.Server.setRestartTyp(True)
+            server.Server.stopServer()
+            app.logger.info('Reboot required, restarting')
     readColumn = db.session.query(db.Custom_Columns)\
             .filter(db.and_(db.Custom_Columns.datatype == 'bool',db.Custom_Columns.mark_for_delete == 0)).all()
     return render_title_template("config_view_edit.html", content=config, readColumns=readColumn,
@@ -2679,6 +2671,13 @@ def configuration_helper(origin):
             content.config_anonbrowse = 1
         if "config_public_reg" in to_save and to_save["config_public_reg"] == "on":
             content.config_public_reg = 1
+
+        if "config_converterpath" in to_save:
+            content.config_converterpath = to_save["config_converterpath"].strip()
+        if "config_calibre" in to_save:
+            content.config_calibre = to_save["config_calibre"].strip()
+        if "config_ebookconverter" in to_save:
+            content.config_ebookconverter = int(to_save["config_ebookconverter"])
 
         # Remote login configuration
         content.config_remote_login = ("config_remote_login" in to_save and to_save["config_remote_login"] == "on")
