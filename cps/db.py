@@ -112,6 +112,8 @@ class Identifiers(Base):
             return u"https://books.google.com/books?id={0}".format(self.val)
         elif self.type == "kobo":
             return u"https://www.kobo.com/ebook/{0}".format(self.val)
+        elif self.type == "url":
+            return u"{0}".format(self.val)
         else:
             return u""
 
