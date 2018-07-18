@@ -366,7 +366,10 @@ class Config:
         self.config_use_goodreads = data.config_use_goodreads
         self.config_goodreads_api_key = data.config_goodreads_api_key
         self.config_goodreads_api_secret = data.config_goodreads_api_secret
-        self.config_mature_content_tags = data.config_mature_content_tags
+        if data.config_mature_content_tags:
+            self.config_mature_content_tags = data.config_mature_content_tags
+        else:
+            self.config_mature_content_tags = u''
         if data.config_logfile:
             self.config_logfile = data.config_logfile
 
