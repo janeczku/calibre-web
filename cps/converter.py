@@ -34,7 +34,7 @@ def versionCalibre():
     versions = _(u'not installed')
     if os.path.exists(ub.config.config_converterpath):
         try:
-            p = subprocess.Popen(ub.config.config_converterpath + ' --version', stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            p = subprocess.Popen([ub.config.config_converterpath, '--version'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
             p.wait()
             for lines in p.stdout.readlines():
                 if isinstance(lines, bytes):
