@@ -48,12 +48,6 @@ def versionCalibre():
 
 def convert_kindlegen(file_path, book):
     error_message = None
-    # vendorpath = os.path.join(os.path.normpath(os.path.dirname(os.path.realpath(__file__)) +
-    #                                           os.sep + "../vendor" + os.sep))
-    #if sys.platform == "win32":
-    #    kindlegen = (os.path.join(vendorpath, u"kindlegen.exe")).encode(sys.getfilesystemencoding())
-    #else:
-    #    kindlegen = (os.path.join(vendorpath, u"kindlegen")).encode(sys.getfilesystemencoding())
     if not os.path.exists(ub.config.config_converterpath):
         error_message = _(u"kindlegen binary %(kindlepath)s not found", kindlepath=ub.config.config_converterpath)
         web.app.logger.error("convert_kindlegen: " + error_message)
