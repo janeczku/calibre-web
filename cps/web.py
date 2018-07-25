@@ -1508,14 +1508,14 @@ def delete_book(book_id):
 @login_required
 @admin_required
 def authenticate_google_drive():
-    authUrl = Gauth.Instance().auth.GetAuthUrl()
+    authUrl = gdriveutils.Gauth.Instance().auth.GetAuthUrl()
     return redirect(authUrl)
 
 
 @app.route("/gdrive/callback")
 def google_drive_callback():
     auth_code = request.args.get('code')
-    credentials = Gauth.Instance().auth.flow.step2_exchange(auth_code)
+    credentials = gdriveutils.Gauth.Instance().auth.flow.step2_exchange(auth_code)
     with open(os.path.join(config.get_main_dir,'gdrive_credentials'), 'w') as f:
         f.write(credentials.to_json())
     return redirect(url_for('configuration'))
