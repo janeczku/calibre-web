@@ -318,8 +318,10 @@ def setup_db():
         return False
 
     dbpath = os.path.join(config.config_calibre_dir, "metadata.db")
-    engine = create_engine('sqlite:///' + dbpath, echo=False, isolation_level="SERIALIZABLE")
     try:
+        if not os.path.exists(dbpath):
+            raise
+        engine = create_engine('sqlite:///' + dbpath, echo=False, isolation_level="SERIALIZABLE")
         conn = engine.connect()
     except Exception:
         content = ub.session.query(ub.Settings).first()
