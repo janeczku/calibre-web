@@ -2491,6 +2491,7 @@ def configuration():
 @login_required
 @admin_required
 def view_configuration():
+    reboot_required = False
     if request.method == "POST":
         to_save = request.form.to_dict()
         content = ub.session.query(ub.Settings).first()
