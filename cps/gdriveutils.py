@@ -1,6 +1,7 @@
 try:
     from pydrive.auth import GoogleAuth
     from pydrive.drive import GoogleDrive
+    from pydrive.auth import RefreshError
     from apiclient import errors
 except ImportError:
     pass
@@ -132,8 +133,10 @@ def getDrive(drive=None, gauth=None):
             # Refresh them if expired
             try:
                 gauth.Refresh()
-            except:
-                web.app.logger.error("Google Drive gdrive_credentials file not present, reauthenticate in config section")
+            except RefreshError as e:
+                web.app.logger.error("Google Drive error: " + e.message)
+            except Exception as e:
+                web.app.logger.exception(e)
         else:
             # Initialize the saved creds
             gauth.Authorize()

@@ -1800,7 +1800,8 @@ def get_cover(cover_path):
                 app.logger.error(cover_path + '/cover.jpg not found on Google Drive')
                 return send_from_directory(os.path.join(os.path.dirname(__file__), "static"), "generic_cover.jpg")
         except Exception as e:
-            app.logger.error("Message "+e.message)
+            app.logger.error("Error Message: "+e.message)
+            app.logger.exception(e)
             # traceback.print_exc()
             return send_from_directory(os.path.join(os.path.dirname(__file__), "static"),"generic_cover.jpg")
     else:
@@ -2721,7 +2722,7 @@ def configuration_helper(origin):
             config.loadSettings()
             app.logger.setLevel(config.config_log_level)
             logging.getLogger("book_formats").setLevel(config.config_log_level)
-        except e:
+        except Exception as e:
             flash(e, category="error")
             return render_title_template("config_edit.html", content=config, origin=origin, gdrive=gdrive_support,
                                          gdriveError=gdriveError, goodreads=goodreads_support,
@@ -2846,7 +2847,7 @@ def edit_mailsettings():
         try:
             ub.session.commit()
             flash(_(u"Mail settings updated"), category="success")
-        except e:
+        except Exception as e:
             flash(e, category="error")
         if "test" in to_save and to_save["test"]:
             if current_user.kindle_mail:
