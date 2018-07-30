@@ -5,9 +5,7 @@ import db
 import ub
 from flask import current_app as app
 import logging
-import smtplib
 from tempfile import gettempdir
-import socket
 import sys
 import os
 import traceback
@@ -15,6 +13,7 @@ import re
 import unicodedata
 from io import BytesIO
 import converter
+import asyncmail
 
 try:
     from StringIO import StringIO
@@ -28,11 +27,9 @@ except ImportError as e:
     from email.mime.text import MIMEText
 
 from email import encoders
-from email.generator import Generator
 from email.utils import formatdate
 from email.utils import make_msgid
 from flask_babel import gettext as _
-import subprocess
 import threading
 import shutil
 import requests
@@ -52,10 +49,21 @@ except ImportError:
 
 # Global variables
 updater_thread = None
+global_eMailThread = asyncmail.EMailThread()
+global_eMailThread.start()
 
 RET_SUCCESS = 1
 RET_FAIL = 0
 
+
+def update_download(book_id, user_id):
+    check = ub.session.query(ub.Downloads).filter(ub.Downloads.user_id == user_id).filter(ub.Downloads.book_id ==
+                                                                                          book_id).first()
+
+    if not check:
+        new_download = ub.Downloads(user_id=user_id, book_id=book_id)
+        ub.session.add(new_download)
+        ub.session.commit()
 
 def make_mobi(book_id, calibrepath):
     book = db.session.query(db.Books).filter(db.Books.id == book_id).first()
@@ -73,74 +81,16 @@ def make_mobi(book_id, calibrepath):
         return error_message, RET_FAIL
 
 
-class StderrLogger(object):
-
-    buffer = ''
-
-    def __init__(self):
-        self.logger = logging.getLogger('cps.web')
-
-    def write(self, message):
-        if message == '\n':
-            self.logger.debug(self.buffer)
-            self.buffer = ''
-        else:
-            self.buffer += message
-
-
-def send_raw_email(kindle_mail, msg):
-    settings = ub.get_mail_settings()
-
-    msg['From'] = settings["mail_from"]
-    msg['To'] = kindle_mail
-
-    use_ssl = int(settings.get('mail_use_ssl', 0))
-
-    # convert MIME message to string
-    fp = StringIO()
-    gen = Generator(fp, mangle_from_=False)
-    gen.flatten(msg)
-    msg = fp.getvalue()
-
-    # send email
-    try:
-        timeout = 600     # set timeout to 5mins
-
-        org_stderr = sys.stderr
-        sys.stderr = StderrLogger()
-
-        if use_ssl == 2:
-            mailserver = smtplib.SMTP_SSL(settings["mail_server"], settings["mail_port"], timeout)
-        else:
-            mailserver = smtplib.SMTP(settings["mail_server"], settings["mail_port"], timeout)
-        mailserver.set_debuglevel(1)
-
-        if use_ssl == 1:
-            mailserver.starttls()
-
-        if settings["mail_password"]:
-            mailserver.login(str(settings["mail_login"]), str(settings["mail_password"]))
-        mailserver.sendmail(settings["mail_from"], kindle_mail, msg)
-        mailserver.quit()
-
-        smtplib.stderr = org_stderr
-
-    except (socket.error, smtplib.SMTPRecipientsRefused, smtplib.SMTPException) as ex:
-        app.logger.error(traceback.print_exc())
-        return _("Failed to send mail: %s" % str(ex))
-
-    return None
-
-
-def send_test_mail(kindle_mail):
+def send_test_mail(kindle_mail, user_name):
     msg = MIMEMultipart()
     msg['Subject'] = _(u'Calibre-web test email')
     text = _(u'This email has been sent via calibre web.')
     msg.attach(MIMEText(text.encode('UTF-8'), 'plain', 'UTF-8'))
-    return send_raw_email(kindle_mail, msg)
+    global_eMailThread.add_email(msg,ub.get_mail_settings(),kindle_mail, user_name)
+    return # send_raw_email(kindle_mail, msg)
 
 
-def send_mail(book_id, kindle_mail, calibrepath):
+def send_mail(book_id, kindle_mail, calibrepath, user_id):
     """Send email with attachments"""
     # create MIME message
     msg = MIMEMultipart()
@@ -179,8 +129,8 @@ def send_mail(book_id, kindle_mail, calibrepath):
         msg.attach(get_attachment(formats['pdf']))
     else:
         return _("Could not find any formats suitable for sending by email")
-
-    return send_raw_email(kindle_mail, msg)
+    global_eMailThread.add_email(msg,ub.get_mail_settings(),kindle_mail, user_id)
+    return None # send_raw_email(kindle_mail, msg)
 
 
 def get_attachment(file_path):

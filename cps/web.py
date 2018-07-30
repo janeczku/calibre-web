@@ -912,13 +912,41 @@ def get_metadata_calibre_companion(uuid):
     else:
         return ""
 
+@app.route("/ajax/emailstat")
+@login_required
+def get_email_status_json():
+    answer=list()
+    tasks=helper.global_eMailThread.get_taskstatus()
+    if not current_user.role_admin():
+        for task in tasks:
+            if task['user'] == current_user.nickname:
+                if task['formStarttime']:
+                    task['starttime'] = format_datetime(task['formStarttime'], format='short', locale=get_locale())
+                    task['formStarttime'] = ""
+                else:
+                    if 'starttime' not in task:
+                        task['starttime'] = ""
+                answer.append(task)
+    else:
+        for task in tasks:
+            if task['formStarttime']:
+                task['starttime'] = format_datetime(task['formStarttime'], format='short', locale=get_locale())
+                task['formStarttime'] = ""
+            else:
+                if 'starttime' not in  task:
+                    task['starttime'] = ""
+        answer = tasks
+    js=json.dumps(answer)
+    response = make_response(js)
+    response.headers["Content-Type"] = "application/json; charset=utf-8"
+    return response
+
 
 @app.route("/get_authors_json", methods=['GET', 'POST'])
 @login_required_if_no_ano
 def get_authors_json():
     if request.method == "GET":
         query = request.args.get('q')
-        # entries = db.session.execute("select name from authors where name like '%" + query + "%'")
         entries = db.session.query(db.Authors).filter(db.Authors.name.ilike("%" + query + "%")).all()
         json_dumps = json.dumps([dict(name=r.name) for r in entries])
         return json_dumps
@@ -929,10 +957,7 @@ def get_authors_json():
 def get_tags_json():
     if request.method == "GET":
         query = request.args.get('q')
-        # entries = db.session.execute("select name from tags where name like '%" + query + "%'")
         entries = db.session.query(db.Tags).filter(db.Tags.name.ilike("%" + query + "%")).all()
-        # for x in entries:
-        #    alfa = dict(name=x.name)
         json_dumps = json.dumps([dict(name=r.name) for r in entries])
         return json_dumps
 
@@ -1420,6 +1445,35 @@ def bookmark(book_id, book_format):
     ub.session.merge(bookmark)
     ub.session.commit()
     return "", 201
+
+@app.route("/tasks")
+@login_required
+def get_tasks_status():
+    # if current user admin, show all email, otherwise only own emails
+    answer=list()
+    tasks=helper.global_eMailThread.get_taskstatus()
+    if not current_user.role_admin():
+        for task in tasks:
+            if task['user'] == current_user.nickname:
+                if task['formStarttime']:
+                    task['starttime'] = format_datetime(task['formStarttime'], format='short', locale=get_locale())
+                    task['formStarttime'] = ""
+                else:
+                    if 'starttime' not in task:
+                        task['starttime'] = ""
+                answer.append(task)
+    else:
+        for task in tasks:
+            if task['formStarttime']:
+                task['starttime'] = format_datetime(task['formStarttime'], format='short', locale=get_locale())
+                task['formStarttime'] = ""
+            else:
+                if 'starttime' not in  task:
+                    task['starttime'] = ""
+        answer = tasks
+
+    # foreach row format row
+    return render_title_template('tasks.html', entries=answer, title=_(u"Tasks"))
 
 
 @app.route("/admin")
@@ -2147,9 +2201,9 @@ def send_to_kindle(book_id):
     if settings.get("mail_server", "mail.example.com") == "mail.example.com":
         flash(_(u"Please configure the SMTP mail settings first..."), category="error")
     elif current_user.kindle_mail:
-        result = helper.send_mail(book_id, current_user.kindle_mail, config.config_calibre_dir)
+        result = helper.send_mail(book_id, current_user.kindle_mail, config.config_calibre_dir, current_user.nickname)
         if result is None:
-            flash(_(u"Book successfully send to %(kindlemail)s", kindlemail=current_user.kindle_mail),
+            flash(_(u"Book successfully queued for sending to %(kindlemail)s", kindlemail=current_user.kindle_mail),
                   category="success")
             ub.update_download(book_id, int(current_user.id))
         else:
@@ -2851,7 +2905,7 @@ def edit_mailsettings():
             flash(e, category="error")
         if "test" in to_save and to_save["test"]:
             if current_user.kindle_mail:
-                result = helper.send_test_mail(current_user.kindle_mail)
+                result = helper.send_test_mail(current_user.kindle_mail, current_user.nickname)
                 if result is None:
                     flash(_(u"Test E-Mail successfully send to %(kindlemail)s", kindlemail=current_user.kindle_mail),
                           category="success")

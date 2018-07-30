@@ -10,7 +10,6 @@ import sys
 import os
 import logging
 from werkzeug.security import generate_password_hash
-from flask_babel import gettext as _
 import json
 import datetime
 from binascii import hexlify
