@@ -68,6 +68,9 @@
                 {% endif %}
               {% endif %}
               {% if g.user.role_admin() %}
+                <li><a id="top_tasks" href="{{url_for('get_tasks_status')}}"><span class="glyphicon glyphicon-tasks"></span><span class="hidden-sm"> {{_('Tasks')}}</span></a></li>
+              {% endif %}
+              {% if g.user.role_admin() %}
                 <li><a id="top_admin" href="{{url_for('admin')}}"><span class="glyphicon glyphicon-dashboard"></span><span class="hidden-sm"> {{_('Admin')}}</span></a></li>
               {% endif %}
               <li><a id="top_user" href="{{url_for('profile')}}"><span class="glyphicon glyphicon-user"></span><span class="hidden-sm"> {{g.user.nickname}}</span></a></li>
@@ -221,6 +224,7 @@
       </div>
     </div>
     {% block modal %}{% endblock %}
+
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <!--script src="https://code.jquery.com/jquery.js"></script-->
