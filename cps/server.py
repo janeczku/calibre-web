@@ -70,6 +70,7 @@ class server:
 
         if self.restart == True:
             web.app.logger.info("Performing restart of Calibre-web")
+            web.helper.global_eMailThread.stop()
             if os.name == 'nt':
                 arguments = ["\"" + sys.executable + "\""]
                 for e in sys.argv:
@@ -79,6 +80,7 @@ class server:
                 os.execl(sys.executable, sys.executable, *sys.argv)
         else:
             web.app.logger.info("Performing shutdown of Calibre-web")
+            web.helper.global_eMailThread.stop()
         sys.exit(0)
 
     def setRestartTyp(self,starttyp):

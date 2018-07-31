@@ -84,6 +84,7 @@ class email_SSL(email):
 class EMailThread(threading.Thread):
 
     def __init__(self):
+        self._stopevent = threading.Event()
         threading.Thread.__init__(self)
         self.status = 0
         self.current = 0
@@ -93,15 +94,18 @@ class EMailThread(threading.Thread):
         self.asyncSMTP=None
 
     def run(self):
-        while 1:
+        while not self._stopevent.isSet():
             doLock = threading.Lock()
             doLock.acquire()
             if self.current != self.last:
                 doLock.release()
                 self.send_raw_email()
                 self.current += 1
-
+            doLock.release()
             time.sleep(1)
+
+    def stop(self):
+        self._stopevent.set()
 
     def get_send_status(self):
         if self.asyncSMTP:
@@ -134,7 +138,7 @@ class EMailThread(threading.Thread):
         # if more than 50 entries in the list, clean the list
         addLock = threading.Lock()
         addLock.acquire()
-        if self.last >= 3:
+        if self.last >= 20:
             self.delete_completed_tasks()
         # progress, runtime, and status = 0
         self.queue.append({'data':data, 'settings':settings, 'recipent':recipient, 'starttime': 0,
