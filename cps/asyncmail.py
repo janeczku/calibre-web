@@ -101,7 +101,8 @@ class EMailThread(threading.Thread):
                 doLock.release()
                 self.send_raw_email()
                 self.current += 1
-            doLock.release()
+            else:
+                doLock.release()
             time.sleep(1)
 
     def stop(self):
