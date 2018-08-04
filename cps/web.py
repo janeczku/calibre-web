@@ -1480,55 +1480,63 @@ def stats():
                                  categorycounter=categorys, seriecounter=series, title=_(u"Statistics"), page="stat")
 
 
-@app.route("/delete/<int:book_id>/")
+@app.route("/delete/<int:book_id>/", defaults={'book_format': ""})
+@app.route("/delete/<int:book_id>/<string:book_format>/")
 @login_required
-def delete_book(book_id):
+def delete_book(book_id, book_format):
     if current_user.role_delete_books():
         book = db.session.query(db.Books).filter(db.Books.id == book_id).first()
         if book:
-            # delete book from Shelfs, Downloads, Read list
-            ub.session.query(ub.BookShelf).filter(ub.BookShelf.book_id == book_id).delete()
-            ub.session.query(ub.ReadBook).filter(ub.ReadBook.book_id == book_id).delete()
-            # ToDo check Downloads.book right
-            ub.delete_download(book_id)
-            # ub.session.query(ub.Downloads).filter(ub.Downloads.book_id == book_id).delete()
-            ub.session.commit()
+            helper.delete_book(book, config.config_calibre_dir, book_format=book_format.upper())
+            if not book_format:
+                # delete book from Shelfs, Downloads, Read list
+                ub.session.query(ub.BookShelf).filter(ub.BookShelf.book_id == book_id).delete()
+                ub.session.query(ub.ReadBook).filter(ub.ReadBook.book_id == book_id).delete()
+                # ToDo check Downloads.book right
+                ub.delete_download(book_id)
+                # ub.session.query(ub.Downloads).filter(ub.Downloads.book_id == book_id).delete()
+                ub.session.commit()
 
-            helper.delete_book(book, config.config_calibre_dir)
-            # check if only this book links to:
-            # author, language, series, tags, custom columns
-            modify_database_object([u''], book.authors, db.Authors, db.session, 'author')
-            modify_database_object([u''], book.tags, db.Tags, db.session, 'tags')
-            modify_database_object([u''], book.series, db.Series, db.session, 'series')
-            modify_database_object([u''], book.languages, db.Languages, db.session, 'languages')
-            modify_database_object([u''], book.publishers, db.Publishers, db.session, 'series')
+                # check if only this book links to:
+                # author, language, series, tags, custom columns
+                modify_database_object([u''], book.authors, db.Authors, db.session, 'author')
+                modify_database_object([u''], book.tags, db.Tags, db.session, 'tags')
+                modify_database_object([u''], book.series, db.Series, db.session, 'series')
+                modify_database_object([u''], book.languages, db.Languages, db.session, 'languages')
+                modify_database_object([u''], book.publishers, db.Publishers, db.session, 'series')
 
-            cc = db.session.query(db.Custom_Columns).filter(db.Custom_Columns.datatype.notin_(db.cc_exceptions)).all()
-            for c in cc:
-                cc_string = "custom_column_" + str(c.id)
-                if not c.is_multiple:
-                    if len(getattr(book, cc_string)) > 0:
-                        if c.datatype == 'bool' or c.datatype == 'integer':
-                            del_cc = getattr(book, cc_string)[0]
-                            getattr(book, cc_string).remove(del_cc)
-                            db.session.delete(del_cc)
-                        elif c.datatype == 'rating':
-                            del_cc = getattr(book, cc_string)[0]
-                            getattr(book, cc_string).remove(del_cc)
-                            if len(del_cc.books) == 0:
+                cc = db.session.query(db.Custom_Columns).filter(db.Custom_Columns.datatype.notin_(db.cc_exceptions)).all()
+                for c in cc:
+                    cc_string = "custom_column_" + str(c.id)
+                    if not c.is_multiple:
+                        if len(getattr(book, cc_string)) > 0:
+                            if c.datatype == 'bool' or c.datatype == 'integer':
+                                del_cc = getattr(book, cc_string)[0]
+                                getattr(book, cc_string).remove(del_cc)
                                 db.session.delete(del_cc)
-                        else:
-                            del_cc = getattr(book, cc_string)[0]
-                            getattr(book, cc_string).remove(del_cc)
-                            db.session.delete(del_cc)
-                else:
-                    modify_database_object([u''], getattr(book, cc_string), db.cc_classes[c.id], db.session, 'custom')
-            db.session.query(db.Books).filter(db.Books.id == book_id).delete()
+                            elif c.datatype == 'rating':
+                                del_cc = getattr(book, cc_string)[0]
+                                getattr(book, cc_string).remove(del_cc)
+                                if len(del_cc.books) == 0:
+                                    db.session.delete(del_cc)
+                            else:
+                                del_cc = getattr(book, cc_string)[0]
+                                getattr(book, cc_string).remove(del_cc)
+                                db.session.delete(del_cc)
+                    else:
+                        modify_database_object([u''], getattr(book, cc_string), db.cc_classes[c.id], db.session, 'custom')
+                db.session.query(db.Books).filter(db.Books.id == book_id).delete()
+            else:
+                db.session.query(db.Data).filter(db.Data.book == book.id).filter(db.Data.format == book_format).delete()
             db.session.commit()
         else:
-            # book not foundß
+            # book not found
             app.logger.info('Book with id "'+str(book_id)+'" could not be deleted')
-    return redirect(url_for('index'))
+    if book_format:
+        return redirect(url_for('edit_book', book_id=book_id))
+    else:
+        return redirect(url_for('index'))
+
 
 
 @app.route("/gdrive/authenticate")

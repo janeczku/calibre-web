@@ -243,24 +243,27 @@ def get_sorted_author(value):
         value2 = value
     return value2
 
+
 # Deletes a book fro the local filestorage, returns True if deleting is successfull, otherwise false
-def delete_book_file(book, calibrepath):
+def delete_book_file(book, calibrepath, book_format=None):
     # check that path is 2 elements deep, check that target path has no subfolders
     if book.path.count('/') == 1:
         path = os.path.join(calibrepath, book.path)
-        if os.path.isdir(path):
-            if len(next(os.walk(path))[1]):
-                web.app.logger.error(
-                    "Deleting book " + str(book.id) + " failed, path has subfolders: " + book.path)
-                return False
-            shutil.rmtree(path, ignore_errors=True)
-            return True
+        if book_format:
+            for file in os.listdir(path):
+                if file.upper().endswith("."+book_format):
+                    os.remove(os.path.join(path, file))
         else:
-            web.app.logger.error("Deleting book " + str(book.id) + " failed, book path not valid: " + book.path)
-            return False
-    else:
-        web.app.logger.error("Deleting book " + str(book.id) + " failed, book path value: "+ book.path)
-        return False
+            if os.path.isdir(path):
+                if len(next(os.walk(path))[1]):
+                    web.app.logger.error(
+                        "Deleting book " + str(book.id) + " failed, path has subfolders: " + book.path)
+                    return False
+                shutil.rmtree(path, ignore_errors=True)
+                return True
+            else:
+                web.app.logger.error("Deleting book " + str(book.id) + " failed, book path not valid: " + book.path)
+                return False
 
 
 def update_dir_stucture_file(book_id, calibrepath):
@@ -333,9 +336,16 @@ def update_dir_structure_gdrive(book_id):
     return error
 
 
-def delete_book_gdrive(book):
+def delete_book_gdrive(book, book_format):
     error= False
-    gFile = gd.getFileFromEbooksFolder(os.path.dirname(book.path),book.path.split('/')[1])
+    if book_format:
+        name = ''
+        for entry in book.data:
+            if entry.format.upper() == book_format:
+                name = entry.name + '.' + book_format
+        gFile = gd.getFileFromEbooksFolder(book.path, name)
+    else:
+        gFile = gd.getFileFromEbooksFolder(os.path.dirname(book.path),book.path.split('/')[1])
     if gFile:
         gd.deleteDatabaseEntry(gFile['id'])
         gFile.Trash()
@@ -351,11 +361,11 @@ def update_dir_stucture(book_id, calibrepath):
     else:
         return update_dir_stucture_file(book_id, calibrepath)
 
-def delete_book(book, calibrepath):
+def delete_book(book, calibrepath, book_format):
     if ub.config.config_use_google_drive:
-        return delete_book_gdrive(book)
+        return delete_book_gdrive(book, book_format)
     else:
-        return delete_book_file(book, calibrepath)
+        return delete_book_file(book, calibrepath, book_format)
 
 def get_book_cover(cover_path):
     if ub.config.config_use_google_drive:
