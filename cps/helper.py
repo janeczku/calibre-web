@@ -379,7 +379,7 @@ def save_cover(url, book_path):
     img = requests.get(url)
     if img.headers.get('content-type') != 'image/jpeg':
         web.app.logger.error("Cover is no jpg file, can't save")
-        return false
+        return False
 
     if ub.config.config_use_google_drive:
         tmpDir = gettempdir()
@@ -388,13 +388,13 @@ def save_cover(url, book_path):
         f.close()
         uploadFileToEbooksFolder(os.path.join(book_path, 'cover.jpg'), os.path.join(tmpDir, f.name))
         web.app.logger.info("Cover is saved on gdrive")
-        return true
+        return True
 
     f = open(os.path.join(ub.config.config_calibre_dir, book_path, "cover.jpg"), "wb")
     f.write(img.content)
     f.close()
     web.app.logger.info("Cover is saved")
-    return true
+    return True
 
 def do_download_file(book, book_format, data, headers):
     if ub.config.config_use_google_drive:
