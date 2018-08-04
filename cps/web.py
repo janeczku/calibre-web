@@ -3096,7 +3096,7 @@ def edit_book(book_id):
 
         if not error:
             if to_save["cover_url"]:
-                if helper.save_cover(to_save["cover_url"], book.path) is true:
+                if helper.save_cover(to_save["cover_url"], book.path) is True:
                     book.has_cover = 1
                 else:
                     flash(_(u"Cover is not a jpg file, can't save"), category="error")
