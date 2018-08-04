@@ -14,6 +14,7 @@ import unicodedata
 from io import BytesIO
 import converter
 import asyncmail
+import time
 
 try:
     from StringIO import StringIO
@@ -29,6 +30,7 @@ except ImportError as e:
 from email import encoders
 from email.utils import formatdate
 from email.utils import make_msgid
+from flask import send_from_directory, make_response, redirect, abort
 from flask_babel import gettext as _
 import threading
 import shutil
@@ -86,13 +88,14 @@ def send_test_mail(kindle_mail, user_name):
     msg['Subject'] = _(u'Calibre-web test email')
     text = _(u'This email has been sent via calibre web.')
     msg.attach(MIMEText(text.encode('UTF-8'), 'plain', 'UTF-8'))
-    global_eMailThread.add_email(msg,ub.get_mail_settings(),kindle_mail, user_name)
+    global_eMailThread.add_email(msg,ub.get_mail_settings(),kindle_mail, user_name, _('Test E-Mail'))
     return # send_raw_email(kindle_mail, msg)
 
 
 def send_mail(book_id, kindle_mail, calibrepath, user_id):
     """Send email with attachments"""
     # create MIME message
+    result= None
     msg = MIMEMultipart()
     msg['Subject'] = _(u'Send to Kindle')
     msg['Message-Id'] = make_msgid('calibre-web')
@@ -107,48 +110,72 @@ def send_mail(book_id, kindle_mail, calibrepath, user_id):
 
     for entry in data:
         if entry.format == "MOBI":
-            formats["mobi"] = os.path.join(calibrepath, book.path, entry.name + ".mobi")
+            formats["mobi"] = entry.name + ".mobi" # os.path.join(calibrepath, book.path, entry.name + ".mobi")
         if entry.format == "EPUB":
-            formats["epub"] = os.path.join(calibrepath, book.path, entry.name + ".epub")
+            formats["epub"] = entry.name + ".epub" # os.path.join(calibrepath, book.path, entry.name + ".epub")
         if entry.format == "PDF":
-            formats["pdf"] = os.path.join(calibrepath, book.path, entry.name + ".pdf")
+            formats["pdf"] = entry.name + ".pdf" # os.path.join(calibrepath, book.path, entry.name + ".pdf")
 
     if len(formats) == 0:
         return _("Could not find any formats suitable for sending by email")
 
     if 'mobi' in formats:
-        msg.attach(get_attachment(formats['mobi']))
+        result = get_attachment(calibrepath, book.path, formats['mobi'])
+        if result:
+            msg.attach(result)
     elif 'epub' in formats:
         data, resultCode = make_mobi(book.id, calibrepath)
         if resultCode == RET_SUCCESS:
-            msg.attach(get_attachment(data))
+            result = get_attachment(calibrepath, book.path, data) # toDo check data
+            if result:
+                msg.attach(result)
         else:
             app.logger.error = data
             return data  # _("Could not convert epub to mobi")
     elif 'pdf' in formats:
-        msg.attach(get_attachment(formats['pdf']))
+        result = get_attachment(calibrepath, book.path, formats['pdf'])
+        if result:
+            msg.attach(result)
     else:
         return _("Could not find any formats suitable for sending by email")
-    global_eMailThread.add_email(msg,ub.get_mail_settings(),kindle_mail, user_id)
-    return None # send_raw_email(kindle_mail, msg)
+    if result:
+        global_eMailThread.add_email(msg,ub.get_mail_settings(),kindle_mail, user_id, _(u"E-Mail: %s" % book.title))
+        return None # send_raw_email(kindle_mail, msg)
+    else:
+        return _('The requested file could not be read. Maybe wrong permissions?')
 
-
-def get_attachment(file_path):
+def get_attachment(calibrepath, bookpath, filename):
     """Get file as MIMEBase message"""
-    try:
-        file_ = open(file_path, 'rb')
-        attachment = MIMEBase('application', 'octet-stream')
-        attachment.set_payload(file_.read())
-        file_.close()
-        encoders.encode_base64(attachment)
+    if ub.config.config_use_google_drive:
+        df = gd.getFileFromEbooksFolder(bookpath, filename)
+        if df:
+            # tmpDir = gettempdir()
+            datafile = os.path.join(calibrepath, bookpath, filename)
+            if not os.path.exists(os.path.join(calibrepath, bookpath)):
+                os.makedirs(os.path.join(calibrepath, bookpath))
+            df.GetContentFile(datafile)
+            file_ = open(datafile, 'rb')
+            data = file_.read()
+            file_.close()
+            os.remove(datafile)
+        else:
+            return None
+    else:
+        try:
+            file_ = open(os.path.join(calibrepath, bookpath, filename), 'rb')
+            data = file_.read()
+            file_.close()
+        except IOError:
+            traceback.print_exc()
+            app.logger.error = u'The requested file could not be read. Maybe wrong permissions?'
+            return None
 
-        attachment.add_header('Content-Disposition', 'attachment',
-                              filename=os.path.basename(file_path))
-        return attachment
-    except IOError:
-        traceback.print_exc()
-        app.logger.error = u'The requested file could not be read. Maybe wrong permissions?'
-        return None
+    attachment = MIMEBase('application', 'octet-stream')
+    attachment.set_payload(data)
+    encoders.encode_base64(attachment)
+    attachment.add_header('Content-Disposition', 'attachment',
+                          filename=filename)
+    return attachment
 
 
 def get_valid_filename(value, replace_whitespace=True):
@@ -309,6 +336,60 @@ def delete_book(book, calibrepath):
         return delete_book_gdrive(book)
     else:
         return delete_book_file(book, calibrepath)
+
+def get_book_cover(cover_path):
+    if ub.config.config_use_google_drive:
+        try:
+            path=gd.get_cover_via_gdrive(cover_path)
+            if path:
+                return redirect(path)
+            else:
+                web.app.logger.error(cover_path + '/cover.jpg not found on Google Drive')
+                return send_from_directory(os.path.join(os.path.dirname(__file__), "static"), "generic_cover.jpg")
+        except Exception as e:
+            web.app.logger.error("Error Message: "+e.message)
+            web.app.logger.exception(e)
+            # traceback.print_exc()
+            return send_from_directory(os.path.join(os.path.dirname(__file__), "static"),"generic_cover.jpg")
+    else:
+        return send_from_directory(os.path.join(ub.config.config_calibre_dir, cover_path), "cover.jpg")
+
+# saves book cover to gdrive or locally
+def save_cover(url, book_path):
+    img = requests.get(url)
+    if img.headers.get('content-type') != 'image/jpeg':
+        web.app.logger.error("Cover is no jpg file, can't save")
+        return false
+
+    if ub.config.config_use_google_drive:
+        tmpDir = gettempdir()
+        f = open(os.path.join(tmpDir, "uploaded_cover.jpg"), "wb")
+        f.write(img.content)
+        f.close()
+        uploadFileToEbooksFolder(os.path.join(book_path, 'cover.jpg'), os.path.join(tmpDir, f.name))
+        web.app.logger.info("Cover is saved on gdrive")
+        return true
+
+    f = open(os.path.join(ub.config.config_calibre_dir, book_path, "cover.jpg"), "wb")
+    f.write(img.content)
+    f.close()
+    web.app.logger.info("Cover is saved")
+    return true
+
+def do_download_file(book, book_format, data, headers):
+    if ub.config.config_use_google_drive:
+        startTime = time.time()
+        df = gd.getFileFromEbooksFolder(book.path, data.name + "." + book_format)
+        web.app.logger.debug(time.time() - startTime)
+        if df:
+            return gd.do_gdrive_download(df, headers)
+        else:
+            abort(404)
+    else:
+        response = make_response(send_from_directory(os.path.join(ub.config.config_calibre_dir, book.path), data.name + "." + book_format))
+        response.headers = headers
+        return response
+
 ##################################
 
 
