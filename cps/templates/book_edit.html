@@ -15,6 +15,15 @@
     <div class="text-center">
       <button type="button" class="btn btn-danger" id="delete" data-toggle="modal" data-target="#deleteModal">{{_("Delete Book")}}</button>
     </div>
+    {% if book.data|length > 1 %}
+      <div class="text-center more-stuff"><h4> {{_('Delete formats:')}} </h4>
+      {% for file in book.data %}
+        <div class="form-group">
+          <a href="{{ url_for('delete_book', book_id=book.id, book_format=file.format) }}" class="btn btn-danger" type="button">{{_('Delete')}} - {{file.format}}</a>
+        </div>
+      {% endfor %}
+      </div>
+    {% endif %}
 {% endif %}
   </div>
   <div class="col-sm-9 col-xs-12">
