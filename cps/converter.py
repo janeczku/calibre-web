@@ -86,6 +86,8 @@ def convert_kindlegen(file_path, book):
             uncompressed_size=os.path.getsize(file_path + ".mobi")
         ))
         db.session.commit()
+        if ub.config.config_use_google_drive:
+            os.remove(file_path + u".epub")
         return file_path + ".mobi", RET_SUCCESS
     else:
         web.app.logger.info("convert_kindlegen: kindlegen failed with error while converting book")
@@ -101,8 +103,8 @@ def convert_calibre(file_path, book):
         web.app.logger.error("convert_calibre: " + error_message)
         return error_message, RET_FAIL
     try:
-        command = ("\""+ub.config.config_converterpath + "\" " + ub.config.config_calibre +
-                  " \"" + file_path + u".epub\" \"" + file_path + u".mobi\"").encode(sys.getfilesystemencoding())
+        command = ("\""+ub.config.config_converterpath + "\" \"" + file_path + u".epub\" \""
+                   + file_path + u".mobi\" " + ub.config.config_calibre).encode(sys.getfilesystemencoding())
         p = subprocess.Popen(command,stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
     except Exception as e:
         error_message = _(u"Ebook-convert failed, no execution permissions")
@@ -124,6 +126,9 @@ def convert_calibre(file_path, book):
             uncompressed_size=os.path.getsize(file_path + ".mobi")
         ))
         db.session.commit()
+        if ub.config.config_use_google_drive:
+            os.remove(file_path + u".epub")
+
         return file_path + ".mobi", RET_SUCCESS
     else:
         web.app.logger.info("convert_calibre: Ebook-convert failed with error while converting book")
