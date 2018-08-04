@@ -27,7 +27,6 @@ except ImportError:
 import mimetypes
 import logging
 from logging.handlers import RotatingFileHandler
-import textwrap
 from flask import (Flask, render_template, request, Response, redirect,
                    url_for, send_from_directory, make_response, g, flash,
                    abort, Markup, stream_with_context)
@@ -70,7 +69,7 @@ import sys
 import re
 import db
 from shutil import move, copyfile
-import shutil
+# import shutil
 import gdriveutils
 import converter
 import tempfile
@@ -842,36 +841,11 @@ def feed_shelf(book_id):
         response.headers["Content-Type"] = "application/atom+xml; charset=utf-8"
         return response
 
-def partial(total_byte_len, part_size_limit):
-    s = []
-    for p in range(0, total_byte_len, part_size_limit):
-        last = min(total_byte_len - 1, p + part_size_limit - 1)
-        s.append([p, last])
-    return s
-
-
-def do_gdrive_download(df, headers):
-    total_size = int(df.metadata.get('fileSize'))
-    download_url = df.metadata.get('downloadUrl')
-    s = partial(total_size, 1024 * 1024)  # I'm downloading BIG files, so 100M chunk size is fine for me
-
-    def stream():
-        for byte in s:
-            headers = {"Range": 'bytes=%s-%s' % (byte[0], byte[1])}
-            resp, content = df.auth.Get_Http_Object().request(download_url, headers=headers)
-            if resp.status == 206:
-                yield content
-            else:
-                app.logger.info('An error occurred: %s' % resp)
-                return
-    return Response(stream_with_context(stream()), headers=headers)
-
 
 @app.route("/opds/download/<book_id>/<book_format>/")
 @requires_basic_auth_if_no_ano
 @download_required
 def get_opds_download_link(book_id, book_format):
-    startTime = time.time()
     book_format = book_format.split(".")[0]
     book = db.session.query(db.Books).filter(db.Books.id == book_id).first()
     data = db.session.query(db.Data).filter(db.Data.book == book.id).filter(db.Data.format == book_format.upper()).first()
@@ -888,16 +862,15 @@ def get_opds_download_link(book_id, book_format):
         headers["Content-Type"] = mimetypes.types_map['.' + book_format]
     except KeyError:
         headers["Content-Type"] = "application/octet-stream"
-    app.logger.info(time.time() - startTime)
-    startTime = time.time()
-    if config.config_use_google_drive:
-        app.logger.info(time.time() - startTime)
-        df = gdriveutils.getFileFromEbooksFolder(book.path, data.name + "." + book_format)
-        return do_gdrive_download(df, headers)
-    else:
-        response = make_response(send_from_directory(os.path.join(config.config_calibre_dir, book.path), data.name + "." + book_format))
-        response.headers = headers
-        return response
+    return helper.do_download_file(book, book_format, data, headers)
+    #if config.config_use_google_drive:
+    #    app.logger.info(time.time() - startTime)
+    #    df = gdriveutils.getFileFromEbooksFolder(book.path, data.name + "." + book_format)
+    #    return do_gdrive_download(df, headers)
+    #else:
+    #    response = make_response(send_from_directory(os.path.join(config.config_calibre_dir, book.path), data.name + "." + book_format))
+    #    response.headers = headers
+    #    return response
 
 
 @app.route("/ajax/book/<string:uuid>")
@@ -1652,7 +1625,7 @@ def on_received_watch_confirmation():
                         gdriveutils.downloadFile(None, "metadata.db", os.path.join(tmpDir, "tmp_metadata.db"))
                         app.logger.info('Setting up new DB')
                         # prevent error on windows, as os.rename does on exisiting files
-                        shutil.move(os.path.join(tmpDir, "tmp_metadata.db"), dbpath)
+                        move(os.path.join(tmpDir, "tmp_metadata.db"), dbpath)
                         db.setup_db()
             except Exception as e:
                 app.logger.info(e.message)
@@ -1823,44 +1796,11 @@ def advanced_search():
                                  series=series, title=_(u"search"), page="advsearch")
 
 
-def get_cover_via_gdrive(cover_path):
-    df = gdriveutils.getFileFromEbooksFolder(cover_path, 'cover.jpg')
-    if df:
-        if not gdriveutils.session.query(gdriveutils.PermissionAdded).filter(gdriveutils.PermissionAdded.gdrive_id == df['id']).first():
-            df.GetPermissions()
-            df.InsertPermission({
-                            'type': 'anyone',
-                            'value': 'anyone',
-                            'role': 'reader',
-                            'withLink': True})
-            permissionAdded = gdriveutils.PermissionAdded()
-            permissionAdded.gdrive_id = df['id']
-            gdriveutils.session.add(permissionAdded)
-            gdriveutils.session.commit()
-        return df.metadata.get('webContentLink')
-    else:
-        return None
-
 
 @app.route("/cover/<path:cover_path>")
 @login_required_if_no_ano
 def get_cover(cover_path):
-    if config.config_use_google_drive:
-        try:
-            path=get_cover_via_gdrive(cover_path)
-            if path:
-                return redirect(path)
-            else:
-                app.logger.error(cover_path + '/cover.jpg not found on Google Drive')
-                return send_from_directory(os.path.join(os.path.dirname(__file__), "static"), "generic_cover.jpg")
-        except Exception as e:
-            app.logger.error("Error Message: "+e.message)
-            app.logger.exception(e)
-            # traceback.print_exc()
-            return send_from_directory(os.path.join(os.path.dirname(__file__), "static"),"generic_cover.jpg")
-    else:
-        return send_from_directory(os.path.join(config.config_calibre_dir, cover_path), "cover.jpg")
-
+    return helper.get_book_cover(cover_path)
 
 @app.route("/show/<book_id>/<book_format>")
 @login_required_if_no_ano
@@ -1888,10 +1828,7 @@ def serve_book(book_id, book_format):
 @requires_basic_auth_if_no_ano
 def feed_get_cover(book_id):
     book = db.session.query(db.Books).filter(db.Books.id == book_id).first()
-    if config.config_use_google_drive:
-        return redirect(get_cover_via_gdrive(book.path))
-    else:
-        return send_from_directory(os.path.join(config.config_calibre_dir, book.path), "cover.jpg")
+    return helper.get_book_cover(book.path)
 
 
 def render_read_books(page, are_read, as_xml=False):
@@ -2019,16 +1956,17 @@ def get_download_link(book_id, book_format):
         except KeyError:
             headers["Content-Type"] = "application/octet-stream"
         headers["Content-Disposition"] = "attachment; filename*=UTF-8''%s.%s" % (quote(file_name.encode('utf-8')), book_format)
-        if config.config_use_google_drive:
-            df = gdriveutils.getFileFromEbooksFolder(book.path, '%s.%s' % (data.name, book_format))
-            if df:
-                return do_gdrive_download(df, headers)
-            else:
-                abort(404)
-        else:
-            response = make_response(send_from_directory(os.path.join(config.config_calibre_dir, book.path), data.name + "." + book_format))
-            response.headers = headers
-            return response
+        return helper.do_download_file(book, book_format, data, headers)
+        #if config.config_use_google_drive:
+        #    df = gdriveutils.getFileFromEbooksFolder(book.path, '%s.%s' % (data.name, book_format))
+        #    if df:
+        #        return do_gdrive_download(df, headers)
+        #    else:
+        #        abort(404)
+        #else:
+        #    response = make_response(send_from_directory(os.path.join(config.config_calibre_dir, book.path), data.name + "." + book_format))
+        #    response.headers = headers
+        #    return response
     else:
         abort(404)
 
@@ -3158,7 +3096,7 @@ def edit_book(book_id):
 
         if not error:
             if to_save["cover_url"]:
-                if save_cover(to_save["cover_url"], book.path) is true:
+                if helper.save_cover(to_save["cover_url"], book.path) is true:
                     book.has_cover = 1
                 else:
                     flash(_(u"Cover is not a jpg file, can't save"), category="error")
@@ -3313,28 +3251,6 @@ def edit_book(book_id):
         db.session.rollback()
         flash(_("Error editing book, please check logfile for details"), category="error")
         return redirect(url_for('show_book', book_id=book.id))
-
-
-def save_cover(url, book_path):
-    img = requests.get(url)
-    if img.headers.get('content-type') != 'image/jpeg':
-        app.logger.error("Cover is no jpg file, can't save")
-        return false
-
-    if config.config_use_google_drive:
-        tmpDir = tempfile.gettempdir()
-        f = open(os.path.join(tmpDir, "uploaded_cover.jpg"), "wb")
-        f.write(img.content)
-        f.close()
-        gdriveutils.uploadFileToEbooksFolder(os.path.join(book_path, 'cover.jpg'), os.path.join(tmpDir, f.name))
-        app.logger.info("Cover is saved on gdrive")
-        return true
-
-    f = open(os.path.join(config.config_calibre_dir, book_path, "cover.jpg"), "wb")
-    f.write(img.content)
-    f.close()
-    app.logger.info("Cover is saved")
-    return true
 
 
 @app.route("/upload", methods=["GET", "POST"])

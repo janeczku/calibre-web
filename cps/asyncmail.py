@@ -135,7 +135,7 @@ class EMailThread(threading.Thread):
 
         return self.UIqueue
 
-    def add_email(self, data, settings, recipient, user_name):
+    def add_email(self, data, settings, recipient, user_name, type):
         # if more than 50 entries in the list, clean the list
         addLock = threading.Lock()
         addLock.acquire()
@@ -144,7 +144,7 @@ class EMailThread(threading.Thread):
         # progress, runtime, and status = 0
         self.queue.append({'data':data, 'settings':settings, 'recipent':recipient, 'starttime': 0,
                            'status': STAT_WAITING})
-        self.UIqueue.append({'user': user_name, 'formStarttime': '', 'progress': " 0 %", 'type': 'E-Mail',
+        self.UIqueue.append({'user': user_name, 'formStarttime': '', 'progress': " 0 %", 'type': type,
                              'runtime': '0 s', 'status': _('Waiting') })
         # access issue
         self.last=len(self.queue)

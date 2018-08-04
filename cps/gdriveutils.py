@@ -9,6 +9,7 @@ import os
 from ub import config
 import cli
 import shutil
+from flask import Response, stream_with_context
 
 from sqlalchemy import *
 from sqlalchemy.ext.declarative import declarative_base
@@ -281,18 +282,18 @@ def moveGdriveFolderRemote(origin_file, target_folder):
     #    drive.auth.service.files().delete(fileId=previous_parents).execute()
 
 
-def downloadFile(path, filename, output):
-    f = getFileFromEbooksFolder(path, filename)
-    f.GetContentFile(output)
+#def downloadFile(path, filename, output):
+#    f = getFileFromEbooksFolder(path, filename)
+#    return f.GetContentFile(output)
 
-
-def backupCalibreDbAndOptionalDownload(drive, f=None):
+# ToDo: Check purpose Parameter f ??, purpose of function ?
+def backupCalibreDbAndOptionalDownload(drive):
     drive = getDrive(drive)
     metaDataFile = "'%s' in parents and title = 'metadata.db' and trashed = false" % getEbooksFolderId()
     fileList = drive.ListFile({'q': metaDataFile}).GetList()
-    databaseFile = fileList[0]
-    if f:
-        databaseFile.GetContentFile(f)
+    #databaseFile = fileList[0]
+    #if f:
+    #   databaseFile.GetContentFile(f)
 
 
 def copyToDrive(drive, uploadFile, createRoot, replaceFiles,
@@ -446,7 +447,7 @@ def deleteDatabaseOnChange():
     session.commit()
 
 def updateGdriveCalibreFromLocal():
-    backupCalibreDbAndOptionalDownload(Gdrive.Instance().drive)
+    # backupCalibreDbAndOptionalDownload(Gdrive.Instance().drive)
     copyToDrive(Gdrive.Instance().drive, config.config_calibre_dir, False, True)
     for x in os.listdir(config.config_calibre_dir):
         if os.path.isdir(os.path.join(config.config_calibre_dir, x)):
@@ -463,3 +464,47 @@ def updateDatabaseOnEdit(ID,newPath):
 def deleteDatabaseEntry(ID):
     session.query(GdriveId).filter(GdriveId.gdrive_id == ID).delete()
     session.commit()
+
+# Gets cover file from gdrive
+def get_cover_via_gdrive(cover_path):
+    df = getFileFromEbooksFolder(cover_path, 'cover.jpg')
+    if df:
+        if not session.query(PermissionAdded).filter(PermissionAdded.gdrive_id == df['id']).first():
+            df.GetPermissions()
+            df.InsertPermission({
+                            'type': 'anyone',
+                            'value': 'anyone',
+                            'role': 'reader',
+                            'withLink': True})
+            permissionAdded = PermissionAdded()
+            permissionAdded.gdrive_id = df['id']
+            session.add(permissionAdded)
+            session.commit()
+        return df.metadata.get('webContentLink')
+    else:
+        return None
+
+# Creates chunks for downloading big files
+def partial(total_byte_len, part_size_limit):
+    s = []
+    for p in range(0, total_byte_len, part_size_limit):
+        last = min(total_byte_len - 1, p + part_size_limit - 1)
+        s.append([p, last])
+    return s
+
+# downloads files in chunks from gdrive
+def do_gdrive_download(df, headers):
+    total_size = int(df.metadata.get('fileSize'))
+    download_url = df.metadata.get('downloadUrl')
+    s = partial(total_size, 1024 * 1024)  # I'm downloading BIG files, so 100M chunk size is fine for me
+
+    def stream():
+        for byte in s:
+            headers = {"Range": 'bytes=%s-%s' % (byte[0], byte[1])}
+            resp, content = df.auth.Get_Http_Object().request(download_url, headers=headers)
+            if resp.status == 206:
+                yield content
+            else:
+                web.app.logger.info('An error occurred: %s' % resp)
+                return
+    return Response(stream_with_context(stream()), headers=headers)
