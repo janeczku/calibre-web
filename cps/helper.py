@@ -74,10 +74,25 @@ def make_mobi(book_id, calibrepath):
         error_message = _(u"epub format not found for book id: %(book)d", book=book_id)
         app.logger.error("make_mobi: " + error_message)
         return error_message, RET_FAIL
-
+    if ub.config.config_use_google_drive:
+        df = gd.getFileFromEbooksFolder(book.path, data.name + u".epub")
+        if df:
+            datafile = os.path.join(calibrepath, book.path, data.name + u".epub")
+            if not os.path.exists(os.path.join(calibrepath, book.path)):
+                os.makedirs(os.path.join(calibrepath, book.path))
+            df.GetContentFile(datafile)
+        else:
+            error_message = "make_mobi: epub not found on gdrive: %s.epub" % data.name
+            return error_message, RET_FAIL
+    # else:
     file_path = os.path.join(calibrepath, book.path, data.name)
     if os.path.exists(file_path + u".epub"):
-        return converter.convert_mobi(file_path, book)
+        # convert book, and upload in case of google drive
+        res = converter.convert_mobi(file_path, book)
+        if ub.config.config_use_google_drive:
+            gd.updateGdriveCalibreFromLocal()
+            # time.sleep(10)
+        return res
     else:
         error_message = "make_mobi: epub not found: %s.epub" % file_path
         return error_message, RET_FAIL
@@ -104,17 +119,18 @@ def send_mail(book_id, kindle_mail, calibrepath, user_id):
     msg.attach(MIMEText(text.encode('UTF-8'), 'plain', 'UTF-8'))
 
     book = db.session.query(db.Books).filter(db.Books.id == book_id).first()
-    data = db.session.query(db.Data).filter(db.Data.book == book.id)
+    data = db.session.query(db.Data).filter(db.Data.book == book.id).all()
 
     formats = {}
-
-    for entry in data:
+    index = 0
+    for indx,entry in enumerate(data):
         if entry.format == "MOBI":
-            formats["mobi"] = entry.name + ".mobi" # os.path.join(calibrepath, book.path, entry.name + ".mobi")
+            formats["mobi"] = entry.name + ".mobi"
         if entry.format == "EPUB":
-            formats["epub"] = entry.name + ".epub" # os.path.join(calibrepath, book.path, entry.name + ".epub")
+            formats["epub"] = entry.name + ".epub"
+            index = indx
         if entry.format == "PDF":
-            formats["pdf"] = entry.name + ".pdf" # os.path.join(calibrepath, book.path, entry.name + ".pdf")
+            formats["pdf"] = entry.name + ".pdf"
 
     if len(formats) == 0:
         return _("Could not find any formats suitable for sending by email")
@@ -124,14 +140,15 @@ def send_mail(book_id, kindle_mail, calibrepath, user_id):
         if result:
             msg.attach(result)
     elif 'epub' in formats:
+        # returns filename if sucess, otherwise errormessage
         data, resultCode = make_mobi(book.id, calibrepath)
         if resultCode == RET_SUCCESS:
-            result = get_attachment(calibrepath, book.path, data) # toDo check data
+            result = get_attachment(calibrepath, book.path, os.path.basename(data))
             if result:
                 msg.attach(result)
         else:
-            app.logger.error = data
-            return data  # _("Could not convert epub to mobi")
+            app.logger.error(data)
+            return data
     elif 'pdf' in formats:
         result = get_attachment(calibrepath, book.path, formats['pdf'])
         if result:
@@ -144,22 +161,25 @@ def send_mail(book_id, kindle_mail, calibrepath, user_id):
     else:
         return _('The requested file could not be read. Maybe wrong permissions?')
 
+
+# For gdrive download book from gdrive to calibredir (temp dir for books), read contents in both cases and append
+# it in MIME Base64 encoded to
 def get_attachment(calibrepath, bookpath, filename):
     """Get file as MIMEBase message"""
     if ub.config.config_use_google_drive:
         df = gd.getFileFromEbooksFolder(bookpath, filename)
         if df:
-            # tmpDir = gettempdir()
+
             datafile = os.path.join(calibrepath, bookpath, filename)
             if not os.path.exists(os.path.join(calibrepath, bookpath)):
                 os.makedirs(os.path.join(calibrepath, bookpath))
             df.GetContentFile(datafile)
-            file_ = open(datafile, 'rb')
-            data = file_.read()
-            file_.close()
-            os.remove(datafile)
         else:
             return None
+        file_ = open(datafile, 'rb')
+        data = file_.read()
+        file_.close()
+        os.remove(datafile)
     else:
         try:
             file_ = open(os.path.join(calibrepath, bookpath, filename), 'rb')
