@@ -44,7 +44,8 @@ class email(smtplib.SMTP):
     def send(self, str):
         """Send `str' to the server."""
         if self.debuglevel > 0:
-            print>> sys.stderr, 'send:', repr(str)
+            from __future__ import print_function
+            print('send:', repr(str), file=sys.stderr)
         if hasattr(self, 'sock') and self.sock:
             try:
                 if self.transferSize:
@@ -235,7 +236,7 @@ class StderrLogger(object):
     def write(self, message):
         if message == '\n':
             self.logger.debug(self.buffer)
-            print self.buffer
+            print(self.buffer)
             self.buffer = ''
         else:
             self.buffer += message
