@@ -44,8 +44,9 @@ class email(smtplib.SMTP):
     def send(self, str):
         """Send `str' to the server."""
         if self.debuglevel > 0:
-            from __future__ import print_function
-            print('send:', repr(str), file=sys.stderr)
+            # from __future__ import print_function
+            # print('send:', repr(str), file=sys.stderr)
+            pass
         if hasattr(self, 'sock') and self.sock:
             try:
                 if self.transferSize:
