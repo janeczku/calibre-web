@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+from __future__ import print_function
 import smtplib
 import threading
 from datetime import datetime
@@ -11,7 +12,6 @@ import sys
 from email.generator import Generator
 import web
 from flask_babel import gettext as _
-# from babel.dates import format_datetime
 import re
 
 try:
@@ -44,9 +44,7 @@ class email(smtplib.SMTP):
     def send(self, str):
         """Send `str' to the server."""
         if self.debuglevel > 0:
-            # from __future__ import print_function
-            # print('send:', repr(str), file=sys.stderr)
-            pass
+            print('send:', repr(str), file=sys.stderr)
         if hasattr(self, 'sock') and self.sock:
             try:
                 if self.transferSize:
