@@ -1864,7 +1864,7 @@ def render_read_books(page, are_read, as_xml=False):
     if as_xml:
         xml = render_title_template('feed.xml', entries=entries, pagination=pagination)
         response = make_response(xml)
-        response.headers["Content-Type"] = "application/xml"
+        response.headers["Content-Type"] = "application/xml; charset=utf-8"
         return response
     else:
         if are_read:
