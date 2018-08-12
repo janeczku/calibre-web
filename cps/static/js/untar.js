@@ -7,7 +7,7 @@
  *
  * TAR format: http://www.gnu.org/software/automake/manual/tar/Standard.html
  */
- /* global bitjs, importScripts, Uint8Array */
+/* global bitjs, importScripts, Uint8Array */
 
 // This file expects to be invoked as a Worker (see onmessage below).
 importScripts("io.js");
@@ -72,9 +72,9 @@ var TarLocalFile = function(bstream) {
         if (this.prefix.length) {
             this.name = this.prefix + this.name;
         }
-  	    bstream.readBytes(12); // 512 - 500
+        bstream.readBytes(12); // 512 - 500
     } else {
-  	    bstream.readBytes(255); // 512 - 257
+        bstream.readBytes(255); // 512 - 257
     }
 
     // Done header, now rest of blocks are the file contents.
@@ -88,7 +88,7 @@ var TarLocalFile = function(bstream) {
     // A regular file.
     if (this.typeflag === 0) {
         info("  This is a regular file.");
-        var sizeInBytes = parseInt(this.size);
+        // var sizeInBytes = parseInt(this.size);
         this.fileData = new Uint8Array(bstream.bytes.buffer, bstream.ptr, this.size);
         if (this.name.length > 0 && this.size > 0 && this.fileData && this.fileData.buffer) {
             this.isValid = true;
@@ -100,9 +100,9 @@ var TarLocalFile = function(bstream) {
         var remaining = 512 - this.size % 512;
         if (remaining > 0 && remaining < 512) {
             bstream.readBytes(remaining);
-  	    }
+        }
     } else if (this.typeflag === 5) {
-  	    info("  This is a directory.")
+        info("  This is a directory.");
     }
 };
 
@@ -127,7 +127,7 @@ var untar = function(arrayBuffer) {
         if (oneLocalFile && oneLocalFile.isValid) {
             localFiles.push(oneLocalFile);
             totalUncompressedBytesInArchive += oneLocalFile.size;
-  	    }
+        }
     }
     totalFilesInArchive = localFiles.length;
 
