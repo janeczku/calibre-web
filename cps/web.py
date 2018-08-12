@@ -555,9 +555,40 @@ def modify_database_object(input_elements, db_book_object, db_object, db_session
                 else:  # db_type should be tag, or languages
                     new_element = db_object(add_element)
                 db_session.add(new_element)
-                new_element = db.session.query(db_object).filter(db_filter == add_element).first()
             # add element to book
             db_book_object.append(new_element)
+
+
+# read search results from calibre-database and return it
+def get_search_results(term):
+    q = list()
+    authorterms = re.split("[, ]+", term)
+    for authorterm in authorterms:
+        q.append(db.Books.authors.any(db.Authors.name.ilike("%" + authorterm + "%")))
+    db.session.connection().connection.connection.create_function("lower", 1, db.lcase)
+    db.Books.authors.any(db.Authors.name.ilike("%" + term + "%"))
+
+    return db.session.query(db.Books).filter(common_filters()).filter(
+        db.or_(db.Books.tags.any(db.Tags.name.ilike("%" + term + "%")),
+               db.Books.series.any(db.Series.name.ilike("%" + term + "%")),
+               db.Books.authors.any(and_(*q)),
+               db.Books.publishers.any(db.Publishers.name.ilike("%" + term + "%")),
+               db.Books.title.ilike("%" + term + "%"))).all()
+
+
+def feed_search(term):
+    if term:
+        term = term.strip().lower()
+        entries = get_search_results( term)
+        entriescount = len(entries) if len(entries) > 0 else 1
+        pagination = Pagination(1, entriescount, entriescount)
+        xml = render_title_template('feed.xml', searchterm=term, entries=entries, pagination=pagination)
+    else:
+        xml = render_title_template('feed.xml', searchterm="")
+    response = make_response(xml)
+    response.headers["Content-Type"] = "application/atom+xml; charset=utf-8"
+    return response
+
 
 def render_title_template(*args, **kwargs):
     return render_template(instance=config.config_calibre_web_title, *args, **kwargs)
@@ -605,26 +636,6 @@ def feed_cc_search(query):
 @requires_basic_auth_if_no_ano
 def feed_normal_search():
     return feed_search(request.args.get("query").strip())
-
-
-def feed_search(term):
-    if term:
-        term = term.strip().lower()
-        db.session.connection().connection.connection.create_function("lower", 1, db.lcase)
-        entries = db.session.query(db.Books).filter(common_filters()).filter(
-            db.or_(db.Books.tags.any(db.Tags.name.ilike("%" + term + "%")),
-            db.Books.series.any(db.Series.name.ilike("%" + term + "%")),
-            db.Books.authors.any(db.Authors.name.ilike("%" + term + "%")),
-            db.Books.publishers.any(db.Publishers.name.ilike("%" + term + "%")),
-            db.Books.title.ilike("%" + term + "%"))).all()
-        entriescount = len(entries) if len(entries) > 0 else 1
-        pagination = Pagination(1, entriescount, entriescount)
-        xml = render_title_template('feed.xml', searchterm=term, entries=entries, pagination=pagination)
-    else:
-        xml = render_title_template('feed.xml', searchterm="")
-    response = make_response(xml)
-    response.headers["Content-Type"] = "application/atom+xml; charset=utf-8"
-    return response
 
 
 @app.route("/opds/new")
@@ -941,7 +952,7 @@ def get_authors_json():
     if request.method == "GET":
         query = request.args.get('q')
         entries = db.session.query(db.Authors).filter(db.Authors.name.ilike("%" + query + "%")).all()
-        json_dumps = json.dumps([dict(name=r.name) for r in entries])
+        json_dumps = json.dumps([dict(name=r.name.replace('|',',')) for r in entries])
         return json_dumps
 
 
@@ -953,57 +964,6 @@ def get_tags_json():
         entries = db.session.query(db.Tags).filter(db.Tags.name.ilike("%" + query + "%")).all()
         json_dumps = json.dumps([dict(name=r.name) for r in entries])
         return json_dumps
-
-
-@app.route("/get_update_status", methods=['GET'])
-@login_required_if_no_ano
-def get_update_status():
-    status = {}
-    if request.method == "GET":
-        # should be automatically replaced by git with current commit hash
-        commit_id = '$Format:%H$'
-        # ToDo: Handle server not reachable -> ValueError:
-        commit = requests.get('https://api.github.com/repos/janeczku/calibre-web/git/refs/heads/master').json()
-        if "object" in commit and commit['object']['sha'] != commit_id:
-            status['status'] = True
-            commitdate = requests.get('https://api.github.com/repos/janeczku/calibre-web/git/commits/'+commit['object']['sha']).json()
-            if "committer" in commitdate:
-                form_date=datetime.datetime.strptime(commitdate['committer']['date'],"%Y-%m-%dT%H:%M:%SZ")
-                status['commit'] = format_datetime(form_date, format='short', locale=get_locale())
-            else:
-                status['commit'] = u'Unknown'
-        else:
-            status['status'] = False
-    return json.dumps(status)
-
-
-@app.route("/get_updater_status", methods=['GET', 'POST'])
-@login_required
-@admin_required
-def get_updater_status():
-    status = {}
-    if request.method == "POST":
-        commit = request.form.to_dict()
-        if "start" in commit and commit['start'] == 'True':
-            text = {
-                "1": _(u'Requesting update package'),
-                "2": _(u'Downloading update package'),
-                "3": _(u'Unzipping update package'),
-                "4": _(u'Files are replaced'),
-                "5": _(u'Database connections are closed'),
-                "6": _(u'Server is stopped'),
-                "7": _(u'Update finished, please press okay and reload page')
-            }
-            status['text'] = text
-            helper.updater_thread = helper.Updater()
-            helper.updater_thread.start()
-            status['status'] = helper.updater_thread.get_update_status()
-    elif request.method == "GET":
-        try:
-            status['status'] = helper.updater_thread.get_update_status()
-        except Exception:
-            status['status'] = 7
-    return json.dumps(status)
 
 
 @app.route("/get_languages_json", methods=['GET', 'POST'])
@@ -1058,6 +1018,57 @@ def get_matching_tags():
                     tag_dict['tags'].append(tag.id)
     json_dumps = json.dumps(tag_dict)
     return json_dumps
+
+
+@app.route("/get_update_status", methods=['GET'])
+@login_required_if_no_ano
+def get_update_status():
+    status = {}
+    if request.method == "GET":
+        # should be automatically replaced by git with current commit hash
+        commit_id = '$Format:%H$'
+        # ToDo: Handle server not reachable -> ValueError:
+        commit = requests.get('https://api.github.com/repos/janeczku/calibre-web/git/refs/heads/master').json()
+        if "object" in commit and commit['object']['sha'] != commit_id:
+            status['status'] = True
+            commitdate = requests.get('https://api.github.com/repos/janeczku/calibre-web/git/commits/'+commit['object']['sha']).json()
+            if "committer" in commitdate:
+                form_date=datetime.datetime.strptime(commitdate['committer']['date'],"%Y-%m-%dT%H:%M:%SZ")
+                status['commit'] = format_datetime(form_date, format='short', locale=get_locale())
+            else:
+                status['commit'] = u'Unknown'
+        else:
+            status['status'] = False
+    return json.dumps(status)
+
+
+@app.route("/get_updater_status", methods=['GET', 'POST'])
+@login_required
+@admin_required
+def get_updater_status():
+    status = {}
+    if request.method == "POST":
+        commit = request.form.to_dict()
+        if "start" in commit and commit['start'] == 'True':
+            text = {
+                "1": _(u'Requesting update package'),
+                "2": _(u'Downloading update package'),
+                "3": _(u'Unzipping update package'),
+                "4": _(u'Files are replaced'),
+                "5": _(u'Database connections are closed'),
+                "6": _(u'Server is stopped'),
+                "7": _(u'Update finished, please press okay and reload page')
+            }
+            status['text'] = text
+            helper.updater_thread = helper.Updater()
+            helper.updater_thread.start()
+            status['status'] = helper.updater_thread.get_update_status()
+    elif request.method == "GET":
+        try:
+            status['status'] = helper.updater_thread.get_update_status()
+        except Exception:
+            status['status'] = 7
+    return json.dumps(status)
 
 
 @app.route("/", defaults={'page': 1})
@@ -1704,20 +1715,8 @@ def update():
 @login_required_if_no_ano
 def search():
     term = request.args.get("query").strip().lower()
-
     if term:
-        db.session.connection().connection.connection.create_function("lower", 1, db.lcase)
-        entries = db.session.query(db.Books).filter(common_filters()).filter(
-            db.or_(db.Books.tags.any(db.Tags.name.ilike("%" + term + "%")),
-            db.Books.series.any(db.Series.name.ilike("%" + term + "%")),
-            db.Books.authors.any(db.Authors.name.ilike("%" + term + "%")),
-            db.Books.publishers.any(db.Publishers.name.ilike("%" + term + "%")),
-            db.Books.title.ilike("%" + term + "%"))).all()
-
-        # entries = db.session.query(db.Books).with_entities(db.Books.title).filter(db.Books.title.ilike("%" + term + "%")).all()
-        # result = db.session.execute("select name from authors where lower(name) like '%" + term.lower() + "%'")
-        # entries = result.fetchall()
-        # result.close()
+        entries = get_search_results(term)
         return render_title_template('search.html', searchterm=term, entries=entries, page="search")
     else:
         return render_title_template('search.html', searchterm="", page="search")
@@ -1741,14 +1740,14 @@ def advanced_search():
         publisher = request.args.get("publisher")
         pub_start = request.args.get("Publishstart")
         pub_end = request.args.get("Publishend")
-        if author_name: author_name = author_name.strip().lower()
+        if author_name: author_name = author_name.strip().lower().replace(',','|')
         if book_title: book_title = book_title.strip().lower()
         if publisher: publisher = publisher.strip().lower()
         if include_tag_inputs or exclude_tag_inputs or include_series_inputs or exclude_series_inputs or \
                 include_languages_inputs or exclude_languages_inputs or author_name or book_title or \
                 publisher or pub_start or pub_end:
             searchterm = []
-            searchterm.extend((author_name, book_title, publisher))
+            searchterm.extend((author_name.replace('|',','), book_title, publisher))
             if pub_start:
                 try:
                     searchterm.extend([_(u"Published after %s" %
