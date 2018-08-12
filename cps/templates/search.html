@@ -8,6 +8,10 @@
     {% else %}
       <h2>{{entries|length}} {{_('Results for:')}} {{searchterm}}</h2>
     {%endif%}
+    {% if g.user.is_authenticated %}
+      <!--a href="{{ url_for('read_books') }}" class="btn btn-primary">{{ _('Search result to shelf') }} </a-->
+    {% endif %}
+
 
   <div class="row">
 

@@ -119,8 +119,7 @@ ZipLocalFile.prototype.unzip = function() {
         // version == 20, compression method == 8 (DEFLATE)
         info("ZIP v2.0, DEFLATE: " + this.filename + " (" + this.compressedSize + " bytes)");
         this.fileData = inflate(this.fileData, this.uncompressedSize);
-    }
-    else {
+    } else {
         err("UNSUPPORTED VERSION/FORMAT: ZIP v" + this.version + ", compression method=" + this.compressionMethod + ": " + this.filename + " (" + this.compressedSize + " bytes)");
         this.fileData = null;
     }
@@ -510,30 +509,30 @@ function inflate(compressedData, numDecompressedBytes) {
     var buffer = new bitjs.io.ByteBuffer(numDecompressedBytes);
     //var numBlocks = 0;
     var blockSize = 0;
-
+    var bFinal;
     // block format: http://tools.ietf.org/html/rfc1951#page-9
     do {
-        var bFinal = bstream.readBits(1);
+        bFinal = bstream.readBits(1);
         var bType = bstream.readBits(2);
         blockSize = 0;
         // ++numBlocks;
         // no compression
         if (bType === 0) {
             // skip remaining bits in this byte
-            while (bstream.bitPtr != 0) bstream.readBits(1);
+            while (bstream.bitPtr !== 0) bstream.readBits(1);
             var len = bstream.readBits(16),
-                nlen = bstream.readBits(16);
+            // nlen = bstream.readBits(16);
             // TODO: check if nlen is the ones-complement of len?
 
-            if(len > 0) buffer.insertBytes(bstream.readBytes(len));
+            if (len > 0) buffer.insertBytes(bstream.readBytes(len));
             blockSize = len;
         }
         // fixed Huffman codes
-        else if(bType === 1) {
+        else if (bType === 1) {
             blockSize = inflateBlockData(bstream, getFixedLiteralTable(), getFixedDistanceTable(), buffer);
         }
         // dynamic Huffman codes
-        else if(bType === 2) {
+        else if (bType === 2) {
             var numLiteralLengthCodes = bstream.readBits(5) + 257;
             var numDistanceCodes = bstream.readBits(5) + 1,
                 numCodeLengthCodes = bstream.readBits(4) + 4;
@@ -567,24 +566,25 @@ function inflate(compressedData, numDecompressedBytes) {
             var prevCodeLength = 0;
             while (literalCodeLengths.length < numLiteralLengthCodes + numDistanceCodes) {
                 var symbol = decodeSymbol(bstream, codeLengthsCodes);
+                var repeat;
                 if (symbol <= 15) {
                     literalCodeLengths.push(symbol);
                     prevCodeLength = symbol;
                 }
                 else if (symbol === 16) {
-                    var repeat = bstream.readBits(2) + 3;
+                    repeat = bstream.readBits(2) + 3;
                     while (repeat--) {
                         literalCodeLengths.push(prevCodeLength);
                     }
                 }
                 else if (symbol === 17) {
-                    var repeat = bstream.readBits(3) + 3;
+                    repeat = bstream.readBits(3) + 3;
                     while (repeat--) {
                         literalCodeLengths.push(0);
                     }
                 }
                 else if (symbol === 18) {
-                    var repeat = bstream.readBits(7) + 11;
+                    repeat = bstream.readBits(7) + 11;
                     while (repeat--) {
                         literalCodeLengths.push(0);
                     }

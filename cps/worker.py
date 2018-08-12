@@ -360,7 +360,7 @@ class WorkerThread(threading.Thread):
             self.UIqueue[self.current]['message'] = error_message
             return # error_message, RET_FAIL
 
-    def add_convert(self, file_path, bookid, user_name, type, settings, kindle_mail):
+    def add_convert(self, file_path, bookid, user_name, typ, settings, kindle_mail):
         addLock = threading.Lock()
         addLock.acquire()
         if self.last >= 20:
@@ -369,7 +369,7 @@ class WorkerThread(threading.Thread):
         self.id += 1
         self.queue.append({'file_path':file_path, 'bookid':bookid, 'starttime': 0, 'kindle':kindle_mail,
                            'status': STAT_WAITING, 'typ': TASK_CONVERT, 'settings':settings})
-        self.UIqueue.append({'user': user_name, 'formStarttime': '', 'progress': " 0 %", 'type': type,
+        self.UIqueue.append({'user': user_name, 'formStarttime': '', 'progress': " 0 %", 'type': typ,
                              'runtime': '0 s', 'status': _('Waiting'),'id': self.id } )
         self.id += 1
 

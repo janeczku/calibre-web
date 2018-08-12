@@ -160,7 +160,8 @@ var RarVolumeHeader = function(bstream) {
             // read in filename
 
             this.filename = bstream.readBytes(this.nameSize);
-            for (var _i = 0, _s = ""; _i < this.filename.length ; _i++) {
+            var _s = ""
+            for (var _i = 0; _i < this.filename.length ; _i++) {
                 _s += String.fromCharCode(this.filename[_i]);
             }
 
@@ -209,7 +210,7 @@ var RarVolumeHeader = function(bstream) {
     }
 };
 
-var BLOCK_LZ  = 0;
+//var BLOCK_LZ  = 0;
 
 var rLDecode = [0, 1, 2, 3, 4, 5, 6, 7, 8, 10, 12, 14, 16, 20, 24, 28, 32, 40, 48, 56, 64, 80, 96, 112, 128, 160, 192, 224], 
     rLBits = [0, 0, 0, 0, 0, 0, 0, 0, 1,  1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4,  4,  5,  5,  5,  5],
@@ -227,17 +228,17 @@ var rDBits = [0, 0, 0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5,
     5, 6, 6, 7, 7, 8, 8, 9, 9, 10, 10, 11, 11, 12, 12, 13, 13, 14, 14,
     15, 15, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16];
 
-var rLOW_DIST_REP_COUNT = 16;
+var rLowDistRepCount = 16;
 
 var rNC = 299,
     rDC = 60,
     rLDC = 17,
     rRC = 28,
     rBC = 20,
-    rHUFF_TABLE_SIZE = (rNC + rDC + rRC + rLDC);
+    rHuffTableSize = (rNC + rDC + rRC + rLDC);
 
 //var UnpBlockType = BLOCK_LZ;
-var UnpOldTable = new Array(rHUFF_TABLE_SIZE);
+var UnpOldTable = new Array(rHuffTableSize);
 
 var BD = { //bitdecode
     DecodeLen: new Array(16),
@@ -270,8 +271,8 @@ var rBuffer;
 // read in Huffman tables for RAR
 function RarReadTables(bstream) {
     var BitLength = new Array(rBC),
-        Table = new Array(rHUFF_TABLE_SIZE);
-
+        Table = new Array(rHuffTableSize);
+    var i;
     // before we start anything we need to get byte-aligned
     bstream.readBits( (8 - bstream.bitPtr) & 0x7 );
   
@@ -281,7 +282,6 @@ function RarReadTables(bstream) {
     }
   
     if (!bstream.readBits(1)) { //discard old table
-        var i;
         for (i = UnpOldTable.length; i--;) UnpOldTable[i] = 0;
     }
 
@@ -307,24 +307,25 @@ function RarReadTables(bstream) {
 
     // now all 20 bit lengths are obtained, we construct the Huffman Table:
 
-    RarMakeDecodeTables(BitLength, 0, BD, rBC);
+    rarMakeDecodeTables(BitLength, 0, BD, rBC);
   
-    var TableSize = rHUFF_TABLE_SIZE;
+    var TableSize = rHuffTableSize;
     //console.log(DecodeLen, DecodePos, DecodeNum);
     for (i = 0; i < TableSize;) {
+        var N;
         var num = RarDecodeNumber(bstream, BD);
         if (num < 16) {
             Table[i] = (num + UnpOldTable[i]) & 0xf;
             i++;
         } else if (num < 18) {
-            var N = (num === 16) ? (bstream.readBits(3) + 3) : (bstream.readBits(7) + 11);
+            N = (num === 16) ? (bstream.readBits(3) + 3) : (bstream.readBits(7) + 11);
 
             while (N-- > 0 && i < TableSize) {
                 Table[i] = Table[i - 1];
                 i++;
             }
         } else {
-            var N = (num === 18) ? (bstream.readBits(3) + 3) : (bstream.readBits(7) + 11);
+            N = (num === 18) ? (bstream.readBits(3) + 3) : (bstream.readBits(7) + 11);
 
             while (N-- > 0 && i < TableSize) {
                 Table[i++] = 0;
@@ -332,10 +333,10 @@ function RarReadTables(bstream) {
         }
     }
   
-    RarMakeDecodeTables(Table, 0, LD, rNC);
-    RarMakeDecodeTables(Table, rNC, DD, rDC);
-    RarMakeDecodeTables(Table, rNC + rDC, LDD, rLDC);
-    RarMakeDecodeTables(Table, rNC + rDC + rLDC, RD, rRC);
+    rarMakeDecodeTables(Table, 0, LD, rNC);
+    rarMakeDecodeTables(Table, rNC, DD, rDC);
+    rarMakeDecodeTables(Table, rNC + rDC, LDD, rLDC);
+    rarMakeDecodeTables(Table, rNC + rDC + rLDC, RD, rRC);
   
     for (i = UnpOldTable.length; i--;) {
         UnpOldTable[i] = Table[i];
@@ -348,20 +349,20 @@ function RarDecodeNumber(bstream, dec) {
     var DecodeLen = dec.DecodeLen, DecodePos = dec.DecodePos, DecodeNum = dec.DecodeNum;
     var bitField = bstream.getBits() & 0xfffe;
     //some sort of rolled out binary search
-    var bits = ((bitField < DecodeLen[8])?
+    var bits = ((bitField < DecodeLen[8]) ?
         ((bitField < DecodeLen[4]) ?
             ((bitField < DecodeLen[2]) ?
                 ((bitField < DecodeLen[1]) ? 1 : 2)
-            : ((bitField < DecodeLen[3]) ? 3 : 4))
-        : (bitField < DecodeLen[6])?
-            ((bitField < DecodeLen[5]) ? 5 : 6)
-                :((bitField < DecodeLen[7]) ? 7 : 8))
+                : ((bitField < DecodeLen[3]) ? 3 : 4))
+            : (bitField < DecodeLen[6]) ?
+                ((bitField < DecodeLen[5]) ? 5 : 6)
+                : ((bitField < DecodeLen[7]) ? 7 : 8))
         : ((bitField < DecodeLen[12]) ?
             ((bitField < DecodeLen[10]) ?
                 ((bitField < DecodeLen[9]) ? 9 : 10)
-            :((bitField < DecodeLen[11]) ? 11 : 12))
-        : (bitField < DecodeLen[14]) ?
-            ((bitField < DecodeLen[13]) ? 13 : 14)
+                : ((bitField < DecodeLen[11]) ? 11 : 12))
+            : (bitField < DecodeLen[14]) ?
+                ((bitField < DecodeLen[13]) ? 13 : 14)
                 : 15));
     bstream.readBits(bits);
     var N = DecodePos[bits] + ((bitField - DecodeLen[bits -1]) >>> (16 - bits));
@@ -370,7 +371,7 @@ function RarDecodeNumber(bstream, dec) {
 }
 
 
-function RarMakeDecodeTables(BitLength, offset, dec, size) {
+function rarMakeDecodeTables(BitLength, offset, dec, size) {
     var DecodeLen = dec.DecodeLen, DecodePos = dec.DecodePos, DecodeNum = dec.DecodeNum;
     var LenCount = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
         TmpPos = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
@@ -385,7 +386,7 @@ function RarMakeDecodeTables(BitLength, offset, dec, size) {
     DecodeLen[0] = 0;
   
     for (var I = 1; I < 16; ++I) {
-        N = 2 * (N+LenCount[I]);
+        N = 2 * (N + LenCount[I]);
         M = (N << (15-I));
         if (M > 0xFFFF)
             M = 0xFFFF;
@@ -393,9 +394,11 @@ function RarMakeDecodeTables(BitLength, offset, dec, size) {
         DecodePos[I] = DecodePos[I-1] + LenCount[I-1];
         TmpPos[I] = DecodePos[I];
     }
-    for (I = 0; I < size; ++I)
-    if (BitLength[I + offset] != 0)
-        DecodeNum[ TmpPos[ BitLength[offset + I] & 0xF ]++] = I;
+    for (I = 0; I < size; ++I) {
+        if (BitLength[I + offset] != 0) {
+            DecodeNum[ TmpPos[ BitLength[offset + I] & 0xF ]++] = I;
+        }
+    }
 }
 
 // TODO: implement
@@ -504,7 +507,7 @@ function RarReadTables20(bstream) {
     TableSize = rNC20 + rDC20 + rRC20;
     for (var I = 0; I < rBC20; I++)
     BitLength[I] = bstream.readBits(4);
-    RarMakeDecodeTables(BitLength, 0, BD, rBC20);
+    rarMakeDecodeTables(BitLength, 0, BD, rBC20);
     I = 0;
     while (I < TableSize) {
         var num = RarDecodeNumber(bstream, BD);
@@ -528,9 +531,9 @@ function RarReadTables20(bstream) {
             }
         }
     }
-    RarMakeDecodeTables(Table, 0, LD, rNC20);
-    RarMakeDecodeTables(Table, rNC20, DD, rDC20);
-    RarMakeDecodeTables(Table, rNC20 + rDC20, RD, rRC20);
+    rarMakeDecodeTables(Table, 0, LD, rNC20);
+    rarMakeDecodeTables(Table, rNC20, DD, rDC20);
+    rarMakeDecodeTables(Table, rNC20 + rDC20, RD, rRC20);
     for (var i = UnpOldTable20.length; i--;) UnpOldTable20[i] = Table[i];
 }
 
@@ -596,7 +599,7 @@ function Unpack29(bstream, Solid) {
                     } else {
                         var LowDist = RarDecodeNumber(bstream, LDD);
                         if (LowDist === 16) {
-                            lowDistRepCount = rLOW_DIST_REP_COUNT - 1;
+                            lowDistRepCount = rLowDistRepCount - 1;
                             Distance += prevLowDist;
                         } else {
                             Distance += LowDist;
@@ -774,8 +777,7 @@ var RarLocalFile = function(bstream) {
     if (this.header.headType != FILE_HEAD && this.header.headType != ENDARC_HEAD) {
         this.isValid = false;
         info("Error! RAR Volume did not include a FILE_HEAD header ");
-    }
-    else {
+    } else {
         // read in the compressed data
         this.fileData = null;
         if (this.header.packSize > 0) {
