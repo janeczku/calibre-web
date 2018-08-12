@@ -44,8 +44,8 @@ class server:
             web.app.logger.info('Unable to listen on \'\', trying on IPv4 only...')
             self.wsgiserver = WSGIServer(('0.0.0.0', web.ub.config.config_port), web.app, spawn=Pool(), **ssl_args)
             self.wsgiserver.serve_forever()
-        except:
-            pass
+        except Exception:
+            web.app.logger.info("Unknown error while starting gevent")
 
     def startServer(self):
         if gevent_present:
@@ -70,7 +70,7 @@ class server:
 
         if self.restart == True:
             web.app.logger.info("Performing restart of Calibre-web")
-            web.helper.global_eMailThread.stop()
+            web.helper.global_WorkerThread.stop()
             if os.name == 'nt':
                 arguments = ["\"" + sys.executable + "\""]
                 for e in sys.argv:
@@ -80,7 +80,7 @@ class server:
                 os.execl(sys.executable, sys.executable, *sys.argv)
         else:
             web.app.logger.info("Performing shutdown of Calibre-web")
-            web.helper.global_eMailThread.stop()
+            web.helper.global_WorkerThread.stop()
         sys.exit(0)
 
     def setRestartTyp(self,starttyp):
@@ -92,7 +92,8 @@ class server:
         else:
             self.wsgiserver.add_callback(self.wsgiserver.stop)
 
-    def getNameVersion(self):
+    @staticmethod
+    def getNameVersion():
         if gevent_present:
             return {'Gevent':'v'+geventVersion}
         else:

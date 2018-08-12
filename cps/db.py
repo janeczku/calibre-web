@@ -321,7 +321,7 @@ def setup_db():
     try:
         if not os.path.exists(dbpath):
             raise
-        engine = create_engine('sqlite:///' + dbpath, echo=False, isolation_level="SERIALIZABLE")
+        engine = create_engine('sqlite:///' + dbpath, echo=False, isolation_level="SERIALIZABLE", connect_args={'check_same_thread': False})
         conn = engine.connect()
     except Exception:
         content = ub.session.query(ub.Settings).first()
@@ -381,8 +381,9 @@ def setup_db():
                                                                            secondary=books_custom_column_links[cc_id[0]],
                                                                            backref='books'))
 
-    # Base.metadata.create_all(engine)
-    Session = sessionmaker()
-    Session.configure(bind=engine)
+
+    Session = scoped_session(sessionmaker(autocommit=False,
+                                             autoflush=False,
+                                             bind=engine))
     session = Session()
     return True

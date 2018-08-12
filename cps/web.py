@@ -29,14 +29,13 @@ import logging
 from logging.handlers import RotatingFileHandler
 from flask import (Flask, render_template, request, Response, redirect,
                    url_for, send_from_directory, make_response, g, flash,
-                   abort, Markup, stream_with_context)
+                   abort, Markup)
 from flask import __version__ as flaskVersion
 import cache_buster
 import ub
 from ub import config
 import helper
 import os
-import errno
 from sqlalchemy.sql.expression import func
 from sqlalchemy.sql.expression import false
 from sqlalchemy.exc import IntegrityError
@@ -349,25 +348,20 @@ def remote_login_required(f):
 def shortentitle_filter(s,nchar=20):
     text = s.split()
     res = ""  # result
-    sum = 0  # overall length
+    suml = 0  # overall length
     for line in text:
-        if sum >= 60:
+        if suml >= 60:
             res += '...'
             break
         # if word longer than 20 chars truncate line and append '...', otherwise add whole word to result
         # string, and summarize total length to stop at 60 chars
         if len(line) > nchar:
             res += line[:(nchar-3)] + '[..] '
-            sum += nchar+3
+            suml += nchar+3
         else:
             res += line + ' '
-            sum += len(line) + 1
+            suml += len(line) + 1
     return res.strip()
-    #if len(s) > 20:
-    #    s = s.split(':', 1)[0]
-    #    if len(s) > 20:
-    #        s = textwrap.wrap(s, 20, break_long_words=True)[0] + ' ...'
-    #return s
 
 
 @app.template_filter('mimetype')
@@ -784,7 +778,7 @@ def feed_series(book_id):
     off = request.args.get("offset")
     if not off:
         off = 0
-    entries, random, pagination = fill_indexpage((int(off) / (int(config.config_books_per_page)) + 1),
+    entries, __, pagination = fill_indexpage((int(off) / (int(config.config_books_per_page)) + 1),
                     db.Books, db.Books.series.any(db.Series.id == book_id), [db.Books.series_index])
     xml = render_title_template('feed.xml', entries=entries, pagination=pagination)
     response = make_response(xml)
@@ -889,7 +883,7 @@ def get_metadata_calibre_companion(uuid):
 @login_required
 def get_email_status_json():
     answer=list()
-    tasks=helper.global_eMailThread.get_taskstatus()
+    tasks=helper.global_WorkerThread.get_taskstatus()
     if not current_user.role_admin():
         for task in tasks:
             if task['user'] == current_user.nickname:
@@ -909,6 +903,32 @@ def get_email_status_json():
                 if 'starttime' not in  task:
                     task['starttime'] = ""
         answer = tasks
+    '''answer.append({'user': 'Test', 'starttime': '07.3.2018 15:23', 'progress': " 0 %", 'type': 'E-Mail',
+                             'runtime': '0 s', 'rt': 0, 'status': _('Waiting'),'id':1 })
+    answer.append({'user': 'Admin', 'starttime': '07.3.2018 15:33', 'progress': " 11 %", 'type': 'E-Mail',
+                   'runtime': '2 s', 'rt':2, 'status': _('Waiting'),'id':2})
+    answer.append({'user': 'Nanny', 'starttime': '8.3.2018 15:23', 'progress': " 2 %", 'type': 'E-Mail',
+                   'runtime': '32 s','rt':32, 'status': _('Waiting'),'id':3})
+    answer.append({'user': 'Guest', 'starttime': '09.3.2018 14:23', 'progress': " 44 %", 'type': 'E-Mail',
+                   'runtime': '7 s','rt':7, 'status': _('Waiting'),'id':4})
+    answer.append({'user': 'Guest', 'starttime': '09.3.2018 14:23', 'progress': " 44 %", 'type': 'E-Mail',
+                   'runtime': '22 s','rt':22, 'status': _('Waiting'),'id':5})
+    answer.append({'user': 'Guest', 'starttime': '09.3.2018 14:23', 'progress': " 44 %", 'type': 'E-Mail',
+                   'runtime': '17 s','rt':17, 'status': _('Waiting'),'id':6})
+    answer.append({'user': 'Guest', 'starttime': '09.3.2018 14:23', 'progress': " 44 %", 'type': 'E-Mail',
+                   'runtime': '72 s','rt':72, 'status': _('Waiting'),'id':7})
+    answer.append({'user': 'Guest', 'starttime': '19.3.2018 14:23', 'progress': " 44 %", 'type': 'E-Mail',
+                   'runtime': '1:07 s','rt':67, 'status': _('Waiting'),'id':8})
+    answer.append({'user': 'Guest', 'starttime': '18.2.2018 12:23', 'progress': " 44 %", 'type': 'E-Mail',
+                   'runtime': '2:07 s','rt':127, 'status': _('Waiting'),'id':9})
+    answer.append({'user': 'Guest', 'starttime': '09.3.2018 14:23', 'progress': " 44 %", 'type': 'E-Mail',
+                   'runtime': '27 s','rt':27, 'status': _('Waiting'),'id':10})
+    answer.append({'user': 'Guest', 'starttime': '09.3.2018 16:23', 'progress': " 44 %", 'type': 'E-Mail',
+                   'runtime': '73 s','rt':73, 'status': _('Waiting'),'id':11})
+    answer.append({'user': 'Guest', 'starttime': '09.3.2018 14:23', 'progress': " 44 %", 'type': 'E-Mail',
+                   'runtime': '71 s','rt':71, 'status': _('Waiting'),'id':12})
+    answer.append({'user': 'Guest', 'starttime': '09.3.2018 17:23', 'progress': " 44 %", 'type': 'E-Mail',
+                   'runtime': '27 s','rt':27, 'status': _('Waiting'),'id':13})'''
     js=json.dumps(answer)
     response = make_response(js)
     response.headers["Content-Type"] = "application/json; charset=utf-8"
@@ -1184,7 +1204,7 @@ def author(book_id, page):
             gc = GoodreadsClient(config.config_goodreads_api_key, config.config_goodreads_api_secret)
             author_info = gc.find_author(author_name=name)
             other_books = get_unique_other_books(entries.all(), author_info.books)
-        except:
+        except Exception:
             # Skip goodreads, if site is down/inaccessible
             app.logger.error('Goodreads website is down/inaccessible')
 
@@ -1424,7 +1444,7 @@ def bookmark(book_id, book_format):
 def get_tasks_status():
     # if current user admin, show all email, otherwise only own emails
     answer=list()
-    tasks=helper.global_eMailThread.get_taskstatus()
+    tasks=helper.global_WorkerThread.get_taskstatus()
     if not current_user.role_admin():
         for task in tasks:
             if task['user'] == current_user.nickname:
@@ -1492,9 +1512,7 @@ def delete_book(book_id, book_format):
                 # delete book from Shelfs, Downloads, Read list
                 ub.session.query(ub.BookShelf).filter(ub.BookShelf.book_id == book_id).delete()
                 ub.session.query(ub.ReadBook).filter(ub.ReadBook.book_id == book_id).delete()
-                # ToDo check Downloads.book right
                 ub.delete_download(book_id)
-                # ub.session.query(ub.Downloads).filter(ub.Downloads.book_id == book_id).delete()
                 ub.session.commit()
 
                 # check if only this book links to:
@@ -2735,7 +2753,6 @@ def configuration_helper(origin):
                                              gdriveError=gdriveError, goodreads=goodreads_support,
                                              title=_(u"Basic Configuration"), page="config")
         if reboot_required:
-            # db.engine.dispose() # ToDo verify correct
             ub.session.close()
             ub.engine.dispose()
             # stop Server
@@ -3066,7 +3083,6 @@ def edit_book(book_id):
         if is_format:
             # Format entry already exists, no need to update the database
             app.logger.info('Bokk format already existing')
-            pass
         else:
             db_format = db.Data(book_id, file_ext.upper(), file_size, file_name)
             db.session.add(db_format)
