@@ -5,6 +5,7 @@ try:
     from apiclient import errors
 except ImportError:
     pass
+
 import os
 from ub import config
 import cli
@@ -179,9 +180,8 @@ def getEbooksFolderId(drive=None):
         gDriveId = GdriveId()
         try:
             gDriveId.gdrive_id = getEbooksFolder(drive)['id']
-        except:
-            pass
-            # ToDo Path not exisiting
+        except Exception:
+            web.app.logger.error('Error gDrive, root ID not found')
         gDriveId.path = '/'
         session.merge(gDriveId)
         session.commit()
@@ -281,19 +281,6 @@ def moveGdriveFolderRemote(origin_file, target_folder):
     # if not len(children['items']):
     #    drive.auth.service.files().delete(fileId=previous_parents).execute()
 
-
-#def downloadFile(path, filename, output):
-#    f = getFileFromEbooksFolder(path, filename)
-#    return f.GetContentFile(output)
-
-# ToDo: Check purpose Parameter f ??, purpose of function ?
-def backupCalibreDbAndOptionalDownload(drive):
-    drive = getDrive(drive)
-    metaDataFile = "'%s' in parents and title = 'metadata.db' and trashed = false" % getEbooksFolderId()
-    fileList = drive.ListFile({'q': metaDataFile}).GetList()
-    #databaseFile = fileList[0]
-    #if f:
-    #   databaseFile.GetContentFile(f)
 
 
 def copyToDrive(drive, uploadFile, createRoot, replaceFiles,
@@ -447,7 +434,6 @@ def deleteDatabaseOnChange():
     session.commit()
 
 def updateGdriveCalibreFromLocal():
-    # backupCalibreDbAndOptionalDownload(Gdrive.Instance().drive)
     copyToDrive(Gdrive.Instance().drive, config.config_calibre_dir, False, True)
     for x in os.listdir(config.config_calibre_dir):
         if os.path.isdir(os.path.join(config.config_calibre_dir, x)):

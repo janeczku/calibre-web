@@ -8,28 +8,12 @@ import logging
 from tempfile import gettempdir
 import sys
 import os
-import traceback
 import re
 import unicodedata
 from io import BytesIO
-import converter
-import asyncmail
+import worker
 import time
 
-try:
-    from StringIO import StringIO
-    from email.MIMEBase import MIMEBase
-    from email.MIMEMultipart import MIMEMultipart
-    from email.MIMEText import MIMEText
-except ImportError as e:
-    from io import StringIO
-    from email.mime.base import MIMEBase
-    from email.mime.multipart import MIMEMultipart
-    from email.mime.text import MIMEText
-
-from email import encoders
-from email.utils import formatdate
-from email.utils import make_msgid
 from flask import send_from_directory, make_response, redirect, abort
 from flask_babel import gettext as _
 import threading
@@ -51,29 +35,25 @@ except ImportError:
 
 # Global variables
 updater_thread = None
-global_eMailThread = asyncmail.EMailThread()
-global_eMailThread.start()
-
-RET_SUCCESS = 1
-RET_FAIL = 0
+global_WorkerThread = worker.WorkerThread()
+global_WorkerThread.start()
 
 
 def update_download(book_id, user_id):
     check = ub.session.query(ub.Downloads).filter(ub.Downloads.user_id == user_id).filter(ub.Downloads.book_id ==
                                                                                           book_id).first()
-
     if not check:
         new_download = ub.Downloads(user_id=user_id, book_id=book_id)
         ub.session.add(new_download)
         ub.session.commit()
 
-def make_mobi(book_id, calibrepath):
+def make_mobi(book_id, calibrepath, user_id, kindle_mail):
     book = db.session.query(db.Books).filter(db.Books.id == book_id).first()
     data = db.session.query(db.Data).filter(db.Data.book == book.id).filter(db.Data.format == 'EPUB').first()
     if not data:
         error_message = _(u"epub format not found for book id: %(book)d", book=book_id)
         app.logger.error("make_mobi: " + error_message)
-        return error_message, RET_FAIL
+        return error_message
     if ub.config.config_use_google_drive:
         df = gd.getFileFromEbooksFolder(book.path, data.name + u".epub")
         if df:
@@ -82,120 +62,59 @@ def make_mobi(book_id, calibrepath):
                 os.makedirs(os.path.join(calibrepath, book.path))
             df.GetContentFile(datafile)
         else:
-            error_message = "make_mobi: epub not found on gdrive: %s.epub" % data.name
-            return error_message, RET_FAIL
-    # else:
+            error_message = (u"make_mobi: epub not found on gdrive: %s.epub" % data.name)
+            return error_message
     file_path = os.path.join(calibrepath, book.path, data.name)
     if os.path.exists(file_path + u".epub"):
-        # convert book, and upload in case of google drive
-        res = converter.convert_mobi(file_path, book)
-        if ub.config.config_use_google_drive:
-            gd.updateGdriveCalibreFromLocal()
-            # time.sleep(10)
-        return res
+        # append converter to queue
+        global_WorkerThread.add_convert(file_path, book.id, user_id, _(u"Convert: %s" % book.title), ub.get_mail_settings(),
+                                      kindle_mail)
+        return None
     else:
-        error_message = "make_mobi: epub not found: %s.epub" % file_path
-        return error_message, RET_FAIL
+        error_message = (u"make_mobi: epub not found: %s.epub" % file_path)
+        return error_message
 
 
 def send_test_mail(kindle_mail, user_name):
-    msg = MIMEMultipart()
-    msg['Subject'] = _(u'Calibre-web test email')
-    text = _(u'This email has been sent via calibre web.')
-    msg.attach(MIMEText(text.encode('UTF-8'), 'plain', 'UTF-8'))
-    global_eMailThread.add_email(msg,ub.get_mail_settings(),kindle_mail, user_name, _('Test E-Mail'))
-    return # send_raw_email(kindle_mail, msg)
+    global_WorkerThread.add_email(_(u'Calibre-web test email'),None, None, ub.get_mail_settings(),
+                                  kindle_mail, user_name, _(u"Test E-Mail"))
+    return
 
-
+# Files are processed in the following order/priority:
+# 1: If Mobi file is exisiting, it's directly send to kindle email,
+# 2: If Epub file is exisiting, it's converted and send to kindle email
+# 3: If Pdf file is exisiting, it's directly send to kindle email,
 def send_mail(book_id, kindle_mail, calibrepath, user_id):
     """Send email with attachments"""
-    # create MIME message
-    result= None
-    msg = MIMEMultipart()
-    msg['Subject'] = _(u'Send to Kindle')
-    msg['Message-Id'] = make_msgid('calibre-web')
-    msg['Date'] = formatdate(localtime=True)
-    text = _(u'This email has been sent via calibre web.')
-    msg.attach(MIMEText(text.encode('UTF-8'), 'plain', 'UTF-8'))
-
     book = db.session.query(db.Books).filter(db.Books.id == book_id).first()
     data = db.session.query(db.Data).filter(db.Data.book == book.id).all()
 
     formats = {}
-    index = 0
-    for indx,entry in enumerate(data):
+    for entry in data:
         if entry.format == "MOBI":
             formats["mobi"] = entry.name + ".mobi"
         if entry.format == "EPUB":
             formats["epub"] = entry.name + ".epub"
-            index = indx
         if entry.format == "PDF":
             formats["pdf"] = entry.name + ".pdf"
 
     if len(formats) == 0:
-        return _("Could not find any formats suitable for sending by email")
+        return _(u"Could not find any formats suitable for sending by email")
 
     if 'mobi' in formats:
-        result = get_attachment(calibrepath, book.path, formats['mobi'])
-        if result:
-            msg.attach(result)
+        result = formats['mobi']
     elif 'epub' in formats:
-        # returns filename if sucess, otherwise errormessage
-        data, resultCode = make_mobi(book.id, calibrepath)
-        if resultCode == RET_SUCCESS:
-            result = get_attachment(calibrepath, book.path, os.path.basename(data))
-            if result:
-                msg.attach(result)
-        else:
-            app.logger.error(data)
-            return data
+        # returns None if sucess, otherwise errormessage
+        return make_mobi(book.id, calibrepath, user_id, kindle_mail)
     elif 'pdf' in formats:
-        result = get_attachment(calibrepath, book.path, formats['pdf'])
-        if result:
-            msg.attach(result)
+        result = formats['pdf'] # worker.get_attachment()
     else:
-        return _("Could not find any formats suitable for sending by email")
+        return _(u"Could not find any formats suitable for sending by email")
     if result:
-        global_eMailThread.add_email(msg,ub.get_mail_settings(),kindle_mail, user_id, _(u"E-Mail: %s" % book.title))
-        return None # send_raw_email(kindle_mail, msg)
+        global_WorkerThread.add_email(_(u"Send to Kindle"), book.path, result, ub.get_mail_settings(),
+                                      kindle_mail, user_id, _(u"E-Mail: %s" % book.title))
     else:
-        return _('The requested file could not be read. Maybe wrong permissions?')
-
-
-# For gdrive download book from gdrive to calibredir (temp dir for books), read contents in both cases and append
-# it in MIME Base64 encoded to
-def get_attachment(calibrepath, bookpath, filename):
-    """Get file as MIMEBase message"""
-    if ub.config.config_use_google_drive:
-        df = gd.getFileFromEbooksFolder(bookpath, filename)
-        if df:
-
-            datafile = os.path.join(calibrepath, bookpath, filename)
-            if not os.path.exists(os.path.join(calibrepath, bookpath)):
-                os.makedirs(os.path.join(calibrepath, bookpath))
-            df.GetContentFile(datafile)
-        else:
-            return None
-        file_ = open(datafile, 'rb')
-        data = file_.read()
-        file_.close()
-        os.remove(datafile)
-    else:
-        try:
-            file_ = open(os.path.join(calibrepath, bookpath, filename), 'rb')
-            data = file_.read()
-            file_.close()
-        except IOError:
-            traceback.print_exc()
-            app.logger.error = u'The requested file could not be read. Maybe wrong permissions?'
-            return None
-
-    attachment = MIMEBase('application', 'octet-stream')
-    attachment.set_payload(data)
-    encoders.encode_base64(attachment)
-    attachment.add_header('Content-Disposition', 'attachment',
-                          filename=filename)
-    return attachment
+        return _(u"The requested file could not be read. Maybe wrong permissions?")
 
 
 def get_valid_filename(value, replace_whitespace=True):
@@ -225,7 +144,6 @@ def get_valid_filename(value, replace_whitespace=True):
     value = value[:128]
     if not value:
         raise ValueError("Filename cannot be empty")
-
     return value
 
 

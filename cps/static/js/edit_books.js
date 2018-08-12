@@ -80,7 +80,7 @@ function prefixedSource(prefix, query, cb, bhAdapter) {
 
 function getPath() {
     var jsFileLocation = $("script[src*=edit_books]").attr("src");  // the js file path
-    return jsFileLocation.substr(0,jsFileLocation.search("/static/js/edit_books.js"));   // the js folder path
+    return jsFileLocation.substr(0, jsFileLocation.search("/static/js/edit_books.js"));   // the js folder path
 }
 
 var authors = new Bloodhound({
