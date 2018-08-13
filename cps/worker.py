@@ -112,12 +112,15 @@ class email(smtplib.SMTP):
                     self.transferSize = len(strg)
                     lock.release()
                     for i in range(0, self.transferSize, chunksize):
-                        self.sock.send(strg[i:i+chunksize])
+                        if type(strg) == bytes:
+                            self.sock.send((strg[i:i+chunksize]))
+                        else:
+                            self.sock.send((strg[i:i + chunksize]).encode('utf-8'))
                         lock.acquire()
                         self.progress = i
                         lock.release()
                 else:
-                    self.sock.sendall(strg)
+                    self.sock.sendall(strg.encode('utf-8'))
             except socket.error:
                 self.close()
                 raise smtplib.SMTPServerDisconnected('Server not connected')
