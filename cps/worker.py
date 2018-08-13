@@ -464,7 +464,7 @@ class WorkerThread(threading.Thread):
 
             sys.stderr = org_stderr
 
-        except (socket.error, smtplib.SMTPRecipientsRefused, smtplib.SMTPException):
+        except (socket.error, smtplib.SMTPRecipientsRefused, smtplib.SMTPException) as e:
             self.queue[self.current]['status'] = STAT_FAIL
             self.UIqueue[self.current]['status'] = _('Failed')
             self.UIqueue[self.current]['progress'] = "100 %"
