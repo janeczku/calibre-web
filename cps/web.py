@@ -2785,7 +2785,7 @@ def configuration_helper(origin):
             app.logger.info('Reboot required, restarting')
         if origin:
             success = True
-    if is_gdrive_ready():
+    if is_gdrive_ready() and gdrive_support == True:
         gdrivefolders=gdriveutils.listRootFolders()
     else:
         gdrivefolders=None
