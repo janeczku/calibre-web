@@ -139,7 +139,7 @@ class email(smtplib.SMTP):
 
 
 # Class for sending ssl encrypted email with ability to get current progress
-class email_SSL(email):
+class email_SSL(email, smtplib.SMTP_SSL):
 
     def __init__(self, *args, **kwargs):
         smtplib.SMTP_SSL.__init__(self, *args, **kwargs)
@@ -235,9 +235,12 @@ class WorkerThread(threading.Thread):
             self.UIqueue[self.current]['message'] = error_message
             return
         try:
-            p = subprocess.Popen(
-                (web.ub.config.config_converterpath + " \"" + file_path + u".epub\"").encode(sys.getfilesystemencoding()),
-                stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+            command = (web.ub.config.config_converterpath + " \"" + file_path + u".epub\"").encode(sys.getfilesystemencoding())
+            if sys.version_info > (3, 0):
+                p = subprocess.Popen(command.decode('Utf-8'), stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+            else:
+                p = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+
         except Exception:
             error_message = _(u"kindlegen failed, no execution permissions")
             web.app.logger.error("convert_kindlegen: " + error_message)
@@ -251,7 +254,9 @@ class WorkerThread(threading.Thread):
         # Poll process for new output until finished
         while True:
             nextline = p.stdout.readline()
-            if nextline == '' and p.poll() is not None:
+            if sys.version_info > (3, 0):
+                nextline = nextline.decode('Utf-8','backslashreplace')
+            if nextline == u'' and p.poll() is not None:
                 break
             if nextline != "\r\n":
                 # Format of error message (kindlegen translates its output texts):
@@ -259,8 +264,13 @@ class WorkerThread(threading.Thread):
                 conv_error = re.search(".*\(.*\):(E\d+):\s(.*)", nextline)
                 # If error occoures, log in every case
                 if conv_error:
-                    error_message = _(u"Kindlegen failed with Error %(error)s. Message: %(message)s",
+                    if sys.version_info > (3, 0):
+                        error_message = _(u"Kindlegen failed with Error %(error)s. Message: %(message)s",
+                                      error=conv_error.group(1), message=conv_error.group(2))
+                    else:
+                        error_message = _(u"Kindlegen failed with Error %(error)s. Message: %(message)s",
                                       error=conv_error.group(1), message=conv_error.group(2).decode('utf-8'))
+
                     web.app.logger.info("convert_kindlegen: " + error_message)
                     web.app.logger.info(nextline.strip('\r\n'))
                 else:
@@ -311,10 +321,13 @@ class WorkerThread(threading.Thread):
             self.UIqueue[self.current]['message'] = error_message
             return
         try:
-            command = ("\"" + web.ub.config.config_converterpath + "\" \"" + file_path + u".epub\" \""
+            command = (u"\"" + web.ub.config.config_converterpath + u"\" \"" + file_path + u".epub\" \""
                        + file_path + u".mobi\" " + web.ub.config.config_calibre).encode(sys.getfilesystemencoding())
-            p = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
-        except Exception:
+            if sys.version_info > (3, 0):
+                p = subprocess.Popen(command.decode('Utf-8'), stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+            else:
+                p = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+        except Exception as e:
             error_message = _(u"Ebook-convert failed, no execution permissions")
             web.app.logger.error("convert_calibre: " + error_message)
             self.queue[self.current]['status'] = STAT_FAIL
@@ -327,12 +340,18 @@ class WorkerThread(threading.Thread):
         # Poll process for new output until finished
         while True:
             nextline = p.stdout.readline()
+            if sys.version_info > (3, 0):
+                nextline = nextline.decode('Utf-8','backslashreplace')
             if nextline == '' and p.poll() is not None:
                 break
             progress = re.search("(\d+)%\s.*", nextline)
             if progress:
                 self.UIqueue[self.current]['progress'] = progress.group(1) + '%'
-            web.app.logger.debug(nextline.strip('\r\n').decode(sys.getfilesystemencoding()))
+            if sys.version_info > (3, 0):
+                web.app.logger.debug(nextline.strip('\r\n'))
+            else:
+                web.app.logger.debug(nextline.strip('\r\n').decode(sys.getfilesystemencoding()))
+
 
         check = p.returncode
         if check == 0:
