@@ -84,15 +84,11 @@ def get_attachment(bookpath, filename):
     return attachment
 
 
-
 # Class for sending email with ability to get current progress
-class email(smtplib.SMTP):
+class emailbase():
 
     transferSize = 0
     progress = 0
-
-    def __init__(self, *args, **kwargs):
-        smtplib.SMTP.__init__(self, *args, **kwargs)
 
     def data(self, msg):
         self.transferSize = len(msg)
@@ -138,8 +134,15 @@ class email(smtplib.SMTP):
             return "100 %"
 
 
-# Class for sending ssl encrypted email with ability to get current progress
-class email_SSL(email, smtplib.SMTP_SSL):
+# Class for sending email with ability to get current progress, derived from emailbase class
+class email(emailbase, smtplib.SMTP):
+
+    def __init__(self, *args, **kwargs):
+        smtplib.SMTP.__init__(self, *args, **kwargs)
+
+
+# Class for sending ssl encrypted email with ability to get current progress, , derived from emailbase class
+class email_SSL(emailbase, smtplib.SMTP_SSL):
 
     def __init__(self, *args, **kwargs):
         smtplib.SMTP_SSL.__init__(self, *args, **kwargs)
