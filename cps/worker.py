@@ -13,7 +13,6 @@ import os
 from email.generator import Generator
 import web
 from flask_babel import gettext as _
-# from babel.dates import format_datetime
 import re
 import gdriveutils as gd
 import subprocess
@@ -42,6 +41,7 @@ STAT_FINISH_SUCCESS = 3
 
 TASK_EMAIL = 1
 TASK_CONVERT = 2
+TASK_UPLOAD = 3
 
 RET_FAIL = 0
 RET_SUCCESS = 1
@@ -55,7 +55,6 @@ def get_attachment(bookpath, filename):
     if web.ub.config.config_use_google_drive:
         df = gd.getFileFromEbooksFolder(bookpath, filename)
         if df:
-
             datafile = os.path.join(calibrepath, bookpath, filename)
             if not os.path.exists(os.path.join(calibrepath, bookpath)):
                 os.makedirs(os.path.join(calibrepath, bookpath))
@@ -127,7 +126,7 @@ class emailbase():
         if self.transferSize:
             lock2 = threading.Lock()
             lock2.acquire()
-            value = round(float(self.progress) / float(self.transferSize),2)*100
+            value = int((float(self.progress) / float(self.transferSize))*100)
             lock2.release()
             return str(value) + ' %'
         else:
@@ -173,6 +172,7 @@ class WorkerThread(threading.Thread):
                     self.send_raw_email()
                 if self.queue[self.current]['typ'] == TASK_CONVERT:
                     self.convert_mobi()
+                # TASK_UPLOAD is handled implicitly
                 self.current += 1
             else:
                 doLock.release()
@@ -205,17 +205,14 @@ class WorkerThread(threading.Thread):
                 self.UIqueue[self.current]['runtime'] = self._formatRuntime(
                                                         datetime.now() - self.queue[self.current]['starttime'])
         return self.UIqueue
-
+        
     def convert_mobi(self):
         # convert book, and upload in case of google drive
         self.queue[self.current]['status'] = STAT_STARTED
         self.UIqueue[self.current]['status'] = _('Started')
         self.queue[self.current]['starttime'] = datetime.now()
         self.UIqueue[self.current]['formStarttime'] = self.queue[self.current]['starttime']
-        if web.ub.config.config_ebookconverter == 2:
-            filename = self.convert_calibre()
-        else:
-            filename = self.convert_kindlegen()
+        filename=self.convert()
         if web.ub.config.config_use_google_drive:
             gd.updateGdriveCalibreFromLocal()
         if(filename):
@@ -223,19 +220,95 @@ class WorkerThread(threading.Thread):
                        self.queue[self.current]['settings'], self.queue[self.current]['kindle'],
                        self.UIqueue[self.current]['user'], _(u"E-Mail: %s" % self.queue[self.current]['title']))
 
-    def convert_kindlegen(self):
+    def convert(self):
+        error_message = None
+        file_path = self.queue[self.current]['file_path']
+        bookid = self.queue[self.current]['bookid']
+        # check if converter-excecutable is existing
+        if not os.path.exists(web.ub.config.config_converterpath):
+            self._handleError(_(u"Convertertool %(converter)s not found", converter=web.ub.config.config_converterpath))
+            return
+        try:
+            # check which converter to use kindlegen is "1"
+            if web.ub.config.config_ebookconverter == 1:
+                command = (web.ub.config.config_converterpath + u" \"" + file_path + u".epub\"").encode(sys.getfilesystemencoding())
+            else:           
+                command = (u"\"" + web.ub.config.config_converterpath + u"\" \"" + file_path + u".epub\" \""
+                    + file_path + u".mobi\" " + web.ub.config.config_calibre).encode(sys.getfilesystemencoding())
+
+            if sys.version_info > (3, 0):
+                command = command.decode('Utf-8')
+        
+            p = subprocess.Popen(command, stdout=subprocess.PIPE)
+        except Exception as e:
+            self._handleError(_(u"Ebook-converter failed, no execution permissions"))
+            return
+        if web.ub.config.config_ebookconverter == 1:
+            nextline = p.communicate()[0]
+            # Format of error message (kindlegen translates its output texts):
+            # Error(prcgen):E23006: Language not recognized in metadata.The dc:Language field is mandatory.Aborting.
+            conv_error = re.search(".*\(.*\):(E\d+):\s(.*)", nextline, re.MULTILINE)
+            # If error occoures, log in every case
+            if conv_error:
+                error_message = _(u"Kindlegen failed with Error %(error)s. Message: %(message)s",
+                                  error=conv_error.group(1), message=conv_error.group(2).strip())
+                web.app.logger.info("convert_kindlegen: " + error_message)
+            else:
+                web.app.logger.debug("convert_kindlegen: " + nextline)
+
+        else:
+            while p.poll() is None:
+                nextline = p.stdout.readline()
+                if sys.version_info > (3, 0):
+                    nextline = nextline.decode('Utf-8', 'backslashreplace')
+                # if nextline == '' and p.poll() is not None:
+                #    break
+                # while p.poll() is None:
+                web.app.logger.debug(nextline.strip('\r\n'))
+                # parse calibre-converter
+                progress = re.search("(\d+)%\s.*", nextline)
+                if progress:
+                    self.UIqueue[self.current]['progress'] = progress.group(1) + ' %'
+                # if nextline != "\r\n" and web.ub.config.config_ebookconverter == 1:
+
+        #process returncode
+        check = p.returncode
+        # kindlegen returncodes
+        # 0 = Info(prcgen):I1036: Mobi file built successfully
+        # 1 = Info(prcgen):I1037: Mobi file built with WARNINGS!
+        # 2 = Info(prcgen):I1038: MOBI file could not be generated because of errors! 
+        if ( check < 2 and web.ub.config.config_ebookconverter == 1) or \
+                (check == 0 and web.ub.config.config_ebookconverter == 2):
+            cur_book = web.db.session.query(web.db.Books).filter(web.db.Books.id == bookid).first()
+            new_format = web.db.Data(name=cur_book.data[0].name,book_format="MOBI",
+                                     book=bookid,uncompressed_size=os.path.getsize(file_path + ".mobi"))
+            cur_book.data.append(new_format)
+            web.db.session.commit()
+            self.queue[self.current]['path'] = cur_book.path
+            self.queue[self.current]['title'] = cur_book.title
+            if web.ub.config.config_use_google_drive:
+                os.remove(file_path + u".epub")
+            self.queue[self.current]['status'] = STAT_FINISH_SUCCESS
+            self.UIqueue[self.current]['status'] = _('Finished')
+            self.UIqueue[self.current]['progress'] = "100 %"
+            self.UIqueue[self.current]['runtime'] = self._formatRuntime(
+                                                    datetime.now() - self.queue[self.current]['starttime'])
+            return file_path + ".mobi" 
+        else:
+            web.app.logger.info("ebook converter failed with error while converting book")
+            if not error_message:       # ToDo Check         
+                error_message = 'Ebook converter failed with unknown error'
+            self._handleError(error_message)
+            return
+                    
+
+                       
+    '''def convert_kindlegen(self):
         error_message = None
         file_path = self.queue[self.current]['file_path']
         bookid = self.queue[self.current]['bookid']
         if not os.path.exists(web.ub.config.config_converterpath):
-            error_message = _(u"kindlegen binary %(kindlepath)s not found", kindlepath=web.ub.config.config_converterpath)
-            web.app.logger.error("convert_kindlegen: " + error_message)
-            self.queue[self.current]['status'] = STAT_FAIL
-            self.UIqueue[self.current]['status'] = _('Failed')
-            self.UIqueue[self.current]['progress'] = "100 %"
-            self.UIqueue[self.current]['runtime'] = self._formatRuntime(
-                                                    datetime.now() - self.queue[self.current]['starttime'])
-            self.UIqueue[self.current]['message'] = error_message
+            self._handleError(_(u"kindlegen binary %(kindlepath)s not found", kindlepath=web.ub.config.config_converterpath))
             return
         try:
             command = (web.ub.config.config_converterpath + " \"" + file_path + u".epub\"").encode(sys.getfilesystemencoding())
@@ -245,14 +318,7 @@ class WorkerThread(threading.Thread):
                 p = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
 
         except Exception:
-            error_message = _(u"kindlegen failed, no execution permissions")
-            web.app.logger.error("convert_kindlegen: " + error_message)
-            self.queue[self.current]['status'] = STAT_FAIL
-            self.UIqueue[self.current]['status'] = _('Failed')
-            self.UIqueue[self.current]['progress'] = "100 %"
-            self.UIqueue[self.current]['runtime'] = self._formatRuntime(
-                                                    datetime.now() - self.queue[self.current]['starttime'])
-            self.UIqueue[self.current]['message'] = error_message
+            self._handleError(_(u"kindlegen failed, no execution permissions"))
             return
         # Poll process for new output until finished
         while True:
@@ -295,33 +361,21 @@ class WorkerThread(threading.Thread):
             self.UIqueue[self.current]['progress'] = "100 %"
             self.UIqueue[self.current]['runtime'] = self._formatRuntime(
                                                     datetime.now() - self.queue[self.current]['starttime'])
-            return file_path + ".mobi" #, RET_SUCCESS
+            return file_path + ".mobi" 
         else:
             web.app.logger.info("convert_kindlegen: kindlegen failed with error while converting book")
-            if not error_message:
+            if not error_message:                
                 error_message = 'kindlegen failed, no excecution permissions'
-            self.queue[self.current]['status'] = STAT_FAIL
-            self.UIqueue[self.current]['status'] = _('Failed')
-            self.UIqueue[self.current]['progress'] = "100 %"
-            self.UIqueue[self.current]['runtime'] = self._formatRuntime(
-                                                    datetime.now() - self.queue[self.current]['starttime'])
-            self.UIqueue[self.current]['message'] = error_message
-            return # error_message, RET_FAIL
+            self._handleError(error_message)
+            return
 
     def convert_calibre(self):
         error_message = None
         file_path = self.queue[self.current]['file_path']
         bookid = self.queue[self.current]['bookid']
         if not os.path.exists(web.ub.config.config_converterpath):
-            error_message = _(u"Ebook-convert binary %(converterpath)s not found",
-                              converterpath=web.ub.config.config_converterpath)
-            web.app.logger.error("convert_calibre: " + error_message)
-            self.queue[self.current]['status'] = STAT_FAIL
-            self.UIqueue[self.current]['status'] = _('Failed')
-            self.UIqueue[self.current]['progress'] = "100 %"
-            self.UIqueue[self.current]['runtime'] = self._formatRuntime(
-                                                    datetime.now() - self.queue[self.current]['starttime'])
-            self.UIqueue[self.current]['message'] = error_message
+            self._handleError(_(u"Ebook-convert binary %(converterpath)s not found",
+                              converterpath=web.ub.config.config_converterpath))
             return
         try:
             command = (u"\"" + web.ub.config.config_converterpath + u"\" \"" + file_path + u".epub\" \""
@@ -330,16 +384,9 @@ class WorkerThread(threading.Thread):
                 p = subprocess.Popen(command.decode('Utf-8'), stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
             else:
                 p = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
-        except Exception as e:
-            error_message = _(u"Ebook-convert failed, no execution permissions")
-            web.app.logger.error("convert_calibre: " + error_message)
-            self.queue[self.current]['status'] = STAT_FAIL
-            self.UIqueue[self.current]['status'] = _('Failed')
-            self.UIqueue[self.current]['progress'] = "100 %"
-            self.UIqueue[self.current]['runtime'] = self._formatRuntime(
-                                                    datetime.now() - self.queue[self.current]['starttime'])
-            self.UIqueue[self.current]['message'] = error_message
-            return # error_message, RET_FAIL
+        except Exception:
+            self._handleError(_(u"Ebook-convert failed, no execution permissions"))
+            return
         # Poll process for new output until finished
         while True:
             nextline = p.stdout.readline()
@@ -354,8 +401,6 @@ class WorkerThread(threading.Thread):
                 web.app.logger.debug(nextline.strip('\r\n'))
             else:
                 web.app.logger.debug(nextline.strip('\r\n').decode(sys.getfilesystemencoding()))
-
-
         check = p.returncode
         if check == 0:
             cur_book = web.db.session.query(web.db.Books).filter(web.db.Books.id == bookid).first()
@@ -377,13 +422,8 @@ class WorkerThread(threading.Thread):
             web.app.logger.info("convert_calibre: Ebook-convert failed with error while converting book")
             if not error_message:
                 error_message = 'Ebook-convert failed, no excecution permissions'
-            self.queue[self.current]['status'] = STAT_FAIL
-            self.UIqueue[self.current]['status'] = _('Failed')
-            self.UIqueue[self.current]['progress'] = "100 %"
-            self.UIqueue[self.current]['runtime'] = self._formatRuntime(
-                                                    datetime.now() - self.queue[self.current]['starttime'])
-            self.UIqueue[self.current]['message'] = error_message
-            return # error_message, RET_FAIL
+            self._handleError(error_message)                
+            return'''
 
     def add_convert(self, file_path, bookid, user_name, typ, settings, kindle_mail):
         addLock = threading.Lock()
@@ -418,7 +458,27 @@ class WorkerThread(threading.Thread):
         self.last=len(self.queue)
         addLock.release()
 
+    def add_upload(self, user_name, typ):
+        # if more than 20 entries in the list, clean the list
+        addLock = threading.Lock()
+        addLock.acquire()
+        if self.last >= 20:
+            self.delete_completed_tasks()
+        # progress=100%, runtime=0, and status finished
+        self.queue.append({'starttime': datetime.now(), 'status': STAT_FINISH_SUCCESS, 'typ': TASK_UPLOAD})
+        self.UIqueue.append({'user': user_name, 'formStarttime': '', 'progress': "100 %", 'type': typ,
+                             'runtime': '0 s', 'status': _('Finished'),'id': self.id })
+        self.UIqueue[self.current]['formStarttime'] = self.queue[self.current]['starttime']
+        self.id += 1
+        self.last=len(self.queue)
+        addLock.release()
+    
+        
     def send_raw_email(self):
+        self.queue[self.current]['starttime'] = datetime.now()
+        self.UIqueue[self.current]['formStarttime'] = self.queue[self.current]['starttime'] 
+        self.queue[self.current]['status'] = STAT_STARTED
+        self.UIqueue[self.current]['status'] = _('Started')
         obj=self.queue[self.current]
         # create MIME message
         msg = MIMEMultipart()
@@ -432,13 +492,7 @@ class WorkerThread(threading.Thread):
             if result:
                 msg.attach(result)
             else:
-                self.queue[self.current]['status'] = STAT_FAIL
-                self.UIqueue[self.current]['status'] = _('Failed')
-                self.UIqueue[self.current]['progress'] = "100 %"
-                self.queue[self.current]['starttime'] = datetime.now()
-                self.UIqueue[self.current]['formStarttime'] = self.queue[self.current]['starttime']
-                self.UIqueue[self.current]['runtime'] = self._formatRuntime(
-                    datetime.now() - self.queue[self.current]['starttime'])
+                self._handleError(u"Attachment not found")
                 return
 
         msg['From'] = obj['settings']["mail_from"]
@@ -458,12 +512,6 @@ class WorkerThread(threading.Thread):
 
             org_stderr = sys.stderr
             sys.stderr = StderrLogger()
-
-            self.queue[self.current]['status'] = STAT_STARTED
-            self.UIqueue[self.current]['status'] = _('Started')
-            self.queue[self.current]['starttime'] = datetime.now()
-            self.UIqueue[self.current]['formStarttime'] = self.queue[self.current]['starttime']
-
 
             if use_ssl == 2:
                 self.asyncSMTP = email_SSL(obj['settings']["mail_server"], obj['settings']["mail_port"], timeout)
@@ -490,13 +538,8 @@ class WorkerThread(threading.Thread):
             sys.stderr = org_stderr
 
         except (socket.error, smtplib.SMTPRecipientsRefused, smtplib.SMTPException) as e:
-            self.queue[self.current]['status'] = STAT_FAIL
-            self.UIqueue[self.current]['status'] = _('Failed')
-            self.UIqueue[self.current]['progress'] = "100 %"
-            self.UIqueue[self.current]['runtime'] = self._formatRuntime(
-                                                    datetime.now() - self.queue[self.current]['starttime'])
-            web.app.logger.error(e)
-        # return None
+            self._handleError(error_message)
+            return None
 
     def _formatRuntime(self, runtime):
         self.UIqueue[self.current]['rt'] = runtime.total_seconds()
@@ -509,6 +552,17 @@ class WorkerThread(threading.Thread):
         if retVal == ' s':
             retVal = '0 s'
         return retVal
+    
+    def _handleError(self, error_message):
+        web.app.logger.error(error_message)
+        self.queue[self.current]['status'] = STAT_FAIL
+        self.UIqueue[self.current]['status'] = _('Failed')
+        self.UIqueue[self.current]['progress'] = "100 %"
+        self.UIqueue[self.current]['runtime'] = self._formatRuntime(
+                                                datetime.now() - self.queue[self.current]['starttime'])
+        self.UIqueue[self.current]['message'] = error_message
+
+
 
 class StderrLogger(object):
 

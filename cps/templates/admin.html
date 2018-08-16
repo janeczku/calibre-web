@@ -53,6 +53,9 @@
   </table>
 
     <div class="btn btn-default" id="admin_edit_email"><a href="{{url_for('edit_mailsettings')}}">{{_('Change SMTP settings')}}</a></div>
+    {% if g.allow_registration %}
+    <div class="btn btn-default" id="admin_register_domain"><a href="{{url_for('edit_register_domains')}}">{{_('Edit allowed domains')}}</a></div>
+    {% endif %}
 
   <h2>{{_('Configuration')}}</h2>
   <table class="table table-striped" id="table_configuration">
@@ -79,16 +82,14 @@
   <div class="btn btn-default"><a href="{{url_for('configuration')}}">{{_('Basic Configuration')}}</a></div>
   <div class="btn btn-default"><a href="{{url_for('view_configuration')}}">{{_('UI Configuration')}}</a></div>
   <h2>{{_('Administration')}}</h2>
-      {% if not development %}
-        <div>{{_('Current commit timestamp')}}: <span>{{commit}} </span></div>
-        <div class="hidden" id="update_info">{{_('Newest commit timestamp')}}: <span></span></div>
-        <p></p>
-        <div class="btn btn-default" id="restart_database">{{_('Reconnect to Calibre DB')}}</div>
-        <div class="btn btn-default" data-toggle="modal" data-target="#RestartDialog">{{_('Restart Calibre-web')}}</div>
-        <div class="btn btn-default" data-toggle="modal" data-target="#ShutdownDialog">{{_('Stop Calibre-web')}}</div>
-        <div class="btn btn-default" id="check_for_update">{{_('Check for update')}}</div>
-        <div class="btn btn-default hidden" id="perform_update" data-toggle="modal" data-target="#UpdateprogressDialog">{{_('Perform Update')}}</div>
-      {% endif %}
+    <div>{{_('Current commit timestamp')}}: <span>{{commit}} </span></div>
+    <div class="hidden" id="update_info">{{_('Newest commit timestamp')}}: <span></span></div>
+    <p></p>
+    <div class="btn btn-default" id="restart_database">{{_('Reconnect to Calibre DB')}}</div>
+    <div class="btn btn-default" data-toggle="modal" data-target="#RestartDialog">{{_('Restart Calibre-web')}}</div>
+    <div class="btn btn-default" data-toggle="modal" data-target="#ShutdownDialog">{{_('Stop Calibre-web')}}</div>
+    <div class="btn btn-default" id="check_for_update">{{_('Check for update')}}</div>
+    <div class="btn btn-default hidden" id="perform_update" data-toggle="modal" data-target="#UpdateprogressDialog">{{_('Perform Update')}}</div>
 </div>
 <!-- Modal -->
 <div id="RestartDialog" class="modal fade" role="dialog">

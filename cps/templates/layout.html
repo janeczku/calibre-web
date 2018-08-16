@@ -186,13 +186,13 @@
           {% if pagination and (pagination.has_next or pagination.has_prev) %}
             <div class="pagination">
               {% if pagination.has_prev %}
-              <a class="previous" href="{{ url_for_other_page(pagination.page - 1)
+              <a class="previous" href="{{ (pagination.page - 1)|url_for_other_page
                 }}">&laquo; {{_('Previous')}}</a>
               {% endif %}
             {% for page in pagination.iter_pages() %}
               {% if page %}
                 {% if page != pagination.page %}
-                  <a href="{{ url_for_other_page(page) }}">{{ page }}</a>
+                  <a href="{{ (page)|url_for_other_page }}">{{ page }}</a>
                 {% else %}
                   <strong>{{ page }}</strong>
                 {% endif %}
@@ -201,7 +201,7 @@
               {% endif %}
             {% endfor %}
             {% if pagination.has_next %}
-              <a class="next" href="{{ url_for_other_page(pagination.page + 1)
+              <a class="next" href="{{ (pagination.page + 1)|url_for_other_page
                 }}">{{_('Next')}} &raquo;</a>
             {% endif %}
             </div>

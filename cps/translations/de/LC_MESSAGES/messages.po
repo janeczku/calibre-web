@@ -1287,7 +1287,7 @@ msgstr "Über"
 
 #: cps/templates/layout.html:187
 msgid "Previous"
-msgstr "Voerheriger"
+msgstr "Vorheriger"
 
 #: cps/templates/layout.html:214
 msgid "Book Details"

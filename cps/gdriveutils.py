@@ -3,8 +3,9 @@ try:
     from pydrive.drive import GoogleDrive
     from pydrive.auth import RefreshError
     from apiclient import errors
+    gdrive_support = True
 except ImportError:
-    pass
+    gdrive_support = False
 
 import os
 from ub import config
@@ -259,6 +260,13 @@ def copyDriveFileRemote(drive, origin_file_id, copy_title):
         print ('An error occurred: %s' % error)
     return None
 
+
+# Download metadata.db from gdrive
+def downloadFile(path, filename, output):
+    f = getFileFromEbooksFolder(path, filename)
+    f.GetContentFile(output)
+
+
 def moveGdriveFolderRemote(origin_file, target_folder):
     drive = getDrive(Gdrive.Instance().drive)
     previous_parents = ",".join([parent["id"] for parent in origin_file.get('parents')])
@@ -339,7 +347,7 @@ def uploadFileToEbooksFolder(destFile, f):
 
 def watchChange(drive, channel_id, channel_type, channel_address,
               channel_token=None, expiration=None):
-    drive = getDrive(drive)
+    # drive = getDrive(drive)
     # Watch for all changes to a user's Drive.
     # Args:
     # service: Drive API service instance.
@@ -382,7 +390,7 @@ def watchFile(drive, file_id, channel_id, channel_type, channel_address,
     Raises:
     apiclient.errors.HttpError: if http request to create channel fails.
     """
-    drive = getDrive(drive)
+    # drive = getDrive(drive)
 
     body = {
         'id': channel_id,
@@ -405,7 +413,7 @@ def stopChannel(drive, channel_id, resource_id):
     Raises:
     apiclient.errors.HttpError: if http request to create channel fails.
     """
-    drive = getDrive(drive)
+    # drive = getDrive(drive)
     # service=drive.auth.service
     body = {
         'id': channel_id,
@@ -415,7 +423,7 @@ def stopChannel(drive, channel_id, resource_id):
 
 
 def getChangeById (drive, change_id):
-    drive = getDrive(drive)
+    # drive = getDrive(drive)
     # Print a single Change resource information.
     #
     # Args:

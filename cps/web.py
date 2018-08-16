@@ -1,11 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 try:
-    from pydrive.auth import GoogleAuth
     from googleapiclient.errors import HttpError
-    gdrive_support = True
+    # gdrive_support = True
 except ImportError:
-    gdrive_support = False
+    # gdrive_support = False
+    pass
 
 try:
     from goodreads.client import GoodreadsClient
@@ -47,6 +47,8 @@ from flask_principal import Principal
 from flask_principal import __version__ as flask_principalVersion
 from flask_babel import Babel
 from flask_babel import gettext as _
+import pytz
+# from tzlocal import get_localzone
 import requests
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.datastructures import Headers
@@ -64,11 +66,9 @@ from iso639 import __version__ as iso639Version
 from uuid import uuid4
 import os.path
 import sys
-
 import re
 import db
 from shutil import move, copyfile
-# import shutil
 import gdriveutils
 import converter
 import tempfile
@@ -185,13 +185,13 @@ lm.anonymous_user = ub.Anonymous
 app.secret_key = os.getenv('SECRET_KEY', 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT')
 db.setup_db()
 
-if config.config_log_level == logging.DEBUG:
+'''if config.config_log_level == logging.DEBUG:
     logging.getLogger("sqlalchemy.engine").addHandler(file_handler)
     logging.getLogger("sqlalchemy.engine").setLevel(logging.INFO)
     logging.getLogger("sqlalchemy.pool").addHandler(file_handler)
     logging.getLogger("sqlalchemy.pool").setLevel(config.config_log_level)
     logging.getLogger("sqlalchemy.orm").addHandler(file_handler)
-    logging.getLogger("sqlalchemy.orm").setLevel(config.config_log_level)
+    logging.getLogger("sqlalchemy.orm").setLevel(config.config_log_level)'''
 
 
 def is_gdrive_ready():
@@ -309,16 +309,6 @@ class Pagination(object):
                 last = num
 
 
-# pagination links in jinja
-def url_for_other_page(page):
-    args = request.view_args.copy()
-    args['page'] = page
-    return url_for(request.endpoint, **args)
-
-
-app.jinja_env.globals['url_for_other_page'] = url_for_other_page
-
-
 def login_required_if_no_ano(func):
     @wraps(func)
     def decorated_view(*args, **kwargs):
@@ -344,6 +334,15 @@ def remote_login_required(f):
 
 
 # custom jinja filters
+
+# pagination links in jinja
+@app.template_filter('url_for_other_page')
+def url_for_other_page(page):
+    args = request.view_args.copy()
+    args['page'] = page
+    return url_for(request.endpoint, **args)
+
+# shortentitles to at longest nchar, shorten longer words if necessary
 @app.template_filter('shortentitle')
 def shortentitle_filter(s,nchar=20):
     text = s.split()
@@ -354,7 +353,7 @@ def shortentitle_filter(s,nchar=20):
             res += '...'
             break
         # if word longer than 20 chars truncate line and append '...', otherwise add whole word to result
-        # string, and summarize total length to stop at 60 chars
+        # string, and summarize total length to stop at chars given by nchar
         if len(line) > nchar:
             res += line[:(nchar-3)] + '[..] '
             suml += nchar+3
@@ -583,6 +582,7 @@ def feed_search(term):
         entriescount = len(entries) if len(entries) > 0 else 1
         pagination = Pagination(1, entriescount, entriescount)
         xml = render_title_template('feed.xml', searchterm=term, entries=entries, pagination=pagination)
+        
     else:
         xml = render_title_template('feed.xml', searchterm="")
     response = make_response(xml)
@@ -596,8 +596,6 @@ def render_title_template(*args, **kwargs):
 
 @app.before_request
 def before_request():
-    if ub.DEVELOPMENT:
-        reload(ub)
     g.user = current_user
     g.allow_registration = config.config_public_reg
     g.allow_upload = config.config_uploading
@@ -620,7 +618,7 @@ def feed_index():
 @app.route("/opds/osd")
 @requires_basic_auth_if_no_ano
 def feed_osd():
-    xml = render_title_template('osd.xml', lang='de-DE')
+    xml = render_title_template('osd.xml', lang='en-EN')
     response = make_response(xml)
     response.headers["Content-Type"] = "application/xml; charset=utf-8"
     return response
@@ -998,6 +996,7 @@ def get_matching_tags():
 @login_required_if_no_ano
 def get_update_status():
     status = {}
+    tz = time.timezone if (time.localtime().tm_isdst == 0) else time.altzone
     if request.method == "GET":
         # should be automatically replaced by git with current commit hash
         commit_id = '$Format:%H$'
@@ -1007,7 +1006,7 @@ def get_update_status():
             status['status'] = True
             commitdate = requests.get('https://api.github.com/repos/janeczku/calibre-web/git/commits/'+commit['object']['sha']).json()
             if "committer" in commitdate:
-                form_date=datetime.datetime.strptime(commitdate['committer']['date'],"%Y-%m-%dT%H:%M:%SZ")
+                form_date=datetime.datetime.strptime(commitdate['committer']['date'],"%Y-%m-%dT%H:%M:%SZ") - datetime.timedelta(seconds=tz)
                 status['commit'] = format_datetime(form_date, format='short', locale=get_locale())
             else:
                 status['commit'] = u'Unknown'
@@ -1552,10 +1551,14 @@ def authenticate_google_drive():
 @app.route("/gdrive/callback")
 def google_drive_callback():
     auth_code = request.args.get('code')
-    credentials = gdriveutils.Gauth.Instance().auth.flow.step2_exchange(auth_code)
-    with open(os.path.join(config.get_main_dir,'gdrive_credentials'), 'w') as f:
-        f.write(credentials.to_json())
-    return redirect(url_for('configuration'))
+    try:
+        credentials = gdriveutils.Gauth.Instance().auth.flow.step2_exchange(auth_code)
+        with open(os.path.join(config.get_main_dir,'gdrive_credentials'), 'w') as f:
+            f.write(credentials.to_json())
+    except ValueError as error:
+        app.logger.error(error)
+    finally:
+        return redirect(url_for('configuration'))
 
 
 @app.route("/gdrive/watch/subscribe")
@@ -1829,6 +1832,7 @@ def advanced_search():
         q = q.all()
         return render_title_template('search.html', searchterm=searchterm,
                                      entries=q, title=_(u"search"), page="search")
+    # prepare data for search-form
     tags = db.session.query(db.Tags).order_by(db.Tags.name).all()
     series = db.session.query(db.Series).order_by(db.Series.name).all()
     if current_user.filter_language() == u"all":
@@ -2063,7 +2067,7 @@ def register():
             flash(_(u"This username or email address is already in use."), category="error")
             return render_title_template('register.html', title=_(u"register"), page="register")
 
-    return render_title_template('register.html', title=_(u"register"), page="regsiter")
+    return render_title_template('register.html', title=_(u"register"), page="register")
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -2520,7 +2524,7 @@ def admin():
     content = ub.session.query(ub.User).all()
     settings = ub.session.query(ub.Settings).first()
     return render_title_template("admin.html", content=content, email=settings, config=config, commit=commit,
-                                 development=ub.DEVELOPMENT, title=_(u"Admin page"), page="admin")
+                                 title=_(u"Admin page"), page="admin")
 
 
 @app.route("/admin/config", methods=["GET", "POST"])
@@ -2626,7 +2630,7 @@ def configuration_helper(origin):
     gdriveError=None
     db_change = False
     success = False
-    if gdrive_support == False:
+    if gdriveutils.gdrive_support == False:
         gdriveError = _('Import of optional Google Drive requirements missing')
     else:
         if not os.path.isfile(os.path.join(config.get_main_dir,'client_secrets.json')):
@@ -2665,7 +2669,7 @@ def configuration_helper(origin):
             else:
                 flash(_(u'client_secrets.json is not configured for web application'), category="error")
                 return render_title_template("config_edit.html", content=config, origin=origin,
-                                             gdrive=gdrive_support, gdriveError=gdriveError,
+                                             gdrive=gdriveutils.gdrive_support, gdriveError=gdriveError,
                                              goodreads=goodreads_support, title=_(u"Basic Configuration"),
                                              page="config")
         # always show google drive settings, but in case of error deny support
@@ -2691,7 +2695,7 @@ def configuration_helper(origin):
                     ub.session.commit()
                     flash(_(u'Keyfile location is not valid, please enter correct path'), category="error")
                     return render_title_template("config_edit.html", content=config, origin=origin,
-                                                 gdrive=gdrive_support, gdriveError=gdriveError,
+                                                 gdrive=gdriveutils.gdrive_support, gdriveError=gdriveError,
                                                  goodreads=goodreads_support, title=_(u"Basic Configuration"),
                                                  page="config")
         if "config_certfile" in to_save:
@@ -2703,7 +2707,7 @@ def configuration_helper(origin):
                     ub.session.commit()
                     flash(_(u'Certfile location is not valid, please enter correct path'), category="error")
                     return render_title_template("config_edit.html", content=config, origin=origin,
-                                                 gdrive=gdrive_support, gdriveError=gdriveError,
+                                                 gdrive=gdriveutils.gdrive_support, gdriveError=gdriveError,
                                                  goodreads=goodreads_support, title=_(u"Basic Configuration"),
                                                  page="config")
         content.config_uploading = 0
@@ -2746,7 +2750,7 @@ def configuration_helper(origin):
                     ub.session.commit()
                     flash(_(u'Logfile location is not valid, please enter correct path'), category="error")
                     return render_title_template("config_edit.html", content=config, origin=origin,
-                                                 gdrive=gdrive_support, gdriveError=gdriveError,
+                                                 gdrive=gdriveutils.gdrive_support, gdriveError=gdriveError,
                                                  goodreads=goodreads_support, title=_(u"Basic Configuration"),
                                                  page="config")
             else:
@@ -2766,14 +2770,14 @@ def configuration_helper(origin):
             logging.getLogger("book_formats").setLevel(config.config_log_level)
         except Exception as e:
             flash(e, category="error")
-            return render_title_template("config_edit.html", content=config, origin=origin, gdrive=gdrive_support,
+            return render_title_template("config_edit.html", content=config, origin=origin, gdrive=gdriveutils.gdrive_support,
                                          gdriveError=gdriveError, goodreads=goodreads_support,
                                          title=_(u"Basic Configuration"), page="config")
         if db_change:
             reload(db)
             if not db.setup_db():
                 flash(_(u'DB location is not valid, please enter correct path'), category="error")
-                return render_title_template("config_edit.html", content=config, origin=origin, gdrive=gdrive_support,
+                return render_title_template("config_edit.html", content=config, origin=origin, gdrive=gdriveutils.gdrive_support,
                                              gdriveError=gdriveError, goodreads=goodreads_support,
                                              title=_(u"Basic Configuration"), page="config")
         if reboot_required:
@@ -2785,12 +2789,12 @@ def configuration_helper(origin):
             app.logger.info('Reboot required, restarting')
         if origin:
             success = True
-    if is_gdrive_ready() and gdrive_support == True:
+    if is_gdrive_ready() and gdriveutils.gdrive_support == True:
         gdrivefolders=gdriveutils.listRootFolders()
     else:
         gdrivefolders=None
     return render_title_template("config_edit.html", origin=origin, success=success, content=config,
-                                 show_authenticate_google_drive=not is_gdrive_ready(), gdrive=gdrive_support,
+                                 show_authenticate_google_drive=not is_gdrive_ready(), gdrive=gdriveutils.gdrive_support,
                                  gdriveError=gdriveError, gdrivefolders=gdrivefolders,
                                  goodreads=goodreads_support, title=_(u"Basic Configuration"), page="config")
 
@@ -3106,10 +3110,14 @@ def edit_book(book_id):
         is_format = db.session.query(db.Data).filter(db.Data.book == book_id).filter(db.Data.format == file_ext.upper()).first()
         if is_format:
             # Format entry already exists, no need to update the database
-            app.logger.info('Bokk format already existing')
+            app.logger.info('Book format already existing')
         else:
             db_format = db.Data(book_id, file_ext.upper(), file_size, file_name)
             db.session.add(db_format)
+        uploadText=_(u"File format %s added to %s" % (file_ext.upper(),book.title))
+        helper.global_WorkerThread.add_upload(current_user.nickname, 
+            "<a href=\""+ url_for('show_book', book_id=book.id) +"\">"+ uploadText + "</a>")
+            
 
     to_save = request.form.to_dict()
 
@@ -3307,9 +3315,9 @@ def edit_book(book_id):
 def upload():
     if not config.config_uploading:
         abort(404)
-    # create the function for sorting...
     if request.method == 'POST' and 'btn-upload' in request.files:
         for requested_file in request.files.getlist("btn-upload"):
+            # create the function for sorting...
             db.session.connection().connection.connection.create_function("title_sort", 1, db.title_sort)
             db.session.connection().connection.connection.create_function('uuid4', 0, lambda: str(uuid4()))
             if '.' in requested_file.filename:
@@ -3407,7 +3415,7 @@ def upload():
             db_book.data.append(db_data)
 
             db.session.add(db_book)
-            db.session.flush()  # flush content get db_book.id avalible
+            db.session.flush()  # flush content get db_book.id available
 
             # add comment
             book_id = db_book.id
@@ -3425,10 +3433,12 @@ def upload():
                 gdriveutils.updateGdriveCalibreFromLocal()
 
             error = helper.update_dir_stucture(book.id, config.config_calibre_dir)
-            # ToDo: Handle error
+            
             if error:
-                pass
-
+                flash(error, category="error")
+            uploadText=_(u"File %s uploaded" % book.title)
+            helper.global_WorkerThread.add_upload(current_user.nickname, 
+                "<a href=\"" + url_for('show_book', book_id=book.id) + "\">" + uploadText + "</a>")
 
             if db_language is not None:  # display Full name instead of iso639.part3
                 book.languages[0].language_name = _(meta.languages)
@@ -3436,15 +3446,12 @@ def upload():
             for author in db_book.authors:
                 author_names.append(author.name)
             if len(request.files.getlist("btn-upload")) < 2:
-                # db.session.connection().connection.connection.create_function("title_sort", 1, db.title_sort)
                 cc = db.session.query(db.Custom_Columns).filter(db.Custom_Columns.datatype.notin_(db.cc_exceptions)).all()
                 if current_user.role_edit() or current_user.role_admin():
                     return render_title_template('book_edit.html', book=book, authors=author_names,
-                                                 cc=cc,title=_(u"edit metadata"), page="upload")
+                                                 cc=cc, title=_(u"edit metadata"), page="upload")
                 book_in_shelfs = []
                 return render_title_template('detail.html', entry=book, cc=cc,
                                              title=book.title, books_shelfs=book_in_shelfs, page="upload")
-        return redirect(url_for("index"))
-    else:
-        return redirect(url_for("index"))
+    return redirect(url_for("index"))
 
