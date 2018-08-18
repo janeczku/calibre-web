@@ -580,15 +580,22 @@ def feed_search(term):
         entries = get_search_results( term)
         entriescount = len(entries) if len(entries) > 0 else 1
         pagination = Pagination(1, entriescount, entriescount)
-        xml = render_title_template('feed.xml', searchterm=term, entries=entries, pagination=pagination)
+        return render_xml_template('feed.xml', searchterm=term, entries=entries, pagination=pagination)
         
     else:
-        xml = render_title_template('feed.xml', searchterm="")
+        return render_xml_template('feed.xml', searchterm="")
+
+
+def render_xml_template(*args, **kwargs):
+    #ToDo: return time in current timezone similar to %z
+    currtime = datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%S+00:00")
+    xml = render_template(current_time=currtime, *args, **kwargs)
     response = make_response(xml)
     response.headers["Content-Type"] = "application/atom+xml; charset=utf-8"
     return response
 
 
+# Returns the template for redering and includes the instance name
 def render_title_template(*args, **kwargs):
     return render_template(instance=config.config_calibre_web_title, *args, **kwargs)
 
@@ -608,19 +615,13 @@ def before_request():
 @app.route("/opds")
 @requires_basic_auth_if_no_ano
 def feed_index():
-    xml = render_title_template('index.xml')
-    response = make_response(xml)
-    response.headers["Content-Type"] = "application/atom+xml; charset=utf-8"
-    return response
+    return render_xml_template('index.xml')
 
 
 @app.route("/opds/osd")
 @requires_basic_auth_if_no_ano
 def feed_osd():
-    xml = render_title_template('osd.xml', lang='en-EN')
-    response = make_response(xml)
-    response.headers["Content-Type"] = "application/xml; charset=utf-8"
-    return response
+    return render_xml_template('osd.xml', lang='en-EN')
 
 
 @app.route("/opds/search/<query>")
@@ -643,10 +644,7 @@ def feed_new():
         off = 0
     entries, __, pagination = fill_indexpage((int(off) / (int(config.config_books_per_page)) + 1),
                                                  db.Books, True, [db.Books.timestamp.desc()])
-    xml = render_title_template('feed.xml', entries=entries, pagination=pagination)
-    response = make_response(xml)
-    response.headers["Content-Type"] = "application/atom+xml; charset=utf-8"
-    return response
+    return render_xml_template('feed.xml', entries=entries, pagination=pagination)
 
 
 @app.route("/opds/discover")
@@ -655,10 +653,7 @@ def feed_discover():
     entries = db.session.query(db.Books).filter(common_filters()).order_by(func.random())\
         .limit(config.config_books_per_page)
     pagination = Pagination(1, config.config_books_per_page, int(config.config_books_per_page))
-    xml = render_title_template('feed.xml', entries=entries, pagination=pagination)
-    response = make_response(xml)
-    response.headers["Content-Type"] = "application/atom+xml; charset=utf-8"
-    return response
+    return render_xml_template('feed.xml', entries=entries, pagination=pagination)
 
 
 @app.route("/opds/rated")
@@ -669,10 +664,7 @@ def feed_best_rated():
         off = 0
     entries, __, pagination = fill_indexpage((int(off) / (int(config.config_books_per_page)) + 1),
                     db.Books, db.Books.ratings.any(db.Ratings.rating > 9), [db.Books.timestamp.desc()])
-    xml = render_title_template('feed.xml', entries=entries, pagination=pagination)
-    response = make_response(xml)
-    response.headers["Content-Type"] = "application/atom+xml; charset=utf-8"
-    return response
+    return render_xml_template('feed.xml', entries=entries, pagination=pagination)
 
 
 @app.route("/opds/hot")
@@ -698,10 +690,7 @@ def feed_hot():
             # ub.session.commit()
     numBooks = entries.__len__()
     pagination = Pagination((int(off) / (int(config.config_books_per_page)) + 1), config.config_books_per_page, numBooks)
-    xml = render_title_template('feed.xml', entries=entries, pagination=pagination)
-    response = make_response(xml)
-    response.headers["Content-Type"] = "application/atom+xml; charset=utf-8"
-    return response
+    return render_xml_template('feed.xml', entries=entries, pagination=pagination)
 
 
 @app.route("/opds/author")
@@ -714,10 +703,7 @@ def feed_authorindex():
         .group_by('books_authors_link.author').order_by(db.Authors.sort).limit(config.config_books_per_page).offset(off)
     pagination = Pagination((int(off) / (int(config.config_books_per_page)) + 1), config.config_books_per_page,
                             len(db.session.query(db.Authors).all()))
-    xml = render_title_template('feed.xml', listelements=entries, folder='feed_author', pagination=pagination)
-    response = make_response(xml)
-    response.headers["Content-Type"] = "application/atom+xml; charset=utf-8"
-    return response
+    return render_xml_template('feed.xml', listelements=entries, folder='feed_author', pagination=pagination)
 
 
 @app.route("/opds/author/<int:book_id>")
@@ -728,10 +714,7 @@ def feed_author(book_id):
         off = 0
     entries, __, pagination = fill_indexpage((int(off) / (int(config.config_books_per_page)) + 1),
                     db.Books, db.Books.authors.any(db.Authors.id == book_id), [db.Books.timestamp.desc()])
-    xml = render_title_template('feed.xml', entries=entries, pagination=pagination)
-    response = make_response(xml)
-    response.headers["Content-Type"] = "application/atom+xml; charset=utf-8"
-    return response
+    return render_xml_template('feed.xml', entries=entries, pagination=pagination)
 
 
 @app.route("/opds/category")
@@ -744,10 +727,7 @@ def feed_categoryindex():
         .group_by('books_tags_link.tag').order_by(db.Tags.name).offset(off).limit(config.config_books_per_page)
     pagination = Pagination((int(off) / (int(config.config_books_per_page)) + 1), config.config_books_per_page,
                             len(db.session.query(db.Tags).all()))
-    xml = render_title_template('feed.xml', listelements=entries, folder='feed_category', pagination=pagination)
-    response = make_response(xml)
-    response.headers["Content-Type"] = "application/atom+xml; charset=utf-8"
-    return response
+    return render_xml_template('feed.xml', listelements=entries, folder='feed_category', pagination=pagination)
 
 
 @app.route("/opds/category/<int:book_id>")
@@ -758,10 +738,7 @@ def feed_category(book_id):
         off = 0
     entries, __, pagination = fill_indexpage((int(off) / (int(config.config_books_per_page)) + 1),
                     db.Books, db.Books.tags.any(db.Tags.id == book_id), [db.Books.timestamp.desc()])
-    xml = render_title_template('feed.xml', entries=entries, pagination=pagination)
-    response = make_response(xml)
-    response.headers["Content-Type"] = "application/atom+xml; charset=utf-8"
-    return response
+    return render_xml_template('feed.xml', entries=entries, pagination=pagination)
 
 
 @app.route("/opds/series")
@@ -774,10 +751,7 @@ def feed_seriesindex():
         .group_by('books_series_link.series').order_by(db.Series.sort).offset(off).all()
     pagination = Pagination((int(off) / (int(config.config_books_per_page)) + 1), config.config_books_per_page,
                             len(db.session.query(db.Series).all()))
-    xml = render_title_template('feed.xml', listelements=entries, folder='feed_series', pagination=pagination)
-    response = make_response(xml)
-    response.headers["Content-Type"] = "application/atom+xml; charset=utf-8"
-    return response
+    return render_xml_template('feed.xml', listelements=entries, folder='feed_series', pagination=pagination)
 
 
 @app.route("/opds/series/<int:book_id>")
@@ -788,10 +762,7 @@ def feed_series(book_id):
         off = 0
     entries, __, pagination = fill_indexpage((int(off) / (int(config.config_books_per_page)) + 1),
                     db.Books, db.Books.series.any(db.Series.id == book_id), [db.Books.series_index])
-    xml = render_title_template('feed.xml', entries=entries, pagination=pagination)
-    response = make_response(xml)
-    response.headers["Content-Type"] = "application/atom+xml; charset=utf-8"
-    return response
+    return render_xml_template('feed.xml', entries=entries, pagination=pagination)
 
 
 @app.route("/opds/shelfindex/", defaults={'public': 0})
@@ -809,10 +780,7 @@ def feed_shelfindex(public):
         number = shelf.count()
     pagination = Pagination((int(off) / (int(config.config_books_per_page)) + 1), config.config_books_per_page,
                             number)
-    xml = render_title_template('feed.xml', listelements=shelf, folder='feed_shelf', pagination=pagination)
-    response = make_response(xml)
-    response.headers["Content-Type"] = "application/atom+xml; charset=utf-8"
-    return response
+    return render_xml_template('feed.xml', listelements=shelf, folder='feed_shelf', pagination=pagination)
 
 
 @app.route("/opds/shelf/<int:book_id>")
@@ -838,10 +806,7 @@ def feed_shelf(book_id):
             result.append(cur_book)
         pagination = Pagination((int(off) / (int(config.config_books_per_page)) + 1), config.config_books_per_page,
                                 len(result))
-        xml = render_title_template('feed.xml', entries=result, pagination=pagination)
-        response = make_response(xml)
-        response.headers["Content-Type"] = "application/atom+xml; charset=utf-8"
-        return response
+        return render_xml_template('feed.xml', entries=result, pagination=pagination)
 
 
 @app.route("/opds/download/<book_id>/<book_format>/")
@@ -995,7 +960,7 @@ def get_matching_tags():
 @login_required_if_no_ano
 def get_update_status():
     status = {}
-    tz = time.timezone if (time.localtime().tm_isdst == 0) else time.altzone
+    tz = datetime.timedelta(seconds=time.timezone if (time.localtime().tm_isdst == 0) else time.altzone)
     if request.method == "GET":
         # should be automatically replaced by git with current commit hash
         commit_id = '$Format:%H$'
@@ -1005,7 +970,7 @@ def get_update_status():
             status['status'] = True
             commitdate = requests.get('https://api.github.com/repos/janeczku/calibre-web/git/commits/'+commit['object']['sha']).json()
             if "committer" in commitdate:
-                form_date=datetime.datetime.strptime(commitdate['committer']['date'],"%Y-%m-%dT%H:%M:%SZ") - datetime.timedelta(seconds=tz)
+                form_date=datetime.datetime.strptime(commitdate['committer']['date'],"%Y-%m-%dT%H:%M:%SZ") - tz
                 status['commit'] = format_datetime(form_date, format='short', locale=get_locale())
             else:
                 status['commit'] = u'Unknown'
@@ -2512,13 +2477,14 @@ def admin():
     if commit.startswith("$"):
         commit = _(u'Unknown')
     else:
+        tz = datetime.timedelta(seconds=time.timezone if (time.localtime().tm_isdst == 0) else time.altzone)
         form_date = datetime.datetime.strptime(commit[:19], "%Y-%m-%dT%H:%M:%S")
         if len(commit) > 19:    # check if string has timezone
             if commit[19] == '+':
                 form_date -= datetime.timedelta(hours=int(commit[20:22]), minutes=int(commit[23:]))
             elif commit[19] == '-':
                 form_date += datetime.timedelta(hours=int(commit[20:22]), minutes=int(commit[23:]))
-        commit = format_datetime(form_date, format='short', locale=get_locale())
+        commit = format_datetime(form_date - tz, format='short', locale=get_locale())
 
     content = ub.session.query(ub.User).all()
     settings = ub.session.query(ub.Settings).first()
