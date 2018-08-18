@@ -520,7 +520,7 @@ function inflate(compressedData, numDecompressedBytes) {
         if (bType === 0) {
             // skip remaining bits in this byte
             while (bstream.bitPtr !== 0) bstream.readBits(1);
-            var len = bstream.readBits(16),
+            var len = bstream.readBits(16);
             // nlen = bstream.readBits(16);
             // TODO: check if nlen is the ones-complement of len?
 
