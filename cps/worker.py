@@ -231,48 +231,47 @@ class WorkerThread(threading.Thread):
         try:
             # check which converter to use kindlegen is "1"
             if web.ub.config.config_ebookconverter == 1:
-                command = (web.ub.config.config_converterpath + u" \"" + file_path + u".epub\"").encode(sys.getfilesystemencoding())
-            else:           
-                command = (u"\"" + web.ub.config.config_converterpath + u"\" \"" + file_path + u".epub\" \""
-                    + file_path + u".mobi\" " + web.ub.config.config_calibre).encode(sys.getfilesystemencoding())
+                command = [web.ub.config.config_converterpath, u'"' + file_path + u'.epub"']
+            else:
+                command = [web.ub.config.config_converterpath, '"' + file_path + u'.epub"',
+                           '"'+file_path + u'.mobi"']
+                if web.ub.config.config_calibre:
+                    command.append(web.ub.config.config_calibre)
+            # special handling for windows
+            if os.name == 'nt':
+                command = ' '.join(command)
+                if sys.version_info < (3, 0):
+                    command = command.encode(sys.getfilesystemencoding())
 
-            if sys.version_info > (3, 0):
-                command = command.decode('Utf-8')
-        
-            p = subprocess.Popen(command, stdout=subprocess.PIPE)
-        except Exception as e:
-            self._handleError(_(u"Ebook-converter failed, no execution permissions"))
+            p = subprocess.Popen(command, stdout=subprocess.PIPE, universal_newlines=True)
+        except OSError as e:
+            self._handleError(_(u"Ebook-converter failed: %s" % e))
             return
         if web.ub.config.config_ebookconverter == 1:
             nextline = p.communicate()[0]
             # Format of error message (kindlegen translates its output texts):
             # Error(prcgen):E23006: Language not recognized in metadata.The dc:Language field is mandatory.Aborting.
             conv_error = re.search(".*\(.*\):(E\d+):\s(.*)", nextline, re.MULTILINE)
-            # If error occoures, log in every case
+            # If error occoures, store error message for logfile
             if conv_error:
                 error_message = _(u"Kindlegen failed with Error %(error)s. Message: %(message)s",
                                   error=conv_error.group(1), message=conv_error.group(2).strip())
-                web.app.logger.info("convert_kindlegen: " + error_message)
-            else:
-                web.app.logger.debug("convert_kindlegen: " + nextline)
+            web.app.logger.debug("convert_kindlegen: " + nextline)
 
         else:
             while p.poll() is None:
                 nextline = p.stdout.readline()
-                if sys.version_info > (3, 0):
-                    nextline = nextline.decode('Utf-8', 'backslashreplace')
-                # if nextline == '' and p.poll() is not None:
-                #    break
-                # while p.poll() is None:
+                if os.name == 'nt' and sys.version_info < (3, 0):
+                    nextline = nextline.decode('windows-1252')
                 web.app.logger.debug(nextline.strip('\r\n'))
-                # parse calibre-converter
+                # parse progress string from calibre-converter
                 progress = re.search("(\d+)%\s.*", nextline)
                 if progress:
                     self.UIqueue[self.current]['progress'] = progress.group(1) + ' %'
-                # if nextline != "\r\n" and web.ub.config.config_ebookconverter == 1:
 
         #process returncode
         check = p.returncode
+
         # kindlegen returncodes
         # 0 = Info(prcgen):I1036: Mobi file built successfully
         # 1 = Info(prcgen):I1037: Mobi file built with WARNINGS!
@@ -296,134 +295,11 @@ class WorkerThread(threading.Thread):
             return file_path + ".mobi" 
         else:
             web.app.logger.info("ebook converter failed with error while converting book")
-            if not error_message:       # ToDo Check         
+            if not error_message:
                 error_message = 'Ebook converter failed with unknown error'
             self._handleError(error_message)
             return
-                    
 
-                       
-    '''def convert_kindlegen(self):
-        error_message = None
-        file_path = self.queue[self.current]['file_path']
-        bookid = self.queue[self.current]['bookid']
-        if not os.path.exists(web.ub.config.config_converterpath):
-            self._handleError(_(u"kindlegen binary %(kindlepath)s not found", kindlepath=web.ub.config.config_converterpath))
-            return
-        try:
-            command = (web.ub.config.config_converterpath + " \"" + file_path + u".epub\"").encode(sys.getfilesystemencoding())
-            if sys.version_info > (3, 0):
-                p = subprocess.Popen(command.decode('Utf-8'), stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
-            else:
-                p = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
-
-        except Exception:
-            self._handleError(_(u"kindlegen failed, no execution permissions"))
-            return
-        # Poll process for new output until finished
-        while True:
-            nextline = p.stdout.readline()
-            if sys.version_info > (3, 0):
-                nextline = nextline.decode('Utf-8','backslashreplace')
-            if nextline == u'' and p.poll() is not None:
-                break
-            if nextline != "\r\n":
-                # Format of error message (kindlegen translates its output texts):
-                # Error(prcgen):E23006: Language not recognized in metadata.The dc:Language field is mandatory.Aborting.
-                conv_error = re.search(".*\(.*\):(E\d+):\s(.*)", nextline)
-                # If error occoures, log in every case
-                if conv_error:
-                    if sys.version_info > (3, 0):
-                        error_message = _(u"Kindlegen failed with Error %(error)s. Message: %(message)s",
-                                      error=conv_error.group(1), message=conv_error.group(2))
-                    else:
-                        error_message = _(u"Kindlegen failed with Error %(error)s. Message: %(message)s",
-                                      error=conv_error.group(1), message=conv_error.group(2).decode('utf-8'))
-
-                    web.app.logger.info("convert_kindlegen: " + error_message)
-                    web.app.logger.info(nextline.strip('\r\n'))
-                else:
-                    web.app.logger.debug(nextline.strip('\r\n'))
-
-        check = p.returncode
-        if not check or check < 2:
-            cur_book = web.db.session.query(web.db.Books).filter(web.db.Books.id == bookid).first()
-            new_format = web.db.Data(name=cur_book.data[0].name,book_format="MOBI",
-                                     book=bookid,uncompressed_size=os.path.getsize(file_path + ".mobi"))
-            cur_book.data.append(new_format)
-            web.db.session.commit()
-            self.queue[self.current]['path'] = cur_book.path
-            self.queue[self.current]['title'] = cur_book.title
-            if web.ub.config.config_use_google_drive:
-                os.remove(file_path + u".epub")
-            self.queue[self.current]['status'] = STAT_FINISH_SUCCESS
-            self.UIqueue[self.current]['status'] = _('Finished')
-            self.UIqueue[self.current]['progress'] = "100 %"
-            self.UIqueue[self.current]['runtime'] = self._formatRuntime(
-                                                    datetime.now() - self.queue[self.current]['starttime'])
-            return file_path + ".mobi" 
-        else:
-            web.app.logger.info("convert_kindlegen: kindlegen failed with error while converting book")
-            if not error_message:                
-                error_message = 'kindlegen failed, no excecution permissions'
-            self._handleError(error_message)
-            return
-
-    def convert_calibre(self):
-        error_message = None
-        file_path = self.queue[self.current]['file_path']
-        bookid = self.queue[self.current]['bookid']
-        if not os.path.exists(web.ub.config.config_converterpath):
-            self._handleError(_(u"Ebook-convert binary %(converterpath)s not found",
-                              converterpath=web.ub.config.config_converterpath))
-            return
-        try:
-            command = (u"\"" + web.ub.config.config_converterpath + u"\" \"" + file_path + u".epub\" \""
-                       + file_path + u".mobi\" " + web.ub.config.config_calibre).encode(sys.getfilesystemencoding())
-            if sys.version_info > (3, 0):
-                p = subprocess.Popen(command.decode('Utf-8'), stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
-            else:
-                p = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
-        except Exception:
-            self._handleError(_(u"Ebook-convert failed, no execution permissions"))
-            return
-        # Poll process for new output until finished
-        while True:
-            nextline = p.stdout.readline()
-            if sys.version_info > (3, 0):
-                nextline = nextline.decode('Utf-8','backslashreplace')
-            if nextline == '' and p.poll() is not None:
-                break
-            progress = re.search("(\d+)%\s.*", nextline)
-            if progress:
-                self.UIqueue[self.current]['progress'] = progress.group(1) + '%'
-            if sys.version_info > (3, 0):
-                web.app.logger.debug(nextline.strip('\r\n'))
-            else:
-                web.app.logger.debug(nextline.strip('\r\n').decode(sys.getfilesystemencoding()))
-        check = p.returncode
-        if check == 0:
-            cur_book = web.db.session.query(web.db.Books).filter(web.db.Books.id == bookid).first()
-            new_format = web.db.Data(name=cur_book.data[0].name,book_format="MOBI",
-                                     book=bookid,uncompressed_size=os.path.getsize(file_path + ".mobi"))
-            cur_book.data.append(new_format)
-            web.db.session.commit()
-            self.queue[self.current]['path'] = cur_book.path
-            self.queue[self.current]['title'] = cur_book.title
-            if web.ub.config.config_use_google_drive:
-                os.remove(file_path + u".epub")
-            self.queue[self.current]['status'] = STAT_FINISH_SUCCESS
-            self.UIqueue[self.current]['status'] = _('Finished')
-            self.UIqueue[self.current]['progress'] = "100 %"
-            self.UIqueue[self.current]['runtime'] = self._formatRuntime(
-                                                    datetime.now() - self.queue[self.current]['starttime'])
-            return file_path + ".mobi" # , RET_SUCCESS
-        else:
-            web.app.logger.info("convert_calibre: Ebook-convert failed with error while converting book")
-            if not error_message:
-                error_message = 'Ebook-convert failed, no excecution permissions'
-            self._handleError(error_message)                
-            return'''
 
     def add_convert(self, file_path, bookid, user_name, typ, settings, kindle_mail):
         addLock = threading.Lock()
