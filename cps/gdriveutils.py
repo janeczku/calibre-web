@@ -189,8 +189,8 @@ def getEbooksFolderId(drive=None):
         return
 
 
-def getFile(pathId, fileName, drive=None):
-    drive = getDrive(Gdrive.Instance().drive)
+def getFile(pathId, fileName, drive):
+    # drive = getDrive(Gdrive.Instance().drive)
     metaDataFile = "'%s' in parents and trashed = false and title = '%s'" % (pathId, fileName.replace("'", "\\'"))
 
     fileList = drive.ListFile({'q': metaDataFile}).GetList()
