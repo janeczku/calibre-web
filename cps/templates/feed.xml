@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom">
+<feed xmlns="http://www.w3.org/2005/Atom" xmlns:dcterms="http://purl.org/dc/terms/">
   <id>urn:uuid:2853dacf-ed79-42f5-8e8a-a7bb3d1ae6a2</id>
+  <updated>{{ current_time }}</updated>
   <link rel="self"
         href="{{request.script_root + request.full_path}}"
         type="application/atom+xml;profile=opds-catalog;type=feed;kind=navigation"/>
@@ -42,7 +43,7 @@
     <author>
       <name>{{entry.authors[0].name}}</name>
     </author>
-    <language>{{entry.language}}</language>
+    <dcterms:language>{{entry.language}}</dcterms:language>
     {% for tag in entry.tags %}
     <category scheme="http://www.bisg.org/standards/bisac_subject/index.html"
               term="{{tag.name}}"

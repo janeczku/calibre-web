@@ -1,6 +1,6 @@
 {% extends "layout.html" %}
 {% block header %}
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.8.1/bootstrap-table.css">
+<link href="{{ url_for('static', filename='css/libs/bootstrap-table.min.css') }}" rel="stylesheet">
 {% endblock %}
 {% block body %}
 <div class="discover">
@@ -26,7 +26,7 @@
 </div>
 {% endblock %}
 {% block js %}
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.8.1/bootstrap-table.js"></script>
+<script src="{{ url_for('static', filename='js/libs/bootstrap-table/bootstrap-table.min.js') }}"></script>
         <script>
             $('#table').bootstrapTable({
                formatNoMatches: function () {

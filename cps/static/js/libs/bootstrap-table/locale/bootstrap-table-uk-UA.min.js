@@ -1,0 +1,7 @@
+/*
+* bootstrap-table - v1.12.1 - 2018-03-12
+* https://github.com/wenzhixin/bootstrap-table
+* Copyright (c) 2018 zhixin wen
+* Licensed MIT License
+*/
+!function(a){"use strict";a.fn.bootstrapTable.locales["uk-UA"]={formatLoadingMessage:function(){return"Завантаження, будь ласка, зачекайте..."},formatRecordsPerPage:function(a){return a+" записів на сторінку"},formatShowingRows:function(a,b,c){return"Показано з "+a+" по "+b+". Всього: "+c},formatSearch:function(){return"Пошук"},formatNoMatches:function(){return"Не знайдено жодного запису"},formatRefresh:function(){return"Оновити"},formatToggle:function(){return"Змінити"},formatColumns:function(){return"Стовпці"},formatClearFilters:function(){return"Очистити фільтри"},formatMultipleSort:function(){return"Сортування за кількома стовпцями"},formatAddLevel:function(){return"Додати рівень"},formatDeleteLevel:function(){return"Видалити рівень"},formatColumn:function(){return"Стовпець"},formatOrder:function(){return"Порядок"},formatSortBy:function(){return"Сортувати за"},formatThenBy:function(){return"потім за"},formatSort:function(){return"Сортувати"},formatCancel:function(){return"Скасувати"},formatDuplicateAlertTitle:function(){return"Дублювання стовпців!"},formatDuplicateAlertDescription:function(){return"Видаліть, будь ласка, дублюючий стовпець, або замініть його на інший."}},a.extend(a.fn.bootstrapTable.defaults,a.fn.bootstrapTable.locales["uk-UA"])}(jQuery);
