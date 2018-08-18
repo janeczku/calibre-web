@@ -48,7 +48,6 @@ from flask_principal import __version__ as flask_principalVersion
 from flask_babel import Babel
 from flask_babel import gettext as _
 import pytz
-# from tzlocal import get_localzone
 import requests
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.datastructures import Headers
@@ -3088,32 +3087,47 @@ def edit_book(book_id):
     edited_books_id = set()
 
     # Check and handle Uploaded file
-    if 'btn-upload-format' in request.files and '.' in request.files['btn-upload-format'].filename:
+    if 'btn-upload-format' in request.files:
         requested_file = request.files['btn-upload-format']
-        file_ext = requested_file.filename.rsplit('.', 1)[-1].lower()
-        if file_ext not in ALLOWED_EXTENSIONS:
-            flash(_('File extension "%s" is not allowed to be uploaded to this server' % file_ext), category="error")
-            return redirect(url_for('index'))
+        if '.' in requested_file.filename:
+            file_ext = requested_file.filename.rsplit('.', 1)[-1].lower()
+            if file_ext not in ALLOWED_EXTENSIONS:
+                flash(_('File extension "%s" is not allowed to be uploaded to this server' % file_ext), category="error")
+                return redirect(url_for('show_book', book_id=book.id))
+        else:
+            flash(_('File to be uploaded must have an extension'), category="error")
+            return redirect(url_for('show_book', book_id=book.id))
 
         file_name = book.path.rsplit('/', 1)[-1]
-        filepath = config.config_calibre_dir + os.sep + book.path
-        filepath = os.path.normpath(filepath)
-        saved_filename = filepath + os.sep + file_name + '.' + file_ext
+        filepath = os.path.normpath(os.path.join(config.config_calibre_dir, book.path))
+        saved_filename = os.path.join(filepath, file_name + '.' + file_ext)
 
+        # check if file path exists, otherwise create it, copy file to calibre path and delete temp file
+        if not os.path.exists(filepath):
+            try:
+                os.makedirs(filepath)
+            except OSError:
+                flash(_(u"Failed to create path %s (Permission denied)." % filepath), category="error")
+                return redirect(url_for('show_book', book_id=book.id))
         try:
             requested_file.save(saved_filename)
         except OSError:
             flash(_(u"Failed to store file %s." % saved_filename), category="error")
-            return redirect(url_for('index'))
+            return redirect(url_for('show_book', book_id=book.id))
 
         file_size = os.path.getsize(saved_filename)
         is_format = db.session.query(db.Data).filter(db.Data.book == book_id).filter(db.Data.format == file_ext.upper()).first()
+        
+        # Format entry already exists, no need to update the database        
         if is_format:
-            # Format entry already exists, no need to update the database
             app.logger.info('Book format already existing')
         else:
             db_format = db.Data(book_id, file_ext.upper(), file_size, file_name)
             db.session.add(db_format)
+            db.session.commit()
+            db.session.connection().connection.connection.create_function("title_sort", 1, db.title_sort)
+
+        # Queue uploader info
         uploadText=_(u"File format %s added to %s" % (file_ext.upper(),book.title))
         helper.global_WorkerThread.add_upload(current_user.nickname, 
             "<a href=\""+ url_for('show_book', book_id=book.id) +"\">"+ uploadText + "</a>")
@@ -3148,6 +3162,7 @@ def edit_book(book_id):
         for b in edited_books_id:
             error = helper.update_dir_stucture(b, config.config_calibre_dir)
             if error:   # stop on error
+                flash(error, category="error")
                 break
 
         if not error:
@@ -3289,6 +3304,8 @@ def edit_book(book_id):
                     input_tags = list(map(lambda it: it.strip(), input_tags))
                     modify_database_object(input_tags, getattr(book, cc_string), db.cc_classes[c.id], db.session, 'custom')
             db.session.commit()
+            if config.config_use_google_drive:
+                gdriveutils.updateGdriveCalibreFromLocal()
             author_names = []
             for author in book.authors:
                 author_names.append(author.name)
@@ -3320,6 +3337,8 @@ def upload():
             # create the function for sorting...
             db.session.connection().connection.connection.create_function("title_sort", 1, db.title_sort)
             db.session.connection().connection.connection.create_function('uuid4', 0, lambda: str(uuid4()))
+            
+            # check if file extension is correct
             if '.' in requested_file.filename:
                 file_ext = requested_file.filename.rsplit('.', 1)[-1].lower()
                 if file_ext not in ALLOWED_EXTENSIONS:
@@ -3332,8 +3351,9 @@ def upload():
             else:
                 flash(_('File to be uploaded must have an extension'), category="error")
                 return redirect(url_for('index'))
+                
+            # extract metadata from file
             meta = uploader.upload(requested_file)
-
             title = meta.title
             author = meta.author
             tags = meta.tags
@@ -3341,10 +3361,10 @@ def upload():
             series_index = meta.series_id
             title_dir = helper.get_valid_filename(title)
             author_dir = helper.get_valid_filename(author)
-            data_name = title_dir
-            filepath = config.config_calibre_dir + os.sep + author_dir + os.sep + title_dir
-            saved_filename = filepath + os.sep + data_name + meta.extension.lower()
+            filepath = os.path.join(config.config_calibre_dir, author_dir, title_dir)
+            saved_filename = os.path.join(filepath, title_dir + meta.extension.lower())
 
+            # check if file path exists, otherwise create it, copy file to calibre path and delete temp file
             if not os.path.exists(filepath):
                 try:
                     os.makedirs(filepath)
@@ -3361,22 +3381,22 @@ def upload():
             except OSError:
                 flash(_(u"Failed to delete file %s (Permission denied)." % meta.file_path), category="warning")
 
-            file_size = os.path.getsize(saved_filename)
             if meta.cover is None:
                 has_cover = 0
-                basedir = config.get_main_dir # os.path.dirname(__file__)
-                copyfile(os.path.join(basedir, "cps/static/generic_cover.jpg"), os.path.join(filepath, "cover.jpg"))
+                copyfile(os.path.join(config.get_main_dir, "cps/static/generic_cover.jpg"), os.path.join(filepath, "cover.jpg"))
             else:
                 has_cover = 1
                 move(meta.cover, os.path.join(filepath, "cover.jpg"))
 
+            # handle authors
             is_author = db.session.query(db.Authors).filter(db.Authors.name == author).first()
             if is_author:
                 db_author = is_author
             else:
                 db_author = db.Authors(author, helper.get_sorted_author(author), "")
                 db.session.add(db_author)
-
+            
+            # handle series
             db_series = None
             is_series = db.session.query(db.Series).filter(db.Series.name == series).first()
             if is_series:
@@ -3396,6 +3416,7 @@ def upload():
                 else:
                     db_language = db.Languages(input_language)
                     db.session.add(db_language)
+                    
             # combine path and normalize path from windows systems
             path = os.path.join(author_dir, title_dir).replace('\\', '/')
             db_book = db.Books(title, "", db_author.sort, datetime.datetime.now(), datetime.datetime(101, 1, 1),
@@ -3405,42 +3426,47 @@ def upload():
                 db_book.series.append(db_series)
             if db_language is not None:
                 db_book.languages.append(db_language)
-            db_data = db.Data(db_book, meta.extension.upper()[1:], file_size, data_name)
-
+            file_size = os.path.getsize(saved_filename)                
+            db_data = db.Data(db_book, meta.extension.upper()[1:], file_size, title_dir)
+            
+            # handle tags
             input_tags = tags.split(',')
             input_tags = list(map(lambda it: it.strip(), input_tags))
             if input_tags[0] !="":
                 modify_database_object(input_tags, db_book.tags, db.Tags, db.session, 'tags')
-
+            
+            # flush content, get db_book.id available
             db_book.data.append(db_data)
-
             db.session.add(db_book)
-            db.session.flush()  # flush content get db_book.id available
+            db.session.flush()  
 
             # add comment
             book_id = db_book.id
             upload_comment = Markup(meta.description).unescape()
             if upload_comment != "":
                 db.session.add(db.Comments(upload_comment, book_id))
-
+            
+            # save data to database, reread data
             db.session.commit()
             db.session.connection().connection.connection.create_function("title_sort", 1, db.title_sort)
-
             book = db.session.query(db.Books) \
                 .filter(db.Books.id == book_id).filter(common_filters()).first()
 
+            # upload book to gdrive if nesseccary and add "(bookid)" to folder name
             if config.config_use_google_drive:
                 gdriveutils.updateGdriveCalibreFromLocal()
-
             error = helper.update_dir_stucture(book.id, config.config_calibre_dir)
-            
+            db.session.commit()
+            if config.config_use_google_drive:
+                gdriveutils.updateGdriveCalibreFromLocal()
             if error:
                 flash(error, category="error")
-            uploadText=_(u"File %s uploaded" % book.title)
+            uploadText=_(u"File %s uploaded" % book.title)            
             helper.global_WorkerThread.add_upload(current_user.nickname, 
                 "<a href=\"" + url_for('show_book', book_id=book.id) + "\">" + uploadText + "</a>")
 
-            if db_language is not None:  # display Full name instead of iso639.part3
+            # create data for displaying display Full language name instead of iso639.part3language 
+            if db_language is not None:  
                 book.languages[0].language_name = _(meta.languages)
             author_names = []
             for author in db_book.authors:

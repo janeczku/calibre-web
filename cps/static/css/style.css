@@ -96,3 +96,5 @@ input.pill:not(:checked) + label .glyphicon {
 
 .upload-format-input-text {display: initial;}
 #btn-upload-format {display: none;}
+
+.panel-title > a { text-decoration: none;}

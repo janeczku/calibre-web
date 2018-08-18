@@ -184,7 +184,7 @@ def delete_book_file(book, calibrepath, book_format=None):
                 return False
 
 
-def update_dir_stucture_file(book_id, calibrepath):
+def update_dir_structure_file(book_id, calibrepath):
     localbook = db.session.query(db.Books).filter(db.Books.id == book_id).first()
     path = os.path.join(calibrepath, localbook.path)
 
@@ -277,7 +277,7 @@ def update_dir_stucture(book_id, calibrepath):
     if ub.config.config_use_google_drive:
         return update_dir_structure_gdrive(book_id)
     else:
-        return update_dir_stucture_file(book_id, calibrepath)
+        return update_dir_structure_file(book_id, calibrepath)
 
 def delete_book(book, calibrepath, book_format):
     if ub.config.config_use_google_drive:
