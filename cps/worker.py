@@ -205,7 +205,7 @@ class WorkerThread(threading.Thread):
                 self.UIqueue[self.current]['runtime'] = self._formatRuntime(
                                                         datetime.now() - self.queue[self.current]['starttime'])
         return self.UIqueue
-        
+
     def convert_mobi(self):
         # convert book, and upload in case of google drive
         self.queue[self.current]['status'] = STAT_STARTED
@@ -275,7 +275,7 @@ class WorkerThread(threading.Thread):
         # kindlegen returncodes
         # 0 = Info(prcgen):I1036: Mobi file built successfully
         # 1 = Info(prcgen):I1037: Mobi file built with WARNINGS!
-        # 2 = Info(prcgen):I1038: MOBI file could not be generated because of errors! 
+        # 2 = Info(prcgen):I1038: MOBI file could not be generated because of errors!
         if ( check < 2 and web.ub.config.config_ebookconverter == 1) or \
                 (check == 0 and web.ub.config.config_ebookconverter == 2):
             cur_book = web.db.session.query(web.db.Books).filter(web.db.Books.id == bookid).first()
@@ -292,7 +292,7 @@ class WorkerThread(threading.Thread):
             self.UIqueue[self.current]['progress'] = "100 %"
             self.UIqueue[self.current]['runtime'] = self._formatRuntime(
                                                     datetime.now() - self.queue[self.current]['starttime'])
-            return file_path + ".mobi" 
+            return file_path + ".mobi"
         else:
             web.app.logger.info("ebook converter failed with error while converting book")
             if not error_message:
@@ -352,7 +352,7 @@ class WorkerThread(threading.Thread):
         
     def send_raw_email(self):
         self.queue[self.current]['starttime'] = datetime.now()
-        self.UIqueue[self.current]['formStarttime'] = self.queue[self.current]['starttime'] 
+        self.UIqueue[self.current]['formStarttime'] = self.queue[self.current]['starttime']
         self.queue[self.current]['status'] = STAT_STARTED
         self.UIqueue[self.current]['status'] = _('Started')
         obj=self.queue[self.current]
@@ -414,7 +414,7 @@ class WorkerThread(threading.Thread):
             sys.stderr = org_stderr
 
         except (socket.error, smtplib.SMTPRecipientsRefused, smtplib.SMTPException) as e:
-            self._handleError(error_message)
+            self._handleError(e)
             return None
 
     def _formatRuntime(self, runtime):

@@ -46,9 +46,8 @@ DEFAULT_PASS = "admin123"
 DEFAULT_PORT = int(os.environ.get("CALIBRE_PORT", 8083))
 
 
-
-
 class UserBase:
+
     @property
     def is_authenticated(self):
         return True
@@ -170,7 +169,7 @@ class User(UserBase, Base):
     theme = Column(Integer, default=0)
 
 
-# Class for anonymous user is derived from User base and complets overrides methods and properties for the
+# Class for anonymous user is derived from User base and completly overrides methods and properties for the
 # anonymous user
 class Anonymous(AnonymousUserMixin, UserBase):
     def __init__(self):
@@ -204,7 +203,7 @@ class Anonymous(AnonymousUserMixin, UserBase):
         return False
 
 
-# Baseclass representing Shelfs in calibre-web inapp.db
+# Baseclass representing Shelfs in calibre-web in app.db
 class Shelf(Base):
     __tablename__ = 'shelf'
 
@@ -774,5 +773,6 @@ else:
     migrate_Database()
     clean_database()
 
-# Generate global Settings Object accecable from every file
+# Generate global Settings Object accessible from every file
 config = Config()
+searched_ids = {}

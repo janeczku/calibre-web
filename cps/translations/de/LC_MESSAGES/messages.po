@@ -1515,8 +1515,8 @@ msgid "Delete this Shelf"
 msgstr "Lösche dieses Bücherregal"
 
 #: cps/templates/shelf.html:8
-msgid "Edit Shelf name"
-msgstr "Bücherregal umbenennen"
+msgid "Edit Shelf"
+msgstr "Bücherregal editieren"
 
 #: cps/templates/shelf.html:9 cps/templates/shelf_order.html:11
 msgid "Change order"
