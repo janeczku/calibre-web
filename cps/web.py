@@ -47,7 +47,7 @@ from flask_principal import Principal
 from flask_principal import __version__ as flask_principalVersion
 from flask_babel import Babel
 from flask_babel import gettext as _
-import pytz
+
 import requests
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.datastructures import Headers
@@ -183,14 +183,6 @@ lm.login_view = 'login'
 lm.anonymous_user = ub.Anonymous
 app.secret_key = os.getenv('SECRET_KEY', 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT')
 db.setup_db()
-
-'''if config.config_log_level == logging.DEBUG:
-    logging.getLogger("sqlalchemy.engine").addHandler(file_handler)
-    logging.getLogger("sqlalchemy.engine").setLevel(logging.INFO)
-    logging.getLogger("sqlalchemy.pool").addHandler(file_handler)
-    logging.getLogger("sqlalchemy.pool").setLevel(config.config_log_level)
-    logging.getLogger("sqlalchemy.orm").addHandler(file_handler)
-    logging.getLogger("sqlalchemy.orm").setLevel(config.config_log_level)'''
 
 
 def is_gdrive_ready():
@@ -462,7 +454,7 @@ def edit_required(f):
     return inner
 
 
-# Language and content filters
+# Language and content filters for displaying in the UI
 def common_filters():
     if current_user.filter_language() != "all":
         lang_filter = db.Books.languages.any(db.Languages.lang_code == current_user.filter_language())
@@ -471,6 +463,19 @@ def common_filters():
     content_rating_filter = false() if current_user.mature_content else \
         db.Books.tags.any(db.Tags.name.in_(config.mature_content_tags()))
     return and_(lang_filter, ~content_rating_filter)
+
+
+# Creates for all stored languages a translated speaking name in the array for the UI
+def speaking_language(languages = None):
+    if not languages:
+        languages = db.session.query(db.Languages).all()
+    for lang in languages:
+        try:
+            cur_l = LC.parse(lang.lang_code)
+            lang.name = cur_l.get_language_name(get_locale())
+        except Exception:
+            lang.name = _(isoLanguages.get(part3=lang.lang_code).name)
+    return languages
 
 
 # Fill indexpage with all requested data from database
@@ -489,6 +494,8 @@ def fill_indexpage(page, database, db_filter, order, *join):
     return entries, random, pagination
 
 
+# Modifies different Database objects, first check if elements have to be added to database, than check
+# if elements have to be deleted, because they are no longer used
 def modify_database_object(input_elements, db_book_object, db_object, db_session, db_type):
     input_elements = [x for x in input_elements if x != '']
     # we have all input element (authors, series, tags) names now
@@ -557,7 +564,7 @@ def modify_database_object(input_elements, db_book_object, db_object, db_session
             db_book_object.append(new_element)
 
 
-# read search results from calibre-database and return it
+# read search results from calibre-database and return it (function is used for feed and simple search
 def get_search_results(term):
     q = list()
     authorterms = re.split("[, ]+", term)
@@ -581,7 +588,6 @@ def feed_search(term):
         entriescount = len(entries) if len(entries) > 0 else 1
         pagination = Pagination(1, entriescount, entriescount)
         return render_xml_template('feed.xml', searchterm=term, entries=entries, pagination=pagination)
-        
     else:
         return render_xml_template('feed.xml', searchterm="")
 
@@ -907,13 +913,7 @@ def get_tags_json():
 def get_languages_json():
     if request.method == "GET":
         query = request.args.get('q').lower()
-        languages = db.session.query(db.Languages).all()
-        for lang in languages:
-            try:
-                cur_l = LC.parse(lang.lang_code)
-                lang.name = cur_l.get_language_name(get_locale())
-            except Exception:
-                lang.name = _(isoLanguages.get(part3=lang.lang_code).name)
+        languages = speaking_language()
         entries = [s for s in languages if query in s.name.lower()]
         json_dumps = json.dumps([dict(name=r.name) for r in entries])
         return json_dumps
@@ -1212,13 +1212,7 @@ def series(book_id, page):
 def language_overview():
     if current_user.show_language():
         if current_user.filter_language() == u"all":
-            languages = db.session.query(db.Languages).all()
-            for lang in languages:
-                try:
-                    cur_l = LC.parse(lang.lang_code)
-                    lang.name = cur_l.get_language_name(get_locale())
-                except Exception:
-                    lang.name = _(isoLanguages.get(part3=lang.lang_code).name)
+            languages = speaking_language()
         else:
             try:
                 cur_l = LC.parse(current_user.filter_language())
@@ -1521,8 +1515,7 @@ def google_drive_callback():
             f.write(credentials.to_json())
     except ValueError as error:
         app.logger.error(error)
-    finally:
-        return redirect(url_for('configuration'))
+    return redirect(url_for('configuration'))
 
 
 @app.route("/gdrive/watch/subscribe")
@@ -1730,12 +1723,8 @@ def advanced_search():
         serie_names = db.session.query(db.Series).filter(db.Series.id.in_(include_series_inputs)).all()
         searchterm.extend(serie.name for serie in serie_names)
         language_names = db.session.query(db.Languages).filter(db.Languages.id.in_(include_languages_inputs)).all()
-        for lang in language_names:
-            try:
-                cur_l = LC.parse(lang.lang_code)
-                lang.name = cur_l.get_language_name(get_locale())
-            except Exception:
-                lang.name = _(isoLanguages.get(part3=lang.lang_code).name)
+        if language_names:
+            language_names = speaking_language(language_names)
         searchterm.extend(language.name for language in language_names)
         if rating_high:
             searchterm.extend([_(u"Rating <= %s" % rating_high)])
@@ -1794,22 +1783,19 @@ def advanced_search():
                     q = q.filter(getattr(db.Books, 'custom_column_'+str(c.id)).any(
                         db.cc_classes[c.id].value.ilike("%" + custom_query + "%")))
         q = q.all()
+        ids = list()
+        for element in q:
+            ids.append(element.id)
+        ub.searched_ids[current_user.id] = ids
         return render_title_template('search.html', searchterm=searchterm,
                                      entries=q, title=_(u"search"), page="search")
     # prepare data for search-form
     tags = db.session.query(db.Tags).order_by(db.Tags.name).all()
     series = db.session.query(db.Series).order_by(db.Series.name).all()
     if current_user.filter_language() == u"all":
-        languages = db.session.query(db.Languages).all()
-        for lang in languages:
-            try:
-                cur_l = LC.parse(lang.lang_code)
-                lang.name = cur_l.get_language_name(get_locale())
-            except Exception:
-                lang.name = _(isoLanguages.get(part3=lang.lang_code).name)
+        languages = speaking_language()
     else:
         languages = None
-
     return render_title_template('search_form.html', tags=tags, languages=languages,
                                  series=series, title=_(u"search"), cc=cc, page="advsearch")
 
@@ -2213,7 +2199,57 @@ def add_to_shelf(shelf_id, book_id):
         return redirect(request.environ["HTTP_REFERER"])
     return "", 204
 
+@app.route("/shelf/massadd/<int:shelf_id>")
+@login_required
+def search_to_shelf(shelf_id):
+    shelf = ub.session.query(ub.Shelf).filter(ub.Shelf.id == shelf_id).first()
+    if shelf is None:
+        app.logger.info("Invalid shelf specified")
+        return "Invalid shelf specified", 400
 
+    if not shelf.is_public and not shelf.user_id == int(current_user.id):
+        app.logger.info("Sorry you are not allowed to add a book to the the shelf: %s" % shelf.name)
+        return "Sorry you are not allowed to add a book to the the shelf: %s" % shelf.name, 403
+
+    if shelf.is_public and not current_user.role_edit_shelfs():
+        app.logger.info("User is not allowed to edit public shelves")
+        return "User is not allowed to edit public shelves", 403
+
+    if current_user.id in ub.searched_ids and ub.searched_ids[current_user.id]:
+        books_for_shelf = list()
+        books_in_shelf = ub.session.query(ub.BookShelf).filter(ub.BookShelf.shelf == shelf_id).all()
+        if books_in_shelf:
+            book_ids = list()
+            for book_id in books_in_shelf:
+                book_ids.append(book_id.book_id)
+            for id in ub.searched_ids[current_user.id]:
+                if id not in book_ids:
+                    books_for_shelf.append(id)
+        else:
+            books_for_shelf = ub.searched_ids[current_user.id]
+
+        if not books_for_shelf:
+            app.logger.info("Books are already part of the shelf: %s" % shelf.name)
+            flash(_(u"Books are already part of the shelf: %s" % shelf.name), category="error")
+            return redirect(url_for('index'))
+
+        maxOrder = ub.session.query(func.max(ub.BookShelf.order)).filter(ub.BookShelf.shelf == shelf_id).first()
+        if maxOrder[0] is None:
+            maxOrder = 0
+        else:
+            maxOrder = maxOrder[0]
+
+        for book in books_for_shelf:
+            maxOrder = maxOrder + 1
+            ins = ub.BookShelf(shelf=shelf.id, book_id=book, order=maxOrder)
+            ub.session.add(ins)
+        ub.session.commit()
+        flash(_(u"Books have been added to shelf: %(sname)s", sname=shelf.name), category="success")
+    else:
+        flash(_(u"Could not add books to shelf: %(sname)s", sname=shelf.name), category="error")
+    return redirect(url_for('index'))       
+
+    
 @app.route("/shelf/remove/<int:shelf_id>/<int:book_id>")
 @login_required
 def remove_from_shelf(shelf_id, book_id):
@@ -2397,13 +2433,7 @@ def order_shelf(shelf_id):
 def profile():
     content = ub.session.query(ub.User).filter(ub.User.id == int(current_user.id)).first()
     downloads = list()
-    languages = db.session.query(db.Languages).all()
-    for lang in languages:
-        try:
-            cur_l = LC.parse(lang.lang_code)
-            lang.name = cur_l.get_language_name(get_locale())
-        except Exception:
-            lang.name = _(isoLanguages.get(part3=lang.lang_code).name)
+    languages = speaking_language()
     translations = babel.list_translations() + [LC('en')]
     for book in content.downloads:
         downloadBook = db.session.query(db.Books).filter(db.Books.id == book.book_id).first()
@@ -2769,13 +2799,7 @@ def configuration_helper(origin):
 @admin_required
 def new_user():
     content = ub.User()
-    languages = db.session.query(db.Languages).all()
-    for lang in languages:
-        try:
-            cur_l = LC.parse(lang.lang_code)
-            lang.name = cur_l.get_language_name(get_locale())
-        except Exception:
-            lang.name = _(isoLanguages.get(part3=lang.lang_code).name)
+    languages = speaking_language()
     translations = [LC('en')] + babel.list_translations()
     if request.method == "POST":
         to_save = request.form.to_dict()
@@ -2880,13 +2904,7 @@ def edit_mailsettings():
 def edit_user(user_id):
     content = ub.session.query(ub.User).filter(ub.User.id == int(user_id)).first()  # type: ub.User
     downloads = list()
-    languages = db.session.query(db.Languages).all()
-    for lang in languages:
-        try:
-            cur_l = LC.parse(lang.lang_code)
-            lang.name = cur_l.get_language_name(get_locale())
-        except Exception:
-            lang.name = _(isoLanguages.get(part3=lang.lang_code).name)
+    languages = speaking_language()
     translations = babel.list_translations() + [LC('en')]
     for book in content.downloads:
         downloadBook = db.session.query(db.Books).filter(db.Books.id == book.book_id).first()
@@ -3099,7 +3117,6 @@ def edit_book(book_id):
             uploadText=_(u"File format %s added to %s" % (file_ext.upper(),book.title))
             helper.global_WorkerThread.add_upload(current_user.nickname, 
                 "<a href=\""+ url_for('show_book', book_id=book.id) +"\">"+ uploadText + "</a>")
-            
 
     to_save = request.form.to_dict()
 
@@ -3284,7 +3301,7 @@ def edit_book(book_id):
                                              title=_(u"edit metadata"), page="editbook")
         else:
             db.session.rollback()
-            flash( error, category="error")
+            flash(error, category="error")
             return render_title_template('book_edit.html', book=book, authors=author_names, cc=cc,
                                          title=_(u"edit metadata"), page="editbook")
     except Exception as e:
@@ -3394,7 +3411,7 @@ def upload():
                 db_book.series.append(db_series)
             if db_language is not None:
                 db_book.languages.append(db_language)
-            file_size = os.path.getsize(saved_filename)                
+            file_size = os.path.getsize(saved_filename)
             db_data = db.Data(db_book, meta.extension.upper()[1:], file_size, title_dir)
             
             # handle tags
@@ -3406,7 +3423,7 @@ def upload():
             # flush content, get db_book.id available
             db_book.data.append(db_data)
             db.session.add(db_book)
-            db.session.flush()  
+            db.session.flush()
 
             # add comment
             book_id = db_book.id
@@ -3429,12 +3446,12 @@ def upload():
                 gdriveutils.updateGdriveCalibreFromLocal()
             if error:
                 flash(error, category="error")
-            uploadText=_(u"File %s uploaded" % book.title)            
+            uploadText=_(u"File %s uploaded" % book.title)
             helper.global_WorkerThread.add_upload(current_user.nickname, 
                 "<a href=\"" + url_for('show_book', book_id=book.id) + "\">" + uploadText + "</a>")
 
-            # create data for displaying display Full language name instead of iso639.part3language 
-            if db_language is not None:  
+            # create data for displaying display Full language name instead of iso639.part3language
+            if db_language is not None:
                 book.languages[0].language_name = _(meta.languages)
             author_names = []
             for author in db_book.authors:
