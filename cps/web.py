@@ -288,12 +288,18 @@ class Pagination(object):
     def has_next(self):
         return self.page < self.pages
 
+    # right_edge: last right_edges count of all pages are shown as number, means, if 10 pages are paginated -> 9,10 shown
+    # left_edge: first left_edges count of all pages are shown as number                                    -> 1,2 shown
+    # left_current: left_current count below current page are shown as number, means if current page 5      -> 3,4 shown
+    # left_current: right_current count above current page are shown as number, means if current page 5     -> 6,7 shown
     def iter_pages(self, left_edge=2, left_current=2,
-                   right_current=5, right_edge=2):
+                   right_current=4, right_edge=2):
         last = 0
-        for num in range(self.pages, (self.pages + 1)):  # ToDo: can be simplified
-            if num <= left_edge or (num > self.page - left_current - 1 and num < self.page + right_current) \
-                    or num > self.pages - right_edge:
+        left_current = self.page - left_current - 1
+        right_current = self.page + right_current + 1
+        right_edge = self.pages - right_edge
+        for num in range(1, (self.pages + 1)):
+            if num <= left_edge or (left_current < num < right_current) or num > right_edge:
                 if last + 1 != num:
                     yield None
                 yield num
@@ -1372,11 +1378,11 @@ def bookmark(book_id, book_format):
         ub.session.commit()
         return "", 204
 
-    bookmark = ub.Bookmark(user_id=current_user.id,
+    lbookmark = ub.Bookmark(user_id=current_user.id,
                            book_id=book_id,
                            format=book_format,
                            bookmark_key=bookmark_key)
-    ub.session.merge(bookmark)
+    ub.session.merge(lbookmark)
     ub.session.commit()
     return "", 201
 
@@ -1800,11 +1806,11 @@ def advanced_search():
                                  series=series, title=_(u"search"), cc=cc, page="advsearch")
 
 
-
 @app.route("/cover/<path:cover_path>")
 @login_required_if_no_ano
 def get_cover(cover_path):
     return helper.get_book_cover(cover_path)
+
 
 @app.route("/show/<book_id>/<book_format>")
 @login_required_if_no_ano
@@ -1820,7 +1826,7 @@ def serve_book(book_id, book_format):
         except KeyError:
             headers["Content-Type"] = "application/octet-stream"
         df = gdriveutils.getFileFromEbooksFolder(book.path, data.name + "." + book_format)
-        return do_gdrive_download(df, headers)
+        return gdriveutils.do_gdrive_download(df, headers)
     else:
         return send_from_directory(os.path.join(config.config_calibre_dir, book.path), data.name + "." + book_format)
 
@@ -1847,7 +1853,7 @@ def render_read_books(page, are_read, as_xml=False):
             readBookIds = [x.book for x in readBooks]
         except KeyError:
             app.logger.error(u"Custom Column No.%d is not existing in calibre database" % config.config_read_column)
-            readBookIds=[]
+            readBookIds = []
 
     if are_read:
         db_filter = db.Books.id.in_(readBookIds)
@@ -1855,7 +1861,7 @@ def render_read_books(page, are_read, as_xml=False):
         db_filter = ~db.Books.id.in_(readBookIds)
 
     entries, random, pagination = fill_indexpage(page, db.Books,
-        db_filter, [db.Books.timestamp.desc()])
+            db_filter, [db.Books.timestamp.desc()])
 
     if as_xml:
         xml = render_title_template('feed.xml', entries=entries, pagination=pagination)
@@ -1913,13 +1919,13 @@ def read_book(book_id, book_format):
         return redirect(url_for("index"))
 
     # check if book was downloaded before
-    bookmark = None
+    lbookmark = None
     if current_user.is_authenticated:
-        bookmark = ub.session.query(ub.Bookmark).filter(ub.and_(ub.Bookmark.user_id == int(current_user.id),
+        lbookmark = ub.session.query(ub.Bookmark).filter(ub.and_(ub.Bookmark.user_id == int(current_user.id),
                                                             ub.Bookmark.book_id == book_id,
                                                             ub.Bookmark.format == book_format.upper())).first()
     if book_format.lower() == "epub":
-        return render_title_template('read.html', bookid=book_id, title=_(u"Read a Book"), bookmark=bookmark)
+        return render_title_template('read.html', bookid=book_id, title=_(u"Read a Book"), bookmark=lbookmark)
     elif book_format.lower() == "pdf":
         return render_title_template('readpdf.html', pdffile=book_id, title=_(u"Read a Book"))
     elif book_format.lower() == "txt":
@@ -2199,21 +2205,25 @@ def add_to_shelf(shelf_id, book_id):
         return redirect(request.environ["HTTP_REFERER"])
     return "", 204
 
+
 @app.route("/shelf/massadd/<int:shelf_id>")
 @login_required
 def search_to_shelf(shelf_id):
     shelf = ub.session.query(ub.Shelf).filter(ub.Shelf.id == shelf_id).first()
     if shelf is None:
         app.logger.info("Invalid shelf specified")
-        return "Invalid shelf specified", 400
+        flash(_(u"Invalid shelf specified"), category="error")
+        return redirect(url_for('index'))
 
     if not shelf.is_public and not shelf.user_id == int(current_user.id):
-        app.logger.info("Sorry you are not allowed to add a book to the the shelf: %s" % shelf.name)
-        return "Sorry you are not allowed to add a book to the the shelf: %s" % shelf.name, 403
+        app.logger.info("You are not allowed to add a book to the the shelf: %s" % shelf.name)
+        flash(_(u"You are not allowed to add a book to the the shelf: %s" % shelf.name), category="error")
+        return redirect(url_for('index'))
 
     if shelf.is_public and not current_user.role_edit_shelfs():
         app.logger.info("User is not allowed to edit public shelves")
-        return "User is not allowed to edit public shelves", 403
+        flash(_(u"User is not allowed to edit public shelves"), category="error")
+        return redirect(url_for('index'))
 
     if current_user.id in ub.searched_ids and ub.searched_ids[current_user.id]:
         books_for_shelf = list()
