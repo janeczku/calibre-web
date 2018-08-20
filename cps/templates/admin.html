@@ -53,9 +53,6 @@
   </table>
 
     <div class="btn btn-default" id="admin_edit_email"><a href="{{url_for('edit_mailsettings')}}">{{_('Change SMTP settings')}}</a></div>
-    {% if g.allow_registration %}
-    <div class="btn btn-default" id="admin_register_domain"><a href="{{url_for('edit_register_domains')}}">{{_('Edit allowed domains')}}</a></div>
-    {% endif %}
 
   <h2>{{_('Configuration')}}</h2>
   <table class="table table-striped" id="table_configuration">
