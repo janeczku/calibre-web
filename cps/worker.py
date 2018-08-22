@@ -233,15 +233,23 @@ class WorkerThread(threading.Thread):
             if web.ub.config.config_ebookconverter == 1:
                 command = [web.ub.config.config_converterpath, u'"' + file_path + u'.epub"']
             else:
-                command = [web.ub.config.config_converterpath, '"' + file_path + u'.epub"',
-                           '"'+file_path + u'.mobi"']
-                if web.ub.config.config_calibre:
-                    command.append(web.ub.config.config_calibre)
-            # special handling for windows
-            if os.name == 'nt':
-                command = ' '.join(command)
-                if sys.version_info < (3, 0):
-                    command = command.encode(sys.getfilesystemencoding())
+                # Linux py2.7 encode as list without quotes no empty element for parameters
+                # linux py3.x no encode and as list without quotes no empty element for parameters
+                # windows py2.7 encode as string with qoutes empty element for parameters is okay
+                # windows py 3.x no encode and as string with qoutes empty element for parameters is okay
+                # seperate handling for windows and linux
+                if os.name == 'nt':
+                    command = web.ub.config.config_converterpath + u' "' + file_path + u'.epub" "' + \
+                              file_path + u'.mobi" ' + web.ub.config.config_calibre
+                    if sys.version_info < (3, 0):
+                        command = command.encode(sys.getfilesystemencoding())
+                else:
+                    command = [web.ub.config.config_converterpath, (file_path + u'.epub'),
+                               (file_path + u'.mobi')]
+                    if web.ub.config.config_calibre:
+                        command.append(web.ub.config.config_calibre)
+                    if sys.version_info < (3, 0):
+                        command = [ x.encode(sys.getfilesystemencoding()) for x in command ]
 
             p = subprocess.Popen(command, stdout=subprocess.PIPE, universal_newlines=True)
         except OSError as e:
