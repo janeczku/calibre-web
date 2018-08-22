@@ -5,7 +5,7 @@
 {% block body %}
 <div class="discover">
     <h2>{{_('Tasks list')}}</h2>
-    <table class="table table-no-bordered" id="table" data-url="{{'/ajax/emailstat'}}"  data-sort-name="starttime" data-sort-order="asc">
+    <table class="table table-no-bordered" id="table" data-url="{{  url_for('get_email_status_json') }}"  data-sort-name="starttime" data-sort-order="asc">
       <thead>
         <tr>
             {% if g.user.role_admin() %}
@@ -37,7 +37,7 @@
             setInterval(function() {
                 $.ajax({
                     method:"get",
-                    url: "{{'/ajax/emailstat'}}",
+                    url: "{{ url_for('get_email_status_json')}}",
                     async: true,
                     timeout: 900,
                     success:function(data){
