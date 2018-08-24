@@ -26,6 +26,7 @@ except ImportError:
     pass
 import web
 import server
+import random
 
 try:
     import unidecode
@@ -76,9 +77,26 @@ def make_mobi(book_id, calibrepath, user_id, kindle_mail):
 
 
 def send_test_mail(kindle_mail, user_name):
-    global_WorkerThread.add_email(_(u'Calibre-web test email'),None, None, ub.get_mail_settings(),
+    global_WorkerThread.add_email(_(u'Calibre-Web test email'),None, None, ub.get_mail_settings(),
                                   kindle_mail, user_name, _(u"Test E-Mail"))
     return
+
+
+# Send registration email or password reset email, depending on parameter resend (False means welcome email)
+def send_registration_mail(e_mail, user_name, default_password, resend=False):
+    text = "Hello %s!\r\n" % user_name
+    if not resend:
+        text += "Your new account at Calibre-Web has been created. Thanks for joining us!\r\n"
+    text += "Please log in to your account using the following informations:\r\n"
+    text += "User name: %s\n" % user_name
+    text += "Password: %s\r\n" % default_password
+    text += "Don't forget to change your password after first login.\r\n"
+    text += "Sincerely\r\n\r\n"
+    text += "Your Calibre-Web team"
+    global_WorkerThread.add_email(_(u'Get Started with Calibre-Web'),None, None, ub.get_mail_settings(),
+                                  e_mail, user_name, _(u"Registration E-Mail for user: %s" % user_name),text)
+    return
+
 
 # Files are processed in the following order/priority:
 # 1: If Mobi file is exisiting, it's directly send to kindle email,
@@ -270,6 +288,11 @@ def delete_book_gdrive(book, book_format):
     else:
         error =_(u'Book path %s not found on Google Drive' % book.path)  # file not found
     return error
+
+def generate_random_password():
+    s = "abcdefghijklmnopqrstuvwxyz01234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%&*()?"
+    passlen = 8
+    return "".join(random.sample(s,passlen ))
 
 ################################## External interface
 
