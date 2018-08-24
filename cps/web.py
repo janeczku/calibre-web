@@ -2,9 +2,7 @@
 # -*- coding: utf-8 -*-
 try:
     from googleapiclient.errors import HttpError
-    # gdrive_support = True
 except ImportError:
-    # gdrive_support = False
     pass
 
 try:
@@ -87,6 +85,7 @@ except ImportError:
 
 import time
 import server
+import random
 
 current_milli_time = lambda: int(round(time.time() * 1000))
 
@@ -94,7 +93,8 @@ current_milli_time = lambda: int(round(time.time() * 1000))
 # Global variables
 gdrive_watch_callback_token = 'target=calibreweb-watch_files'
 
-ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'epub', 'mobi', 'azw', 'azw3', 'cbr', 'cbz', 'cbt', 'djvu', 'prc', 'doc', 'docx', 'fb2'])
+ALLOWED_EXTENSIONS = {'txt', 'pdf', 'epub', 'mobi', 'azw', 'azw3', 'cbr', 'cbz', 'cbt', 'djvu', 'prc', 'doc', 'docx',
+                      'fb2'}
 
 
 def md5(fname):
@@ -186,8 +186,8 @@ db.setup_db()
 
 
 def is_gdrive_ready():
-    return os.path.exists(os.path.join(config.get_main_dir,'settings.yaml')) and \
-           os.path.exists(os.path.join(config.get_main_dir,'gdrive_credentials'))
+    return os.path.exists(os.path.join(config.get_main_dir, 'settings.yaml')) and \
+           os.path.exists(os.path.join(config.get_main_dir, 'gdrive_credentials'))
 
 
 @babel.localeselector
@@ -288,10 +288,10 @@ class Pagination(object):
     def has_next(self):
         return self.page < self.pages
 
-    # right_edge: last right_edges count of all pages are shown as number, means, if 10 pages are paginated -> 9,10 shown
-    # left_edge: first left_edges count of all pages are shown as number                                    -> 1,2 shown
-    # left_current: left_current count below current page are shown as number, means if current page 5      -> 3,4 shown
-    # left_current: right_current count above current page are shown as number, means if current page 5     -> 6,7 shown
+    # right_edge: last right_edges count of all pages are shown as number, means, if 10 pages are paginated -> 9,10 shwn
+    # left_edge: first left_edges count of all pages are shown as number                                    -> 1,2 shwn
+    # left_current: left_current count below current page are shown as number, means if current page 5      -> 3,4 shwn
+    # left_current: right_current count above current page are shown as number, means if current page 5     -> 6,7 shwn
     def iter_pages(self, left_edge=2, left_current=2,
                    right_current=4, right_edge=2):
         last = 0
@@ -322,7 +322,7 @@ def remote_login_required(f):
             return f(*args, **kwargs)
         if request.is_xhr:
             data = {'status': 'error', 'message': 'Forbidden'}
-            response = make_response(json.dumps(data, ensure_ascii=false))
+            response = make_response(json.dumps(data, ensure_ascii=False))
             response.headers["Content-Type"] = "application/json; charset=utf-8"
             return response, 403
         abort(403)
@@ -339,9 +339,10 @@ def url_for_other_page(page):
     args['page'] = page
     return url_for(request.endpoint, **args)
 
+
 # shortentitles to at longest nchar, shorten longer words if necessary
 @app.template_filter('shortentitle')
-def shortentitle_filter(s,nchar=20):
+def shortentitle_filter(s, nchar=20):
     text = s.split()
     res = ""  # result
     suml = 0  # overall length
@@ -472,7 +473,7 @@ def common_filters():
 
 
 # Creates for all stored languages a translated speaking name in the array for the UI
-def speaking_language(languages = None):
+def speaking_language(languages=None):
     if not languages:
         languages = db.session.query(db.Languages).all()
     for lang in languages:
@@ -894,6 +895,68 @@ def get_email_status_json():
     return response
 
 
+
+# checks if domain is in database (including wildcards)
+# example SELECT * FROM @TABLE WHERE  'abcdefg' LIKE Name;    
+# from https://code.luasoftware.com/tutorials/flask/execute-raw-sql-in-flask-sqlalchemy/
+def check_valid_domain(domain_text):
+    # result = session.query(Notification).from_statement(text(sql)).params(id=5).all()
+    #ToDo: check possible SQL injection
+    domain_text = domain_text.split('@',1)[-1].lower()
+    sql = "SELECT * FROM registration WHERE '%s' LIKE domain;" % domain_text
+    result = ub.session.query(ub.Registration).from_statement(text(sql)).all()
+    return len(result)
+
+''' POST /post
+{
+    name:  'username',  //name of field (column in db)
+    pk:    1            //primary key (record id)
+    value: 'superuser!' //new value
+}'''  
+@app.route("/ajax/editdomain", methods=['POST'])
+@login_required
+@admin_required
+def edit_domain():
+    vals = request.form.to_dict()
+    answer = ub.session.query(ub.Registration).filter(ub.Registration.id == vals['pk']).first()
+    # domain_name = request.args.get('domain')   
+    answer.domain = vals['value'].replace('*','%').replace('?','_').lower()
+    ub.session.commit()
+    return ""
+
+@app.route("/ajax/adddomain", methods=['POST'])
+@login_required
+@admin_required
+def add_domain():
+    domain_name = request.form.to_dict()['domainname'].replace('*','%').replace('?','_').lower()
+    check = ub.session.query(ub.Registration).filter(ub.Registration.domain == domain_name).first()
+    if not check:
+        new_domain = ub.Registration(domain=domain_name)
+        ub.session.add(new_domain)
+        ub.session.commit()
+    return ""
+
+@app.route("/ajax/deletedomain", methods=['POST'])
+@login_required
+@admin_required
+def delete_domain():
+    domain_id = request.form.to_dict()['domainid'].replace('*','%').replace('?','_').lower()
+    ub.session.query(ub.Registration).filter(ub.Registration.id == domain_id).delete()
+    ub.session.commit()
+    return ""
+
+@app.route("/ajax/domainlist")
+@login_required
+@admin_required
+def list_domain():
+    answer = ub.session.query(ub.Registration).all()
+    json_dumps = json.dumps([{"domain":r.domain.replace('%','*').replace('_','?'),"id":r.id} for r in answer])
+    js=json.dumps(json_dumps.replace('"', "'")).lstrip('"').strip('"')
+    response = make_response(js.replace("'",'"'))
+    response.headers["Content-Type"] = "application/json; charset=utf-8"
+    return response
+
+    
 @app.route("/get_authors_json", methods=['GET', 'POST'])
 @login_required_if_no_ano
 def get_authors_json():
@@ -1997,27 +2060,35 @@ def register():
 
     if request.method == "POST":
         to_save = request.form.to_dict()
-        if not to_save["nickname"] or not to_save["email"] or not to_save["password"]:
+        if not to_save["nickname"] or not to_save["email"]:
             flash(_(u"Please fill out all fields!"), category="error")
             return render_title_template('register.html', title=_(u"register"), page="register")
 
         existing_user = ub.session.query(ub.User).filter(func.lower(ub.User.nickname) == to_save["nickname"].lower()).first()
-        existing_email = ub.session.query(ub.User).filter(ub.User.email == to_save["email"]).first()
+        existing_email = ub.session.query(ub.User).filter(ub.User.email == to_save["email"].lower()).first()
         if not existing_user and not existing_email:
             content = ub.User()
-            content.password = generate_password_hash(to_save["password"])
-            content.nickname = to_save["nickname"]
-            content.email = to_save["email"]
-            content.role = config.config_default_role
-            content.sidebar_view = config.config_default_show
-            try:
-                ub.session.add(content)
-                ub.session.commit()
-            except Exception:
-                ub.session.rollback()
-                flash(_(u"An unknown error occured. Please try again later."), category="error")
+            # content.password = generate_password_hash(to_save["password"])
+            if check_valid_domain(to_save["email"]):
+                content.nickname = to_save["nickname"]
+                content.email = to_save["email"]
+                password = helper.generate_random_password()
+                content.password = generate_password_hash(password) 
+                content.role = config.config_default_role
+                content.sidebar_view = config.config_default_show
+                try:
+                    ub.session.add(content)
+                    ub.session.commit()
+                    helper.send_registration_mail(to_save["email"],to_save["nickname"], password)
+                except Exception:
+                    ub.session.rollback()
+                    flash(_(u"An unknown error occurred. Please try again later."), category="error")
+                    return render_title_template('register.html', title=_(u"register"), page="register")
+            else:
+                flash(_(u"Your email is not allowed to register"), category="error")
+                app.logger.info('Registering failed for user "' + to_save['nickname'] + '" EMailadress: ' + to_save["email"])
                 return render_title_template('register.html', title=_(u"register"), page="register")
-            flash("Your account has been created. Please login.", category="success")
+            flash(_(u"Confirmation email was send to your email account."), category="success")
             return redirect(url_for('login'))
         else:
             flash(_(u"This username or email address is already in use."), category="error")
@@ -2135,7 +2206,7 @@ def token_verified():
         data['status'] = 'success'
         flash(_(u"you are now logged in as: '%(nickname)s'", nickname=user.nickname), category="success")
 
-    response = make_response(json.dumps(data, ensure_ascii=false))
+    response = make_response(json.dumps(data, ensure_ascii=False))
     response.headers["Content-Type"] = "application/json; charset=utf-8"
 
     return response
@@ -2462,6 +2533,10 @@ def profile():
         if "kindle_mail" in to_save and to_save["kindle_mail"] != content.kindle_mail:
             content.kindle_mail = to_save["kindle_mail"]
         if to_save["email"] and to_save["email"] != content.email:
+            if config.config.config_public_reg and not check_valid_domain(to_save["email"]):        
+                flash(_(u"Email is not from valid domain"), category="error")
+                return render_title_template("user_edit.html", content=content, downloads=downloads,
+                                     title=_(u"%(name)s's profile", name=current_user.nickname))            
             content.email = to_save["email"]
         if "show_random" in to_save and to_save["show_random"] == "on":
             content.random_books = 1
@@ -2607,7 +2682,7 @@ def view_configuration():
         if "show_mature_content" in to_save:
             content.config_default_show = content.config_default_show + ub.MATURE_CONTENT
         ub.session.commit()
-        flash(_(u"Calibre-web configuration updated"), category="success")
+        flash(_(u"Calibre-Web configuration updated"), category="success")
         config.loadSettings()
         if reboot_required:
             # db.engine.dispose() # ToDo verify correct
@@ -2635,6 +2710,7 @@ def configuration_helper(origin):
     gdriveError=None
     db_change = False
     success = False
+    filedata = None
     if gdriveutils.gdrive_support == False:
         gdriveError = _('Import of optional Google Drive requirements missing')
     else:
@@ -2645,7 +2721,6 @@ def configuration_helper(origin):
                 filedata=json.load(settings)
             if not 'web' in filedata:
                 gdriveError = _('client_secrets.json is not configured for web application')
-                filedata = None
     if request.method == "POST":
         to_save = request.form.to_dict()
         content = ub.session.query(ub.Settings).first()  # type: ub.Settings
@@ -2769,7 +2844,7 @@ def configuration_helper(origin):
                     db.session.close()
                     db.engine.dispose()
             ub.session.commit()
-            flash(_(u"Calibre-web configuration updated"), category="success")
+            flash(_(u"Calibre-Web configuration updated"), category="success")
             config.loadSettings()
             app.logger.setLevel(config.config_log_level)
             logging.getLogger("book_formats").setLevel(config.config_log_level)
@@ -2794,10 +2869,10 @@ def configuration_helper(origin):
             app.logger.info('Reboot required, restarting')
         if origin:
             success = True
-    if is_gdrive_ready() and gdriveutils.gdrive_support == True:
+    if is_gdrive_ready() and gdriveutils.gdrive_support == True and config.config_use_google_drive == True:
         gdrivefolders=gdriveutils.listRootFolders()
     else:
-        gdrivefolders=None
+        gdrivefolders=list()
     return render_title_template("config_edit.html", origin=origin, success=success, content=config,
                                  show_authenticate_google_drive=not is_gdrive_ready(), gdrive=gdriveutils.gdrive_support,
                                  gdriveError=gdriveError, gdrivefolders=gdrivefolders,
@@ -2819,7 +2894,12 @@ def new_user():
                                          title=_(u"Add new user"))
         content.password = generate_password_hash(to_save["password"])
         content.nickname = to_save["nickname"]
-        content.email = to_save["email"]
+        if config.config_public_reg and not check_valid_domain(to_save["email"]):
+            flash(_(u"Email is not from valid domain"), category="error")
+            return render_title_template("user_edit.html", new_user=1, content=content, translations=translations,
+                                         title=_(u"Add new user"))
+        else:
+            content.email = to_save["email"]
         content.default_language = to_save["default_language"]
         content.mature_content = "show_mature_content" in to_save
         content.theme = int(to_save["theme"])
@@ -2890,22 +2970,23 @@ def edit_mailsettings():
         content.mail_use_ssl = int(to_save["mail_use_ssl"])
         try:
             ub.session.commit()
-            flash(_(u"Mail settings updated"), category="success")
+            flash(_(u"Mail server settings updated"), category="success")
         except Exception as e:
             flash(e, category="error")
         if "test" in to_save and to_save["test"]:
             if current_user.kindle_mail:
                 result = helper.send_test_mail(current_user.kindle_mail, current_user.nickname)
                 if result is None:
-                    flash(_(u"Test E-Mail successfully send to %(kindlemail)s", kindlemail=current_user.kindle_mail),
+                    flash(_(u"Test e-mail successfully send to %(kindlemail)s", kindlemail=current_user.kindle_mail),
                           category="success")
                 else:
-                    flash(_(u"There was an error sending the Test E-Mail: %(res)s", res=result), category="error")
+                    flash(_(u"There was an error sending the Test e-mail: %(res)s", res=result), category="error")
             else:
                 flash(_(u"Please configure your kindle email address first..."), category="error")
         else:
-            flash(_(u"E-Mail settings updated"), category="success")
-    return render_title_template("email_edit.html", content=content, title=_(u"Edit mail settings"), page="mailset")
+            flash(_(u"Mail server settings updated"), category="success")
+    return render_title_template("email_edit.html", content=content, title=_(u"Edit e-mail server settings"),
+                                 page="mailset")
 
 
 @app.route("/admin/user/<int:user_id>", methods=["GET", "POST"])
@@ -2917,9 +2998,9 @@ def edit_user(user_id):
     languages = speaking_language()
     translations = babel.list_translations() + [LC('en')]
     for book in content.downloads:
-        downloadBook = db.session.query(db.Books).filter(db.Books.id == book.book_id).first()
-        if downloadBook:
-            downloads.append(db.session.query(db.Books).filter(db.Books.id == book.book_id).first())
+        downloadbook = db.session.query(db.Books).filter(db.Books.id == book.book_id).first()
+        if downloadbook:
+            downloads.append(downloadbook)
         else:
             ub.delete_download(book.book_id)
             # ub.session.query(ub.Downloads).filter(book.book_id == ub.Downloads.book_id).delete()
@@ -3045,6 +3126,27 @@ def edit_user(user_id):
     return render_title_template("user_edit.html", translations=translations, languages=languages, new_user=0,
                                 content=content, downloads=downloads, title=_(u"Edit User %(nick)s",
                                 nick=content.nickname), page="edituser")
+
+
+@app.route("/admin/resetpassword/<int:user_id>")
+@login_required
+@admin_required
+def reset_password(user_id):
+    if not config.config_public_reg:
+        abort(404)
+    if current_user is not None and current_user.is_authenticated:
+        existing_user = ub.session.query(ub.User).filter(ub.User.id == user_id).first()
+        password = helper.generate_random_password()
+        existing_user.password = generate_password_hash(password)
+        try:
+            ub.session.commit()
+            helper.send_registration_mail(existing_user.email, existing_user.nickname, password, True)
+            flash(_(u"Password for user %s reset" % existing_user.nickname), category="success")
+        except Exception:
+            ub.session.rollback()
+            flash(_(u"An unknown error occurred. Please try again later."), category="error")
+    return redirect(url_for('admin'))
+
 
 
 @app.route("/admin/book/<int:book_id>", methods=['GET', 'POST'])
@@ -3297,7 +3399,8 @@ def edit_book(book_id):
                 else:
                     input_tags = to_save[cc_string].split(',')
                     input_tags = list(map(lambda it: it.strip(), input_tags))
-                    modify_database_object(input_tags, getattr(book, cc_string), db.cc_classes[c.id], db.session, 'custom')
+                    modify_database_object(input_tags, getattr(book, cc_string), db.cc_classes[c.id], db.session,
+                                           'custom')
             db.session.commit()
             if config.config_use_google_drive:
                 gdriveutils.updateGdriveCalibreFromLocal()
@@ -3339,9 +3442,7 @@ def upload():
                 if file_ext not in ALLOWED_EXTENSIONS:
                     flash(
                         _('File extension "%s" is not allowed to be uploaded to this server' %
-                        file_ext),
-                        category="error"
-                    )
+                            file_ext), category="error")
                     return redirect(url_for('index'))
             else:
                 flash(_('File to be uploaded must have an extension'), category="error")

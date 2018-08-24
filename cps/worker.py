@@ -326,7 +326,8 @@ class WorkerThread(threading.Thread):
         addLock.release()
 
 
-    def add_email(self, subject, filepath, attachment, settings, recipient, user_name, typ):
+    def add_email(self, subject, filepath, attachment, settings, recipient, user_name, typ,
+                  text=_(u'This email has been sent via calibre web.')):
         # if more than 20 entries in the list, clean the list
         addLock = threading.Lock()
         addLock.acquire()
@@ -335,7 +336,7 @@ class WorkerThread(threading.Thread):
         # progress, runtime, and status = 0
         self.queue.append({'subject':subject, 'attachment':attachment, 'filepath':filepath,
                            'settings':settings, 'recipent':recipient, 'starttime': 0,
-                           'status': STAT_WAITING, 'typ': TASK_EMAIL})
+                           'status': STAT_WAITING, 'typ': TASK_EMAIL, 'text':text})
         self.UIqueue.append({'user': user_name, 'formStarttime': '', 'progress': " 0 %", 'type': typ,
                              'runtime': '0 s', 'status': _('Waiting'),'id': self.id })
         self.id += 1
@@ -369,7 +370,7 @@ class WorkerThread(threading.Thread):
         msg['Subject'] = self.queue[self.current]['subject']
         msg['Message-Id'] = make_msgid('calibre-web')
         msg['Date'] = formatdate(localtime=True)
-        text = _(u'This email has been sent via calibre web.')
+        text = self.queue[self.current]['text']
         msg.attach(MIMEText(text.encode('UTF-8'), 'plain', 'UTF-8'))
         if obj['attachment']:
             result = get_attachment(obj['filepath'], obj['attachment'])
