@@ -124,13 +124,29 @@
           </div>
         {% endfor %}
       {% endif %}
+
       {% if g.user.role_upload() or g.user.role_admin()%}
         {% if g.allow_upload %}
-          <div role="group" aria-label="Upload new book format">
-            <label class="btn btn-default btn-file" for="btn-upload-format">{{ _('Upload format') }}</label>
+
+          <div class="btn-group" role="group" aria-label="New Book Formats">
+            <label class="btn btn-primary btn-file" for="btn-upload-format"><span class="glyphicon glyphicon-upload"></span> {{ _('Upload format') }}</label>
             <div class="upload-format-input-text" id="upload-format"></div>
             <input id="btn-upload-format" name="btn-upload-format" type="file">
+
+              {%  if display_convertbtn and conversion_formats|length > 0 %}
+                <button id="btnGroupConv" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <span class="glyphicon glyphicon-duplicate"></span> {{_('Convert to book format:')}}
+                    <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="btnGroupConv">
+                  {% for format in conversion_formats %}
+                    <li><a href="{{ format }}">{{format}} ({{ format }})</a></li>
+                  {% endfor %}
+                  </ul>
+                {% endif %}
+
           </div>
+
         {% endif %}
       {% endif %}
 

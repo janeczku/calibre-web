@@ -96,7 +96,6 @@ gdrive_watch_callback_token = 'target=calibreweb-watch_files'
 
 ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'epub', 'mobi', 'azw', 'azw3', 'cbr', 'cbz', 'cbt', 'djvu', 'prc', 'doc', 'docx', 'fb2'])
 
-
 def md5(fname):
     hash_md5 = hashlib.md5()
     with open(fname, "rb") as f:
@@ -3072,10 +3071,30 @@ def edit_book(book_id):
     for author in book.authors:
         author_names.append(author.name.replace('|', ','))
 
+    #Option for showing convertbook button
+    if config.config_ebookconverter == 2:
+        display_convertbtn = True
+    else:
+        display_convertbtn = False
+
+    app.logger.debug(book)
+    app.logger.debug(book.data)
+    #Determine what formats don't already exist
+    allowed_conversion_formats = ALLOWED_EXTENSIONS
+    for file in book.data:
+        try:
+            allowed_conversion_formats.remove(file.format.lower())
+        except Exception:
+            app.logger.debug("Exception thrown:")
+            app.logger.debug(file.format.lower())
+
+    app.logger.debug(allowed_conversion_formats)
+
     # Show form
     if request.method != 'POST':
         return render_title_template('book_edit.html', book=book, authors=author_names, cc=cc,
-                                     title=_(u"edit metadata"), page="editbook")
+                                     title=_(u"edit metadata"), page="editbook", display_convertbtn=display_convertbtn,
+                                     conversion_formats=allowed_conversion_formats)
 
     # Update book
     edited_books_id = set()
