@@ -3153,7 +3153,6 @@ def reset_password(user_id):
     return redirect(url_for('admin'))
 
 
-
 @app.route("/admin/book/<int:book_id>", methods=['GET', 'POST'])
 @login_required_if_no_ano
 @edit_required
@@ -3170,14 +3169,14 @@ def edit_book(book_id):
         flash(_(u"Error opening eBook. File does not exist or file is not accessible"), category="error")
         return redirect(url_for("index"))
 
-    for index in range(0, len(book.languages)):
+    for indx in range(0, len(book.languages)):
         try:
-            book.languages[index].language_name = LC.parse(book.languages[index].lang_code).get_language_name(
+            book.languages[indx].language_name = LC.parse(book.languages[indx].lang_code).get_language_name(
                 get_locale())
         except Exception:
-            book.languages[index].language_name = _(isoLanguages.get(part3=book.languages[index].lang_code).name)
-    for author in book.authors:
-        author_names.append(author.name.replace('|', ','))
+            book.languages[indx].language_name = _(isoLanguages.get(part3=book.languages[indx].lang_code).name)
+    for authr in book.authors:
+        author_names.append(authr.name.replace('|', ','))
 
     # Show form
     if request.method != 'POST':
@@ -3185,7 +3184,7 @@ def edit_book(book_id):
                                      title=_(u"edit metadata"), page="editbook")
 
     # Update book
-    edited_books_id = set()
+    edited_books_id = {}
 
     # Check and handle Uploaded file
     if 'btn-upload-format' in request.files:
@@ -3195,7 +3194,8 @@ def edit_book(book_id):
             if '.' in requested_file.filename:
                 file_ext = requested_file.filename.rsplit('.', 1)[-1].lower()
                 if file_ext not in ALLOWED_EXTENSIONS:
-                    flash(_('File extension "%s" is not allowed to be uploaded to this server' % file_ext), category="error")
+                    flash(_('File extension "%s" is not allowed to be uploaded to this server' % file_ext),
+                          category="error")
                     return redirect(url_for('show_book', book_id=book.id))
             else:
                 flash(_('File to be uploaded must have an extension'), category="error")
@@ -3231,10 +3231,36 @@ def edit_book(book_id):
                 db.session.connection().connection.connection.create_function("title_sort", 1, db.title_sort)
 
             # Queue uploader info
-            uploadText=_(u"File format %s added to %s" % (file_ext.upper(),book.title))
+            uploadText=_(u"File format %s added to %s" % (file_ext.upper(), book.title))
             helper.global_WorkerThread.add_upload(current_user.nickname, 
-                "<a href=\""+ url_for('show_book', book_id=book.id) +"\">"+ uploadText + "</a>")
+                "<a href=\"" + url_for('show_book', book_id=book.id) + "\">" + uploadText + "</a>")
 
+    if 'btn-upload-cover' in request.files:
+        requested_file = request.files['btn-upload-cover']
+        # check for empty request
+        if requested_file.filename != '':
+            file_ext = requested_file.filename.rsplit('.', 1)[-1].lower()
+            # file_name = book.path.rsplit('/', 1)[-1]
+            filepath = os.path.normpath(os.path.join(config.config_calibre_dir, book.path))
+            saved_filename = os.path.join(filepath,  'cover.' + file_ext)
+
+            # check if file path exists, otherwise create it, copy file to calibre path and delete temp file
+            if not os.path.exists(filepath):
+                try:
+                    os.makedirs(filepath)
+                except OSError:
+                    flash(_(u"Failed to create path for cover %s (Permission denied)." % filepath), category="error")
+                    return redirect(url_for('show_book', book_id=book.id))
+            try:
+                requested_file.save(saved_filename)
+                # im=Image.open(saved_filename)
+                book.has_cover = 1
+            except OSError:
+                flash(_(u"Failed to store cover-file %s." % saved_filename), category="error")
+                return redirect(url_for('show_book', book_id=book.id))
+            except IOError:
+                flash(_(u"Cover-file is not a valid image file" % saved_filename), category="error")
+                return redirect(url_for('show_book', book_id=book.id))
     to_save = request.form.to_dict()
 
     try:
@@ -3410,8 +3436,8 @@ def edit_book(book_id):
             if config.config_use_google_drive:
                 gdriveutils.updateGdriveCalibreFromLocal()
             author_names = []
-            for author in book.authors:
-                author_names.append(author.name)
+            for authr in book.authors:
+                author_names.append(authr.name)
             if "detail_view" in to_save:
                 return redirect(url_for('show_book', book_id=book.id))
             else:
@@ -3456,12 +3482,12 @@ def upload():
             # extract metadata from file
             meta = uploader.upload(requested_file)
             title = meta.title
-            author = meta.author
+            authr = meta.author
             tags = meta.tags
             series = meta.series
             series_index = meta.series_id
             title_dir = helper.get_valid_filename(title)
-            author_dir = helper.get_valid_filename(author)
+            author_dir = helper.get_valid_filename(authr)
             filepath = os.path.join(config.config_calibre_dir, author_dir, title_dir)
             saved_filename = os.path.join(filepath, title_dir + meta.extension.lower())
 
@@ -3490,11 +3516,11 @@ def upload():
                 move(meta.cover, os.path.join(filepath, "cover.jpg"))
 
             # handle authors
-            is_author = db.session.query(db.Authors).filter(db.Authors.name == author).first()
+            is_author = db.session.query(db.Authors).filter(db.Authors.name == authr).first()
             if is_author:
                 db_author = is_author
             else:
-                db_author = db.Authors(author, helper.get_sorted_author(author), "")
+                db_author = db.Authors(authr, helper.get_sorted_author(authr), "")
                 db.session.add(db_author)
             
             # handle series
