@@ -94,7 +94,13 @@ input.pill:not(:checked) + label .glyphicon {
 .upload-format-input-text {display: initial;}
 #btn-upload-format {display: none;}
 
-.upload-format-input-text {display: initial;}
-#btn-upload-format {display: none;}
+.upload-cover-input-text {display: initial;}
+#btn-upload-cover {display: none;}
 
 .panel-title > a { text-decoration: none;}
+
+.editable-buttons { display:inline-block; margin-left: 7px ;}
+.editable-input { display:inline-block;}
+.editable-cancel { margin-bottom: 0px !important; margin-left: 7px !important;}
+.editable-submit { margin-bottom: 0px !important;}
+

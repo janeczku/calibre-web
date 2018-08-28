@@ -149,7 +149,7 @@ class UserBase:
         return '<User %r>' % self.nickname
 
 
-# Baseclass for Users in Calibre-web, settings which are depending on certain users are stored here. It is derived from
+# Baseclass for Users in Calibre-Web, settings which are depending on certain users are stored here. It is derived from
 # User Base (all access methods are declared there)
 class User(UserBase, Base):
     __tablename__ = 'user'
@@ -216,7 +216,7 @@ class Shelf(Base):
         return '<Shelf %r>' % self.name
 
 
-# Baseclass representing Relationship between books and Shelfs in Calibre-web in app.db (N:M)
+# Baseclass representing Relationship between books and Shelfs in Calibre-Web in app.db (N:M)
 class BookShelf(Base):
     __tablename__ = 'book_shelf_link'
 
@@ -259,6 +259,17 @@ class Downloads(Base):
     def __repr__(self):
         return '<Download %r' % self.book_id
 
+        
+# Baseclass representing allowed domains for registration
+class Registration(Base):
+    __tablename__ = 'registration'
+
+    id = Column(Integer, primary_key=True)
+    domain = Column(String)
+
+    def __repr__(self):
+        return u"<Registration('{0}')>".format(self.domain)      
+        
 
 # Baseclass for representing settings in app.db with email server settings and Calibre database settings
 # (application settings)
@@ -276,7 +287,7 @@ class Settings(Base):
     config_port = Column(Integer, default=DEFAULT_PORT)
     config_certfile = Column(String)
     config_keyfile = Column(String)
-    config_calibre_web_title = Column(String, default=u'Calibre-web')
+    config_calibre_web_title = Column(String, default=u'Calibre-Web')
     config_books_per_page = Column(Integer, default=60)
     config_random_books = Column(Integer, default=4)
     config_read_column = Column(Integer, default=0)
@@ -516,35 +527,18 @@ class Config:
 # everywhere to curent should work. Migration is done by checking if relevant coloums are existing, and than adding
 # rows with SQL commands
 def migrate_Database():
-    if not engine.dialect.has_table(engine.connect(), "book_read_link"):
-        ReadBook.__table__.create(bind=engine)
     if not engine.dialect.has_table(engine.connect(), "bookmark"):
         Bookmark.__table__.create(bind=engine)
-
-    try:
-        session.query(exists().where(User.locale)).scalar()
-        session.commit()
-    except exc.OperationalError:  # Database is not compatible, some rows are missing
+    if not engine.dialect.has_table(engine.connect(), "registration"):
+        ReadBook.__table__.create(bind=engine)
         conn = engine.connect()
-        conn.execute("ALTER TABLE user ADD column locale String(2) DEFAULT 'en'")
-        conn.execute("ALTER TABLE user ADD column default_language String(3) DEFAULT 'all'")
+        conn.execute("insert into registration (domain) values('%.%')")
         session.commit()
-    try:
-        session.query(exists().where(Settings.config_calibre_dir)).scalar()
-        session.commit()
-    except exc.OperationalError:  # Database is not compatible, some rows are missing
+    # Handle table exists, but no content
+    cnt = session.query(Registration).count()
+    if not cnt:
         conn = engine.connect()
-        conn.execute("ALTER TABLE Settings ADD column `config_calibre_dir` String")
-        conn.execute("ALTER TABLE Settings ADD column `config_port` INTEGER DEFAULT 8083")
-        conn.execute("ALTER TABLE Settings ADD column `config_calibre_web_title` String DEFAULT 'Calibre-web'")
-        conn.execute("ALTER TABLE Settings ADD column `config_books_per_page` INTEGER DEFAULT 60")
-        conn.execute("ALTER TABLE Settings ADD column `config_random_books` INTEGER DEFAULT 4")
-        conn.execute("ALTER TABLE Settings ADD column `config_title_regex` String DEFAULT "
-            "'^(A|The|An|Der|Die|Das|Den|Ein|Eine|Einen|Dem|Des|Einem|Eines)\s+'")
-        conn.execute("ALTER TABLE Settings ADD column `config_log_level` SmallInteger DEFAULT " + str(logging.INFO))
-        conn.execute("ALTER TABLE Settings ADD column `config_uploading` SmallInteger DEFAULT 0")
-        conn.execute("ALTER TABLE Settings ADD column `config_anonbrowse` SmallInteger DEFAULT 0")
-        conn.execute("ALTER TABLE Settings ADD column `config_public_reg` SmallInteger DEFAULT 0")
+        conn.execute("insert into registration (domain) values('%.%')")
         session.commit()
     try:
         session.query(exists().where(Settings.config_use_google_drive)).scalar()
@@ -553,6 +547,7 @@ def migrate_Database():
         conn.execute("ALTER TABLE Settings ADD column `config_use_google_drive` INTEGER DEFAULT 0")
         conn.execute("ALTER TABLE Settings ADD column `config_google_drive_folder` String DEFAULT ''")
         conn.execute("ALTER TABLE Settings ADD column `config_google_drive_watch_changes_response` String DEFAULT ''")
+        session.commit()        
     try:
         session.query(exists().where(Settings.config_columns_to_ignore)).scalar()
     except exc.OperationalError:
@@ -561,14 +556,12 @@ def migrate_Database():
         session.commit()
     try:
         session.query(exists().where(Settings.config_default_role)).scalar()
-        session.commit()
     except exc.OperationalError:  # Database is not compatible, some rows are missing
         conn = engine.connect()
         conn.execute("ALTER TABLE Settings ADD column `config_default_role` SmallInteger DEFAULT 0")
         session.commit()
     try:
         session.query(exists().where(BookShelf.order)).scalar()
-        session.commit()
     except exc.OperationalError:  # Database is not compatible, some rows are missing
         conn = engine.connect()
         conn.execute("ALTER TABLE book_shelf_link ADD column 'order' INTEGER DEFAULT 1")
@@ -576,7 +569,6 @@ def migrate_Database():
     try:
         create = False
         session.query(exists().where(User.sidebar_view)).scalar()
-        session.commit()
     except exc.OperationalError:  # Database is not compatible, some rows are missing
         conn = engine.connect()
         conn.execute("ALTER TABLE user ADD column `sidebar_view` Integer DEFAULT 1")
@@ -606,6 +598,7 @@ def migrate_Database():
     except exc.OperationalError:
         conn = engine.connect()
         conn.execute("ALTER TABLE user ADD column `theme` INTEGER DEFAULT 0")
+        session.commit()
     if session.query(User).filter(User.role.op('&')(ROLE_ANONYMOUS) == ROLE_ANONYMOUS).first() is None:
         create_anonymous_user()
     try:
@@ -627,21 +620,18 @@ def migrate_Database():
         conn.execute("ALTER TABLE Settings ADD column `config_mature_content_tags` String DEFAULT ''")
     try:
         session.query(exists().where(Settings.config_default_show)).scalar()
-        session.commit()
     except exc.OperationalError:  # Database is not compatible, some rows are missing
         conn = engine.connect()
         conn.execute("ALTER TABLE Settings ADD column `config_default_show` SmallInteger DEFAULT 2047")
         session.commit()
     try:
         session.query(exists().where(Settings.config_logfile)).scalar()
-        session.commit()
     except exc.OperationalError:  # Database is not compatible, some rows are missing
         conn = engine.connect()
         conn.execute("ALTER TABLE Settings ADD column `config_logfile` String DEFAULT ''")
         session.commit()
     try:
         session.query(exists().where(Settings.config_certfile)).scalar()
-        session.commit()
     except exc.OperationalError:  # Database is not compatible, some rows are missing
         conn = engine.connect()
         conn.execute("ALTER TABLE Settings ADD column `config_certfile` String DEFAULT ''")
@@ -649,14 +639,12 @@ def migrate_Database():
         session.commit()
     try:
         session.query(exists().where(Settings.config_read_column)).scalar()
-        session.commit()
     except exc.OperationalError:  # Database is not compatible, some rows are missing
         conn = engine.connect()
         conn.execute("ALTER TABLE Settings ADD column `config_read_column` INTEGER DEFAULT 0")
         session.commit()
     try:
         session.query(exists().where(Settings.config_ebookconverter)).scalar()
-        session.commit()
     except exc.OperationalError:  # Database is not compatible, some rows are missing
         conn = engine.connect()
         conn.execute("ALTER TABLE Settings ADD column `config_ebookconverter` INTEGER DEFAULT 0")
