@@ -69,7 +69,7 @@ class server:
             self.wsgiserver.close(True)
 
         if self.restart == True:
-            web.app.logger.info("Performing restart of Calibre-web")
+            web.app.logger.info("Performing restart of Calibre-Web")
             web.helper.global_WorkerThread.stop()
             if os.name == 'nt':
                 arguments = ["\"" + sys.executable + "\""]
@@ -79,7 +79,7 @@ class server:
             else:
                 os.execl(sys.executable, sys.executable, *sys.argv)
         else:
-            web.app.logger.info("Performing shutdown of Calibre-web")
+            web.app.logger.info("Performing shutdown of Calibre-Web")
             web.helper.global_WorkerThread.stop()
         sys.exit(0)
 

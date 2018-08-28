@@ -60,7 +60,11 @@
       <label for="cover_url">{{_('Cover URL (jpg, cover is downloaded and stored in database, field is afterwards empty again)')}}</label>
       <input type="text" class="form-control" name="cover_url" id="cover_url" value="">
     </div>
-
+    <div class="form-group" aria-label="Upload cover from local drive">
+        <label class="btn btn-default btn-file" for="btn-upload-cover">{{ _('Upload Cover from local drive') }}</label>
+        <div class="upload-cover-input-text" id="upload-cover"></div>
+        <input id="btn-upload-cover" name="btn-upload-cover" type="file">
+    </div>
     <div class="form-group">
       <label for="pubdate">{{_('Publishing date')}}</label>
       <div style="position: relative">
@@ -70,7 +74,7 @@
     </div>
     <div class="form-group">
       <label for="languages">{{_('Language')}}</label>
-      <input type="text" class="form-control typeahead" name="languages" id="languages" value="{% for language in book.languages %}{{language.language_name.strip()}}, {% endfor %}">
+      <input type="text" class="form-control typeahead" name="languages" id="languages" value="{% for language in book.languages %}{{language.language_name.strip()}}{% endfor %}">
     </div>
 
       {% if cc|length > 0 %}
@@ -170,7 +174,7 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header bg-danger text-center">
-          <span>{{_('Are really you sure?')}}</span>
+          <span>{{_('Are you really sure?')}}</span>
       </div>
         <div class="modal-body text-center">
           <span>{{_('Book will be deleted from Calibre database')}}</span>
@@ -255,7 +259,7 @@
   var i18nMsg = {
     'loading': {{_('Loading...')|safe|tojson}},
     'search_error': {{_('Search error!')|safe|tojson}},
-    'no_result': {{_('No Result! Please try anonther keyword.')|safe|tojson}},
+    'no_result': {{_('No Result(s) found! Please try aonther keyword.')|safe|tojson}},
     'author': {{_('Author')|safe|tojson}},
     'publisher': {{_('Publisher')|safe|tojson}},
     'description': {{_('Description')|safe|tojson}},

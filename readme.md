@@ -1,6 +1,6 @@
 # About
 
-Calibre Web is a web app providing a clean interface for browsing, reading and downloading eBooks using an existing [Calibre](https://calibre-ebook.com) database.
+Calibre-Web is a web app providing a clean interface for browsing, reading and downloading eBooks using an existing [Calibre](https://calibre-ebook.com) database.
 
 *This software is a fork of [library](https://github.com/mutschler/calibreserver) and licensed under the GPL v3 License.*
 
@@ -12,7 +12,7 @@ Calibre Web is a web app providing a clean interface for browsing, reading and d
 - full graphical setup
 - User management with fine grained per-user permissions
 - Admin interface
-- User Interface in dutch, english, french, german, italian, japanese, polish, russian, simplified chinese, spanish
+- User Interface in dutch, english, french, german, italian, japanese, khmer, polish, russian, simplified chinese, spanish
 - OPDS feed for eBook reader apps 
 - Filter and search by titles, authors, tags, series and language
 - Create custom book collection (shelves)
@@ -98,7 +98,7 @@ The Drive API should now be setup and ready to use, so we need to integrate it i
 8. Google Drive should now be connected and be used to get images and download Epubs. The metadata.db is stored in the calibre library location
 
 ### Optional
-If your calibre web is using https, it is possible to add a "watch" to the drive. This will inform us if the metadata.db file is updated and allow us to update our calibre library accordingly.
+If your Calibre-Web is using https, it is possible to add a "watch" to the drive. This will inform us if the metadata.db file is updated and allow us to update our calibre library accordingly.
 Additionally the public adress your server uses (e.g.https://example.com) has to be verified in the Google developer console. After this is done, please wait a few minutes.
 
 9. Open config page
@@ -123,7 +123,7 @@ Pre-built Docker images based on Alpine Linux are available in these Docker Hub 
 
 Reverse proxy configuration examples for apache and nginx to use Calibre-Web:
 
-nginx configuration for a local server listening on port 8080, mapping calibre web to /calibre:
+nginx configuration for a local server listening on port 8080, mapping Calibre-Web to /calibre:
 
 ```
 http {
@@ -148,7 +148,7 @@ http {
 proxy_redirect http://$host/ https://$host:12345/;
 ```
 
-Apache 2.4 configuration for a local server listening on port 443, mapping calibre web to /calibre-web:
+Apache 2.4 configuration for a local server listening on port 443, mapping Calibre-Web to /calibre-web:
 
 The following modules have to be activated: headers, proxy, rewrite.
 ```
