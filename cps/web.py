@@ -137,9 +137,9 @@ class ReverseProxied(object):
         scheme = environ.get('HTTP_X_SCHEME', '')
         if scheme:
             environ['wsgi.url_scheme'] = scheme
-        server = environ.get('HTTP_X_FORWARDED_SERVER', '')
-        if server:
-            environ['HTTP_HOST'] = server
+        servr = environ.get('HTTP_X_FORWARDED_SERVER', '')
+        if servr:
+            environ['HTTP_HOST'] = servr
         return self.app(environ, start_response)
 
 
@@ -488,17 +488,17 @@ def speaking_language(languages=None):
 # Fill indexpage with all requested data from database
 def fill_indexpage(page, database, db_filter, order, *join):
     if current_user.show_detail_random():
-        random = db.session.query(db.Books).filter(common_filters())\
+        randm = db.session.query(db.Books).filter(common_filters())\
             .order_by(func.random()).limit(config.config_random_books)
     else:
-        random = false
+        randm = false()
     off = int(int(config.config_books_per_page) * (page - 1))
     pagination = Pagination(page, config.config_books_per_page,
                             len(db.session.query(database)
                             .filter(db_filter).filter(common_filters()).all()))
     entries = db.session.query(database).join(*join,isouter=True).filter(db_filter)\
             .filter(common_filters()).order_by(*order).offset(off).limit(config.config_books_per_page).all()
-    return entries, random, pagination
+    return entries, randm, pagination
 
 
 # Modifies different Database objects, first check if elements have to be added to database, than check
@@ -943,6 +943,11 @@ def delete_domain():
     domain_id = request.form.to_dict()['domainid'].replace('*','%').replace('?','_').lower()
     ub.session.query(ub.Registration).filter(ub.Registration.id == domain_id).delete()
     ub.session.commit()
+    # If last domain was deleted, add all domains by default
+    if not ub.session.query(ub.Registration).count():
+        new_domain = ub.Registration(domain="%.%")
+        ub.session.add(new_domain)
+        ub.session.commit()
     return ""
 
 @app.route("/ajax/domainlist")
@@ -1140,7 +1145,7 @@ def hot_books(page):
             random = db.session.query(db.Books).filter(common_filters())\
                 .order_by(func.random()).limit(config.config_random_books)
         else:
-            random = false
+            random = false()
         off = int(int(config.config_books_per_page) * (page - 1))
         all_books = ub.session.query(ub.Downloads, ub.func.count(ub.Downloads.book_id)).order_by(
             ub.func.count(ub.Downloads.book_id).desc()).group_by(ub.Downloads.book_id)
@@ -2435,7 +2440,7 @@ def edit_shelf(shelf_id):
 @login_required
 def delete_shelf(shelf_id):
     cur_shelf = ub.session.query(ub.Shelf).filter(ub.Shelf.id == shelf_id).first()
-    deleted = false
+    deleted = None
     if current_user.role_admin():
         deleted = ub.session.query(ub.Shelf).filter(ub.Shelf.id == shelf_id).delete()
     else:
@@ -2528,12 +2533,12 @@ def profile():
         to_save = request.form.to_dict()
         content.random_books = 0
         if current_user.role_passwd() or current_user.role_admin():
-            if to_save["password"]:
+            if "password" in to_save:
                 content.password = generate_password_hash(to_save["password"])
         if "kindle_mail" in to_save and to_save["kindle_mail"] != content.kindle_mail:
             content.kindle_mail = to_save["kindle_mail"]
         if to_save["email"] and to_save["email"] != content.email:
-            if config.config.config_public_reg and not check_valid_domain(to_save["email"]):        
+            if config.config_public_reg and not check_valid_domain(to_save["email"]):
                 flash(_(u"Email is not from valid domain"), category="error")
                 return render_title_template("user_edit.html", content=content, downloads=downloads,
                                      title=_(u"%(name)s's profile", name=current_user.nickname))            
@@ -2542,7 +2547,7 @@ def profile():
             content.random_books = 1
         if "default_language" in to_save:
             content.default_language = to_save["default_language"]
-        if to_save["locale"]:
+        if "locale" in to_save:
             content.locale = to_save["locale"]
         content.sidebar_view = 0
         if "show_random" in to_save:
@@ -2888,18 +2893,6 @@ def new_user():
     translations = [LC('en')] + babel.list_translations()
     if request.method == "POST":
         to_save = request.form.to_dict()
-        if not to_save["nickname"] or not to_save["email"] or not to_save["password"]:
-            flash(_(u"Please fill out all fields!"), category="error")
-            return render_title_template("user_edit.html", new_user=1, content=content, translations=translations,
-                                         title=_(u"Add new user"))
-        content.password = generate_password_hash(to_save["password"])
-        content.nickname = to_save["nickname"]
-        if config.config_public_reg and not check_valid_domain(to_save["email"]):
-            flash(_(u"Email is not from valid domain"), category="error")
-            return render_title_template("user_edit.html", new_user=1, content=content, translations=translations,
-                                         title=_(u"Add new user"))
-        else:
-            content.email = to_save["email"]
         content.default_language = to_save["default_language"]
         content.mature_content = "show_mature_content" in to_save
         content.theme = int(to_save["theme"])
@@ -2939,6 +2932,18 @@ def new_user():
             content.role = content.role + ub.ROLE_PASSWD
         if "edit_shelf_role" in to_save:
             content.role = content.role + ub.ROLE_EDIT_SHELFS
+        if not to_save["nickname"] or not to_save["email"] or not to_save["password"]:
+            flash(_(u"Please fill out all fields!"), category="error")
+            return render_title_template("user_edit.html", new_user=1, content=content, translations=translations,
+                                         title=_(u"Add new user"))
+        content.password = generate_password_hash(to_save["password"])
+        content.nickname = to_save["nickname"]
+        if config.config_public_reg and not check_valid_domain(to_save["email"]):
+            flash(_(u"Email is not from valid domain"), category="error")
+            return render_title_template("user_edit.html", new_user=1, content=content, translations=translations,
+                                         title=_(u"Add new user"))
+        else:
+            content.email = to_save["email"]
         try:
             ub.session.add(content)
             ub.session.commit()

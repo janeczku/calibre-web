@@ -14,7 +14,7 @@
       <input type="email" class="form-control" name="email" id="email" value="{{ content.email if content.email != None }}" autocomplete="off">
     </div>
     {% if ( g.user and g.user.role_passwd() or g.user.role_admin() ) and not content.role_anonymous() %}
-      {% if g.user and g.user.role_admin() and g.allow_registration and not new_user %}
+      {% if g.user and g.user.role_admin() and g.allow_registration and not new_user and not profile %}
         <div class="btn btn-default" id="resend_password"><a href="{{url_for('reset_password', user_id = content.id) }}">{{_('Reset user Password')}}</a></div>
       {% else %}            
         <div class="form-group">
