@@ -135,6 +135,11 @@ def send_mail(book_id, kindle_mail, calibrepath, user_id):
         return _(u"The requested file could not be read. Maybe wrong permissions?")
 
 
+# Convert existing book entry to new format
+#def convert_book_format(book_id, calibrepath, new_book_format, user_id):
+
+#    return
+
 def get_valid_filename(value, replace_whitespace=True):
     """
     Returns the given string converted to a string that can be used for a clean

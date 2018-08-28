@@ -3183,16 +3183,10 @@ def edit_book(book_id):
     else:
         display_convertbtn = False
 
-    app.logger.debug(book)
-    app.logger.debug(book.data)
     #Determine what formats don't already exist
     allowed_conversion_formats = ALLOWED_EXTENSIONS
     for file in book.data:
-        try:
-            allowed_conversion_formats.remove(file.format.lower())
-        except Exception:
-            app.logger.debug("Exception thrown:")
-            app.logger.debug(file.format.lower())
+        allowed_conversion_formats.remove(file.format.lower())
 
     app.logger.debug(allowed_conversion_formats)
 
@@ -3625,5 +3619,18 @@ def upload():
                 book_in_shelfs = []
                 return render_title_template('detail.html', entry=book, cc=cc,
                                              title=book.title, books_shelfs=book_in_shelfs, page="upload")
+    return redirect(url_for("index"))
+
+
+@app.route("/admin/book/convert/<int:book_id>", methods=['POST'])
+@login_required_if_no_ano
+@edit_required
+def convert_bookformat(book_id):
+    #    rtn = convert_book_format(book_id, calibrepath, new_book_format, user_id)
+    app.logger.debug('got here')
+    app.logger.debug('book id:' + str(book_id))
+    app.logger.debug('from format:'+request.form['book_format_from'])
+    app.logger.debug('to format:' + request.form['book_format_to'])
+
     return redirect(url_for("index"))
 

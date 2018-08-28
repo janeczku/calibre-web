@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
 {% block body %}
 {% if book %}
-<form role="form" action="{{ url_for('edit_book', book_id=book.id) }}" method="post" enctype="multipart/form-data">
+
 
   <div class="col-sm-3 col-lg-3 col-xs-12">
     <div class="cover">
@@ -25,7 +25,37 @@
       </div>
     {% endif %}
 {% endif %}
+
+{%  if display_convertbtn and conversion_formats|length > 0 %}
+  <div class="text-center more-stuff"><h4> {{_('Convert book format:')}} </h4>
+      <form class="padded-bottom" action="{{ url_for('convert_bookformat', book_id=book.id) }}" method="post" enctype="multipart/form-data" id="book_convert_frm">
+          <div class="form-group">
+              <div class="text-left">
+                  <label class="control-label" for="book_format_from">{{_('Convert from:')}}</label>
+                  <select class="form-control" name="book_format_from" id="book_format_from">
+                    <option disabled selected value> -- select an option -- </option>
+                    {% for file in book.data %}
+                    <option>{{file.format}} </option>
+                    {% endfor %}
+                  </select>
+                  <label class="control-label" for="book_format_to">{{_('Convert to:')}}</label>
+                  <select class="form-control" name="book_format_to" id="book_format_to">
+                    <option disabled selected value> -- select an option -- </option>
+                    {% for format in conversion_formats %}
+                    <option>{{format|upper}} </option>
+                    {% endfor %}
+                  </select>
+              </div>
+          </div>
+          <span class="input-group-btn">
+              <button type="submit" class="btn btn-primary" id="btn-book-covert" name="btn-book-covert">{{_('Convert book')}}</button>
+          </span>
+      </form>
   </div>
+{% endif %}
+
+  </div>
+<form role="form" action="{{ url_for('edit_book', book_id=book.id) }}" method="post" enctype="multipart/form-data" id="book_edit_frm">
   <div class="col-sm-9 col-xs-12">
     <div class="form-group">
       <label for="book_title">{{_('Book Title')}}</label>
@@ -136,19 +166,6 @@
             <label class="btn btn-primary btn-file" for="btn-upload-format"><span class="glyphicon glyphicon-upload"></span> {{ _('Upload format') }}</label>
             <div class="upload-format-input-text" id="upload-format"></div>
             <input id="btn-upload-format" name="btn-upload-format" type="file">
-
-              {%  if display_convertbtn and conversion_formats|length > 0 %}
-                <button id="btnGroupConv" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <span class="glyphicon glyphicon-duplicate"></span> {{_('Convert to book format:')}}
-                    <span class="caret"></span>
-                </button>
-                <ul class="dropdown-menu" aria-labelledby="btnGroupConv">
-                  {% for format in conversion_formats %}
-                    <li><a href="{{ format }}">{{format}} ({{ format }})</a></li>
-                  {% endfor %}
-                  </ul>
-                {% endif %}
-
           </div>
 
         {% endif %}
