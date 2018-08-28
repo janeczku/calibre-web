@@ -20,7 +20,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2018-08-28 10:22+0200\n"
+"POT-Creation-Date: 2018-08-28 14:05+0200\n"
 "PO-Revision-Date: 2017-10-26 22:42+0200\n"
 "Last-Translator: Nicolas Roudninski <nicoroud@gmail.com>\n"
 "Language: fr\n"
@@ -547,26 +547,26 @@ msgstr "Éditer l'utilisateur %(nick)s"
 msgid "Password for user %s reset"
 msgstr ""
 
-#: cps/web.py:3170
+#: cps/web.py:3169
 msgid "Error opening eBook. File does not exist or file is not accessible"
 msgstr ""
 "Erreur à l’ouverture du livre. Le fichier n’existe pas ou n’est pas "
 "accessible"
 
-#: cps/web.py:3185 cps/web.py:3419 cps/web.py:3424 cps/web.py:3579
+#: cps/web.py:3184 cps/web.py:3445 cps/web.py:3450 cps/web.py:3605
 msgid "edit metadata"
 msgstr "modifier les métadonnées"
 
-#: cps/web.py:3198 cps/web.py:3449
+#: cps/web.py:3197 cps/web.py:3475
 #, python-format
 msgid "File extension \"%s\" is not allowed to be uploaded to this server"
 msgstr ""
 
-#: cps/web.py:3201 cps/web.py:3453
+#: cps/web.py:3201 cps/web.py:3479
 msgid "File to be uploaded must have an extension"
 msgstr "Pour être téléverser le fichier doit avoir une extension"
 
-#: cps/web.py:3213 cps/web.py:3473
+#: cps/web.py:3213 cps/web.py:3499
 #, python-format
 msgid "Failed to create path %s (Permission denied)."
 msgstr "Impossible de créer le chemin %s (permission refusée)"
@@ -581,29 +581,43 @@ msgstr ""
 msgid "File format %s added to %s"
 msgstr ""
 
-#: cps/web.py:3249 cps/web.py:3253
+#: cps/web.py:3252
+#, python-format
+msgid "Failed to create path for cover %s (Permission denied)."
+msgstr ""
+
+#: cps/web.py:3259
+#, python-format
+msgid "Failed to store cover-file %s."
+msgstr ""
+
+#: cps/web.py:3262
+msgid "Cover-file is not a valid image file"
+msgstr ""
+
+#: cps/web.py:3275 cps/web.py:3279
 msgid "unknown"
 msgstr "inconnu"
 
-#: cps/web.py:3275
+#: cps/web.py:3301
 msgid "Cover is not a jpg file, can't save"
 msgstr ""
 
-#: cps/web.py:3428
+#: cps/web.py:3454
 msgid "Error editing book, please check logfile for details"
 msgstr ""
 
-#: cps/web.py:3478
+#: cps/web.py:3504
 #, python-format
 msgid "Failed to store file %s (Permission denied)."
 msgstr "Impossible d'enregistrer le fichier %s (permission refusée)"
 
-#: cps/web.py:3483
+#: cps/web.py:3509
 #, python-format
 msgid "Failed to delete file %s (Permission denied)."
 msgstr "Impossible de supprimer le fichier %s (permission refusée)"
 
-#: cps/web.py:3565
+#: cps/web.py:3591
 #, python-format
 msgid "File %s uploaded"
 msgstr ""
@@ -787,7 +801,7 @@ msgid "Ok"
 msgstr "D’accord"
 
 #: cps/templates/admin.html:112 cps/templates/admin.html:126
-#: cps/templates/book_edit.html:144 cps/templates/book_edit.html:166
+#: cps/templates/book_edit.html:148 cps/templates/book_edit.html:170
 #: cps/templates/config_edit.html:206 cps/templates/config_view_edit.html:164
 #: cps/templates/email_edit.html:40 cps/templates/email_edit.html:75
 #: cps/templates/shelf.html:60 cps/templates/shelf_edit.html:19
@@ -823,7 +837,7 @@ msgstr "Effacer le livre"
 msgid "Delete formats:"
 msgstr ""
 
-#: cps/templates/book_edit.html:22 cps/templates/book_edit.html:165
+#: cps/templates/book_edit.html:22 cps/templates/book_edit.html:169
 #: cps/templates/email_edit.html:73 cps/templates/email_edit.html:74
 msgid "Delete"
 msgstr "Supprimer"
@@ -832,13 +846,13 @@ msgstr "Supprimer"
 msgid "Book Title"
 msgstr "Titre du livre"
 
-#: cps/templates/book_edit.html:35 cps/templates/book_edit.html:225
-#: cps/templates/book_edit.html:243 cps/templates/search_form.html:10
+#: cps/templates/book_edit.html:35 cps/templates/book_edit.html:229
+#: cps/templates/book_edit.html:247 cps/templates/search_form.html:10
 msgid "Author"
 msgstr "Auteur"
 
-#: cps/templates/book_edit.html:39 cps/templates/book_edit.html:230
-#: cps/templates/book_edit.html:245 cps/templates/search_form.html:106
+#: cps/templates/book_edit.html:39 cps/templates/book_edit.html:234
+#: cps/templates/book_edit.html:249 cps/templates/search_form.html:106
 msgid "Description"
 msgstr "Description"
 
@@ -865,91 +879,95 @@ msgid ""
 "afterwards empty again)"
 msgstr ""
 
-#: cps/templates/book_edit.html:65 cps/templates/detail.html:131
+#: cps/templates/book_edit.html:64
+msgid "Upload Cover from local drive"
+msgstr ""
+
+#: cps/templates/book_edit.html:69 cps/templates/detail.html:131
 msgid "Publishing date"
 msgstr "Date de publication"
 
-#: cps/templates/book_edit.html:72 cps/templates/user_edit.html:33
+#: cps/templates/book_edit.html:76 cps/templates/user_edit.html:33
 msgid "Language"
 msgstr "Langue"
 
-#: cps/templates/book_edit.html:83 cps/templates/search_form.html:117
+#: cps/templates/book_edit.html:87 cps/templates/search_form.html:117
 msgid "Yes"
 msgstr "Oui"
 
-#: cps/templates/book_edit.html:84 cps/templates/search_form.html:118
+#: cps/templates/book_edit.html:88 cps/templates/search_form.html:118
 msgid "No"
 msgstr "Non"
 
-#: cps/templates/book_edit.html:130
+#: cps/templates/book_edit.html:134
 msgid "Upload format"
 msgstr ""
 
-#: cps/templates/book_edit.html:139
+#: cps/templates/book_edit.html:143
 msgid "view book after edit"
 msgstr "voir le livre après l'édition"
 
-#: cps/templates/book_edit.html:142 cps/templates/book_edit.html:178
+#: cps/templates/book_edit.html:146 cps/templates/book_edit.html:182
 msgid "Get metadata"
 msgstr "Obtenir les métadonnées"
 
-#: cps/templates/book_edit.html:143 cps/templates/config_edit.html:204
+#: cps/templates/book_edit.html:147 cps/templates/config_edit.html:204
 #: cps/templates/config_view_edit.html:163 cps/templates/login.html:20
 #: cps/templates/search_form.html:153 cps/templates/shelf_edit.html:17
 #: cps/templates/user_edit.html:151
 msgid "Submit"
 msgstr "Soumettre"
 
-#: cps/templates/book_edit.html:157
+#: cps/templates/book_edit.html:161
 msgid "Are you really sure?"
 msgstr "Etes-vous vraiment sur?"
 
-#: cps/templates/book_edit.html:160
+#: cps/templates/book_edit.html:164
 msgid "Book will be deleted from Calibre database"
 msgstr "Le livre va être supprimé de la base de données de Calibre"
 
-#: cps/templates/book_edit.html:161
+#: cps/templates/book_edit.html:165
 msgid "and from hard disk"
 msgstr "et du disque dur"
 
-#: cps/templates/book_edit.html:181
+#: cps/templates/book_edit.html:185
 msgid "Keyword"
 msgstr "Mot-clé"
 
-#: cps/templates/book_edit.html:182
+#: cps/templates/book_edit.html:186
 msgid " Search keyword "
 msgstr " Rechercher le mot-clé "
 
-#: cps/templates/book_edit.html:184 cps/templates/layout.html:46
+#: cps/templates/book_edit.html:188 cps/templates/layout.html:46
 msgid "Go!"
 msgstr "Allez !"
 
-#: cps/templates/book_edit.html:188
+#: cps/templates/book_edit.html:192
 msgid "Click the cover to load metadata to the form"
 msgstr ""
 
-#: cps/templates/book_edit.html:200 cps/templates/book_edit.html:240
+#: cps/templates/book_edit.html:204 cps/templates/book_edit.html:244
 msgid "Loading..."
 msgstr "Chargement…"
 
-#: cps/templates/book_edit.html:205 cps/templates/layout.html:221
+#: cps/templates/book_edit.html:209 cps/templates/layout.html:221
 msgid "Close"
 msgstr "Fermer"
 
-#: cps/templates/book_edit.html:227 cps/templates/book_edit.html:244
+#: cps/templates/book_edit.html:231 cps/templates/book_edit.html:248
 #: cps/templates/detail.html:126 cps/templates/search_form.html:14
 msgid "Publisher"
 msgstr "Editeur"
 
-#: cps/templates/book_edit.html:232 cps/templates/book_edit.html:246
+#: cps/templates/book_edit.html:236 cps/templates/book_edit.html:250
 msgid "Source"
 msgstr "Source"
 
-#: cps/templates/book_edit.html:241
+#: cps/templates/book_edit.html:245
 msgid "Search error!"
 msgstr "Rechercher les erreur!"
 
-#: cps/templates/book_edit.html:242
+#: cps/templates/book_edit.html:246
 msgid "No Result(s) found! Please try aonther keyword."
 msgstr ""
 
