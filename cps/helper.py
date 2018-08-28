@@ -77,8 +77,8 @@ def make_mobi(book_id, calibrepath, user_id, kindle_mail):
 
 
 def send_test_mail(kindle_mail, user_name):
-    global_WorkerThread.add_email(_(u'Calibre-Web test email'),None, None, ub.get_mail_settings(),
-                                  kindle_mail, user_name, _(u"Test E-Mail"))
+    global_WorkerThread.add_email(_(u'Calibre-Web test e-mail'),None, None, ub.get_mail_settings(),
+                                  kindle_mail, user_name, _(u"Test e-mail"))
     return
 
 
@@ -94,7 +94,7 @@ def send_registration_mail(e_mail, user_name, default_password, resend=False):
     text += "Sincerely\r\n\r\n"
     text += "Your Calibre-Web team"
     global_WorkerThread.add_email(_(u'Get Started with Calibre-Web'),None, None, ub.get_mail_settings(),
-                                  e_mail, user_name, _(u"Registration E-Mail for user: %s" % user_name),text)
+                                  e_mail, user_name, _(u"Registration e-mail for user: %s" % user_name),text)
     return
 
 
@@ -117,7 +117,7 @@ def send_mail(book_id, kindle_mail, calibrepath, user_id):
             formats["pdf"] = entry.name + ".pdf"
 
     if len(formats) == 0:
-        return _(u"Could not find any formats suitable for sending by email")
+        return _(u"Could not find any formats suitable for sending by e-mail")
 
     if 'mobi' in formats:
         result = formats['mobi']
@@ -127,7 +127,7 @@ def send_mail(book_id, kindle_mail, calibrepath, user_id):
     elif 'pdf' in formats:
         result = formats['pdf'] # worker.get_attachment()
     else:
-        return _(u"Could not find any formats suitable for sending by email")
+        return _(u"Could not find any formats suitable for sending by e-mail")
     if result:
         global_WorkerThread.add_email(_(u"Send to Kindle"), book.path, result, ub.get_mail_settings(),
                                       kindle_mail, user_id, _(u"E-Mail: %s" % book.title))

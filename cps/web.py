@@ -2090,13 +2090,13 @@ def register():
                     flash(_(u"An unknown error occurred. Please try again later."), category="error")
                     return render_title_template('register.html', title=_(u"register"), page="register")
             else:
-                flash(_(u"Your email is not allowed to register"), category="error")
-                app.logger.info('Registering failed for user "' + to_save['nickname'] + '" EMailadress: ' + to_save["email"])
+                flash(_(u"Your e-mail is not allowed to register"), category="error")
+                app.logger.info('Registering failed for user "' + to_save['nickname'] + '" e-mail adress: ' + to_save["email"])
                 return render_title_template('register.html', title=_(u"register"), page="register")
-            flash(_(u"Confirmation email was send to your email account."), category="success")
+            flash(_(u"Confirmation e-mail was send to your e-mail account."), category="success")
             return redirect(url_for('login'))
         else:
-            flash(_(u"This username or email address is already in use."), category="error")
+            flash(_(u"This username or e-mail address is already in use."), category="error")
             return render_title_template('register.html', title=_(u"register"), page="register")
 
     return render_title_template('register.html', title=_(u"register"), page="register")
@@ -2233,7 +2233,7 @@ def send_to_kindle(book_id):
         else:
             flash(_(u"There was an error sending this book: %(res)s", res=result), category="error")
     else:
-        flash(_(u"Please configure your kindle email address first..."), category="error")
+        flash(_(u"Please configure your kindle e-mail address first..."), category="error")
     return redirect(request.environ["HTTP_REFERER"])
 
 
@@ -2539,7 +2539,7 @@ def profile():
             content.kindle_mail = to_save["kindle_mail"]
         if to_save["email"] and to_save["email"] != content.email:
             if config.config_public_reg and not check_valid_domain(to_save["email"]):
-                flash(_(u"Email is not from valid domain"), category="error")
+                flash(_(u"E-mail is not from valid domain"), category="error")
                 return render_title_template("user_edit.html", content=content, downloads=downloads,
                                      title=_(u"%(name)s's profile", name=current_user.nickname))            
             content.email = to_save["email"]
@@ -2580,7 +2580,7 @@ def profile():
             ub.session.commit()
         except IntegrityError:
             ub.session.rollback()
-            flash(_(u"Found an existing account for this email address."), category="error")
+            flash(_(u"Found an existing account for this e-mail address."), category="error")
             return render_title_template("user_edit.html", content=content, downloads=downloads,
                                          title=_(u"%(name)s's profile", name=current_user.nickname))
         flash(_(u"Profile updated"), category="success")
@@ -2939,7 +2939,7 @@ def new_user():
         content.password = generate_password_hash(to_save["password"])
         content.nickname = to_save["nickname"]
         if config.config_public_reg and not check_valid_domain(to_save["email"]):
-            flash(_(u"Email is not from valid domain"), category="error")
+            flash(_(u"E-mail is not from valid domain"), category="error")
             return render_title_template("user_edit.html", new_user=1, content=content, translations=translations,
                                          title=_(u"Add new user"))
         else:
@@ -2951,7 +2951,7 @@ def new_user():
             return redirect(url_for('admin'))
         except IntegrityError:
             ub.session.rollback()
-            flash(_(u"Found an existing account for this email address or nickname."), category="error")
+            flash(_(u"Found an existing account for this e-mail address or nickname."), category="error")
     else:
         content.role = config.config_default_role
         content.sidebar_view = config.config_default_show
@@ -2975,7 +2975,7 @@ def edit_mailsettings():
         content.mail_use_ssl = int(to_save["mail_use_ssl"])
         try:
             ub.session.commit()
-            flash(_(u"Mail server settings updated"), category="success")
+            flash(_(u"E-mail server settings updated"), category="success")
         except Exception as e:
             flash(e, category="error")
         if "test" in to_save and to_save["test"]:
@@ -2987,9 +2987,9 @@ def edit_mailsettings():
                 else:
                     flash(_(u"There was an error sending the Test e-mail: %(res)s", res=result), category="error")
             else:
-                flash(_(u"Please configure your kindle email address first..."), category="error")
+                flash(_(u"Please configure your kindle e-mail address first..."), category="error")
         else:
-            flash(_(u"Mail server settings updated"), category="success")
+            flash(_(u"E-mail server settings updated"), category="success")
     return render_title_template("email_edit.html", content=content, title=_(u"Edit e-mail server settings"),
                                  page="mailset")
 
