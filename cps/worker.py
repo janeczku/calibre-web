@@ -218,7 +218,7 @@ class WorkerThread(threading.Thread):
         if(filename):
             self.add_email(_(u'Send to Kindle'), self.queue[self.current]['path'], filename,
                        self.queue[self.current]['settings'], self.queue[self.current]['kindle'],
-                       self.UIqueue[self.current]['user'], _(u"E-Mail: %s" % self.queue[self.current]['title']))
+                       self.UIqueue[self.current]['user'], _(u"E-mail: %s" % self.queue[self.current]['title']))
 
     def convert(self):
         error_message = None
@@ -327,7 +327,7 @@ class WorkerThread(threading.Thread):
 
 
     def add_email(self, subject, filepath, attachment, settings, recipient, user_name, typ,
-                  text=_(u'This email has been sent via calibre web.')):
+                  text=_(u'This e-mail has been sent via Calibre-Web.')):
         # if more than 20 entries in the list, clean the list
         addLock = threading.Lock()
         addLock.acquire()
