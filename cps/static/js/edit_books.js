@@ -255,6 +255,3 @@ $("#btn-upload-cover").on("change", function () {
     $("#upload-cover").html(filename);
 });
 
-$("#btn-book-convert").on("change", function () {
-    alert("woot");
-});
