@@ -3191,6 +3191,7 @@ def edit_book(book_id):
         except Exception:
             app.logger.warning(file.format.lower() + ' already removed from list.')
 
+    app.logger.debug('Allowed conversion formats:')
     app.logger.debug(allowed_conversion_formats)
 
     # Show form
@@ -3629,6 +3630,13 @@ def upload():
 @login_required_if_no_ano
 @edit_required
 def convert_bookformat(book_id):
+    # check to see if we have form fields to work with -  if not send user back
+    book_format_from = request.form.get('book_format_from', None)
+    book_format_to = request.form.get('book_format_to', None)
+
+    if (book_format_from is None) or (book_format_to is None):
+        return redirect(request.environ["HTTP_REFERER"])
+
     app.logger.debug('converting: book id: ' + str(book_id) +
                      ' from: ' + request.form['book_format_from'] +
                      ' to: ' + request.form['book_format_to'])
