@@ -3186,7 +3186,10 @@ def edit_book(book_id):
     #Determine what formats don't already exist
     allowed_conversion_formats = ALLOWED_EXTENSIONS
     for file in book.data:
-        allowed_conversion_formats.remove(file.format.lower())
+        try:
+            allowed_conversion_formats.remove(file.format.lower())
+        except Exception:
+            app.logger.warning(file.formate.lower() + ' already removed from list.')
 
     app.logger.debug(allowed_conversion_formats)
 
