@@ -3177,18 +3177,20 @@ def edit_book(book_id):
     for authr in book.authors:
         author_names.append(authr.name.replace('|', ','))
 
-    #Option for showing convertbook button
+    # Option for showing convertbook button
     if config.config_ebookconverter == 2:
         display_convertbtn = True
     else:
         display_convertbtn = False
 
-    #Determine what formats don't already exist
-    allowed_conversion_formats = ALLOWED_EXTENSIONS
-    for file in book.data:
-        allowed_conversion_formats.remove(file.format.lower())
+    # Determine what formats don't already exist
+    allowed_conversion_formats = ALLOWED_EXTENSIONS.copy()
 
-    app.logger.debug(allowed_conversion_formats)
+    for file in book.data:
+        try:
+            allowed_conversion_formats.remove(file.format.lower())
+        except Exception:
+            app.logger.warning(file.format.lower() + ' already removed from list.')
 
     # Show form
     if request.method != 'POST':
@@ -3626,11 +3628,18 @@ def upload():
 @login_required_if_no_ano
 @edit_required
 def convert_bookformat(book_id):
-    #    rtn = convert_book_format(book_id, calibrepath, new_book_format, user_id)
-    app.logger.debug('got here')
-    app.logger.debug('book id:' + str(book_id))
-    app.logger.debug('from format:'+request.form['book_format_from'])
-    app.logger.debug('to format:' + request.form['book_format_to'])
+    app.logger.debug('converting: book id: ' + str(book_id) +
+                     ' from: ' + request.form['book_format_from'] +
+                     ' to: ' + request.form['book_format_to'])
+    rtn = helper.convert_book_format(book_id, config.config_calibre_dir, request.form['book_format_from'].upper(),
+                                     request.form['book_format_to'].upper(), current_user.nickname)
 
-    return redirect(url_for("index"))
+    if rtn is None:
+        flash(_(u"Book successfully queued for converting to %(book_format)s",
+                    book_format=request.form['book_format_from']),
+                    category="success")
+    else:
+        flash(_(u"There was an error sending this book: %(res)s", res=rtn), category="error")
+
+    return redirect(url_for("get_tasks_status"))
 

@@ -42,6 +42,7 @@ STAT_FINISH_SUCCESS = 3
 TASK_EMAIL = 1
 TASK_CONVERT = 2
 TASK_UPLOAD = 3
+TASK_CONVERT_ANY = 4
 
 RET_FAIL = 0
 RET_SUCCESS = 1
@@ -172,6 +173,8 @@ class WorkerThread(threading.Thread):
                     self.send_raw_email()
                 if self.queue[self.current]['typ'] == TASK_CONVERT:
                     self.convert_mobi()
+                if self.queue[self.current]['typ'] == TASK_CONVERT_ANY:
+                    self.convert_any_format()
                 # TASK_UPLOAD is handled implicitly
                 self.current += 1
             else:
@@ -308,7 +311,6 @@ class WorkerThread(threading.Thread):
             self._handleError(error_message)
             return
 
-
     def add_convert(self, file_path, bookid, user_name, typ, settings, kindle_mail):
         addLock = threading.Lock()
         addLock.acquire()
@@ -324,7 +326,6 @@ class WorkerThread(threading.Thread):
 
         self.last=len(self.queue)
         addLock.release()
-
 
     def add_email(self, subject, filepath, attachment, settings, recipient, user_name, typ,
                   text=_(u'This e-mail has been sent via Calibre-Web.')):
@@ -357,8 +358,140 @@ class WorkerThread(threading.Thread):
         self.id += 1
         self.last=len(self.queue)
         addLock.release()
-    
-        
+
+    def convert_any_format(self):
+        # convert book, and upload in case of google drive
+        self.queue[self.current]['status'] = STAT_STARTED
+        self.UIqueue[self.current]['status'] = _('Started')
+        self.queue[self.current]['starttime'] = datetime.now()
+        self.UIqueue[self.current]['formStarttime'] = self.queue[self.current]['starttime']
+        filename=self.convert_ebook_format()
+        if web.ub.config.config_use_google_drive:
+            gd.updateGdriveCalibreFromLocal()
+
+    def add_convert_any(self, file_path, bookid, user_name, typ, settings):
+        addLock = threading.Lock()
+        addLock.acquire()
+        if self.last >= 20:
+            self.delete_completed_tasks()
+        # progress, runtime, and status = 0
+        self.id += 1
+        self.queue.append({'file_path':file_path, 'bookid':bookid, 'starttime': 0,
+                           'status': STAT_WAITING, 'typ': TASK_CONVERT_ANY, 'settings':settings})
+        self.UIqueue.append({'user': user_name, 'formStarttime': '', 'progress': " 0 %", 'type': typ,
+                             'runtime': '0 s', 'status': _('Waiting'),'id': self.id } )
+        self.id += 1
+
+        self.last=len(self.queue)
+        addLock.release()
+
+    def convert_ebook_format(self):
+        error_message = None
+        file_path = self.queue[self.current]['file_path']
+        bookid = self.queue[self.current]['bookid']
+        format_old_ext = u'.' + self.queue[self.current]['settings']['old_book_format'].lower()
+        format_new_ext = u'.' + self.queue[self.current]['settings']['new_book_format'].lower()
+        # check if converter-executable is existing
+        if not os.path.exists(web.ub.config.config_converterpath):
+            self._handleError(_(u"Convertertool %(converter)s not found", converter=web.ub.config.config_converterpath))
+            return
+        try:
+            # check which converter to use kindlegen is "1" //backward compatibility assumption epub original format
+            if web.ub.config.config_ebookconverter == 1:
+                command = [web.ub.config.config_converterpath, u'"' + file_path + u'.epub"']
+            else:
+                # Linux py2.7 encode as list without quotes no empty element for parameters
+                # linux py3.x no encode and as list without quotes no empty element for parameters
+                # windows py2.7 encode as string with quotes empty element for parameters is okay
+                # windows py 3.x no encode and as string with quotes empty element for parameters is okay
+                # separate handling for windows and linux
+                if os.name == 'nt':
+                    command = web.ub.config.config_converterpath + u' "' + file_path + format_old_ext + u'" "' + \
+                              file_path + format_new_ext + u'" ' + web.ub.config.config_calibre
+                    if sys.version_info < (3, 0):
+                        command = command.encode(sys.getfilesystemencoding())
+                else:
+                    command = [web.ub.config.config_converterpath, (file_path + format_old_ext),
+                               (file_path + format_new_ext)]
+                    if web.ub.config.config_calibre:
+                        command.append(web.ub.config.config_calibre)
+                    if sys.version_info < (3, 0):
+                        command = [ x.encode(sys.getfilesystemencoding()) for x in command ]
+
+            p = subprocess.Popen(command, stdout=subprocess.PIPE, universal_newlines=True)
+        except OSError as e:
+            self._handleError(_(u"Ebook-converter failed: %s" % e))
+            return
+        if web.ub.config.config_ebookconverter == 1:
+            nextline = p.communicate()[0]
+            # Format of error message (kindlegen translates its output texts):
+            # Error(prcgen):E23006: Language not recognized in metadata.The dc:Language field is mandatory.Aborting.
+            conv_error = re.search(".*\(.*\):(E\d+):\s(.*)", nextline, re.MULTILINE)
+            # If error occoures, store error message for logfile
+            if conv_error:
+                error_message = _(u"Kindlegen failed with Error %(error)s. Message: %(message)s",
+                                  error=conv_error.group(1), message=conv_error.group(2).strip())
+            web.app.logger.debug("convert_kindlegen: " + nextline)
+
+        else:
+            while p.poll() is None:
+                nextline = p.stdout.readline()
+                if os.name == 'nt' and sys.version_info < (3, 0):
+                    nextline = nextline.decode('windows-1252')
+                web.app.logger.debug(nextline.strip('\r\n'))
+                # parse progress string from calibre-converter
+                progress = re.search("(\d+)%\s.*", nextline)
+                if progress:
+                    self.UIqueue[self.current]['progress'] = progress.group(1) + ' %'
+
+        #process returncode
+        check = p.returncode
+
+        # kindlegen returncodes
+        # 0 = Info(prcgen):I1036: Mobi file built successfully
+        # 1 = Info(prcgen):I1037: Mobi file built with WARNINGS!
+        # 2 = Info(prcgen):I1038: MOBI file could not be generated because of errors!
+        if ( check < 2 and web.ub.config.config_ebookconverter == 1) or \
+                (check == 0 and web.ub.config.config_ebookconverter == 2):
+            cur_book = web.db.session.query(web.db.Books).filter(web.db.Books.id == bookid).first()
+
+            if web.ub.config.config_ebookconverter == 1:
+                new_format = web.db.Data(name=cur_book.data[0].name,
+                                         book_format=self.queue[self.current]['settings']['new_book_format'],
+                                         book=bookid,uncompressed_size=os.path.getsize(file_path + '.mobi'))
+            else:
+                new_format = web.db.Data(name=cur_book.data[0].name,
+                                         book_format=self.queue[self.current]['settings']['new_book_format'],
+                                         book=bookid, uncompressed_size=os.path.getsize(file_path + format_new_ext))
+
+            cur_book.data.append(new_format)
+            web.db.session.commit()
+            self.queue[self.current]['path'] = cur_book.path
+            self.queue[self.current]['title'] = cur_book.title
+            self.queue[self.current]['status'] = STAT_FINISH_SUCCESS
+            self.UIqueue[self.current]['status'] = _('Finished')
+            self.UIqueue[self.current]['progress'] = "100 %"
+            self.UIqueue[self.current]['runtime'] = self._formatRuntime(
+                                                    datetime.now() - self.queue[self.current]['starttime'])
+
+            if web.ub.config.config_ebookconverter == 1:
+                if web.ub.config.config_use_google_drive:
+                    os.remove(file_path + u".epub")
+
+                return file_path + '.mobi'
+            else:
+                if web.ub.config.config_use_google_drive:
+                    os.remove(file_path + format_old_ext)
+
+                return file_path + format_new_ext
+
+        else:
+            web.app.logger.info("ebook converter failed with error while converting book")
+            if not error_message:
+                error_message = 'Ebook converter failed with unknown error'
+            self._handleError(error_message)
+            return
+
     def send_raw_email(self):
         self.queue[self.current]['starttime'] = datetime.now()
         self.UIqueue[self.current]['formStarttime'] = self.queue[self.current]['starttime']
