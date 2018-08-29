@@ -136,9 +136,49 @@ def send_mail(book_id, kindle_mail, calibrepath, user_id):
 
 
 # Convert existing book entry to new format
-#def convert_book_format(book_id, calibrepath, new_book_format, user_id):
+def convert_book_format(book_id, calibrepath, old_book_format, new_book_format, user_id):
+    book = db.session.query(db.Books).filter(db.Books.id == book_id).first()
+    data = db.session.query(db.Data).filter(db.Data.book == book.id).filter(db.Data.format == old_book_format).first()
+    if not data:
+        error_message = _(u"%(format)s format not found for book id: %(book)d", format=old_book_format, book=book_id)
+        app.logger.error("convert_book_format: " + error_message)
+        return error_message
+    if ub.config.config_use_google_drive:
+        df = gd.getFileFromEbooksFolder(book.path, data.name + "." + old_book_format.lower())
+        if df:
+            datafile = os.path.join(calibrepath, book.path, data.name + "." + old_book_format.lower())
+            if not os.path.exists(os.path.join(calibrepath, book.path)):
+                os.makedirs(os.path.join(calibrepath, book.path))
+            df.GetContentFile(datafile)
+        else:
+            error_message = _(u"convert_book_format: %(format)s not found on gdrive: %(fn)s",
+                              format=old_book_format, fn=data.name + "." + old_book_format.lower())
+            return error_message
+    file_path = os.path.join(calibrepath, book.path, data.name)
+    if os.path.exists(file_path + "." + old_book_format.lower()):
+        # append converter to queue
+        settings = {'old_book_format': old_book_format,
+                    'new_book_format': new_book_format}
 
-#    return
+        app.logger.debug("Creating worker thread:")
+        app.logger.debug("filepath: " + file_path + " " +
+                         "bookid: " + str(book.id) + " " +
+                         "userid: " + str(user_id) + " " +
+                         "taskmsg: " + _(u"Convert to %(format)s: %(book)s",
+                                                       format=new_book_format, book=book.title) + " " +
+                         "settings:old_book_format: " + settings['old_book_format'] + " " +
+                         "settings:new_book_format: " + settings['new_book_format']
+                         )
+
+        global_WorkerThread.add_convert_any(file_path, book.id,
+                                            user_id, _(u"Convert to %(format)s: %(book)s",
+                                                       format=new_book_format, book=book.title),
+                                            settings)
+        return None
+    else:
+        error_message = _(u"convert_book_format: %(format)s not found: %(fn)s",
+                          format=old_book_format, fn=data.name + "." + old_book_format.lower())
+        return error_message
 
 def get_valid_filename(value, replace_whitespace=True):
     """
