@@ -747,7 +747,7 @@ msgid "Public registration"
 msgstr "Публичная регистрация"
 
 #: cps/templates/admin.html:79 cps/templates/remote_login.html:4
-msgid "Remote Login"
+msgid "Remote login"
 msgstr ""
 
 #: cps/templates/admin.html:89
