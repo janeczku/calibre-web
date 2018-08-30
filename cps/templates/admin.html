@@ -8,10 +8,10 @@
         <th>{{_('Email')}}</th>
         <th>{{_('Kindle')}}</th>
         <th>{{_('DLS')}}</th>
-        <th>{{_('Admin')}}</th>
-        <th>{{_('Download')}}</th>
-        <th>{{_('Upload')}}</th>
-        <th>{{_('Edit')}}</th>
+        <th class="hidden-xs">{{_('Admin')}}</th>
+        <th class="hidden-xs">{{_('Download')}}</th>
+        <th class="hidden-xs">{{_('Upload')}}</th>
+        <th class="hidden-xs">{{_('Edit')}}</th>
     </tr>
     {% for user in content %}
       {% if not user.role_anonymous() or config.config_anonbrowse %}
@@ -20,10 +20,10 @@
         <td>{{user.email}}</td>
         <td>{{user.kindle_mail}}</td>
         <td>{{user.downloads.count()}}</td>
-        <td>{% if user.role_admin() %}<span class="glyphicon glyphicon-ok"></span>{% else %}<span class="glyphicon glyphicon-remove"></span>{% endif %}</td>
-        <td>{% if user.role_download() %}<span class="glyphicon glyphicon-ok"></span>{% else %}<span class="glyphicon glyphicon-remove"></span>{% endif %}</td>
-        <td>{% if user.role_upload() %}<span class="glyphicon glyphicon-ok"></span>{% else %}<span class="glyphicon glyphicon-remove"></span>{% endif %}</td>
-        <td>{% if user.role_edit() %}<span class="glyphicon glyphicon-ok"></span>{% else %}<span class="glyphicon glyphicon-remove"></span>{% endif %}</td>
+        <td class="hidden-xs">{% if user.role_admin() %}<span class="glyphicon glyphicon-ok"></span>{% else %}<span class="glyphicon glyphicon-remove"></span>{% endif %}</td>
+        <td class="hidden-xs">{% if user.role_download() %}<span class="glyphicon glyphicon-ok"></span>{% else %}<span class="glyphicon glyphicon-remove"></span>{% endif %}</td>
+        <td class="hidden-xs">{% if user.role_upload() %}<span class="glyphicon glyphicon-ok"></span>{% else %}<span class="glyphicon glyphicon-remove"></span>{% endif %}</td>
+        <td class="hidden-xs">{% if user.role_edit() %}<span class="glyphicon glyphicon-ok"></span>{% else %}<span class="glyphicon glyphicon-remove"></span>{% endif %}</td>
       </tr>
       {% endif %}
     {% endfor %}
@@ -36,14 +36,14 @@
         <th>{{_('SMTP port')}}</th>
         <th>{{_('SSL')}}</th>
         <th>{{_('SMTP login')}}</th>
-        <th>{{_('From mail')}}</th>
+        <th class="hidden-xs">{{_('From mail')}}</th>
     </tr>
       <tr>
         <td>{{email.mail_server}}</td>
         <td>{{email.mail_port}}</td>
         <td>{% if email.mail_use_ssl %}<span class="glyphicon glyphicon-ok"></span>{% else %}<span class="glyphicon glyphicon-remove"></span>{% endif %}</td>
         <td>{{email.mail_login}}</td>
-        <td>{{email.mail_from}}</td>
+        <td class="hidden-xs">{{email.mail_from}}</td>
   </table>
     <div class="btn btn-default" id="admin_edit_email"><a href="{{url_for('edit_mailsettings')}}">{{_('Change SMTP settings')}}</a></div>
 <div id="container">
@@ -54,7 +54,7 @@
         <div class="col-xs-6 col-sm-6">{{config.config_calibre_dir}}</div>
     </div>
     <div class="Row">  
-        <div class="col-xs-6 col-sm-6">{{_('Log Level')}}</div>
+        <div class="col-xs-6 col-sm-6">{{_('Log level')}}</div>
         <div class="col-xs-6 col-sm-6">{{config.get_Log_Level()}}</div>
     </div>
     <div class="Row">    
@@ -72,13 +72,17 @@
         <div class="col-xs-6 col-sm-5">{% if config.config_uploading %}<span class="glyphicon glyphicon-ok"></span>{% else %}<span class="glyphicon glyphicon-remove"></span>{% endif %}</div>
     </div>
     <div class="Row">
+        <div class="col-xs-6 col-sm-7">{{_('Anonymous browsing')}}</div>
+        <div class="col-xs-6 col-sm-5">{% if config.config_anonbrowse %}<span class="glyphicon glyphicon-ok"></span>{% else %}<span class="glyphicon glyphicon-remove"></span>{% endif %}</div>
+    </div>
+    <div class="Row">
         <div class="col-xs-6 col-sm-7">{{_('Public registration')}}</div>
         <div class="col-xs-6 col-sm-5">{% if config.config_public_reg %}<span class="glyphicon glyphicon-ok"></span>{% else %}<span class="glyphicon glyphicon-remove"></span>{% endif %}</div>
     </div>
     <div class="Row">
-        <div class="col-xs-6 col-sm-7">{{_('Remote Login')}}</div>
+        <div class="col-xs-6 col-sm-7">{{_('Remote login')}}</div>
         <div class="col-xs-6 col-sm-5">{% if config.config_remote_login %}<span class="glyphicon glyphicon-ok"></span>{% else %}<span class="glyphicon glyphicon-remove"></span>{% endif %}</div>
-    </div>      
+    </div>
   </div>
 </div>
     <div class="col-xs-12 col-sm-12">

@@ -742,7 +742,7 @@ msgid "Public registration"
 msgstr "ការចុះឈ្មាះសាធារណៈ"
 
 #: cps/templates/admin.html:79 cps/templates/remote_login.html:4
-msgid "Remote Login"
+msgid "Remote login"
 msgstr "ការចូលប្រើប្រាស់ពីចម្ងាយ"
 
 #: cps/templates/admin.html:89

@@ -741,7 +741,7 @@ msgid "Public registration"
 msgstr "公的登録"
 
 #: cps/templates/admin.html:79 cps/templates/remote_login.html:4
-msgid "Remote Login"
+msgid "Remote login"
 msgstr "遠距離ログイン"
 
 #: cps/templates/admin.html:89

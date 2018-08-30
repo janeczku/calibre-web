@@ -3184,7 +3184,7 @@ def edit_book(book_id):
                                      title=_(u"edit metadata"), page="editbook")
 
     # Update book
-    edited_books_id = {}
+    edited_books_id = set()
 
     # Check and handle Uploaded file
     if 'btn-upload-format' in request.files:
