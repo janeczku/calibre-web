@@ -3271,10 +3271,28 @@ def edit_book(book_id):
     for authr in book.authors:
         author_names.append(authr.name.replace('|', ','))
 
+    # Option for showing convertbook button
+    if config.config_ebookconverter == 2:
+        display_convertbtn = True
+    else:
+        display_convertbtn = False
+
+    # Determine what formats don't already exist
+    allowed_conversion_formats = ALLOWED_EXTENSIONS.copy()
+    for file in book.data:
+        try:
+            allowed_conversion_formats.remove(file.format.lower())
+        except Exception:
+            app.logger.warning(file.format.lower() + ' already removed from list.')
+
+    app.logger.debug('Allowed conversion formats:')
+    app.logger.debug(allowed_conversion_formats)
+
     # Show form
     if request.method != 'POST':
         return render_title_template('book_edit.html', book=book, authors=author_names, cc=cc,
-                                     title=_(u"edit metadata"), page="editbook")
+                                     title=_(u"edit metadata"), page="editbook", display_convertbtn=display_convertbtn,
+                                     conversion_formats=allowed_conversion_formats)
 
     # Update book
     edited_books_id = set()
@@ -3700,3 +3718,30 @@ def upload():
                 return render_title_template('detail.html', entry=book, cc=cc,
                                              title=book.title, books_shelfs=book_in_shelfs, page="upload")
     return redirect(url_for("index"))
+
+
+@app.route("/admin/book/convert/<int:book_id>", methods=['POST'])
+@login_required_if_no_ano
+@edit_required
+def convert_bookformat(book_id):
+    # check to see if we have form fields to work with -  if not send user back
+    book_format_from = request.form.get('book_format_from', None)
+    book_format_to = request.form.get('book_format_to', None)
+
+    if (book_format_from is None) or (book_format_to is None):
+        flash(_(u"Source or destination format for conversion missing"), category="error")
+        return redirect(request.environ["HTTP_REFERER"])
+
+    app.logger.debug('converting: book id: ' + str(book_id) +
+                     ' from: ' + request.form['book_format_from'] +
+                     ' to: ' + request.form['book_format_to'])
+    rtn = helper.convert_book_format(book_id, config.config_calibre_dir, book_format_from.upper(),
+                                     book_format_to.upper(), current_user.nickname)
+
+    if rtn is None:
+        flash(_(u"Book successfully queued for converting to %(book_format)s",
+                    book_format=book_format_to),
+                    category="success")
+    else:
+        flash(_(u"There was an error converting this book: %(res)s", res=rtn), category="error")
+    return redirect(request.environ["HTTP_REFERER"])

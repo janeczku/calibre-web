@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
 {% block body %}
 {% if book %}
-<form role="form" action="{{ url_for('edit_book', book_id=book.id) }}" method="post" enctype="multipart/form-data">
+
 
   <div class="col-sm-3 col-lg-3 col-xs-12">
     <div class="cover">
@@ -16,7 +16,7 @@
       <button type="button" class="btn btn-danger" id="delete" data-toggle="modal" data-target="#deleteModal">{{_("Delete Book")}}</button>
     </div>
     {% if book.data|length > 1 %}
-      <div class="text-center more-stuff"><h4> {{_('Delete formats:')}} </h4>
+      <div class="text-center more-stuff"><h4>{{_('Delete formats:')}}</h4>
       {% for file in book.data %}
         <div class="form-group">
           <a href="{{ url_for('delete_book', book_id=book.id, book_format=file.format) }}" class="btn btn-danger" type="button">{{_('Delete')}} - {{file.format}}</a>
@@ -25,7 +25,35 @@
       </div>
     {% endif %}
 {% endif %}
+
+{%  if display_convertbtn and conversion_formats|length > 0 %}
+  <div class="text-center more-stuff"><h4>{{_('Convert book format:')}}</h4>
+      <form class="padded-bottom" action="{{ url_for('convert_bookformat', book_id=book.id) }}" method="post" id="book_convert_frm">
+          <div class="form-group">
+              <div class="text-left">
+                  <label class="control-label" for="book_format_from">{{_('Convert from:')}}</label>
+                  <select class="form-control" name="book_format_from" id="book_format_from">
+                    <option disabled selected value> -- select an option -- </option>
+                    {% for file in book.data %}
+                    <option>{{file.format}} </option>
+                    {% endfor %}
+                  </select>
+                  <label class="control-label" for="book_format_to">{{_('Convert to:')}}</label>
+                  <select class="form-control" name="book_format_to" id="book_format_to">
+                    <option disabled selected value> -- select an option -- </option>
+                    {% for format in conversion_formats %}
+                    <option>{{format|upper}} </option>
+                    {% endfor %}
+                  </select>
+              </div>
+          </div>
+          <button type="submit" class="btn btn-primary" id="btn-book-convert" name="btn-book-convert"><span class="glyphicon glyphicon-duplicate"></span> {{_('Convert book')}}</button>
+      </form>
   </div>
+{% endif %}
+
+  </div>
+<form role="form" action="{{ url_for('edit_book', book_id=book.id) }}" method="post" enctype="multipart/form-data" id="book_edit_frm">
   <div class="col-sm-9 col-xs-12">
     <div class="form-group">
       <label for="book_title">{{_('Book Title')}}</label>
@@ -61,7 +89,7 @@
       <input type="text" class="form-control" name="cover_url" id="cover_url" value="">
     </div>
     <div class="form-group" aria-label="Upload cover from local drive">
-        <label class="btn btn-default btn-file" for="btn-upload-cover">{{ _('Upload Cover from local drive') }}</label>
+        <label class="btn btn-primary btn-file" for="btn-upload-cover">{{ _('Upload Cover from local drive') }}</label>
         <div class="upload-cover-input-text" id="upload-cover"></div>
         <input id="btn-upload-cover" name="btn-upload-cover" type="file">
     </div>
@@ -131,7 +159,7 @@
       {% if g.user.role_upload() or g.user.role_admin()%}
         {% if g.allow_upload %}
           <div role="group" aria-label="Upload new book format">
-            <label class="btn btn-default btn-file" for="btn-upload-format">{{ _('Upload format') }}</label>
+            <label class="btn btn-primary btn-file" for="btn-upload-format">{{ _('Upload format') }}</label>
             <div class="upload-format-input-text" id="upload-format"></div>
             <input id="btn-upload-format" name="btn-upload-format" type="file">
           </div>
