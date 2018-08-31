@@ -254,3 +254,4 @@ $("#btn-upload-cover").on("change", function () {
     } // Remove c:\fake at beginning from localhost chrome
     $("#upload-cover").html(filename);
 });
+

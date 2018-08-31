@@ -53,7 +53,7 @@ def make_mobi(book_id, calibrepath, user_id, kindle_mail):
     book = db.session.query(db.Books).filter(db.Books.id == book_id).first()
     data = db.session.query(db.Data).filter(db.Data.book == book.id).filter(db.Data.format == 'EPUB').first()
     if not data:
-        error_message = _(u"epub format not found for book id: %(book)d", book=book_id)
+        error_message = _(u"Epub format not found for book id: %(book)d", book=book_id)
         app.logger.error("make_mobi: " + error_message)
         return error_message
     if ub.config.config_use_google_drive:
@@ -64,16 +64,19 @@ def make_mobi(book_id, calibrepath, user_id, kindle_mail):
                 os.makedirs(os.path.join(calibrepath, book.path))
             df.GetContentFile(datafile)
         else:
-            error_message = (u"make_mobi: epub not found on gdrive: %s.epub" % data.name)
+            error_message = (u"Epub not found on Google Drive: %s.epub" % data.name)
             return error_message
     file_path = os.path.join(calibrepath, book.path, data.name)
     if os.path.exists(file_path + u".epub"):
-        # append converter to queue
-        global_WorkerThread.add_convert(file_path, book.id, user_id, _(u"Convert: %s" % book.title), ub.get_mail_settings(),
+        # read settings and append converter task to queue
+        settings = ub.get_mail_settings()
+        settings['old_book_format'] = u'EPUB'
+        settings['new_book_format'] = u'MOBI'
+        global_WorkerThread.add_convert(file_path, book.id, user_id, _(u"Convert: %s" % book.title), settings,
                                       kindle_mail)
         return None
     else:
-        error_message = (u"make_mobi: epub not found: %s.epub" % file_path)
+        error_message = (u"Epub not found: %s.epub" % file_path)
         return error_message
 
 
@@ -134,6 +137,52 @@ def send_mail(book_id, kindle_mail, calibrepath, user_id):
                                       kindle_mail, user_id, _(u"E-Mail: %s" % book.title))
     else:
         return _(u"The requested file could not be read. Maybe wrong permissions?")
+
+
+# Convert existing book entry to new format
+def convert_book_format(book_id, calibrepath, old_book_format, new_book_format, user_id):
+    book = db.session.query(db.Books).filter(db.Books.id == book_id).first()
+    data = db.session.query(db.Data).filter(db.Data.book == book.id).filter(db.Data.format == old_book_format).first()
+    if not data:
+        error_message = _(u"%(format)s format not found for book id: %(book)d", format=old_book_format, book=book_id)
+        app.logger.error("convert_book_format: " + error_message)
+        return error_message
+    if ub.config.config_use_google_drive:
+        df = gd.getFileFromEbooksFolder(book.path, data.name + "." + old_book_format.lower())
+        if df:
+            datafile = os.path.join(calibrepath, book.path, data.name + "." + old_book_format.lower())
+            if not os.path.exists(os.path.join(calibrepath, book.path)):
+                os.makedirs(os.path.join(calibrepath, book.path))
+            df.GetContentFile(datafile)
+        else:
+            error_message = _(u"%(format)s not found on Google Drive: %(fn)s",
+                              format=old_book_format, fn=data.name + "." + old_book_format.lower())
+            return error_message
+    file_path = os.path.join(calibrepath, book.path, data.name)
+    if os.path.exists(file_path + "." + old_book_format.lower()):
+        # append converter to queue
+        settings = {'old_book_format': old_book_format,
+                    'new_book_format': new_book_format}
+
+        app.logger.debug("Creating task for worker thread:")
+        app.logger.debug("filepath: " + file_path + " " +
+                         "bookid: " + str(book.id) + " " +
+                         "userid: " + str(user_id) + " " +
+                         "taskmsg: " + _(u"Convert to %(format)s: %(book)s",
+                                                       format=new_book_format, book=book.title) + " " +
+                         "settings:old_book_format: " + settings['old_book_format'] + " " +
+                         "settings:new_book_format: " + settings['new_book_format']
+                         )
+
+        global_WorkerThread.add_convert(file_path, book.id,
+                                            user_id, _(u"Convert to %(format)s: %(book)s",
+                                                       format=new_book_format, book=book.title),
+                                            settings)
+        return None
+    else:
+        error_message = _(u"%(format)s not found: %(fn)s",
+                          format=old_book_format, fn=data.name + "." + old_book_format.lower())
+        return error_message
 
 
 def get_valid_filename(value, replace_whitespace=True):
@@ -339,7 +388,7 @@ def save_cover(url, book_path):
         f.write(img.content)
         f.close()
         uploadFileToEbooksFolder(os.path.join(book_path, 'cover.jpg'), os.path.join(tmpDir, f.name))
-        web.app.logger.info("Cover is saved on gdrive")
+        web.app.logger.info("Cover is saved on Google Drive")
         return True
 
     f = open(os.path.join(ub.config.config_calibre_dir, book_path, "cover.jpg"), "wb")

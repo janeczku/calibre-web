@@ -10,7 +10,7 @@
     </div>
     {% endif %}
     <div class="form-group">
-      <label for="email">{{_('Email address')}}</label>
+      <label for="email">{{_('E-mail address')}}</label>
       <input type="email" class="form-control" name="email" id="email" value="{{ content.email if content.email != None }}" autocomplete="off">
     </div>
     {% if ( g.user and g.user.role_passwd() or g.user.role_admin() ) and not content.role_anonymous() %}
