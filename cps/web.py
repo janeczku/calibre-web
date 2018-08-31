@@ -22,6 +22,18 @@ try:
 except ImportError:
     pass  # We're not using Python 3
 
+try:
+    import rarfile
+    rar_support=True
+except ImportError:
+    rar_support=False
+
+try:
+    from natsort import natsorted as sort
+except ImportError:
+    sort=sorted # Just use regular sort then
+                #   may cause issues with badly named pages in cbz/cbr files
+
 import mimetypes
 import logging
 from logging.handlers import RotatingFileHandler
@@ -47,6 +59,8 @@ from flask_babel import Babel
 from flask_babel import gettext as _
 
 import requests
+# import zipfile
+# import tarfile
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.datastructures import Headers
 from babel import Locale as LC
@@ -83,9 +97,10 @@ try:
 except ImportError:
     from flask_login.__about__ import __version__ as flask_loginVersion
 
+# import codecs
 import time
 import server
-import random
+# import random
 
 current_milli_time = lambda: int(round(time.time() * 1000))
 
@@ -95,7 +110,8 @@ gdrive_watch_callback_token = 'target=calibreweb-watch_files'
 
 ALLOWED_EXTENSIONS = {'txt', 'pdf', 'epub', 'mobi', 'azw', 'azw3', 'cbr', 'cbz', 'cbt', 'djvu', 'prc', 'doc', 'docx',
                       'fb2'}
-
+# READER_EXTENSIONS = set(['txt', 'pdf', 'epub', 'zip', 'cbz', 'tar', 'cbt'] + (['rar','cbr'] if rar_support else []))
+# READER_EXTENSIONS = set(['txt', 'pdf', 'epub', 'zip', 'cbz', 'tar', 'cbt', 'rar', 'cbr'])
 
 def md5(fname):
     hash_md5 = hashlib.md5()
@@ -401,6 +417,13 @@ def timestamptodate(date, fmt=None):
 @app.template_filter('yesno')
 def yesno(value, yes, no):
     return yes if value else no
+
+
+'''@app.template_filter('canread')
+def canread(ext):
+    if isinstance(ext, db.Data):
+        ext = ext.format
+    return ext.lower() in READER_EXTENSIONS'''
 
 
 def admin_required(f):
@@ -961,7 +984,57 @@ def list_domain():
     response.headers["Content-Type"] = "application/json; charset=utf-8"
     return response
 
-    
+'''
+@app.route("/ajax/getcomic/<int:book_id>/<book_format>/<int:page>")
+@login_required
+def get_comic_book(book_id, book_format, page):
+    book = db.session.query(db.Books).filter(db.Books.id == book_id).first()
+    if not book:
+        return "", 204
+    else:
+        for bookformat in book.data:
+            if bookformat.format.lower() == book_format.lower():
+                cbr_file = os.path.join(config.config_calibre_dir, book.path, bookformat.name) + "." + book_format
+                if book_format in ("cbr", "rar"):
+                    if rar_support == True:
+                        rarfile.UNRAR_TOOL = config.config_rarfile_location
+                        try:
+                            rf = rarfile.RarFile(cbr_file)
+                            names = sort(rf.namelist())
+                            extract = lambda page: rf.read(names[page])
+                        except:
+                            # rarfile not valid
+                            app.logger.error('Unrar binary not found, or unable to decompress file ' + cbr_file)
+                            return "", 204
+                    else:
+                        app.logger.info('Unrar is not supported please install python rarfile extension')
+                        # no support means return nothing
+                        return "", 204
+                elif book_format in ("cbz", "zip"):
+                    zf = zipfile.ZipFile(cbr_file)
+                    names=sort(zf.namelist())
+                    extract = lambda page: zf.read(names[page])
+                elif book_format in ("cbt", "tar"):
+                    tf = tarfile.TarFile(cbr_file)
+                    names=sort(tf.getnames())
+                    extract = lambda page: tf.extractfile(names[page]).read()
+                else:
+                    app.logger.error('unsupported comic format')
+                    return "", 204
+
+                if sys.version_info.major >= 3:
+                    b64 = codecs.encode(extract(page), 'base64').decode()
+                else:
+                    b64 = extract(page).encode('base64')
+                ext = names[page].rpartition('.')[-1]
+                if ext not in ('png', 'gif', 'jpg', 'jpeg'):
+                    ext = 'png'
+                extractedfile="data:image/" + ext + ";base64," + b64
+                fileData={"name": names[page], "page":page, "last":len(names)-1, "content": extractedfile}
+                return make_response(json.dumps(fileData))
+        return "", 204
+'''
+
 @app.route("/get_authors_json", methods=['GET', 'POST'])
 @login_required_if_no_ano
 def get_authors_json():
@@ -1379,7 +1452,6 @@ def toggle_read(book_id):
         except KeyError:
             app.logger.error(
                     u"Custom Column No.%d is not exisiting in calibre database" % config.config_read_column)
-
     return ""
 
 @app.route("/book/<int:book_id>")
@@ -1427,6 +1499,8 @@ def show_book(book_id):
         else:
             have_read = None
 
+        entries.tags = sort(entries.tags, key = lambda tag: tag.name)
+
         return render_title_template('detail.html', entry=entries, cc=cc, is_xhr=request.is_xhr,
                                      title=entries.title, books_shelfs=book_in_shelfs,
                                      have_read=have_read, page="book")
@@ -1453,6 +1527,7 @@ def bookmark(book_id, book_format):
     ub.session.merge(lbookmark)
     ub.session.commit()
     return "", 201
+
 
 @app.route("/tasks")
 @login_required
@@ -1510,7 +1585,6 @@ def stats():
     versions.update(converter.versioncheck())
     versions.update(server.Server.getNameVersion())
     versions['Python'] = sys.version
-
     return render_title_template('stats.html', bookcounter=counter, authorcounter=authors, versions=versions,
                                  categorycounter=categorys, seriecounter=series, title=_(u"Statistics"), page="stat")
 
@@ -2011,6 +2085,15 @@ def read_book(book_id, book_format):
                 #    copyfile(cbr_file, tmp_file)
                 return render_title_template('readcbr.html', comicfile=all_name, title=_(u"Read a Book"),
                                              extension=fileext)
+        '''if rar_support == True:
+            extensionList = ["cbr","cbt","cbz"]
+        else:
+            extensionList = ["cbt","cbz"]
+        for fileext in extensionList:
+            if book_format.lower() == fileext:
+                return render_title_template('readcbr.html', comicfile=book_id, extension=fileext, title=_(u"Read a Book"), book=book)
+        flash(_(u"Error opening eBook. File does not exist or file is not accessible."), category="error")
+        return redirect(url_for("index"))'''
 
 
 @app.route("/download/<int:book_id>/<book_format>")
@@ -2823,7 +2906,6 @@ def configuration_helper(origin):
             content.config_goodreads_api_key = to_save["config_goodreads_api_key"]
         if "config_goodreads_api_secret" in to_save:
             content.config_goodreads_api_secret = to_save["config_goodreads_api_secret"]
-
         if "config_log_level" in to_save:
             content.config_log_level = int(to_save["config_log_level"])
         if content.config_logfile != to_save["config_logfile"]:
@@ -2841,6 +2923,17 @@ def configuration_helper(origin):
             else:
                 content.config_logfile = to_save["config_logfile"]
             reboot_required = True
+
+        # Rarfile Content configuration
+        if "config_rarfile_location" in to_save:
+            check = helper.check_unrar(to_save["config_rarfile_location"].strip())
+            if not check[0] :
+                content.config_rarfile_location = to_save["config_rarfile_location"].strip()
+            else:
+                flash(check[1], category="error")
+                return render_title_template("config_edit.html", content=config, origin=origin, gdrive=gdriveutils.gdrive_support,
+                                         goodreads=goodreads_support, rarfile_support=rar_support,
+                                         title=_(u"Basic Configuration"))
         try:
             if content.config_use_google_drive and is_gdrive_ready() and not os.path.exists(config.config_calibre_dir + "/metadata.db"):
                 gdriveutils.downloadFile(None, "metadata.db", config.config_calibre_dir + "/metadata.db")
@@ -2856,14 +2949,14 @@ def configuration_helper(origin):
         except Exception as e:
             flash(e, category="error")
             return render_title_template("config_edit.html", content=config, origin=origin, gdrive=gdriveutils.gdrive_support,
-                                         gdriveError=gdriveError, goodreads=goodreads_support,
+                                         gdriveError=gdriveError, goodreads=goodreads_support, rarfile_support=rar_support,
                                          title=_(u"Basic Configuration"), page="config")
         if db_change:
             reload(db)
             if not db.setup_db():
                 flash(_(u'DB location is not valid, please enter correct path'), category="error")
                 return render_title_template("config_edit.html", content=config, origin=origin, gdrive=gdriveutils.gdrive_support,
-                                             gdriveError=gdriveError, goodreads=goodreads_support,
+                                             gdriveError=gdriveError, goodreads=goodreads_support, rarfile_support=rar_support,
                                              title=_(u"Basic Configuration"), page="config")
         if reboot_required:
             ub.session.close()
@@ -2880,7 +2973,7 @@ def configuration_helper(origin):
         gdrivefolders=list()
     return render_title_template("config_edit.html", origin=origin, success=success, content=config,
                                  show_authenticate_google_drive=not is_gdrive_ready(), gdrive=gdriveutils.gdrive_support,
-                                 gdriveError=gdriveError, gdrivefolders=gdrivefolders,
+                                 gdriveError=gdriveError, gdrivefolders=gdrivefolders, rarfile_support=rar_support,
                                  goodreads=goodreads_support, title=_(u"Basic Configuration"), page="config")
 
 
@@ -3607,4 +3700,3 @@ def upload():
                 return render_title_template('detail.html', entry=book, cc=cc,
                                              title=book.title, books_shelfs=book_in_shelfs, page="upload")
     return redirect(url_for("index"))
-

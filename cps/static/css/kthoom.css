@@ -1,32 +1,133 @@
 body {
-	background: #444;
-    overflow: hidden;
-	color: white;
-	font-family: sans-serif;
-	margin: 0px;
+  background: #444;
+  overflow-x: hidden;
+  overflow-y: auto;
+  color: white;
+  font-family: sans-serif;
+  margin: 0px;
 }
 
-.main {
-	position: re;
-	left: 5px;
-    overflow: hidden;
-	right: 5px;
-	text-align: center;
-    top: 5px;
+#main {
+  text-align: center;
+  z-index: 2;
+}
+
+.view {
+  padding-top:0px;
+}
+
+#sidebar a,
+#sidebar ul,
+#sidebar li,
+#sidebar li img {
+  max-width: 100%;
+  text-align: center;
+}
+
+#sidebar ul {
+  position: relative;
+}
+
+#sidebar a {
+  display: inline-block;
+  position: relative;
+  cursor: pointer;
+  padding: 4px;
+
+  transition: all .2s ease;
+}
+
+#sidebar a:hover,
+#sidebar a:focus {
+  outline: none;
+  box-shadow: 0px 2px 8px 1px black;
+}
+
+#sidebar a.active,
+#sidebar a.active img + span {
+  background-color:  #45B29D;
+}
+
+#sidebar li img {
+  display: block;
+  max-height: 200px;
+}
+
+#sidebar li img + span {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  padding: 2px;
+  min-width: 25px;
+  line-height: 25px;
+  background: #6b6b6b;
+  border-top-left-radius: 5px;
+}
+
+#sidebar #panels {
+  z-index: 1;
 }
 
 #progress {
-	position: absolute;
-	display: inline;
-	left: 90px;
-	right: 160px;
-	height: 20px;
-	margin-top: 1px;
-	text-align: right;
+  position: absolute;
+  display: inline;
+  top: 0;
+  left: 0;
+  right: 0;
+  min-height: 4px;
+  font-family: sans-serif;
+  font-size: 10px;
+  line-height: 10px;
+  text-align: right;
+
+  transition: min-height 150ms ease-in-out;
+}
+
+#progress .bar-load,
+#progress .bar-read {
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+
+  transition: width 150ms ease-in-out;
+}
+
+#progress .bar-load {
+  color: #000;
+  background-color: #CCC;
+}
+
+#progress .bar-read  {
+  color: #FFF;
+  background-color: #45B29D;
+}
+
+#progress .text {
+  display: none;
+  padding: 0 5px;
+}
+
+#progress.loading,
+#titlebar:hover #progress {
+  min-height: 10px;
+}
+
+#progress.loading .text,
+#titlebar:hover #progress .text {
+  display: inline-block;
 }
 
 .hide {
-	display: none !important;
+  display: none !important;
+}
+
+#mainContent {
+  overflow: auto;
+  outline: none;
 }
 
 #mainText {
@@ -42,29 +143,13 @@ body {
   word-wrap: break-word;
 }
 
-#mainImage{
-   margin-top: 32px; 
+#titlebar {
+  min-height: 25px;
+  height: auto;
 }
 
-#titlebar.main {
-  opacity: 0;
-  position: absolute;
-  top: 0;
-  height: 30px;
-  left: 0;
-  right: 0;
-  background-color: black;
-  padding-bottom: 70px;
-  -webkit-transition: opacity 0.2s ease;
-  -moz-transition: opacity 0.2s ease;
-  transition: opacity 0.2s ease;
-  background: -moz-linear-gradient(top, rgba(0,2,34,1) 0%, rgba(0,1,24,1) 30%, rgba(0,0,0,0) 100%); /* FF3.6+ */
-  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(0,2,34,1)), color-stop(30%,rgba(0,1,24,1)), color-stop(100%,rgba(0,0,0,0))); /* Chrome,Safari4+ */
-  background: -webkit-linear-gradient(top, rgba(0,2,34,1) 0%,rgba(0,1,24,1) 30%,rgba(0,0,0,0) 100%); /* Chrome10+,Safari5.1+ */
-  background: -o-linear-gradient(top, rgba(0,2,34,1) 0%,rgba(0,1,24,1) 30%,rgba(0,0,0,0) 100%); /* Opera11.10+ */
-  background: -ms-linear-gradient(top, rgba(0,2,34,1) 0%,rgba(0,1,24,1) 30%,rgba(0,0,0,0) 100%); /* IE10+ */
-  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#000222', endColorstr='#00000000',GradientType=0 ); /* IE6-9 */
-  background: linear-gradient(top, rgba(0,2,34,1) 0%,rgba(0,1,24,1) 30%,rgba(0,0,0,0) 100%); /* W3C */
+#metainfo {
+  max-width: 70%;
 }
 
 #prev {
@@ -100,6 +185,72 @@ body {
   color: #000;
 }
 
+th, td {
+  padding: 5px;
+}
+
+th {
+  text-align: right;
+  vertical-align: top;
+}
+
+.modal {
+  /* Makes the modal responsive. Note sure if this should be moved to main.css */
+  margin: 0;
+  max-width: 96%;
+  transform: translate(-50%, -50%);
+}
+
+.md-content {
+  min-height: 320px;
+  height: auto;
+}
+
+.md-content > div {
+  overflow: hidden;
+}
+
+.md-content > div p {
+  padding: 5px 0;
+}
+
+.settings-column {
+  float: left;
+  min-width: 35%;
+  padding-bottom: 10px;
+}
+
+.inputs {
+  margin: -5px;
+}
+
+.inputs input {
+  vertical-align: middle;
+}
+
+.inputs label {
+  display: inline-block;
+  margin: 5px;
+  white-space: nowrap;
+}
+
+.dark-theme #main {
+  background-color: #000;
+}
+
+.dark-theme #titlebar {
+  color: #DDD;
+}
+
+.dark-theme #titlebar a:active {
+  color: #FFF;
+}
+
+.dark-theme #progress .bar-read {
+  background-color: red;
+}
 
 
-
+.dark-theme .overlay {
+  background-color: rgba(0,0,0,0.8);
+}
