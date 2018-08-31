@@ -27,6 +27,7 @@ except ImportError:
 import web
 import server
 import random
+import subprocess
 
 try:
     import unidecode
@@ -512,3 +513,28 @@ class Updater(threading.Thread):
                 except Exception:
                     logging.getLogger('cps.web').debug("Could not remove:" + item_path)
         shutil.rmtree(source, ignore_errors=True)
+
+        
+def check_unrar(unrarLocation):
+    error = False
+    if os.path.exists(unrarLocation):
+        try:
+            if sys.version_info < (3, 0):
+                unrarLocation = unrarLocation.encode(sys.getfilesystemencoding())
+            p = subprocess.Popen(unrarLocation, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            p.wait()
+            for lines in p.stdout.readlines():
+                if isinstance(lines, bytes):
+                    lines = lines.decode('utf-8')
+                value=re.search('UNRAR (.*) freeware', lines)
+                if value:
+                    version = value.group(1)
+        except OSError as e:
+            error = True
+            web.app.logger.exception(e)
+            version =_(u'Error excecuting UnRar')
+    else:
+        version = _(u'Unrar binary file not found')
+        error=True
+    return (error, version)
+

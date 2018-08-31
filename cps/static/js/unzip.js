@@ -9,7 +9,7 @@
  * ZIP format: http://www.pkware.com/documents/casestudies/APPNOTE.TXT
  * DEFLATE format: http://tools.ietf.org/html/rfc1951
  */
-/* global bitjs, importScripts, Uint8Array  */
+/* global bitjs */ 
 
 // This file expects to be invoked as a Worker (see onmessage below).
 importScripts("io.js");
@@ -44,12 +44,12 @@ var zLocalFileHeaderSignature = 0x04034b50;
 var zArchiveExtraDataSignature = 0x08064b50;
 var zCentralFileHeaderSignature = 0x02014b50;
 var zDigitalSignatureSignature = 0x05054b50;
-//var zEndOfCentralDirSignature = 0x06064b50;
-//var zEndOfCentralDirLocatorSignature = 0x07064b50;
+var zEndOfCentralDirSignature = 0x06064b50;
+var zEndOfCentralDirLocatorSignature = 0x07064b50;
 
 // takes a ByteStream and parses out the local file information
 var ZipLocalFile = function(bstream) {
-    if (typeof bstream !== typeof {} || !bstream.readNumber || typeof bstream.readNumber !== typeof function() {} ) {
+    if (typeof bstream != typeof {} || !bstream.readNumber || typeof bstream.readNumber != typeof function(){}) {
         return null;
     }
 
@@ -100,7 +100,7 @@ var ZipLocalFile = function(bstream) {
     // "This descriptor exists only if bit 3 of the general purpose bit flag is set"
     // But how do you figure out how big the file data is if you don't know the compressedSize
     // from the header?!?
-    if ((this.generalPurpose & bitjs.BIT[3]) !== 0) {
+    if ((this.generalPurpose & bitjs.BIT[3]) != 0) {
         this.crc32 = bstream.readNumber(4);
         this.compressedSize = bstream.readNumber(4);
         this.uncompressedSize = bstream.readNumber(4);
@@ -111,15 +111,17 @@ var ZipLocalFile = function(bstream) {
 ZipLocalFile.prototype.unzip = function() {
 
     // Zip Version 1.0, no compression (store only)
-    if (this.compressionMethod === 0 ) {
-        info("ZIP v" + this.version + ", store only: " + this.filename + " (" + this.compressedSize + " bytes)");
+    if (this.compressionMethod == 0 ) {
+        info("ZIP v"+this.version+", store only: " + this.filename + " (" + this.compressedSize + " bytes)");
         currentBytesUnarchivedInFile = this.compressedSize;
         currentBytesUnarchived += this.compressedSize;
-    } else if (this.compressionMethod === 8) {
-        // version == 20, compression method == 8 (DEFLATE)
+    }
+    // version == 20, compression method == 8 (DEFLATE)
+    else if (this.compressionMethod == 8) {
         info("ZIP v2.0, DEFLATE: " + this.filename + " (" + this.compressedSize + " bytes)");
         this.fileData = inflate(this.fileData, this.uncompressedSize);
-    } else {
+    }
+    else {
         err("UNSUPPORTED VERSION/FORMAT: ZIP v" + this.version + ", compression method=" + this.compressionMethod + ": " + this.filename + " (" + this.compressedSize + " bytes)");
         this.fileData = null;
     }
@@ -142,10 +144,10 @@ var unzip = function(arrayBuffer) {
 
     var bstream = new bitjs.io.ByteStream(arrayBuffer);
     // detect local file header signature or return null
-    if (bstream.peekNumber(4) === zLocalFileHeaderSignature) {
+    if (bstream.peekNumber(4) == zLocalFileHeaderSignature) {
         var localFiles = [];
         // loop until we don't see any more local files
-        while (bstream.peekNumber(4) === zLocalFileHeaderSignature) {
+        while (bstream.peekNumber(4) == zLocalFileHeaderSignature) {
             var oneLocalFile = new ZipLocalFile(bstream);
             // this should strip out directories/folders
             if (oneLocalFile && oneLocalFile.uncompressedSize > 0 && oneLocalFile.fileData) {
@@ -156,14 +158,14 @@ var unzip = function(arrayBuffer) {
         totalFilesInArchive = localFiles.length;
 
         // got all local files, now sort them
-        localFiles.sort(function(a, b) {
+        localFiles.sort(function(a,b) {
             var aname = a.filename.toLowerCase();
             var bname = b.filename.toLowerCase();
             return aname > bname ? 1 : -1;
         });
 
         // archive extra data record
-        if (bstream.peekNumber(4) === zArchiveExtraDataSignature) {
+        if (bstream.peekNumber(4) == zArchiveExtraDataSignature) {
             info(" Found an Archive Extra Data Signature");
 
             // skipping this record for now
@@ -174,11 +176,11 @@ var unzip = function(arrayBuffer) {
 
         // central directory structure
         // TODO: handle the rest of the structures (Zip64 stuff)
-        if (bstream.peekNumber(4) === zCentralFileHeaderSignature) {
+        if (bstream.peekNumber(4) == zCentralFileHeaderSignature) {
             info(" Found a Central File Header");
 
             // read all file headers
-            while (bstream.peekNumber(4) === zCentralFileHeaderSignature) {
+            while (bstream.peekNumber(4) == zCentralFileHeaderSignature) {
                 bstream.readNumber(4); // signature
                 bstream.readNumber(2); // version made by
                 bstream.readNumber(2); // version needed to extract
@@ -204,7 +206,7 @@ var unzip = function(arrayBuffer) {
         }
 
         // digital signature
-        if (bstream.peekNumber(4) === zDigitalSignatureSignature) {
+        if (bstream.peekNumber(4) == zDigitalSignatureSignature) {
             info(" Found a Digital Signature");
 
             bstream.readNumber(4);
@@ -229,68 +231,66 @@ var unzip = function(arrayBuffer) {
             // actually do the unzipping
             localfile.unzip();
 
-            if (localfile.fileData !== null) {
+            if (localfile.fileData != null) {
                 postMessage(new bitjs.archive.UnarchiveExtractEvent(localfile));
                 postProgress();
             }
         }
         postProgress();
         postMessage(new bitjs.archive.UnarchiveFinishEvent());
-    }
-};
+  }
+}
 
 // returns a table of Huffman codes 
 // each entry's index is its code and its value is a JavaScript object 
 // containing {length: 6, symbol: X}
 function getHuffmanCodes(bitLengths) {
-    var len;
     // ensure bitLengths is an array containing at least one element
-    if (typeof bitLengths !== typeof [] || bitLengths.length < 1) {
+    if (typeof bitLengths != typeof [] || bitLengths.length < 1) {
         err("Error! getHuffmanCodes() called with an invalid array");
         return null;
     }
 
     // Reference: http://tools.ietf.org/html/rfc1951#page-8
     var numLengths = bitLengths.length,
-        blCount = [],
+        bl_count = [],
         MAX_BITS = 1;
-
 
     // Step 1: count up how many codes of each length we have
     for (var i = 0; i < numLengths; ++i) {
-        len = bitLengths[i];
+        var length = bitLengths[i];
         // test to ensure each bit length is a positive, non-zero number
-        if (typeof len !== typeof 1 || len < 0) {
-            err("bitLengths contained an invalid number in getHuffmanCodes(): " + len + " of type " + (typeof len));
+        if (typeof length != typeof 1 || length < 0) {
+            err("bitLengths contained an invalid number in getHuffmanCodes(): " + length + " of type " + (typeof length));
             return null;
         }
         // increment the appropriate bitlength count
-        if (blCount[len] === undefined) blCount[len] = 0;
+        if (bl_count[length] == undefined) bl_count[length] = 0;
         // a length of zero means this symbol is not participating in the huffman coding
-        if (len > 0) blCount[len]++;
+        if (length > 0) bl_count[length]++;
 
-        if (len > MAX_BITS) MAX_BITS = len;
+        if (length > MAX_BITS) MAX_BITS = length;
     }
 
     // Step 2: Find the numerical value of the smallest code for each code length
-    var nextCode = [],
+    var next_code = [],
         code = 0;
     for (var bits = 1; bits <= MAX_BITS; ++bits) {
-        len = bits - 1;
+        var length = bits-1;
         // ensure undefined lengths are zero
-        if (blCount[len] === undefined) blCount[len] = 0;
-        code = (code + blCount[bits - 1]) << 1;
-        nextCode[bits] = code;
+        if (bl_count[length] == undefined) bl_count[length] = 0;
+        code = (code + bl_count[bits-1]) << 1;
+        next_code[bits] = code;
     }
 
     // Step 3: Assign numerical values to all codes
     var table = {}, tableLength = 0;
     for (var n = 0; n < numLengths; ++n) {
-        len = bitLengths[n];
-        if (len !== 0) {
-            table[nextCode[len]] = { length: len, symbol: n }; //, bitstring: binaryValueToString(nextCode[len],len) };
+        var len = bitLengths[n];
+        if (len != 0) {
+            table[next_code[len]] = { length: len, symbol: n }; //, bitstring: binaryValueToString(next_code[len],len) };
             tableLength++;
-            nextCode[len]++;
+            next_code[len]++;
         }
     }
     table.maxLength = tableLength;
@@ -318,11 +318,10 @@ function getHuffmanCodes(bitLengths) {
 var fixedHCtoLiteral = null;
 var fixedHCtoDistance = null;
 function getFixedLiteralTable() {
-    var i;
     // create once
     if (!fixedHCtoLiteral) {
         var bitlengths = new Array(288);
-        for (i = 0; i <= 143; ++i) bitlengths[i] = 8;
+        for (var i = 0; i <= 143; ++i) bitlengths[i] = 8;
         for (i = 144; i <= 255; ++i) bitlengths[i] = 9;
         for (i = 256; i <= 279; ++i) bitlengths[i] = 7;
         for (i = 280; i <= 287; ++i) bitlengths[i] = 8;
@@ -336,9 +335,7 @@ function getFixedDistanceTable() {
     // create once
     if (!fixedHCtoDistance) {
         var bitlengths = new Array(32);
-        for (var i = 0; i < 32; ++i) {
-            bitlengths[i] = 5;
-        }
+        for (var i = 0; i < 32; ++i) { bitlengths[i] = 5; }
 
         // get huffman code table
         fixedHCtoDistance = getHuffmanCodes(bitlengths);
@@ -350,17 +347,17 @@ function getFixedDistanceTable() {
 // then return that symbol
 function decodeSymbol(bstream, hcTable) {
     var code = 0, len = 0;
-    // var match = false;
+    var match = false;
 
     // loop until we match
     for (;;) {
         // read in next bit
         var bit = bstream.readBits(1);
-        code = (code << 1) | bit;
+        code = (code<<1) | bit;
         ++len;
 
         // check against Huffman Code table and break if found
-        if (hcTable.hasOwnProperty(code) && hcTable[code].length === len) {
+        if (hcTable.hasOwnProperty(code) && hcTable[code].length == len) {
 
             break;
         }
@@ -375,31 +372,31 @@ function decodeSymbol(bstream, hcTable) {
 
 
 var CodeLengthCodeOrder = [16, 17, 18, 0, 8, 7, 9, 6, 10, 5, 11, 4, 12, 3, 13, 2, 14, 1, 15];
-/*
-     Extra               Extra               Extra
-Code Bits Length(s) Code Bits Lengths   Code Bits Length(s)
----- ---- ------     ---- ---- -------   ---- ---- -------
- 257   0     3       267   1   15,16     277   4   67-82
- 258   0     4       268   1   17,18     278   4   83-98
- 259   0     5       269   2   19-22     279   4   99-114
- 260   0     6       270   2   23-26     280   4  115-130
- 261   0     7       271   2   27-30     281   5  131-162
- 262   0     8       272   2   31-34     282   5  163-194
- 263   0     9       273   3   35-42     283   5  195-226
- 264   0    10       274   3   43-50     284   5  227-257
- 265   1  11,12      275   3   51-58     285   0    258
- 266   1  13,14      276   3   59-66
-*/
+    /*
+         Extra               Extra               Extra
+    Code Bits Length(s) Code Bits Lengths   Code Bits Length(s)
+    ---- ---- ------     ---- ---- -------   ---- ---- -------
+     257   0     3       267   1   15,16     277   4   67-82
+     258   0     4       268   1   17,18     278   4   83-98
+     259   0     5       269   2   19-22     279   4   99-114
+     260   0     6       270   2   23-26     280   4  115-130
+     261   0     7       271   2   27-30     281   5  131-162
+     262   0     8       272   2   31-34     282   5  163-194
+     263   0     9       273   3   35-42     283   5  195-226
+     264   0    10       274   3   43-50     284   5  227-257
+     265   1  11,12      275   3   51-58     285   0    258
+     266   1  13,14      276   3   59-66
 
+    */
 var LengthLookupTable = [
-    [0, 3], [0, 4], [0, 5], [0, 6],
-    [0, 7], [0, 8], [0, 9], [0, 10],
-    [1, 11], [1, 13], [1, 15], [1, 17],
-    [2, 19], [2, 23], [2, 27], [2, 31],
-    [3, 35], [3, 43], [3, 51], [3, 59],
-    [4, 67], [4, 83], [4, 99], [4, 115],
-    [5, 131], [5, 163], [5, 195], [5, 227],
-    [0, 258]
+        [0,3], [0,4], [0,5], [0,6],
+        [0,7], [0,8], [0,9], [0,10],
+        [1,11], [1,13], [1,15], [1,17],
+        [2,19], [2,23], [2,27], [2,31],
+        [3,35], [3,43], [3,51], [3,59],
+        [4,67], [4,83], [4,99], [4,115],
+        [5,131], [5,163], [5,195], [5,227],
+        [0,258]
 ];
     /*
           Extra           Extra                Extra
@@ -417,20 +414,20 @@ var LengthLookupTable = [
        9   3  25-32   19   8   769-1024   29   13 24577-32768
     */
 var DistLookupTable = [
-    [0, 1], [0, 2], [0, 3], [0, 4],
-    [1, 5], [1, 7],
-    [2, 9], [2, 13],
-    [3, 17], [3, 25],
-    [4, 33], [4, 49],
-    [5, 65], [5, 97],
-    [6, 129], [6, 193],
-    [7, 257], [7, 385],
-    [8, 513], [8, 769],
-    [9, 1025], [9, 1537],
-    [10, 2049], [10, 3073],
-    [11, 4097], [11, 6145],
-    [12, 8193], [12, 12289],
-    [13, 16385], [13, 24577]
+    [0,1], [0,2], [0,3], [0,4],
+    [1,5], [1,7],
+    [2,9], [2,13],
+    [3,17], [3,25],
+    [4,33], [4,49],
+    [5,65], [5,97],
+    [6,129], [6,193],
+    [7,257], [7,385],
+    [8,513], [8,769],
+    [9,1025], [9,1537],
+    [10,2049], [10,3073],
+    [11,4097], [11,6145],
+    [12,8193], [12,12289],
+    [13,16385], [13,24577]
 ];
 
 function inflateBlockData(bstream, hcLiteralTable, hcDistanceTable, buffer) {
@@ -449,10 +446,10 @@ function inflateBlockData(bstream, hcLiteralTable, hcDistanceTable, buffer) {
                    stream, and copy length bytes from this
                    position to the output stream.
     */
-    var blockSize = 0;
+    var numSymbols = 0, blockSize = 0;
     for (;;) {
         var symbol = decodeSymbol(bstream, hcLiteralTable);
-        // ++numSymbols;
+        ++numSymbols;
         if (symbol < 256) {
             // copy literal byte to output
             buffer.insertByte(symbol);
@@ -460,11 +457,11 @@ function inflateBlockData(bstream, hcLiteralTable, hcDistanceTable, buffer) {
         }
         else {
             // end of block reached
-            if (symbol === 256) {
+            if (symbol == 256) {
                 break;
             }
             else {
-                var lengthLookup = LengthLookupTable[symbol - 257],
+                var lengthLookup = LengthLookupTable[symbol-257],
                     length = lengthLookup[1] + bstream.readBits(lengthLookup[0]),
                     distLookup = DistLookupTable[decodeSymbol(bstream, hcDistanceTable)],
                     distance = distLookup[1] + bstream.readBits(distLookup[0]);
@@ -482,13 +479,13 @@ function inflateBlockData(bstream, hcLiteralTable, hcDistanceTable, buffer) {
                 // loop for each character
                 var ch = buffer.ptr - distance;
                 blockSize += length;
-                if (length > distance) {
-                    var data = buffer.data;
-                    while (length--) {
-                        buffer.insertByte(data[ch++]);
-                    }
+                if(length > distance) {
+                  var data = buffer.data;
+                  while (length--) {
+                      buffer.insertByte(data[ch++]);
+                  }
                 } else {
-                    buffer.insertBytes(buffer.data.subarray(ch, ch + length));
+                  buffer.insertBytes(buffer.data.subarray(ch, ch + length))
                 }
 
             } // length-distance pair
@@ -507,38 +504,37 @@ function inflate(compressedData, numDecompressedBytes) {
         compressedData.byteOffset,
         compressedData.byteLength);
     var buffer = new bitjs.io.ByteBuffer(numDecompressedBytes);
-    //var numBlocks = 0;
-    var blockSize = 0;
-    var bFinal;
+    var numBlocks = 0, blockSize = 0;
+
     // block format: http://tools.ietf.org/html/rfc1951#page-9
     do {
-        bFinal = bstream.readBits(1);
-        var bType = bstream.readBits(2);
+        var bFinal = bstream.readBits(1),
+            bType = bstream.readBits(2);
         blockSize = 0;
-        // ++numBlocks;
+        ++numBlocks;
         // no compression
-        if (bType === 0) {
+        if (bType == 0) {
             // skip remaining bits in this byte
-            while (bstream.bitPtr !== 0) bstream.readBits(1);
-            var len = bstream.readBits(16);
-            // nlen = bstream.readBits(16);
+            while (bstream.bitPtr != 0) bstream.readBits(1);
+            var len = bstream.readBits(16),
+                nlen = bstream.readBits(16);
             // TODO: check if nlen is the ones-complement of len?
 
-            if (len > 0) buffer.insertBytes(bstream.readBytes(len));
+            if(len > 0) buffer.insertBytes(bstream.readBytes(len));
             blockSize = len;
         }
         // fixed Huffman codes
-        else if (bType === 1) {
+        else if(bType == 1) {
             blockSize = inflateBlockData(bstream, getFixedLiteralTable(), getFixedDistanceTable(), buffer);
         }
         // dynamic Huffman codes
-        else if (bType === 2) {
+        else if(bType == 2) {
             var numLiteralLengthCodes = bstream.readBits(5) + 257;
             var numDistanceCodes = bstream.readBits(5) + 1,
                 numCodeLengthCodes = bstream.readBits(4) + 4;
 
             // populate the array of code length codes (first de-compaction)
-            var codeLengthsCodeLengths = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+            var codeLengthsCodeLengths = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
             for (var i = 0; i < numCodeLengthCodes; ++i) {
                 codeLengthsCodeLengths[ CodeLengthCodeOrder[i] ] = bstream.readBits(3);
             }
@@ -566,25 +562,24 @@ function inflate(compressedData, numDecompressedBytes) {
             var prevCodeLength = 0;
             while (literalCodeLengths.length < numLiteralLengthCodes + numDistanceCodes) {
                 var symbol = decodeSymbol(bstream, codeLengthsCodes);
-                var repeat;
                 if (symbol <= 15) {
                     literalCodeLengths.push(symbol);
                     prevCodeLength = symbol;
                 }
-                else if (symbol === 16) {
-                    repeat = bstream.readBits(2) + 3;
+                else if (symbol == 16) {
+                    var repeat = bstream.readBits(2) + 3;
                     while (repeat--) {
                         literalCodeLengths.push(prevCodeLength);
                     }
                 }
-                else if (symbol === 17) {
-                    repeat = bstream.readBits(3) + 3;
+                else if (symbol == 17) {
+                    var repeat = bstream.readBits(3) + 3;
                     while (repeat--) {
                         literalCodeLengths.push(0);
                     }
                 }
-                else if (symbol === 18) {
-                    repeat = bstream.readBits(7) + 11;
+                else if (symbol == 18) {
+                    var repeat = bstream.readBits(7) + 11;
                     while (repeat--) {
                         literalCodeLengths.push(0);
                     }
@@ -610,7 +605,7 @@ function inflate(compressedData, numDecompressedBytes) {
         currentBytesUnarchived += blockSize;
         postProgress();
 
-    } while (bFinal !== 1);
+    } while (bFinal != 1);
     // we are done reading blocks if the bFinal bit was set for this block
 
     // return the buffer data bytes

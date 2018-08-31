@@ -170,7 +170,7 @@
       <h4 class="panel-title">
         <a class="accordion-toggle" data-toggle="collapse" href="#collapseeight">
           <span class="glyphicon glyphicon-plus"></span>
-           {{_('E-Book converter')}}
+           {{_('External binaries')}}
         </a>
       </h4>
     </div>
@@ -179,9 +179,9 @@
           <div class="form-group">
               <div><input type="radio" name="config_ebookconverter" id="converter0" value="0" {% if content.config_ebookconverter == 0 %}checked{% endif %}>
               <label for="converter0">{{_('No converter')}}</label></div>
-              <div><label><input type="radio" name="config_ebookconverter" id="converter1" value="1" {% if content.config_ebookconverter == 1 %}checked{% endif %}>
+              <div><input type="radio" name="config_ebookconverter" id="converter1" value="1" {% if content.config_ebookconverter == 1 %}checked{% endif %}>
               <label for="converter1">{{_('Use Kindlegen')}}</label></div>
-              <div><label><input type="radio" name="config_ebookconverter" id="converter2" value="2" {% if content.config_ebookconverter == 2 %}checked{% endif %}>
+              <div><input type="radio" name="config_ebookconverter" id="converter2" value="2" {% if content.config_ebookconverter == 2 %}checked{% endif %}>
               <label for="converter2">{{_('Use calibre\'s ebook converter')}}</label></div>
           </div>
           <div data-related="calibre">
@@ -194,6 +194,12 @@
                 <input type="text" class="form-control" id="config_converterpath" name="config_converterpath" value="{% if content.config_converterpath != None %}{{ content.config_converterpath }}{% endif %}" autocomplete="off">
             </div>
           </div>
+          {% if rarfile_support %}
+            <div class="form-group">
+                <label for="config_rarfile_location">{{_('Location of Unrar binary')}}</label>
+                <input type="text" class="form-control" name="config_rarfile_location" id="config_rarfile_location" value="{% if content.config_rarfile_location != None %}{{ content.config_rarfile_location }}{% endif %}" autocomplete="off">
+            </div>
+          {% endif %}
       </div>
     </div>
   </div>
