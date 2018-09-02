@@ -67,6 +67,7 @@ from babel import Locale as LC
 from babel import negotiate_locale
 from babel import __version__ as babelVersion
 from babel.dates import format_date, format_datetime
+from babel.core import UnknownLocaleError
 from functools import wraps
 import base64
 from sqlalchemy.sql import *
@@ -503,7 +504,7 @@ def speaking_language(languages=None):
         try:
             cur_l = LC.parse(lang.lang_code)
             lang.name = cur_l.get_language_name(get_locale())
-        except Exception:
+        except UnknownLocaleError:
             lang.name = _(isoLanguages.get(part3=lang.lang_code).name)
     return languages
 
@@ -675,9 +676,7 @@ def feed_normal_search():
 @app.route("/opds/new")
 @requires_basic_auth_if_no_ano
 def feed_new():
-    off = request.args.get("offset")
-    if not off:
-        off = 0
+    off = request.args.get("offset") or 0
     entries, __, pagination = fill_indexpage((int(off) / (int(config.config_books_per_page)) + 1),
                                                  db.Books, True, [db.Books.timestamp.desc()])
     return render_xml_template('feed.xml', entries=entries, pagination=pagination)
@@ -695,9 +694,7 @@ def feed_discover():
 @app.route("/opds/rated")
 @requires_basic_auth_if_no_ano
 def feed_best_rated():
-    off = request.args.get("offset")
-    if not off:
-        off = 0
+    off = request.args.get("offset") or 0
     entries, __, pagination = fill_indexpage((int(off) / (int(config.config_books_per_page)) + 1),
                     db.Books, db.Books.ratings.any(db.Ratings.rating > 9), [db.Books.timestamp.desc()])
     return render_xml_template('feed.xml', entries=entries, pagination=pagination)
@@ -706,9 +703,7 @@ def feed_best_rated():
 @app.route("/opds/hot")
 @requires_basic_auth_if_no_ano
 def feed_hot():
-    off = request.args.get("offset")
-    if not off:
-        off = 0
+    off = request.args.get("offset") or 0
     all_books = ub.session.query(ub.Downloads, ub.func.count(ub.Downloads.book_id)).order_by(
         ub.func.count(ub.Downloads.book_id).desc()).group_by(ub.Downloads.book_id)
     hot_books = all_books.offset(off).limit(config.config_books_per_page)
@@ -732,9 +727,7 @@ def feed_hot():
 @app.route("/opds/author")
 @requires_basic_auth_if_no_ano
 def feed_authorindex():
-    off = request.args.get("offset")
-    if not off:
-        off = 0
+    off = request.args.get("offset") or 0
     entries = db.session.query(db.Authors).join(db.books_authors_link).join(db.Books).filter(common_filters())\
         .group_by('books_authors_link.author').order_by(db.Authors.sort).limit(config.config_books_per_page).offset(off)
     pagination = Pagination((int(off) / (int(config.config_books_per_page)) + 1), config.config_books_per_page,
@@ -745,9 +738,7 @@ def feed_authorindex():
 @app.route("/opds/author/<int:book_id>")
 @requires_basic_auth_if_no_ano
 def feed_author(book_id):
-    off = request.args.get("offset")
-    if not off:
-        off = 0
+    off = request.args.get("offset") or 0
     entries, __, pagination = fill_indexpage((int(off) / (int(config.config_books_per_page)) + 1),
                     db.Books, db.Books.authors.any(db.Authors.id == book_id), [db.Books.timestamp.desc()])
     return render_xml_template('feed.xml', entries=entries, pagination=pagination)
@@ -756,9 +747,7 @@ def feed_author(book_id):
 @app.route("/opds/category")
 @requires_basic_auth_if_no_ano
 def feed_categoryindex():
-    off = request.args.get("offset")
-    if not off:
-        off = 0
+    off = request.args.get("offset") or 0
     entries = db.session.query(db.Tags).join(db.books_tags_link).join(db.Books).filter(common_filters())\
         .group_by('books_tags_link.tag').order_by(db.Tags.name).offset(off).limit(config.config_books_per_page)
     pagination = Pagination((int(off) / (int(config.config_books_per_page)) + 1), config.config_books_per_page,
@@ -769,9 +758,7 @@ def feed_categoryindex():
 @app.route("/opds/category/<int:book_id>")
 @requires_basic_auth_if_no_ano
 def feed_category(book_id):
-    off = request.args.get("offset")
-    if not off:
-        off = 0
+    off = request.args.get("offset") or 0
     entries, __, pagination = fill_indexpage((int(off) / (int(config.config_books_per_page)) + 1),
                     db.Books, db.Books.tags.any(db.Tags.id == book_id), [db.Books.timestamp.desc()])
     return render_xml_template('feed.xml', entries=entries, pagination=pagination)
@@ -780,9 +767,7 @@ def feed_category(book_id):
 @app.route("/opds/series")
 @requires_basic_auth_if_no_ano
 def feed_seriesindex():
-    off = request.args.get("offset")
-    if not off:
-        off = 0
+    off = request.args.get("offset") or 0
     entries = db.session.query(db.Series).join(db.books_series_link).join(db.Books).filter(common_filters())\
         .group_by('books_series_link.series').order_by(db.Series.sort).offset(off).all()
     pagination = Pagination((int(off) / (int(config.config_books_per_page)) + 1), config.config_books_per_page,
@@ -793,9 +778,7 @@ def feed_seriesindex():
 @app.route("/opds/series/<int:book_id>")
 @requires_basic_auth_if_no_ano
 def feed_series(book_id):
-    off = request.args.get("offset")
-    if not off:
-        off = 0
+    off = request.args.get("offset") or 0
     entries, __, pagination = fill_indexpage((int(off) / (int(config.config_books_per_page)) + 1),
                     db.Books, db.Books.series.any(db.Series.id == book_id), [db.Books.series_index])
     return render_xml_template('feed.xml', entries=entries, pagination=pagination)
@@ -805,9 +788,7 @@ def feed_series(book_id):
 @app.route("/opds/shelfindex/<string:public>")
 @requires_basic_auth_if_no_ano
 def feed_shelfindex(public):
-    off = request.args.get("offset")
-    if not off:
-        off = 0
+    off = request.args.get("offset") or 0
     if public is not 0:
         shelf = g.public_shelfes
         number = len(shelf)
@@ -822,9 +803,7 @@ def feed_shelfindex(public):
 @app.route("/opds/shelf/<int:book_id>")
 @requires_basic_auth_if_no_ano
 def feed_shelf(book_id):
-    off = request.args.get("offset")
-    if not off:
-        off = 0
+    off = request.args.get("offset") or 0
     if current_user.is_anonymous:
         shelf = ub.session.query(ub.Shelf).filter(ub.Shelf.is_public == 1, ub.Shelf.id == book_id).first()
     else:
@@ -918,7 +897,6 @@ def get_email_status_json():
     return response
 
 
-
 # checks if domain is in database (including wildcards)
 # example SELECT * FROM @TABLE WHERE  'abcdefg' LIKE Name;    
 # from https://code.luasoftware.com/tutorials/flask/execute-raw-sql-in-flask-sqlalchemy/
@@ -930,12 +908,11 @@ def check_valid_domain(domain_text):
     result = ub.session.query(ub.Registration).from_statement(text(sql)).all()
     return len(result)
 
+
 ''' POST /post
-{
     name:  'username',  //name of field (column in db)
     pk:    1            //primary key (record id)
-    value: 'superuser!' //new value
-}'''  
+    value: 'superuser!' //new value'''
 @app.route("/ajax/editdomain", methods=['POST'])
 @login_required
 @admin_required
@@ -946,6 +923,7 @@ def edit_domain():
     answer.domain = vals['value'].replace('*','%').replace('?','_').lower()
     ub.session.commit()
     return ""
+
 
 @app.route("/ajax/adddomain", methods=['POST'])
 @login_required
@@ -958,6 +936,7 @@ def add_domain():
         ub.session.add(new_domain)
         ub.session.commit()
     return ""
+
 
 @app.route("/ajax/deletedomain", methods=['POST'])
 @login_required
@@ -973,6 +952,7 @@ def delete_domain():
         ub.session.commit()
     return ""
 
+
 @app.route("/ajax/domainlist")
 @login_required
 @admin_required
@@ -983,6 +963,7 @@ def list_domain():
     response = make_response(js.replace("'",'"'))
     response.headers["Content-Type"] = "application/json; charset=utf-8"
     return response
+
 
 '''
 @app.route("/ajax/getcomic/<int:book_id>/<book_format>/<int:page>")
@@ -1034,6 +1015,7 @@ def get_comic_book(book_id, book_format, page):
                 return make_response(json.dumps(fileData))
         return "", 204
 '''
+
 
 @app.route("/get_authors_json", methods=['GET', 'POST'])
 @login_required_if_no_ano
@@ -1363,7 +1345,7 @@ def language_overview():
         else:
             try:
                 cur_l = LC.parse(current_user.filter_language())
-            except Exception:
+            except UnknownLocaleError:
                 cur_l = None
             languages = db.session.query(db.Languages).filter(
                 db.Languages.lang_code == current_user.filter_language()).all()
@@ -1389,7 +1371,7 @@ def language(name, page):
     try:
         cur_l = LC.parse(name)
         name = cur_l.get_language_name(get_locale())
-    except Exception:
+    except UnknownLocaleError:
         name = _(isoLanguages.get(part3=name).name)
     return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
                                  title=_(u"Language: %(name)s", name=name), page="language")
@@ -1463,7 +1445,7 @@ def show_book(book_id):
             try:
                 entries.languages[index].language_name = LC.parse(entries.languages[index].lang_code).get_language_name(
                     get_locale())
-            except Exception:
+            except UnknownLocaleError:
                 entries.languages[index].language_name = _(
                     isoLanguages.get(part3=entries.languages[index].lang_code).name)
         tmpcc = db.session.query(db.Custom_Columns).filter(db.Custom_Columns.datatype.notin_(db.cc_exceptions)).all()
@@ -2023,9 +2005,7 @@ def render_read_books(page, are_read, as_xml=False):
 @app.route("/opds/readbooks/")
 @login_required_if_no_ano
 def feed_read_books():
-    off = request.args.get("offset")
-    if not off:
-        off = 0
+    off = request.args.get("offset") or 0
     return render_read_books(int(off) / (int(config.config_books_per_page)) + 1, True, True)
 
 
@@ -2039,9 +2019,7 @@ def read_books(page):
 @app.route("/opds/unreadbooks/")
 @login_required_if_no_ano
 def feed_unread_books():
-    off = request.args.get("offset")
-    if not off:
-        off = 0
+    off = request.args.get("offset") or 0
     return render_read_books(int(off) / (int(config.config_books_per_page)) + 1, False, True)
 
 
@@ -2616,7 +2594,7 @@ def profile():
         to_save = request.form.to_dict()
         content.random_books = 0
         if current_user.role_passwd() or current_user.role_admin():
-            if "password" in to_save:
+            if "password" in to_save and to_save["password"]:
                 content.password = generate_password_hash(to_save["password"])
         if "kindle_mail" in to_save and to_save["kindle_mail"] != content.kindle_mail:
             content.kindle_mail = to_save["kindle_mail"]
@@ -2925,7 +2903,7 @@ def configuration_helper(origin):
             reboot_required = True
 
         # Rarfile Content configuration
-        if "config_rarfile_location" in to_save:
+        if "config_rarfile_location" in to_save and to_save['config_rarfile_location'] is not u"":
             check = helper.check_unrar(to_save["config_rarfile_location"].strip())
             if not check[0] :
                 content.config_rarfile_location = to_save["config_rarfile_location"].strip()
@@ -3266,7 +3244,7 @@ def edit_book(book_id):
         try:
             book.languages[indx].language_name = LC.parse(book.languages[indx].lang_code).get_language_name(
                 get_locale())
-        except Exception:
+        except UnknownLocaleError:
             book.languages[indx].language_name = _(isoLanguages.get(part3=book.languages[indx].lang_code).name)
     for authr in book.authors:
         author_names.append(authr.name.replace('|', ','))
@@ -3444,7 +3422,7 @@ def edit_book(book_id):
             for lang in languages:
                 try:
                     lang.name = LC.parse(lang.lang_code).get_language_name(get_locale()).lower()
-                except Exception:
+                except UnknownLocaleError:
                     lang.name = _(isoLanguages.get(part3=lang.lang_code).name).lower()
                 for inp_lang in input_languages:
                     if inp_lang == lang.name:
