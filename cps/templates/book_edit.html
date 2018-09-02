@@ -69,7 +69,7 @@
     </div>
     <div class="form-group">
       <label for="tags">{{_('Tags')}}</label>
-      <input type="text" class="form-control typeahead" name="tags" id="tags" value="{% for tag in book.tags %}{{tag.name.strip()}}, {% endfor %}">
+      <input type="text" class="form-control typeahead" name="tags" id="tags" value="{% for tag in book.tags %}{{tag.name.strip()}}{% if not loop.last %}, {% endif %}{% endfor %}">
     </div>
 
     <div class="form-group">
@@ -102,7 +102,7 @@
     </div>
     <div class="form-group">
       <label for="languages">{{_('Language')}}</label>
-      <input type="text" class="form-control typeahead" name="languages" id="languages" value="{% for language in book.languages %}{{language.language_name.strip()}}{% endfor %}">
+      <input type="text" class="form-control typeahead" name="languages" id="languages" value="{% for language in book.languages %}{{language.language_name.strip()}}{% if not loop.last %}, {% endif %}{% endfor %}">
     </div>
 
       {% if cc|length > 0 %}
