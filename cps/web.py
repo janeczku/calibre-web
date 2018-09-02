@@ -3415,6 +3415,12 @@ def edit_book(book_id):
             else:
                 book.pubdate = db.Books.DEFAULT_PUBDATE
 
+            '''if len(book.publishers):
+                if to_save["publisher"] != book.publishers[0].name:
+                    modify_database_object(to_save["publisher"], book.publishers, db.Publishers, db.session, 'series')
+            else:
+                modify_database_object(to_save["publisher"], book.publishers, db.Publishers, db.session, 'series')'''
+
             # retranslate displayed text to language codes
             languages = db.session.query(db.Languages).all()
             input_l = []
@@ -3524,12 +3530,19 @@ def edit_book(book_id):
             db.session.commit()
             if config.config_use_google_drive:
                 gdriveutils.updateGdriveCalibreFromLocal()
-            author_names = []
-            for authr in book.authors:
-                author_names.append(authr.name)
             if "detail_view" in to_save:
                 return redirect(url_for('show_book', book_id=book.id))
             else:
+                for indx in range(0, len(book.languages)):
+                    try:
+                        book.languages[indx].language_name = LC.parse(book.languages[indx].lang_code).get_language_name(
+                            get_locale())
+                    except UnknownLocaleError:
+                        book.languages[indx].language_name = _(
+                            isoLanguages.get(part3=book.languages[indx].lang_code).name)
+                author_names = []
+                for authr in book.authors:
+                    author_names.append(authr.name)
                 return render_title_template('book_edit.html', book=book, authors=author_names, cc=cc,
                                              title=_(u"edit metadata"), page="editbook")
         else:

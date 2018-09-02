@@ -71,7 +71,6 @@
       <label for="tags">{{_('Tags')}}</label>
       <input type="text" class="form-control typeahead" name="tags" id="tags" value="{% for tag in book.tags %}{{tag.name.strip()}}{% if not loop.last %}, {% endif %}{% endfor %}">
     </div>
-
     <div class="form-group">
       <label for="series">{{_('Series')}}</label>
       <input type="text" class="form-control typeahead" name="series" id="series" value="{% if book.series %}{{book.series[0].name}}{% endif %}">
@@ -101,10 +100,13 @@
       </div>
     </div>
     <div class="form-group">
+      <label for="publisher">{{_('Publisher')}}</label>
+      <input type="text" class="form-control typeahead" name="publisher" id="publisher" value="{% if book.publishers|length > 0 %}{{book.publishers[0].name}}{% endif %}"  disabled>
+    </div>
+    <div class="form-group">
       <label for="languages">{{_('Language')}}</label>
       <input type="text" class="form-control typeahead" name="languages" id="languages" value="{% for language in book.languages %}{{language.language_name.strip()}}{% if not loop.last %}, {% endif %}{% endfor %}">
     </div>
-
       {% if cc|length > 0 %}
         {% for c in cc %}
           <div class="form-group">
