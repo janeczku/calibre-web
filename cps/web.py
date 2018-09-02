@@ -3263,8 +3263,7 @@ def edit_book(book_id):
         except Exception:
             app.logger.warning(file.format.lower() + ' already removed from list.')
 
-    app.logger.debug('Allowed conversion formats:')
-    app.logger.debug(allowed_conversion_formats)
+    app.logger.debug('Allowed conversion formats: '+ ', '.join(allowed_conversion_formats))
 
     # Show form
     if request.method != 'POST':
@@ -3505,6 +3504,7 @@ def edit_book(book_id):
                                 if new_cc is None:
                                     new_cc = cc_class(value=to_save[cc_string].strip())
                                     db.session.add(new_cc)
+                                    db.session.flush()
                                     new_cc = db.session.query(cc_class).filter(
                                         cc_class.value == to_save[cc_string].strip()).first()
                                 # add cc value to book
