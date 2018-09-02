@@ -303,27 +303,29 @@ class WorkerThread(threading.Thread):
         if (check < 2 and web.ub.config.config_ebookconverter == 1) or \
             (check == 0 and web.ub.config.config_ebookconverter == 2):
             cur_book = web.db.session.query(web.db.Books).filter(web.db.Books.id == bookid).first()
-            new_format = web.db.Data(name=cur_book.data[0].name,
-                                     book_format=self.queue[self.current]['settings']['new_book_format'],
-                                     book=bookid, uncompressed_size=os.path.getsize(file_path + format_new_ext))
-            cur_book.data.append(new_format)
-            web.db.session.commit()
-            self.queue[self.current]['path'] = cur_book.path
-            self.queue[self.current]['title'] = cur_book.title
-            if web.ub.config.config_use_google_drive:
-                os.remove(file_path + format_old_ext)
-            self.queue[self.current]['status'] = STAT_FINISH_SUCCESS
-            self.UIqueue[self.current]['status'] = _('Finished')
-            self.UIqueue[self.current]['progress'] = "100 %"
-            self.UIqueue[self.current]['runtime'] = self._formatRuntime(
-                datetime.now() - self.queue[self.current]['starttime'])
-            return file_path + format_new_ext
-        else:
-            web.app.logger.info("ebook converter failed with error while converting book")
-            if not error_message:
-                error_message = 'Ebook converter failed with unknown error'
-            self._handleError(error_message)
-            return
+            if os.path.isfile(file_path + format_new_ext):
+                new_format = web.db.Data(name=cur_book.data[0].name,
+                                         book_format=self.queue[self.current]['settings']['new_book_format'],
+                                         book=bookid, uncompressed_size=os.path.getsize(file_path + format_new_ext))
+                cur_book.data.append(new_format)
+                web.db.session.commit()
+                self.queue[self.current]['path'] = cur_book.path
+                self.queue[self.current]['title'] = cur_book.title
+                if web.ub.config.config_use_google_drive:
+                    os.remove(file_path + format_old_ext)
+                self.queue[self.current]['status'] = STAT_FINISH_SUCCESS
+                self.UIqueue[self.current]['status'] = _('Finished')
+                self.UIqueue[self.current]['progress'] = "100 %"
+                self.UIqueue[self.current]['runtime'] = self._formatRuntime(
+                    datetime.now() - self.queue[self.current]['starttime'])
+                return file_path + format_new_ext
+            else:
+                error_message = format_new_ext.upper() + ' format not found on disk'
+        web.app.logger.info("ebook converter failed with error while converting book")
+        if not error_message:
+            error_message = 'Ebook converter failed with unknown error'
+        self._handleError(error_message)
+        return
 
 
     def add_convert(self, file_path, bookid, user_name, typ, settings, kindle_mail=None):
