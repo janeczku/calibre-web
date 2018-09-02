@@ -403,15 +403,14 @@ class WorkerThread(threading.Thread):
         msg['To'] = obj['recipent']
 
         use_ssl = int(obj['settings'].get('mail_use_ssl', 0))
-
-        # convert MIME message to string
-        fp = StringIO()
-        gen = Generator(fp, mangle_from_=False)
-        gen.flatten(msg)
-        msg = fp.getvalue()
-
-        # send email
         try:
+            # convert MIME message to string
+            fp = StringIO()
+            gen = Generator(fp, mangle_from_=False)
+            gen.flatten(msg)
+            msg = fp.getvalue()
+
+            # send email
             timeout = 600  # set timeout to 5mins
 
             org_stderr = sys.stderr
@@ -441,9 +440,17 @@ class WorkerThread(threading.Thread):
 
             sys.stderr = org_stderr
 
-        except (socket.error, smtplib.SMTPRecipientsRefused, smtplib.SMTPException) as e:
-            self._handleError(e)
+        except (MemoryError) as e:
+            self._handleError(u'Error sending email: ' + e.message)
             return None
+        except (smtplib.SMTPException) as e:
+            self._handleError(u'Error sending email: ' + e.smtp_error.replace("\n",'. '))
+            return None
+        except (socket.error) as e:
+            self._handleError(u'Error sending email: ' + e.strerror)
+            return None
+
+
 
     def _formatRuntime(self, runtime):
         self.UIqueue[self.current]['rt'] = runtime.total_seconds()
