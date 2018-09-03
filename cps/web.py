@@ -1780,6 +1780,10 @@ def search():
     term = request.args.get("query").strip().lower()
     if term:
         entries = get_search_results(term)
+        ids = list()
+        for element in entries:
+            ids.append(element.id)
+        ub.searched_ids[current_user.id] = ids
         return render_title_template('search.html', searchterm=term, entries=entries, page="search")
     else:
         return render_title_template('search.html', searchterm="", page="search")
