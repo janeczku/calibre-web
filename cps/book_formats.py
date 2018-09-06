@@ -5,6 +5,12 @@ import logging
 import uploader
 import os
 from flask_babel import gettext as _
+import comic
+
+try:
+    from lxml.etree import LXML_VERSION as lxmlversion
+except ImportError:
+    lxmlversion = None
 
 __author__ = 'lemmsh'
 
@@ -14,7 +20,7 @@ try:
     from wand.image import Image
     from wand import version as ImageVersion
     use_generic_pdf_cover = False
-except ImportError as e:
+except (ImportError, RuntimeError) as e:
     logger.warning('cannot import Image, generating pdf covers for pdf uploads will not work: %s', e)
     use_generic_pdf_cover = True
 try:
@@ -49,8 +55,11 @@ def process(tmp_file_path, original_file_name, original_file_extension):
             meta = epub.get_epub_info(tmp_file_path, original_file_name, original_file_extension)
         if ".FB2" == original_file_extension.upper() and use_fb2_meta is True:
             meta = fb2.get_fb2_info(tmp_file_path, original_file_extension)
-    except Exception as e:
-        logger.warning('cannot parse metadata, using default: %s', e)
+        if original_file_extension.upper() in ['.CBZ', '.CBT']:
+            meta = comic.get_comic_info(tmp_file_path, original_file_name, original_file_extension)
+
+    except Exception as ex:
+        logger.warning('cannot parse metadata, using default: %s', ex)
 
     if meta and meta.title.strip() and meta.author.strip():
         return meta
@@ -111,13 +120,18 @@ def pdf_preview(tmp_file_path, tmp_dir):
             img.save(filename=os.path.join(tmp_dir, cover_file_name))
         return cover_file_name
 
+
 def get_versions():
     if not use_generic_pdf_cover:
         IVersion=ImageVersion.MAGICK_VERSION
     else:
-        IVersion=_(u'not installed')
+        IVersion = _(u'not installed')
     if use_pdf_meta:
-        PVersion=PyPdfVersion
+        PVersion='v'+PyPdfVersion
     else:
         PVersion=_(u'not installed')
-    return {'ImageVersion':IVersion,'PyPdfVersion':PVersion}
+    if lxmlversion:
+        XVersion = 'v'+'.'.join(map(str, lxmlversion))
+    else:
+        XVersion = _(u'not installed')
+    return {'Image Magick': IVersion, 'PyPdf': PVersion, 'lxml':XVersion}

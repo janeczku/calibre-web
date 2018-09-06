@@ -3,91 +3,132 @@
 <div class="discover">
   <h2>{{title}}</h2>
   <form role="form" method="POST" autocomplete="off">
+<div class="panel-group">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h4 class="panel-title">
+        <a class="accordion-toggle" data-toggle="collapse" href="#collapseOne">
+          <span class="glyphicon glyphicon-minus"></span>
+          {{_('Library Configuration')}}
+        </a>
+      </h4>
+    </div>
+    <div id="collapseOne" class="panel-collapse collapse in">
+      <div class="panel-body">
     <div class="form-group required">
       <label for="config_calibre_dir">{{_('Location of Calibre database')}}</label>
       <input type="text" class="form-control" name="config_calibre_dir" id="config_calibre_dir" value="{% if content.config_calibre_dir != None %}{{ content.config_calibre_dir }}{% endif %}" autocomplete="off">
     </div>
-    {% if gdrive %}
     <div class="form-group required">
       <input type="checkbox" id="config_use_google_drive" name="config_use_google_drive" data-control="gdrive_settings" {% if content.config_use_google_drive %}checked{% endif %} >
-      <label for="config_use_google_drive">{{_('Use google drive?')}}</label>
+      <label for="config_use_google_drive">{{_('Use Google Drive?')}}</label>
     </div>
     <div data-related="gdrive_settings">
-      <div class="form-group required">
-        <label for="config_google_drive_client_id">{{_('Client id')}}</label>
-        <input type="text" class="form-control" name="config_google_drive_client_id" id="config_google_drive_client_id" value="{% if content.config_google_drive_client_id %}{{content.config_google_drive_client_id}}{% endif %}" autocomplete="off">
-      </div>
-      <div class="form-group required">
-        <label for="config_google_drive_client_secret">{{_('Client secret')}}</label>
-        <input type="text" class="form-control" name="config_google_drive_client_secret" id="config_google_drive_client_secret" value="{% if content.config_google_drive_client_secret %}{{content.config_google_drive_client_secret}}{% endif %}" autocomplete="off">
-      </div>
-      <div class="form-group required">
-        <label for="config_google_drive_calibre_url_base">{{_('Calibre Base URL')}}</label>
-        <input type="text" class="form-control" name="config_google_drive_calibre_url_base" id="config_google_drive_calibre_url_base" value="{% if content.config_google_drive_calibre_url_base %}{{content.config_google_drive_calibre_url_base}}{% endif %}" autocomplete="off">
-      </div>
-      <div class="form-group required">
-        <label for="config_google_drive_folder">{{_('Google drive Calibre folder')}}</label>
-        <input type="text" class="form-control" name="config_google_drive_folder" id="config_google_drive_folder" value="{% if content.config_google_drive_folder %}{{content.config_google_drive_folder}}{% endif %}" autocomplete="off" required>
-      </div>
-      {% if show_authenticate_google_drive %}
-        <div class="form-group required">
-          <a href="{{ url_for('authenticate_google_drive') }}" class="btn btn-primary">Authenticate Google Drive</a>
+      {% if gdriveError %}
+        <div class="form-group">
+          <label>
+            {{_('Google Drive config problem')}}: {{ gdriveError }}
+          </label>
         </div>
       {% else %}
-        {% if content.config_google_drive_watch_changes_response %}
-        <label for="config_google_drive_watch_changes_response">{{_('Metadata Watch Channel ID')}}</label>
-        <div class="form-group input-group required">
-          <input type="text" class="form-control" name="config_google_drive_watch_changes_response" id="config_google_drive_watch_changes_response" value="{{ content.config_google_drive_watch_changes_response['id'] }} expires on {{ content.config_google_drive_watch_changes_response['expiration'] |  strftime }}" autocomplete="off" disabled="">
-          <span class="input-group-btn">
-          <a href="{{ url_for('revoke_watch_gdrive') }}" class="btn btn-primary">Revoke</a>
-          </span>
-          {% else %}
-          <a href="{{ url_for('watch_gdrive') }}" class="btn btn-primary">Enable watch of metadata.db</a>
+        {% if show_authenticate_google_drive and g.user.is_authenticated %}
+          <div class="form-group required">
+            <a href="{{ url_for('authenticate_google_drive') }}" class="btn btn-primary">{{_('Authenticate Google Drive')}}</a>
+          </div>
+        {% else %}
+          {% if show_authenticate_google_drive and not g.user.is_authenticated %}
+          <div >{{_('Please finish Google Drive setup after login')}}</div>
           {% endif %}
-        </div>
+          {% if not show_authenticate_google_drive %}
+          <div class="form-group required">
+            <label for="config_google_drive_folder">{{_('Google Drive Calibre folder')}}</label>
+              <select name="config_google_drive_folder" id="config_google_drive_folder" class="form-control">
+                {%  for gdrivefolder in gdrivefolders %}
+                <option value="{{ gdrivefolder.title }}" {% if gdrivefolder.title == content.config_google_drive_folder %}selected{% endif %}>{{ gdrivefolder.title }}</option>
+                {% endfor %}
+              </select>
+          </div>
+          {% if content.config_google_drive_watch_changes_response %}
+            <label for="config_google_drive_watch_changes_response">{{_('Metadata Watch Channel ID')}}</label>
+            <div class="form-group input-group required">
+              <input type="text" class="form-control" name="config_google_drive_watch_changes_response" id="config_google_drive_watch_changes_response" value="{{ content.config_google_drive_watch_changes_response['id'] }} expires on {{ content.config_google_drive_watch_changes_response['expiration'] |  strftime }}" autocomplete="off" disabled="">
+              <span class="input-group-btn"><a href="{{ url_for('revoke_watch_gdrive') }}" class="btn btn-primary">{{_('Revoke')}}</a></span>
+            </div>
+          {% else %}
+            <a href="{{ url_for('watch_gdrive') }}" class="btn btn-primary">Enable watch of metadata.db</a>
+          {% endif %}
+          {% endif %}
         {% endif %}
+      {% endif %}
     </div>
-    {% endif %}
-    <div class="form-group">
-      <label for="config_port">{{_('Server Port')}}</label>
-      <input type="number" min="1" max="65535" class="form-control" name="config_port" id="config_port" value="{% if content.config_port != None %}{{ content.config_port }}{% endif %}" autocomplete="off" required>
+      </div>
     </div>
-    <div class="form-group">
-      <label for="config_calibre_web_title">{{_('Title')}}</label>
-      <input type="text" class="form-control" name="config_calibre_web_title" id="config_calibre_web_title" value="{% if content.config_calibre_web_title != None %}{{ content.config_calibre_web_title }}{% endif %}" autocomplete="off" required>
-    </div>    
-    <div class="form-group">
-      <label for="config_books_per_page">{{_('Books per page')}}</label>
-      <input type="number" min="1" max="200" class="form-control" name="config_books_per_page" id="config_books_per_page" value="{% if content.config_books_per_page != None %}{{ content.config_books_per_page }}{% endif %}" autocomplete="off">
+  </div>
+
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h4 class="panel-title">
+        <a class="accordion-toggle" data-toggle="collapse" href="#collapsetwo">
+          <span class="glyphicon glyphicon-plus"></span>
+          {{_('Server Configuration')}}
+        </a>
+      </h4>
     </div>
-    <div class="form-group">
-      <label for="config_random_books">{{_('No. of random books to show')}}</label>
-      <input type="number" min="1" max="30" class="form-control" name="config_random_books" id="config_random_books" value="{% if content.config_random_books != None %}{{ content.config_random_books }}{% endif %}" autocomplete="off">
+    <div id="collapsetwo" class="panel-collapse collapse">
+      <div class="panel-body">
+                <div class="form-group">
+          <label for="config_port">{{_('Server Port')}}</label>
+          <input type="number" min="1" max="65535" class="form-control" name="config_port" id="config_port" value="{% if content.config_port != None %}{{ content.config_port }}{% endif %}" autocomplete="off" required>
+        </div>
+        <div class="form-group">
+          <label for="config_certfile">{{_('SSL certfile location (leave it empty for non-SSL Servers)')}}</label>
+          <input type="text" class="form-control" name="config_certfile" id="config_certfile" value="{% if content.config_certfile != None %}{{ content.config_certfile }}{% endif %}" autocomplete="off">
+        </div>
+        <div class="form-group">
+          <label for="config_keyfile">{{_('SSL Keyfile location (leave it empty for non-SSL Servers)')}}</label>
+          <input type="text" class="form-control" name="config_keyfile" id="config_keyfile" value="{% if content.config_keyfile != None %}{{ content.config_keyfile }}{% endif %}" autocomplete="off">
+        </div>
+      </div>
     </div>
-    <div class="form-group">
-      <label for="config_columns_to_ignore">{{_('Regular expression for ignoring columns')}}</label>
-      <input type="text" class="form-control" name="config_columns_to_ignore" id="config_columns_to_ignore" value="{% if content.config_columns_to_ignore != None %}{{ content.config_columns_to_ignore }}{% endif %}" autocomplete="off">
+  </div>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h4 class="panel-title">
+        <a class="accordion-toggle" data-toggle="collapse" href="#collapsethree">
+          <span class="glyphicon glyphicon-plus"></span>
+          {{_('Logfile Configuration')}}
+        </a>
+      </h4>
     </div>
-    <div class="form-group">
-      <label for="config_title_regex">{{_('Regular expression for title sorting')}}</label>
-      <input type="text" class="form-control" name="config_title_regex" id="config_title_regex" value="{% if content.config_title_regex != None %}{{ content.config_title_regex }}{% endif %}" autocomplete="off">
+    <div id="collapsethree" class="panel-collapse collapse">
+      <div class="panel-body">
+        <div class="form-group">
+        <label for="config_log_level">{{_('Log Level')}}</label>
+            <select name="config_log_level" id="config_log_level" class="form-control">
+                    <option value="10" {% if content.config_log_level == 10 %}selected{% endif %}>DEBUG</option>
+                    <option value="20" {% if content.config_log_level == 20 or content.config_log_level == None %}selected{% endif %}>INFO</option>
+                    <option value="30" {% if content.config_log_level == 30 %}selected{% endif %}>WARNING</option>
+                    <option value="40" {% if content.config_log_level == 40 %}selected{% endif %}>ERROR</option>
+            </select>
+        </div>
+        <div class="form-group">
+          <label for="config_logfile">{{_('Location and name of logfile (calibre-web.log for no entry)')}}</label>
+          <input type="text" class="form-control" name="config_logfile" id="config_logfile" value="{% if content.config_logfile != None %}{{ content.config_logfile }}{% endif %}" autocomplete="off">
+        </div>
+      </div>
     </div>
-    <div class="form-group">
-      <label for="config_mature_content_tags">{{_('Tags for Mature Content')}}</label>
-      <input type="text" class="form-control" name="config_mature_content_tags" id="config_mature_content_tags"
-             value="{% if content.config_mature_content_tags != None%}{{ content.config_mature_content_tags }}{% endif %}"
-             autocomplete="off"
-      >
+  </div>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h4 class="panel-title">
+        <a class="accordion-toggle" data-toggle="collapse" href="#collapsefive">
+          <span class="glyphicon glyphicon-plus"></span>
+          {{_('Feature Configuration')}}
+        </a>
+      </h4>
     </div>
-    <div class="form-group">
-    <label for="config_log_level">{{_('Log Level')}}</label>
-        <select name="config_log_level" id="config_log_level" class="form-control">
-                <option value="10" {% if content.config_log_level == 10 %}selected{% endif %}>DEBUG</option>
-                <option value="20" {% if content.config_log_level == 20 or content.config_log_level == None %}selected{% endif %}>INFO</option>
-                <option value="30" {% if content.config_log_level == 30 %}selected{% endif %}>WARNING</option>
-                <option value="40" {% if content.config_log_level == 40 %}selected{% endif %}>ERROR</option>
-        </select>
-    </div>
+    <div id="collapsefive" class="panel-collapse collapse">
+      <div class="panel-body">
     <div class="form-group">
         <input type="checkbox" id="config_uploading" name="config_uploading" {% if content.config_uploading %}checked{% endif %}>
         <label for="config_uploading">{{_('Enable uploading')}}</label>
@@ -121,36 +162,51 @@
       </div>
     </div>
     {% endif %}
+      </div>
+    </div>
+  </div>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h4 class="panel-title">
+        <a class="accordion-toggle" data-toggle="collapse" href="#collapseeight">
+          <span class="glyphicon glyphicon-plus"></span>
+           {{_('External binaries')}}
+        </a>
+      </h4>
+    </div>
+    <div id="collapseeight" class="panel-collapse collapse">
+      <div class="panel-body">
+          <div class="form-group">
+              <div><input type="radio" name="config_ebookconverter" id="converter0" value="0" {% if content.config_ebookconverter == 0 %}checked{% endif %}>
+              <label for="converter0">{{_('No converter')}}</label></div>
+              <div><input type="radio" name="config_ebookconverter" id="converter1" value="1" {% if content.config_ebookconverter == 1 %}checked{% endif %}>
+              <label for="converter1">{{_('Use Kindlegen')}}</label></div>
+              <div><input type="radio" name="config_ebookconverter" id="converter2" value="2" {% if content.config_ebookconverter == 2 %}checked{% endif %}>
+              <label for="converter2">{{_('Use calibre\'s ebook converter')}}</label></div>
+          </div>
+          <div data-related="calibre">
+            <div class="form-group">
+                <label for="config_calibre">{{_('E-Book converter settings')}}</label>
+                <input type="text" class="form-control" id="config_calibre" name="config_calibre" value="{% if content.config_calibre != None %}{{ content.config_calibre }}{% endif %}" autocomplete="off">
+            </div>
+            <div class="form-group">
+                <label for="config_calibre">{{_('Path to convertertool')}}</label>
+                <input type="text" class="form-control" id="config_converterpath" name="config_converterpath" value="{% if content.config_converterpath != None %}{{ content.config_converterpath }}{% endif %}" autocomplete="off">
+            </div>
+          </div>
+          {% if rarfile_support %}
+            <div class="form-group">
+                <label for="config_rarfile_location">{{_('Location of Unrar binary')}}</label>
+                <input type="text" class="form-control" name="config_rarfile_location" id="config_rarfile_location" value="{% if content.config_rarfile_location != None %}{{ content.config_rarfile_location }}{% endif %}" autocomplete="off">
+            </div>
+          {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
 
-    <h2>{{_('Default Settings for new users')}}</h2>
-    <div class="form-group">
-      <input type="checkbox" name="admin_role" id="admin_role" {% if content.role_admin() %}checked{% endif %}>
-      <label for="admin_role">{{_('Admin user')}}</label>
-    </div>
-    <div class="form-group">
-      <input type="checkbox" name="download_role" id="download_role" {% if content.role_download() %}checked{% endif %}>
-      <label for="download_role">{{_('Allow Downloads')}}</label>
-    </div>
-    <div class="form-group">
-      <input type="checkbox" name="upload_role" id="upload_role" {% if content.role_upload() %}checked{% endif %}>
-      <label for="upload_role">{{_('Allow Uploads')}}</label>
-    </div>
-    <div class="form-group">
-      <input type="checkbox" name="edit_role" id="edit_role" {% if content.role_edit() %}checked{% endif %}>
-      <label for="edit_role">{{_('Allow Edit')}}</label>
-    </div>
-    <div class="form-group">
-      <input type="checkbox" name="delete_role" id="delete_role" {% if content.role_delete_books() %}checked{% endif %}>
-      <label for="delete_role">{{_('Allow Delete books')}}</label>
-    </div>
-    <div class="form-group">
-      <input type="checkbox" name="passwd_role" id="passwd_role" {% if content.role_passwd() %}checked{% endif %}>
-      <label for="passwd_role">{{_('Allow Changing Password')}}</label>
-    </div>
-    <div class="form-group">
-      <input type="checkbox" name="edit_shelf_role" id="edit_shelf_role" {% if content.role_edit_shelfs() %}checked{% endif %}>
-      <label for="edit_shelf_role">{{_('Allow Editing Public Shelfs')}}</label>
-    </div>
+
+    <div class="col-sm-12">
     <button type="submit" class="btn btn-default">{{_('Submit')}}</button>
     {% if not origin %}
       <a href="{{ url_for('admin') }}" class="btn btn-default">{{_('Back')}}</a>
@@ -158,6 +214,7 @@
     {% if success %}
       <a href="{{ url_for('login') }}" class="btn btn-default">{{_('Login')}}</a>
     {% endif %}
+    </div>
   </form>
 </div>
 {% endblock %}
@@ -165,6 +222,11 @@
 <script type="text/javascript">
     $(document).on('change', '#config_use_google_drive', function() {
         $('#config_google_drive_folder').prop('required', $(this).prop('checked'));
+    });
+    $('.collapse').on('shown.bs.collapse', function(){
+        $(this).parent().find(".glyphicon-plus").removeClass("glyphicon-plus").addClass("glyphicon-minus");
+    }).on('hidden.bs.collapse', function(){
+    $(this).parent().find(".glyphicon-minus").removeClass("glyphicon-minus").addClass("glyphicon-plus");
     });
 </script>
 {% endblock %}

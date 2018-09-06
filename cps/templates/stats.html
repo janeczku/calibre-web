@@ -2,7 +2,7 @@
 {% block body %}
   <h3>{{_('About')}}</h3>
 <p>{{instance}} powered by 
-<a href="https://github.com/janeczku/calibre-web" title="Calibre-Web">Calibre Web</a>.
+<a href="https://github.com/janeczku/calibre-web" title="Calibre-Web">Calibre-Web</a>.
 </p>  
   <h3>{{_('Calibre library statistics')}}</h3>
 <table id="stats" class="table">
@@ -34,62 +34,12 @@
     </tr>
   </thead>
   <tbody>
+  {% for library,version in versions.items() %}
     <tr>
-      <th>Python</th>
-      <td>{{versions['PythonVersion']}}</td>
+      <th>{{library}}</th>
+      <td>{{version}}</td>
     </tr>
-    <tr>
-      <th>Kindlegen</th>
-      <td>{{versions['KindlegenVersion']}}</td>
-    </tr>
-    <tr>
-      <th>ImageMagick</th>
-      <td>{{versions['ImageVersion']}}</td>
-    </tr>
-    <tr>
-      <th>PyPDF2</th>
-      <td>v{{versions['PyPdfVersion']}}</td>
-    </tr>
-    <tr>
-      <th>Babel</th>
-      <td>v{{versions['babel']}}</td>
-    </tr>
-    <tr>
-      <th>SqlAlchemy</th>
-      <td>v{{versions['sqlalchemy']}}</td>
-    </tr>
-    <tr>
-      <th>Flask</th>
-      <td>v{{versions['flask']}}</td>
-    </tr>
-    <tr>
-      <th>Flask Login</th>
-      <td>v{{versions['flasklogin']}}</td>
-    </tr>
-    <tr>
-      <th>Flask Principal</th>
-      <td>v{{versions['flask_principal']}}</td>
-    </tr>
-    <tr>
-      <th>Tornado web server</th>
-      <td>v{{versions['tornado']}}</td>
-    </tr>
-    <tr>
-      <th>ISO639 Languages</th>
-      <td>v{{versions['iso639']}}</td>
-    </tr>
-    <tr>
-      <th>Requests</th>
-      <td>v{{versions['requests']}}</td>
-    </tr>
-    <tr>
-      <th>SQlite</th>
-      <td>v{{versions['sqlite']}}</td>
-    </tr>
-    <tr>
-      <th>Pysqlite</th>
-      <td>v{{versions['pysqlite']}}</td>
-    </tr>
+  {% endfor %}
   </tbody>
 </table>
 {% endblock %}

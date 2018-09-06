@@ -29,6 +29,40 @@ if ($("#description").length) {
     }
 }
 
+if (!Modernizr.inputtypes.date) {
+    $("#Publishstart").datepicker({
+        format: "yyyy-mm-dd",
+        language: language
+    }).on("change", function () {
+        // Show localized date over top of the standard YYYY-MM-DD date
+        var pubDate;
+        var results = /(\d{4})[-\/\\](\d{1,2})[-\/\\](\d{1,2})/.exec(this.value); // YYYY-MM-DD
+        if (results) {
+            pubDate = new Date(results[1], parseInt(results[2], 10) - 1, results[3]) || new Date(this.value);
+            $("#fake_Publishstart")
+                .val(pubDate.toLocaleDateString(language))
+                .removeClass("hidden");
+        }
+    }).trigger("change");
+}
+
+if (!Modernizr.inputtypes.date) {
+    $("#Publishend").datepicker({
+        format: "yyyy-mm-dd",
+        language: language
+    }).on("change", function () {
+        // Show localized date over top of the standard YYYY-MM-DD date
+        var pubDate;
+        var results = /(\d{4})[-\/\\](\d{1,2})[-\/\\](\d{1,2})/.exec(this.value); // YYYY-MM-DD
+        if (results) {
+            pubDate = new Date(results[1], parseInt(results[2], 10) - 1, results[3]) || new Date(this.value);
+            $("#fake_Publishend")
+                .val(pubDate.toLocaleDateString(language))
+                .removeClass("hidden");
+        }
+    }).trigger("change");
+}
+
 /*
 Takes a prefix, query typeahead callback, Bloodhound typeahead adapter
  and returns the completions it gets from the bloodhound engine prefixed.
@@ -46,8 +80,7 @@ function prefixedSource(prefix, query, cb, bhAdapter) {
 
 function getPath() {
     var jsFileLocation = $("script[src*=edit_books]").attr("src");  // the js file path
-    jsFileLocation = jsFileLocation.replace("/static/js/edit_books.js", "");   // the js folder path
-    return jsFileLocation;
+    return jsFileLocation.substr(0, jsFileLocation.search("/static/js/edit_books.js"));   // the js folder path
 }
 
 var authors = new Bloodhound({
@@ -213,3 +246,12 @@ $("#btn-upload-format").on("change", function () {
     } // Remove c:\fake at beginning from localhost chrome
     $("#upload-format").html(filename);
 });
+
+$("#btn-upload-cover").on("change", function () {
+    var filename = $(this).val();
+    if (filename.substring(3, 11) === "fakepath") {
+        filename = filename.substring(12);
+    } // Remove c:\fake at beginning from localhost chrome
+    $("#upload-cover").html(filename);
+});
+

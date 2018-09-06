@@ -1,6 +1,6 @@
 # About
 
-Calibre Web is a web app providing a clean interface for browsing, reading and downloading eBooks using an existing [Calibre](https://calibre-ebook.com) database.
+Calibre-Web is a web app providing a clean interface for browsing, reading and downloading eBooks using an existing [Calibre](https://calibre-ebook.com) database.
 
 *This software is a fork of [library](https://github.com/mutschler/calibreserver) and licensed under the GPL v3 License.*
 
@@ -12,7 +12,7 @@ Calibre Web is a web app providing a clean interface for browsing, reading and d
 - full graphical setup
 - User management with fine grained per-user permissions
 - Admin interface
-- User Interface in dutch, english, french, german, italian, polish, russian, simplified chinese, spanish
+- User Interface in dutch, english, french, german, italian, japanese, khmer, polish, russian, simplified chinese, spanish
 - OPDS feed for eBook reader apps 
 - Filter and search by titles, authors, tags, series and language
 - Create custom book collection (shelves)
@@ -46,7 +46,7 @@ Calibre Web is a web app providing a clean interface for browsing, reading and d
 The configuration can be changed as admin in the admin panel under "Configuration"
 
 Server Port:
-Changes the port calibre-web is listening, changes take effect after pressing submit button
+Changes the port Calibre-Web is listening, changes take effect after pressing submit button
 
 Enable public registration:    
 Tick to enable public user registration.
@@ -70,7 +70,7 @@ Optionally, to enable on-the-fly conversion from EPUB to MOBI when using the sen
 
 ## Using Google Drive integration
 
-Additional optional dependencys are necessary to get this work. Please install all optional  requirements by executing `pip install --target vendor -r optional-requirements.txt`
+Calibre Calibre library (metadata.db) can be located on a Google Drive. Additional optional dependencys are necessary to get this work. Please install all optional  requirements by executing `pip install --target vendor -r optional-requirements.txt`
 
 To use google drive integration, you have to use the google developer console to create a new app. https://console.developers.google.com
 
@@ -82,35 +82,48 @@ Once a project has been created, we need to create a client ID and a client secr
 4. Click Create Credentials and OAuth Client ID
 5. Select Web Application and then next
 6. Give the Credentials a name and enter your callback, which will be CALIBRE_WEB_URL/gdrive/callback
-7. Finally click save
+7. Click save
+8. Download json file and place it in `calibre-web` directory, with the name `client_secrets.json`  
 
-The Drive API should now be setup and ready to use, so we need to integrate it into Calibre Web. This is done as below: -
+The Drive API should now be setup and ready to use, so we need to integrate it into Calibre-Web. This is done as below: -
 
 1. Open config page
-2. Enter the location that will be used to store the metadata.db file, and to temporary store uploaded books and other temporary files for upload
+2. Enter the location that will be used to store the metadata.db file locally, and to temporary store uploaded books and other temporary files for upload ("Location of Calibre database")
 2. Tick Use Google Drive
-3. Enter Client Secret and Client Key as provided via previous steps
-4. Enter the folder that is the root of your calibre library
-5. Enter base URL for calibre (used for google callbacks)
-6 Now select Authenticate Google Drive
-7. This should redirect you to google to allow it top use your Drive, and then redirect you back to the config page
+3. Click the "Submit" button
+4. Now select Authenticate Google Drive
+5. This should redirect you to Google. After allowing it to use your Drive, it redirects you back to the config page
+6. Select the folder that is the root of your calibre library on Gdrive ("Google drive Calibre folder")
+7. Click the "Submit" button
 8. Google Drive should now be connected and be used to get images and download Epubs. The metadata.db is stored in the calibre library location
 
 ### Optional
-If your calibre web is using https, it is possible to add a "watch" to the drive. This will inform us if the metadata.db file is updated and allow us to update our calibre library accordingly.
+If your Calibre-Web is using https, it is possible to add a "watch" to the drive. This will inform us if the metadata.db file is updated and allow us to update our calibre library accordingly.
+Additionally the public adress your server uses (e.g.https://example.com) has to be verified in the Google developer console. After this is done, please wait a few minutes.
 
-9. Click enable watch of metadata.db
-10. Note that this expires after a week, so will need to be manually refresh 
+9. Open config page
+10. Click enable watch of metadata.db
+11. Note that this expires after a week, so will need to be manually refresh 
 
-## Docker image
+## Docker images
 
-Calibre Web can be run as Docker container. Pre-built Docker images based on Alpine Linux are available in this Docker Hub repository: [technosoft2000/calibre-web](https://hub.docker.com/r/technosoft2000/calibre-web/).
+Pre-built Docker images based on Alpine Linux are available in these Docker Hub repositories:
+
+**x64**
++ **technosoft2000** at [technosoft2000/calibre-web](https://hub.docker.com/r/technosoft2000/calibre-web/)
++ **linuxserver.io** at [linuxserver/calibre-web](https://hub.docker.com/r/linuxserver/calibre-web/)
+
+**armhf**
++ **linuxserver.io** at [lsioarmhf/calibre-web](https://hub.docker.com/r/lsioarmhf/calibre-web/)
+
+**aarch64**
++ **linuxserver.io** at [lsioarmhf/calibre-web-aarch64](https://hub.docker.com/r/lsioarmhf/calibre-web-aarch64)
 
 ## Reverse Proxy
 
-Reverse proxy configuration examples for apache and nginx to use calibre-web:
+Reverse proxy configuration examples for apache and nginx to use Calibre-Web:
 
-nginx configuration for a local server listening on port 8080, mapping calibre web to /calibre:
+nginx configuration for a local server listening on port 8080, mapping Calibre-Web to /calibre:
 
 ```
 http {
@@ -118,19 +131,24 @@ http {
         server  127.0.0.1:8083;
     }
     server {
-            location /calibre-web {
-                proxy_bind              $server_addr;
+            client_max_body_size 20M;
+            location /calibre {
+                proxy_bind              $server_adress;
                 proxy_pass              http://127.0.0.1:8083;
                 proxy_set_header        Host            $http_host;
                 proxy_set_header        X-Forwarded-For $proxy_add_x_forwarded_for;
                 proxy_set_header        X-Scheme        $scheme;
-                proxy_set_header        X-Script-Name   /calibre-web;
+                proxy_set_header        X-Script-Name   /calibre;
         }
     }
 }
 ```
+*Note: If using SSL in your reverse proxy on a non-standard port (e.g.12345), the following proxy_redirect line may be required:*
+```
+proxy_redirect http://$host/ https://$host:12345/;
+```
 
-Apache 2.4 configuration for a local server listening on port 443, mapping calibre web to /calibre-web:
+Apache 2.4 configuration for a local server listening on port 443, mapping Calibre-Web to /calibre-web:
 
 The following modules have to be activated: headers, proxy, rewrite.
 ```
@@ -152,17 +170,26 @@ Listen 443
 </VirtualHost>
 ```
 
-## Start calibre-web as service under Linux
+## (Optional) SSL Configuration
+
+For configuration of calibre-web as SSL Server go to the Config page in the Admin section. Enter the certfile- and keyfile-location, optionally change port to 443 and press submit. 
+Afterwards the server can only be accessed via SSL. In case of a misconfiguration (wrong/invalid files) both files can be overridden via command line options 
+-c [certfile location] -k [keyfile location]
+By using "" as file locations the server runs as non SSL server again. The correct file path can than be entered on the Config page. After the next restart without command line options the changed file paths are applied.
+
+
+## Start Calibre-Web as service under Linux
 
 Create a file "cps.service" as root in the folder /etc/systemd/system with the following content:
 
 ```[Unit]
-Description=Calibre-web
+Description=Calibre-Web
 
 [Service]
 Type=simple
 User=[Username]
 ExecStart=[path to python] [/PATH/TO/cps.py]
+WorkingDirectory=[/PATH/TO/cps.py]
 
 [Install]
 WantedBy=multi-user.target
@@ -173,3 +200,13 @@ Replace the user and ExecStart with your user and foldernames.
 `sudo systemctl enable cps.service`
 
 enables the service.
+
+## Command line options
+
+Starting the script with `-h` lists all supported command line options
+Currently supported are 2 options, which are both useful for running multiple instances of Calibre-Web
+
+`"-p path"` allows to specify the location of the settings database 
+`"-g path"` allows to specify the location of the google-drive database 
+`"-c path"` allows to specify the location of SSL certfile, works only in combination with keyfile 
+`"-k path"` allows to specify the location of SSL keyfile, works only in combination with certfile 
