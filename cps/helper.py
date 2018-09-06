@@ -75,9 +75,10 @@ def convert_book_format(book_id, calibrepath, old_book_format, new_book_format, 
             settings = ub.get_mail_settings()
             text = _(u"Convert: %s" % book.title)
         else:
+            settings = dict()
             text = _(u"Convert to %(format)s: %(book)s", format=new_book_format, book=book.title)
-        settings['old_book_format'] = u'EPUB'
-        settings['new_book_format'] = u'MOBI'
+        settings['old_book_format'] = old_book_format
+        settings['new_book_format'] = new_book_format
         global_WorkerThread.add_convert(file_path, book.id, user_id, text, settings, kindle_mail)
         return None
     else:
