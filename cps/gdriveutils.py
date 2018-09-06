@@ -1,12 +1,17 @@
 try:
     from pydrive.auth import GoogleAuth
     from pydrive.drive import GoogleDrive
+    from pydrive.auth import RefreshError
     from apiclient import errors
+    gdrive_support = True
 except ImportError:
-    pass
-import os
+    gdrive_support = False
 
+import os
 from ub import config
+import cli
+import shutil
+from flask import Response, stream_with_context
 
 from sqlalchemy import *
 from sqlalchemy.ext.declarative import declarative_base
@@ -15,9 +20,58 @@ from sqlalchemy.orm import *
 
 import web
 
+class Singleton:
+    """
+    A non-thread-safe helper class to ease implementing singletons.
+    This should be used as a decorator -- not a metaclass -- to the
+    class that should be a singleton.
 
-dbpath = os.path.join(os.path.normpath(os.path.dirname(os.path.realpath(__file__)) + os.sep + ".." + os.sep), "gdrive.db")
-engine = create_engine('sqlite:///{0}'.format(dbpath), echo=False)
+    The decorated class can define one `__init__` function that
+    takes only the `self` argument. Also, the decorated class cannot be
+    inherited from. Other than that, there are no restrictions that apply
+    to the decorated class.
+
+    To get the singleton instance, use the `Instance` method. Trying
+    to use `__call__` will result in a `TypeError` being raised.
+
+    """
+
+    def __init__(self, decorated):
+        self._decorated = decorated
+
+    def Instance(self):
+        """
+        Returns the singleton instance. Upon its first call, it creates a
+        new instance of the decorated class and calls its `__init__` method.
+        On all subsequent calls, the already created instance is returned.
+
+        """
+        try:
+            return self._instance
+        except AttributeError:
+            self._instance = self._decorated()
+            return self._instance
+
+    def __call__(self):
+        raise TypeError('Singletons must be accessed through `Instance()`.')
+
+    def __instancecheck__(self, inst):
+        return isinstance(inst, self._decorated)
+
+
+@Singleton
+class Gauth:
+    def __init__(self):
+        self.auth = GoogleAuth(settings_file=os.path.join(config.get_main_dir,'settings.yaml'))
+
+
+@Singleton
+class Gdrive:
+    def __init__(self):
+        self.drive = getDrive(gauth=Gauth.Instance().auth)
+
+
+engine = create_engine('sqlite:///{0}'.format(cli.gdpath), echo=False)
 Base = declarative_base()
 
 # Open session for database connection
@@ -64,24 +118,28 @@ def migrate():
                 session.execute('ALTER TABLE gdrive_ids2 RENAME to gdrive_ids')
             break
 
-if not os.path.exists(dbpath):
+if not os.path.exists(cli.gdpath):
     try:
         Base.metadata.create_all(engine)
     except Exception:
         raise
-
 migrate()
 
 
 def getDrive(drive=None, gauth=None):
     if not drive:
         if not gauth:
-            gauth = GoogleAuth(settings_file='settings.yaml')
+            gauth = GoogleAuth(settings_file=os.path.join(config.get_main_dir,'settings.yaml'))
         # Try to load saved client credentials
-        gauth.LoadCredentialsFile("gdrive_credentials")
+        gauth.LoadCredentialsFile(os.path.join(config.get_main_dir,'gdrive_credentials'))
         if gauth.access_token_expired:
             # Refresh them if expired
-            gauth.Refresh()
+            try:
+                gauth.Refresh()
+            except RefreshError as e:
+                web.app.logger.error("Google Drive error: " + e.message)
+            except Exception as e:
+                web.app.logger.exception(e)
         else:
             # Initialize the saved creds
             gauth.Authorize()
@@ -91,41 +149,55 @@ def getDrive(drive=None, gauth=None):
         drive.auth.Refresh()
     return drive
 
+def listRootFolders(drive=None):
+    drive = getDrive(drive)
+    folder = "'root' in parents and mimeType = 'application/vnd.google-apps.folder' and trashed = false"
+    fileList = drive.ListFile({'q': folder}).GetList()
+    return fileList
+
 
 def getEbooksFolder(drive=None):
+    return getFolderInFolder('root',config.config_google_drive_folder,drive)
+
+
+def getFolderInFolder(parentId, folderName,drive=None):
     drive = getDrive(drive)
-    ebooksFolder = "title = '%s' and 'root' in parents and mimeType = 'application/vnd.google-apps.folder' and trashed = false" % config.config_google_drive_folder
+    query=""
+    if folderName:
+        query = "title = '%s' and " % folderName.replace("'", "\\'")
+    folder = query + "'%s' in parents and mimeType = 'application/vnd.google-apps.folder' and trashed = false" % parentId
+    fileList = drive.ListFile({'q': folder}).GetList()
+    if fileList.__len__() == 0:
+        return None
+    else:
+        return fileList[0]
 
-    fileList = drive.ListFile({'q': ebooksFolder}).GetList()
-    return fileList[0]
-
-
+# Search for id of root folder in gdrive database, if not found request from gdrive and store in internal database
 def getEbooksFolderId(drive=None):
     storedPathName = session.query(GdriveId).filter(GdriveId.path == '/').first()
     if storedPathName:
         return storedPathName.gdrive_id
     else:
         gDriveId = GdriveId()
-        gDriveId.gdrive_id = getEbooksFolder(drive)['id']
+        try:
+            gDriveId.gdrive_id = getEbooksFolder(drive)['id']
+        except Exception:
+            web.app.logger.error('Error gDrive, root ID not found')
         gDriveId.path = '/'
         session.merge(gDriveId)
         session.commit()
         return
 
 
-def getFolderInFolder(parentId, folderName, drive=None):
-    drive = getDrive(drive)
-    folder = "title = '%s' and '%s' in parents and mimeType = 'application/vnd.google-apps.folder' and trashed = false" % (folderName.replace("'", "\\'"), parentId)
-    fileList = drive.ListFile({'q': folder}).GetList()
-    return fileList[0]
-
-
-def getFile(pathId, fileName, drive=None):
-    drive = getDrive(drive)
+def getFile(pathId, fileName, drive):
+    # drive = getDrive(Gdrive.Instance().drive)
     metaDataFile = "'%s' in parents and trashed = false and title = '%s'" % (pathId, fileName.replace("'", "\\'"))
 
     fileList = drive.ListFile({'q': metaDataFile}).GetList()
-    return fileList[0]
+    if fileList.__len__() == 0:
+        return None
+    else:
+        return fileList[0]
 
 
 def getFolderId(path, drive=None):
@@ -146,12 +218,17 @@ def getFolderId(path, drive=None):
                 if storedPathName:
                     currentFolderId = storedPathName.gdrive_id
                 else:
-                    currentFolderId = getFolderInFolder(currentFolderId, x, drive)['id']
-                    gDriveId = GdriveId()
-                    gDriveId.gdrive_id = currentFolderId
-                    gDriveId.path = currentPath
-                    session.merge(gDriveId)
-                    dbChange = True
+                    currentFolder = getFolderInFolder(currentFolderId, x, drive)
+                    if currentFolder:
+                        gDriveId = GdriveId()
+                        gDriveId.gdrive_id = currentFolder['id']
+                        gDriveId.path = currentPath
+                        session.merge(gDriveId)
+                        dbChange = True
+                        currentFolderId = currentFolder['id']
+                    else:
+                        currentFolderId= None
+                        break
         if dbChange:
             session.commit()
     else:
@@ -159,15 +236,17 @@ def getFolderId(path, drive=None):
     return currentFolderId
 
 
-def getFileFromEbooksFolder(drive, path, fileName):
-    drive = getDrive(drive)
+def getFileFromEbooksFolder(path, fileName):
+    drive = getDrive(Gdrive.Instance().drive)
     if path:
         # sqlCheckPath=path if path[-1] =='/' else path + '/'
         folderId = getFolderId(path, drive)
     else:
         folderId = getEbooksFolderId(drive)
-
-    return getFile(folderId, fileName, drive)
+    if folderId:
+        return getFile(folderId, fileName, drive)
+    else:
+        return None
 
 
 def copyDriveFileRemote(drive, origin_file_id, copy_title):
@@ -182,22 +261,34 @@ def copyDriveFileRemote(drive, origin_file_id, copy_title):
     return None
 
 
-def downloadFile(drive, path, filename, output):
-    drive = getDrive(drive)
-    f = getFileFromEbooksFolder(drive, path, filename)
+# Download metadata.db from gdrive
+def downloadFile(path, filename, output):
+    f = getFileFromEbooksFolder(path, filename)
     f.GetContentFile(output)
 
 
-def backupCalibreDbAndOptionalDownload(drive, f=None):
-    drive = getDrive(drive)
-    metaDataFile = "'%s' in parents and title = 'metadata.db' and trashed = false" % getEbooksFolderId()
+def moveGdriveFolderRemote(origin_file, target_folder):
+    drive = getDrive(Gdrive.Instance().drive)
+    previous_parents = ",".join([parent["id"] for parent in origin_file.get('parents')])
+    gFileTargetDir = getFileFromEbooksFolder(None, target_folder)
+    if not gFileTargetDir:
+        # Folder is not exisiting, create, and move folder
+        gFileTargetDir = drive.CreateFile(
+            {'title': target_folder, 'parents': [{"kind": "drive#fileLink", 'id': getEbooksFolderId()}],
+             "mimeType": "application/vnd.google-apps.folder"})
+        gFileTargetDir.Upload()
+    # Move the file to the new folder
+    drive.auth.service.files().update(fileId=origin_file['id'],
+                                      addParents=gFileTargetDir['id'],
+                                      removeParents=previous_parents,
+                                      fields='id, parents').execute()
+    # if previous_parents has no childs anymore, delete originfileparent
+    # is not working correctly, because of slow update on gdrive -> could cause trouble in gdrive.db
+    # (nonexisting folder has id)
+    # children = drive.auth.service.children().list(folderId=previous_parents).execute()
+    # if not len(children['items']):
+    #    drive.auth.service.files().delete(fileId=previous_parents).execute()
 
-    fileList = drive.ListFile({'q': metaDataFile}).GetList()
-
-    databaseFile = fileList[0]
-
-    if f:
-        databaseFile.GetContentFile(f)
 
 
 def copyToDrive(drive, uploadFile, createRoot, replaceFiles,
@@ -231,8 +322,8 @@ def copyToDrive(drive, uploadFile, createRoot, replaceFiles,
             driveFile.Upload()
 
 
-def uploadFileToEbooksFolder(drive, destFile, f):
-    drive = getDrive(drive)
+def uploadFileToEbooksFolder(destFile, f):
+    drive = getDrive(Gdrive.Instance().drive)
     parent = getEbooksFolder(drive)
     splitDir = destFile.split('/')
     for i, x in enumerate(splitDir):
@@ -256,7 +347,7 @@ def uploadFileToEbooksFolder(drive, destFile, f):
 
 def watchChange(drive, channel_id, channel_type, channel_address,
               channel_token=None, expiration=None):
-    drive = getDrive(drive)
+    # drive = getDrive(drive)
     # Watch for all changes to a user's Drive.
     # Args:
     # service: Drive API service instance.
@@ -299,7 +390,7 @@ def watchFile(drive, file_id, channel_id, channel_type, channel_address,
     Raises:
     apiclient.errors.HttpError: if http request to create channel fails.
     """
-    drive = getDrive(drive)
+    # drive = getDrive(drive)
 
     body = {
         'id': channel_id,
@@ -322,7 +413,7 @@ def stopChannel(drive, channel_id, resource_id):
     Raises:
     apiclient.errors.HttpError: if http request to create channel fails.
     """
-    drive = getDrive(drive)
+    # drive = getDrive(drive)
     # service=drive.auth.service
     body = {
         'id': channel_id,
@@ -332,7 +423,7 @@ def stopChannel(drive, channel_id, resource_id):
 
 
 def getChangeById (drive, change_id):
-    drive = getDrive(drive)
+    # drive = getDrive(drive)
     # Print a single Change resource information.
     #
     # Args:
@@ -341,6 +432,73 @@ def getChangeById (drive, change_id):
     try:
         change = drive.auth.service.changes().get(changeId=change_id).execute()
         return change
-    except (errors.HttpError, error):
-        web.app.logger.exception(error)
+    except (errors.HttpError) as error:
+        web.app.logger.info(error.message)
         return None
+
+# Deletes the local hashes database to force search for new folder names
+def deleteDatabaseOnChange():
+    session.query(GdriveId).delete()
+    session.commit()
+
+def updateGdriveCalibreFromLocal():
+    copyToDrive(Gdrive.Instance().drive, config.config_calibre_dir, False, True)
+    for x in os.listdir(config.config_calibre_dir):
+        if os.path.isdir(os.path.join(config.config_calibre_dir, x)):
+            shutil.rmtree(os.path.join(config.config_calibre_dir, x))
+
+# update gdrive.db on edit of books title
+def updateDatabaseOnEdit(ID,newPath):
+    storedPathName = session.query(GdriveId).filter(GdriveId.gdrive_id == ID).first()
+    if storedPathName:
+        storedPathName.path = newPath
+        session.commit()
+
+# Deletes the hashes in database of deleted book
+def deleteDatabaseEntry(ID):
+    session.query(GdriveId).filter(GdriveId.gdrive_id == ID).delete()
+    session.commit()
+
+# Gets cover file from gdrive
+def get_cover_via_gdrive(cover_path):
+    df = getFileFromEbooksFolder(cover_path, 'cover.jpg')
+    if df:
+        if not session.query(PermissionAdded).filter(PermissionAdded.gdrive_id == df['id']).first():
+            df.GetPermissions()
+            df.InsertPermission({
+                            'type': 'anyone',
+                            'value': 'anyone',
+                            'role': 'reader',
+                            'withLink': True})
+            permissionAdded = PermissionAdded()
+            permissionAdded.gdrive_id = df['id']
+            session.add(permissionAdded)
+            session.commit()
+        return df.metadata.get('webContentLink')
+    else:
+        return None
+
+# Creates chunks for downloading big files
+def partial(total_byte_len, part_size_limit):
+    s = []
+    for p in range(0, total_byte_len, part_size_limit):
+        last = min(total_byte_len - 1, p + part_size_limit - 1)
+        s.append([p, last])
+    return s
+
+# downloads files in chunks from gdrive
+def do_gdrive_download(df, headers):
+    total_size = int(df.metadata.get('fileSize'))
+    download_url = df.metadata.get('downloadUrl')
+    s = partial(total_size, 1024 * 1024)  # I'm downloading BIG files, so 100M chunk size is fine for me
+
+    def stream():
+        for byte in s:
+            headers = {"Range": 'bytes=%s-%s' % (byte[0], byte[1])}
+            resp, content = df.auth.Get_Http_Object().request(download_url, headers=headers)
+            if resp.status == 206:
+                yield content
+            else:
+                web.app.logger.info('An error occurred: %s' % resp)
+                return
+    return Response(stream_with_context(stream()), headers=headers)

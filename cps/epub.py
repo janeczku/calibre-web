@@ -12,7 +12,7 @@ def extractCover(zipFile, coverFile, coverpath, tmp_file_name):
     if coverFile is None:
         return None
     else:
-        zipCoverPath = os.path.join(coverpath , coverFile).replace('\\','/')
+        zipCoverPath = os.path.join(coverpath, coverFile).replace('\\', '/')
         cf = zipFile.read(zipCoverPath)
         prefix = os.path.splitext(tmp_file_name)[0]
         tmp_cover_name = prefix + '.' + os.path.basename(zipCoverPath)
@@ -93,7 +93,7 @@ def get_epub_info(tmp_file_path, original_file_name, original_file_extension):
             coversection = tree.xpath("/pkg:package/pkg:manifest/pkg:item[@id='"+meta_cover[0]+"']/@href", namespaces=ns)
             if len(coversection) > 0:
                 filetype = coversection[0].rsplit('.', 1)[-1]
-                if filetype == "xhtml" or filetype == "html":  #if cover is (x)html format
+                if filetype == "xhtml" or filetype == "html":  # if cover is (x)html format
                     markup = epubZip.read(os.path.join(coverpath, coversection[0]))
                     markupTree = etree.fromstring(markup)
                     # no matter xhtml or html with no namespace

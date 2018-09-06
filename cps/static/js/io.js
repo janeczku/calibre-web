@@ -121,7 +121,7 @@ bitjs.io = bitjs.io || {};
      * @return {number} The peeked bits, as an unsigned number.
      */
     bitjs.io.BitStream.prototype.peekBitsRtl = function(n, movePointers) {
-        if (n <= 0 || typeof n != typeof 1) {
+        if (n <= 0 || typeof n !== typeof 1) {
             return 0;
         }
 
@@ -150,8 +150,7 @@ bitjs.io = bitjs.io || {};
                 bytePtr++;
                 bitPtr = 0;
                 n -= numBitsLeftInThisByte;
-            }
-            else {
+            } else {
                 result <<= n;
                 result |= ((bytes[bytePtr] & (BITMASK[n] << (8 - n - bitPtr))) >> (8 - n - bitPtr));
 
