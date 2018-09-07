@@ -57,10 +57,7 @@ from flask_principal import Principal
 from flask_principal import __version__ as flask_principalVersion
 from flask_babel import Babel
 from flask_babel import gettext as _
-
 import requests
-# import zipfile
-# import tarfile
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.datastructures import Headers
 from babel import Locale as LC
@@ -86,6 +83,8 @@ import converter
 import tempfile
 import hashlib
 from redirect import redirect_back
+import time
+import server
 
 try:
     from urllib.parse import quote
@@ -97,11 +96,6 @@ try:
     from flask_login import __version__ as flask_loginVersion
 except ImportError:
     from flask_login.__about__ import __version__ as flask_loginVersion
-
-# import codecs
-import time
-import server
-# import random
 
 current_milli_time = lambda: int(round(time.time() * 1000))
 
@@ -2772,6 +2766,7 @@ def view_configuration():
 @app.route("/config", methods=["GET", "POST"])
 @unconfigured
 def basic_configuration():
+    logout_user()
     return configuration_helper(1)
 
 
@@ -2893,7 +2888,7 @@ def configuration_helper(origin):
         if content.config_logfile != to_save["config_logfile"]:
             # check valid path, only path or file
             if os.path.dirname(to_save["config_logfile"]):
-                if os.path.exists(os.path.dirname(to_save["config_log_level"])):
+                if os.path.exists(os.path.dirname(to_save["config_logfile"])):
                     content.config_logfile = to_save["config_logfile"]
                 else:
                     ub.session.commit()
