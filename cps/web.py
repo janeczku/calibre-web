@@ -1739,7 +1739,6 @@ def shutdown():
         db.engine.dispose()
         ub.session.close()
         ub.engine.dispose()
-        # stop gevent server
 
         showtext = {}
         if task == 0:
@@ -1748,6 +1747,7 @@ def shutdown():
         else:
             showtext['text'] = _(u'Performing shutdown of server, please close window')
             server.Server.setRestartTyp(False)
+        # stop gevent/tornado server
         server.Server.stopServer()
         return json.dumps(showtext)
     else:
@@ -2750,8 +2750,8 @@ def view_configuration():
         config.loadSettings()
         if reboot_required:
             # db.engine.dispose() # ToDo verify correct
-            ub.session.close()
-            ub.engine.dispose()
+            # ub.session.close()
+            # ub.engine.dispose()
             # stop Server
             server.Server.setRestartTyp(True)
             server.Server.stopServer()
