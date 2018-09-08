@@ -1824,7 +1824,7 @@ def advanced_search():
     cc_present = False
     for c in cc:
         if request.args.get('custom_column_' + str(c.id)):
-            searchterm.extend([_(u"%s: %s" % (c.name, request.args.get('custom_column_' + str(c.id))))])
+            searchterm.extend([(u"%s: %s" % (c.name, request.args.get('custom_column_' + str(c.id))))])
             cc_present = True
 
     if include_tag_inputs or exclude_tag_inputs or include_series_inputs or exclude_series_inputs or \
@@ -1834,9 +1834,9 @@ def advanced_search():
         searchterm.extend((author_name.replace('|',','), book_title, publisher))
         if pub_start:
             try:
-                searchterm.extend([_(u"Published after %s" %
+                searchterm.extend([_(u"Published after ") +
                                format_date(datetime.datetime.strptime(pub_start,"%Y-%m-%d"),
-                                           format='medium', locale=get_locale()))])
+                                           format='medium', locale=get_locale())])
             except ValueError:
                 pub_start = u""
         if pub_end:
@@ -1855,13 +1855,13 @@ def advanced_search():
             language_names = speaking_language(language_names)
         searchterm.extend(language.name for language in language_names)
         if rating_high:
-            searchterm.extend([_(u"Rating <= %s" % rating_high)])
+            searchterm.extend([_(u"Rating <= %(rating)s", rating=rating_high)])
         if rating_low:
-            searchterm.extend([_(u"Rating >= %s" % rating_low)])
+            searchterm.extend([_(u"Rating >= %(rating)s", rating=rating_low)])
         # handle custom columns
         for c in cc:
             if request.args.get('custom_column_' + str(c.id)):
-                searchterm.extend([_(u"%s: %s" % (c.name, request.args.get('custom_column_' + str(c.id))))])
+                searchterm.extend([(u"%s: %s" % (c.name, request.args.get('custom_column_' + str(c.id))))])
         searchterm = " + ".join(filter(None, searchterm))
         q = q.filter()
         if author_name:
@@ -2352,7 +2352,7 @@ def search_to_shelf(shelf_id):
 
     if not shelf.is_public and not shelf.user_id == int(current_user.id):
         app.logger.info("You are not allowed to add a book to the the shelf: %s" % shelf.name)
-        flash(_(u"You are not allowed to add a book to the the shelf: %s" % shelf.name), category="error")
+        flash(_(u"You are not allowed to add a book to the the shelf: %(name)s", name=shelf.name), category="error")
         return redirect(url_for('index'))
 
     if shelf.is_public and not current_user.role_edit_shelfs():
@@ -2375,7 +2375,7 @@ def search_to_shelf(shelf_id):
 
         if not books_for_shelf:
             app.logger.info("Books are already part of the shelf: %s" % shelf.name)
-            flash(_(u"Books are already part of the shelf: %s" % shelf.name), category="error")
+            flash(_(u"Books are already part of the shelf: %(name)s", name=shelf.name), category="error")
             return redirect(url_for('index'))
 
         maxOrder = ub.session.query(func.max(ub.BookShelf.order)).filter(ub.BookShelf.shelf == shelf_id).first()
@@ -3216,7 +3216,7 @@ def reset_password(user_id):
         try:
             ub.session.commit()
             helper.send_registration_mail(existing_user.email, existing_user.nickname, password, True)
-            flash(_(u"Password for user %s reset" % existing_user.nickname), category="success")
+            flash(_(u"Password for user %(user)s reset", user=existing_user.nickname), category="success")
         except Exception:
             ub.session.rollback()
             flash(_(u"An unknown error occurred. Please try again later."), category="error")
@@ -3297,12 +3297,12 @@ def edit_book(book_id):
                 try:
                     os.makedirs(filepath)
                 except OSError:
-                    flash(_(u"Failed to create path %s (Permission denied)." % filepath), category="error")
+                    flash(_(u"Failed to create path %(path)s (Permission denied).", path=filepath), category="error")
                     return redirect(url_for('show_book', book_id=book.id))
             try:
                 requested_file.save(saved_filename)
             except OSError:
-                flash(_(u"Failed to store file %s." % saved_filename), category="error")
+                flash(_(u"Failed to store file %(file)s.", file=saved_filename), category="error")
                 return redirect(url_for('show_book', book_id=book.id))
 
             file_size = os.path.getsize(saved_filename)
@@ -3318,7 +3318,7 @@ def edit_book(book_id):
                 db.session.connection().connection.connection.create_function("title_sort", 1, db.title_sort)
 
             # Queue uploader info
-            uploadText=_(u"File format %s added to %s" % (file_ext.upper(), book.title))
+            uploadText=_(u"File format %(ext)s added to %(book)s", ext=file_ext.upper(), book=book.title)
             helper.global_WorkerThread.add_upload(current_user.nickname, 
                 "<a href=\"" + url_for('show_book', book_id=book.id) + "\">" + uploadText + "</a>")
 
@@ -3336,14 +3336,14 @@ def edit_book(book_id):
                 try:
                     os.makedirs(filepath)
                 except OSError:
-                    flash(_(u"Failed to create path for cover %s (Permission denied)." % filepath), category="error")
+                    flash(_(u"Failed to create path for cover %(path)s (Permission denied).", cover=filepath), category="error")
                     return redirect(url_for('show_book', book_id=book.id))
             try:
                 requested_file.save(saved_filename)
                 # im=Image.open(saved_filename)
                 book.has_cover = 1
             except OSError:
-                flash(_(u"Failed to store cover-file %s." % saved_filename), category="error")
+                flash(_(u"Failed to store cover-file %(cover)s.", cover=saved_filename), category="error")
                 return redirect(url_for('show_book', book_id=book.id))
             except IOError:
                 flash(_(u"Cover-file is not a valid image file" % saved_filename), category="error")
@@ -3573,8 +3573,8 @@ def upload():
                 file_ext = requested_file.filename.rsplit('.', 1)[-1].lower()
                 if file_ext not in ALLOWED_EXTENSIONS:
                     flash(
-                        _('File extension "%s" is not allowed to be uploaded to this server' %
-                            file_ext), category="error")
+                        _('File extension "%(ext)s" is not allowed to be uploaded to this server',
+                          ext=file_ext), category="error")
                     return redirect(url_for('index'))
             else:
                 flash(_('File to be uploaded must have an extension'), category="error")
@@ -3597,17 +3597,17 @@ def upload():
                 try:
                     os.makedirs(filepath)
                 except OSError:
-                    flash(_(u"Failed to create path %s (Permission denied)." % filepath), category="error")
+                    flash(_(u"Failed to create path %(path)s (Permission denied).", path=filepath), category="error")
                     return redirect(url_for('index'))
             try:
                 copyfile(meta.file_path, saved_filename)
             except OSError:
-                flash(_(u"Failed to store file %s (Permission denied)." % saved_filename), category="error")
+                flash(_(u"Failed to store file %(file)s (Permission denied).", file=saved_filename), category="error")
                 return redirect(url_for('index'))
             try:
                 os.unlink(meta.file_path)
             except OSError:
-                flash(_(u"Failed to delete file %s (Permission denied)." % meta.file_path), category="warning")
+                flash(_(u"Failed to delete file %(file)s (Permission denied).", file= meta.file_path), category="warning")
 
             if meta.cover is None:
                 has_cover = 0
@@ -3689,7 +3689,7 @@ def upload():
                 gdriveutils.updateGdriveCalibreFromLocal()
             if error:
                 flash(error, category="error")
-            uploadText=_(u"File %s uploaded" % book.title)
+            uploadText=_(u"File %(file)s uploaded", file=book.title)
             helper.global_WorkerThread.add_upload(current_user.nickname, 
                 "<a href=\"" + url_for('show_book', book_id=book.id) + "\">" + uploadText + "</a>")
 
