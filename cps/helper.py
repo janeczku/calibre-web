@@ -73,7 +73,7 @@ def convert_book_format(book_id, calibrepath, old_book_format, new_book_format, 
         # read settings and append converter task to queue
         if kindle_mail:
             settings = ub.get_mail_settings()
-            text = _(u"Convert: %s" % book.title)
+            text = _(u"Convert: %(book)s" , book=book.title)
         else:
             settings = dict()
             text = _(u"Convert to %(format)s: %(book)s", format=new_book_format, book=book.title)
@@ -105,7 +105,7 @@ def send_registration_mail(e_mail, user_name, default_password, resend=False):
     text += "Sincerely\r\n\r\n"
     text += "Your Calibre-Web team"
     global_WorkerThread.add_email(_(u'Get Started with Calibre-Web'),None, None, ub.get_mail_settings(),
-                                  e_mail, user_name, _(u"Registration e-mail for user: %s" % user_name),text)
+                                  e_mail, user_name, _(u"Registration e-mail for user: %(name)s", name=user_name),text)
     return
 
 
@@ -141,7 +141,7 @@ def send_mail(book_id, kindle_mail, calibrepath, user_id):
         return _(u"Could not find any formats suitable for sending by e-mail")
     if result:
         global_WorkerThread.add_email(_(u"Send to Kindle"), book.path, result, ub.get_mail_settings(),
-                                      kindle_mail, user_id, _(u"E-Mail: %s" % book.title))
+                                      kindle_mail, user_id, _(u"E-mail: %(book)s", book=book.title))
     else:
         return _(u"The requested file could not be read. Maybe wrong permissions?")
 
@@ -238,7 +238,7 @@ def update_dir_structure_file(book_id, calibrepath):
         except OSError as ex:
             web.app.logger.error("Rename title from: " + path + " to " + new_title_path)
             web.app.logger.error(ex, exc_info=True)
-            return _('Rename title from: "%s" to "%s" failed with error: %s' % (path, new_title_path, str(ex)))
+            return _('Rename title from: "%(src)s" to "%(dest)s" failed with error: %(error)s', src=path, dest=new_title_path, error=str(ex))
     if authordir != new_authordir:
         try:
             new_author_path = os.path.join(os.path.join(calibrepath, new_authordir), os.path.basename(path))
@@ -247,7 +247,7 @@ def update_dir_structure_file(book_id, calibrepath):
         except OSError as ex:
             web.app.logger.error("Rename author from: " + path + " to " + new_author_path)
             web.app.logger.error(ex, exc_info=True)
-            return _('Rename author from: "%s" to "%s" failed with error: %s' % (path, new_title_path, str(ex)))
+            return _('Rename author from: "%(src)s" to "%(dest)s" failed with error: %(error)s', src=path, dest=new_title_path, error=str(ex))
     return False
 
 
@@ -261,7 +261,6 @@ def update_dir_structure_gdrive(book_id):
     new_titledir = get_valid_filename(book.title) + " (" + str(book_id) + ")"
 
     if titledir != new_titledir:
-        # print (titledir)
         gFile = gd.getFileFromEbooksFolder(os.path.dirname(book.path), titledir)
         if gFile:
             gFile['title'] = new_titledir
@@ -270,7 +269,7 @@ def update_dir_structure_gdrive(book_id):
             book.path = book.path.split('/')[0] + '/' + new_titledir
             gd.updateDatabaseOnEdit(gFile['id'], book.path)     # only child folder affected
         else:
-            error = _(u'File %s not found on Google Drive' % book.path) # file not found
+            error = _(u'File %(file)s not found on Google Drive', file= book.path) # file not found
 
     if authordir != new_authordir:
         gFile = gd.getFileFromEbooksFolder(os.path.dirname(book.path), titledir)
@@ -279,7 +278,7 @@ def update_dir_structure_gdrive(book_id):
             book.path = new_authordir + '/' + book.path.split('/')[1]
             gd.updateDatabaseOnEdit(gFile['id'], book.path)
         else:
-            error = _(u'File %s not found on Google Drive' % authordir) # file not found
+            error = _(u'File %(file)s not found on Google Drive', file=authordir) # file not found
     return error
 
 
@@ -297,7 +296,7 @@ def delete_book_gdrive(book, book_format):
         gd.deleteDatabaseEntry(gFile['id'])
         gFile.Trash()
     else:
-        error =_(u'Book path %s not found on Google Drive' % book.path)  # file not found
+        error =_(u'Book path %(path)s not found on Google Drive', path=book.path)  # file not found
     return error
 
 def generate_random_password():

@@ -223,7 +223,7 @@ class WorkerThread(threading.Thread):
             if curr_task == TASK_CONVERT:
                 self.add_email(_(u'Send to Kindle'), self.queue[self.current]['path'], filename,
                        self.queue[self.current]['settings'], self.queue[self.current]['kindle'],
-                       self.UIqueue[self.current]['user'], _(u"E-mail: %s" % self.queue[self.current]['title']))
+                       self.UIqueue[self.current]['user'], _(u"E-mail: %(book)s", book=self.queue[self.current]['title']))
 
 
     def convert_ebook_format(self):
@@ -269,7 +269,7 @@ class WorkerThread(threading.Thread):
 
             p = subprocess.Popen(command, stdout=subprocess.PIPE, universal_newlines=True)
         except OSError as e:
-            self._handleError(_(u"Ebook-converter failed: %s" % e))
+            self._handleError(_(u"Ebook-converter failed: %(error)s", error=e))
             return
 
         if web.ub.config.config_ebookconverter == 1:
