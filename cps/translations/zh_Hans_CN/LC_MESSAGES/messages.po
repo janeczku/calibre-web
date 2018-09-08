@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2018-09-08 12:22+0200\n"
+"POT-Creation-Date: 2018-09-08 14:49+0200\n"
 "PO-Revision-Date: 2017-01-06 17:00+0000\n"
 "Last-Translator: dalin <dalin.lin@gmail.com>\n"
 "Language: zh_Hans_CN\n"
@@ -96,17 +96,13 @@ msgstr "无法读取请求的文件。 可能有错误的权限设置？"
 
 #: cps/helper.py:241
 #, python-format
-msgid ""
-"Rename title from: \"%(src)s\" to \"%(dest)s\" failed with error: "
-"%(error)s"
-msgstr "将标题从\"%(src)s\"改为\"%(dest)s\"时失败，出错信息: %(error)s"
+msgid "Rename title from: '%(src)s' to '%(dest)s' failed with error: %(error)s"
+msgstr "将标题从'%(src)s'改为'%(dest)s'时失败，出错信息: %(error)s"
 
 #: cps/helper.py:250
 #, python-format
-msgid ""
-"Rename author from: \"%(src)s\" to \"%(dest)s\" failed with error: "
-"%(error)s"
-msgstr "将作者从\"%(src)s\"改为\"%(dest)s\"时失败，出错信息: %(error)s"
+msgid "Rename author from: '%(src)s' to '%(dest)s' failed with error: %(error)s"
+msgstr "将作者从'%(src)s'改为'%(dest)s'时失败，出错信息: %(error)s"
 
 #: cps/helper.py:272 cps/helper.py:281
 #, python-format
@@ -377,7 +373,7 @@ msgstr "书籍已经在书架 %(name)s 中了"
 #: cps/web.py:2392
 #, python-format
 msgid "Books have been added to shelf: %(sname)s"
-msgstr "书籍已经被添加到书架 %(sname)s 中\""
+msgstr "书籍已经被添加到书架 %(sname)s 中'"
 
 #: cps/web.py:2394
 #, python-format
@@ -442,7 +438,7 @@ msgstr "修改书架 '%(name)s' 顺序"
 
 #: cps/web.py:2601 cps/web.py:3012
 msgid "E-mail is not from valid domain"
-msgstr "邮箱不在有效域中\""
+msgstr "邮箱不在有效域中'"
 
 #: cps/web.py:2603 cps/web.py:2644 cps/web.py:2647
 #, python-format
@@ -570,10 +566,10 @@ msgstr "打开电子书出错。文件不存在或不可访问"
 msgid "edit metadata"
 msgstr "编辑元数据"
 
-#: cps/web.py:3284
+#: cps/web.py:3284 cps/web.py:3576
 #, python-format
-msgid "File extension \"%s\" is not allowed to be uploaded to this server"
-msgstr ""
+msgid "File extension '%(ext)s' is not allowed to be uploaded to this server"
+msgstr "不能上传后缀为　'%(ext)s'　的文件到此服务器"
 
 #: cps/web.py:3288 cps/web.py:3580
 msgid "File to be uploaded must have an extension"
@@ -619,11 +615,6 @@ msgstr "封面不是一个jpg文件，无法保存"
 #: cps/web.py:3555
 msgid "Error editing book, please check logfile for details"
 msgstr "编辑书籍出错，详情请检查日志文件"
-
-#: cps/web.py:3576
-#, python-format
-msgid "File extension \"%(ext)s\" is not allowed to be uploaded to this server"
-msgstr "不能上传后缀为　\"%(ext)s\"　的文件到此服务器"
 
 #: cps/web.py:3605
 #, python-format
@@ -1105,7 +1096,7 @@ msgstr "启用注册"
 
 #: cps/templates/config_edit.html:146
 msgid "Enable remote login (\"magic link\")"
-msgstr "启用远程登录 (\"魔法链接\")"
+msgstr "启用远程登录 ('魔法链接')"
 
 #: cps/templates/config_edit.html:151
 msgid "Use"
@@ -1855,15 +1846,13 @@ msgstr "最近下载"
 #~ msgid "E-Mail: %s"
 #~ msgstr ""
 
-#~ msgid ""
-#~ "Rename title from: \"%(src)s\" to "
-#~ "\"%(dest)s\" failed with error: %(error)s"
-#~ msgstr "将标题从\"%(src)s\"改为\"%(dest)s\"时失败，出错信息: %(error)s"
+#~ msgid "Rename title from: '%(src)s' to '%(dest)s' failed with error: %(error)s"
+#~ msgstr "将标题从'%(src)s'改为'%(dest)s'时失败，出错信息: %(error)s"
 
 #~ msgid ""
-#~ "Rename author from: \"%(src)s\" to "
-#~ "\"%(dest)s\" failed with error: %(error)s"
-#~ msgstr "将作者从\"%(src)s\"改为\"%(dest)s\"时失败，出错信息: %(error)s"
+#~ "Rename author from: '%(src)s' to "
+#~ "'%(dest)s' failed with error: %(error)s"
+#~ msgstr "将作者从'%(src)s'改为'%(dest)s'时失败，出错信息: %(error)s"
 
 #~ msgid "Password for user %(user)s reset"
 #~ msgstr "用户 %(user)s 的密码已重置"
@@ -1871,16 +1860,18 @@ msgstr "最近下载"
 #~ msgid "Password for user %s reset"
 #~ msgstr ""
 
-#~ msgid ""
-#~ "Rename title from: \"%(src)s\" to "
-#~ "\"%(src)s\" failed with error: %(error)s"
+#~ msgid "Rename title from: '%(src)s' to '%(src)s' failed with error: %(error)s"
 #~ msgstr ""
 
-#~ msgid ""
-#~ "Rename author from: \"%(src)s\" to "
-#~ "\"%(src)s\" failed with error: %(error)s"
+#~ msgid "Rename author from: '%(src)s' to '%(src)s' failed with error: %(error)s"
 #~ msgstr ""
 
 #~ msgid "Failed to create path for cover %(cover)s (Permission denied)."
 #~ msgstr "为封面 %(cover)s 创建路径失败(权限拒绝)。"
+
+#~ msgid "File extension '%s' is not allowed to be uploaded to this server"
+#~ msgstr ""
+
+#~ msgid "File extension \"%(ext)s\" is not allowed to be uploaded to this server"
+#~ msgstr "不能上传后缀为　\"%(ext)s\"　的文件到此服务器"
 

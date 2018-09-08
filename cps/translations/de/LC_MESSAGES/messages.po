@@ -21,7 +21,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2018-09-08 12:22+0200\n"
+"POT-Creation-Date: 2018-09-08 14:49+0200\n"
 "PO-Revision-Date: 2016-07-12 19:54+0200\n"
 "Last-Translator: Ozzie Isaacs\n"
 "Language: de\n"
@@ -106,20 +106,16 @@ msgstr ""
 
 #: cps/helper.py:241
 #, python-format
-msgid ""
-"Rename title from: \"%(src)s\" to \"%(dest)s\" failed with error: "
-"%(error)s"
+msgid "Rename title from: '%(src)s' to '%(dest)s' failed with error: %(error)s"
 msgstr ""
-"Umbenennen des Titelpfades \"%(src)s\" nach \"%(dest)s\" schlug fehl: "
+"Umbenennen des Titelpfades '%(src)s' nach '%(dest)s' schlug fehl: "
 "%(error)s"
 
 #: cps/helper.py:250
 #, python-format
-msgid ""
-"Rename author from: \"%(src)s\" to \"%(dest)s\" failed with error: "
-"%(error)s"
+msgid "Rename author from: '%(src)s' to '%(dest)s' failed with error: %(error)s"
 msgstr ""
-"Umbenennen des Authorpfades \"%(src)s\" nach \"%(dest)s\" schlug fehl: "
+"Umbenennen des Authorpfades '%(src)s' nach '%(dest)s' schlug fehl: "
 "%(error)s"
 
 #: cps/helper.py:272 cps/helper.py:281
@@ -592,10 +588,10 @@ msgstr ""
 msgid "edit metadata"
 msgstr "Metadaten editieren"
 
-#: cps/web.py:3284
+#: cps/web.py:3284 cps/web.py:3576
 #, python-format
-msgid "File extension \"%s\" is not allowed to be uploaded to this server"
-msgstr ""
+msgid "File extension '%(ext)s' is not allowed to be uploaded to this server"
+msgstr "Dateiendung '%(ext)s' kann nicht auf diesen Server hochgeladen werden"
 
 #: cps/web.py:3288 cps/web.py:3580
 msgid "File to be uploaded must have an extension"
@@ -641,13 +637,6 @@ msgstr "Cover ist keine JPG Datei, konnte nicht gespeichert werden"
 #: cps/web.py:3555
 msgid "Error editing book, please check logfile for details"
 msgstr "Fehler beim Editieren des Buchs, Details im Logfile"
-
-#: cps/web.py:3576
-#, python-format
-msgid "File extension \"%(ext)s\" is not allowed to be uploaded to this server"
-msgstr ""
-"Die Dateiendung \"%(ext)s\" kann nicht auf diesen Server hochgeladen "
-"werden"
 
 #: cps/web.py:3605
 #, python-format
@@ -1133,7 +1122,7 @@ msgstr "Öffentliche Registrierung aktivieren"
 
 #: cps/templates/config_edit.html:146
 msgid "Enable remote login (\"magic link\")"
-msgstr "Remote Login aktivieren (\"Magischer Link\")"
+msgstr "Remote Login aktivieren ('Magischer Link')"
 
 #: cps/templates/config_edit.html:151
 msgid "Use"
@@ -1882,4 +1871,7 @@ msgstr "Letzte Downloads"
 #~ msgstr ""
 #~ "Ordner erzeugen für Cover %(cover)s "
 #~ "fehlgeschalgen (Zugriff verweigert)."
+
+#~ msgid "File extension '%s' is not allowed to be uploaded to this server"
+#~ msgstr ""
 

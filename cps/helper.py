@@ -238,7 +238,7 @@ def update_dir_structure_file(book_id, calibrepath):
         except OSError as ex:
             web.app.logger.error("Rename title from: " + path + " to " + new_title_path)
             web.app.logger.error(ex, exc_info=True)
-            return _('Rename title from: "%(src)s" to "%(dest)s" failed with error: %(error)s', src=path, dest=new_title_path, error=str(ex))
+            return _("Rename title from: '%(src)s' to '%(dest)s' failed with error: %(error)s", src=path, dest=new_title_path, error=str(ex))
     if authordir != new_authordir:
         try:
             new_author_path = os.path.join(os.path.join(calibrepath, new_authordir), os.path.basename(path))
@@ -247,7 +247,7 @@ def update_dir_structure_file(book_id, calibrepath):
         except OSError as ex:
             web.app.logger.error("Rename author from: " + path + " to " + new_author_path)
             web.app.logger.error(ex, exc_info=True)
-            return _('Rename author from: "%(src)s" to "%(dest)s" failed with error: %(error)s', src=path, dest=new_title_path, error=str(ex))
+            return _("Rename author from: '%(src)s' to '%(dest)s' failed with error: %(error)s", src=path, dest=new_title_path, error=str(ex))
     return False
 
 

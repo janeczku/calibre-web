@@ -20,7 +20,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2018-09-08 12:22+0200\n"
+"POT-Creation-Date: 2018-09-08 14:49+0200\n"
 "PO-Revision-Date: 2018-09-07 13:58+0200\n"
 "Last-Translator: Nicolas Roudninski <nicoroud@gmail.com>\n"
 "Language: fr\n"
@@ -51,7 +51,7 @@ msgid "%(format)s not found on Google Drive: %(fn)s"
 msgstr "le %(format)s est introuvable sur Google Drive : %(fn)s"
 
 #: cps/helper.py:76
-#, fuzzy, python-format
+#, python-format
 msgid "Convert: %(book)s"
 msgstr "Conversion : %(book)s"
 
@@ -91,7 +91,7 @@ msgid "Send to Kindle"
 msgstr "Envoyer vers Kindle"
 
 #: cps/helper.py:144 cps/worker.py:226
-#, fuzzy, python-format
+#, python-format
 msgid "E-mail: %(book)s"
 msgstr "Courriel : %(book)s"
 
@@ -101,21 +101,17 @@ msgstr "Le fichier demandé n’a pu être lu. Problème de permission d’accè
 
 #: cps/helper.py:241
 #, python-format
-msgid ""
-"Rename title from: \"%(src)s\" to \"%(dest)s\" failed with error: "
-"%(error)s"
+msgid "Rename title from: '%(src)s' to '%(dest)s' failed with error: %(error)s"
 msgstr ""
-"Renommer le titre de : \"%(src)s\" à \"%(dest)s\" a échoué avec l’erreur "
-": %(error)s"
+"Renommer le titre de : '%(src)s' à '%(dest)s' a échoué avec l’erreur : "
+"%(error)s"
 
 #: cps/helper.py:250
 #, python-format
-msgid ""
-"Rename author from: \"%(src)s\" to \"%(dest)s\" failed with error: "
-"%(error)s"
+msgid "Rename author from: '%(src)s' to '%(dest)s' failed with error: %(error)s"
 msgstr ""
-"Renommer l’auteur de : \"%(src)s\" à \"%(dest)s\" a échoué avec l’erreur "
-": %%(error)s"
+"Renommer l’auteur de : '%(src)s' à '%(dest)s' a échoué avec l’erreur : "
+"%(error)s"
 
 #: cps/helper.py:272 cps/helper.py:281
 #, python-format
@@ -262,7 +258,6 @@ msgid "Update done"
 msgstr "Mise à jour effectuée"
 
 #: cps/web.py:1837
-#, fuzzy
 msgid "Published after "
 msgstr "Publié après le "
 
@@ -353,7 +348,7 @@ msgid "Please configure the SMTP mail settings first..."
 msgstr "Veuillez configurer les paramètres SMTP au préalable…"
 
 #: cps/web.py:2289
-#, fuzzy, python-format
+#, python-format
 msgid "Book successfully queued for sending to %(kindlemail)s"
 msgstr ""
 "Le livre a été mis en file de traitement avec succès pour un envois vers "
@@ -603,10 +598,12 @@ msgstr ""
 msgid "edit metadata"
 msgstr "modifier les métadonnées"
 
-#: cps/web.py:3284
+#: cps/web.py:3284 cps/web.py:3576
 #, python-format
-msgid "File extension \"%s\" is not allowed to be uploaded to this server"
+msgid "File extension '%(ext)s' is not allowed to be uploaded to this server"
 msgstr ""
+"L’extension de fichier '%(ext)s' n’est pas autorisée pour être déposée "
+"sur ce serveur"
 
 #: cps/web.py:3288 cps/web.py:3580
 msgid "File to be uploaded must have an extension"
@@ -656,13 +653,6 @@ msgid "Error editing book, please check logfile for details"
 msgstr ""
 "Erreur d’édition du livre, veuillez consulter le journal (log) pour plus "
 "de détails"
-
-#: cps/web.py:3576
-#, python-format
-msgid "File extension \"%(ext)s\" is not allowed to be uploaded to this server"
-msgstr ""
-"L’extension de fichier \"%(ext)s\" n’est pas autorisée pour être déposée "
-"sur ce serveur"
 
 #: cps/web.py:3605
 #, python-format
@@ -717,7 +707,6 @@ msgstr ""
 "message : %(message)s"
 
 #: cps/worker.py:317 cps/worker.py:377 cps/worker.py:438
-#, fuzzy
 msgid "Finished"
 msgstr "Terminé"
 
@@ -1906,21 +1895,19 @@ msgstr "Téléchargements récents"
 #~ msgid "E-Mail: %(book)s"
 #~ msgstr "Courriel : %(book)s"
 
-#~ msgid ""
-#~ "Rename title from: \"%(src)s\" to "
-#~ "\"%(dest)s\" failed with error: %(error)s"
+#~ msgid "Rename title from: '%(src)s' to '%(dest)s' failed with error: %(error)s"
 #~ msgstr ""
-#~ "Renommer le titre de : \"%(src)s\" "
-#~ "à \"%(dest)s\" a échoué avec l’erreur"
-#~ " : %(error)s"
+#~ "Renommer le titre de : '%(src)s' à"
+#~ " '%(dest)s' a échoué avec l’erreur :"
+#~ " %(error)s"
 
 #~ msgid ""
-#~ "Rename author from: \"%(src)s\" to "
-#~ "\"%(dest)s\" failed with error: %(error)s"
+#~ "Rename author from: '%(src)s' to "
+#~ "'%(dest)s' failed with error: %(error)s"
 #~ msgstr ""
-#~ "Renommer l’auteur de : \"%(src)s\" à "
-#~ "\"%(dest)s\" a échoué avec l’erreur :"
-#~ " %%(error)s"
+#~ "Renommer l’auteur de : '%(src)s' à "
+#~ "'%(dest)s' a échoué avec l’erreur : "
+#~ "%%(error)s"
 
 #~ msgid "Password for user %(user)s reset"
 #~ msgstr "Le mot de passe de l’utilisateur %(user)s a été réinitialisé"
@@ -1930,4 +1917,7 @@ msgstr "Téléchargements récents"
 #~ "Echec de la création du chemin "
 #~ "d’accès pour la couverture %(cover)s "
 #~ "(Autorisation refusée)"
+
+#~ msgid "File extension '%s' is not allowed to be uploaded to this server"
+#~ msgstr ""
 

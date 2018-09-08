@@ -14,7 +14,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2018-09-08 12:22+0200\n"
+"POT-Creation-Date: 2018-09-08 14:49+0200\n"
 "PO-Revision-Date: 2017-04-30 00:47+0300\n"
 "Last-Translator: Pavel Korovin <p@tristero.se>\n"
 "Language: ru\n"
@@ -96,16 +96,12 @@ msgstr ""
 
 #: cps/helper.py:241
 #, python-format
-msgid ""
-"Rename title from: \"%(src)s\" to \"%(dest)s\" failed with error: "
-"%(error)s"
+msgid "Rename title from: '%(src)s' to '%(dest)s' failed with error: %(error)s"
 msgstr ""
 
 #: cps/helper.py:250
 #, python-format
-msgid ""
-"Rename author from: \"%(src)s\" to \"%(dest)s\" failed with error: "
-"%(error)s"
+msgid "Rename author from: '%(src)s' to '%(dest)s' failed with error: %(error)s"
 msgstr ""
 
 #: cps/helper.py:272 cps/helper.py:281
@@ -570,10 +566,10 @@ msgstr ""
 msgid "edit metadata"
 msgstr "изменить метаданные"
 
-#: cps/web.py:3284
+#: cps/web.py:3284 cps/web.py:3576
 #, python-format
-msgid "File extension \"%s\" is not allowed to be uploaded to this server"
-msgstr ""
+msgid "File extension '%(ext)s' is not allowed to be uploaded to this server"
+msgstr "Запрещена загрузка файлов с расширением '%(ext)s'"
 
 #: cps/web.py:3288 cps/web.py:3580
 msgid "File to be uploaded must have an extension"
@@ -619,11 +615,6 @@ msgstr ""
 #: cps/web.py:3555
 msgid "Error editing book, please check logfile for details"
 msgstr ""
-
-#: cps/web.py:3576
-#, python-format
-msgid "File extension \"%(ext)s\" is not allowed to be uploaded to this server"
-msgstr "Запрещена загрузка файлов с расширением \"%(ext)s\""
 
 #: cps/web.py:3605
 #, python-format
@@ -1852,14 +1843,12 @@ msgstr "Недавние скачивания"
 #~ msgid "E-Mail: %s"
 #~ msgstr ""
 
-#~ msgid ""
-#~ "Rename title from: \"%(src)s\" to "
-#~ "\"%(dest)s\" failed with error: %(error)s"
+#~ msgid "Rename title from: '%(src)s' to '%(dest)s' failed with error: %(error)s"
 #~ msgstr ""
 
 #~ msgid ""
-#~ "Rename author from: \"%(src)s\" to "
-#~ "\"%(dest)s\" failed with error: %(error)s"
+#~ "Rename author from: '%(src)s' to "
+#~ "'%(dest)s' failed with error: %(error)s"
 #~ msgstr ""
 
 #~ msgid "Password for user %(user)s reset"
@@ -1868,16 +1857,18 @@ msgstr "Недавние скачивания"
 #~ msgid "Password for user %s reset"
 #~ msgstr ""
 
-#~ msgid ""
-#~ "Rename title from: \"%(src)s\" to "
-#~ "\"%(src)s\" failed with error: %(error)s"
+#~ msgid "Rename title from: '%(src)s' to '%(src)s' failed with error: %(error)s"
 #~ msgstr ""
 
-#~ msgid ""
-#~ "Rename author from: \"%(src)s\" to "
-#~ "\"%(src)s\" failed with error: %(error)s"
+#~ msgid "Rename author from: '%(src)s' to '%(src)s' failed with error: %(error)s"
 #~ msgstr ""
 
 #~ msgid "Failed to create path for cover %(cover)s (Permission denied)."
 #~ msgstr ""
+
+#~ msgid "File extension '%s' is not allowed to be uploaded to this server"
+#~ msgstr ""
+
+#~ msgid "File extension \"%(ext)s\" is not allowed to be uploaded to this server"
+#~ msgstr "Запрещена загрузка файлов с расширением \"%(ext)s\""
 

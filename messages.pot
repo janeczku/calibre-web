@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2018-09-08 12:22+0200\n"
+"POT-Creation-Date: 2018-09-08 14:49+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -87,12 +87,12 @@ msgstr ""
 
 #: cps/helper.py:241
 #, python-format
-msgid "Rename title from: \"%(src)s\" to \"%(dest)s\" failed with error: %(error)s"
+msgid "Rename title from: '%(src)s' to '%(dest)s' failed with error: %(error)s"
 msgstr ""
 
 #: cps/helper.py:250
 #, python-format
-msgid "Rename author from: \"%(src)s\" to \"%(dest)s\" failed with error: %(error)s"
+msgid "Rename author from: '%(src)s' to '%(dest)s' failed with error: %(error)s"
 msgstr ""
 
 #: cps/helper.py:272 cps/helper.py:281
@@ -555,9 +555,9 @@ msgstr ""
 msgid "edit metadata"
 msgstr ""
 
-#: cps/web.py:3284
+#: cps/web.py:3284 cps/web.py:3576
 #, python-format
-msgid "File extension \"%s\" is not allowed to be uploaded to this server"
+msgid "File extension '%(ext)s' is not allowed to be uploaded to this server"
 msgstr ""
 
 #: cps/web.py:3288 cps/web.py:3580
@@ -603,11 +603,6 @@ msgstr ""
 
 #: cps/web.py:3555
 msgid "Error editing book, please check logfile for details"
-msgstr ""
-
-#: cps/web.py:3576
-#, python-format
-msgid "File extension \"%(ext)s\" is not allowed to be uploaded to this server"
 msgstr ""
 
 #: cps/web.py:3605

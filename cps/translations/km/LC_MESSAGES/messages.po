@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2018-09-08 12:22+0200\n"
+"POT-Creation-Date: 2018-09-08 14:49+0200\n"
 "PO-Revision-Date: 2018-08-27 17:06+0700\n"
 "Last-Translator: \n"
 "Language: km_KH\n"
@@ -89,16 +89,12 @@ msgstr "ឯកសារដែលបានស្នើសុំមិនអាច
 
 #: cps/helper.py:241
 #, python-format
-msgid ""
-"Rename title from: \"%(src)s\" to \"%(dest)s\" failed with error: "
-"%(error)s"
+msgid "Rename title from: '%(src)s' to '%(dest)s' failed with error: %(error)s"
 msgstr "ប្តូរចំណងជើងពី “%(src)s” ទៅជា “%(dest)s” បរាជ័យដោយបញ្ហា: %(error)s"
 
 #: cps/helper.py:250
 #, python-format
-msgid ""
-"Rename author from: \"%(src)s\" to \"%(dest)s\" failed with error: "
-"%(error)s"
+msgid "Rename author from: '%(src)s' to '%(dest)s' failed with error: %(error)s"
 msgstr "ប្តូរអ្នកនិពន្ធពី “%(src)s” ទៅជា “%(dest)s” បរាជ័យដោយបញ្ហា: %(error)s"
 
 #: cps/helper.py:272 cps/helper.py:281
@@ -565,10 +561,10 @@ msgstr "មានបញ្ហាពេលបើកឯកសារ eBook ។ ព�
 msgid "edit metadata"
 msgstr "កែប្រែទិន្នន័យមេតា"
 
-#: cps/web.py:3284
+#: cps/web.py:3284 cps/web.py:3576
 #, python-format
-msgid "File extension \"%s\" is not allowed to be uploaded to this server"
-msgstr ""
+msgid "File extension '%(ext)s' is not allowed to be uploaded to this server"
+msgstr "ឯកសារប្រភេទ '%(ext)s' មិនត្រូវបានអនុញ្ញាតឲអាប់ឡូដទៅម៉ាស៊ីន server នេះទេ"
 
 #: cps/web.py:3288 cps/web.py:3580
 msgid "File to be uploaded must have an extension"
@@ -614,11 +610,6 @@ msgstr "គម្របមិនមែនជាឯកសារ JPG មិនអ�
 #: cps/web.py:3555
 msgid "Error editing book, please check logfile for details"
 msgstr "មានបញ្ហាពេលកែប្រែសៀវភៅ សូមពិនិត្យមើល logfile សម្រាប់ព័ត៌មានបន្ថែម"
-
-#: cps/web.py:3576
-#, python-format
-msgid "File extension \"%(ext)s\" is not allowed to be uploaded to this server"
-msgstr "ឯកសារប្រភេទ “%(ext)s” មិនត្រូវបានអនុញ្ញាតឲអាប់ឡូដទៅម៉ាស៊ីន server នេះទេ"
 
 #: cps/web.py:3605
 #, python-format
@@ -1851,14 +1842,12 @@ msgstr "ការទាញយកថ្មីៗ"
 #~ msgid "E-Mail: %(book)s"
 #~ msgstr "អ៊ីមែល៖ %(book)s"
 
-#~ msgid ""
-#~ "Rename title from: \"%(src)s\" to "
-#~ "\"%(dest)s\" failed with error: %(error)s"
+#~ msgid "Rename title from: '%(src)s' to '%(dest)s' failed with error: %(error)s"
 #~ msgstr "ប្តូរចំណងជើងពី “%(src)s” ទៅជា “%(dest)s” បរាជ័យដោយបញ្ហា: %(error)s"
 
 #~ msgid ""
-#~ "Rename author from: \"%(src)s\" to "
-#~ "\"%(dest)s\" failed with error: %(error)s"
+#~ "Rename author from: '%(src)s' to "
+#~ "'%(dest)s' failed with error: %(error)s"
 #~ msgstr "ប្តូរអ្នកនិពន្ធពី “%(src)s” ទៅជា “%(dest)s” បរាជ័យដោយបញ្ហា: %(error)s"
 
 #~ msgid "Password for user %(user)s reset"
@@ -1867,16 +1856,18 @@ msgstr "ការទាញយកថ្មីៗ"
 #~ msgid "Password for user %s reset"
 #~ msgstr ""
 
-#~ msgid ""
-#~ "Rename title from: \"%(src)s\" to "
-#~ "\"%(src)s\" failed with error: %(error)s"
+#~ msgid "Rename title from: '%(src)s' to '%(src)s' failed with error: %(error)s"
 #~ msgstr ""
 
-#~ msgid ""
-#~ "Rename author from: \"%(src)s\" to "
-#~ "\"%(src)s\" failed with error: %(error)s"
+#~ msgid "Rename author from: '%(src)s' to '%(src)s' failed with error: %(error)s"
 #~ msgstr ""
 
 #~ msgid "Failed to create path for cover %(cover)s (Permission denied)."
 #~ msgstr ""
+
+#~ msgid "File extension '%s' is not allowed to be uploaded to this server"
+#~ msgstr ""
+
+#~ msgid "File extension \"%(ext)s\" is not allowed to be uploaded to this server"
+#~ msgstr "ឯកសារប្រភេទ “%(ext)s” មិនត្រូវបានអនុញ្ញាតឲអាប់ឡូដទៅម៉ាស៊ីន server នេះទេ"
 
