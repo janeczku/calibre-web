@@ -85,6 +85,7 @@ import hashlib
 from redirect import redirect_back
 import time
 import server
+import cPickle
 
 try:
     from urllib.parse import quote
@@ -183,7 +184,6 @@ logging.getLogger("book_formats").addHandler(file_handler)
 logging.getLogger("book_formats").setLevel(config.config_log_level)
 
 Principal(app)
-
 babel = Babel(app)
 
 import uploader
@@ -194,6 +194,9 @@ lm.login_view = 'login'
 lm.anonymous_user = ub.Anonymous
 app.secret_key = os.getenv('SECRET_KEY', 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT')
 db.setup_db()
+
+with open(os.path.join(config.get_main_dir, 'cps/translations/iso639.pickle'), 'rb') as f:
+    language_table = cPickle.load(f)
 
 
 def is_gdrive_ready():
@@ -1036,9 +1039,10 @@ def get_tags_json():
 def get_languages_json():
     if request.method == "GET":
         query = request.args.get('q').lower()
-        languages = speaking_language()
-        entries = [s for s in languages if query in s.name.lower()]
-        json_dumps = json.dumps([dict(name=r.name) for r in entries])
+        # languages = speaking_language()
+        languages = language_table[get_locale()]
+        entries = [s for key,s in languages.items() if query in s.lower()]
+        json_dumps = json.dumps([dict(name=r) for r in entries])
         return json_dumps
 
 

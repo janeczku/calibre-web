@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2018-09-08 14:49+0200\n"
+"POT-Creation-Date: 2018-09-08 20:58+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -113,523 +113,523 @@ msgstr ""
 msgid "Unrar binary file not found"
 msgstr ""
 
-#: cps/web.py:1114
+#: cps/web.py:1117
 msgid "Requesting update package"
 msgstr ""
 
-#: cps/web.py:1115
+#: cps/web.py:1118
 msgid "Downloading update package"
 msgstr ""
 
-#: cps/web.py:1116
+#: cps/web.py:1119
 msgid "Unzipping update package"
 msgstr ""
 
-#: cps/web.py:1117
+#: cps/web.py:1120
 msgid "Files are replaced"
 msgstr ""
 
-#: cps/web.py:1118
+#: cps/web.py:1121
 msgid "Database connections are closed"
 msgstr ""
 
-#: cps/web.py:1119
+#: cps/web.py:1122
 msgid "Server is stopped"
 msgstr ""
 
-#: cps/web.py:1120
+#: cps/web.py:1123
 msgid "Update finished, please press okay and reload page"
 msgstr ""
 
-#: cps/web.py:1140
+#: cps/web.py:1143
 msgid "Recently Added Books"
 msgstr ""
 
-#: cps/web.py:1150
+#: cps/web.py:1153
 msgid "Newest Books"
 msgstr ""
 
-#: cps/web.py:1162
+#: cps/web.py:1165
 msgid "Oldest Books"
 msgstr ""
 
-#: cps/web.py:1174
+#: cps/web.py:1177
 msgid "Books (A-Z)"
 msgstr ""
 
-#: cps/web.py:1185
+#: cps/web.py:1188
 msgid "Books (Z-A)"
 msgstr ""
 
-#: cps/web.py:1214
+#: cps/web.py:1217
 msgid "Hot Books (most downloaded)"
 msgstr ""
 
-#: cps/web.py:1227
+#: cps/web.py:1230
 msgid "Best rated books"
 msgstr ""
 
-#: cps/templates/index.xml:36 cps/web.py:1239
+#: cps/templates/index.xml:36 cps/web.py:1242
 msgid "Random Books"
 msgstr ""
 
-#: cps/web.py:1254
+#: cps/web.py:1257
 msgid "Author list"
 msgstr ""
 
-#: cps/web.py:1266 cps/web.py:1329 cps/web.py:1484 cps/web.py:2036
+#: cps/web.py:1269 cps/web.py:1332 cps/web.py:1487 cps/web.py:2039
 msgid "Error opening eBook. File does not exist or file is not accessible:"
 msgstr ""
 
-#: cps/templates/index.xml:73 cps/web.py:1313
+#: cps/templates/index.xml:73 cps/web.py:1316
 msgid "Series list"
 msgstr ""
 
-#: cps/web.py:1327
+#: cps/web.py:1330
 #, python-format
 msgid "Series: %(serie)s"
 msgstr ""
 
-#: cps/web.py:1354
+#: cps/web.py:1357
 msgid "Available languages"
 msgstr ""
 
-#: cps/web.py:1371
+#: cps/web.py:1374
 #, python-format
 msgid "Language: %(name)s"
 msgstr ""
 
-#: cps/templates/index.xml:66 cps/web.py:1382
+#: cps/templates/index.xml:66 cps/web.py:1385
 msgid "Category list"
 msgstr ""
 
-#: cps/web.py:1396
+#: cps/web.py:1399
 #, python-format
 msgid "Category: %(name)s"
 msgstr ""
 
-#: cps/templates/layout.html:71 cps/web.py:1535
+#: cps/templates/layout.html:71 cps/web.py:1538
 msgid "Tasks"
 msgstr ""
 
-#: cps/web.py:1565
+#: cps/web.py:1568
 msgid "Statistics"
 msgstr ""
 
-#: cps/web.py:1670
+#: cps/web.py:1673
 msgid "Callback domain is not verified, please follow steps to verify domain in google developer console"
 msgstr ""
 
-#: cps/web.py:1746
+#: cps/web.py:1748
 msgid "Server restarted, please reload page"
 msgstr ""
 
-#: cps/web.py:1749
+#: cps/web.py:1751
 msgid "Performing shutdown of server, please close window"
 msgstr ""
 
-#: cps/web.py:1767
+#: cps/web.py:1770
 msgid "Update done"
 msgstr ""
 
-#: cps/web.py:1837
+#: cps/web.py:1840
 msgid "Published after "
 msgstr ""
 
-#: cps/web.py:1844
+#: cps/web.py:1847
 msgid "Published before "
 msgstr ""
 
-#: cps/web.py:1858
+#: cps/web.py:1861
 #, python-format
 msgid "Rating <= %(rating)s"
 msgstr ""
 
-#: cps/web.py:1860
+#: cps/web.py:1863
 #, python-format
 msgid "Rating >= %(rating)s"
 msgstr ""
 
-#: cps/web.py:1919 cps/web.py:1928
+#: cps/web.py:1922 cps/web.py:1931
 msgid "search"
 msgstr ""
 
 #: cps/templates/index.xml:44 cps/templates/index.xml:48
-#: cps/templates/layout.html:146 cps/web.py:1995
+#: cps/templates/layout.html:146 cps/web.py:1998
 msgid "Read Books"
 msgstr ""
 
 #: cps/templates/index.xml:52 cps/templates/index.xml:56
-#: cps/templates/layout.html:148 cps/web.py:1998
+#: cps/templates/layout.html:148 cps/web.py:2001
 msgid "Unread Books"
 msgstr ""
 
-#: cps/web.py:2046 cps/web.py:2048 cps/web.py:2050 cps/web.py:2062
+#: cps/web.py:2049 cps/web.py:2051 cps/web.py:2053 cps/web.py:2065
 msgid "Read a Book"
 msgstr ""
 
-#: cps/web.py:2128 cps/web.py:3006
+#: cps/web.py:2131 cps/web.py:3009
 msgid "Please fill out all fields!"
 msgstr ""
 
-#: cps/web.py:2129 cps/web.py:2150 cps/web.py:2154 cps/web.py:2159
-#: cps/web.py:2161
+#: cps/web.py:2132 cps/web.py:2153 cps/web.py:2157 cps/web.py:2162
+#: cps/web.py:2164
 msgid "register"
 msgstr ""
 
-#: cps/web.py:2149 cps/web.py:3222
+#: cps/web.py:2152 cps/web.py:3225
 msgid "An unknown error occurred. Please try again later."
 msgstr ""
 
-#: cps/web.py:2152
+#: cps/web.py:2155
 msgid "Your e-mail is not allowed to register"
 msgstr ""
 
-#: cps/web.py:2155
+#: cps/web.py:2158
 msgid "Confirmation e-mail was send to your e-mail account."
 msgstr ""
 
-#: cps/web.py:2158
+#: cps/web.py:2161
 msgid "This username or e-mail address is already in use."
 msgstr ""
 
-#: cps/web.py:2175 cps/web.py:2271
+#: cps/web.py:2178 cps/web.py:2274
 #, python-format
 msgid "you are now logged in as: '%(nickname)s'"
 msgstr ""
 
-#: cps/web.py:2180
+#: cps/web.py:2183
 msgid "Wrong Username or Password"
 msgstr ""
 
-#: cps/web.py:2186 cps/web.py:2207
+#: cps/web.py:2189 cps/web.py:2210
 msgid "login"
 msgstr ""
 
-#: cps/web.py:2219 cps/web.py:2250
+#: cps/web.py:2222 cps/web.py:2253
 msgid "Token not found"
 msgstr ""
 
-#: cps/web.py:2227 cps/web.py:2258
+#: cps/web.py:2230 cps/web.py:2261
 msgid "Token has expired"
 msgstr ""
 
-#: cps/web.py:2235
+#: cps/web.py:2238
 msgid "Success! Please return to your device"
 msgstr ""
 
-#: cps/web.py:2285
+#: cps/web.py:2288
 msgid "Please configure the SMTP mail settings first..."
 msgstr ""
 
-#: cps/web.py:2289
+#: cps/web.py:2292
 #, python-format
 msgid "Book successfully queued for sending to %(kindlemail)s"
 msgstr ""
 
-#: cps/web.py:2293
+#: cps/web.py:2296
 #, python-format
 msgid "There was an error sending this book: %(res)s"
 msgstr ""
 
-#: cps/web.py:2295 cps/web.py:3060
+#: cps/web.py:2298 cps/web.py:3063
 msgid "Please configure your kindle e-mail address first..."
 msgstr ""
 
-#: cps/web.py:2339
+#: cps/web.py:2342
 #, python-format
 msgid "Book has been added to shelf: %(sname)s"
 msgstr ""
 
-#: cps/web.py:2350
+#: cps/web.py:2353
 msgid "Invalid shelf specified"
 msgstr ""
 
-#: cps/web.py:2355
+#: cps/web.py:2358
 #, python-format
 msgid "You are not allowed to add a book to the the shelf: %(name)s"
 msgstr ""
 
-#: cps/web.py:2360
+#: cps/web.py:2363
 msgid "User is not allowed to edit public shelves"
 msgstr ""
 
-#: cps/web.py:2378
+#: cps/web.py:2381
 #, python-format
 msgid "Books are already part of the shelf: %(name)s"
 msgstr ""
 
-#: cps/web.py:2392
+#: cps/web.py:2395
 #, python-format
 msgid "Books have been added to shelf: %(sname)s"
 msgstr ""
 
-#: cps/web.py:2394
+#: cps/web.py:2397
 #, python-format
 msgid "Could not add books to shelf: %(sname)s"
 msgstr ""
 
-#: cps/web.py:2431
+#: cps/web.py:2434
 #, python-format
 msgid "Book has been removed from shelf: %(sname)s"
 msgstr ""
 
-#: cps/web.py:2437
+#: cps/web.py:2440
 #, python-format
 msgid "Sorry you are not allowed to remove a book from this shelf: %(sname)s"
 msgstr ""
 
-#: cps/web.py:2457 cps/web.py:2481
+#: cps/web.py:2460 cps/web.py:2484
 #, python-format
 msgid "A shelf with the name '%(title)s' already exists."
 msgstr ""
 
-#: cps/web.py:2462
+#: cps/web.py:2465
 #, python-format
 msgid "Shelf %(title)s created"
 msgstr ""
 
-#: cps/web.py:2464 cps/web.py:2492
+#: cps/web.py:2467 cps/web.py:2495
 msgid "There was an error"
 msgstr ""
 
-#: cps/web.py:2465 cps/web.py:2467
+#: cps/web.py:2468 cps/web.py:2470
 msgid "create a shelf"
 msgstr ""
 
-#: cps/web.py:2490
+#: cps/web.py:2493
 #, python-format
 msgid "Shelf %(title)s changed"
 msgstr ""
 
-#: cps/web.py:2493 cps/web.py:2495
+#: cps/web.py:2496 cps/web.py:2498
 msgid "Edit a shelf"
 msgstr ""
 
-#: cps/web.py:2516
+#: cps/web.py:2519
 #, python-format
 msgid "successfully deleted shelf %(name)s"
 msgstr ""
 
-#: cps/web.py:2538
+#: cps/web.py:2541
 #, python-format
 msgid "Shelf: '%(name)s'"
 msgstr ""
 
-#: cps/web.py:2541
+#: cps/web.py:2544
 msgid "Error opening shelf. Shelf does not exist or is not accessible"
 msgstr ""
 
-#: cps/web.py:2572
+#: cps/web.py:2575
 #, python-format
 msgid "Change order of Shelf: '%(name)s'"
 msgstr ""
 
-#: cps/web.py:2601 cps/web.py:3012
+#: cps/web.py:2604 cps/web.py:3015
 msgid "E-mail is not from valid domain"
 msgstr ""
 
-#: cps/web.py:2603 cps/web.py:2644 cps/web.py:2647
+#: cps/web.py:2606 cps/web.py:2647 cps/web.py:2650
 #, python-format
 msgid "%(name)s's profile"
 msgstr ""
 
-#: cps/web.py:2642
+#: cps/web.py:2645
 msgid "Found an existing account for this e-mail address."
 msgstr ""
 
-#: cps/web.py:2645
+#: cps/web.py:2648
 msgid "Profile updated"
 msgstr ""
 
-#: cps/web.py:2657
+#: cps/web.py:2660
 msgid "Unknown"
 msgstr ""
 
-#: cps/web.py:2671
+#: cps/web.py:2674
 msgid "Admin page"
 msgstr ""
 
-#: cps/web.py:2749 cps/web.py:2922
+#: cps/web.py:2752 cps/web.py:2925
 msgid "Calibre-Web configuration updated"
 msgstr ""
 
-#: cps/templates/admin.html:91 cps/web.py:2762
+#: cps/templates/admin.html:91 cps/web.py:2765
 msgid "UI Configuration"
 msgstr ""
 
-#: cps/web.py:2780
+#: cps/web.py:2783
 msgid "Import of optional Google Drive requirements missing"
 msgstr ""
 
-#: cps/web.py:2783
+#: cps/web.py:2786
 msgid "client_secrets.json is missing or not readable"
 msgstr ""
 
-#: cps/web.py:2788 cps/web.py:2815
+#: cps/web.py:2791 cps/web.py:2818
 msgid "client_secrets.json is not configured for web application"
 msgstr ""
 
-#: cps/templates/admin.html:90 cps/web.py:2818 cps/web.py:2844 cps/web.py:2856
-#: cps/web.py:2898 cps/web.py:2913 cps/web.py:2930 cps/web.py:2937
-#: cps/web.py:2954
+#: cps/templates/admin.html:90 cps/web.py:2821 cps/web.py:2847 cps/web.py:2859
+#: cps/web.py:2901 cps/web.py:2916 cps/web.py:2933 cps/web.py:2940
+#: cps/web.py:2957
 msgid "Basic Configuration"
 msgstr ""
 
-#: cps/web.py:2841
+#: cps/web.py:2844
 msgid "Keyfile location is not valid, please enter correct path"
 msgstr ""
 
-#: cps/web.py:2853
+#: cps/web.py:2856
 msgid "Certfile location is not valid, please enter correct path"
 msgstr ""
 
-#: cps/web.py:2895
+#: cps/web.py:2898
 msgid "Logfile location is not valid, please enter correct path"
 msgstr ""
 
-#: cps/web.py:2934
+#: cps/web.py:2937
 msgid "DB location is not valid, please enter correct path"
 msgstr ""
 
-#: cps/templates/admin.html:31 cps/web.py:3008 cps/web.py:3014 cps/web.py:3030
+#: cps/templates/admin.html:31 cps/web.py:3011 cps/web.py:3017 cps/web.py:3033
 msgid "Add new user"
 msgstr ""
 
-#: cps/web.py:3020
+#: cps/web.py:3023
 #, python-format
 msgid "User '%(user)s' created"
 msgstr ""
 
-#: cps/web.py:3024
+#: cps/web.py:3027
 msgid "Found an existing account for this e-mail address or nickname."
 msgstr ""
 
-#: cps/web.py:3048 cps/web.py:3062
+#: cps/web.py:3051 cps/web.py:3065
 msgid "E-mail server settings updated"
-msgstr ""
-
-#: cps/web.py:3055
-#, python-format
-msgid "Test e-mail successfully send to %(kindlemail)s"
 msgstr ""
 
 #: cps/web.py:3058
 #, python-format
+msgid "Test e-mail successfully send to %(kindlemail)s"
+msgstr ""
+
+#: cps/web.py:3061
+#, python-format
 msgid "There was an error sending the Test e-mail: %(res)s"
 msgstr ""
 
-#: cps/web.py:3063
+#: cps/web.py:3066
 msgid "Edit e-mail server settings"
 msgstr ""
 
-#: cps/web.py:3088
+#: cps/web.py:3091
 #, python-format
 msgid "User '%(nick)s' deleted"
 msgstr ""
 
-#: cps/web.py:3197
+#: cps/web.py:3200
 #, python-format
 msgid "User '%(nick)s' updated"
 msgstr ""
 
-#: cps/web.py:3200
+#: cps/web.py:3203
 msgid "An unknown error occured."
 msgstr ""
 
-#: cps/web.py:3202
+#: cps/web.py:3205
 #, python-format
 msgid "Edit User %(nick)s"
 msgstr ""
 
-#: cps/web.py:3219
+#: cps/web.py:3222
 #, python-format
 msgid "Password for user %(user)s reset"
 msgstr ""
 
-#: cps/web.py:3239
+#: cps/web.py:3242
 msgid "Error opening eBook. File does not exist or file is not accessible"
 msgstr ""
 
-#: cps/web.py:3270 cps/web.py:3546 cps/web.py:3551 cps/web.py:3706
+#: cps/web.py:3273 cps/web.py:3549 cps/web.py:3554 cps/web.py:3709
 msgid "edit metadata"
 msgstr ""
 
-#: cps/web.py:3284 cps/web.py:3576
+#: cps/web.py:3287 cps/web.py:3579
 #, python-format
 msgid "File extension '%(ext)s' is not allowed to be uploaded to this server"
 msgstr ""
 
-#: cps/web.py:3288 cps/web.py:3580
+#: cps/web.py:3291 cps/web.py:3583
 msgid "File to be uploaded must have an extension"
 msgstr ""
 
-#: cps/web.py:3300 cps/web.py:3600
+#: cps/web.py:3303 cps/web.py:3603
 #, python-format
 msgid "Failed to create path %(path)s (Permission denied)."
 msgstr ""
 
-#: cps/web.py:3305
+#: cps/web.py:3308
 #, python-format
 msgid "Failed to store file %(file)s."
 msgstr ""
 
-#: cps/web.py:3321
+#: cps/web.py:3324
 #, python-format
 msgid "File format %(ext)s added to %(book)s"
 msgstr ""
 
-#: cps/web.py:3339
+#: cps/web.py:3342
 #, python-format
 msgid "Failed to create path for cover %(path)s (Permission denied)."
 msgstr ""
 
-#: cps/web.py:3346
+#: cps/web.py:3349
 #, python-format
 msgid "Failed to store cover-file %(cover)s."
 msgstr ""
 
-#: cps/web.py:3349
+#: cps/web.py:3352
 msgid "Cover-file is not a valid image file"
 msgstr ""
 
-#: cps/web.py:3362 cps/web.py:3366
+#: cps/web.py:3365 cps/web.py:3369
 msgid "unknown"
 msgstr ""
 
-#: cps/web.py:3388
+#: cps/web.py:3391
 msgid "Cover is not a jpg file, can't save"
 msgstr ""
 
-#: cps/web.py:3555
+#: cps/web.py:3558
 msgid "Error editing book, please check logfile for details"
 msgstr ""
 
-#: cps/web.py:3605
+#: cps/web.py:3608
 #, python-format
 msgid "Failed to store file %(file)s (Permission denied)."
 msgstr ""
 
-#: cps/web.py:3610
+#: cps/web.py:3613
 #, python-format
 msgid "Failed to delete file %(file)s (Permission denied)."
 msgstr ""
 
-#: cps/web.py:3692
+#: cps/web.py:3695
 #, python-format
 msgid "File %(file)s uploaded"
 msgstr ""
 
-#: cps/web.py:3722
+#: cps/web.py:3725
 msgid "Source or destination format for conversion missing"
 msgstr ""
 
-#: cps/web.py:3732
+#: cps/web.py:3735
 #, python-format
 msgid "Book successfully queued for converting to %(book_format)s"
 msgstr ""
 
-#: cps/web.py:3736
+#: cps/web.py:3739
 #, python-format
 msgid "There was an error converting this book: %(res)s"
 msgstr ""
