@@ -3281,7 +3281,7 @@ def edit_book(book_id):
             if '.' in requested_file.filename:
                 file_ext = requested_file.filename.rsplit('.', 1)[-1].lower()
                 if file_ext not in ALLOWED_EXTENSIONS:
-                    flash(_('File extension "%s" is not allowed to be uploaded to this server' % file_ext),
+                    flash(_("File extension '%(ext)s' is not allowed to be uploaded to this server", ext=file_ext),
                           category="error")
                     return redirect(url_for('show_book', book_id=book.id))
             else:
@@ -3573,7 +3573,7 @@ def upload():
                 file_ext = requested_file.filename.rsplit('.', 1)[-1].lower()
                 if file_ext not in ALLOWED_EXTENSIONS:
                     flash(
-                        _('File extension "%(ext)s" is not allowed to be uploaded to this server',
+                        _("File extension '%(ext)s' is not allowed to be uploaded to this server",
                           ext=file_ext), category="error")
                     return redirect(url_for('index'))
             else:

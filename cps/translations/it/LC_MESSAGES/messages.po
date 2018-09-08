@@ -14,7 +14,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2018-09-08 12:22+0200\n"
+"POT-Creation-Date: 2018-09-08 14:49+0200\n"
 "PO-Revision-Date: 2017-04-04 15:09+0200\n"
 "Last-Translator: Marco Picone <marcovendere@gmail.com>\n"
 "Language: it\n"
@@ -95,16 +95,12 @@ msgstr ""
 
 #: cps/helper.py:241
 #, python-format
-msgid ""
-"Rename title from: \"%(src)s\" to \"%(dest)s\" failed with error: "
-"%(error)s"
+msgid "Rename title from: '%(src)s' to '%(dest)s' failed with error: %(error)s"
 msgstr ""
 
 #: cps/helper.py:250
 #, python-format
-msgid ""
-"Rename author from: \"%(src)s\" to \"%(dest)s\" failed with error: "
-"%(error)s"
+msgid "Rename author from: '%(src)s' to '%(dest)s' failed with error: %(error)s"
 msgstr ""
 
 #: cps/helper.py:272 cps/helper.py:281
@@ -575,10 +571,12 @@ msgstr ""
 msgid "edit metadata"
 msgstr "modificare la metainformazione"
 
-#: cps/web.py:3284
+#: cps/web.py:3284 cps/web.py:3576
 #, python-format
-msgid "File extension \"%s\" is not allowed to be uploaded to this server"
+msgid "File extension '%(ext)s' is not allowed to be uploaded to this server"
 msgstr ""
+"Non è consentito caricare i file con l'estensione '%(ext)s' a questo "
+"server"
 
 #: cps/web.py:3288 cps/web.py:3580
 msgid "File to be uploaded must have an extension"
@@ -625,13 +623,6 @@ msgstr ""
 msgid "Error editing book, please check logfile for details"
 msgstr ""
 
-#: cps/web.py:3576
-#, python-format
-msgid "File extension \"%(ext)s\" is not allowed to be uploaded to this server"
-msgstr ""
-"Non è consentito caricare i file con l'estensione \"%(ext)s\" a questo "
-"server"
-
 #: cps/web.py:3605
 #, python-format
 msgid "Failed to store file %(file)s (Permission denied)."
@@ -640,7 +631,7 @@ msgstr "Impossibile archiviare il file %(file)s (autorizzazione negata)"
 #: cps/web.py:3610
 #, python-format
 msgid "Failed to delete file %(file)s (Permission denied)."
-msgstr "Impossibile eliminare il file %s (autorizzazione negata)"
+msgstr "Impossibile eliminare il file %(file)s (autorizzazione negata)"
 
 #: cps/web.py:3692
 #, python-format
@@ -988,7 +979,7 @@ msgstr "Sei davvero sicuro?"
 
 #: cps/templates/book_edit.html:194
 msgid "Book will be deleted from Calibre database"
-msgstr "l libro verrà cancellato dal database Calibre\""
+msgstr "l libro verrà cancellato dal database Calibre'"
 
 #: cps/templates/book_edit.html:195
 msgid "and from hard disk"
@@ -1863,14 +1854,12 @@ msgstr "Download Recenti"
 #~ msgid "E-Mail: %(book)s"
 #~ msgstr ""
 
-#~ msgid ""
-#~ "Rename title from: \"%(src)s\" to "
-#~ "\"%(dest)s\" failed with error: %(error)s"
+#~ msgid "Rename title from: '%(src)s' to '%(dest)s' failed with error: %(error)s"
 #~ msgstr ""
 
 #~ msgid ""
-#~ "Rename author from: \"%(src)s\" to "
-#~ "\"%(dest)s\" failed with error: %(error)s"
+#~ "Rename author from: '%(src)s' to "
+#~ "'%(dest)s' failed with error: %(error)s"
 #~ msgstr ""
 
 #~ msgid "Password for user %(user)s reset"
@@ -1879,16 +1868,21 @@ msgstr "Download Recenti"
 #~ msgid "Password for user %s reset"
 #~ msgstr ""
 
-#~ msgid ""
-#~ "Rename title from: \"%(src)s\" to "
-#~ "\"%(src)s\" failed with error: %(error)s"
+#~ msgid "Rename title from: '%(src)s' to '%(src)s' failed with error: %(error)s"
 #~ msgstr ""
 
-#~ msgid ""
-#~ "Rename author from: \"%(src)s\" to "
-#~ "\"%(src)s\" failed with error: %(error)s"
+#~ msgid "Rename author from: '%(src)s' to '%(src)s' failed with error: %(error)s"
 #~ msgstr ""
 
 #~ msgid "Failed to create path for cover %(cover)s (Permission denied)."
 #~ msgstr ""
+
+#~ msgid "File extension '%s' is not allowed to be uploaded to this server"
+#~ msgstr ""
+
+#~ msgid "File extension \"%(ext)s\" is not allowed to be uploaded to this server"
+#~ msgstr ""
+#~ "Non è consentito caricare i file "
+#~ "con l'estensione \"%(ext)s\" a questo "
+#~ "server"
 

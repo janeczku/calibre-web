@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2018-09-08 12:22+0200\n"
+"POT-Creation-Date: 2018-09-08 14:49+0200\n"
 "PO-Revision-Date: 2018-02-07 02:20-0500\n"
 "Last-Translator: white <space_white@yahoo.com>\n"
 "Language: ja\n"
@@ -90,16 +90,12 @@ msgstr ""
 
 #: cps/helper.py:241
 #, python-format
-msgid ""
-"Rename title from: \"%(src)s\" to \"%(dest)s\" failed with error: "
-"%(error)s"
+msgid "Rename title from: '%(src)s' to '%(dest)s' failed with error: %(error)s"
 msgstr ""
 
 #: cps/helper.py:250
 #, python-format
-msgid ""
-"Rename author from: \"%(src)s\" to \"%(dest)s\" failed with error: "
-"%(error)s"
+msgid "Rename author from: '%(src)s' to '%(dest)s' failed with error: %(error)s"
 msgstr ""
 
 #: cps/helper.py:272 cps/helper.py:281
@@ -564,10 +560,10 @@ msgstr "電子本を開けません。ファイルは存在しないまたはア
 msgid "edit metadata"
 msgstr "メタデータを編集します"
 
-#: cps/web.py:3284
+#: cps/web.py:3284 cps/web.py:3576
 #, python-format
-msgid "File extension \"%s\" is not allowed to be uploaded to this server"
-msgstr ""
+msgid "File extension '%(ext)s' is not allowed to be uploaded to this server"
+msgstr "ファイル拡張子 '%(ext)s' をこのサーバにアップロードする許可はありません"
 
 #: cps/web.py:3288 cps/web.py:3580
 msgid "File to be uploaded must have an extension"
@@ -613,11 +609,6 @@ msgstr ""
 #: cps/web.py:3555
 msgid "Error editing book, please check logfile for details"
 msgstr ""
-
-#: cps/web.py:3576
-#, python-format
-msgid "File extension \"%(ext)s\" is not allowed to be uploaded to this server"
-msgstr "ファイル拡張子 \"%(ext)s\" をこのサーバにアップロードする許可はありません"
 
 #: cps/web.py:3605
 #, python-format
@@ -1099,7 +1090,7 @@ msgstr "公的登録を有効する"
 
 #: cps/templates/config_edit.html:146
 msgid "Enable remote login (\"magic link\")"
-msgstr "遠距離ログインを有効する (\"マジックリンク\")"
+msgstr "遠距離ログインを有効する ('マジックリンク')"
 
 #: cps/templates/config_edit.html:151
 msgid "Use"
@@ -1846,15 +1837,13 @@ msgstr "最近ダウンロード"
 #~ msgid "E-Mail: %(book)s"
 #~ msgstr ""
 
-#~ msgid ""
-#~ "Rename title from: \"%(src)s\" to "
-#~ "\"%(dest)s\" failed with error: %(error)s"
-#~ msgstr "タイトルを\"%(src)s\"から\"%(dest)s\"の改名は失敗しました。エーラ: %(error)s"
+#~ msgid "Rename title from: '%(src)s' to '%(dest)s' failed with error: %(error)s"
+#~ msgstr "タイトルを'%(src)s'から'%(dest)s'の改名は失敗しました。エーラ: %(error)s"
 
 #~ msgid ""
-#~ "Rename author from: \"%(src)s\" to "
-#~ "\"%(dest)s\" failed with error: %(error)s"
-#~ msgstr "著者を\"%(src)s\"から\"%(dest)s\"の改名は失敗しました。エーラ：%(error)s"
+#~ "Rename author from: '%(src)s' to "
+#~ "'%(dest)s' failed with error: %(error)s"
+#~ msgstr "著者を'%(src)s'から'%(dest)s'の改名は失敗しました。エーラ：%(error)s"
 
 #~ msgid "Password for user %(user)s reset"
 #~ msgstr ""
@@ -1862,16 +1851,18 @@ msgstr "最近ダウンロード"
 #~ msgid "Password for user %s reset"
 #~ msgstr ""
 
-#~ msgid ""
-#~ "Rename title from: \"%(src)s\" to "
-#~ "\"%(src)s\" failed with error: %(error)s"
+#~ msgid "Rename title from: '%(src)s' to '%(src)s' failed with error: %(error)s"
 #~ msgstr ""
 
-#~ msgid ""
-#~ "Rename author from: \"%(src)s\" to "
-#~ "\"%(src)s\" failed with error: %(error)s"
+#~ msgid "Rename author from: '%(src)s' to '%(src)s' failed with error: %(error)s"
 #~ msgstr ""
 
 #~ msgid "Failed to create path for cover %(cover)s (Permission denied)."
 #~ msgstr ""
+
+#~ msgid "File extension '%s' is not allowed to be uploaded to this server"
+#~ msgstr ""
+
+#~ msgid "File extension \"%(ext)s\" is not allowed to be uploaded to this server"
+#~ msgstr "ファイル拡張子 \"%(ext)s\" をこのサーバにアップロードする許可はありません"
 
