@@ -2936,8 +2936,8 @@ def configuration_helper(origin):
                                              gdriveError=gdriveError, goodreads=goodreads_support, rarfile_support=rar_support,
                                              title=_(u"Basic Configuration"), page="config")
         if reboot_required:
-            ub.session.close()
-            ub.engine.dispose()
+            # ub.session.close()
+            # ub.engine.dispose()
             # stop Server
             server.Server.setRestartTyp(True)
             server.Server.stopServer()
