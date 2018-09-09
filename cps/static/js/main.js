@@ -104,6 +104,7 @@ $(function() {
         var $this = $(this);
         var buttonText = $this.html();
         $this.html("...");
+        $("#update_error").addClass("hidden")
         $.ajax({
             dataType: "json",
             url: window.location.pathname + "/../../get_update_status",
@@ -115,6 +116,11 @@ $(function() {
                     $("#update_info")
                         .removeClass("hidden")
                         .find("span").html(data.commit);
+                }
+                if (data.error.length != 0) {
+                    $("#update_error")
+                        .removeClass("hidden")
+                        .find("span").html(data.error);
                 }
             }
         });
