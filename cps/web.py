@@ -1082,23 +1082,58 @@ def get_matching_tags():
 @app.route("/get_update_status", methods=['GET'])
 @login_required_if_no_ano
 def get_update_status():
-    status = {}
+    status = {
+        'status': False
+    }
+    repository_url = 'https://api.github.com/repos/janeczku/calibre-web'
     tz = datetime.timedelta(seconds=time.timezone if (time.localtime().tm_isdst == 0) else time.altzone)
+
     if request.method == "GET":
         # should be automatically replaced by git with current commit hash
-        commit_id = '$Format:%H$'
-        # ToDo: Handle server not reachable -> ValueError:
-        commit = requests.get('https://api.github.com/repos/janeczku/calibre-web/git/refs/heads/master').json()
-        if "object" in commit and commit['object']['sha'] != commit_id:
-            status['status'] = True
-            commitdate = requests.get('https://api.github.com/repos/janeczku/calibre-web/git/commits/'+commit['object']['sha']).json()
-            if "committer" in commitdate:
-                form_date=datetime.datetime.strptime(commitdate['committer']['date'],"%Y-%m-%dT%H:%M:%SZ") - tz
-                status['commit'] = format_datetime(form_date, format='short', locale=get_locale())
+        current_commit_id = '$Format:%H$'
+
+        try:
+            r = requests.get(repository_url + '/git/refs/heads/master')
+            r.raise_for_status()
+            commit = r.json()
+        except requests.exceptions.HTTPError as ex:
+            status['error'] = _(u'HTTP Error') + ' ' + str(ex)
+        except requests.exceptions.ConnectionError:
+            status['error'] = _(u'Connection error')
+        except requests.exceptions.Timeout:
+            status['error'] = _(u'Timeout while establishing connection')
+        except requests.exceptions.RequestException:
+            status['error'] = _(u'General error')
+
+        if 'error' in status:
+            return json.dumps(status)
+
+        if 'object' in commit and commit['object']['sha'] != current_commit_id:
+            # a new update is available
+            try:
+                r = requests.get(repository_url + '/git/commits/' + commit['object']['sha'])
+                r.raise_for_status()
+                update_data = r.json()
+            except requests.exceptions.HTTPError as ex:
+                status['error'] = _(u'HTTP Error') + ' ' + str(ex)
+            except requests.exceptions.ConnectionError:
+                status['error'] = _(u'Connection error')
+            except requests.exceptions.Timeout:
+                status['error'] = _(u'Timeout while establishing connection')
+            except requests.exceptions.RequestException:
+                status['error'] = _(u'General error')
+
+            if 'error' in status:
+                return json.dumps(status)
+
+            if 'committer' in update_data:
+                status['status'] = True
+                new_commit_date = datetime.datetime.strptime(
+                    update_data['committer']['date'], '%Y-%m-%dT%H:%M:%SZ') - tz
+                status['commit'] = format_datetime(new_commit_date, format='short', locale=get_locale())
             else:
-                status['commit'] = u'Unknown'
-        else:
-            status['status'] = False
+                status['error'] = _(u'Could not fetch update information')
+
     return json.dumps(status)
 
 
