@@ -1044,8 +1044,12 @@ def get_languages_json():
         query = request.args.get('q').lower()
         # languages = speaking_language()
         languages = language_table[get_locale()]
-        entries = [s for key,s in languages.items() if query in s.lower()]
-        json_dumps = json.dumps([dict(name=r) for r in entries])
+        entries_start = [s for key, s in languages.items() if s.lower().startswith(query.lower())]
+        if len(entries_start) < 5:
+            entries = [s for key,s in languages.items() if query in s.lower()]
+            entries_start.extend(entries[0:(5-len(entries_start))])
+            entries_start = list(set(entries_start))
+        json_dumps = json.dumps([dict(name=r) for r in entries_start[0:5]])
         return json_dumps
 
 
@@ -3247,11 +3251,7 @@ def edit_book(book_id):
         return redirect(url_for("index"))
 
     for indx in range(0, len(book.languages)):
-        try:
-            book.languages[indx].language_name = LC.parse(book.languages[indx].lang_code).get_language_name(
-                get_locale())
-        except UnknownLocaleError:
-            book.languages[indx].language_name = _(isoLanguages.get(part3=book.languages[indx].lang_code).name)
+        book.languages[indx].language_name = language_table[get_locale()][book.languages[indx].lang_code]
     for authr in book.authors:
         author_names.append(authr.name.replace('|', ','))
 
@@ -3276,10 +3276,6 @@ def edit_book(book_id):
         return render_title_template('book_edit.html', book=book, authors=author_names, cc=cc,
                                      title=_(u"edit metadata"), page="editbook", display_convertbtn=display_convertbtn,
                                      conversion_formats=allowed_conversion_formats)
-
-    # Update book
-    edited_books_id = set()
-
     # Check and handle Uploaded file
     if 'btn-upload-format' in request.files:
         requested_file = request.files['btn-upload-format']
@@ -3334,7 +3330,6 @@ def edit_book(book_id):
         # check for empty request
         if requested_file.filename != '':
             file_ext = requested_file.filename.rsplit('.', 1)[-1].lower()
-            # file_name = book.path.rsplit('/', 1)[-1]
             filepath = os.path.normpath(os.path.join(config.config_calibre_dir, book.path))
             saved_filename = os.path.join(filepath,  'cover.' + file_ext)
 
@@ -3358,10 +3353,14 @@ def edit_book(book_id):
     to_save = request.form.to_dict()
 
     try:
+        # Update book
+        edited_books_id = set()
+        #handle book title
         if book.title != to_save["book_title"]:
             book.title = to_save["book_title"]
             edited_books_id.add(book.id)
 
+        # handle author(s)
         input_authors = to_save["author_name"].split('&')
         input_authors = list(map(lambda it: it.strip().replace(',', '|'), input_authors))
         # we have all author names now
@@ -3397,21 +3396,21 @@ def edit_book(book_id):
             if book.series_index != to_save["series_index"]:
                 book.series_index = to_save["series_index"]
 
+            # Handle book comments/description
             if len(book.comments):
                 book.comments[0].text = to_save["description"]
             else:
                 book.comments.append(db.Comments(text=to_save["description"], book=book.id))
 
+            # Handle book tags
             input_tags = to_save["tags"].split(',')
             input_tags = list(map(lambda it: it.strip(), input_tags))
             modify_database_object(input_tags, book.tags, db.Tags, db.session, 'tags')
 
+            # Handle book series
             input_series = [to_save["series"].strip()]
             input_series = [x for x in input_series if x != '']
             modify_database_object(input_series, book.series, db.Series, db.session, 'series')
-
-            input_languages = to_save["languages"].split(',')
-            input_languages = list(map(lambda it: it.strip().lower(), input_languages))
 
             if to_save["pubdate"]:
                 try:
@@ -3420,24 +3419,25 @@ def edit_book(book_id):
                     book.pubdate = db.Books.DEFAULT_PUBDATE
             else:
                 book.pubdate = db.Books.DEFAULT_PUBDATE
-
             '''if len(book.publishers):
                 if to_save["publisher"] != book.publishers[0].name:
                     modify_database_object(to_save["publisher"], book.publishers, db.Publishers, db.session, 'series')
             else:
                 modify_database_object(to_save["publisher"], book.publishers, db.Publishers, db.session, 'series')'''
 
-            # retranslate displayed text to language codes
-            languages = db.session.query(db.Languages).all()
+            # handle book languages
+            input_languages = to_save["languages"].split(',')
+            # input_languages = list(map(lambda it: it.strip().lower(), input_languages))
+            input_languages = [x.strip().lower() for x in input_languages if x != '']
             input_l = []
-            for lang in languages:
+            invers_lang_table = [x.lower() for x in language_table[get_locale()].values()]
+            for lang in input_languages:
                 try:
-                    lang.name = LC.parse(lang.lang_code).get_language_name(get_locale()).lower()
-                except UnknownLocaleError:
-                    lang.name = _(isoLanguages.get(part3=lang.lang_code).name).lower()
-                for inp_lang in input_languages:
-                    if inp_lang == lang.name:
-                        input_l.append(lang.lang_code)
+                    res = list(language_table[get_locale()].keys())[invers_lang_table.index(lang)]
+                    input_l.append(res)
+                except ValueError:
+                    app.logger.error('%s is not a valid language' % lang)
+                    flash(_(u"%(langname)s is not a valid language", langname=lang), category="error")
             modify_database_object(input_l, book.languages, db.Languages, db.session, 'languages')
 
             if to_save["rating"].strip():
