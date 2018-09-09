@@ -85,7 +85,10 @@ import hashlib
 from redirect import redirect_back
 import time
 import server
-import cPickle
+try:
+    import cPickle
+except ImportError:
+    import pickle as cPickle
 
 try:
     from urllib.parse import quote
