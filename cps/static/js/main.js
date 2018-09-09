@@ -110,18 +110,33 @@ $(function() {
             url: window.location.pathname + "/../../get_update_status",
             success: function success(data) {
                 $this.html(buttonText);
-                if (data.status === true) {
-                    $("#check_for_update").addClass("hidden");
-                    $("#perform_update").removeClass("hidden");
-                    $("#update_info")
-                        .removeClass("hidden")
-                        .find("span").html(data.commit);
+
+                var cssClass = '';
+                var message = ''
+
+                if (data.success === true) {
+                    if (data.update === true) {
+                        $("#check_for_update").addClass("hidden");
+                        $("#perform_update").removeClass("hidden");
+                        $("#update_info")
+                            .removeClass("hidden")
+                            .find("span").html(data.commit);
+
+                        data.history.reverse().forEach((entry, index) => {
+                            $("<tr><td>" + entry[0] + "</td><td>" + entry[1] + "</td></tr>").appendTo($("#update_table"));
+                        });
+                        cssClass = 'alert-warning'
+                    } else {
+                        cssClass = 'alert-success'
+                    }
+                } else {
+                    cssClass = 'alert-danger'
                 }
-                if (data.error.length != 0) {
-                    $("#update_error")
-                        .removeClass("hidden")
-                        .find("span").html(data.error);
-                }
+
+                message = '<div class="alert ' + cssClass
+                    + ' fade in"><a href="#" class="close" data-dismiss="alert">&times;</a>' + data.message + '</div>';
+
+                $(message).insertAfter($("#update_table"));
             }
         });
     });

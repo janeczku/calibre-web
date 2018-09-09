@@ -1085,7 +1085,9 @@ def get_matching_tags():
 @login_required_if_no_ano
 def get_update_status():
     status = {
-        'status': False,
+        'update': False,
+        'success': False,
+        'message': '',
         'current_commit_hash': ''
     }
     repository_url = 'https://api.github.com/repos/janeczku/calibre-web'
@@ -1106,15 +1108,16 @@ def get_update_status():
             r.raise_for_status()
             commit = r.json()
         except requests.exceptions.HTTPError as ex:
-            status['error'] = _(u'HTTP Error') + ' ' + str(ex)
+            status['message'] = _(u'HTTP Error') + ' ' + str(ex)
         except requests.exceptions.ConnectionError:
-            status['error'] = _(u'Connection error')
+            status['message'] = _(u'Connection error')
         except requests.exceptions.Timeout:
-            status['error'] = _(u'Timeout while establishing connection')
+            status['message'] = _(u'Timeout while establishing connection')
         except requests.exceptions.RequestException:
-            status['error'] = _(u'General error')
+            status['message'] = _(u'General error')
 
-        if 'error' in status:
+        if status['message'] != '':
+            status['success'] = False
             return json.dumps(status)
 
         if 'object' in commit and commit['object']['sha'] != status['current_commit_hash']:
@@ -1132,17 +1135,67 @@ def get_update_status():
             except requests.exceptions.RequestException:
                 status['error'] = _(u'General error')
 
-            if 'error' in status:
+            if status['message'] != '':
+                status['success'] = False
                 return json.dumps(status)
 
-            if 'committer' in update_data:
-                status['status'] = True
+            if 'committer' in update_data and 'message' in update_data:
+                parents = []
+
+                status['update'] = True
+                status['success'] = True
+                status['message'] = _(u'A new update is available. Click on the button below update to the latest version.')
+
                 new_commit_date = datetime.datetime.strptime(
                     update_data['committer']['date'], '%Y-%m-%dT%H:%M:%SZ') - tz
-                status['commit'] = format_datetime(new_commit_date, format='short', locale=get_locale())
-            else:
-                status['error'] = _(u'Could not fetch update information')
+                parents.append(
+                    [
+                        format_datetime(new_commit_date, format='short', locale=get_locale()),
+                        update_data['message'],
+                        update_data['sha']
+                    ]
+                )
 
+                # it only makes sense to analyze the parents if we know the current commit hash
+                if status['current_commit_hash'] != '':
+                    try:
+                        parent_commit = update_data['parents'][0]
+                        # limit the maximum search depth
+                        remaining_parents_cnt = 10
+                    except IndexError:
+                        remaining_parents_cnt = None
+
+                    if remaining_parents_cnt is not None:
+                        while True:
+                            if remaining_parents_cnt == 0:
+                                break
+
+                            # check if we are more than one update behind if so, go up the tree
+                            if parent_commit['sha'] != status['current_commit_hash']:
+                                try:
+                                    r = requests.get(parent_commit['url'])
+                                    r.raise_for_status()
+                                    parent_data = r.json()
+
+                                    parent_commit_date = datetime.datetime.strptime(
+                                        parent_data['committer']['date'], '%Y-%m-%dT%H:%M:%SZ') - tz
+                                    parent_commit_date = format_datetime(
+                                        parent_commit_date, format='short', locale=get_locale())
+
+                                    parents.append([parent_commit_date, parent_data['message'], parent_data['sha']])
+                                    parent_commit = parent_data['parents'][0]
+                                    remaining_parents_cnt -= 1
+                                except Exception:
+                                    # it isn't crucial if we can't get information about the parent
+                                    break
+                            else:
+                                # parent is our current version
+                                break
+            else:
+                status['success'] = False
+                status['message'] = _(u'Could not fetch update information')
+
+    status['history'] = parents
     return json.dumps(status)
 
 

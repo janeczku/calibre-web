@@ -113,8 +113,21 @@
   <div class="row">
     <div class="col">
       <h2>{{_('Update')}}</h2>
-      <div>{{_('Current commit timestamp')}}: <span>{{commit}} </span></div>
-      <div class="hidden" id="update_info">{{_('Newest commit timestamp')}}: <span></span></div>
+      <table class="table table-striped" id="update_table">
+        <thead>
+          <tr>
+              <th class="col-xs-3">{{_('Version')}}</th>
+              <th class="col-xl-8">{{_('Details')}}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr id="current_version">
+            <td>{{commit}} <i>({{_('current version')}})</i></td>
+            <td>/</td>
+          </tr>
+        </tbody>
+      </table>
+
       <div class="hidden" id="update_error"> <span>{{update_error}}</span></div>
       <div class="btn btn-default" id="check_for_update">{{_('Check for update')}}</div>
       <div class="btn btn-default hidden" id="perform_update" data-toggle="modal" data-target="#UpdateprogressDialog">{{_('Perform Update')}}</div>
