@@ -547,3 +547,11 @@ def check_unrar(unrarLocation):
         error=True
     return (error, version)
 
+def is_sha1(sha1):
+    if len(sha1) != 40:
+        return False
+    try:
+        temp = int(sha1, 16)
+    except ValueError:
+        return False
+    return True

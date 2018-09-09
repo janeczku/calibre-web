@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+from builtins import OSError
+
 try:
     from googleapiclient.errors import HttpError
 except ImportError:
@@ -1083,14 +1085,21 @@ def get_matching_tags():
 @login_required_if_no_ano
 def get_update_status():
     status = {
-        'status': False
+        'status': False,
+        'current_commit_hash': ''
     }
     repository_url = 'https://api.github.com/repos/janeczku/calibre-web'
     tz = datetime.timedelta(seconds=time.timezone if (time.localtime().tm_isdst == 0) else time.altzone)
 
     if request.method == "GET":
-        # should be automatically replaced by git with current commit hash
-        current_commit_id = '$Format:%H$'
+        # get current commit hash from file
+        try:
+            with open('version', 'r') as f:
+                data = f.read().replace('\n', '')
+                if helper.is_sha1(data):
+                    status['current_commit_hash'] = data
+        except FileNotFoundError:
+            pass
 
         try:
             r = requests.get(repository_url + '/git/refs/heads/master')
@@ -1108,7 +1117,7 @@ def get_update_status():
         if 'error' in status:
             return json.dumps(status)
 
-        if 'object' in commit and commit['object']['sha'] != current_commit_id:
+        if 'object' in commit and commit['object']['sha'] != status['current_commit_hash']:
             # a new update is available
             try:
                 r = requests.get(repository_url + '/git/commits/' + commit['object']['sha'])
