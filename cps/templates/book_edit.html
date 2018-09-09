@@ -26,7 +26,7 @@
     {% endif %}
 {% endif %}
 
-{%  if display_convertbtn and conversion_formats|length > 0 %}
+{%  if source_formats|length > 0 and conversion_formats|length > 0 %}
   <div class="text-center more-stuff"><h4>{{_('Convert book format:')}}</h4>
       <form class="padded-bottom" action="{{ url_for('convert_bookformat', book_id=book.id) }}" method="post" id="book_convert_frm">
           <div class="form-group">
@@ -34,8 +34,8 @@
                   <label class="control-label" for="book_format_from">{{_('Convert from:')}}</label>
                   <select class="form-control" name="book_format_from" id="book_format_from">
                     <option disabled selected value> -- {{_('select an option')}} -- </option>
-                    {% for file in book.data %}
-                    <option>{{file.format}} </option>
+                    {% for format in source_formats %}
+                    <option>{{format|upper}} </option>
                     {% endfor %}
                   </select>
                   <label class="control-label" for="book_format_to">{{_('Convert to:')}}</label>
