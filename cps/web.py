@@ -107,10 +107,12 @@ current_milli_time = lambda: int(round(time.time() * 1000))
 # Global variables
 gdrive_watch_callback_token = 'target=calibreweb-watch_files'
 
-ALLOWED_EXTENSIONS = {'txt', 'pdf', 'epub', 'mobi', 'azw', 'azw3', 'cbr', 'cbz', 'cbt', 'djvu', 'prc', 'doc', 'docx',
+EXTENSIONS_UPLOAD = {'txt', 'pdf', 'epub', 'mobi', 'azw', 'azw3', 'cbr', 'cbz', 'cbt', 'djvu', 'prc', 'doc', 'docx',
                       'fb2'}
-# READER_EXTENSIONS = set(['txt', 'pdf', 'epub', 'zip', 'cbz', 'tar', 'cbt'] + (['rar','cbr'] if rar_support else []))
-# READER_EXTENSIONS = set(['txt', 'pdf', 'epub', 'zip', 'cbz', 'tar', 'cbt', 'rar', 'cbr'])
+EXTENSIONS_CONVERT = {'pdf', 'epub', 'mobi', 'azw3', 'docx', 'rtf', 'fb2', 'lit', 'lrf', 'txt'}
+
+# EXTENSIONS_READER = set(['txt', 'pdf', 'epub', 'zip', 'cbz', 'tar', 'cbt'] + (['rar','cbr'] if rar_support else []))
+
 
 def md5(fname):
     hash_md5 = hashlib.md5()
@@ -424,7 +426,7 @@ def yesno(value, yes, no):
 def canread(ext):
     if isinstance(ext, db.Data):
         ext = ext.format
-    return ext.lower() in READER_EXTENSIONS'''
+    return ext.lower() in EXTENSIONS_READER'''
 
 
 def admin_required(f):
@@ -3256,13 +3258,14 @@ def edit_book(book_id):
         author_names.append(authr.name.replace('|', ','))
 
     # Option for showing convertbook button
+    valid_source_formats=list()
     if config.config_ebookconverter == 2:
-        display_convertbtn = True
-    else:
-        display_convertbtn = False
+        for file in book.data:
+            if file.format.lower() in EXTENSIONS_CONVERT:
+                valid_source_formats.append(file.format.lower())
 
     # Determine what formats don't already exist
-    allowed_conversion_formats = ALLOWED_EXTENSIONS.copy()
+    allowed_conversion_formats = EXTENSIONS_CONVERT.copy()
     for file in book.data:
         try:
             allowed_conversion_formats.remove(file.format.lower())
@@ -3274,8 +3277,9 @@ def edit_book(book_id):
     # Show form
     if request.method != 'POST':
         return render_title_template('book_edit.html', book=book, authors=author_names, cc=cc,
-                                     title=_(u"edit metadata"), page="editbook", display_convertbtn=display_convertbtn,
-                                     conversion_formats=allowed_conversion_formats)
+                                     title=_(u"edit metadata"), page="editbook",
+                                     conversion_formats=allowed_conversion_formats,
+                                     source_formats=valid_source_formats)
     # Check and handle Uploaded file
     if 'btn-upload-format' in request.files:
         requested_file = request.files['btn-upload-format']
@@ -3283,7 +3287,7 @@ def edit_book(book_id):
         if requested_file.filename != '':
             if '.' in requested_file.filename:
                 file_ext = requested_file.filename.rsplit('.', 1)[-1].lower()
-                if file_ext not in ALLOWED_EXTENSIONS:
+                if file_ext not in EXTENSIONS_UPLOAD:
                     flash(_("File extension '%(ext)s' is not allowed to be uploaded to this server", ext=file_ext),
                           category="error")
                     return redirect(url_for('show_book', book_id=book.id))
@@ -3578,7 +3582,7 @@ def upload():
             # check if file extension is correct
             if '.' in requested_file.filename:
                 file_ext = requested_file.filename.rsplit('.', 1)[-1].lower()
-                if file_ext not in ALLOWED_EXTENSIONS:
+                if file_ext not in EXTENSIONS_UPLOAD:
                     flash(
                         _("File extension '%(ext)s' is not allowed to be uploaded to this server",
                           ext=file_ext), category="error")
