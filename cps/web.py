@@ -1,7 +1,5 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from builtins import OSError
-
 try:
     from googleapiclient.errors import HttpError
 except ImportError:
