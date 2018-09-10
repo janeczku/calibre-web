@@ -2547,7 +2547,12 @@ def show_shelf(shelf_id):
             ub.BookShelf.order.asc()).all()
         for book in books_in_shelf:
             cur_book = db.session.query(db.Books).filter(db.Books.id == book.book_id).first()
-            result.append(cur_book)
+            if cur_book:
+                result.append(cur_book)
+            else:
+                app.logger.info('Not existing book %s in shelf %s deleted' % (book.book_id, shelf.id))
+                ub.session.query(ub.BookShelf).filter(ub.BookShelf.book_id == book.book_id).delete()
+                ub.session.commit()
         return render_title_template('shelf.html', entries=result, title=_(u"Shelf: '%(name)s'", name=shelf.name),
                                  shelf=shelf, page="shelf")
     else:
