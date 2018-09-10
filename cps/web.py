@@ -1126,7 +1126,7 @@ def get_update_status():
             status.update({
                 'update': False,
                 'success': True,
-                'message': _(u'Now update available. You already have the latest version installed')
+                'message': _(u'No update available. You already have the latest version installed')
             })
             return json.dumps(status)
 
