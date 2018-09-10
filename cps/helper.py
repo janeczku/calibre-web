@@ -547,6 +547,7 @@ def check_unrar(unrarLocation):
         error=True
     return (error, version)
 
+
 def is_sha1(sha1):
     if len(sha1) != 40:
         return False
@@ -555,3 +556,19 @@ def is_sha1(sha1):
     except ValueError:
         return False
     return True
+
+
+def get_current_version_info():
+    try:
+        with open('version', 'r') as f:
+            content = f.readlines()
+            content = [x.strip() for x in content]
+
+            if len(content) != 2:
+                return False
+
+            if is_sha1(content[0]) and len(content[1]) > 0:
+                return {'sha': content[0], 'datetime': content[1]}
+    except FileNotFoundError:
+        return False
+    return False
