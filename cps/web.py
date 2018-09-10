@@ -1094,14 +1094,11 @@ def get_update_status():
     tz = datetime.timedelta(seconds=time.timezone if (time.localtime().tm_isdst == 0) else time.altzone)
 
     if request.method == "GET":
-        # get current commit hash from file
-        try:
-            with open('version', 'r') as f:
-                data = f.read().replace('\n', '')
-                if helper.is_sha1(data):
-                    status['current_commit_hash'] = data
-        except FileNotFoundError:
-            pass
+        version = helper.get_current_version_info()
+        if version is False:
+            status['current_commit_hash'] = _(u'Unknown')
+        else:
+            status['current_commit_hash'] = version['sha']
 
         try:
             r = requests.get(repository_url + '/git/refs/heads/master')
@@ -2749,10 +2746,12 @@ def profile():
 @login_required
 @admin_required
 def admin():
-    commit = '$Format:%cI$'
-    if commit.startswith("$"):
+    version = helper.get_current_version_info()
+    if version is False:
         commit = _(u'Unknown')
     else:
+        commit = version['datetime']
+
         tz = datetime.timedelta(seconds=time.timezone if (time.localtime().tm_isdst == 0) else time.altzone)
         form_date = datetime.datetime.strptime(commit[:19], "%Y-%m-%dT%H:%M:%S")
         if len(commit) > 19:    # check if string has timezone
