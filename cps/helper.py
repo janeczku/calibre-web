@@ -568,7 +568,7 @@ def get_current_version_info():
                 return False
 
             if is_sha1(content[0]) and len(content[1]) > 0:
-                return {'sha': content[0], 'datetime': content[1]}
+                return {'hash': content[0], 'datetime': content[1]}
     except FileNotFoundError:
         return False
     return False
