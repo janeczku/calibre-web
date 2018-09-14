@@ -547,3 +547,23 @@ def check_unrar(unrarLocation):
         error=True
     return (error, version)
 
+
+def is_sha1(sha1):
+    if len(sha1) != 40:
+        return False
+    try:
+        int(sha1, 16)
+    except ValueError:
+        return False
+    return True
+
+
+def get_current_version_info():
+    content = {}
+    # content[0] = '$Format: % H$'
+    # content[1] = '$Format: % cI$'
+    content[0] = 'bb7d2c6273ae4560e83950d36d64533343623a57'
+    content[1] = '2018-09-09T10:13:08+02:00'
+    if is_sha1(content[0]) and len(content[1]) > 0:
+        return {'hash': content[0], 'datetime': content[1]}
+    return False
