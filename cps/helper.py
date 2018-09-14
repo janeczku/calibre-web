@@ -560,10 +560,10 @@ def is_sha1(sha1):
 
 def get_current_version_info():
     content = {}
-    # content[0] = '$Format: % H$'
-    # content[1] = '$Format: % cI$'
-    content[0] = 'bb7d2c6273ae4560e83950d36d64533343623a57'
-    content[1] = '2018-09-09T10:13:08+02:00'
+    content[0] = '$Format: % H$'
+    content[1] = '$Format: % cI$'
+    # content[0] = 'bb7d2c6273ae4560e83950d36d64533343623a57'
+    # content[1] = '2018-09-09T10:13:08+02:00'
     if is_sha1(content[0]) and len(content[1]) > 0:
         return {'hash': content[0], 'datetime': content[1]}
     return False
