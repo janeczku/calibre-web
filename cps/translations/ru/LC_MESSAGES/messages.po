@@ -14,7 +14,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2018-09-09 17:57+0200\n"
+"POT-Creation-Date: 2018-09-14 20:34+0200\n"
 "PO-Revision-Date: 2017-04-30 00:47+0300\n"
 "Last-Translator: Pavel Korovin <p@tristero.se>\n"
 "Language: ru\n"
@@ -276,7 +276,7 @@ msgstr "Непрочитанные"
 msgid "Read a Book"
 msgstr "Читать книгу"
 
-#: cps/web.py:2141 cps/web.py:3019
+#: cps/web.py:2141 cps/web.py:3024
 msgid "Please fill out all fields!"
 msgstr "Пожалуйста, заполните все поля!"
 
@@ -285,7 +285,7 @@ msgstr "Пожалуйста, заполните все поля!"
 msgid "register"
 msgstr "зарегистрироваться"
 
-#: cps/web.py:2162 cps/web.py:3235
+#: cps/web.py:2162 cps/web.py:3240
 msgid "An unknown error occurred. Please try again later."
 msgstr "Неизвестная ошибка. Попробуйте позже."
 
@@ -340,7 +340,7 @@ msgstr ""
 msgid "There was an error sending this book: %(res)s"
 msgstr "Ошибка при отправке книги: %(res)s"
 
-#: cps/web.py:2308 cps/web.py:3073
+#: cps/web.py:2308 cps/web.py:3078
 msgid "Please configure your kindle e-mail address first..."
 msgstr "Пожалуйста, сначала настройте e-mail на вашем kindle"
 
@@ -419,266 +419,266 @@ msgstr "Изменить книжную полку"
 msgid "successfully deleted shelf %(name)s"
 msgstr "Книжная полка %(name)s удалена"
 
-#: cps/web.py:2551
+#: cps/web.py:2556
 #, python-format
 msgid "Shelf: '%(name)s'"
 msgstr "Книжная полка: '%(name)s'"
 
-#: cps/web.py:2554
+#: cps/web.py:2559
 msgid "Error opening shelf. Shelf does not exist or is not accessible"
 msgstr "Ошибка открытия книжной полки. Полка не существует или недоступна"
 
-#: cps/web.py:2585
+#: cps/web.py:2590
 #, python-format
 msgid "Change order of Shelf: '%(name)s'"
 msgstr "Изменить расположение книжной полки '%(name)s'"
 
-#: cps/web.py:2614 cps/web.py:3025
+#: cps/web.py:2619 cps/web.py:3030
 msgid "E-mail is not from valid domain"
 msgstr "E-mail не из существующей доменной зоны"
 
-#: cps/web.py:2616 cps/web.py:2657 cps/web.py:2660
+#: cps/web.py:2621 cps/web.py:2662 cps/web.py:2665
 #, python-format
 msgid "%(name)s's profile"
 msgstr "Профиль %(name)s"
 
-#: cps/web.py:2655
+#: cps/web.py:2660
 msgid "Found an existing account for this e-mail address."
 msgstr ""
 
-#: cps/web.py:2658
+#: cps/web.py:2663
 msgid "Profile updated"
 msgstr "Профиль обновлён"
 
-#: cps/web.py:2670
+#: cps/web.py:2675
 msgid "Unknown"
 msgstr "Неизвестно"
 
-#: cps/web.py:2684
+#: cps/web.py:2689
 msgid "Admin page"
 msgstr "Администрирование"
 
-#: cps/web.py:2762 cps/web.py:2935
+#: cps/web.py:2767 cps/web.py:2940
 msgid "Calibre-Web configuration updated"
 msgstr "Конфигурация Calibre-Web обновлена"
 
-#: cps/templates/admin.html:91 cps/web.py:2775
+#: cps/templates/admin.html:91 cps/web.py:2780
 msgid "UI Configuration"
 msgstr "Настройка интерфейса"
 
-#: cps/web.py:2793
+#: cps/web.py:2798
 msgid "Import of optional Google Drive requirements missing"
 msgstr ""
 
-#: cps/web.py:2796
+#: cps/web.py:2801
 msgid "client_secrets.json is missing or not readable"
 msgstr "client_secrets.json отсутствует или его невозможно прочесть"
 
-#: cps/web.py:2801 cps/web.py:2828
+#: cps/web.py:2806 cps/web.py:2833
 msgid "client_secrets.json is not configured for web application"
 msgstr ""
 
-#: cps/templates/admin.html:90 cps/web.py:2831 cps/web.py:2857 cps/web.py:2869
-#: cps/web.py:2911 cps/web.py:2926 cps/web.py:2943 cps/web.py:2950
-#: cps/web.py:2967
+#: cps/templates/admin.html:90 cps/web.py:2836 cps/web.py:2862 cps/web.py:2874
+#: cps/web.py:2916 cps/web.py:2931 cps/web.py:2948 cps/web.py:2955
+#: cps/web.py:2972
 msgid "Basic Configuration"
 msgstr "Настройки сервера"
 
-#: cps/web.py:2854
+#: cps/web.py:2859
 msgid "Keyfile location is not valid, please enter correct path"
 msgstr ""
 
-#: cps/web.py:2866
+#: cps/web.py:2871
 msgid "Certfile location is not valid, please enter correct path"
 msgstr ""
 
-#: cps/web.py:2908
+#: cps/web.py:2913
 msgid "Logfile location is not valid, please enter correct path"
 msgstr ""
 
-#: cps/web.py:2947
+#: cps/web.py:2952
 msgid "DB location is not valid, please enter correct path"
 msgstr "Неверный путь к фалу БД, пожалуйста, укажите правильное расположение БД"
 
-#: cps/templates/admin.html:31 cps/web.py:3021 cps/web.py:3027 cps/web.py:3043
+#: cps/templates/admin.html:31 cps/web.py:3026 cps/web.py:3032 cps/web.py:3048
 msgid "Add new user"
 msgstr "Добавить пользователя"
 
-#: cps/web.py:3033
+#: cps/web.py:3038
 #, python-format
 msgid "User '%(user)s' created"
 msgstr "Пользователь '%(user)s' добавлен"
 
-#: cps/web.py:3037
+#: cps/web.py:3042
 msgid "Found an existing account for this e-mail address or nickname."
 msgstr ""
 
-#: cps/web.py:3061 cps/web.py:3075
+#: cps/web.py:3066 cps/web.py:3080
 msgid "E-mail server settings updated"
 msgstr "Настройки E-mail сервера обновлены"
 
-#: cps/web.py:3068
+#: cps/web.py:3073
 #, python-format
 msgid "Test e-mail successfully send to %(kindlemail)s"
 msgstr ""
 
-#: cps/web.py:3071
+#: cps/web.py:3076
 #, python-format
 msgid "There was an error sending the Test e-mail: %(res)s"
 msgstr ""
 
-#: cps/web.py:3076
+#: cps/web.py:3081
 msgid "Edit e-mail server settings"
 msgstr "Изменить настройки e-mail сервера"
 
-#: cps/web.py:3101
+#: cps/web.py:3106
 #, python-format
 msgid "User '%(nick)s' deleted"
 msgstr "Пользователь '%(nick)s' удалён"
 
-#: cps/web.py:3210
+#: cps/web.py:3215
 #, python-format
 msgid "User '%(nick)s' updated"
 msgstr "Пользователь '%(nick)s' обновлён"
 
-#: cps/web.py:3213
+#: cps/web.py:3218
 msgid "An unknown error occured."
 msgstr "Произошла неизвестная ошибка."
 
-#: cps/web.py:3215
+#: cps/web.py:3220
 #, python-format
 msgid "Edit User %(nick)s"
 msgstr "Изменить пользователя %(nick)s"
 
-#: cps/web.py:3232
+#: cps/web.py:3237
 #, python-format
 msgid "Password for user %(user)s reset"
 msgstr "Пароль для пользователя %(user)s сброшен"
 
-#: cps/web.py:3252
+#: cps/web.py:3257
 msgid "Error opening eBook. File does not exist or file is not accessible"
 msgstr ""
 
-#: cps/web.py:3279 cps/web.py:3555 cps/web.py:3560 cps/web.py:3715
+#: cps/web.py:3285 cps/web.py:3562 cps/web.py:3567 cps/web.py:3722
 msgid "edit metadata"
 msgstr "изменить метаданные"
 
-#: cps/web.py:3289 cps/web.py:3585
+#: cps/web.py:3296 cps/web.py:3592
 #, python-format
 msgid "File extension '%(ext)s' is not allowed to be uploaded to this server"
 msgstr "Запрещена загрузка файлов с расширением '%(ext)s'"
 
-#: cps/web.py:3293 cps/web.py:3589
+#: cps/web.py:3300 cps/web.py:3596
 msgid "File to be uploaded must have an extension"
 msgstr "Загружаемый файл должен иметь расширение"
 
-#: cps/web.py:3305 cps/web.py:3609
+#: cps/web.py:3312 cps/web.py:3616
 #, python-format
 msgid "Failed to create path %(path)s (Permission denied)."
 msgstr "Ошибка при создании пути %(path)s (доступ запрещён)"
 
-#: cps/web.py:3310
+#: cps/web.py:3317
 #, python-format
 msgid "Failed to store file %(file)s."
 msgstr ""
 
-#: cps/web.py:3326
+#: cps/web.py:3333
 #, python-format
 msgid "File format %(ext)s added to %(book)s"
 msgstr ""
 
-#: cps/web.py:3343
+#: cps/web.py:3350
 #, python-format
 msgid "Failed to create path for cover %(path)s (Permission denied)."
 msgstr ""
 
-#: cps/web.py:3350
+#: cps/web.py:3357
 #, python-format
 msgid "Failed to store cover-file %(cover)s."
 msgstr ""
 
-#: cps/web.py:3353
+#: cps/web.py:3360
 msgid "Cover-file is not a valid image file"
 msgstr "Файл обложки не соответствует изображению"
 
-#: cps/web.py:3370 cps/web.py:3374
+#: cps/web.py:3377 cps/web.py:3381
 msgid "unknown"
 msgstr "неизвестно"
 
-#: cps/web.py:3396
+#: cps/web.py:3403
 msgid "Cover is not a jpg file, can't save"
 msgstr "Обложка не jpg файл, невозможно сохранить"
 
-#: cps/web.py:3442
+#: cps/web.py:3449
 #, python-format
 msgid "%(langname)s is not a valid language"
 msgstr ""
 
-#: cps/web.py:3564
+#: cps/web.py:3571
 msgid "Error editing book, please check logfile for details"
 msgstr "Ошибка редактирования книги. Пожалуйста, проверьте лог-файл для дополнительной информации"
 
-#: cps/web.py:3614
+#: cps/web.py:3621
 #, python-format
 msgid "Failed to store file %(file)s (Permission denied)."
 msgstr "Ошибка записи файоа %(file)s (доступ запрещён)"
 
-#: cps/web.py:3619
+#: cps/web.py:3626
 #, python-format
 msgid "Failed to delete file %(file)s (Permission denied)."
 msgstr "Ошибка удаления файла %(file)s (доступ запрещён)"
 
-#: cps/web.py:3701
+#: cps/web.py:3708
 #, python-format
 msgid "File %(file)s uploaded"
 msgstr "Файл %(file)s загружен"
 
-#: cps/web.py:3731
+#: cps/web.py:3738
 msgid "Source or destination format for conversion missing"
 msgstr ""
 
-#: cps/web.py:3741
+#: cps/web.py:3748
 #, python-format
 msgid "Book successfully queued for converting to %(book_format)s"
 msgstr ""
 
-#: cps/web.py:3745
+#: cps/web.py:3752
 #, python-format
 msgid "There was an error converting this book: %(res)s"
 msgstr ""
 
-#: cps/worker.py:215 cps/worker.py:387
+#: cps/worker.py:215 cps/worker.py:398
 msgid "Started"
 msgstr "Начало"
 
-#: cps/worker.py:237
+#: cps/worker.py:251
 #, python-format
 msgid "Convertertool %(converter)s not found"
 msgstr ""
 
-#: cps/worker.py:272
+#: cps/worker.py:287
 #, python-format
 msgid "Ebook-converter failed: %(error)s"
 msgstr ""
 
-#: cps/worker.py:283
+#: cps/worker.py:298
 #, python-format
 msgid "Kindlegen failed with Error %(error)s. Message: %(message)s"
 msgstr ""
 
-#: cps/worker.py:317 cps/worker.py:377 cps/worker.py:438
-msgid "Finished"
-msgstr "Закончено"
-
-#: cps/worker.py:344 cps/worker.py:363
+#: cps/worker.py:355 cps/worker.py:374
 msgid "Waiting"
 msgstr "Ожидание"
 
-#: cps/worker.py:351
+#: cps/worker.py:362
 msgid "This e-mail has been sent via Calibre-Web."
 msgstr ""
 
-#: cps/worker.py:472
+#: cps/worker.py:388 cps/worker.py:484
+msgid "Finished"
+msgstr "Закончено"
+
+#: cps/worker.py:476
 msgid "Failed"
 msgstr "Неудачно"
 
@@ -692,7 +692,7 @@ msgstr "Имя пользователя"
 
 #: cps/templates/admin.html:8
 msgid "E-mail"
-msgstr ""
+msgstr "Почта"
 
 #: cps/templates/admin.html:9
 msgid "Kindle"
@@ -1837,35 +1837,6 @@ msgstr "Удалить этого пользователя"
 msgid "Recent Downloads"
 msgstr "Недавние скачивания"
 
-#~ msgid "%s: %s"
-#~ msgstr "%s: %s"
-
-#~ msgid "E-Mail: %s"
+#~ msgid "E-mail: %s"
 #~ msgstr "Почта: %s"
 
-#~ msgid "Rename title from: '%(src)s' to '%(dest)s' failed with error: %(error)s"
-#~ msgstr ""
-
-#~ msgid "Rename author from: '%(src)s' to '%(dest)s' failed with error: %(error)s"
-#~ msgstr ""
-
-#~ msgid "Password for user %(user)s reset"
-#~ msgstr "Пароль для пользователя %(user)s сброшен"
-
-#~ msgid "Password for user %s reset"
-#~ msgstr "Пароль для пользователя %s сброшен"
-
-#~ msgid "Rename title from: '%(src)s' to '%(src)s' failed with error: %(error)s"
-#~ msgstr ""
-
-#~ msgid "Rename author from: '%(src)s' to '%(src)s' failed with error: %(error)s"
-#~ msgstr ""
-
-#~ msgid "Failed to create path for cover %(cover)s (Permission denied)."
-#~ msgstr ""
-
-#~ msgid "File extension '%s' is not allowed to be uploaded to this server"
-#~ msgstr ""
-
-#~ msgid "File extension \"%(ext)s\" is not allowed to be uploaded to this server"
-#~ msgstr "Запрещена загрузка файлов с расширением \"%(ext)s\""
