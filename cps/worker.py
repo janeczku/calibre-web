@@ -232,10 +232,29 @@ class WorkerThread(threading.Thread):
         bookid = self.queue[self.current]['bookid']
         format_old_ext = u'.' + self.queue[self.current]['settings']['old_book_format'].lower()
         format_new_ext = u'.' + self.queue[self.current]['settings']['new_book_format'].lower()
+        
+        # check to see if destination format already exists - 
+        # if it does - mark the conversion task as complete and return a success
+        # this will allow send to kindle workflow to continue to work
+        if os.path.isfile(file_path + format_new_ext):
+            web.app.logger.info("Book id %d already converted to %s", bookid, format_new_ext)
+            cur_book = web.db.session.query(web.db.Books).filter(web.db.Books.id == bookid).first()
+            self.queue[self.current]['path'] = file_path
+            self.queue[self.current]['title'] = cur_book.title
+            self.queue[self.current]['status'] = STAT_FINISH_SUCCESS
+            self.UIqueue[self.current]['status'] = _('Finished')
+            self.UIqueue[self.current]['progress'] = "100 %"
+            self.UIqueue[self.current]['runtime'] = self._formatRuntime(
+                datetime.now() - self.queue[self.current]['starttime'])
+            return file_path + format_new_ext
+        else:
+            web.app.logger.info("Book id %d - target format of %s does not existing. Moving forward with convert.", bookid, format_new_ext)
+        
         # check if converter-executable is existing
         if not os.path.exists(web.ub.config.config_converterpath):
             self._handleError(_(u"Convertertool %(converter)s not found", converter=web.ub.config.config_converterpath))
             return
+       
         try:
             # check which converter to use kindlegen is "1"
             if format_old_ext == '.epub' and format_new_ext == '.mobi':
