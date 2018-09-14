@@ -233,7 +233,7 @@ class WorkerThread(threading.Thread):
         format_old_ext = u'.' + self.queue[self.current]['settings']['old_book_format'].lower()
         format_new_ext = u'.' + self.queue[self.current]['settings']['new_book_format'].lower()
         
-        # check to see if destination format already exists - 
+        # check to see if destination format already exists -
         # if it does - mark the conversion task as complete and return a success
         # this will allow send to kindle workflow to continue to work
         if os.path.isfile(file_path + format_new_ext):
