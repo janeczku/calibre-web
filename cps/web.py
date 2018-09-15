@@ -1040,35 +1040,6 @@ def get_tags_json():
         return json_dumps
 
 
-@app.route("/get_updater_status", methods=['GET', 'POST'])
-@login_required
-@admin_required
-def get_updater_status():
-    status = {}
-    if request.method == "POST":
-        commit = request.form.to_dict()
-        if "start" in commit and commit['start'] == 'True':
-            text = {
-                "1": _(u'Requesting update package'),
-                "2": _(u'Downloading update package'),
-                "3": _(u'Unzipping update package'),
-                "4": _(u'Files are replaced'),
-                "5": _(u'Database connections are closed'),
-                "6": _(u'Server is stopped'),
-                "7": _(u'Update finished, please press okay and reload page')
-            }
-            status['text'] = text
-            helper.updater_thread = helper.Updater()
-            helper.updater_thread.start()
-            status['status'] = helper.updater_thread.get_update_status()
-    elif request.method == "GET":
-        try:
-            status['status'] = helper.updater_thread.get_update_status()
-        except Exception:
-            status['status'] = 7
-    return json.dumps(status)
-
-
 @app.route("/get_languages_json", methods=['GET', 'POST'])
 @login_required_if_no_ano
 def get_languages_json():
