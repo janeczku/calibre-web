@@ -143,13 +143,12 @@ bitjs.archive = bitjs.archive || {};
      * Progress event.
      */
     bitjs.archive.UnarchiveProgressEvent = function(
-            currentFilename,
-            currentFileNumber,
-            currentBytesUnarchivedInFile,
-            currentBytesUnarchived,
-            totalUncompressedBytesInArchive,
-            totalFilesInArchive)
-    {
+        currentFilename,
+        currentFileNumber,
+        currentBytesUnarchivedInFile,
+        currentBytesUnarchived,
+        totalUncompressedBytesInArchive,
+        totalFilesInArchive) {
         bitjs.base(this, bitjs.archive.UnarchiveEvent.Type.PROGRESS);
 
         this.currentFilename = currentFilename;

@@ -1,6 +1,6 @@
 # About
 
-Calibre Web is a web app providing a clean interface for browsing, reading and downloading eBooks using an existing [Calibre](https://calibre-ebook.com) database.
+Calibre-Web is a web app providing a clean interface for browsing, reading and downloading eBooks using an existing [Calibre](https://calibre-ebook.com) database.
 
 *This software is a fork of [library](https://github.com/mutschler/calibreserver) and licensed under the GPL v3 License.*
 
@@ -12,7 +12,7 @@ Calibre Web is a web app providing a clean interface for browsing, reading and d
 - full graphical setup
 - User management with fine grained per-user permissions
 - Admin interface
-- User Interface in dutch, english, french, german, italian, japanese, polish, russian, simplified chinese, spanish
+- User Interface in dutch, english, french, german, italian, japanese, khmer, polish, russian, simplified chinese, spanish
 - OPDS feed for eBook reader apps 
 - Filter and search by titles, authors, tags, series and language
 - Create custom book collection (shelves)
@@ -83,37 +83,47 @@ Once a project has been created, we need to create a client ID and a client secr
 5. Select Web Application and then next
 6. Give the Credentials a name and enter your callback, which will be CALIBRE_WEB_URL/gdrive/callback
 7. Click save
-8. Download json file and place it in `calibre-web/cps` directory, with the name `client_secrets.json`  
+8. Download json file and place it in `calibre-web` directory, with the name `client_secrets.json`  
 
 The Drive API should now be setup and ready to use, so we need to integrate it into Calibre-Web. This is done as below: -
 
 1. Open config page
-2. Enter the location that will be used to store the metadata.db file, and to temporary store uploaded books and other temporary files for upload
+2. Enter the location that will be used to store the metadata.db file locally, and to temporary store uploaded books and other temporary files for upload ("Location of Calibre database")
 2. Tick Use Google Drive
-3. Enter Client Secret and Client Key as provided via previous steps
-4. Enter the folder that is the root of your calibre library
-5. Enter base URL for calibre (used for google callbacks)
-6. Click the "Submit" button
-7. Come back to the configuration form
-8. Now select Authenticate Google Drive
-9. This should redirect you to google to allow it top use your Drive, and then redirect you back to the config page
-10. Google Drive should now be connected and be used to get images and download Epubs. The metadata.db is stored in the calibre library location
+3. Click the "Submit" button
+4. Now select Authenticate Google Drive
+5. This should redirect you to Google. After allowing it to use your Drive, it redirects you back to the config page
+6. Select the folder that is the root of your calibre library on Gdrive ("Google drive Calibre folder")
+7. Click the "Submit" button
+8. Google Drive should now be connected and be used to get images and download Epubs. The metadata.db is stored in the calibre library location
 
 ### Optional
-If your calibre web is using https, it is possible to add a "watch" to the drive. This will inform us if the metadata.db file is updated and allow us to update our calibre library accordingly.
+If your Calibre-Web is using https, it is possible to add a "watch" to the drive. This will inform us if the metadata.db file is updated and allow us to update our calibre library accordingly.
+Additionally the public adress your server uses (e.g.https://example.com) has to be verified in the Google developer console. After this is done, please wait a few minutes.
 
-11. Click enable watch of metadata.db
-12. Note that this expires after a week, so will need to be manually refresh 
+9. Open config page
+10. Click enable watch of metadata.db
+11. Note that this expires after a week, so will need to be manually refresh 
 
-## Docker image
+## Docker images
 
-Calibre Web can be run as Docker container. Pre-built Docker images based on Alpine Linux are available in this Docker Hub repository: [technosoft2000/calibre-web](https://hub.docker.com/r/technosoft2000/calibre-web/).
+Pre-built Docker images based on Alpine Linux are available in these Docker Hub repositories:
+
+**x64**
++ **technosoft2000** at [technosoft2000/calibre-web](https://hub.docker.com/r/technosoft2000/calibre-web/)
++ **linuxserver.io** at [linuxserver/calibre-web](https://hub.docker.com/r/linuxserver/calibre-web/)
+
+**armhf**
++ **linuxserver.io** at [lsioarmhf/calibre-web](https://hub.docker.com/r/lsioarmhf/calibre-web/)
+
+**aarch64**
++ **linuxserver.io** at [lsioarmhf/calibre-web-aarch64](https://hub.docker.com/r/lsioarmhf/calibre-web-aarch64)
 
 ## Reverse Proxy
 
 Reverse proxy configuration examples for apache and nginx to use Calibre-Web:
 
-nginx configuration for a local server listening on port 8080, mapping calibre web to /calibre:
+nginx configuration for a local server listening on port 8080, mapping Calibre-Web to /calibre:
 
 ```
 http {
@@ -121,8 +131,9 @@ http {
         server  127.0.0.1:8083;
     }
     server {
+            client_max_body_size 20M;
             location /calibre {
-                proxy_bind              $server_addr;
+                proxy_bind              $server_adress;
                 proxy_pass              http://127.0.0.1:8083;
                 proxy_set_header        Host            $http_host;
                 proxy_set_header        X-Forwarded-For $proxy_add_x_forwarded_for;
@@ -132,8 +143,12 @@ http {
     }
 }
 ```
+*Note: If using SSL in your reverse proxy on a non-standard port (e.g.12345), the following proxy_redirect line may be required:*
+```
+proxy_redirect http://$host/ https://$host:12345/;
+```
 
-Apache 2.4 configuration for a local server listening on port 443, mapping calibre web to /calibre-web:
+Apache 2.4 configuration for a local server listening on port 443, mapping Calibre-Web to /calibre-web:
 
 The following modules have to be activated: headers, proxy, rewrite.
 ```
@@ -174,6 +189,7 @@ Description=Calibre-Web
 Type=simple
 User=[Username]
 ExecStart=[path to python] [/PATH/TO/cps.py]
+WorkingDirectory=[/PATH/TO/cps.py]
 
 [Install]
 WantedBy=multi-user.target

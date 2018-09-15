@@ -10,14 +10,20 @@
     </div>
     {% endif %}
     <div class="form-group">
-      <label for="email">{{_('Email address')}}</label>
+      <label for="email">{{_('E-mail address')}}</label>
       <input type="email" class="form-control" name="email" id="email" value="{{ content.email if content.email != None }}" autocomplete="off">
     </div>
     {% if ( g.user and g.user.role_passwd() or g.user.role_admin() ) and not content.role_anonymous() %}
-    <div class="form-group">
-      <label for="password">{{_('Password')}}</label>
-      <input type="password" class="form-control" name="password" id="password" value="" autocomplete="off">
-    </div>
+      {% if g.user and g.user.role_admin() and g.allow_registration and not new_user and not profile %}
+        <div class="btn btn-default" id="resend_password"><a href="{{url_for('reset_password', user_id = content.id) }}">{{_('Reset user Password')}}</a></div>
+      {% else %}            
+        <div class="form-group">
+          <label for="password">{{_('Password')}}</label>
+          <input type="password" class="form-control" name="password" id="password" value="" autocomplete="off">
+        </div>
+    {% endif %}
+
+    
     {% endif %}
     <div class="form-group">
       <label for="kindle_mail">{{_('Kindle E-Mail')}}</label>

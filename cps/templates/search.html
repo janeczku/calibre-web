@@ -1,16 +1,36 @@
 {% extends "layout.html" %}
 {% block body %}
 <div class="discover">
-
     {% if entries|length < 1 %}
       <h2>{{_('No Results for:')}} {{searchterm}}</h2>
       <p>{{_('Please try a different search')}}</p>
     {% else %}
-      <h2>{{entries|length}} {{_('Results for:')}} {{searchterm}}</h2>
-    {%endif%}
+      <h2>{{entries|length}} {{_('Results for:')}} {{searchterm}}</h2>    
+      {% if g.user.is_authenticated %}
+        {% if g.user.shelf.all() or g.public_shelfes %}
+          <div id="shelf-actions" class="btn-toolbar" role="toolbar">
+            <div class="btn-group" role="group" aria-label="Add to shelves">
+              <button id="add-to-shelf" type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <span class="glyphicon glyphicon-list"></span> {{_('Add to shelf')}}
+                <span class="caret"></span>
+              </button>
+              <ul id="add-to-shelves" class="dropdown-menu" aria-labelledby="add-to-shelf">
+                {% for shelf in g.user.shelf %}
+                  {% if shelf.is_public != 1 %}
+                    <li><a href="{{ url_for('search_to_shelf', shelf_id=shelf.id) }}"> {{shelf.name}}</a></li>
+                  {% endif %}
+                {% endfor %}
+                {% for shelf in g.public_shelfes %}
+                  <li><a href="{{ url_for('search_to_shelf', shelf_id=shelf.id) }}">{{shelf.name}}</a></li>
+                {% endfor %}
+              </ul>
+            </div>
+          </div>
+        {% endif %}
+      {% endif %}
+  {% endif %}
 
   <div class="row">
-
     {% for entry in entries %}
     <div class="col-sm-3 col-lg-2 col-xs-6 book">
       <div class="cover">
