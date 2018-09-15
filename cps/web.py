@@ -1040,27 +1040,6 @@ def get_tags_json():
         return json_dumps
 
 
-@app.route("/get_update_status", methods=['GET'])
-@login_required_if_no_ano
-def get_update_status():
-    status = {}
-    if request.method == "GET":
-        # should be automatically replaced by git with current commit hash
-        commit_id = '66c1966b44454828b0dd431c2d07c5b71c064598'
-        commit = requests.get('https://api.github.com/repos/janeczku/calibre-web/git/refs/heads/master').json()
-        if "object" in commit and commit['object']['sha'] != commit_id:
-            status['status'] = True
-            commitdate = requests.get('https://api.github.com/repos/janeczku/calibre-web/git/commits/'+commit['object']['sha']).json()
-            if "committer" in commitdate:
-                form_date=datetime.datetime.strptime(commitdate['committer']['date'],"%Y-%m-%dT%H:%M:%SZ")
-                status['commit'] = format_datetime(form_date, format='short', locale=get_locale())
-            else:
-                status['commit'] = u'Unknown'
-        else:
-            status['status'] = False
-    return json.dumps(status)
-
-
 @app.route("/get_updater_status", methods=['GET', 'POST'])
 @login_required
 @admin_required
