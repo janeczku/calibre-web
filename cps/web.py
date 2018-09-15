@@ -172,6 +172,7 @@ mimetypes.add_type('application/x-cbr', '.cbr')
 mimetypes.add_type('application/x-cbz', '.cbz')
 mimetypes.add_type('application/x-cbt', '.cbt')
 mimetypes.add_type('image/vnd.djvu', '.djvu')
+mimetypes.add_type('audio/mpeg', '.mpeg')
 
 app = (Flask(__name__))
 app.wsgi_app = ReverseProxied(app.wsgi_app)
@@ -2164,6 +2165,9 @@ def read_book(book_id, book_format):
         return render_title_template('readpdf.html', pdffile=book_id, title=_(u"Read a Book"))
     elif book_format.lower() == "txt":
         return render_title_template('readtxt.html', txtfile=book_id, title=_(u"Read a Book"))
+    elif book_format.lower() == "mp3":
+        entries = db.session.query(db.Books).filter(db.Books.id == book_id).filter(common_filters()).first()
+        return render_title_template('listenmp3.html', mp3file=book_id, title=_(u"Read a Book"), entry=entries, bookmark=bookmark)
     else:
         book_dir = os.path.join(config.get_main_dir, "cps", "static", str(book_id))
         if not os.path.exists(book_dir):

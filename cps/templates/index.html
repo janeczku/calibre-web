@@ -68,6 +68,11 @@
               &amp;
             {% endif %}
           {% endfor %}
+          {% for format in entry.data %}
+            {% if format.format|lower == 'mp3' %}
+            <span class="glyphicon glyphicon-music"></span>
+            {% endif %}
+          {%endfor%}
         </p>
         {% if entry.ratings.__len__() > 0 %}
         <div class="rating">
