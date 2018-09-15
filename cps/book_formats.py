@@ -7,6 +7,11 @@ import os
 from flask_babel import gettext as _
 import comic
 
+try:
+    from lxml.etree import LXML_VERSION as lxmlversion
+except ImportError:
+    lxmlversion = None
+
 __author__ = 'lemmsh'
 
 logger = logging.getLogger("book_formats")
@@ -120,9 +125,13 @@ def get_versions():
     if not use_generic_pdf_cover:
         IVersion=ImageVersion.MAGICK_VERSION
     else:
-        IVersion=_(u'not installed')
+        IVersion = _(u'not installed')
     if use_pdf_meta:
-        PVersion=PyPdfVersion
+        PVersion='v'+PyPdfVersion
     else:
         PVersion=_(u'not installed')
-    return {'ImageVersion': IVersion, 'PyPdfVersion': PVersion}
+    if lxmlversion:
+        XVersion = 'v'+'.'.join(map(str, lxmlversion))
+    else:
+        XVersion = _(u'not installed')
+    return {'Image Magick': IVersion, 'PyPdf': PVersion, 'lxml':XVersion}

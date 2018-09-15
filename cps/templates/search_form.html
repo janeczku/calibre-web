@@ -14,22 +14,21 @@
       <label for="Publisher">{{_('Publisher')}}</label>
       <input type="text" class="form-control" name="publisher" id="publisher" value="">
     </div>
-    <!--div class="form-group"-->
-        <div class="row">
-            <div class="form-group col-sm-6">
-              <label for="Publishstart">{{_('Publishing date from')}}</label>
-              <div style="position: relative">
-                <input type="date" class="form-control" name="Publishstart" id="Publishstart" value="">
-                <input type="text" class="form-control fake-input hidden" id="fake_Publishstart" value="">
-              </div>
-            </div>
-            <div class="form-group col-sm-6">
-              <label for="Publishend">{{_('Publishing date to')}}</label>
-              <div style="position: relative">
-                <input type="date" class="form-control" name="Publishend" id="Publishend" value="">
-                <input type="text" class="form-control fake-input hidden" id="fake_Publishend" value="">
-              </div>
-            </div>
+    <div class="row">
+        <div class="form-group col-sm-6">
+          <label for="Publishstart">{{_('Publishing date from')}}</label>
+          <div style="position: relative">
+            <input type="date" class="form-control" name="Publishstart" id="Publishstart" value="">
+            <input type="text" class="form-control fake-input hidden" id="fake_Publishstart" value="">
+          </div>
+        </div>
+        <div class="form-group col-sm-6">
+          <label for="Publishend">{{_('Publishing date to')}}</label>
+          <div style="position: relative">
+            <input type="date" class="form-control" name="Publishend" id="Publishend" value="">
+            <input type="text" class="form-control fake-input hidden" id="fake_Publishend" value="">
+          </div>
+        </div>
     </div>
     <label for="include_tag">{{_('Tags')}}</label>
     <div class="form-group" id="test">
@@ -71,7 +70,7 @@
         {% endfor %}
       </div>
     </div>
-   {% if languages %}
+    {% if languages %}
       <label for="include_language">{{_('Languages')}}</label>
       <div class="form-group">
         <div class="btn-toolbar btn-toolbar-lg" data-toggle="buttons">
@@ -92,7 +91,65 @@
           {% endfor %}
         </div>
       </div>
-   {% endif%}
+    {% endif%}
+    <div class="row">
+        <div class="form-group col-sm-6">
+          <label for="ratinghigh">{{_('Rating bigger than')}}</label>
+          <input type="number"  name="ratinghigh" id="ratinghigh" class="rating input-lg" data-clearable="" >
+        </div>
+        <div class="form-group col-sm-6">
+          <label for="ratinglow">{{_('Rating less than')}}</label>
+          <input type="number"  name="ratinglow" id="ratinglow" class="rating input-lg" data-clearable="" >
+        </div>
+    </div>
+    <div class="form-group">
+      <label for="comment">{{_('Description')}}</label>
+      <input type="text" class="form-control" name="comment" id="comment" value="">
+    </div>
+
+    {% if cc|length > 0 %}
+      {% for c in cc %}
+        <div class="form-group">
+        <label for="{{ 'custom_column_' ~ c.id }}">{{ c.name }}</label>
+        {% if c.datatype == 'bool' %}
+          <select name="{{ 'custom_column_' ~ c.id }}" id="{{ 'custom_column_' ~ c.id }}" class="form-control">
+            <option value="" selected></option>
+            <option value="True" >{{_('Yes')}}</option>
+            <option value="False" >{{_('No')}}</option>
+          </select>
+        {% endif %}
+
+        {% if c.datatype == 'int' %}
+          <input type="number" step="1" class="form-control" name="{{ 'custom_column_' ~ c.id }}" id="{{ 'custom_column_' ~ c.id }}" value="">
+        {% endif %}
+
+        {% if c.datatype in ['text', 'series'] and not c.is_multiple %}
+          <input type="text" class="form-control" name="{{ 'custom_column_' ~ c.id }}" id="{{ 'custom_column_' ~ c.id }}" value="">
+        {% endif %}
+
+        {% if c.datatype in ['text', 'series'] and c.is_multiple %}
+          <input type="text" class="form-control" name="{{ 'custom_column_' ~ c.id }}" id="{{ 'custom_column_' ~ c.id }}" value="">
+        {% endif %}
+
+        {% if c.datatype == 'enumeration' %}
+          <select class="form-control" name="{{ 'custom_column_' ~ c.id }}" id="{{ 'custom_column_' ~ c.id }}">
+              <option></option>
+              {% for opt in c.get_display_dict().enum_values %}
+                <option>{{ opt }}</option>
+              {% endfor %}
+          </select>
+        {% endif %}
+
+        {% if c.datatype == 'rating' %}
+          <input type="number" min="1" max="5" step="1" class="form-control" name="{{ 'custom_column_' ~ c.id }}" id="{{ 'custom_column_' ~ c.id }}"
+            {% if book['custom_column_' ~ c.id]|length > 0 %}
+                value="{{ '%d' %  (book['custom_column_' ~ c.id][0].value / 2) }}"
+            {% endif %}>
+        {% endif %}
+        </div>
+      {% endfor %}
+    {% endif %}
+
     <button type="submit" class="btn btn-default">{{_('Submit')}}</button>
   </form>
 </div>
@@ -107,6 +164,7 @@
 {% if not g.user.locale == 'en' %}
 <script src="{{ url_for('static', filename='js/libs/bootstrap-datepicker/locales/bootstrap-datepicker.' + g.user.locale + '.min.js') }}" charset="UTF-8"></script>
 {% endif %}
+<script src="{{ url_for('static', filename='js/libs/bootstrap-rating-input.min.js') }}"></script>
 <script src="{{ url_for('static', filename='js/libs/typeahead.bundle.js') }}"></script>
 <script src="{{ url_for('static', filename='js/edit_books.js') }}"></script>
 <script>

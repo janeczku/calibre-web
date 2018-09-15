@@ -112,6 +112,8 @@ class Identifiers(Base):
             return u"https://books.google.com/books?id={0}".format(self.val)
         elif self.type == "kobo":
             return u"https://www.kobo.com/ebook/{0}".format(self.val)
+        elif self.type == "url":
+            return u"{0}".format(self.val)
         else:
             return u""
 
@@ -254,7 +256,7 @@ class Books(Base):
     uuid = Column(String)
 
     authors = relationship('Authors', secondary=books_authors_link, backref='books')
-    tags = relationship('Tags', secondary=books_tags_link, backref='books')
+    tags = relationship('Tags', secondary=books_tags_link, backref='books',order_by="Tags.name")
     comments = relationship('Comments', backref='books')
     data = relationship('Data', backref='books')
     series = relationship('Series', secondary=books_series_link, backref='books')
@@ -280,6 +282,9 @@ class Books(Base):
                                                                  self.timestamp, self.pubdate, self.series_index,
                                                                  self.last_modified, self.path, self.has_cover)
 
+    @property
+    def atom_timestamp(self):
+        return (self.timestamp or '').replace(' ', 'T')
 
 class Custom_Columns(Base):
     __tablename__ = 'custom_columns'
@@ -313,8 +318,10 @@ def setup_db():
         return False
 
     dbpath = os.path.join(config.config_calibre_dir, "metadata.db")
-    engine = create_engine('sqlite:///' + dbpath, echo=False, isolation_level="SERIALIZABLE")
     try:
+        if not os.path.exists(dbpath):
+            raise
+        engine = create_engine('sqlite:///' + dbpath, echo=False, isolation_level="SERIALIZABLE", connect_args={'check_same_thread': False})
         conn = engine.connect()
     except Exception:
         content = ub.session.query(ub.Settings).first()
@@ -374,8 +381,9 @@ def setup_db():
                                                                            secondary=books_custom_column_links[cc_id[0]],
                                                                            backref='books'))
 
-    # Base.metadata.create_all(engine)
-    Session = sessionmaker()
-    Session.configure(bind=engine)
+
+    Session = scoped_session(sessionmaker(autocommit=False,
+                                             autoflush=False,
+                                             bind=engine))
     session = Session()
     return True
