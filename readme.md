@@ -6,6 +6,10 @@ Calibre-Web is a web app providing a clean interface for browsing, reading and d
 
 ![screenshot](https://raw.githubusercontent.com/janeczku/docker-calibre-web/master/screenshot.png)
 
+## Updates
+
+- Audiobook support (see notes below) - huge thanks to Modembug for the feature and Mohammed90 for clean up work!
+
 ## Features
 
 - Bootstrap 3 HTML5 interface
@@ -27,6 +31,7 @@ Calibre-Web is a web app providing a clean interface for browsing, reading and d
 - Ability to hide content based on categories for certain users
 - Self update capability
 - "Magic Link" login to make it easy to log on eReaders
+- Audiobook support (see notes below)
 
 ## Quick start
 
@@ -210,3 +215,11 @@ Currently supported are 2 options, which are both useful for running multiple in
 `"-g path"` allows to specify the location of the google-drive database 
 `"-c path"` allows to specify the location of SSL certfile, works only in combination with keyfile 
 `"-k path"` allows to specify the location of SSL keyfile, works only in combination with certfile 
+
+## Audiobook support
+
+Calibre-web has "limited" audiobook support.  This feature is new and requires some testing.  Any modern browser should be able to support the new feature.  Testing from mobile devices is needed.
+
+Files with .mp3, .m4a, .m4b, and .aax can now be uploaded.  These files will appear as a downloaded item in the book details page.  If an .mp3 file exists, the site will offer a Listen in Browser option.
+
+While you can load mulitple audiobook formats for a book, the site is configured to work with the entire book in one format.  If you have a multi-file collection for your audiobook, convert it to a single file before upload.  Otherwise, the system may assume a different book per file!
