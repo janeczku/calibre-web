@@ -107,7 +107,7 @@ current_milli_time = lambda: int(round(time.time() * 1000))
 # Global variables
 gdrive_watch_callback_token = 'target=calibreweb-watch_files'
 
-EXTENSIONS_UPLOAD = {'txt', 'pdf', 'epub', 'mobi', 'azw', 'azw3', 'cbr', 'cbz', 'cbt', 'djvu', 'prc', 'doc', 'docx', 'fb2', 'mp3', 'aax', 'm4a'}
+EXTENSIONS_UPLOAD = {'txt', 'pdf', 'epub', 'mobi', 'azw', 'azw3', 'cbr', 'cbz', 'cbt', 'djvu', 'prc', 'doc', 'docx', 'fb2', 'mp3', 'aax', 'm4a', 'm4b'}
 EXTENSIONS_CONVERT = {'pdf', 'epub', 'mobi', 'azw3', 'docx', 'rtf', 'fb2', 'lit', 'lrf', 'txt'}
 
 # EXTENSIONS_READER = set(['txt', 'pdf', 'epub', 'zip', 'cbz', 'tar', 'cbt'] + (['rar','cbr'] if rar_support else []))
@@ -1592,6 +1592,8 @@ def show_book(book_id):
             have_read = None
 
         entries.tags = sort(entries.tags, key = lambda tag: tag.name)
+
+        app.logger.debug(entries)
 
         return render_title_template('detail.html', entry=entries, cc=cc, is_xhr=request.is_xhr,
                                      title=entries.title, books_shelfs=book_in_shelfs,
