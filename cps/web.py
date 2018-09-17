@@ -214,7 +214,8 @@ def get_locale():
     # if a user is logged in, use the locale from the user settings
     user = getattr(g, 'user', None)
     if user is not None and hasattr(user, "locale"):
-        return user.locale
+        if user.nickname != 'Guest':   # if the account is the guest account bypass the config lang settings
+            return user.locale
     translations = [item.language for item in babel.list_translations()] + ['en']
     preferred = [x.replace('-', '_') for x in request.accept_languages.values()]
     return negotiate_locale(preferred, translations)
