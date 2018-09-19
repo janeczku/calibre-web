@@ -212,7 +212,7 @@ class WorkerThread(threading.Thread):
     def convert_any_format(self):
         # convert book, and upload in case of google drive
         self.queue[self.current]['status'] = STAT_STARTED
-        self.UIqueue[self.current]['status'] = _('Started')
+        self.UIqueue[self.current]['status'] = STAT_STARTED
         self.queue[self.current]['starttime'] = datetime.now()
         self.UIqueue[self.current]['formStarttime'] = self.queue[self.current]['starttime']
         curr_task = self.queue[self.current]['typ']
@@ -352,7 +352,7 @@ class WorkerThread(threading.Thread):
         self.queue.append({'file_path':file_path, 'bookid':bookid, 'starttime': 0, 'kindle': kindle_mail,
                            'status': STAT_WAITING, 'typ': task, 'settings':settings})
         self.UIqueue.append({'user': user_name, 'formStarttime': '', 'progress': " 0 %", 'type': typ,
-                             'runtime': '0 s', 'status': _('Waiting'),'id': self.id } )
+                             'runtime': '0 s', 'status': STAT_WAITING,'id': self.id } )
 
         self.last=len(self.queue)
         addLock.release()
@@ -371,7 +371,7 @@ class WorkerThread(threading.Thread):
                            'settings':settings, 'recipent':recipient, 'starttime': 0,
                            'status': STAT_WAITING, 'typ': TASK_EMAIL, 'text':text})
         self.UIqueue.append({'user': user_name, 'formStarttime': '', 'progress': " 0 %", 'type': typ,
-                             'runtime': '0 s', 'status': _('Waiting'),'id': self.id })
+                             'runtime': '0 s', 'status': STAT_WAITING,'id': self.id })
         self.last=len(self.queue)
         addLock.release()
 
@@ -395,7 +395,7 @@ class WorkerThread(threading.Thread):
         self.queue[self.current]['starttime'] = datetime.now()
         self.UIqueue[self.current]['formStarttime'] = self.queue[self.current]['starttime']
         self.queue[self.current]['status'] = STAT_STARTED
-        self.UIqueue[self.current]['status'] = _('Started')
+        self.UIqueue[self.current]['status'] = STAT_STARTED
         obj=self.queue[self.current]
         # create MIME message
         msg = MIMEMultipart()
@@ -473,7 +473,7 @@ class WorkerThread(threading.Thread):
     def _handleError(self, error_message):
         web.app.logger.error(error_message)
         self.queue[self.current]['status'] = STAT_FAIL
-        self.UIqueue[self.current]['status'] = _('Failed')
+        self.UIqueue[self.current]['status'] = STAT_FAIL
         self.UIqueue[self.current]['progress'] = "100 %"
         self.UIqueue[self.current]['runtime'] = self._formatRuntime(
                                                 datetime.now() - self.queue[self.current]['starttime'])
@@ -481,7 +481,7 @@ class WorkerThread(threading.Thread):
 
     def _handleSuccess(self):
         self.queue[self.current]['status'] = STAT_FINISH_SUCCESS
-        self.UIqueue[self.current]['status'] = _('Finished')
+        self.UIqueue[self.current]['status'] = STAT_FINISH_SUCCESS
         self.UIqueue[self.current]['progress'] = "100 %"
         self.UIqueue[self.current]['runtime'] = self._formatRuntime(
             datetime.now() - self.queue[self.current]['starttime'])
