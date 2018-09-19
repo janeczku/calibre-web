@@ -1702,7 +1702,7 @@ def delete_book(book_id, book_format):
                 modify_database_object([u''], book.tags, db.Tags, db.session, 'tags')
                 modify_database_object([u''], book.series, db.Series, db.session, 'series')
                 modify_database_object([u''], book.languages, db.Languages, db.session, 'languages')
-                modify_database_object([u''], book.publishers, db.Publishers, db.session, 'series')
+                modify_database_object([u''], book.publishers, db.Publishers, db.session, 'publishers')
 
                 cc = db.session.query(db.Custom_Columns).filter(db.Custom_Columns.datatype.notin_(db.cc_exceptions)).all()
                 for c in cc:
