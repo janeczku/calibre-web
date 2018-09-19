@@ -567,3 +567,24 @@ def get_current_version_info():
     if is_sha1(content[0]) and len(content[1]) > 0:
         return {'hash': content[0], 'datetime': content[1]}
     return False
+
+def render_task_status(tasklist):
+    #helper function to apply localize status information in tasklist entries
+    renderedtasklist=list()
+
+    for task in tasklist:
+        if isinstance( task['status'], int ):
+            if task['status'] == worker.STAT_WAITING:
+                task['status'] = _('Waiting')
+            elif task['status'] == worker.STAT_FAIL:
+                task['status'] = _('Failed')
+            elif task['status'] == worker.STAT_STARTED:
+                task['status'] = _('Started')
+            elif task['status'] == worker.STAT_FINISH_SUCCESS:
+                task['status'] = _('Finished')
+            else:
+                task['status'] = _('Unknown Status')        
+        renderedtasklist.append(task)
+
+    return renderedtasklist
+        

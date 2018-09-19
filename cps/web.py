@@ -85,6 +85,7 @@ import hashlib
 from redirect import redirect_back
 import time
 import server
+import copy
 try:
     import cPickle
 except ImportError:
@@ -873,6 +874,7 @@ def get_metadata_calibre_companion(uuid):
 @login_required
 def get_email_status_json():
     answer=list()
+    UIanswer = list()
     tasks=helper.global_WorkerThread.get_taskstatus()
     if not current_user.role_admin():
         for task in tasks:
@@ -893,7 +895,11 @@ def get_email_status_json():
                 if 'starttime' not in  task:
                     task['starttime'] = ""
         answer = tasks
-    js=json.dumps(answer)
+    
+    UIanswer = copy.deepcopy(answer)
+    UIanswer = helper.render_task_status(UIanswer)
+    
+    js=json.dumps(UIanswer)
     response = make_response(js)
     response.headers["Content-Type"] = "application/json; charset=utf-8"
     return response
@@ -1626,6 +1632,7 @@ def bookmark(book_id, book_format):
 def get_tasks_status():
     # if current user admin, show all email, otherwise only own emails
     answer=list()
+    UIanswer=list()
     tasks=helper.global_WorkerThread.get_taskstatus()
     if not current_user.role_admin():
         for task in tasks:
@@ -1647,8 +1654,10 @@ def get_tasks_status():
                     task['starttime'] = ""
         answer = tasks
 
+    UIanswer = copy.deepcopy(answer)
+    UIanswer = helper.render_task_status(UIanswer)
     # foreach row format row
-    return render_title_template('tasks.html', entries=answer, title=_(u"Tasks"))
+    return render_title_template('tasks.html', entries=UIanswer, title=_(u"Tasks"))
 
 
 @app.route("/admin")
