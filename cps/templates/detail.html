@@ -61,15 +61,26 @@
                 </ul>
             </div>
 
-            {% for format in entry.data %}
-              {% if format.format|lower == 'mp3' %}
-              <a href="{{ url_for('read_book', book_id=entry.id, book_format=format.format|lower) }}" id="listen-in-browser" class="btn btn-primary" role="button"><span class="glyphicon glyphicon-music"></span> {{_('Listen in browser')}}</a>
-              {% endif %}
-            {% endfor %}
-        
+            {% if audioentries|length %}
+              <div class="btn-group" role="group">
+                <button id="listen-in-browser" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <span class="glyphicon glyphicon-music"></span> {{_('Listen in browser')}}
+                  <span class="caret"></span>
+                </button>
+                  <ul class="dropdown-menu" aria-labelledby="listen-in-browser">
+             
+              {% for format in entry.data %}
+                  {% if format.format|lower in audioentries %}
+                    <li><a target="_blank" href="{{ url_for('read_book', book_id=entry.id, book_format=format.format|lower) }}">{{format.format}}</a></li>
+                    {% endif %}
+              {% endfor %}
+                  </ul>
+              </div>
+            {% endif %}
+
           {% endif %}
+          </div>
         </div>
-      </div>
       <h2>{{entry.title|shortentitle(40)}}</h2>
       <p class="author">
           {% for author in entry.authors %}

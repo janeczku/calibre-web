@@ -109,6 +109,7 @@ gdrive_watch_callback_token = 'target=calibreweb-watch_files'
 
 EXTENSIONS_UPLOAD = {'txt', 'pdf', 'epub', 'mobi', 'azw', 'azw3', 'cbr', 'cbz', 'cbt', 'djvu', 'prc', 'doc', 'docx', 'fb2', 'mp3', 'aax', 'm4a', 'm4b'}
 EXTENSIONS_CONVERT = {'pdf', 'epub', 'mobi', 'azw3', 'docx', 'rtf', 'fb2', 'lit', 'lrf', 'txt'}
+EXTENSIONS_AUDIO = {'mp3', 'aax', 'm4a', 'm4b'}
 
 # EXTENSIONS_READER = set(['txt', 'pdf', 'epub', 'zip', 'cbz', 'tar', 'cbt'] + (['rar','cbr'] if rar_support else []))
 
@@ -1599,9 +1600,12 @@ def show_book(book_id):
 
         entries.tags = sort(entries.tags, key = lambda tag: tag.name)
 
-        app.logger.debug(entries)
+        audioentries = []
+        for format in entries.data:
+            if format.format.lower() in EXTENSIONS_AUDIO:
+                audioentries.append(format.format.lower())
 
-        return render_title_template('detail.html', entry=entries, cc=cc, is_xhr=request.is_xhr,
+        return render_title_template('detail.html', entry=entries, audioentries=audioentries, cc=cc, is_xhr=request.is_xhr,
                                      title=entries.title, books_shelfs=book_in_shelfs,
                                      have_read=have_read, page="book")
     else:
@@ -2174,7 +2178,20 @@ def read_book(book_id, book_format):
         return render_title_template('readtxt.html', txtfile=book_id, title=_(u"Read a Book"))
     elif book_format.lower() == "mp3":
         entries = db.session.query(db.Books).filter(db.Books.id == book_id).filter(common_filters()).first()
-        return render_title_template('listenmp3.html', mp3file=book_id, title=_(u"Read a Book"), entry=entries, bookmark=bookmark)
+        return render_title_template('listenmp3.html', mp3file=book_id, audioformat=book_format.lower(),
+                                         title=_(u"Read a Book"), entry=entries, bookmark=bookmark)
+    elif book_format.lower() == "m4b":
+        entries = db.session.query(db.Books).filter(db.Books.id == book_id).filter(common_filters()).first()
+        return render_title_template('listenmp3.html', mp3file=book_id, audioformat=book_format.lower(),
+                                         title=_(u"Read a Book"), entry=entries, bookmark=bookmark)
+    elif book_format.lower() == "aax":
+        entries = db.session.query(db.Books).filter(db.Books.id == book_id).filter(common_filters()).first()
+        return render_title_template('listenmp3.html', mp3file=book_id, audioformat=book_format.lower(),
+                                         title=_(u"Read a Book"), entry=entries, bookmark=bookmark)  
+    elif book_format.lower() == "m4a":
+        entries = db.session.query(db.Books).filter(db.Books.id == book_id).filter(common_filters()).first()
+        return render_title_template('listenmp3.html', mp3file=book_id, audioformat=book_format.lower(),
+                                         title=_(u"Read a Book"), entry=entries, bookmark=bookmark)                                   
     else:
         book_dir = os.path.join(config.get_main_dir, "cps", "static", str(book_id))
         if not os.path.exists(book_dir):
