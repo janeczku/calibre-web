@@ -107,9 +107,9 @@ current_milli_time = lambda: int(round(time.time() * 1000))
 # Global variables
 gdrive_watch_callback_token = 'target=calibreweb-watch_files'
 
-EXTENSIONS_UPLOAD = {'txt', 'pdf', 'epub', 'mobi', 'azw', 'azw3', 'cbr', 'cbz', 'cbt', 'djvu', 'prc', 'doc', 'docx', 'fb2', 'mp3', 'aax', 'm4a', 'm4b'}
+EXTENSIONS_UPLOAD = {'txt', 'pdf', 'epub', 'mobi', 'azw', 'azw3', 'cbr', 'cbz', 'cbt', 'djvu', 'prc', 'doc', 'docx', 'fb2', 'mp3',  'm4a', 'm4b'}
 EXTENSIONS_CONVERT = {'pdf', 'epub', 'mobi', 'azw3', 'docx', 'rtf', 'fb2', 'lit', 'lrf', 'txt'}
-EXTENSIONS_AUDIO = {'mp3', 'aax', 'm4a', 'm4b'}
+EXTENSIONS_AUDIO = {'mp3', 'm4a', 'm4b'}
 
 # EXTENSIONS_READER = set(['txt', 'pdf', 'epub', 'zip', 'cbz', 'tar', 'cbt'] + (['rar','cbr'] if rar_support else []))
 
@@ -178,7 +178,7 @@ mimetypes.add_type('audio/mp4', '.m4a')
 mimetypes.add_type('audio/mp4', '.m4b')
 mimetypes.add_type('audio/ogg', '.ogg')
 mimetypes.add_type('audio/ogg', '.oga')
-mimetypes.add_type('audio/vnd.audible.aax', '.aax')
+
 
 app = (Flask(__name__))
 app.wsgi_app = ReverseProxied(app.wsgi_app)
@@ -2068,7 +2068,7 @@ def serve_book(book_id, book_format):
     book_format = book_format.split(".")[0]
     book = db.session.query(db.Books).filter(db.Books.id == book_id).first()
     data = db.session.query(db.Data).filter(db.Data.book == book.id).filter(db.Data.format == book_format.upper()).first()
-    app.logger.info(data.name)
+    app.logger.info('Serving book: %s', data.name)
     if config.config_use_google_drive:
         headers = Headers()
         try:
@@ -2165,13 +2165,13 @@ def read_book(book_id, book_format):
         return redirect(url_for("index"))
 
     # check if book was downloaded before
-    lbookmark = None
+    bookmark = None
     if current_user.is_authenticated:
-        lbookmark = ub.session.query(ub.Bookmark).filter(ub.and_(ub.Bookmark.user_id == int(current_user.id),
+        bookmark = ub.session.query(ub.Bookmark).filter(ub.and_(ub.Bookmark.user_id == int(current_user.id),
                                                             ub.Bookmark.book_id == book_id,
                                                             ub.Bookmark.format == book_format.upper())).first()
     if book_format.lower() == "epub":
-        return render_title_template('read.html', bookid=book_id, title=_(u"Read a Book"), bookmark=lbookmark)
+        return render_title_template('read.html', bookid=book_id, title=_(u"Read a Book"), bookmark=bookmark)
     elif book_format.lower() == "pdf":
         return render_title_template('readpdf.html', pdffile=book_id, title=_(u"Read a Book"))
     elif book_format.lower() == "txt":
@@ -2184,10 +2184,6 @@ def read_book(book_id, book_format):
         entries = db.session.query(db.Books).filter(db.Books.id == book_id).filter(common_filters()).first()
         return render_title_template('listenmp3.html', mp3file=book_id, audioformat=book_format.lower(),
                                          title=_(u"Read a Book"), entry=entries, bookmark=bookmark)
-    elif book_format.lower() == "aax":
-        entries = db.session.query(db.Books).filter(db.Books.id == book_id).filter(common_filters()).first()
-        return render_title_template('listenmp3.html', mp3file=book_id, audioformat=book_format.lower(),
-                                         title=_(u"Read a Book"), entry=entries, bookmark=bookmark)  
     elif book_format.lower() == "m4a":
         entries = db.session.query(db.Books).filter(db.Books.id == book_id).filter(common_filters()).first()
         return render_title_template('listenmp3.html', mp3file=book_id, audioformat=book_format.lower(),

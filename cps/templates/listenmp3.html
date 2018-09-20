@@ -117,7 +117,7 @@
         <div class="sm2-playlist-wrapper">
           <ul class="sm2-playlist-bd">
             <li>
-              <a href="{{ url_for('serve_book', book_id=mp3file,book_format=audioformat) }}"></a>
+              <a href="{{ url_for('serve_book', book_id=mp3file,book_format=audioformat)}}"></a>
             </li>
           </ul>
         </div>
@@ -129,9 +129,9 @@
         filePath: "{{ url_for('static', filename='js/libs/') }}",
         cssPath: "{{ url_for('static', filename='css/') }}",
         bookUrl: "{{ url_for('static', filename=mp3file) }}/",
-        bookmarkUrl: "{{ url_for('bookmark', book_id=mp3file, book_format='MP3') }}",
+        bookmarkUrl: "{{ url_for('bookmark', book_id=mp3file, book_format=audioformat.upper()) }}",
         bookmark: "{{ bookmark.bookmark_key if bookmark != None }}",
-        useBookmarks: {{ g.user.is_authenticated | tojson }}
+        useBookmarks: "{{ g.user.is_authenticated | tojson }}"
             };
     </script>
   </div>
