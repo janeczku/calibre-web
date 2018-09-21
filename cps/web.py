@@ -1601,9 +1601,9 @@ def show_book(book_id):
         entries.tags = sort(entries.tags, key = lambda tag: tag.name)
 
         audioentries = []
-        for format in entries.data:
-            if format.format.lower() in EXTENSIONS_AUDIO:
-                audioentries.append(format.format.lower())
+        for media_format in entries.data:
+            if media_format.format.lower() in EXTENSIONS_AUDIO:
+                audioentries.append(media_format.format.lower())
 
         return render_title_template('detail.html', entry=entries, audioentries=audioentries, cc=cc, is_xhr=request.is_xhr,
                                      title=entries.title, books_shelfs=book_in_shelfs,
@@ -2187,7 +2187,7 @@ def read_book(book_id, book_format):
     elif book_format.lower() == "m4a":
         entries = db.session.query(db.Books).filter(db.Books.id == book_id).filter(common_filters()).first()
         return render_title_template('listenmp3.html', mp3file=book_id, audioformat=book_format.lower(),
-                                         title=_(u"Read a Book"), entry=entries, bookmark=bookmark)                                   
+                                         title=_(u"Read a Book"), entry=entries, bookmark=bookmark)
     else:
         book_dir = os.path.join(config.get_main_dir, "cps", "static", str(book_id))
         if not os.path.exists(book_dir):
