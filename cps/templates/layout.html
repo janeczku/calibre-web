@@ -122,16 +122,16 @@
               <li id="nav_new" {% if page == 'root' %}class="active"{% endif %}><a href="{{url_for('index')}}"><span class="glyphicon glyphicon-book"></span> {{_('Recently Added')}}</a></li>
               {%endif%}
               {% if g.user.show_sorted() %}
-              <li class="dropdown">
+              <li id="nav_sort" class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                   <span class="glyphicon glyphicon-sort-by-attributes"></span>{{_('Sorted Books')}}
                   <span class="caret"></span>
                 </a>
                 <ul class="dropdown-menu">
-                  <li {% if page == 'newest' %}class="active"{% endif %}><a href="{{url_for('newest_books')}}">{{_('Sort By')}} {{_('Newest')}}</a></li>
-                  <li {% if page == 'oldest' %}class="active"{% endif %}><a href="{{url_for('oldest_books')}}">{{_('Sort By')}} {{_('Oldest')}}</a></li>
-                  <li {% if page == 'a-z' %}class="active"{% endif %}><a href="{{url_for('titles_ascending')}}">{{_('Sort By')}} {{_('Title')}} ({{_('Ascending')}})</a></li>
-                  <li {% if page == 'z-a' %}class="active"{% endif %}><a href="{{url_for('titles_descending')}}">{{_('Sort By')}} {{_('Title')}}  ({{_('Descending')}})</a></li>
+                  <li id="nav_sort_old" {% if page == 'newest' %}class="active"{% endif %}><a href="{{url_for('newest_books')}}">{{_('Sort By')}} {{_('Newest')}}</a></li>
+                  <li id="nav_sort_new" {% if page == 'oldest' %}class="active"{% endif %}><a href="{{url_for('oldest_books')}}">{{_('Sort By')}} {{_('Oldest')}}</a></li>
+                  <li id="nav_sort_asc" {% if page == 'a-z' %}class="active"{% endif %}><a href="{{url_for('titles_ascending')}}">{{_('Sort By')}} {{_('Title')}} ({{_('Ascending')}})</a></li>
+                  <li id="nav_sort_desc" {% if page == 'z-a' %}class="active"{% endif %}><a href="{{url_for('titles_descending')}}">{{_('Sort By')}} {{_('Title')}}  ({{_('Descending')}})</a></li>
                 </ul>
               </li>
               {%endif%}
@@ -139,13 +139,13 @@
               <li id="nav_hot" {% if page == 'hot' %}class="active"{% endif %}><a href="{{url_for('hot_books')}}"><span class="glyphicon glyphicon-fire"></span>{{_('Hot Books')}}</a></li>
               {%endif%}
               {% if g.user.show_best_rated_books() %}
-              <li {% if page == 'rated' %}class="active"{% endif %}><a href="{{url_for('best_rated_books')}}"><span class="glyphicon glyphicon-star"></span>{{_('Best rated Books')}}</a></li>
+              <li id="nav_rated" {% if page == 'rated' %}class="active"{% endif %}><a href="{{url_for('best_rated_books')}}"><span class="glyphicon glyphicon-star"></span>{{_('Best rated Books')}}</a></li>
               {%endif%}
               {% if g.user.show_read_and_unread() %}
                 {% if not g.user.is_anonymous %}
-                  <li {% if page == 'read' %}class="active"{% endif %}><a href="{{url_for('read_books')}}"><span class="glyphicon glyphicon-eye-open"></span>{{_('Read Books')}}</a></li>
+                  <li id="nav_read" {% if page == 'read' %}class="active"{% endif %}><a href="{{url_for('read_books')}}"><span class="glyphicon glyphicon-eye-open"></span>{{_('Read Books')}}</a></li>
                 {%endif%}
-                <li {% if page == 'read' %}class="active"{% endif %}><a href="{{url_for('unread_books')}}"><span class="glyphicon glyphicon-eye-close"></span>{{_('Unread Books')}}</a></li>
+                <li id="nav_unread" {% if page == 'read' %}class="active"{% endif %}><a href="{{url_for('unread_books')}}"><span class="glyphicon glyphicon-eye-close"></span>{{_('Unread Books')}}</a></li>
               {%endif%}
               {% if g.user.show_random_books() %}
               <li id="nav_rand" {% if page == 'discover' %}class="active"{% endif %}><a href="{{url_for('discover')}}"><span class="glyphicon glyphicon-random"></span>{{_('Discover')}}</a></li>

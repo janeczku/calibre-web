@@ -487,6 +487,7 @@ class WorkerThread(threading.Thread):
             datetime.now() - self.queue[self.current]['starttime'])
 
 
+# Enable logging of smtp lib debug output
 class StderrLogger(object):
 
     buffer = ''

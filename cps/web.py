@@ -107,8 +107,9 @@ current_milli_time = lambda: int(round(time.time() * 1000))
 # Global variables
 gdrive_watch_callback_token = 'target=calibreweb-watch_files'
 
-EXTENSIONS_UPLOAD = {'txt', 'pdf', 'epub', 'mobi', 'azw', 'azw3', 'cbr', 'cbz', 'cbt', 'djvu', 'prc', 'doc', 'docx', 'fb2', 'mp3',  'm4a', 'm4b'}
-EXTENSIONS_CONVERT = {'pdf', 'epub', 'mobi', 'azw3', 'docx', 'rtf', 'fb2', 'lit', 'lrf', 'txt'}
+EXTENSIONS_UPLOAD = {'txt', 'pdf', 'epub', 'mobi', 'azw', 'azw3', 'cbr', 'cbz', 'cbt', 'djvu', 'prc', 'doc', 'docx', 
+                      'fb2', 'html', 'rtf', 'odt', 'mp3',  'm4a', 'm4b'}
+EXTENSIONS_CONVERT = {'pdf', 'epub', 'mobi', 'azw3', 'docx', 'rtf', 'fb2', 'lit', 'lrf', 'txt', 'html', 'rtf', 'odt'}
 EXTENSIONS_AUDIO = {'mp3', 'm4a', 'm4b'}
 
 # EXTENSIONS_READER = set(['txt', 'pdf', 'epub', 'zip', 'cbz', 'tar', 'cbt'] + (['rar','cbr'] if rar_support else []))
@@ -597,7 +598,7 @@ def modify_database_object(input_elements, db_book_object, db_object, db_session
                     new_element = db_object(add_element, add_element)
                 elif db_type == 'custom':
                     new_element = db_object(value=add_element)
-                else:  # db_type should be tag, or languages
+                else:  # db_type should be tag, language or publisher
                     new_element = db_object(add_element)
                 db_session.add(new_element)
             # add element to book
@@ -1714,7 +1715,7 @@ def delete_book(book_id, book_format):
                 modify_database_object([u''], book.tags, db.Tags, db.session, 'tags')
                 modify_database_object([u''], book.series, db.Series, db.session, 'series')
                 modify_database_object([u''], book.languages, db.Languages, db.session, 'languages')
-                modify_database_object([u''], book.publishers, db.Publishers, db.session, 'series')
+                modify_database_object([u''], book.publishers, db.Publishers, db.session, 'publishers')
 
                 cc = db.session.query(db.Custom_Columns).filter(db.Custom_Columns.datatype.notin_(db.cc_exceptions)).all()
                 for c in cc:
@@ -3035,7 +3036,8 @@ def configuration_helper(origin):
         if content.config_logfile != to_save["config_logfile"]:
             # check valid path, only path or file
             if os.path.dirname(to_save["config_logfile"]):
-                if os.path.exists(os.path.dirname(to_save["config_logfile"])):
+                if os.path.exists(os.path.dirname(to_save["config_logfile"])) and \
+                        os.path.basename(to_save["config_logfile"]) and not os.path.isdir(to_save["config_logfile"]):
                     content.config_logfile = to_save["config_logfile"]
                 else:
                     ub.session.commit()
@@ -3083,8 +3085,6 @@ def configuration_helper(origin):
                                              gdriveError=gdriveError, goodreads=goodreads_support, rarfile_support=rar_support,
                                              title=_(u"Basic Configuration"), page="config")
         if reboot_required:
-            # ub.session.close()
-            # ub.engine.dispose()
             # stop Server
             server.Server.setRestartTyp(True)
             server.Server.stopServer()
