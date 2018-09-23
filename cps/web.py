@@ -590,7 +590,7 @@ def modify_database_object(input_elements, db_book_object, db_object, db_session
                     new_element = db_object(add_element, add_element)
                 elif db_type == 'custom':
                     new_element = db_object(value=add_element)
-                else:  # db_type should be tag, or languages
+                else:  # db_type should be tag, languages, publisher
                     new_element = db_object(add_element)
                 db_session.add(new_element)
             # add element to book
