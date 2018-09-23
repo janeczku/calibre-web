@@ -107,7 +107,7 @@ current_milli_time = lambda: int(round(time.time() * 1000))
 # Global variables
 gdrive_watch_callback_token = 'target=calibreweb-watch_files'
 
-EXTENSIONS_UPLOAD = {'txt', 'pdf', 'epub', 'mobi', 'azw', 'azw3', 'cbr', 'cbz', 'cbt', 'djvu', 'prc', 'doc', 'docx', 
+EXTENSIONS_UPLOAD = {'txt', 'pdf', 'epub', 'mobi', 'azw', 'azw3', 'cbr', 'cbz', 'cbt', 'djvu', 'prc', 'doc', 'docx',
                       'fb2', 'html', 'rtf', 'odt', 'mp3',  'm4a', 'm4b'}
 EXTENSIONS_CONVERT = {'pdf', 'epub', 'mobi', 'azw3', 'docx', 'rtf', 'fb2', 'lit', 'lrf', 'txt', 'html', 'rtf', 'odt'}
 EXTENSIONS_AUDIO = {'mp3', 'm4a', 'm4b'}
