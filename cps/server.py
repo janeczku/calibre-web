@@ -5,6 +5,8 @@
 from socket import error as SocketError
 import sys
 import os
+import signal
+
 try:
     from gevent.pywsgi import WSGIServer
     from gevent.pool import Pool
@@ -26,7 +28,8 @@ class server:
     restart= False
 
     def __init__(self):
-        pass
+        signal.signal(signal.SIGINT, self.killServer)
+        signal.signal(signal.SIGTERM, self.killServer)        
 
     def start_gevent(self):
         try:
@@ -85,6 +88,9 @@ class server:
 
     def setRestartTyp(self,starttyp):
         self.restart=starttyp
+
+    def killServer(self, signum, frame):
+        self.stopServer()
 
     def stopServer(self):
         if gevent_present:

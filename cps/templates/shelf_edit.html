@@ -14,7 +14,7 @@
         </label>
       </div>
     {% endif %}
-    <button type="submit" class="btn btn-default">{{_('Submit')}}</button>
+    <button type="submit" class="btn btn-default" id="submit">{{_('Submit')}}</button>
     {% if shelf.id != None %}
       <a href="{{ url_for('show_shelf', shelf_id=shelf.id) }}" class="btn btn-default">{{_('Back')}}</a>
     {% endif %}

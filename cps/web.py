@@ -590,7 +590,7 @@ def modify_database_object(input_elements, db_book_object, db_object, db_session
                     new_element = db_object(add_element, add_element)
                 elif db_type == 'custom':
                     new_element = db_object(value=add_element)
-                else:  # db_type should be tag, languages, publisher
+                else:  # db_type should be tag, language or publisher
                     new_element = db_object(add_element)
                 db_session.add(new_element)
             # add element to book
@@ -3011,7 +3011,8 @@ def configuration_helper(origin):
         if content.config_logfile != to_save["config_logfile"]:
             # check valid path, only path or file
             if os.path.dirname(to_save["config_logfile"]):
-                if os.path.exists(os.path.dirname(to_save["config_logfile"])):
+                if os.path.exists(os.path.dirname(to_save["config_logfile"])) and \
+                        os.path.basename(to_save["config_logfile"]) and not os.path.isdir(to_save["config_logfile"]):
                     content.config_logfile = to_save["config_logfile"]
                 else:
                     ub.session.commit()
@@ -3059,8 +3060,6 @@ def configuration_helper(origin):
                                              gdriveError=gdriveError, goodreads=goodreads_support, rarfile_support=rar_support,
                                              title=_(u"Basic Configuration"), page="config")
         if reboot_required:
-            # ub.session.close()
-            # ub.engine.dispose()
             # stop Server
             server.Server.setRestartTyp(True)
             server.Server.stopServer()
