@@ -44,5 +44,9 @@ if args.k:
         print("Keyfilepath is invalid. Exiting...")
         sys.exit(1)
 
+if (args.k and not args.c) or (not args.k and args.c):
+    print("Certfile and Keyfile have to be used together. Exiting...")
+    sys.exit(1)
+
 if args.k is "":
     keyfilepath = ""
