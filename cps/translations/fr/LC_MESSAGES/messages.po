@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2018-09-14 21:11+0200\n"
-"PO-Revision-Date: 2018-09-08 17:48+0200\n"
+"POT-Creation-Date: 2018-09-23 19:00+0200\n"
+"PO-Revision-Date: 2018-09-16 00:46+0200\n"
 "Last-Translator: Nicolas Roudninski <nicoroud@gmail.com>\n"
 "Language: fr\n"
 "Language-Team: \n"
@@ -120,35 +120,35 @@ msgstr "Inconnu"
 
 #: cps/web.py:1121 cps/web.py:1152
 msgid "HTTP Error"
-msgstr ""
+msgstr "Erreur HTTP"
 
 #: cps/web.py:1123 cps/web.py:1154
 msgid "Connection error"
-msgstr ""
+msgstr "Erreur de connexion"
 
 #: cps/web.py:1125 cps/web.py:1156
 msgid "Timeout while establishing connection"
-msgstr ""
+msgstr "Délai d'attente dépassé lors de l'établissement de connexion"
 
 #: cps/web.py:1127 cps/web.py:1158
 msgid "General error"
-msgstr ""
+msgstr "Erreur générale"
 
 #: cps/web.py:1133
 msgid "Unexpected data while reading update information"
-msgstr ""
+msgstr "Données inattendues lors de la lecture des informations de mise à jour"
 
 #: cps/web.py:1140
 msgid "No update available. You already have the latest version installed"
-msgstr ""
+msgstr "Aucune mise à jour disponible. Vous avez déjà la dernière version installée"
 
 #: cps/web.py:1165
 msgid "A new update is available. Click on the button below to update to the latest version."
-msgstr ""
+msgstr "Une nouvelle mise à jour est disponible. Cliquez sur le bouton ci-dessous pour charger la dernière version."
 
 #: cps/web.py:1215
 msgid "Could not fetch update information"
-msgstr ""
+msgstr "Impossible d'extraire les informations de mise à jour"
 
 #: cps/web.py:1230
 msgid "Requesting update package"
@@ -637,7 +637,7 @@ msgstr "Le fichier de couverture n’est pas au format jpg, impossible de sauveg
 #: cps/web.py:3554
 #, python-format
 msgid "%(langname)s is not a valid language"
-msgstr ""
+msgstr "%(langname)s n'est pas une langue valide"
 
 #: cps/web.py:3676
 msgid "Error editing book, please check logfile for details"
@@ -826,19 +826,19 @@ msgstr "Arrêter Calibre-Web"
 
 #: cps/templates/admin.html:115
 msgid "Update"
-msgstr ""
+msgstr "Mise à jour de Calibre-Web"
 
 #: cps/templates/admin.html:119
 msgid "Version"
-msgstr ""
+msgstr "Version"
 
 #: cps/templates/admin.html:120
 msgid "Details"
-msgstr ""
+msgstr "Détails"
 
 #: cps/templates/admin.html:126
 msgid "Current version"
-msgstr ""
+msgstr "Version actuellement installée"
 
 #: cps/templates/admin.html:132
 msgid "Check for update"
