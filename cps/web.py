@@ -108,8 +108,8 @@ current_milli_time = lambda: int(round(time.time() * 1000))
 gdrive_watch_callback_token = 'target=calibreweb-watch_files'
 
 EXTENSIONS_UPLOAD = {'txt', 'pdf', 'epub', 'mobi', 'azw', 'azw3', 'cbr', 'cbz', 'cbt', 'djvu', 'prc', 'doc', 'docx',
-                      'fb2'}
-EXTENSIONS_CONVERT = {'pdf', 'epub', 'mobi', 'azw3', 'docx', 'rtf', 'fb2', 'lit', 'lrf', 'txt'}
+                      'fb2', 'html', 'rtf', 'odt'}
+EXTENSIONS_CONVERT = {'pdf', 'epub', 'mobi', 'azw3', 'docx', 'rtf', 'fb2', 'lit', 'lrf', 'txt', 'html', 'rtf', 'odt'}
 
 # EXTENSIONS_READER = set(['txt', 'pdf', 'epub', 'zip', 'cbz', 'tar', 'cbt'] + (['rar','cbr'] if rar_support else []))
 
