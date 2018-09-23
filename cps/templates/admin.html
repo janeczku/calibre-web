@@ -96,8 +96,8 @@
             <div class="col-xs-6 col-sm-5">{% if config.config_remote_login %}<span class="glyphicon glyphicon-ok"></span>{% else %}<span class="glyphicon glyphicon-remove"></span>{% endif %}</div>
         </div>
       </div>
-      <div class="btn btn-default"><a href="{{url_for('configuration')}}">{{_('Basic Configuration')}}</a></div>
-      <div class="btn btn-default"><a href="{{url_for('view_configuration')}}">{{_('UI Configuration')}}</a></div>
+      <div class="btn btn-default"><a id="basic_config" href="{{url_for('configuration')}}">{{_('Basic Configuration')}}</a></div>
+      <div class="btn btn-default"><a id="view_config" href="{{url_for('view_configuration')}}">{{_('UI Configuration')}}</a></div>
     </div>
   </div>
 
@@ -105,8 +105,8 @@
     <div class="col">
       <h2>{{_('Administration')}}</h2>
       <div class="btn btn-default" id="restart_database">{{_('Reconnect to Calibre DB')}}</div>
-      <div class="btn btn-default" data-toggle="modal" data-target="#RestartDialog">{{_('Restart Calibre-Web')}}</div>
-      <div class="btn btn-default" data-toggle="modal" data-target="#ShutdownDialog">{{_('Stop Calibre-Web')}}</div>
+      <div class="btn btn-default" id="admin_restart"data-toggle="modal" data-target="#RestartDialog">{{_('Restart Calibre-Web')}}</div>
+      <div class="btn btn-default" id="admin_stop" data-toggle="modal" data-target="#ShutdownDialog">{{_('Stop Calibre-Web')}}</div>
     </div>
   </div>
 

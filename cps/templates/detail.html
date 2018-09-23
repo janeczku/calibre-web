@@ -174,8 +174,10 @@
 
 
       {% if entry.comments|length > 0 and entry.comments[0].text|length > 0%}
-        <h3>{{_('Description:')}}</h3>
-        {{entry.comments[0].text|safe}}
+        <div class="comments">
+            <h3>{{_('Description:')}}</h3>
+            {{entry.comments[0].text|safe}}
+        </div>
       {% endif %}
 
 
