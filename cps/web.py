@@ -2419,18 +2419,22 @@ def add_to_shelf(shelf_id, book_id):
     if shelf is None:
         app.logger.info("Invalid shelf specified")
         if not request.is_xhr:
+            flash(_(u"Invalid shelf specified"), category="error")
             return redirect(url_for('index'))
         return "Invalid shelf specified", 400
 
     if not shelf.is_public and not shelf.user_id == int(current_user.id):
         app.logger.info("Sorry you are not allowed to add a book to the the shelf: %s" % shelf.name)
         if not request.is_xhr:
+            flash(_(u"Sorry you are not allowed to add a book to the the shelf: %(shelfname)s", shelfname=shelf.name),
+                  category="error")
             return redirect(url_for('index'))
         return "Sorry you are not allowed to add a book to the the shelf: %s" % shelf.name, 403
 
     if shelf.is_public and not current_user.role_edit_shelfs():
         app.logger.info("User is not allowed to edit public shelves")
         if not request.is_xhr:
+            flash(_(u"You are not allowed to edit public shelves"), category="error")
             return redirect(url_for('index'))
         return "User is not allowed to edit public shelves", 403
 
@@ -2439,6 +2443,7 @@ def add_to_shelf(shelf_id, book_id):
     if book_in_shelf:
         app.logger.info("Book is already part of the shelf: %s" % shelf.name)
         if not request.is_xhr:
+            flash(_(u"Book is already part of the shelf: %(shelfname)s", shelfname=shelf.name), category="error")
             return redirect(url_for('index'))
         return "Book is already part of the shelf: %s" % shelf.name, 400
 
@@ -2453,7 +2458,10 @@ def add_to_shelf(shelf_id, book_id):
     ub.session.commit()
     if not request.is_xhr:
         flash(_(u"Book has been added to shelf: %(sname)s", sname=shelf.name), category="success")
-        return redirect(request.environ["HTTP_REFERER"])
+        if "HTTP_REFERER" in request.environ:
+            return redirect(request.environ["HTTP_REFERER"])
+        else:
+            return redirect(url_for('index'))
     return "", 204
 
 
@@ -3109,6 +3117,11 @@ def new_user():
             content.sidebar_view += ub.SIDEBAR_AUTHOR
         if "show_detail_random" in to_save:
             content.sidebar_view += ub.DETAIL_RANDOM
+        if "show_sorted" in to_save:
+            content.sidebar_view += ub.SIDEBAR_SORTED
+        if "show_recent" in to_save:
+            content.sidebar_view += ub.SIDEBAR_RECENT
+
         content.role = 0
         if "admin_role" in to_save:
             content.role = content.role + ub.ROLE_ADMIN
