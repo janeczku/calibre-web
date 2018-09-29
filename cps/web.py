@@ -41,6 +41,8 @@ from flask import (Flask, render_template, request, Response, redirect,
                    url_for, send_from_directory, make_response, g, flash,
                    abort, Markup)
 from flask import __version__ as flaskVersion
+from werkzeug import __version__ as werkzeugVersion
+from jinja2 import __version__  as jinja2Version
 import cache_buster
 import ub
 from ub import config
@@ -1665,8 +1667,10 @@ def stats():
     categorys = db.session.query(db.Tags).count()
     series = db.session.query(db.Series).count()
     versions = uploader.book_formats.get_versions()
-    versions['Babel'] = 'v'+babelVersion
-    versions['Sqlalchemy'] = 'v'+sqlalchemyVersion
+    versions['Babel'] = 'v' + babelVersion
+    versions['Sqlalchemy'] = 'v' + sqlalchemyVersion
+    versions['Werkzeug'] = 'v' + werkzeugVersion
+    versions['Jinja2'] = 'v' + jinja2Version
     versions['Flask'] = 'v'+flaskVersion
     versions['Flask Login'] = 'v'+flask_loginVersion
     versions['Flask Principal'] = 'v'+flask_principalVersion
