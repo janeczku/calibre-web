@@ -41,6 +41,8 @@ from flask import (Flask, render_template, request, Response, redirect,
                    url_for, send_from_directory, make_response, g, flash,
                    abort, Markup)
 from flask import __version__ as flaskVersion
+from werkzeug import __version__ as werkzeugVersion
+from jinja2 import __version__  as jinja2Version
 import cache_buster
 import ub
 from ub import config
@@ -85,6 +87,10 @@ import hashlib
 from redirect import redirect_back
 import time
 import server
+try:
+    import cPickle
+except ImportError:
+    import pickle as cPickle
 
 try:
     from urllib.parse import quote
@@ -103,10 +109,12 @@ current_milli_time = lambda: int(round(time.time() * 1000))
 # Global variables
 gdrive_watch_callback_token = 'target=calibreweb-watch_files'
 
-ALLOWED_EXTENSIONS = {'txt', 'pdf', 'epub', 'mobi', 'azw', 'azw3', 'cbr', 'cbz', 'cbt', 'djvu', 'prc', 'doc', 'docx',
-                      'fb2'}
-# READER_EXTENSIONS = set(['txt', 'pdf', 'epub', 'zip', 'cbz', 'tar', 'cbt'] + (['rar','cbr'] if rar_support else []))
-# READER_EXTENSIONS = set(['txt', 'pdf', 'epub', 'zip', 'cbz', 'tar', 'cbt', 'rar', 'cbr'])
+EXTENSIONS_UPLOAD = {'txt', 'pdf', 'epub', 'mobi', 'azw', 'azw3', 'cbr', 'cbz', 'cbt', 'djvu', 'prc', 'doc', 'docx',
+                      'fb2', 'html', 'rtf', 'odt'}
+EXTENSIONS_CONVERT = {'pdf', 'epub', 'mobi', 'azw3', 'docx', 'rtf', 'fb2', 'lit', 'lrf', 'txt', 'html', 'rtf', 'odt'}
+
+# EXTENSIONS_READER = set(['txt', 'pdf', 'epub', 'zip', 'cbz', 'tar', 'cbt'] + (['rar','cbr'] if rar_support else []))
+
 
 def md5(fname):
     hash_md5 = hashlib.md5()
@@ -183,7 +191,6 @@ logging.getLogger("book_formats").addHandler(file_handler)
 logging.getLogger("book_formats").setLevel(config.config_log_level)
 
 Principal(app)
-
 babel = Babel(app)
 
 import uploader
@@ -194,6 +201,9 @@ lm.login_view = 'login'
 lm.anonymous_user = ub.Anonymous
 app.secret_key = os.getenv('SECRET_KEY', 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT')
 db.setup_db()
+
+with open(os.path.join(config.get_main_dir, 'cps/translations/iso639.pickle'), 'rb') as f:
+    language_table = cPickle.load(f)
 
 
 def is_gdrive_ready():
@@ -418,7 +428,7 @@ def yesno(value, yes, no):
 def canread(ext):
     if isinstance(ext, db.Data):
         ext = ext.format
-    return ext.lower() in READER_EXTENSIONS'''
+    return ext.lower() in EXTENSIONS_READER'''
 
 
 def admin_required(f):
@@ -582,7 +592,7 @@ def modify_database_object(input_elements, db_book_object, db_object, db_session
                     new_element = db_object(add_element, add_element)
                 elif db_type == 'custom':
                     new_element = db_object(value=add_element)
-                else:  # db_type should be tag, or languages
+                else:  # db_type should be tag, language or publisher
                     new_element = db_object(add_element)
                 db_session.add(new_element)
             # add element to book
@@ -1036,9 +1046,14 @@ def get_tags_json():
 def get_languages_json():
     if request.method == "GET":
         query = request.args.get('q').lower()
-        languages = speaking_language()
-        entries = [s for s in languages if query in s.name.lower()]
-        json_dumps = json.dumps([dict(name=r.name) for r in entries])
+        # languages = speaking_language()
+        languages = language_table[get_locale()]
+        entries_start = [s for key, s in languages.items() if s.lower().startswith(query.lower())]
+        if len(entries_start) < 5:
+            entries = [s for key,s in languages.items() if query in s.lower()]
+            entries_start.extend(entries[0:(5-len(entries_start))])
+            entries_start = list(set(entries_start))
+        json_dumps = json.dumps([dict(name=r) for r in entries_start[0:5]])
         return json_dumps
 
 
@@ -1149,7 +1164,7 @@ def get_update_status():
 
         if 'committer' in update_data and 'message' in update_data:
             status['success'] = True
-            status['message'] = _(u'A new update is available. Click on the button below update to the latest version.')
+            status['message'] = _(u'A new update is available. Click on the button below to update to the latest version.')
 
             new_commit_date = datetime.datetime.strptime(
                 update_data['committer']['date'], '%Y-%m-%dT%H:%M:%SZ') - tz
@@ -1652,8 +1667,10 @@ def stats():
     categorys = db.session.query(db.Tags).count()
     series = db.session.query(db.Series).count()
     versions = uploader.book_formats.get_versions()
-    versions['Babel'] = 'v'+babelVersion
-    versions['Sqlalchemy'] = 'v'+sqlalchemyVersion
+    versions['Babel'] = 'v' + babelVersion
+    versions['Sqlalchemy'] = 'v' + sqlalchemyVersion
+    versions['Werkzeug'] = 'v' + werkzeugVersion
+    versions['Jinja2'] = 'v' + jinja2Version
     versions['Flask'] = 'v'+flaskVersion
     versions['Flask Login'] = 'v'+flask_loginVersion
     versions['Flask Principal'] = 'v'+flask_principalVersion
@@ -1689,7 +1706,7 @@ def delete_book(book_id, book_format):
                 modify_database_object([u''], book.tags, db.Tags, db.session, 'tags')
                 modify_database_object([u''], book.series, db.Series, db.session, 'series')
                 modify_database_object([u''], book.languages, db.Languages, db.session, 'languages')
-                modify_database_object([u''], book.publishers, db.Publishers, db.session, 'series')
+                modify_database_object([u''], book.publishers, db.Publishers, db.session, 'publishers')
 
                 cc = db.session.query(db.Custom_Columns).filter(db.Custom_Columns.datatype.notin_(db.cc_exceptions)).all()
                 for c in cc:
@@ -2406,18 +2423,22 @@ def add_to_shelf(shelf_id, book_id):
     if shelf is None:
         app.logger.info("Invalid shelf specified")
         if not request.is_xhr:
+            flash(_(u"Invalid shelf specified"), category="error")
             return redirect(url_for('index'))
         return "Invalid shelf specified", 400
 
     if not shelf.is_public and not shelf.user_id == int(current_user.id):
         app.logger.info("Sorry you are not allowed to add a book to the the shelf: %s" % shelf.name)
         if not request.is_xhr:
+            flash(_(u"Sorry you are not allowed to add a book to the the shelf: %(shelfname)s", shelfname=shelf.name),
+                  category="error")
             return redirect(url_for('index'))
         return "Sorry you are not allowed to add a book to the the shelf: %s" % shelf.name, 403
 
     if shelf.is_public and not current_user.role_edit_shelfs():
         app.logger.info("User is not allowed to edit public shelves")
         if not request.is_xhr:
+            flash(_(u"You are not allowed to edit public shelves"), category="error")
             return redirect(url_for('index'))
         return "User is not allowed to edit public shelves", 403
 
@@ -2426,6 +2447,7 @@ def add_to_shelf(shelf_id, book_id):
     if book_in_shelf:
         app.logger.info("Book is already part of the shelf: %s" % shelf.name)
         if not request.is_xhr:
+            flash(_(u"Book is already part of the shelf: %(shelfname)s", shelfname=shelf.name), category="error")
             return redirect(url_for('index'))
         return "Book is already part of the shelf: %s" % shelf.name, 400
 
@@ -2440,7 +2462,10 @@ def add_to_shelf(shelf_id, book_id):
     ub.session.commit()
     if not request.is_xhr:
         flash(_(u"Book has been added to shelf: %(sname)s", sname=shelf.name), category="success")
-        return redirect(request.environ["HTTP_REFERER"])
+        if "HTTP_REFERER" in request.environ:
+            return redirect(request.environ["HTTP_REFERER"])
+        else:
+            return redirect(url_for('index'))
     return "", 204
 
 
@@ -2637,7 +2662,12 @@ def show_shelf(shelf_id):
             ub.BookShelf.order.asc()).all()
         for book in books_in_shelf:
             cur_book = db.session.query(db.Books).filter(db.Books.id == book.book_id).first()
-            result.append(cur_book)
+            if cur_book:
+                result.append(cur_book)
+            else:
+                app.logger.info('Not existing book %s in shelf %s deleted' % (book.book_id, shelf.id))
+                ub.session.query(ub.BookShelf).filter(ub.BookShelf.book_id == book.book_id).delete()
+                ub.session.commit()
         return render_title_template('shelf.html', entries=result, title=_(u"Shelf: '%(name)s'", name=shelf.name),
                                  shelf=shelf, page="shelf")
     else:
@@ -2993,7 +3023,8 @@ def configuration_helper(origin):
         if content.config_logfile != to_save["config_logfile"]:
             # check valid path, only path or file
             if os.path.dirname(to_save["config_logfile"]):
-                if os.path.exists(os.path.dirname(to_save["config_logfile"])):
+                if os.path.exists(os.path.dirname(to_save["config_logfile"])) and \
+                        os.path.basename(to_save["config_logfile"]) and not os.path.isdir(to_save["config_logfile"]):
                     content.config_logfile = to_save["config_logfile"]
                 else:
                     ub.session.commit()
@@ -3041,8 +3072,6 @@ def configuration_helper(origin):
                                              gdriveError=gdriveError, goodreads=goodreads_support, rarfile_support=rar_support,
                                              title=_(u"Basic Configuration"), page="config")
         if reboot_required:
-            # ub.session.close()
-            # ub.engine.dispose()
             # stop Server
             server.Server.setRestartTyp(True)
             server.Server.stopServer()
@@ -3092,6 +3121,11 @@ def new_user():
             content.sidebar_view += ub.SIDEBAR_AUTHOR
         if "show_detail_random" in to_save:
             content.sidebar_view += ub.DETAIL_RANDOM
+        if "show_sorted" in to_save:
+            content.sidebar_view += ub.SIDEBAR_SORTED
+        if "show_recent" in to_save:
+            content.sidebar_view += ub.SIDEBAR_RECENT
+
         content.role = 0
         if "admin_role" in to_save:
             content.role = content.role + ub.ROLE_ADMIN
@@ -3345,22 +3379,19 @@ def edit_book(book_id):
         return redirect(url_for("index"))
 
     for indx in range(0, len(book.languages)):
-        try:
-            book.languages[indx].language_name = LC.parse(book.languages[indx].lang_code).get_language_name(
-                get_locale())
-        except UnknownLocaleError:
-            book.languages[indx].language_name = _(isoLanguages.get(part3=book.languages[indx].lang_code).name)
+        book.languages[indx].language_name = language_table[get_locale()][book.languages[indx].lang_code]
     for authr in book.authors:
         author_names.append(authr.name.replace('|', ','))
 
     # Option for showing convertbook button
+    valid_source_formats=list()
     if config.config_ebookconverter == 2:
-        display_convertbtn = True
-    else:
-        display_convertbtn = False
+        for file in book.data:
+            if file.format.lower() in EXTENSIONS_CONVERT:
+                valid_source_formats.append(file.format.lower())
 
     # Determine what formats don't already exist
-    allowed_conversion_formats = ALLOWED_EXTENSIONS.copy()
+    allowed_conversion_formats = EXTENSIONS_CONVERT.copy()
     for file in book.data:
         try:
             allowed_conversion_formats.remove(file.format.lower())
@@ -3372,12 +3403,9 @@ def edit_book(book_id):
     # Show form
     if request.method != 'POST':
         return render_title_template('book_edit.html', book=book, authors=author_names, cc=cc,
-                                     title=_(u"edit metadata"), page="editbook", display_convertbtn=display_convertbtn,
-                                     conversion_formats=allowed_conversion_formats)
-
-    # Update book
-    edited_books_id = set()
-
+                                     title=_(u"edit metadata"), page="editbook",
+                                     conversion_formats=allowed_conversion_formats,
+                                     source_formats=valid_source_formats)
     # Check and handle Uploaded file
     if 'btn-upload-format' in request.files:
         requested_file = request.files['btn-upload-format']
@@ -3385,7 +3413,7 @@ def edit_book(book_id):
         if requested_file.filename != '':
             if '.' in requested_file.filename:
                 file_ext = requested_file.filename.rsplit('.', 1)[-1].lower()
-                if file_ext not in ALLOWED_EXTENSIONS:
+                if file_ext not in EXTENSIONS_UPLOAD:
                     flash(_("File extension '%(ext)s' is not allowed to be uploaded to this server", ext=file_ext),
                           category="error")
                     return redirect(url_for('show_book', book_id=book.id))
@@ -3432,7 +3460,6 @@ def edit_book(book_id):
         # check for empty request
         if requested_file.filename != '':
             file_ext = requested_file.filename.rsplit('.', 1)[-1].lower()
-            # file_name = book.path.rsplit('/', 1)[-1]
             filepath = os.path.normpath(os.path.join(config.config_calibre_dir, book.path))
             saved_filename = os.path.join(filepath,  'cover.' + file_ext)
 
@@ -3456,10 +3483,14 @@ def edit_book(book_id):
     to_save = request.form.to_dict()
 
     try:
+        # Update book
+        edited_books_id = set()
+        #handle book title
         if book.title != to_save["book_title"]:
             book.title = to_save["book_title"]
             edited_books_id.add(book.id)
 
+        # handle author(s)
         input_authors = to_save["author_name"].split('&')
         input_authors = list(map(lambda it: it.strip().replace(',', '|'), input_authors))
         # we have all author names now
@@ -3495,21 +3526,21 @@ def edit_book(book_id):
             if book.series_index != to_save["series_index"]:
                 book.series_index = to_save["series_index"]
 
+            # Handle book comments/description
             if len(book.comments):
                 book.comments[0].text = to_save["description"]
             else:
                 book.comments.append(db.Comments(text=to_save["description"], book=book.id))
 
+            # Handle book tags
             input_tags = to_save["tags"].split(',')
             input_tags = list(map(lambda it: it.strip(), input_tags))
             modify_database_object(input_tags, book.tags, db.Tags, db.session, 'tags')
 
+            # Handle book series
             input_series = [to_save["series"].strip()]
             input_series = [x for x in input_series if x != '']
             modify_database_object(input_series, book.series, db.Series, db.session, 'series')
-
-            input_languages = to_save["languages"].split(',')
-            input_languages = list(map(lambda it: it.strip().lower(), input_languages))
 
             if to_save["pubdate"]:
                 try:
@@ -3518,24 +3549,25 @@ def edit_book(book_id):
                     book.pubdate = db.Books.DEFAULT_PUBDATE
             else:
                 book.pubdate = db.Books.DEFAULT_PUBDATE
-
             '''if len(book.publishers):
                 if to_save["publisher"] != book.publishers[0].name:
                     modify_database_object(to_save["publisher"], book.publishers, db.Publishers, db.session, 'series')
             else:
                 modify_database_object(to_save["publisher"], book.publishers, db.Publishers, db.session, 'series')'''
 
-            # retranslate displayed text to language codes
-            languages = db.session.query(db.Languages).all()
+            # handle book languages
+            input_languages = to_save["languages"].split(',')
+            # input_languages = list(map(lambda it: it.strip().lower(), input_languages))
+            input_languages = [x.strip().lower() for x in input_languages if x != '']
             input_l = []
-            for lang in languages:
+            invers_lang_table = [x.lower() for x in language_table[get_locale()].values()]
+            for lang in input_languages:
                 try:
-                    lang.name = LC.parse(lang.lang_code).get_language_name(get_locale()).lower()
-                except UnknownLocaleError:
-                    lang.name = _(isoLanguages.get(part3=lang.lang_code).name).lower()
-                for inp_lang in input_languages:
-                    if inp_lang == lang.name:
-                        input_l.append(lang.lang_code)
+                    res = list(language_table[get_locale()].keys())[invers_lang_table.index(lang)]
+                    input_l.append(res)
+                except ValueError:
+                    app.logger.error('%s is not a valid language' % lang)
+                    flash(_(u"%(langname)s is not a valid language", langname=lang), category="error")
             modify_database_object(input_l, book.languages, db.Languages, db.session, 'languages')
 
             if to_save["rating"].strip():
@@ -3676,7 +3708,7 @@ def upload():
             # check if file extension is correct
             if '.' in requested_file.filename:
                 file_ext = requested_file.filename.rsplit('.', 1)[-1].lower()
-                if file_ext not in ALLOWED_EXTENSIONS:
+                if file_ext not in EXTENSIONS_UPLOAD:
                     flash(
                         _("File extension '%(ext)s' is not allowed to be uploaded to this server",
                           ext=file_ext), category="error")

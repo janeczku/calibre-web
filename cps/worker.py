@@ -232,10 +232,25 @@ class WorkerThread(threading.Thread):
         bookid = self.queue[self.current]['bookid']
         format_old_ext = u'.' + self.queue[self.current]['settings']['old_book_format'].lower()
         format_new_ext = u'.' + self.queue[self.current]['settings']['new_book_format'].lower()
+        
+        # check to see if destination format already exists -
+        # if it does - mark the conversion task as complete and return a success
+        # this will allow send to kindle workflow to continue to work
+        if os.path.isfile(file_path + format_new_ext):
+            web.app.logger.info("Book id %d already converted to %s", bookid, format_new_ext)
+            cur_book = web.db.session.query(web.db.Books).filter(web.db.Books.id == bookid).first()
+            self.queue[self.current]['path'] = file_path
+            self.queue[self.current]['title'] = cur_book.title
+            self._handleSuccess()
+            return file_path + format_new_ext
+        else:
+            web.app.logger.info("Book id %d - target format of %s does not existing. Moving forward with convert.", bookid, format_new_ext)
+        
         # check if converter-executable is existing
         if not os.path.exists(web.ub.config.config_converterpath):
             self._handleError(_(u"Convertertool %(converter)s not found", converter=web.ub.config.config_converterpath))
             return
+       
         try:
             # check which converter to use kindlegen is "1"
             if format_old_ext == '.epub' and format_new_ext == '.mobi':
@@ -313,11 +328,7 @@ class WorkerThread(threading.Thread):
                 self.queue[self.current]['title'] = cur_book.title
                 if web.ub.config.config_use_google_drive:
                     os.remove(file_path + format_old_ext)
-                self.queue[self.current]['status'] = STAT_FINISH_SUCCESS
-                self.UIqueue[self.current]['status'] = _('Finished')
-                self.UIqueue[self.current]['progress'] = "100 %"
-                self.UIqueue[self.current]['runtime'] = self._formatRuntime(
-                    datetime.now() - self.queue[self.current]['starttime'])
+                self._handleSuccess()
                 return file_path + format_new_ext
             else:
                 error_message = format_new_ext.upper() + ' format not found on disk'
@@ -434,12 +445,7 @@ class WorkerThread(threading.Thread):
                 self.asyncSMTP.login(str(obj['settings']["mail_login"]), str(obj['settings']["mail_password"]))
             self.asyncSMTP.sendmail(obj['settings']["mail_from"], obj['recipent'], msg)
             self.asyncSMTP.quit()
-            self.queue[self.current]['status'] = STAT_FINISH_SUCCESS
-            self.UIqueue[self.current]['status'] = _('Finished')
-            self.UIqueue[self.current]['progress'] = "100 %"
-            self.UIqueue[self.current]['runtime'] = self._formatRuntime(
-                                                        datetime.now() - self.queue[self.current]['starttime'])
-
+            self._handleSuccess()
             sys.stderr = org_stderr
 
         except (MemoryError) as e:
@@ -451,8 +457,6 @@ class WorkerThread(threading.Thread):
         except (socket.error) as e:
             self._handleError(u'Error sending email: ' + e.strerror)
             return None
-
-
 
     def _formatRuntime(self, runtime):
         self.UIqueue[self.current]['rt'] = runtime.total_seconds()
@@ -475,8 +479,15 @@ class WorkerThread(threading.Thread):
                                                 datetime.now() - self.queue[self.current]['starttime'])
         self.UIqueue[self.current]['message'] = error_message
 
+    def _handleSuccess(self):
+        self.queue[self.current]['status'] = STAT_FINISH_SUCCESS
+        self.UIqueue[self.current]['status'] = _('Finished')
+        self.UIqueue[self.current]['progress'] = "100 %"
+        self.UIqueue[self.current]['runtime'] = self._formatRuntime(
+            datetime.now() - self.queue[self.current]['starttime'])
 
 
+# Enable logging of smtp lib debug output
 class StderrLogger(object):
 
     buffer = ''
