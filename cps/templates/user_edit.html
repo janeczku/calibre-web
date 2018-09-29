@@ -140,7 +140,7 @@
     {% if g.user and g.user.role_admin() and not profile and not new_user and not content.role_anonymous() %}
       <div class="checkbox">
         <label>
-          <input type="checkbox" name="delete"> {{_('Delete this user')}}
+          <input type="checkbox" id="delete" name="delete"> {{_('Delete this user')}}
         </label>
       </div>
     {% endif %}
@@ -149,8 +149,8 @@
     <button type="submit" id="submit" class="btn btn-default">{{_('Submit')}}</button>
     {% if not profile %}
       <a href="{{ url_for('admin') }}" id="back" class="btn btn-default">{{_('Back')}}</a>
-    </div>
     {% endif %}
+    </div>
   </form>
 
   {% if downloads %}
