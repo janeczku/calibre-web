@@ -61,7 +61,14 @@
     <id>{{url_for('feed_authorindex')}}</id>
     <updated>{{ current_time }}</updated>
     <content type="text">{{_('Books ordered by Author')}}</content>
-    </entry>
+  </entry>
+  <entry>
+    <title>{{_('Publishers')}}</title>
+    <link rel="subsection" href="{{url_for('feed_publisherindex')}}" type="application/atom+xml;profile=opds-catalog"/>
+    <id>{{url_for('feed_publisherindex')}}</id>
+    <updated>{{ current_time }}</updated>
+    <content type="text">{{_('Books ordered by publisher')}}</content>
+  </entry>
   <entry>
     <title>{{_('Category list')}}</title>
     <link rel="subsection" href="{{url_for('feed_categoryindex')}}" type="application/atom+xml;profile=opds-catalog"/>
