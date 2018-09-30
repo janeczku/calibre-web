@@ -1,11 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-
 from socket import error as SocketError
 import sys
 import os
 import signal
+import web
 
 try:
     from gevent.pywsgi import WSGIServer
@@ -19,8 +19,6 @@ except ImportError:
     from tornado import version as tornadoVersion
     gevent_present = False
 
-import web
-
 
 class server:
 
@@ -29,7 +27,7 @@ class server:
 
     def __init__(self):
         signal.signal(signal.SIGINT, self.killServer)
-        signal.signal(signal.SIGTERM, self.killServer)        
+        signal.signal(signal.SIGTERM, self.killServer)
 
     def start_gevent(self):
         try:
@@ -68,7 +66,8 @@ class server:
                         ssl_options=ssl)
             http_server.listen(web.ub.config.config_port)
             self.wsgiserver=IOLoop.instance()
-            self.wsgiserver.start()     # wait for stop signal
+            self.wsgiserver.start()
+            # wait for stop signal
             self.wsgiserver.close(True)
 
         if self.restart == True:

@@ -1173,7 +1173,7 @@ msgstr "Pfad zu Konvertertool"
 
 #: cps/templates/config_edit.html:199
 msgid "Location of Unrar binary"
-msgstr "Ofad zum UnRar Programm"
+msgstr "Pfad zum UnRar Programm"
 
 #: cps/templates/config_edit.html:215 cps/templates/layout.html:82
 #: cps/templates/login.html:4
