@@ -120,13 +120,20 @@
 
       </div>
       {% endif %}
+
       {% if entry.publishers|length > 0 %}
       <div class="publishers">
-      <p>
-          <span>{{_('Publisher')}}:{% for publisher in entry.publishers %} {{publisher.name}}{% if not loop.last %},{% endif %}{% endfor %}</span>
-      </p>
+        <p>
+          <span>{{_('Publisher')}}:
+            {% for publisher in entry.publishers %}
+              <a href="{{url_for('publisher', book_id=publisher.id ) }}">{{publisher.name}}</a>
+              {% if not loop.last %},{% endif %}
+            {% endfor %}
+          </span>
+        </p>
       </div>
-      {% endif %}
+	    {% endif %}
+
       {% if entry.pubdate[:10] != '0101-01-01' %}
         <p>{{_('Publishing date')}}: {{entry.pubdate|formatdate}} </p>
       {% endif %}
