@@ -211,7 +211,7 @@ class Publishers(Base):
     name = Column(String)
     sort = Column(String)
 
-    def __init__(self, name, sort):
+    def __init__(self, name, sort = "ASC"):
         self.name = name
         self.sort = sort
 
