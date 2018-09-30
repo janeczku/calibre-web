@@ -1,5 +1,60 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+
+import mimetypes
+import logging
+from logging.handlers import RotatingFileHandler
+from flask import (Flask, render_template, request, Response, redirect,
+                   url_for, send_from_directory, make_response, g, flash,
+                   abort, Markup)
+from flask import __version__ as flaskVersion
+from werkzeug import __version__ as werkzeugVersion
+from jinja2 import __version__  as jinja2Version
+import cache_buster
+import ub
+from ub import config
+import helper
+import os
+from sqlalchemy.sql.expression import func
+from sqlalchemy.sql.expression import false
+from sqlalchemy.exc import IntegrityError
+from sqlalchemy import __version__ as sqlalchemyVersion
+from math import ceil
+from flask_login import (LoginManager, login_user, logout_user,
+                         login_required, current_user)
+from flask_principal import Principal
+from flask_principal import __version__ as flask_principalVersion
+from flask_babel import Babel
+from flask_babel import gettext as _
+import requests
+from werkzeug.security import generate_password_hash, check_password_hash
+from werkzeug.datastructures import Headers
+from babel import Locale as LC
+from babel import negotiate_locale
+from babel import __version__ as babelVersion
+from babel.dates import format_date, format_datetime
+from babel.core import UnknownLocaleError
+from functools import wraps
+import base64
+from sqlalchemy.sql import *
+import json
+import datetime
+from iso639 import languages as isoLanguages
+from iso639 import __version__ as iso639Version
+from pytz import __version__ as pytzVersion
+from uuid import uuid4
+import os.path
+import sys
+import re
+import db
+from shutil import move, copyfile
+import gdriveutils
+import converter
+import tempfile
+from redirect import redirect_back
+import time
+import server
+from reverseproxy import ReverseProxied
 try:
     from googleapiclient.errors import HttpError
 except ImportError:
@@ -33,58 +88,6 @@ try:
 except ImportError:
     sort=sorted # Just use regular sort then
                 #   may cause issues with badly named pages in cbz/cbr files
-
-import mimetypes
-import logging
-from logging.handlers import RotatingFileHandler
-from flask import (Flask, render_template, request, Response, redirect,
-                   url_for, send_from_directory, make_response, g, flash,
-                   abort, Markup)
-from flask import __version__ as flaskVersion
-import cache_buster
-import ub
-from ub import config
-import helper
-import os
-from sqlalchemy.sql.expression import func
-from sqlalchemy.sql.expression import false
-from sqlalchemy.exc import IntegrityError
-from sqlalchemy import __version__ as sqlalchemyVersion
-from math import ceil
-from flask_login import (LoginManager, login_user, logout_user,
-                         login_required, current_user)
-from flask_principal import Principal
-from flask_principal import __version__ as flask_principalVersion
-from flask_babel import Babel
-from flask_babel import gettext as _
-import requests
-from werkzeug.security import generate_password_hash, check_password_hash
-from werkzeug.datastructures import Headers
-from babel import Locale as LC
-from babel import negotiate_locale
-from babel import __version__ as babelVersion
-from babel.dates import format_date, format_datetime
-from babel.core import UnknownLocaleError
-from functools import wraps
-import base64
-from sqlalchemy.sql import *
-import json
-import datetime
-from iso639 import languages as isoLanguages
-from iso639 import __version__ as iso639Version
-from uuid import uuid4
-import os.path
-import sys
-import re
-import db
-from shutil import move, copyfile
-import gdriveutils
-import converter
-import tempfile
-import hashlib
-from redirect import redirect_back
-import time
-import server
 try:
     import cPickle
 except ImportError:
@@ -101,12 +104,10 @@ try:
 except ImportError:
     from flask_login.__about__ import __version__ as flask_loginVersion
 
-current_milli_time = lambda: int(round(time.time() * 1000))
-
 
 # Global variables
+current_milli_time = lambda: int(round(time.time() * 1000))
 gdrive_watch_callback_token = 'target=calibreweb-watch_files'
-
 EXTENSIONS_UPLOAD = {'txt', 'pdf', 'epub', 'mobi', 'azw', 'azw3', 'cbr', 'cbz', 'cbt', 'djvu', 'prc', 'doc', 'docx',
                       'fb2', 'html', 'rtf', 'odt', 'mp3',  'm4a', 'm4b'}
 EXTENSIONS_CONVERT = {'pdf', 'epub', 'mobi', 'azw3', 'docx', 'rtf', 'fb2', 'lit', 'lrf', 'txt', 'html', 'rtf', 'odt'}
@@ -115,15 +116,7 @@ EXTENSIONS_AUDIO = {'mp3', 'm4a', 'm4b'}
 # EXTENSIONS_READER = set(['txt', 'pdf', 'epub', 'zip', 'cbz', 'tar', 'cbt'] + (['rar','cbr'] if rar_support else []))
 
 
-def md5(fname):
-    hash_md5 = hashlib.md5()
-    with open(fname, "rb") as f:
-        for chunk in iter(lambda: f.read(4096), b""):
-            hash_md5.update(chunk)
-    return hash_md5.hexdigest()
-
-
-class ReverseProxied(object):
+'''class ReverseProxied(object):
     """Wrap the application in this middleware and configure the
     front-end server to add these headers, to let you quietly bind
     this to a URL other than / and to an HTTP scheme that is
@@ -158,7 +151,7 @@ class ReverseProxied(object):
         servr = environ.get('HTTP_X_FORWARDED_SERVER', '')
         if servr:
             environ['HTTP_HOST'] = servr
-        return self.app(environ, start_response)
+        return self.app(environ, start_response)'''
 
 
 # Main code
@@ -1678,15 +1671,19 @@ def stats():
     categorys = db.session.query(db.Tags).count()
     series = db.session.query(db.Series).count()
     versions = uploader.book_formats.get_versions()
-    versions['Babel'] = 'v'+babelVersion
-    versions['Sqlalchemy'] = 'v'+sqlalchemyVersion
-    versions['Flask'] = 'v'+flaskVersion
-    versions['Flask Login'] = 'v'+flask_loginVersion
-    versions['Flask Principal'] = 'v'+flask_principalVersion
-    versions['Iso 639'] = 'v'+iso639Version
-    versions['Requests'] = 'v'+requests.__version__
-    versions['pySqlite'] = 'v'+db.engine.dialect.dbapi.version
-    versions['Sqlite'] = 'v'+db.engine.dialect.dbapi.sqlite_version
+    versions['Babel'] = 'v' + babelVersion
+    versions['Sqlalchemy'] = 'v' + sqlalchemyVersion
+    versions['Werkzeug'] = 'v' + werkzeugVersion
+    versions['Jinja2'] = 'v' + jinja2Version
+    versions['Flask'] = 'v' + flaskVersion
+    versions['Flask Login'] = 'v' + flask_loginVersion
+    versions['Flask Principal'] = 'v' + flask_principalVersion
+    versions['Iso 639'] = 'v' + iso639Version
+    versions['pytz'] = 'v' + pytzVersion
+
+    versions['Requests'] = 'v' + requests.__version__
+    versions['pySqlite'] = 'v' + db.engine.dialect.dbapi.version
+    versions['Sqlite'] = 'v' + db.engine.dialect.dbapi.sqlite_version
     versions.update(converter.versioncheck())
     versions.update(server.Server.getNameVersion())
     versions['Python'] = sys.version
@@ -3383,24 +3380,19 @@ def reset_password(user_id):
     return redirect(url_for('admin'))
 
 
-@app.route("/admin/book/<int:book_id>", methods=['GET', 'POST'])
-@login_required_if_no_ano
-@edit_required
-def edit_book(book_id):
-    # create the function for sorting...
+def render_edit_book(book_id):
     db.session.connection().connection.connection.create_function("title_sort", 1, db.title_sort)
     cc = db.session.query(db.Custom_Columns).filter(db.Custom_Columns.datatype.notin_(db.cc_exceptions)).all()
     book = db.session.query(db.Books)\
         .filter(db.Books.id == book_id).filter(common_filters()).first()
-    author_names = []
 
-    # Book not found
     if not book:
         flash(_(u"Error opening eBook. File does not exist or file is not accessible"), category="error")
         return redirect(url_for("index"))
 
     for indx in range(0, len(book.languages)):
         book.languages[indx].language_name = language_table[get_locale()][book.languages[indx].lang_code]
+    author_names = []
     for authr in book.authors:
         author_names.append(authr.name.replace('|', ','))
 
@@ -3419,14 +3411,92 @@ def edit_book(book_id):
         except Exception:
             app.logger.warning(file.format.lower() + ' already removed from list.')
 
-    app.logger.debug('Allowed conversion formats: '+ ', '.join(allowed_conversion_formats))
+    return render_title_template('book_edit.html', book=book, authors=author_names, cc=cc,
+                                 title=_(u"edit metadata"), page="editbook",
+                                 conversion_formats=allowed_conversion_formats,
+                                 source_formats=valid_source_formats)
 
-    # Show form
-    if request.method != 'POST':
-        return render_title_template('book_edit.html', book=book, authors=author_names, cc=cc,
-                                     title=_(u"edit metadata"), page="editbook",
-                                     conversion_formats=allowed_conversion_formats,
-                                     source_formats=valid_source_formats)
+
+def edit_cc_data(book_id, book, to_save):
+    cc = db.session.query(db.Custom_Columns).filter(db.Custom_Columns.datatype.notin_(db.cc_exceptions)).all()
+    for c in cc:
+        cc_string = "custom_column_" + str(c.id)
+        if not c.is_multiple:
+            if len(getattr(book, cc_string)) > 0:
+                cc_db_value = getattr(book, cc_string)[0].value
+            else:
+                cc_db_value = None
+            if to_save[cc_string].strip():
+                if c.datatype == 'bool':
+                    if to_save[cc_string] == 'None':
+                        to_save[cc_string] = None
+                    else:
+                        to_save[cc_string] = 1 if to_save[cc_string] == 'True' else 0
+                    if to_save[cc_string] != cc_db_value:
+                        if cc_db_value is not None:
+                            if to_save[cc_string] is not None:
+                                setattr(getattr(book, cc_string)[0], 'value', to_save[cc_string])
+                            else:
+                                del_cc = getattr(book, cc_string)[0]
+                                getattr(book, cc_string).remove(del_cc)
+                                db.session.delete(del_cc)
+                        else:
+                            cc_class = db.cc_classes[c.id]
+                            new_cc = cc_class(value=to_save[cc_string], book=book_id)
+                            db.session.add(new_cc)
+                elif c.datatype == 'int':
+                    if to_save[cc_string] == 'None':
+                        to_save[cc_string] = None
+                    if to_save[cc_string] != cc_db_value:
+                        if cc_db_value is not None:
+                            if to_save[cc_string] is not None:
+                                setattr(getattr(book, cc_string)[0], 'value', to_save[cc_string])
+                            else:
+                                del_cc = getattr(book, cc_string)[0]
+                                getattr(book, cc_string).remove(del_cc)
+                                db.session.delete(del_cc)
+                        else:
+                            cc_class = db.cc_classes[c.id]
+                            new_cc = cc_class(value=to_save[cc_string], book=book_id)
+                            db.session.add(new_cc)
+
+                else:
+                    if c.datatype == 'rating':
+                        to_save[cc_string] = str(int(float(to_save[cc_string]) * 2))
+                    if to_save[cc_string].strip() != cc_db_value:
+                        if cc_db_value is not None:
+                            # remove old cc_val
+                            del_cc = getattr(book, cc_string)[0]
+                            getattr(book, cc_string).remove(del_cc)
+                            if len(del_cc.books) == 0:
+                                db.session.delete(del_cc)
+                        cc_class = db.cc_classes[c.id]
+                        new_cc = db.session.query(cc_class).filter(
+                            cc_class.value == to_save[cc_string].strip()).first()
+                        # if no cc val is found add it
+                        if new_cc is None:
+                            new_cc = cc_class(value=to_save[cc_string].strip())
+                            db.session.add(new_cc)
+                            db.session.flush()
+                            new_cc = db.session.query(cc_class).filter(
+                                cc_class.value == to_save[cc_string].strip()).first()
+                        # add cc value to book
+                        getattr(book, cc_string).append(new_cc)
+            else:
+                if cc_db_value is not None:
+                    # remove old cc_val
+                    del_cc = getattr(book, cc_string)[0]
+                    getattr(book, cc_string).remove(del_cc)
+                    if len(del_cc.books) == 0:
+                        db.session.delete(del_cc)
+        else:
+            input_tags = to_save[cc_string].split(',')
+            input_tags = list(map(lambda it: it.strip(), input_tags))
+            modify_database_object(input_tags, getattr(book, cc_string), db.cc_classes[c.id], db.session,
+                                   'custom')
+        return cc
+
+def upload_single_file(request, book, book_id):
     # Check and handle Uploaded file
     if 'btn-upload-format' in request.files:
         requested_file = request.files['btn-upload-format']
@@ -3473,9 +3543,10 @@ def edit_book(book_id):
 
             # Queue uploader info
             uploadText=_(u"File format %(ext)s added to %(book)s", ext=file_ext.upper(), book=book.title)
-            helper.global_WorkerThread.add_upload(current_user.nickname, 
+            helper.global_WorkerThread.add_upload(current_user.nickname,
                 "<a href=\"" + url_for('show_book', book_id=book.id) + "\">" + uploadText + "</a>")
 
+def upload_cover(request, book):
     if 'btn-upload-cover' in request.files:
         requested_file = request.files['btn-upload-cover']
         # check for empty request
@@ -3501,15 +3572,37 @@ def edit_book(book_id):
             except IOError:
                 flash(_(u"Cover-file is not a valid image file" % saved_filename), category="error")
                 return redirect(url_for('show_book', book_id=book.id))
-    to_save = request.form.to_dict()
 
+@app.route("/admin/book/<int:book_id>", methods=['GET', 'POST'])
+@login_required_if_no_ano
+@edit_required
+def edit_book(book_id):
+    # Show form
+    if request.method != 'POST':
+        return render_edit_book(book_id)
+
+    # create the function for sorting...
+    db.session.connection().connection.connection.create_function("title_sort", 1, db.title_sort)
+    book = db.session.query(db.Books)\
+        .filter(db.Books.id == book_id).filter(common_filters()).first()
+
+    # Book not found
+    if not book:
+        flash(_(u"Error opening eBook. File does not exist or file is not accessible"), category="error")
+        return redirect(url_for("index"))
+
+    upload_single_file(request, book, book_id)
+    upload_cover(request, book)
     try:
+        to_save = request.form.to_dict()
         # Update book
-        edited_books_id = set()
+        edited_books_id = None
         #handle book title
         if book.title != to_save["book_title"]:
+            if to_save["book_title"] == '':
+                to_save["book_title"] = _(u'unknown')
             book.title = to_save["book_title"]
-            edited_books_id.add(book.id)
+            edited_books_id = book.id
 
         # handle author(s)
         input_authors = to_save["author_name"].split('&')
@@ -3524,18 +3617,17 @@ def edit_book(book_id):
         modify_database_object(input_authors, book.authors, db.Authors, db.session, 'author')
         if book.authors:
             if author0_before_edit != book.authors[0].name:
-                edited_books_id.add(book.id)
+                edited_books_id = book.id
                 book.author_sort = helper.get_sorted_author(input_authors[0])
 
         if config.config_use_google_drive:
             gdriveutils.updateGdriveCalibreFromLocal()
 
         error = False
-        for b in edited_books_id:
-            error = helper.update_dir_stucture(b, config.config_calibre_dir)
+        if edited_books_id:
+            error = helper.update_dir_stucture(edited_books_id, config.config_calibre_dir)
             if error:   # stop on error
                 flash(error, category="error")
-                break
 
         if not error:
             if to_save["cover_url"]:
@@ -3578,7 +3670,6 @@ def edit_book(book_id):
 
             # handle book languages
             input_languages = to_save["languages"].split(',')
-            # input_languages = list(map(lambda it: it.strip().lower(), input_languages))
             input_languages = [x.strip().lower() for x in input_languages if x != '']
             input_l = []
             invers_lang_table = [x.lower() for x in language_table[get_locale()].values()]
@@ -3591,6 +3682,7 @@ def edit_book(book_id):
                     flash(_(u"%(langname)s is not a valid language", langname=lang), category="error")
             modify_database_object(input_l, book.languages, db.Languages, db.session, 'languages')
 
+            # handle book ratings
             if to_save["rating"].strip():
                 old_rating = False
                 if len(book.ratings) > 0:
@@ -3609,104 +3701,20 @@ def edit_book(book_id):
                 if len(book.ratings) > 0:
                     book.ratings.remove(book.ratings[0])
 
-            for c in cc:
-                cc_string = "custom_column_" + str(c.id)
-                if not c.is_multiple:
-                    if len(getattr(book, cc_string)) > 0:
-                        cc_db_value = getattr(book, cc_string)[0].value
-                    else:
-                        cc_db_value = None
-                    if to_save[cc_string].strip():
-                        if c.datatype == 'bool':
-                            if to_save[cc_string] == 'None':
-                                to_save[cc_string] = None
-                            else:
-                                to_save[cc_string] = 1 if to_save[cc_string] == 'True' else 0
-                            if to_save[cc_string] != cc_db_value:
-                                if cc_db_value is not None:
-                                    if to_save[cc_string] is not None:
-                                        setattr(getattr(book, cc_string)[0], 'value', to_save[cc_string])
-                                    else:
-                                        del_cc = getattr(book, cc_string)[0]
-                                        getattr(book, cc_string).remove(del_cc)
-                                        db.session.delete(del_cc)
-                                else:
-                                    cc_class = db.cc_classes[c.id]
-                                    new_cc = cc_class(value=to_save[cc_string], book=book_id)
-                                    db.session.add(new_cc)
-                        elif c.datatype == 'int':
-                            if to_save[cc_string] == 'None':
-                                to_save[cc_string] = None
-                            if to_save[cc_string] != cc_db_value:
-                                if cc_db_value is not None:
-                                    if to_save[cc_string] is not None:
-                                        setattr(getattr(book, cc_string)[0], 'value', to_save[cc_string])
-                                    else:
-                                        del_cc = getattr(book, cc_string)[0]
-                                        getattr(book, cc_string).remove(del_cc)
-                                        db.session.delete(del_cc)
-                                else:
-                                    cc_class = db.cc_classes[c.id]
-                                    new_cc = cc_class(value=to_save[cc_string], book=book_id)
-                                    db.session.add(new_cc)
+            # handle cc data
+            edit_cc_data(book_id, book, to_save)
 
-                        else:
-                            if c.datatype == 'rating':
-                                to_save[cc_string] = str(int(float(to_save[cc_string]) * 2))
-                            if to_save[cc_string].strip() != cc_db_value:
-                                if cc_db_value is not None:
-                                    # remove old cc_val
-                                    del_cc = getattr(book, cc_string)[0]
-                                    getattr(book, cc_string).remove(del_cc)
-                                    if len(del_cc.books) == 0:
-                                        db.session.delete(del_cc)
-                                cc_class = db.cc_classes[c.id]
-                                new_cc = db.session.query(cc_class).filter(
-                                    cc_class.value == to_save[cc_string].strip()).first()
-                                # if no cc val is found add it
-                                if new_cc is None:
-                                    new_cc = cc_class(value=to_save[cc_string].strip())
-                                    db.session.add(new_cc)
-                                    db.session.flush()
-                                    new_cc = db.session.query(cc_class).filter(
-                                        cc_class.value == to_save[cc_string].strip()).first()
-                                # add cc value to book
-                                getattr(book, cc_string).append(new_cc)
-                    else:
-                        if cc_db_value is not None:
-                            # remove old cc_val
-                            del_cc = getattr(book, cc_string)[0]
-                            getattr(book, cc_string).remove(del_cc)
-                            if len(del_cc.books) == 0:
-                                db.session.delete(del_cc)
-                else:
-                    input_tags = to_save[cc_string].split(',')
-                    input_tags = list(map(lambda it: it.strip(), input_tags))
-                    modify_database_object(input_tags, getattr(book, cc_string), db.cc_classes[c.id], db.session,
-                                           'custom')
             db.session.commit()
             if config.config_use_google_drive:
                 gdriveutils.updateGdriveCalibreFromLocal()
             if "detail_view" in to_save:
                 return redirect(url_for('show_book', book_id=book.id))
             else:
-                for indx in range(0, len(book.languages)):
-                    try:
-                        book.languages[indx].language_name = LC.parse(book.languages[indx].lang_code).get_language_name(
-                            get_locale())
-                    except UnknownLocaleError:
-                        book.languages[indx].language_name = _(
-                            isoLanguages.get(part3=book.languages[indx].lang_code).name)
-                author_names = []
-                for authr in book.authors:
-                    author_names.append(authr.name)
-                return render_title_template('book_edit.html', book=book, authors=author_names, cc=cc,
-                                             title=_(u"edit metadata"), page="editbook")
+                return render_edit_book(book_id)
         else:
             db.session.rollback()
             flash(error, category="error")
-            return render_title_template('book_edit.html', book=book, authors=author_names, cc=cc,
-                                         title=_(u"edit metadata"), page="editbook")
+            return render_edit_book(book_id)
     except Exception as e:
         app.logger.exception(e)
         db.session.rollback()

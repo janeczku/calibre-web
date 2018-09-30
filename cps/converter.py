@@ -45,5 +45,5 @@ def versioncheck():
     elif ub.config.config_ebookconverter == 2:
         return versionCalibre()
     else:
-        return {'ebook_converter':''}
+        return {'ebook_converter':_(u'not configured')}
 
