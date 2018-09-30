@@ -123,9 +123,11 @@ def pdf_preview(tmp_file_path, tmp_dir):
 
 def get_versions():
     if not use_generic_pdf_cover:
-        IVersion=ImageVersion.MAGICK_VERSION
+        IVersion = ImageVersion.MAGICK_VERSION
+        WVersion = ImageVersion.VERSION
     else:
         IVersion = _(u'not installed')
+        WVersion = _(u'not installed')
     if use_pdf_meta:
         PVersion='v'+PyPdfVersion
     else:
@@ -134,4 +136,4 @@ def get_versions():
         XVersion = 'v'+'.'.join(map(str, lxmlversion))
     else:
         XVersion = _(u'not installed')
-    return {'Image Magick': IVersion, 'PyPdf': PVersion, 'lxml':XVersion}
+    return {'Image Magick': IVersion, 'PyPdf': PVersion, 'lxml':XVersion, 'Wand Version': WVersion}
