@@ -149,19 +149,19 @@ def getDrive(drive=None, gauth=None):
         drive.auth.Refresh()
     return drive
 
-def listRootFolders(drive=None):
-    drive = getDrive(drive)
+def listRootFolders():
+    drive = getDrive(Gdrive.Instance().drive)
     folder = "'root' in parents and mimeType = 'application/vnd.google-apps.folder' and trashed = false"
     fileList = drive.ListFile({'q': folder}).GetList()
     return fileList
 
 
-def getEbooksFolder(drive=None):
+def getEbooksFolder(drive):
     return getFolderInFolder('root',config.config_google_drive_folder,drive)
 
 
-def getFolderInFolder(parentId, folderName,drive=None):
-    drive = getDrive(drive)
+def getFolderInFolder(parentId, folderName, drive):
+    # drive = getDrive(drive)
     query=""
     if folderName:
         query = "title = '%s' and " % folderName.replace("'", "\\'")
@@ -190,7 +190,6 @@ def getEbooksFolderId(drive=None):
 
 
 def getFile(pathId, fileName, drive):
-    # drive = getDrive(Gdrive.Instance().drive)
     metaDataFile = "'%s' in parents and trashed = false and title = '%s'" % (pathId, fileName.replace("'", "\\'"))
 
     fileList = drive.ListFile({'q': metaDataFile}).GetList()
@@ -200,8 +199,8 @@ def getFile(pathId, fileName, drive):
         return fileList[0]
 
 
-def getFolderId(path, drive=None):
-    drive = getDrive(drive)
+def getFolderId(path, drive):
+    # drive = getDrive(drive)
     currentFolderId = getEbooksFolderId(drive)
     sqlCheckPath = path if path[-1] == '/' else path + '/'
     storedPathName = session.query(GdriveId).filter(GdriveId.path == sqlCheckPath).first()
@@ -249,7 +248,7 @@ def getFileFromEbooksFolder(path, fileName):
         return None
 
 
-def copyDriveFileRemote(drive, origin_file_id, copy_title):
+'''def copyDriveFileRemote(drive, origin_file_id, copy_title):
     drive = getDrive(drive)
     copied_file = {'title': copy_title}
     try:
@@ -258,7 +257,7 @@ def copyDriveFileRemote(drive, origin_file_id, copy_title):
         return drive.CreateFile({'id': file_data['id']})
     except errors.HttpError as error:
         print ('An error occurred: %s' % error)
-    return None
+    return None'''
 
 
 # Download metadata.db from gdrive
@@ -347,7 +346,6 @@ def uploadFileToEbooksFolder(destFile, f):
 
 def watchChange(drive, channel_id, channel_type, channel_address,
               channel_token=None, expiration=None):
-    # drive = getDrive(drive)
     # Watch for all changes to a user's Drive.
     # Args:
     # service: Drive API service instance.
@@ -390,8 +388,6 @@ def watchFile(drive, file_id, channel_id, channel_type, channel_address,
     Raises:
     apiclient.errors.HttpError: if http request to create channel fails.
     """
-    # drive = getDrive(drive)
-
     body = {
         'id': channel_id,
         'type': channel_type,
@@ -413,8 +409,6 @@ def stopChannel(drive, channel_id, resource_id):
     Raises:
     apiclient.errors.HttpError: if http request to create channel fails.
     """
-    # drive = getDrive(drive)
-    # service=drive.auth.service
     body = {
         'id': channel_id,
         'resourceId': resource_id
@@ -423,7 +417,6 @@ def stopChannel(drive, channel_id, resource_id):
 
 
 def getChangeById (drive, change_id):
-    # drive = getDrive(drive)
     # Print a single Change resource information.
     #
     # Args:
@@ -454,10 +447,12 @@ def updateDatabaseOnEdit(ID,newPath):
         storedPathName.path = newPath
         session.commit()
 
+
 # Deletes the hashes in database of deleted book
 def deleteDatabaseEntry(ID):
     session.query(GdriveId).filter(GdriveId.gdrive_id == ID).delete()
     session.commit()
+
 
 # Gets cover file from gdrive
 def get_cover_via_gdrive(cover_path):
