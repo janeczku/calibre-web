@@ -1415,6 +1415,31 @@ def author(book_id, page):
                                  title=name, author=author_info, other_books=other_books, page="author")
 
 
+@app.route("/publisher")
+@login_required_if_no_ano
+def publisher_list():
+    if current_user.show_publisher():
+        entries = db.session.query(db.Publishers, func.count('books_publishers_link.book').label('count'))\
+            .join(db.books_publishers_link).join(db.Books).filter(common_filters())\
+            .group_by('books_publishers_link.publisher').order_by(db.Publishers.sort).all()
+        return render_title_template('list.html', entries=entries, folder='publisher',
+                                     title=_(u"Publisher list"), page="publisherlist")
+    else:
+        abort(404)
+
+
+@app.route("/publisher/<int:book_id>", defaults={'page': 1})
+@app.route('/publisher/<int:book_id>/<int:page>')
+@login_required_if_no_ano
+def publisher(book_id, page):
+    entries, random, pagination = fill_indexpage(page, db.Books, db.Books.publishers.any(db.Publishers.id == book_id),
+                                                 (db.Series.name, db.Books.series_index), db.books_series_link, db.Series)
+
+    name = db.session.query(db.Publishers).filter(db.Publishers.id == book_id).first().name
+    return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
+                                 title=_(u"Publisher: %(name)s", name=name), page="publisher")
+
+
 def get_unique_other_books(library_books, author_books):
     # Get all identifiers (ISBN, Goodreads, etc) and filter author's books by that list so we show fewer duplicates
     # Note: Not all images will be shown, even though they're available on Goodreads.com.
@@ -2774,6 +2799,8 @@ def profile():
             content.sidebar_view += ub.SIDEBAR_BEST_RATED
         if "show_author" in to_save:
             content.sidebar_view += ub.SIDEBAR_AUTHOR
+        if "show_publisher" in to_save:
+            content.sidebar_view += ub.SIDEBAR_PUBLISHER
         if "show_read_and_unread" in to_save:
             content.sidebar_view += ub.SIDEBAR_READ_AND_UNREAD
         if "show_detail_random" in to_save:
@@ -2884,6 +2911,8 @@ def view_configuration():
             content.config_default_show = content.config_default_show + ub.SIDEBAR_RANDOM
         if "show_author" in to_save:
             content.config_default_show = content.config_default_show + ub.SIDEBAR_AUTHOR
+        if "show_publisher" in to_save:
+            content.config_default_show = content.config_default_show + ub.SIDEBAR_PUBLISHER
         if "show_best_rated" in to_save:
             content.config_default_show = content.config_default_show + ub.SIDEBAR_BEST_RATED
         if "show_read_and_unread" in to_save:

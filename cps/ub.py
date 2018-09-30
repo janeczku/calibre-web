@@ -41,6 +41,7 @@ SIDEBAR_READ_AND_UNREAD = 256
 SIDEBAR_RECENT = 512
 SIDEBAR_SORTED = 1024
 MATURE_CONTENT = 2048
+SIDEBAR_PUBLISHER = 4096
 
 DEFAULT_PASS = "admin123"
 DEFAULT_PORT = int(os.environ.get("CALIBRE_PORT", 8083))
@@ -135,6 +136,9 @@ class UserBase:
 
     def show_author(self):
         return bool((self.sidebar_view is not None)and(self.sidebar_view & SIDEBAR_AUTHOR == SIDEBAR_AUTHOR))
+
+    def show_publisher(self):
+        return bool((self.sidebar_view is not None)and(self.sidebar_view & SIDEBAR_PUBLISHER == SIDEBAR_PUBLISHER))
 
     def show_best_rated_books(self):
         return bool((self.sidebar_view is not None)and(self.sidebar_view & SIDEBAR_BEST_RATED == SIDEBAR_BEST_RATED))
@@ -484,6 +488,10 @@ class Config:
     def show_author(self):
         return bool((self.config_default_show is not None) and
                     (self.config_default_show & SIDEBAR_AUTHOR == SIDEBAR_AUTHOR))
+
+    def show_publisher(self):
+        return bool((self.config_default_show is not None) and
+                    (self.config_default_show & SIDEBAR_PUBLISHER == SIDEBAR_PUBLISHER))
 
     def show_best_rated_books(self):
         return bool((self.config_default_show is not None) and
