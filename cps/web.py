@@ -752,6 +752,26 @@ def feed_author(book_id):
     return render_xml_template('feed.xml', entries=entries, pagination=pagination)
 
 
+@app.route("/opds/publisher")
+@requires_basic_auth_if_no_ano
+def feed_publisherindex():
+    off = request.args.get("offset") or 0
+    entries = db.session.query(db.Publishers).join(db.books_publishers_link).join(db.Books).filter(common_filters())\
+        .group_by('books_publishers_link.publisher').order_by(db.Publishers.sort).limit(config.config_books_per_page).offset(off)
+    pagination = Pagination((int(off) / (int(config.config_books_per_page)) + 1), config.config_books_per_page,
+                            len(db.session.query(db.Publishers).all()))
+    return render_xml_template('feed.xml', listelements=entries, folder='feed_publisher', pagination=pagination)
+
+
+@app.route("/opds/publisher/<int:book_id>")
+@requires_basic_auth_if_no_ano
+def feed_publisher(book_id):
+    off = request.args.get("offset") or 0
+    entries, __, pagination = fill_indexpage((int(off) / (int(config.config_books_per_page)) + 1),
+                                             db.Books, db.Books.publishers.any(db.Publishers.id == book_id), [db.Books.timestamp.desc()])
+    return render_xml_template('feed.xml', entries=entries, pagination=pagination)
+
+
 @app.route("/opds/category")
 @requires_basic_auth_if_no_ano
 def feed_categoryindex():
