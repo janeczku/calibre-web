@@ -532,6 +532,10 @@ def fill_indexpage(page, database, db_filter, order, *join):
 # Modifies different Database objects, first check if elements have to be added to database, than check
 # if elements have to be deleted, because they are no longer used
 def modify_database_object(input_elements, db_book_object, db_object, db_session, db_type):
+    # passing input_elements not as a list may lead to undesired results
+    if type(input_elements) is not list:
+        raise TypeError(str(input_elements) + " should be passed as a list")
+
     input_elements = [x for x in input_elements if x != '']
     # we have all input element (authors, series, tags) names now
     # 1. search for elements to remove
@@ -551,7 +555,7 @@ def modify_database_object(input_elements, db_book_object, db_object, db_session
         # if the element was not found in the new list, add it to remove list
         if not found:
             del_elements.append(c_elements)
-        # 2. search for elements that need to be added
+    # 2. search for elements that need to be added
     add_elements = []
     for inp_element in input_elements:
         found = False
@@ -1030,7 +1034,17 @@ def get_authors_json():
         json_dumps = json.dumps([dict(name=r.name.replace('|',',')) for r in entries])
         return json_dumps
 
+		
+@app.route("/get_publishers_json", methods=['GET', 'POST'])
+@login_required_if_no_ano
+def get_publishers_json():
+    if request.method == "GET":
+        query = request.args.get('q')
+        entries = db.session.query(db.Publishers).filter(db.Publishers.name.ilike("%" + query + "%")).all()
+        json_dumps = json.dumps([dict(name=r.name.replace('|',',')) for r in entries])
+        return json_dumps
 
+		
 @app.route("/get_tags_json", methods=['GET', 'POST'])
 @login_required_if_no_ano
 def get_tags_json():
@@ -3549,11 +3563,10 @@ def edit_book(book_id):
                     book.pubdate = db.Books.DEFAULT_PUBDATE
             else:
                 book.pubdate = db.Books.DEFAULT_PUBDATE
-            '''if len(book.publishers):
-                if to_save["publisher"] != book.publishers[0].name:
-                    modify_database_object(to_save["publisher"], book.publishers, db.Publishers, db.session, 'series')
-            else:
-                modify_database_object(to_save["publisher"], book.publishers, db.Publishers, db.session, 'series')'''
+
+            if to_save["publisher"]:
+                if len(book.publishers) == 0 or (len(book.publishers) > 0 and to_save["publisher"] != book.publishers[0].name):
+                    modify_database_object([to_save["publisher"]], book.publishers, db.Publishers, db.session, 'publisher')
 
             # handle book languages
             input_languages = to_save["languages"].split(',')

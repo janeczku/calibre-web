@@ -142,6 +142,17 @@ var languages = new Bloodhound({
     }
 });
 
+var publishers = new Bloodhound({
+    name: "publisher",
+    datumTokenizer: function datumTokenizer(datum) {
+        return [datum.name];
+    },
+    queryTokenizer: Bloodhound.tokenizers.whitespace,
+    remote: {
+        url: getPath() + "/get_publishers_json?q=%QUERY"
+    }
+});
+
 function sourceSplit(query, cb, split, source) {
     var bhAdapter = source.ttAdapter();
 
@@ -220,6 +231,20 @@ promiseLanguages.done(function() {
             source: function source(query, cb) {
                 return sourceSplit(query, cb, ",", languages); //(",")
             }
+        }
+    );
+});
+
+var promisePublishers = publishers.initialize();
+promisePublishers.done(function() {
+    $("#publisher").typeahead(
+        {
+            highlight: true, minLength: 0,
+            hint: true
+        }, {
+            name: "publishers",
+            displayKey: "name",
+            source: publishers.ttAdapter()
         }
     );
 });
