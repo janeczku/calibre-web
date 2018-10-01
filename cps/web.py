@@ -1586,9 +1586,11 @@ def show_book(book_id):
 
         entries.tags = sort(entries.tags, key = lambda tag: tag.name)
 
+        flg_send_to_kindle = helper.chk_send_to_kindle(book_id)
+
         return render_title_template('detail.html', entry=entries, cc=cc, is_xhr=request.is_xhr,
                                      title=entries.title, books_shelfs=book_in_shelfs,
-                                     have_read=have_read, page="book")
+                                     have_read=have_read, flg_kindle=flg_send_to_kindle, page="book")
     else:
         flash(_(u"Error opening eBook. File does not exist or file is not accessible:"), category="error")
         return redirect(url_for("index"))
@@ -3846,8 +3848,9 @@ def upload():
                     return render_title_template('book_edit.html', book=book, authors=author_names,
                                                  cc=cc, title=_(u"edit metadata"), page="upload")
                 book_in_shelfs = []
+                flg_send_to_kindle = helper.chk_send_to_kindle(book_id)
                 return render_title_template('detail.html', entry=book, cc=cc,
-                                             title=book.title, books_shelfs=book_in_shelfs, page="upload")
+                                             title=book.title, books_shelfs=book_in_shelfs, flg_kindle=flg_send_to_kindle, page="upload")
     return redirect(url_for("index"))
 
 

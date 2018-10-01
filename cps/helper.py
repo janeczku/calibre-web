@@ -108,6 +108,65 @@ def send_registration_mail(e_mail, user_name, default_password, resend=False):
                                   e_mail, user_name, _(u"Registration e-mail for user: %(name)s", name=user_name),text)
     return
 
+def chk_send_to_kindle(book_id):
+    '''
+        Used to determine if we can show the Send to Kindle button.
+        Specifically checks the existing book formats and the conversion options available.
+
+        mobi = true
+        epub && kindlegen or ebookconvert = true
+        all valid 'book' format && ebookconvert = true
+        all other combinations = false
+    '''
+    book = db.session.query(db.Books).filter(db.Books.id == book_id).first()
+    data = db.session.query(db.Data).filter(db.Data.book == book.id).all()
+    if data:
+        bookformats = get_formats_from_book(data)
+
+        if ub.config.config_ebookconverter == 0:
+            # no converter - only allow for mobi and pdf formats
+            if 'MOBI' in bookformats or 'PDF' in bookformats:
+                return True
+            else:
+                return False
+        else:
+            if ub.config.config_ebookconverter == 1:
+                # the converter is kindlegen - only allow epub
+                if 'EPUB' in bookformats:
+                    return True
+                else:
+                    return False
+            
+            if ub.config.config_ebookconverter == 2:
+                # the converter is ebook-convert - allow for any allowable 'book' format
+                formatcount = 0
+                for bookformat in bookformats:
+                    if bookformat.lower() in web.EXTENSIONS_CONVERT:
+                        formatcount += 1 
+                
+                if formatcount > 0: 
+                    return True
+                else:
+                    return False
+            else:
+                return False
+
+        return False    
+    else:
+        app.logger.error(u'Cannot find book entry %d', book_id)
+        return False
+
+def get_formats_from_book(data):
+    '''
+        data s/b the data member of db.entry
+        returns a list of formats
+    '''
+    formatlist=[]
+    for entry in data:
+        formatlist.append(entry.format.upper())
+
+    return formatlist
+
 
 # Files are processed in the following order/priority:
 # 1: If Mobi file is exisiting, it's directly send to kindle email,
