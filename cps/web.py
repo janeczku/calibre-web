@@ -533,7 +533,7 @@ def fill_indexpage(page, database, db_filter, order, *join):
 # if elements have to be deleted, because they are no longer used
 def modify_database_object(input_elements, db_book_object, db_object, db_session, db_type):
     # passing input_elements not as a list may lead to undesired results
-    if type(input_elements) is not list:
+    if not isinstance(input_elements, list):
         raise TypeError(str(input_elements) + " should be passed as a list")
 
     input_elements = [x for x in input_elements if x != '']
