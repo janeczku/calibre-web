@@ -320,7 +320,7 @@ class WorkerThread(threading.Thread):
             cur_book = web.db.session.query(web.db.Books).filter(web.db.Books.id == bookid).first()
             if os.path.isfile(file_path + format_new_ext):
                 new_format = web.db.Data(name=cur_book.data[0].name,
-                                         book_format=self.queue[self.current]['settings']['new_book_format'],
+                                         book_format=self.queue[self.current]['settings']['new_book_format'].upper(),
                                          book=bookid, uncompressed_size=os.path.getsize(file_path + format_new_ext))
                 cur_book.data.append(new_format)
                 web.db.session.commit()
