@@ -5,6 +5,22 @@
   src: local('Grand Hotel'), local('GrandHotel-Regular'), url("fonts/GrandHotel-Regular.ttf") format('truetype');
 }
 
+html.http-error {
+  margin: 0;
+  height: 100%;
+}
+.http-error body {
+  margin: 0;
+  height: 100%;
+  display: table;
+  width: 100%;
+}
+.http-error body > div {
+  display: table-cell;
+  vertical-align: middle;
+  text-align: center;
+}
+
 body{background:#f2f2f2}body h2{font-weight:normal;color:#444}
 body { margin-bottom: 40px;}
 a{color: #45b29d}a:hover{color: #444;}

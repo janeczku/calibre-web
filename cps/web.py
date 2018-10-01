@@ -42,6 +42,8 @@ from flask import (Flask, render_template, request, Response, redirect,
                    abort, Markup)
 from flask import __version__ as flaskVersion
 from werkzeug import __version__ as werkzeugVersion
+from werkzeug.exceptions import default_exceptions
+
 from jinja2 import __version__  as jinja2Version
 import cache_buster
 import ub
@@ -176,6 +178,20 @@ mimetypes.add_type('application/x-cbt', '.cbt')
 mimetypes.add_type('image/vnd.djvu', '.djvu')
 
 app = (Flask(__name__))
+
+
+def error_http(error):
+    return render_template('http_error.html',
+                           error_code=error.code,
+                           error_name=error.name,
+                           instance=config.config_calibre_web_title
+                           ), error.code
+
+
+# http error handling
+for ex in default_exceptions:
+    app.register_error_handler(ex, error_http)
+
 app.wsgi_app = ReverseProxied(app.wsgi_app)
 cache_buster.init_cache_busting(app)
 
