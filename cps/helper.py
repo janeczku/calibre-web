@@ -185,6 +185,10 @@ def send_mail(book_id, kindle_mail, calibrepath, user_id):
             formats["epub"] = entry.name + ".epub"
         if entry.format == "PDF":
             formats["pdf"] = entry.name + ".pdf"
+        if entry.format == "AZW":
+            formats["azw"] = entry.name + ".azw"
+        if entry.format == "AZW3":
+            formats["azw3"] = entry.name + ".azw3"
 
     if len(formats) == 0:
         return _(u"Could not find any formats suitable for sending by e-mail")
@@ -194,6 +198,12 @@ def send_mail(book_id, kindle_mail, calibrepath, user_id):
     elif 'epub' in formats:
         # returns None if sucess, otherwise errormessage
         return convert_book_format(book_id, calibrepath, u'epub', u'mobi', user_id, kindle_mail)
+    elif 'azw3' in formats:
+        # returns None if sucess, otherwise errormessage
+        return convert_book_format(book_id, calibrepath, u'azw3', u'mobi', user_id, kindle_mail)
+    elif 'azw' in formats:
+        # returns None if sucess, otherwise errormessage
+        return convert_book_format(book_id, calibrepath, u'azw', u'mobi', user_id, kindle_mail)
     elif 'pdf' in formats:
         result = formats['pdf'] # worker.get_attachment()
     else:
