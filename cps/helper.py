@@ -142,16 +142,16 @@ def chk_send_to_kindle(book_id):
                 formatcount = 0
                 for bookformat in bookformats:
                     if bookformat.lower() in web.EXTENSIONS_CONVERT:
-                        formatcount += 1 
+                        formatcount += 1
                 
-                if formatcount > 0: 
+                if formatcount > 0:
                     return True
                 else:
                     return False
             else:
                 return False
 
-        return False    
+        return False
     else:
         app.logger.error(u'Cannot find book entry %d', book_id)
         return False
