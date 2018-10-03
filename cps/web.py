@@ -894,10 +894,10 @@ def get_email_status_json():
                 if 'starttime' not in  task:
                     task['starttime'] = ""
         answer = tasks
-    
+
     UIanswer = copy.deepcopy(answer)
     UIanswer = helper.render_task_status(UIanswer)
-    
+
     js=json.dumps(UIanswer)
     response = make_response(js)
     response.headers["Content-Type"] = "application/json; charset=utf-8"
@@ -905,7 +905,7 @@ def get_email_status_json():
 
 
 # checks if domain is in database (including wildcards)
-# example SELECT * FROM @TABLE WHERE  'abcdefg' LIKE Name;    
+# example SELECT * FROM @TABLE WHERE  'abcdefg' LIKE Name;
 # from https://code.luasoftware.com/tutorials/flask/execute-raw-sql-in-flask-sqlalchemy/
 def check_valid_domain(domain_text):
     # result = session.query(Notification).from_statement(text(sql)).params(id=5).all()
@@ -926,7 +926,7 @@ def check_valid_domain(domain_text):
 def edit_domain():
     vals = request.form.to_dict()
     answer = ub.session.query(ub.Registration).filter(ub.Registration.id == vals['pk']).first()
-    # domain_name = request.args.get('domain')   
+    # domain_name = request.args.get('domain')
     answer.domain = vals['value'].replace('*','%').replace('?','_').lower()
     ub.session.commit()
     return ""
@@ -2265,7 +2265,7 @@ def register():
                 content.nickname = to_save["nickname"]
                 content.email = to_save["email"]
                 password = helper.generate_random_password()
-                content.password = generate_password_hash(password) 
+                content.password = generate_password_hash(password)
                 content.role = config.config_default_role
                 content.sidebar_view = config.config_default_show
                 try:
@@ -2528,9 +2528,9 @@ def search_to_shelf(shelf_id):
         flash(_(u"Books have been added to shelf: %(sname)s", sname=shelf.name), category="success")
     else:
         flash(_(u"Could not add books to shelf: %(sname)s", sname=shelf.name), category="error")
-    return redirect(url_for('index'))       
+    return redirect(url_for('index'))
 
-    
+
 @app.route("/shelf/remove/<int:shelf_id>/<int:book_id>")
 @login_required
 def remove_from_shelf(shelf_id, book_id):
@@ -2741,7 +2741,7 @@ def profile():
             if config.config_public_reg and not check_valid_domain(to_save["email"]):
                 flash(_(u"E-mail is not from valid domain"), category="error")
                 return render_title_template("user_edit.html", content=content, downloads=downloads,
-                                     title=_(u"%(name)s's profile", name=current_user.nickname))            
+                                     title=_(u"%(name)s's profile", name=current_user.nickname))
             content.email = to_save["email"]
         if "show_random" in to_save and to_save["show_random"] == "on":
             content.random_books = 1
@@ -3721,7 +3721,7 @@ def upload():
             # create the function for sorting...
             db.session.connection().connection.connection.create_function("title_sort", 1, db.title_sort)
             db.session.connection().connection.connection.create_function('uuid4', 0, lambda: str(uuid4()))
-            
+
             # check if file extension is correct
             if '.' in requested_file.filename:
                 file_ext = requested_file.filename.rsplit('.', 1)[-1].lower()
@@ -3733,7 +3733,7 @@ def upload():
             else:
                 flash(_('File to be uploaded must have an extension'), category="error")
                 return redirect(url_for('index'))
-                
+
             # extract metadata from file
             meta = uploader.upload(requested_file)
             title = meta.title
@@ -3777,7 +3777,7 @@ def upload():
             else:
                 db_author = db.Authors(authr, helper.get_sorted_author(authr), "")
                 db.session.add(db_author)
-            
+
             # handle series
             db_series = None
             is_series = db.session.query(db.Series).filter(db.Series.name == series).first()
@@ -3798,7 +3798,7 @@ def upload():
                 else:
                     db_language = db.Languages(input_language)
                     db.session.add(db_language)
-                    
+
             # combine path and normalize path from windows systems
             path = os.path.join(author_dir, title_dir).replace('\\', '/')
             db_book = db.Books(title, "", db_author.sort, datetime.datetime.now(), datetime.datetime(101, 1, 1),
@@ -3810,13 +3810,13 @@ def upload():
                 db_book.languages.append(db_language)
             file_size = os.path.getsize(saved_filename)
             db_data = db.Data(db_book, meta.extension.upper()[1:], file_size, title_dir)
-            
+
             # handle tags
             input_tags = tags.split(',')
             input_tags = list(map(lambda it: it.strip(), input_tags))
             if input_tags[0] !="":
                 modify_database_object(input_tags, db_book.tags, db.Tags, db.session, 'tags')
-            
+
             # flush content, get db_book.id available
             db_book.data.append(db_data)
             db.session.add(db_book)
@@ -3827,7 +3827,7 @@ def upload():
             upload_comment = Markup(meta.description).unescape()
             if upload_comment != "":
                 db.session.add(db.Comments(upload_comment, book_id))
-            
+
             # save data to database, reread data
             db.session.commit()
             db.session.connection().connection.connection.create_function("title_sort", 1, db.title_sort)
@@ -3844,7 +3844,7 @@ def upload():
             if error:
                 flash(error, category="error")
             uploadText=_(u"File %(file)s uploaded", file=book.title)
-            helper.global_WorkerThread.add_upload(current_user.nickname, 
+            helper.global_WorkerThread.add_upload(current_user.nickname,
                 "<a href=\"" + url_for('show_book', book_id=book.id) + "\">" + uploadText + "</a>")
 
             # create data for displaying display Full language name instead of iso639.part3language
