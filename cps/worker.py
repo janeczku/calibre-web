@@ -33,12 +33,12 @@ from email.utils import formatdate
 from email.utils import make_msgid
 
 chunksize = 8192
-
+# task 'status' consts
 STAT_WAITING = 0
 STAT_FAIL = 1
 STAT_STARTED = 2
 STAT_FINISH_SUCCESS = 3
-
+#taskType consts
 TASK_EMAIL = 1
 TASK_CONVERT = 2
 TASK_UPLOAD = 3
@@ -169,11 +169,11 @@ class WorkerThread(threading.Thread):
             doLock.acquire()
             if self.current != self.last:
                 doLock.release()
-                if self.queue[self.current]['typ'] == TASK_EMAIL:
+                if self.queue[self.current]['taskType'] == TASK_EMAIL:
                     self.send_raw_email()
-                if self.queue[self.current]['typ'] == TASK_CONVERT:
+                if self.queue[self.current]['taskType'] == TASK_CONVERT:
                     self.convert_any_format()
-                if self.queue[self.current]['typ'] == TASK_CONVERT_ANY:
+                if self.queue[self.current]['taskType'] == TASK_CONVERT_ANY:
                     self.convert_any_format()
                 # TASK_UPLOAD is handled implicitly
                 self.current += 1
@@ -203,7 +203,7 @@ class WorkerThread(threading.Thread):
     def get_taskstatus(self):
         if self.current  < len(self.queue):
             if self.queue[self.current]['status'] == STAT_STARTED:
-                if self.queue[self.current]['typ'] == TASK_EMAIL:
+                if self.queue[self.current]['taskType'] == TASK_EMAIL:
                     self.UIqueue[self.current]['progress'] = self.get_send_status()
                 self.UIqueue[self.current]['runtime'] = self._formatRuntime(
                                                         datetime.now() - self.queue[self.current]['starttime'])
@@ -215,7 +215,7 @@ class WorkerThread(threading.Thread):
         self.UIqueue[self.current]['status'] = STAT_STARTED
         self.queue[self.current]['starttime'] = datetime.now()
         self.UIqueue[self.current]['formStarttime'] = self.queue[self.current]['starttime']
-        curr_task = self.queue[self.current]['typ']
+        curr_task = self.queue[self.current]['taskType']
         filename = self.convert_ebook_format()
         if filename:
             if web.ub.config.config_use_google_drive:
@@ -223,7 +223,7 @@ class WorkerThread(threading.Thread):
             if curr_task == TASK_CONVERT:
                 self.add_email(_(u'Send to Kindle'), self.queue[self.current]['path'], filename,
                        self.queue[self.current]['settings'], self.queue[self.current]['kindle'],
-                       self.UIqueue[self.current]['user'], _(u"E-mail: %(book)s", book=self.queue[self.current]['title']))
+                       self.UIqueue[self.current]['user'], _(u"%(book)s", book=self.queue[self.current]['title']))
 
 
     def convert_ebook_format(self):
@@ -232,7 +232,7 @@ class WorkerThread(threading.Thread):
         bookid = self.queue[self.current]['bookid']
         format_old_ext = u'.' + self.queue[self.current]['settings']['old_book_format'].lower()
         format_new_ext = u'.' + self.queue[self.current]['settings']['new_book_format'].lower()
-        
+
         # check to see if destination format already exists -
         # if it does - mark the conversion task as complete and return a success
         # this will allow send to kindle workflow to continue to work
@@ -245,12 +245,12 @@ class WorkerThread(threading.Thread):
             return file_path + format_new_ext
         else:
             web.app.logger.info("Book id %d - target format of %s does not existing. Moving forward with convert.", bookid, format_new_ext)
-        
+
         # check if converter-executable is existing
         if not os.path.exists(web.ub.config.config_converterpath):
             self._handleError(_(u"Convertertool %(converter)s not found", converter=web.ub.config.config_converterpath))
             return
-       
+
         try:
             # check which converter to use kindlegen is "1"
             if format_old_ext == '.epub' and format_new_ext == '.mobi':
@@ -339,7 +339,7 @@ class WorkerThread(threading.Thread):
         return
 
 
-    def add_convert(self, file_path, bookid, user_name, typ, settings, kindle_mail=None):
+    def add_convert(self, file_path, bookid, user_name, taskMessage, settings, kindle_mail=None):
         addLock = threading.Lock()
         addLock.acquire()
         if self.last >= 20:
@@ -350,15 +350,15 @@ class WorkerThread(threading.Thread):
         if kindle_mail:
             task = TASK_CONVERT
         self.queue.append({'file_path':file_path, 'bookid':bookid, 'starttime': 0, 'kindle': kindle_mail,
-                           'status': STAT_WAITING, 'typ': task, 'settings':settings})
-        self.UIqueue.append({'user': user_name, 'formStarttime': '', 'progress': " 0 %", 'type': typ,
-                             'runtime': '0 s', 'status': STAT_WAITING,'id': self.id } )
+                           'status': STAT_WAITING, 'taskType': task, 'settings':settings})
+        self.UIqueue.append({'user': user_name, 'formStarttime': '', 'progress': " 0 %", 'taskMessage': taskMessage,
+                             'runtime': '0 s', 'status': STAT_WAITING,'id': self.id, 'taskType': task } )
 
         self.last=len(self.queue)
         addLock.release()
 
 
-    def add_email(self, subject, filepath, attachment, settings, recipient, user_name, typ,
+    def add_email(self, subject, filepath, attachment, settings, recipient, user_name, taskMessage,
                   text=_(u'This e-mail has been sent via Calibre-Web.')):
         # if more than 20 entries in the list, clean the list
         addLock = threading.Lock()
@@ -369,13 +369,13 @@ class WorkerThread(threading.Thread):
         self.id += 1
         self.queue.append({'subject':subject, 'attachment':attachment, 'filepath':filepath,
                            'settings':settings, 'recipent':recipient, 'starttime': 0,
-                           'status': STAT_WAITING, 'typ': TASK_EMAIL, 'text':text})
-        self.UIqueue.append({'user': user_name, 'formStarttime': '', 'progress': " 0 %", 'type': typ,
-                             'runtime': '0 s', 'status': STAT_WAITING,'id': self.id })
+                           'status': STAT_WAITING, 'taskType': TASK_EMAIL, 'text':text})
+        self.UIqueue.append({'user': user_name, 'formStarttime': '', 'progress': " 0 %", 'taskMessage': taskMessage,
+                             'runtime': '0 s', 'status': STAT_WAITING,'id': self.id, 'taskType': TASK_EMAIL })
         self.last=len(self.queue)
         addLock.release()
 
-    def add_upload(self, user_name, typ):
+    def add_upload(self, user_name, taskMessage):
         # if more than 20 entries in the list, clean the list
         addLock = threading.Lock()
         addLock.acquire()
@@ -383,9 +383,9 @@ class WorkerThread(threading.Thread):
             self.delete_completed_tasks()
         # progress=100%, runtime=0, and status finished
         self.id += 1
-        self.queue.append({'starttime': datetime.now(), 'status': STAT_FINISH_SUCCESS, 'typ': TASK_UPLOAD})
-        self.UIqueue.append({'user': user_name, 'formStarttime': '', 'progress': "100 %", 'type': typ,
-                             'runtime': '0 s', 'status': _('Finished'),'id': self.id })
+        self.queue.append({'starttime': datetime.now(), 'status': STAT_FINISH_SUCCESS, 'taskType': TASK_UPLOAD})
+        self.UIqueue.append({'user': user_name, 'formStarttime': '', 'progress': "100 %", 'taskMessage': taskMessage,
+                             'runtime': '0 s', 'status': _('Finished'),'id': self.id, 'taskType': TASK_UPLOAD})
         self.UIqueue[self.current]['formStarttime'] = self.queue[self.current]['starttime']
         self.last=len(self.queue)
         addLock.release()
@@ -469,7 +469,7 @@ class WorkerThread(threading.Thread):
         if retVal == ' s':
             retVal = '0 s'
         return retVal
-    
+
     def _handleError(self, error_message):
         web.app.logger.error(error_message)
         self.queue[self.current]['status'] = STAT_FAIL
@@ -502,3 +502,4 @@ class StderrLogger(object):
             self.buffer = ''
         else:
             self.buffer += message
+
