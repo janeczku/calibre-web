@@ -180,7 +180,12 @@ cache_buster.init_cache_busting(app)
 
 formatter = logging.Formatter(
     "[%(asctime)s] {%(pathname)s:%(lineno)d} %(levelname)s - %(message)s")
-file_handler = RotatingFileHandler(config.get_config_logfile(), maxBytes=50000, backupCount=2)
+try:
+    file_handler = RotatingFileHandler(config.get_config_logfile(), maxBytes=50000, backupCount=2)
+except IOError:
+    file_handler = RotatingFileHandler(os.path.join(config.get_main_dir, "calibre-web.log"),
+                                       maxBytes=50000, backupCount=2)
+    # ToDo: reset logfile value in config class
 file_handler.setFormatter(formatter)
 app.logger.addHandler(file_handler)
 app.logger.setLevel(config.config_log_level)
@@ -215,7 +220,8 @@ def get_locale():
     # if a user is logged in, use the locale from the user settings
     user = getattr(g, 'user', None)
     if user is not None and hasattr(user, "locale"):
-        return user.locale
+        if user.nickname != 'Guest':   # if the account is the guest account bypass the config lang settings
+            return user.locale
     translations = [item.language for item in babel.list_translations()] + ['en']
     preferred = [x.replace('-', '_') for x in request.accept_languages.values()]
     return negotiate_locale(preferred, translations)
@@ -3598,10 +3604,10 @@ def edit_book(book_id):
         # Update book
         edited_books_id = None
         #handle book title
-        if book.title != to_save["book_title"]:
+        if book.title != to_save["book_title"].rstrip().strip():
             if to_save["book_title"] == '':
                 to_save["book_title"] = _(u'unknown')
-            book.title = to_save["book_title"]
+            book.title = to_save["book_title"].rstrip().strip()
             edited_books_id = book.id
 
         # handle author(s)
@@ -3626,8 +3632,6 @@ def edit_book(book_id):
         error = False
         if edited_books_id:
             error = helper.update_dir_stucture(edited_books_id, config.config_calibre_dir)
-            if error:   # stop on error
-                flash(error, category="error")
 
         if not error:
             if to_save["cover_url"]:
