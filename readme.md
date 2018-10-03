@@ -13,7 +13,7 @@ Calibre-Web is a web app providing a clean interface for browsing, reading and d
 - User management with fine grained per-user permissions
 - Admin interface
 - User Interface in dutch, english, french, german, italian, japanese, khmer, polish, russian, simplified chinese, spanish
-- OPDS feed for eBook reader apps 
+- OPDS feed for eBook reader apps
 - Filter and search by titles, authors, tags, series and language
 - Create custom book collection (shelves)
 - Support for editing eBook metadata and deleting eBooks from Calibre library
@@ -30,7 +30,7 @@ Calibre-Web is a web app providing a clean interface for browsing, reading and d
 
 ## Quick start
 
-1. Install dependencies by running `pip install --target vendor -r requirements.txt`. 
+1. Install dependencies by running `pip install --target vendor -r requirements.txt`.
 2. Execute the command: `python cps.py` (or `nohup python cps.py` - recommended if you want to exit the terminal window)
 3. Point your browser to `http://localhost:8083` or `http://localhost:8083/opds` for the OPDS catalog
 4. Set `Location of Calibre database` to the path of the folder where your Calibre library (metadata.db) lives, push "submit" button
@@ -41,6 +41,9 @@ Calibre-Web is a web app providing a clean interface for browsing, reading and d
 *Username:* admin
 *Password:* admin123
 
+**Issues with Ubuntu:**
+Please note that running the above install command can fail on some versions of Ubuntu, saying `"can't combine user with prefix"`. This is a [known bug](https://github.com/pypa/pip/issues/3826) and can be remedied by using the command `pip install --system --target vendor -r requirements.txt` instead.
+
 ## Runtime Configuration Options
 
 The configuration can be changed as admin in the admin panel under "Configuration"
@@ -48,14 +51,14 @@ The configuration can be changed as admin in the admin panel under "Configuratio
 Server Port:
 Changes the port Calibre-Web is listening, changes take effect after pressing submit button
 
-Enable public registration:    
+Enable public registration:
 Tick to enable public user registration.
 
-Enable anonymous browsing:    
+Enable anonymous browsing:
 Tick to allow not logged in users to browse the catalog, anonymous user permissions can be set as admin ("Guest" user)
 
 Enable uploading:
-Tick to enable uploading of PDF, epub, FB2. This requires the imagemagick library to be installed.    
+Tick to enable uploading of PDF, epub, FB2. This requires the imagemagick library to be installed.
 
 Enable remote login ("magic link"):
 Tick to enable remote login, i.e. a link that allows user to log in via a different device.
@@ -83,7 +86,7 @@ Once a project has been created, we need to create a client ID and a client secr
 5. Select Web Application and then next
 6. Give the Credentials a name and enter your callback, which will be CALIBRE_WEB_URL/gdrive/callback
 7. Click save
-8. Download json file and place it in `calibre-web` directory, with the name `client_secrets.json`  
+8. Download json file and place it in `calibre-web` directory, with the name `client_secrets.json`
 
 The Drive API should now be setup and ready to use, so we need to integrate it into Calibre-Web. This is done as below: -
 
@@ -103,7 +106,7 @@ Additionally the public adress your server uses (e.g.https://example.com) has to
 
 9. Open config page
 10. Click enable watch of metadata.db
-11. Note that this expires after a week, so will need to be manually refresh 
+11. Note that this expires after a week, so will need to be manually refresh
 
 ## Docker images
 
@@ -160,7 +163,7 @@ Listen 443
     SSLCipherSuite ALL:!ADH:!EXPORT56:RC4+RSA:+HIGH:+MEDIUM:+LOW:+SSLv2:+EXP:+eNULL
     SSLCertificateFile "C:\Apache24\conf\ssl\test.crt"
     SSLCertificateKeyFile "C:\Apache24\conf\ssl\test.key"
-    
+
     <Location "/calibre-web" >
         RequestHeader set X-SCRIPT-NAME /calibre-web
         RequestHeader set X-SCHEME https
@@ -172,8 +175,8 @@ Listen 443
 
 ## (Optional) SSL Configuration
 
-For configuration of calibre-web as SSL Server go to the Config page in the Admin section. Enter the certfile- and keyfile-location, optionally change port to 443 and press submit. 
-Afterwards the server can only be accessed via SSL. In case of a misconfiguration (wrong/invalid files) both files can be overridden via command line options 
+For configuration of calibre-web as SSL Server go to the Config page in the Admin section. Enter the certfile- and keyfile-location, optionally change port to 443 and press submit.
+Afterwards the server can only be accessed via SSL. In case of a misconfiguration (wrong/invalid files) both files can be overridden via command line options
 -c [certfile location] -k [keyfile location]
 By using "" as file locations the server runs as non SSL server again. The correct file path can than be entered on the Config page. After the next restart without command line options the changed file paths are applied.
 
@@ -206,7 +209,7 @@ enables the service.
 Starting the script with `-h` lists all supported command line options
 Currently supported are 2 options, which are both useful for running multiple instances of Calibre-Web
 
-`"-p path"` allows to specify the location of the settings database 
-`"-g path"` allows to specify the location of the google-drive database 
-`"-c path"` allows to specify the location of SSL certfile, works only in combination with keyfile 
-`"-k path"` allows to specify the location of SSL keyfile, works only in combination with certfile 
+`"-p path"` allows to specify the location of the settings database
+`"-g path"` allows to specify the location of the google-drive database
+`"-c path"` allows to specify the location of SSL certfile, works only in combination with keyfile
+`"-k path"` allows to specify the location of SSL keyfile, works only in combination with certfile
