@@ -14,7 +14,7 @@
     <div class="col-sm-9 col-lg-9 book-meta">
       <div class="btn-toolbar" role="toolbar">
         <div class="btn-group" role="group" aria-label="Download, send to Kindle, reading">
-          
+
           {% if g.user.role_download() %}
             {% if entry.data|length %}
             <div class="btn-group" role="group">
@@ -68,7 +68,7 @@
                   <span class="caret"></span>
                 </button>
                   <ul class="dropdown-menu" aria-labelledby="listen-in-browser">
-             
+
               {% for format in entry.data %}
                   {% if format.format|lower in audioentries %}
                     <li><a target="_blank" href="{{ url_for('read_book', book_id=entry.id, book_format=format.format|lower) }}">{{format.format}}</a></li>
@@ -79,8 +79,8 @@
             {% endif %}
 
           {% endif %}
-          </div>
         </div>
+      </div>
       <h2>{{entry.title|shortentitle(40)}}</h2>
       <p class="author">
           {% for author in entry.authors %}
