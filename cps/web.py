@@ -1765,6 +1765,8 @@ def authenticate_google_drive():
 @app.route("/gdrive/callback")
 def google_drive_callback():
     auth_code = request.args.get('code')
+    if not auth_code:
+        abort(403)
     try:
         credentials = gdriveutils.Gauth.Instance().auth.flow.step2_exchange(auth_code)
         with open(os.path.join(config.get_main_dir,'gdrive_credentials'), 'w') as f:
@@ -3714,6 +3716,7 @@ def edit_book(book_id):
             if "detail_view" in to_save:
                 return redirect(url_for('show_book', book_id=book.id))
             else:
+                flash(_("Metadata successfully updated"), category="success")
                 return render_edit_book(book_id)
         else:
             db.session.rollback()
