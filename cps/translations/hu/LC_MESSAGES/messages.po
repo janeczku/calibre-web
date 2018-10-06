@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2018-09-14 21:11+0200\n"
-"PO-Revision-Date: 2018-10-06 21:32+0200\n"
+"PO-Revision-Date: 2018-10-06 21:40+0200\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -214,7 +214,7 @@ msgstr "Kelendő könyvek (legtöbbet letöltöttek)"
 
 #: cps/web.py:1343
 msgid "Best rated books"
-msgstr "Legjobb könyvek"
+msgstr "Legjobbra értékelt könyvek"
 
 #: cps/templates/index.xml:36 cps/web.py:1355
 msgid "Random Books"
@@ -1441,7 +1441,7 @@ msgstr "Ebből a katalógusból származó népszerű kiadványok letöltések a
 
 #: cps/templates/index.xml:22 cps/templates/layout.html:142
 msgid "Best rated Books"
-msgstr "Legjobbra értékelt könyvek"
+msgstr "Legjobb könyvek"
 
 #: cps/templates/index.xml:26
 msgid "Popular publications from this catalog based on Rating."
