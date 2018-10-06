@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2018-09-14 21:11+0200\n"
-"PO-Revision-Date: 2018-10-06 21:03+0200\n"
+"PO-Revision-Date: 2018-10-06 21:32+0200\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -182,7 +182,7 @@ msgstr "Adatbázis kapcsolatok lezárva"
 
 #: cps/web.py:1235
 msgid "Server is stopped"
-msgstr "A szerver leállt"
+msgstr "A kiszolgáló leállt."
 
 #: cps/web.py:1236
 msgid "Update finished, please press okay and reload page"
@@ -214,7 +214,7 @@ msgstr "Kelendő könyvek (legtöbbet letöltöttek)"
 
 #: cps/web.py:1343
 msgid "Best rated books"
-msgstr "Legjobbra értékelt könyvek"
+msgstr "Legjobb könyvek"
 
 #: cps/templates/index.xml:36 cps/web.py:1355
 msgid "Random Books"
@@ -254,7 +254,7 @@ msgstr "Címkék listája"
 #: cps/web.py:1512
 #, python-format
 msgid "Category: %(name)s"
-msgstr "Címkék: %(name)s"
+msgstr "Címke: %(name)s"
 
 #: cps/templates/layout.html:71 cps/web.py:1651
 msgid "Tasks"
@@ -274,11 +274,11 @@ msgstr ""
 
 #: cps/web.py:1861
 msgid "Server restarted, please reload page"
-msgstr "A szerver újraindult, tölts be újra az oldalt!"
+msgstr "A kiszolgáló újraindult, tölts be újra az oldalt!"
 
 #: cps/web.py:1864
 msgid "Performing shutdown of server, please close window"
-msgstr "A szerver leállítása folyamatban, zárd be ezt az ablakot"
+msgstr "A kiszolgáló leállítása folyamatban, zárd be ezt az ablakot"
 
 #: cps/web.py:1883
 msgid "Update done"
@@ -558,7 +558,7 @@ msgstr ""
 
 #: cps/web.py:3171 cps/web.py:3185
 msgid "E-mail server settings updated"
-msgstr "Az e-mail szerver beállítási frissítve."
+msgstr "Az e-mail kiszolgáló beállításai frissítve."
 
 #: cps/web.py:3178
 #, python-format
@@ -572,7 +572,7 @@ msgstr "Hiba történt a teszt levél küldése során: %(res)s"
 
 #: cps/web.py:3186
 msgid "Edit e-mail server settings"
-msgstr "Az e-mail szerver beállításainak módosítása"
+msgstr "Az e-mail kiszolgáló beállításainak módosítása"
 
 #: cps/web.py:3211
 #, python-format
@@ -752,7 +752,7 @@ msgstr "Kindle"
 
 #: cps/templates/admin.html:12
 msgid "DLS"
-msgstr "DLS"
+msgstr "Letöltések"
 
 #: cps/templates/admin.html:13 cps/templates/layout.html:74
 msgid "Admin"
@@ -773,7 +773,7 @@ msgstr "Szerkesztés"
 
 #: cps/templates/admin.html:39
 msgid "SMTP e-mail server settings"
-msgstr "SMTP e-mail szerver beállítások"
+msgstr "SMTP e-mail kiszolgáló beállítások"
 
 #: cps/templates/admin.html:42 cps/templates/email_edit.html:11
 msgid "SMTP hostname"
@@ -805,35 +805,35 @@ msgstr "Konfiguráció"
 
 #: cps/templates/admin.html:65
 msgid "Calibre DB dir"
-msgstr "Calibre adatbázis mappája"
+msgstr "Calibre adatbázis mappája:"
 
 #: cps/templates/admin.html:69
 msgid "Log level"
-msgstr "Naplózás szintje"
+msgstr "Naplózás szintje:"
 
 #: cps/templates/admin.html:73
 msgid "Port"
-msgstr "Port"
+msgstr "Port:"
 
 #: cps/templates/admin.html:79 cps/templates/config_view_edit.html:23
 msgid "Books per page"
-msgstr "Könyvek oldalanként"
+msgstr "Könyvek oldalanként:"
 
 #: cps/templates/admin.html:83
 msgid "Uploading"
-msgstr "Feltöltés"
+msgstr "Feltöltés:"
 
 #: cps/templates/admin.html:87
 msgid "Anonymous browsing"
-msgstr "Böngészés bejelentkezés nélkül"
+msgstr "Böngészés bejelentkezés nélkül:"
 
 #: cps/templates/admin.html:91
 msgid "Public registration"
-msgstr "Nyílvános regisztráció"
+msgstr "Nyílvános regisztráció:"
 
 #: cps/templates/admin.html:95 cps/templates/remote_login.html:4
 msgid "Remote login"
-msgstr "Távoli belépés"
+msgstr "Távoli belépés:"
 
 #: cps/templates/admin.html:106
 msgid "Administration"
@@ -967,7 +967,7 @@ msgstr "Címkék"
 #: cps/templates/book_edit.html:75 cps/templates/layout.html:157
 #: cps/templates/search_form.html:53
 msgid "Series"
-msgstr "Sorozat"
+msgstr "Sorozatok"
 
 #: cps/templates/book_edit.html:79
 msgid "Series id"
@@ -1213,12 +1213,12 @@ msgstr "Belépés"
 
 #: cps/templates/config_view_edit.html:12
 msgid "View Configuration"
-msgstr "Beállítások megtekintése"
+msgstr "Általános beállítások"
 
 #: cps/templates/config_view_edit.html:19 cps/templates/layout.html:133
 #: cps/templates/layout.html:134 cps/templates/shelf_edit.html:7
 msgid "Title"
-msgstr "Cím"
+msgstr "Név"
 
 #: cps/templates/config_view_edit.html:27
 msgid "No. of random books to show"
@@ -1798,7 +1798,7 @@ msgstr "A polc el fog tűnni mindenki számára és örökké!"
 
 #: cps/templates/shelf_edit.html:13
 msgid "should the shelf be public?"
-msgstr "Legyen a polc nyilvános?"
+msgstr "Nyilvános polc"
 
 #: cps/templates/shelf_order.html:5
 msgid "Drag 'n drop to rearrange order"
@@ -1890,7 +1890,7 @@ msgstr "caliBlur! sötét téma (béta)"
 
 #: cps/templates/user_edit.html:49
 msgid "Show books with language"
-msgstr "Mutasd a könyveket a következő nyelvvel:"
+msgstr "Mutasd a könyveket a következő nyelvvel"
 
 #: cps/templates/user_edit.html:51
 msgid "Show all"
