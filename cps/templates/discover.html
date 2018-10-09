@@ -14,7 +14,9 @@
         {% endif %}
       </div>
       <div class="meta">
-        <p class="title">{{entry.title|shortentitle}}</p>
+        <a href="{{ url_for('show_book', book_id=entry.id) }}" data-toggle="modal" data-target="#bookDetailsModal" data-remote="false">
+          <p class="title">{{entry.title|shortentitle}}</p>
+        </a>
         <p class="author">
           {% for author in entry.authors %}
             <a href="{{url_for('author', book_id=author.id) }}">{{author.name.replace('|',',')|shortentitle(30)}}</a>
