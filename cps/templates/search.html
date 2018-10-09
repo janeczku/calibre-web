@@ -5,7 +5,7 @@
       <h2>{{_('No Results for:')}} {{searchterm}}</h2>
       <p>{{_('Please try a different search')}}</p>
     {% else %}
-      <h2>{{entries|length}} {{_('Results for:')}} {{searchterm}}</h2>    
+      <h2>{{entries|length}} {{_('Results for:')}} {{searchterm}}</h2>
       {% if g.user.is_authenticated %}
         {% if g.user.shelf.all() or g.public_shelfes %}
           <div id="shelf-actions" class="btn-toolbar" role="toolbar">
@@ -41,7 +41,9 @@
         {% endif %}
       </div>
       <div class="meta">
-        <p class="title">{{entry.title|shortentitle}}</p>
+        <a href="{{ url_for('show_book', book_id=entry.id) }}" data-toggle="modal" data-target="#bookDetailsModal" data-remote="false">
+          <p class="title">{{entry.title|shortentitle}}</p>
+        </a>
         <p class="author">
           {% for author in entry.authors %}
             <a href="{{url_for('author', book_id=author.id ) }}">{{author.name.replace('|',',')}}</a>

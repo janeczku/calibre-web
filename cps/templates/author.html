@@ -36,7 +36,9 @@
         </a>
       </div>
       <div class="meta">
-        <p class="title">{{entry.title|shortentitle}}</p>
+        <a href="{{ url_for('show_book', book_id=entry.id) }}">
+          <p class="title">{{entry.title|shortentitle}}</p>
+        </a>
         <p class="author">
           {% for author in entry.authors %}
           <a href="{{url_for('author', book_id=author.id) }}">{{author.name.replace('|',',')}}</a>
