@@ -2676,6 +2676,35 @@ def show_shelf(shelf_id):
         return redirect(url_for("index"))
 
 
+@app.route("/shelfdown/<int:shelf_id>")
+@login_required_if_no_ano
+def show_shelf_down(shelf_id):
+    if current_user.is_anonymous:
+        shelf = ub.session.query(ub.Shelf).filter(ub.Shelf.is_public == 1, ub.Shelf.id == shelf_id).first()
+    else:
+        shelf = ub.session.query(ub.Shelf).filter(ub.or_(ub.and_(ub.Shelf.user_id == int(current_user.id),
+                                                                 ub.Shelf.id == shelf_id),
+                                                         ub.and_(ub.Shelf.is_public == 1,
+                                                                 ub.Shelf.id == shelf_id))).first()
+    result = list()
+    # user is allowed to access shelf
+    if shelf:
+        books_in_shelf = ub.session.query(ub.BookShelf).filter(ub.BookShelf.shelf == shelf_id).order_by(
+            ub.BookShelf.order.asc()).all()
+        for book in books_in_shelf:
+            cur_book = db.session.query(db.Books).filter(db.Books.id == book.book_id).first()
+            if cur_book:
+                result.append(cur_book)
+            else:
+                app.logger.info('Not existing book %s in shelf %s deleted' % (book.book_id, shelf.id))
+                ub.session.query(ub.BookShelf).filter(ub.BookShelf.book_id == book.book_id).delete()
+                ub.session.commit()
+        return render_title_template('shelfdown.html', entries=result, title=_(u"Shelf: '%(name)s'", name=shelf.name),
+                                 shelf=shelf, page="shelf")
+    else:
+        flash(_(u"Error opening shelf. Shelf does not exist or is not accessible"), category="error")
+        return redirect(url_for("index"))
+
 @app.route("/shelf/order/<int:shelf_id>", methods=["GET", "POST"])
 @login_required
 def order_shelf(shelf_id):
