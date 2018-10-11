@@ -2677,7 +2677,6 @@ def show_shelf(shelf_id):
 
 
 @app.route("/shelfdown/<int:shelf_id>")
-@login_required_if_no_ano
 def show_shelf_down(shelf_id):
     if current_user.is_anonymous:
         shelf = ub.session.query(ub.Shelf).filter(ub.Shelf.is_public == 1, ub.Shelf.id == shelf_id).first()
