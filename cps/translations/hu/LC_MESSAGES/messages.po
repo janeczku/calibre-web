@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2018-09-14 21:11+0200\n"
-"PO-Revision-Date: 2018-10-06 21:40+0200\n"
+"PO-Revision-Date: 2018-10-11 18:13+0200\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -218,7 +218,7 @@ msgstr "Legjobbra értékelt könyvek"
 
 #: cps/templates/index.xml:36 cps/web.py:1355
 msgid "Random Books"
-msgstr "Véletlen könyvek"
+msgstr "Könyvek találomra"
 
 #: cps/web.py:1370
 msgid "Author list"
@@ -269,8 +269,8 @@ msgid ""
 "Callback domain is not verified, please follow steps to verify domain in "
 "google developer console"
 msgstr ""
-"A visszahívási domain nem ellenőrzött, kövesd az alábbi lépéseket a domain "
-"ellenőrzéséhez a Google Developer Console-ban:"
+"A visszahívási tartomány nem ellenőrzött, kövesd az alábbi lépéseket a "
+"tartomány ellenőrzéséhez a Google Developer Console-ban:"
 
 #: cps/web.py:1861
 msgid "Server restarted, please reload page"
@@ -481,7 +481,7 @@ msgstr "A következő polc átrendezése: %(name)s"
 
 #: cps/web.py:2722 cps/web.py:3135
 msgid "E-mail is not from valid domain"
-msgstr "Az e-mail domain-je nem érvényes."
+msgstr "Az e-mail tartománya nem érvényes."
 
 #: cps/web.py:2724 cps/web.py:2765 cps/web.py:2768
 #, python-format
@@ -1222,7 +1222,7 @@ msgstr "Név"
 
 #: cps/templates/config_view_edit.html:27
 msgid "No. of random books to show"
-msgstr "Mutatott véletlen könyvek száma"
+msgstr "Találomra mutatott könyvek száma"
 
 #: cps/templates/config_view_edit.html:31
 msgid "Regular expression for ignoring columns"
@@ -1278,7 +1278,7 @@ msgstr "Új felhasználók alapértelmezett látható elemei"
 
 #: cps/templates/config_view_edit.html:112 cps/templates/user_edit.html:60
 msgid "Show random books"
-msgstr "Véletlen könyvek mutatása"
+msgstr "Könyvek találomra mutatása"
 
 #: cps/templates/config_view_edit.html:116 cps/templates/user_edit.html:64
 msgid "Show recent books"
@@ -1318,7 +1318,7 @@ msgstr "Mutassa az olvasva/olvasatlan állapotot"
 
 #: cps/templates/config_view_edit.html:152 cps/templates/user_edit.html:100
 msgid "Show random books in detail view"
-msgstr "Mutasson véletlen könyveket a részletes nézetben"
+msgstr "Mutasson könyveket találomra a részletes nézetben"
 
 #: cps/templates/config_view_edit.html:156 cps/templates/user_edit.html:113
 msgid "Show mature content"
@@ -1396,15 +1396,15 @@ msgstr "Beállítások mentése és teszt e-mail küldése"
 
 #: cps/templates/email_edit.html:43
 msgid "Allowed domains for registering"
-msgstr "Regisztráláshoz engedélyezett domain-ek"
+msgstr "Regisztráláshoz engedélyezett tartományok"
 
 #: cps/templates/email_edit.html:47
 msgid "Enter domainname"
-msgstr "Domain-név megadása"
+msgstr "Tartomány megadása"
 
 #: cps/templates/email_edit.html:55
 msgid "Add Domain"
-msgstr "Domain hozzáadása"
+msgstr "Tartomány hozzáadása"
 
 #: cps/templates/email_edit.html:58
 msgid "Add"
@@ -1412,7 +1412,7 @@ msgstr "Hozzáadás"
 
 #: cps/templates/email_edit.html:72
 msgid "Do you really want to delete this domain rule?"
-msgstr "Valóban törölni akarod ezt a domain-szabályt?"
+msgstr "Valóban törölni akarod ezt a tartomány-szabályt?"
 
 #: cps/templates/feed.xml:21 cps/templates/layout.html:205
 msgid "Next"
@@ -1425,7 +1425,7 @@ msgstr "Keresés"
 
 #: cps/templates/index.html:5
 msgid "Discover (Random Books)"
-msgstr "Felfedezés (véletlen könyvek)"
+msgstr "Felfedezés (könyvek találomra)"
 
 #: cps/templates/index.xml:6
 msgid "Start"
@@ -1457,7 +1457,7 @@ msgstr "A legfrissebb könyvek"
 
 #: cps/templates/index.xml:40
 msgid "Show Random Books"
-msgstr "Mutass véletlen könyveket"
+msgstr "Mutass könyveket találomra"
 
 #: cps/templates/index.xml:59 cps/templates/layout.html:160
 msgid "Authors"
