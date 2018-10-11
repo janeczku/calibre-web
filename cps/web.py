@@ -4,7 +4,7 @@
 import mimetypes
 import logging
 from logging.handlers import RotatingFileHandler
-from flask import (Flask, render_template, request, Response, redirect,
+from flask import (Flask, session, render_template, request, Response, redirect,
                    url_for, send_from_directory, make_response, g, flash,
                    abort, Markup)
 from flask import __version__ as flaskVersion
@@ -55,6 +55,11 @@ from redirect import redirect_back
 import time
 import server
 from reverseproxy import ReverseProxied
+from flask_dance.contrib.github import make_github_blueprint, github
+from flask_dance.contrib.google import make_google_blueprint, google
+from flask_dance.consumer import oauth_authorized, oauth_error
+from sqlalchemy.orm.exc import NoResultFound
+from oauth import OAuthBackend
 try:
     from googleapiclient.errors import HttpError
 except ImportError:
@@ -114,6 +119,7 @@ EXTENSIONS_CONVERT = {'pdf', 'epub', 'mobi', 'azw3', 'docx', 'rtf', 'fb2', 'lit'
 
 # EXTENSIONS_READER = set(['txt', 'pdf', 'epub', 'zip', 'cbz', 'tar', 'cbt'] + (['rar','cbr'] if rar_support else []))
 
+oauth_check = []
 
 '''class ReverseProxied(object):
     """Wrap the application in this middleware and configure the
@@ -347,6 +353,35 @@ def remote_login_required(f):
 
     return inner
 
+
+def github_oauth_required(f):
+    @wraps(f)
+    def inner(*args, **kwargs):
+        if config.config_use_github_oauth:
+            return f(*args, **kwargs)
+        if request.is_xhr:
+            data = {'status': 'error', 'message': 'Not Found'}
+            response = make_response(json.dumps(data, ensure_ascii=False))
+            response.headers["Content-Type"] = "application/json; charset=utf-8"
+            return response, 404
+        abort(404)
+
+    return inner
+
+
+def google_oauth_required(f):
+    @wraps(f)
+    def inner(*args, **kwargs):
+        if config.config_use_google_oauth:
+            return f(*args, **kwargs)
+        if request.is_xhr:
+            data = {'status': 'error', 'message': 'Not Found'}
+            response = make_response(json.dumps(data, ensure_ascii=False))
+            response.headers["Content-Type"] = "application/json; charset=utf-8"
+            return response, 404
+        abort(404)
+
+    return inner
 
 # custom jinja filters
 
@@ -2264,6 +2299,7 @@ def register():
                 try:
                     ub.session.add(content)
                     ub.session.commit()
+                    register_user_with_oauth(content)
                     helper.send_registration_mail(to_save["email"],to_save["nickname"], password)
                 except Exception:
                     ub.session.rollback()
@@ -2279,7 +2315,8 @@ def register():
             flash(_(u"This username or e-mail address is already in use."), category="error")
             return render_title_template('register.html', title=_(u"register"), page="register")
 
-    return render_title_template('register.html', title=_(u"register"), page="register")
+    register_user_with_oauth()
+    return render_title_template('register.html', config=config, title=_(u"register"), page="register")
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -2304,8 +2341,7 @@ def login():
     # if next_url is None or not is_safe_url(next_url):
     next_url = url_for('index')
 
-    return render_title_template('login.html', title=_(u"login"), next_url=next_url,
-                                 remote_login=config.config_remote_login, page="login")
+    return render_title_template('login.html', title=_(u"login"), next_url=next_url, config=config, page="login")
 
 
 @app.route('/logout')
@@ -2313,6 +2349,7 @@ def login():
 def logout():
     if current_user is not None and current_user.is_authenticated:
         logout_user()
+        logout_oauth_user()
     return redirect(url_for('login'))
 
 
@@ -3019,6 +3056,29 @@ def configuration_helper(origin):
             content.config_goodreads_api_key = to_save["config_goodreads_api_key"]
         if "config_goodreads_api_secret" in to_save:
             content.config_goodreads_api_secret = to_save["config_goodreads_api_secret"]
+
+        # GitHub OAuth configuration
+        content.config_use_github_oauth = ("config_use_github_oauth" in to_save and to_save["config_use_github_oauth"] == "on")
+        if "config_github_oauth_client_id" in to_save:
+            content.config_github_oauth_client_id = to_save["config_github_oauth_client_id"]
+        if "config_github_oauth_client_secret" in to_save:
+            content.config_github_oauth_client_secret = to_save["config_github_oauth_client_secret"]
+
+        if content.config_github_oauth_client_id != config.config_github_oauth_client_id or \
+            content.config_github_oauth_client_secret != config.config_github_oauth_client_secret:
+            reboot_required = True
+
+        # Google OAuth configuration
+        content.config_use_google_oauth = ("config_use_google_oauth" in to_save and to_save["config_use_google_oauth"] == "on")
+        if "config_google_oauth_client_id" in to_save:
+            content.config_google_oauth_client_id = to_save["config_google_oauth_client_id"]
+        if "config_google_oauth_client_secret" in to_save:
+            content.config_google_oauth_client_secret = to_save["config_google_oauth_client_secret"]
+
+        if content.config_google_oauth_client_id != config.config_google_oauth_client_id or \
+            content.config_google_oauth_client_secret != config.config_google_oauth_client_secret:
+            reboot_required = True
+
         if "config_log_level" in to_save:
             content.config_log_level = int(to_save["config_log_level"])
         if content.config_logfile != to_save["config_logfile"]:
@@ -3883,3 +3943,214 @@ def convert_bookformat(book_id):
     else:
         flash(_(u"There was an error converting this book: %(res)s", res=rtn), category="error")
     return redirect(request.environ["HTTP_REFERER"])
+
+
+def register_oauth_blueprint(blueprint):
+    if blueprint.name != "":
+        oauth_check.append(blueprint.name)
+
+
+def register_user_with_oauth(user=None):
+    all_oauth = []
+    for oauth in oauth_check:
+        if oauth + '_oauth_user_id' in session and session[oauth + '_oauth_user_id'] != '':
+            all_oauth.append(oauth)
+    if len(all_oauth) == 0:
+        return
+    if user is None:
+        flash(_(u"Register with %s" % ", ".join(all_oauth)), category="success")
+    else:
+        for oauth in all_oauth:
+            # Find this OAuth token in the database, or create it
+            query = ub.session.query(ub.OAuth).filter_by(
+                provider=oauth,
+                provider_user_id=session[oauth + "_oauth_user_id"],
+            )
+            try:
+                oauth = query.one()
+                oauth.user_id = user.id
+            except NoResultFound:
+                # no found, return error
+                return
+            try:
+                ub.session.commit()
+            except Exception as e:
+                app.logger.exception(e)
+                ub.session.rollback()
+
+
+def logout_oauth_user():
+    for oauth in oauth_check:
+        if oauth + '_oauth_user_id' in session:
+            session.pop(oauth + '_oauth_user_id')
+
+
+github_blueprint = make_github_blueprint(
+    client_id=config.config_github_oauth_client_id,
+    client_secret=config.config_github_oauth_client_secret,
+    redirect_to="github_login",)
+
+google_blueprint = make_google_blueprint(
+    client_id=config.config_google_oauth_client_id,
+    client_secret=config.config_google_oauth_client_secret,
+    redirect_to="google_login",
+    scope=[
+        "https://www.googleapis.com/auth/plus.me",
+        "https://www.googleapis.com/auth/userinfo.email",
+    ]
+)
+
+app.register_blueprint(google_blueprint, url_prefix="/login")
+app.register_blueprint(github_blueprint, url_prefix='/login')
+
+github_blueprint.backend = OAuthBackend(ub.OAuth, ub.session, user=current_user, user_required=True)
+google_blueprint.backend = OAuthBackend(ub.OAuth, ub.session, user=current_user, user_required=True)
+
+register_oauth_blueprint(github_blueprint)
+register_oauth_blueprint(google_blueprint)
+
+
+@oauth_authorized.connect_via(github_blueprint)
+def github_logged_in(blueprint, token):
+    if not token:
+        flash("Failed to log in with GitHub.", category="error")
+        return False
+
+    resp = blueprint.session.get("/user")
+    if not resp.ok:
+        msg = "Failed to fetch user info from GitHub."
+        flash(msg, category="error")
+        return False
+
+    github_info = resp.json()
+    github_user_id = str(github_info["id"])
+    return oauth_update_token(blueprint, token, github_user_id)
+
+
+@oauth_authorized.connect_via(google_blueprint)
+def google_logged_in(blueprint, token):
+    if not token:
+        flash("Failed to log in with Google.", category="error")
+        return False
+
+    resp = blueprint.session.get("/oauth2/v2/userinfo")
+    if not resp.ok:
+        msg = "Failed to fetch user info from Google."
+        flash(msg, category="error")
+        return False
+
+    google_info = resp.json()
+    google_user_id = str(google_info["id"])
+
+    return oauth_update_token(blueprint, token, google_user_id)
+
+
+def oauth_update_token(blueprint, token, provider_user_id):
+    session[blueprint.name + "_oauth_user_id"] = provider_user_id
+    session[blueprint.name + "_oauth_token"] = token
+
+    # Find this OAuth token in the database, or create it
+    query = ub.session.query(ub.OAuth).filter_by(
+        provider=blueprint.name,
+        provider_user_id=provider_user_id,
+    )
+    try:
+        oauth = query.one()
+        # update token
+        oauth.token = token
+    except NoResultFound:
+        oauth = ub.OAuth(
+            provider=blueprint.name,
+            provider_user_id=provider_user_id,
+            token=token,
+        )
+    try:
+        ub.session.add(oauth)
+        ub.session.commit()
+    except Exception as e:
+        app.logger.exception(e)
+        ub.session.rollback()
+
+    # Disable Flask-Dance's default behavior for saving the OAuth token
+    return False
+
+
+def bind_oauth_or_register(provider, provider_user_id, redirect_url):
+    query = ub.session.query(ub.OAuth).filter_by(
+        provider=provider,
+        provider_user_id=provider_user_id,
+    )
+    try:
+        oauth = query.one()
+        # already bind with user, just login
+        if oauth.user:
+            login_user(oauth.user)
+            return redirect(url_for('index'))
+        else:
+            # bind to current user
+            if current_user and not current_user.is_anonymous:
+                oauth.user = current_user
+                try:
+                    ub.session.add(oauth)
+                    ub.session.commit()
+                except Exception as e:
+                    app.logger.exception(e)
+                    ub.session.rollback()
+            return redirect(url_for('register'))
+    except NoResultFound:
+        return redirect(url_for(redirect_url))
+
+
+# notify on OAuth provider error
+@oauth_error.connect_via(github_blueprint)
+def github_error(blueprint, error, error_description=None, error_uri=None):
+    msg = (
+        "OAuth error from {name}! "
+        "error={error} description={description} uri={uri}"
+    ).format(
+        name=blueprint.name,
+        error=error,
+        description=error_description,
+        uri=error_uri,
+    )
+    flash(msg, category="error")
+
+
+@app.route('/github')
+@github_oauth_required
+def github_login():
+    if not github.authorized:
+        return redirect(url_for('github.login'))
+    account_info = github.get('/user')
+    if account_info.ok:
+        account_info_json = account_info.json()
+        return bind_oauth_or_register(github_blueprint.name, account_info_json['id'], 'github.login')
+    flash(_(u"GitHub Oauth error, please retry later."), category="error")
+    return redirect(url_for('login'))
+
+
+@app.route('/google')
+@google_oauth_required
+def google_login():
+    if not google.authorized:
+        return redirect(url_for("google.login"))
+    resp = google.get("/oauth2/v2/userinfo")
+    if resp.ok:
+        account_info_json = resp.json()
+        return bind_oauth_or_register(google_blueprint.name, account_info_json['id'], 'google.login')
+    flash(_(u"Google Oauth error, please retry later."), category="error")
+    return redirect(url_for('login'))
+
+
+@oauth_error.connect_via(google_blueprint)
+def google_error(blueprint, error, error_description=None, error_uri=None):
+    msg = (
+        "OAuth error from {name}! "
+        "error={error} description={description} uri={uri}"
+    ).format(
+        name=blueprint.name,
+        error=error,
+        description=error_description,
+        uri=error_uri,
+    )
+    flash(msg, category="error")
