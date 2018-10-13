@@ -119,7 +119,7 @@ EXTENSIONS_CONVERT = {'pdf', 'epub', 'mobi', 'azw3', 'docx', 'rtf', 'fb2', 'lit'
 
 # EXTENSIONS_READER = set(['txt', 'pdf', 'epub', 'zip', 'cbz', 'tar', 'cbt'] + (['rar','cbr'] if rar_support else []))
 
-oauth_check = []
+oauth_check = {}
 
 '''class ReverseProxied(object):
     """Wrap the application in this middleware and configure the
@@ -2751,6 +2751,7 @@ def profile():
     downloads = list()
     languages = speaking_language()
     translations = babel.list_translations() + [LC('en')]
+    oauth_status = get_oauth_status()
     for book in content.downloads:
         downloadBook = db.session.query(db.Books).filter(db.Books.id == book.book_id).first()
         if downloadBook:
@@ -2812,11 +2813,11 @@ def profile():
             ub.session.rollback()
             flash(_(u"Found an existing account for this e-mail address."), category="error")
             return render_title_template("user_edit.html", content=content, downloads=downloads,
-                                         title=_(u"%(name)s's profile", name=current_user.nickname))
+                                         title=_(u"%(name)s's profile", name=current_user.nickname, registered_oauth=oauth_check, oauth_status=oauth_status))
         flash(_(u"Profile updated"), category="success")
     return render_title_template("user_edit.html", translations=translations, profile=1, languages=languages,
                                 content=content, downloads=downloads, title=_(u"%(name)s's profile",
-                                name=current_user.nickname), page="me")
+                                name=current_user.nickname), page="me", registered_oauth=oauth_check, oauth_status=oauth_status)
 
 
 @app.route("/admin/view")
@@ -3945,22 +3946,22 @@ def convert_bookformat(book_id):
     return redirect(request.environ["HTTP_REFERER"])
 
 
-def register_oauth_blueprint(blueprint):
+def register_oauth_blueprint(blueprint, show_name):
     if blueprint.name != "":
-        oauth_check.append(blueprint.name)
+        oauth_check[blueprint.name] = show_name
 
 
 def register_user_with_oauth(user=None):
-    all_oauth = []
-    for oauth in oauth_check:
+    all_oauth = {}
+    for oauth in oauth_check.keys():
         if oauth + '_oauth_user_id' in session and session[oauth + '_oauth_user_id'] != '':
-            all_oauth.append(oauth)
-    if len(all_oauth) == 0:
+            all_oauth[oauth] = oauth_check[oauth]
+    if len(all_oauth.keys()) == 0:
         return
     if user is None:
-        flash(_(u"Register with %s" % ", ".join(all_oauth)), category="success")
+        flash(_(u"Register with %s" % ", ".join(list(all_oauth.values()))), category="success")
     else:
-        for oauth in all_oauth:
+        for oauth in all_oauth.keys():
             # Find this OAuth token in the database, or create it
             query = ub.session.query(ub.OAuth).filter_by(
                 provider=oauth,
@@ -3980,7 +3981,7 @@ def register_user_with_oauth(user=None):
 
 
 def logout_oauth_user():
-    for oauth in oauth_check:
+    for oauth in oauth_check.keys():
         if oauth + '_oauth_user_id' in session:
             session.pop(oauth + '_oauth_user_id')
 
@@ -4006,20 +4007,22 @@ app.register_blueprint(github_blueprint, url_prefix='/login')
 github_blueprint.backend = OAuthBackend(ub.OAuth, ub.session, user=current_user, user_required=True)
 google_blueprint.backend = OAuthBackend(ub.OAuth, ub.session, user=current_user, user_required=True)
 
-register_oauth_blueprint(github_blueprint)
-register_oauth_blueprint(google_blueprint)
+
+if config.config_use_github_oauth:
+    register_oauth_blueprint(github_blueprint, 'GitHub')
+if config.config_use_google_oauth:
+    register_oauth_blueprint(google_blueprint, 'Google')
 
 
 @oauth_authorized.connect_via(github_blueprint)
 def github_logged_in(blueprint, token):
     if not token:
-        flash("Failed to log in with GitHub.", category="error")
+        flash(_("Failed to log in with GitHub."), category="error")
         return False
 
     resp = blueprint.session.get("/user")
     if not resp.ok:
-        msg = "Failed to fetch user info from GitHub."
-        flash(msg, category="error")
+        flash(_("Failed to fetch user info from GitHub."), category="error")
         return False
 
     github_info = resp.json()
@@ -4030,13 +4033,12 @@ def github_logged_in(blueprint, token):
 @oauth_authorized.connect_via(google_blueprint)
 def google_logged_in(blueprint, token):
     if not token:
-        flash("Failed to log in with Google.", category="error")
+        flash(_("Failed to log in with Google."), category="error")
         return False
 
     resp = blueprint.session.get("/oauth2/v2/userinfo")
     if not resp.ok:
-        msg = "Failed to fetch user info from Google."
-        flash(msg, category="error")
+        flash(_("Failed to fetch user info from Google."), category="error")
         return False
 
     google_info = resp.json()
@@ -4088,7 +4090,7 @@ def bind_oauth_or_register(provider, provider_user_id, redirect_url):
             return redirect(url_for('index'))
         else:
             # bind to current user
-            if current_user and not current_user.is_anonymous:
+            if current_user and current_user.is_authenticated:
                 oauth.user = current_user
                 try:
                     ub.session.add(oauth)
@@ -4099,6 +4101,46 @@ def bind_oauth_or_register(provider, provider_user_id, redirect_url):
             return redirect(url_for('register'))
     except NoResultFound:
         return redirect(url_for(redirect_url))
+
+
+def get_oauth_status():
+    status = []
+    query = ub.session.query(ub.OAuth).filter_by(
+        user_id=current_user.id,
+    )
+    try:
+        oauths = query.all()
+        for oauth in oauths:
+            status.append(oauth.provider)
+        return status
+    except NoResultFound:
+        return None
+
+
+def unlink_oauth(provider):
+    if request.host_url + 'me' != request.referrer:
+        pass
+    query = ub.session.query(ub.OAuth).filter_by(
+        provider=provider,
+        user_id=current_user.id,
+    )
+    try:
+        oauth = query.one()
+        if current_user and current_user.is_authenticated:
+            oauth.user = current_user
+            try:
+                ub.session.delete(oauth)
+                ub.session.commit()
+                logout_oauth_user()
+                flash(_("Unlink to %(oauth)s success.", oauth=oauth_check[provider]), category="success")
+            except Exception as e:
+                app.logger.exception(e)
+                ub.session.rollback()
+                flash(_("Unlink to %(oauth)s failed.", oauth=oauth_check[provider]), category="error")
+    except NoResultFound:
+        app.logger.warning("oauth %s for user %d not fount" % (provider, current_user.id))
+        flash(_("Not linked to %(oauth)s.", oauth=oauth_check[provider]), category="error")
+    return redirect(url_for('profile'))
 
 
 # notify on OAuth provider error
@@ -4129,6 +4171,12 @@ def github_login():
     return redirect(url_for('login'))
 
 
+@app.route('/unlink/github', methods=["GET"])
+@login_required
+def github_login_unlink():
+    return unlink_oauth(github_blueprint.name)
+
+
 @app.route('/google')
 @google_oauth_required
 def google_login():
@@ -4154,3 +4202,9 @@ def google_error(blueprint, error, error_description=None, error_uri=None):
         uri=error_uri,
     )
     flash(msg, category="error")
+
+
+@app.route('/unlink/google', methods=["GET"])
+@login_required
+def google_login_unlink():
+    return unlink_oauth(google_blueprint.name)
