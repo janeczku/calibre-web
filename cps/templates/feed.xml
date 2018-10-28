@@ -43,6 +43,9 @@
     <author>
       <name>{{entry.authors[0].name}}</name>
     </author>
+    <publisher>
+      <name>{{entry.publishers[0].name}}</name>
+    </publisher>
     <dcterms:language>{{entry.language}}</dcterms:language>
     {% for tag in entry.tags %}
     <category scheme="http://www.bisg.org/standards/bisac_subject/index.html"

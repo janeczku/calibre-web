@@ -529,6 +529,10 @@ def fill_indexpage(page, database, db_filter, order, *join):
 # Modifies different Database objects, first check if elements have to be added to database, than check
 # if elements have to be deleted, because they are no longer used
 def modify_database_object(input_elements, db_book_object, db_object, db_session, db_type):
+    # passing input_elements not as a list may lead to undesired results
+    if not isinstance(input_elements, list):
+        raise TypeError(str(input_elements) + " should be passed as a list")
+
     input_elements = [x for x in input_elements if x != '']
     # we have all input element (authors, series, tags) names now
     # 1. search for elements to remove
@@ -542,13 +546,13 @@ def modify_database_object(input_elements, db_book_object, db_object, db_session
         else:
             type_elements = c_elements.name
         for inp_element in input_elements:
-            if inp_element == type_elements:
+            if inp_element.lower() == type_elements.lower():
                 found = True
                 break
         # if the element was not found in the new list, add it to remove list
         if not found:
             del_elements.append(c_elements)
-        # 2. search for elements that need to be added
+    # 2. search for elements that need to be added
     add_elements = []
     for inp_element in input_elements:
         found = False
@@ -580,20 +584,46 @@ def modify_database_object(input_elements, db_book_object, db_object, db_session
             db_filter = db_object.name
         for add_element in add_elements:
             # check if a element with that name exists
-            new_element = db_session.query(db_object).filter(db_filter == add_element).first()
+            db_element = db_session.query(db_object).filter(db_filter == add_element).first()
             # if no element is found add it
-            if new_element is None:
-                if db_type == 'author':
-                    new_element = db_object(add_element, add_element.replace('|', ','), "")
-                elif db_type == 'series':
-                    new_element = db_object(add_element, add_element)
-                elif db_type == 'custom':
-                    new_element = db_object(value=add_element)
-                else:  # db_type should be tag, language or publisher
-                    new_element = db_object(add_element)
+            # if new_element is None:
+            if db_type == 'author':
+                new_element = db_object(add_element, add_element.replace('|', ','), "")
+            elif db_type == 'series':
+                new_element = db_object(add_element, add_element)
+            elif db_type == 'custom':
+                new_element = db_object(value=add_element)
+            elif db_type == 'publisher':
+                new_element = db_object(add_element, None)
+            else:  # db_type should be tag or language
+                new_element = db_object(add_element)
+            if db_element is None:
                 db_session.add(new_element)
-            # add element to book
-            db_book_object.append(new_element)
+                db_book_object.append(new_element)
+            else:
+                if db_type == 'custom' and db_element.value != add_element:
+                    new_element.value = add_element
+                    # new_element = db_element
+                elif db_type == 'language' and db_element.lang_code != add_element:
+                    db_element.lang_code = add_element
+                    # new_element = db_element
+                elif db_type == 'series' and db_element.name != add_element:
+                    db_element.name = add_element # = add_element # new_element = db_object(add_element, add_element)
+                    db_element.sort = add_element
+                    # new_element = db_element
+                elif db_type == 'author' and db_element.name != add_element:
+                    db_element.name = add_element
+                    db_element.sort = add_element.replace('|', ',')
+                    # new_element = db_element
+                if db_type == 'publisher' and db_element.name != add_element:
+                    db_element.name = add_element
+                    db_element.sort = None
+                    # new_element = db_element
+                elif db_element.name != add_element:
+                    db_element.name = add_element
+                    # new_element = db_element
+                # add element to book
+                db_book_object.append(db_element)
 
 
 # read search results from calibre-database and return it (function is used for feed and simple search
@@ -742,6 +772,26 @@ def feed_author(book_id):
     off = request.args.get("offset") or 0
     entries, __, pagination = fill_indexpage((int(off) / (int(config.config_books_per_page)) + 1),
                     db.Books, db.Books.authors.any(db.Authors.id == book_id), [db.Books.timestamp.desc()])
+    return render_xml_template('feed.xml', entries=entries, pagination=pagination)
+
+
+@app.route("/opds/publisher")
+@requires_basic_auth_if_no_ano
+def feed_publisherindex():
+    off = request.args.get("offset") or 0
+    entries = db.session.query(db.Publishers).join(db.books_publishers_link).join(db.Books).filter(common_filters())\
+        .group_by('books_publishers_link.publisher').order_by(db.Publishers.sort).limit(config.config_books_per_page).offset(off)
+    pagination = Pagination((int(off) / (int(config.config_books_per_page)) + 1), config.config_books_per_page,
+                            len(db.session.query(db.Publishers).all()))
+    return render_xml_template('feed.xml', listelements=entries, folder='feed_publisher', pagination=pagination)
+
+
+@app.route("/opds/publisher/<int:book_id>")
+@requires_basic_auth_if_no_ano
+def feed_publisher(book_id):
+    off = request.args.get("offset") or 0
+    entries, __, pagination = fill_indexpage((int(off) / (int(config.config_books_per_page)) + 1),
+                                             db.Books, db.Books.publishers.any(db.Publishers.id == book_id), [db.Books.timestamp.desc()])
     return render_xml_template('feed.xml', entries=entries, pagination=pagination)
 
 
@@ -1027,7 +1077,17 @@ def get_authors_json():
         json_dumps = json.dumps([dict(name=r.name.replace('|',',')) for r in entries])
         return json_dumps
 
+		
+@app.route("/get_publishers_json", methods=['GET', 'POST'])
+@login_required_if_no_ano
+def get_publishers_json():
+    if request.method == "GET":
+        query = request.args.get('q')
+        entries = db.session.query(db.Publishers).filter(db.Publishers.name.ilike("%" + query + "%")).all()
+        json_dumps = json.dumps([dict(name=r.name.replace('|',',')) for r in entries])
+        return json_dumps
 
+		
 @app.route("/get_tags_json", methods=['GET', 'POST'])
 @login_required_if_no_ano
 def get_tags_json():
@@ -1340,7 +1400,8 @@ def best_rated_books(page):
                                                      [db.Books.timestamp.desc()])
         return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
                                      title=_(u"Best rated books"), page="rated")
-    abort(404)
+    else:
+        abort(404)
 
 
 @app.route("/discover", defaults={'page': 1})
@@ -1398,6 +1459,33 @@ def author(book_id, page):
                                  title=name, author=author_info, other_books=other_books, page="author")
 
 
+@app.route("/publisher")
+@login_required_if_no_ano
+def publisher_list():
+    if current_user.show_publisher():
+        entries = db.session.query(db.Publishers, func.count('books_publishers_link.book').label('count'))\
+            .join(db.books_publishers_link).join(db.Books).filter(common_filters())\
+            .group_by('books_publishers_link.publisher').order_by(db.Publishers.sort).all()
+        return render_title_template('list.html', entries=entries, folder='publisher',
+                                     title=_(u"Publisher list"), page="publisherlist")
+    else:
+        abort(404)
+
+
+@app.route("/publisher/<int:book_id>", defaults={'page': 1})
+@app.route('/publisher/<int:book_id>/<int:page>')
+@login_required_if_no_ano
+def publisher(book_id, page):
+    publisher = db.session.query(db.Publishers).filter(db.Publishers.id == book_id).first()
+    if publisher:
+        entries, random, pagination = fill_indexpage(page, db.Books, db.Books.publishers.any(db.Publishers.id == book_id),
+                                                 (db.Series.name, db.Books.series_index), db.books_series_link, db.Series)
+        return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
+                                 title=_(u"Publisher: %(name)s", name=publisher.name), page="publisher")
+    else:
+        abort(404)
+
+
 def get_unique_other_books(library_books, author_books):
     # Get all identifiers (ISBN, Goodreads, etc) and filter author's books by that list so we show fewer duplicates
     # Note: Not all images will be shown, even though they're available on Goodreads.com.
@@ -1434,15 +1522,18 @@ def series_list():
 @app.route("/series/<int:book_id>/<int:page>'")
 @login_required_if_no_ano
 def series(book_id, page):
-    entries, random, pagination = fill_indexpage(page, db.Books, db.Books.series.any(db.Series.id == book_id),
+    name = db.session.query(db.Series).filter(db.Series.id == book_id).first()
+    if name:
+        entries, random, pagination = fill_indexpage(page, db.Books, db.Books.series.any(db.Series.id == book_id),
                                                  [db.Books.series_index])
-    name = db.session.query(db.Series).filter(db.Series.id == book_id).first().name
-    if entries:
-        return render_title_template('index.html', random=random, pagination=pagination, entries=entries,
-                                     title=_(u"Series: %(serie)s", serie=name), page="series")
+        if entries:
+            return render_title_template('index.html', random=random, pagination=pagination, entries=entries,
+                                     title=_(u"Series: %(serie)s", serie=name.name), page="series")
+        else:
+            flash(_(u"Error opening eBook. File does not exist or file is not accessible:"), category="error")
+            return redirect(url_for("index"))
     else:
-        flash(_(u"Error opening eBook. File does not exist or file is not accessible:"), category="error")
-        return redirect(url_for("index"))
+        abort(404)
 
 
 @app.route("/language")
@@ -1475,15 +1566,18 @@ def language_overview():
 @app.route('/language/<name>/page/<int:page>')
 @login_required_if_no_ano
 def language(name, page):
-    entries, random, pagination = fill_indexpage(page, db.Books, db.Books.languages.any(db.Languages.lang_code == name),
-                                                 [db.Books.timestamp.desc()])
     try:
         cur_l = LC.parse(name)
-        name = cur_l.get_language_name(get_locale())
+        lang_name = cur_l.get_language_name(get_locale())
     except UnknownLocaleError:
-        name = _(isoLanguages.get(part3=name).name)
+        try:
+            lang_name = _(isoLanguages.get(part3=name).name)
+        except KeyError:
+            abort(404)
+    entries, random, pagination = fill_indexpage(page, db.Books, db.Books.languages.any(db.Languages.lang_code == name),
+                                                 [db.Books.timestamp.desc()])
     return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
-                                 title=_(u"Language: %(name)s", name=name), page="language")
+                                 title=_(u"Language: %(name)s", name=lang_name), page="language")
 
 
 @app.route("/category")
@@ -1503,12 +1597,14 @@ def category_list():
 @app.route('/category/<int:book_id>/<int:page>')
 @login_required_if_no_ano
 def category(book_id, page):
-    entries, random, pagination = fill_indexpage(page, db.Books, db.Books.tags.any(db.Tags.id == book_id),
-                                                 (db.Series.name, db.Books.series_index),db.books_series_link,db.Series)
-
-    name = db.session.query(db.Tags).filter(db.Tags.id == book_id).first().name
-    return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
-                                 title=_(u"Category: %(name)s", name=name), page="category")
+    name = db.session.query(db.Tags).filter(db.Tags.id == book_id).first()
+    if name:
+        entries, random, pagination = fill_indexpage(page, db.Books, db.Books.tags.any(db.Tags.id == book_id),
+                                        (db.Series.name, db.Books.series_index),db.books_series_link,db.Series)
+        return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
+                                 title=_(u"Category: %(name)s", name=name.name), page="category")
+    else:
+        abort(404)
 
 
 @app.route("/ajax/toggleread/<int:book_id>", methods=['POST'])
@@ -2761,6 +2857,8 @@ def profile():
             content.sidebar_view += ub.SIDEBAR_BEST_RATED
         if "show_author" in to_save:
             content.sidebar_view += ub.SIDEBAR_AUTHOR
+        if "show_publisher" in to_save:
+            content.sidebar_view += ub.SIDEBAR_PUBLISHER
         if "show_read_and_unread" in to_save:
             content.sidebar_view += ub.SIDEBAR_READ_AND_UNREAD
         if "show_detail_random" in to_save:
@@ -2871,6 +2969,8 @@ def view_configuration():
             content.config_default_show = content.config_default_show + ub.SIDEBAR_RANDOM
         if "show_author" in to_save:
             content.config_default_show = content.config_default_show + ub.SIDEBAR_AUTHOR
+        if "show_publisher" in to_save:
+            content.config_default_show = content.config_default_show + ub.SIDEBAR_PUBLISHER
         if "show_best_rated" in to_save:
             content.config_default_show = content.config_default_show + ub.SIDEBAR_BEST_RATED
         if "show_read_and_unread" in to_save:
@@ -3120,6 +3220,8 @@ def new_user():
             content.sidebar_view += ub.SIDEBAR_BEST_RATED
         if "show_author" in to_save:
             content.sidebar_view += ub.SIDEBAR_AUTHOR
+        if "show_publisher" in to_save:
+            content.sidebar_view += ub.SIDEBAR_PUBLISHER
         if "show_detail_random" in to_save:
             content.sidebar_view += ub.DETAIL_RANDOM
         if "show_sorted" in to_save:
@@ -3643,11 +3745,14 @@ def edit_book(book_id):
                     book.pubdate = db.Books.DEFAULT_PUBDATE
             else:
                 book.pubdate = db.Books.DEFAULT_PUBDATE
-            '''if len(book.publishers):
-                if to_save["publisher"] != book.publishers[0].name:
-                    modify_database_object(to_save["publisher"], book.publishers, db.Publishers, db.session, 'series')
-            else:
-                modify_database_object(to_save["publisher"], book.publishers, db.Publishers, db.session, 'series')'''
+
+            if to_save["publisher"]:
+                publisher = to_save["publisher"].rstrip().strip()
+                if len(book.publishers) == 0 or (len(book.publishers) > 0 and publisher != book.publishers[0].name):
+                    modify_database_object([publisher], book.publishers, db.Publishers, db.session, 'publisher')
+            elif len(book.publishers):
+                modify_database_object([], book.publishers, db.Publishers, db.session, 'publisher')
+
 
             # handle book languages
             input_languages = to_save["languages"].split(',')
