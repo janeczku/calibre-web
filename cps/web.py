@@ -1292,7 +1292,11 @@ def get_updater_status():
                 "4": _(u'Files are replaced'),
                 "5": _(u'Database connections are closed'),
                 "6": _(u'Server is stopped'),
-                "7": _(u'Update finished, please press okay and reload page')
+                "7": _(u'Update finished, please press okay and reload page'),
+                "8": _(u'Update failed:') + u' ' + _(u'HTTP Error'),
+                "9": _(u'Update failed:') + u' ' + _(u'Connection error'),
+                "10": _(u'Update failed:') + u' ' + _(u'Timeout while establishing connection'),
+                "11": _(u'Update failed:') + u' ' + _(u'General error')
             }
             status['text'] = text
             helper.updater_thread = helper.Updater()
@@ -1302,7 +1306,7 @@ def get_updater_status():
         try:
             status['status'] = helper.updater_thread.get_update_status()
         except Exception:
-            status['status'] = 7
+            status['status'] = 11
     return json.dumps(status)
 
 

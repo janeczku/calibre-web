@@ -381,25 +381,40 @@ class Updater(threading.Thread):
         self.status = 0
 
     def run(self):
-        self.status = 1
-        r = requests.get('https://api.github.com/repos/janeczku/calibre-web/zipball/master', stream=True)
-        fname = re.findall("filename=(.+)", r.headers['content-disposition'])[0]
-        self.status = 2
-        z = zipfile.ZipFile(BytesIO(r.content))
-        self.status = 3
-        tmp_dir = gettempdir()
-        z.extractall(tmp_dir)
-        self.status = 4
-        self.update_source(os.path.join(tmp_dir, os.path.splitext(fname)[0]), ub.config.get_main_dir)
-        self.status = 5
-        db.session.close()
-        db.engine.dispose()
-        ub.session.close()
-        ub.engine.dispose()
-        self.status = 6
-        server.Server.setRestartTyp(True)
-        server.Server.stopServer()
-        self.status = 7
+        try:
+            self.status = 1
+            r = requests.get('https://api.github.com/repos/janeczku/calibre-web/zipball/master', stream=True)
+            r.raise_for_status()
+
+            fname = re.findall("filename=(.+)", r.headers['content-disposition'])[0]
+            self.status = 2
+            z = zipfile.ZipFile(BytesIO(r.content))
+            self.status = 3
+            tmp_dir = gettempdir()
+            z.extractall(tmp_dir)
+            self.status = 4
+            self.update_source(os.path.join(tmp_dir, os.path.splitext(fname)[0]), ub.config.get_main_dir)
+            self.status = 5
+            db.session.close()
+            db.engine.dispose()
+            ub.session.close()
+            ub.engine.dispose()
+            self.status = 6
+            server.Server.setRestartTyp(True)
+            server.Server.stopServer()
+            self.status = 7
+        except requests.exceptions.HTTPError as ex:
+            logging.getLogger('cps.web').info( u'HTTP Error' + ' ' + str(ex))
+            self.status = 8
+        except requests.exceptions.ConnectionError:
+            logging.getLogger('cps.web').info(u'Connection error')
+            self.status = 9
+        except requests.exceptions.Timeout:
+            logging.getLogger('cps.web').info(u'Timeout while establishing connection')
+            self.status = 10
+        except requests.exceptions.RequestException:
+            self.status = 11
+            logging.getLogger('cps.web').info(u'General error')
 
     def get_update_status(self):
         return self.status
