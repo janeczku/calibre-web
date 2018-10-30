@@ -178,13 +178,18 @@ def get_valid_filename(value, replace_whitespace=True):
 
 def get_sorted_author(value):
     try:
-        regexes = ["^(JR|SR)\.?$", "^I{1,3}\.?$", "^IV\.?$"]
-        combined = "(" + ")|(".join(regexes) + ")"
-        value = value.split(" ")
-        if re.match(combined, value[-1].upper()):
-            value2 = value[-2] + ", " + " ".join(value[:-2]) + " " + value[-1]
+        if ',' not in value:
+            regexes = ["^(JR|SR)\.?$", "^I{1,3}\.?$", "^IV\.?$"]
+            combined = "(" + ")|(".join(regexes) + ")"
+            value = value.split(" ")
+            if re.match(combined, value[-1].upper()):
+                value2 = value[-2] + ", " + " ".join(value[:-2]) + " " + value[-1]
+            elif len(value) == 1:
+                value2 = value[0]
+            else:
+                value2 = value[-1] + ", " + " ".join(value[:-1])
         else:
-            value2 = value[-1] + ", " + " ".join(value[:-1])
+            value2 = value
     except Exception:
         web.app.logger.error("Sorting author " + str(value) + "failed")
         value2 = value
