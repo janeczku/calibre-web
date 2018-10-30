@@ -40,11 +40,16 @@ class server:
             else:
                 self.wsgiserver = WSGIServer(('', web.ub.config.config_port), web.app, spawn=Pool(), **ssl_args)
             self.wsgiserver.serve_forever()
-
         except SocketError:
-            web.app.logger.info('Unable to listen on \'\', trying on IPv4 only...')
-            self.wsgiserver = WSGIServer(('0.0.0.0', web.ub.config.config_port), web.app, spawn=Pool(), **ssl_args)
-            self.wsgiserver.serve_forever()
+            try:
+                web.app.logger.info('Unable to listen on \'\', trying on IPv4 only...')
+                self.wsgiserver = WSGIServer(('0.0.0.0', web.ub.config.config_port), web.app, spawn=Pool(), **ssl_args)
+                self.wsgiserver.serve_forever()
+            except (OSError, SocketError) as e:
+                web.app.logger.info("Error starting server: %s" % e.strerror)
+                print("Error starting server: %s" % e.strerror)
+                web.helper.global_WorkerThread.stop()
+                sys.exit(1)
         except Exception:
             web.app.logger.info("Unknown error while starting gevent")
 
@@ -54,21 +59,27 @@ class server:
             # leave subprocess out to allow forking for fetchers and processors
             self.start_gevent()
         else:
-            web.app.logger.info('Starting Tornado server')
-            if web.ub.config.get_config_certfile() and web.ub.config.get_config_keyfile():
-                ssl={"certfile": web.ub.config.get_config_certfile(),
-                     "keyfile": web.ub.config.get_config_keyfile()}
-            else:
-                ssl=None
-            # Max Buffersize set to 200MB
-            http_server = HTTPServer(WSGIContainer(web.app),
-                        max_buffer_size = 209700000,
-                        ssl_options=ssl)
-            http_server.listen(web.ub.config.config_port)
-            self.wsgiserver=IOLoop.instance()
-            self.wsgiserver.start()
-            # wait for stop signal
-            self.wsgiserver.close(True)
+            try:
+                web.app.logger.info('Starting Tornado server')
+                if web.ub.config.get_config_certfile() and web.ub.config.get_config_keyfile():
+                    ssl={"certfile": web.ub.config.get_config_certfile(),
+                         "keyfile": web.ub.config.get_config_keyfile()}
+                else:
+                    ssl=None
+                # Max Buffersize set to 200MB
+                http_server = HTTPServer(WSGIContainer(web.app),
+                            max_buffer_size = 209700000,
+                            ssl_options=ssl)
+                http_server.listen(web.ub.config.config_port)
+                self.wsgiserver=IOLoop.instance()
+                self.wsgiserver.start()
+                # wait for stop signal
+                self.wsgiserver.close(True)
+            except SocketError as e:
+                web.app.logger.info("Error starting server: %s" % e.strerror)
+                print("Error starting server: %s" % e.strerror)
+                web.helper.global_WorkerThread.stop()
+                sys.exit(1)
 
         if self.restart == True:
             web.app.logger.info("Performing restart of Calibre-Web")
