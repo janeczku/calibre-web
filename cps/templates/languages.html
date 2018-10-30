@@ -2,15 +2,15 @@
 {% block body %}
   <h1>{{title}}</h1>
   <div class="container">
-       <div class="col-sm-6">
+       <div class="col-xs-12 col-sm-6">
   {% for lang in languages %}
       {% if loop.index0 == (loop.length/2)|int and loop.length > 20 %}
        </div>
-       <div class="col-sm-6">
+       <div class="col-xs-12 col-sm-6">
     {% endif %}
     <div class="row">
-        <div class="col-xs-1" align="left"><span class="badge">{{lang_counter[loop.index0].bookcount}}</span></div>
-        <div class="col-xs-6"><a id="list_{{loop.index0}}" href="{{url_for('language', name=lang.lang_code)}}">{{lang.name}}</a></div>
+        <div class="col-xs-2 col-sm-2 col-md-1" align="left"><span class="badge">{{lang_counter[loop.index0].bookcount}}</span></div>
+        <div class="col-xs-10 col-sm-10 col-md-11"><a id="list_{{loop.index0}}" href="{{url_for('language', name=lang.lang_code)}}">{{lang.name}}</a></div>
     </div>
   {% endfor %}
   </div>

@@ -32,7 +32,7 @@ def versionCalibre():
             for lines in p.stdout.readlines():
                 if isinstance(lines, bytes):
                     lines = lines.decode('utf-8')
-                if re.search('.*\(calibre', lines):
+                if re.search('ebook-convert.*\(calibre', lines):
                     versions = lines
         except Exception:
             versions = _(u'Excecution permissions missing')
@@ -45,5 +45,5 @@ def versioncheck():
     elif ub.config.config_ebookconverter == 2:
         return versionCalibre()
     else:
-        return {'ebook_converter':''}
+        return {'ebook_converter':_(u'not configured')}
 

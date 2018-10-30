@@ -2,7 +2,7 @@
 {% block body %}
   <h3>{{_('About')}}</h3>
 <p>{{instance}} powered by 
-<a href="https://github.com/janeczku/calibre-web" title="Calibre-Web">Calibre Web</a>.
+<a href="https://github.com/janeczku/calibre-web" title="Calibre-Web">Calibre-Web</a>.
 </p>  
   <h3>{{_('Calibre library statistics')}}</h3>
 <table id="stats" class="table">
@@ -34,7 +34,7 @@
     </tr>
   </thead>
   <tbody>
-  {% for library,version in versions.iteritems() %}
+  {% for library,version in versions.items() %}
     <tr>
       <th>{{library}}</th>
       <td>{{version}}</td>

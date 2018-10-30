@@ -26,6 +26,8 @@ except ImportError:
     pass
 import web
 import server
+import random
+import subprocess
 
 try:
     import unidecode
@@ -47,38 +49,65 @@ def update_download(book_id, user_id):
         ub.session.add(new_download)
         ub.session.commit()
 
-def make_mobi(book_id, calibrepath, user_id, kindle_mail):
+# Convert existing book entry to new format
+def convert_book_format(book_id, calibrepath, old_book_format, new_book_format, user_id, kindle_mail=None):
     book = db.session.query(db.Books).filter(db.Books.id == book_id).first()
-    data = db.session.query(db.Data).filter(db.Data.book == book.id).filter(db.Data.format == 'EPUB').first()
+    data = db.session.query(db.Data).filter(db.Data.book == book.id).filter(db.Data.format == old_book_format).first()
     if not data:
-        error_message = _(u"epub format not found for book id: %(book)d", book=book_id)
-        app.logger.error("make_mobi: " + error_message)
+        error_message = _(u"%(format)s format not found for book id: %(book)d", format=old_book_format, book=book_id)
+        app.logger.error("convert_book_format: " + error_message)
         return error_message
     if ub.config.config_use_google_drive:
-        df = gd.getFileFromEbooksFolder(book.path, data.name + u".epub")
+        df = gd.getFileFromEbooksFolder(book.path, data.name + "." + old_book_format.lower())
         if df:
-            datafile = os.path.join(calibrepath, book.path, data.name + u".epub")
+            datafile = os.path.join(calibrepath, book.path, data.name + u"." + old_book_format.lower())
             if not os.path.exists(os.path.join(calibrepath, book.path)):
                 os.makedirs(os.path.join(calibrepath, book.path))
             df.GetContentFile(datafile)
         else:
-            error_message = (u"make_mobi: epub not found on gdrive: %s.epub" % data.name)
+            error_message = _(u"%(format)s not found on Google Drive: %(fn)s",
+                              format=old_book_format, fn=data.name + "." + old_book_format.lower())
             return error_message
     file_path = os.path.join(calibrepath, book.path, data.name)
-    if os.path.exists(file_path + u".epub"):
-        # append converter to queue
-        global_WorkerThread.add_convert(file_path, book.id, user_id, _(u"Convert: %s" % book.title), ub.get_mail_settings(),
-                                      kindle_mail)
+    if os.path.exists(file_path + "." + old_book_format.lower()):
+        # read settings and append converter task to queue
+        if kindle_mail:
+            settings = ub.get_mail_settings()
+            text = _(u"Convert: %(book)s" , book=book.title)
+        else:
+            settings = dict()
+            text = _(u"Convert to %(format)s: %(book)s", format=new_book_format, book=book.title)
+        settings['old_book_format'] = old_book_format
+        settings['new_book_format'] = new_book_format
+        global_WorkerThread.add_convert(file_path, book.id, user_id, text, settings, kindle_mail)
         return None
     else:
-        error_message = (u"make_mobi: epub not found: %s.epub" % file_path)
+        error_message = _(u"%(format)s not found: %(fn)s",
+                        format=old_book_format, fn=data.name + "." + old_book_format.lower())
         return error_message
 
 
 def send_test_mail(kindle_mail, user_name):
-    global_WorkerThread.add_email(_(u'Calibre-web test email'),None, None, ub.get_mail_settings(),
-                                  kindle_mail, user_name, _(u"Test E-Mail"))
+    global_WorkerThread.add_email(_(u'Calibre-Web test e-mail'),None, None, ub.get_mail_settings(),
+                                  kindle_mail, user_name, _(u"Test e-mail"))
     return
+
+
+# Send registration email or password reset email, depending on parameter resend (False means welcome email)
+def send_registration_mail(e_mail, user_name, default_password, resend=False):
+    text = "Hello %s!\r\n" % user_name
+    if not resend:
+        text += "Your new account at Calibre-Web has been created. Thanks for joining us!\r\n"
+    text += "Please log in to your account using the following informations:\r\n"
+    text += "User name: %s\n" % user_name
+    text += "Password: %s\r\n" % default_password
+    text += "Don't forget to change your password after first login.\r\n"
+    text += "Sincerely\r\n\r\n"
+    text += "Your Calibre-Web team"
+    global_WorkerThread.add_email(_(u'Get Started with Calibre-Web'),None, None, ub.get_mail_settings(),
+                                  e_mail, user_name, _(u"Registration e-mail for user: %(name)s", name=user_name),text)
+    return
+
 
 # Files are processed in the following order/priority:
 # 1: If Mobi file is exisiting, it's directly send to kindle email,
@@ -99,20 +128,20 @@ def send_mail(book_id, kindle_mail, calibrepath, user_id):
             formats["pdf"] = entry.name + ".pdf"
 
     if len(formats) == 0:
-        return _(u"Could not find any formats suitable for sending by email")
+        return _(u"Could not find any formats suitable for sending by e-mail")
 
     if 'mobi' in formats:
         result = formats['mobi']
     elif 'epub' in formats:
         # returns None if sucess, otherwise errormessage
-        return make_mobi(book.id, calibrepath, user_id, kindle_mail)
+        return convert_book_format(book_id, calibrepath, u'epub', u'mobi', user_id, kindle_mail)
     elif 'pdf' in formats:
         result = formats['pdf'] # worker.get_attachment()
     else:
-        return _(u"Could not find any formats suitable for sending by email")
+        return _(u"Could not find any formats suitable for sending by e-mail")
     if result:
         global_WorkerThread.add_email(_(u"Send to Kindle"), book.path, result, ub.get_mail_settings(),
-                                      kindle_mail, user_id, _(u"E-Mail: %s" % book.title))
+                                      kindle_mail, user_id, _(u"E-mail: %(book)s", book=book.title))
     else:
         return _(u"The requested file could not be read. Maybe wrong permissions?")
 
@@ -184,7 +213,7 @@ def delete_book_file(book, calibrepath, book_format=None):
                 return False
 
 
-def update_dir_stucture_file(book_id, calibrepath):
+def update_dir_structure_file(book_id, calibrepath):
     localbook = db.session.query(db.Books).filter(db.Books.id == book_id).first()
     path = os.path.join(calibrepath, localbook.path)
 
@@ -207,18 +236,18 @@ def update_dir_stucture_file(book_id, calibrepath):
             path = new_title_path
             localbook.path = localbook.path.split('/')[0] + '/' + new_titledir
         except OSError as ex:
-            web.app.logger.error("Rename title from: " + path + " to " + new_title_path)
-            web.app.logger.error(ex, exc_info=True)
-            return _('Rename title from: "%s" to "%s" failed with error: %s' % (path, new_title_path, str(ex)))
+            web.app.logger.error("Rename title from: " + path + " to " + new_title_path + ": " + str(ex))
+            web.app.logger.debug(ex, exc_info=True)
+            return _("Rename title from: '%(src)s' to '%(dest)s' failed with error: %(error)s", src=path, dest=new_title_path, error=str(ex))
     if authordir != new_authordir:
         try:
             new_author_path = os.path.join(os.path.join(calibrepath, new_authordir), os.path.basename(path))
             os.renames(path, new_author_path)
             localbook.path = new_authordir + '/' + localbook.path.split('/')[1]
         except OSError as ex:
-            web.app.logger.error("Rename author from: " + path + " to " + new_author_path)
-            web.app.logger.error(ex, exc_info=True)
-            return _('Rename author from: "%s" to "%s" failed with error: %s' % (path, new_title_path, str(ex)))
+            web.app.logger.error("Rename author from: " + path + " to " + new_author_path + ": " + str(ex))
+            web.app.logger.debug(ex, exc_info=True)
+            return _("Rename author from: '%(src)s' to '%(dest)s' failed with error: %(error)s", src=path, dest=new_author_path, error=str(ex))
     return False
 
 
@@ -232,7 +261,6 @@ def update_dir_structure_gdrive(book_id):
     new_titledir = get_valid_filename(book.title) + " (" + str(book_id) + ")"
 
     if titledir != new_titledir:
-        # print (titledir)
         gFile = gd.getFileFromEbooksFolder(os.path.dirname(book.path), titledir)
         if gFile:
             gFile['title'] = new_titledir
@@ -241,7 +269,7 @@ def update_dir_structure_gdrive(book_id):
             book.path = book.path.split('/')[0] + '/' + new_titledir
             gd.updateDatabaseOnEdit(gFile['id'], book.path)     # only child folder affected
         else:
-            error = _(u'File %s not found on Google Drive' % book.path) # file not found
+            error = _(u'File %(file)s not found on Google Drive', file= book.path) # file not found
 
     if authordir != new_authordir:
         gFile = gd.getFileFromEbooksFolder(os.path.dirname(book.path), titledir)
@@ -250,7 +278,7 @@ def update_dir_structure_gdrive(book_id):
             book.path = new_authordir + '/' + book.path.split('/')[1]
             gd.updateDatabaseOnEdit(gFile['id'], book.path)
         else:
-            error = _(u'File %s not found on Google Drive' % authordir) # file not found
+            error = _(u'File %(file)s not found on Google Drive', file=authordir) # file not found
     return error
 
 
@@ -268,8 +296,13 @@ def delete_book_gdrive(book, book_format):
         gd.deleteDatabaseEntry(gFile['id'])
         gFile.Trash()
     else:
-        error =_(u'Book path %s not found on Google Drive' % book.path)  # file not found
+        error =_(u'Book path %(path)s not found on Google Drive', path=book.path)  # file not found
     return error
+
+def generate_random_password():
+    s = "abcdefghijklmnopqrstuvwxyz01234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%&*()?"
+    passlen = 8
+    return "".join(random.sample(s,passlen ))
 
 ################################## External interface
 
@@ -277,7 +310,7 @@ def update_dir_stucture(book_id, calibrepath):
     if ub.config.config_use_google_drive:
         return update_dir_structure_gdrive(book_id)
     else:
-        return update_dir_stucture_file(book_id, calibrepath)
+        return update_dir_structure_file(book_id, calibrepath)
 
 def delete_book(book, calibrepath, book_format):
     if ub.config.config_use_google_drive:
@@ -315,7 +348,7 @@ def save_cover(url, book_path):
         f.write(img.content)
         f.close()
         uploadFileToEbooksFolder(os.path.join(book_path, 'cover.jpg'), os.path.join(tmpDir, f.name))
-        web.app.logger.info("Cover is saved on gdrive")
+        web.app.logger.info("Cover is saved on Google Drive")
         return True
 
     f = open(os.path.join(ub.config.config_calibre_dir, book_path, "cover.jpg"), "wb")
@@ -348,25 +381,40 @@ class Updater(threading.Thread):
         self.status = 0
 
     def run(self):
-        self.status = 1
-        r = requests.get('https://api.github.com/repos/janeczku/calibre-web/zipball/master', stream=True)
-        fname = re.findall("filename=(.+)", r.headers['content-disposition'])[0]
-        self.status = 2
-        z = zipfile.ZipFile(BytesIO(r.content))
-        self.status = 3
-        tmp_dir = gettempdir()
-        z.extractall(tmp_dir)
-        self.status = 4
-        self.update_source(os.path.join(tmp_dir, os.path.splitext(fname)[0]), ub.config.get_main_dir)
-        self.status = 5
-        db.session.close()
-        db.engine.dispose()
-        ub.session.close()
-        ub.engine.dispose()
-        self.status = 6
-        server.Server.setRestartTyp(True)
-        server.Server.stopServer()
-        self.status = 7
+        try:
+            self.status = 1
+            r = requests.get('https://api.github.com/repos/janeczku/calibre-web/zipball/master', stream=True)
+            r.raise_for_status()
+
+            fname = re.findall("filename=(.+)", r.headers['content-disposition'])[0]
+            self.status = 2
+            z = zipfile.ZipFile(BytesIO(r.content))
+            self.status = 3
+            tmp_dir = gettempdir()
+            z.extractall(tmp_dir)
+            self.status = 4
+            self.update_source(os.path.join(tmp_dir, os.path.splitext(fname)[0]), ub.config.get_main_dir)
+            self.status = 5
+            db.session.close()
+            db.engine.dispose()
+            ub.session.close()
+            ub.engine.dispose()
+            self.status = 6
+            server.Server.setRestartTyp(True)
+            server.Server.stopServer()
+            self.status = 7
+        except requests.exceptions.HTTPError as ex:
+            logging.getLogger('cps.web').info( u'HTTP Error' + ' ' + str(ex))
+            self.status = 8
+        except requests.exceptions.ConnectionError:
+            logging.getLogger('cps.web').info(u'Connection error')
+            self.status = 9
+        except requests.exceptions.Timeout:
+            logging.getLogger('cps.web').info(u'Timeout while establishing connection')
+            self.status = 10
+        except requests.exceptions.RequestException:
+            self.status = 11
+            logging.getLogger('cps.web').info(u'General error')
 
     def get_update_status(self):
         return self.status
@@ -489,3 +537,48 @@ class Updater(threading.Thread):
                 except Exception:
                     logging.getLogger('cps.web').debug("Could not remove:" + item_path)
         shutil.rmtree(source, ignore_errors=True)
+
+        
+def check_unrar(unrarLocation):
+    error = False
+    if os.path.exists(unrarLocation):
+        try:
+            if sys.version_info < (3, 0):
+                unrarLocation = unrarLocation.encode(sys.getfilesystemencoding())
+            p = subprocess.Popen(unrarLocation, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            p.wait()
+            for lines in p.stdout.readlines():
+                if isinstance(lines, bytes):
+                    lines = lines.decode('utf-8')
+                value=re.search('UNRAR (.*) freeware', lines)
+                if value:
+                    version = value.group(1)
+        except OSError as e:
+            error = True
+            web.app.logger.exception(e)
+            version =_(u'Error excecuting UnRar')
+    else:
+        version = _(u'Unrar binary file not found')
+        error=True
+    return (error, version)
+
+
+def is_sha1(sha1):
+    if len(sha1) != 40:
+        return False
+    try:
+        int(sha1, 16)
+    except ValueError:
+        return False
+    return True
+
+
+def get_current_version_info():
+    content = {}
+    content[0] = '$Format:%H$'
+    content[1] = '$Format:%cI$'
+    # content[0] = 'bb7d2c6273ae4560e83950d36d64533343623a57'
+    # content[1] = '2018-09-09T10:13:08+02:00'
+    if is_sha1(content[0]) and len(content[1]) > 0:
+        return {'hash': content[0], 'datetime': content[1]}
+    return False

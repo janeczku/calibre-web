@@ -10,14 +10,18 @@
     </div>
     {% endif %}
     <div class="form-group">
-      <label for="email">{{_('Email address')}}</label>
+      <label for="email">{{_('E-mail address')}}</label>
       <input type="email" class="form-control" name="email" id="email" value="{{ content.email if content.email != None }}" autocomplete="off">
     </div>
     {% if ( g.user and g.user.role_passwd() or g.user.role_admin() ) and not content.role_anonymous() %}
-    <div class="form-group">
-      <label for="password">{{_('Password')}}</label>
-      <input type="password" class="form-control" name="password" id="password" value="" autocomplete="off">
-    </div>
+      {% if g.user and g.user.role_admin() and g.allow_registration and not new_user and not profile %}
+        <div class="btn btn-default" id="resend_password"><a href="{{url_for('reset_password', user_id = content.id) }}">{{_('Reset user Password')}}</a></div>
+      {% else %}            
+        <div class="form-group">
+          <label for="password">{{_('Password')}}</label>
+          <input type="password" class="form-control" name="password" id="password" value="" autocomplete="off">
+        </div>
+    {% endif %}
     {% endif %}
     <div class="form-group">
       <label for="kindle_mail">{{_('Kindle E-Mail')}}</label>
@@ -86,6 +90,10 @@
           <label for="show_author">{{_('Show author selection')}}</label>
       </div>
       <div class="form-group">
+          <input type="checkbox" name="show_publisher" id="show_publisher" {% if content.show_publisher() %}checked{% endif %}>
+          <label for="show_publisher">{{_('Show publisher selection')}}</label>
+      </div>
+      <div class="form-group">
           <input type="checkbox" name="show_read_and_unread" id="show_read_and_unread" {% if content.show_read_and_unread() %}checked{% endif %}>
           <label for="show_read_and_unread">{{_('Show read and unread')}}</label>
       </div>
@@ -136,7 +144,7 @@
     {% if g.user and g.user.role_admin() and not profile and not new_user and not content.role_anonymous() %}
       <div class="checkbox">
         <label>
-          <input type="checkbox" name="delete"> {{_('Delete this user')}}
+          <input type="checkbox" id="delete" name="delete"> {{_('Delete this user')}}
         </label>
       </div>
     {% endif %}
@@ -145,8 +153,8 @@
     <button type="submit" id="submit" class="btn btn-default">{{_('Submit')}}</button>
     {% if not profile %}
       <a href="{{ url_for('admin') }}" id="back" class="btn btn-default">{{_('Back')}}</a>
-    </div>
     {% endif %}
+    </div>
   </form>
 
   {% if downloads %}

@@ -142,6 +142,17 @@ var languages = new Bloodhound({
     }
 });
 
+var publishers = new Bloodhound({
+    name: "publisher",
+    datumTokenizer: function datumTokenizer(datum) {
+        return [datum.name];
+    },
+    queryTokenizer: Bloodhound.tokenizers.whitespace,
+    remote: {
+        url: getPath() + "/get_publishers_json?q=%QUERY"
+    }
+});
+
 function sourceSplit(query, cb, split, source) {
     var bhAdapter = source.ttAdapter();
 
@@ -224,6 +235,20 @@ promiseLanguages.done(function() {
     );
 });
 
+var promisePublishers = publishers.initialize();
+promisePublishers.done(function() {
+    $("#publisher").typeahead(
+        {
+            highlight: true, minLength: 0,
+            hint: true
+        }, {
+            name: "publishers",
+            displayKey: "name",
+            source: publishers.ttAdapter()
+        }
+    );
+});
+
 $("#search").on("change input.typeahead:selected", function() {
     var form = $("form").serialize();
     $.getJSON( getPath() + "/get_matching_tags", form, function( data ) {
@@ -246,3 +271,12 @@ $("#btn-upload-format").on("change", function () {
     } // Remove c:\fake at beginning from localhost chrome
     $("#upload-format").html(filename);
 });
+
+$("#btn-upload-cover").on("change", function () {
+    var filename = $(this).val();
+    if (filename.substring(3, 11) === "fakepath") {
+        filename = filename.substring(12);
+    } // Remove c:\fake at beginning from localhost chrome
+    $("#upload-cover").html(filename);
+});
+

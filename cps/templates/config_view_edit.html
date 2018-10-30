@@ -7,10 +7,10 @@
   <div class="panel panel-default">
     <div class="panel-heading">
       <h4 class="panel-title">
-        <div class="accordion-toggle" data-toggle="collapse" href="#collapsefour">
+        <a class="accordion-toggle" data-toggle="collapse" href="#collapsefour">
           <span class="glyphicon glyphicon-plus"></span>
           {{_('View Configuration')}}
-        </div>
+        </a>
       </h4>
     </div>
     <div id="collapsefour" class="panel-collapse collapse">
@@ -57,10 +57,10 @@
   <div class="panel panel-default">
     <div class="panel-heading">
       <h4 class="panel-title">
-        <div class="accordion-toggle" data-toggle="collapse" href="#collapsesix">
+        <a class="accordion-toggle" data-toggle="collapse" href="#collapsesix">
           <span class="glyphicon glyphicon-plus"></span>
           {{_('Default settings for new users')}}
-        </div>
+        </a>
       </h4>
     </div>
     <div id="collapsesix" class="panel-collapse collapse">
@@ -99,10 +99,10 @@
   <div class="panel panel-default">
     <div class="panel-heading">
       <h4 class="panel-title">
-        <div class="accordion-toggle" data-toggle="collapse" href="#collapseseven">
+        <a class="accordion-toggle" data-toggle="collapse" href="#collapseseven">
           <span class="glyphicon glyphicon-plus"></span>
           {{_('Default visibilities for new users')}}
-        </div>
+        </a>
       </h4>
     </div>
     <div id="collapseseven" class="panel-collapse collapse">
@@ -144,6 +144,10 @@
               <label for="show_author">{{_('Show author selection')}}</label>
           </div>
           <div class="form-group">
+              <input type="checkbox" name="show_publisher" id="show_publisher" {% if content.show_publisher() %}checked{% endif %}>
+              <label for="show_publisher">{{_('Show publisher selection')}}</label>
+          </div>
+          <div class="form-group">
               <input type="checkbox" name="show_read_and_unread" id="show_read_and_unread" {% if content.show_read_and_unread() %}checked{% endif %}>
               <label for="show_read_and_unread">{{_('Show read and unread')}}</label>
           </div>
@@ -160,7 +164,7 @@
   </div>
 </div>
     <div class="col-sm-12">
-    <button type="submit" class="btn btn-default">{{_('Submit')}}</button>
+    <button type="submit" name="submit" class="btn btn-default">{{_('Submit')}}</button>
     <a href="{{ url_for('admin') }}" class="btn btn-default">{{_('Back')}}</a>
     </div>
   </form>

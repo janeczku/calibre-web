@@ -15,4 +15,6 @@ six==1.10.0
 goodreads>=0.3.2
 python-Levenshtein>=0.12.0
 # other
-lxml==3.7.2
+lxml>=3.8.0
+rarfile>=2.7
+natsort>=2.2.0

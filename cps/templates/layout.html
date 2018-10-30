@@ -122,58 +122,61 @@
               <li id="nav_new" {% if page == 'root' %}class="active"{% endif %}><a href="{{url_for('index')}}"><span class="glyphicon glyphicon-book"></span> {{_('Recently Added')}}</a></li>
               {%endif%}
               {% if g.user.show_sorted() %}
-              <li class="dropdown">
+              <li id="nav_sort" class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                  <span class="glyphicon glyphicon-sort-by-attributes"></span> {{_('Sorted Books')}}
+                  <span class="glyphicon glyphicon-sort-by-attributes"></span>{{_('Sorted Books')}}
                   <span class="caret"></span>
                 </a>
                 <ul class="dropdown-menu">
-                  <li {% if page == 'newest' %}class="active"{% endif %}><a href="{{url_for('newest_books')}}">{{_('Sort By')}} {{_('Newest')}}</a></li>
-                  <li {% if page == 'oldest' %}class="active"{% endif %}><a href="{{url_for('oldest_books')}}">{{_('Sort By')}} {{_('Oldest')}}</a></li>
-                  <li {% if page == 'a-z' %}class="active"{% endif %}><a href="{{url_for('titles_ascending')}}">{{_('Sort By')}} {{_('Title')}} ({{_('Ascending')}})</a></li>
-                  <li {% if page == 'z-a' %}class="active"{% endif %}><a href="{{url_for('titles_descending')}}">{{_('Sort By')}} {{_('Title')}}  ({{_('Descending')}})</a></li>
+                  <li id="nav_sort_old" {% if page == 'newest' %}class="active"{% endif %}><a href="{{url_for('newest_books')}}">{{_('Sort By')}} {{_('Newest')}}</a></li>
+                  <li id="nav_sort_new" {% if page == 'oldest' %}class="active"{% endif %}><a href="{{url_for('oldest_books')}}">{{_('Sort By')}} {{_('Oldest')}}</a></li>
+                  <li id="nav_sort_asc" {% if page == 'a-z' %}class="active"{% endif %}><a href="{{url_for('titles_ascending')}}">{{_('Sort By')}} {{_('Title')}} ({{_('Ascending')}})</a></li>
+                  <li id="nav_sort_desc" {% if page == 'z-a' %}class="active"{% endif %}><a href="{{url_for('titles_descending')}}">{{_('Sort By')}} {{_('Title')}}  ({{_('Descending')}})</a></li>
                 </ul>
               </li>
               {%endif%}
               {% if g.user.show_hot_books() %}
-              <li id="nav_hot" {% if page == 'hot' %}class="active"{% endif %}><a href="{{url_for('hot_books')}}"><span class="glyphicon glyphicon-fire"></span> {{_('Hot Books')}}</a></li>
+              <li id="nav_hot" {% if page == 'hot' %}class="active"{% endif %}><a href="{{url_for('hot_books')}}"><span class="glyphicon glyphicon-fire"></span>{{_('Hot Books')}}</a></li>
               {%endif%}
               {% if g.user.show_best_rated_books() %}
-              <li {% if page == 'rated' %}class="active"{% endif %}><a href="{{url_for('best_rated_books')}}"><span class="glyphicon glyphicon-star"></span> {{_('Best rated Books')}}</a></li>
+              <li id="nav_rated" {% if page == 'rated' %}class="active"{% endif %}><a href="{{url_for('best_rated_books')}}"><span class="glyphicon glyphicon-star"></span>{{_('Best rated Books')}}</a></li>
               {%endif%}
               {% if g.user.show_read_and_unread() %}
                 {% if not g.user.is_anonymous %}
-                  <li {% if page == 'read' %}class="active"{% endif %}><a href="{{url_for('read_books')}}"><span class="glyphicon glyphicon-eye-open"></span> {{_('Read Books')}}</a></li>
+                  <li id="nav_read" {% if page == 'read' %}class="active"{% endif %}><a href="{{url_for('read_books')}}"><span class="glyphicon glyphicon-eye-open"></span>{{_('Read Books')}}</a></li>
                 {%endif%}
-                <li {% if page == 'read' %}class="active"{% endif %}><a href="{{url_for('unread_books')}}"><span class="glyphicon glyphicon-eye-close"></span> {{_('Unread Books')}}</a></li>
+                <li id="nav_unread" {% if page == 'read' %}class="active"{% endif %}><a href="{{url_for('unread_books')}}"><span class="glyphicon glyphicon-eye-close"></span>{{_('Unread Books')}}</a></li>
               {%endif%}
               {% if g.user.show_random_books() %}
-              <li id="nav_rand" {% if page == 'discover' %}class="active"{% endif %}><a href="{{url_for('discover')}}"><span class="glyphicon glyphicon-random"></span> {{_('Discover')}}</a></li>
+              <li id="nav_rand" {% if page == 'discover' %}class="active"{% endif %}><a href="{{url_for('discover')}}"><span class="glyphicon glyphicon-random"></span>{{_('Discover')}}</a></li>
               {%endif%}
               {% if g.user.show_category() %}
-              <li id="nav_cat" {% if page == 'discover' %}class="category"{% endif %}><a href="{{url_for('category_list')}}"><span class="glyphicon glyphicon-inbox"></span> {{_('Categories')}}</a></li>
+              <li id="nav_cat" {% if page == 'discover' %}class="category"{% endif %}><a href="{{url_for('category_list')}}"><span class="glyphicon glyphicon-inbox"></span>{{_('Categories')}}</a></li>
               {%endif%}
               {% if g.user.show_series() %}
-              <li id="nav_serie" {% if page == 'series' %}class="active"{% endif %}><a href="{{url_for('series_list')}}"><span class="glyphicon glyphicon-bookmark"></span> {{_('Series')}}</a></li>
+              <li id="nav_serie" {% if page == 'series' %}class="active"{% endif %}><a href="{{url_for('series_list')}}"><span class="glyphicon glyphicon-bookmark"></span>{{_('Series')}}</a></li>
               {%endif%}
               {% if g.user.show_author() %}
-              <li id="nav_author" {% if page == 'author' %}class="active"{% endif %}><a href="{{url_for('author_list')}}"><span class="glyphicon glyphicon-user"></span> {{_('Authors')}}</a></li>
+              <li id="nav_author" {% if page == 'author' %}class="active"{% endif %}><a href="{{url_for('author_list')}}"><span class="glyphicon glyphicon-user"></span>{{_('Authors')}}</a></li>
+              {%endif%}
+              {% if g.user.show_publisher() %}
+              <li id="nav_publisher" {% if page == 'publisher' %}class="active"{% endif %}><a href="{{url_for('publisher_list')}}"><span class="glyphicon glyphicon-text-size"></span>{{_('Publishers')}}</a></li>
               {%endif%}
               {% if g.user.filter_language() == 'all' and g.user.show_language() %}
-                <li id="nav_lang" {% if page == 'language' %}class="active"{% endif %}><a href="{{url_for('language_overview')}}"><span class="glyphicon glyphicon-flag"></span> {{_('Languages')}} </a></li>
+                <li id="nav_lang" {% if page == 'language' %}class="active"{% endif %}><a href="{{url_for('language_overview')}}"><span class="glyphicon glyphicon-flag"></span>{{_('Languages')}} </a></li>
               {%endif%}
               {% if g.user.is_authenticated or g.user.is_anonymous %}
                 <li class="nav-head hidden-xs">{{_('Public Shelves')}}</li>
                 {% for shelf in g.public_shelfes %}
-                  <li><a href="{{url_for('show_shelf', shelf_id=shelf.id)}}"><span class="glyphicon glyphicon-list"></span> {{shelf.name}}</a></li>
+                  <li><a href="{{url_for('show_shelf', shelf_id=shelf.id)}}"><span class="glyphicon glyphicon-list public_shelf"></span>{{shelf.name|shortentitle(40)}}</a></li>
                 {% endfor %}
                 <li class="nav-head hidden-xs">{{_('Your Shelves')}}</li>
                 {% for shelf in g.user.shelf %}
-                  <li><a href="{{url_for('show_shelf', shelf_id=shelf.id)}}"><span class="glyphicon glyphicon-list"></span> {{shelf.name}}</a></li>
+                  <li><a href="{{url_for('show_shelf', shelf_id=shelf.id)}}"><span class="glyphicon glyphicon-list private_shelf"></span>{{shelf.name|shortentitle(40)}}</a></li>
                 {% endfor %}
               {% if not g.user.is_anonymous %}
                 <li id="nav_createshelf" class="create-shelf"><a href="{{url_for('create_shelf')}}">{{_('Create a Shelf')}}</a></li>
-                <li id="nav_about" {% if page == 'stat' %}class="active"{% endif %}><a href="{{url_for('stats')}}"><span class="glyphicon glyphicon-info-sign"></span> {{_('About')}}</a></li>
+                <li id="nav_about" {% if page == 'stat' %}class="active"{% endif %}><a href="{{url_for('stats')}}"><span class="glyphicon glyphicon-info-sign"></span>{{_('About')}}</a></li>
               {% endif %}
               {% endif %}
 
@@ -186,13 +189,13 @@
           {% if pagination and (pagination.has_next or pagination.has_prev) %}
             <div class="pagination">
               {% if pagination.has_prev %}
-              <a class="previous" href="{{ url_for_other_page(pagination.page - 1)
+              <a class="previous" href="{{ (pagination.page - 1)|url_for_other_page
                 }}">&laquo; {{_('Previous')}}</a>
               {% endif %}
             {% for page in pagination.iter_pages() %}
               {% if page %}
                 {% if page != pagination.page %}
-                  <a href="{{ url_for_other_page(page) }}">{{ page }}</a>
+                  <a href="{{ (page)|url_for_other_page }}">{{ page }}</a>
                 {% else %}
                   <strong>{{ page }}</strong>
                 {% endif %}
@@ -201,7 +204,7 @@
               {% endif %}
             {% endfor %}
             {% if pagination.has_next %}
-              <a class="next" href="{{ url_for_other_page(pagination.page + 1)
+              <a class="next" href="{{ (pagination.page + 1)|url_for_other_page
                 }}">{{_('Next')}} &raquo;</a>
             {% endif %}
             </div>

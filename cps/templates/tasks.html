@@ -1,11 +1,11 @@
 {% extends "layout.html" %}
 {% block header %}
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.8.1/bootstrap-table.css">
+<link href="{{ url_for('static', filename='css/libs/bootstrap-table.min.css') }}" rel="stylesheet">
 {% endblock %}
 {% block body %}
 <div class="discover">
     <h2>{{_('Tasks list')}}</h2>
-    <table class="table table-no-bordered" id="table" data-url="{{'/ajax/emailstat'}}"  data-sort-name="starttime" data-sort-order="asc">
+    <table class="table table-no-bordered" id="table" data-url="{{  url_for('get_email_status_json') }}"  data-sort-name="starttime" data-sort-order="asc">
       <thead>
         <tr>
             {% if g.user.role_admin() %}
@@ -26,8 +26,9 @@
 </div>
 {% endblock %}
 {% block js %}
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.8.1/bootstrap-table.js"></script>
+<script src="{{ url_for('static', filename='js/libs/bootstrap-table/bootstrap-table.min.js') }}"></script>
         <script>
+            // ToDo: Move to js file
             $('#table').bootstrapTable({
                formatNoMatches: function () {
                 return '';
@@ -37,7 +38,7 @@
             setInterval(function() {
                 $.ajax({
                     method:"get",
-                    url: "{{'/ajax/emailstat'}}",
+                    url: "{{ url_for('get_email_status_json')}}",
                     async: true,
                     timeout: 900,
                     success:function(data){

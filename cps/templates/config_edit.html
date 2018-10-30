@@ -7,10 +7,10 @@
   <div class="panel panel-default">
     <div class="panel-heading">
       <h4 class="panel-title">
-        <div class="accordion-toggle" data-toggle="collapse" href="#collapseOne">
+        <a class="accordion-toggle" data-toggle="collapse" href="#collapseOne">
           <span class="glyphicon glyphicon-minus"></span>
           {{_('Library Configuration')}}
-        </div>
+        </a>
       </h4>
     </div>
     <div id="collapseOne" class="panel-collapse collapse in">
@@ -31,11 +31,15 @@
           </label>
         </div>
       {% else %}
-        {% if show_authenticate_google_drive %}
+        {% if show_authenticate_google_drive and g.user.is_authenticated %}
           <div class="form-group required">
             <a href="{{ url_for('authenticate_google_drive') }}" class="btn btn-primary">{{_('Authenticate Google Drive')}}</a>
           </div>
         {% else %}
+          {% if show_authenticate_google_drive and not g.user.is_authenticated %}
+          <div >{{_('Please finish Google Drive setup after login')}}</div>
+          {% endif %}
+          {% if not show_authenticate_google_drive %}
           <div class="form-group required">
             <label for="config_google_drive_folder">{{_('Google Drive Calibre folder')}}</label>
               <select name="config_google_drive_folder" id="config_google_drive_folder" class="form-control">
@@ -53,19 +57,21 @@
           {% else %}
             <a href="{{ url_for('watch_gdrive') }}" class="btn btn-primary">Enable watch of metadata.db</a>
           {% endif %}
+          {% endif %}
         {% endif %}
       {% endif %}
     </div>
       </div>
     </div>
   </div>
+
   <div class="panel panel-default">
     <div class="panel-heading">
       <h4 class="panel-title">
-        <div class="accordion-toggle" data-toggle="collapse" href="#collapsetwo">
+        <a class="accordion-toggle" data-toggle="collapse" href="#collapsetwo">
           <span class="glyphicon glyphicon-plus"></span>
           {{_('Server Configuration')}}
-        </div>
+        </a>
       </h4>
     </div>
     <div id="collapsetwo" class="panel-collapse collapse">
@@ -88,10 +94,10 @@
   <div class="panel panel-default">
     <div class="panel-heading">
       <h4 class="panel-title">
-        <div class="accordion-toggle" data-toggle="collapse" href="#collapsethree">
+        <a class="accordion-toggle" data-toggle="collapse" href="#collapsethree">
           <span class="glyphicon glyphicon-plus"></span>
           {{_('Logfile Configuration')}}
-        </div>
+        </a>
       </h4>
     </div>
     <div id="collapsethree" class="panel-collapse collapse">
@@ -115,10 +121,10 @@
   <div class="panel panel-default">
     <div class="panel-heading">
       <h4 class="panel-title">
-        <div class="accordion-toggle" data-toggle="collapse" href="#collapsefive">
+        <a class="accordion-toggle" data-toggle="collapse" href="#collapsefive">
           <span class="glyphicon glyphicon-plus"></span>
           {{_('Feature Configuration')}}
-        </div>
+        </a>
       </h4>
     </div>
     <div id="collapsefive" class="panel-collapse collapse">
@@ -162,10 +168,10 @@
   <div class="panel panel-default">
     <div class="panel-heading">
       <h4 class="panel-title">
-        <div class="accordion-toggle" data-toggle="collapse" href="#collapseeight">
+        <a class="accordion-toggle" data-toggle="collapse" href="#collapseeight">
           <span class="glyphicon glyphicon-plus"></span>
-           {{_('E-Book converter')}}
-        </div>
+           {{_('External binaries')}}
+        </a>
       </h4>
     </div>
     <div id="collapseeight" class="panel-collapse collapse">
@@ -173,9 +179,9 @@
           <div class="form-group">
               <div><input type="radio" name="config_ebookconverter" id="converter0" value="0" {% if content.config_ebookconverter == 0 %}checked{% endif %}>
               <label for="converter0">{{_('No converter')}}</label></div>
-              <div><label><input type="radio" name="config_ebookconverter" id="converter1" value="1" {% if content.config_ebookconverter == 1 %}checked{% endif %}>
+              <div><input type="radio" name="config_ebookconverter" id="converter1" value="1" {% if content.config_ebookconverter == 1 %}checked{% endif %}>
               <label for="converter1">{{_('Use Kindlegen')}}</label></div>
-              <div><label><input type="radio" name="config_ebookconverter" id="converter2" value="2" {% if content.config_ebookconverter == 2 %}checked{% endif %}>
+              <div><input type="radio" name="config_ebookconverter" id="converter2" value="2" {% if content.config_ebookconverter == 2 %}checked{% endif %}>
               <label for="converter2">{{_('Use calibre\'s ebook converter')}}</label></div>
           </div>
           <div data-related="calibre">
@@ -188,6 +194,12 @@
                 <input type="text" class="form-control" id="config_converterpath" name="config_converterpath" value="{% if content.config_converterpath != None %}{{ content.config_converterpath }}{% endif %}" autocomplete="off">
             </div>
           </div>
+          {% if rarfile_support %}
+            <div class="form-group">
+                <label for="config_rarfile_location">{{_('Location of Unrar binary')}}</label>
+                <input type="text" class="form-control" name="config_rarfile_location" id="config_rarfile_location" value="{% if content.config_rarfile_location != None %}{{ content.config_rarfile_location }}{% endif %}" autocomplete="off">
+            </div>
+          {% endif %}
       </div>
     </div>
   </div>
@@ -195,12 +207,12 @@
 
 
     <div class="col-sm-12">
-    <button type="submit" class="btn btn-default">{{_('Submit')}}</button>
+    <button type="submit" name="submit" class="btn btn-default">{{_('Submit')}}</button>
     {% if not origin %}
       <a href="{{ url_for('admin') }}" class="btn btn-default">{{_('Back')}}</a>
     {% endif %}
     {% if success %}
-      <a href="{{ url_for('login') }}" class="btn btn-default">{{_('Login')}}</a>
+      <a href="{{ url_for('login') }}" name="login" class="btn btn-default">{{_('Login')}}</a>
     {% endif %}
     </div>
   </form>

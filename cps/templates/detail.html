@@ -60,7 +60,7 @@
               {% endif %}
         </div>
       </div>
-      <h2>{{entry.title|shortentitle(40)}}</h2>
+      <h2 id="title">{{entry.title|shortentitle(40)}}</h2>
       <p class="author">
           {% for author in entry.authors %}
             <a href="{{url_for('author', book_id=author.id ) }}">{{author.name.replace('|',',')}}</a>
@@ -120,13 +120,17 @@
 
       </div>
       {% endif %}
+
       {% if entry.publishers|length > 0 %}
       <div class="publishers">
-      <p>
-          <span>{{_('Publisher')}}:{% for publisher in entry.publishers %} {{publisher.name}}{% if not loop.last %},{% endif %}{% endfor %}</span>
-      </p>
+        <p>
+          <span>{{_('Publisher')}}:
+              <a href="{{url_for('publisher', book_id=entry.publishers[0].id ) }}">{{entry.publishers[0].name}}</a>
+          </span>
+        </p>
       </div>
       {% endif %}
+
       {% if entry.pubdate[:10] != '0101-01-01' %}
         <p>{{_('Publishing date')}}: {{entry.pubdate|formatdate}} </p>
       {% endif %}
@@ -174,8 +178,10 @@
 
 
       {% if entry.comments|length > 0 and entry.comments[0].text|length > 0%}
-        <h3>{{_('Description:')}}</h3>
-        {{entry.comments[0].text|safe}}
+        <div class="comments">
+            <h3>{{_('Description:')}}</h3>
+            {{entry.comments[0].text|safe}}
+        </div>
       {% endif %}
 
 
@@ -248,7 +254,7 @@
       {% if g.user.role_edit() %}
       <div class="btn-toolbar" role="toolbar">
         <div class="btn-group" role="group" aria-label="Edit/Delete book">
-          <a href="{{ url_for('edit_book', book_id=entry.id) }}" class="btn btn-sm btn-warning" role="button"><span class="glyphicon glyphicon-edit"></span> {{_('Edit metadata')}}</a>
+          <a href="{{ url_for('edit_book', book_id=entry.id) }}" class="btn btn-sm btn-warning" id="edit_book" role="button"><span class="glyphicon glyphicon-edit"></span> {{_('Edit metadata')}}</a>
         </div>
       </div>
       {% endif %}
