@@ -1289,9 +1289,9 @@ def get_updater_status():
                 "1": _(u'Requesting update package'),
                 "2": _(u'Downloading update package'),
                 "3": _(u'Unzipping update package'),
-                "4": _(u'Files are replaced'),
+                "4": _(u'Replacing files'),
                 "5": _(u'Database connections are closed'),
-                "6": _(u'Server is stopped'),
+                "6": _(u'Stopping server'),
                 "7": _(u'Update finished, please press okay and reload page'),
                 "8": _(u'Update failed:') + u' ' + _(u'HTTP Error'),
                 "9": _(u'Update failed:') + u' ' + _(u'Connection error'),
@@ -1305,8 +1305,9 @@ def get_updater_status():
     elif request.method == "GET":
         try:
             status['status'] = helper.updater_thread.get_update_status()
-        except Exception:
-            status['status'] = 11
+        except Exception as e:
+            app.logger.exception(e)
+            status['status'] = 7
     return json.dumps(status)
 
 

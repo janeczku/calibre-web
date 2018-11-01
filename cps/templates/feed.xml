@@ -43,11 +43,12 @@
     <title>{{entry.title}}</title>
     <id>{{entry.uuid}}</id>
     <updated>{{entry.atom_timestamp}}</updated>
-    <author>
-      <name>{{entry.authors[0].name}}</name>
-    </author>
-
-    {% if publishers.__len__() > 0 %}
+    {% if entry.authors.__len__() > 0 %}
+      <author>
+        <name>{{entry.authors[0].name}}</name>
+      </author>
+    {% endif %}
+    {% if entry.publishers.__len__() > 0 %}
       <publisher>
         <name>{{entry.publishers[0].name}}</name>
       </publisher>
