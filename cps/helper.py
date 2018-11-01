@@ -399,15 +399,12 @@ class Updater(threading.Thread):
             z.extractall(tmp_dir)
             self.status = 4
             self.update_source(os.path.join(tmp_dir, os.path.splitext(fname)[0]), ub.config.get_main_dir)
-            self.status = 5
-            db.session.close()
-            db.engine.dispose()
-            ub.session.close()
-            ub.engine.dispose()
             self.status = 6
+            time.sleep(2)
             server.Server.setRestartTyp(True)
             server.Server.stopServer()
             self.status = 7
+            time.sleep(2)
         except requests.exceptions.HTTPError as ex:
             logging.getLogger('cps.web').info( u'HTTP Error' + ' ' + str(ex))
             self.status = 8
