@@ -1305,9 +1305,11 @@ def get_updater_status():
     elif request.method == "GET":
         try:
             status['status'] = helper.updater_thread.get_update_status()
-        except Exception as e:
-            app.logger.exception(e)
+        except AttributeError:
+            # thread is not active, occours after restart on update
             status['status'] = 7
+        except Exception:
+            status['status'] = 11
     return json.dumps(status)
 
 
