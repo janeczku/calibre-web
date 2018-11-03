@@ -9,6 +9,8 @@ from flask import (Flask, render_template, request, Response, redirect,
                    abort, Markup)
 from flask import __version__ as flaskVersion
 from werkzeug import __version__ as werkzeugVersion
+from werkzeug.exceptions import default_exceptions
+
 from jinja2 import __version__  as jinja2Version
 import cache_buster
 import ub
@@ -131,6 +133,21 @@ mimetypes.add_type('application/x-cbt', '.cbt')
 mimetypes.add_type('image/vnd.djvu', '.djvu')
 
 app = (Flask(__name__))
+
+# custom error page
+def error_http(error):
+    return render_template('http_error.html',
+                            error_code=error.code,
+                            error_name=error.name,
+                            instance=config.config_calibre_web_title
+                            ), error.code
+
+# http error handling
+for ex in default_exceptions:
+    # new routine for all client errors, server errors stay
+    if ex < 500:
+        app.register_error_handler(ex, error_http)
+
 app.wsgi_app = ReverseProxied(app.wsgi_app)
 cache_buster.init_cache_busting(app)
 
@@ -169,6 +186,7 @@ with open(os.path.join(config.get_main_dir, 'cps/translations/iso639.pickle'), '
 def is_gdrive_ready():
     return os.path.exists(os.path.join(config.get_main_dir, 'settings.yaml')) and \
            os.path.exists(os.path.join(config.get_main_dir, 'gdrive_credentials'))
+
 
 
 @babel.localeselector
