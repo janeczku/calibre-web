@@ -2255,7 +2255,8 @@ def read_book(book_id, book_format):
             extensionList = ["cbt","cbz"]
         for fileext in extensionList:
             if book_format.lower() == fileext:
-                return render_title_template('readcbr.html', comicfile=book_id, extension=fileext, title=_(u"Read a Book"), book=book)
+                return render_title_template('readcbr.html', comicfile=book_id, 
+                extension=fileext, title=_(u"Read a Book"), book=book)
         flash(_(u"Error opening eBook. File does not exist or file is not accessible."), category="error")
         return redirect(url_for("index"))'''
 
@@ -2266,7 +2267,8 @@ def read_book(book_id, book_format):
 def get_download_link(book_id, book_format):
     book_format = book_format.split(".")[0]
     book = db.session.query(db.Books).filter(db.Books.id == book_id).first()
-    data = db.session.query(db.Data).filter(db.Data.book == book.id).filter(db.Data.format == book_format.upper()).first()
+    data = db.session.query(db.Data).filter(db.Data.book == book.id)\
+        .filter(db.Data.format == book_format.upper()).first()
     if data:
         # collect downloaded books only for registered user and not for anonymous user
         if current_user.is_authenticated:
@@ -2280,18 +2282,9 @@ def get_download_link(book_id, book_format):
             headers["Content-Type"] = mimetypes.types_map['.' + book_format]
         except KeyError:
             headers["Content-Type"] = "application/octet-stream"
-        headers["Content-Disposition"] = "attachment; filename*=UTF-8''%s.%s" % (quote(file_name.encode('utf-8')), book_format)
+        headers["Content-Disposition"] = "attachment; filename*=UTF-8''%s.%s" % (quote(file_name.encode('utf-8')),
+                                                                                 book_format)
         return helper.do_download_file(book, book_format, data, headers)
-        #if config.config_use_google_drive:
-        #    df = gdriveutils.getFileFromEbooksFolder(book.path, '%s.%s' % (data.name, book_format))
-        #    if df:
-        #        return do_gdrive_download(df, headers)
-        #    else:
-        #        abort(404)
-        #else:
-        #    response = make_response(send_from_directory(os.path.join(config.config_calibre_dir, book.path), data.name + "." + book_format))
-        #    response.headers = headers
-        #    return response
     else:
         abort(404)
 

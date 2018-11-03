@@ -377,7 +377,11 @@ def do_download_file(book, book_format, data, headers):
         else:
             abort(404)
     else:
-        response = make_response(send_from_directory(os.path.join(ub.config.config_calibre_dir, book.path), data.name + "." + book_format))
+        filename = os.path.join(ub.config.config_calibre_dir, book.path)
+        if not os.path.isfile(os.path.join(filename, data.name + "." + book_format)):
+            # ToDo: improve error handling
+            web.app.logger.error('File not found: %s' % os.path.join(filename, data.name + "." + book_format))
+        response = make_response(send_from_directory(filename, data.name + "." + book_format))
         response.headers = headers
         return response
 
