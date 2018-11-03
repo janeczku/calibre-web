@@ -54,8 +54,9 @@ import tempfile
 from redirect import redirect_back
 import time
 import server
-import copy
+# import copy
 from reverseproxy import ReverseProxied
+
 try:
     from googleapiclient.errors import HttpError
 except ImportError:
@@ -114,44 +115,6 @@ EXTENSIONS_UPLOAD = {'txt', 'pdf', 'epub', 'mobi', 'azw', 'azw3', 'cbr', 'cbz', 
 EXTENSIONS_CONVERT = {'pdf', 'epub', 'mobi', 'azw3', 'docx', 'rtf', 'fb2', 'lit', 'lrf', 'txt', 'html', 'rtf', 'odt'}
 
 # EXTENSIONS_READER = set(['txt', 'pdf', 'epub', 'zip', 'cbz', 'tar', 'cbt'] + (['rar','cbr'] if rar_support else []))
-
-
-'''class ReverseProxied(object):
-    """Wrap the application in this middleware and configure the
-    front-end server to add these headers, to let you quietly bind
-    this to a URL other than / and to an HTTP scheme that is
-    different than what is used locally.
-
-    Code courtesy of: http://flask.pocoo.org/snippets/35/
-
-    In nginx:
-    location /myprefix {
-        proxy_pass http://127.0.0.1:8083;
-        proxy_set_header Host $host;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header X-Scheme $scheme;
-        proxy_set_header X-Script-Name /myprefix;
-        }
-    """
-
-    def __init__(self, application):
-        self.app = application
-
-    def __call__(self, environ, start_response):
-        script_name = environ.get('HTTP_X_SCRIPT_NAME', '')
-        if script_name:
-            environ['SCRIPT_NAME'] = script_name
-            path_info = environ.get('PATH_INFO', '')
-            if path_info and path_info.startswith(script_name):
-                environ['PATH_INFO'] = path_info[len(script_name):]
-
-        scheme = environ.get('HTTP_X_SCHEME', '')
-        if scheme:
-            environ['wsgi.url_scheme'] = scheme
-        servr = environ.get('HTTP_X_FORWARDED_SERVER', '')
-        if servr:
-            environ['HTTP_HOST'] = servr
-        return self.app(environ, start_response)'''
 
 
 # Main code
@@ -897,14 +860,6 @@ def get_opds_download_link(book_id, book_format):
     except KeyError:
         headers["Content-Type"] = "application/octet-stream"
     return helper.do_download_file(book, book_format, data, headers)
-    #if config.config_use_google_drive:
-    #    app.logger.info(time.time() - startTime)
-    #    df = gdriveutils.getFileFromEbooksFolder(book.path, data.name + "." + book_format)
-    #    return do_gdrive_download(df, headers)
-    #else:
-    #    response = make_response(send_from_directory(os.path.join(config.config_calibre_dir, book.path), data.name + "." + book_format))
-    #    response.headers = headers
-    #    return response
 
 
 @app.route("/ajax/book/<string:uuid>")
@@ -923,7 +878,7 @@ def get_metadata_calibre_companion(uuid):
 @login_required
 def get_email_status_json():
     answer=list()
-    UIanswer = list()
+    # UIanswer = list()
     tasks=helper.global_WorkerThread.get_taskstatus()
     if not current_user.role_admin():
         for task in tasks:
@@ -945,10 +900,10 @@ def get_email_status_json():
                     task['starttime'] = ""
         answer = tasks
 
-    UIanswer = copy.deepcopy(answer)
-    UIanswer = helper.render_task_status(UIanswer)
+    # UIanswer = copy.deepcopy(answer)
+    answer = helper.render_task_status(answer)
 
-    js=json.dumps(UIanswer)
+    js=json.dumps(answer)
     response = make_response(js)
     response.headers["Content-Type"] = "application/json; charset=utf-8"
     return response
@@ -1734,32 +1689,14 @@ def bookmark(book_id, book_format):
 def get_tasks_status():
     # if current user admin, show all email, otherwise only own emails
     answer=list()
-    UIanswer=list()
+    # UIanswer=list()
     tasks=helper.global_WorkerThread.get_taskstatus()
-    if not current_user.role_admin():
-        for task in tasks:
-            if task['user'] == current_user.nickname:
-                if task['formStarttime']:
-                    task['starttime'] = format_datetime(task['formStarttime'], format='short', locale=get_locale())
-                    task['formStarttime'] = ""
-                else:
-                    if 'starttime' not in task:
-                        task['starttime'] = ""
-                answer.append(task)
-    else:
-        for task in tasks:
-            if task['formStarttime']:
-                task['starttime'] = format_datetime(task['formStarttime'], format='short', locale=get_locale())
-                task['formStarttime'] = ""
-            else:
-                if 'starttime' not in  task:
-                    task['starttime'] = ""
-        answer = tasks
+        # answer = tasks
 
-    UIanswer = copy.deepcopy(answer)
-    UIanswer = helper.render_task_status(UIanswer)
+    # UIanswer = copy.deepcopy(answer)
+    answer = helper.render_task_status(tasks)
     # foreach row format row
-    return render_title_template('tasks.html', entries=UIanswer, title=_(u"Tasks"))
+    return render_title_template('tasks.html', entries=answer, title=_(u"Tasks"))
 
 
 @app.route("/admin")
