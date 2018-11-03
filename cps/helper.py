@@ -73,10 +73,10 @@ def convert_book_format(book_id, calibrepath, old_book_format, new_book_format, 
         # read settings and append converter task to queue
         if kindle_mail:
             settings = ub.get_mail_settings()
-            text = _(u"Convert: %(book)s" , book=book.title)
+            text = _(u"%(format)s: %(book)s", format=new_book_format, book=book.title)
         else:
             settings = dict()
-            text = _(u"Convert to %(format)s: %(book)s", format=new_book_format, book=book.title)
+            text = _(u"%(format)s: %(book)s", format=new_book_format, book=book.title)
         settings['old_book_format'] = old_book_format
         settings['new_book_format'] = new_book_format
         global_WorkerThread.add_convert(file_path, book.id, user_id, text, settings, kindle_mail)
@@ -540,7 +540,7 @@ class Updater(threading.Thread):
                     logging.getLogger('cps.web').debug("Could not remove:" + item_path)
         shutil.rmtree(source, ignore_errors=True)
 
-        
+
 def check_unrar(unrarLocation):
     error = False
     if os.path.exists(unrarLocation):
@@ -584,3 +584,39 @@ def get_current_version_info():
     if is_sha1(content[0]) and len(content[1]) > 0:
         return {'hash': content[0], 'datetime': content[1]}
     return False
+
+
+def render_task_status(tasklist):
+    #helper function to apply localize status information in tasklist entries
+    renderedtasklist=list()
+
+    for task in tasklist:
+        # localize the task status
+        if isinstance( task['status'], int ):
+            if task['status'] == worker.STAT_WAITING:
+                task['status'] = _('Waiting')
+            elif task['status'] == worker.STAT_FAIL:
+                task['status'] = _('Failed')
+            elif task['status'] == worker.STAT_STARTED:
+                task['status'] = _('Started')
+            elif task['status'] == worker.STAT_FINISH_SUCCESS:
+                task['status'] = _('Finished')
+            else:
+                task['status'] = _('Unknown Status')
+
+        # localize the task type
+        if isinstance( task['taskType'], int ):
+            if task['taskType'] == worker.TASK_EMAIL:
+                task['taskMessage'] = _('EMAIL: ') + task['taskMessage']
+            elif  task['taskType'] == worker.TASK_CONVERT:
+                task['taskMessage'] = _('CONVERT: ') + task['taskMessage']
+            elif  task['taskType'] == worker.TASK_UPLOAD:
+                task['taskMessage'] = _('UPLOAD: ') + task['taskMessage']
+            elif  task['taskType'] == worker.TASK_CONVERT_ANY:
+                task['taskMessage'] = _('CONVERT: ') + task['taskMessage']
+            else:
+                task['taskMessage'] = _('Unknown Task: ') + task['taskMessage']
+
+        renderedtasklist.append(task)
+
+    return renderedtasklist
