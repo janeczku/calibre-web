@@ -122,7 +122,7 @@ $(function() {
                             .removeClass("hidden")
                             .find("span").html(data.commit);
 
-                        data.history.reverse().forEach((entry, index) => {
+                        data.history.reverse().forEach(function(entry, index) {
                             $("<tr><td>" + entry[0] + "</td><td>" + entry[1] + "</td></tr>").appendTo($("#update_table"));
                         });
                         cssClass = 'alert-warning'
