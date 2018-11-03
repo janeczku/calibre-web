@@ -13,9 +13,10 @@ import unicodedata
 from io import BytesIO
 import worker
 import time
-
 from flask import send_from_directory, make_response, redirect, abort
 from flask_babel import gettext as _
+from flask_login import current_user
+from babel.dates import format_datetime
 import threading
 import shutil
 import requests
@@ -73,10 +74,12 @@ def convert_book_format(book_id, calibrepath, old_book_format, new_book_format, 
         # read settings and append converter task to queue
         if kindle_mail:
             settings = ub.get_mail_settings()
-            text = _(u"%(format)s: %(book)s", format=new_book_format, book=book.title)
+            settings['subject'] = _('Send to Kindle') # pretranslate Subject for e-mail
+            settings['body'] = _(u'This e-mail has been sent via Calibre-Web.')
+            # text = _(u"%(format)s: %(book)s", format=new_book_format, book=book.title)
         else:
             settings = dict()
-            text = _(u"%(format)s: %(book)s", format=new_book_format, book=book.title)
+        text = (u"%s -> %s: %s" % (old_book_format, new_book_format, book.title))
         settings['old_book_format'] = old_book_format
         settings['new_book_format'] = new_book_format
         global_WorkerThread.add_convert(file_path, book.id, user_id, text, settings, kindle_mail)
@@ -89,7 +92,8 @@ def convert_book_format(book_id, calibrepath, old_book_format, new_book_format, 
 
 def send_test_mail(kindle_mail, user_name):
     global_WorkerThread.add_email(_(u'Calibre-Web test e-mail'),None, None, ub.get_mail_settings(),
-                                  kindle_mail, user_name, _(u"Test e-mail"))
+                                  kindle_mail, user_name, _(u"Test e-mail"),
+                                  _(u'This e-mail has been sent via Calibre-Web.'))
     return
 
 
@@ -133,7 +137,7 @@ def send_mail(book_id, kindle_mail, calibrepath, user_id):
     if 'mobi' in formats:
         result = formats['mobi']
     elif 'epub' in formats:
-        # returns None if sucess, otherwise errormessage
+        # returns None if success, otherwise errormessage
         return convert_book_format(book_id, calibrepath, u'epub', u'mobi', user_id, kindle_mail)
     elif 'pdf' in formats:
         result = formats['pdf'] # worker.get_attachment()
@@ -591,32 +595,40 @@ def render_task_status(tasklist):
     renderedtasklist=list()
 
     for task in tasklist:
-        # localize the task status
-        if isinstance( task['status'], int ):
-            if task['status'] == worker.STAT_WAITING:
-                task['status'] = _('Waiting')
-            elif task['status'] == worker.STAT_FAIL:
-                task['status'] = _('Failed')
-            elif task['status'] == worker.STAT_STARTED:
-                task['status'] = _('Started')
-            elif task['status'] == worker.STAT_FINISH_SUCCESS:
-                task['status'] = _('Finished')
+        if task['user'] == current_user.nickname or current_user.role_admin():
+            if task['formStarttime']:
+                task['starttime'] = format_datetime(task['formStarttime'], format='short', locale=web.get_locale())
+                task['formStarttime'] = ""
             else:
-                task['status'] = _('Unknown Status')
+                if 'starttime' not in task:
+                    task['starttime'] = ""
 
-        # localize the task type
-        if isinstance( task['taskType'], int ):
-            if task['taskType'] == worker.TASK_EMAIL:
-                task['taskMessage'] = _('EMAIL: ') + task['taskMessage']
-            elif  task['taskType'] == worker.TASK_CONVERT:
-                task['taskMessage'] = _('CONVERT: ') + task['taskMessage']
-            elif  task['taskType'] == worker.TASK_UPLOAD:
-                task['taskMessage'] = _('UPLOAD: ') + task['taskMessage']
-            elif  task['taskType'] == worker.TASK_CONVERT_ANY:
-                task['taskMessage'] = _('CONVERT: ') + task['taskMessage']
-            else:
-                task['taskMessage'] = _('Unknown Task: ') + task['taskMessage']
+            # localize the task status
+            if isinstance( task['stat'], int ):
+                if task['stat'] == worker.STAT_WAITING:
+                    task['status'] = _(u'Waiting')
+                elif task['stat'] == worker.STAT_FAIL:
+                    task['status'] = _(u'Failed')
+                elif task['stat'] == worker.STAT_STARTED:
+                    task['status'] = _(u'Started')
+                elif task['stat'] == worker.STAT_FINISH_SUCCESS:
+                    task['status'] = _(u'Finished')
+                else:
+                    task['status'] = _(u'Unknown Status')
 
-        renderedtasklist.append(task)
+            # localize the task type
+            if isinstance( task['taskType'], int ):
+                if task['taskType'] == worker.TASK_EMAIL:
+                    task['taskMessage'] = _(u'E-mail: ') + task['taskMess']
+                elif  task['taskType'] == worker.TASK_CONVERT:
+                    task['taskMessage'] = _(u'Convert: ') + task['taskMess']
+                elif  task['taskType'] == worker.TASK_UPLOAD:
+                    task['taskMessage'] = _(u'Upload: ') + task['taskMess']
+                elif  task['taskType'] == worker.TASK_CONVERT_ANY:
+                    task['taskMessage'] = _(u'Convert: ') + task['taskMess']
+                else:
+                    task['taskMessage'] = _(u'Unknown Task: ') + task['taskMess']
+
+            renderedtasklist.append(task)
 
     return renderedtasklist

@@ -170,11 +170,11 @@ class WorkerThread(threading.Thread):
             if self.current != self.last:
                 doLock.release()
                 if self.queue[self.current]['taskType'] == TASK_EMAIL:
-                    self.send_raw_email()
+                    self._send_raw_email()
                 if self.queue[self.current]['taskType'] == TASK_CONVERT:
-                    self.convert_any_format()
+                    self._convert_any_format()
                 if self.queue[self.current]['taskType'] == TASK_CONVERT_ANY:
-                    self.convert_any_format()
+                    self._convert_any_format()
                 # TASK_UPLOAD is handled implicitly
                 self.current += 1
             else:
@@ -190,7 +190,7 @@ class WorkerThread(threading.Thread):
         else:
             return "0 %"
 
-    def delete_completed_tasks(self):
+    def _delete_completed_tasks(self):
         for index, task in reversed(list(enumerate(self.UIqueue))):
             if task['progress'] == "100 %":
                 # delete tasks
@@ -202,31 +202,30 @@ class WorkerThread(threading.Thread):
 
     def get_taskstatus(self):
         if self.current  < len(self.queue):
-            if self.queue[self.current]['status'] == STAT_STARTED:
+            if self.UIqueue[self.current]['stat'] == STAT_STARTED:
                 if self.queue[self.current]['taskType'] == TASK_EMAIL:
                     self.UIqueue[self.current]['progress'] = self.get_send_status()
                 self.UIqueue[self.current]['runtime'] = self._formatRuntime(
                                                         datetime.now() - self.queue[self.current]['starttime'])
         return self.UIqueue
 
-    def convert_any_format(self):
+    def _convert_any_format(self):
         # convert book, and upload in case of google drive
-        self.queue[self.current]['status'] = STAT_STARTED
-        self.UIqueue[self.current]['status'] = STAT_STARTED
+        self.UIqueue[self.current]['stat'] = STAT_STARTED
         self.queue[self.current]['starttime'] = datetime.now()
         self.UIqueue[self.current]['formStarttime'] = self.queue[self.current]['starttime']
         curr_task = self.queue[self.current]['taskType']
-        filename = self.convert_ebook_format()
+        filename = self._convert_ebook_format()
         if filename:
             if web.ub.config.config_use_google_drive:
                 gd.updateGdriveCalibreFromLocal()
             if curr_task == TASK_CONVERT:
-                self.add_email(_(u'Send to Kindle'), self.queue[self.current]['path'], filename,
-                       self.queue[self.current]['settings'], self.queue[self.current]['kindle'],
-                       self.UIqueue[self.current]['user'], _(u"%(book)s", book=self.queue[self.current]['title']))
+                self.add_email(self.queue[self.current]['settings']['subject'], self.queue[self.current]['path'],
+                                filename, self.queue[self.current]['settings'], self.queue[self.current]['kindle'],
+                                self.UIqueue[self.current]['user'], self.queue[self.current]['title'],
+                                self.queue[self.current]['settings']['body'])
 
-
-    def convert_ebook_format(self):
+    def _convert_ebook_format(self):
         error_message = None
         file_path = self.queue[self.current]['file_path']
         bookid = self.queue[self.current]['bookid']
@@ -244,11 +243,12 @@ class WorkerThread(threading.Thread):
             self._handleSuccess()
             return file_path + format_new_ext
         else:
-            web.app.logger.info("Book id %d - target format of %s does not existing. Moving forward with convert.", bookid, format_new_ext)
+            web.app.logger.info("Book id %d - target format of %s does not exist. Moving forward with convert.", bookid, format_new_ext)
 
         # check if converter-executable is existing
         if not os.path.exists(web.ub.config.config_converterpath):
-            self._handleError(_(u"Convertertool %(converter)s not found", converter=web.ub.config.config_converterpath))
+            # ToDo Text is not translated
+            self._handleError(u"Convertertool %s not found" % web.ub.config.config_converterpath)
             return
 
         try:
@@ -343,35 +343,34 @@ class WorkerThread(threading.Thread):
         addLock = threading.Lock()
         addLock.acquire()
         if self.last >= 20:
-            self.delete_completed_tasks()
+            self._delete_completed_tasks()
         # progress, runtime, and status = 0
         self.id += 1
         task = TASK_CONVERT_ANY
         if kindle_mail:
             task = TASK_CONVERT
         self.queue.append({'file_path':file_path, 'bookid':bookid, 'starttime': 0, 'kindle': kindle_mail,
-                           'status': STAT_WAITING, 'taskType': task, 'settings':settings})
-        self.UIqueue.append({'user': user_name, 'formStarttime': '', 'progress': " 0 %", 'taskMessage': taskMessage,
-                             'runtime': '0 s', 'status': STAT_WAITING,'id': self.id, 'taskType': task } )
+                           'taskType': task, 'settings':settings})
+        self.UIqueue.append({'user': user_name, 'formStarttime': '', 'progress': " 0 %", 'taskMess': taskMessage,
+                             'runtime': '0 s', 'stat': STAT_WAITING,'id': self.id, 'taskType': task } )
 
         self.last=len(self.queue)
         addLock.release()
 
-
     def add_email(self, subject, filepath, attachment, settings, recipient, user_name, taskMessage,
-                  text=_(u'This e-mail has been sent via Calibre-Web.')):
+                  text):
         # if more than 20 entries in the list, clean the list
         addLock = threading.Lock()
         addLock.acquire()
         if self.last >= 20:
-            self.delete_completed_tasks()
+            self._delete_completed_tasks()
         # progress, runtime, and status = 0
         self.id += 1
         self.queue.append({'subject':subject, 'attachment':attachment, 'filepath':filepath,
                            'settings':settings, 'recipent':recipient, 'starttime': 0,
-                           'status': STAT_WAITING, 'taskType': TASK_EMAIL, 'text':text})
-        self.UIqueue.append({'user': user_name, 'formStarttime': '', 'progress': " 0 %", 'taskMessage': taskMessage,
-                             'runtime': '0 s', 'status': STAT_WAITING,'id': self.id, 'taskType': TASK_EMAIL })
+                           'taskType': TASK_EMAIL, 'text':text})
+        self.UIqueue.append({'user': user_name, 'formStarttime': '', 'progress': " 0 %", 'taskMess': taskMessage,
+                             'runtime': '0 s', 'stat': STAT_WAITING,'id': self.id, 'taskType': TASK_EMAIL })
         self.last=len(self.queue)
         addLock.release()
 
@@ -380,22 +379,22 @@ class WorkerThread(threading.Thread):
         addLock = threading.Lock()
         addLock.acquire()
         if self.last >= 20:
-            self.delete_completed_tasks()
+            self._delete_completed_tasks()
         # progress=100%, runtime=0, and status finished
         self.id += 1
-        self.queue.append({'starttime': datetime.now(), 'status': STAT_FINISH_SUCCESS, 'taskType': TASK_UPLOAD})
-        self.UIqueue.append({'user': user_name, 'formStarttime': '', 'progress': "100 %", 'taskMessage': taskMessage,
-                             'runtime': '0 s', 'status': _('Finished'),'id': self.id, 'taskType': TASK_UPLOAD})
+        self.queue.append({'starttime': datetime.now(), 'taskType': TASK_UPLOAD})
+        self.UIqueue.append({'user': user_name, 'formStarttime': '', 'progress': "100 %", 'taskMess': taskMessage,
+                             'runtime': '0 s', 'stat': STAT_FINISH_SUCCESS,'id': self.id, 'taskType': TASK_UPLOAD})
         self.UIqueue[self.current]['formStarttime'] = self.queue[self.current]['starttime']
         self.last=len(self.queue)
         addLock.release()
 
 
-    def send_raw_email(self):
+    def _send_raw_email(self):
         self.queue[self.current]['starttime'] = datetime.now()
         self.UIqueue[self.current]['formStarttime'] = self.queue[self.current]['starttime']
-        self.queue[self.current]['status'] = STAT_STARTED
-        self.UIqueue[self.current]['status'] = STAT_STARTED
+        # self.queue[self.current]['status'] = STAT_STARTED
+        self.UIqueue[self.current]['stat'] = STAT_STARTED
         obj=self.queue[self.current]
         # create MIME message
         msg = MIMEMultipart()
@@ -452,7 +451,11 @@ class WorkerThread(threading.Thread):
             self._handleError(u'Error sending email: ' + e.message)
             return None
         except (smtplib.SMTPException) as e:
-            self._handleError(u'Error sending email: ' + e.smtp_error.replace("\n",'. '))
+            if hasattr(e, "smtp_error"):
+                text = e.smtp_error.replace("\n",'. ')
+            else:
+                text = ''
+            self._handleError(u'Error sending email: ' + text)
             return None
         except (socket.error) as e:
             self._handleError(u'Error sending email: ' + e.strerror)
@@ -472,16 +475,16 @@ class WorkerThread(threading.Thread):
 
     def _handleError(self, error_message):
         web.app.logger.error(error_message)
-        self.queue[self.current]['status'] = STAT_FAIL
-        self.UIqueue[self.current]['status'] = STAT_FAIL
+        # self.queue[self.current]['status'] = STAT_FAIL
+        self.UIqueue[self.current]['stat'] = STAT_FAIL
         self.UIqueue[self.current]['progress'] = "100 %"
         self.UIqueue[self.current]['runtime'] = self._formatRuntime(
                                                 datetime.now() - self.queue[self.current]['starttime'])
         self.UIqueue[self.current]['message'] = error_message
 
     def _handleSuccess(self):
-        self.queue[self.current]['status'] = STAT_FINISH_SUCCESS
-        self.UIqueue[self.current]['status'] = STAT_FINISH_SUCCESS
+        # self.queue[self.current]['status'] = STAT_FINISH_SUCCESS
+        self.UIqueue[self.current]['stat'] = STAT_FINISH_SUCCESS
         self.UIqueue[self.current]['progress'] = "100 %"
         self.UIqueue[self.current]['runtime'] = self._formatRuntime(
             datetime.now() - self.queue[self.current]['starttime'])
