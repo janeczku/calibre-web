@@ -109,7 +109,7 @@ def send_registration_mail(e_mail, user_name, default_password, resend=False):
     text += "Sincerely\r\n\r\n"
     text += "Your Calibre-Web team"
     global_WorkerThread.add_email(_(u'Get Started with Calibre-Web'),None, None, ub.get_mail_settings(),
-                                  e_mail, user_name, _(u"Registration e-mail for user: %(name)s", name=user_name),text)
+                                  e_mail, user_name, _(u"Registration e-mail for user: %(name)s", name=user_name), text)
     return
 
 
@@ -145,7 +145,8 @@ def send_mail(book_id, kindle_mail, calibrepath, user_id):
         return _(u"Could not find any formats suitable for sending by e-mail")
     if result:
         global_WorkerThread.add_email(_(u"Send to Kindle"), book.path, result, ub.get_mail_settings(),
-                                      kindle_mail, user_id, _(u"E-mail: %(book)s", book=book.title))
+                                      kindle_mail, user_id, _(u"E-mail: %(book)s", book=book.title),
+                                      _(u'This e-mail has been sent via Calibre-Web.'))
     else:
         return _(u"The requested file could not be read. Maybe wrong permissions?")
 
