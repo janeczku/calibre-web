@@ -9,6 +9,8 @@ from flask import (Flask, render_template, request, Response, redirect,
                    abort, Markup)
 from flask import __version__ as flaskVersion
 from werkzeug import __version__ as werkzeugVersion
+from werkzeug.exceptions import default_exceptions
+
 from jinja2 import __version__  as jinja2Version
 import cache_buster
 import ub
@@ -54,7 +56,9 @@ import tempfile
 from redirect import redirect_back
 import time
 import server
+# import copy
 from reverseproxy import ReverseProxied
+
 try:
     from googleapiclient.errors import HttpError
 except ImportError:
@@ -115,44 +119,6 @@ EXTENSIONS_CONVERT = {'pdf', 'epub', 'mobi', 'azw3', 'docx', 'rtf', 'fb2', 'lit'
 # EXTENSIONS_READER = set(['txt', 'pdf', 'epub', 'zip', 'cbz', 'tar', 'cbt'] + (['rar','cbr'] if rar_support else []))
 
 
-'''class ReverseProxied(object):
-    """Wrap the application in this middleware and configure the
-    front-end server to add these headers, to let you quietly bind
-    this to a URL other than / and to an HTTP scheme that is
-    different than what is used locally.
-
-    Code courtesy of: http://flask.pocoo.org/snippets/35/
-
-    In nginx:
-    location /myprefix {
-        proxy_pass http://127.0.0.1:8083;
-        proxy_set_header Host $host;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header X-Scheme $scheme;
-        proxy_set_header X-Script-Name /myprefix;
-        }
-    """
-
-    def __init__(self, application):
-        self.app = application
-
-    def __call__(self, environ, start_response):
-        script_name = environ.get('HTTP_X_SCRIPT_NAME', '')
-        if script_name:
-            environ['SCRIPT_NAME'] = script_name
-            path_info = environ.get('PATH_INFO', '')
-            if path_info and path_info.startswith(script_name):
-                environ['PATH_INFO'] = path_info[len(script_name):]
-
-        scheme = environ.get('HTTP_X_SCHEME', '')
-        if scheme:
-            environ['wsgi.url_scheme'] = scheme
-        servr = environ.get('HTTP_X_FORWARDED_SERVER', '')
-        if servr:
-            environ['HTTP_HOST'] = servr
-        return self.app(environ, start_response)'''
-
-
 # Main code
 mimetypes.init()
 mimetypes.add_type('application/xhtml+xml', '.xhtml')
@@ -167,6 +133,21 @@ mimetypes.add_type('application/x-cbt', '.cbt')
 mimetypes.add_type('image/vnd.djvu', '.djvu')
 
 app = (Flask(__name__))
+
+# custom error page
+def error_http(error):
+    return render_template('http_error.html',
+                            error_code=error.code,
+                            error_name=error.name,
+                            instance=config.config_calibre_web_title
+                            ), error.code
+
+# http error handling
+for ex in default_exceptions:
+    # new routine for all client errors, server errors stay
+    if ex < 500:
+        app.register_error_handler(ex, error_http)
+
 app.wsgi_app = ReverseProxied(app.wsgi_app)
 cache_buster.init_cache_busting(app)
 
@@ -205,6 +186,7 @@ with open(os.path.join(config.get_main_dir, 'cps/translations/iso639.pickle'), '
 def is_gdrive_ready():
     return os.path.exists(os.path.join(config.get_main_dir, 'settings.yaml')) and \
            os.path.exists(os.path.join(config.get_main_dir, 'gdrive_credentials'))
+
 
 
 @babel.localeselector
@@ -588,7 +570,7 @@ def modify_database_object(input_elements, db_book_object, db_object, db_session
             # if no element is found add it
             # if new_element is None:
             if db_type == 'author':
-                new_element = db_object(add_element, add_element.replace('|', ','), "")
+                new_element = db_object(add_element, helper.get_sorted_author(add_element.replace('|', ',')), "")
             elif db_type == 'series':
                 new_element = db_object(add_element, add_element)
             elif db_type == 'custom':
@@ -896,14 +878,6 @@ def get_opds_download_link(book_id, book_format):
     except KeyError:
         headers["Content-Type"] = "application/octet-stream"
     return helper.do_download_file(book, book_format, data, headers)
-    #if config.config_use_google_drive:
-    #    app.logger.info(time.time() - startTime)
-    #    df = gdriveutils.getFileFromEbooksFolder(book.path, data.name + "." + book_format)
-    #    return do_gdrive_download(df, headers)
-    #else:
-    #    response = make_response(send_from_directory(os.path.join(config.config_calibre_dir, book.path), data.name + "." + book_format))
-    #    response.headers = headers
-    #    return response
 
 
 @app.route("/ajax/book/<string:uuid>")
@@ -922,6 +896,7 @@ def get_metadata_calibre_companion(uuid):
 @login_required
 def get_email_status_json():
     answer=list()
+    # UIanswer = list()
     tasks=helper.global_WorkerThread.get_taskstatus()
     if not current_user.role_admin():
         for task in tasks:
@@ -942,6 +917,10 @@ def get_email_status_json():
                 if 'starttime' not in  task:
                     task['starttime'] = ""
         answer = tasks
+
+    # UIanswer = copy.deepcopy(answer)
+    answer = helper.render_task_status(answer)
+
     js=json.dumps(answer)
     response = make_response(js)
     response.headers["Content-Type"] = "application/json; charset=utf-8"
@@ -949,7 +928,7 @@ def get_email_status_json():
 
 
 # checks if domain is in database (including wildcards)
-# example SELECT * FROM @TABLE WHERE  'abcdefg' LIKE Name;    
+# example SELECT * FROM @TABLE WHERE  'abcdefg' LIKE Name;
 # from https://code.luasoftware.com/tutorials/flask/execute-raw-sql-in-flask-sqlalchemy/
 def check_valid_domain(domain_text):
     # result = session.query(Notification).from_statement(text(sql)).params(id=5).all()
@@ -970,7 +949,7 @@ def check_valid_domain(domain_text):
 def edit_domain():
     vals = request.form.to_dict()
     answer = ub.session.query(ub.Registration).filter(ub.Registration.id == vals['pk']).first()
-    # domain_name = request.args.get('domain')   
+    # domain_name = request.args.get('domain')
     answer.domain = vals['value'].replace('*','%').replace('?','_').lower()
     ub.session.commit()
     return ""
@@ -1289,9 +1268,9 @@ def get_updater_status():
                 "1": _(u'Requesting update package'),
                 "2": _(u'Downloading update package'),
                 "3": _(u'Unzipping update package'),
-                "4": _(u'Files are replaced'),
+                "4": _(u'Replacing files'),
                 "5": _(u'Database connections are closed'),
-                "6": _(u'Server is stopped'),
+                "6": _(u'Stopping server'),
                 "7": _(u'Update finished, please press okay and reload page'),
                 "8": _(u'Update failed:') + u' ' + _(u'HTTP Error'),
                 "9": _(u'Update failed:') + u' ' + _(u'Connection error'),
@@ -1305,6 +1284,9 @@ def get_updater_status():
     elif request.method == "GET":
         try:
             status['status'] = helper.updater_thread.get_update_status()
+        except AttributeError:
+            # thread is not active, occours after restart on update
+            status['status'] = 7
         except Exception:
             status['status'] = 11
     return json.dumps(status)
@@ -1725,27 +1707,12 @@ def bookmark(book_id, book_format):
 def get_tasks_status():
     # if current user admin, show all email, otherwise only own emails
     answer=list()
+    # UIanswer=list()
     tasks=helper.global_WorkerThread.get_taskstatus()
-    if not current_user.role_admin():
-        for task in tasks:
-            if task['user'] == current_user.nickname:
-                if task['formStarttime']:
-                    task['starttime'] = format_datetime(task['formStarttime'], format='short', locale=get_locale())
-                    task['formStarttime'] = ""
-                else:
-                    if 'starttime' not in task:
-                        task['starttime'] = ""
-                answer.append(task)
-    else:
-        for task in tasks:
-            if task['formStarttime']:
-                task['starttime'] = format_datetime(task['formStarttime'], format='short', locale=get_locale())
-                task['formStarttime'] = ""
-            else:
-                if 'starttime' not in  task:
-                    task['starttime'] = ""
-        answer = tasks
+        # answer = tasks
 
+    # UIanswer = copy.deepcopy(answer)
+    answer = helper.render_task_status(tasks)
     # foreach row format row
     return render_title_template('tasks.html', entries=answer, title=_(u"Tasks"))
 
@@ -2288,7 +2255,8 @@ def read_book(book_id, book_format):
             extensionList = ["cbt","cbz"]
         for fileext in extensionList:
             if book_format.lower() == fileext:
-                return render_title_template('readcbr.html', comicfile=book_id, extension=fileext, title=_(u"Read a Book"), book=book)
+                return render_title_template('readcbr.html', comicfile=book_id, 
+                extension=fileext, title=_(u"Read a Book"), book=book)
         flash(_(u"Error opening eBook. File does not exist or file is not accessible."), category="error")
         return redirect(url_for("index"))'''
 
@@ -2299,7 +2267,8 @@ def read_book(book_id, book_format):
 def get_download_link(book_id, book_format):
     book_format = book_format.split(".")[0]
     book = db.session.query(db.Books).filter(db.Books.id == book_id).first()
-    data = db.session.query(db.Data).filter(db.Data.book == book.id).filter(db.Data.format == book_format.upper()).first()
+    data = db.session.query(db.Data).filter(db.Data.book == book.id)\
+        .filter(db.Data.format == book_format.upper()).first()
     if data:
         # collect downloaded books only for registered user and not for anonymous user
         if current_user.is_authenticated:
@@ -2313,18 +2282,9 @@ def get_download_link(book_id, book_format):
             headers["Content-Type"] = mimetypes.types_map['.' + book_format]
         except KeyError:
             headers["Content-Type"] = "application/octet-stream"
-        headers["Content-Disposition"] = "attachment; filename*=UTF-8''%s.%s" % (quote(file_name.encode('utf-8')), book_format)
+        headers["Content-Disposition"] = "attachment; filename*=UTF-8''%s.%s" % (quote(file_name.encode('utf-8')),
+                                                                                 book_format)
         return helper.do_download_file(book, book_format, data, headers)
-        #if config.config_use_google_drive:
-        #    df = gdriveutils.getFileFromEbooksFolder(book.path, '%s.%s' % (data.name, book_format))
-        #    if df:
-        #        return do_gdrive_download(df, headers)
-        #    else:
-        #        abort(404)
-        #else:
-        #    response = make_response(send_from_directory(os.path.join(config.config_calibre_dir, book.path), data.name + "." + book_format))
-        #    response.headers = headers
-        #    return response
     else:
         abort(404)
 
@@ -2358,7 +2318,7 @@ def register():
                 content.nickname = to_save["nickname"]
                 content.email = to_save["email"]
                 password = helper.generate_random_password()
-                content.password = generate_password_hash(password) 
+                content.password = generate_password_hash(password)
                 content.role = config.config_default_role
                 content.sidebar_view = config.config_default_show
                 try:
@@ -2621,9 +2581,9 @@ def search_to_shelf(shelf_id):
         flash(_(u"Books have been added to shelf: %(sname)s", sname=shelf.name), category="success")
     else:
         flash(_(u"Could not add books to shelf: %(sname)s", sname=shelf.name), category="error")
-    return redirect(url_for('index'))       
+    return redirect(url_for('index'))
 
-    
+
 @app.route("/shelf/remove/<int:shelf_id>/<int:book_id>")
 @login_required
 def remove_from_shelf(shelf_id, book_id):
@@ -2834,7 +2794,7 @@ def profile():
             if config.config_public_reg and not check_valid_domain(to_save["email"]):
                 flash(_(u"E-mail is not from valid domain"), category="error")
                 return render_title_template("user_edit.html", content=content, downloads=downloads,
-                                     title=_(u"%(name)s's profile", name=current_user.nickname))            
+                                     title=_(u"%(name)s's profile", name=current_user.nickname))
             content.email = to_save["email"]
         if "show_random" in to_save and to_save["show_random"] == "on":
             content.random_books = 1
@@ -3824,7 +3784,7 @@ def upload():
             # create the function for sorting...
             db.session.connection().connection.connection.create_function("title_sort", 1, db.title_sort)
             db.session.connection().connection.connection.create_function('uuid4', 0, lambda: str(uuid4()))
-            
+
             # check if file extension is correct
             if '.' in requested_file.filename:
                 file_ext = requested_file.filename.rsplit('.', 1)[-1].lower()
@@ -3836,7 +3796,7 @@ def upload():
             else:
                 flash(_('File to be uploaded must have an extension'), category="error")
                 return redirect(url_for('index'))
-                
+
             # extract metadata from file
             meta = uploader.upload(requested_file)
             title = meta.title
@@ -3880,7 +3840,7 @@ def upload():
             else:
                 db_author = db.Authors(authr, helper.get_sorted_author(authr), "")
                 db.session.add(db_author)
-            
+
             # handle series
             db_series = None
             is_series = db.session.query(db.Series).filter(db.Series.name == series).first()
@@ -3901,7 +3861,7 @@ def upload():
                 else:
                     db_language = db.Languages(input_language)
                     db.session.add(db_language)
-                    
+
             # combine path and normalize path from windows systems
             path = os.path.join(author_dir, title_dir).replace('\\', '/')
             db_book = db.Books(title, "", db_author.sort, datetime.datetime.now(), datetime.datetime(101, 1, 1),
@@ -3913,13 +3873,13 @@ def upload():
                 db_book.languages.append(db_language)
             file_size = os.path.getsize(saved_filename)
             db_data = db.Data(db_book, meta.extension.upper()[1:], file_size, title_dir)
-            
+
             # handle tags
             input_tags = tags.split(',')
             input_tags = list(map(lambda it: it.strip(), input_tags))
             if input_tags[0] !="":
                 modify_database_object(input_tags, db_book.tags, db.Tags, db.session, 'tags')
-            
+
             # flush content, get db_book.id available
             db_book.data.append(db_data)
             db.session.add(db_book)
@@ -3930,7 +3890,7 @@ def upload():
             upload_comment = Markup(meta.description).unescape()
             if upload_comment != "":
                 db.session.add(db.Comments(upload_comment, book_id))
-            
+
             # save data to database, reread data
             db.session.commit()
             db.session.connection().connection.connection.create_function("title_sort", 1, db.title_sort)
@@ -3947,7 +3907,7 @@ def upload():
             if error:
                 flash(error, category="error")
             uploadText=_(u"File %(file)s uploaded", file=book.title)
-            helper.global_WorkerThread.add_upload(current_user.nickname, 
+            helper.global_WorkerThread.add_upload(current_user.nickname,
                 "<a href=\"" + url_for('show_book', book_id=book.id) + "\">" + uploadText + "</a>")
 
             # create data for displaying display Full language name instead of iso639.part3language
