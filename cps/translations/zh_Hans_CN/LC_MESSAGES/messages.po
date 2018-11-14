@@ -29,7 +29,7 @@ msgstr "可执行权限缺失"
 
 #: cps/converter.py:48
 msgid "not configured"
-msgstr ""
+msgstr "未配置"
 
 #: cps/helper.py:58
 #, python-format
@@ -130,7 +130,7 @@ msgstr "已完成"
 
 #: cps/helper.py:617
 msgid "Unknown Status"
-msgstr ""
+msgstr "未知状态"
 
 #: cps/helper.py:622
 msgid "E-mail: "
@@ -138,15 +138,15 @@ msgstr ""
 
 #: cps/helper.py:624 cps/helper.py:628
 msgid "Convert: "
-msgstr ""
+msgstr "转换："
 
 #: cps/helper.py:626
 msgid "Upload: "
-msgstr ""
+msgstr "上传："
 
 #: cps/helper.py:630
 msgid "Unknown Task: "
-msgstr ""
+msgstr "未知任务："
 
 #: cps/web.py:1132 cps/web.py:2842
 msgid "Unknown"
@@ -154,35 +154,35 @@ msgstr "未知"
 
 #: cps/web.py:1141 cps/web.py:1172 cps/web.py:1257
 msgid "HTTP Error"
-msgstr ""
+msgstr "HTTP错误"
 
 #: cps/web.py:1143 cps/web.py:1174 cps/web.py:1258
 msgid "Connection error"
-msgstr ""
+msgstr "连接错误"
 
 #: cps/web.py:1145 cps/web.py:1176 cps/web.py:1259
 msgid "Timeout while establishing connection"
-msgstr ""
+msgstr "建立连接超时"
 
 #: cps/web.py:1147 cps/web.py:1178 cps/web.py:1260
 msgid "General error"
-msgstr ""
+msgstr "一般错误"
 
 #: cps/web.py:1153
 msgid "Unexpected data while reading update information"
-msgstr ""
+msgstr "读取更新信息时出现异常数据"
 
 #: cps/web.py:1160
 msgid "No update available. You already have the latest version installed"
-msgstr ""
+msgstr "没有可用更新。您已经安装了最新版本"
 
 #: cps/web.py:1185
 msgid "A new update is available. Click on the button below to update to the latest version."
-msgstr ""
+msgstr "有一个更新可用。点击正文按钮更新到最新版本。"
 
 #: cps/web.py:1235
 msgid "Could not fetch update information"
-msgstr ""
+msgstr "无法获取更新信息"
 
 #: cps/web.py:1250
 msgid "Requesting update package"
@@ -198,7 +198,7 @@ msgstr "正在解压更新包"
 
 #: cps/web.py:1253
 msgid "Replacing files"
-msgstr ""
+msgstr "正在替换文件"
 
 #: cps/web.py:1254
 msgid "Database connections are closed"
@@ -206,7 +206,7 @@ msgstr "数据库连接已关闭"
 
 #: cps/web.py:1255
 msgid "Stopping server"
-msgstr ""
+msgstr "正在停止服务器"
 
 #: cps/web.py:1256
 msgid "Update finished, please press okay and reload page"
@@ -214,7 +214,7 @@ msgstr "更新完成，请按确定并刷新页面"
 
 #: cps/web.py:1257 cps/web.py:1258 cps/web.py:1259 cps/web.py:1260
 msgid "Update failed:"
-msgstr ""
+msgstr "更新失败："
 
 #: cps/web.py:1283
 msgid "Recently Added Books"
@@ -258,12 +258,12 @@ msgstr "无法打开电子书。 文件不存在或者文件不可访问:"
 
 #: cps/web.py:1438
 msgid "Publisher list"
-msgstr ""
+msgstr "出版社列表"
 
 #: cps/web.py:1452
 #, python-format
 msgid "Publisher: %(name)s"
-msgstr ""
+msgstr "出版社： %(name)s"
 
 #: cps/templates/index.xml:83 cps/web.py:1484
 msgid "Series list"
@@ -318,7 +318,7 @@ msgstr "更新完成"
 
 #: cps/web.py:2007
 msgid "Published after "
-msgstr ""
+msgstr "出版时晚于 "
 
 #: cps/web.py:2014
 msgid "Published before "
@@ -427,16 +427,16 @@ msgstr "指定的书架无效"
 #: cps/web.py:2483
 #, python-format
 msgid "Sorry you are not allowed to add a book to the the shelf: %(shelfname)s"
-msgstr ""
+msgstr "对不起，您没有添加书籍到书架 %(shelfname)s 的权限"
 
 #: cps/web.py:2491
 msgid "You are not allowed to edit public shelves"
-msgstr ""
+msgstr "您没有编辑书架的权限"
 
 #: cps/web.py:2500
 #, python-format
 msgid "Book is already part of the shelf: %(shelfname)s"
-msgstr ""
+msgstr "此书已经是书架 %(shelfname)s 的一部分"
 
 #: cps/web.py:2514
 #, python-format
@@ -676,7 +676,7 @@ msgstr "已添加 %(ext)s 格式到 %(book)s"
 #: cps/web.py:3601
 #, python-format
 msgid "Failed to create path for cover %(path)s (Permission denied)."
-msgstr ""
+msgstr "为封面 %(path)s 创建路径失败(权限拒绝)。"
 
 #: cps/web.py:3608
 #, python-format
@@ -698,11 +698,11 @@ msgstr "封面不是一个jpg文件，无法保存"
 #: cps/web.py:3721
 #, python-format
 msgid "%(langname)s is not a valid language"
-msgstr ""
+msgstr "%(langname)s 不是一种有效语言"
 
 #: cps/web.py:3752
 msgid "Metadata successfully updated"
-msgstr ""
+msgstr "已成功更新元数据"
 
 #: cps/web.py:3761
 msgid "Error editing book, please check logfile for details"
@@ -866,19 +866,19 @@ msgstr "停止 Calibre-Web"
 
 #: cps/templates/admin.html:115
 msgid "Update"
-msgstr ""
+msgstr "更新"
 
 #: cps/templates/admin.html:119
 msgid "Version"
-msgstr ""
+msgstr "版本"
 
 #: cps/templates/admin.html:120
 msgid "Details"
-msgstr ""
+msgstr "详情"
 
 #: cps/templates/admin.html:126
 msgid "Current version"
-msgstr ""
+msgstr "当前版本"
 
 #: cps/templates/admin.html:132
 msgid "Check for update"
@@ -1323,7 +1323,7 @@ msgstr "显示作者选择"
 
 #: cps/templates/config_view_edit.html:148 cps/templates/user_edit.html:94
 msgid "Show publisher selection"
-msgstr ""
+msgstr "显示出版社选择"
 
 #: cps/templates/config_view_edit.html:152 cps/templates/user_edit.html:98
 msgid "Show read and unread"
@@ -1480,11 +1480,11 @@ msgstr "书籍按作者排序"
 
 #: cps/templates/index.xml:69 cps/templates/layout.html:163
 msgid "Publishers"
-msgstr ""
+msgstr "出版社"
 
 #: cps/templates/index.xml:73
 msgid "Books ordered by publisher"
-msgstr ""
+msgstr "书籍按出版社排版"
 
 #: cps/templates/index.xml:80
 msgid "Books ordered by category"
