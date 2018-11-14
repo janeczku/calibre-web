@@ -1,0 +1,21 @@
+.hiddenRow {
+  display: none;
+}
+
+.bg-grey {
+  background-color: rgba(0, 0, 0, 0.03);
+}
+
+.table-curved {
+  border-radius: 20px;
+}
+
+.buttons, .report-description {
+  margin: 5px;
+  padding: 5px;
+}
+
+.piechart{
+    text-align: center;
+}
+
