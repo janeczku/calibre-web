@@ -27,7 +27,10 @@
         href="{{request.script_root + request.path}}?offset={{ pagination.previous_offset }}"
         type="application/atom+xml;profile=opds-catalog;type=feed;kind=navigation"/>
 {% endif %}
-  <link title="{{_('Search')}}" type="application/atom+xml" href="{{url_for('feed_normal_search')}}?query={searchTerms}" rel="search"/>
+    <link rel="search"
+      href="{{url_for('feed_osd')}}"
+      type="application/opensearchdescription+xml"/>
+  <!--link title="{{_('Search')}}" type="application/atom+xml" href="{{url_for('feed_normal_search')}}?query={searchTerms}" rel="search"/-->
   <title>{{instance}}</title>
   <author>
     <name>{{instance}}</name>
@@ -40,9 +43,16 @@
     <title>{{entry.title}}</title>
     <id>{{entry.uuid}}</id>
     <updated>{{entry.atom_timestamp}}</updated>
-    <author>
-      <name>{{entry.authors[0].name}}</name>
-    </author>
+    {% if entry.authors.__len__() > 0 %}
+      <author>
+        <name>{{entry.authors[0].name}}</name>
+      </author>
+    {% endif %}
+    {% if entry.publishers.__len__() > 0 %}
+      <publisher>
+        <name>{{entry.publishers[0].name}}</name>
+      </publisher>
+    {% endif %}
     <dcterms:language>{{entry.language}}</dcterms:language>
     {% for tag in entry.tags %}
     <category scheme="http://www.bisg.org/standards/bisac_subject/index.html"

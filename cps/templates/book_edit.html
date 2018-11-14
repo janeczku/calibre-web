@@ -6,9 +6,9 @@
   <div class="col-sm-3 col-lg-3 col-xs-12">
     <div class="cover">
       {% if book.has_cover %}
-        <img src="{{ url_for('get_cover', cover_path=book.path.replace('\\','/')) }}" />
+        <img src="{{ url_for('get_cover', cover_path=book.path.replace('\\','/')) }}" alt="{{ book.title }}"/>
       {% else %}
-        <img src="{{ url_for('static', filename='generic_cover.jpg') }}" />
+        <img src="{{ url_for('static', filename='generic_cover.jpg') }}" alt="{{ book.title }}"/>
       {% endif %}
     </div>
 {% if g.user.role_delete_books() %}
@@ -26,7 +26,7 @@
     {% endif %}
 {% endif %}
 
-{%  if display_convertbtn and conversion_formats|length > 0 %}
+{%  if source_formats|length > 0 and conversion_formats|length > 0 %}
   <div class="text-center more-stuff"><h4>{{_('Convert book format:')}}</h4>
       <form class="padded-bottom" action="{{ url_for('convert_bookformat', book_id=book.id) }}" method="post" id="book_convert_frm">
           <div class="form-group">
@@ -34,8 +34,8 @@
                   <label class="control-label" for="book_format_from">{{_('Convert from:')}}</label>
                   <select class="form-control" name="book_format_from" id="book_format_from">
                     <option disabled selected value> -- {{_('select an option')}} -- </option>
-                    {% for file in book.data %}
-                    <option>{{file.format}} </option>
+                    {% for format in source_formats %}
+                    <option>{{format|upper}} </option>
                     {% endfor %}
                   </select>
                   <label class="control-label" for="book_format_to">{{_('Convert to:')}}</label>
@@ -101,7 +101,7 @@
     </div>
     <div class="form-group">
       <label for="publisher">{{_('Publisher')}}</label>
-      <input type="text" class="form-control typeahead" name="publisher" id="publisher" value="{% if book.publishers|length > 0 %}{{book.publishers[0].name}}{% endif %}"  disabled>
+      <input type="text" class="form-control typeahead" name="publisher" id="publisher" value="{% if book.publishers|length > 0 %}{{book.publishers[0].name}}{% endif %}">
     </div>
     <div class="form-group">
       <label for="languages">{{_('Language')}}</label>
@@ -174,7 +174,7 @@
       </label>
     </div>
     <a href="#" id="get_meta" class="btn btn-default" data-toggle="modal" data-target="#metaModal">{{_('Get metadata')}}</a>
-    <button type="submit" class="btn btn-default">{{_('Submit')}}</button>
+    <button type="submit" id="submit" class="btn btn-default">{{_('Submit')}}</button>
     <a href="{{ url_for('show_book', book_id=book.id) }}" class="btn btn-default">{{_('Back')}}</a>
   </div>
 </form>

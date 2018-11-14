@@ -41,6 +41,7 @@ SIDEBAR_READ_AND_UNREAD = 256
 SIDEBAR_RECENT = 512
 SIDEBAR_SORTED = 1024
 MATURE_CONTENT = 2048
+SIDEBAR_PUBLISHER = 4096
 
 DEFAULT_PASS = "admin123"
 DEFAULT_PORT = int(os.environ.get("CALIBRE_PORT", 8083))
@@ -135,6 +136,9 @@ class UserBase:
 
     def show_author(self):
         return bool((self.sidebar_view is not None)and(self.sidebar_view & SIDEBAR_AUTHOR == SIDEBAR_AUTHOR))
+
+    def show_publisher(self):
+        return bool((self.sidebar_view is not None)and(self.sidebar_view & SIDEBAR_PUBLISHER == SIDEBAR_PUBLISHER))
 
     def show_best_rated_books(self):
         return bool((self.sidebar_view is not None)and(self.sidebar_view & SIDEBAR_BEST_RATED == SIDEBAR_BEST_RATED))
@@ -297,7 +301,7 @@ class Settings(Base):
     config_anonbrowse = Column(SmallInteger, default=0)
     config_public_reg = Column(SmallInteger, default=0)
     config_default_role = Column(SmallInteger, default=0)
-    config_default_show = Column(SmallInteger, default=2047)
+    config_default_show = Column(SmallInteger, default=6143)
     config_columns_to_ignore = Column(String)
     config_use_google_drive = Column(Boolean)
     config_google_drive_folder = Column(String)
@@ -484,6 +488,10 @@ class Config:
     def show_author(self):
         return bool((self.config_default_show is not None) and
                     (self.config_default_show & SIDEBAR_AUTHOR == SIDEBAR_AUTHOR))
+
+    def show_publisher(self):
+        return bool((self.config_default_show is not None) and
+                    (self.config_default_show & SIDEBAR_PUBLISHER == SIDEBAR_PUBLISHER))
 
     def show_best_rated_books(self):
         return bool((self.config_default_show is not None) and
@@ -740,7 +748,7 @@ def create_admin_user():
     user.role = ROLE_USER + ROLE_ADMIN + ROLE_DOWNLOAD + ROLE_UPLOAD + ROLE_EDIT + ROLE_DELETE_BOOKS + ROLE_PASSWD
     user.sidebar_view = DETAIL_RANDOM + SIDEBAR_LANGUAGE + SIDEBAR_SERIES + SIDEBAR_CATEGORY + SIDEBAR_HOT + \
             SIDEBAR_RANDOM + SIDEBAR_AUTHOR + SIDEBAR_BEST_RATED + SIDEBAR_READ_AND_UNREAD + SIDEBAR_RECENT + \
-            SIDEBAR_SORTED + MATURE_CONTENT
+            SIDEBAR_SORTED + MATURE_CONTENT + SIDEBAR_PUBLISHER
 
     user.password = generate_password_hash(DEFAULT_PASS)
 

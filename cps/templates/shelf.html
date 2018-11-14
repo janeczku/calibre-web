@@ -4,9 +4,9 @@
   <h2>{{title}}</h2>
   {% if g.user.is_authenticated %}
     {% if (g.user.role_edit_shelfs() and shelf.is_public ) or not shelf.is_public  %}
-      <div data-toggle="modal" data-target="#DeleteShelfDialog" class="btn btn-danger">{{ _('Delete this Shelf') }} </div>
-      <a href="{{ url_for('edit_shelf', shelf_id=shelf.id) }}" class="btn btn-primary">{{ _('Edit Shelf') }} </a>
-      <a href="{{ url_for('order_shelf', shelf_id=shelf.id) }}" class="btn btn-primary">{{ _('Change order') }} </a>
+      <div id="delete_shelf" data-toggle="modal" data-target="#DeleteShelfDialog" class="btn btn-danger">{{ _('Delete this Shelf') }} </div>
+      <a id="edit_shelf" href="{{ url_for('edit_shelf', shelf_id=shelf.id) }}" class="btn btn-primary">{{ _('Edit Shelf') }} </a>
+      <a id="order_shelf" href="{{ url_for('order_shelf', shelf_id=shelf.id) }}" class="btn btn-primary">{{ _('Change order') }} </a>
     {% endif %}
   {% endif %}
   <div class="row">
@@ -14,14 +14,18 @@
     {% for entry in entries %}
     <div class="col-sm-3 col-lg-2 col-xs-6 book">
       <div class="cover">
-        {% if entry.has_cover is defined %}
-          <a href="{{ url_for('show_book', book_id=entry.id) }}" data-toggle="modal" data-target="#bookDetailsModal" data-remote="false">
-            <img src="{{ url_for('get_cover', cover_path=entry.path.replace('\\','/')) }}" />
-          </a>
-        {% endif %}
+            <a href="{{ url_for('show_book', book_id=entry.id) }}" data-toggle="modal" data-target="#bookDetailsModal" data-remote="false">
+            {% if entry.has_cover %}
+              <img src="{{ url_for('get_cover', cover_path=entry.path.replace('\\','/')) }}" alt="{{ entry.title }}" />
+            {% else %}
+              <img src="{{ url_for('static', filename='generic_cover.jpg') }}" alt="{{ entry.title }}" />
+            {% endif %}
+            </a>
       </div>
       <div class="meta">
-        <p class="title">{{entry.title|shortentitle}}</p>
+        <a href="{{ url_for('show_book', book_id=entry.id) }}" data-toggle="modal" data-target="#bookDetailsModal" data-remote="false">
+          <p class="title">{{entry.title|shortentitle}}</p>
+        </a>
         <p class="author">
           {% for author in entry.authors %}
             <a href="{{url_for('author', book_id=author.id) }}">{{author.name.replace('|',',')}}</a>
@@ -56,7 +60,7 @@
       <div class="modal-body text-center">
         <span>{{_('Shelf will be lost for everybody and forever!')}}</span>
           <p></p>
-        <a href="{{ url_for('delete_shelf', shelf_id=shelf.id) }}" class="btn btn-danger">{{_('Ok')}}</a>
+        <a id="confirm" href="{{ url_for('delete_shelf', shelf_id=shelf.id) }}" class="btn btn-danger">{{_('Ok')}}</a>
         <button type="button" class="btn btn-default" data-dismiss="modal">{{_('Back')}}</button>
       </div>
     </div>
