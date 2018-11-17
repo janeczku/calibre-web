@@ -591,7 +591,7 @@ def modify_database_object(input_elements, db_book_object, db_object, db_session
                 if db_type == 'custom' and db_element.value != add_element:
                     new_element.value = add_element
                     # new_element = db_element
-                elif db_type == 'language' and db_element.lang_code != add_element:
+                elif db_type == 'languages' and db_element.lang_code != add_element:
                     db_element.lang_code = add_element
                     # new_element = db_element
                 elif db_type == 'series' and db_element.name != add_element:
