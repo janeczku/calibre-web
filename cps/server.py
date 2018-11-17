@@ -32,9 +32,14 @@ class server:
     def start_gevent(self):
         try:
             ssl_args = dict()
-            if web.ub.config.get_config_certfile() and web.ub.config.get_config_keyfile():
-                ssl_args = {"certfile": web.ub.config.get_config_certfile(),
-                            "keyfile": web.ub.config.get_config_keyfile()}
+            certfile_path   = web.ub.config.get_config_certfile()
+            keyfile_path    = web.ub.config.get_config_keyfile()
+            if certfile_path and keyfile_path:
+                if os.path.isfile(certfile_path) and os.path.isfile(keyfile_path):
+                    ssl_args = {"certfile": certfile_path,
+                                "keyfile": keyfile_path}
+                else:
+                    web.app.logger.info('The specified paths for the ssl certificate file and/or key file seem to be broken. Ignoring ssl. Cert path: %s | Key path: %s' % (certfile_path, keyfile_path))
             if os.name == 'nt':
                 self.wsgiserver= WSGIServer(('0.0.0.0', web.ub.config.config_port), web.app, spawn=Pool(), **ssl_args)
             else:
@@ -60,12 +65,17 @@ class server:
             self.start_gevent()
         else:
             try:
+                ssl = None
                 web.app.logger.info('Starting Tornado server')
-                if web.ub.config.get_config_certfile() and web.ub.config.get_config_keyfile():
-                    ssl={"certfile": web.ub.config.get_config_certfile(),
-                         "keyfile": web.ub.config.get_config_keyfile()}
-                else:
-                    ssl=None
+                certfile_path   = web.ub.config.get_config_certfile()
+                keyfile_path    = web.ub.config.get_config_keyfile()
+                if certfile_path and keyfile_path:
+                    if os.path.isfile(certfile_path) and os.path.isfile(keyfile_path):
+                        ssl = {"certfile": certfile_path,
+                               "keyfile": keyfile_path}
+                    else:
+                        web.app.logger.info('The specified paths for the ssl certificate file and/or key file seem to be broken. Ignoring ssl. Cert path: %s | Key path: %s' % (certfile_path, keyfile_path))
+
                 # Max Buffersize set to 200MB
                 http_server = HTTPServer(WSGIContainer(web.app),
                             max_buffer_size = 209700000,
