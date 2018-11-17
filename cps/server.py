@@ -70,8 +70,8 @@ class server:
                 keyfile_path    = web.ub.config.get_config_keyfile()
                 if certfile_path and keyfile_path:
                     if os.path.isfile(certfile_path) and os.path.isfile(keyfile_path):
-                        ssl_args = {"certfile": certfile_path,
-                                    "keyfile": keyfile_path}
+                        ssl = {"certfile": certfile_path,
+                               "keyfile": keyfile_path}
                     else:
                         web.app.logger.info('The specified paths for the ssl certificate file and/or key file seem to be broken. Ignoring ssl. Cert path: %s | Key path: %s' % (certfile_path, keyfile_path))
                 else:
