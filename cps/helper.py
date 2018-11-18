@@ -17,6 +17,7 @@ from flask import send_from_directory, make_response, redirect, abort
 from flask_babel import gettext as _
 from flask_login import current_user
 from babel.dates import format_datetime
+from datetime import datetime
 import threading
 import shutil
 import requests
@@ -112,42 +113,68 @@ def send_registration_mail(e_mail, user_name, default_password, resend=False):
                                   e_mail, user_name, _(u"Registration e-mail for user: %(name)s", name=user_name), text)
     return
 
+def check_send_to_kindle(entry):
+    '''
+        returns all available book formats for sending to Kindle
+    '''
+    if len(entry.data):
+        bookformats=list()
+        if ub.config.config_ebookconverter == 0:
+            # no converter - only for mobi and pdf formats
+            for ele in iter(entry.data):
+                if 'MOBI' in ele.format:
+                    bookformats.append({'format':'Mobi','text':_('Send %(format)s to Kindle',format='Mobi')})
+                if 'PDF' in ele.format:
+                    bookformats.append({'format':'Pdf','text':_('Send %(format)s to Kindle',format='Pdf')})
+                if 'AZW' in ele.format:
+                    bookformats.append({'format':'Azw','text':_('Send %(format)s to Kindle',format='Azw')})
+                if 'AZW3' in ele.format:
+                    bookformats.append({'format':'Azw3','text':_('Send %(format)s to Kkindle',format='Azw3')})
+        else:
+            formats = list()
+            for ele in iter(entry.data):
+                formats.append(ele.format)
+            if 'MOBI' in formats:
+                bookformats.append({'format': 'Mobi','convert':0,'text':_('Send %(format)s to Kindle',format='Mobi')})
+            if 'AZW' in formats:
+                bookformats.append({'format': 'Azw','convert':0,'text':_('Send %(format)s to Kindle',format='Azw')})
+            if 'AZW3' in formats:
+                bookformats.append({'format': 'Azw3','convert':0,'text':_('Send %(format)s to Kindle',format='Azw3')})
+            if 'PDF' in formats:
+                bookformats.append({'format': 'Pdf','convert':0,'text':_('Send %(format)s to Kindle',format='Pdf')})
+            if ub.config.config_ebookconverter >= 1:
+                if 'EPUB' in formats and not 'MOBI' in formats:
+                    bookformats.append({'format': 'Mobi','convert':1,
+                            'text':_('Convert %(orig)s to %(format)s and send to Kindle',orig='Epub',format='Mobi')})
+            if ub.config.config_ebookconverter == 2:
+                if 'EPUB' in formats and not 'AZW3' in formats:
+                    bookformats.append({'format': 'Azw3','convert':1,
+                            'text':_('Convert %(orig)s to %(format)s and send to Kindle',orig='Epub',format='Azw3')})
+        return bookformats
+    else:
+        app.logger.error(u'Cannot find book entry %d', entry.id)
+        return None
+
 
 # Files are processed in the following order/priority:
-# 1: If Mobi file is exisiting, it's directly send to kindle email,
-# 2: If Epub file is exisiting, it's converted and send to kindle email
-# 3: If Pdf file is exisiting, it's directly send to kindle email,
-def send_mail(book_id, kindle_mail, calibrepath, user_id):
+# 1: If Mobi file is existing, it's directly send to kindle email,
+# 2: If Epub file is existing, it's converted and send to kindle email,
+# 3: If Pdf file is existing, it's directly send to kindle email
+def send_mail(book_id, book_format, convert, kindle_mail, calibrepath, user_id):
     """Send email with attachments"""
     book = db.session.query(db.Books).filter(db.Books.id == book_id).first()
-    data = db.session.query(db.Data).filter(db.Data.book == book.id).all()
 
-    formats = {}
-    for entry in data:
-        if entry.format == "MOBI":
-            formats["mobi"] = entry.name + ".mobi"
-        if entry.format == "EPUB":
-            formats["epub"] = entry.name + ".epub"
-        if entry.format == "PDF":
-            formats["pdf"] = entry.name + ".pdf"
-
-    if len(formats) == 0:
-        return _(u"Could not find any formats suitable for sending by e-mail")
-
-    if 'mobi' in formats:
-        result = formats['mobi']
-    elif 'epub' in formats:
+    if convert:
         # returns None if success, otherwise errormessage
-        return convert_book_format(book_id, calibrepath, u'epub', u'mobi', user_id, kindle_mail)
-    elif 'pdf' in formats:
-        result = formats['pdf'] # worker.get_attachment()
+        return convert_book_format(book_id, calibrepath, u'epub', book_format.lower(), user_id, kindle_mail)
     else:
-        return _(u"Could not find any formats suitable for sending by e-mail")
-    if result:
-        global_WorkerThread.add_email(_(u"Send to Kindle"), book.path, result, ub.get_mail_settings(),
+        for entry in iter(book.data):
+            if entry.format.upper() == book_format.upper():
+                result = entry.name + '.' + book_format.lower()
+                global_WorkerThread.add_email(_(u"Send to Kindle"), book.path, result, ub.get_mail_settings(),
                                       kindle_mail, user_id, _(u"E-mail: %(book)s", book=book.title),
                                       _(u'This e-mail has been sent via Calibre-Web.'))
-    else:
+                return
         return _(u"The requested file could not be read. Maybe wrong permissions?")
 
 
@@ -594,16 +621,23 @@ def get_current_version_info():
         return {'hash': content[0], 'datetime': content[1]}
     return False
 
+def json_serial(obj):
+    """JSON serializer for objects not serializable by default json code"""
+
+    if isinstance(obj, (datetime)):
+        return obj.isoformat()
+    raise TypeError ("Type %s not serializable" % type(obj))
 
 def render_task_status(tasklist):
     #helper function to apply localize status information in tasklist entries
     renderedtasklist=list()
-
+    # task2 = task
     for task in tasklist:
         if task['user'] == current_user.nickname or current_user.role_admin():
+            # task2 = copy.deepcopy(task) # = task
             if task['formStarttime']:
                 task['starttime'] = format_datetime(task['formStarttime'], format='short', locale=web.get_locale())
-                task['formStarttime'] = ""
+            # task2['formStarttime'] = ""
             else:
                 if 'starttime' not in task:
                     task['starttime'] = ""

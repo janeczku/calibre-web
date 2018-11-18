@@ -903,12 +903,12 @@ def get_email_status_json():
     answer=list()
     # UIanswer = list()
     tasks=helper.global_WorkerThread.get_taskstatus()
-    if not current_user.role_admin():
+    '''if not current_user.role_admin():
         for task in tasks:
             if task['user'] == current_user.nickname:
                 if task['formStarttime']:
                     task['starttime'] = format_datetime(task['formStarttime'], format='short', locale=get_locale())
-                    task['formStarttime'] = ""
+                    # task['formStarttime'] = ""
                 else:
                     if 'starttime' not in task:
                         task['starttime'] = ""
@@ -921,12 +921,12 @@ def get_email_status_json():
             else:
                 if 'starttime' not in  task:
                     task['starttime'] = ""
-        answer = tasks
+        answer = tasks'''
 
     # UIanswer = copy.deepcopy(answer)
-    answer = helper.render_task_status(answer)
+    answer = helper.render_task_status(tasks)
 
-    js=json.dumps(answer)
+    js=json.dumps(answer, default=helper.json_serial)
     response = make_response(js)
     response.headers["Content-Type"] = "application/json; charset=utf-8"
     return response
@@ -1679,9 +1679,11 @@ def show_book(book_id):
 
         entries.tags = sort(entries.tags, key = lambda tag: tag.name)
 
+        kindle_list = helper.check_send_to_kindle(entries)
+
         return render_title_template('detail.html', entry=entries, cc=cc, is_xhr=request.is_xhr,
                                      title=entries.title, books_shelfs=book_in_shelfs,
-                                     have_read=have_read, page="book")
+                                     have_read=have_read, kindle_list=kindle_list, page="book")
     else:
         flash(_(u"Error opening eBook. File does not exist or file is not accessible:"), category="error")
         return redirect(url_for("index"))
@@ -2462,15 +2464,15 @@ def token_verified():
     return response
 
 
-@app.route('/send/<int:book_id>')
+@app.route('/send/<int:book_id>/<book_format>/<int:convert>')
 @login_required
 @download_required
-def send_to_kindle(book_id):
+def send_to_kindle(book_id, book_format, convert):
     settings = ub.get_mail_settings()
     if settings.get("mail_server", "mail.example.com") == "mail.example.com":
         flash(_(u"Please configure the SMTP mail settings first..."), category="error")
     elif current_user.kindle_mail:
-        result = helper.send_mail(book_id, current_user.kindle_mail, config.config_calibre_dir, current_user.nickname)
+        result = helper.send_mail(book_id, book_format, convert, current_user.kindle_mail, config.config_calibre_dir, current_user.nickname)
         if result is None:
             flash(_(u"Book successfully queued for sending to %(kindlemail)s", kindlemail=current_user.kindle_mail),
                   category="success")
@@ -3911,7 +3913,7 @@ def upload():
                 gdriveutils.updateGdriveCalibreFromLocal()
             if error:
                 flash(error, category="error")
-            uploadText=_(u"File %(file)s uploaded", file=book.title)
+            uploadText=(u"File %s" % book.title)
             helper.global_WorkerThread.add_upload(current_user.nickname,
                 "<a href=\"" + url_for('show_book', book_id=book.id) + "\">" + uploadText + "</a>")
 
@@ -3927,8 +3929,9 @@ def upload():
                     return render_title_template('book_edit.html', book=book, authors=author_names,
                                                  cc=cc, title=_(u"edit metadata"), page="upload")
                 book_in_shelfs = []
+                flg_send_to_kindle = helper.chk_send_to_kindle(book_id)
                 return render_title_template('detail.html', entry=book, cc=cc,
-                                             title=book.title, books_shelfs=book_in_shelfs, page="upload")
+                                             title=book.title, books_shelfs=book_in_shelfs, flg_kindle=flg_send_to_kindle, page="upload")
     return redirect(url_for("index"))
 
 
