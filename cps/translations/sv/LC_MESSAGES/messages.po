@@ -5,18 +5,19 @@
 # FIRST AUTHOR OzzieIsaacs, 2016.
 msgid ""
 msgstr ""
-"Project-Id-Version:  Calibre-Web\n"
+"Project-Id-Version: Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
 "POT-Creation-Date: 2018-11-17 16:38+0100\n"
-"PO-Revision-Date: 2018-11-05 11:59+0100\n"
+"PO-Revision-Date: 2018-11-23 02:57+0100\n"
 "Last-Translator: Jonatan Nyberg <jonatan.nyberg.karl@gmail.com>\n"
 "Language: sv\n"
 "Language-Team: \n"
-"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.6.0\n"
+"X-Generator: Poedit 2.2\n"
 
 #: cps/book_formats.py:129 cps/book_formats.py:130 cps/book_formats.py:134
 #: cps/book_formats.py:138 cps/converter.py:11 cps/converter.py:27
@@ -29,7 +30,7 @@ msgstr "Utförande behörighet saknas"
 
 #: cps/converter.py:48
 msgid "not configured"
-msgstr ""
+msgstr "inte konfigurerad"
 
 #: cps/helper.py:58
 #, python-format
@@ -130,23 +131,23 @@ msgstr "Klar"
 
 #: cps/helper.py:622
 msgid "Unknown Status"
-msgstr ""
+msgstr "Okänd status"
 
 #: cps/helper.py:627
 msgid "E-mail: "
-msgstr ""
+msgstr "E-post: "
 
 #: cps/helper.py:629 cps/helper.py:633
 msgid "Convert: "
-msgstr ""
+msgstr "Konvertera: "
 
 #: cps/helper.py:631
 msgid "Upload: "
-msgstr ""
+msgstr "Överför: "
 
 #: cps/helper.py:635
 msgid "Unknown Task: "
-msgstr ""
+msgstr "Okänd uppgift: "
 
 #: cps/web.py:1155 cps/web.py:2858
 msgid "Unknown"
@@ -198,7 +199,7 @@ msgstr "Packar upp uppdateringspaketet"
 
 #: cps/web.py:1276
 msgid "Replacing files"
-msgstr ""
+msgstr "Ersätta filer"
 
 #: cps/web.py:1277
 msgid "Database connections are closed"
@@ -206,7 +207,7 @@ msgstr "Databasanslutningarna är stängda"
 
 #: cps/web.py:1278
 msgid "Stopping server"
-msgstr ""
+msgstr "Stoppar server"
 
 #: cps/web.py:1279
 msgid "Update finished, please press okay and reload page"
@@ -214,7 +215,7 @@ msgstr "Uppdatering klar, tryck på okej och uppdatera sidan"
 
 #: cps/web.py:1280 cps/web.py:1281 cps/web.py:1282 cps/web.py:1283
 msgid "Update failed:"
-msgstr ""
+msgstr "Uppdateringen misslyckades:"
 
 #: cps/web.py:1306
 msgid "Recently Added Books"
@@ -258,12 +259,12 @@ msgstr "Fel vid öppnande av e-bok. Filen finns inte eller filen är inte tillg�
 
 #: cps/web.py:1461
 msgid "Publisher list"
-msgstr ""
+msgstr "Lista över förlag"
 
 #: cps/web.py:1475
 #, python-format
 msgid "Publisher: %(name)s"
-msgstr ""
+msgstr "Förlag: %(name)s"
 
 #: cps/templates/index.xml:83 cps/web.py:1507
 msgid "Series list"
@@ -427,16 +428,16 @@ msgstr "Ogiltig hylla specificerad"
 #: cps/web.py:2499
 #, python-format
 msgid "Sorry you are not allowed to add a book to the the shelf: %(shelfname)s"
-msgstr ""
+msgstr "Tyvärr får du inte lägga till en bok på hyllan: %(shelfname)s"
 
 #: cps/web.py:2507
 msgid "You are not allowed to edit public shelves"
-msgstr ""
+msgstr "Du får inte redigera offentliga hyllor"
 
 #: cps/web.py:2516
 #, python-format
 msgid "Book is already part of the shelf: %(shelfname)s"
-msgstr ""
+msgstr "Boken är redan en del av hyllan: %(shelfname)s"
 
 #: cps/web.py:2530
 #, python-format
@@ -702,7 +703,7 @@ msgstr "%(langname)s är inte ett giltigt språk"
 
 #: cps/web.py:3768
 msgid "Metadata successfully updated"
-msgstr ""
+msgstr "Metadata uppdaterades"
 
 #: cps/web.py:3777
 msgid "Error editing book, please check logfile for details"
@@ -1323,7 +1324,7 @@ msgstr "Visa författarval"
 
 #: cps/templates/config_view_edit.html:148 cps/templates/user_edit.html:94
 msgid "Show publisher selection"
-msgstr ""
+msgstr "Visa urval av förlag"
 
 #: cps/templates/config_view_edit.html:152 cps/templates/user_edit.html:98
 msgid "Show read and unread"
@@ -1436,7 +1437,7 @@ msgstr "Sök"
 
 #: cps/templates/http_error.html:23
 msgid "Back to home"
-msgstr ""
+msgstr "Tillbaka till hemmet"
 
 #: cps/templates/index.html:5
 msgid "Discover (Random Books)"
@@ -1484,11 +1485,11 @@ msgstr "Böcker ordnade efter författare"
 
 #: cps/templates/index.xml:69 cps/templates/layout.html:163
 msgid "Publishers"
-msgstr ""
+msgstr "Förlag"
 
 #: cps/templates/index.xml:73
 msgid "Books ordered by publisher"
-msgstr ""
+msgstr "Böcker ordnade efter förlag"
 
 #: cps/templates/index.xml:80
 msgid "Books ordered by category"
@@ -1945,4 +1946,3 @@ msgstr "Senaste hämtningar"
 
 #~ msgid "Choose a password"
 #~ msgstr "Välj ett lösenord"
-
