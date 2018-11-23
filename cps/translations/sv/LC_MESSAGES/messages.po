@@ -427,7 +427,7 @@ msgstr "Ogiltig hylla specificerad"
 
 #: cps/web.py:2499
 #, python-format
-msgid "Sorry you are not allowed to add a book to the the shelf: %(shelfname)s"
+msgid "Sorry you are not allowed to add a book to the shelf: %(shelfname)s"
 msgstr "Tyvärr får du inte lägga till en bok på hyllan: %(shelfname)s"
 
 #: cps/web.py:2507
