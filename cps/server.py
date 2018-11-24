@@ -113,10 +113,11 @@ class server:
         self.stopServer()
 
     def stopServer(self):
-        if gevent_present:
-            self.wsgiserver.close()
-        else:
-            self.wsgiserver.add_callback(self.wsgiserver.stop)
+        if self.wsgiserver:
+            if gevent_present:
+                self.wsgiserver.close()
+            else:
+                self.wsgiserver.add_callback(self.wsgiserver.stop)
 
     @staticmethod
     def getNameVersion():
