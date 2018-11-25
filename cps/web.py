@@ -56,7 +56,6 @@ import tempfile
 from redirect import redirect_back
 import time
 import server
-# import copy
 from reverseproxy import ReverseProxied
 
 try:
@@ -115,8 +114,6 @@ gdrive_watch_callback_token = 'target=calibreweb-watch_files'
 EXTENSIONS_UPLOAD = {'txt', 'pdf', 'epub', 'mobi', 'azw', 'azw3', 'cbr', 'cbz', 'cbt', 'djvu', 'prc', 'doc', 'docx',
                       'fb2', 'html', 'rtf', 'odt'}
 EXTENSIONS_CONVERT = {'pdf', 'epub', 'mobi', 'azw3', 'docx', 'rtf', 'fb2', 'lit', 'lrf', 'txt', 'html', 'rtf', 'odt'}
-
-# EXTENSIONS_READER = set(['txt', 'pdf', 'epub', 'zip', 'cbz', 'tar', 'cbt'] + (['rar','cbr'] if rar_support else []))
 
 
 # Main code
@@ -733,7 +730,8 @@ def feed_hot():
             # ub.session.query(ub.Downloads).filter(book.Downloads.book_id == ub.Downloads.book_id).delete()
             # ub.session.commit()
     numBooks = entries.__len__()
-    pagination = Pagination((int(off) / (int(config.config_books_per_page)) + 1), config.config_books_per_page, numBooks)
+    pagination = Pagination((int(off) / (int(config.config_books_per_page)) + 1),
+                            config.config_books_per_page, numBooks)
     return render_xml_template('feed.xml', entries=entries, pagination=pagination)
 
 
@@ -773,7 +771,8 @@ def feed_publisherindex():
 def feed_publisher(book_id):
     off = request.args.get("offset") or 0
     entries, __, pagination = fill_indexpage((int(off) / (int(config.config_books_per_page)) + 1),
-                                             db.Books, db.Books.publishers.any(db.Publishers.id == book_id), [db.Books.timestamp.desc()])
+                                             db.Books, db.Books.publishers.any(db.Publishers.id == book_id),
+                                             [db.Books.timestamp.desc()])
     return render_xml_template('feed.xml', entries=entries, pagination=pagination)
 
 
@@ -872,7 +871,8 @@ def get_opds_download_link(book_id, book_format):
         file_name = book.authors[0].name + '_' + file_name
     file_name = helper.get_valid_filename(file_name)
     headers = Headers()
-    headers["Content-Disposition"] = "attachment; filename*=UTF-8''%s.%s" % (quote(file_name.encode('utf8')), book_format)
+    headers["Content-Disposition"] = "attachment; filename*=UTF-8''%s.%s" % (quote(file_name.encode('utf8')),
+                                                                             book_format)
     try:
         headers["Content-Type"] = mimetypes.types_map['.' + book_format]
     except KeyError:
@@ -895,32 +895,8 @@ def get_metadata_calibre_companion(uuid):
 @app.route("/ajax/emailstat")
 @login_required
 def get_email_status_json():
-    answer=list()
-    # UIanswer = list()
     tasks=helper.global_WorkerThread.get_taskstatus()
-    '''if not current_user.role_admin():
-        for task in tasks:
-            if task['user'] == current_user.nickname:
-                if task['formStarttime']:
-                    task['starttime'] = format_datetime(task['formStarttime'], format='short', locale=get_locale())
-                    # task['formStarttime'] = ""
-                else:
-                    if 'starttime' not in task:
-                        task['starttime'] = ""
-                answer.append(task)
-    else:
-        for task in tasks:
-            if task['formStarttime']:
-                task['starttime'] = format_datetime(task['formStarttime'], format='short', locale=get_locale())
-                task['formStarttime'] = ""
-            else:
-                if 'starttime' not in  task:
-                    task['starttime'] = ""
-        answer = tasks'''
-
-    # UIanswer = copy.deepcopy(answer)
     answer = helper.render_task_status(tasks)
-
     js=json.dumps(answer, default=helper.json_serial)
     response = make_response(js)
     response.headers["Content-Type"] = "application/json; charset=utf-8"
@@ -1423,7 +1399,7 @@ def author_list():
 @login_required_if_no_ano
 def author(book_id, page):
     entries, __, pagination = fill_indexpage(page, db.Books, db.Books.authors.any(db.Authors.id == book_id),
-                                                 [db.Series.name, db.Books.series_index],db.books_series_link, db.Series)
+                                            [db.Series.name, db.Books.series_index],db.books_series_link, db.Series)
     if entries is None:
         flash(_(u"Error opening eBook. File does not exist or file is not accessible:"), category="error")
         return redirect(url_for("index"))
@@ -1464,8 +1440,9 @@ def publisher_list():
 def publisher(book_id, page):
     publisher = db.session.query(db.Publishers).filter(db.Publishers.id == book_id).first()
     if publisher:
-        entries, random, pagination = fill_indexpage(page, db.Books, db.Books.publishers.any(db.Publishers.id == book_id),
-                                                 (db.Series.name, db.Books.series_index), db.books_series_link, db.Series)
+        entries, random, pagination = fill_indexpage(page, db.Books,
+                                            db.Books.publishers.any(db.Publishers.id == book_id),
+                                            (db.Series.name, db.Books.series_index), db.books_series_link, db.Series)
         return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
                                  title=_(u"Publisher: %(name)s", name=publisher.name), page="publisher")
     else:
@@ -1675,10 +1652,11 @@ def show_book(book_id):
         entries.tags = sort(entries.tags, key = lambda tag: tag.name)
 
         kindle_list = helper.check_send_to_kindle(entries)
+        reader_list = helper.check_read_formats(entries)
 
         return render_title_template('detail.html', entry=entries, cc=cc, is_xhr=request.is_xhr,
                                      title=entries.title, books_shelfs=book_in_shelfs,
-                                     have_read=have_read, kindle_list=kindle_list, page="book")
+                                     have_read=have_read, kindle_list=kindle_list, reader_list=reader_list, page="book")
     else:
         flash(_(u"Error opening eBook. File does not exist or file is not accessible:"), category="error")
         return redirect(url_for("index"))
@@ -1795,7 +1773,8 @@ def delete_book(book_id, book_format):
                                 getattr(book, cc_string).remove(del_cc)
                                 db.session.delete(del_cc)
                     else:
-                        modify_database_object([u''], getattr(book, cc_string), db.cc_classes[c.id], db.session, 'custom')
+                        modify_database_object([u''], getattr(book, cc_string), db.cc_classes[c.id],
+                                               db.session, 'custom')
                 db.session.query(db.Books).filter(db.Books.id == book_id).delete()
             else:
                 db.session.query(db.Data).filter(db.Data.book == book.id).filter(db.Data.format == book_format).delete()
@@ -1871,7 +1850,8 @@ def revoke_watch_gdrive():
     last_watch_response = config.config_google_drive_watch_changes_response
     if last_watch_response:
         try:
-            gdriveutils.stopChannel(gdriveutils.Gdrive.Instance().drive, last_watch_response['id'], last_watch_response['resourceId'])
+            gdriveutils.stopChannel(gdriveutils.Gdrive.Instance().drive, last_watch_response['id'],
+                                    last_watch_response['resourceId'])
         except HttpError:
             pass
         settings = ub.session.query(ub.Settings).first()
@@ -2467,7 +2447,8 @@ def send_to_kindle(book_id, book_format, convert):
     if settings.get("mail_server", "mail.example.com") == "mail.example.com":
         flash(_(u"Please configure the SMTP mail settings first..."), category="error")
     elif current_user.kindle_mail:
-        result = helper.send_mail(book_id, book_format, convert, current_user.kindle_mail, config.config_calibre_dir, current_user.nickname)
+        result = helper.send_mail(book_id, book_format, convert, current_user.kindle_mail, config.config_calibre_dir,
+                                  current_user.nickname)
         if result is None:
             flash(_(u"Book successfully queued for sending to %(kindlemail)s", kindlemail=current_user.kindle_mail),
                   category="success")
@@ -2625,7 +2606,8 @@ def remove_from_shelf(shelf_id, book_id):
     else:
         app.logger.info("Sorry you are not allowed to remove a book from this shelf: %s" % shelf.name)
         if not request.is_xhr:
-            flash(_(u"Sorry you are not allowed to remove a book from this shelf: %(sname)s", sname=shelf.name), category="error")
+            flash(_(u"Sorry you are not allowed to remove a book from this shelf: %(sname)s", sname=shelf.name),
+                  category="error")
             return redirect(url_for('index'))
         return "Sorry you are not allowed to remove a book from this shelf: %s" % shelf.name, 403
 
@@ -3111,9 +3093,9 @@ def configuration_helper(origin):
                 content.config_rarfile_location = to_save["config_rarfile_location"].strip()
             else:
                 flash(check[1], category="error")
-                return render_title_template("config_edit.html", content=config, origin=origin, gdrive=gdriveutils.gdrive_support,
-                                         goodreads=goodreads_support, rarfile_support=rar_support,
-                                         title=_(u"Basic Configuration"))
+                return render_title_template("config_edit.html", content=config, origin=origin,
+                                             gdrive=gdriveutils.gdrive_support, goodreads=goodreads_support,
+                                             rarfile_support=rar_support, title=_(u"Basic Configuration"))
         try:
             if content.config_use_google_drive and is_gdrive_ready() and not os.path.exists(config.config_calibre_dir + "/metadata.db"):
                 gdriveutils.downloadFile(None, "metadata.db", config.config_calibre_dir + "/metadata.db")
@@ -3128,15 +3110,17 @@ def configuration_helper(origin):
             logging.getLogger("book_formats").setLevel(config.config_log_level)
         except Exception as e:
             flash(e, category="error")
-            return render_title_template("config_edit.html", content=config, origin=origin, gdrive=gdriveutils.gdrive_support,
-                                         gdriveError=gdriveError, goodreads=goodreads_support, rarfile_support=rar_support,
+            return render_title_template("config_edit.html", content=config, origin=origin,
+                                         gdrive=gdriveutils.gdrive_support, gdriveError=gdriveError,
+                                         goodreads=goodreads_support, rarfile_support=rar_support,
                                          title=_(u"Basic Configuration"), page="config")
         if db_change:
             reload(db)
             if not db.setup_db():
                 flash(_(u'DB location is not valid, please enter correct path'), category="error")
-                return render_title_template("config_edit.html", content=config, origin=origin, gdrive=gdriveutils.gdrive_support,
-                                             gdriveError=gdriveError, goodreads=goodreads_support, rarfile_support=rar_support,
+                return render_title_template("config_edit.html", content=config, origin=origin,
+                                             gdrive=gdriveutils.gdrive_support,gdriveError=gdriveError,
+                                             goodreads=goodreads_support, rarfile_support=rar_support,
                                              title=_(u"Basic Configuration"), page="config")
         if reboot_required:
             # stop Server
@@ -3150,8 +3134,9 @@ def configuration_helper(origin):
     else:
         gdrivefolders=list()
     return render_title_template("config_edit.html", origin=origin, success=success, content=config,
-                                 show_authenticate_google_drive=not is_gdrive_ready(), gdrive=gdriveutils.gdrive_support,
-                                 gdriveError=gdriveError, gdrivefolders=gdrivefolders, rarfile_support=rar_support,
+                                 show_authenticate_google_drive=not is_gdrive_ready(),
+                                 gdrive=gdriveutils.gdrive_support, gdriveError=gdriveError,
+                                 gdrivefolders=gdrivefolders, rarfile_support=rar_support,
                                  goodreads=goodreads_support, title=_(u"Basic Configuration"), page="config")
 
 
@@ -3581,7 +3566,8 @@ def upload_single_file(request, book, book_id):
                 return redirect(url_for('show_book', book_id=book.id))
 
             file_size = os.path.getsize(saved_filename)
-            is_format = db.session.query(db.Data).filter(db.Data.book == book_id).filter(db.Data.format == file_ext.upper()).first()
+            is_format = db.session.query(db.Data).filter(db.Data.book == book_id).\
+                filter(db.Data.format == file_ext.upper()).first()
 
             # Format entry already exists, no need to update the database
             if is_format:
@@ -3611,7 +3597,8 @@ def upload_cover(request, book):
                 try:
                     os.makedirs(filepath)
                 except OSError:
-                    flash(_(u"Failed to create path for cover %(path)s (Permission denied).", cover=filepath), category="error")
+                    flash(_(u"Failed to create path for cover %(path)s (Permission denied).", cover=filepath),
+                          category="error")
                     return redirect(url_for('show_book', book_id=book.id))
             try:
                 requested_file.save(saved_filename)
@@ -3826,11 +3813,13 @@ def upload():
             try:
                 os.unlink(meta.file_path)
             except OSError:
-                flash(_(u"Failed to delete file %(file)s (Permission denied).", file= meta.file_path), category="warning")
+                flash(_(u"Failed to delete file %(file)s (Permission denied).", file= meta.file_path),
+                      category="warning")
 
             if meta.cover is None:
                 has_cover = 0
-                copyfile(os.path.join(config.get_main_dir, "cps/static/generic_cover.jpg"), os.path.join(filepath, "cover.jpg"))
+                copyfile(os.path.join(config.get_main_dir, "cps/static/generic_cover.jpg"),
+                         os.path.join(filepath, "cover.jpg"))
             else:
                 has_cover = 1
                 move(meta.cover, os.path.join(filepath, "cover.jpg"))
@@ -3896,8 +3885,7 @@ def upload():
             # save data to database, reread data
             db.session.commit()
             db.session.connection().connection.connection.create_function("title_sort", 1, db.title_sort)
-            book = db.session.query(db.Books) \
-                .filter(db.Books.id == book_id).filter(common_filters()).first()
+            book = db.session.query(db.Books).filter(db.Books.id == book_id).filter(common_filters()).first()
 
             # upload book to gdrive if nesseccary and add "(bookid)" to folder name
             if config.config_use_google_drive:
@@ -3919,14 +3907,18 @@ def upload():
             for author in db_book.authors:
                 author_names.append(author.name)
             if len(request.files.getlist("btn-upload")) < 2:
-                cc = db.session.query(db.Custom_Columns).filter(db.Custom_Columns.datatype.notin_(db.cc_exceptions)).all()
+                cc = db.session.query(db.Custom_Columns).filter(db.Custom_Columns.
+                                                                datatype.notin_(db.cc_exceptions)).all()
                 if current_user.role_edit() or current_user.role_admin():
                     return render_title_template('book_edit.html', book=book, authors=author_names,
                                                  cc=cc, title=_(u"edit metadata"), page="upload")
                 book_in_shelfs = []
-                flg_send_to_kindle = helper.chk_send_to_kindle(book_id)
+                kindle_list = helper.check_send_to_kindle(book)
+                reader_list = helper.check_read_formats(book)
+
                 return render_title_template('detail.html', entry=book, cc=cc,
-                                             title=book.title, books_shelfs=book_in_shelfs, flg_kindle=flg_send_to_kindle, page="upload")
+                                             title=book.title, books_shelfs=book_in_shelfs, kindle_list=kindle_list,
+                                             reader_list=reader_list, page="upload")
     return redirect(url_for("index"))
 
 

@@ -57,17 +57,15 @@
                 </div>
               {% endif %}
             {% endif %}
-              {% if entry.data|length  %}
+              {% if reader_list  %}
               <div class="btn-group" role="group">
                 <button id="read-in-browser" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   <span class="glyphicon glyphicon-eye-open"></span> {{_('Read in browser')}}
                   <span class="caret"></span>
                 </button>
                     <ul class="dropdown-menu" aria-labelledby="read-in-browser">
-                    {% for format in entry.data %}
-                      {%if format.format|lower == 'epub' or format.format|lower == 'txt' or format.format|lower == 'pdf' or format.format|lower == 'cbr' or format.format|lower == 'cbt' or format.format|lower == 'cbz' %}
-                      <li><a target="_blank" href="{{ url_for('read_book', book_id=entry.id, book_format=format.format|lower) }}">{{format.format}}</a></li>
-                      {% endif %}
+                    {% for format in reader_list %}
+                      <li><a target="_blank" href="{{ url_for('read_book', book_id=entry.id, book_format=format) }}">{{format}}</a></li>
                     {%endfor%}
                     </ul>
               </div>

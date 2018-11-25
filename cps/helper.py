@@ -114,9 +114,9 @@ def send_registration_mail(e_mail, user_name, default_password, resend=False):
     return
 
 def check_send_to_kindle(entry):
-    '''
+    """
         returns all available book formats for sending to Kindle
-    '''
+    """
     if len(entry.data):
         bookformats=list()
         if ub.config.config_ebookconverter == 0:
@@ -154,6 +154,18 @@ def check_send_to_kindle(entry):
     else:
         app.logger.error(u'Cannot find book entry %d', entry.id)
         return None
+
+
+# Check if a reader is existing for any of the book formats, if not, return empty list, otherwise return
+# list with supported formats
+def check_read_formats(entry):
+    EXTENSIONS_READER = {'TXT', 'PDF', 'EPUB', 'ZIP', 'CBZ', 'TAR', 'CBT', 'RAR', 'CBR'}
+    bookformats = list()
+    if len(entry.data):
+        for ele in iter(entry.data):
+            if ele.format in EXTENSIONS_READER:
+                bookformats.append(ele.format.lower())
+    return bookformats
 
 
 # Files are processed in the following order/priority:
@@ -336,6 +348,7 @@ def delete_book_gdrive(book, book_format):
         error =_(u'Book path %(path)s not found on Google Drive', path=book.path)  # file not found
     return error
 
+
 def generate_random_password():
     s = "abcdefghijklmnopqrstuvwxyz01234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%&*()?"
     passlen = 8
@@ -349,11 +362,13 @@ def update_dir_stucture(book_id, calibrepath):
     else:
         return update_dir_structure_file(book_id, calibrepath)
 
+
 def delete_book(book, calibrepath, book_format):
     if ub.config.config_use_google_drive:
         return delete_book_gdrive(book, book_format)
     else:
         return delete_book_file(book, calibrepath, book_format)
+
 
 def get_book_cover(cover_path):
     if ub.config.config_use_google_drive:
@@ -372,6 +387,7 @@ def get_book_cover(cover_path):
     else:
         return send_from_directory(os.path.join(ub.config.config_calibre_dir, cover_path), "cover.jpg")
 
+
 # saves book cover to gdrive or locally
 def save_cover(url, book_path):
     img = requests.get(url)
@@ -384,7 +400,7 @@ def save_cover(url, book_path):
         f = open(os.path.join(tmpDir, "uploaded_cover.jpg"), "wb")
         f.write(img.content)
         f.close()
-        uploadFileToEbooksFolder(os.path.join(book_path, 'cover.jpg'), os.path.join(tmpDir, f.name))
+        gd.uploadFileToEbooksFolder(os.path.join(book_path, 'cover.jpg'), os.path.join(tmpDir, f.name))
         web.app.logger.info("Cover is saved on Google Drive")
         return True
 
@@ -393,6 +409,7 @@ def save_cover(url, book_path):
     f.close()
     web.app.logger.info("Cover is saved")
     return True
+
 
 def do_download_file(book, book_format, data, headers):
     if ub.config.config_use_google_drive:
@@ -621,12 +638,14 @@ def get_current_version_info():
         return {'hash': content[0], 'datetime': content[1]}
     return False
 
+
 def json_serial(obj):
     """JSON serializer for objects not serializable by default json code"""
 
     if isinstance(obj, (datetime)):
         return obj.isoformat()
     raise TypeError ("Type %s not serializable" % type(obj))
+
 
 def render_task_status(tasklist):
     #helper function to apply localize status information in tasklist entries
