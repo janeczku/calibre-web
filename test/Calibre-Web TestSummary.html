@@ -32,15 +32,15 @@
 
 <div id='header_parameters' class='row text-center report-parameters'>
     <div class="col-xs-6 col-md-4">
-        <p class='text-justify attribute'><strong>Start Time:</strong> 2018-10-28 21:05:48.274095</p>
+        <p class='text-justify attribute'><strong>Start Time:</strong> 2018-11-25 12:06:17.948456</p>
 
     </div>
     <div class="col-xs-6 col-md-4">
-        <p class='text-justify attribute'><strong>Stop Time:</strong> 2018-10-28 21:23:52.450214</p>
+        <p class='text-justify attribute'><strong>Stop Time:</strong> 2018-11-25 12:24:09.768645</p>
 
     </div>
     <div class="col-xs-6 col-md-4">
-        <p class='text-justify attribute'><strong>Duration:</strong> 0:18:04.176119</p>
+        <p class='text-justify attribute'><strong>Duration:</strong> 0:17:51.820189</p>
 
     </div>
 </div>
@@ -524,20 +524,20 @@ AssertionError: logfile config value is not empty after reseting to default</pre
         <!--css div popup end-->
     </td>
 </tr>
-<tr class='skipClass'>
-    <td>test_ebook_convert.test_ebook_convert</td>
-    <td class="text-center">12</td>
+<tr class='failClass'>
+    <td>test_edit_books.test_edit_books</td>
+    <td class="text-center">22</td>
+    <td class="text-center">3</td>
+    <td class="text-center">2</td>
     <td class="text-center">0</td>
-    <td class="text-center">0</td>
-    <td class="text-center">0</td>
-    <td class="text-center">12</td>
+    <td class="text-center">17</td>
     <td class="text-center">
-        <a onclick="showClassDetail('c6', 12)">Detail</a>
+        <a onclick="showClassDetail('c6', 22)">Detail</a>
     </td>
 </tr>
 <tr id='st6.1' class='none bg-warning'>
     <td>
-        <div class='testcase'>test_SSL_smtp_setup_error</div>
+        <div class='testcase'>test_database_errors</div>
     </td>
     <td colspan='6'>
         <div class="text-center">
@@ -561,7 +561,7 @@ AssertionError: logfile config value is not empty after reseting to default</pre
 </tr>
 <tr id='st6.2' class='none bg-warning'>
     <td>
-        <div class='testcase'>test_STARTTLS_smtp_setup_error</div>
+        <div class='testcase'>test_delete_book</div>
     </td>
     <td colspan='6'>
         <div class="text-center">
@@ -585,7 +585,7 @@ AssertionError: logfile config value is not empty after reseting to default</pre
 </tr>
 <tr id='st6.3' class='none bg-warning'>
     <td>
-        <div class='testcase'>test_convert_deactivate</div>
+        <div class='testcase'>test_delete_format</div>
     </td>
     <td colspan='6'>
         <div class="text-center">
@@ -607,57 +607,42 @@ AssertionError: logfile config value is not empty after reseting to default</pre
         <!--css div popup end-->
     </td>
 </tr>
-<tr id='st6.4' class='none bg-warning'>
+<tr id='ft6.4' class='none bg-danger'>
     <td>
-        <div class='testcase'>test_convert_email</div>
+        <div class='testcase'>test_edit_author</div>
     </td>
     <td colspan='6'>
         <div class="text-center">
-            <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st6.4')">SKIP</a>
+            <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft6.4')">FAIL</a>
         </div>
         <!--css div popup start-->
-        <div id='div_st6.4' class="popup_window test_output" style="display:none;">
+        <div id='div_ft6.4' class="popup_window test_output" style="display:none;">
             <div class='close_button pull-right'>
                 <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                        onclick="document.getElementById('div_st6.4').style.display='none'"><span
+                        onclick="document.getElementById('div_ft6.4').style.display='none'"><span
                         aria-hidden="true">&times;</span></button>
-                <!--<a onfocus='this.blur();' onclick="document.getElementById('div_st6.4').style.display='none'">[x]</a>-->
+                <!--<a onfocus='this.blur();' onclick="document.getElementById('div_ft6.4').style.display='none'">[x]</a>-->
             </div>
             <div class="text-left pull-left">
-                <pre class="text-left">st6.4: Not Implemented</pre>
+                <pre class="text-left">ft6.4: Traceback (most recent call last):
+  File "/home/matthias/Entwicklung/calibre-web-test/test/test_edit_books.py", line 227, in test_edit_author
+    self.assertFalse(os.path.isdir(os.path.join(TEST_DB, 'Sigurd Lindgren', 'book8 (8)')))
+AssertionError: True is not false</pre>
             </div>
             <div class="clearfix"></div>
         </div>
         <!--css div popup end-->
     </td>
 </tr>
-<tr id='st6.5' class='none bg-warning'>
+<tr id='pt6.5' class='hiddenRow bg-success'>
     <td>
-        <div class='testcase'>test_convert_failed_and_email</div>
+        <div class='testcase'>test_edit_category</div>
     </td>
-    <td colspan='6'>
-        <div class="text-center">
-            <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st6.5')">SKIP</a>
-        </div>
-        <!--css div popup start-->
-        <div id='div_st6.5' class="popup_window test_output" style="display:none;">
-            <div class='close_button pull-right'>
-                <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                        onclick="document.getElementById('div_st6.5').style.display='none'"><span
-                        aria-hidden="true">&times;</span></button>
-                <!--<a onfocus='this.blur();' onclick="document.getElementById('div_st6.5').style.display='none'">[x]</a>-->
-            </div>
-            <div class="text-left pull-left">
-                <pre class="text-left">st6.5: Not Implemented</pre>
-            </div>
-            <div class="clearfix"></div>
-        </div>
-        <!--css div popup end-->
-    </td>
+    <td colspan='6' align='center'>PASS</td>
 </tr>
 <tr id='st6.6' class='none bg-warning'>
     <td>
-        <div class='testcase'>test_convert_only</div>
+        <div class='testcase'>test_edit_comments</div>
     </td>
     <td colspan='6'>
         <div class="text-center">
@@ -681,7 +666,7 @@ AssertionError: logfile config value is not empty after reseting to default</pre
 </tr>
 <tr id='st6.7' class='none bg-warning'>
     <td>
-        <div class='testcase'>test_convert_parameter</div>
+        <div class='testcase'>test_edit_custom_bool</div>
     </td>
     <td colspan='6'>
         <div class="text-center">
@@ -705,7 +690,7 @@ AssertionError: logfile config value is not empty after reseting to default</pre
 </tr>
 <tr id='st6.8' class='none bg-warning'>
     <td>
-        <div class='testcase'>test_convert_wrong_excecutable</div>
+        <div class='testcase'>test_edit_custom_rating</div>
     </td>
     <td colspan='6'>
         <div class="text-center">
@@ -729,7 +714,7 @@ AssertionError: logfile config value is not empty after reseting to default</pre
 </tr>
 <tr id='st6.9' class='none bg-warning'>
     <td>
-        <div class='testcase'>test_email_failed</div>
+        <div class='testcase'>test_edit_custom_single_select</div>
     </td>
     <td colspan='6'>
         <div class="text-center">
@@ -753,7 +738,7 @@ AssertionError: logfile config value is not empty after reseting to default</pre
 </tr>
 <tr id='st6.10' class='none bg-warning'>
     <td>
-        <div class='testcase'>test_email_only</div>
+        <div class='testcase'>test_edit_custom_text</div>
     </td>
     <td colspan='6'>
         <div class="text-center">
@@ -777,7 +762,7 @@ AssertionError: logfile config value is not empty after reseting to default</pre
 </tr>
 <tr id='st6.11' class='none bg-warning'>
     <td>
-        <div class='testcase'>test_kindle_send_not_configured</div>
+        <div class='testcase'>test_edit_language</div>
     </td>
     <td colspan='6'>
         <div class="text-center">
@@ -799,37 +784,244 @@ AssertionError: logfile config value is not empty after reseting to default</pre
         <!--css div popup end-->
     </td>
 </tr>
-<tr id='st6.12' class='none bg-warning'>
+<tr id='pt6.12' class='hiddenRow bg-success'>
     <td>
-        <div class='testcase'>test_smtp_setup_error</div>
+        <div class='testcase'>test_edit_publisher</div>
+    </td>
+    <td colspan='6' align='center'>PASS</td>
+</tr>
+<tr id='st6.13' class='none bg-warning'>
+    <td>
+        <div class='testcase'>test_edit_publishing_date</div>
     </td>
     <td colspan='6'>
         <div class="text-center">
-            <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st6.12')">SKIP</a>
+            <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st6.13')">SKIP</a>
         </div>
         <!--css div popup start-->
-        <div id='div_st6.12' class="popup_window test_output" style="display:none;">
+        <div id='div_st6.13' class="popup_window test_output" style="display:none;">
             <div class='close_button pull-right'>
                 <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                        onclick="document.getElementById('div_st6.12').style.display='none'"><span
+                        onclick="document.getElementById('div_st6.13').style.display='none'"><span
                         aria-hidden="true">&times;</span></button>
-                <!--<a onfocus='this.blur();' onclick="document.getElementById('div_st6.12').style.display='none'">[x]</a>-->
+                <!--<a onfocus='this.blur();' onclick="document.getElementById('div_st6.13').style.display='none'">[x]</a>-->
             </div>
             <div class="text-left pull-left">
-                <pre class="text-left">st6.12: Not Implemented</pre>
+                <pre class="text-left">st6.13: Not Implemented</pre>
             </div>
             <div class="clearfix"></div>
         </div>
         <!--css div popup end-->
     </td>
 </tr>
-<tr class='failClass'>
-    <td>test_edit_books.test_edit_books</td>
+<tr id='st6.14' class='none bg-warning'>
+    <td>
+        <div class='testcase'>test_edit_rating</div>
+    </td>
+    <td colspan='6'>
+        <div class="text-center">
+            <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st6.14')">SKIP</a>
+        </div>
+        <!--css div popup start-->
+        <div id='div_st6.14' class="popup_window test_output" style="display:none;">
+            <div class='close_button pull-right'>
+                <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
+                        onclick="document.getElementById('div_st6.14').style.display='none'"><span
+                        aria-hidden="true">&times;</span></button>
+                <!--<a onfocus='this.blur();' onclick="document.getElementById('div_st6.14').style.display='none'">[x]</a>-->
+            </div>
+            <div class="text-left pull-left">
+                <pre class="text-left">st6.14: Not Implemented</pre>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+        <!--css div popup end-->
+    </td>
+</tr>
+<tr id='pt6.15' class='hiddenRow bg-success'>
+    <td>
+        <div class='testcase'>test_edit_series</div>
+    </td>
+    <td colspan='6' align='center'>PASS</td>
+</tr>
+<tr id='ft6.16' class='none bg-danger'>
+    <td>
+        <div class='testcase'>test_edit_title</div>
+    </td>
+    <td colspan='6'>
+        <div class="text-center">
+            <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft6.16')">FAIL</a>
+        </div>
+        <!--css div popup start-->
+        <div id='div_ft6.16' class="popup_window test_output" style="display:none;">
+            <div class='close_button pull-right'>
+                <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
+                        onclick="document.getElementById('div_ft6.16').style.display='none'"><span
+                        aria-hidden="true">&times;</span></button>
+                <!--<a onfocus='this.blur();' onclick="document.getElementById('div_ft6.16').style.display='none'">[x]</a>-->
+            </div>
+            <div class="text-left pull-left">
+                <pre class="text-left">ft6.16: Traceback (most recent call last):
+  File "/home/matthias/Entwicklung/calibre-web-test/test/test_edit_books.py", line 122, in test_edit_title
+    self.assertEqual('The camicdemo', books[1][8]['title'])
+AssertionError: 'The camicdemo' != '\n          '</pre>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+        <!--css div popup end-->
+    </td>
+</tr>
+<tr id='st6.17' class='none bg-warning'>
+    <td>
+        <div class='testcase'>test_typeahead_author</div>
+    </td>
+    <td colspan='6'>
+        <div class="text-center">
+            <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st6.17')">SKIP</a>
+        </div>
+        <!--css div popup start-->
+        <div id='div_st6.17' class="popup_window test_output" style="display:none;">
+            <div class='close_button pull-right'>
+                <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
+                        onclick="document.getElementById('div_st6.17').style.display='none'"><span
+                        aria-hidden="true">&times;</span></button>
+                <!--<a onfocus='this.blur();' onclick="document.getElementById('div_st6.17').style.display='none'">[x]</a>-->
+            </div>
+            <div class="text-left pull-left">
+                <pre class="text-left">st6.17: Not Implemented</pre>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+        <!--css div popup end-->
+    </td>
+</tr>
+<tr id='st6.18' class='none bg-warning'>
+    <td>
+        <div class='testcase'>test_typeahead_language</div>
+    </td>
+    <td colspan='6'>
+        <div class="text-center">
+            <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st6.18')">SKIP</a>
+        </div>
+        <!--css div popup start-->
+        <div id='div_st6.18' class="popup_window test_output" style="display:none;">
+            <div class='close_button pull-right'>
+                <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
+                        onclick="document.getElementById('div_st6.18').style.display='none'"><span
+                        aria-hidden="true">&times;</span></button>
+                <!--<a onfocus='this.blur();' onclick="document.getElementById('div_st6.18').style.display='none'">[x]</a>-->
+            </div>
+            <div class="text-left pull-left">
+                <pre class="text-left">st6.18: Not Implemented</pre>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+        <!--css div popup end-->
+    </td>
+</tr>
+<tr id='st6.19' class='none bg-warning'>
+    <td>
+        <div class='testcase'>test_typeahead_publisher</div>
+    </td>
+    <td colspan='6'>
+        <div class="text-center">
+            <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st6.19')">SKIP</a>
+        </div>
+        <!--css div popup start-->
+        <div id='div_st6.19' class="popup_window test_output" style="display:none;">
+            <div class='close_button pull-right'>
+                <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
+                        onclick="document.getElementById('div_st6.19').style.display='none'"><span
+                        aria-hidden="true">&times;</span></button>
+                <!--<a onfocus='this.blur();' onclick="document.getElementById('div_st6.19').style.display='none'">[x]</a>-->
+            </div>
+            <div class="text-left pull-left">
+                <pre class="text-left">st6.19: Not Implemented</pre>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+        <!--css div popup end-->
+    </td>
+</tr>
+<tr id='st6.20' class='none bg-warning'>
+    <td>
+        <div class='testcase'>test_typeahead_series</div>
+    </td>
+    <td colspan='6'>
+        <div class="text-center">
+            <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st6.20')">SKIP</a>
+        </div>
+        <!--css div popup start-->
+        <div id='div_st6.20' class="popup_window test_output" style="display:none;">
+            <div class='close_button pull-right'>
+                <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
+                        onclick="document.getElementById('div_st6.20').style.display='none'"><span
+                        aria-hidden="true">&times;</span></button>
+                <!--<a onfocus='this.blur();' onclick="document.getElementById('div_st6.20').style.display='none'">[x]</a>-->
+            </div>
+            <div class="text-left pull-left">
+                <pre class="text-left">st6.20: Not Implemented</pre>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+        <!--css div popup end-->
+    </td>
+</tr>
+<tr id='st6.21' class='none bg-warning'>
+    <td>
+        <div class='testcase'>test_typeahead_tag</div>
+    </td>
+    <td colspan='6'>
+        <div class="text-center">
+            <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st6.21')">SKIP</a>
+        </div>
+        <!--css div popup start-->
+        <div id='div_st6.21' class="popup_window test_output" style="display:none;">
+            <div class='close_button pull-right'>
+                <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
+                        onclick="document.getElementById('div_st6.21').style.display='none'"><span
+                        aria-hidden="true">&times;</span></button>
+                <!--<a onfocus='this.blur();' onclick="document.getElementById('div_st6.21').style.display='none'">[x]</a>-->
+            </div>
+            <div class="text-left pull-left">
+                <pre class="text-left">st6.21: Not Implemented</pre>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+        <!--css div popup end-->
+    </td>
+</tr>
+<tr id='st6.22' class='none bg-warning'>
+    <td>
+        <div class='testcase'>test_upload_cover_hdd</div>
+    </td>
+    <td colspan='6'>
+        <div class="text-center">
+            <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st6.22')">SKIP</a>
+        </div>
+        <!--css div popup start-->
+        <div id='div_st6.22' class="popup_window test_output" style="display:none;">
+            <div class='close_button pull-right'>
+                <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
+                        onclick="document.getElementById('div_st6.22').style.display='none'"><span
+                        aria-hidden="true">&times;</span></button>
+                <!--<a onfocus='this.blur();' onclick="document.getElementById('div_st6.22').style.display='none'">[x]</a>-->
+            </div>
+            <div class="text-left pull-left">
+                <pre class="text-left">st6.22: Not Implemented</pre>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+        <!--css div popup end-->
+    </td>
+</tr>
+<tr class='skipClass'>
+    <td>test_edit_books_gdrive.test_edit_books_gdrive</td>
     <td class="text-center">22</td>
-    <td class="text-center">4</td>
-    <td class="text-center">1</td>
     <td class="text-center">0</td>
-    <td class="text-center">17</td>
+    <td class="text-center">0</td>
+    <td class="text-center">0</td>
+    <td class="text-center">22</td>
     <td class="text-center">
         <a onclick="showClassDetail('c7', 22)">Detail</a>
     </td>
@@ -906,17 +1098,53 @@ AssertionError: logfile config value is not empty after reseting to default</pre
         <!--css div popup end-->
     </td>
 </tr>
-<tr id='pt7.4' class='hiddenRow bg-success'>
+<tr id='st7.4' class='none bg-warning'>
     <td>
         <div class='testcase'>test_edit_author</div>
     </td>
-    <td colspan='6' align='center'>PASS</td>
+    <td colspan='6'>
+        <div class="text-center">
+            <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st7.4')">SKIP</a>
+        </div>
+        <!--css div popup start-->
+        <div id='div_st7.4' class="popup_window test_output" style="display:none;">
+            <div class='close_button pull-right'>
+                <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
+                        onclick="document.getElementById('div_st7.4').style.display='none'"><span
+                        aria-hidden="true">&times;</span></button>
+                <!--<a onfocus='this.blur();' onclick="document.getElementById('div_st7.4').style.display='none'">[x]</a>-->
+            </div>
+            <div class="text-left pull-left">
+                <pre class="text-left">st7.4: Not Implemented</pre>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+        <!--css div popup end-->
+    </td>
 </tr>
-<tr id='pt7.5' class='hiddenRow bg-success'>
+<tr id='st7.5' class='none bg-warning'>
     <td>
         <div class='testcase'>test_edit_category</div>
     </td>
-    <td colspan='6' align='center'>PASS</td>
+    <td colspan='6'>
+        <div class="text-center">
+            <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st7.5')">SKIP</a>
+        </div>
+        <!--css div popup start-->
+        <div id='div_st7.5' class="popup_window test_output" style="display:none;">
+            <div class='close_button pull-right'>
+                <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
+                        onclick="document.getElementById('div_st7.5').style.display='none'"><span
+                        aria-hidden="true">&times;</span></button>
+                <!--<a onfocus='this.blur();' onclick="document.getElementById('div_st7.5').style.display='none'">[x]</a>-->
+            </div>
+            <div class="text-left pull-left">
+                <pre class="text-left">st7.5: Not Implemented</pre>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+        <!--css div popup end-->
+    </td>
 </tr>
 <tr id='st7.6' class='none bg-warning'>
     <td>
@@ -1062,29 +1290,24 @@ AssertionError: logfile config value is not empty after reseting to default</pre
         <!--css div popup end-->
     </td>
 </tr>
-<tr id='ft7.12' class='none bg-danger'>
+<tr id='st7.12' class='none bg-warning'>
     <td>
         <div class='testcase'>test_edit_publisher</div>
     </td>
     <td colspan='6'>
         <div class="text-center">
-            <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft7.12')">FAIL</a>
+            <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st7.12')">SKIP</a>
         </div>
         <!--css div popup start-->
-        <div id='div_ft7.12' class="popup_window test_output" style="display:none;">
+        <div id='div_st7.12' class="popup_window test_output" style="display:none;">
             <div class='close_button pull-right'>
                 <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                        onclick="document.getElementById('div_ft7.12').style.display='none'"><span
+                        onclick="document.getElementById('div_st7.12').style.display='none'"><span
                         aria-hidden="true">&times;</span></button>
-                <!--<a onfocus='this.blur();' onclick="document.getElementById('div_ft7.12').style.display='none'">[x]</a>-->
+                <!--<a onfocus='this.blur();' onclick="document.getElementById('div_st7.12').style.display='none'">[x]</a>-->
             </div>
             <div class="text-left pull-left">
-                <pre class="text-left">ft7.12: Traceback (most recent call last):
-  File "/home/matthias/Entwicklung/calibre-web-test/test/test_edit_books.py", line 344, in test_edit_publisher
-    self.assertEqual(list_element[0].text, u'Beta|,Bet')
-AssertionError: u'Randomh\xe4us' != u'Beta|,Bet'
-- Randomh\xe4us
-+ Beta|,Bet</pre>
+                <pre class="text-left">st7.12: Not Implemented</pre>
             </div>
             <div class="clearfix"></div>
         </div>
@@ -1139,17 +1362,53 @@ AssertionError: u'Randomh\xe4us' != u'Beta|,Bet'
         <!--css div popup end-->
     </td>
 </tr>
-<tr id='pt7.15' class='hiddenRow bg-success'>
+<tr id='st7.15' class='none bg-warning'>
     <td>
         <div class='testcase'>test_edit_series</div>
     </td>
-    <td colspan='6' align='center'>PASS</td>
+    <td colspan='6'>
+        <div class="text-center">
+            <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st7.15')">SKIP</a>
+        </div>
+        <!--css div popup start-->
+        <div id='div_st7.15' class="popup_window test_output" style="display:none;">
+            <div class='close_button pull-right'>
+                <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
+                        onclick="document.getElementById('div_st7.15').style.display='none'"><span
+                        aria-hidden="true">&times;</span></button>
+                <!--<a onfocus='this.blur();' onclick="document.getElementById('div_st7.15').style.display='none'">[x]</a>-->
+            </div>
+            <div class="text-left pull-left">
+                <pre class="text-left">st7.15: Not Implemented</pre>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+        <!--css div popup end-->
+    </td>
 </tr>
-<tr id='pt7.16' class='hiddenRow bg-success'>
+<tr id='st7.16' class='none bg-warning'>
     <td>
         <div class='testcase'>test_edit_title</div>
     </td>
-    <td colspan='6' align='center'>PASS</td>
+    <td colspan='6'>
+        <div class="text-center">
+            <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st7.16')">SKIP</a>
+        </div>
+        <!--css div popup start-->
+        <div id='div_st7.16' class="popup_window test_output" style="display:none;">
+            <div class='close_button pull-right'>
+                <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
+                        onclick="document.getElementById('div_st7.16').style.display='none'"><span
+                        aria-hidden="true">&times;</span></button>
+                <!--<a onfocus='this.blur();' onclick="document.getElementById('div_st7.16').style.display='none'">[x]</a>-->
+            </div>
+            <div class="text-left pull-left">
+                <pre class="text-left">st7.16: Not Implemented</pre>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+        <!--css div popup end-->
+    </td>
 </tr>
 <tr id='st7.17' class='none bg-warning'>
     <td>
@@ -1295,587 +1554,69 @@ AssertionError: u'Randomh\xe4us' != u'Beta|,Bet'
         <!--css div popup end-->
     </td>
 </tr>
-<tr class='skipClass'>
-    <td>test_edit_books_gdrive.test_edit_books_gdrive</td>
-    <td class="text-center">22</td>
-    <td class="text-center">0</td>
-    <td class="text-center">0</td>
-    <td class="text-center">0</td>
-    <td class="text-center">22</td>
-    <td class="text-center">
-        <a onclick="showClassDetail('c8', 22)">Detail</a>
-    </td>
-</tr>
-<tr id='st8.1' class='none bg-warning'>
-    <td>
-        <div class='testcase'>test_database_errors</div>
-    </td>
-    <td colspan='6'>
-        <div class="text-center">
-            <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st8.1')">SKIP</a>
-        </div>
-        <!--css div popup start-->
-        <div id='div_st8.1' class="popup_window test_output" style="display:none;">
-            <div class='close_button pull-right'>
-                <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                        onclick="document.getElementById('div_st8.1').style.display='none'"><span
-                        aria-hidden="true">&times;</span></button>
-                <!--<a onfocus='this.blur();' onclick="document.getElementById('div_st8.1').style.display='none'">[x]</a>-->
-            </div>
-            <div class="text-left pull-left">
-                <pre class="text-left">st8.1: Not Implemented</pre>
-            </div>
-            <div class="clearfix"></div>
-        </div>
-        <!--css div popup end-->
-    </td>
-</tr>
-<tr id='st8.2' class='none bg-warning'>
-    <td>
-        <div class='testcase'>test_delete_book</div>
-    </td>
-    <td colspan='6'>
-        <div class="text-center">
-            <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st8.2')">SKIP</a>
-        </div>
-        <!--css div popup start-->
-        <div id='div_st8.2' class="popup_window test_output" style="display:none;">
-            <div class='close_button pull-right'>
-                <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                        onclick="document.getElementById('div_st8.2').style.display='none'"><span
-                        aria-hidden="true">&times;</span></button>
-                <!--<a onfocus='this.blur();' onclick="document.getElementById('div_st8.2').style.display='none'">[x]</a>-->
-            </div>
-            <div class="text-left pull-left">
-                <pre class="text-left">st8.2: Not Implemented</pre>
-            </div>
-            <div class="clearfix"></div>
-        </div>
-        <!--css div popup end-->
-    </td>
-</tr>
-<tr id='st8.3' class='none bg-warning'>
-    <td>
-        <div class='testcase'>test_delete_format</div>
-    </td>
-    <td colspan='6'>
-        <div class="text-center">
-            <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st8.3')">SKIP</a>
-        </div>
-        <!--css div popup start-->
-        <div id='div_st8.3' class="popup_window test_output" style="display:none;">
-            <div class='close_button pull-right'>
-                <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                        onclick="document.getElementById('div_st8.3').style.display='none'"><span
-                        aria-hidden="true">&times;</span></button>
-                <!--<a onfocus='this.blur();' onclick="document.getElementById('div_st8.3').style.display='none'">[x]</a>-->
-            </div>
-            <div class="text-left pull-left">
-                <pre class="text-left">st8.3: Not Implemented</pre>
-            </div>
-            <div class="clearfix"></div>
-        </div>
-        <!--css div popup end-->
-    </td>
-</tr>
-<tr id='st8.4' class='none bg-warning'>
-    <td>
-        <div class='testcase'>test_edit_author</div>
-    </td>
-    <td colspan='6'>
-        <div class="text-center">
-            <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st8.4')">SKIP</a>
-        </div>
-        <!--css div popup start-->
-        <div id='div_st8.4' class="popup_window test_output" style="display:none;">
-            <div class='close_button pull-right'>
-                <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                        onclick="document.getElementById('div_st8.4').style.display='none'"><span
-                        aria-hidden="true">&times;</span></button>
-                <!--<a onfocus='this.blur();' onclick="document.getElementById('div_st8.4').style.display='none'">[x]</a>-->
-            </div>
-            <div class="text-left pull-left">
-                <pre class="text-left">st8.4: Not Implemented</pre>
-            </div>
-            <div class="clearfix"></div>
-        </div>
-        <!--css div popup end-->
-    </td>
-</tr>
-<tr id='st8.5' class='none bg-warning'>
-    <td>
-        <div class='testcase'>test_edit_category</div>
-    </td>
-    <td colspan='6'>
-        <div class="text-center">
-            <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st8.5')">SKIP</a>
-        </div>
-        <!--css div popup start-->
-        <div id='div_st8.5' class="popup_window test_output" style="display:none;">
-            <div class='close_button pull-right'>
-                <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                        onclick="document.getElementById('div_st8.5').style.display='none'"><span
-                        aria-hidden="true">&times;</span></button>
-                <!--<a onfocus='this.blur();' onclick="document.getElementById('div_st8.5').style.display='none'">[x]</a>-->
-            </div>
-            <div class="text-left pull-left">
-                <pre class="text-left">st8.5: Not Implemented</pre>
-            </div>
-            <div class="clearfix"></div>
-        </div>
-        <!--css div popup end-->
-    </td>
-</tr>
-<tr id='st8.6' class='none bg-warning'>
-    <td>
-        <div class='testcase'>test_edit_comments</div>
-    </td>
-    <td colspan='6'>
-        <div class="text-center">
-            <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st8.6')">SKIP</a>
-        </div>
-        <!--css div popup start-->
-        <div id='div_st8.6' class="popup_window test_output" style="display:none;">
-            <div class='close_button pull-right'>
-                <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                        onclick="document.getElementById('div_st8.6').style.display='none'"><span
-                        aria-hidden="true">&times;</span></button>
-                <!--<a onfocus='this.blur();' onclick="document.getElementById('div_st8.6').style.display='none'">[x]</a>-->
-            </div>
-            <div class="text-left pull-left">
-                <pre class="text-left">st8.6: Not Implemented</pre>
-            </div>
-            <div class="clearfix"></div>
-        </div>
-        <!--css div popup end-->
-    </td>
-</tr>
-<tr id='st8.7' class='none bg-warning'>
-    <td>
-        <div class='testcase'>test_edit_custom_bool</div>
-    </td>
-    <td colspan='6'>
-        <div class="text-center">
-            <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st8.7')">SKIP</a>
-        </div>
-        <!--css div popup start-->
-        <div id='div_st8.7' class="popup_window test_output" style="display:none;">
-            <div class='close_button pull-right'>
-                <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                        onclick="document.getElementById('div_st8.7').style.display='none'"><span
-                        aria-hidden="true">&times;</span></button>
-                <!--<a onfocus='this.blur();' onclick="document.getElementById('div_st8.7').style.display='none'">[x]</a>-->
-            </div>
-            <div class="text-left pull-left">
-                <pre class="text-left">st8.7: Not Implemented</pre>
-            </div>
-            <div class="clearfix"></div>
-        </div>
-        <!--css div popup end-->
-    </td>
-</tr>
-<tr id='st8.8' class='none bg-warning'>
-    <td>
-        <div class='testcase'>test_edit_custom_rating</div>
-    </td>
-    <td colspan='6'>
-        <div class="text-center">
-            <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st8.8')">SKIP</a>
-        </div>
-        <!--css div popup start-->
-        <div id='div_st8.8' class="popup_window test_output" style="display:none;">
-            <div class='close_button pull-right'>
-                <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                        onclick="document.getElementById('div_st8.8').style.display='none'"><span
-                        aria-hidden="true">&times;</span></button>
-                <!--<a onfocus='this.blur();' onclick="document.getElementById('div_st8.8').style.display='none'">[x]</a>-->
-            </div>
-            <div class="text-left pull-left">
-                <pre class="text-left">st8.8: Not Implemented</pre>
-            </div>
-            <div class="clearfix"></div>
-        </div>
-        <!--css div popup end-->
-    </td>
-</tr>
-<tr id='st8.9' class='none bg-warning'>
-    <td>
-        <div class='testcase'>test_edit_custom_single_select</div>
-    </td>
-    <td colspan='6'>
-        <div class="text-center">
-            <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st8.9')">SKIP</a>
-        </div>
-        <!--css div popup start-->
-        <div id='div_st8.9' class="popup_window test_output" style="display:none;">
-            <div class='close_button pull-right'>
-                <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                        onclick="document.getElementById('div_st8.9').style.display='none'"><span
-                        aria-hidden="true">&times;</span></button>
-                <!--<a onfocus='this.blur();' onclick="document.getElementById('div_st8.9').style.display='none'">[x]</a>-->
-            </div>
-            <div class="text-left pull-left">
-                <pre class="text-left">st8.9: Not Implemented</pre>
-            </div>
-            <div class="clearfix"></div>
-        </div>
-        <!--css div popup end-->
-    </td>
-</tr>
-<tr id='st8.10' class='none bg-warning'>
-    <td>
-        <div class='testcase'>test_edit_custom_text</div>
-    </td>
-    <td colspan='6'>
-        <div class="text-center">
-            <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st8.10')">SKIP</a>
-        </div>
-        <!--css div popup start-->
-        <div id='div_st8.10' class="popup_window test_output" style="display:none;">
-            <div class='close_button pull-right'>
-                <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                        onclick="document.getElementById('div_st8.10').style.display='none'"><span
-                        aria-hidden="true">&times;</span></button>
-                <!--<a onfocus='this.blur();' onclick="document.getElementById('div_st8.10').style.display='none'">[x]</a>-->
-            </div>
-            <div class="text-left pull-left">
-                <pre class="text-left">st8.10: Not Implemented</pre>
-            </div>
-            <div class="clearfix"></div>
-        </div>
-        <!--css div popup end-->
-    </td>
-</tr>
-<tr id='st8.11' class='none bg-warning'>
-    <td>
-        <div class='testcase'>test_edit_language</div>
-    </td>
-    <td colspan='6'>
-        <div class="text-center">
-            <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st8.11')">SKIP</a>
-        </div>
-        <!--css div popup start-->
-        <div id='div_st8.11' class="popup_window test_output" style="display:none;">
-            <div class='close_button pull-right'>
-                <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                        onclick="document.getElementById('div_st8.11').style.display='none'"><span
-                        aria-hidden="true">&times;</span></button>
-                <!--<a onfocus='this.blur();' onclick="document.getElementById('div_st8.11').style.display='none'">[x]</a>-->
-            </div>
-            <div class="text-left pull-left">
-                <pre class="text-left">st8.11: Not Implemented</pre>
-            </div>
-            <div class="clearfix"></div>
-        </div>
-        <!--css div popup end-->
-    </td>
-</tr>
-<tr id='st8.12' class='none bg-warning'>
-    <td>
-        <div class='testcase'>test_edit_publisher</div>
-    </td>
-    <td colspan='6'>
-        <div class="text-center">
-            <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st8.12')">SKIP</a>
-        </div>
-        <!--css div popup start-->
-        <div id='div_st8.12' class="popup_window test_output" style="display:none;">
-            <div class='close_button pull-right'>
-                <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                        onclick="document.getElementById('div_st8.12').style.display='none'"><span
-                        aria-hidden="true">&times;</span></button>
-                <!--<a onfocus='this.blur();' onclick="document.getElementById('div_st8.12').style.display='none'">[x]</a>-->
-            </div>
-            <div class="text-left pull-left">
-                <pre class="text-left">st8.12: Not Implemented</pre>
-            </div>
-            <div class="clearfix"></div>
-        </div>
-        <!--css div popup end-->
-    </td>
-</tr>
-<tr id='st8.13' class='none bg-warning'>
-    <td>
-        <div class='testcase'>test_edit_publishing_date</div>
-    </td>
-    <td colspan='6'>
-        <div class="text-center">
-            <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st8.13')">SKIP</a>
-        </div>
-        <!--css div popup start-->
-        <div id='div_st8.13' class="popup_window test_output" style="display:none;">
-            <div class='close_button pull-right'>
-                <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                        onclick="document.getElementById('div_st8.13').style.display='none'"><span
-                        aria-hidden="true">&times;</span></button>
-                <!--<a onfocus='this.blur();' onclick="document.getElementById('div_st8.13').style.display='none'">[x]</a>-->
-            </div>
-            <div class="text-left pull-left">
-                <pre class="text-left">st8.13: Not Implemented</pre>
-            </div>
-            <div class="clearfix"></div>
-        </div>
-        <!--css div popup end-->
-    </td>
-</tr>
-<tr id='st8.14' class='none bg-warning'>
-    <td>
-        <div class='testcase'>test_edit_rating</div>
-    </td>
-    <td colspan='6'>
-        <div class="text-center">
-            <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st8.14')">SKIP</a>
-        </div>
-        <!--css div popup start-->
-        <div id='div_st8.14' class="popup_window test_output" style="display:none;">
-            <div class='close_button pull-right'>
-                <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                        onclick="document.getElementById('div_st8.14').style.display='none'"><span
-                        aria-hidden="true">&times;</span></button>
-                <!--<a onfocus='this.blur();' onclick="document.getElementById('div_st8.14').style.display='none'">[x]</a>-->
-            </div>
-            <div class="text-left pull-left">
-                <pre class="text-left">st8.14: Not Implemented</pre>
-            </div>
-            <div class="clearfix"></div>
-        </div>
-        <!--css div popup end-->
-    </td>
-</tr>
-<tr id='st8.15' class='none bg-warning'>
-    <td>
-        <div class='testcase'>test_edit_series</div>
-    </td>
-    <td colspan='6'>
-        <div class="text-center">
-            <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st8.15')">SKIP</a>
-        </div>
-        <!--css div popup start-->
-        <div id='div_st8.15' class="popup_window test_output" style="display:none;">
-            <div class='close_button pull-right'>
-                <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                        onclick="document.getElementById('div_st8.15').style.display='none'"><span
-                        aria-hidden="true">&times;</span></button>
-                <!--<a onfocus='this.blur();' onclick="document.getElementById('div_st8.15').style.display='none'">[x]</a>-->
-            </div>
-            <div class="text-left pull-left">
-                <pre class="text-left">st8.15: Not Implemented</pre>
-            </div>
-            <div class="clearfix"></div>
-        </div>
-        <!--css div popup end-->
-    </td>
-</tr>
-<tr id='st8.16' class='none bg-warning'>
-    <td>
-        <div class='testcase'>test_edit_title</div>
-    </td>
-    <td colspan='6'>
-        <div class="text-center">
-            <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st8.16')">SKIP</a>
-        </div>
-        <!--css div popup start-->
-        <div id='div_st8.16' class="popup_window test_output" style="display:none;">
-            <div class='close_button pull-right'>
-                <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                        onclick="document.getElementById('div_st8.16').style.display='none'"><span
-                        aria-hidden="true">&times;</span></button>
-                <!--<a onfocus='this.blur();' onclick="document.getElementById('div_st8.16').style.display='none'">[x]</a>-->
-            </div>
-            <div class="text-left pull-left">
-                <pre class="text-left">st8.16: Not Implemented</pre>
-            </div>
-            <div class="clearfix"></div>
-        </div>
-        <!--css div popup end-->
-    </td>
-</tr>
-<tr id='st8.17' class='none bg-warning'>
-    <td>
-        <div class='testcase'>test_typeahead_author</div>
-    </td>
-    <td colspan='6'>
-        <div class="text-center">
-            <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st8.17')">SKIP</a>
-        </div>
-        <!--css div popup start-->
-        <div id='div_st8.17' class="popup_window test_output" style="display:none;">
-            <div class='close_button pull-right'>
-                <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                        onclick="document.getElementById('div_st8.17').style.display='none'"><span
-                        aria-hidden="true">&times;</span></button>
-                <!--<a onfocus='this.blur();' onclick="document.getElementById('div_st8.17').style.display='none'">[x]</a>-->
-            </div>
-            <div class="text-left pull-left">
-                <pre class="text-left">st8.17: Not Implemented</pre>
-            </div>
-            <div class="clearfix"></div>
-        </div>
-        <!--css div popup end-->
-    </td>
-</tr>
-<tr id='st8.18' class='none bg-warning'>
-    <td>
-        <div class='testcase'>test_typeahead_language</div>
-    </td>
-    <td colspan='6'>
-        <div class="text-center">
-            <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st8.18')">SKIP</a>
-        </div>
-        <!--css div popup start-->
-        <div id='div_st8.18' class="popup_window test_output" style="display:none;">
-            <div class='close_button pull-right'>
-                <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                        onclick="document.getElementById('div_st8.18').style.display='none'"><span
-                        aria-hidden="true">&times;</span></button>
-                <!--<a onfocus='this.blur();' onclick="document.getElementById('div_st8.18').style.display='none'">[x]</a>-->
-            </div>
-            <div class="text-left pull-left">
-                <pre class="text-left">st8.18: Not Implemented</pre>
-            </div>
-            <div class="clearfix"></div>
-        </div>
-        <!--css div popup end-->
-    </td>
-</tr>
-<tr id='st8.19' class='none bg-warning'>
-    <td>
-        <div class='testcase'>test_typeahead_publisher</div>
-    </td>
-    <td colspan='6'>
-        <div class="text-center">
-            <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st8.19')">SKIP</a>
-        </div>
-        <!--css div popup start-->
-        <div id='div_st8.19' class="popup_window test_output" style="display:none;">
-            <div class='close_button pull-right'>
-                <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                        onclick="document.getElementById('div_st8.19').style.display='none'"><span
-                        aria-hidden="true">&times;</span></button>
-                <!--<a onfocus='this.blur();' onclick="document.getElementById('div_st8.19').style.display='none'">[x]</a>-->
-            </div>
-            <div class="text-left pull-left">
-                <pre class="text-left">st8.19: Not Implemented</pre>
-            </div>
-            <div class="clearfix"></div>
-        </div>
-        <!--css div popup end-->
-    </td>
-</tr>
-<tr id='st8.20' class='none bg-warning'>
-    <td>
-        <div class='testcase'>test_typeahead_series</div>
-    </td>
-    <td colspan='6'>
-        <div class="text-center">
-            <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st8.20')">SKIP</a>
-        </div>
-        <!--css div popup start-->
-        <div id='div_st8.20' class="popup_window test_output" style="display:none;">
-            <div class='close_button pull-right'>
-                <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                        onclick="document.getElementById('div_st8.20').style.display='none'"><span
-                        aria-hidden="true">&times;</span></button>
-                <!--<a onfocus='this.blur();' onclick="document.getElementById('div_st8.20').style.display='none'">[x]</a>-->
-            </div>
-            <div class="text-left pull-left">
-                <pre class="text-left">st8.20: Not Implemented</pre>
-            </div>
-            <div class="clearfix"></div>
-        </div>
-        <!--css div popup end-->
-    </td>
-</tr>
-<tr id='st8.21' class='none bg-warning'>
-    <td>
-        <div class='testcase'>test_typeahead_tag</div>
-    </td>
-    <td colspan='6'>
-        <div class="text-center">
-            <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st8.21')">SKIP</a>
-        </div>
-        <!--css div popup start-->
-        <div id='div_st8.21' class="popup_window test_output" style="display:none;">
-            <div class='close_button pull-right'>
-                <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                        onclick="document.getElementById('div_st8.21').style.display='none'"><span
-                        aria-hidden="true">&times;</span></button>
-                <!--<a onfocus='this.blur();' onclick="document.getElementById('div_st8.21').style.display='none'">[x]</a>-->
-            </div>
-            <div class="text-left pull-left">
-                <pre class="text-left">st8.21: Not Implemented</pre>
-            </div>
-            <div class="clearfix"></div>
-        </div>
-        <!--css div popup end-->
-    </td>
-</tr>
-<tr id='st8.22' class='none bg-warning'>
-    <td>
-        <div class='testcase'>test_upload_cover_hdd</div>
-    </td>
-    <td colspan='6'>
-        <div class="text-center">
-            <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st8.22')">SKIP</a>
-        </div>
-        <!--css div popup start-->
-        <div id='div_st8.22' class="popup_window test_output" style="display:none;">
-            <div class='close_button pull-right'>
-                <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                        onclick="document.getElementById('div_st8.22').style.display='none'"><span
-                        aria-hidden="true">&times;</span></button>
-                <!--<a onfocus='this.blur();' onclick="document.getElementById('div_st8.22').style.display='none'">[x]</a>-->
-            </div>
-            <div class="text-left pull-left">
-                <pre class="text-left">st8.22: Not Implemented</pre>
-            </div>
-            <div class="clearfix"></div>
-        </div>
-        <!--css div popup end-->
-    </td>
-</tr>
-<tr class='passClass'>
+<tr class='failClass'>
     <td>test_login.test_login</td>
     <td class="text-center">6</td>
-    <td class="text-center">6</td>
-    <td class="text-center">0</td>
+    <td class="text-center">5</td>
+    <td class="text-center">1</td>
     <td class="text-center">0</td>
     <td class="text-center">0</td>
     <td class="text-center">
-        <a onclick="showClassDetail('c9', 6)">Detail</a>
+        <a onclick="showClassDetail('c8', 6)">Detail</a>
     </td>
 </tr>
-<tr id='pt9.1' class='hiddenRow bg-success'>
+<tr id='pt8.1' class='hiddenRow bg-success'>
     <td>
         <div class='testcase'>test_login_capital_letters_user_unicode_password_passwort</div>
     </td>
     <td colspan='6' align='center'>PASS</td>
 </tr>
-<tr id='pt9.2' class='hiddenRow bg-success'>
+<tr id='pt8.2' class='hiddenRow bg-success'>
     <td>
         <div class='testcase'>test_login_delete_admin</div>
     </td>
     <td colspan='6' align='center'>PASS</td>
 </tr>
-<tr id='pt9.3' class='hiddenRow bg-success'>
+<tr id='pt8.3' class='hiddenRow bg-success'>
     <td>
         <div class='testcase'>test_login_empty_password</div>
     </td>
     <td colspan='6' align='center'>PASS</td>
 </tr>
-<tr id='pt9.4' class='hiddenRow bg-success'>
+<tr id='ft8.4' class='none bg-danger'>
     <td>
         <div class='testcase'>test_login_protected</div>
     </td>
-    <td colspan='6' align='center'>PASS</td>
+    <td colspan='6'>
+        <div class="text-center">
+            <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft8.4')">FAIL</a>
+        </div>
+        <!--css div popup start-->
+        <div id='div_ft8.4' class="popup_window test_output" style="display:none;">
+            <div class='close_button pull-right'>
+                <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
+                        onclick="document.getElementById('div_ft8.4').style.display='none'"><span
+                        aria-hidden="true">&times;</span></button>
+                <!--<a onfocus='this.blur();' onclick="document.getElementById('div_ft8.4').style.display='none'">[x]</a>-->
+            </div>
+            <div class="text-left pull-left">
+                <pre class="text-left">ft8.4: Traceback (most recent call last):
+  File "/home/matthias/Entwicklung/calibre-web-test/test/test_login.py", line 81, in test_login_protected
+    self.assertTrue(self.fail_access_page("http://127.0.0.1:8083/config"))
+AssertionError: False is not true</pre>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+        <!--css div popup end-->
+    </td>
 </tr>
-<tr id='pt9.5' class='hiddenRow bg-success'>
+<tr id='pt8.5' class='hiddenRow bg-success'>
     <td>
         <div class='testcase'>test_login_unicode_user_space_end_passwort</div>
     </td>
     <td colspan='6' align='center'>PASS</td>
 </tr>
-<tr id='pt9.6' class='hiddenRow bg-success'>
+<tr id='pt8.6' class='hiddenRow bg-success'>
     <td>
         <div class='testcase'>test_login_user_with_space_passwort_end_space</div>
     </td>
@@ -1889,12 +1630,47 @@ AssertionError: u'Randomh\xe4us' != u'Beta|,Bet'
     <td class="text-center">0</td>
     <td class="text-center">1</td>
     <td class="text-center">
+        <a onclick="showClassDetail('c9', 1)">Detail</a>
+    </td>
+</tr>
+<tr id='st9.1' class='none bg-warning'>
+    <td>
+        <div class='testcase'>test_opds</div>
+    </td>
+    <td colspan='6'>
+        <div class="text-center">
+            <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st9.1')">SKIP</a>
+        </div>
+        <!--css div popup start-->
+        <div id='div_st9.1' class="popup_window test_output" style="display:none;">
+            <div class='close_button pull-right'>
+                <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
+                        onclick="document.getElementById('div_st9.1').style.display='none'"><span
+                        aria-hidden="true">&times;</span></button>
+                <!--<a onfocus='this.blur();' onclick="document.getElementById('div_st9.1').style.display='none'">[x]</a>-->
+            </div>
+            <div class="text-left pull-left">
+                <pre class="text-left">st9.1: Not Implemented</pre>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+        <!--css div popup end-->
+    </td>
+</tr>
+<tr class='skipClass'>
+    <td>test_updater.test_updater</td>
+    <td class="text-center">1</td>
+    <td class="text-center">0</td>
+    <td class="text-center">0</td>
+    <td class="text-center">0</td>
+    <td class="text-center">1</td>
+    <td class="text-center">
         <a onclick="showClassDetail('c10', 1)">Detail</a>
     </td>
 </tr>
 <tr id='st10.1' class='none bg-warning'>
     <td>
-        <div class='testcase'>test_opds</div>
+        <div class='testcase'>test_updater</div>
     </td>
     <td colspan='6'>
         <div class="text-center">
@@ -1916,113 +1692,90 @@ AssertionError: u'Randomh\xe4us' != u'Beta|,Bet'
         <!--css div popup end-->
     </td>
 </tr>
-<tr class='skipClass'>
-    <td>test_updater.test_updater</td>
-    <td class="text-center">1</td>
-    <td class="text-center">0</td>
-    <td class="text-center">0</td>
-    <td class="text-center">0</td>
-    <td class="text-center">1</td>
-    <td class="text-center">
-        <a onclick="showClassDetail('c11', 1)">Detail</a>
-    </td>
-</tr>
-<tr id='st11.1' class='none bg-warning'>
-    <td>
-        <div class='testcase'>test_updater</div>
-    </td>
-    <td colspan='6'>
-        <div class="text-center">
-            <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st11.1')">SKIP</a>
-        </div>
-        <!--css div popup start-->
-        <div id='div_st11.1' class="popup_window test_output" style="display:none;">
-            <div class='close_button pull-right'>
-                <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                        onclick="document.getElementById('div_st11.1').style.display='none'"><span
-                        aria-hidden="true">&times;</span></button>
-                <!--<a onfocus='this.blur();' onclick="document.getElementById('div_st11.1').style.display='none'">[x]</a>-->
-            </div>
-            <div class="text-left pull-left">
-                <pre class="text-left">st11.1: Not Implemented</pre>
-            </div>
-            <div class="clearfix"></div>
-        </div>
-        <!--css div popup end-->
-    </td>
-</tr>
 <tr class='passClass'>
     <td>test_helper.calibre_helper</td>
-    <td class="text-center">11</td>
-    <td class="text-center">11</td>
+    <td class="text-center">13</td>
+    <td class="text-center">13</td>
     <td class="text-center">0</td>
     <td class="text-center">0</td>
     <td class="text-center">0</td>
     <td class="text-center">
-        <a onclick="showClassDetail('c12', 11)">Detail</a>
+        <a onclick="showClassDetail('c11', 13)">Detail</a>
     </td>
 </tr>
-<tr id='pt12.1' class='hiddenRow bg-success'>
+<tr id='pt11.1' class='hiddenRow bg-success'>
     <td>
         <div class='testcase'>test_author_sort</div>
     </td>
     <td colspan='6' align='center'>PASS</td>
 </tr>
-<tr id='pt12.2' class='hiddenRow bg-success'>
+<tr id='pt11.2' class='hiddenRow bg-success'>
+    <td>
+        <div class='testcase'>test_author_sort_comma</div>
+    </td>
+    <td colspan='6' align='center'>PASS</td>
+</tr>
+<tr id='pt11.3' class='hiddenRow bg-success'>
     <td>
         <div class='testcase'>test_author_sort_junior</div>
     </td>
     <td colspan='6' align='center'>PASS</td>
 </tr>
-<tr id='pt12.3' class='hiddenRow bg-success'>
+<tr id='pt11.4' class='hiddenRow bg-success'>
+    <td>
+        <div class='testcase'>test_author_sort_oneword</div>
+    </td>
+    <td colspan='6' align='center'>PASS</td>
+</tr>
+<tr id='pt11.5' class='hiddenRow bg-success'>
     <td>
         <div class='testcase'>test_author_sort_roman</div>
     </td>
     <td colspan='6' align='center'>PASS</td>
 </tr>
-<tr id='pt12.4' class='hiddenRow bg-success'>
+<tr id='pt11.6' class='hiddenRow bg-success'>
     <td>
         <div class='testcase'>test_check_Limit_Length</div>
     </td>
     <td colspan='6' align='center'>PASS</td>
 </tr>
-<tr id='pt12.5' class='hiddenRow bg-success'>
+<tr id='pt11.7' class='hiddenRow bg-success'>
     <td>
         <div class='testcase'>test_check_char_replacement</div>
     </td>
     <td colspan='6' align='center'>PASS</td>
 </tr>
-<tr id='pt12.6' class='hiddenRow bg-success'>
+<tr id='pt11.8' class='hiddenRow bg-success'>
     <td>
         <div class='testcase'>test_check_chinese_Characters</div>
     </td>
     <td colspan='6' align='center'>PASS</td>
 </tr>
-<tr id='pt12.7' class='hiddenRow bg-success'>
+<tr id='pt11.9' class='hiddenRow bg-success'>
     <td>
         <div class='testcase'>test_check_degEUR_replacement</div>
     </td>
     <td colspan='6' align='center'>PASS</td>
 </tr>
-<tr id='pt12.8' class='hiddenRow bg-success'>
+<tr id='pt11.10' class='hiddenRow bg-success'>
     <td>
         <div class='testcase'>test_check_doubleS</div>
     </td>
     <td colspan='6' align='center'>PASS</td>
 </tr>
-<tr id='pt12.9' class='hiddenRow bg-success'>
+<tr id='pt11.11' class='hiddenRow bg-success'>
     <td>
         <div class='testcase'>test_check_finish_Dot</div>
     </td>
     <td colspan='6' align='center'>PASS</td>
 </tr>
-<tr id='pt12.10' class='hiddenRow bg-success'>
+<tr id='pt11.12' class='hiddenRow bg-success'>
     <td>
         <div class='testcase'>test_check_high23</div>
     </td>
     <td colspan='6' align='center'>PASS</td>
 </tr>
-<tr id='pt12.11' class='hiddenRow bg-success'>
+<tr id='pt11.13' class='hiddenRow bg-success'>
     <td>
         <div class='testcase'>test_check_umlauts</div>
     </td>
@@ -2036,99 +1789,99 @@ AssertionError: u'Randomh\xe4us' != u'Beta|,Bet'
     <td class="text-center">0</td>
     <td class="text-center">4</td>
     <td class="text-center">
-        <a onclick="showClassDetail('c13', 4)">Detail</a>
+        <a onclick="showClassDetail('c12', 4)">Detail</a>
     </td>
 </tr>
-<tr id='st13.1' class='none bg-warning'>
+<tr id='st12.1' class='none bg-warning'>
     <td>
         <div class='testcase'>test_login_with_password</div>
     </td>
     <td colspan='6'>
         <div class="text-center">
-            <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st13.1')">SKIP</a>
+            <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st12.1')">SKIP</a>
         </div>
         <!--css div popup start-->
-        <div id='div_st13.1' class="popup_window test_output" style="display:none;">
+        <div id='div_st12.1' class="popup_window test_output" style="display:none;">
             <div class='close_button pull-right'>
                 <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                        onclick="document.getElementById('div_st13.1').style.display='none'"><span
+                        onclick="document.getElementById('div_st12.1').style.display='none'"><span
                         aria-hidden="true">&times;</span></button>
-                <!--<a onfocus='this.blur();' onclick="document.getElementById('div_st13.1').style.display='none'">[x]</a>-->
+                <!--<a onfocus='this.blur();' onclick="document.getElementById('div_st12.1').style.display='none'">[x]</a>-->
             </div>
             <div class="text-left pull-left">
-                <pre class="text-left">st13.1: Not Implemented</pre>
+                <pre class="text-left">st12.1: Not Implemented</pre>
             </div>
             <div class="clearfix"></div>
         </div>
         <!--css div popup end-->
     </td>
 </tr>
-<tr id='st13.2' class='none bg-warning'>
+<tr id='st12.2' class='none bg-warning'>
     <td>
         <div class='testcase'>test_registering_user</div>
     </td>
     <td colspan='6'>
         <div class="text-center">
-            <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st13.2')">SKIP</a>
+            <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st12.2')">SKIP</a>
         </div>
         <!--css div popup start-->
-        <div id='div_st13.2' class="popup_window test_output" style="display:none;">
+        <div id='div_st12.2' class="popup_window test_output" style="display:none;">
             <div class='close_button pull-right'>
                 <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                        onclick="document.getElementById('div_st13.2').style.display='none'"><span
+                        onclick="document.getElementById('div_st12.2').style.display='none'"><span
                         aria-hidden="true">&times;</span></button>
-                <!--<a onfocus='this.blur();' onclick="document.getElementById('div_st13.2').style.display='none'">[x]</a>-->
+                <!--<a onfocus='this.blur();' onclick="document.getElementById('div_st12.2').style.display='none'">[x]</a>-->
             </div>
             <div class="text-left pull-left">
-                <pre class="text-left">st13.2: Not Implemented</pre>
+                <pre class="text-left">st12.2: Not Implemented</pre>
             </div>
             <div class="clearfix"></div>
         </div>
         <!--css div popup end-->
     </td>
 </tr>
-<tr id='st13.3' class='none bg-warning'>
+<tr id='st12.3' class='none bg-warning'>
     <td>
         <div class='testcase'>test_registering_user_fail</div>
     </td>
     <td colspan='6'>
         <div class="text-center">
-            <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st13.3')">SKIP</a>
+            <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st12.3')">SKIP</a>
         </div>
         <!--css div popup start-->
-        <div id='div_st13.3' class="popup_window test_output" style="display:none;">
+        <div id='div_st12.3' class="popup_window test_output" style="display:none;">
             <div class='close_button pull-right'>
                 <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                        onclick="document.getElementById('div_st13.3').style.display='none'"><span
+                        onclick="document.getElementById('div_st12.3').style.display='none'"><span
                         aria-hidden="true">&times;</span></button>
-                <!--<a onfocus='this.blur();' onclick="document.getElementById('div_st13.3').style.display='none'">[x]</a>-->
+                <!--<a onfocus='this.blur();' onclick="document.getElementById('div_st12.3').style.display='none'">[x]</a>-->
             </div>
             <div class="text-left pull-left">
-                <pre class="text-left">st13.3: Not Implemented</pre>
+                <pre class="text-left">st12.3: Not Implemented</pre>
             </div>
             <div class="clearfix"></div>
         </div>
         <!--css div popup end-->
     </td>
 </tr>
-<tr id='st13.4' class='none bg-warning'>
+<tr id='st12.4' class='none bg-warning'>
     <td>
         <div class='testcase'>test_resend_password</div>
     </td>
     <td colspan='6'>
         <div class="text-center">
-            <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st13.4')">SKIP</a>
+            <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st12.4')">SKIP</a>
         </div>
         <!--css div popup start-->
-        <div id='div_st13.4' class="popup_window test_output" style="display:none;">
+        <div id='div_st12.4' class="popup_window test_output" style="display:none;">
             <div class='close_button pull-right'>
                 <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                        onclick="document.getElementById('div_st13.4').style.display='none'"><span
+                        onclick="document.getElementById('div_st12.4').style.display='none'"><span
                         aria-hidden="true">&times;</span></button>
-                <!--<a onfocus='this.blur();' onclick="document.getElementById('div_st13.4').style.display='none'">[x]</a>-->
+                <!--<a onfocus='this.blur();' onclick="document.getElementById('div_st12.4').style.display='none'">[x]</a>-->
             </div>
             <div class="text-left pull-left">
-                <pre class="text-left">st13.4: Not Implemented</pre>
+                <pre class="text-left">st12.4: Not Implemented</pre>
             </div>
             <div class="clearfix"></div>
         </div>
@@ -2143,28 +1896,28 @@ AssertionError: u'Randomh\xe4us' != u'Beta|,Bet'
     <td class="text-center">0</td>
     <td class="text-center">0</td>
     <td class="text-center">
-        <a onclick="showClassDetail('c14', 4)">Detail</a>
+        <a onclick="showClassDetail('c13', 4)">Detail</a>
     </td>
 </tr>
-<tr id='pt14.1' class='hiddenRow bg-success'>
+<tr id='pt13.1' class='hiddenRow bg-success'>
     <td>
         <div class='testcase'>test_cli_SSL_files</div>
     </td>
     <td colspan='6' align='center'>PASS</td>
 </tr>
-<tr id='pt14.2' class='hiddenRow bg-success'>
+<tr id='pt13.2' class='hiddenRow bg-success'>
     <td>
         <div class='testcase'>test_cli_different_folder</div>
     </td>
     <td colspan='6' align='center'>PASS</td>
 </tr>
-<tr id='pt14.3' class='hiddenRow bg-success'>
+<tr id='pt13.3' class='hiddenRow bg-success'>
     <td>
         <div class='testcase'>test_cli_different_settings_database</div>
     </td>
     <td colspan='6' align='center'>PASS</td>
 </tr>
-<tr id='pt14.4' class='hiddenRow bg-success'>
+<tr id='pt13.4' class='hiddenRow bg-success'>
     <td>
         <div class='testcase'>test_environ_port_setting</div>
     </td>
@@ -2173,17 +1926,17 @@ AssertionError: u'Randomh\xe4us' != u'Beta|,Bet'
 
     <tr id='total_row' class="text-center bg-grey">
         <td>Total</td>
-        <td>127</td>
+        <td>117</td>
         <td>63</td>
-        <td>3</td>
+        <td>5</td>
         <td>0</td>
-        <td>61</td>
+        <td>49</td>
         <td>&nbsp;</td>
     </tr>
 </table>
 
 <script>
-    drawCircle(63, 3, 0, 61);
+    drawCircle(63, 5, 0, 49);
 </script>
 
 </div>
