@@ -123,13 +123,13 @@ def check_send_to_kindle(entry):
             # no converter - only for mobi and pdf formats
             for ele in iter(entry.data):
                 if 'MOBI' in ele.format:
-                    bookformats.append({'format':'Mobi','text':_('Send %(format)s to Kindle',format='Mobi')})
+                    bookformats.append({'format':'Mobi','convert':0,'text':_('Send %(format)s to Kindle',format='Mobi')})
                 if 'PDF' in ele.format:
-                    bookformats.append({'format':'Pdf','text':_('Send %(format)s to Kindle',format='Pdf')})
+                    bookformats.append({'format':'Pdf','convert':0,'text':_('Send %(format)s to Kindle',format='Pdf')})
                 if 'AZW' in ele.format:
-                    bookformats.append({'format':'Azw','text':_('Send %(format)s to Kindle',format='Azw')})
+                    bookformats.append({'format':'Azw','convert':0,'text':_('Send %(format)s to Kindle',format='Azw')})
                 if 'AZW3' in ele.format:
-                    bookformats.append({'format':'Azw3','text':_('Send %(format)s to Kkindle',format='Azw3')})
+                    bookformats.append({'format':'Azw3','convert':0,'text':_('Send %(format)s to Kindle',format='Azw3')})
         else:
             formats = list()
             for ele in iter(entry.data):
