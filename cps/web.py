@@ -2056,9 +2056,11 @@ def advanced_search():
             for language in exclude_languages_inputs:
                 q = q.filter(not_(db.Books.series.any(db.Languages.id == language)))
         if rating_high:
-            q = q.filter(db.Books.ratings.any(db.Ratings.id <= rating_high))
+            rating_high = int(rating_high) * 2
+            q = q.filter(db.Books.ratings.any(db.Ratings.rating <= rating_high))
         if rating_low:
-            q = q.filter(db.Books.ratings.any(db.Ratings.id >= rating_low))
+            rating_low = int(rating_low) *2
+            q = q.filter(db.Books.ratings.any(db.Ratings.rating >= rating_low))
         if description:
             q = q.filter(db.Books.comments.any(db.Comments.text.ilike("%" + description + "%")))
 
