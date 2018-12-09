@@ -9,15 +9,16 @@ msgstr ""
 "Project-Id-Version: Calibre-Web dutch translation by Ed Driesen (GPL V3)\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2018-11-03 14:03+0100\n"
-"PO-Revision-Date: 2018-09-23 13:29+0200\n"
+"PO-Revision-Date: 2018-12-09 15:07+0100\n"
 "Last-Translator: \n"
 "Language: nl\n"
 "Language-Team: ed.driesen@telenet.be\n"
-"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.6.0\n"
+"X-Generator: Poedit 2.0.6\n"
 
 #: cps/book_formats.py:129 cps/book_formats.py:130 cps/book_formats.py:134
 #: cps/book_formats.py:138 cps/converter.py:11 cps/converter.py:27
@@ -30,7 +31,7 @@ msgstr "Rechten om uit te voeren ontbreken"
 
 #: cps/converter.py:48
 msgid "not configured"
-msgstr ""
+msgstr "Niet geconfigureerd"
 
 #: cps/helper.py:58
 #, python-format
@@ -131,23 +132,23 @@ msgstr "Voltooid"
 
 #: cps/helper.py:617
 msgid "Unknown Status"
-msgstr ""
+msgstr "Onbekende status"
 
 #: cps/helper.py:622
 msgid "E-mail: "
-msgstr ""
+msgstr "Email:"
 
 #: cps/helper.py:624 cps/helper.py:628
 msgid "Convert: "
-msgstr ""
+msgstr "Converteer:"
 
 #: cps/helper.py:626
 msgid "Upload: "
-msgstr ""
+msgstr "Upload:"
 
 #: cps/helper.py:630
 msgid "Unknown Task: "
-msgstr ""
+msgstr "Onbekende taak:"
 
 #: cps/web.py:1132 cps/web.py:2842
 msgid "Unknown"
@@ -199,7 +200,7 @@ msgstr "Update pakket wordt uitgepakt"
 
 #: cps/web.py:1253
 msgid "Replacing files"
-msgstr ""
+msgstr "Bestanden aan het vervangen"
 
 #: cps/web.py:1254
 msgid "Database connections are closed"
@@ -207,7 +208,7 @@ msgstr "Database verbindingen zijn gesloten"
 
 #: cps/web.py:1255
 msgid "Stopping server"
-msgstr ""
+msgstr "Server aan het stoppen"
 
 #: cps/web.py:1256
 msgid "Update finished, please press okay and reload page"
@@ -215,7 +216,7 @@ msgstr "Update voltooid, klik op ok en herlaad de pagina"
 
 #: cps/web.py:1257 cps/web.py:1258 cps/web.py:1259 cps/web.py:1260
 msgid "Update failed:"
-msgstr ""
+msgstr "Update gefaald:"
 
 #: cps/web.py:1283
 msgid "Recently Added Books"
@@ -259,12 +260,12 @@ msgstr "Fout bij openen van het boek. Bestand bestaat niet of is niet toegankeli
 
 #: cps/web.py:1438
 msgid "Publisher list"
-msgstr ""
+msgstr "Uitgeverslijst"
 
 #: cps/web.py:1452
 #, python-format
 msgid "Publisher: %(name)s"
-msgstr ""
+msgstr "Uitgever: %(name)s"
 
 #: cps/templates/index.xml:83 cps/web.py:1484
 msgid "Series list"
@@ -428,16 +429,16 @@ msgstr "Ongeldige boekenplank gespecificeerd"
 #: cps/web.py:2483
 #, python-format
 msgid "Sorry you are not allowed to add a book to the the shelf: %(shelfname)s"
-msgstr ""
+msgstr "Sorry, jij mag geen boeken toe voegen aan boekenplank: %(shelfname)s"
 
 #: cps/web.py:2491
 msgid "You are not allowed to edit public shelves"
-msgstr ""
+msgstr "Jij mag geen publieke boekenplanken bewerken"
 
 #: cps/web.py:2500
 #, python-format
 msgid "Book is already part of the shelf: %(shelfname)s"
-msgstr ""
+msgstr "Dit boek maakt al deel uit van boekenplank: %(shelfname)s"
 
 #: cps/web.py:2514
 #, python-format
@@ -703,7 +704,7 @@ msgstr "%(langname)s is geen geldige taal"
 
 #: cps/web.py:3752
 msgid "Metadata successfully updated"
-msgstr ""
+msgstr "Metadata succesvol geüpdatet"
 
 #: cps/web.py:3761
 msgid "Error editing book, please check logfile for details"
@@ -1324,7 +1325,7 @@ msgstr "Toon auteur selectie"
 
 #: cps/templates/config_view_edit.html:148 cps/templates/user_edit.html:94
 msgid "Show publisher selection"
-msgstr ""
+msgstr "Toon uitgevers selectie"
 
 #: cps/templates/config_view_edit.html:152 cps/templates/user_edit.html:98
 msgid "Show read and unread"
@@ -1481,11 +1482,11 @@ msgstr "Boeken gesorteerd op Auteur"
 
 #: cps/templates/index.xml:69 cps/templates/layout.html:163
 msgid "Publishers"
-msgstr ""
+msgstr "Uitgevers"
 
 #: cps/templates/index.xml:73
 msgid "Books ordered by publisher"
-msgstr ""
+msgstr "Boeken gesorteerd op uitgever"
 
 #: cps/templates/index.xml:80
 msgid "Books ordered by category"
@@ -1919,30 +1920,6 @@ msgstr "Wis deze gebruiker"
 msgid "Recent Downloads"
 msgstr "Recente Downloads"
 
-#~ msgid "Published after %s"
-#~ msgstr ""
-
-#~ msgid "Convert: %s"
-#~ msgstr ""
-
-#~ msgid "%s: %s"
-#~ msgstr ""
-
-#~ msgid "Password for user %s reset"
-#~ msgstr ""
-
-#~ msgid "Rename title from: '%(src)s' to '%(src)s' failed with error: %(error)s"
-#~ msgstr ""
-
-#~ msgid "Rename author from: '%(src)s' to '%(src)s' failed with error: %(error)s"
-#~ msgstr ""
-
-#~ msgid "Failed to create path for cover %(cover)s (Permission denied)."
-#~ msgstr ""
-
-#~ msgid "File extension '%s' is not allowed to be uploaded to this server"
-#~ msgstr ""
-
 #~ msgid "File extension \"%(ext)s\" is not allowed to be uploaded to this server"
 #~ msgstr "Het uploaden van bestandsextensie \"%(ext)s\" is niet toegestaan op deze server"
 
@@ -1969,4 +1946,3 @@ msgstr "Recente Downloads"
 
 #~ msgid "Choose a password"
 #~ msgstr "Kies een wachtwoord"
-
