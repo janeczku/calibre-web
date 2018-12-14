@@ -5,18 +5,19 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version:  Calibre-Web\n"
+"Project-Id-Version: Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
 "POT-Creation-Date: 2018-11-03 14:03+0100\n"
-"PO-Revision-Date: 2017-04-30 00:47+0300\n"
+"PO-Revision-Date: 2018-12-14 16:26+0300\n"
 "Last-Translator: Pavel Korovin <p@tristero.se>\n"
 "Language: ru\n"
 "Language-Team: \n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2)\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.6.0\n"
+"X-Generator: Poedit 2.2\n"
 
 #: cps/book_formats.py:129 cps/book_formats.py:130 cps/book_formats.py:134
 #: cps/book_formats.py:138 cps/converter.py:11 cps/converter.py:27
@@ -29,7 +30,7 @@ msgstr "Отсутствуют разрешения на выполнение"
 
 #: cps/converter.py:48
 msgid "not configured"
-msgstr ""
+msgstr "не настроен"
 
 #: cps/helper.py:58
 #, python-format
@@ -130,23 +131,23 @@ msgstr "Закончено"
 
 #: cps/helper.py:617
 msgid "Unknown Status"
-msgstr ""
+msgstr "Неизвестный статус"
 
 #: cps/helper.py:622
 msgid "E-mail: "
-msgstr ""
+msgstr "E-mail: "
 
 #: cps/helper.py:624 cps/helper.py:628
 msgid "Convert: "
-msgstr ""
+msgstr "Конвертировать:"
 
 #: cps/helper.py:626
 msgid "Upload: "
-msgstr ""
+msgstr "Загрузить:"
 
 #: cps/helper.py:630
 msgid "Unknown Task: "
-msgstr ""
+msgstr "Неизвестная задача:"
 
 #: cps/web.py:1132 cps/web.py:2842
 msgid "Unknown"
@@ -198,7 +199,7 @@ msgstr "Распаковка обновлений"
 
 #: cps/web.py:1253
 msgid "Replacing files"
-msgstr ""
+msgstr "Замена файлов"
 
 #: cps/web.py:1254
 msgid "Database connections are closed"
@@ -206,7 +207,7 @@ msgstr "Соеднинения с базой данных закрыты"
 
 #: cps/web.py:1255
 msgid "Stopping server"
-msgstr ""
+msgstr "Остановка сервера"
 
 #: cps/web.py:1256
 msgid "Update finished, please press okay and reload page"
@@ -214,7 +215,7 @@ msgstr "Обновления установлены, нажмите okay и пе
 
 #: cps/web.py:1257 cps/web.py:1258 cps/web.py:1259 cps/web.py:1260
 msgid "Update failed:"
-msgstr ""
+msgstr "Ошибка обновления:"
 
 #: cps/web.py:1283
 msgid "Recently Added Books"
@@ -258,12 +259,12 @@ msgstr "Невозможно открыть книгу. Файл не сущес
 
 #: cps/web.py:1438
 msgid "Publisher list"
-msgstr ""
+msgstr "Список издателей"
 
 #: cps/web.py:1452
 #, python-format
 msgid "Publisher: %(name)s"
-msgstr ""
+msgstr "Издатель: %(name)s"
 
 #: cps/templates/index.xml:83 cps/web.py:1484
 msgid "Series list"
@@ -427,16 +428,16 @@ msgstr "Указана неверная полка"
 #: cps/web.py:2483
 #, python-format
 msgid "Sorry you are not allowed to add a book to the the shelf: %(shelfname)s"
-msgstr ""
+msgstr "Извините, но вам не разрешено добавлять книгу на полку: %(shelfname)s"
 
 #: cps/web.py:2491
 msgid "You are not allowed to edit public shelves"
-msgstr ""
+msgstr "Вы не можете редактировать общедоступные полки"
 
 #: cps/web.py:2500
 #, python-format
 msgid "Book is already part of the shelf: %(shelfname)s"
-msgstr ""
+msgstr "Книги уже размещены на полке: %(shelfname)s"
 
 #: cps/web.py:2514
 #, python-format
@@ -702,7 +703,7 @@ msgstr "%(langname)s не допустимый язык"
 
 #: cps/web.py:3752
 msgid "Metadata successfully updated"
-msgstr ""
+msgstr "Метаданные обновлены"
 
 #: cps/web.py:3761
 msgid "Error editing book, please check logfile for details"
@@ -1323,7 +1324,7 @@ msgstr "Показывать выбор автора"
 
 #: cps/templates/config_view_edit.html:148 cps/templates/user_edit.html:94
 msgid "Show publisher selection"
-msgstr ""
+msgstr "Показать выбор издателя"
 
 #: cps/templates/config_view_edit.html:152 cps/templates/user_edit.html:98
 msgid "Show read and unread"
@@ -1480,11 +1481,11 @@ msgstr "Книги, отсортированные по Автору"
 
 #: cps/templates/index.xml:69 cps/templates/layout.html:163
 msgid "Publishers"
-msgstr ""
+msgstr "Издатели"
 
 #: cps/templates/index.xml:73
 msgid "Books ordered by publisher"
-msgstr ""
+msgstr "Книги, отсортированные по издателю"
 
 #: cps/templates/index.xml:80
 msgid "Books ordered by category"
@@ -1944,4 +1945,3 @@ msgstr "Недавние скачивания"
 
 #~ msgid "Convertertool %(converter)s not found"
 #~ msgstr "Инструмент конвертирования %(converter)s не найден"
-
