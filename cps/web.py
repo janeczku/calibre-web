@@ -3533,7 +3533,7 @@ def edit_cc_data(book_id, book, to_save):
             input_tags = list(map(lambda it: it.strip(), input_tags))
             modify_database_object(input_tags, getattr(book, cc_string), db.cc_classes[c.id], db.session,
                                    'custom')
-        return cc
+    return cc
 
 def upload_single_file(request, book, book_id):
     # Check and handle Uploaded file
