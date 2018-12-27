@@ -113,7 +113,7 @@ current_milli_time = lambda: int(round(time.time() * 1000))
 gdrive_watch_callback_token = 'target=calibreweb-watch_files'
 EXTENSIONS_UPLOAD = {'txt', 'pdf', 'epub', 'mobi', 'azw', 'azw3', 'cbr', 'cbz', 'cbt', 'djvu', 'prc', 'doc', 'docx',
                       'fb2', 'html', 'rtf', 'odt'}
-EXTENSIONS_CONVERT = {'pdf', 'epub', 'mobi', 'azw3', 'docx', 'rtf', 'fb2', 'lit', 'lrf', 'txt', 'html', 'rtf', 'odt'}
+EXTENSIONS_CONVERT = {'pdf', 'epub', 'mobi', 'azw3', 'docx', 'rtf', 'fb2', 'lit', 'lrf', 'txt', 'htmlz'}
 
 
 # Main code
@@ -3186,9 +3186,9 @@ def new_user():
         if "upload_role" in to_save:
             content.role = content.role + ub.ROLE_UPLOAD
         if "edit_role" in to_save:
-            content.role = content.role + ub.ROLE_DELETE_BOOKS
-        if "delete_role" in to_save:
             content.role = content.role + ub.ROLE_EDIT
+        if "delete_role" in to_save:
+            content.role = content.role + ub.ROLE_DELETE_BOOKS
         if "passwd_role" in to_save:
             content.role = content.role + ub.ROLE_PASSWD
         if "edit_shelf_role" in to_save:
@@ -3236,7 +3236,6 @@ def edit_mailsettings():
         content.mail_use_ssl = int(to_save["mail_use_ssl"])
         try:
             ub.session.commit()
-            flash(_(u"E-mail server settings updated"), category="success")
         except Exception as e:
             flash(e, category="error")
         if "test" in to_save and to_save["test"]:

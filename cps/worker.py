@@ -99,7 +99,7 @@ class emailbase():
     def send(self, strg):
         """Send `strg' to the server."""
         if self.debuglevel > 0:
-            print('send:', repr(strg), file=sys.stderr)
+            print('send:', repr(strg[:300]), file=sys.stderr)
         if hasattr(self, 'sock') and self.sock:
             try:
                 if self.transferSize:
@@ -278,7 +278,9 @@ class WorkerThread(threading.Thread):
                     command = [web.ub.config.config_converterpath, (file_path + format_old_ext),
                                (file_path + format_new_ext)]
                     if web.ub.config.config_calibre:
-                        command.append(web.ub.config.config_calibre)
+                        parameters = web.ub.config.config_calibre.split(" ")
+                        for param in parameters:
+                            command.append(param)
                     if sys.version_info < (3, 0):
                         command = [x.encode(sys.getfilesystemencoding()) for x in command]
 
