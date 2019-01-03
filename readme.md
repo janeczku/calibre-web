@@ -113,8 +113,8 @@ Additionally the public adress your server uses (e.g.https://example.com) has to
 Pre-built Docker images based on Alpine Linux are available in these Docker Hub repositories:
 
 **x64**
-+ **technosoft2000** at [technosoft2000/calibre-web](https://hub.docker.com/r/technosoft2000/calibre-web/)
-+ **linuxserver.io** at [linuxserver/calibre-web](https://hub.docker.com/r/linuxserver/calibre-web/)
++ **technosoft2000** at [technosoft2000/calibre-web](https://hub.docker.com/r/technosoft2000/calibre-web/). If you want the option to convert/download ebooks in multiple formats, use this image as it includes Calibre's ebook-convert binary. The "path to convertertool" should be set to /opt/calibre/ebook-convert.
++ **linuxserver.io** at [linuxserver/calibre-web](https://hub.docker.com/r/linuxserver/calibre-web/). Cannot convert between ebook formats.
 
 **armhf**
 + **linuxserver.io** at [lsioarmhf/calibre-web](https://hub.docker.com/r/lsioarmhf/calibre-web/)
