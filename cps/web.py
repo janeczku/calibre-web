@@ -586,24 +586,29 @@ def modify_database_object(input_elements, db_book_object, db_object, db_session
                 db_session.add(new_element)
                 db_book_object.append(new_element)
             else:
-                if db_type == 'custom' and db_element.value != add_element:
-                    new_element.value = add_element
-                    # new_element = db_element
-                elif db_type == 'languages' and db_element.lang_code != add_element:
-                    db_element.lang_code = add_element
-                    # new_element = db_element
-                elif db_type == 'series' and db_element.name != add_element:
-                    db_element.name = add_element # = add_element # new_element = db_object(add_element, add_element)
-                    db_element.sort = add_element
-                    # new_element = db_element
-                elif db_type == 'author' and db_element.name != add_element:
-                    db_element.name = add_element
-                    db_element.sort = add_element.replace('|', ',')
-                    # new_element = db_element
-                if db_type == 'publisher' and db_element.name != add_element:
-                    db_element.name = add_element
-                    db_element.sort = None
-                    # new_element = db_element
+                if db_type == 'custom':
+                    if db_element.value != add_element:
+                        new_element.value = add_element
+                        # new_element = db_element
+                elif db_type == 'languages':
+                    if db_element.lang_code != add_element:
+                        db_element.lang_code = add_element
+                        # new_element = db_element
+                elif db_type == 'series':
+                    if db_element.name != add_element:
+                        db_element.name = add_element # = add_element # new_element = db_object(add_element, add_element)
+                        db_element.sort = add_element
+                        # new_element = db_element
+                elif db_type == 'author':
+                    if db_element.name != add_element:
+                        db_element.name = add_element
+                        db_element.sort = add_element.replace('|', ',')
+                        # new_element = db_element
+                elif db_type == 'publisher':
+                    if db_element.name != add_element:
+                        db_element.name = add_element
+                        db_element.sort = None
+                        # new_element = db_element
                 elif db_element.name != add_element:
                     db_element.name = add_element
                     # new_element = db_element
@@ -3533,7 +3538,7 @@ def edit_cc_data(book_id, book, to_save):
             input_tags = list(map(lambda it: it.strip(), input_tags))
             modify_database_object(input_tags, getattr(book, cc_string), db.cc_classes[c.id], db.session,
                                    'custom')
-        return cc
+    return cc
 
 def upload_single_file(request, book, book_id):
     # Check and handle Uploaded file
