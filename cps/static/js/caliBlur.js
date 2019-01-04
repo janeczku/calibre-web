@@ -220,8 +220,8 @@ publisher = $( '.publishers p span' ).text().split( ':' );
   $.each(publisher, function(i, val) {
     $( '.publishers' ).append( '<span>' + publisher[i] + '</span>' );
   });
-$( '.publishers span:nth-child(2)' ).text(function() {
-return $(this).text().replace(/^\s+/g, "");
+$( '.publishers span:nth-child(3)' ).text(function() {
+return $(this).text().replace(/^\s+|^\t+|\t+|\s+$/g, "");
 });
 
   published = $( '.book-meta p:contains("Publishing date")' )
