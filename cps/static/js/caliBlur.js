@@ -215,11 +215,15 @@ if ( $( 'body.book' ).length > 0 ) {
     .prepend( '<div><img class="bg-blur" src="' + cover + '"></div>' );
 
   // Fix-up book detail headings
-  publisher = $( '.publishers p span' ).text().split( ': ' );
+publisher = $( '.publishers p span' ).text().split( ':' );
   $( '.publishers p span' ).remove();
   $.each(publisher, function(i, val) {
     $( '.publishers' ).append( '<span>' + publisher[i] + '</span>' );
   });
+$( '.publishers span:nth-child(2)' ).text(function() {
+return $(this).text().replace(/^\s+/g, "");
+});
+
   published = $( '.book-meta p:contains("Publishing date")' )
   .text().split(': ');
   $( '.book-meta p:contains("Publishing date")' )
