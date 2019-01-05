@@ -262,12 +262,15 @@ def delete_book_file(book, calibrepath, book_format=None):
                 return False
 
 
-def update_dir_structure_file(book_id, calibrepath):
+def update_dir_structure_file(book_id, calibrepath, first_author):
     localbook = db.session.query(db.Books).filter(db.Books.id == book_id).first()
     path = os.path.join(calibrepath, localbook.path)
 
     authordir = localbook.path.split('/')[0]
-    new_authordir = get_valid_filename(localbook.authors[0].name)
+    if first_author:
+        new_authordir = get_valid_filename(first_author)
+    else:
+        new_authordir = get_valid_filename(localbook.authors[0].name)
 
     titledir = localbook.path.split('/')[1]
     new_titledir = get_valid_filename(localbook.title) + " (" + str(book_id) + ")"
@@ -300,12 +303,15 @@ def update_dir_structure_file(book_id, calibrepath):
     return False
 
 
-def update_dir_structure_gdrive(book_id):
+def update_dir_structure_gdrive(book_id, first_author):
     error = False
     book = db.session.query(db.Books).filter(db.Books.id == book_id).first()
 
     authordir = book.path.split('/')[0]
-    new_authordir = get_valid_filename(book.authors[0].name)
+    if first_author:
+        new_authordir = get_valid_filename(first_author)
+    else:
+        new_authordir = get_valid_filename(book.authors[0].name)
     titledir = book.path.split('/')[1]
     new_titledir = get_valid_filename(book.title) + " (" + str(book_id) + ")"
 
@@ -356,11 +362,11 @@ def generate_random_password():
 
 ################################## External interface
 
-def update_dir_stucture(book_id, calibrepath):
+def update_dir_stucture(book_id, calibrepath, first_author = None):
     if ub.config.config_use_google_drive:
-        return update_dir_structure_gdrive(book_id)
+        return update_dir_structure_gdrive(book_id, first_author)
     else:
-        return update_dir_structure_file(book_id, calibrepath)
+        return update_dir_structure_file(book_id, calibrepath, first_author)
 
 
 def delete_book(book, calibrepath, book_format):
