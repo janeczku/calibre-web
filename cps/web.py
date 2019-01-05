@@ -532,6 +532,7 @@ def modify_database_object(input_elements, db_book_object, db_object, db_session
             type_elements = c_elements.name
         for inp_element in input_elements:
             if inp_element.lower() == type_elements.lower():
+                # if inp_element == type_elements:
                 found = True
                 break
         # if the element was not found in the new list, add it to remove list
@@ -3656,22 +3657,24 @@ def edit_book(book_id):
         # we have all author names now
         if input_authors == ['']:
             input_authors = [_(u'unknown')]  # prevent empty Author
-        if book.authors:
-            author0_before_edit = book.authors[0].name
-        else:
-            author0_before_edit = db.Authors(_(u'unknown'), '', 0)
+
         modify_database_object(input_authors, book.authors, db.Authors, db.session, 'author')
-        if book.authors:
-            if author0_before_edit != book.authors[0].name:
-                edited_books_id = book.id
-                book.author_sort = helper.get_sorted_author(input_authors[0])
+
+        sort_authors_list = list()
+        for inp in input_authors:
+            sort_authors_list.append(helper.get_sorted_author(inp))
+        sort_authors = ' & '.join(sort_authors_list)
+        if book.author_sort != sort_authors:
+            edited_books_id = book.id
+            book.author_sort = sort_authors
+
 
         if config.config_use_google_drive:
             gdriveutils.updateGdriveCalibreFromLocal()
 
         error = False
         if edited_books_id:
-            error = helper.update_dir_stucture(edited_books_id, config.config_calibre_dir)
+            error = helper.update_dir_stucture(edited_books_id, config.config_calibre_dir, input_authors[0])
 
         if not error:
             if to_save["cover_url"]:
