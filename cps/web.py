@@ -494,6 +494,21 @@ def speaking_language(languages=None):
             lang.name = _(isoLanguages.get(part3=lang.lang_code).name)
     return languages
 
+# Orders all Authors in the list according to authors sort
+def order_authors(entry):
+    sort_authors = entry.author_sort.split('&')
+    authors_ordered = list()
+    error = False
+    for auth in sort_authors:
+        # ToDo: How to handle not found authorname
+        result = db.session.query(db.Authors).filter(db.Authors.sort == auth.lstrip().strip()).first()
+        if not result:
+            error = True
+            break
+        authors_ordered.append(result)
+    if not error:
+        entry.authors = authors_ordered
+    return entry
 
 # Fill indexpage with all requested data from database
 def fill_indexpage(page, database, db_filter, order, *join):
@@ -508,6 +523,20 @@ def fill_indexpage(page, database, db_filter, order, *join):
                             .filter(db_filter).filter(common_filters()).all()))
     entries = db.session.query(database).join(*join,isouter=True).filter(db_filter)\
             .filter(common_filters()).order_by(*order).offset(off).limit(config.config_books_per_page).all()
+    for book in entries:
+        book = order_authors(book)
+        '''sort_authors = book.author_sort.split('&')
+        authors_ordered = list()
+        error = False
+        for auth in sort_authors:
+            # ToDo: How to handle not found authorname
+            result = db.session.query(db.Authors).filter(db.Authors.sort == auth.lstrip().strip()).first()
+            if not result:
+                error = True
+                break
+            authors_ordered.append(result)
+        if not error:
+            book.authors = authors_ordered'''
     return entries, randm, pagination
 
 
@@ -1658,6 +1687,20 @@ def show_book(book_id):
             have_read = None
 
         entries.tags = sort(entries.tags, key = lambda tag: tag.name)
+
+        entries = order_authors(entries)
+        '''sort_authors = entries.author_sort.split('&')
+        authors_ordered = list()
+        error = False
+        for auth in sort_authors:
+            # ToDo: How to handle not found authorname
+            result = db.session.query(db.Authors).filter(db.Authors.sort == auth.lstrip().strip()).first()
+            if not result:
+                error = True
+                break
+            authors_ordered.append(result)
+        if not error:
+            entries.authors = authors_ordered'''
 
         kindle_list = helper.check_send_to_kindle(entries)
         reader_list = helper.check_read_formats(entries)
@@ -3437,6 +3480,20 @@ def render_edit_book(book_id):
 
     for indx in range(0, len(book.languages)):
         book.languages[indx].language_name = language_table[get_locale()][book.languages[indx].lang_code]
+    book = order_authors(book)
+    '''sort_authors = book.author_sort.split('&')
+    authors_ordered = list()
+    error = False
+    for auth in sort_authors:
+        # ToDo: How to handle not found authorname
+        result = db.session.query(db.Authors).filter(db.Authors.sort == auth.lstrip().strip()).first()
+        if not result:
+            error = True
+            break
+        authors_ordered.append(result)
+    if not error:
+        book.authors = authors_ordered'''
+
     author_names = []
     for authr in book.authors:
         author_names.append(authr.name.replace('|', ','))
@@ -3660,9 +3717,16 @@ def edit_book(book_id):
 
         modify_database_object(input_authors, book.authors, db.Authors, db.session, 'author')
 
+        # Search for each author if author is in database, if not, authorname and sorted authorname is generated new
+        # everything then is assembled for sorted author field in database
         sort_authors_list = list()
         for inp in input_authors:
-            sort_authors_list.append(helper.get_sorted_author(inp))
+            stored_author = db.session.query(db.Authors).filter(db.Authors.name == inp).first()
+            if not stored_author:
+                stored_author = helper.get_sorted_author(inp)
+            else:
+                stored_author = stored_author.sort
+            sort_authors_list.append(helper.get_sorted_author(stored_author))
         sort_authors = ' & '.join(sort_authors_list)
         if book.author_sort != sort_authors:
             edited_books_id = book.id
