@@ -525,18 +525,6 @@ def fill_indexpage(page, database, db_filter, order, *join):
             .filter(common_filters()).order_by(*order).offset(off).limit(config.config_books_per_page).all()
     for book in entries:
         book = order_authors(book)
-        '''sort_authors = book.author_sort.split('&')
-        authors_ordered = list()
-        error = False
-        for auth in sort_authors:
-            # ToDo: How to handle not found authorname
-            result = db.session.query(db.Authors).filter(db.Authors.sort == auth.lstrip().strip()).first()
-            if not result:
-                error = True
-                break
-            authors_ordered.append(result)
-        if not error:
-            book.authors = authors_ordered'''
     return entries, randm, pagination
 
 
@@ -1689,18 +1677,6 @@ def show_book(book_id):
         entries.tags = sort(entries.tags, key = lambda tag: tag.name)
 
         entries = order_authors(entries)
-        '''sort_authors = entries.author_sort.split('&')
-        authors_ordered = list()
-        error = False
-        for auth in sort_authors:
-            # ToDo: How to handle not found authorname
-            result = db.session.query(db.Authors).filter(db.Authors.sort == auth.lstrip().strip()).first()
-            if not result:
-                error = True
-                break
-            authors_ordered.append(result)
-        if not error:
-            entries.authors = authors_ordered'''
 
         kindle_list = helper.check_send_to_kindle(entries)
         reader_list = helper.check_read_formats(entries)
@@ -3480,19 +3456,8 @@ def render_edit_book(book_id):
 
     for indx in range(0, len(book.languages)):
         book.languages[indx].language_name = language_table[get_locale()][book.languages[indx].lang_code]
+
     book = order_authors(book)
-    '''sort_authors = book.author_sort.split('&')
-    authors_ordered = list()
-    error = False
-    for auth in sort_authors:
-        # ToDo: How to handle not found authorname
-        result = db.session.query(db.Authors).filter(db.Authors.sort == auth.lstrip().strip()).first()
-        if not result:
-            error = True
-            break
-        authors_ordered.append(result)
-    if not error:
-        book.authors = authors_ordered'''
 
     author_names = []
     for authr in book.authors:
