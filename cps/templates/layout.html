@@ -166,11 +166,11 @@
                 <li id="nav_lang" {% if page == 'language' %}class="active"{% endif %}><a href="{{url_for('language_overview')}}"><span class="glyphicon glyphicon-flag"></span>{{_('Languages')}} </a></li>
               {%endif%}
               {% if g.user.is_authenticated or g.user.is_anonymous %}
-                <li class="nav-head hidden-xs">{{_('Public Shelves')}}</li>
+                <li class="nav-head hidden-xs public-shelves">{{_('Public Shelves')}}</li>
                 {% for shelf in g.public_shelfes %}
                   <li><a href="{{url_for('show_shelf', shelf_id=shelf.id)}}"><span class="glyphicon glyphicon-list public_shelf"></span>{{shelf.name|shortentitle(40)}}</a></li>
                 {% endfor %}
-                <li class="nav-head hidden-xs">{{_('Your Shelves')}}</li>
+                <li class="nav-head hidden-xs your-shelves">{{_('Your Shelves')}}</li>
                 {% for shelf in g.user.shelf %}
                   <li><a href="{{url_for('show_shelf', shelf_id=shelf.id)}}"><span class="glyphicon glyphicon-list private_shelf"></span>{{shelf.name|shortentitle(40)}}</a></li>
                 {% endfor %}
