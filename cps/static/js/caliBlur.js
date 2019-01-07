@@ -224,14 +224,13 @@ $( '.publishers span:nth-child(3)' ).text(function() {
 return $(this).text().replace(/^\s+|^\t+|\t+|\s+$/g, "");
 });
 
-  published = $( '.book-meta p:contains("Publishing date")' )
+  published = $( '.publishing-date p' )
   .text().split(': ');
-  $( '.book-meta p:contains("Publishing date")' )
-  .before( '<div class="published-date"></div>' );
-  $( '.book-meta p:contains("Publishing date")' ).remove();
+  $( '.publishing-date p' ).remove();
   $.each(published, function(i, val) {
-    $( '.published-date' ).append( '<span>' + published[i] + '</span>' );
+    $( '.publishing-date' ).append( '<span>' + published[i] + '</span>' );
   });
+    
   languages = $( '.languages p span' ).text().split( ': ' );
   $( '.languages p span' ).remove();
   $.each(languages, function(i, val) {
