@@ -400,7 +400,7 @@ if ( $( 'body.shelf' ).length > 0 ) {
 }
 
 // Move create shelf
-$( '#nav_createshelf' ).prependTo( 'li:contains("Your Shelves")' );
+$( '#nav_createshelf' ).prependTo( '.your-shelves' );
 
 // Create drop-down for profile and move elements to it
 $( '#main-nav' )
