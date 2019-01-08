@@ -944,14 +944,14 @@ def check_valid_domain(domain_text):
     return len(result)
 
 
-''' POST /post
-    name:  'username',  //name of field (column in db)
-    pk:    1            //primary key (record id)
-    value: 'superuser!' //new value'''
 @app.route("/ajax/editdomain", methods=['POST'])
 @login_required
 @admin_required
 def edit_domain():
+    ''' POST /post
+        name:  'username',  //name of field (column in db)
+        pk:    1            //primary key (record id)
+        value: 'superuser!' //new value'''
     vals = request.form.to_dict()
     answer = ub.session.query(ub.Registration).filter(ub.Registration.id == vals['pk']).first()
     # domain_name = request.args.get('domain')
@@ -1061,7 +1061,7 @@ def get_authors_json():
         json_dumps = json.dumps([dict(name=r.name.replace('|',',')) for r in entries])
         return json_dumps
 
-		
+
 @app.route("/get_publishers_json", methods=['GET', 'POST'])
 @login_required_if_no_ano
 def get_publishers_json():
@@ -1160,8 +1160,8 @@ def get_update_status():
             r = requests.get(repository_url + '/git/refs/heads/master')
             r.raise_for_status()
             commit = r.json()
-        except requests.exceptions.HTTPError as ex:
-            status['message'] = _(u'HTTP Error') + ' ' + str(ex)
+        except requests.exceptions.HTTPError as e:
+            status['message'] = _(u'HTTP Error') + ' ' + str(e)
         except requests.exceptions.ConnectionError:
             status['message'] = _(u'Connection error')
         except requests.exceptions.Timeout:

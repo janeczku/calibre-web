@@ -105,7 +105,7 @@ $(function() {
         var buttonText = $this.html();
         $this.html("...");
         $("#update_error").addClass("hidden");
-        if($("#message").length){
+        if ($("#message").length){
             $("#message").alert("close");
         }
         $.ajax({
@@ -114,8 +114,8 @@ $(function() {
             success: function success(data) {
                 $this.html(buttonText);
 
-                var cssClass = '';
-                var message = ''
+                var cssClass = "";
+                var message = "";
 
                 if (data.success === true) {
                     if (data.update === true) {
@@ -125,19 +125,20 @@ $(function() {
                             .removeClass("hidden")
                             .find("span").html(data.commit);
 
-                        data.history.reverse().forEach(function(entry, index) {
+                        data.history.reverse().forEach(function(entry) {
                             $("<tr><td>" + entry[0] + "</td><td>" + entry[1] + "</td></tr>").appendTo($("#update_table"));
                         });
-                        cssClass = 'alert-warning';
+                        cssClass = "alert-warning";
                     } else {
-                        cssClass = 'alert-success';
+                        cssClass = "alert-success";
                     }
                 } else {
-                    cssClass = 'alert-danger';
+                    cssClass = "alert-danger";
                 }
 
-                message = '<div id="message" class="alert ' + cssClass
-                    + ' fade in"><a href="#" class="close" data-dismiss="alert">&times;</a>' + data.message + '</div>';
+                message = "<div id=\"message\" class=\"alert " + cssClass
+                    + " fade in\"><a href=\"#\" class=\"close\" data-dismiss=\"alert\">&times;</a>"
+                    + data.message + "</div>";
 
                 $(message).insertAfter($("#update_table"));
             }
