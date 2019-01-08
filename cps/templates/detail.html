@@ -144,7 +144,9 @@
       {% endif %}
 
       {% if entry.pubdate[:10] != '0101-01-01' %}
+      <div class="publishing-date">
         <p>{{_('Publishing date')}}: {{entry.pubdate|formatdate}} </p>
+      </div>
       {% endif %}
       {% if cc|length > 0 %}
 
