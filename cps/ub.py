@@ -14,6 +14,7 @@ import json
 import datetime
 from binascii import hexlify
 import cli
+import ldap
 
 engine = create_engine('sqlite:///{0}'.format(cli.settingspath), echo=False)
 Base = declarative_base()
@@ -46,6 +47,8 @@ SIDEBAR_PUBLISHER = 4096
 DEFAULT_PASS = "admin123"
 DEFAULT_PORT = int(os.environ.get("CALIBRE_PORT", 8083))
 
+LDAP_PROVIDER_URL = 'ldap://localhost:389/'
+LDAP_PROTOCOL_VERSION = 3
 
 class UserBase:
 
@@ -152,6 +155,13 @@ class UserBase:
     def __repr__(self):
         return '<User %r>' % self.nickname
 
+    @staticmethod
+    def try_login(username, password):
+        conn = get_ldap_connection()
+        conn.simple_bind_s(
+             'uid={},ou=users,dc=yunohost,dc=org'.format(username),
+             password
+        )
 
 # Baseclass for Users in Calibre-Web, settings which are depending on certain users are stored here. It is derived from
 # User Base (all access methods are declared there)
@@ -777,6 +787,11 @@ else:
     Base.metadata.create_all(engine)
     migrate_Database()
     clean_database()
+
+#get LDAP connection
+def get_ldap_connection():
+    conn = ldap.initialize(LDAP_PROVIDER_URL)
+    return conn
 
 # Generate global Settings Object accessible from every file
 config = Config()

@@ -57,6 +57,7 @@ from redirect import redirect_back
 import time
 import server
 from reverseproxy import ReverseProxied
+import ldap
 
 try:
     from googleapiclient.errors import HttpError
@@ -2342,7 +2343,16 @@ def login():
     if request.method == "POST":
         form = request.form.to_dict()
         user = ub.session.query(ub.User).filter(func.lower(ub.User.nickname) == form['username'].strip().lower()).first()
-        if user and check_password_hash(user.password, form['password']) and user.nickname is not "Guest":
+        try:
+            app.logger.info("Tryong LDAP connexion")
+            ub.User.try_login(form['username'], form['password'])
+            login_user(user, remember=True)
+            flash(_(u"you are now logged in as: '%(nickname)s'", nickname=user.nickname), category="success")
+            return redirect_back(url_for("index"))
+        except ldap.INVALID_CREDENTIALS:
+            ipAdress = request.headers.get('X-Forwarded-For', request.remote_addr)
+            app.logger.info('LDAP Login failed for user "' + form['username'] + '" IP-adress: ' + ipAdress)
+        if user and check_password_hash(user.password, form['password']) and user.nickname is not "Guest" and not user.is_authenticated:
             login_user(user, remember=True)
             flash(_(u"you are now logged in as: '%(nickname)s'", nickname=user.nickname), category="success")
             return redirect_back(url_for("index"))
