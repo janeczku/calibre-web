@@ -128,8 +128,8 @@ if ( $( 'body.book' ).length > 0 ) {
   }*/
 
   description = $( '.comments' );
-  bookInfo = $( '.author' ).nextUntil( 'h3:contains("Description:")');
-  $( 'h3:contains("Description:")' ).detach();
+  bookInfo = $( '.author' ).nextUntil( 'h3:contains("Description")');
+  $( 'h3:contains("Description")' ).detach();
   $( '.comments' ).detach();
   $( bookInfo ).wrapAll( '<div class="bookinfo"></div>' );
 //  $( 'h3:contains("Description:")' ).after( '<div class="description"></div>' );
