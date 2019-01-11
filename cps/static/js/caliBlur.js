@@ -5,6 +5,8 @@ $( 'body.stat' ).addClass( 'stats' );
 $( 'body.config' ).addClass( 'admin');
 $( 'body.uiconfig' ).addClass( 'admin');
 $( 'body.advsearch' ).addClass( 'advanced_search' );
+$( 'body.newuser' ).addClass( 'admin' );
+$( 'body.mailset' ).addClass( 'admin' );
 
 // Back button
 curHref = window.location.href.split('/');
