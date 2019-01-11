@@ -3,7 +3,8 @@ $( 'a[href*="advanced"]' ).parent().insertAfter( '#nav_new' );
 $( 'body' ).addClass('blur');
 $( 'body.stat' ).addClass( 'stats' );
 $( 'body.config' ).addClass( 'admin');
-$( 'body.viewconfig' ).addClass( 'admin');
+$( 'body.uiconfig' ).addClass( 'admin');
+$( 'body.advsearch' ).addClass( 'advanced_search' );
 
 // Back button
 curHref = window.location.href.split('/');
