@@ -442,7 +442,7 @@ $(document).on('click','.dropdown-toggle',function() {
 
 // Fade out content on page unload
 // delegate all clicks on "a" tag (links)
-$(document).on("click", "a:not(.btn-toolbar a, a[href*='shelf/remove'], .identifiers a, .bookinfo , .btn-group > a, #add-to-shelves a, #book-list a, .stat.blur.stats a )", function () {
+$(document).on("click", "a:not(.btn-toolbar a, a[href*='shelf/remove'], .identifiers a, .bookinfo , .btn-group > a, #add-to-shelves a, #book-list a, .stat.blur a )", function () {
 
     // get the href attribute
     var newUrl = $(this).attr("href");
@@ -495,7 +495,7 @@ backurl = '../../book/' + url[2]
 $( 'body.epub #title-controls' )
   .append('<div class="epub-back"><input action="action" onclick="location.href=backurl; return false;" type="button" value="Back" /></div>')
 
-$(  'body.stats .col-sm-10 p:first' ).insertAfter( '#libs' );
+$(  'body.stat .col-sm-10 p:first' ).insertAfter( '#libs' );
 
 // Check if link is external and force _blank attribute
 $(function(){ // document ready
