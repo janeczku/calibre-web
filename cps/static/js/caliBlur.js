@@ -730,10 +730,10 @@ if ( $( window ).width() <= 768 ) {
 }
 
 // LayerCake plug
-if ( $(' .stat.blur.stats p').length > 0 ) {
-  $(' .stat.blur.stats p').append(" and <a href='https://github.com/leram84/layer.Cake/tree/master/caliBlur' target='_blank'>layer.Cake</a>");
-  str = $(' .stat.blur.stats p').html().replace("</a>.","</a>");
-  $(' .stat.blur.stats p').html(str);
+if ( $(' body.stat p').length > 0 ) {
+  $(' body.stat p').append(" and <a href='https://github.com/leram84/layer.Cake/tree/master/caliBlur' target='_blank'>layer.Cake</a>");
+  str = $(' body.stat p').html().replace("</a>.","</a>");
+  $(' body.stat p').html(str);
 }
 // Collect delete buttons in editbook to single dropdown
 $( '.editbook .text-center.more-stuff' ).prepend( '<button id="deleteButton" type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-remove"></span>Delete Format<span class="caret"></span></button><ul class="dropdown-menu delete-dropdown"></ul>' );
