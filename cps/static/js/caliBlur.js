@@ -1,6 +1,9 @@
 // Move advanced search to side-menu
 $( 'a[href*="advanced"]' ).parent().insertAfter( '#nav_new' );
 $( 'body' ).addClass('blur');
+$( 'body.stat' ).addClass( 'stats' );
+$( 'body.config' ).addClass( 'admin');
+$( 'body.viewconfig' ).addClass( 'admin');
 
 // Back button
 curHref = window.location.href.split('/');
@@ -34,99 +37,7 @@ $( 'a.navbar-brand' ).clone().appendTo( '.home-btn' ).empty().removeClass('navba
 
 // Wrap book description in div container
 if ( $( 'body.book' ).length > 0 ) {
-
-  /* description = $( 'h3:contains("Description:")' ).nextUntil( '.morestuff' ).slice(0,-1);
-  bookInfo = $( '.author' ).nextUntil( 'h3:contains("Description:")');
-  $( 'h3:contains("Description:")' ).hide();
-  $( description ).detach();
-  $( bookInfo ).wrapAll( '<div class="bookinfo"></div>' );
-  $( 'h3:contains("Description:")' ).after( '<div class="description"></div>' );
-  $( '.languages' ).appendTo( '.bookinfo' );
-  $('.hr').detach();
-  if ( $( '.identifiers ').length > 0 ) {
-    console.log(".identifiers length " + $( '.identifiers ').length );
-      $( '.identifiers' ).before( '<div class="hr"></div>' );
-    } else {
-    if ( $( '.bookinfo > p:first-child' ).length > 0 ) {
-      console.log(".bookinfo > p:first-child length " +  $( '.bookinfo > p' ).length );
-      $( '.bookinfo > p:first-child' ).first().after( '<div class="hr"></div>' );
-      } else{
-        if ( $( '.bookinfo a[href*="/series/"]' ).length > 0 ) {
-          console.log( 'series text found; placing hr below series' );
-          $( '.bookinfo a[href*="/series/"]' ).parent().after( '<div class="hr"></div>' );
-        } else {
-        console.log("prepending hr div to top of .bookinfo");
-      $( '.bookinfo' ).prepend( '<div class="hr"></div>' );
-      }
-    }
-  }
-  $( '.rating' ).insertBefore( '.hr' );
-  $( 'div.description' ).hide();
-  $( '#remove-from-shelves' ).insertAfter( '.hr' );
-
-  /* if book description is not in html format, Remove extra line breaks
-  Remove blank lines/unnecessary spaces, split by line break to array
-  Push array into .description div. If there is still a wall of text,
-  find sentences and split wall into groups of three sentence paragraphs.
-  If the book format is in html format, Keep html, but strip away inline
-  styles and empty elements */
-/*
-  // If text is sitting in div as text node
-  if ( description[0] === undefined ) {
-    textValue = $( '.book-meta' )
-      .contents()
-      .filter(function() {
-        return this.nodeType == Node.TEXT_NODE;
-      }).text();
-    description = $.makeArray(
-      textValue.replace(/(?:(?:\r\n|\r|\n)\s*){2}/gm, "")
-    );
-    $( '.book-meta' ).contents().filter(function() {
-      return this.nodeType === 3;
-    }).remove();
-  }
-  if ( description[1] === undefined ) {
-    newdesc = description.toString()
-    .replace(/^(?=\n)$|^\s*|\s*$|\n\n+/gm,"").split(/\n/);
-    $.each(newdesc, function(i, val) {
-    $( 'div.description' ).append( '<p>' + newdesc[i] + '</p>' );
-    });
-    $( '.description' ).fadeIn(100);
-    //If still a wall of text create 3 sentence paragraphs.
-   if( $( '.description p' ).length === 1 ) {
-     if ( description.context != undefined ) {
-     newdesc = description.text()
-      .replace(/^(?=\n)$|^\s*|\s*$|\n\n+/gm,"").split(/\n/);
-     }
-     else {
-       newdesc = description.toString();
-     }
-     doc = nlp ( newdesc.toString() );
-     sentences = doc.map((m)=> m.out( 'text' ));
-     $( '.description p' ).remove();
-     let size = 3; let sentenceChunks = [];
-     for (var i=0; i<sentences.length; i+=size) {
-       sentenceChunks.push(sentences.slice(i,i+size));
-     }
-     let output = '';
-     $.each(sentenceChunks, function(i, val) {
-         let preOutput = '';
-         $.each(val, function(i, val) {
-         preOutput += val;
-       });
-       output += '<p>' + preOutput + '</p>';
-     });
-     $( 'div.description' ).append( output );
-   }
-  } else {
-      $.each(description, function(i, val) {
-      $( description[i].outerHTML ).appendTo( '.description' );
-      $( 'div.description :empty' ).remove();
-      $( 'div.description ').attr( 'style', '' );
-      });
-    $( 'div.description' ).fadeIn( 100 );
-  }*/
-
+    
   description = $( '.comments' );
   bookInfo = $( '.author' ).nextUntil( 'h3:contains("Description")');
   $( 'h3:contains("Description")' ).detach();
@@ -239,7 +150,6 @@ return $(this).text().replace(/^\s+|^\t+|\t+|\s+$/g, "");
 
   $( '.book-meta h2:first' ).clone()
   .prependTo( '.book-meta > .btn-toolbar:first' );
-
 
   // If only one download type exists still put the items into a drop-drown list.
   downloads = $( 'a[id^=btnGroupDrop]' ).get();
@@ -422,13 +332,7 @@ $( 'input#query' ).focusout(function() {
             $( 'form[role="search"]' ).removeClass( 'search-focus' );
   }, 100);
 });
-
-// Add class to random book discover
-// ToDo: done
-$( 'h2:contains("Discover (Random Books")' )
-  .parent()
-  .addClass( 'random-books' );
-
+    
 // Check if dropdown goes out of viewport and add class
 
 $(document).on('click','.dropdown-toggle',function() {
