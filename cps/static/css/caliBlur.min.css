@@ -4342,7 +4342,7 @@ body.advanced_search>div.container-fluid>div.row-fluid>div.col-sm-10>div.col-sm-
         font-size: 13px;
         position: absolute;
         left: 25px;
-        margin-top: 37px
+        margin-top: 9px
     }
 
     body:not(.blur) #nav_new:after {
@@ -4352,8 +4352,8 @@ body.advanced_search>div.container-fluid>div.row-fluid>div.col-sm-10>div.col-sm-
         line-height: 1.71428571;
         white-space: nowrap;
         position: absolute;
-        left: 52px;
-        margin-top: 4px
+        left: 49px;
+        margin-top: 5px
     }
 
     body:not(.blur)>.navbar>.container-fluid>.navbar-header:after,body:not(.blur)>.navbar>.container-fluid>.navbar-header:before {
@@ -4704,7 +4704,7 @@ body.admin.config>div.container-fluid>div>div.col-sm-10>div.discover>h2:first-of
 }
 
 body:not(.blur) #scnd-nav>li>a>.glyphicon-book,body:not(.blur) #scnd-nav>li>a>.glyphicon-search {
-    margin-right: 8px
+    margin-right: 7px
 }
 
 #scnd-nav>li>a>.glyphicon-search {
@@ -7536,4 +7536,13 @@ body.publisherlist>div.container-fluid>div>div.col-sm-10>div.container>div.col-s
     body.publisherlist>div.container-fluid>div>div.col-sm-10>div.container:before {
         display: none !important;
     }
+}
+body.advanced_search>div.container-fluid>div.row-fluid>div.col-sm-10>div.col-sm-8>form>div .twitter-typeahead .tt-hint {
+    background-color: hsla(0,0%,100%,.08) !important;
+}
+@media only screen and (min-width: 767px) and (max-width: 811px) {
+body.author>div.container-fluid>div>div.col-sm-10>div.discover {
+    width: calc(100% + 20px);
+    padding: 0 0 0 0px!important;
+}
 }
