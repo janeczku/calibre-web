@@ -681,6 +681,7 @@ def before_request():
     g.user = current_user
     g.allow_registration = config.config_public_reg
     g.allow_upload = config.config_uploading
+    g.current_theme = config.config_theme
     g.public_shelfes = ub.session.query(ub.Shelf).filter(ub.Shelf.is_public == 1).order_by(ub.Shelf.name).all()
     if not config.db_configured and request.endpoint not in ('basic_configuration', 'login') and '/static/' not in request.path:
         return redirect(url_for('basic_configuration'))
@@ -1418,7 +1419,7 @@ def author_list():
         for entry in entries:
             entry.Authors.name = entry.Authors.name.replace('|', ',')
         return render_title_template('list.html', entries=entries, folder='author',
-                                     title=_(u"Author list"), page="authorlist")
+                                     title=u"Author list", page="authorlist")
     else:
         abort(404)
 
@@ -2842,7 +2843,6 @@ def profile():
             content.sidebar_view += ub.DETAIL_RANDOM
 
         content.mature_content = "show_mature_content" in to_save
-        content.theme = int(to_save["theme"])
 
         try:
             ub.session.commit()
@@ -2903,6 +2903,8 @@ def view_configuration():
             content.config_columns_to_ignore = to_save["config_columns_to_ignore"]
         if "config_read_column" in to_save:
             content.config_read_column = int(to_save["config_read_column"])
+        if "config_theme" in to_save:
+            content.config_theme = int(to_save["config_theme"])
         if "config_title_regex" in to_save:
             if content.config_title_regex != to_save["config_title_regex"]:
                 content.config_title_regex = to_save["config_title_regex"]
@@ -2961,6 +2963,7 @@ def view_configuration():
         ub.session.commit()
         flash(_(u"Calibre-Web configuration updated"), category="success")
         config.loadSettings()
+        before_request()
         if reboot_required:
             # db.engine.dispose() # ToDo verify correct
             # ub.session.close()
@@ -3180,7 +3183,6 @@ def new_user():
         to_save = request.form.to_dict()
         content.default_language = to_save["default_language"]
         content.mature_content = "show_mature_content" in to_save
-        content.theme = int(to_save["theme"])
         if "locale" in to_save:
             content.locale = to_save["locale"]
         content.sidebar_view = 0
@@ -3403,7 +3405,6 @@ def edit_user(user_id):
                 content.sidebar_view -= ub.DETAIL_RANDOM
 
             content.mature_content = "show_mature_content" in to_save
-            content.theme = int(to_save["theme"])
 
             if "default_language" in to_save:
                 content.default_language = to_save["default_language"]
