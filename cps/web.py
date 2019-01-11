@@ -1722,7 +1722,7 @@ def get_tasks_status():
     # UIanswer = copy.deepcopy(answer)
     answer = helper.render_task_status(tasks)
     # foreach row format row
-    return render_title_template('tasks.html', entries=answer, title=_(u"Tasks"))
+    return render_title_template('tasks.html', entries=answer, title=_(u"Tasks") page="tasks")
 
 
 @app.route("/admin")
