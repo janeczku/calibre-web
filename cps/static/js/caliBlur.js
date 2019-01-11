@@ -385,18 +385,6 @@ $(document).mouseup(function (e) {
 
 // Split path name to array and remove blanks
 url = window.location.pathname
-  .split( "/" ).filter( function(v){return v!==''} );
-// Add classes to some body elements that don't have it
-if ( jQuery.inArray( 'epub', url ) != -1 ) {
-  $( 'body' ).addClass( url[3] );
-} else {
-  $( 'body' ).addClass( url[1] );
-}
-if ( $( 'body.shelf' ).length > 0 ) {
-  $( 'a[href*= "'+url[1]+"/"+url[2]+'"]' )
-    .parent()
-    .addClass( 'active' );
-}
 
 // Move create shelf
 $( '#nav_createshelf' ).prependTo( '.your-shelves' );
