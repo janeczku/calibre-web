@@ -112,7 +112,8 @@ def migrate():
                 sql=sql[0].replace(currUniqueConstraint, 'UNIQUE (gdrive_id, path)')
                 sql=sql.replace(GdriveId.__tablename__, GdriveId.__tablename__ + '2')
                 session.execute(sql)
-                session.execute('INSERT INTO gdrive_ids2 (id, gdrive_id, path) SELECT id, gdrive_id, path FROM gdrive_ids;')
+                session.execute("INSERT INTO gdrive_ids2 (id, gdrive_id, path) SELECT id, "
+                                "gdrive_id, path FROM gdrive_ids;")
                 session.commit()
                 session.execute('DROP TABLE %s' % 'gdrive_ids')
                 session.execute('ALTER TABLE gdrive_ids2 RENAME to gdrive_ids')
@@ -165,7 +166,8 @@ def getFolderInFolder(parentId, folderName, drive):
     query=""
     if folderName:
         query = "title = '%s' and " % folderName.replace("'", "\\'")
-    folder = query + "'%s' in parents and mimeType = 'application/vnd.google-apps.folder' and trashed = false" % parentId
+    folder = query + "'%s' in parents and mimeType = 'application/vnd.google-apps.folder'" \
+                     " and trashed = false" % parentId
     fileList = drive.ListFile({'q': folder}).GetList()
     if fileList.__len__() == 0:
         return None
@@ -191,7 +193,6 @@ def getEbooksFolderId(drive=None):
 
 def getFile(pathId, fileName, drive):
     metaDataFile = "'%s' in parents and trashed = false and title = '%s'" % (pathId, fileName.replace("'", "\\'"))
-
     fileList = drive.ListFile({'q': metaDataFile}).GetList()
     if fileList.__len__() == 0:
         return None
@@ -299,9 +300,11 @@ def copyToDrive(drive, uploadFile, createRoot, replaceFiles,
     if not parent:
         parent = getEbooksFolder(drive)
     if os.path.isdir(os.path.join(prevDir,uploadFile)):
-        existingFolder = drive.ListFile({'q': "title = '%s' and '%s' in parents and trashed = false" % (os.path.basename(uploadFile), parent['id'])}).GetList()
+        existingFolder = drive.ListFile({'q': "title = '%s' and '%s' in parents and trashed = false" %
+                                              (os.path.basename(uploadFile), parent['id'])}).GetList()
         if len(existingFolder) == 0 and (not isInitial or createRoot):
-            parent = drive.CreateFile({'title': os.path.basename(uploadFile), 'parents': [{"kind": "drive#fileLink", 'id': parent['id']}],
+            parent = drive.CreateFile({'title': os.path.basename(uploadFile),
+                                       'parents': [{"kind": "drive#fileLink", 'id': parent['id']}],
                 "mimeType": "application/vnd.google-apps.folder"})
             parent.Upload()
         else:
@@ -312,11 +315,13 @@ def copyToDrive(drive, uploadFile, createRoot, replaceFiles,
                 copyToDrive(drive, f, True, replaceFiles, ignoreFiles, parent, os.path.join(prevDir, uploadFile))
     else:
         if os.path.basename(uploadFile) not in ignoreFiles:
-            existingFiles = drive.ListFile({'q': "title = '%s' and '%s' in parents and trashed = false" % (os.path.basename(uploadFile), parent['id'])}).GetList()
+            existingFiles = drive.ListFile({'q': "title = '%s' and '%s' in parents and trashed = false" %
+                                                 (os.path.basename(uploadFile), parent['id'])}).GetList()
             if len(existingFiles) > 0:
                 driveFile = existingFiles[0]
             else:
-                driveFile = drive.CreateFile({'title': os.path.basename(uploadFile), 'parents': [{"kind":"drive#fileLink", 'id': parent['id']}], })
+                driveFile = drive.CreateFile({'title': os.path.basename(uploadFile),
+                                              'parents': [{"kind":"drive#fileLink", 'id': parent['id']}], })
             driveFile.SetContentFile(os.path.join(prevDir, uploadFile))
             driveFile.Upload()
 
@@ -327,7 +332,8 @@ def uploadFileToEbooksFolder(destFile, f):
     splitDir = destFile.split('/')
     for i, x in enumerate(splitDir):
         if i == len(splitDir)-1:
-            existingFiles = drive.ListFile({'q': "title = '%s' and '%s' in parents and trashed = false" % (x, parent['id'])}).GetList()
+            existingFiles = drive.ListFile({'q': "title = '%s' and '%s' in parents and trashed = false" %
+                                                 (x, parent['id'])}).GetList()
             if len(existingFiles) > 0:
                 driveFile = existingFiles[0]
             else:
@@ -335,7 +341,8 @@ def uploadFileToEbooksFolder(destFile, f):
             driveFile.SetContentFile(f)
             driveFile.Upload()
         else:
-            existingFolder = drive.ListFile({'q': "title = '%s' and '%s' in parents and trashed = false" % (x, parent['id'])}).GetList()
+            existingFolder = drive.ListFile({'q': "title = '%s' and '%s' in parents and trashed = false" %
+                                                  (x, parent['id'])}).GetList()
             if len(existingFolder) == 0:
                 parent = drive.CreateFile({'title': x, 'parents': [{"kind": "drive#fileLink", 'id': parent['id']}],
                     "mimeType": "application/vnd.google-apps.folder"})

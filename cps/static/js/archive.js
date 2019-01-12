@@ -277,8 +277,6 @@ bitjs.archive = bitjs.archive || {};
             if (e.type === bitjs.archive.UnarchiveEvent.Type.FINISH) {
                 this.worker_.terminate();
             }
-        } else {
-            console.log(e);
         }
     };
 
@@ -292,15 +290,11 @@ bitjs.archive = bitjs.archive || {};
             this.worker_ = new Worker(scriptFileName);
 
             this.worker_.onerror = function(e) {
-                console.log("Worker error: message = " + e.message);
                 throw e;
             };
 
             this.worker_.onmessage = function(e) {
-                if (typeof e.data === "string") {
-                    // Just log any strings the workers pump our way.
-                    console.log(e.data);
-                } else {
+                if (typeof e.data !== "string") {
                     // Assume that it is an UnarchiveEvent.  Some browsers preserve the 'type'
                     // so that instanceof UnarchiveEvent returns true, but others do not.
                     me.handleWorkerEvent_(e.data);
