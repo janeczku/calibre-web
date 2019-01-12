@@ -262,12 +262,15 @@ def delete_book_file(book, calibrepath, book_format=None):
                 return False
 
 
-def update_dir_structure_file(book_id, calibrepath):
+def update_dir_structure_file(book_id, calibrepath, first_author):
     localbook = db.session.query(db.Books).filter(db.Books.id == book_id).first()
     path = os.path.join(calibrepath, localbook.path)
 
     authordir = localbook.path.split('/')[0]
-    new_authordir = get_valid_filename(localbook.authors[0].name)
+    if first_author:
+        new_authordir = get_valid_filename(first_author)
+    else:
+        new_authordir = get_valid_filename(localbook.authors[0].name)
 
     titledir = localbook.path.split('/')[1]
     new_titledir = get_valid_filename(localbook.title) + " (" + str(book_id) + ")"
@@ -281,31 +284,51 @@ def update_dir_structure_file(book_id, calibrepath):
                 web.app.logger.info("Copying title: " + path + " into existing: " + new_title_path)
                 for dir_name, subdir_list, file_list in os.walk(path):
                     for file in file_list:
-                        os.renames(os.path.join(dir_name, file), os.path.join(new_title_path + dir_name[len(path):], file))
+                        os.renames(os.path.join(dir_name, file),
+                                   os.path.join(new_title_path + dir_name[len(path):], file))
             path = new_title_path
             localbook.path = localbook.path.split('/')[0] + '/' + new_titledir
         except OSError as ex:
             web.app.logger.error("Rename title from: " + path + " to " + new_title_path + ": " + str(ex))
             web.app.logger.debug(ex, exc_info=True)
-            return _("Rename title from: '%(src)s' to '%(dest)s' failed with error: %(error)s", src=path, dest=new_title_path, error=str(ex))
+            return _("Rename title from: '%(src)s' to '%(dest)s' failed with error: %(error)s",
+                     src=path, dest=new_title_path, error=str(ex))
     if authordir != new_authordir:
         try:
-            new_author_path = os.path.join(os.path.join(calibrepath, new_authordir), os.path.basename(path))
+            new_author_path = os.path.join(calibrepath, new_authordir, os.path.basename(path))
             os.renames(path, new_author_path)
             localbook.path = new_authordir + '/' + localbook.path.split('/')[1]
         except OSError as ex:
             web.app.logger.error("Rename author from: " + path + " to " + new_author_path + ": " + str(ex))
             web.app.logger.debug(ex, exc_info=True)
-            return _("Rename author from: '%(src)s' to '%(dest)s' failed with error: %(error)s", src=path, dest=new_author_path, error=str(ex))
+            return _("Rename author from: '%(src)s' to '%(dest)s' failed with error: %(error)s",
+                     src=path, dest=new_author_path, error=str(ex))
+    # Rename all files from old names to new names
+    if authordir != new_authordir or titledir != new_titledir:
+        try:
+            for format in localbook.data:
+                path_name = os.path.join(calibrepath, new_authordir, os.path.basename(path))
+                new_name = get_valid_filename(localbook.title) + ' - ' + get_valid_filename(new_authordir)
+                os.renames(os.path.join(path_name, format.name + '.' + format.format.lower()),
+                           os.path.join(path_name,new_name + '.' + format.format.lower()))
+                format.name = new_name
+        except OSError as ex:
+            web.app.logger.error("Rename file in path " + path + " to " + new_name + ": " + str(ex))
+            web.app.logger.debug(ex, exc_info=True)
+            return _("Rename file in path '%(src)s' to '%(dest)s' failed with error: %(error)s",
+                     src=path, dest=new_name, error=str(ex))
     return False
 
 
-def update_dir_structure_gdrive(book_id):
+def update_dir_structure_gdrive(book_id, first_author):
     error = False
     book = db.session.query(db.Books).filter(db.Books.id == book_id).first()
 
     authordir = book.path.split('/')[0]
-    new_authordir = get_valid_filename(book.authors[0].name)
+    if first_author:
+        new_authordir = get_valid_filename(first_author)
+    else:
+        new_authordir = get_valid_filename(book.authors[0].name)
     titledir = book.path.split('/')[1]
     new_titledir = get_valid_filename(book.title) + " (" + str(book_id) + ")"
 
@@ -318,7 +341,7 @@ def update_dir_structure_gdrive(book_id):
             book.path = book.path.split('/')[0] + '/' + new_titledir
             gd.updateDatabaseOnEdit(gFile['id'], book.path)     # only child folder affected
         else:
-            error = _(u'File %(file)s not found on Google Drive', file= book.path) # file not found
+            error = _(u'File %(file)s not found on Google Drive', file=book.path) # file not found
 
     if authordir != new_authordir:
         gFile = gd.getFileFromEbooksFolder(os.path.dirname(book.path), titledir)
@@ -328,6 +351,19 @@ def update_dir_structure_gdrive(book_id):
             gd.updateDatabaseOnEdit(gFile['id'], book.path)
         else:
             error = _(u'File %(file)s not found on Google Drive', file=authordir) # file not found
+    # Rename all files from old names to new names
+    # ToDo: Rename also all bookfiles with new author name and new title name
+    '''
+    if authordir != new_authordir or titledir != new_titledir:
+        for format in book.data:
+            # path_name = os.path.join(calibrepath, new_authordir, os.path.basename(path))
+            new_name = get_valid_filename(book.title) + ' - ' + get_valid_filename(book)
+            format.name = new_name
+            if gFile:
+                pass
+            else:
+                error = _(u'File %(file)s not found on Google Drive', file=format.name)  # file not found
+                break'''
     return error
 
 
@@ -356,11 +392,11 @@ def generate_random_password():
 
 ################################## External interface
 
-def update_dir_stucture(book_id, calibrepath):
+def update_dir_stucture(book_id, calibrepath, first_author = None):
     if ub.config.config_use_google_drive:
-        return update_dir_structure_gdrive(book_id)
+        return update_dir_structure_gdrive(book_id, first_author)
     else:
-        return update_dir_structure_file(book_id, calibrepath)
+        return update_dir_structure_file(book_id, calibrepath, first_author)
 
 
 def delete_book(book, calibrepath, book_format):
