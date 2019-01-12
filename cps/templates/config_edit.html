@@ -162,6 +162,21 @@
       </div>
     </div>
     {% endif %}
+    <div class="form-group">
+      <input type="checkbox" id="config_use_ldap" name="config_use_ldap" data-control="ldap-settings" {% if content.config_use_ldap %}checked{% endif %}>
+      <label for="config_use_ldap">{{_('Use')}} LDAP Authentication</label>
+      </div>
+    <div data-related="ldap-settings">
+      <div class="form-group">
+        <label for="config_ldap_provider_url">{{_('LDAP Provider URL')}}</label>
+        <input type="text" class="form-control" id="config_ldap_provider_url" name="config_ldap_provider_url" value="{% if content.config_use_ldap != None %}{{ content.config_ldap_provider_url }}{% endif %}" autocomplete="off">
+      </div>
+      <div class="form-group">
+        <label for="config_ldap_dn">{{_('LDAP Distinguished Name (DN)')}}</label>
+        <input type="text" class="form-control" id="config_ldap_dn" name="config_ldap_dn" value="{% if content.config_use_ldap != None %}{{ content.config_ldap_dn }}{% endif %}" autocomplete="off">
+      </div>
+    </div>
+    </div>
       </div>
     </div>
   </div>
