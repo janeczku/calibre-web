@@ -157,10 +157,8 @@ class UserBase:
     @staticmethod
     def try_login(username, password):
         conn = get_ldap_connection()
-        print "bind : {}".format(config.config_ldap_dn)
-        print "replace :{}".format(config.config_ldap_dn.replace("%s", username))
         conn.simple_bind_s(
-             'uid={},ou=users,dc=yunohost,dc=org'.format(username),
+             config.config_ldap_dn.replace("%s", username),
              password
         )
 
@@ -804,7 +802,6 @@ else:
 
 #get LDAP connection
 def get_ldap_connection():
-    print "login to LDAP server ldap://{}".format(config.config_ldap_provider_url)
     conn = ldap.initialize('ldap://{}'.format(config.config_ldap_provider_url))
     return conn
 
