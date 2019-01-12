@@ -2343,8 +2343,9 @@ def login():
     if request.method == "POST":
         form = request.form.to_dict()
         user = ub.session.query(ub.User).filter(func.lower(ub.User.nickname) == form['username'].strip().lower()).first()
-        if config.config_use_ldap and ub.User.try_login(form['username'], form['password']):
+        if config.config_use_ldap and user:
             try:
+                ub.User.try_login(form['username'], form['password'])
                 login_user(user, remember=True)
                 flash(_(u"you are now logged in as: '%(nickname)s'", nickname=user.nickname), category="success")
                 return redirect_back(url_for("index"))
@@ -3076,7 +3077,7 @@ def configuration_helper(origin):
 
         #LDAP configuratop,
         if "config_use_ldap" in to_save and to_save["config_use_ldap"] == "on":
-            if not "config_ldap_provider_url" in to_save or not "content.config_ldap_dn" in to_save:
+            if not "config_ldap_provider_url" in to_save or not "config_ldap_dn" in to_save:
                 ub.session.commit()
                 flash(_(u'Please enter a LDAP provider and a DN'), category="error")
                 return render_title_template("config_edit.html", content=config, origin=origin,
