@@ -47,8 +47,6 @@ SIDEBAR_PUBLISHER = 4096
 DEFAULT_PASS = "admin123"
 DEFAULT_PORT = int(os.environ.get("CALIBRE_PORT", 8083))
 
-LDAP_PROVIDER_URL = 'ldap://localhost:389/'
-LDAP_PROTOCOL_VERSION = 3
 
 class UserBase:
 
@@ -155,9 +153,12 @@ class UserBase:
     def __repr__(self):
         return '<User %r>' % self.nickname
 
+    #Login via LDAP method
     @staticmethod
     def try_login(username, password):
         conn = get_ldap_connection()
+        print "bind : {}".format(config.config_ldap_dn)
+        print "replace :{}".format(config.config_ldap_dn.replace("%s", username))
         conn.simple_bind_s(
              'uid={},ou=users,dc=yunohost,dc=org'.format(username),
              password
@@ -803,7 +804,8 @@ else:
 
 #get LDAP connection
 def get_ldap_connection():
-    conn = ldap.initialize(LDAP_PROVIDER_URL)
+    print "login to LDAP server ldap://{}".format(config.config_ldap_provider_url)
+    conn = ldap.initialize('ldap://{}'.format(config.config_ldap_provider_url))
     return conn
 
 # Generate global Settings Object accessible from every file
