@@ -1,6 +1,6 @@
 {% extends "layout.html" %}
 {% block body %}
-<h1>{{title}}</h1>
+<h1 class="{{page}}">{{_(title)}}</h1>
   <div class="container">
     <div class="col-xs-12 col-sm-6">
     {% for entry in entries %}

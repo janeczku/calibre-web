@@ -494,6 +494,21 @@ def speaking_language(languages=None):
             lang.name = _(isoLanguages.get(part3=lang.lang_code).name)
     return languages
 
+# Orders all Authors in the list according to authors sort
+def order_authors(entry):
+    sort_authors = entry.author_sort.split('&')
+    authors_ordered = list()
+    error = False
+    for auth in sort_authors:
+        # ToDo: How to handle not found authorname
+        result = db.session.query(db.Authors).filter(db.Authors.sort == auth.lstrip().strip()).first()
+        if not result:
+            error = True
+            break
+        authors_ordered.append(result)
+    if not error:
+        entry.authors = authors_ordered
+    return entry
 
 # Fill indexpage with all requested data from database
 def fill_indexpage(page, database, db_filter, order, *join):
@@ -508,6 +523,8 @@ def fill_indexpage(page, database, db_filter, order, *join):
                             .filter(db_filter).filter(common_filters()).all()))
     entries = db.session.query(database).join(*join,isouter=True).filter(db_filter)\
             .filter(common_filters()).order_by(*order).offset(off).limit(config.config_books_per_page).all()
+    for book in entries:
+        book = order_authors(book)
     return entries, randm, pagination
 
 
@@ -532,6 +549,7 @@ def modify_database_object(input_elements, db_book_object, db_object, db_session
             type_elements = c_elements.name
         for inp_element in input_elements:
             if inp_element.lower() == type_elements.lower():
+                # if inp_element == type_elements:
                 found = True
                 break
         # if the element was not found in the new list, add it to remove list
@@ -663,6 +681,7 @@ def before_request():
     g.user = current_user
     g.allow_registration = config.config_public_reg
     g.allow_upload = config.config_uploading
+    g.current_theme = config.config_theme
     g.public_shelfes = ub.session.query(ub.Shelf).filter(ub.Shelf.is_public == 1).order_by(ub.Shelf.name).all()
     if not config.db_configured and request.endpoint not in ('basic_configuration', 'login') and '/static/' not in request.path:
         return redirect(url_for('basic_configuration'))
@@ -926,14 +945,14 @@ def check_valid_domain(domain_text):
     return len(result)
 
 
-''' POST /post
-    name:  'username',  //name of field (column in db)
-    pk:    1            //primary key (record id)
-    value: 'superuser!' //new value'''
 @app.route("/ajax/editdomain", methods=['POST'])
 @login_required
 @admin_required
 def edit_domain():
+    ''' POST /post
+        name:  'username',  //name of field (column in db)
+        pk:    1            //primary key (record id)
+        value: 'superuser!' //new value'''
     vals = request.form.to_dict()
     answer = ub.session.query(ub.Registration).filter(ub.Registration.id == vals['pk']).first()
     # domain_name = request.args.get('domain')
@@ -1043,7 +1062,7 @@ def get_authors_json():
         json_dumps = json.dumps([dict(name=r.name.replace('|',',')) for r in entries])
         return json_dumps
 
-		
+
 @app.route("/get_publishers_json", methods=['GET', 'POST'])
 @login_required_if_no_ano
 def get_publishers_json():
@@ -1142,8 +1161,8 @@ def get_update_status():
             r = requests.get(repository_url + '/git/refs/heads/master')
             r.raise_for_status()
             commit = r.json()
-        except requests.exceptions.HTTPError as ex:
-            status['message'] = _(u'HTTP Error') + ' ' + str(ex)
+        except requests.exceptions.HTTPError as e:
+            status['message'] = _(u'HTTP Error') + ' ' + str(e)
         except requests.exceptions.ConnectionError:
             status['message'] = _(u'Connection error')
         except requests.exceptions.Timeout:
@@ -1400,7 +1419,7 @@ def author_list():
         for entry in entries:
             entry.Authors.name = entry.Authors.name.replace('|', ',')
         return render_title_template('list.html', entries=entries, folder='author',
-                                     title=_(u"Author list"), page="authorlist")
+                                     title=u"Author list", page="authorlist")
     else:
         abort(404)
 
@@ -1658,6 +1677,8 @@ def show_book(book_id):
 
         entries.tags = sort(entries.tags, key = lambda tag: tag.name)
 
+        entries = order_authors(entries)
+
         kindle_list = helper.check_send_to_kindle(entries)
         reader_list = helper.check_read_formats(entries)
 
@@ -1701,7 +1722,7 @@ def get_tasks_status():
     # UIanswer = copy.deepcopy(answer)
     answer = helper.render_task_status(tasks)
     # foreach row format row
-    return render_title_template('tasks.html', entries=answer, title=_(u"Tasks"))
+    return render_title_template('tasks.html', entries=answer, title=_(u"Tasks"), page="tasks")
 
 
 @app.route("/admin")
@@ -2833,7 +2854,6 @@ def profile():
             content.sidebar_view += ub.DETAIL_RANDOM
 
         content.mature_content = "show_mature_content" in to_save
-        content.theme = int(to_save["theme"])
 
         try:
             ub.session.commit()
@@ -2894,6 +2914,8 @@ def view_configuration():
             content.config_columns_to_ignore = to_save["config_columns_to_ignore"]
         if "config_read_column" in to_save:
             content.config_read_column = int(to_save["config_read_column"])
+        if "config_theme" in to_save:
+            content.config_theme = int(to_save["config_theme"])
         if "config_title_regex" in to_save:
             if content.config_title_regex != to_save["config_title_regex"]:
                 content.config_title_regex = to_save["config_title_regex"]
@@ -2952,6 +2974,7 @@ def view_configuration():
         ub.session.commit()
         flash(_(u"Calibre-Web configuration updated"), category="success")
         config.loadSettings()
+        before_request()
         if reboot_required:
             # db.engine.dispose() # ToDo verify correct
             # ub.session.close()
@@ -3186,7 +3209,6 @@ def new_user():
         to_save = request.form.to_dict()
         content.default_language = to_save["default_language"]
         content.mature_content = "show_mature_content" in to_save
-        content.theme = int(to_save["theme"])
         if "locale" in to_save:
             content.locale = to_save["locale"]
         content.sidebar_view = 0
@@ -3409,7 +3431,6 @@ def edit_user(user_id):
                 content.sidebar_view -= ub.DETAIL_RANDOM
 
             content.mature_content = "show_mature_content" in to_save
-            content.theme = int(to_save["theme"])
 
             if "default_language" in to_save:
                 content.default_language = to_save["default_language"]
@@ -3462,6 +3483,9 @@ def render_edit_book(book_id):
 
     for indx in range(0, len(book.languages)):
         book.languages[indx].language_name = language_table[get_locale()][book.languages[indx].lang_code]
+
+    book = order_authors(book)
+
     author_names = []
     for authr in book.authors:
         author_names.append(authr.name.replace('|', ','))
@@ -3682,22 +3706,31 @@ def edit_book(book_id):
         # we have all author names now
         if input_authors == ['']:
             input_authors = [_(u'unknown')]  # prevent empty Author
-        if book.authors:
-            author0_before_edit = book.authors[0].name
-        else:
-            author0_before_edit = db.Authors(_(u'unknown'), '', 0)
+
         modify_database_object(input_authors, book.authors, db.Authors, db.session, 'author')
-        if book.authors:
-            if author0_before_edit != book.authors[0].name:
-                edited_books_id = book.id
-                book.author_sort = helper.get_sorted_author(input_authors[0])
+
+        # Search for each author if author is in database, if not, authorname and sorted authorname is generated new
+        # everything then is assembled for sorted author field in database
+        sort_authors_list = list()
+        for inp in input_authors:
+            stored_author = db.session.query(db.Authors).filter(db.Authors.name == inp).first()
+            if not stored_author:
+                stored_author = helper.get_sorted_author(inp)
+            else:
+                stored_author = stored_author.sort
+            sort_authors_list.append(helper.get_sorted_author(stored_author))
+        sort_authors = ' & '.join(sort_authors_list)
+        if book.author_sort != sort_authors:
+            edited_books_id = book.id
+            book.author_sort = sort_authors
+
 
         if config.config_use_google_drive:
             gdriveutils.updateGdriveCalibreFromLocal()
 
         error = False
         if edited_books_id:
-            error = helper.update_dir_stucture(edited_books_id, config.config_calibre_dir)
+            error = helper.update_dir_stucture(edited_books_id, config.config_calibre_dir, input_authors[0])
 
         if not error:
             if to_save["cover_url"]:

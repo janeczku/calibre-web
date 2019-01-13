@@ -269,7 +269,7 @@ var RD = { //rep decode
 var rBuffer;
 
 // read in Huffman tables for RAR
-function RarReadTables(bstream) {
+function rarReadTables(bstream) {
     var BitLength = new Array(rBC),
         Table = new Array(rHuffTableSize);
     var i;
@@ -480,7 +480,7 @@ function Unpack20(bstream) { //, Solid) {
             continue;
         }
         if (num < 270) {
-            var Distance = rSDDecode[num -= 261] + 1;
+            Distance = rSDDecode[num -= 261] + 1;
             if ((Bits = rSDBits[num]) > 0) {
                 Distance += bstream.readBits(Bits);
             }
@@ -513,9 +513,9 @@ function rarReadTables20(bstream) {
     var BitLength = new Array(rBC20);
     var Table = new Array(rMC20 * 4);
     var TableSize, N, I;
+    var i;
     bstream.readBits(1);
     if (!bstream.readBits(1)) {
-        var i;
         for (i = UnpOldTable20.length; i--;) UnpOldTable20[i] = 0;
     }
     TableSize = rNC20 + rDC20 + rRC20;
@@ -553,25 +553,26 @@ function rarReadTables20(bstream) {
 }
 
 
-function Unpack29(bstream, Solid) {
+function Unpack29(bstream) {
     // lazy initialize rDDecode and rDBits
 
     var DDecode = new Array(rDC);
     var DBits = new Array(rDC);
-
+    var Distance = 0;
+    var Length = 0;
     var Dist = 0, BitLength = 0, Slot = 0;
     var I;
-    for (I = 0; I < rDBitLengthCounts.length; I++,BitLength++) {
-        for (var J = 0; J < rDBitLengthCounts[I]; J++,Slot++,Dist+=(1<<BitLength)) {
-            DDecode[Slot]=Dist;
-            DBits[Slot]=BitLength;
+    for (I = 0; I < rDBitLengthCounts.length; I++, BitLength++) {
+        for (var J = 0; J < rDBitLengthCounts[I]; J++, Slot++, Dist += (1 << BitLength)) {
+            DDecode[Slot] = Dist;
+            DBits[Slot] = BitLength;
         }
     }
   
     var Bits;
     //tablesRead = false;
 
-    rOldDist = [0, 0, 0, 0]
+    rOldDist = [0, 0, 0, 0];
 
     lastDist = 0;
     lastLength = 0;
@@ -579,7 +580,7 @@ function Unpack29(bstream, Solid) {
     for (i = UnpOldTable.length; i--;) UnpOldTable[i] = 0;
     
     // read in Huffman tables
-    RarReadTables(bstream);
+    rarReadTables(bstream);
  
     while (true) {
         var num = rarDecodeNumber(bstream, LD);
@@ -589,12 +590,12 @@ function Unpack29(bstream, Solid) {
             continue;
         }
         if (num >= 271) {
-            var Length = rLDecode[num -= 271] + 3;
+            Length = rLDecode[num -= 271] + 3;
             if ((Bits = rLBits[num]) > 0) {
                 Length += bstream.readBits(Bits);
             }
             var DistNumber = rarDecodeNumber(bstream, DD);
-            var Distance = DDecode[DistNumber]+1;
+            Distance = DDecode[DistNumber] + 1;
             if ((Bits = DBits[DistNumber]) > 0) {
                 if (DistNumber > 9) {
                     if (Bits > 4) {
@@ -625,19 +626,19 @@ function Unpack29(bstream, Solid) {
                     Length++;
                 }
             }
-            RarInsertOldDist(Distance);
-            RarInsertLastMatch(Length, Distance);
+            rarInsertOldDist(Distance);
+            rarInsertLastMatch(Length, Distance);
             rarCopyString(Length, Distance);
             continue;
         }
         if (num === 256) {
-            if (!RarReadEndOfBlock(bstream)) break;
+            if (!rarReadEndOfBlock(bstream)) break;
             continue;
         }
         if (num === 257) {
             //console.log("READVMCODE");
-            if (!RarReadVMCode(bstream)) break;
-                continue;
+            if (!rarReadVMCode(bstream)) break;
+            continue;
         }
         if (num === 258) {
             if (lastLength != 0) {
@@ -647,29 +648,29 @@ function Unpack29(bstream, Solid) {
         }
         if (num < 263) {
             var DistNum = num - 259;
-            var Distance = rOldDist[DistNum];
+            Distance = rOldDist[DistNum];
 
             for (var I = DistNum; I > 0; I--) {
-                rOldDist[I] = rOldDist[I-1];
+                rOldDist[I] = rOldDist[I - 1];
             }
             rOldDist[0] = Distance;
 
             var LengthNumber = rarDecodeNumber(bstream, RD);
-            var Length = rLDecode[LengthNumber] + 2;
+            Length = rLDecode[LengthNumber] + 2;
             if ((Bits = rLBits[LengthNumber]) > 0) {
                 Length += bstream.readBits(Bits);
             }
-            RarInsertLastMatch(Length, Distance);
+            rarInsertLastMatch(Length, Distance);
             rarCopyString(Length, Distance);
             continue;
         }
         if (num < 272) {
-            var Distance = rSDDecode[num -= 263] + 1;
+            Distance = rSDDecode[num -= 263] + 1;
             if ((Bits = rSDBits[num]) > 0) {
                 Distance += bstream.readBits(Bits);
             }
-            RarInsertOldDist(Distance);
-            RarInsertLastMatch(2, Distance);
+            rarInsertOldDist(Distance);
+            rarInsertLastMatch(2, Distance);
             rarCopyString(2, Distance);
             continue;
         }
@@ -677,9 +678,9 @@ function Unpack29(bstream, Solid) {
     rarUpdateProgress()
 }
 
-function RarReadEndOfBlock(bstream) {
+function rarReadEndOfBlock(bstream) {
   
-    rarUpdateProgress()
+    rarUpdateProgress();
 
     var NewTable = false, NewFile = false;
     if (bstream.readBits(1)) {
@@ -689,11 +690,11 @@ function RarReadEndOfBlock(bstream) {
         NewTable = !!bstream.readBits(1);
     }
     //tablesRead = !NewTable;
-    return !(NewFile || NewTable && !RarReadTables(bstream));
+    return !(NewFile || NewTable && !rarReadTables(bstream));
 }
 
 
-function RarReadVMCode(bstream) {
+function rarReadVMCode(bstream) {
     var FirstByte = bstream.readBits(8);
     var Length = (FirstByte & 7) + 1;
     if (Length === 7) {
@@ -717,12 +718,12 @@ function RarAddVMCode(firstByte, vmCode, length) {
     return true;
 }
 
-function RarInsertLastMatch(length, distance) {
+function rarInsertLastMatch(length, distance) {
     lastDist = distance;
     lastLength = length;
 }
 
-function RarInsertOldDist(distance) {
+function rarInsertOldDist(distance) {
     rOldDist.splice(3,1);
     rOldDist.splice(0,0,distance);
 }
@@ -768,7 +769,7 @@ function unpack(v) {
             break;
         case 29: // rar 3.x compression
         case 36: // alternative hash
-            Unpack29(bstream, Solid);
+            Unpack29(bstream);
             break;
     } // switch(method)
   

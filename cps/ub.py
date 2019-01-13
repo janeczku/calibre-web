@@ -103,10 +103,6 @@ class UserBase:
     def is_anonymous(self):
         return False
 
-    @property
-    def get_theme(self):
-        return self.theme
-
     def get_id(self):
         return str(self.id)
 
@@ -178,7 +174,7 @@ class User(UserBase, Base):
     sidebar_view = Column(Integer, default=1)
     default_language = Column(String(3), default="all")
     mature_content = Column(Boolean, default=True)
-    theme = Column(Integer, default=0)
+    # theme = Column(Integer, default=0)
 
 
 # Class for anonymous user is derived from User base and completly overrides methods and properties for the
@@ -327,6 +323,7 @@ class Settings(Base):
     config_converterpath = Column(String)
     config_calibre = Column(String)
     config_rarfile_location = Column(String)
+    config_theme = Column(Integer, default=0)
 
     def __repr__(self):
         pass
@@ -403,6 +400,7 @@ class Config:
         if data.config_logfile:
             self.config_logfile = data.config_logfile
         self.config_rarfile_location = data.config_rarfile_location
+        self.config_theme = data.config_theme
 
     @property
     def get_main_dir(self):
@@ -624,12 +622,7 @@ def migrate_Database():
     except exc.OperationalError:
         conn = engine.connect()
         conn.execute("ALTER TABLE user ADD column `mature_content` INTEGER DEFAULT 1")
-    try:
-        session.query(exists().where(User.theme)).scalar()
-    except exc.OperationalError:
-        conn = engine.connect()
-        conn.execute("ALTER TABLE user ADD column `theme` INTEGER DEFAULT 0")
-        session.commit()
+
     if session.query(User).filter(User.role.op('&')(ROLE_ANONYMOUS) == ROLE_ANONYMOUS).first() is None:
         create_anonymous_user()
     try:
@@ -690,6 +683,13 @@ def migrate_Database():
         conn.execute("ALTER TABLE Settings ADD column `config_ldap_provider_url` String DEFAULT ''")
         conn.execute("ALTER TABLE Settings ADD column `config_ldap_dn` String DEFAULT ''")
         session.commit()
+    try:
+        session.query(exists().where(Settings.config_theme)).scalar()
+    except exc.OperationalError:  # Database is not compatible, some rows are missing
+        conn = engine.connect()
+        conn.execute("ALTER TABLE Settings ADD column `config_theme` INTEGER DEFAULT 0")
+        session.commit()
+
     # Remove login capability of user Guest
     conn = engine.connect()
     conn.execute("UPDATE user SET password='' where nickname = 'Guest' and password !=''")

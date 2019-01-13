@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2018-11-03 14:03+0100\n"
+"POT-Creation-Date: 2019-01-12 09:00+0100\n"
 "PO-Revision-Date: 2018-10-11 18:13+0200\n"
 "Last-Translator: \n"
 "Language: hu\n"
@@ -31,718 +31,721 @@ msgstr "Nincs jogosultság a futtatáshoz"
 msgid "not configured"
 msgstr ""
 
-#: cps/helper.py:58
+#: cps/helper.py:59
 #, python-format
 msgid "%(format)s format not found for book id: %(book)d"
 msgstr "A(z) %(format)s formátum nem található a következő könyvhöz: %(book)d"
 
-#: cps/helper.py:70
+#: cps/helper.py:71
 #, python-format
 msgid "%(format)s not found on Google Drive: %(fn)s"
 msgstr "%(format)s nem található a Google Drive-on: %(fn)s"
 
-#: cps/helper.py:77 cps/helper.py:147 cps/templates/detail.html:44
+#: cps/helper.py:78 cps/helper.py:186 cps/templates/detail.html:49
 msgid "Send to Kindle"
 msgstr "Küldés Kindle-re"
 
-#: cps/helper.py:78 cps/helper.py:96
+#: cps/helper.py:79 cps/helper.py:97 cps/helper.py:188
 msgid "This e-mail has been sent via Calibre-Web."
 msgstr "Ez az e-mail a Calibre-Web-en keresztül lett küldve."
 
-#: cps/helper.py:89
+#: cps/helper.py:90
 #, python-format
 msgid "%(format)s not found: %(fn)s"
 msgstr "%(format)s nem található: %(fn)s"
 
-#: cps/helper.py:94
+#: cps/helper.py:95
 msgid "Calibre-Web test e-mail"
 msgstr "Calibre-Web teszt e-mail"
 
-#: cps/helper.py:95
+#: cps/helper.py:96
 msgid "Test e-mail"
 msgstr "Teszt e-mail"
 
-#: cps/helper.py:111
+#: cps/helper.py:112
 msgid "Get Started with Calibre-Web"
 msgstr "Kezdő lépések a Calibre-Web-bel"
 
-#: cps/helper.py:112
+#: cps/helper.py:113
 #, python-format
 msgid "Registration e-mail for user: %(name)s"
 msgstr "Regisztrációs e-mail a következő felhasználóhoz: %(name)s"
 
-#: cps/helper.py:135 cps/helper.py:145
-msgid "Could not find any formats suitable for sending by e-mail"
-msgstr "Az e-mail küldéséhez nem található megfelelő formátum"
+#: cps/helper.py:126 cps/helper.py:128 cps/helper.py:130 cps/helper.py:132
+#: cps/helper.py:138 cps/helper.py:140 cps/helper.py:142 cps/helper.py:144
+#, python-format
+msgid "Send %(format)s to Kindle"
+msgstr ""
 
-#: cps/helper.py:148
+#: cps/helper.py:148 cps/helper.py:152
+#, python-format
+msgid "Convert %(orig)s to %(format)s and send to Kindle"
+msgstr ""
+
+#: cps/helper.py:187
 #, python-format
 msgid "E-mail: %(book)s"
 msgstr "E-mail: %(book)s"
 
-#: cps/helper.py:150
+#: cps/helper.py:190
 msgid "The requested file could not be read. Maybe wrong permissions?"
 msgstr "A kért fájl nem olvasható. Esetleg jogosultsági probléma lenne?"
 
-#: cps/helper.py:250
+#: cps/helper.py:295
 #, python-format
 msgid "Rename title from: '%(src)s' to '%(dest)s' failed with error: %(error)s"
 msgstr "A cím átnevezése \"%(src)s\"-ról \"%(dest)s\"-ra nem sikerült a következő hiba miatt: %(error)s"
 
-#: cps/helper.py:259
+#: cps/helper.py:305
 #, python-format
 msgid "Rename author from: '%(src)s' to '%(dest)s' failed with error: %(error)s"
 msgstr "A szerző átnevezése \"%(src)s\"-ról \"%(dest)s\"-ra nem sikerült a következő hiba miatt: %(error)s"
 
-#: cps/helper.py:281 cps/helper.py:290
+#: cps/helper.py:319
+#, python-format
+msgid "Rename file in path '%(src)s' to '%(dest)s' failed with error: %(error)s"
+msgstr ""
+
+#: cps/helper.py:344 cps/helper.py:353
 #, python-format
 msgid "File %(file)s not found on Google Drive"
 msgstr "A \"%(file)s\" fájl nem található a Google Drive-on"
 
-#: cps/helper.py:308
+#: cps/helper.py:384
 #, python-format
 msgid "Book path %(path)s not found on Google Drive"
 msgstr "A könyv elérési útja (\"%(path)s\") nem található a Google Drive-on"
 
-#: cps/helper.py:565
+#: cps/helper.py:650
 msgid "Error excecuting UnRar"
 msgstr "Hiba az UnRar futtatásakor"
 
-#: cps/helper.py:567
+#: cps/helper.py:652
 msgid "Unrar binary file not found"
 msgstr "Az Unrar futtatható állománya nem található"
 
-#: cps/helper.py:609
+#: cps/helper.py:703
 msgid "Waiting"
 msgstr "Várakozás"
 
-#: cps/helper.py:611
+#: cps/helper.py:705
 msgid "Failed"
 msgstr "Nem sikerült"
 
-#: cps/helper.py:613
+#: cps/helper.py:707
 msgid "Started"
 msgstr "Elindítva"
 
-#: cps/helper.py:615
+#: cps/helper.py:709
 msgid "Finished"
 msgstr "Végrehajtva"
 
-#: cps/helper.py:617
+#: cps/helper.py:711
 msgid "Unknown Status"
 msgstr ""
 
-#: cps/helper.py:622
+#: cps/helper.py:716
 msgid "E-mail: "
 msgstr ""
 
-#: cps/helper.py:624 cps/helper.py:628
+#: cps/helper.py:718 cps/helper.py:722
 msgid "Convert: "
 msgstr ""
 
-#: cps/helper.py:626
+#: cps/helper.py:720
 msgid "Upload: "
 msgstr ""
 
-#: cps/helper.py:630
+#: cps/helper.py:724
 msgid "Unknown Task: "
 msgstr ""
 
-#: cps/web.py:1132 cps/web.py:2842
+#: cps/web.py:1156 cps/web.py:2866
 msgid "Unknown"
 msgstr "Ismeretlen"
 
-#: cps/web.py:1141 cps/web.py:1172 cps/web.py:1257
+#: cps/web.py:1165 cps/web.py:1196 cps/web.py:1281
 msgid "HTTP Error"
 msgstr "HTTP hiba"
 
-#: cps/web.py:1143 cps/web.py:1174 cps/web.py:1258
+#: cps/web.py:1167 cps/web.py:1198 cps/web.py:1282
 msgid "Connection error"
 msgstr "Kapcsolódási hiba"
 
-#: cps/web.py:1145 cps/web.py:1176 cps/web.py:1259
+#: cps/web.py:1169 cps/web.py:1200 cps/web.py:1283
 msgid "Timeout while establishing connection"
 msgstr "Időtúllépés a kapcsolódás során"
 
-#: cps/web.py:1147 cps/web.py:1178 cps/web.py:1260
+#: cps/web.py:1171 cps/web.py:1202 cps/web.py:1284
 msgid "General error"
 msgstr "Általános hiba"
 
-#: cps/web.py:1153
+#: cps/web.py:1177
 msgid "Unexpected data while reading update information"
 msgstr "Ismeretlen adat a frissítési információk olvasásakor"
 
-#: cps/web.py:1160
+#: cps/web.py:1184
 msgid "No update available. You already have the latest version installed"
 msgstr "Nem érhető el újabb frissítés. Már a legújabb verzió van telepítve."
 
-#: cps/web.py:1185
+#: cps/web.py:1209
 msgid "A new update is available. Click on the button below to update to the latest version."
 msgstr "Egy új frissítés érhető el. Kattints a lenti gombra a legújabb verzió frissítésére"
 
-#: cps/web.py:1235
+#: cps/web.py:1259
 msgid "Could not fetch update information"
 msgstr "Nem lehetett begyűjteni a frissítési információkat"
 
-#: cps/web.py:1250
+#: cps/web.py:1274
 msgid "Requesting update package"
 msgstr "Frissítési csomag kérése"
 
-#: cps/web.py:1251
+#: cps/web.py:1275
 msgid "Downloading update package"
 msgstr "Frissítési csomag letöltése"
 
-#: cps/web.py:1252
+#: cps/web.py:1276
 msgid "Unzipping update package"
 msgstr "Frissítési csomag kitömörítése"
 
-#: cps/web.py:1253
+#: cps/web.py:1277
 msgid "Replacing files"
 msgstr ""
 
-#: cps/web.py:1254
+#: cps/web.py:1278
 msgid "Database connections are closed"
 msgstr "Adatbázis kapcsolatok lezárva"
 
-#: cps/web.py:1255
+#: cps/web.py:1279
 msgid "Stopping server"
 msgstr ""
 
-#: cps/web.py:1256
+#: cps/web.py:1280
 msgid "Update finished, please press okay and reload page"
 msgstr "A frissítés települt, kattints az OK-ra és újra tölt az oldal"
 
-#: cps/web.py:1257 cps/web.py:1258 cps/web.py:1259 cps/web.py:1260
+#: cps/web.py:1281 cps/web.py:1282 cps/web.py:1283 cps/web.py:1284
 msgid "Update failed:"
 msgstr ""
 
-#: cps/web.py:1283
+#: cps/web.py:1307
 msgid "Recently Added Books"
 msgstr "Legutóbb hozzáadott könyvek"
 
-#: cps/web.py:1293
+#: cps/web.py:1317
 msgid "Newest Books"
 msgstr "Legújabb könyvek"
 
-#: cps/web.py:1305
+#: cps/web.py:1329
 msgid "Oldest Books"
 msgstr "Legrégebbi könyvek"
 
-#: cps/web.py:1317
+#: cps/web.py:1341
 msgid "Books (A-Z)"
 msgstr "Könyvek (A-Zs)"
 
-#: cps/web.py:1328
+#: cps/web.py:1352
 msgid "Books (Z-A)"
 msgstr "Könyvek (Zs-A)"
 
-#: cps/web.py:1357
+#: cps/web.py:1381
 msgid "Hot Books (most downloaded)"
 msgstr "Kelendő könyvek (legtöbbet letöltöttek)"
 
-#: cps/web.py:1370
+#: cps/web.py:1394
 msgid "Best rated books"
 msgstr "Legjobbra értékelt könyvek"
 
-#: cps/templates/index.xml:39 cps/web.py:1383
+#: cps/templates/index.xml:39 cps/web.py:1407
 msgid "Random Books"
 msgstr "Könyvek találomra"
 
-#: cps/web.py:1398
-msgid "Author list"
-msgstr "Szerzők listája"
-
-#: cps/web.py:1410 cps/web.py:1501 cps/web.py:1663 cps/web.py:2206
+#: cps/web.py:1434 cps/web.py:1689 cps/web.py:2236
 msgid "Error opening eBook. File does not exist or file is not accessible:"
 msgstr "Hiba történt az e-könyv megnyitásakor. A fájl nem létezik vagy nem érhető el:"
 
-#: cps/web.py:1438
+#: cps/web.py:1462
 msgid "Publisher list"
 msgstr ""
 
-#: cps/web.py:1452
+#: cps/web.py:1477
 #, python-format
 msgid "Publisher: %(name)s"
 msgstr ""
 
-#: cps/templates/index.xml:83 cps/web.py:1484
+#: cps/templates/index.xml:83 cps/web.py:1509
 msgid "Series list"
 msgstr "Sorozatok listája"
 
-#: cps/web.py:1499
+#: cps/web.py:1523
 #, python-format
 msgid "Series: %(serie)s"
 msgstr "Sorozat: %(serie)s"
 
-#: cps/web.py:1528
+#: cps/web.py:1549
 msgid "Available languages"
 msgstr "Elérhető nyelvek"
 
-#: cps/web.py:1548
+#: cps/web.py:1569
 #, python-format
 msgid "Language: %(name)s"
 msgstr "Nyelv: %(name)s"
 
-#: cps/templates/index.xml:76 cps/web.py:1559
+#: cps/templates/index.xml:76 cps/web.py:1580
 msgid "Category list"
 msgstr "Címkék listája"
 
-#: cps/web.py:1573
+#: cps/web.py:1594
 #, python-format
 msgid "Category: %(name)s"
 msgstr "Címke: %(name)s"
 
-#: cps/templates/layout.html:71 cps/web.py:1699
+#: cps/templates/layout.html:71 cps/web.py:1725
 msgid "Tasks"
 msgstr "Feladatok"
 
-#: cps/web.py:1733
+#: cps/web.py:1759
 msgid "Statistics"
 msgstr "Statisztika"
 
-#: cps/web.py:1840
+#: cps/web.py:1867
 msgid "Callback domain is not verified, please follow steps to verify domain in google developer console"
 msgstr "A visszahívási tartomány nem ellenőrzött, kövesd az alábbi lépéseket a tartomány ellenőrzéséhez a Google Developer Console-ban:"
 
-#: cps/web.py:1915
+#: cps/web.py:1943
 msgid "Server restarted, please reload page"
 msgstr "A kiszolgáló újraindult, tölts be újra az oldalt!"
 
-#: cps/web.py:1918
+#: cps/web.py:1946
 msgid "Performing shutdown of server, please close window"
 msgstr "A kiszolgáló leállítása folyamatban, zárd be ezt az ablakot"
 
-#: cps/web.py:1937
+#: cps/web.py:1965
 msgid "Update done"
 msgstr "A frissítés kész"
 
-#: cps/web.py:2007
+#: cps/web.py:2035
 msgid "Published after "
 msgstr "Kiadva ezután: "
 
-#: cps/web.py:2014
+#: cps/web.py:2042
 msgid "Published before "
 msgstr "Kiadva ezelőtt: "
 
-#: cps/web.py:2028
+#: cps/web.py:2056
 #, python-format
 msgid "Rating <= %(rating)s"
 msgstr "Értékelés <= %(rating)s"
 
-#: cps/web.py:2030
+#: cps/web.py:2058
 #, python-format
 msgid "Rating >= %(rating)s"
 msgstr "Értékelés <= %(rating)s"
 
-#: cps/web.py:2089 cps/web.py:2098
+#: cps/web.py:2119 cps/web.py:2128
 msgid "search"
 msgstr "keresés"
 
 #: cps/templates/index.xml:47 cps/templates/index.xml:51
-#: cps/templates/layout.html:146 cps/web.py:2165
+#: cps/templates/layout.html:146 cps/web.py:2195
 msgid "Read Books"
 msgstr "Olvasott könyvek"
 
 #: cps/templates/index.xml:55 cps/templates/index.xml:59
-#: cps/templates/layout.html:148 cps/web.py:2168
+#: cps/templates/layout.html:148 cps/web.py:2198
 msgid "Unread Books"
 msgstr "Olvasatlan könyvek"
 
-#: cps/web.py:2216 cps/web.py:2218 cps/web.py:2220 cps/web.py:2232
+#: cps/web.py:2246 cps/web.py:2248 cps/web.py:2250 cps/web.py:2262
 msgid "Read a Book"
 msgstr "Egy olvasott könyv"
 
-#: cps/web.py:2298 cps/web.py:3201
+#: cps/web.py:2321 cps/web.py:3230
 msgid "Please fill out all fields!"
 msgstr "Az összes mezőt ki kell tölteni!"
 
-#: cps/web.py:2299 cps/web.py:2320 cps/web.py:2324 cps/web.py:2329
-#: cps/web.py:2331
+#: cps/web.py:2322 cps/web.py:2343 cps/web.py:2347 cps/web.py:2352
+#: cps/web.py:2354
 msgid "register"
 msgstr "regisztrálás"
 
-#: cps/web.py:2319 cps/web.py:3417
+#: cps/web.py:2342 cps/web.py:3444
 msgid "An unknown error occurred. Please try again later."
 msgstr "Ismeretlen hiba történt. Próbáld újra később!"
 
-#: cps/web.py:2322
+#: cps/web.py:2345
 msgid "Your e-mail is not allowed to register"
 msgstr "Nem engedélyezett a megadott e-mail cím bejegyzése"
 
-#: cps/web.py:2325
+#: cps/web.py:2348
 msgid "Confirmation e-mail was send to your e-mail account."
 msgstr "Jóváhagyó levél elküldve az email címedre."
 
-#: cps/web.py:2328
+#: cps/web.py:2351
 msgid "This username or e-mail address is already in use."
 msgstr "Ez a felhasználónév vagy e-mail cím már használatban van."
 
-#: cps/web.py:2345 cps/web.py:2441
+#: cps/web.py:2368 cps/web.py:2464
 #, python-format
 msgid "you are now logged in as: '%(nickname)s'"
 msgstr "Be vagy jelentkezve mint: %(nickname)s"
 
-#: cps/web.py:2350
+#: cps/web.py:2373
 msgid "Wrong Username or Password"
 msgstr "Rossz felhasználó név vagy jelszó!"
 
-#: cps/web.py:2356 cps/web.py:2377
+#: cps/web.py:2379 cps/web.py:2400
 msgid "login"
 msgstr "belépés"
 
-#: cps/web.py:2389 cps/web.py:2420
+#: cps/web.py:2412 cps/web.py:2443
 msgid "Token not found"
 msgstr "A token nem található."
 
-#: cps/web.py:2397 cps/web.py:2428
+#: cps/web.py:2420 cps/web.py:2451
 msgid "Token has expired"
 msgstr "A token érvényessége lejárt."
 
-#: cps/web.py:2405
+#: cps/web.py:2428
 msgid "Success! Please return to your device"
 msgstr "Sikerült! Újra használható az eszköz."
 
-#: cps/web.py:2455
+#: cps/web.py:2478
 msgid "Please configure the SMTP mail settings first..."
 msgstr "Először be kell állítani az SMTP levelező beállításokat..."
 
-#: cps/web.py:2459
+#: cps/web.py:2483
 #, python-format
 msgid "Book successfully queued for sending to %(kindlemail)s"
 msgstr "A könyv sikeresen küldésre lett jelölve a következő címre: %(kindlemail)s"
 
-#: cps/web.py:2463
+#: cps/web.py:2487
 #, python-format
 msgid "There was an error sending this book: %(res)s"
 msgstr "Hiba történt a könyv küldésekor: %(res)s"
 
-#: cps/web.py:2465 cps/web.py:3255
+#: cps/web.py:2489 cps/web.py:3283
 msgid "Please configure your kindle e-mail address first..."
 msgstr "Először be kell állítani a kindle e-mail címet..."
 
-#: cps/web.py:2476 cps/web.py:2528
+#: cps/web.py:2500 cps/web.py:2552
 msgid "Invalid shelf specified"
 msgstr "A megadott polc érvénytelen!"
 
-#: cps/web.py:2483
+#: cps/web.py:2507
 #, python-format
 msgid "Sorry you are not allowed to add a book to the the shelf: %(shelfname)s"
 msgstr ""
 
-#: cps/web.py:2491
+#: cps/web.py:2515
 msgid "You are not allowed to edit public shelves"
 msgstr ""
 
-#: cps/web.py:2500
+#: cps/web.py:2524
 #, python-format
 msgid "Book is already part of the shelf: %(shelfname)s"
 msgstr ""
 
-#: cps/web.py:2514
+#: cps/web.py:2538
 #, python-format
 msgid "Book has been added to shelf: %(sname)s"
 msgstr "A könyv hozzá lett adva a következő polchoz: %(sname)s"
 
-#: cps/web.py:2533
+#: cps/web.py:2557
 #, python-format
 msgid "You are not allowed to add a book to the the shelf: %(name)s"
 msgstr "Nincs jogosultságod könyvet tenni a következő polcra: %(name)s."
 
-#: cps/web.py:2538
+#: cps/web.py:2562
 msgid "User is not allowed to edit public shelves"
 msgstr "A felhasználó nem szerkeszthet nyilvános polcokat"
 
-#: cps/web.py:2556
+#: cps/web.py:2580
 #, python-format
 msgid "Books are already part of the shelf: %(name)s"
 msgstr "A könyvek már a következő polcon vannak: %(name)s"
 
-#: cps/web.py:2570
+#: cps/web.py:2594
 #, python-format
 msgid "Books have been added to shelf: %(sname)s"
 msgstr "A könyvek hozzá lettek adva a következő polchoz: %(sname)s"
 
-#: cps/web.py:2572
+#: cps/web.py:2596
 #, python-format
 msgid "Could not add books to shelf: %(sname)s"
 msgstr "Nem sikerült hozzáadni a könyveket a polchoz: %(sname)s"
 
-#: cps/web.py:2609
+#: cps/web.py:2633
 #, python-format
 msgid "Book has been removed from shelf: %(sname)s"
 msgstr "A könyv el lett távolítva a polcról: %(sname)s"
 
-#: cps/web.py:2615
+#: cps/web.py:2639
 #, python-format
 msgid "Sorry you are not allowed to remove a book from this shelf: %(sname)s"
 msgstr "Sajnálom, nincs jogosultságot eltávolítani könyvet erről a polcról: %(sname)s"
 
-#: cps/web.py:2635 cps/web.py:2659
+#: cps/web.py:2660 cps/web.py:2684
 #, python-format
 msgid "A shelf with the name '%(title)s' already exists."
 msgstr "Már létezik \"%(title)s\" nevű polc!"
 
-#: cps/web.py:2640
+#: cps/web.py:2665
 #, python-format
 msgid "Shelf %(title)s created"
 msgstr "A következő polc létre lett hozva: %(title)s"
 
-#: cps/web.py:2642 cps/web.py:2670
+#: cps/web.py:2667 cps/web.py:2695
 msgid "There was an error"
 msgstr "Hiba történt"
 
-#: cps/web.py:2643 cps/web.py:2645
+#: cps/web.py:2668 cps/web.py:2670
 msgid "create a shelf"
 msgstr "Polc készítése"
 
-#: cps/web.py:2668
+#: cps/web.py:2693
 #, python-format
 msgid "Shelf %(title)s changed"
 msgstr "A következő polc megváltoztatva: %(title)s"
 
-#: cps/web.py:2671 cps/web.py:2673
+#: cps/web.py:2696 cps/web.py:2698
 msgid "Edit a shelf"
 msgstr "Polc szerkesztése"
 
-#: cps/web.py:2694
+#: cps/web.py:2719
 #, python-format
 msgid "successfully deleted shelf %(name)s"
 msgstr "A következő polc sikeresen törölve: %(name)s"
 
-#: cps/web.py:2721
+#: cps/web.py:2746
 #, python-format
 msgid "Shelf: '%(name)s'"
 msgstr "Polc: '%(name)s'"
 
-#: cps/web.py:2724
+#: cps/web.py:2749
 msgid "Error opening shelf. Shelf does not exist or is not accessible"
 msgstr "Hiba a polc megnyitásakor. A polc nem létezik vagy nem elérhető."
 
-#: cps/web.py:2755
+#: cps/web.py:2780
 #, python-format
 msgid "Change order of Shelf: '%(name)s'"
 msgstr "A következő polc átrendezése: %(name)s"
 
-#: cps/web.py:2784 cps/web.py:3207
+#: cps/web.py:2809 cps/web.py:3236
 msgid "E-mail is not from valid domain"
 msgstr "Az e-mail tartománya nem érvényes."
 
-#: cps/web.py:2786 cps/web.py:2829 cps/web.py:2832
+#: cps/web.py:2811 cps/web.py:2853 cps/web.py:2856
 #, python-format
 msgid "%(name)s's profile"
 msgstr "%(name)s profilja"
 
-#: cps/web.py:2827
+#: cps/web.py:2851
 msgid "Found an existing account for this e-mail address."
 msgstr "Már létezik felhasználó ehhez az e-mail címhez."
 
-#: cps/web.py:2830
+#: cps/web.py:2854
 msgid "Profile updated"
 msgstr "A profil frissítve."
 
-#: cps/web.py:2858
+#: cps/web.py:2882
 msgid "Admin page"
 msgstr "Rendszergazda oldala"
 
-#: cps/web.py:2938 cps/web.py:3112
+#: cps/web.py:2964 cps/web.py:3139
 msgid "Calibre-Web configuration updated"
 msgstr "A Calibre-Web konfigurációja frissítve."
 
-#: cps/templates/admin.html:100 cps/web.py:2951
+#: cps/templates/admin.html:100 cps/web.py:2978
 msgid "UI Configuration"
 msgstr "Felhasználói felület beállításai"
 
-#: cps/web.py:2969
+#: cps/web.py:2996
 msgid "Import of optional Google Drive requirements missing"
 msgstr "Hiányzanak a Google Drive használatához szükséges komponensek"
 
-#: cps/web.py:2972
+#: cps/web.py:2999
 msgid "client_secrets.json is missing or not readable"
 msgstr "A client_secrets.json hiányzik vagy nem olvasható."
 
-#: cps/web.py:2977 cps/web.py:3004
+#: cps/web.py:3004 cps/web.py:3031
 msgid "client_secrets.json is not configured for web application"
 msgstr "A client_secrets.json nincs beállítva a web alkalmazáshoz."
 
-#: cps/templates/admin.html:99 cps/web.py:3007 cps/web.py:3033 cps/web.py:3045
-#: cps/web.py:3088 cps/web.py:3103 cps/web.py:3120 cps/web.py:3127
-#: cps/web.py:3142
+#: cps/templates/admin.html:99 cps/web.py:3034 cps/web.py:3060 cps/web.py:3072
+#: cps/web.py:3115 cps/web.py:3130 cps/web.py:3148 cps/web.py:3156
+#: cps/web.py:3172
 msgid "Basic Configuration"
 msgstr "Alapvető beállítások"
 
-#: cps/web.py:3030
+#: cps/web.py:3057
 msgid "Keyfile location is not valid, please enter correct path"
 msgstr "A kulcsfájl helye nem érvényes, adj meg érvényes elérési utat"
 
-#: cps/web.py:3042
+#: cps/web.py:3069
 msgid "Certfile location is not valid, please enter correct path"
 msgstr "A tanusítványfájl helye nem érvényes, adj meg érvényes elérési utat"
 
-#: cps/web.py:3085
+#: cps/web.py:3112
 msgid "Logfile location is not valid, please enter correct path"
 msgstr "A naplófájl helye nem érvényes, adj meg érvényes elérési utat"
 
-#: cps/web.py:3124
+#: cps/web.py:3152
 msgid "DB location is not valid, please enter correct path"
 msgstr "Az adatbázis helye nem érvényes, adj meg érvényes elérési utat"
 
-#: cps/templates/admin.html:33 cps/web.py:3203 cps/web.py:3209 cps/web.py:3225
+#: cps/templates/admin.html:33 cps/web.py:3232 cps/web.py:3238 cps/web.py:3254
 msgid "Add new user"
 msgstr "Új felhasználó hozzáadása"
 
-#: cps/web.py:3215
+#: cps/web.py:3244
 #, python-format
 msgid "User '%(user)s' created"
 msgstr "A következő felhasználó létrehozva: %(user)s"
 
-#: cps/web.py:3219
+#: cps/web.py:3248
 msgid "Found an existing account for this e-mail address or nickname."
 msgstr "Már létezik felhasználó ehhez az e-mail címhez vagy felhasználói névhez."
 
-#: cps/web.py:3243 cps/web.py:3257
-msgid "E-mail server settings updated"
-msgstr "Az e-mail kiszolgáló beállításai frissítve."
-
-#: cps/web.py:3250
+#: cps/web.py:3278
 #, python-format
 msgid "Test e-mail successfully send to %(kindlemail)s"
 msgstr "A teszt levél sikeresen elküldve ide: %(kindlemail)s"
 
-#: cps/web.py:3253
+#: cps/web.py:3281
 #, python-format
 msgid "There was an error sending the Test e-mail: %(res)s"
 msgstr "Hiba történt a teszt levél küldése során: %(res)s"
 
-#: cps/web.py:3258
+#: cps/web.py:3285
+msgid "E-mail server settings updated"
+msgstr "Az e-mail kiszolgáló beállításai frissítve."
+
+#: cps/web.py:3286
 msgid "Edit e-mail server settings"
 msgstr "Az e-mail kiszolgáló beállításainak módosítása"
 
-#: cps/web.py:3283
+#: cps/web.py:3311
 #, python-format
 msgid "User '%(nick)s' deleted"
 msgstr "A felhasználó törölve: %(nick)s"
 
-#: cps/web.py:3392
+#: cps/web.py:3419
 #, python-format
 msgid "User '%(nick)s' updated"
 msgstr "A felhasználó frissítve: %(nick)s"
 
-#: cps/web.py:3395
+#: cps/web.py:3422
 msgid "An unknown error occured."
 msgstr "Ismeretlen hiba történt."
 
-#: cps/web.py:3397
+#: cps/web.py:3424
 #, python-format
 msgid "Edit User %(nick)s"
 msgstr " A felhasználó szerkesztése: %(nick)s"
 
-#: cps/web.py:3414
+#: cps/web.py:3441
 #, python-format
 msgid "Password for user %(user)s reset"
 msgstr "A(z) %(user)s felhasználó jelszavának alaphelyzetbe állítása"
 
-#: cps/web.py:3428 cps/web.py:3629
+#: cps/web.py:3455 cps/web.py:3661
 msgid "Error opening eBook. File does not exist or file is not accessible"
 msgstr "Hiba az ekönyv megnyitásakor. A fájl nem létezik vagy nem elérhető."
 
-#: cps/web.py:3453 cps/web.py:3912
+#: cps/web.py:3483 cps/web.py:3955
 msgid "edit metadata"
 msgstr "Metaadatok szerkesztése"
 
-#: cps/web.py:3546 cps/web.py:3782
+#: cps/web.py:3576 cps/web.py:3823
 #, python-format
 msgid "File extension '%(ext)s' is not allowed to be uploaded to this server"
 msgstr "A(z) \"%(ext)s\" kiterjesztésű fájlok feltöltése nincs engedélyezve ezen a szerveren."
 
-#: cps/web.py:3550 cps/web.py:3786
+#: cps/web.py:3580 cps/web.py:3827
 msgid "File to be uploaded must have an extension"
 msgstr "A feltöltendő fájlnak kiterjesztéssel kell rendelkeznie!"
 
-#: cps/web.py:3562 cps/web.py:3806
+#: cps/web.py:3592 cps/web.py:3847
 #, python-format
 msgid "Failed to create path %(path)s (Permission denied)."
 msgstr "Nem sikerült létrehozni az elérési utat (engedély megtagadva): %(path)s."
 
-#: cps/web.py:3567
+#: cps/web.py:3597
 #, python-format
 msgid "Failed to store file %(file)s."
 msgstr "Nem sikerült elmenteni a %(file)s fájlt."
 
-#: cps/web.py:3583
+#: cps/web.py:3614
 #, python-format
 msgid "File format %(ext)s added to %(book)s"
 msgstr "A(z) %(ext)s fájlformátum hozzáadva a könyvhez: %(book)s."
 
-#: cps/web.py:3601
+#: cps/web.py:3632
 #, python-format
 msgid "Failed to create path for cover %(path)s (Permission denied)."
 msgstr "Nem sikerült létrehozni az elérési utat a borítóhoz (engedély megtagadva): %(path)s."
 
-#: cps/web.py:3608
+#: cps/web.py:3640
 #, python-format
 msgid "Failed to store cover-file %(cover)s."
 msgstr "Nem sikerült elmenteni a borító-fájlt: %(cover)s."
 
-#: cps/web.py:3611
+#: cps/web.py:3643
 msgid "Cover-file is not a valid image file"
 msgstr "A borító-fájl nem érvényes képfájl!"
 
-#: cps/web.py:3641 cps/web.py:3650 cps/web.py:3654
+#: cps/web.py:3673 cps/web.py:3682
 msgid "unknown"
 msgstr "ismeretlen"
 
-#: cps/web.py:3673
+#: cps/web.py:3714
 msgid "Cover is not a jpg file, can't save"
 msgstr "A borító nem jpg fájl, nem lehet elmenteni."
 
-#: cps/web.py:3721
+#: cps/web.py:3762
 #, python-format
 msgid "%(langname)s is not a valid language"
 msgstr "A(z) %(langname)s nem érvényes nyelv"
 
-#: cps/web.py:3752
+#: cps/web.py:3793
 msgid "Metadata successfully updated"
 msgstr ""
 
-#: cps/web.py:3761
+#: cps/web.py:3802
 msgid "Error editing book, please check logfile for details"
 msgstr "Hiba a könyv szerkesztése során, további részletek a naplófájlban."
 
-#: cps/web.py:3811
+#: cps/web.py:3852
 #, python-format
 msgid "Failed to store file %(file)s (Permission denied)."
 msgstr "Nem sikerült elmenteni a %(file)s fájlt."
 
-#: cps/web.py:3816
+#: cps/web.py:3857
 #, python-format
 msgid "Failed to delete file %(file)s (Permission denied)."
 msgstr "Nem sikerült törölni a %(file)s fájlt."
 
-#: cps/web.py:3898
-#, python-format
-msgid "File %(file)s uploaded"
-msgstr "A %(file)s fájl feltöltve."
-
-#: cps/web.py:3928
+#: cps/web.py:3975
 msgid "Source or destination format for conversion missing"
 msgstr "Az átalakításhoz hiányzik a forrás- vagy a célformátum!"
 
-#: cps/web.py:3938
+#: cps/web.py:3985
 #, python-format
 msgid "Book successfully queued for converting to %(book_format)s"
 msgstr "A könyv sikeresen átalakításra lett jelölve a következő formátumra: %(book_format)s"
 
-#: cps/web.py:3942
+#: cps/web.py:3989
 #, python-format
 msgid "There was an error converting this book: %(res)s"
 msgstr "Hiba történt a könyv átalakításakor: %(res)s"
 
-#: cps/worker.py:287
+#: cps/worker.py:289
 #, python-format
 msgid "Ebook-converter failed: %(error)s"
 msgstr "Az e-könyv átalakítás nem sikerült: %(error)s"
 
-#: cps/worker.py:298
+#: cps/worker.py:300
 #, python-format
 msgid "Kindlegen failed with Error %(error)s. Message: %(message)s"
 msgstr "A Kindlegen futtatása nem sikerült a(z) %(error)s hiba miatt. Üzenet: %(message)s"
@@ -893,16 +896,16 @@ msgid "Do you really want to restart Calibre-Web?"
 msgstr "Valóban újra akarod indítani a Calibre-Web-et?"
 
 #: cps/templates/admin.html:150 cps/templates/admin.html:164
-#: cps/templates/admin.html:184 cps/templates/shelf.html:61
+#: cps/templates/admin.html:184 cps/templates/shelf.html:63
 msgid "Ok"
 msgstr "OK"
 
 #: cps/templates/admin.html:151 cps/templates/admin.html:165
 #: cps/templates/book_edit.html:178 cps/templates/book_edit.html:200
-#: cps/templates/config_edit.html:212 cps/templates/config_view_edit.html:168
+#: cps/templates/config_edit.html:212 cps/templates/config_view_edit.html:175
 #: cps/templates/email_edit.html:40 cps/templates/email_edit.html:75
-#: cps/templates/shelf.html:62 cps/templates/shelf_edit.html:19
-#: cps/templates/shelf_order.html:12 cps/templates/user_edit.html:155
+#: cps/templates/shelf.html:64 cps/templates/shelf_edit.html:19
+#: cps/templates/shelf_order.html:12 cps/templates/user_edit.html:147
 msgid "Back"
 msgstr "Vissza"
 
@@ -922,7 +925,7 @@ msgstr "keresztül"
 msgid "In Library"
 msgstr "Könyvtárban"
 
-#: cps/templates/author.html:69
+#: cps/templates/author.html:71
 msgid "More by"
 msgstr "Több eszerint:"
 
@@ -998,12 +1001,12 @@ msgstr "Borító URL (jpg, borító letöltve és elmentve az adatbázisban, a m
 msgid "Upload Cover from local drive"
 msgstr "Borító feltöltése helyi meghajtóról"
 
-#: cps/templates/book_edit.html:96 cps/templates/detail.html:135
+#: cps/templates/book_edit.html:96 cps/templates/detail.html:148
 msgid "Publishing date"
 msgstr "Kiadás éve"
 
 #: cps/templates/book_edit.html:103 cps/templates/book_edit.html:261
-#: cps/templates/book_edit.html:278 cps/templates/detail.html:127
+#: cps/templates/book_edit.html:278 cps/templates/detail.html:139
 #: cps/templates/search_form.html:14
 msgid "Publisher"
 msgstr "Kiadó"
@@ -1033,9 +1036,9 @@ msgid "Get metadata"
 msgstr "Metaadatok beszerzése"
 
 #: cps/templates/book_edit.html:177 cps/templates/config_edit.html:210
-#: cps/templates/config_view_edit.html:167 cps/templates/login.html:20
+#: cps/templates/config_view_edit.html:174 cps/templates/login.html:20
 #: cps/templates/search_form.html:153 cps/templates/shelf_edit.html:17
-#: cps/templates/user_edit.html:153
+#: cps/templates/user_edit.html:145
 msgid "Submit"
 msgstr "Küldés"
 
@@ -1233,139 +1236,151 @@ msgstr "Név"
 msgid "No. of random books to show"
 msgstr "Találomra mutatott könyvek száma"
 
-#: cps/templates/config_view_edit.html:31
+#: cps/templates/config_view_edit.html:31 cps/templates/readcbr.html:108
+msgid "Theme"
+msgstr "Téma"
+
+#: cps/templates/config_view_edit.html:33
+msgid "Standard Theme"
+msgstr "Alapértelmezett téma"
+
+#: cps/templates/config_view_edit.html:34
+msgid "caliBlur! Dark Theme"
+msgstr "caliBlur! sötét téma"
+
+#: cps/templates/config_view_edit.html:38
 msgid "Regular expression for ignoring columns"
 msgstr "Reguláris kifejezés oszlopok kihagyásához"
 
-#: cps/templates/config_view_edit.html:35
+#: cps/templates/config_view_edit.html:42
 msgid "Link read/unread status to Calibre column"
 msgstr "Olvasva/olvasatlan állapot hozzárendelése Calibre oszlophoz"
 
-#: cps/templates/config_view_edit.html:44
+#: cps/templates/config_view_edit.html:51
 msgid "Regular expression for title sorting"
 msgstr "Reguláris kifejezés címek sorbarendezéséhez"
 
-#: cps/templates/config_view_edit.html:48
+#: cps/templates/config_view_edit.html:55
 msgid "Tags for Mature Content"
 msgstr "Felnőtt tartalom címkéi"
 
-#: cps/templates/config_view_edit.html:62
+#: cps/templates/config_view_edit.html:69
 msgid "Default settings for new users"
 msgstr "Új felhasználók alapértelmezett beállításai"
 
-#: cps/templates/config_view_edit.html:70 cps/templates/user_edit.html:110
+#: cps/templates/config_view_edit.html:77 cps/templates/user_edit.html:102
 msgid "Admin user"
 msgstr "Rendszergazda felhasználó"
 
-#: cps/templates/config_view_edit.html:74 cps/templates/user_edit.html:119
+#: cps/templates/config_view_edit.html:81 cps/templates/user_edit.html:111
 msgid "Allow Downloads"
 msgstr "Letöltés engedélyezése"
 
-#: cps/templates/config_view_edit.html:78 cps/templates/user_edit.html:123
+#: cps/templates/config_view_edit.html:85 cps/templates/user_edit.html:115
 msgid "Allow Uploads"
 msgstr "Feltöltés engedélyezése"
 
-#: cps/templates/config_view_edit.html:82 cps/templates/user_edit.html:127
+#: cps/templates/config_view_edit.html:89 cps/templates/user_edit.html:119
 msgid "Allow Edit"
 msgstr "Szerkesztés engedélyezése"
 
-#: cps/templates/config_view_edit.html:86 cps/templates/user_edit.html:131
+#: cps/templates/config_view_edit.html:93 cps/templates/user_edit.html:123
 msgid "Allow Delete books"
 msgstr "Könyv törlés engedélyezése"
 
-#: cps/templates/config_view_edit.html:90 cps/templates/user_edit.html:136
+#: cps/templates/config_view_edit.html:97 cps/templates/user_edit.html:128
 msgid "Allow Changing Password"
 msgstr "Jelszó változtatásának engedélyezése"
 
-#: cps/templates/config_view_edit.html:94 cps/templates/user_edit.html:140
+#: cps/templates/config_view_edit.html:101 cps/templates/user_edit.html:132
 msgid "Allow Editing Public Shelfs"
 msgstr "Nyilvános polcok szerkesztésének engedélyezése"
 
-#: cps/templates/config_view_edit.html:104
+#: cps/templates/config_view_edit.html:111
 msgid "Default visibilities for new users"
 msgstr "Új felhasználók alapértelmezett látható elemei"
 
-#: cps/templates/config_view_edit.html:112 cps/templates/user_edit.html:58
+#: cps/templates/config_view_edit.html:119 cps/templates/user_edit.html:50
 msgid "Show random books"
 msgstr "Könyvek találomra mutatása"
 
-#: cps/templates/config_view_edit.html:116 cps/templates/user_edit.html:62
+#: cps/templates/config_view_edit.html:123 cps/templates/user_edit.html:54
 msgid "Show recent books"
 msgstr "Legutóbbi könyvek mutatása"
 
-#: cps/templates/config_view_edit.html:120 cps/templates/user_edit.html:66
+#: cps/templates/config_view_edit.html:127 cps/templates/user_edit.html:58
 msgid "Show sorted books"
 msgstr "Rendezett könyvek mutatása"
 
-#: cps/templates/config_view_edit.html:124 cps/templates/user_edit.html:70
+#: cps/templates/config_view_edit.html:131 cps/templates/user_edit.html:62
 msgid "Show hot books"
 msgstr "Kelendő könyvek mutatása"
 
-#: cps/templates/config_view_edit.html:128 cps/templates/user_edit.html:74
+#: cps/templates/config_view_edit.html:135 cps/templates/user_edit.html:66
 msgid "Show best rated books"
 msgstr "Legjobbra értékelt könyvek mutatása"
 
-#: cps/templates/config_view_edit.html:132 cps/templates/user_edit.html:78
+#: cps/templates/config_view_edit.html:139 cps/templates/user_edit.html:70
 msgid "Show language selection"
 msgstr "Nyelv választó mutatása"
 
-#: cps/templates/config_view_edit.html:136 cps/templates/user_edit.html:82
+#: cps/templates/config_view_edit.html:143 cps/templates/user_edit.html:74
 msgid "Show series selection"
 msgstr "Sorozat választó mutatása"
 
-#: cps/templates/config_view_edit.html:140 cps/templates/user_edit.html:86
+#: cps/templates/config_view_edit.html:147 cps/templates/user_edit.html:78
 msgid "Show category selection"
 msgstr "Címke választó mutatása"
 
-#: cps/templates/config_view_edit.html:144 cps/templates/user_edit.html:90
+#: cps/templates/config_view_edit.html:151 cps/templates/user_edit.html:82
 msgid "Show author selection"
 msgstr "Szerző választó mutatása"
 
-#: cps/templates/config_view_edit.html:148 cps/templates/user_edit.html:94
+#: cps/templates/config_view_edit.html:155 cps/templates/user_edit.html:86
 msgid "Show publisher selection"
 msgstr ""
 
-#: cps/templates/config_view_edit.html:152 cps/templates/user_edit.html:98
+#: cps/templates/config_view_edit.html:159 cps/templates/user_edit.html:90
 msgid "Show read and unread"
 msgstr "Mutassa az olvasva/olvasatlan állapotot"
 
-#: cps/templates/config_view_edit.html:156 cps/templates/user_edit.html:102
+#: cps/templates/config_view_edit.html:163 cps/templates/user_edit.html:94
 msgid "Show random books in detail view"
 msgstr "Mutasson könyveket találomra a részletes nézetben"
 
-#: cps/templates/config_view_edit.html:160 cps/templates/user_edit.html:115
+#: cps/templates/config_view_edit.html:167 cps/templates/user_edit.html:107
 msgid "Show mature content"
 msgstr "Mutassa a felnőtt tartalmat"
 
-#: cps/templates/detail.html:49
+#: cps/templates/detail.html:63
 msgid "Read in browser"
 msgstr "Olvasás böngészőben"
 
-#: cps/templates/detail.html:88
+#: cps/templates/detail.html:100
 msgid "Book"
 msgstr " "
 
-#: cps/templates/detail.html:88
+#: cps/templates/detail.html:100
 msgid "of"
 msgstr "kötete a sorozatnak:"
 
-#: cps/templates/detail.html:94
+#: cps/templates/detail.html:106
 msgid "language"
 msgstr "nyelv"
 
-#: cps/templates/detail.html:172
+#: cps/templates/detail.html:186
 msgid "Read"
 msgstr "Olvasva"
 
-#: cps/templates/detail.html:182
+#: cps/templates/detail.html:196
 msgid "Description:"
 msgstr "Ismertető:"
 
-#: cps/templates/detail.html:195 cps/templates/search.html:14
+#: cps/templates/detail.html:209 cps/templates/search.html:14
 msgid "Add to shelf"
 msgstr "Hozzáadás polchoz"
 
-#: cps/templates/detail.html:257
+#: cps/templates/detail.html:271
 msgid "Edit metadata"
 msgstr "Metaadatok szerkesztése"
 
@@ -1433,6 +1448,10 @@ msgstr "Következő"
 #: cps/templates/layout.html:43 cps/templates/layout.html:44
 msgid "Search"
 msgstr "Keresés"
+
+#: cps/templates/http_error.html:23
+msgid "Back to home"
+msgstr ""
 
 #: cps/templates/index.html:5
 msgid "Discover (Random Books)"
@@ -1666,10 +1685,6 @@ msgstr "Forgatás jobbra"
 msgid "Flip Image"
 msgstr "Kép tükrözése"
 
-#: cps/templates/readcbr.html:108 cps/templates/user_edit.html:39
-msgid "Theme"
-msgstr "Téma"
-
 #: cps/templates/readcbr.html:111
 msgid "Light"
 msgstr "Világos"
@@ -1802,11 +1817,11 @@ msgstr "Polc szerkesztése"
 msgid "Change order"
 msgstr "Sorrend változtatása"
 
-#: cps/templates/shelf.html:56
+#: cps/templates/shelf.html:58
 msgid "Do you really want to delete the shelf?"
 msgstr "Valóban törölni akarod a polcot?"
 
-#: cps/templates/shelf.html:59
+#: cps/templates/shelf.html:61
 msgid "Shelf will be lost for everybody and forever!"
 msgstr "A polc el fog tűnni mindenki számára és örökké!"
 
@@ -1894,27 +1909,19 @@ msgstr "Felhasználó jelszavának alaphelyzetbe állítása"
 msgid "Kindle E-Mail"
 msgstr "Kindle e-mail"
 
-#: cps/templates/user_edit.html:41
-msgid "Standard Theme"
-msgstr "Alapértelmezett téma"
-
-#: cps/templates/user_edit.html:42
-msgid "caliBlur! Dark Theme (Beta)"
-msgstr "caliBlur! sötét téma (béta)"
-
-#: cps/templates/user_edit.html:47
+#: cps/templates/user_edit.html:39
 msgid "Show books with language"
 msgstr "Mutasd a könyveket a következő nyelvvel"
 
-#: cps/templates/user_edit.html:49
+#: cps/templates/user_edit.html:41
 msgid "Show all"
 msgstr "Mindent mutass"
 
-#: cps/templates/user_edit.html:147
+#: cps/templates/user_edit.html:139
 msgid "Delete this user"
 msgstr "A felhasználó törlése"
 
-#: cps/templates/user_edit.html:162
+#: cps/templates/user_edit.html:154
 msgid "Recent Downloads"
 msgstr "Utolsó letöltések"
 
@@ -1935,4 +1942,13 @@ msgstr "Utolsó letöltések"
 
 #~ msgid "Choose a password"
 #~ msgstr "Válassz egy jelszót"
+
+#~ msgid "Could not find any formats suitable for sending by e-mail"
+#~ msgstr "Az e-mail küldéséhez nem található megfelelő formátum"
+
+#~ msgid "Author list"
+#~ msgstr "Szerzők listája"
+
+#~ msgid "File %(file)s uploaded"
+#~ msgstr "A %(file)s fájl feltöltve."
 
