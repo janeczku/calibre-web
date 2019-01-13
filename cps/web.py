@@ -2374,7 +2374,7 @@ def login():
                 ipAdress = request.headers.get('X-Forwarded-For', request.remote_addr)
                 app.logger.info('LDAP Login failed for user "' + form['username'] + '" IP-adress: ' + ipAdress)
                 flash(_(u"Wrong Username or Password"), category="error")
-        elif user and check_password_hash(user.password, form['password']) and user.nickname is not "Guest" and not user.is_authenticated:
+        elif user and check_password_hash(user.password, form['password']) and user.nickname is not "Guest":
             login_user(user, remember=True)
             flash(_(u"you are now logged in as: '%(nickname)s'", nickname=user.nickname), category="success")
             return redirect_back(url_for("index"))
