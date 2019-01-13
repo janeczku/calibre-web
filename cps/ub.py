@@ -14,7 +14,6 @@ import json
 import datetime
 from binascii import hexlify
 import cli
-import ldap
 
 engine = create_engine('sqlite:///{0}'.format(cli.settingspath), echo=False)
 Base = declarative_base()
@@ -802,6 +801,7 @@ else:
 
 #get LDAP connection
 def get_ldap_connection():
+    import ldap
     conn = ldap.initialize('ldap://{}'.format(config.config_ldap_provider_url))
     return conn
 

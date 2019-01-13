@@ -57,7 +57,6 @@ from redirect import redirect_back
 import time
 import server
 from reverseproxy import ReverseProxied
-import ldap
 
 try:
     from googleapiclient.errors import HttpError
@@ -2344,6 +2343,7 @@ def login():
         form = request.form.to_dict()
         user = ub.session.query(ub.User).filter(func.lower(ub.User.nickname) == form['username'].strip().lower()).first()
         if config.config_use_ldap and user:
+            import ldap
             try:
                 ub.User.try_login(form['username'], form['password'])
                 login_user(user, remember=True)
@@ -2352,6 +2352,7 @@ def login():
             except ldap.INVALID_CREDENTIALS:
                 ipAdress = request.headers.get('X-Forwarded-For', request.remote_addr)
                 app.logger.info('LDAP Login failed for user "' + form['username'] + '" IP-adress: ' + ipAdress)
+                flash(_(u"Wrong Username or Password"), category="error")
         elif user and check_password_hash(user.password, form['password']) and user.nickname is not "Guest" and not user.is_authenticated:
             login_user(user, remember=True)
             flash(_(u"you are now logged in as: '%(nickname)s'", nickname=user.nickname), category="success")
