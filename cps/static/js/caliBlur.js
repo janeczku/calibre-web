@@ -40,7 +40,7 @@ $( 'a.navbar-brand' ).clone().appendTo( '.home-btn' ).empty().removeClass('navba
 
 // Wrap book description in div container
 if ( $( 'body.book' ).length > 0 ) {
-    
+
   description = $( '.comments' );
   bookInfo = $( '.author' ).nextUntil( 'h3:contains("Description")');
   $( 'h3:contains("Description")' ).detach();
@@ -144,7 +144,7 @@ return $(this).text().replace(/^\s+|^\t+|\t+|\s+$/g, "");
   $.each(published, function(i, val) {
     $( '.publishing-date' ).append( '<span>' + published[i] + '</span>' );
   });
-    
+
   languages = $( '.languages p span' ).text().split( ': ' );
   $( '.languages p span' ).remove();
   $.each(languages, function(i, val) {
@@ -335,7 +335,7 @@ $( 'input#query' ).focusout(function() {
             $( 'form[role="search"]' ).removeClass( 'search-focus' );
   }, 100);
 });
-    
+
 // Check if dropdown goes out of viewport and add class
 
 $(document).on('click','.dropdown-toggle',function() {
@@ -521,8 +521,6 @@ $( '#add-to-shelf' ).attr({
   'data-viewport': '.btn-toolbar' })
   .addClass('addtoshelf-btn-tooltip');
 
-var teetet = $( '#add-to-shelf' ).text()
-
 $( '#have_read_cb' ).attr({
   'data-toggle': 'tooltip',
   'title': 'Mark As Read',
@@ -558,8 +556,6 @@ $( '.btn-group[aria-label="Edit/Delete book"] a' ).attr({
    'data-placement': 'bottom',
    'data-viewport': '.btn-toolbar' })
    .addClass('edit-btn-tooltip');
-
-var teetet = $( '#edit_book' ).text()
 
 $( '#sendbtn' ).attr({
   'data-toggle': 'tooltip',

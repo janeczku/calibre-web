@@ -1072,7 +1072,7 @@ def get_publishers_json():
         json_dumps = json.dumps([dict(name=r.name.replace('|',',')) for r in entries])
         return json_dumps
 
-		
+
 @app.route("/get_tags_json", methods=['GET', 'POST'])
 @login_required_if_no_ano
 def get_tags_json():
@@ -1192,8 +1192,8 @@ def get_update_status():
             r = requests.get(repository_url + '/git/commits/' + commit['object']['sha'])
             r.raise_for_status()
             update_data = r.json()
-        except requests.exceptions.HTTPError as ex:
-            status['error'] = _(u'HTTP Error') + ' ' + str(ex)
+        except requests.exceptions.HTTPError as e:
+            status['error'] = _(u'HTTP Error') + ' ' + str(e)
         except requests.exceptions.ConnectionError:
             status['error'] = _(u'Connection error')
         except requests.exceptions.Timeout:
