@@ -108,7 +108,7 @@ class emailbase():
                     self.transferSize = len(strg)
                     lock.release()
                     for i in range(0, self.transferSize, chunksize):
-                        if type(strg) == bytes:
+                        if isinstance(strg, bytes):
                             self.sock.send((strg[i:i+chunksize]))
                         else:
                             self.sock.send((strg[i:i + chunksize]).encode('utf-8'))
@@ -455,6 +455,8 @@ class WorkerThread(threading.Thread):
         except (smtplib.SMTPException) as e:
             if hasattr(e, "smtp_error"):
                 text = e.smtp_error.replace("\n",'. ')
+            elif hasattr(e, "message"):
+                text = e.message
             else:
                 text = ''
             self._handleError(u'Error sending email: ' + text)
@@ -501,10 +503,13 @@ class StderrLogger(object):
         self.logger = web.app.logger
 
     def write(self, message):
-        if message == '\n':
-            self.logger.debug(self.buffer)
-            print(self.buffer)
-            self.buffer = ''
-        else:
-            self.buffer += message
+        try:
+            if message == '\n':
+                self.logger.debug(self.buffer)
+                print(self.buffer)
+                self.buffer = ''
+            else:
+                self.buffer += message
+        except:
+            pass
 

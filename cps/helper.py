@@ -306,12 +306,12 @@ def update_dir_structure_file(book_id, calibrepath, first_author):
     # Rename all files from old names to new names
     if authordir != new_authordir or titledir != new_titledir:
         try:
-            for format in localbook.data:
+            for file_format in localbook.data:
                 path_name = os.path.join(calibrepath, new_authordir, os.path.basename(path))
                 new_name = get_valid_filename(localbook.title) + ' - ' + get_valid_filename(new_authordir)
-                os.renames(os.path.join(path_name, format.name + '.' + format.format.lower()),
-                           os.path.join(path_name,new_name + '.' + format.format.lower()))
-                format.name = new_name
+                os.renames(os.path.join(path_name, file_format.name + '.' + file_format.format.lower()),
+                           os.path.join(path_name,new_name + '.' + file_format.format.lower()))
+                file_format.name = new_name
         except OSError as ex:
             web.app.logger.error("Rename file in path " + path + " to " + new_name + ": " + str(ex))
             web.app.logger.debug(ex, exc_info=True)

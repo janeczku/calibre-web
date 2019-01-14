@@ -103,7 +103,7 @@
       {% if entry.languages.__len__() > 0 %}
        <div class="languages">
        <p>
-      <span class="label label-default">{{_('language')}}: {% for language in entry.languages %} {{language.language_name}}{% if not loop.last %},{% endif %}{% endfor %} </span>
+      <span class="label label-default">{{_('language')}}: {% for language in entry.languages %}{{language.language_name}}{% if not loop.last %}, {% endif %}{% endfor %}</span>
       </p>
       </div>
       {% endif %}

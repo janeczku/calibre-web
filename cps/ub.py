@@ -268,8 +268,8 @@ class Registration(Base):
     domain = Column(String)
 
     def __repr__(self):
-        return u"<Registration('{0}')>".format(self.domain)      
-        
+        return u"<Registration('{0}')>".format(self.domain)
+
 
 # Baseclass for representing settings in app.db with email server settings and Calibre database settings
 # (application settings)
@@ -555,7 +555,7 @@ def migrate_Database():
         conn.execute("ALTER TABLE Settings ADD column `config_use_google_drive` INTEGER DEFAULT 0")
         conn.execute("ALTER TABLE Settings ADD column `config_google_drive_folder` String DEFAULT ''")
         conn.execute("ALTER TABLE Settings ADD column `config_google_drive_watch_changes_response` String DEFAULT ''")
-        session.commit()        
+        session.commit()
     try:
         session.query(exists().where(Settings.config_columns_to_ignore)).scalar()
     except exc.OperationalError:
