@@ -41,7 +41,7 @@ $(function() {
 
     });
     //triggered when modal is about to be shown
-    $("#DeleteDomain").on("show.bs.modal" function(e) {
+    $("#DeleteDomain").on("show.bs.modal", function(e) {
         //get data-id attribute of the clicked element and store in button
         var domainId = $(e.relatedTarget).data("domain-id");
         $(e.currentTarget).find("#btndeletedomain").data("domainId", domainId);
