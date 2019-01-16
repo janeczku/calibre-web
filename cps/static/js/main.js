@@ -74,11 +74,6 @@ $(function() {
         $(".load-more .row").isotope( "appended", $(data), null );
     });
 
-    $("#sendbtn").click(function() {
-        var $this = $(this);
-        $this.text("Please wait...");
-        $this.addClass("disabled");
-    });
     $("#restart").click(function() {
         $.ajax({
             dataType: "json",
