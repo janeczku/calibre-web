@@ -583,7 +583,7 @@ $( '#sendbtn' ).attr({
   .addClass('send-btn-tooltip');
 
 $( '#sendbtn2' ).attr({
-  'data-toggle': 'tooltip',
+  'data-toggle-two': 'tooltip',
   'title': 'Send to Kindle',
   'data-placement': 'bottom',
   'data-viewport': '.btn-toolbar' })
