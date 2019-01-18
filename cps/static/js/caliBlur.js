@@ -197,7 +197,7 @@ return $(this).text().replace(/^\s+|^\t+|\t+|\s+$/g, "");
     $(  '.readinbrowser-drop' ).toggle();
   });
 
-  $( '#send-to-kindle' ).click( function() {
+  $( '#sendbtn2' ).click( function() {
      $( '.sendtokindle-drop' ).toggle();
   });
     
@@ -574,6 +574,13 @@ $( '.btn-group[aria-label="Edit/Delete book"] a' ).attr({
    .addClass('edit-btn-tooltip');
 
 $( '#sendbtn' ).attr({
+  'data-toggle': 'tooltip',
+  'title': 'Send to Kindle',
+  'data-placement': 'bottom',
+  'data-viewport': '.btn-toolbar' })
+  .addClass('send-btn-tooltip');
+
+$( '#sendbtn2' ).attr({
   'data-toggle': 'tooltip',
   'title': 'Send to Kindle',
   'data-placement': 'bottom',
