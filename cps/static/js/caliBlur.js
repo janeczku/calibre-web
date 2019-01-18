@@ -526,7 +526,7 @@ $( '.profileDrop' ).attr({
 
 $( '#btn-upload' ).attr({
   'data-toggle': 'tooltip',
-  'title': $( '#btn-upload' ).text() , // 'Upload',
+  'title': $( '#btn-upload' ).parent().text() , // 'Upload',
   'data-placement': 'bottom',
   'data-viewport': '#main-nav' })
   .addClass('upload-btn-tooltip');
