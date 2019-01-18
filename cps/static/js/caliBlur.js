@@ -200,6 +200,11 @@ return $(this).text().replace(/^\s+|^\t+|\t+|\s+$/g, "");
   $('.downloadBtn' ).click( function() {
     $(  '.leramslist' ).toggle();
   });
+    
+    $('#sendbtn2' ).click( function() {
+    $(  '.sendtokindle-drop' ).toggle();
+  });
+
 
   $('div[aria-label="Add to shelves"]' ).click( function() {
     $(  '#add-to-shelves' ).toggle();
