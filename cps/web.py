@@ -682,6 +682,7 @@ def before_request():
     g.allow_registration = config.config_public_reg
     g.allow_upload = config.config_uploading
     g.current_theme = config.config_theme
+    g.current_reader_theme = config.config_reader_theme
     g.public_shelfes = ub.session.query(ub.Shelf).filter(ub.Shelf.is_public == 1).order_by(ub.Shelf.name).all()
     if not config.db_configured and request.endpoint not in ('basic_configuration', 'login') and '/static/' not in request.path:
         return redirect(url_for('basic_configuration'))
@@ -2904,7 +2905,9 @@ def view_configuration():
         if "config_read_column" in to_save:
             content.config_read_column = int(to_save["config_read_column"])
         if "config_theme" in to_save:
-            content.config_theme = int(to_save["config_theme"])
+            content.config_theme = int(to_save["config_reader_theme"])
+        if "config_reader_theme" in to_save:
+            content.config_reader_theme = int(to_save["config_reader_theme"])    
         if "config_title_regex" in to_save:
             if content.config_title_regex != to_save["config_title_regex"]:
                 content.config_title_regex = to_save["config_title_regex"]
