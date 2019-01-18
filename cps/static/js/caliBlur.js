@@ -188,6 +188,7 @@ return $(this).text().replace(/^\s+|^\t+|\t+|\s+$/g, "");
 
   // Move dropdown lists higher in dom, replace bootstrap toggle with own toggle.
   $( 'ul[aria-labelledby="read-in-browser"]' ).insertBefore( '.blur-wrapper' ).addClass('readinbrowser-drop');
+  $( 'ul[aria-labelledby="send-to-kindle"]' ).insertBefore( '.blur-wrapper' ).addClass('sendtokindle-drop');
   $( '.leramslist' ).insertBefore( '.blur-wrapper' );
   $( 'ul[aria-labelledby="btnGroupDrop1"]' ).insertBefore( '.blur-wrapper' ).addClass('leramslist');
   $( '#add-to-shelves' ).insertBefore( '.blur-wrapper' );
@@ -196,6 +197,10 @@ return $(this).text().replace(/^\s+|^\t+|\t+|\s+$/g, "");
     $(  '.readinbrowser-drop' ).toggle();
   });
 
+  $( '#send-to-kindle' ).click( function() {
+     $( '.sendtokindle-drop' ).toggle();
+  });
+    
   $('.downloadBtn' ).click( function() {
     $(  '.leramslist' ).toggle();
   });
@@ -223,6 +228,17 @@ return $(this).text().replace(/^\s+|^\t+|\t+|\s+$/g, "");
         $( '.readinbrowser-drop' ).attr("style", "left: " + ribPosition + "px !important; right: auto; top: " + topPos + "px");
       } else {
           $( '.readinbrowser-drop' ).attr("style", "left: " + position + "px !important; right: auto; top: " + topPos + "px");
+      }
+    }
+      
+     if ( $( '#send-to-kindle' ).length > 0 ) {
+      position = $( '#send-to-kindle'  ).offset().left
+      if ( position + $(  '.sendtokindle-drop' ).width() > $( window ).width() ) {
+        positionOff = position + $( '.sendtokindle-drop' ).width() - $( window ).width();
+        ribPosition = position - positionOff - 5
+        $( '.sendtokindle-drop' ).attr("style", "left: " + ribPosition + "px !important; right: auto; top: " + topPos + "px");
+      } else {
+          $( '.sendtokindle-drop' ).attr("style", "left: " + position + "px !important; right: auto; top: " + topPos + "px");
       }
     }
 
