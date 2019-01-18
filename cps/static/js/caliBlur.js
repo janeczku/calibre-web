@@ -291,6 +291,7 @@ $( '.book-meta > .bookinfo > .rating' ).clone().insertBefore( '.book-meta > .des
 $(document).mouseup(function (e) {
   var container = new Array();
   container.push($('ul[aria-labelledby="read-in-browser"]'));
+  container.push($('.sendtokindle-drop'));
   container.push($('.leramslist'));
   container.push($('#add-to-shelves'));
   container.push($('.navbar-collapse.collapse.in'));
