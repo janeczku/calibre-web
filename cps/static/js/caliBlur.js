@@ -226,6 +226,17 @@ return $(this).text().replace(/^\s+|^\t+|\t+|\s+$/g, "");
           $( '.readinbrowser-drop' ).attr("style", "left: " + position + "px !important; right: auto; top: " + topPos + "px");
       }
     }
+      
+     if ( $( '#sendbtn2' ).length > 0 ) {
+      position = $( '#sendbtn2'  ).offset().left
+      if ( position + $(  '.sendtokindle-drop' ).width() > $( window ).width() ) {
+        positionOff = position + $( '.sendtokindle-drop' ).width() - $( window ).width();
+        ribPosition = position - positionOff - 5
+        $( '.sendtokindle-drop' ).attr("style", "left: " + ribPosition + "px !important; right: auto; top: " + topPos + "px");
+      } else {
+          $( '.sendtokindle-drop' ).attr("style", "left: " + position + "px !important; right: auto; top: " + topPos + "px");
+      }
+    }
 
     if ( $( '.downloadBtn' ).length > 0 ) {
 
