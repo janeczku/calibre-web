@@ -160,8 +160,7 @@ return $(this).text().replace(/^\s+|^\t+|\t+|\s+$/g, "");
     $( '<button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-download"></span>Download :<span class="caret"></span></button><ul class="dropdown-menu leramslist aria-labelledby="btnGroupDrop1"></ul>' ).insertBefore( downloads[downloads.length-1] );
     $( downloads ).detach();
     $.each(downloads, function(i, val) {
-      $( '<li>' + downloads[i].outerHTML + '</li>' ).appendTo( '.lerams
-                                                              ' );
+      $( '<li>' + downloads[i].outerHTML + '</li>' ).appendTo( '.leramslist' );
     });
     $( '.leramslist' ).find( 'span' ).remove();
     $( '.leramslist a' ).removeClass( 'btn btn-primary' ).removeAttr( 'role' );
@@ -293,7 +292,6 @@ $(document).mouseup(function (e) {
   var container = new Array();
   container.push($('ul[aria-labelledby="read-in-browser"]'));
   container.push($('.leramslist'));
-  container.push($('sendtokindle-drop'));
   container.push($('#add-to-shelves'));
   container.push($('.navbar-collapse.collapse.in'));
 
