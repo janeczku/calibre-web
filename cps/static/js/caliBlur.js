@@ -188,6 +188,7 @@ return $(this).text().replace(/^\s+|^\t+|\t+|\s+$/g, "");
 
   // Move dropdown lists higher in dom, replace bootstrap toggle with own toggle.
   $( 'ul[aria-labelledby="read-in-browser"]' ).insertBefore( '.blur-wrapper' ).addClass('readinbrowser-drop');
+  $( 'ul[aria-labelledby="send-to-kindle"]' ).insertBefore( '.blur-wrapper' ).addClass('sendtokindle-drop');
   $( '.leramslist' ).insertBefore( '.blur-wrapper' );
   $( 'ul[aria-labelledby="btnGroupDrop1"]' ).insertBefore( '.blur-wrapper' ).addClass('leramslist');
   $( '#add-to-shelves' ).insertBefore( '.blur-wrapper' );
@@ -558,6 +559,13 @@ $( '.btn-group[aria-label="Edit/Delete book"] a' ).attr({
    .addClass('edit-btn-tooltip');
 
 $( '#sendbtn' ).attr({
+  'data-toggle': 'tooltip',
+  'title': 'Send to Kindle',
+  'data-placement': 'bottom',
+  'data-viewport': '.btn-toolbar' })
+  .addClass('send-btn-tooltip');
+
+$( '#sendbtn2' ).attr({
   'data-toggle': 'tooltip',
   'title': 'Send to Kindle',
   'data-placement': 'bottom',
