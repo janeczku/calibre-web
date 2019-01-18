@@ -1,0 +1,42 @@
+:root {
+    --color-background: #474747;
+    --color-title: #fff;
+    --color-active: #ccc;
+    --color-hover: #999;
+    --color-button: #666;
+    --color-divider: #fff;
+    --color-shadow: hsla(0,0%,100%,.45);
+    --color-text: #eee;
+}
+#main {
+    background: var(--color-background);
+}
+#titlebar {
+    color: var(--color-title);
+}
+#titlebar a:hover {
+    border: 1px var(--color-hover) solid;
+}
+#titlebar a:active {
+    color: var(--color-active);
+    -moz-box-shadow: inset 0 0 6px var(--color-divider);
+    -webkit-box-shadow: inset 0 0 6px var(--color-divider);
+    -ms-box-shadow: inset 0 0 6px var(--color-divider);
+    box-shadow: inset 0 0 6px var(--color-divider);
+}
+#divider {
+    border-right: 1px var(--color-divider) solid;
+    box-shadow: -2px 0 15px var(--color-shadow);
+}
+.arrow {
+    color: var(--color-button);
+}
+.arrow:hover {
+    color: var(--color-hover);
+}
+.arrow:active {
+    color: var(--color-active);
+}
+[class^="calibre"] {
+  color: var(--color-text)
+}
