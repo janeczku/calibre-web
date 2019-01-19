@@ -2333,6 +2333,7 @@ def register():
                 content.password = generate_password_hash(password)
                 content.role = config.config_default_role
                 content.sidebar_view = config.config_default_show
+                content.mature_content = bool(config.config_default_show & ub.MATURE_CONTENT)
                 try:
                     ub.session.add(content)
                     ub.session.commit()
