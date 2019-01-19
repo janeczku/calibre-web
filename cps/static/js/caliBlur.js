@@ -188,6 +188,7 @@ return $(this).text().replace(/^\s+|^\t+|\t+|\s+$/g, "");
 
   // Move dropdown lists higher in dom, replace bootstrap toggle with own toggle.
   $( 'ul[aria-labelledby="read-in-browser"]' ).insertBefore( '.blur-wrapper' ).addClass('readinbrowser-drop');
+  $( 'ul[aria-labelledby="send-to-kindle"]' ).insertBefore( '.blur-wrapper' ).addClass('sendtokindle-drop');
   $( '.leramslist' ).insertBefore( '.blur-wrapper' );
   $( 'ul[aria-labelledby="btnGroupDrop1"]' ).insertBefore( '.blur-wrapper' ).addClass('leramslist');
   $( '#add-to-shelves' ).insertBefore( '.blur-wrapper' );
@@ -199,6 +200,11 @@ return $(this).text().replace(/^\s+|^\t+|\t+|\s+$/g, "");
   $('.downloadBtn' ).click( function() {
     $(  '.leramslist' ).toggle();
   });
+    
+    $('#sendbtn2' ).click( function() {
+    $(  '.sendtokindle-drop' ).toggle();
+  });
+
 
   $('div[aria-label="Add to shelves"]' ).click( function() {
     $(  '#add-to-shelves' ).toggle();
@@ -223,6 +229,17 @@ return $(this).text().replace(/^\s+|^\t+|\t+|\s+$/g, "");
         $( '.readinbrowser-drop' ).attr("style", "left: " + ribPosition + "px !important; right: auto; top: " + topPos + "px");
       } else {
           $( '.readinbrowser-drop' ).attr("style", "left: " + position + "px !important; right: auto; top: " + topPos + "px");
+      }
+    }
+      
+     if ( $( '#sendbtn2' ).length > 0 ) {
+      position = $( '#sendbtn2'  ).offset().left
+      if ( position + $(  '.sendtokindle-drop' ).width() > $( window ).width() ) {
+        positionOff = position + $( '.sendtokindle-drop' ).width() - $( window ).width();
+        ribPosition = position - positionOff - 5
+        $( '.sendtokindle-drop' ).attr("style", "left: " + ribPosition + "px !important; right: auto; top: " + topPos + "px");
+      } else {
+          $( '.sendtokindle-drop' ).attr("style", "left: " + position + "px !important; right: auto; top: " + topPos + "px");
       }
     }
 
@@ -274,6 +291,7 @@ $( '.book-meta > .bookinfo > .rating' ).clone().insertBefore( '.book-meta > .des
 $(document).mouseup(function (e) {
   var container = new Array();
   container.push($('ul[aria-labelledby="read-in-browser"]'));
+  container.push($('.sendtokindle-drop'));
   container.push($('.leramslist'));
   container.push($('#add-to-shelves'));
   container.push($('.navbar-collapse.collapse.in'));
@@ -509,7 +527,7 @@ $( '.profileDrop' ).attr({
 
 $( '#btn-upload' ).attr({
   'data-toggle': 'tooltip',
-  'title': $( '#btn-upload' ).text() , // 'Upload',
+  'title': $( '#btn-upload' ).parent().text() , // 'Upload',
   'data-placement': 'bottom',
   'data-viewport': '#main-nav' })
   .addClass('upload-btn-tooltip');
@@ -559,6 +577,13 @@ $( '.btn-group[aria-label="Edit/Delete book"] a' ).attr({
 
 $( '#sendbtn' ).attr({
   'data-toggle': 'tooltip',
+  'title': 'Send to Kindle',
+  'data-placement': 'bottom',
+  'data-viewport': '.btn-toolbar' })
+  .addClass('send-btn-tooltip');
+
+$( '#sendbtn2' ).attr({
+  'data-toggle-two': 'tooltip',
   'title': 'Send to Kindle',
   'data-placement': 'bottom',
   'data-viewport': '.btn-toolbar' })
