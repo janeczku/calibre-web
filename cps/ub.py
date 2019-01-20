@@ -46,6 +46,10 @@ SIDEBAR_PUBLISHER = 4096
 DEFAULT_PASS = "admin123"
 DEFAULT_PORT = int(os.environ.get("CALIBRE_PORT", 8083))
 
+UPDATE_STABLE = 0
+AUTO_UPDATE_STABLE = 1
+UPDATE_NIGHTLY = 2
+AUTO_UPDATE_NIGHTLY = 4
 
 class UserBase:
 
@@ -166,7 +170,6 @@ class User(UserBase, Base):
     sidebar_view = Column(Integer, default=1)
     default_language = Column(String(3), default="all")
     mature_content = Column(Boolean, default=True)
-    # theme = Column(Integer, default=0)
 
 
 # Class for anonymous user is derived from User base and completly overrides methods and properties for the
@@ -259,7 +262,7 @@ class Downloads(Base):
     def __repr__(self):
         return '<Download %r' % self.book_id
 
-        
+
 # Baseclass representing allowed domains for registration
 class Registration(Base):
     __tablename__ = 'registration'
@@ -313,6 +316,7 @@ class Settings(Base):
     config_calibre = Column(String)
     config_rarfile_location = Column(String)
     config_theme = Column(Integer, default=0)
+    config_updatechannel = Column(Integer, default=0)
 
     def __repr__(self):
         pass
@@ -387,10 +391,15 @@ class Config:
             self.config_logfile = data.config_logfile
         self.config_rarfile_location = data.config_rarfile_location
         self.config_theme = data.config_theme
+        self.config_updatechannel = data.config_updatechannel
 
     @property
     def get_main_dir(self):
         return self.config_main_dir
+
+    @property
+    def get_update_channel(self):
+        return self.config_updatechannel
 
     def get_config_certfile(self):
         if cli.certfilepath:
@@ -666,6 +675,12 @@ def migrate_Database():
     except exc.OperationalError:  # Database is not compatible, some rows are missing
         conn = engine.connect()
         conn.execute("ALTER TABLE Settings ADD column `config_theme` INTEGER DEFAULT 0")
+        session.commit()
+    try:
+        session.query(exists().where(Settings.config_updatechannel)).scalar()
+    except exc.OperationalError:  # Database is not compatible, some rows are missing
+        conn = engine.connect()
+        conn.execute("ALTER TABLE Settings ADD column `config_updatechannel` INTEGER DEFAULT 0")
         session.commit()
 
 
