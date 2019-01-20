@@ -1,6 +1,22 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+#  This file is part of the Calibre-Web (https://github.com/janeczku/calibre-web)
+#    Copyright (C) 2018-2019 OzzieIsaacs
+#
+#  This program is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License as published by
+#  the Free Software Foundation, either version 3 of the License, or
+#  (at your option) any later version.
+#
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU General Public License for more details.
+#
+#  You should have received a copy of the GNU General Public License
+#  along with this program. If not, see <http://www.gnu.org/licenses/>.
+
 import threading
 import zipfile
 import requests
@@ -264,7 +280,8 @@ class Updater(threading.Thread):
 
             if 'committer' in update_data and 'message' in update_data:
                 status['success'] = True
-                status['message'] = _(u'A new update is available. Click on the button below to update to the latest version.')
+                status['message'] = _(
+                    u'A new update is available. Click on the button below to update to the latest version.')
 
                 new_commit_date = datetime.datetime.strptime(
                     update_data['committer']['date'], '%Y-%m-%dT%H:%M:%SZ') - tz
@@ -321,7 +338,8 @@ class Updater(threading.Thread):
             status['update'] = True
             if 'body' in commit:
                 status['success'] = True
-                status['message'] = _(u'A new update is available. Click on the button below to update to the latest version.')
+                status['message'] = _(
+                    u'A new update is available. Click on the button below to update to the latest version.')
 
                 new_commit_date = datetime.datetime.strptime(
                     commit['committer']['date'], '%Y-%m-%dT%H:%M:%SZ') - tz
@@ -410,8 +428,9 @@ class Updater(threading.Thread):
 
                 # Check if major versions are identical search for newest nonenqual commit and update to this one
                 if major_version_update == int(current_version[0]):
-                    if (minor_version_update == int(current_version[1]) and patch_version_update > int(current_version[2])) \
-                            or minor_version_update > int(current_version[1]):
+                    if (minor_version_update == int(current_version[1]) and
+                            patch_version_update > int(current_version[2])) or \
+                            minor_version_update > int(current_version[1]):
                         parents.append([commit[i]['tag_name'],commit[i]['body'].replace('\r\n', '<p>')])
                     i -= 1
                     continue
@@ -427,9 +446,8 @@ class Updater(threading.Thread):
                         status.update({
                             'update': True,
                             'success': True,
-                            'message': _(
-                                u'A new update is available. Click on the button below to update to version: ') +
-                                       commit[i]['tag_name'],
+                            'message': _(u'A new update is available. Click on the button below to '
+                                         u'update to version: %(version)s', version=commit[i]['tag_name']),
                             'history': parents
                         })
                         self.updateFile = commit[i]['zipball_url']
@@ -437,9 +455,8 @@ class Updater(threading.Thread):
                         status.update({
                             'update': True,
                             'success': True,
-                            'message': _(
-                                u'A new update is available. Click on the button below to update to version: ') +
-                                       commit[i + 1]['tag_name'],
+                            'message': _(u'A new update is available. Click on the button below to '
+                                         u'update to version: %(version)s', version=commit[i]['tag_name']),
                             'history': parents
                         })
                         self.updateFile = commit[i +1]['zipball_url']
@@ -448,7 +465,8 @@ class Updater(threading.Thread):
                 status.update({
                     'update': True,
                     'success': True,
-                    'message': _(u'A new update is available. Click on the button below to update to the latest version.'),
+                    'message': _(
+                        u'A new update is available. Click on the button below to update to the latest version.'),
                     'history': parents
                 })
                 self.updateFile = commit[0]['zipball_url']

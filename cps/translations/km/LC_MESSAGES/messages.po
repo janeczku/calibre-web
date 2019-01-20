@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2019-01-12 09:00+0100\n"
+"POT-Creation-Date: 2019-01-20 19:36+0100\n"
 "PO-Revision-Date: 2018-08-27 17:06+0700\n"
 "Last-Translator: \n"
 "Language: km_KH\n"
@@ -19,734 +19,739 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.6.0\n"
 
-#: cps/book_formats.py:129 cps/book_formats.py:130 cps/book_formats.py:134
-#: cps/book_formats.py:138 cps/converter.py:11 cps/converter.py:27
+#: cps/book_formats.py:145 cps/book_formats.py:146 cps/book_formats.py:150
+#: cps/book_formats.py:154 cps/converter.py:29 cps/converter.py:45
 msgid "not installed"
 msgstr "មិនបានតម្លើង"
 
-#: cps/converter.py:22 cps/converter.py:38
+#: cps/converter.py:40 cps/converter.py:56
 msgid "Excecution permissions missing"
 msgstr "ខ្វះសិទ្ធិប្រតិបត្តិការ"
 
-#: cps/converter.py:48
+#: cps/converter.py:66
 msgid "not configured"
 msgstr ""
 
-#: cps/helper.py:59
+#: cps/helper.py:77
 #, python-format
 msgid "%(format)s format not found for book id: %(book)d"
 msgstr ""
 
-#: cps/helper.py:71
+#: cps/helper.py:89
 #, python-format
 msgid "%(format)s not found on Google Drive: %(fn)s"
 msgstr ""
 
-#: cps/helper.py:78 cps/helper.py:186 cps/templates/detail.html:49
+#: cps/helper.py:96 cps/helper.py:204 cps/templates/detail.html:49
 msgid "Send to Kindle"
 msgstr "ផ្ញើទៅ Kindle"
 
-#: cps/helper.py:79 cps/helper.py:97 cps/helper.py:188
+#: cps/helper.py:97 cps/helper.py:115 cps/helper.py:206
 msgid "This e-mail has been sent via Calibre-Web."
 msgstr ""
 
-#: cps/helper.py:90
+#: cps/helper.py:108
 #, python-format
 msgid "%(format)s not found: %(fn)s"
 msgstr ""
 
-#: cps/helper.py:95
+#: cps/helper.py:113
 msgid "Calibre-Web test e-mail"
 msgstr ""
 
-#: cps/helper.py:96
+#: cps/helper.py:114
 msgid "Test e-mail"
 msgstr ""
 
-#: cps/helper.py:112
+#: cps/helper.py:130
 msgid "Get Started with Calibre-Web"
 msgstr ""
 
-#: cps/helper.py:113
+#: cps/helper.py:131
 #, python-format
 msgid "Registration e-mail for user: %(name)s"
 msgstr ""
 
-#: cps/helper.py:126 cps/helper.py:128 cps/helper.py:130 cps/helper.py:132
-#: cps/helper.py:138 cps/helper.py:140 cps/helper.py:142 cps/helper.py:144
+#: cps/helper.py:144 cps/helper.py:146 cps/helper.py:148 cps/helper.py:150
+#: cps/helper.py:156 cps/helper.py:158 cps/helper.py:160 cps/helper.py:162
 #, python-format
 msgid "Send %(format)s to Kindle"
 msgstr ""
 
-#: cps/helper.py:148 cps/helper.py:152
+#: cps/helper.py:166 cps/helper.py:170
 #, python-format
 msgid "Convert %(orig)s to %(format)s and send to Kindle"
 msgstr ""
 
-#: cps/helper.py:187
+#: cps/helper.py:205
 #, python-format
 msgid "E-mail: %(book)s"
 msgstr "អ៊ីមែល៖ %(book)s"
 
-#: cps/helper.py:190
+#: cps/helper.py:208
 msgid "The requested file could not be read. Maybe wrong permissions?"
 msgstr "ឯកសារដែលបានស្នើសុំមិនអាចបើកបានទេ។ អាចនឹងខុសសិទ្ធិប្រើប្រាស់ទេដឹង?"
 
-#: cps/helper.py:295
+#: cps/helper.py:313
 #, python-format
 msgid "Rename title from: '%(src)s' to '%(dest)s' failed with error: %(error)s"
 msgstr "ប្តូរចំណងជើងពី “%(src)s” ទៅជា “%(dest)s” បរាជ័យដោយបញ្ហា: %(error)s"
 
-#: cps/helper.py:305
+#: cps/helper.py:323
 #, python-format
 msgid "Rename author from: '%(src)s' to '%(dest)s' failed with error: %(error)s"
 msgstr "ប្តូរអ្នកនិពន្ធពី “%(src)s” ទៅជា “%(dest)s” បរាជ័យដោយបញ្ហា: %(error)s"
 
-#: cps/helper.py:319
+#: cps/helper.py:337
 #, python-format
 msgid "Rename file in path '%(src)s' to '%(dest)s' failed with error: %(error)s"
 msgstr ""
 
-#: cps/helper.py:344 cps/helper.py:353
+#: cps/helper.py:362 cps/helper.py:371
 #, python-format
 msgid "File %(file)s not found on Google Drive"
 msgstr "ឯកសារ %(file)s រកមិនឃើញក្នុង Google Drive"
 
-#: cps/helper.py:384
+#: cps/helper.py:402
 #, python-format
 msgid "Book path %(path)s not found on Google Drive"
 msgstr "ទីតាំងសៀវភៅ %(path)s រកមិនឃើញក្នុង Google Drive"
 
-#: cps/helper.py:650
+#: cps/helper.py:508
 msgid "Error excecuting UnRar"
 msgstr ""
 
-#: cps/helper.py:652
+#: cps/helper.py:510
 msgid "Unrar binary file not found"
 msgstr ""
 
-#: cps/helper.py:703
+#: cps/helper.py:541
 msgid "Waiting"
 msgstr "កំពុងរង់ចាំ"
 
-#: cps/helper.py:705
+#: cps/helper.py:543
 msgid "Failed"
 msgstr "បានបរាជ័យ"
 
-#: cps/helper.py:707
+#: cps/helper.py:545
 msgid "Started"
 msgstr "បានចាប់ផ្តើម"
 
-#: cps/helper.py:709
+#: cps/helper.py:547
 msgid "Finished"
 msgstr "បានបញ្ចប់"
 
-#: cps/helper.py:711
+#: cps/helper.py:549
 msgid "Unknown Status"
 msgstr ""
 
-#: cps/helper.py:716
+#: cps/helper.py:554
 msgid "E-mail: "
 msgstr ""
 
-#: cps/helper.py:718 cps/helper.py:722
+#: cps/helper.py:556 cps/helper.py:560
 msgid "Convert: "
 msgstr ""
 
-#: cps/helper.py:720
+#: cps/helper.py:558
 msgid "Upload: "
 msgstr ""
 
-#: cps/helper.py:724
+#: cps/helper.py:562
 msgid "Unknown Task: "
 msgstr ""
 
-#: cps/web.py:1156 cps/web.py:2866
-msgid "Unknown"
-msgstr "មិនដឹង"
-
-#: cps/web.py:1165 cps/web.py:1196 cps/web.py:1281
-msgid "HTTP Error"
-msgstr ""
-
-#: cps/web.py:1167 cps/web.py:1198 cps/web.py:1282
-msgid "Connection error"
-msgstr ""
-
-#: cps/web.py:1169 cps/web.py:1200 cps/web.py:1283
-msgid "Timeout while establishing connection"
-msgstr ""
-
-#: cps/web.py:1171 cps/web.py:1202 cps/web.py:1284
-msgid "General error"
-msgstr ""
-
-#: cps/web.py:1177
+#: cps/updater.py:251 cps/updater.py:410 cps/updater.py:423
 msgid "Unexpected data while reading update information"
 msgstr ""
 
-#: cps/web.py:1184
+#: cps/updater.py:258 cps/updater.py:416
 msgid "No update available. You already have the latest version installed"
 msgstr ""
 
-#: cps/web.py:1209
+#: cps/updater.py:270 cps/updater.py:501 cps/updater.py:503 cps/web.py:1182
+msgid "HTTP Error"
+msgstr ""
+
+#: cps/updater.py:272 cps/updater.py:505 cps/web.py:1183
+msgid "Connection error"
+msgstr ""
+
+#: cps/updater.py:274 cps/updater.py:507 cps/web.py:1184
+msgid "Timeout while establishing connection"
+msgstr ""
+
+#: cps/updater.py:276 cps/updater.py:509 cps/web.py:1185
+msgid "General error"
+msgstr ""
+
+#: cps/updater.py:283 cps/updater.py:341 cps/updater.py:468
 msgid "A new update is available. Click on the button below to update to the latest version."
 msgstr ""
 
-#: cps/web.py:1259
+#: cps/updater.py:335
 msgid "Could not fetch update information"
 msgstr ""
 
-#: cps/web.py:1274
+#: cps/updater.py:403
+msgid "No release information available"
+msgstr ""
+
+#: cps/updater.py:449 cps/updater.py:458
+#, python-format
+msgid "A new update is available. Click on the button below to update to version: %(version)s"
+msgstr ""
+
+#: cps/updater.py:491 cps/web.py:2768
+msgid "Unknown"
+msgstr "មិនដឹង"
+
+#: cps/web.py:1175
 msgid "Requesting update package"
 msgstr "កំពុងស្នើសុំឯកសារបច្ចុប្បន្នភាព"
 
-#: cps/web.py:1275
+#: cps/web.py:1176
 msgid "Downloading update package"
 msgstr "កំពុងទាញយកឯកសារបច្ចុប្បន្នភាព"
 
-#: cps/web.py:1276
+#: cps/web.py:1177
 msgid "Unzipping update package"
 msgstr "កំពុងពន្លាឯកសារបច្ចុប្បន្នភាព"
 
-#: cps/web.py:1277
+#: cps/web.py:1178
 msgid "Replacing files"
 msgstr ""
 
-#: cps/web.py:1278
+#: cps/web.py:1179
 msgid "Database connections are closed"
 msgstr "ទំនាក់ទំនងទៅមូលដ្ឋានទិន្នន័យត្រូវបានផ្តាច់"
 
-#: cps/web.py:1279
+#: cps/web.py:1180
 msgid "Stopping server"
 msgstr ""
 
-#: cps/web.py:1280
+#: cps/web.py:1181
 msgid "Update finished, please press okay and reload page"
 msgstr "ការធ្វើបច្ចុប្បន្នភាពបានបញ្ចប់ សូមចុច okay រួចបើកទំព័រជាថ្មី"
 
-#: cps/web.py:1281 cps/web.py:1282 cps/web.py:1283 cps/web.py:1284
+#: cps/web.py:1182 cps/web.py:1183 cps/web.py:1184 cps/web.py:1185
 msgid "Update failed:"
 msgstr ""
 
-#: cps/web.py:1307
+#: cps/web.py:1208
 msgid "Recently Added Books"
 msgstr "សៀវភៅដែលទើបបានបន្ថែម"
 
-#: cps/web.py:1317
+#: cps/web.py:1218
 msgid "Newest Books"
 msgstr "សៀវភៅថ្មីៗជាងគេ"
 
-#: cps/web.py:1329
+#: cps/web.py:1230
 msgid "Oldest Books"
 msgstr "សៀវភៅចាស់ជាងគេ"
 
-#: cps/web.py:1341
+#: cps/web.py:1242
 msgid "Books (A-Z)"
 msgstr "សៀវភៅពី A ទៅ Z"
 
-#: cps/web.py:1352
+#: cps/web.py:1253
 msgid "Books (Z-A)"
 msgstr "សៀវភៅពី Z ទៅ A"
 
-#: cps/web.py:1381
+#: cps/web.py:1282
 msgid "Hot Books (most downloaded)"
 msgstr "សៀវភៅដែលត្រូវបានទាញយកច្រើនជាងគេ"
 
-#: cps/web.py:1394
+#: cps/web.py:1295
 msgid "Best rated books"
 msgstr "សៀវភៅដែលត្រូវបានវាយតម្លៃល្អជាងគេ"
 
-#: cps/templates/index.xml:39 cps/web.py:1407
+#: cps/templates/index.xml:39 cps/web.py:1308
 msgid "Random Books"
 msgstr "សៀវភៅចៃដន្យ"
 
-#: cps/web.py:1434 cps/web.py:1689 cps/web.py:2236
+#: cps/web.py:1335 cps/web.py:1590 cps/web.py:2137
 msgid "Error opening eBook. File does not exist or file is not accessible:"
 msgstr "មានបញ្ហាពេលបើកឯកសារ eBook ។ មិនមានឯកសារនេះ ឬមិនអាចបើកបាន៖"
 
-#: cps/web.py:1462
+#: cps/web.py:1363
 msgid "Publisher list"
 msgstr ""
 
-#: cps/web.py:1477
+#: cps/web.py:1378
 #, python-format
 msgid "Publisher: %(name)s"
 msgstr ""
 
-#: cps/templates/index.xml:83 cps/web.py:1509
+#: cps/templates/index.xml:83 cps/web.py:1410
 msgid "Series list"
 msgstr "បញ្ជីស៊េរី"
 
-#: cps/web.py:1523
+#: cps/web.py:1424
 #, python-format
 msgid "Series: %(serie)s"
 msgstr "ស៊េរី៖ %(serie)s"
 
-#: cps/web.py:1549
+#: cps/web.py:1450
 msgid "Available languages"
 msgstr "ភាសាដែលមាន"
 
-#: cps/web.py:1569
+#: cps/web.py:1470
 #, python-format
 msgid "Language: %(name)s"
 msgstr "ភាសា៖ %(name)s"
 
-#: cps/templates/index.xml:76 cps/web.py:1580
+#: cps/templates/index.xml:76 cps/web.py:1481
 msgid "Category list"
 msgstr "បញ្ជីប្រភេទ"
 
-#: cps/web.py:1594
+#: cps/web.py:1495
 #, python-format
 msgid "Category: %(name)s"
 msgstr "ប្រភេទ៖ %(name)s"
 
-#: cps/templates/layout.html:71 cps/web.py:1725
+#: cps/templates/layout.html:71 cps/web.py:1626
 msgid "Tasks"
 msgstr "កិច្ចការនានា"
 
-#: cps/web.py:1759
+#: cps/web.py:1660
 msgid "Statistics"
 msgstr "ស្ថិតិ"
 
-#: cps/web.py:1867
+#: cps/web.py:1768
 msgid "Callback domain is not verified, please follow steps to verify domain in google developer console"
 msgstr "Callback domain មិនទាន់បានផ្ទៀងផ្ទាត់ឲប្រើទេ សូមធ្វើតាមជំហានដើម្បីផ្ទៀងផ្ទាត់ domain នៅក្នុង Google Developer Console"
 
-#: cps/web.py:1943
+#: cps/web.py:1844
 msgid "Server restarted, please reload page"
 msgstr "ម៉ាស៊ីន server បានដំណើរការម្តងទៀត សូមបើកទំព័រជាថ្មី"
 
-#: cps/web.py:1946
+#: cps/web.py:1847
 msgid "Performing shutdown of server, please close window"
 msgstr "កំពុងបិទម៉ាស៊ីន server សូមបិទផ្ទាំងនេះ"
 
-#: cps/web.py:1965
-msgid "Update done"
-msgstr "ការធ្វើបច្ចុប្បន្នភាពរួចរាល់"
-
-#: cps/web.py:2035
+#: cps/web.py:1936
 msgid "Published after "
 msgstr "បានបោះពុម្ភក្រោយ  "
 
-#: cps/web.py:2042
+#: cps/web.py:1943
 msgid "Published before "
 msgstr "បានបោះពុម្ភមុន  "
 
-#: cps/web.py:2056
+#: cps/web.py:1957
 #, python-format
 msgid "Rating <= %(rating)s"
 msgstr "ការវាយតម្លៃ <= %(rating)s"
 
-#: cps/web.py:2058
+#: cps/web.py:1959
 #, python-format
 msgid "Rating >= %(rating)s"
 msgstr "ការវាយតម្លៃ >= %(rating)s"
 
-#: cps/web.py:2119 cps/web.py:2128
+#: cps/web.py:2020 cps/web.py:2029
 msgid "search"
 msgstr "ស្វែងរក"
 
 #: cps/templates/index.xml:47 cps/templates/index.xml:51
-#: cps/templates/layout.html:146 cps/web.py:2195
+#: cps/templates/layout.html:146 cps/web.py:2096
 msgid "Read Books"
 msgstr "សៀវភៅដែលបានអានរួច"
 
 #: cps/templates/index.xml:55 cps/templates/index.xml:59
-#: cps/templates/layout.html:148 cps/web.py:2198
+#: cps/templates/layout.html:148 cps/web.py:2099
 msgid "Unread Books"
 msgstr "សៀវភៅដែលមិនទាន់បានអាន"
 
-#: cps/web.py:2246 cps/web.py:2248 cps/web.py:2250 cps/web.py:2262
+#: cps/web.py:2147 cps/web.py:2149 cps/web.py:2151 cps/web.py:2163
 msgid "Read a Book"
 msgstr "អានសៀវភៅ"
 
-#: cps/web.py:2321 cps/web.py:3230
+#: cps/web.py:2222 cps/web.py:3137
 msgid "Please fill out all fields!"
 msgstr "សូមបំពេញចន្លោះទាំងអស់!"
 
-#: cps/web.py:2322 cps/web.py:2343 cps/web.py:2347 cps/web.py:2352
-#: cps/web.py:2354
+#: cps/web.py:2223 cps/web.py:2245 cps/web.py:2249 cps/web.py:2254
+#: cps/web.py:2256
 msgid "register"
 msgstr "ចុះឈ្មោះ"
 
-#: cps/web.py:2342 cps/web.py:3444
+#: cps/web.py:2244 cps/web.py:3351
 msgid "An unknown error occurred. Please try again later."
 msgstr ""
 
-#: cps/web.py:2345
+#: cps/web.py:2247
 msgid "Your e-mail is not allowed to register"
 msgstr ""
 
-#: cps/web.py:2348
+#: cps/web.py:2250
 msgid "Confirmation e-mail was send to your e-mail account."
 msgstr ""
 
-#: cps/web.py:2351
+#: cps/web.py:2253
 msgid "This username or e-mail address is already in use."
 msgstr ""
 
-#: cps/web.py:2368 cps/web.py:2464
+#: cps/web.py:2270 cps/web.py:2366
 #, python-format
 msgid "you are now logged in as: '%(nickname)s'"
 msgstr "ឥឡូវអ្នកបានចូលដោយមានឈ្មោះថា៖ ‘%(nickname)s’"
 
-#: cps/web.py:2373
+#: cps/web.py:2275
 msgid "Wrong Username or Password"
 msgstr "ខុសឈ្មោះអ្នកប្រើប្រាស់ ឬលេខសម្ងាត់"
 
-#: cps/web.py:2379 cps/web.py:2400
+#: cps/web.py:2281 cps/web.py:2302
 msgid "login"
 msgstr "ចូលប្រើ"
 
-#: cps/web.py:2412 cps/web.py:2443
+#: cps/web.py:2314 cps/web.py:2345
 msgid "Token not found"
 msgstr "រកមិនឃើញវត្ថុតាង"
 
-#: cps/web.py:2420 cps/web.py:2451
+#: cps/web.py:2322 cps/web.py:2353
 msgid "Token has expired"
 msgstr "វត្ថុតាងហួសពេលកំណត់"
 
-#: cps/web.py:2428
+#: cps/web.py:2330
 msgid "Success! Please return to your device"
 msgstr "ជោគជ័យ! សូមវិលមកឧបករណ៍អ្នកវិញ"
 
-#: cps/web.py:2478
+#: cps/web.py:2380
 msgid "Please configure the SMTP mail settings first..."
 msgstr "សូមកំណត់អ៊ីមែល SMTP ជាមុនសិន"
 
-#: cps/web.py:2483
+#: cps/web.py:2385
 #, python-format
 msgid "Book successfully queued for sending to %(kindlemail)s"
 msgstr "សៀវភៅបានចូលជួរសម្រាប់ផ្ញើទៅ %(kindlemail)s ដោយជោគជ័យ"
 
-#: cps/web.py:2487
+#: cps/web.py:2389
 #, python-format
 msgid "There was an error sending this book: %(res)s"
 msgstr "មានបញ្ហានៅពេលផ្ញើសៀវភៅនេះ៖ %(res)s"
 
-#: cps/web.py:2489 cps/web.py:3283
+#: cps/web.py:2391 cps/web.py:3190
 msgid "Please configure your kindle e-mail address first..."
 msgstr ""
 
-#: cps/web.py:2500 cps/web.py:2552
+#: cps/web.py:2402 cps/web.py:2454
 msgid "Invalid shelf specified"
 msgstr ""
 
-#: cps/web.py:2507
+#: cps/web.py:2409
 #, python-format
 msgid "Sorry you are not allowed to add a book to the the shelf: %(shelfname)s"
 msgstr ""
 
-#: cps/web.py:2515
+#: cps/web.py:2417
 msgid "You are not allowed to edit public shelves"
 msgstr ""
 
-#: cps/web.py:2524
+#: cps/web.py:2426
 #, python-format
 msgid "Book is already part of the shelf: %(shelfname)s"
 msgstr ""
 
-#: cps/web.py:2538
+#: cps/web.py:2440
 #, python-format
 msgid "Book has been added to shelf: %(sname)s"
 msgstr "សៀវភៅត្រូវបានបន្ថែមទៅធ្នើ៖ %(sname)s"
 
-#: cps/web.py:2557
+#: cps/web.py:2459
 #, python-format
 msgid "You are not allowed to add a book to the the shelf: %(name)s"
 msgstr ""
 
-#: cps/web.py:2562
+#: cps/web.py:2464
 msgid "User is not allowed to edit public shelves"
 msgstr ""
 
-#: cps/web.py:2580
+#: cps/web.py:2482
 #, python-format
 msgid "Books are already part of the shelf: %(name)s"
 msgstr ""
 
-#: cps/web.py:2594
+#: cps/web.py:2496
 #, python-format
 msgid "Books have been added to shelf: %(sname)s"
 msgstr ""
 
-#: cps/web.py:2596
+#: cps/web.py:2498
 #, python-format
 msgid "Could not add books to shelf: %(sname)s"
 msgstr ""
 
-#: cps/web.py:2633
+#: cps/web.py:2535
 #, python-format
 msgid "Book has been removed from shelf: %(sname)s"
 msgstr "សៀវភៅត្រូវបានដកចេញពីធ្នើ៖ %(sname)s"
 
-#: cps/web.py:2639
+#: cps/web.py:2541
 #, python-format
 msgid "Sorry you are not allowed to remove a book from this shelf: %(sname)s"
 msgstr "សូមអភ័យទោស អ្នកមិនមានសិទ្ធិដកសៀវភៅចេញពីធ្នើនេះទេ៖ %(sname)s"
 
-#: cps/web.py:2660 cps/web.py:2684
+#: cps/web.py:2562 cps/web.py:2586
 #, python-format
 msgid "A shelf with the name '%(title)s' already exists."
 msgstr "មានធ្នើដែលមានឈ្មោះ ‘%(title)s’ រួចហើយ។"
 
-#: cps/web.py:2665
+#: cps/web.py:2567
 #, python-format
 msgid "Shelf %(title)s created"
 msgstr "ធ្នើឈ្មោះ %(title)s ត្រូវបានបង្កើត"
 
-#: cps/web.py:2667 cps/web.py:2695
+#: cps/web.py:2569 cps/web.py:2597
 msgid "There was an error"
 msgstr "មានបញ្ហា"
 
-#: cps/web.py:2668 cps/web.py:2670
+#: cps/web.py:2570 cps/web.py:2572
 msgid "create a shelf"
 msgstr "បង្កើតធ្នើ"
 
-#: cps/web.py:2693
+#: cps/web.py:2595
 #, python-format
 msgid "Shelf %(title)s changed"
 msgstr "ធ្នើឈ្មោះ %(title)s ត្រូវបានប្តូរ"
 
-#: cps/web.py:2696 cps/web.py:2698
+#: cps/web.py:2598 cps/web.py:2600
 msgid "Edit a shelf"
 msgstr "កែប្រែធ្នើ"
 
-#: cps/web.py:2719
+#: cps/web.py:2621
 #, python-format
 msgid "successfully deleted shelf %(name)s"
 msgstr "បានបង្កើតធ្នើឈ្មោះ %(name)s ដោយជោគជ័យ"
 
-#: cps/web.py:2746
+#: cps/web.py:2648
 #, python-format
 msgid "Shelf: '%(name)s'"
 msgstr "ធ្នើ៖ ‘%(name)s’"
 
-#: cps/web.py:2749
+#: cps/web.py:2651
 msgid "Error opening shelf. Shelf does not exist or is not accessible"
 msgstr "មានបញ្ហាពេលបើកធ្នើ។ ពុំមានធ្នើ ឬមិនអាចបើកបាន"
 
-#: cps/web.py:2780
+#: cps/web.py:2682
 #, python-format
 msgid "Change order of Shelf: '%(name)s'"
 msgstr "ប្តូរលំដាប់ធ្នើ៖ ‘%(name)s’"
 
-#: cps/web.py:2809 cps/web.py:3236
+#: cps/web.py:2711 cps/web.py:3143
 msgid "E-mail is not from valid domain"
 msgstr ""
 
-#: cps/web.py:2811 cps/web.py:2853 cps/web.py:2856
+#: cps/web.py:2713 cps/web.py:2755 cps/web.py:2758
 #, python-format
 msgid "%(name)s's profile"
 msgstr "ព័ត៌មានសង្ខេបរបស់ %(name)s"
 
-#: cps/web.py:2851
+#: cps/web.py:2753
 msgid "Found an existing account for this e-mail address."
 msgstr ""
 
-#: cps/web.py:2854
+#: cps/web.py:2756
 msgid "Profile updated"
 msgstr "ព័ត៌មានសង្ខេបបានកែប្រែ"
 
-#: cps/web.py:2882
+#: cps/web.py:2787
 msgid "Admin page"
 msgstr "ទំព័ររដ្ឋបាល"
 
-#: cps/web.py:2964 cps/web.py:3139
+#: cps/web.py:2869 cps/web.py:3046
 msgid "Calibre-Web configuration updated"
 msgstr ""
 
-#: cps/templates/admin.html:100 cps/web.py:2978
+#: cps/templates/admin.html:100 cps/web.py:2883
 msgid "UI Configuration"
 msgstr "ការកំណត់ផ្ទាំងប្រើប្រាស់"
 
-#: cps/web.py:2996
+#: cps/web.py:2901
 msgid "Import of optional Google Drive requirements missing"
 msgstr "ខ្វះការនាំចូលតម្រូវការបន្ថែមរបស់ Google Drive"
 
-#: cps/web.py:2999
+#: cps/web.py:2904
 msgid "client_secrets.json is missing or not readable"
 msgstr "មិនមានឯកសារ client_secrets.json ឬមិនអាចបើកបាន"
 
-#: cps/web.py:3004 cps/web.py:3031
+#: cps/web.py:2909 cps/web.py:2936
 msgid "client_secrets.json is not configured for web application"
 msgstr "ឯកសារ client_secrets.json មិនទាន់បានកំណត់សម្រាប់កម្មវិធីវែប"
 
-#: cps/templates/admin.html:99 cps/web.py:3034 cps/web.py:3060 cps/web.py:3072
-#: cps/web.py:3115 cps/web.py:3130 cps/web.py:3148 cps/web.py:3156
-#: cps/web.py:3172
+#: cps/templates/admin.html:99 cps/web.py:2939 cps/web.py:2965 cps/web.py:2977
+#: cps/web.py:3022 cps/web.py:3037 cps/web.py:3055 cps/web.py:3063
+#: cps/web.py:3079
 msgid "Basic Configuration"
 msgstr "ការកំណត់សាមញ្ញ"
 
-#: cps/web.py:3057
+#: cps/web.py:2962
 msgid "Keyfile location is not valid, please enter correct path"
 msgstr "ទីតាំងរបស់ keyfile មិនត្រឹមត្រូវ សូមបញ្ចូលទីតាំងត្រឹមត្រូវ"
 
-#: cps/web.py:3069
+#: cps/web.py:2974
 msgid "Certfile location is not valid, please enter correct path"
 msgstr "ទីតាំងរបស់ certfile មិនត្រឹមត្រូវ សូមបញ្ចូលទីតាំងត្រឹមត្រូវ"
 
-#: cps/web.py:3112
+#: cps/web.py:3019
 msgid "Logfile location is not valid, please enter correct path"
 msgstr "ទីតាំងរបស់ logfile មិនត្រឹមត្រូវ សូមបញ្ចូលទីតាំងត្រឹមត្រូវ"
 
-#: cps/web.py:3152
+#: cps/web.py:3059
 msgid "DB location is not valid, please enter correct path"
 msgstr "ទីតាំងរបស់ database មិនត្រឹមត្រូវ សូមបញ្ចូលទីតាំងត្រឹមត្រូវ"
 
-#: cps/templates/admin.html:33 cps/web.py:3232 cps/web.py:3238 cps/web.py:3254
+#: cps/templates/admin.html:33 cps/web.py:3139 cps/web.py:3145 cps/web.py:3161
 msgid "Add new user"
 msgstr "បន្ថែមអ្នកប្រើប្រាស់ថ្មី"
 
-#: cps/web.py:3244
+#: cps/web.py:3151
 #, python-format
 msgid "User '%(user)s' created"
 msgstr "បានបង្កើតអ្នកប្រើប្រាស់ ‘%(user)s’"
 
-#: cps/web.py:3248
+#: cps/web.py:3155
 msgid "Found an existing account for this e-mail address or nickname."
 msgstr ""
 
-#: cps/web.py:3278
+#: cps/web.py:3185
 #, python-format
 msgid "Test e-mail successfully send to %(kindlemail)s"
 msgstr ""
 
-#: cps/web.py:3281
+#: cps/web.py:3188
 #, python-format
 msgid "There was an error sending the Test e-mail: %(res)s"
 msgstr ""
 
-#: cps/web.py:3285
+#: cps/web.py:3192
 msgid "E-mail server settings updated"
 msgstr ""
 
-#: cps/web.py:3286
+#: cps/web.py:3193
 msgid "Edit e-mail server settings"
 msgstr ""
 
-#: cps/web.py:3311
+#: cps/web.py:3218
 #, python-format
 msgid "User '%(nick)s' deleted"
 msgstr "អ្នកប្រើប្រាស់ ‘%(nick)s’ ត្រូវបានលុប"
 
-#: cps/web.py:3419
+#: cps/web.py:3326
 #, python-format
 msgid "User '%(nick)s' updated"
 msgstr "អ្នកប្រើប្រាស់ ‘%(nick)s’ ត្រូវបានកែប្រែ"
 
-#: cps/web.py:3422
+#: cps/web.py:3329
 msgid "An unknown error occured."
 msgstr "បញ្ហាដែលមិនដឹងបានកើតឡើង។"
 
-#: cps/web.py:3424
+#: cps/web.py:3331
 #, python-format
 msgid "Edit User %(nick)s"
 msgstr "កែប្រែអ្នកប្រើប្រាស់ %(nick)s"
 
-#: cps/web.py:3441
+#: cps/web.py:3348
 #, python-format
 msgid "Password for user %(user)s reset"
 msgstr ""
 
-#: cps/web.py:3455 cps/web.py:3661
+#: cps/web.py:3362 cps/web.py:3568
 msgid "Error opening eBook. File does not exist or file is not accessible"
 msgstr "មានបញ្ហាពេលបើកឯកសារ eBook ។ ពុំមានឯកសារ ឬឯកសារនេះមិនអាចបើកបាន"
 
-#: cps/web.py:3483 cps/web.py:3955
+#: cps/web.py:3390 cps/web.py:3862
 msgid "edit metadata"
 msgstr "កែប្រែទិន្នន័យមេតា"
 
-#: cps/web.py:3576 cps/web.py:3823
+#: cps/web.py:3483 cps/web.py:3730
 #, python-format
 msgid "File extension '%(ext)s' is not allowed to be uploaded to this server"
 msgstr "ឯកសារប្រភេទ '%(ext)s' មិនត្រូវបានអនុញ្ញាតឲអាប់ឡូដទៅម៉ាស៊ីន server នេះទេ"
 
-#: cps/web.py:3580 cps/web.py:3827
+#: cps/web.py:3487 cps/web.py:3734
 msgid "File to be uploaded must have an extension"
 msgstr "ឯកសារដែលត្រូវអាប់ឡូដត្រូវមានកន្ទុយឯកសារ"
 
-#: cps/web.py:3592 cps/web.py:3847
+#: cps/web.py:3499 cps/web.py:3754
 #, python-format
 msgid "Failed to create path %(path)s (Permission denied)."
 msgstr "មិនអាចបង្កើតទីតាំង %(path)s (ពុំមានសិទ្ធិ)។"
 
-#: cps/web.py:3597
+#: cps/web.py:3504
 #, python-format
 msgid "Failed to store file %(file)s."
 msgstr "មិនអាចរក្សាទុកឯកសារ %(file)s ។"
 
-#: cps/web.py:3614
+#: cps/web.py:3521
 #, python-format
 msgid "File format %(ext)s added to %(book)s"
 msgstr "ឯកសារទម្រង់ %(ext)s ត្រូវបានបន្ថែមទៅ %(book)s"
 
-#: cps/web.py:3632
+#: cps/web.py:3539
 #, python-format
 msgid "Failed to create path for cover %(path)s (Permission denied)."
 msgstr ""
 
-#: cps/web.py:3640
+#: cps/web.py:3547
 #, python-format
 msgid "Failed to store cover-file %(cover)s."
 msgstr ""
 
-#: cps/web.py:3643
+#: cps/web.py:3550
 msgid "Cover-file is not a valid image file"
 msgstr ""
 
-#: cps/web.py:3673 cps/web.py:3682
+#: cps/web.py:3580 cps/web.py:3589
 msgid "unknown"
 msgstr "មិនដឹង"
 
-#: cps/web.py:3714
+#: cps/web.py:3621
 msgid "Cover is not a jpg file, can't save"
 msgstr "គម្របមិនមែនជាឯកសារ JPG មិនអាចរក្សាទុក"
 
-#: cps/web.py:3762
+#: cps/web.py:3669
 #, python-format
 msgid "%(langname)s is not a valid language"
 msgstr ""
 
-#: cps/web.py:3793
+#: cps/web.py:3700
 msgid "Metadata successfully updated"
 msgstr ""
 
-#: cps/web.py:3802
+#: cps/web.py:3709
 msgid "Error editing book, please check logfile for details"
 msgstr "មានបញ្ហាពេលកែប្រែសៀវភៅ សូមពិនិត្យមើល logfile សម្រាប់ព័ត៌មានបន្ថែម"
 
-#: cps/web.py:3852
+#: cps/web.py:3759
 #, python-format
 msgid "Failed to store file %(file)s (Permission denied)."
 msgstr "មិនអាចរក្សាទុកឯកសារ %(file)s (មិនមានសិទ្ធិ)។"
 
-#: cps/web.py:3857
+#: cps/web.py:3764
 #, python-format
 msgid "Failed to delete file %(file)s (Permission denied)."
 msgstr "មិនអាចលុបឯកសារ %(file)s (មិនមានសិទ្ធិ)។"
 
-#: cps/web.py:3975
+#: cps/web.py:3882
 msgid "Source or destination format for conversion missing"
 msgstr ""
 
-#: cps/web.py:3985
+#: cps/web.py:3892
 #, python-format
 msgid "Book successfully queued for converting to %(book_format)s"
 msgstr ""
 
-#: cps/web.py:3989
+#: cps/web.py:3896
 #, python-format
 msgid "There was an error converting this book: %(res)s"
 msgstr ""
 
-#: cps/worker.py:289
+#: cps/worker.py:305
 #, python-format
 msgid "Ebook-converter failed: %(error)s"
 msgstr "Ebook-converter បានបរាជ័យ៖ %(error)s"
 
-#: cps/worker.py:300
+#: cps/worker.py:316
 #, python-format
 msgid "Kindlegen failed with Error %(error)s. Message: %(message)s"
 msgstr "Kindlegen បានបរាជ័យដោយមានកំហុស %(error)s. សារ៖ %(message)s"
@@ -903,7 +908,7 @@ msgstr "បាទ/ចាស"
 
 #: cps/templates/admin.html:151 cps/templates/admin.html:165
 #: cps/templates/book_edit.html:178 cps/templates/book_edit.html:200
-#: cps/templates/config_edit.html:212 cps/templates/config_view_edit.html:175
+#: cps/templates/config_edit.html:221 cps/templates/config_view_edit.html:175
 #: cps/templates/email_edit.html:40 cps/templates/email_edit.html:75
 #: cps/templates/shelf.html:64 cps/templates/shelf_edit.html:19
 #: cps/templates/shelf_order.html:12 cps/templates/user_edit.html:147
@@ -1036,9 +1041,9 @@ msgstr "មើលសៀវភៅក្រោយពីកែប្រែ"
 msgid "Get metadata"
 msgstr "មើលទិន្នន័យមេតា"
 
-#: cps/templates/book_edit.html:177 cps/templates/config_edit.html:210
+#: cps/templates/book_edit.html:177 cps/templates/config_edit.html:219
 #: cps/templates/config_view_edit.html:174 cps/templates/login.html:20
-#: cps/templates/search_form.html:153 cps/templates/shelf_edit.html:17
+#: cps/templates/search_form.html:150 cps/templates/shelf_edit.html:17
 #: cps/templates/user_edit.html:145
 msgid "Submit"
 msgstr "បញ្ចូល"
@@ -1143,83 +1148,103 @@ msgstr "ទីតាំង SSL certfile (ទុកទទេសម្រាប់
 msgid "SSL Keyfile location (leave it empty for non-SSL Servers)"
 msgstr "ទីតាំង SSL keyfile (ទុកទទេសម្រាប់ម៉ាស៊ីន server ដែលមិនប្រើ SSL)"
 
-#: cps/templates/config_edit.html:99
+#: cps/templates/config_edit.html:92
+msgid "Update channel"
+msgstr ""
+
+#: cps/templates/config_edit.html:94
+msgid "Stable"
+msgstr ""
+
+#: cps/templates/config_edit.html:95
+msgid "Stable (Automatic)"
+msgstr ""
+
+#: cps/templates/config_edit.html:96
+msgid "Nightly"
+msgstr ""
+
+#: cps/templates/config_edit.html:97
+msgid "Nightly (Automatic)"
+msgstr ""
+
+#: cps/templates/config_edit.html:108
 msgid "Logfile Configuration"
 msgstr "ការកំណត់ logfile"
 
-#: cps/templates/config_edit.html:106
+#: cps/templates/config_edit.html:115
 msgid "Log Level"
 msgstr "កម្រិត log"
 
-#: cps/templates/config_edit.html:115
+#: cps/templates/config_edit.html:124
 msgid "Location and name of logfile (calibre-web.log for no entry)"
 msgstr "ទីតាំង និងឈ្មោះ logfile (calibre-web.log ប្រសិនបើទទេ)"
 
-#: cps/templates/config_edit.html:126
+#: cps/templates/config_edit.html:135
 msgid "Feature Configuration"
 msgstr "ការកំណត់មុខងារ"
 
-#: cps/templates/config_edit.html:134
+#: cps/templates/config_edit.html:143
 msgid "Enable uploading"
 msgstr "អនុញ្ញាតការអាប់ឡូត"
 
-#: cps/templates/config_edit.html:138
+#: cps/templates/config_edit.html:147
 msgid "Enable anonymous browsing"
 msgstr "អនុញ្ញាតការរុករកដោយអនាមិក"
 
-#: cps/templates/config_edit.html:142
+#: cps/templates/config_edit.html:151
 msgid "Enable public registration"
 msgstr "អនុញ្ញាតការចុះឈ្មោះសាធារណៈ"
 
-#: cps/templates/config_edit.html:146
+#: cps/templates/config_edit.html:155
 msgid "Enable remote login (\"magic link\")"
 msgstr "អនុញ្ញាតការ login ពីចម្ងាយ (ឬ “magic link”)"
 
-#: cps/templates/config_edit.html:151
+#: cps/templates/config_edit.html:160
 msgid "Use"
 msgstr "ប្រើប្រាស់"
 
-#: cps/templates/config_edit.html:152
+#: cps/templates/config_edit.html:161
 msgid "Obtain an API Key"
 msgstr "ទាញយក API key"
 
-#: cps/templates/config_edit.html:156
+#: cps/templates/config_edit.html:165
 msgid "Goodreads API Key"
 msgstr "Goodreads API key"
 
-#: cps/templates/config_edit.html:160
+#: cps/templates/config_edit.html:169
 msgid "Goodreads API Secret"
 msgstr "Goodreads API secret"
 
-#: cps/templates/config_edit.html:173
+#: cps/templates/config_edit.html:182
 msgid "External binaries"
 msgstr ""
 
-#: cps/templates/config_edit.html:181
+#: cps/templates/config_edit.html:190
 msgid "No converter"
 msgstr "គ្មានកម្មវិធីបម្លែង"
 
-#: cps/templates/config_edit.html:183
+#: cps/templates/config_edit.html:192
 msgid "Use Kindlegen"
 msgstr "ប្រើ Kindlegen"
 
-#: cps/templates/config_edit.html:185
+#: cps/templates/config_edit.html:194
 msgid "Use calibre's ebook converter"
 msgstr "ប្រើកម្មវិធីបម្លែង eBook របស់ Calibre"
 
-#: cps/templates/config_edit.html:189
+#: cps/templates/config_edit.html:198
 msgid "E-Book converter settings"
 msgstr "ការកំណត់របស់កម្មវិធីបម្លែង eBook"
 
-#: cps/templates/config_edit.html:193
+#: cps/templates/config_edit.html:202
 msgid "Path to convertertool"
 msgstr "ទីតាំងរបស់កម្មវិធីបម្លែង"
 
-#: cps/templates/config_edit.html:199
+#: cps/templates/config_edit.html:208
 msgid "Location of Unrar binary"
 msgstr ""
 
-#: cps/templates/config_edit.html:215 cps/templates/layout.html:82
+#: cps/templates/config_edit.html:224 cps/templates/layout.html:82
 #: cps/templates/login.html:4
 msgid "Login"
 msgstr "ចូលប្រើប្រាស់"
@@ -1734,6 +1759,10 @@ msgstr ""
 msgid "PDF.js viewer"
 msgstr "កម្មវិធីមើល PDF.js"
 
+#: cps/templates/readpdf.html:418
+msgid "Preparing document for printing..."
+msgstr ""
+
 #: cps/templates/readtxt.html:6
 msgid "Basic txt Reader"
 msgstr "កម្មវិធីមើល txt សាមញ្ញ"
@@ -1991,4 +2020,19 @@ msgstr "ការទាញយកថ្មីៗ"
 
 #~ msgid "File %(file)s uploaded"
 #~ msgstr "ឯកសារ %(file)s ត្រូវបានអាប់ឡូដ"
+
+#~ msgid "Update done"
+#~ msgstr "ការធ្វើបច្ចុប្បន្នភាពរួចរាល់"
+
+#~ msgid "Stable (Automatic))"
+#~ msgstr ""
+
+#~ msgid "Nightly (Automatic))"
+#~ msgstr ""
+
+#~ msgid "A new update is available. Click on the button below to update to version: "
+#~ msgstr ""
+
+#~ msgid "A new update is available. Click on the button below to update to version:  %(version)s"
+#~ msgstr ""
 
