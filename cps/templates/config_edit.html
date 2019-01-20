@@ -76,7 +76,7 @@
     </div>
     <div id="collapsetwo" class="panel-collapse collapse">
       <div class="panel-body">
-                <div class="form-group">
+        <div class="form-group">
           <label for="config_port">{{_('Server Port')}}</label>
           <input type="number" min="1" max="65535" class="form-control" name="config_port" id="config_port" value="{% if content.config_port != None %}{{ content.config_port }}{% endif %}" autocomplete="off" required>
         </div>
@@ -87,6 +87,15 @@
         <div class="form-group">
           <label for="config_keyfile">{{_('SSL Keyfile location (leave it empty for non-SSL Servers)')}}</label>
           <input type="text" class="form-control" name="config_keyfile" id="config_keyfile" value="{% if content.config_keyfile != None %}{{ content.config_keyfile }}{% endif %}" autocomplete="off">
+        </div>
+        <div class="form-group">
+          <label for="config_updater">{{_('Update channel')}}</label>
+            <select name="config_updater" id="config_updater" class="form-control">
+                    <option value="0" {% if content.config_updatechannel == 0 %}selected{% endif %}>{{_('Stable')}}</option>
+                    <!--option value="1" {% if content.config_updatechannel == 1 %}selected{% endif %}>{{_('Stable (Automatic))')}}</option-->
+                    <option value="2" {% if content.config_updatechannel == 2 %}selected{% endif %}>{{_('Nightly')}}</option>
+                    <!--option-- value="3" {% if content.config_updatechannel == 3 %}selected{% endif %}>{{_('Nightly (Automatic))')}}</option-->
+            </select>
         </div>
       </div>
     </div>
