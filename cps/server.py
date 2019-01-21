@@ -61,11 +61,13 @@ class server:
                 self.wsgiserver= WSGIServer(('0.0.0.0', web.ub.config.config_port), web.app, spawn=Pool(), **ssl_args)
             else:
                 self.wsgiserver = WSGIServer(('', web.ub.config.config_port), web.app, spawn=Pool(), **ssl_args)
+            web.py3_gevent_link = self.wsgiserver
             self.wsgiserver.serve_forever()
         except SocketError:
             try:
                 web.app.logger.info('Unable to listen on \'\', trying on IPv4 only...')
                 self.wsgiserver = WSGIServer(('0.0.0.0', web.ub.config.config_port), web.app, spawn=Pool(), **ssl_args)
+                web.py3_gevent_link = self.wsgiserver
                 self.wsgiserver.serve_forever()
             except (OSError, SocketError) as e:
                 web.app.logger.info("Error starting server: %s" % e.strerror)
@@ -130,6 +132,12 @@ class server:
         self.stopServer()
 
     def stopServer(self):
+        if sys.version_info > (3, 0):
+            if not self.wsgiserver:
+                if gevent_present:
+                    self.wsgiserver = web.py3_gevent_link
+                else:
+                    self.wsgiserver = IOLoop.instance()
         if self.wsgiserver:
             if gevent_present:
                 self.wsgiserver.close()
