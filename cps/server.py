@@ -25,7 +25,7 @@ import signal
 import web
 
 try:
-    from gevent.pywsgi import WSGIServer
+    from gevent.piwsgi import WSGIServer
     from gevent.pool import Pool
     from gevent import __version__ as geventVersion
     gevent_present = True
@@ -35,6 +35,7 @@ except ImportError:
     from tornado.ioloop import IOLoop
     from tornado import version as tornadoVersion
     gevent_present = False
+
 
 
 class server:
@@ -63,6 +64,7 @@ class server:
                 self.wsgiserver = WSGIServer(('', web.ub.config.config_port), web.app, spawn=Pool(), **ssl_args)
             web.py3_gevent_link = self.wsgiserver
             self.wsgiserver.serve_forever()
+
         except SocketError:
             try:
                 web.app.logger.info('Unable to listen on \'\', trying on IPv4 only...')
@@ -110,6 +112,9 @@ class server:
                 web.helper.global_WorkerThread.stop()
                 sys.exit(1)
 
+        # ToDo: Somehow caused by circular import under python3 refactor
+        if sys.version_info > (3, 0):
+            self.restart = web.py3_restart_Typ
         if self.restart == True:
             web.app.logger.info("Performing restart of Calibre-Web")
             web.helper.global_WorkerThread.stop()
@@ -126,12 +131,15 @@ class server:
         sys.exit(0)
 
     def setRestartTyp(self,starttyp):
-        self.restart=starttyp
+        self.restart = starttyp
+        # ToDo: Somehow caused by circular import under python3 refactor
+        web.py3_restart_Typ = starttyp
 
     def killServer(self, signum, frame):
         self.stopServer()
 
     def stopServer(self):
+        # ToDo: Somehow caused by circular import under python3 refactor
         if sys.version_info > (3, 0):
             if not self.wsgiserver:
                 if gevent_present:
