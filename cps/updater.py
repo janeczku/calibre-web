@@ -216,7 +216,7 @@ class Updater(threading.Thread):
             item_path = os.path.join(destination, item[1:])
             if os.path.isdir(item_path):
                 logging.getLogger('cps.web').debug("Delete dir " + item_path)
-                shutil.rmtree(item_path)
+                shutil.rmtree(item_path, ignore_errors=True)
             else:
                 try:
                     logging.getLogger('cps.web').debug("Delete file " + item_path)
@@ -237,7 +237,7 @@ class Updater(threading.Thread):
         return False
 
     def _stable_version_info(self):
-        return {'version': '0.6.0'}
+        return {'version': '0.6.0'} # Current version
 
     def _nightly_available_updates(self, request_method):
         tz = datetime.timedelta(seconds=time.timezone if (time.localtime().tm_isdst == 0) else time.altzone)
