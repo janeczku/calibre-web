@@ -1329,7 +1329,7 @@ def author_list():
 
 
 @app.route("/author/<int:book_id>", defaults={'page': 1})
-@app.route("/author/<int:book_id>/<int:page>'")
+@app.route("/author/<int:book_id>/<int:page>")
 @login_required_if_no_ano
 def author(book_id, page):
     entries, __, pagination = fill_indexpage(page, db.Books, db.Books.authors.any(db.Authors.id == book_id),
@@ -1859,15 +1859,6 @@ def shutdown():
             db.setup_db()
             return json.dumps({})
         abort(404)
-
-
-'''@app.route("/update")
-@login_required
-@admin_required
-def update():
-    # updater.updater_thread = helper.Updater()
-    flash(_(u"Update done"), category="info")
-    return abort(404)'''
 
 
 @app.route("/search", methods=["GET"])
