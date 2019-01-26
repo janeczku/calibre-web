@@ -448,20 +448,25 @@ def save_cover(url, book_path):
 
 
 def do_download_file(book, book_format, data, headers):
+    enc = 'utf-8'
+    book_format = book_format.encode(enc)
+    data_name = data.name.encode(enc)
+    book_path = book.path.encode(enc)
+
     if ub.config.config_use_google_drive:
         startTime = time.time()
-        df = gd.getFileFromEbooksFolder(book.path, data.name + "." + book_format)
+        df = gd.getFileFromEbooksFolder(book_path, data_name + "." + book_format)
         web.app.logger.debug(time.time() - startTime)
         if df:
             return gd.do_gdrive_download(df, headers)
         else:
             abort(404)
     else:
-        filename = os.path.join(ub.config.config_calibre_dir, book.path)
-        if not os.path.isfile(os.path.join(filename, data.name + "." + book_format)):
+        filename = os.path.join(ub.config.config_calibre_dir.encode(enc), book_path).encode(enc)
+        if not os.path.isfile(os.path.join(filename, data_name + "." + book_format)):
             # ToDo: improve error handling
-            web.app.logger.error('File not found: %s' % os.path.join(filename, data.name + "." + book_format))
-        response = make_response(send_from_directory(filename, data.name + "." + book_format))
+            web.app.logger.error('File not found: %s' % os.path.join(filename, data_name + "." + book_format))
+        response = make_response(send_from_directory(filename, data_name + "." + book_format))
         response.headers = headers
         return response
 
