@@ -25,7 +25,7 @@ import signal
 import web
 
 try:
-    from gevent.piwsgi import WSGIServer
+    from gevent.pywsgi import WSGIServer
     from gevent.pool import Pool
     from gevent import __version__ as geventVersion
     gevent_present = True

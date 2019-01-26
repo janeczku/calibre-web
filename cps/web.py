@@ -3280,6 +3280,11 @@ def edit_user(user_id):
             elif "show_sorted" not in to_save and content.show_sorted():
                 content.sidebar_view -= ub.SIDEBAR_SORTED
 
+            if "show_publisher" in to_save and not content.show_publisher():
+                content.sidebar_view += ub.SIDEBAR_PUBLISHER
+            elif "show_publisher" not in to_save and content.show_publisher():
+                content.sidebar_view -= ub.SIDEBAR_PUBLISHER
+
             if "show_hot" in to_save and not content.show_hot_books():
                 content.sidebar_view += ub.SIDEBAR_HOT
             elif "show_hot" not in to_save and content.show_hot_books():
