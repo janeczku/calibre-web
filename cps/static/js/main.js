@@ -77,30 +77,14 @@ $(function() {
         layoutMode : "fitRows"
     });
 
-    /*$(".load-more .row").infinitescroll({
-        debug: true,
-        navSelector  : ".pagination",
-        // selector for the paged navigation (it will be hidden)
-        nextSelector : ".next",
-        // selector for the NEXT link (to page 2)
-        itemSelector : ".load-more .book",
-        animate      : true,
-        extraScrollPx: 300
-        // selector for all items you'll retrieve
-    }, function(data) {
-        $(".load-more .row").isotope( "appended", $(data), null );
-    });*/
-
     var $loadMore = $(".load-more .row").infiniteScroll({
         debug: false,
-        // hideNav  : ".pagination",  # ToDo Renable functionn
         // selector for the paged navigation (it will be hidden)
         path : ".next",
         // selector for the NEXT link (to page 2)
-        append : ".load-more .book",
-        //animate      : true,
+        append : ".load-more .book"
+        //animate      : true, # ToDo: Reenable function
         //extraScrollPx: 300
-        // selector for all items you'll retrieve
     });
     $loadMore.on( 'append.infiniteScroll', function( event, response, path, data ) {
         $(".pagination").addClass("hidden");
@@ -218,6 +202,6 @@ $(function() {
         });
 
     $(window).resize(function() {
-        $(".discover .row").isotope("reLayout");
+        $(".discover .row").isotope("layout");
     });
 });
