@@ -136,8 +136,13 @@ gdrive_watch_callback_token = 'target=calibreweb-watch_files'
 py3_gevent_link = None
 py3_restart_Typ = False
 EXTENSIONS_UPLOAD = {'txt', 'pdf', 'epub', 'mobi', 'azw', 'azw3', 'cbr', 'cbz', 'cbt', 'djvu', 'prc', 'doc', 'docx',
-                      'fb2', 'html', 'rtf', 'odt'}
-EXTENSIONS_CONVERT = {'pdf', 'epub', 'mobi', 'azw3', 'docx', 'rtf', 'fb2', 'lit', 'lrf', 'txt', 'htmlz'}
+                      'fb2', 'html', 'rtf', 'odt', 'mp3',  'm4a', 'm4b'}
+EXTENSIONS_CONVERT = {'pdf', 'epub', 'mobi', 'azw3', 'docx', 'rtf', 'fb2', 'lit', 'lrf', 'txt', 'html', 'rtf', 'odt'}
+EXTENSIONS_AUDIO = {'mp3', 'm4a', 'm4b'}
+
+# EXTENSIONS_READER = set(['txt', 'pdf', 'epub', 'zip', 'cbz', 'tar', 'cbt'] + (['rar','cbr'] if rar_support else []))
+
+
 
 
 # Main code
@@ -152,6 +157,13 @@ mimetypes.add_type('application/x-cbr', '.cbr')
 mimetypes.add_type('application/x-cbz', '.cbz')
 mimetypes.add_type('application/x-cbt', '.cbt')
 mimetypes.add_type('image/vnd.djvu', '.djvu')
+mimetypes.add_type('application/mpeg', '.mpeg')
+mimetypes.add_type('application/mpeg', '.mp3')
+mimetypes.add_type('application/mp4', '.m4a')
+mimetypes.add_type('application/mp4', '.m4b')
+mimetypes.add_type('application/ogg', '.ogg')
+mimetypes.add_type('application/ogg', '.oga')
+
 
 app = (Flask(__name__))
 
@@ -1586,7 +1598,12 @@ def show_book(book_id):
         kindle_list = helper.check_send_to_kindle(entries)
         reader_list = helper.check_read_formats(entries)
 
-        return render_title_template('detail.html', entry=entries, cc=cc, is_xhr=request.is_xhr,
+        audioentries = []
+        for media_format in entries.data:
+            if media_format.format.lower() in EXTENSIONS_AUDIO:
+                audioentries.append(media_format.format.lower())
+
+        return render_title_template('detail.html', entry=entries, audioentries=audioentries, cc=cc, is_xhr=request.is_xhr,
                                      title=entries.title, books_shelfs=book_in_shelfs,
                                      have_read=have_read, kindle_list=kindle_list, reader_list=reader_list, page="book")
     else:
@@ -2035,7 +2052,7 @@ def serve_book(book_id, book_format):
     book_format = book_format.split(".")[0]
     book = db.session.query(db.Books).filter(db.Books.id == book_id).first()
     data = db.session.query(db.Data).filter(db.Data.book == book.id).filter(db.Data.format == book_format.upper()).first()
-    app.logger.info(data.name)
+    app.logger.info('Serving book: %s', data.name)
     if config.config_use_google_drive:
         headers = Headers()
         try:
@@ -2132,17 +2149,29 @@ def read_book(book_id, book_format):
         return redirect(url_for("index"))
 
     # check if book was downloaded before
-    lbookmark = None
+    bookmark = None
     if current_user.is_authenticated:
-        lbookmark = ub.session.query(ub.Bookmark).filter(ub.and_(ub.Bookmark.user_id == int(current_user.id),
+        bookmark = ub.session.query(ub.Bookmark).filter(ub.and_(ub.Bookmark.user_id == int(current_user.id),
                                                             ub.Bookmark.book_id == book_id,
                                                             ub.Bookmark.format == book_format.upper())).first()
     if book_format.lower() == "epub":
-        return render_title_template('read.html', bookid=book_id, title=_(u"Read a Book"), bookmark=lbookmark)
+        return render_title_template('read.html', bookid=book_id, title=_(u"Read a Book"), bookmark=bookmark)
     elif book_format.lower() == "pdf":
         return render_title_template('readpdf.html', pdffile=book_id, title=_(u"Read a Book"))
     elif book_format.lower() == "txt":
         return render_title_template('readtxt.html', txtfile=book_id, title=_(u"Read a Book"))
+    elif book_format.lower() == "mp3":
+        entries = db.session.query(db.Books).filter(db.Books.id == book_id).filter(common_filters()).first()
+        return render_title_template('listenmp3.html', mp3file=book_id, audioformat=book_format.lower(),
+                                         title=_(u"Read a Book"), entry=entries, bookmark=bookmark)
+    elif book_format.lower() == "m4b":
+        entries = db.session.query(db.Books).filter(db.Books.id == book_id).filter(common_filters()).first()
+        return render_title_template('listenmp3.html', mp3file=book_id, audioformat=book_format.lower(),
+                                         title=_(u"Read a Book"), entry=entries, bookmark=bookmark)
+    elif book_format.lower() == "m4a":
+        entries = db.session.query(db.Books).filter(db.Books.id == book_id).filter(common_filters()).first()
+        return render_title_template('listenmp3.html', mp3file=book_id, audioformat=book_format.lower(),
+                                         title=_(u"Read a Book"), entry=entries, bookmark=bookmark)
     else:
         book_dir = os.path.join(config.get_main_dir, "cps", "static", str(book_id))
         if not os.path.exists(book_dir):
@@ -3843,7 +3872,7 @@ def upload():
                 gdriveutils.updateGdriveCalibreFromLocal()
             if error:
                 flash(error, category="error")
-            uploadText=(u"File %s" % book.title)
+            uploadText=_(u"File %(file)s uploaded", file=book.title)
             helper.global_WorkerThread.add_upload(current_user.nickname,
                 "<a href=\"" + url_for('show_book', book_id=book.id) + "\">" + uploadText + "</a>")
 
