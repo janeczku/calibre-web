@@ -2,6 +2,9 @@
 {% block body %}
 <div class="discover">
   <h2>{{title}}</h2>
+  {% if g.user.role_download() %}
+ <a id="shelf_down" href="{{ url_for('show_shelf_down', shelf_id=shelf.id) }}" class="btn btn-primary">{{ _('Download') }} </a>
+      {% endif %}
   {% if g.user.is_authenticated %}
     {% if (g.user.role_edit_shelfs() and shelf.is_public ) or not shelf.is_public  %}
       <div id="delete_shelf" data-toggle="modal" data-target="#DeleteShelfDialog" class="btn btn-danger">{{ _('Delete this Shelf') }} </div>
