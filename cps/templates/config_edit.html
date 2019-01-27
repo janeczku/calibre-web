@@ -185,6 +185,7 @@
         <input type="text" class="form-control" id="config_ldap_dn" name="config_ldap_dn" value="{% if content.config_use_ldap != None %}{{ content.config_ldap_dn }}{% endif %}" autocomplete="off">
       </div>
     </div>
+    <div class="form-group">
       <input type="checkbox" id="config_use_github_oauth" name="config_use_github_oauth" data-control="github-oauth-settings" {% if content.config_use_github_oauth %}checked{% endif %}>
       <label for="config_use_github_oauth">{{_('Use')}} GitHub OAuth</label>
       <a href="https://github.com/settings/developers" target="_blank" style="margin-left: 5px">{{_('Obtain GitHub OAuth Credentail')}}</a>
