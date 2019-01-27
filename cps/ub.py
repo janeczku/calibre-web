@@ -23,6 +23,7 @@ from sqlalchemy import exc
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import *
 from flask_login import AnonymousUserMixin
+from flask_dance.consumer.backend.sqla import OAuthConsumerMixin
 import sys
 import os
 import logging
@@ -197,6 +198,12 @@ class User(UserBase, Base):
     mature_content = Column(Boolean, default=True)
 
 
+class OAuth(OAuthConsumerMixin, Base):
+    provider_user_id = Column(String(256))
+    user_id = Column(Integer, ForeignKey(User.id))
+    user = relationship(User)
+
+
 # Class for anonymous user is derived from User base and completly overrides methods and properties for the
 # anonymous user
 class Anonymous(AnonymousUserMixin, UserBase):
@@ -337,6 +344,12 @@ class Settings(Base):
     config_use_ldap = Column(Boolean)
     config_ldap_provider_url = Column(String)
     config_ldap_dn = Column(String)
+    config_use_github_oauth = Column(Boolean)
+    config_github_oauth_client_id = Column(String)
+    config_github_oauth_client_secret = Column(String)
+    config_use_google_oauth = Column(Boolean)
+    config_google_oauth_client_id = Column(String)
+    config_google_oauth_client_secret = Column(String)
     config_mature_content_tags = Column(String)
     config_logfile = Column(String)
     config_ebookconverter = Column(Integer, default=0)
@@ -414,6 +427,12 @@ class Config:
         self.config_use_ldap = data.config_use_ldap
         self.config_ldap_provider_url = data.config_ldap_provider_url
         self.config_ldap_dn = data.config_ldap_dn
+        self.config_use_github_oauth = data.config_use_github_oauth
+        self.config_github_oauth_client_id = data.config_github_oauth_client_id
+        self.config_github_oauth_client_secret = data.config_github_oauth_client_secret
+        self.config_use_google_oauth = data.config_use_google_oauth
+        self.config_google_oauth_client_id = data.config_google_oauth_client_id
+        self.config_google_oauth_client_secret = data.config_google_oauth_client_secret
         if data.config_mature_content_tags:
             self.config_mature_content_tags = data.config_mature_content_tags
         else:
@@ -722,6 +741,22 @@ def migrate_Database():
         conn.execute("ALTER TABLE Settings ADD column `config_updatechannel` INTEGER DEFAULT 0")
         session.commit()
 
+    try:
+        session.query(exists().where(Settings.config_use_github_oauth)).scalar()
+    except exc.OperationalError:
+        conn = engine.connect()
+        conn.execute("ALTER TABLE Settings ADD column `config_use_github_oauth` INTEGER DEFAULT 0")
+        conn.execute("ALTER TABLE Settings ADD column `config_github_oauth_client_id` String DEFAULT ''")
+        conn.execute("ALTER TABLE Settings ADD column `config_github_oauth_client_secret` String DEFAULT ''")
+        session.commit()
+    try:
+        session.query(exists().where(Settings.config_use_google_oauth)).scalar()
+    except exc.OperationalError:
+        conn = engine.connect()
+        conn.execute("ALTER TABLE Settings ADD column `config_use_google_oauth` INTEGER DEFAULT 0")
+        conn.execute("ALTER TABLE Settings ADD column `config_google_oauth_client_id` String DEFAULT ''")
+        conn.execute("ALTER TABLE Settings ADD column `config_google_oauth_client_secret` String DEFAULT ''")
+        session.commit()
     # Remove login capability of user Guest
     conn = engine.connect()
     conn.execute("UPDATE user SET password='' where nickname = 'Guest' and password !=''")

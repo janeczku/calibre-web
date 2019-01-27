@@ -13,3 +13,5 @@ SQLAlchemy>=1.1.0
 tornado>=4.1
 Wand>=0.4.4
 unidecode>=0.04.19
+flask-dance>=0.13.0
+sqlalchemy_utils>=0.33.5
