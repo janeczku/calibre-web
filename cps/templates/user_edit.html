@@ -44,6 +44,21 @@
             {% endfor %}
         </select>
     </div>
+    {% if registered_oauth.keys()| length > 0 %}
+    <div class="form-group">
+    <label for="oauth_settings">{{_('OAuth Settings')}}</label>
+    <br/>
+      {% for oauth, name in registered_oauth.iteritems() %}
+      <label for="config_{{ oauth }}_oauth" style="margin-left: 15px">{{ name }}</label>
+        {% if oauth not in oauth_status %}
+      <a href="/{{ oauth }}" target="_blank" style="margin-left: 5px">Link</a>
+        {% else %}
+      <a href="/unlink/{{ oauth }}" style="margin-left: 5px">Unlink</a>
+        {% endif %}
+      <br/>
+      {% endfor %}
+    </div>
+    {% endif %}
     <div class="col-sm-6">
       <div class="form-group">
           <input type="checkbox" name="show_random" id="show_random" {% if content.show_random_books() %}checked{% endif %}>

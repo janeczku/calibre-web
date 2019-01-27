@@ -185,6 +185,34 @@
         <input type="text" class="form-control" id="config_ldap_dn" name="config_ldap_dn" value="{% if content.config_use_ldap != None %}{{ content.config_ldap_dn }}{% endif %}" autocomplete="off">
       </div>
     </div>
+      <input type="checkbox" id="config_use_github_oauth" name="config_use_github_oauth" data-control="github-oauth-settings" {% if content.config_use_github_oauth %}checked{% endif %}>
+      <label for="config_use_github_oauth">{{_('Use')}} GitHub OAuth</label>
+      <a href="https://github.com/settings/developers" target="_blank" style="margin-left: 5px">{{_('Obtain GitHub OAuth Credentail')}}</a>
+    </div>
+    <div data-related="github-oauth-settings">
+      <div class="form-group">
+        <label for="config_github_oauth_client_id">{{_('GitHub OAuth Client Id')}}</label>
+        <input type="text" class="form-control" id="config_github_oauth_client_id" name="config_github_oauth_client_id" value="{% if content.config_github_oauth_client_id != None %}{{ content.config_github_oauth_client_id }}{% endif %}" autocomplete="off">
+      </div>
+      <div class="form-group">
+        <label for="config_github_oauth_client_secret">{{_('GitHub OAuth Client Secret')}}</label>
+        <input type="text" class="form-control" id="config_github_oauth_client_secret" name="config_github_oauth_client_secret" value="{% if content.config_github_oauth_client_secret != None %}{{ content.config_github_oauth_client_secret }}{% endif %}" autocomplete="off">
+      </div>
+    </div>
+    <div class="form-group">
+      <input type="checkbox" id="config_use_google_oauth" name="config_use_google_oauth" data-control="google-oauth-settings" {% if content.config_use_google_oauth %}checked{% endif %}>
+      <label for="config_use_google_oauth">{{_('Use')}} Google OAuth</label>
+      <a href="https://console.developers.google.com/apis/credentials" target="_blank" style="margin-left: 5px">{{_('Obtain Google OAuth Credentail')}}</a>
+    </div>
+    <div data-related="google-oauth-settings">
+      <div class="form-group">
+        <label for="config_google_oauth_client_id">{{_('Google OAuth Client Id')}}</label>
+        <input type="text" class="form-control" id="config_google_oauth_client_id" name="config_google_oauth_client_id" value="{% if content.config_google_oauth_client_id != None %}{{ content.config_google_oauth_client_id }}{% endif %}" autocomplete="off">
+      </div>
+      <div class="form-group">
+        <label for="config_google_oauth_client_secret">{{_('Google OAuth Client Secret')}}</label>
+        <input type="text" class="form-control" id="config_google_oauth_client_secret" name="config_google_oauth_client_secret" value="{% if content.config_google_oauth_client_secret != None %}{{ content.config_google_oauth_client_secret }}{% endif %}" autocomplete="off">
+      </div>
     </div>
       </div>
     </div>
