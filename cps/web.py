@@ -2288,7 +2288,18 @@ def login():
     if request.method == "POST":
         form = request.form.to_dict()
         user = ub.session.query(ub.User).filter(func.lower(ub.User.nickname) == form['username'].strip().lower()).first()
-        if user and check_password_hash(user.password, form['password']) and user.nickname is not "Guest":
+        if config.config_use_ldap and user:
+            import ldap
+            try:
+                ub.User.try_login(form['username'], form['password'])
+                login_user(user, remember=True)
+                flash(_(u"you are now logged in as: '%(nickname)s'", nickname=user.nickname), category="success")
+                return redirect_back(url_for("index"))
+            except ldap.INVALID_CREDENTIALS:
+                ipAdress = request.headers.get('X-Forwarded-For', request.remote_addr)
+                app.logger.info('LDAP Login failed for user "' + form['username'] + '" IP-adress: ' + ipAdress)
+                flash(_(u"Wrong Username or Password"), category="error")
+        elif user and check_password_hash(user.password, form['password']) and user.nickname is not "Guest":
             login_user(user, remember=True)
             flash(_(u"you are now logged in as: '%(nickname)s'", nickname=user.nickname), category="success")
             return redirect_back(url_for("index"))
@@ -3043,6 +3054,21 @@ def configuration_helper(origin):
             content.config_calibre = to_save["config_calibre"].strip()
         if "config_ebookconverter" in to_save:
             content.config_ebookconverter = int(to_save["config_ebookconverter"])
+
+        #LDAP configuratop,
+        if "config_use_ldap" in to_save and to_save["config_use_ldap"] == "on":
+            if not "config_ldap_provider_url" in to_save or not "config_ldap_dn" in to_save:
+                ub.session.commit()
+                flash(_(u'Please enter a LDAP provider and a DN'), category="error")
+                return render_title_template("config_edit.html", content=config, origin=origin,
+                                             gdrive=gdriveutils.gdrive_support, gdriveError=gdriveError,
+                                             goodreads=goodreads_support, title=_(u"Basic Configuration"),
+                                             page="config")
+            else:
+                content.config_use_ldap = 1
+                content.config_ldap_provider_url = to_save["config_ldap_provider_url"]
+                content.config_ldap_dn = to_save["config_ldap_dn"]
+                db_change = True
 
         # Remote login configuration
         content.config_remote_login = ("config_remote_login" in to_save and to_save["config_remote_login"] == "on")
