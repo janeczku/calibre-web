@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2019-01-20 19:36+0100\n"
+"POT-Creation-Date: 2019-02-03 16:21+0100\n"
 "PO-Revision-Date: 2017-01-06 17:00+0000\n"
 "Last-Translator: dalin <dalin.lin@gmail.com>\n"
 "Language: zh_Hans_CN\n"
@@ -116,47 +116,47 @@ msgstr "Google Drive上找不到文件 %(file)s"
 msgid "Book path %(path)s not found on Google Drive"
 msgstr "Google Drive上找不到书籍路径 %(path)s"
 
-#: cps/helper.py:508
+#: cps/helper.py:510
 msgid "Error excecuting UnRar"
 msgstr "执行UnRar时出错"
 
-#: cps/helper.py:510
+#: cps/helper.py:512
 msgid "Unrar binary file not found"
 msgstr "找不到Unrar二进制文件"
 
-#: cps/helper.py:541
+#: cps/helper.py:543
 msgid "Waiting"
 msgstr "等待中"
 
-#: cps/helper.py:543
+#: cps/helper.py:545
 msgid "Failed"
 msgstr "失败"
 
-#: cps/helper.py:545
+#: cps/helper.py:547
 msgid "Started"
 msgstr "已开始"
 
-#: cps/helper.py:547
+#: cps/helper.py:549
 msgid "Finished"
 msgstr "已完成"
 
-#: cps/helper.py:549
+#: cps/helper.py:551
 msgid "Unknown Status"
 msgstr "未知状态"
 
-#: cps/helper.py:554
+#: cps/helper.py:556
 msgid "E-mail: "
 msgstr ""
 
-#: cps/helper.py:556 cps/helper.py:560
+#: cps/helper.py:558 cps/helper.py:562
 msgid "Convert: "
 msgstr "转换："
 
-#: cps/helper.py:558
+#: cps/helper.py:560
 msgid "Upload: "
 msgstr "上传："
 
-#: cps/helper.py:562
+#: cps/helper.py:564
 msgid "Unknown Task: "
 msgstr "未知任务："
 
@@ -168,19 +168,19 @@ msgstr "读取更新信息时出现异常数据"
 msgid "No update available. You already have the latest version installed"
 msgstr "没有可用更新。您已经安装了最新版本"
 
-#: cps/updater.py:270 cps/updater.py:501 cps/updater.py:503 cps/web.py:1182
+#: cps/updater.py:270 cps/updater.py:501 cps/updater.py:503 cps/web.py:1184
 msgid "HTTP Error"
 msgstr "HTTP错误"
 
-#: cps/updater.py:272 cps/updater.py:505 cps/web.py:1183
+#: cps/updater.py:272 cps/updater.py:505 cps/web.py:1185
 msgid "Connection error"
 msgstr "连接错误"
 
-#: cps/updater.py:274 cps/updater.py:507 cps/web.py:1184
+#: cps/updater.py:274 cps/updater.py:507 cps/web.py:1186
 msgid "Timeout while establishing connection"
 msgstr "建立连接超时"
 
-#: cps/updater.py:276 cps/updater.py:509 cps/web.py:1185
+#: cps/updater.py:276 cps/updater.py:509 cps/web.py:1187
 msgid "General error"
 msgstr "一般错误"
 
@@ -201,385 +201,389 @@ msgstr ""
 msgid "A new update is available. Click on the button below to update to version: %(version)s"
 msgstr ""
 
-#: cps/updater.py:491 cps/web.py:2768
+#: cps/updater.py:491 cps/web.py:2766
 msgid "Unknown"
 msgstr "未知"
 
-#: cps/web.py:1175
+#: cps/web.py:1177
 msgid "Requesting update package"
 msgstr "正在请求更新包"
 
-#: cps/web.py:1176
+#: cps/web.py:1178
 msgid "Downloading update package"
 msgstr "正在下载更新包"
 
-#: cps/web.py:1177
+#: cps/web.py:1179
 msgid "Unzipping update package"
 msgstr "正在解压更新包"
 
-#: cps/web.py:1178
+#: cps/web.py:1180
 msgid "Replacing files"
 msgstr "正在替换文件"
 
-#: cps/web.py:1179
+#: cps/web.py:1181
 msgid "Database connections are closed"
 msgstr "数据库连接已关闭"
 
-#: cps/web.py:1180
+#: cps/web.py:1182
 msgid "Stopping server"
 msgstr "正在停止服务器"
 
-#: cps/web.py:1181
+#: cps/web.py:1183
 msgid "Update finished, please press okay and reload page"
 msgstr "更新完成，请按确定并刷新页面"
 
-#: cps/web.py:1182 cps/web.py:1183 cps/web.py:1184 cps/web.py:1185
+#: cps/web.py:1184 cps/web.py:1185 cps/web.py:1186 cps/web.py:1187
 msgid "Update failed:"
 msgstr "更新失败："
 
-#: cps/web.py:1208
+#: cps/web.py:1210
 msgid "Recently Added Books"
 msgstr "最近添加的书籍"
 
-#: cps/web.py:1218
+#: cps/web.py:1220
 msgid "Newest Books"
 msgstr "最新书籍"
 
-#: cps/web.py:1230
+#: cps/web.py:1232
 msgid "Oldest Books"
 msgstr "最旧书籍"
 
-#: cps/web.py:1242
+#: cps/web.py:1244
 msgid "Books (A-Z)"
 msgstr "书籍 (A-Z)"
 
-#: cps/web.py:1253
+#: cps/web.py:1255
 msgid "Books (Z-A)"
 msgstr "书籍 (Z-A)"
 
-#: cps/web.py:1282
+#: cps/web.py:1284
 msgid "Hot Books (most downloaded)"
 msgstr "热门书籍(最多下载)"
 
-#: cps/web.py:1295
+#: cps/web.py:1297
 msgid "Best rated books"
 msgstr "最高评分书籍"
 
-#: cps/templates/index.xml:39 cps/web.py:1308
+#: cps/templates/index.xml:39 cps/web.py:1310
 msgid "Random Books"
 msgstr "随机书籍"
 
-#: cps/web.py:1335 cps/web.py:1590 cps/web.py:2137
+#: cps/web.py:1337 cps/web.py:1592 cps/web.py:2135
 msgid "Error opening eBook. File does not exist or file is not accessible:"
 msgstr "无法打开电子书。 文件不存在或者文件不可访问:"
 
-#: cps/web.py:1363
+#: cps/web.py:1365
 msgid "Publisher list"
 msgstr "出版社列表"
 
-#: cps/web.py:1378
+#: cps/web.py:1380
 #, python-format
 msgid "Publisher: %(name)s"
 msgstr "出版社： %(name)s"
 
-#: cps/templates/index.xml:83 cps/web.py:1410
+#: cps/templates/index.xml:83 cps/web.py:1412
 msgid "Series list"
 msgstr "丛书列表"
 
-#: cps/web.py:1424
+#: cps/web.py:1426
 #, python-format
 msgid "Series: %(serie)s"
 msgstr "丛书: %(serie)s"
 
-#: cps/web.py:1450
+#: cps/web.py:1452
 msgid "Available languages"
 msgstr "可用语言"
 
-#: cps/web.py:1470
+#: cps/web.py:1472
 #, python-format
 msgid "Language: %(name)s"
 msgstr "语言: %(name)s"
 
-#: cps/templates/index.xml:76 cps/web.py:1481
+#: cps/templates/index.xml:76 cps/web.py:1483
 msgid "Category list"
 msgstr "分类列表"
 
-#: cps/web.py:1495
+#: cps/web.py:1497
 #, python-format
 msgid "Category: %(name)s"
 msgstr "分类: %(name)s"
 
-#: cps/templates/layout.html:71 cps/web.py:1626
+#: cps/templates/layout.html:71 cps/web.py:1628
 msgid "Tasks"
 msgstr "任务"
 
-#: cps/web.py:1660
+#: cps/web.py:1662
 msgid "Statistics"
 msgstr "统计"
 
-#: cps/web.py:1768
+#: cps/web.py:1730
+msgid "Google Drive setup not completed, try to deactivate and activate Google Drive again"
+msgstr ""
+
+#: cps/web.py:1775
 msgid "Callback domain is not verified, please follow steps to verify domain in google developer console"
 msgstr "回调域名尚未被校验，请在google开发者控制台按步骤校验域名"
 
-#: cps/web.py:1844
+#: cps/web.py:1851
 msgid "Server restarted, please reload page"
 msgstr "服务器已重启，请刷新页面"
 
-#: cps/web.py:1847
+#: cps/web.py:1854
 msgid "Performing shutdown of server, please close window"
 msgstr "正在关闭服务器，请关闭窗口"
 
-#: cps/web.py:1936
+#: cps/web.py:1934
 msgid "Published after "
 msgstr "出版时晚于 "
 
-#: cps/web.py:1943
+#: cps/web.py:1941
 msgid "Published before "
 msgstr "出版时早于 "
 
-#: cps/web.py:1957
+#: cps/web.py:1955
 #, python-format
 msgid "Rating <= %(rating)s"
 msgstr "评分 <= %(rating)s"
 
-#: cps/web.py:1959
+#: cps/web.py:1957
 #, python-format
 msgid "Rating >= %(rating)s"
 msgstr "评分 >= %(rating)s"
 
-#: cps/web.py:2020 cps/web.py:2029
+#: cps/web.py:2018 cps/web.py:2027
 msgid "search"
 msgstr "搜索"
 
 #: cps/templates/index.xml:47 cps/templates/index.xml:51
-#: cps/templates/layout.html:146 cps/web.py:2096
+#: cps/templates/layout.html:146 cps/web.py:2094
 msgid "Read Books"
 msgstr "已读书籍"
 
 #: cps/templates/index.xml:55 cps/templates/index.xml:59
-#: cps/templates/layout.html:148 cps/web.py:2099
+#: cps/templates/layout.html:148 cps/web.py:2097
 msgid "Unread Books"
 msgstr "未读书籍"
 
-#: cps/web.py:2147 cps/web.py:2149 cps/web.py:2151 cps/web.py:2163
+#: cps/web.py:2145 cps/web.py:2147 cps/web.py:2149 cps/web.py:2161
 msgid "Read a Book"
 msgstr "阅读一本书"
 
-#: cps/web.py:2222 cps/web.py:3137
+#: cps/web.py:2220 cps/web.py:3138
 msgid "Please fill out all fields!"
 msgstr "请填写所有字段"
 
-#: cps/web.py:2223 cps/web.py:2245 cps/web.py:2249 cps/web.py:2254
-#: cps/web.py:2256
+#: cps/web.py:2221 cps/web.py:2243 cps/web.py:2247 cps/web.py:2252
+#: cps/web.py:2254
 msgid "register"
 msgstr "注册"
 
-#: cps/web.py:2244 cps/web.py:3351
+#: cps/web.py:2242 cps/web.py:3357
 msgid "An unknown error occurred. Please try again later."
 msgstr "发生一个未知错误，请稍后再试。"
 
-#: cps/web.py:2247
+#: cps/web.py:2245
 msgid "Your e-mail is not allowed to register"
 msgstr "您的邮箱不能用来注册"
 
-#: cps/web.py:2250
+#: cps/web.py:2248
 msgid "Confirmation e-mail was send to your e-mail account."
 msgstr "确认邮件已经发送到您的邮箱。"
 
-#: cps/web.py:2253
+#: cps/web.py:2251
 msgid "This username or e-mail address is already in use."
 msgstr "这个用户名或者邮箱已经被使用。"
 
-#: cps/web.py:2270 cps/web.py:2366
+#: cps/web.py:2268 cps/web.py:2364
 #, python-format
 msgid "you are now logged in as: '%(nickname)s'"
 msgstr "您现在已以'%(nickname)s'身份登录"
 
-#: cps/web.py:2275
+#: cps/web.py:2273
 msgid "Wrong Username or Password"
 msgstr "用户名或密码错误"
 
-#: cps/web.py:2281 cps/web.py:2302
+#: cps/web.py:2279 cps/web.py:2300
 msgid "login"
 msgstr "登录"
 
-#: cps/web.py:2314 cps/web.py:2345
+#: cps/web.py:2312 cps/web.py:2343
 msgid "Token not found"
 msgstr "找不到Token"
 
-#: cps/web.py:2322 cps/web.py:2353
+#: cps/web.py:2320 cps/web.py:2351
 msgid "Token has expired"
 msgstr "Token已过期"
 
-#: cps/web.py:2330
+#: cps/web.py:2328
 msgid "Success! Please return to your device"
 msgstr "成功！请返回您的设备"
 
-#: cps/web.py:2380
+#: cps/web.py:2378
 msgid "Please configure the SMTP mail settings first..."
 msgstr "请先配置SMTP邮箱..."
 
-#: cps/web.py:2385
+#: cps/web.py:2383
 #, python-format
 msgid "Book successfully queued for sending to %(kindlemail)s"
 msgstr "书籍已经被成功加入 %(kindlemail)s 的发送队列"
 
-#: cps/web.py:2389
+#: cps/web.py:2387
 #, python-format
 msgid "There was an error sending this book: %(res)s"
 msgstr "发送这本书的时候出现错误: %(res)s"
 
-#: cps/web.py:2391 cps/web.py:3190
+#: cps/web.py:2389 cps/web.py:3191
 msgid "Please configure your kindle e-mail address first..."
 msgstr "请先配置您的kindle邮箱..."
 
-#: cps/web.py:2402 cps/web.py:2454
+#: cps/web.py:2400 cps/web.py:2452
 msgid "Invalid shelf specified"
 msgstr "指定的书架无效"
 
-#: cps/web.py:2409
+#: cps/web.py:2407
 #, python-format
 msgid "Sorry you are not allowed to add a book to the the shelf: %(shelfname)s"
 msgstr "对不起，您没有添加书籍到书架 %(shelfname)s 的权限"
 
-#: cps/web.py:2417
+#: cps/web.py:2415
 msgid "You are not allowed to edit public shelves"
 msgstr "您没有编辑书架的权限"
 
-#: cps/web.py:2426
+#: cps/web.py:2424
 #, python-format
 msgid "Book is already part of the shelf: %(shelfname)s"
 msgstr "此书已经是书架 %(shelfname)s 的一部分"
 
-#: cps/web.py:2440
+#: cps/web.py:2438
 #, python-format
 msgid "Book has been added to shelf: %(sname)s"
 msgstr "此书已被添加到书架: %(sname)s"
 
-#: cps/web.py:2459
+#: cps/web.py:2457
 #, python-format
 msgid "You are not allowed to add a book to the the shelf: %(name)s"
 msgstr "您没有添加书籍到书架 %(name)s 的权限"
 
-#: cps/web.py:2464
+#: cps/web.py:2462
 msgid "User is not allowed to edit public shelves"
 msgstr "用户没有编辑公开书架的权限"
 
-#: cps/web.py:2482
+#: cps/web.py:2480
 #, python-format
 msgid "Books are already part of the shelf: %(name)s"
 msgstr "书籍已经在书架 %(name)s 中了"
 
-#: cps/web.py:2496
+#: cps/web.py:2494
 #, python-format
 msgid "Books have been added to shelf: %(sname)s"
 msgstr "书籍已经被添加到书架 %(sname)s 中'"
 
-#: cps/web.py:2498
+#: cps/web.py:2496
 #, python-format
 msgid "Could not add books to shelf: %(sname)s"
 msgstr "无法添加书籍到书架: %(sname)s"
 
-#: cps/web.py:2535
+#: cps/web.py:2533
 #, python-format
 msgid "Book has been removed from shelf: %(sname)s"
 msgstr "此书已从书架 %(sname)s 中删除"
 
-#: cps/web.py:2541
+#: cps/web.py:2539
 #, python-format
 msgid "Sorry you are not allowed to remove a book from this shelf: %(sname)s"
 msgstr "对不起，您没有从书架 %(sname)s 中删除书籍的权限"
 
-#: cps/web.py:2562 cps/web.py:2586
+#: cps/web.py:2560 cps/web.py:2584
 #, python-format
 msgid "A shelf with the name '%(title)s' already exists."
 msgstr "已存在书架 '%(title)s'。"
 
-#: cps/web.py:2567
+#: cps/web.py:2565
 #, python-format
 msgid "Shelf %(title)s created"
 msgstr "书架 %(title)s 已被创建"
 
-#: cps/web.py:2569 cps/web.py:2597
+#: cps/web.py:2567 cps/web.py:2595
 msgid "There was an error"
 msgstr "发生错误"
 
-#: cps/web.py:2570 cps/web.py:2572
+#: cps/web.py:2568 cps/web.py:2570
 msgid "create a shelf"
 msgstr "创建书架"
 
-#: cps/web.py:2595
+#: cps/web.py:2593
 #, python-format
 msgid "Shelf %(title)s changed"
 msgstr "书架 %(title)s 已被修改"
 
-#: cps/web.py:2598 cps/web.py:2600
+#: cps/web.py:2596 cps/web.py:2598
 msgid "Edit a shelf"
 msgstr "编辑书架"
 
-#: cps/web.py:2621
+#: cps/web.py:2619
 #, python-format
 msgid "successfully deleted shelf %(name)s"
 msgstr "成功删除书架 %(name)s"
 
-#: cps/web.py:2648
+#: cps/web.py:2646
 #, python-format
 msgid "Shelf: '%(name)s'"
 msgstr "书架: '%(name)s'"
 
-#: cps/web.py:2651
+#: cps/web.py:2649
 msgid "Error opening shelf. Shelf does not exist or is not accessible"
 msgstr "打开书架出错。书架不存在或不可访问"
 
-#: cps/web.py:2682
+#: cps/web.py:2680
 #, python-format
 msgid "Change order of Shelf: '%(name)s'"
 msgstr "修改书架 '%(name)s' 顺序"
 
-#: cps/web.py:2711 cps/web.py:3143
+#: cps/web.py:2709 cps/web.py:3144
 msgid "E-mail is not from valid domain"
 msgstr "邮箱不在有效域中'"
 
-#: cps/web.py:2713 cps/web.py:2755 cps/web.py:2758
+#: cps/web.py:2711 cps/web.py:2753 cps/web.py:2756
 #, python-format
 msgid "%(name)s's profile"
 msgstr "%(name)s 的资料"
 
-#: cps/web.py:2753
+#: cps/web.py:2751
 msgid "Found an existing account for this e-mail address."
 msgstr "找到一个已有账号使用这个邮箱。"
 
-#: cps/web.py:2756
+#: cps/web.py:2754
 msgid "Profile updated"
 msgstr "资料已更新"
 
-#: cps/web.py:2787
+#: cps/web.py:2785
 msgid "Admin page"
 msgstr "管理页"
 
-#: cps/web.py:2869 cps/web.py:3046
+#: cps/web.py:2867 cps/web.py:3047
 msgid "Calibre-Web configuration updated"
 msgstr "Calibre-Web配置已更新"
 
-#: cps/templates/admin.html:100 cps/web.py:2883
+#: cps/templates/admin.html:100 cps/web.py:2881
 msgid "UI Configuration"
 msgstr "UI配置"
 
-#: cps/web.py:2901
+#: cps/web.py:2899
 msgid "Import of optional Google Drive requirements missing"
 msgstr "可选的Google Drive依赖导入缺失"
 
-#: cps/web.py:2904
+#: cps/web.py:2902
 msgid "client_secrets.json is missing or not readable"
 msgstr "client_secrets.json文件缺失或不可读"
 
-#: cps/web.py:2909 cps/web.py:2936
+#: cps/web.py:2907 cps/web.py:2936
 msgid "client_secrets.json is not configured for web application"
 msgstr "没有为web应用配置client_secrets.json"
 
 #: cps/templates/admin.html:99 cps/web.py:2939 cps/web.py:2965 cps/web.py:2977
-#: cps/web.py:3022 cps/web.py:3037 cps/web.py:3055 cps/web.py:3063
-#: cps/web.py:3079
+#: cps/web.py:3022 cps/web.py:3037 cps/web.py:3056 cps/web.py:3064
+#: cps/web.py:3080
 msgid "Basic Configuration"
 msgstr "基本配置"
 
@@ -595,152 +599,152 @@ msgstr "证书文件位置无效，请输入正确路径"
 msgid "Logfile location is not valid, please enter correct path"
 msgstr "日志文件位置无效，请输入正确路径"
 
-#: cps/web.py:3059
+#: cps/web.py:3060
 msgid "DB location is not valid, please enter correct path"
 msgstr "DB位置无效，请输入正确路径"
 
-#: cps/templates/admin.html:33 cps/web.py:3139 cps/web.py:3145 cps/web.py:3161
+#: cps/templates/admin.html:33 cps/web.py:3140 cps/web.py:3146 cps/web.py:3162
 msgid "Add new user"
 msgstr "添加新用户"
 
-#: cps/web.py:3151
+#: cps/web.py:3152
 #, python-format
 msgid "User '%(user)s' created"
 msgstr "用户 '%(user)s' 已被创建"
 
-#: cps/web.py:3155
+#: cps/web.py:3156
 msgid "Found an existing account for this e-mail address or nickname."
 msgstr "此邮箱或昵称的账号已经存在。"
 
-#: cps/web.py:3185
+#: cps/web.py:3186
 #, python-format
 msgid "Test e-mail successfully send to %(kindlemail)s"
 msgstr "测试邮件已经被成功发到 %(kindlemail)s"
 
-#: cps/web.py:3188
+#: cps/web.py:3189
 #, python-format
 msgid "There was an error sending the Test e-mail: %(res)s"
 msgstr "发送测试邮件出错了: %(res)s"
 
-#: cps/web.py:3192
+#: cps/web.py:3193
 msgid "E-mail server settings updated"
 msgstr "已更新邮件服务器设置"
 
-#: cps/web.py:3193
+#: cps/web.py:3194
 msgid "Edit e-mail server settings"
 msgstr "编辑邮箱服务器设置"
 
-#: cps/web.py:3218
+#: cps/web.py:3219
 #, python-format
 msgid "User '%(nick)s' deleted"
 msgstr "用户 '%(nick)s' 已被删除"
 
-#: cps/web.py:3326
+#: cps/web.py:3332
 #, python-format
 msgid "User '%(nick)s' updated"
 msgstr "用户 '%(nick)s' 已被更新"
 
-#: cps/web.py:3329
+#: cps/web.py:3335
 msgid "An unknown error occured."
 msgstr "发生未知错误。"
 
-#: cps/web.py:3331
+#: cps/web.py:3337
 #, python-format
 msgid "Edit User %(nick)s"
 msgstr "编辑用户 %(nick)s"
 
-#: cps/web.py:3348
+#: cps/web.py:3354
 #, python-format
 msgid "Password for user %(user)s reset"
 msgstr "用户 %(user)s 的密码已重置"
 
-#: cps/web.py:3362 cps/web.py:3568
+#: cps/web.py:3368 cps/web.py:3574
 msgid "Error opening eBook. File does not exist or file is not accessible"
 msgstr "打开电子书出错。文件不存在或不可访问"
 
-#: cps/web.py:3390 cps/web.py:3862
+#: cps/web.py:3396 cps/web.py:3868
 msgid "edit metadata"
 msgstr "编辑元数据"
 
-#: cps/web.py:3483 cps/web.py:3730
+#: cps/web.py:3489 cps/web.py:3736
 #, python-format
 msgid "File extension '%(ext)s' is not allowed to be uploaded to this server"
 msgstr "不能上传后缀为　'%(ext)s'　的文件到此服务器"
 
-#: cps/web.py:3487 cps/web.py:3734
+#: cps/web.py:3493 cps/web.py:3740
 msgid "File to be uploaded must have an extension"
 msgstr "要上传的文件必须有一个后缀"
 
-#: cps/web.py:3499 cps/web.py:3754
+#: cps/web.py:3505 cps/web.py:3760
 #, python-format
 msgid "Failed to create path %(path)s (Permission denied)."
 msgstr "创建路径 %(path)s 失败(权限拒绝)。"
 
-#: cps/web.py:3504
+#: cps/web.py:3510
 #, python-format
 msgid "Failed to store file %(file)s."
 msgstr "保存文件 %(file)s 失败。"
 
-#: cps/web.py:3521
+#: cps/web.py:3527
 #, python-format
 msgid "File format %(ext)s added to %(book)s"
 msgstr "已添加 %(ext)s 格式到 %(book)s"
 
-#: cps/web.py:3539
+#: cps/web.py:3545
 #, python-format
 msgid "Failed to create path for cover %(path)s (Permission denied)."
 msgstr "为封面 %(path)s 创建路径失败(权限拒绝)。"
 
-#: cps/web.py:3547
+#: cps/web.py:3553
 #, python-format
 msgid "Failed to store cover-file %(cover)s."
 msgstr "保存封面文件 %(cover)s 失败。"
 
-#: cps/web.py:3550
+#: cps/web.py:3556
 msgid "Cover-file is not a valid image file"
 msgstr "封面文件不是一个有效的图片文件"
 
-#: cps/web.py:3580 cps/web.py:3589
+#: cps/web.py:3586 cps/web.py:3595
 msgid "unknown"
 msgstr "未知"
 
-#: cps/web.py:3621
+#: cps/web.py:3627
 msgid "Cover is not a jpg file, can't save"
 msgstr "封面不是一个jpg文件，无法保存"
 
-#: cps/web.py:3669
+#: cps/web.py:3675
 #, python-format
 msgid "%(langname)s is not a valid language"
 msgstr "%(langname)s 不是一种有效语言"
 
-#: cps/web.py:3700
+#: cps/web.py:3706
 msgid "Metadata successfully updated"
 msgstr "已成功更新元数据"
 
-#: cps/web.py:3709
+#: cps/web.py:3715
 msgid "Error editing book, please check logfile for details"
 msgstr "编辑书籍出错，详情请检查日志文件"
 
-#: cps/web.py:3759
+#: cps/web.py:3765
 #, python-format
 msgid "Failed to store file %(file)s (Permission denied)."
 msgstr "存储文件 %(file)s 失败(权限拒绝)。"
 
-#: cps/web.py:3764
+#: cps/web.py:3770
 #, python-format
 msgid "Failed to delete file %(file)s (Permission denied)."
 msgstr "删除文件 %(file)s 失败(权限拒绝)。"
 
-#: cps/web.py:3882
+#: cps/web.py:3888
 msgid "Source or destination format for conversion missing"
 msgstr "转换的源或目的格式缺失"
 
-#: cps/web.py:3892
+#: cps/web.py:3898
 #, python-format
 msgid "Book successfully queued for converting to %(book_format)s"
 msgstr "书籍已经被成功加入 %(book_format)s 的转换队列"
 
-#: cps/web.py:3896
+#: cps/web.py:3902
 #, python-format
 msgid "There was an error converting this book: %(res)s"
 msgstr "转换此书时出现错误： %(res)s"
@@ -907,10 +911,10 @@ msgstr "确定"
 
 #: cps/templates/admin.html:151 cps/templates/admin.html:165
 #: cps/templates/book_edit.html:178 cps/templates/book_edit.html:200
-#: cps/templates/config_edit.html:221 cps/templates/config_view_edit.html:175
+#: cps/templates/config_edit.html:226 cps/templates/config_view_edit.html:175
 #: cps/templates/email_edit.html:40 cps/templates/email_edit.html:75
 #: cps/templates/shelf.html:64 cps/templates/shelf_edit.html:19
-#: cps/templates/shelf_order.html:12 cps/templates/user_edit.html:147
+#: cps/templates/shelf_order.html:12 cps/templates/user_edit.html:149
 msgid "Back"
 msgstr "后退"
 
@@ -1040,10 +1044,10 @@ msgstr "编辑后查看书籍"
 msgid "Get metadata"
 msgstr "获取元数据"
 
-#: cps/templates/book_edit.html:177 cps/templates/config_edit.html:219
+#: cps/templates/book_edit.html:177 cps/templates/config_edit.html:224
 #: cps/templates/config_view_edit.html:174 cps/templates/login.html:20
 #: cps/templates/search_form.html:150 cps/templates/shelf_edit.html:17
-#: cps/templates/user_edit.html:145
+#: cps/templates/user_edit.html:147
 msgid "Submit"
 msgstr "提交"
 
@@ -1116,134 +1120,138 @@ msgid "Authenticate Google Drive"
 msgstr "认证 Google Drive"
 
 #: cps/templates/config_edit.html:40
+msgid "Please hit submit to continue with setup"
+msgstr ""
+
+#: cps/templates/config_edit.html:43
 msgid "Please finish Google Drive setup after login"
 msgstr "登录后请完成Google Drive设置"
 
-#: cps/templates/config_edit.html:44
+#: cps/templates/config_edit.html:48
 msgid "Google Drive Calibre folder"
 msgstr "Google Drive Calibre 目录"
 
-#: cps/templates/config_edit.html:52
+#: cps/templates/config_edit.html:56
 msgid "Metadata Watch Channel ID"
 msgstr "元数据监视频道ID"
 
-#: cps/templates/config_edit.html:55
+#: cps/templates/config_edit.html:59
 msgid "Revoke"
 msgstr "撤回"
 
-#: cps/templates/config_edit.html:73
+#: cps/templates/config_edit.html:78
 msgid "Server Configuration"
 msgstr "服务器配置"
 
-#: cps/templates/config_edit.html:80
+#: cps/templates/config_edit.html:85
 msgid "Server Port"
 msgstr "服务器端口"
 
-#: cps/templates/config_edit.html:84
+#: cps/templates/config_edit.html:89
 msgid "SSL certfile location (leave it empty for non-SSL Servers)"
 msgstr "SSL 证书文件位置(非SSL服务器请留空)"
 
-#: cps/templates/config_edit.html:88
+#: cps/templates/config_edit.html:93
 msgid "SSL Keyfile location (leave it empty for non-SSL Servers)"
 msgstr "SSL Key文件位置(非SSL服务器请留空)"
 
-#: cps/templates/config_edit.html:92
+#: cps/templates/config_edit.html:97
 msgid "Update channel"
 msgstr ""
 
-#: cps/templates/config_edit.html:94
+#: cps/templates/config_edit.html:99
 msgid "Stable"
 msgstr ""
 
-#: cps/templates/config_edit.html:95
+#: cps/templates/config_edit.html:100
 msgid "Stable (Automatic)"
 msgstr ""
 
-#: cps/templates/config_edit.html:96
+#: cps/templates/config_edit.html:101
 msgid "Nightly"
 msgstr ""
 
-#: cps/templates/config_edit.html:97
+#: cps/templates/config_edit.html:102
 msgid "Nightly (Automatic)"
 msgstr ""
 
-#: cps/templates/config_edit.html:108
+#: cps/templates/config_edit.html:113
 msgid "Logfile Configuration"
 msgstr "日志文件配置"
 
-#: cps/templates/config_edit.html:115
+#: cps/templates/config_edit.html:120
 msgid "Log Level"
 msgstr "日志级别"
 
-#: cps/templates/config_edit.html:124
+#: cps/templates/config_edit.html:129
 msgid "Location and name of logfile (calibre-web.log for no entry)"
 msgstr "日志文件位置和名称(默认为calibre-web.log)"
 
-#: cps/templates/config_edit.html:135
+#: cps/templates/config_edit.html:140
 msgid "Feature Configuration"
 msgstr "特性配置"
 
-#: cps/templates/config_edit.html:143
+#: cps/templates/config_edit.html:148
 msgid "Enable uploading"
 msgstr "启用上传"
 
-#: cps/templates/config_edit.html:147
+#: cps/templates/config_edit.html:152
 msgid "Enable anonymous browsing"
 msgstr "启用匿名浏览"
 
-#: cps/templates/config_edit.html:151
+#: cps/templates/config_edit.html:156
 msgid "Enable public registration"
 msgstr "启用注册"
 
-#: cps/templates/config_edit.html:155
+#: cps/templates/config_edit.html:160
 msgid "Enable remote login (\"magic link\")"
 msgstr "启用远程登录 ('魔法链接')"
 
-#: cps/templates/config_edit.html:160
+#: cps/templates/config_edit.html:165
 msgid "Use"
 msgstr "使用"
 
-#: cps/templates/config_edit.html:161
+#: cps/templates/config_edit.html:166
 msgid "Obtain an API Key"
 msgstr "获取API Key"
 
-#: cps/templates/config_edit.html:165
+#: cps/templates/config_edit.html:170
 msgid "Goodreads API Key"
 msgstr ""
 
-#: cps/templates/config_edit.html:169
+#: cps/templates/config_edit.html:174
 msgid "Goodreads API Secret"
 msgstr ""
 
-#: cps/templates/config_edit.html:182
+#: cps/templates/config_edit.html:187
 msgid "External binaries"
 msgstr "外部二进制"
 
-#: cps/templates/config_edit.html:190
+#: cps/templates/config_edit.html:195
 msgid "No converter"
 msgstr "没有转换器"
 
-#: cps/templates/config_edit.html:192
+#: cps/templates/config_edit.html:197
 msgid "Use Kindlegen"
 msgstr "使用Kindlegen"
 
-#: cps/templates/config_edit.html:194
+#: cps/templates/config_edit.html:199
 msgid "Use calibre's ebook converter"
 msgstr "使用calibre的电子书转换器"
 
-#: cps/templates/config_edit.html:198
+#: cps/templates/config_edit.html:203
 msgid "E-Book converter settings"
 msgstr "电子书转换设置"
 
-#: cps/templates/config_edit.html:202
+#: cps/templates/config_edit.html:207
 msgid "Path to convertertool"
 msgstr "转换工具路径"
 
-#: cps/templates/config_edit.html:208
+#: cps/templates/config_edit.html:213
 msgid "Location of Unrar binary"
 msgstr "Unrar二进制位置"
 
-#: cps/templates/config_edit.html:224 cps/templates/layout.html:82
+#: cps/templates/config_edit.html:229 cps/templates/layout.html:82
 #: cps/templates/login.html:4
 msgid "Login"
 msgstr "登录"
@@ -1293,31 +1301,31 @@ msgstr "成人内容标签"
 msgid "Default settings for new users"
 msgstr "新用户默认设置"
 
-#: cps/templates/config_view_edit.html:77 cps/templates/user_edit.html:102
+#: cps/templates/config_view_edit.html:77 cps/templates/user_edit.html:104
 msgid "Admin user"
 msgstr "管理用户"
 
-#: cps/templates/config_view_edit.html:81 cps/templates/user_edit.html:111
+#: cps/templates/config_view_edit.html:81 cps/templates/user_edit.html:113
 msgid "Allow Downloads"
 msgstr "允许下载"
 
-#: cps/templates/config_view_edit.html:85 cps/templates/user_edit.html:115
+#: cps/templates/config_view_edit.html:85 cps/templates/user_edit.html:117
 msgid "Allow Uploads"
 msgstr "允许上传"
 
-#: cps/templates/config_view_edit.html:89 cps/templates/user_edit.html:119
+#: cps/templates/config_view_edit.html:89 cps/templates/user_edit.html:121
 msgid "Allow Edit"
 msgstr "允许编辑"
 
-#: cps/templates/config_view_edit.html:93 cps/templates/user_edit.html:123
+#: cps/templates/config_view_edit.html:93 cps/templates/user_edit.html:125
 msgid "Allow Delete books"
 msgstr "允许删除书籍"
 
-#: cps/templates/config_view_edit.html:97 cps/templates/user_edit.html:128
+#: cps/templates/config_view_edit.html:97 cps/templates/user_edit.html:130
 msgid "Allow Changing Password"
 msgstr "允许修改密码"
 
-#: cps/templates/config_view_edit.html:101 cps/templates/user_edit.html:132
+#: cps/templates/config_view_edit.html:101 cps/templates/user_edit.html:134
 msgid "Allow Editing Public Shelfs"
 msgstr "允许编辑公共书架"
 
@@ -1365,15 +1373,15 @@ msgstr "显示作者选择"
 msgid "Show publisher selection"
 msgstr "显示出版社选择"
 
-#: cps/templates/config_view_edit.html:159 cps/templates/user_edit.html:90
+#: cps/templates/config_view_edit.html:159 cps/templates/user_edit.html:91
 msgid "Show read and unread"
 msgstr "显示已读和未读"
 
-#: cps/templates/config_view_edit.html:163 cps/templates/user_edit.html:94
+#: cps/templates/config_view_edit.html:163 cps/templates/user_edit.html:96
 msgid "Show random books in detail view"
 msgstr "在详情页显示随机书籍"
 
-#: cps/templates/config_view_edit.html:167 cps/templates/user_edit.html:107
+#: cps/templates/config_view_edit.html:167 cps/templates/user_edit.html:109
 msgid "Show mature content"
 msgstr "显示成人内容"
 
@@ -1946,95 +1954,1265 @@ msgstr "按语言显示书籍"
 msgid "Show all"
 msgstr "显示全部"
 
-#: cps/templates/user_edit.html:139
+#: cps/templates/user_edit.html:141
 msgid "Delete this user"
 msgstr "删除此用户"
 
-#: cps/templates/user_edit.html:154
+#: cps/templates/user_edit.html:156
 msgid "Recent Downloads"
 msgstr "最近下载"
 
-#~ msgid "Published after %s"
-#~ msgstr "出版时晚于 %s"
+#~ msgid "Afar"
+#~ msgstr "阿法尔语"
 
-#~ msgid "%s: %s"
+#~ msgid "Abkhazian"
+#~ msgstr "阿布哈兹语"
+
+#~ msgid "Achinese"
+#~ msgstr "亚齐语"
+
+#~ msgid "Acoli"
+#~ msgstr "阿乔利语"
+
+#~ msgid "Adangme"
+#~ msgstr "阿当梅语"
+
+#~ msgid "Adyghe"
+#~ msgstr "阿迪格语"
+
+#~ msgid "Afrihili"
+#~ msgstr "阿弗里希利语"
+
+#~ msgid "Afrikaans"
+#~ msgstr "南非荷兰语"
+
+#~ msgid "Ainu (Japan)"
+#~ msgstr "阿伊努语（日本）"
+
+#~ msgid "Akan"
+#~ msgstr "阿坎语"
+
+#~ msgid "Akkadian"
+#~ msgstr "阿卡德语"
+
+#~ msgid "Aleut"
+#~ msgstr "阿留申语"
+
+#~ msgid "Altai; Southern"
+#~ msgstr "阿尔泰语（南）"
+
+#~ msgid "Amharic"
+#~ msgstr "阿姆哈拉语"
+
+#~ msgid "English; Old (ca. 450-1100)"
+#~ msgstr "英语（上古，约 450-1100）"
+
+#~ msgid "Angika"
+#~ msgstr "安吉卡语"
+
+#~ msgid "Arabic"
+#~ msgstr "阿拉伯语"
+
+#~ msgid "Aramaic; Official (700-300 BCE)"
+#~ msgstr "阿拉米语（官方，公元前 700-300）"
+
+#~ msgid "Aragonese"
+#~ msgstr "阿拉贡语"
+
+#~ msgid "Mapudungun"
+#~ msgstr "阿劳坎语"
+
+#~ msgid "Arapaho"
+#~ msgstr "阿拉帕霍语"
+
+#~ msgid "Arawak"
+#~ msgstr "阿拉瓦克语"
+
+#~ msgid "Assamese"
+#~ msgstr "阿萨姆语"
+
+#~ msgid "Asturian"
+#~ msgstr "阿斯图里亚斯语"
+
+#~ msgid "Avaric"
+#~ msgstr "阿瓦尔语"
+
+#~ msgid "Avestan"
+#~ msgstr "阿维斯陀语"
+
+#~ msgid "Awadhi"
+#~ msgstr "阿瓦德语"
+
+#~ msgid "Aymara"
+#~ msgstr "艾马拉语"
+
+#~ msgid "Azerbaijani"
+#~ msgstr "阿塞拜疆语"
+
+#~ msgid "Bashkir"
+#~ msgstr "巴什基尔语"
+
+#~ msgid "Baluchi"
+#~ msgstr "俾路支语"
+
+#~ msgid "Bambara"
+#~ msgstr "班巴拉语"
+
+#~ msgid "Balinese"
+#~ msgstr "巴厘语"
+
+#~ msgid "Basa (Cameroon)"
+#~ msgstr "巴萨语（喀麦隆）"
+
+#~ msgid "Beja"
+#~ msgstr "贝扎语"
+
+#~ msgid "Belarusian"
+#~ msgstr "白俄罗斯语"
+
+#~ msgid "Bemba (Zambia)"
+#~ msgstr "本巴语（赞比亚）"
+
+#~ msgid "Bengali"
+#~ msgstr "孟加拉语"
+
+#~ msgid "Bhojpuri"
+#~ msgstr "博杰普尔语"
+
+#~ msgid "Bikol"
+#~ msgstr "比科尔语"
+
+#~ msgid "Bini"
+#~ msgstr "比尼语"
+
+#~ msgid "Bislama"
+#~ msgstr "比斯拉马语"
+
+#~ msgid "Siksika"
+#~ msgstr "西克西卡语"
+
+#~ msgid "Tibetan"
+#~ msgstr "藏语"
+
+#~ msgid "Bosnian"
+#~ msgstr "波斯尼亚语"
+
+#~ msgid "Braj"
+#~ msgstr "布拉吉语"
+
+#~ msgid "Breton"
+#~ msgstr "布列塔尼语"
+
+#~ msgid "Buriat"
+#~ msgstr "布里亚特语"
+
+#~ msgid "Buginese"
+#~ msgstr "布吉语"
+
+#~ msgid "Bulgarian"
+#~ msgstr "保加利亚语"
+
+#~ msgid "Bilin"
+#~ msgstr "比林语"
+
+#~ msgid "Caddo"
+#~ msgstr "卡多语"
+
+#~ msgid "Carib; Galibi"
+#~ msgstr "加勒比语"
+
+#~ msgid "Catalan"
+#~ msgstr "加泰罗尼亚语"
+
+#~ msgid "Cebuano"
+#~ msgstr "宿务语"
+
+#~ msgid "Czech"
+#~ msgstr "捷克语"
+
+#~ msgid "Chamorro"
+#~ msgstr "查莫罗语"
+
+#~ msgid "Chibcha"
+#~ msgstr "奇布查语"
+
+#~ msgid "Chechen"
+#~ msgstr "车臣语"
+
+#~ msgid "Chagatai"
+#~ msgstr "察合台语"
+
+#~ msgid "Chuukese"
+#~ msgstr "丘克语"
+
+#~ msgid "Mari (Russia)"
+#~ msgstr "马里语（俄罗斯）"
+
+#~ msgid "Chinook jargon"
+#~ msgstr "奇努克混合语"
+
+#~ msgid "Choctaw"
+#~ msgstr "乔克托语"
+
+#~ msgid "Chipewyan"
+#~ msgstr "奇佩维安语"
+
+#~ msgid "Cherokee"
+#~ msgstr "切罗基语"
+
+#~ msgid "Slavonic; Old"
+#~ msgstr "斯拉夫语（古教会）"
+
+#~ msgid "Chuvash"
+#~ msgstr "楚瓦什语"
+
+#~ msgid "Cheyenne"
+#~ msgstr "夏延语"
+
+#~ msgid "Coptic"
+#~ msgstr "科普特语"
+
+#~ msgid "Cornish"
+#~ msgstr "康沃尔语"
+
+#~ msgid "Corsican"
+#~ msgstr "科西嘉语"
+
+#~ msgid "Cree"
+#~ msgstr "克里语"
+
+#~ msgid "Turkish; Crimean"
+#~ msgstr "鞑靼语（克里米亚）"
+
+#~ msgid "Kashubian"
+#~ msgstr "卡舒比语"
+
+#~ msgid "Welsh"
+#~ msgstr "威尔士语"
+
+#~ msgid "Dakota"
+#~ msgstr "达科他语"
+
+#~ msgid "Danish"
+#~ msgstr "丹麦语"
+
+#~ msgid "Dargwa"
+#~ msgstr "达尔格瓦语"
+
+#~ msgid "Delaware"
+#~ msgstr "特拉华语"
+
+#~ msgid "Slave (Athapascan)"
+#~ msgstr "史拉维语（阿沙巴斯甘）"
+
+#~ msgid "German"
+#~ msgstr "德语"
+
+#~ msgid "Dogrib"
+#~ msgstr "多格里布语"
+
+#~ msgid "Dinka"
+#~ msgstr "丁卡语"
+
+#~ msgid "Dhivehi"
+#~ msgstr "迪维希语"
+
+#~ msgid "Dogri (macrolanguage)"
+#~ msgstr "多格拉语"
+
+#~ msgid "Sorbian; Lower"
+#~ msgstr "索布语（下）"
+
+#~ msgid "Duala"
+#~ msgstr "杜亚拉语"
+
+#~ msgid "Dutch; Middle (ca. 1050-1350)"
+#~ msgstr "荷兰语（中古，约 1050-1350）"
+
+#~ msgid "Dyula"
+#~ msgstr "迪尤拉语"
+
+#~ msgid "Dzongkha"
+#~ msgstr "宗喀语"
+
+#~ msgid "Efik"
+#~ msgstr "埃菲克语"
+
+#~ msgid "Egyptian (Ancient)"
+#~ msgstr "埃及语（古）"
+
+#~ msgid "Ekajuk"
+#~ msgstr "埃克丘克语"
+
+#~ msgid "Greek; Modern (1453-)"
+#~ msgstr "希腊语（现代，1453-）"
+
+#~ msgid "Elamite"
+#~ msgstr "埃兰语"
+
+#~ msgid "English"
+#~ msgstr "英语"
+
+#~ msgid "English; Middle (1100-1500)"
+#~ msgstr "英语（中古，1100-1500）"
+
+#~ msgid "Esperanto"
+#~ msgstr "世界语"
+
+#~ msgid "Estonian"
+#~ msgstr "爱沙尼亚语"
+
+#~ msgid "Basque"
+#~ msgstr "巴斯克语"
+
+#~ msgid "Ewe"
+#~ msgstr "埃维语"
+
+#~ msgid "Ewondo"
+#~ msgstr "埃翁多语"
+
+#~ msgid "Fang (Equatorial Guinea)"
+#~ msgstr "芳语（赤道几内亚）"
+
+#~ msgid "Faroese"
+#~ msgstr "法罗语"
+
+#~ msgid "Persian"
+#~ msgstr "波斯语"
+
+#~ msgid "Fanti"
+#~ msgstr "芳蒂语"
+
+#~ msgid "Fijian"
+#~ msgstr "斐济语"
+
+#~ msgid "Filipino"
+#~ msgstr "菲律宾语"
+
+#~ msgid "Finnish"
+#~ msgstr "芬兰语"
+
+#~ msgid "Fon"
+#~ msgstr "丰语"
+
+#~ msgid "French"
+#~ msgstr "法语"
+
+#~ msgid "French; Middle (ca. 1400-1600)"
+#~ msgstr "法语（中古，约 1400-1600）"
+
+#~ msgid "French; Old (842-ca. 1400)"
+#~ msgstr "法语（上古，842-约 1400）"
+
+#~ msgid "Frisian; Northern"
+#~ msgstr "弗里西语（北）"
+
+#~ msgid "Frisian; Eastern"
+#~ msgstr "弗里西亚语（东）"
+
+#~ msgid "Frisian; Western"
+#~ msgstr "弗里西亚语（西）"
+
+#~ msgid "Fulah"
+#~ msgstr "富拉语"
+
+#~ msgid "Friulian"
+#~ msgstr "弗留利语"
+
+#~ msgid "Ga"
+#~ msgstr "加语"
+
+#~ msgid "Gayo"
+#~ msgstr "卡约语"
+
+#~ msgid "Gbaya (Central African Republic)"
+#~ msgstr "巴亚语（中非共和国）"
+
+#~ msgid "Geez"
+#~ msgstr "吉兹语"
+
+#~ msgid "Gilbertese"
+#~ msgstr "吉尔伯特语"
+
+#~ msgid "Gaelic; Scottish"
+#~ msgstr "盖尔语（苏格兰）"
+
+#~ msgid "Irish"
+#~ msgstr "爱尔兰语"
+
+#~ msgid "Galician"
+#~ msgstr "加利西亚语"
+
+#~ msgid "Manx"
+#~ msgstr "马恩岛语"
+
+#~ msgid "German; Middle High (ca. 1050-1500)"
+#~ msgstr "德语（中古高地，约 1050-1500）"
+
+#~ msgid "German; Old High (ca. 750-1050)"
+#~ msgstr "德语（上古高地，约 750-1050）"
+
+#~ msgid "Gondi"
+#~ msgstr "贡德语"
+
+#~ msgid "Gorontalo"
+#~ msgstr "哥伦打洛语"
+
+#~ msgid "Gothic"
+#~ msgstr "哥特语"
+
+#~ msgid "Grebo"
+#~ msgstr "格列博语"
+
+#~ msgid "Greek; Ancient (to 1453)"
+#~ msgstr "希腊语（古典，直到 1453）"
+
+#~ msgid "Guarani"
+#~ msgstr "瓜拉尼语"
+
+#~ msgid "German; Swiss"
+#~ msgstr "德语（瑞士）"
+
+#~ msgid "Gujarati"
+#~ msgstr "古吉拉特语"
+
+#~ msgid "Gwichʼin"
+#~ msgstr "库臣语"
+
+#~ msgid "Haida"
+#~ msgstr "海达语"
+
+#~ msgid "Creole; Haitian"
+#~ msgstr "克里奥尔语（海地）"
+
+#~ msgid "Hausa"
+#~ msgstr "豪萨语"
+
+#~ msgid "Hawaiian"
+#~ msgstr "夏威夷语"
+
+#~ msgid "Hebrew"
+#~ msgstr "希伯来语"
+
+#~ msgid "Herero"
+#~ msgstr "赫雷罗语"
+
+#~ msgid "Hiligaynon"
+#~ msgstr "希利盖农语"
+
+#~ msgid "Hindi"
+#~ msgstr "印地语"
+
+#~ msgid "Hittite"
+#~ msgstr "赫梯语"
+
+#~ msgid "Hmong"
+#~ msgstr "苗语"
+
+#~ msgid "Hiri Motu"
+#~ msgstr "希里莫图语"
+
+#~ msgid "Croatian"
+#~ msgstr "克罗地亚语"
+
+#~ msgid "Sorbian; Upper"
+#~ msgstr "索布语（上）"
+
+#~ msgid "Hungarian"
+#~ msgstr "匈牙利语"
+
+#~ msgid "Hupa"
+#~ msgstr "胡帕语"
+
+#~ msgid "Armenian"
+#~ msgstr "亚美尼亚语"
+
+#~ msgid "Iban"
+#~ msgstr "伊班语"
+
+#~ msgid "Igbo"
+#~ msgstr "伊博语"
+
+#~ msgid "Ido"
+#~ msgstr "伊多语"
+
+#~ msgid "Yi; Sichuan"
+#~ msgstr "彝语（四川）"
+
+#~ msgid "Inuktitut"
+#~ msgstr "伊努伊特语"
+
+#~ msgid "Interlingue"
+#~ msgstr "国际语（西方）"
+
+#~ msgid "Iloko"
+#~ msgstr "伊洛卡诺语"
+
+#~ msgid "Interlingua (International Auxiliary Language Association)"
+#~ msgstr "国际语"
+
+#~ msgid "Indonesian"
+#~ msgstr "印尼语"
+
+#~ msgid "Ingush"
+#~ msgstr "印古什语"
+
+#~ msgid "Inupiaq"
+#~ msgstr "依努庇克语"
+
+#~ msgid "Icelandic"
+#~ msgstr "冰岛语"
+
+#~ msgid "Italian"
+#~ msgstr "意大利语"
+
+#~ msgid "Javanese"
+#~ msgstr "爪哇语"
+
+#~ msgid "Lojban"
+#~ msgstr "逻辑语"
+
+#~ msgid "Japanese"
+#~ msgstr "日语"
+
+#~ msgid "Judeo-Persian"
+#~ msgstr "犹太-波斯语"
+
+#~ msgid "Judeo-Arabic"
+#~ msgstr "犹太-阿拉伯语"
+
+#~ msgid "Kara-Kalpak"
+#~ msgstr "卡拉卡尔帕克语"
+
+#~ msgid "Kabyle"
+#~ msgstr "卡布列语"
+
+#~ msgid "Kachin"
+#~ msgstr "景颇语"
+
+#~ msgid "Kalaallisut"
+#~ msgstr "格陵兰语"
+
+#~ msgid "Kamba (Kenya)"
+#~ msgstr "坎巴语（肯尼亚）"
+
+#~ msgid "Kannada"
+#~ msgstr "卡纳达语"
+
+#~ msgid "Kashmiri"
+#~ msgstr "克什米尔语"
+
+#~ msgid "Georgian"
+#~ msgstr "格鲁吉亚语"
+
+#~ msgid "Kanuri"
+#~ msgstr "卡努里语"
+
+#~ msgid "Kawi"
+#~ msgstr "卡威语"
+
+#~ msgid "Kazakh"
+#~ msgstr "哈萨克语"
+
+#~ msgid "Kabardian"
+#~ msgstr "卡巴尔达语"
+
+#~ msgid "Khasi"
+#~ msgstr "卡西语"
+
+#~ msgid "Khmer; Central"
+#~ msgstr "高棉语"
+
+#~ msgid "Khotanese"
+#~ msgstr "和田语"
+
+#~ msgid "Kikuyu"
+#~ msgstr "基库尤语"
+
+#~ msgid "Kinyarwanda"
+#~ msgstr "基尼阿万达语"
+
+#~ msgid "Kirghiz"
+#~ msgstr "吉尔吉斯语"
+
+#~ msgid "Kimbundu"
+#~ msgstr "金本杜语"
+
+#~ msgid "Konkani (macrolanguage)"
+#~ msgstr "孔卡尼语"
+
+#~ msgid "Komi"
+#~ msgstr "科米语"
+
+#~ msgid "Kongo"
+#~ msgstr "刚果语"
+
+#~ msgid "Korean"
+#~ msgstr "朝鲜语"
+
+#~ msgid "Kosraean"
+#~ msgstr "科斯拉伊语"
+
+#~ msgid "Kpelle"
+#~ msgstr "克佩勒语"
+
+#~ msgid "Karachay-Balkar"
+#~ msgstr "卡拉恰伊-巴尔卡尔语"
+
+#~ msgid "Karelian"
+#~ msgstr "卡累利阿语"
+
+#~ msgid "Kurukh"
+#~ msgstr "库卢克语"
+
+#~ msgid "Kuanyama"
+#~ msgstr "宽亚玛语"
+
+#~ msgid "Kumyk"
+#~ msgstr "库梅克语"
+
+#~ msgid "Kurdish"
+#~ msgstr "库尔德语"
+
+#~ msgid "Kutenai"
+#~ msgstr "库特内语"
+
+#~ msgid "Ladino"
+#~ msgstr "拉迪诺语"
+
+#~ msgid "Lahnda"
+#~ msgstr "拉亨达语"
+
+#~ msgid "Lamba"
+#~ msgstr "兰巴语"
+
+#~ msgid "Lao"
+#~ msgstr "老挝语"
+
+#~ msgid "Latin"
+#~ msgstr "拉丁语"
+
+#~ msgid "Latvian"
+#~ msgstr "拉脱维亚语"
+
+#~ msgid "Lezghian"
+#~ msgstr "列兹金语"
+
+#~ msgid "Limburgan"
+#~ msgstr "林堡语"
+
+#~ msgid "Lingala"
+#~ msgstr "林加拉语"
+
+#~ msgid "Lithuanian"
+#~ msgstr "立陶宛语"
+
+#~ msgid "Mongo"
+#~ msgstr "芒戈语"
+
+#~ msgid "Lozi"
+#~ msgstr "洛齐语"
+
+#~ msgid "Luxembourgish"
+#~ msgstr "卢森堡语"
+
+#~ msgid "Luba-Lulua"
+#~ msgstr "卢巴-卢拉语"
+
+#~ msgid "Luba-Katanga"
+#~ msgstr "卢巴-加丹加语"
+
+#~ msgid "Ganda"
+#~ msgstr "干达语"
+
+#~ msgid "Luiseno"
+#~ msgstr "卢伊塞诺语"
+
+#~ msgid "Lunda"
+#~ msgstr "隆达语"
+
+#~ msgid "Luo (Kenya and Tanzania)"
+#~ msgstr "卢奥语（肯尼亚和坦桑尼亚）"
+
+#~ msgid "Lushai"
+#~ msgstr "卢萨语"
+
+#~ msgid "Madurese"
+#~ msgstr "马都拉语"
+
+#~ msgid "Magahi"
+#~ msgstr "摩揭陀语"
+
+#~ msgid "Marshallese"
+#~ msgstr "马绍尔语"
+
+#~ msgid "Maithili"
+#~ msgstr "米德勒语"
+
+#~ msgid "Makasar"
+#~ msgstr "望加锡语"
+
+#~ msgid "Malayalam"
+#~ msgstr "马拉雅拉姆语"
+
+#~ msgid "Mandingo"
+#~ msgstr "曼丁哥语"
+
+#~ msgid "Marathi"
+#~ msgstr "马拉地语"
+
+#~ msgid "Masai"
+#~ msgstr "马萨伊语"
+
+#~ msgid "Moksha"
+#~ msgstr "莫克沙语"
+
+#~ msgid "Mandar"
+#~ msgstr "曼达语"
+
+#~ msgid "Mende (Sierra Leone)"
+#~ msgstr "门德语（塞拉利昂）"
+
+#~ msgid "Irish; Middle (900-1200)"
+#~ msgstr "爱尔兰语（中古，900-1200）"
+
+#~ msgid "Mi'kmaq"
+#~ msgstr "米克马克语"
+
+#~ msgid "Minangkabau"
+#~ msgstr "米南卡保语"
+
+#~ msgid "Uncoded languages"
+#~ msgstr "未被编码的语言"
+
+#~ msgid "Macedonian"
+#~ msgstr "马其顿语"
+
+#~ msgid "Malagasy"
+#~ msgstr "马达加斯加语"
+
+#~ msgid "Maltese"
+#~ msgstr "马耳他语"
+
+#~ msgid "Manchu"
+#~ msgstr "满语"
+
+#~ msgid "Manipuri"
+#~ msgstr "曼尼普尔语"
+
+#~ msgid "Mohawk"
+#~ msgstr "莫霍克语"
+
+#~ msgid "Mongolian"
+#~ msgstr "蒙古语"
+
+#~ msgid "Mossi"
+#~ msgstr "莫西语"
+
+#~ msgid "Maori"
+#~ msgstr "毛利语"
+
+#~ msgid "Malay (macrolanguage)"
+#~ msgstr "马来语族"
+
+#~ msgid "Multiple languages"
+#~ msgstr "多种语言"
+
+#~ msgid "Creek"
+#~ msgstr "克里克语"
+
+#~ msgid "Mirandese"
+#~ msgstr "米兰德斯语"
+
+#~ msgid "Marwari"
+#~ msgstr "马尔瓦利语"
+
+#~ msgid "Burmese"
+#~ msgstr "缅甸语"
+
+#~ msgid "Erzya"
+#~ msgstr "厄尔兹亚语"
+
+#~ msgid "Neapolitan"
+#~ msgstr "拿坡里语"
+
+#~ msgid "Nauru"
+#~ msgstr "瑙鲁语"
+
+#~ msgid "Navajo"
+#~ msgstr "纳瓦霍语"
+
+#~ msgid "Ndebele; South"
+#~ msgstr "恩德贝勒语（南）"
+
+#~ msgid "Ndebele; North"
+#~ msgstr "恩德贝勒语（北）"
+
+#~ msgid "Ndonga"
+#~ msgstr "恩敦加语"
+
+#~ msgid "German; Low"
+#~ msgstr "撒克逊语（低地）"
+
+#~ msgid "Nepali"
+#~ msgstr "尼泊尔语"
+
+#~ msgid "Bhasa; Nepal"
+#~ msgstr "尼瓦尔语"
+
+#~ msgid "Nias"
+#~ msgstr "尼亚斯语"
+
+#~ msgid "Niuean"
+#~ msgstr "纽埃语"
+
+#~ msgid "Dutch"
+#~ msgstr "荷兰语"
+
+#~ msgid "Norwegian Nynorsk"
+#~ msgstr "新挪威语"
+
+#~ msgid "Norwegian Bokmål"
+#~ msgstr "挪威布克莫尔语"
+
+#~ msgid "Nogai"
+#~ msgstr "诺盖语"
+
+#~ msgid "Norse; Old"
+#~ msgstr "诺尔斯语（古）"
+
+#~ msgid "Norwegian"
+#~ msgstr "挪威语"
+
+#~ msgid "N'Ko"
+#~ msgstr "西非书面语言字母"
+
+#~ msgid "Sotho; Northern"
+#~ msgstr "索托语（北）"
+
+#~ msgid "Newari; Old"
+#~ msgstr "尼瓦尔语（古典）"
+
+#~ msgid "Nyanja"
+#~ msgstr "尼扬贾语"
+
+#~ msgid "Nyamwezi"
+#~ msgstr "尼扬韦齐语"
+
+#~ msgid "Nyankole"
+#~ msgstr "尼扬科勒语"
+
+#~ msgid "Nyoro"
+#~ msgstr "尼奥罗语"
+
+#~ msgid "Nzima"
+#~ msgstr "恩济马语"
+
+#~ msgid "Occitan (post 1500)"
+#~ msgstr "奥克西唐语（1500 后）"
+
+#~ msgid "Ojibwa"
+#~ msgstr "奥吉布瓦语"
+
+#~ msgid "Oriya"
+#~ msgstr "奥利亚语"
+
+#~ msgid "Oromo"
+#~ msgstr "奥罗莫语"
+
+#~ msgid "Osage"
+#~ msgstr "奥萨格语"
+
+#~ msgid "Ossetian"
+#~ msgstr "奥塞梯语"
+
+#~ msgid "Turkish; Ottoman (1500-1928)"
+#~ msgstr "土耳其语（奥斯曼，1500-1928）"
+
+#~ msgid "Pangasinan"
+#~ msgstr "邦阿西楠语"
+
+#~ msgid "Pahlavi"
+#~ msgstr "钵罗钵语"
+
+#~ msgid "Pampanga"
+#~ msgstr "邦板牙语"
+
+#~ msgid "Panjabi"
+#~ msgstr "旁遮普语"
+
+#~ msgid "Papiamento"
+#~ msgstr "帕皮亚门托语"
+
+#~ msgid "Palauan"
+#~ msgstr "帕劳语"
+
+#~ msgid "Persian; Old (ca. 600-400 B.C.)"
+#~ msgstr "波斯语（古，公元前约 600-400）"
+
+#~ msgid "Phoenician"
+#~ msgstr "腓尼基语"
+
+#~ msgid "Pali"
+#~ msgstr "巴利语"
+
+#~ msgid "Polish"
+#~ msgstr "波兰语"
+
+#~ msgid "Pohnpeian"
+#~ msgstr "波纳佩语"
+
+#~ msgid "Portuguese"
+#~ msgstr "葡萄牙语"
+
+#~ msgid "Provençal; Old (to 1500)"
+#~ msgstr "普罗旺斯语（古，至 1500）"
+
+#~ msgid "Pushto"
+#~ msgstr "普什图语"
+
+#~ msgid "Quechua"
+#~ msgstr "克丘亚语"
+
+#~ msgid "Rajasthani"
+#~ msgstr "拉贾斯坦语"
+
+#~ msgid "Rapanui"
+#~ msgstr "拉帕努伊语"
+
+#~ msgid "Maori; Cook Islands"
+#~ msgstr "拉罗汤加语"
+
+#~ msgid "Romansh"
+#~ msgstr "罗曼什语"
+
+#~ msgid "Romany"
+#~ msgstr "罗姆语"
+
+#~ msgid "Romanian"
+#~ msgstr "罗马尼亚语"
+
+#~ msgid "Rundi"
+#~ msgstr "基隆迪语"
+
+#~ msgid "Romanian; Macedo-"
+#~ msgstr "阿罗马尼亚语"
+
+#~ msgid "Russian"
+#~ msgstr "俄语"
+
+#~ msgid "Sandawe"
+#~ msgstr "桑达韦语"
+
+#~ msgid "Sango"
+#~ msgstr "桑戈语"
+
+#~ msgid "Yakut"
+#~ msgstr "雅库特语"
+
+#~ msgid "Aramaic; Samaritan"
+#~ msgstr "阿拉米语（萨马利亚）"
+
+#~ msgid "Sanskrit"
+#~ msgstr "梵语"
+
+#~ msgid "Sasak"
+#~ msgstr "萨萨克语"
+
+#~ msgid "Santali"
+#~ msgstr "桑塔利语"
+
+#~ msgid "Sicilian"
+#~ msgstr "西西里语"
+
+#~ msgid "Scots"
+#~ msgstr "苏格兰语"
+
+#~ msgid "Selkup"
+#~ msgstr "塞尔库普语"
+
+#~ msgid "Irish; Old (to 900)"
+#~ msgstr "爱尔兰语（古，至 900）"
+
+#~ msgid "Shan"
+#~ msgstr "掸语"
+
+#~ msgid "Sidamo"
+#~ msgstr "锡达莫语"
+
+#~ msgid "Sinhala"
+#~ msgstr "僧加罗语"
+
+#~ msgid "Slovak"
+#~ msgstr "斯洛伐克语"
+
+#~ msgid "Slovenian"
+#~ msgstr "斯洛文尼亚语"
+
+#~ msgid "Sami; Southern"
+#~ msgstr "萨米语（南）"
+
+#~ msgid "Sami; Northern"
+#~ msgstr "萨米语（北）"
+
+#~ msgid "Lule Sami"
+#~ msgstr "律勒欧-萨米语"
+
+#~ msgid "Sami; Inari"
+#~ msgstr "伊纳里-萨米语"
+
+#~ msgid "Samoan"
+#~ msgstr "萨摩亚语"
+
+#~ msgid "Sami; Skolt"
+#~ msgstr "斯科特-萨米语"
+
+#~ msgid "Shona"
+#~ msgstr "修纳语"
+
+#~ msgid "Sindhi"
+#~ msgstr "信德语"
+
+#~ msgid "Soninke"
+#~ msgstr "索宁克语"
+
+#~ msgid "Sogdian"
+#~ msgstr "粟特语"
+
+#~ msgid "Somali"
+#~ msgstr "索马里语"
+
+#~ msgid "Sotho; Southern"
+#~ msgstr "索托语（南）"
+
+#~ msgid "Spanish"
+#~ msgstr "西班牙语"
+
+#~ msgid "Albanian"
+#~ msgstr "阿尔巴尼亚语"
+
+#~ msgid "Sardinian"
+#~ msgstr "撒丁语"
+
+#~ msgid "Sranan Tongo"
+#~ msgstr "苏里南汤加语"
+
+#~ msgid "Serbian"
+#~ msgstr "塞尔维亚语"
+
+#~ msgid "Serer"
+#~ msgstr "塞雷尔语"
+
+#~ msgid "Swati"
+#~ msgstr "斯瓦特语"
+
+#~ msgid "Sukuma"
+#~ msgstr "苏库马语"
+
+#~ msgid "Sundanese"
+#~ msgstr "巽他语"
+
+#~ msgid "Susu"
+#~ msgstr "苏苏语"
+
+#~ msgid "Sumerian"
+#~ msgstr "苏美尔语"
+
+#~ msgid "Swahili (macrolanguage)"
+#~ msgstr "斯瓦希里语族"
+
+#~ msgid "Swedish"
+#~ msgstr "瑞典语"
+
+#~ msgid "Syriac; Classical"
+#~ msgstr "叙利亚语（古典）"
+
+#~ msgid "Syriac"
+#~ msgstr "古叙利亚语"
+
+#~ msgid "Tahitian"
+#~ msgstr "塔希提语"
+
+#~ msgid "Tamil"
+#~ msgstr "泰米尔语"
+
+#~ msgid "Tatar"
+#~ msgstr "塔塔尔语"
+
+#~ msgid "Telugu"
+#~ msgstr "泰卢固语"
+
+#~ msgid "Timne"
+#~ msgstr "滕内语"
+
+#~ msgid "Tereno"
+#~ msgstr "特列纳语"
+
+#~ msgid "Tetum"
+#~ msgstr "特塔姆语"
+
+#~ msgid "Tajik"
+#~ msgstr "塔吉克语"
+
+#~ msgid "Tagalog"
+#~ msgstr "塔加洛语"
+
+#~ msgid "Thai"
+#~ msgstr "泰语"
+
+#~ msgid "Tigre"
+#~ msgstr "提格雷语"
+
+#~ msgid "Tigrinya"
+#~ msgstr "提格里尼亚语"
+
+#~ msgid "Tiv"
+#~ msgstr "蒂夫语"
+
+#~ msgid "Tokelau"
+#~ msgstr "托克劳语"
+
+#~ msgid "Klingon"
+#~ msgstr "克林贡语"
+
+#~ msgid "Tlingit"
+#~ msgstr "特林吉特语"
+
+#~ msgid "Tamashek"
+#~ msgstr "塔马舍克语"
+
+#~ msgid "Tonga (Nyasa)"
+#~ msgstr "汤加语 (尼亚萨)"
+
+#~ msgid "Tonga (Tonga Islands)"
+#~ msgstr "汤加语（汤加岛）"
+
+#~ msgid "Tok Pisin"
+#~ msgstr "托克皮辛语"
+
+#~ msgid "Tsimshian"
+#~ msgstr "钦西安语"
+
+#~ msgid "Tswana"
+#~ msgstr "茨瓦纳语"
+
+#~ msgid "Tsonga"
+#~ msgstr "聪加语"
+
+#~ msgid "Turkmen"
+#~ msgstr "土库曼语"
+
+#~ msgid "Tumbuka"
+#~ msgstr "奇图姆布卡语"
+
+#~ msgid "Turkish"
+#~ msgstr "土耳其语"
+
+#~ msgid "Tuvalu"
+#~ msgstr "图瓦卢语"
+
+#~ msgid "Twi"
+#~ msgstr "契维语"
+
+#~ msgid "Tuvinian"
+#~ msgstr "图瓦语"
+
+#~ msgid "Udmurt"
+#~ msgstr "乌德穆尔特语"
+
+#~ msgid "Ugaritic"
+#~ msgstr "乌加里特语"
+
+#~ msgid "Uighur"
+#~ msgstr "维吾尔语"
+
+#~ msgid "Ukrainian"
+#~ msgstr "乌克兰语"
+
+#~ msgid "Umbundu"
+#~ msgstr "翁本杜语"
+
+#~ msgid "Undetermined"
+#~ msgstr "未确定的语言"
+
+#~ msgid "Urdu"
+#~ msgstr "乌尔都语"
+
+#~ msgid "Uzbek"
+#~ msgstr "乌兹别克语"
+
+#~ msgid "Vai"
+#~ msgstr "瓦伊语"
+
+#~ msgid "Venda"
+#~ msgstr "文达语"
+
+#~ msgid "Vietnamese"
+#~ msgstr "越南语"
+
+#~ msgid "Volapük"
+#~ msgstr "沃拉普克语"
+
+#~ msgid "Votic"
+#~ msgstr "沃提克语"
+
+#~ msgid "Wolaytta"
+#~ msgstr "瓦拉莫语"
+
+#~ msgid "Waray (Philippines)"
+#~ msgstr "瓦赖语（菲律宾）"
+
+#~ msgid "Washo"
+#~ msgstr "瓦肖语"
+
+#~ msgid "Walloon"
+#~ msgstr "瓦龙语"
+
+#~ msgid "Wolof"
+#~ msgstr "沃洛夫语"
+
+#~ msgid "Kalmyk"
+#~ msgstr "卡尔梅克语"
+
+#~ msgid "Xhosa"
+#~ msgstr "科萨语"
+
+#~ msgid "Yao"
+#~ msgstr "瑶语"
+
+#~ msgid "Yapese"
+#~ msgstr "雅浦语"
+
+#~ msgid "Yiddish"
+#~ msgstr "依地语"
+
+#~ msgid "Yoruba"
+#~ msgstr "约鲁巴语"
+
+#~ msgid "Zapotec"
+#~ msgstr "萨波特克语"
+
+#~ msgid "Blissymbols"
+#~ msgstr "布利斯符号"
+
+#~ msgid "Zenaga"
+#~ msgstr "哲纳加语"
+
+#~ msgid "Zhuang"
+#~ msgstr "壮语"
+
+#~ msgid "Chinese"
+#~ msgstr "中文"
+
+#~ msgid "Zulu"
+#~ msgstr "祖鲁语"
+
+#~ msgid "Zuni"
+#~ msgstr "祖尼语"
+
+#~ msgid "No linguistic content"
 #~ msgstr ""
 
-#~ msgid "E-Mail: %s"
-#~ msgstr ""
-
-#~ msgid "Rename title from: '%(src)s' to '%(dest)s' failed with error: %(error)s"
-#~ msgstr "将标题从'%(src)s'改为'%(dest)s'时失败，出错信息: %(error)s"
-
-#~ msgid "Rename author from: '%(src)s' to '%(dest)s' failed with error: %(error)s"
-#~ msgstr "将作者从'%(src)s'改为'%(dest)s'时失败，出错信息: %(error)s"
-
-#~ msgid "Password for user %(user)s reset"
-#~ msgstr "用户 %(user)s 的密码已重置"
-
-#~ msgid "Password for user %s reset"
-#~ msgstr ""
-
-#~ msgid "Rename title from: '%(src)s' to '%(src)s' failed with error: %(error)s"
-#~ msgstr ""
-
-#~ msgid "Rename author from: '%(src)s' to '%(src)s' failed with error: %(error)s"
-#~ msgstr ""
-
-#~ msgid "Failed to create path for cover %(cover)s (Permission denied)."
-#~ msgstr "为封面 %(cover)s 创建路径失败(权限拒绝)。"
-
-#~ msgid "File extension '%s' is not allowed to be uploaded to this server"
-#~ msgstr ""
-
-#~ msgid "File extension \"%(ext)s\" is not allowed to be uploaded to this server"
-#~ msgstr "不能上传后缀为　\"%(ext)s\"　的文件到此服务器"
-
-#~ msgid "Current commit timestamp"
-#~ msgstr "当前提交时间戳"
-
-#~ msgid "Newest commit timestamp"
-#~ msgstr "最新提交时间戳"
-
-#~ msgid "Convert: %(book)s"
-#~ msgstr "转换: %(book)s"
-
-#~ msgid "Convert to %(format)s: %(book)s"
-#~ msgstr "转换到 %(format)s: %(book)s"
-
-#~ msgid "Files are replaced"
-#~ msgstr "文件已替换"
-
-#~ msgid "Server is stopped"
-#~ msgstr "服务器已停止"
-
-#~ msgid "Convertertool %(converter)s not found"
-#~ msgstr "找不到转换工具 $(converter)s"
-
-#~ msgid "Choose a password"
-#~ msgstr "选择一个密码"
-
-#~ msgid "Could not find any formats suitable for sending by e-mail"
-#~ msgstr "找不到任何适合邮件发送的格式"
-
-#~ msgid "Author list"
-#~ msgstr "作者列表"
-
-#~ msgid "File %(file)s uploaded"
-#~ msgstr "文件 %(file)s 已上传"
-
-#~ msgid "Update done"
-#~ msgstr "更新完成"
-
-#~ msgid "Stable (Automatic))"
-#~ msgstr ""
-
-#~ msgid "Nightly (Automatic))"
-#~ msgstr ""
-
-#~ msgid "A new update is available. Click on the button below to update to version: "
-#~ msgstr ""
-
-#~ msgid "A new update is available. Click on the button below to update to version:  %(version)s"
-#~ msgstr ""
+#~ msgid "Zaza"
+#~ msgstr "扎扎其语"
 

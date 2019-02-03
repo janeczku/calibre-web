@@ -3,12 +3,25 @@
 # This file is distributed under the same license as the Calibre-Web
 # project.
 # FIRST AUTHOR <nicoroud@gmail.com>, 2016.
+# # Translation template file..
+# Copyright (C) 2011 Kovid Goyal
+#
+# Translators:
+# Alastair McKinstry <mckinstry@computer.org>, 2001
+# Xotes <alois.glibert@gmail.com>, 2014-2015
+# Cedric De Wilde <daique@tiscalinet.be>, 2001
+# Christian Perrier <bubulle@debian.org>, 2005,2008-2011
+# Christophe Merlet (RedFox) <redfox@eikonex.org>, 2001
+# Guillaume <guillaume@ordi-service.fr>, 2015
+# Ptit Prince <leporello1791@gmail.com>, 2015
+# Ptit Prince <leporello1791@gmail.com>, 2016
+# Xotes <alois.glibert@gmail.com>, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
-"Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2019-01-20 19:36+0100\n"
-"PO-Revision-Date: 2018-09-16 00:46+0200\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2019-02-03 16:21+0100\n"
+"PO-Revision-Date: 2019-02-03 14:57+0100\n"
 "Last-Translator: Nicolas Roudninski <nicoroud@gmail.com>\n"
 "Language: fr\n"
 "Language-Team: \n"
@@ -29,7 +42,7 @@ msgstr "Permission d’exécution manquante"
 
 #: cps/converter.py:66
 msgid "not configured"
-msgstr ""
+msgstr "non configuré"
 
 #: cps/helper.py:77
 #, python-format
@@ -47,7 +60,7 @@ msgstr "Envoyer vers Kindle"
 
 #: cps/helper.py:97 cps/helper.py:115 cps/helper.py:206
 msgid "This e-mail has been sent via Calibre-Web."
-msgstr "Ce courriel a été envoyé depuis Calibre-Web"
+msgstr "Ce courriel a été envoyé depuis Calibre-Web."
 
 #: cps/helper.py:108
 #, python-format
@@ -75,12 +88,12 @@ msgstr "Courriel d’inscription pour l’utilisateur : %(name)s"
 #: cps/helper.py:156 cps/helper.py:158 cps/helper.py:160 cps/helper.py:162
 #, python-format
 msgid "Send %(format)s to Kindle"
-msgstr ""
+msgstr "Envoyer %(format)s vers le Kindle"
 
 #: cps/helper.py:166 cps/helper.py:170
 #, python-format
 msgid "Convert %(orig)s to %(format)s and send to Kindle"
-msgstr ""
+msgstr "Convertir de %(orig)s vers %(format)s et envoyer au Kindle"
 
 #: cps/helper.py:205
 #, python-format
@@ -104,61 +117,61 @@ msgstr "Renommer l’auteur de : '%(src)s' à '%(dest)s' a échoué avec l’err
 #: cps/helper.py:337
 #, python-format
 msgid "Rename file in path '%(src)s' to '%(dest)s' failed with error: %(error)s"
-msgstr ""
+msgstr "La modification du nom de fichier du chemin : '%(src)s' vers '%(dest)s' a échoué avec l’erreur : %(error)s"
 
 #: cps/helper.py:362 cps/helper.py:371
 #, python-format
 msgid "File %(file)s not found on Google Drive"
-msgstr "Le fichier %(file)s est introuvable sur Google Drive"
+msgstr ""
 
 #: cps/helper.py:402
 #, python-format
 msgid "Book path %(path)s not found on Google Drive"
-msgstr "Le chemin d’accès %(path)s du livre est introuvable sur Google Drive"
-
-#: cps/helper.py:508
-msgid "Error excecuting UnRar"
-msgstr "Erreur d’exécution de la commande UnRar"
+msgstr ""
 
 #: cps/helper.py:510
-msgid "Unrar binary file not found"
-msgstr "Le fichier exécutable UnRar est introuvable"
+msgid "Error excecuting UnRar"
+msgstr ""
 
-#: cps/helper.py:541
-msgid "Waiting"
-msgstr "En attente"
+#: cps/helper.py:512
+msgid "Unrar binary file not found"
+msgstr ""
 
 #: cps/helper.py:543
-msgid "Failed"
-msgstr "Echec"
+msgid "Waiting"
+msgstr ""
 
 #: cps/helper.py:545
-msgid "Started"
-msgstr "Démarré"
+msgid "Failed"
+msgstr ""
 
 #: cps/helper.py:547
+msgid "Started"
+msgstr ""
+
+#: cps/helper.py:549
 msgid "Finished"
 msgstr "Terminé"
 
-#: cps/helper.py:549
+#: cps/helper.py:551
 msgid "Unknown Status"
-msgstr ""
+msgstr "Statut inconnu"
 
-#: cps/helper.py:554
+#: cps/helper.py:556
 msgid "E-mail: "
-msgstr ""
+msgstr "Courriel : "
 
-#: cps/helper.py:556 cps/helper.py:560
+#: cps/helper.py:558 cps/helper.py:562
 msgid "Convert: "
-msgstr ""
+msgstr "Convertir vers : "
 
-#: cps/helper.py:558
+#: cps/helper.py:560
 msgid "Upload: "
-msgstr ""
+msgstr "Déposer : "
 
-#: cps/helper.py:562
+#: cps/helper.py:564
 msgid "Unknown Task: "
-msgstr ""
+msgstr "Tâche inconnue : "
 
 #: cps/updater.py:251 cps/updater.py:410 cps/updater.py:423
 msgid "Unexpected data while reading update information"
@@ -168,19 +181,19 @@ msgstr "Données inattendues lors de la lecture des informations de mise à jour
 msgid "No update available. You already have the latest version installed"
 msgstr "Aucune mise à jour disponible. Vous avez déjà la dernière version installée"
 
-#: cps/updater.py:270 cps/updater.py:501 cps/updater.py:503 cps/web.py:1182
+#: cps/updater.py:270 cps/updater.py:501 cps/updater.py:503 cps/web.py:1184
 msgid "HTTP Error"
 msgstr "Erreur HTTP"
 
-#: cps/updater.py:272 cps/updater.py:505 cps/web.py:1183
+#: cps/updater.py:272 cps/updater.py:505 cps/web.py:1185
 msgid "Connection error"
 msgstr "Erreur de connexion"
 
-#: cps/updater.py:274 cps/updater.py:507 cps/web.py:1184
+#: cps/updater.py:274 cps/updater.py:507 cps/web.py:1186
 msgid "Timeout while establishing connection"
 msgstr "Délai d'attente dépassé lors de l'établissement de connexion"
 
-#: cps/updater.py:276 cps/updater.py:509 cps/web.py:1185
+#: cps/updater.py:276 cps/updater.py:509 cps/web.py:1187
 msgid "General error"
 msgstr "Erreur générale"
 
@@ -194,392 +207,396 @@ msgstr "Impossible d'extraire les informations de mise à jour"
 
 #: cps/updater.py:403
 msgid "No release information available"
-msgstr ""
+msgstr "Aucune information concernant cette version n’est disponible"
 
 #: cps/updater.py:449 cps/updater.py:458
 #, python-format
 msgid "A new update is available. Click on the button below to update to version: %(version)s"
-msgstr ""
+msgstr "Une nouvelle mise à jour est disponible. Cliquez sur le bouton ci-dessous pour charger la version %(version)s"
 
-#: cps/updater.py:491 cps/web.py:2768
+#: cps/updater.py:491 cps/web.py:2766
 msgid "Unknown"
 msgstr "Inconnu"
 
-#: cps/web.py:1175
+#: cps/web.py:1177
 msgid "Requesting update package"
 msgstr "Demander une mise à jour"
 
-#: cps/web.py:1176
+#: cps/web.py:1178
 msgid "Downloading update package"
 msgstr "Téléchargement la mise à jour"
 
-#: cps/web.py:1177
+#: cps/web.py:1179
 msgid "Unzipping update package"
 msgstr "Décompression de la mise à jour"
 
-#: cps/web.py:1178
+#: cps/web.py:1180
 msgid "Replacing files"
-msgstr ""
+msgstr "Remplacement des fichiers"
 
-#: cps/web.py:1179
+#: cps/web.py:1181
 msgid "Database connections are closed"
 msgstr "Connexion à la base de donnée fermée"
 
-#: cps/web.py:1180
+#: cps/web.py:1182
 msgid "Stopping server"
-msgstr ""
+msgstr "Arrêt du serveur"
 
-#: cps/web.py:1181
+#: cps/web.py:1183
 msgid "Update finished, please press okay and reload page"
 msgstr "Mise à jour terminée, merci d’appuyer sur okay et de rafraîchir la page"
 
-#: cps/web.py:1182 cps/web.py:1183 cps/web.py:1184 cps/web.py:1185
+#: cps/web.py:1184 cps/web.py:1185 cps/web.py:1186 cps/web.py:1187
 msgid "Update failed:"
-msgstr ""
+msgstr "La mise à jour à échouée : "
 
-#: cps/web.py:1208
+#: cps/web.py:1210
 msgid "Recently Added Books"
 msgstr "Ajouts récents"
 
-#: cps/web.py:1218
+#: cps/web.py:1220
 msgid "Newest Books"
 msgstr "Livres récents"
 
-#: cps/web.py:1230
+#: cps/web.py:1232
 msgid "Oldest Books"
 msgstr "Anciens livres"
 
-#: cps/web.py:1242
+#: cps/web.py:1244
 msgid "Books (A-Z)"
 msgstr "Livres (A-Z)"
 
-#: cps/web.py:1253
+#: cps/web.py:1255
 msgid "Books (Z-A)"
 msgstr "Livres (Z-A)"
 
-#: cps/web.py:1282
+#: cps/web.py:1284
 msgid "Hot Books (most downloaded)"
 msgstr "Livres populaires (les plus téléchargés)"
 
-#: cps/web.py:1295
+#: cps/web.py:1297
 msgid "Best rated books"
 msgstr "Livres les mieux notés"
 
-#: cps/templates/index.xml:39 cps/web.py:1308
+#: cps/templates/index.xml:39 cps/web.py:1310
 msgid "Random Books"
 msgstr "Livres au hasard"
 
-#: cps/web.py:1335 cps/web.py:1590 cps/web.py:2137
+#: cps/web.py:1337 cps/web.py:1592 cps/web.py:2135
 msgid "Error opening eBook. File does not exist or file is not accessible:"
 msgstr "Erreur d'ouverture du livre numérique. Le fichier n'existe pas ou n'est pas accessible :"
 
-#: cps/web.py:1363
+#: cps/web.py:1365
 msgid "Publisher list"
-msgstr ""
+msgstr "Liste des éditeurs"
 
-#: cps/web.py:1378
+#: cps/web.py:1380
 #, python-format
 msgid "Publisher: %(name)s"
-msgstr ""
+msgstr "Editeur : '%(name)s'"
 
-#: cps/templates/index.xml:83 cps/web.py:1410
+#: cps/templates/index.xml:83 cps/web.py:1412
 msgid "Series list"
 msgstr "Liste des séries"
 
-#: cps/web.py:1424
+#: cps/web.py:1426
 #, python-format
 msgid "Series: %(serie)s"
 msgstr "Séries : %(serie)s"
 
-#: cps/web.py:1450
+#: cps/web.py:1452
 msgid "Available languages"
 msgstr "Langues disponibles"
 
-#: cps/web.py:1470
+#: cps/web.py:1472
 #, python-format
 msgid "Language: %(name)s"
 msgstr "Langue : %(name)s"
 
-#: cps/templates/index.xml:76 cps/web.py:1481
+#: cps/templates/index.xml:76 cps/web.py:1483
 msgid "Category list"
 msgstr "Liste des catégories"
 
-#: cps/web.py:1495
+#: cps/web.py:1497
 #, python-format
 msgid "Category: %(name)s"
 msgstr "Catégorie : %(name)s"
 
-#: cps/templates/layout.html:71 cps/web.py:1626
+#: cps/templates/layout.html:71 cps/web.py:1628
 msgid "Tasks"
 msgstr "Tâches"
 
-#: cps/web.py:1660
+#: cps/web.py:1662
 msgid "Statistics"
 msgstr "Statistiques"
 
-#: cps/web.py:1768
+#: cps/web.py:1730
+msgid "Google Drive setup not completed, try to deactivate and activate Google Drive again"
+msgstr ""
+
+#: cps/web.py:1775
 msgid "Callback domain is not verified, please follow steps to verify domain in google developer console"
 msgstr "Le domaine de retour d’appel (Callback domain) est non vérifié, Veuillez suivre les étapes nécessaires pour vérifier le domaine dans la console de développement de Google"
 
-#: cps/web.py:1844
+#: cps/web.py:1851
 msgid "Server restarted, please reload page"
 msgstr "Serveur redémarré, merci de rafraîchir la page"
 
-#: cps/web.py:1847
+#: cps/web.py:1854
 msgid "Performing shutdown of server, please close window"
 msgstr "Arrêt du serveur en cours, merci de fermer la fenêtre"
 
-#: cps/web.py:1936
+#: cps/web.py:1934
 msgid "Published after "
 msgstr "Publié après le "
 
-#: cps/web.py:1943
+#: cps/web.py:1941
 msgid "Published before "
 msgstr "Publié avant le "
 
-#: cps/web.py:1957
+#: cps/web.py:1955
 #, python-format
 msgid "Rating <= %(rating)s"
 msgstr "Évaluation <= %(rating)s"
 
-#: cps/web.py:1959
+#: cps/web.py:1957
 #, python-format
 msgid "Rating >= %(rating)s"
 msgstr "Évaluation >= %(rating)s"
 
-#: cps/web.py:2020 cps/web.py:2029
+#: cps/web.py:2018 cps/web.py:2027
 msgid "search"
 msgstr "recherche"
 
 #: cps/templates/index.xml:47 cps/templates/index.xml:51
-#: cps/templates/layout.html:146 cps/web.py:2096
+#: cps/templates/layout.html:146 cps/web.py:2094
 msgid "Read Books"
 msgstr "Livres lus"
 
 #: cps/templates/index.xml:55 cps/templates/index.xml:59
-#: cps/templates/layout.html:148 cps/web.py:2099
+#: cps/templates/layout.html:148 cps/web.py:2097
 msgid "Unread Books"
 msgstr "Livres non-lus"
 
-#: cps/web.py:2147 cps/web.py:2149 cps/web.py:2151 cps/web.py:2163
+#: cps/web.py:2145 cps/web.py:2147 cps/web.py:2149 cps/web.py:2161
 msgid "Read a Book"
 msgstr "Lire un livre"
 
-#: cps/web.py:2222 cps/web.py:3137
+#: cps/web.py:2220 cps/web.py:3138
 msgid "Please fill out all fields!"
 msgstr "SVP, complétez tous les champs !"
 
-#: cps/web.py:2223 cps/web.py:2245 cps/web.py:2249 cps/web.py:2254
-#: cps/web.py:2256
+#: cps/web.py:2221 cps/web.py:2243 cps/web.py:2247 cps/web.py:2252
+#: cps/web.py:2254
 msgid "register"
 msgstr "s’enregistrer"
 
-#: cps/web.py:2244 cps/web.py:3351
+#: cps/web.py:2242 cps/web.py:3357
 msgid "An unknown error occurred. Please try again later."
 msgstr "Une erreur inconnue est survenue. Veuillez réessayer plus tard."
 
-#: cps/web.py:2247
+#: cps/web.py:2245
 msgid "Your e-mail is not allowed to register"
 msgstr "Votre adresse de courriel n’est pas autorisé pour une inscription"
 
-#: cps/web.py:2250
+#: cps/web.py:2248
 msgid "Confirmation e-mail was send to your e-mail account."
 msgstr "Le courriel de confirmation a été envoyé à votre adresse."
 
-#: cps/web.py:2253
+#: cps/web.py:2251
 msgid "This username or e-mail address is already in use."
 msgstr "Ce nom d’utilisateur ou cette adresse de courriel sont déjà utilisés."
 
-#: cps/web.py:2270 cps/web.py:2366
+#: cps/web.py:2268 cps/web.py:2364
 #, python-format
 msgid "you are now logged in as: '%(nickname)s'"
 msgstr "Vous êtes maintenant connecté sous : '%(nickname)s'"
 
-#: cps/web.py:2275
+#: cps/web.py:2273
 msgid "Wrong Username or Password"
 msgstr "Mauvais nom d'utilisateur ou mot de passe"
 
-#: cps/web.py:2281 cps/web.py:2302
+#: cps/web.py:2279 cps/web.py:2300
 msgid "login"
 msgstr "connexion"
 
-#: cps/web.py:2314 cps/web.py:2345
+#: cps/web.py:2312 cps/web.py:2343
 msgid "Token not found"
 msgstr "Jeton non trouvé"
 
-#: cps/web.py:2322 cps/web.py:2353
+#: cps/web.py:2320 cps/web.py:2351
 msgid "Token has expired"
 msgstr "Jeton expiré"
 
-#: cps/web.py:2330
+#: cps/web.py:2328
 msgid "Success! Please return to your device"
 msgstr "Réussite! Merci de vous tourner vers votre appareil"
 
-#: cps/web.py:2380
+#: cps/web.py:2378
 msgid "Please configure the SMTP mail settings first..."
 msgstr "Veuillez configurer les paramètres SMTP au préalable…"
 
-#: cps/web.py:2385
+#: cps/web.py:2383
 #, python-format
 msgid "Book successfully queued for sending to %(kindlemail)s"
 msgstr "Le livre a été mis en file de traitement avec succès pour un envois vers %(kindlemail)s"
 
-#: cps/web.py:2389
+#: cps/web.py:2387
 #, python-format
 msgid "There was an error sending this book: %(res)s"
 msgstr "Il y a eu une erreur en envoyant ce livre : %(res)s"
 
-#: cps/web.py:2391 cps/web.py:3190
+#: cps/web.py:2389 cps/web.py:3191
 msgid "Please configure your kindle e-mail address first..."
 msgstr "Veuillez configurer votre adresse de courriel Kindle en premier lieu…"
 
-#: cps/web.py:2402 cps/web.py:2454
+#: cps/web.py:2400 cps/web.py:2452
 msgid "Invalid shelf specified"
 msgstr "L’étagère indiquée est invalide"
 
-#: cps/web.py:2409
+#: cps/web.py:2407
 #, python-format
 msgid "Sorry you are not allowed to add a book to the the shelf: %(shelfname)s"
-msgstr ""
+msgstr "Désolé, vous n’êtes pas autorisé à ajouter un livre dans l’étagère %(shelfname)s"
 
-#: cps/web.py:2417
+#: cps/web.py:2415
 msgid "You are not allowed to edit public shelves"
-msgstr ""
+msgstr "Désolé, vous n’êtes pas autorisé à éditer les étagères publiques"
 
-#: cps/web.py:2426
+#: cps/web.py:2424
 #, python-format
 msgid "Book is already part of the shelf: %(shelfname)s"
-msgstr ""
+msgstr "Ce livre est déjà sur l’étagère : %(shelfname)s"
 
-#: cps/web.py:2440
+#: cps/web.py:2438
 #, python-format
 msgid "Book has been added to shelf: %(sname)s"
 msgstr "Le livre a bien été ajouté à l'étagère : %(sname)s"
 
-#: cps/web.py:2459
+#: cps/web.py:2457
 #, python-format
 msgid "You are not allowed to add a book to the the shelf: %(name)s"
 msgstr "Vous n’êtes pas autorisé à ajouter un livre dans l’étagère %(name)s"
 
-#: cps/web.py:2464
+#: cps/web.py:2462
 msgid "User is not allowed to edit public shelves"
 msgstr "L’utilisateur n’est pas autorisé à éditer les étagères publiques"
 
-#: cps/web.py:2482
+#: cps/web.py:2480
 #, python-format
 msgid "Books are already part of the shelf: %(name)s"
 msgstr "Ces livres sont déjà sur l’étagère : %(name)s"
 
-#: cps/web.py:2496
+#: cps/web.py:2494
 #, python-format
 msgid "Books have been added to shelf: %(sname)s"
 msgstr "Les livres ont été ajoutés à l’étagère : %(sname)s"
 
-#: cps/web.py:2498
+#: cps/web.py:2496
 #, python-format
 msgid "Could not add books to shelf: %(sname)s"
 msgstr "Impossible d’ajouter les livres à l’étagère : %(sname)s"
 
-#: cps/web.py:2535
+#: cps/web.py:2533
 #, python-format
 msgid "Book has been removed from shelf: %(sname)s"
 msgstr "Le livre a été supprimé de l'étagère %(sname)s"
 
-#: cps/web.py:2541
+#: cps/web.py:2539
 #, python-format
 msgid "Sorry you are not allowed to remove a book from this shelf: %(sname)s"
 msgstr "Désolé, vous n’êtes pas autorisé à enlever un livre de cette étagère : %(sname)s"
 
-#: cps/web.py:2562 cps/web.py:2586
+#: cps/web.py:2560 cps/web.py:2584
 #, python-format
 msgid "A shelf with the name '%(title)s' already exists."
 msgstr "Une étagère de ce nom '%(title)s' existe déjà."
 
-#: cps/web.py:2567
+#: cps/web.py:2565
 #, python-format
 msgid "Shelf %(title)s created"
 msgstr "Étagère %(title)s créée"
 
-#: cps/web.py:2569 cps/web.py:2597
+#: cps/web.py:2567 cps/web.py:2595
 msgid "There was an error"
 msgstr "Il y a eu une erreur"
 
-#: cps/web.py:2570 cps/web.py:2572
+#: cps/web.py:2568 cps/web.py:2570
 msgid "create a shelf"
 msgstr "Créer une étagère"
 
-#: cps/web.py:2595
+#: cps/web.py:2593
 #, python-format
 msgid "Shelf %(title)s changed"
 msgstr "L’étagère %(title)s a été modifiée"
 
-#: cps/web.py:2598 cps/web.py:2600
+#: cps/web.py:2596 cps/web.py:2598
 msgid "Edit a shelf"
 msgstr "Modifier une étagère"
 
-#: cps/web.py:2621
+#: cps/web.py:2619
 #, python-format
 msgid "successfully deleted shelf %(name)s"
 msgstr "l’étagère %(name)s a été supprimé avec succès"
 
-#: cps/web.py:2648
+#: cps/web.py:2646
 #, python-format
 msgid "Shelf: '%(name)s'"
 msgstr "Étagère : '%(name)s'"
 
-#: cps/web.py:2651
+#: cps/web.py:2649
 msgid "Error opening shelf. Shelf does not exist or is not accessible"
 msgstr "Erreur à l’ouverture de l’étagère. Elle n’existe plus ou n’est plus accessible."
 
-#: cps/web.py:2682
+#: cps/web.py:2680
 #, python-format
 msgid "Change order of Shelf: '%(name)s'"
 msgstr "Modifier l’arrangement de l’étagère : ‘%(name)s’"
 
-#: cps/web.py:2711 cps/web.py:3143
+#: cps/web.py:2709 cps/web.py:3144
 msgid "E-mail is not from valid domain"
 msgstr "Cette adresse de courriel n’appartient pas à un domaine valide"
 
-#: cps/web.py:2713 cps/web.py:2755 cps/web.py:2758
+#: cps/web.py:2711 cps/web.py:2753 cps/web.py:2756
 #, python-format
 msgid "%(name)s's profile"
 msgstr "Profil de %(name)s"
 
-#: cps/web.py:2753
+#: cps/web.py:2751
 msgid "Found an existing account for this e-mail address."
 msgstr "Un compte existant a été trouvé pour cette adresse de courriel"
 
-#: cps/web.py:2756
+#: cps/web.py:2754
 msgid "Profile updated"
 msgstr "Profil mis à jour"
 
-#: cps/web.py:2787
+#: cps/web.py:2785
 msgid "Admin page"
 msgstr "Page administrateur"
 
-#: cps/web.py:2869 cps/web.py:3046
+#: cps/web.py:2867 cps/web.py:3047
 msgid "Calibre-Web configuration updated"
 msgstr "Configuration de Calibre-Web mise à jour"
 
-#: cps/templates/admin.html:100 cps/web.py:2883
+#: cps/templates/admin.html:100 cps/web.py:2881
 msgid "UI Configuration"
 msgstr "Configuration de l’interface utilisateur"
 
-#: cps/web.py:2901
+#: cps/web.py:2899
 msgid "Import of optional Google Drive requirements missing"
 msgstr "L’import des pré-requis optionnels pour Google Drive est manquant"
 
-#: cps/web.py:2904
+#: cps/web.py:2902
 msgid "client_secrets.json is missing or not readable"
 msgstr "client_secrets.json est manquant ou ne peut être lu"
 
-#: cps/web.py:2909 cps/web.py:2936
+#: cps/web.py:2907 cps/web.py:2936
 msgid "client_secrets.json is not configured for web application"
 msgstr "client_secrets.json n’est pas configuré pour une application web"
 
 #: cps/templates/admin.html:99 cps/web.py:2939 cps/web.py:2965 cps/web.py:2977
-#: cps/web.py:3022 cps/web.py:3037 cps/web.py:3055 cps/web.py:3063
-#: cps/web.py:3079
+#: cps/web.py:3022 cps/web.py:3037 cps/web.py:3056 cps/web.py:3064
+#: cps/web.py:3080
 msgid "Basic Configuration"
 msgstr "Configuration principale"
 
@@ -595,152 +612,152 @@ msgstr "L’emplacement du fichier de certificat (cert) n’est pas valide, veui
 msgid "Logfile location is not valid, please enter correct path"
 msgstr "L’emplacement du fichier de Log n’est pas valide, veuillez saisir un chemin d’accès correct"
 
-#: cps/web.py:3059
+#: cps/web.py:3060
 msgid "DB location is not valid, please enter correct path"
 msgstr "L’emplacement du fichier de base de donnée (DB) n’est pas valide, veuillez saisir un chemin d’accès correct"
 
-#: cps/templates/admin.html:33 cps/web.py:3139 cps/web.py:3145 cps/web.py:3161
+#: cps/templates/admin.html:33 cps/web.py:3140 cps/web.py:3146 cps/web.py:3162
 msgid "Add new user"
 msgstr "Ajouter un nouvel utilisateur"
 
-#: cps/web.py:3151
+#: cps/web.py:3152
 #, python-format
 msgid "User '%(user)s' created"
 msgstr "Utilisateur '%(user)s' créé"
 
-#: cps/web.py:3155
+#: cps/web.py:3156
 msgid "Found an existing account for this e-mail address or nickname."
 msgstr "Un compte existant a été trouvé pour cette adresse de courriel ou pour ce surnom."
 
-#: cps/web.py:3185
+#: cps/web.py:3186
 #, python-format
 msgid "Test e-mail successfully send to %(kindlemail)s"
 msgstr "Courriel de test envoyé avec succès sur %(kindlemail)s"
 
-#: cps/web.py:3188
+#: cps/web.py:3189
 #, python-format
 msgid "There was an error sending the Test e-mail: %(res)s"
 msgstr "Il y a eu une erreur pendant l’envoi du courriel de test : %(res)s"
 
-#: cps/web.py:3192
+#: cps/web.py:3193
 msgid "E-mail server settings updated"
 msgstr "Les paramètres du serveur de courriels ont été mis à jour"
 
-#: cps/web.py:3193
+#: cps/web.py:3194
 msgid "Edit e-mail server settings"
 msgstr "Modifier les paramètres du serveur de courriels"
 
-#: cps/web.py:3218
+#: cps/web.py:3219
 #, python-format
 msgid "User '%(nick)s' deleted"
 msgstr "Utilisateur '%(nick)s' supprimé"
 
-#: cps/web.py:3326
+#: cps/web.py:3332
 #, python-format
 msgid "User '%(nick)s' updated"
 msgstr "Utilisateur '%(nick)s'  mis à jour"
 
-#: cps/web.py:3329
+#: cps/web.py:3335
 msgid "An unknown error occured."
 msgstr "Oups ! Une erreur inconnue a eu lieu."
 
-#: cps/web.py:3331
+#: cps/web.py:3337
 #, python-format
 msgid "Edit User %(nick)s"
 msgstr "Éditer l'utilisateur %(nick)s"
 
-#: cps/web.py:3348
+#: cps/web.py:3354
 #, python-format
 msgid "Password for user %(user)s reset"
 msgstr "Le mot de passe de l’utilisateur %(user)s a été réinitialisé"
 
-#: cps/web.py:3362 cps/web.py:3568
+#: cps/web.py:3368 cps/web.py:3574
 msgid "Error opening eBook. File does not exist or file is not accessible"
 msgstr "Erreur à l’ouverture du livre. Le fichier n’existe pas ou n’est pas accessible"
 
-#: cps/web.py:3390 cps/web.py:3862
+#: cps/web.py:3396 cps/web.py:3868
 msgid "edit metadata"
 msgstr "modifier les métadonnées"
 
-#: cps/web.py:3483 cps/web.py:3730
+#: cps/web.py:3489 cps/web.py:3736
 #, python-format
 msgid "File extension '%(ext)s' is not allowed to be uploaded to this server"
 msgstr "L’extension de fichier '%(ext)s' n’est pas autorisée pour être déposée sur ce serveur"
 
-#: cps/web.py:3487 cps/web.py:3734
+#: cps/web.py:3493 cps/web.py:3740
 msgid "File to be uploaded must have an extension"
 msgstr "Pour être déposé le fichier doit avoir une extension"
 
-#: cps/web.py:3499 cps/web.py:3754
+#: cps/web.py:3505 cps/web.py:3760
 #, python-format
 msgid "Failed to create path %(path)s (Permission denied)."
 msgstr "Impossible de créer le chemin %(path)s (permission refusée)"
 
-#: cps/web.py:3504
+#: cps/web.py:3510
 #, python-format
 msgid "Failed to store file %(file)s."
 msgstr "Echec de la sauvegarde du fichier %(file)s."
 
-#: cps/web.py:3521
+#: cps/web.py:3527
 #, python-format
 msgid "File format %(ext)s added to %(book)s"
 msgstr "Le format de fichier %(ext)s a été ajouté à %(book)s"
 
-#: cps/web.py:3539
+#: cps/web.py:3545
 #, python-format
 msgid "Failed to create path for cover %(path)s (Permission denied)."
 msgstr "Impossible de créer le chemin d’accès pour la couverture %(path)s (Autorisation refusée)"
 
-#: cps/web.py:3547
+#: cps/web.py:3553
 #, python-format
 msgid "Failed to store cover-file %(cover)s."
 msgstr "Echec de la sauvegarde du fichier de couverture %(cover)s."
 
-#: cps/web.py:3550
+#: cps/web.py:3556
 msgid "Cover-file is not a valid image file"
 msgstr "Le fichier de couverture n’est pas un fichier d’image valide"
 
-#: cps/web.py:3580 cps/web.py:3589
+#: cps/web.py:3586 cps/web.py:3595
 msgid "unknown"
 msgstr "inconnu"
 
-#: cps/web.py:3621
+#: cps/web.py:3627
 msgid "Cover is not a jpg file, can't save"
 msgstr "Le fichier de couverture n’est pas au format jpg, impossible de sauvegarder"
 
-#: cps/web.py:3669
+#: cps/web.py:3675
 #, python-format
 msgid "%(langname)s is not a valid language"
 msgstr "%(langname)s n'est pas une langue valide"
 
-#: cps/web.py:3700
+#: cps/web.py:3706
 msgid "Metadata successfully updated"
-msgstr ""
+msgstr "Les métadonnées ont bien été mise à jour"
 
-#: cps/web.py:3709
+#: cps/web.py:3715
 msgid "Error editing book, please check logfile for details"
 msgstr "Erreur d’édition du livre, veuillez consulter le journal (log) pour plus de détails"
 
-#: cps/web.py:3759
+#: cps/web.py:3765
 #, python-format
 msgid "Failed to store file %(file)s (Permission denied)."
 msgstr "Impossible d'enregistrer le fichier %(file)s (permission refusée)"
 
-#: cps/web.py:3764
+#: cps/web.py:3770
 #, python-format
 msgid "Failed to delete file %(file)s (Permission denied)."
 msgstr "Impossible de supprimer le fichier %(file)s (permission refusée)"
 
-#: cps/web.py:3882
+#: cps/web.py:3888
 msgid "Source or destination format for conversion missing"
 msgstr "Le format de conversion de la source ou de la destination est manquant"
 
-#: cps/web.py:3892
+#: cps/web.py:3898
 #, python-format
 msgid "Book successfully queued for converting to %(book_format)s"
 msgstr "Le livre a été mis avec succès en file de traitement pour conversion vers %(book_format)s"
 
-#: cps/web.py:3896
+#: cps/web.py:3902
 #, python-format
 msgid "There was an error converting this book: %(res)s"
 msgstr "Une erreur est survenue au cours de la conversion du livre : %(res)s"
@@ -907,10 +924,10 @@ msgstr "D’accord"
 
 #: cps/templates/admin.html:151 cps/templates/admin.html:165
 #: cps/templates/book_edit.html:178 cps/templates/book_edit.html:200
-#: cps/templates/config_edit.html:221 cps/templates/config_view_edit.html:175
+#: cps/templates/config_edit.html:226 cps/templates/config_view_edit.html:175
 #: cps/templates/email_edit.html:40 cps/templates/email_edit.html:75
 #: cps/templates/shelf.html:64 cps/templates/shelf_edit.html:19
-#: cps/templates/shelf_order.html:12 cps/templates/user_edit.html:147
+#: cps/templates/shelf_order.html:12 cps/templates/user_edit.html:149
 msgid "Back"
 msgstr "Retour"
 
@@ -1040,10 +1057,10 @@ msgstr "voir le livre après l'édition"
 msgid "Get metadata"
 msgstr "Obtenir les métadonnées"
 
-#: cps/templates/book_edit.html:177 cps/templates/config_edit.html:219
+#: cps/templates/book_edit.html:177 cps/templates/config_edit.html:224
 #: cps/templates/config_view_edit.html:174 cps/templates/login.html:20
 #: cps/templates/search_form.html:150 cps/templates/shelf_edit.html:17
-#: cps/templates/user_edit.html:145
+#: cps/templates/user_edit.html:147
 msgid "Submit"
 msgstr "Soumettre"
 
@@ -1116,134 +1133,138 @@ msgid "Authenticate Google Drive"
 msgstr "Authentification Google Drive"
 
 #: cps/templates/config_edit.html:40
+msgid "Please hit submit to continue with setup"
+msgstr ""
+
+#: cps/templates/config_edit.html:43
 msgid "Please finish Google Drive setup after login"
 msgstr "Veuillez terminer la configuration de Google Drive après la connexion"
 
-#: cps/templates/config_edit.html:44
+#: cps/templates/config_edit.html:48
 msgid "Google Drive Calibre folder"
 msgstr "Répertoire Google Drive pour Calibre"
 
-#: cps/templates/config_edit.html:52
+#: cps/templates/config_edit.html:56
 msgid "Metadata Watch Channel ID"
 msgstr "Metadata Watch Channel ID"
 
-#: cps/templates/config_edit.html:55
+#: cps/templates/config_edit.html:59
 msgid "Revoke"
 msgstr "Révoquer"
 
-#: cps/templates/config_edit.html:73
+#: cps/templates/config_edit.html:78
 msgid "Server Configuration"
 msgstr "Configuration réseau du serveur"
 
-#: cps/templates/config_edit.html:80
+#: cps/templates/config_edit.html:85
 msgid "Server Port"
 msgstr "Numéro de port"
 
-#: cps/templates/config_edit.html:84
+#: cps/templates/config_edit.html:89
 msgid "SSL certfile location (leave it empty for non-SSL Servers)"
 msgstr "Emplacement du certificat SSL (laisser vide pour les serveurs non SSL)"
 
-#: cps/templates/config_edit.html:88
+#: cps/templates/config_edit.html:93
 msgid "SSL Keyfile location (leave it empty for non-SSL Servers)"
 msgstr "Emplacement de la clé de chiffrement SSL (laisser vide pour les serveurs non SSL)"
 
-#: cps/templates/config_edit.html:92
-msgid "Update channel"
-msgstr ""
-
-#: cps/templates/config_edit.html:94
-msgid "Stable"
-msgstr ""
-
-#: cps/templates/config_edit.html:95
-msgid "Stable (Automatic)"
-msgstr ""
-
-#: cps/templates/config_edit.html:96
-msgid "Nightly"
-msgstr ""
-
 #: cps/templates/config_edit.html:97
-msgid "Nightly (Automatic)"
-msgstr ""
+msgid "Update channel"
+msgstr "Canal de mise à jour"
 
-#: cps/templates/config_edit.html:108
+#: cps/templates/config_edit.html:99
+msgid "Stable"
+msgstr "Stable"
+
+#: cps/templates/config_edit.html:100
+msgid "Stable (Automatic)"
+msgstr "Stable (Automatique)"
+
+#: cps/templates/config_edit.html:101
+msgid "Nightly"
+msgstr "Nightly"
+
+#: cps/templates/config_edit.html:102
+msgid "Nightly (Automatic)"
+msgstr "Nightly (Automatique)"
+
+#: cps/templates/config_edit.html:113
 msgid "Logfile Configuration"
 msgstr "Configuration du journal d’évenements"
 
-#: cps/templates/config_edit.html:115
+#: cps/templates/config_edit.html:120
 msgid "Log Level"
 msgstr "Niveau de journalisation"
 
-#: cps/templates/config_edit.html:124
+#: cps/templates/config_edit.html:129
 msgid "Location and name of logfile (calibre-web.log for no entry)"
 msgstr "Emplacement et nom du fichier journal (sera calibre-web.log si vide)"
 
-#: cps/templates/config_edit.html:135
+#: cps/templates/config_edit.html:140
 msgid "Feature Configuration"
 msgstr "Configuration des options"
 
-#: cps/templates/config_edit.html:143
+#: cps/templates/config_edit.html:148
 msgid "Enable uploading"
 msgstr "Autoriser le dépôt de fichier"
 
-#: cps/templates/config_edit.html:147
+#: cps/templates/config_edit.html:152
 msgid "Enable anonymous browsing"
 msgstr "Autoriser la navigation anonyme"
 
-#: cps/templates/config_edit.html:151
+#: cps/templates/config_edit.html:156
 msgid "Enable public registration"
 msgstr "Autoriser l’inscription publique"
 
-#: cps/templates/config_edit.html:155
+#: cps/templates/config_edit.html:160
 msgid "Enable remote login (\"magic link\")"
 msgstr "Activer la connexion (\"magic link\")"
 
-#: cps/templates/config_edit.html:160
+#: cps/templates/config_edit.html:165
 msgid "Use"
 msgstr "Utiliser"
 
-#: cps/templates/config_edit.html:161
+#: cps/templates/config_edit.html:166
 msgid "Obtain an API Key"
 msgstr "Obtenir la clé API"
 
-#: cps/templates/config_edit.html:165
+#: cps/templates/config_edit.html:170
 msgid "Goodreads API Key"
 msgstr "Clé de l’API Goodreads"
 
-#: cps/templates/config_edit.html:169
+#: cps/templates/config_edit.html:174
 msgid "Goodreads API Secret"
 msgstr "Secret de l’API Goodreads"
 
-#: cps/templates/config_edit.html:182
+#: cps/templates/config_edit.html:187
 msgid "External binaries"
 msgstr "Configuration des outils de conversion externes"
 
-#: cps/templates/config_edit.html:190
+#: cps/templates/config_edit.html:195
 msgid "No converter"
 msgstr "Pas de convertisseur"
 
-#: cps/templates/config_edit.html:192
+#: cps/templates/config_edit.html:197
 msgid "Use Kindlegen"
 msgstr "Utiliser Kindlegen"
 
-#: cps/templates/config_edit.html:194
+#: cps/templates/config_edit.html:199
 msgid "Use calibre's ebook converter"
 msgstr "Utiliser Calibre ebook-convert"
 
-#: cps/templates/config_edit.html:198
+#: cps/templates/config_edit.html:203
 msgid "E-Book converter settings"
 msgstr "Paramètres de la commande de conversion de livres"
 
-#: cps/templates/config_edit.html:202
+#: cps/templates/config_edit.html:207
 msgid "Path to convertertool"
 msgstr "Chemin d’accès à la commande de conversion"
 
-#: cps/templates/config_edit.html:208
+#: cps/templates/config_edit.html:213
 msgid "Location of Unrar binary"
 msgstr "Chemin d’accès à la commande UnRar"
 
-#: cps/templates/config_edit.html:224 cps/templates/layout.html:82
+#: cps/templates/config_edit.html:229 cps/templates/layout.html:82
 #: cps/templates/login.html:4
 msgid "Login"
 msgstr "Connexion"
@@ -1293,31 +1314,31 @@ msgstr "Mots clés pour contenue pour adulte"
 msgid "Default settings for new users"
 msgstr "Réglages par défaut pour les nouveaux utilisateurs"
 
-#: cps/templates/config_view_edit.html:77 cps/templates/user_edit.html:102
+#: cps/templates/config_view_edit.html:77 cps/templates/user_edit.html:104
 msgid "Admin user"
 msgstr "Utilisateur admin"
 
-#: cps/templates/config_view_edit.html:81 cps/templates/user_edit.html:111
+#: cps/templates/config_view_edit.html:81 cps/templates/user_edit.html:113
 msgid "Allow Downloads"
 msgstr "Permettre les téléchargements"
 
-#: cps/templates/config_view_edit.html:85 cps/templates/user_edit.html:115
+#: cps/templates/config_view_edit.html:85 cps/templates/user_edit.html:117
 msgid "Allow Uploads"
 msgstr "Permettre le dépôt de fichiers"
 
-#: cps/templates/config_view_edit.html:89 cps/templates/user_edit.html:119
+#: cps/templates/config_view_edit.html:89 cps/templates/user_edit.html:121
 msgid "Allow Edit"
 msgstr "Permettre l'édition"
 
-#: cps/templates/config_view_edit.html:93 cps/templates/user_edit.html:123
+#: cps/templates/config_view_edit.html:93 cps/templates/user_edit.html:125
 msgid "Allow Delete books"
 msgstr "Autoriser la suppression des livres"
 
-#: cps/templates/config_view_edit.html:97 cps/templates/user_edit.html:128
+#: cps/templates/config_view_edit.html:97 cps/templates/user_edit.html:130
 msgid "Allow Changing Password"
 msgstr "Permettre le changement de mot de passe"
 
-#: cps/templates/config_view_edit.html:101 cps/templates/user_edit.html:132
+#: cps/templates/config_view_edit.html:101 cps/templates/user_edit.html:134
 msgid "Allow Editing Public Shelfs"
 msgstr "Autoriser la modification d’étagères publiques"
 
@@ -1363,17 +1384,17 @@ msgstr "Montrer la sélection par auteur"
 
 #: cps/templates/config_view_edit.html:155 cps/templates/user_edit.html:86
 msgid "Show publisher selection"
-msgstr ""
+msgstr "Montrer la sélection par éditeur"
 
-#: cps/templates/config_view_edit.html:159 cps/templates/user_edit.html:90
+#: cps/templates/config_view_edit.html:159 cps/templates/user_edit.html:91
 msgid "Show read and unread"
 msgstr "Montrer lu et non-lu"
 
-#: cps/templates/config_view_edit.html:163 cps/templates/user_edit.html:94
+#: cps/templates/config_view_edit.html:163 cps/templates/user_edit.html:96
 msgid "Show random books in detail view"
 msgstr "Montrer aléatoirement des livres dans la vue détaillée"
 
-#: cps/templates/config_view_edit.html:167 cps/templates/user_edit.html:107
+#: cps/templates/config_view_edit.html:167 cps/templates/user_edit.html:109
 msgid "Show mature content"
 msgstr "Montrer le contenu pour adulte"
 
@@ -1476,7 +1497,7 @@ msgstr "Chercher"
 
 #: cps/templates/http_error.html:23
 msgid "Back to home"
-msgstr ""
+msgstr "Retour à l’accueil"
 
 #: cps/templates/index.html:5
 msgid "Discover (Random Books)"
@@ -1524,11 +1545,11 @@ msgstr "Livres classés par auteur"
 
 #: cps/templates/index.xml:69 cps/templates/layout.html:163
 msgid "Publishers"
-msgstr ""
+msgstr "Editeurs"
 
 #: cps/templates/index.xml:73
 msgid "Books ordered by publisher"
-msgstr ""
+msgstr "Livres classés par éditeur"
 
 #: cps/templates/index.xml:80
 msgid "Books ordered by category"
@@ -1760,7 +1781,7 @@ msgstr "Visionneuse PDF.js"
 
 #: cps/templates/readpdf.html:418
 msgid "Preparing document for printing..."
-msgstr ""
+msgstr "Préparation des documents pour l’impression"
 
 #: cps/templates/readtxt.html:6
 msgid "Basic txt Reader"
@@ -1946,59 +1967,1265 @@ msgstr "Montrer les livres dans la langue"
 msgid "Show all"
 msgstr "Montrer tout"
 
-#: cps/templates/user_edit.html:139
+#: cps/templates/user_edit.html:141
 msgid "Delete this user"
 msgstr "Supprimer cet utilisateur"
 
-#: cps/templates/user_edit.html:154
+#: cps/templates/user_edit.html:156
 msgid "Recent Downloads"
 msgstr "Téléchargements récents"
 
-#~ msgid "Current commit timestamp"
-#~ msgstr "Horodatage de la version actuelle "
+#~ msgid "Afar"
+#~ msgstr "afar"
 
-#~ msgid "Newest commit timestamp"
-#~ msgstr "Horodatage de la version la plus récente "
+#~ msgid "Abkhazian"
+#~ msgstr "abkhaze"
 
-#~ msgid "Convert: %(book)s"
-#~ msgstr "Conversion : %(book)s"
+#~ msgid "Achinese"
+#~ msgstr "at-chinois"
 
-#~ msgid "Convert to %(format)s: %(book)s"
-#~ msgstr "Conversion vers %(format)s : %(book)s"
+#~ msgid "Acoli"
+#~ msgstr "acoli"
 
-#~ msgid "Files are replaced"
-#~ msgstr "Fichiers remplacés"
+#~ msgid "Adangme"
+#~ msgstr "adangme"
 
-#~ msgid "Server is stopped"
-#~ msgstr "Serveur arrêté"
+#~ msgid "Adyghe"
+#~ msgstr "adyguéen"
 
-#~ msgid "Convertertool %(converter)s not found"
-#~ msgstr "Outil de conversion %(converter)s introuvable"
+#~ msgid "Afrihili"
+#~ msgstr "afrihili"
 
-#~ msgid "Choose a password"
-#~ msgstr "Choisissez un mot de passe"
+#~ msgid "Afrikaans"
+#~ msgstr "Afrikaans"
 
-#~ msgid "Could not find any formats suitable for sending by e-mail"
-#~ msgstr "Aucun format supporté pour l’envois par courriel n’a été trouvé"
+#~ msgid "Ainu (Japan)"
+#~ msgstr "aïnou (Japon)"
 
-#~ msgid "Author list"
-#~ msgstr "Liste des auteurs"
+#~ msgid "Akan"
+#~ msgstr "akan"
 
-#~ msgid "File %(file)s uploaded"
-#~ msgstr "Fichier %(file)s déposé"
+#~ msgid "Akkadian"
+#~ msgstr "akkadien"
 
-#~ msgid "Update done"
-#~ msgstr "Mise à jour effectuée"
+#~ msgid "Aleut"
+#~ msgstr "aléoute"
 
-#~ msgid "Stable (Automatic))"
-#~ msgstr ""
+#~ msgid "Altai; Southern"
+#~ msgstr "altaï méridional"
 
-#~ msgid "Nightly (Automatic))"
-#~ msgstr ""
+#~ msgid "Amharic"
+#~ msgstr "amharique"
 
-#~ msgid "A new update is available. Click on the button below to update to version: "
-#~ msgstr ""
+#~ msgid "English; Old (ca. 450-1100)"
+#~ msgstr "anglo-saxon (environ 450-1100)"
 
-#~ msgid "A new update is available. Click on the button below to update to version:  %(version)s"
-#~ msgstr ""
+#~ msgid "Angika"
+#~ msgstr "angika"
+
+#~ msgid "Arabic"
+#~ msgstr "arabe"
+
+#~ msgid "Aramaic; Official (700-300 BCE)"
+#~ msgstr "araméen officiel (700-300 A.C.)"
+
+#~ msgid "Aragonese"
+#~ msgstr "aragonais"
+
+#~ msgid "Mapudungun"
+#~ msgstr "mapudungun"
+
+#~ msgid "Arapaho"
+#~ msgstr "arapaho"
+
+#~ msgid "Arawak"
+#~ msgstr "arawak"
+
+#~ msgid "Assamese"
+#~ msgstr "assamais"
+
+#~ msgid "Asturian"
+#~ msgstr "asturien"
+
+#~ msgid "Avaric"
+#~ msgstr "avar"
+
+#~ msgid "Avestan"
+#~ msgstr "avestique"
+
+#~ msgid "Awadhi"
+#~ msgstr "awadhi"
+
+#~ msgid "Aymara"
+#~ msgstr "aymara"
+
+#~ msgid "Azerbaijani"
+#~ msgstr "azéri"
+
+#~ msgid "Bashkir"
+#~ msgstr "bachkir"
+
+#~ msgid "Baluchi"
+#~ msgstr "baloutchi"
+
+#~ msgid "Bambara"
+#~ msgstr "bambara"
+
+#~ msgid "Balinese"
+#~ msgstr "balinais"
+
+#~ msgid "Basa (Cameroon)"
+#~ msgstr "basa (Cameroun)"
+
+#~ msgid "Beja"
+#~ msgstr "beja"
+
+#~ msgid "Belarusian"
+#~ msgstr "biélorusse"
+
+#~ msgid "Bemba (Zambia)"
+#~ msgstr "bemba (Zambie)"
+
+#~ msgid "Bengali"
+#~ msgstr "bengali"
+
+#~ msgid "Bhojpuri"
+#~ msgstr "bhojpuri"
+
+#~ msgid "Bikol"
+#~ msgstr "bikol"
+
+#~ msgid "Bini"
+#~ msgstr "bini"
+
+#~ msgid "Bislama"
+#~ msgstr "bislama"
+
+#~ msgid "Siksika"
+#~ msgstr "pied-noir"
+
+#~ msgid "Tibetan"
+#~ msgstr "tibétain"
+
+#~ msgid "Bosnian"
+#~ msgstr "bosniaque"
+
+#~ msgid "Braj"
+#~ msgstr "braj"
+
+#~ msgid "Breton"
+#~ msgstr "breton"
+
+#~ msgid "Buriat"
+#~ msgstr "bouriate"
+
+#~ msgid "Buginese"
+#~ msgstr "buginais"
+
+#~ msgid "Bulgarian"
+#~ msgstr "bulgare"
+
+#~ msgid "Bilin"
+#~ msgstr "bilin"
+
+#~ msgid "Caddo"
+#~ msgstr "caddo"
+
+#~ msgid "Carib; Galibi"
+#~ msgstr "carib; Galibi"
+
+#~ msgid "Catalan"
+#~ msgstr "catalan"
+
+#~ msgid "Cebuano"
+#~ msgstr "cébuan"
+
+#~ msgid "Czech"
+#~ msgstr "tchèque"
+
+#~ msgid "Chamorro"
+#~ msgstr "chamorro"
+
+#~ msgid "Chibcha"
+#~ msgstr "chibcha"
+
+#~ msgid "Chechen"
+#~ msgstr "thétchène"
+
+#~ msgid "Chagatai"
+#~ msgstr "chagatai"
+
+#~ msgid "Chuukese"
+#~ msgstr "chuukese"
+
+#~ msgid "Mari (Russia)"
+#~ msgstr "mari (Russie)"
+
+#~ msgid "Chinook jargon"
+#~ msgstr "chinook; jargon"
+
+#~ msgid "Choctaw"
+#~ msgstr "choctaw"
+
+#~ msgid "Chipewyan"
+#~ msgstr "chipewyan"
+
+#~ msgid "Cherokee"
+#~ msgstr "cherokee"
+
+#~ msgid "Slavonic; Old"
+#~ msgstr "slavon; ancien"
+
+#~ msgid "Chuvash"
+#~ msgstr "tchouvache"
+
+#~ msgid "Cheyenne"
+#~ msgstr "cheyenne"
+
+#~ msgid "Coptic"
+#~ msgstr "copte"
+
+#~ msgid "Cornish"
+#~ msgstr "cornish"
+
+#~ msgid "Corsican"
+#~ msgstr "corse"
+
+#~ msgid "Cree"
+#~ msgstr "cri"
+
+#~ msgid "Turkish; Crimean"
+#~ msgstr "turc de Crimée"
+
+#~ msgid "Kashubian"
+#~ msgstr "kachoubien"
+
+#~ msgid "Welsh"
+#~ msgstr "gallois"
+
+#~ msgid "Dakota"
+#~ msgstr "dakota"
+
+#~ msgid "Danish"
+#~ msgstr "danois"
+
+#~ msgid "Dargwa"
+#~ msgstr "dargwa"
+
+#~ msgid "Delaware"
+#~ msgstr "delaware"
+
+#~ msgid "Slave (Athapascan)"
+#~ msgstr "esclave (athapascan)"
+
+#~ msgid "German"
+#~ msgstr "allemand"
+
+#~ msgid "Dogrib"
+#~ msgstr "dogrib"
+
+#~ msgid "Dinka"
+#~ msgstr "dinka"
+
+#~ msgid "Dhivehi"
+#~ msgstr "dhivehi"
+
+#~ msgid "Dogri (macrolanguage)"
+#~ msgstr "dogri (macrolangue)"
+
+#~ msgid "Sorbian; Lower"
+#~ msgstr "bas-sorbien"
+
+#~ msgid "Duala"
+#~ msgstr "duala"
+
+#~ msgid "Dutch; Middle (ca. 1050-1350)"
+#~ msgstr "néerlandais moyen (environ 1050-1350)"
+
+#~ msgid "Dyula"
+#~ msgstr "dioula"
+
+#~ msgid "Dzongkha"
+#~ msgstr "dzongkha"
+
+#~ msgid "Efik"
+#~ msgstr "efik"
+
+#~ msgid "Egyptian (Ancient)"
+#~ msgstr "égyptien ancien"
+
+#~ msgid "Ekajuk"
+#~ msgstr "ekajuk"
+
+#~ msgid "Greek; Modern (1453-)"
+#~ msgstr "grec moderne (après 1453)"
+
+#~ msgid "Elamite"
+#~ msgstr "élamite"
+
+#~ msgid "English"
+#~ msgstr "anglais"
+
+#~ msgid "English; Middle (1100-1500)"
+#~ msgstr "anglais moyen (1100-1500)"
+
+#~ msgid "Esperanto"
+#~ msgstr "espéranto"
+
+#~ msgid "Estonian"
+#~ msgstr "estonien"
+
+#~ msgid "Basque"
+#~ msgstr "basque"
+
+#~ msgid "Ewe"
+#~ msgstr "ewe"
+
+#~ msgid "Ewondo"
+#~ msgstr "ewondo"
+
+#~ msgid "Fang (Equatorial Guinea)"
+#~ msgstr "fang (Guinée Équatoriale)"
+
+#~ msgid "Faroese"
+#~ msgstr "féroéen"
+
+#~ msgid "Persian"
+#~ msgstr "persan"
+
+#~ msgid "Fanti"
+#~ msgstr "fanti"
+
+#~ msgid "Fijian"
+#~ msgstr "fidjien"
+
+#~ msgid "Filipino"
+#~ msgstr "filipino"
+
+#~ msgid "Finnish"
+#~ msgstr "finnois"
+
+#~ msgid "Fon"
+#~ msgstr "fon-gbe"
+
+#~ msgid "French"
+#~ msgstr "Français"
+
+#~ msgid "French; Middle (ca. 1400-1600)"
+#~ msgstr "français moyen (environ 1400-1600)"
+
+#~ msgid "French; Old (842-ca. 1400)"
+#~ msgstr "ancien français (842 à environ 1400)"
+
+#~ msgid "Frisian; Northern"
+#~ msgstr "frison septentrional"
+
+#~ msgid "Frisian; Eastern"
+#~ msgstr "frison oriental"
+
+#~ msgid "Frisian; Western"
+#~ msgstr "frison occidental"
+
+#~ msgid "Fulah"
+#~ msgstr "fulah"
+
+#~ msgid "Friulian"
+#~ msgstr "frioulan"
+
+#~ msgid "Ga"
+#~ msgstr "ga"
+
+#~ msgid "Gayo"
+#~ msgstr "gayo"
+
+#~ msgid "Gbaya (Central African Republic)"
+#~ msgstr "gbaya (République Centrafricaine)"
+
+#~ msgid "Geez"
+#~ msgstr "geez"
+
+#~ msgid "Gilbertese"
+#~ msgstr "gilbertese"
+
+#~ msgid "Gaelic; Scottish"
+#~ msgstr "gaélique écossais"
+
+#~ msgid "Irish"
+#~ msgstr "irlandais"
+
+#~ msgid "Galician"
+#~ msgstr "galicien"
+
+#~ msgid "Manx"
+#~ msgstr "manx"
+
+#~ msgid "German; Middle High (ca. 1050-1500)"
+#~ msgstr "allemand; moyen haut (environ 1050-1500)"
+
+#~ msgid "German; Old High (ca. 750-1050)"
+#~ msgstr "allemand; vieux haut (environ 750-1050)"
+
+#~ msgid "Gondi"
+#~ msgstr "gondi"
+
+#~ msgid "Gorontalo"
+#~ msgstr "gorontalo"
+
+#~ msgid "Gothic"
+#~ msgstr "gothique"
+
+#~ msgid "Grebo"
+#~ msgstr "grebo"
+
+#~ msgid "Greek; Ancient (to 1453)"
+#~ msgstr "grec ancien (jusqu'à 1453)"
+
+#~ msgid "Guarani"
+#~ msgstr "guarani"
+
+#~ msgid "German; Swiss"
+#~ msgstr "allemand de Suisse"
+
+#~ msgid "Gujarati"
+#~ msgstr "gujarati"
+
+#~ msgid "Gwichʼin"
+#~ msgstr "gwichʼin"
+
+#~ msgid "Haida"
+#~ msgstr "haida"
+
+#~ msgid "Creole; Haitian"
+#~ msgstr "créole haïtien"
+
+#~ msgid "Hausa"
+#~ msgstr "hausa"
+
+#~ msgid "Hawaiian"
+#~ msgstr "hawaïen"
+
+#~ msgid "Hebrew"
+#~ msgstr "hébreu"
+
+#~ msgid "Herero"
+#~ msgstr "herero"
+
+#~ msgid "Hiligaynon"
+#~ msgstr "hiligaynon"
+
+#~ msgid "Hindi"
+#~ msgstr "hindi"
+
+#~ msgid "Hittite"
+#~ msgstr "hittite"
+
+#~ msgid "Hmong"
+#~ msgstr "hmong"
+
+#~ msgid "Hiri Motu"
+#~ msgstr "hiri Motu"
+
+#~ msgid "Croatian"
+#~ msgstr "croate"
+
+#~ msgid "Sorbian; Upper"
+#~ msgstr "haut-sorbien"
+
+#~ msgid "Hungarian"
+#~ msgstr "hongrois"
+
+#~ msgid "Hupa"
+#~ msgstr "hupa"
+
+#~ msgid "Armenian"
+#~ msgstr "arménien"
+
+#~ msgid "Iban"
+#~ msgstr "iban"
+
+#~ msgid "Igbo"
+#~ msgstr "igbo"
+
+#~ msgid "Ido"
+#~ msgstr "ido"
+
+#~ msgid "Yi; Sichuan"
+#~ msgstr "yi de Sichuan"
+
+#~ msgid "Inuktitut"
+#~ msgstr "inuktitut"
+
+#~ msgid "Interlingue"
+#~ msgstr "interlingue"
+
+#~ msgid "Iloko"
+#~ msgstr "iloko"
+
+#~ msgid "Interlingua (International Auxiliary Language Association)"
+#~ msgstr "interlingua (association pour une langue auxiliaire internationale)"
+
+#~ msgid "Indonesian"
+#~ msgstr "indonésien"
+
+#~ msgid "Ingush"
+#~ msgstr "ingouche"
+
+#~ msgid "Inupiaq"
+#~ msgstr "inupiaq"
+
+#~ msgid "Icelandic"
+#~ msgstr "islandais"
+
+#~ msgid "Italian"
+#~ msgstr "italien"
+
+#~ msgid "Javanese"
+#~ msgstr "javanais"
+
+#~ msgid "Lojban"
+#~ msgstr "lojban"
+
+#~ msgid "Japanese"
+#~ msgstr "japonais"
+
+#~ msgid "Judeo-Persian"
+#~ msgstr "judéo-persan"
+
+#~ msgid "Judeo-Arabic"
+#~ msgstr "judéo-arabe"
+
+#~ msgid "Kara-Kalpak"
+#~ msgstr "kara-kalpak"
+
+#~ msgid "Kabyle"
+#~ msgstr "kabyle"
+
+#~ msgid "Kachin"
+#~ msgstr "kachin"
+
+#~ msgid "Kalaallisut"
+#~ msgstr "kalaallisut"
+
+#~ msgid "Kamba (Kenya)"
+#~ msgstr "kamba (Kenya)"
+
+#~ msgid "Kannada"
+#~ msgstr "kannada"
+
+#~ msgid "Kashmiri"
+#~ msgstr "cachemiri"
+
+#~ msgid "Georgian"
+#~ msgstr "géorgien"
+
+#~ msgid "Kanuri"
+#~ msgstr "kanuri"
+
+#~ msgid "Kawi"
+#~ msgstr "kawi"
+
+#~ msgid "Kazakh"
+#~ msgstr "kazakh"
+
+#~ msgid "Kabardian"
+#~ msgstr "kabardian"
+
+#~ msgid "Khasi"
+#~ msgstr "khasi"
+
+#~ msgid "Khmer; Central"
+#~ msgstr "khmer central"
+
+#~ msgid "Khotanese"
+#~ msgstr "khotanais"
+
+#~ msgid "Kikuyu"
+#~ msgstr "kikuyu"
+
+#~ msgid "Kinyarwanda"
+#~ msgstr "kinyarwanda"
+
+#~ msgid "Kirghiz"
+#~ msgstr "kirghize"
+
+#~ msgid "Kimbundu"
+#~ msgstr "kimbundu"
+
+#~ msgid "Konkani (macrolanguage)"
+#~ msgstr "konkani (macrolangue)"
+
+#~ msgid "Komi"
+#~ msgstr "komi"
+
+#~ msgid "Kongo"
+#~ msgstr "kongo"
+
+#~ msgid "Korean"
+#~ msgstr "coréen"
+
+#~ msgid "Kosraean"
+#~ msgstr "kosraéen"
+
+#~ msgid "Kpelle"
+#~ msgstr "kpelle"
+
+#~ msgid "Karachay-Balkar"
+#~ msgstr "karachay-balkar"
+
+#~ msgid "Karelian"
+#~ msgstr "carélien"
+
+#~ msgid "Kurukh"
+#~ msgstr "kurukh"
+
+#~ msgid "Kuanyama"
+#~ msgstr "kuanyama"
+
+#~ msgid "Kumyk"
+#~ msgstr "kumyk"
+
+#~ msgid "Kurdish"
+#~ msgstr "kurde"
+
+#~ msgid "Kutenai"
+#~ msgstr "kutenai"
+
+#~ msgid "Ladino"
+#~ msgstr "ladino"
+
+#~ msgid "Lahnda"
+#~ msgstr "lahnda"
+
+#~ msgid "Lamba"
+#~ msgstr "lamba"
+
+#~ msgid "Lao"
+#~ msgstr "lao"
+
+#~ msgid "Latin"
+#~ msgstr "latin"
+
+#~ msgid "Latvian"
+#~ msgstr "letton"
+
+#~ msgid "Lezghian"
+#~ msgstr "lezghian"
+
+#~ msgid "Limburgan"
+#~ msgstr "limbourgeois"
+
+#~ msgid "Lingala"
+#~ msgstr "lingala"
+
+#~ msgid "Lithuanian"
+#~ msgstr "lituanien"
+
+#~ msgid "Mongo"
+#~ msgstr "mongo"
+
+#~ msgid "Lozi"
+#~ msgstr "lozi"
+
+#~ msgid "Luxembourgish"
+#~ msgstr "luxembourgeois"
+
+#~ msgid "Luba-Lulua"
+#~ msgstr "luba-lulua"
+
+#~ msgid "Luba-Katanga"
+#~ msgstr "luba-katanga"
+
+#~ msgid "Ganda"
+#~ msgstr "ganda"
+
+#~ msgid "Luiseno"
+#~ msgstr "luiseno"
+
+#~ msgid "Lunda"
+#~ msgstr "lunda"
+
+#~ msgid "Luo (Kenya and Tanzania)"
+#~ msgstr "luo (Kenya et Tanzanie)"
+
+#~ msgid "Lushai"
+#~ msgstr "lushai"
+
+#~ msgid "Madurese"
+#~ msgstr "madurais"
+
+#~ msgid "Magahi"
+#~ msgstr "magahi"
+
+#~ msgid "Marshallese"
+#~ msgstr "marshallais"
+
+#~ msgid "Maithili"
+#~ msgstr "maithili"
+
+#~ msgid "Makasar"
+#~ msgstr "makassar"
+
+#~ msgid "Malayalam"
+#~ msgstr "malayalam"
+
+#~ msgid "Mandingo"
+#~ msgstr "mandingue"
+
+#~ msgid "Marathi"
+#~ msgstr "marathi"
+
+#~ msgid "Masai"
+#~ msgstr "massaï"
+
+#~ msgid "Moksha"
+#~ msgstr "moksha"
+
+#~ msgid "Mandar"
+#~ msgstr "mandar"
+
+#~ msgid "Mende (Sierra Leone)"
+#~ msgstr "mende (Sierra Léone)"
+
+#~ msgid "Irish; Middle (900-1200)"
+#~ msgstr "irlandais intermédiaire (900-1200)"
+
+#~ msgid "Mi'kmaq"
+#~ msgstr "micmaque"
+
+#~ msgid "Minangkabau"
+#~ msgstr "minangkabau"
+
+#~ msgid "Uncoded languages"
+#~ msgstr "Langues non codées"
+
+#~ msgid "Macedonian"
+#~ msgstr "macédonien"
+
+#~ msgid "Malagasy"
+#~ msgstr "malgache"
+
+#~ msgid "Maltese"
+#~ msgstr "maltais"
+
+#~ msgid "Manchu"
+#~ msgstr "mandchou"
+
+#~ msgid "Manipuri"
+#~ msgstr "manipuri"
+
+#~ msgid "Mohawk"
+#~ msgstr "mohawk"
+
+#~ msgid "Mongolian"
+#~ msgstr "mongol"
+
+#~ msgid "Mossi"
+#~ msgstr "mossi"
+
+#~ msgid "Maori"
+#~ msgstr "maori"
+
+#~ msgid "Malay (macrolanguage)"
+#~ msgstr "malais (macrolangue)"
+
+#~ msgid "Multiple languages"
+#~ msgstr "Langues multiples"
+
+#~ msgid "Creek"
+#~ msgstr "creek"
+
+#~ msgid "Mirandese"
+#~ msgstr "mirandais"
+
+#~ msgid "Marwari"
+#~ msgstr "marwari"
+
+#~ msgid "Burmese"
+#~ msgstr "birman"
+
+#~ msgid "Erzya"
+#~ msgstr "erzya"
+
+#~ msgid "Neapolitan"
+#~ msgstr "napolitain"
+
+#~ msgid "Nauru"
+#~ msgstr "nauru"
+
+#~ msgid "Navajo"
+#~ msgstr "navajo"
+
+#~ msgid "Ndebele; South"
+#~ msgstr "ndebele méridional"
+
+#~ msgid "Ndebele; North"
+#~ msgstr "ndebele septentrional"
+
+#~ msgid "Ndonga"
+#~ msgstr "ndonga"
+
+#~ msgid "German; Low"
+#~ msgstr "Allemand; Bas"
+
+#~ msgid "Nepali"
+#~ msgstr "népalais"
+
+#~ msgid "Bhasa; Nepal"
+#~ msgstr "bhasa; Népal"
+
+#~ msgid "Nias"
+#~ msgstr "nias"
+
+#~ msgid "Niuean"
+#~ msgstr "niuéen"
+
+#~ msgid "Dutch"
+#~ msgstr "néerlandais"
+
+#~ msgid "Norwegian Nynorsk"
+#~ msgstr "norvégien nynorsk"
+
+#~ msgid "Norwegian Bokmål"
+#~ msgstr "norvégien bokmål"
+
+#~ msgid "Nogai"
+#~ msgstr "nogaï"
+
+#~ msgid "Norse; Old"
+#~ msgstr "norse ancien"
+
+#~ msgid "Norwegian"
+#~ msgstr "norvégien"
+
+#~ msgid "N'Ko"
+#~ msgstr "n'Ko"
+
+#~ msgid "Sotho; Northern"
+#~ msgstr "sotho septentrional"
+
+#~ msgid "Newari; Old"
+#~ msgstr "newari ancien"
+
+#~ msgid "Nyanja"
+#~ msgstr "nyanja"
+
+#~ msgid "Nyamwezi"
+#~ msgstr "nyamwezi"
+
+#~ msgid "Nyankole"
+#~ msgstr "nyankole"
+
+#~ msgid "Nyoro"
+#~ msgstr "nyoro"
+
+#~ msgid "Nzima"
+#~ msgstr "nzima"
+
+#~ msgid "Occitan (post 1500)"
+#~ msgstr "occitan (après 1500)"
+
+#~ msgid "Ojibwa"
+#~ msgstr "ojibwa"
+
+#~ msgid "Oriya"
+#~ msgstr "oriya"
+
+#~ msgid "Oromo"
+#~ msgstr "oromo"
+
+#~ msgid "Osage"
+#~ msgstr "osage"
+
+#~ msgid "Ossetian"
+#~ msgstr "ossétien"
+
+#~ msgid "Turkish; Ottoman (1500-1928)"
+#~ msgstr "turc ottoman (1500-1928)"
+
+#~ msgid "Pangasinan"
+#~ msgstr "pangasinan"
+
+#~ msgid "Pahlavi"
+#~ msgstr "pahlavi"
+
+#~ msgid "Pampanga"
+#~ msgstr "pampangan"
+
+#~ msgid "Panjabi"
+#~ msgstr "pendjabi"
+
+#~ msgid "Papiamento"
+#~ msgstr "papiamento"
+
+#~ msgid "Palauan"
+#~ msgstr "palauéen"
+
+#~ msgid "Persian; Old (ca. 600-400 B.C.)"
+#~ msgstr "perse ancien (environ 600-400 avant J.-C.)"
+
+#~ msgid "Phoenician"
+#~ msgstr "phénicien"
+
+#~ msgid "Pali"
+#~ msgstr "pali"
+
+#~ msgid "Polish"
+#~ msgstr "polonais"
+
+#~ msgid "Pohnpeian"
+#~ msgstr "pohnpeien"
+
+#~ msgid "Portuguese"
+#~ msgstr "portugais"
+
+#~ msgid "Provençal; Old (to 1500)"
+#~ msgstr "provençal ancien (jusqu'à 1500)"
+
+#~ msgid "Pushto"
+#~ msgstr "pushto"
+
+#~ msgid "Quechua"
+#~ msgstr "quechua"
+
+#~ msgid "Rajasthani"
+#~ msgstr "rajasthani"
+
+#~ msgid "Rapanui"
+#~ msgstr "rapanui"
+
+#~ msgid "Maori; Cook Islands"
+#~ msgstr "maori des Îles Cook"
+
+#~ msgid "Romansh"
+#~ msgstr "romanche"
+
+#~ msgid "Romany"
+#~ msgstr "romany"
+
+#~ msgid "Romanian"
+#~ msgstr "roumain"
+
+#~ msgid "Rundi"
+#~ msgstr "rundi"
+
+#~ msgid "Romanian; Macedo-"
+#~ msgstr "macédo-roumain"
+
+#~ msgid "Russian"
+#~ msgstr "russe"
+
+#~ msgid "Sandawe"
+#~ msgstr "sandawe"
+
+#~ msgid "Sango"
+#~ msgstr "sango"
+
+#~ msgid "Yakut"
+#~ msgstr "iakoute"
+
+#~ msgid "Aramaic; Samaritan"
+#~ msgstr "aramaïque samaritain"
+
+#~ msgid "Sanskrit"
+#~ msgstr "sanskrit"
+
+#~ msgid "Sasak"
+#~ msgstr "sasak"
+
+#~ msgid "Santali"
+#~ msgstr "santali"
+
+#~ msgid "Sicilian"
+#~ msgstr "sicilien"
+
+#~ msgid "Scots"
+#~ msgstr "écossais"
+
+#~ msgid "Selkup"
+#~ msgstr "selkup"
+
+#~ msgid "Irish; Old (to 900)"
+#~ msgstr "irlandais ancien (jusqu'à 900)"
+
+#~ msgid "Shan"
+#~ msgstr "shan"
+
+#~ msgid "Sidamo"
+#~ msgstr "sidamo"
+
+#~ msgid "Sinhala"
+#~ msgstr "sinhala"
+
+#~ msgid "Slovak"
+#~ msgstr "slovaque"
+
+#~ msgid "Slovenian"
+#~ msgstr "slovène"
+
+#~ msgid "Sami; Southern"
+#~ msgstr "sami méridional"
+
+#~ msgid "Sami; Northern"
+#~ msgstr "sami septentrional"
+
+#~ msgid "Lule Sami"
+#~ msgstr "sami de Lule"
+
+#~ msgid "Sami; Inari"
+#~ msgstr "sami d'Inari"
+
+#~ msgid "Samoan"
+#~ msgstr "samoan"
+
+#~ msgid "Sami; Skolt"
+#~ msgstr "sami de Skolt"
+
+#~ msgid "Shona"
+#~ msgstr "shona"
+
+#~ msgid "Sindhi"
+#~ msgstr "sindhi"
+
+#~ msgid "Soninke"
+#~ msgstr "soninke"
+
+#~ msgid "Sogdian"
+#~ msgstr "sogdien"
+
+#~ msgid "Somali"
+#~ msgstr "somali"
+
+#~ msgid "Sotho; Southern"
+#~ msgstr "sotho méridional"
+
+#~ msgid "Spanish"
+#~ msgstr "espagnol"
+
+#~ msgid "Albanian"
+#~ msgstr "albanais"
+
+#~ msgid "Sardinian"
+#~ msgstr "sarde"
+
+#~ msgid "Sranan Tongo"
+#~ msgstr "sranan Tongo"
+
+#~ msgid "Serbian"
+#~ msgstr "serbe"
+
+#~ msgid "Serer"
+#~ msgstr "serer"
+
+#~ msgid "Swati"
+#~ msgstr "swati"
+
+#~ msgid "Sukuma"
+#~ msgstr "sukuma"
+
+#~ msgid "Sundanese"
+#~ msgstr "sundanais"
+
+#~ msgid "Susu"
+#~ msgstr "susu"
+
+#~ msgid "Sumerian"
+#~ msgstr "sumérien"
+
+#~ msgid "Swahili (macrolanguage)"
+#~ msgstr "swahili (macrolangue)"
+
+#~ msgid "Swedish"
+#~ msgstr "suédois"
+
+#~ msgid "Syriac; Classical"
+#~ msgstr "syriaque classique"
+
+#~ msgid "Syriac"
+#~ msgstr "syriaque"
+
+#~ msgid "Tahitian"
+#~ msgstr "tahitien"
+
+#~ msgid "Tamil"
+#~ msgstr "tamoul"
+
+#~ msgid "Tatar"
+#~ msgstr "tatar"
+
+#~ msgid "Telugu"
+#~ msgstr "télougou"
+
+#~ msgid "Timne"
+#~ msgstr "timne"
+
+#~ msgid "Tereno"
+#~ msgstr "tereno"
+
+#~ msgid "Tetum"
+#~ msgstr "tetum"
+
+#~ msgid "Tajik"
+#~ msgstr "tadjik"
+
+#~ msgid "Tagalog"
+#~ msgstr "tagalog"
+
+#~ msgid "Thai"
+#~ msgstr "thai"
+
+#~ msgid "Tigre"
+#~ msgstr "tigre"
+
+#~ msgid "Tigrinya"
+#~ msgstr "tigrigna"
+
+#~ msgid "Tiv"
+#~ msgstr "tiv"
+
+#~ msgid "Tokelau"
+#~ msgstr "tokelau"
+
+#~ msgid "Klingon"
+#~ msgstr "klingon"
+
+#~ msgid "Tlingit"
+#~ msgstr "tlingit"
+
+#~ msgid "Tamashek"
+#~ msgstr "tamacheq"
+
+#~ msgid "Tonga (Nyasa)"
+#~ msgstr "tonga (Nyasa)"
+
+#~ msgid "Tonga (Tonga Islands)"
+#~ msgstr "tonga (Îles Tonga)"
+
+#~ msgid "Tok Pisin"
+#~ msgstr "tok Pisin"
+
+#~ msgid "Tsimshian"
+#~ msgstr "tsimshien"
+
+#~ msgid "Tswana"
+#~ msgstr "tswana"
+
+#~ msgid "Tsonga"
+#~ msgstr "tsonga"
+
+#~ msgid "Turkmen"
+#~ msgstr "turkmène"
+
+#~ msgid "Tumbuka"
+#~ msgstr "tumbuka"
+
+#~ msgid "Turkish"
+#~ msgstr "turc"
+
+#~ msgid "Tuvalu"
+#~ msgstr "tuvalu"
+
+#~ msgid "Twi"
+#~ msgstr "twi"
+
+#~ msgid "Tuvinian"
+#~ msgstr "tuvinien"
+
+#~ msgid "Udmurt"
+#~ msgstr "udmurt"
+
+#~ msgid "Ugaritic"
+#~ msgstr "ougaritique"
+
+#~ msgid "Uighur"
+#~ msgstr "ouïghour"
+
+#~ msgid "Ukrainian"
+#~ msgstr "ukrainien"
+
+#~ msgid "Umbundu"
+#~ msgstr "umbundu"
+
+#~ msgid "Undetermined"
+#~ msgstr "indéterminé"
+
+#~ msgid "Urdu"
+#~ msgstr "ourdou"
+
+#~ msgid "Uzbek"
+#~ msgstr "ouszbek"
+
+#~ msgid "Vai"
+#~ msgstr "vai"
+
+#~ msgid "Venda"
+#~ msgstr "venda"
+
+#~ msgid "Vietnamese"
+#~ msgstr "vietnamien"
+
+#~ msgid "Volapük"
+#~ msgstr "volapük"
+
+#~ msgid "Votic"
+#~ msgstr "votique"
+
+#~ msgid "Wolaytta"
+#~ msgstr "wolaytta"
+
+#~ msgid "Waray (Philippines)"
+#~ msgstr "waray (Philippines)"
+
+#~ msgid "Washo"
+#~ msgstr "washo"
+
+#~ msgid "Walloon"
+#~ msgstr "wallon"
+
+#~ msgid "Wolof"
+#~ msgstr "wolof"
+
+#~ msgid "Kalmyk"
+#~ msgstr "kalmouke"
+
+#~ msgid "Xhosa"
+#~ msgstr "xhosa"
+
+#~ msgid "Yao"
+#~ msgstr "yao"
+
+#~ msgid "Yapese"
+#~ msgstr "yapese"
+
+#~ msgid "Yiddish"
+#~ msgstr "yiddish"
+
+#~ msgid "Yoruba"
+#~ msgstr "yoruba"
+
+#~ msgid "Zapotec"
+#~ msgstr "zapotèque"
+
+#~ msgid "Blissymbols"
+#~ msgstr "blissymbols"
+
+#~ msgid "Zenaga"
+#~ msgstr "zenaga"
+
+#~ msgid "Zhuang"
+#~ msgstr "zhuang"
+
+#~ msgid "Chinese"
+#~ msgstr "chinois"
+
+#~ msgid "Zulu"
+#~ msgstr "zoulou"
+
+#~ msgid "Zuni"
+#~ msgstr "zuni"
+
+#~ msgid "No linguistic content"
+#~ msgstr "pas de contenu linguistique"
+
+#~ msgid "Zaza"
+#~ msgstr "zaza"
 
