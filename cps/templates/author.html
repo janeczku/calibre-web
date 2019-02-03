@@ -29,7 +29,7 @@
       <div class="cover">
         <a href="{{ url_for('show_book', book_id=entry.id) }}">
           {% if entry.has_cover %}
-          <img src="{{ url_for('get_cover', cover_path=entry.path.replace('\\','/')) }}" />
+          <img src="{{ url_for('get_cover', book_id=entry.id) }}" />
           {% else %}
           <img src="{{ url_for('static', filename='generic_cover.jpg') }}" />
           {% endif %}

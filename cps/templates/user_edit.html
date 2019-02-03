@@ -157,7 +157,7 @@
     {% for entry in downloads %}
       <div class="col-sm-2">
         <a class="pull-left" href="{{ url_for('show_book', book_id=entry.id) }}">
-          <img class="media-object" width="100" src="{{ url_for('get_cover', cover_path=entry.path.replace('\\','/')) }}" alt="...">
+          <img class="media-object" width="100" src="{{ url_for('get_cover', book_id=entry.id) }}" alt="...">
         </a>
       </div>
     {% endfor %}
