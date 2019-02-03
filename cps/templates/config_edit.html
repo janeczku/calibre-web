@@ -31,15 +31,19 @@
           </label>
         </div>
       {% else %}
-        {% if show_authenticate_google_drive and g.user.is_authenticated %}
+        {% if show_authenticate_google_drive and g.user.is_authenticated and content.config_use_google_drive %}
           <div class="form-group required">
             <a href="{{ url_for('authenticate_google_drive') }}" class="btn btn-primary">{{_('Authenticate Google Drive')}}</a>
           </div>
         {% else %}
-          {% if show_authenticate_google_drive and not g.user.is_authenticated %}
+            {% if show_authenticate_google_drive and g.user.is_authenticated and not content.config_use_google_drive %}
+            <div >{{_('Please hit submit to continue with setup')}}</div>
+            {% endif %}
+          {% if not g.user.is_authenticated %}
           <div >{{_('Please finish Google Drive setup after login')}}</div>
-          {% endif %}
-          {% if not show_authenticate_google_drive %}
+            {% endif %}
+          {% if g.user.is_authenticated %}
+            {% if not show_authenticate_google_drive %}
           <div class="form-group required">
             <label for="config_google_drive_folder">{{_('Google Drive Calibre folder')}}</label>
               <select name="config_google_drive_folder" id="config_google_drive_folder" class="form-control">
@@ -56,6 +60,7 @@
             </div>
           {% else %}
             <a href="{{ url_for('watch_gdrive') }}" class="btn btn-primary">Enable watch of metadata.db</a>
+          {% endif %}
           {% endif %}
           {% endif %}
         {% endif %}
