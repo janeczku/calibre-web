@@ -83,6 +83,8 @@ from flask_dance.contrib.google import make_google_blueprint, google
 from flask_dance.consumer import oauth_authorized, oauth_error
 from sqlalchemy.orm.exc import NoResultFound
 from oauth import OAuthBackend
+import hashlib
+>>>>>>> master
 
 try:
     from googleapiclient.errors import HttpError
@@ -1008,11 +1010,9 @@ def get_email_status_json():
 # example SELECT * FROM @TABLE WHERE  'abcdefg' LIKE Name;
 # from https://code.luasoftware.com/tutorials/flask/execute-raw-sql-in-flask-sqlalchemy/
 def check_valid_domain(domain_text):
-    # result = session.query(Notification).from_statement(text(sql)).params(id=5).all()
-    #ToDo: check possible SQL injection
     domain_text = domain_text.split('@',1)[-1].lower()
-    sql = "SELECT * FROM registration WHERE '%s' LIKE domain;" % domain_text
-    result = ub.session.query(ub.Registration).from_statement(text(sql)).all()
+    sql = "SELECT * FROM registration WHERE :domain LIKE domain;"
+    result = ub.session.query(ub.Registration).from_statement(text(sql)).params(domain=domain_text).all()
     return len(result)
 
 
@@ -1777,7 +1777,12 @@ def delete_book(book_id, book_format):
 @login_required
 @admin_required
 def authenticate_google_drive():
-    authUrl = gdriveutils.Gauth.Instance().auth.GetAuthUrl()
+    try:
+        authUrl = gdriveutils.Gauth.Instance().auth.GetAuthUrl()
+    except gdriveutils.InvalidConfigError:
+        flash(_(u'Google Drive setup not completed, try to deactivate and activate Google Drive again'),
+              category="error")
+        return redirect(url_for('index'))
     return redirect(authUrl)
 
 
@@ -1865,7 +1870,7 @@ def on_received_watch_confirmation():
                 app.logger.debug(response)
                 if response:
                     dbpath = os.path.join(config.config_calibre_dir, "metadata.db")
-                    if not response['deleted'] and response['file']['title'] == 'metadata.db' and response['file']['md5Checksum'] != md5(dbpath):
+                    if not response['deleted'] and response['file']['title'] == 'metadata.db' and response['file']['md5Checksum'] != hashlib.md5(dbpath):
                         tmpDir = tempfile.gettempdir()
                         app.logger.info('Database file updated')
                         copyfile(dbpath, os.path.join(tmpDir, "metadata.db_" + str(current_milli_time())))
@@ -3015,6 +3020,8 @@ def configuration_helper(origin):
                 content.config_calibre_dir = to_save["config_calibre_dir"]
                 db_change = True
         # Google drive setup
+        if not os.path.isfile(os.path.join(config.get_main_dir, 'settings.yaml')):
+            content.config_use_google_drive = False
         if "config_use_google_drive" in to_save and not content.config_use_google_drive and not gdriveError:
             if filedata:
                 if filedata['web']['redirect_uris'][0].endswith('/'):
@@ -3174,7 +3181,8 @@ def configuration_helper(origin):
                                              gdrive=gdriveutils.gdrive_support, goodreads=goodreads_support,
                                              rarfile_support=rar_support, title=_(u"Basic Configuration"))
         try:
-            if content.config_use_google_drive and is_gdrive_ready() and not os.path.exists(config.config_calibre_dir + "/metadata.db"):
+            if content.config_use_google_drive and is_gdrive_ready() and not \
+                    os.path.exists(os.path.join(content.config_calibre_dir, "metadata.db")):
                 gdriveutils.downloadFile(None, "metadata.db", config.config_calibre_dir + "/metadata.db")
             if db_change:
                 if config.db_configured:
@@ -3206,7 +3214,7 @@ def configuration_helper(origin):
             app.logger.info('Reboot required, restarting')
         if origin:
             success = True
-    if is_gdrive_ready() and gdriveutils.gdrive_support == True and config.config_use_google_drive == True:
+    if is_gdrive_ready() and gdriveutils.gdrive_support == True: # and config.config_use_google_drive == True:
         gdrivefolders=gdriveutils.listRootFolders()
     else:
         gdrivefolders=list()
