@@ -84,7 +84,6 @@ from flask_dance.consumer import oauth_authorized, oauth_error
 from sqlalchemy.orm.exc import NoResultFound
 from oauth import OAuthBackend
 import hashlib
->>>>>>> master
 
 try:
     from googleapiclient.errors import HttpError

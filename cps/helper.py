@@ -22,7 +22,6 @@
 import db
 import ub
 from flask import current_app as app
-# import logging
 from tempfile import gettempdir
 import sys
 import os
@@ -36,18 +35,15 @@ from flask_babel import gettext as _
 from flask_login import current_user
 from babel.dates import format_datetime
 from datetime import datetime
-# import threading
 import shutil
 import requests
-# import zipfile
 try:
     import gdriveutils as gd
 except ImportError:
     pass
 import web
-# import server
 import random
-import subprocess
+from subproc_wrapper import process_open
 
 try:
     import unidecode
@@ -496,7 +492,7 @@ def check_unrar(unrarLocation):
         try:
             if sys.version_info < (3, 0):
                 unrarLocation = unrarLocation.encode(sys.getfilesystemencoding())
-            p = subprocess.Popen(unrarLocation, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            p = process_open(unrarLocation)
             p.wait()
             for lines in p.stdout.readlines():
                 if isinstance(lines, bytes):
