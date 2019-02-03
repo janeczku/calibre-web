@@ -37,8 +37,8 @@ Calibre-Web is a web app providing a clean interface for browsing, reading and d
    optionally a google drive can be used to host the calibre library (-> Using Google Drive integration)
 5. Go to Login page
 
-**Default admin login:**
-*Username:* admin
+**Default admin login:**\
+*Username:* admin\
 *Password:* admin123
 
 **Issues with Ubuntu:**
