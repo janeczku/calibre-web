@@ -31,7 +31,9 @@ import web
 from flask_babel import gettext as _
 import re
 import gdriveutils as gd
-import subprocess
+# import subprocess
+from subproc_wrapper import process_open
+
 
 try:
     from StringIO import StringIO
@@ -271,36 +273,37 @@ class WorkerThread(threading.Thread):
             # check which converter to use kindlegen is "1"
             if format_old_ext == '.epub' and format_new_ext == '.mobi':
                 if web.ub.config.config_ebookconverter == 1:
-                    if os.name == 'nt':
+                    '''if os.name == 'nt':
                         command = web.ub.config.config_converterpath + u' "' + file_path + u'.epub"'
                         if sys.version_info < (3, 0):
                             command = command.encode(sys.getfilesystemencoding())
-                    else:
-                        command = [web.ub.config.config_converterpath, file_path + u'.epub']
-                        if sys.version_info < (3, 0):
-                            command = [x.encode(sys.getfilesystemencoding()) for x in command]
+                    else:'''
+                    command = [web.ub.config.config_converterpath, file_path + u'.epub']
+                    quotes = (1)
             if web.ub.config.config_ebookconverter == 2:
                 # Linux py2.7 encode as list without quotes no empty element for parameters
                 # linux py3.x no encode and as list without quotes no empty element for parameters
                 # windows py2.7 encode as string with quotes empty element for parameters is okay
                 # windows py 3.x no encode and as string with quotes empty element for parameters is okay
                 # separate handling for windows and linux
-                if os.name == 'nt':
+                quotes = (1,2)
+                '''if os.name == 'nt':
                     command = web.ub.config.config_converterpath + u' "' + file_path + format_old_ext + u'" "' + \
                               file_path + format_new_ext + u'" ' + web.ub.config.config_calibre
                     if sys.version_info < (3, 0):
                         command = command.encode(sys.getfilesystemencoding())
-                else:
-                    command = [web.ub.config.config_converterpath, (file_path + format_old_ext),
-                               (file_path + format_new_ext)]
-                    if web.ub.config.config_calibre:
-                        parameters = web.ub.config.config_calibre.split(" ")
-                        for param in parameters:
-                            command.append(param)
-                    if sys.version_info < (3, 0):
-                        command = [x.encode(sys.getfilesystemencoding()) for x in command]
-
-            p = subprocess.Popen(command, stdout=subprocess.PIPE, universal_newlines=True)
+                else:'''
+                command = [web.ub.config.config_converterpath, (file_path + format_old_ext),
+                    (file_path + format_new_ext)]
+                index = 3
+                if web.ub.config.config_calibre:
+                    parameters = web.ub.config.config_calibre.split(" ")
+                    for param in parameters:
+                        command.append(param)
+                        quotes.append(index)
+                        index += 1
+            p = process_open(command, quotes)
+            # p = subprocess.Popen(command, stdout=subprocess.PIPE, universal_newlines=True)
         except OSError as e:
             self._handleError(_(u"Ebook-converter failed: %(error)s", error=e))
             return

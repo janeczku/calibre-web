@@ -19,17 +19,19 @@
 
 
 import os
-import subprocess
+# import subprocess
 import ub
 import re
 from flask_babel import gettext as _
+from subproc_wrapper import process_open
 
 
 def versionKindle():
     versions = _(u'not installed')
     if os.path.exists(ub.config.config_converterpath):
         try:
-            p = subprocess.Popen(ub.config.config_converterpath, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            p = process_open(ub.config.config_converterpath)
+            # p = subprocess.Popen(ub.config.config_converterpath, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
             p.wait()
             for lines in p.stdout.readlines():
                 if isinstance(lines, bytes):
@@ -45,7 +47,8 @@ def versionCalibre():
     versions = _(u'not installed')
     if os.path.exists(ub.config.config_converterpath):
         try:
-            p = subprocess.Popen([ub.config.config_converterpath, '--version'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            p = process_open([ub.config.config_converterpath, '--version'])
+            # p = subprocess.Popen([ub.config.config_converterpath, '--version'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
             p.wait()
             for lines in p.stdout.readlines():
                 if isinstance(lines, bytes):
