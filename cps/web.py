@@ -2079,10 +2079,11 @@ def advanced_search():
                                  series=series, title=_(u"search"), cc=cc, page="advsearch")
 
 
-@app.route("/cover/<path:cover_path>")
+@app.route("/cover/<book_id>")
 @login_required_if_no_ano
-def get_cover(cover_path):
-    return helper.get_book_cover(cover_path)
+def get_cover(book_id):
+    book = db.session.query(db.Books).filter(db.Books.id == book_id).first()
+    return helper.get_book_cover(book.path)
 
 
 @app.route("/show/<book_id>/<book_format>")
@@ -2104,10 +2105,10 @@ def serve_book(book_id, book_format):
         return send_from_directory(os.path.join(config.config_calibre_dir, book.path), data.name + "." + book_format)
 
 
-@app.route("/opds/thumb_240_240/<path:book_id>")
-@app.route("/opds/cover_240_240/<path:book_id>")
-@app.route("/opds/cover_90_90/<path:book_id>")
-@app.route("/opds/cover/<path:book_id>")
+@app.route("/opds/thumb_240_240/<book_id>")
+@app.route("/opds/cover_240_240/<book_id>")
+@app.route("/opds/cover_90_90/<book_id>")
+@app.route("/opds/cover/<book_id>")
 @requires_basic_auth_if_no_ano
 def feed_get_cover(book_id):
     book = db.session.query(db.Books).filter(db.Books.id == book_id).first()
