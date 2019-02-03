@@ -72,7 +72,6 @@ class Updater(threading.Thread):
             r = requests.get(self._get_request_path(), stream=True)
             r.raise_for_status()
 
-            fname = re.findall("filename=(.+)", r.headers['content-disposition'])[0]
             self.status = 2
             z = zipfile.ZipFile(BytesIO(r.content))
             self.status = 3
@@ -189,8 +188,9 @@ class Updater(threading.Thread):
         # destination files
         old_list = list()
         exclude = (
-            'vendor' + os.sep + 'kindlegen.exe', 'vendor' + os.sep + 'kindlegen', os.sep + 'app.db',
-            os.sep + 'vendor', os.sep + 'calibre-web.log')
+            os.sep + 'app.db', os.sep + 'calibre-web.log1', os.sep + 'calibre-web.log2', os.sep + 'gdrive.db',
+            os.sep + 'vendor', os.sep + 'calibre-web.log', os.sep + '.git', os.sep +'client_secrets.json',
+            os.sep + 'gdrive_credentials', os.sep + 'settings.yaml')
         for root, dirs, files in os.walk(destination, topdown=True):
             for name in files:
                 old_list.append(os.path.join(root, name).replace(destination, ''))
@@ -237,7 +237,7 @@ class Updater(threading.Thread):
         return False
 
     def _stable_version_info(self):
-        return {'version': '0.6.0'} # Current version
+        return {'version': '0.6.1'} # Current version
 
     def _nightly_available_updates(self, request_method):
         tz = datetime.timedelta(seconds=time.timezone if (time.localtime().tm_isdst == 0) else time.altzone)
