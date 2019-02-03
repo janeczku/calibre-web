@@ -1,16 +1,34 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+#  This file is part of the Calibre-Web (https://github.com/janeczku/calibre-web)
+#    Copyright (C) 2012-2019 cervinko, idalin, SiphonSquirrel, ouzklcn, akushsky,
+#                            OzzieIsaacs, bodybybuddha, jkrehm, matthazinski, janeczku
+#
+#  This program is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License as published by
+#  the Free Software Foundation, either version 3 of the License, or
+#  (at your option) any later version.
+#
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU General Public License for more details.
+#
+#  You should have received a copy of the GNU General Public License
+#  along with this program. If not, see <http://www.gnu.org/licenses/>.
+
+
 import db
 import ub
 from flask import current_app as app
-import logging
+# import logging
 from tempfile import gettempdir
 import sys
 import os
 import re
 import unicodedata
-from io import BytesIO
+# from io import BytesIO
 import worker
 import time
 from flask import send_from_directory, make_response, redirect, abort
@@ -18,16 +36,16 @@ from flask_babel import gettext as _
 from flask_login import current_user
 from babel.dates import format_datetime
 from datetime import datetime
-import threading
+# import threading
 import shutil
 import requests
-import zipfile
+# import zipfile
 try:
     import gdriveutils as gd
 except ImportError:
     pass
 import web
-import server
+# import server
 import random
 import subprocess
 
@@ -38,7 +56,7 @@ except ImportError:
     use_unidecode = False
 
 # Global variables
-updater_thread = None
+# updater_thread = None
 global_WorkerThread = worker.WorkerThread()
 global_WorkerThread.start()
 
@@ -468,166 +486,6 @@ def do_download_file(book, book_format, data, headers):
 ##################################
 
 
-class Updater(threading.Thread):
-
-    def __init__(self):
-        threading.Thread.__init__(self)
-        self.status = 0
-
-    def run(self):
-        try:
-            self.status = 1
-            r = requests.get('https://api.github.com/repos/janeczku/calibre-web/zipball/master', stream=True)
-            r.raise_for_status()
-
-            fname = re.findall("filename=(.+)", r.headers['content-disposition'])[0]
-            self.status = 2
-            z = zipfile.ZipFile(BytesIO(r.content))
-            self.status = 3
-            tmp_dir = gettempdir()
-            z.extractall(tmp_dir)
-            self.status = 4
-            self.update_source(os.path.join(tmp_dir, os.path.splitext(fname)[0]), ub.config.get_main_dir)
-            self.status = 6
-            time.sleep(2)
-            server.Server.setRestartTyp(True)
-            server.Server.stopServer()
-            self.status = 7
-            time.sleep(2)
-        except requests.exceptions.HTTPError as ex:
-            logging.getLogger('cps.web').info( u'HTTP Error' + ' ' + str(ex))
-            self.status = 8
-        except requests.exceptions.ConnectionError:
-            logging.getLogger('cps.web').info(u'Connection error')
-            self.status = 9
-        except requests.exceptions.Timeout:
-            logging.getLogger('cps.web').info(u'Timeout while establishing connection')
-            self.status = 10
-        except requests.exceptions.RequestException:
-            self.status = 11
-            logging.getLogger('cps.web').info(u'General error')
-
-    def get_update_status(self):
-        return self.status
-
-    @classmethod
-    def file_to_list(self, filelist):
-        return [x.strip() for x in open(filelist, 'r') if not x.startswith('#EXT')]
-
-    @classmethod
-    def one_minus_two(self, one, two):
-        return [x for x in one if x not in set(two)]
-
-    @classmethod
-    def reduce_dirs(self, delete_files, new_list):
-        new_delete = []
-        for filename in delete_files:
-            parts = filename.split(os.sep)
-            sub = ''
-            for part in parts:
-                sub = os.path.join(sub, part)
-                if sub == '':
-                    sub = os.sep
-                count = 0
-                for song in new_list:
-                    if song.startswith(sub):
-                        count += 1
-                        break
-                if count == 0:
-                    if sub != '\\':
-                        new_delete.append(sub)
-                    break
-        return list(set(new_delete))
-
-    @classmethod
-    def reduce_files(self, remove_items, exclude_items):
-        rf = []
-        for item in remove_items:
-            if not item.startswith(exclude_items):
-                rf.append(item)
-        return rf
-
-    @classmethod
-    def moveallfiles(self, root_src_dir, root_dst_dir):
-        change_permissions = True
-        if sys.platform == "win32" or sys.platform == "darwin":
-            change_permissions = False
-        else:
-            logging.getLogger('cps.web').debug('Update on OS-System : ' + sys.platform)
-            new_permissions = os.stat(root_dst_dir)
-            # print new_permissions
-        for src_dir, __, files in os.walk(root_src_dir):
-            dst_dir = src_dir.replace(root_src_dir, root_dst_dir, 1)
-            if not os.path.exists(dst_dir):
-                os.makedirs(dst_dir)
-                logging.getLogger('cps.web').debug('Create-Dir: '+dst_dir)
-                if change_permissions:
-                    # print('Permissions: User '+str(new_permissions.st_uid)+' Group '+str(new_permissions.st_uid))
-                    os.chown(dst_dir, new_permissions.st_uid, new_permissions.st_gid)
-            for file_ in files:
-                src_file = os.path.join(src_dir, file_)
-                dst_file = os.path.join(dst_dir, file_)
-                if os.path.exists(dst_file):
-                    if change_permissions:
-                        permission = os.stat(dst_file)
-                    logging.getLogger('cps.web').debug('Remove file before copy: '+dst_file)
-                    os.remove(dst_file)
-                else:
-                    if change_permissions:
-                        permission = new_permissions
-                shutil.move(src_file, dst_dir)
-                logging.getLogger('cps.web').debug('Move File '+src_file+' to '+dst_dir)
-                if change_permissions:
-                    try:
-                        os.chown(dst_file, permission.st_uid, permission.st_gid)
-                    except (Exception) as e:
-                        # ex = sys.exc_info()
-                        old_permissions = os.stat(dst_file)
-                        logging.getLogger('cps.web').debug('Fail change permissions of ' + str(dst_file) + '. Before: '
-                            + str(old_permissions.st_uid) + ':' + str(old_permissions.st_gid) + ' After: '
-                            + str(permission.st_uid) + ':' + str(permission.st_gid) + ' error: '+str(e))
-        return
-
-    def update_source(self, source, destination):
-        # destination files
-        old_list = list()
-        exclude = (
-            'vendor' + os.sep + 'kindlegen.exe', 'vendor' + os.sep + 'kindlegen', os.sep + 'app.db',
-            os.sep + 'vendor', os.sep + 'calibre-web.log')
-        for root, dirs, files in os.walk(destination, topdown=True):
-            for name in files:
-                old_list.append(os.path.join(root, name).replace(destination, ''))
-            for name in dirs:
-                old_list.append(os.path.join(root, name).replace(destination, ''))
-        # source files
-        new_list = list()
-        for root, dirs, files in os.walk(source, topdown=True):
-            for name in files:
-                new_list.append(os.path.join(root, name).replace(source, ''))
-            for name in dirs:
-                new_list.append(os.path.join(root, name).replace(source, ''))
-
-        delete_files = self.one_minus_two(old_list, new_list)
-
-        rf = self.reduce_files(delete_files, exclude)
-
-        remove_items = self.reduce_dirs(rf, new_list)
-
-        self.moveallfiles(source, destination)
-
-        for item in remove_items:
-            item_path = os.path.join(destination, item[1:])
-            if os.path.isdir(item_path):
-                logging.getLogger('cps.web').debug("Delete dir " + item_path)
-                shutil.rmtree(item_path)
-            else:
-                try:
-                    logging.getLogger('cps.web').debug("Delete file " + item_path)
-                    # log_from_thread("Delete file " + item_path)
-                    os.remove(item_path)
-                except Exception:
-                    logging.getLogger('cps.web').debug("Could not remove:" + item_path)
-        shutil.rmtree(source, ignore_errors=True)
 
 
 def check_unrar(unrarLocation):
@@ -653,26 +511,6 @@ def check_unrar(unrarLocation):
         error=True
     return (error, version)
 
-
-def is_sha1(sha1):
-    if len(sha1) != 40:
-        return False
-    try:
-        int(sha1, 16)
-    except ValueError:
-        return False
-    return True
-
-
-def get_current_version_info():
-    content = {}
-    content[0] = '$Format:%H$'
-    content[1] = '$Format:%cI$'
-    # content[0] = 'bb7d2c6273ae4560e83950d36d64533343623a57'
-    # content[1] = '2018-09-09T10:13:08+02:00'
-    if is_sha1(content[0]) and len(content[1]) > 0:
-        return {'hash': content[0], 'datetime': content[1]}
-    return False
 
 
 def json_serial(obj):

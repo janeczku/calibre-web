@@ -1,6 +1,23 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+#  This file is part of the Calibre-Web (https://github.com/janeczku/calibre-web)
+#    Copyright (C) 2012-2019 mutschler, jkrehm, cervinko, janeczku, OzzieIsaacs, csitko
+#                            ok11, issmirnov, idalin
+#
+#  This program is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License as published by
+#  the Free Software Foundation, either version 3 of the License, or
+#  (at your option) any later version.
+#
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU General Public License for more details.
+#
+#  You should have received a copy of the GNU General Public License
+#  along with this program. If not, see <http://www.gnu.org/licenses/>.
+
 from sqlalchemy import *
 from sqlalchemy import exc
 from sqlalchemy.ext.declarative import declarative_base
@@ -46,6 +63,10 @@ SIDEBAR_PUBLISHER = 4096
 DEFAULT_PASS = "admin123"
 DEFAULT_PORT = int(os.environ.get("CALIBRE_PORT", 8083))
 
+UPDATE_STABLE = 0
+AUTO_UPDATE_STABLE = 1
+UPDATE_NIGHTLY = 2
+AUTO_UPDATE_NIGHTLY = 4
 
 class UserBase:
 
@@ -166,7 +187,6 @@ class User(UserBase, Base):
     sidebar_view = Column(Integer, default=1)
     default_language = Column(String(3), default="all")
     mature_content = Column(Boolean, default=True)
-    # theme = Column(Integer, default=0)
 
 
 # Class for anonymous user is derived from User base and completly overrides methods and properties for the
@@ -259,7 +279,7 @@ class Downloads(Base):
     def __repr__(self):
         return '<Download %r' % self.book_id
 
-        
+
 # Baseclass representing allowed domains for registration
 class Registration(Base):
     __tablename__ = 'registration'
@@ -313,6 +333,7 @@ class Settings(Base):
     config_calibre = Column(String)
     config_rarfile_location = Column(String)
     config_theme = Column(Integer, default=0)
+    config_updatechannel = Column(Integer, default=0)
 
     def __repr__(self):
         pass
@@ -387,10 +408,15 @@ class Config:
             self.config_logfile = data.config_logfile
         self.config_rarfile_location = data.config_rarfile_location
         self.config_theme = data.config_theme
+        self.config_updatechannel = data.config_updatechannel
 
     @property
     def get_main_dir(self):
         return self.config_main_dir
+
+    @property
+    def get_update_channel(self):
+        return self.config_updatechannel
 
     def get_config_certfile(self):
         if cli.certfilepath:
@@ -666,6 +692,12 @@ def migrate_Database():
     except exc.OperationalError:  # Database is not compatible, some rows are missing
         conn = engine.connect()
         conn.execute("ALTER TABLE Settings ADD column `config_theme` INTEGER DEFAULT 0")
+        session.commit()
+    try:
+        session.query(exists().where(Settings.config_updatechannel)).scalar()
+    except exc.OperationalError:  # Database is not compatible, some rows are missing
+        conn = engine.connect()
+        conn.execute("ALTER TABLE Settings ADD column `config_updatechannel` INTEGER DEFAULT 0")
         session.commit()
 
 
