@@ -22,7 +22,7 @@ from socket import error as SocketError
 import sys
 import os
 import signal
-import web
+from cps import config, global_WorkerThread
 
 try:
     from gevent.pywsgi import WSGIServer
@@ -42,82 +42,81 @@ class server:
 
     wsgiserver = None
     restart= False
+    app = None
 
     def __init__(self):
         signal.signal(signal.SIGINT, self.killServer)
         signal.signal(signal.SIGTERM, self.killServer)
 
+    def init_app(self,application):
+        self.app = application
+
     def start_gevent(self):
         try:
             ssl_args = dict()
-            certfile_path   = web.ub.config.get_config_certfile()
-            keyfile_path    = web.ub.config.get_config_keyfile()
+            certfile_path   = config.get_config_certfile()
+            keyfile_path    = config.get_config_keyfile()
             if certfile_path and keyfile_path:
                 if os.path.isfile(certfile_path) and os.path.isfile(keyfile_path):
                     ssl_args = {"certfile": certfile_path,
                                 "keyfile": keyfile_path}
                 else:
-                    web.app.logger.info('The specified paths for the ssl certificate file and/or key file seem to be broken. Ignoring ssl. Cert path: %s | Key path: %s' % (certfile_path, keyfile_path))
+                    self.app.logger.info('The specified paths for the ssl certificate file and/or key file seem to be broken. Ignoring ssl. Cert path: %s | Key path: %s' % (certfile_path, keyfile_path))
             if os.name == 'nt':
-                self.wsgiserver= WSGIServer(('0.0.0.0', web.ub.config.config_port), web.app, spawn=Pool(), **ssl_args)
+                self.wsgiserver= WSGIServer(('0.0.0.0', config.config_port), self.app, spawn=Pool(), **ssl_args)
             else:
-                self.wsgiserver = WSGIServer(('', web.ub.config.config_port), web.app, spawn=Pool(), **ssl_args)
-            web.py3_gevent_link = self.wsgiserver
+                self.wsgiserver = WSGIServer(('', config.config_port), self.app, spawn=Pool(), **ssl_args)
             self.wsgiserver.serve_forever()
 
         except SocketError:
             try:
-                web.app.logger.info('Unable to listen on \'\', trying on IPv4 only...')
-                self.wsgiserver = WSGIServer(('0.0.0.0', web.ub.config.config_port), web.app, spawn=Pool(), **ssl_args)
-                web.py3_gevent_link = self.wsgiserver
+                self.app.logger.info('Unable to listen on \'\', trying on IPv4 only...')
+                self.wsgiserver = WSGIServer(('0.0.0.0', config.config_port), self.app, spawn=Pool(), **ssl_args)
                 self.wsgiserver.serve_forever()
             except (OSError, SocketError) as e:
-                web.app.logger.info("Error starting server: %s" % e.strerror)
+                self.app.logger.info("Error starting server: %s" % e.strerror)
                 print("Error starting server: %s" % e.strerror)
-                web.helper.global_WorkerThread.stop()
+                global_WorkerThread.stop()
                 sys.exit(1)
         except Exception:
-            web.app.logger.info("Unknown error while starting gevent")
+            self.app.logger.info("Unknown error while starting gevent")
 
     def startServer(self):
         if gevent_present:
-            web.app.logger.info('Starting Gevent server')
+            self.app.logger.info('Starting Gevent server')
             # leave subprocess out to allow forking for fetchers and processors
             self.start_gevent()
         else:
             try:
                 ssl = None
-                web.app.logger.info('Starting Tornado server')
-                certfile_path   = web.ub.config.get_config_certfile()
-                keyfile_path    = web.ub.config.get_config_keyfile()
+                self.app.logger.info('Starting Tornado server')
+                certfile_path   = config.get_config_certfile()
+                keyfile_path    = config.get_config_keyfile()
                 if certfile_path and keyfile_path:
                     if os.path.isfile(certfile_path) and os.path.isfile(keyfile_path):
                         ssl = {"certfile": certfile_path,
                                "keyfile": keyfile_path}
                     else:
-                        web.app.logger.info('The specified paths for the ssl certificate file and/or key file seem to be broken. Ignoring ssl. Cert path: %s | Key path: %s' % (certfile_path, keyfile_path))
+                        self.app.logger.info('The specified paths for the ssl certificate file and/or key file seem to be broken. Ignoring ssl. Cert path: %s | Key path: %s' % (certfile_path, keyfile_path))
 
                 # Max Buffersize set to 200MB
-                http_server = HTTPServer(WSGIContainer(web.app),
+                http_server = HTTPServer(WSGIContainer(self.app),
                             max_buffer_size = 209700000,
                             ssl_options=ssl)
-                http_server.listen(web.ub.config.config_port)
+                http_server.listen(config.config_port)
                 self.wsgiserver=IOLoop.instance()
                 self.wsgiserver.start()
                 # wait for stop signal
                 self.wsgiserver.close(True)
             except SocketError as e:
-                web.app.logger.info("Error starting server: %s" % e.strerror)
+                self.app.logger.info("Error starting server: %s" % e.strerror)
                 print("Error starting server: %s" % e.strerror)
-                web.helper.global_WorkerThread.stop()
+                global_WorkerThread.stop()
                 sys.exit(1)
 
-        # ToDo: Somehow caused by circular import under python3 refactor
-        if sys.version_info > (3, 0):
-            self.restart = web.py3_restart_Typ
         if self.restart == True:
-            web.app.logger.info("Performing restart of Calibre-Web")
-            web.helper.global_WorkerThread.stop()
+            self.app.logger.info("Performing restart of Calibre-Web")
+            global_WorkerThread.stop()
             if os.name == 'nt':
                 arguments = ["\"" + sys.executable + "\""]
                 for e in sys.argv:
@@ -126,26 +125,17 @@ class server:
             else:
                 os.execl(sys.executable, sys.executable, *sys.argv)
         else:
-            web.app.logger.info("Performing shutdown of Calibre-Web")
-            web.helper.global_WorkerThread.stop()
+            self.app.logger.info("Performing shutdown of Calibre-Web")
+            global_WorkerThread.stop()
         sys.exit(0)
 
     def setRestartTyp(self,starttyp):
         self.restart = starttyp
-        # ToDo: Somehow caused by circular import under python3 refactor
-        web.py3_restart_Typ = starttyp
 
     def killServer(self, signum, frame):
         self.stopServer()
 
     def stopServer(self):
-        # ToDo: Somehow caused by circular import under python3 refactor
-        if sys.version_info > (3, 0):
-            if not self.wsgiserver:
-                if gevent_present:
-                    self.wsgiserver = web.py3_gevent_link
-                else:
-                    self.wsgiserver = IOLoop.instance()
         if self.wsgiserver:
             if gevent_present:
                 self.wsgiserver.close()
@@ -155,10 +145,6 @@ class server:
     @staticmethod
     def getNameVersion():
         if gevent_present:
-            return {'Gevent':'v'+geventVersion}
+            return {'Gevent':'v' + geventVersion}
         else:
             return {'Tornado':'v'+tornadoVersion}
-
-
-# Start Instance of Server
-Server=server()

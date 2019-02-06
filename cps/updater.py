@@ -28,7 +28,8 @@ from io import BytesIO
 import os
 import sys
 import shutil
-from ub import config, UPDATE_STABLE
+from cps import config
+from ub import UPDATE_STABLE
 from tempfile import gettempdir
 import datetime
 import json

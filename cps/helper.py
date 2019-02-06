@@ -20,14 +20,13 @@
 
 
 import db
-import ub
+from cps import config
 from flask import current_app as app
 from tempfile import gettempdir
 import sys
 import os
 import re
 import unicodedata
-# from io import BytesIO
 import worker
 import time
 from flask import send_from_directory, make_response, redirect, abort
@@ -41,20 +40,16 @@ try:
     import gdriveutils as gd
 except ImportError:
     pass
-import web
+# import web
 import random
 from subproc_wrapper import process_open
+import ub
 
 try:
     import unidecode
     use_unidecode = True
 except ImportError:
     use_unidecode = False
-
-# Global variables
-# updater_thread = None
-global_WorkerThread = worker.WorkerThread()
-global_WorkerThread.start()
 
 
 def update_download(book_id, user_id):
@@ -73,7 +68,7 @@ def convert_book_format(book_id, calibrepath, old_book_format, new_book_format, 
         error_message = _(u"%(format)s format not found for book id: %(book)d", format=old_book_format, book=book_id)
         app.logger.error("convert_book_format: " + error_message)
         return error_message
-    if ub.config.config_use_google_drive:
+    if config.config_use_google_drive:
         df = gd.getFileFromEbooksFolder(book.path, data.name + "." + old_book_format.lower())
         if df:
             datafile = os.path.join(calibrepath, book.path, data.name + u"." + old_book_format.lower())
@@ -133,7 +128,7 @@ def check_send_to_kindle(entry):
     """
     if len(entry.data):
         bookformats=list()
-        if ub.config.config_ebookconverter == 0:
+        if config.config_ebookconverter == 0:
             # no converter - only for mobi and pdf formats
             for ele in iter(entry.data):
                 if 'MOBI' in ele.format:
@@ -156,11 +151,11 @@ def check_send_to_kindle(entry):
                 bookformats.append({'format': 'Azw3','convert':0,'text':_('Send %(format)s to Kindle',format='Azw3')})
             if 'PDF' in formats:
                 bookformats.append({'format': 'Pdf','convert':0,'text':_('Send %(format)s to Kindle',format='Pdf')})
-            if ub.config.config_ebookconverter >= 1:
+            if config.config_ebookconverter >= 1:
                 if 'EPUB' in formats and not 'MOBI' in formats:
                     bookformats.append({'format': 'Mobi','convert':1,
                             'text':_('Convert %(orig)s to %(format)s and send to Kindle',orig='Epub',format='Mobi')})
-            if ub.config.config_ebookconverter == 2:
+            if config.config_ebookconverter == 2:
                 if 'EPUB' in formats and not 'AZW3' in formats:
                     bookformats.append({'format': 'Azw3','convert':1,
                             'text':_('Convert %(orig)s to %(format)s and send to Kindle',orig='Epub',format='Azw3')})
@@ -407,21 +402,21 @@ def generate_random_password():
 ################################## External interface
 
 def update_dir_stucture(book_id, calibrepath, first_author = None):
-    if ub.config.config_use_google_drive:
+    if config.config_use_google_drive:
         return update_dir_structure_gdrive(book_id, first_author)
     else:
         return update_dir_structure_file(book_id, calibrepath, first_author)
 
 
 def delete_book(book, calibrepath, book_format):
-    if ub.config.config_use_google_drive:
+    if config.config_use_google_drive:
         return delete_book_gdrive(book, book_format)
     else:
         return delete_book_file(book, calibrepath, book_format)
 
 
 def get_book_cover(cover_path):
-    if ub.config.config_use_google_drive:
+    if config.config_use_google_drive:
         try:
             if not web.is_gdrive_ready():
                 return send_from_directory(os.path.join(os.path.dirname(__file__), "static"), "generic_cover.jpg")
@@ -437,7 +432,7 @@ def get_book_cover(cover_path):
             # traceback.print_exc()
             return send_from_directory(os.path.join(os.path.dirname(__file__), "static"),"generic_cover.jpg")
     else:
-        return send_from_directory(os.path.join(ub.config.config_calibre_dir, cover_path), "cover.jpg")
+        return send_from_directory(os.path.join(config.config_calibre_dir, cover_path), "cover.jpg")
 
 
 # saves book cover to gdrive or locally
@@ -447,7 +442,7 @@ def save_cover(url, book_path):
         web.app.logger.error("Cover is no jpg file, can't save")
         return False
 
-    if ub.config.config_use_google_drive:
+    if config.config_use_google_drive:
         tmpDir = gettempdir()
         f = open(os.path.join(tmpDir, "uploaded_cover.jpg"), "wb")
         f.write(img.content)
@@ -456,7 +451,7 @@ def save_cover(url, book_path):
         web.app.logger.info("Cover is saved on Google Drive")
         return True
 
-    f = open(os.path.join(ub.config.config_calibre_dir, book_path, "cover.jpg"), "wb")
+    f = open(os.path.join(config.config_calibre_dir, book_path, "cover.jpg"), "wb")
     f.write(img.content)
     f.close()
     web.app.logger.info("Cover is saved")
@@ -464,7 +459,7 @@ def save_cover(url, book_path):
 
 
 def do_download_file(book, book_format, data, headers):
-    if ub.config.config_use_google_drive:
+    if config.config_use_google_drive:
         startTime = time.time()
         df = gd.getFileFromEbooksFolder(book.path, data.name + "." + book_format)
         web.app.logger.debug(time.time() - startTime)
@@ -473,7 +468,7 @@ def do_download_file(book, book_format, data, headers):
         else:
             abort(404)
     else:
-        filename = os.path.join(ub.config.config_calibre_dir, book.path)
+        filename = os.path.join(config.config_calibre_dir, book.path)
         if not os.path.isfile(os.path.join(filename, data.name + "." + book_format)):
             # ToDo: improve error handling
             web.app.logger.error('File not found: %s' % os.path.join(filename, data.name + "." + book_format))
