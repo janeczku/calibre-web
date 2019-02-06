@@ -8,21 +8,21 @@
     {% for entry in random %}
     <div class="col-sm-3 col-lg-2 col-xs-6 book" id="books_rand">
       <div class="cover">
-          <a href="{{ url_for('show_book', book_id=entry.id) }}" data-toggle="modal" data-target="#bookDetailsModal" data-remote="false">
+          <a href="{{ url_for('web.show_book', book_id=entry.id) }}" data-toggle="modal" data-target="#bookDetailsModal" data-remote="false">
             {% if entry.has_cover %}
-              <img src="{{ url_for('get_cover', book_id=entry.id) }}" alt="{{ entry.title }}" />
+              <img src="{{ url_for('web.get_cover', book_id=entry.id) }}" alt="{{ entry.title }}" />
             {% else %}
               <img src="{{ url_for('static', filename='generic_cover.jpg') }}" alt="{{ entry.title }}" />
             {% endif %}
           </a>
       </div>
       <div class="meta">
-        <a href="{{ url_for('show_book', book_id=entry.id) }}" data-toggle="modal" data-target="#bookDetailsModal" data-remote="false">
+        <a href="{{ url_for('web.show_book', book_id=entry.id) }}" data-toggle="modal" data-target="#bookDetailsModal" data-remote="false">
           <p class="title">{{entry.title|shortentitle}}</p>
         </a>
         <p class="author">
           {% for author in entry.authors %}
-            <a href="{{url_for('author', book_id=author.id) }}">{{author.name.replace('|',',')|shortentitle(30)}}</a>
+            <a href="{{url_for('web.author', book_id=author.id) }}">{{author.name.replace('|',',')|shortentitle(30)}}</a>
             {% if not loop.last %}
               &amp;
             {% endif %}
@@ -53,21 +53,21 @@
     {% for entry in entries %}
     <div class="col-sm-3 col-lg-2 col-xs-6 book" id="books">
       <div class="cover">
-          <a href="{{ url_for('show_book', book_id=entry.id) }}" data-toggle="modal" data-target="#bookDetailsModal" data-remote="false">
+          <a href="{{ url_for('web.show_book', book_id=entry.id) }}" data-toggle="modal" data-target="#bookDetailsModal" data-remote="false">
             {% if entry.has_cover %}
-              <img src="{{ url_for('get_cover', book_id=entry.id) }}" alt="{{ entry.title }}"/>
+              <img src="{{ url_for('web.get_cover', book_id=entry.id) }}" alt="{{ entry.title }}"/>
             {% else %}
               <img src="{{ url_for('static', filename='generic_cover.jpg') }}" alt="{{ entry.title }}" />
             {% endif %}
           </a>
       </div>
       <div class="meta">
-        <a href="{{ url_for('show_book', book_id=entry.id) }}" data-toggle="modal" data-target="#bookDetailsModal" data-remote="false">
+        <a href="{{ url_for('web.show_book', book_id=entry.id) }}" data-toggle="modal" data-target="#bookDetailsModal" data-remote="false">
           <p class="title">{{entry.title|shortentitle}}</p>
         </a>
         <p class="author">
           {% for author in entry.authors %}
-            <a href="{{url_for('author', book_id=author.id) }}">{{author.name.replace('|',',')|shortentitle(30)}}</a>
+            <a href="{{url_for('web.author', book_id=author.id) }}">{{author.name.replace('|',',')|shortentitle(30)}}</a>
             {% if not loop.last %}
               &amp;
             {% endif %}

@@ -27,7 +27,7 @@ except ImportError:
     gdrive_support = False
 
 import os
-from ub import config
+from cps import config
 import cli
 import shutil
 from flask import Response, stream_with_context

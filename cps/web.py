@@ -23,30 +23,23 @@
 
 import mimetypes
 import logging
-from logging.handlers import RotatingFileHandler
 from flask import (Flask, session, render_template, request, Response, redirect,
                    url_for, send_from_directory, make_response, g, flash,
                    abort, Markup)
 from flask import __version__ as flaskVersion
 from werkzeug import __version__ as werkzeugVersion
-from werkzeug.exceptions import default_exceptions
+# from werkzeug.exceptions import default_exceptions
 
 from jinja2 import __version__  as jinja2Version
-import cache_buster
-import ub
-from ub import config
 import helper
 import os
-from sqlalchemy.sql.expression import func
-from sqlalchemy.sql.expression import false
+# from sqlalchemy.sql.expression import func
+# from sqlalchemy.sql.expression import false
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy import __version__ as sqlalchemyVersion
-from math import ceil
-from flask_login import (LoginManager, login_user, logout_user,
+from flask_login import (login_user, logout_user,
                          login_required, current_user)
-from flask_principal import Principal
 from flask_principal import __version__ as flask_principalVersion
-from flask_babel import Babel
 from flask_babel import gettext as _
 import requests
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -76,14 +69,16 @@ import tempfile
 from redirect import redirect_back
 import time
 import server
-from reverseproxy import ReverseProxied
 from updater import updater_thread
-from flask_dance.contrib.github import make_github_blueprint, github
-from flask_dance.contrib.google import make_google_blueprint, google
-from flask_dance.consumer import oauth_authorized, oauth_error
-from sqlalchemy.orm.exc import NoResultFound
-from oauth import OAuthBackend
+#from flask_dance.contrib.github import make_github_blueprint, github
+#from flask_dance.contrib.google import make_google_blueprint, google
+#from flask_dance.consumer import oauth_authorized, oauth_error
+#from sqlalchemy.orm.exc import NoResultFound
+# from oauth import OAuthBackend
 import hashlib
+from cps import lm, babel, ub_session, config, Server
+import ub
+from pagination import Pagination
 
 try:
     from googleapiclient.errors import HttpError
@@ -139,8 +134,6 @@ except ImportError:
 current_milli_time = lambda: int(round(time.time() * 1000))
 gdrive_watch_callback_token = 'target=calibreweb-watch_files'
 # ToDo: Somehow caused by circular import under python3 refactor
-py3_gevent_link = None
-py3_restart_Typ = False
 EXTENSIONS_UPLOAD = {'txt', 'pdf', 'epub', 'mobi', 'azw', 'azw3', 'cbr', 'cbz', 'cbt', 'djvu', 'prc', 'doc', 'docx',
                       'fb2', 'html', 'rtf', 'odt', 'mp3',  'm4a', 'm4b'}
 EXTENSIONS_CONVERT = {'pdf', 'epub', 'mobi', 'azw3', 'docx', 'rtf', 'fb2', 'lit', 'lrf', 'txt', 'html', 'rtf', 'odt'}
@@ -174,7 +167,7 @@ mimetypes.add_type('application/ogg', '.oga')
 
 app = (Flask(__name__))
 
-# custom error page
+''''# custom error page
 def error_http(error):
     return render_template('http_error.html',
                             error_code=error.code,
@@ -188,39 +181,15 @@ for ex in default_exceptions:
     if ex < 500:
         app.register_error_handler(ex, error_http)
 
-app.wsgi_app = ReverseProxied(app.wsgi_app)
-cache_buster.init_cache_busting(app)
 
-formatter = logging.Formatter(
-    "[%(asctime)s] {%(pathname)s:%(lineno)d} %(levelname)s - %(message)s")
-try:
-    file_handler = RotatingFileHandler(config.get_config_logfile(), maxBytes=50000, backupCount=2)
-except IOError:
-    file_handler = RotatingFileHandler(os.path.join(config.get_main_dir, "calibre-web.log"),
-                                       maxBytes=50000, backupCount=2)
-    # ToDo: reset logfile value in config class
-file_handler.setFormatter(formatter)
-app.logger.addHandler(file_handler)
-app.logger.setLevel(config.config_log_level)
 
-app.logger.info('Starting Calibre Web...')
-logging.getLogger("book_formats").addHandler(file_handler)
-logging.getLogger("book_formats").setLevel(config.config_log_level)
+# import uploader
 
-Principal(app)
-babel = Babel(app)
+'''
 
-import uploader
+from flask import Blueprint
 
-lm = LoginManager(app)
-lm.init_app(app)
-lm.login_view = 'login'
-lm.anonymous_user = ub.Anonymous
-app.secret_key = os.getenv('SECRET_KEY', 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT')
-db.setup_db()
-
-with open(os.path.join(config.get_main_dir, 'cps/translations/iso639.pickle'), 'rb') as f:
-    language_table = cPickle.load(f)
+web = Blueprint('web', __name__)
 
 
 def is_gdrive_ready():
@@ -256,8 +225,10 @@ def get_timezone():
 
 @lm.user_loader
 def load_user(user_id):
-    return ub.session.query(ub.User).filter(ub.User.id == int(user_id)).first()
-
+    try:
+        return ub_session.query(ub.User).filter(ub.User.id == int(user_id)).first()
+    except Exception as e:
+        print(e)
 
 @lm.header_loader
 def load_user_from_header(header_val):
@@ -298,58 +269,6 @@ def requires_basic_auth_if_no_ano(f):
         return f(*args, **kwargs)
 
     return decorated
-
-
-# simple pagination for the feed
-class Pagination(object):
-    def __init__(self, page, per_page, total_count):
-        self.page = int(page)
-        self.per_page = int(per_page)
-        self.total_count = int(total_count)
-
-    @property
-    def next_offset(self):
-        return int(self.page * self.per_page)
-
-    @property
-    def previous_offset(self):
-        return int((self.page - 2) * self.per_page)
-
-    @property
-    def last_offset(self):
-        last = int(self.total_count) - int(self.per_page)
-        if last < 0:
-            last = 0
-        return int(last)
-
-    @property
-    def pages(self):
-        return int(ceil(self.total_count / float(self.per_page)))
-
-    @property
-    def has_prev(self):
-        return self.page > 1
-
-    @property
-    def has_next(self):
-        return self.page < self.pages
-
-    # right_edge: last right_edges count of all pages are shown as number, means, if 10 pages are paginated -> 9,10 shwn
-    # left_edge: first left_edges count of all pages are shown as number                                    -> 1,2 shwn
-    # left_current: left_current count below current page are shown as number, means if current page 5      -> 3,4 shwn
-    # left_current: right_current count above current page are shown as number, means if current page 5     -> 6,7 shwn
-    def iter_pages(self, left_edge=2, left_current=2,
-                   right_current=4, right_edge=2):
-        last = 0
-        left_current = self.page - left_current - 1
-        right_current = self.page + right_current + 1
-        right_edge = self.pages - right_edge
-        for num in range(1, (self.pages + 1)):
-            if num <= left_edge or (left_current < num < right_current) or num > right_edge:
-                if last + 1 != num:
-                    yield None
-                yield num
-                last = num
 
 
 def login_required_if_no_ano(func):
@@ -408,7 +327,7 @@ def google_oauth_required(f):
 # custom jinja filters
 
 # pagination links in jinja
-@app.template_filter('url_for_other_page')
+@web.app_template_filter('url_for_other_page')
 def url_for_other_page(page):
     args = request.view_args.copy()
     args['page'] = page
@@ -416,7 +335,7 @@ def url_for_other_page(page):
 
 
 # shortentitles to at longest nchar, shorten longer words if necessary
-@app.template_filter('shortentitle')
+@web.app_template_filter('shortentitle')
 def shortentitle_filter(s, nchar=20):
     text = s.split()
     res = ""  # result
@@ -436,7 +355,7 @@ def shortentitle_filter(s, nchar=20):
     return res.strip()
 
 
-@app.template_filter('mimetype')
+@web.app_template_filter('mimetype')
 def mimetype_filter(val):
     try:
         s = mimetypes.types_map['.' + val]
@@ -445,14 +364,14 @@ def mimetype_filter(val):
     return s
 
 
-@app.template_filter('formatdate')
+@web.app_template_filter('formatdate')
 def formatdate_filter(val):
     conformed_timestamp = re.sub(r"[:]|([-](?!((\d{2}[:]\d{2})|(\d{4}))$))", '', val)
     formatdate = datetime.datetime.strptime(conformed_timestamp[:15], "%Y%m%d %H%M%S")
     return format_date(formatdate, format='medium', locale=get_locale())
 
 
-@app.template_filter('formatdateinput')
+@web.app_template_filter('formatdateinput')
 def format_date_input(val):
     conformed_timestamp = re.sub(r"[:]|([-](?!((\d{2}[:]\d{2})|(\d{4}))$))", '', val)
     date_obj = datetime.datetime.strptime(conformed_timestamp[:15], "%Y%m%d %H%M%S")
@@ -460,7 +379,7 @@ def format_date_input(val):
     return '' if input_date == "0101-01-01" else input_date
 
 
-@app.template_filter('strftime')
+@web.app_template_filter('strftime')
 def timestamptodate(date, fmt=None):
     date = datetime.datetime.fromtimestamp(
         int(date)/1000
@@ -473,12 +392,12 @@ def timestamptodate(date, fmt=None):
     return native.strftime(time_format)
 
 
-@app.template_filter('yesno')
+@web.app_template_filter('yesno')
 def yesno(value, yes, no):
     return yes if value else no
 
 
-'''@app.template_filter('canread')
+'''@web.app_template_filter('canread')
 def canread(ext):
     if isinstance(ext, db.Data):
         ext = ext.format
@@ -748,44 +667,44 @@ def render_title_template(*args, **kwargs):
     return render_template(instance=config.config_calibre_web_title, *args, **kwargs)
 
 
-@app.before_request
+@web.before_request
 def before_request():
     g.user = current_user
     g.allow_registration = config.config_public_reg
     g.allow_upload = config.config_uploading
     g.current_theme = config.config_theme
     g.public_shelfes = ub.session.query(ub.Shelf).filter(ub.Shelf.is_public == 1).order_by(ub.Shelf.name).all()
-    if not config.db_configured and request.endpoint not in ('basic_configuration', 'login') and '/static/' not in request.path:
-        return redirect(url_for('basic_configuration'))
+    if not config.db_configured and request.endpoint not in ('web.basic_configuration', 'login') and '/static/' not in request.path:
+        return redirect(url_for('web.basic_configuration'))
 
 
 # Routing functions
 
-@app.route("/opds")
+@web.route("/opds")
 @requires_basic_auth_if_no_ano
 def feed_index():
     return render_xml_template('index.xml')
 
 
-@app.route("/opds/osd")
+@web.route("/opds/osd")
 @requires_basic_auth_if_no_ano
 def feed_osd():
     return render_xml_template('osd.xml', lang='en-EN')
 
 
-@app.route("/opds/search/<query>")
+@web.route("/opds/search/<query>")
 @requires_basic_auth_if_no_ano
 def feed_cc_search(query):
     return feed_search(query.strip())
 
 
-@app.route("/opds/search", methods=["GET"])
+@web.route("/opds/search", methods=["GET"])
 @requires_basic_auth_if_no_ano
 def feed_normal_search():
     return feed_search(request.args.get("query").strip())
 
 
-@app.route("/opds/new")
+@web.route("/opds/new")
 @requires_basic_auth_if_no_ano
 def feed_new():
     off = request.args.get("offset") or 0
@@ -794,7 +713,7 @@ def feed_new():
     return render_xml_template('feed.xml', entries=entries, pagination=pagination)
 
 
-@app.route("/opds/discover")
+@web.route("/opds/discover")
 @requires_basic_auth_if_no_ano
 def feed_discover():
     entries = db.session.query(db.Books).filter(common_filters()).order_by(func.random())\
@@ -803,7 +722,7 @@ def feed_discover():
     return render_xml_template('feed.xml', entries=entries, pagination=pagination)
 
 
-@app.route("/opds/rated")
+@web.route("/opds/rated")
 @requires_basic_auth_if_no_ano
 def feed_best_rated():
     off = request.args.get("offset") or 0
@@ -812,7 +731,7 @@ def feed_best_rated():
     return render_xml_template('feed.xml', entries=entries, pagination=pagination)
 
 
-@app.route("/opds/hot")
+@web.route("/opds/hot")
 @requires_basic_auth_if_no_ano
 def feed_hot():
     off = request.args.get("offset") or 0
@@ -837,7 +756,7 @@ def feed_hot():
     return render_xml_template('feed.xml', entries=entries, pagination=pagination)
 
 
-@app.route("/opds/author")
+@web.route("/opds/author")
 @requires_basic_auth_if_no_ano
 def feed_authorindex():
     off = request.args.get("offset") or 0
@@ -848,7 +767,7 @@ def feed_authorindex():
     return render_xml_template('feed.xml', listelements=entries, folder='feed_author', pagination=pagination)
 
 
-@app.route("/opds/author/<int:book_id>")
+@web.route("/opds/author/<int:book_id>")
 @requires_basic_auth_if_no_ano
 def feed_author(book_id):
     off = request.args.get("offset") or 0
@@ -857,7 +776,7 @@ def feed_author(book_id):
     return render_xml_template('feed.xml', entries=entries, pagination=pagination)
 
 
-@app.route("/opds/publisher")
+@web.route("/opds/publisher")
 @requires_basic_auth_if_no_ano
 def feed_publisherindex():
     off = request.args.get("offset") or 0
@@ -868,7 +787,7 @@ def feed_publisherindex():
     return render_xml_template('feed.xml', listelements=entries, folder='feed_publisher', pagination=pagination)
 
 
-@app.route("/opds/publisher/<int:book_id>")
+@web.route("/opds/publisher/<int:book_id>")
 @requires_basic_auth_if_no_ano
 def feed_publisher(book_id):
     off = request.args.get("offset") or 0
@@ -878,7 +797,7 @@ def feed_publisher(book_id):
     return render_xml_template('feed.xml', entries=entries, pagination=pagination)
 
 
-@app.route("/opds/category")
+@web.route("/opds/category")
 @requires_basic_auth_if_no_ano
 def feed_categoryindex():
     off = request.args.get("offset") or 0
@@ -889,7 +808,7 @@ def feed_categoryindex():
     return render_xml_template('feed.xml', listelements=entries, folder='feed_category', pagination=pagination)
 
 
-@app.route("/opds/category/<int:book_id>")
+@web.route("/opds/category/<int:book_id>")
 @requires_basic_auth_if_no_ano
 def feed_category(book_id):
     off = request.args.get("offset") or 0
@@ -898,7 +817,7 @@ def feed_category(book_id):
     return render_xml_template('feed.xml', entries=entries, pagination=pagination)
 
 
-@app.route("/opds/series")
+@web.route("/opds/series")
 @requires_basic_auth_if_no_ano
 def feed_seriesindex():
     off = request.args.get("offset") or 0
@@ -909,7 +828,7 @@ def feed_seriesindex():
     return render_xml_template('feed.xml', listelements=entries, folder='feed_series', pagination=pagination)
 
 
-@app.route("/opds/series/<int:book_id>")
+@web.route("/opds/series/<int:book_id>")
 @requires_basic_auth_if_no_ano
 def feed_series(book_id):
     off = request.args.get("offset") or 0
@@ -918,8 +837,8 @@ def feed_series(book_id):
     return render_xml_template('feed.xml', entries=entries, pagination=pagination)
 
 
-@app.route("/opds/shelfindex/", defaults={'public': 0})
-@app.route("/opds/shelfindex/<string:public>")
+@web.route("/opds/shelfindex/", defaults={'public': 0})
+@web.route("/opds/shelfindex/<string:public>")
 @requires_basic_auth_if_no_ano
 def feed_shelfindex(public):
     off = request.args.get("offset") or 0
@@ -934,7 +853,7 @@ def feed_shelfindex(public):
     return render_xml_template('feed.xml', listelements=shelf, folder='feed_shelf', pagination=pagination)
 
 
-@app.route("/opds/shelf/<int:book_id>")
+@web.route("/opds/shelf/<int:book_id>")
 @requires_basic_auth_if_no_ano
 def feed_shelf(book_id):
     off = request.args.get("offset") or 0
@@ -958,7 +877,7 @@ def feed_shelf(book_id):
         return render_xml_template('feed.xml', entries=result, pagination=pagination)
 
 
-@app.route("/opds/download/<book_id>/<book_format>/")
+@web.route("/opds/download/<book_id>/<book_format>/")
 @requires_basic_auth_if_no_ano
 @download_required
 def get_opds_download_link(book_id, book_format):
@@ -982,7 +901,7 @@ def get_opds_download_link(book_id, book_format):
     return helper.do_download_file(book, book_format, data, headers)
 
 
-@app.route("/ajax/book/<string:uuid>")
+@web.route("/ajax/book/<string:uuid>")
 @requires_basic_auth_if_no_ano
 def get_metadata_calibre_companion(uuid):
     entry = db.session.query(db.Books).filter(db.Books.uuid.like("%" + uuid + "%")).first()
@@ -994,7 +913,7 @@ def get_metadata_calibre_companion(uuid):
     else:
         return ""
 
-@app.route("/ajax/emailstat")
+@web.route("/ajax/emailstat")
 @login_required
 def get_email_status_json():
     tasks=helper.global_WorkerThread.get_taskstatus()
@@ -1015,7 +934,7 @@ def check_valid_domain(domain_text):
     return len(result)
 
 
-@app.route("/ajax/editdomain", methods=['POST'])
+@web.route("/ajax/editdomain", methods=['POST'])
 @login_required
 @admin_required
 def edit_domain():
@@ -1031,7 +950,7 @@ def edit_domain():
     return ""
 
 
-@app.route("/ajax/adddomain", methods=['POST'])
+@web.route("/ajax/adddomain", methods=['POST'])
 @login_required
 @admin_required
 def add_domain():
@@ -1044,7 +963,7 @@ def add_domain():
     return ""
 
 
-@app.route("/ajax/deletedomain", methods=['POST'])
+@web.route("/ajax/deletedomain", methods=['POST'])
 @login_required
 @admin_required
 def delete_domain():
@@ -1059,7 +978,7 @@ def delete_domain():
     return ""
 
 
-@app.route("/ajax/domainlist")
+@web.route("/ajax/domainlist")
 @login_required
 @admin_required
 def list_domain():
@@ -1072,7 +991,7 @@ def list_domain():
 
 
 '''
-@app.route("/ajax/getcomic/<int:book_id>/<book_format>/<int:page>")
+@web.route("/ajax/getcomic/<int:book_id>/<book_format>/<int:page>")
 @login_required
 def get_comic_book(book_id, book_format, page):
     book = db.session.query(db.Books).filter(db.Books.id == book_id).first()
@@ -1123,7 +1042,7 @@ def get_comic_book(book_id, book_format, page):
 '''
 
 
-@app.route("/get_authors_json", methods=['GET', 'POST'])
+@web.route("/get_authors_json", methods=['GET', 'POST'])
 @login_required_if_no_ano
 def get_authors_json():
     if request.method == "GET":
@@ -1133,7 +1052,7 @@ def get_authors_json():
         return json_dumps
 
 
-@app.route("/get_publishers_json", methods=['GET', 'POST'])
+@web.route("/get_publishers_json", methods=['GET', 'POST'])
 @login_required_if_no_ano
 def get_publishers_json():
     if request.method == "GET":
@@ -1143,7 +1062,7 @@ def get_publishers_json():
         return json_dumps
 
 
-@app.route("/get_tags_json", methods=['GET', 'POST'])
+@web.route("/get_tags_json", methods=['GET', 'POST'])
 @login_required_if_no_ano
 def get_tags_json():
     if request.method == "GET":
@@ -1153,7 +1072,7 @@ def get_tags_json():
         return json_dumps
 
 
-@app.route("/get_languages_json", methods=['GET', 'POST'])
+@web.route("/get_languages_json", methods=['GET', 'POST'])
 @login_required_if_no_ano
 def get_languages_json():
     if request.method == "GET":
@@ -1169,7 +1088,7 @@ def get_languages_json():
         return json_dumps
 
 
-@app.route("/get_series_json", methods=['GET', 'POST'])
+@web.route("/get_series_json", methods=['GET', 'POST'])
 @login_required_if_no_ano
 def get_series_json():
     if request.method == "GET":
@@ -1180,7 +1099,7 @@ def get_series_json():
         return json_dumps
 
 
-@app.route("/get_matching_tags", methods=['GET', 'POST'])
+@web.route("/get_matching_tags", methods=['GET', 'POST'])
 @login_required_if_no_ano
 def get_matching_tags():
     tag_dict = {'tags': []}
@@ -1206,13 +1125,13 @@ def get_matching_tags():
     return json_dumps
 
 
-@app.route("/get_update_status", methods=['GET'])
+@web.route("/get_update_status", methods=['GET'])
 @login_required_if_no_ano
 def get_update_status():
     return updater_thread.get_available_updates(request.method)
 
 
-@app.route("/get_updater_status", methods=['GET', 'POST'])
+@web.route("/get_updater_status", methods=['GET', 'POST'])
 @login_required
 @admin_required
 def get_updater_status():
@@ -1248,8 +1167,8 @@ def get_updater_status():
     return json.dumps(status)
 
 
-@app.route("/", defaults={'page': 1})
-@app.route('/page/<int:page>')
+@web.route("/", defaults={'page': 1})
+@web.route('/page/<int:page>')
 @login_required_if_no_ano
 def index(page):
     entries, random, pagination = fill_indexpage(page, db.Books, True, [db.Books.timestamp.desc()])
@@ -1257,8 +1176,8 @@ def index(page):
                                  title=_(u"Recently Added Books"), page="root")
 
 
-@app.route('/books/newest', defaults={'page': 1})
-@app.route('/books/newest/page/<int:page>')
+@web.route('/books/newest', defaults={'page': 1})
+@web.route('/books/newest/page/<int:page>')
 @login_required_if_no_ano
 def newest_books(page):
     if current_user.show_sorted():
@@ -1269,8 +1188,8 @@ def newest_books(page):
         abort(404)
 
 
-@app.route('/books/oldest', defaults={'page': 1})
-@app.route('/books/oldest/page/<int:page>')
+@web.route('/books/oldest', defaults={'page': 1})
+@web.route('/books/oldest/page/<int:page>')
 @login_required_if_no_ano
 def oldest_books(page):
     if current_user.show_sorted():
@@ -1281,8 +1200,8 @@ def oldest_books(page):
         abort(404)
 
 
-@app.route('/books/a-z', defaults={'page': 1})
-@app.route('/books/a-z/page/<int:page>')
+@web.route('/books/a-z', defaults={'page': 1})
+@web.route('/books/a-z/page/<int:page>')
 @login_required_if_no_ano
 def titles_ascending(page):
     if current_user.show_sorted():
@@ -1293,8 +1212,8 @@ def titles_ascending(page):
         abort(404)
 
 
-@app.route('/books/z-a', defaults={'page': 1})
-@app.route('/books/z-a/page/<int:page>')
+@web.route('/books/z-a', defaults={'page': 1})
+@web.route('/books/z-a/page/<int:page>')
 @login_required_if_no_ano
 def titles_descending(page):
     entries, random, pagination = fill_indexpage(page, db.Books, True, [db.Books.sort.desc()])
@@ -1302,8 +1221,8 @@ def titles_descending(page):
                                  title=_(u"Books (Z-A)"), page="z-a")
 
 
-@app.route("/hot", defaults={'page': 1})
-@app.route('/hot/page/<int:page>')
+@web.route("/hot", defaults={'page': 1})
+@web.route('/hot/page/<int:page>')
 @login_required_if_no_ano
 def hot_books(page):
     if current_user.show_hot_books():
@@ -1333,8 +1252,8 @@ def hot_books(page):
        abort(404)
 
 
-@app.route("/rated", defaults={'page': 1})
-@app.route('/rated/page/<int:page>')
+@web.route("/rated", defaults={'page': 1})
+@web.route('/rated/page/<int:page>')
 @login_required_if_no_ano
 def best_rated_books(page):
     if current_user.show_best_rated_books():
@@ -1346,8 +1265,8 @@ def best_rated_books(page):
         abort(404)
 
 
-@app.route("/discover", defaults={'page': 1})
-@app.route('/discover/page/<int:page>')
+@web.route("/discover", defaults={'page': 1})
+@web.route('/discover/page/<int:page>')
 @login_required_if_no_ano
 def discover(page):
     if current_user.show_random_books():
@@ -1359,7 +1278,7 @@ def discover(page):
         abort(404)
 
 
-@app.route("/author")
+@web.route("/author")
 @login_required_if_no_ano
 def author_list():
     if current_user.show_author():
@@ -1374,15 +1293,15 @@ def author_list():
         abort(404)
 
 
-@app.route("/author/<int:book_id>", defaults={'page': 1})
-@app.route("/author/<int:book_id>/<int:page>")
+@web.route("/author/<int:book_id>", defaults={'page': 1})
+@web.route("/author/<int:book_id>/<int:page>")
 @login_required_if_no_ano
 def author(book_id, page):
     entries, __, pagination = fill_indexpage(page, db.Books, db.Books.authors.any(db.Authors.id == book_id),
                                             [db.Series.name, db.Books.series_index],db.books_series_link, db.Series)
     if entries is None:
         flash(_(u"Error opening eBook. File does not exist or file is not accessible:"), category="error")
-        return redirect(url_for("index"))
+        return redirect(url_for("web.index"))
 
     name = (db.session.query(db.Authors).filter(db.Authors.id == book_id).first().name).replace('|', ',')
 
@@ -1401,7 +1320,7 @@ def author(book_id, page):
                                  title=name, author=author_info, other_books=other_books, page="author")
 
 
-@app.route("/publisher")
+@web.route("/publisher")
 @login_required_if_no_ano
 def publisher_list():
     if current_user.show_publisher():
@@ -1414,8 +1333,8 @@ def publisher_list():
         abort(404)
 
 
-@app.route("/publisher/<int:book_id>", defaults={'page': 1})
-@app.route('/publisher/<int:book_id>/<int:page>')
+@web.route("/publisher/<int:book_id>", defaults={'page': 1})
+@web.route('/publisher/<int:book_id>/<int:page>')
 @login_required_if_no_ano
 def publisher(book_id, page):
     publisher = db.session.query(db.Publishers).filter(db.Publishers.id == book_id).first()
@@ -1448,7 +1367,7 @@ def get_unique_other_books(library_books, author_books):
     return other_books
 
 
-@app.route("/series")
+@web.route("/series")
 @login_required_if_no_ano
 def series_list():
     if current_user.show_series():
@@ -1461,8 +1380,8 @@ def series_list():
         abort(404)
 
 
-@app.route("/series/<int:book_id>/", defaults={'page': 1})
-@app.route("/series/<int:book_id>/<int:page>")
+@web.route("/series/<int:book_id>/", defaults={'page': 1})
+@web.route("/series/<int:book_id>/<int:page>")
 @login_required_if_no_ano
 def series(book_id, page):
     name = db.session.query(db.Series).filter(db.Series.id == book_id).first()
@@ -1475,7 +1394,7 @@ def series(book_id, page):
         abort(404)
 
 
-@app.route("/language")
+@web.route("/language")
 @login_required_if_no_ano
 def language_overview():
     if current_user.show_language():
@@ -1501,8 +1420,8 @@ def language_overview():
         abort(404)
 
 
-@app.route("/language/<name>", defaults={'page': 1})
-@app.route('/language/<name>/page/<int:page>')
+@web.route("/language/<name>", defaults={'page': 1})
+@web.route('/language/<name>/page/<int:page>')
 @login_required_if_no_ano
 def language(name, page):
     try:
@@ -1519,7 +1438,7 @@ def language(name, page):
                                  title=_(u"Language: %(name)s", name=lang_name), page="language")
 
 
-@app.route("/category")
+@web.route("/category")
 @login_required_if_no_ano
 def category_list():
     if current_user.show_category():
@@ -1532,8 +1451,8 @@ def category_list():
         abort(404)
 
 
-@app.route("/category/<int:book_id>", defaults={'page': 1})
-@app.route('/category/<int:book_id>/<int:page>')
+@web.route("/category/<int:book_id>", defaults={'page': 1})
+@web.route('/category/<int:book_id>/<int:page>')
 @login_required_if_no_ano
 def category(book_id, page):
     name = db.session.query(db.Tags).filter(db.Tags.id == book_id).first()
@@ -1546,7 +1465,7 @@ def category(book_id, page):
         abort(404)
 
 
-@app.route("/ajax/toggleread/<int:book_id>", methods=['POST'])
+@web.route("/ajax/toggleread/<int:book_id>", methods=['POST'])
 @login_required
 def toggle_read(book_id):
     if not config.config_read_column:
@@ -1580,7 +1499,7 @@ def toggle_read(book_id):
                     u"Custom Column No.%d is not exisiting in calibre database" % config.config_read_column)
     return ""
 
-@app.route("/book/<int:book_id>")
+@web.route("/book/<int:book_id>")
 @login_required_if_no_ano
 def show_book(book_id):
     entries = db.session.query(db.Books).filter(db.Books.id == book_id).filter(common_filters()).first()
@@ -1642,10 +1561,10 @@ def show_book(book_id):
                                      have_read=have_read, kindle_list=kindle_list, reader_list=reader_list, page="book")
     else:
         flash(_(u"Error opening eBook. File does not exist or file is not accessible:"), category="error")
-        return redirect(url_for("index"))
+        return redirect(url_for("web.index"))
 
 
-@app.route("/ajax/bookmark/<int:book_id>/<book_format>", methods=['POST'])
+@web.route("/ajax/bookmark/<int:book_id>/<book_format>", methods=['POST'])
 @login_required
 def bookmark(book_id, book_format):
     bookmark_key = request.form["bookmark"]
@@ -1665,7 +1584,7 @@ def bookmark(book_id, book_format):
     return "", 201
 
 
-@app.route("/tasks")
+@web.route("/tasks")
 @login_required
 def get_tasks_status():
     # if current user admin, show all email, otherwise only own emails
@@ -1680,13 +1599,13 @@ def get_tasks_status():
     return render_title_template('tasks.html', entries=answer, title=_(u"Tasks"), page="tasks")
 
 
-@app.route("/admin")
+@web.route("/admin")
 @login_required
 def admin_forbidden():
     abort(403)
 
 
-@app.route("/stats")
+@web.route("/stats")
 @login_required
 def stats():
     counter = db.session.query(db.Books).count()
@@ -1714,8 +1633,8 @@ def stats():
                                  categorycounter=categorys, seriecounter=series, title=_(u"Statistics"), page="stat")
 
 
-@app.route("/delete/<int:book_id>/", defaults={'book_format': ""})
-@app.route("/delete/<int:book_id>/<string:book_format>/")
+@web.route("/delete/<int:book_id>/", defaults={'book_format': ""})
+@web.route("/delete/<int:book_id>/<string:book_format>/")
 @login_required
 def delete_book(book_id, book_format):
     if current_user.role_delete_books():
@@ -1772,7 +1691,7 @@ def delete_book(book_id, book_format):
 
 
 
-@app.route("/gdrive/authenticate")
+@web.route("/gdrive/authenticate")
 @login_required
 @admin_required
 def authenticate_google_drive():
@@ -1785,7 +1704,7 @@ def authenticate_google_drive():
     return redirect(authUrl)
 
 
-@app.route("/gdrive/callback")
+@web.route("/gdrive/callback")
 def google_drive_callback():
     auth_code = request.args.get('code')
     if not auth_code:
@@ -1799,7 +1718,7 @@ def google_drive_callback():
     return redirect(url_for('configuration'))
 
 
-@app.route("/gdrive/watch/subscribe")
+@web.route("/gdrive/watch/subscribe")
 @login_required
 @admin_required
 def watch_gdrive():
@@ -1831,7 +1750,7 @@ def watch_gdrive():
     return redirect(url_for('configuration'))
 
 
-@app.route("/gdrive/watch/revoke")
+@web.route("/gdrive/watch/revoke")
 @login_required
 @admin_required
 def revoke_watch_gdrive():
@@ -1850,7 +1769,7 @@ def revoke_watch_gdrive():
     return redirect(url_for('configuration'))
 
 
-@app.route("/gdrive/watch/callback", methods=['GET', 'POST'])
+@web.route("/gdrive/watch/callback", methods=['GET', 'POST'])
 def on_received_watch_confirmation():
     app.logger.debug(request.headers)
     if request.headers.get('X-Goog-Channel-Token') == gdrive_watch_callback_token \
@@ -1886,7 +1805,7 @@ def on_received_watch_confirmation():
     return ''
 
 
-@app.route("/shutdown")
+@web.route("/shutdown")
 @login_required
 @admin_required
 def shutdown():
@@ -1901,12 +1820,12 @@ def shutdown():
         showtext = {}
         if task == 0:
             showtext['text'] = _(u'Server restarted, please reload page')
-            server.Server.setRestartTyp(True)
+            Server.setRestartTyp(True)
         else:
             showtext['text'] = _(u'Performing shutdown of server, please close window')
-            server.Server.setRestartTyp(False)
+            Server.setRestartTyp(False)
         # stop gevent/tornado server
-        server.Server.stopServer()
+        Server.stopServer()
         return json.dumps(showtext)
     else:
         if task == 2:
@@ -1917,7 +1836,7 @@ def shutdown():
         abort(404)
 
 
-@app.route("/search", methods=["GET"])
+@web.route("/search", methods=["GET"])
 @login_required_if_no_ano
 def search():
     term = request.args.get("query").strip().lower()
@@ -1932,7 +1851,7 @@ def search():
         return render_title_template('search.html', searchterm="", page="search")
 
 
-@app.route("/advanced_search", methods=['GET'])
+@web.route("/advanced_search", methods=['GET'])
 @login_required_if_no_ano
 def advanced_search():
     # Build custom columns names
@@ -2079,14 +1998,14 @@ def advanced_search():
                                  series=series, title=_(u"search"), cc=cc, page="advsearch")
 
 
-@app.route("/cover/<book_id>")
+@web.route("/cover/<book_id>")
 @login_required_if_no_ano
 def get_cover(book_id):
     book = db.session.query(db.Books).filter(db.Books.id == book_id).first()
     return helper.get_book_cover(book.path)
 
 
-@app.route("/show/<book_id>/<book_format>")
+@web.route("/show/<book_id>/<book_format>")
 @login_required_if_no_ano
 def serve_book(book_id, book_format):
     book_format = book_format.split(".")[0]
@@ -2105,10 +2024,10 @@ def serve_book(book_id, book_format):
         return send_from_directory(os.path.join(config.config_calibre_dir, book.path), data.name + "." + book_format)
 
 
-@app.route("/opds/thumb_240_240/<book_id>")
-@app.route("/opds/cover_240_240/<book_id>")
-@app.route("/opds/cover_90_90/<book_id>")
-@app.route("/opds/cover/<book_id>")
+@web.route("/opds/thumb_240_240/<book_id>")
+@web.route("/opds/cover_240_240/<book_id>")
+@web.route("/opds/cover_90_90/<book_id>")
+@web.route("/opds/cover/<book_id>")
 @requires_basic_auth_if_no_ano
 def feed_get_cover(book_id):
     book = db.session.query(db.Books).filter(db.Books.id == book_id).first()
@@ -2152,41 +2071,41 @@ def render_read_books(page, are_read, as_xml=False):
                                 title=_(name, name=name), page="read")
 
 
-@app.route("/opds/readbooks/")
+@web.route("/opds/readbooks/")
 @login_required_if_no_ano
 def feed_read_books():
     off = request.args.get("offset") or 0
     return render_read_books(int(off) / (int(config.config_books_per_page)) + 1, True, True)
 
 
-@app.route("/readbooks/", defaults={'page': 1})
-@app.route("/readbooks/<int:page>'")
+@web.route("/readbooks/", defaults={'page': 1})
+@web.route("/readbooks/<int:page>'")
 @login_required_if_no_ano
 def read_books(page):
     return render_read_books(page, True)
 
 
-@app.route("/opds/unreadbooks/")
+@web.route("/opds/unreadbooks/")
 @login_required_if_no_ano
 def feed_unread_books():
     off = request.args.get("offset") or 0
     return render_read_books(int(off) / (int(config.config_books_per_page)) + 1, False, True)
 
 
-@app.route("/unreadbooks/", defaults={'page': 1})
-@app.route("/unreadbooks/<int:page>'")
+@web.route("/unreadbooks/", defaults={'page': 1})
+@web.route("/unreadbooks/<int:page>'")
 @login_required_if_no_ano
 def unread_books(page):
     return render_read_books(page, False)
 
 
-@app.route("/read/<int:book_id>/<book_format>")
+@web.route("/read/<int:book_id>/<book_format>")
 @login_required_if_no_ano
 def read_book(book_id, book_format):
     book = db.session.query(db.Books).filter(db.Books.id == book_id).first()
     if not book:
         flash(_(u"Error opening eBook. File does not exist or file is not accessible:"), category="error")
-        return redirect(url_for("index"))
+        return redirect(url_for("web.index"))
 
     # check if book was downloaded before
     bookmark = None
@@ -2234,10 +2153,10 @@ def read_book(book_id, book_format):
                 return render_title_template('readcbr.html', comicfile=book_id, 
                 extension=fileext, title=_(u"Read a Book"), book=book)
         flash(_(u"Error opening eBook. File does not exist or file is not accessible."), category="error")
-        return redirect(url_for("index"))'''
+        return redirect(url_for("web.index"))'''
 
 
-@app.route("/download/<int:book_id>/<book_format>")
+@web.route("/download/<int:book_id>/<book_format>")
 @login_required_if_no_ano
 @download_required
 def get_download_link(book_id, book_format):
@@ -2265,14 +2184,14 @@ def get_download_link(book_id, book_format):
         abort(404)
 
 
-@app.route("/download/<int:book_id>/<book_format>/<anyname>")
+@web.route("/download/<int:book_id>/<book_format>/<anyname>")
 @login_required_if_no_ano
 @download_required
 def get_download_link_ext(book_id, book_format, anyname):
     return get_download_link(book_id, book_format)
 
 
-@app.route('/register', methods=['GET', 'POST'])
+@web.route('/register', methods=['GET', 'POST'])
 def register():
     if not config.config_public_reg:
         abort(404)
@@ -2321,10 +2240,10 @@ def register():
     return render_title_template('register.html', config=config, title=_(u"register"), page="register")
 
 
-@app.route('/login', methods=['GET', 'POST'])
+@web.route('/login', methods=['GET', 'POST'])
 def login():
     if not config.db_configured:
-        return redirect(url_for('basic_configuration'))
+        return redirect(url_for('web.basic_configuration'))
     if current_user is not None and current_user.is_authenticated:
         return redirect(url_for('index'))
     if request.method == "POST":
@@ -2344,7 +2263,7 @@ def login():
         elif user and check_password_hash(user.password, form['password']) and user.nickname is not "Guest":
             login_user(user, remember=True)
             flash(_(u"you are now logged in as: '%(nickname)s'", nickname=user.nickname), category="success")
-            return redirect_back(url_for("index"))
+            return redirect_back(url_for("web.index"))
         else:
             ipAdress = request.headers.get('X-Forwarded-For', request.remote_addr)
             app.logger.info('Login failed for user "' + form['username'] + '" IP-adress: ' + ipAdress)
@@ -2352,21 +2271,21 @@ def login():
 
     # next_url = request.args.get('next')
     # if next_url is None or not is_safe_url(next_url):
-    next_url = url_for('index')
+    next_url = url_for('web.index')
 
     return render_title_template('login.html', title=_(u"login"), next_url=next_url, config=config, page="login")
 
 
-@app.route('/logout')
+@web.route('/logout')
 @login_required
 def logout():
     if current_user is not None and current_user.is_authenticated:
         logout_user()
-        logout_oauth_user()
-    return redirect(url_for('login'))
+        # logout_oauth_user()
+    return redirect(url_for('web.login'))
 
 
-@app.route('/remote/login')
+@web.route('/remote/login')
 @remote_login_required
 def remote_login():
     auth_token = ub.RemoteAuthToken()
@@ -2379,7 +2298,7 @@ def remote_login():
                                  verify_url=verify_url, page="remotelogin")
 
 
-@app.route('/verify/<token>')
+@web.route('/verify/<token>')
 @remote_login_required
 @login_required
 def verify_token(token):
@@ -2407,7 +2326,7 @@ def verify_token(token):
     return redirect(url_for('index'))
 
 
-@app.route('/ajax/verify_token', methods=['POST'])
+@web.route('/ajax/verify_token', methods=['POST'])
 @remote_login_required
 def token_verified():
     token = request.form['token']
@@ -2447,7 +2366,7 @@ def token_verified():
     return response
 
 
-@app.route('/send/<int:book_id>/<book_format>/<int:convert>')
+@web.route('/send/<int:book_id>/<book_format>/<int:convert>')
 @login_required
 @download_required
 def send_to_kindle(book_id, book_format, convert):
@@ -2468,7 +2387,7 @@ def send_to_kindle(book_id, book_format, convert):
     return redirect(request.environ["HTTP_REFERER"])
 
 
-@app.route("/shelf/add/<int:shelf_id>/<int:book_id>")
+@web.route("/shelf/add/<int:shelf_id>/<int:book_id>")
 @login_required
 def add_to_shelf(shelf_id, book_id):
     shelf = ub.session.query(ub.Shelf).filter(ub.Shelf.id == shelf_id).first()
@@ -2521,7 +2440,7 @@ def add_to_shelf(shelf_id, book_id):
     return "", 204
 
 
-@app.route("/shelf/massadd/<int:shelf_id>")
+@web.route("/shelf/massadd/<int:shelf_id>")
 @login_required
 def search_to_shelf(shelf_id):
     shelf = ub.session.query(ub.Shelf).filter(ub.Shelf.id == shelf_id).first()
@@ -2575,7 +2494,7 @@ def search_to_shelf(shelf_id):
     return redirect(url_for('index'))
 
 
-@app.route("/shelf/remove/<int:shelf_id>/<int:book_id>")
+@web.route("/shelf/remove/<int:shelf_id>/<int:book_id>")
 @login_required
 def remove_from_shelf(shelf_id, book_id):
     shelf = ub.session.query(ub.Shelf).filter(ub.Shelf.id == shelf_id).first()
@@ -2621,7 +2540,7 @@ def remove_from_shelf(shelf_id, book_id):
 
 
 
-@app.route("/shelf/create", methods=["GET", "POST"])
+@web.route("/shelf/create", methods=["GET", "POST"])
 @login_required
 def create_shelf():
     shelf = ub.Shelf()
@@ -2648,7 +2567,7 @@ def create_shelf():
         return render_title_template('shelf_edit.html', shelf=shelf, title=_(u"create a shelf"), page="shelfcreate")
 
 
-@app.route("/shelf/edit/<int:shelf_id>", methods=["GET", "POST"])
+@web.route("/shelf/edit/<int:shelf_id>", methods=["GET", "POST"])
 @login_required
 def edit_shelf(shelf_id):
     shelf = ub.session.query(ub.Shelf).filter(ub.Shelf.id == shelf_id).first()
@@ -2676,7 +2595,7 @@ def edit_shelf(shelf_id):
         return render_title_template('shelf_edit.html', shelf=shelf, title=_(u"Edit a shelf"), page="shelfedit")
 
 
-@app.route("/shelf/delete/<int:shelf_id>")
+@web.route("/shelf/delete/<int:shelf_id>")
 @login_required
 def delete_shelf(shelf_id):
     cur_shelf = ub.session.query(ub.Shelf).filter(ub.Shelf.id == shelf_id).first()
@@ -2698,7 +2617,7 @@ def delete_shelf(shelf_id):
     return redirect(url_for('index'))
 
 
-@app.route("/shelf/<int:shelf_id>")
+@web.route("/shelf/<int:shelf_id>")
 @login_required_if_no_ano
 def show_shelf(shelf_id):
     if current_user.is_anonymous:
@@ -2725,10 +2644,10 @@ def show_shelf(shelf_id):
                                  shelf=shelf, page="shelf")
     else:
         flash(_(u"Error opening shelf. Shelf does not exist or is not accessible"), category="error")
-        return redirect(url_for("index"))
+        return redirect(url_for("web.index"))
 
 
-@app.route("/shelfdown/<int:shelf_id>")
+@web.route("/shelfdown/<int:shelf_id>")
 def show_shelf_down(shelf_id):
     if current_user.is_anonymous:
         shelf = ub.session.query(ub.Shelf).filter(ub.Shelf.is_public == 1, ub.Shelf.id == shelf_id).first()
@@ -2754,9 +2673,9 @@ def show_shelf_down(shelf_id):
                                  shelf=shelf, page="shelf")
     else:
         flash(_(u"Error opening shelf. Shelf does not exist or is not accessible"), category="error")
-        return redirect(url_for("index"))
+        return redirect(url_for("web.index"))
 
-@app.route("/shelf/order/<int:shelf_id>", methods=["GET", "POST"])
+@web.route("/shelf/order/<int:shelf_id>", methods=["GET", "POST"])
 @login_required
 def order_shelf(shelf_id):
     if request.method == "POST":
@@ -2787,14 +2706,14 @@ def order_shelf(shelf_id):
                                  shelf=shelf, page="shelforder")
 
 
-@app.route("/me", methods=["GET", "POST"])
+@web.route("/me", methods=["GET", "POST"])
 @login_required
 def profile():
     content = ub.session.query(ub.User).filter(ub.User.id == int(current_user.id)).first()
     downloads = list()
     languages = speaking_language()
     translations = babel.list_translations() + [LC('en')]
-    oauth_status = get_oauth_status()
+    oauth_status = None # oauth_status = get_oauth_status()
     for book in content.downloads:
         downloadBook = db.session.query(db.Books).filter(db.Books.id == book.book_id).first()
         if downloadBook:
@@ -2864,7 +2783,7 @@ def profile():
                                 name=current_user.nickname), page="me", registered_oauth=oauth_check, oauth_status=oauth_status)
 
 
-@app.route("/admin/view")
+@web.route("/admin/view")
 @login_required
 @admin_required
 def admin():
@@ -2892,14 +2811,14 @@ def admin():
                                  title=_(u"Admin page"), page="admin")
 
 
-@app.route("/admin/config", methods=["GET", "POST"])
+@web.route("/admin/config", methods=["GET", "POST"])
 @login_required
 @admin_required
 def configuration():
     return configuration_helper(0)
 
 
-@app.route("/admin/viewconfig", methods=["GET", "POST"])
+@web.route("/admin/viewconfig", methods=["GET", "POST"])
 @login_required
 @admin_required
 def view_configuration():
@@ -2989,7 +2908,7 @@ def view_configuration():
 
 
 
-@app.route("/config", methods=["GET", "POST"])
+@web.route("/config", methods=["GET", "POST"])
 @unconfigured
 def basic_configuration():
     logout_user()
@@ -3225,7 +3144,7 @@ def configuration_helper(origin):
                                  goodreads=goodreads_support, title=_(u"Basic Configuration"), page="config")
 
 
-@app.route("/admin/user/new", methods=["GET", "POST"])
+@web.route("/admin/user/new", methods=["GET", "POST"])
 @login_required
 @admin_required
 def new_user():
@@ -3307,7 +3226,7 @@ def new_user():
                                  languages=languages, title=_(u"Add new user"), page="newuser")
 
 
-@app.route("/admin/mailsettings", methods=["GET", "POST"])
+@web.route("/admin/mailsettings", methods=["GET", "POST"])
 @login_required
 @admin_required
 def edit_mailsettings():
@@ -3340,7 +3259,7 @@ def edit_mailsettings():
                                  page="mailset")
 
 
-@app.route("/admin/user/<int:user_id>", methods=["GET", "POST"])
+@web.route("/admin/user/<int:user_id>", methods=["GET", "POST"])
 @login_required
 @admin_required
 def edit_user(user_id):
@@ -3483,7 +3402,7 @@ def edit_user(user_id):
                                 nick=content.nickname), page="edituser")
 
 
-@app.route("/admin/resetpassword/<int:user_id>")
+@web.route("/admin/resetpassword/<int:user_id>")
 @login_required
 @admin_required
 def reset_password(user_id):
@@ -3511,7 +3430,7 @@ def render_edit_book(book_id):
 
     if not book:
         flash(_(u"Error opening eBook. File does not exist or file is not accessible"), category="error")
-        return redirect(url_for("index"))
+        return redirect(url_for("web.index"))
 
     for indx in range(0, len(book.languages)):
         book.languages[indx].language_name = language_table[get_locale()][book.languages[indx].lang_code]
@@ -3701,7 +3620,7 @@ def upload_cover(request, book):
                 flash(_(u"Cover-file is not a valid image file" % saved_filename), category="error")
                 return redirect(url_for('show_book', book_id=book.id))
 
-@app.route("/admin/book/<int:book_id>", methods=['GET', 'POST'])
+@web.route("/admin/book/<int:book_id>", methods=['GET', 'POST'])
 @login_required_if_no_ano
 @edit_required
 def edit_book(book_id):
@@ -3717,7 +3636,7 @@ def edit_book(book_id):
     # Book not found
     if not book:
         flash(_(u"Error opening eBook. File does not exist or file is not accessible"), category="error")
-        return redirect(url_for("index"))
+        return redirect(url_for("web.index"))
 
     upload_single_file(request, book, book_id)
     upload_cover(request, book)
@@ -3861,7 +3780,7 @@ def edit_book(book_id):
         return redirect(url_for('show_book', book_id=book.id))
 
 
-@app.route("/upload", methods=["GET", "POST"])
+@web.route("/upload", methods=["GET", "POST"])
 @login_required_if_no_ano
 @upload_required
 def upload():
@@ -4018,10 +3937,10 @@ def upload():
                 return render_title_template('detail.html', entry=book, cc=cc,
                                              title=book.title, books_shelfs=book_in_shelfs, kindle_list=kindle_list,
                                              reader_list=reader_list, page="upload")
-    return redirect(url_for("index"))
+    return redirect(url_for("web.index"))
 
 
-@app.route("/admin/book/convert/<int:book_id>", methods=['POST'])
+@web.route("/admin/book/convert/<int:book_id>", methods=['POST'])
 @login_required_if_no_ano
 @edit_required
 def convert_bookformat(book_id):
@@ -4047,7 +3966,7 @@ def convert_bookformat(book_id):
         flash(_(u"There was an error converting this book: %(res)s", res=rtn), category="error")
     return redirect(request.environ["HTTP_REFERER"])
 
-
+'''
 def register_oauth_blueprint(blueprint, show_name):
     if blueprint.name != "":
         oauth_check[blueprint.name] = show_name
@@ -4260,7 +4179,7 @@ def github_error(blueprint, error, error_description=None, error_uri=None):
     flash(msg, category="error")
 
 
-@app.route('/github')
+@web.route('/github')
 @github_oauth_required
 def github_login():
     if not github.authorized:
@@ -4273,13 +4192,13 @@ def github_login():
     return redirect(url_for('login'))
 
 
-@app.route('/unlink/github', methods=["GET"])
+@web.route('/unlink/github', methods=["GET"])
 @login_required
 def github_login_unlink():
     return unlink_oauth(github_blueprint.name)
 
 
-@app.route('/google')
+@web.route('/google')
 @google_oauth_required
 def google_login():
     if not google.authorized:
@@ -4306,7 +4225,8 @@ def google_error(blueprint, error, error_description=None, error_uri=None):
     flash(msg, category="error")
 
 
-@app.route('/unlink/google', methods=["GET"])
+@web.route('/unlink/google', methods=["GET"])
 @login_required
 def google_login_unlink():
     return unlink_oauth(google_blueprint.name)
+'''
