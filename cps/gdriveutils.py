@@ -27,7 +27,7 @@ except ImportError:
     gdrive_support = False
 
 import os
-from cps import config
+from cps import config, app
 import cli
 import shutil
 from flask import Response, stream_with_context
@@ -36,8 +36,6 @@ from sqlalchemy import *
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import *
 
-
-import web
 
 class Singleton:
     """
@@ -88,6 +86,10 @@ class Gauth:
 class Gdrive:
     def __init__(self):
         self.drive = getDrive(gauth=Gauth.Instance().auth)
+
+def is_gdrive_ready():
+    return os.path.exists(os.path.join(config.get_main_dir, 'settings.yaml')) and \
+           os.path.exists(os.path.join(config.get_main_dir, 'gdrive_credentials'))
 
 
 engine = create_engine('sqlite:///{0}'.format(cli.gdpath), echo=False)
@@ -157,9 +159,9 @@ def getDrive(drive=None, gauth=None):
             try:
                 gauth.Refresh()
             except RefreshError as e:
-                web.app.logger.error("Google Drive error: " + e.message)
+                app.logger.error("Google Drive error: " + e.message)
             except Exception as e:
-                web.app.logger.exception(e)
+                app.logger.exception(e)
         else:
             # Initialize the saved creds
             gauth.Authorize()
@@ -169,7 +171,7 @@ def getDrive(drive=None, gauth=None):
         try:
             drive.auth.Refresh()
         except RefreshError as e:
-            web.app.logger.error("Google Drive error: " + e.message)
+            app.logger.error("Google Drive error: " + e.message)
     return drive
 
 def listRootFolders():
@@ -206,7 +208,7 @@ def getEbooksFolderId(drive=None):
         try:
             gDriveId.gdrive_id = getEbooksFolder(drive)['id']
         except Exception:
-            web.app.logger.error('Error gDrive, root ID not found')
+            app.logger.error('Error gDrive, root ID not found')
         gDriveId.path = '/'
         session.merge(gDriveId)
         session.commit()
@@ -455,10 +457,10 @@ def getChangeById (drive, change_id):
         change = drive.auth.service.changes().get(changeId=change_id).execute()
         return change
     except (errors.HttpError) as error:
-        web.app.logger.info(error.message)
+        app.logger.info(error.message)
         return None
     except Exception as e:
-        web.app.logger.info(e)
+        app.logger.info(e)
         return None
 
 
@@ -527,6 +529,6 @@ def do_gdrive_download(df, headers):
             if resp.status == 206:
                 yield content
             else:
-                web.app.logger.info('An error occurred: %s' % resp)
+                app.logger.info('An error occurred: %s' % resp)
                 return
     return Response(stream_with_context(stream()), headers=headers)

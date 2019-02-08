@@ -35,6 +35,8 @@ import cli
 engine = create_engine('sqlite:///{0}'.format(cli.settingspath), echo=False)
 Base = declarative_base()
 
+session = None
+
 ROLE_USER = 0
 ROLE_ADMIN = 1
 ROLE_DOWNLOAD = 2
@@ -849,22 +851,23 @@ def create_admin_user():
     except Exception:
         session.rollback()
 
+def init_db():
+    # Open session for database connection
+    global session
+    Session = sessionmaker()
+    Session.configure(bind=engine)
+    session = Session()
 
-# Open session for database connection
-Session = sessionmaker()
-Session.configure(bind=engine)
-session = Session()
 
-
-if not os.path.exists(cli.settingspath):
-    try:
+    if not os.path.exists(cli.settingspath):
+        try:
+            Base.metadata.create_all(engine)
+            create_default_config()
+            create_admin_user()
+            create_anonymous_user()
+        except Exception:
+            raise
+    else:
         Base.metadata.create_all(engine)
-        create_default_config()
-        create_admin_user()
-        create_anonymous_user()
-    except Exception:
-        raise
-else:
-    Base.metadata.create_all(engine)
-    migrate_Database()
-    clean_database()
+        migrate_Database()
+        clean_database()

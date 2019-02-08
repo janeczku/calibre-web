@@ -24,13 +24,14 @@ import ub
 import re
 from flask_babel import gettext as _
 from subproc_wrapper import process_open
+from cps import config
 
 
 def versionKindle():
     versions = _(u'not installed')
-    if os.path.exists(ub.config.config_converterpath):
+    if os.path.exists(config.config_converterpath):
         try:
-            p = process_open(ub.config.config_converterpath)
+            p = process_open(config.config_converterpath)
             # p = subprocess.Popen(ub.config.config_converterpath, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
             p.wait()
             for lines in p.stdout.readlines():
@@ -45,9 +46,9 @@ def versionKindle():
 
 def versionCalibre():
     versions = _(u'not installed')
-    if os.path.exists(ub.config.config_converterpath):
+    if os.path.exists(config.config_converterpath):
         try:
-            p = process_open([ub.config.config_converterpath, '--version'])
+            p = process_open([config.config_converterpath, '--version'])
             # p = subprocess.Popen([ub.config.config_converterpath, '--version'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
             p.wait()
             for lines in p.stdout.readlines():
@@ -61,9 +62,9 @@ def versionCalibre():
 
 
 def versioncheck():
-    if ub.config.config_ebookconverter == 1:
+    if config.config_ebookconverter == 1:
         return versionKindle()
-    elif ub.config.config_ebookconverter == 2:
+    elif config.config_ebookconverter == 2:
         return versionCalibre()
     else:
         return {'ebook_converter':_(u'not configured')}
