@@ -37,33 +37,34 @@ except ImportError:
     gevent_present = False
 
 
-
 class server:
 
     wsgiserver = None
-    restart= False
+    restart = False
     app = None
 
     def __init__(self):
         signal.signal(signal.SIGINT, self.killServer)
         signal.signal(signal.SIGTERM, self.killServer)
 
-    def init_app(self,application):
+    def init_app(self, application):
         self.app = application
 
     def start_gevent(self):
+        ssl_args = dict()
         try:
-            ssl_args = dict()
-            certfile_path   = config.get_config_certfile()
-            keyfile_path    = config.get_config_keyfile()
+            certfile_path = config.get_config_certfile()
+            keyfile_path = config.get_config_keyfile()
             if certfile_path and keyfile_path:
                 if os.path.isfile(certfile_path) and os.path.isfile(keyfile_path):
                     ssl_args = {"certfile": certfile_path,
                                 "keyfile": keyfile_path}
                 else:
-                    self.app.logger.info('The specified paths for the ssl certificate file and/or key file seem to be broken. Ignoring ssl. Cert path: %s | Key path: %s' % (certfile_path, keyfile_path))
+                    self.app.logger.info('The specified paths for the ssl certificate file and/or key file seem '
+                                         'to be broken. Ignoring ssl. Cert path: %s | Key path: '
+                                         '%s' % (certfile_path, keyfile_path))
             if os.name == 'nt':
-                self.wsgiserver= WSGIServer(('0.0.0.0', config.config_port), self.app, spawn=Pool(), **ssl_args)
+                self.wsgiserver = WSGIServer(('0.0.0.0', config.config_port), self.app, spawn=Pool(), **ssl_args)
             else:
                 self.wsgiserver = WSGIServer(('', config.config_port), self.app, spawn=Pool(), **ssl_args)
             self.wsgiserver.serve_forever()
@@ -90,14 +91,16 @@ class server:
             try:
                 ssl = None
                 self.app.logger.info('Starting Tornado server')
-                certfile_path   = config.get_config_certfile()
-                keyfile_path    = config.get_config_keyfile()
+                certfile_path = config.get_config_certfile()
+                keyfile_path = config.get_config_keyfile()
                 if certfile_path and keyfile_path:
                     if os.path.isfile(certfile_path) and os.path.isfile(keyfile_path):
                         ssl = {"certfile": certfile_path,
                                "keyfile": keyfile_path}
                     else:
-                        self.app.logger.info('The specified paths for the ssl certificate file and/or key file seem to be broken. Ignoring ssl. Cert path: %s | Key path: %s' % (certfile_path, keyfile_path))
+                        self.app.logger.info('The specified paths for the ssl certificate file and/or key file '
+                                             'seem to be broken. Ignoring ssl. Cert path: %s | Key '
+                                             'path: %s' % (certfile_path, keyfile_path))
 
                 # Max Buffersize set to 200MB
                 http_server = HTTPServer(WSGIContainer(self.app),
@@ -114,7 +117,7 @@ class server:
                 global_WorkerThread.stop()
                 sys.exit(1)
 
-        if self.restart == True:
+        if self.restart is True:
             self.app.logger.info("Performing restart of Calibre-Web")
             global_WorkerThread.stop()
             if os.name == 'nt':
@@ -145,6 +148,6 @@ class server:
     @staticmethod
     def getNameVersion():
         if gevent_present:
-            return {'Gevent':'v' + geventVersion}
+            return {'Gevent': 'v' + geventVersion}
         else:
-            return {'Tornado':'v'+tornadoVersion}
+            return {'Tornado': 'v' + tornadoVersion}

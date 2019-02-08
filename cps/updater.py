@@ -17,26 +17,25 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program. If not, see <http://www.gnu.org/licenses/>.
 
+
+from cps import config, get_locale
 import threading
 import zipfile
 import requests
-import re
 import logging
-import server
 import time
 from io import BytesIO
 import os
 import sys
 import shutil
-from cps import config
 from ub import UPDATE_STABLE
 from tempfile import gettempdir
 import datetime
 import json
 from flask_babel import gettext as _
 from babel.dates import format_datetime
-import web
 
+import server
 
 def is_sha1(sha1):
     if len(sha1) != 40:
@@ -288,7 +287,7 @@ class Updater(threading.Thread):
                     update_data['committer']['date'], '%Y-%m-%dT%H:%M:%SZ') - tz
                 parents.append(
                     [
-                        format_datetime(new_commit_date, format='short', locale=web.get_locale()),
+                        format_datetime(new_commit_date, format='short', locale=get_locale()),
                         update_data['message'],
                         update_data['sha']
                     ]
@@ -318,7 +317,7 @@ class Updater(threading.Thread):
                                     parent_commit_date = datetime.datetime.strptime(
                                         parent_data['committer']['date'], '%Y-%m-%dT%H:%M:%SZ') - tz
                                     parent_commit_date = format_datetime(
-                                        parent_commit_date, format='short', locale=web.get_locale())
+                                        parent_commit_date, format='short', locale=get_locale())
 
                                     parents.append([parent_commit_date,
                                                     parent_data['message'].replace('\r\n','<p>').replace('\n','<p>')])
@@ -346,7 +345,7 @@ class Updater(threading.Thread):
                     commit['committer']['date'], '%Y-%m-%dT%H:%M:%SZ') - tz
                 parents.append(
                     [
-                        format_datetime(new_commit_date, format='short', locale=web.get_locale()),
+                        format_datetime(new_commit_date, format='short', locale=get_locale()),
                         commit['message'],
                         commit['sha']
                     ]
@@ -376,7 +375,7 @@ class Updater(threading.Thread):
                                     parent_commit_date = datetime.datetime.strptime(
                                         parent_data['committer']['date'], '%Y-%m-%dT%H:%M:%SZ') - tz
                                     parent_commit_date = format_datetime(
-                                        parent_commit_date, format='short', locale=web.get_locale())
+                                        parent_commit_date, format='short', locale=get_locale())
 
                                     parents.append([parent_commit_date, parent_data['message'], parent_data['sha']])
                                     parent_commit = parent_data['parents'][0]
@@ -510,6 +509,3 @@ class Updater(threading.Thread):
             status['message'] = _(u'General error')
 
         return status, commit
-
-
-updater_thread = Updater()

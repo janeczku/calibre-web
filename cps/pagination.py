@@ -23,6 +23,7 @@
 
 from math import ceil
 
+
 # simple pagination for the feed
 class Pagination(object):
     def __init__(self, page, per_page, total_count):

@@ -71,7 +71,7 @@
                 <li><a id="top_tasks" href="{{url_for('web.get_tasks_status')}}"><span class="glyphicon glyphicon-tasks"></span><span class="hidden-sm"> {{_('Tasks')}}</span></a></li>
               {% endif %}
               {% if g.user.role_admin() %}
-                <li><a id="top_admin" href="{{url_for('web.admin')}}"><span class="glyphicon glyphicon-dashboard"></span><span class="hidden-sm"> {{_('Admin')}}</span></a></li>
+                <li><a id="top_admin" href="{{url_for('admin.admin')}}"><span class="glyphicon glyphicon-dashboard"></span><span class="hidden-sm"> {{_('Admin')}}</span></a></li>
               {% endif %}
               <li><a id="top_user" href="{{url_for('web.profile')}}"><span class="glyphicon glyphicon-user"></span><span class="hidden-sm"> {{g.user.nickname}}</span></a></li>
               {% if not g.user.is_anonymous %}
@@ -172,11 +172,11 @@
                 {% endfor %}
                 <li class="nav-head hidden-xs your-shelves">{{_('Your Shelves')}}</li>
                 {% for shelf in g.user.shelf %}
-                  <li><a href="{{url_for('web.show_shelf', shelf_id=shelf.id)}}"><span class="glyphicon glyphicon-list private_shelf"></span>{{shelf.name|shortentitle(40)}}</a></li>
+                  <li><a href="{{url_for('shelf.show_shelf', shelf_id=shelf.id)}}"><span class="glyphicon glyphicon-list private_shelf"></span>{{shelf.name|shortentitle(40)}}</a></li>
                 {% endfor %}
               {% if not g.user.is_anonymous %}
-                <li id="nav_createshelf" class="create-shelf"><a href="{{url_for('web.create_shelf')}}">{{_('Create a Shelf')}}</a></li>
-                <li id="nav_about" {% if page == 'stat' %}class="active"{% endif %}><a href="{{url_for('web.stats')}}"><span class="glyphicon glyphicon-info-sign"></span>{{_('About')}}</a></li>
+                <li id="nav_createshelf" class="create-shelf"><a href="{{url_for('shelf.create_shelf')}}">{{_('Create a Shelf')}}</a></li>
+                <li id="nav_about" {% if page == 'stat' %}class="active"{% endif %}><a href="{{url_for('about.stats')}}"><span class="glyphicon glyphicon-info-sign"></span>{{_('About')}}</a></li>
               {% endif %}
               {% endif %}
 
