@@ -53,7 +53,7 @@
 {% endif %}
 
   </div>
-<form role="form" action="{{ url_for('web.edit_book', book_id=book.id) }}" method="post" enctype="multipart/form-data" id="book_edit_frm">
+<form role="form" action="{{ url_for('editbook.edit_book', book_id=book.id) }}" method="post" enctype="multipart/form-data" id="book_edit_frm">
   <div class="col-sm-9 col-xs-12">
     <div class="form-group">
       <label for="book_title">{{_('Book Title')}}</label>
@@ -196,7 +196,7 @@
         </div>
 
       <div class="modal-footer">
-        <a href="{{ url_for('web.delete_book', book_id=book.id) }}" class="btn btn-danger">{{_('Delete')}}</a>
+        <a href="{{ url_for('editbook.delete_book', book_id=book.id) }}" class="btn btn-danger">{{_('Delete')}}</a>
         <button type="button" class="btn btn-default" data-dismiss="modal">{{_('Back')}}</button>
       </div>
     </div>

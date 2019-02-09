@@ -36,7 +36,7 @@
 
       <div class="cover">
         {% if entry.has_cover %}
-        <img src="{{ url_for('get_cover', cover_path=entry.path.replace('\\','/')) }}" alt="{{ entry.title }}" /> {% else %}
+        <img src="{{ url_for('web.get_cover', cover_path=entry.path.replace('\\','/')) }}" alt="{{ entry.title }}" /> {% else %}
         <img src="{{ url_for('static', filename='generic_cover.jpg') }}" alt="{{ entry.title }}" /> {% endif %}
       </div>
 
@@ -117,7 +117,7 @@
         <div class="sm2-playlist-wrapper">
           <ul class="sm2-playlist-bd">
             <li>
-              <a href="{{ url_for('serve_book', book_id=mp3file,book_format=audioformat)}}"></a>
+              <a href="{{ url_for('web.serve_book', book_id=mp3file,book_format=audioformat)}}"></a>
             </li>
           </ul>
         </div>
@@ -129,7 +129,7 @@
         filePath: "{{ url_for('static', filename='js/libs/') }}",
         cssPath: "{{ url_for('static', filename='css/') }}",
         bookUrl: "{{ url_for('static', filename=mp3file) }}/",
-        bookmarkUrl: "{{ url_for('bookmark', book_id=mp3file, book_format=audioformat.upper()) }}",
+        bookmarkUrl: "{{ url_for('web.bookmark', book_id=mp3file, book_format=audioformat.upper()) }}",
         bookmark: "{{ bookmark.bookmark_key if bookmark != None }}",
         useBookmarks: "{{ g.user.is_authenticated | tojson }}"
             };

@@ -599,6 +599,8 @@ class Config:
 # everywhere to curent should work. Migration is done by checking if relevant coloums are existing, and than adding
 # rows with SQL commands
 def migrate_Database():
+    if not engine.dialect.has_table(engine.connect(), "book_read_link"):
+        ReadBook.__table__.create(bind=engine)
     if not engine.dialect.has_table(engine.connect(), "bookmark"):
         Bookmark.__table__.create(bind=engine)
     if not engine.dialect.has_table(engine.connect(), "registration"):

@@ -22,11 +22,11 @@
 #  along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 import os
-from flask import Blueprint
-from flask import abort, request
-from flask_login import login_required, current_user
-from web import admin_required, render_title_template, flash, redirect, url_for, before_request, logout_user, \
-    speaking_language, unconfigured
+from flask import Blueprint, flash, redirect, url_for
+from flask import abort, request, make_response
+from flask_login import login_required, current_user, logout_user
+from web import admin_required, render_title_template,  before_request, speaking_language, unconfigured, \
+    login_required_if_no_ano, check_valid_domain
 from cps import db, ub, Server, get_locale, config, app, updater_thread, babel
 import json
 from datetime import datetime, timedelta
@@ -36,9 +36,9 @@ from flask_babel import gettext as _
 from babel import Locale as LC
 from sqlalchemy.exc import IntegrityError
 from gdriveutils import is_gdrive_ready, gdrive_support, downloadFile, deleteDatabaseOnChange, listRootFolders
-from web import login_required_if_no_ano, check_valid_domain
 import helper
 from werkzeug.security import generate_password_hash
+from sqlalchemy.sql.expression import text
 
 try:
     from goodreads.client import GoodreadsClient
@@ -216,6 +216,62 @@ def view_configuration():
             .filter(db.and_(db.Custom_Columns.datatype == 'bool',db.Custom_Columns.mark_for_delete == 0)).all()
     return render_title_template("config_view_edit.html", content=config, readColumns=readColumn,
                                  title=_(u"UI Configuration"), page="uiconfig")
+
+
+@admi.route("/ajax/editdomain", methods=['POST'])
+@login_required
+@admin_required
+def edit_domain():
+    # POST /post
+    # name:  'username',  //name of field (column in db)
+    # pk:    1            //primary key (record id)
+    # value: 'superuser!' //new value
+    vals = request.form.to_dict()
+    answer = ub.session.query(ub.Registration).filter(ub.Registration.id == vals['pk']).first()
+    # domain_name = request.args.get('domain')
+    answer.domain = vals['value'].replace('*', '%').replace('?', '_').lower()
+    ub.session.commit()
+    return ""
+
+
+@admi.route("/ajax/adddomain", methods=['POST'])
+@login_required
+@admin_required
+def add_domain():
+    domain_name = request.form.to_dict()['domainname'].replace('*', '%').replace('?', '_').lower()
+    check = ub.session.query(ub.Registration).filter(ub.Registration.domain == domain_name).first()
+    if not check:
+        new_domain = ub.Registration(domain=domain_name)
+        ub.session.add(new_domain)
+        ub.session.commit()
+    return ""
+
+
+@admi.route("/ajax/deletedomain", methods=['POST'])
+@login_required
+@admin_required
+def delete_domain():
+    domain_id = request.form.to_dict()['domainid'].replace('*', '%').replace('?', '_').lower()
+    ub.session.query(ub.Registration).filter(ub.Registration.id == domain_id).delete()
+    ub.session.commit()
+    # If last domain was deleted, add all domains by default
+    if not ub.session.query(ub.Registration).count():
+        new_domain = ub.Registration(domain="%.%")
+        ub.session.add(new_domain)
+        ub.session.commit()
+    return ""
+
+
+@admi.route("/ajax/domainlist")
+@login_required
+@admin_required
+def list_domain():
+    answer = ub.session.query(ub.Registration).all()
+    json_dumps = json.dumps([{"domain": r.domain.replace('%', '*').replace('_', '?'), "id": r.id} for r in answer])
+    js = json.dumps(json_dumps.replace('"', "'")).lstrip('"').strip('"')
+    response = make_response(js.replace("'", '"'))
+    response.headers["Content-Type"] = "application/json; charset=utf-8"
+    return response
 
 
 @admi.route("/config", methods=["GET", "POST"])

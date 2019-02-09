@@ -187,7 +187,7 @@ def bind_oauth_or_register(provider, provider_user_id, redirect_url):
                 except Exception as e:
                     app.logger.exception(e)
                     ub.session.rollback()
-            return redirect(url_for('register'))
+            return redirect(url_for('web.register'))
     except NoResultFound:
         return redirect(url_for(redirect_url))
 
@@ -247,7 +247,7 @@ def github_error(blueprint, error, error_description=None, error_uri=None):
     flash(msg, category="error")
 
 
-@web.route('/github')
+@oauth.route('/github')
 @github_oauth_required
 def github_login():
     if not github.authorized:
@@ -260,13 +260,13 @@ def github_login():
     return redirect(url_for('login'))
 
 
-@web.route('/unlink/github', methods=["GET"])
+@oauth.route('/unlink/github', methods=["GET"])
 @login_required
 def github_login_unlink():
     return unlink_oauth(github_blueprint.name)
 
 
-@web.route('/google')
+@oauth.route('/google')
 @google_oauth_required
 def google_login():
     if not google.authorized:
@@ -293,7 +293,7 @@ def google_error(blueprint, error, error_description=None, error_uri=None):
     flash(msg, category="error")
 
 
-@web.route('/unlink/google', methods=["GET"])
+@oauth.route('/unlink/google', methods=["GET"])
 @login_required
 def google_login_unlink():
     return unlink_oauth(google_blueprint.name)

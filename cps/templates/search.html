@@ -17,11 +17,11 @@
               <ul id="add-to-shelves" class="dropdown-menu" aria-labelledby="add-to-shelf">
                 {% for shelf in g.user.shelf %}
                   {% if shelf.is_public != 1 %}
-                    <li><a href="{{ url_for('search_to_shelf', shelf_id=shelf.id) }}"> {{shelf.name}}</a></li>
+                    <li><a href="{{ url_for('shelf.search_to_shelf', shelf_id=shelf.id) }}"> {{shelf.name}}</a></li>
                   {% endif %}
                 {% endfor %}
                 {% for shelf in g.public_shelfes %}
-                  <li><a href="{{ url_for('search_to_shelf', shelf_id=shelf.id) }}">{{shelf.name}}</a></li>
+                  <li><a href="{{ url_for('shelf.search_to_shelf', shelf_id=shelf.id) }}">{{shelf.name}}</a></li>
                 {% endfor %}
               </ul>
             </div>
