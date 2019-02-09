@@ -31,7 +31,6 @@ import os
 from sqlalchemy.exc import IntegrityError
 from flask_login import login_user, logout_user, login_required, current_user
 from flask_babel import gettext as _
-
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.datastructures import Headers
 from babel import Locale as LC
@@ -50,6 +49,7 @@ import gdriveutils
 from redirect import redirect_back
 from cps import lm, babel, ub, config, get_locale, language_table, app
 from pagination import Pagination
+# from admin import check_valid_domain
 # from oauth_bb import oauth_check, register_user_with_oauth
 
 try:
@@ -280,6 +280,15 @@ def speaking_language(languages=None):
             lang.name = _(isoLanguages.get(part3=lang.lang_code).name)
     return languages
 
+# checks if domain is in database (including wildcards)
+# example SELECT * FROM @TABLE WHERE  'abcdefg' LIKE Name;
+# from https://code.luasoftware.com/tutorials/flask/execute-raw-sql-in-flask-sqlalchemy/
+def check_valid_domain(domain_text):
+    domain_text = domain_text.split('@', 1)[-1].lower()
+    sql = "SELECT * FROM registration WHERE :domain LIKE domain;"
+    result = ub.session.query(ub.Registration).from_statement(text(sql)).params(domain=domain_text).all()
+    return len(result)
+
 
 # Orders all Authors in the list according to authors sort
 def order_authors(entry):
@@ -355,72 +364,6 @@ def get_email_status_json():
     answer = helper.render_task_status(tasks)
     js = json.dumps(answer, default=helper.json_serial)
     response = make_response(js)
-    response.headers["Content-Type"] = "application/json; charset=utf-8"
-    return response
-
-
-# checks if domain is in database (including wildcards)
-# example SELECT * FROM @TABLE WHERE  'abcdefg' LIKE Name;
-# from https://code.luasoftware.com/tutorials/flask/execute-raw-sql-in-flask-sqlalchemy/
-def check_valid_domain(domain_text):
-    domain_text = domain_text.split('@', 1)[-1].lower()
-    sql = "SELECT * FROM registration WHERE :domain LIKE domain;"
-    result = ub.session.query(ub.Registration).from_statement(text(sql)).params(domain=domain_text).all()
-    return len(result)
-
-
-@web.route("/ajax/editdomain", methods=['POST'])
-@login_required
-@admin_required
-def edit_domain():
-    # POST /post
-    # name:  'username',  //name of field (column in db)
-    # pk:    1            //primary key (record id)
-    # value: 'superuser!' //new value
-    vals = request.form.to_dict()
-    answer = ub.session.query(ub.Registration).filter(ub.Registration.id == vals['pk']).first()
-    # domain_name = request.args.get('domain')
-    answer.domain = vals['value'].replace('*', '%').replace('?', '_').lower()
-    ub.session.commit()
-    return ""
-
-
-@web.route("/ajax/adddomain", methods=['POST'])
-@login_required
-@admin_required
-def add_domain():
-    domain_name = request.form.to_dict()['domainname'].replace('*', '%').replace('?', '_').lower()
-    check = ub.session.query(ub.Registration).filter(ub.Registration.domain == domain_name).first()
-    if not check:
-        new_domain = ub.Registration(domain=domain_name)
-        ub.session.add(new_domain)
-        ub.session.commit()
-    return ""
-
-
-@web.route("/ajax/deletedomain", methods=['POST'])
-@login_required
-@admin_required
-def delete_domain():
-    domain_id = request.form.to_dict()['domainid'].replace('*', '%').replace('?', '_').lower()
-    ub.session.query(ub.Registration).filter(ub.Registration.id == domain_id).delete()
-    ub.session.commit()
-    # If last domain was deleted, add all domains by default
-    if not ub.session.query(ub.Registration).count():
-        new_domain = ub.Registration(domain="%.%")
-        ub.session.add(new_domain)
-        ub.session.commit()
-    return ""
-
-
-@web.route("/ajax/domainlist")
-@login_required
-@admin_required
-def list_domain():
-    answer = ub.session.query(ub.Registration).all()
-    json_dumps = json.dumps([{"domain": r.domain.replace('%', '*').replace('_', '?'), "id": r.id} for r in answer])
-    js = json.dumps(json_dumps.replace('"', "'")).lstrip('"').strip('"')
-    response = make_response(js.replace("'", '"'))
     response.headers["Content-Type"] = "application/json; charset=utf-8"
     return response
 

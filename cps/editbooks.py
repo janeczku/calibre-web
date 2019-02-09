@@ -22,12 +22,13 @@
 #  along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 # opds routing functions
-from cps import config, language_table, get_locale, app, ub
-from flask import request, flash, redirect, url_for, abort, Markup
+from cps import config, language_table, get_locale, app, ub, global_WorkerThread
+from flask import request, flash, redirect, url_for, abort, Markup, Response
 from flask import Blueprint
 import datetime
 import db
 import os
+import json
 from flask_babel import gettext as _
 from uuid import uuid4
 import helper
@@ -206,9 +207,9 @@ def delete_book(book_id, book_format):
             # book not found
             app.logger.info('Book with id "'+str(book_id)+'" could not be deleted')
     if book_format:
-        return redirect(url_for('edit_book', book_id=book_id))
+        return redirect(url_for('editbook.edit_book', book_id=book_id))
     else:
-        return redirect(url_for('index'))
+        return redirect(url_for('web.index'))
 
 
 def render_edit_book(book_id):
@@ -341,10 +342,10 @@ def upload_single_file(request, book, book_id):
                 if file_ext not in EXTENSIONS_UPLOAD:
                     flash(_("File extension '%(ext)s' is not allowed to be uploaded to this server", ext=file_ext),
                           category="error")
-                    return redirect(url_for('show_book', book_id=book.id))
+                    return redirect(url_for('web.show_book', book_id=book.id))
             else:
                 flash(_('File to be uploaded must have an extension'), category="error")
-                return redirect(url_for('show_book', book_id=book.id))
+                return redirect(url_for('web.show_book', book_id=book.id))
 
             file_name = book.path.rsplit('/', 1)[-1]
             filepath = os.path.normpath(os.path.join(config.config_calibre_dir, book.path))
@@ -356,12 +357,12 @@ def upload_single_file(request, book, book_id):
                     os.makedirs(filepath)
                 except OSError:
                     flash(_(u"Failed to create path %(path)s (Permission denied).", path=filepath), category="error")
-                    return redirect(url_for('show_book', book_id=book.id))
+                    return redirect(url_for('web.show_book', book_id=book.id))
             try:
                 requested_file.save(saved_filename)
             except OSError:
                 flash(_(u"Failed to store file %(file)s.", file=saved_filename), category="error")
-                return redirect(url_for('show_book', book_id=book.id))
+                return redirect(url_for('web.show_book', book_id=book.id))
 
             file_size = os.path.getsize(saved_filename)
             is_format = db.session.query(db.Data).filter(db.Data.book == book_id).\
@@ -378,7 +379,7 @@ def upload_single_file(request, book, book_id):
 
             # Queue uploader info
             uploadText=_(u"File format %(ext)s added to %(book)s", ext=file_ext.upper(), book=book.title)
-            helper.global_WorkerThread.add_upload(current_user.nickname,
+            global_WorkerThread.add_upload(current_user.nickname,
                 "<a href=\"" + url_for('show_book', book_id=book.id) + "\">" + uploadText + "</a>")
 
 def upload_cover(request, book):
@@ -397,17 +398,17 @@ def upload_cover(request, book):
                 except OSError:
                     flash(_(u"Failed to create path for cover %(path)s (Permission denied).", cover=filepath),
                           category="error")
-                    return redirect(url_for('show_book', book_id=book.id))
+                    return redirect(url_for('web.show_book', book_id=book.id))
             try:
                 requested_file.save(saved_filename)
                 # im=Image.open(saved_filename)
                 book.has_cover = 1
             except OSError:
                 flash(_(u"Failed to store cover-file %(cover)s.", cover=saved_filename), category="error")
-                return redirect(url_for('show_book', book_id=book.id))
+                return redirect(url_for('web.show_book', book_id=book.id))
             except IOError:
                 flash(_(u"Cover-file is not a valid image file" % saved_filename), category="error")
-                return redirect(url_for('show_book', book_id=book.id))
+                return redirect(url_for('web.show_book', book_id=book.id))
 
 @editbook.route("/admin/book/<int:book_id>", methods=['GET', 'POST'])
 @login_required_if_no_ano
@@ -554,7 +555,7 @@ def edit_book(book_id):
             if config.config_use_google_drive:
                 gdriveutils.updateGdriveCalibreFromLocal()
             if "detail_view" in to_save:
-                return redirect(url_for('show_book', book_id=book.id))
+                return redirect(url_for('web.show_book', book_id=book.id))
             else:
                 flash(_("Metadata successfully updated"), category="success")
                 return render_edit_book(book_id)
@@ -566,7 +567,7 @@ def edit_book(book_id):
         app.logger.exception(e)
         db.session.rollback()
         flash(_("Error editing book, please check logfile for details"), category="error")
-        return redirect(url_for('show_book', book_id=book.id))
+        return redirect(url_for('web.show_book', book_id=book.id))
 
 
 @editbook.route("/upload", methods=["GET", "POST"])
@@ -704,8 +705,8 @@ def upload():
             if error:
                 flash(error, category="error")
             uploadText=_(u"File %(file)s uploaded", file=book.title)
-            helper.global_WorkerThread.add_upload(current_user.nickname,
-                "<a href=\"" + url_for('show_book', book_id=book.id) + "\">" + uploadText + "</a>")
+            global_WorkerThread.add_upload(current_user.nickname,
+                "<a href=\"" + url_for('web.show_book', book_id=book.id) + "\">" + uploadText + "</a>")
 
             # create data for displaying display Full language name instead of iso639.part3language
             if db_language is not None:
@@ -714,19 +715,13 @@ def upload():
             for author in db_book.authors:
                 author_names.append(author.name)
             if len(request.files.getlist("btn-upload")) < 2:
-                cc = db.session.query(db.Custom_Columns).filter(db.Custom_Columns.
-                                                                datatype.notin_(db.cc_exceptions)).all()
                 if current_user.role_edit() or current_user.role_admin():
-                    return render_title_template('book_edit.html', book=book, authors=author_names,
-                                                 cc=cc, title=_(u"edit metadata"), page="upload")
-                book_in_shelfs = []
-                kindle_list = helper.check_send_to_kindle(book)
-                reader_list = helper.check_read_formats(book)
-
-                return render_title_template('detail.html', entry=book, cc=cc,
-                                             title=book.title, books_shelfs=book_in_shelfs, kindle_list=kindle_list,
-                                             reader_list=reader_list, page="upload")
-    return redirect(url_for("web.index"))
+                    resp = {"location": url_for('editbook.edit_book', book_id=db_book.id)}
+                    return Response(json.dumps(resp), mimetype='application/json')
+                else:
+                    resp = {"location": url_for('web.show_book', book_id=db_book.id)}
+                    return Response(json.dumps(resp), mimetype='application/json')
+        return Response(json.dumps({"location": url_for("web.index")}), mimetype='application/json')
 
 
 @editbook.route("/admin/book/convert/<int:book_id>", methods=['POST'])

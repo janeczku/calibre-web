@@ -81,8 +81,8 @@
           window.calibre = {
               filePath: "{{ url_for('static', filename='js/libs/') }}",
               cssPath: "{{ url_for('static', filename='css/') }}",
-              bookmarkUrl: "{{ url_for('bookmark', book_id=bookid, book_format='EPUB') }}",
-              bookUrl: "{{ url_for('get_download_link_ext', book_id=bookid, book_format='epub', anyname='file.epub') }}",
+              bookmarkUrl: "{{ url_for('web.bookmark', book_id=bookid, book_format='EPUB') }}",
+              bookUrl: "{{ url_for('web.get_download_link_ext', book_id=bookid, book_format='epub', anyname='file.epub') }}",
               bookmark: "{{ bookmark.bookmark_key if bookmark != None }}",
               useBookmarks: "{{ g.user.is_authenticated | tojson }}"
           };

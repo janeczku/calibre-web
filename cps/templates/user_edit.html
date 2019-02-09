@@ -15,7 +15,7 @@
     </div>
     {% if ( g.user and g.user.role_passwd() or g.user.role_admin() ) and not content.role_anonymous() %}
       {% if g.user and g.user.role_admin() and g.allow_registration and not new_user and not profile %}
-        <div class="btn btn-default" id="resend_password"><a href="{{url_for('reset_password', user_id = content.id) }}">{{_('Reset user Password')}}</a></div>
+        <div class="btn btn-default" id="resend_password"><a href="{{url_for('admin.reset_password', user_id = content.id) }}">{{_('Reset user Password')}}</a></div>
       {% else %}
         <div class="form-group">
           <label for="password">{{_('Password')}}</label>
@@ -161,7 +161,7 @@
       <div class="col-sm-12">
     <button type="submit" id="submit" class="btn btn-default">{{_('Submit')}}</button>
     {% if not profile %}
-      <a href="{{ url_for('admin') }}" id="back" class="btn btn-default">{{_('Back')}}</a>
+      <a href="{{ url_for('admin.admin') }}" id="back" class="btn btn-default">{{_('Back')}}</a>
     {% endif %}
     </div>
   </form>
@@ -171,8 +171,8 @@
     <h2>{{_('Recent Downloads')}}</h2>
     {% for entry in downloads %}
       <div class="col-sm-2">
-        <a class="pull-left" href="{{ url_for('show_book', book_id=entry.id) }}">
-          <img class="media-object" width="100" src="{{ url_for('get_cover', book_id=entry.id) }}" alt="...">
+        <a class="pull-left" href="{{ url_for('web.show_book', book_id=entry.id) }}">
+          <img class="media-object" width="100" src="{{ url_for('web.get_cover', book_id=entry.id) }}" alt="...">
         </a>
       </div>
     {% endfor %}

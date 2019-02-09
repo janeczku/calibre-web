@@ -224,8 +224,8 @@
             {% for shelf in g.user.shelf %}
               {% if not shelf.id in books_shelfs and shelf.is_public != 1 %}
                 <li>
-                  <a href="{{ url_for('web.add_to_shelf', book_id=entry.id, shelf_id=shelf.id) }}"
-                     data-remove-href="{{ url_for('web.remove_from_shelf', book_id=entry.id, shelf_id=shelf.id) }}"
+                  <a href="{{ url_for('shelf.add_to_shelf', book_id=entry.id, shelf_id=shelf.id) }}"
+                     data-remove-href="{{ url_for('shelf.remove_from_shelf', book_id=entry.id, shelf_id=shelf.id) }}"
                      data-shelf-action="add"
                   >
                     {{shelf.name}}
@@ -236,8 +236,8 @@
             {% for shelf in g.public_shelfes %}
               {% if not shelf.id in books_shelfs %}
                 <li>
-                  <a href="{{ url_for('web.add_to_shelf', book_id=entry.id, shelf_id=shelf.id) }}"
-                     data-remove-href="{{ url_for('web.remove_from_shelf', book_id=entry.id, shelf_id=shelf.id) }}"
+                  <a href="{{ url_for('shelf.add_to_shelf', book_id=entry.id, shelf_id=shelf.id) }}"
+                     data-remove-href="{{ url_for('shelf.remove_from_shelf', book_id=entry.id, shelf_id=shelf.id) }}"
                      data-shelf-action="add"
                   >
                     {{shelf.name}}
@@ -251,8 +251,8 @@
           {% if books_shelfs %}
             {% for shelf in g.user.shelf %}
               {% if shelf.id in books_shelfs and shelf.is_public != 1 %}
-                <a href="{{ url_for('web.remove_from_shelf', book_id=entry.id, shelf_id=shelf.id) }}"
-                   data-add-href="{{ url_for('web.add_to_shelf', book_id=entry.id, shelf_id=shelf.id) }}"
+                <a href="{{ url_for('shelf.remove_from_shelf', book_id=entry.id, shelf_id=shelf.id) }}"
+                   data-add-href="{{ url_for('shelf.add_to_shelf', book_id=entry.id, shelf_id=shelf.id) }}"
                    class="btn btn-sm btn-default" role="button" data-shelf-action="remove"
                 >
                   <span class="glyphicon glyphicon-remove"></span> {{shelf.name}}
@@ -261,8 +261,8 @@
             {%endfor%}
             {% for shelf in g.public_shelfes %}
               {% if shelf.id in books_shelfs %}
-                <a href="{{ url_for('web.remove_from_shelf', book_id=entry.id, shelf_id=shelf.id) }}"
-                   data-add-href="{{ url_for('web.add_to_shelf', book_id=entry.id, shelf_id=shelf.id) }}"
+                <a href="{{ url_for('shelf.remove_from_shelf', book_id=entry.id, shelf_id=shelf.id) }}"
+                   data-add-href="{{ url_for('shelf.add_to_shelf', book_id=entry.id, shelf_id=shelf.id) }}"
                    class="btn btn-sm btn-default" role="button" data-shelf-action="remove"
                 >
                   <span class="glyphicon glyphicon-remove"></span> {{shelf.name}}
@@ -279,7 +279,7 @@
       {% if g.user.role_edit() %}
       <div class="btn-toolbar" role="toolbar">
         <div class="btn-group" role="group" aria-label="Edit/Delete book">
-          <a href="{{ url_for('web.edit_book', book_id=entry.id) }}" class="btn btn-sm btn-warning" id="edit_book" role="button"><span class="glyphicon glyphicon-edit"></span> {{_('Edit metadata')}}</a>
+          <a href="{{ url_for('editbook.edit_book', book_id=entry.id) }}" class="btn btn-sm btn-warning" id="edit_book" role="button"><span class="glyphicon glyphicon-edit"></span> {{_('Edit metadata')}}</a>
         </div>
       </div>
       {% endif %}

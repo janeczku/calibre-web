@@ -12,6 +12,7 @@
     <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
     <link href="{{ url_for('static', filename='css/libs/bootstrap.min.css') }}" rel="stylesheet" media="screen">
     <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet" media="screen">
+    <link href="{{ url_for('static', filename='css/upload.css') }}" rel="stylesheet" media="screen">
     {% if g.current_theme == 1 %}
        <link href="{{ url_for('static', filename='css/caliBlur.min.css') }}" rel="stylesheet" media="screen">
     {% endif %}
@@ -59,7 +60,7 @@
               {% if g.user.role_upload() or g.user.role_admin()%}
                 {% if g.allow_upload %}
                   <li>
-                    <form id="form-upload" class="navbar-form" action="{{ url_for('web.upload') }}" method="post" enctype="multipart/form-data">
+                    <form id="form-upload" class="navbar-form" action="{{ url_for('editbook.upload') }}" method="post" enctype="multipart/form-data">
                       <div class="form-group">
                         <span class="btn btn-default btn-file">{{_('Upload')}}<input id="btn-upload" name="btn-upload" type="file" multiple></span>
                       </div>
@@ -103,14 +104,6 @@
       </div>
       {%endif%}
     {% endfor %}
-    <div id="loader" hidden="true">
-      <center>
-        <h3>{{_('Uploading...')}}</h3>
-        <span>{{_("please don't refresh the page")}}</span>.
-        <br />
-        <img src="{{ url_for('static', filename='img/loader.gif') }}">
-      </center>
-    </div>
     <div class="container-fluid">
       <div class="row-fluid">
         {% if g.user.is_authenticated or g.user.is_anonymous %}
@@ -240,6 +233,7 @@
     <script src="{{ url_for('static', filename='js/libs/plugins.js') }}"></script>
     <script src="{{ url_for('static', filename='js/libs/jquery.form.js') }}"></script>
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/uploadprogress.js') }}"> </script>
     {% if g.current_theme == 1 %}
       <script src="{{ url_for('static', filename='js/libs/jquery.visible.min.js') }}"></script>
       <script src="{{ url_for('static', filename='js/libs/compromise.min.js') }}"></script>
@@ -247,12 +241,12 @@
       <script src="{{ url_for('static', filename='js/caliBlur.js') }}"></script>
     {% endif %}
     <script type="text/javascript">
-    $(function () {
-      $("#btn-upload").change(function () {
-        $("#loader").show();
-        $("#form-upload").submit();
-      });
-    });
+        $(function() {
+            $("#form-upload").uploadprogress({redirect_url: '{{ url_for('web.index')}}'});
+            $("#btn-upload").change(function() {
+                $("#form-upload").submit();
+            });
+        });
     </script>
 
     {% block js %}{% endblock %}

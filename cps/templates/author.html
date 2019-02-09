@@ -27,21 +27,21 @@
     {% for entry in entries %}
     <div id="books" class="col-sm-3 col-lg-2 col-xs-6 book">
       <div class="cover">
-        <a href="{{ url_for('show_book', book_id=entry.id) }}">
+        <a href="{{ url_for('web.show_book', book_id=entry.id) }}">
           {% if entry.has_cover %}
-          <img src="{{ url_for('get_cover', book_id=entry.id) }}" />
+          <img src="{{ url_for('web.get_cover', book_id=entry.id) }}" />
           {% else %}
           <img src="{{ url_for('static', filename='generic_cover.jpg') }}" />
           {% endif %}
         </a>
       </div>
       <div class="meta">
-        <a href="{{ url_for('show_book', book_id=entry.id) }}">
+        <a href="{{ url_for('web.show_book', book_id=entry.id) }}">
           <p class="title">{{entry.title|shortentitle}}</p>
         </a>
         <p class="author">
           {% for author in entry.authors %}
-          <a href="{{url_for('author', book_id=author.id) }}">{{author.name.replace('|',',')}}</a>
+          <a href="{{url_for('web.author', book_id=author.id) }}">{{author.name.replace('|',',')}}</a>
           {% if not loop.last %}
           &amp;
           {% endif %}
