@@ -23,7 +23,7 @@
 
 from cps import mimetypes, global_WorkerThread, searched_ids
 from flask import render_template, request, redirect, url_for, send_from_directory, make_response, g, flash, abort
-# from werkzeug.exceptions import default_exceptions
+from werkzeug.exceptions import default_exceptions
 import helper
 import os
 # from sqlalchemy.sql.expression import func
@@ -101,7 +101,7 @@ EXTENSIONS_AUDIO = {'mp3', 'm4a', 'm4b'}
 # EXTENSIONS_READER = set(['txt', 'pdf', 'epub', 'zip', 'cbz', 'tar', 'cbt'] + (['rar','cbr'] if rar_support else []))
 
 
-''''# custom error page
+# custom error page
 def error_http(error):
     return render_template('http_error.html',
                             error_code=error.code,
@@ -115,7 +115,7 @@ for ex in default_exceptions:
     if ex < 500:
         app.register_error_handler(ex, error_http)
 
-'''
+
 
 web = Blueprint('web', __name__)
 
@@ -967,7 +967,6 @@ def advanced_search():
 
     db.session.connection().connection.connection.create_function("lower", 1, db.lcase)
     q = db.session.query(db.Books)
-    # postargs = request.form.to_dict()
 
     include_tag_inputs = request.args.getlist('include_tag')
     exclude_tag_inputs = request.args.getlist('exclude_tag')
