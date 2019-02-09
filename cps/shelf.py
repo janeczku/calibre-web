@@ -22,7 +22,7 @@
 #  along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 from flask import Blueprint, request, flash, redirect, url_for
-from cps import ub
+from cps import ub, searched_ids
 from flask_babel import gettext as _
 from sqlalchemy.sql.expression import func, or_
 from flask_login import login_required, current_user
@@ -104,18 +104,18 @@ def search_to_shelf(shelf_id):
         flash(_(u"User is not allowed to edit public shelves"), category="error")
         return redirect(url_for('index'))
 
-    if current_user.id in ub.searched_ids and ub.searched_ids[current_user.id]:
+    if current_user.id in searched_ids and searched_ids[current_user.id]:
         books_for_shelf = list()
         books_in_shelf = ub.session.query(ub.BookShelf).filter(ub.BookShelf.shelf == shelf_id).all()
         if books_in_shelf:
             book_ids = list()
             for book_id in books_in_shelf:
                 book_ids.append(book_id.book_id)
-            for id in ub.searched_ids[current_user.id]:
+            for id in searched_ids[current_user.id]:
                 if id not in book_ids:
                     books_for_shelf.append(id)
         else:
-            books_for_shelf = ub.searched_ids[current_user.id]
+            books_for_shelf = searched_ids[current_user.id]
 
         if not books_for_shelf:
             app.logger.info("Books are already part of the shelf: %s" % shelf.name)
@@ -136,7 +136,7 @@ def search_to_shelf(shelf_id):
         flash(_(u"Books have been added to shelf: %(sname)s", sname=shelf.name), category="success")
     else:
         flash(_(u"Could not add books to shelf: %(sname)s", sname=shelf.name), category="error")
-    return redirect(url_for('index'))
+    return redirect(url_for('web.index'))
 
 
 @shelf.route("/shelf/remove/<int:shelf_id>/<int:book_id>")
@@ -259,7 +259,7 @@ def delete_shelf(shelf_id):
         ub.session.query(ub.BookShelf).filter(ub.BookShelf.shelf == shelf_id).delete()
         ub.session.commit()
         app.logger.info(_(u"successfully deleted shelf %(name)s", name=cur_shelf.name, category="success"))
-    return redirect(url_for('index'))
+    return redirect(url_for('web.index'))
 
 
 @shelf.route("/shelf/<int:shelf_id>")
