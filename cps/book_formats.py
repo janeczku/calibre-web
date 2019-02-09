@@ -35,6 +35,7 @@ logger = logging.getLogger("book_formats")
 try:
     from wand.image import Image
     from wand import version as ImageVersion
+    from wand.exceptions import PolicyError
     use_generic_pdf_cover = False
 except (ImportError, RuntimeError) as e:
     logger.warning('cannot import Image, generating pdf covers for pdf uploads will not work: %s', e)
@@ -130,12 +131,18 @@ def pdf_preview(tmp_file_path, tmp_dir):
     if use_generic_pdf_cover:
         return None
     else:
-        cover_file_name = os.path.splitext(tmp_file_path)[0] + ".cover.jpg"
-        with Image(filename=tmp_file_path + "[0]", resolution=150) as img:
-            img.compression_quality = 88
-            img.save(filename=os.path.join(tmp_dir, cover_file_name))
-        return cover_file_name
-
+        try:
+            cover_file_name = os.path.splitext(tmp_file_path)[0] + ".cover.jpg"
+            with Image(filename=tmp_file_path + "[0]", resolution=150) as img:
+                img.compression_quality = 88
+                img.save(filename=os.path.join(tmp_dir, cover_file_name))
+            return cover_file_name
+        except PolicyError as ex:
+            logger.warning('Pdf extraction forbidden by Imagemagick policy: %s', ex)
+            return None
+        except Exception as ex:
+            logger.warning('Cannot extract cover image, using default: %s', ex)
+            return None
 
 def get_versions():
     if not use_generic_pdf_cover:
