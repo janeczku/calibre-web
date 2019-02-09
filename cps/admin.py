@@ -38,7 +38,7 @@ from sqlalchemy.exc import IntegrityError
 from gdriveutils import is_gdrive_ready, gdrive_support, downloadFile, deleteDatabaseOnChange, listRootFolders
 import helper
 from werkzeug.security import generate_password_hash
-from sqlalchemy.sql.expression import text
+from oauth_bb import oauth_check
 
 try:
     from goodreads.client import GoodreadsClient
@@ -591,7 +591,7 @@ def new_user():
         content.sidebar_view = config.config_default_show
         content.mature_content = bool(config.config_default_show & ub.MATURE_CONTENT)
     return render_title_template("user_edit.html", new_user=1, content=content, translations=translations,
-                                 languages=languages, title=_(u"Add new user"), page="newuser")
+                                 languages=languages, title=_(u"Add new user"), page="newuser", registered_oauth=oauth_check)
 
 
 @admi.route("/admin/mailsettings", methods=["GET", "POST"])
@@ -767,7 +767,7 @@ def edit_user(user_id):
             flash(_(u"An unknown error occured."), category="error")
     return render_title_template("user_edit.html", translations=translations, languages=languages, new_user=0,
                                  content=content, downloads=downloads, title=_(u"Edit User %(nick)s",
-                                                                               nick=content.nickname), page="edituser")
+                                                                               nick=content.nickname), page="edituser", registered_oauth=oauth_check)
 
 
 @admi.route("/admin/resetpassword/<int:user_id>")
