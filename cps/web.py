@@ -26,8 +26,6 @@ from flask import render_template, request, redirect, url_for, send_from_directo
 from werkzeug.exceptions import default_exceptions
 import helper
 import os
-# from sqlalchemy.sql.expression import func
-# from sqlalchemy.sql.expression import false
 from sqlalchemy.exc import IntegrityError
 from flask_login import login_user, logout_user, login_required, current_user
 from flask_babel import gettext as _
@@ -36,21 +34,31 @@ from werkzeug.datastructures import Headers
 from babel import Locale as LC
 from babel.dates import format_date
 from babel.core import UnknownLocaleError
-from functools import wraps
 import base64
 from sqlalchemy.sql import *
 import json
 import datetime
 from iso639 import languages as isoLanguages
-import os.path
 import re
 import db
 import gdriveutils
 from redirect import redirect_back
 from cps import lm, babel, ub, config, get_locale, language_table, app
 from pagination import Pagination
-# from admin import check_valid_domain
-# from oauth_bb import oauth_check, register_user_with_oauth
+from sqlalchemy.sql.expression import text
+
+from oauth_bb import oauth_check, register_user_with_oauth, logout_oauth_user, get_oauth_status
+
+'''try:
+    oauth_support = True
+except ImportError:
+    oauth_support = False'''
+
+try:
+    import ldap
+    ldap_support = True
+except ImportError:
+    ldap_support = False
 
 try:
     from googleapiclient.errors import HttpError
@@ -70,7 +78,7 @@ except ImportError:
     levenshtein_support = False
 
 try:
-    from functools import reduce
+    from functools import reduce, wraps
 except ImportError:
     pass  # We're not using Python 3
 
@@ -165,21 +173,6 @@ def remote_login_required(f):
             response.headers["Content-Type"] = "application/json; charset=utf-8"
             return response, 403
         abort(403)
-
-    return inner
-
-
-def github_oauth_required(f):
-    @wraps(f)
-    def inner(*args, **kwargs):
-        if config.config_use_github_oauth:
-            return f(*args, **kwargs)
-        if request.is_xhr:
-            data = {'status': 'error', 'message': 'Not Found'}
-            response = make_response(json.dumps(data, ensure_ascii=False))
-            response.headers["Content-Type"] = "application/json; charset=utf-8"
-            return response, 404
-        abort(404)
 
     return inner
 
@@ -1299,7 +1292,8 @@ def register():
                 try:
                     ub.session.add(content)
                     ub.session.commit()
-                    # register_user_with_oauth(content)
+                    if oauth_support:
+                        register_user_with_oauth(content)
                     helper.send_registration_mail(to_save["email"], to_save["nickname"], password)
                 except Exception:
                     ub.session.rollback()
@@ -1316,7 +1310,8 @@ def register():
             flash(_(u"This username or e-mail address is already in use."), category="error")
             return render_title_template('register.html', title=_(u"register"), page="register")
 
-    # register_user_with_oauth()
+    if oauth_support:
+        register_user_with_oauth()
     return render_title_template('register.html', config=config, title=_(u"register"), page="register")
 
 
@@ -1330,7 +1325,7 @@ def login():
         form = request.form.to_dict()
         user = ub.session.query(ub.User).filter(func.lower(ub.User.nickname) == form['username'].strip().lower())\
             .first()
-        if config.config_use_ldap and user:
+        '''if config.config_use_ldap and user:
             import ldap
             try:
                 ub.User.try_login(form['username'], form['password'])
@@ -1341,7 +1336,8 @@ def login():
                 ipAdress = request.headers.get('X-Forwarded-For', request.remote_addr)
                 app.logger.info('LDAP Login failed for user "' + form['username'] + '" IP-adress: ' + ipAdress)
                 flash(_(u"Wrong Username or Password"), category="error")
-        elif user and check_password_hash(user.password, form['password']) and user.nickname is not "Guest":
+        el'''
+        if user and check_password_hash(user.password, form['password']) and user.nickname is not "Guest":
             login_user(user, remember=True)
             flash(_(u"you are now logged in as: '%(nickname)s'", nickname=user.nickname), category="success")
             return redirect_back(url_for("web.index"))
@@ -1362,7 +1358,8 @@ def login():
 def logout():
     if current_user is not None and current_user.is_authenticated:
         logout_user()
-        # logout_oauth_user()
+        if oauth_support:
+            logout_oauth_user()
     return redirect(url_for('web.login'))
 
 
@@ -1475,7 +1472,7 @@ def profile():
     downloads = list()
     languages = speaking_language()
     translations = babel.list_translations() + [LC('en')]
-    oauth_status = None  # oauth_status = get_oauth_status()
+    oauth_status = get_oauth_status()
     for book in content.downloads:
         downloadBook = db.session.query(db.Books).filter(db.Books.id == book.book_id).first()
         if downloadBook:
