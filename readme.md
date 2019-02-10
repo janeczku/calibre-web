@@ -48,9 +48,14 @@ Please note that running the above install command can fail on some versions of 
 
 Python 2.7+, python 3.x+
 
+Optionally, to enable on-the-fly conversion from one ebook format to another when using the send-to-kindle feature, or during editing ob ebooks metadata:
+
+[Download and install](https://calibre-ebook.com/download) the Calibre desktop program for your platform and enter the folder including programm name (normally /opt/calibre/ebook-convert, or c:\prgogram files\calibre\ebook-convert.exe) in the field "calibre's converter tool" on the setup page.
+
+\*** DEPRECATED \*** Support will be removed in future releases
 Optionally, to enable on-the-fly conversion from EPUB to MOBI when using the send-to-kindle feature:
 
-[Download](http://www.amazon.com/gp/feature.html?docId=1000765211) Amazon's KindleGen tool for your platform and place the binary named as `kindlegen` in the `vendor` folder.
+[Download Kindlegen](http://www.amazon.com/gp/feature.html?docId=1000765211) Amazon's KindleGen tool for your platform and place the binary named as `kindlegen` in the `vendor` folder.
 
 ## Docker images
 
