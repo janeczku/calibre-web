@@ -33,8 +33,8 @@ Calibre-Web is a web app providing a clean interface for browsing, reading and d
 1. Install dependencies by running `pip install --target vendor -r requirements.txt`.
 2. Execute the command: `python cps.py` (or `nohup python cps.py` - recommended if you want to exit the terminal window)
 3. Point your browser to `http://localhost:8083` or `http://localhost:8083/opds` for the OPDS catalog
-4. Set `Location of Calibre database` to the path of the folder where your Calibre library (metadata.db) lives, push "submit" button
-   optionally a google drive can be used to host the calibre library (-> Using Google Drive integration)
+4. Set `Location of Calibre database` to the path of the folder where your Calibre library (metadata.db) lives, push "submit" button\
+   Optionally a Google Drive can be used to host the calibre library [-> Using Google Drive integration](https://github.com/janeczku/calibre-web/wiki/Configuration#using-google-drive-integration)
 5. Go to Login page
 
 **Default admin login:**\
@@ -48,7 +48,11 @@ Please note that running the above install command can fail on some versions of 
 
 Python 2.7+, python 3.x+
 
-Optionally, to enable on-the-fly conversion from EPUB to MOBI when using the send-to-kindle feature:
+Optionally, to enable on-the-fly conversion from one ebook format to another when using the send-to-kindle feature, or during editing ob ebooks metadata:
+
+[Download and install](https://calibre-ebook.com/download) the Calibre desktop program for your platform and enter the folder including programm name (normally /opt/calibre/ebook-convert, or C:\Program Files\calibre\ebook-convert.exe) in the field "calibre's converter tool" on the setup page.
+
+\*** DEPRECATED \*** Support will be removed in future releases
 
 [Download](http://www.amazon.com/gp/feature.html?docId=1000765211) Amazon's KindleGen tool for your platform and place the binary named as `kindlegen` in the `vendor` folder.
 
