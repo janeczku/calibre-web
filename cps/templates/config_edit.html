@@ -159,7 +159,7 @@
       <input type="checkbox" id="config_remote_login" name="config_remote_login" {% if content.config_remote_login %}checked{% endif %}>
       <label for="config_remote_login">{{_('Enable remote login ("magic link")')}}</label>
     </div>
-    {% if goodreads %}
+    {% if feature_support['goodreads'] %}
     <div class="form-group">
       <input type="checkbox" id="config_use_goodreads" name="config_use_goodreads" data-control="goodreads-settings" {% if content.config_use_goodreads %}checked{% endif %}>
       <label for="config_use_goodreads">{{_('Use')}} Goodreads</label>
@@ -176,6 +176,7 @@
       </div>
     </div>
     {% endif %}
+    {% if feature_support['ldap'] %}
     <div class="form-group">
       <input type="checkbox" id="config_use_ldap" name="config_use_ldap" data-control="ldap-settings" {% if content.config_use_ldap %}checked{% endif %}>
       <label for="config_use_ldap">{{_('Use')}} LDAP Authentication</label>
@@ -190,6 +191,8 @@
         <input type="text" class="form-control" id="config_ldap_dn" name="config_ldap_dn" value="{% if content.config_use_ldap != None %}{{ content.config_ldap_dn }}{% endif %}" autocomplete="off">
       </div>
     </div>
+    {% endif %}
+    {% if feature_support['oauth'] %}
     <div class="form-group">
       <input type="checkbox" id="config_use_github_oauth" name="config_use_github_oauth" data-control="github-oauth-settings" {% if content.config_use_github_oauth %}checked{% endif %}>
       <label for="config_use_github_oauth">{{_('Use')}} GitHub OAuth</label>
@@ -220,6 +223,7 @@
         <input type="text" class="form-control" id="config_google_oauth_client_secret" name="config_google_oauth_client_secret" value="{% if content.config_google_oauth_client_secret != None %}{{ content.config_google_oauth_client_secret }}{% endif %}" autocomplete="off">
       </div>
     </div>
+    {% endif %}
       </div>
     </div>
   </div>

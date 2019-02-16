@@ -40,7 +40,7 @@ def add_to_shelf(shelf_id, book_id):
         app.logger.info("Invalid shelf specified")
         if not request.is_xhr:
             flash(_(u"Invalid shelf specified"), category="error")
-            return redirect(url_for('index'))
+            return redirect(url_for('web.index'))
         return "Invalid shelf specified", 400
 
     if not shelf.is_public and not shelf.user_id == int(current_user.id):
@@ -48,14 +48,14 @@ def add_to_shelf(shelf_id, book_id):
         if not request.is_xhr:
             flash(_(u"Sorry you are not allowed to add a book to the the shelf: %(shelfname)s", shelfname=shelf.name),
                   category="error")
-            return redirect(url_for('index'))
+            return redirect(url_for('web.index'))
         return "Sorry you are not allowed to add a book to the the shelf: %s" % shelf.name, 403
 
     if shelf.is_public and not current_user.role_edit_shelfs():
         app.logger.info("User is not allowed to edit public shelves")
         if not request.is_xhr:
             flash(_(u"You are not allowed to edit public shelves"), category="error")
-            return redirect(url_for('index'))
+            return redirect(url_for('web.index'))
         return "User is not allowed to edit public shelves", 403
 
     book_in_shelf = ub.session.query(ub.BookShelf).filter(ub.BookShelf.shelf == shelf_id,
@@ -64,7 +64,7 @@ def add_to_shelf(shelf_id, book_id):
         app.logger.info("Book is already part of the shelf: %s" % shelf.name)
         if not request.is_xhr:
             flash(_(u"Book is already part of the shelf: %(shelfname)s", shelfname=shelf.name), category="error")
-            return redirect(url_for('index'))
+            return redirect(url_for('web.index'))
         return "Book is already part of the shelf: %s" % shelf.name, 400
 
     maxOrder = ub.session.query(func.max(ub.BookShelf.order)).filter(ub.BookShelf.shelf == shelf_id).first()
@@ -81,7 +81,7 @@ def add_to_shelf(shelf_id, book_id):
         if "HTTP_REFERER" in request.environ:
             return redirect(request.environ["HTTP_REFERER"])
         else:
-            return redirect(url_for('index'))
+            return redirect(url_for('web.index'))
     return "", 204
 
 
@@ -92,17 +92,17 @@ def search_to_shelf(shelf_id):
     if shelf is None:
         app.logger.info("Invalid shelf specified")
         flash(_(u"Invalid shelf specified"), category="error")
-        return redirect(url_for('index'))
+        return redirect(url_for('web.index'))
 
     if not shelf.is_public and not shelf.user_id == int(current_user.id):
         app.logger.info("You are not allowed to add a book to the the shelf: %s" % shelf.name)
         flash(_(u"You are not allowed to add a book to the the shelf: %(name)s", name=shelf.name), category="error")
-        return redirect(url_for('index'))
+        return redirect(url_for('web.index'))
 
     if shelf.is_public and not current_user.role_edit_shelfs():
         app.logger.info("User is not allowed to edit public shelves")
         flash(_(u"User is not allowed to edit public shelves"), category="error")
-        return redirect(url_for('index'))
+        return redirect(url_for('web.index'))
 
     if current_user.id in searched_ids and searched_ids[current_user.id]:
         books_for_shelf = list()
@@ -120,7 +120,7 @@ def search_to_shelf(shelf_id):
         if not books_for_shelf:
             app.logger.info("Books are already part of the shelf: %s" % shelf.name)
             flash(_(u"Books are already part of the shelf: %(name)s", name=shelf.name), category="error")
-            return redirect(url_for('index'))
+            return redirect(url_for('web.index'))
 
         maxOrder = ub.session.query(func.max(ub.BookShelf.order)).filter(ub.BookShelf.shelf == shelf_id).first()
         if maxOrder[0] is None:
@@ -146,7 +146,7 @@ def remove_from_shelf(shelf_id, book_id):
     if shelf is None:
         app.logger.info("Invalid shelf specified")
         if not request.is_xhr:
-            return redirect(url_for('index'))
+            return redirect(url_for('web.index'))
         return "Invalid shelf specified", 400
 
     # if shelf is public and use is allowed to edit shelfs, or if shelf is private and user is owner
@@ -165,7 +165,7 @@ def remove_from_shelf(shelf_id, book_id):
         if book_shelf is None:
             app.logger.info("Book already removed from shelf")
             if not request.is_xhr:
-                return redirect(url_for('index'))
+                return redirect(url_for('web.index'))
             return "Book already removed from shelf", 410
 
         ub.session.delete(book_shelf)
@@ -180,7 +180,7 @@ def remove_from_shelf(shelf_id, book_id):
         if not request.is_xhr:
             flash(_(u"Sorry you are not allowed to remove a book from this shelf: %(sname)s", sname=shelf.name),
                   category="error")
-            return redirect(url_for('index'))
+            return redirect(url_for('web.index'))
         return "Sorry you are not allowed to remove a book from this shelf: %s" % shelf.name, 403
 
 

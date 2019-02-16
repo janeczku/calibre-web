@@ -161,7 +161,7 @@
               {% if g.user.is_authenticated or g.user.is_anonymous %}
                 <li class="nav-head hidden-xs public-shelves">{{_('Public Shelves')}}</li>
                 {% for shelf in g.public_shelfes %}
-                  <li><a href="{{url_for('web.show_shelf', shelf_id=shelf.id)}}"><span class="glyphicon glyphicon-list public_shelf"></span>{{shelf.name|shortentitle(40)}}</a></li>
+                  <li><a href="{{url_for('shelf.show_shelf', shelf_id=shelf.id)}}"><span class="glyphicon glyphicon-list public_shelf"></span>{{shelf.name|shortentitle(40)}}</a></li>
                 {% endfor %}
                 <li class="nav-head hidden-xs your-shelves">{{_('Your Shelves')}}</li>
                 {% for shelf in g.user.shelf %}

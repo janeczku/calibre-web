@@ -42,7 +42,7 @@ from iso639 import languages as isoLanguages
 
 editbook = Blueprint('editbook', __name__)
 
-EXTENSIONS_CONVERT = {'pdf', 'epub', 'mobi', 'azw3', 'docx', 'rtf', 'fb2', 'lit', 'lrf', 'txt', 'html', 'rtf', 'odt'}
+EXTENSIONS_CONVERT = {'pdf', 'epub', 'mobi', 'azw3', 'docx', 'rtf', 'fb2', 'lit', 'lrf', 'txt', 'htmlz', 'rtf', 'odt'}
 
 EXTENSIONS_UPLOAD = {'txt', 'pdf', 'epub', 'mobi', 'azw', 'azw3', 'cbr', 'cbz', 'cbt', 'djvu', 'prc', 'doc', 'docx',
                       'fb2', 'html', 'rtf', 'odt', 'mp3',  'm4a', 'm4b'}
@@ -380,7 +380,7 @@ def upload_single_file(request, book, book_id):
             # Queue uploader info
             uploadText=_(u"File format %(ext)s added to %(book)s", ext=file_ext.upper(), book=book.title)
             global_WorkerThread.add_upload(current_user.nickname,
-                "<a href=\"" + url_for('show_book', book_id=book.id) + "\">" + uploadText + "</a>")
+                "<a href=\"" + url_for('web.show_book', book_id=book.id) + "\">" + uploadText + "</a>")
 
 def upload_cover(request, book):
     if 'btn-upload-cover' in request.files:
@@ -589,10 +589,10 @@ def upload():
                     flash(
                         _("File extension '%(ext)s' is not allowed to be uploaded to this server",
                           ext=file_ext), category="error")
-                    return redirect(url_for('index'))
+                    return redirect(url_for('web.index'))
             else:
                 flash(_('File to be uploaded must have an extension'), category="error")
-                return redirect(url_for('index'))
+                return redirect(url_for('web.index'))
 
             # extract metadata from file
             meta = uploader.upload(requested_file)
@@ -612,12 +612,12 @@ def upload():
                     os.makedirs(filepath)
                 except OSError:
                     flash(_(u"Failed to create path %(path)s (Permission denied).", path=filepath), category="error")
-                    return redirect(url_for('index'))
+                    return redirect(url_for('web.index'))
             try:
                 copyfile(meta.file_path, saved_filename)
             except OSError:
                 flash(_(u"Failed to store file %(file)s (Permission denied).", file=saved_filename), category="error")
-                return redirect(url_for('index'))
+                return redirect(url_for('web.index'))
             try:
                 os.unlink(meta.file_path)
             except OSError:

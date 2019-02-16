@@ -70,7 +70,7 @@ def google_drive_callback():
             f.write(credentials.to_json())
     except ValueError as error:
         app.logger.error(error)
-    return redirect(url_for('configuration'))
+    return redirect(url_for('admin.configuration'))
 
 
 @gdrive.route("/gdrive/watch/subscribe")
@@ -102,7 +102,7 @@ def watch_gdrive():
             else:
                 flash(reason['message'], category="error")
 
-    return redirect(url_for('configuration'))
+    return redirect(url_for('admin.configuration'))
 
 
 @gdrive.route("/gdrive/watch/revoke")
@@ -121,7 +121,7 @@ def revoke_watch_gdrive():
         ub.session.merge(settings)
         ub.session.commit()
         config.loadSettings()
-    return redirect(url_for('configuration'))
+    return redirect(url_for('admin.configuration'))
 
 
 @gdrive.route("/gdrive/watch/callback", methods=['GET', 'POST'])

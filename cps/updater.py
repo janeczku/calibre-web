@@ -18,11 +18,10 @@
 #  along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 
-from cps import config, get_locale
+from cps import config, get_locale, Server, app
 import threading
 import zipfile
 import requests
-import logging
 import time
 from io import BytesIO
 import os
@@ -35,7 +34,6 @@ import json
 from flask_babel import gettext as _
 from babel.dates import format_datetime
 
-import server
 
 def is_sha1(sha1):
     if len(sha1) != 40:
@@ -69,39 +67,45 @@ class Updater(threading.Thread):
     def run(self):
         try:
             self.status = 1
-            r = requests.get(self._get_request_path(), stream=True)
+            app.logger.debug(u'Download update file')
+            headers = {'Accept': 'application/vnd.github.v3+json'}
+            r = requests.get(self._get_request_path(), stream=True, headers=headers)
             r.raise_for_status()
 
             self.status = 2
+            app.logger.debug(u'Opening zipfile')
             z = zipfile.ZipFile(BytesIO(r.content))
             self.status = 3
+            app.logger.debug(u'Extracting zipfile')
             tmp_dir = gettempdir()
             z.extractall(tmp_dir)
             foldername = os.path.join(tmp_dir, z.namelist()[0])[:-1]
             if not os.path.isdir(foldername):
                 self.status = 11
-                logging.getLogger('cps.web').info(u'Extracted contents of zipfile not found in temp folder')
+                app.logger.info(u'Extracted contents of zipfile not found in temp folder')
                 return
             self.status = 4
+            app.logger.debug(u'Replacing files')
             self.update_source(foldername, config.get_main_dir)
             self.status = 6
+            app.logger.debug(u'Preparing restart of server')
             time.sleep(2)
-            server.Server.setRestartTyp(True)
-            server.Server.stopServer()
+            Server.setRestartTyp(True)
+            Server.stopServer()
             self.status = 7
             time.sleep(2)
         except requests.exceptions.HTTPError as ex:
-            logging.getLogger('cps.web').info( u'HTTP Error' + ' ' + str(ex))
+            app.logger.info( u'HTTP Error' + ' ' + str(ex))
             self.status = 8
         except requests.exceptions.ConnectionError:
-            logging.getLogger('cps.web').info(u'Connection error')
+            app.logger.info(u'Connection error')
             self.status = 9
         except requests.exceptions.Timeout:
-            logging.getLogger('cps.web').info(u'Timeout while establishing connection')
+            app.logger.info(u'Timeout while establishing connection')
             self.status = 10
         except requests.exceptions.RequestException:
             self.status = 11
-            logging.getLogger('cps.web').info(u'General error')
+            app.logger.info(u'General error')
 
     def get_update_status(self):
         return self.status
@@ -149,14 +153,14 @@ class Updater(threading.Thread):
         if sys.platform == "win32" or sys.platform == "darwin":
             change_permissions = False
         else:
-            logging.getLogger('cps.web').debug('Update on OS-System : ' + sys.platform)
+            app.logger.debug('Update on OS-System : ' + sys.platform)
             new_permissions = os.stat(root_dst_dir)
             # print new_permissions
         for src_dir, __, files in os.walk(root_src_dir):
             dst_dir = src_dir.replace(root_src_dir, root_dst_dir, 1)
             if not os.path.exists(dst_dir):
                 os.makedirs(dst_dir)
-                logging.getLogger('cps.web').debug('Create-Dir: '+dst_dir)
+                app.logger.debug('Create-Dir: '+dst_dir)
                 if change_permissions:
                     # print('Permissions: User '+str(new_permissions.st_uid)+' Group '+str(new_permissions.st_uid))
                     os.chown(dst_dir, new_permissions.st_uid, new_permissions.st_gid)
@@ -166,20 +170,20 @@ class Updater(threading.Thread):
                 if os.path.exists(dst_file):
                     if change_permissions:
                         permission = os.stat(dst_file)
-                    logging.getLogger('cps.web').debug('Remove file before copy: '+dst_file)
+                    app.logger.debug('Remove file before copy: '+dst_file)
                     os.remove(dst_file)
                 else:
                     if change_permissions:
                         permission = new_permissions
                 shutil.move(src_file, dst_dir)
-                logging.getLogger('cps.web').debug('Move File '+src_file+' to '+dst_dir)
+                app.logger.debug('Move File '+src_file+' to '+dst_dir)
                 if change_permissions:
                     try:
                         os.chown(dst_file, permission.st_uid, permission.st_gid)
                     except (Exception) as e:
                         # ex = sys.exc_info()
                         old_permissions = os.stat(dst_file)
-                        logging.getLogger('cps.web').debug('Fail change permissions of ' + str(dst_file) + '. Before: '
+                        app.logger.debug('Fail change permissions of ' + str(dst_file) + '. Before: '
                             + str(old_permissions.st_uid) + ':' + str(old_permissions.st_gid) + ' After: '
                             + str(permission.st_uid) + ':' + str(permission.st_gid) + ' error: '+str(e))
         return
@@ -215,15 +219,15 @@ class Updater(threading.Thread):
         for item in remove_items:
             item_path = os.path.join(destination, item[1:])
             if os.path.isdir(item_path):
-                logging.getLogger('cps.web').debug("Delete dir " + item_path)
+                app.logger.debug("Delete dir " + item_path)
                 shutil.rmtree(item_path, ignore_errors=True)
             else:
                 try:
-                    logging.getLogger('cps.web').debug("Delete file " + item_path)
+                    app.logger.debug("Delete file " + item_path)
                     # log_from_thread("Delete file " + item_path)
                     os.remove(item_path)
                 except Exception:
-                    logging.getLogger('cps.web').debug("Could not remove:" + item_path)
+                    app.logger.debug("Could not remove:" + item_path)
         shutil.rmtree(source, ignore_errors=True)
 
     def _nightly_version_info(self):
@@ -263,7 +267,8 @@ class Updater(threading.Thread):
             status['update'] = True
 
             try:
-                r = requests.get(repository_url + '/git/commits/' + commit['object']['sha'])
+                headers = {'Accept': 'application/vnd.github.v3+json'}
+                r = requests.get(repository_url + '/git/commits/' + commit['object']['sha'], headers=headers)
                 r.raise_for_status()
                 update_data = r.json()
             except requests.exceptions.HTTPError as e:
@@ -310,7 +315,8 @@ class Updater(threading.Thread):
                             # check if we are more than one update behind if so, go up the tree
                             if parent_commit['sha'] != status['current_commit_hash']:
                                 try:
-                                    r = requests.get(parent_commit['url'])
+                                    headers = {'Accept': 'application/vnd.github.v3+json'}
+                                    r = requests.get(parent_commit['url'], headers=headers)
                                     r.raise_for_status()
                                     parent_data = r.json()
 
@@ -368,7 +374,8 @@ class Updater(threading.Thread):
                             # check if we are more than one update behind if so, go up the tree
                             if commit['sha'] != status['current_commit_hash']:
                                 try:
-                                    r = requests.get(parent_commit['url'])
+                                    headers = {'Accept': 'application/vnd.github.v3+json'}
+                                    r = requests.get(parent_commit['url'], headers=headers)
                                     r.raise_for_status()
                                     parent_data = r.json()
 
@@ -492,7 +499,8 @@ class Updater(threading.Thread):
         else:
             status['current_commit_hash'] = version['version']
         try:
-            r = requests.get(repository_url)
+            headers = {'Accept': 'application/vnd.github.v3+json'}
+            r = requests.get(repository_url, headers=headers)
             commit = r.json()
             r.raise_for_status()
         except requests.exceptions.HTTPError as e:

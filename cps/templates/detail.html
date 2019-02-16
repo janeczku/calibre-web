@@ -57,9 +57,22 @@
                 </div>
               {% endif %}
             {% endif %}
+          {% if reader_list  %}
+              <div class="btn-group" role="group">
+                <button id="read-in-browser" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <span class="glyphicon glyphicon-eye-open"></span> {{_('Read in browser')}}
+                  <span class="caret"></span>
+                </button>
+                    <ul class="dropdown-menu" aria-labelledby="read-in-browser">
+                    {% for format in reader_list %}
+                      <li><a target="_blank" href="{{ url_for('web.read_book', book_id=entry.id, book_format=format) }}">{{format}}</a></li>
+                    {%endfor%}
+                    </ul>
+              </div>
+            {% endif %}
               {% if reader_list  %}
             {% if audioentries|length %}
-              <div class="btn-group" role="group">
+              <!--div class="btn-group" role="group">
                 <button id="listen-in-browser" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   <span class="glyphicon glyphicon-music"></span> {{_('Listen in browser')}}
                   <span class="caret"></span>
@@ -77,7 +90,7 @@
                     {% endif %}
               {% endfor %}
                   </ul>
-              </div>
+              </div-->
             {% endif %}
 
           {% endif %}

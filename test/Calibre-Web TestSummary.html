@@ -30,15 +30,15 @@
 
 <div id='header_parameters' class='row text-center report-parameters'>
     <div class="col-xs-6 col-md-4">
-        <p class='text-justify attribute'><strong>Start Time:</strong> 2019-01-27 07:20:26.105524</p>
+        <p class='text-justify attribute'><strong>Start Time:</strong> 2019-02-10 12:10:31.096065</p>
 
     </div>
     <div class="col-xs-6 col-md-4">
-        <p class='text-justify attribute'><strong>Stop Time:</strong> 2019-01-27 08:08:50.419347</p>
+        <p class='text-justify attribute'><strong>Stop Time:</strong> 2019-02-10 12:53:18.410539</p>
 
     </div>
     <div class="col-xs-6 col-md-4">
-        <p class='text-justify attribute'><strong>Duration:</strong> 0:48:24.313823</p>
+        <p class='text-justify attribute'><strong>Duration:</strong> 0:42:47.314474</p>
 
     </div>
 </div>
@@ -577,97 +577,92 @@
         <!--css div popup end-->
     </td>
 </tr>
-<tr class='passClass'>
+<tr class='errorClass'>
     <td>test_email_ssl.test_SSL_Python27</td>
     <td class="text-center">4</td>
-    <td class="text-center">4</td>
+    <td class="text-center">1</td>
     <td class="text-center">0</td>
-    <td class="text-center">0</td>
+    <td class="text-center">3</td>
     <td class="text-center">0</td>
     <td class="text-center">
         <a onclick="showClassDetail('c3', 4)">Detail</a>
     </td>
 </tr>
-<tr id='pt3.1' class='hiddenRow bg-success'>
+<tr id='et3.1' class='none bg-info'>
     <td>
         <div class='testcase'>test_SSL_None_setup_error</div>
     </td>
     <td colspan='6'>
         <div class="text-center">
-            <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_pt3.1')">PASS</a>
+            <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et3.1')">ERROR</a>
         </div>
         <!--css div popup start-->
-        <div id='div_pt3.1' class="popup_window test_output" style="display:none;">
+        <div id='div_et3.1' class="popup_window test_output" style="display:none;">
             <div class='close_button pull-right'>
                 <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                        onclick="document.getElementById('div_pt3.1').style.display='none'"><span
+                        onclick="document.getElementById('div_et3.1').style.display='none'"><span
                         aria-hidden="true">&times;</span></button>
             </div>
             <div class="text-left pull-left">
-                <pre class="text-left">pt3.1: /home/matthias/Entwicklung/calibre-web-test/test/ui_helper.py:621: FutureWarning: The behavior of this method will change in future versions. Use specific 'len(elem)' or 'elem is not None' test instead.
+                <pre class="text-left">et3.1: /home/matthias/Entwicklung/calibre-web-test/test/ui_helper.py:604: FutureWarning: The behavior of this method will change in future versions. Use specific 'len(elem)' or 'elem is not None' test instead.
   ret['edit_enable'] = bool(tree.find("//*[@class='glyphicon glyphicon-edit']"))
-/home/matthias/Entwicklung/calibre-web-test/test/ui_helper.py:664: FutureWarning: The behavior of this method will change in future versions. Use specific 'len(elem)' or 'elem is not None' test instead.
-  ret['read']= bool(tree.find("//*[@id='have_read_cb']"))
-Incomming connection 127.0.0.1:44852
-127.0.0.1:44852 Timeouted</pre>
+/home/matthias/Entwicklung/calibre-web-test/test/ui_helper.py:660: FutureWarning: The behavior of this method will change in future versions. Use specific 'len(elem)' or 'elem is not None' test instead.
+  ret['read']= bool(tree.find("//*[@id='have_read_cb']"))Traceback (most recent call last):
+  File "/home/matthias/Entwicklung/calibre-web-test/test/test_email_ssl.py", line 149, in test_SSL_None_setup_error
+    details['kindlebtn'].click()
+AttributeError: 'NoneType' object has no attribute 'click'</pre>
             </div>
             <div class="clearfix"></div>
         </div>
         <!--css div popup end-->
     </td>
 </tr>
-<tr id='pt3.2' class='hiddenRow bg-success'>
+<tr id='et3.2' class='none bg-info'>
     <td>
         <div class='testcase'>test_SSL_STARTTLS_setup_error</div>
     </td>
     <td colspan='6'>
         <div class="text-center">
-            <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_pt3.2')">PASS</a>
+            <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et3.2')">ERROR</a>
         </div>
         <!--css div popup start-->
-        <div id='div_pt3.2' class="popup_window test_output" style="display:none;">
+        <div id='div_et3.2' class="popup_window test_output" style="display:none;">
             <div class='close_button pull-right'>
                 <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                        onclick="document.getElementById('div_pt3.2').style.display='none'"><span
+                        onclick="document.getElementById('div_et3.2').style.display='none'"><span
                         aria-hidden="true">&times;</span></button>
             </div>
             <div class="text-left pull-left">
-                <pre class="text-left">pt3.2: Incomming connection 127.0.0.1:44856
-127.0.0.1:44856 Timeouted</pre>
+                <pre class="text-left">et3.2: Traceback (most recent call last):
+  File "/home/matthias/Entwicklung/calibre-web-test/test/test_email_ssl.py", line 129, in test_SSL_STARTTLS_setup_error
+    details['kindlebtn'].click()
+AttributeError: 'NoneType' object has no attribute 'click'</pre>
             </div>
             <div class="clearfix"></div>
         </div>
         <!--css div popup end-->
     </td>
 </tr>
-<tr id='pt3.3' class='hiddenRow bg-success'>
+<tr id='et3.3' class='none bg-info'>
     <td>
         <div class='testcase'>test_SSL_only</div>
     </td>
     <td colspan='6'>
         <div class="text-center">
-            <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_pt3.3')">PASS</a>
+            <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et3.3')">ERROR</a>
         </div>
         <!--css div popup start-->
-        <div id='div_pt3.3' class="popup_window test_output" style="display:none;">
+        <div id='div_et3.3' class="popup_window test_output" style="display:none;">
             <div class='close_button pull-right'>
                 <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                        onclick="document.getElementById('div_pt3.3').style.display='none'"><span
+                        onclick="document.getElementById('div_et3.3').style.display='none'"><span
                         aria-hidden="true">&times;</span></button>
             </div>
             <div class="text-left pull-left">
-                <pre class="text-left">pt3.3: Incomming connection 127.0.0.1:44862
-Received: EHLO
-Received: AUTH
-User: name@host.com, Password: 10234
-Received: MAIL
-Received: RCPT
-Received: DATA
-('Receiving message from:', ('127.0.0.1', 44862))
-('Message addressed from:', '&lt;name@host.com&gt; size=30379')
-('Message addressed to  :', ['a1@b.com'])
-('Message length        :', 30378)
-Received: QUIT</pre>
+                <pre class="text-left">et3.3: Traceback (most recent call last):
+  File "/home/matthias/Entwicklung/calibre-web-test/test/test_email_ssl.py", line 108, in test_SSL_only
+    details['kindlebtn'].click()
+AttributeError: 'NoneType' object has no attribute 'click'</pre>
             </div>
             <div class="clearfix"></div>
         </div>
@@ -690,17 +685,17 @@ Received: QUIT</pre>
                         aria-hidden="true">&times;</span></button>
             </div>
             <div class="text-left pull-left">
-                <pre class="text-left">pt3.4: Incomming connection 127.0.0.1:44864
+                <pre class="text-left">pt3.4: Incomming connection 127.0.0.1:40856
 Received: EHLO
 Received: AUTH
 User: name@host.com, Password: 10234
 Received: MAIL
 Received: RCPT
 Received: DATA
-('Receiving message from:', ('127.0.0.1', 44864))
-('Message addressed from:', '&lt;name@host.com&gt; size=508')
+('Receiving message from:', ('127.0.0.1', 40856))
+('Message addressed from:', '&lt;name@host.com&gt; size=507')
 ('Message addressed to  :', ['a1@b.com'])
-('Message length        :', 507)
+('Message length        :', 506)
 Received: QUIT</pre>
             </div>
             <div class="clearfix"></div>
@@ -708,93 +703,89 @@ Received: QUIT</pre>
         <!--css div popup end-->
     </td>
 </tr>
-<tr class='failClass'>
+<tr class='errorClass'>
     <td>test_email_ssl.test_SSL_Python36</td>
     <td class="text-center">4</td>
-    <td class="text-center">3</td>
-    <td class="text-center">1</td>
     <td class="text-center">0</td>
+    <td class="text-center">1</td>
+    <td class="text-center">3</td>
     <td class="text-center">0</td>
     <td class="text-center">
         <a onclick="showClassDetail('c4', 4)">Detail</a>
     </td>
 </tr>
-<tr id='pt4.1' class='hiddenRow bg-success'>
+<tr id='et4.1' class='none bg-info'>
     <td>
         <div class='testcase'>test_SSL_None_setup_error</div>
     </td>
     <td colspan='6'>
         <div class="text-center">
-            <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_pt4.1')">PASS</a>
+            <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et4.1')">ERROR</a>
         </div>
         <!--css div popup start-->
-        <div id='div_pt4.1' class="popup_window test_output" style="display:none;">
+        <div id='div_et4.1' class="popup_window test_output" style="display:none;">
             <div class='close_button pull-right'>
                 <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                        onclick="document.getElementById('div_pt4.1').style.display='none'"><span
+                        onclick="document.getElementById('div_et4.1').style.display='none'"><span
                         aria-hidden="true">&times;</span></button>
             </div>
             <div class="text-left pull-left">
-                <pre class="text-left">pt4.1: Incomming connection 127.0.0.1:44964
-127.0.0.1:44964 Timeouted</pre>
+                <pre class="text-left">et4.1: Traceback (most recent call last):
+  File "/home/matthias/Entwicklung/calibre-web-test/test/test_email_ssl.py", line 149, in test_SSL_None_setup_error
+    details['kindlebtn'].click()
+AttributeError: 'NoneType' object has no attribute 'click'</pre>
             </div>
             <div class="clearfix"></div>
         </div>
         <!--css div popup end-->
     </td>
 </tr>
-<tr id='pt4.2' class='hiddenRow bg-success'>
+<tr id='et4.2' class='none bg-info'>
     <td>
         <div class='testcase'>test_SSL_STARTTLS_setup_error</div>
     </td>
     <td colspan='6'>
         <div class="text-center">
-            <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_pt4.2')">PASS</a>
+            <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et4.2')">ERROR</a>
         </div>
         <!--css div popup start-->
-        <div id='div_pt4.2' class="popup_window test_output" style="display:none;">
+        <div id='div_et4.2' class="popup_window test_output" style="display:none;">
             <div class='close_button pull-right'>
                 <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                        onclick="document.getElementById('div_pt4.2').style.display='none'"><span
+                        onclick="document.getElementById('div_et4.2').style.display='none'"><span
                         aria-hidden="true">&times;</span></button>
             </div>
             <div class="text-left pull-left">
-                <pre class="text-left">pt4.2: Incomming connection 127.0.0.1:44970
-127.0.0.1:44970 Timeouted</pre>
+                <pre class="text-left">et4.2: Traceback (most recent call last):
+  File "/home/matthias/Entwicklung/calibre-web-test/test/test_email_ssl.py", line 129, in test_SSL_STARTTLS_setup_error
+    details['kindlebtn'].click()
+AttributeError: 'NoneType' object has no attribute 'click'</pre>
             </div>
             <div class="clearfix"></div>
         </div>
         <!--css div popup end-->
     </td>
 </tr>
-<tr id='pt4.3' class='hiddenRow bg-success'>
+<tr id='et4.3' class='none bg-info'>
     <td>
         <div class='testcase'>test_SSL_only</div>
     </td>
     <td colspan='6'>
         <div class="text-center">
-            <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_pt4.3')">PASS</a>
+            <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et4.3')">ERROR</a>
         </div>
         <!--css div popup start-->
-        <div id='div_pt4.3' class="popup_window test_output" style="display:none;">
+        <div id='div_et4.3' class="popup_window test_output" style="display:none;">
             <div class='close_button pull-right'>
                 <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                        onclick="document.getElementById('div_pt4.3').style.display='none'"><span
+                        onclick="document.getElementById('div_et4.3').style.display='none'"><span
                         aria-hidden="true">&times;</span></button>
             </div>
             <div class="text-left pull-left">
-                <pre class="text-left">pt4.3: Incomming connection 127.0.0.1:44972
-Received: EHLO
-Received: AUTH
-User: name@host.com, Password: 10234
-Received: MAIL
-Received: RCPT
-Received: DATA
-('Receiving message from:', ('127.0.0.1', 44972))
-('Message addressed from:', '&lt;name@host.com&gt; size=30787')
-('Message addressed to  :', ['a1@b.com'])
-('Message length        :', 30377)
-Received: QUIT</pre>
+                <pre class="text-left">et4.3: Traceback (most recent call last):
+  File "/home/matthias/Entwicklung/calibre-web-test/test/test_email_ssl.py", line 108, in test_SSL_only
+    details['kindlebtn'].click()
+AttributeError: 'NoneType' object has no attribute 'click'</pre>
             </div>
             <div class="clearfix"></div>
         </div>
@@ -1500,147 +1491,73 @@ AssertionError: logfile config value is not empty after reseting to default</pre
         <!--css div popup end-->
     </td>
 </tr>
-<tr class='passClass'>
+<tr class='skipClass'>
     <td>test_anonymous.test_anonymous_Python27</td>
-    <td class="text-center">10</td>
-    <td class="text-center">10</td>
+    <td class="text-center">1</td>
     <td class="text-center">0</td>
     <td class="text-center">0</td>
     <td class="text-center">0</td>
+    <td class="text-center">1</td>
     <td class="text-center">
-        <a onclick="showClassDetail('c8', 10)">Detail</a>
+        <a onclick="showClassDetail('c8', 1)">Detail</a>
     </td>
 </tr>
-<tr id='pt8.1' class='hiddenRow bg-success'>
+<tr id='st8.1' class='none bg-warning'>
     <td>
-        <div class='testcase'>test_anonymous_change_visibility_authors</div>
+        <div class='testcase'>test_anonymous_user</div>
     </td>
-    <td colspan='6' align='center'>PASS</td>
-</tr>
-<tr id='pt8.2' class='hiddenRow bg-success'>
-    <td>
-        <div class='testcase'>test_anonymous_change_visibility_category</div>
+    <td colspan='6'>
+        <div class="text-center">
+            <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st8.1')">SKIP</a>
+        </div>
+        <!--css div popup start-->
+        <div id='div_st8.1' class="popup_window test_output" style="display:none;">
+            <div class='close_button pull-right'>
+                <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
+                        onclick="document.getElementById('div_st8.1').style.display='none'"><span
+                        aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="text-left pull-left">
+                <pre class="text-left">st8.1: Not Implemented</pre>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+        <!--css div popup end-->
     </td>
-    <td colspan='6' align='center'>PASS</td>
 </tr>
-<tr id='pt8.3' class='hiddenRow bg-success'>
-    <td>
-        <div class='testcase'>test_anonymous_change_visibility_hot</div>
-    </td>
-    <td colspan='6' align='center'>PASS</td>
-</tr>
-<tr id='pt8.4' class='hiddenRow bg-success'>
-    <td>
-        <div class='testcase'>test_anonymous_change_visibility_language</div>
-    </td>
-    <td colspan='6' align='center'>PASS</td>
-</tr>
-<tr id='pt8.5' class='hiddenRow bg-success'>
-    <td>
-        <div class='testcase'>test_anonymous_change_visibility_publisher</div>
-    </td>
-    <td colspan='6' align='center'>PASS</td>
-</tr>
-<tr id='pt8.6' class='hiddenRow bg-success'>
-    <td>
-        <div class='testcase'>test_anonymous_change_visibility_rated</div>
-    </td>
-    <td colspan='6' align='center'>PASS</td>
-</tr>
-<tr id='pt8.7' class='hiddenRow bg-success'>
-    <td>
-        <div class='testcase'>test_anonymous_change_visibility_series</div>
-    </td>
-    <td colspan='6' align='center'>PASS</td>
-</tr>
-<tr id='pt8.8' class='hiddenRow bg-success'>
-    <td>
-        <div class='testcase'>test_anonymous_change_visibility_sorted</div>
-    </td>
-    <td colspan='6' align='center'>PASS</td>
-</tr>
-<tr id='pt8.9' class='hiddenRow bg-success'>
-    <td>
-        <div class='testcase'>test_anonymous_impossible_settings</div>
-    </td>
-    <td colspan='6' align='center'>PASS</td>
-</tr>
-<tr id='pt8.10' class='hiddenRow bg-success'>
-    <td>
-        <div class='testcase'>test_anonymous_locale_select</div>
-    </td>
-    <td colspan='6' align='center'>PASS</td>
-</tr>
-<tr class='passClass'>
+<tr class='skipClass'>
     <td>test_anonymous.test_anonymous_Python36</td>
-    <td class="text-center">10</td>
-    <td class="text-center">10</td>
+    <td class="text-center">1</td>
     <td class="text-center">0</td>
     <td class="text-center">0</td>
     <td class="text-center">0</td>
+    <td class="text-center">1</td>
     <td class="text-center">
-        <a onclick="showClassDetail('c9', 10)">Detail</a>
+        <a onclick="showClassDetail('c9', 1)">Detail</a>
     </td>
 </tr>
-<tr id='pt9.1' class='hiddenRow bg-success'>
+<tr id='st9.1' class='none bg-warning'>
     <td>
-        <div class='testcase'>test_anonymous_change_visibility_authors</div>
+        <div class='testcase'>test_anonymous_user</div>
     </td>
-    <td colspan='6' align='center'>PASS</td>
-</tr>
-<tr id='pt9.2' class='hiddenRow bg-success'>
-    <td>
-        <div class='testcase'>test_anonymous_change_visibility_category</div>
+    <td colspan='6'>
+        <div class="text-center">
+            <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st9.1')">SKIP</a>
+        </div>
+        <!--css div popup start-->
+        <div id='div_st9.1' class="popup_window test_output" style="display:none;">
+            <div class='close_button pull-right'>
+                <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
+                        onclick="document.getElementById('div_st9.1').style.display='none'"><span
+                        aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="text-left pull-left">
+                <pre class="text-left">st9.1: Not Implemented</pre>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+        <!--css div popup end-->
     </td>
-    <td colspan='6' align='center'>PASS</td>
-</tr>
-<tr id='pt9.3' class='hiddenRow bg-success'>
-    <td>
-        <div class='testcase'>test_anonymous_change_visibility_hot</div>
-    </td>
-    <td colspan='6' align='center'>PASS</td>
-</tr>
-<tr id='pt9.4' class='hiddenRow bg-success'>
-    <td>
-        <div class='testcase'>test_anonymous_change_visibility_language</div>
-    </td>
-    <td colspan='6' align='center'>PASS</td>
-</tr>
-<tr id='pt9.5' class='hiddenRow bg-success'>
-    <td>
-        <div class='testcase'>test_anonymous_change_visibility_publisher</div>
-    </td>
-    <td colspan='6' align='center'>PASS</td>
-</tr>
-<tr id='pt9.6' class='hiddenRow bg-success'>
-    <td>
-        <div class='testcase'>test_anonymous_change_visibility_rated</div>
-    </td>
-    <td colspan='6' align='center'>PASS</td>
-</tr>
-<tr id='pt9.7' class='hiddenRow bg-success'>
-    <td>
-        <div class='testcase'>test_anonymous_change_visibility_series</div>
-    </td>
-    <td colspan='6' align='center'>PASS</td>
-</tr>
-<tr id='pt9.8' class='hiddenRow bg-success'>
-    <td>
-        <div class='testcase'>test_anonymous_change_visibility_sorted</div>
-    </td>
-    <td colspan='6' align='center'>PASS</td>
-</tr>
-<tr id='pt9.9' class='hiddenRow bg-success'>
-    <td>
-        <div class='testcase'>test_anonymous_impossible_settings</div>
-    </td>
-    <td colspan='6' align='center'>PASS</td>
-</tr>
-<tr id='pt9.10' class='hiddenRow bg-success'>
-    <td>
-        <div class='testcase'>test_anonymous_locale_select</div>
-    </td>
-    <td colspan='6' align='center'>PASS</td>
 </tr>
 <tr class='skipClass'>
     <td>test_user_template.test_user_template_Python27</td>
@@ -1982,24 +1899,24 @@ AssertionError: logfile config value is not empty after reseting to default</pre
 </tr>
 <tr class='skipClass'>
     <td>test_cli.test_cli_Python27</td>
-    <td class="text-center">7</td>
     <td class="text-center">6</td>
+    <td class="text-center">5</td>
     <td class="text-center">0</td>
     <td class="text-center">0</td>
     <td class="text-center">1</td>
     <td class="text-center">
-        <a onclick="showClassDetail('c13', 7)">Detail</a>
+        <a onclick="showClassDetail('c13', 6)">Detail</a>
     </td>
 </tr>
 <tr id='pt13.1' class='hiddenRow bg-success'>
     <td>
-        <div class='testcase'>test_cli_SSL_files</div>
+        <div class='testcase'>test_already_started</div>
     </td>
     <td colspan='6' align='center'>PASS</td>
 </tr>
 <tr id='pt13.2' class='hiddenRow bg-success'>
     <td>
-        <div class='testcase'>test_cli_already_started</div>
+        <div class='testcase'>test_cli_SSL_files</div>
     </td>
     <td colspan='6' align='center'>PASS</td>
 </tr>
@@ -2015,61 +1932,55 @@ AssertionError: logfile config value is not empty after reseting to default</pre
     </td>
     <td colspan='6' align='center'>PASS</td>
 </tr>
-<tr id='pt13.5' class='hiddenRow bg-success'>
-    <td>
-        <div class='testcase'>test_cli_environ_port_setting</div>
-    </td>
-    <td colspan='6' align='center'>PASS</td>
-</tr>
-<tr id='st13.6' class='none bg-warning'>
+<tr id='st13.5' class='none bg-warning'>
     <td>
         <div class='testcase'>test_cli_gdrive_location</div>
     </td>
     <td colspan='6'>
         <div class="text-center">
-            <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st13.6')">SKIP</a>
+            <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st13.5')">SKIP</a>
         </div>
         <!--css div popup start-->
-        <div id='div_st13.6' class="popup_window test_output" style="display:none;">
+        <div id='div_st13.5' class="popup_window test_output" style="display:none;">
             <div class='close_button pull-right'>
                 <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                        onclick="document.getElementById('div_st13.6').style.display='none'"><span
+                        onclick="document.getElementById('div_st13.5').style.display='none'"><span
                         aria-hidden="true">&times;</span></button>
             </div>
             <div class="text-left pull-left">
-                <pre class="text-left">st13.6: Not Implemented</pre>
+                <pre class="text-left">st13.5: Not Implemented</pre>
             </div>
             <div class="clearfix"></div>
         </div>
         <!--css div popup end-->
     </td>
 </tr>
-<tr id='pt13.7' class='hiddenRow bg-success'>
+<tr id='pt13.6' class='hiddenRow bg-success'>
     <td>
-        <div class='testcase'>test_cli_server_Stop</div>
+        <div class='testcase'>test_environ_port_setting</div>
     </td>
     <td colspan='6' align='center'>PASS</td>
 </tr>
 <tr class='skipClass'>
     <td>test_cli.test_cli_Python36</td>
-    <td class="text-center">7</td>
     <td class="text-center">6</td>
+    <td class="text-center">5</td>
     <td class="text-center">0</td>
     <td class="text-center">0</td>
     <td class="text-center">1</td>
     <td class="text-center">
-        <a onclick="showClassDetail('c14', 7)">Detail</a>
+        <a onclick="showClassDetail('c14', 6)">Detail</a>
     </td>
 </tr>
 <tr id='pt14.1' class='hiddenRow bg-success'>
     <td>
-        <div class='testcase'>test_cli_SSL_files</div>
+        <div class='testcase'>test_already_started</div>
     </td>
     <td colspan='6' align='center'>PASS</td>
 </tr>
 <tr id='pt14.2' class='hiddenRow bg-success'>
     <td>
-        <div class='testcase'>test_cli_already_started</div>
+        <div class='testcase'>test_cli_SSL_files</div>
     </td>
     <td colspan='6' align='center'>PASS</td>
 </tr>
@@ -2085,48 +1996,42 @@ AssertionError: logfile config value is not empty after reseting to default</pre
     </td>
     <td colspan='6' align='center'>PASS</td>
 </tr>
-<tr id='pt14.5' class='hiddenRow bg-success'>
-    <td>
-        <div class='testcase'>test_cli_environ_port_setting</div>
-    </td>
-    <td colspan='6' align='center'>PASS</td>
-</tr>
-<tr id='st14.6' class='none bg-warning'>
+<tr id='st14.5' class='none bg-warning'>
     <td>
         <div class='testcase'>test_cli_gdrive_location</div>
     </td>
     <td colspan='6'>
         <div class="text-center">
-            <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st14.6')">SKIP</a>
+            <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st14.5')">SKIP</a>
         </div>
         <!--css div popup start-->
-        <div id='div_st14.6' class="popup_window test_output" style="display:none;">
+        <div id='div_st14.5' class="popup_window test_output" style="display:none;">
             <div class='close_button pull-right'>
                 <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                        onclick="document.getElementById('div_st14.6').style.display='none'"><span
+                        onclick="document.getElementById('div_st14.5').style.display='none'"><span
                         aria-hidden="true">&times;</span></button>
             </div>
             <div class="text-left pull-left">
-                <pre class="text-left">st14.6: Not Implemented</pre>
+                <pre class="text-left">st14.5: Not Implemented</pre>
             </div>
             <div class="clearfix"></div>
         </div>
         <!--css div popup end-->
     </td>
 </tr>
-<tr id='pt14.7' class='hiddenRow bg-success'>
+<tr id='pt14.6' class='hiddenRow bg-success'>
     <td>
-        <div class='testcase'>test_cli_server_Stop</div>
+        <div class='testcase'>test_environ_port_setting</div>
     </td>
     <td colspan='6' align='center'>PASS</td>
 </tr>
-<tr class='skipClass'>
+<tr class='failClass'>
     <td>test_shelf.test_shelf_Python27</td>
     <td class="text-center">7</td>
     <td class="text-center">6</td>
-    <td class="text-center">0</td>
-    <td class="text-center">0</td>
     <td class="text-center">1</td>
+    <td class="text-center">0</td>
+    <td class="text-center">0</td>
     <td class="text-center">
         <a onclick="showClassDetail('c15', 7)">Detail</a>
     </td>
@@ -2161,23 +2066,26 @@ AssertionError: logfile config value is not empty after reseting to default</pre
     </td>
     <td colspan='6' align='center'>PASS</td>
 </tr>
-<tr id='st15.6' class='none bg-warning'>
+<tr id='ft15.6' class='none bg-danger'>
     <td>
         <div class='testcase'>test_shelf_database_change</div>
     </td>
     <td colspan='6'>
         <div class="text-center">
-            <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st15.6')">SKIP</a>
+            <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft15.6')">FAIL</a>
         </div>
         <!--css div popup start-->
-        <div id='div_st15.6' class="popup_window test_output" style="display:none;">
+        <div id='div_ft15.6' class="popup_window test_output" style="display:none;">
             <div class='close_button pull-right'>
                 <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                        onclick="document.getElementById('div_st15.6').style.display='none'"><span
+                        onclick="document.getElementById('div_ft15.6').style.display='none'"><span
                         aria-hidden="true">&times;</span></button>
             </div>
             <div class="text-left pull-left">
-                <pre class="text-left">st15.6: Not Implemented</pre>
+                <pre class="text-left">ft15.6: Traceback (most recent call last):
+  File "/home/matthias/Entwicklung/calibre-web-test/test/test_shelf.py", line 315, in test_shelf_database_change
+    self.assertIsNone('Not Implemented', 'Database change')
+AssertionError: Database change</pre>
             </div>
             <div class="clearfix"></div>
         </div>
@@ -2190,13 +2098,13 @@ AssertionError: logfile config value is not empty after reseting to default</pre
     </td>
     <td colspan='6' align='center'>PASS</td>
 </tr>
-<tr class='skipClass'>
+<tr class='failClass'>
     <td>test_shelf.test_shelf_Python36</td>
     <td class="text-center">7</td>
     <td class="text-center">6</td>
-    <td class="text-center">0</td>
-    <td class="text-center">0</td>
     <td class="text-center">1</td>
+    <td class="text-center">0</td>
+    <td class="text-center">0</td>
     <td class="text-center">
         <a onclick="showClassDetail('c16', 7)">Detail</a>
     </td>
@@ -2231,23 +2139,26 @@ AssertionError: logfile config value is not empty after reseting to default</pre
     </td>
     <td colspan='6' align='center'>PASS</td>
 </tr>
-<tr id='st16.6' class='none bg-warning'>
+<tr id='ft16.6' class='none bg-danger'>
     <td>
         <div class='testcase'>test_shelf_database_change</div>
     </td>
     <td colspan='6'>
         <div class="text-center">
-            <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st16.6')">SKIP</a>
+            <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft16.6')">FAIL</a>
         </div>
         <!--css div popup start-->
-        <div id='div_st16.6' class="popup_window test_output" style="display:none;">
+        <div id='div_ft16.6' class="popup_window test_output" style="display:none;">
             <div class='close_button pull-right'>
                 <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                        onclick="document.getElementById('div_st16.6').style.display='none'"><span
+                        onclick="document.getElementById('div_ft16.6').style.display='none'"><span
                         aria-hidden="true">&times;</span></button>
             </div>
             <div class="text-left pull-left">
-                <pre class="text-left">st16.6: Not Implemented</pre>
+                <pre class="text-left">ft16.6: Traceback (most recent call last):
+  File "/home/matthias/Entwicklung/calibre-web-test/test/test_shelf.py", line 315, in test_shelf_database_change
+    self.assertIsNone('Not Implemented', 'Database change')
+AssertionError: Database change</pre>
             </div>
             <div class="clearfix"></div>
         </div>
@@ -2260,15 +2171,15 @@ AssertionError: logfile config value is not empty after reseting to default</pre
     </td>
     <td colspan='6' align='center'>PASS</td>
 </tr>
-<tr class='passClass'>
+<tr class='failClass'>
     <td>test_login.test_login_Python27</td>
+    <td class="text-center">7</td>
     <td class="text-center">6</td>
-    <td class="text-center">6</td>
-    <td class="text-center">0</td>
+    <td class="text-center">1</td>
     <td class="text-center">0</td>
     <td class="text-center">0</td>
     <td class="text-center">
-        <a onclick="showClassDetail('c17', 6)">Detail</a>
+        <a onclick="showClassDetail('c17', 7)">Detail</a>
     </td>
 </tr>
 <tr id='pt17.1' class='hiddenRow bg-success'>
@@ -2291,31 +2202,57 @@ AssertionError: logfile config value is not empty after reseting to default</pre
 </tr>
 <tr id='pt17.4' class='hiddenRow bg-success'>
     <td>
-        <div class='testcase'>test_login_protected</div>
+        <div class='testcase'>test_login_locale_select</div>
     </td>
     <td colspan='6' align='center'>PASS</td>
 </tr>
-<tr id='pt17.5' class='hiddenRow bg-success'>
+<tr id='ft17.5' class='none bg-danger'>
+    <td>
+        <div class='testcase'>test_login_protected</div>
+    </td>
+    <td colspan='6'>
+        <div class="text-center">
+            <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft17.5')">FAIL</a>
+        </div>
+        <!--css div popup start-->
+        <div id='div_ft17.5' class="popup_window test_output" style="display:none;">
+            <div class='close_button pull-right'>
+                <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
+                        onclick="document.getElementById('div_ft17.5').style.display='none'"><span
+                        aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="text-left pull-left">
+                <pre class="text-left">ft17.5: Traceback (most recent call last):
+  File "/home/matthias/Entwicklung/calibre-web-test/test/test_login.py", line 173, in test_login_protected
+    self.assertEqual(self.fail_access_page("http://127.0.0.1:8083/update"),1)
+AssertionError: 2 != 1</pre>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+        <!--css div popup end-->
+    </td>
+</tr>
+<tr id='pt17.6' class='hiddenRow bg-success'>
     <td>
         <div class='testcase'>test_login_unicode_user_space_end_passwort</div>
     </td>
     <td colspan='6' align='center'>PASS</td>
 </tr>
-<tr id='pt17.6' class='hiddenRow bg-success'>
+<tr id='pt17.7' class='hiddenRow bg-success'>
     <td>
         <div class='testcase'>test_login_user_with_space_passwort_end_space</div>
     </td>
     <td colspan='6' align='center'>PASS</td>
 </tr>
-<tr class='passClass'>
+<tr class='failClass'>
     <td>test_login.test_login_Python36</td>
+    <td class="text-center">7</td>
     <td class="text-center">6</td>
-    <td class="text-center">6</td>
-    <td class="text-center">0</td>
+    <td class="text-center">1</td>
     <td class="text-center">0</td>
     <td class="text-center">0</td>
     <td class="text-center">
-        <a onclick="showClassDetail('c18', 6)">Detail</a>
+        <a onclick="showClassDetail('c18', 7)">Detail</a>
     </td>
 </tr>
 <tr id='pt18.1' class='hiddenRow bg-success'>
@@ -2338,78 +2275,108 @@ AssertionError: logfile config value is not empty after reseting to default</pre
 </tr>
 <tr id='pt18.4' class='hiddenRow bg-success'>
     <td>
+        <div class='testcase'>test_login_locale_select</div>
+    </td>
+    <td colspan='6' align='center'>PASS</td>
+</tr>
+<tr id='ft18.5' class='none bg-danger'>
+    <td>
         <div class='testcase'>test_login_protected</div>
-    </td>
-    <td colspan='6' align='center'>PASS</td>
-</tr>
-<tr id='pt18.5' class='hiddenRow bg-success'>
-    <td>
-        <div class='testcase'>test_login_unicode_user_space_end_passwort</div>
-    </td>
-    <td colspan='6' align='center'>PASS</td>
-</tr>
-<tr id='pt18.6' class='hiddenRow bg-success'>
-    <td>
-        <div class='testcase'>test_login_user_with_space_passwort_end_space</div>
-    </td>
-    <td colspan='6' align='center'>PASS</td>
-</tr>
-<tr class='passClass'>
-    <td>test_ebook_convert.test_ebook_convert_Python27</td>
-    <td class="text-center">11</td>
-    <td class="text-center">11</td>
-    <td class="text-center">0</td>
-    <td class="text-center">0</td>
-    <td class="text-center">0</td>
-    <td class="text-center">
-        <a onclick="showClassDetail('c19', 11)">Detail</a>
-    </td>
-</tr>
-<tr id='pt19.1' class='hiddenRow bg-success'>
-    <td>
-        <div class='testcase'>test_SSL_smtp_setup_error</div>
     </td>
     <td colspan='6'>
         <div class="text-center">
-            <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_pt19.1')">PASS</a>
+            <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft18.5')">FAIL</a>
         </div>
         <!--css div popup start-->
-        <div id='div_pt19.1' class="popup_window test_output" style="display:none;">
+        <div id='div_ft18.5' class="popup_window test_output" style="display:none;">
             <div class='close_button pull-right'>
                 <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                        onclick="document.getElementById('div_pt19.1').style.display='none'"><span
+                        onclick="document.getElementById('div_ft18.5').style.display='none'"><span
                         aria-hidden="true">&times;</span></button>
             </div>
             <div class="text-left pull-left">
-                <pre class="text-left">pt19.1: Incomming connection 127.0.0.1:49274
-Received: EHLO
-Received: AUTH
-User: name@host.com, Password: 1234
-Incomming connection 127.0.0.1:49276</pre>
+                <pre class="text-left">ft18.5: Traceback (most recent call last):
+  File "/home/matthias/Entwicklung/calibre-web-test/test/test_login.py", line 173, in test_login_protected
+    self.assertEqual(self.fail_access_page("http://127.0.0.1:8083/update"),1)
+AssertionError: 2 != 1</pre>
             </div>
             <div class="clearfix"></div>
         </div>
         <!--css div popup end-->
     </td>
 </tr>
-<tr id='pt19.2' class='hiddenRow bg-success'>
+<tr id='pt18.6' class='hiddenRow bg-success'>
+    <td>
+        <div class='testcase'>test_login_unicode_user_space_end_passwort</div>
+    </td>
+    <td colspan='6' align='center'>PASS</td>
+</tr>
+<tr id='pt18.7' class='hiddenRow bg-success'>
+    <td>
+        <div class='testcase'>test_login_user_with_space_passwort_end_space</div>
+    </td>
+    <td colspan='6' align='center'>PASS</td>
+</tr>
+<tr class='errorClass'>
+    <td>test_ebook_convert.test_ebook_convert_Python27</td>
+    <td class="text-center">11</td>
+    <td class="text-center">2</td>
+    <td class="text-center">2</td>
+    <td class="text-center">7</td>
+    <td class="text-center">0</td>
+    <td class="text-center">
+        <a onclick="showClassDetail('c19', 11)">Detail</a>
+    </td>
+</tr>
+<tr id='et19.1' class='none bg-info'>
+    <td>
+        <div class='testcase'>test_SSL_smtp_setup_error</div>
+    </td>
+    <td colspan='6'>
+        <div class="text-center">
+            <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et19.1')">ERROR</a>
+        </div>
+        <!--css div popup start-->
+        <div id='div_et19.1' class="popup_window test_output" style="display:none;">
+            <div class='close_button pull-right'>
+                <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
+                        onclick="document.getElementById('div_et19.1').style.display='none'"><span
+                        aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="text-left pull-left">
+                <pre class="text-left">et19.1: Incomming connection 127.0.0.1:53856
+Received: EHLO
+Received: AUTH
+User: name@host.com, Password: 1234Traceback (most recent call last):
+  File "/home/matthias/Entwicklung/calibre-web-test/test/test_ebook_convert.py", line 471, in test_SSL_smtp_setup_error
+    details['kindlebtn'].click()
+AttributeError: 'NoneType' object has no attribute 'click'</pre>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+        <!--css div popup end-->
+    </td>
+</tr>
+<tr id='et19.2' class='none bg-info'>
     <td>
         <div class='testcase'>test_STARTTLS_smtp_setup_error</div>
     </td>
     <td colspan='6'>
         <div class="text-center">
-            <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_pt19.2')">PASS</a>
+            <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et19.2')">ERROR</a>
         </div>
         <!--css div popup start-->
-        <div id='div_pt19.2' class="popup_window test_output" style="display:none;">
+        <div id='div_et19.2' class="popup_window test_output" style="display:none;">
             <div class='close_button pull-right'>
                 <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                        onclick="document.getElementById('div_pt19.2').style.display='none'"><span
+                        onclick="document.getElementById('div_et19.2').style.display='none'"><span
                         aria-hidden="true">&times;</span></button>
             </div>
             <div class="text-left pull-left">
-                <pre class="text-left">pt19.2: Incomming connection 127.0.0.1:49278
-Received: EHLO</pre>
+                <pre class="text-left">et19.2: Traceback (most recent call last):
+  File "/home/matthias/Entwicklung/calibre-web-test/test/test_ebook_convert.py", line 451, in test_STARTTLS_smtp_setup_error
+    details['kindlebtn'].click()
+AttributeError: 'NoneType' object has no attribute 'click'</pre>
             </div>
             <div class="clearfix"></div>
         </div>
@@ -2420,222 +2387,188 @@ Received: EHLO</pre>
     <td>
         <div class='testcase'>test_convert_deactivate</div>
     </td>
-    <td colspan='6'>
-        <div class="text-center">
-            <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_pt19.3')">PASS</a>
-        </div>
-        <!--css div popup start-->
-        <div id='div_pt19.3' class="popup_window test_output" style="display:none;">
-            <div class='close_button pull-right'>
-                <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                        onclick="document.getElementById('div_pt19.3').style.display='none'"><span
-                        aria-hidden="true">&times;</span></button>
-            </div>
-            <div class="text-left pull-left">
-                <pre class="text-left">pt19.3: 127.0.0.1:49278 Timeouted</pre>
-            </div>
-            <div class="clearfix"></div>
-        </div>
-        <!--css div popup end-->
-    </td>
+    <td colspan='6' align='center'>PASS</td>
 </tr>
-<tr id='pt19.4' class='hiddenRow bg-success'>
+<tr id='et19.4' class='none bg-info'>
     <td>
         <div class='testcase'>test_convert_email</div>
     </td>
     <td colspan='6'>
         <div class="text-center">
-            <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_pt19.4')">PASS</a>
+            <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et19.4')">ERROR</a>
         </div>
         <!--css div popup start-->
-        <div id='div_pt19.4' class="popup_window test_output" style="display:none;">
+        <div id='div_et19.4' class="popup_window test_output" style="display:none;">
             <div class='close_button pull-right'>
                 <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                        onclick="document.getElementById('div_pt19.4').style.display='none'"><span
+                        onclick="document.getElementById('div_et19.4').style.display='none'"><span
                         aria-hidden="true">&times;</span></button>
             </div>
             <div class="text-left pull-left">
-                <pre class="text-left">pt19.4: Incomming connection 127.0.0.1:49282
-Received: EHLO
-Received: AUTH
-User: name@host.com, Password: 10234
-Received: MAIL
-Received: RCPT
-Received: DATA
-('Receiving message from:', ('127.0.0.1', 49282))
-('Message addressed from:', '&lt;name@host.com&gt; size=506')
-('Message addressed to  :', ['a1@b.com'])
-('Message length        :', 505)
-Received: QUIT
-Incomming connection 127.0.0.1:49284
-Received: EHLO
-Received: AUTH
-User: name@host.com, Password: 10234
-Received: MAIL
-Received: RCPT
-Received: DATA
-('Receiving message from:', ('127.0.0.1', 49284))
-('Message addressed from:', '&lt;name@host.com&gt; size=25226')
-('Message addressed to  :', ['a1@b.com'])
-('Message length        :', 25225)
-Received: QUIT</pre>
+                <pre class="text-left">et19.4: Incomming connection 127.0.0.1:53870
+Received: EHLOTraceback (most recent call last):
+  File "/home/matthias/Entwicklung/calibre-web-test/test/test_ebook_convert.py", line 206, in test_convert_email
+    self.assertEqual(len(details['kindle']),2)
+TypeError: object of type 'NoneType' has no len()</pre>
             </div>
             <div class="clearfix"></div>
         </div>
         <!--css div popup end-->
     </td>
 </tr>
-<tr id='pt19.5' class='hiddenRow bg-success'>
+<tr id='et19.5' class='none bg-info'>
     <td>
         <div class='testcase'>test_convert_failed_and_email</div>
     </td>
     <td colspan='6'>
         <div class="text-center">
-            <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_pt19.5')">PASS</a>
+            <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et19.5')">ERROR</a>
         </div>
         <!--css div popup start-->
-        <div id='div_pt19.5' class="popup_window test_output" style="display:none;">
+        <div id='div_et19.5' class="popup_window test_output" style="display:none;">
             <div class='close_button pull-right'>
                 <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                        onclick="document.getElementById('div_pt19.5').style.display='none'"><span
+                        onclick="document.getElementById('div_et19.5').style.display='none'"><span
                         aria-hidden="true">&times;</span></button>
             </div>
             <div class="text-left pull-left">
-                <pre class="text-left">pt19.5: Incomming connection 127.0.0.1:49286
-Received: EHLO
-Received: AUTH
-User: name@host.com, Password: 1234
-Incomming connection 127.0.0.1:49288
-Received: EHLO
-Received: AUTH
-User: name@host.com, Password: 10234
-Received: MAIL
-Received: RCPT
-Received: DATA
-('Receiving message from:', ('127.0.0.1', 49288))
-('Message addressed from:', '&lt;name@host.com&gt; size=507')
-('Message addressed to  :', ['a1@b.com'])
-('Message length        :', 506)
-Received: QUIT</pre>
+                <pre class="text-left">et19.5: Incomming connection 127.0.0.1:53872
+Received: EHLOTraceback (most recent call last):
+  File "/home/matthias/Entwicklung/calibre-web-test/test/test_ebook_convert.py", line 253, in test_convert_failed_and_email
+    self.assertEqual(len(details['kindle']),2)
+TypeError: object of type 'NoneType' has no len()</pre>
             </div>
             <div class="clearfix"></div>
         </div>
         <!--css div popup end-->
     </td>
 </tr>
-<tr id='pt19.6' class='hiddenRow bg-success'>
+<tr id='et19.6' class='none bg-info'>
     <td>
         <div class='testcase'>test_convert_only</div>
     </td>
     <td colspan='6'>
         <div class="text-center">
-            <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_pt19.6')">PASS</a>
+            <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et19.6')">ERROR</a>
         </div>
         <!--css div popup start-->
-        <div id='div_pt19.6' class="popup_window test_output" style="display:none;">
+        <div id='div_et19.6' class="popup_window test_output" style="display:none;">
             <div class='close_button pull-right'>
                 <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                        onclick="document.getElementById('div_pt19.6').style.display='none'"><span
+                        onclick="document.getElementById('div_et19.6').style.display='none'"><span
                         aria-hidden="true">&times;</span></button>
             </div>
             <div class="text-left pull-left">
-                <pre class="text-left">pt19.6: Incomming connection 127.0.0.1:49290
-Received: EHLO
-Received: AUTH
-User: name@host.com, Password: 1234</pre>
+                <pre class="text-left">et19.6: 127.0.0.1:53872 TimeoutedTraceback (most recent call last):
+  File "/home/matthias/Entwicklung/calibre-web-test/test/test_ebook_convert.py", line 340, in test_convert_only
+    select.select_by_visible_text('HTMLZ')
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/support/select.py", line 140, in select_by_visible_text
+    raise NoSuchElementException("Could not locate element with visible text: %s" % text)
+NoSuchElementException: Message: Could not locate element with visible text: HTMLZ</pre>
             </div>
             <div class="clearfix"></div>
         </div>
         <!--css div popup end-->
     </td>
 </tr>
-<tr id='pt19.7' class='hiddenRow bg-success'>
+<tr id='ft19.7' class='none bg-danger'>
     <td>
         <div class='testcase'>test_convert_parameter</div>
     </td>
-    <td colspan='6' align='center'>PASS</td>
+    <td colspan='6'>
+        <div class="text-center">
+            <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft19.7')">FAIL</a>
+        </div>
+        <!--css div popup start-->
+        <div id='div_ft19.7' class="popup_window test_output" style="display:none;">
+            <div class='close_button pull-right'>
+                <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
+                        onclick="document.getElementById('div_ft19.7').style.display='none'"><span
+                        aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="text-left pull-left">
+                <pre class="text-left">ft19.7: Traceback (most recent call last):
+  File "/home/matthias/Entwicklung/calibre-web-test/test/test_ebook_convert.py", line 183, in test_convert_parameter
+    self.assertEqual(ret[-1]['result'], 'Finished')
+AssertionError: 'Started' != 'Finished'</pre>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+        <!--css div popup end-->
+    </td>
 </tr>
-<tr id='pt19.8' class='hiddenRow bg-success'>
+<tr id='et19.8' class='none bg-info'>
     <td>
         <div class='testcase'>test_convert_wrong_excecutable</div>
     </td>
-    <td colspan='6' align='center'>PASS</td>
+    <td colspan='6'>
+        <div class="text-center">
+            <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et19.8')">ERROR</a>
+        </div>
+        <!--css div popup start-->
+        <div id='div_et19.8' class="popup_window test_output" style="display:none;">
+            <div class='close_button pull-right'>
+                <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
+                        onclick="document.getElementById('div_et19.8').style.display='none'"><span
+                        aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="text-left pull-left">
+                <pre class="text-left">et19.8: Traceback (most recent call last):
+  File "/home/matthias/Entwicklung/calibre-web-test/test/test_ebook_convert.py", line 117, in test_convert_wrong_excecutable
+    self.assertEqual(len(details['kindle']),2)
+TypeError: object of type 'NoneType' has no len()</pre>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+        <!--css div popup end-->
+    </td>
 </tr>
-<tr id='pt19.9' class='hiddenRow bg-success'>
+<tr id='et19.9' class='none bg-info'>
     <td>
         <div class='testcase'>test_email_failed</div>
     </td>
     <td colspan='6'>
         <div class="text-center">
-            <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_pt19.9')">PASS</a>
+            <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et19.9')">ERROR</a>
         </div>
         <!--css div popup start-->
-        <div id='div_pt19.9' class="popup_window test_output" style="display:none;">
+        <div id='div_et19.9' class="popup_window test_output" style="display:none;">
             <div class='close_button pull-right'>
                 <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                        onclick="document.getElementById('div_pt19.9').style.display='none'"><span
+                        onclick="document.getElementById('div_et19.9').style.display='none'"><span
                         aria-hidden="true">&times;</span></button>
             </div>
             <div class="text-left pull-left">
-                <pre class="text-left">pt19.9: Incomming connection 127.0.0.1:49294
-Received: EHLO
-Received: AUTH
-User: name@host.com, Password: 10234
-Received: MAIL
-Received: RCPT
-Received: DATA
-('Receiving message from:', ('127.0.0.1', 49294))
-('Message addressed from:', '&lt;name@host.com&gt; size=33940')
-('Message addressed to  :', ['a1@b.com'])
-('Message length        :', 33939)
-Received: RSET
-127.0.0.1:49294 Timeouted</pre>
+                <pre class="text-left">et19.9: Traceback (most recent call last):
+  File "/home/matthias/Entwicklung/calibre-web-test/test/test_ebook_convert.py", line 428, in test_email_failed
+    details['kindlebtn'].click()
+AttributeError: 'NoneType' object has no attribute 'click'</pre>
             </div>
             <div class="clearfix"></div>
         </div>
         <!--css div popup end-->
     </td>
 </tr>
-<tr id='pt19.10' class='hiddenRow bg-success'>
+<tr id='ft19.10' class='none bg-danger'>
     <td>
         <div class='testcase'>test_email_only</div>
     </td>
     <td colspan='6'>
         <div class="text-center">
-            <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_pt19.10')">PASS</a>
+            <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft19.10')">FAIL</a>
         </div>
         <!--css div popup start-->
-        <div id='div_pt19.10' class="popup_window test_output" style="display:none;">
+        <div id='div_ft19.10' class="popup_window test_output" style="display:none;">
             <div class='close_button pull-right'>
                 <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                        onclick="document.getElementById('div_pt19.10').style.display='none'"><span
+                        onclick="document.getElementById('div_ft19.10').style.display='none'"><span
                         aria-hidden="true">&times;</span></button>
             </div>
             <div class="text-left pull-left">
-                <pre class="text-left">pt19.10: Incomming connection 127.0.0.1:49296
-Received: EHLO
-Received: AUTH
-User: name@host.com, Password: 10234
-Received: MAIL
-Received: RCPT
-Received: DATA
-('Receiving message from:', ('127.0.0.1', 49296))
-('Message addressed from:', '&lt;name@host.com&gt; size=507')
-('Message addressed to  :', ['a1@b.com'])
-('Message length        :', 506)
-Received: QUIT
-Incomming connection 127.0.0.1:49298
-Received: EHLO
-Received: AUTH
-User: name@host.com, Password: 10234
-Received: MAIL
-Received: RCPT
-Received: DATA
-('Receiving message from:', ('127.0.0.1', 49298))
-('Message addressed from:', '&lt;name@host.com&gt; size=30782')
-('Message addressed to  :', ['a1@b.com'])
-('Message length        :', 30781)
-Received: QUIT</pre>
+                <pre class="text-left">ft19.10: Traceback (most recent call last):
+  File "/home/matthias/Entwicklung/calibre-web-test/test/test_ebook_convert.py", line 400, in test_email_only
+    self.assertEqual(ret[-1]['result'], 'Finished')
+AssertionError: 'Waiting' != 'Finished'</pre>
             </div>
             <div class="clearfix"></div>
         </div>
@@ -2648,58 +2581,63 @@ Received: QUIT</pre>
     </td>
     <td colspan='6' align='center'>PASS</td>
 </tr>
-<tr class='failClass'>
+<tr class='errorClass'>
     <td>test_ebook_convert.test_ebook_convert_Python36</td>
     <td class="text-center">11</td>
-    <td class="text-center">9</td>
     <td class="text-center">2</td>
-    <td class="text-center">0</td>
+    <td class="text-center">3</td>
+    <td class="text-center">6</td>
     <td class="text-center">0</td>
     <td class="text-center">
         <a onclick="showClassDetail('c20', 11)">Detail</a>
     </td>
 </tr>
-<tr id='pt20.1' class='hiddenRow bg-success'>
+<tr id='et20.1' class='none bg-info'>
     <td>
         <div class='testcase'>test_SSL_smtp_setup_error</div>
     </td>
     <td colspan='6'>
         <div class="text-center">
-            <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_pt20.1')">PASS</a>
+            <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et20.1')">ERROR</a>
         </div>
         <!--css div popup start-->
-        <div id='div_pt20.1' class="popup_window test_output" style="display:none;">
+        <div id='div_et20.1' class="popup_window test_output" style="display:none;">
             <div class='close_button pull-right'>
                 <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                        onclick="document.getElementById('div_pt20.1').style.display='none'"><span
+                        onclick="document.getElementById('div_et20.1').style.display='none'"><span
                         aria-hidden="true">&times;</span></button>
             </div>
             <div class="text-left pull-left">
-                <pre class="text-left">pt20.1: Incomming connection 127.0.0.1:49402</pre>
+                <pre class="text-left">et20.1: Traceback (most recent call last):
+  File "/home/matthias/Entwicklung/calibre-web-test/test/test_ebook_convert.py", line 471, in test_SSL_smtp_setup_error
+    details['kindlebtn'].click()
+AttributeError: 'NoneType' object has no attribute 'click'</pre>
             </div>
             <div class="clearfix"></div>
         </div>
         <!--css div popup end-->
     </td>
 </tr>
-<tr id='pt20.2' class='hiddenRow bg-success'>
+<tr id='et20.2' class='none bg-info'>
     <td>
         <div class='testcase'>test_STARTTLS_smtp_setup_error</div>
     </td>
     <td colspan='6'>
         <div class="text-center">
-            <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_pt20.2')">PASS</a>
+            <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et20.2')">ERROR</a>
         </div>
         <!--css div popup start-->
-        <div id='div_pt20.2' class="popup_window test_output" style="display:none;">
+        <div id='div_et20.2' class="popup_window test_output" style="display:none;">
             <div class='close_button pull-right'>
                 <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                        onclick="document.getElementById('div_pt20.2').style.display='none'"><span
+                        onclick="document.getElementById('div_et20.2').style.display='none'"><span
                         aria-hidden="true">&times;</span></button>
             </div>
             <div class="text-left pull-left">
-                <pre class="text-left">pt20.2: Incomming connection 127.0.0.1:49406
-Received: EHLO</pre>
+                <pre class="text-left">et20.2: Traceback (most recent call last):
+  File "/home/matthias/Entwicklung/calibre-web-test/test/test_ebook_convert.py", line 451, in test_STARTTLS_smtp_setup_error
+    details['kindlebtn'].click()
+AttributeError: 'NoneType' object has no attribute 'click'</pre>
             </div>
             <div class="clearfix"></div>
         </div>
@@ -2710,179 +2648,162 @@ Received: EHLO</pre>
     <td>
         <div class='testcase'>test_convert_deactivate</div>
     </td>
-    <td colspan='6'>
-        <div class="text-center">
-            <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_pt20.3')">PASS</a>
-        </div>
-        <!--css div popup start-->
-        <div id='div_pt20.3' class="popup_window test_output" style="display:none;">
-            <div class='close_button pull-right'>
-                <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                        onclick="document.getElementById('div_pt20.3').style.display='none'"><span
-                        aria-hidden="true">&times;</span></button>
-            </div>
-            <div class="text-left pull-left">
-                <pre class="text-left">pt20.3: 127.0.0.1:49406 Timeouted</pre>
-            </div>
-            <div class="clearfix"></div>
-        </div>
-        <!--css div popup end-->
-    </td>
+    <td colspan='6' align='center'>PASS</td>
 </tr>
-<tr id='pt20.4' class='hiddenRow bg-success'>
+<tr id='et20.4' class='none bg-info'>
     <td>
         <div class='testcase'>test_convert_email</div>
     </td>
     <td colspan='6'>
         <div class="text-center">
-            <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_pt20.4')">PASS</a>
+            <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et20.4')">ERROR</a>
         </div>
         <!--css div popup start-->
-        <div id='div_pt20.4' class="popup_window test_output" style="display:none;">
+        <div id='div_et20.4' class="popup_window test_output" style="display:none;">
             <div class='close_button pull-right'>
                 <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                        onclick="document.getElementById('div_pt20.4').style.display='none'"><span
+                        onclick="document.getElementById('div_et20.4').style.display='none'"><span
                         aria-hidden="true">&times;</span></button>
             </div>
             <div class="text-left pull-left">
-                <pre class="text-left">pt20.4: Incomming connection 127.0.0.1:49408
-Received: EHLO
-Received: AUTH
-User: name@host.com, Password: 10234
-Received: MAIL
-Received: RCPT
-Received: DATA
-('Receiving message from:', ('127.0.0.1', 49408))
-('Message addressed from:', '&lt;name@host.com&gt; size=523')
-('Message addressed to  :', ['a1@b.com'])
-('Message length        :', 506)
-Received: QUIT
-Incomming connection 127.0.0.1:49410
-Received: EHLO
-Received: AUTH
-User: name@host.com, Password: 10234
-Received: MAIL
-Received: RCPT
-Received: DATA
-('Receiving message from:', ('127.0.0.1', 49410))
-('Message addressed from:', '&lt;name@host.com&gt; size=25553')
-('Message addressed to  :', ['a1@b.com'])
-('Message length        :', 25211)
-Received: QUIT
-Incomming connection 127.0.0.1:49412
-Received: EHLO
-Received: AUTH
-User: name@host.com, Password: 1234</pre>
+                <pre class="text-left">et20.4: Incomming connection 127.0.0.1:53996
+Received: EHLOTraceback (most recent call last):
+  File "/home/matthias/Entwicklung/calibre-web-test/test/test_ebook_convert.py", line 206, in test_convert_email
+    self.assertEqual(len(details['kindle']),2)
+TypeError: object of type 'NoneType' has no len()</pre>
             </div>
             <div class="clearfix"></div>
         </div>
         <!--css div popup end-->
     </td>
 </tr>
-<tr id='pt20.5' class='hiddenRow bg-success'>
+<tr id='et20.5' class='none bg-info'>
     <td>
         <div class='testcase'>test_convert_failed_and_email</div>
     </td>
     <td colspan='6'>
         <div class="text-center">
-            <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_pt20.5')">PASS</a>
+            <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et20.5')">ERROR</a>
         </div>
         <!--css div popup start-->
-        <div id='div_pt20.5' class="popup_window test_output" style="display:none;">
+        <div id='div_et20.5' class="popup_window test_output" style="display:none;">
             <div class='close_button pull-right'>
                 <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                        onclick="document.getElementById('div_pt20.5').style.display='none'"><span
+                        onclick="document.getElementById('div_et20.5').style.display='none'"><span
                         aria-hidden="true">&times;</span></button>
             </div>
             <div class="text-left pull-left">
-                <pre class="text-left">pt20.5: Incomming connection 127.0.0.1:49414
-Received: EHLO
-Received: AUTH
-User: name@host.com, Password: 10234
-Received: MAIL
-Received: RCPT
-Received: DATA
-('Receiving message from:', ('127.0.0.1', 49414))
-('Message addressed from:', '&lt;name@host.com&gt; size=523')
-('Message addressed to  :', ['a1@b.com'])
-('Message length        :', 506)
-Received: QUIT</pre>
+                <pre class="text-left">et20.5: Incomming connection 127.0.0.1:53998
+Received: EHLOTraceback (most recent call last):
+  File "/home/matthias/Entwicklung/calibre-web-test/test/test_ebook_convert.py", line 253, in test_convert_failed_and_email
+    self.assertEqual(len(details['kindle']),2)
+TypeError: object of type 'NoneType' has no len()</pre>
             </div>
             <div class="clearfix"></div>
         </div>
         <!--css div popup end-->
     </td>
 </tr>
-<tr id='pt20.6' class='hiddenRow bg-success'>
+<tr id='et20.6' class='none bg-info'>
     <td>
         <div class='testcase'>test_convert_only</div>
     </td>
     <td colspan='6'>
         <div class="text-center">
-            <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_pt20.6')">PASS</a>
+            <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et20.6')">ERROR</a>
         </div>
         <!--css div popup start-->
-        <div id='div_pt20.6' class="popup_window test_output" style="display:none;">
+        <div id='div_et20.6' class="popup_window test_output" style="display:none;">
             <div class='close_button pull-right'>
                 <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                        onclick="document.getElementById('div_pt20.6').style.display='none'"><span
+                        onclick="document.getElementById('div_et20.6').style.display='none'"><span
                         aria-hidden="true">&times;</span></button>
             </div>
             <div class="text-left pull-left">
-                <pre class="text-left">pt20.6: Incomming connection 127.0.0.1:49418
-Received: EHLO
-Received: AUTH
-User: name@host.com, Password: 1234</pre>
+                <pre class="text-left">et20.6: 127.0.0.1:53998 TimeoutedTraceback (most recent call last):
+  File "/home/matthias/Entwicklung/calibre-web-test/test/test_ebook_convert.py", line 340, in test_convert_only
+    select.select_by_visible_text('HTMLZ')
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/support/select.py", line 140, in select_by_visible_text
+    raise NoSuchElementException("Could not locate element with visible text: %s" % text)
+NoSuchElementException: Message: Could not locate element with visible text: HTMLZ</pre>
             </div>
             <div class="clearfix"></div>
         </div>
         <!--css div popup end-->
     </td>
 </tr>
-<tr id='pt20.7' class='hiddenRow bg-success'>
+<tr id='ft20.7' class='none bg-danger'>
     <td>
         <div class='testcase'>test_convert_parameter</div>
     </td>
-    <td colspan='6' align='center'>PASS</td>
+    <td colspan='6'>
+        <div class="text-center">
+            <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft20.7')">FAIL</a>
+        </div>
+        <!--css div popup start-->
+        <div id='div_ft20.7' class="popup_window test_output" style="display:none;">
+            <div class='close_button pull-right'>
+                <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
+                        onclick="document.getElementById('div_ft20.7').style.display='none'"><span
+                        aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="text-left pull-left">
+                <pre class="text-left">ft20.7: Traceback (most recent call last):
+  File "/home/matthias/Entwicklung/calibre-web-test/test/test_ebook_convert.py", line 183, in test_convert_parameter
+    self.assertEqual(ret[-1]['result'], 'Finished')
+AssertionError: 'Waiting' != 'Finished'</pre>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+        <!--css div popup end-->
+    </td>
 </tr>
-<tr id='pt20.8' class='hiddenRow bg-success'>
+<tr id='ft20.8' class='none bg-danger'>
     <td>
         <div class='testcase'>test_convert_wrong_excecutable</div>
     </td>
-    <td colspan='6' align='center'>PASS</td>
+    <td colspan='6'>
+        <div class="text-center">
+            <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft20.8')">FAIL</a>
+        </div>
+        <!--css div popup start-->
+        <div id='div_ft20.8' class="popup_window test_output" style="display:none;">
+            <div class='close_button pull-right'>
+                <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
+                        onclick="document.getElementById('div_ft20.8').style.display='none'"><span
+                        aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="text-left pull-left">
+                <pre class="text-left">ft20.8: Traceback (most recent call last):
+  File "/home/matthias/Entwicklung/calibre-web-test/test/test_ebook_convert.py", line 115, in test_convert_wrong_excecutable
+    self.assertEqual(element.text,'not installed')
+AssertionError: u'Excecution permissions missing' != 'not installed'</pre>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+        <!--css div popup end-->
+    </td>
 </tr>
-<tr id='ft20.9' class='none bg-danger'>
+<tr id='et20.9' class='none bg-info'>
     <td>
         <div class='testcase'>test_email_failed</div>
     </td>
     <td colspan='6'>
         <div class="text-center">
-            <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft20.9')">FAIL</a>
+            <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et20.9')">ERROR</a>
         </div>
         <!--css div popup start-->
-        <div id='div_ft20.9' class="popup_window test_output" style="display:none;">
+        <div id='div_et20.9' class="popup_window test_output" style="display:none;">
             <div class='close_button pull-right'>
                 <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                        onclick="document.getElementById('div_ft20.9').style.display='none'"><span
+                        onclick="document.getElementById('div_et20.9').style.display='none'"><span
                         aria-hidden="true">&times;</span></button>
             </div>
             <div class="text-left pull-left">
-                <pre class="text-left">ft20.9: Incomming connection 127.0.0.1:49422
-Received: EHLO
-Received: AUTH
-User: name@host.com, Password: 10234
-Received: MAIL
-Received: RCPT
-Received: DATA
-('Receiving message from:', ('127.0.0.1', 49422))
-('Message addressed from:', '&lt;name@host.com&gt; size=34381')
-('Message addressed to  :', ['a1@b.com'])
-('Message length        :', 33925)
-Received: RSET
-127.0.0.1:49422 TimeoutedTraceback (most recent call last):
-  File "/home/matthias/Entwicklung/calibre-web-test/test/test_ebook_convert.py", line 445, in test_email_failed
-    self.assertEqual(ret[-1]['result'], 'Failed')
-AssertionError: 'Started' != 'Failed'</pre>
+                <pre class="text-left">et20.9: Traceback (most recent call last):
+  File "/home/matthias/Entwicklung/calibre-web-test/test/test_ebook_convert.py", line 428, in test_email_failed
+    details['kindlebtn'].click()
+AttributeError: 'NoneType' object has no attribute 'click'</pre>
             </div>
             <div class="clearfix"></div>
         </div>
@@ -2906,7 +2827,7 @@ AssertionError: 'Started' != 'Failed'</pre>
             </div>
             <div class="text-left pull-left">
                 <pre class="text-left">ft20.10: Traceback (most recent call last):
-  File "/home/matthias/Entwicklung/calibre-web-test/test/test_ebook_convert.py", line 404, in test_email_only
+  File "/home/matthias/Entwicklung/calibre-web-test/test/test_ebook_convert.py", line 400, in test_email_only
     self.assertEqual(ret[-1]['result'], 'Finished')
 AssertionError: 'Waiting' != 'Finished'</pre>
             </div>
@@ -3859,142 +3780,126 @@ AssertionError: 'The camicdemo' != '\n          '</pre>
         <!--css div popup end-->
     </td>
 </tr>
-<tr class='passClass'>
+<tr class='errorClass'>
     <td>test_email_STARTTLS.test_STARTTLS_Python27</td>
     <td class="text-center">2</td>
+    <td class="text-center">0</td>
+    <td class="text-center">0</td>
     <td class="text-center">2</td>
-    <td class="text-center">0</td>
-    <td class="text-center">0</td>
     <td class="text-center">0</td>
     <td class="text-center">
         <a onclick="showClassDetail('c25', 2)">Detail</a>
     </td>
 </tr>
-<tr id='pt25.1' class='hiddenRow bg-success'>
+<tr id='et25.1' class='none bg-info'>
     <td>
         <div class='testcase'>test_STARTTLS</div>
     </td>
     <td colspan='6'>
         <div class="text-center">
-            <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_pt25.1')">PASS</a>
+            <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et25.1')">ERROR</a>
         </div>
         <!--css div popup start-->
-        <div id='div_pt25.1' class="popup_window test_output" style="display:none;">
+        <div id='div_et25.1' class="popup_window test_output" style="display:none;">
             <div class='close_button pull-right'>
                 <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                        onclick="document.getElementById('div_pt25.1').style.display='none'"><span
+                        onclick="document.getElementById('div_et25.1').style.display='none'"><span
                         aria-hidden="true">&times;</span></button>
             </div>
             <div class="text-left pull-left">
-                <pre class="text-left">pt25.1: Incomming connection 127.0.0.1:38798
-Incomming connection 127.0.0.1:38800
-Received: EHLO
-Received: STARTTLS
-Received: EHLO
-Received: AUTH
-User: name@host.com, Password: 10234
-Received: MAIL
-Received: RCPT
-Received: DATA
-('Receiving message from:', ('127.0.0.1', 38800))
-('Message addressed from:', '&lt;name@host.com&gt; size=30379')
-('Message addressed to  :', ['a1@b.com'])
-('Message length        :', 30378)
-Received: QUIT</pre>
+                <pre class="text-left">et25.1: Incomming connection 127.0.0.1:51216Traceback (most recent call last):
+  File "/home/matthias/Entwicklung/calibre-web-test/test/test_email_STARTTLS.py", line 98, in test_STARTTLS
+    details['kindlebtn'].click()
+AttributeError: 'NoneType' object has no attribute 'click'</pre>
             </div>
             <div class="clearfix"></div>
         </div>
         <!--css div popup end-->
     </td>
 </tr>
-<tr id='pt25.2' class='hiddenRow bg-success'>
+<tr id='et25.2' class='none bg-info'>
     <td>
         <div class='testcase'>test_STARTTLS_SSL_setup_error</div>
     </td>
     <td colspan='6'>
         <div class="text-center">
-            <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_pt25.2')">PASS</a>
+            <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et25.2')">ERROR</a>
         </div>
         <!--css div popup start-->
-        <div id='div_pt25.2' class="popup_window test_output" style="display:none;">
+        <div id='div_et25.2' class="popup_window test_output" style="display:none;">
             <div class='close_button pull-right'>
                 <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                        onclick="document.getElementById('div_pt25.2').style.display='none'"><span
+                        onclick="document.getElementById('div_et25.2').style.display='none'"><span
                         aria-hidden="true">&times;</span></button>
             </div>
             <div class="text-left pull-left">
-                <pre class="text-left">pt25.2: Incomming connection 127.0.0.1:38802</pre>
+                <pre class="text-left">et25.2: Traceback (most recent call last):
+  File "/home/matthias/Entwicklung/calibre-web-test/test/test_email_STARTTLS.py", line 119, in test_STARTTLS_SSL_setup_error
+    details['kindlebtn'].click()
+AttributeError: 'NoneType' object has no attribute 'click'</pre>
             </div>
             <div class="clearfix"></div>
         </div>
         <!--css div popup end-->
     </td>
 </tr>
-<tr class='passClass'>
+<tr class='errorClass'>
     <td>test_email_STARTTLS.test_STARTTLS_Python36</td>
     <td class="text-center">2</td>
+    <td class="text-center">0</td>
+    <td class="text-center">0</td>
     <td class="text-center">2</td>
-    <td class="text-center">0</td>
-    <td class="text-center">0</td>
     <td class="text-center">0</td>
     <td class="text-center">
         <a onclick="showClassDetail('c26', 2)">Detail</a>
     </td>
 </tr>
-<tr id='pt26.1' class='hiddenRow bg-success'>
+<tr id='et26.1' class='none bg-info'>
     <td>
         <div class='testcase'>test_STARTTLS</div>
     </td>
     <td colspan='6'>
         <div class="text-center">
-            <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_pt26.1')">PASS</a>
+            <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et26.1')">ERROR</a>
         </div>
         <!--css div popup start-->
-        <div id='div_pt26.1' class="popup_window test_output" style="display:none;">
+        <div id='div_et26.1' class="popup_window test_output" style="display:none;">
             <div class='close_button pull-right'>
                 <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                        onclick="document.getElementById('div_pt26.1').style.display='none'"><span
+                        onclick="document.getElementById('div_et26.1').style.display='none'"><span
                         aria-hidden="true">&times;</span></button>
             </div>
             <div class="text-left pull-left">
-                <pre class="text-left">pt26.1: Incomming connection 127.0.0.1:38904
-Incomming connection 127.0.0.1:38906
-Received: EHLO
-Received: STARTTLS
-Received: EHLO
-Received: AUTH
-User: name@host.com, Password: 10234
-Received: MAIL
-Received: RCPT
-Received: DATA
-('Receiving message from:', ('127.0.0.1', 38906))
-('Message addressed from:', '&lt;name@host.com&gt; size=30788')
-('Message addressed to  :', ['a1@b.com'])
-('Message length        :', 30378)
-Received: QUIT</pre>
+                <pre class="text-left">et26.1: Incomming connection 127.0.0.1:51324Traceback (most recent call last):
+  File "/home/matthias/Entwicklung/calibre-web-test/test/test_email_STARTTLS.py", line 98, in test_STARTTLS
+    details['kindlebtn'].click()
+AttributeError: 'NoneType' object has no attribute 'click'</pre>
             </div>
             <div class="clearfix"></div>
         </div>
         <!--css div popup end-->
     </td>
 </tr>
-<tr id='pt26.2' class='hiddenRow bg-success'>
+<tr id='et26.2' class='none bg-info'>
     <td>
         <div class='testcase'>test_STARTTLS_SSL_setup_error</div>
     </td>
     <td colspan='6'>
         <div class="text-center">
-            <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_pt26.2')">PASS</a>
+            <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et26.2')">ERROR</a>
         </div>
         <!--css div popup start-->
-        <div id='div_pt26.2' class="popup_window test_output" style="display:none;">
+        <div id='div_et26.2' class="popup_window test_output" style="display:none;">
             <div class='close_button pull-right'>
                 <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                        onclick="document.getElementById('div_pt26.2').style.display='none'"><span
+                        onclick="document.getElementById('div_et26.2').style.display='none'"><span
                         aria-hidden="true">&times;</span></button>
             </div>
             <div class="text-left pull-left">
-                <pre class="text-left">pt26.2: Incomming connection 127.0.0.1:38908</pre>
+                <pre class="text-left">et26.2: Traceback (most recent call last):
+  File "/home/matthias/Entwicklung/calibre-web-test/test/test_email_STARTTLS.py", line 119, in test_STARTTLS_SSL_setup_error
+    details['kindlebtn'].click()
+AttributeError: 'NoneType' object has no attribute 'click'</pre>
             </div>
             <div class="clearfix"></div>
         </div>
@@ -4093,17 +3998,17 @@ Received: QUIT</pre>
 
     <tr id='total_row' class="text-center bg-grey">
         <td>Total</td>
-        <td>270</td>
-        <td>186</td>
-        <td>7</td>
-        <td>0</td>
+        <td>252</td>
+        <td>138</td>
+        <td>14</td>
+        <td>23</td>
         <td>77</td>
         <td>&nbsp;</td>
     </tr>
 </table>
 
 <script>
-    drawCircle(186, 7, 0, 77);
+    drawCircle(138, 14, 23, 77);
 </script>
 
 </div>
