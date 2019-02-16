@@ -64,10 +64,8 @@ DEFAULT_PASS = "admin123"
 try:
     DEFAULT_PORT = int(os.environ.get("CALIBRE_PORT", 8083))
 except ValueError:
-    '''value = re.findall('.*?(\d+)$',os.environ.get("CALIBRE_PORT"))
-    if len(value):
-        DEFAULT_PORT = int(value[0])
-    else:'''
+    print ('Environmentvariable CALIBRE_PORT is set to an invalid value: ' +
+           os.environ.get("CALIBRE_PORT", 8083) + ', faling back to default (8083)')
     DEFAULT_PORT = 8083
 
 UPDATE_STABLE = 0
