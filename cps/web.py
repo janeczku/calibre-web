@@ -3862,19 +3862,13 @@ def upload():
             for author in db_book.authors:
                 author_names.append(author.name)
             if len(request.files.getlist("btn-upload")) < 2:
-                cc = db.session.query(db.Custom_Columns).filter(db.Custom_Columns.
-                                                                datatype.notin_(db.cc_exceptions)).all()
                 if current_user.role_edit() or current_user.role_admin():
-                    return render_title_template('book_edit.html', book=book, authors=author_names,
-                                                 cc=cc, title=_(u"edit metadata"), page="upload")
-                book_in_shelfs = []
-                kindle_list = helper.check_send_to_kindle(book)
-                reader_list = helper.check_read_formats(book)
-
-                return render_title_template('detail.html', entry=book, cc=cc,
-                                             title=book.title, books_shelfs=book_in_shelfs, kindle_list=kindle_list,
-                                             reader_list=reader_list, page="upload")
-    return redirect(url_for("index"))
+                    resp = {"location": url_for('edit_book', book_id=db_book.id)}
+                    return Response(json.dumps(resp), mimetype='application/json')
+                else:
+                    resp = {"location": url_for('show_book', book_id=db_book.id)}
+                    return Response(json.dumps(resp), mimetype='application/json')
+    return Response(json.dumps({"location": url_for("index")}), mimetype='application/json')
 
 
 @app.route("/admin/book/convert/<int:book_id>", methods=['POST'])
