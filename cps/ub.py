@@ -61,7 +61,14 @@ MATURE_CONTENT = 2048
 SIDEBAR_PUBLISHER = 4096
 
 DEFAULT_PASS = "admin123"
-DEFAULT_PORT = int(os.environ.get("CALIBRE_PORT", 8083))
+try:
+    DEFAULT_PORT = int(os.environ.get("CALIBRE_PORT", 8083))
+except ValueError:
+    '''value = re.findall('.*?(\d+)$',os.environ.get("CALIBRE_PORT"))
+    if len(value):
+        DEFAULT_PORT = int(value[0])
+    else:'''
+    DEFAULT_PORT = 8083
 
 UPDATE_STABLE = 0
 AUTO_UPDATE_STABLE = 1
