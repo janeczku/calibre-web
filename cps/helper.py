@@ -19,13 +19,13 @@
 #  along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 
-import db
-from cps import config
+from cps import config, global_WorkerThread, get_locale
 from flask import current_app as app
 from tempfile import gettempdir
 import sys
 import os
 import re
+import db
 import unicodedata
 import worker
 import time
@@ -40,7 +40,6 @@ try:
     import gdriveutils as gd
 except ImportError:
     pass
-# import web
 import random
 from subproc_wrapper import process_open
 import ub
@@ -244,7 +243,7 @@ def get_sorted_author(value):
         else:
             value2 = value
     except Exception:
-        web.app.logger.error("Sorting author " + str(value) + "failed")
+        app.logger.error("Sorting author " + str(value) + "failed")
         value2 = value
     return value2
 
@@ -261,13 +260,13 @@ def delete_book_file(book, calibrepath, book_format=None):
         else:
             if os.path.isdir(path):
                 if len(next(os.walk(path))[1]):
-                    web.app.logger.error(
+                    app.logger.error(
                         "Deleting book " + str(book.id) + " failed, path has subfolders: " + book.path)
                     return False
                 shutil.rmtree(path, ignore_errors=True)
                 return True
             else:
-                web.app.logger.error("Deleting book " + str(book.id) + " failed, book path not valid: " + book.path)
+                app.logger.error("Deleting book " + str(book.id) + " failed, book path not valid: " + book.path)
                 return False
 
 
@@ -290,7 +289,7 @@ def update_dir_structure_file(book_id, calibrepath, first_author):
             if not os.path.exists(new_title_path):
                 os.renames(path, new_title_path)
             else:
-                web.app.logger.info("Copying title: " + path + " into existing: " + new_title_path)
+                app.logger.info("Copying title: " + path + " into existing: " + new_title_path)
                 for dir_name, subdir_list, file_list in os.walk(path):
                     for file in file_list:
                         os.renames(os.path.join(dir_name, file),
@@ -298,8 +297,8 @@ def update_dir_structure_file(book_id, calibrepath, first_author):
             path = new_title_path
             localbook.path = localbook.path.split('/')[0] + '/' + new_titledir
         except OSError as ex:
-            web.app.logger.error("Rename title from: " + path + " to " + new_title_path + ": " + str(ex))
-            web.app.logger.debug(ex, exc_info=True)
+            app.logger.error("Rename title from: " + path + " to " + new_title_path + ": " + str(ex))
+            app.logger.debug(ex, exc_info=True)
             return _("Rename title from: '%(src)s' to '%(dest)s' failed with error: %(error)s",
                      src=path, dest=new_title_path, error=str(ex))
     if authordir != new_authordir:
@@ -308,8 +307,8 @@ def update_dir_structure_file(book_id, calibrepath, first_author):
             os.renames(path, new_author_path)
             localbook.path = new_authordir + '/' + localbook.path.split('/')[1]
         except OSError as ex:
-            web.app.logger.error("Rename author from: " + path + " to " + new_author_path + ": " + str(ex))
-            web.app.logger.debug(ex, exc_info=True)
+            app.logger.error("Rename author from: " + path + " to " + new_author_path + ": " + str(ex))
+            app.logger.debug(ex, exc_info=True)
             return _("Rename author from: '%(src)s' to '%(dest)s' failed with error: %(error)s",
                      src=path, dest=new_author_path, error=str(ex))
     # Rename all files from old names to new names
@@ -322,8 +321,8 @@ def update_dir_structure_file(book_id, calibrepath, first_author):
                            os.path.join(path_name,new_name + '.' + file_format.format.lower()))
                 file_format.name = new_name
         except OSError as ex:
-            web.app.logger.error("Rename file in path " + path + " to " + new_name + ": " + str(ex))
-            web.app.logger.debug(ex, exc_info=True)
+            app.logger.error("Rename file in path " + path + " to " + new_name + ": " + str(ex))
+            app.logger.debug(ex, exc_info=True)
             return _("Rename file in path '%(src)s' to '%(dest)s' failed with error: %(error)s",
                      src=path, dest=new_name, error=str(ex))
     return False
@@ -418,17 +417,17 @@ def delete_book(book, calibrepath, book_format):
 def get_book_cover(cover_path):
     if config.config_use_google_drive:
         try:
-            if not web.is_gdrive_ready():
+            if not gd.is_gdrive_ready():
                 return send_from_directory(os.path.join(os.path.dirname(__file__), "static"), "generic_cover.jpg")
             path=gd.get_cover_via_gdrive(cover_path)
             if path:
                 return redirect(path)
             else:
-                web.app.logger.error(cover_path + '/cover.jpg not found on Google Drive')
+                app.logger.error(cover_path + '/cover.jpg not found on Google Drive')
                 return send_from_directory(os.path.join(os.path.dirname(__file__), "static"), "generic_cover.jpg")
         except Exception as e:
-            web.app.logger.error("Error Message: " + e.message)
-            web.app.logger.exception(e)
+            app.logger.error("Error Message: " + e.message)
+            app.logger.exception(e)
             # traceback.print_exc()
             return send_from_directory(os.path.join(os.path.dirname(__file__), "static"),"generic_cover.jpg")
     else:
@@ -439,7 +438,7 @@ def get_book_cover(cover_path):
 def save_cover(url, book_path):
     img = requests.get(url)
     if img.headers.get('content-type') != 'image/jpeg':
-        web.app.logger.error("Cover is no jpg file, can't save")
+        app.logger.error("Cover is no jpg file, can't save")
         return False
 
     if config.config_use_google_drive:
@@ -448,13 +447,13 @@ def save_cover(url, book_path):
         f.write(img.content)
         f.close()
         gd.uploadFileToEbooksFolder(os.path.join(book_path, 'cover.jpg'), os.path.join(tmpDir, f.name))
-        web.app.logger.info("Cover is saved on Google Drive")
+        app.logger.info("Cover is saved on Google Drive")
         return True
 
     f = open(os.path.join(config.config_calibre_dir, book_path, "cover.jpg"), "wb")
     f.write(img.content)
     f.close()
-    web.app.logger.info("Cover is saved")
+    app.logger.info("Cover is saved")
     return True
 
 
@@ -462,7 +461,7 @@ def do_download_file(book, book_format, data, headers):
     if config.config_use_google_drive:
         startTime = time.time()
         df = gd.getFileFromEbooksFolder(book.path, data.name + "." + book_format)
-        web.app.logger.debug(time.time() - startTime)
+        app.logger.debug(time.time() - startTime)
         if df:
             return gd.do_gdrive_download(df, headers)
         else:
@@ -471,7 +470,7 @@ def do_download_file(book, book_format, data, headers):
         filename = os.path.join(config.config_calibre_dir, book.path)
         if not os.path.isfile(os.path.join(filename, data.name + "." + book_format)):
             # ToDo: improve error handling
-            web.app.logger.error('File not found: %s' % os.path.join(filename, data.name + "." + book_format))
+            app.logger.error('File not found: %s' % os.path.join(filename, data.name + "." + book_format))
         response = make_response(send_from_directory(filename, data.name + "." + book_format))
         response.headers = headers
         return response
@@ -497,7 +496,7 @@ def check_unrar(unrarLocation):
                     version = value.group(1)
         except OSError as e:
             error = True
-            web.app.logger.exception(e)
+            app.logger.exception(e)
             version =_(u'Error excecuting UnRar')
     else:
         version = _(u'Unrar binary file not found')
@@ -522,7 +521,7 @@ def render_task_status(tasklist):
         if task['user'] == current_user.nickname or current_user.role_admin():
             # task2 = copy.deepcopy(task) # = task
             if task['formStarttime']:
-                task['starttime'] = format_datetime(task['formStarttime'], format='short', locale=web.get_locale())
+                task['starttime'] = format_datetime(task['formStarttime'], format='short', locale=get_locale())
             # task2['formStarttime'] = ""
             else:
                 if 'starttime' not in task:

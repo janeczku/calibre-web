@@ -23,7 +23,6 @@ from sqlalchemy import exc
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import *
 from flask_login import AnonymousUserMixin
-from flask_dance.consumer.backend.sqla import OAuthConsumerMixin
 import sys
 import os
 import logging
@@ -34,8 +33,11 @@ from binascii import hexlify
 import cli
 
 try:
+    from flask_dance.consumer.backend.sqla import OAuthConsumerMixin
     import ldap
+    oauth_support = True
 except ImportError:
+    oauth_support = False
     pass
 
 engine = create_engine('sqlite:///{0}'.format(cli.settingspath), echo=False)
@@ -207,11 +209,11 @@ class User(UserBase, Base):
     default_language = Column(String(3), default="all")
     mature_content = Column(Boolean, default=True)
 
-
-class OAuth(OAuthConsumerMixin, Base):
-    provider_user_id = Column(String(256))
-    user_id = Column(Integer, ForeignKey(User.id))
-    user = relationship(User)
+if oauth_support:
+    class OAuth(OAuthConsumerMixin, Base):
+        provider_user_id = Column(String(256))
+        user_id = Column(Integer, ForeignKey(User.id))
+        user = relationship(User)
 
 
 # Class for anonymous user is derived from User base and completly overrides methods and properties for the
@@ -834,7 +836,7 @@ def delete_download(book_id):
     session.commit()
 
 # Generate user Guest (translated text), as anoymous user, no rights
-def create_anonymous_user(session):
+def create_anonymous_user():
     user = User()
     user.nickname = "Guest"
     user.email = 'no@email'

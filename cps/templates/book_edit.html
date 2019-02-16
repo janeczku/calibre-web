@@ -19,7 +19,7 @@
       <div class="text-center more-stuff"><h4>{{_('Delete formats:')}}</h4>
       {% for file in book.data %}
         <div class="form-group">
-          <a href="{{ url_for('web.delete_book', book_id=book.id, book_format=file.format) }}" class="btn btn-danger" type="button">{{_('Delete')}} - {{file.format}}</a>
+          <a href="{{ url_for('editbook.delete_book', book_id=book.id, book_format=file.format) }}" class="btn btn-danger" type="button">{{_('Delete')}} - {{file.format}}</a>
         </div>
       {% endfor %}
       </div>
@@ -28,7 +28,7 @@
 
 {%  if source_formats|length > 0 and conversion_formats|length > 0 %}
   <div class="text-center more-stuff"><h4>{{_('Convert book format:')}}</h4>
-      <form class="padded-bottom" action="{{ url_for('web.convert_bookformat', book_id=book.id) }}" method="post" id="book_convert_frm">
+      <form class="padded-bottom" action="{{ url_for('editbook.convert_bookformat', book_id=book.id) }}" method="post" id="book_convert_frm">
           <div class="form-group">
               <div class="text-left">
                   <label class="control-label" for="book_format_from">{{_('Convert from:')}}</label>

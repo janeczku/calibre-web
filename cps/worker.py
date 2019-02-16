@@ -27,13 +27,11 @@ import socket
 import sys
 import os
 from email.generator import Generator
-from cps import config, db # , app
-# import web
+from cps import config, db, app
 from flask_babel import gettext as _
 import re
-# import gdriveutils as gd
+import gdriveutils as gd
 from subproc_wrapper import process_open
-
 
 try:
     from StringIO import StringIO
@@ -90,8 +88,8 @@ def get_attachment(bookpath, filename):
             data = file_.read()
             file_.close()
         except IOError as e:
-            # web.app.logger.exception(e) # traceback.print_exc()
-            # web.app.logger.error(u'The requested file could not be read. Maybe wrong permissions?')
+            app.logger.exception(e) # traceback.print_exc()
+            app.logger.error(u'The requested file could not be read. Maybe wrong permissions?')
             return None
 
     attachment = MIMEBase('application', 'octet-stream')
@@ -116,8 +114,7 @@ class emailbase():
 
     def send(self, strg):
         """Send `strg' to the server."""
-        if self.debuglevel > 0:
-            print('send:', repr(strg[:300]), file=sys.stderr)
+        app.logger.debug('send:' + repr(strg[:300]))
         if hasattr(self, 'sock') and self.sock:
             try:
                 if self.transferSize:
@@ -140,6 +137,9 @@ class emailbase():
                 raise smtplib.SMTPServerDisconnected('Server not connected')
         else:
             raise smtplib.SMTPServerDisconnected('please run connect() first')
+
+    def _print_debug(self, *args):
+        app.logger.debug(args)
 
     def getTransferStatus(self):
         if self.transferSize:
@@ -254,14 +254,14 @@ class WorkerThread(threading.Thread):
         # if it does - mark the conversion task as complete and return a success
         # this will allow send to kindle workflow to continue to work
         if os.path.isfile(file_path + format_new_ext):
-            # web.app.logger.info("Book id %d already converted to %s", bookid, format_new_ext)
+            app.logger.info("Book id %d already converted to %s", bookid, format_new_ext)
             cur_book = db.session.query(db.Books).filter(db.Books.id == bookid).first()
             self.queue[self.current]['path'] = file_path
             self.queue[self.current]['title'] = cur_book.title
             self._handleSuccess()
             return file_path + format_new_ext
         else:
-            web.app.logger.info("Book id %d - target format of %s does not exist. Moving forward with convert.", bookid, format_new_ext)
+            app.logger.info("Book id %d - target format of %s does not exist. Moving forward with convert.", bookid, format_new_ext)
 
         # check if converter-executable is existing
         if not os.path.exists(config.config_converterpath):
@@ -274,22 +274,22 @@ class WorkerThread(threading.Thread):
             if format_old_ext == '.epub' and format_new_ext == '.mobi':
                 if config.config_ebookconverter == 1:
                     '''if os.name == 'nt':
-                        command = web.ub.config.config_converterpath + u' "' + file_path + u'.epub"'
+                        command = config.config_converterpath + u' "' + file_path + u'.epub"'
                         if sys.version_info < (3, 0):
                             command = command.encode(sys.getfilesystemencoding())
                     else:'''
                     command = [config.config_converterpath, file_path + u'.epub']
-                    quotes = (1)
+                    quotes = [1]
             if config.config_ebookconverter == 2:
                 # Linux py2.7 encode as list without quotes no empty element for parameters
                 # linux py3.x no encode and as list without quotes no empty element for parameters
                 # windows py2.7 encode as string with quotes empty element for parameters is okay
                 # windows py 3.x no encode and as string with quotes empty element for parameters is okay
                 # separate handling for windows and linux
-                quotes = (1,2)
+                quotes = [1,2]
                 '''if os.name == 'nt':
-                    command = web.ub.config.config_converterpath + u' "' + file_path + format_old_ext + u'" "' + \
-                              file_path + format_new_ext + u'" ' + web.ub.config.config_calibre
+                    command = config.config_converterpath + u' "' + file_path + format_old_ext + u'" "' + \
+                              file_path + format_new_ext + u'" ' + config.config_calibre
                     if sys.version_info < (3, 0):
                         command = command.encode(sys.getfilesystemencoding())
                 else:'''
@@ -317,13 +317,13 @@ class WorkerThread(threading.Thread):
             if conv_error:
                 error_message = _(u"Kindlegen failed with Error %(error)s. Message: %(message)s",
                                   error=conv_error.group(1), message=conv_error.group(2).strip())
-            web.app.logger.debug("convert_kindlegen: " + nextline)
+            app.logger.debug("convert_kindlegen: " + nextline)
         else:
             while p.poll() is None:
                 nextline = p.stdout.readline()
                 if os.name == 'nt' and sys.version_info < (3, 0):
                     nextline = nextline.decode('windows-1252')
-                web.app.logger.debug(nextline.strip('\r\n'))
+                app.logger.debug(nextline.strip('\r\n'))
                 # parse progress string from calibre-converter
                 progress = re.search("(\d+)%\s.*", nextline)
                 if progress:
@@ -353,7 +353,7 @@ class WorkerThread(threading.Thread):
                 return file_path + format_new_ext
             else:
                 error_message = format_new_ext.upper() + ' format not found on disk'
-        # web.app.logger.info("ebook converter failed with error while converting book")
+        app.logger.info("ebook converter failed with error while converting book")
         if not error_message:
             error_message = 'Ebook converter failed with unknown error'
         self._handleError(error_message)
@@ -414,7 +414,6 @@ class WorkerThread(threading.Thread):
     def _send_raw_email(self):
         self.queue[self.current]['starttime'] = datetime.now()
         self.UIqueue[self.current]['formStarttime'] = self.queue[self.current]['starttime']
-        # self.queue[self.current]['status'] = STAT_STARTED
         self.UIqueue[self.current]['stat'] = STAT_STARTED
         obj=self.queue[self.current]
         # create MIME message
@@ -446,8 +445,11 @@ class WorkerThread(threading.Thread):
             # send email
             timeout = 600  # set timeout to 5mins
 
-            org_stderr = sys.stderr
-            sys.stderr = StderrLogger()
+            # redirect output to logfile on python2 pn python3 debugoutput is caught with overwritten
+            # _print_debug function
+            if sys.version_info < (3, 0):
+                org_smtpstderr = smtplib.stderr
+                smtplib.stderr = StderrLogger()
 
             if use_ssl == 2:
                 self.asyncSMTP = email_SSL(obj['settings']["mail_server"], obj['settings']["mail_port"], timeout)
@@ -455,7 +457,7 @@ class WorkerThread(threading.Thread):
                 self.asyncSMTP = email(obj['settings']["mail_server"], obj['settings']["mail_port"], timeout)
 
             # link to logginglevel
-            if web.ub.config.config_log_level != logging.DEBUG:
+            if config.config_log_level != logging.DEBUG:
                 self.asyncSMTP.set_debuglevel(0)
             else:
                 self.asyncSMTP.set_debuglevel(1)
@@ -466,7 +468,9 @@ class WorkerThread(threading.Thread):
             self.asyncSMTP.sendmail(obj['settings']["mail_from"], obj['recipent'], msg)
             self.asyncSMTP.quit()
             self._handleSuccess()
-            sys.stderr = org_stderr
+
+            if sys.version_info < (3, 0):
+                smtplib.stderr = org_smtpstderr
 
         except (MemoryError) as e:
             self._handleError(u'Error sending email: ' + e.message)
@@ -497,7 +501,7 @@ class WorkerThread(threading.Thread):
         return retVal
 
     def _handleError(self, error_message):
-        web.app.logger.error(error_message)
+        app.logger.error(error_message)
         # self.queue[self.current]['status'] = STAT_FAIL
         self.UIqueue[self.current]['stat'] = STAT_FAIL
         self.UIqueue[self.current]['progress'] = "100 %"
@@ -519,13 +523,12 @@ class StderrLogger(object):
     buffer = ''
 
     def __init__(self):
-        self.logger = web.app.logger
+        self.logger = app.logger
 
     def write(self, message):
         try:
             if message == '\n':
-                self.logger.debug(self.buffer)
-                print(self.buffer)
+                self.logger.debug(self.buffer.replace("\n","\\n"))
                 self.buffer = ''
             else:
                 self.buffer += message

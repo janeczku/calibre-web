@@ -21,6 +21,7 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program. If not, see <http://www.gnu.org/licenses/>.
 
+import logging
 import os
 from flask import Blueprint, flash, redirect, url_for
 from flask import abort, request, make_response
@@ -39,20 +40,26 @@ from gdriveutils import is_gdrive_ready, gdrive_support, downloadFile, deleteDat
 import helper
 from werkzeug.security import generate_password_hash
 from oauth_bb import oauth_check
+try:
+    from urllib.parse import quote
+    from imp import reload
+except ImportError:
+    from urllib import quote
 
+feature_support = dict()
 try:
     from goodreads.client import GoodreadsClient
-    goodreads_support = True
+    feature_support['goodreads'] = True
 except ImportError:
-    goodreads_support = False
+    feature_support['goodreads'] = False
 
 try:
     import rarfile
-    rar_support = True
+    feature_support['rar'] = True
 except ImportError:
-    rar_support = False
+    feature_support['rar'] = False
 
-
+feature_support['gdrive'] = gdrive_support
 admi = Blueprint('admin', __name__)
 
 
@@ -287,7 +294,7 @@ def configuration_helper(origin):
     db_change = False
     success = False
     filedata = None
-    if gdrive_support is False:
+    if not feature_support['gdrive']:
         gdriveError = _('Import of optional Google Drive requirements missing')
     else:
         if not os.path.isfile(os.path.join(config.get_main_dir, 'client_secrets.json')):
@@ -327,7 +334,7 @@ def configuration_helper(origin):
             else:
                 flash(_(u'client_secrets.json is not configured for web application'), category="error")
                 return render_title_template("config_edit.html", content=config, origin=origin,
-                                             gdrive=gdrive_support, gdriveError=gdriveError,
+                                             gdriveError=gdriveError,
                                              goodreads=goodreads_support, title=_(u"Basic Configuration"),
                                              page="config")
         # always show google drive settings, but in case of error deny support
@@ -353,7 +360,7 @@ def configuration_helper(origin):
                     ub.session.commit()
                     flash(_(u'Keyfile location is not valid, please enter correct path'), category="error")
                     return render_title_template("config_edit.html", content=config, origin=origin,
-                                                 gdrive=gdrive_support, gdriveError=gdriveError,
+                                                 gdriveError=gdriveError,
                                                  goodreads=goodreads_support, title=_(u"Basic Configuration"),
                                                  page="config")
         if "config_certfile" in to_save:
@@ -365,9 +372,8 @@ def configuration_helper(origin):
                     ub.session.commit()
                     flash(_(u'Certfile location is not valid, please enter correct path'), category="error")
                     return render_title_template("config_edit.html", content=config, origin=origin,
-                                                 gdrive=gdrive_support, gdriveError=gdriveError,
-                                                 goodreads=goodreads_support, title=_(u"Basic Configuration"),
-                                                 page="config")
+                                                 gdriveError=gdriveError, feature_support=feature_support,
+                                                 title=_(u"Basic Configuration"), page="config")
         content.config_uploading = 0
         content.config_anonbrowse = 0
         content.config_public_reg = 0
@@ -391,9 +397,8 @@ def configuration_helper(origin):
                 ub.session.commit()
                 flash(_(u'Please enter a LDAP provider and a DN'), category="error")
                 return render_title_template("config_edit.html", content=config, origin=origin,
-                                             gdrive=gdrive_support, gdriveError=gdriveError,
-                                             goodreads=goodreads_support, title=_(u"Basic Configuration"),
-                                             page="config")
+                                             gdriveError=gdriveError, feature_support=feature_support,
+                                             title=_(u"Basic Configuration"), page="config")
             else:
                 content.config_use_ldap = 1
                 content.config_ldap_provider_url = to_save["config_ldap_provider_url"]
@@ -450,9 +455,8 @@ def configuration_helper(origin):
                     ub.session.commit()
                     flash(_(u'Logfile location is not valid, please enter correct path'), category="error")
                     return render_title_template("config_edit.html", content=config, origin=origin,
-                                                 gdrive=gdrive_support, gdriveError=gdriveError,
-                                                 goodreads=goodreads_support, title=_(u"Basic Configuration"),
-                                                 page="config")
+                                                 gdriveError=gdriveError, feature_support=feature_support,
+                                                 title=_(u"Basic Configuration"), page="config")
             else:
                 content.config_logfile = to_save["config_logfile"]
             reboot_required = True
@@ -465,8 +469,7 @@ def configuration_helper(origin):
             else:
                 flash(check[1], category="error")
                 return render_title_template("config_edit.html", content=config, origin=origin,
-                                             gdrive=gdrive_support, goodreads=goodreads_support,
-                                             rarfile_support=rar_support, title=_(u"Basic Configuration"))
+                                             feature_support=feature_support, title=_(u"Basic Configuration"))
         try:
             if content.config_use_google_drive and is_gdrive_ready() and not \
                     os.path.exists(os.path.join(content.config_calibre_dir, "metadata.db")):
@@ -479,20 +482,18 @@ def configuration_helper(origin):
             flash(_(u"Calibre-Web configuration updated"), category="success")
             config.loadSettings()
             app.logger.setLevel(config.config_log_level)
-            logging.getLogger("book_formats").setLevel(config.config_log_level)
+            logging.getLogger("uploader").setLevel(config.config_log_level)
         except Exception as e:
             flash(e, category="error")
             return render_title_template("config_edit.html", content=config, origin=origin,
-                                         gdrive=gdrive_support, gdriveError=gdriveError,
-                                         goodreads=goodreads_support, rarfile_support=rar_support,
+                                         gdriveError=gdriveError, feature_support=feature_support,
                                          title=_(u"Basic Configuration"), page="config")
         if db_change:
             reload(db)
             if not db.setup_db():
                 flash(_(u'DB location is not valid, please enter correct path'), category="error")
                 return render_title_template("config_edit.html", content=config, origin=origin,
-                                             gdrive=gdrive_support, gdriveError=gdriveError,
-                                             goodreads=goodreads_support, rarfile_support=rar_support,
+                                             gdriveError=gdriveError, feature_support=feature_support,
                                              title=_(u"Basic Configuration"), page="config")
         if reboot_required:
             # stop Server
@@ -501,15 +502,14 @@ def configuration_helper(origin):
             app.logger.info('Reboot required, restarting')
         if origin:
             success = True
-    if is_gdrive_ready() and gdrive_support is True:  # and config.config_use_google_drive == True:
+    if is_gdrive_ready() and feature_support['gdrive'] is True:  # and config.config_use_google_drive == True:
         gdrivefolders = listRootFolders()
     else:
         gdrivefolders = list()
     return render_title_template("config_edit.html", origin=origin, success=success, content=config,
                                  show_authenticate_google_drive=not is_gdrive_ready(),
-                                 gdrive=gdrive_support, gdriveError=gdriveError,
-                                 gdrivefolders=gdrivefolders, rarfile_support=rar_support,
-                                 goodreads=goodreads_support, title=_(u"Basic Configuration"), page="config")
+                                 gdriveError=gdriveError, gdrivefolders=gdrivefolders, feature_support=feature_support,
+                                 title=_(u"Basic Configuration"), page="config")
 
 
 @admi.route("/admin/user/new", methods=["GET", "POST"])
@@ -569,20 +569,20 @@ def new_user():
         if not to_save["nickname"] or not to_save["email"] or not to_save["password"]:
             flash(_(u"Please fill out all fields!"), category="error")
             return render_title_template("user_edit.html", new_user=1, content=content, translations=translations,
-                                         title=_(u"Add new user"))
+                                         registered_oauth=oauth_check, title=_(u"Add new user"))
         content.password = generate_password_hash(to_save["password"])
         content.nickname = to_save["nickname"]
         if config.config_public_reg and not check_valid_domain(to_save["email"]):
             flash(_(u"E-mail is not from valid domain"), category="error")
             return render_title_template("user_edit.html", new_user=1, content=content, translations=translations,
-                                         title=_(u"Add new user"))
+                                         registered_oauth=oauth_check, title=_(u"Add new user"))
         else:
             content.email = to_save["email"]
         try:
             ub.session.add(content)
             ub.session.commit()
             flash(_(u"User '%(user)s' created", user=content.nickname), category="success")
-            return redirect(url_for('admin'))
+            return redirect(url_for('admin.admin'))
         except IntegrityError:
             ub.session.rollback()
             flash(_(u"Found an existing account for this e-mail address or nickname."), category="error")
@@ -591,7 +591,8 @@ def new_user():
         content.sidebar_view = config.config_default_show
         content.mature_content = bool(config.config_default_show & ub.MATURE_CONTENT)
     return render_title_template("user_edit.html", new_user=1, content=content, translations=translations,
-                                 languages=languages, title=_(u"Add new user"), page="newuser", registered_oauth=oauth_check)
+                                 languages=languages, title=_(u"Add new user"), page="newuser",
+                                 registered_oauth=oauth_check)
 
 
 @admi.route("/admin/mailsettings", methods=["GET", "POST"])
@@ -649,7 +650,7 @@ def edit_user(user_id):
             ub.session.query(ub.User).filter(ub.User.id == content.id).delete()
             ub.session.commit()
             flash(_(u"User '%(nick)s' deleted", nick=content.nickname), category="success")
-            return redirect(url_for('admin'))
+            return redirect(url_for('admin.admin'))
         else:
             if "password" in to_save and to_save["password"]:
                 content.password = generate_password_hash(to_save["password"])
@@ -766,8 +767,8 @@ def edit_user(user_id):
             ub.session.rollback()
             flash(_(u"An unknown error occured."), category="error")
     return render_title_template("user_edit.html", translations=translations, languages=languages, new_user=0,
-                                 content=content, downloads=downloads, title=_(u"Edit User %(nick)s",
-                                                                               nick=content.nickname), page="edituser", registered_oauth=oauth_check)
+                                 content=content, downloads=downloads, registered_oauth=oauth_check,
+                                 title=_(u"Edit User %(nick)s", nick=content.nickname), page="edituser")
 
 
 @admi.route("/admin/resetpassword/<int:user_id>")
@@ -787,7 +788,7 @@ def reset_password(user_id):
         except Exception:
             ub.session.rollback()
             flash(_(u"An unknown error occurred. Please try again later."), category="error")
-    return redirect(url_for('admin'))
+    return redirect(url_for('admin.admin'))
 
 
 @admi.route("/get_update_status", methods=['GET'])

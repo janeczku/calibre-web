@@ -47,18 +47,19 @@ from cps import lm, babel, ub, config, get_locale, language_table, app
 from pagination import Pagination
 from sqlalchemy.sql.expression import text
 
-from oauth_bb import oauth_check, register_user_with_oauth, logout_oauth_user, get_oauth_status
-
-'''try:
-    oauth_support = True
+feature_support = dict()
+try:
+    from oauth_bb import oauth_check, register_user_with_oauth, logout_oauth_user, get_oauth_status
+    feature_support['oauth'] = True
 except ImportError:
-    oauth_support = False'''
+    feature_support['oauth'] = False
+    oauth_check = {}
 
 try:
     import ldap
-    ldap_support = True
+    feature_support['ldap'] = True
 except ImportError:
-    ldap_support = False
+    feature_support['ldap'] = False
 
 try:
     from googleapiclient.errors import HttpError
@@ -67,15 +68,15 @@ except ImportError:
 
 try:
     from goodreads.client import GoodreadsClient
-    goodreads_support = True
+    feature_support['goodreads'] = True
 except ImportError:
-    goodreads_support = False
+    feature_support['goodreads'] = False
 
 try:
     import Levenshtein
-    levenshtein_support = True
+    feature_support['levenshtein'] = True
 except ImportError:
-    levenshtein_support = False
+    feature_support['levenshtein'] = False
 
 try:
     from functools import reduce, wraps
@@ -84,9 +85,9 @@ except ImportError:
 
 try:
     import rarfile
-    rar_support=True
+    feature_support['rar'] = True
 except ImportError:
-    rar_support=False
+    feature_support['rar'] = False
 
 try:
     from natsort import natsorted as sort
@@ -95,10 +96,8 @@ except ImportError:
 
 try:
     from urllib.parse import quote
-    from imp import reload
 except ImportError:
     from urllib import quote
-
 
 from flask import Blueprint
 
@@ -106,7 +105,8 @@ from flask import Blueprint
 
 EXTENSIONS_AUDIO = {'mp3', 'm4a', 'm4b'}
 
-# EXTENSIONS_READER = set(['txt', 'pdf', 'epub', 'zip', 'cbz', 'tar', 'cbt'] + (['rar','cbr'] if rar_support else []))
+'''EXTENSIONS_READER = set(['txt', 'pdf', 'epub', 'zip', 'cbz', 'tar', 'cbt'] + 
+                        (['rar','cbr'] if feature_support['rar'] else []))'''
 
 
 # custom error page
@@ -346,8 +346,8 @@ def before_request():
     g.allow_upload = config.config_uploading
     g.current_theme = config.config_theme
     g.public_shelfes = ub.session.query(ub.Shelf).filter(ub.Shelf.is_public == 1).order_by(ub.Shelf.name).all()
-    if not config.db_configured and request.endpoint not in ('web.basic_configuration', 'login') and '/static/' not in request.path:
-        return redirect(url_for('web.basic_configuration'))
+    if not config.db_configured and request.endpoint not in ('admin.basic_configuration', 'login') and '/static/' not in request.path:
+        return redirect(url_for('admin.basic_configuration'))
 
 
 @web.route("/ajax/emailstat")
@@ -373,7 +373,7 @@ def get_comic_book(book_id, book_format, page):
             if bookformat.format.lower() == book_format.lower():
                 cbr_file = os.path.join(config.config_calibre_dir, book.path, bookformat.name) + "." + book_format
                 if book_format in ("cbr", "rar"):
-                    if rar_support == True:
+                    if feature_support['rar'] == True:
                         rarfile.UNRAR_TOOL = config.config_rarfile_location
                         try:
                             rf = rarfile.RarFile(cbr_file)
@@ -636,7 +636,7 @@ def author(book_id, page):
 
     author_info = None
     other_books = []
-    if goodreads_support and config.config_use_goodreads:
+    if feature_support['goodreads'] and config.config_use_goodreads:
         try:
             gc = GoodreadsClient(config.config_goodreads_api_key, config.config_goodreads_api_secret)
             author_info = gc.find_author(author_name=name)
@@ -688,7 +688,7 @@ def get_unique_other_books(library_books, author_books):
                          author_books)
 
     # Fuzzy match book titles
-    if levenshtein_support:
+    if feature_support['levenshtein']:
         library_titles = reduce(lambda acc, book: acc + [book.title], library_books, [])
         other_books = filter(lambda author_book: not filter(
             lambda library_book:
@@ -1215,7 +1215,7 @@ def read_book(book_id, book_format):
                 #    copyfile(cbr_file, tmp_file)
                 return render_title_template('readcbr.html', comicfile=all_name, title=_(u"Read a Book"),
                                              extension=fileext)
-        '''if rar_support == True:
+        '''if feature_support['rar']:
             extensionList = ["cbr","cbt","cbz"]
         else:
             extensionList = ["cbt","cbz"]
@@ -1292,7 +1292,7 @@ def register():
                 try:
                     ub.session.add(content)
                     ub.session.commit()
-                    if oauth_support:
+                    if feature_support['oauth']:
                         register_user_with_oauth(content)
                     helper.send_registration_mail(to_save["email"], to_save["nickname"], password)
                 except Exception:
@@ -1310,7 +1310,7 @@ def register():
             flash(_(u"This username or e-mail address is already in use."), category="error")
             return render_title_template('register.html', title=_(u"register"), page="register")
 
-    if oauth_support:
+    if feature_support['oauth']:
         register_user_with_oauth()
     return render_title_template('register.html', config=config, title=_(u"register"), page="register")
 
@@ -1318,7 +1318,7 @@ def register():
 @web.route('/login', methods=['GET', 'POST'])
 def login():
     if not config.db_configured:
-        return redirect(url_for('web.basic_configuration'))
+        return redirect(url_for('admin.basic_configuration'))
     if current_user is not None and current_user.is_authenticated:
         return redirect(url_for('web.index'))
     if request.method == "POST":
@@ -1358,7 +1358,7 @@ def login():
 def logout():
     if current_user is not None and current_user.is_authenticated:
         logout_user()
-        if oauth_support:
+        if feature_support['oauth']:
             logout_oauth_user()
     return redirect(url_for('web.login'))
 
@@ -1370,7 +1370,7 @@ def remote_login():
     ub.session.add(auth_token)
     ub.session.commit()
 
-    verify_url = url_for('verify_token', token=auth_token.auth_token, _external=true)
+    verify_url = url_for('web.verify_token', token=auth_token.auth_token, _external=true)
 
     return render_title_template('remote_login.html', title=_(u"login"), token=auth_token.auth_token,
                                  verify_url=verify_url, page="remotelogin")
@@ -1385,7 +1385,7 @@ def verify_token(token):
     # Token not found
     if auth_token is None:
         flash(_(u"Token not found"), category="error")
-        return redirect(url_for('index'))
+        return redirect(url_for('web.index'))
 
     # Token expired
     if datetime.datetime.now() > auth_token.expiration:
@@ -1393,7 +1393,7 @@ def verify_token(token):
         ub.session.commit()
 
         flash(_(u"Token has expired"), category="error")
-        return redirect(url_for('index'))
+        return redirect(url_for('web.index'))
 
     # Update token with user information
     auth_token.user_id = current_user.id
@@ -1401,7 +1401,7 @@ def verify_token(token):
     ub.session.commit()
 
     flash(_(u"Success! Please return to your device"), category="success")
-    return redirect(url_for('index'))
+    return redirect(url_for('web.index'))
 
 
 @web.route('/ajax/verify_token', methods=['POST'])
@@ -1472,7 +1472,10 @@ def profile():
     downloads = list()
     languages = speaking_language()
     translations = babel.list_translations() + [LC('en')]
-    oauth_status = get_oauth_status()
+    if feature_support['oauth']:
+        oauth_status = get_oauth_status()
+    else:
+        oauth_status = None
     for book in content.downloads:
         downloadBook = db.session.query(db.Books).filter(db.Books.id == book.book_id).first()
         if downloadBook:
@@ -1535,9 +1538,11 @@ def profile():
             ub.session.rollback()
             flash(_(u"Found an existing account for this e-mail address."), category="error")
             return render_title_template("user_edit.html", content=content, downloads=downloads,
-                                         title=_(u"%(name)s's profile", name=current_user.nickname, registered_oauth=oauth_check, oauth_status=oauth_status))
+                                         title=_(u"%(name)s's profile", name=current_user.nickname,
+                                                 registered_oauth=oauth_check, oauth_status=oauth_status))
         flash(_(u"Profile updated"), category="success")
     return render_title_template("user_edit.html", translations=translations, profile=1, languages=languages,
-                                content=content, downloads=downloads, title=_(u"%(name)s's profile",
-                                name=current_user.nickname), page="me", registered_oauth=oauth_check, oauth_status=oauth_status)
+                                 content=content, downloads=downloads, title=_(u"%(name)s's profile",
+                                 name=current_user.nickname), page="me", registered_oauth=oauth_check,
+                                 oauth_status=oauth_status)
 
