@@ -39,7 +39,6 @@ from sqlalchemy.exc import IntegrityError
 from gdriveutils import is_gdrive_ready, gdrive_support, downloadFile, deleteDatabaseOnChange, listRootFolders
 import helper
 from werkzeug.security import generate_password_hash
-from oauth_bb import oauth_check
 try:
     from urllib.parse import quote
     from imp import reload
@@ -58,6 +57,19 @@ try:
     feature_support['rar'] = True
 except ImportError:
     feature_support['rar'] = False
+
+try:
+    import ldap
+    feature_support['ldap'] = True
+except ImportError:
+    feature_support['ldap'] = False
+
+try:
+    from oauth_bb import oauth_check
+    feature_support['oauth'] = True
+except ImportError:
+    feature_support['oauth'] = False
+    oauth_check = {}
 
 feature_support['gdrive'] = gdrive_support
 admi = Blueprint('admin', __name__)
@@ -335,7 +347,7 @@ def configuration_helper(origin):
                 flash(_(u'client_secrets.json is not configured for web application'), category="error")
                 return render_title_template("config_edit.html", content=config, origin=origin,
                                              gdriveError=gdriveError,
-                                             goodreads=goodreads_support, title=_(u"Basic Configuration"),
+                                             gfeature_support=feature_support, title=_(u"Basic Configuration"),
                                              page="config")
         # always show google drive settings, but in case of error deny support
         if "config_use_google_drive" in to_save and not gdriveError:
@@ -361,7 +373,7 @@ def configuration_helper(origin):
                     flash(_(u'Keyfile location is not valid, please enter correct path'), category="error")
                     return render_title_template("config_edit.html", content=config, origin=origin,
                                                  gdriveError=gdriveError,
-                                                 goodreads=goodreads_support, title=_(u"Basic Configuration"),
+                                                 feature_support=feature_support, title=_(u"Basic Configuration"),
                                                  page="config")
         if "config_certfile" in to_save:
             if content.config_certfile != to_save["config_certfile"]:
@@ -392,7 +404,7 @@ def configuration_helper(origin):
             content.config_ebookconverter = int(to_save["config_ebookconverter"])
 
         #LDAP configurator,
-        if "config_use_ldap" in to_save and to_save["config_use_ldap"] == "on":
+        if "config_login_type" in to_save and to_save["config_login_type"] == "1":
             if "config_ldap_provider_url" not in to_save or "config_ldap_dn" not in to_save:
                 ub.session.commit()
                 flash(_(u'Please enter a LDAP provider and a DN'), category="error")
@@ -400,7 +412,7 @@ def configuration_helper(origin):
                                              gdriveError=gdriveError, feature_support=feature_support,
                                              title=_(u"Basic Configuration"), page="config")
             else:
-                content.config_use_ldap = 1
+                content.config_login_type = ub.LOGIN_LDAP
                 content.config_ldap_provider_url = to_save["config_ldap_provider_url"]
                 content.config_ldap_dn = to_save["config_ldap_dn"]
                 db_change = True

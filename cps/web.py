@@ -1325,10 +1325,10 @@ def login():
         form = request.form.to_dict()
         user = ub.session.query(ub.User).filter(func.lower(ub.User.nickname) == form['username'].strip().lower())\
             .first()
-        '''if config.config_use_ldap and user:
-            import ldap
+        if config.config_login_type == 1 and user:
             try:
-                ub.User.try_login(form['username'], form['password'])
+                ub.User.try_login(form['username'], form['password'], config.config_ldap_dn,
+                                  config.config_ldap_provider_url)
                 login_user(user, remember=True)
                 flash(_(u"you are now logged in as: '%(nickname)s'", nickname=user.nickname), category="success")
                 return redirect_back(url_for("web.index"))
@@ -1336,15 +1336,18 @@ def login():
                 ipAdress = request.headers.get('X-Forwarded-For', request.remote_addr)
                 app.logger.info('LDAP Login failed for user "' + form['username'] + '" IP-adress: ' + ipAdress)
                 flash(_(u"Wrong Username or Password"), category="error")
-        el'''
-        if user and check_password_hash(user.password, form['password']) and user.nickname is not "Guest":
-            login_user(user, remember=True)
-            flash(_(u"you are now logged in as: '%(nickname)s'", nickname=user.nickname), category="success")
-            return redirect_back(url_for("web.index"))
+            except ldap.SERVER_DOWN:
+                app.logger.info('LDAP Login failed, LDAP Server down')
+                flash(_(u"Could not login. LDAP server down, please contact your administrator"), category="error")
         else:
-            ipAdress = request.headers.get('X-Forwarded-For', request.remote_addr)
-            app.logger.info('Login failed for user "' + form['username'] + '" IP-adress: ' + ipAdress)
-            flash(_(u"Wrong Username or Password"), category="error")
+            if user and check_password_hash(user.password, form['password']) and user.nickname is not "Guest":
+                login_user(user, remember=True)
+                flash(_(u"you are now logged in as: '%(nickname)s'", nickname=user.nickname), category="success")
+                return redirect_back(url_for("web.index"))
+            else:
+                ipAdress = request.headers.get('X-Forwarded-For', request.remote_addr)
+                app.logger.info('Login failed for user "' + form['username'] + '" IP-adress: ' + ipAdress)
+                flash(_(u"Wrong Username or Password"), category="error")
 
     # next_url = request.args.get('next')
     # if next_url is None or not is_safe_url(next_url):

@@ -34,16 +34,15 @@ import cli
 
 try:
     from flask_dance.consumer.backend.sqla import OAuthConsumerMixin
-    import ldap
     oauth_support = True
 except ImportError:
     oauth_support = False
     pass
 
-engine = create_engine('sqlite:///{0}'.format(cli.settingspath), echo=False)
-Base = declarative_base()
-
-session = None
+try:
+    import ldap
+except ImportError:
+    pass
 
 ROLE_USER = 0
 ROLE_ADMIN = 1
@@ -70,6 +69,16 @@ SIDEBAR_SORTED = 1024
 MATURE_CONTENT = 2048
 SIDEBAR_PUBLISHER = 4096
 
+UPDATE_STABLE = 0
+AUTO_UPDATE_STABLE = 1
+UPDATE_NIGHTLY = 2
+AUTO_UPDATE_NIGHTLY = 4
+
+LOGIN_STANDARD = 0
+LOGIN_LDAP = 1
+LOGIN_OAUTH_GITHUB = 2
+LOGIN_OAUTH_GOOGLE = 3
+
 DEFAULT_PASS = "admin123"
 try:
     DEFAULT_PORT = int(os.environ.get("CALIBRE_PORT", 8083))
@@ -78,10 +87,8 @@ except ValueError:
            os.environ.get("CALIBRE_PORT", 8083) + ', faling back to default (8083)')
     DEFAULT_PORT = 8083
 
-UPDATE_STABLE = 0
-AUTO_UPDATE_STABLE = 1
-UPDATE_NIGHTLY = 2
-AUTO_UPDATE_NIGHTLY = 4
+session = None
+
 
 engine = create_engine('sqlite:///{0}'.format(cli.settingspath), echo=False)
 Base = declarative_base()
@@ -188,12 +195,12 @@ class UserBase:
     def __repr__(self):
         return '<User %r>' % self.nickname
 
-    #Login via LDAP method
+    # Login via LDAP method
     @staticmethod
-    def try_login(username, password):
-        conn = get_ldap_connection()
+    def try_login(username, password,config_dn, ldap_provider_url):
+        conn = get_ldap_connection(ldap_provider_url)
         conn.simple_bind_s(
-             config.config_ldap_dn.replace("%s", username),
+             config_dn.replace("%s", username),
              password)
 
 # Baseclass for Users in Calibre-Web, settings which are depending on certain users are stored here. It is derived from
@@ -358,13 +365,14 @@ class Settings(Base):
     config_use_goodreads = Column(Boolean)
     config_goodreads_api_key = Column(String)
     config_goodreads_api_secret = Column(String)
-    config_use_ldap = Column(Boolean)
+    config_login_type = Column(Integer, default=0)
+    # config_use_ldap = Column(Boolean)
     config_ldap_provider_url = Column(String)
     config_ldap_dn = Column(String)
-    config_use_github_oauth = Column(Boolean)
+    # config_use_github_oauth = Column(Boolean)
     config_github_oauth_client_id = Column(String)
     config_github_oauth_client_secret = Column(String)
-    config_use_google_oauth = Column(Boolean)
+    # config_use_google_oauth = Column(Boolean)
     config_google_oauth_client_id = Column(String)
     config_google_oauth_client_secret = Column(String)
     config_mature_content_tags = Column(String)
@@ -441,13 +449,14 @@ class Config:
         self.config_use_goodreads = data.config_use_goodreads
         self.config_goodreads_api_key = data.config_goodreads_api_key
         self.config_goodreads_api_secret = data.config_goodreads_api_secret
-        self.config_use_ldap = data.config_use_ldap
+        self.config_login_type = data.config_login_type
+        # self.config_use_ldap = data.config_use_ldap
         self.config_ldap_provider_url = data.config_ldap_provider_url
         self.config_ldap_dn = data.config_ldap_dn
-        self.config_use_github_oauth = data.config_use_github_oauth
+        # self.config_use_github_oauth = data.config_use_github_oauth
         self.config_github_oauth_client_id = data.config_github_oauth_client_id
         self.config_github_oauth_client_secret = data.config_github_oauth_client_secret
-        self.config_use_google_oauth = data.config_use_google_oauth
+        # self.config_use_google_oauth = data.config_use_google_oauth
         self.config_google_oauth_client_id = data.config_google_oauth_client_id
         self.config_google_oauth_client_secret = data.config_google_oauth_client_secret
         if data.config_mature_content_tags:
@@ -740,12 +749,14 @@ def migrate_Database():
         conn.execute("ALTER TABLE Settings ADD column `config_calibre` String DEFAULT ''")
         session.commit()
     try:
-        session.query(exists().where(Settings.config_use_ldap)).scalar()
+        session.query(exists().where(Settings.config_login_type)).scalar()
     except exc.OperationalError:
         conn = engine.connect()
-        conn.execute("ALTER TABLE Settings ADD column `config_use_ldap` INTEGER DEFAULT 0")
+        conn.execute("ALTER TABLE Settings ADD column `config_login_type` INTEGER DEFAULT 0")
         conn.execute("ALTER TABLE Settings ADD column `config_ldap_provider_url` String DEFAULT ''")
         conn.execute("ALTER TABLE Settings ADD column `config_ldap_dn` String DEFAULT ''")
+        conn.execute("ALTER TABLE Settings ADD column `config_github_oauth_client_id` String DEFAULT ''")
+        conn.execute("ALTER TABLE Settings ADD column `config_github_oauth_client_secret` String DEFAULT ''")
         session.commit()
     try:
         session.query(exists().where(Settings.config_theme)).scalar()
@@ -760,22 +771,6 @@ def migrate_Database():
         conn.execute("ALTER TABLE Settings ADD column `config_updatechannel` INTEGER DEFAULT 0")
         session.commit()
 
-    try:
-        session.query(exists().where(Settings.config_use_github_oauth)).scalar()
-    except exc.OperationalError:
-        conn = engine.connect()
-        conn.execute("ALTER TABLE Settings ADD column `config_use_github_oauth` INTEGER DEFAULT 0")
-        conn.execute("ALTER TABLE Settings ADD column `config_github_oauth_client_id` String DEFAULT ''")
-        conn.execute("ALTER TABLE Settings ADD column `config_github_oauth_client_secret` String DEFAULT ''")
-        session.commit()
-    try:
-        session.query(exists().where(Settings.config_use_google_oauth)).scalar()
-    except exc.OperationalError:
-        conn = engine.connect()
-        conn.execute("ALTER TABLE Settings ADD column `config_use_google_oauth` INTEGER DEFAULT 0")
-        conn.execute("ALTER TABLE Settings ADD column `config_google_oauth_client_id` String DEFAULT ''")
-        conn.execute("ALTER TABLE Settings ADD column `config_google_oauth_client_secret` String DEFAULT ''")
-        session.commit()
     # Remove login capability of user Guest
     conn = engine.connect()
     conn.execute("UPDATE user SET password='' where nickname = 'Guest' and password !=''")
@@ -789,8 +784,8 @@ def clean_database():
 
 
 #get LDAP connection
-def get_ldap_connection():
-    conn = ldap.initialize('ldap://{}'.format(config.config_ldap_provider_url))
+def get_ldap_connection(ldap_provider_url):
+    conn = ldap.initialize('ldap://{}'.format(ldap_provider_url))
     return conn
 
 
