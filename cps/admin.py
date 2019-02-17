@@ -432,28 +432,28 @@ def configuration_helper(origin):
             content.config_updatechannel = int(to_save["config_updater"])
 
         # GitHub OAuth configuration
-        content.config_use_github_oauth = ("config_use_github_oauth" in to_save and
-                                           to_save["config_use_github_oauth"] == "on")
-        if "config_github_oauth_client_id" in to_save:
-            content.config_github_oauth_client_id = to_save["config_github_oauth_client_id"]
-        if "config_github_oauth_client_secret" in to_save:
-            content.config_github_oauth_client_secret = to_save["config_github_oauth_client_secret"]
+        if "config_login_type" in to_save and to_save["config_login_type"] == "2":
+            if "config_github_oauth_client_id" in to_save:
+                content.config_github_oauth_client_id = to_save["config_github_oauth_client_id"]
+            if "config_github_oauth_client_secret" in to_save:
+                content.config_github_oauth_client_secret = to_save["config_github_oauth_client_secret"]
 
-        if content.config_github_oauth_client_id != config.config_github_oauth_client_id or \
-                content.config_github_oauth_client_secret != config.config_github_oauth_client_secret:
-            reboot_required = True
+            if content.config_github_oauth_client_id != config.config_github_oauth_client_id or \
+                    content.config_github_oauth_client_secret != config.config_github_oauth_client_secret:
+                reboot_required = True
+                content.config_login_type = ub.LOGIN_OAUTH_GITHUB
 
         # Google OAuth configuration
-        content.config_use_google_oauth = ("config_use_google_oauth" in to_save and
-                                           to_save["config_use_google_oauth"] == "on")
-        if "config_google_oauth_client_id" in to_save:
-            content.config_google_oauth_client_id = to_save["config_google_oauth_client_id"]
-        if "config_google_oauth_client_secret" in to_save:
-            content.config_google_oauth_client_secret = to_save["config_google_oauth_client_secret"]
+        if "config_login_type" in to_save and to_save["config_login_type"] == "3":
+            if "config_google_oauth_client_id" in to_save:
+                content.config_google_oauth_client_id = to_save["config_google_oauth_client_id"]
+            if "config_google_oauth_client_secret" in to_save:
+                content.config_google_oauth_client_secret = to_save["config_google_oauth_client_secret"]
 
-        if content.config_google_oauth_client_id != config.config_google_oauth_client_id or \
-                content.config_google_oauth_client_secret != config.config_google_oauth_client_secret:
-            reboot_required = True
+            if content.config_google_oauth_client_id != config.config_google_oauth_client_id or \
+                    content.config_google_oauth_client_secret != config.config_google_oauth_client_secret:
+                reboot_required = True
+                content.config_login_type = ub.LOGIN_OAUTH_GOOGLE
 
         if "config_log_level" in to_save:
             content.config_log_level = int(to_save["config_log_level"])
