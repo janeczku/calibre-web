@@ -20,13 +20,11 @@
 #
 #  You should have received a copy of the GNU General Public License
 #  along with this program. If not, see <http://www.gnu.org/licenses/>
-try:
-    from flask_dance.contrib.github import make_github_blueprint, github
-    from flask_dance.contrib.google import make_google_blueprint, google
-    from flask_dance.consumer import oauth_authorized, oauth_error
-    from oauth import OAuthBackend
-except ImportError:
-    pass
+
+from flask_dance.contrib.github import make_github_blueprint, github
+from flask_dance.contrib.google import make_google_blueprint, google
+from flask_dance.consumer import oauth_authorized, oauth_error
+from oauth import OAuthBackend
 from sqlalchemy.orm.exc import NoResultFound
 from flask import flash, session, redirect, url_for, request, make_response, abort
 import json

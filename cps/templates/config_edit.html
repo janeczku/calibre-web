@@ -176,53 +176,54 @@
       </div>
     </div>
     {% endif %}
-    {% if feature_support['ldap'] %}
-    <div class="form-group">
-      <input type="checkbox" id="config_use_ldap" name="config_use_ldap" data-control="ldap-settings" {% if content.config_use_ldap %}checked{% endif %}>
-      <label for="config_use_ldap">{{_('Use')}} LDAP Authentication</label>
-      </div>
-    <div data-related="ldap-settings">
+    {% if feature_support['ldap'] or feature_support['oauth'] %}
       <div class="form-group">
-        <label for="config_ldap_provider_url">{{_('LDAP Provider URL')}}</label>
-        <input type="text" class="form-control" id="config_ldap_provider_url" name="config_ldap_provider_url" value="{% if content.config_use_ldap != None %}{{ content.config_ldap_provider_url }}{% endif %}" autocomplete="off">
+      <label for="config_login_type">{{_('Login type')}}</label>
+          <select name="config_login_type" id="config_login_type" class="form-control" data-control="login-settings">
+                  <option value="0" {% if content.config_login_type == 0 %}selected{% endif %}>{{_('Use standard Authentication')}}</option>
+                  {% if feature_support['ldap'] %}
+                    <option value="1" {% if content.config_login_type == 1 %}selected{% endif %}>{{_('Use')}} LDAP Authentication</option>
+                  {% endif %}
+                  {% if feature_support['oauth'] %}
+                    <option value="2" {% if content.config_login_type == 2 %}selected{% endif %}>{{_('Use')}} GitHub OAuth</option>
+                    <option value="3" {% if content.config_login_type == 3 %}selected{% endif %}>{{_('Use')}} GitHub OAuth</option>
+                  {% endif %}
+          </select>
       </div>
-      <div class="form-group">
-        <label for="config_ldap_dn">{{_('LDAP Distinguished Name (DN)')}}</label>
-        <input type="text" class="form-control" id="config_ldap_dn" name="config_ldap_dn" value="{% if content.config_use_ldap != None %}{{ content.config_ldap_dn }}{% endif %}" autocomplete="off">
-      </div>
-    </div>
-    {% endif %}
-    {% if feature_support['oauth'] %}
-    <div class="form-group">
-      <input type="checkbox" id="config_use_github_oauth" name="config_use_github_oauth" data-control="github-oauth-settings" {% if content.config_use_github_oauth %}checked{% endif %}>
-      <label for="config_use_github_oauth">{{_('Use')}} GitHub OAuth</label>
-      <a href="https://github.com/settings/developers" target="_blank" style="margin-left: 5px">{{_('Obtain GitHub OAuth Credentail')}}</a>
-    </div>
-    <div data-related="github-oauth-settings">
-      <div class="form-group">
-        <label for="config_github_oauth_client_id">{{_('GitHub OAuth Client Id')}}</label>
-        <input type="text" class="form-control" id="config_github_oauth_client_id" name="config_github_oauth_client_id" value="{% if content.config_github_oauth_client_id != None %}{{ content.config_github_oauth_client_id }}{% endif %}" autocomplete="off">
-      </div>
-      <div class="form-group">
-        <label for="config_github_oauth_client_secret">{{_('GitHub OAuth Client Secret')}}</label>
-        <input type="text" class="form-control" id="config_github_oauth_client_secret" name="config_github_oauth_client_secret" value="{% if content.config_github_oauth_client_secret != None %}{{ content.config_github_oauth_client_secret }}{% endif %}" autocomplete="off">
-      </div>
-    </div>
-    <div class="form-group">
-      <input type="checkbox" id="config_use_google_oauth" name="config_use_google_oauth" data-control="google-oauth-settings" {% if content.config_use_google_oauth %}checked{% endif %}>
-      <label for="config_use_google_oauth">{{_('Use')}} Google OAuth</label>
-      <a href="https://console.developers.google.com/apis/credentials" target="_blank" style="margin-left: 5px">{{_('Obtain Google OAuth Credentail')}}</a>
-    </div>
-    <div data-related="google-oauth-settings">
-      <div class="form-group">
-        <label for="config_google_oauth_client_id">{{_('Google OAuth Client Id')}}</label>
-        <input type="text" class="form-control" id="config_google_oauth_client_id" name="config_google_oauth_client_id" value="{% if content.config_google_oauth_client_id != None %}{{ content.config_google_oauth_client_id }}{% endif %}" autocomplete="off">
-      </div>
-      <div class="form-group">
-        <label for="config_google_oauth_client_secret">{{_('Google OAuth Client Secret')}}</label>
-        <input type="text" class="form-control" id="config_google_oauth_client_secret" name="config_google_oauth_client_secret" value="{% if content.config_google_oauth_client_secret != None %}{{ content.config_google_oauth_client_secret }}{% endif %}" autocomplete="off">
-      </div>
-    </div>
+      {% if feature_support['ldap'] %}
+        <div data-related="login-settings-1">
+          <div class="form-group">
+            <label for="config_ldap_provider_url">{{_('LDAP Provider URL')}}</label>
+            <input type="text" class="form-control" id="config_ldap_provider_url" name="config_ldap_provider_url" value="{{ content.config_ldap_provider_url }}" autocomplete="off">
+          </div>
+          <div class="form-group">
+            <label for="config_ldap_dn">{{_('LDAP Distinguished Name (DN)')}}</label>
+            <input type="text" class="form-control" id="config_ldap_dn" name="config_ldap_dn" value="{{ content.config_ldap_dn }}" autocomplete="off">
+          </div>
+        </div>
+      {% endif %}
+      {% if feature_support['oauth'] %}
+        <div data-related="login-settings-2">
+          <div class="form-group">
+            <label for="config_github_oauth_client_id">{{_('GitHub OAuth Client Id')}}</label>
+            <input type="text" class="form-control" id="config_github_oauth_client_id" name="config_github_oauth_client_id" value="{% if content.config_github_oauth_client_id != None %}{{ content.config_github_oauth_client_id }}{% endif %}" autocomplete="off">
+          </div>
+          <div class="form-group">
+            <label for="config_github_oauth_client_secret">{{_('GitHub OAuth Client Secret')}}</label>
+            <input type="text" class="form-control" id="config_github_oauth_client_secret" name="config_github_oauth_client_secret" value="{% if content.config_github_oauth_client_secret != None %}{{ content.config_github_oauth_client_secret }}{% endif %}" autocomplete="off">
+          </div>
+        </div>
+        <div data-related="login-settings-3">
+          <div class="form-group">
+            <label for="config_google_oauth_client_id">{{_('Google OAuth Client Id')}}</label>
+            <input type="text" class="form-control" id="config_google_oauth_client_id" name="config_google_oauth_client_id" value="{% if content.config_google_oauth_client_id != None %}{{ content.config_google_oauth_client_id }}{% endif %}" autocomplete="off">
+          </div>
+          <div class="form-group">
+            <label for="config_google_oauth_client_secret">{{_('Google OAuth Client Secret')}}</label>
+            <input type="text" class="form-control" id="config_google_oauth_client_secret" name="config_google_oauth_client_secret" value="{% if content.config_google_oauth_client_secret != None %}{{ content.config_google_oauth_client_secret }}{% endif %}" autocomplete="off">
+          </div>
+        </div>
+      {% endif %}
     {% endif %}
       </div>
     </div>

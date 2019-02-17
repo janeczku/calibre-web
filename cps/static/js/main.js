@@ -29,6 +29,23 @@ $(document).on("change", "input[type=\"checkbox\"][data-control]", function () {
     });
 });
 
+
+// Generic control/related handler to show/hide fields based on a select' value
+$(document).on("change","select[data-control]", function(){
+    var $this = $(this);
+    var name = $this.data("control");
+    var showOrHide = $this.val();
+    var showOrHideLast = $("#"+name + " option:last").val()
+    for (i = 0; i < $(this)[0].length; i++){
+        if (parseInt($(this)[0][i].value) == showOrHide){
+            $("[data-related=\"" + name + "-" + i + "\"]").show();
+        } else {
+            $("[data-related=\"" + name + "-" + i + "\"]").hide();
+        }
+    }
+});
+
+
 $(function() {
     var updateTimerID;
     var updateText;
@@ -179,7 +196,9 @@ $(function() {
         });
     });
 
+    // Init all data control handlers to default
     $("input[data-control]").trigger("change");
+    $("select[data-control]").trigger("change");
 
     $("#bookDetailsModal")
         .on("show.bs.modal", function(e) {
