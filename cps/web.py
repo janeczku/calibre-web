@@ -177,21 +177,6 @@ def remote_login_required(f):
     return inner
 
 
-def google_oauth_required(f):
-    @wraps(f)
-    def inner(*args, **kwargs):
-        if config.config_use_google_oauth:
-            return f(*args, **kwargs)
-        if request.is_xhr:
-            data = {'status': 'error', 'message': 'Not Found'}
-            response = make_response(json.dumps(data, ensure_ascii=False))
-            response.headers["Content-Type"] = "application/json; charset=utf-8"
-            return response, 404
-        abort(404)
-
-    return inner
-
-
 def admin_required(f):
     """
     Checks if current_user.role == 1
@@ -1330,7 +1315,7 @@ def login():
                 ub.User.try_login(form['username'], form['password'], config.config_ldap_dn,
                                   config.config_ldap_provider_url)
                 login_user(user, remember=True)
-                flash(_(u"you are now logged in as: '%(nickname)s'", nickname=user.nickname), category="success")
+                flash(_(u"You are now logged in as: '%(nickname)s'", nickname=user.nickname), category="success")
                 return redirect_back(url_for("web.index"))
             except ldap.INVALID_CREDENTIALS:
                 ipAdress = request.headers.get('X-Forwarded-For', request.remote_addr)
@@ -1342,7 +1327,7 @@ def login():
         else:
             if user and check_password_hash(user.password, form['password']) and user.nickname is not "Guest":
                 login_user(user, remember=True)
-                flash(_(u"you are now logged in as: '%(nickname)s'", nickname=user.nickname), category="success")
+                flash(_(u"You are now logged in as: '%(nickname)s'", nickname=user.nickname), category="success")
                 return redirect_back(url_for("web.index"))
             else:
                 ipAdress = request.headers.get('X-Forwarded-For', request.remote_addr)
