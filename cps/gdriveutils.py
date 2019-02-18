@@ -31,6 +31,7 @@ from ub import config
 import cli
 import shutil
 from flask import Response, stream_with_context
+import time
 
 from sqlalchemy import *
 from sqlalchemy.ext.declarative import declarative_base
@@ -187,7 +188,7 @@ def getFolderInFolder(parentId, folderName, drive):
     # drive = getDrive(drive)
     query=""
     if folderName:
-        query = "title = '%s' and " % folderName.replace("'", "\\'")
+        query = "title = '%s' and " % folderName.replace("'", r"\'")
     folder = query + "'%s' in parents and mimeType = 'application/vnd.google-apps.folder'" \
                      " and trashed = false" % parentId
     fileList = drive.ListFile({'q': folder}).GetList()
@@ -214,7 +215,7 @@ def getEbooksFolderId(drive=None):
 
 
 def getFile(pathId, fileName, drive):
-    metaDataFile = "'%s' in parents and trashed = false and title = '%s'" % (pathId, fileName.replace("'", "\\'"))
+    metaDataFile = "'%s' in parents and trashed = false and title = '%s'" % (pathId, fileName.replace("'", r"\'"))
     fileList = drive.ListFile({'q': metaDataFile}).GetList()
     if fileList.__len__() == 0:
         return None
@@ -249,7 +250,7 @@ def getFolderId(path, drive):
                         dbChange = True
                         currentFolderId = currentFolder['id']
                     else:
-                        currentFolderId= None
+                        currentFolderId = None
                         break
         if dbChange:
             session.commit()
@@ -271,16 +272,9 @@ def getFileFromEbooksFolder(path, fileName):
         return None
 
 
-'''def copyDriveFileRemote(drive, origin_file_id, copy_title):
-    drive = getDrive(drive)
-    copied_file = {'title': copy_title}
-    try:
-        file_data = drive.auth.service.files().copy(
-        fileId = origin_file_id, body=copied_file).execute()
-        return drive.CreateFile({'id': file_data['id']})
-    except errors.HttpError as error:
-        print ('An error occurred: %s' % error)
-    return None'''
+def moveGdriveFileRemote(origin_file_id, new_title):
+    origin_file_id['title']= new_title
+    origin_file_id.Upload()
 
 
 # Download metadata.db from gdrive
@@ -307,9 +301,11 @@ def moveGdriveFolderRemote(origin_file, target_folder):
     # if previous_parents has no childs anymore, delete originfileparent
     # is not working correctly, because of slow update on gdrive -> could cause trouble in gdrive.db
     # (nonexisting folder has id)
-    # children = drive.auth.service.children().list(folderId=previous_parents).execute()
-    # if not len(children['items']):
-    #    drive.auth.service.files().delete(fileId=previous_parents).execute()
+    time.sleep(20)
+    children = drive.auth.service.children().list(folderId=previous_parents).execute()
+    if not len(children['items']):
+        drive.auth.service.files().delete(fileId=previous_parents).execute()
+        time.sleep(20)
 
 
 
@@ -323,7 +319,7 @@ def copyToDrive(drive, uploadFile, createRoot, replaceFiles,
         parent = getEbooksFolder(drive)
     if os.path.isdir(os.path.join(prevDir,uploadFile)):
         existingFolder = drive.ListFile({'q': "title = '%s' and '%s' in parents and trashed = false" %
-                                              (os.path.basename(uploadFile), parent['id'])}).GetList()
+                                              (os.path.basename(uploadFile).replace("'", r"\'"), parent['id'])}).GetList()
         if len(existingFolder) == 0 and (not isInitial or createRoot):
             parent = drive.CreateFile({'title': os.path.basename(uploadFile),
                                        'parents': [{"kind": "drive#fileLink", 'id': parent['id']}],
@@ -338,11 +334,11 @@ def copyToDrive(drive, uploadFile, createRoot, replaceFiles,
     else:
         if os.path.basename(uploadFile) not in ignoreFiles:
             existingFiles = drive.ListFile({'q': "title = '%s' and '%s' in parents and trashed = false" %
-                                                 (os.path.basename(uploadFile), parent['id'])}).GetList()
+                                                 (os.path.basename(uploadFile).replace("'", r"\'"), parent['id'])}).GetList()
             if len(existingFiles) > 0:
                 driveFile = existingFiles[0]
             else:
-                driveFile = drive.CreateFile({'title': os.path.basename(uploadFile),
+                driveFile = drive.CreateFile({'title': os.path.basename(uploadFile).replace("'", r"\'"),
                                               'parents': [{"kind":"drive#fileLink", 'id': parent['id']}], })
             driveFile.SetContentFile(os.path.join(prevDir, uploadFile))
             driveFile.Upload()
@@ -355,7 +351,7 @@ def uploadFileToEbooksFolder(destFile, f):
     for i, x in enumerate(splitDir):
         if i == len(splitDir)-1:
             existingFiles = drive.ListFile({'q': "title = '%s' and '%s' in parents and trashed = false" %
-                                                 (x, parent['id'])}).GetList()
+                                                 (x.replace("'", r"\'"), parent['id'])}).GetList()
             if len(existingFiles) > 0:
                 driveFile = existingFiles[0]
             else:
@@ -364,7 +360,7 @@ def uploadFileToEbooksFolder(destFile, f):
             driveFile.Upload()
         else:
             existingFolder = drive.ListFile({'q': "title = '%s' and '%s' in parents and trashed = false" %
-                                                  (x, parent['id'])}).GetList()
+                                                  (x.replace("'", r"\'"), parent['id'])}).GetList()
             if len(existingFolder) == 0:
                 parent = drive.CreateFile({'title': x, 'parents': [{"kind": "drive#fileLink", 'id': parent['id']}],
                     "mimeType": "application/vnd.google-apps.folder"})
@@ -475,9 +471,10 @@ def updateGdriveCalibreFromLocal():
 
 # update gdrive.db on edit of books title
 def updateDatabaseOnEdit(ID,newPath):
+    sqlCheckPath = newPath if newPath[-1] == '/' else newPath + u'/'
     storedPathName = session.query(GdriveId).filter(GdriveId.gdrive_id == ID).first()
     if storedPathName:
-        storedPathName.path = newPath
+        storedPathName.path = sqlCheckPath
         session.commit()
 
 

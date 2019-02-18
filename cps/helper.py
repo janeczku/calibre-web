@@ -324,11 +324,11 @@ def update_dir_structure_file(book_id, calibrepath, first_author):
     # Rename all files from old names to new names
     if authordir != new_authordir or titledir != new_titledir:
         try:
+            new_name = get_valid_filename(localbook.title) + ' - ' + get_valid_filename(new_authordir)
+            path_name = os.path.join(calibrepath, new_authordir, os.path.basename(path))
             for file_format in localbook.data:
-                path_name = os.path.join(calibrepath, new_authordir, os.path.basename(path))
-                new_name = get_valid_filename(localbook.title) + ' - ' + get_valid_filename(new_authordir)
                 os.renames(os.path.join(path_name, file_format.name + '.' + file_format.format.lower()),
-                           os.path.join(path_name,new_name + '.' + file_format.format.lower()))
+                           os.path.join(path_name, new_name + '.' + file_format.format.lower()))
                 file_format.name = new_name
         except OSError as ex:
             web.app.logger.error("Rename file in path " + path + " to " + new_name + ": " + str(ex))
@@ -341,6 +341,7 @@ def update_dir_structure_file(book_id, calibrepath, first_author):
 def update_dir_structure_gdrive(book_id, first_author):
     error = False
     book = db.session.query(db.Books).filter(db.Books.id == book_id).first()
+    path = book.path
 
     authordir = book.path.split('/')[0]
     if first_author:
@@ -348,7 +349,7 @@ def update_dir_structure_gdrive(book_id, first_author):
     else:
         new_authordir = get_valid_filename(book.authors[0].name)
     titledir = book.path.split('/')[1]
-    new_titledir = get_valid_filename(book.title) + " (" + str(book_id) + ")"
+    new_titledir = get_valid_filename(book.title) + u" (" + str(book_id) + u")"
 
     if titledir != new_titledir:
         gFile = gd.getFileFromEbooksFolder(os.path.dirname(book.path), titledir)
@@ -356,7 +357,9 @@ def update_dir_structure_gdrive(book_id, first_author):
             gFile['title'] = new_titledir
 
             gFile.Upload()
-            book.path = book.path.split('/')[0] + '/' + new_titledir
+            time.sleep(10)
+            book.path = book.path.split('/')[0] + u'/' + new_titledir
+            path = book.path
             gd.updateDatabaseOnEdit(gFile['id'], book.path)     # only child folder affected
         else:
             error = _(u'File %(file)s not found on Google Drive', file=book.path) # file not found
@@ -364,24 +367,24 @@ def update_dir_structure_gdrive(book_id, first_author):
     if authordir != new_authordir:
         gFile = gd.getFileFromEbooksFolder(os.path.dirname(book.path), titledir)
         if gFile:
-            gd.moveGdriveFolderRemote(gFile,new_authordir)
-            book.path = new_authordir + '/' + book.path.split('/')[1]
+            gd.moveGdriveFolderRemote(gFile, new_authordir)
+            time.sleep(10)
+            book.path = new_authordir + u'/' + book.path.split('/')[1]
+            path = book.path
             gd.updateDatabaseOnEdit(gFile['id'], book.path)
         else:
             error = _(u'File %(file)s not found on Google Drive', file=authordir) # file not found
     # Rename all files from old names to new names
-    # ToDo: Rename also all bookfiles with new author name and new title name
-    '''
+
     if authordir != new_authordir or titledir != new_titledir:
-        for format in book.data:
-            # path_name = os.path.join(calibrepath, new_authordir, os.path.basename(path))
-            new_name = get_valid_filename(book.title) + ' - ' + get_valid_filename(book)
-            format.name = new_name
-            if gFile:
-                pass
-            else:
-                error = _(u'File %(file)s not found on Google Drive', file=format.name)  # file not found
-                break'''
+        new_name = get_valid_filename(book.title) + u' - ' + get_valid_filename(new_authordir)
+        for file_format in book.data:
+            gFile = gd.getFileFromEbooksFolder(path, file_format.name + u'.' + file_format.format.lower())
+            if not gFile:
+                error = _(u'File %(file)s not found on Google Drive', file=file_format.name)  # file not found
+                break
+            gd.moveGdriveFileRemote(gFile, new_name + u'.' + file_format.format.lower())
+            file_format.name = new_name
     return error
 
 

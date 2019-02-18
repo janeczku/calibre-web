@@ -3845,6 +3845,7 @@ def upload():
             # upload book to gdrive if nesseccary and add "(bookid)" to folder name
             if config.config_use_google_drive:
                 gdriveutils.updateGdriveCalibreFromLocal()
+                time.sleep(10)
             error = helper.update_dir_stucture(book.id, config.config_calibre_dir)
             db.session.commit()
             if config.config_use_google_drive:
