@@ -323,7 +323,7 @@ def copyToDrive(drive, uploadFile, createRoot, replaceFiles,
         parent = getEbooksFolder(drive)
     if os.path.isdir(os.path.join(prevDir,uploadFile)):
         existingFolder = drive.ListFile({'q': "title = '%s' and '%s' in parents and trashed = false" %
-                                              (os.path.basename(uploadFile), parent['id'])}).GetList()
+                                              (os.path.basename(uploadFile).replace("'", r"\'"), parent['id'])}).GetList()
         if len(existingFolder) == 0 and (not isInitial or createRoot):
             parent = drive.CreateFile({'title': os.path.basename(uploadFile),
                                        'parents': [{"kind": "drive#fileLink", 'id': parent['id']}],
@@ -338,11 +338,11 @@ def copyToDrive(drive, uploadFile, createRoot, replaceFiles,
     else:
         if os.path.basename(uploadFile) not in ignoreFiles:
             existingFiles = drive.ListFile({'q': "title = '%s' and '%s' in parents and trashed = false" %
-                                                 (os.path.basename(uploadFile), parent['id'])}).GetList()
+                                                 (os.path.basename(uploadFile).replace("'", r"\'"), parent['id'])}).GetList()
             if len(existingFiles) > 0:
                 driveFile = existingFiles[0]
             else:
-                driveFile = drive.CreateFile({'title': os.path.basename(uploadFile),
+                driveFile = drive.CreateFile({'title': os.path.basename(uploadFile).replace("'", r"\'"),
                                               'parents': [{"kind":"drive#fileLink", 'id': parent['id']}], })
             driveFile.SetContentFile(os.path.join(prevDir, uploadFile))
             driveFile.Upload()
