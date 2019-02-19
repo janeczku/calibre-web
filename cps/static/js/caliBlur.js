@@ -24,6 +24,9 @@ $( 'body.advsearch' ).addClass( 'advanced_search' );
 $( 'body.newuser' ).addClass( 'admin' );
 $( 'body.mailset' ).addClass( 'admin' );
 
+// Re-add loader to fix CSS/Jquery targets 
+$( '<div id="loader" hidden="true"><center><h3>Uploading...</h3><span>please don\'t refresh the page</span>".                      "<br><img src=""></center></div>'  ).insertAfter( '.navbar.navbar-default.navbar-static-top ' );
+
 // Back button
 curHref = window.location.href.split('/');
 prevHref = document.referrer.split('/');
