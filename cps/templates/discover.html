@@ -9,7 +9,7 @@
       <div class="cover">
         {% if entry.has_cover is defined %}
           <a href="{{ url_for('show_book', book_id=entry.id) }}" data-toggle="modal" data-target="#bookDetailsModal" data-remote="false">
-            <img src="{{ url_for('get_cover', cover_path=entry.path.replace('\\','/')) }}" alt="{{ entry.title }}" />
+            <img src="{{ url_for('get_cover', book_id=entry.id) }}" alt="{{ entry.title }}" />
           </a>
         {% endif %}
       </div>
