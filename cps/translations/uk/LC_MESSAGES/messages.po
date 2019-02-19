@@ -1,17 +1,16 @@
-# Translations template for PROJECT.
-# Copyright (C) 2019 ORGANIZATION
-# This file is distributed under the same license as the PROJECT project.
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2019.
-#
-#, fuzzy
+# Переклад на українську мову для Calibre-web.
+# Copyright (C) 2018 ABIS Team
+# This file is distributed under the same license as the Calibre-web project
+# ABIS Team <biblio.if.abis@gmail.com>, 2018.
 msgid ""
 msgstr ""
-"Project-Id-Version: PROJECT VERSION\n"
-"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"Project-Id-Version:  Calibre-web\n"
+"Report-Msgid-Bugs-To: https://github.com/janeczku/calibre-web\n"
 "POT-Creation-Date: 2019-02-03 16:21+0100\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"PO-Revision-Date: 2017-04-30 00:47+0300\n"
+"Last-Translator: ABIS Team <biblio.if.abis@gmail.com>\n"
+"Language: ua\n"
+"Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -20,11 +19,11 @@ msgstr ""
 #: cps/book_formats.py:145 cps/book_formats.py:146 cps/book_formats.py:150
 #: cps/book_formats.py:154 cps/converter.py:29 cps/converter.py:45
 msgid "not installed"
-msgstr ""
+msgstr "не встановлено"
 
 #: cps/converter.py:40 cps/converter.py:56
 msgid "Excecution permissions missing"
-msgstr ""
+msgstr "Відсутній дозвіл на виконання"
 
 #: cps/converter.py:66
 msgid "not configured"
@@ -42,7 +41,7 @@ msgstr ""
 
 #: cps/helper.py:96 cps/helper.py:204 cps/templates/detail.html:49
 msgid "Send to Kindle"
-msgstr ""
+msgstr "Відправити на Kindle"
 
 #: cps/helper.py:97 cps/helper.py:115 cps/helper.py:206
 msgid "This e-mail has been sent via Calibre-Web."
@@ -202,19 +201,19 @@ msgstr ""
 
 #: cps/updater.py:491 cps/web.py:2766
 msgid "Unknown"
-msgstr ""
+msgstr "Невідомий"
 
 #: cps/web.py:1177
 msgid "Requesting update package"
-msgstr ""
+msgstr "Перевірка оновлень"
 
 #: cps/web.py:1178
 msgid "Downloading update package"
-msgstr ""
+msgstr "Завантаження оновлень"
 
 #: cps/web.py:1179
 msgid "Unzipping update package"
-msgstr ""
+msgstr "Розпакування оновлення"
 
 #: cps/web.py:1180
 msgid "Replacing files"
@@ -222,7 +221,7 @@ msgstr ""
 
 #: cps/web.py:1181
 msgid "Database connections are closed"
-msgstr ""
+msgstr "З'єднання з базою даних закрите"
 
 #: cps/web.py:1182
 msgid "Stopping server"
@@ -230,7 +229,7 @@ msgstr ""
 
 #: cps/web.py:1183
 msgid "Update finished, please press okay and reload page"
-msgstr ""
+msgstr "Оновлення встановлені, натисніть ok і перезавантажте сторінку"
 
 #: cps/web.py:1184 cps/web.py:1185 cps/web.py:1186 cps/web.py:1187
 msgid "Update failed:"
@@ -238,39 +237,39 @@ msgstr ""
 
 #: cps/web.py:1210
 msgid "Recently Added Books"
-msgstr ""
+msgstr "Нещодавно додані книги"
 
 #: cps/web.py:1220
 msgid "Newest Books"
-msgstr ""
+msgstr "Найновіші книги"
 
 #: cps/web.py:1232
 msgid "Oldest Books"
-msgstr ""
+msgstr "Найстаріші книги"
 
 #: cps/web.py:1244
 msgid "Books (A-Z)"
-msgstr ""
+msgstr "Книги (А-Я)"
 
 #: cps/web.py:1255
 msgid "Books (Z-A)"
-msgstr ""
+msgstr "Книги (Я-А)"
 
 #: cps/web.py:1284
 msgid "Hot Books (most downloaded)"
-msgstr ""
+msgstr "Популярні книги (найбільш завантажувані)"
 
 #: cps/web.py:1297
 msgid "Best rated books"
-msgstr ""
+msgstr "Книги з найкращим рейтингом"
 
 #: cps/templates/index.xml:39 cps/web.py:1310
 msgid "Random Books"
-msgstr ""
+msgstr "Випадковий список книг"
 
 #: cps/web.py:1337 cps/web.py:1592 cps/web.py:2135
 msgid "Error opening eBook. File does not exist or file is not accessible:"
-msgstr ""
+msgstr "Неможливо відкрити книгу. Файл не існує або немає доступу."
 
 #: cps/web.py:1365
 msgid "Publisher list"
@@ -283,30 +282,30 @@ msgstr ""
 
 #: cps/templates/index.xml:83 cps/web.py:1412
 msgid "Series list"
-msgstr ""
+msgstr "Список серій"
 
 #: cps/web.py:1426
 #, python-format
 msgid "Series: %(serie)s"
-msgstr ""
+msgstr "Серії: %(serie)s"
 
 #: cps/web.py:1452
 msgid "Available languages"
-msgstr ""
+msgstr "Доступні мови"
 
 #: cps/web.py:1472
 #, python-format
 msgid "Language: %(name)s"
-msgstr ""
+msgstr "Мова: %(name)s"
 
 #: cps/templates/index.xml:76 cps/web.py:1483
 msgid "Category list"
-msgstr ""
+msgstr "Список категорій"
 
 #: cps/web.py:1497
 #, python-format
 msgid "Category: %(name)s"
-msgstr ""
+msgstr "Категорія: %(name)s"
 
 #: cps/templates/layout.html:71 cps/web.py:1628
 msgid "Tasks"
@@ -314,7 +313,7 @@ msgstr ""
 
 #: cps/web.py:1662
 msgid "Statistics"
-msgstr ""
+msgstr "Статистика"
 
 #: cps/web.py:1730
 msgid "Google Drive setup not completed, try to deactivate and activate Google Drive again"
@@ -322,15 +321,15 @@ msgstr ""
 
 #: cps/web.py:1775
 msgid "Callback domain is not verified, please follow steps to verify domain in google developer console"
-msgstr ""
+msgstr "Домен зворотнього зв'язку не підтверджено. Виконайте дії для підтвердження домену, будь-ласка"
 
 #: cps/web.py:1851
 msgid "Server restarted, please reload page"
-msgstr ""
+msgstr "Сервер перезавантажено, будь-ласка, перезавантажте сторінку"
 
 #: cps/web.py:1854
 msgid "Performing shutdown of server, please close window"
-msgstr ""
+msgstr "Виконується зупинка серверу, будь-ласка, закрийте вікно"
 
 #: cps/web.py:1934
 msgid "Published after "
@@ -338,7 +337,7 @@ msgstr ""
 
 #: cps/web.py:1941
 msgid "Published before "
-msgstr ""
+msgstr "Опубліковано до"
 
 #: cps/web.py:1955
 #, python-format
@@ -352,30 +351,30 @@ msgstr ""
 
 #: cps/web.py:2018 cps/web.py:2027
 msgid "search"
-msgstr ""
+msgstr "пошук"
 
 #: cps/templates/index.xml:47 cps/templates/index.xml:51
 #: cps/templates/layout.html:146 cps/web.py:2094
 msgid "Read Books"
-msgstr ""
+msgstr "Прочитані книги"
 
 #: cps/templates/index.xml:55 cps/templates/index.xml:59
 #: cps/templates/layout.html:148 cps/web.py:2097
 msgid "Unread Books"
-msgstr ""
+msgstr "Непрочитані книги"
 
 #: cps/web.py:2145 cps/web.py:2147 cps/web.py:2149 cps/web.py:2161
 msgid "Read a Book"
-msgstr ""
+msgstr "Читати книгу"
 
 #: cps/web.py:2220 cps/web.py:3138
 msgid "Please fill out all fields!"
-msgstr ""
+msgstr "Будь-ласка, заповніть всі поля!"
 
 #: cps/web.py:2221 cps/web.py:2243 cps/web.py:2247 cps/web.py:2252
 #: cps/web.py:2254
 msgid "register"
-msgstr ""
+msgstr "зареєструватись"
 
 #: cps/web.py:2242 cps/web.py:3357
 msgid "An unknown error occurred. Please try again later."
@@ -396,31 +395,31 @@ msgstr ""
 #: cps/web.py:2268 cps/web.py:2364
 #, python-format
 msgid "you are now logged in as: '%(nickname)s'"
-msgstr ""
+msgstr "Ви увійшли як користувач: '%(nickname)s'"
 
 #: cps/web.py:2273
 msgid "Wrong Username or Password"
-msgstr ""
+msgstr "Помилка в імені користувача або паролі"
 
 #: cps/web.py:2279 cps/web.py:2300
 msgid "login"
-msgstr ""
+msgstr "увійти"
 
 #: cps/web.py:2312 cps/web.py:2343
 msgid "Token not found"
-msgstr ""
+msgstr "Токен не знайдено"
 
 #: cps/web.py:2320 cps/web.py:2351
 msgid "Token has expired"
-msgstr ""
+msgstr "Час дії токено вичерпано"
 
 #: cps/web.py:2328
 msgid "Success! Please return to your device"
-msgstr ""
+msgstr "Вдалося! Будь-ласка, поверніться до вашого пристрою"
 
 #: cps/web.py:2378
 msgid "Please configure the SMTP mail settings first..."
-msgstr ""
+msgstr "Будь-ласка, спочатку сконфігуруйте параметри SMTP"
 
 #: cps/web.py:2383
 #, python-format
@@ -430,7 +429,7 @@ msgstr ""
 #: cps/web.py:2387
 #, python-format
 msgid "There was an error sending this book: %(res)s"
-msgstr ""
+msgstr "Помилка при відправці книги: %(res)s"
 
 #: cps/web.py:2389 cps/web.py:3191
 msgid "Please configure your kindle e-mail address first..."
@@ -457,7 +456,7 @@ msgstr ""
 #: cps/web.py:2438
 #, python-format
 msgid "Book has been added to shelf: %(sname)s"
-msgstr ""
+msgstr "Книга додана на книжкову полицю: %(sname)s"
 
 #: cps/web.py:2457
 #, python-format
@@ -486,58 +485,58 @@ msgstr ""
 #: cps/web.py:2533
 #, python-format
 msgid "Book has been removed from shelf: %(sname)s"
-msgstr ""
+msgstr "Книга видалена з книжкової полиці: %(sname)s"
 
 #: cps/web.py:2539
 #, python-format
 msgid "Sorry you are not allowed to remove a book from this shelf: %(sname)s"
-msgstr ""
+msgstr "Вибачте, але у вас немає дозволу для видалення книги з цієї полиці"
 
 #: cps/web.py:2560 cps/web.py:2584
 #, python-format
 msgid "A shelf with the name '%(title)s' already exists."
-msgstr ""
+msgstr "Книжкова полиця з назвою '%(title)s' уже существует."
 
 #: cps/web.py:2565
 #, python-format
 msgid "Shelf %(title)s created"
-msgstr ""
+msgstr "Створена книжкова полиця %(title)s"
 
 #: cps/web.py:2567 cps/web.py:2595
 msgid "There was an error"
-msgstr ""
+msgstr "Сталась помилка"
 
 #: cps/web.py:2568 cps/web.py:2570
 msgid "create a shelf"
-msgstr ""
+msgstr "створити книжкову полицю"
 
 #: cps/web.py:2593
 #, python-format
 msgid "Shelf %(title)s changed"
-msgstr ""
+msgstr "Книжкова полиця %(title)s змінена"
 
 #: cps/web.py:2596 cps/web.py:2598
 msgid "Edit a shelf"
-msgstr ""
+msgstr "Змінити книжкову полицю"
 
 #: cps/web.py:2619
 #, python-format
 msgid "successfully deleted shelf %(name)s"
-msgstr ""
+msgstr "Книжкова полиця %(name)s видалена"
 
 #: cps/web.py:2646
 #, python-format
 msgid "Shelf: '%(name)s'"
-msgstr ""
+msgstr "Книжкова полиця: '%(name)s'"
 
 #: cps/web.py:2649
 msgid "Error opening shelf. Shelf does not exist or is not accessible"
-msgstr ""
+msgstr "Помилка при відкриванні полиці. Полиця не існує або до неї відсутній доступ"
 
 #: cps/web.py:2680
 #, python-format
 msgid "Change order of Shelf: '%(name)s'"
-msgstr ""
+msgstr "Змінити розташування книжкової полиці '%(name)s'"
 
 #: cps/web.py:2709 cps/web.py:3144
 msgid "E-mail is not from valid domain"
@@ -546,7 +545,7 @@ msgstr ""
 #: cps/web.py:2711 cps/web.py:2753 cps/web.py:2756
 #, python-format
 msgid "%(name)s's profile"
-msgstr ""
+msgstr "Профіль %(name)s"
 
 #: cps/web.py:2751
 msgid "Found an existing account for this e-mail address."
@@ -554,11 +553,11 @@ msgstr ""
 
 #: cps/web.py:2754
 msgid "Profile updated"
-msgstr ""
+msgstr "Профіль оновлено"
 
 #: cps/web.py:2785
 msgid "Admin page"
-msgstr ""
+msgstr "Сторінка адміністратора"
 
 #: cps/web.py:2867 cps/web.py:3047
 msgid "Calibre-Web configuration updated"
@@ -566,50 +565,50 @@ msgstr ""
 
 #: cps/templates/admin.html:100 cps/web.py:2881
 msgid "UI Configuration"
-msgstr ""
+msgstr "Конфігурація інтерфейсу"
 
 #: cps/web.py:2899
 msgid "Import of optional Google Drive requirements missing"
-msgstr ""
+msgstr "Імпорт додаткових вимог Google Drive відсутній"
 
 #: cps/web.py:2902
 msgid "client_secrets.json is missing or not readable"
-msgstr ""
+msgstr "Неможливо зчитати client_secrets.json або він відсутній"
 
 #: cps/web.py:2907 cps/web.py:2936
 msgid "client_secrets.json is not configured for web application"
-msgstr ""
+msgstr "Неможливо зконфігурувати client_secrets.json для веб-додатку"
 
 #: cps/templates/admin.html:99 cps/web.py:2939 cps/web.py:2965 cps/web.py:2977
 #: cps/web.py:3022 cps/web.py:3037 cps/web.py:3056 cps/web.py:3064
 #: cps/web.py:3080
 msgid "Basic Configuration"
-msgstr ""
+msgstr "Настройки сервера"
 
 #: cps/web.py:2962
 msgid "Keyfile location is not valid, please enter correct path"
-msgstr ""
+msgstr "Невідомий шлях до Keyfile. Будь-ласка введіть коректний"
 
 #: cps/web.py:2974
 msgid "Certfile location is not valid, please enter correct path"
-msgstr ""
+msgstr "Невідомий шлях до Certfile. Будь-ласка введіть коректний"
 
 #: cps/web.py:3019
 msgid "Logfile location is not valid, please enter correct path"
-msgstr ""
+msgstr "Невідомий шлях до Logfile. Будь-ласка введіть коректний"
 
 #: cps/web.py:3060
 msgid "DB location is not valid, please enter correct path"
-msgstr ""
+msgstr "Невідомий шлях до БД. Будь-ласка введіть коректний"
 
 #: cps/templates/admin.html:33 cps/web.py:3140 cps/web.py:3146 cps/web.py:3162
 msgid "Add new user"
-msgstr ""
+msgstr "Додати користувача"
 
 #: cps/web.py:3152
 #, python-format
 msgid "User '%(user)s' created"
-msgstr ""
+msgstr "Користувач '%(user)s' додан"
 
 #: cps/web.py:3156
 msgid "Found an existing account for this e-mail address or nickname."
@@ -636,21 +635,21 @@ msgstr ""
 #: cps/web.py:3219
 #, python-format
 msgid "User '%(nick)s' deleted"
-msgstr ""
+msgstr "Користувача '%(nick)s' видалено"
 
 #: cps/web.py:3332
 #, python-format
 msgid "User '%(nick)s' updated"
-msgstr ""
+msgstr "Користувача '%(nick)s' оновлено"
 
 #: cps/web.py:3335
 msgid "An unknown error occured."
-msgstr ""
+msgstr "Сталась невідома помилка"
 
 #: cps/web.py:3337
 #, python-format
 msgid "Edit User %(nick)s"
-msgstr ""
+msgstr "Змінити користувача %(nick)s"
 
 #: cps/web.py:3354
 #, python-format
@@ -659,11 +658,11 @@ msgstr ""
 
 #: cps/web.py:3368 cps/web.py:3574
 msgid "Error opening eBook. File does not exist or file is not accessible"
-msgstr ""
+msgstr "Сталась помилка при відкриванні eBook. Файл не існує або відсутній доступ до нього"
 
 #: cps/web.py:3396 cps/web.py:3868
 msgid "edit metadata"
-msgstr ""
+msgstr "змінити метадані"
 
 #: cps/web.py:3489 cps/web.py:3736
 #, python-format
@@ -672,7 +671,7 @@ msgstr ""
 
 #: cps/web.py:3493 cps/web.py:3740
 msgid "File to be uploaded must have an extension"
-msgstr ""
+msgstr "Завантажувальний файл повинен мати розширення"
 
 #: cps/web.py:3505 cps/web.py:3760
 #, python-format
@@ -705,11 +704,11 @@ msgstr ""
 
 #: cps/web.py:3586 cps/web.py:3595
 msgid "unknown"
-msgstr ""
+msgstr "невідомий"
 
 #: cps/web.py:3627
 msgid "Cover is not a jpg file, can't save"
-msgstr ""
+msgstr "Обкладинка не є .jpg файлом. Неможливо зберегти"
 
 #: cps/web.py:3675
 #, python-format
@@ -722,7 +721,7 @@ msgstr ""
 
 #: cps/web.py:3715
 msgid "Error editing book, please check logfile for details"
-msgstr ""
+msgstr "Сталась помилка при редагуванні книги. Будь-ласка, перевірте лог-файл для деталей"
 
 #: cps/web.py:3765
 #, python-format
@@ -756,15 +755,15 @@ msgstr ""
 #: cps/worker.py:316
 #, python-format
 msgid "Kindlegen failed with Error %(error)s. Message: %(message)s"
-msgstr ""
+msgstr "Kindlegen відхилено з помилкою %(error)s. Повідомлення: %(message)s "
 
 #: cps/templates/admin.html:6
 msgid "User list"
-msgstr ""
+msgstr "Список користувачів"
 
 #: cps/templates/admin.html:9
 msgid "Nickname"
-msgstr ""
+msgstr "Ім'я користувача"
 
 #: cps/templates/admin.html:10
 msgid "E-mail"
@@ -772,28 +771,28 @@ msgstr ""
 
 #: cps/templates/admin.html:11
 msgid "Kindle"
-msgstr ""
+msgstr "Kindle"
 
 #: cps/templates/admin.html:12
 msgid "DLS"
-msgstr ""
+msgstr "DLS"
 
 #: cps/templates/admin.html:13 cps/templates/layout.html:74
 msgid "Admin"
-msgstr ""
+msgstr "Адмін"
 
 #: cps/templates/admin.html:14 cps/templates/detail.html:22
 #: cps/templates/detail.html:31
 msgid "Download"
-msgstr ""
+msgstr "Завантажити"
 
 #: cps/templates/admin.html:15 cps/templates/layout.html:64
 msgid "Upload"
-msgstr ""
+msgstr "Додати нову книгу"
 
 #: cps/templates/admin.html:16
 msgid "Edit"
-msgstr ""
+msgstr "Редагувати"
 
 #: cps/templates/admin.html:39
 msgid "SMTP e-mail server settings"
@@ -801,35 +800,35 @@ msgstr ""
 
 #: cps/templates/admin.html:42 cps/templates/email_edit.html:11
 msgid "SMTP hostname"
-msgstr ""
+msgstr "SMTP-сервер"
 
 #: cps/templates/admin.html:43
 msgid "SMTP port"
-msgstr ""
+msgstr "SMTP-порт"
 
 #: cps/templates/admin.html:44
 msgid "SSL"
-msgstr ""
+msgstr "SSL"
 
 #: cps/templates/admin.html:45 cps/templates/email_edit.html:27
 msgid "SMTP login"
-msgstr ""
+msgstr "SMTP логін"
 
 #: cps/templates/admin.html:46
 msgid "From mail"
-msgstr ""
+msgstr "Відправник"
 
 #: cps/templates/admin.html:56
 msgid "Change SMTP settings"
-msgstr ""
+msgstr "Змінити налаштування SMTP"
 
 #: cps/templates/admin.html:62
 msgid "Configuration"
-msgstr ""
+msgstr "Налаштування сервера"
 
 #: cps/templates/admin.html:65
 msgid "Calibre DB dir"
-msgstr ""
+msgstr "Папка Calibre DB"
 
 #: cps/templates/admin.html:69
 msgid "Log level"
@@ -837,23 +836,23 @@ msgstr ""
 
 #: cps/templates/admin.html:73
 msgid "Port"
-msgstr ""
+msgstr "Порт"
 
 #: cps/templates/admin.html:79 cps/templates/config_view_edit.html:23
 msgid "Books per page"
-msgstr ""
+msgstr "Кількість книг на сторінці"
 
 #: cps/templates/admin.html:83
 msgid "Uploading"
-msgstr ""
+msgstr "Загрузка на сервер"
 
 #: cps/templates/admin.html:87
 msgid "Anonymous browsing"
-msgstr ""
+msgstr "Анонімний перегляд"
 
 #: cps/templates/admin.html:91
 msgid "Public registration"
-msgstr ""
+msgstr "Публічна реєстрація"
 
 #: cps/templates/admin.html:95 cps/templates/remote_login.html:4
 msgid "Remote login"
@@ -861,11 +860,11 @@ msgstr ""
 
 #: cps/templates/admin.html:106
 msgid "Administration"
-msgstr ""
+msgstr "Адміністрування"
 
 #: cps/templates/admin.html:107
 msgid "Reconnect to Calibre DB"
-msgstr ""
+msgstr "Повторне підключення до БД Calibre"
 
 #: cps/templates/admin.html:108
 msgid "Restart Calibre-Web"
@@ -893,11 +892,11 @@ msgstr ""
 
 #: cps/templates/admin.html:132
 msgid "Check for update"
-msgstr ""
+msgstr "Перевірка оновлень"
 
 #: cps/templates/admin.html:133
 msgid "Perform Update"
-msgstr ""
+msgstr "Встановити оновлення"
 
 #: cps/templates/admin.html:145
 msgid "Do you really want to restart Calibre-Web?"
@@ -906,7 +905,7 @@ msgstr ""
 #: cps/templates/admin.html:150 cps/templates/admin.html:164
 #: cps/templates/admin.html:184 cps/templates/shelf.html:63
 msgid "Ok"
-msgstr ""
+msgstr "Ok"
 
 #: cps/templates/admin.html:151 cps/templates/admin.html:165
 #: cps/templates/book_edit.html:178 cps/templates/book_edit.html:200
@@ -915,7 +914,7 @@ msgstr ""
 #: cps/templates/shelf.html:64 cps/templates/shelf_edit.html:19
 #: cps/templates/shelf_order.html:12 cps/templates/user_edit.html:149
 msgid "Back"
-msgstr ""
+msgstr "Назад"
 
 #: cps/templates/admin.html:163
 msgid "Do you really want to stop Calibre-Web?"
@@ -923,23 +922,23 @@ msgstr ""
 
 #: cps/templates/admin.html:175
 msgid "Updating, please do not reload page"
-msgstr ""
+msgstr "Встановлення оновлень, будь-ласка, не оновлюйте сторінку"
 
 #: cps/templates/author.html:15
 msgid "via"
-msgstr ""
+msgstr "через"
 
 #: cps/templates/author.html:23
 msgid "In Library"
-msgstr ""
+msgstr "У бібліотеці"
 
 #: cps/templates/author.html:71
 msgid "More by"
-msgstr ""
+msgstr "Більше за"
 
 #: cps/templates/book_edit.html:16
 msgid "Delete Book"
-msgstr ""
+msgstr "Видалити книгу"
 
 #: cps/templates/book_edit.html:19
 msgid "Delete formats:"
@@ -948,7 +947,7 @@ msgstr ""
 #: cps/templates/book_edit.html:22 cps/templates/book_edit.html:199
 #: cps/templates/email_edit.html:73 cps/templates/email_edit.html:74
 msgid "Delete"
-msgstr ""
+msgstr "Видалити"
 
 #: cps/templates/book_edit.html:30
 msgid "Convert book format:"
@@ -972,34 +971,34 @@ msgstr ""
 
 #: cps/templates/book_edit.html:59 cps/templates/search_form.html:6
 msgid "Book Title"
-msgstr ""
+msgstr "Назва книги"
 
 #: cps/templates/book_edit.html:63 cps/templates/book_edit.html:259
 #: cps/templates/book_edit.html:277 cps/templates/search_form.html:10
 msgid "Author"
-msgstr ""
+msgstr "Автор"
 
 #: cps/templates/book_edit.html:67 cps/templates/book_edit.html:264
 #: cps/templates/book_edit.html:279 cps/templates/search_form.html:106
 msgid "Description"
-msgstr ""
+msgstr "Опис"
 
 #: cps/templates/book_edit.html:71 cps/templates/search_form.html:33
 msgid "Tags"
-msgstr ""
+msgstr "Теги"
 
 #: cps/templates/book_edit.html:75 cps/templates/layout.html:157
 #: cps/templates/search_form.html:53
 msgid "Series"
-msgstr ""
+msgstr "Серії"
 
 #: cps/templates/book_edit.html:79
 msgid "Series id"
-msgstr ""
+msgstr "Серія"
 
 #: cps/templates/book_edit.html:83
 msgid "Rating"
-msgstr ""
+msgstr "Рейтинг"
 
 #: cps/templates/book_edit.html:87
 msgid "Cover URL (jpg, cover is downloaded and stored in database, field is afterwards empty again)"
@@ -1011,44 +1010,44 @@ msgstr ""
 
 #: cps/templates/book_edit.html:96 cps/templates/detail.html:148
 msgid "Publishing date"
-msgstr ""
+msgstr "Опубліковано"
 
 #: cps/templates/book_edit.html:103 cps/templates/book_edit.html:261
 #: cps/templates/book_edit.html:278 cps/templates/detail.html:139
 #: cps/templates/search_form.html:14
 msgid "Publisher"
-msgstr ""
+msgstr "Видавець"
 
 #: cps/templates/book_edit.html:107 cps/templates/user_edit.html:31
 msgid "Language"
-msgstr ""
+msgstr "Мова"
 
 #: cps/templates/book_edit.html:117 cps/templates/search_form.html:117
 msgid "Yes"
-msgstr ""
+msgstr "Так"
 
 #: cps/templates/book_edit.html:118 cps/templates/search_form.html:118
 msgid "No"
-msgstr ""
+msgstr "Ні"
 
 #: cps/templates/book_edit.html:164
 msgid "Upload format"
-msgstr ""
+msgstr "Формат завантаження"
 
 #: cps/templates/book_edit.html:173
 msgid "view book after edit"
-msgstr ""
+msgstr "переглянути книгу після редагування"
 
 #: cps/templates/book_edit.html:176 cps/templates/book_edit.html:212
 msgid "Get metadata"
-msgstr ""
+msgstr "Отримати метадані"
 
 #: cps/templates/book_edit.html:177 cps/templates/config_edit.html:224
 #: cps/templates/config_view_edit.html:174 cps/templates/login.html:20
 #: cps/templates/search_form.html:150 cps/templates/shelf_edit.html:17
 #: cps/templates/user_edit.html:147
 msgid "Submit"
-msgstr ""
+msgstr "Зберегти"
 
 #: cps/templates/book_edit.html:191
 msgid "Are you really sure?"
@@ -1056,43 +1055,43 @@ msgstr ""
 
 #: cps/templates/book_edit.html:194
 msgid "Book will be deleted from Calibre database"
-msgstr ""
+msgstr "Книга буде видалена з БД Calibre"
 
 #: cps/templates/book_edit.html:195
 msgid "and from hard disk"
-msgstr ""
+msgstr "і з диску"
 
 #: cps/templates/book_edit.html:215
 msgid "Keyword"
-msgstr ""
+msgstr "Ключове слово"
 
 #: cps/templates/book_edit.html:216
 msgid " Search keyword "
-msgstr ""
+msgstr " Пошук по ключовому слову"
 
 #: cps/templates/book_edit.html:218 cps/templates/layout.html:46
 msgid "Go!"
-msgstr ""
+msgstr "Шукати"
 
 #: cps/templates/book_edit.html:222
 msgid "Click the cover to load metadata to the form"
-msgstr ""
+msgstr "Натисніть на обкладинку, щоб отримати метадані"
 
 #: cps/templates/book_edit.html:234 cps/templates/book_edit.html:274
 msgid "Loading..."
-msgstr ""
+msgstr "Завантаження..."
 
 #: cps/templates/book_edit.html:239 cps/templates/layout.html:224
 msgid "Close"
-msgstr ""
+msgstr "Закрити"
 
 #: cps/templates/book_edit.html:266 cps/templates/book_edit.html:280
 msgid "Source"
-msgstr ""
+msgstr "Джерело"
 
 #: cps/templates/book_edit.html:275
 msgid "Search error!"
-msgstr ""
+msgstr "Помилка пошуку!"
 
 #: cps/templates/book_edit.html:276
 msgid "No Result(s) found! Please try aonther keyword."
@@ -1100,23 +1099,23 @@ msgstr ""
 
 #: cps/templates/config_edit.html:12
 msgid "Library Configuration"
-msgstr ""
+msgstr "Налаштування бібліотеки"
 
 #: cps/templates/config_edit.html:19
 msgid "Location of Calibre database"
-msgstr ""
+msgstr "Розташування БД Calibre"
 
 #: cps/templates/config_edit.html:24
 msgid "Use Google Drive?"
-msgstr ""
+msgstr "Використовувати Google Drive?"
 
 #: cps/templates/config_edit.html:30
 msgid "Google Drive config problem"
-msgstr ""
+msgstr "Google Drive проблема налаштування"
 
 #: cps/templates/config_edit.html:36
 msgid "Authenticate Google Drive"
-msgstr ""
+msgstr "Автентифікація Google Drive"
 
 #: cps/templates/config_edit.html:40
 msgid "Please hit submit to continue with setup"
@@ -1128,31 +1127,31 @@ msgstr ""
 
 #: cps/templates/config_edit.html:48
 msgid "Google Drive Calibre folder"
-msgstr ""
+msgstr "Папка Calibre в Google Drive"
 
 #: cps/templates/config_edit.html:56
 msgid "Metadata Watch Channel ID"
-msgstr ""
+msgstr "Metadata Watch Channel ID"
 
 #: cps/templates/config_edit.html:59
 msgid "Revoke"
-msgstr ""
+msgstr "Скасувати"
 
 #: cps/templates/config_edit.html:78
 msgid "Server Configuration"
-msgstr ""
+msgstr "Налаштування серверу"
 
 #: cps/templates/config_edit.html:85
 msgid "Server Port"
-msgstr ""
+msgstr "Порт сервера"
 
 #: cps/templates/config_edit.html:89
 msgid "SSL certfile location (leave it empty for non-SSL Servers)"
-msgstr ""
+msgstr "Розташування сертифіката SSL (залиште його порожнім для серверів, які не використовують SSL)"
 
 #: cps/templates/config_edit.html:93
 msgid "SSL Keyfile location (leave it empty for non-SSL Servers)"
-msgstr ""
+msgstr "Розташування ключових слів SSL (залиште його порожнім для серверів, які не використовують SSL)"
 
 #: cps/templates/config_edit.html:97
 msgid "Update channel"
@@ -1176,43 +1175,43 @@ msgstr ""
 
 #: cps/templates/config_edit.html:113
 msgid "Logfile Configuration"
-msgstr ""
+msgstr "Logfile налаштування"
 
 #: cps/templates/config_edit.html:120
 msgid "Log Level"
-msgstr ""
+msgstr "Рівень логовання"
 
 #: cps/templates/config_edit.html:129
 msgid "Location and name of logfile (calibre-web.log for no entry)"
-msgstr ""
+msgstr "Розташування і назва логфайлу (calibre-web.log for no entry)"
 
 #: cps/templates/config_edit.html:140
 msgid "Feature Configuration"
-msgstr ""
+msgstr "Особливі налаштування"
 
 #: cps/templates/config_edit.html:148
 msgid "Enable uploading"
-msgstr ""
+msgstr "Дозволити завантаження книг на сервер"
 
 #: cps/templates/config_edit.html:152
 msgid "Enable anonymous browsing"
-msgstr ""
+msgstr "Дозволити анонімний перегляд"
 
 #: cps/templates/config_edit.html:156
 msgid "Enable public registration"
-msgstr ""
+msgstr "Дозволити публічну реєстрацію"
 
 #: cps/templates/config_edit.html:160
 msgid "Enable remote login (\"magic link\")"
-msgstr ""
+msgstr "Включити віддалений логін (\"magic link\")"
 
 #: cps/templates/config_edit.html:165
 msgid "Use"
-msgstr ""
+msgstr "Використовувати"
 
 #: cps/templates/config_edit.html:166
 msgid "Obtain an API Key"
-msgstr ""
+msgstr "Отримати ключ API"
 
 #: cps/templates/config_edit.html:170
 msgid "Goodreads API Key"
@@ -1253,28 +1252,28 @@ msgstr ""
 #: cps/templates/config_edit.html:229 cps/templates/layout.html:82
 #: cps/templates/login.html:4
 msgid "Login"
-msgstr ""
+msgstr "Ім'я користувача"
 
 #: cps/templates/config_view_edit.html:12
 msgid "View Configuration"
-msgstr ""
+msgstr "Переглянути налаштування"
 
 #: cps/templates/config_view_edit.html:19 cps/templates/layout.html:133
 #: cps/templates/layout.html:134 cps/templates/shelf_edit.html:7
 msgid "Title"
-msgstr ""
+msgstr "Заголовок"
 
 #: cps/templates/config_view_edit.html:27
 msgid "No. of random books to show"
-msgstr ""
+msgstr "Кількість показаних випадкових книг"
 
 #: cps/templates/config_view_edit.html:31 cps/templates/readcbr.html:108
 msgid "Theme"
-msgstr ""
+msgstr "Тема"
 
 #: cps/templates/config_view_edit.html:33
 msgid "Standard Theme"
-msgstr ""
+msgstr "Стандартна тема"
 
 #: cps/templates/config_view_edit.html:34
 msgid "caliBlur! Dark Theme"
@@ -1282,7 +1281,7 @@ msgstr ""
 
 #: cps/templates/config_view_edit.html:38
 msgid "Regular expression for ignoring columns"
-msgstr ""
+msgstr "Regexp для ігнорування стовпців"
 
 #: cps/templates/config_view_edit.html:42
 msgid "Link read/unread status to Calibre column"
@@ -1290,7 +1289,7 @@ msgstr ""
 
 #: cps/templates/config_view_edit.html:51
 msgid "Regular expression for title sorting"
-msgstr ""
+msgstr "Regexp для сортування по назві"
 
 #: cps/templates/config_view_edit.html:55
 msgid "Tags for Mature Content"
@@ -1298,75 +1297,75 @@ msgstr ""
 
 #: cps/templates/config_view_edit.html:69
 msgid "Default settings for new users"
-msgstr ""
+msgstr "Налаштування по замовчуванню для нових користувачів"
 
 #: cps/templates/config_view_edit.html:77 cps/templates/user_edit.html:104
 msgid "Admin user"
-msgstr ""
+msgstr "Керування сервером"
 
 #: cps/templates/config_view_edit.html:81 cps/templates/user_edit.html:113
 msgid "Allow Downloads"
-msgstr ""
+msgstr "Дозволити завантажувати з сервера"
 
 #: cps/templates/config_view_edit.html:85 cps/templates/user_edit.html:117
 msgid "Allow Uploads"
-msgstr ""
+msgstr "Дозволити завантаження на сервер"
 
 #: cps/templates/config_view_edit.html:89 cps/templates/user_edit.html:121
 msgid "Allow Edit"
-msgstr ""
+msgstr "Дозволити редагування книг"
 
 #: cps/templates/config_view_edit.html:93 cps/templates/user_edit.html:125
 msgid "Allow Delete books"
-msgstr ""
+msgstr "Дозволити видалення книг"
 
 #: cps/templates/config_view_edit.html:97 cps/templates/user_edit.html:130
 msgid "Allow Changing Password"
-msgstr ""
+msgstr "Дозволити зміну пароля"
 
 #: cps/templates/config_view_edit.html:101 cps/templates/user_edit.html:134
 msgid "Allow Editing Public Shelfs"
-msgstr ""
+msgstr "Дозволити редагування публічних книжкових полиць"
 
 #: cps/templates/config_view_edit.html:111
 msgid "Default visibilities for new users"
-msgstr ""
+msgstr "Можливості за замовчуванням для нових користувачів"
 
 #: cps/templates/config_view_edit.html:119 cps/templates/user_edit.html:50
 msgid "Show random books"
-msgstr ""
+msgstr "Показувати випадкові книги"
 
 #: cps/templates/config_view_edit.html:123 cps/templates/user_edit.html:54
 msgid "Show recent books"
-msgstr ""
+msgstr "Показувати останні книги"
 
 #: cps/templates/config_view_edit.html:127 cps/templates/user_edit.html:58
 msgid "Show sorted books"
-msgstr ""
+msgstr "Показувати відсортовані книги"
 
 #: cps/templates/config_view_edit.html:131 cps/templates/user_edit.html:62
 msgid "Show hot books"
-msgstr ""
+msgstr "Показувати популярні книги"
 
 #: cps/templates/config_view_edit.html:135 cps/templates/user_edit.html:66
 msgid "Show best rated books"
-msgstr ""
+msgstr "Показувати книги з найвищим рейтингом"
 
 #: cps/templates/config_view_edit.html:139 cps/templates/user_edit.html:70
 msgid "Show language selection"
-msgstr ""
+msgstr "Показувати вибір мови"
 
 #: cps/templates/config_view_edit.html:143 cps/templates/user_edit.html:74
 msgid "Show series selection"
-msgstr ""
+msgstr "Показувати вибір серії"
 
 #: cps/templates/config_view_edit.html:147 cps/templates/user_edit.html:78
 msgid "Show category selection"
-msgstr ""
+msgstr "Показувати вибір категорії"
 
 #: cps/templates/config_view_edit.html:151 cps/templates/user_edit.html:82
 msgid "Show author selection"
-msgstr ""
+msgstr "Показувати вибір автора"
 
 #: cps/templates/config_view_edit.html:155 cps/templates/user_edit.html:86
 msgid "Show publisher selection"
@@ -1374,11 +1373,11 @@ msgstr ""
 
 #: cps/templates/config_view_edit.html:159 cps/templates/user_edit.html:91
 msgid "Show read and unread"
-msgstr ""
+msgstr "Показувати прочитані та непрочитані книги"
 
 #: cps/templates/config_view_edit.html:163 cps/templates/user_edit.html:96
 msgid "Show random books in detail view"
-msgstr ""
+msgstr "Показувати випадкові книги при перегляді деталей"
 
 #: cps/templates/config_view_edit.html:167 cps/templates/user_edit.html:109
 msgid "Show mature content"
@@ -1386,71 +1385,71 @@ msgstr ""
 
 #: cps/templates/detail.html:63
 msgid "Read in browser"
-msgstr ""
+msgstr "Відкрити в браузері"
 
 #: cps/templates/detail.html:100
 msgid "Book"
-msgstr ""
+msgstr "Книга"
 
 #: cps/templates/detail.html:100
 msgid "of"
-msgstr ""
+msgstr "з"
 
 #: cps/templates/detail.html:106
 msgid "language"
-msgstr ""
+msgstr "Мова"
 
 #: cps/templates/detail.html:186
 msgid "Read"
-msgstr ""
+msgstr "Прочитано"
 
 #: cps/templates/detail.html:196
 msgid "Description:"
-msgstr ""
+msgstr "Опис:"
 
 #: cps/templates/detail.html:209 cps/templates/search.html:14
 msgid "Add to shelf"
-msgstr ""
+msgstr "Додати на книжкову полицю"
 
 #: cps/templates/detail.html:271
 msgid "Edit metadata"
-msgstr ""
+msgstr "Редагувати метадані"
 
 #: cps/templates/email_edit.html:15
 msgid "SMTP port (usually 25 for plain SMTP and 465 for SSL and 587 for STARTTLS)"
-msgstr ""
+msgstr "SMTP-порт (зазвичай 25 для SMTP, 465 для SSL і 587 для STARTTLS)"
 
 #: cps/templates/email_edit.html:19
 msgid "Encryption"
-msgstr ""
+msgstr "Шифрування"
 
 #: cps/templates/email_edit.html:21
 msgid "None"
-msgstr ""
+msgstr "Ні"
 
 #: cps/templates/email_edit.html:22
 msgid "STARTTLS"
-msgstr ""
+msgstr "STARTTLS"
 
 #: cps/templates/email_edit.html:23
 msgid "SSL/TLS"
-msgstr ""
+msgstr "SSL/TLS"
 
 #: cps/templates/email_edit.html:31
 msgid "SMTP password"
-msgstr ""
+msgstr "Пароль SMTP"
 
 #: cps/templates/email_edit.html:35
 msgid "From e-mail"
-msgstr ""
+msgstr "Адрес відправника"
 
 #: cps/templates/email_edit.html:38
 msgid "Save settings"
-msgstr ""
+msgstr "Зберегти налаштування"
 
 #: cps/templates/email_edit.html:39
 msgid "Save settings and send Test E-Mail"
-msgstr ""
+msgstr "Зберегти налаштування і відправити тестове повідомлення"
 
 #: cps/templates/email_edit.html:43
 msgid "Allowed domains for registering"
@@ -1474,12 +1473,12 @@ msgstr ""
 
 #: cps/templates/feed.xml:21 cps/templates/layout.html:208
 msgid "Next"
-msgstr ""
+msgstr "Далі"
 
 #: cps/templates/feed.xml:33 cps/templates/index.xml:11
 #: cps/templates/layout.html:43 cps/templates/layout.html:44
 msgid "Search"
-msgstr ""
+msgstr "Пошук"
 
 #: cps/templates/http_error.html:23
 msgid "Back to home"
@@ -1487,47 +1486,47 @@ msgstr ""
 
 #: cps/templates/index.html:5
 msgid "Discover (Random Books)"
-msgstr ""
+msgstr "Огляд (випадкові книги)"
 
 #: cps/templates/index.xml:6
 msgid "Start"
-msgstr ""
+msgstr "Старт"
 
 #: cps/templates/index.xml:18 cps/templates/layout.html:139
 msgid "Hot Books"
-msgstr ""
+msgstr "Популярні книги"
 
 #: cps/templates/index.xml:22
 msgid "Popular publications from this catalog based on Downloads."
-msgstr ""
+msgstr "Популярні книги в цьому каталозі, на основі кількості завантажень"
 
 #: cps/templates/index.xml:25 cps/templates/layout.html:142
 msgid "Best rated Books"
-msgstr ""
+msgstr "Книги з найкращим рейтингом"
 
 #: cps/templates/index.xml:29
 msgid "Popular publications from this catalog based on Rating."
-msgstr ""
+msgstr "Популярні книги з цього каталогу на основі рейтингу"
 
 #: cps/templates/index.xml:32
 msgid "New Books"
-msgstr ""
+msgstr "Нові книги"
 
 #: cps/templates/index.xml:36
 msgid "The latest Books"
-msgstr ""
+msgstr "Останні книги"
 
 #: cps/templates/index.xml:43
 msgid "Show Random Books"
-msgstr ""
+msgstr "Показувати випадкові книги"
 
 #: cps/templates/index.xml:62 cps/templates/layout.html:160
 msgid "Authors"
-msgstr ""
+msgstr "Автори"
 
 #: cps/templates/index.xml:66
 msgid "Books ordered by Author"
-msgstr ""
+msgstr "Книги відсортовані за автором"
 
 #: cps/templates/index.xml:69 cps/templates/layout.html:163
 msgid "Publishers"
@@ -1539,130 +1538,130 @@ msgstr ""
 
 #: cps/templates/index.xml:80
 msgid "Books ordered by category"
-msgstr ""
+msgstr "Книги відсортовані за категоріями"
 
 #: cps/templates/index.xml:87
 msgid "Books ordered by series"
-msgstr ""
+msgstr "Книги відсортовані за серією"
 
 #: cps/templates/index.xml:90 cps/templates/layout.html:169
 msgid "Public Shelves"
-msgstr ""
+msgstr "Загальні книжкові полиці"
 
 #: cps/templates/index.xml:94
 msgid "Books organized in public shelfs, visible to everyone"
-msgstr ""
+msgstr "Книги, організовані на публічних полицях, видимі всім"
 
 #: cps/templates/index.xml:98 cps/templates/layout.html:173
 msgid "Your Shelves"
-msgstr ""
+msgstr "Ваші книжкові полиці"
 
 #: cps/templates/index.xml:102
 msgid "User's own shelfs, only visible to the current user himself"
-msgstr ""
+msgstr "Власні полиці користувача, видимі тільки поточному користувачеві"
 
 #: cps/templates/layout.html:33
 msgid "Toggle navigation"
-msgstr ""
+msgstr "Включити навігацію"
 
 #: cps/templates/layout.html:54
 msgid "Advanced Search"
-msgstr ""
+msgstr "Розширений пошук"
 
 #: cps/templates/layout.html:78
 msgid "Logout"
-msgstr ""
+msgstr "Вийти"
 
 #: cps/templates/layout.html:83 cps/templates/register.html:14
 msgid "Register"
-msgstr ""
+msgstr "Зареєструватись"
 
 #: cps/templates/layout.html:108
 msgid "Uploading..."
-msgstr ""
+msgstr "Завантаження..."
 
 #: cps/templates/layout.html:109
 msgid "please don't refresh the page"
-msgstr ""
+msgstr "будь ласка, не перезавантажуйте сторінку"
 
 #: cps/templates/layout.html:120
 msgid "Browse"
-msgstr ""
+msgstr "Перегляд"
 
 #: cps/templates/layout.html:122
 msgid "Recently Added"
-msgstr ""
+msgstr "Останні додані"
 
 #: cps/templates/layout.html:127
 msgid "Sorted Books"
-msgstr ""
+msgstr "Відсортовані книги"
 
 #: cps/templates/layout.html:131 cps/templates/layout.html:132
 #: cps/templates/layout.html:133 cps/templates/layout.html:134
 msgid "Sort By"
-msgstr ""
+msgstr "Сортувати за"
 
 #: cps/templates/layout.html:131
 msgid "Newest"
-msgstr ""
+msgstr "Найновіші"
 
 #: cps/templates/layout.html:132
 msgid "Oldest"
-msgstr ""
+msgstr "Найстаріші"
 
 #: cps/templates/layout.html:133
 msgid "Ascending"
-msgstr ""
+msgstr "За зростанням"
 
 #: cps/templates/layout.html:134
 msgid "Descending"
-msgstr ""
+msgstr "За спаданням"
 
 #: cps/templates/layout.html:151
 msgid "Discover"
-msgstr ""
+msgstr "Огляд"
 
 #: cps/templates/layout.html:154
 msgid "Categories"
-msgstr ""
+msgstr "Категорії"
 
 #: cps/templates/layout.html:166 cps/templates/search_form.html:74
 msgid "Languages"
-msgstr ""
+msgstr "Мови"
 
 #: cps/templates/layout.html:178
 msgid "Create a Shelf"
-msgstr ""
+msgstr "Створити книжкову полицю"
 
 #: cps/templates/layout.html:179 cps/templates/stats.html:3
 msgid "About"
-msgstr ""
+msgstr "Про програму"
 
 #: cps/templates/layout.html:193
 msgid "Previous"
-msgstr ""
+msgstr "Попередній перегляд"
 
 #: cps/templates/layout.html:220
 msgid "Book Details"
-msgstr ""
+msgstr "Деталі"
 
 #: cps/templates/login.html:8 cps/templates/login.html:9
 #: cps/templates/register.html:7 cps/templates/user_edit.html:8
 msgid "Username"
-msgstr ""
+msgstr "Ім'я користувача"
 
 #: cps/templates/login.html:12 cps/templates/login.html:13
 #: cps/templates/user_edit.html:21
 msgid "Password"
-msgstr ""
+msgstr "Пароль"
 
 #: cps/templates/login.html:17
 msgid "Remember me"
-msgstr ""
+msgstr "Запам'ятати мене"
 
 #: cps/templates/login.html:22
 msgid "Log in with magic link"
-msgstr ""
+msgstr "Увійдіть в систему за допомогою magic link"
 
 #: cps/templates/osd.xml:5
 msgid "Calibre-Web ebook catalog"
@@ -1671,11 +1670,11 @@ msgstr ""
 #: cps/templates/read.html:69 cps/templates/readcbr.html:79
 #: cps/templates/readcbr.html:103
 msgid "Settings"
-msgstr ""
+msgstr "Налаштування"
 
 #: cps/templates/read.html:72
 msgid "Reflow text when sidebars are open."
-msgstr ""
+msgstr "Переформатувати текст, коли відкриті бічні панелі."
 
 #: cps/templates/readcbr.html:84
 msgid "Keyboard Shortcuts"
@@ -1763,7 +1762,7 @@ msgstr ""
 
 #: cps/templates/readpdf.html:29
 msgid "PDF.js viewer"
-msgstr ""
+msgstr "Переглядач PDF.js"
 
 #: cps/templates/readpdf.html:418
 msgid "Preparing document for printing..."
@@ -1771,15 +1770,15 @@ msgstr ""
 
 #: cps/templates/readtxt.html:6
 msgid "Basic txt Reader"
-msgstr ""
+msgstr "Засіб для читання txt-файлів"
 
 #: cps/templates/register.html:4
 msgid "Register a new account"
-msgstr ""
+msgstr "Зареєструвати нового користувача"
 
 #: cps/templates/register.html:8
 msgid "Choose a username"
-msgstr ""
+msgstr "Виберіть ім'я користувача"
 
 #: cps/templates/register.html:11 cps/templates/user_edit.html:13
 msgid "E-mail address"
@@ -1787,7 +1786,7 @@ msgstr ""
 
 #: cps/templates/register.html:12
 msgid "Your email address"
-msgstr ""
+msgstr "Ваш email-адрес"
 
 #: cps/templates/remote_login.html:6
 msgid "Using your another device, visit"
@@ -1795,43 +1794,43 @@ msgstr ""
 
 #: cps/templates/remote_login.html:6
 msgid "and log in"
-msgstr ""
+msgstr "і логін"
 
 #: cps/templates/remote_login.html:9
 msgid "Once you do so, you will automatically get logged in on this device."
-msgstr ""
+msgstr "Після цього ви автоматично ввійдете в систему на цьому пристрої."
 
 #: cps/templates/search.html:5
 msgid "No Results for:"
-msgstr ""
+msgstr "Нічого не знайдено за запитом:"
 
 #: cps/templates/search.html:6
 msgid "Please try a different search"
-msgstr ""
+msgstr "Спробуйте змінити критерії пошук"
 
 #: cps/templates/search.html:8
 msgid "Results for:"
-msgstr ""
+msgstr "Результати для:"
 
 #: cps/templates/search_form.html:19
 msgid "Publishing date from"
-msgstr ""
+msgstr "Дата публікації з"
 
 #: cps/templates/search_form.html:26
 msgid "Publishing date to"
-msgstr ""
+msgstr "Дата публікації до"
 
 #: cps/templates/search_form.html:43
 msgid "Exclude Tags"
-msgstr ""
+msgstr "Виключити теги"
 
 #: cps/templates/search_form.html:63
 msgid "Exclude Series"
-msgstr ""
+msgstr "Виключити серії"
 
 #: cps/templates/search_form.html:84
 msgid "Exclude Languages"
-msgstr ""
+msgstr "Виключити мови"
 
 #: cps/templates/search_form.html:97
 msgid "Rating bigger than"
@@ -1843,7 +1842,7 @@ msgstr ""
 
 #: cps/templates/shelf.html:7
 msgid "Delete this Shelf"
-msgstr ""
+msgstr "Видалити цю книжкову полицю"
 
 #: cps/templates/shelf.html:8
 msgid "Edit Shelf"
@@ -1851,55 +1850,55 @@ msgstr ""
 
 #: cps/templates/shelf.html:9 cps/templates/shelf_order.html:11
 msgid "Change order"
-msgstr ""
+msgstr "Змінити порядок"
 
 #: cps/templates/shelf.html:58
 msgid "Do you really want to delete the shelf?"
-msgstr ""
+msgstr "Ви справді хочете видалити книжкову полицю?"
 
 #: cps/templates/shelf.html:61
 msgid "Shelf will be lost for everybody and forever!"
-msgstr ""
+msgstr "Книжкова полиця буде остаточно видалена для всіх"
 
 #: cps/templates/shelf_edit.html:13
 msgid "should the shelf be public?"
-msgstr ""
+msgstr "зробити книжкову полицю доступною для всіх?"
 
 #: cps/templates/shelf_order.html:5
 msgid "Drag 'n drop to rearrange order"
-msgstr ""
+msgstr "Перетягніть для змінення порядку"
 
 #: cps/templates/stats.html:7
 msgid "Calibre library statistics"
-msgstr ""
+msgstr "Статистика бібліотеки Calibre"
 
 #: cps/templates/stats.html:12
 msgid "Books in this Library"
-msgstr ""
+msgstr "Книг в цій бібліотеці"
 
 #: cps/templates/stats.html:16
 msgid "Authors in this Library"
-msgstr ""
+msgstr "Авторів в цій бібліотеці"
 
 #: cps/templates/stats.html:20
 msgid "Categories in this Library"
-msgstr ""
+msgstr "Категорій в цій бібліотеці"
 
 #: cps/templates/stats.html:24
 msgid "Series in this Library"
-msgstr ""
+msgstr "Серій в цій бібліотеці"
 
 #: cps/templates/stats.html:28
 msgid "Linked libraries"
-msgstr ""
+msgstr "Встановлене ПЗ"
 
 #: cps/templates/stats.html:32
 msgid "Program library"
-msgstr ""
+msgstr "Назва"
 
 #: cps/templates/stats.html:33
 msgid "Installed Version"
-msgstr ""
+msgstr "Встановлена версія"
 
 #: cps/templates/tasks.html:7
 msgid "Tasks list"
@@ -1943,21 +1942,171 @@ msgstr ""
 
 #: cps/templates/user_edit.html:27
 msgid "Kindle E-Mail"
-msgstr ""
+msgstr "Електронний адрес Kindle"
 
 #: cps/templates/user_edit.html:39
 msgid "Show books with language"
-msgstr ""
+msgstr "Показувати книги на мовах"
 
 #: cps/templates/user_edit.html:41
 msgid "Show all"
-msgstr ""
+msgstr "Показати всі"
 
 #: cps/templates/user_edit.html:141
 msgid "Delete this user"
-msgstr ""
+msgstr "Видалити цього користувача"
 
 #: cps/templates/user_edit.html:156
 msgid "Recent Downloads"
-msgstr ""
+msgstr "Нещодавно переглянуті"
+
+#~ msgid "kindlegen binary %(kindlepath)s not found"
+#~ msgstr "Бінарний %(kindlepath)s не знайдено "
+
+#~ msgid "epub format not found for book id: %(book)d"
+#~ msgstr "Формат epub не знайдено для книги: %(book)d"
+
+#~ msgid "kindlegen failed, no execution permissions"
+#~ msgstr "kindlegen відхилено, відсутній дозвіл на виконання"
+
+#~ msgid "Failed to send mail: %s"
+#~ msgstr "Помилка відправлення листа: %s"
+
+#~ msgid "Calibre-web test email"
+#~ msgstr "Тестове повідомлення від Calibre-web"
+
+#~ msgid "This email has been sent via calibre web."
+#~ msgstr "Це повідомлення було відправлено через calibre web"
+
+#~ msgid "Could not find any formats suitable for sending by email"
+#~ msgstr "Неможливо знайти формат, відповідний для відправки по email"
+
+#~ msgid "Rename title from: \"%s\" to \"%s\" failed with error: %s"
+#~ msgstr "Не вдалося перейменувати заголовок з: \"%s\" на \"%s\". Помилка: %s"
+
+#~ msgid "Rename author from: \"%s\" to \"%s\" failed with error: %s"
+#~ msgstr "Не вдалося перейменувати автора з: \"%s\" на \"%s\". Помилка: %s"
+
+#~ msgid "File %s not found on Google Drive"
+#~ msgstr "Файл %s не знайдено на Google Drive"
+
+#~ msgid "Book path %s not found on Google Drive"
+#~ msgstr "Шлях до книги %s не знайдено на Google Drive"
+
+#~ msgid "Files are replaced"
+#~ msgstr "Файли замінені"
+
+#~ msgid "Server is stopped"
+#~ msgstr "Сервер зупинено"
+
+#~ msgid "Author list"
+#~ msgstr "Автори"
+
+#~ msgid "Update done"
+#~ msgstr "Оновлення завершено"
+
+#~ msgid "Published after %s"
+#~ msgstr "Опубліковано після %s"
+
+#~ msgid "An unknown error occured. Please try again later."
+#~ msgstr "Невідома помилка. Будь-ласка, спробуйте пізніше."
+
+#~ msgid "This username or email address is already in use."
+#~ msgstr "Ім'я користувача або адреса ел. пошти вже використовується"
+
+#~ msgid "Book successfully send to %(kindlemail)s"
+#~ msgstr "Книга успішно відправлена на %(kindlemail)s"
+
+#~ msgid "Please configure your kindle email address first..."
+#~ msgstr "Будь-ласка, спочатку вкажіть ваш kindle email..."
+
+#~ msgid "Found an existing account for this email address."
+#~ msgstr "Знайден обліковий запис  для даної адреси email."
+
+#~ msgid "Calibre-web configuration updated"
+#~ msgstr "Конфігурація Calibre-web оновлена"
+
+#~ msgid "Found an existing account for this email address or nickname."
+#~ msgstr "Для вказаної адреси або імені знайдено існуючий обліковий запис."
+
+#~ msgid "Mail settings updated"
+#~ msgstr "Налаштування пошти змінено"
+
+#~ msgid "Test E-Mail successfully send to %(kindlemail)s"
+#~ msgstr "Тестове повідомлення успішно відправлено на адресу %(kindlemail)s"
+
+#~ msgid "There was an error sending the Test E-Mail: %(res)s"
+#~ msgstr "Помилка відправки тестового повідомлення: %(res)s"
+
+#~ msgid "E-Mail settings updated"
+#~ msgstr "Оновлено налаштування e-mail"
+
+#~ msgid "Edit mail settings"
+#~ msgstr "Змінити поштові налаштування"
+
+#~ msgid "File extension \"%s\" is not allowed to be uploaded to this server"
+#~ msgstr "Заборонене завантаження файлів з розширенням \"%s\""
+
+#~ msgid "Failed to store file %s."
+#~ msgstr "Не вдалося зберегти файл"
+
+#~ msgid "Failed to create path %s (Permission denied)."
+#~ msgstr "Помилка при створенні шляху %s (доступ відсутній)"
+
+#~ msgid "Failed to store file %s (Permission denied)."
+#~ msgstr "Помилка запису файлу %s (доступ відсутній)"
+
+#~ msgid "Failed to delete file %s (Permission denied)."
+#~ msgstr "Помилка видалення файлу %s (доступ відсутній)"
+
+#~ msgid "Email"
+#~ msgstr "Імейл"
+
+#~ msgid "Passwd"
+#~ msgstr "Змінити пароль"
+
+#~ msgid "SMTP mail settings"
+#~ msgstr "Параметри SMTP"
+
+#~ msgid "Remote Login"
+#~ msgstr "Віддалений логін"
+
+#~ msgid "Current commit timestamp"
+#~ msgstr "Поточна мітка передачі"
+
+#~ msgid "Newest commit timestamp"
+#~ msgstr "Найновіша мітка передачі"
+
+#~ msgid "Restart Calibre-web"
+#~ msgstr "Перезавантажити Calibre-web"
+
+#~ msgid "Stop Calibre-web"
+#~ msgstr "Зупинити Calibre-web"
+
+#~ msgid "Do you really want to restart Calibre-web?"
+#~ msgstr "Ви дійсно бажаєте перезавантажити Calibre-web?"
+
+#~ msgid "Do you really want to stop Calibre-web?"
+#~ msgstr "Ви дійсно бажаєте зупинити Calibre-web?"
+
+#~ msgid "Are really you sure?"
+#~ msgstr "Ви впевнені?"
+
+#~ msgid "No Result! Please try anonther keyword."
+#~ msgstr "Немає результатів. Будь ласка, спробуйте інше ключове слово"
+
+#~ msgid "Calibre Web ebook catalog"
+#~ msgstr "Каталог електронних книг Calibre Web"
+
+#~ msgid "Choose a password"
+#~ msgstr "Виберіть пароль"
+
+#~ msgid "Email address"
+#~ msgstr "Електронна пошта"
+
+#~ msgid "Edit Shelf name"
+#~ msgstr "Змінити ім'я книжкової полиці"
+
+#~ msgid "caliBlur! Dark Theme (Beta)"
+#~ msgstr "caliBlur! Темна тема (тестова версія)"
 

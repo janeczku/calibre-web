@@ -16,7 +16,7 @@
       <div class="cover">
             <a href="{{ url_for('show_book', book_id=entry.id) }}" data-toggle="modal" data-target="#bookDetailsModal" data-remote="false">
             {% if entry.has_cover %}
-              <img src="{{ url_for('get_cover', cover_path=entry.path.replace('\\','/')) }}" alt="{{ entry.title }}" />
+              <img src="{{ url_for('get_cover', book_id=entry.id) }}" alt="{{ entry.title }}" />
             {% else %}
               <img src="{{ url_for('static', filename='generic_cover.jpg') }}" alt="{{ entry.title }}" />
             {% endif %}

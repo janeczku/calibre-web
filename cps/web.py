@@ -1,6 +1,26 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+#  This file is part of the Calibre-Web (https://github.com/janeczku/calibre-web)
+#    Copyright (C) 2018-2019 OzzieIsaacs, cervinko, jkrehm, bodybybuddha, ok11,
+#                            andy29485, idalin, Kyosfonica, wuqi, Kennyl, lemmsh,
+#                            falgh1, grunjol, csitko, ytils, xybydy, trasba, vrabe,
+#                            ruben-herold, marblepebble, JackED42, SiphonSquirrel,
+#                            apetresc, nanu-c, mutschler
+#
+#  This program is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License as published by
+#  the Free Software Foundation, either version 3 of the License, or
+#  (at your option) any later version.
+#
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU General Public License for more details.
+#
+#  You should have received a copy of the GNU General Public License
+#  along with this program. If not, see <http://www.gnu.org/licenses/>.
+
 import mimetypes
 import logging
 from logging.handlers import RotatingFileHandler
@@ -57,6 +77,8 @@ from redirect import redirect_back
 import time
 import server
 from reverseproxy import ReverseProxied
+from updater import updater_thread
+import hashlib
 
 try:
     from googleapiclient.errors import HttpError
@@ -111,6 +133,9 @@ except ImportError:
 # Global variables
 current_milli_time = lambda: int(round(time.time() * 1000))
 gdrive_watch_callback_token = 'target=calibreweb-watch_files'
+# ToDo: Somehow caused by circular import under python3 refactor
+py3_gevent_link = None
+py3_restart_Typ = False
 EXTENSIONS_UPLOAD = {'txt', 'pdf', 'epub', 'mobi', 'azw', 'azw3', 'cbr', 'cbz', 'cbt', 'djvu', 'prc', 'doc', 'docx',
                       'fb2', 'html', 'rtf', 'odt'}
 EXTENSIONS_CONVERT = {'pdf', 'epub', 'mobi', 'azw3', 'docx', 'rtf', 'fb2', 'lit', 'lrf', 'txt', 'htmlz'}
@@ -937,11 +962,9 @@ def get_email_status_json():
 # example SELECT * FROM @TABLE WHERE  'abcdefg' LIKE Name;
 # from https://code.luasoftware.com/tutorials/flask/execute-raw-sql-in-flask-sqlalchemy/
 def check_valid_domain(domain_text):
-    # result = session.query(Notification).from_statement(text(sql)).params(id=5).all()
-    #ToDo: check possible SQL injection
     domain_text = domain_text.split('@',1)[-1].lower()
-    sql = "SELECT * FROM registration WHERE '%s' LIKE domain;" % domain_text
-    result = ub.session.query(ub.Registration).from_statement(text(sql)).all()
+    sql = "SELECT * FROM registration WHERE :domain LIKE domain;"
+    result = ub.session.query(ub.Registration).from_statement(text(sql)).params(domain=domain_text).all()
     return len(result)
 
 
@@ -1139,127 +1162,7 @@ def get_matching_tags():
 @app.route("/get_update_status", methods=['GET'])
 @login_required_if_no_ano
 def get_update_status():
-    status = {
-        'update': False,
-        'success': False,
-        'message': '',
-        'current_commit_hash': ''
-    }
-    parents = []
-
-    repository_url = 'https://api.github.com/repos/janeczku/calibre-web'
-    tz = datetime.timedelta(seconds=time.timezone if (time.localtime().tm_isdst == 0) else time.altzone)
-
-    if request.method == "GET":
-        version = helper.get_current_version_info()
-        if version is False:
-            status['current_commit_hash'] = _(u'Unknown')
-        else:
-            status['current_commit_hash'] = version['hash']
-
-        try:
-            r = requests.get(repository_url + '/git/refs/heads/master')
-            r.raise_for_status()
-            commit = r.json()
-        except requests.exceptions.HTTPError as e:
-            status['message'] = _(u'HTTP Error') + ' ' + str(e)
-        except requests.exceptions.ConnectionError:
-            status['message'] = _(u'Connection error')
-        except requests.exceptions.Timeout:
-            status['message'] = _(u'Timeout while establishing connection')
-        except requests.exceptions.RequestException:
-            status['message'] = _(u'General error')
-
-        if status['message'] != '':
-            return json.dumps(status)
-
-        if 'object' not in commit:
-            status['message'] = _(u'Unexpected data while reading update information')
-            return json.dumps(status)
-
-        if commit['object']['sha'] == status['current_commit_hash']:
-            status.update({
-                'update': False,
-                'success': True,
-                'message': _(u'No update available. You already have the latest version installed')
-            })
-            return json.dumps(status)
-
-        # a new update is available
-        status['update'] = True
-
-        try:
-            r = requests.get(repository_url + '/git/commits/' + commit['object']['sha'])
-            r.raise_for_status()
-            update_data = r.json()
-        except requests.exceptions.HTTPError as e:
-            status['error'] = _(u'HTTP Error') + ' ' + str(e)
-        except requests.exceptions.ConnectionError:
-            status['error'] = _(u'Connection error')
-        except requests.exceptions.Timeout:
-            status['error'] = _(u'Timeout while establishing connection')
-        except requests.exceptions.RequestException:
-            status['error'] = _(u'General error')
-
-        if status['message'] != '':
-            return json.dumps(status)
-
-        if 'committer' in update_data and 'message' in update_data:
-            status['success'] = True
-            status['message'] = _(u'A new update is available. Click on the button below to update to the latest version.')
-
-            new_commit_date = datetime.datetime.strptime(
-                update_data['committer']['date'], '%Y-%m-%dT%H:%M:%SZ') - tz
-            parents.append(
-                [
-                    format_datetime(new_commit_date, format='short', locale=get_locale()),
-                    update_data['message'],
-                    update_data['sha']
-                ]
-            )
-
-            # it only makes sense to analyze the parents if we know the current commit hash
-            if status['current_commit_hash'] != '':
-                try:
-                    parent_commit = update_data['parents'][0]
-                    # limit the maximum search depth
-                    remaining_parents_cnt = 10
-                except IndexError:
-                    remaining_parents_cnt = None
-
-                if remaining_parents_cnt is not None:
-                    while True:
-                        if remaining_parents_cnt == 0:
-                            break
-
-                        # check if we are more than one update behind if so, go up the tree
-                        if parent_commit['sha'] != status['current_commit_hash']:
-                            try:
-                                r = requests.get(parent_commit['url'])
-                                r.raise_for_status()
-                                parent_data = r.json()
-
-                                parent_commit_date = datetime.datetime.strptime(
-                                    parent_data['committer']['date'], '%Y-%m-%dT%H:%M:%SZ') - tz
-                                parent_commit_date = format_datetime(
-                                    parent_commit_date, format='short', locale=get_locale())
-
-                                parents.append([parent_commit_date, parent_data['message'], parent_data['sha']])
-                                parent_commit = parent_data['parents'][0]
-                                remaining_parents_cnt -= 1
-                            except Exception:
-                                # it isn't crucial if we can't get information about the parent
-                                break
-                        else:
-                            # parent is our current version
-                            break
-
-        else:
-            status['success'] = False
-            status['message'] = _(u'Could not fetch update information')
-
-    status['history'] = parents
-    return json.dumps(status)
+    return updater_thread.get_available_updates(request.method)
 
 
 @app.route("/get_updater_status", methods=['GET', 'POST'])
@@ -1284,12 +1187,12 @@ def get_updater_status():
                 "11": _(u'Update failed:') + u' ' + _(u'General error')
             }
             status['text'] = text
-            helper.updater_thread = helper.Updater()
-            helper.updater_thread.start()
-            status['status'] = helper.updater_thread.get_update_status()
+            # helper.updater_thread = helper.Updater()
+            updater_thread.start()
+            status['status'] = updater_thread.get_update_status()
     elif request.method == "GET":
         try:
-            status['status'] = helper.updater_thread.get_update_status()
+            status['status'] = updater_thread.get_update_status()
         except AttributeError:
             # thread is not active, occours after restart on update
             status['status'] = 7
@@ -1425,7 +1328,7 @@ def author_list():
 
 
 @app.route("/author/<int:book_id>", defaults={'page': 1})
-@app.route("/author/<int:book_id>/<int:page>'")
+@app.route("/author/<int:book_id>/<int:page>")
 @login_required_if_no_ano
 def author(book_id, page):
     entries, __, pagination = fill_indexpage(page, db.Books, db.Books.authors.any(db.Authors.id == book_id),
@@ -1821,7 +1724,12 @@ def delete_book(book_id, book_format):
 @login_required
 @admin_required
 def authenticate_google_drive():
-    authUrl = gdriveutils.Gauth.Instance().auth.GetAuthUrl()
+    try:
+        authUrl = gdriveutils.Gauth.Instance().auth.GetAuthUrl()
+    except gdriveutils.InvalidConfigError:
+        flash(_(u'Google Drive setup not completed, try to deactivate and activate Google Drive again'),
+              category="error")
+        return redirect(url_for('index'))
     return redirect(authUrl)
 
 
@@ -1909,7 +1817,7 @@ def on_received_watch_confirmation():
                 app.logger.debug(response)
                 if response:
                     dbpath = os.path.join(config.config_calibre_dir, "metadata.db")
-                    if not response['deleted'] and response['file']['title'] == 'metadata.db' and response['file']['md5Checksum'] != md5(dbpath):
+                    if not response['deleted'] and response['file']['title'] == 'metadata.db' and response['file']['md5Checksum'] != hashlib.md5(dbpath):
                         tmpDir = tempfile.gettempdir()
                         app.logger.info('Database file updated')
                         copyfile(dbpath, os.path.join(tmpDir, "metadata.db_" + str(current_milli_time())))
@@ -1955,15 +1863,6 @@ def shutdown():
             db.setup_db()
             return json.dumps({})
         abort(404)
-
-
-@app.route("/update")
-@login_required
-@admin_required
-def update():
-    helper.updater_thread = helper.Updater()
-    flash(_(u"Update done"), category="info")
-    return abort(404)
 
 
 @app.route("/search", methods=["GET"])
@@ -2128,10 +2027,11 @@ def advanced_search():
                                  series=series, title=_(u"search"), cc=cc, page="advsearch")
 
 
-@app.route("/cover/<path:cover_path>")
+@app.route("/cover/<book_id>")
 @login_required_if_no_ano
-def get_cover(cover_path):
-    return helper.get_book_cover(cover_path)
+def get_cover(book_id):
+    book = db.session.query(db.Books).filter(db.Books.id == book_id).first()
+    return helper.get_book_cover(book.path)
 
 
 @app.route("/show/<book_id>/<book_format>")
@@ -2153,10 +2053,10 @@ def serve_book(book_id, book_format):
         return send_from_directory(os.path.join(config.config_calibre_dir, book.path), data.name + "." + book_format)
 
 
-@app.route("/opds/thumb_240_240/<path:book_id>")
-@app.route("/opds/cover_240_240/<path:book_id>")
-@app.route("/opds/cover_90_90/<path:book_id>")
-@app.route("/opds/cover/<path:book_id>")
+@app.route("/opds/thumb_240_240/<book_id>")
+@app.route("/opds/cover_240_240/<book_id>")
+@app.route("/opds/cover_90_90/<book_id>")
+@app.route("/opds/cover/<book_id>")
 @requires_basic_auth_if_no_ano
 def feed_get_cover(book_id):
     book = db.session.query(db.Books).filter(db.Books.id == book_id).first()
@@ -2333,6 +2233,7 @@ def register():
                 content.password = generate_password_hash(password)
                 content.role = config.config_default_role
                 content.sidebar_view = config.config_default_show
+                content.mature_content = bool(config.config_default_show & ub.MATURE_CONTENT)
                 try:
                     ub.session.add(content)
                     ub.session.commit()
@@ -2861,20 +2762,23 @@ def profile():
 @login_required
 @admin_required
 def admin():
-    version = helper.get_current_version_info()
+    version = updater_thread.get_current_version_info()
     if version is False:
         commit = _(u'Unknown')
     else:
-        commit = version['datetime']
+        if 'datetime' in version:
+            commit = version['datetime']
 
-        tz = datetime.timedelta(seconds=time.timezone if (time.localtime().tm_isdst == 0) else time.altzone)
-        form_date = datetime.datetime.strptime(commit[:19], "%Y-%m-%dT%H:%M:%S")
-        if len(commit) > 19:    # check if string has timezone
-            if commit[19] == '+':
-                form_date -= datetime.timedelta(hours=int(commit[20:22]), minutes=int(commit[23:]))
-            elif commit[19] == '-':
-                form_date += datetime.timedelta(hours=int(commit[20:22]), minutes=int(commit[23:]))
-        commit = format_datetime(form_date - tz, format='short', locale=get_locale())
+            tz = datetime.timedelta(seconds=time.timezone if (time.localtime().tm_isdst == 0) else time.altzone)
+            form_date = datetime.datetime.strptime(commit[:19], "%Y-%m-%dT%H:%M:%S")
+            if len(commit) > 19:    # check if string has timezone
+                if commit[19] == '+':
+                    form_date -= datetime.timedelta(hours=int(commit[20:22]), minutes=int(commit[23:]))
+                elif commit[19] == '-':
+                    form_date += datetime.timedelta(hours=int(commit[20:22]), minutes=int(commit[23:]))
+            commit = format_datetime(form_date - tz, format='short', locale=get_locale())
+        else:
+            commit = version['version']
 
     content = ub.session.query(ub.User).all()
     settings = ub.session.query(ub.Settings).first()
@@ -3010,6 +2914,8 @@ def configuration_helper(origin):
                 content.config_calibre_dir = to_save["config_calibre_dir"]
                 db_change = True
         # Google drive setup
+        if not os.path.isfile(os.path.join(config.get_main_dir, 'settings.yaml')):
+            content.config_use_google_drive = False
         if "config_use_google_drive" in to_save and not content.config_use_google_drive and not gdriveError:
             if filedata:
                 if filedata['web']['redirect_uris'][0].endswith('/'):
@@ -3099,6 +3005,8 @@ def configuration_helper(origin):
             content.config_goodreads_api_key = to_save["config_goodreads_api_key"]
         if "config_goodreads_api_secret" in to_save:
             content.config_goodreads_api_secret = to_save["config_goodreads_api_secret"]
+        if "config_updater" in to_save:
+            content.config_updatechannel = int(to_save["config_updater"])
         if "config_log_level" in to_save:
             content.config_log_level = int(to_save["config_log_level"])
         if content.config_logfile != to_save["config_logfile"]:
@@ -3129,7 +3037,8 @@ def configuration_helper(origin):
                                              gdrive=gdriveutils.gdrive_support, goodreads=goodreads_support,
                                              rarfile_support=rar_support, title=_(u"Basic Configuration"))
         try:
-            if content.config_use_google_drive and is_gdrive_ready() and not os.path.exists(config.config_calibre_dir + "/metadata.db"):
+            if content.config_use_google_drive and is_gdrive_ready() and not \
+                    os.path.exists(os.path.join(content.config_calibre_dir, "metadata.db")):
                 gdriveutils.downloadFile(None, "metadata.db", config.config_calibre_dir + "/metadata.db")
             if db_change:
                 if config.db_configured:
@@ -3161,7 +3070,7 @@ def configuration_helper(origin):
             app.logger.info('Reboot required, restarting')
         if origin:
             success = True
-    if is_gdrive_ready() and gdriveutils.gdrive_support == True and config.config_use_google_drive == True:
+    if is_gdrive_ready() and gdriveutils.gdrive_support == True: # and config.config_use_google_drive == True:
         gdrivefolders=gdriveutils.listRootFolders()
     else:
         gdrivefolders=list()
@@ -3378,6 +3287,11 @@ def edit_user(user_id):
                 content.sidebar_view += ub.SIDEBAR_SORTED
             elif "show_sorted" not in to_save and content.show_sorted():
                 content.sidebar_view -= ub.SIDEBAR_SORTED
+
+            if "show_publisher" in to_save and not content.show_publisher():
+                content.sidebar_view += ub.SIDEBAR_PUBLISHER
+            elif "show_publisher" not in to_save and content.show_publisher():
+                content.sidebar_view -= ub.SIDEBAR_PUBLISHER
 
             if "show_hot" in to_save and not content.show_hot_books():
                 content.sidebar_view += ub.SIDEBAR_HOT
@@ -3948,19 +3862,13 @@ def upload():
             for author in db_book.authors:
                 author_names.append(author.name)
             if len(request.files.getlist("btn-upload")) < 2:
-                cc = db.session.query(db.Custom_Columns).filter(db.Custom_Columns.
-                                                                datatype.notin_(db.cc_exceptions)).all()
                 if current_user.role_edit() or current_user.role_admin():
-                    return render_title_template('book_edit.html', book=book, authors=author_names,
-                                                 cc=cc, title=_(u"edit metadata"), page="upload")
-                book_in_shelfs = []
-                kindle_list = helper.check_send_to_kindle(book)
-                reader_list = helper.check_read_formats(book)
-
-                return render_title_template('detail.html', entry=book, cc=cc,
-                                             title=book.title, books_shelfs=book_in_shelfs, kindle_list=kindle_list,
-                                             reader_list=reader_list, page="upload")
-    return redirect(url_for("index"))
+                    resp = {"location": url_for('edit_book', book_id=db_book.id)}
+                    return Response(json.dumps(resp), mimetype='application/json')
+                else:
+                    resp = {"location": url_for('show_book', book_id=db_book.id)}
+                    return Response(json.dumps(resp), mimetype='application/json')
+    return Response(json.dumps({"location": url_for("index")}), mimetype='application/json')
 
 
 @app.route("/admin/book/convert/<int:book_id>", methods=['POST'])

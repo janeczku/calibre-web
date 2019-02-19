@@ -1,7 +1,26 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+#  This file is part of the Calibre-Web (https://github.com/janeczku/calibre-web)
+#    Copyright (C) 2018 idalin, OzzieIsaacs
+#
+#  This program is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License as published by
+#  the Free Software Foundation, either version 3 of the License, or
+#  (at your option) any later version.
+#
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU General Public License for more details.
+#
+#  You should have received a copy of the GNU General Public License
+#  along with this program. If not, see <http://www.gnu.org/licenses/>.
+
 try:
     from pydrive.auth import GoogleAuth
     from pydrive.drive import GoogleDrive
-    from pydrive.auth import RefreshError
+    from pydrive.auth import RefreshError, InvalidConfigError
     from apiclient import errors
     gdrive_support = True
 except ImportError:
@@ -147,7 +166,10 @@ def getDrive(drive=None, gauth=None):
         # Save the current credentials to a file
         return GoogleDrive(gauth)
     if drive.auth.access_token_expired:
-        drive.auth.Refresh()
+        try:
+            drive.auth.Refresh()
+        except RefreshError as e:
+            web.app.logger.error("Google Drive error: " + e.message)
     return drive
 
 def listRootFolders():
@@ -435,6 +457,10 @@ def getChangeById (drive, change_id):
     except (errors.HttpError) as error:
         web.app.logger.info(error.message)
         return None
+    except Exception as e:
+        web.app.logger.info(e)
+        return None
+
 
 # Deletes the local hashes database to force search for new folder names
 def deleteDatabaseOnChange():
