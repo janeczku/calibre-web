@@ -92,7 +92,7 @@ if ( $( 'body.book' ).length > 0 ) {
       .replace(/^(?=\n)$|^\s*|\s*$|\n\n+/gm,"").split(/\n/);
      }
      else {
-       newdesc = description.toString();
+       newdesc = description.text();
      }
      doc = nlp ( newdesc.toString() );
      sentences = doc.map((m)=> m.out( 'text' ));
