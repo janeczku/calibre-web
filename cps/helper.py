@@ -22,13 +22,11 @@
 import db
 import ub
 from flask import current_app as app
-# import logging
 from tempfile import gettempdir
 import sys
 import os
 import re
 import unicodedata
-# from io import BytesIO
 import worker
 import time
 from flask import send_from_directory, make_response, redirect, abort
@@ -36,16 +34,13 @@ from flask_babel import gettext as _
 from flask_login import current_user
 from babel.dates import format_datetime
 from datetime import datetime
-# import threading
 import shutil
 import requests
-# import zipfile
 try:
     import gdriveutils as gd
 except ImportError:
     pass
 import web
-# import server
 import random
 import subprocess
 
@@ -355,9 +350,7 @@ def update_dir_structure_gdrive(book_id, first_author):
         gFile = gd.getFileFromEbooksFolder(os.path.dirname(book.path), titledir)
         if gFile:
             gFile['title'] = new_titledir
-
             gFile.Upload()
-            time.sleep(10)
             book.path = book.path.split('/')[0] + u'/' + new_titledir
             path = book.path
             gd.updateDatabaseOnEdit(gFile['id'], book.path)     # only child folder affected
@@ -365,10 +358,9 @@ def update_dir_structure_gdrive(book_id, first_author):
             error = _(u'File %(file)s not found on Google Drive', file=book.path) # file not found
 
     if authordir != new_authordir:
-        gFile = gd.getFileFromEbooksFolder(os.path.dirname(book.path), titledir)
+        gFile = gd.getFileFromEbooksFolder(os.path.dirname(book.path), new_titledir)
         if gFile:
             gd.moveGdriveFolderRemote(gFile, new_authordir)
-            time.sleep(10)
             book.path = new_authordir + u'/' + book.path.split('/')[1]
             path = book.path
             gd.updateDatabaseOnEdit(gFile['id'], book.path)
