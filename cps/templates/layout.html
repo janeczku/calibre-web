@@ -104,6 +104,14 @@
       </div>
       {%endif%}
     {% endfor %}
+    {% if g.current_theme == 1 %}
+      <div id="loader" hidden="true">
+        <center>
+          <h3>{{_('Uploading...')}}</h3>
+          <span>{{_("please don't refresh the page")}}</span>.
+        </center>
+      </div>
+    {%endif%}
     <div class="container-fluid">
       <div class="row-fluid">
         {% if g.user.is_authenticated or g.user.is_anonymous %}
