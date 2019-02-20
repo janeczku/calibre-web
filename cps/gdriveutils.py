@@ -31,13 +31,9 @@ from ub import config
 import cli
 import shutil
 from flask import Response, stream_with_context
-import time
-
 from sqlalchemy import *
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import *
-
-
 import web
 
 class Singleton:
@@ -286,9 +282,10 @@ def downloadFile(path, filename, output):
 def moveGdriveFolderRemote(origin_file, target_folder):
     drive = getDrive(Gdrive.Instance().drive)
     previous_parents = ",".join([parent["id"] for parent in origin_file.get('parents')])
+    children = drive.auth.service.children().list(folderId=previous_parents).execute()
     gFileTargetDir = getFileFromEbooksFolder(None, target_folder)
     if not gFileTargetDir:
-        # Folder is not exisiting, create, and move folder
+        # Folder is not existing, create, and move folder
         gFileTargetDir = drive.CreateFile(
             {'title': target_folder, 'parents': [{"kind": "drive#fileLink", 'id': getEbooksFolderId()}],
              "mimeType": "application/vnd.google-apps.folder"})
@@ -298,15 +295,10 @@ def moveGdriveFolderRemote(origin_file, target_folder):
                                       addParents=gFileTargetDir['id'],
                                       removeParents=previous_parents,
                                       fields='id, parents').execute()
-    # if previous_parents has no childs anymore, delete originfileparent
-    # is not working correctly, because of slow update on gdrive -> could cause trouble in gdrive.db
-    # (nonexisting folder has id)
-    time.sleep(20)
-    children = drive.auth.service.children().list(folderId=previous_parents).execute()
-    if not len(children['items']):
+    # if previous_parents has no childs anymore, delete original fileparent
+    if len(children['items']) == 1:
+        deleteDatabaseEntry(previous_parents)
         drive.auth.service.files().delete(fileId=previous_parents).execute()
-        time.sleep(20)
-
 
 
 def copyToDrive(drive, uploadFile, createRoot, replaceFiles,
