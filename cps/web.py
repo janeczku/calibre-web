@@ -40,7 +40,7 @@ import json
 import datetime
 from iso639 import languages as isoLanguages
 import re
-import db
+from cps import db
 import gdriveutils
 from redirect import redirect_back
 from cps import lm, babel, ub, config, get_locale, language_table, app
