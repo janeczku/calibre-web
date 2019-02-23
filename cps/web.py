@@ -2027,7 +2027,7 @@ def advanced_search():
                                  series=series, title=_(u"search"), cc=cc, page="advsearch")
 
 
-@app.route("/cover/<book_id>")
+@app.route("/cover/<int:book_id>")
 @login_required_if_no_ano
 def get_cover(book_id):
     book = db.session.query(db.Books).filter(db.Books.id == book_id).first()
@@ -3851,7 +3851,7 @@ def upload():
                 gdriveutils.updateGdriveCalibreFromLocal()
             if error:
                 flash(error, category="error")
-            uploadText=(u"File %s" % book.title)
+            uploadText=_(u"File %(title)s", title=book.title)
             helper.global_WorkerThread.add_upload(current_user.nickname,
                 "<a href=\"" + url_for('show_book', book_id=book.id) + "\">" + uploadText + "</a>")
 
