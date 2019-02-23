@@ -101,7 +101,7 @@ def default_meta(tmp_file_path, original_file_name, original_file_extension):
 def pdf_meta(tmp_file_path, original_file_name, original_file_extension):
 
     if use_pdf_meta:
-        pdf = PdfFileReader(open(tmp_file_path, 'rb'))
+        pdf = PdfFileReader(open(tmp_file_path, 'rb'), strict=False)
         doc_info = pdf.getDocumentInfo()
     else:
         doc_info = None

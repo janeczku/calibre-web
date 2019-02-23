@@ -490,19 +490,19 @@ if ( $( 'body.shelf' ).length > 0 ) {
       .addClass( 'order-shelf-btn' );
   $( '.delete-shelf-btn' ).attr({
       'data-toggle-two': 'tooltip',
-      'title': 'Delete Shelf',
+      'title': $( '.delete-shelf-btn' ).text(),     // 'Delete Shelf'
       'data-placement': 'bottom' })
       .addClass('delete-btn-tooltip');
 
   $( '.edit-shelf-btn' ).attr({
       'data-toggle-two': 'tooltip',
-      'title': 'Edit Shelf',
+      'title': $( '.edit-shelf-btn' ).text(),       // 'Edit Shelf'
       'data-placement': 'bottom' })
       .addClass('edit-btn-tooltip');
 
   $( '.order-shelf-btn' ).attr({
       'data-toggle-two': 'tooltip',
-      'title': 'Reorder Shelf',
+      'title': $( '.order-shelf-btn' ).text(),      //'Reorder Shelf'
       'data-placement': 'bottom' })
       .addClass('order-btn-tooltip');
 }
@@ -510,32 +510,32 @@ if ( $( 'body.shelf' ).length > 0 ) {
 // Rest of Tooltips
 $( '.home-btn > a' ).attr({
     'data-toggle': 'tooltip',
-    'title': 'Home',
+    'title': $(document.body).attr('data-text'),    // Home
     'data-placement': 'bottom' })
     .addClass('home-btn-tooltip');
 
 $( '.plexBack > a' ).attr({
    'data-toggle': 'tooltip',
-   'title': 'Back',
+   'title': $(document.body).attr('data-textback'), // Back
    'data-placement': 'bottom' })
    .addClass('back-btn-tooltip');
 
 $( '#top_tasks' ).attr({
     'data-toggle': 'tooltip',
-    'title': $( '#top_tasks' ).text(), //'Tasks',
+    'title': $( '#top_tasks' ).text(),              // 'Tasks'
     'data-placement': 'bottom',
     'data-viewport': '#main-nav' })
     .addClass('tasks-btn-tooltip');
 
 $( '#top_admin' ).attr({
   'data-toggle': 'tooltip',
-  'title': 'Settings',
+  'title': $( '#top_admin' ).attr('data-text'),     // Settings
   'data-placement': 'bottom',
   'data-viewport': '#main-nav' })
   .addClass('admin-btn-tooltip');
 
 $( '.profileDrop' ).attr({
-  'title': 'Account',
+  'title': $( '#top_user' ).attr('data-text'),      //Account
   'data-placement': 'bottom',
   'data-toggle-two': 'tooltip',
   'data-viewport': '#main-nav' })
@@ -543,78 +543,78 @@ $( '.profileDrop' ).attr({
 
 $( '#btn-upload' ).attr({
   'data-toggle': 'tooltip',
-  'title': $( '#btn-upload' ).parent().text() , // 'Upload',
+  'title': $( '#btn-upload' ).parent().text() ,     // 'Upload'
   'data-placement': 'bottom',
   'data-viewport': '#main-nav' })
   .addClass('upload-btn-tooltip');
 
 $( '#add-to-shelf' ).attr({
   'data-toggle-two': 'tooltip',
-  'title': $( '#add-to-shelf' ).text() , // 'Add to Shelf',
+  'title': $( '#add-to-shelf' ).text() ,            // 'Add to Shelf'
   'data-placement': 'bottom',
   'data-viewport': '.btn-toolbar' })
   .addClass('addtoshelf-btn-tooltip');
 
 $( '#have_read_cb' ).attr({
   'data-toggle': 'tooltip',
-  'title': 'Mark As Read',
+  'title': $( '#have_read_cb').attr('data-unchecked'),
   'data-placement': 'bottom',
   'data-viewport': '.btn-toolbar' })
   .addClass('readunread-btn-tooltip');
 
 $( '#have_read_cb:checked' ).attr({
   'data-toggle': 'tooltip',
-  'title': 'Mark As Unread',
+  'title': $( '#have_read_cb').attr('data-checked'),
   'data-placement': 'bottom',
   'data-viewport': '.btn-toolbar' })
   .addClass('readunread-btn-tooltip');
 
   $( 'button#delete' ).attr({
     'data-toggle-two': 'tooltip',
-    'title': $( 'button#delete' ).text(), //'Delete',
+    'title': $( 'button#delete' ).text(),           //'Delete'
     'data-placement': 'bottom',
     'data-viewport': '.btn-toolbar' })
     .addClass('delete-book-btn-tooltip');
 
 $( '#have_read_cb' ).click(function() {
   if ( $( '#have_read_cb:checked' ).length > 0 ) {
-      $( this ).attr('data-original-title', 'Mark as Unread');
+      $( this ).attr('data-original-title', $('#have_read_cb').attr('data-checked'));
   } else {
-      $( this).attr('data-original-title', 'Mark as Read');
+      $( this).attr('data-original-title', $('#have_read_cb').attr('data-unchecked'));
   }
 });
 
 $( '.btn-group[aria-label="Edit/Delete book"] a' ).attr({
    'data-toggle': 'tooltip',
-   'title': $( '#edit_book' ).text(), // 'Edit',
+   'title': $( '#edit_book' ).text(),               // 'Edit'
    'data-placement': 'bottom',
    'data-viewport': '.btn-toolbar' })
    .addClass('edit-btn-tooltip');
 
 $( '#sendbtn' ).attr({
   'data-toggle': 'tooltip',
-  'title': 'Send to Kindle',
+  'title': $( '#sendbtn' ).attr('data-text'),
   'data-placement': 'bottom',
   'data-viewport': '.btn-toolbar' })
   .addClass('send-btn-tooltip');
 
 $( '#sendbtn2' ).attr({
   'data-toggle-two': 'tooltip',
-  'title': 'Send to Kindle',
+  'title': $( '#sendbtn2' ).text(),                 // 'Send to Kindle',
   'data-placement': 'bottom',
   'data-viewport': '.btn-toolbar' })
   .addClass('send-btn-tooltip');
 
 $( '#read-in-browser' ).attr({
   'data-toggle-two': 'tooltip',
-  'title': 'Read',
+  'title': $( '#read-in-browser' ).text(),
   'data-placement': 'bottom',
   'data-viewport': '.btn-toolbar'})
   .addClass('send-btn-tooltip');
 
 $( '#btnGroupDrop1' ).attr({
   'data-toggle-two': 'tooltip',
-  'title': 'Download',
+  'title': $( '#btnGroupDrop1' ).text(),
   'data-placement': 'bottom',
   'data-viewport': '.btn-toolbar' });
 
