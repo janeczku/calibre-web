@@ -230,7 +230,10 @@ def get_valid_filename(value, replace_whitespace=True):
     value = value[:128]
     if not value:
         raise ValueError("Filename cannot be empty")
-    return value
+    if sys.version_info.major == 3:
+        return value
+    else:
+        return value.decode('utf-8')
 
 
 def get_sorted_author(value):
