@@ -250,7 +250,13 @@
     {% endif %}
     <script type="text/javascript">
         $(function() {
-            $("#form-upload").uploadprogress({redirect_url: '{{ url_for('index')}}'});
+            $("#form-upload").uploadprogress({
+              redirect_url: "{{ url_for('index')}}",
+              uploadedMsg: "{{_('Upload done, processing, please wait...')}}",
+              modalTitle: "{{_('Uploading...')}}",
+              modalFooter: "{{_('Close')}}",
+              modalTitleFailed: "{{_('Error')}}"
+            });
             $("#btn-upload").change(function() {
                 $("#form-upload").submit();
             });
