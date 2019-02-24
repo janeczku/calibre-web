@@ -142,12 +142,12 @@ if ub.oauth_support:
     @oauth_authorized.connect_via(github_blueprint)
     def github_logged_in(blueprint, token):
         if not token:
-            flash(_("Failed to log in with GitHub."), category="error")
+            flash(_(u"Failed to log in with GitHub."), category="error")
             return False
 
         resp = blueprint.session.get("/user")
         if not resp.ok:
-            flash(_("Failed to fetch user info from GitHub."), category="error")
+            flash(_(u"Failed to fetch user info from GitHub."), category="error")
             return False
 
         github_info = resp.json()
@@ -158,12 +158,12 @@ if ub.oauth_support:
     @oauth_authorized.connect_via(google_blueprint)
     def google_logged_in(blueprint, token):
         if not token:
-            flash(_("Failed to log in with Google."), category="error")
+            flash(_(u"Failed to log in with Google."), category="error")
             return False
 
         resp = blueprint.session.get("/oauth2/v2/userinfo")
         if not resp.ok:
-            flash(_("Failed to fetch user info from Google."), category="error")
+            flash(_(u"Failed to fetch user info from Google."), category="error")
             return False
 
         google_info = resp.json()
@@ -226,7 +226,7 @@ if ub.oauth_support:
                 if config.config_public_reg:
                     return redirect(url_for('web.register'))
                 else:
-                    flash(_('Public registration is not enabled'), category="error")
+                    flash(_(u"Public registration is not enabled"), category="error")
                     redirect(url_for(redirect_url))
         except NoResultFound:
             return redirect(url_for(redirect_url))
@@ -261,14 +261,14 @@ if ub.oauth_support:
                     ub.session.delete(oauth)
                     ub.session.commit()
                     logout_oauth_user()
-                    flash(_("Unlink to %(oauth)s success.", oauth=oauth_check[provider]), category="success")
+                    flash(_(u"Unlink to %(oauth)s success.", oauth=oauth_check[provider]), category="success")
                 except Exception as e:
                     app.logger.exception(e)
                     ub.session.rollback()
-                    flash(_("Unlink to %(oauth)s failed.", oauth=oauth_check[provider]), category="error")
+                    flash(_(u"Unlink to %(oauth)s failed.", oauth=oauth_check[provider]), category="error")
         except NoResultFound:
             app.logger.warning("oauth %s for user %d not fount" % (provider, current_user.id))
-            flash(_("Not linked to %(oauth)s.", oauth=oauth_check[provider]), category="error")
+            flash(_(u"Not linked to %(oauth)s.", oauth=oauth_check[provider]), category="error")
         return redirect(url_for('web.profile'))
 
 
@@ -276,14 +276,14 @@ if ub.oauth_support:
     @oauth_error.connect_via(github_blueprint)
     def github_error(blueprint, error, error_description=None, error_uri=None):
         msg = (
-            "OAuth error from {name}! "
-            "error={error} description={description} uri={uri}"
+            u"OAuth error from {name}! "
+            u"error={error} description={description} uri={uri}"
         ).format(
             name=blueprint.name,
             error=error,
             description=error_description,
             uri=error_uri,
-        )
+        ) # ToDo: Translate
         flash(msg, category="error")
 
 
@@ -322,14 +322,14 @@ if ub.oauth_support:
     @oauth_error.connect_via(google_blueprint)
     def google_error(blueprint, error, error_description=None, error_uri=None):
         msg = (
-            "OAuth error from {name}! "
-            "error={error} description={description} uri={uri}"
+            u"OAuth error from {name}! "
+            u"error={error} description={description} uri={uri}"
         ).format(
             name=blueprint.name,
             error=error,
             description=error_description,
             uri=error_uri,
-        )
+        ) # ToDo: Translate
         flash(msg, category="error")
 
 
