@@ -1078,7 +1078,7 @@ def advanced_search():
                                  series=series, title=_(u"search"), cc=cc, page="advsearch")
 
 
-@web.route("/cover/<book_id>")
+@web.route("/cover/<int:book_id>")
 @login_required_if_no_ano
 def get_cover(book_id):
     book = db.session.query(db.Books).filter(db.Books.id == book_id).first()
@@ -1252,7 +1252,7 @@ def register():
     if not config.config_public_reg:
         abort(404)
     if current_user is not None and current_user.is_authenticated:
-        return redirect(url_for('index'))
+        return redirect(url_for('web.index'))
 
     if request.method == "POST":
         to_save = request.form.to_dict()
@@ -1290,7 +1290,7 @@ def register():
                                 to_save["email"])
                 return render_title_template('register.html', title=_(u"register"), page="register")
             flash(_(u"Confirmation e-mail was send to your e-mail account."), category="success")
-            return redirect(url_for('login'))
+            return redirect(url_for('web.login'))
         else:
             flash(_(u"This username or e-mail address is already in use."), category="error")
             return render_title_template('register.html', title=_(u"register"), page="register")
