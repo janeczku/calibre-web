@@ -22,12 +22,11 @@
 #  along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 # opds routing functions
-from cps import config, mimetypes, app
+from cps import config, mimetypes, app, db
 from flask import request, render_template, Response, g, make_response
 from pagination import Pagination
 from flask import Blueprint
 import datetime
-import db
 import ub
 from flask_login import current_user
 from functools import wraps
