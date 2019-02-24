@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2019-02-20 20:23+0100\n"
+"POT-Creation-Date: 2019-02-24 19:21+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -40,7 +40,8 @@ msgstr ""
 msgid "%(format)s not found on Google Drive: %(fn)s"
 msgstr ""
 
-#: cps/helper.py:91 cps/helper.py:199 cps/templates/detail.html:49
+#: cps/helper.py:91 cps/helper.py:199 cps/templates/detail.html:45
+#: cps/templates/detail.html:49
 msgid "Send to Kindle"
 msgstr ""
 
@@ -90,72 +91,72 @@ msgstr ""
 msgid "The requested file could not be read. Maybe wrong permissions?"
 msgstr ""
 
-#: cps/helper.py:308
+#: cps/helper.py:311
 #, python-format
 msgid "Rename title from: '%(src)s' to '%(dest)s' failed with error: %(error)s"
 msgstr ""
 
-#: cps/helper.py:318
+#: cps/helper.py:321
 #, python-format
 msgid "Rename author from: '%(src)s' to '%(dest)s' failed with error: %(error)s"
 msgstr ""
 
-#: cps/helper.py:332
+#: cps/helper.py:335
 #, python-format
 msgid "Rename file in path '%(src)s' to '%(dest)s' failed with error: %(error)s"
 msgstr ""
 
-#: cps/helper.py:358 cps/helper.py:368 cps/helper.py:376
+#: cps/helper.py:361 cps/helper.py:371 cps/helper.py:379
 #, python-format
 msgid "File %(file)s not found on Google Drive"
 msgstr ""
 
-#: cps/helper.py:397
+#: cps/helper.py:400
 #, python-format
 msgid "Book path %(path)s not found on Google Drive"
 msgstr ""
 
-#: cps/helper.py:505
+#: cps/helper.py:508
 msgid "Error excecuting UnRar"
 msgstr ""
 
-#: cps/helper.py:507
+#: cps/helper.py:510
 msgid "Unrar binary file not found"
 msgstr ""
 
-#: cps/helper.py:538
+#: cps/helper.py:541
 msgid "Waiting"
 msgstr ""
 
-#: cps/helper.py:540
+#: cps/helper.py:543
 msgid "Failed"
 msgstr ""
 
-#: cps/helper.py:542
+#: cps/helper.py:545
 msgid "Started"
 msgstr ""
 
-#: cps/helper.py:544
+#: cps/helper.py:547
 msgid "Finished"
 msgstr ""
 
-#: cps/helper.py:546
+#: cps/helper.py:549
 msgid "Unknown Status"
 msgstr ""
 
-#: cps/helper.py:551
+#: cps/helper.py:554
 msgid "E-mail: "
 msgstr ""
 
-#: cps/helper.py:553 cps/helper.py:557
+#: cps/helper.py:556 cps/helper.py:560
 msgid "Convert: "
 msgstr ""
 
-#: cps/helper.py:555
+#: cps/helper.py:558
 msgid "Upload: "
 msgstr ""
 
-#: cps/helper.py:559
+#: cps/helper.py:562
 msgid "Unknown Task: "
 msgstr ""
 
@@ -734,6 +735,11 @@ msgstr ""
 msgid "Failed to delete file %(file)s (Permission denied)."
 msgstr ""
 
+#: cps/web.py:3854
+#, python-format
+msgid "File %(title)s"
+msgstr ""
+
 #: cps/web.py:3883
 msgid "Source or destination format for conversion missing"
 msgstr ""
@@ -912,8 +918,9 @@ msgstr ""
 #: cps/templates/book_edit.html:178 cps/templates/book_edit.html:200
 #: cps/templates/config_edit.html:226 cps/templates/config_view_edit.html:175
 #: cps/templates/email_edit.html:40 cps/templates/email_edit.html:75
-#: cps/templates/shelf.html:64 cps/templates/shelf_edit.html:19
-#: cps/templates/shelf_order.html:12 cps/templates/user_edit.html:149
+#: cps/templates/layout.html:28 cps/templates/shelf.html:64
+#: cps/templates/shelf_edit.html:19 cps/templates/shelf_order.html:12
+#: cps/templates/user_edit.html:149
 msgid "Back"
 msgstr ""
 
@@ -1083,6 +1090,7 @@ msgid "Loading..."
 msgstr ""
 
 #: cps/templates/book_edit.html:239 cps/templates/layout.html:225
+#: cps/templates/layout.html:257
 msgid "Close"
 msgstr ""
 
@@ -1400,6 +1408,14 @@ msgstr ""
 msgid "language"
 msgstr ""
 
+#: cps/templates/detail.html:185
+msgid "Mark As Unread"
+msgstr ""
+
+#: cps/templates/detail.html:185
+msgid "Mark As Read"
+msgstr ""
+
 #: cps/templates/detail.html:186
 msgid "Read"
 msgstr ""
@@ -1561,12 +1577,25 @@ msgstr ""
 msgid "User's own shelfs, only visible to the current user himself"
 msgstr ""
 
+#: cps/templates/layout.html:28
+msgid "Home"
+msgstr ""
+
 #: cps/templates/layout.html:34
 msgid "Toggle navigation"
 msgstr ""
 
 #: cps/templates/layout.html:55
 msgid "Advanced Search"
+msgstr ""
+
+#: cps/templates/layout.html:75 cps/templates/read.html:71
+#: cps/templates/readcbr.html:79 cps/templates/readcbr.html:103
+msgid "Settings"
+msgstr ""
+
+#: cps/templates/layout.html:77
+msgid "Account"
 msgstr ""
 
 #: cps/templates/layout.html:79
@@ -1577,7 +1606,7 @@ msgstr ""
 msgid "Register"
 msgstr ""
 
-#: cps/templates/layout.html:110
+#: cps/templates/layout.html:110 cps/templates/layout.html:256
 msgid "Uploading..."
 msgstr ""
 
@@ -1650,6 +1679,10 @@ msgstr ""
 msgid "Upload done, processing, please wait..."
 msgstr ""
 
+#: cps/templates/layout.html:258
+msgid "Error"
+msgstr ""
+
 #: cps/templates/login.html:8 cps/templates/login.html:9
 #: cps/templates/register.html:7 cps/templates/user_edit.html:8
 msgid "Username"
@@ -1670,11 +1703,6 @@ msgstr ""
 
 #: cps/templates/osd.xml:5
 msgid "Calibre-Web ebook catalog"
-msgstr ""
-
-#: cps/templates/read.html:71 cps/templates/readcbr.html:79
-#: cps/templates/readcbr.html:103
-msgid "Settings"
 msgstr ""
 
 #: cps/templates/read.html:74
