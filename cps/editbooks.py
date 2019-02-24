@@ -26,7 +26,7 @@ from cps import config, language_table, get_locale, app, ub, global_WorkerThread
 from flask import request, flash, redirect, url_for, abort, Markup, Response
 from flask import Blueprint
 import datetime
-import db
+from cps import db
 import os
 import json
 from flask_babel import gettext as _

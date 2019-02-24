@@ -23,7 +23,7 @@
 
 from flask import Blueprint
 from flask_login import login_required
-import db
+from cps import db
 import sys
 import uploader
 from babel import __version__ as babelVersion

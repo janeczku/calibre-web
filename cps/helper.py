@@ -19,13 +19,12 @@
 #  along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 
-from cps import config, global_WorkerThread, get_locale
+from cps import config, global_WorkerThread, get_locale, db
 from flask import current_app as app
 from tempfile import gettempdir
 import sys
 import os
 import re
-import db
 import unicodedata
 import worker
 import time

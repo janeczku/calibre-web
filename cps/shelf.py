@@ -22,13 +22,11 @@
 #  along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 from flask import Blueprint, request, flash, redirect, url_for
-from cps import ub, searched_ids
+from cps import ub, searched_ids, app, db
 from flask_babel import gettext as _
 from sqlalchemy.sql.expression import func, or_
 from flask_login import login_required, current_user
 from web import render_title_template
-from cps import app
-import db
 
 shelf = Blueprint('shelf', __name__)
 
