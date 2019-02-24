@@ -401,7 +401,7 @@ class Updater(threading.Thread):
         if request_method == "GET":
             parents = []
             # repository_url = 'https://api.github.com/repos/flatpak/flatpak/releases'  # test URL
-            repository_url = 'https://api.github.com/repos/janeczku/calibre-web/releases'
+            repository_url = 'https://api.github.com/repos/janeczku/calibre-web/releases?per_page=100'
             status, commit = self._load_remote_data(repository_url)
             if status['message'] != '':
                 return json.dumps(status)

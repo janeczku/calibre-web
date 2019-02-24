@@ -223,7 +223,11 @@ if ub.oauth_support:
                     except Exception as e:
                         app.logger.exception(e)
                         ub.session.rollback()
-                return redirect(url_for('web.register'))
+                if config.config_public_reg:
+                    return redirect(url_for('web.register'))
+                else:
+                    flash(_('Public registration is not enabled'), category="error")
+                    redirect(url_for(redirect_url))
         except NoResultFound:
             return redirect(url_for(redirect_url))
 
@@ -265,7 +269,7 @@ if ub.oauth_support:
         except NoResultFound:
             app.logger.warning("oauth %s for user %d not fount" % (provider, current_user.id))
             flash(_("Not linked to %(oauth)s.", oauth=oauth_check[provider]), category="error")
-        return redirect(url_for('profile'))
+        return redirect(url_for('web.profile'))
 
 
     # notify on OAuth provider error

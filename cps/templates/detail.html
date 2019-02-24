@@ -18,7 +18,7 @@
             {% if entry.data|length %}
             <div class="btn-group" role="group">
                 {% if entry.data|length < 2 %}
-                  <button type="button" class="btn btn-primary">
+                  <button id="Download" type="button" class="btn btn-primary">
                     {{_('Download')}} :
                   </button>
                   {% for format in entry.data %}
@@ -42,7 +42,7 @@
           {% endif %}
             {% if g.user.kindle_mail and g.user.is_authenticated and kindle_list %}
               {% if kindle_list.__len__() == 1 %}
-                <a href="{{url_for('web.send_to_kindle', book_id=entry.id, book_format=kindle_list[0]['format'], convert=kindle_list[0]['convert'])}}" id="sendbtn" class="btn btn-primary" role="button"><span class="glyphicon glyphicon-send"></span> {{kindle_list[0]['text']}}</a>
+                <a href="{{url_for('web.send_to_kindle', book_id=entry.id, book_format=kindle_list[0]['format'], convert=kindle_list[0]['convert'])}}" id="sendbtn" data-text="{{_('Send to Kindle')}}" class="btn btn-primary" role="button"><span class="glyphicon glyphicon-send"></span> {{kindle_list[0]['text']}}</a>
               {% else %}
                 <div class="btn-group" role="group">
                   <button id="sendbtn2" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -206,7 +206,7 @@
           <p>
           <form id="have_read_form" action="{{ url_for('web.toggle_read', book_id=entry.id)}}" method="POST">
             <label class="block-label">
-              <input id="have_read_cb" type="checkbox" {% if have_read %}checked{% endif %} >
+              <input id="have_read_cb" data-checked="{{_('Mark As Unread')}}" data-unchecked="{{_('Mark As Read')}}" type="checkbox" {% if have_read %}checked{% endif %} >
               <span>{{_('Read')}}</span>
             </label>
           </form>

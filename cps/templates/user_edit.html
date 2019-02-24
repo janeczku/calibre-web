@@ -51,9 +51,9 @@
       {% for oauth, name in registered_oauth.iteritems() %}
       <label for="config_{{ oauth }}_oauth" style="margin-left: 15px">{{ name }}</label>
         {% if oauth not in oauth_status %}
-      <a href="/{{ oauth }}" target="_blank" style="margin-left: 5px">Link</a>
+      <a href="/cw/github" target="_blank" style="margin-left: 5px">Link</a> <!-- ToDo: Not really working-->
         {% else %}
-      <a href="/unlink/{{ oauth }}" style="margin-left: 5px">Unlink</a>
+      <a href="{{ url_for('oauth.github_login_unlink') }}" style="margin-left: 5px">{{_('Unlink')}}</a> <!-- ToDo: Google not working-->
         {% endif %}
       <br/>
       {% endfor %}
