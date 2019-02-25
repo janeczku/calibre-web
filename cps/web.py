@@ -1207,7 +1207,7 @@ def get_updater_status():
 def index(page):
     entries, random, pagination = fill_indexpage(page, db.Books, True, [db.Books.timestamp.desc()])
     return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
-                                 title=_(u"Recently Added Books"), page="root")
+                                 title=_(u"Recently Added Books"), page="root", config_authors_max=config.config_authors_max)
 
 
 @app.route('/books/newest', defaults={'page': 1})
@@ -1351,7 +1351,8 @@ def author(book_id, page):
             app.logger.error('Goodreads website is down/inaccessible')
 
     return render_title_template('author.html', entries=entries, pagination=pagination,
-                                 title=name, author=author_info, other_books=other_books, page="author")
+                                 title=name, author=author_info, other_books=other_books, page="author",
+                                 config_authors_max=config.config_authors_max)
 
 
 @app.route("/publisher")
@@ -2817,6 +2818,9 @@ def view_configuration():
             content.config_random_books = int(to_save["config_random_books"])
         if "config_books_per_page" in to_save:
             content.config_books_per_page = int(to_save["config_books_per_page"])
+        # maximum authors to show before we display a 'show more' link
+        if "config_authors_max" in to_save:
+            content.config_authors_max = int(to_save["config_authors_max"])
         # Mature Content configuration
         if "config_mature_content_tags" in to_save:
             content.config_mature_content_tags = to_save["config_mature_content_tags"].strip()
