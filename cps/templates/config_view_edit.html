@@ -28,6 +28,10 @@
           <input type="number" min="1" max="30" class="form-control" name="config_random_books" id="config_random_books" value="{% if content.config_random_books != None %}{{ content.config_random_books }}{% endif %}" autocomplete="off">
         </div>
         <div class="form-group">
+          <label for="config_authors_max">{{_('No. of authors to show before hiding (0=disable hiding)')}}</label>
+          <input type="number" min="0" max="999" class="form-control" name="config_authors_max" id="config_authors_max" value="{% if content.config_authors_max != None %}{{ content.config_authors_max }}{% endif %}" autocomplete="off">
+        </div>
+        <div class="form-group">
         <label for="config_theme">{{_('Theme')}}</label>
             <select name="config_theme" id="config_theme" class="form-control">
                 <option value="0" {% if content.config_theme == 0 %}selected{% endif %}>{{ _("Standard Theme") }}</option>
