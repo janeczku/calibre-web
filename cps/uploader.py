@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 #  This file is part of the Calibre-Web (https://github.com/janeczku/calibre-web)
-#    Copyright (C) 2012-2019 lemmsh, OzzieIsaacs
+#    Copyright (C) 2012-2019 lemmsh cervinko Kennyl matthazinski OzzieIsaacs
 #
 #  This program is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
@@ -25,40 +25,10 @@ import logging
 import os
 from flask_babel import gettext as _
 import comic
-
-BookMeta = namedtuple('BookMeta', 'file_path, extension, title, author, cover, description, tags, series, series_id, languages')
-
-"""
- :rtype: BookMeta
-"""
-
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-
-#   This file is part of the Calibre-Web (https://github.com/janeczku/calibre-web)
-#     Copyright (C) 2016-2019 lemmsh cervinko Kennyl matthazinski OzzieIsaacs
-#
-#   This program is free software: you can redistribute it and/or modify
-#   it under the terms of the GNU General Public License as published by
-#   the Free Software Foundation, either version 3 of the License, or
-#   (at your option) any later version.
-#
-#   This program is distributed in the hope that it will be useful,
-#   but WITHOUT ANY WARRANTY; without even the implied warranty of
-#   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#   GNU General Public License for more details.
-#
-#   You should have received a copy of the GNU General Public License
-#   along with this program. If not, see <http://www.gnu.org/licenses/>.
-
-
-
 try:
     from lxml.etree import LXML_VERSION as lxmlversion
 except ImportError:
     lxmlversion = None
-
-__author__ = 'lemmsh'
 
 logger = logging.getLogger("book_formats")
 
@@ -91,6 +61,14 @@ try:
 except ImportError as e:
     logger.warning('cannot import fb2, extracting fb2 metadata will not work: %s', e)
     use_fb2_meta = False
+
+__author__ = 'lemmsh'
+
+BookMeta = namedtuple('BookMeta', 'file_path, extension, title, author, cover, description, tags, series, series_id, languages')
+
+"""
+ :rtype: BookMeta
+"""
 
 
 def process(tmp_file_path, original_file_name, original_file_extension):
