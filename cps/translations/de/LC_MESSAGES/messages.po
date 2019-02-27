@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2019-02-24 19:21+0100\n"
+"POT-Creation-Date: 2019-02-27 19:28+0100\n"
 "PO-Revision-Date: 2019-02-24 19:15+0100\n"
 "Last-Translator: Ozzie Isaacs\n"
 "Language: de\n"
@@ -310,7 +310,7 @@ msgstr "Kategorieliste"
 msgid "Category: %(name)s"
 msgstr "Kategorie: %(name)s"
 
-#: cps/templates/layout.html:72 cps/web.py:1628
+#: cps/templates/layout.html:73 cps/web.py:1628
 msgid "Tasks"
 msgstr "Aufgaben"
 
@@ -357,12 +357,12 @@ msgid "search"
 msgstr "Suche"
 
 #: cps/templates/index.xml:47 cps/templates/index.xml:51
-#: cps/templates/layout.html:147 cps/web.py:2095
+#: cps/templates/layout.html:148 cps/web.py:2095
 msgid "Read Books"
 msgstr "Gelesene Bücher"
 
 #: cps/templates/index.xml:55 cps/templates/index.xml:59
-#: cps/templates/layout.html:149 cps/web.py:2098
+#: cps/templates/layout.html:150 cps/web.py:2098
 msgid "Unread Books"
 msgstr "Ungelesene Bücher"
 
@@ -667,16 +667,16 @@ msgstr "Buch öffnen fehlgeschlagen. Datei existiert nicht, oder ist nicht zugä
 msgid "edit metadata"
 msgstr "Metadaten editieren"
 
-#: cps/web.py:3490 cps/web.py:3737
+#: cps/web.py:3490 cps/web.py:3736
 #, python-format
 msgid "File extension '%(ext)s' is not allowed to be uploaded to this server"
 msgstr "Dateiendung '%(ext)s' kann nicht auf diesen Server hochgeladen werden"
 
-#: cps/web.py:3494 cps/web.py:3741
+#: cps/web.py:3494 cps/web.py:3739
 msgid "File to be uploaded must have an extension"
 msgstr "Dateien müssen eine Erweiterung haben, um hochgeladen zu werden"
 
-#: cps/web.py:3506 cps/web.py:3761
+#: cps/web.py:3506 cps/web.py:3758
 #, python-format
 msgid "Failed to create path %(path)s (Permission denied)."
 msgstr "Fehler beim Erzeugen des Pfads %(path)s (Zugriff verweigert)"
@@ -726,31 +726,31 @@ msgstr "Metadaten wurden erfolgreich aktualisiert"
 msgid "Error editing book, please check logfile for details"
 msgstr "Fehler beim Editieren des Buchs, Details im Logfile"
 
-#: cps/web.py:3766
+#: cps/web.py:3762
 #, python-format
 msgid "Failed to store file %(file)s (Permission denied)."
 msgstr "Fehler beim speichern der Datei %(file)s (Zugriff verweigert)"
 
-#: cps/web.py:3771
+#: cps/web.py:3767
 #, python-format
 msgid "Failed to delete file %(file)s (Permission denied)."
 msgstr "Fehler beim Löschen von Datei %(file)s (Zugriff verweigert)"
 
-#: cps/web.py:3854
+#: cps/web.py:3850
 #, python-format
 msgid "File %(title)s"
 msgstr "Datei %(title)s"
 
-#: cps/web.py:3883
+#: cps/web.py:3879
 msgid "Source or destination format for conversion missing"
 msgstr "Quell- oder Zielformat für Konvertierung fehlt"
 
-#: cps/web.py:3893
+#: cps/web.py:3889
 #, python-format
 msgid "Book successfully queued for converting to %(book_format)s"
 msgstr "Buch wurde erfolgreich für die Konvertierung in das %(book_format)s Format eingereiht"
 
-#: cps/web.py:3897
+#: cps/web.py:3893
 #, python-format
 msgid "There was an error converting this book: %(res)s"
 msgstr "Es trat ein Fehlker beim Konvertieren des Buches auf: %(res)s"
@@ -785,7 +785,7 @@ msgstr "Kindle"
 msgid "DLS"
 msgstr "DLS"
 
-#: cps/templates/admin.html:13 cps/templates/layout.html:75
+#: cps/templates/admin.html:13 cps/templates/layout.html:76
 msgid "Admin"
 msgstr "Admin"
 
@@ -996,7 +996,7 @@ msgstr "Beschreibung"
 msgid "Tags"
 msgstr "Tags"
 
-#: cps/templates/book_edit.html:75 cps/templates/layout.html:158
+#: cps/templates/book_edit.html:75 cps/templates/layout.html:159
 #: cps/templates/search_form.html:53
 msgid "Series"
 msgstr "Serien"
@@ -1090,8 +1090,8 @@ msgstr "Klicke auf das Bild um die Metadaten zu übertragen"
 msgid "Loading..."
 msgstr "Lade..."
 
-#: cps/templates/book_edit.html:239 cps/templates/layout.html:225
-#: cps/templates/layout.html:257
+#: cps/templates/book_edit.html:239 cps/templates/layout.html:226
+#: cps/templates/layout.html:258
 msgid "Close"
 msgstr "Schließen"
 
@@ -1259,7 +1259,7 @@ msgstr "Pfad zu Konvertertool"
 msgid "Location of Unrar binary"
 msgstr "Pfad zum UnRar Programm"
 
-#: cps/templates/config_edit.html:229 cps/templates/layout.html:83
+#: cps/templates/config_edit.html:229 cps/templates/layout.html:84
 #: cps/templates/login.html:4
 msgid "Login"
 msgstr "Login"
@@ -1268,8 +1268,8 @@ msgstr "Login"
 msgid "View Configuration"
 msgstr "Ansichtskonfiguration"
 
-#: cps/templates/config_view_edit.html:19 cps/templates/layout.html:134
-#: cps/templates/layout.html:135 cps/templates/shelf_edit.html:7
+#: cps/templates/config_view_edit.html:19 cps/templates/layout.html:135
+#: cps/templates/layout.html:136 cps/templates/shelf_edit.html:7
 msgid "Title"
 msgstr "Titel"
 
@@ -1489,7 +1489,7 @@ msgstr "Hinzufügen"
 msgid "Do you really want to delete this domain rule?"
 msgstr "Soll diese Domain Regel wirklich gelöscht werden?"
 
-#: cps/templates/feed.xml:21 cps/templates/layout.html:209
+#: cps/templates/feed.xml:21 cps/templates/layout.html:210
 msgid "Next"
 msgstr "Nächste"
 
@@ -1510,7 +1510,7 @@ msgstr "Entdecke (Zufälliges Buch)"
 msgid "Start"
 msgstr "Start"
 
-#: cps/templates/index.xml:18 cps/templates/layout.html:140
+#: cps/templates/index.xml:18 cps/templates/layout.html:141
 msgid "Hot Books"
 msgstr "Beliebte Bücher"
 
@@ -1518,7 +1518,7 @@ msgstr "Beliebte Bücher"
 msgid "Popular publications from this catalog based on Downloads."
 msgstr "Beliebte Publikationen aus dieser Bibliothek basierend auf Downloadzahlen."
 
-#: cps/templates/index.xml:25 cps/templates/layout.html:143
+#: cps/templates/index.xml:25 cps/templates/layout.html:144
 msgid "Best rated Books"
 msgstr "Best bewertete Bücher"
 
@@ -1538,7 +1538,7 @@ msgstr "Die neuesten Bücher"
 msgid "Show Random Books"
 msgstr "Zeige zufällige Bücher"
 
-#: cps/templates/index.xml:62 cps/templates/layout.html:161
+#: cps/templates/index.xml:62 cps/templates/layout.html:162
 msgid "Authors"
 msgstr "Autoren"
 
@@ -1546,7 +1546,7 @@ msgstr "Autoren"
 msgid "Books ordered by Author"
 msgstr "Bücher nach Autoren sortiert"
 
-#: cps/templates/index.xml:69 cps/templates/layout.html:164
+#: cps/templates/index.xml:69 cps/templates/layout.html:165
 msgid "Publishers"
 msgstr "Verleger"
 
@@ -1562,7 +1562,7 @@ msgstr "Bücher nach Kategorien sortiert"
 msgid "Books ordered by series"
 msgstr "Bücher nach Reihen geordnet"
 
-#: cps/templates/index.xml:90 cps/templates/layout.html:170
+#: cps/templates/index.xml:90 cps/templates/layout.html:171
 msgid "Public Shelves"
 msgstr "Öffentliche Bücherregale"
 
@@ -1570,7 +1570,7 @@ msgstr "Öffentliche Bücherregale"
 msgid "Books organized in public shelfs, visible to everyone"
 msgstr "Bücher organisiert in öffentlichem Bücherregal, sichtbar für jedermann"
 
-#: cps/templates/index.xml:98 cps/templates/layout.html:174
+#: cps/templates/index.xml:98 cps/templates/layout.html:175
 msgid "Your Shelves"
 msgstr "Deine Bücherregale"
 
@@ -1590,99 +1590,99 @@ msgstr "Nagivation umschalten"
 msgid "Advanced Search"
 msgstr "Erweiterte Suche"
 
-#: cps/templates/layout.html:75 cps/templates/read.html:71
+#: cps/templates/layout.html:76 cps/templates/read.html:71
 #: cps/templates/readcbr.html:79 cps/templates/readcbr.html:103
 msgid "Settings"
 msgstr "Einstellungen"
 
-#: cps/templates/layout.html:77
+#: cps/templates/layout.html:78
 msgid "Account"
 msgstr "Benutzerkonto"
 
-#: cps/templates/layout.html:79
+#: cps/templates/layout.html:80
 msgid "Logout"
 msgstr "Logout"
 
-#: cps/templates/layout.html:84 cps/templates/register.html:14
+#: cps/templates/layout.html:85 cps/templates/register.html:14
 msgid "Register"
 msgstr "Registrieren"
 
-#: cps/templates/layout.html:110 cps/templates/layout.html:256
+#: cps/templates/layout.html:111 cps/templates/layout.html:257
 msgid "Uploading..."
 msgstr "Hochladen..."
 
-#: cps/templates/layout.html:111
+#: cps/templates/layout.html:112
 msgid "please don't refresh the page"
 msgstr "Bitte die Seite nicht neu laden"
 
-#: cps/templates/layout.html:121
+#: cps/templates/layout.html:122
 msgid "Browse"
 msgstr "Browsen"
 
-#: cps/templates/layout.html:123
+#: cps/templates/layout.html:124
 msgid "Recently Added"
 msgstr "Kürzlich hinzugefügt"
 
-#: cps/templates/layout.html:128
+#: cps/templates/layout.html:129
 msgid "Sorted Books"
 msgstr "Bücher Sortiert"
 
-#: cps/templates/layout.html:132 cps/templates/layout.html:133
-#: cps/templates/layout.html:134 cps/templates/layout.html:135
+#: cps/templates/layout.html:133 cps/templates/layout.html:134
+#: cps/templates/layout.html:135 cps/templates/layout.html:136
 msgid "Sort By"
 msgstr "Sortiert nach"
 
-#: cps/templates/layout.html:132
+#: cps/templates/layout.html:133
 msgid "Newest"
 msgstr "Neueste"
 
-#: cps/templates/layout.html:133
+#: cps/templates/layout.html:134
 msgid "Oldest"
 msgstr "Älteste"
 
-#: cps/templates/layout.html:134
+#: cps/templates/layout.html:135
 msgid "Ascending"
 msgstr "Aufsteigend"
 
-#: cps/templates/layout.html:135
+#: cps/templates/layout.html:136
 msgid "Descending"
 msgstr "Absteigend"
 
-#: cps/templates/layout.html:152
+#: cps/templates/layout.html:153
 msgid "Discover"
 msgstr "Entdecke"
 
-#: cps/templates/layout.html:155
+#: cps/templates/layout.html:156
 msgid "Categories"
 msgstr "Kategorien"
 
-#: cps/templates/layout.html:167 cps/templates/search_form.html:74
+#: cps/templates/layout.html:168 cps/templates/search_form.html:74
 msgid "Languages"
 msgstr "Sprachen"
 
-#: cps/templates/layout.html:179
+#: cps/templates/layout.html:180
 msgid "Create a Shelf"
 msgstr "Bücherregal erzeugen"
 
-#: cps/templates/layout.html:180 cps/templates/stats.html:3
+#: cps/templates/layout.html:181 cps/templates/stats.html:3
 msgid "About"
 msgstr "Über"
 
-#: cps/templates/layout.html:194
+#: cps/templates/layout.html:195
 msgid "Previous"
 msgstr "Vorheriger"
 
-#: cps/templates/layout.html:221
+#: cps/templates/layout.html:222
 msgid "Book Details"
 msgstr "Buchdetails"
 
-#: cps/templates/layout.html:255
+#: cps/templates/layout.html:256
 msgid "Upload done, processing, please wait..."
 msgstr "Hochladen beendet, verarbeite Daten, bitte warten..."
 
-#: cps/templates/layout.html:258
+#: cps/templates/layout.html:259
 msgid "Error"
-msgstr "Fehker"
+msgstr "Fehler"
 
 #: cps/templates/login.html:8 cps/templates/login.html:9
 #: cps/templates/register.html:7 cps/templates/user_edit.html:8
