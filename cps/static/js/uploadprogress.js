@@ -132,8 +132,8 @@
             // Replace the contents of the form, with the returned html
             if (xhr.status === 422) {
                 var newHtml = $.parseHTML(xhr.responseText);
-                this.replace_form(newHtml);
-                this.$modal.modal("hide");
+                this.$modalBar.text(newHtml[0].data);
+                //this.$modal.modal("hide");
             }
             // Write the error response to the document.
             else{

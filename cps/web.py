@@ -698,7 +698,7 @@ def render_xml_template(*args, **kwargs):
 
 # Returns the template for redering and includes the instance name
 def render_title_template(*args, **kwargs):
-    return render_template(instance=config.config_calibre_web_title, *args, **kwargs)
+    return render_template(instance=config.config_calibre_web_title, accept=EXTENSIONS_UPLOAD, *args, **kwargs)
 
 
 @app.before_request
@@ -3733,13 +3733,10 @@ def upload():
             if '.' in requested_file.filename:
                 file_ext = requested_file.filename.rsplit('.', 1)[-1].lower()
                 if file_ext not in EXTENSIONS_UPLOAD:
-                    flash(
-                        _("File extension '%(ext)s' is not allowed to be uploaded to this server",
-                          ext=file_ext), category="error")
-                    return redirect(url_for('index'))
+                    return Response(_("File extension '%(ext)s' is not allowed to be uploaded to this server",
+                          ext=file_ext)), 422
             else:
-                flash(_('File to be uploaded must have an extension'), category="error")
-                return redirect(url_for('index'))
+                return Response(_('File to be uploaded must have an extension')), 422
 
             # extract metadata from file
             meta = uploader.upload(requested_file)
@@ -3758,13 +3755,12 @@ def upload():
                 try:
                     os.makedirs(filepath)
                 except OSError:
-                    flash(_(u"Failed to create path %(path)s (Permission denied).", path=filepath), category="error")
-                    return redirect(url_for('index'))
+                    return Response(_(u"Failed to create path %(path)s (Permission denied).", path=filepath)), 422
             try:
                 copyfile(meta.file_path, saved_filename)
             except OSError:
-                flash(_(u"Failed to store file %(file)s (Permission denied).", file=saved_filename), category="error")
-                return redirect(url_for('index'))
+                return Response(_(u"Failed to store file %(file)s (Permission denied).", file=saved_filename)), 422
+
             try:
                 os.unlink(meta.file_path)
             except OSError:
