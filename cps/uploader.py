@@ -25,12 +25,13 @@ import logging
 import os
 from flask_babel import gettext as _
 import comic
+from cps import app
 try:
     from lxml.etree import LXML_VERSION as lxmlversion
 except ImportError:
     lxmlversion = None
 
-logger = logging.getLogger("book_formats")
+# logger = logging.getLogger("uploader")
 
 try:
     from wand.image import Image
@@ -38,28 +39,28 @@ try:
     from wand.exceptions import PolicyError
     use_generic_pdf_cover = False
 except (ImportError, RuntimeError) as e:
-    logger.warning('cannot import Image, generating pdf covers for pdf uploads will not work: %s', e)
+    app.logger.warning('cannot import Image, generating pdf covers for pdf uploads will not work: %s', e)
     use_generic_pdf_cover = True
 try:
     from PyPDF2 import PdfFileReader
     from PyPDF2 import __version__ as PyPdfVersion
     use_pdf_meta = True
 except ImportError as e:
-    logger.warning('cannot import PyPDF2, extracting pdf metadata will not work: %s', e)
+    app.logger.warning('cannot import PyPDF2, extracting pdf metadata will not work: %s', e)
     use_pdf_meta = False
 
 try:
     import epub
     use_epub_meta = True
 except ImportError as e:
-    logger.warning('cannot import epub, extracting epub metadata will not work: %s', e)
+    app.logger.warning('cannot import epub, extracting epub metadata will not work: %s', e)
     use_epub_meta = False
 
 try:
     import fb2
     use_fb2_meta = True
 except ImportError as e:
-    logger.warning('cannot import fb2, extracting fb2 metadata will not work: %s', e)
+    app.logger.warning('cannot import fb2, extracting fb2 metadata will not work: %s', e)
     use_fb2_meta = False
 
 __author__ = 'lemmsh'
@@ -84,7 +85,7 @@ def process(tmp_file_path, original_file_name, original_file_extension):
             meta = comic.get_comic_info(tmp_file_path, original_file_name, original_file_extension)
 
     except Exception as ex:
-        logger.warning('cannot parse metadata, using default: %s', ex)
+        app.logger.warning('cannot parse metadata, using default: %s', ex)
 
     if meta and meta.title.strip() and meta.author.strip():
         return meta

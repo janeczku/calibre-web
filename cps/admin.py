@@ -494,7 +494,7 @@ def configuration_helper(origin):
             flash(_(u"Calibre-Web configuration updated"), category="success")
             config.loadSettings()
             app.logger.setLevel(config.config_log_level)
-            logging.getLogger("uploader").setLevel(config.config_log_level)
+            # logging.getLogger("uploader").setLevel(config.config_log_level)
         except Exception as e:
             flash(e, category="error")
             return render_title_template("config_edit.html", content=config, origin=origin,

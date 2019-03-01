@@ -25,9 +25,6 @@ except ImportError:
     import pickle as cPickle
 
 
-
-
-
 mimetypes.init()
 mimetypes.add_type('application/xhtml+xml', '.xhtml')
 mimetypes.add_type('application/epub+zip', '.epub')
@@ -55,7 +52,6 @@ lm.anonymous_user = ub.Anonymous
 
 ub.init_db()
 config = Config()
-
 
 import db
 
@@ -90,8 +86,8 @@ def create_app():
     app.logger.setLevel(config.config_log_level)
 
     app.logger.info('Starting Calibre Web...')
-    logging.getLogger("book_formats").addHandler(file_handler)
-    logging.getLogger("book_formats").setLevel(config.config_log_level)
+    # logging.getLogger("uploader").addHandler(file_handler)
+    # logging.getLogger("uploader").setLevel(config.config_log_level)
     Principal(app)
     lm.init_app(app)
     app.secret_key = os.getenv('SECRET_KEY', 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT')
