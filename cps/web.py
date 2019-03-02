@@ -61,8 +61,7 @@ import base64
 from sqlalchemy.sql import *
 import json
 import datetime
-from iso639 import languages as isoLanguages
-from iso639 import __version__ as iso639Version
+import isoLanguages
 from pytz import __version__ as pytzVersion
 from uuid import uuid4
 import os.path
@@ -1657,7 +1656,7 @@ def stats():
     versions['Flask'] = 'v' + flaskVersion
     versions['Flask Login'] = 'v' + flask_loginVersion
     versions['Flask Principal'] = 'v' + flask_principalVersion
-    versions['Iso 639'] = 'v' + iso639Version
+    versions['Iso 639'] = 'v' + isoLanguages.__version__
     versions['pytz'] = 'v' + pytzVersion
 
     versions['Requests'] = 'v' + requests.__version__
