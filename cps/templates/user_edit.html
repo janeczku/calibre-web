@@ -60,7 +60,16 @@
     </div>
     {% endif %}
     <div class="col-sm-6">
-      <div class="form-group">
+        {% for element in sidebar %}
+          {% if element['public'] %}
+            <div class="form-group">
+              <input type="checkbox" name="show_{{element['visibility']}}" id="show_{{element['visibility']}}" {% if content.check_visibility(element['visibility']) %}checked{% endif %}>
+              <label for="show_{{element['visibility']}}">{{element['show_text']}}</label>
+            </div>
+          {% endif %}
+        {% endfor %}
+
+      <!--div class="form-group">
           <input type="checkbox" name="show_random" id="show_random" {% if content.show_random_books() %}checked{% endif %}>
           <label for="show_random">{{_('Show random books')}}</label>
       </div>
@@ -99,7 +108,7 @@
       <div class="form-group">
           <input type="checkbox" name="show_publisher" id="show_publisher" {% if content.show_publisher() %}checked{% endif %}>
           <label for="show_publisher">{{_('Show publisher selection')}}</label>
-      </div>
+      </div-->
       {% if not content.role_anonymous() %}
       <div class="form-group">
           <input type="checkbox" name="show_read_and_unread" id="show_read_and_unread" {% if content.show_read_and_unread() %}checked{% endif %}>

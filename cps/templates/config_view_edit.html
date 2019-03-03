@@ -114,7 +114,15 @@
     </div>
     <div id="collapseseven" class="panel-collapse collapse">
       <div class="panel-body">
+
+        {% for element in sidebar %}
           <div class="form-group">
+              <input type="checkbox" name="show_{{element['visibility']}}" id="show_{{element['visibility']}}" {% if content.show_element(element['visibility']) %}checked{% endif %}>
+              <label for="show_{{element['visibility']}}">{{element['show_text']}}</label>
+          </div>
+        {% endfor %}
+
+          <!--div class="form-group">
               <input type="checkbox" name="show_random" id="show_random" {% if content.show_random_books() %}checked{% endif %}>
               <label for="show_random">{{_('Show random books')}}</label>
           </div>
@@ -157,7 +165,7 @@
           <div class="form-group">
               <input type="checkbox" name="show_read_and_unread" id="show_read_and_unread" {% if content.show_read_and_unread() %}checked{% endif %}>
               <label for="show_read_and_unread">{{_('Show read and unread')}}</label>
-          </div>
+          </div-->
           <div class="form-group">
               <input type="checkbox" name="show_detail_random" id="show_detail_random" {% if content.show_detail_random() %}checked{% endif %}>
               <label for="show_detail_random">{{_('Show random books in detail view')}}</label>

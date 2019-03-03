@@ -119,11 +119,8 @@
           <nav class="navigation">
             <ul class="list-unstyled" id="scnd-nav" intent in-standard-append="nav.navigation" in-mobile-after="#main-nav" in-mobile-class="nav navbar-nav">
               <li class="nav-head hidden-xs">{{_('Browse')}}</li>
-              {% if g.user.show_recent() %}
-              <li id="nav_new" {% if page == 'root' %}class="active"{% endif %}><a href="{{url_for('web.index')}}"><span class="glyphicon glyphicon-book"></span> {{_('Recently Added')}}</a></li>
-              {%endif%}
               {% if g.user.show_sorted() %}
-              <li id="nav_sort" class="dropdown">
+              <!--li id="nav_sort" class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                   <span class="glyphicon glyphicon-sort-by-attributes"></span>{{_('Sorted Books')}}
                   <span class="caret"></span>
@@ -134,38 +131,14 @@
                   <li id="nav_sort_asc" {% if page == 'a-z' %}class="active"{% endif %}><a href="{{url_for('web.titles_ascending')}}">{{_('Sort By')}} {{_('Title')}} ({{_('Ascending')}})</a></li>
                   <li id="nav_sort_desc" {% if page == 'z-a' %}class="active"{% endif %}><a href="{{url_for('web.titles_descending')}}">{{_('Sort By')}} {{_('Title')}}  ({{_('Descending')}})</a></li>
                 </ul>
-              </li>
+              </li-->
               {%endif%}
-              {% if g.user.show_hot_books() %}
-              <li id="nav_hot" {% if page == 'hot' %}class="active"{% endif %}><a href="{{url_for('web.hot_books')}}"><span class="glyphicon glyphicon-fire"></span>{{_('Hot Books')}}</a></li>
-              {%endif%}
-              {% if g.user.show_best_rated_books() %}
-              <li id="nav_rated" {% if page == 'rated' %}class="active"{% endif %}><a href="{{url_for('web.best_rated_books')}}"><span class="glyphicon glyphicon-star"></span>{{_('Best rated Books')}}</a></li>
-              {%endif%}
-              {% if g.user.show_read_and_unread() %}
-                {% if not g.user.is_anonymous %}
-                  <li id="nav_read" {% if page == 'read' %}class="active"{% endif %}><a href="{{url_for('web.read_books')}}"><span class="glyphicon glyphicon-eye-open"></span>{{_('Read Books')}}</a></li>
-                {%endif%}
-                <li id="nav_unread" {% if page == 'read' %}class="active"{% endif %}><a href="{{url_for('web.unread_books')}}"><span class="glyphicon glyphicon-eye-close"></span>{{_('Unread Books')}}</a></li>
-              {%endif%}
-              {% if g.user.show_random_books() %}
-              <li id="nav_rand" {% if page == 'discover' %}class="active"{% endif %}><a href="{{url_for('web.discover')}}"><span class="glyphicon glyphicon-random"></span>{{_('Discover')}}</a></li>
-              {%endif%}
-              {% if g.user.show_category() %}
-              <li id="nav_cat" {% if page == 'discover' %}class="category"{% endif %}><a href="{{url_for('web.category_list')}}"><span class="glyphicon glyphicon-inbox"></span>{{_('Categories')}}</a></li>
-              {%endif%}
-              {% if g.user.show_series() %}
-              <li id="nav_serie" {% if page == 'series' %}class="active"{% endif %}><a href="{{url_for('web.series_list')}}"><span class="glyphicon glyphicon-bookmark"></span>{{_('Series')}}</a></li>
-              {%endif%}
-              {% if g.user.show_author() %}
-              <li id="nav_author" {% if page == 'author' %}class="active"{% endif %}><a href="{{url_for('web.author_list')}}"><span class="glyphicon glyphicon-user"></span>{{_('Authors')}}</a></li>
-              {%endif%}
-              {% if g.user.show_publisher() %}
-              <li id="nav_publisher" {% if page == 'publisher' %}class="active"{% endif %}><a href="{{url_for('web.publisher_list')}}"><span class="glyphicon glyphicon-text-size"></span>{{_('Publishers')}}</a></li>
-              {%endif%}
-              {% if g.user.filter_language() == 'all' and g.user.show_language() %}
-                <li id="nav_lang" {% if page == 'language' %}class="active"{% endif %}><a href="{{url_for('web.language_overview')}}"><span class="glyphicon glyphicon-flag"></span>{{_('Languages')}} </a></li>
-              {%endif%}
+              {% for element in sidebar %}
+                {% if g.user.check_visibility(element['visibility']) and element['public'] %}
+                    <li id="nav_{{element['id']}}" {% if page == element['page'] %}class="active"{% endif %}><a href="{{element['link']}}"><span class="glyphicon {{element['glyph']}}"></span>{{_(element['text'])}}</a></li>
+                {% endif %}
+              {% endfor %}
+
               {% if g.user.is_authenticated or g.user.is_anonymous %}
                 <li class="nav-head hidden-xs public-shelves">{{_('Public Shelves')}}</li>
                 {% for shelf in g.public_shelfes %}
