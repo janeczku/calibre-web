@@ -130,3 +130,4 @@ input.pill:not(:checked) + label .glyphicon {
 .editable-cancel { margin-bottom: 0px !important; margin-left: 7px !important;}
 .editable-submit { margin-bottom: 0px !important;}
 
+.filterheader { margin-bottom: 20px; }
