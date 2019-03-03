@@ -36,6 +36,7 @@ import helper
 from werkzeug.security import check_password_hash
 from werkzeug.datastructures import Headers
 from web import download_required
+import sys
 try:
     from urllib.parse import quote
 except ImportError:
@@ -300,7 +301,10 @@ def feed_search(term):
         return render_xml_template('feed.xml', searchterm="")
 
 def check_auth(username, password):
-    user = ub.session.query(ub.User).filter(func.lower(ub.User.nickname) == username.lower()).first()
+    if sys.version_info.major == 3:
+        username=username.encode('windows-1252')
+    user = ub.session.query(ub.User).filter(func.lower(ub.User.nickname) ==
+                                            username.decode('utf-8').lower()).first()
     return bool(user and check_password_hash(user.password, password))
 
 

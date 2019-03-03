@@ -46,6 +46,7 @@ from cps import lm, babel, ub, config, get_locale, language_table, app, db
 from pagination import Pagination
 from sqlalchemy.sql.expression import text
 
+
 feature_support = dict()
 try:
     from oauth_bb import oauth_check, register_user_with_oauth, logout_oauth_user, get_oauth_status
@@ -1349,7 +1350,7 @@ def login():
 def logout():
     if current_user is not None and current_user.is_authenticated:
         logout_user()
-        if feature_support['oauth']:
+        if feature_support['oauth'] and (config.config_login_type == 2 or config.config_login_type == 3):
             logout_oauth_user()
     return redirect(url_for('web.login'))
 
