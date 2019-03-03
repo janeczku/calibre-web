@@ -247,7 +247,7 @@ def load_user_from_header(header_val):
         header_val = header_val.replace('Basic ', '', 1)
     basic_username = basic_password = ''
     try:
-        header_val = base64.b64decode(header_val)
+        header_val = base64.b64decode(header_val).decode('utf-8')
         basic_username = header_val.split(':')[0]
         basic_password = header_val.split(':')[1]
     except TypeError:
@@ -259,6 +259,8 @@ def load_user_from_header(header_val):
 
 
 def check_auth(username, password):
+    if sys.version_info.major == 3:
+        username=username.encode('windows-1252')
     user = ub.session.query(ub.User).filter(func.lower(ub.User.nickname) == username.lower()).first()
     return bool(user and check_password_hash(user.password, password))
 
@@ -726,6 +728,7 @@ def feed_osd():
     return render_xml_template('osd.xml', lang='en-EN')
 
 
+@app.route("/opds/search/", defaults={'query': ""})
 @app.route("/opds/search/<query>")
 @requires_basic_auth_if_no_ano
 def feed_cc_search(query):
