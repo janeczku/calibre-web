@@ -94,6 +94,13 @@ $(function() {
         layoutMode : "fitRows"
     });
 
+    $(".grid").isotope({
+        // options
+        itemSelector : ".grid-item",
+        layoutMode : "fitColumns"
+    });
+
+
     var $loadMore = $(".load-more .row").infiniteScroll({
         debug: false,
         // selector for the paged navigation (it will be hidden)

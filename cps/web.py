@@ -141,7 +141,7 @@ def load_user_from_header(header_val):
         header_val = header_val.replace('Basic ', '', 1)
     basic_username = basic_password = ''
     try:
-        header_val = base64.b64decode(header_val)
+        header_val = base64.b64decode(header_val).decode('utf-8')
         basic_username = header_val.split(':')[0]
         basic_password = header_val.split(':')[1]
     except TypeError:
@@ -598,9 +598,13 @@ def author_list():
         entries = db.session.query(db.Authors, func.count('books_authors_link.book').label('count'))\
             .join(db.books_authors_link).join(db.Books).filter(common_filters())\
             .group_by('books_authors_link.author').order_by(db.Authors.sort).all()
+        charlist = db.session.query(func.upper(func.substr(db.Authors.sort,1,1)).label('char')) \
+            .join(db.books_authors_link).join(db.Books).filter(common_filters()) \
+            .group_by(func.upper(func.substr(db.Authors.sort,1,1))).all()
+        # charlist = db.session.query(func.substr(db.Authors.sort,1,1).label('char'),func.count(db.Authors.sort).label('count')).group_by(func.substr(db.Authors.sort,1,1)).all()
         for entry in entries:
             entry.Authors.name = entry.Authors.name.replace('|', ',')
-        return render_title_template('list.html', entries=entries, folder='web.author',
+        return render_title_template('list.html', entries=entries, folder='web.author', charlist=charlist,
                                      title=u"Author list", page="authorlist")
     else:
         abort(404)

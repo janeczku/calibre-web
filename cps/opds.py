@@ -35,6 +35,7 @@ from sqlalchemy.sql.expression import func
 import helper
 from werkzeug.security import check_password_hash
 from werkzeug.datastructures import Headers
+from web import download_required
 try:
     from urllib.parse import quote
 except ImportError:
@@ -66,7 +67,7 @@ def feed_index():
 def feed_osd():
     return render_xml_template('osd.xml', lang='en-EN')
 
-
+@opds.route("/opds/search", defaults={'query': ""})
 @opds.route("/opds/search/<query>")
 @requires_basic_auth_if_no_ano
 def feed_cc_search(query):
@@ -254,7 +255,7 @@ def feed_shelf(book_id):
 
 @opds.route("/opds/download/<book_id>/<book_format>/")
 @requires_basic_auth_if_no_ano
-# @download_required
+@download_required
 def get_opds_download_link(book_id, book_format):
     book_format = book_format.split(".")[0]
     book = db.session.query(db.Books).filter(db.Books.id == book_id).first()
