@@ -702,6 +702,9 @@ def edit_user(user_id):
             elif "edit_shelf_role" not in to_save and content.role_edit_shelfs():
                 content.role = content.role - ub.ROLE_EDIT_SHELFS
 
+            # next(v for k, v in my_dict.items() if k.startswith('show'))
+            val=[{k[5:]:v} for k, v in to_save.items() if k.startswith('show')]
+            # ['15th july']
             if "show_random" in to_save and not content.show_random_books():
                 content.sidebar_view += ub.SIDEBAR_RANDOM
             elif "show_random" not in to_save and content.show_random_books():

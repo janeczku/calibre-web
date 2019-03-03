@@ -22,7 +22,8 @@
 #  along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 from cps import mimetypes, global_WorkerThread, searched_ids
-from flask import render_template, request, redirect, url_for, send_from_directory, make_response, g, flash, abort
+from flask import render_template, request, redirect, send_from_directory, make_response, g, flash, abort, \
+    url_for
 from werkzeug.exceptions import default_exceptions
 import helper
 import os
@@ -108,6 +109,8 @@ EXTENSIONS_AUDIO = {'mp3', 'm4a', 'm4b'}
 '''EXTENSIONS_READER = set(['txt', 'pdf', 'epub', 'zip', 'cbz', 'tar', 'cbt'] + 
                         (['rar','cbr'] if feature_support['rar'] else []))'''
 
+
+# with app.app_context():
 
 # custom error page
 def error_http(error):
@@ -321,7 +324,19 @@ def get_search_results(term):
 
 # Returns the template for rendering and includes the instance name
 def render_title_template(*args, **kwargs):
-    return render_template(instance=config.config_calibre_web_title, *args, **kwargs)
+    sidebar=list()
+    sidebar.append({"glyph":"glyphicon-book","text":_('Recently Added'),"link":url_for('web.index'),"id":"new", "visibility":ub.SIDEBAR_RECENT, 'public':True, "page": "root", "show_text":_('Show recent books')})
+    sidebar.append({"glyph":"glyphicon-fire","text":_('Hot Books'),"link":url_for('web.hot_books'),"id":"hot", "visibility":ub.SIDEBAR_HOT, 'public':True, "page": "hot", "show_text":_('Show hot books')})
+    sidebar.append({"glyph":"glyphicon-star","text":_('Best rated Books'),"link":url_for('web.best_rated_books'),"id":"rated","visibility":ub.SIDEBAR_BEST_RATED, 'public':True, "page": "rated", "show_text":_('Show best rated books')})
+    sidebar.append({"glyph":"glyphicon-eye-open","text":_('Read Books'),"link":url_for('web.read_books'),"id":"read","visibility":ub.SIDEBAR_READ_AND_UNREAD, 'public':(not g.user.is_anonymous), "page": "read", "show_text":_('Show read')})
+    sidebar.append({"glyph":"glyphicon-eye-close","text":_('Unread Books'),"link":url_for('web.unread_books'),"id":"unread","visibility":ub.SIDEBAR_READ_AND_UNREAD, 'public':(not g.user.is_anonymous), "page": "read", "show_text":_('Show unread')})
+    sidebar.append({"glyph":"glyphicon-random","text":_('Discover'),"link":url_for('web.discover'),"id":"rand","visibility":ub.SIDEBAR_RANDOM, 'public':True, "page": "discover", "show_text":_('Show random books')})
+    sidebar.append({"glyph":"glyphicon-inbox","text":_('Categories'),"link":url_for('web.category_list'),"id":"cat","visibility":ub.SIDEBAR_CATEGORY, 'public':True, "page": "category", "show_text":_('Show category selection')})
+    sidebar.append({"glyph":"glyphicon-bookmark","text":_('Series'),"link":url_for('web.series_list'),"id":"serie","visibility":ub.SIDEBAR_SERIES, 'public':True, "page": "series", "show_text":_('Show series selection')})
+    sidebar.append({"glyph":"glyphicon-user","text":_('Authors'),"link":url_for('web.author_list'),"id":"author","visibility":ub.SIDEBAR_AUTHOR, 'public':True, "page": "author", "show_text":_('Show author selection')})
+    sidebar.append({"glyph":"glyphicon-text-size","text":_('Publishers'),"link":url_for('web.publisher_list'),"id":"publisher","visibility":ub.SIDEBAR_PUBLISHER, 'public':True, "page": "publisher", "show_text":_('Show publisher selection')})
+    sidebar.append({"glyph":"glyphicon-flag","text":_('Languages'),"link":url_for('web.language_overview'),"id":"lang","visibility":ub.SIDEBAR_LANGUAGE, 'public':(g.user.filter_language() == 'all'), "page": "language", "show_text":_('Show language selection')})
+    return render_template(instance=config.config_calibre_web_title, sidebar=sidebar, *args, **kwargs)
 
 
 @web.before_app_request
@@ -344,6 +359,9 @@ def get_email_status_json():
     response = make_response(js)
     response.headers["Content-Type"] = "application/json; charset=utf-8"
     return response
+
+
+
 
 
 '''

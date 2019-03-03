@@ -156,6 +156,9 @@ class UserBase:
     def filter_language(self):
         return self.default_language
 
+    def check_visibility(self, value):
+        return bool((self.sidebar_view is not None) and (self.sidebar_view & value == value))
+
     def show_random_books(self):
         return bool((self.sidebar_view is not None)and(self.sidebar_view & SIDEBAR_RANDOM == SIDEBAR_RANDOM))
 
@@ -547,6 +550,10 @@ class Config:
     def show_detail_random(self):
         return bool((self.config_default_show is not None) and
                     (self.config_default_show & DETAIL_RANDOM == DETAIL_RANDOM))
+
+    def show_element(self, value):
+        return bool((self.config_default_show is not None) and
+                    (self.config_default_show & value == value))
 
     def show_language(self):
         return bool((self.config_default_show is not None) and
