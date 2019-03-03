@@ -433,7 +433,6 @@ def get_tags_json():
 def get_languages_json():
     if request.method == "GET":
         query = request.args.get('q').lower()
-        # languages = speaking_language()
         languages = language_table[get_locale()]
         entries_start = [s for key, s in languages.items() if s.lower().startswith(query.lower())]
         if len(entries_start) < 5:
@@ -602,7 +601,6 @@ def author_list():
         charlist = db.session.query(func.upper(func.substr(db.Authors.sort,1,1)).label('char')) \
             .join(db.books_authors_link).join(db.Books).filter(common_filters()) \
             .group_by(func.upper(func.substr(db.Authors.sort,1,1))).all()
-        # charlist = db.session.query(func.substr(db.Authors.sort,1,1).label('char'),func.count(db.Authors.sort).label('count')).group_by(func.substr(db.Authors.sort,1,1)).all()
         for entry in entries:
             entry.Authors.name = entry.Authors.name.replace('|', ',')
         return render_title_template('list.html', entries=entries, folder='web.author', charlist=charlist,
@@ -645,7 +643,10 @@ def publisher_list():
         entries = db.session.query(db.Publishers, func.count('books_publishers_link.book').label('count'))\
             .join(db.books_publishers_link).join(db.Books).filter(common_filters())\
             .group_by('books_publishers_link.publisher').order_by(db.Publishers.sort).all()
-        return render_title_template('list.html', entries=entries, folder='web.publisher',
+        charlist = db.session.query(func.upper(func.substr(db.Publishers.name,1,1)).label('char')) \
+            .join(db.books_publishers_link).join(db.Books).filter(common_filters()) \
+            .group_by(func.upper(func.substr(db.Publishers.name,1,1))).all()
+        return render_title_template('list.html', entries=entries, folder='web.publisher', charlist=charlist,
                                      title=_(u"Publisher list"), page="publisherlist")
     else:
         abort(404)
@@ -696,7 +697,10 @@ def series_list():
         entries = db.session.query(db.Series, func.count('books_series_link.book').label('count'))\
             .join(db.books_series_link).join(db.Books).filter(common_filters())\
             .group_by('books_series_link.series').order_by(db.Series.sort).all()
-        return render_title_template('list.html', entries=entries, folder='web.series',
+        charlist = db.session.query(func.upper(func.substr(db.Series.sort,1,1)).label('char')) \
+            .join(db.books_series_link).join(db.Books).filter(common_filters()) \
+            .group_by(func.upper(func.substr(db.Series.sort,1,1))).all()
+        return render_title_template('list.html', entries=entries, folder='web.series', charlist=charlist,
                                      title=_(u"Series list"), page="serieslist")
     else:
         abort(404)
@@ -720,8 +724,10 @@ def series(book_id, page):
 @login_required_if_no_ano
 def language_overview():
     if current_user.show_language():
+        charlist = list()
         if current_user.filter_language() == u"all":
             languages = speaking_language()
+            # ToDo: generate first character list for languages
         else:
             try:
                 cur_l = LC.parse(current_user.filter_language())
@@ -737,7 +743,7 @@ def language_overview():
                                         func.count('books_languages_link.book').label('bookcount')).group_by(
             'books_languages_link.lang_code').all()
         return render_title_template('languages.html', languages=languages, lang_counter=lang_counter,
-                                     title=_(u"Available languages"), page="langlist")
+                                     charlist=charlist, title=_(u"Available languages"), page="langlist")
     else:
         abort(404)
 
@@ -767,7 +773,10 @@ def category_list():
         entries = db.session.query(db.Tags, func.count('books_tags_link.book').label('count'))\
             .join(db.books_tags_link).join(db.Books).order_by(db.Tags.name).filter(common_filters())\
             .group_by('books_tags_link.tag').all()
-        return render_title_template('list.html', entries=entries, folder='web.category',
+        charlist = db.session.query(func.upper(func.substr(db.Tags.name,1,1)).label('char')) \
+            .join(db.books_tags_link).join(db.Books).filter(common_filters()) \
+            .group_by(func.upper(func.substr(db.Tags.name,1,1))).all()
+        return render_title_template('list.html', entries=entries, folder='web.category', charlist=charlist,
                                      title=_(u"Category list"), page="catlist")
     else:
         abort(404)
