@@ -2,17 +2,20 @@
 {% block body %}
 <h1 class="{{page}}">{{_(title)}}</h1>
   <div class="container">
-    <div class="col-xs-12 col-sm-6">
-    {% for entry in entries %}
-      {% if loop.index0 == (loop.length/2)|int and loop.length > 20 %}
-        </div>
-        <div class="col-xs-12 col-sm-6">
-      {% endif %}
-      <div class="row">
-        <div class="col-xs-2 col-sm-2 col-md-1" align="left"><span class="badge">{{entry.count}}</span></div>
-        <div class="col-xs-10 col-sm-10 col-md-11"><a id="list_{{loop.index0}}" href="{{url_for(folder, book_id=entry[0].id )}}">{{entry[0].name}}</a></div>
+    <span class="btn btn-success"><span class="glyphicon glyphicon-sort-by-alphabet"></span></span></button>
+      <button class="btn btn-success"><span class="glyphicon glyphicon-sort-by-alphabet-alt"></span></button>
+      <div class="btn-group" role="group">
+        {% for char in charlist%}
+        <button class="btn btn-success">{{char.char}}</button>
+        {% endfor %}
       </div>
+        <div class="grid">
+      {% for entry in entries %}
+          <div class="grid-item">
+            <span class="badge">{{entry.count}}</span>
+            <a id="list_{{loop.index0}}" href="{{url_for(folder, book_id=entry[0].id )}}">{{entry[0].name}}</a>
+          </div>
     {% endfor %}
-  </div>
+    </div>
   </div>
 {% endblock %}
