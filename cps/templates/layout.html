@@ -119,7 +119,7 @@
           <nav class="navigation">
             <ul class="list-unstyled" id="scnd-nav" intent in-standard-append="nav.navigation" in-mobile-after="#main-nav" in-mobile-class="nav navbar-nav">
               <li class="nav-head hidden-xs">{{_('Browse')}}</li>
-              {% if g.user.show_sorted() %}
+              {% if g.user.check_visibility(1024) %}  <!-- ToDo: eliminate -->
               <!--li id="nav_sort" class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                   <span class="glyphicon glyphicon-sort-by-attributes"></span>{{_('Sorted Books')}}
@@ -135,7 +135,7 @@
               {%endif%}
               {% for element in sidebar %}
                 {% if g.user.check_visibility(element['visibility']) and element['public'] %}
-                    <li id="nav_{{element['id']}}" {% if page == element['page'] %}class="active"{% endif %}><a href="{{element['link']}}"><span class="glyphicon {{element['glyph']}}"></span>{{_(element['text'])}}</a></li>
+                    <li id="nav_{{element['id']}}" {% if page == element['page'] %}class="active"{% endif %}><a href="{{url_for(element['link'])}}"><span class="glyphicon {{element['glyph']}}"></span>{{_(element['text'])}}</a></li>
                 {% endif %}
               {% endfor %}
 

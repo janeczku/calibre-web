@@ -324,18 +324,7 @@ def get_search_results(term):
 
 # Returns the template for rendering and includes the instance name
 def render_title_template(*args, **kwargs):
-    sidebar=list()
-    sidebar.append({"glyph":"glyphicon-book","text":_('Recently Added'),"link":url_for('web.index'),"id":"new", "visibility":ub.SIDEBAR_RECENT, 'public':True, "page": "root", "show_text":_('Show recent books')})
-    sidebar.append({"glyph":"glyphicon-fire","text":_('Hot Books'),"link":url_for('web.hot_books'),"id":"hot", "visibility":ub.SIDEBAR_HOT, 'public':True, "page": "hot", "show_text":_('Show hot books')})
-    sidebar.append({"glyph":"glyphicon-star","text":_('Best rated Books'),"link":url_for('web.best_rated_books'),"id":"rated","visibility":ub.SIDEBAR_BEST_RATED, 'public':True, "page": "rated", "show_text":_('Show best rated books')})
-    sidebar.append({"glyph":"glyphicon-eye-open","text":_('Read Books'),"link":url_for('web.read_books'),"id":"read","visibility":ub.SIDEBAR_READ_AND_UNREAD, 'public':(not g.user.is_anonymous), "page": "read", "show_text":_('Show read')})
-    sidebar.append({"glyph":"glyphicon-eye-close","text":_('Unread Books'),"link":url_for('web.unread_books'),"id":"unread","visibility":ub.SIDEBAR_READ_AND_UNREAD, 'public':(not g.user.is_anonymous), "page": "read", "show_text":_('Show unread')})
-    sidebar.append({"glyph":"glyphicon-random","text":_('Discover'),"link":url_for('web.discover'),"id":"rand","visibility":ub.SIDEBAR_RANDOM, 'public':True, "page": "discover", "show_text":_('Show random books')})
-    sidebar.append({"glyph":"glyphicon-inbox","text":_('Categories'),"link":url_for('web.category_list'),"id":"cat","visibility":ub.SIDEBAR_CATEGORY, 'public':True, "page": "category", "show_text":_('Show category selection')})
-    sidebar.append({"glyph":"glyphicon-bookmark","text":_('Series'),"link":url_for('web.series_list'),"id":"serie","visibility":ub.SIDEBAR_SERIES, 'public':True, "page": "series", "show_text":_('Show series selection')})
-    sidebar.append({"glyph":"glyphicon-user","text":_('Authors'),"link":url_for('web.author_list'),"id":"author","visibility":ub.SIDEBAR_AUTHOR, 'public':True, "page": "author", "show_text":_('Show author selection')})
-    sidebar.append({"glyph":"glyphicon-text-size","text":_('Publishers'),"link":url_for('web.publisher_list'),"id":"publisher","visibility":ub.SIDEBAR_PUBLISHER, 'public':True, "page": "publisher", "show_text":_('Show publisher selection')})
-    sidebar.append({"glyph":"glyphicon-flag","text":_('Languages'),"link":url_for('web.language_overview'),"id":"lang","visibility":ub.SIDEBAR_LANGUAGE, 'public':(g.user.filter_language() == 'all'), "page": "language", "show_text":_('Show language selection')})
+    sidebar=ub.get_sidebar_config()
     return render_template(instance=config.config_calibre_web_title, sidebar=sidebar, *args, **kwargs)
 
 
@@ -556,7 +545,7 @@ def titles_descending(page):
 @web.route('/hot/page/<int:page>')
 @login_required_if_no_ano
 def hot_books(page):
-    if current_user.show_hot_books():
+    if current_user.check_visibility(ub.SIDEBAR_HOT):
         if current_user.show_detail_random():
             random = db.session.query(db.Books).filter(common_filters())\
                 .order_by(func.random()).limit(config.config_random_books)
@@ -587,7 +576,7 @@ def hot_books(page):
 @web.route('/rated/page/<int:page>')
 @login_required_if_no_ano
 def best_rated_books(page):
-    if current_user.show_best_rated_books():
+    if current_user.check_visibility(ub.SIDEBAR_BEST_RATED):
         entries, random, pagination = fill_indexpage(page, db.Books, db.Books.ratings.any(db.Ratings.rating > 9),
                                                      [db.Books.timestamp.desc()])
         return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
@@ -600,7 +589,7 @@ def best_rated_books(page):
 @web.route('/discover/page/<int:page>')
 @login_required_if_no_ano
 def discover(page):
-    if current_user.show_random_books():
+    if current_user.check_visibility(ub.SIDEBAR_RANDOM):
         entries, __, pagination = fill_indexpage(page, db.Books, True, [func.randomblob(2)])
         pagination = Pagination(1, config.config_books_per_page, config.config_books_per_page)
         return render_title_template('discover.html', entries=entries, pagination=pagination,
@@ -612,7 +601,7 @@ def discover(page):
 @web.route("/author")
 @login_required_if_no_ano
 def author_list():
-    if current_user.show_author():
+    if current_user.check_visibility(ub.SIDEBAR_AUTHOR):
         entries = db.session.query(db.Authors, func.count('books_authors_link.book').label('count'))\
             .join(db.books_authors_link).join(db.Books).filter(common_filters())\
             .group_by('books_authors_link.author').order_by(db.Authors.sort).all()
@@ -657,7 +646,7 @@ def author(book_id, page):
 @web.route("/publisher")
 @login_required_if_no_ano
 def publisher_list():
-    if current_user.show_publisher():
+    if current_user.check_visibility(ub.SIDEBAR_PUBLISHER):
         entries = db.session.query(db.Publishers, func.count('books_publishers_link.book').label('count'))\
             .join(db.books_publishers_link).join(db.Books).filter(common_filters())\
             .group_by('books_publishers_link.publisher').order_by(db.Publishers.sort).all()
@@ -711,7 +700,7 @@ def get_unique_other_books(library_books, author_books):
 @web.route("/series")
 @login_required_if_no_ano
 def series_list():
-    if current_user.show_series():
+    if current_user.check_visibility(ub.SIDEBAR_SERIES):
         entries = db.session.query(db.Series, func.count('books_series_link.book').label('count'))\
             .join(db.books_series_link).join(db.Books).filter(common_filters())\
             .group_by('books_series_link.series').order_by(db.Series.sort).all()
@@ -741,7 +730,7 @@ def series(book_id, page):
 @web.route("/language")
 @login_required_if_no_ano
 def language_overview():
-    if current_user.show_language():
+    if current_user.check_visibility(ub.SIDEBAR_LANGUAGE):
         charlist = list()
         if current_user.filter_language() == u"all":
             languages = speaking_language()
@@ -787,7 +776,7 @@ def language(name, page):
 @web.route("/category")
 @login_required_if_no_ano
 def category_list():
-    if current_user.show_category():
+    if current_user.check_visibility(ub.SIDEBAR_CATEGORY):
         entries = db.session.query(db.Tags, func.count('books_tags_link.book').label('count'))\
             .join(db.books_tags_link).join(db.Books).order_by(db.Tags.name).filter(common_filters())\
             .group_by('books_tags_link.tag').all()
@@ -1523,30 +1512,13 @@ def profile():
             content.default_language = to_save["default_language"]
         if "locale" in to_save:
             content.locale = to_save["locale"]
-        content.sidebar_view = 0
-        if "show_random" in to_save:
-            content.sidebar_view += ub.SIDEBAR_RANDOM
-        if "show_language" in to_save:
-            content.sidebar_view += ub.SIDEBAR_LANGUAGE
-        if "show_series" in to_save:
-            content.sidebar_view += ub.SIDEBAR_SERIES
-        if "show_category" in to_save:
-            content.sidebar_view += ub.SIDEBAR_CATEGORY
-        if "show_recent" in to_save:
-            content.sidebar_view += ub.SIDEBAR_RECENT
-        if "show_sorted" in to_save:
-            content.sidebar_view += ub.SIDEBAR_SORTED
-        if "show_hot" in to_save:
-            content.sidebar_view += ub.SIDEBAR_HOT
-        if "show_best_rated" in to_save:
-            content.sidebar_view += ub.SIDEBAR_BEST_RATED
-        if "show_author" in to_save:
-            content.sidebar_view += ub.SIDEBAR_AUTHOR
-        if "show_publisher" in to_save:
-            content.sidebar_view += ub.SIDEBAR_PUBLISHER
-        if "show_read_and_unread" in to_save:
-            content.sidebar_view += ub.SIDEBAR_READ_AND_UNREAD
-        if "show_detail_random" in to_save:
+
+        val = 0
+        for key,v in to_save.items():
+            if key.startswith('show'):
+                val += int(key[5:])
+        content.sidebar_view = val
+        if "Show_detail_random" in to_save:
             content.sidebar_view += ub.DETAIL_RANDOM
 
         content.mature_content = "show_mature_content" in to_save

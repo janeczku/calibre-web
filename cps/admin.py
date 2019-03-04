@@ -21,7 +21,6 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-import logging
 import os
 from flask import Blueprint, flash, redirect, url_for
 from flask import abort, request, make_response
@@ -193,30 +192,12 @@ def view_configuration():
             content.config_default_role = content.config_default_role + ub.ROLE_EDIT_SHELFS
 
         content.config_default_show = 0
-        if "show_detail_random" in to_save:
-            content.config_default_show = content.config_default_show + ub.DETAIL_RANDOM
-        if "show_language" in to_save:
-            content.config_default_show = content.config_default_show + ub.SIDEBAR_LANGUAGE
-        if "show_series" in to_save:
-            content.config_default_show = content.config_default_show + ub.SIDEBAR_SERIES
-        if "show_category" in to_save:
-            content.config_default_show = content.config_default_show + ub.SIDEBAR_CATEGORY
-        if "show_hot" in to_save:
-            content.config_default_show = content.config_default_show + ub.SIDEBAR_HOT
-        if "show_random" in to_save:
-            content.config_default_show = content.config_default_show + ub.SIDEBAR_RANDOM
-        if "show_author" in to_save:
-            content.config_default_show = content.config_default_show + ub.SIDEBAR_AUTHOR
-        if "show_publisher" in to_save:
-            content.config_default_show = content.config_default_show + ub.SIDEBAR_PUBLISHER
-        if "show_best_rated" in to_save:
-            content.config_default_show = content.config_default_show + ub.SIDEBAR_BEST_RATED
-        if "show_read_and_unread" in to_save:
-            content.config_default_show = content.config_default_show + ub.SIDEBAR_READ_AND_UNREAD
-        if "show_recent" in to_save:
-            content.config_default_show = content.config_default_show + ub.SIDEBAR_RECENT
-        if "show_sorted" in to_save:
-            content.config_default_show = content.config_default_show + ub.SIDEBAR_SORTED
+        val = [int(k[5:]) for k, v in to_save.items() if k.startswith('show')]
+        sidebar = ub.get_sidebar_config()
+        for element in sidebar:
+            if element['visibility'] in val:
+                content.config_default_show = content.config_default_show + element['visibility']
+
         if "show_mature_content" in to_save:
             content.config_default_show = content.config_default_show + ub.MATURE_CONTENT
         ub.session.commit()
@@ -537,31 +518,15 @@ def new_user():
         content.mature_content = "show_mature_content" in to_save
         if "locale" in to_save:
             content.locale = to_save["locale"]
-        content.sidebar_view = 0
-        if "show_random" in to_save:
-            content.sidebar_view += ub.SIDEBAR_RANDOM
-        if "show_language" in to_save:
-            content.sidebar_view += ub.SIDEBAR_LANGUAGE
-        if "show_series" in to_save:
-            content.sidebar_view += ub.SIDEBAR_SERIES
-        if "show_category" in to_save:
-            content.sidebar_view += ub.SIDEBAR_CATEGORY
-        if "show_hot" in to_save:
-            content.sidebar_view += ub.SIDEBAR_HOT
-        if "show_read_and_unread" in to_save:
-            content.sidebar_view += ub.SIDEBAR_READ_AND_UNREAD
-        if "show_best_rated" in to_save:
-            content.sidebar_view += ub.SIDEBAR_BEST_RATED
-        if "show_author" in to_save:
-            content.sidebar_view += ub.SIDEBAR_AUTHOR
-        if "show_publisher" in to_save:
-            content.sidebar_view += ub.SIDEBAR_PUBLISHER
+
+        val = 0
+        for key,v in to_save.items():
+            if key.startswith('show'):
+                val += int(key[5:])
+        content.sidebar_view = val
+
         if "show_detail_random" in to_save:
             content.sidebar_view += ub.DETAIL_RANDOM
-        if "show_sorted" in to_save:
-            content.sidebar_view += ub.SIDEBAR_SORTED
-        if "show_recent" in to_save:
-            content.sidebar_view += ub.SIDEBAR_RECENT
 
         content.role = 0
         if "admin_role" in to_save:
@@ -702,67 +667,22 @@ def edit_user(user_id):
             elif "edit_shelf_role" not in to_save and content.role_edit_shelfs():
                 content.role = content.role - ub.ROLE_EDIT_SHELFS
 
-            # next(v for k, v in my_dict.items() if k.startswith('show'))
-            val=[{k[5:]:v} for k, v in to_save.items() if k.startswith('show')]
-            # ['15th july']
-            if "show_random" in to_save and not content.show_random_books():
-                content.sidebar_view += ub.SIDEBAR_RANDOM
-            elif "show_random" not in to_save and content.show_random_books():
-                content.sidebar_view -= ub.SIDEBAR_RANDOM
+            val = [int(k[5:]) for k, v in to_save.items() if k.startswith('show')]
+            sidebar = ub.get_sidebar_config()
+            for element in sidebar:
+                if element['visibility'] in val and not content.check_visibility(element['visibility']):
+                    content.sidebar_view += element['visibility']
+                elif not element['visibility'] in val and content.check_visibility(element['visibility']):
+                    content.sidebar_view -= element['visibility']
 
-            if "show_language" in to_save and not content.show_language():
-                content.sidebar_view += ub.SIDEBAR_LANGUAGE
-            elif "show_language" not in to_save and content.show_language():
-                content.sidebar_view -= ub.SIDEBAR_LANGUAGE
-
-            if "show_series" in to_save and not content.show_series():
-                content.sidebar_view += ub.SIDEBAR_SERIES
-            elif "show_series" not in to_save and content.show_series():
-                content.sidebar_view -= ub.SIDEBAR_SERIES
-
-            if "show_category" in to_save and not content.show_category():
-                content.sidebar_view += ub.SIDEBAR_CATEGORY
-            elif "show_category" not in to_save and content.show_category():
-                content.sidebar_view -= ub.SIDEBAR_CATEGORY
-
-            if "show_recent" in to_save and not content.show_recent():
-                content.sidebar_view += ub.SIDEBAR_RECENT
-            elif "show_recent" not in to_save and content.show_recent():
-                content.sidebar_view -= ub.SIDEBAR_RECENT
-
-            if "show_sorted" in to_save and not content.show_sorted():
-                content.sidebar_view += ub.SIDEBAR_SORTED
-            elif "show_sorted" not in to_save and content.show_sorted():
-                content.sidebar_view -= ub.SIDEBAR_SORTED
-
-            if "show_publisher" in to_save and not content.show_publisher():
-                content.sidebar_view += ub.SIDEBAR_PUBLISHER
-            elif "show_publisher" not in to_save and content.show_publisher():
-                content.sidebar_view -= ub.SIDEBAR_PUBLISHER
-
-            if "show_hot" in to_save and not content.show_hot_books():
-                content.sidebar_view += ub.SIDEBAR_HOT
-            elif "show_hot" not in to_save and content.show_hot_books():
-                content.sidebar_view -= ub.SIDEBAR_HOT
-
-            if "show_best_rated" in to_save and not content.show_best_rated_books():
-                content.sidebar_view += ub.SIDEBAR_BEST_RATED
-            elif "show_best_rated" not in to_save and content.show_best_rated_books():
-                content.sidebar_view -= ub.SIDEBAR_BEST_RATED
-
-            if "show_read_and_unread" in to_save and not content.show_read_and_unread():
+            if "Show_read_and_unread" in to_save and not content.show_read_and_unread():
                 content.sidebar_view += ub.SIDEBAR_READ_AND_UNREAD
-            elif "show_read_and_unread" not in to_save and content.show_read_and_unread():
+            elif "Show_read_and_unread" not in to_save and content.show_read_and_unread():
                 content.sidebar_view -= ub.SIDEBAR_READ_AND_UNREAD
 
-            if "show_author" in to_save and not content.show_author():
-                content.sidebar_view += ub.SIDEBAR_AUTHOR
-            elif "show_author" not in to_save and content.show_author():
-                content.sidebar_view -= ub.SIDEBAR_AUTHOR
-
-            if "show_detail_random" in to_save and not content.show_detail_random():
+            if "Show_detail_random" in to_save and not content.show_detail_random():
                 content.sidebar_view += ub.DETAIL_RANDOM
-            elif "show_detail_random" not in to_save and content.show_detail_random():
+            elif "Show_detail_random" not in to_save and content.show_detail_random():
                 content.sidebar_view -= ub.DETAIL_RANDOM
 
             content.mature_content = "show_mature_content" in to_save
