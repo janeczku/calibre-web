@@ -21,7 +21,6 @@
 from tempfile import gettempdir
 import hashlib
 from collections import namedtuple
-import logging
 import os
 from flask_babel import gettext as _
 import comic
@@ -31,7 +30,6 @@ try:
 except ImportError:
     lxmlversion = None
 
-# logger = logging.getLogger("uploader")
 
 try:
     from wand.image import Image
