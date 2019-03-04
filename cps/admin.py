@@ -39,10 +39,9 @@ from gdriveutils import is_gdrive_ready, gdrive_support, downloadFile, deleteDat
 import helper
 from werkzeug.security import generate_password_hash
 try:
-    from urllib.parse import quote
     from imp import reload
 except ImportError:
-    from urllib import quote
+    pass
 
 feature_support = dict()
 try:

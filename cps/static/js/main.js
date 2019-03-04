@@ -31,13 +31,13 @@ $(document).on("change", "input[type=\"checkbox\"][data-control]", function () {
 
 
 // Generic control/related handler to show/hide fields based on a select' value
-$(document).on("change","select[data-control]", function(){
+$(document).on("change", "select[data-control]", function() {
     var $this = $(this);
     var name = $this.data("control");
     var showOrHide = $this.val();
-    var showOrHideLast = $("#"+name + " option:last").val()
-    for (i = 0; i < $(this)[0].length; i++){
-        if (parseInt($(this)[0][i].value) == showOrHide){
+    // var showOrHideLast = $("#" + name + " option:last").val()
+    for (var i = 0; i < $(this)[0].length; i++) {
+        if (parseInt($(this)[0][i].value) === showOrHide) {
             $("[data-related=\"" + name + "-" + i + "\"]").show();
         } else {
             $("[data-related=\"" + name + "-" + i + "\"]").hide();
@@ -110,7 +110,7 @@ $(function() {
         //animate      : true, # ToDo: Reenable function
         //extraScrollPx: 300
     });
-    $loadMore.on( 'append.infiniteScroll', function( event, response, path, data ) {
+    $loadMore.on( "append.infiniteScroll", function( event, response, path, data ) {
         $(".pagination").addClass("hidden");
         $(".load-more .row").isotope( "appended", $(data), null );
     });
@@ -141,7 +141,7 @@ $(function() {
         var buttonText = $this.html();
         $this.html("...");
         $("#update_error").addClass("hidden");
-        if ($("#message").length){
+        if ($("#message").length) {
             $("#message").alert("close");
         }
         $.ajax({
