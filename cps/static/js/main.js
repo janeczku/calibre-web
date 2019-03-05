@@ -86,7 +86,7 @@ $(function() {
         //animate      : true, # ToDo: Reenable function
         //extraScrollPx: 300
     });
-    $loadMore.on( 'append.infiniteScroll', function( event, response, path, data ) {
+    $loadMore.on( "append.infiniteScroll", function( event, response, path, data ) {
         $(".pagination").addClass("hidden");
         $(".load-more .row").isotope( "appended", $(data), null );
     });
@@ -117,7 +117,7 @@ $(function() {
         var buttonText = $this.html();
         $this.html("...");
         $("#update_error").addClass("hidden");
-        if ($("#message").length){
+        if ($("#message").length) {
             $("#message").alert("close");
         }
         $.ajax({
@@ -179,6 +179,7 @@ $(function() {
         });
     });
 
+    // Init all data control handlers to default
     $("input[data-control]").trigger("change");
 
     $("#bookDetailsModal")
