@@ -170,7 +170,7 @@
         replaceForm: function(html) {
             var newForm;
             var formId = this.$form.attr("id");
-            if ( typeof(formId) !== "undefined") {
+            if ( typeof formId !== "undefined") {
                 newForm = $(html).find("#" + formId);
             } else {
                 newForm = $(html).find("form");
