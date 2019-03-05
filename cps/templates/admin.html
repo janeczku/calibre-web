@@ -15,7 +15,7 @@
             <th class="hidden-xs">{{_('Upload')}}</th>
             <th class="hidden-xs">{{_('Edit')}}</th>
         </tr>
-        {% for user in content %}
+        {% for user in allUser %}
           {% if not user.role_anonymous() or config.config_anonbrowse %}
           <tr>
             <td><a href="{{url_for('admin.edit_user', user_id=user.id)}}">{{user.nickname}}</a></td>

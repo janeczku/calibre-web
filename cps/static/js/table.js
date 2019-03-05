@@ -27,7 +27,7 @@ $(function() {
             async: true,
             timeout: 900,
             success:function(data){
-                $("#domain-table"").bootstrapTable("load", data);
+                $("#domain-table").bootstrapTable("load", data);
             }
         });
     });

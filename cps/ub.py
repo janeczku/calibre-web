@@ -68,7 +68,7 @@ SIDEBAR_BEST_RATED = 128
 SIDEBAR_READ_AND_UNREAD = 256
 SIDEBAR_RECENT = 512
 SIDEBAR_SORTED = 1024
-# MATURE_CONTENT = 2048
+MATURE_CONTENT = 2048
 SIDEBAR_PUBLISHER = 4096
 
 UPDATE_STABLE = 0
@@ -96,44 +96,49 @@ engine = create_engine('sqlite:///{0}'.format(cli.settingspath), echo=False)
 Base = declarative_base()
 
 
-def get_sidebar_config():
+def get_sidebar_config(kwargs=[]):
+    if 'content' in kwargs:
+        content = not kwargs['content'].role_anonymous()
+    else:
+        content = False
     sidebar = list()
     sidebar.append({"glyph": "glyphicon-book", "text": _('Recently Added'), "link": 'web.index', "id": "new",
                     "visibility": SIDEBAR_RECENT, 'public': True, "page": "root",
-                    "show_text": _('Show recent books')})
+                    "show_text": _('Show recent books'), "config_show":True})
     sidebar.append({"glyph": "glyphicon-fire", "text": _('Hot Books'), "link": 'web.hot_books', "id": "hot",
-                    "visibility": SIDEBAR_HOT, 'public': True, "page": "hot", "show_text": _('Show hot books')})
+                    "visibility": SIDEBAR_HOT, 'public': True, "page": "hot", "show_text": _('Show hot books'),
+                    "config_show":True})
     sidebar.append(
         {"glyph": "glyphicon-star", "text": _('Best rated Books'), "link": 'web.best_rated_books', "id": "rated",
          "visibility": SIDEBAR_BEST_RATED, 'public': True, "page": "rated",
-         "show_text": _('Show best rated books')})
+         "show_text": _('Show best rated books'), "config_show":True})
     sidebar.append({"glyph": "glyphicon-eye-open", "text": _('Read Books'), "link": 'web.read_books', "id": "read",
                     "visibility": SIDEBAR_READ_AND_UNREAD, 'public': (not g.user.is_anonymous), "page": "read",
-                    "show_text": _('Show read')})
+                    "show_text": _('Show read and unread'), "config_show": content})
     sidebar.append(
         {"glyph": "glyphicon-eye-close", "text": _('Unread Books'), "link": 'web.unread_books', "id": "unread",
          "visibility": SIDEBAR_READ_AND_UNREAD, 'public': (not g.user.is_anonymous), "page": "read",
-         "show_text": _('Show unread')})
+         "show_text": _('Show unread'), "config_show":False})
     sidebar.append({"glyph": "glyphicon-random", "text": _('Discover'), "link": 'web.discover', "id": "rand",
                     "visibility": SIDEBAR_RANDOM, 'public': True, "page": "discover",
-                    "show_text": _('Show random books')})
+                    "show_text": _('Show random books'), "config_show":True})
     sidebar.append({"glyph": "glyphicon-inbox", "text": _('Categories'), "link": 'web.category_list', "id": "cat",
                     "visibility": SIDEBAR_CATEGORY, 'public': True, "page": "category",
-                    "show_text": _('Show category selection')})
+                    "show_text": _('Show category selection'), "config_show":True})
     sidebar.append({"glyph": "glyphicon-bookmark", "text": _('Series'), "link": 'web.series_list', "id": "serie",
                     "visibility": SIDEBAR_SERIES, 'public': True, "page": "series",
-                    "show_text": _('Show series selection')})
+                    "show_text": _('Show series selection'), "config_show":True})
     sidebar.append({"glyph": "glyphicon-user", "text": _('Authors'), "link": 'web.author_list', "id": "author",
                     "visibility": SIDEBAR_AUTHOR, 'public': True, "page": "author",
-                    "show_text": _('Show author selection')})
+                    "show_text": _('Show author selection'), "config_show":True})
     sidebar.append(
         {"glyph": "glyphicon-text-size", "text": _('Publishers'), "link": 'web.publisher_list', "id": "publisher",
          "visibility": SIDEBAR_PUBLISHER, 'public': True, "page": "publisher",
-         "show_text": _('Show publisher selection')})
+         "show_text": _('Show publisher selection'), "config_show":True})
     sidebar.append({"glyph": "glyphicon-flag", "text": _('Languages'), "link": 'web.language_overview', "id": "lang",
                     "visibility": SIDEBAR_LANGUAGE, 'public': (g.user.filter_language() == 'all'),
                     "page": "language",
-                    "show_text": _('Show language selection')})
+                    "show_text": _('Show language selection'), "config_show":True})
     return sidebar
 
 
@@ -565,6 +570,9 @@ class Config:
         return bool((self.config_default_show is not None) and
                     (self.config_default_show & value == value))
 
+    def show_mature_content(self):
+        return bool((self.config_default_show is not None) and
+                    (self.config_default_show & MATURE_CONTENT == MATURE_CONTENT))
 
     def mature_content_tags(self):
         if sys.version_info > (3, 0): # Python3 str, Python2 unicode
