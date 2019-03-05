@@ -113,6 +113,7 @@ ZipLocalFile.prototype.unzip = function() {
         info("ZIP v" + this.version + ", store only: " + this.filename + " (" + this.compressedSize + " bytes)");
         currentBytesUnarchivedInFile = this.compressedSize;
         currentBytesUnarchived += this.compressedSize;
+        this.fileData = zeroCompression(this.fileData, this.uncompressedSize);
     }
     // version == 20, compression method == 8 (DEFLATE)
     else if (this.compressionMethod == 8) {
@@ -491,6 +492,16 @@ function inflateBlockData(bstream, hcLiteralTable, hcDistanceTable, buffer) {
         } // length-distance pair or end-of-block
     } // loop until we reach end of block
     return blockSize;
+}
+
+function zeroCompression(compressedData, numDecompressedBytes) {
+    var bstream = new bitjs.io.BitStream(compressedData.buffer,
+        false /* rtl */,
+        compressedData.byteOffset,
+        compressedData.byteLength);
+    var buffer = new bitjs.io.ByteBuffer(numDecompressedBytes);
+    buffer.insertBytes(bstream.readBytes(numDecompressedBytes));
+    return buffer.data;
 }
 
 // {Uint8Array} compressedData A Uint8Array of the compressed file data.
