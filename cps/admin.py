@@ -132,9 +132,9 @@ def admin():
         else:
             commit = version['version']
 
-    content = ub.session.query(ub.User).all()
+    allUser = ub.session.query(ub.User).all()
     settings = ub.session.query(ub.Settings).first()
-    return render_title_template("admin.html", content=content, email=settings, config=config, commit=commit,
+    return render_title_template("admin.html", allUser=allUser, email=settings, config=config, commit=commit,
                                  title=_(u"Admin page"), page="admin")
 
 
@@ -190,14 +190,14 @@ def view_configuration():
         if "edit_shelf_role" in to_save:
             content.config_default_role = content.config_default_role + ub.ROLE_EDIT_SHELFS
 
-        content.config_default_show = 0
-        val = [int(k[5:]) for k, v in to_save.items() if k.startswith('show')]
-        sidebar = ub.get_sidebar_config()
-        for element in sidebar:
-            if element['visibility'] in val:
-                content.config_default_show = content.config_default_show + element['visibility']
+        val = 0
+        for key,v in to_save.items():
+            if key.startswith('show'):
+                val += int(key[5:])
+        content.config_default_show = val
 
-        if "show_mature_content" in to_save:
+
+        if "Show_mature_content" in to_save:
             content.config_default_show = content.config_default_show + ub.MATURE_CONTENT
         ub.session.commit()
         flash(_(u"Calibre-Web configuration updated"), category="success")
@@ -213,7 +213,7 @@ def view_configuration():
             app.logger.info('Reboot required, restarting')
     readColumn = db.session.query(db.Custom_Columns)\
             .filter(db.and_(db.Custom_Columns.datatype == 'bool',db.Custom_Columns.mark_for_delete == 0)).all()
-    return render_title_template("config_view_edit.html", content=config, readColumns=readColumn,
+    return render_title_template("config_view_edit.html", conf=config, readColumns=readColumn,
                                  title=_(u"UI Configuration"), page="uiconfig")
 
 
@@ -514,7 +514,7 @@ def new_user():
     if request.method == "POST":
         to_save = request.form.to_dict()
         content.default_language = to_save["default_language"]
-        content.mature_content = "show_mature_content" in to_save
+        content.mature_content = "Show_mature_content" in to_save
         if "locale" in to_save:
             content.locale = to_save["locale"]
 
@@ -674,17 +674,12 @@ def edit_user(user_id):
                 elif not element['visibility'] in val and content.check_visibility(element['visibility']):
                     content.sidebar_view -= element['visibility']
 
-            if "Show_read_and_unread" in to_save and not content.show_read_and_unread():
-                content.sidebar_view += ub.SIDEBAR_READ_AND_UNREAD
-            elif "Show_read_and_unread" not in to_save and content.show_read_and_unread():
-                content.sidebar_view -= ub.SIDEBAR_READ_AND_UNREAD
-
             if "Show_detail_random" in to_save and not content.show_detail_random():
                 content.sidebar_view += ub.DETAIL_RANDOM
             elif "Show_detail_random" not in to_save and content.show_detail_random():
                 content.sidebar_view -= ub.DETAIL_RANDOM
 
-            content.mature_content = "show_mature_content" in to_save
+            content.mature_content = "Show_mature_content" in to_save
 
             if "default_language" in to_save:
                 content.default_language = to_save["default_language"]

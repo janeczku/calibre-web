@@ -324,7 +324,7 @@ def get_search_results(term):
 
 # Returns the template for rendering and includes the instance name
 def render_title_template(*args, **kwargs):
-    sidebar=ub.get_sidebar_config()
+    sidebar=ub.get_sidebar_config(kwargs)
     return render_template(instance=config.config_calibre_web_title, sidebar=sidebar, *args, **kwargs)
 
 
@@ -1476,7 +1476,7 @@ def send_to_kindle(book_id, book_format, convert):
 @web.route("/me", methods=["GET", "POST"])
 @login_required
 def profile():
-    content = ub.session.query(ub.User).filter(ub.User.id == int(current_user.id)).first()
+    # content = ub.session.query(ub.User).filter(ub.User.id == int(current_user.id)).first()
     downloads = list()
     languages = speaking_language()
     translations = babel.list_translations() + [LC('en')]
@@ -1484,7 +1484,7 @@ def profile():
         oauth_status = get_oauth_status()
     else:
         oauth_status = None
-    for book in content.downloads:
+    for book in current_user.downloads:
         downloadBook = db.session.query(db.Books).filter(db.Books.id == book.book_id).first()
         if downloadBook:
             downloads.append(db.session.query(db.Books).filter(db.Books.id == book.book_id).first())
@@ -1494,46 +1494,46 @@ def profile():
             # ub.session.commit()
     if request.method == "POST":
         to_save = request.form.to_dict()
-        content.random_books = 0
+        current_user.random_books = 0
         if current_user.role_passwd() or current_user.role_admin():
             if "password" in to_save and to_save["password"]:
-                content.password = generate_password_hash(to_save["password"])
-        if "kindle_mail" in to_save and to_save["kindle_mail"] != content.kindle_mail:
-            content.kindle_mail = to_save["kindle_mail"]
-        if to_save["email"] and to_save["email"] != content.email:
+                current_user.password = generate_password_hash(to_save["password"])
+        if "kindle_mail" in to_save and to_save["kindle_mail"] != current_user.kindle_mail:
+            current_user.kindle_mail = to_save["kindle_mail"]
+        if to_save["email"] and to_save["email"] != current_user.email:
             if config.config_public_reg and not check_valid_domain(to_save["email"]):
                 flash(_(u"E-mail is not from valid domain"), category="error")
-                return render_title_template("user_edit.html", content=content, downloads=downloads,
+                return render_title_template("user_edit.html", content=current_user, downloads=downloads,
                                              title=_(u"%(name)s's profile", name=current_user.nickname))
-            content.email = to_save["email"]
+            current_user.email = to_save["email"]
         if "show_random" in to_save and to_save["show_random"] == "on":
-            content.random_books = 1
+            current_user.random_books = 1
         if "default_language" in to_save:
-            content.default_language = to_save["default_language"]
+            current_user.default_language = to_save["default_language"]
         if "locale" in to_save:
-            content.locale = to_save["locale"]
+            current_user.locale = to_save["locale"]
 
         val = 0
         for key,v in to_save.items():
             if key.startswith('show'):
                 val += int(key[5:])
-        content.sidebar_view = val
+        current_user.sidebar_view = val
         if "Show_detail_random" in to_save:
-            content.sidebar_view += ub.DETAIL_RANDOM
+            current_user.sidebar_view += ub.DETAIL_RANDOM
 
-        content.mature_content = "show_mature_content" in to_save
+        current_user.mature_content = "Show_mature_content" in to_save
 
         try:
             ub.session.commit()
         except IntegrityError:
             ub.session.rollback()
             flash(_(u"Found an existing account for this e-mail address."), category="error")
-            return render_title_template("user_edit.html", content=content, downloads=downloads,
+            return render_title_template("user_edit.html", content=current_user, downloads=downloads,
                                          title=_(u"%(name)s's profile", name=current_user.nickname,
                                                  registered_oauth=oauth_check, oauth_status=oauth_status))
         flash(_(u"Profile updated"), category="success")
     return render_title_template("user_edit.html", translations=translations, profile=1, languages=languages,
-                                 content=content, downloads=downloads, title=_(u"%(name)s's profile",
+                                 content=current_user, downloads=downloads, title=_(u"%(name)s's profile",
                                  name=current_user.nickname), page="me", registered_oauth=oauth_check,
                                  oauth_status=oauth_status)
 
