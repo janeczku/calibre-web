@@ -22,11 +22,10 @@
 #  along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 # opds routing functions
-from cps import config, language_table, get_locale, app, ub, global_WorkerThread
+from cps import config, language_table, get_locale, app, ub, global_WorkerThread, db
 from flask import request, flash, redirect, url_for, abort, Markup, Response
 from flask import Blueprint
 import datetime
-from cps import db
 import os
 import json
 from flask_babel import gettext as _
@@ -34,7 +33,7 @@ from uuid import uuid4
 import helper
 from flask_login import current_user
 from web import login_required_if_no_ano, common_filters, order_authors, render_title_template, edit_required, \
-    upload_required, login_required
+    upload_required, login_required, EXTENSIONS_UPLOAD
 import gdriveutils
 from shutil import move, copyfile
 import uploader
@@ -44,8 +43,6 @@ editbook = Blueprint('editbook', __name__)
 
 EXTENSIONS_CONVERT = {'pdf', 'epub', 'mobi', 'azw3', 'docx', 'rtf', 'fb2', 'lit', 'lrf', 'txt', 'htmlz', 'rtf', 'odt'}
 
-EXTENSIONS_UPLOAD = {'txt', 'pdf', 'epub', 'mobi', 'azw', 'azw3', 'cbr', 'cbz', 'cbt', 'djvu', 'prc', 'doc', 'docx',
-                      'fb2', 'html', 'rtf', 'odt', 'mp3',  'm4a', 'm4b'}
 
 
 

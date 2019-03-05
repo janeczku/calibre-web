@@ -47,7 +47,6 @@ from cps import lm, babel, ub, config, get_locale, language_table, app, db
 from pagination import Pagination
 from sqlalchemy.sql.expression import text
 
-
 feature_support = dict()
 try:
     from oauth_bb import oauth_check, register_user_with_oauth, logout_oauth_user, get_oauth_status
@@ -106,6 +105,10 @@ from flask import Blueprint
 
 EXTENSIONS_AUDIO = {'mp3', 'm4a', 'm4b'}
 
+EXTENSIONS_UPLOAD = {'txt', 'pdf', 'epub', 'mobi', 'azw', 'azw3', 'cbr', 'cbz', 'cbt', 'djvu', 'prc', 'doc', 'docx',
+                      'fb2', 'html', 'rtf', 'odt', 'mp3',  'm4a', 'm4b'}
+
+
 '''EXTENSIONS_READER = set(['txt', 'pdf', 'epub', 'zip', 'cbz', 'tar', 'cbt'] + 
                         (['rar','cbr'] if feature_support['rar'] else []))'''
 
@@ -133,10 +136,7 @@ web = Blueprint('web', __name__)
 
 @lm.user_loader
 def load_user(user_id):
-    try:
-        return ub.session.query(ub.User).filter(ub.User.id == int(user_id)).first()
-    except Exception as e:
-        print(e)
+    return ub.session.query(ub.User).filter(ub.User.id == int(user_id)).first()
 
 
 @lm.header_loader
@@ -325,7 +325,8 @@ def get_search_results(term):
 # Returns the template for rendering and includes the instance name
 def render_title_template(*args, **kwargs):
     sidebar=ub.get_sidebar_config(kwargs)
-    return render_template(instance=config.config_calibre_web_title, sidebar=sidebar, *args, **kwargs)
+    return render_template(instance=config.config_calibre_web_title, sidebar=sidebar, accept=EXTENSIONS_UPLOAD,
+                           *args, **kwargs)
 
 
 @web.before_app_request

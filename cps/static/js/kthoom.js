@@ -99,7 +99,8 @@ kthoom.setSettings = function() {
 };
 
 var createURLFromArray = function(array, mimeType) {
-    var offset = array.byteOffset, len = array.byteLength;
+    var offset = array.byteOffset;
+    var len = array.byteLength;
     var url;
     var blob;
 
