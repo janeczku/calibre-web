@@ -70,6 +70,7 @@ SIDEBAR_RECENT = 512
 SIDEBAR_SORTED = 1024
 MATURE_CONTENT = 2048
 SIDEBAR_PUBLISHER = 4096
+SIDEBAR_RATING = 8192
 
 UPDATE_STABLE = 0
 AUTO_UPDATE_STABLE = 1
@@ -139,6 +140,9 @@ def get_sidebar_config(kwargs=[]):
                     "visibility": SIDEBAR_LANGUAGE, 'public': (g.user.filter_language() == 'all'),
                     "page": "language",
                     "show_text": _('Show language selection'), "config_show":True})
+    sidebar.append({"glyph": "glyphicon-star-empty", "text": _('Ratings'), "link": 'web.ratings_list', "id": "rate",
+                    "visibility": SIDEBAR_RATING, 'public': True,
+                    "page": "rating", "show_text": _('Show ratings selection'), "config_show":True})
     return sidebar
 
 
@@ -835,7 +839,7 @@ def create_admin_user():
     user.role = ROLE_USER + ROLE_ADMIN + ROLE_DOWNLOAD + ROLE_UPLOAD + ROLE_EDIT + ROLE_DELETE_BOOKS + ROLE_PASSWD
     user.sidebar_view = DETAIL_RANDOM + SIDEBAR_LANGUAGE + SIDEBAR_SERIES + SIDEBAR_CATEGORY + SIDEBAR_HOT + \
             SIDEBAR_RANDOM + SIDEBAR_AUTHOR + SIDEBAR_BEST_RATED + SIDEBAR_READ_AND_UNREAD + SIDEBAR_RECENT + \
-            SIDEBAR_SORTED + SIDEBAR_PUBLISHER
+            SIDEBAR_SORTED + + MATURE_CONTENT + SIDEBAR_PUBLISHER + SIDEBAR_RATING
 
     user.password = generate_password_hash(DEFAULT_PASS)
 

@@ -501,36 +501,27 @@ def index(page):
 @web.route('/books/newest/page/<int:page>')
 @login_required_if_no_ano
 def newest_books(page):
-    if current_user.show_sorted():
-        entries, random, pagination = fill_indexpage(page, db.Books, True, [db.Books.pubdate.desc()])
-        return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
-                                     title=_(u"Newest Books"), page="newest")
-    else:
-        abort(404)
+    entries, random, pagination = fill_indexpage(page, db.Books, True, [db.Books.pubdate.desc()])
+    return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
+                                 title=_(u"Newest Books"), page="newest")
 
 
 @web.route('/books/oldest', defaults={'page': 1})
 @web.route('/books/oldest/page/<int:page>')
 @login_required_if_no_ano
 def oldest_books(page):
-    if current_user.show_sorted():
-        entries, random, pagination = fill_indexpage(page, db.Books, True, [db.Books.pubdate])
-        return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
-                                     title=_(u"Oldest Books"), page="oldest")
-    else:
-        abort(404)
+    entries, random, pagination = fill_indexpage(page, db.Books, True, [db.Books.pubdate])
+    return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
+                                 title=_(u"Oldest Books"), page="oldest")
 
 
 @web.route('/books/a-z', defaults={'page': 1})
 @web.route('/books/a-z/page/<int:page>')
 @login_required_if_no_ano
 def titles_ascending(page):
-    if current_user.show_sorted():
-        entries, random, pagination = fill_indexpage(page, db.Books, True, [db.Books.sort])
-        return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
-                                     title=_(u"Books (A-Z)"), page="a-z")
-    else:
-        abort(404)
+    entries, random, pagination = fill_indexpage(page, db.Books, True, [db.Books.sort])
+    return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
+                                 title=_(u"Books (A-Z)"), page="a-z")
 
 
 @web.route('/books/z-a', defaults={'page': 1})
@@ -605,7 +596,7 @@ def author_list():
     if current_user.check_visibility(ub.SIDEBAR_AUTHOR):
         entries = db.session.query(db.Authors, func.count('books_authors_link.book').label('count'))\
             .join(db.books_authors_link).join(db.Books).filter(common_filters())\
-            .group_by('books_authors_link.author').order_by(db.Authors.sort).all()
+            .group_by(text('books_authors_link.author')).order_by(db.Authors.sort).all()
         charlist = db.session.query(func.upper(func.substr(db.Authors.sort,1,1)).label('char')) \
             .join(db.books_authors_link).join(db.Books).filter(common_filters()) \
             .group_by(func.upper(func.substr(db.Authors.sort,1,1))).all()
@@ -650,7 +641,7 @@ def publisher_list():
     if current_user.check_visibility(ub.SIDEBAR_PUBLISHER):
         entries = db.session.query(db.Publishers, func.count('books_publishers_link.book').label('count'))\
             .join(db.books_publishers_link).join(db.Books).filter(common_filters())\
-            .group_by('books_publishers_link.publisher').order_by(db.Publishers.sort).all()
+            .group_by(text('books_publishers_link.publisher')).order_by(db.Publishers.sort).all()
         charlist = db.session.query(func.upper(func.substr(db.Publishers.name,1,1)).label('char')) \
             .join(db.books_publishers_link).join(db.Books).filter(common_filters()) \
             .group_by(func.upper(func.substr(db.Publishers.name,1,1))).all()
@@ -704,7 +695,7 @@ def series_list():
     if current_user.check_visibility(ub.SIDEBAR_SERIES):
         entries = db.session.query(db.Series, func.count('books_series_link.book').label('count'))\
             .join(db.books_series_link).join(db.Books).filter(common_filters())\
-            .group_by('books_series_link.series').order_by(db.Series.sort).all()
+            .group_by(text('books_series_link.series')).order_by(db.Series.sort).all()
         charlist = db.session.query(func.upper(func.substr(db.Series.sort,1,1)).label('char')) \
             .join(db.books_series_link).join(db.Books).filter(common_filters()) \
             .group_by(func.upper(func.substr(db.Series.sort,1,1))).all()
@@ -724,6 +715,36 @@ def series(book_id, page):
                                                      [db.Books.series_index])
         return render_title_template('index.html', random=random, pagination=pagination, entries=entries,
                                      title=_(u"Series: %(serie)s", serie=name.name), page="series")
+    else:
+        abort(404)
+
+
+@web.route("/ratings")
+@login_required_if_no_ano
+def ratings_list():
+    if current_user.check_visibility(ub.SIDEBAR_RATING):
+        entries = db.session.query(db.Series, func.count('books_series_link.book').label('count'))\
+            .join(db.books_series_link).join(db.Books).filter(common_filters())\
+            .group_by(text('books_series_link.series')).order_by(db.Series.sort).all()
+        charlist = db.session.query(func.upper(func.substr(db.Series.sort,1,1)).label('char')) \
+            .join(db.books_series_link).join(db.Books).filter(common_filters()) \
+            .group_by(func.upper(func.substr(db.Series.sort,1,1))).all()
+        return render_title_template('list.html', entries=entries, folder='web.series', charlist=charlist,
+                                     title=_(u"Ratings list"), page="ratingslist")
+    else:
+        abort(404)
+
+
+@web.route("/ratings/<int:book_id>/", defaults={'page': 1})
+@web.route("/ratings/<int:book_id>/<int:page>")
+@login_required_if_no_ano
+def ratings(book_id, page):
+    name = db.session.query(db.Series).filter(db.Series.id == book_id).first()
+    if name:
+        entries, random, pagination = fill_indexpage(page, db.Books, db.Books.series.any(db.Series.id == book_id),
+                                                     [db.Books.series_index])
+        return render_title_template('index.html', random=random, pagination=pagination, entries=entries,
+                                     title=_(u"Ratings: %(serie)s", serie=name.name), page="ratings")
     else:
         abort(404)
 
@@ -749,7 +770,7 @@ def language_overview():
                 languages[0].name = _(isoLanguages.get(part3=languages[0].lang_code).name)
         lang_counter = db.session.query(db.books_languages_link,
                                         func.count('books_languages_link.book').label('bookcount')).group_by(
-            'books_languages_link.lang_code').all()
+            text('books_languages_link.lang_code')).all()
         return render_title_template('languages.html', languages=languages, lang_counter=lang_counter,
                                      charlist=charlist, title=_(u"Available languages"), page="langlist")
     else:
@@ -780,7 +801,7 @@ def category_list():
     if current_user.check_visibility(ub.SIDEBAR_CATEGORY):
         entries = db.session.query(db.Tags, func.count('books_tags_link.book').label('count'))\
             .join(db.books_tags_link).join(db.Books).order_by(db.Tags.name).filter(common_filters())\
-            .group_by('books_tags_link.tag').all()
+            .group_by(text('books_tags_link.tag')).all()
         charlist = db.session.query(func.upper(func.substr(db.Tags.name,1,1)).label('char')) \
             .join(db.books_tags_link).join(db.Books).filter(common_filters()) \
             .group_by(func.upper(func.substr(db.Tags.name,1,1))).all()

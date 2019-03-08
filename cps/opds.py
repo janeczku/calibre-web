@@ -31,12 +31,13 @@ import ub
 from flask_login import current_user
 from functools import wraps
 from web import login_required_if_no_ano, fill_indexpage, common_filters, get_search_results, render_read_books
-from sqlalchemy.sql.expression import func
+from sqlalchemy.sql.expression import func, text
 import helper
 from werkzeug.security import check_password_hash
 from werkzeug.datastructures import Headers
 from web import download_required
 import sys
+
 try:
     from urllib.parse import quote
 except ImportError:
@@ -138,7 +139,7 @@ def feed_hot():
 def feed_authorindex():
     off = request.args.get("offset") or 0
     entries = db.session.query(db.Authors).join(db.books_authors_link).join(db.Books).filter(common_filters())\
-        .group_by('books_authors_link.author').order_by(db.Authors.sort).limit(config.config_books_per_page).offset(off)
+        .group_by(text('books_authors_link.author')).order_by(db.Authors.sort).limit(config.config_books_per_page).offset(off)
     pagination = Pagination((int(off) / (int(config.config_books_per_page)) + 1), config.config_books_per_page,
                             len(db.session.query(db.Authors).all()))
     return render_xml_template('feed.xml', listelements=entries, folder='opds.feed_author', pagination=pagination)
@@ -158,7 +159,7 @@ def feed_author(book_id):
 def feed_publisherindex():
     off = request.args.get("offset") or 0
     entries = db.session.query(db.Publishers).join(db.books_publishers_link).join(db.Books).filter(common_filters())\
-        .group_by('books_publishers_link.publisher').order_by(db.Publishers.sort).limit(config.config_books_per_page).offset(off)
+        .group_by(text('books_publishers_link.publisher')).order_by(db.Publishers.sort).limit(config.config_books_per_page).offset(off)
     pagination = Pagination((int(off) / (int(config.config_books_per_page)) + 1), config.config_books_per_page,
                             len(db.session.query(db.Publishers).all()))
     return render_xml_template('feed.xml', listelements=entries, folder='opds.feed_publisher', pagination=pagination)
@@ -179,7 +180,7 @@ def feed_publisher(book_id):
 def feed_categoryindex():
     off = request.args.get("offset") or 0
     entries = db.session.query(db.Tags).join(db.books_tags_link).join(db.Books).filter(common_filters())\
-        .group_by('books_tags_link.tag').order_by(db.Tags.name).offset(off).limit(config.config_books_per_page)
+        .group_by(text('books_tags_link.tag')).order_by(db.Tags.name).offset(off).limit(config.config_books_per_page)
     pagination = Pagination((int(off) / (int(config.config_books_per_page)) + 1), config.config_books_per_page,
                             len(db.session.query(db.Tags).all()))
     return render_xml_template('feed.xml', listelements=entries, folder='opds.feed_category', pagination=pagination)
@@ -199,7 +200,7 @@ def feed_category(book_id):
 def feed_seriesindex():
     off = request.args.get("offset") or 0
     entries = db.session.query(db.Series).join(db.books_series_link).join(db.Books).filter(common_filters())\
-        .group_by('books_series_link.series').order_by(db.Series.sort).offset(off).all()
+        .group_by(text('books_series_link.series')).order_by(db.Series.sort).offset(off).all()
     pagination = Pagination((int(off) / (int(config.config_books_per_page)) + 1), config.config_books_per_page,
                             len(db.session.query(db.Series).all()))
     return render_xml_template('feed.xml', listelements=entries, folder='opds.feed_series', pagination=pagination)
