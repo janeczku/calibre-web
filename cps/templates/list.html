@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
 {% block body %}
 <h1 class="{{page}}">{{_(title)}}</h1>
-  <div class="container">
+
     <div class="filterheader hidden-xs hidden-sm">
       <button id="desc" class="btn btn-success"><span class="glyphicon glyphicon-sort-by-alphabet"></span></button>
       <button id="asc" class="btn btn-success"><span class="glyphicon glyphicon-sort-by-alphabet-alt"></span></button>
@@ -12,6 +12,7 @@
         {% endfor %}
       </div>
     </div>
+  <div class="container">
     <div id="list" class="col-xs-12 col-sm-6">
     {% for entry in entries %}
       <div class="row" data-id="{% if entry[0].sort %}{{entry[0].sort}}{% else %}{{entry[0].name}}{% endif %}">

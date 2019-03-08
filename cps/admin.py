@@ -325,7 +325,7 @@ def configuration_helper(origin):
                                     'credential': os.path.join(config.get_main_dir, 'gdrive_credentials')})
             else:
                 flash(_(u'client_secrets.json is not configured for web application'), category="error")
-                return render_title_template("config_edit.html", content=config, origin=origin,
+                return render_title_template("config_edit.html", config=config, origin=origin,
                                              gdriveError=gdriveError,
                                              gfeature_support=feature_support, title=_(u"Basic Configuration"),
                                              page="config")
@@ -351,7 +351,7 @@ def configuration_helper(origin):
                 else:
                     ub.session.commit()
                     flash(_(u'Keyfile location is not valid, please enter correct path'), category="error")
-                    return render_title_template("config_edit.html", content=config, origin=origin,
+                    return render_title_template("config_edit.html", config=config, origin=origin,
                                                  gdriveError=gdriveError,
                                                  feature_support=feature_support, title=_(u"Basic Configuration"),
                                                  page="config")
@@ -363,7 +363,7 @@ def configuration_helper(origin):
                 else:
                     ub.session.commit()
                     flash(_(u'Certfile location is not valid, please enter correct path'), category="error")
-                    return render_title_template("config_edit.html", content=config, origin=origin,
+                    return render_title_template("config_edit.html", config=config, origin=origin,
                                                  gdriveError=gdriveError, feature_support=feature_support,
                                                  title=_(u"Basic Configuration"), page="config")
         content.config_uploading = 0
@@ -388,7 +388,7 @@ def configuration_helper(origin):
             if "config_ldap_provider_url" not in to_save or "config_ldap_dn" not in to_save:
                 ub.session.commit()
                 flash(_(u'Please enter a LDAP provider and a DN'), category="error")
-                return render_title_template("config_edit.html", content=config, origin=origin,
+                return render_title_template("config_edit.html", config=config, origin=origin,
                                              gdriveError=gdriveError, feature_support=feature_support,
                                              title=_(u"Basic Configuration"), page="config")
             else:
@@ -446,7 +446,7 @@ def configuration_helper(origin):
                 else:
                     ub.session.commit()
                     flash(_(u'Logfile location is not valid, please enter correct path'), category="error")
-                    return render_title_template("config_edit.html", content=config, origin=origin,
+                    return render_title_template("config_edit.html", config=config, origin=origin,
                                                  gdriveError=gdriveError, feature_support=feature_support,
                                                  title=_(u"Basic Configuration"), page="config")
             else:
@@ -460,7 +460,7 @@ def configuration_helper(origin):
                 content.config_rarfile_location = to_save["config_rarfile_location"].strip()
             else:
                 flash(check[1], category="error")
-                return render_title_template("config_edit.html", content=config, origin=origin,
+                return render_title_template("config_edit.html", config=config, origin=origin,
                                              feature_support=feature_support, title=_(u"Basic Configuration"))
         try:
             if content.config_use_google_drive and is_gdrive_ready() and not \
@@ -477,14 +477,14 @@ def configuration_helper(origin):
             # logging.getLogger("uploader").setLevel(config.config_log_level)
         except Exception as e:
             flash(e, category="error")
-            return render_title_template("config_edit.html", content=config, origin=origin,
+            return render_title_template("config_edit.html", config=config, origin=origin,
                                          gdriveError=gdriveError, feature_support=feature_support,
                                          title=_(u"Basic Configuration"), page="config")
         if db_change:
             reload(db)
             if not db.setup_db():
                 flash(_(u'DB location is not valid, please enter correct path'), category="error")
-                return render_title_template("config_edit.html", content=config, origin=origin,
+                return render_title_template("config_edit.html", config=config, origin=origin,
                                              gdriveError=gdriveError, feature_support=feature_support,
                                              title=_(u"Basic Configuration"), page="config")
         if reboot_required:
@@ -498,7 +498,7 @@ def configuration_helper(origin):
         gdrivefolders = listRootFolders()
     else:
         gdrivefolders = list()
-    return render_title_template("config_edit.html", origin=origin, success=success, content=config,
+    return render_title_template("config_edit.html", origin=origin, success=success, config=config,
                                  show_authenticate_google_drive=not is_gdrive_ready(),
                                  gdriveError=gdriveError, gdrivefolders=gdrivefolders, feature_support=feature_support,
                                  title=_(u"Basic Configuration"), page="config")
