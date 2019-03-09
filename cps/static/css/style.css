@@ -130,3 +130,7 @@ input.pill:not(:checked) + label .glyphicon {
 .editable-cancel { margin-bottom: 0px !important; margin-left: 7px !important;}
 .editable-submit { margin-bottom: 0px !important;}
 
+.modal-body .comments {
+    max-height:300px;
+    overflow-y: auto;
+}

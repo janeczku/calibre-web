@@ -411,8 +411,8 @@ $( 'div.comments' ).readmore( {
   collapsedHeight: 134,
   heightMargin: 45,
   speed: 300,
-  moreLink: '<a href="#">READ MORE</a>',
-  lessLink: '<a href="#">READ LESS</a>',
+  moreLink: '<a href="#">READ MORE</a>',    // ToDo: make translateable
+  lessLink: '<a href="#">READ LESS</a>',    // ToDo: make translateable
 });
 /////////////////////////////////
 //     End of Global Work     //
