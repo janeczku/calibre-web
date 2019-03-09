@@ -104,7 +104,7 @@
                 // HTTP 500 ends up here!?!
                 return this.error(xhr);
             }
-            this.set_progress(100);
+            this.setProgress(100);
             var url;
             var contentType = xhr.getResponseHeader("Content-Type");
 
