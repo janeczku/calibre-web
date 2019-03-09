@@ -205,4 +205,12 @@ $(function() {
     $(window).resize(function() {
         $(".discover .row").isotope("layout");
     });
+	
+    $(".author-expand").click(function() {
+        $(this).parent().find("a.author-name").slice($(this).data("authors-max")).toggle();
+        $(this).parent().find("span.author-hidden-divider").toggle();
+        $(this).html() === $(this).data("collapse-caption") ? $(this).html("(...)") : $(this).html($(this).data("collapse-caption"));
+        $(".discover .row").isotope("layout");
+    });
+	
 });
