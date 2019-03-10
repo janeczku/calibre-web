@@ -41,10 +41,20 @@
         </a>
         <p class="author">
           {% for author in entry.authors %}
-          <a href="{{url_for('web.author', book_id=author.id) }}">{{author.name.replace('|',',')}}</a>
-          {% if not loop.last %}
-          &amp;
-          {% endif %}
+            {% if loop.index > config_authors_max and config_authors_max != 0 %}
+              {% if not loop.first %}
+                <span class="author-hidden-divider">&amp;</span>
+			  {% endif %}
+              <a class="author-name author-hidden" href="{{url_for('web.author', book_id=author.id) }}">{{author.name.replace('|',',')|shortentitle(30)}}</a>
+              {% if loop.last %}
+                <a href="#" class="author-expand" data-authors-max="{{config_authors_max}}" data-collapse-caption="({{_('reduce')}})">(...)</a>
+              {% endif %}
+            {% else %}
+              {% if not loop.first %}
+                <span>&amp;</span>
+              {% endif %}
+              <a class="author-name" href="{{url_for('web.author', book_id=author.id) }}">{{author.name.replace('|',',')|shortentitle(30)}}</a>
+            {% endif %}
           {% endfor %}
         </p>
         {% if entry.ratings.__len__() > 0 %}
@@ -80,13 +90,15 @@
       <div class="meta">
         <p class="title">{{entry.title|shortentitle}}</p>
         <p class="author">
-          {% for author in entry.authors %}
-          <a href="https://www.goodreads.com/author/show/{{ author.gid }}" target="_blank" rel="noopener">
-            {{author.name.replace('|',',')}}
-          </a>
-          {% if not loop.last %}
-          &amp;
-          {% endif %}
+		  {% for author in entry.authors %}
+			{% if loop.index > config_authors_max and config_authors_max != 0 %}
+				<a class="author-name author-hidden" href="https://www.goodreads.com/author/show/{{ author.gid }}" target="_blank" rel="noopener">{{author.name.replace('|',',')}}</a>
+				{% if loop.last %}
+					<a href="#" class="author-expand" data-authors-max="{{config_authors_max}}" data-collapse-caption="({{_('reduce')}})">(...)</a>
+				{% endif %}
+			{% else %}
+				<a class="author-name" href="https://www.goodreads.com/author/show/{{ author.gid }}" target="_blank" rel="noopener">{{author.name.replace('|',',')}}</a>
+		    {% endif %}
           {% endfor %}
         </p>
         <div class="rating">

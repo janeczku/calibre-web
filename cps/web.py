@@ -494,7 +494,7 @@ def get_matching_tags():
 def index(page):
     entries, random, pagination = fill_indexpage(page, db.Books, True, [db.Books.timestamp.desc()])
     return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
-                                 title=_(u"Recently Added Books"), page="root")
+                                 title=_(u"Recently Added Books"), page="root", config_authors_max=config.config_authors_max)
 
 
 @web.route('/books/newest', defaults={'page': 1})
@@ -632,7 +632,8 @@ def author(book_id, page):
             app.logger.error('Goodreads website is down/inaccessible')
 
     return render_title_template('author.html', entries=entries, pagination=pagination,
-                                 title=name, author=author_info, other_books=other_books, page="author")
+                                 title=name, author=author_info, other_books=other_books, page="author",
+                                 config_authors_max=config.config_authors_max)
 
 
 @web.route("/publisher")
