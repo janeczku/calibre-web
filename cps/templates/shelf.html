@@ -31,13 +31,13 @@
         </a>
         <p class="author">
           {% for author in entry.authors %}
-            {% if loop.index > config_authors_max and config_authors_max != 0 %}
+            {% if loop.index > g.config_authors_max and g.config_authors_max != 0 %}
               {% if not loop.first %}
                 <span class="author-hidden-divider">&amp;</span>
 			  {% endif %}
               <a class="author-name author-hidden" href="{{url_for('web.author', book_id=author.id) }}">{{author.name.replace('|',',')|shortentitle(30)}}</a>
               {% if loop.last %}
-                <a href="#" class="author-expand" data-authors-max="{{config_authors_max}}" data-collapse-caption="({{_('reduce')}})">(...)</a>
+                <a href="#" class="author-expand" data-authors-max="{{g.config_authors_max}}" data-collapse-caption="({{_('reduce')}})">(...)</a>
               {% endif %}
             {% else %}
               {% if not loop.first %}

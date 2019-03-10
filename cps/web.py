@@ -36,7 +36,9 @@ from babel import Locale as LC
 from babel.dates import format_date
 from babel.core import UnknownLocaleError
 import base64
-from sqlalchemy.sql import *
+# from sqlalchemy.sql import *
+from sqlalchemy import String as SQLString
+from sqlalchemy.sql.expression import text, func, cast, true, and_, false
 import json
 import datetime
 from iso639 import languages as isoLanguages
@@ -45,7 +47,7 @@ import gdriveutils
 from redirect import redirect_back
 from cps import lm, babel, ub, config, get_locale, language_table, app, db
 from pagination import Pagination
-from sqlalchemy.sql.expression import text
+
 
 feature_support = dict()
 try:
@@ -335,6 +337,7 @@ def before_request():
     g.allow_registration = config.config_public_reg
     g.allow_upload = config.config_uploading
     g.current_theme = config.config_theme
+    g.config_authors_max = config.config_authors_max
     g.public_shelfes = ub.session.query(ub.Shelf).filter(ub.Shelf.is_public == 1).order_by(ub.Shelf.name).all()
     if not config.db_configured and request.endpoint not in ('admin.basic_configuration', 'login') and '/static/' not in request.path:
         return redirect(url_for('admin.basic_configuration'))
@@ -494,7 +497,7 @@ def get_matching_tags():
 def index(page):
     entries, random, pagination = fill_indexpage(page, db.Books, True, [db.Books.timestamp.desc()])
     return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
-                                 title=_(u"Recently Added Books"), page="root", config_authors_max=config.config_authors_max)
+                                 title=_(u"Recently Added Books"), page="root")
 
 
 @web.route('/books/newest', defaults={'page': 1})
@@ -632,8 +635,7 @@ def author(book_id, page):
             app.logger.error('Goodreads website is down/inaccessible')
 
     return render_title_template('author.html', entries=entries, pagination=pagination,
-                                 title=name, author=author_info, other_books=other_books, page="author",
-                                 config_authors_max=config.config_authors_max)
+                                 title=name, author=author_info, other_books=other_books, page="author")
 
 
 @web.route("/publisher")
@@ -720,17 +722,16 @@ def series(book_id, page):
         abort(404)
 
 
+# (cast(db.Ratings.rating/2, SQLString)).label('name'))\
 @web.route("/ratings")
 @login_required_if_no_ano
 def ratings_list():
     if current_user.check_visibility(ub.SIDEBAR_RATING):
-        entries = db.session.query(db.Series, func.count('books_series_link.book').label('count'))\
-            .join(db.books_series_link).join(db.Books).filter(common_filters())\
-            .group_by(text('books_series_link.series')).order_by(db.Series.sort).all()
-        charlist = db.session.query(func.upper(func.substr(db.Series.sort,1,1)).label('char')) \
-            .join(db.books_series_link).join(db.Books).filter(common_filters()) \
-            .group_by(func.upper(func.substr(db.Series.sort,1,1))).all()
-        return render_title_template('list.html', entries=entries, folder='web.series', charlist=charlist,
+        entries = db.session.query(db.Ratings, func.count('books_ratings_link.book').label('count'),
+                                   (db.Ratings.rating/2).label('name'))\
+            .join(db.books_ratings_link).join(db.Books).filter(common_filters())\
+            .group_by(text('books_ratings_link.rating')).order_by(db.Ratings.rating).all()
+        return render_title_template('list.html', entries=entries, folder='web.ratings', charlist=list(),
                                      title=_(u"Ratings list"), page="ratingslist")
     else:
         abort(404)
@@ -740,12 +741,12 @@ def ratings_list():
 @web.route("/ratings/<int:book_id>/<int:page>")
 @login_required_if_no_ano
 def ratings(book_id, page):
-    name = db.session.query(db.Series).filter(db.Series.id == book_id).first()
-    if name:
-        entries, random, pagination = fill_indexpage(page, db.Books, db.Books.series.any(db.Series.id == book_id),
-                                                     [db.Books.series_index])
+    if book_id <=5:
+        name = db.session.query(db.Ratings).filter(db.Ratings.id == book_id).first()
+        entries, random, pagination = fill_indexpage(page, db.Books, db.Books.ratings.any(db.Ratings.id == book_id),
+                                                 [db.Books.timestamp.desc()])
         return render_title_template('index.html', random=random, pagination=pagination, entries=entries,
-                                     title=_(u"Ratings: %(serie)s", serie=name.name), page="ratings")
+                                     title=_(u"Ratings: %(rating)s stars", rating=(name.rating/2)), page="ratings")
     else:
         abort(404)
 
