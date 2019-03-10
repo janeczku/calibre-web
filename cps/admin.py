@@ -172,6 +172,11 @@ def view_configuration():
         # Mature Content configuration
         if "config_mature_content_tags" in to_save:
             content.config_mature_content_tags = to_save["config_mature_content_tags"].strip()
+        if "Show_mature_content" in to_save:
+            content.config_default_show = content.config_default_show + ub.MATURE_CONTENT
+
+        if "config_authors_max" in to_save:
+            content.config_authors_max = int(to_save["config_authors_max"])
 
         # Default user configuration
         content.config_default_role = 0
@@ -196,9 +201,6 @@ def view_configuration():
                 val += int(key[5:])
         content.config_default_show = val
 
-
-        if "Show_mature_content" in to_save:
-            content.config_default_show = content.config_default_show + ub.MATURE_CONTENT
         ub.session.commit()
         flash(_(u"Calibre-Web configuration updated"), category="success")
         config.loadSettings()

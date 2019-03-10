@@ -1527,7 +1527,8 @@ def profile():
             if config.config_public_reg and not check_valid_domain(to_save["email"]):
                 flash(_(u"E-mail is not from valid domain"), category="error")
                 return render_title_template("user_edit.html", content=current_user, downloads=downloads,
-                                             title=_(u"%(name)s's profile", name=current_user.nickname))
+                                             title=_(u"%(name)s's profile", name=current_user.nickname), page="me",
+                                             registered_oauth=oauth_check, oauth_status=oauth_status)
             current_user.email = to_save["email"]
         if "show_random" in to_save and to_save["show_random"] == "on":
             current_user.random_books = 1
@@ -1552,8 +1553,9 @@ def profile():
             ub.session.rollback()
             flash(_(u"Found an existing account for this e-mail address."), category="error")
             return render_title_template("user_edit.html", content=current_user, downloads=downloads,
-                                         title=_(u"%(name)s's profile", name=current_user.nickname,
-                                                 registered_oauth=oauth_check, oauth_status=oauth_status))
+                                         translations=translations,
+                                         title=_(u"%(name)s's profile", name=current_user.nickname), page="me",
+                                                 registered_oauth=oauth_check, oauth_status=oauth_status)
         flash(_(u"Profile updated"), category="success")
     return render_title_template("user_edit.html", translations=translations, profile=1, languages=languages,
                                  content=current_user, downloads=downloads, title=_(u"%(name)s's profile",

@@ -223,11 +223,12 @@ if ub.oauth_support:
                     except Exception as e:
                         app.logger.exception(e)
                         ub.session.rollback()
-                if config.config_public_reg:
-                    return redirect(url_for('web.register'))
-                else:
-                    flash(_(u"Public registration is not enabled"), category="error")
-                    redirect(url_for(redirect_url))
+                    return redirect(url_for('web.login'))
+                #if config.config_public_reg:
+                #   return redirect(url_for('web.register'))
+                #else:
+                #    flash(_(u"Public registration is not enabled"), category="error")
+                #    return redirect(url_for(redirect_url))
         except NoResultFound:
             return redirect(url_for(redirect_url))
 
@@ -306,7 +307,7 @@ if ub.oauth_support:
         return unlink_oauth(github_blueprint.name)
 
 
-    @oauth.route('/google')
+    @oauth.route('/login/google')
     @google_oauth_required
     def google_login():
         if not google.authorized:
