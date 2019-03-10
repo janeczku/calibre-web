@@ -19,7 +19,7 @@
     }
 
     var template = "<div class=\"modal fade\" id=\"file-progress-modal\">" +
-    "<div class=\"modal-dialog\">" +
+    "<div class=\"modal-dialog upload-modal-dialog\">" +
     "  <div class=\"modal-content\">" +
     "    <div class=\"modal-header\">" +
     "      <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\"><span aria-hidden=\"true\">&times;</span></button>" +
@@ -170,7 +170,7 @@
         replaceForm: function(html) {
             var newForm;
             var formId = this.$form.attr("id");
-            if (typeof formId !== "undefined") {
+            if ( typeof formId !== "undefined") {
                 newForm = $(html).find("#" + formId);
             } else {
                 newForm = $(html).find("form");

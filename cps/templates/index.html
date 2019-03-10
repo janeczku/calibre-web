@@ -4,7 +4,7 @@
 <div class="discover random-books">
   <h2 class="random-books">{{_('Discover (Random Books)')}}</h2>
   <div class="row">
-    {% for entry in random %}
+web.    {% for entry in random %}
     <div class="col-sm-3 col-lg-2 col-xs-6 book" id="books_rand">
       <div class="cover">
           <a href="{{ url_for('web.show_book', book_id=entry.id) }}" data-toggle="modal" data-target="#bookDetailsModal" data-remote="false">
@@ -21,9 +21,19 @@
         </a>
         <p class="author">
           {% for author in entry.authors %}
-            <a href="{{url_for('web.author', book_id=author.id) }}">{{author.name.replace('|',',')|shortentitle(30)}}</a>
-            {% if not loop.last %}
-              &amp;
+            {% if loop.index > config_authors_max and config_authors_max != 0 %}
+              {% if not loop.first %}
+                <span class="author-hidden-divider">&amp;</span>
+			  {% endif %}
+              <a class="author-name author-hidden" href="{{url_for('web.author', book_id=author.id) }}">{{author.name.replace('|',',')|shortentitle(30)}}</a>
+              {% if loop.last %}
+                <a href="#" class="author-expand" data-authors-max="{{config_authors_max}}" data-collapse-caption="({{_('reduce')}})">(...)</a>
+              {% endif %}
+            {% else %}
+              {% if not loop.first %}
+                <span>&amp;</span>
+              {% endif %}
+              <a class="author-name" href="{{url_for('web.author', book_id=author.id) }}">{{author.name.replace('|',',')|shortentitle(30)}}</a>
             {% endif %}
           {% endfor %}
         </p>
@@ -78,9 +88,19 @@
         </a>
         <p class="author">
           {% for author in entry.authors %}
-            <a href="{{url_for('web.author', book_id=author.id) }}">{{author.name.replace('|',',')|shortentitle(30)}}</a>
-            {% if not loop.last %}
-              &amp;
+            {% if loop.index > config_authors_max and config_authors_max != 0 %}
+              {% if not loop.first %}
+                <span class="author-hidden-divider">&amp;</span>
+			  {% endif %}
+              <a class="author-name author-hidden" href="{{url_for('web.author', book_id=author.id) }}">{{author.name.replace('|',',')|shortentitle(30)}}</a>
+              {% if loop.last %}
+                <a href="#" class="author-expand" data-authors-max="{{config_authors_max}}" data-collapse-caption="({{_('reduce')}})">(...)</a>
+              {% endif %}
+            {% else %}
+              {% if not loop.first %}
+                <span>&amp;</span>
+              {% endif %}
+              <a class="author-name" href="{{url_for('web.author', book_id=author.id) }}">{{author.name.replace('|',',')|shortentitle(30)}}</a>
             {% endif %}
           {% endfor %}
           {% for format in entry.data %}
