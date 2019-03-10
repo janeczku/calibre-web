@@ -35,6 +35,7 @@
             {% endfor %}
         </select>
     </div>
+
     <div class="form-group">
       <label for="default_language">{{_('Show books with language')}}</label>
         <select name="default_language" id="default_language" class="form-control">
@@ -44,21 +45,21 @@
             {% endfor %}
         </select>
     </div>
+
     {% if registered_oauth.keys()| length > 0 %}
-    <div class="form-group">
-    <label for="oauth_settings">{{_('OAuth Settings')}}</label>
-    <br/>
       {% for oauth, name in registered_oauth.iteritems() %}
-      <label for="config_{{ oauth }}_oauth" style="margin-left: 15px">{{ name }}</label>
+    <div class="form-group">
+      <label>{{ name }} {{_('OAuth Settings')}}</label>
         {% if oauth not in oauth_status %}
-      <a href="/cw/github" target="_blank" style="margin-left: 5px">Link</a> <!-- ToDo: Not really working-->
+        <div><a href="{{ url_for(oauth +'.login') }}" id="config_{{ oauth }}_oauth" class="btn btn-primary">{{_('Link')}}</a></div>
         {% else %}
-      <a href="{{ url_for('oauth.github_login_unlink') }}" style="margin-left: 5px">{{_('Unlink')}}</a> <!-- ToDo: Google not working-->
+        <div><a href="{{ url_for('oauth.'+ oauth +'_login_unlink') }}" id="config_{{ oauth }}_oauth" class="btn btn-primary">{{_('Unlink')}}</a></div>
         {% endif %}
-      <br/>
       {% endfor %}
     </div>
+
     {% endif %}
+
     <div class="col-sm-6">
         {% for element in sidebar %}
           {% if element['config_show'] %}
