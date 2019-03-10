@@ -34,7 +34,7 @@ $(document).on("change", "input[type=\"checkbox\"][data-control]", function () {
 $(document).on("change", "select[data-control]", function() {
     var $this = $(this);
     var name = $this.data("control");
-    var showOrHide = $this.val();
+    var showOrHide = parseInt($this.val());
     // var showOrHideLast = $("#" + name + " option:last").val()
     for (var i = 0; i < $(this)[0].length; i++) {
         if (parseInt($(this)[0][i].value) === showOrHide) {
@@ -230,12 +230,12 @@ $(function() {
     $(window).resize(function() {
         $(".discover .row").isotope("layout");
     });
-	
+
     $(".author-expand").click(function() {
         $(this).parent().find("a.author-name").slice($(this).data("authors-max")).toggle();
         $(this).parent().find("span.author-hidden-divider").toggle();
         $(this).html() === $(this).data("collapse-caption") ? $(this).html("(...)") : $(this).html($(this).data("collapse-caption"));
         $(".discover .row").isotope("layout");
     });
-	
+
 });
