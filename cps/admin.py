@@ -385,7 +385,7 @@ def configuration_helper(origin):
 
         #LDAP configurator,
         if "config_login_type" in to_save and to_save["config_login_type"] == "1":
-            if "config_ldap_provider_url" not in to_save or "config_ldap_dn" not in to_save:
+            if to_save["config_ldap_provider_url"] == u'' or to_save["config_ldap_dn"] == u'':
                 ub.session.commit()
                 flash(_(u'Please enter a LDAP provider and a DN'), category="error")
                 return render_title_template("config_edit.html", config=config, origin=origin,
@@ -413,27 +413,34 @@ def configuration_helper(origin):
 
         # GitHub OAuth configuration
         if "config_login_type" in to_save and to_save["config_login_type"] == "2":
-            if "config_github_oauth_client_id" in to_save:
-                content.config_github_oauth_client_id = to_save["config_github_oauth_client_id"]
-            if "config_github_oauth_client_secret" in to_save:
-                content.config_github_oauth_client_secret = to_save["config_github_oauth_client_secret"]
-
-            if content.config_github_oauth_client_id != config.config_github_oauth_client_id or \
-                    content.config_github_oauth_client_secret != config.config_github_oauth_client_secret:
-                reboot_required = True
+            if to_save["config_github_oauth_client_id"] == u'' or to_save["config_github_oauth_client_secret"] == u'':
+                ub.session.commit()
+                flash(_(u'Please enter Github oauth credentials'), category="error")
+                return render_title_template("config_edit.html", config=config, origin=origin,
+                                             gdriveError=gdriveError, feature_support=feature_support,
+                                             title=_(u"Basic Configuration"), page="config")
+            else:
                 content.config_login_type = ub.LOGIN_OAUTH_GITHUB
+                content.config_github_oauth_client_id = to_save["config_github_oauth_client_id"]
+                content.config_github_oauth_client_secret = to_save["config_github_oauth_client_secret"]
+                reboot_required = True
 
         # Google OAuth configuration
         if "config_login_type" in to_save and to_save["config_login_type"] == "3":
-            if "config_google_oauth_client_id" in to_save:
-                content.config_google_oauth_client_id = to_save["config_google_oauth_client_id"]
-            if "config_google_oauth_client_secret" in to_save:
-                content.config_google_oauth_client_secret = to_save["config_google_oauth_client_secret"]
-
-            if content.config_google_oauth_client_id != config.config_google_oauth_client_id or \
-                    content.config_google_oauth_client_secret != config.config_google_oauth_client_secret:
-                reboot_required = True
+            if to_save["config_google_oauth_client_id"] == u'' or to_save["config_google_oauth_client_secret"] == u'':
+                ub.session.commit()
+                flash(_(u'Please enter Google oauth credentials'), category="error")
+                return render_title_template("config_edit.html", config=config, origin=origin,
+                                             gdriveError=gdriveError, feature_support=feature_support,
+                                             title=_(u"Basic Configuration"), page="config")
+            else:
                 content.config_login_type = ub.LOGIN_OAUTH_GOOGLE
+                content.config_google_oauth_client_id = to_save["config_google_oauth_client_id"]
+                content.config_google_oauth_client_secret = to_save["config_google_oauth_client_secret"]
+                reboot_required = True
+
+        if "config_login_type" in to_save and to_save["config_login_type"] == "0":
+            content.config_login_type = ub.LOGIN_STANDARD
 
         if "config_log_level" in to_save:
             content.config_log_level = int(to_save["config_log_level"])
