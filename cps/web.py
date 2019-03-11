@@ -722,7 +722,6 @@ def series(book_id, page):
         abort(404)
 
 
-# (cast(db.Ratings.rating/2, SQLString)).label('name'))\
 @web.route("/ratings")
 @login_required_if_no_ano
 def ratings_list():
@@ -746,7 +745,34 @@ def ratings(book_id, page):
         entries, random, pagination = fill_indexpage(page, db.Books, db.Books.ratings.any(db.Ratings.id == book_id),
                                                  [db.Books.timestamp.desc()])
         return render_title_template('index.html', random=random, pagination=pagination, entries=entries,
-                                     title=_(u"Ratings: %(rating)s stars", rating=(name.rating/2)), page="ratings")
+                                     title=_(u"Rating: %(rating)s stars", rating=int(name.rating/2)), page="ratings")
+    else:
+        abort(404)
+
+
+@web.route("/formats")
+@login_required_if_no_ano
+def formats_list():
+    if current_user.check_visibility(ub.SIDEBAR_FORMAT):
+        entries = db.session.query(db.Data, func.count('data.book').label('count'),db.Data.format.label('format'))\
+            .join(db.Books).filter(common_filters())\
+            .group_by(db.Data.format).order_by(db.Data.format).all()
+        return render_title_template('list.html', entries=entries, folder='web.formats', charlist=list(),
+                                     title=_(u"File formats list"), page="formatslist")
+    else:
+        abort(404)
+
+
+@web.route("/formats/<book_id>/", defaults={'page': 1})
+@web.route("/formats/<book_id>/<int:page>")
+@login_required_if_no_ano
+def formats(book_id, page):
+    name = db.session.query(db.Data).filter(db.Data.format == book_id.upper()).first()
+    if name:
+        entries, random, pagination = fill_indexpage(page, db.Books, db.Books.data.any(db.Data.format == book_id.upper()),
+                                                 [db.Books.timestamp.desc()])
+        return render_title_template('index.html', random=random, pagination=pagination, entries=entries,
+                                     title=_(u"File format: %(format)s", format=name.format), page="formats")
     else:
         abort(404)
 
