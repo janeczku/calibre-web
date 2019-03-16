@@ -63,11 +63,6 @@ except ImportError:
     feature_support['ldap'] = False
 
 try:
-    from googleapiclient.errors import HttpErrort
-except ImportError:
-    pass
-
-try:
     from goodreads.client import GoodreadsClient
     feature_support['goodreads'] = True
 except ImportError:
@@ -540,39 +535,6 @@ def books_list(data,sort, page):
                                  title=_(u"Books"), page="newest")
 
 
-'''
-@web.route("/hot", defaults={'page': 1})
-@web.route('/hot/page/<int:page>')
-@login_required_if_no_ano
-def hot_books(page):
-
-
-@web.route("/rated", defaults={'page': 1})
-@web.route('/rated/page/<int:page>')
-@login_required_if_no_ano
-def best_rated_books(page):
-    if current_user.check_visibility(ub.SIDEBAR_BEST_RATED):
-        entries, random, pagination = fill_indexpage(page, db.Books, db.Books.ratings.any(db.Ratings.rating > 9),
-                                                     [db.Books.timestamp.desc()])
-        return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
-                                     title=_(u"Best rated books"), page="rated")
-    else:
-        abort(404)
-
-
-@web.route("/discover", defaults={'page': 1})
-@web.route('/discover/page/<int:page>')
-@login_required_if_no_ano
-def discover(page):
-    if current_user.check_visibility(ub.SIDEBAR_RANDOM):
-        entries, __, pagination = fill_indexpage(page, db.Books, True, [func.randomblob(2)])
-        pagination = Pagination(1, config.config_books_per_page, config.config_books_per_page)
-        return render_title_template('discover.html', entries=entries, pagination=pagination,
-                                     title=_(u"Random Books"), page="discover")
-    else:
-        abort(404)'''
-
-
 @web.route("/author")
 @login_required_if_no_ano
 def author_list():
@@ -843,16 +805,6 @@ def search():
 def advanced_search():
     # Build custom columns names
     cc = helper.get_cc_columns()
-    '''tmpcc = db.session.query(db.Custom_Columns).filter(db.Custom_Columns.datatype.notin_(db.cc_exceptions)).all()
-    if config.config_columns_to_ignore:
-        cc = []
-        for col in tmpcc:
-            r = re.compile(config.config_columns_to_ignore)
-            if r.match(col.label):
-                cc.append(col)
-    else:
-        cc = tmpcc'''
-
     db.session.connection().connection.connection.create_function("lower", 1, db.lcase)
     q = db.session.query(db.Books)
 
@@ -986,20 +938,6 @@ def advanced_search():
         languages = None
     return render_title_template('search_form.html', tags=tags, languages=languages,
                                  series=series, title=_(u"search"), cc=cc, page="advsearch")
-
-
-'''@web.route("/unreadbooks/", defaults={'page': 1})
-@web.route("/unreadbooks/<int:page>'")
-@login_required_if_no_ano
-def unread_books(page):
-    return render_read_books(page, False)
-
-
-@web.route("/readbooks/", defaults={'page': 1})
-@web.route("/readbooks/<int:page>'")
-@login_required_if_no_ano
-def read_books(page):
-    return render_read_books(page, True)'''
 
 
 def render_read_books(page, are_read, as_xml=False, order=[]):
@@ -1426,16 +1364,6 @@ def show_book(book_id):
                 entries.languages[index].language_name = _(
                     isoLanguages.get(part3=entries.languages[index].lang_code).name)
         cc = helper.get_cc_columns()
-        '''tmpcc = db.session.query(db.Custom_Columns).filter(db.Custom_Columns.datatype.notin_(db.cc_exceptions)).all()
-
-        if config.config_columns_to_ignore:
-            cc = []
-            for col in tmpcc:
-                r = re.compile(config.config_columns_to_ignore)
-                if r.match(col.label):
-                    cc.append(col)
-        else:
-            cc = tmpcc'''
         book_in_shelfs = []
         shelfs = ub.session.query(ub.BookShelf).filter(ub.BookShelf.book_id == book_id).all()
         for entry in shelfs:

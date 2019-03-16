@@ -47,7 +47,7 @@ var zDigitalSignatureSignature = 0x05054b50;
 
 // takes a ByteStream and parses out the local file information
 var ZipLocalFile = function(bstream) {
-    if (typeof bstream != typeof {} || !bstream.readNumber || typeof bstream.readNumber != typeof function() {}) {
+    if (typeof bstream !== typeof {} || !bstream.readNumber || typeof bstream.readNumber !== typeof function() {}) {
         return null;
     }
 
@@ -98,7 +98,7 @@ var ZipLocalFile = function(bstream) {
     // "This descriptor exists only if bit 3 of the general purpose bit flag is set"
     // But how do you figure out how big the file data is if you don't know the compressedSize
     // from the header?!?
-    if ((this.generalPurpose & bitjs.BIT[3]) != 0) {
+    if ((this.generalPurpose & bitjs.BIT[3]) !== 0) {
         this.crc32 = bstream.readNumber(4);
         this.compressedSize = bstream.readNumber(4);
         this.uncompressedSize = bstream.readNumber(4);
@@ -109,14 +109,14 @@ var ZipLocalFile = function(bstream) {
 ZipLocalFile.prototype.unzip = function() {
 
     // Zip Version 1.0, no compression (store only)
-    if (this.compressionMethod == 0 ) {
+    if (this.compressionMethod === 0 ) {
         info("ZIP v" + this.version + ", store only: " + this.filename + " (" + this.compressedSize + " bytes)");
         currentBytesUnarchivedInFile = this.compressedSize;
         currentBytesUnarchived += this.compressedSize;
         this.fileData = zeroCompression(this.fileData, this.uncompressedSize);
     }
     // version == 20, compression method == 8 (DEFLATE)
-    else if (this.compressionMethod == 8) {
+    else if (this.compressionMethod === 8) {
         info("ZIP v2.0, DEFLATE: " + this.filename + " (" + this.compressedSize + " bytes)");
         this.fileData = inflate(this.fileData, this.uncompressedSize);
     }
@@ -143,10 +143,10 @@ var unzip = function(arrayBuffer) {
 
     var bstream = new bitjs.io.ByteStream(arrayBuffer);
     // detect local file header signature or return null
-    if (bstream.peekNumber(4) == zLocalFileHeaderSignature) {
+    if (bstream.peekNumber(4) === zLocalFileHeaderSignature) {
         var localFiles = [];
         // loop until we don't see any more local files
-        while (bstream.peekNumber(4) == zLocalFileHeaderSignature) {
+        while (bstream.peekNumber(4) === zLocalFileHeaderSignature) {
             var oneLocalFile = new ZipLocalFile(bstream);
             // this should strip out directories/folders
             if (oneLocalFile && oneLocalFile.uncompressedSize > 0 && oneLocalFile.fileData) {
@@ -164,7 +164,7 @@ var unzip = function(arrayBuffer) {
         });
 
         // archive extra data record
-        if (bstream.peekNumber(4) == zArchiveExtraDataSignature) {
+        if (bstream.peekNumber(4) === zArchiveExtraDataSignature) {
             info(" Found an Archive Extra Data Signature");
 
             // skipping this record for now
@@ -175,7 +175,7 @@ var unzip = function(arrayBuffer) {
 
         // central directory structure
         // TODO: handle the rest of the structures (Zip64 stuff)
-        if (bstream.peekNumber(4) == zCentralFileHeaderSignature) {
+        if (bstream.peekNumber(4) === zCentralFileHeaderSignature) {
             info(" Found a Central File Header");
 
             // read all file headers
@@ -205,7 +205,7 @@ var unzip = function(arrayBuffer) {
         }
 
         // digital signature
-        if (bstream.peekNumber(4) == zDigitalSignatureSignature) {
+        if (bstream.peekNumber(4) === zDigitalSignatureSignature) {
             info(" Found a Digital Signature");
 
             bstream.readNumber(4);
@@ -230,7 +230,7 @@ var unzip = function(arrayBuffer) {
             // actually do the unzipping
             localfile.unzip();
 
-            if (localfile.fileData != null) {
+            if (localfile.fileData !== null) {
                 postMessage(new bitjs.archive.UnarchiveExtractEvent(localfile));
                 postProgress();
             }
@@ -245,7 +245,7 @@ var unzip = function(arrayBuffer) {
 // containing {length: 6, symbol: X}
 function getHuffmanCodes(bitLengths) {
     // ensure bitLengths is an array containing at least one element
-    if (typeof bitLengths != typeof [] || bitLengths.length < 1) {
+    if (typeof bitLengths !== typeof [] || bitLengths.length < 1) {
         err("Error! getHuffmanCodes() called with an invalid array");
         return null;
     }
@@ -259,7 +259,7 @@ function getHuffmanCodes(bitLengths) {
     for (var i = 0; i < numLengths; ++i) {
         var length = bitLengths[i];
         // test to ensure each bit length is a positive, non-zero number
-        if (typeof length != typeof 1 || length < 0) {
+        if (typeof length !== typeof 1 || length < 0) {
             err("bitLengths contained an invalid number in getHuffmanCodes(): " + length + " of type " + (typeof length));
             return null;
         }
@@ -275,9 +275,9 @@ function getHuffmanCodes(bitLengths) {
     var nextCode = [],
         code = 0;
     for (var bits = 1; bits <= MAX_BITS; ++bits) {
-        var length = bits - 1;
+        var length2 = bits - 1;
         // ensure undefined lengths are zero
-        if (blCount[length] == undefined) blCount[length] = 0;
+        if (blCount[length2] == undefined) blCount[length2] = 0;
         code = (code + blCount[bits - 1]) << 1;
         nextCode [bits] = code;
     }
@@ -286,7 +286,7 @@ function getHuffmanCodes(bitLengths) {
     var table = {}, tableLength = 0;
     for (var n = 0; n < numLengths; ++n) {
         var len = bitLengths[n];
-        if (len != 0) {
+        if (len !== 0) {
             table[nextCode [len]] = { length: len, symbol: n }; //, bitstring: binaryValueToString(nextCode [len],len) };
             tableLength++;
             nextCode [len]++;
@@ -358,7 +358,7 @@ function decodeSymbol(bstream, hcTable) {
         ++len;
 
         // check against Huffman Code table and break if found
-        if (hcTable.hasOwnProperty(code) && hcTable[code].length == len) {
+        if (hcTable.hasOwnProperty(code) && hcTable[code].length === len) {
 
             break;
         }
@@ -457,7 +457,7 @@ function inflateBlockData(bstream, hcLiteralTable, hcDistanceTable, buffer) {
         }
         else {
             // end of block reached
-            if (symbol == 256) {
+            if (symbol === 256) {
                 break;
             }
             else {
@@ -485,7 +485,7 @@ function inflateBlockData(bstream, hcLiteralTable, hcDistanceTable, buffer) {
                         buffer.insertByte(data[ch++]);
                     }
                 } else {
-                  buffer.insertBytes(buffer.data.subarray(ch, ch + length));
+                    buffer.insertBytes(buffer.data.subarray(ch, ch + length));
                 }
 
             } // length-distance pair
@@ -514,12 +514,13 @@ function inflate(compressedData, numDecompressedBytes) {
         compressedData.byteOffset,
         compressedData.byteLength);
     var buffer = new bitjs.io.ByteBuffer(numDecompressedBytes);
-    var numBlocks = 0, blockSize = 0;
+    var blockSize = 0;
 
     // block format: http://tools.ietf.org/html/rfc1951#page-9
+    var bFinal = 0;
     do {
-        var bFinal = bstream.readBits(1),
-            bType = bstream.readBits(2);
+        bFinal = bstream.readBits(1);
+        var bType = bstream.readBits(2);
         blockSize = 0;
         ++numBlocks;
         // no compression
@@ -528,23 +529,23 @@ function inflate(compressedData, numDecompressedBytes) {
             while (bstream.bitPtr != 0) bstream.readBits(1);
             var len = bstream.readBits(16);
             bstream.readBits(16);
-                // TODO: check if nlen is the ones-complement of len?
+            // TODO: check if nlen is the ones-complement of len?
 
             if (len > 0) buffer.insertBytes(bstream.readBytes(len));
             blockSize = len;
         }
         // fixed Huffman codes
-        else if(bType == 1) {
+        else if (bType == 1) {
             blockSize = inflateBlockData(bstream, getFixedLiteralTable(), getFixedDistanceTable(), buffer);
         }
         // dynamic Huffman codes
-        else if(bType == 2) {
+        else if (bType == 2) {
             var numLiteralLengthCodes = bstream.readBits(5) + 257;
             var numDistanceCodes = bstream.readBits(5) + 1,
                 numCodeLengthCodes = bstream.readBits(4) + 4;
 
             // populate the array of code length codes (first de-compaction)
-            var codeLengthsCodeLengths = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+            var codeLengthsCodeLengths = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
             for (var i = 0; i < numCodeLengthCodes; ++i) {
                 codeLengthsCodeLengths[ CodeLengthCodeOrder[i] ] = bstream.readBits(3);
             }
@@ -576,18 +577,17 @@ function inflate(compressedData, numDecompressedBytes) {
                     literalCodeLengths.push(symbol);
                     prevCodeLength = symbol;
                 }
-                else if (symbol == 16) {
+                else if (symbol === 16) {
                     var repeat = bstream.readBits(2) + 3;
                     while (repeat--) {
                         literalCodeLengths.push(prevCodeLength);
                     }
-                }
-                else if (symbol == 17) {
+                } else if (symbol === 17) {
                     var repeat1 = bstream.readBits(3) + 3;
                     while (repeat1--) {
                         literalCodeLengths.push(0);
                     }
-                } else if (symbol == 18) {
+                } else if (symbol === 18) {
                     var repeat2 = bstream.readBits(7) + 11;
                     while (repeat2--) {
                         literalCodeLengths.push(0);
@@ -613,7 +613,7 @@ function inflate(compressedData, numDecompressedBytes) {
         currentBytesUnarchived += blockSize;
         postProgress();
 
-    } while (bFinal != 1);
+    } while (bFinal !== 1);
     // we are done reading blocks if the bFinal bit was set for this block
 
     // return the buffer data bytes
