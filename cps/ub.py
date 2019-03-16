@@ -39,7 +39,6 @@ try:
     oauth_support = True
 except ImportError:
     oauth_support = False
-    pass
 
 try:
     import ldap
@@ -98,7 +97,8 @@ engine = create_engine('sqlite:///{0}'.format(cli.settingspath), echo=False)
 Base = declarative_base()
 
 
-def get_sidebar_config(kwargs=[]):
+def get_sidebar_config(kwargs=None):
+    kwargs = kwargs or []
     if 'content' in kwargs:
         content = not kwargs['content'].role_anonymous()
     else:
