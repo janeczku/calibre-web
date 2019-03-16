@@ -19,7 +19,7 @@
 #  along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 
-from cps import config, global_WorkerThread, get_locale, db
+from cps import config, global_WorkerThread, get_locale, db, mimetypes
 from flask import current_app as app
 from tempfile import gettempdir
 import sys
@@ -40,6 +40,7 @@ import requests
 from sqlalchemy.sql.expression import true, and_, false, text, func
 from iso639 import languages as isoLanguages
 from pagination import Pagination
+from werkzeug.datastructures import Headers
 
 try:
     import gdriveutils as gd
@@ -50,10 +51,21 @@ from subproc_wrapper import process_open
 import ub
 
 try:
+    from urllib.parse import quote
+except ImportError:
+    from urllib import quote
+
+try:
     import unidecode
     use_unidecode = True
 except ImportError:
     use_unidecode = False
+
+try:
+    import Levenshtein
+    use_levenshtein = True
+except ImportError:
+    use_levenshtein = False
 
 
 def update_download(book_id, user_id):
@@ -660,7 +672,7 @@ def get_unique_other_books(library_books, author_books):
                          author_books)
 
     # Fuzzy match book titles
-    if feature_support['levenshtein']:
+    if use_levenshtein:
         library_titles = reduce(lambda acc, book: acc + [book.title], library_books, [])
         other_books = filter(lambda author_book: not filter(
             lambda library_book:
@@ -670,3 +682,40 @@ def get_unique_other_books(library_books, author_books):
         ), other_books)
 
     return other_books
+
+
+def get_cc_columns():
+    tmpcc = db.session.query(db.Custom_Columns).filter(db.Custom_Columns.datatype.notin_(db.cc_exceptions)).all()
+    if config.config_columns_to_ignore:
+        cc = []
+        for col in tmpcc:
+            r = re.compile(config.config_columns_to_ignore)
+            if r.match(col.label):
+                cc.append(col)
+    else:
+        cc = tmpcc
+    return cc
+
+def get_download_link(book_id, book_format):
+    book_format = book_format.split(".")[0]
+    book = db.session.query(db.Books).filter(db.Books.id == book_id).first()
+    data = db.session.query(db.Data).filter(db.Data.book == book.id)\
+        .filter(db.Data.format == book_format.upper()).first()
+    if data:
+        # collect downloaded books only for registered user and not for anonymous user
+        if current_user.is_authenticated:
+            ub.update_download(book_id, int(current_user.id))
+        file_name = book.title
+        if len(book.authors) > 0:
+            file_name = book.authors[0].name + '_' + file_name
+        file_name = get_valid_filename(file_name)
+        headers = Headers()
+        try:
+            headers["Content-Type"] = mimetypes.types_map['.' + book_format]
+        except KeyError:
+            headers["Content-Type"] = "application/octet-stream"
+        headers["Content-Disposition"] = "attachment; filename*=UTF-8''%s.%s" % (quote(file_name.encode('utf-8')),
+                                                                                 book_format)
+        return do_download_file(book, book_format, data, headers)
+    else:
+        abort(404)

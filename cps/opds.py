@@ -22,7 +22,7 @@
 #  along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 # opds routing functions
-from cps import config, mimetypes, app, db
+from cps import config, db
 from flask import request, render_template, Response, g, make_response
 from pagination import Pagination
 from flask import Blueprint
@@ -34,7 +34,6 @@ from web import login_required_if_no_ano, common_filters, get_search_results, re
 from sqlalchemy.sql.expression import func, text
 import helper
 from werkzeug.security import check_password_hash
-from werkzeug.datastructures import Headers
 from helper import fill_indexpage
 import sys
 
@@ -58,7 +57,7 @@ def requires_basic_auth_if_no_ano(f):
     return decorated
 
 
-@opds.route("/opds")
+@opds.route("/opds/")
 @requires_basic_auth_if_no_ano
 def feed_index():
     return render_xml_template('index.xml')
@@ -258,25 +257,9 @@ def feed_shelf(book_id):
 @opds.route("/opds/download/<book_id>/<book_format>/")
 @requires_basic_auth_if_no_ano
 @download_required
-def get_opds_download_link(book_id, book_format):
-    book_format = book_format.split(".")[0]
-    book = db.session.query(db.Books).filter(db.Books.id == book_id).first()
-    data = db.session.query(db.Data).filter(db.Data.book == book.id).filter(db.Data.format == book_format.upper()).first()
-    app.logger.info(data.name)
-    if current_user.is_authenticated:
-        ub.update_download(book_id, int(current_user.id))
-    file_name = book.title
-    if len(book.authors) > 0:
-        file_name = book.authors[0].name + '_' + file_name
-    file_name = helper.get_valid_filename(file_name)
-    headers = Headers()
-    headers["Content-Disposition"] = "attachment; filename*=UTF-8''%s.%s" % (quote(file_name.encode('utf8')),
-                                                                             book_format)
-    try:
-        headers["Content-Type"] = mimetypes.types_map['.' + book_format]
-    except KeyError:
-        headers["Content-Type"] = "application/octet-stream"
-    return helper.do_download_file(book, book_format, data, headers)
+def opds_download_link(book_id, book_format):
+    return helper.get_download_link(book_id,book_format)
+
 
 @opds.route("/ajax/book/<string:uuid>")
 @requires_basic_auth_if_no_ano
