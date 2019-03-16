@@ -99,7 +99,7 @@
       <h2 id="title">{{entry.title|shortentitle(40)}}</h2>
       <p class="author">
           {% for author in entry.authors %}
-            <a href="{{url_for('web.author', book_id=author.id ) }}">{{author.name.replace('|',',')}}</a>
+            <a href="{{url_for('web.books_list',  data='author', sort='new', book_id=author.id ) }}">{{author.name.replace('|',',')}}</a>
             {% if not loop.last %}
               &amp;
             {% endif %}

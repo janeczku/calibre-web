@@ -464,19 +464,20 @@ def index(page):
                                  title=_(u"Recently Added Books"), page="root")
 
 
-@web.route('/<data>/<sort>', defaults={'page': 1})
-@web.route('/<data>/<sort>/<int:page>')
+@web.route('/<data>/<sort>', defaults={'page': 1, 'book_id': 1})
+@web.route('/<data>/<sort>/<int:book_id>', defaults={'page': 1})
+@web.route('/<data>/<sort>/<int:book_id>/<int:page>')
 @login_required_if_no_ano
-def books_list(data,sort, page):
+def books_list(data, sort, book_id, page):
     order = [db.Books.timestamp.desc()]
     if sort == 'pubnew':
         order = [db.Books.pubdate.desc()]
     if sort == 'pubold':
         order = [db.Books.pubdate]
     if sort == 'abc':
-        [db.Books.sort]
+        order = [db.Books.sort]
     if sort == 'zyx':
-        [db.Books.sort.desc()]
+        order = [db.Books.sort.desc()]
     if sort == 'new':
         order = [db.Books.timestamp.desc()]
     if sort == 'old':
@@ -503,36 +504,42 @@ def books_list(data,sort, page):
     elif data == "read":
         return render_read_books(page, True, order=order)
     elif data == "hot":
-        if current_user.check_visibility(ub.SIDEBAR_HOT):
-            if current_user.show_detail_random():
-                random = db.session.query(db.Books).filter(common_filters()) \
-                    .order_by(func.random()).limit(config.config_random_books)
-            else:
-                random = false()
-            off = int(int(config.config_books_per_page) * (page - 1))
-            all_books = ub.session.query(ub.Downloads, ub.func.count(ub.Downloads.book_id)).order_by(
-                ub.func.count(ub.Downloads.book_id).desc()).group_by(ub.Downloads.book_id)
-            hot_books = all_books.offset(off).limit(config.config_books_per_page)
-            entries = list()
-            for book in hot_books:
-                downloadBook = db.session.query(db.Books).filter(common_filters()).filter(
-                    db.Books.id == book.Downloads.book_id).first()
-                if downloadBook:
-                    entries.append(downloadBook)
-                else:
-                    ub.delete_download(book.Downloads.book_id)
-                    # ub.session.query(ub.Downloads).filter(book.Downloads.book_id == ub.Downloads.book_id).delete()
-                    # ub.session.commit()
-            numBooks = entries.__len__()
-            pagination = Pagination(page, config.config_books_per_page, numBooks)
-            return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
-                                         title=_(u"Hot Books (most downloaded)"), page="hot")
-        else:
-            abort(404)
+        return render_hot_books(page)
+    elif data == "author":
+        return render_author_books(page, book_id, order)
     else:
         entries, random, pagination = fill_indexpage(page, db.Books, True, order)
         return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
                                  title=_(u"Books"), page="newest")
+
+
+def render_hot_books(page):
+    if current_user.check_visibility(ub.SIDEBAR_HOT):
+        if current_user.show_detail_random():
+            random = db.session.query(db.Books).filter(common_filters()) \
+                .order_by(func.random()).limit(config.config_random_books)
+        else:
+            random = false()
+        off = int(int(config.config_books_per_page) * (page - 1))
+        all_books = ub.session.query(ub.Downloads, ub.func.count(ub.Downloads.book_id)).order_by(
+            ub.func.count(ub.Downloads.book_id).desc()).group_by(ub.Downloads.book_id)
+        hot_books = all_books.offset(off).limit(config.config_books_per_page)
+        entries = list()
+        for book in hot_books:
+            downloadBook = db.session.query(db.Books).filter(common_filters()).filter(
+                db.Books.id == book.Downloads.book_id).first()
+            if downloadBook:
+                entries.append(downloadBook)
+            else:
+                ub.delete_download(book.Downloads.book_id)
+                # ub.session.query(ub.Downloads).filter(book.Downloads.book_id == ub.Downloads.book_id).delete()
+                # ub.session.commit()
+        numBooks = entries.__len__()
+        pagination = Pagination(page, config.config_books_per_page, numBooks)
+        return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
+                                     title=_(u"Hot Books (most downloaded)"), page="hot")
+    else:
+        abort(404)
 
 
 @web.route("/author")
@@ -547,18 +554,16 @@ def author_list():
             .group_by(func.upper(func.substr(db.Authors.sort,1,1))).all()
         for entry in entries:
             entry.Authors.name = entry.Authors.name.replace('|', ',')
-        return render_title_template('list.html', entries=entries, folder='web.author', charlist=charlist,
-                                     title=u"Author list", page="authorlist")
+        return render_title_template('list.html', entries=entries, folder='web.books_list', charlist=charlist,
+                                     title=u"Author list", page="authorlist", data='author')
     else:
         abort(404)
 
 
-@web.route("/author/<int:book_id>", defaults={'page': 1})
-@web.route("/author/<int:book_id>/<int:page>")
-@login_required_if_no_ano
-def author(book_id, page):
+# ToDo wrong order function
+def render_author_books(page, book_id, order):
     entries, __, pagination = fill_indexpage(page, db.Books, db.Books.authors.any(db.Authors.id == book_id),
-                                             [db.Series.name, db.Books.series_index], db.books_series_link, db.Series)
+                                             [order[0], db.Series.name, db.Books.series_index], db.books_series_link, db.Series)
     if entries is None:
         flash(_(u"Error opening eBook. File does not exist or file is not accessible:"), category="error")
         return redirect(url_for("web.index"))
