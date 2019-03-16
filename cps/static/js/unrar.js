@@ -405,7 +405,7 @@ function rarMakeDecodeTables(BitLength, offset, dec, size) {
 }
 
 // TODO: implement
-function Unpack15() { //bstream, Solid) {
+function unpack15() { //bstream, Solid) {
     info("ERROR!  RAR 1.5 compression not supported");
 }
 
@@ -416,7 +416,7 @@ var rOldDist = [0, 0, 0, 0];
 var lastDist = 0;
 var lastLength = 0;
 
-function Unpack20(bstream) { //, Solid) {
+function unpack20(bstream) { //, Solid) {
     var destUnpSize = rBuffer.data.length;
     var oldDistPtr = 0;
     var Length;
@@ -553,7 +553,7 @@ function rarReadTables20(bstream) {
 }
 
 
-function Unpack29(bstream) {
+function unpack29(bstream) {
     // lazy initialize rDDecode and rDBits
 
     var DDecode = new Array(rDC);
@@ -650,8 +650,8 @@ function Unpack29(bstream) {
             var DistNum = num - 259;
             Distance = rOldDist[DistNum];
 
-            for (var I = DistNum; I > 0; I--) {
-                rOldDist[I] = rOldDist[I - 1];
+            for (var I2 = DistNum; I2 > 0; I2--) {
+                rOldDist[I2] = rOldDist[I2 - 1];
             }
             rOldDist[0] = Distance;
 
@@ -707,10 +707,10 @@ function rarReadVMCode(bstream) {
         //do something here with cheking readbuf
         vmCode.push(bstream.readBits(8));
     }
-    return RarAddVMCode(FirstByte, vmCode, Length);
+    return rarAddVMCode(vmCode);
 }
 
-function RarAddVMCode(firstByte, vmCode, length) {
+function rarAddVMCode(vmCode) {
     //console.log(vmCode);
     if (vmCode.length > 0) {
         info("Error! RarVM not supported yet!");
@@ -752,24 +752,23 @@ function unpack(v) {
 
     // TODO: implement what happens when unpVer is < 15
     var Ver = v.header.unpVer <= 15 ? 15 : v.header.unpVer,
-        Solid = v.header.LHD_SOLID,
         bstream = new bitjs.io.BitStream(v.fileData.buffer, true /* rtl */, v.fileData.byteOffset, v.fileData.byteLength );
 
     rBuffer = new bitjs.io.ByteBuffer(v.header.unpackedSize);
 
     info("Unpacking " + v.filename + " RAR v" + Ver);
 
-    switch(Ver) {
+    switch (Ver) {
         case 15: // rar 1.5 compression
-            Unpack15(); //(bstream, Solid);
+            unpack15(); //(bstream, Solid);
             break;
         case 20: // rar 2.x compression
         case 26: // files larger than 2GB
-            Unpack20(bstream); //, Solid);
+            unpack20(bstream); //, Solid);
             break;
         case 29: // rar 3.x compression
         case 36: // alternative hash
-            Unpack29(bstream);
+            unpack29(bstream);
             break;
     } // switch(method)
 
@@ -870,7 +869,9 @@ var unrar = function(arrayBuffer) {
                 return aname > bname ? 1 : -1;
             });
 
-            info(localFiles.map(function(a) {return a.filename;}).join(", "));
+            info(localFiles.map(function(a) {
+                return a.filename;
+            }).join(", "));
             for (var i = 0; i < localFiles.length; ++i) {
                 var localfile = localFiles[i];
 
