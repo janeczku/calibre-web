@@ -45,8 +45,6 @@ editbook = Blueprint('editbook', __name__)
 EXTENSIONS_CONVERT = {'pdf', 'epub', 'mobi', 'azw3', 'docx', 'rtf', 'fb2', 'lit', 'lrf', 'txt', 'htmlz', 'rtf', 'odt'}
 
 
-
-
 # Modifies different Database objects, first check if elements have to be added to database, than check
 # if elements have to be deleted, because they are no longer used
 def modify_database_object(input_elements, db_book_object, db_object, db_session, db_type):
@@ -260,26 +258,12 @@ def edit_cc_data(book_id, book, to_save):
             else:
                 cc_db_value = None
             if to_save[cc_string].strip():
-                if c.datatype == 'bool':
+                if c.datatype == 'int' or c.datatype == 'bool':
                     if to_save[cc_string] == 'None':
                         to_save[cc_string] = None
-                    else:
+                    elif c.datatype == 'bool':
                         to_save[cc_string] = 1 if to_save[cc_string] == 'True' else 0
-                    if to_save[cc_string] != cc_db_value:
-                        if cc_db_value is not None:
-                            if to_save[cc_string] is not None:
-                                setattr(getattr(book, cc_string)[0], 'value', to_save[cc_string])
-                            else:
-                                del_cc = getattr(book, cc_string)[0]
-                                getattr(book, cc_string).remove(del_cc)
-                                db.session.delete(del_cc)
-                        else:
-                            cc_class = db.cc_classes[c.id]
-                            new_cc = cc_class(value=to_save[cc_string], book=book_id)
-                            db.session.add(new_cc)
-                elif c.datatype == 'int':
-                    if to_save[cc_string] == 'None':
-                        to_save[cc_string] = None
+
                     if to_save[cc_string] != cc_db_value:
                         if cc_db_value is not None:
                             if to_save[cc_string] is not None:
@@ -401,11 +385,11 @@ def upload_cover(request, book):
                 requested_file.save(saved_filename)
                 # im=Image.open(saved_filename)
                 book.has_cover = 1
-            except OSError:
-                flash(_(u"Failed to store cover-file %(cover)s.", cover=saved_filename), category="error")
-                return redirect(url_for('web.show_book', book_id=book.id))
             except IOError:
                 flash(_(u"Cover-file is not a valid image file" % saved_filename), category="error")
+                return redirect(url_for('web.show_book', book_id=book.id))
+            except OSError:
+                flash(_(u"Failed to store cover-file %(cover)s.", cover=saved_filename), category="error")
                 return redirect(url_for('web.show_book', book_id=book.id))
 
 @editbook.route("/admin/book/<int:book_id>", methods=['GET', 'POST'])
