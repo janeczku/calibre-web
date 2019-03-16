@@ -22,10 +22,11 @@
 #  along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 from cps import mimetypes, global_WorkerThread, searched_ids
-from flask import render_template, request, redirect, send_from_directory, make_response, g, flash, abort, \
-    url_for
+from flask import render_template, request, redirect, send_from_directory, make_response, g, flash, abort, url_for
 from werkzeug.exceptions import default_exceptions
 import helper
+from helper import common_filters, get_search_results, fill_indexpage, speaking_language, check_valid_domain, \
+    order_authors
 import os
 from sqlalchemy.exc import IntegrityError
 from flask_login import login_user, logout_user, login_required, current_user
@@ -36,9 +37,7 @@ from babel import Locale as LC
 from babel.dates import format_date
 from babel.core import UnknownLocaleError
 import base64
-# from sqlalchemy.sql import *
-from sqlalchemy import String as SQLString
-from sqlalchemy.sql.expression import text, func, cast, true, and_, false
+from sqlalchemy.sql.expression import text, func, true, and_, false, not_
 import json
 import datetime
 from iso639 import languages as isoLanguages
@@ -135,6 +134,7 @@ for ex in default_exceptions:
 
 web = Blueprint('web', __name__)
 
+# ################################### Login logic and rights management ###############################################
 
 @lm.user_loader
 def load_user(user_id):
@@ -239,89 +239,7 @@ def edit_required(f):
 
     return inner
 
-
-# Language and content filters for displaying in the UI
-def common_filters():
-    if current_user.filter_language() != "all":
-        lang_filter = db.Books.languages.any(db.Languages.lang_code == current_user.filter_language())
-    else:
-        lang_filter = true()
-    content_rating_filter = false() if current_user.mature_content else \
-        db.Books.tags.any(db.Tags.name.in_(config.mature_content_tags()))
-    return and_(lang_filter, ~content_rating_filter)
-
-
-# Creates for all stored languages a translated speaking name in the array for the UI
-def speaking_language(languages=None):
-    if not languages:
-        languages = db.session.query(db.Languages).all()
-    for lang in languages:
-        try:
-            cur_l = LC.parse(lang.lang_code)
-            lang.name = cur_l.get_language_name(get_locale())
-        except UnknownLocaleError:
-            lang.name = _(isoLanguages.get(part3=lang.lang_code).name)
-    return languages
-
-# checks if domain is in database (including wildcards)
-# example SELECT * FROM @TABLE WHERE  'abcdefg' LIKE Name;
-# from https://code.luasoftware.com/tutorials/flask/execute-raw-sql-in-flask-sqlalchemy/
-def check_valid_domain(domain_text):
-    domain_text = domain_text.split('@', 1)[-1].lower()
-    sql = "SELECT * FROM registration WHERE :domain LIKE domain;"
-    result = ub.session.query(ub.Registration).from_statement(text(sql)).params(domain=domain_text).all()
-    return len(result)
-
-
-# Orders all Authors in the list according to authors sort
-def order_authors(entry):
-    sort_authors = entry.author_sort.split('&')
-    authors_ordered = list()
-    error = False
-    for auth in sort_authors:
-        # ToDo: How to handle not found authorname
-        result = db.session.query(db.Authors).filter(db.Authors.sort == auth.lstrip().strip()).first()
-        if not result:
-            error = True
-            break
-        authors_ordered.append(result)
-    if not error:
-        entry.authors = authors_ordered
-    return entry
-
-
-# Fill indexpage with all requested data from database
-def fill_indexpage(page, database, db_filter, order, *join):
-    if current_user.show_detail_random():
-        randm = db.session.query(db.Books).filter(common_filters())\
-            .order_by(func.random()).limit(config.config_random_books)
-    else:
-        randm = false()
-    off = int(int(config.config_books_per_page) * (page - 1))
-    pagination = Pagination(page, config.config_books_per_page,
-                            len(db.session.query(database).filter(db_filter).filter(common_filters()).all()))
-    entries = db.session.query(database).join(*join, isouter=True).filter(db_filter).filter(common_filters()).\
-        order_by(*order).offset(off).limit(config.config_books_per_page).all()
-    for book in entries:
-        book = order_authors(book)
-    return entries, randm, pagination
-
-
-# read search results from calibre-database and return it (function is used for feed and simple search
-def get_search_results(term):
-    q = list()
-    authorterms = re.split("[, ]+", term)
-    for authorterm in authorterms:
-        q.append(db.Books.authors.any(db.Authors.name.ilike("%" + authorterm + "%")))
-    db.session.connection().connection.connection.create_function("lower", 1, db.lcase)
-    db.Books.authors.any(db.Authors.name.ilike("%" + term + "%"))
-
-    return db.session.query(db.Books).filter(common_filters()).filter(
-        db.or_(db.Books.tags.any(db.Tags.name.ilike("%" + term + "%")),
-               db.Books.series.any(db.Series.name.ilike("%" + term + "%")),
-               db.Books.authors.any(and_(*q)),
-               db.Books.publishers.any(db.Publishers.name.ilike("%" + term + "%")),
-               db.Books.title.ilike("%" + term + "%"))).all()
+# ################################### Helper functions ################################################################
 
 
 # Returns the template for rendering and includes the instance name
@@ -343,6 +261,9 @@ def before_request():
         return redirect(url_for('admin.basic_configuration'))
 
 
+
+# ################################### data provider functions #########################################################
+
 @web.route("/ajax/emailstat")
 @login_required
 def get_email_status_json():
@@ -354,8 +275,59 @@ def get_email_status_json():
     return response
 
 
+@web.route("/ajax/bookmark/<int:book_id>/<book_format>", methods=['POST'])
+@login_required
+def bookmark(book_id, book_format):
+    bookmark_key = request.form["bookmark"]
+    ub.session.query(ub.Bookmark).filter(ub.and_(ub.Bookmark.user_id == int(current_user.id),
+                                                 ub.Bookmark.book_id == book_id,
+                                                 ub.Bookmark.format == book_format)).delete()
+    if not bookmark_key:
+        ub.session.commit()
+        return "", 204
+
+    lbookmark = ub.Bookmark(user_id=current_user.id,
+                            book_id=book_id,
+                            format=book_format,
+                            bookmark_key=bookmark_key)
+    ub.session.merge(lbookmark)
+    ub.session.commit()
+    return "", 201
 
 
+@web.route("/ajax/toggleread/<int:book_id>", methods=['POST'])
+@login_required
+def toggle_read(book_id):
+    if not config.config_read_column:
+        book = ub.session.query(ub.ReadBook).filter(ub.and_(ub.ReadBook.user_id == int(current_user.id),
+                                                                   ub.ReadBook.book_id == book_id)).first()
+        if book:
+            book.is_read = not book.is_read
+        else:
+            readBook = ub.ReadBook()
+            readBook.user_id = int(current_user.id)
+            readBook.book_id = book_id
+            readBook.is_read = True
+            book = readBook
+        ub.session.merge(book)
+        ub.session.commit()
+    else:
+        try:
+            db.session.connection().connection.connection.create_function("title_sort", 1, db.title_sort)
+            book = db.session.query(db.Books).filter(db.Books.id == book_id).filter(common_filters()).first()
+            read_status = getattr(book, 'custom_column_' + str(config.config_read_column))
+            if len(read_status):
+                read_status[0].value = not read_status[0].value
+                db.session.commit()
+            else:
+                cc_class = db.cc_classes[config.config_read_column]
+                new_cc = cc_class(value=1, book=book_id)
+                db.session.add(new_cc)
+                db.session.commit()
+        except KeyError:
+            app.logger.error(
+                    u"Custom Column No.%d is not exisiting in calibre database" % config.config_read_column)
+    return ""
 
 '''
 @web.route("/ajax/getcomic/<int:book_id>/<book_format>/<int:page>")
@@ -408,6 +380,7 @@ def get_comic_book(book_id, book_format, page):
         return "", 204
 '''
 
+# ################################### Typeahead ##################################################################
 
 @web.route("/get_authors_json", methods=['GET', 'POST'])
 @login_required_if_no_ano
@@ -491,6 +464,8 @@ def get_matching_tags():
     return json_dumps
 
 
+# ################################### View Books list ##################################################################
+
 @web.route("/", defaults={'page': 1})
 @web.route('/page/<int:page>')
 @login_required_if_no_ano
@@ -500,71 +475,82 @@ def index(page):
                                  title=_(u"Recently Added Books"), page="root")
 
 
-@web.route('/books/newest', defaults={'page': 1})
-@web.route('/books/newest/page/<int:page>')
+@web.route('/<data>/<sort>', defaults={'page': 1})
+@web.route('/<data>/<sort>/<int:page>')
 @login_required_if_no_ano
-def newest_books(page):
-    entries, random, pagination = fill_indexpage(page, db.Books, True, [db.Books.pubdate.desc()])
-    return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
-                                 title=_(u"Newest Books"), page="newest")
+def books_list(data,sort, page):
+    order = [db.Books.timestamp.desc()]
+    if sort == 'pubnew':
+        order = [db.Books.pubdate.desc()]
+    if sort == 'pubold':
+        order = [db.Books.pubdate]
+    if sort == 'abc':
+        [db.Books.sort]
+    if sort == 'zyx':
+        [db.Books.sort.desc()]
+    if sort == 'new':
+        order = [db.Books.timestamp.desc()]
+    if sort == 'old':
+        order = [db.Books.timestamp]
+
+    if data == "rated":
+        if current_user.check_visibility(ub.SIDEBAR_BEST_RATED):
+            entries, random, pagination = fill_indexpage(page, db.Books, db.Books.ratings.any(db.Ratings.rating > 9),
+                                                         order)
+            return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
+                                         title=_(u"Best rated books"), page="rated")
+        else:
+            abort(404)
+    elif data == "discover":
+        if current_user.check_visibility(ub.SIDEBAR_RANDOM):
+            entries, __, pagination = fill_indexpage(page, db.Books, True, [func.randomblob(2)])
+            pagination = Pagination(1, config.config_books_per_page, config.config_books_per_page)
+            return render_title_template('discover.html', entries=entries, pagination=pagination,
+                                         title=_(u"Random Books"), page="discover")
+        else:
+            abort(404)
+    elif data == "unread":
+        return render_read_books(page, False, order=order)
+    elif data == "read":
+        return render_read_books(page, True, order=order)
+    elif data == "hot":
+        if current_user.check_visibility(ub.SIDEBAR_HOT):
+            if current_user.show_detail_random():
+                random = db.session.query(db.Books).filter(common_filters()) \
+                    .order_by(func.random()).limit(config.config_random_books)
+            else:
+                random = false()
+            off = int(int(config.config_books_per_page) * (page - 1))
+            all_books = ub.session.query(ub.Downloads, ub.func.count(ub.Downloads.book_id)).order_by(
+                ub.func.count(ub.Downloads.book_id).desc()).group_by(ub.Downloads.book_id)
+            hot_books = all_books.offset(off).limit(config.config_books_per_page)
+            entries = list()
+            for book in hot_books:
+                downloadBook = db.session.query(db.Books).filter(common_filters()).filter(
+                    db.Books.id == book.Downloads.book_id).first()
+                if downloadBook:
+                    entries.append(downloadBook)
+                else:
+                    ub.delete_download(book.Downloads.book_id)
+                    # ub.session.query(ub.Downloads).filter(book.Downloads.book_id == ub.Downloads.book_id).delete()
+                    # ub.session.commit()
+            numBooks = entries.__len__()
+            pagination = Pagination(page, config.config_books_per_page, numBooks)
+            return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
+                                         title=_(u"Hot Books (most downloaded)"), page="hot")
+        else:
+            abort(404)
+    else:
+        entries, random, pagination = fill_indexpage(page, db.Books, True, order)
+        return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
+                                 title=_(u"Books"), page="newest")
 
 
-@web.route('/books/oldest', defaults={'page': 1})
-@web.route('/books/oldest/page/<int:page>')
-@login_required_if_no_ano
-def oldest_books(page):
-    entries, random, pagination = fill_indexpage(page, db.Books, True, [db.Books.pubdate])
-    return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
-                                 title=_(u"Oldest Books"), page="oldest")
-
-
-@web.route('/books/a-z', defaults={'page': 1})
-@web.route('/books/a-z/page/<int:page>')
-@login_required_if_no_ano
-def titles_ascending(page):
-    entries, random, pagination = fill_indexpage(page, db.Books, True, [db.Books.sort])
-    return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
-                                 title=_(u"Books (A-Z)"), page="a-z")
-
-
-@web.route('/books/z-a', defaults={'page': 1})
-@web.route('/books/z-a/page/<int:page>')
-@login_required_if_no_ano
-def titles_descending(page):
-    entries, random, pagination = fill_indexpage(page, db.Books, True, [db.Books.sort.desc()])
-    return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
-                                 title=_(u"Books (Z-A)"), page="z-a")
-
-
+'''
 @web.route("/hot", defaults={'page': 1})
 @web.route('/hot/page/<int:page>')
 @login_required_if_no_ano
 def hot_books(page):
-    if current_user.check_visibility(ub.SIDEBAR_HOT):
-        if current_user.show_detail_random():
-            random = db.session.query(db.Books).filter(common_filters())\
-                .order_by(func.random()).limit(config.config_random_books)
-        else:
-            random = false()
-        off = int(int(config.config_books_per_page) * (page - 1))
-        all_books = ub.session.query(ub.Downloads, ub.func.count(ub.Downloads.book_id)).order_by(
-            ub.func.count(ub.Downloads.book_id).desc()).group_by(ub.Downloads.book_id)
-        hot_books = all_books.offset(off).limit(config.config_books_per_page)
-        entries = list()
-        for book in hot_books:
-            downloadBook = db.session.query(db.Books).filter(common_filters()).filter(db.Books.id == book.Downloads.book_id).first()
-            if downloadBook:
-                entries.append(downloadBook)
-            else:
-                ub.delete_download(book.Downloads.book_id)
-                # ub.session.query(ub.Downloads).filter(book.Downloads.book_id == ub.Downloads.book_id).delete()
-                # ub.session.commit()
-        numBooks = entries.__len__()
-        pagination = Pagination(page, config.config_books_per_page, numBooks)
-        return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
-                                     title=_(u"Hot Books (most downloaded)"), page="hot")
-    else:
-        abort(404)
 
 
 @web.route("/rated", defaults={'page': 1})
@@ -590,7 +576,7 @@ def discover(page):
         return render_title_template('discover.html', entries=entries, pagination=pagination,
                                      title=_(u"Random Books"), page="discover")
     else:
-        abort(404)
+        abort(404)'''
 
 
 @web.route("/author")
@@ -629,7 +615,7 @@ def author(book_id, page):
         try:
             gc = GoodreadsClient(config.config_goodreads_api_key, config.config_goodreads_api_secret)
             author_info = gc.find_author(author_name=name)
-            other_books = get_unique_other_books(entries.all(), author_info.books)
+            other_books = helper.get_unique_other_books(entries.all(), author_info.books)
         except Exception:
             # Skip goodreads, if site is down/inaccessible
             app.logger.error('Goodreads website is down/inaccessible')
@@ -668,28 +654,6 @@ def publisher(book_id, page):
                                      title=_(u"Publisher: %(name)s", name=publisher.name), page="publisher")
     else:
         abort(404)
-
-
-def get_unique_other_books(library_books, author_books):
-    # Get all identifiers (ISBN, Goodreads, etc) and filter author's books by that list so we show fewer duplicates
-    # Note: Not all images will be shown, even though they're available on Goodreads.com.
-    #       See https://www.goodreads.com/topic/show/18213769-goodreads-book-images
-    identifiers = reduce(lambda acc, book: acc + map(lambda identifier: identifier.val, book.identifiers),
-                         library_books, [])
-    other_books = filter(lambda book: book.isbn not in identifiers and book.gid["#text"] not in identifiers,
-                         author_books)
-
-    # Fuzzy match book titles
-    if feature_support['levenshtein']:
-        library_titles = reduce(lambda acc, book: acc + [book.title], library_books, [])
-        other_books = filter(lambda author_book: not filter(
-            lambda library_book:
-            # Remove items in parentheses before comparing
-            Levenshtein.ratio(re.sub(r"\(.*\)", "", author_book.title), library_book) > 0.7,
-            library_titles
-        ), other_books)
-
-    return other_books
 
 
 @web.route("/series")
@@ -854,135 +818,16 @@ def category(book_id, page):
         abort(404)
 
 
-@web.route("/ajax/toggleread/<int:book_id>", methods=['POST'])
-@login_required
-def toggle_read(book_id):
-    if not config.config_read_column:
-        book = ub.session.query(ub.ReadBook).filter(ub.and_(ub.ReadBook.user_id == int(current_user.id),
-                                                                   ub.ReadBook.book_id == book_id)).first()
-        if book:
-            book.is_read = not book.is_read
-        else:
-            readBook = ub.ReadBook()
-            readBook.user_id = int(current_user.id)
-            readBook.book_id = book_id
-            readBook.is_read = True
-            book = readBook
-        ub.session.merge(book)
-        ub.session.commit()
-    else:
-        try:
-            db.session.connection().connection.connection.create_function("title_sort", 1, db.title_sort)
-            book = db.session.query(db.Books).filter(db.Books.id == book_id).filter(common_filters()).first()
-            read_status = getattr(book, 'custom_column_' + str(config.config_read_column))
-            if len(read_status):
-                read_status[0].value = not read_status[0].value
-                db.session.commit()
-            else:
-                cc_class = db.cc_classes[config.config_read_column]
-                new_cc = cc_class(value=1, book=book_id)
-                db.session.add(new_cc)
-                db.session.commit()
-        except KeyError:
-            app.logger.error(
-                    u"Custom Column No.%d is not exisiting in calibre database" % config.config_read_column)
-    return ""
-
-
-@web.route("/book/<int:book_id>")
-@login_required_if_no_ano
-def show_book(book_id):
-    entries = db.session.query(db.Books).filter(db.Books.id == book_id).filter(common_filters()).first()
-    if entries:
-        for index in range(0, len(entries.languages)):
-            try:
-                entries.languages[index].language_name = LC.parse(entries.languages[index].lang_code).get_language_name(
-                    get_locale())
-            except UnknownLocaleError:
-                entries.languages[index].language_name = _(
-                    isoLanguages.get(part3=entries.languages[index].lang_code).name)
-        tmpcc = db.session.query(db.Custom_Columns).filter(db.Custom_Columns.datatype.notin_(db.cc_exceptions)).all()
-
-        if config.config_columns_to_ignore:
-            cc = []
-            for col in tmpcc:
-                r = re.compile(config.config_columns_to_ignore)
-                if r.match(col.label):
-                    cc.append(col)
-        else:
-            cc = tmpcc
-        book_in_shelfs = []
-        shelfs = ub.session.query(ub.BookShelf).filter(ub.BookShelf.book_id == book_id).all()
-        for entry in shelfs:
-            book_in_shelfs.append(entry.shelf)
-
-        if not current_user.is_anonymous:
-            if not config.config_read_column:
-                matching_have_read_book = ub.session.query(ub.ReadBook).\
-                    filter(ub.and_(ub.ReadBook.user_id == int(current_user.id), ub.ReadBook.book_id == book_id)).all()
-                have_read = len(matching_have_read_book) > 0 and matching_have_read_book[0].is_read
-            else:
-                try:
-                    matching_have_read_book = getattr(entries, 'custom_column_'+str(config.config_read_column))
-                    have_read = len(matching_have_read_book) > 0 and matching_have_read_book[0].value
-                except KeyError:
-                    app.logger.error(
-                        u"Custom Column No.%d is not exisiting in calibre database" % config.config_read_column)
-                    have_read = None
-
-        else:
-            have_read = None
-
-        entries.tags = sort(entries.tags, key=lambda tag: tag.name)
-
-        entries = order_authors(entries)
-
-        kindle_list = helper.check_send_to_kindle(entries)
-        reader_list = helper.check_read_formats(entries)
-
-        audioentries = []
-        for media_format in entries.data:
-            if media_format.format.lower() in EXTENSIONS_AUDIO:
-                audioentries.append(media_format.format.lower())
-
-        return render_title_template('detail.html', entry=entries, audioentries=audioentries, cc=cc,
-                                     is_xhr=request.is_xhr, title=entries.title, books_shelfs=book_in_shelfs,
-                                     have_read=have_read, kindle_list=kindle_list, reader_list=reader_list, page="book")
-    else:
-        flash(_(u"Error opening eBook. File does not exist or file is not accessible:"), category="error")
-        return redirect(url_for("web.index"))
-
-
-@web.route("/ajax/bookmark/<int:book_id>/<book_format>", methods=['POST'])
-@login_required
-def bookmark(book_id, book_format):
-    bookmark_key = request.form["bookmark"]
-    ub.session.query(ub.Bookmark).filter(ub.and_(ub.Bookmark.user_id == int(current_user.id),
-                                                 ub.Bookmark.book_id == book_id,
-                                                 ub.Bookmark.format == book_format)).delete()
-    if not bookmark_key:
-        ub.session.commit()
-        return "", 204
-
-    lbookmark = ub.Bookmark(user_id=current_user.id,
-                            book_id=book_id,
-                            format=book_format,
-                            bookmark_key=bookmark_key)
-    ub.session.merge(lbookmark)
-    ub.session.commit()
-    return "", 201
-
-
 @web.route("/tasks")
 @login_required
 def get_tasks_status():
     # if current user admin, show all email, otherwise only own emails
     tasks = global_WorkerThread.get_taskstatus()
-    # UIanswer = copy.deepcopy(answer)
     answer = helper.render_task_status(tasks)
-    # foreach row format row
     return render_title_template('tasks.html', entries=answer, title=_(u"Tasks"), page="tasks")
 
+
+# ################################### Search functions ################################################################
 
 @web.route("/search", methods=["GET"])
 @login_required_if_no_ano
@@ -1148,6 +993,60 @@ def advanced_search():
                                  series=series, title=_(u"search"), cc=cc, page="advsearch")
 
 
+'''@web.route("/unreadbooks/", defaults={'page': 1})
+@web.route("/unreadbooks/<int:page>'")
+@login_required_if_no_ano
+def unread_books(page):
+    return render_read_books(page, False)
+
+
+@web.route("/readbooks/", defaults={'page': 1})
+@web.route("/readbooks/<int:page>'")
+@login_required_if_no_ano
+def read_books(page):
+    return render_read_books(page, True)'''
+
+
+def render_read_books(page, are_read, as_xml=False, order=[]):
+    if not config.config_read_column:
+        readBooks = ub.session.query(ub.ReadBook).filter(ub.ReadBook.user_id == int(current_user.id))\
+            .filter(ub.ReadBook.is_read is True).all()
+        readBookIds = [x.book_id for x in readBooks]
+    else:
+        try:
+            readBooks = db.session.query(db.cc_classes[config.config_read_column])\
+                .filter(db.cc_classes[config.config_read_column].value is True).all()
+            readBookIds = [x.book for x in readBooks]
+        except KeyError:
+            app.logger.error(u"Custom Column No.%d is not existing in calibre database" % config.config_read_column)
+            readBookIds = []
+
+    if are_read:
+        db_filter = db.Books.id.in_(readBookIds)
+    else:
+        db_filter = ~db.Books.id.in_(readBookIds)
+
+    entries, random, pagination = fill_indexpage(page, db.Books, db_filter, order)
+
+    if as_xml:
+        xml = render_title_template('feed.xml', entries=entries, pagination=pagination)
+        response = make_response(xml)
+        response.headers["Content-Type"] = "application/xml; charset=utf-8"
+        return response
+    else:
+        if are_read:
+            name = _(u'Read Books') + ' (' + str(len(readBookIds)) + ')'
+            pagename = "read"
+        else:
+            total_books = db.session.query(func.count(db.Books.id)).scalar()
+            name = _(u'Unread Books') + ' (' + str(total_books - len(readBookIds)) + ')'
+            pagename = "unread"
+        return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
+                                     title=name, page=pagename)
+
+
+# ################################### Download/Send ##################################################################
+
 @web.route("/cover/<int:book_id>")
 @login_required_if_no_ano
 def get_cover(book_id):
@@ -1173,113 +1072,6 @@ def serve_book(book_id, book_format):
         return gdriveutils.do_gdrive_download(df, headers)
     else:
         return send_from_directory(os.path.join(config.config_calibre_dir, book.path), data.name + "." + book_format)
-
-
-@web.route("/unreadbooks/", defaults={'page': 1})
-@web.route("/unreadbooks/<int:page>'")
-@login_required_if_no_ano
-def unread_books(page):
-    return render_read_books(page, False)
-
-
-@web.route("/readbooks/", defaults={'page': 1})
-@web.route("/readbooks/<int:page>'")
-@login_required_if_no_ano
-def read_books(page):
-    return render_read_books(page, True)
-
-
-def render_read_books(page, are_read, as_xml=False):
-    if not config.config_read_column:
-        readBooks = ub.session.query(ub.ReadBook).filter(ub.ReadBook.user_id == int(current_user.id))\
-            .filter(ub.ReadBook.is_read is True).all()
-        readBookIds = [x.book_id for x in readBooks]
-    else:
-        try:
-            readBooks = db.session.query(db.cc_classes[config.config_read_column])\
-                .filter(db.cc_classes[config.config_read_column].value is True).all()
-            readBookIds = [x.book for x in readBooks]
-        except KeyError:
-            app.logger.error(u"Custom Column No.%d is not existing in calibre database" % config.config_read_column)
-            readBookIds = []
-
-    if are_read:
-        db_filter = db.Books.id.in_(readBookIds)
-    else:
-        db_filter = ~db.Books.id.in_(readBookIds)
-
-    entries, random, pagination = fill_indexpage(page, db.Books, db_filter, [db.Books.timestamp.desc()])
-
-    if as_xml:
-        xml = render_title_template('feed.xml', entries=entries, pagination=pagination)
-        response = make_response(xml)
-        response.headers["Content-Type"] = "application/xml; charset=utf-8"
-        return response
-    else:
-        if are_read:
-            name = _(u'Read Books') + ' (' + str(len(readBookIds)) + ')'
-        else:
-            total_books = db.session.query(func.count(db.Books.id)).scalar()
-            name = _(u'Unread Books') + ' (' + str(total_books - len(readBookIds)) + ')'
-        return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
-                                     title=_(name, name=name), page="read")
-
-
-@web.route("/read/<int:book_id>/<book_format>")
-@login_required_if_no_ano
-def read_book(book_id, book_format):
-    book = db.session.query(db.Books).filter(db.Books.id == book_id).first()
-    if not book:
-        flash(_(u"Error opening eBook. File does not exist or file is not accessible:"), category="error")
-        return redirect(url_for("web.index"))
-
-    # check if book was downloaded before
-    bookmark = None
-    if current_user.is_authenticated:
-        bookmark = ub.session.query(ub.Bookmark).filter(ub.and_(ub.Bookmark.user_id == int(current_user.id),
-                                                                ub.Bookmark.book_id == book_id,
-                                                                ub.Bookmark.format == book_format.upper())).first()
-    if book_format.lower() == "epub":
-        return render_title_template('read.html', bookid=book_id, title=_(u"Read a Book"), bookmark=bookmark)
-    elif book_format.lower() == "pdf":
-        return render_title_template('readpdf.html', pdffile=book_id, title=_(u"Read a Book"))
-    elif book_format.lower() == "txt":
-        return render_title_template('readtxt.html', txtfile=book_id, title=_(u"Read a Book"))
-    elif book_format.lower() == "mp3":
-        entries = db.session.query(db.Books).filter(db.Books.id == book_id).filter(common_filters()).first()
-        return render_title_template('listenmp3.html', mp3file=book_id, audioformat=book_format.lower(),
-                                     title=_(u"Read a Book"), entry=entries, bookmark=bookmark)
-    elif book_format.lower() == "m4b":
-        entries = db.session.query(db.Books).filter(db.Books.id == book_id).filter(common_filters()).first()
-        return render_title_template('listenmp3.html', mp3file=book_id, audioformat=book_format.lower(),
-                                     title=_(u"Read a Book"), entry=entries, bookmark=bookmark)
-    elif book_format.lower() == "m4a":
-        entries = db.session.query(db.Books).filter(db.Books.id == book_id).filter(common_filters()).first()
-        return render_title_template('listenmp3.html', mp3file=book_id, audioformat=book_format.lower(),
-                                     title=_(u"Read a Book"), entry=entries, bookmark=bookmark)
-    else:
-        book_dir = os.path.join(config.get_main_dir, "cps", "static", str(book_id))
-        if not os.path.exists(book_dir):
-            os.mkdir(book_dir)
-        for fileext in ["cbr", "cbt", "cbz"]:
-            if book_format.lower() == fileext:
-                all_name = str(book_id)  # + "/" + book.data[0].name + "." + fileext
-                # tmp_file = os.path.join(book_dir, book.data[0].name) + "." + fileext
-                # if not os.path.exists(all_name):
-                #    cbr_file = os.path.join(config.config_calibre_dir, book.path, book.data[0].name) + "." + fileext
-                #    copyfile(cbr_file, tmp_file)
-                return render_title_template('readcbr.html', comicfile=all_name, title=_(u"Read a Book"),
-                                             extension=fileext)
-        '''if feature_support['rar']:
-            extensionList = ["cbr","cbt","cbz"]
-        else:
-            extensionList = ["cbt","cbz"]
-        for fileext in extensionList:
-            if book_format.lower() == fileext:
-                return render_title_template('readcbr.html', comicfile=book_id, 
-                extension=fileext, title=_(u"Read a Book"), book=book)
-        flash(_(u"Error opening eBook. File does not exist or file is not accessible."), category="error")
-        return redirect(url_for("web.index"))'''
 
 
 @web.route("/download/<int:book_id>/<book_format>")
@@ -1316,6 +1108,29 @@ def get_download_link(book_id, book_format):
 def get_download_link_ext(book_id, book_format, anyname):
     return get_download_link(book_id, book_format)
 
+
+@web.route('/send/<int:book_id>/<book_format>/<int:convert>')
+@login_required
+@download_required
+def send_to_kindle(book_id, book_format, convert):
+    settings = ub.get_mail_settings()
+    if settings.get("mail_server", "mail.example.com") == "mail.example.com":
+        flash(_(u"Please configure the SMTP mail settings first..."), category="error")
+    elif current_user.kindle_mail:
+        result = helper.send_mail(book_id, book_format, convert, current_user.kindle_mail, config.config_calibre_dir,
+                                  current_user.nickname)
+        if result is None:
+            flash(_(u"Book successfully queued for sending to %(kindlemail)s", kindlemail=current_user.kindle_mail),
+                  category="success")
+            ub.update_download(book_id, int(current_user.id))
+        else:
+            flash(_(u"There was an error sending this book: %(res)s", res=result), category="error")
+    else:
+        flash(_(u"Please configure your kindle e-mail address first..."), category="error")
+    return redirect(request.environ["HTTP_REFERER"])
+
+
+# ################################### Login Logout ##################################################################
 
 @web.route('/register', methods=['GET', 'POST'])
 def register():
@@ -1502,26 +1317,7 @@ def token_verified():
     return response
 
 
-@web.route('/send/<int:book_id>/<book_format>/<int:convert>')
-@login_required
-@download_required
-def send_to_kindle(book_id, book_format, convert):
-    settings = ub.get_mail_settings()
-    if settings.get("mail_server", "mail.example.com") == "mail.example.com":
-        flash(_(u"Please configure the SMTP mail settings first..."), category="error")
-    elif current_user.kindle_mail:
-        result = helper.send_mail(book_id, book_format, convert, current_user.kindle_mail, config.config_calibre_dir,
-                                  current_user.nickname)
-        if result is None:
-            flash(_(u"Book successfully queued for sending to %(kindlemail)s", kindlemail=current_user.kindle_mail),
-                  category="success")
-            ub.update_download(book_id, int(current_user.id))
-        else:
-            flash(_(u"There was an error sending this book: %(res)s", res=result), category="error")
-    else:
-        flash(_(u"Please configure your kindle e-mail address first..."), category="error")
-    return redirect(request.environ["HTTP_REFERER"])
-
+# ################################### Users own configuration #########################################################
 
 @web.route("/me", methods=["GET", "POST"])
 @login_required
@@ -1589,3 +1385,125 @@ def profile():
                                  name=current_user.nickname), page="me", registered_oauth=oauth_check,
                                  oauth_status=oauth_status)
 
+
+# ###################################Show single book ##################################################################
+
+@web.route("/read/<int:book_id>/<book_format>")
+@login_required_if_no_ano
+def read_book(book_id, book_format):
+    book = db.session.query(db.Books).filter(db.Books.id == book_id).first()
+    if not book:
+        flash(_(u"Error opening eBook. File does not exist or file is not accessible:"), category="error")
+        return redirect(url_for("web.index"))
+
+    # check if book was downloaded before
+    bookmark = None
+    if current_user.is_authenticated:
+        bookmark = ub.session.query(ub.Bookmark).filter(ub.and_(ub.Bookmark.user_id == int(current_user.id),
+                                                                ub.Bookmark.book_id == book_id,
+                                                                ub.Bookmark.format == book_format.upper())).first()
+    if book_format.lower() == "epub":
+        return render_title_template('read.html', bookid=book_id, title=_(u"Read a Book"), bookmark=bookmark)
+    elif book_format.lower() == "pdf":
+        return render_title_template('readpdf.html', pdffile=book_id, title=_(u"Read a Book"))
+    elif book_format.lower() == "txt":
+        return render_title_template('readtxt.html', txtfile=book_id, title=_(u"Read a Book"))
+    elif book_format.lower() == "mp3":
+        entries = db.session.query(db.Books).filter(db.Books.id == book_id).filter(common_filters()).first()
+        return render_title_template('listenmp3.html', mp3file=book_id, audioformat=book_format.lower(),
+                                     title=_(u"Read a Book"), entry=entries, bookmark=bookmark)
+    elif book_format.lower() == "m4b":
+        entries = db.session.query(db.Books).filter(db.Books.id == book_id).filter(common_filters()).first()
+        return render_title_template('listenmp3.html', mp3file=book_id, audioformat=book_format.lower(),
+                                     title=_(u"Read a Book"), entry=entries, bookmark=bookmark)
+    elif book_format.lower() == "m4a":
+        entries = db.session.query(db.Books).filter(db.Books.id == book_id).filter(common_filters()).first()
+        return render_title_template('listenmp3.html', mp3file=book_id, audioformat=book_format.lower(),
+                                     title=_(u"Read a Book"), entry=entries, bookmark=bookmark)
+    else:
+        book_dir = os.path.join(config.get_main_dir, "cps", "static", str(book_id))
+        if not os.path.exists(book_dir):
+            os.mkdir(book_dir)
+        for fileext in ["cbr", "cbt", "cbz"]:
+            if book_format.lower() == fileext:
+                all_name = str(book_id)  # + "/" + book.data[0].name + "." + fileext
+                # tmp_file = os.path.join(book_dir, book.data[0].name) + "." + fileext
+                # if not os.path.exists(all_name):
+                #    cbr_file = os.path.join(config.config_calibre_dir, book.path, book.data[0].name) + "." + fileext
+                #    copyfile(cbr_file, tmp_file)
+                return render_title_template('readcbr.html', comicfile=all_name, title=_(u"Read a Book"),
+                                             extension=fileext)
+        '''if feature_support['rar']:
+            extensionList = ["cbr","cbt","cbz"]
+        else:
+            extensionList = ["cbt","cbz"]
+        for fileext in extensionList:
+            if book_format.lower() == fileext:
+                return render_title_template('readcbr.html', comicfile=book_id, 
+                extension=fileext, title=_(u"Read a Book"), book=book)
+        flash(_(u"Error opening eBook. File does not exist or file is not accessible."), category="error")
+        return redirect(url_for("web.index"))'''
+
+
+@web.route("/book/<int:book_id>")
+@login_required_if_no_ano
+def show_book(book_id):
+    entries = db.session.query(db.Books).filter(db.Books.id == book_id).filter(common_filters()).first()
+    if entries:
+        for index in range(0, len(entries.languages)):
+            try:
+                entries.languages[index].language_name = LC.parse(entries.languages[index].lang_code).get_language_name(
+                    get_locale())
+            except UnknownLocaleError:
+                entries.languages[index].language_name = _(
+                    isoLanguages.get(part3=entries.languages[index].lang_code).name)
+        tmpcc = db.session.query(db.Custom_Columns).filter(db.Custom_Columns.datatype.notin_(db.cc_exceptions)).all()
+
+        if config.config_columns_to_ignore:
+            cc = []
+            for col in tmpcc:
+                r = re.compile(config.config_columns_to_ignore)
+                if r.match(col.label):
+                    cc.append(col)
+        else:
+            cc = tmpcc
+        book_in_shelfs = []
+        shelfs = ub.session.query(ub.BookShelf).filter(ub.BookShelf.book_id == book_id).all()
+        for entry in shelfs:
+            book_in_shelfs.append(entry.shelf)
+
+        if not current_user.is_anonymous:
+            if not config.config_read_column:
+                matching_have_read_book = ub.session.query(ub.ReadBook).\
+                    filter(ub.and_(ub.ReadBook.user_id == int(current_user.id), ub.ReadBook.book_id == book_id)).all()
+                have_read = len(matching_have_read_book) > 0 and matching_have_read_book[0].is_read
+            else:
+                try:
+                    matching_have_read_book = getattr(entries, 'custom_column_'+str(config.config_read_column))
+                    have_read = len(matching_have_read_book) > 0 and matching_have_read_book[0].value
+                except KeyError:
+                    app.logger.error(
+                        u"Custom Column No.%d is not exisiting in calibre database" % config.config_read_column)
+                    have_read = None
+
+        else:
+            have_read = None
+
+        entries.tags = sort(entries.tags, key=lambda tag: tag.name)
+
+        entries = order_authors(entries)
+
+        kindle_list = helper.check_send_to_kindle(entries)
+        reader_list = helper.check_read_formats(entries)
+
+        audioentries = []
+        for media_format in entries.data:
+            if media_format.format.lower() in EXTENSIONS_AUDIO:
+                audioentries.append(media_format.format.lower())
+
+        return render_title_template('detail.html', entry=entries, audioentries=audioentries, cc=cc,
+                                     is_xhr=request.is_xhr, title=entries.title, books_shelfs=book_in_shelfs,
+                                     have_read=have_read, kindle_list=kindle_list, reader_list=reader_list, page="book")
+    else:
+        flash(_(u"Error opening eBook. File does not exist or file is not accessible:"), category="error")
+        return redirect(url_for("web.index"))

@@ -58,14 +58,14 @@ web.    {% for entry in random %}
 <div class="discover load-more">
   <h2 class="{{title}}">{{_(title)}}</h2>
     <div class="filterheader hidden-xs hidden-sm">
-      <a id="new" class="btn btn-primary" href="{{url_for('web.newest_books')}}"><span class="glyphicon glyphicon-sort-by-order"></span></a>
-      <a id="old" class="btn btn-primary" href="{{url_for('web.oldest_books')}}"><span class="glyphicon glyphicon-sort-by-order-alt"></span></a>
-      <a id="asc" class="btn btn-primary" href="{{url_for('web.titles_ascending')}}"><span class="glyphicon glyphicon-font"></span><span class="glyphicon glyphicon-sort-by-alphabet"></span></a>
-      <a id="desc" class="btn btn-primary" href="{{url_for('web.titles_descending')}}"><span class="glyphicon glyphicon-font"></span><span class="glyphicon glyphicon-sort-by-alphabet-alt"></span></a>
-      <a id="pub_new" class="btn btn-primary" href="{{url_for('web.titles_descending')}}"><span class="glyphicon glyphicon-calendar"></span><span class="glyphicon glyphicon-sort-by-order"></a>
-      <a id="pub_old" class="btn btn-primary" href="{{url_for('web.titles_descending')}}"><span class="glyphicon glyphicon-calendar"></span><span class="glyphicon glyphicon-sort-by-order-alt"></a>
+      <a id="new" class="btn btn-primary" href="{{url_for('web.books_list', data=page, sort='new')}}"><span class="glyphicon glyphicon-sort-by-order"></span></a>
+      <a id="old" class="btn btn-primary" href="{{url_for('web.books_list', data=page, sort='old')}}"><span class="glyphicon glyphicon-sort-by-order-alt"></span></a>
+      <a id="asc" class="btn btn-primary" href="{{url_for('web.books_list', data=page, sort='abc')}}"><span class="glyphicon glyphicon-font"></span><span class="glyphicon glyphicon-sort-by-alphabet"></span></a>
+      <a id="desc" class="btn btn-primary" href="{{url_for('web.books_list', data=page, sort='zyx')}}"><span class="glyphicon glyphicon-font"></span><span class="glyphicon glyphicon-sort-by-alphabet-alt"></span></a>
+      <a id="pub_new" class="btn btn-primary" href="{{url_for('web.books_list', data=page, sort='pubnew')}}"><span class="glyphicon glyphicon-calendar"></span><span class="glyphicon glyphicon-sort-by-order"></span></a>
+      <a id="pub_old" class="btn btn-primary" href="{{url_for('web.books_list', data=page, sort='pubold')}}"><span class="glyphicon glyphicon-calendar"></span><span class="glyphicon glyphicon-sort-by-order-alt"></span></a>
       <div class="btn-group character" role="group">
-        <a id="no_shelf" class="btn btn-primary" href="{{url_for('web.titles_descending')}}"><span class="glyphicon glyphicon-list"></span><b>?</b></a>
+        <a id="no_shelf" class="btn btn-primary" href="{{url_for('web.books_list', data=page, sort='pubold')}}"><span class="glyphicon glyphicon-list"></span><b>?</b></a>
         <div id="all" class="btn btn-primary">{{_('All')}}</div>
       </div>
     </div>

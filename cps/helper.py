@@ -32,9 +32,15 @@ from flask import send_from_directory, make_response, redirect, abort
 from flask_babel import gettext as _
 from flask_login import current_user
 from babel.dates import format_datetime
+from babel.core import UnknownLocaleError
 from datetime import datetime
+from babel import Locale as LC
 import shutil
 import requests
+from sqlalchemy.sql.expression import true, and_, false, text, func
+from iso639 import languages as isoLanguages
+from pagination import Pagination
+
 try:
     import gdriveutils as gd
 except ImportError:
@@ -558,3 +564,109 @@ def render_task_status(tasklist):
             renderedtasklist.append(task)
 
     return renderedtasklist
+
+
+# Language and content filters for displaying in the UI
+def common_filters():
+    if current_user.filter_language() != "all":
+        lang_filter = db.Books.languages.any(db.Languages.lang_code == current_user.filter_language())
+    else:
+        lang_filter = true()
+    content_rating_filter = false() if current_user.mature_content else \
+        db.Books.tags.any(db.Tags.name.in_(config.mature_content_tags()))
+    return and_(lang_filter, ~content_rating_filter)
+
+
+# Creates for all stored languages a translated speaking name in the array for the UI
+def speaking_language(languages=None):
+    if not languages:
+        languages = db.session.query(db.Languages).all()
+    for lang in languages:
+        try:
+            cur_l = LC.parse(lang.lang_code)
+            lang.name = cur_l.get_language_name(get_locale())
+        except UnknownLocaleError:
+            lang.name = _(isoLanguages.get(part3=lang.lang_code).name)
+    return languages
+
+# checks if domain is in database (including wildcards)
+# example SELECT * FROM @TABLE WHERE  'abcdefg' LIKE Name;
+# from https://code.luasoftware.com/tutorials/flask/execute-raw-sql-in-flask-sqlalchemy/
+def check_valid_domain(domain_text):
+    domain_text = domain_text.split('@', 1)[-1].lower()
+    sql = "SELECT * FROM registration WHERE :domain LIKE domain;"
+    result = ub.session.query(ub.Registration).from_statement(text(sql)).params(domain=domain_text).all()
+    return len(result)
+
+
+# Orders all Authors in the list according to authors sort
+def order_authors(entry):
+    sort_authors = entry.author_sort.split('&')
+    authors_ordered = list()
+    error = False
+    for auth in sort_authors:
+        # ToDo: How to handle not found authorname
+        result = db.session.query(db.Authors).filter(db.Authors.sort == auth.lstrip().strip()).first()
+        if not result:
+            error = True
+            break
+        authors_ordered.append(result)
+    if not error:
+        entry.authors = authors_ordered
+    return entry
+
+
+# Fill indexpage with all requested data from database
+def fill_indexpage(page, database, db_filter, order, *join):
+    if current_user.show_detail_random():
+        randm = db.session.query(db.Books).filter(common_filters())\
+            .order_by(func.random()).limit(config.config_random_books)
+    else:
+        randm = false()
+    off = int(int(config.config_books_per_page) * (page - 1))
+    pagination = Pagination(page, config.config_books_per_page,
+                            len(db.session.query(database).filter(db_filter).filter(common_filters()).all()))
+    entries = db.session.query(database).join(*join, isouter=True).filter(db_filter).filter(common_filters()).\
+        order_by(*order).offset(off).limit(config.config_books_per_page).all()
+    for book in entries:
+        book = order_authors(book)
+    return entries, randm, pagination
+
+
+# read search results from calibre-database and return it (function is used for feed and simple search
+def get_search_results(term):
+    q = list()
+    authorterms = re.split("[, ]+", term)
+    for authorterm in authorterms:
+        q.append(db.Books.authors.any(db.Authors.name.ilike("%" + authorterm + "%")))
+    db.session.connection().connection.connection.create_function("lower", 1, db.lcase)
+    db.Books.authors.any(db.Authors.name.ilike("%" + term + "%"))
+
+    return db.session.query(db.Books).filter(common_filters()).filter(
+        db.or_(db.Books.tags.any(db.Tags.name.ilike("%" + term + "%")),
+               db.Books.series.any(db.Series.name.ilike("%" + term + "%")),
+               db.Books.authors.any(and_(*q)),
+               db.Books.publishers.any(db.Publishers.name.ilike("%" + term + "%")),
+               db.Books.title.ilike("%" + term + "%"))).all()
+
+
+def get_unique_other_books(library_books, author_books):
+    # Get all identifiers (ISBN, Goodreads, etc) and filter author's books by that list so we show fewer duplicates
+    # Note: Not all images will be shown, even though they're available on Goodreads.com.
+    #       See https://www.goodreads.com/topic/show/18213769-goodreads-book-images
+    identifiers = reduce(lambda acc, book: acc + map(lambda identifier: identifier.val, book.identifiers),
+                         library_books, [])
+    other_books = filter(lambda book: book.isbn not in identifiers and book.gid["#text"] not in identifiers,
+                         author_books)
+
+    # Fuzzy match book titles
+    if feature_support['levenshtein']:
+        library_titles = reduce(lambda acc, book: acc + [book.title], library_books, [])
+        other_books = filter(lambda author_book: not filter(
+            lambda library_book:
+            # Remove items in parentheses before comparing
+            Levenshtein.ratio(re.sub(r"\(.*\)", "", author_book.title), library_book) > 0.7,
+            library_titles
+        ), other_books)
+
+    return other_books

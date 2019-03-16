@@ -25,8 +25,8 @@ import os
 from flask import Blueprint, flash, redirect, url_for
 from flask import abort, request, make_response
 from flask_login import login_required, current_user, logout_user
-from web import admin_required, render_title_template,  before_request, speaking_language, unconfigured, \
-    login_required_if_no_ano, check_valid_domain
+from web import admin_required, render_title_template,  before_request, unconfigured, \
+    login_required_if_no_ano
 from cps import db, ub, Server, get_locale, config, app, updater_thread, babel
 import json
 from datetime import datetime, timedelta
@@ -37,6 +37,7 @@ from babel import Locale as LC
 from sqlalchemy.exc import IntegrityError
 from gdriveutils import is_gdrive_ready, gdrive_support, downloadFile, deleteDatabaseOnChange, listRootFolders
 import helper
+from helper import speaking_language, check_valid_domain
 from werkzeug.security import generate_password_hash
 try:
     from imp import reload
