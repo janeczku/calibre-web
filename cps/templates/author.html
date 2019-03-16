@@ -22,6 +22,18 @@
   {% if author is not none %}
     <h3>{{_("In Library")}}</h3>
   {% endif %}
+    <div class="filterheader hidden-xs hidden-sm">
+      <a id="new" class="btn btn-primary" href="{{url_for('web.books_list', data='author', sort='new')}}"><span class="glyphicon glyphicon-sort-by-order"></span></a>
+      <a id="old" class="btn btn-primary" href="{{url_for('web.books_list', data='author', sort='old')}}"><span class="glyphicon glyphicon-sort-by-order-alt"></span></a>
+      <a id="asc" class="btn btn-primary" href="{{url_for('web.books_list', data='author', sort='abc')}}"><span class="glyphicon glyphicon-font"></span><span class="glyphicon glyphicon-sort-by-alphabet"></span></a>
+      <a id="desc" class="btn btn-primary" href="{{url_for('web.books_list', data='author', sort='zyx')}}"><span class="glyphicon glyphicon-font"></span><span class="glyphicon glyphicon-sort-by-alphabet-alt"></span></a>
+      <a id="pub_new" class="btn btn-primary" href="{{url_for('web.books_list', data='author', sort='pubnew')}}"><span class="glyphicon glyphicon-calendar"></span><span class="glyphicon glyphicon-sort-by-order"></span></a>
+      <a id="pub_old" class="btn btn-primary" href="{{url_for('web.books_list', data='author', sort='pubold')}}"><span class="glyphicon glyphicon-calendar"></span><span class="glyphicon glyphicon-sort-by-order-alt"></span></a>
+      <div class="btn-group character" role="group">
+        <a id="no_shelf" class="btn btn-primary" href="{{url_for('web.books_list', data='author', sort='pubold')}}"><span class="glyphicon glyphicon-list"></span><b>?</b></a>
+        <div id="all" class="btn btn-primary">{{_('All')}}</div>
+      </div>
+    </div>
   <div class="row">
     {% if entries[0] %}
     {% for entry in entries %}
@@ -45,7 +57,7 @@
               {% if not loop.first %}
                 <span class="author-hidden-divider">&amp;</span>
 			  {% endif %}
-              <a class="author-name author-hidden" href="{{url_for('web.author', book_id=author.id) }}">{{author.name.replace('|',',')|shortentitle(30)}}</a>
+              <a class="author-name author-hidden" href="{{url_for('web.books_list',  data='author', sort='new', book_id=author.id) }}">{{author.name.replace('|',',')|shortentitle(30)}}</a>
               {% if loop.last %}
                 <a href="#" class="author-expand" data-authors-max="{{g.config_authors_max}}" data-collapse-caption="({{_('reduce')}})">(...)</a>
               {% endif %}
@@ -53,7 +65,7 @@
               {% if not loop.first %}
                 <span>&amp;</span>
               {% endif %}
-              <a class="author-name" href="{{url_for('web.author', book_id=author.id) }}">{{author.name.replace('|',',')|shortentitle(30)}}</a>
+              <a class="author-name" href="{{url_for('web.books_list',  data='author', sort='new', book_id=author.id) }}">{{author.name.replace('|',',')|shortentitle(30)}}</a>
             {% endif %}
           {% endfor %}
         </p>
