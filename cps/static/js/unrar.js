@@ -728,6 +728,8 @@ function rarInsertOldDist(distance) {
     rOldDist.splice(0, 0, distance);
 }
 
+var rOldBuffers = [];
+
 //this is the real function, the other one is for debugging
 function rarCopyString(length, distance) {
     var destPtr = rBuffer.ptr - distance;
@@ -746,7 +748,6 @@ function rarCopyString(length, distance) {
     }
 }
 
-var rOldBuffers = [];
 // v must be a valid RarVolume
 function unpack(v) {
 
