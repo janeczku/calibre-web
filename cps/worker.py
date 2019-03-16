@@ -533,5 +533,4 @@ class StderrLogger(object):
             else:
                 self.buffer += message
         except:
-            pass
-
+            self.logger.debug("Logging Error")

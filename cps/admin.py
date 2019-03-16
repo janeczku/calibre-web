@@ -676,7 +676,7 @@ def edit_user(user_id):
             elif "edit_shelf_role" not in to_save and content.role_edit_shelfs():
                 content.role = content.role - ub.ROLE_EDIT_SHELFS
 
-            val = [int(k[5:]) for k, v in to_save.items() if k.startswith('show')]
+            val = [int(k[5:]) for k, __ in to_save.items() if k.startswith('show')]
             sidebar = ub.get_sidebar_config()
             for element in sidebar:
                 if element['visibility'] in val and not content.check_visibility(element['visibility']):
