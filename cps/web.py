@@ -37,7 +37,7 @@ from babel import Locale as LC
 from babel.dates import format_date
 from babel.core import UnknownLocaleError
 import base64
-from sqlalchemy.sql.expression import text, func, true, and_, false, not_
+from sqlalchemy.sql.expression import text, func, true, false, not_
 import json
 import datetime
 from iso639 import languages as isoLanguages
@@ -63,7 +63,7 @@ except ImportError:
     feature_support['ldap'] = False
 
 try:
-    from googleapiclient.errors import HttpError
+    from googleapiclient.errors import HttpErrort
 except ImportError:
     pass
 
@@ -72,12 +72,6 @@ try:
     feature_support['goodreads'] = True
 except ImportError:
     feature_support['goodreads'] = False
-
-try:
-    import Levenshtein
-    feature_support['levenshtein'] = True
-except ImportError:
-    feature_support['levenshtein'] = False
 
 try:
     from functools import reduce, wraps
@@ -110,7 +104,7 @@ EXTENSIONS_UPLOAD = {'txt', 'pdf', 'epub', 'mobi', 'azw', 'azw3', 'cbr', 'cbz', 
                       'fb2', 'html', 'rtf', 'odt', 'mp3',  'm4a', 'm4b'}
 
 
-'''EXTENSIONS_READER = set(['txt', 'pdf', 'epub', 'zip', 'cbz', 'tar', 'cbt'] + 
+'''EXTENSIONS_READER = set(['txt', 'pdf', 'epub', 'zip', 'cbz', 'tar', 'cbt'] +
                         (['rar','cbr'] if feature_support['rar'] else []))'''
 
 
@@ -848,7 +842,8 @@ def search():
 @login_required_if_no_ano
 def advanced_search():
     # Build custom columns names
-    tmpcc = db.session.query(db.Custom_Columns).filter(db.Custom_Columns.datatype.notin_(db.cc_exceptions)).all()
+    cc = helper.get_cc_columns()
+    '''tmpcc = db.session.query(db.Custom_Columns).filter(db.Custom_Columns.datatype.notin_(db.cc_exceptions)).all()
     if config.config_columns_to_ignore:
         cc = []
         for col in tmpcc:
@@ -856,7 +851,7 @@ def advanced_search():
             if r.match(col.label):
                 cc.append(col)
     else:
-        cc = tmpcc
+        cc = tmpcc'''
 
     db.session.connection().connection.connection.create_function("lower", 1, db.lcase)
     q = db.session.query(db.Books)
@@ -1074,39 +1069,12 @@ def serve_book(book_id, book_format):
         return send_from_directory(os.path.join(config.config_calibre_dir, book.path), data.name + "." + book_format)
 
 
-@web.route("/download/<int:book_id>/<book_format>")
-@login_required_if_no_ano
-@download_required
-def get_download_link(book_id, book_format):
-    book_format = book_format.split(".")[0]
-    book = db.session.query(db.Books).filter(db.Books.id == book_id).first()
-    data = db.session.query(db.Data).filter(db.Data.book == book.id)\
-        .filter(db.Data.format == book_format.upper()).first()
-    if data:
-        # collect downloaded books only for registered user and not for anonymous user
-        if current_user.is_authenticated:
-            ub.update_download(book_id, int(current_user.id))
-        file_name = book.title
-        if len(book.authors) > 0:
-            file_name = book.authors[0].name + '_' + file_name
-        file_name = helper.get_valid_filename(file_name)
-        headers = Headers()
-        try:
-            headers["Content-Type"] = mimetypes.types_map['.' + book_format]
-        except KeyError:
-            headers["Content-Type"] = "application/octet-stream"
-        headers["Content-Disposition"] = "attachment; filename*=UTF-8''%s.%s" % (quote(file_name.encode('utf-8')),
-                                                                                 book_format)
-        return helper.do_download_file(book, book_format, data, headers)
-    else:
-        abort(404)
-
-
+@web.route("/download/<int:book_id>/<book_format>", defaults={'anyname': 'None'})
 @web.route("/download/<int:book_id>/<book_format>/<anyname>")
 @login_required_if_no_ano
 @download_required
-def get_download_link_ext(book_id, book_format, anyname):
-    return get_download_link(book_id, book_format)
+def download_link(book_id, book_format, anyname):
+    return helper.get_download_link(book_id, book_format)
 
 
 @web.route('/send/<int:book_id>/<book_format>/<int:convert>')
@@ -1457,7 +1425,8 @@ def show_book(book_id):
             except UnknownLocaleError:
                 entries.languages[index].language_name = _(
                     isoLanguages.get(part3=entries.languages[index].lang_code).name)
-        tmpcc = db.session.query(db.Custom_Columns).filter(db.Custom_Columns.datatype.notin_(db.cc_exceptions)).all()
+        cc = helper.get_cc_columns()
+        '''tmpcc = db.session.query(db.Custom_Columns).filter(db.Custom_Columns.datatype.notin_(db.cc_exceptions)).all()
 
         if config.config_columns_to_ignore:
             cc = []
@@ -1466,7 +1435,7 @@ def show_book(book_id):
                 if r.match(col.label):
                     cc.append(col)
         else:
-            cc = tmpcc
+            cc = tmpcc'''
         book_in_shelfs = []
         shelfs = ub.session.query(ub.BookShelf).filter(ub.BookShelf.book_id == book_id).all()
         for entry in shelfs:
