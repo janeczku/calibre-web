@@ -30,12 +30,12 @@ import datetime
 import ub
 from flask_login import current_user
 from functools import wraps
-from web import login_required_if_no_ano, fill_indexpage, common_filters, get_search_results, render_read_books
+from web import login_required_if_no_ano, common_filters, get_search_results, render_read_books, download_required
 from sqlalchemy.sql.expression import func, text
 import helper
 from werkzeug.security import check_password_hash
 from werkzeug.datastructures import Headers
-from web import download_required
+from helper import fill_indexpage
 import sys
 
 try:

@@ -121,22 +121,10 @@
             <ul class="list-unstyled" id="scnd-nav" intent in-standard-append="nav.navigation" in-mobile-after="#main-nav" in-mobile-class="nav navbar-nav">
               <li class="nav-head hidden-xs">{{_('Browse')}}</li>
               {% if g.user.check_visibility(1024) %}  <!-- ToDo: eliminate -->
-              <!--li id="nav_sort" class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                  <span class="glyphicon glyphicon-sort-by-attributes"></span>{{_('Sorted Books')}}
-                  <span class="caret"></span>
-                </a>
-                <ul class="dropdown-menu">
-                  <li id="nav_sort_old" {% if page == 'newest' %}class="active"{% endif %}><a href="{{url_for('web.newest_books')}}">{{_('Sort By')}} {{_('Newest')}}</a></li>
-                  <li id="nav_sort_new" {% if page == 'oldest' %}class="active"{% endif %}><a href="{{url_for('web.oldest_books')}}">{{_('Sort By')}} {{_('Oldest')}}</a></li>
-                  <li id="nav_sort_asc" {% if page == 'a-z' %}class="active"{% endif %}><a href="{{url_for('web.titles_ascending')}}">{{_('Sort By')}} {{_('Title')}} ({{_('Ascending')}})</a></li>
-                  <li id="nav_sort_desc" {% if page == 'z-a' %}class="active"{% endif %}><a href="{{url_for('web.titles_descending')}}">{{_('Sort By')}} {{_('Title')}}  ({{_('Descending')}})</a></li>
-                </ul>
-              </li-->
               {%endif%}
               {% for element in sidebar %}
                 {% if g.user.check_visibility(element['visibility']) and element['public'] %}
-                    <li id="nav_{{element['id']}}" {% if page == element['page'] %}class="active"{% endif %}><a href="{{url_for(element['link'])}}"><span class="glyphicon {{element['glyph']}}"></span>{{_(element['text'])}}</a></li>
+                    <li id="nav_{{element['id']}}" {% if page == element['page'] %}class="active"{% endif %}><a href="{{url_for(element['link'], data=element['page'], sort='new')}}"><span class="glyphicon {{element['glyph']}}"></span>{{_(element['text'])}}</a></li>
                 {% endif %}
               {% endfor %}
 
