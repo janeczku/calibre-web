@@ -1997,6 +1997,10 @@ msgstr "Zeige nur Bücher mit dieser Sprache"
 msgid "Show all"
 msgstr "Zeige alle"
 
+#: cps/templates/user_edit.html:48
+msgid "Allowed Tags"
+msgstr "Zulässige Tags"
+
 #: cps/templates/user_edit.html:141
 msgid "Delete this user"
 msgstr "Benutzer löschen"
@@ -2004,4 +2008,5 @@ msgstr "Benutzer löschen"
 #: cps/templates/user_edit.html:156
 msgid "Recent Downloads"
 msgstr "Letzte Downloads"
+
 

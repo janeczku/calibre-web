@@ -1996,6 +1996,10 @@ msgstr "Mostra libri per lingua"
 msgid "Show all"
 msgstr "Mostra tutto"
 
+#: cps/templates/user_edit.html:48
+msgid "Allowed Tags"
+msgstr "Tag consentiti"
+
 #: cps/templates/user_edit.html:141
 msgid "Delete this user"
 msgstr "Elimina questo utente"

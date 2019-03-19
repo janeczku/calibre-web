@@ -1997,6 +1997,10 @@ msgstr "Visa böcker med språk"
 msgid "Show all"
 msgstr "Visa alla"
 
+#: cps/templates/user_edit.html:48
+msgid "Allowed Tags"
+msgstr "Tillåten etiketter"
+
 #: cps/templates/user_edit.html:141
 msgid "Delete this user"
 msgstr "Ta bort den här användaren"

@@ -1998,6 +1998,10 @@ msgstr "បង្ហាញសៀវភៅដែលមានភាសា"
 msgid "Show all"
 msgstr "បង្ហាញទាំងអស់"
 
+#: cps/templates/user_edit.html:48
+msgid "Allowed Tags"
+msgstr "ស្លាកដែលបានអនុញ្ញាត"
+
 #: cps/templates/user_edit.html:141
 msgid "Delete this user"
 msgstr "លុបអ្នកប្រើប្រាស់នេះ"

@@ -1997,6 +1997,10 @@ msgstr "Mutasd a könyveket a következő nyelvvel"
 msgid "Show all"
 msgstr "Mindent mutass"
 
+#: cps/templates/user_edit.html:48
+msgid "Allowed Tags"
+msgstr "Engedélyezett címkék"
+
 #: cps/templates/user_edit.html:141
 msgid "Delete this user"
 msgstr "A felhasználó törlése"

@@ -2010,6 +2010,10 @@ msgstr "Montrer les livres dans la langue"
 msgid "Show all"
 msgstr "Montrer tout"
 
+#: cps/templates/user_edit.html:48
+msgid "Allowed Tags"
+msgstr "Tags autorisés"
+
 #: cps/templates/user_edit.html:141
 msgid "Delete this user"
 msgstr "Supprimer cet utilisateur"
