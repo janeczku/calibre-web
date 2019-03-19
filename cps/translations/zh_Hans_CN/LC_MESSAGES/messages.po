@@ -1997,6 +1997,10 @@ msgstr "按语言显示书籍"
 msgid "Show all"
 msgstr "显示全部"
 
+#: cps/templates/user_edit.html:48
+msgid "Allowed Tags"
+msgstr "允许的标签"
+
 #: cps/templates/user_edit.html:141
 msgid "Delete this user"
 msgstr "删除此用户"

@@ -497,6 +497,12 @@ def edit_required(f):
 
     return inner
 
+def allowed_tags(tags):
+    if sys.version_info > (3, 0): # Python3 str, Python2 unicode
+        lstrip = str.lstrip
+    else:
+        lstrip = unicode.lstrip
+    return list(map(lstrip, tags.split(",")))
 
 # Language and content filters for displaying in the UI
 def common_filters():
@@ -504,9 +510,14 @@ def common_filters():
         lang_filter = db.Books.languages.any(db.Languages.lang_code == current_user.filter_language())
     else:
         lang_filter = true()
+    if current_user.allowed_tags is not None and current_user.allowed_tags != '':
+        tags_filter = db.Books.tags.any(db.Tags.name.in_(allowed_tags(current_user.allowed_tags)))
+    else:
+        tags_filter = true()
     content_rating_filter = false() if current_user.mature_content else \
         db.Books.tags.any(db.Tags.name.in_(config.mature_content_tags()))
-    return and_(lang_filter, ~content_rating_filter)
+
+    return and_(tags_filter, lang_filter, ~content_rating_filter)
 
 
 # Creates for all stored languages a translated speaking name in the array for the UI
@@ -1085,7 +1096,8 @@ def get_comic_book(book_id, book_format, page):
 def get_authors_json():
     if request.method == "GET":
         query = request.args.get('q')
-        entries = db.session.query(db.Authors).filter(db.Authors.name.ilike("%" + query + "%")).all()
+        entries = db.session.query(db.Authors).join(db.books_authors_link).join(db.Books).filter(common_filters())\
+            .filter(db.Authors.name.ilike("%" + query + "%")).all()
         json_dumps = json.dumps([dict(name=r.name.replace('|',',')) for r in entries])
         return json_dumps
 
@@ -2710,6 +2722,8 @@ def profile():
                 content.password = generate_password_hash(to_save["password"])
         if "kindle_mail" in to_save and to_save["kindle_mail"] != content.kindle_mail:
             content.kindle_mail = to_save["kindle_mail"]
+        if "allowed_tags" in to_save and to_save["allowed_tags"] != content.allowed_tags:
+            content.allowed_tags = to_save["allowed_tags"].strip()
         if to_save["email"] and to_save["email"] != content.email:
             if config.config_public_reg and not check_valid_domain(to_save["email"]):
                 flash(_(u"E-mail is not from valid domain"), category="error")
@@ -2872,6 +2886,7 @@ def view_configuration():
             content.config_default_show = content.config_default_show + ub.SIDEBAR_SORTED
         if "show_mature_content" in to_save:
             content.config_default_show = content.config_default_show + ub.MATURE_CONTENT
+
         ub.session.commit()
         flash(_(u"Calibre-Web configuration updated"), category="success")
         config.loadSettings()
@@ -3336,6 +3351,8 @@ def edit_user(user_id):
                 content.email = to_save["email"]
             if "kindle_mail" in to_save and to_save["kindle_mail"] != content.kindle_mail:
                 content.kindle_mail = to_save["kindle_mail"]
+            if "allowed_tags" in to_save and to_save["allowed_tags"] != content.allowed_tags:
+                content.allowed_tags = to_save["allowed_tags"]
         try:
             ub.session.commit()
             flash(_(u"User '%(nick)s' updated", nick=content.nickname), category="success")

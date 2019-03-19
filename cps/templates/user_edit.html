@@ -44,6 +44,11 @@
             {% endfor %}
         </select>
     </div>
+      <div class="form-group">
+          <label for="allowed_tags">{{_('Allowed Tags')}}</label>
+          <input type="text" class="form-control" name="allowed_tags" id="allowed_tags" value="{{ content.allowed_tags if content.allowed_tags != None }}" autocomplete="off">
+      </div>
+
     <div class="col-sm-6">
       <div class="form-group">
           <input type="checkbox" name="show_random" id="show_random" {% if content.show_random_books() %}checked{% endif %}>

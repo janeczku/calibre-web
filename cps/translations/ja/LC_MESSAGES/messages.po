@@ -1997,6 +1997,10 @@ msgstr "言語で本を表示する"
 msgid "Show all"
 msgstr "全て表示"
 
+#: cps/templates/user_edit.html:48
+msgid "Allowed Tags"
+msgstr "許可されたタグ"
+
 #: cps/templates/user_edit.html:141
 msgid "Delete this user"
 msgstr "このユーザを削除する"

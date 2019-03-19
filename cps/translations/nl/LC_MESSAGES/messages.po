@@ -1998,6 +1998,10 @@ msgstr "Toon boeken met taal"
 msgid "Show all"
 msgstr "Toon alles"
 
+#: cps/templates/user_edit.html:48
+msgid "Allowed Tags"
+msgstr "Toegestane tags"
+
 #: cps/templates/user_edit.html:141
 msgid "Delete this user"
 msgstr "Wis deze gebruiker"

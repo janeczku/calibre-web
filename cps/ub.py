@@ -192,6 +192,7 @@ class User(UserBase, Base):
     sidebar_view = Column(Integer, default=1)
     default_language = Column(String(3), default="all")
     mature_content = Column(Boolean, default=True)
+    allowed_tags = Column(String)
 
 
 # Class for anonymous user is derived from User base and completly overrides methods and properties for the

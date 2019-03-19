@@ -1995,6 +1995,10 @@ msgstr "Показувати книги на мовах"
 msgid "Show all"
 msgstr "Показати всі"
 
+#: cps/templates/user_edit.html:48
+msgid "Allowed Tags"
+msgstr "Дозволені теги"
+
 #: cps/templates/user_edit.html:141
 msgid "Delete this user"
 msgstr "Видалити цього користувача"
