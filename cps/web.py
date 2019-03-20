@@ -2843,7 +2843,7 @@ def view_configuration():
             content.config_default_role = content.config_default_role + ub.ROLE_DELETE_BOOKS
         if "passwd_role" in to_save:
             content.config_default_role = content.config_default_role + ub.ROLE_PASSWD
-        if "passwd_role" in to_save:
+        if "edit_shelf_role" in to_save:
             content.config_default_role = content.config_default_role + ub.ROLE_EDIT_SHELFS
         content.config_default_show = 0
         if "show_detail_random" in to_save:
