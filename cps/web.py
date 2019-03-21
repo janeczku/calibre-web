@@ -2113,7 +2113,7 @@ def feed_read_books():
 
 
 @app.route("/readbooks/", defaults={'page': 1})
-@app.route("/readbooks/<int:page>'")
+@app.route("/readbooks/<int:page>")
 @login_required_if_no_ano
 def read_books(page):
     return render_read_books(page, True)
@@ -2127,7 +2127,7 @@ def feed_unread_books():
 
 
 @app.route("/unreadbooks/", defaults={'page': 1})
-@app.route("/unreadbooks/<int:page>'")
+@app.route("/unreadbooks/<int:page>")
 @login_required_if_no_ano
 def unread_books(page):
     return render_read_books(page, False)
