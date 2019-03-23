@@ -471,7 +471,7 @@ def unconfigured(f):
 def download_required(f):
     @wraps(f)
     def inner(*args, **kwargs):
-        if current_user.role_download() or current_user.role_admin():
+        if current_user.role_download():
             return f(*args, **kwargs)
         abort(403)
 
@@ -2065,7 +2065,10 @@ def serve_book(book_id, book_format):
 @requires_basic_auth_if_no_ano
 def feed_get_cover(book_id):
     book = db.session.query(db.Books).filter(db.Books.id == book_id).first()
-    return helper.get_book_cover(book.path)
+    if book:
+        return helper.get_book_cover(book.path)
+    else:
+        abort(404)
 
 
 def render_read_books(page, are_read, as_xml=False):
