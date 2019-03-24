@@ -529,7 +529,7 @@ def new_user():
             content.locale = to_save["locale"]
 
         val = 0
-        for key,v in to_save.items():
+        for key, _ in to_save.items():
             if key.startswith('show'):
                 val += int(key[5:])
         content.sidebar_view = val

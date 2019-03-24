@@ -41,7 +41,6 @@ from sqlalchemy.sql.expression import text, func, true, false, not_
 import json
 import datetime
 from iso639 import languages as isoLanguages
-import re
 import gdriveutils
 from redirect import redirect_back
 from cps import lm, babel, ub, config, get_locale, language_table, app, db
@@ -69,7 +68,7 @@ except ImportError:
     feature_support['goodreads'] = False
 
 try:
-    from functools import reduce, wraps
+    from functools import wraps
 except ImportError:
     pass  # We're not using Python 3
 
@@ -83,11 +82,6 @@ try:
     from natsort import natsorted as sort
 except ImportError:
     sort = sorted # Just use regular sort then, may cause issues with badly named pages in cbz/cbr files
-
-try:
-    from urllib.parse import quote
-except ImportError:
-    from urllib import quote
 
 from flask import Blueprint
 
@@ -944,7 +938,8 @@ def advanced_search():
                                  series=series, title=_(u"search"), cc=cc, page="advsearch")
 
 
-def render_read_books(page, are_read, as_xml=False, order=[]):
+def render_read_books(page, are_read, as_xml=False, order=None):
+    order = order or []
     if not config.config_read_column:
         readBooks = ub.session.query(ub.ReadBook).filter(ub.ReadBook.user_id == int(current_user.id))\
             .filter(ub.ReadBook.is_read is True).all()
@@ -1271,7 +1266,7 @@ def profile():
             current_user.locale = to_save["locale"]
 
         val = 0
-        for key,v in to_save.items():
+        for key, _ in to_save.items():
             if key.startswith('show'):
                 val += int(key[5:])
         current_user.sidebar_view = val
