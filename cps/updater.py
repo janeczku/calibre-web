@@ -51,7 +51,7 @@ class Updater(threading.Thread):
 
     def __init__(self):
         threading.Thread.__init__(self)
-        self.status = 0
+        self.status = -1
         self.updateIndex = None
 
     def get_current_version_info(self):
