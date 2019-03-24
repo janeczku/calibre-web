@@ -230,6 +230,7 @@ class Updater(threading.Thread):
                     app.logger.debug("Could not remove:" + item_path)
         shutil.rmtree(source, ignore_errors=True)
 
+    @classmethod
     def _nightly_version_info(self):
         content = {}
         content[0] = '$Format:%H$'
@@ -240,6 +241,7 @@ class Updater(threading.Thread):
             return {'version': content[0], 'datetime': content[1]}
         return False
 
+    @classmethod
     def _stable_version_info(self):
         return {'version': '0.6.1'} # Current version
 
@@ -341,58 +343,6 @@ class Updater(threading.Thread):
                 status['message'] = _(u'Could not fetch update information')
 
             # a new update is available
-            status['update'] = True
-            if 'body' in commit:
-                status['success'] = True
-                status['message'] = _(
-                    u'A new update is available. Click on the button below to update to the latest version.')
-
-                new_commit_date = datetime.datetime.strptime(
-                    commit['committer']['date'], '%Y-%m-%dT%H:%M:%SZ') - tz
-                parents.append(
-                    [
-                        format_datetime(new_commit_date, format='short', locale=get_locale()),
-                        commit['message'],
-                        commit['sha']
-                    ]
-                )
-
-                # it only makes sense to analyze the parents if we know the current commit hash
-                if status['current_commit_hash'] != '':
-                    try:
-                        parent_commit = commit['parents'][0]
-                        # limit the maximum search depth
-                        remaining_parents_cnt = 10
-                    except IndexError:
-                        remaining_parents_cnt = None
-
-                    if remaining_parents_cnt is not None:
-                        while True:
-                            if remaining_parents_cnt == 0:
-                                break
-
-                            # check if we are more than one update behind if so, go up the tree
-                            if commit['sha'] != status['current_commit_hash']:
-                                try:
-                                    headers = {'Accept': 'application/vnd.github.v3+json'}
-                                    r = requests.get(parent_commit['url'], headers=headers)
-                                    r.raise_for_status()
-                                    parent_data = r.json()
-
-                                    parent_commit_date = datetime.datetime.strptime(
-                                        parent_data['committer']['date'], '%Y-%m-%dT%H:%M:%SZ') - tz
-                                    parent_commit_date = format_datetime(
-                                        parent_commit_date, format='short', locale=get_locale())
-
-                                    parents.append([parent_commit_date, parent_data['message'], parent_data['sha']])
-                                    parent_commit = parent_data['parents'][0]
-                                    remaining_parents_cnt -= 1
-                                except Exception:
-                                    # it isn't crucial if we can't get information about the parent
-                                    break
-                            else:
-                                # parent is our current version
-                                break
             status['history'] = parents[::-1]
             return json.dumps(status)
         return ''
