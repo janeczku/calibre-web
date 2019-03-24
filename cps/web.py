@@ -1205,7 +1205,6 @@ def get_updater_status():
             status['status'] = 7
         except Exception:
             status['status'] = 11
-    app.logger.error(status['status'])
     return json.dumps(status)
 
 
