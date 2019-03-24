@@ -64,11 +64,11 @@ web.    {% for entry in random %}
       <a id="desc" class="btn btn-primary" href="{{url_for('web.books_list', data=page, sort='zyx')}}"><span class="glyphicon glyphicon-font"></span><span class="glyphicon glyphicon-sort-by-alphabet-alt"></span></a>
       <a id="pub_new" class="btn btn-primary" href="{{url_for('web.books_list', data=page, sort='pubnew')}}"><span class="glyphicon glyphicon-calendar"></span><span class="glyphicon glyphicon-sort-by-order"></span></a>
       <a id="pub_old" class="btn btn-primary" href="{{url_for('web.books_list', data=page, sort='pubold')}}"><span class="glyphicon glyphicon-calendar"></span><span class="glyphicon glyphicon-sort-by-order-alt"></span></a>
-      <div class="btn-group character" role="group">
-        <a id="no_shelf" class="btn btn-primary" href="{{url_for('web.books_list', data=page, sort='pubold')}}"><span class="glyphicon glyphicon-list"></span><b>?</b></a>
-        <div id="all" class="btn btn-primary">{{_('All')}}</div>
-      </div>
     </div>
+        <div class="btn-group character">
+        <a id="no_shelf" class="btn btn-primary" href="{{url_for('web.books_list', data=page, sort='pubold')}}"><span class="glyphicon glyphicon-list"></span><b>{{_('Group by series')}}</b></a>
+      </div>
+
   <div class="row">
     {% if entries[0] %}
     {% for entry in entries %}

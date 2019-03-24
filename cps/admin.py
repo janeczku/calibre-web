@@ -766,9 +766,6 @@ def get_updater_status():
             status['status'] = updater_thread.get_update_status()
             if status['status']  == -1:
                 status['status'] = 7
-        except AttributeError:
-            # thread is not active, occurs after restart on update
-            status['status'] = 7
         except Exception:
             status['status'] = 11
     return json.dumps(status)

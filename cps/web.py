@@ -563,7 +563,7 @@ def author_list():
 # ToDo wrong order function
 def render_author_books(page, book_id, order):
     entries, __, pagination = fill_indexpage(page, db.Books, db.Books.authors.any(db.Authors.id == book_id),
-                                             [order[0], db.Series.name, db.Books.series_index], db.books_series_link, db.Series)
+                                             [db.Series.name, db.Books.series_index, order[0]], db.books_series_link, db.Series)
     if entries is None:
         flash(_(u"Error opening eBook. File does not exist or file is not accessible:"), category="error")
         return redirect(url_for("web.index"))
@@ -609,8 +609,7 @@ def publisher(book_id, page):
     if publisher:
         entries, random, pagination = fill_indexpage(page, db.Books,
                                                      db.Books.publishers.any(db.Publishers.id == book_id),
-                                                     (db.Series.name, db.Books.series_index), db.books_series_link,
-                                                     db.Series)
+                                                     [db.Books.series_index])
         return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
                                      title=_(u"Publisher: %(name)s", name=publisher.name), page="publisher")
     else:
