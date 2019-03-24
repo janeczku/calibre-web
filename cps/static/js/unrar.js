@@ -641,7 +641,7 @@ function unpack29(bstream) {
             continue;
         }
         if (num === 258) {
-            if (lastLength != 0) {
+            if (lastLength !== 0) {
                 rarCopyString(lastLength, lastDist);
             }
             continue;
@@ -690,7 +690,7 @@ function rarReadEndOfBlock(bstream) {
         NewTable = !!bstream.readBits(1);
     }
     //tablesRead = !NewTable;
-    return !(NewFile || NewTable && !rarReadTables(bstream));
+    return !(NewFile || (NewTable && !rarReadTables(bstream)));
 }
 
 
@@ -784,7 +784,7 @@ var RarLocalFile = function(bstream) {
     this.header = new RarVolumeHeader(bstream);
     this.filename = this.header.filename;
 
-    if (this.header.headType != FILE_HEAD && this.header.headType != ENDARC_HEAD) {
+    if (this.header.headType !== FILE_HEAD && this.header.headType !== ENDARC_HEAD) {
         this.isValid = false;
         info("Error! RAR Volume did not include a FILE_HEAD header ");
     } else {
@@ -840,7 +840,7 @@ var unrar = function(arrayBuffer) {
         info("Found RAR signature");
 
         var mhead = new RarVolumeHeader(bstream);
-        if (mhead.headType != MAIN_HEAD) {
+        if (mhead.headType !== MAIN_HEAD) {
             info("Error! RAR did not include a MAIN_HEAD header");
         } else {
             var localFiles = [];

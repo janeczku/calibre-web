@@ -179,7 +179,7 @@ var unzip = function(arrayBuffer) {
             info(" Found a Central File Header");
 
             // read all file headers
-            while (bstream.peekNumber(4) == zCentralFileHeaderSignature) {
+            while (bstream.peekNumber(4) === zCentralFileHeaderSignature) {
                 bstream.readNumber(4); // signature
                 bstream.readNumber(2); // version made by
                 bstream.readNumber(2); // version needed to extract
@@ -264,7 +264,7 @@ function getHuffmanCodes(bitLengths) {
             return null;
         }
         // increment the appropriate bitlength count
-        if (blCount[length] == undefined) blCount[length] = 0;
+        if (typeof blCount[length] === "undefined") blCount[length] = 0;
         // a length of zero means this symbol is not participating in the huffman coding
         if (length > 0) blCount[length]++;
 
@@ -277,7 +277,7 @@ function getHuffmanCodes(bitLengths) {
     for (var bits = 1; bits <= MAX_BITS; ++bits) {
         var length2 = bits - 1;
         // ensure undefined lengths are zero
-        if (blCount[length2] == undefined) blCount[length2] = 0;
+        if (typeof blCount[length2] === "undefined") blCount[length2] = 0;
         code = (code + blCount[bits - 1]) << 1;
         nextCode [bits] = code;
     }
@@ -522,11 +522,11 @@ function inflate(compressedData, numDecompressedBytes) {
         bFinal = bstream.readBits(1);
         var bType = bstream.readBits(2);
         blockSize = 0;
-        ++numBlocks;
+        // ++numBlocks;
         // no compression
         if (bType == 0) {
             // skip remaining bits in this byte
-            while (bstream.bitPtr != 0) bstream.readBits(1);
+            while (bstream.bitPtr !== 0) bstream.readBits(1);
             var len = bstream.readBits(16);
             bstream.readBits(16);
             // TODO: check if nlen is the ones-complement of len?
@@ -535,11 +535,11 @@ function inflate(compressedData, numDecompressedBytes) {
             blockSize = len;
         }
         // fixed Huffman codes
-        else if (bType == 1) {
+        else if (bType === 1) {
             blockSize = inflateBlockData(bstream, getFixedLiteralTable(), getFixedDistanceTable(), buffer);
         }
         // dynamic Huffman codes
-        else if (bType == 2) {
+        else if (bType === 2) {
             var numLiteralLengthCodes = bstream.readBits(5) + 257;
             var numDistanceCodes = bstream.readBits(5) + 1,
                 numCodeLengthCodes = bstream.readBits(4) + 4;
@@ -576,8 +576,7 @@ function inflate(compressedData, numDecompressedBytes) {
                 if (symbol <= 15) {
                     literalCodeLengths.push(symbol);
                     prevCodeLength = symbol;
-                }
-                else if (symbol === 16) {
+                } else if (symbol === 16) {
                     var repeat = bstream.readBits(2) + 3;
                     while (repeat--) {
                         literalCodeLengths.push(prevCodeLength);

@@ -341,9 +341,6 @@ class Updater(threading.Thread):
             else:
                 status['success'] = False
                 status['message'] = _(u'Could not fetch update information')
-
-            # a new update is available
-            status['history'] = parents[::-1]
             return json.dumps(status)
         return ''
 

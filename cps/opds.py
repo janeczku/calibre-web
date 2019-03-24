@@ -37,11 +37,6 @@ from werkzeug.security import check_password_hash
 from helper import fill_indexpage
 import sys
 
-try:
-    from urllib.parse import quote
-except ImportError:
-    from urllib import quote
-
 opds = Blueprint('opds', __name__)
 
 

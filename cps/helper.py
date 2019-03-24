@@ -67,6 +67,11 @@ try:
 except ImportError:
     use_levenshtein = False
 
+try:
+    from functools import reduce
+except ImportError:
+    pass  # We're not using Python 3
+
 
 def update_download(book_id, user_id):
     check = ub.session.query(ub.Downloads).filter(ub.Downloads.user_id == user_id).filter(ub.Downloads.book_id ==
