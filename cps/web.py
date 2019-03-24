@@ -1306,41 +1306,27 @@ def read_book(book_id, book_format):
         return render_title_template('readpdf.html', pdffile=book_id, title=_(u"Read a Book"))
     elif book_format.lower() == "txt":
         return render_title_template('readtxt.html', txtfile=book_id, title=_(u"Read a Book"))
-    elif book_format.lower() == "mp3":
-        entries = db.session.query(db.Books).filter(db.Books.id == book_id).filter(common_filters()).first()
-        return render_title_template('listenmp3.html', mp3file=book_id, audioformat=book_format.lower(),
-                                     title=_(u"Read a Book"), entry=entries, bookmark=bookmark)
-    elif book_format.lower() == "m4b":
-        entries = db.session.query(db.Books).filter(db.Books.id == book_id).filter(common_filters()).first()
-        return render_title_template('listenmp3.html', mp3file=book_id, audioformat=book_format.lower(),
-                                     title=_(u"Read a Book"), entry=entries, bookmark=bookmark)
-    elif book_format.lower() == "m4a":
-        entries = db.session.query(db.Books).filter(db.Books.id == book_id).filter(common_filters()).first()
-        return render_title_template('listenmp3.html', mp3file=book_id, audioformat=book_format.lower(),
-                                     title=_(u"Read a Book"), entry=entries, bookmark=bookmark)
     else:
-        book_dir = os.path.join(config.get_main_dir, "cps", "static", str(book_id))
-        if not os.path.exists(book_dir):
-            os.mkdir(book_dir)
-        for fileext in ["cbr", "cbt", "cbz"]:
-            if book_format.lower() == fileext:
-                all_name = str(book_id)  # + "/" + book.data[0].name + "." + fileext
-                # tmp_file = os.path.join(book_dir, book.data[0].name) + "." + fileext
-                # if not os.path.exists(all_name):
-                #    cbr_file = os.path.join(config.config_calibre_dir, book.path, book.data[0].name) + "." + fileext
-                #    copyfile(cbr_file, tmp_file)
+        for fileExt in ["mp3", "m4b", "m4a"]:
+            if book_format.lower() == fileExt:
+                entries = db.session.query(db.Books).filter(db.Books.id == book_id).filter(common_filters()).first()
+                return render_title_template('listenmp3.html', mp3file=book_id, audioformat=book_format.lower(),
+                                             title=_(u"Read a Book"), entry=entries, bookmark=bookmark)
+        for fileExt in ["cbr", "cbt", "cbz"]:
+            if book_format.lower() == fileExt:
+                all_name = str(book_id)
                 return render_title_template('readcbr.html', comicfile=all_name, title=_(u"Read a Book"),
-                                             extension=fileext)
-        '''if feature_support['rar']:
-            extensionList = ["cbr","cbt","cbz"]
-        else:
-            extensionList = ["cbt","cbz"]
-        for fileext in extensionList:
-            if book_format.lower() == fileext:
-                return render_title_template('readcbr.html', comicfile=book_id, 
-                extension=fileext, title=_(u"Read a Book"), book=book)
+                                             extension=fileExt)
+        # if feature_support['rar']:
+        #    extensionList = ["cbr","cbt","cbz"]
+        # else:
+        #     extensionList = ["cbt","cbz"]
+        # for fileext in extensionList:
+        #     if book_format.lower() == fileext:
+        #         return render_title_template('readcbr.html', comicfile=book_id,
+        #         extension=fileext, title=_(u"Read a Book"), book=book)
         flash(_(u"Error opening eBook. File does not exist or file is not accessible."), category="error")
-        return redirect(url_for("web.index"))'''
+        return redirect(url_for("web.index"))
 
 
 @web.route("/book/<int:book_id>")
