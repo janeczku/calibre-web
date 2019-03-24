@@ -758,12 +758,14 @@ def get_updater_status():
                 "11": _(u'Update failed:') + u' ' + _(u'General error')
             }
             status['text'] = text
-            # helper.updater_thread = helper.Updater()
+            updater_thread.status = 0
             updater_thread.start()
             status['status'] = updater_thread.get_update_status()
     elif request.method == "GET":
         try:
             status['status'] = updater_thread.get_update_status()
+            if status['status']  == -1:
+                status['status'] = 7
         except AttributeError:
             # thread is not active, occurs after restart on update
             status['status'] = 7
