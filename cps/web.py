@@ -365,34 +365,38 @@ def get_comic_book(book_id, book_format, page):
 
 # ################################### Typeahead ##################################################################
 
-@web.route("/get_authors_json", methods=['GET', 'POST'])
+def get_typeahead(database, query, replace=('','')):
+    entries = db.session.query(database).filter(database.name.ilike("%" + query + "%")).all()
+    json_dumps = json.dumps([dict(name=r.name.replace(*replace)) for r in entries])
+    return json_dumps
+
+
+@web.route("/get_authors_json")
 @login_required_if_no_ano
 def get_authors_json():
     if request.method == "GET":
-        query = request.args.get('q')
-        entries = db.session.query(db.Authors).filter(db.Authors.name.ilike("%" + query + "%")).all()
-        json_dumps = json.dumps([dict(name=r.name.replace('|', ',')) for r in entries])
-        return json_dumps
+        return get_typeahead(db.Authors, request.args.get('q'), ('|', ','))
 
 
-@web.route("/get_publishers_json", methods=['GET', 'POST'])
+@web.route("/get_publishers_json")
 @login_required_if_no_ano
 def get_publishers_json():
     if request.method == "GET":
-        query = request.args.get('q')
-        entries = db.session.query(db.Publishers).filter(db.Publishers.name.ilike("%" + query + "%")).all()
-        json_dumps = json.dumps([dict(name=r.name.replace('|', ',')) for r in entries])
-        return json_dumps
+        return get_typeahead(db.Publishers, request.args.get('q'), ('|', ','))
 
 
-@web.route("/get_tags_json", methods=['GET', 'POST'])
+@web.route("/get_tags_json")
 @login_required_if_no_ano
 def get_tags_json():
     if request.method == "GET":
-        query = request.args.get('q')
-        entries = db.session.query(db.Tags).filter(db.Tags.name.ilike("%" + query + "%")).all()
-        json_dumps = json.dumps([dict(name=r.name) for r in entries])
-        return json_dumps
+        return get_typeahead(db.Tags, request.args.get('q'))
+
+
+@web.route("/get_series_json")
+@login_required_if_no_ano
+def get_series_json():
+    if request.method == "GET":
+        return get_typeahead(db.Series, request.args.get('q'))
 
 
 @web.route("/get_languages_json", methods=['GET', 'POST'])
@@ -407,17 +411,6 @@ def get_languages_json():
             entries_start.extend(entries[0:(5-len(entries_start))])
             entries_start = list(set(entries_start))
         json_dumps = json.dumps([dict(name=r) for r in entries_start[0:5]])
-        return json_dumps
-
-
-@web.route("/get_series_json", methods=['GET', 'POST'])
-@login_required_if_no_ano
-def get_series_json():
-    if request.method == "GET":
-        query = request.args.get('q')
-        entries = db.session.query(db.Series).filter(db.Series.name.ilike("%" + query + "%")).all()
-        # entries = db.session.execute("select name from series where name like '%" + query + "%'")
-        json_dumps = json.dumps([dict(name=r.name) for r in entries])
         return json_dumps
 
 
