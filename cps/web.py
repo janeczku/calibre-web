@@ -3778,8 +3778,7 @@ def upload():
             try:
                 os.unlink(meta.file_path)
             except OSError:
-                flash(_(u"Failed to delete file %(file)s (Permission denied).", file= meta.file_path),
-                      category="warning")
+                return Response(_(u"Failed to delete file %(file)s (Permission denied).", file= meta.file_path)), 422
 
             if meta.cover is None:
                 has_cover = 0
