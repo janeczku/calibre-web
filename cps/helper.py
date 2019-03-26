@@ -24,6 +24,7 @@ import ub
 from flask import current_app as app
 from tempfile import gettempdir
 import sys
+import io
 import os
 import re
 import unicodedata
@@ -34,6 +35,7 @@ from flask_babel import gettext as _
 from flask_login import current_user
 from babel.dates import format_datetime
 from datetime import datetime
+from PIL import Image
 import shutil
 import requests
 try:
@@ -445,9 +447,18 @@ def get_book_cover(cover_path):
 # saves book cover to gdrive or locally
 def save_cover(url, book_path):
     img = requests.get(url)
-    if img.headers.get('content-type') != 'image/jpeg':
-        web.app.logger.error("Cover is no jpg file, can't save")
+    content_type = img.headers.get('content-type')
+    if content_type not in ('image/jpeg', 'image/png', 'image/webp'):
+        web.app.logger.error("Cover is only support jpg/png/webp file, can't save")
         return False
+
+    # convert to jpg because calibre just support jpg
+    if content_type in ('image/png', 'image/webp'):
+        imgc = Image.open(io.BytesIO(img.content))
+        im = imgc.convert('RGB')
+        tmp_bytesio = io.BytesIO()
+        im.save(tmp_bytesio, format='JPEG')
+        img.content = tmp_bytesio.getvalue()
 
     if ub.config.config_use_google_drive:
         tmpDir = gettempdir()
