@@ -22,8 +22,17 @@ $("#desc").click(function() {
         return;
     }
     var list = $('#list');
+    var second = $('#second');
     var listItems = list.children(".row");
-    list.append(listItems.get().reverse());
+    var reversed, elementLength, middle;
+    Array.prototype.push.apply(listItems,second.children(".row"))
+    reversed = listItems.get().reverse();
+    elementLength = reversed.length;
+
+    middle = parseInt(elementLength / 2) + (elementLength % 2);
+
+    list.append(reversed.slice(0, middle));
+    second.append(reversed.slice(middle,elementLength));
     direction = 0;
 });
 
@@ -33,8 +42,15 @@ $("#asc").click(function() {
         return;
     }
     var list = $("#list");
+    var second = $('#second');
     var listItems = list.children(".row");
-    list.append(listItems.get().reverse());
+    Array.prototype.push.apply(listItems,second.children(".row"));
+    reversed = listItems.get().reverse();
+    elementLength = reversed.length;
+    middle = parseInt(elementLength / 2) + (elementLength % 2);
+
+    list.append(reversed.slice(0, middle));
+    second.append(reversed.slice(middle,elementLength));
     direction = 1;
 });
 
