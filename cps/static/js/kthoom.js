@@ -99,14 +99,15 @@ kthoom.setSettings = function() {
 };
 
 var createURLFromArray = function(array, mimeType) {
-    var offset = array.byteOffset, len = array.byteLength;
+    var offset = array.byteOffset;
+    var len = array.byteLength;
     var url;
     var blob;
 
     if (mimeType === 'image/xml+svg') {
         const xmlStr = new TextDecoder('utf-8').decode(array);
         return 'data:image/svg+xml;UTF-8,' + encodeURIComponent(xmlStr);
-  }
+    }
 
     // TODO: Move all this browser support testing to a common place
     //     and do it just once.
@@ -137,11 +138,13 @@ var createURLFromArray = function(array, mimeType) {
 kthoom.ImageFile = function(file) {
     this.filename = file.filename;
     var fileExtension = file.filename.split(".").pop().toLowerCase();
-    var mimeType = fileExtension === "png" ? "image/png" :
+    this.mimeType = fileExtension === "png" ? "image/png" :
         (fileExtension === "jpg" || fileExtension === "jpeg") ? "image/jpeg" :
             fileExtension === "gif" ? "image/gif" : fileExtension == 'svg' ? 'image/xml+svg' : undefined;
-    this.dataURI = createURLFromArray(file.fileData, mimeType);
-    this.data = file;
+    if ( this.mimeType !== undefined) {
+        this.dataURI = createURLFromArray(file.fileData, this.mimeType);
+        this.data = file;
+    }
 };
 
 
@@ -169,33 +172,41 @@ function loadFromArrayBuffer(ab) {
         unarchiver.addEventListener(bitjs.archive.UnarchiveEvent.Type.PROGRESS,
             function(e) {
                 var percentage = e.currentBytesUnarchived / e.totalUncompressedBytesInArchive;
-                totalImages = e.totalFilesInArchive;
+                if (totalImages === 0) {
+                    totalImages = e.totalFilesInArchive;
+                }
                 updateProgress(percentage *100);
                 lastCompletion = percentage * 100;
             });
         unarchiver.addEventListener(bitjs.archive.UnarchiveEvent.Type.EXTRACT,
             function(e) {
-            // convert DecompressedFile into a bunch of ImageFiles
+                // convert DecompressedFile into a bunch of ImageFiles
                 if (e.unarchivedFile) {
                     var f = e.unarchivedFile;
                     // add any new pages based on the filename
                     if (imageFilenames.indexOf(f.filename) === -1) {
-                        imageFilenames.push(f.filename);
-                        imageFiles.push(new kthoom.ImageFile(f));
-        				// add thumbnails to the TOC list
-        				$("#thumbnails").append(
-            				"<li>" +
-                				"<a data-page='" + imageFiles.length + "'>" +
-                    				"<img src='" + imageFiles[imageFiles.length - 1].dataURI + "'/>" +
-                    				"<span>" + imageFiles.length + "</span>" +
-                				"</a>" +
-            				"</li>"
-        				);
+                        var test = new kthoom.ImageFile(f);
+                        if ( test.mimeType !== undefined) {
+                            imageFilenames.push(f.filename);
+                            imageFiles.push(test);
+                            // add thumbnails to the TOC list
+                            $("#thumbnails").append(
+                                "<li>" +
+                                    "<a data-page='" + imageFiles.length + "'>" +
+                                        "<img src='" + imageFiles[imageFiles.length - 1].dataURI + "'/>" +
+                                        "<span>" + imageFiles.length + "</span>" +
+                                    "</a>" +
+                                "</li>"
+                            );
+                            // display first page if we haven't yet
+                            if (imageFiles.length === currentImage + 1) {
+                                updatePage(lastCompletion);
+                            }
+                        }
+                        else {
+                            totalImages--;
+                        }
                     }
-                }
-                // display first page if we haven't yet
-                if (imageFiles.length === currentImage + 1) {
-                    updatePage(lastCompletion);
                 }
             });
         unarchiver.addEventListener(bitjs.archive.UnarchiveEvent.Type.FINISH,

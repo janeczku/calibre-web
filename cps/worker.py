@@ -1,6 +1,22 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+#  This file is part of the Calibre-Web (https://github.com/janeczku/calibre-web)
+#    Copyright (C) 2018-2019 OzzieIsaacs, bodybybuddha, janeczku
+#
+#  This program is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License as published by
+#  the Free Software Foundation, either version 3 of the License, or
+#  (at your option) any later version.
+#
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU General Public License for more details.
+#
+#  You should have received a copy of the GNU General Public License
+#  along with this program. If not, see <http://www.gnu.org/licenses/>.
+
 from __future__ import print_function
 import smtplib
 import threading
@@ -71,7 +87,7 @@ def get_attachment(bookpath, filename):
             file_ = open(os.path.join(calibrepath, bookpath, filename), 'rb')
             data = file_.read()
             file_.close()
-        except IOError:
+        except IOError as e:
             web.app.logger.exception(e) # traceback.print_exc()
             web.app.logger.error(u'The requested file could not be read. Maybe wrong permissions?')
             return None
@@ -99,7 +115,7 @@ class emailbase():
     def send(self, strg):
         """Send `strg' to the server."""
         if self.debuglevel > 0:
-            print('send:', repr(strg), file=sys.stderr)
+            print('send:', repr(strg[:300]), file=sys.stderr)
         if hasattr(self, 'sock') and self.sock:
             try:
                 if self.transferSize:
@@ -108,7 +124,7 @@ class emailbase():
                     self.transferSize = len(strg)
                     lock.release()
                     for i in range(0, self.transferSize, chunksize):
-                        if type(strg) == bytes:
+                        if isinstance(strg, bytes):
                             self.sock.send((strg[i:i+chunksize]))
                         else:
                             self.sock.send((strg[i:i + chunksize]).encode('utf-8'))
@@ -278,7 +294,9 @@ class WorkerThread(threading.Thread):
                     command = [web.ub.config.config_converterpath, (file_path + format_old_ext),
                                (file_path + format_new_ext)]
                     if web.ub.config.config_calibre:
-                        command.append(web.ub.config.config_calibre)
+                        parameters = web.ub.config.config_calibre.split(" ")
+                        for param in parameters:
+                            command.append(param)
                     if sys.version_info < (3, 0):
                         command = [x.encode(sys.getfilesystemencoding()) for x in command]
 
@@ -320,7 +338,7 @@ class WorkerThread(threading.Thread):
             cur_book = web.db.session.query(web.db.Books).filter(web.db.Books.id == bookid).first()
             if os.path.isfile(file_path + format_new_ext):
                 new_format = web.db.Data(name=cur_book.data[0].name,
-                                         book_format=self.queue[self.current]['settings']['new_book_format'],
+                                         book_format=self.queue[self.current]['settings']['new_book_format'].upper(),
                                          book=bookid, uncompressed_size=os.path.getsize(file_path + format_new_ext))
                 cur_book.data.append(new_format)
                 web.db.session.commit()
@@ -453,6 +471,8 @@ class WorkerThread(threading.Thread):
         except (smtplib.SMTPException) as e:
             if hasattr(e, "smtp_error"):
                 text = e.smtp_error.replace("\n",'. ')
+            elif hasattr(e, "message"):
+                text = e.message
             else:
                 text = ''
             self._handleError(u'Error sending email: ' + text)
@@ -499,10 +519,13 @@ class StderrLogger(object):
         self.logger = web.app.logger
 
     def write(self, message):
-        if message == '\n':
-            self.logger.debug(self.buffer)
-            print(self.buffer)
-            self.buffer = ''
-        else:
-            self.buffer += message
+        try:
+            if message == '\n':
+                self.logger.debug(self.buffer)
+                print(self.buffer)
+                self.buffer = ''
+            else:
+                self.buffer += message
+        except:
+            pass
 
