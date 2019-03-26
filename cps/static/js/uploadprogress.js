@@ -130,22 +130,19 @@
             this.$modalFooter.show();
 
             var contentType = xhr.getResponseHeader("Content-Type");
-            // Replace the contents of the form, with the returned html
-            if (xhr.status === 422) {
-                var newHtml = $.parseHTML(xhr.responseText);
-                this.replaceForm(newHtml);
-                this.$modal.modal("hide");
-            }
             // Write the error response to the document.
-            else{
-                // Handle no response error
-                if (contentType) {
-                    var responseText = xhr.responseText;
-                    if (contentType.indexOf("text/plain") !== -1) {
-                        responseText = "<pre>" + responseText + "</pre>";
-                    }
+            if (contentType || xhr.status === 422) {
+                var responseText = xhr.responseText;
+                if (contentType.indexOf("text/plain") !== -1) {
+                    responseText = "<pre>" + responseText + "</pre>";
                     document.write(responseText);
                 }
+                else {
+                    this.$modalBar.text(responseText);
+                }
+            }
+            else {
+                this.$modalBar.text(this.options.modalTitleFailed);
             }
         },
 
