@@ -127,7 +127,7 @@
         </div>
         <div class="form-group">
           <label for="config_logfile">{{_('Location and name of logfile (calibre-web.log for no entry)')}}</label>
-          <input type="text" class="form-control" name="config_logfile" id="config_logfile" value="{% if content.config_logfile != None %}{{ content.config_logfile }}{% endif %}" autocomplete="off">
+          <input type="text" class="form-control" name="config_logfile" id="config_logfile" value="{{ content.config_logfile }}" autocomplete="off">
         </div>
       </div>
     </div>

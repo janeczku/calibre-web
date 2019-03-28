@@ -58,6 +58,9 @@ from cps import worker
 from cps import web
 from cps import gdriveutils as gd
 
+from cps import logger
+log = logger.create()
+
 
 # Global variables
 # updater_thread = None
@@ -78,9 +81,8 @@ def convert_book_format(book_id, calibrepath, old_book_format, new_book_format, 
     book = db.session.query(db.Books).filter(db.Books.id == book_id).first()
     data = db.session.query(db.Data).filter(db.Data.book == book.id).filter(db.Data.format == old_book_format).first()
     if not data:
-        error_message = _(u"%(format)s format not found for book id: %(book)d", format=old_book_format, book=book_id)
-        app.logger.error("convert_book_format: " + error_message)
-        return error_message
+        log.error('%s format not found for book id: %s', old_book_format, book_id)
+        return _(u"%(format)s format not found for book id: %(book)d", format=old_book_format, book=book_id)
     if ub.config.config_use_google_drive:
         df = gd.getFileFromEbooksFolder(book.path, data.name + "." + old_book_format.lower())
         if df:
@@ -107,17 +109,16 @@ def convert_book_format(book_id, calibrepath, old_book_format, new_book_format, 
         settings['new_book_format'] = new_book_format
         global_WorkerThread.add_convert(file_path, book.id, user_id, text, settings, kindle_mail)
         return None
-    else:
-        error_message = _(u"%(format)s not found: %(fn)s",
-                        format=old_book_format, fn=data.name + "." + old_book_format.lower())
-        return error_message
+
+    error_message = _(u"%(format)s not found: %(fn)s",
+                    format=old_book_format, fn=data.name + "." + old_book_format.lower())
+    return error_message
 
 
 def send_test_mail(kindle_mail, user_name):
     global_WorkerThread.add_email(_(u'Calibre-Web test e-mail'),None, None, ub.get_mail_settings(),
                                   kindle_mail, user_name, _(u"Test e-mail"),
                                   _(u'This e-mail has been sent via Calibre-Web.'))
-    return
 
 
 # Send registration email or password reset email, depending on parameter resend (False means welcome email)
@@ -133,7 +134,6 @@ def send_registration_mail(e_mail, user_name, default_password, resend=False):
     text += "Your Calibre-Web team"
     global_WorkerThread.add_email(_(u'Get Started with Calibre-Web'),None, None, ub.get_mail_settings(),
                                   e_mail, None, _(u"Registration e-mail for user: %(name)s", name=user_name), text)
-    return
 
 def check_send_to_kindle(entry):
     """
@@ -172,8 +172,7 @@ def check_send_to_kindle(entry):
                             'text':_('Convert %(orig)s to %(format)s and send to Kindle',orig='Epub',format='Azw3')})'''
         return bookformats
     else:
-        app.logger.error(u'Cannot find book entry %d', entry.id)
-        return None
+        log.error('Cannot find book entry %s', entry.id)
 
 
 # Check if a reader is existing for any of the book formats, if not, return empty list, otherwise return
@@ -258,7 +257,7 @@ def get_sorted_author(value):
         else:
             value2 = value
     except Exception:
-        web.app.logger.error("Sorting author " + str(value) + "failed")
+        log.error('Sorting author %s failed', value)
         value2 = value
     return value2
 
@@ -275,13 +274,12 @@ def delete_book_file(book, calibrepath, book_format=None):
         else:
             if os.path.isdir(path):
                 if len(next(os.walk(path))[1]):
-                    web.app.logger.error(
-                        "Deleting book " + str(book.id) + " failed, path has subfolders: " + book.path)
+                    log.error('Deleting book %s failed, path has subfolders: %s', book.id, book.path)
                     return False
                 shutil.rmtree(path, ignore_errors=True)
                 return True
             else:
-                web.app.logger.error("Deleting book " + str(book.id) + " failed, book path not valid: " + book.path)
+                log.error('Deleting book %s failed, book path not valid: %s', book.id, book.path)
                 return False
 
 
@@ -304,7 +302,7 @@ def update_dir_structure_file(book_id, calibrepath, first_author):
             if not os.path.exists(new_title_path):
                 os.renames(path, new_title_path)
             else:
-                web.app.logger.info("Copying title: " + path + " into existing: " + new_title_path)
+                log.info('Copying title: %s into existing: %s', path, new_title_path)
                 for dir_name, subdir_list, file_list in os.walk(path):
                     for file in file_list:
                         os.renames(os.path.join(dir_name, file),
@@ -312,8 +310,8 @@ def update_dir_structure_file(book_id, calibrepath, first_author):
             path = new_title_path
             localbook.path = localbook.path.split('/')[0] + '/' + new_titledir
         except OSError as ex:
-            web.app.logger.error("Rename title from: " + path + " to " + new_title_path + ": " + str(ex))
-            web.app.logger.debug(ex, exc_info=True)
+            log.error('Rename title from: %s to %s: %s', path, new_title_path, ex)
+            log.debug(ex, exc_info=True)
             return _("Rename title from: '%(src)s' to '%(dest)s' failed with error: %(error)s",
                      src=path, dest=new_title_path, error=str(ex))
     if authordir != new_authordir:
@@ -322,8 +320,8 @@ def update_dir_structure_file(book_id, calibrepath, first_author):
             os.renames(path, new_author_path)
             localbook.path = new_authordir + '/' + localbook.path.split('/')[1]
         except OSError as ex:
-            web.app.logger.error("Rename author from: " + path + " to " + new_author_path + ": " + str(ex))
-            web.app.logger.debug(ex, exc_info=True)
+            log.error('Rename author from: %s to %s: %s', path, new_author_path, ex)
+            log.debug(ex, exc_info=True)
             return _("Rename author from: '%(src)s' to '%(dest)s' failed with error: %(error)s",
                      src=path, dest=new_author_path, error=str(ex))
     # Rename all files from old names to new names
@@ -336,8 +334,8 @@ def update_dir_structure_file(book_id, calibrepath, first_author):
                            os.path.join(path_name, new_name + '.' + file_format.format.lower()))
                 file_format.name = new_name
         except OSError as ex:
-            web.app.logger.error("Rename file in path " + path + " to " + new_name + ": " + str(ex))
-            web.app.logger.debug(ex, exc_info=True)
+            log.error('Rename file in path %s to %s: %s', path, new_name, ex)
+            log.debug(ex, exc_info=True)
             return _("Rename file in path '%(src)s' to '%(dest)s' failed with error: %(error)s",
                      src=path, dest=new_name, error=str(ex))
     return False
@@ -438,15 +436,13 @@ def get_book_cover(cover_path):
             if path:
                 return redirect(path)
             else:
-                web.app.logger.error(cover_path + '/cover.jpg not found on Google Drive')
+                log.error('%s/cover.jpg not found on Google Drive', cover_path)
                 return send_from_directory(constants.STATIC_DIR, "generic_cover.jpg")
         except Exception as e:
-            web.app.logger.error("Error Message: " + e.message)
-            web.app.logger.exception(e)
-            # traceback.print_exc()
-            return send_from_directory(constants.STATIC_DIR,"generic_cover.jpg")
-    else:
-        return send_from_directory(os.path.join(ub.config.config_calibre_dir, cover_path), "cover.jpg")
+            log.exception(e)
+            return send_from_directory(constants.STATIC_DIR, "generic_cover.jpg")
+
+    return send_from_directory(os.path.join(ub.config.config_calibre_dir, cover_path), "cover.jpg")
 
 
 # saves book cover from url
@@ -466,15 +462,15 @@ def save_cover_from_filestorage(filepath, saved_filename, img):
             try:
                 os.makedirs(filepath)
             except OSError:
-                web.app.logger.error(u"Failed to create path for cover")
+                log.error('Failed to create path for cover: %s', filepath)
                 return False
         try:
             img.save(os.path.join(filepath, saved_filename))
         except OSError:
-            web.app.logger.error(u"Failed to store cover-file")
+            log.error('Failed to store cover-file')
             return False
         except IOError:
-            web.app.logger.error(u"Cover-file is not a valid image file")
+            log.error('Cover-file is not a valid image file')
             return False
     return True
 
@@ -485,7 +481,7 @@ def save_cover(img, book_path):
 
     if use_PIL:
         if content_type not in ('image/jpeg', 'image/png', 'image/webp'):
-            web.app.logger.error("Only jpg/jpeg/png/webp files are supported as coverfile")
+            log.error('Only jpg/jpeg/png/webp files are supported as coverfile')
             return False
         # convert to jpg because calibre only supports jpg
         if content_type in ('image/png', 'image/webp'):
@@ -499,7 +495,7 @@ def save_cover(img, book_path):
             img._content = tmp_bytesio.getvalue()
     else:
         if content_type not in ('image/jpeg'):
-            web.app.logger.error("Only jpg/jpeg files are supported as coverfile")
+            log.error('Only jpg/jpeg files are supported as coverfile')
             return False
 
     if ub.config.config_use_google_drive:
@@ -507,7 +503,7 @@ def save_cover(img, book_path):
         if save_cover_from_filestorage(tmpDir, "uploaded_cover.jpg", img) is True:
             gd.uploadFileToEbooksFolder(os.path.join(book_path, 'cover.jpg'),
                                         os.path.join(tmpDir, "uploaded_cover.jpg"))
-            web.app.logger.info("Cover is saved on Google Drive")
+            log.info('Cover is saved on Google Drive: %s', book_path)
             return True
         else:
             return False
@@ -520,7 +516,7 @@ def do_download_file(book, book_format, data, headers):
     if ub.config.config_use_google_drive:
         startTime = time.time()
         df = gd.getFileFromEbooksFolder(book.path, data.name + "." + book_format)
-        web.app.logger.debug(time.time() - startTime)
+        log.debug('%.3f', time.time() - startTime)
         if df:
             return gd.do_gdrive_download(df, headers)
         else:
@@ -529,7 +525,7 @@ def do_download_file(book, book_format, data, headers):
         filename = os.path.join(ub.config.config_calibre_dir, book.path)
         if not os.path.isfile(os.path.join(filename, data.name + "." + book_format)):
             # ToDo: improve error handling
-            web.app.logger.error('File not found: %s' % os.path.join(filename, data.name + "." + book_format))
+            log.error('File not found: %s', os.path.join(filename, data.name + "." + book_format))
         response = make_response(send_from_directory(filename, data.name + "." + book_format))
         response.headers = headers
         return response
@@ -552,13 +548,13 @@ def check_unrar(unrarLocation):
                 value=re.search('UNRAR (.*) freeware', lines)
                 if value:
                     version = value.group(1)
-        except OSError as e:
+        except OSError as ex:
             error = True
-            web.app.logger.exception(e)
-            version =_(u'Error excecuting UnRar')
+            log.exception(ex)
+            version = _(u'Error excecuting UnRar')
     else:
         version = _(u'Unrar binary file not found')
-        error=True
+        error = True
     return (error, version)
 
 

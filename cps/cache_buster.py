@@ -20,6 +20,9 @@
 import os
 import hashlib
 
+from cps import logger
+log = logger.create()
+
 
 def init_cache_busting(app):
     """
@@ -34,7 +37,7 @@ def init_cache_busting(app):
 
     hash_table = {}  # map of file hashes
 
-    app.logger.debug('Computing cache-busting values...')
+    log.debug('Computing cache-busting values...')
     # compute file hashes
     for dirpath, __, filenames in os.walk(static_folder):
         for filename in filenames:
@@ -47,7 +50,7 @@ def init_cache_busting(app):
             file_path = rooted_filename.replace(static_folder, "")
             file_path = file_path.replace("\\", "/")  # Convert Windows path to web path
             hash_table[file_path] = file_hash
-    app.logger.debug('Finished computing cache-busting values')
+    log.debug('Finished computing cache-busting values')
 
     def bust_filename(filename):
         return hash_table.get(filename, "")

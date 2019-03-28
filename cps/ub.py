@@ -20,7 +20,6 @@
 
 import sys
 import os
-import logging
 import json
 import datetime
 from binascii import hexlify
@@ -35,6 +34,7 @@ from sqlalchemy.orm import *
 
 from cps import constants
 from cps import cli
+from cps import logger
 
 
 engine = create_engine('sqlite:///{0}'.format(cli.settingspath), echo=False)
@@ -275,7 +275,7 @@ class Settings(Base):
     config_authors_max = Column(Integer, default=0)
     config_read_column = Column(Integer, default=0)
     config_title_regex = Column(String, default=u'^(A|The|An|Der|Die|Das|Den|Ein|Eine|Einen|Dem|Des|Einem|Eines)\s+')
-    config_log_level = Column(SmallInteger, default=constants.DEFAULT_LOG_LEVEL)
+    config_log_level = Column(SmallInteger, default=logger.DEFAULT_LOG_LEVEL)
     config_uploading = Column(SmallInteger, default=0)
     config_anonbrowse = Column(SmallInteger, default=0)
     config_public_reg = Column(SmallInteger, default=0)
@@ -362,15 +362,12 @@ class Config:
         self.config_use_goodreads = data.config_use_goodreads
         self.config_goodreads_api_key = data.config_goodreads_api_key
         self.config_goodreads_api_secret = data.config_goodreads_api_secret
-        if data.config_mature_content_tags:
-            self.config_mature_content_tags = data.config_mature_content_tags
-        else:
-            self.config_mature_content_tags = u''
-        if data.config_logfile:
-            self.config_logfile = data.config_logfile
+        self.config_mature_content_tags = data.config_mature_content_tags or u''
+        self.config_logfile = data.config_logfile or u''
         self.config_rarfile_location = data.config_rarfile_location
         self.config_theme = data.config_theme
         self.config_updatechannel = data.config_updatechannel
+        logger.setup(self.config_logfile, self.config_log_level)
 
     @property
     def get_update_channel(self):
@@ -389,13 +386,6 @@ class Config:
         if cli.certfilepath is "":
             return None
         return self.config_keyfile
-
-    def get_config_logfile(self):
-        if not self.config_logfile:
-            return os.path.join(constants.BASE_DIR, "calibre-web.log")
-        if os.path.dirname(self.config_logfile):
-            return self.config_logfile
-        return os.path.join(constants.BASE_DIR, self.config_logfile)
 
     def _has_role(self, role_flag):
         return constants.has_flag(self.config_default_role, role_flag)
@@ -471,16 +461,7 @@ class Config:
         return list(map(lstrip, self.config_mature_content_tags.split(",")))
 
     def get_Log_Level(self):
-        ret_value = ""
-        if self.config_log_level == logging.INFO:
-            ret_value = 'INFO'
-        elif self.config_log_level == logging.DEBUG:
-            ret_value = 'DEBUG'
-        elif self.config_log_level == logging.WARNING:
-            ret_value = 'WARNING'
-        elif self.config_log_level == logging.ERROR:
-            ret_value = 'ERROR'
-        return ret_value
+        return logger.get_level_name(self.config_log_level)
 
 
 # Migrate database to current version, has to be updated after every database change. Currently migration from

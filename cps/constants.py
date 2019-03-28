@@ -3,7 +3,6 @@
 
 import sys
 import os
-import logging
 
 
 BASE_DIR = sys.path[0]
@@ -43,7 +42,6 @@ ADMIN_USER_ROLES   = ROLE_USER | ROLE_ADMIN | ROLE_DOWNLOAD | ROLE_UPLOAD | ROLE
 ADMIN_USER_SIDEBAR = (SIDEBAR_PUBLISHER << 1) - 1
 
 
-DEFAULT_LOG_LEVEL  = logging.INFO
 DEFAULT_PASSWORD   = "admin123"
 try:
     DEFAULT_PORT = os.environ.get("CALIBRE_PORT", 8083)

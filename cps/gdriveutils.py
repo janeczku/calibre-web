@@ -40,10 +40,14 @@ from cps import cli
 from cps.ub import config
 from cps import web
 
+from cps import logger
+log = logger.create()
+
 
 SETTINGS_YAML  = os.path.join(constants.BASE_DIR, 'settings.yaml')
 CREDENTIALS    = os.path.join(constants.BASE_DIR, 'gdrive_credentials')
 CLIENT_SECRETS = os.path.join(constants.BASE_DIR, 'client_secrets.json')
+
 
 class Singleton:
     """
@@ -162,10 +166,10 @@ def getDrive(drive=None, gauth=None):
             # Refresh them if expired
             try:
                 gauth.Refresh()
-            except RefreshError as e:
-                web.app.logger.error("Google Drive error: " + e.message)
-            except Exception as e:
-                web.app.logger.exception(e)
+            except RefreshError as ex:
+                log.error('Google Drive error: %s', ex)
+            except Exception as ex:
+                log.exception(ex)
         else:
             # Initialize the saved creds
             gauth.Authorize()
@@ -174,8 +178,8 @@ def getDrive(drive=None, gauth=None):
     if drive.auth.access_token_expired:
         try:
             drive.auth.Refresh()
-        except RefreshError as e:
-            web.app.logger.error("Google Drive error: " + e.message)
+        except RefreshError as ex:
+            log.error('Google Drive error: %s', ex)
     return drive
 
 def listRootFolders():
@@ -199,8 +203,7 @@ def getFolderInFolder(parentId, folderName, drive):
     fileList = drive.ListFile({'q': folder}).GetList()
     if fileList.__len__() == 0:
         return None
-    else:
-        return fileList[0]
+    return fileList[0]
 
 # Search for id of root folder in gdrive database, if not found request from gdrive and store in internal database
 def getEbooksFolderId(drive=None):
@@ -212,7 +215,7 @@ def getEbooksFolderId(drive=None):
         try:
             gDriveId.gdrive_id = getEbooksFolder(drive)['id']
         except Exception:
-            web.app.logger.error('Error gDrive, root ID not found')
+            log.error('Error gDrive, root ID not found')
         gDriveId.path = '/'
         session.merge(gDriveId)
         session.commit()
@@ -224,8 +227,7 @@ def getFile(pathId, fileName, drive):
     fileList = drive.ListFile({'q': metaDataFile}).GetList()
     if fileList.__len__() == 0:
         return None
-    else:
-        return fileList[0]
+    return fileList[0]
 
 
 def getFolderId(path, drive):
@@ -273,8 +275,6 @@ def getFileFromEbooksFolder(path, fileName):
         folderId = getEbooksFolderId(drive)
     if folderId:
         return getFile(folderId, fileName, drive)
-    else:
-        return None
 
 
 def moveGdriveFileRemote(origin_file_id, new_title):
@@ -451,12 +451,10 @@ def getChangeById (drive, change_id):
     try:
         change = drive.auth.service.changes().get(changeId=change_id).execute()
         return change
-    except (errors.HttpError) as error:
-        web.app.logger.info(error.message)
-        return None
-    except Exception as e:
-        web.app.logger.info(e)
-        return None
+    except (errors.HttpError) as ex:
+        log.info(ex)
+    except Exception as ex:
+        log.warning(ex)
 
 
 # Deletes the local hashes database to force search for new folder names
@@ -501,8 +499,6 @@ def get_cover_via_gdrive(cover_path):
             session.add(permissionAdded)
             session.commit()
         return df.metadata.get('webContentLink')
-    else:
-        return None
 
 # Creates chunks for downloading big files
 def partial(total_byte_len, part_size_limit):
@@ -525,6 +521,6 @@ def do_gdrive_download(df, headers):
             if resp.status == 206:
                 yield content
             else:
-                web.app.logger.info('An error occurred: %s' % resp)
+                log.info('An error occurred: %s', resp)
                 return
     return Response(stream_with_context(stream()), headers=headers)

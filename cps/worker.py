@@ -24,7 +24,6 @@ import os
 import socket
 import smtplib
 import threading
-import logging
 import time
 import re
 import subprocess
@@ -48,6 +47,10 @@ except ImportError:
 
 from cps import web
 from cps import gdriveutils as gd
+
+from cps import logger
+log = logger.create()
+
 
 chunksize = 8192
 # task 'status' consts
@@ -88,16 +91,15 @@ def get_attachment(bookpath, filename):
             file_ = open(os.path.join(calibrepath, bookpath, filename), 'rb')
             data = file_.read()
             file_.close()
-        except IOError as e:
-            web.app.logger.exception(e) # traceback.print_exc()
-            web.app.logger.error(u'The requested file could not be read. Maybe wrong permissions?')
+        except IOError as ex:
+            log.error('The requested file could not be read. Maybe wrong permissions?')
+            log.exception(ex)
             return None
 
     attachment = MIMEBase('application', 'octet-stream')
     attachment.set_payload(data)
     encoders.encode_base64(attachment)
-    attachment.add_header('Content-Disposition', 'attachment',
-                          filename=filename)
+    attachment.add_header('Content-Disposition', 'attachment', filename=filename)
     return attachment
 
 
@@ -253,14 +255,14 @@ class WorkerThread(threading.Thread):
         # if it does - mark the conversion task as complete and return a success
         # this will allow send to kindle workflow to continue to work
         if os.path.isfile(file_path + format_new_ext):
-            web.app.logger.info("Book id %d already converted to %s", bookid, format_new_ext)
+            log.info('Book id %d already converted to %s', bookid, format_new_ext)
             cur_book = web.db.session.query(web.db.Books).filter(web.db.Books.id == bookid).first()
             self.queue[self.current]['path'] = file_path
             self.queue[self.current]['title'] = cur_book.title
             self._handleSuccess()
             return file_path + format_new_ext
         else:
-            web.app.logger.info("Book id %d - target format of %s does not exist. Moving forward with convert.", bookid, format_new_ext)
+            log.info('Book id %d - target format of %s does not exist. Moving forward with convert.', bookid, format_new_ext)
 
         # check if converter-executable is existing
         if not os.path.exists(web.ub.config.config_converterpath):
@@ -302,8 +304,8 @@ class WorkerThread(threading.Thread):
                         command = [x.encode(sys.getfilesystemencoding()) for x in command]
 
             p = subprocess.Popen(command, stdout=subprocess.PIPE, universal_newlines=True)
-        except OSError as e:
-            self._handleError(_(u"Ebook-converter failed: %(error)s", error=e))
+        except OSError as ex:
+            self._handleError(_(u"Ebook-converter failed: %(error)s", error=ex))
             return
 
         if web.ub.config.config_ebookconverter == 1:
@@ -315,13 +317,13 @@ class WorkerThread(threading.Thread):
             if conv_error:
                 error_message = _(u"Kindlegen failed with Error %(error)s. Message: %(message)s",
                                   error=conv_error.group(1), message=conv_error.group(2).strip())
-            web.app.logger.debug("convert_kindlegen: " + nextline)
+            log.debug('convert_kindlegen: %s', nextline)
         else:
             while p.poll() is None:
                 nextline = p.stdout.readline()
                 if os.name == 'nt' and sys.version_info < (3, 0):
                     nextline = nextline.decode('windows-1252')
-                web.app.logger.debug(nextline.strip('\r\n'))
+                log.debug('%s', nextline.strip('\r\n'))
                 # parse progress string from calibre-converter
                 progress = re.search("(\d+)%\s.*", nextline)
                 if progress:
@@ -351,7 +353,7 @@ class WorkerThread(threading.Thread):
                 return file_path + format_new_ext
             else:
                 error_message = format_new_ext.upper() + ' format not found on disk'
-        web.app.logger.info("ebook converter failed with error while converting book")
+        log.info('ebook converter failed with error while converting book')
         if not error_message:
             error_message = 'Ebook converter failed with unknown error'
         self._handleError(error_message)
@@ -445,7 +447,7 @@ class WorkerThread(threading.Thread):
             timeout = 600  # set timeout to 5mins
 
             org_stderr = sys.stderr
-            sys.stderr = StderrLogger()
+            sys.stderr = logger.StderrLogger("worker.smtp")
 
             if use_ssl == 2:
                 self.asyncSMTP = email_SSL(obj['settings']["mail_server"], obj['settings']["mail_port"], timeout)
@@ -453,9 +455,7 @@ class WorkerThread(threading.Thread):
                 self.asyncSMTP = email(obj['settings']["mail_server"], obj['settings']["mail_port"], timeout)
 
             # link to logginglevel
-            if web.ub.config.config_log_level != logging.DEBUG:
-                self.asyncSMTP.set_debuglevel(0)
-            else:
+            if logger.is_debug_enabled():
                 self.asyncSMTP.set_debuglevel(1)
             if use_ssl == 1:
                 self.asyncSMTP.starttls()
@@ -466,21 +466,18 @@ class WorkerThread(threading.Thread):
             self._handleSuccess()
             sys.stderr = org_stderr
 
-        except (MemoryError) as e:
-            self._handleError(u'Error sending email: ' + e.message)
-            return None
-        except (smtplib.SMTPException, smtplib.SMTPAuthenticationError) as e:
-            if hasattr(e, "smtp_error"):
-                text = e.smtp_error.decode('utf-8').replace("\n",'. ')
-            elif hasattr(e, "message"):
-                text = e.message
+        except (MemoryError) as ex:
+            self._handleError(u'Error sending email: ' + ex.message)
+        except (smtplib.SMTPException, smtplib.SMTPAuthenticationError) as ex:
+            if hasattr(ex, "smtp_error"):
+                text = ex.smtp_error.decode('utf-8').replace("\n",'. ')
+            elif hasattr(ex, "message"):
+                text = ex.message
             else:
                 text = ''
             self._handleError(u'Error sending email: ' + text)
-            return None
-        except (socket.error) as e:
-            self._handleError(u'Error sending email: ' + e.strerror)
-            return None
+        except (socket.error) as ex:
+            self._handleError(u'Error sending email: ' + ex.strerror)
 
     def _formatRuntime(self, runtime):
         self.UIqueue[self.current]['rt'] = runtime.total_seconds()
@@ -495,7 +492,7 @@ class WorkerThread(threading.Thread):
         return retVal
 
     def _handleError(self, error_message):
-        web.app.logger.error(error_message)
+        log.error('%s', error_message)
         self.UIqueue[self.current]['stat'] = STAT_FAIL
         self.UIqueue[self.current]['progress'] = "100 %"
         self.UIqueue[self.current]['runtime'] = self._formatRuntime(
@@ -507,24 +504,3 @@ class WorkerThread(threading.Thread):
         self.UIqueue[self.current]['progress'] = "100 %"
         self.UIqueue[self.current]['runtime'] = self._formatRuntime(
             datetime.now() - self.queue[self.current]['starttime'])
-
-
-# Enable logging of smtp lib debug output
-class StderrLogger(object):
-
-    buffer = ''
-
-    def __init__(self):
-        self.logger = web.app.logger
-
-    def write(self, message):
-        try:
-            if message == '\n':
-                self.logger.debug(self.buffer)
-                print(self.buffer)
-                self.buffer = ''
-            else:
-                self.buffer += message
-        except:
-            pass
-

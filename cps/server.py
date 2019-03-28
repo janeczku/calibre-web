@@ -37,26 +37,34 @@ except ImportError:
 
 from cps import web
 
+from cps import logger
+log = logger.create()
+
 
 class server:
     wsgiserver = None
-    restart= False
+    restart = False
 
     def __init__(self):
         signal.signal(signal.SIGINT, self.killServer)
         signal.signal(signal.SIGTERM, self.killServer)
 
+        ssl_args = None
+        certfile_path   = web.ub.config.get_config_certfile()
+        keyfile_path    = web.ub.config.get_config_keyfile()
+        if certfile_path and keyfile_path:
+            if os.path.isfile(certfile_path) and os.path.isfile(keyfile_path):
+                ssl_args = {"certfile": certfile_path,
+                            "keyfile": keyfile_path}
+            else:
+                log.warning('The specified paths for the ssl certificate file and/or key file seem to be broken. Ignoring ssl.')
+                log.warning('Cert path: %s', certfile_path)
+                log.warning('Key path:  %s', keyfile_path)
+        self.ssl_args = ssl_args
+
     def start_gevent(self):
+        ssl_args = self.ssl_args or dict()
         try:
-            ssl_args = dict()
-            certfile_path   = web.ub.config.get_config_certfile()
-            keyfile_path    = web.ub.config.get_config_keyfile()
-            if certfile_path and keyfile_path:
-                if os.path.isfile(certfile_path) and os.path.isfile(keyfile_path):
-                    ssl_args = {"certfile": certfile_path,
-                                "keyfile": keyfile_path}
-                else:
-                    web.app.logger.info('The specified paths for the ssl certificate file and/or key file seem to be broken. Ignoring ssl. Cert path: %s | Key path: %s' % (certfile_path, keyfile_path))
             if os.name == 'nt':
                 self.wsgiserver= WSGIServer(('0.0.0.0', web.ub.config.config_port), web.app, spawn=Pool(), **ssl_args)
             else:
@@ -66,48 +74,39 @@ class server:
 
         except SocketError:
             try:
-                web.app.logger.info('Unable to listen on \'\', trying on IPv4 only...')
+                log.info('Unable to listen on \'\', trying on IPv4 only...')
                 self.wsgiserver = WSGIServer(('0.0.0.0', web.ub.config.config_port), web.app, spawn=Pool(), **ssl_args)
                 web.py3_gevent_link = self.wsgiserver
                 self.wsgiserver.serve_forever()
-            except (OSError, SocketError) as e:
-                web.app.logger.info("Error starting server: %s" % e.strerror)
-                print("Error starting server: %s" % e.strerror)
+            except (OSError, SocketError) as ex:
+                log.info('Error starting server: %s', ex)
+                print("Error starting server: %s" % ex)
                 web.helper.global_WorkerThread.stop()
                 sys.exit(1)
         except Exception:
-            web.app.logger.info("Unknown error while starting gevent")
+            log.info('Unknown error while starting gevent')
 
     def startServer(self):
         if gevent_present:
-            web.app.logger.info('Starting Gevent server')
+            log.info('Starting Gevent server')
             # leave subprocess out to allow forking for fetchers and processors
             self.start_gevent()
         else:
             try:
-                ssl = None
-                web.app.logger.info('Starting Tornado server')
-                certfile_path   = web.ub.config.get_config_certfile()
-                keyfile_path    = web.ub.config.get_config_keyfile()
-                if certfile_path and keyfile_path:
-                    if os.path.isfile(certfile_path) and os.path.isfile(keyfile_path):
-                        ssl = {"certfile": certfile_path,
-                               "keyfile": keyfile_path}
-                    else:
-                        web.app.logger.info('The specified paths for the ssl certificate file and/or key file seem to be broken. Ignoring ssl. Cert path: %s | Key path: %s' % (certfile_path, keyfile_path))
+                log.info('Starting Tornado server')
 
                 # Max Buffersize set to 200MB
                 http_server = HTTPServer(WSGIContainer(web.app),
                             max_buffer_size = 209700000,
-                            ssl_options=ssl)
+                            ssl_options=self.ssl_args)
                 http_server.listen(web.ub.config.config_port)
                 self.wsgiserver=IOLoop.instance()
                 self.wsgiserver.start()
                 # wait for stop signal
                 self.wsgiserver.close(True)
-            except SocketError as e:
-                web.app.logger.info("Error starting server: %s" % e.strerror)
-                print("Error starting server: %s" % e.strerror)
+            except SocketError as ex:
+                log.info('Error starting server: %s', ex)
+                print("Error starting server: %s" % ex)
                 web.helper.global_WorkerThread.stop()
                 sys.exit(1)
 
@@ -115,7 +114,7 @@ class server:
         if sys.version_info > (3, 0):
             self.restart = web.py3_restart_Typ
         if self.restart == True:
-            web.app.logger.info("Performing restart of Calibre-Web")
+            log.info('Performing restart of Calibre-Web')
             web.helper.global_WorkerThread.stop()
             if os.name == 'nt':
                 arguments = ["\"" + sys.executable + "\""]
@@ -125,7 +124,7 @@ class server:
             else:
                 os.execl(sys.executable, sys.executable, *sys.argv)
         else:
-            web.app.logger.info("Performing shutdown of Calibre-Web")
+            log.info('Performing shutdown of Calibre-Web')
             web.helper.global_WorkerThread.stop()
         sys.exit(0)
 

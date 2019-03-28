@@ -23,7 +23,6 @@ import threading
 import zipfile
 import requests
 import re
-import logging
 import time
 import shutil
 import datetime
@@ -38,6 +37,10 @@ from cps import constants
 from cps import server
 from cps.ub import config
 from cps import web
+from cps import logger
+
+
+log = logger.create()
 
 
 def is_sha1(sha1):
@@ -83,7 +86,7 @@ class Updater(threading.Thread):
             foldername = os.path.join(tmp_dir, z.namelist()[0])[:-1]
             if not os.path.isdir(foldername):
                 self.status = 11
-                logging.getLogger('cps.web').info(u'Extracted contents of zipfile not found in temp folder')
+                log.info('Extracted contents of zipfile not found in temp folder')
                 return
             self.status = 4
             self.update_source(foldername, constants.BASE_DIR)
@@ -94,17 +97,17 @@ class Updater(threading.Thread):
             self.status = 7
             time.sleep(2)
         except requests.exceptions.HTTPError as ex:
-            logging.getLogger('cps.web').info( u'HTTP Error' + ' ' + str(ex))
+            log.info('HTTP Error %s', ex)
             self.status = 8
         except requests.exceptions.ConnectionError:
-            logging.getLogger('cps.web').info(u'Connection error')
+            log.info('Connection error')
             self.status = 9
         except requests.exceptions.Timeout:
-            logging.getLogger('cps.web').info(u'Timeout while establishing connection')
+            log.info('Timeout while establishing connection')
             self.status = 10
         except requests.exceptions.RequestException:
             self.status = 11
-            logging.getLogger('cps.web').info(u'General error')
+            log.info('General error')
 
     def get_update_status(self):
         return self.status
@@ -152,14 +155,14 @@ class Updater(threading.Thread):
         if sys.platform == "win32" or sys.platform == "darwin":
             change_permissions = False
         else:
-            logging.getLogger('cps.web').debug('Update on OS-System : ' + sys.platform)
+            log.debug('Update on OS-System : %s', sys.platform)
             new_permissions = os.stat(root_dst_dir)
             # print new_permissions
         for src_dir, __, files in os.walk(root_src_dir):
             dst_dir = src_dir.replace(root_src_dir, root_dst_dir, 1)
             if not os.path.exists(dst_dir):
                 os.makedirs(dst_dir)
-                logging.getLogger('cps.web').debug('Create-Dir: '+dst_dir)
+                log.debug('Create-Dir: %s', dst_dir)
                 if change_permissions:
                     # print('Permissions: User '+str(new_permissions.st_uid)+' Group '+str(new_permissions.st_uid))
                     os.chown(dst_dir, new_permissions.st_uid, new_permissions.st_gid)
@@ -169,22 +172,21 @@ class Updater(threading.Thread):
                 if os.path.exists(dst_file):
                     if change_permissions:
                         permission = os.stat(dst_file)
-                    logging.getLogger('cps.web').debug('Remove file before copy: '+dst_file)
+                    log.debug('Remove file before copy: %s', dst_file)
                     os.remove(dst_file)
                 else:
                     if change_permissions:
                         permission = new_permissions
                 shutil.move(src_file, dst_dir)
-                logging.getLogger('cps.web').debug('Move File '+src_file+' to '+dst_dir)
+                log.debug('Move File %s to %s', src_file, dst_dir)
                 if change_permissions:
                     try:
                         os.chown(dst_file, permission.st_uid, permission.st_gid)
-                    except (Exception) as e:
+                    except (Exception) as ex:
                         # ex = sys.exc_info()
                         old_permissions = os.stat(dst_file)
-                        logging.getLogger('cps.web').debug('Fail change permissions of ' + str(dst_file) + '. Before: '
-                            + str(old_permissions.st_uid) + ':' + str(old_permissions.st_gid) + ' After: '
-                            + str(permission.st_uid) + ':' + str(permission.st_gid) + ' error: '+str(e))
+                        log.debug('Fail change permissions of %s. Before: %s:%s After: %s:%s error: %s',
+                                dst_file, old_permissions.st_uid, old_permissions.st_gid, permission.st_uid, permission.st_gid, ex)
         return
 
     def update_source(self, source, destination):
@@ -218,15 +220,15 @@ class Updater(threading.Thread):
         for item in remove_items:
             item_path = os.path.join(destination, item[1:])
             if os.path.isdir(item_path):
-                logging.getLogger('cps.web').debug("Delete dir " + item_path)
+                log.debug('Delete dir %s', item_path)
                 shutil.rmtree(item_path, ignore_errors=True)
             else:
                 try:
-                    logging.getLogger('cps.web').debug("Delete file " + item_path)
+                    log.debug('Delete file %s', item_path)
                     # log_from_thread("Delete file " + item_path)
                     os.remove(item_path)
                 except Exception:
-                    logging.getLogger('cps.web').debug("Could not remove:" + item_path)
+                    log.debug('Could not remove: %s', item_path)
         shutil.rmtree(source, ignore_errors=True)
 
     def _nightly_version_info(self):
@@ -269,8 +271,8 @@ class Updater(threading.Thread):
                 r = requests.get(repository_url + '/git/commits/' + commit['object']['sha'])
                 r.raise_for_status()
                 update_data = r.json()
-            except requests.exceptions.HTTPError as e:
-                status['error'] = _(u'HTTP Error') + ' ' + str(e)
+            except requests.exceptions.HTTPError as ex:
+                status['error'] = _(u'HTTP Error') + (': %s' % ex)
             except requests.exceptions.ConnectionError:
                 status['error'] = _(u'Connection error')
             except requests.exceptions.Timeout:
@@ -498,12 +500,12 @@ class Updater(threading.Thread):
             r = requests.get(repository_url)
             commit = r.json()
             r.raise_for_status()
-        except requests.exceptions.HTTPError as e:
+        except requests.exceptions.HTTPError as ex:
             if commit:
                 if 'message' in commit:
                     status['message'] = _(u'HTTP Error') + ': ' + commit['message']
             else:
-                status['message'] = _(u'HTTP Error') + ': ' + str(e)
+                status['message'] = _(u'HTTP Error') + (': %s' % ex)
         except requests.exceptions.ConnectionError:
             status['message'] = _(u'Connection error')
         except requests.exceptions.Timeout:

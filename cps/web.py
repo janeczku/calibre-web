@@ -25,7 +25,6 @@ import sys
 import os
 import os.path
 import mimetypes
-import logging
 import requests
 import base64
 import json
@@ -41,7 +40,6 @@ from pytz import __version__ as pytzVersion
 from uuid import uuid4
 from shutil import move, copyfile
 from jinja2 import __version__  as jinja2Version
-from logging.handlers import RotatingFileHandler
 
 from flask import (Flask, render_template, request, Response, redirect,
                    url_for, send_from_directory, make_response, g, flash,
@@ -132,6 +130,9 @@ from cps.redirect import redirect_back
 from cps.reverseproxy import ReverseProxied
 from cps.updater import updater_thread
 
+from cps import logger
+log = logger.create()
+
 
 # Global variables
 current_milli_time = lambda: int(round(time.time() * 1000))
@@ -173,21 +174,7 @@ for ex in default_exceptions:
 app.wsgi_app = ReverseProxied(app.wsgi_app)
 cache_buster.init_cache_busting(app)
 
-formatter = logging.Formatter(
-    "[%(asctime)s] {%(pathname)s:%(lineno)d} %(levelname)s - %(message)s")
-try:
-    file_handler = RotatingFileHandler(config.get_config_logfile(), maxBytes=50000, backupCount=2)
-except IOError:
-    file_handler = RotatingFileHandler(os.path.join(constants.BASE_DIR, "calibre-web.log"),
-                                       maxBytes=50000, backupCount=2)
-    # ToDo: reset logfile value in config class
-file_handler.setFormatter(formatter)
-app.logger.addHandler(file_handler)
-app.logger.setLevel(config.config_log_level)
-
-app.logger.info('Starting Calibre Web...')
-logging.getLogger("book_formats").addHandler(file_handler)
-logging.getLogger("book_formats").setLevel(config.config_log_level)
+log.info('Starting Calibre Web...')
 
 Principal(app)
 babel = Babel(app)
@@ -204,9 +191,9 @@ db.setup_db()
 try:
     with open(os.path.join(constants.BASE_DIR, 'cps/translations/iso639.pickle'), 'rb') as f:
         language_table = cPickle.load(f)
-except cPickle.UnpicklingError as error:
-    app.logger.error("Can't read file cps/translations/iso639.pickle: %s", error)
-    print("Can't read file cps/translations/iso639.pickle: %s" % error)
+except cPickle.UnpicklingError as ex:
+    log.error('Can\'t read file cps/translations/iso639.pickle: %s', ex)
+    print("Can't read file cps/translations/iso639.pickle: %s" % ex)
     helper.global_WorkerThread.stop()
     sys.exit(1)
 
@@ -227,8 +214,8 @@ def get_locale():
     for x in request.accept_languages.values():
         try:
             preferred.append(str(LC.parse(x.replace('-', '_'))))
-        except (UnknownLocaleError, ValueError) as e:
-            app.logger.debug("Could not parse locale: %s", e)
+        except (UnknownLocaleError, ValueError) as ex:
+            log.debug('Could not parse locale: %s', ex)
             preferred.append('en')
     return negotiate_locale(preferred, translations)
 
@@ -410,8 +397,8 @@ def formatdate_filter(val):
         conformed_timestamp = re.sub(r"[:]|([-](?!((\d{2}[:]\d{2})|(\d{4}))$))", '', val)
         formatdate = datetime.datetime.strptime(conformed_timestamp[:15], "%Y%m%d %H%M%S")
         return format_date(formatdate, format='medium', locale=get_locale())
-    except AttributeError as e:
-        app.logger.error('Babel error: %s, Current user locale: %s, Current User: %s' % (e, current_user.locale, current_user.nickname))
+    except AttributeError as ex:
+        log.error('Babel error: %s, Current user locale: %s, Current User: %s', ex, current_user.locale, current_user.nickname)
         return formatdate
 
 
@@ -934,7 +921,7 @@ def get_opds_download_link(book_id, book_format):
     book_format = book_format.split(".")[0]
     book = db.session.query(db.Books).filter(db.Books.id == book_id).first()
     data = db.session.query(db.Data).filter(db.Data.book == book.id).filter(db.Data.format == book_format.upper()).first()
-    app.logger.info(data.name)
+    log.info('%s', data.name)
     if current_user.is_authenticated:
         ub.update_download(book_id, int(current_user.id))
     file_name = book.title
@@ -1060,10 +1047,10 @@ def get_comic_book(book_id, book_format, page):
                             extract = lambda page: rf.read(names[page])
                         except:
                             # rarfile not valid
-                            app.logger.error('Unrar binary not found, or unable to decompress file ' + cbr_file)
+                            log.error('Unrar binary not found, or unable to decompress file %s', cbr_file)
                             return "", 204
                     else:
-                        app.logger.info('Unrar is not supported please install python rarfile extension')
+                        log.info('Unrar is not supported please install python rarfile extension')
                         # no support means return nothing
                         return "", 204
                 elif book_format in ("cbz", "zip"):
@@ -1075,7 +1062,7 @@ def get_comic_book(book_id, book_format, page):
                     names=sort(tf.getnames())
                     extract = lambda page: tf.extractfile(names[page]).read()
                 else:
-                    app.logger.error('unsupported comic format')
+                    log.error('unsupported comic format')
                     return "", 204
 
                 if sys.version_info.major >= 3:
@@ -1372,7 +1359,7 @@ def author(book_id, page):
             other_books = get_unique_other_books(entries.all(), author_info.books)
         except Exception:
             # Skip goodreads, if site is down/inaccessible
-            app.logger.error('Goodreads website is down/inaccessible')
+            log.error('Goodreads website is down/inaccessible')
 
     return render_title_template('author.html', entries=entries, pagination=pagination,
                                  title=name, author=author_info, other_books=other_books, page="author",
@@ -1554,8 +1541,7 @@ def toggle_read(book_id):
                 db.session.add(new_cc)
                 db.session.commit()
         except KeyError:
-            app.logger.error(
-                    u"Custom Column No.%d is not exisiting in calibre database" % config.config_read_column)
+            log.error('Custom Column No.%d is not exisiting in calibre database', config.config_read_column)
     return ""
 
 @app.route("/book/<int:book_id>")
@@ -1596,8 +1582,7 @@ def show_book(book_id):
                     matching_have_read_book = getattr(entries,'custom_column_'+str(config.config_read_column))
                     have_read = len(matching_have_read_book) > 0 and matching_have_read_book[0].value
                 except KeyError:
-                    app.logger.error(
-                        u"Custom Column No.%d is not exisiting in calibre database" % config.config_read_column)
+                    log.error('Custom Column No.%d is not exisiting in calibre database', config.config_read_column)
                     have_read = None
 
         else:
@@ -1731,7 +1716,7 @@ def delete_book(book_id, book_format):
             db.session.commit()
         else:
             # book not found
-            app.logger.info('Book with id "'+str(book_id)+'" could not be deleted')
+            log.info('Book with id "%s" could not be deleted', book_id)
     if book_format:
         return redirect(url_for('edit_book', book_id=book_id))
     else:
@@ -1761,8 +1746,8 @@ def google_drive_callback():
         credentials = gdriveutils.Gauth.Instance().auth.flow.step2_exchange(auth_code)
         with open(gdriveutils.CREDENTIALS, 'w') as f:
             f.write(credentials.to_json())
-    except ValueError as error:
-        app.logger.error(error)
+    except ValueError as ex:
+        log.error(ex)
     return redirect(url_for('configuration'))
 
 
@@ -1788,8 +1773,8 @@ def watch_gdrive():
             ub.session.commit()
             settings = ub.session.query(ub.Settings).first()
             config.loadSettings()
-        except HttpError as e:
-            reason=json.loads(e.content)['error']['errors'][0]
+        except HttpError as ex:
+            reason=json.loads(ex.content)['error']['errors'][0]
             if reason['reason'] == u'push.webhookUrlUnauthorized':
                 flash(_(u'Callback domain is not verified, please follow steps to verify domain in google developer console'), category="error")
             else:
@@ -1819,7 +1804,7 @@ def revoke_watch_gdrive():
 
 @app.route("/gdrive/watch/callback", methods=['GET', 'POST'])
 def on_received_watch_confirmation():
-    app.logger.debug(request.headers)
+    log.debug('%s', request.headers)
     if request.headers.get('X-Goog-Channel-Token') == gdrive_watch_callback_token \
             and request.headers.get('X-Goog-Resource-State') == 'change' \
             and request.data:
@@ -1827,28 +1812,27 @@ def on_received_watch_confirmation():
         data = request.data
 
         def updateMetaData():
-            app.logger.info('Change received from gdrive')
-            app.logger.debug(data)
+            log.info('Change received from gdrive')
+            log.debug('%s', data)
             try:
                 j = json.loads(data)
-                app.logger.info('Getting change details')
+                log.info('Getting change details')
                 response = gdriveutils.getChangeById(gdriveutils.Gdrive.Instance().drive, j['id'])
-                app.logger.debug(response)
+                log.debug('%s', response)
                 if response:
                     dbpath = os.path.join(config.config_calibre_dir, "metadata.db")
                     if not response['deleted'] and response['file']['title'] == 'metadata.db' and response['file']['md5Checksum'] != hashlib.md5(dbpath):
                         tmpDir = tempfile.gettempdir()
-                        app.logger.info('Database file updated')
+                        log.info('Database file updated')
                         copyfile(dbpath, os.path.join(tmpDir, "metadata.db_" + str(current_milli_time())))
-                        app.logger.info('Backing up existing and downloading updated metadata.db')
+                        log.info('Backing up existing and downloading updated metadata.db')
                         gdriveutils.downloadFile(None, "metadata.db", os.path.join(tmpDir, "tmp_metadata.db"))
-                        app.logger.info('Setting up new DB')
+                        log.info('Setting up new DB')
                         # prevent error on windows, as os.rename does on exisiting files
                         move(os.path.join(tmpDir, "tmp_metadata.db"), dbpath)
                         db.setup_db()
-            except Exception as e:
-                app.logger.info(e.message)
-                app.logger.exception(e)
+            except Exception as ex:
+                log.exception(ex)
         updateMetaData()
     return ''
 
@@ -2057,7 +2041,7 @@ def serve_book(book_id, book_format):
     book_format = book_format.split(".")[0]
     book = db.session.query(db.Books).filter(db.Books.id == book_id).first()
     data = db.session.query(db.Data).filter(db.Data.book == book.id).filter(db.Data.format == book_format.upper()).first()
-    app.logger.info(data.name)
+    log.info('%s', data.name)
     if config.config_use_google_drive:
         headers = Headers()
         try:
@@ -2094,7 +2078,7 @@ def render_read_books(page, are_read, as_xml=False):
                 .filter(db.cc_classes[config.config_read_column].value==True).all()
             readBookIds = [x.book for x in readBooks]
         except KeyError:
-            app.logger.error(u"Custom Column No.%d is not existing in calibre database" % config.config_read_column)
+            log.error('Custom Column No.%d is not existing in calibre database', config.config_read_column)
             readBookIds = []
 
     if are_read:
@@ -2271,7 +2255,7 @@ def register():
                     return render_title_template('register.html', title=_(u"register"), page="register")
             else:
                 flash(_(u"Your e-mail is not allowed to register"), category="error")
-                app.logger.info('Registering failed for user "' + to_save['nickname'] + '" e-mail adress: ' + to_save["email"])
+                log.info('Registering failed for user "%s" e-mail adress: %s', to_save['nickname'], to_save["email"])
                 return render_title_template('register.html', title=_(u"register"), page="register")
             flash(_(u"Confirmation e-mail was send to your e-mail account."), category="success")
             return redirect(url_for('login'))
@@ -2297,7 +2281,7 @@ def login():
             return redirect_back(url_for("index"))
         else:
             ipAdress = request.headers.get('X-Forwarded-For', request.remote_addr)
-            app.logger.info('Login failed for user "' + form['username'] + '" IP-adress: ' + ipAdress)
+            log.info('Login failed for user "%s" IP-adress: %s', form['username'], ipAdress)
             flash(_(u"Wrong Username or Password"), category="error")
 
     # next_url = request.args.get('next')
@@ -2423,14 +2407,14 @@ def send_to_kindle(book_id, book_format, convert):
 def add_to_shelf(shelf_id, book_id):
     shelf = ub.session.query(ub.Shelf).filter(ub.Shelf.id == shelf_id).first()
     if shelf is None:
-        app.logger.info("Invalid shelf specified")
+        log.info('Invalid shelf specified')
         if not request.is_xhr:
             flash(_(u"Invalid shelf specified"), category="error")
             return redirect(url_for('index'))
         return "Invalid shelf specified", 400
 
     if not shelf.is_public and not shelf.user_id == int(current_user.id):
-        app.logger.info("Sorry you are not allowed to add a book to the the shelf: %s" % shelf.name)
+        log.info('Sorry you are not allowed to add a book to the the shelf: %s', shelf.name)
         if not request.is_xhr:
             flash(_(u"Sorry you are not allowed to add a book to the the shelf: %(shelfname)s", shelfname=shelf.name),
                   category="error")
@@ -2438,7 +2422,7 @@ def add_to_shelf(shelf_id, book_id):
         return "Sorry you are not allowed to add a book to the the shelf: %s" % shelf.name, 403
 
     if shelf.is_public and not current_user.role_edit_shelfs():
-        app.logger.info("User is not allowed to edit public shelves")
+        log.info('User is not allowed to edit public shelves')
         if not request.is_xhr:
             flash(_(u"You are not allowed to edit public shelves"), category="error")
             return redirect(url_for('index'))
@@ -2447,7 +2431,7 @@ def add_to_shelf(shelf_id, book_id):
     book_in_shelf = ub.session.query(ub.BookShelf).filter(ub.BookShelf.shelf == shelf_id,
                                           ub.BookShelf.book_id == book_id).first()
     if book_in_shelf:
-        app.logger.info("Book is already part of the shelf: %s" % shelf.name)
+        log.info('Book is already part of the shelf: %s', shelf.name)
         if not request.is_xhr:
             flash(_(u"Book is already part of the shelf: %(shelfname)s", shelfname=shelf.name), category="error")
             return redirect(url_for('index'))
@@ -2476,17 +2460,17 @@ def add_to_shelf(shelf_id, book_id):
 def search_to_shelf(shelf_id):
     shelf = ub.session.query(ub.Shelf).filter(ub.Shelf.id == shelf_id).first()
     if shelf is None:
-        app.logger.info("Invalid shelf specified")
+        log.info('Invalid shelf specified')
         flash(_(u"Invalid shelf specified"), category="error")
         return redirect(url_for('index'))
 
     if not shelf.is_public and not shelf.user_id == int(current_user.id):
-        app.logger.info("You are not allowed to add a book to the the shelf: %s" % shelf.name)
+        log.info('You are not allowed to add a book to the the shelf: %s', shelf.name)
         flash(_(u"You are not allowed to add a book to the the shelf: %(name)s", name=shelf.name), category="error")
         return redirect(url_for('index'))
 
     if shelf.is_public and not current_user.role_edit_shelfs():
-        app.logger.info("User is not allowed to edit public shelves")
+        log.info('User is not allowed to edit public shelves')
         flash(_(u"User is not allowed to edit public shelves"), category="error")
         return redirect(url_for('index'))
 
@@ -2504,7 +2488,7 @@ def search_to_shelf(shelf_id):
             books_for_shelf = ub.searched_ids[current_user.id]
 
         if not books_for_shelf:
-            app.logger.info("Books are already part of the shelf: %s" % shelf.name)
+            log.info('Books are already part of the shelf: %s', shelf.name)
             flash(_(u"Books are already part of the shelf: %(name)s", name=shelf.name), category="error")
             return redirect(url_for('index'))
 
@@ -2530,7 +2514,7 @@ def search_to_shelf(shelf_id):
 def remove_from_shelf(shelf_id, book_id):
     shelf = ub.session.query(ub.Shelf).filter(ub.Shelf.id == shelf_id).first()
     if shelf is None:
-        app.logger.info("Invalid shelf specified")
+        log.info('Invalid shelf specified')
         if not request.is_xhr:
             return redirect(url_for('index'))
         return "Invalid shelf specified", 400
@@ -2549,7 +2533,7 @@ def remove_from_shelf(shelf_id, book_id):
                                                            ub.BookShelf.book_id == book_id).first()
 
         if book_shelf is None:
-            app.logger.info("Book already removed from shelf")
+            log.info('Book already removed from shelf')
             if not request.is_xhr:
                 return redirect(url_for('index'))
             return "Book already removed from shelf", 410
@@ -2562,7 +2546,7 @@ def remove_from_shelf(shelf_id, book_id):
             return redirect(request.environ["HTTP_REFERER"])
         return "", 204
     else:
-        app.logger.info("Sorry you are not allowed to remove a book from this shelf: %s" % shelf.name)
+        log.info('Sorry you are not allowed to remove a book from this shelf: %s', shelf.name)
         if not request.is_xhr:
             flash(_(u"Sorry you are not allowed to remove a book from this shelf: %(sname)s", sname=shelf.name),
                   category="error")
@@ -2644,7 +2628,7 @@ def delete_shelf(shelf_id):
     if deleted:
         ub.session.query(ub.BookShelf).filter(ub.BookShelf.shelf == shelf_id).delete()
         ub.session.commit()
-        app.logger.info(_(u"successfully deleted shelf %(name)s", name=cur_shelf.name, category="success"))
+        log.info('successfully deleted shelf %s', cur_shelf.name)
     return redirect(url_for('index'))
 
 
@@ -2668,7 +2652,7 @@ def show_shelf(shelf_id):
             if cur_book:
                 result.append(cur_book)
             else:
-                app.logger.info('Not existing book %s in shelf %s deleted' % (book.book_id, shelf.id))
+                log.info('Not existing book %s in shelf %s deleted', book.book_id, shelf.id)
                 ub.session.query(ub.BookShelf).filter(ub.BookShelf.book_id == book.book_id).delete()
                 ub.session.commit()
         return render_title_template('shelf.html', entries=result, title=_(u"Shelf: '%(name)s'", name=shelf.name),
@@ -2905,7 +2889,7 @@ def view_configuration():
             # stop Server
             server.Server.setRestartTyp(True)
             server.Server.stopServer()
-            app.logger.info('Reboot required, restarting')
+            log.info('Reboot required, restarting')
     readColumn = db.session.query(db.Custom_Columns)\
             .filter(db.and_(db.Custom_Columns.datatype == 'bool',db.Custom_Columns.mark_for_delete == 0)).all()
     return render_title_template("config_view_edit.html", content=config, readColumns=readColumn,
@@ -3041,20 +3025,14 @@ def configuration_helper(origin):
             content.config_log_level = int(to_save["config_log_level"])
         if content.config_logfile != to_save["config_logfile"]:
             # check valid path, only path or file
-            if os.path.dirname(to_save["config_logfile"]):
-                if os.path.exists(os.path.dirname(to_save["config_logfile"])) and \
-                        os.path.basename(to_save["config_logfile"]) and not os.path.isdir(to_save["config_logfile"]):
-                    content.config_logfile = to_save["config_logfile"]
-                else:
-                    ub.session.commit()
-                    flash(_(u'Logfile location is not valid, please enter correct path'), category="error")
-                    return render_title_template("config_edit.html", content=config, origin=origin,
-                                                 gdrive=gdriveutils.gdrive_support, gdriveError=gdriveError,
-                                                 goodreads=goodreads_support, title=_(u"Basic Configuration"),
-                                                 page="config")
-            else:
-                content.config_logfile = to_save["config_logfile"]
-            reboot_required = True
+            if not logger.is_valid_logfile(to_save["config_logfile"]):
+                ub.session.commit()
+                flash(_(u'Logfile location is not valid, please enter correct path'), category="error")
+                return render_title_template("config_edit.html", content=config, origin=origin,
+                                             gdrive=gdriveutils.gdrive_support, gdriveError=gdriveError,
+                                             goodreads=goodreads_support, title=_(u"Basic Configuration"),
+                                             page="config")
+            content.config_logfile = to_save["config_logfile"]
 
         # Rarfile Content configuration
         if "config_rarfile_location" in to_save and to_save['config_rarfile_location'] is not u"":
@@ -3077,10 +3055,8 @@ def configuration_helper(origin):
             ub.session.commit()
             flash(_(u"Calibre-Web configuration updated"), category="success")
             config.loadSettings()
-            app.logger.setLevel(config.config_log_level)
-            logging.getLogger("book_formats").setLevel(config.config_log_level)
-        except Exception as e:
-            flash(e, category="error")
+        except Exception as ex:
+            flash(ex, category="error")
             return render_title_template("config_edit.html", content=config, origin=origin,
                                          gdrive=gdriveutils.gdrive_support, gdriveError=gdriveError,
                                          goodreads=goodreads_support, rarfile_support=rar_support,
@@ -3097,7 +3073,7 @@ def configuration_helper(origin):
             # stop Server
             server.Server.setRestartTyp(True)
             server.Server.stopServer()
-            app.logger.info('Reboot required, restarting')
+            log.info('Reboot required, restarting')
         if origin:
             success = True
     if is_gdrive_ready() and gdriveutils.gdrive_support == True: # and config.config_use_google_drive == True:
@@ -3208,8 +3184,8 @@ def edit_mailsettings():
         content.mail_use_ssl = int(to_save["mail_use_ssl"])
         try:
             ub.session.commit()
-        except Exception as e:
-            flash(e, category="error")
+        except Exception as ex:
+            flash(ex, category="error")
         if "test" in to_save and to_save["test"]:
             if current_user.kindle_mail:
                 result = helper.send_test_mail(current_user.kindle_mail, current_user.nickname)
@@ -3421,7 +3397,7 @@ def render_edit_book(book_id):
         try:
             allowed_conversion_formats.remove(file.format.lower())
         except Exception:
-            app.logger.warning(file.format.lower() + ' already removed from list.')
+            log.warning('%s already removed from list.', file.format.lower())
 
     return render_title_template('book_edit.html', book=book, authors=author_names, cc=cc,
                                  title=_(u"edit metadata"), page="editbook",
@@ -3547,7 +3523,7 @@ def upload_single_file(request, book, book_id):
 
             # Format entry already exists, no need to update the database
             if is_format:
-                app.logger.info('Book format already existing')
+                log.info('Book format already existing')
             else:
                 db_format = db.Data(book_id, file_ext.upper(), file_size, file_name)
                 db.session.add(db_format)
@@ -3571,7 +3547,6 @@ def upload_cover(request, book):
                 # ToDo Message not always coorect
                 flash(_(u"Cover is not a supported imageformat (jpg/png/webp), can't save"), category="error")
                 return False
-    return None
 
 @app.route("/admin/book/<int:book_id>", methods=['GET', 'POST'])
 @login_required_if_no_ano
@@ -3689,7 +3664,7 @@ def edit_book(book_id):
                     res = list(language_table[get_locale()].keys())[invers_lang_table.index(lang)]
                     input_l.append(res)
                 except ValueError:
-                    app.logger.error('%s is not a valid language' % lang)
+                    log.error('%s is not a valid language', lang)
                     flash(_(u"%(langname)s is not a valid language", langname=lang), category="error")
             modify_database_object(input_l, book.languages, db.Languages, db.session, 'languages')
 
@@ -3727,8 +3702,8 @@ def edit_book(book_id):
             db.session.rollback()
             flash(error, category="error")
             return render_edit_book(book_id)
-    except Exception as e:
-        app.logger.exception(e)
+    except Exception as ex:
+        log.exception(ex)
         db.session.rollback()
         flash(_("Error editing book, please check logfile for details"), category="error")
         return redirect(url_for('show_book', book_id=book.id))
@@ -3895,9 +3870,7 @@ def convert_bookformat(book_id):
         flash(_(u"Source or destination format for conversion missing"), category="error")
         return redirect(request.environ["HTTP_REFERER"])
 
-    app.logger.debug('converting: book id: ' + str(book_id) +
-                     ' from: ' + request.form['book_format_from'] +
-                     ' to: ' + request.form['book_format_to'])
+    log.debug('converting book id: %s from %s to %s', book_id, request.form['book_format_from'], request.form['book_format_to'])
     rtn = helper.convert_book_format(book_id, config.config_calibre_dir, book_format_from.upper(),
                                      book_format_to.upper(), current_user.nickname)
 
