@@ -11,7 +11,7 @@ except ImportError:
         import pkg_resources
         __version__ = pkg_resources.get_distribution('pycountry').version + ' (PyCountry)'
         del pkg_resources
-    except:
+    except (ImportError, Exception):
         __version__ = "? (PyCountry)"
 
     def _copy_fields(l):
