@@ -29,6 +29,3 @@ gdrive_credentials
 
 vendor
 client_secrets.json
-
-# External dependencies - need proper integrating
-libunrar
