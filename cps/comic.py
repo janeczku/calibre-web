@@ -19,8 +19,7 @@
 
 import os
 import uploader
-from comicapi.comicarchive import *
-from comicapi.issuestring import *
+from comicapi.comicarchive import ComicArchive, MetaDataStyle
 from iso639 import languages as isoLanguages
 
 def extractCover(tmp_file_name, original_file_extension):
@@ -31,7 +30,6 @@ def extractCover(tmp_file_name, original_file_extension):
         extension = ext[1].lower()
         if extension == '.jpg' or extension == '.jpeg':
             cover_data = archive.getPage(0)
-    print(archive.getPageName(0))
     prefix = os.path.dirname(tmp_file_name)
     if cover_data:
         tmp_cover_name = prefix + '/cover' + extension
