@@ -13,4 +13,4 @@ SQLAlchemy>=1.1.0
 tornado>=4.1
 Wand>=0.4.4
 unidecode>=0.04.19
-git+https://github.com/wildthyme/comicapi.git@c57bda958e56cf1ae23bec1cde974b4c424b2eb4#egg=comicapi
+git+https://github.com/wildthyme/comicapi.git@0f36fdd81bd03d6a979bebf03f907a1405d992c4#egg=comicapi
