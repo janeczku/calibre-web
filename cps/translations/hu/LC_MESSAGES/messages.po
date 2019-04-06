@@ -8,15 +8,16 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2019-03-10 08:03+0100\n"
-"PO-Revision-Date: 2018-10-11 18:13+0200\n"
+"PO-Revision-Date: 2019-04-06 23:36+0200\n"
 "Last-Translator: \n"
-"Language: hu\n"
 "Language-Team: \n"
-"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"Language: hu\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "Generated-By: Babel 2.6.0\n"
+"X-Generator: Poedit 2.2.1\n"
 
 #: cps/book_formats.py:152 cps/book_formats.py:153 cps/book_formats.py:157
 #: cps/book_formats.py:161 cps/converter.py:29 cps/converter.py:45
@@ -29,7 +30,7 @@ msgstr "Nincs jogosultság a futtatáshoz"
 
 #: cps/converter.py:66
 msgid "not configured"
-msgstr ""
+msgstr "nincs konfigurálva"
 
 #: cps/helper.py:72
 #, python-format
@@ -76,12 +77,12 @@ msgstr "Regisztrációs e-mail a következő felhasználóhoz: %(name)s"
 #: cps/helper.py:151 cps/helper.py:153 cps/helper.py:155 cps/helper.py:157
 #, python-format
 msgid "Send %(format)s to Kindle"
-msgstr ""
+msgstr "%(format)s küldése Kindle-re"
 
 #: cps/helper.py:161 cps/helper.py:165
 #, python-format
 msgid "Convert %(orig)s to %(format)s and send to Kindle"
-msgstr ""
+msgstr "%(orig)s konvertálása %(format)s-ra és küldés Kindle-re"
 
 #: cps/helper.py:200
 #, python-format
@@ -95,17 +96,25 @@ msgstr "A kért fájl nem olvasható. Esetleg jogosultsági probléma lenne?"
 #: cps/helper.py:311
 #, python-format
 msgid "Rename title from: '%(src)s' to '%(dest)s' failed with error: %(error)s"
-msgstr "A cím átnevezése \"%(src)s\"-ról \"%(dest)s\"-ra nem sikerült a következő hiba miatt: %(error)s"
+msgstr ""
+"A cím átnevezése \"%(src)s\"-ról \"%(dest)s\"-ra nem sikerült a következő "
+"hiba miatt: %(error)s"
 
 #: cps/helper.py:321
 #, python-format
-msgid "Rename author from: '%(src)s' to '%(dest)s' failed with error: %(error)s"
-msgstr "A szerző átnevezése \"%(src)s\"-ról \"%(dest)s\"-ra nem sikerült a következő hiba miatt: %(error)s"
+msgid ""
+"Rename author from: '%(src)s' to '%(dest)s' failed with error: %(error)s"
+msgstr ""
+"A szerző átnevezése \"%(src)s\"-ról \"%(dest)s\"-ra nem sikerült a következő "
+"hiba miatt: %(error)s"
 
 #: cps/helper.py:335
 #, python-format
-msgid "Rename file in path '%(src)s' to '%(dest)s' failed with error: %(error)s"
+msgid ""
+"Rename file in path '%(src)s' to '%(dest)s' failed with error: %(error)s"
 msgstr ""
+"\"%(src)s\" fájl átnevezése \"%(dest)s\"-re nem sikerült a következő hiba "
+"miatt: %(error)s"
 
 #: cps/helper.py:361 cps/helper.py:371 cps/helper.py:379
 #, python-format
@@ -143,23 +152,23 @@ msgstr "Végrehajtva"
 
 #: cps/helper.py:549
 msgid "Unknown Status"
-msgstr ""
+msgstr "Ismeretlen állapot"
 
 #: cps/helper.py:554
 msgid "E-mail: "
-msgstr ""
+msgstr "E-mail cím: "
 
 #: cps/helper.py:556 cps/helper.py:560
 msgid "Convert: "
-msgstr ""
+msgstr "Konvertálás:"
 
 #: cps/helper.py:558
 msgid "Upload: "
-msgstr ""
+msgstr "Feltöltés:"
 
 #: cps/helper.py:562
 msgid "Unknown Task: "
-msgstr ""
+msgstr "Ismeretlen feladat:"
 
 #: cps/updater.py:251 cps/updater.py:410 cps/updater.py:423
 msgid "Unexpected data while reading update information"
@@ -186,8 +195,12 @@ msgid "General error"
 msgstr "Általános hiba"
 
 #: cps/updater.py:283 cps/updater.py:341 cps/updater.py:468
-msgid "A new update is available. Click on the button below to update to the latest version."
-msgstr "Egy új frissítés érhető el. Kattints a lenti gombra a legújabb verzió frissítésére"
+msgid ""
+"A new update is available. Click on the button below to update to the latest "
+"version."
+msgstr ""
+"Egy új frissítés érhető el. Kattints a lenti gombra a legújabb verzió "
+"frissítésére"
 
 #: cps/updater.py:335
 msgid "Could not fetch update information"
@@ -195,12 +208,16 @@ msgstr "Nem lehetett begyűjteni a frissítési információkat"
 
 #: cps/updater.py:403
 msgid "No release information available"
-msgstr ""
+msgstr "Nincs információ a kiadásról."
 
 #: cps/updater.py:449 cps/updater.py:458
 #, python-format
-msgid "A new update is available. Click on the button below to update to version: %(version)s"
+msgid ""
+"A new update is available. Click on the button below to update to version: "
+"%(version)s"
 msgstr ""
+"Új frissítés érhető el. Kattints az alábbi gombra a frissítéshez a következő "
+"verzióra: %(version)s"
 
 #: cps/updater.py:491 cps/web.py:2771
 msgid "Unknown"
@@ -220,7 +237,7 @@ msgstr "Frissítési csomag kitömörítése"
 
 #: cps/web.py:1183
 msgid "Replacing files"
-msgstr ""
+msgstr "Fájlok cserélése"
 
 #: cps/web.py:1184
 msgid "Database connections are closed"
@@ -228,7 +245,7 @@ msgstr "Adatbázis kapcsolatok lezárva"
 
 #: cps/web.py:1185
 msgid "Stopping server"
-msgstr ""
+msgstr "Szerver leállítása"
 
 #: cps/web.py:1186
 msgid "Update finished, please press okay and reload page"
@@ -236,7 +253,7 @@ msgstr "A frissítés települt, kattints az OK-ra és újra tölt az oldal"
 
 #: cps/web.py:1187 cps/web.py:1188 cps/web.py:1189 cps/web.py:1190
 msgid "Update failed:"
-msgstr ""
+msgstr "A frissítés nem sikerült:"
 
 #: cps/web.py:1213
 msgid "Recently Added Books"
@@ -272,16 +289,17 @@ msgstr "Könyvek találomra"
 
 #: cps/web.py:1340 cps/web.py:1596 cps/web.py:2140
 msgid "Error opening eBook. File does not exist or file is not accessible:"
-msgstr "Hiba történt az e-könyv megnyitásakor. A fájl nem létezik vagy nem érhető el:"
+msgstr ""
+"Hiba történt az e-könyv megnyitásakor. A fájl nem létezik vagy nem érhető el:"
 
 #: cps/web.py:1369
 msgid "Publisher list"
-msgstr ""
+msgstr "Kiadók listája"
 
 #: cps/web.py:1384
 #, python-format
 msgid "Publisher: %(name)s"
-msgstr ""
+msgstr "Kiadó: %(name)s"
 
 #: cps/templates/index.xml:83 cps/web.py:1416
 msgid "Series list"
@@ -319,12 +337,20 @@ msgid "Statistics"
 msgstr "Statisztika"
 
 #: cps/web.py:1734
-msgid "Google Drive setup not completed, try to deactivate and activate Google Drive again"
+msgid ""
+"Google Drive setup not completed, try to deactivate and activate Google "
+"Drive again"
 msgstr ""
+"A Google Drive beállítása nem fejeződött be, próbáld kikapcsolni és újra "
+"aktíválni a Google Drive-ot."
 
 #: cps/web.py:1779
-msgid "Callback domain is not verified, please follow steps to verify domain in google developer console"
-msgstr "A visszahívási tartomány nem ellenőrzött, kövesd az alábbi lépéseket a tartomány ellenőrzéséhez a Google Developer Console-ban:"
+msgid ""
+"Callback domain is not verified, please follow steps to verify domain in "
+"google developer console"
+msgstr ""
+"A visszahívási tartomány nem ellenőrzött, kövesd az alábbi lépéseket a "
+"tartomány ellenőrzéséhez a Google Developer Console-ban:"
 
 #: cps/web.py:1855
 msgid "Server restarted, please reload page"
@@ -427,7 +453,8 @@ msgstr "Először be kell állítani az SMTP levelező beállításokat..."
 #: cps/web.py:2388
 #, python-format
 msgid "Book successfully queued for sending to %(kindlemail)s"
-msgstr "A könyv sikeresen küldésre lett jelölve a következő címre: %(kindlemail)s"
+msgstr ""
+"A könyv sikeresen küldésre lett jelölve a következő címre: %(kindlemail)s"
 
 #: cps/web.py:2392
 #, python-format
@@ -446,15 +473,17 @@ msgstr "A megadott polc érvénytelen!"
 #, python-format
 msgid "Sorry you are not allowed to add a book to the the shelf: %(shelfname)s"
 msgstr ""
+"Elnézést, nem vagy jogosult hozzáadni a könyvet a következő polcra: "
+"%(shelfname)s"
 
 #: cps/web.py:2420
 msgid "You are not allowed to edit public shelves"
-msgstr ""
+msgstr "Nem vagy jogosult szerkeszteni nyilvános polcokat"
 
 #: cps/web.py:2429
 #, python-format
 msgid "Book is already part of the shelf: %(shelfname)s"
-msgstr ""
+msgstr "A könyv már a következő polcon van: %(shelfname)s"
 
 #: cps/web.py:2443
 #, python-format
@@ -493,7 +522,8 @@ msgstr "A könyv el lett távolítva a polcról: %(sname)s"
 #: cps/web.py:2544
 #, python-format
 msgid "Sorry you are not allowed to remove a book from this shelf: %(sname)s"
-msgstr "Sajnálom, nincs jogosultságot eltávolítani könyvet erről a polcról: %(sname)s"
+msgstr ""
+"Sajnálom, nincs jogosultságot eltávolítani könyvet erről a polcról: %(sname)s"
 
 #: cps/web.py:2565 cps/web.py:2589
 #, python-format
@@ -615,7 +645,8 @@ msgstr "A következő felhasználó létrehozva: %(user)s"
 
 #: cps/web.py:3164
 msgid "Found an existing account for this e-mail address or nickname."
-msgstr "Már létezik felhasználó ehhez az e-mail címhez vagy felhasználói névhez."
+msgstr ""
+"Már létezik felhasználó ehhez az e-mail címhez vagy felhasználói névhez."
 
 #: cps/web.py:3194
 #, python-format
@@ -670,7 +701,9 @@ msgstr "Metaadatok szerkesztése"
 #: cps/web.py:3497 cps/web.py:3743
 #, python-format
 msgid "File extension '%(ext)s' is not allowed to be uploaded to this server"
-msgstr "A(z) \"%(ext)s\" kiterjesztésű fájlok feltöltése nincs engedélyezve ezen a szerveren."
+msgstr ""
+"A(z) \"%(ext)s\" kiterjesztésű fájlok feltöltése nincs engedélyezve ezen a "
+"szerveren."
 
 #: cps/web.py:3501 cps/web.py:3746
 msgid "File to be uploaded must have an extension"
@@ -679,7 +712,8 @@ msgstr "A feltöltendő fájlnak kiterjesztéssel kell rendelkeznie!"
 #: cps/web.py:3513 cps/web.py:3765
 #, python-format
 msgid "Failed to create path %(path)s (Permission denied)."
-msgstr "Nem sikerült létrehozni az elérési utat (engedély megtagadva): %(path)s."
+msgstr ""
+"Nem sikerült létrehozni az elérési utat (engedély megtagadva): %(path)s."
 
 #: cps/web.py:3518
 #, python-format
@@ -694,7 +728,9 @@ msgstr "A(z) %(ext)s fájlformátum hozzáadva a könyvhez: %(book)s."
 #: cps/web.py:3553
 #, python-format
 msgid "Failed to create path for cover %(path)s (Permission denied)."
-msgstr "Nem sikerült létrehozni az elérési utat a borítóhoz (engedély megtagadva): %(path)s."
+msgstr ""
+"Nem sikerült létrehozni az elérési utat a borítóhoz (engedély megtagadva): "
+"%(path)s."
 
 #: cps/web.py:3561
 #, python-format
@@ -720,7 +756,7 @@ msgstr "A(z) %(langname)s nem érvényes nyelv"
 
 #: cps/web.py:3714
 msgid "Metadata successfully updated"
-msgstr ""
+msgstr "A metaadatok sikeresen frissültek"
 
 #: cps/web.py:3723
 msgid "Error editing book, please check logfile for details"
@@ -739,7 +775,7 @@ msgstr "Nem sikerült törölni a %(file)s fájlt."
 #: cps/web.py:3857
 #, python-format
 msgid "File %(title)s"
-msgstr ""
+msgstr "Fájl: %(title)s"
 
 #: cps/web.py:3886
 msgid "Source or destination format for conversion missing"
@@ -748,7 +784,9 @@ msgstr "Az átalakításhoz hiányzik a forrás- vagy a célformátum!"
 #: cps/web.py:3896
 #, python-format
 msgid "Book successfully queued for converting to %(book_format)s"
-msgstr "A könyv sikeresen átalakításra lett jelölve a következő formátumra: %(book_format)s"
+msgstr ""
+"A könyv sikeresen átalakításra lett jelölve a következő formátumra: "
+"%(book_format)s"
 
 #: cps/web.py:3900
 #, python-format
@@ -763,7 +801,9 @@ msgstr "Az e-könyv átalakítás nem sikerült: %(error)s"
 #: cps/worker.py:316
 #, python-format
 msgid "Kindlegen failed with Error %(error)s. Message: %(message)s"
-msgstr "A Kindlegen futtatása nem sikerült a(z) %(error)s hiba miatt. Üzenet: %(message)s"
+msgstr ""
+"A Kindlegen futtatása nem sikerült a(z) %(error)s hiba miatt. Üzenet: "
+"%(message)s"
 
 #: cps/templates/admin.html:6
 msgid "User list"
@@ -946,7 +986,7 @@ msgstr "Könyvtárban"
 #: cps/templates/index.html:86 cps/templates/search.html:55
 #: cps/templates/shelf.html:37
 msgid "reduce"
-msgstr ""
+msgstr "csökkentsd"
 
 #: cps/templates/author.html:81
 msgid "More by"
@@ -1017,8 +1057,12 @@ msgid "Rating"
 msgstr "Értékelés"
 
 #: cps/templates/book_edit.html:87
-msgid "Cover URL (jpg, cover is downloaded and stored in database, field is afterwards empty again)"
-msgstr "Borító URL (jpg, borító letöltve és elmentve az adatbázisban, a mező újra üres lesz utána)"
+msgid ""
+"Cover URL (jpg, cover is downloaded and stored in database, field is "
+"afterwards empty again)"
+msgstr ""
+"Borító URL (jpg, borító letöltve és elmentve az adatbázisban, a mező újra "
+"üres lesz utána)"
 
 #: cps/templates/book_edit.html:91
 msgid "Upload Cover from local drive"
@@ -1136,7 +1180,7 @@ msgstr "Google Drive hitelesítés"
 
 #: cps/templates/config_edit.html:40
 msgid "Please hit submit to continue with setup"
-msgstr ""
+msgstr "A beállítás folytatásához kattints a Küldés gombra"
 
 #: cps/templates/config_edit.html:43
 msgid "Please finish Google Drive setup after login"
@@ -1172,23 +1216,23 @@ msgstr "SSL kulcsfájl helye (nem SSL szerverekhez üresen kell hagyni)"
 
 #: cps/templates/config_edit.html:97
 msgid "Update channel"
-msgstr ""
+msgstr "Frissítési forrás"
 
 #: cps/templates/config_edit.html:99
 msgid "Stable"
-msgstr ""
+msgstr "Stabil"
 
 #: cps/templates/config_edit.html:100
 msgid "Stable (Automatic)"
-msgstr ""
+msgstr "Stabil (automatikus)"
 
 #: cps/templates/config_edit.html:101
 msgid "Nightly"
-msgstr ""
+msgstr "Éjszakai"
 
 #: cps/templates/config_edit.html:102
 msgid "Nightly (Automatic)"
-msgstr ""
+msgstr "Éjszakai (automatikus)"
 
 #: cps/templates/config_edit.html:113
 msgid "Logfile Configuration"
@@ -1286,7 +1330,7 @@ msgstr "Találomra mutatott könyvek száma"
 
 #: cps/templates/config_view_edit.html:31
 msgid "No. of authors to show before hiding (0=disable hiding)"
-msgstr ""
+msgstr "Mutatott szerzők száma (0=elrejtés kikapcsolása)"
 
 #: cps/templates/config_view_edit.html:35 cps/templates/readcbr.html:108
 msgid "Theme"
@@ -1390,7 +1434,7 @@ msgstr "Szerző választó mutatása"
 
 #: cps/templates/config_view_edit.html:159 cps/templates/user_edit.html:86
 msgid "Show publisher selection"
-msgstr ""
+msgstr "Kiadó választó mutatása"
 
 #: cps/templates/config_view_edit.html:163 cps/templates/user_edit.html:91
 msgid "Show read and unread"
@@ -1422,11 +1466,11 @@ msgstr "nyelv"
 
 #: cps/templates/detail.html:185
 msgid "Mark As Unread"
-msgstr ""
+msgstr "Legyen olvasatlan"
 
 #: cps/templates/detail.html:185
 msgid "Mark As Read"
-msgstr ""
+msgstr "Legyen olvasott"
 
 #: cps/templates/detail.html:186
 msgid "Read"
@@ -1445,8 +1489,10 @@ msgid "Edit metadata"
 msgstr "Metaadatok szerkesztése"
 
 #: cps/templates/email_edit.html:15
-msgid "SMTP port (usually 25 for plain SMTP and 465 for SSL and 587 for STARTTLS)"
-msgstr "SMTP port (egyszerű SMTP-hez rendszerint 25, SSL-hez 465 és STARTTLS-hez 587)"
+msgid ""
+"SMTP port (usually 25 for plain SMTP and 465 for SSL and 587 for STARTTLS)"
+msgstr ""
+"SMTP port (egyszerű SMTP-hez rendszerint 25, SSL-hez 465 és STARTTLS-hez 587)"
 
 #: cps/templates/email_edit.html:19
 msgid "Encryption"
@@ -1511,7 +1557,7 @@ msgstr "Keresés"
 
 #: cps/templates/http_error.html:23
 msgid "Back to home"
-msgstr ""
+msgstr "Vissza a kezdőlapra"
 
 #: cps/templates/index.html:5
 msgid "Discover (Random Books)"
@@ -1559,11 +1605,11 @@ msgstr "Könyvek szerző szerint rendezve"
 
 #: cps/templates/index.xml:69 cps/templates/layout.html:165
 msgid "Publishers"
-msgstr ""
+msgstr "Kiadók"
 
 #: cps/templates/index.xml:73
 msgid "Books ordered by publisher"
-msgstr ""
+msgstr "Könyvek kiadók szerint rendezve"
 
 #: cps/templates/index.xml:80
 msgid "Books ordered by category"
@@ -1591,7 +1637,7 @@ msgstr "A felhasználó saját polcai, csak a jelenlegi felhasználónak láthat
 
 #: cps/templates/layout.html:28
 msgid "Home"
-msgstr ""
+msgstr "Kezdőlap"
 
 #: cps/templates/layout.html:34
 msgid "Toggle navigation"
@@ -1608,7 +1654,7 @@ msgstr "Beállítások"
 
 #: cps/templates/layout.html:78
 msgid "Account"
-msgstr ""
+msgstr "Felhasználói fiók"
 
 #: cps/templates/layout.html:80
 msgid "Logout"
@@ -1689,11 +1735,11 @@ msgstr "Könyv részletei"
 
 #: cps/templates/layout.html:256
 msgid "Upload done, processing, please wait..."
-msgstr ""
+msgstr "Feltöltés kész, feldolgozás alatt, kérlek várj..."
 
 #: cps/templates/layout.html:259
 msgid "Error"
-msgstr ""
+msgstr "Hiba"
 
 #: cps/templates/login.html:8 cps/templates/login.html:9
 #: cps/templates/register.html:7 cps/templates/user_edit.html:8
@@ -1811,7 +1857,7 @@ msgstr "PDF.js olvasó"
 
 #: cps/templates/readpdf.html:418
 msgid "Preparing document for printing..."
-msgstr ""
+msgstr "Dokumentum előkészítése nyomtatásra..."
 
 #: cps/templates/readtxt.html:6
 msgid "Basic txt Reader"
@@ -1843,7 +1889,8 @@ msgstr "és lépj be"
 
 #: cps/templates/remote_login.html:9
 msgid "Once you do so, you will automatically get logged in on this device."
-msgstr "Az első belépés után automatikusan be leszel léptetve ezen az eszközön."
+msgstr ""
+"Az első belépés után automatikusan be leszel léptetve ezen az eszközön."
 
 #: cps/templates/search.html:5
 msgid "No Results for:"
@@ -2062,9 +2109,6 @@ msgstr "Utolsó letöltések"
 #~ msgid "Aragonese"
 #~ msgstr "aragóniai"
 
-#~ msgid "Mapudungun"
-#~ msgstr ""
-
 #~ msgid "Arapaho"
 #~ msgstr "arapaho"
 
@@ -2073,9 +2117,6 @@ msgstr "Utolsó letöltések"
 
 #~ msgid "Assamese"
 #~ msgstr "asszámi"
-
-#~ msgid "Asturian"
-#~ msgstr ""
 
 #~ msgid "Avaric"
 #~ msgstr "avar"
@@ -2104,17 +2145,11 @@ msgstr "Utolsó letöltések"
 #~ msgid "Balinese"
 #~ msgstr "balinéz"
 
-#~ msgid "Basa (Cameroon)"
-#~ msgstr ""
-
 #~ msgid "Beja"
 #~ msgstr "beja"
 
 #~ msgid "Belarusian"
 #~ msgstr "belarusz"
-
-#~ msgid "Bemba (Zambia)"
-#~ msgstr ""
 
 #~ msgid "Bengali"
 #~ msgstr "bengáli"
@@ -2155,14 +2190,8 @@ msgstr "Utolsó letöltések"
 #~ msgid "Bulgarian"
 #~ msgstr "bolgár"
 
-#~ msgid "Bilin"
-#~ msgstr ""
-
 #~ msgid "Caddo"
 #~ msgstr "caddo"
-
-#~ msgid "Carib; Galibi"
-#~ msgstr ""
 
 #~ msgid "Catalan"
 #~ msgstr "katalán"
@@ -2187,9 +2216,6 @@ msgstr "Utolsó letöltések"
 
 #~ msgid "Chuukese"
 #~ msgstr "csukéz"
-
-#~ msgid "Mari (Russia)"
-#~ msgstr ""
 
 #~ msgid "Chinook jargon"
 #~ msgstr "chinook zsargon"
@@ -2224,9 +2250,6 @@ msgstr "Utolsó letöltések"
 #~ msgid "Cree"
 #~ msgstr "cree"
 
-#~ msgid "Turkish; Crimean"
-#~ msgstr ""
-
 #~ msgid "Kashubian"
 #~ msgstr "kasubi"
 
@@ -2257,20 +2280,8 @@ msgstr "Utolsó letöltések"
 #~ msgid "Dinka"
 #~ msgstr "dinka"
 
-#~ msgid "Dhivehi"
-#~ msgstr ""
-
-#~ msgid "Dogri (macrolanguage)"
-#~ msgstr ""
-
-#~ msgid "Sorbian; Lower"
-#~ msgstr ""
-
 #~ msgid "Duala"
 #~ msgstr "duala"
-
-#~ msgid "Dutch; Middle (ca. 1050-1350)"
-#~ msgstr ""
 
 #~ msgid "Dyula"
 #~ msgstr "djula"
@@ -2314,9 +2325,6 @@ msgstr "Utolsó letöltések"
 #~ msgid "Ewondo"
 #~ msgstr "ewondo"
 
-#~ msgid "Fang (Equatorial Guinea)"
-#~ msgstr ""
-
 #~ msgid "Faroese"
 #~ msgstr "Feröeri"
 
@@ -2329,9 +2337,6 @@ msgstr "Utolsó letöltések"
 #~ msgid "Fijian"
 #~ msgstr "fidzsi"
 
-#~ msgid "Filipino"
-#~ msgstr ""
-
 #~ msgid "Finnish"
 #~ msgstr "finn"
 
@@ -2341,20 +2346,8 @@ msgstr "Utolsó letöltések"
 #~ msgid "French"
 #~ msgstr "francia"
 
-#~ msgid "French; Middle (ca. 1400-1600)"
-#~ msgstr ""
-
 #~ msgid "French; Old (842-ca. 1400)"
 #~ msgstr "francia; ófrancia (842- kb. 1400)"
-
-#~ msgid "Frisian; Northern"
-#~ msgstr ""
-
-#~ msgid "Frisian; Eastern"
-#~ msgstr ""
-
-#~ msgid "Frisian; Western"
-#~ msgstr ""
 
 #~ msgid "Fulah"
 #~ msgstr "fula"
@@ -2368,17 +2361,11 @@ msgstr "Utolsó letöltések"
 #~ msgid "Gayo"
 #~ msgstr "gajo"
 
-#~ msgid "Gbaya (Central African Republic)"
-#~ msgstr ""
-
 #~ msgid "Geez"
 #~ msgstr "gíz"
 
 #~ msgid "Gilbertese"
 #~ msgstr "gilberti"
-
-#~ msgid "Gaelic; Scottish"
-#~ msgstr ""
 
 #~ msgid "Irish"
 #~ msgstr "ír"
@@ -2388,9 +2375,6 @@ msgstr "Utolsó letöltések"
 
 #~ msgid "Manx"
 #~ msgstr "manx"
-
-#~ msgid "German; Middle High (ca. 1050-1500)"
-#~ msgstr ""
 
 #~ msgid "German; Old High (ca. 750-1050)"
 #~ msgstr "német; ónémet (kb. 750-1050)"
@@ -2413,20 +2397,11 @@ msgstr "Utolsó letöltések"
 #~ msgid "Guarani"
 #~ msgstr "guarani"
 
-#~ msgid "German; Swiss"
-#~ msgstr ""
-
 #~ msgid "Gujarati"
 #~ msgstr "gudzsarati"
 
-#~ msgid "Gwichʼin"
-#~ msgstr ""
-
 #~ msgid "Haida"
 #~ msgstr "haida"
-
-#~ msgid "Creole; Haitian"
-#~ msgstr ""
 
 #~ msgid "Hausa"
 #~ msgstr "hausza"
@@ -2458,9 +2433,6 @@ msgstr "Utolsó letöltések"
 #~ msgid "Croatian"
 #~ msgstr "horvát"
 
-#~ msgid "Sorbian; Upper"
-#~ msgstr ""
-
 #~ msgid "Hungarian"
 #~ msgstr "Magyar"
 
@@ -2478,9 +2450,6 @@ msgstr "Utolsó letöltések"
 
 #~ msgid "Ido"
 #~ msgstr "ido"
-
-#~ msgid "Yi; Sichuan"
-#~ msgstr ""
 
 #~ msgid "Inuktitut"
 #~ msgstr "inuktitut"
@@ -2533,12 +2502,6 @@ msgstr "Utolsó letöltések"
 #~ msgid "Kachin"
 #~ msgstr "kachin"
 
-#~ msgid "Kalaallisut"
-#~ msgstr ""
-
-#~ msgid "Kamba (Kenya)"
-#~ msgstr ""
-
 #~ msgid "Kannada"
 #~ msgstr "kannada"
 
@@ -2563,9 +2526,6 @@ msgstr "Utolsó letöltések"
 #~ msgid "Khasi"
 #~ msgstr "kazi"
 
-#~ msgid "Khmer; Central"
-#~ msgstr ""
-
 #~ msgid "Khotanese"
 #~ msgstr "kotáni"
 
@@ -2580,9 +2540,6 @@ msgstr "Utolsó letöltések"
 
 #~ msgid "Kimbundu"
 #~ msgstr "kimbundu"
-
-#~ msgid "Konkani (macrolanguage)"
-#~ msgstr ""
 
 #~ msgid "Komi"
 #~ msgstr "komi"
@@ -2641,9 +2598,6 @@ msgstr "Utolsó letöltések"
 #~ msgid "Lezghian"
 #~ msgstr "lezgi"
 
-#~ msgid "Limburgan"
-#~ msgstr ""
-
 #~ msgid "Lingala"
 #~ msgstr "lingala"
 
@@ -2655,9 +2609,6 @@ msgstr "Utolsó letöltések"
 
 #~ msgid "Lozi"
 #~ msgstr "lozi"
-
-#~ msgid "Luxembourgish"
-#~ msgstr ""
 
 #~ msgid "Luba-Lulua"
 #~ msgstr "luba-lulua"
@@ -2686,9 +2637,6 @@ msgstr "Utolsó letöltések"
 #~ msgid "Magahi"
 #~ msgstr "magahi"
 
-#~ msgid "Marshallese"
-#~ msgstr ""
-
 #~ msgid "Maithili"
 #~ msgstr "maithili"
 
@@ -2713,20 +2661,11 @@ msgstr "Utolsó letöltések"
 #~ msgid "Mandar"
 #~ msgstr "mandar"
 
-#~ msgid "Mende (Sierra Leone)"
-#~ msgstr ""
-
 #~ msgid "Irish; Middle (900-1200)"
 #~ msgstr "közép-ír (900-1200)"
 
-#~ msgid "Mi'kmaq"
-#~ msgstr ""
-
 #~ msgid "Minangkabau"
 #~ msgstr "minangkabau"
-
-#~ msgid "Uncoded languages"
-#~ msgstr ""
 
 #~ msgid "Macedonian"
 #~ msgstr "macedón"
@@ -2755,9 +2694,6 @@ msgstr "Utolsó letöltések"
 #~ msgid "Maori"
 #~ msgstr "maori"
 
-#~ msgid "Malay (macrolanguage)"
-#~ msgstr ""
-
 #~ msgid "Multiple languages"
 #~ msgstr "több nyelv"
 
@@ -2782,9 +2718,6 @@ msgstr "Utolsó letöltések"
 #~ msgid "Nauru"
 #~ msgstr "nauru"
 
-#~ msgid "Navajo"
-#~ msgstr ""
-
 #~ msgid "Ndebele; South"
 #~ msgstr "ndebele (déli)"
 
@@ -2794,14 +2727,8 @@ msgstr "Utolsó letöltések"
 #~ msgid "Ndonga"
 #~ msgstr "ndonga"
 
-#~ msgid "German; Low"
-#~ msgstr ""
-
 #~ msgid "Nepali"
 #~ msgstr "nepáli"
-
-#~ msgid "Bhasa; Nepal"
-#~ msgstr ""
 
 #~ msgid "Nias"
 #~ msgstr "nias"
@@ -2815,9 +2742,6 @@ msgstr "Utolsó letöltések"
 #~ msgid "Norwegian Nynorsk"
 #~ msgstr "norvég (nynorsk)"
 
-#~ msgid "Norwegian Bokmål"
-#~ msgstr ""
-
 #~ msgid "Nogai"
 #~ msgstr "nogai"
 
@@ -2827,17 +2751,11 @@ msgstr "Utolsó letöltések"
 #~ msgid "Norwegian"
 #~ msgstr "norvég"
 
-#~ msgid "N'Ko"
-#~ msgstr ""
-
 #~ msgid "Sotho; Northern"
 #~ msgstr "sotho (északi)"
 
 #~ msgid "Newari; Old"
 #~ msgstr "newari; ónewari"
-
-#~ msgid "Nyanja"
-#~ msgstr ""
 
 #~ msgid "Nyamwezi"
 #~ msgstr "nyamwezi"
@@ -2851,9 +2769,6 @@ msgstr "Utolsó letöltések"
 #~ msgid "Nzima"
 #~ msgstr "nzima"
 
-#~ msgid "Occitan (post 1500)"
-#~ msgstr ""
-
 #~ msgid "Ojibwa"
 #~ msgstr "odzsibwa"
 
@@ -2865,9 +2780,6 @@ msgstr "Utolsó letöltések"
 
 #~ msgid "Osage"
 #~ msgstr "oszage"
-
-#~ msgid "Ossetian"
-#~ msgstr ""
 
 #~ msgid "Turkish; Ottoman (1500-1928)"
 #~ msgstr "török (ottomán) (1500-1928)"
@@ -2881,17 +2793,11 @@ msgstr "Utolsó letöltések"
 #~ msgid "Pampanga"
 #~ msgstr "pampanga"
 
-#~ msgid "Panjabi"
-#~ msgstr ""
-
 #~ msgid "Papiamento"
 #~ msgstr "papiamento"
 
 #~ msgid "Palauan"
 #~ msgstr "palaui"
-
-#~ msgid "Persian; Old (ca. 600-400 B.C.)"
-#~ msgstr ""
 
 #~ msgid "Phoenician"
 #~ msgstr "főníciai"
@@ -2923,12 +2829,6 @@ msgstr "Utolsó letöltések"
 #~ msgid "Rapanui"
 #~ msgstr "rapanui"
 
-#~ msgid "Maori; Cook Islands"
-#~ msgstr ""
-
-#~ msgid "Romansh"
-#~ msgstr ""
-
 #~ msgid "Romany"
 #~ msgstr "roma"
 
@@ -2937,9 +2837,6 @@ msgstr "Utolsó letöltések"
 
 #~ msgid "Rundi"
 #~ msgstr "rundi"
-
-#~ msgid "Romanian; Macedo-"
-#~ msgstr ""
 
 #~ msgid "Russian"
 #~ msgstr "orosz"
@@ -2983,32 +2880,17 @@ msgstr "Utolsó letöltések"
 #~ msgid "Sidamo"
 #~ msgstr "szidamo"
 
-#~ msgid "Sinhala"
-#~ msgstr ""
-
 #~ msgid "Slovak"
 #~ msgstr "szlovák"
 
 #~ msgid "Slovenian"
 #~ msgstr "szlovén"
 
-#~ msgid "Sami; Southern"
-#~ msgstr ""
-
-#~ msgid "Sami; Northern"
-#~ msgstr ""
-
 #~ msgid "Lule Sami"
 #~ msgstr "lule szami"
 
-#~ msgid "Sami; Inari"
-#~ msgstr ""
-
 #~ msgid "Samoan"
 #~ msgstr "szamoai"
-
-#~ msgid "Sami; Skolt"
-#~ msgstr ""
 
 #~ msgid "Shona"
 #~ msgstr "shona"
@@ -3037,9 +2919,6 @@ msgstr "Utolsó letöltések"
 #~ msgid "Sardinian"
 #~ msgstr "szardíniai"
 
-#~ msgid "Sranan Tongo"
-#~ msgstr ""
-
 #~ msgid "Serbian"
 #~ msgstr "szerb"
 
@@ -3061,14 +2940,8 @@ msgstr "Utolsó letöltések"
 #~ msgid "Sumerian"
 #~ msgstr "sumér"
 
-#~ msgid "Swahili (macrolanguage)"
-#~ msgstr ""
-
 #~ msgid "Swedish"
 #~ msgstr "svéd"
-
-#~ msgid "Syriac; Classical"
-#~ msgstr ""
 
 #~ msgid "Syriac"
 #~ msgstr "szír"
@@ -3114,9 +2987,6 @@ msgstr "Utolsó letöltések"
 
 #~ msgid "Tokelau"
 #~ msgstr "tokelau"
-
-#~ msgid "Klingon"
-#~ msgstr ""
 
 #~ msgid "Tlingit"
 #~ msgstr "tlingit"
@@ -3199,12 +3069,6 @@ msgstr "Utolsó letöltések"
 #~ msgid "Votic"
 #~ msgstr "vót"
 
-#~ msgid "Wolaytta"
-#~ msgstr ""
-
-#~ msgid "Waray (Philippines)"
-#~ msgstr ""
-
 #~ msgid "Washo"
 #~ msgstr "washo"
 
@@ -3213,9 +3077,6 @@ msgstr "Utolsó letöltések"
 
 #~ msgid "Wolof"
 #~ msgstr "wolof"
-
-#~ msgid "Kalmyk"
-#~ msgstr ""
 
 #~ msgid "Xhosa"
 #~ msgstr "xhosa"
@@ -3235,9 +3096,6 @@ msgstr "Utolsó letöltések"
 #~ msgid "Zapotec"
 #~ msgstr "Zapoték"
 
-#~ msgid "Blissymbols"
-#~ msgstr ""
-
 #~ msgid "Zenaga"
 #~ msgstr "zenaga"
 
@@ -3252,10 +3110,3 @@ msgstr "Utolsó letöltések"
 
 #~ msgid "Zuni"
 #~ msgstr "zuni"
-
-#~ msgid "No linguistic content"
-#~ msgstr ""
-
-#~ msgid "Zaza"
-#~ msgstr ""
-
