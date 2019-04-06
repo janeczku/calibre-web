@@ -12,8 +12,9 @@
     <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
     <link href="{{ url_for('static', filename='css/libs/bootstrap.min.css') }}" rel="stylesheet" media="screen">
     <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet" media="screen">
-    {% if g.user.get_theme == 1 %}
-       <link href="{{ url_for('static', filename='css/caliBlur-style.css') }}" rel="stylesheet" media="screen">
+    <link href="{{ url_for('static', filename='css/upload.css') }}" rel="stylesheet" media="screen">
+    {% if g.current_theme == 1 %}
+       <link href="{{ url_for('static', filename='css/caliBlur.min.css') }}" rel="stylesheet" media="screen">
     {% endif %}
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -24,7 +25,7 @@
 
     {% block header %}{% endblock %}
   </head>
-  <body class="{{ page }}">
+  <body class="{{ page }}" data-text="{{_('Home')}}" data-textback="{{_('Back')}}">
     <!-- Static navbar -->
     <div class="navbar navbar-default navbar-static-top" role="navigation">
       <div class="container-fluid">
@@ -61,21 +62,22 @@
                   <li>
                     <form id="form-upload" class="navbar-form" action="{{ url_for('upload') }}" method="post" enctype="multipart/form-data">
                       <div class="form-group">
-                        <span class="btn btn-default btn-file">{{_('Upload')}}<input id="btn-upload" name="btn-upload" type="file" multiple></span>
+                        <span class="btn btn-default btn-file">{{_('Upload')}}<input id="btn-upload" name="btn-upload"
+                        type="file" accept="{% for format in accept %}.{{format}}{{ ',' if not loop.last }}{% endfor %}" multiple></span>
                       </div>
                     </form>
                   </li>
                 {% endif %}
               {% endif %}
-              {% if g.user.role_admin() %}
-                <li><a id="top_tasks" href="{{url_for('get_tasks_status')}}"><span class="glyphicon glyphicon-tasks"></span><span class="hidden-sm"> {{_('Tasks')}}</span></a></li>
-              {% endif %}
-              {% if g.user.role_admin() %}
-                <li><a id="top_admin" href="{{url_for('admin')}}"><span class="glyphicon glyphicon-dashboard"></span><span class="hidden-sm"> {{_('Admin')}}</span></a></li>
-              {% endif %}
-              <li><a id="top_user" href="{{url_for('profile')}}"><span class="glyphicon glyphicon-user"></span><span class="hidden-sm"> {{g.user.nickname}}</span></a></li>
               {% if not g.user.is_anonymous %}
-              <li><a id="logout" href="{{url_for('logout')}}"><span class="glyphicon glyphicon-log-out"></span><span class="hidden-sm"> {{_('Logout')}}</span></a></li>
+                <li><a id="top_tasks" href="{{url_for('get_tasks_status')}}"><span class="glyphicon glyphicon-tasks"></span><span class="hidden-sm">{{_('Tasks')}}</span></a></li>
+              {% endif %}
+              {% if g.user.role_admin() %}
+                <li><a id="top_admin" data-text="{{_('Settings')}}" href="{{url_for('admin')}}"><span class="glyphicon glyphicon-dashboard"></span><span class="hidden-sm">{{_('Admin')}}</span></a></li>
+              {% endif %}
+              <li><a id="top_user" data-text="{{_('Account')}}" href="{{url_for('profile')}}"><span class="glyphicon glyphicon-user"></span><span class="hidden-sm">{{g.user.nickname}}</span></a></li>
+              {% if not g.user.is_anonymous %}
+              <li><a id="logout" href="{{url_for('logout')}}"><span class="glyphicon glyphicon-log-out"></span><span class="hidden-sm">{{_('Logout')}}</span></a></li>
               {% endif %}
             {% endif %}
             {% if g.allow_registration and not g.user.is_authenticated %}
@@ -103,14 +105,14 @@
       </div>
       {%endif%}
     {% endfor %}
-    <div id="loader" hidden="true">
-      <center>
-        <h3>{{_('Uploading...')}}</h3>
-        <span>{{_("please don't refresh the page")}}</span>.
-        <br />
-        <img src="{{ url_for('static', filename='img/loader.gif') }}">
-      </center>
-    </div>
+    {% if g.current_theme == 1 %}
+      <div id="loader" hidden="true">
+        <center>
+          <h3>{{_('Uploading...')}}</h3>
+          <span>{{_("please don't refresh the page")}}</span>.
+        </center>
+      </div>
+    {%endif%}
     <div class="container-fluid">
       <div class="row-fluid">
         {% if g.user.is_authenticated or g.user.is_anonymous %}
@@ -159,15 +161,18 @@
               {% if g.user.show_author() %}
               <li id="nav_author" {% if page == 'author' %}class="active"{% endif %}><a href="{{url_for('author_list')}}"><span class="glyphicon glyphicon-user"></span>{{_('Authors')}}</a></li>
               {%endif%}
+              {% if g.user.show_publisher() %}
+              <li id="nav_publisher" {% if page == 'publisher' %}class="active"{% endif %}><a href="{{url_for('publisher_list')}}"><span class="glyphicon glyphicon-text-size"></span>{{_('Publishers')}}</a></li>
+              {%endif%}
               {% if g.user.filter_language() == 'all' and g.user.show_language() %}
                 <li id="nav_lang" {% if page == 'language' %}class="active"{% endif %}><a href="{{url_for('language_overview')}}"><span class="glyphicon glyphicon-flag"></span>{{_('Languages')}} </a></li>
               {%endif%}
               {% if g.user.is_authenticated or g.user.is_anonymous %}
-                <li class="nav-head hidden-xs">{{_('Public Shelves')}}</li>
+                <li class="nav-head hidden-xs public-shelves">{{_('Public Shelves')}}</li>
                 {% for shelf in g.public_shelfes %}
                   <li><a href="{{url_for('show_shelf', shelf_id=shelf.id)}}"><span class="glyphicon glyphicon-list public_shelf"></span>{{shelf.name|shortentitle(40)}}</a></li>
                 {% endfor %}
-                <li class="nav-head hidden-xs">{{_('Your Shelves')}}</li>
+                <li class="nav-head hidden-xs your-shelves">{{_('Your Shelves')}}</li>
                 {% for shelf in g.user.shelf %}
                   <li><a href="{{url_for('show_shelf', shelf_id=shelf.id)}}"><span class="glyphicon glyphicon-list private_shelf"></span>{{shelf.name|shortentitle(40)}}</a></li>
                 {% endfor %}
@@ -237,13 +242,26 @@
     <script src="{{ url_for('static', filename='js/libs/plugins.js') }}"></script>
     <script src="{{ url_for('static', filename='js/libs/jquery.form.js') }}"></script>
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/uploadprogress.js') }}"> </script>
+    {% if g.current_theme == 1 %}
+      <script src="{{ url_for('static', filename='js/libs/jquery.visible.min.js') }}"></script>
+      <script src="{{ url_for('static', filename='js/libs/compromise.min.js') }}"></script>
+      <script src="{{ url_for('static', filename='js/libs/readmore.min.js') }}"></script>
+      <script src="{{ url_for('static', filename='js/caliBlur.js') }}"></script>
+    {% endif %}
     <script type="text/javascript">
-    $(function () {
-      $("#btn-upload").change(function () {
-        $("#loader").show();
-        $("#form-upload").submit();
-      });
-    });
+        $(function() {
+            $("#form-upload").uploadprogress({
+              redirect_url: "{{ url_for('index')}}",
+              uploadedMsg: "{{_('Upload done, processing, please wait...')}}",
+              modalTitle: "{{_('Uploading...')}}",
+              modalFooter: "{{_('Close')}}",
+              modalTitleFailed: "{{_('Error')}}"
+            });
+            $("#btn-upload").change(function() {
+                $("#form-upload").submit();
+            });
+        });
     </script>
 
     {% block js %}{% endblock %}

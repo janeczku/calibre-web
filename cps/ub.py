@@ -1,6 +1,23 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+#  This file is part of the Calibre-Web (https://github.com/janeczku/calibre-web)
+#    Copyright (C) 2012-2019 mutschler, jkrehm, cervinko, janeczku, OzzieIsaacs, csitko
+#                            ok11, issmirnov, idalin
+#
+#  This program is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License as published by
+#  the Free Software Foundation, either version 3 of the License, or
+#  (at your option) any later version.
+#
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU General Public License for more details.
+#
+#  You should have received a copy of the GNU General Public License
+#  along with this program. If not, see <http://www.gnu.org/licenses/>.
+
 from sqlalchemy import *
 from sqlalchemy import exc
 from sqlalchemy.ext.declarative import declarative_base
@@ -41,10 +58,20 @@ SIDEBAR_READ_AND_UNREAD = 256
 SIDEBAR_RECENT = 512
 SIDEBAR_SORTED = 1024
 MATURE_CONTENT = 2048
+SIDEBAR_PUBLISHER = 4096
 
 DEFAULT_PASS = "admin123"
-DEFAULT_PORT = int(os.environ.get("CALIBRE_PORT", 8083))
+try:
+    DEFAULT_PORT = int(os.environ.get("CALIBRE_PORT", 8083))
+except ValueError:
+    print ('Environmentvariable CALIBRE_PORT is set to an invalid value: ' +
+           os.environ.get("CALIBRE_PORT", 8083) + ', faling back to default (8083)')
+    DEFAULT_PORT = 8083
 
+UPDATE_STABLE = 0
+AUTO_UPDATE_STABLE = 1
+UPDATE_NIGHTLY = 2
+AUTO_UPDATE_NIGHTLY = 4
 
 class UserBase:
 
@@ -102,10 +129,6 @@ class UserBase:
     def is_anonymous(self):
         return False
 
-    @property
-    def get_theme(self):
-        return self.theme
-
     def get_id(self):
         return str(self.id)
 
@@ -135,6 +158,9 @@ class UserBase:
 
     def show_author(self):
         return bool((self.sidebar_view is not None)and(self.sidebar_view & SIDEBAR_AUTHOR == SIDEBAR_AUTHOR))
+
+    def show_publisher(self):
+        return bool((self.sidebar_view is not None)and(self.sidebar_view & SIDEBAR_PUBLISHER == SIDEBAR_PUBLISHER))
 
     def show_best_rated_books(self):
         return bool((self.sidebar_view is not None)and(self.sidebar_view & SIDEBAR_BEST_RATED == SIDEBAR_BEST_RATED))
@@ -166,7 +192,6 @@ class User(UserBase, Base):
     sidebar_view = Column(Integer, default=1)
     default_language = Column(String(3), default="all")
     mature_content = Column(Boolean, default=True)
-    theme = Column(Integer, default=0)
 
 
 # Class for anonymous user is derived from User base and completly overrides methods and properties for the
@@ -259,7 +284,7 @@ class Downloads(Base):
     def __repr__(self):
         return '<Download %r' % self.book_id
 
-        
+
 # Baseclass representing allowed domains for registration
 class Registration(Base):
     __tablename__ = 'registration'
@@ -268,8 +293,8 @@ class Registration(Base):
     domain = Column(String)
 
     def __repr__(self):
-        return u"<Registration('{0}')>".format(self.domain)      
-        
+        return u"<Registration('{0}')>".format(self.domain)
+
 
 # Baseclass for representing settings in app.db with email server settings and Calibre database settings
 # (application settings)
@@ -290,6 +315,7 @@ class Settings(Base):
     config_calibre_web_title = Column(String, default=u'Calibre-Web')
     config_books_per_page = Column(Integer, default=60)
     config_random_books = Column(Integer, default=4)
+    config_authors_max = Column(Integer, default=0)
     config_read_column = Column(Integer, default=0)
     config_title_regex = Column(String, default=u'^(A|The|An|Der|Die|Das|Den|Ein|Eine|Einen|Dem|Des|Einem|Eines)\s+')
     config_log_level = Column(SmallInteger, default=logging.INFO)
@@ -297,7 +323,7 @@ class Settings(Base):
     config_anonbrowse = Column(SmallInteger, default=0)
     config_public_reg = Column(SmallInteger, default=0)
     config_default_role = Column(SmallInteger, default=0)
-    config_default_show = Column(SmallInteger, default=2047)
+    config_default_show = Column(SmallInteger, default=6143)
     config_columns_to_ignore = Column(String)
     config_use_google_drive = Column(Boolean)
     config_google_drive_folder = Column(String)
@@ -312,6 +338,8 @@ class Settings(Base):
     config_converterpath = Column(String)
     config_calibre = Column(String)
     config_rarfile_location = Column(String)
+    config_theme = Column(Integer, default=0)
+    config_updatechannel = Column(Integer, default=0)
 
     def __repr__(self):
         pass
@@ -353,6 +381,7 @@ class Config:
         self.config_calibre_web_title = data.config_calibre_web_title
         self.config_books_per_page = data.config_books_per_page
         self.config_random_books = data.config_random_books
+        self.config_authors_max = data.config_authors_max
         self.config_title_regex = data.config_title_regex
         self.config_read_column = data.config_read_column
         self.config_log_level = data.config_log_level
@@ -385,10 +414,16 @@ class Config:
         if data.config_logfile:
             self.config_logfile = data.config_logfile
         self.config_rarfile_location = data.config_rarfile_location
+        self.config_theme = data.config_theme
+        self.config_updatechannel = data.config_updatechannel
 
     @property
     def get_main_dir(self):
         return self.config_main_dir
+
+    @property
+    def get_update_channel(self):
+        return self.config_updatechannel
 
     def get_config_certfile(self):
         if cli.certfilepath:
@@ -485,6 +520,10 @@ class Config:
         return bool((self.config_default_show is not None) and
                     (self.config_default_show & SIDEBAR_AUTHOR == SIDEBAR_AUTHOR))
 
+    def show_publisher(self):
+        return bool((self.config_default_show is not None) and
+                    (self.config_default_show & SIDEBAR_PUBLISHER == SIDEBAR_PUBLISHER))
+
     def show_best_rated_books(self):
         return bool((self.config_default_show is not None) and
                     (self.config_default_show & SIDEBAR_BEST_RATED == SIDEBAR_BEST_RATED))
@@ -529,6 +568,8 @@ class Config:
 # everywhere to curent should work. Migration is done by checking if relevant coloums are existing, and than adding
 # rows with SQL commands
 def migrate_Database():
+    if not engine.dialect.has_table(engine.connect(), "book_read_link"):
+        ReadBook.__table__.create(bind=engine)
     if not engine.dialect.has_table(engine.connect(), "bookmark"):
         Bookmark.__table__.create(bind=engine)
     if not engine.dialect.has_table(engine.connect(), "registration"):
@@ -549,7 +590,7 @@ def migrate_Database():
         conn.execute("ALTER TABLE Settings ADD column `config_use_google_drive` INTEGER DEFAULT 0")
         conn.execute("ALTER TABLE Settings ADD column `config_google_drive_folder` String DEFAULT ''")
         conn.execute("ALTER TABLE Settings ADD column `config_google_drive_watch_changes_response` String DEFAULT ''")
-        session.commit()        
+        session.commit()
     try:
         session.query(exists().where(Settings.config_columns_to_ignore)).scalar()
     except exc.OperationalError:
@@ -561,6 +602,12 @@ def migrate_Database():
     except exc.OperationalError:  # Database is not compatible, some rows are missing
         conn = engine.connect()
         conn.execute("ALTER TABLE Settings ADD column `config_default_role` SmallInteger DEFAULT 0")
+        session.commit()
+    try:
+        session.query(exists().where(Settings.config_authors_max)).scalar()
+    except exc.OperationalError:  # Database is not compatible, some rows are missing
+        conn = engine.connect()
+        conn.execute("ALTER TABLE Settings ADD column `config_authors_max` INTEGER DEFAULT 0")
         session.commit()
     try:
         session.query(exists().where(BookShelf.order)).scalar()
@@ -602,12 +649,7 @@ def migrate_Database():
     except exc.OperationalError:
         conn = engine.connect()
         conn.execute("ALTER TABLE user ADD column `mature_content` INTEGER DEFAULT 1")
-    try:
-        session.query(exists().where(User.theme)).scalar()
-    except exc.OperationalError:
-        conn = engine.connect()
-        conn.execute("ALTER TABLE user ADD column `theme` INTEGER DEFAULT 0")
-        session.commit()
+
     if session.query(User).filter(User.role.op('&')(ROLE_ANONYMOUS) == ROLE_ANONYMOUS).first() is None:
         create_anonymous_user()
     try:
@@ -660,6 +702,19 @@ def migrate_Database():
         conn.execute("ALTER TABLE Settings ADD column `config_converterpath` String DEFAULT ''")
         conn.execute("ALTER TABLE Settings ADD column `config_calibre` String DEFAULT ''")
         session.commit()
+    try:
+        session.query(exists().where(Settings.config_theme)).scalar()
+    except exc.OperationalError:  # Database is not compatible, some rows are missing
+        conn = engine.connect()
+        conn.execute("ALTER TABLE Settings ADD column `config_theme` INTEGER DEFAULT 0")
+        session.commit()
+    try:
+        session.query(exists().where(Settings.config_updatechannel)).scalar()
+    except exc.OperationalError:  # Database is not compatible, some rows are missing
+        conn = engine.connect()
+        conn.execute("ALTER TABLE Settings ADD column `config_updatechannel` INTEGER DEFAULT 0")
+        session.commit()
+
 
     # Remove login capability of user Guest
     conn = engine.connect()
@@ -740,7 +795,7 @@ def create_admin_user():
     user.role = ROLE_USER + ROLE_ADMIN + ROLE_DOWNLOAD + ROLE_UPLOAD + ROLE_EDIT + ROLE_DELETE_BOOKS + ROLE_PASSWD
     user.sidebar_view = DETAIL_RANDOM + SIDEBAR_LANGUAGE + SIDEBAR_SERIES + SIDEBAR_CATEGORY + SIDEBAR_HOT + \
             SIDEBAR_RANDOM + SIDEBAR_AUTHOR + SIDEBAR_BEST_RATED + SIDEBAR_READ_AND_UNREAD + SIDEBAR_RECENT + \
-            SIDEBAR_SORTED + MATURE_CONTENT
+            SIDEBAR_SORTED + MATURE_CONTENT + SIDEBAR_PUBLISHER
 
     user.password = generate_password_hash(DEFAULT_PASS)
 

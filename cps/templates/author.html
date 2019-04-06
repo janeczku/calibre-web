@@ -29,20 +29,32 @@
       <div class="cover">
         <a href="{{ url_for('show_book', book_id=entry.id) }}">
           {% if entry.has_cover %}
-          <img src="{{ url_for('get_cover', cover_path=entry.path.replace('\\','/')) }}" />
+          <img src="{{ url_for('get_cover', book_id=entry.id) }}" />
           {% else %}
           <img src="{{ url_for('static', filename='generic_cover.jpg') }}" />
           {% endif %}
         </a>
       </div>
       <div class="meta">
-        <p class="title">{{entry.title|shortentitle}}</p>
+        <a href="{{ url_for('show_book', book_id=entry.id) }}">
+          <p class="title">{{entry.title|shortentitle}}</p>
+        </a>
         <p class="author">
           {% for author in entry.authors %}
-          <a href="{{url_for('author', book_id=author.id) }}">{{author.name.replace('|',',')}}</a>
-          {% if not loop.last %}
-          &amp;
-          {% endif %}
+            {% if loop.index > g.config_authors_max and g.config_authors_max != 0 %}
+              {% if not loop.first %}
+                <span class="author-hidden-divider">&amp;</span>
+			  {% endif %}
+              <a class="author-name author-hidden" href="{{url_for('author', book_id=author.id) }}">{{author.name.replace('|',',')|shortentitle(30)}}</a>
+              {% if loop.last %}
+                <a href="#" class="author-expand" data-authors-max="{{g.config_authors_max}}" data-collapse-caption="({{_('reduce')}})">(...)</a>
+              {% endif %}
+            {% else %}
+              {% if not loop.first %}
+                <span>&amp;</span>
+              {% endif %}
+              <a class="author-name" href="{{url_for('author', book_id=author.id) }}">{{author.name.replace('|',',')|shortentitle(30)}}</a>
+            {% endif %}
           {% endfor %}
         </p>
         {% if entry.ratings.__len__() > 0 %}
@@ -78,13 +90,15 @@
       <div class="meta">
         <p class="title">{{entry.title|shortentitle}}</p>
         <p class="author">
-          {% for author in entry.authors %}
-          <a href="https://www.goodreads.com/author/show/{{ author.gid }}" target="_blank" rel="noopener">
-            {{author.name.replace('|',',')}}
-          </a>
-          {% if not loop.last %}
-          &amp;
-          {% endif %}
+		  {% for author in entry.authors %}
+			{% if loop.index > g.config_authors_max and g.config_authors_max != 0 %}
+				<a class="author-name author-hidden" href="https://www.goodreads.com/author/show/{{ author.gid }}" target="_blank" rel="noopener">{{author.name.replace('|',',')}}</a>
+				{% if loop.last %}
+					<a href="#" class="author-expand" data-authors-max="{{g.config_authors_max}}" data-collapse-caption="({{_('reduce')}})">(...)</a>
+				{% endif %}
+			{% else %}
+				<a class="author-name" href="https://www.goodreads.com/author/show/{{ author.gid }}" target="_blank" rel="noopener">{{author.name.replace('|',',')}}</a>
+		    {% endif %}
           {% endfor %}
         </p>
         <div class="rating">

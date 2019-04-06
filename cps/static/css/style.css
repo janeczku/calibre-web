@@ -5,6 +5,22 @@
   src: local('Grand Hotel'), local('GrandHotel-Regular'), url("fonts/GrandHotel-Regular.ttf") format('truetype');
 }
 
+html.http-error {
+  margin: 0;
+  height: 100%;
+}
+.http-error body {
+  margin: 0;
+  height: 100%;
+  display: table;
+  width: 100%;
+}
+.http-error body > div {
+  display: table-cell;
+  vertical-align: middle;
+  text-align: center;
+}
+
 body{background:#f2f2f2}body h2{font-weight:normal;color:#444}
 body { margin-bottom: 40px;}
 a{color: #45b29d}a:hover{color: #444;}
@@ -20,6 +36,11 @@ a{color: #45b29d}a:hover{color: #444;}
 .container-fluid .book .meta .title{font-weight:bold;font-size:15px;color:#444}
 .container-fluid .book .meta .author{font-size:12px;color:#999}
 .container-fluid .book .meta .rating{margin-top:5px}.rating .glyphicon-star{color:#999}.rating .glyphicon-star.good{color:#45b29d}
+
+.container-fluid .author .author-hidden, .container-fluid .author .author-hidden-divider {
+  display: none;
+}
+
 .navbar-brand{font-family: 'Grand Hotel', cursive; font-size: 35px; color: #45b29d !important;}
 .more-stuff{margin-top: 20px; padding-top: 20px; border-top: 1px solid #ccc}
 .more-stuff>li{margin-bottom: 10px;}
@@ -36,6 +57,7 @@ span.glyphicon.glyphicon-tags {padding-right: 5px;color: #999;vertical-align: te
     -moz-box-shadow: 0 5px 8px -6px #777;
     box-shadow: 0 5px 8px -6px #777;
 }
+
 .navbar-default .navbar-toggle .icon-bar {background-color: #000;}
 .navbar-default .navbar-toggle {border-color: #000;}
 .cover { margin-bottom: 10px;}
@@ -87,6 +109,16 @@ input.pill:not(:checked) + label .glyphicon {
 
 .tags_click, .serie_click, .language_click {margin-right: 5px;}
 
+#meta-info {
+    height:600px;
+    overflow-y:scroll;
+}
+.media-list {
+    padding-right:15px;
+}
+.media-body p {
+    text-align: justify;
+}
 #meta-info img { max-height: 150px; max-width: 100px; cursor: pointer; }
 
 .padded-bottom { margin-bottom: 15px; }
@@ -104,3 +136,7 @@ input.pill:not(:checked) + label .glyphicon {
 .editable-cancel { margin-bottom: 0px !important; margin-left: 7px !important;}
 .editable-submit { margin-bottom: 0px !important;}
 
+.modal-body .comments {
+    max-height:300px;
+    overflow-y: auto;
+}
