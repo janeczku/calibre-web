@@ -28,6 +28,17 @@
           <input type="number" min="1" max="30" class="form-control" name="config_random_books" id="config_random_books" value="{% if content.config_random_books != None %}{{ content.config_random_books }}{% endif %}" autocomplete="off">
         </div>
         <div class="form-group">
+          <label for="config_authors_max">{{_('No. of authors to show before hiding (0=disable hiding)')}}</label>
+          <input type="number" min="0" max="999" class="form-control" name="config_authors_max" id="config_authors_max" value="{% if content.config_authors_max != None %}{{ content.config_authors_max }}{% endif %}" autocomplete="off">
+        </div>
+        <div class="form-group">
+        <label for="config_theme">{{_('Theme')}}</label>
+            <select name="config_theme" id="config_theme" class="form-control">
+                <option value="0" {% if content.config_theme == 0 %}selected{% endif %}>{{ _("Standard Theme") }}</option>
+                <option value="1" {% if content.config_theme == 1 %}selected{% endif %}>{{ _("caliBlur! Dark Theme") }}</option>
+            </select>
+        </div>
+        <div class="form-group">
           <label for="config_columns_to_ignore">{{_('Regular expression for ignoring columns')}}</label>
           <input type="text" class="form-control" name="config_columns_to_ignore" id="config_columns_to_ignore" value="{% if content.config_columns_to_ignore != None %}{{ content.config_columns_to_ignore }}{% endif %}" autocomplete="off">
         </div>
@@ -142,6 +153,10 @@
           <div class="form-group">
               <input type="checkbox" name="show_author" id="show_author" {% if content.show_author() %}checked{% endif %}>
               <label for="show_author">{{_('Show author selection')}}</label>
+          </div>
+          <div class="form-group">
+              <input type="checkbox" name="show_publisher" id="show_publisher" {% if content.show_publisher() %}checked{% endif %}>
+              <label for="show_publisher">{{_('Show publisher selection')}}</label>
           </div>
           <div class="form-group">
               <input type="checkbox" name="show_read_and_unread" id="show_read_and_unread" {% if content.show_read_and_unread() %}checked{% endif %}>

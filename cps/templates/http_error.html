@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html class="http-error" lang="{{ g.user.locale }}">
+  <head>
+    <title>{{ instance }} | HTTP Error ({{ error_code }})</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+
+    <!-- Bootstrap -->
+    <link rel="apple-touch-icon" sizes="140x140" href="{{ url_for('static', filename='favicon.ico') }}">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <link href="{{ url_for('static', filename='css/libs/bootstrap.min.css') }}" rel="stylesheet" media="screen">
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet" media="screen">
+    {% if g.current_theme == 1 %}
+       <link href="{{ url_for('static', filename='css/caliBlur.min.css') }}" rel="stylesheet" media="screen">
+    {% endif %}
+  </head>
+  <body>
+    <div class="container text-center">
+        <h1>{{ error_code }}</h1>
+        <h3>{{ error_name }}</h3>
+        <a href="{{url_for('index')}}" title="{{ _('Back to home') }}">{{_('Back to home')}}</a>
+    </div>
+  </body>
+</html>

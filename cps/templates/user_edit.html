@@ -16,7 +16,7 @@
     {% if ( g.user and g.user.role_passwd() or g.user.role_admin() ) and not content.role_anonymous() %}
       {% if g.user and g.user.role_admin() and g.allow_registration and not new_user and not profile %}
         <div class="btn btn-default" id="resend_password"><a href="{{url_for('reset_password', user_id = content.id) }}">{{_('Reset user Password')}}</a></div>
-      {% else %}            
+      {% else %}
         <div class="form-group">
           <label for="password">{{_('Password')}}</label>
           <input type="password" class="form-control" name="password" id="password" value="" autocomplete="off">
@@ -35,14 +35,6 @@
             {% endfor %}
         </select>
     </div>
-    <div class="form-group">
-    <label for="theme">{{_('Theme')}}</label>
-        <select name="theme" id="theme" class="form-control">
-            <option value="0" {% if content.get_theme == 0 %}selected{% endif %}>{{ _("Standard Theme") }}</option>
-            <option value="1" {% if content.get_theme == 1 %}selected{% endif %}>{{ _("caliBlur! Dark Theme (Beta)") }}</option>
-        </select>
-    </div>
-
     <div class="form-group">
       <label for="default_language">{{_('Show books with language')}}</label>
         <select name="default_language" id="default_language" class="form-control">
@@ -90,9 +82,15 @@
           <label for="show_author">{{_('Show author selection')}}</label>
       </div>
       <div class="form-group">
+          <input type="checkbox" name="show_publisher" id="show_publisher" {% if content.show_publisher() %}checked{% endif %}>
+          <label for="show_publisher">{{_('Show publisher selection')}}</label>
+      </div>
+      {% if not content.role_anonymous() %}
+      <div class="form-group">
           <input type="checkbox" name="show_read_and_unread" id="show_read_and_unread" {% if content.show_read_and_unread() %}checked{% endif %}>
           <label for="show_read_and_unread">{{_('Show read and unread')}}</label>
       </div>
+      {% endif %}
       <div class="form-group">
           <input type="checkbox" name="show_detail_random" id="show_detail_random" {% if content.show_detail_random() %}checked{% endif %}>
           <label for="show_detail_random">{{_('Show random books in detail view')}}</label>
@@ -159,7 +157,7 @@
     {% for entry in downloads %}
       <div class="col-sm-2">
         <a class="pull-left" href="{{ url_for('show_book', book_id=entry.id) }}">
-          <img class="media-object" width="100" src="{{ url_for('get_cover', cover_path=entry.path.replace('\\','/')) }}" alt="...">
+          <img class="media-object" width="100" src="{{ url_for('get_cover', book_id=entry.id) }}" alt="...">
         </a>
       </div>
     {% endfor %}
