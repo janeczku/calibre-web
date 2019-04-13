@@ -21,7 +21,7 @@ import zipfile
 from lxml import etree
 import os
 import uploader
-from iso639 import languages as isoLanguages
+import isoLanguages
 
 
 def extractCover(zipFile, coverFile, coverpath, tmp_file_name):
