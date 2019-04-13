@@ -40,7 +40,14 @@ import base64
 from sqlalchemy.sql.expression import text, func, true, false, not_
 import json
 import datetime
-from iso639 import languages as isoLanguages
+import isoLanguages
+from pytz import __version__ as pytzVersion
+from uuid import uuid4
+import os.path
+import sys
+import re
+import db
+from shutil import move, copyfile
 import gdriveutils
 from redirect import redirect_back
 from cps import lm, babel, ub, config, get_locale, language_table, app, db
@@ -196,7 +203,7 @@ def unconfigured(f):
 def download_required(f):
     @wraps(f)
     def inner(*args, **kwargs):
-        if current_user.role_download() or current_user.role_admin():
+        if current_user.role_download():
             return f(*args, **kwargs)
         abort(403)
 
