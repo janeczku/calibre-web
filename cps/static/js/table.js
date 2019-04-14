@@ -65,11 +65,12 @@ $(function() {
     });
 });
 
-/*function TableActions (value, row, index) {
+/* Function for deleting domain restrictions */
+function TableActions (value, row, index) {
     return [
         "<a class=\"danger remove\" data-toggle=\"modal\" data-target=\"#DeleteDomain\" data-domain-id=\"" + row.id
         + "\" title=\"Remove\">",
         "<i class=\"glyphicon glyphicon-trash\"></i>",
         "</a>"
     ].join("");
-}*/
+}

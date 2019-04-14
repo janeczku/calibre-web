@@ -468,9 +468,9 @@ class WorkerThread(threading.Thread):
         except (MemoryError) as e:
             self._handleError(u'Error sending email: ' + e.message)
             return None
-        except (smtplib.SMTPException) as e:
+        except (smtplib.SMTPException, smtplib.SMTPAuthenticationError) as e:
             if hasattr(e, "smtp_error"):
-                text = e.smtp_error.replace("\n",'. ')
+                text = e.smtp_error.decode('utf-8').replace("\n",'. ')
             elif hasattr(e, "message"):
                 text = e.message
             else:
@@ -495,7 +495,6 @@ class WorkerThread(threading.Thread):
 
     def _handleError(self, error_message):
         web.app.logger.error(error_message)
-        # self.queue[self.current]['status'] = STAT_FAIL
         self.UIqueue[self.current]['stat'] = STAT_FAIL
         self.UIqueue[self.current]['progress'] = "100 %"
         self.UIqueue[self.current]['runtime'] = self._formatRuntime(
@@ -503,7 +502,6 @@ class WorkerThread(threading.Thread):
         self.UIqueue[self.current]['message'] = error_message
 
     def _handleSuccess(self):
-        # self.queue[self.current]['status'] = STAT_FINISH_SUCCESS
         self.UIqueue[self.current]['stat'] = STAT_FINISH_SUCCESS
         self.UIqueue[self.current]['progress'] = "100 %"
         self.UIqueue[self.current]['runtime'] = self._formatRuntime(
