@@ -272,6 +272,7 @@ class Anonymous(AnonymousUserMixin, UserBase):
         self.locale = data.locale
         self.mature_content = data.mature_content
         self.anon_browse = settings.config_anonbrowse
+        self.kindle_mail = data.kindle_mail
 
     def role_admin(self):
         return False
