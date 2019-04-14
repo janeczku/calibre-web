@@ -49,7 +49,7 @@ class ReverseProxied(object):
         scheme = environ.get('HTTP_X_SCHEME', '')
         if scheme:
             environ['wsgi.url_scheme'] = scheme
-        servr = environ.get('HTTP_X_FORWARDED_SERVER', '')
+        servr = environ.get('HTTP_X_FORWARDED_HOST', '')
         if servr:
             environ['HTTP_HOST'] = servr
         return self.app(environ, start_response)
