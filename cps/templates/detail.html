@@ -40,7 +40,7 @@
             </div>
             {% endif %}
           {% endif %}
-            {% if g.user.kindle_mail and g.user.is_authenticated and kindle_list %}
+            {% if g.user.kindle_mail and kindle_list %}
               {% if kindle_list.__len__() == 1 %}
                 <a href="{{url_for('send_to_kindle', book_id=entry.id, book_format=kindle_list[0]['format'], convert=kindle_list[0]['convert'])}}" id="sendbtn" data-text="{{_('Send to Kindle')}}" class="btn btn-primary" role="button"><span class="glyphicon glyphicon-send"></span> {{kindle_list[0]['text']}}</a>
               {% else %}
