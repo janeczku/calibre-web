@@ -655,16 +655,23 @@ def get_search_results(term):
     q = list()
     authorterms = re.split("[, ]+", term)
     for authorterm in authorterms:
-        q.append(db.Books.authors.any(db.Authors.name.ilike("%" + authorterm + "%")))
+        q.append(db.Books.authors.any(db.or_(db.Authors.name.ilike("%" + authorterm + "%"),
+                                             db.Authors.name.ilike("%" + unidecode.unidecode(authorterm) + "%"))))
     db.session.connection().connection.connection.create_function("lower", 1, db.lcase)
-    db.Books.authors.any(db.Authors.name.ilike("%" + term + "%"))
+    db.Books.authors.any(db.or_(db.Authors.name.ilike("%" + term + "%"),
+                                db.Authors.name.ilike("%" + unidecode.unidecode(term) + "%")))
 
     return db.session.query(db.Books).filter(common_filters()).filter(
         db.or_(db.Books.tags.any(db.Tags.name.ilike("%" + term + "%")),
                db.Books.series.any(db.Series.name.ilike("%" + term + "%")),
                db.Books.authors.any(and_(*q)),
                db.Books.publishers.any(db.Publishers.name.ilike("%" + term + "%")),
-               db.Books.title.ilike("%" + term + "%"))).all()
+               db.Books.title.ilike("%" + term + "%"),
+               db.Books.tags.any(db.Tags.name.ilike("%" + unidecode.unidecode(term) + "%")),
+               db.Books.series.any(db.Series.name.ilike("%" + unidecode.unidecode(term) + "%")),
+               db.Books.publishers.any(db.Publishers.name.ilike("%" + unidecode.unidecode(term) + "%")),
+               db.Books.title.ilike("%" + unidecode.unidecode(term) + "%")
+               )).all()
 
 
 def get_unique_other_books(library_books, author_books):
