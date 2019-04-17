@@ -35,7 +35,6 @@ from flask_babel import gettext as _
 from flask_login import current_user
 from babel.dates import format_datetime
 from datetime import datetime
-from PIL import Image
 import shutil
 import requests
 try:
@@ -51,6 +50,12 @@ try:
     use_unidecode = True
 except ImportError:
     use_unidecode = False
+
+try:
+    from PIL import Image
+    use_PIL = True
+except ImportError:
+    use_PIL = False
 
 # Global variables
 # updater_thread = None
@@ -481,16 +486,17 @@ def save_cover(img, book_path):
         web.app.logger.error("Only jpg/jpeg/png/webp files are supported as coverfile")
         return False
 
-    # convert to jpg because calibre only supports jpg
-    if content_type in ('image/png', 'image/webp'):
-        if hasattr(img,'stream'):
-            imgc = Image.open(img.stream)
-        else:
-            imgc = Image.open(io.BytesIO(img.content))
-        im = imgc.convert('RGB')
-        tmp_bytesio = io.BytesIO()
-        im.save(tmp_bytesio, format='JPEG')
-        img._content = tmp_bytesio.getvalue()
+    if use_PIL:
+        # convert to jpg because calibre only supports jpg
+        if content_type in ('image/png', 'image/webp'):
+            if hasattr(img,'stream'):
+                imgc = Image.open(img.stream)
+            else:
+                imgc = Image.open(io.BytesIO(img.content))
+            im = imgc.convert('RGB')
+            tmp_bytesio = io.BytesIO()
+            im.save(tmp_bytesio, format='JPEG')
+            img._content = tmp_bytesio.getvalue()
 
     if ub.config.config_use_google_drive:
         tmpDir = gettempdir()
