@@ -112,6 +112,8 @@ class Identifiers(Base):
             return u"Google Books"
         elif self.type == "kobo":
             return u"Kobo"
+        if self.type == "lubimyczytac":
+            return u"Lubimyczytac"
         else:
             return self.type
 
@@ -130,6 +132,8 @@ class Identifiers(Base):
             return u"https://books.google.com/books?id={0}".format(self.val)
         elif self.type == "kobo":
             return u"https://www.kobo.com/ebook/{0}".format(self.val)
+        elif self.type == "lubimyczytac":
+            return u" http://lubimyczytac.pl/ksiazka/{0}".format(self.val)
         elif self.type == "url":
             return u"{0}".format(self.val)
         else:
