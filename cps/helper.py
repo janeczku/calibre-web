@@ -482,11 +482,11 @@ def save_cover_from_filestorage(filepath, saved_filename, img):
 # saves book cover to gdrive or locally
 def save_cover(img, book_path):
     content_type = img.headers.get('content-type')
-    if content_type not in ('image/jpeg', 'image/png', 'image/webp'):
-        web.app.logger.error("Only jpg/jpeg/png/webp files are supported as coverfile")
-        return False
 
     if use_PIL:
+        if content_type not in ('image/jpeg', 'image/png', 'image/webp'):
+            web.app.logger.error("Only jpg/jpeg/png/webp files are supported as coverfile")
+            return False
         # convert to jpg because calibre only supports jpg
         if content_type in ('image/png', 'image/webp'):
             if hasattr(img,'stream'):
@@ -497,6 +497,10 @@ def save_cover(img, book_path):
             tmp_bytesio = io.BytesIO()
             im.save(tmp_bytesio, format='JPEG')
             img._content = tmp_bytesio.getvalue()
+    else:
+        if content_type not in ('image/jpeg'):
+            web.app.logger.error("Only jpg/jpeg files are supported as coverfile")
+            return False
 
     if ub.config.config_use_google_drive:
         tmpDir = gettempdir()
