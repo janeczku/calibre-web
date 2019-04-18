@@ -201,9 +201,14 @@ lm.anonymous_user = ub.Anonymous
 app.secret_key = os.getenv('SECRET_KEY', 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT')
 db.setup_db()
 
-with open(os.path.join(config.get_main_dir, 'cps/translations/iso639.pickle'), 'rb') as f:
-    language_table = cPickle.load(f)
-
+try:
+    with open(os.path.join(config.get_main_dir, 'cps/translations/iso639.pickle'), 'rb') as f:
+        language_table = cPickle.load(f)
+except cPickle.UnpicklingError as error:
+    app.logger.error("Can't read file cps/translations/iso639.pickle: %s", error)
+    print("Can't read file cps/translations/iso639.pickle: %s" % error)
+    helper.global_WorkerThread.stop()
+    sys.exit(1)
 
 def is_gdrive_ready():
     return os.path.exists(os.path.join(config.get_main_dir, 'settings.yaml')) and \

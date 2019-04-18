@@ -64,6 +64,7 @@ except ImportError as e:
 
 try:
     from PIL import Image
+    from PIL import __version__ as PILversion
     use_PIL = True
 except ImportError:
     use_PIL = False
@@ -175,7 +176,6 @@ def pdf_preview(tmp_file_path, tmp_dir):
                             cover_file_name = os.path.splitext(tmp_file_path)[0] + ".cover.png"
                             img.save(filename=os.path.join(tmp_dir, cover_file_name))
                             return cover_file_name
-                            # img.save(obj[1:] + ".png")
             except Exception as ex:
                 print(ex)
         try:
@@ -206,4 +206,12 @@ def get_versions():
         XVersion = 'v'+'.'.join(map(str, lxmlversion))
     else:
         XVersion = _(u'not installed')
-    return {'Image Magick': IVersion, 'PyPdf': PVersion, 'lxml':XVersion, 'Wand Version': WVersion}
+    if use_PIL:
+        PILVersion = 'v' + PILversion
+    else:
+        PILVersion = _(u'not installed')
+    return {'Image Magick': IVersion,
+            'PyPdf': PVersion,
+            'lxml':XVersion,
+            'Wand': WVersion,
+            'Pillow': PILVersion}
