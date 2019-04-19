@@ -724,6 +724,7 @@ def before_request():
 
 # Routing functions
 
+@app.route("/opds/")
 @app.route("/opds")
 @requires_basic_auth_if_no_ano
 def feed_index():
@@ -2123,11 +2124,15 @@ def render_read_books(page, are_read, as_xml=False):
 
 
 @app.route("/opds/readbooks/")
-@login_required_if_no_ano
+@requires_basic_auth_if_no_ano
 def feed_read_books():
     off = request.args.get("offset") or 0
     return render_read_books(int(off) / (int(config.config_books_per_page)) + 1, True, True)
 
+
+@app.route("/favicon.ico")
+def favicon():
+    return send_from_directory(os.path.join(os.path.dirname(__file__), "static"), "favicon.ico")
 
 @app.route("/readbooks/", defaults={'page': 1})
 @app.route("/readbooks/<int:page>")
@@ -2137,7 +2142,7 @@ def read_books(page):
 
 
 @app.route("/opds/unreadbooks/")
-@login_required_if_no_ano
+@requires_basic_auth_if_no_ano
 def feed_unread_books():
     off = request.args.get("offset") or 0
     return render_read_books(int(off) / (int(config.config_books_per_page)) + 1, False, True)
