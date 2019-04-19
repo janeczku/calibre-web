@@ -668,25 +668,20 @@ def modify_database_object(input_elements, db_book_object, db_object, db_session
 
 # read search results from calibre-database and return it (function is used for feed and simple search
 def get_search_results(term):
+    db.session.connection().connection.connection.create_function("lower", 1, db.lcase)
     q = list()
     authorterms = re.split("[, ]+", term)
     for authorterm in authorterms:
-        q.append(db.Books.authors.any(db.or_(db.Authors.name.ilike("%" + authorterm + "%"),
-                                             db.Authors.name.ilike("%" + unidecode.unidecode(authorterm) + "%"))))
-    db.session.connection().connection.connection.create_function("lower", 1, db.lcase)
-    db.Books.authors.any(db.or_(db.Authors.name.ilike("%" + term + "%"),
-                                db.Authors.name.ilike("%" + unidecode.unidecode(term) + "%")))
+        q.append(db.Books.authors.any(db.func.lower(db.Authors.name).ilike("%" + authorterm + "%")))
+
+    db.Books.authors.any(db.func.lower(db.Authors.name).ilike("%" + term + "%"))
 
     return db.session.query(db.Books).filter(common_filters()).filter(
-        db.or_(db.Books.tags.any(db.Tags.name.ilike("%" + term + "%")),
-               db.Books.series.any(db.Series.name.ilike("%" + term + "%")),
+        db.or_(db.Books.tags.any(db.func.lower(db.Tags.name).ilike("%" + term + "%")),
+               db.Books.series.any(db.func.lower(db.Series.name).ilike("%" + term + "%")),
                db.Books.authors.any(and_(*q)),
-               db.Books.publishers.any(db.Publishers.name.ilike("%" + term + "%")),
-               db.Books.title.ilike("%" + term + "%"),
-               db.Books.tags.any(db.Tags.name.ilike("%" + unidecode.unidecode(term) + "%")),
-               db.Books.series.any(db.Series.name.ilike("%" + unidecode.unidecode(term) + "%")),
-               db.Books.publishers.any(db.Publishers.name.ilike("%" + unidecode.unidecode(term) + "%")),
-               db.Books.title.ilike("%" + unidecode.unidecode(term) + "%")
+               db.Books.publishers.any(db.func.lower(db.Publishers.name).ilike("%" + term + "%")),
+               db.func.lower(db.Books.title).ilike("%" + term + "%")
                )).all()
 
 
@@ -1097,7 +1092,8 @@ def get_comic_book(book_id, book_format, page):
 def get_authors_json():
     if request.method == "GET":
         query = request.args.get('q')
-        entries = db.session.query(db.Authors).filter(db.Authors.name.ilike("%" + query + "%")).all()
+        db.session.connection().connection.connection.create_function("lower", 1, db.lcase)
+        entries = db.session.query(db.Authors).filter(db.func.lower(db.Authors.name).ilike("%" + query + "%")).all()
         json_dumps = json.dumps([dict(name=r.name.replace('|',',')) for r in entries])
         return json_dumps
 
@@ -1107,7 +1103,8 @@ def get_authors_json():
 def get_publishers_json():
     if request.method == "GET":
         query = request.args.get('q')
-        entries = db.session.query(db.Publishers).filter(db.Publishers.name.ilike("%" + query + "%")).all()
+        db.session.connection().connection.connection.create_function("lower", 1, db.lcase)
+        entries = db.session.query(db.Publishers).filter(db.func.lower(db.Publishers.name).ilike("%" + query + "%")).all()
         json_dumps = json.dumps([dict(name=r.name.replace('|',',')) for r in entries])
         return json_dumps
 
@@ -1117,7 +1114,8 @@ def get_publishers_json():
 def get_tags_json():
     if request.method == "GET":
         query = request.args.get('q')
-        entries = db.session.query(db.Tags).filter(db.Tags.name.ilike("%" + query + "%")).all()
+        db.session.connection().connection.connection.create_function("lower", 1, db.lcase)
+        entries = db.session.query(db.Tags).filter(db.func.lower(db.Tags.name).ilike("%" + query + "%")).all()
         json_dumps = json.dumps([dict(name=r.name) for r in entries])
         return json_dumps
 
@@ -1143,7 +1141,8 @@ def get_languages_json():
 def get_series_json():
     if request.method == "GET":
         query = request.args.get('q')
-        entries = db.session.query(db.Series).filter(db.Series.name.ilike("%" + query + "%")).all()
+        db.session.connection().connection.connection.create_function("lower", 1, db.lcase)
+        entries = db.session.query(db.Series).filter(db.func.lower(db.Series.name).ilike("%" + query + "%")).all()
         # entries = db.session.execute("select name from series where name like '%" + query + "%'")
         json_dumps = json.dumps([dict(name=r.name) for r in entries])
         return json_dumps
@@ -1155,12 +1154,13 @@ def get_matching_tags():
     tag_dict = {'tags': []}
     if request.method == "GET":
         q = db.session.query(db.Books)
+        db.session.connection().connection.connection.create_function("lower", 1, db.lcase)
         author_input = request.args.get('author_name')
         title_input = request.args.get('book_title')
         include_tag_inputs = request.args.getlist('include_tag')
         exclude_tag_inputs = request.args.getlist('exclude_tag')
-        q = q.filter(db.Books.authors.any(db.Authors.name.ilike("%" + author_input + "%")),
-                     db.Books.title.ilike("%" + title_input + "%"))
+        q = q.filter(db.Books.authors.any(db.func.lower(db.Authors.name).ilike("%" + author_input + "%")),
+                     db.func.lower(db.Books.title).ilike("%" + title_input + "%"))
         if len(include_tag_inputs) > 0:
             for tag in include_tag_inputs:
                 q = q.filter(db.Books.tags.any(db.Tags.id == tag))
@@ -1916,7 +1916,6 @@ def advanced_search():
 
     db.session.connection().connection.connection.create_function("lower", 1, db.lcase)
     q = db.session.query(db.Books)
-    # postargs = request.form.to_dict()
 
     include_tag_inputs = request.args.getlist('include_tag')
     exclude_tag_inputs = request.args.getlist('exclude_tag')
@@ -1982,20 +1981,15 @@ def advanced_search():
         searchterm = " + ".join(filter(None, searchterm))
         q = q.filter()
         if author_name:
-            q = q.filter(db.Books.authors.any(db.or_(db.Authors.name.ilike("%" + author_name + "%"),
-                                                     db.Authors.name.ilike("%" + unidecode.unidecode(author_name)
-                                                                           + "%"))))
+            q = q.filter(db.Books.authors.any(db.func.lower(db.Authors.name).ilike("%" + author_name + "%")))
         if book_title:
-            q = q.filter(db.or_(db.Books.title.ilike("%" + book_title + "%"),
-                                db.Books.title.ilike("%" + unidecode.unidecode(book_title) + "%")))
+            q = q.filter(db.func.lower(db.Books.title).ilike("%" + book_title + "%"))
         if pub_start:
             q = q.filter(db.Books.pubdate >= pub_start)
         if pub_end:
             q = q.filter(db.Books.pubdate <= pub_end)
         if publisher:
-            q = q.filter(db.Books.publishers.any(db.or_(db.Publishers.name.ilike("%" + publisher + "%"),
-                                                        db.Publishers.name.ilike("%" + unidecode.unidecode(publisher)
-                                                                                 + "%"),)))
+            q = q.filter(db.Books.publishers.any(db.func.lower(db.Publishers.name).ilike("%" + publisher + "%")))
         for tag in include_tag_inputs:
             q = q.filter(db.Books.tags.any(db.Tags.id == tag))
         for tag in exclude_tag_inputs:
@@ -2018,9 +2012,7 @@ def advanced_search():
             rating_low = int(rating_low) *2
             q = q.filter(db.Books.ratings.any(db.Ratings.rating >= rating_low))
         if description:
-            q = q.filter(db.Books.comments.any(db.or_(db.Comments.text.ilike("%" + description + "%"),
-                                                      db.Comments.text.ilike("%" + unidecode.unidecode(description)
-                                                                             + "%"))))
+            q = q.filter(db.Books.comments.any(db.func.lower(db.Comments.text).ilike("%" + description + "%")))
 
         # search custom culumns
         for c in cc:
@@ -2035,8 +2027,7 @@ def advanced_search():
                         db.cc_classes[c.id].value == custom_query ))
                 else:
                     q = q.filter(getattr(db.Books, 'custom_column_'+str(c.id)).any(
-                        db.or_(db.cc_classes[c.id].value.ilike("%" + custom_query + "%"),
-                               db.cc_classes[c.id].value.ilike("%" + unidecode.unidecode(custom_query) + "%"))))
+                        db.func.lower(db.cc_classes[c.id].value).ilike("%" + custom_query + "%")))
         q = q.all()
         ids = list()
         for element in q:

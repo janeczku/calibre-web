@@ -27,6 +27,7 @@ import ast
 from ub import config
 import ub
 import sys
+import unidecode
 
 session = None
 cc_exceptions = ['datetime', 'comments', 'float', 'composite', 'series']
@@ -46,7 +47,7 @@ def title_sort(title):
 
 
 def lcase(s):
-    return s.lower()
+    return unidecode.unidecode(s.lower())
 
 
 def ucase(s):
@@ -359,8 +360,8 @@ def setup_db():
     ub.session.commit()
     config.loadSettings()
     conn.connection.create_function('title_sort', 1, title_sort)
-    conn.connection.create_function('lower', 1, lcase)
-    conn.connection.create_function('upper', 1, ucase)
+    # conn.connection.create_function('lower', 1, lcase)
+    # conn.connection.create_function('upper', 1, ucase)
 
     if not cc_classes:
         cc = conn.execute("SELECT id, datatype FROM custom_columns")
