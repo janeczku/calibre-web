@@ -364,7 +364,8 @@ def upload_single_file(request, book, book_id):
             global_WorkerThread.add_upload(current_user.nickname,
                 "<a href=\"" + url_for('web.show_book', book_id=book.id) + "\">" + uploadText + "</a>")
 
-def upload_cover(request, book):
+
+def upload_single_file(request, book, book_id):
     if 'btn-upload-cover' in request.files:
         requested_file = request.files['btn-upload-cover']
         # check for empty request
@@ -380,17 +381,38 @@ def upload_cover(request, book):
                 except OSError:
                     flash(_(u"Failed to create path for cover %(path)s (Permission denied).", cover=filepath),
                           category="error")
-                    return redirect(url_for('web.show_book', book_id=book.id))
+                    return redirect(url_for('show_book', book_id=book.id))
             try:
                 requested_file.save(saved_filename)
                 # im=Image.open(saved_filename)
                 book.has_cover = 1
-            except IOError:
-                flash(_(u"Cover-file is not a valid image file" % saved_filename), category="error")
-                return redirect(url_for('web.show_book', book_id=book.id))
             except OSError:
                 flash(_(u"Failed to store cover-file %(cover)s.", cover=saved_filename), category="error")
                 return redirect(url_for('web.show_book', book_id=book.id))
+            except IOError:
+                flash(_(u"Cover-file is not a valid image file" % saved_filename), category="error")
+                return redirect(url_for('web.show_book', book_id=book.id))
+            if helper.save_cover(requested_file, book.path) is True:
+                return True
+            else:
+                # ToDo Message not always coorect
+                flash(_(u"Cover is not a supported imageformat (jpg/png/webp), can't save"), category="error")
+                return False
+    return None
+
+
+def upload_cover(request, book):
+    if 'btn-upload-cover' in request.files:
+        requested_file = request.files['btn-upload-cover']
+        # check for empty request
+        if requested_file.filename != '':
+            if helper.save_cover(requested_file, book.path) is True:
+                return True
+            else:
+                # ToDo Message not always coorect
+                flash(_(u"Cover is not a supported imageformat (jpg/png/webp), can't save"), category="error")
+                return False
+    return None
 
 @editbook.route("/admin/book/<int:book_id>", methods=['GET', 'POST'])
 @login_required_if_no_ano
@@ -411,7 +433,8 @@ def edit_book(book_id):
         return redirect(url_for("web.index"))
 
     upload_single_file(request, book, book_id)
-    upload_cover(request, book)
+    if upload_cover(request, book) is True:
+        book.has_cover = 1
     try:
         to_save = request.form.to_dict()
         # Update book
@@ -457,7 +480,7 @@ def edit_book(book_id):
 
         if not error:
             if to_save["cover_url"]:
-                if helper.save_cover(to_save["cover_url"], book.path) is True:
+                if helper.save_cover_from_url(to_save["cover_url"], book.path) is True:
                     book.has_cover = 1
                 else:
                     flash(_(u"Cover is not a jpg file, can't save"), category="error")
