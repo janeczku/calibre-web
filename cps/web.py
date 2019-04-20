@@ -41,18 +41,11 @@ from sqlalchemy.sql.expression import text, func, true, false, not_
 import json
 import datetime
 import isoLanguages
-from pytz import __version__ as pytzVersion
-from uuid import uuid4
 import os.path
-import sys
-import re
-import db
-from shutil import move, copyfile
 import gdriveutils
 from redirect import redirect_back
 from cps import lm, babel, ub, config, get_locale, language_table, app, db
 from pagination import Pagination
-import unidecode
 
 
 feature_support = dict()
@@ -374,7 +367,8 @@ def get_comic_book(book_id, book_format, page):
 # ################################### Typeahead ##################################################################
 
 def get_typeahead(database, query, replace=('','')):
-    entries = db.session.query(database).filter(database.name.ilike("%" + query + "%")).all()
+    db.session.connection().connection.connection.create_function("lower", 1, db.lcase)
+    entries = db.session.query(database).filter(db.func.lower(database.name).ilike("%" + query + "%")).all()
     json_dumps = json.dumps([dict(name=r.name.replace(*replace)) for r in entries])
     return json_dumps
 
@@ -428,12 +422,13 @@ def get_matching_tags():
     tag_dict = {'tags': []}
     if request.method == "GET":
         q = db.session.query(db.Books)
+        db.session.connection().connection.connection.create_function("lower", 1, db.lcase)
         author_input = request.args.get('author_name')
         title_input = request.args.get('book_title')
         include_tag_inputs = request.args.getlist('include_tag')
         exclude_tag_inputs = request.args.getlist('exclude_tag')
-        q = q.filter(db.Books.authors.any(db.Authors.name.ilike("%" + author_input + "%")),
-                     db.Books.title.ilike("%" + title_input + "%"))
+        q = q.filter(db.Books.authors.any(db.func.lower(db.Authors.name).ilike("%" + author_input + "%")),
+                     db.func.lower(db.Books.title).ilike("%" + title_input + "%"))
         if len(include_tag_inputs) > 0:
             for tag in include_tag_inputs:
                 q = q.filter(db.Books.tags.any(db.Tags.id == tag))
@@ -874,20 +869,15 @@ def advanced_search():
         searchterm = " + ".join(filter(None, searchterm))
         q = q.filter()
         if author_name:
-            q = q.filter(db.Books.authors.any(db.or_(db.Authors.name.ilike("%" + author_name + "%"),
-                                                     db.Authors.name.ilike("%" + unidecode.unidecode(author_name)
-                                                                           + "%"))))
+            q = q.filter(db.Books.authors.any(db.func.lower(db.Authors.name).ilike("%" + author_name + "%")))
         if book_title:
-            q = q.filter(db.or_(db.Books.title.ilike("%" + book_title + "%"),
-                                db.Books.title.ilike("%" + unidecode.unidecode(book_title) + "%")))
+            q = q.filter(db.func.lower(db.Books.title).ilike("%" + book_title + "%"))
         if pub_start:
             q = q.filter(db.Books.pubdate >= pub_start)
         if pub_end:
             q = q.filter(db.Books.pubdate <= pub_end)
         if publisher:
-            q = q.filter(db.Books.publishers.any(db.or_(db.Publishers.name.ilike("%" + publisher + "%"),
-                                                        db.Publishers.name.ilike("%" + unidecode.unidecode(publisher)
-                                                                                 + "%"),)))
+            q = q.filter(db.Books.publishers.any(db.func.lower(db.Publishers.name).ilike("%" + publisher + "%")))
         for tag in include_tag_inputs:
             q = q.filter(db.Books.tags.any(db.Tags.id == tag))
         for tag in exclude_tag_inputs:
@@ -910,9 +900,7 @@ def advanced_search():
             rating_low = int(rating_low) * 2
             q = q.filter(db.Books.ratings.any(db.Ratings.rating >= rating_low))
         if description:
-            q = q.filter(db.Books.comments.any(db.or_(db.Comments.text.ilike("%" + description + "%"),
-                                                      db.Comments.text.ilike("%" + unidecode.unidecode(description)
-                                                                             + "%"))))
+            q = q.filter(db.Books.comments.any(db.func.lower(db.Comments.text).ilike("%" + description + "%")))
 
         # search custom culumns
         for c in cc:
@@ -927,8 +915,7 @@ def advanced_search():
                         db.cc_classes[c.id].value == custom_query))
                 else:
                     q = q.filter(getattr(db.Books, 'custom_column_'+str(c.id)).any(
-                        db.or_(db.cc_classes[c.id].value.ilike("%" + custom_query + "%"),
-                               db.cc_classes[c.id].value.ilike("%" + unidecode.unidecode(custom_query) + "%"))))
+                        db.func.lower(db.cc_classes[c.id].value).ilike("%" + custom_query + "%")))
         q = q.all()
         ids = list()
         for element in q:

@@ -25,15 +25,12 @@ var ggResults = [];
 
 $(function () {
     var msg = i18nMsg;
-    var douban = "https://api.douban.com";
-    var dbSearch = "/v2/book/search";
-    // var dbGetInfo = "/v2/book/";
-    // var db_get_info_by_isbn = "/v2/book/isbn/ ";
-    var dbDone = false;
+    /*var douban = "https://api.douban.com";
+    var dbSearch = "/v2/book/search";*/
+    var dbDone = true;
 
     var google = "https://www.googleapis.com/";
     var ggSearch = "/books/v1/volumes";
-    // var gg_get_info = "/books/v1/volumes/";
     var ggDone = false;
 
     var showFlag = 0;
@@ -96,7 +93,7 @@ $(function () {
             });
             ggDone = false;
         }
-        if (dbDone && dbResults.length > 0) {
+        /*if (dbDone && dbResults.length > 0) {
             dbResults.forEach(function(result) {
                 var book = {
                     id: result.id,
@@ -130,7 +127,7 @@ $(function () {
                 $("#book-list").append($book);
             });
             dbDone = false;
-        }
+        }*/
     }
 
     function ggSearchBook (title) {
@@ -150,7 +147,7 @@ $(function () {
         });
     }
 
-    function dbSearchBook (title) {
+    /*function dbSearchBook (title) {
         $.ajax({
             url: douban + dbSearch + "?q=" + title + "&fields=all&count=10",
             type: "GET",
@@ -160,7 +157,7 @@ $(function () {
                 dbResults = data.books;
             },
             error: function error() {
-                $("#meta-info").html("<p class=\"text-danger\">" + msg.search_error + "!</p>");
+                $("#meta-info").html("<p class=\"text-danger\">" + msg.search_error + "!</p>"+ $("#meta-info")[0].innerHTML)
             },
             complete: function complete() {
                 dbDone = true;
@@ -168,14 +165,13 @@ $(function () {
                 $("#show-douban").trigger("change");
             }
         });
-    }
+    }*/
 
     function doSearch (keyword) {
         showFlag = 0;
         $("#meta-info").text(msg.loading);
-        // var keyword = $("#keyword").val();
         if (keyword) {
-            dbSearchBook(keyword);
+            // dbSearchBook(keyword);
             ggSearchBook(keyword);
         }
     }

@@ -243,7 +243,7 @@ class Updater(threading.Thread):
 
     @classmethod
     def _stable_version_info(self):
-        return {'version': '0.6.1'} # Current version
+        return {'version': '0.6.2'} # Current version
 
     def _nightly_available_updates(self, request_method):
         tz = datetime.timedelta(seconds=time.timezone if (time.localtime().tm_isdst == 0) else time.altzone)

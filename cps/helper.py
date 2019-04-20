@@ -23,6 +23,7 @@ from cps import config, global_WorkerThread, get_locale, db, mimetypes
 from flask import current_app as app
 from tempfile import gettempdir
 import sys
+import io
 import os
 import re
 import unicodedata
@@ -71,6 +72,12 @@ try:
     from functools import reduce
 except ImportError:
     pass  # We're not using Python 3
+
+try:
+    from PIL import Image
+    use_PIL = True
+except ImportError:
+    use_PIL = False
 
 
 def update_download(book_id, user_id):
@@ -459,27 +466,71 @@ def get_book_cover(cover_path):
         return send_from_directory(os.path.join(config.config_calibre_dir, cover_path), "cover.jpg")
 
 
-# saves book cover to gdrive or locally
-def save_cover(url, book_path):
+# saves book cover from url
+def save_cover_from_url(url, book_path):
     img = requests.get(url)
-    if img.headers.get('content-type') != 'image/jpeg':
-        app.logger.error("Cover is no jpg file, can't save")
-        return False
+    return save_cover(img, book_path)
 
-    if config.config_use_google_drive:
-        tmpDir = gettempdir()
-        f = open(os.path.join(tmpDir, "uploaded_cover.jpg"), "wb")
-        f.write(img.content)
+
+def save_cover_from_filestorage(filepath, saved_filename, img):
+    if hasattr(img, '_content'):
+        f = open(os.path.join(filepath, saved_filename), "wb")
+        f.write(img._content)
         f.close()
-        gd.uploadFileToEbooksFolder(os.path.join(book_path, 'cover.jpg'), os.path.join(tmpDir, f.name))
-        app.logger.info("Cover is saved on Google Drive")
-        return True
-
-    f = open(os.path.join(config.config_calibre_dir, book_path, "cover.jpg"), "wb")
-    f.write(img.content)
-    f.close()
-    app.logger.info("Cover is saved")
+    else:
+        # check if file path exists, otherwise create it, copy file to calibre path and delete temp file
+        if not os.path.exists(filepath):
+            try:
+                os.makedirs(filepath)
+            except OSError:
+                app.logger.error(u"Failed to create path for cover")
+                return False
+        try:
+            img.save(os.path.join(filepath, saved_filename))
+        except OSError:
+            app.logger.error(u"Failed to store cover-file")
+            return False
+        except IOError:
+            app.logger.error(u"Cover-file is not a valid image file")
+            return False
     return True
+
+
+# saves book cover to gdrive or locally
+def save_cover(img, book_path):
+    content_type = img.headers.get('content-type')
+
+    if use_PIL:
+        if content_type not in ('image/jpeg', 'image/png', 'image/webp'):
+            app.logger.error("Only jpg/jpeg/png/webp files are supported as coverfile")
+            return False
+        # convert to jpg because calibre only supports jpg
+        if content_type in ('image/png', 'image/webp'):
+            if hasattr(img,'stream'):
+                imgc = Image.open(img.stream)
+            else:
+                imgc = Image.open(io.BytesIO(img.content))
+            im = imgc.convert('RGB')
+            tmp_bytesio = io.BytesIO()
+            im.save(tmp_bytesio, format='JPEG')
+            img._content = tmp_bytesio.getvalue()
+    else:
+        if content_type not in ('image/jpeg'):
+            app.logger.error("Only jpg/jpeg files are supported as coverfile")
+            return False
+
+    if ub.config.config_use_google_drive:
+        tmpDir = gettempdir()
+        if save_cover_from_filestorage(tmpDir, "uploaded_cover.jpg", img) is True:
+            gd.uploadFileToEbooksFolder(os.path.join(book_path, 'cover.jpg'),
+                                        os.path.join(tmpDir, "uploaded_cover.jpg"))
+            app.logger.info("Cover is saved on Google Drive")
+            return True
+        else:
+            return False
+    else:
+        return save_cover_from_filestorage(os.path.join(config.config_calibre_dir, book_path), "cover.jpg", img)
+
 
 
 def do_download_file(book, book_format, data, headers):
@@ -501,7 +552,6 @@ def do_download_file(book, book_format, data, headers):
         return response
 
 ##################################
-
 
 
 
@@ -652,27 +702,22 @@ def fill_indexpage(page, database, db_filter, order, *join):
 
 # read search results from calibre-database and return it (function is used for feed and simple search
 def get_search_results(term):
-    q = list()
-    authorterms = re.split("[, ]+", term)
-    for authorterm in authorterms:
-        q.append(db.Books.authors.any(db.or_(db.Authors.name.ilike("%" + authorterm + "%"),
-                                             db.Authors.name.ilike("%" + unidecode.unidecode(authorterm) + "%"))))
-    db.session.connection().connection.connection.create_function("lower", 1, db.lcase)
-    db.Books.authors.any(db.or_(db.Authors.name.ilike("%" + term + "%"),
-                                db.Authors.name.ilike("%" + unidecode.unidecode(term) + "%")))
+    def get_search_results(term):
+        db.session.connection().connection.connection.create_function("lower", 1, db.lcase)
+        q = list()
+        authorterms = re.split("[, ]+", term)
+        for authorterm in authorterms:
+            q.append(db.Books.authors.any(db.func.lower(db.Authors.name).ilike("%" + authorterm + "%")))
 
-    return db.session.query(db.Books).filter(common_filters()).filter(
-        db.or_(db.Books.tags.any(db.Tags.name.ilike("%" + term + "%")),
-               db.Books.series.any(db.Series.name.ilike("%" + term + "%")),
-               db.Books.authors.any(and_(*q)),
-               db.Books.publishers.any(db.Publishers.name.ilike("%" + term + "%")),
-               db.Books.title.ilike("%" + term + "%"),
-               db.Books.tags.any(db.Tags.name.ilike("%" + unidecode.unidecode(term) + "%")),
-               db.Books.series.any(db.Series.name.ilike("%" + unidecode.unidecode(term) + "%")),
-               db.Books.publishers.any(db.Publishers.name.ilike("%" + unidecode.unidecode(term) + "%")),
-               db.Books.title.ilike("%" + unidecode.unidecode(term) + "%")
-               )).all()
+        db.Books.authors.any(db.func.lower(db.Authors.name).ilike("%" + term + "%"))
 
+        return db.session.query(db.Books).filter(common_filters()).filter(
+            db.or_(db.Books.tags.any(db.func.lower(db.Tags.name).ilike("%" + term + "%")),
+                   db.Books.series.any(db.func.lower(db.Series.name).ilike("%" + term + "%")),
+                   db.Books.authors.any(and_(*q)),
+                   db.Books.publishers.any(db.func.lower(db.Publishers.name).ilike("%" + term + "%")),
+                   db.func.lower(db.Books.title).ilike("%" + term + "%")
+                   )).all()
 
 def get_unique_other_books(library_books, author_books):
     # Get all identifiers (ISBN, Goodreads, etc) and filter author's books by that list so we show fewer duplicates

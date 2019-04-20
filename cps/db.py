@@ -27,6 +27,7 @@ import ast
 from cps import config
 import ub
 import sys
+import unidecode
 
 session = None
 cc_exceptions = ['datetime', 'comments', 'float', 'composite', 'series']
@@ -46,7 +47,7 @@ def title_sort(title):
 
 
 def lcase(s):
-    return s.lower()
+    return unidecode.unidecode(s.lower())
 
 
 def ucase(s):
@@ -112,6 +113,8 @@ class Identifiers(Base):
             return u"Google Books"
         elif self.type == "kobo":
             return u"Kobo"
+        if self.type == "lubimyczytac":
+            return u"Lubimyczytac"
         else:
             return self.type
 
@@ -130,6 +133,8 @@ class Identifiers(Base):
             return u"https://books.google.com/books?id={0}".format(self.val)
         elif self.type == "kobo":
             return u"https://www.kobo.com/ebook/{0}".format(self.val)
+        elif self.type == "lubimyczytac":
+            return u" http://lubimyczytac.pl/ksiazka/{0}".format(self.val)
         elif self.type == "url":
             return u"{0}".format(self.val)
         else:
@@ -355,8 +360,8 @@ def setup_db():
     ub.session.commit()
     config.loadSettings()
     conn.connection.create_function('title_sort', 1, title_sort)
-    conn.connection.create_function('lower', 1, lcase)
-    conn.connection.create_function('upper', 1, ucase)
+    # conn.connection.create_function('lower', 1, lcase)
+    # conn.connection.create_function('upper', 1, ucase)
 
     if not cc_classes:
         cc = conn.execute("SELECT id, datatype FROM custom_columns")

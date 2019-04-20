@@ -35,6 +35,7 @@ from babel import Locale as LC
 from babel import negotiate_locale
 import os
 import ub
+import sys
 from ub import Config, Settings
 try:
     import cPickle
@@ -72,8 +73,14 @@ config = Config()
 
 import db
 
-with open(os.path.join(config.get_main_dir, 'cps/translations/iso639.pickle'), 'rb') as f:
-   language_table = cPickle.load(f)
+try:
+    with open(os.path.join(config.get_main_dir, 'cps/translations/iso639.pickle'), 'rb') as f:
+        language_table = cPickle.load(f)
+except cPickle.UnpicklingError as error:
+    # app.logger.error("Can't read file cps/translations/iso639.pickle: %s", error)
+    print("Can't read file cps/translations/iso639.pickle: %s" % error)
+    sys.exit(1)
+
 
 searched_ids = {}
 
