@@ -148,8 +148,8 @@ def check_send_to_kindle(entry):
                     bookformats.append({'format':'Pdf','convert':0,'text':_('Send %(format)s to Kindle',format='Pdf')})
                 if 'AZW' in ele.format:
                     bookformats.append({'format':'Azw','convert':0,'text':_('Send %(format)s to Kindle',format='Azw')})
-                if 'AZW3' in ele.format:
-                    bookformats.append({'format':'Azw3','convert':0,'text':_('Send %(format)s to Kindle',format='Azw3')})
+                '''if 'AZW3' in ele.format:
+                    bookformats.append({'format':'Azw3','convert':0,'text':_('Send %(format)s to Kindle',format='Azw3')})'''
         else:
             formats = list()
             for ele in iter(entry.data):
@@ -158,18 +158,16 @@ def check_send_to_kindle(entry):
                 bookformats.append({'format': 'Mobi','convert':0,'text':_('Send %(format)s to Kindle',format='Mobi')})
             if 'AZW' in formats:
                 bookformats.append({'format': 'Azw','convert':0,'text':_('Send %(format)s to Kindle',format='Azw')})
-            if 'AZW3' in formats:
-                bookformats.append({'format': 'Azw3','convert':0,'text':_('Send %(format)s to Kindle',format='Azw3')})
             if 'PDF' in formats:
                 bookformats.append({'format': 'Pdf','convert':0,'text':_('Send %(format)s to Kindle',format='Pdf')})
             if ub.config.config_ebookconverter >= 1:
                 if 'EPUB' in formats and not 'MOBI' in formats:
                     bookformats.append({'format': 'Mobi','convert':1,
                             'text':_('Convert %(orig)s to %(format)s and send to Kindle',orig='Epub',format='Mobi')})
-            if ub.config.config_ebookconverter == 2:
+            '''if ub.config.config_ebookconverter == 2:
                 if 'EPUB' in formats and not 'AZW3' in formats:
                     bookformats.append({'format': 'Azw3','convert':1,
-                            'text':_('Convert %(orig)s to %(format)s and send to Kindle',orig='Epub',format='Azw3')})
+                            'text':_('Convert %(orig)s to %(format)s and send to Kindle',orig='Epub',format='Azw3')})'''
         return bookformats
     else:
         app.logger.error(u'Cannot find book entry %d', entry.id)
