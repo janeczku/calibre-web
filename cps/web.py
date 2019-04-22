@@ -447,9 +447,9 @@ def index(page):
                                  title=_(u"Recently Added Books"), page="root")
 
 
-@web.route('/<data>/<sort>', defaults={'page': 1, 'book_id': 1})
-@web.route('/<data>/<sort>/<int:book_id>', defaults={'page': 1})
-@web.route('/<data>/<sort>/<int:book_id>/<int:page>')
+@web.route('/<data>/<sort>', defaults={'page': 1, 'book_id': "1"})
+@web.route('/<data>/<sort>/<book_id>', defaults={'page': 1})
+@web.route('/<data>/<sort>/<book_id>/<int:page>')
 @login_required_if_no_ano
 def books_list(data, sort, book_id, page):
     order = [db.Books.timestamp.desc()]

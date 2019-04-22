@@ -4,7 +4,7 @@
 
     <div class="filterheader hidden-xs hidden-sm">
       {% if entries.__len__ %}
-       {% if not entries[0].sort %}
+       {% if entries[0][0].sort %}
         <button id="sort_name" class="btn btn-success"><b>B,A <-> A B</b></button>
        {% endif %}
       {% endif %}
