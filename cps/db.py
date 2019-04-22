@@ -46,14 +46,6 @@ def title_sort(title):
     return title.strip()
 
 
-def lcase(s):
-    return unidecode.unidecode(s.lower())
-
-
-def ucase(s):
-    return s.upper()
-
-
 Base = declarative_base()
 
 books_authors_link = Table('books_authors_link', Base.metadata,

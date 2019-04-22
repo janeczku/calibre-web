@@ -21,31 +21,30 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-from cps import mimetypes, global_WorkerThread, searched_ids
-from flask import render_template, request, redirect, send_from_directory, make_response, g, flash, abort, url_for
-from werkzeug.exceptions import default_exceptions
-import helper
+from cps import mimetypes, global_WorkerThread, searched_ids, lm, babel, ub, config, get_locale, language_table, app, db
 from helper import common_filters, get_search_results, fill_indexpage, speaking_language, check_valid_domain, \
-    order_authors
-import os
-from sqlalchemy.exc import IntegrityError
+    order_authors, get_typeahead, render_task_status, json_serial, get_unique_other_books, get_cc_columns, \
+    get_book_cover, get_download_link, send_mail, generate_random_password, send_registration_mail, \
+    check_send_to_kindle, check_read_formats, lcase
+from flask import render_template, request, redirect, send_from_directory, make_response, g, flash, abort, url_for
 from flask_login import login_user, logout_user, login_required, current_user
-from flask_babel import gettext as _
+from werkzeug.exceptions import default_exceptions
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.datastructures import Headers
+from redirect import redirect_back
+from pagination import Pagination
 from babel import Locale as LC
 from babel.dates import format_date
 from babel.core import UnknownLocaleError
-import base64
+from flask_babel import gettext as _
 from sqlalchemy.sql.expression import text, func, true, false, not_
+from sqlalchemy.exc import IntegrityError
+import base64
+import os.path
 import json
 import datetime
 import isoLanguages
-import os.path
 import gdriveutils
-from redirect import redirect_back
-from cps import lm, babel, ub, config, get_locale, language_table, app, db
-from pagination import Pagination
 
 
 feature_support = dict()
@@ -252,8 +251,8 @@ def before_request():
 @login_required
 def get_email_status_json():
     tasks = global_WorkerThread.get_taskstatus()
-    answer = helper.render_task_status(tasks)
-    js = json.dumps(answer, default=helper.json_serial)
+    answer = render_task_status(tasks)
+    js = json.dumps(answer, default=json_serial)
     response = make_response(js)
     response.headers["Content-Type"] = "application/json; charset=utf-8"
     return response
@@ -366,12 +365,6 @@ def get_comic_book(book_id, book_format, page):
 
 # ################################### Typeahead ##################################################################
 
-def get_typeahead(database, query, replace=('','')):
-    db.session.connection().connection.connection.create_function("lower", 1, db.lcase)
-    entries = db.session.query(database).filter(db.func.lower(database.name).ilike("%" + query + "%")).all()
-    json_dumps = json.dumps([dict(name=r.name.replace(*replace)) for r in entries])
-    return json_dumps
-
 
 @web.route("/get_authors_json")
 @login_required_if_no_ano
@@ -422,7 +415,7 @@ def get_matching_tags():
     tag_dict = {'tags': []}
     if request.method == "GET":
         q = db.session.query(db.Books)
-        db.session.connection().connection.connection.create_function("lower", 1, db.lcase)
+        db.session.connection().connection.connection.create_function("lower", 1, lcase)
         author_input = request.args.get('author_name')
         title_input = request.args.get('book_title')
         include_tag_inputs = request.args.getlist('include_tag')
@@ -497,6 +490,16 @@ def books_list(data, sort, book_id, page):
         return render_hot_books(page)
     elif data == "author":
         return render_author_books(page, book_id, order)
+    elif data == "publisher":
+        return render_publisher_books(page, book_id, order)
+    elif data == "series":
+        return render_series_books(page, book_id, order)
+    elif data == "ratings":
+        return render_ratings_books(page, book_id, order)
+    elif data == "formats":
+        return render_formats_books(page, book_id, order)
+    elif data == "category":
+        return render_category_books(page, book_id, order)
     else:
         entries, random, pagination = fill_indexpage(page, db.Books, True, order)
         return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
@@ -532,6 +535,88 @@ def render_hot_books(page):
         abort(404)
 
 
+# ToDo wrong order function
+def render_author_books(page, book_id, order):
+    entries, __, pagination = fill_indexpage(page, db.Books, db.Books.authors.any(db.Authors.id == book_id),
+                                             [db.Series.name, db.Books.series_index, order[0]], db.books_series_link, db.Series)
+    if entries is None:
+        flash(_(u"Error opening eBook. File does not exist or file is not accessible:"), category="error")
+        return redirect(url_for("web.index"))
+
+    name = db.session.query(db.Authors).filter(db.Authors.id == book_id).first().name.replace('|', ',')
+
+    author_info = None
+    other_books = []
+    if feature_support['goodreads'] and config.config_use_goodreads:
+        try:
+            gc = GoodreadsClient(config.config_goodreads_api_key, config.config_goodreads_api_secret)
+            author_info = gc.find_author(author_name=name)
+            other_books = get_unique_other_books(entries.all(), author_info.books)
+        except Exception:
+            # Skip goodreads, if site is down/inaccessible
+            app.logger.error('Goodreads website is down/inaccessible')
+
+    return render_title_template('author.html', entries=entries, pagination=pagination,
+                                 title=name, author=author_info, other_books=other_books, page="author")
+
+
+def render_publisher_books(page, book_id, order):
+    publisher = db.session.query(db.Publishers).filter(db.Publishers.id == book_id).first()
+    if publisher:
+        entries, random, pagination = fill_indexpage(page, db.Books,
+                                                     db.Books.publishers.any(db.Publishers.id == book_id),
+                                                     [db.Books.series_index, order[0]])
+        return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
+                                     title=_(u"Publisher: %(name)s", name=publisher.name), page="publisher")
+    else:
+        abort(404)
+
+
+def render_series_books(page, book_id, order):
+    name = db.session.query(db.Series).filter(db.Series.id == book_id).first()
+    if name:
+        entries, random, pagination = fill_indexpage(page, db.Books, db.Books.series.any(db.Series.id == book_id),
+                                                     [db.Books.series_index, order[0]])
+        return render_title_template('index.html', random=random, pagination=pagination, entries=entries,
+                                     title=_(u"Series: %(serie)s", serie=name.name), page="series")
+    else:
+        abort(404)
+
+
+def render_ratings_books(page, book_id, order):
+    if book_id <=5:
+        name = db.session.query(db.Ratings).filter(db.Ratings.id == book_id).first()
+        entries, random, pagination = fill_indexpage(page, db.Books, db.Books.ratings.any(db.Ratings.id == book_id),
+                                                 [db.Books.timestamp.desc(), order[0]])
+        return render_title_template('index.html', random=random, pagination=pagination, entries=entries,
+                                     title=_(u"Rating: %(rating)s stars", rating=int(name.rating/2)), page="ratings")
+    else:
+        abort(404)
+
+
+def render_formats_books(page, book_id, order):
+    name = db.session.query(db.Data).filter(db.Data.format == book_id.upper()).first()
+    if name:
+        entries, random, pagination = fill_indexpage(page, db.Books, db.Books.data.any(db.Data.format == book_id.upper()),
+                                                 [db.Books.timestamp.desc(), order[0]])
+        return render_title_template('index.html', random=random, pagination=pagination, entries=entries,
+                                     title=_(u"File format: %(format)s", format=name.format), page="formats")
+    else:
+        abort(404)
+
+
+def render_category_books(page, book_id, order):
+    name = db.session.query(db.Tags).filter(db.Tags.id == book_id).first()
+    if name:
+        entries, random, pagination = fill_indexpage(page, db.Books, db.Books.tags.any(db.Tags.id == book_id),
+                                                     [db.Series.name, db.Books.series_index, order[0]],
+                                                     db.books_series_link, db.Series)
+        return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
+                                 title=_(u"Category: %(name)s", name=name.name), page="category")
+    else:
+        abort(404)
+
+
 @web.route("/author")
 @login_required_if_no_ano
 def author_list():
@@ -550,31 +635,6 @@ def author_list():
         abort(404)
 
 
-# ToDo wrong order function
-def render_author_books(page, book_id, order):
-    entries, __, pagination = fill_indexpage(page, db.Books, db.Books.authors.any(db.Authors.id == book_id),
-                                             [db.Series.name, db.Books.series_index, order[0]], db.books_series_link, db.Series)
-    if entries is None:
-        flash(_(u"Error opening eBook. File does not exist or file is not accessible:"), category="error")
-        return redirect(url_for("web.index"))
-
-    name = db.session.query(db.Authors).filter(db.Authors.id == book_id).first().name.replace('|', ',')
-
-    author_info = None
-    other_books = []
-    if feature_support['goodreads'] and config.config_use_goodreads:
-        try:
-            gc = GoodreadsClient(config.config_goodreads_api_key, config.config_goodreads_api_secret)
-            author_info = gc.find_author(author_name=name)
-            other_books = helper.get_unique_other_books(entries.all(), author_info.books)
-        except Exception:
-            # Skip goodreads, if site is down/inaccessible
-            app.logger.error('Goodreads website is down/inaccessible')
-
-    return render_title_template('author.html', entries=entries, pagination=pagination,
-                                 title=name, author=author_info, other_books=other_books, page="author")
-
-
 @web.route("/publisher")
 @login_required_if_no_ano
 def publisher_list():
@@ -585,23 +645,8 @@ def publisher_list():
         charlist = db.session.query(func.upper(func.substr(db.Publishers.name,1,1)).label('char')) \
             .join(db.books_publishers_link).join(db.Books).filter(common_filters()) \
             .group_by(func.upper(func.substr(db.Publishers.name,1,1))).all()
-        return render_title_template('list.html', entries=entries, folder='web.publisher', charlist=charlist,
-                                     title=_(u"Publisher list"), page="publisherlist")
-    else:
-        abort(404)
-
-
-@web.route("/publisher/<int:book_id>", defaults={'page': 1})
-@web.route('/publisher/<int:book_id>/<int:page>')
-@login_required_if_no_ano
-def publisher(book_id, page):
-    publisher = db.session.query(db.Publishers).filter(db.Publishers.id == book_id).first()
-    if publisher:
-        entries, random, pagination = fill_indexpage(page, db.Books,
-                                                     db.Books.publishers.any(db.Publishers.id == book_id),
-                                                     [db.Books.series_index])
-        return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
-                                     title=_(u"Publisher: %(name)s", name=publisher.name), page="publisher")
+        return render_title_template('list.html', entries=entries, folder='web.books_list', charlist=charlist,
+                                     title=_(u"Publisher list"), page="publisherlist", data="publisher")
     else:
         abort(404)
 
@@ -616,22 +661,8 @@ def series_list():
         charlist = db.session.query(func.upper(func.substr(db.Series.sort,1,1)).label('char')) \
             .join(db.books_series_link).join(db.Books).filter(common_filters()) \
             .group_by(func.upper(func.substr(db.Series.sort,1,1))).all()
-        return render_title_template('list.html', entries=entries, folder='web.series', charlist=charlist,
-                                     title=_(u"Series list"), page="serieslist")
-    else:
-        abort(404)
-
-
-@web.route("/series/<int:book_id>/", defaults={'page': 1})
-@web.route("/series/<int:book_id>/<int:page>")
-@login_required_if_no_ano
-def series(book_id, page):
-    name = db.session.query(db.Series).filter(db.Series.id == book_id).first()
-    if name:
-        entries, random, pagination = fill_indexpage(page, db.Books, db.Books.series.any(db.Series.id == book_id),
-                                                     [db.Books.series_index])
-        return render_title_template('index.html', random=random, pagination=pagination, entries=entries,
-                                     title=_(u"Series: %(serie)s", serie=name.name), page="series")
+        return render_title_template('list.html', entries=entries, folder='web.books_list', charlist=charlist,
+                                     title=_(u"Series list"), page="serieslist", data="series")
     else:
         abort(404)
 
@@ -644,22 +675,8 @@ def ratings_list():
                                    (db.Ratings.rating/2).label('name'))\
             .join(db.books_ratings_link).join(db.Books).filter(common_filters())\
             .group_by(text('books_ratings_link.rating')).order_by(db.Ratings.rating).all()
-        return render_title_template('list.html', entries=entries, folder='web.ratings', charlist=list(),
-                                     title=_(u"Ratings list"), page="ratingslist")
-    else:
-        abort(404)
-
-
-@web.route("/ratings/<int:book_id>/", defaults={'page': 1})
-@web.route("/ratings/<int:book_id>/<int:page>")
-@login_required_if_no_ano
-def ratings(book_id, page):
-    if book_id <=5:
-        name = db.session.query(db.Ratings).filter(db.Ratings.id == book_id).first()
-        entries, random, pagination = fill_indexpage(page, db.Books, db.Books.ratings.any(db.Ratings.id == book_id),
-                                                 [db.Books.timestamp.desc()])
-        return render_title_template('index.html', random=random, pagination=pagination, entries=entries,
-                                     title=_(u"Rating: %(rating)s stars", rating=int(name.rating/2)), page="ratings")
+        return render_title_template('list.html', entries=entries, folder='web.books_list', charlist=list(),
+                                     title=_(u"Ratings list"), page="ratingslist", data="ratings")
     else:
         abort(404)
 
@@ -671,22 +688,8 @@ def formats_list():
         entries = db.session.query(db.Data, func.count('data.book').label('count'),db.Data.format.label('format'))\
             .join(db.Books).filter(common_filters())\
             .group_by(db.Data.format).order_by(db.Data.format).all()
-        return render_title_template('list.html', entries=entries, folder='web.formats', charlist=list(),
-                                     title=_(u"File formats list"), page="formatslist")
-    else:
-        abort(404)
-
-
-@web.route("/formats/<book_id>/", defaults={'page': 1})
-@web.route("/formats/<book_id>/<int:page>")
-@login_required_if_no_ano
-def formats(book_id, page):
-    name = db.session.query(db.Data).filter(db.Data.format == book_id.upper()).first()
-    if name:
-        entries, random, pagination = fill_indexpage(page, db.Books, db.Books.data.any(db.Data.format == book_id.upper()),
-                                                 [db.Books.timestamp.desc()])
-        return render_title_template('index.html', random=random, pagination=pagination, entries=entries,
-                                     title=_(u"File format: %(format)s", format=name.format), page="formats")
+        return render_title_template('list.html', entries=entries, folder='web.books_list', charlist=list(),
+                                     title=_(u"File formats list"), page="formatslist", data="formats")
     else:
         abort(404)
 
@@ -714,7 +717,7 @@ def language_overview():
                                         func.count('books_languages_link.book').label('bookcount')).group_by(
             text('books_languages_link.lang_code')).all()
         return render_title_template('languages.html', languages=languages, lang_counter=lang_counter,
-                                     charlist=charlist, title=_(u"Available languages"), page="langlist")
+                                     charlist=charlist, title=_(u"Available languages"), page="langlist", data="language")
     else:
         abort(404)
 
@@ -747,33 +750,20 @@ def category_list():
         charlist = db.session.query(func.upper(func.substr(db.Tags.name,1,1)).label('char')) \
             .join(db.books_tags_link).join(db.Books).filter(common_filters()) \
             .group_by(func.upper(func.substr(db.Tags.name,1,1))).all()
-        return render_title_template('list.html', entries=entries, folder='web.category', charlist=charlist,
-                                     title=_(u"Category list"), page="catlist")
+        return render_title_template('list.html', entries=entries, folder='web.books_list', charlist=charlist,
+                                     title=_(u"Category list"), page="catlist", data="category")
     else:
         abort(404)
 
 
-@web.route("/category/<int:book_id>", defaults={'page': 1})
-@web.route('/category/<int:book_id>/<int:page>')
-@login_required_if_no_ano
-def category(book_id, page):
-    name = db.session.query(db.Tags).filter(db.Tags.id == book_id).first()
-    if name:
-        entries, random, pagination = fill_indexpage(page, db.Books, db.Books.tags.any(db.Tags.id == book_id),
-                                                     (db.Series.name, db.Books.series_index),db.books_series_link,
-                                                     db.Series)
-        return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
-                                 title=_(u"Category: %(name)s", name=name.name), page="category")
-    else:
-        abort(404)
-
+# ################################### Task functions ################################################################
 
 @web.route("/tasks")
 @login_required
 def get_tasks_status():
     # if current user admin, show all email, otherwise only own emails
     tasks = global_WorkerThread.get_taskstatus()
-    answer = helper.render_task_status(tasks)
+    answer = render_task_status(tasks)
     return render_title_template('tasks.html', entries=answer, title=_(u"Tasks"), page="tasks")
 
 
@@ -798,8 +788,8 @@ def search():
 @login_required_if_no_ano
 def advanced_search():
     # Build custom columns names
-    cc = helper.get_cc_columns()
-    db.session.connection().connection.connection.create_function("lower", 1, db.lcase)
+    cc = get_cc_columns()
+    db.session.connection().connection.connection.create_function("lower", 1, lcase)
     q = db.session.query(db.Books)
 
     include_tag_inputs = request.args.getlist('include_tag')
@@ -978,8 +968,7 @@ def render_read_books(page, are_read, as_xml=False, order=None):
 @web.route("/cover/<int:book_id>")
 @login_required_if_no_ano
 def get_cover(book_id):
-    book = db.session.query(db.Books).filter(db.Books.id == book_id).first()
-    return helper.get_book_cover(book.path)
+    return get_book_cover(book_id)
 
 
 @web.route("/show/<book_id>/<book_format>")
@@ -1007,7 +996,7 @@ def serve_book(book_id, book_format):
 @login_required_if_no_ano
 @download_required
 def download_link(book_id, book_format, anyname):
-    return helper.get_download_link(book_id, book_format)
+    return get_download_link(book_id, book_format)
 
 
 @web.route('/send/<int:book_id>/<book_format>/<int:convert>')
@@ -1018,7 +1007,7 @@ def send_to_kindle(book_id, book_format, convert):
     if settings.get("mail_server", "mail.example.com") == "mail.example.com":
         flash(_(u"Please configure the SMTP mail settings first..."), category="error")
     elif current_user.kindle_mail:
-        result = helper.send_mail(book_id, book_format, convert, current_user.kindle_mail, config.config_calibre_dir,
+        result = send_mail(book_id, book_format, convert, current_user.kindle_mail, config.config_calibre_dir,
                                   current_user.nickname)
         if result is None:
             flash(_(u"Book successfully queued for sending to %(kindlemail)s", kindlemail=current_user.kindle_mail),
@@ -1055,7 +1044,7 @@ def register():
             if check_valid_domain(to_save["email"]):
                 content.nickname = to_save["nickname"]
                 content.email = to_save["email"]
-                password = helper.generate_random_password()
+                password = generate_random_password()
                 content.password = generate_password_hash(password)
                 content.role = config.config_default_role
                 content.sidebar_view = config.config_default_show
@@ -1065,7 +1054,7 @@ def register():
                     ub.session.commit()
                     if feature_support['oauth']:
                         register_user_with_oauth(content)
-                    helper.send_registration_mail(to_save["email"], to_save["nickname"], password)
+                    send_registration_mail(to_save["email"], to_save["nickname"], password)
                 except Exception:
                     ub.session.rollback()
                     flash(_(u"An unknown error occurred. Please try again later."), category="error")
@@ -1120,8 +1109,6 @@ def login():
                 app.logger.info('Login failed for user "' + form['username'] + '" IP-adress: ' + ipAdress)
                 flash(_(u"Wrong Username or Password"), category="error")
 
-    # next_url = request.args.get('next')
-    # if next_url is None or not is_safe_url(next_url):
     next_url = url_for('web.index')
 
     return render_title_template('login.html', title=_(u"login"), next_url=next_url, config=config, page="login")
@@ -1223,7 +1210,7 @@ def token_verified():
 @web.route("/me", methods=["GET", "POST"])
 @login_required
 def profile():
-    # content = ub.session.query(ub.User).filter(ub.User.id == int(current_user.id)).first()
+    global _
     downloads = list()
     languages = speaking_language()
     translations = babel.list_translations() + [LC('en')]
@@ -1282,9 +1269,9 @@ def profile():
                                                  registered_oauth=oauth_check, oauth_status=oauth_status)
         flash(_(u"Profile updated"), category="success")
     return render_title_template("user_edit.html", translations=translations, profile=1, languages=languages,
-                                 content=current_user, downloads=downloads, title=_(u"%(name)s's profile",
-                                 name=current_user.nickname), page="me", registered_oauth=oauth_check,
-                                 oauth_status=oauth_status)
+                                 content=current_user, downloads=downloads, title= _(u"%(name)s's profile",
+                                                                                           name=current_user.nickname),
+                                 page="me", registered_oauth=oauth_check, oauth_status=oauth_status)
 
 
 # ###################################Show single book ##################################################################
@@ -1344,7 +1331,7 @@ def show_book(book_id):
             except UnknownLocaleError:
                 entries.languages[index].language_name = _(
                     isoLanguages.get(part3=entries.languages[index].lang_code).name)
-        cc = helper.get_cc_columns()
+        cc = get_cc_columns()
         book_in_shelfs = []
         shelfs = ub.session.query(ub.BookShelf).filter(ub.BookShelf.book_id == book_id).all()
         for entry in shelfs:
@@ -1371,8 +1358,8 @@ def show_book(book_id):
 
         entries = order_authors(entries)
 
-        kindle_list = helper.check_send_to_kindle(entries)
-        reader_list = helper.check_read_formats(entries)
+        kindle_list = check_send_to_kindle(entries)
+        reader_list = check_read_formats(entries)
 
         audioentries = []
         for media_format in entries.data:

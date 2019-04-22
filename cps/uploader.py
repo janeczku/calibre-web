@@ -67,6 +67,8 @@ try:
     from PIL import __version__ as PILversion
     use_PIL = True
 except ImportError:
+    app.logger.warning('cannot import Pillow, using png and webp images as cover will not work: %s', e)
+    use_generic_pdf_cover = True
     use_PIL = False
 
 

@@ -42,6 +42,7 @@ from sqlalchemy.sql.expression import true, and_, false, text, func
 from iso639 import languages as isoLanguages
 from pagination import Pagination
 from werkzeug.datastructures import Headers
+import json
 
 try:
     import gdriveutils as gd
@@ -149,6 +150,7 @@ def send_registration_mail(e_mail, user_name, default_password, resend=False):
     global_WorkerThread.add_email(_(u'Get Started with Calibre-Web'),None, None, ub.get_mail_settings(),
                                   e_mail, user_name, _(u"Registration e-mail for user: %(name)s", name=user_name), text)
     return
+
 
 def check_send_to_kindle(entry):
     """
@@ -444,24 +446,33 @@ def delete_book(book, calibrepath, book_format):
         return delete_book_file(book, calibrepath, book_format)
 
 
-def get_book_cover(cover_path):
-    if config.config_use_google_drive:
-        try:
-            if not gd.is_gdrive_ready():
-                return send_from_directory(os.path.join(os.path.dirname(__file__), "static"), "generic_cover.jpg")
-            path=gd.get_cover_via_gdrive(cover_path)
-            if path:
-                return redirect(path)
+def get_book_cover(book_id):
+    book = db.session.query(db.Books).filter(db.Books.id == book_id).first()
+    if book.has_cover:
+
+        if config.config_use_google_drive:
+            try:
+                if not gd.is_gdrive_ready():
+                    return send_from_directory(os.path.join(os.path.dirname(__file__), "static"), "generic_cover.jpg")
+                path=gd.get_cover_via_gdrive(book.path)
+                if path:
+                    return redirect(path)
+                else:
+                    app.logger.error(book.path + '/cover.jpg not found on Google Drive')
+                    return send_from_directory(os.path.join(os.path.dirname(__file__), "static"), "generic_cover.jpg")
+            except Exception as e:
+                app.logger.error("Error Message: " + e.message)
+                app.logger.exception(e)
+                # traceback.print_exc()
+                return send_from_directory(os.path.join(os.path.dirname(__file__), "static"),"generic_cover.jpg")
+        else:
+            cover_file_path = os.path.join(config.config_calibre_dir, book.path)
+            if os.path.isfile(os.path.join(cover_file_path, "cover.jpg")):
+                return send_from_directory(cover_file_path, "cover.jpg")
             else:
-                app.logger.error(cover_path + '/cover.jpg not found on Google Drive')
-                return send_from_directory(os.path.join(os.path.dirname(__file__), "static"), "generic_cover.jpg")
-        except Exception as e:
-            app.logger.error("Error Message: " + e.message)
-            app.logger.exception(e)
-            # traceback.print_exc()
-            return send_from_directory(os.path.join(os.path.dirname(__file__), "static"),"generic_cover.jpg")
+                return send_from_directory(os.path.join(os.path.dirname(__file__), "static"),"generic_cover.jpg")
     else:
-        return send_from_directory(os.path.join(config.config_calibre_dir, cover_path), "cover.jpg")
+        return send_from_directory(os.path.join(os.path.dirname(__file__), "static"),"generic_cover.jpg")
 
 
 # saves book cover from url
@@ -698,24 +709,29 @@ def fill_indexpage(page, database, db_filter, order, *join):
     return entries, randm, pagination
 
 
+def get_typeahead(database, query, replace=('','')):
+    db.session.connection().connection.connection.create_function("lower", 1, lcase)
+    entries = db.session.query(database).filter(db.func.lower(database.name).ilike("%" + query + "%")).all()
+    json_dumps = json.dumps([dict(name=r.name.replace(*replace)) for r in entries])
+    return json_dumps
+
 # read search results from calibre-database and return it (function is used for feed and simple search
 def get_search_results(term):
-    def get_search_results(term):
-        db.session.connection().connection.connection.create_function("lower", 1, db.lcase)
-        q = list()
-        authorterms = re.split("[, ]+", term)
-        for authorterm in authorterms:
-            q.append(db.Books.authors.any(db.func.lower(db.Authors.name).ilike("%" + authorterm + "%")))
+    db.session.connection().connection.connection.create_function("lower", 1, lcase)
+    q = list()
+    authorterms = re.split("[, ]+", term)
+    for authorterm in authorterms:
+        q.append(db.Books.authors.any(db.func.lower(db.Authors.name).ilike("%" + authorterm + "%")))
 
-        db.Books.authors.any(db.func.lower(db.Authors.name).ilike("%" + term + "%"))
+    db.Books.authors.any(db.func.lower(db.Authors.name).ilike("%" + term + "%"))
 
-        return db.session.query(db.Books).filter(common_filters()).filter(
-            db.or_(db.Books.tags.any(db.func.lower(db.Tags.name).ilike("%" + term + "%")),
-                   db.Books.series.any(db.func.lower(db.Series.name).ilike("%" + term + "%")),
-                   db.Books.authors.any(and_(*q)),
-                   db.Books.publishers.any(db.func.lower(db.Publishers.name).ilike("%" + term + "%")),
-                   db.func.lower(db.Books.title).ilike("%" + term + "%")
-                   )).all()
+    return db.session.query(db.Books).filter(common_filters()).filter(
+        db.or_(db.Books.tags.any(db.func.lower(db.Tags.name).ilike("%" + term + "%")),
+               db.Books.series.any(db.func.lower(db.Series.name).ilike("%" + term + "%")),
+               db.Books.authors.any(and_(*q)),
+               db.Books.publishers.any(db.func.lower(db.Publishers.name).ilike("%" + term + "%")),
+               db.func.lower(db.Books.title).ilike("%" + term + "%")
+               )).all()
 
 def get_unique_other_books(library_books, author_books):
     # Get all identifiers (ISBN, Goodreads, etc) and filter author's books by that list so we show fewer duplicates
@@ -774,3 +790,10 @@ def get_download_link(book_id, book_format):
         return do_download_file(book, book_format, data, headers)
     else:
         abort(404)
+
+
+
+############### Database Helper functions
+
+def lcase(s):
+    return unidecode.unidecode(s.lower())

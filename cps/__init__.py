@@ -81,9 +81,7 @@ except cPickle.UnpicklingError as error:
     print("Can't read file cps/translations/iso639.pickle: %s" % error)
     sys.exit(1)
 
-
 searched_ids = {}
-
 
 from worker import WorkerThread
 global_WorkerThread = WorkerThread()
@@ -110,8 +108,6 @@ def create_app():
     app.logger.setLevel(config.config_log_level)
 
     app.logger.info('Starting Calibre Web...')
-    # logging.getLogger("uploader").addHandler(file_handler)
-    # logging.getLogger("uploader").setLevel(config.config_log_level)
     Principal(app)
     lm.init_app(app)
     app.secret_key = os.getenv('SECRET_KEY', 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT')
@@ -119,7 +115,6 @@ def create_app():
     db.setup_db()
     babel.init_app(app)
     global_WorkerThread.start()
-
     return app
 
 @babel.localeselector

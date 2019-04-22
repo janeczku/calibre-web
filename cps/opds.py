@@ -308,8 +308,7 @@ def render_xml_template(*args, **kwargs):
 @opds.route("/opds/cover/<book_id>")
 @requires_basic_auth_if_no_ano
 def feed_get_cover(book_id):
-    book = db.session.query(db.Books).filter(db.Books.id == book_id).first()
-    return helper.get_book_cover(book.path)
+    return helper.get_book_cover(book_id)
 
 @opds.route("/opds/readbooks/")
 @requires_basic_auth_if_no_ano
