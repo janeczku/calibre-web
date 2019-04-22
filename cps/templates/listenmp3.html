@@ -35,9 +35,7 @@
       <h2>{{ entry.title }}</h2>
 
       <div class="cover">
-        {% if entry.has_cover %}
-        <img src="{{ url_for('web.get_cover', cover_path=entry.path.replace('\\','/')) }}" alt="{{ entry.title }}" /> {% else %}
-        <img src="{{ url_for('static', filename='generic_cover.jpg') }}" alt="{{ entry.title }}" /> {% endif %}
+        <img src="{{ url_for('web.get_cover', cover_path=entry.path.replace('\\','/')) }}" alt="{{ entry.title }}" />
       </div>
 
       {% if entry.ratings.__len__() > 0 %}

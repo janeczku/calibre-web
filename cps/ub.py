@@ -100,7 +100,10 @@ Base = declarative_base()
 def get_sidebar_config(kwargs=None):
     kwargs = kwargs or []
     if 'content' in kwargs:
-        content = not kwargs['content'].role_anonymous()
+        if not isinstance(kwargs['content'], Settings):
+            content = not kwargs['content'].role_anonymous()
+        else:
+            content = False
     else:
         content = False
     sidebar = list()

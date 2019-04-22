@@ -4,11 +4,7 @@
   <div class="row">
     <div class="col-sm-3 col-lg-3 col-xs-5">
       <div class="cover">
-        {% if entry.has_cover %}
           <img src="{{ url_for('web.get_cover', book_id=entry.id) }}" alt="{{ entry.title }}" />
-        {% else %}
-          <img src="{{ url_for('static', filename='generic_cover.jpg') }}" alt="{{ entry.title }}" />
-        {% endif %}
       </div>
     </div>
     <div class="col-sm-9 col-lg-9 book-meta">
@@ -150,7 +146,7 @@
         <span class="glyphicon glyphicon-tags"></span>
 
         {% for tag in entry.tags %}
-          <a href="{{ url_for('web.category', book_id=tag.id) }}" class="btn btn-xs btn-info" role="button">{{tag.name}}</a>
+          <a href="{{ url_for('web.books_list', data='category', sort='new', book_id=tag.id) }}" class="btn btn-xs btn-info" role="button">{{tag.name}}</a>
         {%endfor%}
       </p>
 
