@@ -407,9 +407,14 @@ def mimetype_filter(val):
 
 @app.template_filter('formatdate')
 def formatdate_filter(val):
-    conformed_timestamp = re.sub(r"[:]|([-](?!((\d{2}[:]\d{2})|(\d{4}))$))", '', val)
-    formatdate = datetime.datetime.strptime(conformed_timestamp[:15], "%Y%m%d %H%M%S")
-    return format_date(formatdate, format='medium', locale=get_locale())
+    try:
+        conformed_timestamp = re.sub(r"[:]|([-](?!((\d{2}[:]\d{2})|(\d{4}))$))", '', val)
+        formatdate = datetime.datetime.strptime(conformed_timestamp[:15], "%Y%m%d %H%M%S")
+        return format_date(formatdate, format='medium', locale=get_locale())
+    except AttributeError as e:
+        app.logger.error('Babel error: %s, Current user locale: %s, Current User: %s' % (e, current_user.locale, current_user.nickname))
+        return formatdate
+
 
 
 @app.template_filter('formatdateinput')
