@@ -133,7 +133,7 @@
             // Write the error response to the document.
             if (contentType || xhr.status === 422) {
                 var responseText = xhr.responseText;
-                if (contentType.indexOf("text/plain") !== -1) {
+                if (contentType.indexOf("application/javascript") !== -1) {
                     responseText = "<pre>" + responseText + "</pre>";
                     document.write(responseText);
                 }
