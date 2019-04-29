@@ -554,7 +554,7 @@ def fill_indexpage(page, database, db_filter, order, *join):
                             len(db.session.query(database)
                             .filter(db_filter).filter(common_filters()).all()))
     entries = db.session.query(database).join(*join,isouter=True).filter(db_filter)\
-            .filter(common_filters()).order_by(*order).offset(off).limit(config.config_books_per_page).all()
+            .filter(common_filters()).order_by(*order).order_by(db.Books.sort).offset(off).limit(config.config_books_per_page).all()
     for book in entries:
         book = order_authors(book)
     return entries, randm, pagination
@@ -682,7 +682,7 @@ def get_search_results(term):
                db.Books.authors.any(and_(*q)),
                db.Books.publishers.any(db.func.lower(db.Publishers.name).ilike("%" + term + "%")),
                db.func.lower(db.Books.title).ilike("%" + term + "%")
-               )).all()
+               )).order_by(db.Books.sort).all()
 
 
 def feed_search(term):

@@ -1,17 +1,17 @@
 /**
-* untar.js
-*
-* Licensed under the MIT License
-*
-* Copyright(c) 2011 Google Inc.
-*
-* Reference Documentation:
-*
-* TAR format: http://www.gnu.org/software/automake/manual/tar/Standard.html
-*/
+ * untar.js
+ *
+ * Licensed under the MIT License
+ *
+ * Copyright(c) 2011 Google Inc.
+ *
+ * Reference Documentation:
+ *
+ * TAR format: http://www.gnu.org/software/automake/manual/tar/Standard.html
+ */
 
 // This file expects to be invoked as a Worker (see onmessage below).
-importScripts('bytestream.js');
+importScripts('../io/bytestream.js');
 importScripts('archive.js');
 
 const UnarchiveState = {
@@ -42,15 +42,6 @@ const info = function(str) {
 const err = function(str) {
   postMessage(new bitjs.archive.UnarchiveErrorEvent(str));
 };
-
-// Removes all characters from the first zero-byte in the string onwards.
-var readCleanString = function(bstr, numBytes) {
-  var str = bstr.readString(numBytes);
-  var zIndex = str.indexOf(String.fromCharCode(0));
-  return zIndex != -1 ? str.substr(0, zIndex) : str;
-};
-
-
 const postProgress = function() {
   postMessage(new bitjs.archive.UnarchiveProgressEvent(
       currentFilename,
@@ -63,6 +54,12 @@ const postProgress = function() {
   ));
 };
 
+// Removes all characters from the first zero-byte in the string onwards.
+const readCleanString = function(bstr, numBytes) {
+  const str = bstr.readString(numBytes);
+  const zIndex = str.indexOf(String.fromCharCode(0));
+  return zIndex != -1 ? str.substr(0, zIndex) : str;
+};
 
 class TarLocalFile {
   // takes a ByteStream and parses out the local file information
@@ -82,7 +79,7 @@ class TarLocalFile {
     this.typeflag = readCleanString(bstream, 1);
     this.linkname = readCleanString(bstream, 100);
     this.maybeMagic = readCleanString(bstream, 6);
-    
+
     if (this.maybeMagic == "ustar") {
       this.version = readCleanString(bstream, 2);
       this.uname = readCleanString(bstream, 32);
@@ -94,7 +91,7 @@ class TarLocalFile {
       if (this.prefix.length) {
         this.name = this.prefix + this.name;
       }
-      bstream.readBytes(12); // 512 - 500in
+      bstream.readBytes(12); // 512 - 500
     } else {
       bstream.readBytes(255); // 512 - 257
     }
