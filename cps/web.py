@@ -2168,7 +2168,7 @@ def read_book(book_id, book_format):
         flash(_(u"Error opening eBook. File does not exist or file is not accessible:"), category="error")
         return redirect(url_for("index"))
 
-    # check if book was downloaded before
+    # check if book has bookmark
     lbookmark = None
     if current_user.is_authenticated:
         lbookmark = ub.session.query(ub.Bookmark).filter(ub.and_(ub.Bookmark.user_id == int(current_user.id),
@@ -2203,6 +2203,9 @@ def read_book(book_id, book_format):
                 extension=fileext, title=_(u"Read a Book"), book=book)
         flash(_(u"Error opening eBook. File does not exist or file is not accessible."), category="error")
         return redirect(url_for("index"))'''
+        flash(_(u"Error opening eBook. Fileformat is not supported."), category="error")
+        return redirect(url_for("index"))
+
 
 
 @app.route("/download/<int:book_id>/<book_format>")
