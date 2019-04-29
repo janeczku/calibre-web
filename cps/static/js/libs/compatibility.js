@@ -190,7 +190,7 @@ if (typeof PDFJS === 'undefined') {
         this._responseType = value;
         if (value === 'arraybuffer' &&
             typeof this.overrideMimeType === 'function') {
-          this.overrideMimeType('text/plain; charset=x-user-defined');
+          this.overrideMimeType('application/javascript; charset=x-user-defined');
         }
       }
     }

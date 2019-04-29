@@ -14473,7 +14473,7 @@ document.webL10n = function (window, document, undefined) {
     xhr.open('GET', url, gAsyncResourceLoading);
 
     if (xhr.overrideMimeType) {
-      xhr.overrideMimeType('text/plain; charset=utf-8');
+      xhr.overrideMimeType('application/javascript; charset=utf-8');
     }
 
     xhr.onreadystatechange = function () {
