@@ -704,7 +704,7 @@ def feed_search(term):
 def render_xml_template(*args, **kwargs):
     #ToDo: return time in current timezone similar to %z
     currtime = datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%S+00:00")
-    xml = render_template(current_time=currtime, *args, **kwargs)
+    xml = render_template(current_time=currtime, instance=config.config_calibre_web_title, *args, **kwargs)
     response = make_response(xml)
     response.headers["Content-Type"] = "application/atom+xml; charset=utf-8"
     return response

@@ -14,7 +14,10 @@ six==1.10.0
 # goodreads
 goodreads>=0.3.2
 python-Levenshtein>=0.12.0
-# other
+#extracting metadata
 lxml>=3.8.0
+Pillow>=4.0.0
 rarfile>=2.7
+# other
 natsort>=2.2.0
+
