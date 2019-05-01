@@ -13,4 +13,3 @@ SQLAlchemy>=1.1.0
 tornado>=4.1
 Wand>=0.4.4
 unidecode>=0.04.19
-Pillow>=5.4.0
