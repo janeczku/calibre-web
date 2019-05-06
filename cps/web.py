@@ -897,7 +897,6 @@ def advanced_search():
             custom_query = request.args.get('custom_column_' + str(c.id))
             if custom_query:
                 if c.datatype == 'bool':
-                    getattr(db.Books, 'custom_column_1')
                     q = q.filter(getattr(db.Books, 'custom_column_'+str(c.id)).any(
                         db.cc_classes[c.id].value == (custom_query == "True")))
                 elif c.datatype == 'int':
