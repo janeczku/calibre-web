@@ -66,7 +66,8 @@ var settings = {
     vflip: false,
     rotateTimes: 0,
     fitMode: kthoom.Key.B,
-    theme: "light"
+    theme: "light",
+    direction: 0 // 0 = Left to Right, 1 = Right to Left
 };
 
 kthoom.saveSettings = function() {
@@ -367,6 +368,22 @@ function setImage(url) {
     }
 }
 
+function showLeftPage() {
+    if (settings.direction === 0) {
+        showPrevPage()
+    } else {
+        showNextPage()
+    }
+}
+
+function showRightPage() {
+    if (settings.direction === 0) {
+        showNextPage()
+    } else {
+        showPrevPage()
+    }
+}
+
 function showPrevPage() {
     currentImage--;
     if (currentImage < 0) {
@@ -421,11 +438,11 @@ function keyHandler(evt) {
     switch (evt.keyCode) {
         case kthoom.Key.LEFT:
             if (hasModifier) break;
-            showPrevPage();
+            showLeftPage();
             break;
         case kthoom.Key.RIGHT:
             if (hasModifier) break;
-            showNextPage();
+            showRightPage();
             break;
         case kthoom.Key.L:
             if (hasModifier) break;
@@ -486,11 +503,11 @@ function keyHandler(evt) {
             if (evt.shiftKey && atTop) {
                 evt.preventDefault();
                 // If it's Shift + Space and the container is at the top of the page
-                showPrevPage();
+                showLeftPage();
             } else if (!evt.shiftKey && atBottom) {
                 evt.preventDefault();
                 // If you're at the bottom of the page and you only pressed space
-                showNextPage();
+                showRightPage();
                 container.scrollTop(0);
             }
             break;
@@ -621,25 +638,25 @@ function init(filename) {
 
         // Determine if the user clicked/tapped the left side or the
         // right side of the page.
-        var clickedPrev = false;
+        var clickedLeft = false;
         switch (settings.rotateTimes) {
             case 0:
-                clickedPrev = clickX < (comicWidth / 2);
+                clickedLeft = clickX < (comicWidth / 2);
                 break;
             case 1:
-                clickedPrev = clickY < (comicHeight / 2);
+                clickedLeft = clickY < (comicHeight / 2);
                 break;
             case 2:
-                clickedPrev = clickX > (comicWidth / 2);
+                clickedLeft = clickX > (comicWidth / 2);
                 break;
             case 3:
-                clickedPrev = clickY > (comicHeight / 2);
+                clickedLeft = clickY > (comicHeight / 2);
                 break;
         }
-        if (clickedPrev) {
-            showPrevPage();
+        if (clickedLeft) {
+            showLeftPage();
         } else {
-            showNextPage();
+            showRightPage();
         }
     });
 }
