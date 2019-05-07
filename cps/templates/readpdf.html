@@ -34,20 +34,18 @@ See https://github.com/adobe-type-tools/cmap-resources
     <script src="{{ url_for('static', filename='js/libs/compatibility.js') }}"></script>
 
     <!-- This snippet is used in production (included from viewer.html) -->
-    <link rel="resource" type="application/l10n" href="{{ url_for('static', filename='locale/locale.properties') }}">
     <script src="{{ url_for('static', filename='js/libs/pdf.js') }}"></script>
 
     <script type="text/javascript">
 
     window.addEventListener('load', function() {
+        PDFViewerApplicationOptions.set('sidebarViewOnLoad', 0);
         PDFViewerApplicationOptions.set('imageResourcesPath', "{{ url_for('static', filename='css/images/') }}");
         PDFViewerApplicationOptions.set('workerSrc', "{{ url_for('static', filename='js/libs/pdf.worker.js') }}");
-        PDFViewerApplicationOptions.set('sidebarViewOnLoad', 0);
-        // PDFViewerApplication.open("{{ url_for('serve_book', book_id=pdffile, book_format='pdf') }}");
-        PDFViewerApplicationOptions.set('defaultUrl', "{{ url_for('serve_book', book_id=pdffile, book_format='pdf') }}");
+        PDFViewerApplication.open("{{ url_for('serve_book', book_id=pdffile, book_format='pdf') }}");
     });
     </script>
-
+    <link rel="resource" type="application/l10n" href="{{ url_for('static', filename='locale/locale.properties') }}">
     <script src="{{ url_for('static', filename='js/libs/viewer.js') }}"></script>
 
   </head>
