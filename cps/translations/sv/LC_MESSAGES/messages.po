@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2019-03-10 08:03+0100\n"
+"POT-Creation-Date: 2019-05-08 20:23+0200\n"
 "PO-Revision-Date: 2018-11-23 02:57+0100\n"
 "Last-Translator: Jonatan Nyberg <jonatan.nyberg.karl@gmail.com>\n"
 "Language: sv\n"
@@ -18,8 +18,9 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.6.0\n"
 
-#: cps/book_formats.py:152 cps/book_formats.py:153 cps/book_formats.py:157
-#: cps/book_formats.py:161 cps/converter.py:29 cps/converter.py:45
+#: cps/book_formats.py:199 cps/book_formats.py:200 cps/book_formats.py:204
+#: cps/book_formats.py:208 cps/book_formats.py:212 cps/converter.py:29
+#: cps/converter.py:45
 msgid "not installed"
 msgstr "inte installerad"
 
@@ -31,133 +32,133 @@ msgstr "Utförande behörighet saknas"
 msgid "not configured"
 msgstr "inte konfigurerad"
 
-#: cps/helper.py:72
+#: cps/helper.py:79
 #, python-format
 msgid "%(format)s format not found for book id: %(book)d"
 msgstr "%(format)s formatet hittades inte för bok-id: %(book)d"
 
-#: cps/helper.py:84
+#: cps/helper.py:91
 #, python-format
 msgid "%(format)s not found on Google Drive: %(fn)s"
 msgstr "%(format)s hittades inte på Google Drive: %(fn)s"
 
-#: cps/helper.py:91 cps/helper.py:199 cps/templates/detail.html:45
+#: cps/helper.py:98 cps/helper.py:204 cps/templates/detail.html:45
 #: cps/templates/detail.html:49
 msgid "Send to Kindle"
 msgstr "Skicka till Kindle"
 
-#: cps/helper.py:92 cps/helper.py:110 cps/helper.py:201
+#: cps/helper.py:99 cps/helper.py:117 cps/helper.py:206
 msgid "This e-mail has been sent via Calibre-Web."
 msgstr "Detta e-postmeddelande har skickats via Calibre-Web."
 
-#: cps/helper.py:103
+#: cps/helper.py:110
 #, python-format
 msgid "%(format)s not found: %(fn)s"
 msgstr "%(format)s hittades inte: %(fn)s"
 
-#: cps/helper.py:108
+#: cps/helper.py:115
 msgid "Calibre-Web test e-mail"
 msgstr "Calibre-Web test e-post"
 
-#: cps/helper.py:109
+#: cps/helper.py:116
 msgid "Test e-mail"
 msgstr "Test e-post"
 
-#: cps/helper.py:125
+#: cps/helper.py:132
 msgid "Get Started with Calibre-Web"
 msgstr "Kom igång med Calibre-Web"
 
-#: cps/helper.py:126
+#: cps/helper.py:133
 #, python-format
 msgid "Registration e-mail for user: %(name)s"
 msgstr "Registrera e-post för användare: %(name)s"
 
-#: cps/helper.py:139 cps/helper.py:141 cps/helper.py:143 cps/helper.py:145
-#: cps/helper.py:151 cps/helper.py:153 cps/helper.py:155 cps/helper.py:157
+#: cps/helper.py:146 cps/helper.py:148 cps/helper.py:150 cps/helper.py:158
+#: cps/helper.py:160 cps/helper.py:162
 #, python-format
 msgid "Send %(format)s to Kindle"
 msgstr ""
 
-#: cps/helper.py:161 cps/helper.py:165
+#: cps/helper.py:166
 #, python-format
 msgid "Convert %(orig)s to %(format)s and send to Kindle"
 msgstr ""
 
-#: cps/helper.py:200
+#: cps/helper.py:205
 #, python-format
 msgid "E-mail: %(book)s"
 msgstr "E-post: %(book)s"
 
-#: cps/helper.py:203
+#: cps/helper.py:208
 msgid "The requested file could not be read. Maybe wrong permissions?"
 msgstr "Den begärda filen kunde inte läsas. Kanske fel behörigheter?"
 
-#: cps/helper.py:311
+#: cps/helper.py:316
 #, python-format
 msgid "Rename title from: '%(src)s' to '%(dest)s' failed with error: %(error)s"
 msgstr "Byt namn på titel från: \"%(src)s\" till \"%(dest)s\" misslyckades med fel: %(error)s"
 
-#: cps/helper.py:321
+#: cps/helper.py:326
 #, python-format
 msgid "Rename author from: '%(src)s' to '%(dest)s' failed with error: %(error)s"
 msgstr "Byt namn på författare från: \"%(src)s\" till \"%(dest)s\" misslyckades med fel: %(error)s"
 
-#: cps/helper.py:335
+#: cps/helper.py:340
 #, python-format
 msgid "Rename file in path '%(src)s' to '%(dest)s' failed with error: %(error)s"
 msgstr ""
 
-#: cps/helper.py:361 cps/helper.py:371 cps/helper.py:379
+#: cps/helper.py:366 cps/helper.py:376 cps/helper.py:384
 #, python-format
 msgid "File %(file)s not found on Google Drive"
 msgstr "Filen %(file)s hittades inte på Google Drive"
 
-#: cps/helper.py:400
+#: cps/helper.py:405
 #, python-format
 msgid "Book path %(path)s not found on Google Drive"
 msgstr "Boksökvägen %(path)s hittades inte på Google Drive"
 
-#: cps/helper.py:508
+#: cps/helper.py:556
 msgid "Error excecuting UnRar"
 msgstr "Fel vid körning av UnRar"
 
-#: cps/helper.py:510
+#: cps/helper.py:558
 msgid "Unrar binary file not found"
 msgstr "Unrar binärfil hittades inte"
 
-#: cps/helper.py:541
+#: cps/helper.py:589
 msgid "Waiting"
 msgstr "Väntar"
 
-#: cps/helper.py:543
+#: cps/helper.py:591
 msgid "Failed"
 msgstr "Misslyckades"
 
-#: cps/helper.py:545
+#: cps/helper.py:593
 msgid "Started"
 msgstr "Startad"
 
-#: cps/helper.py:547
+#: cps/helper.py:595
 msgid "Finished"
 msgstr "Klar"
 
-#: cps/helper.py:549
+#: cps/helper.py:597
 msgid "Unknown Status"
 msgstr "Okänd status"
 
-#: cps/helper.py:554
+#: cps/helper.py:602
 msgid "E-mail: "
 msgstr "E-post: "
 
-#: cps/helper.py:556 cps/helper.py:560
+#: cps/helper.py:604 cps/helper.py:608
 msgid "Convert: "
 msgstr "Konvertera: "
 
-#: cps/helper.py:558
+#: cps/helper.py:606
 msgid "Upload: "
 msgstr "Överför: "
 
-#: cps/helper.py:562
+#: cps/helper.py:610
 msgid "Unknown Task: "
 msgstr "Okänd uppgift: "
 
@@ -169,19 +170,19 @@ msgstr "Oväntade data vid läsning av uppdateringsinformation"
 msgid "No update available. You already have the latest version installed"
 msgstr "Ingen uppdatering tillgänglig. Du har redan den senaste versionen installerad"
 
-#: cps/updater.py:270 cps/updater.py:501 cps/updater.py:503 cps/web.py:1187
+#: cps/updater.py:270 cps/updater.py:501 cps/updater.py:503 cps/web.py:1206
 msgid "HTTP Error"
 msgstr "HTTP-fel"
 
-#: cps/updater.py:272 cps/updater.py:505 cps/web.py:1188
+#: cps/updater.py:272 cps/updater.py:505 cps/web.py:1207
 msgid "Connection error"
 msgstr "Anslutningsfel"
 
-#: cps/updater.py:274 cps/updater.py:507 cps/web.py:1189
+#: cps/updater.py:274 cps/updater.py:507 cps/web.py:1208
 msgid "Timeout while establishing connection"
 msgstr "Tiden ute när du etablerade anslutning"
 
-#: cps/updater.py:276 cps/updater.py:509 cps/web.py:1190
+#: cps/updater.py:276 cps/updater.py:509 cps/web.py:1209
 msgid "General error"
 msgstr "Allmänt fel"
 
@@ -202,555 +203,545 @@ msgstr ""
 msgid "A new update is available. Click on the button below to update to version: %(version)s"
 msgstr ""
 
-#: cps/updater.py:491 cps/web.py:2771
+#: cps/updater.py:491 cps/web.py:2801
 msgid "Unknown"
 msgstr "Okänd"
 
-#: cps/web.py:1180
+#: cps/web.py:1199
 msgid "Requesting update package"
 msgstr "Begär uppdateringspaketet"
 
-#: cps/web.py:1181
+#: cps/web.py:1200
 msgid "Downloading update package"
 msgstr "Hämtar uppdateringspaketet"
 
-#: cps/web.py:1182
+#: cps/web.py:1201
 msgid "Unzipping update package"
 msgstr "Packar upp uppdateringspaketet"
 
-#: cps/web.py:1183
+#: cps/web.py:1202
 msgid "Replacing files"
 msgstr "Ersätta filer"
 
-#: cps/web.py:1184
+#: cps/web.py:1203
 msgid "Database connections are closed"
 msgstr "Databasanslutningarna är stängda"
 
-#: cps/web.py:1185
+#: cps/web.py:1204
 msgid "Stopping server"
 msgstr "Stoppar server"
 
-#: cps/web.py:1186
+#: cps/web.py:1205
 msgid "Update finished, please press okay and reload page"
 msgstr "Uppdatering klar, tryck på okej och uppdatera sidan"
 
-#: cps/web.py:1187 cps/web.py:1188 cps/web.py:1189 cps/web.py:1190
+#: cps/web.py:1206 cps/web.py:1207 cps/web.py:1208 cps/web.py:1209
 msgid "Update failed:"
 msgstr "Uppdateringen misslyckades:"
 
-#: cps/web.py:1213
+#: cps/web.py:1235
 msgid "Recently Added Books"
 msgstr "Nyligen tillagda böcker"
 
-#: cps/web.py:1223
+#: cps/web.py:1245
 msgid "Newest Books"
 msgstr "Nyaste böcker"
 
-#: cps/web.py:1235
+#: cps/web.py:1257
 msgid "Oldest Books"
 msgstr "Äldsta böcker"
 
-#: cps/web.py:1247
+#: cps/web.py:1269
 msgid "Books (A-Z)"
 msgstr "Böcker (A-Ö)"
 
-#: cps/web.py:1258
+#: cps/web.py:1280
 msgid "Books (Z-A)"
 msgstr "Böcker (Ö-A)"
 
-#: cps/web.py:1287
+#: cps/web.py:1309
 msgid "Hot Books (most downloaded)"
 msgstr "Heta böcker (mest hämtade)"
 
-#: cps/web.py:1300
+#: cps/web.py:1322
 msgid "Best rated books"
 msgstr "Bäst rankade böcker"
 
-#: cps/templates/index.xml:39 cps/web.py:1313
+#: cps/templates/index.xml:39 cps/web.py:1335
 msgid "Random Books"
 msgstr "Slumpmässiga böcker"
 
-#: cps/web.py:1340 cps/web.py:1596 cps/web.py:2140
+#: cps/web.py:1362 cps/web.py:1618 cps/web.py:2167
 msgid "Error opening eBook. File does not exist or file is not accessible:"
 msgstr "Fel vid öppnande av e-bok. Filen finns inte eller filen är inte tillgänglig:"
 
-#: cps/web.py:1369
+#: cps/web.py:1391
 msgid "Publisher list"
 msgstr "Lista över förlag"
 
-#: cps/web.py:1384
+#: cps/web.py:1406
 #, python-format
 msgid "Publisher: %(name)s"
 msgstr "Förlag: %(name)s"
 
-#: cps/templates/index.xml:83 cps/web.py:1416
+#: cps/templates/index.xml:83 cps/web.py:1438
 msgid "Series list"
 msgstr "Serielista"
 
-#: cps/web.py:1430
+#: cps/web.py:1452
 #, python-format
 msgid "Series: %(serie)s"
 msgstr "Serier: %(serie)s"
 
-#: cps/web.py:1456
+#: cps/web.py:1478
 msgid "Available languages"
 msgstr "Tillgängliga språk"
 
-#: cps/web.py:1476
+#: cps/web.py:1498
 #, python-format
 msgid "Language: %(name)s"
 msgstr "Språk: %(name)s"
 
-#: cps/templates/index.xml:76 cps/web.py:1487
+#: cps/templates/index.xml:76 cps/web.py:1509
 msgid "Category list"
 msgstr "Kategorilista"
 
-#: cps/web.py:1501
+#: cps/web.py:1523
 #, python-format
 msgid "Category: %(name)s"
 msgstr "Kategori: %(name)s"
 
-#: cps/templates/layout.html:73 cps/web.py:1632
+#: cps/templates/layout.html:73 cps/web.py:1654
 msgid "Tasks"
 msgstr "Uppgifter"
 
-#: cps/web.py:1666
+#: cps/web.py:1688
 msgid "Statistics"
 msgstr "Statistik"
 
-#: cps/web.py:1734
+#: cps/web.py:1756
 msgid "Google Drive setup not completed, try to deactivate and activate Google Drive again"
 msgstr ""
 
-#: cps/web.py:1779
+#: cps/web.py:1801
 msgid "Callback domain is not verified, please follow steps to verify domain in google developer console"
 msgstr "Återuppringningsdomänen är inte verifierad, följ stegen för att verifiera domänen i Google utvecklarkonsol"
 
-#: cps/web.py:1855
+#: cps/web.py:1877
 msgid "Server restarted, please reload page"
 msgstr "Server startas om, vänligen uppdatera sidan"
 
-#: cps/web.py:1858
+#: cps/web.py:1880
 msgid "Performing shutdown of server, please close window"
 msgstr "Stänger servern, vänligen stäng fönstret"
 
-#: cps/web.py:1938
+#: cps/web.py:1959
 msgid "Published after "
 msgstr "Publicerad efter "
 
-#: cps/web.py:1945
+#: cps/web.py:1966
 msgid "Published before "
 msgstr "Publicerad före "
 
-#: cps/web.py:1959
+#: cps/web.py:1980
 #, python-format
 msgid "Rating <= %(rating)s"
 msgstr "Betyg <= %(rating)s"
 
-#: cps/web.py:1961
+#: cps/web.py:1982
 #, python-format
 msgid "Rating >= %(rating)s"
 msgstr "Betyg >= %(rating)s"
 
-#: cps/web.py:2022 cps/web.py:2031
+#: cps/web.py:2042 cps/web.py:2051
 msgid "search"
 msgstr "sök"
 
 #: cps/templates/index.xml:47 cps/templates/index.xml:51
-#: cps/templates/layout.html:148 cps/web.py:2099
+#: cps/templates/layout.html:148 cps/web.py:2122
 msgid "Read Books"
 msgstr "Lästa böcker"
 
 #: cps/templates/index.xml:55 cps/templates/index.xml:59
-#: cps/templates/layout.html:150 cps/web.py:2102
+#: cps/templates/layout.html:150 cps/web.py:2125
 msgid "Unread Books"
 msgstr "Olästa böcker"
 
-#: cps/web.py:2150 cps/web.py:2152 cps/web.py:2154 cps/web.py:2166
+#: cps/web.py:2177 cps/web.py:2179 cps/web.py:2181 cps/web.py:2193
 msgid "Read a Book"
 msgstr "Läs en bok"
 
-#: cps/web.py:2225 cps/web.py:3146
+#: cps/web.py:2205
+msgid "Error opening eBook. Fileformat is not supported."
+msgstr ""
+
+#: cps/web.py:2255 cps/web.py:3176
 msgid "Please fill out all fields!"
 msgstr "Fyll i alla fält!"
 
-#: cps/web.py:2226 cps/web.py:2248 cps/web.py:2252 cps/web.py:2257
-#: cps/web.py:2259
+#: cps/web.py:2256 cps/web.py:2278 cps/web.py:2282 cps/web.py:2287
+#: cps/web.py:2289
 msgid "register"
 msgstr "registrera"
 
-#: cps/web.py:2247 cps/web.py:3365
+#: cps/web.py:2277 cps/web.py:3395
 msgid "An unknown error occurred. Please try again later."
 msgstr "Ett okänt fel uppstod. Försök igen senare."
 
-#: cps/web.py:2250
+#: cps/web.py:2280
 msgid "Your e-mail is not allowed to register"
 msgstr "Din e-post är inte tillåten att registrera"
 
-#: cps/web.py:2253
+#: cps/web.py:2283
 msgid "Confirmation e-mail was send to your e-mail account."
 msgstr "Bekräftelsemail skickades till ditt e-postkonto."
 
-#: cps/web.py:2256
+#: cps/web.py:2286
 msgid "This username or e-mail address is already in use."
 msgstr "Det här användarnamnet eller e-postadressen är redan i bruk."
 
-#: cps/web.py:2273 cps/web.py:2369
+#: cps/web.py:2303 cps/web.py:2399
 #, python-format
 msgid "you are now logged in as: '%(nickname)s'"
 msgstr "du är nu inloggad som: \"%(nickname)s\""
 
-#: cps/web.py:2278
+#: cps/web.py:2308
 msgid "Wrong Username or Password"
 msgstr "Fel användarnamn eller lösenord"
 
-#: cps/web.py:2284 cps/web.py:2305
+#: cps/web.py:2314 cps/web.py:2335
 msgid "login"
 msgstr "logga in"
 
-#: cps/web.py:2317 cps/web.py:2348
+#: cps/web.py:2347 cps/web.py:2378
 msgid "Token not found"
 msgstr "Token hittades inte"
 
-#: cps/web.py:2325 cps/web.py:2356
+#: cps/web.py:2355 cps/web.py:2386
 msgid "Token has expired"
 msgstr "Token har löpt ut"
 
-#: cps/web.py:2333
+#: cps/web.py:2363
 msgid "Success! Please return to your device"
 msgstr "Lyckades! Vänligen återvänd till din enhet"
 
-#: cps/web.py:2383
+#: cps/web.py:2413
 msgid "Please configure the SMTP mail settings first..."
 msgstr "Konfigurera SMTP-postinställningarna först..."
 
-#: cps/web.py:2388
+#: cps/web.py:2418
 #, python-format
 msgid "Book successfully queued for sending to %(kindlemail)s"
 msgstr "Boken är i kö för att skicka till %(kindlemail)s"
 
-#: cps/web.py:2392
+#: cps/web.py:2422
 #, python-format
 msgid "There was an error sending this book: %(res)s"
 msgstr "Det gick inte att skicka den här boken: %(res)s"
 
-#: cps/web.py:2394 cps/web.py:3199
+#: cps/web.py:2424 cps/web.py:3229
 msgid "Please configure your kindle e-mail address first..."
 msgstr "Konfigurera din kindle-e-postadress först..."
 
-#: cps/web.py:2405 cps/web.py:2457
+#: cps/web.py:2435 cps/web.py:2487
 msgid "Invalid shelf specified"
 msgstr "Ogiltig hylla specificerad"
 
-#: cps/web.py:2412
+#: cps/web.py:2442
 #, python-format
 msgid "Sorry you are not allowed to add a book to the the shelf: %(shelfname)s"
 msgstr ""
 
-#: cps/web.py:2420
+#: cps/web.py:2450
 msgid "You are not allowed to edit public shelves"
 msgstr "Du får inte redigera offentliga hyllor"
 
-#: cps/web.py:2429
+#: cps/web.py:2459
 #, python-format
 msgid "Book is already part of the shelf: %(shelfname)s"
 msgstr "Boken är redan en del av hyllan: %(shelfname)s"
 
-#: cps/web.py:2443
+#: cps/web.py:2473
 #, python-format
 msgid "Book has been added to shelf: %(sname)s"
 msgstr "Boken har lagts till i hyllan: %(sname)s"
 
-#: cps/web.py:2462
+#: cps/web.py:2492
 #, python-format
 msgid "You are not allowed to add a book to the the shelf: %(name)s"
 msgstr "Du får inte lägga till en bok i hyllan: %(name)s"
 
-#: cps/web.py:2467
+#: cps/web.py:2497
 msgid "User is not allowed to edit public shelves"
 msgstr "Användaren får inte redigera publika hyllor"
 
-#: cps/web.py:2485
+#: cps/web.py:2515
 #, python-format
 msgid "Books are already part of the shelf: %(name)s"
 msgstr "Böcker är redan en del av hyllan: %(name)s"
 
-#: cps/web.py:2499
+#: cps/web.py:2529
 #, python-format
 msgid "Books have been added to shelf: %(sname)s"
 msgstr "Böcker har lagts till hyllan: %(sname)s"
 
-#: cps/web.py:2501
+#: cps/web.py:2531
 #, python-format
 msgid "Could not add books to shelf: %(sname)s"
 msgstr "Kunde inte lägga till böcker till hyllan: %(sname)s"
 
-#: cps/web.py:2538
+#: cps/web.py:2568
 #, python-format
 msgid "Book has been removed from shelf: %(sname)s"
 msgstr "Boken har tagits bort från hyllan: %(sname)s"
 
-#: cps/web.py:2544
+#: cps/web.py:2574
 #, python-format
 msgid "Sorry you are not allowed to remove a book from this shelf: %(sname)s"
 msgstr "Tyvärr har du inte rätt att ta bort en bok från den här hyllan: %(sname)s"
 
-#: cps/web.py:2565 cps/web.py:2589
+#: cps/web.py:2595 cps/web.py:2619
 #, python-format
 msgid "A shelf with the name '%(title)s' already exists."
 msgstr "En hylla med namnet '%(title)s' finns redan."
 
-#: cps/web.py:2570
+#: cps/web.py:2600
 #, python-format
 msgid "Shelf %(title)s created"
 msgstr "Hyllan %(title)s skapad"
 
-#: cps/web.py:2572 cps/web.py:2600
+#: cps/web.py:2602 cps/web.py:2630
 msgid "There was an error"
 msgstr "Det fanns ett fel"
 
-#: cps/web.py:2573 cps/web.py:2575
+#: cps/web.py:2603 cps/web.py:2605
 msgid "create a shelf"
 msgstr "skapa en hylla"
 
-#: cps/web.py:2598
+#: cps/web.py:2628
 #, python-format
 msgid "Shelf %(title)s changed"
 msgstr "Hyllan %(title)s ändrad"
 
-#: cps/web.py:2601 cps/web.py:2603
+#: cps/web.py:2631 cps/web.py:2633
 msgid "Edit a shelf"
 msgstr "Redigera en hylla"
 
-#: cps/web.py:2624
+#: cps/web.py:2654
 #, python-format
 msgid "successfully deleted shelf %(name)s"
 msgstr "tog bort hyllan %(name)s"
 
-#: cps/web.py:2651
+#: cps/web.py:2681
 #, python-format
 msgid "Shelf: '%(name)s'"
 msgstr "Hylla: '%(name)s'"
 
-#: cps/web.py:2654
+#: cps/web.py:2684
 msgid "Error opening shelf. Shelf does not exist or is not accessible"
 msgstr "Fel vid öppning av hyllan. Hylla finns inte eller är inte tillgänglig"
 
-#: cps/web.py:2685
+#: cps/web.py:2715
 #, python-format
 msgid "Change order of Shelf: '%(name)s'"
 msgstr "Ändra ordning på hyllan: '%(name)s'"
 
-#: cps/web.py:2714 cps/web.py:3152
+#: cps/web.py:2744 cps/web.py:3182
 msgid "E-mail is not from valid domain"
 msgstr "E-posten är inte från giltig domän"
 
-#: cps/web.py:2716 cps/web.py:2758 cps/web.py:2761
+#: cps/web.py:2746 cps/web.py:2788 cps/web.py:2791
 #, python-format
 msgid "%(name)s's profile"
 msgstr "%(name)ss profil"
 
-#: cps/web.py:2756
+#: cps/web.py:2786
 msgid "Found an existing account for this e-mail address."
 msgstr "Hittade ett befintligt konto för den här e-postadressen."
 
-#: cps/web.py:2759
+#: cps/web.py:2789
 msgid "Profile updated"
 msgstr "Profilen uppdaterad"
 
-#: cps/web.py:2790
+#: cps/web.py:2820
 msgid "Admin page"
 msgstr "Administrationssida"
 
-#: cps/web.py:2875 cps/web.py:3055
+#: cps/web.py:2905 cps/web.py:3085
 msgid "Calibre-Web configuration updated"
 msgstr "Calibre-Web konfiguration uppdaterad"
 
-#: cps/templates/admin.html:100 cps/web.py:2889
+#: cps/templates/admin.html:100 cps/web.py:2919
 msgid "UI Configuration"
 msgstr "Användargränssnitt konfiguration"
 
-#: cps/web.py:2907
+#: cps/web.py:2937
 msgid "Import of optional Google Drive requirements missing"
 msgstr "Import av valfri Google Drive krav saknas"
 
-#: cps/web.py:2910
+#: cps/web.py:2940
 msgid "client_secrets.json is missing or not readable"
 msgstr "client_secrets.json saknas eller inte kan läsas"
 
-#: cps/web.py:2915 cps/web.py:2944
+#: cps/web.py:2945 cps/web.py:2974
 msgid "client_secrets.json is not configured for web application"
 msgstr "client_secrets.json är inte konfigurerad för webbapplikation"
 
-#: cps/templates/admin.html:99 cps/web.py:2947 cps/web.py:2973 cps/web.py:2985
-#: cps/web.py:3030 cps/web.py:3045 cps/web.py:3064 cps/web.py:3072
-#: cps/web.py:3088
+#: cps/templates/admin.html:99 cps/web.py:2977 cps/web.py:3003 cps/web.py:3015
+#: cps/web.py:3060 cps/web.py:3075 cps/web.py:3094 cps/web.py:3102
+#: cps/web.py:3118
 msgid "Basic Configuration"
 msgstr "Grundläggande konfiguration"
 
-#: cps/web.py:2970
+#: cps/web.py:3000
 msgid "Keyfile location is not valid, please enter correct path"
 msgstr "Platsen för Keyfile är inte giltig, ange rätt sökväg"
 
-#: cps/web.py:2982
+#: cps/web.py:3012
 msgid "Certfile location is not valid, please enter correct path"
 msgstr "Platsen för Certfile är inte giltig, ange rätt sökväg"
 
-#: cps/web.py:3027
+#: cps/web.py:3057
 msgid "Logfile location is not valid, please enter correct path"
 msgstr "Platsen för Logfile platsen är inte giltig, ange rätt sökväg"
 
-#: cps/web.py:3068
+#: cps/web.py:3098
 msgid "DB location is not valid, please enter correct path"
 msgstr "Platsen för DB är inte giltig, ange rätt sökväg"
 
-#: cps/templates/admin.html:33 cps/web.py:3148 cps/web.py:3154 cps/web.py:3170
+#: cps/templates/admin.html:33 cps/web.py:3178 cps/web.py:3184 cps/web.py:3200
 msgid "Add new user"
 msgstr "Lägg till ny användare"
 
-#: cps/web.py:3160
+#: cps/web.py:3190
 #, python-format
 msgid "User '%(user)s' created"
 msgstr "Användaren '%(user)s' skapad"
 
-#: cps/web.py:3164
+#: cps/web.py:3194
 msgid "Found an existing account for this e-mail address or nickname."
 msgstr "Hittade ett befintligt konto för den här e-postadressen eller smeknamnet."
 
-#: cps/web.py:3194
+#: cps/web.py:3224
 #, python-format
 msgid "Test e-mail successfully send to %(kindlemail)s"
 msgstr "Test-e-post skicka till %(kindlemail)s"
 
-#: cps/web.py:3197
+#: cps/web.py:3227
 #, python-format
 msgid "There was an error sending the Test e-mail: %(res)s"
 msgstr "Det gick inte att skicka Testmeddelandet: %(res)s"
 
-#: cps/web.py:3201
+#: cps/web.py:3231
 msgid "E-mail server settings updated"
 msgstr "E-postserverinställningar uppdaterade"
 
-#: cps/web.py:3202
+#: cps/web.py:3232
 msgid "Edit e-mail server settings"
 msgstr "Redigera inställningar för e-postserver"
 
-#: cps/web.py:3227
+#: cps/web.py:3257
 #, python-format
 msgid "User '%(nick)s' deleted"
 msgstr "Användaren '%(nick)s' borttagen"
 
-#: cps/web.py:3340
+#: cps/web.py:3370
 #, python-format
 msgid "User '%(nick)s' updated"
 msgstr "Användaren '%(nick)s' uppdaterad"
 
-#: cps/web.py:3343
+#: cps/web.py:3373
 msgid "An unknown error occured."
 msgstr "Ett okänt fel uppstod."
 
-#: cps/web.py:3345
+#: cps/web.py:3375
 #, python-format
 msgid "Edit User %(nick)s"
 msgstr "Redigera användaren %(nick)s"
 
-#: cps/web.py:3362
+#: cps/web.py:3392
 #, python-format
 msgid "Password for user %(user)s reset"
 msgstr "Lösenord för användaren %(user)s återställd"
 
-#: cps/web.py:3376 cps/web.py:3582
+#: cps/web.py:3406 cps/web.py:3598
 msgid "Error opening eBook. File does not exist or file is not accessible"
 msgstr "Det gick inte att öppna e-boken. Filen finns inte eller filen är inte tillgänglig"
 
-#: cps/web.py:3404
+#: cps/web.py:3434
 msgid "edit metadata"
 msgstr "redigera metadata"
 
-#: cps/web.py:3497 cps/web.py:3743
+#: cps/web.py:3527 cps/web.py:3760
 #, python-format
 msgid "File extension '%(ext)s' is not allowed to be uploaded to this server"
 msgstr "Filändelsen '%(ext)s' får inte laddas upp till den här servern"
 
-#: cps/web.py:3501 cps/web.py:3746
+#: cps/web.py:3531 cps/web.py:3763
 msgid "File to be uploaded must have an extension"
 msgstr "Filen som ska laddas upp måste ha en ändelse"
 
-#: cps/web.py:3513 cps/web.py:3765
+#: cps/web.py:3543 cps/web.py:3782
 #, python-format
 msgid "Failed to create path %(path)s (Permission denied)."
 msgstr "Det gick inte att skapa sökväg %(path)s (behörighet nekad)."
 
-#: cps/web.py:3518
+#: cps/web.py:3548
 #, python-format
 msgid "Failed to store file %(file)s."
 msgstr "Det gick inte att lagra filen %(file)s."
 
-#: cps/web.py:3535
+#: cps/web.py:3565
 #, python-format
 msgid "File format %(ext)s added to %(book)s"
 msgstr "Filformatet %(ext)s lades till %(book)s"
 
-#: cps/web.py:3553
-#, python-format
-msgid "Failed to create path for cover %(path)s (Permission denied)."
-msgstr "Det gick inte att skapa sökväg för omslag %(path)s (behörighet nekad)."
+#: cps/web.py:3579 cps/web.py:3652
+msgid "Cover is not a supported imageformat (jpg/png/webp), can't save"
+msgstr ""
 
-#: cps/web.py:3561
-#, python-format
-msgid "Failed to store cover-file %(cover)s."
-msgstr "Det gick inte att lagra omslagsfilen %(cover)s."
-
-#: cps/web.py:3564
-msgid "Cover-file is not a valid image file"
-msgstr "Omslagsfilen är inte en giltig bildfil"
-
-#: cps/web.py:3594 cps/web.py:3603
+#: cps/web.py:3611 cps/web.py:3620
 msgid "unknown"
 msgstr "okänd"
 
-#: cps/web.py:3635
-msgid "Cover is not a jpg file, can't save"
-msgstr "Omslag är inte en jpg-fil, kan inte spara"
-
-#: cps/web.py:3683
+#: cps/web.py:3700
 #, python-format
 msgid "%(langname)s is not a valid language"
 msgstr "%(langname)s är inte ett giltigt språk"
 
-#: cps/web.py:3714
+#: cps/web.py:3731
 msgid "Metadata successfully updated"
 msgstr "Metadata uppdaterades"
 
-#: cps/web.py:3723
+#: cps/web.py:3740
 msgid "Error editing book, please check logfile for details"
 msgstr "Det gick inte att redigera boken, kontrollera loggfilen för mer information"
 
-#: cps/web.py:3769
+#: cps/web.py:3786
 #, python-format
 msgid "Failed to store file %(file)s (Permission denied)."
 msgstr "Det gick inte att lagra filen %(file)s (behörighet nekad)."
 
-#: cps/web.py:3774
+#: cps/web.py:3791
 #, python-format
 msgid "Failed to delete file %(file)s (Permission denied)."
 msgstr "Det gick inte att ta bort filen %(file)s (behörighet nekad)."
 
-#: cps/web.py:3857
+#: cps/web.py:3873
 #, python-format
 msgid "File %(title)s"
 msgstr ""
 
-#: cps/web.py:3886
+#: cps/web.py:3902
 msgid "Source or destination format for conversion missing"
 msgstr "Källa eller målformat för konvertering saknas"
 
-#: cps/web.py:3896
+#: cps/web.py:3912
 #, python-format
 msgid "Book successfully queued for converting to %(book_format)s"
 msgstr "Boken är i kö för konvertering till %(book_format)s"
 
-#: cps/web.py:3900
+#: cps/web.py:3916
 #, python-format
 msgid "There was an error converting this book: %(res)s"
 msgstr "Det gick inte att konvertera den här boken: %(res)s"
@@ -1288,7 +1279,7 @@ msgstr "Antal slumpmässiga böcker att visa"
 msgid "No. of authors to show before hiding (0=disable hiding)"
 msgstr ""
 
-#: cps/templates/config_view_edit.html:35 cps/templates/readcbr.html:108
+#: cps/templates/config_view_edit.html:35 cps/templates/readcbr.html:118
 msgid "Theme"
 msgstr "Tema"
 
@@ -1602,7 +1593,7 @@ msgid "Advanced Search"
 msgstr "Avancerad sökning"
 
 #: cps/templates/layout.html:76 cps/templates/read.html:71
-#: cps/templates/readcbr.html:79 cps/templates/readcbr.html:103
+#: cps/templates/readcbr.html:89 cps/templates/readcbr.html:113
 msgid "Settings"
 msgstr "Inställningar"
 
@@ -1721,97 +1712,105 @@ msgstr "Calibre-Web e-bokkatalog"
 msgid "Reflow text when sidebars are open."
 msgstr "Fyll i texten igen när sidofält är öppna."
 
-#: cps/templates/readcbr.html:84
+#: cps/templates/readcbr.html:94
 msgid "Keyboard Shortcuts"
 msgstr "Kortkommandon"
 
-#: cps/templates/readcbr.html:87
+#: cps/templates/readcbr.html:97
 msgid "Previous Page"
 msgstr "Föregående sida"
 
-#: cps/templates/readcbr.html:88
+#: cps/templates/readcbr.html:98
 msgid "Next Page"
 msgstr "Nästa sida"
 
-#: cps/templates/readcbr.html:89
+#: cps/templates/readcbr.html:99
 msgid "Scale to Best"
 msgstr "Skala till bäst"
 
-#: cps/templates/readcbr.html:90
+#: cps/templates/readcbr.html:100
 msgid "Scale to Width"
 msgstr "Skala till bredd"
 
-#: cps/templates/readcbr.html:91
+#: cps/templates/readcbr.html:101
 msgid "Scale to Height"
 msgstr "Skala till höjd"
 
-#: cps/templates/readcbr.html:92
+#: cps/templates/readcbr.html:102
 msgid "Scale to Native"
 msgstr "Skala till ursprunglig"
 
-#: cps/templates/readcbr.html:93
+#: cps/templates/readcbr.html:103
 msgid "Rotate Right"
 msgstr "Rotera åt höger"
 
-#: cps/templates/readcbr.html:94
+#: cps/templates/readcbr.html:104
 msgid "Rotate Left"
 msgstr "Rotera åt vänster"
 
-#: cps/templates/readcbr.html:95
+#: cps/templates/readcbr.html:105
 msgid "Flip Image"
 msgstr "Vänd bilden"
 
-#: cps/templates/readcbr.html:111
+#: cps/templates/readcbr.html:121
 msgid "Light"
 msgstr "Ljust"
 
-#: cps/templates/readcbr.html:112
+#: cps/templates/readcbr.html:122
 msgid "Dark"
 msgstr "Mörkt"
 
-#: cps/templates/readcbr.html:117
+#: cps/templates/readcbr.html:127
 msgid "Scale"
 msgstr "Skala"
 
-#: cps/templates/readcbr.html:120
+#: cps/templates/readcbr.html:130
 msgid "Best"
 msgstr "Bäst"
 
-#: cps/templates/readcbr.html:121
+#: cps/templates/readcbr.html:131
 msgid "Width"
 msgstr "Bredd"
 
-#: cps/templates/readcbr.html:122
+#: cps/templates/readcbr.html:132
 msgid "Height"
 msgstr "Höjd"
 
-#: cps/templates/readcbr.html:123
+#: cps/templates/readcbr.html:133
 msgid "Native"
 msgstr "Ursprunglig"
 
-#: cps/templates/readcbr.html:128
+#: cps/templates/readcbr.html:138
 msgid "Rotate"
 msgstr "Rotera"
 
-#: cps/templates/readcbr.html:139
+#: cps/templates/readcbr.html:149
 msgid "Flip"
 msgstr "Vänd"
 
-#: cps/templates/readcbr.html:142
+#: cps/templates/readcbr.html:152
 msgid "Horizontal"
 msgstr "Horisontell"
 
-#: cps/templates/readcbr.html:143
+#: cps/templates/readcbr.html:153
 msgid "Vertical"
 msgstr "Vertikal"
+
+#: cps/templates/readcbr.html:158
+msgid "Direction"
+msgstr ""
+
+#: cps/templates/readcbr.html:161
+msgid "Left to Right"
+msgstr ""
+
+#: cps/templates/readcbr.html:162
+msgid "Right to Left"
+msgstr ""
 
 #: cps/templates/readpdf.html:29
 msgid "PDF.js viewer"
 msgstr "PDF.js visare"
-
-#: cps/templates/readpdf.html:418
-msgid "Preparing document for printing..."
-msgstr ""
 
 #: cps/templates/readtxt.html:6
 msgid "Basic txt Reader"
@@ -2057,5 +2056,20 @@ msgstr "Senaste hämtningar"
 #~ msgstr ""
 
 #~ msgid "A new update is available. Click on the button below to update to version:  %(version)s"
+#~ msgstr ""
+
+#~ msgid "Failed to create path for cover %(path)s (Permission denied)."
+#~ msgstr "Det gick inte att skapa sökväg för omslag %(path)s (behörighet nekad)."
+
+#~ msgid "Failed to store cover-file %(cover)s."
+#~ msgstr "Det gick inte att lagra omslagsfilen %(cover)s."
+
+#~ msgid "Cover-file is not a valid image file"
+#~ msgstr "Omslagsfilen är inte en giltig bildfil"
+
+#~ msgid "Cover is not a jpg file, can't save"
+#~ msgstr "Omslag är inte en jpg-fil, kan inte spara"
+
+#~ msgid "Preparing document for printing..."
 #~ msgstr ""
 
