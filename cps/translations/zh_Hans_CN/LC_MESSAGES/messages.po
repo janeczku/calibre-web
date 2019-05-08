@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2019-03-10 08:03+0100\n"
+"POT-Creation-Date: 2019-05-08 20:23+0200\n"
 "PO-Revision-Date: 2017-01-06 17:00+0000\n"
 "Last-Translator: dalin <dalin.lin@gmail.com>\n"
 "Language: zh_Hans_CN\n"
@@ -18,8 +18,9 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.6.0\n"
 
-#: cps/book_formats.py:152 cps/book_formats.py:153 cps/book_formats.py:157
-#: cps/book_formats.py:161 cps/converter.py:29 cps/converter.py:45
+#: cps/book_formats.py:199 cps/book_formats.py:200 cps/book_formats.py:204
+#: cps/book_formats.py:208 cps/book_formats.py:212 cps/converter.py:29
+#: cps/converter.py:45
 msgid "not installed"
 msgstr "未安装"
 
@@ -31,133 +32,133 @@ msgstr "可执行权限缺失"
 msgid "not configured"
 msgstr "未配置"
 
-#: cps/helper.py:72
+#: cps/helper.py:79
 #, python-format
 msgid "%(format)s format not found for book id: %(book)d"
 msgstr "找不到id为 %(book)d 的书的 %(format)s 格式"
 
-#: cps/helper.py:84
+#: cps/helper.py:91
 #, python-format
 msgid "%(format)s not found on Google Drive: %(fn)s"
 msgstr "Google Drive %(fn)s 上找不到 %(format)s"
 
-#: cps/helper.py:91 cps/helper.py:199 cps/templates/detail.html:45
+#: cps/helper.py:98 cps/helper.py:204 cps/templates/detail.html:45
 #: cps/templates/detail.html:49
 msgid "Send to Kindle"
 msgstr "发送到Kindle"
 
-#: cps/helper.py:92 cps/helper.py:110 cps/helper.py:201
+#: cps/helper.py:99 cps/helper.py:117 cps/helper.py:206
 msgid "This e-mail has been sent via Calibre-Web."
 msgstr "此邮件已经通过Calibre-Web发送"
 
-#: cps/helper.py:103
+#: cps/helper.py:110
 #, python-format
 msgid "%(format)s not found: %(fn)s"
 msgstr "找不到 %(format)s: %(fn)s"
 
-#: cps/helper.py:108
+#: cps/helper.py:115
 msgid "Calibre-Web test e-mail"
 msgstr "Calibre-Web测试邮件"
 
-#: cps/helper.py:109
+#: cps/helper.py:116
 msgid "Test e-mail"
 msgstr "测试邮件"
 
-#: cps/helper.py:125
+#: cps/helper.py:132
 msgid "Get Started with Calibre-Web"
 msgstr "开启Calibre-Web之旅"
 
-#: cps/helper.py:126
+#: cps/helper.py:133
 #, python-format
 msgid "Registration e-mail for user: %(name)s"
 msgstr "用户 %(name)s 的注册邮箱"
 
-#: cps/helper.py:139 cps/helper.py:141 cps/helper.py:143 cps/helper.py:145
-#: cps/helper.py:151 cps/helper.py:153 cps/helper.py:155 cps/helper.py:157
+#: cps/helper.py:146 cps/helper.py:148 cps/helper.py:150 cps/helper.py:158
+#: cps/helper.py:160 cps/helper.py:162
 #, python-format
 msgid "Send %(format)s to Kindle"
 msgstr ""
 
-#: cps/helper.py:161 cps/helper.py:165
+#: cps/helper.py:166
 #, python-format
 msgid "Convert %(orig)s to %(format)s and send to Kindle"
 msgstr ""
 
-#: cps/helper.py:200
+#: cps/helper.py:205
 #, python-format
 msgid "E-mail: %(book)s"
 msgstr ""
 
-#: cps/helper.py:203
+#: cps/helper.py:208
 msgid "The requested file could not be read. Maybe wrong permissions?"
 msgstr "无法读取请求的文件。 可能有错误的权限设置？"
 
-#: cps/helper.py:311
+#: cps/helper.py:316
 #, python-format
 msgid "Rename title from: '%(src)s' to '%(dest)s' failed with error: %(error)s"
 msgstr "将标题从'%(src)s'改为'%(dest)s'时失败，出错信息: %(error)s"
 
-#: cps/helper.py:321
+#: cps/helper.py:326
 #, python-format
 msgid "Rename author from: '%(src)s' to '%(dest)s' failed with error: %(error)s"
 msgstr "将作者从'%(src)s'改为'%(dest)s'时失败，出错信息: %(error)s"
 
-#: cps/helper.py:335
+#: cps/helper.py:340
 #, python-format
 msgid "Rename file in path '%(src)s' to '%(dest)s' failed with error: %(error)s"
 msgstr ""
 
-#: cps/helper.py:361 cps/helper.py:371 cps/helper.py:379
+#: cps/helper.py:366 cps/helper.py:376 cps/helper.py:384
 #, python-format
 msgid "File %(file)s not found on Google Drive"
 msgstr "Google Drive上找不到文件 %(file)s"
 
-#: cps/helper.py:400
+#: cps/helper.py:405
 #, python-format
 msgid "Book path %(path)s not found on Google Drive"
 msgstr "Google Drive上找不到书籍路径 %(path)s"
 
-#: cps/helper.py:508
+#: cps/helper.py:556
 msgid "Error excecuting UnRar"
 msgstr "执行UnRar时出错"
 
-#: cps/helper.py:510
+#: cps/helper.py:558
 msgid "Unrar binary file not found"
 msgstr "找不到Unrar二进制文件"
 
-#: cps/helper.py:541
+#: cps/helper.py:589
 msgid "Waiting"
 msgstr "等待中"
 
-#: cps/helper.py:543
+#: cps/helper.py:591
 msgid "Failed"
 msgstr "失败"
 
-#: cps/helper.py:545
+#: cps/helper.py:593
 msgid "Started"
 msgstr "已开始"
 
-#: cps/helper.py:547
+#: cps/helper.py:595
 msgid "Finished"
 msgstr "已完成"
 
-#: cps/helper.py:549
+#: cps/helper.py:597
 msgid "Unknown Status"
 msgstr "未知状态"
 
-#: cps/helper.py:554
+#: cps/helper.py:602
 msgid "E-mail: "
 msgstr ""
 
-#: cps/helper.py:556 cps/helper.py:560
+#: cps/helper.py:604 cps/helper.py:608
 msgid "Convert: "
 msgstr "转换："
 
-#: cps/helper.py:558
+#: cps/helper.py:606
 msgid "Upload: "
 msgstr "上传："
 
-#: cps/helper.py:562
+#: cps/helper.py:610
 msgid "Unknown Task: "
 msgstr "未知任务："
 
@@ -169,19 +170,19 @@ msgstr "读取更新信息时出现异常数据"
 msgid "No update available. You already have the latest version installed"
 msgstr "没有可用更新。您已经安装了最新版本"
 
-#: cps/updater.py:270 cps/updater.py:501 cps/updater.py:503 cps/web.py:1187
+#: cps/updater.py:270 cps/updater.py:501 cps/updater.py:503 cps/web.py:1206
 msgid "HTTP Error"
 msgstr "HTTP错误"
 
-#: cps/updater.py:272 cps/updater.py:505 cps/web.py:1188
+#: cps/updater.py:272 cps/updater.py:505 cps/web.py:1207
 msgid "Connection error"
 msgstr "连接错误"
 
-#: cps/updater.py:274 cps/updater.py:507 cps/web.py:1189
+#: cps/updater.py:274 cps/updater.py:507 cps/web.py:1208
 msgid "Timeout while establishing connection"
 msgstr "建立连接超时"
 
-#: cps/updater.py:276 cps/updater.py:509 cps/web.py:1190
+#: cps/updater.py:276 cps/updater.py:509 cps/web.py:1209
 msgid "General error"
 msgstr "一般错误"
 
@@ -202,555 +203,545 @@ msgstr ""
 msgid "A new update is available. Click on the button below to update to version: %(version)s"
 msgstr ""
 
-#: cps/updater.py:491 cps/web.py:2771
+#: cps/updater.py:491 cps/web.py:2801
 msgid "Unknown"
 msgstr "未知"
 
-#: cps/web.py:1180
+#: cps/web.py:1199
 msgid "Requesting update package"
 msgstr "正在请求更新包"
 
-#: cps/web.py:1181
+#: cps/web.py:1200
 msgid "Downloading update package"
 msgstr "正在下载更新包"
 
-#: cps/web.py:1182
+#: cps/web.py:1201
 msgid "Unzipping update package"
 msgstr "正在解压更新包"
 
-#: cps/web.py:1183
+#: cps/web.py:1202
 msgid "Replacing files"
 msgstr "正在替换文件"
 
-#: cps/web.py:1184
+#: cps/web.py:1203
 msgid "Database connections are closed"
 msgstr "数据库连接已关闭"
 
-#: cps/web.py:1185
+#: cps/web.py:1204
 msgid "Stopping server"
 msgstr "正在停止服务器"
 
-#: cps/web.py:1186
+#: cps/web.py:1205
 msgid "Update finished, please press okay and reload page"
 msgstr "更新完成，请按确定并刷新页面"
 
-#: cps/web.py:1187 cps/web.py:1188 cps/web.py:1189 cps/web.py:1190
+#: cps/web.py:1206 cps/web.py:1207 cps/web.py:1208 cps/web.py:1209
 msgid "Update failed:"
 msgstr "更新失败："
 
-#: cps/web.py:1213
+#: cps/web.py:1235
 msgid "Recently Added Books"
 msgstr "最近添加的书籍"
 
-#: cps/web.py:1223
+#: cps/web.py:1245
 msgid "Newest Books"
 msgstr "最新书籍"
 
-#: cps/web.py:1235
+#: cps/web.py:1257
 msgid "Oldest Books"
 msgstr "最旧书籍"
 
-#: cps/web.py:1247
+#: cps/web.py:1269
 msgid "Books (A-Z)"
 msgstr "书籍 (A-Z)"
 
-#: cps/web.py:1258
+#: cps/web.py:1280
 msgid "Books (Z-A)"
 msgstr "书籍 (Z-A)"
 
-#: cps/web.py:1287
+#: cps/web.py:1309
 msgid "Hot Books (most downloaded)"
 msgstr "热门书籍(最多下载)"
 
-#: cps/web.py:1300
+#: cps/web.py:1322
 msgid "Best rated books"
 msgstr "最高评分书籍"
 
-#: cps/templates/index.xml:39 cps/web.py:1313
+#: cps/templates/index.xml:39 cps/web.py:1335
 msgid "Random Books"
 msgstr "随机书籍"
 
-#: cps/web.py:1340 cps/web.py:1596 cps/web.py:2140
+#: cps/web.py:1362 cps/web.py:1618 cps/web.py:2167
 msgid "Error opening eBook. File does not exist or file is not accessible:"
 msgstr "无法打开电子书。 文件不存在或者文件不可访问:"
 
-#: cps/web.py:1369
+#: cps/web.py:1391
 msgid "Publisher list"
 msgstr "出版社列表"
 
-#: cps/web.py:1384
+#: cps/web.py:1406
 #, python-format
 msgid "Publisher: %(name)s"
 msgstr "出版社： %(name)s"
 
-#: cps/templates/index.xml:83 cps/web.py:1416
+#: cps/templates/index.xml:83 cps/web.py:1438
 msgid "Series list"
 msgstr "丛书列表"
 
-#: cps/web.py:1430
+#: cps/web.py:1452
 #, python-format
 msgid "Series: %(serie)s"
 msgstr "丛书: %(serie)s"
 
-#: cps/web.py:1456
+#: cps/web.py:1478
 msgid "Available languages"
 msgstr "可用语言"
 
-#: cps/web.py:1476
+#: cps/web.py:1498
 #, python-format
 msgid "Language: %(name)s"
 msgstr "语言: %(name)s"
 
-#: cps/templates/index.xml:76 cps/web.py:1487
+#: cps/templates/index.xml:76 cps/web.py:1509
 msgid "Category list"
 msgstr "分类列表"
 
-#: cps/web.py:1501
+#: cps/web.py:1523
 #, python-format
 msgid "Category: %(name)s"
 msgstr "分类: %(name)s"
 
-#: cps/templates/layout.html:73 cps/web.py:1632
+#: cps/templates/layout.html:73 cps/web.py:1654
 msgid "Tasks"
 msgstr "任务"
 
-#: cps/web.py:1666
+#: cps/web.py:1688
 msgid "Statistics"
 msgstr "统计"
 
-#: cps/web.py:1734
+#: cps/web.py:1756
 msgid "Google Drive setup not completed, try to deactivate and activate Google Drive again"
 msgstr ""
 
-#: cps/web.py:1779
+#: cps/web.py:1801
 msgid "Callback domain is not verified, please follow steps to verify domain in google developer console"
 msgstr "回调域名尚未被校验，请在google开发者控制台按步骤校验域名"
 
-#: cps/web.py:1855
+#: cps/web.py:1877
 msgid "Server restarted, please reload page"
 msgstr "服务器已重启，请刷新页面"
 
-#: cps/web.py:1858
+#: cps/web.py:1880
 msgid "Performing shutdown of server, please close window"
 msgstr "正在关闭服务器，请关闭窗口"
 
-#: cps/web.py:1938
+#: cps/web.py:1959
 msgid "Published after "
 msgstr "出版时晚于 "
 
-#: cps/web.py:1945
+#: cps/web.py:1966
 msgid "Published before "
 msgstr "出版时早于 "
 
-#: cps/web.py:1959
+#: cps/web.py:1980
 #, python-format
 msgid "Rating <= %(rating)s"
 msgstr "评分 <= %(rating)s"
 
-#: cps/web.py:1961
+#: cps/web.py:1982
 #, python-format
 msgid "Rating >= %(rating)s"
 msgstr "评分 >= %(rating)s"
 
-#: cps/web.py:2022 cps/web.py:2031
+#: cps/web.py:2042 cps/web.py:2051
 msgid "search"
 msgstr "搜索"
 
 #: cps/templates/index.xml:47 cps/templates/index.xml:51
-#: cps/templates/layout.html:148 cps/web.py:2099
+#: cps/templates/layout.html:148 cps/web.py:2122
 msgid "Read Books"
 msgstr "已读书籍"
 
 #: cps/templates/index.xml:55 cps/templates/index.xml:59
-#: cps/templates/layout.html:150 cps/web.py:2102
+#: cps/templates/layout.html:150 cps/web.py:2125
 msgid "Unread Books"
 msgstr "未读书籍"
 
-#: cps/web.py:2150 cps/web.py:2152 cps/web.py:2154 cps/web.py:2166
+#: cps/web.py:2177 cps/web.py:2179 cps/web.py:2181 cps/web.py:2193
 msgid "Read a Book"
 msgstr "阅读一本书"
 
-#: cps/web.py:2225 cps/web.py:3146
+#: cps/web.py:2205
+msgid "Error opening eBook. Fileformat is not supported."
+msgstr ""
+
+#: cps/web.py:2255 cps/web.py:3176
 msgid "Please fill out all fields!"
 msgstr "请填写所有字段"
 
-#: cps/web.py:2226 cps/web.py:2248 cps/web.py:2252 cps/web.py:2257
-#: cps/web.py:2259
+#: cps/web.py:2256 cps/web.py:2278 cps/web.py:2282 cps/web.py:2287
+#: cps/web.py:2289
 msgid "register"
 msgstr "注册"
 
-#: cps/web.py:2247 cps/web.py:3365
+#: cps/web.py:2277 cps/web.py:3395
 msgid "An unknown error occurred. Please try again later."
 msgstr "发生一个未知错误，请稍后再试。"
 
-#: cps/web.py:2250
+#: cps/web.py:2280
 msgid "Your e-mail is not allowed to register"
 msgstr "您的邮箱不能用来注册"
 
-#: cps/web.py:2253
+#: cps/web.py:2283
 msgid "Confirmation e-mail was send to your e-mail account."
 msgstr "确认邮件已经发送到您的邮箱。"
 
-#: cps/web.py:2256
+#: cps/web.py:2286
 msgid "This username or e-mail address is already in use."
 msgstr "这个用户名或者邮箱已经被使用。"
 
-#: cps/web.py:2273 cps/web.py:2369
+#: cps/web.py:2303 cps/web.py:2399
 #, python-format
 msgid "you are now logged in as: '%(nickname)s'"
 msgstr "您现在已以'%(nickname)s'身份登录"
 
-#: cps/web.py:2278
+#: cps/web.py:2308
 msgid "Wrong Username or Password"
 msgstr "用户名或密码错误"
 
-#: cps/web.py:2284 cps/web.py:2305
+#: cps/web.py:2314 cps/web.py:2335
 msgid "login"
 msgstr "登录"
 
-#: cps/web.py:2317 cps/web.py:2348
+#: cps/web.py:2347 cps/web.py:2378
 msgid "Token not found"
 msgstr "找不到Token"
 
-#: cps/web.py:2325 cps/web.py:2356
+#: cps/web.py:2355 cps/web.py:2386
 msgid "Token has expired"
 msgstr "Token已过期"
 
-#: cps/web.py:2333
+#: cps/web.py:2363
 msgid "Success! Please return to your device"
 msgstr "成功！请返回您的设备"
 
-#: cps/web.py:2383
+#: cps/web.py:2413
 msgid "Please configure the SMTP mail settings first..."
 msgstr "请先配置SMTP邮箱..."
 
-#: cps/web.py:2388
+#: cps/web.py:2418
 #, python-format
 msgid "Book successfully queued for sending to %(kindlemail)s"
 msgstr "书籍已经被成功加入 %(kindlemail)s 的发送队列"
 
-#: cps/web.py:2392
+#: cps/web.py:2422
 #, python-format
 msgid "There was an error sending this book: %(res)s"
 msgstr "发送这本书的时候出现错误: %(res)s"
 
-#: cps/web.py:2394 cps/web.py:3199
+#: cps/web.py:2424 cps/web.py:3229
 msgid "Please configure your kindle e-mail address first..."
 msgstr "请先配置您的kindle邮箱..."
 
-#: cps/web.py:2405 cps/web.py:2457
+#: cps/web.py:2435 cps/web.py:2487
 msgid "Invalid shelf specified"
 msgstr "指定的书架无效"
 
-#: cps/web.py:2412
+#: cps/web.py:2442
 #, python-format
 msgid "Sorry you are not allowed to add a book to the the shelf: %(shelfname)s"
 msgstr "对不起，您没有添加书籍到书架 %(shelfname)s 的权限"
 
-#: cps/web.py:2420
+#: cps/web.py:2450
 msgid "You are not allowed to edit public shelves"
 msgstr "您没有编辑书架的权限"
 
-#: cps/web.py:2429
+#: cps/web.py:2459
 #, python-format
 msgid "Book is already part of the shelf: %(shelfname)s"
 msgstr "此书已经是书架 %(shelfname)s 的一部分"
 
-#: cps/web.py:2443
+#: cps/web.py:2473
 #, python-format
 msgid "Book has been added to shelf: %(sname)s"
 msgstr "此书已被添加到书架: %(sname)s"
 
-#: cps/web.py:2462
+#: cps/web.py:2492
 #, python-format
 msgid "You are not allowed to add a book to the the shelf: %(name)s"
 msgstr "您没有添加书籍到书架 %(name)s 的权限"
 
-#: cps/web.py:2467
+#: cps/web.py:2497
 msgid "User is not allowed to edit public shelves"
 msgstr "用户没有编辑公开书架的权限"
 
-#: cps/web.py:2485
+#: cps/web.py:2515
 #, python-format
 msgid "Books are already part of the shelf: %(name)s"
 msgstr "书籍已经在书架 %(name)s 中了"
 
-#: cps/web.py:2499
+#: cps/web.py:2529
 #, python-format
 msgid "Books have been added to shelf: %(sname)s"
 msgstr "书籍已经被添加到书架 %(sname)s 中'"
 
-#: cps/web.py:2501
+#: cps/web.py:2531
 #, python-format
 msgid "Could not add books to shelf: %(sname)s"
 msgstr "无法添加书籍到书架: %(sname)s"
 
-#: cps/web.py:2538
+#: cps/web.py:2568
 #, python-format
 msgid "Book has been removed from shelf: %(sname)s"
 msgstr "此书已从书架 %(sname)s 中删除"
 
-#: cps/web.py:2544
+#: cps/web.py:2574
 #, python-format
 msgid "Sorry you are not allowed to remove a book from this shelf: %(sname)s"
 msgstr "对不起，您没有从书架 %(sname)s 中删除书籍的权限"
 
-#: cps/web.py:2565 cps/web.py:2589
+#: cps/web.py:2595 cps/web.py:2619
 #, python-format
 msgid "A shelf with the name '%(title)s' already exists."
 msgstr "已存在书架 '%(title)s'。"
 
-#: cps/web.py:2570
+#: cps/web.py:2600
 #, python-format
 msgid "Shelf %(title)s created"
 msgstr "书架 %(title)s 已被创建"
 
-#: cps/web.py:2572 cps/web.py:2600
+#: cps/web.py:2602 cps/web.py:2630
 msgid "There was an error"
 msgstr "发生错误"
 
-#: cps/web.py:2573 cps/web.py:2575
+#: cps/web.py:2603 cps/web.py:2605
 msgid "create a shelf"
 msgstr "创建书架"
 
-#: cps/web.py:2598
+#: cps/web.py:2628
 #, python-format
 msgid "Shelf %(title)s changed"
 msgstr "书架 %(title)s 已被修改"
 
-#: cps/web.py:2601 cps/web.py:2603
+#: cps/web.py:2631 cps/web.py:2633
 msgid "Edit a shelf"
 msgstr "编辑书架"
 
-#: cps/web.py:2624
+#: cps/web.py:2654
 #, python-format
 msgid "successfully deleted shelf %(name)s"
 msgstr "成功删除书架 %(name)s"
 
-#: cps/web.py:2651
+#: cps/web.py:2681
 #, python-format
 msgid "Shelf: '%(name)s'"
 msgstr "书架: '%(name)s'"
 
-#: cps/web.py:2654
+#: cps/web.py:2684
 msgid "Error opening shelf. Shelf does not exist or is not accessible"
 msgstr "打开书架出错。书架不存在或不可访问"
 
-#: cps/web.py:2685
+#: cps/web.py:2715
 #, python-format
 msgid "Change order of Shelf: '%(name)s'"
 msgstr "修改书架 '%(name)s' 顺序"
 
-#: cps/web.py:2714 cps/web.py:3152
+#: cps/web.py:2744 cps/web.py:3182
 msgid "E-mail is not from valid domain"
 msgstr "邮箱不在有效域中'"
 
-#: cps/web.py:2716 cps/web.py:2758 cps/web.py:2761
+#: cps/web.py:2746 cps/web.py:2788 cps/web.py:2791
 #, python-format
 msgid "%(name)s's profile"
 msgstr "%(name)s 的资料"
 
-#: cps/web.py:2756
+#: cps/web.py:2786
 msgid "Found an existing account for this e-mail address."
 msgstr "找到一个已有账号使用这个邮箱。"
 
-#: cps/web.py:2759
+#: cps/web.py:2789
 msgid "Profile updated"
 msgstr "资料已更新"
 
-#: cps/web.py:2790
+#: cps/web.py:2820
 msgid "Admin page"
 msgstr "管理页"
 
-#: cps/web.py:2875 cps/web.py:3055
+#: cps/web.py:2905 cps/web.py:3085
 msgid "Calibre-Web configuration updated"
 msgstr "Calibre-Web配置已更新"
 
-#: cps/templates/admin.html:100 cps/web.py:2889
+#: cps/templates/admin.html:100 cps/web.py:2919
 msgid "UI Configuration"
 msgstr "UI配置"
 
-#: cps/web.py:2907
+#: cps/web.py:2937
 msgid "Import of optional Google Drive requirements missing"
 msgstr "可选的Google Drive依赖导入缺失"
 
-#: cps/web.py:2910
+#: cps/web.py:2940
 msgid "client_secrets.json is missing or not readable"
 msgstr "client_secrets.json文件缺失或不可读"
 
-#: cps/web.py:2915 cps/web.py:2944
+#: cps/web.py:2945 cps/web.py:2974
 msgid "client_secrets.json is not configured for web application"
 msgstr "没有为web应用配置client_secrets.json"
 
-#: cps/templates/admin.html:99 cps/web.py:2947 cps/web.py:2973 cps/web.py:2985
-#: cps/web.py:3030 cps/web.py:3045 cps/web.py:3064 cps/web.py:3072
-#: cps/web.py:3088
+#: cps/templates/admin.html:99 cps/web.py:2977 cps/web.py:3003 cps/web.py:3015
+#: cps/web.py:3060 cps/web.py:3075 cps/web.py:3094 cps/web.py:3102
+#: cps/web.py:3118
 msgid "Basic Configuration"
 msgstr "基本配置"
 
-#: cps/web.py:2970
+#: cps/web.py:3000
 msgid "Keyfile location is not valid, please enter correct path"
 msgstr "key文件位置无效，请输入正确路径"
 
-#: cps/web.py:2982
+#: cps/web.py:3012
 msgid "Certfile location is not valid, please enter correct path"
 msgstr "证书文件位置无效，请输入正确路径"
 
-#: cps/web.py:3027
+#: cps/web.py:3057
 msgid "Logfile location is not valid, please enter correct path"
 msgstr "日志文件位置无效，请输入正确路径"
 
-#: cps/web.py:3068
+#: cps/web.py:3098
 msgid "DB location is not valid, please enter correct path"
 msgstr "DB位置无效，请输入正确路径"
 
-#: cps/templates/admin.html:33 cps/web.py:3148 cps/web.py:3154 cps/web.py:3170
+#: cps/templates/admin.html:33 cps/web.py:3178 cps/web.py:3184 cps/web.py:3200
 msgid "Add new user"
 msgstr "添加新用户"
 
-#: cps/web.py:3160
+#: cps/web.py:3190
 #, python-format
 msgid "User '%(user)s' created"
 msgstr "用户 '%(user)s' 已被创建"
 
-#: cps/web.py:3164
+#: cps/web.py:3194
 msgid "Found an existing account for this e-mail address or nickname."
 msgstr "此邮箱或昵称的账号已经存在。"
 
-#: cps/web.py:3194
+#: cps/web.py:3224
 #, python-format
 msgid "Test e-mail successfully send to %(kindlemail)s"
 msgstr "测试邮件已经被成功发到 %(kindlemail)s"
 
-#: cps/web.py:3197
+#: cps/web.py:3227
 #, python-format
 msgid "There was an error sending the Test e-mail: %(res)s"
 msgstr "发送测试邮件出错了: %(res)s"
 
-#: cps/web.py:3201
+#: cps/web.py:3231
 msgid "E-mail server settings updated"
 msgstr "已更新邮件服务器设置"
 
-#: cps/web.py:3202
+#: cps/web.py:3232
 msgid "Edit e-mail server settings"
 msgstr "编辑邮箱服务器设置"
 
-#: cps/web.py:3227
+#: cps/web.py:3257
 #, python-format
 msgid "User '%(nick)s' deleted"
 msgstr "用户 '%(nick)s' 已被删除"
 
-#: cps/web.py:3340
+#: cps/web.py:3370
 #, python-format
 msgid "User '%(nick)s' updated"
 msgstr "用户 '%(nick)s' 已被更新"
 
-#: cps/web.py:3343
+#: cps/web.py:3373
 msgid "An unknown error occured."
 msgstr "发生未知错误。"
 
-#: cps/web.py:3345
+#: cps/web.py:3375
 #, python-format
 msgid "Edit User %(nick)s"
 msgstr "编辑用户 %(nick)s"
 
-#: cps/web.py:3362
+#: cps/web.py:3392
 #, python-format
 msgid "Password for user %(user)s reset"
 msgstr "用户 %(user)s 的密码已重置"
 
-#: cps/web.py:3376 cps/web.py:3582
+#: cps/web.py:3406 cps/web.py:3598
 msgid "Error opening eBook. File does not exist or file is not accessible"
 msgstr "打开电子书出错。文件不存在或不可访问"
 
-#: cps/web.py:3404
+#: cps/web.py:3434
 msgid "edit metadata"
 msgstr "编辑元数据"
 
-#: cps/web.py:3497 cps/web.py:3743
+#: cps/web.py:3527 cps/web.py:3760
 #, python-format
 msgid "File extension '%(ext)s' is not allowed to be uploaded to this server"
 msgstr "不能上传后缀为　'%(ext)s'　的文件到此服务器"
 
-#: cps/web.py:3501 cps/web.py:3746
+#: cps/web.py:3531 cps/web.py:3763
 msgid "File to be uploaded must have an extension"
 msgstr "要上传的文件必须有一个后缀"
 
-#: cps/web.py:3513 cps/web.py:3765
+#: cps/web.py:3543 cps/web.py:3782
 #, python-format
 msgid "Failed to create path %(path)s (Permission denied)."
 msgstr "创建路径 %(path)s 失败(权限拒绝)。"
 
-#: cps/web.py:3518
+#: cps/web.py:3548
 #, python-format
 msgid "Failed to store file %(file)s."
 msgstr "保存文件 %(file)s 失败。"
 
-#: cps/web.py:3535
+#: cps/web.py:3565
 #, python-format
 msgid "File format %(ext)s added to %(book)s"
 msgstr "已添加 %(ext)s 格式到 %(book)s"
 
-#: cps/web.py:3553
-#, python-format
-msgid "Failed to create path for cover %(path)s (Permission denied)."
-msgstr "为封面 %(path)s 创建路径失败(权限拒绝)。"
+#: cps/web.py:3579 cps/web.py:3652
+msgid "Cover is not a supported imageformat (jpg/png/webp), can't save"
+msgstr ""
 
-#: cps/web.py:3561
-#, python-format
-msgid "Failed to store cover-file %(cover)s."
-msgstr "保存封面文件 %(cover)s 失败。"
-
-#: cps/web.py:3564
-msgid "Cover-file is not a valid image file"
-msgstr "封面文件不是一个有效的图片文件"
-
-#: cps/web.py:3594 cps/web.py:3603
+#: cps/web.py:3611 cps/web.py:3620
 msgid "unknown"
 msgstr "未知"
 
-#: cps/web.py:3635
-msgid "Cover is not a jpg file, can't save"
-msgstr "封面不是一个jpg文件，无法保存"
-
-#: cps/web.py:3683
+#: cps/web.py:3700
 #, python-format
 msgid "%(langname)s is not a valid language"
 msgstr "%(langname)s 不是一种有效语言"
 
-#: cps/web.py:3714
+#: cps/web.py:3731
 msgid "Metadata successfully updated"
 msgstr "已成功更新元数据"
 
-#: cps/web.py:3723
+#: cps/web.py:3740
 msgid "Error editing book, please check logfile for details"
 msgstr "编辑书籍出错，详情请检查日志文件"
 
-#: cps/web.py:3769
+#: cps/web.py:3786
 #, python-format
 msgid "Failed to store file %(file)s (Permission denied)."
 msgstr "存储文件 %(file)s 失败(权限拒绝)。"
 
-#: cps/web.py:3774
+#: cps/web.py:3791
 #, python-format
 msgid "Failed to delete file %(file)s (Permission denied)."
 msgstr "删除文件 %(file)s 失败(权限拒绝)。"
 
-#: cps/web.py:3857
+#: cps/web.py:3873
 #, python-format
 msgid "File %(title)s"
 msgstr ""
 
-#: cps/web.py:3886
+#: cps/web.py:3902
 msgid "Source or destination format for conversion missing"
 msgstr "转换的源或目的格式缺失"
 
-#: cps/web.py:3896
+#: cps/web.py:3912
 #, python-format
 msgid "Book successfully queued for converting to %(book_format)s"
 msgstr "书籍已经被成功加入 %(book_format)s 的转换队列"
 
-#: cps/web.py:3900
+#: cps/web.py:3916
 #, python-format
 msgid "There was an error converting this book: %(res)s"
 msgstr "转换此书时出现错误： %(res)s"
@@ -1288,7 +1279,7 @@ msgstr "随机书籍显示数量"
 msgid "No. of authors to show before hiding (0=disable hiding)"
 msgstr ""
 
-#: cps/templates/config_view_edit.html:35 cps/templates/readcbr.html:108
+#: cps/templates/config_view_edit.html:35 cps/templates/readcbr.html:118
 msgid "Theme"
 msgstr "主题"
 
@@ -1602,7 +1593,7 @@ msgid "Advanced Search"
 msgstr "高级搜索"
 
 #: cps/templates/layout.html:76 cps/templates/read.html:71
-#: cps/templates/readcbr.html:79 cps/templates/readcbr.html:103
+#: cps/templates/readcbr.html:89 cps/templates/readcbr.html:113
 msgid "Settings"
 msgstr "设置"
 
@@ -1721,97 +1712,105 @@ msgstr "Caliebre-Web电子书目录"
 msgid "Reflow text when sidebars are open."
 msgstr ""
 
-#: cps/templates/readcbr.html:84
+#: cps/templates/readcbr.html:94
 msgid "Keyboard Shortcuts"
 msgstr "快捷键"
 
-#: cps/templates/readcbr.html:87
+#: cps/templates/readcbr.html:97
 msgid "Previous Page"
 msgstr "上一页"
 
-#: cps/templates/readcbr.html:88
+#: cps/templates/readcbr.html:98
 msgid "Next Page"
 msgstr "下一页"
 
-#: cps/templates/readcbr.html:89
+#: cps/templates/readcbr.html:99
 msgid "Scale to Best"
 msgstr "缩放到最佳"
 
-#: cps/templates/readcbr.html:90
+#: cps/templates/readcbr.html:100
 msgid "Scale to Width"
 msgstr "按宽度缩放"
 
-#: cps/templates/readcbr.html:91
+#: cps/templates/readcbr.html:101
 msgid "Scale to Height"
 msgstr "按高度缩放"
 
-#: cps/templates/readcbr.html:92
+#: cps/templates/readcbr.html:102
 msgid "Scale to Native"
 msgstr ""
 
-#: cps/templates/readcbr.html:93
+#: cps/templates/readcbr.html:103
 msgid "Rotate Right"
 msgstr "向右旋转"
 
-#: cps/templates/readcbr.html:94
+#: cps/templates/readcbr.html:104
 msgid "Rotate Left"
 msgstr "向左旋转"
 
-#: cps/templates/readcbr.html:95
+#: cps/templates/readcbr.html:105
 msgid "Flip Image"
 msgstr "翻转图片"
 
-#: cps/templates/readcbr.html:111
+#: cps/templates/readcbr.html:121
 msgid "Light"
 msgstr "浅色"
 
-#: cps/templates/readcbr.html:112
+#: cps/templates/readcbr.html:122
 msgid "Dark"
 msgstr "深色"
 
-#: cps/templates/readcbr.html:117
+#: cps/templates/readcbr.html:127
 msgid "Scale"
 msgstr "缩放"
 
-#: cps/templates/readcbr.html:120
+#: cps/templates/readcbr.html:130
 msgid "Best"
 msgstr "最佳"
 
-#: cps/templates/readcbr.html:121
+#: cps/templates/readcbr.html:131
 msgid "Width"
 msgstr "宽度"
 
-#: cps/templates/readcbr.html:122
+#: cps/templates/readcbr.html:132
 msgid "Height"
 msgstr "高度"
 
-#: cps/templates/readcbr.html:123
+#: cps/templates/readcbr.html:133
 msgid "Native"
 msgstr ""
 
-#: cps/templates/readcbr.html:128
+#: cps/templates/readcbr.html:138
 msgid "Rotate"
 msgstr "旋转"
 
-#: cps/templates/readcbr.html:139
+#: cps/templates/readcbr.html:149
 msgid "Flip"
 msgstr "翻转"
 
-#: cps/templates/readcbr.html:142
+#: cps/templates/readcbr.html:152
 msgid "Horizontal"
 msgstr "水平"
 
-#: cps/templates/readcbr.html:143
+#: cps/templates/readcbr.html:153
 msgid "Vertical"
 msgstr "垂直"
+
+#: cps/templates/readcbr.html:158
+msgid "Direction"
+msgstr ""
+
+#: cps/templates/readcbr.html:161
+msgid "Left to Right"
+msgstr ""
+
+#: cps/templates/readcbr.html:162
+msgid "Right to Left"
+msgstr ""
 
 #: cps/templates/readpdf.html:29
 msgid "PDF.js viewer"
 msgstr "PDF.js 查看器"
-
-#: cps/templates/readpdf.html:418
-msgid "Preparing document for printing..."
-msgstr ""
 
 #: cps/templates/readtxt.html:6
 msgid "Basic txt Reader"
@@ -3258,4 +3257,19 @@ msgstr "最近下载"
 
 #~ msgid "Zaza"
 #~ msgstr "扎扎其语"
+
+#~ msgid "Failed to create path for cover %(path)s (Permission denied)."
+#~ msgstr "为封面 %(path)s 创建路径失败(权限拒绝)。"
+
+#~ msgid "Failed to store cover-file %(cover)s."
+#~ msgstr "保存封面文件 %(cover)s 失败。"
+
+#~ msgid "Cover-file is not a valid image file"
+#~ msgstr "封面文件不是一个有效的图片文件"
+
+#~ msgid "Cover is not a jpg file, can't save"
+#~ msgstr "封面不是一个jpg文件，无法保存"
+
+#~ msgid "Preparing document for printing..."
+#~ msgstr ""
 
