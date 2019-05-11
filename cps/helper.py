@@ -130,7 +130,7 @@ def send_registration_mail(e_mail, user_name, default_password, resend=False):
     text += "Sincerely\r\n\r\n"
     text += "Your Calibre-Web team"
     global_WorkerThread.add_email(_(u'Get Started with Calibre-Web'),None, None, ub.get_mail_settings(),
-                                  e_mail, user_name, _(u"Registration e-mail for user: %(name)s", name=user_name), text)
+                                  e_mail, None, _(u"Registration e-mail for user: %(name)s", name=user_name), text)
     return
 
 def check_send_to_kindle(entry):
@@ -568,17 +568,13 @@ def json_serial(obj):
         return obj.isoformat()
     raise TypeError ("Type %s not serializable" % type(obj))
 
-
+# helper function to apply localize status information in tasklist entries
 def render_task_status(tasklist):
-    #helper function to apply localize status information in tasklist entries
     renderedtasklist=list()
-    # task2 = task
     for task in tasklist:
         if task['user'] == current_user.nickname or current_user.role_admin():
-            # task2 = copy.deepcopy(task) # = task
             if task['formStarttime']:
                 task['starttime'] = format_datetime(task['formStarttime'], format='short', locale=web.get_locale())
-            # task2['formStarttime'] = ""
             else:
                 if 'starttime' not in task:
                     task['starttime'] = ""
