@@ -1209,7 +1209,6 @@ def token_verified():
 @web.route("/me", methods=["GET", "POST"])
 @login_required
 def profile():
-    global _
     downloads = list()
     languages = speaking_language()
     translations = babel.list_translations() + [LC('en')]
@@ -1248,7 +1247,7 @@ def profile():
             current_user.locale = to_save["locale"]
 
         val = 0
-        for key, _ in to_save.items():
+        for key, __ in to_save.items():
             if key.startswith('show'):
                 val += int(key[5:])
         current_user.sidebar_view = val

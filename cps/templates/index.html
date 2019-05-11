@@ -4,7 +4,7 @@
 <div class="discover random-books">
   <h2 class="random-books">{{_('Discover (Random Books)')}}</h2>
   <div class="row">
-web.    {% for entry in random %}
+   {% for entry in random %}
     <div class="col-sm-3 col-lg-2 col-xs-6 book" id="books_rand">
       <div class="cover">
           <a href="{{ url_for('web.show_book', book_id=entry.id) }}" data-toggle="modal" data-target="#bookDetailsModal" data-remote="false">

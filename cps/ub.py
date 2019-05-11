@@ -105,7 +105,7 @@ def get_sidebar_config(kwargs=None):
         else:
             content = False
     else:
-        content = False
+        content = 'conf' in kwargs
     sidebar = list()
     sidebar.append({"glyph": "glyphicon-book", "text": _('Recently Added'), "link": 'web.index', "id": "new",
                     "visibility": SIDEBAR_RECENT, 'public': True, "page": "root",
