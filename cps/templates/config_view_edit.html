@@ -119,10 +119,12 @@
     <div id="collapseseven" class="panel-collapse collapse">
       <div class="panel-body">
         {% for element in sidebar %}
-          <div class="form-group">
+          {% if element['config_show'] %}
+            <div class="form-group">
               <input type="checkbox" name="show_{{element['visibility']}}" id="show_{{element['visibility']}}" {% if conf.show_element_new_user(element['visibility']) %}checked{% endif %}>
               <label for="show_{{element['visibility']}}">{{element['show_text']}}</label>
-          </div>
+            </div>
+          {% endif %}
         {% endfor %}
         <div class="form-group">
             <input type="checkbox" name="Show_detail_random" id="Show_detail_random" {% if conf.show_detail_random() %}checked{% endif %}>
