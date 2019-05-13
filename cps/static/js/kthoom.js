@@ -160,7 +160,7 @@ function initProgressClick() {
 function loadFromArrayBuffer(ab) {
     var start = (new Date).getTime();
     var h = new Uint8Array(ab, 0, 10);
-    var pathToBitJS = "../../static/js/";
+    var pathToBitJS = "../../static/js/archive/";
     if (h[0] === 0x52 && h[1] === 0x61 && h[2] === 0x72 && h[3] === 0x21) { //Rar!
         unarchiver = new bitjs.archive.Unrarrer(ab, pathToBitJS);
     } else if (h[0] === 80 && h[1] === 75) { //PK (Zip)
