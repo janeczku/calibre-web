@@ -28,19 +28,19 @@ var totalFilesInArchive = 0;
 
 // Helper functions.
 var info = function(str) {
-  postMessage(new bitjs.archive.UnarchiveInfoEvent(str));
+    postMessage(new bitjs.archive.UnarchiveInfoEvent(str));
 };
 var err = function(str) {
-  postMessage(new bitjs.archive.UnarchiveErrorEvent(str));
+    postMessage(new bitjs.archive.UnarchiveErrorEvent(str));
 };
 var postProgress = function() {
-  postMessage(new bitjs.archive.UnarchiveProgressEvent(
-      currentFilename,
-      currentFileNumber,
-      currentBytesUnarchivedInFile,
-      currentBytesUnarchived,
-      totalUncompressedBytesInArchive,
-      totalFilesInArchive));
+    postMessage(new bitjs.archive.UnarchiveProgressEvent(
+        currentFilename,
+        currentFileNumber,
+        currentBytesUnarchivedInFile,
+        currentBytesUnarchived,
+        totalUncompressedBytesInArchive,
+        totalFilesInArchive));
 };
 
 var zLocalFileHeaderSignature = 0x04034b50;
@@ -52,7 +52,8 @@ var zEndOfCentralDirLocatorSignature = 0x07064b50;
 
 // takes a ByteStream and parses out the local file information
 var ZipLocalFile = function(bstream) {
-    if (typeof bstream != typeof {} || !bstream.readNumber || typeof bstream.readNumber != typeof function(){}) {
+    if (typeof bstream != typeof {} || !bstream.readNumber || typeof bstream.readNumber != typeof
+        function() {}) {
         return null;
     }
 
@@ -89,7 +90,7 @@ var ZipLocalFile = function(bstream) {
     this.extraField = null;
     if (this.extraFieldLength > 0) {
         this.extraField = bstream.readString(this.extraFieldLength);
-         info(" extra field=" + this.extraField);
+        info(" extra field=" + this.extraField);
     }
 
     // read in the compressed data
@@ -113,21 +114,20 @@ var ZipLocalFile = function(bstream) {
 // determine what kind of compressed data we have and decompress
 ZipLocalFile.prototype.unzip = function() {
 
-  // Zip Version 1.0, no compression (store only)
-  if (this.compressionMethod == 0 ) {
-    info("ZIP v"+this.version+", store only: " + this.filename + " (" + this.compressedSize + " bytes)");
-    currentBytesUnarchivedInFile = this.compressedSize;
-    currentBytesUnarchived += this.compressedSize;
-  }
-  // version == 20, compression method == 8 (DEFLATE)
-  else if (this.compressionMethod == 8) {
-    info("ZIP v2.0, DEFLATE: " + this.filename + " (" + this.compressedSize + " bytes)");
-    this.fileData = inflate(this.fileData, this.uncompressedSize);
-  }
-  else {
-    err("UNSUPPORTED VERSION/FORMAT: ZIP v" + this.version + ", compression method=" + this.compressionMethod + ": " + this.filename + " (" + this.compressedSize + " bytes)");
-    this.fileData = null;
-  }
+    // Zip Version 1.0, no compression (store only)
+    if (this.compressionMethod == 0) {
+        info("ZIP v" + this.version + ", store only: " + this.filename + " (" + this.compressedSize + " bytes)");
+        currentBytesUnarchivedInFile = this.compressedSize;
+        currentBytesUnarchived += this.compressedSize;
+    }
+    // version == 20, compression method == 8 (DEFLATE)
+    else if (this.compressionMethod == 8) {
+        info("ZIP v2.0, DEFLATE: " + this.filename + " (" + this.compressedSize + " bytes)");
+        this.fileData = inflate(this.fileData, this.uncompressedSize);
+    } else {
+        err("UNSUPPORTED VERSION/FORMAT: ZIP v" + this.version + ", compression method=" + this.compressionMethod + ": " + this.filename + " (" + this.compressedSize + " bytes)");
+        this.fileData = null;
+    }
 };
 
 
@@ -135,19 +135,19 @@ ZipLocalFile.prototype.unzip = function() {
 // returns null on error
 // returns an array of DecompressedFile objects on success
 var unzip = function(arrayBuffer) {
-  postMessage(new bitjs.archive.UnarchiveStartEvent());
+    postMessage(new bitjs.archive.UnarchiveStartEvent());
 
-  currentFilename = "";
-  currentFileNumber = 0;
-  currentBytesUnarchivedInFile = 0;
-  currentBytesUnarchived = 0;
-  totalUncompressedBytesInArchive = 0;
-  totalFilesInArchive = 0;
-  currentBytesUnarchived = 0;
+    currentFilename = "";
+    currentFileNumber = 0;
+    currentBytesUnarchivedInFile = 0;
+    currentBytesUnarchived = 0;
+    totalUncompressedBytesInArchive = 0;
+    totalFilesInArchive = 0;
+    currentBytesUnarchived = 0;
 
-  var bstream = new bitjs.io.ByteStream(arrayBuffer);
-  // detect local file header signature or return null
-  if (bstream.peekNumber(4) == zLocalFileHeaderSignature) {
+    var bstream = new bitjs.io.ByteStream(arrayBuffer);
+    // detect local file header signature or return null
+    if (bstream.peekNumber(4) == zLocalFileHeaderSignature) {
         var localFiles = [];
         // loop until we don't see any more local files
         while (bstream.peekNumber(4) == zLocalFileHeaderSignature) {
@@ -161,7 +161,7 @@ var unzip = function(arrayBuffer) {
         totalFilesInArchive = localFiles.length;
 
         // got all local files, now sort them
-        localFiles.sort(function(a,b) {
+        localFiles.sort(function(a, b) {
             var aname = a.filename;
             var bname = b.filename;
             return aname > bname ? 1 : -1;
@@ -261,7 +261,7 @@ var unzip = function(arrayBuffer) {
         }
         postProgress();
         postMessage(new bitjs.archive.UnarchiveFinishEvent());
-  }
+    }
 }
 
 // returns a table of Huffman codes 
@@ -299,19 +299,23 @@ function getHuffmanCodes(bitLengths) {
     var next_code = [],
         code = 0;
     for (var bits = 1; bits <= MAX_BITS; ++bits) {
-        var length = bits-1;
+        var length = bits - 1;
         // ensure undefined lengths are zero
         if (bl_count[length] == undefined) bl_count[length] = 0;
-        code = (code + bl_count[bits-1]) << 1;
+        code = (code + bl_count[bits - 1]) << 1;
         next_code[bits] = code;
     }
 
     // Step 3: Assign numerical values to all codes
-    var table = {}, tableLength = 0;
+    var table = {},
+        tableLength = 0;
     for (var n = 0; n < numLengths; ++n) {
         var len = bitLengths[n];
         if (len != 0) {
-            table[next_code[len]] = { length: len, symbol: n }; //, bitstring: binaryValueToString(next_code[len],len) };
+            table[next_code[len]] = {
+                length: len,
+                symbol: n
+            }; //, bitstring: binaryValueToString(next_code[len],len) };
             tableLength++;
             next_code[len]++;
         }
@@ -340,6 +344,7 @@ function getHuffmanCodes(bitLengths) {
 // fixed Huffman codes go from 7-9 bits, so we need an array whose index can hold up to 9 bits
 var fixedHCtoLiteral = null;
 var fixedHCtoDistance = null;
+
 function getFixedLiteralTable() {
     // create once
     if (!fixedHCtoLiteral) {
@@ -359,7 +364,9 @@ function getFixedDistanceTable() {
     // create once
     if (!fixedHCtoDistance) {
         var bitlengths = new Array(32);
-        for (var i = 0; i < 32; ++i) { bitlengths[i] = 5; }
+        for (var i = 0; i < 32; ++i) {
+            bitlengths[i] = 5;
+        }
 
         // get huffman code table
         fixedHCtoDistance = getHuffmanCodes(bitlengths);
@@ -370,14 +377,15 @@ function getFixedDistanceTable() {
 // extract one bit at a time until we find a matching Huffman Code
 // then return that symbol
 function decodeSymbol(bstream, hcTable) {
-    var code = 0, len = 0;
+    var code = 0,
+        len = 0;
     var match = false;
 
     // loop until we match
     for (;;) {
         // read in next bit
         var bit = bstream.readBits(1);
-        code = (code<<1) | bit;
+        code = (code << 1) | bit;
         ++len;
 
         // check against Huffman Code table and break if found
@@ -395,61 +403,98 @@ function decodeSymbol(bstream, hcTable) {
 
 
 var CodeLengthCodeOrder = [16, 17, 18, 0, 8, 7, 9, 6, 10, 5, 11, 4, 12, 3, 13, 2, 14, 1, 15];
-    /*
-         Extra               Extra               Extra
-    Code Bits Length(s) Code Bits Lengths   Code Bits Length(s)
-    ---- ---- ------     ---- ---- -------   ---- ---- -------
-     257   0     3       267   1   15,16     277   4   67-82
-     258   0     4       268   1   17,18     278   4   83-98
-     259   0     5       269   2   19-22     279   4   99-114
-     260   0     6       270   2   23-26     280   4  115-130
-     261   0     7       271   2   27-30     281   5  131-162
-     262   0     8       272   2   31-34     282   5  163-194
-     263   0     9       273   3   35-42     283   5  195-226
-     264   0    10       274   3   43-50     284   5  227-257
-     265   1  11,12      275   3   51-58     285   0    258
-     266   1  13,14      276   3   59-66
-    */
+/*
+     Extra               Extra               Extra
+Code Bits Length(s) Code Bits Lengths   Code Bits Length(s)
+---- ---- ------     ---- ---- -------   ---- ---- -------
+ 257   0     3       267   1   15,16     277   4   67-82
+ 258   0     4       268   1   17,18     278   4   83-98
+ 259   0     5       269   2   19-22     279   4   99-114
+ 260   0     6       270   2   23-26     280   4  115-130
+ 261   0     7       271   2   27-30     281   5  131-162
+ 262   0     8       272   2   31-34     282   5  163-194
+ 263   0     9       273   3   35-42     283   5  195-226
+ 264   0    10       274   3   43-50     284   5  227-257
+ 265   1  11,12      275   3   51-58     285   0    258
+ 266   1  13,14      276   3   59-66
+*/
 var LengthLookupTable = [
-        [0,3], [0,4], [0,5], [0,6],
-        [0,7], [0,8], [0,9], [0,10],
-        [1,11], [1,13], [1,15], [1,17],
-        [2,19], [2,23], [2,27], [2,31],
-        [3,35], [3,43], [3,51], [3,59],
-        [4,67], [4,83], [4,99], [4,115],
-        [5,131], [5,163], [5,195], [5,227],
-        [0,258]
+    [0, 3],
+    [0, 4],
+    [0, 5],
+    [0, 6],
+    [0, 7],
+    [0, 8],
+    [0, 9],
+    [0, 10],
+    [1, 11],
+    [1, 13],
+    [1, 15],
+    [1, 17],
+    [2, 19],
+    [2, 23],
+    [2, 27],
+    [2, 31],
+    [3, 35],
+    [3, 43],
+    [3, 51],
+    [3, 59],
+    [4, 67],
+    [4, 83],
+    [4, 99],
+    [4, 115],
+    [5, 131],
+    [5, 163],
+    [5, 195],
+    [5, 227],
+    [0, 258]
 ];
-    /*
-          Extra           Extra                Extra
-     Code Bits Dist  Code Bits   Dist     Code Bits Distance
-     ---- ---- ----  ---- ----  ------    ---- ---- --------
-       0   0    1     10   4     33-48    20    9   1025-1536
-       1   0    2     11   4     49-64    21    9   1537-2048
-       2   0    3     12   5     65-96    22   10   2049-3072
-       3   0    4     13   5     97-128   23   10   3073-4096
-       4   1   5,6    14   6    129-192   24   11   4097-6144
-       5   1   7,8    15   6    193-256   25   11   6145-8192
-       6   2   9-12   16   7    257-384   26   12  8193-12288
-       7   2  13-16   17   7    385-512   27   12 12289-16384
-       8   3  17-24   18   8    513-768   28   13 16385-24576
-       9   3  25-32   19   8   769-1024   29   13 24577-32768
-    */
+/*
+      Extra           Extra                Extra
+ Code Bits Dist  Code Bits   Dist     Code Bits Distance
+ ---- ---- ----  ---- ----  ------    ---- ---- --------
+   0   0    1     10   4     33-48    20    9   1025-1536
+   1   0    2     11   4     49-64    21    9   1537-2048
+   2   0    3     12   5     65-96    22   10   2049-3072
+   3   0    4     13   5     97-128   23   10   3073-4096
+   4   1   5,6    14   6    129-192   24   11   4097-6144
+   5   1   7,8    15   6    193-256   25   11   6145-8192
+   6   2   9-12   16   7    257-384   26   12  8193-12288
+   7   2  13-16   17   7    385-512   27   12 12289-16384
+   8   3  17-24   18   8    513-768   28   13 16385-24576
+   9   3  25-32   19   8   769-1024   29   13 24577-32768
+*/
 var DistLookupTable = [
-    [0,1], [0,2], [0,3], [0,4],
-    [1,5], [1,7],
-    [2,9], [2,13],
-    [3,17], [3,25],
-    [4,33], [4,49],
-    [5,65], [5,97],
-    [6,129], [6,193],
-    [7,257], [7,385],
-    [8,513], [8,769],
-    [9,1025], [9,1537],
-    [10,2049], [10,3073],
-    [11,4097], [11,6145],
-    [12,8193], [12,12289],
-    [13,16385], [13,24577]
+    [0, 1],
+    [0, 2],
+    [0, 3],
+    [0, 4],
+    [1, 5],
+    [1, 7],
+    [2, 9],
+    [2, 13],
+    [3, 17],
+    [3, 25],
+    [4, 33],
+    [4, 49],
+    [5, 65],
+    [5, 97],
+    [6, 129],
+    [6, 193],
+    [7, 257],
+    [7, 385],
+    [8, 513],
+    [8, 769],
+    [9, 1025],
+    [9, 1537],
+    [10, 2049],
+    [10, 3073],
+    [11, 4097],
+    [11, 6145],
+    [12, 8193],
+    [12, 12289],
+    [13, 16385],
+    [13, 24577]
 ];
 
 function inflateBlockData(bstream, hcLiteralTable, hcDistanceTable, buffer) {
@@ -468,7 +513,8 @@ function inflateBlockData(bstream, hcLiteralTable, hcDistanceTable, buffer) {
                    stream, and copy length bytes from this
                    position to the output stream.
     */
-    var numSymbols = 0, blockSize = 0;
+    var numSymbols = 0,
+        blockSize = 0;
     for (;;) {
         var symbol = decodeSymbol(bstream, hcLiteralTable);
         ++numSymbols;
@@ -476,14 +522,12 @@ function inflateBlockData(bstream, hcLiteralTable, hcDistanceTable, buffer) {
             // copy literal byte to output
             buffer.insertByte(symbol);
             blockSize++;
-        }
-        else {
+        } else {
             // end of block reached
             if (symbol == 256) {
                 break;
-            }
-            else {
-                var lengthLookup = LengthLookupTable[symbol-257],
+            } else {
+                var lengthLookup = LengthLookupTable[symbol - 257],
                     length = lengthLookup[1] + bstream.readBits(lengthLookup[0]),
                     distLookup = DistLookupTable[decodeSymbol(bstream, hcDistanceTable)],
                     distance = distLookup[1] + bstream.readBits(distLookup[0]);
@@ -501,13 +545,13 @@ function inflateBlockData(bstream, hcLiteralTable, hcDistanceTable, buffer) {
                 // loop for each character
                 var ch = buffer.ptr - distance;
                 blockSize += length;
-                if(length > distance) {
-                  var data = buffer.data;
-                  while (length--) {
-                      buffer.insertByte(data[ch++]);
-                  }
+                if (length > distance) {
+                    var data = buffer.data;
+                    while (length--) {
+                        buffer.insertByte(data[ch++]);
+                    }
                 } else {
-                  buffer.insertBytes(buffer.data.subarray(ch, ch + length))
+                    buffer.insertBytes(buffer.data.subarray(ch, ch + length))
                 }
             } // length-distance pair
         } // length-distance pair or end-of-block
@@ -519,16 +563,17 @@ function inflateBlockData(bstream, hcLiteralTable, hcDistanceTable, buffer) {
 // compression method 8
 // deflate: http://tools.ietf.org/html/rfc1951
 function inflate(compressedData, numDecompressedBytes) {
-  // Bit stream representing the compressed data.
-  var bstream = new bitjs.io.BitStream(compressedData.buffer,
-      false /* rtl */,
-      compressedData.byteOffset,
-      compressedData.byteLength);
-  var buffer = new bitjs.io.ByteBuffer(numDecompressedBytes);
-  var numBlocks = 0, blockSize = 0;
+    // Bit stream representing the compressed data.
+    var bstream = new bitjs.io.BitStream(compressedData.buffer,
+        false /* rtl */ ,
+        compressedData.byteOffset,
+        compressedData.byteLength);
+    var buffer = new bitjs.io.ByteBuffer(numDecompressedBytes);
+    var numBlocks = 0,
+        blockSize = 0;
 
-  // block format: http://tools.ietf.org/html/rfc1951#page-9
-  do {
+    // block format: http://tools.ietf.org/html/rfc1951#page-9
+    do {
         var bFinal = bstream.readBits(1),
             bType = bstream.readBits(2);
         blockSize = 0;
@@ -540,23 +585,23 @@ function inflate(compressedData, numDecompressedBytes) {
             var len = bstream.readBits(16),
                 nlen = bstream.readBits(16);
             // TODO: check if nlen is the ones-complement of len?
-            if(len > 0) buffer.insertBytes(bstream.readBytes(len));
+            if (len > 0) buffer.insertBytes(bstream.readBytes(len));
             blockSize = len;
         }
         // fixed Huffman codes
-        else if(bType == 1) {
+        else if (bType == 1) {
             blockSize = inflateBlockData(bstream, getFixedLiteralTable(), getFixedDistanceTable(), buffer);
         }
         // dynamic Huffman codes
-        else if(bType == 2) {
+        else if (bType == 2) {
             var numLiteralLengthCodes = bstream.readBits(5) + 257;
             var numDistanceCodes = bstream.readBits(5) + 1,
                 numCodeLengthCodes = bstream.readBits(4) + 4;
 
             // populate the array of code length codes (first de-compaction)
-            var codeLengthsCodeLengths = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+            var codeLengthsCodeLengths = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
             for (var i = 0; i < numCodeLengthCodes; ++i) {
-                codeLengthsCodeLengths[ CodeLengthCodeOrder[i] ] = bstream.readBits(3);
+                codeLengthsCodeLengths[CodeLengthCodeOrder[i]] = bstream.readBits(3);
             }
 
             // get the Huffman Codes for the code lengths
@@ -585,20 +630,17 @@ function inflate(compressedData, numDecompressedBytes) {
                 if (symbol <= 15) {
                     literalCodeLengths.push(symbol);
                     prevCodeLength = symbol;
-                }
-                else if (symbol == 16) {
+                } else if (symbol == 16) {
                     var repeat = bstream.readBits(2) + 3;
                     while (repeat--) {
                         literalCodeLengths.push(prevCodeLength);
                     }
-                }
-                else if (symbol == 17) {
+                } else if (symbol == 17) {
                     var repeat = bstream.readBits(3) + 3;
                     while (repeat--) {
                         literalCodeLengths.push(0);
                     }
-                }
-                else if (symbol == 18) {
+                } else if (symbol == 18) {
                     var repeat = bstream.readBits(7) + 11;
                     while (repeat--) {
                         literalCodeLengths.push(0);
@@ -624,14 +666,14 @@ function inflate(compressedData, numDecompressedBytes) {
         currentBytesUnarchivedInFile += blockSize;
         currentBytesUnarchived += blockSize;
         postProgress();
-  } while (bFinal != 1);
-  // we are done reading blocks if the bFinal bit was set for this block
+    } while (bFinal != 1);
+    // we are done reading blocks if the bFinal bit was set for this block
 
-  // return the buffer data bytes
-  return buffer.data;
+    // return the buffer data bytes
+    return buffer.data;
 }
 
 // event.data.file has the ArrayBuffer.
 onmessage = function(event) {
-  unzip(event.data.file, true);
+    unzip(event.data.file, true);
 };
