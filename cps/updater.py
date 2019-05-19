@@ -86,7 +86,7 @@ class Updater(threading.Thread):
                 logging.getLogger('cps.web').info(u'Extracted contents of zipfile not found in temp folder')
                 return
             self.status = 4
-            self.update_source(foldername, config.get_main_dir)
+            self.update_source(foldername, constants.BASE_DIR)
             self.status = 6
             time.sleep(2)
             server.Server.setRestartTyp(True)

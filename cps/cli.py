@@ -22,6 +22,8 @@ import sys
 import os
 import argparse
 
+from cps import constants
+
 
 parser = argparse.ArgumentParser(description='Calibre Web is a web app'
                     ' providing a interface for browsing, reading and downloading eBooks\n', prog='cps.py')
@@ -31,17 +33,9 @@ parser.add_argument('-c', metavar='path', help='path and name to SSL certfile, e
 parser.add_argument('-k', metavar='path', help='path and name to SSL keyfile, e.g. /opt/test.key, works only in combination with certfile')
 args = parser.parse_args()
 
-generalPath = os.path.normpath(os.getenv("CALIBRE_DBPATH",
-                        os.path.dirname(os.path.realpath(__file__)) + os.sep + ".." + os.sep))
-if args.p:
-    settingspath = args.p
-else:
-    settingspath = os.path.join(generalPath, "app.db")
-
-if args.g:
-    gdpath = args.g
-else:
-    gdpath = os.path.join(generalPath, "gdrive.db")
+generalPath = os.path.normpath(os.getenv("CALIBRE_DBPATH", constants.BASE_DIR))
+settingspath = args.p or os.path.join(generalPath, "app.db")
+gdpath = args.g or os.path.join(generalPath, "gdrive.db")
 
 certfilepath = None
 keyfilepath = None

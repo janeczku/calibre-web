@@ -1,8 +1,13 @@
 # -*- python-mode -*-
 # -*- coding: utf-8 -*-
 
+import sys
 import os
 import logging
+
+
+BASE_DIR = sys.path[0]
+STATIC_DIR = os.path.join(BASE_DIR, 'cps', 'static')
 
 
 ROLE_USER               = 0

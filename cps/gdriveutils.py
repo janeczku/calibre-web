@@ -35,10 +35,15 @@ from sqlalchemy import *
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import *
 
+from cps import constants
 from cps import cli
 from cps.ub import config
 from cps import web
 
+
+SETTINGS_YAML  = os.path.join(constants.BASE_DIR, 'settings.yaml')
+CREDENTIALS    = os.path.join(constants.BASE_DIR, 'gdrive_credentials')
+CLIENT_SECRETS = os.path.join(constants.BASE_DIR, 'client_secrets.json')
 
 class Singleton:
     """
@@ -82,7 +87,7 @@ class Singleton:
 @Singleton
 class Gauth:
     def __init__(self):
-        self.auth = GoogleAuth(settings_file=os.path.join(config.get_main_dir,'settings.yaml'))
+        self.auth = GoogleAuth(settings_file=SETTINGS_YAML)
 
 
 @Singleton
@@ -150,9 +155,9 @@ migrate()
 def getDrive(drive=None, gauth=None):
     if not drive:
         if not gauth:
-            gauth = GoogleAuth(settings_file=os.path.join(config.get_main_dir,'settings.yaml'))
+            gauth = GoogleAuth(settings_file=SETTINGS_YAML)
         # Try to load saved client credentials
-        gauth.LoadCredentialsFile(os.path.join(config.get_main_dir,'gdrive_credentials'))
+        gauth.LoadCredentialsFile(CREDENTIALS)
         if gauth.access_token_expired:
             # Refresh them if expired
             try:

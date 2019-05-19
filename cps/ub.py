@@ -322,8 +322,6 @@ class RemoteAuthToken(Base):
 # Class holds all application specific settings in calibre-web
 class Config:
     def __init__(self):
-        self.config_main_dir = os.path.join(os.path.normpath(os.path.dirname(
-            os.path.realpath(__file__)) + os.sep + ".." + os.sep))
         self.db_configured = None
         self.config_logfile = None
         self.loadSettings()
@@ -375,39 +373,29 @@ class Config:
         self.config_updatechannel = data.config_updatechannel
 
     @property
-    def get_main_dir(self):
-        return self.config_main_dir
-
-    @property
     def get_update_channel(self):
         return self.config_updatechannel
 
     def get_config_certfile(self):
         if cli.certfilepath:
             return cli.certfilepath
-        else:
-            if cli.certfilepath is "":
-                return None
-            else:
-                return self.config_certfile
+        if cli.certfilepath is "":
+            return None
+        return self.config_certfile
 
     def get_config_keyfile(self):
         if cli.keyfilepath:
             return cli.keyfilepath
-        else:
-            if cli.certfilepath is "":
-                return None
-            else:
-                return self.config_keyfile
+        if cli.certfilepath is "":
+            return None
+        return self.config_keyfile
 
     def get_config_logfile(self):
         if not self.config_logfile:
-            return os.path.join(self.get_main_dir, "calibre-web.log")
-        else:
-            if os.path.dirname(self.config_logfile):
-                return self.config_logfile
-            else:
-                return os.path.join(self.get_main_dir, self.config_logfile)
+            return os.path.join(constants.BASE_DIR, "calibre-web.log")
+        if os.path.dirname(self.config_logfile):
+            return self.config_logfile
+        return os.path.join(constants.BASE_DIR, self.config_logfile)
 
     def _has_role(self, role_flag):
         return constants.has_flag(self.config_default_role, role_flag)

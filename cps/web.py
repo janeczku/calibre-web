@@ -178,7 +178,7 @@ formatter = logging.Formatter(
 try:
     file_handler = RotatingFileHandler(config.get_config_logfile(), maxBytes=50000, backupCount=2)
 except IOError:
-    file_handler = RotatingFileHandler(os.path.join(config.get_main_dir, "calibre-web.log"),
+    file_handler = RotatingFileHandler(os.path.join(constants.BASE_DIR, "calibre-web.log"),
                                        maxBytes=50000, backupCount=2)
     # ToDo: reset logfile value in config class
 file_handler.setFormatter(formatter)
@@ -202,7 +202,7 @@ app.secret_key = os.getenv('SECRET_KEY', 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT')
 db.setup_db()
 
 try:
-    with open(os.path.join(config.get_main_dir, 'cps/translations/iso639.pickle'), 'rb') as f:
+    with open(os.path.join(constants.BASE_DIR, 'cps/translations/iso639.pickle'), 'rb') as f:
         language_table = cPickle.load(f)
 except cPickle.UnpicklingError as error:
     app.logger.error("Can't read file cps/translations/iso639.pickle: %s", error)
@@ -211,9 +211,8 @@ except cPickle.UnpicklingError as error:
     sys.exit(1)
 
 def is_gdrive_ready():
-    return os.path.exists(os.path.join(config.get_main_dir, 'settings.yaml')) and \
-           os.path.exists(os.path.join(config.get_main_dir, 'gdrive_credentials'))
-
+    return os.path.isfile(gdriveutils.SETTINGS_YAML) and \
+           os.path.isfile(gdriveutils.CREDENTIALS)
 
 
 @babel.localeselector
@@ -1760,7 +1759,7 @@ def google_drive_callback():
         abort(403)
     try:
         credentials = gdriveutils.Gauth.Instance().auth.flow.step2_exchange(auth_code)
-        with open(os.path.join(config.get_main_dir,'gdrive_credentials'), 'w') as f:
+        with open(gdriveutils.CREDENTIALS, 'w') as f:
             f.write(credentials.to_json())
     except ValueError as error:
         app.logger.error(error)
@@ -1772,7 +1771,7 @@ def google_drive_callback():
 @admin_required
 def watch_gdrive():
     if not config.config_google_drive_watch_changes_response:
-        with open(os.path.join(config.get_main_dir,'client_secrets.json'), 'r') as settings:
+        with open(gdriveutils.CLIENT_SECRETS, 'r') as settings:
             filedata = json.load(settings)
         if filedata['web']['redirect_uris'][0].endswith('/'):
             filedata['web']['redirect_uris'][0] = filedata['web']['redirect_uris'][0][:-((len('/gdrive/callback')+1))]
@@ -2130,7 +2129,7 @@ def feed_read_books():
 
 @app.route("/favicon.ico")
 def favicon():
-    return send_from_directory(os.path.join(os.path.dirname(__file__), "static"), "favicon.ico")
+    return send_from_directory(constants.STATIC_DIR, "favicon.ico")
 
 @app.route("/readbooks/", defaults={'page': 1})
 @app.route("/readbooks/<int:page>")
@@ -2174,7 +2173,7 @@ def read_book(book_id, book_format):
     elif book_format.lower() == "txt":
         return render_title_template('readtxt.html', txtfile=book_id, title=_(u"Read a Book"))
     else:
-        book_dir = os.path.join(config.get_main_dir, "cps", "static", str(book_id))
+        book_dir = os.path.join(constants.STATIC_DIR, str(book_id))
         if not os.path.exists(book_dir):
             os.mkdir(book_dir)
         for fileext in ["cbr", "cbt", "cbz"]:
@@ -2930,10 +2929,10 @@ def configuration_helper(origin):
     if gdriveutils.gdrive_support == False:
         gdriveError = _('Import of optional Google Drive requirements missing')
     else:
-        if not os.path.isfile(os.path.join(config.get_main_dir,'client_secrets.json')):
+        if not os.path.isfile(gdriveutils.CLIENT_SECRETS):
             gdriveError = _('client_secrets.json is missing or not readable')
         else:
-            with open(os.path.join(config.get_main_dir,'client_secrets.json'), 'r') as settings:
+            with open(gdriveutils.CLIENT_SECRETS, 'r') as settings:
                 filedata=json.load(settings)
             if not 'web' in filedata:
                 gdriveError = _('client_secrets.json is not configured for web application')
@@ -2945,13 +2944,13 @@ def configuration_helper(origin):
                 content.config_calibre_dir = to_save["config_calibre_dir"]
                 db_change = True
         # Google drive setup
-        if not os.path.isfile(os.path.join(config.get_main_dir, 'settings.yaml')):
+        if not os.path.isfile(gdriveutils.SETTINGS_YAML):
             content.config_use_google_drive = False
         if "config_use_google_drive" in to_save and not content.config_use_google_drive and not gdriveError:
             if filedata:
                 if filedata['web']['redirect_uris'][0].endswith('/'):
                     filedata['web']['redirect_uris'][0] = filedata['web']['redirect_uris'][0][:-1]
-                with open(os.path.join(config.get_main_dir,'settings.yaml'), 'w') as f:
+                with open(gdriveutils.SETTINGS_YAML, 'w') as f:
                     yaml = "client_config_backend: settings\nclient_config_file: %(client_file)s\n" \
                            "client_config:\n" \
                            "  client_id: %(client_id)s\n  client_secret: %(client_secret)s\n" \
@@ -2959,11 +2958,11 @@ def configuration_helper(origin):
                            "save_credentials_backend: file\nsave_credentials_file: %(credential)s\n\n" \
                            "get_refresh_token: True\n\noauth_scope:\n" \
                            "  - https://www.googleapis.com/auth/drive\n"
-                    f.write(yaml % {'client_file': os.path.join(config.get_main_dir,'client_secrets.json'),
+                    f.write(yaml % {'client_file': gdriveutils.CLIENT_SECRETS,
                                     'client_id': filedata['web']['client_id'],
                                    'client_secret': filedata['web']['client_secret'],
                                    'redirect_uri': filedata['web']['redirect_uris'][0],
-                                    'credential': os.path.join(config.get_main_dir,'gdrive_credentials')})
+                                    'credential': gdriveutils.CREDENTIALS})
             else:
                 flash(_(u'client_secrets.json is not configured for web application'), category="error")
                 return render_title_template("config_edit.html", content=config, origin=origin,
@@ -3786,7 +3785,7 @@ def upload():
 
             if meta.cover is None:
                 has_cover = 0
-                copyfile(os.path.join(config.get_main_dir, "cps/static/generic_cover.jpg"),
+                copyfile(os.path.join(constants.STATIC_DIR, "generic_cover.jpg"),
                          os.path.join(filepath, "cover.jpg"))
             else:
                 has_cover = 1
