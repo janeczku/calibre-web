@@ -18,21 +18,24 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program. If not, see <http://www.gnu.org/licenses/>.
 
+import sys
+import os
+import logging
+import json
+import datetime
+from binascii import hexlify
+
+from flask_login import AnonymousUserMixin
+from werkzeug.security import generate_password_hash
+
 from sqlalchemy import *
 from sqlalchemy import exc
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import *
-from flask_login import AnonymousUserMixin
-import sys
-import os
-import logging
-from werkzeug.security import generate_password_hash
-import json
-import datetime
-from binascii import hexlify
-import cli
 
-import constants
+from cps import constants
+from cps import cli
+
 
 engine = create_engine('sqlite:///{0}'.format(cli.settingspath), echo=False)
 Base = declarative_base()

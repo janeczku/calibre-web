@@ -17,20 +17,23 @@
 #   You should have received a copy of the GNU General Public License
 #   along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-import logging
-import uploader
+__author__ = 'lemmsh'
+
 import os
+import logging
 from flask_babel import gettext as _
-import comic
+
+from cps import uploader
+from cps import comic
+
+
+logger = logging.getLogger("book_formats")
+
 
 try:
     from lxml.etree import LXML_VERSION as lxmlversion
 except ImportError:
     lxmlversion = None
-
-__author__ = 'lemmsh'
-
-logger = logging.getLogger("book_formats")
 
 try:
     from wand.image import Image
@@ -40,6 +43,7 @@ try:
 except (ImportError, RuntimeError) as e:
     logger.warning('cannot import Image, generating pdf covers for pdf uploads will not work: %s', e)
     use_generic_pdf_cover = True
+
 try:
     from PyPDF2 import PdfFileReader
     from PyPDF2 import __version__ as PyPdfVersion
@@ -49,14 +53,14 @@ except ImportError as e:
     use_pdf_meta = False
 
 try:
-    import epub
+    from cps import epub
     use_epub_meta = True
 except ImportError as e:
     logger.warning('cannot import epub, extracting epub metadata will not work: %s', e)
     use_epub_meta = False
 
 try:
-    import fb2
+    from cps import fb2
     use_fb2_meta = True
 except ImportError as e:
     logger.warning('cannot import fb2, extracting fb2 metadata will not work: %s', e)

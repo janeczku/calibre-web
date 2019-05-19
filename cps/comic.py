@@ -17,10 +17,11 @@
 #   You should have received a copy of the GNU General Public License
 #   along with this program. If not, see <http://www.gnu.org/licenses/>.
 
+import os
 import zipfile
 import tarfile
-import os
-import uploader
+
+from cps import uploader
 
 
 def extractCover(tmp_file_name, original_file_extension):

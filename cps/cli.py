@@ -18,9 +18,10 @@
 #   You should have received a copy of the GNU General Public License
 #   along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-import argparse
-import os
 import sys
+import os
+import argparse
+
 
 parser = argparse.ArgumentParser(description='Calibre Web is a web app'
                     ' providing a interface for browsing, reading and downloading eBooks\n', prog='cps.py')

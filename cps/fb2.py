@@ -18,7 +18,8 @@
 #  along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 from lxml import etree
-import uploader
+
+from cps import uploader
 
 
 def get_fb2_info(tmp_file_path, original_file_extension):

@@ -17,25 +17,27 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program. If not, see <http://www.gnu.org/licenses/>.
 
+import sys
+import os
 import threading
 import zipfile
 import requests
 import re
 import logging
-import server
 import time
-from io import BytesIO
-import os
-import sys
 import shutil
-from ub import config
-from tempfile import gettempdir
 import datetime
 import json
-from flask_babel import gettext as _
+from io import BytesIO
+from tempfile import gettempdir
+
 from babel.dates import format_datetime
-import web
-import constants
+from flask_babel import gettext as _
+
+from cps import constants
+from cps import server
+from cps.ub import config
+from cps import web
 
 
 def is_sha1(sha1):

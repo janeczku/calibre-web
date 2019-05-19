@@ -18,16 +18,19 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-from sqlalchemy import *
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import *
 import os
 import re
 import ast
-from ub import config
-import ub
 import sys
 import unidecode
+
+from sqlalchemy import *
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import *
+
+from cps import ub
+from cps.ub import config
+
 
 session = None
 cc_exceptions = ['datetime', 'comments', 'float', 'composite', 'series']

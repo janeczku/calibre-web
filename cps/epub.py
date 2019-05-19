@@ -17,11 +17,12 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program. If not, see <http://www.gnu.org/licenses/>.
 
+import os
 import zipfile
 from lxml import etree
-import os
-import uploader
-import isoLanguages
+
+from cps import uploader
+from cps import isoLanguages
 
 
 def extractCover(zipFile, coverFile, coverpath, tmp_file_name):

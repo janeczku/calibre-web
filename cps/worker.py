@@ -18,21 +18,23 @@
 #  along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 from __future__ import print_function
-import smtplib
-import threading
-from datetime import datetime
-import logging
-import time
-import socket
+
 import sys
 import os
-from email.generator import Generator
-import web
-from flask_babel import gettext as _
+import socket
+import smtplib
+import threading
+import logging
+import time
 import re
-import gdriveutils as gd
 import subprocess
+from datetime import datetime
+from flask_babel import gettext as _
 
+from email import encoders
+from email.utils import formatdate
+from email.utils import make_msgid
+from email.generator import Generator
 try:
     from StringIO import StringIO
     from email.MIMEBase import MIMEBase
@@ -44,9 +46,8 @@ except ImportError:
     from email.mime.multipart import MIMEMultipart
     from email.mime.text import MIMEText
 
-from email import encoders
-from email.utils import formatdate
-from email.utils import make_msgid
+from cps import web
+from cps import gdriveutils as gd
 
 chunksize = 8192
 # task 'status' consts

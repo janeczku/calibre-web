@@ -19,31 +19,25 @@
 #  along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 
-import db
-import ub
-from flask import current_app as app
-from tempfile import gettempdir
 import sys
 import io
 import os
 import re
 import unicodedata
-import worker
 import time
-from flask import send_from_directory, make_response, redirect, abort
-from flask_babel import gettext as _
-from flask_login import current_user
-from babel.dates import format_datetime
-from datetime import datetime
 import shutil
 import requests
-try:
-    import gdriveutils as gd
-except ImportError:
-    pass
-import web
 import random
 import subprocess
+from datetime import datetime
+from tempfile import gettempdir
+
+from flask import current_app as app
+from flask import send_from_directory, make_response, redirect, abort
+from flask_login import current_user
+
+from babel.dates import format_datetime
+from flask_babel import gettext as _
 
 try:
     import unidecode
@@ -56,6 +50,13 @@ try:
     use_PIL = True
 except ImportError:
     use_PIL = False
+
+from cps import db
+from cps import ub
+from cps import worker
+from cps import web
+from cps import gdriveutils as gd
+
 
 # Global variables
 # updater_thread = None

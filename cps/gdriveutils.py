@@ -27,14 +27,18 @@ except ImportError:
     gdrive_support = False
 
 import os
-from ub import config
-import cli
 import shutil
+
 from flask import Response, stream_with_context
+
 from sqlalchemy import *
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import *
-import web
+
+from cps import cli
+from cps.ub import config
+from cps import web
+
 
 class Singleton:
     """

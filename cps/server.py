@@ -18,11 +18,10 @@
 #  along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 
-from socket import error as SocketError
 import sys
 import os
 import signal
-import web
+from socket import error as SocketError
 
 try:
     from gevent.pywsgi import WSGIServer
@@ -36,10 +35,10 @@ except ImportError:
     from tornado import version as tornadoVersion
     gevent_present = False
 
+from cps import web
 
 
 class server:
-
     wsgiserver = None
     restart= False
 

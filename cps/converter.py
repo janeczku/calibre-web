@@ -20,9 +20,10 @@
 
 import os
 import subprocess
-import ub
 import re
 from flask_babel import gettext as _
+
+from cps import ub
 
 
 def versionKindle():

@@ -21,64 +21,53 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program. If not, see <http://www.gnu.org/licenses/>.
 
+import sys
+import os
+import os.path
 import mimetypes
 import logging
+import requests
+import base64
+import json
+import datetime
+import re
+import tempfile
+import time
+import hashlib
+import unidecode
+from math import ceil
+from functools import wraps
+from pytz import __version__ as pytzVersion
+from uuid import uuid4
+from shutil import move, copyfile
+from jinja2 import __version__  as jinja2Version
 from logging.handlers import RotatingFileHandler
+
 from flask import (Flask, render_template, request, Response, redirect,
                    url_for, send_from_directory, make_response, g, flash,
                    abort, Markup)
 from flask import __version__ as flaskVersion
-from werkzeug import __version__ as werkzeugVersion
-from werkzeug.exceptions import default_exceptions
-
-from jinja2 import __version__  as jinja2Version
-import cache_buster
-import ub
-from ub import config
-import helper
-import os
-from sqlalchemy.sql.expression import func
-from sqlalchemy.sql.expression import false
-from sqlalchemy.exc import IntegrityError
-from sqlalchemy import __version__ as sqlalchemyVersion
-from math import ceil
-from flask_login import (LoginManager, login_user, logout_user,
-                         login_required, current_user)
+from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 from flask_principal import Principal
 from flask_principal import __version__ as flask_principalVersion
-from flask_babel import Babel
-from flask_babel import gettext as _
-import requests
+from werkzeug import __version__ as werkzeugVersion
+from werkzeug.exceptions import default_exceptions
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.datastructures import Headers
+
 from babel import Locale as LC
 from babel import negotiate_locale
 from babel import __version__ as babelVersion
 from babel.dates import format_date, format_datetime
 from babel.core import UnknownLocaleError
-from functools import wraps
-import base64
+from flask_babel import Babel
+from flask_babel import gettext as _
+
 from sqlalchemy.sql import *
-import json
-import datetime
-import isoLanguages
-from pytz import __version__ as pytzVersion
-from uuid import uuid4
-import os.path
-import sys
-import re
-import db
-from shutil import move, copyfile
-import gdriveutils
-import converter
-import tempfile
-from redirect import redirect_back
-import time
-import server
-from reverseproxy import ReverseProxied
-from updater import updater_thread
-import hashlib
-import unidecode
+from sqlalchemy.sql.expression import func
+from sqlalchemy.sql.expression import false
+from sqlalchemy.exc import IntegrityError
+from sqlalchemy import __version__ as sqlalchemyVersion
 
 try:
     from googleapiclient.errors import HttpError
@@ -129,7 +118,19 @@ try:
 except ImportError:
     from flask_login.__about__ import __version__ as flask_loginVersion
 
-import constants
+from cps import constants
+from cps import cache_buster
+from cps import ub
+from cps.ub import config
+from cps import helper
+from cps import isoLanguages
+from cps import db
+from cps import gdriveutils
+from cps import converter
+from cps import server
+from cps.redirect import redirect_back
+from cps.reverseproxy import ReverseProxied
+from cps.updater import updater_thread
 
 
 # Global variables
@@ -191,7 +192,7 @@ logging.getLogger("book_formats").setLevel(config.config_log_level)
 Principal(app)
 babel = Babel(app)
 
-import uploader
+from cps import uploader
 
 lm = LoginManager(app)
 lm.init_app(app)
