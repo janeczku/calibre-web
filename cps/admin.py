@@ -185,6 +185,8 @@ def view_configuration():
             content.config_default_role = content.config_default_role + ub.ROLE_ADMIN
         if "download_role" in to_save:
             content.config_default_role = content.config_default_role + ub.ROLE_DOWNLOAD
+        if "viewer_role" in to_save:
+            content.config_default_role = content.config_default_role + ub.ROLE_VIEWER
         if "upload_role" in to_save:
             content.config_default_role = content.config_default_role + ub.ROLE_UPLOAD
         if "edit_role" in to_save:
@@ -650,6 +652,11 @@ def edit_user(user_id):
                 content.role = content.role + ub.ROLE_DOWNLOAD
             elif "download_role" not in to_save and content.role_download():
                 content.role = content.role - ub.ROLE_DOWNLOAD
+
+            if "viewer_role" in to_save and not content.role_viewer():
+                content.role = content.role + ub.ROLE_VIEWER
+            elif "viewer_role" not in to_save and content.role_viewer():
+                content.role = content.role - ub.ROLE_VIEWER
 
             if "upload_role" in to_save and not content.role_upload():
                 content.role = content.role + ub.ROLE_UPLOAD

@@ -53,7 +53,7 @@
                 </div>
               {% endif %}
             {% endif %}
-          {% if reader_list  %}
+          {% if reader_list and g.user.role_viewer() %}
               <div class="btn-group" role="group">
                 <button id="read-in-browser" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   <span class="glyphicon glyphicon-eye-open"></span> {{_('Read in browser')}}
