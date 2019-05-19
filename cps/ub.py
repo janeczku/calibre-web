@@ -54,6 +54,7 @@ ROLE_PASSWD = 16
 ROLE_ANONYMOUS = 32
 ROLE_EDIT_SHELFS = 64
 ROLE_DELETE_BOOKS = 128
+ROLE_VIEWER = 256
 
 
 DETAIL_RANDOM = 1
@@ -201,6 +202,10 @@ class UserBase:
 
     def role_delete_books(self):
         return bool((self.role is not None)and(self.role & ROLE_DELETE_BOOKS == ROLE_DELETE_BOOKS))
+
+
+    def role_viewer(self):
+        return bool((self.role is not None)and(self.role & ROLE_VIEWER == ROLE_VIEWER))
 
     @property
     def is_active(self):
@@ -549,6 +554,12 @@ class Config:
         else:
             return False
 
+    def role_viewer(self):
+        if self.config_default_role is not None:
+            return True if self.config_default_role & ROLE_VIEWER == ROLE_VIEWER else False
+        else:
+            return False
+
     def role_upload(self):
         if self.config_default_role is not None:
             return True if self.config_default_role & ROLE_UPLOAD == ROLE_UPLOAD else False
@@ -853,7 +864,8 @@ def create_anonymous_user():
 def create_admin_user():
     user = User()
     user.nickname = "admin"
-    user.role = ROLE_USER + ROLE_ADMIN + ROLE_DOWNLOAD + ROLE_UPLOAD + ROLE_EDIT + ROLE_DELETE_BOOKS + ROLE_PASSWD
+    user.role = ROLE_USER + ROLE_ADMIN + ROLE_DOWNLOAD + ROLE_UPLOAD + ROLE_EDIT + ROLE_DELETE_BOOKS + ROLE_PASSWD +\
+                ROLE_VIEWER
     user.sidebar_view = DETAIL_RANDOM + SIDEBAR_LANGUAGE + SIDEBAR_SERIES + SIDEBAR_CATEGORY + SIDEBAR_HOT + \
             SIDEBAR_RANDOM + SIDEBAR_AUTHOR + SIDEBAR_BEST_RATED + SIDEBAR_READ_AND_UNREAD + SIDEBAR_RECENT + \
             SIDEBAR_SORTED + MATURE_CONTENT + SIDEBAR_PUBLISHER + SIDEBAR_RATING + SIDEBAR_FORMAT

@@ -12,6 +12,7 @@
             <th>{{_('DLS')}}</th>
             <th class="hidden-xs">{{_('Admin')}}</th>
             <th class="hidden-xs">{{_('Download')}}</th>
+            <th class="hidden-xs">{{_('View Ebooks')}}</th>
             <th class="hidden-xs">{{_('Upload')}}</th>
             <th class="hidden-xs">{{_('Edit')}}</th>
         </tr>
@@ -24,6 +25,7 @@
             <td>{{user.downloads.count()}}</td>
             <td class="hidden-xs">{% if user.role_admin() %}<span class="glyphicon glyphicon-ok"></span>{% else %}<span class="glyphicon glyphicon-remove"></span>{% endif %}</td>
             <td class="hidden-xs">{% if user.role_download() %}<span class="glyphicon glyphicon-ok"></span>{% else %}<span class="glyphicon glyphicon-remove"></span>{% endif %}</td>
+            <td class="hidden-xs">{% if user.role_viewer() %}<span class="glyphicon glyphicon-ok"></span>{% else %}<span class="glyphicon glyphicon-remove"></span>{% endif %}</td>
             <td class="hidden-xs">{% if user.role_upload() %}<span class="glyphicon glyphicon-ok"></span>{% else %}<span class="glyphicon glyphicon-remove"></span>{% endif %}</td>
             <td class="hidden-xs">{% if user.role_edit() %}<span class="glyphicon glyphicon-ok"></span>{% else %}<span class="glyphicon glyphicon-remove"></span>{% endif %}</td>
           </tr>

@@ -203,6 +203,16 @@ def download_required(f):
     return inner
 
 
+def viewer_required(f):
+    @wraps(f)
+    def inner(*args, **kwargs):
+        if current_user.role_viewer():
+            return f(*args, **kwargs)
+        abort(403)
+
+    return inner
+
+
 def upload_required(f):
     @wraps(f)
     def inner(*args, **kwargs):
@@ -972,6 +982,7 @@ def get_cover(book_id):
 
 @web.route("/show/<book_id>/<book_format>")
 @login_required_if_no_ano
+@viewer_required
 def serve_book(book_id, book_format):
     book_format = book_format.split(".")[0]
     book = db.session.query(db.Books).filter(db.Books.id == book_id).first()
@@ -1276,6 +1287,7 @@ def profile():
 
 @web.route("/read/<int:book_id>/<book_format>")
 @login_required_if_no_ano
+@viewer_required
 def read_book(book_id, book_format):
     book = db.session.query(db.Books).filter(db.Books.id == book_id).first()
     if not book:
