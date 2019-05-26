@@ -356,7 +356,7 @@ class RemoteAuthToken(Base):
     expiration = Column(DateTime)
 
     def __init__(self):
-        self.auth_token = hexlify(os.urandom(4))
+        self.auth_token = (hexlify(os.urandom(4))).decode('utf-8')
         self.expiration = datetime.datetime.now() + datetime.timedelta(minutes=10)  # 10 min from now
 
     def __repr__(self):
