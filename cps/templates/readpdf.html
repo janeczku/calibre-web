@@ -124,7 +124,7 @@ See https://github.com/adobe-type-tools/cmap-resources
               <span data-l10n-id="print_label">Print</span>
             </button>
 
-            <button id="secondaryDownload" class="secondaryToolbarButton download visibleMediumView" title="Download" tabindex="54" data-l10n-id="download">
+            <button id="secondaryDownload" class="secondaryToolbarButton download visibleMediumView" title="Download" tabindex="54" data-l10n-id="download" {% if not g.user.role_download() %} style="display:none;" {% endif %}>
               <span data-l10n-id="download_label">Download</span>
             </button>
 
@@ -227,7 +227,7 @@ See https://github.com/adobe-type-tools/cmap-resources
                   <span data-l10n-id="print_label">Print</span>
                 </button>
 
-                <button id="download" class="toolbarButton download hiddenMediumView" title="Download" tabindex="34" data-l10n-id="download">
+                <button id="download" class="toolbarButton download hiddenMediumView" title="Download" tabindex="34" data-l10n-id="download" {% if not g.user.role_download() %} style="display:none;" {% endif %}>
                   <span data-l10n-id="download_label">Download</span>
                 </button>
                 <a href="#" id="viewBookmark" class="toolbarButton bookmark hiddenSmallView" title="Current view (copy or open in new window)" tabindex="35" data-l10n-id="bookmark">
