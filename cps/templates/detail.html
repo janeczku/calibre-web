@@ -150,9 +150,9 @@
       {% endif %}
       {% if cc|length > 0 %}
 
-        <div class="custom_columns">
-        <p>
+
         {% for c in cc %}
+        <div class="real_custom_columns">
           {% if entry['custom_column_' ~ c.id]|length > 0 %}
             {{ c.name }}:
             {% for column in entry['custom_column_' ~ c.id] %}
@@ -170,11 +170,9 @@
                 {% endif %}
               {% endif %}
             {% endfor %}
-            <br />
           {% endif %}
-        {% endfor %}
-        </p>
         </div>
+        {% endfor %}
       {% endif %}
       {% if not g.user.is_anonymous %}
 
@@ -193,7 +191,7 @@
 
       {% if entry.comments|length > 0 and entry.comments[0].text|length > 0%}
         <div class="comments">
-            <h3>{{_('Description:')}}</h3>
+            <h3 id="decription">{{_('Description:')}}</h3>
             {{entry.comments[0].text|safe}}
         </div>
       {% endif %}
