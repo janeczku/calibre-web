@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2019-05-26 11:29+0200\n"
-"PO-Revision-Date: 2019-05-08 20:23+0200\n"
+"POT-Creation-Date: 2019-05-30 09:06+0200\n"
+"PO-Revision-Date: 2019-05-30 09:06+0200\n"
 "Last-Translator: Ozzie Isaacs\n"
 "Language: de\n"
 "Language-Team: \n"
@@ -373,7 +373,7 @@ msgstr "Lese ein Buch"
 
 #: cps/web.py:2199
 msgid "Error opening eBook. Fileformat is not supported."
-msgstr "Fehler beim Öffnen des Buches, das Format wird nicht unterstützt"
+msgstr "Fehler beim Öffnen des Buches, das Format wird nicht unterstützt."
 
 #: cps/web.py:2249 cps/web.py:3170
 msgid "Please fill out all fields!"
@@ -1127,7 +1127,7 @@ msgstr "Google Drive authentifizieren"
 
 #: cps/templates/config_edit.html:40
 msgid "Please hit submit to continue with setup"
-msgstr "Bitte wähle Abschicken um mit dem Setup fortzufahren "
+msgstr "Bitte wähle Abschicken um mit dem Setup fortzufahren"
 
 #: cps/templates/config_edit.html:43
 msgid "Please finish Google Drive setup after login"
@@ -1833,8 +1833,8 @@ msgid "Your email address"
 msgstr "Deine E-Mail Adresse"
 
 #: cps/templates/remote_login.html:6
-msgid "Using your another device, login and visit "
-msgstr ""
+msgid "Use your other device, login and visit "
+msgstr "Benutze dein anderes Gerät, logge dich ein und besuche "
 
 #: cps/templates/remote_login.html:9
 msgid "Once you do so, you will automatically get logged in on this device."
@@ -1842,7 +1842,7 @@ msgstr "Danach wirst Du automatisch auf diesem Gerät eingeloggt sein."
 
 #: cps/templates/remote_login.html:12
 msgid "The link will expire after 10 minutes."
-msgstr ""
+msgstr "Dieser Link wird in 10 Minuten ablaufen."
 
 #: cps/templates/search.html:5
 msgid "No Results for:"
