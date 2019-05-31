@@ -152,11 +152,11 @@ body {
   max-width: 70%;
 }
 
-#prev {
+#left {
   left: 40px;
 }
 
-#next {
+#right {
   right: 40px;
 }
 

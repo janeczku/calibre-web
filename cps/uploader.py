@@ -23,7 +23,7 @@ import hashlib
 from collections import namedtuple
 import os
 from flask_babel import gettext as _
-import comic
+from cps import comic
 from cps import app
 
 try:

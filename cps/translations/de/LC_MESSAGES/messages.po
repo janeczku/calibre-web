@@ -496,19 +496,31 @@ msgstr ""
 msgid "Not linked to %(oauth)s."
 msgstr ""
 
-#: cps/oauth_bb.py:300
-msgid "GitHub Oauth error, please retry later."
-msgstr ""
+msgstr "Erfolg! Bitte zum Gerät zurückkehren"
 
-#: cps/oauth_bb.py:319
-msgid "Google Oauth error, please retry later."
-msgstr ""
+#: cps/web.py:2407
+msgid "Please configure the SMTP mail settings first..."
+msgstr "Bitte zuerst die SMTP Mail Einstellung konfigurieren ..."
 
-#: cps/shelf.py:40 cps/shelf.py:92
+#: cps/web.py:2412
+#, python-format
+msgid "Book successfully queued for sending to %(kindlemail)s"
+msgstr "Buch erfolgreich zum Senden an %(kindlemail)s eingereiht"
+
+#: cps/web.py:2416
+#, python-format
+msgid "There was an error sending this book: %(res)s"
+msgstr "Beim Senden des Buchs trat ein Fehler auf: %(res)s"
+
+#: cps/web.py:2418 cps/web.py:3223
+msgid "Please configure your kindle e-mail address first..."
+msgstr "Bitte zuerst die Kindle E-Mailadresse konfigurieren..."
+
+#: cps/web.py:2429 cps/web.py:2481
 msgid "Invalid shelf specified"
 msgstr "Ungültiges Bücherregal angegeben"
 
-#: cps/shelf.py:47
+#: cps/web.py:2436
 #, python-format
 msgid "Sorry you are not allowed to add a book to the the shelf: %(shelfname)s"
 msgstr "Keine Erlaubnis ein Buch zum Bücherregale %(shelfname)s hinzuzufügen vorhanden"
@@ -1511,7 +1523,7 @@ msgstr "Anzahl Anzeige zufällige Bücher"
 msgid "No. of authors to show before hiding (0=disable hiding)"
 msgstr "Anzahl Autoren in Übersicht (0=deaktiviert)"
 
-#: cps/templates/config_view_edit.html:35 cps/templates/readcbr.html:108
+#: cps/templates/config_view_edit.html:35 cps/templates/readcbr.html:118
 msgid "Theme"
 msgstr "Theme"
 
@@ -1773,7 +1785,7 @@ msgid "Advanced Search"
 msgstr "Erweiterte Suche"
 
 #: cps/templates/layout.html:76 cps/templates/read.html:71
-#: cps/templates/readcbr.html:79 cps/templates/readcbr.html:103
+#: cps/templates/readcbr.html:89 cps/templates/readcbr.html:113
 msgid "Settings"
 msgstr "Einstellungen"
 
@@ -1851,97 +1863,105 @@ msgstr "Calibre-Web E-Book Katalog"
 msgid "Reflow text when sidebars are open."
 msgstr "Text umbrechen wenn Seitenleiste geöffnet ist."
 
-#: cps/templates/readcbr.html:84
+#: cps/templates/readcbr.html:94
 msgid "Keyboard Shortcuts"
 msgstr "Tastatur Kürzel"
 
-#: cps/templates/readcbr.html:87
+#: cps/templates/readcbr.html:97
 msgid "Previous Page"
 msgstr "Vorherige Seite"
 
-#: cps/templates/readcbr.html:88
+#: cps/templates/readcbr.html:98
 msgid "Next Page"
 msgstr "Nächste Seite"
 
-#: cps/templates/readcbr.html:89
+#: cps/templates/readcbr.html:99
 msgid "Scale to Best"
 msgstr "Optimale Skalierung"
 
-#: cps/templates/readcbr.html:90
+#: cps/templates/readcbr.html:100
 msgid "Scale to Width"
 msgstr "Skaliere auf Breite"
 
-#: cps/templates/readcbr.html:91
+#: cps/templates/readcbr.html:101
 msgid "Scale to Height"
 msgstr "Skaliere auf Höhe"
 
-#: cps/templates/readcbr.html:92
+#: cps/templates/readcbr.html:102
 msgid "Scale to Native"
 msgstr "Skaliere 1:1"
 
-#: cps/templates/readcbr.html:93
+#: cps/templates/readcbr.html:103
 msgid "Rotate Right"
 msgstr "Rechts rotieren"
 
-#: cps/templates/readcbr.html:94
+#: cps/templates/readcbr.html:104
 msgid "Rotate Left"
 msgstr "Links rotieren"
 
-#: cps/templates/readcbr.html:95
+#: cps/templates/readcbr.html:105
 msgid "Flip Image"
 msgstr "Bild umdrehen"
 
-#: cps/templates/readcbr.html:111
+#: cps/templates/readcbr.html:121
 msgid "Light"
 msgstr "Hell"
 
-#: cps/templates/readcbr.html:112
+#: cps/templates/readcbr.html:122
 msgid "Dark"
 msgstr "Dunkel"
 
-#: cps/templates/readcbr.html:117
+#: cps/templates/readcbr.html:127
 msgid "Scale"
 msgstr "Skalierung"
 
-#: cps/templates/readcbr.html:120
+#: cps/templates/readcbr.html:130
 msgid "Best"
 msgstr "Beste"
 
-#: cps/templates/readcbr.html:121
+#: cps/templates/readcbr.html:131
 msgid "Width"
 msgstr "Breite"
 
-#: cps/templates/readcbr.html:122
+#: cps/templates/readcbr.html:132
 msgid "Height"
 msgstr "Höhe"
 
-#: cps/templates/readcbr.html:123
+#: cps/templates/readcbr.html:133
 msgid "Native"
 msgstr "1:1"
 
-#: cps/templates/readcbr.html:128
+#: cps/templates/readcbr.html:138
 msgid "Rotate"
 msgstr "Rotieren"
 
-#: cps/templates/readcbr.html:139
+#: cps/templates/readcbr.html:149
 msgid "Flip"
 msgstr "Umdrehen"
 
-#: cps/templates/readcbr.html:142
+#: cps/templates/readcbr.html:152
 msgid "Horizontal"
 msgstr "Horizontal"
 
-#: cps/templates/readcbr.html:143
+#: cps/templates/readcbr.html:153
 msgid "Vertical"
 msgstr "Vertikal"
+
+#: cps/templates/readcbr.html:158
+msgid "Direction"
+msgstr "Leserichtung"
+
+#: cps/templates/readcbr.html:161
+msgid "Left to Right"
+msgstr "Links nach rechts"
+
+#: cps/templates/readcbr.html:162
+msgid "Right to Left"
+msgstr "Rechts nach links"
 
 #: cps/templates/readpdf.html:29
 msgid "PDF.js viewer"
 msgstr "PDF.js Viewer"
-
-#: cps/templates/readpdf.html:418
-msgid "Preparing document for printing..."
-msgstr "Bereite Dokument zum Ducken vor..."
 
 #: cps/templates/readtxt.html:6
 msgid "Basic txt Reader"
@@ -1964,16 +1984,16 @@ msgid "Your email address"
 msgstr "Deine E-Mail Adresse"
 
 #: cps/templates/remote_login.html:6
-msgid "Using your another device, visit"
-msgstr "Benutze das andere Gerät und besuche"
-
-#: cps/templates/remote_login.html:6
-msgid "and log in"
-msgstr "und logge Dich ein"
+msgid "Use your other device, login and visit "
+msgstr "Benutze dein anderes Gerät, logge dich ein und besuche "
 
 #: cps/templates/remote_login.html:9
 msgid "Once you do so, you will automatically get logged in on this device."
 msgstr "Danach wirst Du automatisch auf diesem Gerät eingeloggt sein."
+
+#: cps/templates/remote_login.html:12
+msgid "The link will expire after 10 minutes."
+msgstr "Dieser Link wird in 10 Minuten ablaufen."
 
 #: cps/templates/search.html:5
 msgid "No Results for:"

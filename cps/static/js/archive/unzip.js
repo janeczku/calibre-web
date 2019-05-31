@@ -1,6 +1,8 @@
 /**
  * unzip.js
  *
+ * Licensed under the MIT License
+ *
  * Copyright(c) 2011 Google Inc.
  * Copyright(c) 2011 antimatter15
  *
@@ -12,8 +14,10 @@
 /* global bitjs, importScripts, Uint8Array*/
 
 // This file expects to be invoked as a Worker (see onmessage below).
-importScripts("io.js");
-importScripts("archive.js");
+importScripts('../io/bitstream.js');
+importScripts('../io/bytebuffer.js');
+importScripts('../io/bytestream.js');
+importScripts('archive.js');
 
 // Progress variables.
 var currentFilename = "";
@@ -283,7 +287,8 @@ function getHuffmanCodes(bitLengths) {
     }
 
     // Step 3: Assign numerical values to all codes
-    var table = {}, tableLength = 0;
+    var table = {},
+        tableLength = 0;
     for (var n = 0; n < numLengths; ++n) {
         var len = bitLengths[n];
         if (len !== 0) {
@@ -316,6 +321,7 @@ function getHuffmanCodes(bitLengths) {
 // fixed Huffman codes go from 7-9 bits, so we need an array whose index can hold up to 9 bits
 var fixedHCtoLiteral = null;
 var fixedHCtoDistance = null;
+
 function getFixedLiteralTable() {
     // create once
     if (!fixedHCtoLiteral) {
@@ -331,6 +337,7 @@ function getFixedLiteralTable() {
     }
     return fixedHCtoLiteral;
 }
+
 function getFixedDistanceTable() {
     // create once
     if (!fixedHCtoDistance) {
@@ -387,16 +394,36 @@ Code Bits Length(s) Code Bits Lengths   Code Bits Length(s)
  264   0    10       274   3   43-50     284   5  227-257
  265   1  11,12      275   3   51-58     285   0    258
  266   1  13,14      276   3   59-66
-
 */
 var LengthLookupTable = [
-    [0, 3], [0, 4], [0, 5], [0, 6],
-    [0, 7], [0, 8], [0, 9], [0, 10],
-    [1, 11], [1, 13], [1, 15], [1, 17],
-    [2, 19], [2, 23], [2, 27], [2, 31],
-    [3, 35], [3, 43], [3, 51], [3, 59],
-    [4, 67], [4, 83], [4, 99], [4, 115],
-    [5, 131], [5, 163], [5, 195], [5, 227],
+    [0, 3],
+    [0, 4],
+    [0, 5],
+    [0, 6],
+    [0, 7],
+    [0, 8],
+    [0, 9],
+    [0, 10],
+    [1, 11],
+    [1, 13],
+    [1, 15],
+    [1, 17],
+    [2, 19],
+    [2, 23],
+    [2, 27],
+    [2, 31],
+    [3, 35],
+    [3, 43],
+    [3, 51],
+    [3, 59],
+    [4, 67],
+    [4, 83],
+    [4, 99],
+    [4, 115],
+    [5, 131],
+    [5, 163],
+    [5, 195],
+    [5, 227],
     [0, 258]
 ];
 /*
@@ -415,20 +442,36 @@ var LengthLookupTable = [
    9   3  25-32   19   8   769-1024   29   13 24577-32768
 */
 var DistLookupTable = [
-    [0, 1], [0, 2], [0, 3], [0, 4],
-    [1, 5], [1, 7],
-    [2, 9], [2, 13],
-    [3, 17], [3, 25],
-    [4, 33], [4, 49],
-    [5, 65], [5, 97],
-    [6, 129], [6, 193],
-    [7, 257], [7, 385],
-    [8, 513], [8, 769],
-    [9, 1025], [9, 1537],
-    [10, 2049], [10, 3073],
-    [11, 4097], [11, 6145],
-    [12, 8193], [12, 12289],
-    [13, 16385], [13, 24577]
+    [0, 1],
+    [0, 2],
+    [0, 3],
+    [0, 4],
+    [1, 5],
+    [1, 7],
+    [2, 9],
+    [2, 13],
+    [3, 17],
+    [3, 25],
+    [4, 33],
+    [4, 49],
+    [5, 65],
+    [5, 97],
+    [6, 129],
+    [6, 193],
+    [7, 257],
+    [7, 385],
+    [8, 513],
+    [8, 769],
+    [9, 1025],
+    [9, 1537],
+    [10, 2049],
+    [10, 3073],
+    [11, 4097],
+    [11, 6145],
+    [12, 8193],
+    [12, 12289],
+    [13, 16385],
+    [13, 24577]
 ];
 
 function inflateBlockData(bstream, hcLiteralTable, hcDistanceTable, buffer) {
@@ -487,7 +530,6 @@ function inflateBlockData(bstream, hcLiteralTable, hcDistanceTable, buffer) {
                 } else {
                     buffer.insertBytes(buffer.data.subarray(ch, ch + length));
                 }
-
             } // length-distance pair
         } // length-distance pair or end-of-block
     } // loop until we reach end of block

@@ -1294,7 +1294,7 @@ def read_book(book_id, book_format):
         flash(_(u"Error opening eBook. File does not exist or file is not accessible:"), category="error")
         return redirect(url_for("web.index"))
 
-    # check if book was downloaded before
+    # check if book has bookmark
     bookmark = None
     if current_user.is_authenticated:
         bookmark = ub.session.query(ub.Bookmark).filter(ub.and_(ub.Bookmark.user_id == int(current_user.id),
