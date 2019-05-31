@@ -58,8 +58,8 @@ $( 'a.navbar-brand' ).clone().appendTo( '.home-btn' ).empty().removeClass('navba
 if ( $( 'body.book' ).length > 0 ) {
 
   description = $( '.comments' );
-  bookInfo = $( '.author' ).nextUntil( 'h3:contains("Description")');
-  $( 'h3:contains("Description")' ).detach();
+  bookInfo = $( ".author" ).nextUntil("#decription");
+  $("#decription").detach();
   $( '.comments' ).detach();
   $( bookInfo ).wrapAll( '<div class="bookinfo"></div>' );
 //  $( 'h3:contains("Description:")' ).after( '<div class="description"></div>' );
@@ -145,14 +145,29 @@ if ( $( 'body.book' ).length > 0 ) {
     .prepend( '<div><img class="bg-blur" src="' + cover + '"></div>' );
 
   // Fix-up book detail headings
-publisher = $( '.publishers p span' ).text().split( ':' );
-  $( '.publishers p span' ).remove();
-  $.each(publisher, function(i, val) {
-    $( '.publishers' ).append( '<span>' + publisher[i] + '</span>' );
+  publisher = $( '.publishers p span' ).text().split( ':' );
+    $( '.publishers p span' ).remove();
+    $.each(publisher, function(i, val) {
+      $( '.publishers' ).append( '<span>' + publisher[i] + '</span>' );
+    });
+  $( '.publishers span:nth-child(3)' ).text(function() {
+  return $(this).text().replace(/^\s+|^\t+|\t+|\s+$/g, "");
   });
-$( '.publishers span:nth-child(3)' ).text(function() {
-return $(this).text().replace(/^\s+|^\t+|\t+|\s+$/g, "");
-});
+
+  // Fix-up book custom colums headings
+  // real_custom_column = $( '.real_custom_columns' ).text().split( ':' );
+  real_custom_column = $( '.real_custom_columns' );
+    // $( '.real_custom_columns' ).remove();
+    $.each(real_custom_column, function(i, val) {
+        real_cc = $(this).text().split( ':' );
+        $( this ).text("");
+        if (real_cc.length > 1) {
+            $( this ).append( '<span>' + real_cc[0] + '</span><span>' + real_cc[1] + '</span>' );
+        }
+    });
+  //$( '.real_custom_columns:nth-child(3)' ).text(function() {
+  //return $(this).text().replace(/^\s+|^\t+|\t+|\s+$/g, "");
+  //});
 
   published = $( '.publishing-date p' )
   .text().split(': ');
