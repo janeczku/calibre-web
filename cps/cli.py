@@ -28,6 +28,7 @@ parser.add_argument('-p', metavar='path', help='path and name to settings db, e.
 parser.add_argument('-g', metavar='path', help='path and name to gdrive db, e.g. /opt/gd.db')
 parser.add_argument('-c', metavar='path', help='path and name to SSL certfile, e.g. /opt/test.cert, works only in combination with keyfile')
 parser.add_argument('-k', metavar='path', help='path and name to SSL keyfile, e.g. /opt/test.key, works only in combination with certfile')
+parser.add_argument('-v', action='store_true', help='shows version number and exits Calibre-web')
 args = parser.parse_args()
 
 generalPath = os.path.normpath(os.getenv("CALIBRE_DBPATH",
@@ -67,3 +68,7 @@ if (args.k and not args.c) or (not args.k and args.c):
 
 if args.k is "":
     keyfilepath = ""
+
+if args.v:
+    print("Calibre-web version: 0.6.4")
+    sys.exit(1)
