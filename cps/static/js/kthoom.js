@@ -16,7 +16,6 @@
 
 */
 /* global screenfull, bitjs */
-
 if (window.opera) {
     window.console.log = function(str) {
         opera.postError(str);
@@ -160,11 +159,16 @@ function initProgressClick() {
 function loadFromArrayBuffer(ab) {
     var start = (new Date).getTime();
     var h = new Uint8Array(ab, 0, 10);
-    var pathToBitJS = "../../static/js/";
+    var pathToBitJS = "../../static/js/archive/";
     if (h[0] === 0x52 && h[1] === 0x61 && h[2] === 0x72 && h[3] === 0x21) { //Rar!
         unarchiver = new bitjs.archive.Unrarrer(ab, pathToBitJS);
     } else if (h[0] === 80 && h[1] === 75) { //PK (Zip)
         unarchiver = new bitjs.archive.Unzipper(ab, pathToBitJS);
+    } else if (h[0] == 255 && h[1] == 216) { // JPEG
+        // ToDo: check
+        updateProgress(100);
+        lastCompletion = 100;
+        return;
     } else { // Try with tar
         unarchiver = new bitjs.archive.Untarrer(ab, pathToBitJS);
     }
@@ -178,6 +182,10 @@ function loadFromArrayBuffer(ab) {
                 }
                 updateProgress(percentage *100);
                 lastCompletion = percentage * 100;
+            });
+        unarchiver.addEventListener(bitjs.archive.UnarchiveEvent.Type.INFO,
+            function(e) {
+                // console.log(e.msg);  77 Enable debug output here
             });
         unarchiver.addEventListener(bitjs.archive.UnarchiveEvent.Type.EXTRACT,
             function(e) {

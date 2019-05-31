@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <title>Comic Reader</title>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <title>Comic Reader</title>
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width, user-scalable=no">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -15,7 +15,7 @@
   <script src="{{ url_for('static', filename='js/libs/jquery.min.js') }}"></script>
   <script src="{{ url_for('static', filename='js/libs/screenfull.min.js') }}"></script>
   <script src="{{ url_for('static', filename='js/kthoom.js') }}"></script>
-	<script src="{{ url_for('static', filename='js/archive.js') }}"></script>
+	<script src="{{ url_for('static', filename='js/archive/archive.js') }}"></script>
   <script>
     var updateArrows = function() {
       if ($('input[name="direction"]:checked').val() === "0") {
@@ -31,17 +31,11 @@
         init("{{ url_for('serve_book', book_id=comicfile, book_format=extension) }}");
         updateArrows();
       }
-    };
+    }
   </script>
 </head>
 <body>
 <div id="sidebar">
-  <!--
-  <div id="panels">
-     <a id="show-Toc" class="show_view icon-list-1 active" data-view="Toc">TOC</a>
-     <a id="show-Bookmarks" class="show_view icon-bookmark" data-view="Bookmarks">Bookmarks</a>
-  </div>
-  -->
   <div id="tocView" class="view" tabindex="-1">
     <ul id="thumbnails"></ul>
   </div>
