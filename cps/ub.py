@@ -30,7 +30,7 @@ from werkzeug.security import generate_password_hash
 import json
 import datetime
 from binascii import hexlify
-import cli
+from cps import cli
 
 engine = create_engine('sqlite:///{0}'.format(cli.settingspath), echo=False)
 Base = declarative_base()

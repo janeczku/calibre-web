@@ -112,7 +112,7 @@ try:
     from natsort import natsorted as sort
 except ImportError:
     sort=sorted # Just use regular sort then
-                #   may cause issues with badly named pages in cbz/cbr files
+                # may cause issues with badly named pages in cbz/cbr files
 try:
     import cPickle
 except ImportError:
