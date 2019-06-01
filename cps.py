@@ -43,7 +43,7 @@ except ImportError:
     oauth_available = False
 
 
-if __name__ == '__main__':
+def main():
     app = create_app()
     app.register_blueprint(web)
     app.register_blueprint(opds)
@@ -58,5 +58,5 @@ if __name__ == '__main__':
     Server.startServer()
 
 
-
-
+if __name__ == '__main__':
+    main()
