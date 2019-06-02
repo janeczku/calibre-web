@@ -426,18 +426,25 @@ class Updater(threading.Thread):
                 minor_version_update = int(commit[i]['tag_name'].split('.')[1])
                 patch_version_update = int(commit[i]['tag_name'].split('.')[2])
 
+                current_version[0] = int(current_version[0])
+                current_version[1] = int(current_version[1])
+                try:
+                    current_version[2] = int(current_version[2])
+                except ValueError:
+                    current_version[2] = int(current_version[2].split(' ')[0])-1
+
                 # Check if major versions are identical search for newest nonenqual commit and update to this one
-                if major_version_update == int(current_version[0]):
-                    if (minor_version_update == int(current_version[1]) and
-                            patch_version_update > int(current_version[2])) or \
-                            minor_version_update > int(current_version[1]):
+                if major_version_update == current_version[0]:
+                    if (minor_version_update == current_version[1] and
+                            patch_version_update > current_version[2]) or \
+                            minor_version_update > current_version[1]:
                         parents.append([commit[i]['tag_name'],commit[i]['body'].replace('\r\n', '<p>')])
                     i -= 1
                     continue
-                if major_version_update < int(current_version[0]):
+                if major_version_update < current_version[0]:
                     i -= 1
                     continue
-                if major_version_update > int(current_version[0]):
+                if major_version_update > current_version[0]:
                     # found update update to last version before major update, unless current version is on last version
                     # before major update
                     if commit[i+1]['tag_name'].split('.')[1] == current_version[1]:
@@ -466,7 +473,7 @@ class Updater(threading.Thread):
                     'update': True,
                     'success': True,
                     'message': _(
-                        u'A new update is available. Click on the button below to update to the latest version.'),
+                        u'Click on the button below to update to the latest stable version.'),
                     'history': parents
                 })
                 self.updateFile = commit[0]['zipball_url']

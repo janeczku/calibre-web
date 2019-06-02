@@ -103,6 +103,7 @@ class server:
                             ssl_options=ssl)
                 http_server.listen(web.ub.config.config_port)
                 self.wsgiserver=IOLoop.instance()
+                web.py3_gevent_link = self.wsgiserver
                 self.wsgiserver.start()
                 # wait for stop signal
                 self.wsgiserver.close(True)
@@ -142,10 +143,10 @@ class server:
         # ToDo: Somehow caused by circular import under python3 refactor
         if sys.version_info > (3, 0):
             if not self.wsgiserver:
-                if gevent_present:
-                    self.wsgiserver = web.py3_gevent_link
-                else:
-                    self.wsgiserver = IOLoop.instance()
+                # if gevent_present:
+                self.wsgiserver = web.py3_gevent_link
+                #else:
+                #    self.wsgiserver = IOLoop.instance()
         if self.wsgiserver:
             if gevent_present:
                 self.wsgiserver.close()
