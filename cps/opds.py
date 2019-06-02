@@ -22,7 +22,7 @@
 #  along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 # opds routing functions
-from cps import config, db
+from . import config, db
 from flask import request, render_template, Response, g, make_response
 from pagination import Pagination
 from flask import Blueprint
@@ -30,11 +30,10 @@ import datetime
 import ub
 from flask_login import current_user
 from functools import wraps
-from web import login_required_if_no_ano, common_filters, get_search_results, render_read_books, download_required
+from .web import login_required_if_no_ano, common_filters, get_search_results, render_read_books, download_required
 from sqlalchemy.sql.expression import func, text
-import helper
 from werkzeug.security import check_password_hash
-from helper import fill_indexpage
+from .helper import fill_indexpage, get_download_link, get_book_cover
 import sys
 
 opds = Blueprint('opds', __name__)
@@ -253,7 +252,7 @@ def feed_shelf(book_id):
 @requires_basic_auth_if_no_ano
 @download_required
 def opds_download_link(book_id, book_format):
-    return helper.get_download_link(book_id,book_format)
+    return get_download_link(book_id,book_format)
 
 
 @opds.route("/ajax/book/<string:uuid>")
@@ -308,7 +307,7 @@ def render_xml_template(*args, **kwargs):
 @opds.route("/opds/cover/<book_id>")
 @requires_basic_auth_if_no_ano
 def feed_get_cover(book_id):
-    return helper.get_book_cover(book_id)
+    return get_book_cover(book_id)
 
 @opds.route("/opds/readbooks/")
 @requires_basic_auth_if_no_ano

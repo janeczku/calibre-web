@@ -20,6 +20,7 @@
 #
 #  You should have received a copy of the GNU General Public License
 #  along with this program. If not, see <http://www.gnu.org/licenses/>.
+__all__ =['app']
 
 import mimetypes
 from flask import Flask, request, g
@@ -71,7 +72,7 @@ lm.anonymous_user = ub.Anonymous
 ub.init_db()
 config = Config()
 
-import db
+from . import db
 
 try:
     with open(os.path.join(config.get_main_dir, 'cps/translations/iso639.pickle'), 'rb') as f:
@@ -83,10 +84,10 @@ except cPickle.UnpicklingError as error:
 
 searched_ids = {}
 
-from worker import WorkerThread
+from .worker import WorkerThread
 global_WorkerThread = WorkerThread()
 
-from server import server
+from .server import server
 Server = server()
 
 babel = Babel()
@@ -142,5 +143,5 @@ def get_timezone():
     if user is not None:
         return user.timezone
 
-from updater import Updater
+from .updater import Updater
 updater_thread = Updater()

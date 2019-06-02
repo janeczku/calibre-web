@@ -22,7 +22,7 @@ from socket import error as SocketError
 import sys
 import os
 import signal
-from cps import config, global_WorkerThread
+from . import config, global_WorkerThread
 
 try:
     from gevent.pywsgi import WSGIServer

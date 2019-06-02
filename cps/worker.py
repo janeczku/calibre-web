@@ -27,11 +27,11 @@ import socket
 import sys
 import os
 from email.generator import Generator
-from cps import config, db, app
+from . import config, db, app
 from flask_babel import gettext as _
 import re
-import gdriveutils as gd
-from subproc_wrapper import process_open
+from .gdriveutils import getFileFromEbooksFolder, updateGdriveCalibreFromLocal
+from .subproc_wrapper import process_open
 
 try:
     from StringIO import StringIO
@@ -70,7 +70,7 @@ def get_attachment(bookpath, filename):
     """Get file as MIMEBase message"""
     calibrepath = config.config_calibre_dir
     if config.config_use_google_drive:
-        df = gd.getFileFromEbooksFolder(bookpath, filename)
+        df = getFileFromEbooksFolder(bookpath, filename)
         if df:
             datafile = os.path.join(calibrepath, bookpath, filename)
             if not os.path.exists(os.path.join(calibrepath, bookpath)):
@@ -236,7 +236,7 @@ class WorkerThread(threading.Thread):
         filename = self._convert_ebook_format()
         if filename:
             if config.config_use_google_drive:
-                gd.updateGdriveCalibreFromLocal()
+                updateGdriveCalibreFromLocal()
             if curr_task == TASK_CONVERT:
                 self.add_email(self.queue[self.current]['settings']['subject'], self.queue[self.current]['path'],
                                 filename, self.queue[self.current]['settings'], self.queue[self.current]['kindle'],

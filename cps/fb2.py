@@ -18,7 +18,7 @@
 #  along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 from lxml import etree
-import uploader
+from .constants import BookMeta
 
 
 def get_fb2_info(tmp_file_path, original_file_extension):
@@ -66,7 +66,7 @@ def get_fb2_info(tmp_file_path, original_file_extension):
     else:
         description = u''
 
-    return uploader.BookMeta(
+    return BookMeta(
         file_path=tmp_file_path,
         extension=original_file_extension,
         title=title.decode('utf-8'),

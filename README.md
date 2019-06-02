@@ -73,4 +73,4 @@ Pre-built Docker images based on Alpine Linux are available in these Docker Hub 
 
 # Wiki
 
-For further informations, How To's and FAQ please check the ![Wiki](https://github.com/janeczku/calibre-web/wiki)
+For further informations, How To's and FAQ please check the [Wiki](https://github.com/janeczku/calibre-web/wiki)

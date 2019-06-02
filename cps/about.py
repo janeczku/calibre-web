@@ -23,9 +23,9 @@
 
 from flask import Blueprint
 from flask_login import login_required
-from cps import db
+from . import db
 import sys
-import uploader
+from .uploader import get_versions
 from babel import __version__ as babelVersion
 from sqlalchemy import __version__ as sqlalchemyVersion
 from flask_principal import __version__ as flask_principalVersion
@@ -34,11 +34,11 @@ from pytz import __version__ as pytzVersion
 from flask import __version__ as flaskVersion
 from werkzeug import __version__ as werkzeugVersion
 from jinja2 import __version__  as jinja2Version
-import converter
+from .converter import versioncheck
 from flask_babel import gettext as _
 from cps import Server
 import requests
-from web import render_title_template
+from .web import render_title_template
 
 try:
     from flask_login import __version__ as flask_loginVersion
@@ -55,7 +55,7 @@ def stats():
     authors = db.session.query(db.Authors).count()
     categorys = db.session.query(db.Tags).count()
     series = db.session.query(db.Series).count()
-    versions = uploader.get_versions()
+    versions = get_versions()
     versions['Babel'] = 'v' + babelVersion
     versions['Sqlalchemy'] = 'v' + sqlalchemyVersion
     versions['Werkzeug'] = 'v' + werkzeugVersion
@@ -69,7 +69,7 @@ def stats():
     versions['Requests'] = 'v' + requests.__version__
     versions['pySqlite'] = 'v' + db.engine.dialect.dbapi.version
     versions['Sqlite'] = 'v' + db.engine.dialect.dbapi.sqlite_version
-    versions.update(converter.versioncheck())
+    versions.update(versioncheck())
     versions.update(Server.getNameVersion())
     versions['Python'] = sys.version
     return render_title_template('stats.html', bookcounter=counter, authorcounter=authors, versions=versions,

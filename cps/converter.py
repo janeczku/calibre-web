@@ -24,7 +24,7 @@ import ub
 import re
 from flask_babel import gettext as _
 from subproc_wrapper import process_open
-from cps import config
+from . import config
 
 
 def versionKindle():

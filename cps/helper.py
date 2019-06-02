@@ -19,7 +19,7 @@
 #  along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 
-from cps import config, global_WorkerThread, get_locale, db, mimetypes
+from . import config, global_WorkerThread, get_locale, db, mimetypes
 from flask import current_app as app
 from tempfile import gettempdir
 import sys
@@ -27,7 +27,8 @@ import io
 import os
 import re
 import unicodedata
-import worker
+from .worker import STAT_WAITING, STAT_FAIL, STAT_STARTED, STAT_FINISH_SUCCESS, TASK_EMAIL, TASK_CONVERT, TASK_UPLOAD, \
+    TASK_CONVERT_ANY
 import time
 from flask import send_from_directory, make_response, redirect, abort
 from flask_babel import gettext as _
@@ -610,26 +611,26 @@ def render_task_status(tasklist):
 
             # localize the task status
             if isinstance( task['stat'], int ):
-                if task['stat'] == worker.STAT_WAITING:
+                if task['stat'] == STAT_WAITING:
                     task['status'] = _(u'Waiting')
-                elif task['stat'] == worker.STAT_FAIL:
+                elif task['stat'] == STAT_FAIL:
                     task['status'] = _(u'Failed')
-                elif task['stat'] == worker.STAT_STARTED:
+                elif task['stat'] == STAT_STARTED:
                     task['status'] = _(u'Started')
-                elif task['stat'] == worker.STAT_FINISH_SUCCESS:
+                elif task['stat'] == STAT_FINISH_SUCCESS:
                     task['status'] = _(u'Finished')
                 else:
                     task['status'] = _(u'Unknown Status')
 
             # localize the task type
             if isinstance( task['taskType'], int ):
-                if task['taskType'] == worker.TASK_EMAIL:
+                if task['taskType'] == TASK_EMAIL:
                     task['taskMessage'] = _(u'E-mail: ') + task['taskMess']
-                elif  task['taskType'] == worker.TASK_CONVERT:
+                elif  task['taskType'] == TASK_CONVERT:
                     task['taskMessage'] = _(u'Convert: ') + task['taskMess']
-                elif  task['taskType'] == worker.TASK_UPLOAD:
+                elif  task['taskType'] == TASK_UPLOAD:
                     task['taskMessage'] = _(u'Upload: ') + task['taskMess']
-                elif  task['taskType'] == worker.TASK_CONVERT_ANY:
+                elif  task['taskType'] == TASK_CONVERT_ANY:
                     task['taskMessage'] = _(u'Convert: ') + task['taskMess']
                 else:
                     task['taskMessage'] = _(u'Unknown Task: ') + task['taskMess']

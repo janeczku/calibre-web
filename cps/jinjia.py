@@ -26,9 +26,10 @@
 from flask import Blueprint, request, url_for
 import datetime
 import re
-from cps import mimetypes
+from . import mimetypes, app
 from babel.dates import format_date
 from flask_babel import get_locale
+from flask_login import current_user
 
 jinjia = Blueprint('jinjia', __name__)
 
@@ -78,7 +79,8 @@ def formatdate_filter(val):
         formatdate = datetime.datetime.strptime(conformed_timestamp[:15], "%Y%m%d %H%M%S")
         return format_date(formatdate, format='medium', locale=get_locale())
     except AttributeError as e:
-        app.logger.error('Babel error: %s, Current user locale: %s, Current User: %s' % (e, current_user.locale, current_user.nickname))
+        app.logger.error('Babel error: %s, Current user locale: %s, Current User: %s' %
+                         (e, current_user.locale, current_user.nickname))
         return formatdate
 
 @jinjia.app_template_filter('formatdateinput')
