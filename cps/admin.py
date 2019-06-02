@@ -25,9 +25,9 @@ import os
 from flask import Blueprint, flash, redirect, url_for
 from flask import abort, request, make_response
 from flask_login import login_required, current_user, logout_user
-from web import admin_required, render_title_template,  before_request, unconfigured, \
+from .web import admin_required, render_title_template,  before_request, unconfigured, \
     login_required_if_no_ano
-from cps import db, ub, Server, get_locale, config, app, updater_thread, babel
+from . import db, ub, Server, get_locale, config, app, updater_thread, babel
 import json
 from datetime import datetime, timedelta
 import time
@@ -35,9 +35,9 @@ from babel.dates import format_datetime
 from flask_babel import gettext as _
 from babel import Locale as LC
 from sqlalchemy.exc import IntegrityError
-from gdriveutils import is_gdrive_ready, gdrive_support, downloadFile, deleteDatabaseOnChange, listRootFolders
-import helper
-from helper import speaking_language, check_valid_domain
+from .gdriveutils import is_gdrive_ready, gdrive_support, downloadFile, deleteDatabaseOnChange, listRootFolders
+from .helper import speaking_language, check_valid_domain, check_unrar, send_test_mail, generate_random_password, \
+    send_registration_mail
 from werkzeug.security import generate_password_hash
 try:
     from imp import reload
@@ -467,7 +467,7 @@ def configuration_helper(origin):
 
         # Rarfile Content configuration
         if "config_rarfile_location" in to_save and to_save['config_rarfile_location'] is not u"":
-            check = helper.check_unrar(to_save["config_rarfile_location"].strip())
+            check = check_unrar(to_save["config_rarfile_location"].strip())
             if not check[0] :
                 content.config_rarfile_location = to_save["config_rarfile_location"].strip()
             else:
@@ -486,7 +486,6 @@ def configuration_helper(origin):
             flash(_(u"Calibre-Web configuration updated"), category="success")
             config.loadSettings()
             app.logger.setLevel(config.config_log_level)
-            # logging.getLogger("uploader").setLevel(config.config_log_level)
         except Exception as e:
             flash(e, category="error")
             return render_title_template("config_edit.html", config=config, origin=origin,
@@ -602,7 +601,7 @@ def edit_mailsettings():
             flash(e, category="error")
         if "test" in to_save and to_save["test"]:
             if current_user.kindle_mail:
-                result = helper.send_test_mail(current_user.kindle_mail, current_user.nickname)
+                result = send_test_mail(current_user.kindle_mail, current_user.nickname)
                 if result is None:
                     flash(_(u"Test e-mail successfully send to %(kindlemail)s", kindlemail=current_user.kindle_mail),
                           category="success")
@@ -725,11 +724,11 @@ def reset_password(user_id):
         abort(404)
     if current_user is not None and current_user.is_authenticated:
         existing_user = ub.session.query(ub.User).filter(ub.User.id == user_id).first()
-        password = helper.generate_random_password()
+        password = generate_random_password()
         existing_user.password = generate_password_hash(password)
         try:
             ub.session.commit()
-            helper.send_registration_mail(existing_user.email, existing_user.nickname, password, True)
+            send_registration_mail(existing_user.email, existing_user.nickname, password, True)
             flash(_(u"Password for user %(user)s reset", user=existing_user.nickname), category="success")
         except Exception:
             ub.session.rollback()

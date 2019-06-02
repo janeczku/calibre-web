@@ -24,7 +24,7 @@ from sqlalchemy.orm import *
 import os
 import re
 import ast
-from cps import config
+from . import config
 import ub
 import sys
 import unidecode

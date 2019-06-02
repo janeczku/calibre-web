@@ -21,8 +21,8 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-from cps import mimetypes, global_WorkerThread, searched_ids, lm, babel, ub, config, get_locale, language_table, app, db
-from helper import common_filters, get_search_results, fill_indexpage, speaking_language, check_valid_domain, \
+from . import mimetypes, global_WorkerThread, searched_ids, lm, babel, ub, config, get_locale, language_table, app, db
+from .helper import common_filters, get_search_results, fill_indexpage, speaking_language, check_valid_domain, \
     order_authors, get_typeahead, render_task_status, json_serial, get_unique_other_books, get_cc_columns, \
     get_book_cover, get_download_link, send_mail, generate_random_password, send_registration_mail, \
     check_send_to_kindle, check_read_formats, lcase
@@ -44,7 +44,7 @@ import os.path
 import json
 import datetime
 import isoLanguages
-import gdriveutils
+from .gdriveutils import getFileFromEbooksFolder, do_gdrive_download
 
 
 feature_support = dict()
@@ -995,8 +995,8 @@ def serve_book(book_id, book_format):
             headers["Content-Type"] = mimetypes.types_map['.' + book_format]
         except KeyError:
             headers["Content-Type"] = "application/octet-stream"
-        df = gdriveutils.getFileFromEbooksFolder(book.path, data.name + "." + book_format)
-        return gdriveutils.do_gdrive_download(df, headers)
+        df = getFileFromEbooksFolder(book.path, data.name + "." + book_format)
+        return do_gdrive_download(df, headers)
     else:
         return send_from_directory(os.path.join(config.config_calibre_dir, book.path), data.name + "." + book_format)
 

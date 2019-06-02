@@ -20,7 +20,7 @@
 import zipfile
 from lxml import etree
 import os
-import uploader
+from .constants import BookMeta
 import isoLanguages
 
 

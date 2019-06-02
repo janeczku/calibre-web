@@ -22,17 +22,17 @@
 #  along with this program. If not, see <http://www.gnu.org/licenses/>.
 import os
 from flask import Blueprint
-import gdriveutils
+from . import gdriveutils
 from flask import flash, request, redirect, url_for, abort
 from flask_babel import gettext as _
-from cps import app, config, ub, db
+from . import app, config, ub, db
 from flask_login import login_required
 import json
 from uuid import uuid4
 from time import time
 import tempfile
 from shutil import move, copyfile
-from web import admin_required
+from .web import admin_required
 
 try:
     from googleapiclient.errors import HttpError

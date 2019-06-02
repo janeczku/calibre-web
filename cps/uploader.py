@@ -17,14 +17,13 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-# import os
+
 from tempfile import gettempdir
 import hashlib
-from collections import namedtuple
 import os
 from flask_babel import gettext as _
-from cps import comic
-from cps import app
+import comic
+from . import app
 
 try:
     from lxml.etree import LXML_VERSION as lxmlversion
@@ -72,13 +71,8 @@ except ImportError:
     use_PIL = False
 
 
+
 __author__ = 'lemmsh'
-
-BookMeta = namedtuple('BookMeta', 'file_path, extension, title, author, cover, description, tags, series, series_id, languages')
-
-"""
- :rtype: BookMeta
-"""
 
 
 def process(tmp_file_path, original_file_name, original_file_extension):

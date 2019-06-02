@@ -18,7 +18,7 @@
 #  along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 
-from cps import config, get_locale, Server, app
+from . import config, get_locale, Server, app
 import threading
 import zipfile
 import requests

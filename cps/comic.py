@@ -18,7 +18,7 @@
 #   along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 import os
-from cps import uploader
+from constants import BookMeta
 from cps import app
 from iso639 import languages as isoLanguages
 
@@ -94,7 +94,7 @@ def get_comic_info(tmp_file_path, original_file_name, original_file_extension):
         else:
              loadedMetadata.language = ""
 
-        return uploader.BookMeta(
+        return BookMeta(
                 file_path=tmp_file_path,
                 extension=original_file_extension,
                 title=loadedMetadata.title or original_file_name,
@@ -107,7 +107,7 @@ def get_comic_info(tmp_file_path, original_file_name, original_file_extension):
                 languages=loadedMetadata.language)
     else:
 
-        return uploader.BookMeta(
+        return BookMeta(
             file_path=tmp_file_path,
             extension=original_file_extension,
             title=original_file_name,
