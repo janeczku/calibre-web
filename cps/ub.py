@@ -692,17 +692,67 @@ def migrate_Database():
     except exc.OperationalError:
         conn = engine.connect()
         conn.execute("ALTER TABLE Settings ADD column `config_use_ldap` INTEGER DEFAULT 0")
+        session.commit()
+    try:
+        session.query(exists().where(Settings.config_ldap_provider_url)).scalar()
+    except exc.OperationalError:
+        conn = engine.connect()
         conn.execute("ALTER TABLE Settings ADD column `config_ldap_provider_url` String DEFAULT ''")
+        session.commit()
+    try:
+        session.query(exists().where(Settings.config_ldap_port)).scalar()
+    except exc.OperationalError:
+        conn = engine.connect()
         conn.execute("ALTER TABLE Settings ADD column `config_ldap_port` INTEGER DEFAULT ''")
+        session.commit()
+    try:
+        session.query(exists().where(Settings.config_ldap_schema)).scalar()
+    except exc.OperationalError:
+        conn = engine.connect()
         conn.execute("ALTER TABLE Settings ADD column `config_ldap_schema ` String DEFAULT ''")
+        session.commit()
+    try:
+        session.query(exists().where(Settings.config_ldap_serv_username)).scalar()
+    except exc.OperationalError:
+        conn = engine.connect()
         conn.execute("ALTER TABLE Settings ADD column `config_ldap_serv_username` String DEFAULT ''")
         conn.execute("ALTER TABLE Settings ADD column `config_ldap_serv_password` String DEFAULT ''")
+        session.commit()
+    try:
+        session.query(exists().where(Settings.config_ldap_use_ssl)).scalar()
+    except exc.OperationalError:
+        conn = engine.connect()
         conn.execute("ALTER TABLE Settings ADD column `config_ldap_use_ssl` INTEGER DEFAULT 0")
+        session.commit()
+    try:
+        session.query(exists().where(Settings.config_ldap_use_tls)).scalar()
+    except exc.OperationalError:
+        conn = engine.connect()
         conn.execute("ALTER TABLE Settings ADD column `cconfig_ldap_use_tls` INTEGER DEFAULT 0")
+        session.commit()
+    try:
+        session.query(exists().where(Settings.config_ldap_require_cert)).scalar()
+    except exc.OperationalError:
+        conn = engine.connect()
         conn.execute("ALTER TABLE Settings ADD column `config_ldap_require_cert` INTEGER DEFAULT 0")
         conn.execute("ALTER TABLE Settings ADD column `config_ldap_cert_path` String DEFAULT ''")
+        session.commit()
+    try:
+        session.query(exists().where(Settings.config_ldap_dn)).scalar()
+    except exc.OperationalError:
+        conn = engine.connect()
         conn.execute("ALTER TABLE Settings ADD column `config_ldap_dn` String DEFAULT ''")
+        session.commit()
+    try:
+        session.query(exists().where(Settings.config_ldap_user_object)).scalar()
+    except exc.OperationalError:
+        conn = engine.connect()
         conn.execute("ALTER TABLE Settings ADD column `config_ldap_user_object` String DEFAULT ''")
+        session.commit()
+    try:
+        session.query(exists().where(Settings.config_ldap_openldap)).scalar()
+    except exc.OperationalError:
+        conn = engine.connect()
         conn.execute("ALTER TABLE Settings ADD column `config_ldap_openldap` INTEGER DEFAULT 0")
         session.commit()
     try:

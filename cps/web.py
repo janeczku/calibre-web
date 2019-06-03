@@ -183,7 +183,7 @@ app.secret_key = os.getenv('SECRET_KEY', 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT')
 db.setup_db()
 
 if ldap_support and config.config_use_ldap:
-    app.confgi['LDAP_HOST'] = config.config_ldap_provider_url
+    app.config['LDAP_HOST'] = config.config_ldap_provider_url
     app.config['LDAP_PORT'] = config.config_ldap_port
     app.config['LDAP_SCHEMA'] = config.config_ldap_schema
     app.config['LDAP_USERNAME'] = config.config_ldap_serv_username
@@ -197,7 +197,7 @@ if ldap_support and config.config_use_ldap:
         app.config['LDAP_CERT_PATH'] = config.config_ldap_cert_path
     app.config['LDAP_BASE_DN'] = config.config_ldap_dn
     app.config['LDAP_USER_OBJECT_FILTER'] = config.config_ldap_user_object
-    if config.config_openldap:
+    if config.config_ldap_openldap:
         app.config['LDAP_OPENLDAP'] = True
 
 #    app.config['LDAP_BASE_DN'] = 'ou=users,dc=yunohost,dc=org'
@@ -3140,15 +3140,16 @@ def configuration_helper(origin):
             content.config_ebookconverter = int(to_save["config_ebookconverter"])
 
         #LDAP configuration,
+        content.config_use_ldap = 0
         if "config_use_ldap" in to_save and to_save["config_use_ldap"] == "on":
-            if not "config_ldap_provider_url" in to_save or not "config_ldap_dn" in to_save:
+            if not to_save["config_ldap_provider_url"] or not to_save["config_ldap_port"] or not to_save["config_ldap_dn"] or not to_save["config_ldap_user_object"]:
                 ub.session.commit()
-                flash(_(u'Please enter a LDAP provider and a DN'), category="error")
+                flash(_(u'Please enter a LDAP provider, port, DN and user object identifier'), category="error")
                 return render_title_template("config_edit.html", content=config, origin=origin,
                                              gdrive=gdriveutils.gdrive_support, gdriveError=gdriveError,
                                              goodreads=goodreads_support, title=_(u"Basic Configuration"),
                                              page="config")
-            elif not "config_ldap_serv_username" in to_save or not "config_ldap_serv_password" in to_save:
+            elif not to_save["config_ldap_serv_username"] or not to_save["config_ldap_serv_password"]:
                 ub.session.commit()
                 flash(_(u'Please enter a LDAP service account and password'), category="error")
                 return render_title_template("config_edit.html", content=config, origin=origin,
@@ -3162,29 +3163,32 @@ def configuration_helper(origin):
                 content.config_ldap_schema = to_save["config_ldap_schema"]
                 content.config_ldap_serv_username = to_save["config_ldap_serv_username"]
                 content.config_ldap_serv_password = to_save["config_ldap_serv_password"]
-                if content.config_ldap_use_ssl in to_save and to_save["config_ldap_use_ssl"] == "on":
-                    content.config_ldap_use_ssl = 1
-                if content.config_ldap_use_tls in to_save and to_save["config_ldap_use_tls"] == "on":
-                    content.config_ldap_use_tls = 1
-                if content.config_ldap_require_cert in to_save and to_save["config_ldap_require_cert"] == "on":
-                    content.config_ldap_require_cert = 1
-                    if "config_ldap_cert_path " in to_save:
-                        if content.config_ldap_cert_path  != to_save["config_ldap_cert_path "]:
-                            if os.path.isfile(to_save["config_ldap_cert_path "]) or to_save["config_ldap_cert_path "] is u"":
-                                content.config_certfile = to_save["config_ldap_cert_path "]
-                            else:
-                                ub.session.commit()
-                                flash(_(u'Certfile location is not valid, please enter correct path'), category="error")
-                                return render_title_template("config_edit.html", content=config, origin=origin,
-                                                 gdrive=gdriveutils.gdrive_support, gdriveError=gdriveError,
-                                                 goodreads=goodreads_support, title=_(u"Basic Configuration"),
-                                                 page="config")
                 content.config_ldap_dn = to_save["config_ldap_dn"]
                 content.config_ldap_user_object = to_save["config_ldap_user_object"]
-                if content.config_ldap_openldap in to_save and to_save["config_ldap_openldap"] == "on":
-                    content.config_ldap_openldap = 1
-                db_change = True
                 reboot_required = True
+        content.config_ldap_use_ssl = 0
+        content.config_ldap_use_tls = 0
+        content.config_ldap_require_cert = 0
+        content.config_ldap_openldap = 0
+        if "config_ldap_use_ssl" in to_save and to_save["config_ldap_use_ssl"] == "on":
+            content.config_ldap_use_ssl = 1
+        if "config_ldap_use_tls" in to_save and to_save["config_ldap_use_tls"] == "on":
+            content.config_ldap_use_tls = 1
+        if "config_ldap_require_cert" in to_save and to_save["config_ldap_require_cert"] == "on":
+            content.config_ldap_require_cert = 1
+        if "config_ldap_openldap" in to_save and to_save["config_ldap_openldap"] == "on":
+            content.config_ldap_openldap = 1
+        if "config_ldap_cert_path " in to_save:
+            if content.config_ldap_cert_path  != to_save["config_ldap_cert_path "]:
+                if os.path.isfile(to_save["config_ldap_cert_path "]) or to_save["config_ldap_cert_path "] is u"":
+                    content.config_certfile = to_save["config_ldap_cert_path "]
+                else:
+                    ub.session.commit()
+                    flash(_(u'Certfile location is not valid, please enter correct path'), category="error")
+                    return render_title_template("config_edit.html", content=config, origin=origin,
+                                        gdrive=gdriveutils.gdrive_support, gdriveError=gdriveError,
+                                        goodreads=goodreads_support, title=_(u"Basic Configuration"),
+                                        page="config")
 
         # Remote login configuration
         content.config_remote_login = ("config_remote_login" in to_save and to_save["config_remote_login"] == "on")
