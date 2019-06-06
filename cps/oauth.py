@@ -1,7 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+from __future__ import division, print_function, unicode_literals
 from flask import session
+
+
 try:
     from flask_dance.consumer.backend.sqla import SQLAlchemyBackend, first, _get_real_user
     from sqlalchemy.orm.exc import NoResultFound

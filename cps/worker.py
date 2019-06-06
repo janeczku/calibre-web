@@ -17,21 +17,15 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-from __future__ import print_function
-import smtplib
-import threading
-from datetime import datetime
-import logging
-import time
-import socket
+from __future__ import division, print_function, unicode_literals
 import sys
 import os
-from email.generator import Generator
-from . import config, db, app
-from flask_babel import gettext as _
 import re
-from .gdriveutils import getFileFromEbooksFolder, updateGdriveCalibreFromLocal
-from .subproc_wrapper import process_open
+import smtplib
+import socket
+import time
+import threading
+from datetime import datetime
 
 try:
     from StringIO import StringIO
@@ -47,6 +41,14 @@ except ImportError:
 from email import encoders
 from email.utils import formatdate
 from email.utils import make_msgid
+from email.generator import Generator
+from flask_babel import gettext as _
+
+from . import logger, config, db, gdriveutils
+from .subproc_wrapper import process_open
+
+
+log = logger.create()
 
 chunksize = 8192
 # task 'status' consts
@@ -70,7 +72,7 @@ def get_attachment(bookpath, filename):
     """Get file as MIMEBase message"""
     calibrepath = config.config_calibre_dir
     if config.config_use_google_drive:
-        df = getFileFromEbooksFolder(bookpath, filename)
+        df = gdriveutils.getFileFromEbooksFolder(bookpath, filename)
         if df:
             datafile = os.path.join(calibrepath, bookpath, filename)
             if not os.path.exists(os.path.join(calibrepath, bookpath)):
@@ -88,8 +90,8 @@ def get_attachment(bookpath, filename):
             data = file_.read()
             file_.close()
         except IOError as e:
-            app.logger.exception(e) # traceback.print_exc()
-            app.logger.error(u'The requested file could not be read. Maybe wrong permissions?')
+            log.exception(e) # traceback.print_exc()
+            log.error(u'The requested file could not be read. Maybe wrong permissions?')
             return None
 
     attachment = MIMEBase('application', 'octet-stream')
@@ -114,7 +116,7 @@ class emailbase():
 
     def send(self, strg):
         """Send `strg' to the server."""
-        app.logger.debug('send:' + repr(strg[:300]))
+        log.debug('send: %r', strg[:300])
         if hasattr(self, 'sock') and self.sock:
             try:
                 if self.transferSize:
@@ -139,7 +141,7 @@ class emailbase():
             raise smtplib.SMTPServerDisconnected('please run connect() first')
 
     def _print_debug(self, *args):
-        app.logger.debug(args)
+        log.debug(args)
 
     def getTransferStatus(self):
         if self.transferSize:
@@ -236,7 +238,7 @@ class WorkerThread(threading.Thread):
         filename = self._convert_ebook_format()
         if filename:
             if config.config_use_google_drive:
-                updateGdriveCalibreFromLocal()
+                gdriveutils.updateGdriveCalibreFromLocal()
             if curr_task == TASK_CONVERT:
                 self.add_email(self.queue[self.current]['settings']['subject'], self.queue[self.current]['path'],
                                 filename, self.queue[self.current]['settings'], self.queue[self.current]['kindle'],
@@ -254,14 +256,14 @@ class WorkerThread(threading.Thread):
         # if it does - mark the conversion task as complete and return a success
         # this will allow send to kindle workflow to continue to work
         if os.path.isfile(file_path + format_new_ext):
-            app.logger.info("Book id %d already converted to %s", bookid, format_new_ext)
+            log.info("Book id %d already converted to %s", bookid, format_new_ext)
             cur_book = db.session.query(db.Books).filter(db.Books.id == bookid).first()
             self.queue[self.current]['path'] = file_path
             self.queue[self.current]['title'] = cur_book.title
             self._handleSuccess()
             return file_path + format_new_ext
         else:
-            app.logger.info("Book id %d - target format of %s does not exist. Moving forward with convert.", bookid, format_new_ext)
+            log.info("Book id %d - target format of %s does not exist. Moving forward with convert.", bookid, format_new_ext)
 
         # check if converter-executable is existing
         if not os.path.exists(config.config_converterpath):
@@ -317,13 +319,13 @@ class WorkerThread(threading.Thread):
             if conv_error:
                 error_message = _(u"Kindlegen failed with Error %(error)s. Message: %(message)s",
                                   error=conv_error.group(1), message=conv_error.group(2).strip())
-            app.logger.debug("convert_kindlegen: " + nextline)
+            log.debug("convert_kindlegen: %s", nextline)
         else:
             while p.poll() is None:
                 nextline = p.stdout.readline()
                 if os.name == 'nt' and sys.version_info < (3, 0):
                     nextline = nextline.decode('windows-1252')
-                app.logger.debug(nextline.strip('\r\n'))
+                log.debug(nextline.strip('\r\n'))
                 # parse progress string from calibre-converter
                 progress = re.search("(\d+)%\s.*", nextline)
                 if progress:
@@ -353,7 +355,7 @@ class WorkerThread(threading.Thread):
                 return file_path + format_new_ext
             else:
                 error_message = format_new_ext.upper() + ' format not found on disk'
-        app.logger.info("ebook converter failed with error while converting book")
+        log.info("ebook converter failed with error while converting book")
         if not error_message:
             error_message = 'Ebook converter failed with unknown error'
         self._handleError(error_message)
@@ -449,7 +451,7 @@ class WorkerThread(threading.Thread):
             # _print_debug function
             if sys.version_info < (3, 0):
                 org_smtpstderr = smtplib.stderr
-                smtplib.stderr = StderrLogger()
+                smtplib.stderr = logger.StderrLogger('worker.smtp')
 
             if use_ssl == 2:
                 self.asyncSMTP = email_SSL(obj['settings']["mail_server"], obj['settings']["mail_port"], timeout)
@@ -457,9 +459,7 @@ class WorkerThread(threading.Thread):
                 self.asyncSMTP = email(obj['settings']["mail_server"], obj['settings']["mail_port"], timeout)
 
             # link to logginglevel
-            if config.config_log_level != logging.DEBUG:
-                self.asyncSMTP.set_debuglevel(0)
-            else:
+            if logger.is_debug_enabled():
                 self.asyncSMTP.set_debuglevel(1)
             if use_ssl == 1:
                 self.asyncSMTP.starttls()
@@ -501,7 +501,7 @@ class WorkerThread(threading.Thread):
         return retVal
 
     def _handleError(self, error_message):
-        app.logger.error(error_message)
+        log.error(error_message)
         self.UIqueue[self.current]['stat'] = STAT_FAIL
         self.UIqueue[self.current]['progress'] = "100 %"
         self.UIqueue[self.current]['runtime'] = self._formatRuntime(
@@ -513,22 +513,3 @@ class WorkerThread(threading.Thread):
         self.UIqueue[self.current]['progress'] = "100 %"
         self.UIqueue[self.current]['runtime'] = self._formatRuntime(
             datetime.now() - self.queue[self.current]['starttime'])
-
-
-# Enable logging of smtp lib debug output
-class StderrLogger(object):
-
-    buffer = ''
-
-    def __init__(self):
-        self.logger = app.logger
-
-    def write(self, message):
-        try:
-            if message == '\n':
-                self.logger.debug(self.buffer.replace("\n","\\n"))
-                self.buffer = ''
-            else:
-                self.buffer += message
-        except:
-            self.logger.debug("Logging Error")

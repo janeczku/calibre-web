@@ -17,14 +17,14 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-import os
+from __future__ import absolute_import, division, print_function, unicode_literals
 import sys
+import os
 
-base_path = os.path.dirname(os.path.abspath(__file__))
+
 # Insert local directories into path
-sys.path.append(base_path)
-sys.path.append(os.path.join(base_path, 'cps'))
-sys.path.append(os.path.join(base_path, 'vendor'))
+sys.path.append(os.path.join(sys.path[0], 'vendor'))
+
 
 from cps import create_app
 from cps.opds import opds

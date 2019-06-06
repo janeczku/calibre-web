@@ -23,15 +23,21 @@
 
 # custom jinja filters
 
-from flask import Blueprint, request, url_for
+from __future__ import division, print_function, unicode_literals
 import datetime
+import mimetypes
 import re
-from . import mimetypes, app
+
 from babel.dates import format_date
+from flask import Blueprint, request, url_for
 from flask_babel import get_locale
 from flask_login import current_user
 
+from . import logger
+
+
 jinjia = Blueprint('jinjia', __name__)
+log = logger.create()
 
 
 # pagination links in jinja
@@ -79,8 +85,7 @@ def formatdate_filter(val):
         formatdate = datetime.datetime.strptime(conformed_timestamp[:15], "%Y%m%d %H%M%S")
         return format_date(formatdate, format='medium', locale=get_locale())
     except AttributeError as e:
-        app.logger.error('Babel error: %s, Current user locale: %s, Current User: %s' %
-                         (e, current_user.locale, current_user.nickname))
+        log.error('Babel error: %s, Current user locale: %s, Current User: %s', e, current_user.locale, current_user.nickname)
         return formatdate
 
 @jinjia.app_template_filter('formatdateinput')
