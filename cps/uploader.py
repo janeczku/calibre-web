@@ -17,13 +17,19 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-
-from tempfile import gettempdir
-import hashlib
+from __future__ import division, print_function, unicode_literals
 import os
+import hashlib
+from tempfile import gettempdir
+
 from flask_babel import gettext as _
-import comic
-from . import app
+
+from . import logger, comic
+from .constants import BookMeta
+
+
+log = logger.create()
+
 
 try:
     from lxml.etree import LXML_VERSION as lxmlversion
@@ -36,7 +42,7 @@ try:
     from wand.exceptions import PolicyError
     use_generic_pdf_cover = False
 except (ImportError, RuntimeError) as e:
-    app.logger.warning('cannot import Image, generating pdf covers for pdf uploads will not work: %s', e)
+    log.warning('cannot import Image, generating pdf covers for pdf uploads will not work: %s', e)
     use_generic_pdf_cover = True
 
 try:
@@ -44,29 +50,29 @@ try:
     from PyPDF2 import __version__ as PyPdfVersion
     use_pdf_meta = True
 except ImportError as e:
-    app.logger.warning('cannot import PyPDF2, extracting pdf metadata will not work: %s', e)
+    log.warning('cannot import PyPDF2, extracting pdf metadata will not work: %s', e)
     use_pdf_meta = False
 
 try:
-    import epub
+    from . import epub
     use_epub_meta = True
 except ImportError as e:
-    app.logger.warning('cannot import epub, extracting epub metadata will not work: %s', e)
+    log.warning('cannot import epub, extracting epub metadata will not work: %s', e)
     use_epub_meta = False
 
 try:
-    import fb2
+    from . import fb2
     use_fb2_meta = True
 except ImportError as e:
-    app.logger.warning('cannot import fb2, extracting fb2 metadata will not work: %s', e)
+    log.warning('cannot import fb2, extracting fb2 metadata will not work: %s', e)
     use_fb2_meta = False
 
 try:
     from PIL import Image
     from PIL import __version__ as PILversion
     use_PIL = True
-except ImportError:
-    app.logger.warning('cannot import Pillow, using png and webp images as cover will not work: %s', e)
+except ImportError as e:
+    log.warning('cannot import Pillow, using png and webp images as cover will not work: %s', e)
     use_generic_pdf_cover = True
     use_PIL = False
 
@@ -88,7 +94,7 @@ def process(tmp_file_path, original_file_name, original_file_extension):
             meta = comic.get_comic_info(tmp_file_path, original_file_name, original_file_extension)
 
     except Exception as ex:
-        app.logger.warning('cannot parse metadata, using default: %s', ex)
+        log.warning('cannot parse metadata, using default: %s', ex)
 
     if meta and meta.title.strip() and meta.author.strip():
         return meta
@@ -192,10 +198,10 @@ def pdf_preview(tmp_file_path, tmp_dir):
                 img.save(filename=os.path.join(tmp_dir, cover_file_name))
             return cover_file_name
         except PolicyError as ex:
-            app.logger.warning('Pdf extraction forbidden by Imagemagick policy: %s', ex)
+            log.warning('Pdf extraction forbidden by Imagemagick policy: %s', ex)
             return None
         except Exception as ex:
-            app.logger.warning('Cannot extract cover image, using default: %s', ex)
+            log.warning('Cannot extract cover image, using default: %s', ex)
             return None
 
 
