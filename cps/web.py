@@ -57,6 +57,7 @@ from redirect import redirect_back
 import time
 import server
 from reverseproxy import ReverseProxied
+from __builtin__ import True
 
 try:
     from googleapiclient.errors import HttpError
@@ -107,6 +108,11 @@ try:
 except ImportError:
     from flask_login.__about__ import __version__ as flask_loginVersion
 
+try:
+   from flask_simpleldap import LDAP, LDAPException
+   ldap_support = True
+except ImportError:
+   ldap_support = False
 
 # Global variables
 current_milli_time = lambda: int(round(time.time() * 1000))
@@ -175,6 +181,31 @@ lm.login_view = 'login'
 lm.anonymous_user = ub.Anonymous
 app.secret_key = os.getenv('SECRET_KEY', 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT')
 db.setup_db()
+
+if ldap_support and config.config_use_ldap:
+    app.config['LDAP_HOST'] = config.config_ldap_provider_url
+    app.config['LDAP_PORT'] = config.config_ldap_port
+    app.config['LDAP_SCHEMA'] = config.config_ldap_schema
+    app.config['LDAP_USERNAME'] = config.config_ldap_user_object.replace('%s', config.config_ldap_serv_username) + ',' + config.config_ldap_dn
+    app.config['LDAP_PASSWORD'] = base64.b64decode(config.config_ldap_serv_password)  
+    if config.config_ldap_use_ssl:
+        app.config['LDAP_USE_SSL'] = True
+    if config.config_ldap_use_tls:
+        app.config['LDAP_USE_TLS'] = True
+    app.config['LDAP_REQUIRE_CERT'] = config.config_ldap_require_cert
+    if config.config_ldap_require_cert:
+        app.config['LDAP_CERT_PATH'] = config.config_ldap_cert_path
+    app.config['LDAP_BASE_DN'] = config.config_ldap_dn
+    app.config['LDAP_USER_OBJECT_FILTER'] = config.config_ldap_user_object
+    if config.config_ldap_openldap:
+        app.config['LDAP_OPENLDAP'] = True
+
+#    app.config['LDAP_BASE_DN'] = 'ou=users,dc=yunohost,dc=org'
+#    app.config['LDAP_USER_OBJECT_FILTER'] = '(uid=%s)'
+    ldap = LDAP(app)
+elif config.config_use_ldap and not ldap_support:
+    app.logger.error('Cannot activate ldap support, did you run \'pip install --target vendor -r optional-requirements-ldap.txt\'?')
+
 
 with open(os.path.join(config.get_main_dir, 'cps/translations/iso639.pickle'), 'rb') as f:
     language_table = cPickle.load(f)
@@ -255,6 +286,13 @@ def requires_basic_auth_if_no_ano(f):
         return f(*args, **kwargs)
 
     return decorated
+
+def basic_auth_required_check(condition):
+    def decorator(f):
+        if condition and ldap_support:
+           return ldap.basic_auth_required(f)
+        return requires_basic_auth_if_no_ano(f)
+    return decorator
 
 
 # simple pagination for the feed
@@ -690,31 +728,31 @@ def before_request():
 # Routing functions
 
 @app.route("/opds")
-@requires_basic_auth_if_no_ano
+@basic_auth_required_check(config.config_use_ldap)
 def feed_index():
     return render_xml_template('index.xml')
 
 
 @app.route("/opds/osd")
-@requires_basic_auth_if_no_ano
+@basic_auth_required_check(config.config_use_ldap)
 def feed_osd():
     return render_xml_template('osd.xml', lang='en-EN')
 
 
 @app.route("/opds/search/<query>")
-@requires_basic_auth_if_no_ano
+@basic_auth_required_check(config.config_use_ldap)
 def feed_cc_search(query):
     return feed_search(query.strip())
 
 
 @app.route("/opds/search", methods=["GET"])
-@requires_basic_auth_if_no_ano
+@basic_auth_required_check(config.config_use_ldap)
 def feed_normal_search():
     return feed_search(request.args.get("query").strip())
 
 
 @app.route("/opds/new")
-@requires_basic_auth_if_no_ano
+@basic_auth_required_check(config.config_use_ldap)
 def feed_new():
     off = request.args.get("offset") or 0
     entries, __, pagination = fill_indexpage((int(off) / (int(config.config_books_per_page)) + 1),
@@ -723,7 +761,7 @@ def feed_new():
 
 
 @app.route("/opds/discover")
-@requires_basic_auth_if_no_ano
+@basic_auth_required_check(config.config_use_ldap)
 def feed_discover():
     entries = db.session.query(db.Books).filter(common_filters()).order_by(func.random())\
         .limit(config.config_books_per_page)
@@ -732,7 +770,7 @@ def feed_discover():
 
 
 @app.route("/opds/rated")
-@requires_basic_auth_if_no_ano
+@basic_auth_required_check(config.config_use_ldap)
 def feed_best_rated():
     off = request.args.get("offset") or 0
     entries, __, pagination = fill_indexpage((int(off) / (int(config.config_books_per_page)) + 1),
@@ -741,7 +779,7 @@ def feed_best_rated():
 
 
 @app.route("/opds/hot")
-@requires_basic_auth_if_no_ano
+@basic_auth_required_check(config.config_use_ldap)
 def feed_hot():
     off = request.args.get("offset") or 0
     all_books = ub.session.query(ub.Downloads, ub.func.count(ub.Downloads.book_id)).order_by(
@@ -766,7 +804,7 @@ def feed_hot():
 
 
 @app.route("/opds/author")
-@requires_basic_auth_if_no_ano
+@basic_auth_required_check(config.config_use_ldap)
 def feed_authorindex():
     off = request.args.get("offset") or 0
     entries = db.session.query(db.Authors).join(db.books_authors_link).join(db.Books).filter(common_filters())\
@@ -777,7 +815,7 @@ def feed_authorindex():
 
 
 @app.route("/opds/author/<int:book_id>")
-@requires_basic_auth_if_no_ano
+@basic_auth_required_check(config.config_use_ldap)
 def feed_author(book_id):
     off = request.args.get("offset") or 0
     entries, __, pagination = fill_indexpage((int(off) / (int(config.config_books_per_page)) + 1),
@@ -786,7 +824,7 @@ def feed_author(book_id):
 
 
 @app.route("/opds/publisher")
-@requires_basic_auth_if_no_ano
+@basic_auth_required_check(config.config_use_ldap)
 def feed_publisherindex():
     off = request.args.get("offset") or 0
     entries = db.session.query(db.Publishers).join(db.books_publishers_link).join(db.Books).filter(common_filters())\
@@ -797,7 +835,7 @@ def feed_publisherindex():
 
 
 @app.route("/opds/publisher/<int:book_id>")
-@requires_basic_auth_if_no_ano
+@basic_auth_required_check(config.config_use_ldap)
 def feed_publisher(book_id):
     off = request.args.get("offset") or 0
     entries, __, pagination = fill_indexpage((int(off) / (int(config.config_books_per_page)) + 1),
@@ -807,7 +845,7 @@ def feed_publisher(book_id):
 
 
 @app.route("/opds/category")
-@requires_basic_auth_if_no_ano
+@basic_auth_required_check(config.config_use_ldap)
 def feed_categoryindex():
     off = request.args.get("offset") or 0
     entries = db.session.query(db.Tags).join(db.books_tags_link).join(db.Books).filter(common_filters())\
@@ -818,7 +856,7 @@ def feed_categoryindex():
 
 
 @app.route("/opds/category/<int:book_id>")
-@requires_basic_auth_if_no_ano
+@basic_auth_required_check(config.config_use_ldap)
 def feed_category(book_id):
     off = request.args.get("offset") or 0
     entries, __, pagination = fill_indexpage((int(off) / (int(config.config_books_per_page)) + 1),
@@ -827,7 +865,7 @@ def feed_category(book_id):
 
 
 @app.route("/opds/series")
-@requires_basic_auth_if_no_ano
+@basic_auth_required_check(config.config_use_ldap)
 def feed_seriesindex():
     off = request.args.get("offset") or 0
     entries = db.session.query(db.Series).join(db.books_series_link).join(db.Books).filter(common_filters())\
@@ -838,7 +876,7 @@ def feed_seriesindex():
 
 
 @app.route("/opds/series/<int:book_id>")
-@requires_basic_auth_if_no_ano
+@basic_auth_required_check(config.config_use_ldap)
 def feed_series(book_id):
     off = request.args.get("offset") or 0
     entries, __, pagination = fill_indexpage((int(off) / (int(config.config_books_per_page)) + 1),
@@ -848,7 +886,7 @@ def feed_series(book_id):
 
 @app.route("/opds/shelfindex/", defaults={'public': 0})
 @app.route("/opds/shelfindex/<string:public>")
-@requires_basic_auth_if_no_ano
+@basic_auth_required_check(config.config_use_ldap)
 def feed_shelfindex(public):
     off = request.args.get("offset") or 0
     if public is not 0:
@@ -863,7 +901,7 @@ def feed_shelfindex(public):
 
 
 @app.route("/opds/shelf/<int:book_id>")
-@requires_basic_auth_if_no_ano
+@basic_auth_required_check(config.config_use_ldap)
 def feed_shelf(book_id):
     off = request.args.get("offset") or 0
     if current_user.is_anonymous:
@@ -887,7 +925,7 @@ def feed_shelf(book_id):
 
 
 @app.route("/opds/download/<book_id>/<book_format>/")
-@requires_basic_auth_if_no_ano
+@basic_auth_required_check(config.config_use_ldap)
 @download_required
 def get_opds_download_link(book_id, book_format):
     book_format = book_format.split(".")[0]
@@ -911,7 +949,7 @@ def get_opds_download_link(book_id, book_format):
 
 
 @app.route("/ajax/book/<string:uuid>")
-@requires_basic_auth_if_no_ano
+@basic_auth_required_check(config.config_use_ldap)
 def get_metadata_calibre_companion(uuid):
     entry = db.session.query(db.Books).filter(db.Books.uuid.like("%" + uuid + "%")).first()
     if entry is not None:
@@ -2157,7 +2195,7 @@ def serve_book(book_id, book_format):
 @app.route("/opds/cover_240_240/<path:book_id>")
 @app.route("/opds/cover_90_90/<path:book_id>")
 @app.route("/opds/cover/<path:book_id>")
-@requires_basic_auth_if_no_ano
+@basic_auth_required_check(config.config_use_ldap)
 def feed_get_cover(book_id):
     book = db.session.query(db.Books).filter(db.Books.id == book_id).first()
     return helper.get_book_cover(book.path)
@@ -2360,20 +2398,22 @@ def login():
         return redirect(url_for('basic_configuration'))
     if current_user is not None and current_user.is_authenticated:
         return redirect(url_for('index'))
+    if config.config_use_ldap and not ldap_support:
+        flash(_(u"Cannot activate LDAP authentication"), category="error")
     if request.method == "POST":
         form = request.form.to_dict()
         user = ub.session.query(ub.User).filter(func.lower(ub.User.nickname) == form['username'].strip().lower()).first()
-        if config.config_use_ldap and user:
-            import ldap
+        if ldap_support and config.config_use_ldap and user:
             try:
-                ub.User.try_login(form['username'], form['password'])
-                login_user(user, remember=True)
-                flash(_(u"you are now logged in as: '%(nickname)s'", nickname=user.nickname), category="success")
-                return redirect_back(url_for("index"))
-            except ldap.INVALID_CREDENTIALS:
-                ipAdress = request.headers.get('X-Forwarded-For', request.remote_addr)
-                app.logger.info('LDAP Login failed for user "' + form['username'] + '" IP-adress: ' + ipAdress)
-                flash(_(u"Wrong Username or Password"), category="error")
+              if ldap.bind_user(form['username'], form['password']) is not None:
+                   login_user(user, remember=True)
+                   flash(_(u"you are now logged in as: '%(nickname)s'", nickname=user.nickname), category="success")
+                   return redirect_back(url_for("index"))
+            except LDAPException as exception:
+               app.logger.error( 'Login Error: ' + str(exception))
+               ipAdress = request.headers.get('X-Forwarded-For', request.remote_addr)
+               app.logger.info('LDAP Login failed for user "' + form['username'] + ', IP-address :' + ipAdress)
+               flash(_(u"Wrong Username or Password"), category="error")
         elif user and check_password_hash(user.password, form['password']) and user.nickname is not "Guest":
             login_user(user, remember=True)
             flash(_(u"you are now logged in as: '%(nickname)s'", nickname=user.nickname), category="success")
@@ -3099,11 +3139,19 @@ def configuration_helper(origin):
         if "config_ebookconverter" in to_save:
             content.config_ebookconverter = int(to_save["config_ebookconverter"])
 
-        #LDAP configuratop,
+        #LDAP configuration,
+        content.config_use_ldap = 0
         if "config_use_ldap" in to_save and to_save["config_use_ldap"] == "on":
-            if not "config_ldap_provider_url" in to_save or not "config_ldap_dn" in to_save:
+            if not to_save["config_ldap_provider_url"] or not to_save["config_ldap_port"] or not to_save["config_ldap_dn"] or not to_save["config_ldap_user_object"]:
                 ub.session.commit()
-                flash(_(u'Please enter a LDAP provider and a DN'), category="error")
+                flash(_(u'Please enter a LDAP provider, port, DN and user object identifier'), category="error")
+                return render_title_template("config_edit.html", content=config, origin=origin,
+                                             gdrive=gdriveutils.gdrive_support, gdriveError=gdriveError,
+                                             goodreads=goodreads_support, title=_(u"Basic Configuration"),
+                                             page="config")
+            elif not to_save["config_ldap_serv_username"] or not to_save["config_ldap_serv_password"]:
+                ub.session.commit()
+                flash(_(u'Please enter a LDAP service account and password'), category="error")
                 return render_title_template("config_edit.html", content=config, origin=origin,
                                              gdrive=gdriveutils.gdrive_support, gdriveError=gdriveError,
                                              goodreads=goodreads_support, title=_(u"Basic Configuration"),
@@ -3111,8 +3159,36 @@ def configuration_helper(origin):
             else:
                 content.config_use_ldap = 1
                 content.config_ldap_provider_url = to_save["config_ldap_provider_url"]
+                content.config_ldap_port = to_save["config_ldap_port"]
+                content.config_ldap_schema = to_save["config_ldap_schema"]
+                content.config_ldap_serv_username = to_save["config_ldap_serv_username"]
+                content.config_ldap_serv_password = base64.b64encode(to_save["config_ldap_serv_password"])
                 content.config_ldap_dn = to_save["config_ldap_dn"]
-                db_change = True
+                content.config_ldap_user_object = to_save["config_ldap_user_object"]
+                reboot_required = True
+        content.config_ldap_use_ssl = 0
+        content.config_ldap_use_tls = 0
+        content.config_ldap_require_cert = 0
+        content.config_ldap_openldap = 0
+        if "config_ldap_use_ssl" in to_save and to_save["config_ldap_use_ssl"] == "on":
+            content.config_ldap_use_ssl = 1
+        if "config_ldap_use_tls" in to_save and to_save["config_ldap_use_tls"] == "on":
+            content.config_ldap_use_tls = 1
+        if "config_ldap_require_cert" in to_save and to_save["config_ldap_require_cert"] == "on":
+            content.config_ldap_require_cert = 1
+        if "config_ldap_openldap" in to_save and to_save["config_ldap_openldap"] == "on":
+            content.config_ldap_openldap = 1
+        if "config_ldap_cert_path " in to_save:
+            if content.config_ldap_cert_path  != to_save["config_ldap_cert_path "]:
+                if os.path.isfile(to_save["config_ldap_cert_path "]) or to_save["config_ldap_cert_path "] is u"":
+                    content.config_certfile = to_save["config_ldap_cert_path "]
+                else:
+                    ub.session.commit()
+                    flash(_(u'Certfile location is not valid, please enter correct path'), category="error")
+                    return render_title_template("config_edit.html", content=config, origin=origin,
+                                        gdrive=gdriveutils.gdrive_support, gdriveError=gdriveError,
+                                        goodreads=goodreads_support, title=_(u"Basic Configuration"),
+                                        page="config")
 
         # Remote login configuration
         content.config_remote_login = ("config_remote_login" in to_save and to_save["config_remote_login"] == "on")
