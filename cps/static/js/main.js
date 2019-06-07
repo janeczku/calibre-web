@@ -1,3 +1,20 @@
+/* This file is part of the Calibre-Web (https://github.com/janeczku/calibre-web)
+ *    Copyright (C) 2012-2019  mutschler, janeczku, jkrehm, OzzieIsaacs
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+
 // Generic control/related handler to show/hide fields based on a checkbox' value
 // e.g.
 //  <input type="checkbox" data-control="stuff-to-show">
@@ -60,25 +77,20 @@ $(function() {
         layoutMode : "fitRows"
     });
 
-    $(".load-more .row").infinitescroll({
+    var $loadMore = $(".load-more .row").infiniteScroll({
         debug: false,
-        navSelector  : ".pagination",
         // selector for the paged navigation (it will be hidden)
-        nextSelector : ".pagination a:last",
+        path : ".next",
         // selector for the NEXT link (to page 2)
-        itemSelector : ".load-more .book",
-        animate      : true,
-        extraScrollPx: 300
-        // selector for all items you'll retrieve
-    }, function(data) {
+        append : ".load-more .book"
+        //animate      : true, # ToDo: Reenable function
+        //extraScrollPx: 300
+    });
+    $loadMore.on( "append.infiniteScroll", function( event, response, path, data ) {
+        $(".pagination").addClass("hidden");
         $(".load-more .row").isotope( "appended", $(data), null );
     });
 
-    $("#sendbtn").click(function() {
-        var $this = $(this);
-        $this.text("Please wait...");
-        $this.addClass("disabled");
-    });
     $("#restart").click(function() {
         $.ajax({
             dataType: "json",
@@ -105,7 +117,7 @@ $(function() {
         var buttonText = $this.html();
         $this.html("...");
         $("#update_error").addClass("hidden");
-        if ($("#message").length){
+        if ($("#message").length) {
             $("#message").alert("close");
         }
         $.ajax({
@@ -125,7 +137,7 @@ $(function() {
                             .removeClass("hidden")
                             .find("span").html(data.commit);
 
-                        data.history.reverse().forEach(function(entry) {
+                        data.history.forEach(function(entry) {
                             $("<tr><td>" + entry[0] + "</td><td>" + entry[1] + "</td></tr>").appendTo($("#update_table"));
                         });
                         cssClass = "alert-warning";
@@ -167,6 +179,7 @@ $(function() {
         });
     });
 
+    // Init all data control handlers to default
     $("input[data-control]").trigger("change");
 
     $("#bookDetailsModal")
@@ -190,6 +203,14 @@ $(function() {
         });
 
     $(window).resize(function() {
-        $(".discover .row").isotope("reLayout");
+        $(".discover .row").isotope("layout");
     });
+	
+    $(".author-expand").click(function() {
+        $(this).parent().find("a.author-name").slice($(this).data("authors-max")).toggle();
+        $(this).parent().find("span.author-hidden-divider").toggle();
+        $(this).html() === $(this).data("collapse-caption") ? $(this).html("(...)") : $(this).html($(this).data("collapse-caption"));
+        $(".discover .row").isotope("layout");
+    });
+	
 });

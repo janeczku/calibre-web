@@ -1,6 +1,26 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+#  This file is part of the Calibre-Web (https://github.com/janeczku/calibre-web)
+#    Copyright (C) 2018-2019 OzzieIsaacs, cervinko, jkrehm, bodybybuddha, ok11,
+#                            andy29485, idalin, Kyosfonica, wuqi, Kennyl, lemmsh,
+#                            falgh1, grunjol, csitko, ytils, xybydy, trasba, vrabe,
+#                            ruben-herold, marblepebble, JackED42, SiphonSquirrel,
+#                            apetresc, nanu-c, mutschler
+#
+#  This program is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License as published by
+#  the Free Software Foundation, either version 3 of the License, or
+#  (at your option) any later version.
+#
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU General Public License for more details.
+#
+#  You should have received a copy of the GNU General Public License
+#  along with this program. If not, see <http://www.gnu.org/licenses/>.
+
 import mimetypes
 import logging
 from logging.handlers import RotatingFileHandler
@@ -41,8 +61,7 @@ import base64
 from sqlalchemy.sql import *
 import json
 import datetime
-from iso639 import languages as isoLanguages
-from iso639 import __version__ as iso639Version
+import isoLanguages
 from pytz import __version__ as pytzVersion
 from uuid import uuid4
 import os.path
@@ -57,7 +76,9 @@ from redirect import redirect_back
 import time
 import server
 from reverseproxy import ReverseProxied
-from __builtin__ import True
+from updater import updater_thread
+import hashlib
+import unidecode
 
 try:
     from googleapiclient.errors import HttpError
@@ -91,7 +112,7 @@ try:
     from natsort import natsorted as sort
 except ImportError:
     sort=sorted # Just use regular sort then
-                #   may cause issues with badly named pages in cbz/cbr files
+                # may cause issues with badly named pages in cbz/cbr files
 try:
     import cPickle
 except ImportError:
@@ -117,6 +138,9 @@ except ImportError:
 # Global variables
 current_milli_time = lambda: int(round(time.time() * 1000))
 gdrive_watch_callback_token = 'target=calibreweb-watch_files'
+# ToDo: Somehow caused by circular import under python3 refactor
+py3_gevent_link = None
+py3_restart_Typ = False
 EXTENSIONS_UPLOAD = {'txt', 'pdf', 'epub', 'mobi', 'azw', 'azw3', 'cbr', 'cbz', 'cbt', 'djvu', 'prc', 'doc', 'docx',
                       'fb2', 'html', 'rtf', 'odt'}
 EXTENSIONS_CONVERT = {'pdf', 'epub', 'mobi', 'azw3', 'docx', 'rtf', 'fb2', 'lit', 'lrf', 'txt', 'htmlz'}
@@ -206,10 +230,14 @@ if ldap_support and config.config_use_ldap:
 elif config.config_use_ldap and not ldap_support:
     app.logger.error('Cannot activate ldap support, did you run \'pip install --target vendor -r optional-requirements-ldap.txt\'?')
 
-
-with open(os.path.join(config.get_main_dir, 'cps/translations/iso639.pickle'), 'rb') as f:
-    language_table = cPickle.load(f)
-
+try:
+    with open(os.path.join(config.get_main_dir, 'cps/translations/iso639.pickle'), 'rb') as f:
+        language_table = cPickle.load(f)
+except cPickle.UnpicklingError as error:
+    app.logger.error("Can't read file cps/translations/iso639.pickle: %s", error)
+    print("Can't read file cps/translations/iso639.pickle: %s" % error)
+    helper.global_WorkerThread.stop()
+    sys.exit(1)
 
 def is_gdrive_ready():
     return os.path.exists(os.path.join(config.get_main_dir, 'settings.yaml')) and \
@@ -253,7 +281,7 @@ def load_user_from_header(header_val):
         header_val = header_val.replace('Basic ', '', 1)
     basic_username = basic_password = ''
     try:
-        header_val = base64.b64decode(header_val)
+        header_val = base64.b64decode(header_val).decode('utf-8')
         basic_username = header_val.split(':')[0]
         basic_password = header_val.split(':')[1]
     except TypeError:
@@ -265,7 +293,9 @@ def load_user_from_header(header_val):
 
 
 def check_auth(username, password):
-    user = ub.session.query(ub.User).filter(func.lower(ub.User.nickname) == username.lower()).first()
+    if sys.version_info.major == 3:
+        username=username.encode('windows-1252')
+    user = ub.session.query(ub.User).filter(func.lower(ub.User.nickname) == username.decode('utf-8').lower()).first()
     return bool(user and check_password_hash(user.password, password))
 
 
@@ -413,9 +443,14 @@ def mimetype_filter(val):
 
 @app.template_filter('formatdate')
 def formatdate_filter(val):
-    conformed_timestamp = re.sub(r"[:]|([-](?!((\d{2}[:]\d{2})|(\d{4}))$))", '', val)
-    formatdate = datetime.datetime.strptime(conformed_timestamp[:15], "%Y%m%d %H%M%S")
-    return format_date(formatdate, format='medium', locale=get_locale())
+    try:
+        conformed_timestamp = re.sub(r"[:]|([-](?!((\d{2}[:]\d{2})|(\d{4}))$))", '', val)
+        formatdate = datetime.datetime.strptime(conformed_timestamp[:15], "%Y%m%d %H%M%S")
+        return format_date(formatdate, format='medium', locale=get_locale())
+    except AttributeError as e:
+        app.logger.error('Babel error: %s, Current user locale: %s, Current User: %s' % (e, current_user.locale, current_user.nickname))
+        return formatdate
+
 
 
 @app.template_filter('formatdateinput')
@@ -482,7 +517,7 @@ def unconfigured(f):
 def download_required(f):
     @wraps(f)
     def inner(*args, **kwargs):
-        if current_user.role_download() or current_user.role_admin():
+        if current_user.role_download():
             return f(*args, **kwargs)
         abort(403)
 
@@ -674,19 +709,21 @@ def modify_database_object(input_elements, db_book_object, db_object, db_session
 
 # read search results from calibre-database and return it (function is used for feed and simple search
 def get_search_results(term):
+    db.session.connection().connection.connection.create_function("lower", 1, db.lcase)
     q = list()
     authorterms = re.split("[, ]+", term)
     for authorterm in authorterms:
-        q.append(db.Books.authors.any(db.Authors.name.ilike("%" + authorterm + "%")))
-    db.session.connection().connection.connection.create_function("lower", 1, db.lcase)
-    db.Books.authors.any(db.Authors.name.ilike("%" + term + "%"))
+        q.append(db.Books.authors.any(db.func.lower(db.Authors.name).ilike("%" + authorterm + "%")))
+
+    db.Books.authors.any(db.func.lower(db.Authors.name).ilike("%" + term + "%"))
 
     return db.session.query(db.Books).filter(common_filters()).filter(
-        db.or_(db.Books.tags.any(db.Tags.name.ilike("%" + term + "%")),
-               db.Books.series.any(db.Series.name.ilike("%" + term + "%")),
+        db.or_(db.Books.tags.any(db.func.lower(db.Tags.name).ilike("%" + term + "%")),
+               db.Books.series.any(db.func.lower(db.Series.name).ilike("%" + term + "%")),
                db.Books.authors.any(and_(*q)),
-               db.Books.publishers.any(db.Publishers.name.ilike("%" + term + "%")),
-               db.Books.title.ilike("%" + term + "%"))).all()
+               db.Books.publishers.any(db.func.lower(db.Publishers.name).ilike("%" + term + "%")),
+               db.func.lower(db.Books.title).ilike("%" + term + "%")
+               )).all()
 
 
 def feed_search(term):
@@ -703,7 +740,7 @@ def feed_search(term):
 def render_xml_template(*args, **kwargs):
     #ToDo: return time in current timezone similar to %z
     currtime = datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%S+00:00")
-    xml = render_template(current_time=currtime, *args, **kwargs)
+    xml = render_template(current_time=currtime, instance=config.config_calibre_web_title, *args, **kwargs)
     response = make_response(xml)
     response.headers["Content-Type"] = "application/atom+xml; charset=utf-8"
     return response
@@ -711,7 +748,7 @@ def render_xml_template(*args, **kwargs):
 
 # Returns the template for redering and includes the instance name
 def render_title_template(*args, **kwargs):
-    return render_template(instance=config.config_calibre_web_title, *args, **kwargs)
+    return render_template(instance=config.config_calibre_web_title, accept=EXTENSIONS_UPLOAD, *args, **kwargs)
 
 
 @app.before_request
@@ -720,6 +757,7 @@ def before_request():
     g.allow_registration = config.config_public_reg
     g.allow_upload = config.config_uploading
     g.current_theme = config.config_theme
+    g.config_authors_max = config.config_authors_max
     g.public_shelfes = ub.session.query(ub.Shelf).filter(ub.Shelf.is_public == 1).order_by(ub.Shelf.name).all()
     if not config.db_configured and request.endpoint not in ('basic_configuration', 'login') and '/static/' not in request.path:
         return redirect(url_for('basic_configuration'))
@@ -727,6 +765,7 @@ def before_request():
 
 # Routing functions
 
+@app.route("/opds/")
 @app.route("/opds")
 @basic_auth_required_check(config.config_use_ldap)
 def feed_index():
@@ -739,6 +778,7 @@ def feed_osd():
     return render_xml_template('osd.xml', lang='en-EN')
 
 
+@app.route("/opds/search/", defaults={'query': ""})
 @app.route("/opds/search/<query>")
 @basic_auth_required_check(config.config_use_ldap)
 def feed_cc_search(query):
@@ -808,7 +848,7 @@ def feed_hot():
 def feed_authorindex():
     off = request.args.get("offset") or 0
     entries = db.session.query(db.Authors).join(db.books_authors_link).join(db.Books).filter(common_filters())\
-        .group_by('books_authors_link.author').order_by(db.Authors.sort).limit(config.config_books_per_page).offset(off)
+        .group_by(text('books_authors_link.author')).order_by(db.Authors.sort).limit(config.config_books_per_page).offset(off)
     pagination = Pagination((int(off) / (int(config.config_books_per_page)) + 1), config.config_books_per_page,
                             len(db.session.query(db.Authors).all()))
     return render_xml_template('feed.xml', listelements=entries, folder='feed_author', pagination=pagination)
@@ -828,7 +868,7 @@ def feed_author(book_id):
 def feed_publisherindex():
     off = request.args.get("offset") or 0
     entries = db.session.query(db.Publishers).join(db.books_publishers_link).join(db.Books).filter(common_filters())\
-        .group_by('books_publishers_link.publisher').order_by(db.Publishers.sort).limit(config.config_books_per_page).offset(off)
+        .group_by(text('books_publishers_link.publisher')).order_by(db.Publishers.sort).limit(config.config_books_per_page).offset(off)
     pagination = Pagination((int(off) / (int(config.config_books_per_page)) + 1), config.config_books_per_page,
                             len(db.session.query(db.Publishers).all()))
     return render_xml_template('feed.xml', listelements=entries, folder='feed_publisher', pagination=pagination)
@@ -849,7 +889,7 @@ def feed_publisher(book_id):
 def feed_categoryindex():
     off = request.args.get("offset") or 0
     entries = db.session.query(db.Tags).join(db.books_tags_link).join(db.Books).filter(common_filters())\
-        .group_by('books_tags_link.tag').order_by(db.Tags.name).offset(off).limit(config.config_books_per_page)
+        .group_by(text('books_tags_link.tag')).order_by(db.Tags.name).offset(off).limit(config.config_books_per_page)
     pagination = Pagination((int(off) / (int(config.config_books_per_page)) + 1), config.config_books_per_page,
                             len(db.session.query(db.Tags).all()))
     return render_xml_template('feed.xml', listelements=entries, folder='feed_category', pagination=pagination)
@@ -869,7 +909,7 @@ def feed_category(book_id):
 def feed_seriesindex():
     off = request.args.get("offset") or 0
     entries = db.session.query(db.Series).join(db.books_series_link).join(db.Books).filter(common_filters())\
-        .group_by('books_series_link.series').order_by(db.Series.sort).offset(off).all()
+        .group_by(text('books_series_link.series')).order_by(db.Series.sort).offset(off).all()
     pagination = Pagination((int(off) / (int(config.config_books_per_page)) + 1), config.config_books_per_page,
                             len(db.session.query(db.Series).all()))
     return render_xml_template('feed.xml', listelements=entries, folder='feed_series', pagination=pagination)
@@ -975,11 +1015,9 @@ def get_email_status_json():
 # example SELECT * FROM @TABLE WHERE  'abcdefg' LIKE Name;
 # from https://code.luasoftware.com/tutorials/flask/execute-raw-sql-in-flask-sqlalchemy/
 def check_valid_domain(domain_text):
-    # result = session.query(Notification).from_statement(text(sql)).params(id=5).all()
-    #ToDo: check possible SQL injection
     domain_text = domain_text.split('@',1)[-1].lower()
-    sql = "SELECT * FROM registration WHERE '%s' LIKE domain;" % domain_text
-    result = ub.session.query(ub.Registration).from_statement(text(sql)).all()
+    sql = "SELECT * FROM registration WHERE :domain LIKE domain;"
+    result = ub.session.query(ub.Registration).from_statement(text(sql)).params(domain=domain_text).all()
     return len(result)
 
 
@@ -1096,7 +1134,8 @@ def get_comic_book(book_id, book_format, page):
 def get_authors_json():
     if request.method == "GET":
         query = request.args.get('q')
-        entries = db.session.query(db.Authors).filter(db.Authors.name.ilike("%" + query + "%")).all()
+        db.session.connection().connection.connection.create_function("lower", 1, db.lcase)
+        entries = db.session.query(db.Authors).filter(db.func.lower(db.Authors.name).ilike("%" + query + "%")).all()
         json_dumps = json.dumps([dict(name=r.name.replace('|',',')) for r in entries])
         return json_dumps
 
@@ -1106,17 +1145,19 @@ def get_authors_json():
 def get_publishers_json():
     if request.method == "GET":
         query = request.args.get('q')
-        entries = db.session.query(db.Publishers).filter(db.Publishers.name.ilike("%" + query + "%")).all()
+        db.session.connection().connection.connection.create_function("lower", 1, db.lcase)
+        entries = db.session.query(db.Publishers).filter(db.func.lower(db.Publishers.name).ilike("%" + query + "%")).all()
         json_dumps = json.dumps([dict(name=r.name.replace('|',',')) for r in entries])
         return json_dumps
 
-		
+
 @app.route("/get_tags_json", methods=['GET', 'POST'])
 @login_required_if_no_ano
 def get_tags_json():
     if request.method == "GET":
         query = request.args.get('q')
-        entries = db.session.query(db.Tags).filter(db.Tags.name.ilike("%" + query + "%")).all()
+        db.session.connection().connection.connection.create_function("lower", 1, db.lcase)
+        entries = db.session.query(db.Tags).filter(db.func.lower(db.Tags.name).ilike("%" + query + "%")).all()
         json_dumps = json.dumps([dict(name=r.name) for r in entries])
         return json_dumps
 
@@ -1142,7 +1183,8 @@ def get_languages_json():
 def get_series_json():
     if request.method == "GET":
         query = request.args.get('q')
-        entries = db.session.query(db.Series).filter(db.Series.name.ilike("%" + query + "%")).all()
+        db.session.connection().connection.connection.create_function("lower", 1, db.lcase)
+        entries = db.session.query(db.Series).filter(db.func.lower(db.Series.name).ilike("%" + query + "%")).all()
         # entries = db.session.execute("select name from series where name like '%" + query + "%'")
         json_dumps = json.dumps([dict(name=r.name) for r in entries])
         return json_dumps
@@ -1154,12 +1196,13 @@ def get_matching_tags():
     tag_dict = {'tags': []}
     if request.method == "GET":
         q = db.session.query(db.Books)
+        db.session.connection().connection.connection.create_function("lower", 1, db.lcase)
         author_input = request.args.get('author_name')
         title_input = request.args.get('book_title')
         include_tag_inputs = request.args.getlist('include_tag')
         exclude_tag_inputs = request.args.getlist('exclude_tag')
-        q = q.filter(db.Books.authors.any(db.Authors.name.ilike("%" + author_input + "%")),
-                     db.Books.title.ilike("%" + title_input + "%"))
+        q = q.filter(db.Books.authors.any(db.func.lower(db.Authors.name).ilike("%" + author_input + "%")),
+                     db.func.lower(db.Books.title).ilike("%" + title_input + "%"))
         if len(include_tag_inputs) > 0:
             for tag in include_tag_inputs:
                 q = q.filter(db.Books.tags.any(db.Tags.id == tag))
@@ -1177,127 +1220,7 @@ def get_matching_tags():
 @app.route("/get_update_status", methods=['GET'])
 @login_required_if_no_ano
 def get_update_status():
-    status = {
-        'update': False,
-        'success': False,
-        'message': '',
-        'current_commit_hash': ''
-    }
-    parents = []
-
-    repository_url = 'https://api.github.com/repos/janeczku/calibre-web'
-    tz = datetime.timedelta(seconds=time.timezone if (time.localtime().tm_isdst == 0) else time.altzone)
-
-    if request.method == "GET":
-        version = helper.get_current_version_info()
-        if version is False:
-            status['current_commit_hash'] = _(u'Unknown')
-        else:
-            status['current_commit_hash'] = version['hash']
-
-        try:
-            r = requests.get(repository_url + '/git/refs/heads/master')
-            r.raise_for_status()
-            commit = r.json()
-        except requests.exceptions.HTTPError as e:
-            status['message'] = _(u'HTTP Error') + ' ' + str(e)
-        except requests.exceptions.ConnectionError:
-            status['message'] = _(u'Connection error')
-        except requests.exceptions.Timeout:
-            status['message'] = _(u'Timeout while establishing connection')
-        except requests.exceptions.RequestException:
-            status['message'] = _(u'General error')
-
-        if status['message'] != '':
-            return json.dumps(status)
-
-        if 'object' not in commit:
-            status['message'] = _(u'Unexpected data while reading update information')
-            return json.dumps(status)
-
-        if commit['object']['sha'] == status['current_commit_hash']:
-            status.update({
-                'update': False,
-                'success': True,
-                'message': _(u'No update available. You already have the latest version installed')
-            })
-            return json.dumps(status)
-
-        # a new update is available
-        status['update'] = True
-
-        try:
-            r = requests.get(repository_url + '/git/commits/' + commit['object']['sha'])
-            r.raise_for_status()
-            update_data = r.json()
-        except requests.exceptions.HTTPError as ex:
-            status['error'] = _(u'HTTP Error') + ' ' + str(ex)
-        except requests.exceptions.ConnectionError:
-            status['error'] = _(u'Connection error')
-        except requests.exceptions.Timeout:
-            status['error'] = _(u'Timeout while establishing connection')
-        except requests.exceptions.RequestException:
-            status['error'] = _(u'General error')
-
-        if status['message'] != '':
-            return json.dumps(status)
-
-        if 'committer' in update_data and 'message' in update_data:
-            status['success'] = True
-            status['message'] = _(u'A new update is available. Click on the button below to update to the latest version.')
-
-            new_commit_date = datetime.datetime.strptime(
-                update_data['committer']['date'], '%Y-%m-%dT%H:%M:%SZ') - tz
-            parents.append(
-                [
-                    format_datetime(new_commit_date, format='short', locale=get_locale()),
-                    update_data['message'],
-                    update_data['sha']
-                ]
-            )
-
-            # it only makes sense to analyze the parents if we know the current commit hash
-            if status['current_commit_hash'] != '':
-                try:
-                    parent_commit = update_data['parents'][0]
-                    # limit the maximum search depth
-                    remaining_parents_cnt = 10
-                except IndexError:
-                    remaining_parents_cnt = None
-
-                if remaining_parents_cnt is not None:
-                    while True:
-                        if remaining_parents_cnt == 0:
-                            break
-
-                        # check if we are more than one update behind if so, go up the tree
-                        if parent_commit['sha'] != status['current_commit_hash']:
-                            try:
-                                r = requests.get(parent_commit['url'])
-                                r.raise_for_status()
-                                parent_data = r.json()
-
-                                parent_commit_date = datetime.datetime.strptime(
-                                    parent_data['committer']['date'], '%Y-%m-%dT%H:%M:%SZ') - tz
-                                parent_commit_date = format_datetime(
-                                    parent_commit_date, format='short', locale=get_locale())
-
-                                parents.append([parent_commit_date, parent_data['message'], parent_data['sha']])
-                                parent_commit = parent_data['parents'][0]
-                                remaining_parents_cnt -= 1
-                            except Exception:
-                                # it isn't crucial if we can't get information about the parent
-                                break
-                        else:
-                            # parent is our current version
-                            break
-
-        else:
-            status['success'] = False
-            status['message'] = _(u'Could not fetch update information')
-
-    status['history'] = parents
-    return json.dumps(status)
+    return updater_thread.get_available_updates(request.method)
 
 
 @app.route("/get_updater_status", methods=['GET', 'POST'])
@@ -1322,12 +1245,15 @@ def get_updater_status():
                 "11": _(u'Update failed:') + u' ' + _(u'General error')
             }
             status['text'] = text
-            helper.updater_thread = helper.Updater()
-            helper.updater_thread.start()
-            status['status'] = helper.updater_thread.get_update_status()
+            # helper.updater_thread = helper.Updater()
+            updater_thread.status = 0
+            updater_thread.start()
+            status['status'] = updater_thread.get_update_status()
     elif request.method == "GET":
         try:
-            status['status'] = helper.updater_thread.get_update_status()
+            status['status'] = updater_thread.get_update_status()
+            if status['status']  == -1:
+                status['status'] = 7
         except AttributeError:
             # thread is not active, occours after restart on update
             status['status'] = 7
@@ -1342,7 +1268,7 @@ def get_updater_status():
 def index(page):
     entries, random, pagination = fill_indexpage(page, db.Books, True, [db.Books.timestamp.desc()])
     return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
-                                 title=_(u"Recently Added Books"), page="root")
+                                 title=_(u"Recently Added Books"), page="root", config_authors_max=config.config_authors_max)
 
 
 @app.route('/books/newest', defaults={'page': 1})
@@ -1453,7 +1379,7 @@ def author_list():
     if current_user.show_author():
         entries = db.session.query(db.Authors, func.count('books_authors_link.book').label('count'))\
             .join(db.books_authors_link).join(db.Books).filter(common_filters())\
-            .group_by('books_authors_link.author').order_by(db.Authors.sort).all()
+            .group_by(text('books_authors_link.author')).order_by(db.Authors.sort).all()
         for entry in entries:
             entry.Authors.name = entry.Authors.name.replace('|', ',')
         return render_title_template('list.html', entries=entries, folder='author',
@@ -1463,7 +1389,7 @@ def author_list():
 
 
 @app.route("/author/<int:book_id>", defaults={'page': 1})
-@app.route("/author/<int:book_id>/<int:page>'")
+@app.route("/author/<int:book_id>/<int:page>")
 @login_required_if_no_ano
 def author(book_id, page):
     entries, __, pagination = fill_indexpage(page, db.Books, db.Books.authors.any(db.Authors.id == book_id),
@@ -1486,7 +1412,8 @@ def author(book_id, page):
             app.logger.error('Goodreads website is down/inaccessible')
 
     return render_title_template('author.html', entries=entries, pagination=pagination,
-                                 title=name, author=author_info, other_books=other_books, page="author")
+                                 title=name, author=author_info, other_books=other_books, page="author",
+                                 config_authors_max=config.config_authors_max)
 
 
 @app.route("/publisher")
@@ -1495,7 +1422,7 @@ def publisher_list():
     if current_user.show_publisher():
         entries = db.session.query(db.Publishers, func.count('books_publishers_link.book').label('count'))\
             .join(db.books_publishers_link).join(db.Books).filter(common_filters())\
-            .group_by('books_publishers_link.publisher').order_by(db.Publishers.sort).all()
+            .group_by(text('books_publishers_link.publisher')).order_by(db.Publishers.sort).all()
         return render_title_template('list.html', entries=entries, folder='publisher',
                                      title=_(u"Publisher list"), page="publisherlist")
     else:
@@ -1542,7 +1469,7 @@ def series_list():
     if current_user.show_series():
         entries = db.session.query(db.Series, func.count('books_series_link.book').label('count'))\
             .join(db.books_series_link).join(db.Books).filter(common_filters())\
-            .group_by('books_series_link.series').order_by(db.Series.sort).all()
+            .group_by(text('books_series_link.series')).order_by(db.Series.sort).all()
         return render_title_template('list.html', entries=entries, folder='series',
                                      title=_(u"Series list"), page="serieslist")
     else:
@@ -1582,7 +1509,7 @@ def language_overview():
                 languages[0].name = _(isoLanguages.get(part3=languages[0].lang_code).name)
         lang_counter = db.session.query(db.books_languages_link,
                                         func.count('books_languages_link.book').label('bookcount')).group_by(
-            'books_languages_link.lang_code').all()
+            text('books_languages_link.lang_code')).all()
         return render_title_template('languages.html', languages=languages, lang_counter=lang_counter,
                                      title=_(u"Available languages"), page="langlist")
     else:
@@ -1613,7 +1540,7 @@ def category_list():
     if current_user.show_category():
         entries = db.session.query(db.Tags, func.count('books_tags_link.book').label('count'))\
             .join(db.books_tags_link).join(db.Books).order_by(db.Tags.name).filter(common_filters())\
-            .group_by('books_tags_link.tag').all()
+            .group_by(text('books_tags_link.tag')).all()
         return render_title_template('list.html', entries=entries, folder='category',
                                      title=_(u"Category list"), page="catlist")
     else:
@@ -1752,14 +1679,8 @@ def bookmark(book_id, book_format):
 @login_required
 def get_tasks_status():
     # if current user admin, show all email, otherwise only own emails
-    answer=list()
-    # UIanswer=list()
     tasks=helper.global_WorkerThread.get_taskstatus()
-        # answer = tasks
-
-    # UIanswer = copy.deepcopy(answer)
     answer = helper.render_task_status(tasks)
-    # foreach row format row
     return render_title_template('tasks.html', entries=answer, title=_(u"Tasks"), page="tasks")
 
 
@@ -1784,7 +1705,7 @@ def stats():
     versions['Flask'] = 'v' + flaskVersion
     versions['Flask Login'] = 'v' + flask_loginVersion
     versions['Flask Principal'] = 'v' + flask_principalVersion
-    versions['Iso 639'] = 'v' + iso639Version
+    versions['Iso 639'] = 'v' + isoLanguages.__version__
     versions['pytz'] = 'v' + pytzVersion
 
     versions['Requests'] = 'v' + requests.__version__
@@ -1859,7 +1780,12 @@ def delete_book(book_id, book_format):
 @login_required
 @admin_required
 def authenticate_google_drive():
-    authUrl = gdriveutils.Gauth.Instance().auth.GetAuthUrl()
+    try:
+        authUrl = gdriveutils.Gauth.Instance().auth.GetAuthUrl()
+    except gdriveutils.InvalidConfigError:
+        flash(_(u'Google Drive setup not completed, try to deactivate and activate Google Drive again'),
+              category="error")
+        return redirect(url_for('index'))
     return redirect(authUrl)
 
 
@@ -1947,7 +1873,7 @@ def on_received_watch_confirmation():
                 app.logger.debug(response)
                 if response:
                     dbpath = os.path.join(config.config_calibre_dir, "metadata.db")
-                    if not response['deleted'] and response['file']['title'] == 'metadata.db' and response['file']['md5Checksum'] != md5(dbpath):
+                    if not response['deleted'] and response['file']['title'] == 'metadata.db' and response['file']['md5Checksum'] != hashlib.md5(dbpath):
                         tmpDir = tempfile.gettempdir()
                         app.logger.info('Database file updated')
                         copyfile(dbpath, os.path.join(tmpDir, "metadata.db_" + str(current_milli_time())))
@@ -1995,15 +1921,6 @@ def shutdown():
         abort(404)
 
 
-@app.route("/update")
-@login_required
-@admin_required
-def update():
-    helper.updater_thread = helper.Updater()
-    flash(_(u"Update done"), category="info")
-    return abort(404)
-
-
 @app.route("/search", methods=["GET"])
 @login_required_if_no_ano
 def search():
@@ -2035,7 +1952,6 @@ def advanced_search():
 
     db.session.connection().connection.connection.create_function("lower", 1, db.lcase)
     q = db.session.query(db.Books)
-    # postargs = request.form.to_dict()
 
     include_tag_inputs = request.args.getlist('include_tag')
     exclude_tag_inputs = request.args.getlist('exclude_tag')
@@ -2101,15 +2017,15 @@ def advanced_search():
         searchterm = " + ".join(filter(None, searchterm))
         q = q.filter()
         if author_name:
-            q = q.filter(db.Books.authors.any(db.Authors.name.ilike("%" + author_name + "%")))
+            q = q.filter(db.Books.authors.any(db.func.lower(db.Authors.name).ilike("%" + author_name + "%")))
         if book_title:
-            q = q.filter(db.Books.title.ilike("%" + book_title + "%"))
+            q = q.filter(db.func.lower(db.Books.title).ilike("%" + book_title + "%"))
         if pub_start:
             q = q.filter(db.Books.pubdate >= pub_start)
         if pub_end:
             q = q.filter(db.Books.pubdate <= pub_end)
         if publisher:
-            q = q.filter(db.Books.publishers.any(db.Publishers.name.ilike("%" + publisher + "%")))
+            q = q.filter(db.Books.publishers.any(db.func.lower(db.Publishers.name).ilike("%" + publisher + "%")))
         for tag in include_tag_inputs:
             q = q.filter(db.Books.tags.any(db.Tags.id == tag))
         for tag in exclude_tag_inputs:
@@ -2132,14 +2048,13 @@ def advanced_search():
             rating_low = int(rating_low) *2
             q = q.filter(db.Books.ratings.any(db.Ratings.rating >= rating_low))
         if description:
-            q = q.filter(db.Books.comments.any(db.Comments.text.ilike("%" + description + "%")))
+            q = q.filter(db.Books.comments.any(db.func.lower(db.Comments.text).ilike("%" + description + "%")))
 
         # search custom culumns
         for c in cc:
             custom_query = request.args.get('custom_column_' + str(c.id))
             if custom_query:
                 if c.datatype == 'bool':
-                    getattr(db.Books, 'custom_column_1')
                     q = q.filter(getattr(db.Books, 'custom_column_'+str(c.id)).any(
                         db.cc_classes[c.id].value == (custom_query== "True") ))
                 elif c.datatype == 'int':
@@ -2147,7 +2062,7 @@ def advanced_search():
                         db.cc_classes[c.id].value == custom_query ))
                 else:
                     q = q.filter(getattr(db.Books, 'custom_column_'+str(c.id)).any(
-                        db.cc_classes[c.id].value.ilike("%" + custom_query + "%")))
+                        db.func.lower(db.cc_classes[c.id].value).ilike("%" + custom_query + "%")))
         q = q.all()
         ids = list()
         for element in q:
@@ -2166,10 +2081,11 @@ def advanced_search():
                                  series=series, title=_(u"search"), cc=cc, page="advsearch")
 
 
-@app.route("/cover/<path:cover_path>")
+@app.route("/cover/<int:book_id>")
 @login_required_if_no_ano
-def get_cover(cover_path):
-    return helper.get_book_cover(cover_path)
+def get_cover(book_id):
+    book = db.session.query(db.Books).filter(db.Books.id == book_id).first()
+    return helper.get_book_cover(book.path)
 
 
 @app.route("/show/<book_id>/<book_format>")
@@ -2191,6 +2107,7 @@ def serve_book(book_id, book_format):
         return send_from_directory(os.path.join(config.config_calibre_dir, book.path), data.name + "." + book_format)
 
 
+
 @app.route("/opds/thumb_240_240/<path:book_id>")
 @app.route("/opds/cover_240_240/<path:book_id>")
 @app.route("/opds/cover_90_90/<path:book_id>")
@@ -2198,7 +2115,10 @@ def serve_book(book_id, book_format):
 @basic_auth_required_check(config.config_use_ldap)
 def feed_get_cover(book_id):
     book = db.session.query(db.Books).filter(db.Books.id == book_id).first()
-    return helper.get_book_cover(book.path)
+    if book:
+        return helper.get_book_cover(book.path)
+    else:
+        abort(404)
 
 
 def render_read_books(page, are_read, as_xml=False):
@@ -2239,28 +2159,32 @@ def render_read_books(page, are_read, as_xml=False):
 
 
 @app.route("/opds/readbooks/")
-@login_required_if_no_ano
+@requires_basic_auth_if_no_ano
 def feed_read_books():
     off = request.args.get("offset") or 0
     return render_read_books(int(off) / (int(config.config_books_per_page)) + 1, True, True)
 
 
+@app.route("/favicon.ico")
+def favicon():
+    return send_from_directory(os.path.join(os.path.dirname(__file__), "static"), "favicon.ico")
+
 @app.route("/readbooks/", defaults={'page': 1})
-@app.route("/readbooks/<int:page>'")
+@app.route("/readbooks/<int:page>")
 @login_required_if_no_ano
 def read_books(page):
     return render_read_books(page, True)
 
 
 @app.route("/opds/unreadbooks/")
-@login_required_if_no_ano
+@requires_basic_auth_if_no_ano
 def feed_unread_books():
     off = request.args.get("offset") or 0
     return render_read_books(int(off) / (int(config.config_books_per_page)) + 1, False, True)
 
 
 @app.route("/unreadbooks/", defaults={'page': 1})
-@app.route("/unreadbooks/<int:page>'")
+@app.route("/unreadbooks/<int:page>")
 @login_required_if_no_ano
 def unread_books(page):
     return render_read_books(page, False)
@@ -2274,7 +2198,7 @@ def read_book(book_id, book_format):
         flash(_(u"Error opening eBook. File does not exist or file is not accessible:"), category="error")
         return redirect(url_for("index"))
 
-    # check if book was downloaded before
+    # check if book has bookmark
     lbookmark = None
     if current_user.is_authenticated:
         lbookmark = ub.session.query(ub.Bookmark).filter(ub.and_(ub.Bookmark.user_id == int(current_user.id),
@@ -2309,6 +2233,9 @@ def read_book(book_id, book_format):
                 extension=fileext, title=_(u"Read a Book"), book=book)
         flash(_(u"Error opening eBook. File does not exist or file is not accessible."), category="error")
         return redirect(url_for("index"))'''
+        flash(_(u"Error opening eBook. Fileformat is not supported."), category="error")
+        return redirect(url_for("index"))
+
 
 
 @app.route("/download/<int:book_id>/<book_format>")
@@ -2371,6 +2298,7 @@ def register():
                 content.password = generate_password_hash(password)
                 content.role = config.config_default_role
                 content.sidebar_view = config.config_default_show
+                content.mature_content = bool(config.config_default_show & ub.MATURE_CONTENT)
                 try:
                     ub.session.add(content)
                     ub.session.commit()
@@ -2912,20 +2840,23 @@ def profile():
 @login_required
 @admin_required
 def admin():
-    version = helper.get_current_version_info()
+    version = updater_thread.get_current_version_info()
     if version is False:
         commit = _(u'Unknown')
     else:
-        commit = version['datetime']
+        if 'datetime' in version:
+            commit = version['datetime']
 
-        tz = datetime.timedelta(seconds=time.timezone if (time.localtime().tm_isdst == 0) else time.altzone)
-        form_date = datetime.datetime.strptime(commit[:19], "%Y-%m-%dT%H:%M:%S")
-        if len(commit) > 19:    # check if string has timezone
-            if commit[19] == '+':
-                form_date -= datetime.timedelta(hours=int(commit[20:22]), minutes=int(commit[23:]))
-            elif commit[19] == '-':
-                form_date += datetime.timedelta(hours=int(commit[20:22]), minutes=int(commit[23:]))
-        commit = format_datetime(form_date - tz, format='short', locale=get_locale())
+            tz = datetime.timedelta(seconds=time.timezone if (time.localtime().tm_isdst == 0) else time.altzone)
+            form_date = datetime.datetime.strptime(commit[:19], "%Y-%m-%dT%H:%M:%S")
+            if len(commit) > 19:    # check if string has timezone
+                if commit[19] == '+':
+                    form_date -= datetime.timedelta(hours=int(commit[20:22]), minutes=int(commit[23:]))
+                elif commit[19] == '-':
+                    form_date += datetime.timedelta(hours=int(commit[20:22]), minutes=int(commit[23:]))
+            commit = format_datetime(form_date - tz, format='short', locale=get_locale())
+        else:
+            commit = version['version']
 
     content = ub.session.query(ub.User).all()
     settings = ub.session.query(ub.Settings).first()
@@ -2964,6 +2895,9 @@ def view_configuration():
             content.config_random_books = int(to_save["config_random_books"])
         if "config_books_per_page" in to_save:
             content.config_books_per_page = int(to_save["config_books_per_page"])
+        # maximum authors to show before we display a 'show more' link
+        if "config_authors_max" in to_save:
+            content.config_authors_max = int(to_save["config_authors_max"])
         # Mature Content configuration
         if "config_mature_content_tags" in to_save:
             content.config_mature_content_tags = to_save["config_mature_content_tags"].strip()
@@ -2982,7 +2916,7 @@ def view_configuration():
             content.config_default_role = content.config_default_role + ub.ROLE_DELETE_BOOKS
         if "passwd_role" in to_save:
             content.config_default_role = content.config_default_role + ub.ROLE_PASSWD
-        if "passwd_role" in to_save:
+        if "edit_shelf_role" in to_save:
             content.config_default_role = content.config_default_role + ub.ROLE_EDIT_SHELFS
         content.config_default_show = 0
         if "show_detail_random" in to_save:
@@ -3061,6 +2995,8 @@ def configuration_helper(origin):
                 content.config_calibre_dir = to_save["config_calibre_dir"]
                 db_change = True
         # Google drive setup
+        if not os.path.isfile(os.path.join(config.get_main_dir, 'settings.yaml')):
+            content.config_use_google_drive = False
         if "config_use_google_drive" in to_save and not content.config_use_google_drive and not gdriveError:
             if filedata:
                 if filedata['web']['redirect_uris'][0].endswith('/'):
@@ -3201,6 +3137,8 @@ def configuration_helper(origin):
             content.config_goodreads_api_key = to_save["config_goodreads_api_key"]
         if "config_goodreads_api_secret" in to_save:
             content.config_goodreads_api_secret = to_save["config_goodreads_api_secret"]
+        if "config_updater" in to_save:
+            content.config_updatechannel = int(to_save["config_updater"])
         if "config_log_level" in to_save:
             content.config_log_level = int(to_save["config_log_level"])
         if content.config_logfile != to_save["config_logfile"]:
@@ -3231,7 +3169,8 @@ def configuration_helper(origin):
                                              gdrive=gdriveutils.gdrive_support, goodreads=goodreads_support,
                                              rarfile_support=rar_support, title=_(u"Basic Configuration"))
         try:
-            if content.config_use_google_drive and is_gdrive_ready() and not os.path.exists(config.config_calibre_dir + "/metadata.db"):
+            if content.config_use_google_drive and is_gdrive_ready() and not \
+                    os.path.exists(os.path.join(content.config_calibre_dir, "metadata.db")):
                 gdriveutils.downloadFile(None, "metadata.db", config.config_calibre_dir + "/metadata.db")
             if db_change:
                 if config.db_configured:
@@ -3263,7 +3202,7 @@ def configuration_helper(origin):
             app.logger.info('Reboot required, restarting')
         if origin:
             success = True
-    if is_gdrive_ready() and gdriveutils.gdrive_support == True and config.config_use_google_drive == True:
+    if is_gdrive_ready() and gdriveutils.gdrive_support == True: # and config.config_use_google_drive == True:
         gdrivefolders=gdriveutils.listRootFolders()
     else:
         gdrivefolders=list()
@@ -3480,6 +3419,11 @@ def edit_user(user_id):
                 content.sidebar_view += ub.SIDEBAR_SORTED
             elif "show_sorted" not in to_save and content.show_sorted():
                 content.sidebar_view -= ub.SIDEBAR_SORTED
+
+            if "show_publisher" in to_save and not content.show_publisher():
+                content.sidebar_view += ub.SIDEBAR_PUBLISHER
+            elif "show_publisher" not in to_save and content.show_publisher():
+                content.sidebar_view -= ub.SIDEBAR_PUBLISHER
 
             if "show_hot" in to_save and not content.show_hot_books():
                 content.sidebar_view += ub.SIDEBAR_HOT
@@ -3717,33 +3661,19 @@ def upload_single_file(request, book, book_id):
             helper.global_WorkerThread.add_upload(current_user.nickname,
                 "<a href=\"" + url_for('show_book', book_id=book.id) + "\">" + uploadText + "</a>")
 
+
 def upload_cover(request, book):
     if 'btn-upload-cover' in request.files:
         requested_file = request.files['btn-upload-cover']
         # check for empty request
         if requested_file.filename != '':
-            file_ext = requested_file.filename.rsplit('.', 1)[-1].lower()
-            filepath = os.path.normpath(os.path.join(config.config_calibre_dir, book.path))
-            saved_filename = os.path.join(filepath,  'cover.' + file_ext)
-
-            # check if file path exists, otherwise create it, copy file to calibre path and delete temp file
-            if not os.path.exists(filepath):
-                try:
-                    os.makedirs(filepath)
-                except OSError:
-                    flash(_(u"Failed to create path for cover %(path)s (Permission denied).", cover=filepath),
-                          category="error")
-                    return redirect(url_for('show_book', book_id=book.id))
-            try:
-                requested_file.save(saved_filename)
-                # im=Image.open(saved_filename)
-                book.has_cover = 1
-            except OSError:
-                flash(_(u"Failed to store cover-file %(cover)s.", cover=saved_filename), category="error")
-                return redirect(url_for('show_book', book_id=book.id))
-            except IOError:
-                flash(_(u"Cover-file is not a valid image file" % saved_filename), category="error")
-                return redirect(url_for('show_book', book_id=book.id))
+            if helper.save_cover(requested_file, book.path) is True:
+                return True
+            else:
+                # ToDo Message not always coorect
+                flash(_(u"Cover is not a supported imageformat (jpg/png/webp), can't save"), category="error")
+                return False
+    return None
 
 @app.route("/admin/book/<int:book_id>", methods=['GET', 'POST'])
 @login_required_if_no_ano
@@ -3764,7 +3694,8 @@ def edit_book(book_id):
         return redirect(url_for("index"))
 
     upload_single_file(request, book, book_id)
-    upload_cover(request, book)
+    if upload_cover(request, book) is True:
+        book.has_cover = 1
     try:
         to_save = request.form.to_dict()
         # Update book
@@ -3810,10 +3741,10 @@ def edit_book(book_id):
 
         if not error:
             if to_save["cover_url"]:
-                if helper.save_cover(to_save["cover_url"], book.path) is True:
+                if helper.save_cover_from_url(to_save["cover_url"], book.path) is True:
                     book.has_cover = 1
                 else:
-                    flash(_(u"Cover is not a jpg file, can't save"), category="error")
+                    flash(_(u"Cover is not a supported imageformat (jpg/png/webp), can't save"), category="error")
 
             if book.series_index != to_save["series_index"]:
                 book.series_index = to_save["series_index"]
@@ -3921,13 +3852,10 @@ def upload():
             if '.' in requested_file.filename:
                 file_ext = requested_file.filename.rsplit('.', 1)[-1].lower()
                 if file_ext not in EXTENSIONS_UPLOAD:
-                    flash(
-                        _("File extension '%(ext)s' is not allowed to be uploaded to this server",
-                          ext=file_ext), category="error")
-                    return redirect(url_for('index'))
+                    return Response(_("File extension '%(ext)s' is not allowed to be uploaded to this server",
+                          ext=file_ext)), 422
             else:
-                flash(_('File to be uploaded must have an extension'), category="error")
-                return redirect(url_for('index'))
+                return Response(_('File to be uploaded must have an extension')), 422
 
             # extract metadata from file
             meta = uploader.upload(requested_file)
@@ -3946,18 +3874,16 @@ def upload():
                 try:
                     os.makedirs(filepath)
                 except OSError:
-                    flash(_(u"Failed to create path %(path)s (Permission denied).", path=filepath), category="error")
-                    return redirect(url_for('index'))
+                    return Response(_(u"Failed to create path %(path)s (Permission denied).", path=filepath)), 422
             try:
                 copyfile(meta.file_path, saved_filename)
             except OSError:
-                flash(_(u"Failed to store file %(file)s (Permission denied).", file=saved_filename), category="error")
-                return redirect(url_for('index'))
+                return Response(_(u"Failed to store file %(file)s (Permission denied).", file=saved_filename)), 422
+
             try:
                 os.unlink(meta.file_path)
             except OSError:
-                flash(_(u"Failed to delete file %(file)s (Permission denied).", file= meta.file_path),
-                      category="warning")
+                return Response(_(u"Failed to delete file %(file)s (Permission denied).", file= meta.file_path)), 422
 
             if meta.cover is None:
                 has_cover = 0
@@ -4039,7 +3965,7 @@ def upload():
                 gdriveutils.updateGdriveCalibreFromLocal()
             if error:
                 flash(error, category="error")
-            uploadText=(u"File %s" % book.title)
+            uploadText=_(u"File %(title)s", title=book.title)
             helper.global_WorkerThread.add_upload(current_user.nickname,
                 "<a href=\"" + url_for('show_book', book_id=book.id) + "\">" + uploadText + "</a>")
 
@@ -4050,19 +3976,13 @@ def upload():
             for author in db_book.authors:
                 author_names.append(author.name)
             if len(request.files.getlist("btn-upload")) < 2:
-                cc = db.session.query(db.Custom_Columns).filter(db.Custom_Columns.
-                                                                datatype.notin_(db.cc_exceptions)).all()
                 if current_user.role_edit() or current_user.role_admin():
-                    return render_title_template('book_edit.html', book=book, authors=author_names,
-                                                 cc=cc, title=_(u"edit metadata"), page="upload")
-                book_in_shelfs = []
-                kindle_list = helper.check_send_to_kindle(book)
-                reader_list = helper.check_read_formats(book)
-
-                return render_title_template('detail.html', entry=book, cc=cc,
-                                             title=book.title, books_shelfs=book_in_shelfs, kindle_list=kindle_list,
-                                             reader_list=reader_list, page="upload")
-    return redirect(url_for("index"))
+                    resp = {"location": url_for('edit_book', book_id=db_book.id)}
+                    return Response(json.dumps(resp), mimetype='application/json')
+                else:
+                    resp = {"location": url_for('show_book', book_id=db_book.id)}
+                    return Response(json.dumps(resp), mimetype='application/json')
+    return Response(json.dumps({"location": url_for("index")}), mimetype='application/json')
 
 
 @app.route("/admin/book/convert/<int:book_id>", methods=['POST'])
