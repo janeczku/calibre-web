@@ -1,0 +1,3 @@
+include cps/static/*
+include cps/templates/*
+include cps/translations/*

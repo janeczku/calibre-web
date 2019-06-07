@@ -5,7 +5,7 @@
     <div class="col-sm-3 col-lg-3 col-xs-5">
       <div class="cover">
         {% if entry.has_cover %}
-          <img src="{{ url_for('get_cover', cover_path=entry.path.replace('\\','/')) }}" alt="{{ entry.title }}" />
+          <img src="{{ url_for('get_cover', book_id=entry.id) }}" alt="{{ entry.title }}" />
         {% else %}
           <img src="{{ url_for('static', filename='generic_cover.jpg') }}" alt="{{ entry.title }}" />
         {% endif %}
@@ -18,7 +18,7 @@
             {% if entry.data|length %}
             <div class="btn-group" role="group">
                 {% if entry.data|length < 2 %}
-                  <button type="button" class="btn btn-primary">
+                  <button id="Download" type="button" class="btn btn-primary">
                     {{_('Download')}} :
                   </button>
                   {% for format in entry.data %}
@@ -40,9 +40,9 @@
             </div>
             {% endif %}
           {% endif %}
-            {% if g.user.kindle_mail and g.user.is_authenticated and kindle_list %}
+            {% if g.user.kindle_mail and kindle_list %}
               {% if kindle_list.__len__() == 1 %}
-                <a href="{{url_for('send_to_kindle', book_id=entry.id, book_format=kindle_list[0]['format'], convert=kindle_list[0]['convert'])}}" id="sendbtn" class="btn btn-primary" role="button"><span class="glyphicon glyphicon-send"></span> {{kindle_list[0]['text']}}</a>
+                <a href="{{url_for('send_to_kindle', book_id=entry.id, book_format=kindle_list[0]['format'], convert=kindle_list[0]['convert'])}}" id="sendbtn" data-text="{{_('Send to Kindle')}}" class="btn btn-primary" role="button"><span class="glyphicon glyphicon-send"></span> {{kindle_list[0]['text']}}</a>
               {% else %}
                 <div class="btn-group" role="group">
                   <button id="sendbtn2" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -103,7 +103,7 @@
       {% if entry.languages.__len__() > 0 %}
        <div class="languages">
        <p>
-      <span class="label label-default">{{_('language')}}: {% for language in entry.languages %} {{language.language_name}}{% if not loop.last %},{% endif %}{% endfor %} </span>
+      <span class="label label-default">{{_('language')}}: {% for language in entry.languages %}{{language.language_name}}{% if not loop.last %}, {% endif %}{% endfor %}</span>
       </p>
       </div>
       {% endif %}
@@ -150,9 +150,9 @@
       {% endif %}
       {% if cc|length > 0 %}
 
-        <div class="custom_columns">
-        <p>
+
         {% for c in cc %}
+        <div class="real_custom_columns">
           {% if entry['custom_column_' ~ c.id]|length > 0 %}
             {{ c.name }}:
             {% for column in entry['custom_column_' ~ c.id] %}
@@ -170,11 +170,9 @@
                 {% endif %}
               {% endif %}
             {% endfor %}
-            <br />
           {% endif %}
-        {% endfor %}
-        </p>
         </div>
+        {% endfor %}
       {% endif %}
       {% if not g.user.is_anonymous %}
 
@@ -182,7 +180,7 @@
           <p>
           <form id="have_read_form" action="{{ url_for('toggle_read', book_id=entry.id)}}" method="POST">
             <label class="block-label">
-              <input id="have_read_cb" type="checkbox" {% if have_read %}checked{% endif %} >
+              <input id="have_read_cb" data-checked="{{_('Mark As Unread')}}" data-unchecked="{{_('Mark As Read')}}" type="checkbox" {% if have_read %}checked{% endif %} >
               <span>{{_('Read')}}</span>
             </label>
           </form>
@@ -193,7 +191,7 @@
 
       {% if entry.comments|length > 0 and entry.comments[0].text|length > 0%}
         <div class="comments">
-            <h3>{{_('Description:')}}</h3>
+            <h3 id="decription">{{_('Description:')}}</h3>
             {{entry.comments[0].text|safe}}
         </div>
       {% endif %}

@@ -16,7 +16,6 @@
 
 */
 /* global screenfull, bitjs */
-
 if (window.opera) {
     window.console.log = function(str) {
         opera.postError(str);
@@ -66,7 +65,8 @@ var settings = {
     vflip: false,
     rotateTimes: 0,
     fitMode: kthoom.Key.B,
-    theme: "light"
+    theme: "light",
+    direction: 0 // 0 = Left to Right, 1 = Right to Left
 };
 
 kthoom.saveSettings = function() {
@@ -99,14 +99,15 @@ kthoom.setSettings = function() {
 };
 
 var createURLFromArray = function(array, mimeType) {
-    var offset = array.byteOffset, len = array.byteLength;
+    var offset = array.byteOffset;
+    var len = array.byteLength;
     var url;
     var blob;
 
     if (mimeType === 'image/xml+svg') {
         const xmlStr = new TextDecoder('utf-8').decode(array);
         return 'data:image/svg+xml;UTF-8,' + encodeURIComponent(xmlStr);
-  }
+    }
 
     // TODO: Move all this browser support testing to a common place
     //     and do it just once.
@@ -137,11 +138,13 @@ var createURLFromArray = function(array, mimeType) {
 kthoom.ImageFile = function(file) {
     this.filename = file.filename;
     var fileExtension = file.filename.split(".").pop().toLowerCase();
-    var mimeType = fileExtension === "png" ? "image/png" :
+    this.mimeType = fileExtension === "png" ? "image/png" :
         (fileExtension === "jpg" || fileExtension === "jpeg") ? "image/jpeg" :
             fileExtension === "gif" ? "image/gif" : fileExtension == 'svg' ? 'image/xml+svg' : undefined;
-    this.dataURI = createURLFromArray(file.fileData, mimeType);
-    this.data = file;
+    if ( this.mimeType !== undefined) {
+        this.dataURI = createURLFromArray(file.fileData, this.mimeType);
+        this.data = file;
+    }
 };
 
 
@@ -156,11 +159,16 @@ function initProgressClick() {
 function loadFromArrayBuffer(ab) {
     var start = (new Date).getTime();
     var h = new Uint8Array(ab, 0, 10);
-    var pathToBitJS = "../../static/js/";
+    var pathToBitJS = "../../static/js/archive/";
     if (h[0] === 0x52 && h[1] === 0x61 && h[2] === 0x72 && h[3] === 0x21) { //Rar!
         unarchiver = new bitjs.archive.Unrarrer(ab, pathToBitJS);
     } else if (h[0] === 80 && h[1] === 75) { //PK (Zip)
         unarchiver = new bitjs.archive.Unzipper(ab, pathToBitJS);
+    } else if (h[0] == 255 && h[1] == 216) { // JPEG
+        // ToDo: check
+        updateProgress(100);
+        lastCompletion = 100;
+        return;
     } else { // Try with tar
         unarchiver = new bitjs.archive.Untarrer(ab, pathToBitJS);
     }
@@ -169,33 +177,45 @@ function loadFromArrayBuffer(ab) {
         unarchiver.addEventListener(bitjs.archive.UnarchiveEvent.Type.PROGRESS,
             function(e) {
                 var percentage = e.currentBytesUnarchived / e.totalUncompressedBytesInArchive;
-                totalImages = e.totalFilesInArchive;
+                if (totalImages === 0) {
+                    totalImages = e.totalFilesInArchive;
+                }
                 updateProgress(percentage *100);
                 lastCompletion = percentage * 100;
             });
+        unarchiver.addEventListener(bitjs.archive.UnarchiveEvent.Type.INFO,
+            function(e) {
+                // console.log(e.msg);  77 Enable debug output here
+            });
         unarchiver.addEventListener(bitjs.archive.UnarchiveEvent.Type.EXTRACT,
             function(e) {
-            // convert DecompressedFile into a bunch of ImageFiles
+                // convert DecompressedFile into a bunch of ImageFiles
                 if (e.unarchivedFile) {
                     var f = e.unarchivedFile;
                     // add any new pages based on the filename
                     if (imageFilenames.indexOf(f.filename) === -1) {
-                        imageFilenames.push(f.filename);
-                        imageFiles.push(new kthoom.ImageFile(f));
-        				// add thumbnails to the TOC list
-        				$("#thumbnails").append(
-            				"<li>" +
-                				"<a data-page='" + imageFiles.length + "'>" +
-                    				"<img src='" + imageFiles[imageFiles.length - 1].dataURI + "'/>" +
-                    				"<span>" + imageFiles.length + "</span>" +
-                				"</a>" +
-            				"</li>"
-        				);
+                        var test = new kthoom.ImageFile(f);
+                        if ( test.mimeType !== undefined) {
+                            imageFilenames.push(f.filename);
+                            imageFiles.push(test);
+                            // add thumbnails to the TOC list
+                            $("#thumbnails").append(
+                                "<li>" +
+                                    "<a data-page='" + imageFiles.length + "'>" +
+                                        "<img src='" + imageFiles[imageFiles.length - 1].dataURI + "'/>" +
+                                        "<span>" + imageFiles.length + "</span>" +
+                                    "</a>" +
+                                "</li>"
+                            );
+                            // display first page if we haven't yet
+                            if (imageFiles.length === currentImage + 1) {
+                                updatePage(lastCompletion);
+                            }
+                        }
+                        else {
+                            totalImages--;
+                        }
                     }
-                }
-                // display first page if we haven't yet
-                if (imageFiles.length === currentImage + 1) {
-                    updatePage(lastCompletion);
                 }
             });
         unarchiver.addEventListener(bitjs.archive.UnarchiveEvent.Type.FINISH,
@@ -356,6 +376,22 @@ function setImage(url) {
     }
 }
 
+function showLeftPage() {
+    if (settings.direction === 0) {
+        showPrevPage()
+    } else {
+        showNextPage()
+    }
+}
+
+function showRightPage() {
+    if (settings.direction === 0) {
+        showNextPage()
+    } else {
+        showPrevPage()
+    }
+}
+
 function showPrevPage() {
     currentImage--;
     if (currentImage < 0) {
@@ -410,11 +446,11 @@ function keyHandler(evt) {
     switch (evt.keyCode) {
         case kthoom.Key.LEFT:
             if (hasModifier) break;
-            showPrevPage();
+            showLeftPage();
             break;
         case kthoom.Key.RIGHT:
             if (hasModifier) break;
-            showNextPage();
+            showRightPage();
             break;
         case kthoom.Key.L:
             if (hasModifier) break;
@@ -475,11 +511,11 @@ function keyHandler(evt) {
             if (evt.shiftKey && atTop) {
                 evt.preventDefault();
                 // If it's Shift + Space and the container is at the top of the page
-                showPrevPage();
+                showLeftPage();
             } else if (!evt.shiftKey && atBottom) {
                 evt.preventDefault();
                 // If you're at the bottom of the page and you only pressed space
-                showNextPage();
+                showRightPage();
                 container.scrollTop(0);
             }
             break;
@@ -610,25 +646,25 @@ function init(filename) {
 
         // Determine if the user clicked/tapped the left side or the
         // right side of the page.
-        var clickedPrev = false;
+        var clickedLeft = false;
         switch (settings.rotateTimes) {
             case 0:
-                clickedPrev = clickX < (comicWidth / 2);
+                clickedLeft = clickX < (comicWidth / 2);
                 break;
             case 1:
-                clickedPrev = clickY < (comicHeight / 2);
+                clickedLeft = clickY < (comicHeight / 2);
                 break;
             case 2:
-                clickedPrev = clickX > (comicWidth / 2);
+                clickedLeft = clickX > (comicWidth / 2);
                 break;
             case 3:
-                clickedPrev = clickY > (comicHeight / 2);
+                clickedLeft = clickY > (comicHeight / 2);
                 break;
         }
-        if (clickedPrev) {
-            showPrevPage();
+        if (clickedLeft) {
+            showLeftPage();
         } else {
-            showNextPage();
+            showRightPage();
         }
     });
 }

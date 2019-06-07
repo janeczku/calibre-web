@@ -7,6 +7,8 @@
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, user-scalable=no">
         <meta name="apple-mobile-web-app-capable" content="yes">
+        <link rel="apple-touch-icon" sizes="140x140" href="{{ url_for('static', filename='favicon.ico') }}">
+        <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
 
         <link rel="stylesheet" href="{{ url_for('static', filename='css/libs/normalize.css') }}">
         <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
@@ -89,10 +91,8 @@
       </script>
       <script src="{{ url_for('static', filename='js/libs/jquery.min.js') }}"></script>
       <script src="{{ url_for('static', filename='js/libs/jszip.min.js') }}"></script>
-      <script src="{{ url_for('static', filename='js/libs/zip.min.js') }}"></script>
       <script src="{{ url_for('static', filename='js/libs/screenfull.min.js') }}"></script>
       <script src="{{ url_for('static', filename='js/libs/epub.min.js') }}"></script>
-      <script src="{{ url_for('static', filename='js/libs/hooks.min.js') }}"></script>
       <script src="{{ url_for('static', filename='js/libs/reader.min.js') }}"></script>
       <script src="{{ url_for('static', filename='js/reading/epub.js') }}"></script>
     </body>

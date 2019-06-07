@@ -1,6 +1,22 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+#  This file is part of the Calibre-Web (https://github.com/janeczku/calibre-web)
+#    Copyright (C) 2018-2019 OzzieIsaacs, bodybybuddha, janeczku
+#
+#  This program is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License as published by
+#  the Free Software Foundation, either version 3 of the License, or
+#  (at your option) any later version.
+#
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU General Public License for more details.
+#
+#  You should have received a copy of the GNU General Public License
+#  along with this program. If not, see <http://www.gnu.org/licenses/>.
+
 from __future__ import print_function
 import smtplib
 import threading
@@ -108,7 +124,7 @@ class emailbase():
                     self.transferSize = len(strg)
                     lock.release()
                     for i in range(0, self.transferSize, chunksize):
-                        if type(strg) == bytes:
+                        if isinstance(strg, bytes):
                             self.sock.send((strg[i:i+chunksize]))
                         else:
                             self.sock.send((strg[i:i + chunksize]).encode('utf-8'))
@@ -452,9 +468,11 @@ class WorkerThread(threading.Thread):
         except (MemoryError) as e:
             self._handleError(u'Error sending email: ' + e.message)
             return None
-        except (smtplib.SMTPException) as e:
+        except (smtplib.SMTPException, smtplib.SMTPAuthenticationError) as e:
             if hasattr(e, "smtp_error"):
-                text = e.smtp_error.replace("\n",'. ')
+                text = e.smtp_error.decode('utf-8').replace("\n",'. ')
+            elif hasattr(e, "message"):
+                text = e.message
             else:
                 text = ''
             self._handleError(u'Error sending email: ' + text)
@@ -477,7 +495,6 @@ class WorkerThread(threading.Thread):
 
     def _handleError(self, error_message):
         web.app.logger.error(error_message)
-        # self.queue[self.current]['status'] = STAT_FAIL
         self.UIqueue[self.current]['stat'] = STAT_FAIL
         self.UIqueue[self.current]['progress'] = "100 %"
         self.UIqueue[self.current]['runtime'] = self._formatRuntime(
@@ -485,7 +502,6 @@ class WorkerThread(threading.Thread):
         self.UIqueue[self.current]['message'] = error_message
 
     def _handleSuccess(self):
-        # self.queue[self.current]['status'] = STAT_FINISH_SUCCESS
         self.UIqueue[self.current]['stat'] = STAT_FINISH_SUCCESS
         self.UIqueue[self.current]['progress'] = "100 %"
         self.UIqueue[self.current]['runtime'] = self._formatRuntime(
@@ -501,10 +517,13 @@ class StderrLogger(object):
         self.logger = web.app.logger
 
     def write(self, message):
-        if message == '\n':
-            self.logger.debug(self.buffer)
-            print(self.buffer)
-            self.buffer = ''
-        else:
-            self.buffer += message
+        try:
+            if message == '\n':
+                self.logger.debug(self.buffer)
+                print(self.buffer)
+                self.buffer = ''
+            else:
+                self.buffer += message
+        except:
+            pass
 

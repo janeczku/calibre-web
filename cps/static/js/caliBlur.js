@@ -1,3 +1,19 @@
+/* This file is part of the Calibre-Web (https://github.com/janeczku/calibre-web)
+ *    Copyright (C) 2018-2019  hexeth
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
 // Move advanced search to side-menu
 $( 'a[href*="advanced"]' ).parent().insertAfter( '#nav_new' );
 $( 'body' ).addClass('blur');
@@ -40,10 +56,10 @@ $( 'a.navbar-brand' ).clone().appendTo( '.home-btn' ).empty().removeClass('navba
 
 // Wrap book description in div container
 if ( $( 'body.book' ).length > 0 ) {
-    
+
   description = $( '.comments' );
-  bookInfo = $( '.author' ).nextUntil( 'h3:contains("Description")');
-  $( 'h3:contains("Description")' ).detach();
+  bookInfo = $( ".author" ).nextUntil("#decription");
+  $("#decription").detach();
   $( '.comments' ).detach();
   $( bookInfo ).wrapAll( '<div class="bookinfo"></div>' );
 //  $( 'h3:contains("Description:")' ).after( '<div class="description"></div>' );
@@ -92,7 +108,7 @@ if ( $( 'body.book' ).length > 0 ) {
       .replace(/^(?=\n)$|^\s*|\s*$|\n\n+/gm,"").split(/\n/);
      }
      else {
-       newdesc = description.toString();
+       newdesc = description.text();
      }
      doc = nlp ( newdesc.toString() );
      sentences = doc.map((m)=> m.out( 'text' ));
@@ -129,14 +145,29 @@ if ( $( 'body.book' ).length > 0 ) {
     .prepend( '<div><img class="bg-blur" src="' + cover + '"></div>' );
 
   // Fix-up book detail headings
-publisher = $( '.publishers p span' ).text().split( ':' );
-  $( '.publishers p span' ).remove();
-  $.each(publisher, function(i, val) {
-    $( '.publishers' ).append( '<span>' + publisher[i] + '</span>' );
+  publisher = $( '.publishers p span' ).text().split( ':' );
+    $( '.publishers p span' ).remove();
+    $.each(publisher, function(i, val) {
+      $( '.publishers' ).append( '<span>' + publisher[i] + '</span>' );
+    });
+  $( '.publishers span:nth-child(3)' ).text(function() {
+  return $(this).text().replace(/^\s+|^\t+|\t+|\s+$/g, "");
   });
-$( '.publishers span:nth-child(3)' ).text(function() {
-return $(this).text().replace(/^\s+|^\t+|\t+|\s+$/g, "");
-});
+
+  // Fix-up book custom colums headings
+  // real_custom_column = $( '.real_custom_columns' ).text().split( ':' );
+  real_custom_column = $( '.real_custom_columns' );
+    // $( '.real_custom_columns' ).remove();
+    $.each(real_custom_column, function(i, val) {
+        real_cc = $(this).text().split( ':' );
+        $( this ).text("");
+        if (real_cc.length > 1) {
+            $( this ).append( '<span>' + real_cc[0] + '</span><span>' + real_cc[1] + '</span>' );
+        }
+    });
+  //$( '.real_custom_columns:nth-child(3)' ).text(function() {
+  //return $(this).text().replace(/^\s+|^\t+|\t+|\s+$/g, "");
+  //});
 
   published = $( '.publishing-date p' )
   .text().split(': ');
@@ -144,7 +175,7 @@ return $(this).text().replace(/^\s+|^\t+|\t+|\s+$/g, "");
   $.each(published, function(i, val) {
     $( '.publishing-date' ).append( '<span>' + published[i] + '</span>' );
   });
-    
+
   languages = $( '.languages p span' ).text().split( ': ' );
   $( '.languages p span' ).remove();
   $.each(languages, function(i, val) {
@@ -188,6 +219,7 @@ return $(this).text().replace(/^\s+|^\t+|\t+|\s+$/g, "");
 
   // Move dropdown lists higher in dom, replace bootstrap toggle with own toggle.
   $( 'ul[aria-labelledby="read-in-browser"]' ).insertBefore( '.blur-wrapper' ).addClass('readinbrowser-drop');
+  $( 'ul[aria-labelledby="send-to-kindle"]' ).insertBefore( '.blur-wrapper' ).addClass('sendtokindle-drop');
   $( '.leramslist' ).insertBefore( '.blur-wrapper' );
   $( 'ul[aria-labelledby="btnGroupDrop1"]' ).insertBefore( '.blur-wrapper' ).addClass('leramslist');
   $( '#add-to-shelves' ).insertBefore( '.blur-wrapper' );
@@ -199,6 +231,11 @@ return $(this).text().replace(/^\s+|^\t+|\t+|\s+$/g, "");
   $('.downloadBtn' ).click( function() {
     $(  '.leramslist' ).toggle();
   });
+
+    $('#sendbtn2' ).click( function() {
+    $(  '.sendtokindle-drop' ).toggle();
+  });
+
 
   $('div[aria-label="Add to shelves"]' ).click( function() {
     $(  '#add-to-shelves' ).toggle();
@@ -223,6 +260,17 @@ return $(this).text().replace(/^\s+|^\t+|\t+|\s+$/g, "");
         $( '.readinbrowser-drop' ).attr("style", "left: " + ribPosition + "px !important; right: auto; top: " + topPos + "px");
       } else {
           $( '.readinbrowser-drop' ).attr("style", "left: " + position + "px !important; right: auto; top: " + topPos + "px");
+      }
+    }
+
+     if ( $( '#sendbtn2' ).length > 0 ) {
+      position = $( '#sendbtn2'  ).offset().left
+      if ( position + $(  '.sendtokindle-drop' ).width() > $( window ).width() ) {
+        positionOff = position + $( '.sendtokindle-drop' ).width() - $( window ).width();
+        ribPosition = position - positionOff - 5
+        $( '.sendtokindle-drop' ).attr("style", "left: " + ribPosition + "px !important; right: auto; top: " + topPos + "px");
+      } else {
+          $( '.sendtokindle-drop' ).attr("style", "left: " + position + "px !important; right: auto; top: " + topPos + "px");
       }
     }
 
@@ -274,6 +322,7 @@ $( '.book-meta > .bookinfo > .rating' ).clone().insertBefore( '.book-meta > .des
 $(document).mouseup(function (e) {
   var container = new Array();
   container.push($('ul[aria-labelledby="read-in-browser"]'));
+  container.push($('.sendtokindle-drop'));
   container.push($('.leramslist'));
   container.push($('#add-to-shelves'));
   container.push($('.navbar-collapse.collapse.in'));
@@ -335,7 +384,7 @@ $( 'input#query' ).focusout(function() {
             $( 'form[role="search"]' ).removeClass( 'search-focus' );
   }, 100);
 });
-    
+
 // Check if dropdown goes out of viewport and add class
 
 $(document).on('click','.dropdown-toggle',function() {
@@ -377,8 +426,8 @@ $( 'div.comments' ).readmore( {
   collapsedHeight: 134,
   heightMargin: 45,
   speed: 300,
-  moreLink: '<a href="#">READ MORE</a>',
-  lessLink: '<a href="#">READ LESS</a>',
+  moreLink: '<a href="#">READ MORE</a>',    // ToDo: make translateable
+  lessLink: '<a href="#">READ LESS</a>',    // ToDo: make translateable
 });
 /////////////////////////////////
 //     End of Global Work     //
@@ -456,19 +505,19 @@ if ( $( 'body.shelf' ).length > 0 ) {
       .addClass( 'order-shelf-btn' );
   $( '.delete-shelf-btn' ).attr({
       'data-toggle-two': 'tooltip',
-      'title': 'Delete Shelf',
+      'title': $( '.delete-shelf-btn' ).text(),     // 'Delete Shelf'
       'data-placement': 'bottom' })
       .addClass('delete-btn-tooltip');
 
   $( '.edit-shelf-btn' ).attr({
       'data-toggle-two': 'tooltip',
-      'title': 'Edit Shelf',
+      'title': $( '.edit-shelf-btn' ).text(),       // 'Edit Shelf'
       'data-placement': 'bottom' })
       .addClass('edit-btn-tooltip');
 
   $( '.order-shelf-btn' ).attr({
       'data-toggle-two': 'tooltip',
-      'title': 'Reorder Shelf',
+      'title': $( '.order-shelf-btn' ).text(),      //'Reorder Shelf'
       'data-placement': 'bottom' })
       .addClass('order-btn-tooltip');
 }
@@ -476,32 +525,32 @@ if ( $( 'body.shelf' ).length > 0 ) {
 // Rest of Tooltips
 $( '.home-btn > a' ).attr({
     'data-toggle': 'tooltip',
-    'title': 'Home',
+    'title': $(document.body).attr('data-text'),    // Home
     'data-placement': 'bottom' })
     .addClass('home-btn-tooltip');
 
 $( '.plexBack > a' ).attr({
    'data-toggle': 'tooltip',
-   'title': 'Back',
+   'title': $(document.body).attr('data-textback'), // Back
    'data-placement': 'bottom' })
    .addClass('back-btn-tooltip');
 
 $( '#top_tasks' ).attr({
     'data-toggle': 'tooltip',
-    'title': $( '#top_tasks' ).text(), //'Tasks',
+    'title': $( '#top_tasks' ).text(),              // 'Tasks'
     'data-placement': 'bottom',
     'data-viewport': '#main-nav' })
     .addClass('tasks-btn-tooltip');
 
 $( '#top_admin' ).attr({
   'data-toggle': 'tooltip',
-  'title': 'Settings',
+  'title': $( '#top_admin' ).attr('data-text'),     // Settings
   'data-placement': 'bottom',
   'data-viewport': '#main-nav' })
   .addClass('admin-btn-tooltip');
 
 $( '.profileDrop' ).attr({
-  'title': 'Account',
+  'title': $( '#top_user' ).attr('data-text'),      //Account
   'data-placement': 'bottom',
   'data-toggle-two': 'tooltip',
   'data-viewport': '#main-nav' })
@@ -509,75 +558,78 @@ $( '.profileDrop' ).attr({
 
 $( '#btn-upload' ).attr({
   'data-toggle': 'tooltip',
-  'title': $( '#btn-upload' ).text() , // 'Upload',
+  'title': $( '#btn-upload' ).parent().text() ,     // 'Upload'
   'data-placement': 'bottom',
   'data-viewport': '#main-nav' })
   .addClass('upload-btn-tooltip');
 
 $( '#add-to-shelf' ).attr({
   'data-toggle-two': 'tooltip',
-  'title': $( '#add-to-shelf' ).text() , // 'Add to Shelf',
+  'title': $( '#add-to-shelf' ).text() ,            // 'Add to Shelf'
   'data-placement': 'bottom',
   'data-viewport': '.btn-toolbar' })
   .addClass('addtoshelf-btn-tooltip');
 
-var teetet = $( '#add-to-shelf' ).text()
-
 $( '#have_read_cb' ).attr({
   'data-toggle': 'tooltip',
-  'title': 'Mark As Read',
+  'title': $( '#have_read_cb').attr('data-unchecked'),
   'data-placement': 'bottom',
   'data-viewport': '.btn-toolbar' })
   .addClass('readunread-btn-tooltip');
 
 $( '#have_read_cb:checked' ).attr({
   'data-toggle': 'tooltip',
-  'title': 'Mark As Unread',
+  'title': $( '#have_read_cb').attr('data-checked'),
   'data-placement': 'bottom',
   'data-viewport': '.btn-toolbar' })
   .addClass('readunread-btn-tooltip');
 
   $( 'button#delete' ).attr({
     'data-toggle-two': 'tooltip',
-    'title': $( 'button#delete' ).text(), //'Delete',
+    'title': $( 'button#delete' ).text(),           //'Delete'
     'data-placement': 'bottom',
     'data-viewport': '.btn-toolbar' })
     .addClass('delete-book-btn-tooltip');
 
 $( '#have_read_cb' ).click(function() {
   if ( $( '#have_read_cb:checked' ).length > 0 ) {
-      $( this ).attr('data-original-title', 'Mark as Unread');
+      $( this ).attr('data-original-title', $('#have_read_cb').attr('data-checked'));
   } else {
-      $( this).attr('data-original-title', 'Mark as Read');
+      $( this).attr('data-original-title', $('#have_read_cb').attr('data-unchecked'));
   }
 });
 
 $( '.btn-group[aria-label="Edit/Delete book"] a' ).attr({
    'data-toggle': 'tooltip',
-   'title': $( '#edit_book' ).text(), // 'Edit',
+   'title': $( '#edit_book' ).text(),               // 'Edit'
    'data-placement': 'bottom',
    'data-viewport': '.btn-toolbar' })
    .addClass('edit-btn-tooltip');
 
-var teetet = $( '#edit_book' ).text()
-
 $( '#sendbtn' ).attr({
   'data-toggle': 'tooltip',
-  'title': 'Send to Kindle',
+  'title': $( '#sendbtn' ).attr('data-text'),
+  'data-placement': 'bottom',
+  'data-viewport': '.btn-toolbar' })
+  .addClass('send-btn-tooltip');
+
+$( '#sendbtn2' ).attr({
+  'data-toggle-two': 'tooltip',
+  'title': $( '#sendbtn2' ).text(),                 // 'Send to Kindle',
   'data-placement': 'bottom',
   'data-viewport': '.btn-toolbar' })
   .addClass('send-btn-tooltip');
 
 $( '#read-in-browser' ).attr({
   'data-toggle-two': 'tooltip',
-  'title': 'Read',
+  'title': $( '#read-in-browser' ).text(),
   'data-placement': 'bottom',
   'data-viewport': '.btn-toolbar'})
   .addClass('send-btn-tooltip');
 
 $( '#btnGroupDrop1' ).attr({
   'data-toggle-two': 'tooltip',
-  'title': 'Download',
+  'title': $( '#btnGroupDrop1' ).text(),
   'data-placement': 'bottom',
   'data-viewport': '.btn-toolbar' });
 

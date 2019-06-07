@@ -1,6 +1,23 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+#  This file is part of the Calibre-Web (https://github.com/janeczku/calibre-web)
+#    Copyright (C) 2012-2019 janeczku, OzzieIsaacs, andrerfcsantos, idalin
+#
+#  This program is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License as published by
+#  the Free Software Foundation, either version 3 of the License, or
+#  (at your option) any later version.
+#
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU General Public License for more details.
+#
+#  You should have received a copy of the GNU General Public License
+#  along with this program. If not, see <http://www.gnu.org/licenses/>.
+
+
 from socket import error as SocketError
 import sys
 import os
@@ -18,6 +35,7 @@ except ImportError:
     from tornado.ioloop import IOLoop
     from tornado import version as tornadoVersion
     gevent_present = False
+
 
 
 class server:
@@ -44,11 +62,14 @@ class server:
                 self.wsgiserver= WSGIServer(('0.0.0.0', web.ub.config.config_port), web.app, spawn=Pool(), **ssl_args)
             else:
                 self.wsgiserver = WSGIServer(('', web.ub.config.config_port), web.app, spawn=Pool(), **ssl_args)
+            web.py3_gevent_link = self.wsgiserver
             self.wsgiserver.serve_forever()
+
         except SocketError:
             try:
                 web.app.logger.info('Unable to listen on \'\', trying on IPv4 only...')
                 self.wsgiserver = WSGIServer(('0.0.0.0', web.ub.config.config_port), web.app, spawn=Pool(), **ssl_args)
+                web.py3_gevent_link = self.wsgiserver
                 self.wsgiserver.serve_forever()
             except (OSError, SocketError) as e:
                 web.app.logger.info("Error starting server: %s" % e.strerror)
@@ -82,6 +103,7 @@ class server:
                             ssl_options=ssl)
                 http_server.listen(web.ub.config.config_port)
                 self.wsgiserver=IOLoop.instance()
+                web.py3_gevent_link = self.wsgiserver
                 self.wsgiserver.start()
                 # wait for stop signal
                 self.wsgiserver.close(True)
@@ -91,6 +113,9 @@ class server:
                 web.helper.global_WorkerThread.stop()
                 sys.exit(1)
 
+        # ToDo: Somehow caused by circular import under python3 refactor
+        if sys.version_info > (3, 0):
+            self.restart = web.py3_restart_Typ
         if self.restart == True:
             web.app.logger.info("Performing restart of Calibre-Web")
             web.helper.global_WorkerThread.stop()
@@ -107,12 +132,21 @@ class server:
         sys.exit(0)
 
     def setRestartTyp(self,starttyp):
-        self.restart=starttyp
+        self.restart = starttyp
+        # ToDo: Somehow caused by circular import under python3 refactor
+        web.py3_restart_Typ = starttyp
 
     def killServer(self, signum, frame):
         self.stopServer()
 
     def stopServer(self):
+        # ToDo: Somehow caused by circular import under python3 refactor
+        if sys.version_info > (3, 0):
+            if not self.wsgiserver:
+                # if gevent_present:
+                self.wsgiserver = web.py3_gevent_link
+                #else:
+                #    self.wsgiserver = IOLoop.instance()
         if self.wsgiserver:
             if gevent_present:
                 self.wsgiserver.close()

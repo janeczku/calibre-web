@@ -6,7 +6,7 @@
    <Developer>Janeczku</Developer>
    <Contact>https://github.com/janeczku/calibre-web</Contact>
    <Url type="text/html"
-        template="{{url_for('search')}}?query={searchTerms}"/>
+        template="{{url_for('feed_cc_search')}}{searchTerms}"/>
    <Url type="application/atom+xml"
         template="{{url_for('feed_normal_search')}}?query={searchTerms}"/>
    <SyndicationRight>open</SyndicationRight>
