@@ -1884,6 +1884,12 @@ def shutdown():
             return json.dumps({})
         abort(404)
 
+@app.route("/reconnect")
+def reconnect():
+    db.session.close()
+    db.engine.dispose()
+    db.setup_db()
+    return json.dumps({})
 
 @app.route("/search", methods=["GET"])
 @login_required_if_no_ano
