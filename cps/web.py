@@ -186,8 +186,8 @@ if ldap_support and config.config_use_ldap:
     app.config['LDAP_HOST'] = config.config_ldap_provider_url
     app.config['LDAP_PORT'] = config.config_ldap_port
     app.config['LDAP_SCHEMA'] = config.config_ldap_schema
-    app.config['LDAP_USERNAME'] = config.config_ldap_serv_username
-    app.config['LDAP_PASSWORD'] = config.config_ldap_serv_password
+    app.config['LDAP_USERNAME'] = config.config_ldap_user_object.replace('%s', config.config_ldap_serv_username) + ',' + config.config_ldap_dn
+    app.config['LDAP_PASSWORD'] = base64.b64decode(config.config_ldap_serv_password)  
     if config.config_ldap_use_ssl:
         app.config['LDAP_USE_SSL'] = True
     if config.config_ldap_use_tls:
@@ -3162,7 +3162,7 @@ def configuration_helper(origin):
                 content.config_ldap_port = to_save["config_ldap_port"]
                 content.config_ldap_schema = to_save["config_ldap_schema"]
                 content.config_ldap_serv_username = to_save["config_ldap_serv_username"]
-                content.config_ldap_serv_password = to_save["config_ldap_serv_password"]
+                content.config_ldap_serv_password = base64.b64encode(to_save["config_ldap_serv_password"])
                 content.config_ldap_dn = to_save["config_ldap_dn"]
                 content.config_ldap_user_object = to_save["config_ldap_user_object"]
                 reboot_required = True
