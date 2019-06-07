@@ -1,1 +1,2 @@
 python_ldap>=3.0.0
+flask-simpleldap
