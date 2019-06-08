@@ -23,7 +23,8 @@ import os
 from collections import namedtuple
 
 
-BASE_DIR            = sys.path[0]
+# Base dir is parent of current file, necessary if called from different folder
+BASE_DIR            = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)),os.pardir))
 STATIC_DIR          = os.path.join(BASE_DIR, 'cps', 'static')
 TEMPLATES_DIR       = os.path.join(BASE_DIR, 'cps', 'templates')
 TRANSLATIONS_DIR    = os.path.join(BASE_DIR, 'cps', 'translations')
@@ -104,9 +105,7 @@ def has_flag(value, bit_flag):
     return bit_flag == (bit_flag & (value or 0))
 
 
-"""
- :rtype: BookMeta
-"""
+# :rtype: BookMeta
 BookMeta = namedtuple('BookMeta', 'file_path, extension, title, author, cover, description, tags, series, '
                                   'series_id, languages')
 

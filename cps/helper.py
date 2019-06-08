@@ -491,11 +491,11 @@ def save_cover_from_filestorage(filepath, saved_filename, img):
                 return False
         try:
             img.save(os.path.join(filepath, saved_filename))
-        except OSError:
-            log.error(u"Failed to store cover-file")
-            return False
         except IOError:
             log.error(u"Cover-file is not a valid image file")
+            return False
+        except OSError:
+            log.error(u"Failed to store cover-file")
             return False
     return True
 
@@ -703,7 +703,7 @@ def fill_indexpage(page, database, db_filter, order, *join):
 
 def get_typeahead(database, query, replace=('','')):
     db.session.connection().connection.connection.create_function("lower", 1, lcase)
-    entries = db.session.query(database).filter(db.func.lower(database.name).ilike("%" + query + "%")).all()
+    entries = db.session.query(database).filter(func.lower(database.name).ilike("%" + query + "%")).all()
     json_dumps = json.dumps([dict(name=r.name.replace(*replace)) for r in entries])
     return json_dumps
 
@@ -713,16 +713,16 @@ def get_search_results(term):
     q = list()
     authorterms = re.split("[, ]+", term)
     for authorterm in authorterms:
-        q.append(db.Books.authors.any(db.func.lower(db.Authors.name).ilike("%" + authorterm + "%")))
+        q.append(db.Books.authors.any(func.lower(db.Authors.name).ilike("%" + authorterm + "%")))
 
-    db.Books.authors.any(db.func.lower(db.Authors.name).ilike("%" + term + "%"))
+    db.Books.authors.any(func.lower(db.Authors.name).ilike("%" + term + "%"))
 
     return db.session.query(db.Books).filter(common_filters()).filter(
-        or_(db.Books.tags.any(db.func.lower(db.Tags.name).ilike("%" + term + "%")),
-            db.Books.series.any(db.func.lower(db.Series.name).ilike("%" + term + "%")),
+        or_(db.Books.tags.any(func.lower(db.Tags.name).ilike("%" + term + "%")),
+            db.Books.series.any(func.lower(db.Series.name).ilike("%" + term + "%")),
             db.Books.authors.any(and_(*q)),
-            db.Books.publishers.any(db.func.lower(db.Publishers.name).ilike("%" + term + "%")),
-            db.func.lower(db.Books.title).ilike("%" + term + "%")
+            db.Books.publishers.any(func.lower(db.Publishers.name).ilike("%" + term + "%")),
+            func.lower(db.Books.title).ilike("%" + term + "%")
             )).all()
 
 def get_unique_other_books(library_books, author_books):

@@ -64,7 +64,7 @@ bitjs.io = bitjs.io || {};
             return 0;
         }
 
-        var movePointers = movePointers || false;
+        movePointers = movePointers || false;
         var bytePtr = this.bytePtr;
         var bitPtr = this.bitPtr;
         var result = 0;
@@ -125,7 +125,7 @@ bitjs.io = bitjs.io || {};
             return 0;
         }
 
-        var movePointers = movePointers || false;
+        movePointers = movePointers || false;
         var bytePtr = this.bytePtr;
         var bitPtr = this.bitPtr;
         var result = 0;
@@ -197,7 +197,7 @@ bitjs.io = bitjs.io || {};
      * @return {Uint8Array} The subarray.
      */
     bitjs.io.BitStream.prototype.peekBytes = function(n, movePointers) {
-        if (n <= 0 || typeof n != typeof 1) {
+        if (n <= 0 || typeof n !== typeof 1) {
             return 0;
         }
 
@@ -322,7 +322,7 @@ bitjs.io = bitjs.io || {};
      * @return {Uint8Array} The subarray.
      */
     bitjs.io.ByteStream.prototype.peekBytes = function(n, movePointers) {
-        if (n <= 0 || typeof n != typeof 1) {
+        if (n <= 0 || typeof n !== typeof 1) {
             return null;
         }
 
@@ -352,7 +352,7 @@ bitjs.io = bitjs.io || {};
      * @return {string} The next n bytes as a string.
      */
     bitjs.io.ByteStream.prototype.peekString = function(n) {
-        if (n <= 0 || typeof n != typeof 1) {
+        if (n <= 0 || typeof n !== typeof 1) {
             return "";
         }
 
