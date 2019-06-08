@@ -18,78 +18,35 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-from sqlalchemy import *
-from sqlalchemy import exc
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import *
-from flask_login import AnonymousUserMixin
+from __future__ import division, print_function, unicode_literals
 import sys
 import os
-import logging
-from werkzeug.security import generate_password_hash
-import json
 import datetime
+import json
 from binascii import hexlify
-import cli
+
 from flask import g
 from flask_babel import gettext as _
-
+from flask_login import AnonymousUserMixin
 try:
     from flask_dance.consumer.backend.sqla import OAuthConsumerMixin
     oauth_support = True
 except ImportError:
     oauth_support = False
+from sqlalchemy import create_engine, exc, exists
+from sqlalchemy import Column, ForeignKey
+from sqlalchemy import String, Integer, SmallInteger, Boolean, DateTime
+from sqlalchemy.orm import relationship, sessionmaker
+from sqlalchemy.ext.declarative import declarative_base
+from werkzeug.security import generate_password_hash
 
 try:
     import ldap
 except ImportError:
     pass
 
-ROLE_USER = 0
-ROLE_ADMIN = 1
-ROLE_DOWNLOAD = 2
-ROLE_UPLOAD = 4
-ROLE_EDIT = 8
-ROLE_PASSWD = 16
-ROLE_ANONYMOUS = 32
-ROLE_EDIT_SHELFS = 64
-ROLE_DELETE_BOOKS = 128
-ROLE_VIEWER = 256
+from . import constants, logger, cli
 
-
-DETAIL_RANDOM = 1
-SIDEBAR_LANGUAGE = 2
-SIDEBAR_SERIES = 4
-SIDEBAR_CATEGORY = 8
-SIDEBAR_HOT = 16
-SIDEBAR_RANDOM = 32
-SIDEBAR_AUTHOR = 64
-SIDEBAR_BEST_RATED = 128
-SIDEBAR_READ_AND_UNREAD = 256
-SIDEBAR_RECENT = 512
-SIDEBAR_SORTED = 1024
-MATURE_CONTENT = 2048
-SIDEBAR_PUBLISHER = 4096
-SIDEBAR_RATING = 8192
-SIDEBAR_FORMAT = 16384
-
-UPDATE_STABLE = 0
-AUTO_UPDATE_STABLE = 1
-UPDATE_NIGHTLY = 2
-AUTO_UPDATE_NIGHTLY = 4
-
-LOGIN_STANDARD = 0
-LOGIN_LDAP = 1
-LOGIN_OAUTH_GITHUB = 2
-LOGIN_OAUTH_GOOGLE = 3
-
-DEFAULT_PASS = "admin123"
-try:
-    DEFAULT_PORT = int(os.environ.get("CALIBRE_PORT", 8083))
-except ValueError:
-    print ('Environmentvariable CALIBRE_PORT is set to an invalid value: ' +
-           os.environ.get("CALIBRE_PORT", 8083) + ', faling back to default (8083)')
-    DEFAULT_PORT = 8083
 
 session = None
 
@@ -109,47 +66,47 @@ def get_sidebar_config(kwargs=None):
         content = 'conf' in kwargs
     sidebar = list()
     sidebar.append({"glyph": "glyphicon-book", "text": _('Recently Added'), "link": 'web.index', "id": "new",
-                    "visibility": SIDEBAR_RECENT, 'public': True, "page": "root",
+                    "visibility": constants.SIDEBAR_RECENT, 'public': True, "page": "root",
                     "show_text": _('Show recent books'), "config_show":True})
     sidebar.append({"glyph": "glyphicon-fire", "text": _('Hot Books'), "link": 'web.books_list', "id": "hot",
-                    "visibility": SIDEBAR_HOT, 'public': True, "page": "hot", "show_text": _('Show hot books'),
+                    "visibility": constants.SIDEBAR_HOT, 'public': True, "page": "hot", "show_text": _('Show hot books'),
                     "config_show":True})
     sidebar.append(
         {"glyph": "glyphicon-star", "text": _('Best rated Books'), "link": 'web.books_list', "id": "rated",
-         "visibility": SIDEBAR_BEST_RATED, 'public': True, "page": "rated",
+         "visibility": constants.SIDEBAR_BEST_RATED, 'public': True, "page": "rated",
          "show_text": _('Show best rated books'), "config_show":True})
     sidebar.append({"glyph": "glyphicon-eye-open", "text": _('Read Books'), "link": 'web.books_list', "id": "read",
-                    "visibility": SIDEBAR_READ_AND_UNREAD, 'public': (not g.user.is_anonymous), "page": "read",
+                    "visibility": constants.SIDEBAR_READ_AND_UNREAD, 'public': (not g.user.is_anonymous), "page": "read",
                     "show_text": _('Show read and unread'), "config_show": content})
     sidebar.append(
         {"glyph": "glyphicon-eye-close", "text": _('Unread Books'), "link": 'web.books_list', "id": "unread",
-         "visibility": SIDEBAR_READ_AND_UNREAD, 'public': (not g.user.is_anonymous), "page": "unread",
+         "visibility": constants.SIDEBAR_READ_AND_UNREAD, 'public': (not g.user.is_anonymous), "page": "unread",
          "show_text": _('Show unread'), "config_show":False})
     sidebar.append({"glyph": "glyphicon-random", "text": _('Discover'), "link": 'web.books_list', "id": "rand",
-                    "visibility": SIDEBAR_RANDOM, 'public': True, "page": "discover",
+                    "visibility": constants.SIDEBAR_RANDOM, 'public': True, "page": "discover",
                     "show_text": _('Show random books'), "config_show":True})
     sidebar.append({"glyph": "glyphicon-inbox", "text": _('Categories'), "link": 'web.category_list', "id": "cat",
-                    "visibility": SIDEBAR_CATEGORY, 'public': True, "page": "category",
+                    "visibility": constants.SIDEBAR_CATEGORY, 'public': True, "page": "category",
                     "show_text": _('Show category selection'), "config_show":True})
     sidebar.append({"glyph": "glyphicon-bookmark", "text": _('Series'), "link": 'web.series_list', "id": "serie",
-                    "visibility": SIDEBAR_SERIES, 'public': True, "page": "series",
+                    "visibility": constants.SIDEBAR_SERIES, 'public': True, "page": "series",
                     "show_text": _('Show series selection'), "config_show":True})
     sidebar.append({"glyph": "glyphicon-user", "text": _('Authors'), "link": 'web.author_list', "id": "author",
-                    "visibility": SIDEBAR_AUTHOR, 'public': True, "page": "author",
+                    "visibility": constants.SIDEBAR_AUTHOR, 'public': True, "page": "author",
                     "show_text": _('Show author selection'), "config_show":True})
     sidebar.append(
         {"glyph": "glyphicon-text-size", "text": _('Publishers'), "link": 'web.publisher_list', "id": "publisher",
-         "visibility": SIDEBAR_PUBLISHER, 'public': True, "page": "publisher",
+         "visibility": constants.SIDEBAR_PUBLISHER, 'public': True, "page": "publisher",
          "show_text": _('Show publisher selection'), "config_show":True})
     sidebar.append({"glyph": "glyphicon-flag", "text": _('Languages'), "link": 'web.language_overview', "id": "lang",
-                    "visibility": SIDEBAR_LANGUAGE, 'public': (g.user.filter_language() == 'all'),
+                    "visibility": constants.SIDEBAR_LANGUAGE, 'public': (g.user.filter_language() == 'all'),
                     "page": "language",
                     "show_text": _('Show language selection'), "config_show":True})
     sidebar.append({"glyph": "glyphicon-star-empty", "text": _('Ratings'), "link": 'web.ratings_list', "id": "rate",
-                    "visibility": SIDEBAR_RATING, 'public': True,
+                    "visibility": constants.SIDEBAR_RATING, 'public': True,
                     "page": "rating", "show_text": _('Show ratings selection'), "config_show":True})
     sidebar.append({"glyph": "glyphicon-file", "text": _('File formats'), "link": 'web.formats_list', "id": "format",
-                    "visibility": SIDEBAR_FORMAT, 'public': True,
+                    "visibility": constants.SIDEBAR_FORMAT, 'public': True,
                     "page": "format", "show_text": _('Show file formats selection'), "config_show":True})
     return sidebar
 
@@ -161,51 +118,35 @@ class UserBase:
     def is_authenticated(self):
         return True
 
+    def _has_role(self, role_flag):
+        return constants.has_flag(self.role, role_flag)
+
     def role_admin(self):
-        if self.role is not None:
-            return True if self.role & ROLE_ADMIN == ROLE_ADMIN else False
-        else:
-            return False
+        return self._has_role(constants.ROLE_ADMIN)
 
     def role_download(self):
-        if self.role is not None:
-            return True if self.role & ROLE_DOWNLOAD == ROLE_DOWNLOAD else False
-        else:
-            return False
+        return self._has_role(constants.ROLE_DOWNLOAD)
 
     def role_upload(self):
-        return bool((self.role is not None)and(self.role & ROLE_UPLOAD == ROLE_UPLOAD))
+        return self._has_role(constants.ROLE_UPLOAD)
 
     def role_edit(self):
-        if self.role is not None:
-            return True if self.role & ROLE_EDIT == ROLE_EDIT else False
-        else:
-            return False
+        return self._has_role(constants.ROLE_EDIT)
 
     def role_passwd(self):
-        if self.role is not None:
-            return True if self.role & ROLE_PASSWD == ROLE_PASSWD else False
-        else:
-            return False
+        return self._has_role(constants.ROLE_PASSWD)
 
     def role_anonymous(self):
-        if self.role is not None:
-            return True if self.role & ROLE_ANONYMOUS == ROLE_ANONYMOUS else False
-        else:
-            return False
+        return self._has_role(constants.ROLE_ANONYMOUS)
 
     def role_edit_shelfs(self):
-        if self.role is not None:
-            return True if self.role & ROLE_EDIT_SHELFS == ROLE_EDIT_SHELFS else False
-        else:
-            return False
+        return self._has_role(constants.ROLE_EDIT_SHELFS)
 
     def role_delete_books(self):
-        return bool((self.role is not None)and(self.role & ROLE_DELETE_BOOKS == ROLE_DELETE_BOOKS))
-
+        return self._has_role(constants.ROLE_DELETE_BOOKS)
 
     def role_viewer(self):
-        return bool((self.role is not None)and(self.role & ROLE_VIEWER == ROLE_VIEWER))
+        return self._has_role(constants.ROLE_VIEWER)
 
     @property
     def is_active(self):
@@ -222,10 +163,10 @@ class UserBase:
         return self.default_language
 
     def check_visibility(self, value):
-        return bool((self.sidebar_view is not None) and (self.sidebar_view & value == value))
+        return constants.has_flag(self.sidebar_view, value)
 
     def show_detail_random(self):
-        return bool((self.sidebar_view is not None)and(self.sidebar_view & DETAIL_RANDOM == DETAIL_RANDOM))
+        return self.check_visibility(constants.DETAIL_RANDOM)
 
     def __repr__(self):
         return '<User %r>' % self.nickname
@@ -246,7 +187,7 @@ class User(UserBase, Base):
     id = Column(Integer, primary_key=True)
     nickname = Column(String(64), unique=True)
     email = Column(String(120), unique=True, default="")
-    role = Column(SmallInteger, default=ROLE_USER)
+    role = Column(SmallInteger, default=constants.ROLE_USER)
     password = Column(String)
     kindle_mail = Column(String(120), default="")
     shelf = relationship('Shelf', backref='user', lazy='dynamic', order_by='Shelf.name')
@@ -270,7 +211,7 @@ class Anonymous(AnonymousUserMixin, UserBase):
         self.loadSettings()
 
     def loadSettings(self):
-        data = session.query(User).filter(User.role.op('&')(ROLE_ANONYMOUS) == ROLE_ANONYMOUS).first()  # type: User
+        data = session.query(User).filter(User.role.op('&')(constants.ROLE_ANONYMOUS) == constants.ROLE_ANONYMOUS).first()  # type: User
         settings = session.query(Settings).first()
         self.nickname = data.nickname
         self.role = data.role
@@ -308,7 +249,7 @@ class Shelf(Base):
     user_id = Column(Integer, ForeignKey('user.id'))
 
     def __repr__(self):
-        return '<Shelf %r>' % self.name
+        return '<Shelf %d:%r>' % (self.id, self.name)
 
 
 # Baseclass representing Relationship between books and Shelfs in Calibre-Web in app.db (N:M)
@@ -379,7 +320,7 @@ class Settings(Base):
     mail_password = Column(String)
     mail_from = Column(String)
     config_calibre_dir = Column(String)
-    config_port = Column(Integer, default=DEFAULT_PORT)
+    config_port = Column(Integer, default=constants.DEFAULT_PORT)
     config_certfile = Column(String)
     config_keyfile = Column(String)
     config_calibre_web_title = Column(String, default=u'Calibre-Web')
@@ -388,7 +329,7 @@ class Settings(Base):
     config_authors_max = Column(Integer, default=0)
     config_read_column = Column(Integer, default=0)
     config_title_regex = Column(String, default=u'^(A|The|An|Der|Die|Das|Den|Ein|Eine|Einen|Dem|Des|Einem|Eines)\s+')
-    config_log_level = Column(SmallInteger, default=logging.INFO)
+    config_log_level = Column(SmallInteger, default=logger.DEFAULT_LOG_LEVEL)
     config_uploading = Column(SmallInteger, default=0)
     config_anonbrowse = Column(SmallInteger, default=0)
     config_public_reg = Column(SmallInteger, default=0)
@@ -445,8 +386,6 @@ class RemoteAuthToken(Base):
 # Class holds all application specific settings in calibre-web
 class Config:
     def __init__(self):
-        self.config_main_dir = os.path.join(os.path.normpath(os.path.dirname(
-            os.path.realpath(__file__)) + os.sep + ".." + os.sep))
         self.db_configured = None
         self.config_logfile = None
         self.loadSettings()
@@ -497,19 +436,12 @@ class Config:
         # self.config_use_google_oauth = data.config_use_google_oauth
         self.config_google_oauth_client_id = data.config_google_oauth_client_id
         self.config_google_oauth_client_secret = data.config_google_oauth_client_secret
-        if data.config_mature_content_tags:
-            self.config_mature_content_tags = data.config_mature_content_tags
-        else:
-            self.config_mature_content_tags = u''
-        if data.config_logfile:
-            self.config_logfile = data.config_logfile
+        self.config_mature_content_tags = data.config_mature_content_tags or u''
+        self.config_logfile = data.config_logfile or u''
         self.config_rarfile_location = data.config_rarfile_location
         self.config_theme = data.config_theme
         self.config_updatechannel = data.config_updatechannel
-
-    @property
-    def get_main_dir(self):
-        return self.config_main_dir
+        logger.setup(self.config_logfile, self.config_log_level)
 
     @property
     def get_update_channel(self):
@@ -533,72 +465,41 @@ class Config:
             else:
                 return self.config_keyfile
 
-    def get_config_logfile(self):
-        if not self.config_logfile:
-            return os.path.join(self.get_main_dir, "calibre-web.log")
-        else:
-            if os.path.dirname(self.config_logfile):
-                return self.config_logfile
-            else:
-                return os.path.join(self.get_main_dir, self.config_logfile)
+    def _has_role(self, role_flag):
+        return constants.has_flag(self.config_default_role, role_flag)
 
     def role_admin(self):
-        if self.config_default_role is not None:
-            return True if self.config_default_role & ROLE_ADMIN == ROLE_ADMIN else False
-        else:
-            return False
+        return self._has_role(constants.ROLE_ADMIN)
 
     def role_download(self):
-        if self.config_default_role is not None:
-            return True if self.config_default_role & ROLE_DOWNLOAD == ROLE_DOWNLOAD else False
-        else:
-            return False
+        return self._has_role(constants.ROLE_DOWNLOAD)
 
     def role_viewer(self):
-        if self.config_default_role is not None:
-            return True if self.config_default_role & ROLE_VIEWER == ROLE_VIEWER else False
-        else:
-            return False
+        return self._has_role(constants.ROLE_VIEWER)
 
     def role_upload(self):
-        if self.config_default_role is not None:
-            return True if self.config_default_role & ROLE_UPLOAD == ROLE_UPLOAD else False
-        else:
-            return False
+        return self._has_role(constants.ROLE_UPLOAD)
 
     def role_edit(self):
-        if self.config_default_role is not None:
-            return True if self.config_default_role & ROLE_EDIT == ROLE_EDIT else False
-        else:
-            return False
+        return self._has_role(constants.ROLE_EDIT)
 
     def role_passwd(self):
-        if self.config_default_role is not None:
-            return True if self.config_default_role & ROLE_PASSWD == ROLE_PASSWD else False
-        else:
-            return False
+        return self._has_role(constants.ROLE_PASSWD)
 
     def role_edit_shelfs(self):
-        if self.config_default_role is not None:
-            return True if self.config_default_role & ROLE_EDIT_SHELFS == ROLE_EDIT_SHELFS else False
-        else:
-            return False
+        return self._has_role(constants.ROLE_EDIT_SHELFS)
 
     def role_delete_books(self):
-        return bool((self.config_default_role is not None) and
-                    (self.config_default_role & ROLE_DELETE_BOOKS == ROLE_DELETE_BOOKS))
-
-    def show_detail_random(self):
-        return bool((self.config_default_show is not None) and
-                    (self.config_default_show & DETAIL_RANDOM == DETAIL_RANDOM))
+        return self._has_role(constants.ROLE_DELETE_BOOKS)
 
     def show_element_new_user(self, value):
-        return bool((self.config_default_show is not None) and
-                    (self.config_default_show & value == value))
+        return constants.has_flag(self.config_default_show, value)
+
+    def show_detail_random(self):
+        return self.show_element_new_user(constants.DETAIL_RANDOM)
 
     def show_mature_content(self):
-        return bool((self.config_default_show is not None) and
-                    (self.config_default_show & MATURE_CONTENT == MATURE_CONTENT))
+        return self.show_element_new_user(constants.MATURE_CONTENT)
 
     def mature_content_tags(self):
         if sys.version_info > (3, 0): # Python3 str, Python2 unicode
@@ -608,16 +509,7 @@ class Config:
         return list(map(lstrip, self.config_mature_content_tags.split(",")))
 
     def get_Log_Level(self):
-        ret_value = ""
-        if self.config_log_level == logging.INFO:
-            ret_value = 'INFO'
-        elif self.config_log_level == logging.DEBUG:
-            ret_value = 'DEBUG'
-        elif self.config_log_level == logging.WARNING:
-            ret_value = 'WARNING'
-        elif self.config_log_level == logging.ERROR:
-            ret_value = 'ERROR'
-        return ret_value
+        return logger.get_level_name(self.config_log_level)
 
 
 # Migrate database to current version, has to be updated after every database change. Currently migration from
@@ -696,9 +588,9 @@ def migrate_Database():
         conn.execute("UPDATE user SET 'sidebar_view' = (random_books* :side_random + language_books * :side_lang "
             "+ series_books * :side_series + category_books * :side_category + hot_books * "
             ":side_hot + :side_autor + :detail_random)"
-            ,{'side_random': SIDEBAR_RANDOM, 'side_lang': SIDEBAR_LANGUAGE, 'side_series': SIDEBAR_SERIES,
-            'side_category': SIDEBAR_CATEGORY, 'side_hot': SIDEBAR_HOT, 'side_autor': SIDEBAR_AUTHOR,
-            'detail_random': DETAIL_RANDOM})
+            ,{'side_random': constants.SIDEBAR_RANDOM, 'side_lang': constants.SIDEBAR_LANGUAGE, 'side_series': constants.SIDEBAR_SERIES,
+            'side_category': constants.SIDEBAR_CATEGORY, 'side_hot': constants.SIDEBAR_HOT, 'side_autor': constants.SIDEBAR_AUTHOR,
+            'detail_random': constants.DETAIL_RANDOM})
         session.commit()
     try:
         session.query(exists().where(User.mature_content)).scalar()
@@ -706,7 +598,7 @@ def migrate_Database():
         conn = engine.connect()
         conn.execute("ALTER TABLE user ADD column `mature_content` INTEGER DEFAULT 1")
 
-    if session.query(User).filter(User.role.op('&')(ROLE_ANONYMOUS) == ROLE_ANONYMOUS).first() is None:
+    if session.query(User).filter(User.role.op('&')(constants.ROLE_ANONYMOUS) == constants.ROLE_ANONYMOUS).first() is None:
         create_anonymous_user()
     try:
         session.query(exists().where(Settings.config_remote_login)).scalar()
@@ -850,7 +742,7 @@ def create_anonymous_user():
     user = User()
     user.nickname = "Guest"
     user.email = 'no@email'
-    user.role = ROLE_ANONYMOUS
+    user.role = constants.ROLE_ANONYMOUS
     user.password = ''
 
     session.add(user)
@@ -864,13 +756,10 @@ def create_anonymous_user():
 def create_admin_user():
     user = User()
     user.nickname = "admin"
-    user.role = ROLE_USER + ROLE_ADMIN + ROLE_DOWNLOAD + ROLE_UPLOAD + ROLE_EDIT + ROLE_DELETE_BOOKS + ROLE_PASSWD +\
-                ROLE_VIEWER
-    user.sidebar_view = DETAIL_RANDOM + SIDEBAR_LANGUAGE + SIDEBAR_SERIES + SIDEBAR_CATEGORY + SIDEBAR_HOT + \
-            SIDEBAR_RANDOM + SIDEBAR_AUTHOR + SIDEBAR_BEST_RATED + SIDEBAR_READ_AND_UNREAD + SIDEBAR_RECENT + \
-            SIDEBAR_SORTED + MATURE_CONTENT + SIDEBAR_PUBLISHER + SIDEBAR_RATING + SIDEBAR_FORMAT
+    user.role = constants.ADMIN_USER_ROLES
+    user.sidebar_view = constants.ADMIN_USER_SIDEBAR
 
-    user.password = generate_password_hash(DEFAULT_PASS)
+    user.password = generate_password_hash(constants.DEFAULT_PASSWORD)
 
     session.add(user)
     try:

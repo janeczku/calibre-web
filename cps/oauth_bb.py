@@ -21,30 +21,34 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program. If not, see <http://www.gnu.org/licenses/>
 
-from flask_dance.contrib.github import make_github_blueprint, github
-from flask_dance.contrib.google import make_google_blueprint, google
-from flask_dance.consumer import oauth_authorized, oauth_error
-from oauth import OAuthBackend
-from sqlalchemy.orm.exc import NoResultFound
-from flask import session, request, make_response, abort
+from __future__ import division, print_function, unicode_literals
 import json
-from cps import config, app
-import ub
-from flask_login import login_user, current_user
+from functools import wraps
+from oauth import OAuthBackend
+
+from flask import session, request, make_response, abort
 from flask import Blueprint, flash, redirect, url_for
 from flask_babel import gettext as _
-# from web import github_oauth_required
-from functools import wraps
-from web import login_required
+from flask_dance.consumer import oauth_authorized, oauth_error
+from flask_dance.contrib.github import make_github_blueprint, github
+from flask_dance.contrib.google import make_google_blueprint, google
+from flask_login import login_user, current_user
+from sqlalchemy.orm.exc import NoResultFound
+
+from . import constants, logger, config, app, ub
+from .web import login_required
+# from .web import github_oauth_required
+
 
 oauth_check = {}
 oauth = Blueprint('oauth', __name__)
+log = logger.create()
 
 
 def github_oauth_required(f):
     @wraps(f)
     def inner(*args, **kwargs):
-        if config.config_login_type == ub.LOGIN_OAUTH_GITHUB:
+        if config.config_login_type == constants.LOGIN_OAUTH_GITHUB:
             return f(*args, **kwargs)
         if request.is_xhr:
             data = {'status': 'error', 'message': 'Not Found'}
@@ -59,7 +63,7 @@ def github_oauth_required(f):
 def google_oauth_required(f):
     @wraps(f)
     def inner(*args, **kwargs):
-        if config.config_use_google_oauth == ub.LOGIN_OAUTH_GOOGLE:
+        if config.config_use_google_oauth == constants.LOGIN_OAUTH_GOOGLE:
             return f(*args, **kwargs)
         if request.is_xhr:
             data = {'status': 'error', 'message': 'Not Found'}
@@ -101,7 +105,7 @@ def register_user_with_oauth(user=None):
             try:
                 ub.session.commit()
             except Exception as e:
-                app.logger.exception(e)
+                log.exception(e)
                 ub.session.rollback()
 
 
@@ -133,9 +137,9 @@ if ub.oauth_support:
     google_blueprint.backend = OAuthBackend(ub.OAuth, ub.session, user=current_user, user_required=True)
 
 
-    if config.config_login_type == ub.LOGIN_OAUTH_GITHUB:
+    if config.config_login_type == constants.LOGIN_OAUTH_GITHUB:
         register_oauth_blueprint(github_blueprint, 'GitHub')
-    if config.config_login_type == ub.LOGIN_OAUTH_GOOGLE:
+    if config.config_login_type == constants.LOGIN_OAUTH_GOOGLE:
         register_oauth_blueprint(google_blueprint, 'Google')
 
 
@@ -195,7 +199,7 @@ if ub.oauth_support:
             ub.session.add(oauth)
             ub.session.commit()
         except Exception as e:
-            app.logger.exception(e)
+            log.exception(e)
             ub.session.rollback()
 
         # Disable Flask-Dance's default behavior for saving the OAuth token
@@ -221,7 +225,7 @@ if ub.oauth_support:
                         ub.session.add(oauth)
                         ub.session.commit()
                     except Exception as e:
-                        app.logger.exception(e)
+                        log.exception(e)
                         ub.session.rollback()
                     return redirect(url_for('web.login'))
                 #if config.config_public_reg:
@@ -264,11 +268,11 @@ if ub.oauth_support:
                     logout_oauth_user()
                     flash(_(u"Unlink to %(oauth)s success.", oauth=oauth_check[provider]), category="success")
                 except Exception as e:
-                    app.logger.exception(e)
+                    log.exception(e)
                     ub.session.rollback()
                     flash(_(u"Unlink to %(oauth)s failed.", oauth=oauth_check[provider]), category="error")
         except NoResultFound:
-            app.logger.warning("oauth %s for user %d not fount" % (provider, current_user.id))
+            log.warning("oauth %s for user %d not fount", provider, current_user.id)
             flash(_(u"Not linked to %(oauth)s.", oauth=oauth_check[provider]), category="error")
         return redirect(url_for('web.profile'))
 

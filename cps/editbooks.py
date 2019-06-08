@@ -21,28 +21,25 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-# opds routing functions
-from . import config, language_table, get_locale, app, ub, global_WorkerThread, db
-from flask import request, flash, redirect, url_for, abort, Markup, Response
-from flask import Blueprint
-import datetime
+from __future__ import division, print_function, unicode_literals
 import os
+import datetime
 import json
-from flask_babel import gettext as _
-from uuid import uuid4
-from . import helper
-from .helper import order_authors, common_filters
-from flask_login import current_user
-from .web import login_required_if_no_ano, render_title_template, edit_required, \
-    upload_required, login_required, EXTENSIONS_UPLOAD
-from . import gdriveutils
 from shutil import move, copyfile
-from . import uploader
-from iso639 import languages as isoLanguages
+from uuid import uuid4
+
+from flask import Blueprint, request, flash, redirect, url_for, abort, Markup, Response
+from flask_babel import gettext as _
+from flask_login import current_user
+
+from . import constants, logger, isoLanguages, gdriveutils, uploader, helper
+from . import config, get_locale, db, ub, global_WorkerThread, language_table
+from .helper import order_authors, common_filters
+from .web import login_required_if_no_ano, render_title_template, edit_required, upload_required, login_required
+
 
 editbook = Blueprint('editbook', __name__)
-
-EXTENSIONS_CONVERT = {'pdf', 'epub', 'mobi', 'azw3', 'docx', 'rtf', 'fb2', 'lit', 'lrf', 'txt', 'htmlz', 'rtf', 'odt'}
+log = logger.create()
 
 
 # Modifies different Database objects, first check if elements have to be added to database, than check
@@ -201,7 +198,7 @@ def delete_book(book_id, book_format):
             db.session.commit()
         else:
             # book not found
-            app.logger.info('Book with id "'+str(book_id)+'" could not be deleted')
+            log.error('Book with id "%s" could not be deleted: not found', book_id)
     if book_format:
         return redirect(url_for('editbook.edit_book', book_id=book_id))
     else:
@@ -231,16 +228,16 @@ def render_edit_book(book_id):
     valid_source_formats=list()
     if config.config_ebookconverter == 2:
         for file in book.data:
-            if file.format.lower() in EXTENSIONS_CONVERT:
+            if file.format.lower() in constants.EXTENSIONS_CONVERT:
                 valid_source_formats.append(file.format.lower())
 
     # Determine what formats don't already exist
-    allowed_conversion_formats = EXTENSIONS_CONVERT.copy()
+    allowed_conversion_formats = constants.EXTENSIONS_CONVERT.copy()
     for file in book.data:
         try:
             allowed_conversion_formats.remove(file.format.lower())
         except Exception:
-            app.logger.warning(file.format.lower() + ' already removed from list.')
+            log.warning('%s already removed from list.', file.format.lower())
 
     return render_title_template('book_edit.html', book=book, authors=author_names, cc=cc,
                                  title=_(u"edit metadata"), page="editbook",
@@ -321,7 +318,7 @@ def upload_single_file(request, book, book_id):
         if requested_file.filename != '':
             if '.' in requested_file.filename:
                 file_ext = requested_file.filename.rsplit('.', 1)[-1].lower()
-                if file_ext not in EXTENSIONS_UPLOAD:
+                if file_ext not in constants.EXTENSIONS_UPLOAD:
                     flash(_("File extension '%(ext)s' is not allowed to be uploaded to this server", ext=file_ext),
                           category="error")
                     return redirect(url_for('web.show_book', book_id=book.id))
@@ -352,7 +349,7 @@ def upload_single_file(request, book, book_id):
 
             # Format entry already exists, no need to update the database
             if is_format:
-                app.logger.info('Book format already existing')
+                log.warning('Book format %s already existing', file_ext.upper())
             else:
                 db_format = db.Data(book_id, file_ext.upper(), file_size, file_name)
                 db.session.add(db_format)
@@ -530,7 +527,7 @@ def edit_book(book_id):
                     res = list(language_table[get_locale()].keys())[invers_lang_table.index(lang)]
                     input_l.append(res)
                 except ValueError:
-                    app.logger.error('%s is not a valid language' % lang)
+                    log.error('%s is not a valid language', lang)
                     flash(_(u"%(langname)s is not a valid language", langname=lang), category="error")
             modify_database_object(input_l, book.languages, db.Languages, db.session, 'languages')
 
@@ -569,7 +566,7 @@ def edit_book(book_id):
             flash(error, category="error")
             return render_edit_book(book_id)
     except Exception as e:
-        app.logger.exception(e)
+        log.exception(e)
         db.session.rollback()
         flash(_("Error editing book, please check logfile for details"), category="error")
         return redirect(url_for('web.show_book', book_id=book.id))
@@ -590,7 +587,7 @@ def upload():
             # check if file extension is correct
             if '.' in requested_file.filename:
                 file_ext = requested_file.filename.rsplit('.', 1)[-1].lower()
-                if file_ext not in EXTENSIONS_UPLOAD:
+                if file_ext not in constants.EXTENSIONS_UPLOAD:
                     flash(
                         _("File extension '%(ext)s' is not allowed to be uploaded to this server",
                           ext=file_ext), category="error")
@@ -631,7 +628,7 @@ def upload():
 
             if meta.cover is None:
                 has_cover = 0
-                copyfile(os.path.join(config.get_main_dir, "cps/static/generic_cover.jpg"),
+                copyfile(os.path.join(constants.STATIC_DIR, 'generic_cover.jpg'),
                          os.path.join(filepath, "cover.jpg"))
             else:
                 has_cover = 1
@@ -741,9 +738,7 @@ def convert_bookformat(book_id):
         flash(_(u"Source or destination format for conversion missing"), category="error")
         return redirect(request.environ["HTTP_REFERER"])
 
-    app.logger.debug('converting: book id: ' + str(book_id) +
-                     ' from: ' + request.form['book_format_from'] +
-                     ' to: ' + request.form['book_format_to'])
+    log.info('converting: book id: %s from: %s to: %s', book_id, book_format_from, book_format_to)
     rtn = helper.convert_book_format(book_id, config.config_calibre_dir, book_format_from.upper(),
                                      book_format_to.upper(), current_user.nickname)
 

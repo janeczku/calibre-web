@@ -20,28 +20,27 @@
 #
 #  You should have received a copy of the GNU General Public License
 #  along with this program. If not, see <http://www.gnu.org/licenses/>.
-__all__ =['app']
 
-import mimetypes
-from flask import Flask, request, g
-from flask_login import LoginManager
-from flask_babel import Babel
-import cache_buster
-from reverseproxy import ReverseProxied
-import logging
-from logging.handlers import RotatingFileHandler
-from flask_principal import Principal
-from babel.core import UnknownLocaleError
-from babel import Locale as LC
-from babel import negotiate_locale
-import os
-import ub
+from __future__ import division, print_function, unicode_literals
 import sys
-from ub import Config, Settings
+import os
+import mimetypes
 try:
     import cPickle
 except ImportError:
     import pickle as cPickle
+
+from babel import Locale as LC
+from babel import negotiate_locale
+from babel.core import UnknownLocaleError
+from flask import Flask, request, g
+from flask_login import LoginManager
+from flask_babel import Babel
+from flask_principal import Principal
+
+from . import logger, cache_buster, ub
+from .constants import TRANSLATIONS_DIR as _TRANSLATIONS_DIR
+from .reverseproxy import ReverseProxied
 
 
 mimetypes.init()
@@ -70,12 +69,11 @@ lm.anonymous_user = ub.Anonymous
 
 
 ub.init_db()
-config = Config()
-
+config = ub.Config()
 from . import db
 
 try:
-    with open(os.path.join(config.get_main_dir, 'cps/translations/iso639.pickle'), 'rb') as f:
+    with open(os.path.join(_TRANSLATIONS_DIR, 'iso639.pickle'), 'rb') as f:
         language_table = cPickle.load(f)
 except cPickle.UnpicklingError as error:
     # app.logger.error("Can't read file cps/translations/iso639.pickle: %s", error)
@@ -91,24 +89,14 @@ from .server import server
 Server = server()
 
 babel = Babel()
+log = logger.create()
+
 
 def create_app():
     app.wsgi_app = ReverseProxied(app.wsgi_app)
     cache_buster.init_cache_busting(app)
 
-    formatter = logging.Formatter(
-        "[%(asctime)s] {%(pathname)s:%(lineno)d} %(levelname)s - %(message)s")
-    try:
-        file_handler = RotatingFileHandler(config.get_config_logfile(), maxBytes=50000, backupCount=2)
-    except IOError:
-        file_handler = RotatingFileHandler(os.path.join(config.get_main_dir, "calibre-web.log"),
-                                           maxBytes=50000, backupCount=2)
-        # ToDo: reset logfile value in config class
-    file_handler.setFormatter(formatter)
-    app.logger.addHandler(file_handler)
-    app.logger.setLevel(config.config_log_level)
-
-    app.logger.info('Starting Calibre Web...')
+    log.info('Starting Calibre Web...')
     Principal(app)
     lm.init_app(app)
     app.secret_key = os.getenv('SECRET_KEY', 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT')
@@ -132,7 +120,7 @@ def get_locale():
         try:
             preferred.append(str(LC.parse(x.replace('-', '_'))))
         except (UnknownLocaleError, ValueError) as e:
-            app.logger.debug("Could not parse locale: %s", e)
+            log.warning('Could not parse locale "%s": %s', x, e)
             preferred.append('en')
     return negotiate_locale(preferred, translations)
 
@@ -145,3 +133,6 @@ def get_timezone():
 
 from .updater import Updater
 updater_thread = Updater()
+
+
+__all__ = ['app']

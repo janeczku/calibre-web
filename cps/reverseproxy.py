@@ -37,6 +37,8 @@
 #
 # Inspired by http://flask.pocoo.org/snippets/35/
 
+from __future__ import division, print_function, unicode_literals
+
 
 class ReverseProxied(object):
     """Wrap the application in this middleware and configure the

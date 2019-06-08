@@ -21,22 +21,24 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-# opds routing functions
-from . import config, db
-from flask import request, render_template, Response, g, make_response
-from pagination import Pagination
-from flask import Blueprint
-import datetime
-import ub
-from flask_login import current_user
-from functools import wraps
-from .web import login_required_if_no_ano, common_filters, get_search_results, render_read_books, download_required
-from sqlalchemy.sql.expression import func, text
-from werkzeug.security import check_password_hash
-from .helper import fill_indexpage, get_download_link, get_book_cover
+from __future__ import division, print_function, unicode_literals
 import sys
+import datetime
+from functools import wraps
+
+from flask import Blueprint, request, render_template, Response, g, make_response
+from flask_login import current_user
+from sqlalchemy.sql.expression import func, text, or_, and_
+from werkzeug.security import check_password_hash
+
+from . import logger, config, db, ub
+from .helper import fill_indexpage, get_download_link, get_book_cover
+from .pagination import Pagination
+from .web import common_filters, get_search_results, render_read_books, download_required
+
 
 opds = Blueprint('opds', __name__)
+log = logger.create()
 
 
 def requires_basic_auth_if_no_ano(f):
@@ -231,10 +233,10 @@ def feed_shelf(book_id):
     if current_user.is_anonymous:
         shelf = ub.session.query(ub.Shelf).filter(ub.Shelf.is_public == 1, ub.Shelf.id == book_id).first()
     else:
-        shelf = ub.session.query(ub.Shelf).filter(ub.or_(ub.and_(ub.Shelf.user_id == int(current_user.id),
-                                                                 ub.Shelf.id == book_id),
-                                                         ub.and_(ub.Shelf.is_public == 1,
-                                                                 ub.Shelf.id == book_id))).first()
+        shelf = ub.session.query(ub.Shelf).filter(or_(and_(ub.Shelf.user_id == int(current_user.id),
+                                                           ub.Shelf.id == book_id),
+                                                      and_(ub.Shelf.is_public == 1,
+                                                           ub.Shelf.id == book_id))).first()
     result = list()
     # user is allowed to access shelf
     if shelf:

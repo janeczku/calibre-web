@@ -17,23 +17,35 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program. If not, see <http://www.gnu.org/licenses/>.
 
+from __future__ import division, print_function, unicode_literals
+import os
+import shutil
+
+from flask import Response, stream_with_context
+from sqlalchemy import create_engine
+from sqlalchemy import Column, UniqueConstraint
+from sqlalchemy import String, Integer
+from sqlalchemy.orm import sessionmaker, scoped_session
+from sqlalchemy.ext.declarative import declarative_base
+
 try:
     from pydrive.auth import GoogleAuth
     from pydrive.drive import GoogleDrive
-    from pydrive.auth import RefreshError, InvalidConfigError
+    from pydrive.auth import RefreshError
     from apiclient import errors
     gdrive_support = True
 except ImportError:
     gdrive_support = False
 
-import os
-from . import config, app
-import cli
-import shutil
-from flask import Response, stream_with_context
-from sqlalchemy import *
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import *
+from . import logger, cli, config
+from .constants import BASE_DIR as _BASE_DIR
+
+
+SETTINGS_YAML  = os.path.join(_BASE_DIR, 'settings.yaml')
+CREDENTIALS    = os.path.join(_BASE_DIR, 'gdrive_credentials')
+CLIENT_SECRETS = os.path.join(_BASE_DIR, 'client_secrets.json')
+
+log = logger.create()
 
 
 class Singleton:
@@ -78,7 +90,7 @@ class Singleton:
 @Singleton
 class Gauth:
     def __init__(self):
-        self.auth = GoogleAuth(settings_file=os.path.join(config.get_main_dir,'settings.yaml'))
+        self.auth = GoogleAuth(settings_file=SETTINGS_YAML)
 
 
 @Singleton
@@ -87,8 +99,7 @@ class Gdrive:
         self.drive = getDrive(gauth=Gauth.Instance().auth)
 
 def is_gdrive_ready():
-    return os.path.exists(os.path.join(config.get_main_dir, 'settings.yaml')) and \
-           os.path.exists(os.path.join(config.get_main_dir, 'gdrive_credentials'))
+    return os.path.exists(SETTINGS_YAML) and os.path.exists(CREDENTIALS)
 
 
 engine = create_engine('sqlite:///{0}'.format(cli.gdpath), echo=False)
@@ -150,17 +161,17 @@ migrate()
 def getDrive(drive=None, gauth=None):
     if not drive:
         if not gauth:
-            gauth = GoogleAuth(settings_file=os.path.join(config.get_main_dir,'settings.yaml'))
+            gauth = GoogleAuth(settings_file=SETTINGS_YAML)
         # Try to load saved client credentials
-        gauth.LoadCredentialsFile(os.path.join(config.get_main_dir,'gdrive_credentials'))
+        gauth.LoadCredentialsFile(CREDENTIALS)
         if gauth.access_token_expired:
             # Refresh them if expired
             try:
                 gauth.Refresh()
             except RefreshError as e:
-                app.logger.error("Google Drive error: " + e.message)
+                log.error("Google Drive error: %s", e)
             except Exception as e:
-                app.logger.exception(e)
+                log.exception(e)
         else:
             # Initialize the saved creds
             gauth.Authorize()
@@ -170,7 +181,7 @@ def getDrive(drive=None, gauth=None):
         try:
             drive.auth.Refresh()
         except RefreshError as e:
-            app.logger.error("Google Drive error: " + e.message)
+            log.error("Google Drive error: %s", e)
     return drive
 
 def listRootFolders():
@@ -207,7 +218,7 @@ def getEbooksFolderId(drive=None):
         try:
             gDriveId.gdrive_id = getEbooksFolder(drive)['id']
         except Exception:
-            app.logger.error('Error gDrive, root ID not found')
+            log.error('Error gDrive, root ID not found')
         gDriveId.path = '/'
         session.merge(gDriveId)
         session.commit()
@@ -447,10 +458,10 @@ def getChangeById (drive, change_id):
         change = drive.auth.service.changes().get(changeId=change_id).execute()
         return change
     except (errors.HttpError) as error:
-        app.logger.info(error.message)
+        log.error(error)
         return None
     except Exception as e:
-        app.logger.info(e)
+        log.error(e)
         return None
 
 
@@ -520,6 +531,6 @@ def do_gdrive_download(df, headers):
             if resp.status == 206:
                 yield content
             else:
-                app.logger.info('An error occurred: %s' % resp)
+                log.warning('An error occurred: %s', resp)
                 return
     return Response(stream_with_context(stream()), headers=headers)

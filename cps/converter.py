@@ -17,14 +17,14 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-
+from __future__ import division, print_function, unicode_literals
 import os
-# import subprocess
-import ub
 import re
+
 from flask_babel import gettext as _
-from subproc_wrapper import process_open
+
 from . import config
+from .subproc_wrapper import process_open
 
 
 def versionKindle():

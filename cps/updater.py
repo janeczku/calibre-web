@@ -17,22 +17,28 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-
-from . import config, get_locale, Server, app
-import threading
-import zipfile
-import requests
-import time
-from io import BytesIO
-import os
+from __future__ import division, print_function, unicode_literals
 import sys
-import shutil
-from ub import UPDATE_STABLE
-from tempfile import gettempdir
+import os
 import datetime
 import json
-from flask_babel import gettext as _
+import requests
+import shutil
+import threading
+import time
+import zipfile
+from io import BytesIO
+from tempfile import gettempdir
+
 from babel.dates import format_datetime
+from flask_babel import gettext as _
+
+from . import constants, logger, config, get_locale, Server
+
+
+log = logger.create()
+_REPOSITORY_API_URL = 'https://api.github.com/repos/janeczku/calibre-web'
+
 
 
 def is_sha1(sha1):
@@ -53,13 +59,13 @@ class Updater(threading.Thread):
         self.updateIndex = None
 
     def get_current_version_info(self):
-        if config.get_update_channel == UPDATE_STABLE:
+        if config.get_update_channel == constants.UPDATE_STABLE:
             return self._stable_version_info()
         else:
             return self._nightly_version_info()
 
     def get_available_updates(self, request_method):
-        if config.get_update_channel == UPDATE_STABLE:
+        if config.get_update_channel == constants.UPDATE_STABLE:
             return self._stable_available_updates(request_method)
         else:
             return self._nightly_available_updates(request_method)
@@ -67,45 +73,45 @@ class Updater(threading.Thread):
     def run(self):
         try:
             self.status = 1
-            app.logger.debug(u'Download update file')
+            log.debug(u'Download update file')
             headers = {'Accept': 'application/vnd.github.v3+json'}
             r = requests.get(self._get_request_path(), stream=True, headers=headers)
             r.raise_for_status()
 
             self.status = 2
-            app.logger.debug(u'Opening zipfile')
+            log.debug(u'Opening zipfile')
             z = zipfile.ZipFile(BytesIO(r.content))
             self.status = 3
-            app.logger.debug(u'Extracting zipfile')
+            log.debug(u'Extracting zipfile')
             tmp_dir = gettempdir()
             z.extractall(tmp_dir)
             foldername = os.path.join(tmp_dir, z.namelist()[0])[:-1]
             if not os.path.isdir(foldername):
                 self.status = 11
-                app.logger.info(u'Extracted contents of zipfile not found in temp folder')
+                log.info(u'Extracted contents of zipfile not found in temp folder')
                 return
             self.status = 4
-            app.logger.debug(u'Replacing files')
-            self.update_source(foldername, config.get_main_dir)
+            log.debug(u'Replacing files')
+            self.update_source(foldername, constants.BASE_DIR)
             self.status = 6
-            app.logger.debug(u'Preparing restart of server')
+            log.debug(u'Preparing restart of server')
             time.sleep(2)
             Server.setRestartTyp(True)
             Server.stopServer()
             self.status = 7
             time.sleep(2)
         except requests.exceptions.HTTPError as ex:
-            app.logger.info( u'HTTP Error' + ' ' + str(ex))
+            log.info(u'HTTP Error %s', ex)
             self.status = 8
         except requests.exceptions.ConnectionError:
-            app.logger.info(u'Connection error')
+            log.info(u'Connection error')
             self.status = 9
         except requests.exceptions.Timeout:
-            app.logger.info(u'Timeout while establishing connection')
+            log.info(u'Timeout while establishing connection')
             self.status = 10
         except requests.exceptions.RequestException:
             self.status = 11
-            app.logger.info(u'General error')
+            log.info(u'General error')
 
     def get_update_status(self):
         return self.status
@@ -153,14 +159,14 @@ class Updater(threading.Thread):
         if sys.platform == "win32" or sys.platform == "darwin":
             change_permissions = False
         else:
-            app.logger.debug('Update on OS-System : ' + sys.platform)
+            log.debug('Update on OS-System : %s', sys.platform)
             new_permissions = os.stat(root_dst_dir)
             # print new_permissions
         for src_dir, __, files in os.walk(root_src_dir):
             dst_dir = src_dir.replace(root_src_dir, root_dst_dir, 1)
             if not os.path.exists(dst_dir):
                 os.makedirs(dst_dir)
-                app.logger.debug('Create-Dir: '+dst_dir)
+                log.debug('Create-Dir: %s', dst_dir)
                 if change_permissions:
                     # print('Permissions: User '+str(new_permissions.st_uid)+' Group '+str(new_permissions.st_uid))
                     os.chown(dst_dir, new_permissions.st_uid, new_permissions.st_gid)
@@ -170,22 +176,22 @@ class Updater(threading.Thread):
                 if os.path.exists(dst_file):
                     if change_permissions:
                         permission = os.stat(dst_file)
-                    app.logger.debug('Remove file before copy: '+dst_file)
+                    log.debug('Remove file before copy: %s', dst_file)
                     os.remove(dst_file)
                 else:
                     if change_permissions:
                         permission = new_permissions
                 shutil.move(src_file, dst_dir)
-                app.logger.debug('Move File '+src_file+' to '+dst_dir)
+                log.debug('Move File %s to %s', src_file, dst_dir)
                 if change_permissions:
                     try:
                         os.chown(dst_file, permission.st_uid, permission.st_gid)
                     except (Exception) as e:
                         # ex = sys.exc_info()
                         old_permissions = os.stat(dst_file)
-                        app.logger.debug('Fail change permissions of ' + str(dst_file) + '. Before: '
-                            + str(old_permissions.st_uid) + ':' + str(old_permissions.st_gid) + ' After: '
-                            + str(permission.st_uid) + ':' + str(permission.st_gid) + ' error: '+str(e))
+                        log.debug('Fail change permissions of %s. Before: %s:%s After %s:%s error: %s',
+                                dst_file, old_permissions.st_uid, old_permissions.st_gid,
+                                permission.st_uid, permission.st_gid, e)
         return
 
     def update_source(self, source, destination):
@@ -219,15 +225,15 @@ class Updater(threading.Thread):
         for item in remove_items:
             item_path = os.path.join(destination, item[1:])
             if os.path.isdir(item_path):
-                app.logger.debug("Delete dir " + item_path)
+                log.debug("Delete dir %s", item_path)
                 shutil.rmtree(item_path, ignore_errors=True)
             else:
                 try:
-                    app.logger.debug("Delete file " + item_path)
+                    log.debug("Delete file %s", item_path)
                     # log_from_thread("Delete file " + item_path)
                     os.remove(item_path)
                 except Exception:
-                    app.logger.debug("Could not remove:" + item_path)
+                    log.debug("Could not remove: %s", item_path)
         shutil.rmtree(source, ignore_errors=True)
 
     @classmethod
@@ -243,12 +249,12 @@ class Updater(threading.Thread):
 
     @classmethod
     def _stable_version_info(self):
-        return {'version': '0.6.4 Beta'} # Current version
+        return constants.STABLE_VERSION # Current version
 
     def _nightly_available_updates(self, request_method):
         tz = datetime.timedelta(seconds=time.timezone if (time.localtime().tm_isdst == 0) else time.altzone)
         if request_method == "GET":
-            repository_url = 'https://api.github.com/repos/janeczku/calibre-web'
+            repository_url = _REPOSITORY_API_URL
             status, commit = self._load_remote_data(repository_url +'/git/refs/heads/master')
             parents = []
             if status['message'] != '':
@@ -348,7 +354,7 @@ class Updater(threading.Thread):
         if request_method == "GET":
             parents = []
             # repository_url = 'https://api.github.com/repos/flatpak/flatpak/releases'  # test URL
-            repository_url = 'https://api.github.com/repos/janeczku/calibre-web/releases?per_page=100'
+            repository_url = _REPOSITORY_API_URL + '/releases?per_page=100'
             status, commit = self._load_remote_data(repository_url)
             if status['message'] != '':
                 return json.dumps(status)
@@ -434,10 +440,10 @@ class Updater(threading.Thread):
         return json.dumps(status)
 
     def _get_request_path(self):
-        if config.get_update_channel == UPDATE_STABLE:
+        if config.get_update_channel == constants.UPDATE_STABLE:
             return self.updateFile
         else:
-            return 'https://api.github.com/repos/janeczku/calibre-web/zipball/master'
+            return _REPOSITORY_API_URL + '/zipball/master'
 
     def _load_remote_data(self, repository_url):
         status = {

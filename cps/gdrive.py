@@ -20,26 +20,31 @@
 #
 #  You should have received a copy of the GNU General Public License
 #  along with this program. If not, see <http://www.gnu.org/licenses/>.
+
+from __future__ import division, print_function, unicode_literals
 import os
-from flask import Blueprint
-from . import gdriveutils
-from flask import flash, request, redirect, url_for, abort
-from flask_babel import gettext as _
-from . import app, config, ub, db
-from flask_login import login_required
+import hashlib
 import json
+import tempfile
 from uuid import uuid4
 from time import time
-import tempfile
 from shutil import move, copyfile
-from .web import admin_required
+
+from flask import Blueprint, flash, request, redirect, url_for, abort
+from flask_babel import gettext as _
+from flask_login import login_required
 
 try:
     from googleapiclient.errors import HttpError
 except ImportError:
     pass
 
+from . import logger, gdriveutils, config, ub, db
+from .web import admin_required
+
+
 gdrive = Blueprint('gdrive', __name__)
+log = logger.create()
 
 current_milli_time = lambda: int(round(time() * 1000))
 
@@ -66,10 +71,10 @@ def google_drive_callback():
         abort(403)
     try:
         credentials = gdriveutils.Gauth.Instance().auth.flow.step2_exchange(auth_code)
-        with open(os.path.join(config.get_main_dir,'gdrive_credentials'), 'w') as f:
+        with open(gdriveutils.CREDENTIALS, 'w') as f:
             f.write(credentials.to_json())
     except ValueError as error:
-        app.logger.error(error)
+        log.error(error)
     return redirect(url_for('admin.configuration'))
 
 
@@ -78,7 +83,7 @@ def google_drive_callback():
 @admin_required
 def watch_gdrive():
     if not config.config_google_drive_watch_changes_response:
-        with open(os.path.join(config.get_main_dir,'client_secrets.json'), 'r') as settings:
+        with open(gdriveutils.CLIENT_SECRETS, 'r') as settings:
             filedata = json.load(settings)
         if filedata['web']['redirect_uris'][0].endswith('/'):
             filedata['web']['redirect_uris'][0] = filedata['web']['redirect_uris'][0][:-((len('/gdrive/callback')+1))]
@@ -126,7 +131,7 @@ def revoke_watch_gdrive():
 
 @gdrive.route("/gdrive/watch/callback", methods=['GET', 'POST'])
 def on_received_watch_confirmation():
-    app.logger.debug(request.headers)
+    log.debug('%r', request.headers)
     if request.headers.get('X-Goog-Channel-Token') == gdrive_watch_callback_token \
             and request.headers.get('X-Goog-Resource-State') == 'change' \
             and request.data:
@@ -134,27 +139,26 @@ def on_received_watch_confirmation():
         data = request.data
 
         def updateMetaData():
-            app.logger.info('Change received from gdrive')
-            app.logger.debug(data)
+            log.info('Change received from gdrive')
+            log.debug('%r', data)
             try:
                 j = json.loads(data)
-                app.logger.info('Getting change details')
+                log.info('Getting change details')
                 response = gdriveutils.getChangeById(gdriveutils.Gdrive.Instance().drive, j['id'])
-                app.logger.debug(response)
+                log.debug('%r', response)
                 if response:
                     dbpath = os.path.join(config.config_calibre_dir, "metadata.db")
                     if not response['deleted'] and response['file']['title'] == 'metadata.db' and response['file']['md5Checksum'] != hashlib.md5(dbpath):
                         tmpDir = tempfile.gettempdir()
-                        app.logger.info('Database file updated')
+                        log.info('Database file updated')
                         copyfile(dbpath, os.path.join(tmpDir, "metadata.db_" + str(current_milli_time())))
-                        app.logger.info('Backing up existing and downloading updated metadata.db')
+                        log.info('Backing up existing and downloading updated metadata.db')
                         gdriveutils.downloadFile(None, "metadata.db", os.path.join(tmpDir, "tmp_metadata.db"))
-                        app.logger.info('Setting up new DB')
+                        log.info('Setting up new DB')
                         # prevent error on windows, as os.rename does on exisiting files
                         move(os.path.join(tmpDir, "tmp_metadata.db"), dbpath)
                         db.setup_db()
             except Exception as e:
-                app.logger.info(e.message)
-                app.logger.exception(e)
+                log.exception(e)
         updateMetaData()
     return ''
