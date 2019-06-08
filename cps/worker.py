@@ -140,6 +140,7 @@ class emailbase():
         else:
             raise smtplib.SMTPServerDisconnected('please run connect() first')
 
+    @classmethod
     def _print_debug(self, *args):
         log.debug(args)
 

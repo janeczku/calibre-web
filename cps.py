@@ -23,7 +23,8 @@ import os
 
 
 # Insert local directories into path
-sys.path.append(os.path.join(sys.path[0], 'vendor'))
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'vendor'))
 
 
 from cps import create_app

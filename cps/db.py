@@ -342,7 +342,10 @@ def setup_db():
     try:
         if not os.path.exists(dbpath):
             raise
-        engine = create_engine('sqlite:///' + dbpath, echo=False, isolation_level="SERIALIZABLE", connect_args={'check_same_thread': False})
+        engine = create_engine('sqlite:///' + dbpath,
+                               echo=False,
+                               isolation_level="SERIALIZABLE",
+                               connect_args={'check_same_thread': False})
         conn = engine.connect()
     except Exception:
         content = ub.session.query(ub.Settings).first()

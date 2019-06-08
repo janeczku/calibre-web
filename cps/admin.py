@@ -204,7 +204,7 @@ def view_configuration():
             content.config_default_role |= constants.ROLE_EDIT_SHELFS
 
         val = 0
-        for key,v in to_save.items():
+        for key, __ in to_save.items():
             if key.startswith('show'):
                 val |= int(key[5:])
         content.config_default_show = val

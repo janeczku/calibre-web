@@ -266,10 +266,10 @@ def delete_shelf(shelf_id):
     return redirect(url_for('web.index'))
 
 # @shelf.route("/shelfdown/<int:shelf_id>")
-@shelf.route("/shelf/<int:shelf_id>", defaults={'type': 1})
-@shelf.route("/shelf/<int:shelf_id>/<int:type>")
+@shelf.route("/shelf/<int:shelf_id>", defaults={'shelf_type': 1})
+@shelf.route("/shelf/<int:shelf_id>/<int:shelf_type>")
 @login_required
-def show_shelf(type, shelf_id):
+def show_shelf(shelf_type, shelf_id):
     if current_user.is_anonymous:
         shelf = ub.session.query(ub.Shelf).filter(ub.Shelf.is_public == 1, ub.Shelf.id == shelf_id).first()
     else:
@@ -280,7 +280,7 @@ def show_shelf(type, shelf_id):
     result = list()
     # user is allowed to access shelf
     if shelf:
-        page = "shelf.html" if type == 1 else 'shelfdown.html'
+        page = "shelf.html" if shelf_type == 1 else 'shelfdown.html'
 
         books_in_shelf = ub.session.query(ub.BookShelf).filter(ub.BookShelf.shelf == shelf_id).order_by(
             ub.BookShelf.order.asc()).all()

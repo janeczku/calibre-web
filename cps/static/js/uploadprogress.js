@@ -57,7 +57,7 @@
             this.$modalBar = this.$modal.find(".progress-bar");
 
             // Translate texts
-            this.$modalTitle.text(this.options.modalTitle)
+            this.$modalTitle.text(this.options.modalTitle);
             this.$modalFooter.children("button").text(this.options.modalFooter);
 
             this.$modal.on("hidden.bs.modal", $.proxy(this.reset, this));
@@ -113,8 +113,7 @@
             if (contentType.indexOf("application/json") !== -1) {
                 var response = $.parseJSON(xhr.responseText);
                 url = response.location;
-            }
-            else{
+            } else {
                 url = this.options.redirect_url;
             }
             window.location.href = url;
@@ -136,12 +135,10 @@
                 if (contentType.indexOf("text/plain") !== -1) {
                     responseText = "<pre>" + responseText + "</pre>";
                     document.write(responseText);
-                }
-                else {
+                } else {
                     this.$modalBar.text(responseText);
                 }
-            }
-            else {
+            } else {
                 this.$modalBar.text(this.options.modalTitleFailed);
             }
         },

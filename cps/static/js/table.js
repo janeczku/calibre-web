@@ -15,18 +15,20 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+/* exported TableActions */
+
 $(function() {
 
     $("#domain_submit").click(function(event) {
         event.preventDefault();
         $("#domain_add").ajaxForm();
         $(this).closest("form").submit();
-        $.ajax({
+        $.ajax ({
             method:"get",
             url: window.location.pathname + "/../../ajax/domainlist",
             async: true,
             timeout: 900,
-            success:function(data){
+            success:function(data) {
                 $("#domain-table").bootstrapTable("load", data);
             }
         });

@@ -121,5 +121,5 @@ class StderrLogger(object):
                 self.buffer = ''
             else:
                 self.buffer += message
-        except:
+        except Exception:
             self.logger.debug("Logging Error")
