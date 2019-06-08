@@ -18,40 +18,30 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-
-from . import config, global_WorkerThread, get_locale, db, mimetypes
-from flask import current_app as app
-from tempfile import gettempdir
+from __future__ import division, print_function, unicode_literals
 import sys
-import io
 import os
+import io
+import json
+import mimetypes
+import random
 import re
-import unicodedata
-from .worker import STAT_WAITING, STAT_FAIL, STAT_STARTED, STAT_FINISH_SUCCESS, TASK_EMAIL, TASK_CONVERT, TASK_UPLOAD, \
-    TASK_CONVERT_ANY
+import requests
+import shutil
 import time
+import unicodedata
+from datetime import datetime
+from functools import reduce
+from tempfile import gettempdir
+
+from babel import Locale as LC
+from babel.core import UnknownLocaleError
+from babel.dates import format_datetime
 from flask import send_from_directory, make_response, redirect, abort
 from flask_babel import gettext as _
 from flask_login import current_user
-from babel.dates import format_datetime
-from babel.core import UnknownLocaleError
-from datetime import datetime
-from babel import Locale as LC
-import shutil
-import requests
-from sqlalchemy.sql.expression import true, and_, false, text, func
-from iso639 import languages as isoLanguages
-from pagination import Pagination
+from sqlalchemy.sql.expression import true, false, and_, or_, text, func
 from werkzeug.datastructures import Headers
-import json
-
-try:
-    import gdriveutils as gd
-except ImportError:
-    pass
-import random
-from subproc_wrapper import process_open
-import ub
 
 try:
     from urllib.parse import quote
@@ -71,15 +61,21 @@ except ImportError:
     use_levenshtein = False
 
 try:
-    from functools import reduce
-except ImportError:
-    pass  # We're not using Python 3
-
-try:
     from PIL import Image
     use_PIL = True
 except ImportError:
     use_PIL = False
+
+from . import logger, config, global_WorkerThread, get_locale, db, ub, isoLanguages
+from . import gdriveutils as gd
+from .constants import STATIC_DIR as _STATIC_DIR
+from .pagination import Pagination
+from .subproc_wrapper import process_open
+from .worker import STAT_WAITING, STAT_FAIL, STAT_STARTED, STAT_FINISH_SUCCESS
+from .worker import TASK_EMAIL, TASK_CONVERT, TASK_UPLOAD, TASK_CONVERT_ANY
+
+
+log = logger.create()
 
 
 def update_download(book_id, user_id):
@@ -96,7 +92,7 @@ def convert_book_format(book_id, calibrepath, old_book_format, new_book_format, 
     data = db.session.query(db.Data).filter(db.Data.book == book.id).filter(db.Data.format == old_book_format).first()
     if not data:
         error_message = _(u"%(format)s format not found for book id: %(book)d", format=old_book_format, book=book_id)
-        app.logger.error("convert_book_format: " + error_message)
+        log.error("convert_book_format: %s", error_message)
         return error_message
     if config.config_use_google_drive:
         df = gd.getFileFromEbooksFolder(book.path, data.name + "." + old_book_format.lower())
@@ -190,7 +186,7 @@ def check_send_to_kindle(entry):
                             'text':_('Convert %(orig)s to %(format)s and send to Kindle',orig='Epub',format='Azw3')})'''
         return bookformats
     else:
-        app.logger.error(u'Cannot find book entry %d', entry.id)
+        log.error(u'Cannot find book entry %d', entry.id)
         return None
 
 
@@ -275,8 +271,8 @@ def get_sorted_author(value):
                 value2 = value[-1] + ", " + " ".join(value[:-1])
         else:
             value2 = value
-    except Exception:
-        app.logger.error("Sorting author " + str(value) + "failed")
+    except Exception as ex:
+        log.error("Sorting author %s failed: %s", value, ex)
         value2 = value
     return value2
 
@@ -293,13 +289,12 @@ def delete_book_file(book, calibrepath, book_format=None):
         else:
             if os.path.isdir(path):
                 if len(next(os.walk(path))[1]):
-                    app.logger.error(
-                        "Deleting book " + str(book.id) + " failed, path has subfolders: " + book.path)
+                    log.error("Deleting book %s failed, path has subfolders: %s", book.id, book.path)
                     return False
                 shutil.rmtree(path, ignore_errors=True)
                 return True
             else:
-                app.logger.error("Deleting book " + str(book.id) + " failed, book path not valid: " + book.path)
+                log.error("Deleting book %s failed, book path not valid: %s", book.id, book.path)
                 return False
 
 
@@ -322,7 +317,7 @@ def update_dir_structure_file(book_id, calibrepath, first_author):
             if not os.path.exists(new_title_path):
                 os.renames(path, new_title_path)
             else:
-                app.logger.info("Copying title: " + path + " into existing: " + new_title_path)
+                log.info("Copying title: %s into existing: %s", path, new_title_path)
                 for dir_name, __, file_list in os.walk(path):
                     for file in file_list:
                         os.renames(os.path.join(dir_name, file),
@@ -330,8 +325,8 @@ def update_dir_structure_file(book_id, calibrepath, first_author):
             path = new_title_path
             localbook.path = localbook.path.split('/')[0] + '/' + new_titledir
         except OSError as ex:
-            app.logger.error("Rename title from: " + path + " to " + new_title_path + ": " + str(ex))
-            app.logger.debug(ex, exc_info=True)
+            log.error("Rename title from: %s to %s: %s", path, new_title_path, ex)
+            log.debug(ex, exc_info=True)
             return _("Rename title from: '%(src)s' to '%(dest)s' failed with error: %(error)s",
                      src=path, dest=new_title_path, error=str(ex))
     if authordir != new_authordir:
@@ -340,8 +335,8 @@ def update_dir_structure_file(book_id, calibrepath, first_author):
             os.renames(path, new_author_path)
             localbook.path = new_authordir + '/' + localbook.path.split('/')[1]
         except OSError as ex:
-            app.logger.error("Rename author from: " + path + " to " + new_author_path + ": " + str(ex))
-            app.logger.debug(ex, exc_info=True)
+            log.error("Rename author from: %s to %s: %s", path, new_author_path, ex)
+            log.debug(ex, exc_info=True)
             return _("Rename author from: '%(src)s' to '%(dest)s' failed with error: %(error)s",
                      src=path, dest=new_author_path, error=str(ex))
     # Rename all files from old names to new names
@@ -354,8 +349,8 @@ def update_dir_structure_file(book_id, calibrepath, first_author):
                            os.path.join(path_name, new_name + '.' + file_format.format.lower()))
                 file_format.name = new_name
         except OSError as ex:
-            app.logger.error("Rename file in path " + path + " to " + new_name + ": " + str(ex))
-            app.logger.debug(ex, exc_info=True)
+            log.error("Rename file in path %s to %s: %s", path, new_name, ex)
+            log.debug(ex, exc_info=True)
             return _("Rename file in path '%(src)s' to '%(dest)s' failed with error: %(error)s",
                      src=path, dest=new_name, error=str(ex))
     return False
@@ -454,26 +449,25 @@ def get_book_cover(book_id):
         if config.config_use_google_drive:
             try:
                 if not gd.is_gdrive_ready():
-                    return send_from_directory(os.path.join(os.path.dirname(__file__), "static"), "generic_cover.jpg")
+                    return send_from_directory(_STATIC_DIR, "generic_cover.jpg")
                 path=gd.get_cover_via_gdrive(book.path)
                 if path:
                     return redirect(path)
                 else:
-                    app.logger.error(book.path + '/cover.jpg not found on Google Drive')
-                    return send_from_directory(os.path.join(os.path.dirname(__file__), "static"), "generic_cover.jpg")
+                    log.error('%s/cover.jpg not found on Google Drive', book.path)
+                    return send_from_directory(_STATIC_DIR, "generic_cover.jpg")
             except Exception as e:
-                app.logger.error("Error Message: " + e.message)
-                app.logger.exception(e)
+                log.exception(e)
                 # traceback.print_exc()
-                return send_from_directory(os.path.join(os.path.dirname(__file__), "static"),"generic_cover.jpg")
+                return send_from_directory(_STATIC_DIR,"generic_cover.jpg")
         else:
             cover_file_path = os.path.join(config.config_calibre_dir, book.path)
             if os.path.isfile(os.path.join(cover_file_path, "cover.jpg")):
                 return send_from_directory(cover_file_path, "cover.jpg")
             else:
-                return send_from_directory(os.path.join(os.path.dirname(__file__), "static"),"generic_cover.jpg")
+                return send_from_directory(_STATIC_DIR,"generic_cover.jpg")
     else:
-        return send_from_directory(os.path.join(os.path.dirname(__file__), "static"),"generic_cover.jpg")
+        return send_from_directory(_STATIC_DIR,"generic_cover.jpg")
 
 
 # saves book cover from url
@@ -493,15 +487,15 @@ def save_cover_from_filestorage(filepath, saved_filename, img):
             try:
                 os.makedirs(filepath)
             except OSError:
-                app.logger.error(u"Failed to create path for cover")
+                log.error(u"Failed to create path for cover")
                 return False
         try:
             img.save(os.path.join(filepath, saved_filename))
         except OSError:
-            app.logger.error(u"Failed to store cover-file")
+            log.error(u"Failed to store cover-file")
             return False
         except IOError:
-            app.logger.error(u"Cover-file is not a valid image file")
+            log.error(u"Cover-file is not a valid image file")
             return False
     return True
 
@@ -512,7 +506,7 @@ def save_cover(img, book_path):
 
     if use_PIL:
         if content_type not in ('image/jpeg', 'image/png', 'image/webp'):
-            app.logger.error("Only jpg/jpeg/png/webp files are supported as coverfile")
+            log.error("Only jpg/jpeg/png/webp files are supported as coverfile")
             return False
         # convert to jpg because calibre only supports jpg
         if content_type in ('image/png', 'image/webp'):
@@ -526,7 +520,7 @@ def save_cover(img, book_path):
             img._content = tmp_bytesio.getvalue()
     else:
         if content_type not in ('image/jpeg'):
-            app.logger.error("Only jpg/jpeg files are supported as coverfile")
+            log.error("Only jpg/jpeg files are supported as coverfile")
             return False
 
     if ub.config.config_use_google_drive:
@@ -534,7 +528,7 @@ def save_cover(img, book_path):
         if save_cover_from_filestorage(tmpDir, "uploaded_cover.jpg", img) is True:
             gd.uploadFileToEbooksFolder(os.path.join(book_path, 'cover.jpg'),
                                         os.path.join(tmpDir, "uploaded_cover.jpg"))
-            app.logger.info("Cover is saved on Google Drive")
+            log.info("Cover is saved on Google Drive")
             return True
         else:
             return False
@@ -547,7 +541,7 @@ def do_download_file(book, book_format, data, headers):
     if config.config_use_google_drive:
         startTime = time.time()
         df = gd.getFileFromEbooksFolder(book.path, data.name + "." + book_format)
-        app.logger.debug(time.time() - startTime)
+        log.debug('%s', time.time() - startTime)
         if df:
             return gd.do_gdrive_download(df, headers)
         else:
@@ -556,7 +550,7 @@ def do_download_file(book, book_format, data, headers):
         filename = os.path.join(config.config_calibre_dir, book.path)
         if not os.path.isfile(os.path.join(filename, data.name + "." + book_format)):
             # ToDo: improve error handling
-            app.logger.error('File not found: %s' % os.path.join(filename, data.name + "." + book_format))
+            log.error('File not found: %s', os.path.join(filename, data.name + "." + book_format))
         response = make_response(send_from_directory(filename, data.name + "." + book_format))
         response.headers = headers
         return response
@@ -581,7 +575,7 @@ def check_unrar(unrarLocation):
                     version = value.group(1)
         except OSError as e:
             error = True
-            app.logger.exception(e)
+            log.exception(e)
             version =_(u'Error excecuting UnRar')
     else:
         version = _(u'Unrar binary file not found')
@@ -724,12 +718,12 @@ def get_search_results(term):
     db.Books.authors.any(db.func.lower(db.Authors.name).ilike("%" + term + "%"))
 
     return db.session.query(db.Books).filter(common_filters()).filter(
-        db.or_(db.Books.tags.any(db.func.lower(db.Tags.name).ilike("%" + term + "%")),
-               db.Books.series.any(db.func.lower(db.Series.name).ilike("%" + term + "%")),
-               db.Books.authors.any(and_(*q)),
-               db.Books.publishers.any(db.func.lower(db.Publishers.name).ilike("%" + term + "%")),
-               db.func.lower(db.Books.title).ilike("%" + term + "%")
-               )).all()
+        or_(db.Books.tags.any(db.func.lower(db.Tags.name).ilike("%" + term + "%")),
+            db.Books.series.any(db.func.lower(db.Series.name).ilike("%" + term + "%")),
+            db.Books.authors.any(and_(*q)),
+            db.Books.publishers.any(db.func.lower(db.Publishers.name).ilike("%" + term + "%")),
+            db.func.lower(db.Books.title).ilike("%" + term + "%")
+            )).all()
 
 def get_unique_other_books(library_books, author_books):
     # Get all identifiers (ISBN, Goodreads, etc) and filter author's books by that list so we show fewer duplicates

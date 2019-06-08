@@ -21,35 +21,39 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-from . import mimetypes, global_WorkerThread, searched_ids, lm, babel, ub, config, get_locale, language_table, app, db
-from .helper import common_filters, get_search_results, fill_indexpage, speaking_language, check_valid_domain, \
-    order_authors, get_typeahead, render_task_status, json_serial, get_unique_other_books, get_cc_columns, \
-    get_book_cover, get_download_link, send_mail, generate_random_password, send_registration_mail, \
-    check_send_to_kindle, check_read_formats, lcase
-from flask import render_template, request, redirect, send_from_directory, make_response, g, flash, abort, url_for
-from flask_login import login_user, logout_user, login_required, current_user
-from werkzeug.exceptions import default_exceptions
-from werkzeug.security import generate_password_hash, check_password_hash
-from werkzeug.datastructures import Headers
-from redirect import redirect_back
-from pagination import Pagination
+from __future__ import division, print_function, unicode_literals
+import os
+import base64
+import datetime
+import json
+import mimetypes
+
 from babel import Locale as LC
 from babel.dates import format_date
 from babel.core import UnknownLocaleError
+from flask import Blueprint
+from flask import render_template, request, redirect, send_from_directory, make_response, g, flash, abort, url_for
 from flask_babel import gettext as _
-from sqlalchemy.sql.expression import text, func, true, false, not_
+from flask_login import login_user, logout_user, login_required, current_user
 from sqlalchemy.exc import IntegrityError
-import base64
-import os.path
-import json
-import datetime
-import isoLanguages
-from .gdriveutils import getFileFromEbooksFolder, do_gdrive_download
+from sqlalchemy.sql.expression import text, func, true, false, not_, and_
+from werkzeug.exceptions import default_exceptions
+from werkzeug.datastructures import Headers
+from werkzeug.security import generate_password_hash, check_password_hash
 
+from . import constants, logger, isoLanguages
+from . import global_WorkerThread, searched_ids, lm, babel, db, ub, config, get_locale, app, language_table
+from .gdriveutils import getFileFromEbooksFolder, do_gdrive_download
+from .helper import common_filters, get_search_results, fill_indexpage, speaking_language, check_valid_domain, \
+        order_authors, get_typeahead, render_task_status, json_serial, get_unique_other_books, get_cc_columns, \
+        get_book_cover, get_download_link, send_mail, generate_random_password, send_registration_mail, \
+        check_send_to_kindle, check_read_formats, lcase
+from .pagination import Pagination
+from .redirect import redirect_back
 
 feature_support = dict()
 try:
-    from oauth_bb import oauth_check, register_user_with_oauth, logout_oauth_user, get_oauth_status
+    from .oauth_bb import oauth_check, register_user_with_oauth, logout_oauth_user, get_oauth_status
     feature_support['oauth'] = True
 except ImportError:
     feature_support['oauth'] = False
@@ -72,32 +76,17 @@ try:
 except ImportError:
     pass  # We're not using Python 3
 
-try:
-    import rarfile
-    feature_support['rar'] = True
-except ImportError:
-    feature_support['rar'] = False
+# try:
+#     import rarfile
+#     feature_support['rar'] = True
+# except ImportError:
+#     feature_support['rar'] = False
 
 try:
     from natsort import natsorted as sort
 except ImportError:
     sort = sorted # Just use regular sort then, may cause issues with badly named pages in cbz/cbr files
 
-from flask import Blueprint
-
-# Global variables
-
-EXTENSIONS_AUDIO = {'mp3', 'm4a', 'm4b'}
-
-EXTENSIONS_UPLOAD = {'txt', 'pdf', 'epub', 'mobi', 'azw', 'azw3', 'cbr', 'cbz', 'cbt', 'djvu', 'prc', 'doc', 'docx',
-                      'fb2', 'html', 'rtf', 'odt', 'mp3',  'm4a', 'm4b'}
-
-
-'''EXTENSIONS_READER = set(['txt', 'pdf', 'epub', 'zip', 'cbz', 'tar', 'cbt'] +
-                        (['rar','cbr'] if feature_support['rar'] else []))'''
-
-
-# with app.app_context():
 
 # custom error page
 def error_http(error):
@@ -116,6 +105,7 @@ for ex in default_exceptions:
 
 
 web = Blueprint('web', __name__)
+log = logger.create()
 
 # ################################### Login logic and rights management ###############################################
 
@@ -238,7 +228,7 @@ def edit_required(f):
 # Returns the template for rendering and includes the instance name
 def render_title_template(*args, **kwargs):
     sidebar=ub.get_sidebar_config(kwargs)
-    return render_template(instance=config.config_calibre_web_title, sidebar=sidebar, accept=EXTENSIONS_UPLOAD,
+    return render_template(instance=config.config_calibre_web_title, sidebar=sidebar, accept=constants.EXTENSIONS_UPLOAD,
                            *args, **kwargs)
 
 
@@ -272,9 +262,9 @@ def get_email_status_json():
 @login_required
 def bookmark(book_id, book_format):
     bookmark_key = request.form["bookmark"]
-    ub.session.query(ub.Bookmark).filter(ub.and_(ub.Bookmark.user_id == int(current_user.id),
-                                                 ub.Bookmark.book_id == book_id,
-                                                 ub.Bookmark.format == book_format)).delete()
+    ub.session.query(ub.Bookmark).filter(and_(ub.Bookmark.user_id == int(current_user.id),
+                                              ub.Bookmark.book_id == book_id,
+                                              ub.Bookmark.format == book_format)).delete()
     if not bookmark_key:
         ub.session.commit()
         return "", 204
@@ -292,8 +282,8 @@ def bookmark(book_id, book_format):
 @login_required
 def toggle_read(book_id):
     if not config.config_read_column:
-        book = ub.session.query(ub.ReadBook).filter(ub.and_(ub.ReadBook.user_id == int(current_user.id),
-                                                                   ub.ReadBook.book_id == book_id)).first()
+        book = ub.session.query(ub.ReadBook).filter(and_(ub.ReadBook.user_id == int(current_user.id),
+                                                         ub.ReadBook.book_id == book_id)).first()
         if book:
             book.is_read = not book.is_read
         else:
@@ -318,8 +308,7 @@ def toggle_read(book_id):
                 db.session.add(new_cc)
                 db.session.commit()
         except KeyError:
-            app.logger.error(
-                    u"Custom Column No.%d is not exisiting in calibre database" % config.config_read_column)
+            log.error(u"Custom Column No.%d is not exisiting in calibre database", config.config_read_column)
     return ""
 
 '''
@@ -342,10 +331,10 @@ def get_comic_book(book_id, book_format, page):
                             extract = lambda page: rf.read(names[page])
                         except:
                             # rarfile not valid
-                            app.logger.error('Unrar binary not found, or unable to decompress file ' + cbr_file)
+                            log.error('Unrar binary not found, or unable to decompress file %s', cbr_file)
                             return "", 204
                     else:
-                        app.logger.info('Unrar is not supported please install python rarfile extension')
+                        log.info('Unrar is not supported please install python rarfile extension')
                         # no support means return nothing
                         return "", 204
                 elif book_format in ("cbz", "zip"):
@@ -357,7 +346,7 @@ def get_comic_book(book_id, book_format, page):
                     names=sort(tf.getnames())
                     extract = lambda page: tf.extractfile(names[page]).read()
                 else:
-                    app.logger.error('unsupported comic format')
+                    log.error('unsupported comic format')
                     return "", 204
 
                 if sys.version_info.major >= 3:
@@ -477,7 +466,7 @@ def books_list(data, sort, book_id, page):
         order = [db.Books.timestamp]
 
     if data == "rated":
-        if current_user.check_visibility(ub.SIDEBAR_BEST_RATED):
+        if current_user.check_visibility(constants.SIDEBAR_BEST_RATED):
             entries, random, pagination = fill_indexpage(page, db.Books, db.Books.ratings.any(db.Ratings.rating > 9),
                                                          order)
             return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
@@ -485,7 +474,7 @@ def books_list(data, sort, book_id, page):
         else:
             abort(404)
     elif data == "discover":
-        if current_user.check_visibility(ub.SIDEBAR_RANDOM):
+        if current_user.check_visibility(constants.SIDEBAR_RANDOM):
             entries, __, pagination = fill_indexpage(page, db.Books, True, [func.randomblob(2)])
             pagination = Pagination(1, config.config_books_per_page, config.config_books_per_page)
             return render_title_template('discover.html', entries=entries, pagination=pagination,
@@ -517,7 +506,7 @@ def books_list(data, sort, book_id, page):
 
 
 def render_hot_books(page):
-    if current_user.check_visibility(ub.SIDEBAR_HOT):
+    if current_user.check_visibility(constants.SIDEBAR_HOT):
         if current_user.show_detail_random():
             random = db.session.query(db.Books).filter(common_filters()) \
                 .order_by(func.random()).limit(config.config_random_books)
@@ -564,7 +553,7 @@ def render_author_books(page, book_id, order):
             other_books = get_unique_other_books(entries.all(), author_info.books)
         except Exception:
             # Skip goodreads, if site is down/inaccessible
-            app.logger.error('Goodreads website is down/inaccessible')
+            log.error('Goodreads website is down/inaccessible')
 
     return render_title_template('author.html', entries=entries, pagination=pagination,
                                  title=name, author=author_info, other_books=other_books, page="author")
@@ -630,7 +619,7 @@ def render_category_books(page, book_id, order):
 @web.route("/author")
 @login_required_if_no_ano
 def author_list():
-    if current_user.check_visibility(ub.SIDEBAR_AUTHOR):
+    if current_user.check_visibility(constants.SIDEBAR_AUTHOR):
         entries = db.session.query(db.Authors, func.count('books_authors_link.book').label('count'))\
             .join(db.books_authors_link).join(db.Books).filter(common_filters())\
             .group_by(text('books_authors_link.author')).order_by(db.Authors.sort).all()
@@ -648,7 +637,7 @@ def author_list():
 @web.route("/publisher")
 @login_required_if_no_ano
 def publisher_list():
-    if current_user.check_visibility(ub.SIDEBAR_PUBLISHER):
+    if current_user.check_visibility(constants.SIDEBAR_PUBLISHER):
         entries = db.session.query(db.Publishers, func.count('books_publishers_link.book').label('count'))\
             .join(db.books_publishers_link).join(db.Books).filter(common_filters())\
             .group_by(text('books_publishers_link.publisher')).order_by(db.Publishers.sort).all()
@@ -664,7 +653,7 @@ def publisher_list():
 @web.route("/series")
 @login_required_if_no_ano
 def series_list():
-    if current_user.check_visibility(ub.SIDEBAR_SERIES):
+    if current_user.check_visibility(constants.SIDEBAR_SERIES):
         entries = db.session.query(db.Series, func.count('books_series_link.book').label('count'))\
             .join(db.books_series_link).join(db.Books).filter(common_filters())\
             .group_by(text('books_series_link.series')).order_by(db.Series.sort).all()
@@ -680,7 +669,7 @@ def series_list():
 @web.route("/ratings")
 @login_required_if_no_ano
 def ratings_list():
-    if current_user.check_visibility(ub.SIDEBAR_RATING):
+    if current_user.check_visibility(constants.SIDEBAR_RATING):
         entries = db.session.query(db.Ratings, func.count('books_ratings_link.book').label('count'),
                                    (db.Ratings.rating/2).label('name'))\
             .join(db.books_ratings_link).join(db.Books).filter(common_filters())\
@@ -694,7 +683,7 @@ def ratings_list():
 @web.route("/formats")
 @login_required_if_no_ano
 def formats_list():
-    if current_user.check_visibility(ub.SIDEBAR_FORMAT):
+    if current_user.check_visibility(constants.SIDEBAR_FORMAT):
         entries = db.session.query(db.Data, func.count('data.book').label('count'),db.Data.format.label('format'))\
             .join(db.Books).filter(common_filters())\
             .group_by(db.Data.format).order_by(db.Data.format).all()
@@ -707,7 +696,7 @@ def formats_list():
 @web.route("/language")
 @login_required_if_no_ano
 def language_overview():
-    if current_user.check_visibility(ub.SIDEBAR_LANGUAGE):
+    if current_user.check_visibility(constants.SIDEBAR_LANGUAGE):
         charlist = list()
         if current_user.filter_language() == u"all":
             languages = speaking_language()
@@ -753,7 +742,7 @@ def language(name, page):
 @web.route("/category")
 @login_required_if_no_ano
 def category_list():
-    if current_user.check_visibility(ub.SIDEBAR_CATEGORY):
+    if current_user.check_visibility(constants.SIDEBAR_CATEGORY):
         entries = db.session.query(db.Tags, func.count('books_tags_link.book').label('count'))\
             .join(db.books_tags_link).join(db.Books).order_by(db.Tags.name).filter(common_filters())\
             .group_by(text('books_tags_link.tag')).all()
@@ -945,7 +934,7 @@ def render_read_books(page, are_read, as_xml=False, order=None):
                 .filter(db.cc_classes[config.config_read_column].value is True).all()
             readBookIds = [x.book for x in readBooks]
         except KeyError:
-            app.logger.error(u"Custom Column No.%d is not existing in calibre database" % config.config_read_column)
+            log.error("Custom Column No.%d is not existing in calibre database", config.config_read_column)
             readBookIds = []
 
     if are_read:
@@ -988,7 +977,7 @@ def serve_book(book_id, book_format):
     book = db.session.query(db.Books).filter(db.Books.id == book_id).first()
     data = db.session.query(db.Data).filter(db.Data.book == book.id).filter(db.Data.format == book_format.upper())\
         .first()
-    app.logger.info('Serving book: %s', data.name)
+    log.info('Serving book: %s', data.name)
     if config.config_use_google_drive:
         headers = Headers()
         try:
@@ -1058,7 +1047,7 @@ def register():
                 content.password = generate_password_hash(password)
                 content.role = config.config_default_role
                 content.sidebar_view = config.config_default_show
-                content.mature_content = bool(config.config_default_show & ub.MATURE_CONTENT)
+                content.mature_content = bool(config.config_default_show & constants.MATURE_CONTENT)
                 try:
                     ub.session.add(content)
                     ub.session.commit()
@@ -1071,8 +1060,7 @@ def register():
                     return render_title_template('register.html', title=_(u"register"), page="register")
             else:
                 flash(_(u"Your e-mail is not allowed to register"), category="error")
-                app.logger.info('Registering failed for user "' + to_save['nickname'] + '" e-mail adress: ' +
-                                to_save["email"])
+                log.info('Registering failed for user "%s" e-mail adress: %s', to_save['nickname'], to_save["email"])
                 return render_title_template('register.html', title=_(u"register"), page="register")
             flash(_(u"Confirmation e-mail was send to your e-mail account."), category="success")
             return redirect(url_for('web.login'))
@@ -1104,10 +1092,10 @@ def login():
                 return redirect_back(url_for("web.index"))
             except ldap.INVALID_CREDENTIALS:
                 ipAdress = request.headers.get('X-Forwarded-For', request.remote_addr)
-                app.logger.info('LDAP Login failed for user "' + form['username'] + '" IP-adress: ' + ipAdress)
+                log.info('LDAP Login failed for user "%s" IP-adress: %s', form['username'], ipAdress)
                 flash(_(u"Wrong Username or Password"), category="error")
             except ldap.SERVER_DOWN:
-                app.logger.info('LDAP Login failed, LDAP Server down')
+                log.info('LDAP Login failed, LDAP Server down')
                 flash(_(u"Could not login. LDAP server down, please contact your administrator"), category="error")
         else:
             if user and check_password_hash(user.password, form['password']) and user.nickname is not "Guest":
@@ -1116,7 +1104,7 @@ def login():
                 return redirect_back(url_for("web.index"))
             else:
                 ipAdress = request.headers.get('X-Forwarded-For', request.remote_addr)
-                app.logger.info('Login failed for user "' + form['username'] + '" IP-adress: ' + ipAdress)
+                log.info('Login failed for user "%s" IP-adress: %s', form['username'], ipAdress)
                 flash(_(u"Wrong Username or Password"), category="error")
 
     next_url = url_for('web.index')
@@ -1263,7 +1251,7 @@ def profile():
                 val += int(key[5:])
         current_user.sidebar_view = val
         if "Show_detail_random" in to_save:
-            current_user.sidebar_view += ub.DETAIL_RANDOM
+            current_user.sidebar_view += constants.DETAIL_RANDOM
 
         current_user.mature_content = "Show_mature_content" in to_save
 
@@ -1297,9 +1285,9 @@ def read_book(book_id, book_format):
     # check if book has bookmark
     bookmark = None
     if current_user.is_authenticated:
-        bookmark = ub.session.query(ub.Bookmark).filter(ub.and_(ub.Bookmark.user_id == int(current_user.id),
-                                                                ub.Bookmark.book_id == book_id,
-                                                                ub.Bookmark.format == book_format.upper())).first()
+        bookmark = ub.session.query(ub.Bookmark).filter(and_(ub.Bookmark.user_id == int(current_user.id),
+                                                             ub.Bookmark.book_id == book_id,
+                                                             ub.Bookmark.format == book_format.upper())).first()
     if book_format.lower() == "epub":
         return render_title_template('read.html', bookid=book_id, title=_(u"Read a Book"), bookmark=bookmark)
     elif book_format.lower() == "pdf":
@@ -1350,15 +1338,14 @@ def show_book(book_id):
         if not current_user.is_anonymous:
             if not config.config_read_column:
                 matching_have_read_book = ub.session.query(ub.ReadBook).\
-                    filter(ub.and_(ub.ReadBook.user_id == int(current_user.id), ub.ReadBook.book_id == book_id)).all()
+                    filter(and_(ub.ReadBook.user_id == int(current_user.id), ub.ReadBook.book_id == book_id)).all()
                 have_read = len(matching_have_read_book) > 0 and matching_have_read_book[0].is_read
             else:
                 try:
                     matching_have_read_book = getattr(entries, 'custom_column_'+str(config.config_read_column))
                     have_read = len(matching_have_read_book) > 0 and matching_have_read_book[0].value
                 except KeyError:
-                    app.logger.error(
-                        u"Custom Column No.%d is not exisiting in calibre database" % config.config_read_column)
+                    log.error("Custom Column No.%d is not exisiting in calibre database", config.config_read_column)
                     have_read = None
 
         else:
@@ -1373,7 +1360,7 @@ def show_book(book_id):
 
         audioentries = []
         for media_format in entries.data:
-            if media_format.format.lower() in EXTENSIONS_AUDIO:
+            if media_format.format.lower() in constants.EXTENSIONS_AUDIO:
                 audioentries.append(media_format.format.lower())
 
         return render_title_template('detail.html', entry=entries, audioentries=audioentries, cc=cc,

@@ -17,12 +17,11 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-
-from socket import error as SocketError
+from __future__ import division, print_function, unicode_literals
 import sys
 import os
 import signal
-from . import config, global_WorkerThread
+import socket
 
 try:
     from gevent.pywsgi import WSGIServer
@@ -35,6 +34,11 @@ except ImportError:
     from tornado.ioloop import IOLoop
     from tornado import version as tornadoVersion
     gevent_present = False
+
+from . import logger, config, global_WorkerThread
+
+
+log = logger.create()
 
 
 class server:
@@ -49,76 +53,77 @@ class server:
 
     def init_app(self, application):
         self.app = application
+        self.port = config.config_port
+
+        self.ssl_args = None
+        certfile_path = config.get_config_certfile()
+        keyfile_path = config.get_config_keyfile()
+        if certfile_path and keyfile_path:
+            if os.path.isfile(certfile_path) and os.path.isfile(keyfile_path):
+                self.ssl_args = {"certfile": certfile_path,
+                                  "keyfile": keyfile_path}
+            else:
+                log.warning('The specified paths for the ssl certificate file and/or key file seem to be broken. Ignoring ssl.')
+                log.warning('Cert path: %s', certfile_path)
+                log.warning('Key path:  %s', keyfile_path)
+
+    def _make_gevent_socket(self):
+        if os.name == 'nt':
+            return ('0.0.0.0', self.port)
+
+        try:
+            s = WSGIServer.get_listener(('', self.port), family=socket.AF_INET6)
+        except socket.error as ex:
+            log.error('%s', ex)
+            log.warning('Unable to listen on \'\', trying on IPv4 only...')
+            s = WSGIServer.get_listener(('', self.port), family=socket.AF_INET)
+        log.debug("%r %r", s._sock, s._sock.getsockname())
+        return s
 
     def start_gevent(self):
-        ssl_args = dict()
-        try:
-            certfile_path = config.get_config_certfile()
-            keyfile_path = config.get_config_keyfile()
-            if certfile_path and keyfile_path:
-                if os.path.isfile(certfile_path) and os.path.isfile(keyfile_path):
-                    ssl_args = {"certfile": certfile_path,
-                                "keyfile": keyfile_path}
-                else:
-                    self.app.logger.info('The specified paths for the ssl certificate file and/or key file seem '
-                                         'to be broken. Ignoring ssl. Cert path: %s | Key path: '
-                                         '%s' % (certfile_path, keyfile_path))
-            if os.name == 'nt':
-                self.wsgiserver = WSGIServer(('0.0.0.0', config.config_port), self.app, spawn=Pool(), **ssl_args)
-            else:
-                self.wsgiserver = WSGIServer(('', config.config_port), self.app, spawn=Pool(), **ssl_args)
-            self.wsgiserver.serve_forever()
+        ssl_args = self.ssl_args or {}
+        log.info('Starting Gevent server')
 
-        except SocketError:
-            try:
-                self.app.logger.info('Unable to listen on \'\', trying on IPv4 only...')
-                self.wsgiserver = WSGIServer(('0.0.0.0', config.config_port), self.app, spawn=Pool(), **ssl_args)
-                self.wsgiserver.serve_forever()
-            except (OSError, SocketError) as e:
-                self.app.logger.info("Error starting server: %s" % e.strerror)
-                print("Error starting server: %s" % e.strerror)
-                global_WorkerThread.stop()
-                sys.exit(1)
+        try:
+            sock = self._make_gevent_socket()
+            self.wsgiserver = WSGIServer(sock, self.app, spawn=Pool(), **ssl_args)
+            self.wsgiserver.serve_forever()
+        except (OSError, socket.error) as e:
+            log.info("Error starting server: %s", e.strerror)
+            print("Error starting server: %s" % e.strerror)
+            global_WorkerThread.stop()
+            sys.exit(1)
         except Exception:
-            self.app.logger.info("Unknown error while starting gevent")
+            log.exception("Unknown error while starting gevent")
+
+    def start_tornado(self):
+        log.info('Starting Tornado server')
+
+        try:
+            # Max Buffersize set to 200MB
+            http_server = HTTPServer(WSGIContainer(self.app),
+                        max_buffer_size = 209700000,
+                        ssl_options=self.ssl_args)
+            http_server.listen(self.port)
+            self.wsgiserver=IOLoop.instance()
+            self.wsgiserver.start()
+            # wait for stop signal
+            self.wsgiserver.close(True)
+        except socket.error as err:
+            log.exception("Error starting tornado server")
+            print("Error starting server: %s" % err.strerror)
+            global_WorkerThread.stop()
+            sys.exit(1)
 
     def startServer(self):
         if gevent_present:
-            self.app.logger.info('Starting Gevent server')
             # leave subprocess out to allow forking for fetchers and processors
             self.start_gevent()
         else:
-            try:
-                ssl = None
-                self.app.logger.info('Starting Tornado server')
-                certfile_path = config.get_config_certfile()
-                keyfile_path = config.get_config_keyfile()
-                if certfile_path and keyfile_path:
-                    if os.path.isfile(certfile_path) and os.path.isfile(keyfile_path):
-                        ssl = {"certfile": certfile_path,
-                               "keyfile": keyfile_path}
-                    else:
-                        self.app.logger.info('The specified paths for the ssl certificate file and/or key file '
-                                             'seem to be broken. Ignoring ssl. Cert path: %s | Key '
-                                             'path: %s' % (certfile_path, keyfile_path))
-
-                # Max Buffersize set to 200MB
-                http_server = HTTPServer(WSGIContainer(self.app),
-                            max_buffer_size = 209700000,
-                            ssl_options=ssl)
-                http_server.listen(config.config_port)
-                self.wsgiserver=IOLoop.instance()
-                self.wsgiserver.start()
-                # wait for stop signal
-                self.wsgiserver.close(True)
-            except SocketError as e:
-                self.app.logger.info("Error starting server: %s" % e.strerror)
-                print("Error starting server: %s" % e.strerror)
-                global_WorkerThread.stop()
-                sys.exit(1)
+            self.start_tornado()
 
         if self.restart is True:
-            self.app.logger.info("Performing restart of Calibre-Web")
+            log.info("Performing restart of Calibre-Web")
             global_WorkerThread.stop()
             if os.name == 'nt':
                 arguments = ["\"" + sys.executable + "\""]
@@ -128,7 +133,7 @@ class server:
             else:
                 os.execl(sys.executable, sys.executable, *sys.argv)
         else:
-            self.app.logger.info("Performing shutdown of Calibre-Web")
+            log.info("Performing shutdown of Calibre-Web")
             global_WorkerThread.stop()
         sys.exit(0)
 

@@ -17,17 +17,21 @@
 #   You should have received a copy of the GNU General Public License
 #   along with this program. If not, see <http://www.gnu.org/licenses/>.
 
+from __future__ import division, print_function, unicode_literals
 import os
-from constants import BookMeta
-from cps import app
-from iso639 import languages as isoLanguages
+
+from . import logger, isoLanguages
+from .constants import BookMeta
+
+
+log = logger.create()
 
 
 try:
     from comicapi.comicarchive import ComicArchive, MetaDataStyle
     use_comic_meta = True
 except ImportError as e:
-    app.logger.warning('cannot import comicapi, extracting comic metadata will not work: %s', e)
+    log.warning('cannot import comicapi, extracting comic metadata will not work: %s', e)
     import zipfile
     import tarfile
     use_comic_meta = False

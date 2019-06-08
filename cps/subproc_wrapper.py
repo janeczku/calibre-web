@@ -16,9 +16,11 @@
 #
 #  You should have received a copy of the GNU General Public License
 #  along with this program. If not, see <http://www.gnu.org/licenses/>.
-import subprocess
-import os
+
+from __future__ import division, print_function, unicode_literals
 import sys
+import os
+import subprocess
 
 
 def process_open(command, quotes=(), env=None, sout=subprocess.PIPE):

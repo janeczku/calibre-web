@@ -21,28 +21,31 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program. If not, see <http://www.gnu.org/licenses/>.
 
+from __future__ import division, print_function, unicode_literals
 import os
-from flask import Blueprint, flash, redirect, url_for
-from flask import abort, request, make_response
-from flask_login import login_required, current_user, logout_user
-from .web import admin_required, render_title_template,  before_request, unconfigured, \
-    login_required_if_no_ano
-from . import db, ub, Server, get_locale, config, app, updater_thread, babel
 import json
-from datetime import datetime, timedelta
 import time
-from babel.dates import format_datetime
-from flask_babel import gettext as _
-from babel import Locale as LC
-from sqlalchemy.exc import IntegrityError
-from .gdriveutils import is_gdrive_ready, gdrive_support, downloadFile, deleteDatabaseOnChange, listRootFolders
-from .helper import speaking_language, check_valid_domain, check_unrar, send_test_mail, generate_random_password, \
-    send_registration_mail
-from werkzeug.security import generate_password_hash
+from datetime import datetime, timedelta
 try:
     from imp import reload
 except ImportError:
     pass
+
+from babel import Locale as LC
+from babel.dates import format_datetime
+from flask import Blueprint, flash, redirect, url_for, abort, request, make_response
+from flask_login import login_required, current_user, logout_user
+from flask_babel import gettext as _
+from sqlalchemy import and_
+from sqlalchemy.exc import IntegrityError
+from werkzeug.security import generate_password_hash
+
+from . import constants, logger
+from . import db, ub, Server, get_locale, config, updater_thread, babel, gdriveutils
+from .helper import speaking_language, check_valid_domain, check_unrar, send_test_mail, generate_random_password, \
+                    send_registration_mail
+from .gdriveutils import is_gdrive_ready, gdrive_support, downloadFile, deleteDatabaseOnChange, listRootFolders
+from .web import admin_required, render_title_template,  before_request, unconfigured, login_required_if_no_ano
 
 feature_support = dict()
 try:
@@ -51,11 +54,11 @@ try:
 except ImportError:
     feature_support['goodreads'] = False
 
-try:
-    import rarfile
-    feature_support['rar'] = True
-except ImportError:
-    feature_support['rar'] = False
+# try:
+#     import rarfile
+#     feature_support['rar'] = True
+# except ImportError:
+#     feature_support['rar'] = False
 
 try:
     import ldap
@@ -70,8 +73,10 @@ except ImportError:
     feature_support['oauth'] = False
     oauth_check = {}
 
+
 feature_support['gdrive'] = gdrive_support
 admi = Blueprint('admin', __name__)
+log = logger.create()
 
 
 @admi.route("/admin")
@@ -174,7 +179,7 @@ def view_configuration():
         if "config_mature_content_tags" in to_save:
             content.config_mature_content_tags = to_save["config_mature_content_tags"].strip()
         if "Show_mature_content" in to_save:
-            content.config_default_show = content.config_default_show + ub.MATURE_CONTENT
+            content.config_default_show |= constants.MATURE_CONTENT
 
         if "config_authors_max" in to_save:
             content.config_authors_max = int(to_save["config_authors_max"])
@@ -182,26 +187,26 @@ def view_configuration():
         # Default user configuration
         content.config_default_role = 0
         if "admin_role" in to_save:
-            content.config_default_role = content.config_default_role + ub.ROLE_ADMIN
+            content.config_default_role |= constants.ROLE_ADMIN
         if "download_role" in to_save:
-            content.config_default_role = content.config_default_role + ub.ROLE_DOWNLOAD
+            content.config_default_role |= constants.ROLE_DOWNLOAD
         if "viewer_role" in to_save:
-            content.config_default_role = content.config_default_role + ub.ROLE_VIEWER
+            content.config_default_role |= constants.ROLE_VIEWER
         if "upload_role" in to_save:
-            content.config_default_role = content.config_default_role + ub.ROLE_UPLOAD
+            content.config_default_role |= constants.ROLE_UPLOAD
         if "edit_role" in to_save:
-            content.config_default_role = content.config_default_role + ub.ROLE_EDIT
+            content.config_default_role |= constants.ROLE_EDIT
         if "delete_role" in to_save:
-            content.config_default_role = content.config_default_role + ub.ROLE_DELETE_BOOKS
+            content.config_default_role |= constants.ROLE_DELETE_BOOKS
         if "passwd_role" in to_save:
-            content.config_default_role = content.config_default_role + ub.ROLE_PASSWD
+            content.config_default_role |= constants.ROLE_PASSWD
         if "edit_shelf_role" in to_save:
-            content.config_default_role = content.config_default_role + ub.ROLE_EDIT_SHELFS
+            content.config_default_role |= constants.ROLE_EDIT_SHELFS
 
         val = 0
         for key,v in to_save.items():
             if key.startswith('show'):
-                val += int(key[5:])
+                val |= int(key[5:])
         content.config_default_show = val
 
         ub.session.commit()
@@ -215,9 +220,9 @@ def view_configuration():
             # stop Server
             Server.setRestartTyp(True)
             Server.stopServer()
-            app.logger.info('Reboot required, restarting')
+            log.info('Reboot required, restarting')
     readColumn = db.session.query(db.Custom_Columns)\
-            .filter(db.and_(db.Custom_Columns.datatype == 'bool',db.Custom_Columns.mark_for_delete == 0)).all()
+            .filter(and_(db.Custom_Columns.datatype == 'bool',db.Custom_Columns.mark_for_delete == 0)).all()
     return render_title_template("config_view_edit.html", conf=config, readColumns=readColumn,
                                  title=_(u"UI Configuration"), page="uiconfig")
 
@@ -294,10 +299,10 @@ def configuration_helper(origin):
     if not feature_support['gdrive']:
         gdriveError = _('Import of optional Google Drive requirements missing')
     else:
-        if not os.path.isfile(os.path.join(config.get_main_dir, 'client_secrets.json')):
+        if not os.path.isfile(gdriveutils.CLIENT_SECRETS):
             gdriveError = _('client_secrets.json is missing or not readable')
         else:
-            with open(os.path.join(config.get_main_dir, 'client_secrets.json'), 'r') as settings:
+            with open(gdriveutils.CLIENT_SECRETS, 'r') as settings:
                 filedata = json.load(settings)
             if 'web' not in filedata:
                 gdriveError = _('client_secrets.json is not configured for web application')
@@ -309,13 +314,13 @@ def configuration_helper(origin):
                 content.config_calibre_dir = to_save["config_calibre_dir"]
                 db_change = True
         # Google drive setup
-        if not os.path.isfile(os.path.join(config.get_main_dir, 'settings.yaml')):
+        if not os.path.isfile(gdriveutils.SETTINGS_YAML):
             content.config_use_google_drive = False
         if "config_use_google_drive" in to_save and not content.config_use_google_drive and not gdriveError:
             if filedata:
                 if filedata['web']['redirect_uris'][0].endswith('/'):
                     filedata['web']['redirect_uris'][0] = filedata['web']['redirect_uris'][0][:-1]
-                with open(os.path.join(config.get_main_dir, 'settings.yaml'), 'w') as f:
+                with open(gdriveutils.SETTINGS_YAML, 'w') as f:
                     yaml = "client_config_backend: settings\nclient_config_file: %(client_file)s\n" \
                            "client_config:\n" \
                            "  client_id: %(client_id)s\n  client_secret: %(client_secret)s\n" \
@@ -323,11 +328,11 @@ def configuration_helper(origin):
                            "save_credentials_backend: file\nsave_credentials_file: %(credential)s\n\n" \
                            "get_refresh_token: True\n\noauth_scope:\n" \
                            "  - https://www.googleapis.com/auth/drive\n"
-                    f.write(yaml % {'client_file': os.path.join(config.get_main_dir, 'client_secrets.json'),
+                    f.write(yaml % {'client_file': gdriveutils.CLIENT_SECRETS,
                                     'client_id': filedata['web']['client_id'],
                                     'client_secret': filedata['web']['client_secret'],
                                     'redirect_uri': filedata['web']['redirect_uris'][0],
-                                    'credential': os.path.join(config.get_main_dir, 'gdrive_credentials')})
+                                    'credential': gdriveutils.CREDENTIALS})
             else:
                 flash(_(u'client_secrets.json is not configured for web application'), category="error")
                 return render_title_template("config_edit.html", config=config, origin=origin,
@@ -397,7 +402,7 @@ def configuration_helper(origin):
                                              gdriveError=gdriveError, feature_support=feature_support,
                                              title=_(u"Basic Configuration"), page="config")
             else:
-                content.config_login_type = ub.LOGIN_LDAP
+                content.config_login_type = constants.LOGIN_LDAP
                 content.config_ldap_provider_url = to_save["config_ldap_provider_url"]
                 content.config_ldap_dn = to_save["config_ldap_dn"]
                 db_change = True
@@ -425,7 +430,7 @@ def configuration_helper(origin):
                                              gdriveError=gdriveError, feature_support=feature_support,
                                              title=_(u"Basic Configuration"), page="config")
             else:
-                content.config_login_type = ub.LOGIN_OAUTH_GITHUB
+                content.config_login_type = constants.LOGIN_OAUTH_GITHUB
                 content.config_github_oauth_client_id = to_save["config_github_oauth_client_id"]
                 content.config_github_oauth_client_secret = to_save["config_github_oauth_client_secret"]
                 reboot_required = True
@@ -439,31 +444,25 @@ def configuration_helper(origin):
                                              gdriveError=gdriveError, feature_support=feature_support,
                                              title=_(u"Basic Configuration"), page="config")
             else:
-                content.config_login_type = ub.LOGIN_OAUTH_GOOGLE
+                content.config_login_type = constants.LOGIN_OAUTH_GOOGLE
                 content.config_google_oauth_client_id = to_save["config_google_oauth_client_id"]
                 content.config_google_oauth_client_secret = to_save["config_google_oauth_client_secret"]
                 reboot_required = True
 
         if "config_login_type" in to_save and to_save["config_login_type"] == "0":
-            content.config_login_type = ub.LOGIN_STANDARD
+            content.config_login_type = constants.LOGIN_STANDARD
 
         if "config_log_level" in to_save:
             content.config_log_level = int(to_save["config_log_level"])
         if content.config_logfile != to_save["config_logfile"]:
             # check valid path, only path or file
-            if os.path.dirname(to_save["config_logfile"]):
-                if os.path.exists(os.path.dirname(to_save["config_logfile"])) and \
-                        os.path.basename(to_save["config_logfile"]) and not os.path.isdir(to_save["config_logfile"]):
-                    content.config_logfile = to_save["config_logfile"]
-                else:
+            if not logger.is_valid_logfile(to_save["config_logfile"]):
                     ub.session.commit()
                     flash(_(u'Logfile location is not valid, please enter correct path'), category="error")
                     return render_title_template("config_edit.html", config=config, origin=origin,
                                                  gdriveError=gdriveError, feature_support=feature_support,
                                                  title=_(u"Basic Configuration"), page="config")
-            else:
-                content.config_logfile = to_save["config_logfile"]
-            reboot_required = True
+            content.config_logfile = to_save["config_logfile"]
 
         # Rarfile Content configuration
         if "config_rarfile_location" in to_save and to_save['config_rarfile_location'] is not u"":
@@ -485,7 +484,6 @@ def configuration_helper(origin):
             ub.session.commit()
             flash(_(u"Calibre-Web configuration updated"), category="success")
             config.loadSettings()
-            app.logger.setLevel(config.config_log_level)
         except Exception as e:
             flash(e, category="error")
             return render_title_template("config_edit.html", config=config, origin=origin,
@@ -502,7 +500,7 @@ def configuration_helper(origin):
             # stop Server
             Server.setRestartTyp(True)
             Server.stopServer()
-            app.logger.info('Reboot required, restarting')
+            log.info('Reboot required, restarting')
         if origin:
             success = True
     if is_gdrive_ready() and feature_support['gdrive'] is True:  # and config.config_use_google_drive == True:
@@ -536,23 +534,23 @@ def new_user():
         content.sidebar_view = val
 
         if "show_detail_random" in to_save:
-            content.sidebar_view += ub.DETAIL_RANDOM
+            content.sidebar_view |= constants.DETAIL_RANDOM
 
         content.role = 0
         if "admin_role" in to_save:
-            content.role = content.role + ub.ROLE_ADMIN
+            content.role |= constants.ROLE_ADMIN
         if "download_role" in to_save:
-            content.role = content.role + ub.ROLE_DOWNLOAD
+            content.role |= constants.ROLE_DOWNLOAD
         if "upload_role" in to_save:
-            content.role = content.role + ub.ROLE_UPLOAD
+            content.role |= constants.ROLE_UPLOAD
         if "edit_role" in to_save:
-            content.role = content.role + ub.ROLE_EDIT
+            content.role |= constants.ROLE_EDIT
         if "delete_role" in to_save:
-            content.role = content.role + ub.ROLE_DELETE_BOOKS
+            content.role |= constants.ROLE_DELETE_BOOKS
         if "passwd_role" in to_save:
-            content.role = content.role + ub.ROLE_PASSWD
+            content.role |= constants.ROLE_PASSWD
         if "edit_shelf_role" in to_save:
-            content.role = content.role + ub.ROLE_EDIT_SHELFS
+            content.role |= constants.ROLE_EDIT_SHELFS
         if not to_save["nickname"] or not to_save["email"] or not to_save["password"]:
             flash(_(u"Please fill out all fields!"), category="error")
             return render_title_template("user_edit.html", new_user=1, content=content, translations=translations,
@@ -576,7 +574,7 @@ def new_user():
     else:
         content.role = config.config_default_role
         content.sidebar_view = config.config_default_show
-        content.mature_content = bool(config.config_default_show & ub.MATURE_CONTENT)
+        content.mature_content = bool(config.config_default_show & constants.MATURE_CONTENT)
     return render_title_template("user_edit.html", new_user=1, content=content, translations=translations,
                                  languages=languages, title=_(u"Add new user"), page="newuser",
                                  registered_oauth=oauth_check)
@@ -642,58 +640,58 @@ def edit_user(user_id):
             if "password" in to_save and to_save["password"]:
                 content.password = generate_password_hash(to_save["password"])
 
-            if "admin_role" in to_save and not content.role_admin():
-                content.role = content.role + ub.ROLE_ADMIN
-            elif "admin_role" not in to_save and content.role_admin():
-                content.role = content.role - ub.ROLE_ADMIN
+            if "admin_role" in to_save:
+                content.role |= constants.ROLE_ADMIN
+            else:
+                content.role &= ~constants.ROLE_ADMIN
 
-            if "download_role" in to_save and not content.role_download():
-                content.role = content.role + ub.ROLE_DOWNLOAD
-            elif "download_role" not in to_save and content.role_download():
-                content.role = content.role - ub.ROLE_DOWNLOAD
+            if "download_role" in to_save:
+                content.role |= constants.ROLE_DOWNLOAD
+            else:
+                content.role &= ~constants.ROLE_DOWNLOAD
 
-            if "viewer_role" in to_save and not content.role_viewer():
-                content.role = content.role + ub.ROLE_VIEWER
-            elif "viewer_role" not in to_save and content.role_viewer():
-                content.role = content.role - ub.ROLE_VIEWER
+            if "viewer_role" in to_save:
+                content.role |= constants.ROLE_VIEWER
+            else:
+                content.role &= ~constants.ROLE_VIEWER
 
-            if "upload_role" in to_save and not content.role_upload():
-                content.role = content.role + ub.ROLE_UPLOAD
-            elif "upload_role" not in to_save and content.role_upload():
-                content.role = content.role - ub.ROLE_UPLOAD
+            if "upload_role" in to_save:
+                content.role |= constants.ROLE_UPLOAD
+            else:
+                content.role &= ~constants.ROLE_UPLOAD
 
-            if "edit_role" in to_save and not content.role_edit():
-                content.role = content.role + ub.ROLE_EDIT
-            elif "edit_role" not in to_save and content.role_edit():
-                content.role = content.role - ub.ROLE_EDIT
+            if "edit_role" in to_save:
+                content.role |= constants.ROLE_EDIT
+            else:
+                content.role &= ~constants.ROLE_EDIT
 
-            if "delete_role" in to_save and not content.role_delete_books():
-                content.role = content.role + ub.ROLE_DELETE_BOOKS
-            elif "delete_role" not in to_save and content.role_delete_books():
-                content.role = content.role - ub.ROLE_DELETE_BOOKS
+            if "delete_role" in to_save:
+                content.role |= constants.ROLE_DELETE_BOOKS
+            else:
+                content.role &= ~constants.ROLE_DELETE_BOOKS
 
-            if "passwd_role" in to_save and not content.role_passwd():
-                content.role = content.role + ub.ROLE_PASSWD
-            elif "passwd_role" not in to_save and content.role_passwd():
-                content.role = content.role - ub.ROLE_PASSWD
+            if "passwd_role" in to_save:
+                content.role |= constants.ROLE_PASSWD
+            else:
+                content.role &= ~constants.ROLE_PASSWD
 
-            if "edit_shelf_role" in to_save and not content.role_edit_shelfs():
-                content.role = content.role + ub.ROLE_EDIT_SHELFS
-            elif "edit_shelf_role" not in to_save and content.role_edit_shelfs():
-                content.role = content.role - ub.ROLE_EDIT_SHELFS
+            if "edit_shelf_role" in to_save:
+                content.role |= constants.ROLE_EDIT_SHELFS
+            else:
+                content.role &= ~constants.ROLE_EDIT_SHELFS
 
-            val = [int(k[5:]) for k, __ in to_save.items() if k.startswith('show')]
+            val = [int(k[5:]) for k, __ in to_save.items() if k.startswith('show_')]
             sidebar = ub.get_sidebar_config()
             for element in sidebar:
                 if element['visibility'] in val and not content.check_visibility(element['visibility']):
-                    content.sidebar_view += element['visibility']
+                    content.sidebar_view |= element['visibility']
                 elif not element['visibility'] in val and content.check_visibility(element['visibility']):
-                    content.sidebar_view -= element['visibility']
+                    content.sidebar_view &= ~element['visibility']
 
-            if "Show_detail_random" in to_save and not content.show_detail_random():
-                content.sidebar_view += ub.DETAIL_RANDOM
-            elif "Show_detail_random" not in to_save and content.show_detail_random():
-                content.sidebar_view -= ub.DETAIL_RANDOM
+            if "Show_detail_random" in to_save:
+                content.sidebar_view |= constants.DETAIL_RANDOM
+            else:
+                content.sidebar_view &= ~constants.DETAIL_RANDOM
 
             content.mature_content = "Show_mature_content" in to_save
 

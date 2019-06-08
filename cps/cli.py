@@ -18,9 +18,13 @@
 #   You should have received a copy of the GNU General Public License
 #   along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-import argparse
-import os
+from __future__ import division, print_function, unicode_literals
 import sys
+import os
+import argparse
+
+from .constants import CONFIG_DIR as _CONFIG_DIR
+
 
 parser = argparse.ArgumentParser(description='Calibre Web is a web app'
                     ' providing a interface for browsing, reading and downloading eBooks\n', prog='cps.py')
@@ -33,17 +37,8 @@ parser.add_argument('-k', metavar='path',
 parser.add_argument('-v', action='store_true', help='shows version number and exits Calibre-web')
 args = parser.parse_args()
 
-generalPath = os.path.normpath(os.getenv("CALIBRE_DBPATH",
-                        os.path.dirname(os.path.realpath(__file__)) + os.sep + ".." + os.sep))
-if args.p:
-    settingspath = args.p
-else:
-    settingspath = os.path.join(generalPath, "app.db")
-
-if args.g:
-    gdpath = args.g
-else:
-    gdpath = os.path.join(generalPath, "gdrive.db")
+settingspath    = args.p or os.path.join(_CONFIG_DIR, "app.db")
+gdpath          = args.g or os.path.join(_CONFIG_DIR, "gdrive.db")
 
 certfilepath = None
 keyfilepath = None

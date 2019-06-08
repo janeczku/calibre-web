@@ -18,16 +18,20 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-from sqlalchemy import *
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import *
+from __future__ import division, print_function, unicode_literals
+import sys
 import os
 import re
 import ast
-from . import config
-import ub
-import sys
-import unidecode
+
+from sqlalchemy import create_engine
+from sqlalchemy import Table, Column, ForeignKey
+from sqlalchemy import String, Integer, Boolean
+from sqlalchemy.orm import relationship, sessionmaker, scoped_session
+from sqlalchemy.ext.declarative import declarative_base
+
+from . import config, ub
+
 
 session = None
 cc_exceptions = ['datetime', 'comments', 'float', 'composite', 'series']
@@ -385,7 +389,7 @@ def setup_db():
                     ccdict = {'__tablename__': 'custom_column_' + str(row.id),
                               'id': Column(Integer, primary_key=True),
                               'value': Column(String)}
-                cc_classes[row.id] = type('Custom_Column_' + str(row.id), (Base,), ccdict)
+                cc_classes[row.id] = type(str('Custom_Column_' + str(row.id)), (Base,), ccdict)
 
         for cc_id in cc_ids:
             if (cc_id[1] == 'bool') or (cc_id[1] == 'int'):

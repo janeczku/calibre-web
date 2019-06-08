@@ -1,3 +1,6 @@
+
+.tooltip.bottom .tooltip-inner{font-size:13px;font-family:Open Sans Semibold,Helvetica Neue,Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;padding:3px 10px;border-radius:4px;background-color:#fff;-webkit-box-shadow:0 4px 10px 0 rgba(0,0,0,.35);box-shadow:0 4px 10px 0 rgba(0,0,0,.35);opacity:1;white-space:nowrap;margin-top:-16px!important;line-height:1.71428571;color:#ddd}
+
 @font-face {
   font-family: 'Grand Hotel';
   font-style: normal;
