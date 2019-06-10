@@ -28,8 +28,8 @@ sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'vendor
 
 
 from cps import create_app
+from cps import web_server
 from cps.opds import opds
-from cps import Server
 from cps.web import web
 from cps.jinjia import jinjia
 from cps.about import about
@@ -56,7 +56,8 @@ def main():
     app.register_blueprint(editbook)
     if oauth_available:
         app.register_blueprint(oauth)
-    Server.startServer()
+    success = web_server.start()
+    sys.exit(0 if success else 1)
 
 
 if __name__ == '__main__':

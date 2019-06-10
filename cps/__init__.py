@@ -84,8 +84,8 @@ searched_ids = {}
 from .worker import WorkerThread
 global_WorkerThread = WorkerThread()
 
-from .server import server
-Server = server()
+from .server import WebServer
+web_server = WebServer()
 
 from .ldap import Ldap
 ldap = Ldap()
@@ -103,7 +103,7 @@ def create_app():
     Principal(app)
     lm.init_app(app)
     app.secret_key = os.getenv('SECRET_KEY', 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT')
-    Server.init_app(app)
+    web_server.init_app(app, config)
     db.setup_db()
     babel.init_app(app)
     ldap.init_app(app)

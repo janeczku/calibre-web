@@ -41,7 +41,7 @@ from sqlalchemy.exc import IntegrityError
 from werkzeug.security import generate_password_hash
 
 from . import constants, logger, ldap
-from . import db, ub, Server, get_locale, config, updater_thread, babel, gdriveutils
+from . import db, ub, web_server, get_locale, config, updater_thread, babel, gdriveutils
 from .helper import speaking_language, check_valid_domain, check_unrar, send_test_mail, generate_random_password, \
                     send_registration_mail
 from .gdriveutils import is_gdrive_ready, gdrive_support, downloadFile, deleteDatabaseOnChange, listRootFolders
@@ -102,12 +102,10 @@ def shutdown():
         showtext = {}
         if task == 0:
             showtext['text'] = _(u'Server restarted, please reload page')
-            Server.setRestartTyp(True)
         else:
             showtext['text'] = _(u'Performing shutdown of server, please close window')
-            Server.setRestartTyp(False)
         # stop gevent/tornado server
-        Server.stopServer()
+        web_server.stop(task == 0)
         return json.dumps(showtext)
     else:
         if task == 2:
@@ -220,8 +218,7 @@ def view_configuration():
             # ub.session.close()
             # ub.engine.dispose()
             # stop Server
-            Server.setRestartTyp(True)
-            Server.stopServer()
+            web_server.stop(True)
             log.info('Reboot required, restarting')
     readColumn = db.session.query(db.Custom_Columns)\
             .filter(and_(db.Custom_Columns.datatype == 'bool',db.Custom_Columns.mark_for_delete == 0)).all()
@@ -554,8 +551,7 @@ def configuration_helper(origin):
                                              title=_(u"Basic Configuration"), page="config")
         if reboot_required:
             # stop Server
-            Server.setRestartTyp(True)
-            Server.stopServer()
+            web_server.stop(True)
             log.info('Reboot required, restarting')
         if origin:
             success = True
