@@ -20,16 +20,16 @@
  * Douban Books api document: https://developers.douban.com/wiki/?title=book_v2 (Chinese Only)
 */
 /* global _, i18nMsg, tinymce */
-var dbResults = [];
+// var dbResults = [];
 var ggResults = [];
 
 $(function () {
     var msg = i18nMsg;
     /*var douban = "https://api.douban.com";
     var dbSearch = "/v2/book/search";*/
-    var dbDone = true;
+    // var dbDone = true;
 
-    var google = "https://www.googleapis.com/";
+    var google = "https://www.googleapis.com";
     var ggSearch = "/books/v1/volumes";
     var ggDone = false;
 
@@ -56,11 +56,9 @@ $(function () {
         if (showFlag === 1) {
             $("#meta-info").html("<ul id=\"book-list\" class=\"media-list\"></ul>");
         }
-        if (ggDone && dbDone) {
-            if (!ggResults && !dbResults) {
-                $("#meta-info").html("<p class=\"text-danger\">" + msg.no_result + "</p>");
-                return;
-            }
+        if (!ggDone) {
+            $("#meta-info").html("<p class=\"text-danger\">" + msg.no_result + "</p>");
+            return;
         }
         if (ggDone && ggResults.length > 0) {
             ggResults.forEach(function(result) {
@@ -137,10 +135,12 @@ $(function () {
             dataType: "jsonp",
             jsonp: "callback",
             success: function success(data) {
-                ggResults = data.items;
+                if ("items" in data) {
+                    ggResults = data.items;
+                    ggDone = true;
+                }
             },
             complete: function complete() {
-                ggDone = true;
                 showResult();
                 $("#show-google").trigger("change");
             }
