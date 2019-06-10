@@ -127,7 +127,15 @@
         </div>
         <div class="form-group">
           <label for="config_logfile">{{_('Location and name of logfile (calibre-web.log for no entry)')}}</label>
-          <input type="text" class="form-control" name="config_logfile" id="config_logfile" value="{% if config.config_logfile != None %}{{ config.config_logfile }}{% endif %}" autocomplete="off">
+           <input type="text" class="form-control" name="config_logfile" id="config_logfile" value="{% if config.config_logfile != None %}{{ config.config_logfile }}{% endif %}" autocomplete="off">
+        </div>
+      <div class="form-group">
+          <input type="checkbox" id="config_access_log" name="config_access_log" {% if config.config_access_log %}checked{% endif %}>
+          <label for="config_access_log">{{_('Enable Access Log')}}</label>
+        </div>
+        <div class="form-group">
+          <label for="config_access_logfile">{{_('Location and name of access logfile (access.log for no entry)')}}</label>
+          <input type="text" class="form-control" name="config_access_logfile" id="config_access_logfile" value="{% if config.config_access_logfile != None %}{{ config.config_access_logfile }}{% endif %}" autocomplete="off">
         </div>
       </div>
     </div>

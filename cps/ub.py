@@ -39,6 +39,7 @@ from sqlalchemy import String, Integer, SmallInteger, Boolean, DateTime
 from sqlalchemy.orm import relationship, sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 from werkzeug.security import generate_password_hash
+import logging
 
 try:
     import ldap
@@ -330,6 +331,7 @@ class Settings(Base):
     config_read_column = Column(Integer, default=0)
     config_title_regex = Column(String, default=u'^(A|The|An|Der|Die|Das|Den|Ein|Eine|Einen|Dem|Des|Einem|Eines)\s+')
     config_log_level = Column(SmallInteger, default=logger.DEFAULT_LOG_LEVEL)
+    config_access_log = Column(SmallInteger, default=0)
     config_uploading = Column(SmallInteger, default=0)
     config_anonbrowse = Column(SmallInteger, default=0)
     config_public_reg = Column(SmallInteger, default=0)
@@ -355,6 +357,7 @@ class Settings(Base):
     config_google_oauth_client_secret = Column(String)
     config_mature_content_tags = Column(String)
     config_logfile = Column(String)
+    config_access_logfile = Column(String)
     config_ebookconverter = Column(Integer, default=0)
     config_converterpath = Column(String)
     config_calibre = Column(String)
@@ -404,6 +407,7 @@ class Config:
         self.config_title_regex = data.config_title_regex
         self.config_read_column = data.config_read_column
         self.config_log_level = data.config_log_level
+        self.config_access_log = data.config_access_log
         self.config_uploading = data.config_uploading
         self.config_anonbrowse = data.config_anonbrowse
         self.config_public_reg = data.config_public_reg
@@ -438,10 +442,13 @@ class Config:
         self.config_google_oauth_client_secret = data.config_google_oauth_client_secret
         self.config_mature_content_tags = data.config_mature_content_tags or u''
         self.config_logfile = data.config_logfile or u''
+        self.config_access_logfile = data.config_access_logfile or u''
         self.config_rarfile_location = data.config_rarfile_location
         self.config_theme = data.config_theme
         self.config_updatechannel = data.config_updatechannel
-        logger.setup(self.config_logfile, self.config_log_level)
+        logger.setup(self.config_logfile, "general", self.config_log_level)
+        if self.config_access_log:
+            logger.setup("access.log", "access", logger.DEFAULT_ACCESS_LEVEL)
 
     @property
     def get_update_channel(self):
@@ -464,6 +471,21 @@ class Config:
                 return None
             else:
                 return self.config_keyfile
+
+    def get_config_ipaddress(self, readable=False):
+        if not readable:
+            if cli.ipadress:
+                return cli.ipadress
+            else:
+                return ""
+        else:
+            answer="0.0.0.0"
+            if cli.ipadress:
+                if cli.ipv6:
+                    answer = "["+cli.ipadress+"]"
+                else:
+                    answer = cli.ipadress
+            return answer
 
     def _has_role(self, role_flag):
         return constants.has_flag(self.config_default_role, role_flag)
@@ -588,8 +610,10 @@ def migrate_Database():
         conn.execute("UPDATE user SET 'sidebar_view' = (random_books* :side_random + language_books * :side_lang "
             "+ series_books * :side_series + category_books * :side_category + hot_books * "
             ":side_hot + :side_autor + :detail_random)"
-            ,{'side_random': constants.SIDEBAR_RANDOM, 'side_lang': constants.SIDEBAR_LANGUAGE, 'side_series': constants.SIDEBAR_SERIES,
-            'side_category': constants.SIDEBAR_CATEGORY, 'side_hot': constants.SIDEBAR_HOT, 'side_autor': constants.SIDEBAR_AUTHOR,
+            ,{'side_random': constants.SIDEBAR_RANDOM, 'side_lang': constants.SIDEBAR_LANGUAGE,
+              'side_series': constants.SIDEBAR_SERIES,
+            'side_category': constants.SIDEBAR_CATEGORY, 'side_hot': constants.SIDEBAR_HOT,
+              'side_autor': constants.SIDEBAR_AUTHOR,
             'detail_random': constants.DETAIL_RANDOM})
         session.commit()
     try:
@@ -671,6 +695,13 @@ def migrate_Database():
     except exc.OperationalError:  # Database is not compatible, some rows are missing
         conn = engine.connect()
         conn.execute("ALTER TABLE Settings ADD column `config_updatechannel` INTEGER DEFAULT 0")
+        session.commit()
+    try:
+        session.query(exists().where(Settings.config_access_log)).scalar()
+    except exc.OperationalError:  # Database is not compatible, some rows are missing
+        conn = engine.connect()
+        conn.execute("ALTER TABLE Settings ADD column `config_access_log` INTEGER DEFAULT 0")
+        conn.execute("ALTER TABLE Settings ADD column `config_access_logfile` String DEFAULT ''")
         session.commit()
 
     # Remove login capability of user Guest

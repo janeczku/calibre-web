@@ -54,15 +54,15 @@
 <div class="discover load-more">
   <h2 class="{{title}}">{{_(title)}}</h2>
     <div class="filterheader hidden-xs hidden-sm">
-      <a data-toggle="tooltip" id="new" class="btn btn-primary" href="{{url_for('web.books_list', data=page, sort='new')}}"><span class="glyphicon glyphicon-sort-by-attributes"></span></a>
-      <a id="old" class="btn btn-primary" href="{{url_for('web.books_list', data=page, sort='old')}}"><span class="glyphicon glyphicon-sort-by-attributes-alt"></span></a>
-      <a id="asc" class="btn btn-primary" href="{{url_for('web.books_list', data=page, sort='abc')}}"><span class="glyphicon glyphicon-font"></span><span class="glyphicon glyphicon-sort-by-alphabet"></span></a>
-      <a id="desc" class="btn btn-primary" href="{{url_for('web.books_list', data=page, sort='zyx')}}"><span class="glyphicon glyphicon-font"></span><span class="glyphicon glyphicon-sort-by-alphabet-alt"></span></a>
-      <a id="pub_new" class="btn btn-primary" href="{{url_for('web.books_list', data=page, sort='pubnew')}}"><span class="glyphicon glyphicon-calendar"></span><span class="glyphicon glyphicon-sort-by-order"></span></a>
-      <a id="pub_old" class="btn btn-primary" href="{{url_for('web.books_list', data=page, sort='pubold')}}"><span class="glyphicon glyphicon-calendar"></span><span class="glyphicon glyphicon-sort-by-order-alt"></span></a>
-      <div class="btn-group character">
-        <a id="no_shelf" class="btn btn-primary" href="{{url_for('web.books_list', data=page, sort='pubold')}}"><span class="glyphicon glyphicon-list"></span> <b>{{_('Group by series')}}</b></a>
-      </div>
+      <a data-toggle="tooltip" id="new" class="btn btn-primary" href="{{url_for('web.books_list', data=page, book_id=id, sort='new')}}"><span class="glyphicon glyphicon-book"></span> <span class="glyphicon glyphicon-calendar"></span><span class="glyphicon glyphicon-sort-by-order"></span></a>
+      <a id="old" class="btn btn-primary" href="{{url_for('web.books_list', data=page, book_id=id, sort='old')}}"><span class="glyphicon glyphicon-book"></span> <span class="glyphicon glyphicon-calendar"></span><span class="glyphicon glyphicon-sort-by-order-alt"></span></a>
+      <a id="asc" class="btn btn-primary" href="{{url_for('web.books_list', data=page, book_id=id, sort='abc')}}"><span class="glyphicon glyphicon-font"></span><span class="glyphicon glyphicon-sort-by-alphabet"></span></a>
+      <a id="desc" class="btn btn-primary" href="{{url_for('web.books_list', data=page, book_id=id, sort='zyx')}}"><span class="glyphicon glyphicon-font"></span><span class="glyphicon glyphicon-sort-by-alphabet-alt"></span></a>
+      <a id="pub_new" class="btn btn-primary" href="{{url_for('web.books_list', data=page, book_id=id, sort='pubnew')}}"><span class="glyphicon glyphicon-calendar"></span><span class="glyphicon glyphicon-sort-by-order"></span></a>
+      <a id="pub_old" class="btn btn-primary" href="{{url_for('web.books_list', data=page, book_id=id, sort='pubold')}}"><span class="glyphicon glyphicon-calendar"></span><span class="glyphicon glyphicon-sort-by-order-alt"></span></a>
+      <!--div class="btn-group character">
+        <a id="no_shelf" class="btn btn-primary" href="{{url_for('web.books_list', data=page, book_id=id, sort='pubold')}}"><span class="glyphicon glyphicon-list"></span> <b>{{_('Group by series')}}</b></a>
+      </div-->
     </div>
 
   <div class="row">

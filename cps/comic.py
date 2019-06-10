@@ -24,14 +24,14 @@ from . import logger, isoLanguages
 from .constants import BookMeta
 
 
-log = logger.create()
+# log = logger.create()
 
 
 try:
     from comicapi.comicarchive import ComicArchive, MetaDataStyle
     use_comic_meta = True
 except ImportError as e:
-    log.warning('cannot import comicapi, extracting comic metadata will not work: %s', e)
+    logger.warning('cannot import comicapi, extracting comic metadata will not work: %s', e)
     import zipfile
     import tarfile
     use_comic_meta = False

@@ -25,23 +25,50 @@ from logging.handlers import RotatingFileHandler
 
 from .constants import BASE_DIR as _BASE_DIR
 
-
+ACCESS_FORMATTER    = Formatter("%(message)s")
 FORMATTER           = Formatter("[%(asctime)s] %(levelname)5s {%(name)s:%(lineno)d} %(message)s")
 DEFAULT_LOG_LEVEL   = logging.INFO
 DEFAULT_LOG_FILE    = os.path.join(_BASE_DIR, "calibre-web.log")
+DEFAULT_ACCESS_LOG  = os.path.join(_BASE_DIR, "access.log")
 LOG_TO_STDERR       = '/dev/stderr'
-
+DEFAULT_ACCESS_LEVEL= logging.INFO
 
 logging.addLevelName(logging.WARNING, "WARN")
 logging.addLevelName(logging.CRITICAL, "CRIT")
 
 
+def info(msg, *args, **kwargs):
+    create(2).info(msg, *args, **kwargs)
+
+
+def warning(msg, *args, **kwargs):
+    create(2).warning(msg, *args, **kwargs)
+
+
+def error(msg, *args, **kwargs):
+    create(2).error(msg, *args, **kwargs)
+
+
+def critical(msg, *args, **kwargs):
+    create(2).critical(msg, *args, **kwargs)
+
+
+def exception(msg, *args, **kwargs):
+    create(2).exception(msg, *args, **kwargs)
+
+
+def debug(msg, *args, **kwargs):
+    create(2).debug(msg, *args, **kwargs)
+
+
 def get(name=None):
-    return logging.getLogger(name)
+    val = logging.getLogger("general")
+    val.name = name
+    return val
 
 
-def create():
-    parent_frame = inspect.stack(0)[1]
+def create(ini=1):
+    parent_frame = inspect.stack(0)[ini]
     if hasattr(parent_frame, 'frame'):
         parent_frame = parent_frame.frame
     else:
@@ -50,8 +77,11 @@ def create():
     return get(parent_module.__name__)
 
 
-def is_debug_enabled():
-    return logging.root.level <= logging.DEBUG
+def is_debug_enabled(logger):
+    return logging.getLogger(logger).level <= logging.DEBUG
+
+def is_info_enabled(logger):
+    return logging.getLogger(logger).level <= logging.INFO
 
 
 def get_level_name(level):
@@ -67,17 +97,23 @@ def is_valid_logfile(file_path):
     return (not log_dir) or os.path.isdir(log_dir)
 
 
-def setup(log_file, log_level=None):
+def setup(log_file, logger, log_level=None):
+    if logger == "general":
+        formatter = FORMATTER
+        default_file = DEFAULT_LOG_FILE
+    else:
+        formatter = ACCESS_FORMATTER
+        default_file = DEFAULT_ACCESS_LOG
     if log_file:
         if not os.path.dirname(log_file):
             log_file = os.path.join(_BASE_DIR, log_file)
         log_file = os.path.abspath(log_file)
     else:
         # log_file = LOG_TO_STDERR
-        log_file = DEFAULT_LOG_FILE
+        log_file = default_file
 
     # print ('%r -- %r' % (log_level, log_file))
-    r = logging.root
+    r = logging.getLogger(logger)
     r.setLevel(log_level or DEFAULT_LOG_LEVEL)
 
     previous_handler = r.handlers[0] if r.handlers else None
@@ -96,10 +132,10 @@ def setup(log_file, log_level=None):
         try:
             file_handler = RotatingFileHandler(log_file, maxBytes=50000, backupCount=2)
         except IOError:
-            if log_file == DEFAULT_LOG_FILE:
+            if log_file == default_file:
                 raise
-            file_handler = RotatingFileHandler(DEFAULT_LOG_FILE, maxBytes=50000, backupCount=2)
-    file_handler.setFormatter(FORMATTER)
+            file_handler = RotatingFileHandler(default_file, maxBytes=50000, backupCount=2)
+    file_handler.setFormatter(formatter)
 
     for h in r.handlers:
         r.removeHandler(h)
@@ -122,4 +158,4 @@ class StderrLogger(object):
             else:
                 self.buffer += message
         except Exception:
-            self.logger.debug("Logging Error")
+            self.log.debug("Logging Error")

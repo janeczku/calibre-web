@@ -108,8 +108,8 @@ def feed_best_rated():
 @requires_basic_auth_if_no_ano
 def feed_hot():
     off = request.args.get("offset") or 0
-    all_books = ub.session.query(ub.Downloads, ub.func.count(ub.Downloads.book_id)).order_by(
-        ub.func.count(ub.Downloads.book_id).desc()).group_by(ub.Downloads.book_id)
+    all_books = ub.session.query(ub.Downloads, func.count(ub.Downloads.book_id)).order_by(
+        func.count(ub.Downloads.book_id).desc()).group_by(ub.Downloads.book_id)
     hot_books = all_books.offset(off).limit(config.config_books_per_page)
     entries = list()
     for book in hot_books:
