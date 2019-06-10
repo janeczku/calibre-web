@@ -45,7 +45,7 @@ SETTINGS_YAML  = os.path.join(_BASE_DIR, 'settings.yaml')
 CREDENTIALS    = os.path.join(_BASE_DIR, 'gdrive_credentials')
 CLIENT_SECRETS = os.path.join(_BASE_DIR, 'client_secrets.json')
 
-log = logger.create()
+# log = logger.create()
 
 
 class Singleton:
@@ -169,9 +169,9 @@ def getDrive(drive=None, gauth=None):
             try:
                 gauth.Refresh()
             except RefreshError as e:
-                log.error("Google Drive error: %s", e)
+                logger.error("Google Drive error: %s", e)
             except Exception as e:
-                log.exception(e)
+                logger.exception(e)
         else:
             # Initialize the saved creds
             gauth.Authorize()
@@ -181,7 +181,7 @@ def getDrive(drive=None, gauth=None):
         try:
             drive.auth.Refresh()
         except RefreshError as e:
-            log.error("Google Drive error: %s", e)
+            logger.error("Google Drive error: %s", e)
     return drive
 
 def listRootFolders():
@@ -218,7 +218,7 @@ def getEbooksFolderId(drive=None):
         try:
             gDriveId.gdrive_id = getEbooksFolder(drive)['id']
         except Exception:
-            log.error('Error gDrive, root ID not found')
+            logger.error('Error gDrive, root ID not found')
         gDriveId.path = '/'
         session.merge(gDriveId)
         session.commit()
@@ -458,10 +458,10 @@ def getChangeById (drive, change_id):
         change = drive.auth.service.changes().get(changeId=change_id).execute()
         return change
     except (errors.HttpError) as error:
-        log.error(error)
+        logger.error(error)
         return None
     except Exception as e:
-        log.error(e)
+        logger.error(e)
         return None
 
 
@@ -531,6 +531,6 @@ def do_gdrive_download(df, headers):
             if resp.status == 206:
                 yield content
             else:
-                log.warning('An error occurred: %s', resp)
+                logger.warning('An error occurred: %s', resp)
                 return
     return Response(stream_with_context(stream()), headers=headers)

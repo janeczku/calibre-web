@@ -105,7 +105,7 @@ for ex in default_exceptions:
 
 
 web = Blueprint('web', __name__)
-log = logger.create()
+# log = logger.create()
 
 # ################################### Login logic and rights management ###############################################
 
@@ -308,7 +308,7 @@ def toggle_read(book_id):
                 db.session.add(new_cc)
                 db.session.commit()
         except KeyError:
-            log.error(u"Custom Column No.%d is not exisiting in calibre database", config.config_read_column)
+            logger.error(u"Custom Column No.%d is not exisiting in calibre database", config.config_read_column)
     return ""
 
 '''
@@ -331,10 +331,10 @@ def get_comic_book(book_id, book_format, page):
                             extract = lambda page: rf.read(names[page])
                         except:
                             # rarfile not valid
-                            log.error('Unrar binary not found, or unable to decompress file %s', cbr_file)
+                            logger.error('Unrar binary not found, or unable to decompress file %s', cbr_file)
                             return "", 204
                     else:
-                        log.info('Unrar is not supported please install python rarfile extension')
+                        logger.info('Unrar is not supported please install python rarfile extension')
                         # no support means return nothing
                         return "", 204
                 elif book_format in ("cbz", "zip"):
@@ -346,7 +346,7 @@ def get_comic_book(book_id, book_format, page):
                     names=sort(tf.getnames())
                     extract = lambda page: tf.extractfile(names[page]).read()
                 else:
-                    log.error('unsupported comic format')
+                    logger.error('unsupported comic format')
                     return "", 204
 
                 if sys.version_info.major >= 3:
@@ -447,6 +447,7 @@ def index(page):
 
 
 @web.route('/<data>/<sort>', defaults={'page': 1, 'book_id': "1"})
+@web.route('/<data>/<sort>/', defaults={'page': 1, 'book_id': "1"})
 @web.route('/<data>/<sort>/<book_id>', defaults={'page': 1})
 @web.route('/<data>/<sort>/<book_id>/<int:page>')
 @login_required_if_no_ano
@@ -470,14 +471,14 @@ def books_list(data, sort, book_id, page):
             entries, random, pagination = fill_indexpage(page, db.Books, db.Books.ratings.any(db.Ratings.rating > 9),
                                                          order)
             return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
-                                         title=_(u"Best rated books"), page="rated")
+                                         id=book_id, title=_(u"Best rated books"), page="rated")
         else:
             abort(404)
     elif data == "discover":
         if current_user.check_visibility(constants.SIDEBAR_RANDOM):
             entries, __, pagination = fill_indexpage(page, db.Books, True, [func.randomblob(2)])
             pagination = Pagination(1, config.config_books_per_page, config.config_books_per_page)
-            return render_title_template('discover.html', entries=entries, pagination=pagination,
+            return render_title_template('discover.html', entries=entries, pagination=pagination, id=book_id,
                                          title=_(u"Random Books"), page="discover")
         else:
             abort(404)
@@ -513,8 +514,8 @@ def render_hot_books(page):
         else:
             random = false()
         off = int(int(config.config_books_per_page) * (page - 1))
-        all_books = ub.session.query(ub.Downloads, ub.func.count(ub.Downloads.book_id)).order_by(
-            ub.func.count(ub.Downloads.book_id).desc()).group_by(ub.Downloads.book_id)
+        all_books = ub.session.query(ub.Downloads, func.count(ub.Downloads.book_id)).order_by(
+            func.count(ub.Downloads.book_id).desc()).group_by(ub.Downloads.book_id)
         hot_books = all_books.offset(off).limit(config.config_books_per_page)
         entries = list()
         for book in hot_books:
@@ -534,11 +535,11 @@ def render_hot_books(page):
         abort(404)
 
 
-# ToDo wrong order function
 def render_author_books(page, book_id, order):
     entries, __, pagination = fill_indexpage(page, db.Books, db.Books.authors.any(db.Authors.id == book_id),
-                                             [db.Series.name, db.Books.series_index, order[0]], db.books_series_link, db.Series)
-    if entries is None:
+                                             [order[0], db.Series.name, db.Books.series_index],
+                                             db.books_series_link, db.Series)
+    if entries is None or not len(entries):
         flash(_(u"Error opening eBook. File does not exist or file is not accessible:"), category="error")
         return redirect(url_for("web.index"))
 
@@ -553,10 +554,11 @@ def render_author_books(page, book_id, order):
             other_books = get_unique_other_books(entries.all(), author_info.books)
         except Exception:
             # Skip goodreads, if site is down/inaccessible
-            log.error('Goodreads website is down/inaccessible')
+            logger.error('Goodreads website is down/inaccessible')
 
-    return render_title_template('author.html', entries=entries, pagination=pagination,
-                                 title=name, author=author_info, other_books=other_books, page="author")
+    return render_title_template('author.html', entries=entries, pagination=pagination, id=book_id,
+                                 title=_(u"Author: %(name)s", name=name), author=author_info, other_books=other_books,
+                                 page="author")
 
 
 def render_publisher_books(page, book_id, order):
@@ -564,8 +566,9 @@ def render_publisher_books(page, book_id, order):
     if publisher:
         entries, random, pagination = fill_indexpage(page, db.Books,
                                                      db.Books.publishers.any(db.Publishers.id == book_id),
-                                                     [db.Books.series_index, order[0]])
-        return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
+                                                     [db.Series.name, order[0], db.Books.series_index],
+                                                     db.books_series_link, db.Series)
+        return render_title_template('index.html', random=random, entries=entries, pagination=pagination, id=book_id,
                                      title=_(u"Publisher: %(name)s", name=publisher.name), page="publisher")
     else:
         abort(404)
@@ -934,7 +937,7 @@ def render_read_books(page, are_read, as_xml=False, order=None):
                 .filter(db.cc_classes[config.config_read_column].value is True).all()
             readBookIds = [x.book for x in readBooks]
         except KeyError:
-            log.error("Custom Column No.%d is not existing in calibre database", config.config_read_column)
+            logger.error("Custom Column No.%d is not existing in calibre database", config.config_read_column)
             readBookIds = []
 
     if are_read:
@@ -977,7 +980,7 @@ def serve_book(book_id, book_format):
     book = db.session.query(db.Books).filter(db.Books.id == book_id).first()
     data = db.session.query(db.Data).filter(db.Data.book == book.id).filter(db.Data.format == book_format.upper())\
         .first()
-    log.info('Serving book: %s', data.name)
+    logger.info('Serving book: %s', data.name)
     if config.config_use_google_drive:
         headers = Headers()
         try:
@@ -1060,7 +1063,7 @@ def register():
                     return render_title_template('register.html', title=_(u"register"), page="register")
             else:
                 flash(_(u"Your e-mail is not allowed to register"), category="error")
-                log.info('Registering failed for user "%s" e-mail adress: %s', to_save['nickname'], to_save["email"])
+                logger.info('Registering failed for user "%s" e-mail adress: %s', to_save['nickname'], to_save["email"])
                 return render_title_template('register.html', title=_(u"register"), page="register")
             flash(_(u"Confirmation e-mail was send to your e-mail account."), category="success")
             return redirect(url_for('web.login'))
@@ -1092,10 +1095,10 @@ def login():
                 return redirect_back(url_for("web.index"))
             except ldap.INVALID_CREDENTIALS:
                 ipAdress = request.headers.get('X-Forwarded-For', request.remote_addr)
-                log.info('LDAP Login failed for user "%s" IP-adress: %s', form['username'], ipAdress)
+                logger.info('LDAP Login failed for user "%s" IP-adress: %s', form['username'], ipAdress)
                 flash(_(u"Wrong Username or Password"), category="error")
             except ldap.SERVER_DOWN:
-                log.info('LDAP Login failed, LDAP Server down')
+                logger.info('LDAP Login failed, LDAP Server down')
                 flash(_(u"Could not login. LDAP server down, please contact your administrator"), category="error")
         else:
             if user and check_password_hash(user.password, form['password']) and user.nickname is not "Guest":
@@ -1104,7 +1107,7 @@ def login():
                 return redirect_back(url_for("web.index"))
             else:
                 ipAdress = request.headers.get('X-Forwarded-For', request.remote_addr)
-                log.info('Login failed for user "%s" IP-adress: %s', form['username'], ipAdress)
+                logger.info('Login failed for user "%s" IP-adress: %s', form['username'], ipAdress)
                 flash(_(u"Wrong Username or Password"), category="error")
 
     next_url = url_for('web.index')
@@ -1345,7 +1348,7 @@ def show_book(book_id):
                     matching_have_read_book = getattr(entries, 'custom_column_'+str(config.config_read_column))
                     have_read = len(matching_have_read_book) > 0 and matching_have_read_book[0].value
                 except KeyError:
-                    log.error("Custom Column No.%d is not exisiting in calibre database", config.config_read_column)
+                    logger.error("Custom Column No.%d is not exisiting in calibre database", config.config_read_column)
                     have_read = None
 
         else:

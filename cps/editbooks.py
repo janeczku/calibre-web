@@ -39,7 +39,7 @@ from .web import login_required_if_no_ano, render_title_template, edit_required,
 
 
 editbook = Blueprint('editbook', __name__)
-log = logger.create()
+# log = logger.create()
 
 
 # Modifies different Database objects, first check if elements have to be added to database, than check
@@ -198,7 +198,7 @@ def delete_book(book_id, book_format):
             db.session.commit()
         else:
             # book not found
-            log.error('Book with id "%s" could not be deleted: not found', book_id)
+            logger.error('Book with id "%s" could not be deleted: not found', book_id)
     if book_format:
         return redirect(url_for('editbook.edit_book', book_id=book_id))
     else:
@@ -237,7 +237,7 @@ def render_edit_book(book_id):
         try:
             allowed_conversion_formats.remove(file.format.lower())
         except Exception:
-            log.warning('%s already removed from list.', file.format.lower())
+            logger.warning('%s already removed from list.', file.format.lower())
 
     return render_title_template('book_edit.html', book=book, authors=author_names, cc=cc,
                                  title=_(u"edit metadata"), page="editbook",
@@ -349,7 +349,7 @@ def upload_single_file(request, book, book_id):
 
             # Format entry already exists, no need to update the database
             if is_format:
-                log.warning('Book format %s already existing', file_ext.upper())
+                logger.warning('Book format %s already existing', file_ext.upper())
             else:
                 db_format = db.Data(book_id, file_ext.upper(), file_size, file_name)
                 db.session.add(db_format)
@@ -492,7 +492,7 @@ def edit_book(book_id):
                     res = list(language_table[get_locale()].keys())[invers_lang_table.index(lang)]
                     input_l.append(res)
                 except ValueError:
-                    log.error('%s is not a valid language', lang)
+                    logger.error('%s is not a valid language', lang)
                     flash(_(u"%(langname)s is not a valid language", langname=lang), category="error")
             modify_database_object(input_l, book.languages, db.Languages, db.session, 'languages')
 
@@ -531,7 +531,7 @@ def edit_book(book_id):
             flash(error, category="error")
             return render_edit_book(book_id)
     except Exception as e:
-        log.exception(e)
+        logger.exception(e)
         db.session.rollback()
         flash(_("Error editing book, please check logfile for details"), category="error")
         return redirect(url_for('web.show_book', book_id=book.id))
@@ -703,7 +703,7 @@ def convert_bookformat(book_id):
         flash(_(u"Source or destination format for conversion missing"), category="error")
         return redirect(request.environ["HTTP_REFERER"])
 
-    log.info('converting: book id: %s from: %s to: %s', book_id, book_format_from, book_format_to)
+    logger.info('converting: book id: %s from: %s to: %s', book_id, book_format_from, book_format_to)
     rtn = helper.convert_book_format(book_id, config.config_calibre_dir, book_format_from.upper(),
                                      book_format_to.upper(), current_user.nickname)
 

@@ -76,7 +76,7 @@ except ImportError:
 
 feature_support['gdrive'] = gdrive_support
 admi = Blueprint('admin', __name__)
-log = logger.create()
+# log = logger.create()
 
 
 @admi.route("/admin")
@@ -220,7 +220,7 @@ def view_configuration():
             # stop Server
             Server.setRestartTyp(True)
             Server.stopServer()
-            log.info('Reboot required, restarting')
+            logger.info('Reboot required, restarting')
     readColumn = db.session.query(db.Custom_Columns)\
             .filter(and_(db.Custom_Columns.datatype == 'bool',db.Custom_Columns.mark_for_delete == 0)).all()
     return render_title_template("config_view_edit.html", conf=config, readColumns=readColumn,
@@ -464,6 +464,24 @@ def configuration_helper(origin):
                                                  title=_(u"Basic Configuration"), page="config")
             content.config_logfile = to_save["config_logfile"]
 
+        content.config_access_log = 0
+        if "config_access_log" in to_save and to_save["config_access_log"] == "on":
+            content.config_access_log = 1
+            reboot_required = True
+        if "config_access_log" not in to_save and config.config_access_log:
+            reboot_required = True
+
+        if content.config_access_logfile != to_save["config_access_logfile"]:
+            # check valid path, only path or file
+            if not logger.is_valid_logfile(to_save["config_access_logfile"]):
+                    ub.session.commit()
+                    flash(_(u'Access Logfile location is not valid, please enter correct path'), category="error")
+                    return render_title_template("config_edit.html", config=config, origin=origin,
+                                                 gdriveError=gdriveError, feature_support=feature_support,
+                                                 title=_(u"Basic Configuration"), page="config")
+            content.config_access_logfile = to_save["config_access_logfile"]
+            reboot_required = True
+
         # Rarfile Content configuration
         if "config_rarfile_location" in to_save and to_save['config_rarfile_location'] is not u"":
             check = check_unrar(to_save["config_rarfile_location"].strip())
@@ -500,7 +518,7 @@ def configuration_helper(origin):
             # stop Server
             Server.setRestartTyp(True)
             Server.stopServer()
-            log.info('Reboot required, restarting')
+            logger.info('Reboot required, restarting')
         if origin:
             success = True
     if is_gdrive_ready() and feature_support['gdrive'] is True:  # and config.config_use_google_drive == True:

@@ -24,6 +24,48 @@ import os
 import argparse
 
 from .constants import CONFIG_DIR as _CONFIG_DIR
+from .constants import STABLE_VERSION as _STABLE_VERSION
+from .constants import NIGHTLY_VERSION as _NIGHTLY_VERSION
+
+VALID_CHARACTERS = 'ABCDEFabcdef:0123456789'
+
+ipv6 = False
+
+
+def version_info():
+    if _NIGHTLY_VERSION[1].startswith('$Format'):
+        return "Calibre-Web version: %s - unkown git-clone" % _STABLE_VERSION['version']
+    else:
+        return "Calibre-Web version: %s -%s" % (_STABLE_VERSION['version'],_NIGHTLY_VERSION[1])
+
+
+def validate_ip4(address):
+    address_list = address.split('.')
+    if len(address_list) != 4:
+        return False
+    for val in address_list:
+        if not val.isdigit():
+            return False
+        i = int(val)
+        if i < 0 or i > 255:
+            return False
+    return True
+
+
+def validate_ip6(address):
+    address_list = address.split(':')
+    return (
+        len(address_list) == 8
+        and all(len(current) <= 4 for current in address_list)
+        and all(current in VALID_CHARACTERS for current in address)
+    )
+
+
+def validate_ip(address):
+    if validate_ip4(address) or ipv6:
+        return address
+    print("IP address is invalid. Exiting")
+    sys.exit(1)
 
 
 parser = argparse.ArgumentParser(description='Calibre Web is a web app'
@@ -34,12 +76,17 @@ parser.add_argument('-c', metavar='path',
                     help='path and name to SSL certfile, e.g. /opt/test.cert, works only in combination with keyfile')
 parser.add_argument('-k', metavar='path',
                     help='path and name to SSL keyfile, e.g. /opt/test.key, works only in combination with certfile')
-parser.add_argument('-v', action='store_true', help='shows version number and exits Calibre-web')
+parser.add_argument('-v', '--version', action='version', help='Shows version number and exits Calibre-web',
+                    version=version_info())
+parser.add_argument('-i', metavar='ip-adress', help='Server IP-Adress to listen')
+parser.add_argument('-s', metavar='user:pass', help='Sets specific username to new password')
 args = parser.parse_args()
+
 
 settingspath    = args.p or os.path.join(_CONFIG_DIR, "app.db")
 gdpath          = args.g or os.path.join(_CONFIG_DIR, "gdrive.db")
 
+# handle and check parameter for ssl encryption
 certfilepath = None
 keyfilepath = None
 if args.c:
@@ -66,6 +113,12 @@ if (args.k and not args.c) or (not args.k and args.c):
 if args.k is "":
     keyfilepath = ""
 
-if args.v:
-    print("Calibre-web version: 0.6.4")
-    sys.exit(1)
+# handle and check ipadress argument
+if args.i:
+    ipv6 = validate_ip6(args.i)
+    ipadress = validate_ip(args.i)
+else:
+    ipadress = None
+
+# handle and check user password argument
+user_password   = args.s or None

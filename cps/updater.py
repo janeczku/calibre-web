@@ -36,9 +36,8 @@ from flask_babel import gettext as _
 from . import constants, logger, config, get_locale, Server
 
 
-log = logger.create()
+# log = logger.create()
 _REPOSITORY_API_URL = 'https://api.github.com/repos/janeczku/calibre-web'
-
 
 
 def is_sha1(sha1):
@@ -73,59 +72,59 @@ class Updater(threading.Thread):
     def run(self):
         try:
             self.status = 1
-            log.debug(u'Download update file')
+            logger.debug(u'Download update file')
             headers = {'Accept': 'application/vnd.github.v3+json'}
             r = requests.get(self._get_request_path(), stream=True, headers=headers)
             r.raise_for_status()
 
             self.status = 2
-            log.debug(u'Opening zipfile')
+            logger.debug(u'Opening zipfile')
             z = zipfile.ZipFile(BytesIO(r.content))
             self.status = 3
-            log.debug(u'Extracting zipfile')
+            logger.debug(u'Extracting zipfile')
             tmp_dir = gettempdir()
             z.extractall(tmp_dir)
             foldername = os.path.join(tmp_dir, z.namelist()[0])[:-1]
             if not os.path.isdir(foldername):
                 self.status = 11
-                log.info(u'Extracted contents of zipfile not found in temp folder')
+                logger.error(u'Extracted contents of zipfile not found in temp folder')
                 return
             self.status = 4
-            log.debug(u'Replacing files')
+            logger.debug(u'Replacing files')
             self.update_source(foldername, constants.BASE_DIR)
             self.status = 6
-            log.debug(u'Preparing restart of server')
+            logger.debug(u'Preparing restart of server')
             time.sleep(2)
             Server.setRestartTyp(True)
             Server.stopServer()
             self.status = 7
             time.sleep(2)
         except requests.exceptions.HTTPError as ex:
-            log.info(u'HTTP Error %s', ex)
+            logger.info(u'HTTP Error %s', ex)
             self.status = 8
         except requests.exceptions.ConnectionError:
-            log.info(u'Connection error')
+            logger.info(u'Connection error')
             self.status = 9
         except requests.exceptions.Timeout:
-            log.info(u'Timeout while establishing connection')
+            logger.info(u'Timeout while establishing connection')
             self.status = 10
         except requests.exceptions.RequestException:
             self.status = 11
-            log.info(u'General error')
+            logger.info(u'General error')
 
     def get_update_status(self):
         return self.status
 
     @classmethod
-    def file_to_list(self, filelist):
+    def file_to_list(cls, filelist):
         return [x.strip() for x in open(filelist, 'r') if not x.startswith('#EXT')]
 
     @classmethod
-    def one_minus_two(self, one, two):
+    def one_minus_two(cls, one, two):
         return [x for x in one if x not in set(two)]
 
     @classmethod
-    def reduce_dirs(self, delete_files, new_list):
+    def reduce_dirs(cls, delete_files, new_list):
         new_delete = []
         for filename in delete_files:
             parts = filename.split(os.sep)
@@ -146,7 +145,7 @@ class Updater(threading.Thread):
         return list(set(new_delete))
 
     @classmethod
-    def reduce_files(self, remove_items, exclude_items):
+    def reduce_files(cls, remove_items, exclude_items):
         rf = []
         for item in remove_items:
             if not item.startswith(exclude_items):
@@ -154,44 +153,41 @@ class Updater(threading.Thread):
         return rf
 
     @classmethod
-    def moveallfiles(self, root_src_dir, root_dst_dir):
+    def moveallfiles(cls, root_src_dir, root_dst_dir):
         change_permissions = True
+        new_permissions = os.stat(root_dst_dir)
         if sys.platform == "win32" or sys.platform == "darwin":
             change_permissions = False
         else:
-            log.debug('Update on OS-System : %s', sys.platform)
-            new_permissions = os.stat(root_dst_dir)
-            # print new_permissions
+            logger.debug('Update on OS-System : %s', sys.platform)
         for src_dir, __, files in os.walk(root_src_dir):
             dst_dir = src_dir.replace(root_src_dir, root_dst_dir, 1)
             if not os.path.exists(dst_dir):
                 os.makedirs(dst_dir)
-                log.debug('Create-Dir: %s', dst_dir)
+                logger.debug('Create-Dir: %s', dst_dir)
                 if change_permissions:
                     # print('Permissions: User '+str(new_permissions.st_uid)+' Group '+str(new_permissions.st_uid))
                     os.chown(dst_dir, new_permissions.st_uid, new_permissions.st_gid)
             for file_ in files:
                 src_file = os.path.join(src_dir, file_)
                 dst_file = os.path.join(dst_dir, file_)
+                permission = os.stat(dst_file)
                 if os.path.exists(dst_file):
-                    if change_permissions:
-                        permission = os.stat(dst_file)
-                    log.debug('Remove file before copy: %s', dst_file)
+                    logger.debug('Remove file before copy: %s', dst_file)
                     os.remove(dst_file)
                 else:
                     if change_permissions:
                         permission = new_permissions
                 shutil.move(src_file, dst_dir)
-                log.debug('Move File %s to %s', src_file, dst_dir)
+                logger.debug('Move File %s to %s', src_file, dst_dir)
                 if change_permissions:
                     try:
                         os.chown(dst_file, permission.st_uid, permission.st_gid)
-                    except (Exception) as e:
-                        # ex = sys.exc_info()
+                    except OSError as e:
                         old_permissions = os.stat(dst_file)
-                        log.debug('Fail change permissions of %s. Before: %s:%s After %s:%s error: %s',
-                                dst_file, old_permissions.st_uid, old_permissions.st_gid,
-                                permission.st_uid, permission.st_gid, e)
+                        logger.debug('Fail change permissions of %s. Before: %s:%s After %s:%s error: %s',
+                                  dst_file, old_permissions.st_uid, old_permissions.st_gid,
+                                  permission.st_uid, permission.st_gid, e)
         return
 
     def update_source(self, source, destination):
@@ -199,7 +195,7 @@ class Updater(threading.Thread):
         old_list = list()
         exclude = (
             os.sep + 'app.db', os.sep + 'calibre-web.log1', os.sep + 'calibre-web.log2', os.sep + 'gdrive.db',
-            os.sep + 'vendor', os.sep + 'calibre-web.log', os.sep + '.git', os.sep +'client_secrets.json',
+            os.sep + 'vendor', os.sep + 'calibre-web.log', os.sep + '.git', os.sep + 'client_secrets.json',
             os.sep + 'gdrive_credentials', os.sep + 'settings.yaml')
         for root, dirs, files in os.walk(destination, topdown=True):
             for name in files:
@@ -225,37 +221,32 @@ class Updater(threading.Thread):
         for item in remove_items:
             item_path = os.path.join(destination, item[1:])
             if os.path.isdir(item_path):
-                log.debug("Delete dir %s", item_path)
+                logger.debug("Delete dir %s", item_path)
                 shutil.rmtree(item_path, ignore_errors=True)
             else:
                 try:
-                    log.debug("Delete file %s", item_path)
+                    logger.debug("Delete file %s", item_path)
                     # log_from_thread("Delete file " + item_path)
                     os.remove(item_path)
-                except Exception:
-                    log.debug("Could not remove: %s", item_path)
+                except OSError:
+                    logger.debug("Could not remove: %s", item_path)
         shutil.rmtree(source, ignore_errors=True)
 
     @classmethod
-    def _nightly_version_info(self):
-        content = {}
-        content[0] = '$Format:%H$'
-        content[1] = '$Format:%cI$'
-        # content[0] = 'bb7d2c6273ae4560e83950d36d64533343623a57'
-        # content[1] = '2018-09-09T10:13:08+02:00'
-        if is_sha1(content[0]) and len(content[1]) > 0:
-            return {'version': content[0], 'datetime': content[1]}
+    def _nightly_version_info(cls):
+        if is_sha1(constants.NIGHTLY_VERSION[0]) and len(constants.NIGHTLY_VERSION[1]) > 0:
+            return {'version': constants.NIGHTLY_VERSION[0], 'datetime': constants.NIGHTLY_VERSION[1]}
         return False
 
     @classmethod
-    def _stable_version_info(self):
+    def _stable_version_info(cls):
         return constants.STABLE_VERSION # Current version
 
     def _nightly_available_updates(self, request_method):
         tz = datetime.timedelta(seconds=time.timezone if (time.localtime().tm_isdst == 0) else time.altzone)
         if request_method == "GET":
             repository_url = _REPOSITORY_API_URL
-            status, commit = self._load_remote_data(repository_url +'/git/refs/heads/master')
+            status, commit = self._load_remote_data(repository_url + '/git/refs/heads/master')
             parents = []
             if status['message'] != '':
                 return json.dumps(status)
@@ -334,7 +325,7 @@ class Updater(threading.Thread):
                                         parent_commit_date, format='short', locale=get_locale())
 
                                     parents.append([parent_commit_date,
-                                                    parent_data['message'].replace('\r\n','<p>').replace('\n','<p>')])
+                                                    parent_data['message'].replace('\r\n', '<p>').replace('\n', '<p>')])
                                     parent_commit = parent_data['parents'][0]
                                     remaining_parents_cnt -= 1
                                 except Exception:
@@ -398,7 +389,7 @@ class Updater(threading.Thread):
                     if (minor_version_update == current_version[1] and
                             patch_version_update > current_version[2]) or \
                             minor_version_update > current_version[1]:
-                        parents.append([commit[i]['tag_name'],commit[i]['body'].replace('\r\n', '<p>')])
+                        parents.append([commit[i]['tag_name'], commit[i]['body'].replace('\r\n', '<p>')])
                     i -= 1
                     continue
                 if major_version_update < current_version[0]:
@@ -426,7 +417,7 @@ class Updater(threading.Thread):
                                          u'update to version: %(version)s', version=commit[i]['tag_name']),
                             'history': parents
                         })
-                        self.updateFile = commit[i +1]['zipball_url']
+                        self.updateFile = commit[i+1]['zipball_url']
                     break
             if i == -1:
                 status.update({
