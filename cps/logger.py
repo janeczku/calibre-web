@@ -25,6 +25,7 @@ from logging.handlers import RotatingFileHandler
 
 from .constants import BASE_DIR as _BASE_DIR
 
+
 ACCESS_FORMATTER_GEVENT  = Formatter("%(message)s")
 ACCESS_FORMATTER_TORNADO = Formatter("[%(asctime)s] %(message)s")
 
@@ -33,7 +34,6 @@ DEFAULT_LOG_LEVEL   = logging.INFO
 DEFAULT_LOG_FILE    = os.path.join(_BASE_DIR, "calibre-web.log")
 DEFAULT_ACCESS_LOG  = os.path.join(_BASE_DIR, "access.log")
 LOG_TO_STDERR       = '/dev/stderr'
-DEFAULT_ACCESS_LEVEL= logging.INFO
 
 logging.addLevelName(logging.WARNING, "WARN")
 logging.addLevelName(logging.CRITICAL, "CRIT")
@@ -73,35 +73,26 @@ def is_valid_logfile(file_path):
     return (not log_dir) or os.path.isdir(log_dir)
 
 
-def setup(log_file, log_level=None, logger=None):
-    if logger != "access" and logger != "tornado.access":
-        formatter = FORMATTER
-        default_file = DEFAULT_LOG_FILE
-    else:
-        if logger == "tornado.access":
-            formatter = ACCESS_FORMATTER_TORNADO
-        else:
-            formatter = ACCESS_FORMATTER_GEVENT
-        default_file = DEFAULT_ACCESS_LOG
+def _absolute_log_file(log_file, default_log_file):
     if log_file:
         if not os.path.dirname(log_file):
             log_file = os.path.join(_BASE_DIR, log_file)
-        log_file = os.path.abspath(log_file)
-    else:
-        log_file = LOG_TO_STDERR
-        # log_file = default_file
+        return os.path.abspath(log_file)
 
-    # print ('%r -- %r' % (log_level, log_file))
-    if logger != "access" and logger != "tornado.access":
-        r = logging.root
-    else:
-        r = logging.getLogger(logger)
-        r.propagate = False
+    return default_log_file
+
+
+def setup(log_file, log_level=None):
+    '''
+    Configure the logging output.
+    May be called multiple times.
+    '''
+    log_file = _absolute_log_file(log_file, DEFAULT_LOG_FILE)
+
+    r = logging.root
     r.setLevel(log_level or DEFAULT_LOG_LEVEL)
 
     previous_handler = r.handlers[0] if r.handlers else None
-    # print ('previous %r' % previous_handler)
-
     if previous_handler:
         # if the log_file has not changed, don't create a new handler
         if getattr(previous_handler, 'baseFilename', None) == log_file:
@@ -115,16 +106,32 @@ def setup(log_file, log_level=None, logger=None):
         try:
             file_handler = RotatingFileHandler(log_file, maxBytes=50000, backupCount=2)
         except IOError:
-            if log_file == default_file:
+            if log_file == DEFAULT_LOG_FILE:
                 raise
-            file_handler = RotatingFileHandler(default_file, maxBytes=50000, backupCount=2)
-    file_handler.setFormatter(formatter)
+            file_handler = RotatingFileHandler(DEFAULT_LOG_FILE, maxBytes=50000, backupCount=2)
+    file_handler.setFormatter(FORMATTER)
 
     for h in r.handlers:
         r.removeHandler(h)
         h.close()
     r.addHandler(file_handler)
-    # print ('new handler %r' % file_handler)
+
+
+def create_access_log(log_file, log_name, formatter):
+    '''
+    One-time configuration for the web server's access log.
+    '''
+    log_file = _absolute_log_file(log_file, DEFAULT_ACCESS_LOG)
+    logging.debug("access log: %s", log_file)
+
+    access_log = logging.getLogger(log_name)
+    access_log.propagate = False
+    access_log.setLevel(logging.INFO)
+
+    file_handler = RotatingFileHandler(log_file, maxBytes=50000, backupCount=2)
+    file_handler.setFormatter(formatter)
+    access_log.addHandler(file_handler)
+    return access_log
 
 
 # Enable logging of smtp lib debug output
