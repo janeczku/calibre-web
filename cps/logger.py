@@ -25,7 +25,9 @@ from logging.handlers import RotatingFileHandler
 
 from .constants import BASE_DIR as _BASE_DIR
 
-ACCESS_FORMATTER    = Formatter("%(message)s")
+ACCESS_FORMATTER_GEVENT  = Formatter("%(message)s")
+ACCESS_FORMATTER_TORNADO = Formatter("[%(asctime)s] %(message)s")
+
 FORMATTER           = Formatter("[%(asctime)s] %(levelname)5s {%(name)s:%(lineno)d} %(message)s")
 DEFAULT_LOG_LEVEL   = logging.INFO
 DEFAULT_LOG_FILE    = os.path.join(_BASE_DIR, "calibre-web.log")
@@ -37,38 +39,12 @@ logging.addLevelName(logging.WARNING, "WARN")
 logging.addLevelName(logging.CRITICAL, "CRIT")
 
 
-def info(msg, *args, **kwargs):
-    create(2).info(msg, *args, **kwargs)
-
-
-def warning(msg, *args, **kwargs):
-    create(2).warning(msg, *args, **kwargs)
-
-
-def error(msg, *args, **kwargs):
-    create(2).error(msg, *args, **kwargs)
-
-
-def critical(msg, *args, **kwargs):
-    create(2).critical(msg, *args, **kwargs)
-
-
-def exception(msg, *args, **kwargs):
-    create(2).exception(msg, *args, **kwargs)
-
-
-def debug(msg, *args, **kwargs):
-    create(2).debug(msg, *args, **kwargs)
-
-
 def get(name=None):
-    val = logging.getLogger("general")
-    val.name = name
-    return val
+    return logging.getLogger(name)
 
 
-def create(ini=1):
-    parent_frame = inspect.stack(0)[ini]
+def create():
+    parent_frame = inspect.stack(0)[1]
     if hasattr(parent_frame, 'frame'):
         parent_frame = parent_frame.frame
     else:
@@ -77,8 +53,8 @@ def create(ini=1):
     return get(parent_module.__name__)
 
 
-def is_debug_enabled(logger):
-    return logging.getLogger(logger).level <= logging.DEBUG
+def is_debug_enabled():
+    return logging.root.level <= logging.DEBUG
 
 def is_info_enabled(logger):
     return logging.getLogger(logger).level <= logging.INFO
@@ -97,12 +73,15 @@ def is_valid_logfile(file_path):
     return (not log_dir) or os.path.isdir(log_dir)
 
 
-def setup(log_file, logger, log_level=None):
-    if logger == "general":
+def setup(log_file, log_level=None, logger=None):
+    if logger != "access" and logger != "tornado.access":
         formatter = FORMATTER
         default_file = DEFAULT_LOG_FILE
     else:
-        formatter = ACCESS_FORMATTER
+        if logger == "tornado.access":
+            formatter = ACCESS_FORMATTER_TORNADO
+        else:
+            formatter = ACCESS_FORMATTER_GEVENT
         default_file = DEFAULT_ACCESS_LOG
     if log_file:
         if not os.path.dirname(log_file):
@@ -113,7 +92,11 @@ def setup(log_file, logger, log_level=None):
         log_file = default_file
 
     # print ('%r -- %r' % (log_level, log_file))
-    r = logging.getLogger(logger)
+    if logger != "access" and logger != "tornado.access":
+        r = logging.root
+    else:
+        r = logging.getLogger(logger)
+        r.propagate = False
     r.setLevel(log_level or DEFAULT_LOG_LEVEL)
 
     previous_handler = r.handlers[0] if r.handlers else None

@@ -37,7 +37,7 @@ from . import logger
 
 
 jinjia = Blueprint('jinjia', __name__)
-# log = logger.create()
+log = logger.create()
 
 
 # pagination links in jinja
@@ -85,7 +85,7 @@ def formatdate_filter(val):
         formatdate = datetime.datetime.strptime(conformed_timestamp[:15], "%Y%m%d %H%M%S")
         return format_date(formatdate, format='medium', locale=get_locale())
     except AttributeError as e:
-        logger.error('Babel error: %s, Current user locale: %s, Current User: %s', e, current_user.locale, current_user.nickname)
+        log.error('Babel error: %s, Current user locale: %s, Current User: %s', e, current_user.locale, current_user.nickname)
         return formatdate
 
 @jinjia.app_template_filter('formatdateinput')

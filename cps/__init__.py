@@ -88,13 +88,14 @@ from .server import server
 Server = server()
 
 babel = Babel()
+log = logger.create()
 
 
 def create_app():
     app.wsgi_app = ReverseProxied(app.wsgi_app)
     cache_buster.init_cache_busting(app)
 
-    logger.info('Starting Calibre Web...')
+    log.info('Starting Calibre Web...')
     Principal(app)
     lm.init_app(app)
     app.secret_key = os.getenv('SECRET_KEY', 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT')
@@ -118,7 +119,7 @@ def get_locale():
         try:
             preferred.append(str(LC.parse(x.replace('-', '_'))))
         except (UnknownLocaleError, ValueError) as e:
-            logger.warning('Could not parse locale "%s": %s', x, e)
+            log.warning('Could not parse locale "%s": %s', x, e)
             preferred.append('en')
     return negotiate_locale(preferred, translations)
 

@@ -48,7 +48,7 @@ from . import logger, config, db, gdriveutils
 from .subproc_wrapper import process_open
 
 
-# log = logger.create()
+log = logger.create()
 
 chunksize = 8192
 # task 'status' consts
@@ -90,8 +90,8 @@ def get_attachment(bookpath, filename):
             data = file_.read()
             file_.close()
         except IOError as e:
-            logger.exception(e) # traceback.print_exc()
-            logger.error(u'The requested file could not be read. Maybe wrong permissions?')
+            log.exception(e) # traceback.print_exc()
+            log.error(u'The requested file could not be read. Maybe wrong permissions?')
             return None
 
     attachment = MIMEBase('application', 'octet-stream')
@@ -116,7 +116,7 @@ class emailbase():
 
     def send(self, strg):
         """Send `strg' to the server."""
-        logger.debug('send: %r', strg[:300])
+        log.debug('send: %r', strg[:300])
         if hasattr(self, 'sock') and self.sock:
             try:
                 if self.transferSize:
@@ -142,7 +142,7 @@ class emailbase():
 
     @classmethod
     def _print_debug(self, *args):
-        logger.debug(args)
+        log.debug(args)
 
     def getTransferStatus(self):
         if self.transferSize:
@@ -257,14 +257,14 @@ class WorkerThread(threading.Thread):
         # if it does - mark the conversion task as complete and return a success
         # this will allow send to kindle workflow to continue to work
         if os.path.isfile(file_path + format_new_ext):
-            logger.info("Book id %d already converted to %s", bookid, format_new_ext)
+            log.info("Book id %d already converted to %s", bookid, format_new_ext)
             cur_book = db.session.query(db.Books).filter(db.Books.id == bookid).first()
             self.queue[self.current]['path'] = file_path
             self.queue[self.current]['title'] = cur_book.title
             self._handleSuccess()
             return file_path + format_new_ext
         else:
-            logger.info("Book id %d - target format of %s does not exist. Moving forward with convert.", bookid, format_new_ext)
+            log.info("Book id %d - target format of %s does not exist. Moving forward with convert.", bookid, format_new_ext)
 
         # check if converter-executable is existing
         if not os.path.exists(config.config_converterpath):
@@ -320,13 +320,13 @@ class WorkerThread(threading.Thread):
             if conv_error:
                 error_message = _(u"Kindlegen failed with Error %(error)s. Message: %(message)s",
                                   error=conv_error.group(1), message=conv_error.group(2).strip())
-            logger.debug("convert_kindlegen: %s", nextline)
+            log.debug("convert_kindlegen: %s", nextline)
         else:
             while p.poll() is None:
                 nextline = p.stdout.readline()
                 if os.name == 'nt' and sys.version_info < (3, 0):
                     nextline = nextline.decode('windows-1252')
-                logger.debug(nextline.strip('\r\n'))
+                log.debug(nextline.strip('\r\n'))
                 # parse progress string from calibre-converter
                 progress = re.search("(\d+)%\s.*", nextline)
                 if progress:
@@ -356,7 +356,7 @@ class WorkerThread(threading.Thread):
                 return file_path + format_new_ext
             else:
                 error_message = format_new_ext.upper() + ' format not found on disk'
-        logger.info("ebook converter failed with error while converting book")
+        log.info("ebook converter failed with error while converting book")
         if not error_message:
             error_message = 'Ebook converter failed with unknown error'
         self._handleError(error_message)
@@ -460,7 +460,7 @@ class WorkerThread(threading.Thread):
                 self.asyncSMTP = email(obj['settings']["mail_server"], obj['settings']["mail_port"], timeout)
 
             # link to logginglevel
-            if logger.is_debug_enabled('general'):
+            if logger.is_debug_enabled():
                 self.asyncSMTP.set_debuglevel(1)
             if use_ssl == 1:
                 self.asyncSMTP.starttls()
@@ -502,7 +502,7 @@ class WorkerThread(threading.Thread):
         return retVal
 
     def _handleError(self, error_message):
-        logger.error(error_message)
+        log.error(error_message)
         self.UIqueue[self.current]['stat'] = STAT_FAIL
         self.UIqueue[self.current]['progress'] = "100 %"
         self.UIqueue[self.current]['runtime'] = self._formatRuntime(

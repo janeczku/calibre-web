@@ -42,7 +42,7 @@ from .web import login_required
 
 oauth_check = {}
 oauth = Blueprint('oauth', __name__)
-# log = logger.create()
+log = logger.create()
 
 
 def github_oauth_required(f):
@@ -105,7 +105,7 @@ def register_user_with_oauth(user=None):
             try:
                 ub.session.commit()
             except Exception as e:
-                logger.exception(e)
+                log.exception(e)
                 ub.session.rollback()
 
 
@@ -199,7 +199,7 @@ if ub.oauth_support:
             ub.session.add(oauth)
             ub.session.commit()
         except Exception as e:
-            logger.exception(e)
+            log.exception(e)
             ub.session.rollback()
 
         # Disable Flask-Dance's default behavior for saving the OAuth token
@@ -225,7 +225,7 @@ if ub.oauth_support:
                         ub.session.add(oauth)
                         ub.session.commit()
                     except Exception as e:
-                        logger.exception(e)
+                        log.exception(e)
                         ub.session.rollback()
                     return redirect(url_for('web.login'))
                 #if config.config_public_reg:
@@ -268,11 +268,11 @@ if ub.oauth_support:
                     logout_oauth_user()
                     flash(_(u"Unlink to %(oauth)s success.", oauth=oauth_check[provider]), category="success")
                 except Exception as e:
-                    logger.exception(e)
+                    log.exception(e)
                     ub.session.rollback()
                     flash(_(u"Unlink to %(oauth)s failed.", oauth=oauth_check[provider]), category="error")
         except NoResultFound:
-            logger.warning("oauth %s for user %d not fount", provider, current_user.id)
+            log.warning("oauth %s for user %d not fount", provider, current_user.id)
             flash(_(u"Not linked to %(oauth)s.", oauth=oauth_check[provider]), category="error")
         return redirect(url_for('web.profile'))
 

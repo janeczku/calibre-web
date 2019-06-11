@@ -34,9 +34,14 @@ except ImportError:
     from tornado.httpserver import HTTPServer
     from tornado.ioloop import IOLoop
     from tornado import version as tornadoVersion
+    from tornado import log as tornadoLog
+    from tornado import options as tornadoOptions
     gevent_present = False
 
 from . import logger, config, global_WorkerThread
+
+
+log = logger.create()
 
 
 class server:
@@ -54,10 +59,13 @@ class server:
         self.app = application
         self.port = config.config_port
         self.listening = config.get_config_ipaddress(readable=True) + ":" + str(self.port)
+        self.access_logger = None
         if config.config_access_log:
-            self.access_logger = logging.getLogger("access")
-        else:
-            self.access_logger = None
+            if gevent_present:
+                logger.setup(config.config_access_logfile, logger.DEFAULT_ACCESS_LEVEL, "access")
+                self.access_logger = logging.getLogger("access")
+            else:
+                logger.setup(config.config_access_logfile, logger.DEFAULT_ACCESS_LEVEL, "tornado.access")
 
         self.ssl_args = None
         certfile_path = config.get_config_certfile()
@@ -67,9 +75,9 @@ class server:
                 self.ssl_args = {"certfile": certfile_path,
                                   "keyfile": keyfile_path}
             else:
-                logger.warning('The specified paths for the ssl certificate file and/or key file seem to be broken. Ignoring ssl.')
-                logger.warning('Cert path: %s', certfile_path)
-                logger.warning('Key path:  %s', keyfile_path)
+                log.warning('The specified paths for the ssl certificate file and/or key file seem to be broken. Ignoring ssl.')
+                log.warning('Cert path: %s', certfile_path)
+                log.warning('Key path:  %s', keyfile_path)
 
     def _make_gevent_socket(self):
         if config.get_config_ipaddress():
@@ -80,15 +88,15 @@ class server:
         try:
             s = WSGIServer.get_listener(('', self.port), family=socket.AF_INET6)
         except socket.error as ex:
-            logger.error('%s', ex)
-            logger.warning('Unable to listen on \'\', trying on IPv4 only...')
+            log.error('%s', ex)
+            log.warning('Unable to listen on \'\', trying on IPv4 only...')
             s = WSGIServer.get_listener(('', self.port), family=socket.AF_INET)
-        logger.debug("%r %r", s._sock, s._sock.getsockname())
+        log.debug("%r %r", s._sock, s._sock.getsockname())
         return s
 
     def start_gevent(self):
         ssl_args = self.ssl_args or {}
-        logger.info('Starting Gevent server on %s', self.listening)
+        log.info('Starting Gevent server')
 
         try:
             sock = self._make_gevent_socket()
@@ -96,35 +104,34 @@ class server:
             self.wsgiserver.serve_forever()
         except socket.error:
             try:
-                logger.info('Unable to listen on "", trying on "0.0.0.0" only...')
+                log.info('Unable to listen on "", trying on "0.0.0.0" only...')
                 self.wsgiserver = WSGIServer(('0.0.0.0', config.config_port), self.app, spawn=Pool(), **ssl_args)
                 self.wsgiserver.serve_forever()
             except (OSError, socket.error) as e:
-                logger.info("Error starting server: %s", e.strerror)
+                log.info("Error starting server: %s", e.strerror)
                 print("Error starting server: %s" % e.strerror)
                 global_WorkerThread.stop()
                 sys.exit(1)
         except Exception:
-            logger.exception("Unknown error while starting gevent")
+            log.exception("Unknown error while starting gevent")
             sys.exit(0)
 
     def start_tornado(self):
-        logger.info('Starting Tornado server on %s', self.listening)
+        log.info('Starting Tornado server on %s', self.listening)
 
         try:
-            # Max Buffersize set to 200MB
+            # Max Buffersize set to 200MB            )
             http_server = HTTPServer(WSGIContainer(self.app),
                         max_buffer_size = 209700000,
                         ssl_options=self.ssl_args)
             address = config.get_config_ipaddress()
             http_server.listen(self.port, address)
-            # self.access_log = logging.getLogger("tornado.access")
             self.wsgiserver=IOLoop.instance()
             self.wsgiserver.start()
             # wait for stop signal
             self.wsgiserver.close(True)
         except socket.error as err:
-            logger.exception("Error starting tornado server")
+            log.exception("Error starting tornado server")
             print("Error starting server: %s" % err.strerror)
             global_WorkerThread.stop()
             sys.exit(1)
@@ -137,7 +144,7 @@ class server:
             self.start_tornado()
 
         if self.restart is True:
-            logger.info("Performing restart of Calibre-Web")
+            log.info("Performing restart of Calibre-Web")
             global_WorkerThread.stop()
             if os.name == 'nt':
                 arguments = ["\"" + sys.executable + "\""]
@@ -147,7 +154,7 @@ class server:
             else:
                 os.execl(sys.executable, sys.executable, *sys.argv)
         else:
-            logger.info("Performing shutdown of Calibre-Web")
+            log.info("Performing shutdown of Calibre-Web")
             global_WorkerThread.stop()
         sys.exit(0)
 

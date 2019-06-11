@@ -76,7 +76,7 @@ except ImportError:
 
 feature_support['gdrive'] = gdrive_support
 admi = Blueprint('admin', __name__)
-# log = logger.create()
+log = logger.create()
 
 
 @admi.route("/admin")
@@ -220,7 +220,7 @@ def view_configuration():
             # stop Server
             Server.setRestartTyp(True)
             Server.stopServer()
-            logger.info('Reboot required, restarting')
+            log.info('Reboot required, restarting')
     readColumn = db.session.query(db.Custom_Columns)\
             .filter(and_(db.Custom_Columns.datatype == 'bool',db.Custom_Columns.mark_for_delete == 0)).all()
     return render_title_template("config_view_edit.html", conf=config, readColumns=readColumn,
@@ -518,7 +518,7 @@ def configuration_helper(origin):
             # stop Server
             Server.setRestartTyp(True)
             Server.stopServer()
-            logger.info('Reboot required, restarting')
+            log.info('Reboot required, restarting')
         if origin:
             success = True
     if is_gdrive_ready() and feature_support['gdrive'] is True:  # and config.config_use_google_drive == True:

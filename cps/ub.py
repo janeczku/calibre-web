@@ -39,7 +39,6 @@ from sqlalchemy import String, Integer, SmallInteger, Boolean, DateTime
 from sqlalchemy.orm import relationship, sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 from werkzeug.security import generate_password_hash
-import logging
 
 try:
     import ldap
@@ -446,9 +445,7 @@ class Config:
         self.config_rarfile_location = data.config_rarfile_location
         self.config_theme = data.config_theme
         self.config_updatechannel = data.config_updatechannel
-        logger.setup(self.config_logfile, "general", self.config_log_level)
-        if self.config_access_log:
-            logger.setup("access.log", "access", logger.DEFAULT_ACCESS_LEVEL)
+        logger.setup(self.config_logfile, self.config_log_level)
 
     @property
     def get_update_channel(self):

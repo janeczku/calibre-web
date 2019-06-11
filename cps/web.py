@@ -105,7 +105,7 @@ for ex in default_exceptions:
 
 
 web = Blueprint('web', __name__)
-# log = logger.create()
+log = logger.create()
 
 # ################################### Login logic and rights management ###############################################
 
@@ -308,7 +308,7 @@ def toggle_read(book_id):
                 db.session.add(new_cc)
                 db.session.commit()
         except KeyError:
-            logger.error(u"Custom Column No.%d is not exisiting in calibre database", config.config_read_column)
+            log.error(u"Custom Column No.%d is not exisiting in calibre database", config.config_read_column)
     return ""
 
 '''
@@ -331,10 +331,10 @@ def get_comic_book(book_id, book_format, page):
                             extract = lambda page: rf.read(names[page])
                         except:
                             # rarfile not valid
-                            logger.error('Unrar binary not found, or unable to decompress file %s', cbr_file)
+                            log.error('Unrar binary not found, or unable to decompress file %s', cbr_file)
                             return "", 204
                     else:
-                        logger.info('Unrar is not supported please install python rarfile extension')
+                        log.info('Unrar is not supported please install python rarfile extension')
                         # no support means return nothing
                         return "", 204
                 elif book_format in ("cbz", "zip"):
@@ -346,7 +346,7 @@ def get_comic_book(book_id, book_format, page):
                     names=sort(tf.getnames())
                     extract = lambda page: tf.extractfile(names[page]).read()
                 else:
-                    logger.error('unsupported comic format')
+                    log.error('unsupported comic format')
                     return "", 204
 
                 if sys.version_info.major >= 3:
@@ -937,7 +937,7 @@ def render_read_books(page, are_read, as_xml=False, order=None):
                 .filter(db.cc_classes[config.config_read_column].value is True).all()
             readBookIds = [x.book for x in readBooks]
         except KeyError:
-            logger.error("Custom Column No.%d is not existing in calibre database", config.config_read_column)
+            log.error("Custom Column No.%d is not existing in calibre database", config.config_read_column)
             readBookIds = []
 
     if are_read:
@@ -980,7 +980,7 @@ def serve_book(book_id, book_format):
     book = db.session.query(db.Books).filter(db.Books.id == book_id).first()
     data = db.session.query(db.Data).filter(db.Data.book == book.id).filter(db.Data.format == book_format.upper())\
         .first()
-    logger.info('Serving book: %s', data.name)
+    log.info('Serving book: %s', data.name)
     if config.config_use_google_drive:
         headers = Headers()
         try:
@@ -1063,7 +1063,7 @@ def register():
                     return render_title_template('register.html', title=_(u"register"), page="register")
             else:
                 flash(_(u"Your e-mail is not allowed to register"), category="error")
-                logger.info('Registering failed for user "%s" e-mail adress: %s', to_save['nickname'], to_save["email"])
+                log.info('Registering failed for user "%s" e-mail adress: %s', to_save['nickname'], to_save["email"])
                 return render_title_template('register.html', title=_(u"register"), page="register")
             flash(_(u"Confirmation e-mail was send to your e-mail account."), category="success")
             return redirect(url_for('web.login'))
@@ -1095,10 +1095,10 @@ def login():
                 return redirect_back(url_for("web.index"))
             except ldap.INVALID_CREDENTIALS:
                 ipAdress = request.headers.get('X-Forwarded-For', request.remote_addr)
-                logger.info('LDAP Login failed for user "%s" IP-adress: %s', form['username'], ipAdress)
+                log.info('LDAP Login failed for user "%s" IP-adress: %s', form['username'], ipAdress)
                 flash(_(u"Wrong Username or Password"), category="error")
             except ldap.SERVER_DOWN:
-                logger.info('LDAP Login failed, LDAP Server down')
+                log.info('LDAP Login failed, LDAP Server down')
                 flash(_(u"Could not login. LDAP server down, please contact your administrator"), category="error")
         else:
             if user and check_password_hash(user.password, form['password']) and user.nickname is not "Guest":
@@ -1107,7 +1107,7 @@ def login():
                 return redirect_back(url_for("web.index"))
             else:
                 ipAdress = request.headers.get('X-Forwarded-For', request.remote_addr)
-                logger.info('Login failed for user "%s" IP-adress: %s', form['username'], ipAdress)
+                log.info('Login failed for user "%s" IP-adress: %s', form['username'], ipAdress)
                 flash(_(u"Wrong Username or Password"), category="error")
 
     next_url = url_for('web.index')
@@ -1348,7 +1348,7 @@ def show_book(book_id):
                     matching_have_read_book = getattr(entries, 'custom_column_'+str(config.config_read_column))
                     have_read = len(matching_have_read_book) > 0 and matching_have_read_book[0].value
                 except KeyError:
-                    logger.error("Custom Column No.%d is not exisiting in calibre database", config.config_read_column)
+                    log.error("Custom Column No.%d is not exisiting in calibre database", config.config_read_column)
                     have_read = None
 
         else:
