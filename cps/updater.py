@@ -36,7 +36,7 @@ from flask_babel import gettext as _
 from . import constants, logger, config, get_locale, Server
 
 
-# log = logger.create()
+log = logger.create()
 _REPOSITORY_API_URL = 'https://api.github.com/repos/janeczku/calibre-web'
 
 
@@ -72,45 +72,45 @@ class Updater(threading.Thread):
     def run(self):
         try:
             self.status = 1
-            logger.debug(u'Download update file')
+            log.debug(u'Download update file')
             headers = {'Accept': 'application/vnd.github.v3+json'}
             r = requests.get(self._get_request_path(), stream=True, headers=headers)
             r.raise_for_status()
 
             self.status = 2
-            logger.debug(u'Opening zipfile')
+            log.debug(u'Opening zipfile')
             z = zipfile.ZipFile(BytesIO(r.content))
             self.status = 3
-            logger.debug(u'Extracting zipfile')
+            log.debug(u'Extracting zipfile')
             tmp_dir = gettempdir()
             z.extractall(tmp_dir)
             foldername = os.path.join(tmp_dir, z.namelist()[0])[:-1]
             if not os.path.isdir(foldername):
                 self.status = 11
-                logger.error(u'Extracted contents of zipfile not found in temp folder')
+                log.info(u'Extracted contents of zipfile not found in temp folder')
                 return
             self.status = 4
-            logger.debug(u'Replacing files')
+            log.debug(u'Replacing files')
             self.update_source(foldername, constants.BASE_DIR)
             self.status = 6
-            logger.debug(u'Preparing restart of server')
+            log.debug(u'Preparing restart of server')
             time.sleep(2)
             Server.setRestartTyp(True)
             Server.stopServer()
             self.status = 7
             time.sleep(2)
         except requests.exceptions.HTTPError as ex:
-            logger.info(u'HTTP Error %s', ex)
+            log.info(u'HTTP Error %s', ex)
             self.status = 8
         except requests.exceptions.ConnectionError:
-            logger.info(u'Connection error')
+            log.info(u'Connection error')
             self.status = 9
         except requests.exceptions.Timeout:
-            logger.info(u'Timeout while establishing connection')
+            log.info(u'Timeout while establishing connection')
             self.status = 10
         except requests.exceptions.RequestException:
             self.status = 11
-            logger.info(u'General error')
+            log.info(u'General error')
 
     def get_update_status(self):
         return self.status
@@ -159,12 +159,12 @@ class Updater(threading.Thread):
         if sys.platform == "win32" or sys.platform == "darwin":
             change_permissions = False
         else:
-            logger.debug('Update on OS-System : %s', sys.platform)
+            log.debug('Update on OS-System : %s', sys.platform)
         for src_dir, __, files in os.walk(root_src_dir):
             dst_dir = src_dir.replace(root_src_dir, root_dst_dir, 1)
             if not os.path.exists(dst_dir):
                 os.makedirs(dst_dir)
-                logger.debug('Create-Dir: %s', dst_dir)
+                log.debug('Create-Dir: %s', dst_dir)
                 if change_permissions:
                     # print('Permissions: User '+str(new_permissions.st_uid)+' Group '+str(new_permissions.st_uid))
                     os.chown(dst_dir, new_permissions.st_uid, new_permissions.st_gid)
@@ -173,19 +173,19 @@ class Updater(threading.Thread):
                 dst_file = os.path.join(dst_dir, file_)
                 permission = os.stat(dst_file)
                 if os.path.exists(dst_file):
-                    logger.debug('Remove file before copy: %s', dst_file)
+                    log.debug('Remove file before copy: %s', dst_file)
                     os.remove(dst_file)
                 else:
                     if change_permissions:
                         permission = new_permissions
                 shutil.move(src_file, dst_dir)
-                logger.debug('Move File %s to %s', src_file, dst_dir)
+                log.debug('Move File %s to %s', src_file, dst_dir)
                 if change_permissions:
                     try:
                         os.chown(dst_file, permission.st_uid, permission.st_gid)
                     except OSError as e:
                         old_permissions = os.stat(dst_file)
-                        logger.debug('Fail change permissions of %s. Before: %s:%s After %s:%s error: %s',
+                        log.debug('Fail change permissions of %s. Before: %s:%s After %s:%s error: %s',
                                   dst_file, old_permissions.st_uid, old_permissions.st_gid,
                                   permission.st_uid, permission.st_gid, e)
         return
@@ -221,11 +221,11 @@ class Updater(threading.Thread):
         for item in remove_items:
             item_path = os.path.join(destination, item[1:])
             if os.path.isdir(item_path):
-                logger.debug("Delete dir %s", item_path)
+                log.debug("Delete dir %s", item_path)
                 shutil.rmtree(item_path, ignore_errors=True)
             else:
                 try:
-                    logger.debug("Delete file %s", item_path)
+                    log.debug("Delete file %s", item_path)
                     # log_from_thread("Delete file " + item_path)
                     os.remove(item_path)
                 except OSError:

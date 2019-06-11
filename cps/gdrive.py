@@ -44,7 +44,7 @@ from .web import admin_required
 
 
 gdrive = Blueprint('gdrive', __name__)
-# log = logger.create()
+log = logger.create()
 
 current_milli_time = lambda: int(round(time() * 1000))
 
@@ -74,7 +74,7 @@ def google_drive_callback():
         with open(gdriveutils.CREDENTIALS, 'w') as f:
             f.write(credentials.to_json())
     except ValueError as error:
-        logger.error(error)
+        log.error(error)
     return redirect(url_for('admin.configuration'))
 
 
@@ -131,7 +131,7 @@ def revoke_watch_gdrive():
 
 @gdrive.route("/gdrive/watch/callback", methods=['GET', 'POST'])
 def on_received_watch_confirmation():
-    logger.debug('%r', request.headers)
+    log.debug('%r', request.headers)
     if request.headers.get('X-Goog-Channel-Token') == gdrive_watch_callback_token \
             and request.headers.get('X-Goog-Resource-State') == 'change' \
             and request.data:
@@ -139,26 +139,26 @@ def on_received_watch_confirmation():
         data = request.data
 
         def updateMetaData():
-            logger.info('Change received from gdrive')
-            logger.debug('%r', data)
+            log.info('Change received from gdrive')
+            log.debug('%r', data)
             try:
                 j = json.loads(data)
-                logger.info('Getting change details')
+                log.info('Getting change details')
                 response = gdriveutils.getChangeById(gdriveutils.Gdrive.Instance().drive, j['id'])
-                logger.debug('%r', response)
+                log.debug('%r', response)
                 if response:
                     dbpath = os.path.join(config.config_calibre_dir, "metadata.db")
                     if not response['deleted'] and response['file']['title'] == 'metadata.db' and response['file']['md5Checksum'] != hashlib.md5(dbpath):
                         tmpDir = tempfile.gettempdir()
-                        logger.info('Database file updated')
+                        log.info('Database file updated')
                         copyfile(dbpath, os.path.join(tmpDir, "metadata.db_" + str(current_milli_time())))
-                        logger.info('Backing up existing and downloading updated metadata.db')
+                        log.info('Backing up existing and downloading updated metadata.db')
                         gdriveutils.downloadFile(None, "metadata.db", os.path.join(tmpDir, "tmp_metadata.db"))
-                        logger.info('Setting up new DB')
+                        log.info('Setting up new DB')
                         # prevent error on windows, as os.rename does on exisiting files
                         move(os.path.join(tmpDir, "tmp_metadata.db"), dbpath)
                         db.setup_db()
             except Exception as e:
-                logger.exception(e)
+                log.exception(e)
         updateMetaData()
     return ''
