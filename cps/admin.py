@@ -26,6 +26,8 @@ import os
 import json
 import time
 from datetime import datetime, timedelta
+# import uuid
+import random
 try:
     from imp import reload
 except ImportError:
@@ -33,7 +35,7 @@ except ImportError:
 
 from babel import Locale as LC
 from babel.dates import format_datetime
-from flask import Blueprint, flash, redirect, url_for, abort, request, make_response
+from flask import Blueprint, flash, redirect, url_for, abort, request, make_response, send_from_directory
 from flask_login import login_required, current_user, logout_user
 from flask_babel import gettext as _
 from sqlalchemy import and_
@@ -542,6 +544,9 @@ def new_user():
         to_save = request.form.to_dict()
         content.default_language = to_save["default_language"]
         content.mature_content = "Show_mature_content" in to_save
+        dat = datetime.strptime("1.1.2019", "%d.%m.%Y")
+        content.id = int(time.time()*100)
+        # val= int(uuid.uuid4())
         if "locale" in to_save:
             content.locale = to_save["locale"]
 
@@ -550,6 +555,7 @@ def new_user():
             if key.startswith('show'):
                 val += int(key[5:])
         content.sidebar_view = val
+
 
         if "show_detail_random" in to_save:
             content.sidebar_view |= constants.DETAIL_RANDOM
@@ -756,6 +762,25 @@ def reset_password(user_id):
             ub.session.rollback()
             flash(_(u"An unknown error occurred. Please try again later."), category="error")
     return redirect(url_for('admin.admin'))
+
+
+@admi.route("/admin/logfile")
+@login_required
+@admin_required
+def view_logfile():
+    perpage_p = {0:"30",1:"40",2:"100"}
+    for key, value in perpage_p.items():
+        print(key)
+        print(value)
+    return render_title_template("logviewer.html",title=_(u"Logfile viewer"), perpage_p=perpage_p, perpage = 30,
+                                 page="logfile")
+
+
+@admi.route("/ajax/accesslog")
+@login_required
+@admin_required
+def send_logfile():
+    return send_from_directory(constants.BASE_DIR,"access.log")
 
 
 @admi.route("/get_update_status", methods=['GET'])

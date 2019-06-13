@@ -88,8 +88,8 @@ def setup(log_file, log_level=None, logger=None):
             log_file = os.path.join(_BASE_DIR, log_file)
         log_file = os.path.abspath(log_file)
     else:
-        # log_file = LOG_TO_STDERR
-        log_file = default_file
+        log_file = LOG_TO_STDERR
+        # log_file = default_file
 
     # print ('%r -- %r' % (log_level, log_file))
     if logger != "access" and logger != "tornado.access":
