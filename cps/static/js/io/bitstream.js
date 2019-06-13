@@ -8,6 +8,9 @@
  * Copyright(c) 2011 Google Inc.
  * Copyright(c) 2011 antimatter15
  */
+
+/* global bitjs, Uint8Array */
+
 var bitjs = bitjs || {};
 bitjs.io = bitjs.io || {};
 
@@ -30,20 +33,20 @@ bitjs.io = bitjs.io || {};
      * @param {ArrayBuffer} ab An ArrayBuffer object or a Uint8Array.
      * @param {boolean} rtl Whether the stream reads bits from the byte starting
      *     from bit 7 to 0 (true) or bit 0 to 7 (false).
-     * @param {Number} opt_offset The offset into the ArrayBuffer
-     * @param {Number} opt_length The length of this BitStream
+     * @param {Number} optOffset The offset into the ArrayBuffer
+     * @param {Number} optLength The length of this BitStream
      */
-    bitjs.io.BitStream = function(ab, rtl, opt_offset, opt_length) {
+    bitjs.io.BitStream = function(ab, rtl, optOffset, optLength) {
         if (!ab || !ab.toString || ab.toString() !== "[object ArrayBuffer]") {
             throw "Error! BitArray constructed with an invalid ArrayBuffer object";
         }
 
-        var offset = opt_offset || 0;
-        var length = opt_length || ab.byteLength;
+        var offset = optOffset || 0;
+        var length = optLength || ab.byteLength;
         this.bytes = new Uint8Array(ab, offset, length);
         this.bytePtr = 0; // tracks which byte we are on
         this.bitPtr = 0; // tracks which bit we are on (can have values 0 through 7)
-        this.peekBits = rtl ? this.peekBits_rtl : this.peekBits_ltr;
+        this.peekBits = rtl ? this.peekBitsRtl : this.peekBitsLtr;
     };
 
 
@@ -57,8 +60,8 @@ bitjs.io = bitjs.io || {};
      * @param {boolean=} movePointers Whether to move the pointer, defaults false.
      * @return {number} The peeked bits, as an unsigned number.
      */
-    bitjs.io.BitStream.prototype.peekBits_ltr = function(n, movePointers) {
-        if (n <= 0 || typeof n != typeof 1) {
+    bitjs.io.BitStream.prototype.peekBitsLtr = function(n, movePointers) {
+        if (n <= 0 || typeof n !== typeof 1) {
             return 0;
         }
 
@@ -77,12 +80,13 @@ bitjs.io = bitjs.io || {};
             if (bytePtr >= bytes.length) {
                 throw "Error!  Overflowed the bit stream! n=" + n + ", bytePtr=" + bytePtr + ", bytes.length=" +
                     bytes.length + ", bitPtr=" + bitPtr;
-                return -1;
+                // return -1;
             }
 
             var numBitsLeftInThisByte = (8 - bitPtr);
+            var mask;
             if (n >= numBitsLeftInThisByte) {
-                var mask = (BITMASK[numBitsLeftInThisByte] << bitPtr);
+                mask = (BITMASK[numBitsLeftInThisByte] << bitPtr);
                 result |= (((bytes[bytePtr] & mask) >> bitPtr) << bitsIn);
 
                 bytePtr++;
@@ -90,7 +94,7 @@ bitjs.io = bitjs.io || {};
                 bitsIn += numBitsLeftInThisByte;
                 n -= numBitsLeftInThisByte;
             } else {
-                var mask = (BITMASK[n] << bitPtr);
+                mask = (BITMASK[n] << bitPtr);
                 result |= (((bytes[bytePtr] & mask) >> bitPtr) << bitsIn);
 
                 bitPtr += n;
@@ -118,8 +122,8 @@ bitjs.io = bitjs.io || {};
      * @param {boolean=} movePointers Whether to move the pointer, defaults false.
      * @return {number} The peeked bits, as an unsigned number.
      */
-    bitjs.io.BitStream.prototype.peekBits_rtl = function(n, movePointers) {
-        if (n <= 0 || typeof n != typeof 1) {
+    bitjs.io.BitStream.prototype.peekBitsRtl = function(n, movePointers) {
+        if (n <= 0 || typeof n !== typeof 1) {
             return 0;
         }
 
@@ -138,7 +142,7 @@ bitjs.io = bitjs.io || {};
             if (bytePtr >= bytes.length) {
                 throw "Error!  Overflowed the bit stream! n=" + n + ", bytePtr=" + bytePtr + ", bytes.length=" +
                     bytes.length + ", bitPtr=" + bitPtr;
-                return -1;
+                // return -1;
             }
 
             var numBitsLeftInThisByte = (8 - bitPtr);
@@ -198,19 +202,19 @@ bitjs.io = bitjs.io || {};
      * @return {Uint8Array} The subarray.
      */
     bitjs.io.BitStream.prototype.peekBytes = function(n, movePointers) {
-        if (n <= 0 || typeof n != typeof 1) {
+        if (n <= 0 || typeof n !== typeof 1) {
             return 0;
         }
 
         // from http://tools.ietf.org/html/rfc1951#page-11
         // "Any bits of input up to the next byte boundary are ignored."
-        while (this.bitPtr != 0) {
+        while (this.bitPtr !== 0) {
             this.readBits(1);
         }
 
         var movePointers = movePointers || false;
-        var bytePtr = this.bytePtr,
-            bitPtr = this.bitPtr;
+        var bytePtr = this.bytePtr;
+        // bitPtr = this.bitPtr;
 
         var result = this.bytes.subarray(bytePtr, bytePtr + n);
 

@@ -8,6 +8,9 @@
  * Copyright(c) 2011 Google Inc.
  * Copyright(c) 2011 antimatter15
  */
+
+/* global bitjs, Uint8Array */
+
 var bitjs = bitjs || {};
 bitjs.io = bitjs.io || {};
 
@@ -19,13 +22,13 @@ bitjs.io = bitjs.io || {};
      * out of an ArrayBuffer.  In this buffer, everything must be byte-aligned.
      *
      * @param {ArrayBuffer} ab The ArrayBuffer object.
-     * @param {number=} opt_offset The offset into the ArrayBuffer
-     * @param {number=} opt_length The length of this BitStream
+     * @param {number=} optOffset The offset into the ArrayBuffer
+     * @param {number=} optLength The length of this BitStream
      * @constructor
      */
-    bitjs.io.ByteStream = function(ab, opt_offset, opt_length) {
-        var offset = opt_offset || 0;
-        var length = opt_length || ab.byteLength;
+    bitjs.io.ByteStream = function(ab, optOffset, optLength) {
+        var offset = optOffset || 0;
+        var length = optLength || ab.byteLength;
         this.bytes = new Uint8Array(ab, offset, length);
         this.ptr = 0;
     };
@@ -40,8 +43,9 @@ bitjs.io = bitjs.io || {};
      */
     bitjs.io.ByteStream.prototype.peekNumber = function(n) {
         // TODO: return error if n would go past the end of the stream?
-        if (n <= 0 || typeof n != typeof 1)
+        if (n <= 0 || typeof n !== typeof 1) {
             return -1;
+        }
 
         var result = 0;
         // read from last byte to first byte and roll them in
@@ -105,7 +109,7 @@ bitjs.io = bitjs.io || {};
      * @return {Uint8Array} The subarray.
      */
     bitjs.io.ByteStream.prototype.peekBytes = function(n, movePointers) {
-        if (n <= 0 || typeof n != typeof 1) {
+        if (n <= 0 || typeof n !== typeof 1) {
             return null;
         }
 
@@ -135,7 +139,7 @@ bitjs.io = bitjs.io || {};
      * @return {string} The next n bytes as a string.
      */
     bitjs.io.ByteStream.prototype.peekString = function(n) {
-        if (n <= 0 || typeof n != typeof 1) {
+        if (n <= 0 || typeof n !== typeof 1) {
             return "";
         }
 
