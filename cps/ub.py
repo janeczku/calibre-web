@@ -432,7 +432,7 @@ class Config:
         self.config_ldap_require_cert = data.config_ldap_require_cert
         self.config_ldap_cert_path = data.config_ldap_cert_path
         self.config_ldap_dn = data.config_ldap_dn
-        self.config_ldap_user_object = data.config_ldap_user_object 
+        self.config_ldap_user_object = data.config_ldap_user_object
         self.config_ldap_openldap = data.config_ldap_openldap
         if data.config_mature_content_tags:
             self.config_mature_content_tags = data.config_mature_content_tags
@@ -751,7 +751,7 @@ def migrate_Database():
         session.query(exists().where(Settings.config_ldap_schema)).scalar()
     except exc.OperationalError:
         conn = engine.connect()
-        conn.execute("ALTER TABLE Settings ADD column `config_ldap_schema ` String DEFAULT ''")
+        conn.execute("ALTER TABLE Settings ADD column `config_ldap_schema` String DEFAULT ''")
         session.commit()
     try:
         session.query(exists().where(Settings.config_ldap_serv_username)).scalar()
@@ -770,7 +770,7 @@ def migrate_Database():
         session.query(exists().where(Settings.config_ldap_use_tls)).scalar()
     except exc.OperationalError:
         conn = engine.connect()
-        conn.execute("ALTER TABLE Settings ADD column `cconfig_ldap_use_tls` INTEGER DEFAULT 0")
+        conn.execute("ALTER TABLE Settings ADD column `config_ldap_use_tls` INTEGER DEFAULT 0")
         session.commit()
     try:
         session.query(exists().where(Settings.config_ldap_require_cert)).scalar()
