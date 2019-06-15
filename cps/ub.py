@@ -179,6 +179,7 @@ class UserBase:
 # User Base (all access methods are declared there)
 class User(UserBase, Base):
     __tablename__ = 'user'
+    __table_args__ = {'sqlite_autoincrement': True}
 
     id = Column(Integer, primary_key=True)
     nickname = Column(String(64), unique=True)
@@ -715,7 +716,34 @@ def migrate_Database():
         conn = engine.connect()
         conn.execute("ALTER TABLE Settings ADD column `config_updatechannel` INTEGER DEFAULT 0")
         session.commit()
-
+    try:
+        # check if one table with autoincrement is existing (should be user table)
+        conn = engine.connect()
+        conn.execute("SELECT COUNT(*) FROM sqlite_sequence WHERE name='user'")
+    except exc.OperationalError:
+        # Create new table user_id and copy contents of table user into it
+        conn = engine.connect()
+        conn.execute("CREATE TABLE user_id (id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,"
+                            "nickname VARCHAR(64),"
+                            "email VARCHAR(120),"
+                            "role SMALLINT,"
+                            "password VARCHAR,"
+                            "kindle_mail VARCHAR(120),"
+                            "locale VARCHAR(2),"
+                            "sidebar_view INTEGER,"
+                            "default_language VARCHAR(3),"
+                            "mature_content BOOLEAN,"
+                            "UNIQUE (nickname),"
+                            "UNIQUE (email),"
+                            "CHECK (mature_content IN (0, 1)))")
+        conn.execute("INSERT INTO user_id(id, nickname, email, role, password, kindle_mail,locale,"
+                        "sidebar_view, default_language, mature_content) "
+                     "SELECT id, nickname, email, role, password, kindle_mail, locale,"
+                        "sidebar_view, default_language, mature_content FROM user")
+        # delete old user table and rename new user_id table to user:
+        conn.execute("DROP TABLE user")
+        conn.execute("ALTER TABLE user_id RENAME TO user")
+        session.commit()
 
     # Remove login capability of user Guest
     conn = engine.connect()
