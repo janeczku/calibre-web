@@ -56,19 +56,29 @@ Optionally, to enable on-the-fly conversion from one ebook format to another whe
 
 [Download](http://www.amazon.com/gp/feature.html?docId=1000765211) Amazon's KindleGen tool for your platform and place the binary named as `kindlegen` in the `vendor` folder.
 
-## Docker images
+## Docker Images
 
-Pre-built Docker images based on Alpine Linux are available in these Docker Hub repositories:
+Pre-built Docker images are available in these Docker Hub repositories:
 
-**x64**
-+ **technosoft2000** at [technosoft2000/calibre-web](https://hub.docker.com/r/technosoft2000/calibre-web/). If you want the option to convert/download ebooks in multiple formats, use this image as it includes Calibre's ebook-convert binary. The "path to convertertool" should be set to /opt/calibre/ebook-convert.
-+ **linuxserver.io** at [linuxserver/calibre-web](https://hub.docker.com/r/linuxserver/calibre-web/). Cannot convert between ebook formats.
+#### **Technosoft2000 - x64**
++ Docker Hub - [https://hub.docker.com/r/technosoft2000/calibre-web/](https://hub.docker.com/r/technosoft2000/calibre-web/)
++ Github - [https://github.com/Technosoft2000/docker-calibre-web](https://github.com/Technosoft2000/docker-calibre-web) 
 
-**armhf**
-+ **linuxserver.io** at [lsioarmhf/calibre-web](https://hub.docker.com/r/lsioarmhf/calibre-web/)
+    Includes the Calibre `ebook-convert` binary.
+    + The "path to convertertool" should be set to `/opt/calibre/ebook-convert`
 
-**aarch64**
-+ **linuxserver.io** at [lsioarmhf/calibre-web-aarch64](https://hub.docker.com/r/lsioarmhf/calibre-web-aarch64)
+#### **LinuxServer - x64, armhf, aarch64**
++ Docker Hub - [https://hub.docker.com/r/linuxserver/calibre-web/](https://hub.docker.com/r/linuxserver/calibre-web/)
++ Github - [https://github.com/linuxserver/docker-calibre-web](https://github.com/linuxserver/docker-calibre-web)
++ Github - (Optional Calibre layer) - [https://github.com/linuxserver/docker-calibre-web/tree/calibre](https://github.com/linuxserver/docker-calibre-web/tree/calibre) 
+
+   This image has the option to pull in an extra docker manifest layer to include the Calibre `ebook-convert` binary.  Just include the environmental variable `DOCKER_MODS=linuxserver/calibre-web:calibre` in your docker run/docker compose file. **(x64 only)**
+  
+   If you do not need this functionality then this can be omitted, keeping the image as lightweight as possible.
+    
+   Both the Calibre-Web and Calibre-Mod images are rebuilt automatically on new releases of Calibre-Web and Calibre respectively, and on updates to any included base image packages on a weekly basis if required.
+   + The "path to convertertool" should be set to `/usr/bin/ebook-convert`
+   + The "path to unrar" should be set to `/usr/bin/unrar`
 
 # Wiki
 
