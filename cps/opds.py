@@ -36,6 +36,11 @@ from .helper import fill_indexpage, get_download_link, get_book_cover
 from .pagination import Pagination
 from .web import common_filters, get_search_results, render_read_books, download_required
 
+try:
+    import ldap
+    ldap_support = True
+except ImportError:
+    ldap_support = False
 
 opds = Blueprint('opds', __name__)
 log = logger.create()
@@ -52,33 +57,39 @@ def requires_basic_auth_if_no_ano(f):
 
     return decorated
 
+def basic_auth_required_check(condition):
+    def decorator(f):
+        if condition and ldap_support:
+           return ldap.basic_auth_required(f)
+        return requires_basic_auth_if_no_ano(f)
+    return decorator
 
 @opds.route("/opds/")
-@requires_basic_auth_if_no_ano
+@basic_auth_required_check(config.config_login_type)
 def feed_index():
     return render_xml_template('index.xml')
 
 
 @opds.route("/opds/osd")
-@requires_basic_auth_if_no_ano
+@basic_auth_required_check(config.config_login_type)
 def feed_osd():
     return render_xml_template('osd.xml', lang='en-EN')
 
 @opds.route("/opds/search", defaults={'query': ""})
 @opds.route("/opds/search/<query>")
-@requires_basic_auth_if_no_ano
+@basic_auth_required_check(config.config_login_type)
 def feed_cc_search(query):
     return feed_search(query.strip())
 
 
 @opds.route("/opds/search", methods=["GET"])
-@requires_basic_auth_if_no_ano
+@basic_auth_required_check(config.config_login_type)
 def feed_normal_search():
     return feed_search(request.args.get("query").strip())
 
 
 @opds.route("/opds/new")
-@requires_basic_auth_if_no_ano
+@basic_auth_required_check(config.config_login_type)
 def feed_new():
     off = request.args.get("offset") or 0
     entries, __, pagination = fill_indexpage((int(off) / (int(config.config_books_per_page)) + 1),
@@ -87,7 +98,7 @@ def feed_new():
 
 
 @opds.route("/opds/discover")
-@requires_basic_auth_if_no_ano
+@basic_auth_required_check(config.config_login_type)
 def feed_discover():
     entries = db.session.query(db.Books).filter(common_filters()).order_by(func.random())\
         .limit(config.config_books_per_page)
@@ -96,7 +107,7 @@ def feed_discover():
 
 
 @opds.route("/opds/rated")
-@requires_basic_auth_if_no_ano
+@basic_auth_required_check(config.config_login_type)
 def feed_best_rated():
     off = request.args.get("offset") or 0
     entries, __, pagination = fill_indexpage((int(off) / (int(config.config_books_per_page)) + 1),
@@ -105,7 +116,7 @@ def feed_best_rated():
 
 
 @opds.route("/opds/hot")
-@requires_basic_auth_if_no_ano
+@basic_auth_required_check(config.config_login_type)
 def feed_hot():
     off = request.args.get("offset") or 0
     all_books = ub.session.query(ub.Downloads, func.count(ub.Downloads.book_id)).order_by(
@@ -130,7 +141,7 @@ def feed_hot():
 
 
 @opds.route("/opds/author")
-@requires_basic_auth_if_no_ano
+@basic_auth_required_check(config.config_login_type)
 def feed_authorindex():
     off = request.args.get("offset") or 0
     entries = db.session.query(db.Authors).join(db.books_authors_link).join(db.Books).filter(common_filters())\
@@ -141,7 +152,7 @@ def feed_authorindex():
 
 
 @opds.route("/opds/author/<int:book_id>")
-@requires_basic_auth_if_no_ano
+@basic_auth_required_check(config.config_login_type)
 def feed_author(book_id):
     off = request.args.get("offset") or 0
     entries, __, pagination = fill_indexpage((int(off) / (int(config.config_books_per_page)) + 1),
@@ -150,7 +161,7 @@ def feed_author(book_id):
 
 
 @opds.route("/opds/publisher")
-@requires_basic_auth_if_no_ano
+@basic_auth_required_check(config.config_login_type)
 def feed_publisherindex():
     off = request.args.get("offset") or 0
     entries = db.session.query(db.Publishers).join(db.books_publishers_link).join(db.Books).filter(common_filters())\
@@ -161,7 +172,7 @@ def feed_publisherindex():
 
 
 @opds.route("/opds/publisher/<int:book_id>")
-@requires_basic_auth_if_no_ano
+@basic_auth_required_check(config.config_login_type)
 def feed_publisher(book_id):
     off = request.args.get("offset") or 0
     entries, __, pagination = fill_indexpage((int(off) / (int(config.config_books_per_page)) + 1),
@@ -171,7 +182,7 @@ def feed_publisher(book_id):
 
 
 @opds.route("/opds/category")
-@requires_basic_auth_if_no_ano
+@basic_auth_required_check(config.config_login_type)
 def feed_categoryindex():
     off = request.args.get("offset") or 0
     entries = db.session.query(db.Tags).join(db.books_tags_link).join(db.Books).filter(common_filters())\
@@ -182,7 +193,7 @@ def feed_categoryindex():
 
 
 @opds.route("/opds/category/<int:book_id>")
-@requires_basic_auth_if_no_ano
+@basic_auth_required_check(config.config_login_type)
 def feed_category(book_id):
     off = request.args.get("offset") or 0
     entries, __, pagination = fill_indexpage((int(off) / (int(config.config_books_per_page)) + 1),
@@ -191,7 +202,7 @@ def feed_category(book_id):
 
 
 @opds.route("/opds/series")
-@requires_basic_auth_if_no_ano
+@basic_auth_required_check(config.config_login_type)
 def feed_seriesindex():
     off = request.args.get("offset") or 0
     entries = db.session.query(db.Series).join(db.books_series_link).join(db.Books).filter(common_filters())\
@@ -202,7 +213,7 @@ def feed_seriesindex():
 
 
 @opds.route("/opds/series/<int:book_id>")
-@requires_basic_auth_if_no_ano
+@basic_auth_required_check(config.config_login_type)
 def feed_series(book_id):
     off = request.args.get("offset") or 0
     entries, __, pagination = fill_indexpage((int(off) / (int(config.config_books_per_page)) + 1),
@@ -212,7 +223,7 @@ def feed_series(book_id):
 
 @opds.route("/opds/shelfindex/", defaults={'public': 0})
 @opds.route("/opds/shelfindex/<string:public>")
-@requires_basic_auth_if_no_ano
+@basic_auth_required_check(config.config_login_type)
 def feed_shelfindex(public):
     off = request.args.get("offset") or 0
     if public is not 0:
@@ -227,7 +238,7 @@ def feed_shelfindex(public):
 
 
 @opds.route("/opds/shelf/<int:book_id>")
-@requires_basic_auth_if_no_ano
+@basic_auth_required_check(config.config_login_type)
 def feed_shelf(book_id):
     off = request.args.get("offset") or 0
     if current_user.is_anonymous:
@@ -251,14 +262,14 @@ def feed_shelf(book_id):
 
 
 @opds.route("/opds/download/<book_id>/<book_format>/")
-@requires_basic_auth_if_no_ano
+@basic_auth_required_check(config.config_login_type)
 @download_required
 def opds_download_link(book_id, book_format):
     return get_download_link(book_id,book_format)
 
 
 @opds.route("/ajax/book/<string:uuid>")
-@requires_basic_auth_if_no_ano
+@basic_auth_required_check(config.config_login_type)
 def get_metadata_calibre_companion(uuid):
     entry = db.session.query(db.Books).filter(db.Books.uuid.like("%" + uuid + "%")).first()
     if entry is not None:
@@ -307,19 +318,19 @@ def render_xml_template(*args, **kwargs):
 @opds.route("/opds/cover_240_240/<book_id>")
 @opds.route("/opds/cover_90_90/<book_id>")
 @opds.route("/opds/cover/<book_id>")
-@requires_basic_auth_if_no_ano
+@basic_auth_required_check(config.config_login_type)
 def feed_get_cover(book_id):
     return get_book_cover(book_id)
 
 @opds.route("/opds/readbooks/")
-@requires_basic_auth_if_no_ano
+@basic_auth_required_check(config.config_login_type)
 def feed_read_books():
     off = request.args.get("offset") or 0
     return render_read_books(int(off) / (int(config.config_books_per_page)) + 1, True, True)
 
 
 @opds.route("/opds/unreadbooks/")
-@requires_basic_auth_if_no_ano
+@basic_auth_required_check(config.config_login_type)
 def feed_unread_books():
     off = request.args.get("offset") or 0
     return render_read_books(int(off) / (int(config.config_books_per_page)) + 1, False, True)

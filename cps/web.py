@@ -103,7 +103,6 @@ for ex in default_exceptions:
         app.register_error_handler(ex, error_http)
 
 
-
 web = Blueprint('web', __name__)
 log = logger.create()
 
@@ -244,9 +243,7 @@ def before_request():
         return redirect(url_for('admin.basic_configuration'))
 
 
-
 # ################################### data provider functions #########################################################
-
 @web.route("/ajax/emailstat")
 @login_required
 def get_email_status_json():
@@ -1082,24 +1079,32 @@ def login():
         return redirect(url_for('admin.basic_configuration'))
     if current_user is not None and current_user.is_authenticated:
         return redirect(url_for('web.index'))
+    if config.config_login_type == 1 and not feature_support['ldap']:
+        flash(_(u"Cannot activate LDAP authentication"), category="error")
     if request.method == "POST":
         form = request.form.to_dict()
         user = ub.session.query(ub.User).filter(func.lower(ub.User.nickname) == form['username'].strip().lower())\
             .first()
-        if config.config_login_type == 1 and user:
+        if config.config_login_type == 1 and user and feature_support['ldap']:
             try:
-                ub.User.try_login(form['username'], form['password'], config.config_ldap_dn,
-                                  config.config_ldap_provider_url)
-                login_user(user, remember=True)
-                flash(_(u"You are now logged in as: '%(nickname)s'", nickname=user.nickname), category="success")
-                return redirect_back(url_for("web.index"))
-            except ldap.INVALID_CREDENTIALS:
+                if ldap.bind_user(form['username'], form['password']) is not None:
+                    login_user(user, remember=True)
+                    flash(_(u"you are now logged in as: '%(nickname)s'", nickname=user.nickname),
+                          category="success")
+                    return redirect_back(url_for("web.index"))
+            except ldap.INVALID_CREDENTIALS as e:
+                log.error('Login Error: ' + str(e))
                 ipAdress = request.headers.get('X-Forwarded-For', request.remote_addr)
                 log.info('LDAP Login failed for user "%s" IP-adress: %s', form['username'], ipAdress)
                 flash(_(u"Wrong Username or Password"), category="error")
             except ldap.SERVER_DOWN:
                 log.info('LDAP Login failed, LDAP Server down')
                 flash(_(u"Could not login. LDAP server down, please contact your administrator"), category="error")
+            '''except LDAPException as exception:
+                app.logger.error('Login Error: ' + str(exception))
+                ipAdress = request.headers.get('X-Forwarded-For', request.remote_addr)
+                app.logger.info('LDAP Login failed for user "' + form['username'] + ', IP-address :' + ipAdress)
+                flash(_(u"Wrong Username or Password"), category="error")'''
         else:
             if user and check_password_hash(user.password, form['password']) and user.nickname is not "Guest":
                 login_user(user, remember=True)
@@ -1274,7 +1279,9 @@ def profile():
                                  page="me", registered_oauth=oauth_check, oauth_status=oauth_status)
 
 
+
 # ###################################Show single book ##################################################################
+
 
 @web.route("/read/<int:book_id>/<book_format>")
 @login_required_if_no_ano

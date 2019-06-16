@@ -87,7 +87,11 @@ global_WorkerThread = WorkerThread()
 from .server import server
 Server = server()
 
+from .ldap import Ldap
+ldap = Ldap()
+
 babel = Babel()
+
 log = logger.create()
 
 
@@ -102,6 +106,7 @@ def create_app():
     Server.init_app(app)
     db.setup_db()
     babel.init_app(app)
+    ldap.init_app(app)
     global_WorkerThread.start()
     return app
 

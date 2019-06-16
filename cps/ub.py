@@ -354,6 +354,18 @@ class Settings(Base):
     # config_use_google_oauth = Column(Boolean)
     config_google_oauth_client_id = Column(String)
     config_google_oauth_client_secret = Column(String)
+    config_ldap_provider_url = Column(String, default='localhost')
+    config_ldap_port = Column(SmallInteger, default=389)
+    config_ldap_schema = Column(String, default='ldap')
+    config_ldap_serv_username = Column(String)
+    config_ldap_serv_password = Column(String)
+    config_ldap_use_ssl = Column(Boolean, default=False)
+    config_ldap_use_tls = Column(Boolean, default=False)
+    config_ldap_require_cert = Column(Boolean, default=False)
+    config_ldap_cert_path = Column(String)
+    config_ldap_dn = Column(String)
+    config_ldap_user_object = Column(String)
+    config_ldap_openldap = Column(Boolean)
     config_mature_content_tags = Column(String)
     config_logfile = Column(String)
     config_access_logfile = Column(String)
@@ -431,7 +443,17 @@ class Config:
         self.config_goodreads_api_secret = data.config_goodreads_api_secret
         self.config_login_type = data.config_login_type
         # self.config_use_ldap = data.config_use_ldap
+        self.config_ldap_user_object = data.config_ldap_user_object
+        self.config_ldap_openldap = data.config_ldap_openldap
         self.config_ldap_provider_url = data.config_ldap_provider_url
+        self.config_ldap_port = data.config_ldap_port
+        self.config_ldap_schema = data.config_ldap_schema
+        self.config_ldap_serv_username = data.config_ldap_serv_username
+        self.config_ldap_serv_password = data.config_ldap_serv_password
+        self.config_ldap_use_ssl = data.config_ldap_use_ssl
+        self.config_ldap_use_tls = data.config_ldap_use_ssl
+        self.config_ldap_require_cert = data.config_ldap_require_cert
+        self.config_ldap_cert_path = data.config_ldap_cert_path
         self.config_ldap_dn = data.config_ldap_dn
         # self.config_use_github_oauth = data.config_use_github_oauth
         self.config_github_oauth_client_id = data.config_github_oauth_client_id
@@ -676,10 +698,70 @@ def migrate_Database():
     except exc.OperationalError:
         conn = engine.connect()
         conn.execute("ALTER TABLE Settings ADD column `config_login_type` INTEGER DEFAULT 0")
+        session.commit()
+    try:
+        session.query(exists().where(Settings.config_ldap_provider_url)).scalar()
+    except exc.OperationalError:
+        conn = engine.connect()
         conn.execute("ALTER TABLE Settings ADD column `config_ldap_provider_url` String DEFAULT ''")
+        session.commit()
+    try:
+        session.query(exists().where(Settings.config_ldap_port)).scalar()
+    except exc.OperationalError:
+        conn = engine.connect()
+        conn.execute("ALTER TABLE Settings ADD column `config_ldap_port` INTEGER DEFAULT ''")
+        session.commit()
+    try:
+        session.query(exists().where(Settings.config_ldap_schema)).scalar()
+    except exc.OperationalError:
+        conn = engine.connect()
+        conn.execute("ALTER TABLE Settings ADD column `config_ldap_schema` String DEFAULT ''")
+        session.commit()
+    try:
+        session.query(exists().where(Settings.config_ldap_serv_username)).scalar()
+    except exc.OperationalError:
+        conn = engine.connect()
+        conn.execute("ALTER TABLE Settings ADD column `config_ldap_serv_username` String DEFAULT ''")
+        conn.execute("ALTER TABLE Settings ADD column `config_ldap_serv_password` String DEFAULT ''")
+        session.commit()
+    try:
+        session.query(exists().where(Settings.config_ldap_use_ssl)).scalar()
+    except exc.OperationalError:
+        conn = engine.connect()
+        conn.execute("ALTER TABLE Settings ADD column `config_ldap_use_ssl` INTEGER DEFAULT 0")
+        session.commit()
+    try:
+        session.query(exists().where(Settings.config_ldap_use_tls)).scalar()
+    except exc.OperationalError:
+        conn = engine.connect()
+        conn.execute("ALTER TABLE Settings ADD column `config_ldap_use_tls` INTEGER DEFAULT 0")
+        session.commit()
+    try:
+        session.query(exists().where(Settings.config_ldap_require_cert)).scalar()
+    except exc.OperationalError:
+        conn = engine.connect()
+        conn.execute("ALTER TABLE Settings ADD column `config_ldap_require_cert` INTEGER DEFAULT 0")
+        conn.execute("ALTER TABLE Settings ADD column `config_ldap_cert_path` String DEFAULT ''")
+        session.commit()
+    try:
+        session.query(exists().where(Settings.config_ldap_dn)).scalar()
+    except exc.OperationalError:
+        conn = engine.connect()
         conn.execute("ALTER TABLE Settings ADD column `config_ldap_dn` String DEFAULT ''")
         conn.execute("ALTER TABLE Settings ADD column `config_github_oauth_client_id` String DEFAULT ''")
         conn.execute("ALTER TABLE Settings ADD column `config_github_oauth_client_secret` String DEFAULT ''")
+        session.commit()
+    try:
+        session.query(exists().where(Settings.config_ldap_user_object)).scalar()
+    except exc.OperationalError:
+        conn = engine.connect()
+        conn.execute("ALTER TABLE Settings ADD column `config_ldap_user_object` String DEFAULT ''")
+        session.commit()
+    try:
+        session.query(exists().where(Settings.config_ldap_openldap)).scalar()
+    except exc.OperationalError:
+        conn = engine.connect()
+        conn.execute("ALTER TABLE Settings ADD column `config_ldap_openldap` INTEGER DEFAULT 0")
         session.commit()
     try:
         session.query(exists().where(Settings.config_theme)).scalar()
