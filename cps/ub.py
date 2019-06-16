@@ -40,10 +40,10 @@ from sqlalchemy.orm import relationship, sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 from werkzeug.security import generate_password_hash
 
-try:
+'''try:
     import ldap
 except ImportError:
-    pass
+    pass'''
 
 from . import constants, logger, cli
 
@@ -172,12 +172,12 @@ class UserBase:
         return '<User %r>' % self.nickname
 
     # Login via LDAP method
-    @staticmethod
+    '''@staticmethod
     def try_login(username, password,config_dn, ldap_provider_url):
         conn = get_ldap_connection(ldap_provider_url)
         conn.simple_bind_s(
              config_dn.replace("%s", username),
-             password)
+             password)'''
 
 # Baseclass for Users in Calibre-Web, settings which are depending on certain users are stored here. It is derived from
 # User Base (all access methods are declared there)
@@ -795,10 +795,10 @@ def clean_database():
     session.query(RemoteAuthToken).filter(now > RemoteAuthToken.expiration).delete()
 
 
-#get LDAP connection
+'''#get LDAP connection
 def get_ldap_connection(ldap_provider_url):
     conn = ldap.initialize('ldap://{}'.format(ldap_provider_url))
-    return conn
+    return conn'''
 
 
 

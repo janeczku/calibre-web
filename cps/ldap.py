@@ -31,6 +31,7 @@ log = logger.create()
 class Ldap():
 
     def __init__(self):
+        self.ldap = None
         return
 
     def init_app(self, app):
@@ -55,7 +56,11 @@ class Ldap():
 
         #    app.config['LDAP_BASE_DN'] = 'ou=users,dc=yunohost,dc=org'
         #    app.config['LDAP_USER_OBJECT_FILTER'] = '(uid=%s)'
-            # ldap = LDAP(app)
+            self.ldap = LDAP(app)
 
         elif config.config_login_type == 1 and not ldap_support:
             log.error('Cannot activate ldap support, did you run \'pip install --target vendor -r optional-requirements.txt\'?')
+
+    @classmethod
+    def ldap_supported(cls):
+        return ldap_support
