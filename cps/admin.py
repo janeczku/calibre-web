@@ -26,8 +26,6 @@ import os
 import json
 import time
 from datetime import datetime, timedelta
-# import uuid
-import random
 try:
     from imp import reload
 except ImportError:
@@ -42,7 +40,7 @@ from sqlalchemy import and_
 from sqlalchemy.exc import IntegrityError
 from werkzeug.security import generate_password_hash
 
-from . import constants, logger
+from . import constants, logger, ldap
 from . import db, ub, Server, get_locale, config, updater_thread, babel, gdriveutils
 from .helper import speaking_language, check_valid_domain, check_unrar, send_test_mail, generate_random_password, \
                     send_registration_mail
@@ -50,6 +48,8 @@ from .gdriveutils import is_gdrive_ready, gdrive_support, downloadFile, deleteDa
 from .web import admin_required, render_title_template,  before_request, unconfigured, login_required_if_no_ano
 
 feature_support = dict()
+feature_support['ldap'] = ldap.ldap_supported()
+
 try:
     from goodreads.client import GoodreadsClient
     feature_support['goodreads'] = True
@@ -62,11 +62,11 @@ except ImportError:
 # except ImportError:
 #     feature_support['rar'] = False
 
-try:
+'''try:
     import ldap
     feature_support['ldap'] = True
 except ImportError:
-    feature_support['ldap'] = False
+    feature_support['ldap'] = False'''
 
 try:
     from oauth_bb import oauth_check
