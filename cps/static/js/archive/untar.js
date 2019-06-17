@@ -10,9 +10,11 @@
  * TAR format: http://www.gnu.org/software/automake/manual/tar/Standard.html
  */
 
+/* global bitjs, importScripts, Uint8Array */
+
 // This file expects to be invoked as a Worker (see onmessage below).
-importScripts('../io/bytestream.js');
-importScripts('archive.js');
+importScripts("../io/bytestream.js");
+importScripts("archive.js");
 
 // Progress variables.
 var currentFilename = "";
@@ -21,6 +23,7 @@ var currentBytesUnarchivedInFile = 0;
 var currentBytesUnarchived = 0;
 var totalUncompressedBytesInArchive = 0;
 var totalFilesInArchive = 0;
+var allLocalFiles = [];
 
 // Helper functions.
 var info = function(str) {
@@ -44,8 +47,8 @@ var postProgress = function() {
         currentBytesUnarchivedInFile,
         currentBytesUnarchived,
         totalUncompressedBytesInArchive,
-        totalFilesInArchive,
-	));
+        totalFilesInArchive
+    ));
 };
 
 // takes a ByteStream and parses out the local file information
@@ -66,7 +69,7 @@ var TarLocalFile = function(bstream) {
     this.linkname = readCleanString(bstream, 100);
     this.maybeMagic = readCleanString(bstream, 6);
 
-    if (this.maybeMagic == "ustar") {
+    if (this.maybeMagic === "ustar") {
         this.version = readCleanString(bstream, 2);
         this.uname = readCleanString(bstream, 32);
         this.gname = readCleanString(bstream, 32);
@@ -103,14 +106,14 @@ var TarLocalFile = function(bstream) {
         }
 
         // Round up to 512-byte blocks.
-        var remaining = 512 - bytesRead % 512;
+        var remaining = 512 - (bytesRead % 512);
         if (remaining > 0 && remaining < 512) {
             bstream.readBytes(remaining);
         }
     } else if (this.typeflag == 5) {
         info("  This is a directory.");
     }
-}
+};
 
 var untar = function(arrayBuffer) {
     postMessage(new bitjs.archive.UnarchiveStartEvent());
@@ -125,7 +128,7 @@ var untar = function(arrayBuffer) {
     var bstream = new bitjs.io.ByteStream(arrayBuffer);
     postProgress();
     // While we don't encounter an empty block, keep making TarLocalFiles.
-    while (bstream.peekNumber(4) != 0) {
+    while (bstream.peekNumber(4) !== 0) {
         var oneLocalFile = new TarLocalFile(bstream);
         if (oneLocalFile && oneLocalFile.isValid) {
             // If we make it to this point and haven't thrown an error, we have successfully
@@ -159,8 +162,8 @@ onmessage = function(event) {
             // Overrun the buffer.
             // unarchiveState = UnarchiveState.WAITING;
         } else {
-            console.error("Found an error while untarring");
-            console.log(e);
+            err("Found an error while untarring");
+            err(e);
             throw e;
         }
     }

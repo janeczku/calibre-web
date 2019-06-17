@@ -8,6 +8,9 @@
  * Copyright(c) 2011 Google Inc.
  * Copyright(c) 2011 antimatter15
  */
+
+/* global bitjs, Uint8Array */
+
 var bitjs = bitjs || {};
 bitjs.io = bitjs.io || {};
 
@@ -20,7 +23,7 @@ bitjs.io = bitjs.io || {};
      * @constructor
      */
     bitjs.io.ByteBuffer = function(numBytes) {
-        if (typeof numBytes != typeof 1 || numBytes <= 0) {
+        if (typeof numBytes !== typeof 1 || numBytes <= 0) {
             throw "Error! ByteBuffer initialized with '" + numBytes + "'";
         }
         this.data = new Uint8Array(numBytes);
@@ -55,14 +58,14 @@ bitjs.io = bitjs.io || {};
      */
     bitjs.io.ByteBuffer.prototype.writeNumber = function(num, numBytes) {
         if (numBytes < 1) {
-            throw 'Trying to write into too few bytes: ' + numBytes;
+            throw "Trying to write into too few bytes: " + numBytes;
         }
         if (num < 0) {
-            throw 'Trying to write a negative number (' + num +
-                ') as an unsigned number to an ArrayBuffer';
+            throw "Trying to write a negative number (" + num +
+                ") as an unsigned number to an ArrayBuffer";
         }
         if (num > (Math.pow(2, numBytes * 8) - 1)) {
-            throw 'Trying to write ' + num + ' into only ' + numBytes + ' bytes';
+            throw "Trying to write " + num + " into only " + numBytes + " bytes";
         }
 
         // Roll 8-bits at a time into an array of bytes.
@@ -85,12 +88,12 @@ bitjs.io = bitjs.io || {};
      */
     bitjs.io.ByteBuffer.prototype.writeSignedNumber = function(num, numBytes) {
         if (numBytes < 1) {
-            throw 'Trying to write into too few bytes: ' + numBytes;
+            throw "Trying to write into too few bytes: " + numBytes;
         }
 
         var HALF = Math.pow(2, (numBytes * 8) - 1);
         if (num >= HALF || num < -HALF) {
-            throw 'Trying to write ' + num + ' into only ' + numBytes + ' bytes';
+            throw "Trying to write " + num + " into only " + numBytes + " bytes";
         }
 
         // Roll 8-bits at a time into an array of bytes.
@@ -112,7 +115,7 @@ bitjs.io = bitjs.io || {};
         for (var i = 0; i < str.length; ++i) {
             var curByte = str.charCodeAt(i);
             if (curByte < 0 || curByte > 255) {
-                throw 'Trying to write a non-ASCII string!';
+                throw "Trying to write a non-ASCII string!";
             }
             this.insertByte(curByte);
         }

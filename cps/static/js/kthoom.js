@@ -15,7 +15,10 @@
   * Typed Arrays: http://www.khronos.org/registry/typedarray/specs/latest/#6
 
 */
-/* global screenfull, bitjs */
+/* global screenfull, bitjs, Uint8Array, opera */
+/* exported init, event */
+
+
 if (window.opera) {
     window.console.log = function(str) {
         opera.postError(str);
@@ -101,12 +104,12 @@ kthoom.setSettings = function() {
 var createURLFromArray = function(array, mimeType) {
     var offset = array.byteOffset;
     var len = array.byteLength;
-    var url;
+    // var url;
     var blob;
 
-    if (mimeType === 'image/xml+svg') {
-        const xmlStr = new TextDecoder('utf-8').decode(array);
-        return 'data:image/svg+xml;UTF-8,' + encodeURIComponent(xmlStr);
+    if (mimeType === "image/xml+svg") {
+        var xmlStr = new TextDecoder("utf-8").decode(array);
+        return "data:image/svg+xml;UTF-8," + encodeURIComponent(xmlStr);
     }
 
     // TODO: Move all this browser support testing to a common place
@@ -140,7 +143,7 @@ kthoom.ImageFile = function(file) {
     var fileExtension = file.filename.split(".").pop().toLowerCase();
     this.mimeType = fileExtension === "png" ? "image/png" :
         (fileExtension === "jpg" || fileExtension === "jpeg") ? "image/jpeg" :
-            fileExtension === "gif" ? "image/gif" : fileExtension == 'svg' ? 'image/xml+svg' : undefined;
+            fileExtension === "gif" ? "image/gif" : fileExtension === "svg" ? "image/xml+svg" : undefined;
     if ( this.mimeType !== undefined) {
         this.dataURI = createURLFromArray(file.fileData, this.mimeType);
         this.data = file;
@@ -154,17 +157,18 @@ function initProgressClick() {
         currentImage = page;
         updatePage();
     });
-};
+}
 
 function loadFromArrayBuffer(ab) {
     var start = (new Date).getTime();
     var h = new Uint8Array(ab, 0, 10);
     var pathToBitJS = "../../static/js/archive/";
+    var lastCompletion = 0;
     if (h[0] === 0x52 && h[1] === 0x61 && h[2] === 0x72 && h[3] === 0x21) { //Rar!
         unarchiver = new bitjs.archive.Unrarrer(ab, pathToBitJS);
     } else if (h[0] === 80 && h[1] === 75) { //PK (Zip)
         unarchiver = new bitjs.archive.Unzipper(ab, pathToBitJS);
-    } else if (h[0] == 255 && h[1] == 216) { // JPEG
+    } else if (h[0] === 255 && h[1] === 216) { // JPEG
         // ToDo: check
         updateProgress(100);
         lastCompletion = 100;
@@ -180,12 +184,12 @@ function loadFromArrayBuffer(ab) {
                 if (totalImages === 0) {
                     totalImages = e.totalFilesInArchive;
                 }
-                updateProgress(percentage *100);
+                updateProgress(percentage * 100);
                 lastCompletion = percentage * 100;
             });
         unarchiver.addEventListener(bitjs.archive.UnarchiveEvent.Type.INFO,
             function(e) {
-                // console.log(e.msg);  77 Enable debug output here
+                // console.log(e.msg);  // Enable debug output here
             });
         unarchiver.addEventListener(bitjs.archive.UnarchiveEvent.Type.EXTRACT,
             function(e) {
@@ -211,8 +215,7 @@ function loadFromArrayBuffer(ab) {
                             if (imageFiles.length === currentImage + 1) {
                                 updatePage(lastCompletion);
                             }
-                        }
-                        else {
+                        } else {
                             totalImages--;
                         }
                     }
@@ -231,22 +234,22 @@ function loadFromArrayBuffer(ab) {
 
 function scrollTocToActive() {
     // Scroll to the thumbnail in the TOC on page change
-    $('#tocView').stop().animate({
-        scrollTop: $('#tocView a.active').position().top
+    $("#tocView").stop().animate({
+        scrollTop: $("#tocView a.active").position().top
     }, 200);
 }
 
 function updatePage() {
-    $('.page').text((currentImage + 1 ) + "/" + totalImages);
+    $(".page").text((currentImage + 1 ) + "/" + totalImages);
 
     // Mark the current page in the TOC
-    $('#tocView a[data-page]')
+    $("#tocView a[data-page]")
     // Remove the currently active thumbnail
-        .removeClass('active')
+        .removeClass("active")
         // Find the new one
-        .filter('[data-page='+ (currentImage + 1) +']')
+        .filter("[data-page=" + (currentImage + 1) + "]")
         // Set it to active
-        .addClass('active');
+        .addClass("active");
 
     scrollTocToActive();
     updateProgress();
@@ -270,8 +273,8 @@ function updateProgress(loadPercentage) {
 
         if (loadPercentage === 100) {
             $("#progress")
-                .removeClass('loading')
-                .find(".load").text('');
+                .removeClass("loading")
+                .find(".load").text("");
         }
     }
 
@@ -326,7 +329,7 @@ function setImage(url) {
                     xhr.onload = function() {
                         $("#mainText").css("display", "");
                         $("#mainText").innerHTML("<iframe style=\"width:100%;height:700px;border:0\" src=\"data:text/html," + escape(xhr.responseText) + "\"></iframe>");
-                    }
+                    };
                     xhr.send(null);
                 } else if (!/(jpg|jpeg|png|gif)$/.test(imageFiles[currentImage].filename) && imageFiles[currentImage].data.uncompressedSize < 10 * 1024) {
                     xhr.open("GET", url, true);
@@ -378,17 +381,17 @@ function setImage(url) {
 
 function showLeftPage() {
     if (settings.direction === 0) {
-        showPrevPage()
+        showPrevPage();
     } else {
-        showNextPage()
+        showNextPage();
     }
 }
 
 function showRightPage() {
     if (settings.direction === 0) {
-        showNextPage()
+        showNextPage();
     } else {
-        showPrevPage()
+        showPrevPage();
     }
 }
 
@@ -504,7 +507,7 @@ function keyHandler(evt) {
             updateScale(false);
             break;
         case kthoom.Key.SPACE:
-            var container = $('#mainContent');
+            var container = $("#mainContent");
             var atTop = container.scrollTop() === 0;
             var atBottom = container.scrollTop() >= container[0].scrollHeight - container.height();
 
@@ -577,9 +580,9 @@ function init(filename) {
         $(this).toggleClass("icon-menu icon-right");
 
         // We need this in a timeout because if we call it during the CSS transition, IE11 shakes the page ¯\_(ツ)_/¯
-        setTimeout(function(){
+        setTimeout(function() {
             // Focus on the TOC or the main content area, depending on which is open
-            $('#main:not(.closed) #mainContent, #sidebar.open #tocView').focus();
+            $("#main:not(.closed) #mainContent, #sidebar.open #tocView").focus();
             scrollTocToActive();
         }, 500);
     });
@@ -630,7 +633,7 @@ function init(filename) {
     }
 
     // Focus the scrollable area so that keyboard scrolling work as expected
-    $('#mainContent').focus();
+    $("#mainContent").focus();
 
     $("#mainImage").click(function(evt) {
         // Firefox does not support offsetX/Y so we have to manually calculate
