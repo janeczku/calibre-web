@@ -14,10 +14,10 @@
 /* global bitjs, importScripts, Uint8Array*/
 
 // This file expects to be invoked as a Worker (see onmessage below).
-importScripts('../io/bitstream.js');
-importScripts('../io/bytebuffer.js');
-importScripts('../io/bytestream.js');
-importScripts('archive.js');
+importScripts("../io/bitstream.js");
+importScripts("../io/bytebuffer.js");
+importScripts("../io/bytestream.js");
+importScripts("archive.js");
 
 // Progress variables.
 var currentFilename = "";
@@ -118,13 +118,11 @@ ZipLocalFile.prototype.unzip = function() {
         currentBytesUnarchivedInFile = this.compressedSize;
         currentBytesUnarchived += this.compressedSize;
         this.fileData = zeroCompression(this.fileData, this.uncompressedSize);
-    }
-    // version == 20, compression method == 8 (DEFLATE)
-    else if (this.compressionMethod === 8) {
+    } else if (this.compressionMethod === 8) {
+        // version == 20, compression method == 8 (DEFLATE)
         info("ZIP v2.0, DEFLATE: " + this.filename + " (" + this.compressedSize + " bytes)");
         this.fileData = inflate(this.fileData, this.uncompressedSize);
-    }
-    else {
+    } else {
         err("UNSUPPORTED VERSION/FORMAT: ZIP v" + this.version + ", compression method=" + this.compressionMethod + ": " + this.filename + " (" + this.compressedSize + " bytes)");
         this.fileData = null;
     }
@@ -497,13 +495,11 @@ function inflateBlockData(bstream, hcLiteralTable, hcDistanceTable, buffer) {
             // copy literal byte to output
             buffer.insertByte(symbol);
             blockSize++;
-        }
-        else {
+        } else {
             // end of block reached
             if (symbol === 256) {
                 break;
-            }
-            else {
+            } else {
                 var lengthLookup = LengthLookupTable[symbol - 257],
                     length = lengthLookup[1] + bstream.readBits(lengthLookup[0]),
                     distLookup = DistLookupTable[decodeSymbol(bstream, hcDistanceTable)],
@@ -566,7 +562,7 @@ function inflate(compressedData, numDecompressedBytes) {
         blockSize = 0;
         // ++numBlocks;
         // no compression
-        if (bType == 0) {
+        if (bType === 0) {
             // skip remaining bits in this byte
             while (bstream.bitPtr !== 0) bstream.readBits(1);
             var len = bstream.readBits(16);
@@ -575,13 +571,11 @@ function inflate(compressedData, numDecompressedBytes) {
 
             if (len > 0) buffer.insertBytes(bstream.readBytes(len));
             blockSize = len;
-        }
-        // fixed Huffman codes
-        else if (bType === 1) {
+        } else if (bType === 1) {
+            // fixed Huffman codes
             blockSize = inflateBlockData(bstream, getFixedLiteralTable(), getFixedDistanceTable(), buffer);
-        }
-        // dynamic Huffman codes
-        else if (bType === 2) {
+        } else if (bType === 2) {
+            // dynamic Huffman codes
             var numLiteralLengthCodes = bstream.readBits(5) + 257;
             var numDistanceCodes = bstream.readBits(5) + 1,
                 numCodeLengthCodes = bstream.readBits(4) + 4;
