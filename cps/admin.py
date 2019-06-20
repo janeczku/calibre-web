@@ -559,7 +559,7 @@ def configuration_helper(origin):
             log.info('Reboot required, restarting')
         if origin:
             success = True
-    if is_gdrive_ready() and feature_support['gdrive'] is True:  # and config.config_use_google_drive == True:
+    if is_gdrive_ready() and feature_support['gdrive'] is True and config.config_use_google_drive == True:
         gdrivefolders = listRootFolders()
     else:
         gdrivefolders = list()
