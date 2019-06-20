@@ -82,4 +82,4 @@ Pre-built Docker images are available in these Docker Hub repositories:
 
 # Wiki
 
-For further informations, How To's and FAQ please check the ![Wiki](../../wiki)
+For further informations, How To's and FAQ please check the [Wiki](../../wiki)
