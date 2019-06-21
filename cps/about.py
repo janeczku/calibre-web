@@ -41,8 +41,9 @@ from jinja2 import __version__  as jinja2Version
 from pytz import __version__ as pytzVersion
 from sqlalchemy import __version__ as sqlalchemyVersion
 
-from . import db, converter, Server, uploader
+from . import db, converter, uploader
 from .isoLanguages import __version__ as iso639Version
+from .server import VERSION as serverVersion
 from .web import render_title_template
 
 
@@ -71,7 +72,7 @@ def stats():
     versions['pySqlite'] = 'v' + db.engine.dialect.dbapi.version
     versions['Sqlite'] = 'v' + db.engine.dialect.dbapi.sqlite_version
     versions.update(converter.versioncheck())
-    versions.update(Server.getNameVersion())
+    versions.update(serverVersion)
     versions['Python'] = sys.version
     return render_title_template('stats.html', bookcounter=counter, authorcounter=authors, versions=versions,
                                  categorycounter=categorys, seriecounter=series, title=_(u"Statistics"), page="stat")
