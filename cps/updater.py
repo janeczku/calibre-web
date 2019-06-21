@@ -33,7 +33,7 @@ from tempfile import gettempdir
 from babel.dates import format_datetime
 from flask_babel import gettext as _
 
-from . import constants, logger, config, get_locale, Server
+from . import constants, logger, config, get_locale, web_server
 
 
 log = logger.create()
@@ -95,8 +95,7 @@ class Updater(threading.Thread):
             self.status = 6
             log.debug(u'Preparing restart of server')
             time.sleep(2)
-            Server.setRestartTyp(True)
-            Server.stopServer()
+            web_server.stop(True)
             self.status = 7
             time.sleep(2)
         except requests.exceptions.HTTPError as ex:

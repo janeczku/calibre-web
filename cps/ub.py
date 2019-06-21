@@ -476,35 +476,22 @@ class Config:
     def get_config_certfile(self):
         if cli.certfilepath:
             return cli.certfilepath
-        else:
-            if cli.certfilepath is "":
-                return None
-            else:
-                return self.config_certfile
+        if cli.certfilepath is "":
+            return None
+        return self.config_certfile
 
     def get_config_keyfile(self):
         if cli.keyfilepath:
             return cli.keyfilepath
-        else:
-            if cli.certfilepath is "":
-                return None
-            else:
-                return self.config_keyfile
+        if cli.certfilepath is "":
+            return None
+        return self.config_keyfile
 
-    def get_config_ipaddress(self, readable=False):
-        if not readable:
-            if cli.ipadress:
-                return cli.ipadress
-            else:
-                return ""
-        else:
-            answer="0.0.0.0"
-            if cli.ipadress:
-                if cli.ipv6:
-                    answer = "["+cli.ipadress+"]"
-                else:
-                    answer = cli.ipadress
-            return answer
+    def get_config_ipaddress(self):
+        return cli.ipadress or ""
+
+    def get_ipaddress_type(self):
+        return cli.ipv6
 
     def _has_role(self, role_flag):
         return constants.has_flag(self.config_default_role, role_flag)
