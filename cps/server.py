@@ -70,6 +70,9 @@ class WebServer:
             log_name = "gevent.access" if _GEVENT else "tornado.access"
             formatter = logger.ACCESS_FORMATTER_GEVENT if _GEVENT else logger.ACCESS_FORMATTER_TORNADO
             self.access_logger = logger.create_access_log(config.config_access_logfile, log_name, formatter)
+        else:
+            if not _GEVENT:
+                logger.get('tornado.access').disabled = True
 
         certfile_path = config.get_config_certfile()
         keyfile_path = config.get_config_keyfile()

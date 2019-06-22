@@ -82,6 +82,14 @@ def _absolute_log_file(log_file, default_log_file):
     return default_log_file
 
 
+def get_logfile(log_file):
+    return _absolute_log_file(log_file, DEFAULT_LOG_FILE)
+
+
+def get_accesslogfile(log_file):
+    return _absolute_log_file(log_file, DEFAULT_ACCESS_LOG)
+
+
 def setup(log_file, log_level=None):
     '''
     Configure the logging output.

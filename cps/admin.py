@@ -62,12 +62,6 @@ except ImportError:
 # except ImportError:
 #     feature_support['rar'] = False
 
-'''try:
-    import ldap
-    feature_support['ldap'] = True
-except ImportError:
-    feature_support['ldap'] = False'''
-
 try:
     from oauth_bb import oauth_check
     feature_support['oauth'] = True
@@ -399,14 +393,14 @@ def configuration_helper(origin):
                 flash(_(u'Please enter a LDAP provider, port, DN and user object identifier'), category="error")
                 return render_title_template("config_edit.html", content=config, origin=origin,
                                              gdrive=gdriveutils.gdrive_support, gdriveError=gdriveError,
-                                             goodreads=goodreads_support, title=_(u"Basic Configuration"),
+                                             feature_support=feature_support, title=_(u"Basic Configuration"),
                                              page="config")
             elif not to_save["config_ldap_serv_username"] or not to_save["config_ldap_serv_password"]:
                 ub.session.commit()
                 flash(_(u'Please enter a LDAP service account and password'), category="error")
                 return render_title_template("config_edit.html", content=config, origin=origin,
                                              gdrive=gdriveutils.gdrive_support, gdriveError=gdriveError,
-                                             goodreads=goodreads_support, title=_(u"Basic Configuration"),
+                                             feature_support=feature_support, title=_(u"Basic Configuration"),
                                              page="config")
             else:
                 content.config_use_ldap = 1
@@ -439,7 +433,7 @@ def configuration_helper(origin):
                     flash(_(u'Certfile location is not valid, please enter correct path'), category="error")
                     return render_title_template("config_edit.html", content=config, origin=origin,
                                         gdrive=gdriveutils.gdrive_support, gdriveError=gdriveError,
-                                        goodreads=goodreads_support, title=_(u"Basic Configuration"),
+                                        feature_support=feature_support, title=_(u"Basic Configuration"),
                                         page="config")
 
         # Remote login configuration
@@ -576,9 +570,6 @@ def new_user():
         to_save = request.form.to_dict()
         content.default_language = to_save["default_language"]
         content.mature_content = "Show_mature_content" in to_save
-        dat = datetime.strptime("1.1.2019", "%d.%m.%Y")
-        content.id = int(time.time()*100)
-        # val= int(uuid.uuid4())
         if "locale" in to_save:
             content.locale = to_save["locale"]
 
@@ -800,19 +791,27 @@ def reset_password(user_id):
 @login_required
 @admin_required
 def view_logfile():
-    perpage_p = {0:"30",1:"40",2:"100"}
-    for key, value in perpage_p.items():
-        print(key)
-        print(value)
-    return render_title_template("logviewer.html",title=_(u"Logfile viewer"), perpage_p=perpage_p, perpage = 30,
-                                 page="logfile")
+    logfiles = {}
+    logfiles[0] = logger.get_logfile(config.config_logfile)
+    logfiles[1] = logger.get_accesslogfile(config.config_access_logfile)
+    return render_title_template("logviewer.html",title=_(u"Logfile viewer"), accesslog_enable=config.config_access_log,
+                                 logfiles=logfiles, page="logfile")
 
 
-@admi.route("/ajax/accesslog")
+@admi.route("/ajax/log/<int:logtype>")
 @login_required
 @admin_required
-def send_logfile():
-    return send_from_directory(constants.BASE_DIR,"access.log")
+def send_logfile(logtype):
+    if logtype == 1:
+        logfile = logger.get_accesslogfile(config.config_access_logfile)
+        return send_from_directory(os.path.dirname(logfile),
+                                   os.path.basename(logfile))
+    if logtype == 0:
+        logfile = logger.get_logfile(config.config_logfile)
+        return send_from_directory(os.path.dirname(logfile),
+                                   os.path.basename(logfile))
+    else:
+        return ""
 
 
 @admi.route("/get_update_status", methods=['GET'])

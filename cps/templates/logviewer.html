@@ -1,141 +1,15 @@
 {% extends "layout.html" %}
 {% block body %}
-{% block header %}
-<style>
-
-html, body {
-  margin: 0;
-  height: 100%;
-  overflow-y: hidden
-}
-
-div.log {
-  font-family: Courier New;
-  font-size: 12px;
-  box-sizing: border-box;
-  height: 500px;
-  overflow-y: scroll;
-  border-style: solid;
-}
-
-div.log {
-  white-space: nowrap;
-  padding: 0.5em;
-}
-
-div.lhl {
-  background-color: #ffd;
-}
-div.thread {
-  background: #fdd;
-}
-
-div.persistent,
-div.persistents,
-div.hint {
-  display: inline;
-  cursor: pointer;
-}
-
-div.hint,
-div.persistent {
-  font-family: Arial;
-  font-size: 12px;
-  padding: 2px;
-  margin: 1px;
-}
-
-div.hint {
-  color: gray;
-  font-style: italic;
-}
-
-div.button,
-div.button2,
-div.button_right {
-  display: inline;
-  font-weight: bold;
-  font-family: Arial;
-  font-size: 12px;
-  padding: 2px;
-  cursor: pointer;
-  color: #3ad;
-  _text-decoration: underline;
-}
-
-div.button2 {
-  border: solid 1px gray;
-  border-radius: 4px;
-  color: black;
-  text-decoration: none;
-}
-
-div.button_right {
-  margin-right: 1em;
-  float: right;
-}
-
-div.nounder {
-  text-decoration: none;
-}
-
-input.filebtn {
-  float: right;
-  position: relative;
-}
-
-</style>
-{% endblock %}
-<!--body onload="load()"-->
-<div id="toobar" class="toobar">
-  <input class="search" id="search" type="text" onmousedown="selectfilter(0)"></input>
-  <div class="button2" onclick="highlight()" title="apply changes in the search box">apply</div>
-  <div class="button_right" onclick="flipfilter(event)" title="disable/enable selected filters">filters on</div>
-  <br/>
-  <div class="button" onclick="filter()" title="show only lines containing the phrase">filter</div>
-  <div class="hint"   onclick="repaint()" id="hint"></div>
-  <div class="hint"   onclick="repaint()" id="position"></div>
-</div>
-<div class="clear"></div>
-
-<div class="logpaginator"><a href="{{'/logs/1'}}"><span class="glyphicon glyphicon-fast-backward"></span></a>  <a href="{{ "/logs/"}}"><span class="glyphicon glyphicon-step-backward"></span></a>  <a href="{{ '/logs/' }}"><span class="glyphicon glyphicon-step-forward"></span></a> <a href="{{'/logs/'}}"><span class="glyphicon glyphicon-fast-forward"></span></a></div>
-<div class="logperpage">
-  <form id="logform1" action="" method="POST">
-    <label for="reversed">{{_('Reversed')}}:</label>
-    <input type="checkbox" name="reversed" id="reversed" onchange="this.form.submit();" {% if reversed %} checked="checked" {% endif %} />&nbsp;
-    <label for="perpage">{{_('Lines per page')}}:</label>
-    <select name="perpage" id ="perpage" onchange="this.form.submit();">
-      {% for key, value in  perpage_p.items() %}
-        <option value="{{key}}"{% if value== perpage %} selected="selected" {% endif %}>{{value}}</option>
-      {% endfor %}
-    </select>
-  </form>
-</div>
-<div class="logwarn">{{warning}}</div>
-<div class="clear"></div>
-<div class="logdiv">
-  <table class="logtable" cellpadding="0" cellspacing="0">
-   <div id="renderer" class="log" onmouseup="mouseup(event)"><div>nothing loaded</div></div>
-  {% for line in log %}
-    <tr><td class="logline">{{line.line}}</td><td>{{line.date}}</td><td class="loglevel">{{line.level}}</td><td>{{line.message}}</td></tr>
-  {% endfor %}
-  </table>
-</div>
-<div class="logform">
-  <form id="logform2" action="" method="POST" style="width: auto">
-    <label for="from" style="display: inline-block; float: left; margin-right: 5px; height: 34px; line-height: 34px;">{{_('Jump to time:')}}</label>
-    <input style="display: inline-block; text-align: center; float: left; width: 155px;" class="form-control" type="text" name="from" id="from" size="15" value="{{from}}"/>
-    <input style="display: inline-block; float: left; margin-left: 5px;" class="btn btn-default" type="submit" value="{{_('Go')}}" />
-  </form>
-</div>
+   <div id="log_group" class="inputs">
+      <div><input type="radio" name="log_radio" id="log1" value="0" checked>
+      <label for="log0">{{_('Show Calibre-Web log')}}</label> {{logfiles[0]}}</div>
+     {% if accesslog_enable %}
+      <div><input type="radio" name="log_radio" id="log0" value="1">
+      <label for="log1">{{_('Show access log')}}</label> {{logfiles[1]}}</div>
+     {% endif %}
+   </div>
+   <div id="renderer" class="log"></div>
 {% endblock %}
 {% block js %}
 <script src="{{ url_for('static', filename='js/logviewer.js') }}"></script>
-<script>
-$(function(){
-  init('access.log');
-});
-
-</script>
-
 {% endblock %}

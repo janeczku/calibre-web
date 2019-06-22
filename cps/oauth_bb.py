@@ -88,7 +88,7 @@ def register_user_with_oauth(user=None):
     if len(all_oauth.keys()) == 0:
         return
     if user is None:
-        flash(_(u"Register with %s" % ", ".join(list(all_oauth.values()))), category="success")
+        flash(_(u"Register with %(provider)s", provider=", ".join(list(all_oauth.values()))), category="success")
     else:
         for oauth in all_oauth.keys():
             # Find this OAuth token in the database, or create it
