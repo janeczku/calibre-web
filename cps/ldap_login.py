@@ -16,10 +16,11 @@
 #   You should have received a copy of the GNU General Public License
 #   along with this program. If not, see <http://www.gnu.org/licenses/>.
 
+from __future__ import division, print_function, unicode_literals
 import base64
 
 try:
-   from flask_simpleldap import LDAP, LDAPException
+   from flask_simpleldap import LDAP # , LDAPException
    ldap_support = True
 except ImportError:
    ldap_support = False

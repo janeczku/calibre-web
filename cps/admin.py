@@ -40,7 +40,7 @@ from sqlalchemy import and_
 from sqlalchemy.exc import IntegrityError
 from werkzeug.security import generate_password_hash
 
-from . import constants, logger, ldap
+from . import constants, logger, ldap1
 from . import db, ub, web_server, get_locale, config, updater_thread, babel, gdriveutils
 from .helper import speaking_language, check_valid_domain, check_unrar, send_test_mail, generate_random_password, \
                     send_registration_mail
@@ -48,7 +48,7 @@ from .gdriveutils import is_gdrive_ready, gdrive_support, downloadFile, deleteDa
 from .web import admin_required, render_title_template,  before_request, unconfigured, login_required_if_no_ano
 
 feature_support = dict()
-feature_support['ldap'] = ldap.ldap_supported()
+feature_support['ldap'] = ldap1.ldap_supported()
 
 try:
     from goodreads.client import GoodreadsClient

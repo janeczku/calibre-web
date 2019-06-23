@@ -40,18 +40,12 @@ from sqlalchemy.orm import relationship, sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 from werkzeug.security import generate_password_hash
 
-'''try:
-    import ldap
-except ImportError:
-    pass'''
-
 from . import constants, logger, cli
 
 
 session = None
 
-
-engine = create_engine('sqlite:///{0}'.format(cli.settingspath), echo=False)
+engine = create_engine(u'sqlite:///{0}'.format(cli.settingspath), echo=False)
 Base = declarative_base()
 
 

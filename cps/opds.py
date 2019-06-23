@@ -31,7 +31,7 @@ from flask_login import current_user
 from sqlalchemy.sql.expression import func, text, or_, and_
 from werkzeug.security import check_password_hash
 
-from . import logger, config, db, ub, ldap
+from . import logger, config, db, ub, ldap1
 from .helper import fill_indexpage, get_download_link, get_book_cover
 from .pagination import Pagination
 from .web import common_filters, get_search_results, render_read_books, download_required
@@ -40,14 +40,14 @@ from .web import common_filters, get_search_results, render_read_books, download
 opds = Blueprint('opds', __name__)
 
 log = logger.create()
-ldap_support = ldap.ldap_supported()
+ldap_support = ldap1.ldap_supported()
 
 
 def requires_basic_auth_if_no_ano(f):
     @wraps(f)
     def decorated(*args, **kwargs):
         if config.config_login_type == 1 and ldap_support:
-            return ldap.ldap.basic_auth_required(*args, **kwargs)
+            return ldap1.ldap.basic_auth_required(*args, **kwargs)
         auth = request.authorization
         if config.config_anonbrowse != 1:
             if not auth or not check_auth(auth.username, auth.password):
@@ -55,15 +55,6 @@ def requires_basic_auth_if_no_ano(f):
         return f(*args, **kwargs)
 
     return decorated
-
-
-'''def basic_auth_required_check(condition):
-    print("susi")
-    def decorator(f):
-        if condition and ldap_support:
-           return ldap.ldap.basic_auth_required(f)
-        return requires_basic_auth_if_no_ano(f)
-    return decorator'''
 
 
 @opds.route("/opds/")
