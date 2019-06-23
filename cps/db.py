@@ -342,7 +342,7 @@ def setup_db():
     try:
         if not os.path.exists(dbpath):
             raise
-        engine = create_engine('sqlite:///' + dbpath,
+        engine = create_engine('sqlite:///{0}'.format(dbpath),
                                echo=False,
                                isolation_level="SERIALIZABLE",
                                connect_args={'check_same_thread': False})

@@ -82,6 +82,18 @@ parser.add_argument('-i', metavar='ip-adress', help='Server IP-Adress to listen'
 parser.add_argument('-s', metavar='user:pass', help='Sets specific username to new password')
 args = parser.parse_args()
 
+if sys.version_info < (3, 0):
+    if args.p:
+        args.p = args.p.decode('utf-8')
+    if args.g:
+        args.g = args.g.decode('utf-8')
+    if args.k:
+        args.k = args.k.decode('utf-8')
+    if args.c:
+        args.c = args.c.decode('utf-8')
+    if args.s:
+        args.s = args.s.decode('utf-8')
+
 
 settingspath    = args.p or os.path.join(_CONFIG_DIR, "app.db")
 gdpath          = args.g or os.path.join(_CONFIG_DIR, "gdrive.db")
