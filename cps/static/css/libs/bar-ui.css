@@ -135,7 +135,7 @@
  width: 100%;
  height: 100%;
  /* for example */
- /* background-image: url(../images/wood_pattern_dark.png); */
+ /* background-image: url(../image/wood_pattern_dark.png); */
  /* additional opacity effects can be applied here. */
  opacity: 0.75;
 
@@ -143,7 +143,7 @@
 
 .sm2-bar-ui.textured.dark-text .sm2-inline-texture {
  /* dark text + textured case: use light wood background (for example.) */
- /* background-image: url(../images/patterns/wood_pattern.png); */
+ /* background-image: url(../image/patterns/wood_pattern.png); */
 }
 
 .sm2-bar-ui.textured.dark-text .sm2-playlist-wrapper {
@@ -704,7 +704,7 @@
  height: 100%;
  top: 0px;
  left: 0px;
- background: none, url(../images/icomoon/free-25px-000000/SVG/spinner.svg);
+ background: none, url(../image/icomoon/free-25px-000000/SVG/spinner.svg);
  background-size: 72%;
  background-position: 50%;
  background-repeat: no-repeat;
