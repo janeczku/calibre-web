@@ -66,9 +66,8 @@
                     </ul>
               </div>
             {% endif %}
-              {% if reader_list  %}
-            {% if audioentries|length %}
-              <!--div class="btn-group" role="group">
+            {% if audioentries|length > 0 %}
+              <div class="btn-group" role="group">
                 <button id="listen-in-browser" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   <span class="glyphicon glyphicon-music"></span> {{_('Listen in browser')}}
                   <span class="caret"></span>
@@ -86,10 +85,8 @@
                     {% endif %}
               {% endfor %}
                   </ul>
-              </div-->
+              </div>
             {% endif %}
-
-          {% endif %}
         </div>
       </div>
       <h2 id="title">{{entry.title|shortentitle(40)}}</h2>
