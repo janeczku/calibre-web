@@ -1332,12 +1332,7 @@ var unrar = function(arrayBuffer) {
             totalFilesInArchive = localFiles.length;
 
             // now we have all information but things are unpacked
-            // TODO: unpack
-            localFiles = localFiles.sort(function(a, b) {
-                var aname = a.filename.toLowerCase();
-                var bname = b.filename.toLowerCase();
-                return aname > bname ? 1 : -1;
-            });
+            localFiles.sort(alphanumCase);
 
             info(localFiles.map(function(a) {
                 return a.filename;

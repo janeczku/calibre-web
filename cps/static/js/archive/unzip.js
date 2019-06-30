@@ -72,23 +72,10 @@ var ZipLocalFile = function(bstream) {
         this.filename = bstream.readString(this.fileNameLength);
     }
 
-    info("Zip Local File Header:");
-    info(" version=" + this.version);
-    info(" general purpose=" + this.generalPurpose);
-    info(" compression method=" + this.compressionMethod);
-    info(" last mod file time=" + this.lastModFileTime);
-    info(" last mod file date=" + this.lastModFileDate);
-    info(" crc32=" + this.crc32);
-    info(" compressed size=" + this.compressedSize);
-    info(" uncompressed size=" + this.uncompressedSize);
-    info(" file name length=" + this.fileNameLength);
-    info(" extra field length=" + this.extraFieldLength);
-    info(" filename = '" + this.filename + "'");
-
     this.extraField = null;
     if (this.extraFieldLength > 0) {
-        this.extraField = bstream.readString(this.extraFieldLength);
-        info(" extra field=" + this.extraField);
+      this.extraField = bstream.readString(this.extraFieldLength);
+      info(" extra field=" + this.extraField);
     }
 
     // read in the compressed data
@@ -107,6 +94,21 @@ var ZipLocalFile = function(bstream) {
         this.compressedSize = bstream.readNumber(4);
         this.uncompressedSize = bstream.readNumber(4);
     }
+
+    // Now that we have all the bytes for this file, we can print out some information.
+    info("Zip Local File Header:");
+    info(" version=" + this.version);
+    info(" general purpose=" + this.generalPurpose);
+    info(" compression method=" + this.compressionMethod);
+    info(" last mod file time=" + this.lastModFileTime);
+    info(" last mod file date=" + this.lastModFileDate);
+    info(" crc32=" + this.crc32);
+    info(" compressed size=" + this.compressedSize);
+    info(" uncompressed size=" + this.uncompressedSize);
+    info(" file name length=" + this.fileNameLength);
+    info(" extra field length=" + this.extraFieldLength);
+    info(" filename = '" + this.filename + "'");
+
 };
 
 // determine what kind of compressed data we have and decompress
@@ -132,6 +134,7 @@ ZipLocalFile.prototype.unzip = function() {
 // Takes an ArrayBuffer of a zip file in
 // returns null on error
 // returns an array of DecompressedFile objects on success
+// ToDo This function differs
 var unzip = function(arrayBuffer) {
     postMessage(new bitjs.archive.UnarchiveStartEvent());
 
@@ -159,11 +162,7 @@ var unzip = function(arrayBuffer) {
         totalFilesInArchive = localFiles.length;
 
         // got all local files, now sort them
-        localFiles.sort(function(a, b) {
-            var aname = a.filename.toLowerCase();
-            var bname = b.filename.toLowerCase();
-            return aname > bname ? 1 : -1;
-        });
+        localFiles.sort(alphanumCase);
 
         // archive extra data record
         if (bstream.peekNumber(4) === zArchiveExtraDataSignature) {
@@ -253,9 +252,9 @@ function getHuffmanCodes(bitLengths) {
     }
 
     // Reference: http://tools.ietf.org/html/rfc1951#page-8
-    var numLengths = bitLengths.length,
-        blCount = [],
-        MAX_BITS = 1;
+    var numLengths = bitLengths.length;
+    var blCount = [];
+    var MAX_BITS = 1;
 
     // Step 1: count up how many codes of each length we have
     for (var i = 0; i < numLengths; ++i) {
@@ -274,8 +273,8 @@ function getHuffmanCodes(bitLengths) {
     }
 
     // Step 2: Find the numerical value of the smallest code for each code length
-    var nextCode = [],
-        code = 0;
+    var nextCode = [];
+    var code = 0;
     for (var bits = 1; bits <= MAX_BITS; ++bits) {
         var length2 = bits - 1;
         // ensure undefined lengths are zero
@@ -285,8 +284,8 @@ function getHuffmanCodes(bitLengths) {
     }
 
     // Step 3: Assign numerical values to all codes
-    var table = {},
-        tableLength = 0;
+    var table = {};
+    var tableLength = 0;
     for (var n = 0; n < numLengths; ++n) {
         var len = bitLengths[n];
         if (len !== 0) {
@@ -353,7 +352,8 @@ function getFixedDistanceTable() {
 // extract one bit at a time until we find a matching Huffman Code
 // then return that symbol
 function decodeSymbol(bstream, hcTable) {
-    var code = 0, len = 0;
+    var code = 0;
+    var len = 0;
 
     // loop until we match
     for (;;) {
@@ -364,7 +364,6 @@ function decodeSymbol(bstream, hcTable) {
 
         // check against Huffman Code table and break if found
         if (hcTable.hasOwnProperty(code) && hcTable[code].length === len) {
-
             break;
         }
         if (len > hcTable.maxLength) {
@@ -500,10 +499,10 @@ function inflateBlockData(bstream, hcLiteralTable, hcDistanceTable, buffer) {
             if (symbol === 256) {
                 break;
             } else {
-                var lengthLookup = LengthLookupTable[symbol - 257],
-                    length = lengthLookup[1] + bstream.readBits(lengthLookup[0]),
-                    distLookup = DistLookupTable[decodeSymbol(bstream, hcDistanceTable)],
-                    distance = distLookup[1] + bstream.readBits(distLookup[0]);
+                var lengthLookup = LengthLookupTable[symbol - 257];
+                var length = lengthLookup[1] + bstream.readBits(lengthLookup[0]);
+                var distLookup = DistLookupTable[decodeSymbol(bstream, hcDistanceTable)];
+                var distance = distLookup[1] + bstream.readBits(distLookup[0]);
 
                 // now apply length and distance appropriately and copy to output
 
@@ -634,8 +633,8 @@ function inflate(compressedData, numDecompressedBytes) {
             var distanceCodeLengths = literalCodeLengths.splice(numLiteralLengthCodes, numDistanceCodes);
 
             // now generate the true Huffman Code tables using these code lengths
-            var hcLiteralTable = getHuffmanCodes(literalCodeLengths),
-                hcDistanceTable = getHuffmanCodes(distanceCodeLengths);
+            var hcLiteralTable = getHuffmanCodes(literalCodeLengths);
+            var hcDistanceTable = getHuffmanCodes(distanceCodeLengths);
             blockSize = inflateBlockData(bstream, hcLiteralTable, hcDistanceTable, buffer);
         } else {
             // error
