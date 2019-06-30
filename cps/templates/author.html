@@ -64,6 +64,11 @@
               <a class="author-name" href="{{url_for('web.books_list',  data='author', sort='new', book_id=author.id) }}">{{author.name.replace('|',',')|shortentitle(30)}}</a>
             {% endif %}
           {% endfor %}
+          {% for format in entry.data %}
+            {% if format.format|lower == 'mp3' %}
+            <span class="glyphicon glyphicon-music"></span>
+            {% endif %}
+          {% endfor %}
         </p>
         {% if entry.ratings.__len__() > 0 %}
         <div class="rating">

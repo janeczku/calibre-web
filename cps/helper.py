@@ -30,13 +30,14 @@ import requests
 import shutil
 import time
 import unicodedata
-from datetime import datetime
+from datetime import datetime, timedelta
 from functools import reduce
 from tempfile import gettempdir
 
 from babel import Locale as LC
 from babel.core import UnknownLocaleError
-from babel.dates import format_datetime
+from babel.dates import format_datetime, format_timedelta
+from babel.units import format_unit
 from flask import send_from_directory, make_response, redirect, abort
 from flask_babel import gettext as _
 from flask_login import current_user
@@ -589,7 +590,33 @@ def json_serial(obj):
 
     if isinstance(obj, (datetime)):
         return obj.isoformat()
+    if isinstance(obj, (timedelta)):
+        return {
+            '__type__': 'timedelta',
+            'days': obj.days,
+            'seconds': obj.seconds,
+            'microseconds': obj.microseconds,
+        }
+        # return obj.isoformat()
     raise TypeError ("Type %s not serializable" % type(obj))
+
+
+# helper function for displaying the runtime of tasks
+def format_runtime(runtime):
+    retVal = ""
+    if runtime.days:
+        retVal = format_unit(runtime.days, 'duration-day', length="long", locale=web.get_locale()) + ', '
+    mins, seconds = divmod(runtime.seconds, 60)
+    hours, minutes = divmod(mins, 60)
+    # ToDo: locale.number_symbols._data['timeSeparator'] -> localize time separator ?
+    if hours:
+        retVal += '{:d}:{:02d}:{:02d}s'.format(hours, minutes, seconds)
+    elif minutes:
+        retVal += '{:2d}:{:02d}s'.format(minutes, seconds)
+    else:
+        retVal += '{:2d}s'.format(seconds)
+    return retVal
+
 
 # helper function to apply localize status information in tasklist entries
 def render_task_status(tasklist):
@@ -602,6 +629,8 @@ def render_task_status(tasklist):
             else:
                 if 'starttime' not in task:
                     task['starttime'] = ""
+
+            task['runtime'] = format_runtime(task['formRuntime'])
 
             # localize the task status
             if isinstance( task['stat'], int ):

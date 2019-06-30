@@ -136,7 +136,8 @@ var untar = function(arrayBuffer) {
         allLocalFiles.push(localFile);
         postProgress();
     }
-    allLocalFiles.sort(naturalCompare);
+    // got all local files, now sort them
+    allLocalFiles.sort(alphanumCase);
 
     allLocalFiles.forEach(function(oneLocalFile) {
         // While we don't encounter an empty block, keep making TarLocalFiles.

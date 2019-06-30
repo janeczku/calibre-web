@@ -107,7 +107,7 @@ def setup(log_file, log_level=None):
             return
         r.debug("logging to %s level %s", log_file, r.level)
 
-    if 1 == 1: # log_file == LOG_TO_STDERR:
+    if log_file == LOG_TO_STDERR:
         file_handler = StreamHandler()
         file_handler.baseFilename = LOG_TO_STDERR
     else:

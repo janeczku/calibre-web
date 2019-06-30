@@ -25,7 +25,7 @@ import smtplib
 import socket
 import time
 import threading
-from datetime import datetime
+from datetime import datetime, timedelta
 
 try:
     from StringIO import StringIO
@@ -226,8 +226,10 @@ class WorkerThread(threading.Thread):
             if self.UIqueue[self.current]['stat'] == STAT_STARTED:
                 if self.queue[self.current]['taskType'] == TASK_EMAIL:
                     self.UIqueue[self.current]['progress'] = self.get_send_status()
-                self.UIqueue[self.current]['runtime'] = self._formatRuntime(
-                                                        datetime.now() - self.queue[self.current]['starttime'])
+                self.UIqueue[self.current]['formRuntime'] = datetime.now() - self.queue[self.current]['starttime']
+                self.UIqueue[self.current]['rt'] = self.UIqueue[self.current]['formRuntime'].days*24*60 \
+                                                   + self.UIqueue[self.current]['formRuntime'].seconds \
+                                                   + self.UIqueue[self.current]['formRuntime'].microseconds
         return self.UIqueue
 
     def _convert_any_format(self):
@@ -336,6 +338,11 @@ class WorkerThread(threading.Thread):
 
         # process returncode
         check = p.returncode
+        calibre_traceback = p.stderr.readlines()
+        for ele in calibre_traceback:
+            log.debug(ele.strip('\n'))
+            if not ele.startswith('Traceback') and not ele.startswith('  File'):
+                error_message = "Calibre failed with error: %s" % ele.strip('\n')
 
         # kindlegen returncodes
         # 0 = Info(prcgen):I1036: Mobi file built successfully
@@ -491,28 +498,14 @@ class WorkerThread(threading.Thread):
             self._handleError(u'Error sending email: ' + e.strerror)
             return None
 
-    def _formatRuntime(self, runtime):
-        self.UIqueue[self.current]['rt'] = runtime.total_seconds()
-        val = re.split('\:|\.', str(runtime))[0:3]
-        erg = list()
-        for v in val:
-            if int(v) > 0:
-                erg.append(v)
-        retVal = (':'.join(erg)).lstrip('0') + ' s'
-        if retVal == ' s':
-            retVal = '0 s'
-        return retVal
-
     def _handleError(self, error_message):
         log.error(error_message)
         self.UIqueue[self.current]['stat'] = STAT_FAIL
         self.UIqueue[self.current]['progress'] = "100 %"
-        self.UIqueue[self.current]['runtime'] = self._formatRuntime(
-                                                datetime.now() - self.queue[self.current]['starttime'])
+        self.UIqueue[self.current]['formRuntime'] = datetime.now() - self.queue[self.current]['starttime']
         self.UIqueue[self.current]['message'] = error_message
 
     def _handleSuccess(self):
         self.UIqueue[self.current]['stat'] = STAT_FINISH_SUCCESS
         self.UIqueue[self.current]['progress'] = "100 %"
-        self.UIqueue[self.current]['runtime'] = self._formatRuntime(
-            datetime.now() - self.queue[self.current]['starttime'])
+        self.UIqueue[self.current]['formRuntime'] = datetime.now() - self.queue[self.current]['starttime']
