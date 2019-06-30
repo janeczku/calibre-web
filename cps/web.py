@@ -3171,13 +3171,22 @@ def new_user():
             return render_title_template("user_edit.html", new_user=1, content=content, translations=translations,
                                          title=_(u"Add new user"))
         content.password = generate_password_hash(to_save["password"])
-        content.nickname = to_save["nickname"]
-        if config.config_public_reg and not check_valid_domain(to_save["email"]):
-            flash(_(u"E-mail is not from valid domain"), category="error")
-            return render_title_template("user_edit.html", new_user=1, content=content, translations=translations,
-                                         title=_(u"Add new user"))
+        existing_user = ub.session.query(ub.User).filter(func.lower(ub.User.nickname) == to_save["nickname"].lower())\
+            .first()
+        existing_email = ub.session.query(ub.User).filter(ub.User.email == to_save["email"].lower())\
+            .first()
+        if not existing_user and not existing_email:
+            content.nickname = to_save["nickname"]
+            if config.config_public_reg and not check_valid_domain(to_save["email"]):
+                flash(_(u"E-mail is not from valid domain"), category="error")
+                return render_title_template("user_edit.html", new_user=1, content=content, translations=translations,
+                                             title=_(u"Add new user"))
+            else:
+                content.email = to_save["email"]
         else:
-            content.email = to_save["email"]
+            flash(_(u"Found an existing account for this e-mail address or nickname."), category="error")
+            return render_title_template("user_edit.html", new_user=1, content=content, translations=translations,
+                                     languages=languages, title=_(u"Add new user"), page="newuser")
         try:
             ub.session.add(content)
             ub.session.commit()
@@ -3362,14 +3371,24 @@ def edit_user(user_id):
             if "locale" in to_save and to_save["locale"]:
                 content.locale = to_save["locale"]
             if to_save["email"] and to_save["email"] != content.email:
-                content.email = to_save["email"]
+                existing_email = ub.session.query(ub.User).filter(ub.User.email == to_save["email"].lower()) \
+                    .first()
+                if not existing_email:
+                    content.email = to_save["email"]
+                else:
+                    flash(_(u"Found an existing account for this e-mail address."), category="error")
+                    return render_title_template("user_edit.html", translations=translations, languages=languages,
+                                                 new_user=0, content=content, downloads=downloads,
+                                                 title=_(u"Edit User %(nick)s", nick=content.nickname), page="edituser")
+
             if "kindle_mail" in to_save and to_save["kindle_mail"] != content.kindle_mail:
                 content.kindle_mail = to_save["kindle_mail"]
         try:
             ub.session.commit()
             flash(_(u"User '%(nick)s' updated", nick=content.nickname), category="success")
-        except IntegrityError:
+        except IntegrityError as e:
             ub.session.rollback()
+            print(e)
             flash(_(u"An unknown error occured."), category="error")
     return render_title_template("user_edit.html", translations=translations, languages=languages, new_user=0,
                                 content=content, downloads=downloads, title=_(u"Edit User %(nick)s",

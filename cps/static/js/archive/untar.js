@@ -115,6 +115,7 @@ var TarLocalFile = function(bstream) {
     }
 };
 
+
 var untar = function(arrayBuffer) {
     postMessage(new bitjs.archive.UnarchiveStartEvent());
     currentFilename = "";
@@ -127,14 +128,22 @@ var untar = function(arrayBuffer) {
 
     var bstream = new bitjs.io.ByteStream(arrayBuffer);
     postProgress();
-    // While we don't encounter an empty block, keep making TarLocalFiles.
+    /*
+    // go through whole file, read header of each block and memorize, filepointer
+    */
     while (bstream.peekNumber(4) !== 0) {
-        var oneLocalFile = new TarLocalFile(bstream);
+        var localFile = new TarLocalFile(bstream);
+        allLocalFiles.push(localFile);
+        postProgress();
+    }
+    // got all local files, now sort them
+    allLocalFiles.sort(alphanumCase);
+
+    allLocalFiles.forEach(function(oneLocalFile) {
+        // While we don't encounter an empty block, keep making TarLocalFiles.
         if (oneLocalFile && oneLocalFile.isValid) {
             // If we make it to this point and haven't thrown an error, we have successfully
             // read in the data for a local file, so we can update the actual bytestream.
-
-            allLocalFiles.push(oneLocalFile);
             totalUncompressedBytesInArchive += oneLocalFile.size;
 
             // update progress
@@ -145,7 +154,7 @@ var untar = function(arrayBuffer) {
             postMessage(new bitjs.archive.UnarchiveExtractEvent(oneLocalFile));
             postProgress();
         }
-    }
+    });
     totalFilesInArchive = allLocalFiles.length;
 
     postProgress();

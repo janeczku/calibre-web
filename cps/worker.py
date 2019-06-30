@@ -20,7 +20,7 @@
 from __future__ import print_function
 import smtplib
 import threading
-from datetime import datetime
+from datetime import datetime, timedelta
 import logging
 import time
 import socket
@@ -221,8 +221,10 @@ class WorkerThread(threading.Thread):
             if self.UIqueue[self.current]['stat'] == STAT_STARTED:
                 if self.queue[self.current]['taskType'] == TASK_EMAIL:
                     self.UIqueue[self.current]['progress'] = self.get_send_status()
-                self.UIqueue[self.current]['runtime'] = self._formatRuntime(
-                                                        datetime.now() - self.queue[self.current]['starttime'])
+                self.UIqueue[self.current]['formRuntime'] = datetime.now() - self.queue[self.current]['starttime']
+                self.UIqueue[self.current]['rt'] = self.UIqueue[self.current]['formRuntime'].days*24*60 \
+                                                   + self.UIqueue[self.current]['formRuntime'].seconds \
+                                                   + self.UIqueue[self.current]['formRuntime'].microseconds
         return self.UIqueue
 
     def _convert_any_format(self):
@@ -259,7 +261,8 @@ class WorkerThread(threading.Thread):
             self._handleSuccess()
             return file_path + format_new_ext
         else:
-            web.app.logger.info("Book id %d - target format of %s does not exist. Moving forward with convert.", bookid, format_new_ext)
+            web.app.logger.info("Book id %d - target format of %s does not exist. Moving forward with convert.",
+                                bookid, format_new_ext)
 
         # check if converter-executable is existing
         if not os.path.exists(web.ub.config.config_converterpath):
@@ -300,7 +303,7 @@ class WorkerThread(threading.Thread):
                     if sys.version_info < (3, 0):
                         command = [x.encode(sys.getfilesystemencoding()) for x in command]
 
-            p = subprocess.Popen(command, stdout=subprocess.PIPE, universal_newlines=True)
+            p = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, universal_newlines=True)
         except OSError as e:
             self._handleError(_(u"Ebook-converter failed: %(error)s", error=e))
             return
@@ -328,6 +331,11 @@ class WorkerThread(threading.Thread):
 
         # process returncode
         check = p.returncode
+        calibre_traceback = p.stderr.readlines()
+        for ele in calibre_traceback:
+            web.app.logger.debug(ele.strip('\n'))
+            if not ele.startswith('Traceback') and not ele.startswith('  File'):
+                error_message = "Calibre failed with error: %s" % ele.strip('\n')
 
         # kindlegen returncodes
         # 0 = Info(prcgen):I1036: Mobi file built successfully
@@ -481,31 +489,17 @@ class WorkerThread(threading.Thread):
             self._handleError(u'Error sending email: ' + e.strerror)
             return None
 
-    def _formatRuntime(self, runtime):
-        self.UIqueue[self.current]['rt'] = runtime.total_seconds()
-        val = re.split('\:|\.', str(runtime))[0:3]
-        erg = list()
-        for v in val:
-            if int(v) > 0:
-                erg.append(v)
-        retVal = (':'.join(erg)).lstrip('0') + ' s'
-        if retVal == ' s':
-            retVal = '0 s'
-        return retVal
-
     def _handleError(self, error_message):
         web.app.logger.error(error_message)
         self.UIqueue[self.current]['stat'] = STAT_FAIL
         self.UIqueue[self.current]['progress'] = "100 %"
-        self.UIqueue[self.current]['runtime'] = self._formatRuntime(
-                                                datetime.now() - self.queue[self.current]['starttime'])
+        self.UIqueue[self.current]['formRuntime'] = datetime.now() - self.queue[self.current]['starttime']
         self.UIqueue[self.current]['message'] = error_message
 
     def _handleSuccess(self):
         self.UIqueue[self.current]['stat'] = STAT_FINISH_SUCCESS
         self.UIqueue[self.current]['progress'] = "100 %"
-        self.UIqueue[self.current]['runtime'] = self._formatRuntime(
-            datetime.now() - self.queue[self.current]['starttime'])
+        self.UIqueue[self.current]['formRuntime'] = datetime.now() - self.queue[self.current]['starttime']
 
 
 # Enable logging of smtp lib debug output
