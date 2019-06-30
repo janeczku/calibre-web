@@ -46,14 +46,13 @@ ldap_support = ldap1.ldap_supported()
 def requires_basic_auth_if_no_ano(f):
     @wraps(f)
     def decorated(*args, **kwargs):
-        if config.config_login_type == 1 and ldap_support:
-            return ldap1.ldap.basic_auth_required(*args, **kwargs)
         auth = request.authorization
         if config.config_anonbrowse != 1:
             if not auth or not check_auth(auth.username, auth.password):
                 return authenticate()
         return f(*args, **kwargs)
-
+    if config.config_login_type == 1 and ldap_support:
+        return ldap1.ldap.basic_auth_required(f)
     return decorated
 
 
