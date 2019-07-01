@@ -40,18 +40,12 @@ from sqlalchemy.orm import relationship, sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 from werkzeug.security import generate_password_hash
 
-'''try:
-    import ldap
-except ImportError:
-    pass'''
-
 from . import constants, logger, cli
 
 
 session = None
 
-
-engine = create_engine('sqlite:///{0}'.format(cli.settingspath), echo=False)
+engine = create_engine(u'sqlite:///{0}'.format(cli.settingspath), echo=False)
 Base = declarative_base()
 
 
@@ -171,18 +165,12 @@ class UserBase:
     def __repr__(self):
         return '<User %r>' % self.nickname
 
-    # Login via LDAP method
-    '''@staticmethod
-    def try_login(username, password,config_dn, ldap_provider_url):
-        conn = get_ldap_connection(ldap_provider_url)
-        conn.simple_bind_s(
-             config_dn.replace("%s", username),
-             password)'''
 
 # Baseclass for Users in Calibre-Web, settings which are depending on certain users are stored here. It is derived from
 # User Base (all access methods are declared there)
 class User(UserBase, Base):
     __tablename__ = 'user'
+    __table_args__ = {'sqlite_autoincrement': True}
 
     id = Column(Integer, primary_key=True)
     nickname = Column(String(64), unique=True)
@@ -476,35 +464,22 @@ class Config:
     def get_config_certfile(self):
         if cli.certfilepath:
             return cli.certfilepath
-        else:
-            if cli.certfilepath is "":
-                return None
-            else:
-                return self.config_certfile
+        if cli.certfilepath is "":
+            return None
+        return self.config_certfile
 
     def get_config_keyfile(self):
         if cli.keyfilepath:
             return cli.keyfilepath
-        else:
-            if cli.certfilepath is "":
-                return None
-            else:
-                return self.config_keyfile
+        if cli.certfilepath is "":
+            return None
+        return self.config_keyfile
 
-    def get_config_ipaddress(self, readable=False):
-        if not readable:
-            if cli.ipadress:
-                return cli.ipadress
-            else:
-                return ""
-        else:
-            answer="0.0.0.0"
-            if cli.ipadress:
-                if cli.ipv6:
-                    answer = "["+cli.ipadress+"]"
-                else:
-                    answer = cli.ipadress
-            return answer
+    def get_config_ipaddress(self):
+        return cli.ipadress or ""
+
+    def get_ipaddress_type(self):
+        return cli.ipv6
 
     def _has_role(self, role_flag):
         return constants.has_flag(self.config_default_role, role_flag)
@@ -782,6 +757,34 @@ def migrate_Database():
         conn.execute("ALTER TABLE Settings ADD column `config_access_log` INTEGER DEFAULT 0")
         conn.execute("ALTER TABLE Settings ADD column `config_access_logfile` String DEFAULT ''")
         session.commit()
+    try:
+        # check if one table with autoincrement is existing (should be user table)
+        conn = engine.connect()
+        conn.execute("SELECT COUNT(*) FROM sqlite_sequence WHERE name='user'")
+    except exc.OperationalError:
+        # Create new table user_id and copy contents of table user into it
+        conn = engine.connect()
+        conn.execute("CREATE TABLE user_id (id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,"
+                            "nickname VARCHAR(64),"
+                            "email VARCHAR(120),"
+                            "role SMALLINT,"
+                            "password VARCHAR,"
+                            "kindle_mail VARCHAR(120),"
+                            "locale VARCHAR(2),"
+                            "sidebar_view INTEGER,"
+                            "default_language VARCHAR(3),"
+                            "mature_content BOOLEAN,"
+                            "UNIQUE (nickname),"
+                            "UNIQUE (email),"
+                            "CHECK (mature_content IN (0, 1)))")
+        conn.execute("INSERT INTO user_id(id, nickname, email, role, password, kindle_mail,locale,"
+                        "sidebar_view, default_language, mature_content) "
+                     "SELECT id, nickname, email, role, password, kindle_mail, locale,"
+                        "sidebar_view, default_language, mature_content FROM user")
+        # delete old user table and rename new user_id table to user:
+        conn.execute("DROP TABLE user")
+        conn.execute("ALTER TABLE user_id RENAME TO user")
+        session.commit()
 
     # Remove login capability of user Guest
     conn = engine.connect()
@@ -793,13 +796,6 @@ def clean_database():
     # Remove expired remote login tokens
     now = datetime.datetime.now()
     session.query(RemoteAuthToken).filter(now > RemoteAuthToken.expiration).delete()
-
-
-'''#get LDAP connection
-def get_ldap_connection(ldap_provider_url):
-    conn = ldap.initialize('ldap://{}'.format(ldap_provider_url))
-    return conn'''
-
 
 
 def create_default_config():

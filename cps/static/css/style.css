@@ -145,3 +145,14 @@ input.pill:not(:checked) + label .glyphicon {
     max-height:300px;
     overflow-y: auto;
 }
+
+div.log {
+  font-family: Courier New;
+  font-size: 12px;
+  box-sizing: border-box;
+  height: 700px;
+  overflow-y: scroll;
+  border: 1px solid #ddd;
+  white-space: nowrap;
+  padding: 0.5em;
+}

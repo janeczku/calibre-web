@@ -84,11 +84,11 @@ searched_ids = {}
 from .worker import WorkerThread
 global_WorkerThread = WorkerThread()
 
-from .server import server
-Server = server()
+from .server import WebServer
+web_server = WebServer()
 
-from .ldap import Ldap
-ldap = Ldap()
+from .ldap_login import Ldap
+ldap1 = Ldap()
 
 babel = Babel()
 
@@ -97,16 +97,22 @@ log = logger.create()
 
 def create_app():
     app.wsgi_app = ReverseProxied(app.wsgi_app)
+    # For python2 convert path to unicode
+    if sys.version_info < (3, 0):
+        app.static_folder = app.static_folder.decode('utf-8')
+        app.root_path = app.root_path.decode('utf-8')
+        app.instance_path = app.instance_path .decode('utf-8')
+
     cache_buster.init_cache_busting(app)
 
     log.info('Starting Calibre Web...')
     Principal(app)
     lm.init_app(app)
     app.secret_key = os.getenv('SECRET_KEY', 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT')
-    Server.init_app(app)
+    web_server.init_app(app, config)
     db.setup_db()
     babel.init_app(app)
-    ldap.init_app(app)
+    ldap1.init_app(app)
     global_WorkerThread.start()
     return app
 

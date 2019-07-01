@@ -41,15 +41,15 @@ from sqlalchemy import and_
 from sqlalchemy.exc import IntegrityError
 from werkzeug.security import generate_password_hash
 
-from . import constants, logger, ldap
-from . import db, ub, Server, get_locale, config, updater_thread, babel, gdriveutils
+from . import constants, logger, ldap1
+from . import db, ub, web_server, get_locale, config, updater_thread, babel, gdriveutils
 from .helper import speaking_language, check_valid_domain, check_unrar, send_test_mail, generate_random_password, \
                     send_registration_mail
 from .gdriveutils import is_gdrive_ready, gdrive_support, downloadFile, deleteDatabaseOnChange, listRootFolders
 from .web import admin_required, render_title_template,  before_request, unconfigured, login_required_if_no_ano
 
 feature_support = dict()
-feature_support['ldap'] = ldap.ldap_supported()
+feature_support['ldap'] = ldap1.ldap_supported()
 
 try:
     from goodreads.client import GoodreadsClient
@@ -62,12 +62,6 @@ except ImportError:
 #     feature_support['rar'] = True
 # except ImportError:
 #     feature_support['rar'] = False
-
-'''try:
-    import ldap
-    feature_support['ldap'] = True
-except ImportError:
-    feature_support['ldap'] = False'''
 
 try:
     from oauth_bb import oauth_check
@@ -103,12 +97,10 @@ def shutdown():
         showtext = {}
         if task == 0:
             showtext['text'] = _(u'Server restarted, please reload page')
-            Server.setRestartTyp(True)
         else:
             showtext['text'] = _(u'Performing shutdown of server, please close window')
-            Server.setRestartTyp(False)
         # stop gevent/tornado server
-        Server.stopServer()
+        web_server.stop(task == 0)
         return json.dumps(showtext)
     else:
         if task == 2:
@@ -221,8 +213,7 @@ def view_configuration():
             # ub.session.close()
             # ub.engine.dispose()
             # stop Server
-            Server.setRestartTyp(True)
-            Server.stopServer()
+            web_server.stop(True)
             log.info('Reboot required, restarting')
     readColumn = db.session.query(db.Custom_Columns)\
             .filter(and_(db.Custom_Columns.datatype == 'bool',db.Custom_Columns.mark_for_delete == 0)).all()
@@ -403,14 +394,14 @@ def configuration_helper(origin):
                 flash(_(u'Please enter a LDAP provider, port, DN and user object identifier'), category="error")
                 return render_title_template("config_edit.html", content=config, origin=origin,
                                              gdrive=gdriveutils.gdrive_support, gdriveError=gdriveError,
-                                             goodreads=goodreads_support, title=_(u"Basic Configuration"),
+                                             feature_support=feature_support, title=_(u"Basic Configuration"),
                                              page="config")
             elif not to_save["config_ldap_serv_username"] or not to_save["config_ldap_serv_password"]:
                 ub.session.commit()
                 flash(_(u'Please enter a LDAP service account and password'), category="error")
                 return render_title_template("config_edit.html", content=config, origin=origin,
                                              gdrive=gdriveutils.gdrive_support, gdriveError=gdriveError,
-                                             goodreads=goodreads_support, title=_(u"Basic Configuration"),
+                                             feature_support=feature_support, title=_(u"Basic Configuration"),
                                              page="config")
             else:
                 content.config_login_type = 1
@@ -444,7 +435,7 @@ def configuration_helper(origin):
                     flash(_(u'Certfile location is not valid, please enter correct path'), category="error")
                     return render_title_template("config_edit.html", content=config, origin=origin,
                                         gdrive=gdriveutils.gdrive_support, gdriveError=gdriveError,
-                                        goodreads=goodreads_support, title=_(u"Basic Configuration"),
+                                        feature_support=feature_support, title=_(u"Basic Configuration"),
                                         page="config")
 
         # Remote login configuration
@@ -556,12 +547,11 @@ def configuration_helper(origin):
                                              title=_(u"Basic Configuration"), page="config")
         if reboot_required:
             # stop Server
-            Server.setRestartTyp(True)
-            Server.stopServer()
+            web_server.stop(True)
             log.info('Reboot required, restarting')
         if origin:
             success = True
-    if is_gdrive_ready() and feature_support['gdrive'] is True:  # and config.config_use_google_drive == True:
+    if is_gdrive_ready() and feature_support['gdrive'] is True and config.config_use_google_drive == True:
         gdrivefolders = listRootFolders()
     else:
         gdrivefolders = list()
@@ -582,9 +572,6 @@ def new_user():
         to_save = request.form.to_dict()
         content.default_language = to_save["default_language"]
         content.mature_content = "Show_mature_content" in to_save
-        dat = datetime.strptime("1.1.2019", "%d.%m.%Y")
-        content.id = int(time.time()*100)
-        # val= int(uuid.uuid4())
         if "locale" in to_save:
             content.locale = to_save["locale"]
 
@@ -806,19 +793,27 @@ def reset_password(user_id):
 @login_required
 @admin_required
 def view_logfile():
-    perpage_p = {0:"30",1:"40",2:"100"}
-    for key, value in perpage_p.items():
-        print(key)
-        print(value)
-    return render_title_template("logviewer.html",title=_(u"Logfile viewer"), perpage_p=perpage_p, perpage = 30,
-                                 page="logfile")
+    logfiles = {}
+    logfiles[0] = logger.get_logfile(config.config_logfile)
+    logfiles[1] = logger.get_accesslogfile(config.config_access_logfile)
+    return render_title_template("logviewer.html",title=_(u"Logfile viewer"), accesslog_enable=config.config_access_log,
+                                 logfiles=logfiles, page="logfile")
 
 
-@admi.route("/ajax/accesslog")
+@admi.route("/ajax/log/<int:logtype>")
 @login_required
 @admin_required
-def send_logfile():
-    return send_from_directory(constants.BASE_DIR,"access.log")
+def send_logfile(logtype):
+    if logtype == 1:
+        logfile = logger.get_accesslogfile(config.config_access_logfile)
+        return send_from_directory(os.path.dirname(logfile),
+                                   os.path.basename(logfile))
+    if logtype == 0:
+        logfile = logger.get_logfile(config.config_logfile)
+        return send_from_directory(os.path.dirname(logfile),
+                                   os.path.basename(logfile))
+    else:
+        return ""
 
 
 @admi.route("/get_update_status", methods=['GET'])
