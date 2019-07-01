@@ -21,6 +21,7 @@ from __future__ import print_function
 import smtplib
 import threading
 from datetime import datetime
+import datetime as dt
 import logging
 import time
 import socket
@@ -482,15 +483,9 @@ class WorkerThread(threading.Thread):
             return None
 
     def _formatRuntime(self, runtime):
-        self.UIqueue[self.current]['rt'] = runtime.total_seconds()
-        val = re.split('\:|\.', str(runtime))[0:3]
-        erg = list()
-        for v in val:
-            if int(v) > 0:
-                erg.append(v)
-        retVal = (':'.join(erg)).lstrip('0') + ' s'
-        if retVal == ' s':
-            retVal = '0 s'
+        total_seconds = runtime.total_seconds()
+        self.UIqueue[self.current]['rt'] = total_seconds
+        retVal = str(dt.timedelta(seconds = int(total_seconds)))
         return retVal
 
     def _handleError(self, error_message):
