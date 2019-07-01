@@ -1098,19 +1098,15 @@ def login():
                     flash(_(u"you are now logged in as: '%(nickname)s'", nickname=user.nickname),
                           category="success")
                     return redirect_back(url_for("web.index"))
-            except ldap.ldap.INVALID_CREDENTIALS as e:
-                log.error('Login Error: ' + str(e))
-                ipAdress = request.headers.get('X-Forwarded-For', request.remote_addr)
-                log.info('LDAP Login failed for user "%s" IP-adress: %s', form['username'], ipAdress)
-                flash(_(u"Wrong Username or Password"), category="error")
-            except ldap.ldap.SERVER_DOWN:
-                log.info('LDAP Login failed, LDAP Server down')
-                flash(_(u"Could not login. LDAP server down, please contact your administrator"), category="error")
-            '''except LDAPException as exception:
-                app.logger.error('Login Error: ' + str(exception))
-                ipAdress = request.headers.get('X-Forwarded-For', request.remote_addr)
-                app.logger.info('LDAP Login failed for user "' + form['username'] + ', IP-address :' + ipAdress)
-                flash(_(u"Wrong Username or Password"), category="error")'''
+            except Exception as exception:
+                app.logger.info('Login Error: ' + str(exception))
+                if str(exception) == 'Invalid credentials':
+                    ipAdress = request.headers.get('X-Forwarded-For', request.remote_addr)
+                    app.logger.info('LDAP Login failed for user "' + form['username'] + ', IP-address :' + ipAdress)
+                    flash(_(u"Wrong Username or Password"), category="error")
+                if str(exception) == 'Server down':
+                    log.info('LDAP Login failed, LDAP Server down')
+                    flash(_(u"Could not login. LDAP server down, please contact your administrator"), category="error")
         else:
             if user and check_password_hash(user.password, form['password']) and user.nickname is not "Guest":
                 login_user(user, remember=True)
