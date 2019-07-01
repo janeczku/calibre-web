@@ -24,7 +24,12 @@ from collections import namedtuple
 
 
 # Base dir is parent of current file, necessary if called from different folder
-BASE_DIR            = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)),os.pardir))
+if sys.version_info < (3, 0):
+    BASE_DIR            = os.path.abspath(os.path.join(
+        os.path.dirname(os.path.abspath(__file__)),os.pardir)).decode('utf-8')
+else:
+    BASE_DIR            = os.path.abspath(os.path.join(
+        os.path.dirname(os.path.abspath(__file__)),os.pardir))
 STATIC_DIR          = os.path.join(BASE_DIR, 'cps', 'static')
 TEMPLATES_DIR       = os.path.join(BASE_DIR, 'cps', 'templates')
 TRANSLATIONS_DIR    = os.path.join(BASE_DIR, 'cps', 'translations')

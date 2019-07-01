@@ -41,7 +41,7 @@ from werkzeug.exceptions import default_exceptions
 from werkzeug.datastructures import Headers
 from werkzeug.security import generate_password_hash, check_password_hash
 
-from . import constants, logger, isoLanguages, ldap
+from . import constants, logger, isoLanguages, ldap1
 from . import global_WorkerThread, searched_ids, lm, babel, db, ub, config, get_locale, app, language_table
 from .gdriveutils import getFileFromEbooksFolder, do_gdrive_download
 from .helper import common_filters, get_search_results, fill_indexpage, speaking_language, check_valid_domain, \
@@ -52,7 +52,7 @@ from .pagination import Pagination
 from .redirect import redirect_back
 
 feature_support = dict()
-feature_support['ldap'] = ldap.ldap_supported()
+feature_support['ldap'] = ldap1.ldap_supported()
 
 try:
     from .oauth_bb import oauth_check, register_user_with_oauth, logout_oauth_user, get_oauth_status
@@ -1093,7 +1093,7 @@ def login():
             .first()
         if config.config_login_type == 1 and user and feature_support['ldap']:
             try:
-                if ldap.ldap.bind_user(form['username'], form['password']) is not None:
+                if ldap1.ldap.bind_user(form['username'], form['password']) is not None:
                     login_user(user, remember=True)
                     flash(_(u"you are now logged in as: '%(nickname)s'", nickname=user.nickname),
                           category="success")

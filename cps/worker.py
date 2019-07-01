@@ -326,6 +326,8 @@ class WorkerThread(threading.Thread):
                 nextline = p.stdout.readline()
                 if os.name == 'nt' and sys.version_info < (3, 0):
                     nextline = nextline.decode('windows-1252')
+                elif os.name == 'posix' and sys.version_info < (3, 0):
+                    nextline = nextline.decode('utf-8')
                 log.debug(nextline.strip('\r\n'))
                 # parse progress string from calibre-converter
                 progress = re.search("(\d+)%\s.*", nextline)
