@@ -413,12 +413,13 @@ def configuration_helper(origin):
                                              goodreads=goodreads_support, title=_(u"Basic Configuration"),
                                              page="config")
             else:
-                content.config_use_ldap = 1
+                content.config_login_type = 1
                 content.config_ldap_provider_url = to_save["config_ldap_provider_url"]
                 content.config_ldap_port = to_save["config_ldap_port"]
                 content.config_ldap_schema = to_save["config_ldap_schema"]
                 content.config_ldap_serv_username = to_save["config_ldap_serv_username"]
-                content.config_ldap_serv_password = base64.b64encode(to_save["config_ldap_serv_password"])
+                if content.config_ldap_serv_password != to_save["config_ldap_serv_password"]:
+                    content.config_ldap_serv_password = base64.b64encode(to_save["config_ldap_serv_password"])
                 content.config_ldap_dn = to_save["config_ldap_dn"]
                 content.config_ldap_user_object = to_save["config_ldap_user_object"]
                 reboot_required = True
