@@ -25,10 +25,6 @@ from __future__ import division, print_function, unicode_literals
 import sys
 import os
 import mimetypes
-try:
-    import cPickle
-except ImportError:
-    import pickle as cPickle
 
 from babel import Locale as LC
 from babel import negotiate_locale
@@ -38,8 +34,7 @@ from flask_login import LoginManager
 from flask_babel import Babel
 from flask_principal import Principal
 
-from . import logger, cache_buster, ub
-from .constants import TRANSLATIONS_DIR as _TRANSLATIONS_DIR
+from . import logger, cache_buster, cli, config_sql, ub
 from .reverseproxy import ReverseProxied
 
 
@@ -68,16 +63,9 @@ lm.login_view = 'web.login'
 lm.anonymous_user = ub.Anonymous
 
 
-ub.init_db()
-config = ub.Config()
-from . import db
-
-try:
-    with open(os.path.join(_TRANSLATIONS_DIR, 'iso639.pickle'), 'rb') as f:
-        language_table = cPickle.load(f)
-except cPickle.UnpicklingError as error:
-    print("Can't read file cps/translations/iso639.pickle: %s" % error)
-    sys.exit(1)
+ub.init_db(cli.settingspath)
+config = config_sql.load_configuration(ub.session)
+from . import db, services
 
 searched_ids = {}
 
@@ -87,10 +75,8 @@ global_WorkerThread = WorkerThread()
 from .server import WebServer
 web_server = WebServer()
 
-from .ldap_login import Ldap
-ldap1 = Ldap()
-
 babel = Babel()
+_BABEL_TRANSLATIONS = set()
 
 log = logger.create()
 
@@ -109,30 +95,45 @@ def create_app():
     Principal(app)
     lm.init_app(app)
     app.secret_key = os.getenv('SECRET_KEY', 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT')
+
     web_server.init_app(app, config)
-    db.setup_db()
+    db.setup_db(config)
+
     babel.init_app(app)
-    ldap1.init_app(app)
+    _BABEL_TRANSLATIONS.update(str(item) for item in babel.list_translations())
+    _BABEL_TRANSLATIONS.add('en')
+
+    if services.ldap:
+        services.ldap.init_app(app, config)
+    if services.goodreads:
+        services.goodreads.connect(config.config_goodreads_api_key, config.config_goodreads_api_secret, config.config_use_goodreads)
+
     global_WorkerThread.start()
     return app
 
 @babel.localeselector
-def get_locale():
+def negociate_locale():
     # if a user is logged in, use the locale from the user settings
     user = getattr(g, 'user', None)
     # user = None
     if user is not None and hasattr(user, "locale"):
         if user.nickname != 'Guest':   # if the account is the guest account bypass the config lang settings
             return user.locale
-    translations = [str(item) for item in babel.list_translations()] + ['en']
-    preferred = list()
-    for x in request.accept_languages.values():
-        try:
-            preferred.append(str(LC.parse(x.replace('-', '_'))))
-        except (UnknownLocaleError, ValueError) as e:
-            log.warning('Could not parse locale "%s": %s', x, e)
-            preferred.append('en')
-    return negotiate_locale(preferred, translations)
+
+    preferred = set()
+    if request.accept_languages:
+        for x in request.accept_languages.values():
+            try:
+                preferred.add(str(LC.parse(x.replace('-', '_'))))
+            except (UnknownLocaleError, ValueError) as e:
+                log.warning('Could not parse locale "%s": %s', x, e)
+                # preferred.append('en')
+
+    return negotiate_locale(preferred or ['en'], _BABEL_TRANSLATIONS)
+
+
+def get_locale():
+    return request._locale
 
 
 @babel.timezoneselector

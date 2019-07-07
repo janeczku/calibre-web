@@ -19,10 +19,8 @@
 #  along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 from __future__ import division, print_function, unicode_literals
-import sys
 import os
 import datetime
-import json
 from binascii import hexlify
 
 from flask import g
@@ -40,22 +38,18 @@ from sqlalchemy.orm import relationship, sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 from werkzeug.security import generate_password_hash
 
-from . import constants, logger, cli
+from . import constants
 
 
 session = None
-
-engine = create_engine(u'sqlite:///{0}'.format(cli.settingspath), echo=False)
 Base = declarative_base()
 
 
 def get_sidebar_config(kwargs=None):
     kwargs = kwargs or []
     if 'content' in kwargs:
-        if not isinstance(kwargs['content'], Settings):
-            content = not kwargs['content'].role_anonymous()
-        else:
-            content = False
+        content = kwargs['content']
+        content = isinstance(content, UserBase) and not content.role_anonymous()
     else:
         content = 'conf' in kwargs
     sidebar = list()
@@ -148,7 +142,7 @@ class UserBase:
 
     @property
     def is_anonymous(self):
-        return False
+        return self.role_anonymous()
 
     def get_id(self):
         return str(self.id)
@@ -200,7 +194,6 @@ class Anonymous(AnonymousUserMixin, UserBase):
 
     def loadSettings(self):
         data = session.query(User).filter(User.role.op('&')(constants.ROLE_ANONYMOUS) == constants.ROLE_ANONYMOUS).first()  # type: User
-        settings = session.query(Settings).first()
         self.nickname = data.nickname
         self.role = data.role
         self.id=data.id
@@ -208,8 +201,10 @@ class Anonymous(AnonymousUserMixin, UserBase):
         self.default_language = data.default_language
         self.locale = data.locale
         self.mature_content = data.mature_content
-        self.anon_browse = settings.config_anonbrowse
         self.kindle_mail = data.kindle_mail
+
+        # settings = session.query(Settings).first()
+        # self.anon_browse = settings.config_anonbrowse
 
     def role_admin(self):
         return False
@@ -220,7 +215,7 @@ class Anonymous(AnonymousUserMixin, UserBase):
 
     @property
     def is_anonymous(self):
-        return self.anon_browse
+        return True  # self.anon_browse
 
     @property
     def is_authenticated(self):
@@ -295,78 +290,6 @@ class Registration(Base):
         return u"<Registration('{0}')>".format(self.domain)
 
 
-# Baseclass for representing settings in app.db with email server settings and Calibre database settings
-# (application settings)
-class Settings(Base):
-    __tablename__ = 'settings'
-
-    id = Column(Integer, primary_key=True)
-    mail_server = Column(String)
-    mail_port = Column(Integer, default=25)
-    mail_use_ssl = Column(SmallInteger, default=0)
-    mail_login = Column(String)
-    mail_password = Column(String)
-    mail_from = Column(String)
-    config_calibre_dir = Column(String)
-    config_port = Column(Integer, default=constants.DEFAULT_PORT)
-    config_certfile = Column(String)
-    config_keyfile = Column(String)
-    config_calibre_web_title = Column(String, default=u'Calibre-Web')
-    config_books_per_page = Column(Integer, default=60)
-    config_random_books = Column(Integer, default=4)
-    config_authors_max = Column(Integer, default=0)
-    config_read_column = Column(Integer, default=0)
-    config_title_regex = Column(String, default=u'^(A|The|An|Der|Die|Das|Den|Ein|Eine|Einen|Dem|Des|Einem|Eines)\s+')
-    config_log_level = Column(SmallInteger, default=logger.DEFAULT_LOG_LEVEL)
-    config_access_log = Column(SmallInteger, default=0)
-    config_uploading = Column(SmallInteger, default=0)
-    config_anonbrowse = Column(SmallInteger, default=0)
-    config_public_reg = Column(SmallInteger, default=0)
-    config_default_role = Column(SmallInteger, default=0)
-    config_default_show = Column(SmallInteger, default=6143)
-    config_columns_to_ignore = Column(String)
-    config_use_google_drive = Column(Boolean)
-    config_google_drive_folder = Column(String)
-    config_google_drive_watch_changes_response = Column(String)
-    config_remote_login = Column(Boolean)
-    config_use_goodreads = Column(Boolean)
-    config_goodreads_api_key = Column(String)
-    config_goodreads_api_secret = Column(String)
-    config_login_type = Column(Integer, default=0)
-    # config_use_ldap = Column(Boolean)
-    config_ldap_provider_url = Column(String)
-    config_ldap_dn = Column(String)
-    # config_use_github_oauth = Column(Boolean)
-    config_github_oauth_client_id = Column(String)
-    config_github_oauth_client_secret = Column(String)
-    # config_use_google_oauth = Column(Boolean)
-    config_google_oauth_client_id = Column(String)
-    config_google_oauth_client_secret = Column(String)
-    config_ldap_provider_url = Column(String, default='localhost')
-    config_ldap_port = Column(SmallInteger, default=389)
-    config_ldap_schema = Column(String, default='ldap')
-    config_ldap_serv_username = Column(String)
-    config_ldap_serv_password = Column(String)
-    config_ldap_use_ssl = Column(Boolean, default=False)
-    config_ldap_use_tls = Column(Boolean, default=False)
-    config_ldap_require_cert = Column(Boolean, default=False)
-    config_ldap_cert_path = Column(String)
-    config_ldap_dn = Column(String)
-    config_ldap_user_object = Column(String)
-    config_ldap_openldap = Column(Boolean)
-    config_mature_content_tags = Column(String)
-    config_logfile = Column(String)
-    config_access_logfile = Column(String)
-    config_ebookconverter = Column(Integer, default=0)
-    config_converterpath = Column(String)
-    config_calibre = Column(String)
-    config_rarfile_location = Column(String)
-    config_theme = Column(Integer, default=0)
-    config_updatechannel = Column(Integer, default=0)
-
-    def __repr__(self):
-        pass
-
 
 class RemoteAuthToken(Base):
     __tablename__ = 'remote_auth_token'
@@ -385,153 +308,11 @@ class RemoteAuthToken(Base):
         return '<Token %r>' % self.id
 
 
-# Class holds all application specific settings in calibre-web
-class Config:
-    def __init__(self):
-        self.db_configured = None
-        self.config_logfile = None
-        self.loadSettings()
-
-    def loadSettings(self):
-        data = session.query(Settings).first()  # type: Settings
-
-        self.config_calibre_dir = data.config_calibre_dir
-        self.config_port = data.config_port
-        self.config_certfile = data.config_certfile
-        self.config_keyfile  = data.config_keyfile
-        self.config_calibre_web_title = data.config_calibre_web_title
-        self.config_books_per_page = data.config_books_per_page
-        self.config_random_books = data.config_random_books
-        self.config_authors_max = data.config_authors_max
-        self.config_title_regex = data.config_title_regex
-        self.config_read_column = data.config_read_column
-        self.config_log_level = data.config_log_level
-        self.config_access_log = data.config_access_log
-        self.config_uploading = data.config_uploading
-        self.config_anonbrowse = data.config_anonbrowse
-        self.config_public_reg = data.config_public_reg
-        self.config_default_role = data.config_default_role
-        self.config_default_show = data.config_default_show
-        self.config_columns_to_ignore = data.config_columns_to_ignore
-        self.config_use_google_drive = data.config_use_google_drive
-        self.config_google_drive_folder = data.config_google_drive_folder
-        self.config_ebookconverter = data.config_ebookconverter
-        self.config_converterpath = data.config_converterpath
-        self.config_calibre = data.config_calibre
-        if data.config_google_drive_watch_changes_response:
-            self.config_google_drive_watch_changes_response = json.loads(data.config_google_drive_watch_changes_response)
-        else:
-            self.config_google_drive_watch_changes_response=None
-        self.config_columns_to_ignore = data.config_columns_to_ignore
-        self.db_configured = bool(self.config_calibre_dir is not None and
-                (not self.config_use_google_drive or os.path.exists(self.config_calibre_dir + '/metadata.db')))
-        self.config_remote_login = data.config_remote_login
-        self.config_use_goodreads = data.config_use_goodreads
-        self.config_goodreads_api_key = data.config_goodreads_api_key
-        self.config_goodreads_api_secret = data.config_goodreads_api_secret
-        self.config_login_type = data.config_login_type
-        # self.config_use_ldap = data.config_use_ldap
-        self.config_ldap_user_object = data.config_ldap_user_object
-        self.config_ldap_openldap = data.config_ldap_openldap
-        self.config_ldap_provider_url = data.config_ldap_provider_url
-        self.config_ldap_port = data.config_ldap_port
-        self.config_ldap_schema = data.config_ldap_schema
-        self.config_ldap_serv_username = data.config_ldap_serv_username
-        self.config_ldap_serv_password = data.config_ldap_serv_password
-        self.config_ldap_use_ssl = data.config_ldap_use_ssl
-        self.config_ldap_use_tls = data.config_ldap_use_ssl
-        self.config_ldap_require_cert = data.config_ldap_require_cert
-        self.config_ldap_cert_path = data.config_ldap_cert_path
-        self.config_ldap_dn = data.config_ldap_dn
-        # self.config_use_github_oauth = data.config_use_github_oauth
-        self.config_github_oauth_client_id = data.config_github_oauth_client_id
-        self.config_github_oauth_client_secret = data.config_github_oauth_client_secret
-        # self.config_use_google_oauth = data.config_use_google_oauth
-        self.config_google_oauth_client_id = data.config_google_oauth_client_id
-        self.config_google_oauth_client_secret = data.config_google_oauth_client_secret
-        self.config_mature_content_tags = data.config_mature_content_tags or u''
-        self.config_logfile = data.config_logfile or u''
-        self.config_access_logfile = data.config_access_logfile or u''
-        self.config_rarfile_location = data.config_rarfile_location
-        self.config_theme = data.config_theme
-        self.config_updatechannel = data.config_updatechannel
-        logger.setup(self.config_logfile, self.config_log_level)
-
-    @property
-    def get_update_channel(self):
-        return self.config_updatechannel
-
-    def get_config_certfile(self):
-        if cli.certfilepath:
-            return cli.certfilepath
-        if cli.certfilepath is "":
-            return None
-        return self.config_certfile
-
-    def get_config_keyfile(self):
-        if cli.keyfilepath:
-            return cli.keyfilepath
-        if cli.certfilepath is "":
-            return None
-        return self.config_keyfile
-
-    def get_config_ipaddress(self):
-        return cli.ipadress or ""
-
-    def get_ipaddress_type(self):
-        return cli.ipv6
-
-    def _has_role(self, role_flag):
-        return constants.has_flag(self.config_default_role, role_flag)
-
-    def role_admin(self):
-        return self._has_role(constants.ROLE_ADMIN)
-
-    def role_download(self):
-        return self._has_role(constants.ROLE_DOWNLOAD)
-
-    def role_viewer(self):
-        return self._has_role(constants.ROLE_VIEWER)
-
-    def role_upload(self):
-        return self._has_role(constants.ROLE_UPLOAD)
-
-    def role_edit(self):
-        return self._has_role(constants.ROLE_EDIT)
-
-    def role_passwd(self):
-        return self._has_role(constants.ROLE_PASSWD)
-
-    def role_edit_shelfs(self):
-        return self._has_role(constants.ROLE_EDIT_SHELFS)
-
-    def role_delete_books(self):
-        return self._has_role(constants.ROLE_DELETE_BOOKS)
-
-    def show_element_new_user(self, value):
-        return constants.has_flag(self.config_default_show, value)
-
-    def show_detail_random(self):
-        return self.show_element_new_user(constants.DETAIL_RANDOM)
-
-    def show_mature_content(self):
-        return self.show_element_new_user(constants.MATURE_CONTENT)
-
-    def mature_content_tags(self):
-        if sys.version_info > (3, 0): # Python3 str, Python2 unicode
-            lstrip = str.lstrip
-        else:
-            lstrip = unicode.lstrip
-        return list(map(lstrip, self.config_mature_content_tags.split(",")))
-
-    def get_Log_Level(self):
-        return logger.get_level_name(self.config_log_level)
-
-
 # Migrate database to current version, has to be updated after every database change. Currently migration from
 # everywhere to curent should work. Migration is done by checking if relevant coloums are existing, and than adding
 # rows with SQL commands
-def migrate_Database():
+def migrate_Database(session):
+    engine = session.bind
     if not engine.dialect.has_table(engine.connect(), "book_read_link"):
         ReadBook.__table__.create(bind=engine)
     if not engine.dialect.has_table(engine.connect(), "bookmark"):
@@ -548,43 +329,10 @@ def migrate_Database():
         conn.execute("insert into registration (domain) values('%.%')")
         session.commit()
     try:
-        session.query(exists().where(Settings.config_use_google_drive)).scalar()
-    except exc.OperationalError:
-        conn = engine.connect()
-        conn.execute("ALTER TABLE Settings ADD column `config_use_google_drive` INTEGER DEFAULT 0")
-        conn.execute("ALTER TABLE Settings ADD column `config_google_drive_folder` String DEFAULT ''")
-        conn.execute("ALTER TABLE Settings ADD column `config_google_drive_watch_changes_response` String DEFAULT ''")
-        session.commit()
-    try:
-        session.query(exists().where(Settings.config_columns_to_ignore)).scalar()
-    except exc.OperationalError:
-        conn = engine.connect()
-        conn.execute("ALTER TABLE Settings ADD column `config_columns_to_ignore` String DEFAULT ''")
-        session.commit()
-    try:
-        session.query(exists().where(Settings.config_default_role)).scalar()
-    except exc.OperationalError:  # Database is not compatible, some rows are missing
-        conn = engine.connect()
-        conn.execute("ALTER TABLE Settings ADD column `config_default_role` SmallInteger DEFAULT 0")
-        session.commit()
-    try:
-        session.query(exists().where(Settings.config_authors_max)).scalar()
-    except exc.OperationalError:  # Database is not compatible, some rows are missing
-        conn = engine.connect()
-        conn.execute("ALTER TABLE Settings ADD column `config_authors_max` INTEGER DEFAULT 0")
-        session.commit()
-    try:
         session.query(exists().where(BookShelf.order)).scalar()
     except exc.OperationalError:  # Database is not compatible, some rows are missing
         conn = engine.connect()
         conn.execute("ALTER TABLE book_shelf_link ADD column 'order' INTEGER DEFAULT 1")
-        session.commit()
-    try:
-        session.query(exists().where(Settings.config_rarfile_location)).scalar()
-        session.commit()
-    except exc.OperationalError:  # Database is not compatible, some rows are missing
-        conn = engine.connect()
-        conn.execute("ALTER TABLE Settings ADD column `config_rarfile_location` String DEFAULT ''")
         session.commit()
     try:
         create = False
@@ -618,145 +366,6 @@ def migrate_Database():
 
     if session.query(User).filter(User.role.op('&')(constants.ROLE_ANONYMOUS) == constants.ROLE_ANONYMOUS).first() is None:
         create_anonymous_user()
-    try:
-        session.query(exists().where(Settings.config_remote_login)).scalar()
-    except exc.OperationalError:
-        conn = engine.connect()
-        conn.execute("ALTER TABLE Settings ADD column `config_remote_login` INTEGER DEFAULT 0")
-    try:
-        session.query(exists().where(Settings.config_use_goodreads)).scalar()
-    except exc.OperationalError:
-        conn = engine.connect()
-        conn.execute("ALTER TABLE Settings ADD column `config_use_goodreads` INTEGER DEFAULT 0")
-        conn.execute("ALTER TABLE Settings ADD column `config_goodreads_api_key` String DEFAULT ''")
-        conn.execute("ALTER TABLE Settings ADD column `config_goodreads_api_secret` String DEFAULT ''")
-    try:
-        session.query(exists().where(Settings.config_mature_content_tags)).scalar()
-    except exc.OperationalError:
-        conn = engine.connect()
-        conn.execute("ALTER TABLE Settings ADD column `config_mature_content_tags` String DEFAULT ''")
-    try:
-        session.query(exists().where(Settings.config_default_show)).scalar()
-    except exc.OperationalError:  # Database is not compatible, some rows are missing
-        conn = engine.connect()
-        conn.execute("ALTER TABLE Settings ADD column `config_default_show` SmallInteger DEFAULT 2047")
-        session.commit()
-    try:
-        session.query(exists().where(Settings.config_logfile)).scalar()
-    except exc.OperationalError:  # Database is not compatible, some rows are missing
-        conn = engine.connect()
-        conn.execute("ALTER TABLE Settings ADD column `config_logfile` String DEFAULT ''")
-        session.commit()
-    try:
-        session.query(exists().where(Settings.config_certfile)).scalar()
-    except exc.OperationalError:  # Database is not compatible, some rows are missing
-        conn = engine.connect()
-        conn.execute("ALTER TABLE Settings ADD column `config_certfile` String DEFAULT ''")
-        conn.execute("ALTER TABLE Settings ADD column `config_keyfile` String DEFAULT ''")
-        session.commit()
-    try:
-        session.query(exists().where(Settings.config_read_column)).scalar()
-    except exc.OperationalError:  # Database is not compatible, some rows are missing
-        conn = engine.connect()
-        conn.execute("ALTER TABLE Settings ADD column `config_read_column` INTEGER DEFAULT 0")
-        session.commit()
-    try:
-        session.query(exists().where(Settings.config_ebookconverter)).scalar()
-    except exc.OperationalError:  # Database is not compatible, some rows are missing
-        conn = engine.connect()
-        conn.execute("ALTER TABLE Settings ADD column `config_ebookconverter` INTEGER DEFAULT 0")
-        conn.execute("ALTER TABLE Settings ADD column `config_converterpath` String DEFAULT ''")
-        conn.execute("ALTER TABLE Settings ADD column `config_calibre` String DEFAULT ''")
-        session.commit()
-    try:
-        session.query(exists().where(Settings.config_login_type)).scalar()
-    except exc.OperationalError:
-        conn = engine.connect()
-        conn.execute("ALTER TABLE Settings ADD column `config_login_type` INTEGER DEFAULT 0")
-        session.commit()
-    try:
-        session.query(exists().where(Settings.config_ldap_provider_url)).scalar()
-    except exc.OperationalError:
-        conn = engine.connect()
-        conn.execute("ALTER TABLE Settings ADD column `config_ldap_provider_url` String DEFAULT ''")
-        session.commit()
-    try:
-        session.query(exists().where(Settings.config_ldap_port)).scalar()
-    except exc.OperationalError:
-        conn = engine.connect()
-        conn.execute("ALTER TABLE Settings ADD column `config_ldap_port` INTEGER DEFAULT ''")
-        session.commit()
-    try:
-        session.query(exists().where(Settings.config_ldap_schema)).scalar()
-    except exc.OperationalError:
-        conn = engine.connect()
-        conn.execute("ALTER TABLE Settings ADD column `config_ldap_schema` String DEFAULT ''")
-        session.commit()
-    try:
-        session.query(exists().where(Settings.config_ldap_serv_username)).scalar()
-    except exc.OperationalError:
-        conn = engine.connect()
-        conn.execute("ALTER TABLE Settings ADD column `config_ldap_serv_username` String DEFAULT ''")
-        conn.execute("ALTER TABLE Settings ADD column `config_ldap_serv_password` String DEFAULT ''")
-        session.commit()
-    try:
-        session.query(exists().where(Settings.config_ldap_use_ssl)).scalar()
-    except exc.OperationalError:
-        conn = engine.connect()
-        conn.execute("ALTER TABLE Settings ADD column `config_ldap_use_ssl` INTEGER DEFAULT 0")
-        session.commit()
-    try:
-        session.query(exists().where(Settings.config_ldap_use_tls)).scalar()
-    except exc.OperationalError:
-        conn = engine.connect()
-        conn.execute("ALTER TABLE Settings ADD column `config_ldap_use_tls` INTEGER DEFAULT 0")
-        session.commit()
-    try:
-        session.query(exists().where(Settings.config_ldap_require_cert)).scalar()
-    except exc.OperationalError:
-        conn = engine.connect()
-        conn.execute("ALTER TABLE Settings ADD column `config_ldap_require_cert` INTEGER DEFAULT 0")
-        conn.execute("ALTER TABLE Settings ADD column `config_ldap_cert_path` String DEFAULT ''")
-        session.commit()
-    try:
-        session.query(exists().where(Settings.config_ldap_dn)).scalar()
-    except exc.OperationalError:
-        conn = engine.connect()
-        conn.execute("ALTER TABLE Settings ADD column `config_ldap_dn` String DEFAULT ''")
-        conn.execute("ALTER TABLE Settings ADD column `config_github_oauth_client_id` String DEFAULT ''")
-        conn.execute("ALTER TABLE Settings ADD column `config_github_oauth_client_secret` String DEFAULT ''")
-        session.commit()
-    try:
-        session.query(exists().where(Settings.config_ldap_user_object)).scalar()
-    except exc.OperationalError:
-        conn = engine.connect()
-        conn.execute("ALTER TABLE Settings ADD column `config_ldap_user_object` String DEFAULT ''")
-        session.commit()
-    try:
-        session.query(exists().where(Settings.config_ldap_openldap)).scalar()
-    except exc.OperationalError:
-        conn = engine.connect()
-        conn.execute("ALTER TABLE Settings ADD column `config_ldap_openldap` INTEGER DEFAULT 0")
-        session.commit()
-    try:
-        session.query(exists().where(Settings.config_theme)).scalar()
-    except exc.OperationalError:  # Database is not compatible, some rows are missing
-        conn = engine.connect()
-        conn.execute("ALTER TABLE Settings ADD column `config_theme` INTEGER DEFAULT 0")
-        session.commit()
-    try:
-        session.query(exists().where(Settings.config_updatechannel)).scalar()
-    except exc.OperationalError:  # Database is not compatible, some rows are missing
-        conn = engine.connect()
-        conn.execute("ALTER TABLE Settings ADD column `config_updatechannel` INTEGER DEFAULT 0")
-        session.commit()
-    try:
-        session.query(exists().where(Settings.config_access_log)).scalar()
-    except exc.OperationalError:  # Database is not compatible, some rows are missing
-        conn = engine.connect()
-        conn.execute("ALTER TABLE Settings ADD column `config_access_log` INTEGER DEFAULT 0")
-        conn.execute("ALTER TABLE Settings ADD column `config_access_logfile` String DEFAULT ''")
-        session.commit()
     try:
         # check if one table with autoincrement is existing (should be user table)
         conn = engine.connect()
@@ -792,41 +401,12 @@ def migrate_Database():
     session.commit()
 
 
-def clean_database():
+def clean_database(session):
     # Remove expired remote login tokens
     now = datetime.datetime.now()
     session.query(RemoteAuthToken).filter(now > RemoteAuthToken.expiration).delete()
-
-
-def create_default_config():
-    settings = Settings()
-    settings.mail_server = "mail.example.com"
-    settings.mail_port = 25
-    settings.mail_use_ssl = 0
-    settings.mail_login = "mail@example.com"
-    settings.mail_password = "mypassword"
-    settings.mail_from = "automailer <mail@example.com>"
-
-    session.add(settings)
     session.commit()
 
-
-def get_mail_settings():
-    settings = session.query(Settings).first()
-
-    if not settings:
-        return {}
-
-    data = {
-        'mail_server': settings.mail_server,
-        'mail_port': settings.mail_port,
-        'mail_use_ssl': settings.mail_use_ssl,
-        'mail_login': settings.mail_login,
-        'mail_password': settings.mail_password,
-        'mail_from': settings.mail_from
-    }
-
-    return data
 
 # Save downloaded books per user in calibre-web's own database
 def update_download(book_id, user_id):
@@ -844,7 +424,7 @@ def delete_download(book_id):
     session.commit()
 
 # Generate user Guest (translated text), as anoymous user, no rights
-def create_anonymous_user():
+def create_anonymous_user(session):
     user = User()
     user.nickname = "Guest"
     user.email = 'no@email'
@@ -859,7 +439,7 @@ def create_anonymous_user():
 
 
 # Generate User admin with admin123 password, and access to everything
-def create_admin_user():
+def create_admin_user(session):
     user = User()
     user.nickname = "admin"
     user.role = constants.ADMIN_USER_ROLES
@@ -873,23 +453,37 @@ def create_admin_user():
     except Exception:
         session.rollback()
 
-def init_db():
+
+def init_db(app_db_path):
     # Open session for database connection
     global session
+
+    engine = create_engine(u'sqlite:///{0}'.format(app_db_path), echo=False)
+
     Session = sessionmaker()
     Session.configure(bind=engine)
     session = Session()
 
-
-    if not os.path.exists(cli.settingspath):
-        try:
-            Base.metadata.create_all(engine)
-            create_default_config()
-            create_admin_user()
-            create_anonymous_user()
-        except Exception:
-            raise
+    if os.path.exists(app_db_path):
+        Base.metadata.create_all(engine)
+        migrate_Database(session)
+        clean_database(session)
     else:
         Base.metadata.create_all(engine)
-        migrate_Database()
-        clean_database()
+        create_admin_user(session)
+        create_anonymous_user(session)
+
+
+def dispose():
+    global session
+
+    engine = None
+    if session:
+        engine = session.bind
+        try: session.close()
+        except: pass
+        session = None
+
+    if engine:
+        try: engine.dispose()
+        except: pass
