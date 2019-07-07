@@ -71,11 +71,7 @@ def shortentitle_filter(s, nchar=20):
 
 @jinjia.app_template_filter('mimetype')
 def mimetype_filter(val):
-    try:
-        s = mimetypes.types_map['.' + val]
-    except Exception:
-        s = 'application/octet-stream'
-    return s
+    return mimetypes.types_map.get('.' + val, 'application/octet-stream')
 
 
 @jinjia.app_template_filter('formatdate')

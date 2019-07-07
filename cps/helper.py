@@ -26,17 +26,16 @@ import json
 import mimetypes
 import random
 import re
-import requests
 import shutil
 import time
 import unicodedata
 from datetime import datetime, timedelta
-from functools import reduce
 from tempfile import gettempdir
 
+import requests
 from babel import Locale as LC
 from babel.core import UnknownLocaleError
-from babel.dates import format_datetime, format_timedelta
+from babel.dates import format_datetime
 from babel.units import format_unit
 from flask import send_from_directory, make_response, redirect, abort
 from flask_babel import gettext as _
@@ -56,12 +55,6 @@ except ImportError:
     use_unidecode = False
 
 try:
-    import Levenshtein
-    use_levenshtein = True
-except ImportError:
-    use_levenshtein = False
-
-try:
     from PIL import Image
     use_PIL = True
 except ImportError:
@@ -71,7 +64,7 @@ from . import logger, config, global_WorkerThread, get_locale, db, ub, isoLangua
 from . import gdriveutils as gd
 from .constants import STATIC_DIR as _STATIC_DIR
 from .pagination import Pagination
-from .subproc_wrapper import process_open
+from .subproc_wrapper import process_wait
 from .worker import STAT_WAITING, STAT_FAIL, STAT_STARTED, STAT_FINISH_SUCCESS
 from .worker import TASK_EMAIL, TASK_CONVERT, TASK_UPLOAD, TASK_CONVERT_ANY
 
@@ -110,7 +103,7 @@ def convert_book_format(book_id, calibrepath, old_book_format, new_book_format, 
     if os.path.exists(file_path + "." + old_book_format.lower()):
         # read settings and append converter task to queue
         if kindle_mail:
-            settings = ub.get_mail_settings()
+            settings = config.get_mail_settings()
             settings['subject'] = _('Send to Kindle') # pretranslate Subject for e-mail
             settings['body'] = _(u'This e-mail has been sent via Calibre-Web.')
             # text = _(u"%(format)s: %(book)s", format=new_book_format, book=book.title)
@@ -128,7 +121,7 @@ def convert_book_format(book_id, calibrepath, old_book_format, new_book_format, 
 
 
 def send_test_mail(kindle_mail, user_name):
-    global_WorkerThread.add_email(_(u'Calibre-Web test e-mail'),None, None, ub.get_mail_settings(),
+    global_WorkerThread.add_email(_(u'Calibre-Web test e-mail'),None, None, config.get_mail_settings(),
                                   kindle_mail, user_name, _(u"Test e-mail"),
                                   _(u'This e-mail has been sent via Calibre-Web.'))
     return
@@ -145,7 +138,7 @@ def send_registration_mail(e_mail, user_name, default_password, resend=False):
     text += "Don't forget to change your password after first login.\r\n"
     text += "Sincerely\r\n\r\n"
     text += "Your Calibre-Web team"
-    global_WorkerThread.add_email(_(u'Get Started with Calibre-Web'),None, None, ub.get_mail_settings(),
+    global_WorkerThread.add_email(_(u'Get Started with Calibre-Web'),None, None, config.get_mail_settings(),
                                   e_mail, None, _(u"Registration e-mail for user: %(name)s", name=user_name), text)
     return
 
@@ -218,7 +211,7 @@ def send_mail(book_id, book_format, convert, kindle_mail, calibrepath, user_id):
         for entry in iter(book.data):
             if entry.format.upper() == book_format.upper():
                 result = entry.name + '.' + book_format.lower()
-                global_WorkerThread.add_email(_(u"Send to Kindle"), book.path, result, ub.get_mail_settings(),
+                global_WorkerThread.add_email(_(u"Send to Kindle"), book.path, result, config.get_mail_settings(),
                                       kindle_mail, user_id, _(u"E-mail: %(book)s", book=book.title),
                                       _(u'This e-mail has been sent via Calibre-Web.'))
                 return
@@ -561,27 +554,23 @@ def do_download_file(book, book_format, data, headers):
 
 
 def check_unrar(unrarLocation):
-    error = False
-    if os.path.exists(unrarLocation):
-        try:
-            if sys.version_info < (3, 0):
-                unrarLocation = unrarLocation.encode(sys.getfilesystemencoding())
-            p = process_open(unrarLocation)
-            p.wait()
-            for lines in p.stdout.readlines():
-                if isinstance(lines, bytes):
-                    lines = lines.decode('utf-8')
-                value=re.search('UNRAR (.*) freeware', lines)
-                if value:
-                    version = value.group(1)
-        except OSError as e:
-            error = True
-            log.exception(e)
-            version =_(u'Error excecuting UnRar')
-    else:
-        version = _(u'Unrar binary file not found')
-        error=True
-    return (error, version)
+    if not unrarLocation:
+        return
+
+    if not os.path.exists(unrarLocation):
+        return 'Unrar binary file not found'
+
+    try:
+        if sys.version_info < (3, 0):
+            unrarLocation = unrarLocation.encode(sys.getfilesystemencoding())
+        for lines in process_wait(unrarLocation):
+            value = re.search('UNRAR (.*) freeware', lines)
+            if value:
+                version = value.group(1)
+                log.debug("unrar version %s", version)
+    except OSError as err:
+        log.exception(err)
+        return 'Error excecuting UnRar'
 
 
 
@@ -605,7 +594,7 @@ def json_serial(obj):
 def format_runtime(runtime):
     retVal = ""
     if runtime.days:
-        retVal = format_unit(runtime.days, 'duration-day', length="long", locale=web.get_locale()) + ', '
+        retVal = format_unit(runtime.days, 'duration-day', length="long", locale=get_locale()) + ', '
     mins, seconds = divmod(runtime.seconds, 60)
     hours, minutes = divmod(mins, 60)
     # ToDo: locale.number_symbols._data['timeSeparator'] -> localize time separator ?
@@ -630,7 +619,10 @@ def render_task_status(tasklist):
                 if 'starttime' not in task:
                     task['starttime'] = ""
 
-            task['runtime'] = format_runtime(task['formRuntime'])
+            if 'formRuntime' not in task:
+                task['runtime'] = ""
+            else:
+                task['runtime'] = format_runtime(task['formRuntime'])
 
             # localize the task status
             if isinstance( task['stat'], int ):
@@ -754,28 +746,6 @@ def get_search_results(term):
             func.lower(db.Books.title).ilike("%" + term + "%")
             )).all()
 
-def get_unique_other_books(library_books, author_books):
-    # Get all identifiers (ISBN, Goodreads, etc) and filter author's books by that list so we show fewer duplicates
-    # Note: Not all images will be shown, even though they're available on Goodreads.com.
-    #       See https://www.goodreads.com/topic/show/18213769-goodreads-book-images
-    identifiers = reduce(lambda acc, book: acc + map(lambda identifier: identifier.val, book.identifiers),
-                         library_books, [])
-    other_books = filter(lambda book: book.isbn not in identifiers and book.gid["#text"] not in identifiers,
-                         author_books)
-
-    # Fuzzy match book titles
-    if use_levenshtein:
-        library_titles = reduce(lambda acc, book: acc + [book.title], library_books, [])
-        other_books = filter(lambda author_book: not filter(
-            lambda library_book:
-            # Remove items in parentheses before comparing
-            Levenshtein.ratio(re.sub(r"\(.*\)", "", author_book.title), library_book) > 0.7,
-            library_titles
-        ), other_books)
-
-    return other_books
-
-
 def get_cc_columns():
     tmpcc = db.session.query(db.Custom_Columns).filter(db.Custom_Columns.datatype.notin_(db.cc_exceptions)).all()
     if config.config_columns_to_ignore:
@@ -802,10 +772,7 @@ def get_download_link(book_id, book_format):
             file_name = book.authors[0].name + '_' + file_name
         file_name = get_valid_filename(file_name)
         headers = Headers()
-        try:
-            headers["Content-Type"] = mimetypes.types_map['.' + book_format]
-        except KeyError:
-            headers["Content-Type"] = "application/octet-stream"
+        headers["Content-Type"] = mimetypes.types_map.get('.' + book_format, "application/octet-stream")
         headers["Content-Disposition"] = "attachment; filename*=UTF-8''%s.%s" % (quote(file_name.encode('utf-8')),
                                                                                  book_format)
         return do_download_file(book, book_format, data, headers)

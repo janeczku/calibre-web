@@ -38,7 +38,7 @@
           </button>
           <a class="navbar-brand" href="{{url_for('web.index')}}">{{instance}}</a>
         </div>
-        {% if g.user.is_authenticated or g.user.is_anonymous %}
+        {% if g.user.is_authenticated or g.allow_anonymous %}
           <form class="navbar-form navbar-left" role="search" action="{{url_for('web.search')}}" method="GET">
             <div class="form-group input-group input-group-sm">
               <label for="query" class="sr-only">{{_('Search')}}</label>
@@ -50,13 +50,13 @@
           </form>
         {% endif %}
         <div class="navbar-collapse collapse">
-          {% if g.user.is_authenticated or g.user.is_anonymous %}
+          {% if g.user.is_authenticated or g.allow_anonymous %}
           <ul class="nav navbar-nav ">
             <li><a href="{{url_for('web.advanced_search')}}"><span class="glyphicon glyphicon-search"></span><span class="hidden-sm"> {{_('Advanced Search')}}</span></a></li>
           </ul>
           {% endif %}
           <ul class="nav navbar-nav navbar-right" id="main-nav">
-            {% if g.user.is_authenticated or g.user.is_anonymous %}
+            {% if g.user.is_authenticated or g.allow_anonymous %}
               {% if g.user.role_upload() or g.user.role_admin()%}
                 {% if g.allow_upload %}
                   <li>
@@ -115,7 +115,7 @@
     {%endif%}
     <div class="container-fluid">
       <div class="row-fluid">
-        {% if g.user.is_authenticated or g.user.is_anonymous %}
+        {% if g.user.is_authenticated or g.allow_anonymous %}
         <div class="col-sm-2">
           <nav class="navigation">
             <ul class="list-unstyled" id="scnd-nav" intent in-standard-append="nav.navigation" in-mobile-after="#main-nav" in-mobile-class="nav navbar-nav">
@@ -128,7 +128,7 @@
                 {% endif %}
               {% endfor %}
 
-              {% if g.user.is_authenticated or g.user.is_anonymous %}
+              {% if g.user.is_authenticated or allow_anonymous %}
                 <li class="nav-head hidden-xs public-shelves">{{_('Public Shelves')}}</li>
                 {% for shelf in g.public_shelfes %}
                   <li><a href="{{url_for('shelf.show_shelf', shelf_id=shelf.id)}}"><span class="glyphicon glyphicon-list public_shelf"></span>{{shelf.name|shortentitle(40)}}</a></li>

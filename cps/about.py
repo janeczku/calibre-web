@@ -69,8 +69,8 @@ def stats():
     versions['pytz'] = 'v' + pytzVersion
 
     versions['Requests'] = 'v' + requests.__version__
-    versions['pySqlite'] = 'v' + db.engine.dialect.dbapi.version
-    versions['Sqlite'] = 'v' + db.engine.dialect.dbapi.sqlite_version
+    versions['pySqlite'] = 'v' + db.session.bind.dialect.dbapi.version
+    versions['Sqlite'] = 'v' + db.session.bind.dialect.dbapi.sqlite_version
     versions.update(converter.versioncheck())
     versions.update(serverVersion)
     versions['Python'] = sys.version

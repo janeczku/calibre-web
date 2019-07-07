@@ -33,7 +33,7 @@ from flask_babel import gettext as _
 from flask_login import current_user
 
 from . import constants, logger, isoLanguages, gdriveutils, uploader, helper
-from . import config, get_locale, db, ub, global_WorkerThread, language_table
+from . import config, get_locale, db, ub, global_WorkerThread
 from .helper import order_authors, common_filters
 from .web import login_required_if_no_ano, render_title_template, edit_required, upload_required, login_required
 
@@ -206,7 +206,7 @@ def delete_book(book_id, book_format):
 
 
 def render_edit_book(book_id):
-    db.session.connection().connection.connection.create_function("title_sort", 1, db.title_sort)
+    db.update_title_sort(config)
     cc = db.session.query(db.Custom_Columns).filter(db.Custom_Columns.datatype.notin_(db.cc_exceptions)).all()
     book = db.session.query(db.Books)\
         .filter(db.Books.id == book_id).filter(common_filters()).first()
@@ -215,8 +215,8 @@ def render_edit_book(book_id):
         flash(_(u"Error opening eBook. File does not exist or file is not accessible"), category="error")
         return redirect(url_for("web.index"))
 
-    for indx in range(0, len(book.languages)):
-        book.languages[indx].language_name = language_table[get_locale()][book.languages[indx].lang_code]
+    for lang in book.languages:
+        lang.language_name = isoLanguages.get_language_name(get_locale(), lang.lang_code)
 
     book = order_authors(book)
 
@@ -354,7 +354,7 @@ def upload_single_file(request, book, book_id):
                 db_format = db.Data(book_id, file_ext.upper(), file_size, file_name)
                 db.session.add(db_format)
                 db.session.commit()
-                db.session.connection().connection.connection.create_function("title_sort", 1, db.title_sort)
+                db.update_title_sort(config)
 
             # Queue uploader info
             uploadText=_(u"File format %(ext)s added to %(book)s", ext=file_ext.upper(), book=book.title)
@@ -385,7 +385,7 @@ def edit_book(book_id):
         return render_edit_book(book_id)
 
     # create the function for sorting...
-    db.session.connection().connection.connection.create_function("title_sort", 1, db.title_sort)
+    db.update_title_sort(config)
     book = db.session.query(db.Books)\
         .filter(db.Books.id == book_id).filter(common_filters()).first()
 
@@ -484,17 +484,12 @@ def edit_book(book_id):
 
             # handle book languages
             input_languages = to_save["languages"].split(',')
-            input_languages = [x.strip().lower() for x in input_languages if x != '']
-            input_l = []
-            invers_lang_table = [x.lower() for x in language_table[get_locale()].values()]
-            for lang in input_languages:
-                try:
-                    res = list(language_table[get_locale()].keys())[invers_lang_table.index(lang)]
-                    input_l.append(res)
-                except ValueError:
-                    log.error('%s is not a valid language', lang)
-                    flash(_(u"%(langname)s is not a valid language", langname=lang), category="error")
-            modify_database_object(input_l, book.languages, db.Languages, db.session, 'languages')
+            unknown_languages = []
+            input_l = isoLanguages.get_language_codes(get_locale(), input_languages, unknown_languages)
+            for l in unknown_languages:
+                log.error('%s is not a valid language', l)
+                flash(_(u"%(langname)s is not a valid language", langname=l), category="error")
+            modify_database_object(list(input_l), book.languages, db.Languages, db.session, 'languages')
 
             # handle book ratings
             if to_save["rating"].strip():
@@ -546,7 +541,7 @@ def upload():
     if request.method == 'POST' and 'btn-upload' in request.files:
         for requested_file in request.files.getlist("btn-upload"):
             # create the function for sorting...
-            db.session.connection().connection.connection.create_function("title_sort", 1, db.title_sort)
+            db.update_title_sort(config)
             db.session.connection().connection.connection.create_function('uuid4', 0, lambda: str(uuid4()))
 
             # check if file extension is correct
@@ -659,7 +654,7 @@ def upload():
 
             # save data to database, reread data
             db.session.commit()
-            db.session.connection().connection.connection.create_function("title_sort", 1, db.title_sort)
+            db.update_title_sort(config)
             book = db.session.query(db.Books).filter(db.Books.id == book_id).filter(common_filters()).first()
 
             # upload book to gdrive if nesseccary and add "(bookid)" to folder name
