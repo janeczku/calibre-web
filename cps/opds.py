@@ -31,7 +31,7 @@ from flask_login import current_user
 from sqlalchemy.sql.expression import func, text, or_, and_
 from werkzeug.security import check_password_hash
 
-from . import logger, config, db, ub, ldap1
+from . import constants, logger, config, db, ub, services
 from .helper import fill_indexpage, get_download_link, get_book_cover
 from .pagination import Pagination
 from .web import common_filters, get_search_results, render_read_books, download_required
@@ -40,7 +40,6 @@ from .web import common_filters, get_search_results, render_read_books, download
 opds = Blueprint('opds', __name__)
 
 log = logger.create()
-ldap_support = ldap1.ldap_supported()
 
 
 def requires_basic_auth_if_no_ano(f):
@@ -51,8 +50,8 @@ def requires_basic_auth_if_no_ano(f):
             if not auth or not check_auth(auth.username, auth.password):
                 return authenticate()
         return f(*args, **kwargs)
-    if config.config_login_type == 1 and ldap_support:
-        return ldap1.ldap.basic_auth_required(f)
+    if config.config_login_type == constants.LOGIN_LDAP and services.ldap:
+        return services.ldap.basic_auth_required(f)
     return decorated
 
 

@@ -41,18 +41,20 @@ from werkzeug.exceptions import default_exceptions
 from werkzeug.datastructures import Headers
 from werkzeug.security import generate_password_hash, check_password_hash
 
-from . import constants, logger, isoLanguages, ldap1
-from . import global_WorkerThread, searched_ids, lm, babel, db, ub, config, get_locale, app, language_table
+from . import constants, logger, isoLanguages, services
+from . import global_WorkerThread, searched_ids, lm, babel, db, ub, config, negociate_locale, get_locale, app
 from .gdriveutils import getFileFromEbooksFolder, do_gdrive_download
 from .helper import common_filters, get_search_results, fill_indexpage, speaking_language, check_valid_domain, \
-        order_authors, get_typeahead, render_task_status, json_serial, get_unique_other_books, get_cc_columns, \
+        order_authors, get_typeahead, render_task_status, json_serial, get_cc_columns, \
         get_book_cover, get_download_link, send_mail, generate_random_password, send_registration_mail, \
         check_send_to_kindle, check_read_formats, lcase
 from .pagination import Pagination
 from .redirect import redirect_back
 
-feature_support = dict()
-feature_support['ldap'] = ldap1.ldap_supported()
+feature_support = {
+        'ldap': bool(services.ldap),
+        'goodreads': bool(services.goodreads)
+    }
 
 try:
     from .oauth_bb import oauth_check, register_user_with_oauth, logout_oauth_user, get_oauth_status
@@ -60,12 +62,6 @@ try:
 except ImportError:
     feature_support['oauth'] = False
     oauth_check = {}
-
-try:
-    from goodreads.client import GoodreadsClient
-    feature_support['goodreads'] = True
-except ImportError:
-    feature_support['goodreads'] = False
 
 try:
     from functools import wraps
@@ -230,6 +226,8 @@ def render_title_template(*args, **kwargs):
 
 @web.before_app_request
 def before_request():
+    # log.debug("before_request: %s %s %r", request.method, request.path, getattr(request, 'locale', None))
+    request._locale = negociate_locale()
     g.user = current_user
     g.allow_registration = config.config_public_reg
     g.allow_upload = config.config_uploading
@@ -292,7 +290,7 @@ def toggle_read(book_id):
         ub.session.commit()
     else:
         try:
-            db.session.connection().connection.connection.create_function("title_sort", 1, db.title_sort)
+            db.update_title_sort(config)
             book = db.session.query(db.Books).filter(db.Books.id == book_id).filter(common_filters()).first()
             read_status = getattr(book, 'custom_column_' + str(config.config_read_column))
             if len(read_status):
@@ -396,10 +394,10 @@ def get_series_json():
 def get_languages_json():
     if request.method == "GET":
         query = request.args.get('q').lower()
-        languages = language_table[get_locale()]
-        entries_start = [s for key, s in languages.items() if s.lower().startswith(query.lower())]
+        language_names = isoLanguages.get_language_names(get_locale())
+        entries_start = [s for key, s in language_names.items() if s.lower().startswith(query.lower())]
         if len(entries_start) < 5:
-            entries = [s for key, s in languages.items() if query in s.lower()]
+            entries = [s for key, s in language_names.items() if query in s.lower()]
             entries_start.extend(entries[0:(5-len(entries_start))])
             entries_start = list(set(entries_start))
         json_dumps = json.dumps([dict(name=r) for r in entries_start[0:5]])
@@ -534,29 +532,26 @@ def render_hot_books(page):
         abort(404)
 
 
-def render_author_books(page, book_id, order):
-    entries, __, pagination = fill_indexpage(page, db.Books, db.Books.authors.any(db.Authors.id == book_id),
+
+def render_author_books(page, author_id, order):
+    entries, __, pagination = fill_indexpage(page, db.Books, db.Books.authors.any(db.Authors.id == author_id),
                                              [order[0], db.Series.name, db.Books.series_index],
                                              db.books_series_link, db.Series)
     if entries is None or not len(entries):
         flash(_(u"Error opening eBook. File does not exist or file is not accessible:"), category="error")
         return redirect(url_for("web.index"))
 
-    name = db.session.query(db.Authors).filter(db.Authors.id == book_id).first().name.replace('|', ',')
+    author = db.session.query(db.Authors).get(author_id)
+    author_name = author.name.replace('|', ',')
 
     author_info = None
     other_books = []
-    if feature_support['goodreads'] and config.config_use_goodreads:
-        try:
-            gc = GoodreadsClient(config.config_goodreads_api_key, config.config_goodreads_api_secret)
-            author_info = gc.find_author(author_name=name)
-            other_books = get_unique_other_books(entries.all(), author_info.books)
-        except Exception:
-            # Skip goodreads, if site is down/inaccessible
-            logger.error('Goodreads website is down/inaccessible')
+    if services.goodreads and config.config_use_goodreads:
+        author_info = services.goodreads.get_author_info(author_name)
+        other_books = services.goodreads.get_other_books(author_info, entries)
 
-    return render_title_template('author.html', entries=entries, pagination=pagination, id=book_id,
-                                 title=_(u"Author: %(name)s", name=name), author=author_info, other_books=other_books,
+    return render_title_template('author.html', entries=entries, pagination=pagination, id=author_id,
+                                 title=_(u"Author: %(name)s", name=author_name), author=author_info, other_books=other_books,
                                  page="author")
 
 
@@ -985,10 +980,7 @@ def serve_book(book_id, book_format):
     log.info('Serving book: %s', data.name)
     if config.config_use_google_drive:
         headers = Headers()
-        try:
-            headers["Content-Type"] = mimetypes.types_map['.' + book_format]
-        except KeyError:
-            headers["Content-Type"] = "application/octet-stream"
+        headers["Content-Type"] = mimetypes.types_map.get('.' + book_format, "application/octet-stream")
         df = getFileFromEbooksFolder(book.path, data.name + "." + book_format)
         return do_gdrive_download(df, headers)
     else:
@@ -1007,7 +999,7 @@ def download_link(book_id, book_format, anyname):
 @login_required
 @download_required
 def send_to_kindle(book_id, book_format, convert):
-    settings = ub.get_mail_settings()
+    settings = config.get_mail_settings()
     if settings.get("mail_server", "mail.example.com") == "mail.example.com":
         flash(_(u"Please configure the SMTP mail settings first..."), category="error")
     elif current_user.kindle_mail:
@@ -1085,41 +1077,33 @@ def login():
         return redirect(url_for('admin.basic_configuration'))
     if current_user is not None and current_user.is_authenticated:
         return redirect(url_for('web.index'))
-    if config.config_login_type == 1 and not feature_support['ldap']:
+    if config.config_login_type == constants.LOGIN_LDAP and not services.ldap:
         flash(_(u"Cannot activate LDAP authentication"), category="error")
     if request.method == "POST":
         form = request.form.to_dict()
         user = ub.session.query(ub.User).filter(func.lower(ub.User.nickname) == form['username'].strip().lower())\
             .first()
-        if config.config_login_type == 1 and user and feature_support['ldap']:
-            try:
-                if ldap1.ldap.bind_user(form['username'], form['password']) is not None:
-                    login_user(user, remember=True)
-                    flash(_(u"you are now logged in as: '%(nickname)s'", nickname=user.nickname),
-                          category="success")
-                    return redirect_back(url_for("web.index"))
-            except ldap1.ldap.INVALID_CREDENTIALS as e:
-                log.error('Login Error: ' + str(e))
+        if config.config_login_type == constants.LOGIN_LDAP and services.ldap and user:
+            login_result = services.ldap.bind_user(form['username'], form['password'])
+            if login_result:
+                login_user(user, remember=True)
+                flash(_(u"you are now logged in as: '%(nickname)s'", nickname=user.nickname),
+                      category="success")
+                return redirect_back(url_for("web.index"))
+            if login_result is None:
+                flash(_(u"Could not login. LDAP server down, please contact your administrator"), category="error")
+            else:
                 ipAdress = request.headers.get('X-Forwarded-For', request.remote_addr)
                 log.info('LDAP Login failed for user "%s" IP-adress: %s', form['username'], ipAdress)
                 flash(_(u"Wrong Username or Password"), category="error")
-            except ldap1.ldap.SERVER_DOWN:
-                log.info('LDAP Login failed, LDAP Server down')
-                flash(_(u"Could not login. LDAP server down, please contact your administrator"), category="error")
-            '''except LDAPException as exception:
-                app.logger.error('Login Error: ' + str(exception))
-                ipAdress = request.headers.get('X-Forwarded-For', request.remote_addr)
-                app.logger.info('LDAP Login failed for user "' + form['username'] + ', IP-address :' + ipAdress)
-                flash(_(u"Wrong Username or Password"), category="error")'''
         else:
-            if user and check_password_hash(user.password, form['password']) and user.nickname is not "Guest":
+            if user and check_password_hash(user.password, form['password']) and user.nickname != "Guest":
                 login_user(user, remember=True)
                 flash(_(u"You are now logged in as: '%(nickname)s'", nickname=user.nickname), category="success")
                 return redirect_back(url_for("web.index"))
-            else:
-                ipAdress = request.headers.get('X-Forwarded-For', request.remote_addr)
-                log.info('Login failed for user "%s" IP-adress: %s', form['username'], ipAdress)
-                flash(_(u"Wrong Username or Password"), category="error")
+            ipAdress = request.headers.get('X-Forwarded-For', request.remote_addr)
+            log.info('Login failed for user "%s" IP-adress: %s', form['username'], ipAdress)
+            flash(_(u"Wrong Username or Password"), category="error")
 
     next_url = url_for('web.index')
 

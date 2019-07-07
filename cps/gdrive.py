@@ -39,7 +39,7 @@ try:
 except ImportError:
     pass
 
-from . import logger, gdriveutils, config, ub, db
+from . import logger, gdriveutils, config, db
 from .web import admin_required
 
 
@@ -94,12 +94,9 @@ def watch_gdrive():
         try:
             result = gdriveutils.watchChange(gdriveutils.Gdrive.Instance().drive, notification_id,
                                'web_hook', address, gdrive_watch_callback_token, current_milli_time() + 604800*1000)
-            settings = ub.session.query(ub.Settings).first()
-            settings.config_google_drive_watch_changes_response = json.dumps(result)
-            ub.session.merge(settings)
-            ub.session.commit()
-            settings = ub.session.query(ub.Settings).first()
-            config.loadSettings()
+            config.config_google_drive_watch_changes_response = json.dumps(result)
+            # after save(), config_google_drive_watch_changes_response will be a json object, not string
+            config.save()
         except HttpError as e:
             reason=json.loads(e.content)['error']['errors'][0]
             if reason['reason'] == u'push.webhookUrlUnauthorized':
@@ -121,11 +118,8 @@ def revoke_watch_gdrive():
                                     last_watch_response['resourceId'])
         except HttpError:
             pass
-        settings = ub.session.query(ub.Settings).first()
-        settings.config_google_drive_watch_changes_response = None
-        ub.session.merge(settings)
-        ub.session.commit()
-        config.loadSettings()
+        config.config_google_drive_watch_changes_response = None
+        config.save()
     return redirect(url_for('admin.configuration'))
 
 
@@ -157,7 +151,7 @@ def on_received_watch_confirmation():
                         log.info('Setting up new DB')
                         # prevent error on windows, as os.rename does on exisiting files
                         move(os.path.join(tmpDir, "tmp_metadata.db"), dbpath)
-                        db.setup_db()
+                        db.setup_db(config)
             except Exception as e:
                 log.exception(e)
         updateMetaData()

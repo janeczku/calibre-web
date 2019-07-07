@@ -197,6 +197,7 @@ class WebServer:
         self.stop()
 
     def stop(self, restart=False):
+        log.info("webserver stop (restart=%s)", restart)
         self.restart = restart
         if self.wsgiserver:
             if _GEVENT:

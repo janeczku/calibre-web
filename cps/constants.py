@@ -74,7 +74,7 @@ SIDEBAR_PUBLISHER       = 1 << 12
 SIDEBAR_RATING          = 1 << 13
 SIDEBAR_FORMAT          = 1 << 14
 
-ADMIN_USER_ROLES        = (ROLE_VIEWER << 1) - 1 - (ROLE_ANONYMOUS | ROLE_EDIT_SHELFS)
+ADMIN_USER_ROLES        = sum(r for r in ALL_ROLES.values()) & ~ROLE_EDIT_SHELFS & ~ROLE_ANONYMOUS
 ADMIN_USER_SIDEBAR      = (SIDEBAR_FORMAT << 1) - 1
 
 UPDATE_STABLE       = 0 << 0
@@ -108,6 +108,9 @@ EXTENSIONS_UPLOAD   = {'txt', 'pdf', 'epub', 'mobi', 'azw', 'azw3', 'cbr', 'cbz'
 
 def has_flag(value, bit_flag):
     return bit_flag == (bit_flag & (value or 0))
+
+def selected_roles(dictionary):
+    return sum(v for k, v in ALL_ROLES.items() if k in dictionary)
 
 
 # :rtype: BookMeta
