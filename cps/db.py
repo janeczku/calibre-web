@@ -30,24 +30,10 @@ from sqlalchemy import String, Integer, Boolean
 from sqlalchemy.orm import relationship, sessionmaker, scoped_session
 from sqlalchemy.ext.declarative import declarative_base
 
-from . import config, ub
-
 
 session = None
 cc_exceptions = ['datetime', 'comments', 'float', 'composite', 'series']
-cc_classes = None
-engine = None
-
-
-# user defined sort function for calibre databases (Series, etc.)
-def title_sort(title):
-    # calibre sort stuff
-    title_pat = re.compile(config.config_title_regex, re.IGNORECASE)
-    match = title_pat.search(title)
-    if match:
-        prep = match.group(1)
-        title = title.replace(prep, '') + ', ' + prep
-    return title.strip()
+cc_classes = {}
 
 
 Base = declarative_base()
@@ -325,40 +311,45 @@ class Custom_Columns(Base):
         return display_dict
 
 
-def setup_db():
-    global engine
-    global session
-    global cc_classes
+def update_title_sort(config, conn=None):
+    # user defined sort function for calibre databases (Series, etc.)
+    def _title_sort(title):
+        # calibre sort stuff
+        title_pat = re.compile(config.config_title_regex, re.IGNORECASE)
+        match = title_pat.search(title)
+        if match:
+            prep = match.group(1)
+            title = title.replace(prep, '') + ', ' + prep
+        return title.strip()
 
-    if config.config_calibre_dir is None or config.config_calibre_dir == u'':
-        content = ub.session.query(ub.Settings).first()
-        content.config_calibre_dir = None
-        content.db_configured = False
-        ub.session.commit()
-        config.loadSettings()
+    conn = conn or session.connection().connection.connection
+    conn.create_function("title_sort", 1, _title_sort)
+
+
+def setup_db(config):
+    dispose()
+
+    if not config.config_calibre_dir:
+        config.invalidate()
         return False
 
     dbpath = os.path.join(config.config_calibre_dir, "metadata.db")
+    if not os.path.exists(dbpath):
+        config.invalidate()
+        return False
+
     try:
-        if not os.path.exists(dbpath):
-            raise
         engine = create_engine('sqlite:///{0}'.format(dbpath),
                                echo=False,
                                isolation_level="SERIALIZABLE",
                                connect_args={'check_same_thread': False})
         conn = engine.connect()
-    except Exception:
-        content = ub.session.query(ub.Settings).first()
-        content.config_calibre_dir = None
-        content.db_configured = False
-        ub.session.commit()
-        config.loadSettings()
+    except:
+        config.invalidate()
         return False
-    content = ub.session.query(ub.Settings).first()
-    content.db_configured = True
-    ub.session.commit()
-    config.loadSettings()
-    conn.connection.create_function('title_sort', 1, title_sort)
+
+    config.db_configured = True
+    update_title_sort(config, conn.connection)
     # conn.connection.create_function('lower', 1, lcase)
     # conn.connection.create_function('upper', 1, ucase)
 
@@ -367,7 +358,6 @@ def setup_db():
 
         cc_ids = []
         books_custom_column_links = {}
-        cc_classes = {}
         for row in cc:
             if row.datatype not in cc_exceptions:
                 books_custom_column_links[row.id] = Table('books_custom_column_' + str(row.id) + '_link', Base.metadata,
@@ -406,8 +396,38 @@ def setup_db():
                                                                            backref='books'))
 
 
+    global session
     Session = scoped_session(sessionmaker(autocommit=False,
                                              autoflush=False,
                                              bind=engine))
     session = Session()
     return True
+
+
+def dispose():
+    global session
+
+    engine = None
+    if session:
+        engine = session.bind
+        try: session.close()
+        except: pass
+        session = None
+
+    if engine:
+        try: engine.dispose()
+        except: pass
+
+    for attr in list(Books.__dict__.keys()):
+        if attr.startswith("custom_column_"):
+            delattr(Books, attr)
+
+    for db_class in cc_classes.values():
+        Base.metadata.remove(db_class.__table__)
+    cc_classes.clear()
+
+    for table in reversed(Base.metadata.sorted_tables):
+        name = table.key
+        if name.startswith("custom_column_") or name.startswith("books_custom_column_"):
+            if table is not None:
+                Base.metadata.remove(table)

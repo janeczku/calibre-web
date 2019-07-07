@@ -19,6 +19,7 @@
 
 from __future__ import division, print_function, unicode_literals
 import os
+import json
 import shutil
 
 from flask import Response, stream_with_context
@@ -79,6 +80,9 @@ class Singleton:
         except AttributeError:
             self._instance = self._decorated()
             return self._instance
+        except ImportError as e:
+            log.debug(e)
+            return None
 
     def __call__(self):
         raise TypeError('Singletons must be accessed through `Instance()`.')
@@ -534,3 +538,51 @@ def do_gdrive_download(df, headers):
                 log.warning('An error occurred: %s', resp)
                 return
     return Response(stream_with_context(stream()), headers=headers)
+
+
+_SETTINGS_YAML_TEMPLATE = """
+client_config_backend: settings
+client_config_file: %(client_file)s
+client_config:
+  client_id: %(client_id)s
+  client_secret: %(client_secret)s
+  redirect_uri: %(redirect_uri)s
+
+save_credentials: True
+save_credentials_backend: file
+save_credentials_file: %(credential)s
+
+get_refresh_token: True
+
+oauth_scope:
+  - https://www.googleapis.com/auth/drive
+"""
+
+def update_settings(client_id, client_secret, redirect_uri):
+    if redirect_uri.endswith('/'):
+        redirect_uri = redirect_uri[:-1]
+    config_params = {
+                        'client_file': CLIENT_SECRETS,
+                        'client_id': client_id,
+                        'client_secret': client_secret,
+                        'redirect_uri': redirect_uri,
+                        'credential': CREDENTIALS
+                    }
+
+    with open(SETTINGS_YAML, 'w') as f:
+        f.write(_SETTINGS_YAML_TEMPLATE % config_params)
+
+
+def get_error_text(client_secrets=None):
+    if not gdrive_support:
+        return 'Import of optional Google Drive requirements missing'
+
+    if not os.path.isfile(CLIENT_SECRETS):
+        return 'client_secrets.json is missing or not readable'
+
+    with open(CLIENT_SECRETS, 'r') as settings:
+        filedata = json.load(settings)
+    if 'web' not in filedata:
+        return 'client_secrets.json is not configured for web application'
+    if client_secrets:
+        client_secrets.update(filedata['web'])

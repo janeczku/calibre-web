@@ -157,3 +157,8 @@ class StderrLogger(object):
                 self.buffer += message
         except Exception:
             self.log.debug("Logging Error")
+
+
+# if debugging, start logging to stderr immediately
+if os.environ.get('FLASK_DEBUG', None):
+    setup(LOG_TO_STDERR, logging.DEBUG)

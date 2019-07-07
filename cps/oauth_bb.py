@@ -24,7 +24,6 @@
 from __future__ import division, print_function, unicode_literals
 import json
 from functools import wraps
-from oauth import OAuthBackend
 
 from flask import session, request, make_response, abort
 from flask import Blueprint, flash, redirect, url_for
@@ -37,6 +36,7 @@ from sqlalchemy.orm.exc import NoResultFound
 
 from . import constants, logger, config, app, ub
 from .web import login_required
+from .oauth import OAuthBackend
 # from .web import github_oauth_required
 
 

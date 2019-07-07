@@ -340,6 +340,8 @@ class WorkerThread(threading.Thread):
         check = p.returncode
         calibre_traceback = p.stderr.readlines()
         for ele in calibre_traceback:
+            if sys.version_info < (3, 0):
+                ele = ele.decode('utf-8')
             log.debug(ele.strip('\n'))
             if not ele.startswith('Traceback') and not ele.startswith('  File'):
                 error_message = "Calibre failed with error: %s" % ele.strip('\n')

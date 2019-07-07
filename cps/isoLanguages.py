@@ -18,6 +18,14 @@
 #   along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 from __future__ import division, print_function, unicode_literals
+import sys
+import os
+try:
+    import cPickle
+except ImportError:
+    import pickle as cPickle
+
+from .constants import TRANSLATIONS_DIR as _TRANSLATIONS_DIR
 
 
 try:
@@ -33,14 +41,43 @@ except ImportError:
         __version__ = "? (PyCountry)"
 
     def _copy_fields(l):
-        l.part1 = l.alpha_2
-        l.part3 = l.alpha_3
+        l.part1 = getattr(l, 'alpha_2', None)
+        l.part3 = getattr(l, 'alpha_3', None)
         return l
 
     def get(name=None, part1=None, part3=None):
-        if (part3 is not None):
+        if part3 is not None:
             return _copy_fields(pyc_languages.get(alpha_3=part3))
-        if (part1 is not None):
+        if part1 is not None:
             return _copy_fields(pyc_languages.get(alpha_2=part1))
-        if (name is not None):
+        if name is not None:
             return _copy_fields(pyc_languages.get(name=name))
+
+
+try:
+    with open(os.path.join(_TRANSLATIONS_DIR, 'iso639.pickle'), 'rb') as f:
+        _LANGUAGES = cPickle.load(f)
+except cPickle.UnpicklingError as error:
+    print("Can't read file cps/translations/iso639.pickle: %s" % error)
+    sys.exit(1)
+
+
+def get_language_names(locale):
+    return _LANGUAGES.get(locale)
+
+
+def get_language_name(locale, lang_code):
+    return get_language_names(locale)[lang_code]
+
+
+def get_language_codes(locale, language_names, remainder=None):
+    language_names = set(x.strip().lower() for x in language_names if x)
+
+    for k, v in get_language_names(locale).items():
+        v = v.lower()
+        if v in language_names:
+            language_names.remove(v)
+            yield k
+
+    if remainder is not None:
+        remainder.extend(language_names)

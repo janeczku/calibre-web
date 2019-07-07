@@ -24,19 +24,14 @@ import re
 from flask_babel import gettext as _
 
 from . import config
-from .subproc_wrapper import process_open
+from .subproc_wrapper import process_wait
 
 
 def versionKindle():
     versions = _(u'not installed')
     if os.path.exists(config.config_converterpath):
         try:
-            p = process_open(config.config_converterpath)
-            # p = subprocess.Popen(ub.config.config_converterpath, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-            p.wait()
-            for lines in p.stdout.readlines():
-                if isinstance(lines, bytes):
-                    lines = lines.decode('utf-8')
+            for lines in process_wait(config.config_converterpath):
                 if re.search('Amazon kindlegen\(', lines):
                     versions = lines
         except Exception:
@@ -48,12 +43,7 @@ def versionCalibre():
     versions = _(u'not installed')
     if os.path.exists(config.config_converterpath):
         try:
-            p = process_open([config.config_converterpath, '--version'])
-            # p = subprocess.Popen([ub.config.config_converterpath, '--version'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-            p.wait()
-            for lines in p.stdout.readlines():
-                if isinstance(lines, bytes):
-                    lines = lines.decode('utf-8')
+            for lines in process_wait([config.config_converterpath, '--version']):
                 if re.search('ebook-convert.*\(calibre', lines):
                     versions = lines
         except Exception:
