@@ -605,7 +605,10 @@ def render_task_status(tasklist):
                 if 'starttime' not in task:
                     task['starttime'] = ""
 
-            task['runtime'] = format_runtime(task['formRuntime'])
+            if 'formRuntime' not in task:
+                task['runtime'] = ""
+            else:
+                task['runtime'] = format_runtime(task['formRuntime'])
 
             # localize the task status
             if isinstance( task['stat'], int ):
