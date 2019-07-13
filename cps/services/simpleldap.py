@@ -19,14 +19,13 @@
 from __future__ import division, print_function, unicode_literals
 import base64
 
-from flask_simpleldap import LDAP
-from ldap import SERVER_DOWN, INVALID_CREDENTIALS
+from flask_simpleldap import LDAP, LDAPException
 
 from .. import constants, logger
 
 
 log = logger.create()
-_ldap = None
+_ldap = LDAP()
 
 
 def init_app(app, config):
@@ -53,7 +52,8 @@ def init_app(app, config):
 
     # app.config['LDAP_BASE_DN'] = 'ou=users,dc=yunohost,dc=org'
     # app.config['LDAP_USER_OBJECT_FILTER'] = '(uid=%s)'
-    _ldap = LDAP(app)
+    _ldap.init_app(app)
+
 
 
 def basic_auth_required(func):
@@ -61,6 +61,7 @@ def basic_auth_required(func):
 
 
 def bind_user(username, password):
+    # ulf= _ldap.get_object_details('admin')
     '''Attempts a LDAP login.
 
     :returns: True if login succeeded, False if login failed, None if server unavailable.
@@ -69,9 +70,13 @@ def bind_user(username, password):
         result = _ldap.bind_user(username, password)
         log.debug("LDAP login '%s': %r", username, result)
         return result is not None
-    except SERVER_DOWN as ex:
-        log.warning('LDAP Server down: %s', ex)
-        return None
-    except INVALID_CREDENTIALS as ex:
-        log.info("LDAP login '%s' failed: %s", username, ex)
-        return False
+    except LDAPException as ex:
+        if ex.message == 'Invalid credentials':
+            log.info("LDAP login '%s' failed: %s", username, ex)
+            return False
+        if ex.message == "Can't contact LDAP server":
+            log.warning('LDAP Server down: %s', ex)
+            return None
+        else:
+            log.warning('LDAP Server error: %s', ex.message)
+            return None
