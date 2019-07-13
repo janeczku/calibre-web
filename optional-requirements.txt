@@ -20,4 +20,4 @@ Pillow>=4.0.0
 rarfile>=2.7
 # other
 natsort>=2.2.0
-
+git+https://github.com/decentral1se/comicapi.git@packaging-fix/remove-python-requires#egg=comicapi
