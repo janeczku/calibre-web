@@ -28,8 +28,8 @@
     };
     document.onreadystatechange = function () {
       if (document.readyState == "complete") {
-        init("{{ url_for('serve_book', book_id=comicfile, book_format=extension) }}");
-        updateArrows();
+      	init("{{ url_for('web.serve_book', book_id=comicfile, book_format=extension) }}");
+      	updateArrows();
       }
     }
   </script>

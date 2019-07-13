@@ -4,7 +4,7 @@ Calibre-Web is a web app providing a clean interface for browsing, reading and d
 
 *This software is a fork of [library](https://github.com/mutschler/calibreserver) and licensed under the GPL v3 License.*
 
-![Main screen](../../wiki/images/main_screen.png)
+![Main screen](https://github.com/janeczku/calibre-web/wiki/images/main_screen.png)
 
 ## Features
 
@@ -82,4 +82,4 @@ Pre-built Docker images are available in these Docker Hub repositories:
 
 # Wiki
 
-For further informations, How To's and FAQ please check the [Wiki](../../wiki)
+For further informations, How To's and FAQ please check the [Wiki](https://github.com/janeczku/calibre-web/wiki)

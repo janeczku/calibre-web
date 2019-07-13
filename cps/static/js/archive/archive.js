@@ -24,40 +24,45 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
  * USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
- /* ********************************************************************
- * Alphanum sort() function version - case insensitive
- *  - Slower, but easier to modify for arrays of objects which contain
- *    string properties
- *
- */
+/* ********************************************************************
+* Alphanum sort() function version - case insensitive
+*  - Slower, but easier to modify for arrays of objects which contain
+*    string properties
+*
+*/
+/* exported alphanumCase */
+
+
 function alphanumCase(a, b) {
-  function chunkify(t) {
-    var tz = new Array();
-    var x = 0, y = -1, n = 0, i, j;
+    function chunkify(t) {
+        var tz = new Array();
+        var x = 0, y = -1, n = 0, i, j;
 
-    while (i = (j = t.charAt(x++)).charCodeAt(0)) {
-      var m = (i == 46 || (i >=48 && i <= 57));
-      if (m !== n) {
-        tz[++y] = "";
-        n = m;
-      }
-      tz[y] += j;
+        while (i = (j = t.charAt(x++)).charCodeAt(0)) {
+            var m = (i === 46 || (i >= 48 && i <= 57));
+            if (m !== n) {
+                tz[++y] = "";
+                n = m;
+            }
+            tz[y] += j;
+        }
+        return tz;
     }
-    return tz;
-  }
 
-  var aa = chunkify(a.filename.toLowerCase());
-  var bb = chunkify(b.filename.toLowerCase());
+    var aa = chunkify(a.filename.toLowerCase());
+    var bb = chunkify(b.filename.toLowerCase());
 
-  for (x = 0; aa[x] && bb[x]; x++) {
-    if (aa[x] !== bb[x]) {
-      var c = Number(aa[x]), d = Number(bb[x]);
-      if (c == aa[x] && d == bb[x]) {
-        return c - d;
-      } else return (aa[x] > bb[x]) ? 1 : -1;
+    for (var x = 0; aa[x] && bb[x]; x++) {
+        if (aa[x] !== bb[x]) {
+            var c = Number(aa[x]), d = Number(bb[x]);
+            if (c === aa[x] && d === bb[x]) {
+                return c - d;
+            } else {
+                return (aa[x] > bb[x]) ? 1 : -1;
+            }
+        }
     }
-  }
-  return aa.length - bb.length;
+    return aa.length - bb.length;
 }
 // ===========================================================================
 

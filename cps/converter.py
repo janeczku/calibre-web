@@ -17,23 +17,21 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-
+from __future__ import division, print_function, unicode_literals
 import os
-import subprocess
-import ub
 import re
+
 from flask_babel import gettext as _
+
+from . import config
+from .subproc_wrapper import process_wait
 
 
 def versionKindle():
     versions = _(u'not installed')
-    if os.path.exists(ub.config.config_converterpath):
+    if os.path.exists(config.config_converterpath):
         try:
-            p = subprocess.Popen(ub.config.config_converterpath, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-            p.wait()
-            for lines in p.stdout.readlines():
-                if isinstance(lines, bytes):
-                    lines = lines.decode('utf-8')
+            for lines in process_wait(config.config_converterpath):
                 if re.search('Amazon kindlegen\(', lines):
                     versions = lines
         except Exception:
@@ -43,13 +41,9 @@ def versionKindle():
 
 def versionCalibre():
     versions = _(u'not installed')
-    if os.path.exists(ub.config.config_converterpath):
+    if os.path.exists(config.config_converterpath):
         try:
-            p = subprocess.Popen([ub.config.config_converterpath, '--version'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-            p.wait()
-            for lines in p.stdout.readlines():
-                if isinstance(lines, bytes):
-                    lines = lines.decode('utf-8')
+            for lines in process_wait([config.config_converterpath, '--version']):
                 if re.search('ebook-convert.*\(calibre', lines):
                     versions = lines
         except Exception:
@@ -58,9 +52,9 @@ def versionCalibre():
 
 
 def versioncheck():
-    if ub.config.config_ebookconverter == 1:
+    if config.config_ebookconverter == 1:
         return versionKindle()
-    elif ub.config.config_ebookconverter == 2:
+    elif config.config_ebookconverter == 2:
         return versionCalibre()
     else:
         return {'ebook_converter':_(u'not configured')}

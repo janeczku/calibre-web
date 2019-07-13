@@ -29,6 +29,23 @@ $(document).on("change", "input[type=\"checkbox\"][data-control]", function () {
     });
 });
 
+
+// Generic control/related handler to show/hide fields based on a select' value
+$(document).on("change", "select[data-control]", function() {
+    var $this = $(this);
+    var name = $this.data("control");
+    var showOrHide = parseInt($this.val());
+    // var showOrHideLast = $("#" + name + " option:last").val()
+    for (var i = 0; i < $(this)[0].length; i++) {
+        if (parseInt($(this)[0][i].value) === showOrHide) {
+            $("[data-related=\"" + name + "-" + i + "\"]").show();
+        } else {
+            $("[data-related=\"" + name + "-" + i + "\"]").hide();
+        }
+    }
+});
+
+
 $(function() {
     var updateTimerID;
     var updateText;
@@ -76,6 +93,13 @@ $(function() {
         itemSelector : ".book",
         layoutMode : "fitRows"
     });
+
+    $(".grid").isotope({
+        // options
+        itemSelector : ".grid-item",
+        layoutMode : "fitColumns"
+    });
+
 
     var $loadMore = $(".load-more .row").infiniteScroll({
         debug: false,
@@ -181,6 +205,7 @@ $(function() {
 
     // Init all data control handlers to default
     $("input[data-control]").trigger("change");
+    $("select[data-control]").trigger("change");
 
     $("#bookDetailsModal")
         .on("show.bs.modal", function(e) {
@@ -205,12 +230,12 @@ $(function() {
     $(window).resize(function() {
         $(".discover .row").isotope("layout");
     });
-	
+
     $(".author-expand").click(function() {
         $(this).parent().find("a.author-name").slice($(this).data("authors-max")).toggle();
         $(this).parent().find("span.author-hidden-divider").toggle();
         $(this).html() === $(this).data("collapse-caption") ? $(this).html("(...)") : $(this).html($(this).data("collapse-caption"));
         $(".discover .row").isotope("layout");
     });
-	
+
 });

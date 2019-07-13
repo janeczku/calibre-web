@@ -17,149 +17,190 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-
-from socket import error as SocketError
+from __future__ import division, print_function, unicode_literals
 import sys
 import os
+import errno
 import signal
-import web
+import socket
 
 try:
     from gevent.pywsgi import WSGIServer
     from gevent.pool import Pool
-    from gevent import __version__ as geventVersion
-    gevent_present = True
+    from gevent import __version__ as _version
+    VERSION = {'Gevent': 'v' + _version}
+    _GEVENT = True
 except ImportError:
     from tornado.wsgi import WSGIContainer
     from tornado.httpserver import HTTPServer
     from tornado.ioloop import IOLoop
-    from tornado import version as tornadoVersion
-    gevent_present = False
+    from tornado import version as _version
+    VERSION = {'Tornado': 'v' + _version}
+    _GEVENT = False
+
+from . import logger, global_WorkerThread
 
 
+log = logger.create()
 
-class server:
 
-    wsgiserver = None
-    restart= False
+class WebServer:
 
     def __init__(self):
-        signal.signal(signal.SIGINT, self.killServer)
-        signal.signal(signal.SIGTERM, self.killServer)
+        signal.signal(signal.SIGINT, self._killServer)
+        signal.signal(signal.SIGTERM, self._killServer)
 
-    def start_gevent(self):
+        self.wsgiserver = None
+        self.access_logger = None
+        self.restart = False
+        self.app = None
+        self.listen_address = None
+        self.listen_port = None
+        self.IPV6 = False
+        self.unix_socket_file = None
+        self.ssl_args = None
+
+    def init_app(self, application, config):
+        self.app = application
+        self.listen_address = config.get_config_ipaddress()
+        self.IPV6 = config.get_ipaddress_type()
+        self.listen_port = config.config_port
+
+        if config.config_access_log:
+            log_name = "gevent.access" if _GEVENT else "tornado.access"
+            formatter = logger.ACCESS_FORMATTER_GEVENT if _GEVENT else logger.ACCESS_FORMATTER_TORNADO
+            self.access_logger = logger.create_access_log(config.config_access_logfile, log_name, formatter)
+        else:
+            if not _GEVENT:
+                logger.get('tornado.access').disabled = True
+
+        certfile_path = config.get_config_certfile()
+        keyfile_path = config.get_config_keyfile()
+        if certfile_path and keyfile_path:
+            if os.path.isfile(certfile_path) and os.path.isfile(keyfile_path):
+                self.ssl_args = {"certfile": certfile_path,
+                                  "keyfile": keyfile_path}
+            else:
+                log.warning('The specified paths for the ssl certificate file and/or key file seem to be broken. Ignoring ssl.')
+                log.warning('Cert path: %s', certfile_path)
+                log.warning('Key path:  %s', keyfile_path)
+
+    def _make_gevent_unix_socket(self, socket_file):
+        # the socket file must not exist prior to bind()
+        if os.path.exists(socket_file):
+            # avoid nuking regular files and symbolic links (could be a mistype or security issue)
+            if os.path.isfile(socket_file) or os.path.islink(socket_file):
+                raise OSError(errno.EEXIST, os.strerror(errno.EEXIST), socket_file)
+            os.remove(socket_file)
+
+        unix_sock = WSGIServer.get_listener(socket_file, family=socket.AF_UNIX)
+        self.unix_socket_file = socket_file
+
+        # ensure current user and group have r/w permissions, no permissions for other users
+        # this way the socket can be shared in a semi-secure manner
+        # between the user running calibre-web and the user running the fronting webserver
+        os.chmod(socket_file, 0o660)
+
+        return unix_sock
+
+    def _make_gevent_socket(self):
+        if os.name != 'nt':
+            unix_socket_file = os.environ.get("CALIBRE_UNIX_SOCKET")
+            if unix_socket_file:
+                output = "socket:" + unix_socket_file + ":" + str(self.listen_port)
+                return self._make_gevent_unix_socket(unix_socket_file), output
+
+        if self.listen_address:
+            return (self.listen_address, self.listen_port), self._get_readable_listen_address()
+
+        if os.name == 'nt':
+            self.listen_address = '0.0.0.0'
+            return (self.listen_address, self.listen_port), self._get_readable_listen_address()
+
+        address = ('', self.listen_port)
         try:
-            ssl_args = dict()
-            certfile_path   = web.ub.config.get_config_certfile()
-            keyfile_path    = web.ub.config.get_config_keyfile()
-            if certfile_path and keyfile_path:
-                if os.path.isfile(certfile_path) and os.path.isfile(keyfile_path):
-                    ssl_args = {"certfile": certfile_path,
-                                "keyfile": keyfile_path}
-                else:
-                    web.app.logger.info('The specified paths for the ssl certificate file and/or key file seem to be broken. Ignoring ssl. Cert path: %s | Key path: %s' % (certfile_path, keyfile_path))
-            if os.name == 'nt':
-                self.wsgiserver= WSGIServer(('0.0.0.0', web.ub.config.config_port), web.app, spawn=Pool(), **ssl_args)
-            else:
-                self.wsgiserver = WSGIServer(('', web.ub.config.config_port), web.app, spawn=Pool(), **ssl_args)
-            web.py3_gevent_link = self.wsgiserver
+            sock = WSGIServer.get_listener(address, family=socket.AF_INET6)
+            output = self._get_readable_listen_address(True)
+        except socket.error as ex:
+            log.error('%s', ex)
+            log.warning('Unable to listen on "", trying on IPv4 only...')
+            output = self._get_readable_listen_address(False)
+            sock = WSGIServer.get_listener(address, family=socket.AF_INET)
+        return sock, output
+
+    def _start_gevent(self):
+        ssl_args = self.ssl_args or {}
+
+        try:
+            sock, output = self._make_gevent_socket()
+            log.info('Starting Gevent server on %s', output)
+            self.wsgiserver = WSGIServer(sock, self.app, log=self.access_logger, spawn=Pool(), **ssl_args)
             self.wsgiserver.serve_forever()
+        finally:
+            if self.unix_socket_file:
+                os.remove(self.unix_socket_file)
+                self.unix_socket_file = None
 
-        except SocketError:
-            try:
-                web.app.logger.info('Unable to listen on \'\', trying on IPv4 only...')
-                self.wsgiserver = WSGIServer(('0.0.0.0', web.ub.config.config_port), web.app, spawn=Pool(), **ssl_args)
-                web.py3_gevent_link = self.wsgiserver
-                self.wsgiserver.serve_forever()
-            except (OSError, SocketError) as e:
-                web.app.logger.info("Error starting server: %s" % e.strerror)
-                print("Error starting server: %s" % e.strerror)
-                web.helper.global_WorkerThread.stop()
-                sys.exit(1)
-        except Exception:
-            web.app.logger.info("Unknown error while starting gevent")
+    def _start_tornado(self):
+        log.info('Starting Tornado server on %s', self._get_readable_listen_address())
 
-    def startServer(self):
-        if gevent_present:
-            web.app.logger.info('Starting Gevent server')
-            # leave subprocess out to allow forking for fetchers and processors
-            self.start_gevent()
+        # Max Buffersize set to 200MB            )
+        http_server = HTTPServer(WSGIContainer(self.app),
+                    max_buffer_size = 209700000,
+                    ssl_options=self.ssl_args)
+        http_server.listen(self.listen_port, self.listen_address)
+        self.wsgiserver=IOLoop.instance()
+        self.wsgiserver.start()
+        # wait for stop signal
+        self.wsgiserver.close(True)
+
+    def _get_readable_listen_address(self, ipV6=False):
+        if self.listen_address == "":
+            listen_string = '""'
         else:
-            try:
-                ssl = None
-                web.app.logger.info('Starting Tornado server')
-                certfile_path   = web.ub.config.get_config_certfile()
-                keyfile_path    = web.ub.config.get_config_keyfile()
-                if certfile_path and keyfile_path:
-                    if os.path.isfile(certfile_path) and os.path.isfile(keyfile_path):
-                        ssl = {"certfile": certfile_path,
-                               "keyfile": keyfile_path}
-                    else:
-                        web.app.logger.info('The specified paths for the ssl certificate file and/or key file seem to be broken. Ignoring ssl. Cert path: %s | Key path: %s' % (certfile_path, keyfile_path))
+            ipV6 = self.IPV6
+            listen_string = self.listen_address
+        if ipV6:
+            adress = "[" + listen_string + "]"
+        else:
+            adress = listen_string
+        return adress + ":" + str(self.listen_port)
 
-                # Max Buffersize set to 200MB
-                http_server = HTTPServer(WSGIContainer(web.app),
-                            max_buffer_size = 209700000,
-                            ssl_options=ssl)
-                http_server.listen(web.ub.config.config_port)
-                self.wsgiserver=IOLoop.instance()
-                web.py3_gevent_link = self.wsgiserver
-                self.wsgiserver.start()
-                # wait for stop signal
-                self.wsgiserver.close(True)
-            except SocketError as e:
-                web.app.logger.info("Error starting server: %s" % e.strerror)
-                print("Error starting server: %s" % e.strerror)
-                web.helper.global_WorkerThread.stop()
-                sys.exit(1)
-
-        # ToDo: Somehow caused by circular import under python3 refactor
-        if sys.version_info > (3, 0):
-            self.restart = web.py3_restart_Typ
-        if self.restart == True:
-            web.app.logger.info("Performing restart of Calibre-Web")
-            web.helper.global_WorkerThread.stop()
-            if os.name == 'nt':
-                arguments = ["\"" + sys.executable + "\""]
-                for e in sys.argv:
-                    arguments.append("\"" + e + "\"")
-                os.execv(sys.executable, arguments)
+    def start(self):
+        try:
+            if _GEVENT:
+                # leave subprocess out to allow forking for fetchers and processors
+                self._start_gevent()
             else:
-                os.execl(sys.executable, sys.executable, *sys.argv)
-        else:
-            web.app.logger.info("Performing shutdown of Calibre-Web")
-            web.helper.global_WorkerThread.stop()
-        sys.exit(0)
+                self._start_tornado()
+        except Exception as ex:
+            log.error("Error starting server: %s", ex)
+            print("Error starting server: %s" % ex)
+            return False
+        finally:
+            self.wsgiserver = None
+            global_WorkerThread.stop()
 
-    def setRestartTyp(self,starttyp):
-        self.restart = starttyp
-        # ToDo: Somehow caused by circular import under python3 refactor
-        web.py3_restart_Typ = starttyp
+        if not self.restart:
+            log.info("Performing shutdown of Calibre-Web")
+            return True
 
-    def killServer(self, signum, frame):
-        self.stopServer()
+        log.info("Performing restart of Calibre-Web")
+        arguments = list(sys.argv)
+        arguments.insert(0, sys.executable)
+        if os.name == 'nt':
+            arguments = ["\"%s\"" % a for a in arguments]
+        os.execv(sys.executable, arguments)
+        return True
 
-    def stopServer(self):
-        # ToDo: Somehow caused by circular import under python3 refactor
-        if sys.version_info > (3, 0):
-            if not self.wsgiserver:
-                # if gevent_present:
-                self.wsgiserver = web.py3_gevent_link
-                #else:
-                #    self.wsgiserver = IOLoop.instance()
+    def _killServer(self, signum, frame):
+        self.stop()
+
+    def stop(self, restart=False):
+        log.info("webserver stop (restart=%s)", restart)
+        self.restart = restart
         if self.wsgiserver:
-            if gevent_present:
+            if _GEVENT:
                 self.wsgiserver.close()
             else:
                 self.wsgiserver.add_callback(self.wsgiserver.stop)
-
-    @staticmethod
-    def getNameVersion():
-        if gevent_present:
-            return {'Gevent':'v'+geventVersion}
-        else:
-            return {'Tornado':'v'+tornadoVersion}
-
-
-# Start Instance of Server
-Server=server()

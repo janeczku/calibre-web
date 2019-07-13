@@ -74,8 +74,8 @@ var ZipLocalFile = function(bstream) {
 
     this.extraField = null;
     if (this.extraFieldLength > 0) {
-      this.extraField = bstream.readString(this.extraFieldLength);
-      info(" extra field=" + this.extraField);
+        this.extraField = bstream.readString(this.extraFieldLength);
+        info(" extra field=" + this.extraField);
     }
 
     // read in the compressed data
