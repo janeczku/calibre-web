@@ -141,6 +141,7 @@ $(function () {
                 }
             },
             complete: function complete() {
+                ggDone = true;
                 showResult();
                 $("#show-google").trigger("change");
             }

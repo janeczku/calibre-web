@@ -22,21 +22,29 @@
   {% if author is not none %}
     <h3>{{_("In Library")}}</h3>
   {% endif %}
+    <div class="filterheader hidden-xs hidden-sm">
+      <a id="new" class="btn btn-primary" href="{{url_for('web.books_list', data='author', book_id=id, sort='new')}}"><span class="glyphicon glyphicon-book"></span> <span class="glyphicon glyphicon-calendar"></span><span class="glyphicon glyphicon-sort-by-order"></span></a>
+      <a id="old" class="btn btn-primary" href="{{url_for('web.books_list', data='author', book_id=id, sort='old')}}"><span class="glyphicon glyphicon-book"></span> <span class="glyphicon glyphicon-calendar"></span><span class="glyphicon glyphicon-sort-by-order-alt"></span></a>
+      <a id="asc" class="btn btn-primary" href="{{url_for('web.books_list', data='author', book_id=id, sort='abc')}}"><span class="glyphicon glyphicon-font"></span><span class="glyphicon glyphicon-sort-by-alphabet"></span></a>
+      <a id="desc" class="btn btn-primary" href="{{url_for('web.books_list', data='author', book_id=id, sort='zyx')}}"><span class="glyphicon glyphicon-font"></span><span class="glyphicon glyphicon-sort-by-alphabet-alt"></span></a>
+      <a id="pub_new" class="btn btn-primary" href="{{url_for('web.books_list', data='author', book_id=id, sort='pubnew')}}"><span class="glyphicon glyphicon-calendar"></span><span class="glyphicon glyphicon-sort-by-order"></span></a>
+      <a id="pub_old" class="btn btn-primary" href="{{url_for('web.books_list', data='author', book_id=id, sort='pubold')}}"><span class="glyphicon glyphicon-calendar"></span><span class="glyphicon glyphicon-sort-by-order-alt"></span></a>
+      <!--div class="btn-group character" role="group">
+        <a id="no_shelf" class="btn btn-primary" href="{{url_for('web.books_list', data='author', book_id=id, sort='pubold')}}"><span class="glyphicon glyphicon-list"></span><b>?</b></a>
+        <div id="all" class="btn btn-primary">{{_('All')}}</div>
+      </div-->
+    </div>
   <div class="row">
     {% if entries[0] %}
     {% for entry in entries %}
     <div id="books" class="col-sm-3 col-lg-2 col-xs-6 book">
       <div class="cover">
-        <a href="{{ url_for('show_book', book_id=entry.id) }}">
-          {% if entry.has_cover %}
-          <img src="{{ url_for('get_cover', book_id=entry.id) }}" />
-          {% else %}
-          <img src="{{ url_for('static', filename='generic_cover.jpg') }}" />
-          {% endif %}
+        <a href="{{ url_for('web.show_book', book_id=entry.id) }}">
+          <img src="{{ url_for('web.get_cover', book_id=entry.id) }}" />
         </a>
       </div>
       <div class="meta">
-        <a href="{{ url_for('show_book', book_id=entry.id) }}">
+        <a href="{{ url_for('web.show_book', book_id=entry.id) }}">
           <p class="title">{{entry.title|shortentitle}}</p>
         </a>
         <p class="author">
@@ -45,7 +53,7 @@
               {% if not loop.first %}
                 <span class="author-hidden-divider">&amp;</span>
 			  {% endif %}
-              <a class="author-name author-hidden" href="{{url_for('author', book_id=author.id) }}">{{author.name.replace('|',',')|shortentitle(30)}}</a>
+              <a class="author-name author-hidden" href="{{url_for('web.books_list',  data='author', sort='new', book_id=author.id) }}">{{author.name.replace('|',',')|shortentitle(30)}}</a>
               {% if loop.last %}
                 <a href="#" class="author-expand" data-authors-max="{{g.config_authors_max}}" data-collapse-caption="({{_('reduce')}})">(...)</a>
               {% endif %}
@@ -53,7 +61,12 @@
               {% if not loop.first %}
                 <span>&amp;</span>
               {% endif %}
-              <a class="author-name" href="{{url_for('author', book_id=author.id) }}">{{author.name.replace('|',',')|shortentitle(30)}}</a>
+              <a class="author-name" href="{{url_for('web.books_list',  data='author', sort='new', book_id=author.id) }}">{{author.name.replace('|',',')|shortentitle(30)}}</a>
+            {% endif %}
+          {% endfor %}
+          {% for format in entry.data %}
+            {% if format.format|lower == 'mp3' %}
+            <span class="glyphicon glyphicon-music"></span>
             {% endif %}
           {% endfor %}
         </p>

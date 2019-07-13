@@ -8,6 +8,8 @@ __pycache__/
 .Python
 env/
 eggs/
+dist/
+build/
 .eggs/
 *.egg-info/
 .installed.cfg

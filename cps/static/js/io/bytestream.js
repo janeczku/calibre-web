@@ -102,6 +102,35 @@ bitjs.io = bitjs.io || {};
 
 
     /**
+     * ToDo: Returns the next n bytes as a signed number and advances the stream pointer.
+     * @param {number} n The number of bytes to read.
+     * @return {number} The bytes interpreted as a signed number.
+     */
+    bitjs.io.ByteStream.prototype.movePointer = function(n) {
+        this.ptr += n;
+        // end of buffer reached
+        if ((this.bytes.byteLength - this.ptr) < 0 ) {
+            this.ptr =  this.bytes.byteLength;
+        }
+    }
+
+    /**
+     * ToDo: Returns the next n bytes as a signed number and advances the stream pointer.
+     * @param {number} n The number of bytes to read.
+     * @return {number} The bytes interpreted as a signed number.
+     */
+    bitjs.io.ByteStream.prototype.moveTo = function(n) {
+        if ( n < 0 ) {
+            n = 0;
+        }
+        this.ptr = n;
+        // end of buffer reached
+        if ((this.bytes.byteLength - this.ptr) < 0 ) {
+            this.ptr =  this.bytes.byteLength;
+        }
+    }
+
+    /**
      * This returns n bytes as a sub-array, advancing the pointer if movePointers
      * is true.
      * @param {number} n The number of bytes to read.

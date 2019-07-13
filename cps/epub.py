@@ -17,11 +17,13 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program. If not, see <http://www.gnu.org/licenses/>.
 
+from __future__ import division, print_function, unicode_literals
+import os
 import zipfile
 from lxml import etree
-import os
-import uploader
-import isoLanguages
+
+from . import isoLanguages
+from .constants import BookMeta
 
 
 def extractCover(zipFile, coverFile, coverpath, tmp_file_name):
@@ -125,7 +127,7 @@ def get_epub_info(tmp_file_path, original_file_name, original_file_extension):
     else:
         title = epub_metadata['title']
 
-    return uploader.BookMeta(
+    return BookMeta(
         file_path=tmp_file_path,
         extension=original_file_extension,
         title=title.encode('utf-8').decode('utf-8'),

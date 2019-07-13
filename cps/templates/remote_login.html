@@ -19,12 +19,12 @@
   (function () {
     // Poll the server to check if the user has authenticated
     var t = setInterval(function () {
-      $.post('{{url_for("token_verified")}}', { token: '{{token}}' })
+      $.post('{{url_for("web.token_verified")}}', { token: '{{token}}' })
         .done(function(response) {
           if (response.status === 'success') {
             // Wait a tick so cookies are updated
             setTimeout(function () {
-              window.location.href = '{{url_for("index")}}';
+              window.location.href = '{{url_for("web.index")}}';
             }, 0);
           }
         })

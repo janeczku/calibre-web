@@ -17,21 +17,15 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-from __future__ import print_function
-import smtplib
-import threading
-from datetime import datetime, timedelta
-import logging
-import time
-import socket
+from __future__ import division, print_function, unicode_literals
 import sys
 import os
-from email.generator import Generator
-import web
-from flask_babel import gettext as _
 import re
-import gdriveutils as gd
-import subprocess
+import smtplib
+import socket
+import time
+import threading
+from datetime import datetime, timedelta
 
 try:
     from StringIO import StringIO
@@ -47,6 +41,14 @@ except ImportError:
 from email import encoders
 from email.utils import formatdate
 from email.utils import make_msgid
+from email.generator import Generator
+from flask_babel import gettext as _
+
+from . import logger, config, db, gdriveutils
+from .subproc_wrapper import process_open
+
+
+log = logger.create()
 
 chunksize = 8192
 # task 'status' consts
@@ -68,9 +70,9 @@ RET_SUCCESS = 1
 # it in MIME Base64 encoded to
 def get_attachment(bookpath, filename):
     """Get file as MIMEBase message"""
-    calibrepath = web.config.config_calibre_dir
-    if web.ub.config.config_use_google_drive:
-        df = gd.getFileFromEbooksFolder(bookpath, filename)
+    calibrepath = config.config_calibre_dir
+    if config.config_use_google_drive:
+        df = gdriveutils.getFileFromEbooksFolder(bookpath, filename)
         if df:
             datafile = os.path.join(calibrepath, bookpath, filename)
             if not os.path.exists(os.path.join(calibrepath, bookpath)):
@@ -88,8 +90,8 @@ def get_attachment(bookpath, filename):
             data = file_.read()
             file_.close()
         except IOError as e:
-            web.app.logger.exception(e) # traceback.print_exc()
-            web.app.logger.error(u'The requested file could not be read. Maybe wrong permissions?')
+            log.exception(e) # traceback.print_exc()
+            log.error(u'The requested file could not be read. Maybe wrong permissions?')
             return None
 
     attachment = MIMEBase('application', 'octet-stream')
@@ -114,8 +116,7 @@ class emailbase():
 
     def send(self, strg):
         """Send `strg' to the server."""
-        if self.debuglevel > 0:
-            print('send:', repr(strg[:300]), file=sys.stderr)
+        log.debug('send: %r', strg[:300])
         if hasattr(self, 'sock') and self.sock:
             try:
                 if self.transferSize:
@@ -138,6 +139,10 @@ class emailbase():
                 raise smtplib.SMTPServerDisconnected('Server not connected')
         else:
             raise smtplib.SMTPServerDisconnected('please run connect() first')
+
+    @classmethod
+    def _print_debug(self, *args):
+        log.debug(args)
 
     def getTransferStatus(self):
         if self.transferSize:
@@ -235,8 +240,8 @@ class WorkerThread(threading.Thread):
         curr_task = self.queue[self.current]['taskType']
         filename = self._convert_ebook_format()
         if filename:
-            if web.ub.config.config_use_google_drive:
-                gd.updateGdriveCalibreFromLocal()
+            if config.config_use_google_drive:
+                gdriveutils.updateGdriveCalibreFromLocal()
             if curr_task == TASK_CONVERT:
                 self.add_email(self.queue[self.current]['settings']['subject'], self.queue[self.current]['path'],
                                 filename, self.queue[self.current]['settings'], self.queue[self.current]['kindle'],
@@ -254,61 +259,61 @@ class WorkerThread(threading.Thread):
         # if it does - mark the conversion task as complete and return a success
         # this will allow send to kindle workflow to continue to work
         if os.path.isfile(file_path + format_new_ext):
-            web.app.logger.info("Book id %d already converted to %s", bookid, format_new_ext)
-            cur_book = web.db.session.query(web.db.Books).filter(web.db.Books.id == bookid).first()
+            log.info("Book id %d already converted to %s", bookid, format_new_ext)
+            cur_book = db.session.query(db.Books).filter(db.Books.id == bookid).first()
             self.queue[self.current]['path'] = file_path
             self.queue[self.current]['title'] = cur_book.title
             self._handleSuccess()
             return file_path + format_new_ext
         else:
-            web.app.logger.info("Book id %d - target format of %s does not exist. Moving forward with convert.",
-                                bookid, format_new_ext)
+            log.info("Book id %d - target format of %s does not exist. Moving forward with convert.", bookid, format_new_ext)
 
         # check if converter-executable is existing
-        if not os.path.exists(web.ub.config.config_converterpath):
+        if not os.path.exists(config.config_converterpath):
             # ToDo Text is not translated
-            self._handleError(u"Convertertool %s not found" % web.ub.config.config_converterpath)
+            self._handleError(u"Convertertool %s not found" % config.config_converterpath)
             return
 
         try:
             # check which converter to use kindlegen is "1"
             if format_old_ext == '.epub' and format_new_ext == '.mobi':
-                if web.ub.config.config_ebookconverter == 1:
-                    if os.name == 'nt':
-                        command = web.ub.config.config_converterpath + u' "' + file_path + u'.epub"'
+                if config.config_ebookconverter == 1:
+                    '''if os.name == 'nt':
+                        command = config.config_converterpath + u' "' + file_path + u'.epub"'
                         if sys.version_info < (3, 0):
                             command = command.encode(sys.getfilesystemencoding())
-                    else:
-                        command = [web.ub.config.config_converterpath, file_path + u'.epub']
-                        if sys.version_info < (3, 0):
-                            command = [x.encode(sys.getfilesystemencoding()) for x in command]
-            if web.ub.config.config_ebookconverter == 2:
+                    else:'''
+                    command = [config.config_converterpath, file_path + u'.epub']
+                    quotes = [1]
+            if config.config_ebookconverter == 2:
                 # Linux py2.7 encode as list without quotes no empty element for parameters
                 # linux py3.x no encode and as list without quotes no empty element for parameters
                 # windows py2.7 encode as string with quotes empty element for parameters is okay
                 # windows py 3.x no encode and as string with quotes empty element for parameters is okay
                 # separate handling for windows and linux
-                if os.name == 'nt':
-                    command = web.ub.config.config_converterpath + u' "' + file_path + format_old_ext + u'" "' + \
-                              file_path + format_new_ext + u'" ' + web.ub.config.config_calibre
+                quotes = [1,2]
+                '''if os.name == 'nt':
+                    command = config.config_converterpath + u' "' + file_path + format_old_ext + u'" "' + \
+                              file_path + format_new_ext + u'" ' + config.config_calibre
                     if sys.version_info < (3, 0):
                         command = command.encode(sys.getfilesystemencoding())
-                else:
-                    command = [web.ub.config.config_converterpath, (file_path + format_old_ext),
-                               (file_path + format_new_ext)]
-                    if web.ub.config.config_calibre:
-                        parameters = web.ub.config.config_calibre.split(" ")
-                        for param in parameters:
-                            command.append(param)
-                    if sys.version_info < (3, 0):
-                        command = [x.encode(sys.getfilesystemencoding()) for x in command]
-
-            p = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, universal_newlines=True)
+                else:'''
+                command = [config.config_converterpath, (file_path + format_old_ext),
+                    (file_path + format_new_ext)]
+                index = 3
+                if config.config_calibre:
+                    parameters = config.config_calibre.split(" ")
+                    for param in parameters:
+                        command.append(param)
+                        quotes.append(index)
+                        index += 1
+            p = process_open(command, quotes)
+            # p = subprocess.Popen(command, stdout=subprocess.PIPE, universal_newlines=True)
         except OSError as e:
             self._handleError(_(u"Ebook-converter failed: %(error)s", error=e))
             return
 
-        if web.ub.config.config_ebookconverter == 1:
+        if config.config_ebookconverter == 1:
             nextline = p.communicate()[0]
             # Format of error message (kindlegen translates its output texts):
             # Error(prcgen):E23006: Language not recognized in metadata.The dc:Language field is mandatory.Aborting.
@@ -317,13 +322,15 @@ class WorkerThread(threading.Thread):
             if conv_error:
                 error_message = _(u"Kindlegen failed with Error %(error)s. Message: %(message)s",
                                   error=conv_error.group(1), message=conv_error.group(2).strip())
-            web.app.logger.debug("convert_kindlegen: " + nextline)
+            log.debug("convert_kindlegen: %s", nextline)
         else:
             while p.poll() is None:
                 nextline = p.stdout.readline()
                 if os.name == 'nt' and sys.version_info < (3, 0):
                     nextline = nextline.decode('windows-1252')
-                web.app.logger.debug(nextline.strip('\r\n'))
+                elif os.name == 'posix' and sys.version_info < (3, 0):
+                    nextline = nextline.decode('utf-8')
+                log.debug(nextline.strip('\r\n'))
                 # parse progress string from calibre-converter
                 progress = re.search("(\d+)%\s.*", nextline)
                 if progress:
@@ -333,7 +340,9 @@ class WorkerThread(threading.Thread):
         check = p.returncode
         calibre_traceback = p.stderr.readlines()
         for ele in calibre_traceback:
-            web.app.logger.debug(ele.strip('\n'))
+            if sys.version_info < (3, 0):
+                ele = ele.decode('utf-8')
+            log.debug(ele.strip('\n'))
             if not ele.startswith('Traceback') and not ele.startswith('  File'):
                 error_message = "Calibre failed with error: %s" % ele.strip('\n')
 
@@ -341,24 +350,24 @@ class WorkerThread(threading.Thread):
         # 0 = Info(prcgen):I1036: Mobi file built successfully
         # 1 = Info(prcgen):I1037: Mobi file built with WARNINGS!
         # 2 = Info(prcgen):I1038: MOBI file could not be generated because of errors!
-        if (check < 2 and web.ub.config.config_ebookconverter == 1) or \
-            (check == 0 and web.ub.config.config_ebookconverter == 2):
-            cur_book = web.db.session.query(web.db.Books).filter(web.db.Books.id == bookid).first()
+        if (check < 2 and config.config_ebookconverter == 1) or \
+            (check == 0 and config.config_ebookconverter == 2):
+            cur_book = db.session.query(db.Books).filter(db.Books.id == bookid).first()
             if os.path.isfile(file_path + format_new_ext):
-                new_format = web.db.Data(name=cur_book.data[0].name,
+                new_format = db.Data(name=cur_book.data[0].name,
                                          book_format=self.queue[self.current]['settings']['new_book_format'].upper(),
                                          book=bookid, uncompressed_size=os.path.getsize(file_path + format_new_ext))
                 cur_book.data.append(new_format)
-                web.db.session.commit()
+                db.session.commit()
                 self.queue[self.current]['path'] = cur_book.path
                 self.queue[self.current]['title'] = cur_book.title
-                if web.ub.config.config_use_google_drive:
+                if config.config_use_google_drive:
                     os.remove(file_path + format_old_ext)
                 self._handleSuccess()
                 return file_path + format_new_ext
             else:
                 error_message = format_new_ext.upper() + ' format not found on disk'
-        web.app.logger.info("ebook converter failed with error while converting book")
+        log.info("ebook converter failed with error while converting book")
         if not error_message:
             error_message = 'Ebook converter failed with unknown error'
         self._handleError(error_message)
@@ -419,7 +428,6 @@ class WorkerThread(threading.Thread):
     def _send_raw_email(self):
         self.queue[self.current]['starttime'] = datetime.now()
         self.UIqueue[self.current]['formStarttime'] = self.queue[self.current]['starttime']
-        # self.queue[self.current]['status'] = STAT_STARTED
         self.UIqueue[self.current]['stat'] = STAT_STARTED
         obj=self.queue[self.current]
         # create MIME message
@@ -451,8 +459,11 @@ class WorkerThread(threading.Thread):
             # send email
             timeout = 600  # set timeout to 5mins
 
-            org_stderr = sys.stderr
-            sys.stderr = StderrLogger()
+            # redirect output to logfile on python2 pn python3 debugoutput is caught with overwritten
+            # _print_debug function
+            if sys.version_info < (3, 0):
+                org_smtpstderr = smtplib.stderr
+                smtplib.stderr = logger.StderrLogger('worker.smtp')
 
             if use_ssl == 2:
                 self.asyncSMTP = email_SSL(obj['settings']["mail_server"], obj['settings']["mail_port"], timeout)
@@ -460,9 +471,7 @@ class WorkerThread(threading.Thread):
                 self.asyncSMTP = email(obj['settings']["mail_server"], obj['settings']["mail_port"], timeout)
 
             # link to logginglevel
-            if web.ub.config.config_log_level != logging.DEBUG:
-                self.asyncSMTP.set_debuglevel(0)
-            else:
+            if logger.is_debug_enabled():
                 self.asyncSMTP.set_debuglevel(1)
             if use_ssl == 1:
                 self.asyncSMTP.starttls()
@@ -471,7 +480,9 @@ class WorkerThread(threading.Thread):
             self.asyncSMTP.sendmail(obj['settings']["mail_from"], obj['recipent'], msg)
             self.asyncSMTP.quit()
             self._handleSuccess()
-            sys.stderr = org_stderr
+
+            if sys.version_info < (3, 0):
+                smtplib.stderr = org_smtpstderr
 
         except (MemoryError) as e:
             self._handleError(u'Error sending email: ' + e.message)
@@ -490,7 +501,7 @@ class WorkerThread(threading.Thread):
             return None
 
     def _handleError(self, error_message):
-        web.app.logger.error(error_message)
+        log.error(error_message)
         self.UIqueue[self.current]['stat'] = STAT_FAIL
         self.UIqueue[self.current]['progress'] = "100 %"
         self.UIqueue[self.current]['formRuntime'] = datetime.now() - self.queue[self.current]['starttime']
@@ -500,24 +511,3 @@ class WorkerThread(threading.Thread):
         self.UIqueue[self.current]['stat'] = STAT_FINISH_SUCCESS
         self.UIqueue[self.current]['progress'] = "100 %"
         self.UIqueue[self.current]['formRuntime'] = datetime.now() - self.queue[self.current]['starttime']
-
-
-# Enable logging of smtp lib debug output
-class StderrLogger(object):
-
-    buffer = ''
-
-    def __init__(self):
-        self.logger = web.app.logger
-
-    def write(self, message):
-        try:
-            if message == '\n':
-                self.logger.debug(self.buffer)
-                print(self.buffer)
-                self.buffer = ''
-            else:
-                self.buffer += message
-        except:
-            pass
-
