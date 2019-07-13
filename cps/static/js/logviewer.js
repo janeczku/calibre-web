@@ -46,19 +46,19 @@ function init(logType) {
     };
     r.send();*/
     $.ajax({
-      url: "/ajax/log/" + logType,
-      datatype: 'text',
-      cache: false
-      })
-      .done( function(data) {
-        var text;
-        $("#renderer").text("");
-        text = (data).split("\n");
-        console.log(text.length);
-        for (var i = 0; i < text.length; i++) {
-            $("#renderer").append( "<div>" + _sanitize(text[i]) + "</div>" );
-        }
-      });
+        url: "/ajax/log/" + logType,
+        datatype: "text",
+        cache: false
+    })
+        .done( function(data) {
+            var text;
+            $("#renderer").text("");
+            text = (data).split("\n");
+            // console.log(text.length);
+            for (var i = 0; i < text.length; i++) {
+                $("#renderer").append( "<div>" + _sanitize(text[i]) + "</div>" );
+            }
+        });
 }
 
 
