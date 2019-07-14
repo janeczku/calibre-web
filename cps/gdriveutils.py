@@ -34,9 +34,11 @@ try:
     from pydrive.drive import GoogleDrive
     from pydrive.auth import RefreshError
     from apiclient import errors
-    gdrive_support = True
+    feature_support['gdrive'] = True
+    # gdrive_support = True
 except ImportError:
-    gdrive_support = False
+    feature_support['gdrive'] = True
+    #gdrive_support = False
 
 from . import logger, cli, config
 from .constants import CONFIG_DIR as _CONFIG_DIR
@@ -574,7 +576,7 @@ def update_settings(client_id, client_secret, redirect_uri):
 
 
 def get_error_text(client_secrets=None):
-    if not gdrive_support:
+    if not feature_support['gdrive']:
         return 'Import of optional Google Drive requirements missing'
 
     if not os.path.isfile(CLIENT_SECRETS):

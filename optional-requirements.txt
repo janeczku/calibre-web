@@ -18,7 +18,7 @@ python-Levenshtein>=0.12.0
 
 # ldap login
 python_ldap>=3.0.0
-flask-simpleldap
+flask-simpleldap>=1.2.0
 
 # extracting metadata
 lxml>=3.8.0

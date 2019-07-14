@@ -19,6 +19,7 @@
       <label for="config_calibre_dir">{{_('Location of Calibre database')}}</label>
       <input type="text" class="form-control" name="config_calibre_dir" id="config_calibre_dir" value="{% if config.config_calibre_dir != None %}{{ config.config_calibre_dir }}{% endif %}" autocomplete="off">
     </div>
+    {% if feature_support['gdrive']  %}
     <div class="form-group required">
       <input type="checkbox" id="config_use_google_drive" name="config_use_google_drive" data-control="gdrive_settings" {% if config.config_use_google_drive %}checked{% endif %} >
       <label for="config_use_google_drive">{{_('Use Google Drive?')}}</label>
@@ -66,6 +67,7 @@
         {% endif %}
       {% endif %}
     </div>
+    {% endif %}
       </div>
     </div>
   </div>
