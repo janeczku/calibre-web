@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 #  This file is part of the Calibre-Web (https://github.com/janeczku/calibre-web)
@@ -21,41 +20,36 @@ from __future__ import division, print_function, unicode_literals
 import os
 import re
 
-from flask_babel import gettext as _
-
-from . import config
+from . import config, logger
 from .subproc_wrapper import process_wait
 
 
-def versionKindle():
-    versions = _(u'not installed')
-    if os.path.exists(config.config_converterpath):
+log = logger.create()
+
+_NOT_CONFIGURED = 'not configured'
+_NOT_INSTALLED = 'not installed'
+_EXECUTION_ERROR = 'Execution permissions missing'
+
+
+def _get_command_version(path, pattern, argument=None):
+    if os.path.exists(path):
+        command = [path]
+        if argument:
+            command.append(argument)
         try:
-            for lines in process_wait(config.config_converterpath):
-                if re.search('Amazon kindlegen\(', lines):
-                    versions = lines
-        except Exception:
-            versions = _(u'Excecution permissions missing')
-    return {'kindlegen' : versions}
+            for line in process_wait(command):
+                if re.search(pattern, line):
+                    return line
+        except Exception as ex:
+            log.warning("%s: %s", path, ex)
+            return _EXECUTION_ERROR
+    return _NOT_INSTALLED
 
 
-def versionCalibre():
-    versions = _(u'not installed')
-    if os.path.exists(config.config_converterpath):
-        try:
-            for lines in process_wait([config.config_converterpath, '--version']):
-                if re.search('ebook-convert.*\(calibre', lines):
-                    versions = lines
-        except Exception:
-            versions = _(u'Excecution permissions missing')
-    return {'Calibre converter' : versions}
-
-
-def versioncheck():
+def get_version():
+    version = None
     if config.config_ebookconverter == 1:
-        return versionKindle()
+        version = _get_command_version(config.config_converterpath, r'Amazon kindlegen\(')
     elif config.config_ebookconverter == 2:
-        return versionCalibre()
-    else:
-        return {'ebook_converter':_(u'not configured')}
-
+        version = _get_command_version(config.config_converterpath, r'ebook-convert.*\(calibre', '--version')
+    return version or _NOT_CONFIGURED
