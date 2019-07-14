@@ -49,7 +49,7 @@ from .gdriveutils import is_gdrive_ready, gdrive_support
 from .web import admin_required, render_title_template, before_request, unconfigured, login_required_if_no_ano
 
 feature_support = {
-        'ldap': bool(services.ldap),
+        'ldap': False, # bool(services.ldap),
         'goodreads': bool(services.goodreads)
     }
 
