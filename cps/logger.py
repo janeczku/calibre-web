@@ -97,15 +97,20 @@ def setup(log_file, log_level=None):
     '''
     log_file = _absolute_log_file(log_file, DEFAULT_LOG_FILE)
 
+    log_level = log_level or DEFAULT_LOG_LEVEL
+    logging.getLogger(__package__).setLevel(log_level)
+
     r = logging.root
-    r.setLevel(log_level or DEFAULT_LOG_LEVEL)
+    if log_level >= logging.INFO or os.environ.get('FLASK_DEBUG'):
+        # avoid spamming the log with debug messages from libraries
+        r.setLevel(log_level)
 
     previous_handler = r.handlers[0] if r.handlers else None
     if previous_handler:
         # if the log_file has not changed, don't create a new handler
         if getattr(previous_handler, 'baseFilename', None) == log_file:
             return
-        r.debug("logging to %s level %s", log_file, r.level)
+        logging.debug("logging to %s level %s", log_file, r.level)
 
     if log_file == LOG_TO_STDERR:
         file_handler = StreamHandler()
