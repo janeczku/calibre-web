@@ -50,8 +50,6 @@ def init_app(app, config):
     app.config['LDAP_USE_TLS'] = bool(config.config_ldap_use_tls)
     app.config['LDAP_OPENLDAP'] = bool(config.config_ldap_openldap)
 
-    # app.config['LDAP_BASE_DN'] = 'ou=users,dc=yunohost,dc=org'
-    # app.config['LDAP_USER_OBJECT_FILTER'] = '(uid=%s)'
     _ldap.init_app(app)
 
 

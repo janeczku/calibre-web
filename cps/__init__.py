@@ -68,6 +68,7 @@ config = config_sql.load_configuration(ub.session)
 from . import db, services
 
 searched_ids = {}
+feature_support = []
 
 from .worker import WorkerThread
 global_WorkerThread = WorkerThread()
