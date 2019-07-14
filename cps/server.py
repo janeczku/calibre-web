@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 #  This file is part of the Calibre-Web (https://github.com/janeczku/calibre-web)
@@ -28,14 +27,14 @@ try:
     from gevent.pywsgi import WSGIServer
     from gevent.pool import Pool
     from gevent import __version__ as _version
-    VERSION = {'Gevent': 'v' + _version}
+    VERSION = 'Gevent ' + _version
     _GEVENT = True
 except ImportError:
     from tornado.wsgi import WSGIContainer
     from tornado.httpserver import HTTPServer
     from tornado.ioloop import IOLoop
     from tornado import version as _version
-    VERSION = {'Tornado': 'v' + _version}
+    VERSION = 'Tornado ' + _version
     _GEVENT = False
 
 from . import logger

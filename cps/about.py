@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 #  This file is part of the Calibre-Web (https://github.com/janeczku/calibre-web)
@@ -23,56 +22,46 @@
 
 from __future__ import division, print_function, unicode_literals
 import sys
-import requests
+import sqlite3
+from collections import OrderedDict
 
-from flask import Blueprint
-from flask import __version__ as flaskVersion
+import babel, pytz, requests, sqlalchemy
+import werkzeug, flask, flask_login, flask_principal, jinja2
 from flask_babel import gettext as _
-from flask_principal import __version__ as flask_principalVersion
-from flask_login import login_required
-try:
-    from flask_login import __version__ as flask_loginVersion
-except ImportError:
-    from flask_login.__about__ import __version__ as flask_loginVersion
-from werkzeug import __version__ as werkzeugVersion
 
-from babel import __version__ as babelVersion
-from jinja2 import __version__  as jinja2Version
-from pytz import __version__ as pytzVersion
-from sqlalchemy import __version__ as sqlalchemyVersion
-
-from . import db, converter, uploader
-from .isoLanguages import __version__ as iso639Version
-from .server import VERSION as serverVersion
+from . import db, converter, uploader, server, isoLanguages
 from .web import render_title_template
 
 
-about = Blueprint('about', __name__)
+about = flask.Blueprint('about', __name__)
+
+
+_VERSIONS = OrderedDict(
+    Python=sys.version,
+    WebServer=server.VERSION,
+    Flask=flask.__version__,
+    Flask_Login=flask_login.__version__,
+    Flask_Principal=flask_principal.__version__,
+    Werkzeug=werkzeug.__version__,
+    Babel=babel.__version__,
+    Jinja2=jinja2.__version__,
+    Requests=requests.__version__,
+    SqlAlchemy=sqlalchemy.__version__,
+    pySqlite=sqlite3.version,
+    SQLite=sqlite3.sqlite_version,
+    iso639=isoLanguages.__version__,
+    pytz=pytz.__version__,
+)
+_VERSIONS.update(uploader.get_versions())
 
 
 @about.route("/stats")
-@login_required
+@flask_login.login_required
 def stats():
     counter = db.session.query(db.Books).count()
     authors = db.session.query(db.Authors).count()
     categorys = db.session.query(db.Tags).count()
     series = db.session.query(db.Series).count()
-    versions = uploader.get_versions()
-    versions['Babel'] = 'v' + babelVersion
-    versions['Sqlalchemy'] = 'v' + sqlalchemyVersion
-    versions['Werkzeug'] = 'v' + werkzeugVersion
-    versions['Jinja2'] = 'v' + jinja2Version
-    versions['Flask'] = 'v' + flaskVersion
-    versions['Flask Login'] = 'v' + flask_loginVersion
-    versions['Flask Principal'] = 'v' + flask_principalVersion
-    versions['Iso 639'] = 'v' + iso639Version
-    versions['pytz'] = 'v' + pytzVersion
-
-    versions['Requests'] = 'v' + requests.__version__
-    versions['pySqlite'] = 'v' + db.session.bind.dialect.dbapi.version
-    versions['Sqlite'] = 'v' + db.session.bind.dialect.dbapi.sqlite_version
-    versions.update(converter.versioncheck())
-    versions.update(serverVersion)
-    versions['Python'] = sys.version
-    return render_title_template('stats.html', bookcounter=counter, authorcounter=authors, versions=versions,
+    _VERSIONS['ebook converter'] = _(converter.get_version())
+    return render_title_template('stats.html', bookcounter=counter, authorcounter=authors, versions=_VERSIONS,
                                  categorycounter=categorys, seriecounter=series, title=_(u"Statistics"), page="stat")
