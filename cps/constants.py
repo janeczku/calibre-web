@@ -22,6 +22,7 @@ import sys
 import os
 from collections import namedtuple
 
+HOME_CONFIG = False
 
 # Base dir is parent of current file, necessary if called from different folder
 if sys.version_info < (3, 0):
@@ -33,7 +34,14 @@ else:
 STATIC_DIR          = os.path.join(BASE_DIR, 'cps', 'static')
 TEMPLATES_DIR       = os.path.join(BASE_DIR, 'cps', 'templates')
 TRANSLATIONS_DIR    = os.path.join(BASE_DIR, 'cps', 'translations')
-CONFIG_DIR          = os.environ.get('CALIBRE_DBPATH', BASE_DIR)
+
+if HOME_CONFIG:
+    home_dir = os.path.join(os.path.expanduser("~"),".calibre-web")
+    if not os.path.exists(home_dir):
+        os.makedirs(home_dir)
+    CONFIG_DIR = os.environ.get('CALIBRE_DBPATH', home_dir)
+else:
+    CONFIG_DIR      = os.environ.get('CALIBRE_DBPATH', BASE_DIR)
 
 
 ROLE_USER               = 0 << 0
