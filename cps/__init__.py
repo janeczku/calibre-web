@@ -34,8 +34,9 @@ from flask_login import LoginManager
 from flask_babel import Babel
 from flask_principal import Principal
 
-from . import logger, cache_buster, cli, config_sql, ub
+from . import logger, cache_buster, cli, config_sql, ub, db, services
 from .reverseproxy import ReverseProxied
+from .server import WebServer
 
 
 mimetypes.init()
@@ -66,14 +67,8 @@ lm.anonymous_user = ub.Anonymous
 ub.init_db(cli.settingspath)
 # pylint: disable=no-member
 config = config_sql.load_configuration(ub.session)
-from . import db, services
 
 searched_ids = {}
-
-from .worker import WorkerThread
-global_WorkerThread = WorkerThread()
-
-from .server import WebServer
 web_server = WebServer()
 
 babel = Babel()
@@ -109,7 +104,6 @@ def create_app():
     if services.goodreads:
         services.goodreads.connect(config.config_goodreads_api_key, config.config_goodreads_api_secret, config.config_use_goodreads)
 
-    global_WorkerThread.start()
     return app
 
 @babel.localeselector
