@@ -136,9 +136,6 @@ class _ConfigSQL(object):
     def get_config_ipaddress(self):
         return cli.ipadress or ""
 
-    def get_ipaddress_type(self):
-        return cli.ipv6
-
     def _has_role(self, role_flag):
         return constants.has_flag(self.config_default_role, role_flag)
 

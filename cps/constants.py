@@ -128,4 +128,3 @@ NIGHTLY_VERSION[1] = '$Format:%cI$'
 
 # clean-up the module namespace
 del sys, os, namedtuple
-
