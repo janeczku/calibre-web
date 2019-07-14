@@ -38,7 +38,7 @@ except ImportError:
     VERSION = {'Tornado': 'v' + _version}
     _GEVENT = False
 
-from . import logger, global_WorkerThread
+from . import logger
 
 
 log = logger.create()
@@ -179,7 +179,6 @@ class WebServer:
             return False
         finally:
             self.wsgiserver = None
-            global_WorkerThread.stop()
 
         if not self.restart:
             log.info("Performing shutdown of Calibre-Web")
