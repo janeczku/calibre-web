@@ -52,7 +52,7 @@ from .pagination import Pagination
 from .redirect import redirect_back
 
 feature_support = {
-        'ldap': bool(services.ldap),
+        'ldap': False, # bool(services.ldap),
         'goodreads': bool(services.goodreads)
     }
 
