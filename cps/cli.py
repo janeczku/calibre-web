@@ -1,6 +1,4 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
-
 
 #   This file is part of the Calibre-Web (https://github.com/janeczku/calibre-web)
 #     Copyright (C) 2018 OzzieIsaacs
@@ -22,50 +20,17 @@ from __future__ import division, print_function, unicode_literals
 import sys
 import os
 import argparse
+import socket
 
 from .constants import CONFIG_DIR as _CONFIG_DIR
 from .constants import STABLE_VERSION as _STABLE_VERSION
 from .constants import NIGHTLY_VERSION as _NIGHTLY_VERSION
 
-VALID_CHARACTERS = 'ABCDEFabcdef:0123456789'
-
-ipv6 = False
-
 
 def version_info():
     if _NIGHTLY_VERSION[1].startswith('$Format'):
         return "Calibre-Web version: %s - unkown git-clone" % _STABLE_VERSION['version']
-    else:
-        return "Calibre-Web version: %s -%s" % (_STABLE_VERSION['version'],_NIGHTLY_VERSION[1])
-
-
-def validate_ip4(address):
-    address_list = address.split('.')
-    if len(address_list) != 4:
-        return False
-    for val in address_list:
-        if not val.isdigit():
-            return False
-        i = int(val)
-        if i < 0 or i > 255:
-            return False
-    return True
-
-
-def validate_ip6(address):
-    address_list = address.split(':')
-    return (
-        len(address_list) == 8
-        and all(len(current) <= 4 for current in address_list)
-        and all(current in VALID_CHARACTERS for current in address)
-    )
-
-
-def validate_ip(address):
-    if validate_ip4(address) or ipv6:
-        return address
-    print("IP address is invalid. Exiting")
-    sys.exit(1)
+    return "Calibre-Web version: %s -%s" % (_STABLE_VERSION['version'], _NIGHTLY_VERSION[1])
 
 
 parser = argparse.ArgumentParser(description='Calibre Web is a web app'
@@ -95,8 +60,8 @@ if sys.version_info < (3, 0):
         args.s = args.s.decode('utf-8')
 
 
-settingspath    = args.p or os.path.join(_CONFIG_DIR, "app.db")
-gdpath          = args.g or os.path.join(_CONFIG_DIR, "gdrive.db")
+settingspath = args.p or os.path.join(_CONFIG_DIR, "app.db")
+gdpath       = args.g or os.path.join(_CONFIG_DIR, "gdrive.db")
 
 # handle and check parameter for ssl encryption
 certfilepath = None
@@ -108,7 +73,7 @@ if args.c:
         print("Certfilepath is invalid. Exiting...")
         sys.exit(1)
 
-if args.c is "":
+if args.c == "":
     certfilepath = ""
 
 if args.k:
@@ -122,15 +87,26 @@ if (args.k and not args.c) or (not args.k and args.c):
     print("Certfile and Keyfile have to be used together. Exiting...")
     sys.exit(1)
 
-if args.k is "":
+if args.k == "":
     keyfilepath = ""
 
 # handle and check ipadress argument
-if args.i:
-    ipv6 = validate_ip6(args.i)
-    ipadress = validate_ip(args.i)
-else:
-    ipadress = None
+ipadress = args.i or None
+if ipadress:
+    try:
+        # try to parse the given ip address with socket
+        if hasattr(socket, 'inet_pton'):
+            if ':' in ipadress:
+                socket.inet_pton(socket.AF_INET6, ipadress)
+            else:
+                socket.inet_pton(socket.AF_INET, ipadress)
+        else:
+            # on windows python < 3.4, inet_pton is not available
+            # inet_atom only handles IPv4 addresses
+            socket.inet_aton(ipadress)
+    except socket.error as err:
+        print(ipadress, ':', err)
+        sys.exit(1)
 
 # handle and check user password argument
-user_password   = args.s or None
+user_password = args.s or None
