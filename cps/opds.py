@@ -22,7 +22,6 @@
 #  along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 from __future__ import division, print_function, unicode_literals
-import sys
 import datetime
 from functools import wraps
 
@@ -284,7 +283,7 @@ def feed_search(term):
         return render_xml_template('feed.xml', searchterm="")
 
 def check_auth(username, password):
-    if sys.version_info.major == 3:
+    if not constants.PY2:
         username=username.encode('windows-1252')
     user = ub.session.query(ub.User).filter(func.lower(ub.User.nickname) ==
                                             username.decode('utf-8').lower()).first()

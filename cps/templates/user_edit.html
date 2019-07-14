@@ -46,18 +46,17 @@
         </select>
     </div>
 
-    {% if registered_oauth.keys()| length > 0 %}
-      {% for id, name in registered_oauth.items() %}
-    <div class="form-group">
-      <label>{{ name }} {{_('OAuth Settings')}}</label>
-        {% if id not in oauth_status %}
-        <div><a href="{{ url_for('oauth.'+ name +'_login') }}" id="config_{{ id }}_oauth" class="btn btn-primary">{{_('Link')}}</a></div>
+    {% if g.oauth_providers and (g.oauth_providers)|selectattr("active")|first and g.user == content and not g.user.role_anonymous() %}
+      <div class="form-group">
+      <label>{{_('OAuth Settings')}}</label>
+      {% for p in g.oauth_providers if p.active %}
+        {% if p.has_token_for(content) %}
+          <a href="{{ url_for('oauth.unlink_provider', provider_id=p.id) }}" id="config_{{ p.id }}_oauth" class="btn btn-primary">{{_('Unlink')}} {{ p.name }}</a>
         {% else %}
-        <div><a href="{{ url_for('oauth.'+ name +'_login_unlink') }}" id="config_{{ id }}_oauth" class="btn btn-primary">{{_('Unlink')}}</a></div>
+          <a href="{{ url_for('oauth.link_provider', provider_id=p.id) }}" id="config_{{ p.id }}_oauth" class="btn btn-primary">{{_('Link')}} {{ p.name }}</a>
         {% endif %}
       {% endfor %}
-    </div>
-
+      </div>
     {% endif %}
 
     <div class="col-sm-6">

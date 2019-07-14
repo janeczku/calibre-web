@@ -23,13 +23,13 @@ from collections import namedtuple
 
 HOME_CONFIG = False
 
+PY2 = sys.version_info < (3, 0)
+
 # Base dir is parent of current file, necessary if called from different folder
-if sys.version_info < (3, 0):
-    BASE_DIR            = os.path.abspath(os.path.join(
-        os.path.dirname(os.path.abspath(__file__)),os.pardir)).decode('utf-8')
-else:
-    BASE_DIR            = os.path.abspath(os.path.join(
-        os.path.dirname(os.path.abspath(__file__)),os.pardir))
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+if PY2:
+    BASE_DIR = BASE_DIR.decode('utf-8')
+
 STATIC_DIR          = os.path.join(BASE_DIR, 'cps', 'static')
 TEMPLATES_DIR       = os.path.join(BASE_DIR, 'cps', 'templates')
 TRANSLATIONS_DIR    = os.path.join(BASE_DIR, 'cps', 'translations')
@@ -39,8 +39,12 @@ if HOME_CONFIG:
     if not os.path.exists(home_dir):
         os.makedirs(home_dir)
     CONFIG_DIR = os.environ.get('CALIBRE_DBPATH', home_dir)
+    del home_dir
 else:
     CONFIG_DIR      = os.environ.get('CALIBRE_DBPATH', BASE_DIR)
+
+if PY2:
+    CONFIG_DIR = CONFIG_DIR.decode('utf-8')
 
 
 ROLE_USER               = 0 << 0

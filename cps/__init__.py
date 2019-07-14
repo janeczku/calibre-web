@@ -33,30 +33,14 @@ from flask_login import LoginManager
 from flask_babel import Babel
 from flask_principal import Principal
 
-from . import logger, cache_buster, cli, config_sql, ub, db, services
+from . import constants, logger, cache_buster, cli, config_sql, ub, db, services
 from .reverseproxy import ReverseProxied
 from .server import WebServer
 
 
-mimetypes.init()
-mimetypes.add_type('application/xhtml+xml', '.xhtml')
-mimetypes.add_type('application/epub+zip', '.epub')
-mimetypes.add_type('application/fb2+zip', '.fb2')
-mimetypes.add_type('application/x-mobipocket-ebook', '.mobi')
-mimetypes.add_type('application/x-mobipocket-ebook', '.prc')
-mimetypes.add_type('application/vnd.amazon.ebook', '.azw')
-mimetypes.add_type('application/x-cbr', '.cbr')
-mimetypes.add_type('application/x-cbz', '.cbz')
-mimetypes.add_type('application/x-cbt', '.cbt')
-mimetypes.add_type('image/vnd.djvu', '.djvu')
-mimetypes.add_type('application/mpeg', '.mpeg')
-mimetypes.add_type('application/mpeg', '.mp3')
-mimetypes.add_type('application/mp4', '.m4a')
-mimetypes.add_type('application/mp4', '.m4b')
-mimetypes.add_type('application/ogg', '.ogg')
-mimetypes.add_type('application/ogg', '.oga')
+_mimetypes_txt = os.path.join(constants.STATIC_DIR, 'mimetypes.txt')
+mimetypes.init((_mimetypes_txt,))
 
-app = Flask(__name__)
 
 lm = LoginManager()
 lm.login_view = 'web.login'
@@ -77,9 +61,10 @@ log = logger.create()
 
 
 def create_app():
+    app = Flask(__name__)
     app.wsgi_app = ReverseProxied(app.wsgi_app)
     # For python2 convert path to unicode
-    if sys.version_info < (3, 0):
+    if constants.PY2:
         app.static_folder = app.static_folder.decode('utf-8')
         app.root_path = app.root_path.decode('utf-8')
         app.instance_path = app.instance_path .decode('utf-8')
@@ -139,4 +124,34 @@ from .updater import Updater
 updater_thread = Updater()
 
 
-__all__ = ['app']
+def main():
+    app = create_app()
+    with app.app_context():
+        from cps.web import web as _web
+        app.register_blueprint(_web)
+
+        from cps.opds import opds as _web_opds
+        app.register_blueprint(_web_opds)
+
+        from cps.jinjia import jinjia as _web_jinjia
+        app.register_blueprint(_web_jinjia)
+
+        from cps.about import about as _web_about
+        app.register_blueprint(_web_about)
+
+        from cps.shelf import shelf as _web_shelf
+        app.register_blueprint(_web_shelf)
+
+        from cps.admin import admi as _web_admin
+        app.register_blueprint(_web_admin)
+
+        from cps.gdrive import gdrive as _web_gdrive
+        app.register_blueprint(_web_gdrive)
+
+        from cps.editbooks import editbook as _web_editbook
+        app.register_blueprint(_web_editbook)
+
+        from cps.oauth_bb import oauth as _web_oauth
+
+    success = web_server.start()
+    sys.exit(0 if success else 1)

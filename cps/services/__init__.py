@@ -34,3 +34,9 @@ try: from . import simpleldap as ldap
 except ImportError as err:
     log.warning("simpleldap: %s", err)
     ldap = None
+
+
+try: from . import oauth
+except ImportError as err:
+    log.warning("oauth: %s", err)
+    oauth = None

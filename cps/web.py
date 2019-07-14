@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 #  This file is part of the Calibre-Web (https://github.com/janeczku/calibre-web)
@@ -33,7 +32,7 @@ import sys
 from babel import Locale as LC
 from babel.dates import format_date
 from babel.core import UnknownLocaleError
-from flask import Blueprint
+from flask import Blueprint, current_app
 from flask import render_template, request, redirect, send_from_directory, make_response, g, flash, abort, url_for
 from flask_babel import gettext as _
 from flask_login import login_user, logout_user, login_required, current_user
@@ -44,7 +43,7 @@ from werkzeug.datastructures import Headers
 from werkzeug.security import generate_password_hash, check_password_hash
 
 from . import constants, logger, isoLanguages, services, worker
-from . import searched_ids, lm, babel, db, ub, config, negociate_locale, get_locale, app
+from . import searched_ids, lm, babel, db, ub, config, negociate_locale, get_locale
 from .gdriveutils import getFileFromEbooksFolder, do_gdrive_download
 from .helper import common_filters, get_search_results, fill_indexpage, speaking_language, check_valid_domain, \
         order_authors, get_typeahead, render_task_status, json_serial, get_cc_columns, \
@@ -53,17 +52,12 @@ from .helper import common_filters, get_search_results, fill_indexpage, speaking
 from .pagination import Pagination
 from .redirect import redirect_back
 
+
 feature_support = {
         'ldap': False, # bool(services.ldap),
-        'goodreads': bool(services.goodreads)
+        'goodreads': bool(services.goodreads),
+        'oauth': bool(services.oauth),
     }
-
-try:
-    from .oauth_bb import oauth_check, register_user_with_oauth, logout_oauth_user, get_oauth_status
-    feature_support['oauth'] = True
-except ImportError:
-    feature_support['oauth'] = False
-    oauth_check = {}
 
 try:
     from functools import wraps
@@ -106,9 +100,9 @@ def internal_error(error):
 # http error handling
 for ex in default_exceptions:
     if ex < 500:
-        app.register_error_handler(ex, error_http)
+        current_app.register_error_handler(ex, error_http)
     elif ex == 500:
-         app.register_error_handler(ex, internal_error)
+        current_app.register_error_handler(ex, internal_error)
 
 
 web = Blueprint('web', __name__)
@@ -245,6 +239,7 @@ def before_request():
     # log.debug("before_request: %s %s %r", request.method, request.path, getattr(request, 'locale', None))
     request._locale = negociate_locale()
     g.user = current_user
+    g.oauth_providers = services.oauth.providers.values() if services.oauth else None
     g.allow_registration = config.config_public_reg
     g.allow_anonymous = config.config_anonbrowse
     g.allow_upload = config.config_uploading
@@ -361,10 +356,10 @@ def get_comic_book(book_id, book_format, page):
                     log.error('unsupported comic format')
                     return "", 204
 
-                if sys.version_info.major >= 3:
-                    b64 = codecs.encode(extract(page), 'base64').decode()
-                else:
+                if constants.PY2:
                     b64 = extract(page).encode('base64')
+                else:
+                    b64 = codecs.encode(extract(page), 'base64').decode()
                 ext = names[page].rpartition('.')[-1]
                 if ext not in ('png', 'gif', 'jpg', 'jpeg'):
                     ext = 'png'
@@ -1067,8 +1062,8 @@ def register():
                 try:
                     ub.session.add(content)
                     ub.session.commit()
-                    if feature_support['oauth']:
-                        register_user_with_oauth(content)
+                    # if services.oauth:
+                    #     services.oauth.register_user(content)
                     send_registration_mail(to_save["email"], to_save["nickname"], password)
                 except Exception:
                     ub.session.rollback()
@@ -1084,8 +1079,9 @@ def register():
             flash(_(u"This username or e-mail address is already in use."), category="error")
             return render_title_template('register.html', title=_(u"register"), page="register")
 
-    if feature_support['oauth']:
-        register_user_with_oauth()
+    # if services.oauth:
+    #       services.oauth.register_user(content)
+
     return render_title_template('register.html', config=config, title=_(u"register"), page="register")
 
 
@@ -1133,8 +1129,8 @@ def login():
 def logout():
     if current_user is not None and current_user.is_authenticated:
         logout_user()
-        if feature_support['oauth'] and (config.config_login_type == 2 or config.config_login_type == 3):
-            logout_oauth_user()
+        if services.oauth:
+            services.oauth.clear_session()
     return redirect(url_for('web.login'))
 
 
@@ -1228,10 +1224,7 @@ def profile():
     downloads = list()
     languages = speaking_language()
     translations = babel.list_translations() + [LC('en')]
-    if feature_support['oauth']:
-        oauth_status = get_oauth_status()
-    else:
-        oauth_status = None
+
     for book in current_user.downloads:
         downloadBook = db.session.query(db.Books).filter(db.Books.id == book.book_id).first()
         if downloadBook:
@@ -1252,8 +1245,7 @@ def profile():
             if config.config_public_reg and not check_valid_domain(to_save["email"]):
                 flash(_(u"E-mail is not from valid domain"), category="error")
                 return render_title_template("user_edit.html", content=current_user, downloads=downloads,
-                                             title=_(u"%(name)s's profile", name=current_user.nickname), page="me",
-                                             registered_oauth=oauth_check, oauth_status=oauth_status)
+                                             title=_(u"%(name)s's profile", name=current_user.nickname), page="me")
             current_user.email = to_save["email"]
         if "show_random" in to_save and to_save["show_random"] == "on":
             current_user.random_books = 1
@@ -1279,13 +1271,11 @@ def profile():
             flash(_(u"Found an existing account for this e-mail address."), category="error")
             return render_title_template("user_edit.html", content=current_user, downloads=downloads,
                                          translations=translations,
-                                         title=_(u"%(name)s's profile", name=current_user.nickname), page="me",
-                                                 registered_oauth=oauth_check, oauth_status=oauth_status)
+                                         title=_(u"%(name)s's profile", name=current_user.nickname), page="me")
         flash(_(u"Profile updated"), category="success")
     return render_title_template("user_edit.html", translations=translations, profile=1, languages=languages,
-                                 content=current_user, downloads=downloads, title= _(u"%(name)s's profile",
-                                                                                           name=current_user.nickname),
-                                 page="me", registered_oauth=oauth_check, oauth_status=oauth_status)
+                                 content=current_user, downloads=downloads,
+                                 title= _(u"%(name)s's profile", name=current_user.nickname), page="me")
 
 
 # ###################################Show single book ##################################################################

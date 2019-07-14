@@ -20,8 +20,8 @@ python-Levenshtein>=0.12.0
 python_ldap>=3.0.0
 flask-simpleldap>1.3.0
 
-#oauth
-flask-dance>=0.13.0
+# oauth login
+flask-dance>=2.0.0
 sqlalchemy_utils>=0.33.5
 
 # extracting metadata

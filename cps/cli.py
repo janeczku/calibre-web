@@ -22,6 +22,7 @@ import os
 import argparse
 import socket
 
+from .constants import PY2
 from .constants import CONFIG_DIR as _CONFIG_DIR
 from .constants import STABLE_VERSION as _STABLE_VERSION
 from .constants import NIGHTLY_VERSION as _NIGHTLY_VERSION
@@ -47,7 +48,7 @@ parser.add_argument('-i', metavar='ip-adress', help='Server IP-Adress to listen'
 parser.add_argument('-s', metavar='user:pass', help='Sets specific username to new password')
 args = parser.parse_args()
 
-if sys.version_info < (3, 0):
+if PY2:
     if args.p:
         args.p = args.p.decode('utf-8')
     if args.g:

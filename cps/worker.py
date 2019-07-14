@@ -17,7 +17,6 @@
 #  along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 from __future__ import division, print_function, unicode_literals
-import sys
 import os
 import re
 import smtplib
@@ -43,7 +42,7 @@ from email.utils import make_msgid
 from email.generator import Generator
 from flask_babel import gettext as _
 
-from . import logger, config, db, gdriveutils
+from . import constants, logger, config, db, gdriveutils
 from .subproc_wrapper import process_open
 
 
@@ -295,7 +294,7 @@ class WorkerThread(threading.Thread):
                 if config.config_ebookconverter == 1:
                     '''if os.name == 'nt':
                         command = config.config_converterpath + u' "' + file_path + u'.epub"'
-                        if sys.version_info < (3, 0):
+                        if constants.PY2:
                             command = command.encode(sys.getfilesystemencoding())
                     else:'''
                     command = [config.config_converterpath, file_path + u'.epub']
@@ -310,7 +309,7 @@ class WorkerThread(threading.Thread):
                 '''if os.name == 'nt':
                     command = config.config_converterpath + u' "' + file_path + format_old_ext + u'" "' + \
                               file_path + format_new_ext + u'" ' + config.config_calibre
-                    if sys.version_info < (3, 0):
+                    if constants.PY2:
                         command = command.encode(sys.getfilesystemencoding())
                 else:'''
                 command = [config.config_converterpath, (file_path + format_old_ext),
@@ -341,9 +340,9 @@ class WorkerThread(threading.Thread):
         else:
             while p.poll() is None:
                 nextline = p.stdout.readline()
-                if os.name == 'nt' and sys.version_info < (3, 0):
+                if os.name == 'nt' and constants.PY2:
                     nextline = nextline.decode('windows-1252')
-                elif os.name == 'posix' and sys.version_info < (3, 0):
+                elif os.name == 'posix' and constants.PY2:
                     nextline = nextline.decode('utf-8')
                 log.debug(nextline.strip('\r\n'))
                 # parse progress string from calibre-converter
@@ -355,7 +354,7 @@ class WorkerThread(threading.Thread):
         check = p.returncode
         calibre_traceback = p.stderr.readlines()
         for ele in calibre_traceback:
-            if sys.version_info < (3, 0):
+            if constants.PY2:
                 ele = ele.decode('utf-8')
             log.debug(ele.strip('\n'))
             if not ele.startswith('Traceback') and not ele.startswith('  File'):
@@ -479,7 +478,7 @@ class WorkerThread(threading.Thread):
 
             # redirect output to logfile on python2 pn python3 debugoutput is caught with overwritten
             # _print_debug function
-            if sys.version_info < (3, 0):
+            if constants.PY2:
                 org_smtpstderr = smtplib.stderr
                 smtplib.stderr = logger.StderrLogger('worker.smtp')
 
@@ -499,7 +498,7 @@ class WorkerThread(threading.Thread):
             self.asyncSMTP.quit()
             self._handleSuccess()
 
-            if sys.version_info < (3, 0):
+            if constants.PY2:
                 smtplib.stderr = org_smtpstderr
 
         except (MemoryError) as e:

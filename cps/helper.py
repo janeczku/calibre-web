@@ -59,7 +59,7 @@ try:
 except ImportError:
     use_PIL = False
 
-from . import logger, config, get_locale, db, ub, isoLanguages, worker
+from . import constants, logger, config, get_locale, db, ub, isoLanguages, worker
 from . import gdriveutils as gd
 from .constants import STATIC_DIR as _STATIC_DIR
 from .pagination import Pagination
@@ -237,10 +237,7 @@ def get_valid_filename(value, replace_whitespace=True):
     value = value[:128]
     if not value:
         raise ValueError("Filename cannot be empty")
-    if sys.version_info.major == 3:
-        return value
-    else:
-        return value.decode('utf-8')
+    return value.decode('utf-8') if constants.PY2 else value
 
 
 def get_sorted_author(value):
@@ -553,7 +550,7 @@ def check_unrar(unrarLocation):
         return 'Unrar binary file not found'
 
     try:
-        if sys.version_info < (3, 0):
+        if constants.PY2:
             unrarLocation = unrarLocation.encode(sys.getfilesystemencoding())
         unrarLocation = [unrarLocation]
         for lines in process_wait(unrarLocation):

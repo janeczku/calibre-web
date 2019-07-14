@@ -1,0 +1,17 @@
+application/xhtml+xml           xhtml
+application/epub+zip            epub
+application/fb2+zip             fb2
+application/x-mobipocket-ebook  mobi
+application/x-mobipocket-ebook  prc
+application/vnd.amazon.ebook    azw
+application/x-cbr               cbr
+application/x-cbz               cbz
+application/x-cbt               cbt
+image/vnd.djvu                  djvu
+
+application/mpeg                mpeg
+application/mpeg                mp3
+application/mp4                 m4a
+application/mp4                 m4b
+application/ogg                 ogg
+application/ogg                 oga

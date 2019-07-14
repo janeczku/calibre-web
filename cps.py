@@ -23,46 +23,12 @@ import os
 
 
 # Insert local directories into path
-if sys.version_info < (3, 0):
-    sys.path.append(os.path.dirname(os.path.abspath(__file__.decode('utf-8'))))
-    sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__.decode('utf-8'))), 'vendor'))
-else:
-    sys.path.append(os.path.dirname(os.path.abspath(__file__)))
-    sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'vendor'))
-
-
-from cps import create_app
-from cps import web_server
-from cps.opds import opds
-from cps.web import web
-from cps.jinjia import jinjia
-from cps.about import about
-from cps.shelf import shelf
-from cps.admin import admi
-from cps.gdrive import gdrive
-from cps.editbooks import editbook
-try:
-    from cps.oauth_bb import oauth
-    oauth_available = True
-except ImportError:
-    oauth_available = False
-
-
-def main():
-    app = create_app()
-    app.register_blueprint(web)
-    app.register_blueprint(opds)
-    app.register_blueprint(jinjia)
-    app.register_blueprint(about)
-    app.register_blueprint(shelf)
-    app.register_blueprint(admi)
-    app.register_blueprint(gdrive)
-    app.register_blueprint(editbook)
-    if oauth_available:
-        app.register_blueprint(oauth)
-    success = web_server.start()
-    sys.exit(0 if success else 1)
+_SELF = os.path.abspath(__file__.decode('utf-8') if sys.version_info < (3, 0) else __file__)
+_BASE = os.path.dirname(_SELF)
+sys.path.append(_BASE)
+sys.path.append(os.path.join(_BASE, 'vendor'))
 
 
 if __name__ == '__main__':
-    main()
+    from cps import main as _cps_main
+    _cps_main()

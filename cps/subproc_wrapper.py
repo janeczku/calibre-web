@@ -22,6 +22,8 @@ import sys
 import os
 import subprocess
 
+from . import constants
+
 
 def process_open(command, quotes=(), env=None, sout=subprocess.PIPE, serr=subprocess.PIPE):
     # Linux py2.7 encode as list without quotes no empty element for parameters
@@ -34,10 +36,10 @@ def process_open(command, quotes=(), env=None, sout=subprocess.PIPE, serr=subpro
             if key in quotes:
                 command[key] = '"' + element + '"'
         exc_command = " ".join(command)
-        if sys.version_info < (3, 0):
+        if constants.PY2:
             exc_command = exc_command.encode(sys.getfilesystemencoding())
     else:
-        if sys.version_info < (3, 0):
+        if constants.PY2:
             exc_command = [x.encode(sys.getfilesystemencoding()) for x in command]
         else:
             exc_command = [x for x in command]

@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 #  This file is part of the Calibre-Web (https://github.com/janeczku/calibre-web)
@@ -26,20 +25,20 @@ from binascii import hexlify
 from flask import g
 from flask_babel import gettext as _
 from flask_login import AnonymousUserMixin
-from werkzeug.local import LocalProxy
-try:
-    from flask_dance.consumer.backend.sqla import OAuthConsumerMixin
-    oauth_support = True
-except ImportError:
-    oauth_support = False
 from sqlalchemy import create_engine, exc, exists
 from sqlalchemy import Column, ForeignKey
 from sqlalchemy import String, Integer, SmallInteger, Boolean, DateTime
 from sqlalchemy.orm import relationship, sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
+from werkzeug.local import LocalProxy
 from werkzeug.security import generate_password_hash
 
-from . import constants # , config
+try:
+    from flask_dance.consumer.storage.sqla import OAuthConsumerMixin
+except ImportError:
+    OAuthConsumerMixin = None
+
+from . import constants
 
 
 session = None
@@ -181,7 +180,7 @@ class User(UserBase, Base):
     mature_content = Column(Boolean, default=True)
 
 
-if oauth_support:
+if OAuthConsumerMixin:
     class OAuth(OAuthConsumerMixin, Base):
         provider_user_id = Column(String(256))
         user_id = Column(Integer, ForeignKey(User.id))
@@ -192,10 +191,10 @@ class OAuthProvider(Base):
     __tablename__ = 'oauthProvider'
 
     id = Column(Integer, primary_key=True)
-    provider_name = Column(String)
+    provider_name = Column(String, unique=True, nullable=False)
     oauth_client_id = Column(String)
     oauth_client_secret = Column(String)
-    active = Column(Boolean)
+    active = Column(Boolean, default=False)
 
 
 # Class for anonymous user is derived from User base and completly overrides methods and properties for the

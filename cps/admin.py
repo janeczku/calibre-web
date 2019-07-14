@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 #  This file is part of the Calibre-Web (https://github.com/janeczku/calibre-web)
@@ -46,7 +45,8 @@ from .web import admin_required, render_title_template, before_request, unconfig
 
 feature_support = {
         'ldap': False, # bool(services.ldap),
-        'goodreads': bool(services.goodreads)
+        'goodreads': bool(services.goodreads),
+        'oauth': bool(services.oauth),
     }
 
 # try:
@@ -54,14 +54,6 @@ feature_support = {
 #     feature_support['rar'] = True
 # except ImportError:
 #     feature_support['rar'] = False
-
-try:
-    from .oauth_bb import oauth_check, oauthblueprints
-    feature_support['oauth'] = True
-except ImportError:
-    feature_support['oauth'] = False
-    oauthblueprints = []
-    oauth_check = {}
 
 
 feature_support['gdrive'] = gdrive_support
@@ -306,28 +298,29 @@ def _configuration_update_helper():
     if _config_int("config_login_type"):
         reboot_required |= config.config_login_type != constants.LOGIN_STANDARD
 
-    #LDAP configurator,
-    if config.config_login_type == constants.LOGIN_LDAP:
-        _config_string("config_ldap_provider_url")
-        _config_int("config_ldap_port")
-        _config_string("config_ldap_schema")
-        _config_string("config_ldap_dn")
-        _config_string("config_ldap_user_object")
-        if not config.config_ldap_provider_url or not config.config_ldap_port or not config.config_ldap_dn or not config.config_ldap_user_object:
-            return _configuration_result('Please enter a LDAP provider, port, DN and user object identifier', gdriveError)
+    if services.ldap:
+        #LDAP configurator,
+        if config.config_login_type == constants.LOGIN_LDAP:
+            _config_string("config_ldap_provider_url")
+            _config_int("config_ldap_port")
+            _config_string("config_ldap_schema")
+            _config_string("config_ldap_dn")
+            _config_string("config_ldap_user_object")
+            if not config.config_ldap_provider_url or not config.config_ldap_port or not config.config_ldap_dn or not config.config_ldap_user_object:
+                return _configuration_result('Please enter a LDAP provider, port, DN and user object identifier', gdriveError)
 
-        _config_string("config_ldap_serv_username")
-        if not config.config_ldap_serv_username or "config_ldap_serv_password" not in to_save:
-            return _configuration_result('Please enter a LDAP service account and password', gdriveError)
-        config.set_from_dictionary(to_save, "config_ldap_serv_password", base64.b64encode)
+            _config_string("config_ldap_serv_username")
+            if not config.config_ldap_serv_username or "config_ldap_serv_password" not in to_save:
+                return _configuration_result('Please enter a LDAP service account and password', gdriveError)
+            config.set_from_dictionary(to_save, "config_ldap_serv_password", base64.b64encode)
 
-    _config_checkbox("config_ldap_use_ssl")
-    _config_checkbox("config_ldap_use_tls")
-    _config_checkbox("config_ldap_openldap")
-    _config_checkbox("config_ldap_require_cert")
-    _config_string("config_ldap_cert_path")
-    if config.config_ldap_cert_path and not os.path.isfile(config.config_ldap_cert_path):
-        return _configuration_result('LDAP Certfile location is not valid, please enter correct path', gdriveError)
+        _config_checkbox("config_ldap_use_ssl")
+        _config_checkbox("config_ldap_use_tls")
+        _config_checkbox("config_ldap_openldap")
+        _config_checkbox("config_ldap_require_cert")
+        _config_string("config_ldap_cert_path")
+        if config.config_ldap_cert_path and not os.path.isfile(config.config_ldap_cert_path):
+            return _configuration_result('LDAP Certfile location is not valid, please enter correct path', gdriveError)
 
     # Remote login configuration
     _config_checkbox("config_remote_login")
@@ -335,36 +328,27 @@ def _configuration_update_helper():
         ub.session.query(ub.RemoteAuthToken).delete()
 
     # Goodreads configuration
-    _config_checkbox("config_use_goodreads")
-    _config_string("config_goodreads_api_key")
-    _config_string("config_goodreads_api_secret")
     if services.goodreads:
+        _config_checkbox("config_use_goodreads")
+        _config_string("config_goodreads_api_key")
+        _config_string("config_goodreads_api_secret")
         services.goodreads.connect(config.config_goodreads_api_key, config.config_goodreads_api_secret, config.config_use_goodreads)
 
     _config_int("config_updatechannel")
 
-    # GitHub OAuth configuration
-    if config.config_login_type == constants.LOGIN_OAUTH:
-        active_oauths = 0
+    # OAuth configuration(s)
+    if services.oauth and config.config_login_type == constants.LOGIN_OAUTH:
+        for provider in services.oauth.providers.values():
+            client_id = to_save.get("config_%s_oauth_client_id" % provider.id)
+            client_secret = to_save.get("config_%s_oauth_client_secret" % provider.id)
 
-        for element in oauthblueprints:
-            if to_save["config_"+str(element['id'])+"_oauth_client_id"] \
-               and to_save["config_"+str(element['id'])+"_oauth_client_secret"]:
-                active_oauths += 1
-                element["active"] = 1
-                ub.session.query(ub.OAuthProvider).filter(ub.OAuthProvider.id == element['id']).update(
-                    {"oauth_client_id":to_save["config_"+str(element['id'])+"_oauth_client_id"],
-                    "oauth_client_secret":to_save["config_"+str(element['id'])+"_oauth_client_secret"],
-                    "active":1})
-                if to_save["config_" + str(element['id']) + "_oauth_client_id"] != element['oauth_client_id'] \
-                    or to_save["config_" + str(element['id']) + "_oauth_client_secret"] != element['oauth_client_secret']:
-                    reboot_required = True
-                    element['oauth_client_id'] = to_save["config_"+str(element['id'])+"_oauth_client_id"]
-                    element['oauth_client_secret'] = to_save["config_"+str(element['id'])+"_oauth_client_secret"]
-            else:
-                ub.session.query(ub.OAuthProvider).filter(ub.OAuthProvider.id == element['id']).update(
-                    {"active":0})
-                element["active"] = 0
+            if client_id is not None and client_secret is not None:
+                if client_id != provider.client_id or client_secret != provider.client_secret:
+                    provider.set_credentials(client_id, client_secret)
+                    query = ub.session.query(ub.OAuthProvider).filter_by(provider_name=provider.id)
+                    query.update({"oauth_client_id":client_id,
+                                  "oauth_client_secret":client_secret,
+                                  "active":provider.active})
 
     _config_int("config_log_level")
     _config_string("config_logfile")
@@ -420,7 +404,7 @@ def _configuration_result(error_flash=None, gdriveError=None):
         flash(_(error_flash), category="error")
         show_login_button = False
 
-    return render_title_template("config_edit.html", config=config, provider=oauthblueprints,
+    return render_title_template("config_edit.html", config=config,
                                  show_back_button=show_back_button, show_login_button=show_login_button,
                                  show_authenticate_google_drive=gdrive_authenticate,
                                  gdriveError=gdriveError, gdrivefolders=gdrivefolders, feature_support=feature_support,
@@ -434,6 +418,7 @@ def new_user():
     content = ub.User()
     languages = speaking_language()
     translations = [LC('en')] + babel.list_translations()
+
     if request.method == "POST":
         to_save = request.form.to_dict()
         content.default_language = to_save["default_language"]
@@ -449,7 +434,7 @@ def new_user():
         if not to_save["nickname"] or not to_save["email"] or not to_save["password"]:
             flash(_(u"Please fill out all fields!"), category="error")
             return render_title_template("user_edit.html", new_user=1, content=content, translations=translations,
-                                         registered_oauth=oauth_check, title=_(u"Add new user"))
+                                         title=_(u"Add new user"))
         content.password = generate_password_hash(to_save["password"])
         existing_user = ub.session.query(ub.User).filter(func.lower(ub.User.nickname) == to_save["nickname"].lower())\
             .first()
@@ -460,14 +445,13 @@ def new_user():
             if config.config_public_reg and not check_valid_domain(to_save["email"]):
                 flash(_(u"E-mail is not from valid domain"), category="error")
                 return render_title_template("user_edit.html", new_user=1, content=content, translations=translations,
-                                             registered_oauth=oauth_check, title=_(u"Add new user"))
+                                             title=_(u"Add new user"))
             else:
                 content.email = to_save["email"]
         else:
             flash(_(u"Found an existing account for this e-mail address or nickname."), category="error")
             return render_title_template("user_edit.html", new_user=1, content=content, translations=translations,
-                                     languages=languages, title=_(u"Add new user"), page="newuser",
-                                     registered_oauth=oauth_check)
+                                     languages=languages, title=_(u"Add new user"), page="newuser")
         try:
             ub.session.add(content)
             ub.session.commit()
@@ -481,8 +465,7 @@ def new_user():
         content.sidebar_view = config.config_default_show
         content.mature_content = bool(config.config_default_show & constants.MATURE_CONTENT)
     return render_title_template("user_edit.html", new_user=1, content=content, translations=translations,
-                                 languages=languages, title=_(u"Add new user"), page="newuser",
-                                 registered_oauth=oauth_check)
+                                 languages=languages, title=_(u"Add new user"), page="newuser")
 
 
 @admi.route("/admin/mailsettings")
@@ -537,6 +520,7 @@ def edit_user(user_id):
     downloads = list()
     languages = speaking_language()
     translations = babel.list_translations() + [LC('en')]
+
     for book in content.downloads:
         downloadbook = db.session.query(db.Books).filter(db.Books.id == book.book_id).first()
         if downloadbook:
@@ -555,53 +539,55 @@ def edit_user(user_id):
                 ub.session.commit()
                 flash(_(u"User '%(nick)s' deleted", nick=content.nickname), category="success")
                 return redirect(url_for('admin.admin'))
-            else:
-                flash(_(u"No admin user remaining, can't delete user", nick=content.nickname), category="error")
-                return redirect(url_for('admin.admin'))
+            flash(_(u"No admin user remaining, can't delete user", nick=content.nickname), category="error")
+            return redirect(url_for('admin.admin'))
+
+        new_password = to_save.get("password")
+        if new_password:
+            content.password = generate_password_hash(new_password)
+
+        anonymous = content.is_anonymous
+        content.role = constants.selected_roles(to_save)
+        if anonymous:
+            content.role |= constants.ROLE_ANONYMOUS
         else:
-            if "password" in to_save and to_save["password"]:
-                content.password = generate_password_hash(to_save["password"])
+            content.role &= ~constants.ROLE_ANONYMOUS
 
-            anonymous = content.is_anonymous
-            content.role = constants.selected_roles(to_save)
-            if anonymous:
-                content.role |= constants.ROLE_ANONYMOUS
-            else:
-                content.role &= ~constants.ROLE_ANONYMOUS
+        val = [int(k[5:]) for k in to_save if k.startswith('show_')]
+        sidebar = ub.get_sidebar_config()
+        for element in sidebar:
+            value = element['visibility']
+            if value in val and not content.check_visibility(value):
+                content.sidebar_view |= value
+            elif not value in val and content.check_visibility(value):
+                content.sidebar_view &= ~value
 
-            val = [int(k[5:]) for k in to_save if k.startswith('show_')]
-            sidebar = ub.get_sidebar_config()
-            for element in sidebar:
-                value = element['visibility']
-                if value in val and not content.check_visibility(value):
-                    content.sidebar_view |= value
-                elif not value in val and content.check_visibility(value):
-                    content.sidebar_view &= ~value
+        if "Show_detail_random" in to_save:
+            content.sidebar_view |= constants.DETAIL_RANDOM
+        else:
+            content.sidebar_view &= ~constants.DETAIL_RANDOM
 
-            if "Show_detail_random" in to_save:
-                content.sidebar_view |= constants.DETAIL_RANDOM
-            else:
-                content.sidebar_view &= ~constants.DETAIL_RANDOM
+        content.mature_content = "Show_mature_content" in to_save
 
-            content.mature_content = "Show_mature_content" in to_save
+        if "default_language" in to_save:
+            content.default_language = to_save["default_language"]
+        if "locale" in to_save and to_save["locale"]:
+            content.locale = to_save["locale"]
 
-            if "default_language" in to_save:
-                content.default_language = to_save["default_language"]
-            if "locale" in to_save and to_save["locale"]:
-                content.locale = to_save["locale"]
-            if to_save["email"] and to_save["email"] != content.email:
-                existing_email = ub.session.query(ub.User).filter(ub.User.email == to_save["email"].lower()) \
-                    .first()
-                if not existing_email:
-                    content.email = to_save["email"]
-                else:
-                    flash(_(u"Found an existing account for this e-mail address."), category="error")
-                    return render_title_template("user_edit.html", translations=translations, languages=languages,
-                                                 new_user=0, content=content, downloads=downloads, registered_oauth=oauth_check,
-                                                 title=_(u"Edit User %(nick)s", nick=content.nickname), page="edituser")
+        new_email = to_save.get("email")
+        if new_email and new_email != content.email:
+            email_already_exists = ub.session.query(ub.User).filter(ub.User.email == new_email.lower()).first()
+            if email_already_exists:
+                flash(_(u"Found an existing account for this e-mail address."), category="error")
+                return render_title_template("user_edit.html", translations=translations, languages=languages,
+                                             new_user=0, content=content, downloads=downloads,
+                                             title=_(u"Edit User %(nick)s", nick=content.nickname), page="edituser")
+            content.email = new_email
 
-            if "kindle_mail" in to_save and to_save["kindle_mail"] != content.kindle_mail:
-                content.kindle_mail = to_save["kindle_mail"]
+        kindle_mail = to_save.get("kindle_mail")
+        if kindle_mail and kindle_mail != content.kindle_mail:
+            content.kindle_mail = kindle_mail
+
         try:
             ub.session.commit()
             flash(_(u"User '%(nick)s' updated", nick=content.nickname), category="success")
@@ -609,7 +595,7 @@ def edit_user(user_id):
             ub.session.rollback()
             flash(_(u"An unknown error occured."), category="error")
     return render_title_template("user_edit.html", translations=translations, languages=languages, new_user=0,
-                                 content=content, downloads=downloads, registered_oauth=oauth_check,
+                                 content=content, downloads=downloads,
                                  title=_(u"Edit User %(nick)s", nick=content.nickname), page="edituser")
 
 
