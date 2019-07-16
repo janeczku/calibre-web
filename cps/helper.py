@@ -60,7 +60,7 @@ try:
 except ImportError:
     use_PIL = False
 
-from . import logger, config, global_WorkerThread, get_locale, db, ub, isoLanguages
+from . import logger, config, get_locale, db, ub, isoLanguages, worker
 from . import gdriveutils as gd
 from .constants import STATIC_DIR as _STATIC_DIR
 from .pagination import Pagination
@@ -112,7 +112,7 @@ def convert_book_format(book_id, calibrepath, old_book_format, new_book_format, 
         text = (u"%s -> %s: %s" % (old_book_format, new_book_format, book.title))
         settings['old_book_format'] = old_book_format
         settings['new_book_format'] = new_book_format
-        global_WorkerThread.add_convert(file_path, book.id, user_id, text, settings, kindle_mail)
+        worker.add_convert(file_path, book.id, user_id, text, settings, kindle_mail)
         return None
     else:
         error_message = _(u"%(format)s not found: %(fn)s",
@@ -121,9 +121,9 @@ def convert_book_format(book_id, calibrepath, old_book_format, new_book_format, 
 
 
 def send_test_mail(kindle_mail, user_name):
-    global_WorkerThread.add_email(_(u'Calibre-Web test e-mail'),None, None, config.get_mail_settings(),
-                                  kindle_mail, user_name, _(u"Test e-mail"),
-                                  _(u'This e-mail has been sent via Calibre-Web.'))
+    worker.add_email(_(u'Calibre-Web test e-mail'), None, None,
+                     config.get_mail_settings(), kindle_mail, user_name,
+                     _(u"Test e-mail"), _(u'This e-mail has been sent via Calibre-Web.'))
     return
 
 
@@ -138,8 +138,9 @@ def send_registration_mail(e_mail, user_name, default_password, resend=False):
     text += "Don't forget to change your password after first login.\r\n"
     text += "Sincerely\r\n\r\n"
     text += "Your Calibre-Web team"
-    global_WorkerThread.add_email(_(u'Get Started with Calibre-Web'),None, None, config.get_mail_settings(),
-                                  e_mail, None, _(u"Registration e-mail for user: %(name)s", name=user_name), text)
+    worker.add_email(_(u'Get Started with Calibre-Web'), None, None,
+                     config.get_mail_settings(), e_mail, None,
+                     _(u"Registration e-mail for user: %(name)s", name=user_name), text)
     return
 
 
@@ -207,15 +208,15 @@ def send_mail(book_id, book_format, convert, kindle_mail, calibrepath, user_id):
     if convert:
         # returns None if success, otherwise errormessage
         return convert_book_format(book_id, calibrepath, u'epub', book_format.lower(), user_id, kindle_mail)
-    else:
-        for entry in iter(book.data):
-            if entry.format.upper() == book_format.upper():
-                result = entry.name + '.' + book_format.lower()
-                global_WorkerThread.add_email(_(u"Send to Kindle"), book.path, result, config.get_mail_settings(),
-                                      kindle_mail, user_id, _(u"E-mail: %(book)s", book=book.title),
-                                      _(u'This e-mail has been sent via Calibre-Web.'))
-                return
-        return _(u"The requested file could not be read. Maybe wrong permissions?")
+
+    for entry in iter(book.data):
+        if entry.format.upper() == book_format.upper():
+            converted_file_name = entry.name + '.' + book_format.lower()
+            worker.add_email(_(u"Send to Kindle"), book.path, converted_file_name,
+                             config.get_mail_settings(), kindle_mail, user_id,
+                             _(u"E-mail: %(book)s", book=book.title), _(u'This e-mail has been sent via Calibre-Web.'))
+            return
+    return _(u"The requested file could not be read. Maybe wrong permissions?")
 
 
 def get_valid_filename(value, replace_whitespace=True):
@@ -232,7 +233,7 @@ def get_valid_filename(value, replace_whitespace=True):
         value = value.replace(u'§', u'SS')
         value = value.replace(u'ß', u'ss')
         value = unicodedata.normalize('NFKD', value)
-        re_slugify = re.compile('[\W\s-]', re.UNICODE)
+        re_slugify = re.compile(r'[\W\s-]', re.UNICODE)
         if isinstance(value, str):  # Python3 str, Python2 unicode
             value = re_slugify.sub('', value).strip()
         else:
@@ -254,7 +255,7 @@ def get_valid_filename(value, replace_whitespace=True):
 def get_sorted_author(value):
     try:
         if ',' not in value:
-            regexes = ["^(JR|SR)\.?$", "^I{1,3}\.?$", "^IV\.?$"]
+            regexes = [r"^(JR|SR)\.?$", r"^I{1,3}\.?$", r"^IV\.?$"]
             combined = "(" + ")|(".join(regexes) + ")"
             value = value.split(" ")
             if re.match(combined, value[-1].upper()):
