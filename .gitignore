@@ -14,6 +14,7 @@ build/
 *.egg-info/
 .installed.cfg
 *.egg
+.pylint.d
 
 # calibre-web
 *.db

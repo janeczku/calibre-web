@@ -30,12 +30,12 @@ from uuid import uuid4
 
 from flask import Blueprint, request, flash, redirect, url_for, abort, Markup, Response
 from flask_babel import gettext as _
-from flask_login import current_user
+from flask_login import current_user, login_required
 
 from . import constants, logger, isoLanguages, gdriveutils, uploader, helper
-from . import config, get_locale, db, ub, global_WorkerThread
+from . import config, get_locale, db, ub, worker
 from .helper import order_authors, common_filters
-from .web import login_required_if_no_ano, render_title_template, edit_required, upload_required, login_required
+from .web import login_required_if_no_ano, render_title_template, edit_required, upload_required
 
 
 editbook = Blueprint('editbook', __name__)
@@ -358,7 +358,7 @@ def upload_single_file(request, book, book_id):
 
             # Queue uploader info
             uploadText=_(u"File format %(ext)s added to %(book)s", ext=file_ext.upper(), book=book.title)
-            global_WorkerThread.add_upload(current_user.nickname,
+            worker.add_upload(current_user.nickname,
                 "<a href=\"" + url_for('web.show_book', book_id=book.id) + "\">" + uploadText + "</a>")
 
 
@@ -667,7 +667,7 @@ def upload():
             if error:
                 flash(error, category="error")
             uploadText=_(u"File %(file)s uploaded", file=book.title)
-            global_WorkerThread.add_upload(current_user.nickname,
+            worker.add_upload(current_user.nickname,
                 "<a href=\"" + url_for('web.show_book', book_id=book.id) + "\">" + uploadText + "</a>")
 
             # create data for displaying display Full language name instead of iso639.part3language
