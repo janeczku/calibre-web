@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 #  This file is part of the Calibre-Web (https://github.com/janeczku/calibre-web)
@@ -301,7 +300,7 @@ def edit_cc_data(book_id, book, to_save):
                     # remove old cc_val
                     del_cc = getattr(book, cc_string)[0]
                     getattr(book, cc_string).remove(del_cc)
-                    if len(del_cc.books) == 0:
+                    if not del_cc.books or len(del_cc.books) == 0:
                         db.session.delete(del_cc)
         else:
             input_tags = to_save[cc_string].split(',')
