@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 #  This file is part of the Calibre-Web (https://github.com/janeczku/calibre-web)
@@ -25,7 +24,7 @@ import smtplib
 import socket
 import time
 import threading
-from datetime import datetime, timedelta
+from datetime import datetime
 
 try:
     from StringIO import StringIO
@@ -64,6 +63,13 @@ TASK_CONVERT_ANY = 4
 
 RET_FAIL = 0
 RET_SUCCESS = 1
+
+
+def _get_main_thread():
+    for t in threading.enumerate():
+        if t.__class__.__name__ == '_MainThread':
+            return t
+    raise Exception("main thread not found?!")
 
 
 # For gdrive download book from gdrive to calibredir (temp dir for books), read contents in both cases and append
@@ -173,19 +179,19 @@ class email_SSL(emailbase, smtplib.SMTP_SSL):
 class WorkerThread(threading.Thread):
 
     def __init__(self):
-        self._stopevent = threading.Event()
         threading.Thread.__init__(self)
         self.status = 0
         self.current = 0
         self.last = 0
         self.queue = list()
         self.UIqueue = list()
-        self.asyncSMTP=None
+        self.asyncSMTP = None
         self.id = 0
 
     # Main thread loop starting the different tasks
     def run(self):
-        while not self._stopevent.isSet():
+        main_thread = _get_main_thread()
+        while main_thread.is_alive():
             doLock = threading.Lock()
             doLock.acquire()
             if self.current != self.last:
@@ -200,10 +206,8 @@ class WorkerThread(threading.Thread):
                 self.current += 1
             else:
                 doLock.release()
-            time.sleep(1)
-
-    def stop(self):
-        self._stopevent.set()
+            if main_thread.is_alive():
+                time.sleep(1)
 
     def get_send_status(self):
         if self.asyncSMTP:
@@ -317,7 +321,7 @@ class WorkerThread(threading.Thread):
             nextline = p.communicate()[0]
             # Format of error message (kindlegen translates its output texts):
             # Error(prcgen):E23006: Language not recognized in metadata.The dc:Language field is mandatory.Aborting.
-            conv_error = re.search(".*\(.*\):(E\d+):\s(.*)", nextline, re.MULTILINE)
+            conv_error = re.search(r".*\(.*\):(E\d+):\s(.*)", nextline, re.MULTILINE)
             # If error occoures, store error message for logfile
             if conv_error:
                 error_message = _(u"Kindlegen failed with Error %(error)s. Message: %(message)s",
@@ -332,7 +336,7 @@ class WorkerThread(threading.Thread):
                     nextline = nextline.decode('utf-8')
                 log.debug(nextline.strip('\r\n'))
                 # parse progress string from calibre-converter
-                progress = re.search("(\d+)%\s.*", nextline)
+                progress = re.search(r"(\d+)%\s.*", nextline)
                 if progress:
                     self.UIqueue[self.current]['progress'] = progress.group(1) + ' %'
 
@@ -511,3 +515,23 @@ class WorkerThread(threading.Thread):
         self.UIqueue[self.current]['stat'] = STAT_FINISH_SUCCESS
         self.UIqueue[self.current]['progress'] = "100 %"
         self.UIqueue[self.current]['formRuntime'] = datetime.now() - self.queue[self.current]['starttime']
+
+
+_worker = WorkerThread()
+_worker.start()
+
+
+def get_taskstatus():
+    return _worker.get_taskstatus()
+
+
+def add_email(subject, filepath, attachment, settings, recipient, user_name, taskMessage, text):
+    return _worker.add_email(subject, filepath, attachment, settings, recipient, user_name, taskMessage, text)
+
+
+def add_upload(user_name, taskMessage):
+    return _worker.add_upload(user_name, taskMessage)
+
+
+def add_convert(file_path, bookid, user_name, taskMessage, settings, kindle_mail=None):
+    return _worker.add_convert(file_path, bookid, user_name, taskMessage, settings, kindle_mail)

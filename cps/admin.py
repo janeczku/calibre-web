@@ -27,10 +27,6 @@ import base64
 import json
 import time
 from datetime import datetime, timedelta
-# try:
-#     from imp import reload
-# except ImportError:
-#     pass
 
 from babel import Locale as LC
 from babel.dates import format_datetime

@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 #  This file is part of the Calibre-Web (https://github.com/janeczku/calibre-web)
@@ -407,20 +406,18 @@ def setup_db(config):
 def dispose():
     global session
 
-    engine = None
-    if session:
-        engine = session.bind
-        try: session.close()
+    old_session = session
+    session = None
+    if old_session:
+        try: old_session.close()
         except: pass
-        session = None
-
-    if engine:
-        try: engine.dispose()
-        except: pass
+        if old_session.bind:
+            try: old_session.bind.dispose()
+            except: pass
 
     for attr in list(Books.__dict__.keys()):
         if attr.startswith("custom_column_"):
-            delattr(Books, attr)
+            setattr(Books, attr, None)
 
     for db_class in cc_classes.values():
         Base.metadata.remove(db_class.__table__)

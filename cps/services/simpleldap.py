@@ -29,10 +29,7 @@ _ldap = LDAP()
 
 
 def init_app(app, config):
-    global _ldap
-
     if config.config_login_type != constants.LOGIN_LDAP:
-        _ldap = None
         return
 
     app.config['LDAP_HOST'] = config.config_ldap_provider_url
