@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 #   This file is part of the Calibre-Web (https://github.com/janeczku/calibre-web)
@@ -136,4 +135,3 @@ NIGHTLY_VERSION[1] = '$Format:%cI$'
 
 # clean-up the module namespace
 del sys, os, namedtuple
-

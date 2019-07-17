@@ -147,9 +147,6 @@ class _ConfigSQL(object):
     def get_config_ipaddress(self):
         return cli.ipadress or ""
 
-    def get_ipaddress_type(self):
-        return cli.ipv6
-
     def _has_role(self, role_flag):
         return constants.has_flag(self.config_default_role, role_flag)
 
@@ -236,8 +233,14 @@ class _ConfigSQL(object):
 
         if self.config_google_drive_watch_changes_response:
             self.config_google_drive_watch_changes_response = json.loads(self.config_google_drive_watch_changes_response)
-        self.db_configured = (self.config_calibre_dir and
-                (not self.config_use_google_drive or os.path.exists(self.config_calibre_dir + '/metadata.db')))
+
+        have_metadata_db = bool(self.config_calibre_dir)
+        if have_metadata_db:
+            if not self.config_use_google_drive:
+                db_file = os.path.join(self.config_calibre_dir, 'metadata.db')
+                have_metadata_db = os.path.isfile(db_file)
+        self.db_configured = have_metadata_db
+
         logger.setup(self.config_logfile, self.config_log_level)
 
     def save(self):
@@ -274,6 +277,7 @@ def _migrate_table(session, orm_class):
                 log.debug("%s: %s", column_name, err)
                 column_default = "" if column.default is None else ("DEFAULT %r" % column.default.arg)
                 alter_table = "ALTER TABLE %s ADD COLUMN `%s` %s %s" % (orm_class.__tablename__, column_name, column.type, column_default)
+                log.debug(alter_table)
                 session.execute(alter_table)
                 changed = True
 

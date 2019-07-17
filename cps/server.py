@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 #  This file is part of the Calibre-Web (https://github.com/janeczku/calibre-web)
@@ -28,23 +27,30 @@ try:
     from gevent.pywsgi import WSGIServer
     from gevent.pool import Pool
     from gevent import __version__ as _version
-    VERSION = {'Gevent': 'v' + _version}
+    VERSION = 'Gevent ' + _version
     _GEVENT = True
 except ImportError:
     from tornado.wsgi import WSGIContainer
     from tornado.httpserver import HTTPServer
     from tornado.ioloop import IOLoop
     from tornado import version as _version
-    VERSION = {'Tornado': 'v' + _version}
+    VERSION = 'Tornado ' + _version
     _GEVENT = False
 
-from . import logger, global_WorkerThread
+from . import logger
 
 
 log = logger.create()
 
 
-class WebServer:
+
+def _readable_listen_address(address, port):
+    if ':' in address:
+        address = "[" + address + "]"
+    return '%s:%s' % (address, port)
+
+
+class WebServer(object):
 
     def __init__(self):
         signal.signal(signal.SIGINT, self._killServer)
@@ -56,14 +62,12 @@ class WebServer:
         self.app = None
         self.listen_address = None
         self.listen_port = None
-        self.IPV6 = False
         self.unix_socket_file = None
         self.ssl_args = None
 
     def init_app(self, application, config):
         self.app = application
         self.listen_address = config.get_config_ipaddress()
-        self.IPV6 = config.get_ipaddress_type()
         self.listen_port = config.config_port
 
         if config.config_access_log:
@@ -78,8 +82,7 @@ class WebServer:
         keyfile_path = config.get_config_keyfile()
         if certfile_path and keyfile_path:
             if os.path.isfile(certfile_path) and os.path.isfile(keyfile_path):
-                self.ssl_args = {"certfile": certfile_path,
-                                  "keyfile": keyfile_path}
+                self.ssl_args = dict(certfile=certfile_path, keyfile=keyfile_path)
             else:
                 log.warning('The specified paths for the ssl certificate file and/or key file seem to be broken. Ignoring ssl.')
                 log.warning('Cert path: %s', certfile_path)
@@ -107,32 +110,33 @@ class WebServer:
         if os.name != 'nt':
             unix_socket_file = os.environ.get("CALIBRE_UNIX_SOCKET")
             if unix_socket_file:
-                output = "socket:" + unix_socket_file + ":" + str(self.listen_port)
-                return self._make_gevent_unix_socket(unix_socket_file), output
+                return self._make_gevent_unix_socket(unix_socket_file), "unix:" + unix_socket_file
 
         if self.listen_address:
-            return (self.listen_address, self.listen_port), self._get_readable_listen_address()
+            return (self.listen_address, self.listen_port), None
 
         if os.name == 'nt':
             self.listen_address = '0.0.0.0'
-            return (self.listen_address, self.listen_port), self._get_readable_listen_address()
+            return (self.listen_address, self.listen_port), None
 
-        address = ('', self.listen_port)
         try:
+            address = ('::', self.listen_port)
             sock = WSGIServer.get_listener(address, family=socket.AF_INET6)
-            output = self._get_readable_listen_address(True)
         except socket.error as ex:
             log.error('%s', ex)
             log.warning('Unable to listen on "", trying on IPv4 only...')
-            output = self._get_readable_listen_address(False)
+            address = ('', self.listen_port)
             sock = WSGIServer.get_listener(address, family=socket.AF_INET)
-        return sock, output
+
+        return sock, _readable_listen_address(*address)
 
     def _start_gevent(self):
         ssl_args = self.ssl_args or {}
 
         try:
             sock, output = self._make_gevent_socket()
+            if output is None:
+                output = _readable_listen_address(self.listen_address, self.listen_port)
             log.info('Starting Gevent server on %s', output)
             self.wsgiserver = WSGIServer(sock, self.app, log=self.access_logger, spawn=Pool(), **ssl_args)
             self.wsgiserver.serve_forever()
@@ -142,29 +146,17 @@ class WebServer:
                 self.unix_socket_file = None
 
     def _start_tornado(self):
-        log.info('Starting Tornado server on %s', self._get_readable_listen_address())
+        log.info('Starting Tornado server on %s', _readable_listen_address(self.listen_address, self.listen_port))
 
         # Max Buffersize set to 200MB            )
         http_server = HTTPServer(WSGIContainer(self.app),
-                    max_buffer_size = 209700000,
-                    ssl_options=self.ssl_args)
+                                 max_buffer_size=209700000,
+                                 ssl_options=self.ssl_args)
         http_server.listen(self.listen_port, self.listen_address)
-        self.wsgiserver=IOLoop.instance()
+        self.wsgiserver = IOLoop.instance()
         self.wsgiserver.start()
         # wait for stop signal
         self.wsgiserver.close(True)
-
-    def _get_readable_listen_address(self, ipV6=False):
-        if self.listen_address == "":
-            listen_string = '""'
-        else:
-            ipV6 = self.IPV6
-            listen_string = self.listen_address
-        if ipV6:
-            adress = "[" + listen_string + "]"
-        else:
-            adress = listen_string
-        return adress + ":" + str(self.listen_port)
 
     def start(self):
         try:
@@ -179,7 +171,6 @@ class WebServer:
             return False
         finally:
             self.wsgiserver = None
-            global_WorkerThread.stop()
 
         if not self.restart:
             log.info("Performing shutdown of Calibre-Web")
@@ -193,7 +184,7 @@ class WebServer:
         os.execv(sys.executable, arguments)
         return True
 
-    def _killServer(self, signum, frame):
+    def _killServer(self, ignored_signum, ignored_frame):
         self.stop()
 
     def stop(self, restart=False):

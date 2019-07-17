@@ -41,8 +41,8 @@ from werkzeug.exceptions import default_exceptions
 from werkzeug.datastructures import Headers
 from werkzeug.security import generate_password_hash, check_password_hash
 
-from . import constants, logger, isoLanguages, services
-from . import global_WorkerThread, searched_ids, lm, babel, db, ub, config, negociate_locale, get_locale, app
+from . import constants, logger, isoLanguages, services, worker
+from . import searched_ids, lm, babel, db, ub, config, negociate_locale, get_locale, app
 from .gdriveutils import getFileFromEbooksFolder, do_gdrive_download
 from .helper import common_filters, get_search_results, fill_indexpage, speaking_language, check_valid_domain, \
         order_authors, get_typeahead, render_task_status, json_serial, get_cc_columns, \
@@ -245,7 +245,7 @@ def before_request():
 @web.route("/ajax/emailstat")
 @login_required
 def get_email_status_json():
-    tasks = global_WorkerThread.get_taskstatus()
+    tasks = worker.get_taskstatus()
     answer = render_task_status(tasks)
     js = json.dumps(answer, default=json_serial)
     response = make_response(js)
@@ -760,7 +760,7 @@ def category_list():
 @login_required
 def get_tasks_status():
     # if current user admin, show all email, otherwise only own emails
-    tasks = global_WorkerThread.get_taskstatus()
+    tasks = worker.get_taskstatus()
     answer = render_task_status(tasks)
     return render_title_template('tasks.html', entries=answer, title=_(u"Tasks"), page="tasks")
 
