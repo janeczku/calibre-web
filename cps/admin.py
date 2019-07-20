@@ -56,10 +56,11 @@ feature_support = {
 #     feature_support['rar'] = False
 
 try:
-    from .oauth_bb import oauth_check
+    from .oauth_bb import oauth_check, oauthblueprints
     feature_support['oauth'] = True
 except ImportError:
     feature_support['oauth'] = False
+    oauthblueprints = []
     oauth_check = {}
 
 
@@ -410,7 +411,7 @@ def _configuration_result(error_flash=None, gdriveError=None):
         flash(_(error_flash), category="error")
         show_login_button = False
 
-    return render_title_template("config_edit.html", config=config,
+    return render_title_template("config_edit.html", config=config, provider=oauthblueprints,
                                  show_back_button=show_back_button, show_login_button=show_login_button,
                                  show_authenticate_google_drive=gdrive_authenticate,
                                  gdriveError=gdriveError, gdrivefolders=gdrivefolders, feature_support=feature_support,

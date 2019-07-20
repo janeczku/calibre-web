@@ -45,7 +45,7 @@ oauth = Blueprint('oauth', __name__)
 log = logger.create()
 
 
-def github_oauth_required(f):
+'''def github_oauth_required(f):
     @wraps(f)
     def inner(*args, **kwargs):
         if config.config_login_type == constants.LOGIN_OAUTH_GITHUB:
@@ -64,6 +64,21 @@ def google_oauth_required(f):
     @wraps(f)
     def inner(*args, **kwargs):
         if config.config_use_google_oauth == constants.LOGIN_OAUTH_GOOGLE:
+            return f(*args, **kwargs)
+        if request.is_xhr:
+            data = {'status': 'error', 'message': 'Not Found'}
+            response = make_response(json.dumps(data, ensure_ascii=False))
+            response.headers["Content-Type"] = "application/json; charset=utf-8"
+            return response, 404
+        abort(404)
+
+    return inner'''
+
+
+def oauth_required(f):
+    @wraps(f)
+    def inner(*args, **kwargs):
+        if config.config_oauth_provider:
             return f(*args, **kwargs)
         if request.is_xhr:
             data = {'status': 'error', 'message': 'Not Found'}
@@ -115,10 +130,62 @@ def logout_oauth_user():
             session.pop(oauth + '_oauth_user_id')
 
 if ub.oauth_support:
-    github_blueprint = make_github_blueprint(
+    oauthblueprints =[]
+    if not ub.session.query(ub.OAuthProvider).count():
+        oauth = ub.OAuthProvider()
+        oauth.provider_name = "github"
+        oauth.active = False
+        ub.session.add(oauth)
+        ub.session.commit()
+        oauth = ub.OAuthProvider()
+        oauth.provider_name = "google"
+        oauth.active = False
+        ub.session.add(oauth)
+        ub.session.commit()
+        '''new_scope = ub.OAuthScope(provider_id=oauth.id, scope="https://www.googleapis.com/auth/plus.me")
+        ub.session.add(new_scope)
+        ub.session.commit()
+        new_scope = ub.OAuthScope(provider_id=oauth.id, scope="https://www.googleapis.com/auth/userinfo.email")
+        ub.session.add(new_scope)
+        ub.session.commit()'''
+
+    ele1=dict(provider_name='Github',
+              active=False,
+              oauth_client_id=None,
+              scope=None,
+              oauth_client_secret=None,
+              obtain_link='https://github.com/settings/developers')
+    ele2=dict(provider_name='Google',
+              active=False,
+              scope=["https://www.googleapis.com/auth/plus.me", "https://www.googleapis.com/auth/userinfo.email"],
+              oauth_client_id=None,
+              oauth_client_secret=None,
+              obtain_link='https://github.com/settings/developers')
+    oauthblueprints.append(ele1)
+    oauthblueprints.append(ele2)
+
+    for element in oauthblueprints:
+        if element['provider_name'] == 'Github':
+            blueprint_func = make_github_blueprint
+        else:
+            blueprint_func = make_google_blueprint
+        blueprint = blueprint_func(
+            client_id=element['oauth_client_id'],
+            client_secret=element['oauth_client_secret'],
+            redirect_to="oauth."+element['provider_name']+"_login",
+            scope = element['scope']
+        )
+        element['blueprint']=blueprint
+        app.register_blueprint(blueprint, url_prefix="/login")
+        element['blueprint'].backend = OAuthBackend(ub.OAuth, ub.session, user=current_user, user_required=True)
+        if element['active']:
+            register_oauth_blueprint(element['blueprint'], element['provider_name'])
+
+
+    '''github_blueprint = make_github_blueprint(
         client_id=config.config_github_oauth_client_id,
         client_secret=config.config_github_oauth_client_secret,
-        redirect_to="oauth.github_login",)
+        redirect_to="oauth.github_login")
 
     google_blueprint = make_google_blueprint(
         client_id=config.config_google_oauth_client_id,
@@ -134,16 +201,15 @@ if ub.oauth_support:
     app.register_blueprint(github_blueprint, url_prefix='/login')
 
     github_blueprint.backend = OAuthBackend(ub.OAuth, ub.session, user=current_user, user_required=True)
-    google_blueprint.backend = OAuthBackend(ub.OAuth, ub.session, user=current_user, user_required=True)
+    google_blueprint.backend = OAuthBackend(ub.OAuth, ub.session, user=current_user, user_required=True)'''
 
-
-    if config.config_login_type == constants.LOGIN_OAUTH_GITHUB:
+    '''if config.config_login_type == constants.LOGIN_OAUTH_GITHUB:
         register_oauth_blueprint(github_blueprint, 'GitHub')
     if config.config_login_type == constants.LOGIN_OAUTH_GOOGLE:
-        register_oauth_blueprint(google_blueprint, 'Google')
+        register_oauth_blueprint(google_blueprint, 'Google')'''
 
 
-    @oauth_authorized.connect_via(github_blueprint)
+    @oauth_authorized.connect_via(oauthblueprints[0]['blueprint'])
     def github_logged_in(blueprint, token):
         if not token:
             flash(_(u"Failed to log in with GitHub."), category="error")
@@ -159,7 +225,7 @@ if ub.oauth_support:
         return oauth_update_token(blueprint, token, github_user_id)
 
 
-    @oauth_authorized.connect_via(google_blueprint)
+    @oauth_authorized.connect_via(oauthblueprints[1]['blueprint'])
     def google_logged_in(blueprint, token):
         if not token:
             flash(_(u"Failed to log in with Google."), category="error")
@@ -278,7 +344,7 @@ if ub.oauth_support:
 
 
     # notify on OAuth provider error
-    @oauth_error.connect_via(github_blueprint)
+    @oauth_error.connect_via(oauthblueprints[0]['blueprint'])
     def github_error(blueprint, error, error_description=None, error_uri=None):
         msg = (
             u"OAuth error from {name}! "
@@ -293,14 +359,14 @@ if ub.oauth_support:
 
 
     @oauth.route('/github')
-    @github_oauth_required
+    @oauth_required
     def github_login():
         if not github.authorized:
             return redirect(url_for('github.login'))
         account_info = github.get('/user')
         if account_info.ok:
             account_info_json = account_info.json()
-            return bind_oauth_or_register(github_blueprint.name, account_info_json['id'], 'github.login')
+            return bind_oauth_or_register(oauthblueprints[0]['blueprint'].name, account_info_json['id'], 'github.login')
         flash(_(u"GitHub Oauth error, please retry later."), category="error")
         return redirect(url_for('web.login'))
 
@@ -308,23 +374,23 @@ if ub.oauth_support:
     @oauth.route('/unlink/github', methods=["GET"])
     @login_required
     def github_login_unlink():
-        return unlink_oauth(github_blueprint.name)
+        return unlink_oauth(oauthblueprints[0]['blueprint'].name)
 
 
     @oauth.route('/login/google')
-    @google_oauth_required
+    @oauth_required
     def google_login():
         if not google.authorized:
             return redirect(url_for("google.login"))
         resp = google.get("/oauth2/v2/userinfo")
         if resp.ok:
             account_info_json = resp.json()
-            return bind_oauth_or_register(google_blueprint.name, account_info_json['id'], 'google.login')
+            return bind_oauth_or_register(oauthblueprints[1]['blueprint'].name, account_info_json['id'], 'google.login')
         flash(_(u"Google Oauth error, please retry later."), category="error")
         return redirect(url_for('web.login'))
 
 
-    @oauth_error.connect_via(google_blueprint)
+    @oauth_error.connect_via(oauthblueprints[1]['blueprint'])
     def google_error(blueprint, error, error_description=None, error_uri=None):
         msg = (
             u"OAuth error from {name}! "
@@ -341,4 +407,4 @@ if ub.oauth_support:
     @oauth.route('/unlink/google', methods=["GET"])
     @login_required
     def google_login_unlink():
-        return unlink_oauth(google_blueprint.name)
+        return unlink_oauth(oauthblueprints[1]['blueprint'].name)

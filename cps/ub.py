@@ -186,6 +186,26 @@ if oauth_support:
         user_id = Column(Integer, ForeignKey(User.id))
         user = relationship(User)
 
+class OAuthProvider(Base):
+    __tablename__ = 'oauthProvider'
+
+    id = Column(Integer, primary_key=True)
+    provider_name = Column(String)
+    oauth_client_id = Column(String)
+    oauth_client_secret = Column(String)
+    active = Column(Boolean)
+    # scope = relationship('OAuthScope', backref='oauthProvider')
+
+
+'''class OAuthScope(Base):
+    __tablename__ = 'oauthScope'
+    id = Column(Integer, primary_key=True)
+    scope = Column(String, unique=True)
+    provider_id = Column(Integer, ForeignKey('oauthProvider.id'))
+
+    def __repr__(self):
+        return u"{0}".format(self.scope)'''
+
 
 # Class for anonymous user is derived from User base and completly overrides methods and properties for the
 # anonymous user
