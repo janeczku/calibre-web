@@ -33,7 +33,7 @@ import requests
 from babel.dates import format_datetime
 from flask_babel import gettext as _
 
-from . import constants, logger, config, get_locale, web_server
+from . import constants, logger, config, web_server
 
 
 log = logger.create()
@@ -62,10 +62,10 @@ class Updater(threading.Thread):
             return self._stable_version_info()
         return self._nightly_version_info()
 
-    def get_available_updates(self, request_method):
+    def get_available_updates(self, request_method, locale):
         if config.config_updatechannel == constants.UPDATE_STABLE:
             return self._stable_available_updates(request_method)
-        return self._nightly_available_updates(request_method)
+        return self._nightly_available_updates(request_method,locale)
 
     def run(self):
         try:
@@ -239,7 +239,7 @@ class Updater(threading.Thread):
     def _stable_version_info(cls):
         return constants.STABLE_VERSION # Current version
 
-    def _nightly_available_updates(self, request_method):
+    def _nightly_available_updates(self, request_method, locale):
         tz = datetime.timedelta(seconds=time.timezone if (time.localtime().tm_isdst == 0) else time.altzone)
         if request_method == "GET":
             repository_url = _REPOSITORY_API_URL
@@ -288,7 +288,7 @@ class Updater(threading.Thread):
                     update_data['committer']['date'], '%Y-%m-%dT%H:%M:%SZ') - tz
                 parents.append(
                     [
-                        format_datetime(new_commit_date, format='short', locale=get_locale()),
+                        format_datetime(new_commit_date, format='short', locale=locale),
                         update_data['message'],
                         update_data['sha']
                     ]
@@ -319,7 +319,7 @@ class Updater(threading.Thread):
                                     parent_commit_date = datetime.datetime.strptime(
                                         parent_data['committer']['date'], '%Y-%m-%dT%H:%M:%SZ') - tz
                                     parent_commit_date = format_datetime(
-                                        parent_commit_date, format='short', locale=get_locale())
+                                        parent_commit_date, format='short', locale=locale)
 
                                     parents.append([parent_commit_date,
                                                     parent_data['message'].replace('\r\n', '<p>').replace('\n', '<p>')])
@@ -331,7 +331,7 @@ class Updater(threading.Thread):
                             else:
                                 # parent is our current version
                                 break
-
+                status['history'] = parents[::-1]
             else:
                 status['success'] = False
                 status['message'] = _(u'Could not fetch update information')
