@@ -271,8 +271,15 @@ def _migrate_table(session, orm_class):
                 session.query(column).first()
             except exc.OperationalError as err:
                 log.debug("%s: %s", column_name, err)
+                if column.default is not None:
+                    if sys.version_info < (3, 0):
+                        if isinstance(column.default.arg,unicode):
+                            column.default.arg = column.default.arg.encode('utf-8')
                 column_default = "" if column.default is None else ("DEFAULT %r" % column.default.arg)
-                alter_table = "ALTER TABLE %s ADD COLUMN `%s` %s %s" % (orm_class.__tablename__, column_name, column.type, column_default)
+                alter_table = "ALTER TABLE %s ADD COLUMN `%s` %s %s" % (orm_class.__tablename__,
+                                                                        column_name,
+                                                                        column.type,
+                                                                        column_default)
                 log.debug(alter_table)
                 session.execute(alter_table)
                 changed = True
