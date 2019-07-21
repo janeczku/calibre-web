@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 #  This file is part of the Calibre-Web (https://github.com/janeczku/calibre-web)
@@ -134,8 +133,7 @@ def get_locale():
 @babel.timezoneselector
 def get_timezone():
     user = getattr(g, 'user', None)
-    if user is not None:
-        return user.timezone
+    return user.timezone if user else None
 
 from .updater import Updater
 updater_thread = Updater()
