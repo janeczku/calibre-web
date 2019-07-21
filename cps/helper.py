@@ -555,6 +555,7 @@ def check_unrar(unrarLocation):
     try:
         if sys.version_info < (3, 0):
             unrarLocation = unrarLocation.encode(sys.getfilesystemencoding())
+        unrarLocation = [unrarLocation]
         for lines in process_wait(unrarLocation):
             value = re.search('UNRAR (.*) freeware', lines)
             if value:
