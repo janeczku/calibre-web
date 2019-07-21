@@ -27,6 +27,8 @@ import base64
 import datetime
 import json
 import mimetypes
+import traceback
+import sys
 
 from babel import Locale as LC
 from babel.dates import format_date
@@ -83,16 +85,30 @@ except ImportError:
 # custom error page
 def error_http(error):
     return render_template('http_error.html',
-                            error_code=error.code,
+                            error_code="Error {0}".format(error.code),
                             error_name=error.name,
+                            issue=False,
                             instance=config.config_calibre_web_title
                             ), error.code
 
+
+def internal_error(error):
+    __, __, tb = sys.exc_info()
+    return render_template('http_error.html',
+                        error_code="Internal Server Error",
+                        error_name=str(error),
+                        issue=True,
+                        error_stack=traceback.format_tb(tb),
+                        instance=config.config_calibre_web_title
+                        ), 500
+
+
 # http error handling
 for ex in default_exceptions:
-    # new routine for all client errors, server errors stay
     if ex < 500:
         app.register_error_handler(ex, error_http)
+    elif ex == 500:
+         app.register_error_handler(ex, internal_error)
 
 
 web = Blueprint('web', __name__)
