@@ -344,18 +344,27 @@ def _configuration_update_helper():
     _config_int("config_updatechannel")
 
     # GitHub OAuth configuration
-    if config.config_login_type == constants.LOGIN_OAUTH_GITHUB:
-        _config_string("config_github_oauth_client_id")
-        _config_string("config_github_oauth_client_secret")
-        if not config.config_github_oauth_client_id or not config.config_github_oauth_client_secret:
-            return _configuration_result('Please enter Github oauth credentials', gdriveError)
+    if config.config_login_type == constants.LOGIN_OAUTH:
+        active_oauths = 0
 
-    # Google OAuth configuration
-    if config.config_login_type == constants.LOGIN_OAUTH_GOOGLE:
-        _config_string("config_google_oauth_client_id")
-        _config_string("config_google_oauth_client_secret")
-        if not config.config_google_oauth_client_id or not config.config_google_oauth_client_secret:
-            return _configuration_result('Please enter Google oauth credentials', gdriveError)
+        for element in oauthblueprints:
+            if to_save["config_"+str(element['id'])+"_oauth_client_id"] \
+               and to_save["config_"+str(element['id'])+"_oauth_client_secret"]:
+                active_oauths += 1
+                element["active"] = 1
+                ub.session.query(ub.OAuthProvider).filter(ub.OAuthProvider.id == element['id']).update(
+                    {"oauth_client_id":to_save["config_"+str(element['id'])+"_oauth_client_id"],
+                    "oauth_client_secret":to_save["config_"+str(element['id'])+"_oauth_client_secret"],
+                    "active":1})
+                if to_save["config_" + str(element['id']) + "_oauth_client_id"] != element['oauth_client_id'] \
+                    or to_save["config_" + str(element['id']) + "_oauth_client_secret"] != element['oauth_client_secret']:
+                    reboot_required = True
+                    element['oauth_client_id'] = to_save["config_"+str(element['id'])+"_oauth_client_id"]
+                    element['oauth_client_secret'] = to_save["config_"+str(element['id'])+"_oauth_client_secret"]
+            else:
+                ub.session.query(ub.OAuthProvider).filter(ub.OAuthProvider.id == element['id']).update(
+                    {"active":0})
+                element["active"] = 0
 
     _config_int("config_log_level")
     _config_string("config_logfile")

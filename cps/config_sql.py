@@ -84,11 +84,7 @@ class _Settings(_Base):
 
     config_login_type = Column(Integer, default=0)
 
-    config_oauth_provider = Column(Integer)
-    #config_github_oauth_client_id = Column(String)
-    #config_github_oauth_client_secret = Column(String)
-    #config_google_oauth_client_id = Column(String)
-    #config_google_oauth_client_secret = Column(String)
+    # config_oauth_provider = Column(Integer)
 
     config_ldap_provider_url = Column(String, default='localhost')
     config_ldap_port = Column(SmallInteger, default=389)
@@ -306,15 +302,6 @@ def load_configuration(session):
     _migrate_database(session)
 
     if not session.query(_Settings).count():
-        session.add(_Settings())
-        session.commit()
-
-    return _ConfigSQL(session)
-
-def load_oauth(session):
-    #_migrate_database(session)
-
-    if not session.query(OAuthProvider).count():
         session.add(_Settings())
         session.commit()
 
