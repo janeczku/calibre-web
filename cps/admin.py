@@ -663,7 +663,7 @@ def send_logfile(logtype):
 @admi.route("/get_update_status", methods=['GET'])
 @login_required_if_no_ano
 def get_update_status():
-    return updater_thread.get_available_updates(request.method)
+    return updater_thread.get_available_updates(request.method, locale=get_locale())
 
 
 @admi.route("/get_updater_status", methods=['GET', 'POST'])
