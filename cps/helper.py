@@ -71,15 +71,6 @@ from .worker import TASK_EMAIL, TASK_CONVERT, TASK_UPLOAD, TASK_CONVERT_ANY
 log = logger.create()
 
 
-# ToDo delete duplicate
-def update_download(book_id, user_id):
-    check = ub.session.query(ub.Downloads).filter(ub.Downloads.user_id == user_id).filter(ub.Downloads.book_id ==
-                                                                                          book_id).first()
-    if not check:
-        new_download = ub.Downloads(user_id=user_id, book_id=book_id)
-        ub.session.add(new_download)
-        ub.session.commit()
-
 # Convert existing book entry to new format
 def convert_book_format(book_id, calibrepath, old_book_format, new_book_format, user_id, kindle_mail=None):
     book = db.session.query(db.Books).filter(db.Books.id == book_id).first()

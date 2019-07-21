@@ -180,11 +180,13 @@ class User(UserBase, Base):
     default_language = Column(String(3), default="all")
     mature_content = Column(Boolean, default=True)
 
+
 if oauth_support:
     class OAuth(OAuthConsumerMixin, Base):
         provider_user_id = Column(String(256))
         user_id = Column(Integer, ForeignKey(User.id))
         user = relationship(User)
+
 
 class OAuthProvider(Base):
     __tablename__ = 'oauthProvider'
@@ -194,17 +196,6 @@ class OAuthProvider(Base):
     oauth_client_id = Column(String)
     oauth_client_secret = Column(String)
     active = Column(Boolean)
-    # scope = relationship('OAuthScope', backref='oauthProvider')
-
-
-'''class OAuthScope(Base):
-    __tablename__ = 'oauthScope'
-    id = Column(Integer, primary_key=True)
-    scope = Column(String, unique=True)
-    provider_id = Column(Integer, ForeignKey('oauthProvider.id'))
-
-    def __repr__(self):
-        return u"{0}".format(self.scope)'''
 
 
 # Class for anonymous user is derived from User base and completly overrides methods and properties for the

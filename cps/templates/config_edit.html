@@ -260,12 +260,12 @@
             <a href="{{prov['obtain_link']}}" target="_blank">{{_('Obtain %(provider)s OAuth Credential', provider=prov['provider_name'])}}</a>
           </div>
           <div class="form-group">
-            <label for="config_{{ prov['provider_name'] }}_oauth_client_id">{{_('%(provider)s OAuth Client Id', provider=prov['provider_name'])}}</label>
-            <input type="text" class="form-control" id="config_{{ prov['provider_name'] }}_oauth_client_id" name="config_{{ prov['provider_name'] }}_oauth_client_id" value="{% if prov['active'] %}{{ prov['oauth_client_id'] }}{% endif %}" autocomplete="off">
+            <label for="config_{{ prov['id'] }}_oauth_client_id">{{_('%(provider)s OAuth Client Id', provider=prov['provider_name'])}}</label>
+            <input type="text" class="form-control" id="config_{{ prov['id'] }}_oauth_client_id" name="config_{{ prov['id'] }}_oauth_client_id" value="{% if prov['oauth_client_id']%}{{ prov['oauth_client_id'] }}{% endif %}" autocomplete="off">
           </div>
           <div class="form-group">
-            <label for="config_{{ prov['provider_name'] }}_oauth_client_secret">{{_('%(provider)s OAuth Client Secret', provider=prov['provider_name'])}}</label>
-            <input type="text" class="form-control" id="config_{{ prov['provider_name'] }}_oauth_client_secret" name="config_{{ prov['provider_name'] }}_oauth_client_secret" value="{% if prov['active'] %}{{ prov['oauth_client_id'] }}{% endif %}" autocomplete="off">
+            <label for="config_{{ prov['id'] }}_oauth_client_secret">{{_('%(provider)s OAuth Client Secret', provider=prov['provider_name'])}}</label>
+            <input type="text" class="form-control" id="config_{{ prov['id'] }}_oauth_client_secret" name="config_{{ prov['id'] }}_oauth_client_secret" value="{% if prov['oauth_client_secret']%}{{ prov['oauth_client_secret'] }}{% endif %}" autocomplete="off">
           </div>
         {% endfor %}
         </div>
