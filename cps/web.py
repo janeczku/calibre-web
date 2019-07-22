@@ -514,6 +514,8 @@ def books_list(data, sort, book_id, page):
         return render_formats_books(page, book_id, order)
     elif data == "category":
         return render_category_books(page, book_id, order)
+    elif data == "language":
+        return render_language_books(page, book_id, order)
     else:
         entries, random, pagination = fill_indexpage(page, db.Books, True, order)
         return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
@@ -568,8 +570,8 @@ def render_author_books(page, author_id, order):
         other_books = services.goodreads.get_other_books(author_info, entries)
 
     return render_title_template('author.html', entries=entries, pagination=pagination, id=author_id,
-                                 title=_(u"Author: %(name)s", name=author_name), author=author_info, other_books=other_books,
-                                 page="author")
+                                 title=_(u"Author: %(name)s", name=author_name), author=author_info,
+                                 other_books=other_books, page="author")
 
 
 def render_publisher_books(page, book_id, order):
@@ -590,19 +592,19 @@ def render_series_books(page, book_id, order):
     if name:
         entries, random, pagination = fill_indexpage(page, db.Books, db.Books.series.any(db.Series.id == book_id),
                                                      [db.Books.series_index, order[0]])
-        return render_title_template('index.html', random=random, pagination=pagination, entries=entries,
+        return render_title_template('index.html', random=random, pagination=pagination, entries=entries, id=book_id,
                                      title=_(u"Series: %(serie)s", serie=name.name), page="series")
     else:
         abort(404)
 
 
 def render_ratings_books(page, book_id, order):
-    if book_id <=5:
-        name = db.session.query(db.Ratings).filter(db.Ratings.id == book_id).first()
-        entries, random, pagination = fill_indexpage(page, db.Books, db.Books.ratings.any(db.Ratings.id == book_id),
-                                                 [db.Books.timestamp.desc(), order[0]])
-        return render_title_template('index.html', random=random, pagination=pagination, entries=entries,
-                                     title=_(u"Rating: %(rating)s stars", rating=int(name.rating/2)), page="ratings")
+    name = db.session.query(db.Ratings).filter(db.Ratings.id == book_id).first()
+    entries, random, pagination = fill_indexpage(page, db.Books, db.Books.ratings.any(db.Ratings.id == book_id),
+                                             [db.Books.timestamp.desc(), order[0]])
+    if name and name.rating <= 10:
+        return render_title_template('index.html', random=random, pagination=pagination, entries=entries, id=book_id,
+                                 title=_(u"Rating: %(rating)s stars", rating=int(name.rating/2)), page="ratings")
     else:
         abort(404)
 
@@ -612,7 +614,7 @@ def render_formats_books(page, book_id, order):
     if name:
         entries, random, pagination = fill_indexpage(page, db.Books, db.Books.data.any(db.Data.format == book_id.upper()),
                                                  [db.Books.timestamp.desc(), order[0]])
-        return render_title_template('index.html', random=random, pagination=pagination, entries=entries,
+        return render_title_template('index.html', random=random, pagination=pagination, entries=entries, id=book_id,
                                      title=_(u"File format: %(format)s", format=name.format), page="formats")
     else:
         abort(404)
@@ -624,10 +626,25 @@ def render_category_books(page, book_id, order):
         entries, random, pagination = fill_indexpage(page, db.Books, db.Books.tags.any(db.Tags.id == book_id),
                                                      [db.Series.name, db.Books.series_index, order[0]],
                                                      db.books_series_link, db.Series)
-        return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
+        return render_title_template('index.html', random=random, entries=entries, pagination=pagination, id=book_id,
                                  title=_(u"Category: %(name)s", name=name.name), page="category")
     else:
         abort(404)
+
+
+def render_language_books(page, name, order):
+    try:
+        cur_l = LC.parse(name)
+        lang_name = cur_l.get_language_name(get_locale())
+    except UnknownLocaleError:
+        try:
+            lang_name = _(isoLanguages.get(part3=name).name)
+        except KeyError:
+            abort(404)
+    entries, random, pagination = fill_indexpage(page, db.Books, db.Books.languages.any(db.Languages.lang_code == name),
+                                                 [db.Books.timestamp.desc(), order[0]])
+    return render_title_template('index.html', random=random, entries=entries, pagination=pagination, id=name,
+                                 title=_(u"Language: %(name)s", name=lang_name), page="language")
 
 
 @web.route("/author")
@@ -730,27 +747,10 @@ def language_overview():
                                         func.count('books_languages_link.book').label('bookcount')).group_by(
             text('books_languages_link.lang_code')).all()
         return render_title_template('languages.html', languages=languages, lang_counter=lang_counter,
-                                     charlist=charlist, title=_(u"Available languages"), page="langlist", data="language")
+                                     charlist=charlist, title=_(u"Available languages"), page="langlist",
+                                     data="language")
     else:
         abort(404)
-
-
-@web.route("/language/<name>", defaults={'page': 1})
-@web.route('/language/<name>/page/<int:page>')
-@login_required_if_no_ano
-def language(name, page):
-    try:
-        cur_l = LC.parse(name)
-        lang_name = cur_l.get_language_name(get_locale())
-    except UnknownLocaleError:
-        try:
-            lang_name = _(isoLanguages.get(part3=name).name)
-        except KeyError:
-            abort(404)
-    entries, random, pagination = fill_indexpage(page, db.Books, db.Books.languages.any(db.Languages.lang_code == name),
-                                                 [db.Books.timestamp.desc()])
-    return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
-                                 title=_(u"Language: %(name)s", name=lang_name), page="language")
 
 
 @web.route("/category")
