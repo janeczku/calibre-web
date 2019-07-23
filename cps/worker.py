@@ -187,16 +187,16 @@ class WorkerThread(threading.Thread):
         self.UIqueue = list()
         self.asyncSMTP = None
         self.id = 0
+        self.doLock = threading.Lock()
 
     # Main thread loop starting the different tasks
     def run(self):
         main_thread = _get_main_thread()
         while main_thread.is_alive():
-            doLock = threading.Lock()
-            doLock.acquire()
+            self.doLock.acquire()
             if self.current != self.last:
                 index = self.current
-                doLock.release()
+                self.doLock.release()
                 if self.queue[index]['taskType'] == TASK_EMAIL:
                     self._send_raw_email()
                 if self.queue[index]['taskType'] == TASK_CONVERT:
@@ -204,11 +204,11 @@ class WorkerThread(threading.Thread):
                 if self.queue[index]['taskType'] == TASK_CONVERT_ANY:
                     self._convert_any_format()
                 # TASK_UPLOAD is handled implicitly
-                doLock.acquire()
+                self.doLock.acquire()
                 self.current += 1
-                doLock.release()
+                self.doLock.release()
             else:
-                doLock.release()
+                self.doLock.release()
             if main_thread.is_alive():
                 time.sleep(1)
 
@@ -229,8 +229,7 @@ class WorkerThread(threading.Thread):
         self.last = len(self.queue)
 
     def get_taskstatus(self):
-        doLock = threading.Lock()
-        doLock.acquire()
+        self.doLock.acquire()
         if self.current  < len(self.queue):
             if self.UIqueue[self.current]['stat'] == STAT_STARTED:
                 if self.queue[self.current]['taskType'] == TASK_EMAIL:
@@ -239,15 +238,14 @@ class WorkerThread(threading.Thread):
                 self.UIqueue[self.current]['rt'] = self.UIqueue[self.current]['formRuntime'].days*24*60 \
                                                    + self.UIqueue[self.current]['formRuntime'].seconds \
                                                    + self.UIqueue[self.current]['formRuntime'].microseconds
-        doLock.release()
+        self.doLock.release()
         return self.UIqueue
 
     def _convert_any_format(self):
         # convert book, and upload in case of google drive
-        doLock = threading.Lock()
-        doLock.acquire()
+        self.doLock.acquire()
         index = self.current
-        doLock.release()
+        self.doLock.release()
         self.UIqueue[index]['stat'] = STAT_STARTED
         self.queue[index]['starttime'] = datetime.now()
         self.UIqueue[index]['formStarttime'] = self.queue[self.current]['starttime']
@@ -264,10 +262,9 @@ class WorkerThread(threading.Thread):
 
     def _convert_ebook_format(self):
         error_message = None
-        doLock = threading.Lock()
-        doLock.acquire()
+        self.doLock.acquire()
         index = self.current
-        doLock.release()
+        self.doLock.release()
         file_path = self.queue[index]['file_path']
         bookid = self.queue[index]['bookid']
         format_old_ext = u'.' + self.queue[index]['settings']['old_book_format'].lower()
@@ -444,10 +441,9 @@ class WorkerThread(threading.Thread):
 
 
     def _send_raw_email(self):
-        doLock = threading.Lock()
-        doLock.acquire()
+        self.doLock.acquire()
         index = self.current
-        doLock.release()
+        self.doLock.release()
         self.queue[index]['starttime'] = datetime.now()
         self.UIqueue[index]['formStarttime'] = self.queue[index]['starttime']
         self.UIqueue[index]['stat'] = STAT_STARTED
@@ -524,20 +520,18 @@ class WorkerThread(threading.Thread):
 
     def _handleError(self, error_message):
         log.error(error_message)
-        doLock = threading.Lock()
-        doLock.acquire()
+        self.doLock.acquire()
         index = self.current
-        doLock.release()
+        self.doLock.release()
         self.UIqueue[index]['stat'] = STAT_FAIL
         self.UIqueue[index]['progress'] = "100 %"
         self.UIqueue[index]['formRuntime'] = datetime.now() - self.queue[self.current]['starttime']
         self.UIqueue[index]['message'] = error_message
 
     def _handleSuccess(self):
-        doLock = threading.Lock()
-        doLock.acquire()
+        self.doLock.acquire()
         index = self.current
-        doLock.release()
+        self.doLock.release()
         self.UIqueue[index]['stat'] = STAT_FINISH_SUCCESS
         self.UIqueue[index]['progress'] = "100 %"
         self.UIqueue[index]['formRuntime'] = datetime.now() - self.queue[self.current]['starttime']
