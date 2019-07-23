@@ -23,7 +23,7 @@ import logging
 from logging import Formatter, StreamHandler
 from logging.handlers import RotatingFileHandler
 
-from .constants import BASE_DIR as _BASE_DIR
+from .constants import CONFIG_DIR as _CONFIG_DIR
 
 
 ACCESS_FORMATTER_GEVENT  = Formatter("%(message)s")
@@ -31,8 +31,8 @@ ACCESS_FORMATTER_TORNADO = Formatter("[%(asctime)s] %(message)s")
 
 FORMATTER           = Formatter("[%(asctime)s] %(levelname)5s {%(name)s:%(lineno)d} %(message)s")
 DEFAULT_LOG_LEVEL   = logging.INFO
-DEFAULT_LOG_FILE    = os.path.join(_BASE_DIR, "calibre-web.log")
-DEFAULT_ACCESS_LOG  = os.path.join(_BASE_DIR, "access.log")
+DEFAULT_LOG_FILE    = os.path.join(_CONFIG_DIR, "calibre-web.log")
+DEFAULT_ACCESS_LOG  = os.path.join(_CONFIG_DIR, "access.log")
 LOG_TO_STDERR       = '/dev/stderr'
 
 logging.addLevelName(logging.WARNING, "WARN")
@@ -76,7 +76,7 @@ def is_valid_logfile(file_path):
 def _absolute_log_file(log_file, default_log_file):
     if log_file:
         if not os.path.dirname(log_file):
-            log_file = os.path.join(_BASE_DIR, log_file)
+            log_file = os.path.join(_CONFIG_DIR, log_file)
         return os.path.abspath(log_file)
 
     return default_log_file
@@ -95,6 +95,11 @@ def setup(log_file, log_level=None):
     Configure the logging output.
     May be called multiple times.
     '''
+    # if debugging, start logging to stderr immediately
+    if os.environ.get('FLASK_DEBUG', None):
+        log_file = LOG_TO_STDERR
+        log_level = logging.DEBUG
+
     log_file = _absolute_log_file(log_file, DEFAULT_LOG_FILE)
 
     log_level = log_level or DEFAULT_LOG_LEVEL
@@ -162,8 +167,3 @@ class StderrLogger(object):
                 self.buffer += message
         except Exception:
             self.log.debug("Logging Error")
-
-
-# if debugging, start logging to stderr immediately
-if os.environ.get('FLASK_DEBUG', None):
-    setup(LOG_TO_STDERR, logging.DEBUG)

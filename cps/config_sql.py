@@ -20,6 +20,7 @@
 from __future__ import division, print_function, unicode_literals
 import os
 import json
+import sys
 
 from sqlalchemy import exc, Column, String, Integer, SmallInteger, Boolean
 from sqlalchemy.ext.declarative import declarative_base
@@ -43,41 +44,48 @@ class _Settings(_Base):
     mail_login = Column(String, default='mail@example.com')
     mail_password = Column(String, default='mypassword')
     mail_from = Column(String, default='automailer <mail@example.com>')
+
     config_calibre_dir = Column(String)
     config_port = Column(Integer, default=constants.DEFAULT_PORT)
     config_certfile = Column(String)
     config_keyfile = Column(String)
+
     config_calibre_web_title = Column(String, default=u'Calibre-Web')
     config_books_per_page = Column(Integer, default=60)
     config_random_books = Column(Integer, default=4)
     config_authors_max = Column(Integer, default=0)
     config_read_column = Column(Integer, default=0)
-    config_title_regex = Column(String, default=r'^(A|The|An|Der|Die|Das|Den|Ein|Eine|Einen|Dem|Des|Einem|Eines)\s+')
+    config_title_regex = Column(String, default=u'^(A|The|An|Der|Die|Das|Den|Ein|Eine|Einen|Dem|Des|Einem|Eines)\s+')
+    config_mature_content_tags = Column(String, default='')
+    config_theme = Column(Integer, default=0)
+
     config_log_level = Column(SmallInteger, default=logger.DEFAULT_LOG_LEVEL)
+    config_logfile = Column(String)
     config_access_log = Column(SmallInteger, default=0)
+    config_access_logfile = Column(String)
+
     config_uploading = Column(SmallInteger, default=0)
     config_anonbrowse = Column(SmallInteger, default=0)
     config_public_reg = Column(SmallInteger, default=0)
+    config_remote_login = Column(Boolean, default=False)
+
+
     config_default_role = Column(SmallInteger, default=0)
     config_default_show = Column(SmallInteger, default=6143)
     config_columns_to_ignore = Column(String)
+
     config_use_google_drive = Column(Boolean, default=False)
     config_google_drive_folder = Column(String)
     config_google_drive_watch_changes_response = Column(String)
-    config_remote_login = Column(Boolean, default=False)
+
     config_use_goodreads = Column(Boolean, default=False)
     config_goodreads_api_key = Column(String)
     config_goodreads_api_secret = Column(String)
+
     config_login_type = Column(Integer, default=0)
-    # config_use_ldap = Column(Boolean)
-    config_ldap_provider_url = Column(String)
-    config_ldap_dn = Column(String)
-    # config_use_github_oauth = Column(Boolean)
-    config_github_oauth_client_id = Column(String)
-    config_github_oauth_client_secret = Column(String)
-    # config_use_google_oauth = Column(Boolean)
-    config_google_oauth_client_id = Column(String)
-    config_google_oauth_client_secret = Column(String)
+
+    # config_oauth_provider = Column(Integer)
+
     config_ldap_provider_url = Column(String, default='localhost')
     config_ldap_port = Column(SmallInteger, default=389)
     config_ldap_schema = Column(String, default='ldap')
@@ -90,14 +98,12 @@ class _Settings(_Base):
     config_ldap_dn = Column(String)
     config_ldap_user_object = Column(String)
     config_ldap_openldap = Column(Boolean, default=False)
-    config_mature_content_tags = Column(String, default='')
-    config_logfile = Column(String)
-    config_access_logfile = Column(String)
+
     config_ebookconverter = Column(Integer, default=0)
     config_converterpath = Column(String)
     config_calibre = Column(String)
     config_rarfile_location = Column(String)
-    config_theme = Column(Integer, default=0)
+
     config_updatechannel = Column(Integer, default=constants.UPDATE_STABLE)
 
     def __repr__(self):
@@ -106,6 +112,7 @@ class _Settings(_Base):
 
 # Class holds all application specific settings in calibre-web
 class _ConfigSQL(object):
+    # pylint: disable=no-member
     def __init__(self, session):
         self._session = session
         self._settings = None
@@ -264,14 +271,32 @@ def _migrate_table(session, orm_class):
                 session.query(column).first()
             except exc.OperationalError as err:
                 log.debug("%s: %s", column_name, err)
+                if column.default is not None:
+                    if sys.version_info < (3, 0):
+                        if isinstance(column.default.arg,unicode):
+                            column.default.arg = column.default.arg.encode('utf-8')
                 column_default = "" if column.default is None else ("DEFAULT %r" % column.default.arg)
-                alter_table = "ALTER TABLE %s ADD COLUMN `%s` %s %s" % (orm_class.__tablename__, column_name, column.type, column_default)
+                alter_table = "ALTER TABLE %s ADD COLUMN `%s` %s %s" % (orm_class.__tablename__,
+                                                                        column_name,
+                                                                        column.type,
+                                                                        column_default)
                 log.debug(alter_table)
                 session.execute(alter_table)
                 changed = True
 
     if changed:
         session.commit()
+
+def autodetect_calibre_binary():
+    if sys.platform == "win32":
+        calibre_path = ["C:\\program files\calibre\calibre-convert.exe",
+                        "C:\\program files(x86)\calibre\calibre-convert.exe"]
+    else:
+        calibre_path = ["/opt/calibre/ebook-convert"]
+    for element in calibre_path:
+        if os.path.isfile(element) and os.access(element, os.X_OK):
+            return element
+    return None
 
 
 def _migrate_database(session):

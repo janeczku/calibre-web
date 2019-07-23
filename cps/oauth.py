@@ -1,6 +1,22 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+#  This file is part of the Calibre-Web (https://github.com/janeczku/calibre-web)
+#    Copyright (C) 2018-2019 jim3ma
+#
+#  This program is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License as published by
+#  the Free Software Foundation, either version 3 of the License, or
+#  (at your option) any later version.
+#
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU General Public License for more details.
+#
+#  You should have received a copy of the GNU General Public License
+#  along with this program. If not, see <http://www.gnu.org/licenses/>
+
 from __future__ import division, print_function, unicode_literals
 from flask import session
 
@@ -16,13 +32,14 @@ try:
 
         .. _SQLAlchemy: http://www.sqlalchemy.org/
         """
-        def __init__(self, model, session,
+        def __init__(self, model, session, provider_id,
                      user=None, user_id=None, user_required=None, anon_user=None,
                      cache=None):
+            self.provider_id = provider_id
             super(OAuthBackend, self).__init__(model, session, user, user_id, user_required, anon_user, cache)
 
         def get(self, blueprint, user=None, user_id=None):
-            if blueprint.name + '_oauth_token' in session and session[blueprint.name + '_oauth_token'] != '':
+            if self.provider_id + '_oauth_token' in session and session[self.provider_id + '_oauth_token'] != '':
                 return session[blueprint.name + '_oauth_token']
             # check cache
             cache_key = self.make_cache_key(blueprint=blueprint, user=user, user_id=user_id)
@@ -33,15 +50,15 @@ try:
             # if not cached, make database queries
             query = (
                 self.session.query(self.model)
-                .filter_by(provider=blueprint.name)
+                .filter_by(provider=self.provider_id)
             )
             uid = first([user_id, self.user_id, blueprint.config.get("user_id")])
             u = first(_get_real_user(ref, self.anon_user)
                       for ref in (user, self.user, blueprint.config.get("user")))
 
             use_provider_user_id = False
-            if blueprint.name + '_oauth_user_id' in session and session[blueprint.name + '_oauth_user_id'] != '':
-                query = query.filter_by(provider_user_id=session[blueprint.name + '_oauth_user_id'])
+            if self.provider_id + '_oauth_user_id' in session and session[self.provider_id + '_oauth_user_id'] != '':
+                query = query.filter_by(provider_user_id=session[self.provider_id + '_oauth_user_id'])
                 use_provider_user_id = True
 
             if self.user_required and not u and not uid and not use_provider_user_id:
@@ -78,7 +95,7 @@ try:
             # if there was an existing model, delete it
             existing_query = (
                 self.session.query(self.model)
-                .filter_by(provider=blueprint.name)
+                .filter_by(provider=self.provider_id)
             )
             # check for user ID
             has_user_id = hasattr(self.model, "user_id")
@@ -92,7 +109,7 @@ try:
             existing_query.delete()
             # create a new model for this token
             kwargs = {
-                "provider": blueprint.name,
+                "provider": self.provider_id,
                 "token": token,
             }
             if has_user_id and uid:
@@ -110,7 +127,7 @@ try:
         def delete(self, blueprint, user=None, user_id=None):
             query = (
                 self.session.query(self.model)
-                .filter_by(provider=blueprint.name)
+                .filter_by(provider=self.provider_id)
             )
             uid = first([user_id, self.user_id, blueprint.config.get("user_id")])
             u = first(_get_real_user(ref, self.anon_user)

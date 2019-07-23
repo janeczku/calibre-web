@@ -37,10 +37,11 @@ $(document).on("change", "select[data-control]", function() {
     var showOrHide = parseInt($this.val());
     // var showOrHideLast = $("#" + name + " option:last").val()
     for (var i = 0; i < $(this)[0].length; i++) {
-        if (parseInt($(this)[0][i].value) === showOrHide) {
-            $("[data-related=\"" + name + "-" + i + "\"]").show();
+        var element = parseInt($(this)[0][i].value);
+        if (element === showOrHide) {
+            $("[data-related=" + name + "-" + element + "]").show();
         } else {
-            $("[data-related=\"" + name + "-" + i + "\"]").hide();
+            $("[data-related=" + name + "-" + element + "]").hide();
         }
     }
 });

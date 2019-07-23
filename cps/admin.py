@@ -45,7 +45,7 @@ from .gdriveutils import is_gdrive_ready, gdrive_support
 from .web import admin_required, render_title_template, before_request, unconfigured, login_required_if_no_ano
 
 feature_support = {
-        'ldap': bool(services.ldap),
+        'ldap': False, # bool(services.ldap),
         'goodreads': bool(services.goodreads)
     }
 
@@ -56,10 +56,11 @@ feature_support = {
 #     feature_support['rar'] = False
 
 try:
-    from .oauth_bb import oauth_check
+    from .oauth_bb import oauth_check, oauthblueprints
     feature_support['oauth'] = True
 except ImportError:
     feature_support['oauth'] = False
+    oauthblueprints = []
     oauth_check = {}
 
 
@@ -343,18 +344,27 @@ def _configuration_update_helper():
     _config_int("config_updatechannel")
 
     # GitHub OAuth configuration
-    if config.config_login_type == constants.LOGIN_OAUTH_GITHUB:
-        _config_string("config_github_oauth_client_id")
-        _config_string("config_github_oauth_client_secret")
-        if not config.config_github_oauth_client_id or not config.config_github_oauth_client_secret:
-            return _configuration_result('Please enter Github oauth credentials', gdriveError)
+    if config.config_login_type == constants.LOGIN_OAUTH:
+        active_oauths = 0
 
-    # Google OAuth configuration
-    if config.config_login_type == constants.LOGIN_OAUTH_GOOGLE:
-        _config_string("config_google_oauth_client_id")
-        _config_string("config_google_oauth_client_secret")
-        if not config.config_google_oauth_client_id or not config.config_google_oauth_client_secret:
-            return _configuration_result('Please enter Google oauth credentials', gdriveError)
+        for element in oauthblueprints:
+            if to_save["config_"+str(element['id'])+"_oauth_client_id"] \
+               and to_save["config_"+str(element['id'])+"_oauth_client_secret"]:
+                active_oauths += 1
+                element["active"] = 1
+                ub.session.query(ub.OAuthProvider).filter(ub.OAuthProvider.id == element['id']).update(
+                    {"oauth_client_id":to_save["config_"+str(element['id'])+"_oauth_client_id"],
+                    "oauth_client_secret":to_save["config_"+str(element['id'])+"_oauth_client_secret"],
+                    "active":1})
+                if to_save["config_" + str(element['id']) + "_oauth_client_id"] != element['oauth_client_id'] \
+                    or to_save["config_" + str(element['id']) + "_oauth_client_secret"] != element['oauth_client_secret']:
+                    reboot_required = True
+                    element['oauth_client_id'] = to_save["config_"+str(element['id'])+"_oauth_client_id"]
+                    element['oauth_client_secret'] = to_save["config_"+str(element['id'])+"_oauth_client_secret"]
+            else:
+                ub.session.query(ub.OAuthProvider).filter(ub.OAuthProvider.id == element['id']).update(
+                    {"active":0})
+                element["active"] = 0
 
     _config_int("config_log_level")
     _config_string("config_logfile")
@@ -410,7 +420,7 @@ def _configuration_result(error_flash=None, gdriveError=None):
         flash(_(error_flash), category="error")
         show_login_button = False
 
-    return render_title_template("config_edit.html", config=config,
+    return render_title_template("config_edit.html", config=config, provider=oauthblueprints,
                                  show_back_button=show_back_button, show_login_button=show_login_button,
                                  show_authenticate_google_drive=gdrive_authenticate,
                                  gdriveError=gdriveError, gdrivefolders=gdrivefolders, feature_support=feature_support,
@@ -653,7 +663,7 @@ def send_logfile(logtype):
 @admi.route("/get_update_status", methods=['GET'])
 @login_required_if_no_ano
 def get_update_status():
-    return updater_thread.get_available_updates(request.method)
+    return updater_thread.get_available_updates(request.method, locale=get_locale())
 
 
 @admi.route("/get_updater_status", methods=['GET', 'POST'])

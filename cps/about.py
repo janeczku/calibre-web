@@ -31,7 +31,10 @@ from flask_babel import gettext as _
 
 from . import db, converter, uploader, server, isoLanguages
 from .web import render_title_template
-
+try:
+    from flask_login import __version__ as flask_loginVersion
+except ImportError:
+    from flask_login.__about__ import __version__ as flask_loginVersion
 
 about = flask.Blueprint('about', __name__)
 
@@ -40,7 +43,7 @@ _VERSIONS = OrderedDict(
     Python=sys.version,
     WebServer=server.VERSION,
     Flask=flask.__version__,
-    Flask_Login=flask_login.__version__,
+    Flask_Login=flask_loginVersion,
     Flask_Principal=flask_principal.__version__,
     Werkzeug=werkzeug.__version__,
     Babel=babel.__version__,

@@ -141,6 +141,7 @@ input.pill:not(:checked) + label .glyphicon {
 
 .filterheader { margin-bottom: 20px; }
 
+.errorlink {margin-top: 20px;}
 .modal-body .comments {
     max-height:300px;
     overflow-y: auto;

@@ -47,13 +47,13 @@
     </div>
 
     {% if registered_oauth.keys()| length > 0 %}
-      {% for oauth, name in registered_oauth.iteritems() %}
+      {% for id, name in registered_oauth.items() %}
     <div class="form-group">
       <label>{{ name }} {{_('OAuth Settings')}}</label>
-        {% if oauth not in oauth_status %}
-        <div><a href="{{ url_for(oauth +'.login') }}" id="config_{{ oauth }}_oauth" class="btn btn-primary">{{_('Link')}}</a></div>
+        {% if id not in oauth_status %}
+        <div><a href="{{ url_for('oauth.'+ name +'_login') }}" id="config_{{ id }}_oauth" class="btn btn-primary">{{_('Link')}}</a></div>
         {% else %}
-        <div><a href="{{ url_for('oauth.'+ oauth +'_login_unlink') }}" id="config_{{ oauth }}_oauth" class="btn btn-primary">{{_('Unlink')}}</a></div>
+        <div><a href="{{ url_for('oauth.'+ name +'_login_unlink') }}" id="config_{{ id }}_oauth" class="btn btn-primary">{{_('Unlink')}}</a></div>
         {% endif %}
       {% endfor %}
     </div>
