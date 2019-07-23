@@ -39,12 +39,12 @@ except ImportError:
     gdrive_support = False
 
 from . import logger, cli, config
-from .constants import BASE_DIR as _BASE_DIR
+from .constants import CONFIG_DIR as _CONFIG_DIR
 
 
-SETTINGS_YAML  = os.path.join(_BASE_DIR, 'settings.yaml')
-CREDENTIALS    = os.path.join(_BASE_DIR, 'gdrive_credentials')
-CLIENT_SECRETS = os.path.join(_BASE_DIR, 'client_secrets.json')
+SETTINGS_YAML  = os.path.join(_CONFIG_DIR, 'settings.yaml')
+CREDENTIALS    = os.path.join(_CONFIG_DIR, 'gdrive_credentials')
+CLIENT_SECRETS = os.path.join(_CONFIG_DIR, 'client_secrets.json')
 
 log = logger.create()
 

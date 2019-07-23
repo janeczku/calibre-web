@@ -21,6 +21,7 @@ import sys
 import os
 from collections import namedtuple
 
+HOME_CONFIG = False
 
 # Base dir is parent of current file, necessary if called from different folder
 if sys.version_info < (3, 0):
@@ -32,7 +33,14 @@ else:
 STATIC_DIR          = os.path.join(BASE_DIR, 'cps', 'static')
 TEMPLATES_DIR       = os.path.join(BASE_DIR, 'cps', 'templates')
 TRANSLATIONS_DIR    = os.path.join(BASE_DIR, 'cps', 'translations')
-CONFIG_DIR          = os.environ.get('CALIBRE_DBPATH', BASE_DIR)
+
+if HOME_CONFIG:
+    home_dir = os.path.join(os.path.expanduser("~"),".calibre-web")
+    if not os.path.exists(home_dir):
+        os.makedirs(home_dir)
+    CONFIG_DIR = os.environ.get('CALIBRE_DBPATH', home_dir)
+else:
+    CONFIG_DIR      = os.environ.get('CALIBRE_DBPATH', BASE_DIR)
 
 
 ROLE_USER               = 0 << 0
@@ -83,8 +91,8 @@ AUTO_UPDATE_NIGHTLY = 1 << 2
 
 LOGIN_STANDARD      = 0
 LOGIN_LDAP          = 1
-LOGIN_OAUTH_GITHUB  = 2
-LOGIN_OAUTH_GOOGLE  = 3
+LOGIN_OAUTH         = 2
+# LOGIN_OAUTH_GOOGLE  = 3
 
 
 DEFAULT_PASSWORD    = "admin123"
@@ -116,7 +124,7 @@ def selected_roles(dictionary):
 BookMeta = namedtuple('BookMeta', 'file_path, extension, title, author, cover, description, tags, series, '
                                   'series_id, languages')
 
-STABLE_VERSION = {'version': '0.6.4 Beta'}
+STABLE_VERSION = {'version': '0.6.5 Beta'}
 
 NIGHTLY_VERSION = {}
 NIGHTLY_VERSION[0] = '$Format:%H$'
