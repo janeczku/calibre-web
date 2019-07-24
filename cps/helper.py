@@ -509,7 +509,7 @@ def save_cover(img, book_path):
             log.error("Only jpg/jpeg files are supported as coverfile")
             return False
 
-    if ub.config.config_use_google_drive:
+    if config.config_use_google_drive:
         tmpDir = gettempdir()
         if save_cover_from_filestorage(tmpDir, "uploaded_cover.jpg", img) is True:
             gd.uploadFileToEbooksFolder(os.path.join(book_path, 'cover.jpg'),

@@ -65,7 +65,7 @@
     <link type="image/jpeg" href="{{url_for('opds.feed_get_cover', book_id=entry.id)}}" rel="http://opds-spec.org/image/thumbnail"/>
     {% endif %}
     {% for format in entry.data %}
-    <link rel="http://opds-spec.org/acquisition" href="{{ url_for('web.download_link', book_id=entry.id, book_format=format.format|lower)}}"
+    <link rel="http://opds-spec.org/acquisition" href="{{ url_for('opds.opds_download_link', book_id=entry.id, book_format=format.format|lower)}}"
           length="{{format.uncompressed_size}}" mtime="{{entry.atom_timestamp}}" type="{{format.format|lower|mimetype}}"/>
     {% endfor %}
   </entry>

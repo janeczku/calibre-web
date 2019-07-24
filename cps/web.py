@@ -947,7 +947,7 @@ def render_read_books(page, are_read, as_xml=False, order=None):
     else:
         try:
             readBooks = db.session.query(db.cc_classes[config.config_read_column])\
-                .filter(db.cc_classes[config.config_read_column].value is True).all()
+                .filter(db.cc_classes[config.config_read_column].value == True).all()
             readBookIds = [x.book for x in readBooks]
         except KeyError:
             log.error("Custom Column No.%d is not existing in calibre database", config.config_read_column)
