@@ -658,6 +658,11 @@ def common_filters():
         db.Books.tags.any(db.Tags.name.in_(config.mature_content_tags()))
     return and_(lang_filter, ~content_rating_filter)
 
+def tags_filters():
+    return ~(false() if current_user.mature_content else \
+        db.Tags.name.in_(config.mature_content_tags()))
+    # return db.session.query(db.Tags).filter(~content_rating_filter).order_by(db.Tags.name).all()
+
 
 # Creates for all stored languages a translated speaking name in the array for the UI
 def speaking_language(languages=None):
@@ -715,9 +720,9 @@ def fill_indexpage(page, database, db_filter, order, *join):
     return entries, randm, pagination
 
 
-def get_typeahead(database, query, replace=('','')):
+def get_typeahead(database, query, replace=('',''), tag_filter=true()):
     db.session.connection().connection.connection.create_function("lower", 1, lcase)
-    entries = db.session.query(database).filter(func.lower(database.name).ilike("%" + query + "%")).all()
+    entries = db.session.query(database).filter(tag_filter).filter(func.lower(database.name).ilike("%" + query + "%")).all()
     json_dumps = json.dumps([dict(name=r.name.replace(*replace)) for r in entries])
     return json_dumps
 
@@ -753,9 +758,12 @@ def get_cc_columns():
 
 def get_download_link(book_id, book_format):
     book_format = book_format.split(".")[0]
-    book = db.session.query(db.Books).filter(db.Books.id == book_id).first()
-    data = db.session.query(db.Data).filter(db.Data.book == book.id)\
-        .filter(db.Data.format == book_format.upper()).first()
+    book = db.session.query(db.Books).filter(db.Books.id == book_id).filter(common_filters()).first()
+    if book:
+        data = db.session.query(db.Data).filter(db.Data.book == book.id)\
+            .filter(db.Data.format == book_format.upper()).first()
+    else:
+        abort(404)
     if data:
         # collect downloaded books only for registered user and not for anonymous user
         if current_user.is_authenticated:
