@@ -49,7 +49,7 @@ from .gdriveutils import getFileFromEbooksFolder, do_gdrive_download
 from .helper import common_filters, get_search_results, fill_indexpage, speaking_language, check_valid_domain, \
         order_authors, get_typeahead, render_task_status, json_serial, get_cc_columns, \
         get_book_cover, get_download_link, send_mail, generate_random_password, send_registration_mail, \
-        check_send_to_kindle, check_read_formats, lcase
+        check_send_to_kindle, check_read_formats, lcase, tags_filters
 from .pagination import Pagination
 from .redirect import redirect_back
 
@@ -396,7 +396,7 @@ def get_publishers_json():
 @login_required_if_no_ano
 def get_tags_json():
     if request.method == "GET":
-        return get_typeahead(db.Tags, request.args.get('q'))
+        return get_typeahead(db.Tags, request.args.get('q'),tag_filter=tags_filters())
 
 
 @web.route("/get_series_json")
@@ -805,7 +805,7 @@ def advanced_search():
     # Build custom columns names
     cc = get_cc_columns()
     db.session.connection().connection.connection.create_function("lower", 1, lcase)
-    q = db.session.query(db.Books)
+    q = db.session.query(db.Books).filter(common_filters())
 
     include_tag_inputs = request.args.getlist('include_tag')
     exclude_tag_inputs = request.args.getlist('exclude_tag')
@@ -928,7 +928,8 @@ def advanced_search():
         return render_title_template('search.html', searchterm=searchterm,
                                      entries=q, title=_(u"search"), page="search")
     # prepare data for search-form
-    tags = db.session.query(db.Tags).order_by(db.Tags.name).all()
+    # tags = db.session.query(db.Tags).order_by(db.Tags.name).all()
+    tags = db.session.query(db.Tags).filter(tags_filters()).order_by(db.Tags.name).all()
     series = db.session.query(db.Series).order_by(db.Series.name).all()
     if current_user.filter_language() == u"all":
         languages = speaking_language()
@@ -1294,7 +1295,7 @@ def profile():
 @login_required_if_no_ano
 @viewer_required
 def read_book(book_id, book_format):
-    book = db.session.query(db.Books).filter(db.Books.id == book_id).first()
+    book = db.session.query(db.Books).filter(db.Books.id == book_id).filter(common_filters()).first()
     if not book:
         flash(_(u"Error opening eBook. File does not exist or file is not accessible:"), category="error")
         return redirect(url_for("web.index"))
