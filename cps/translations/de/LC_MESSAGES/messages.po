@@ -75,7 +75,7 @@ msgstr "Ungültiger Speicherort des SSL-Zertifikats, bitte gültigen Pfad angebe
 
 #: cps/admin.py:393
 msgid "Please enter a LDAP provider, port, DN and user object identifier"
-msgstr "Bitte LDAP-Provider, Port, DN und user object identifer eingeben"
+msgstr "Bitte LDAP-Provider, Port, DN und User Object Identifer eingeben"
 
 #: cps/admin.py:400
 msgid "Please enter a LDAP service account and password"
@@ -340,7 +340,7 @@ msgstr "Callback Domain ist nicht verifiziert, bitte Domain in der Google Develo
 #: cps/helper.py:94
 #, python-format
 msgid "%(format)s format not found for book id: %(book)d"
-msgstr "%(format)s Format für Buch ID %(book)d nicht gefunden "
+msgstr "%(format)s Format für Buch-ID %(book)d nicht gefunden "
 
 #: cps/helper.py:106
 #, python-format
@@ -363,11 +363,11 @@ msgstr "%(format)s nicht gefunden: %(fn)s"
 
 #: cps/helper.py:130
 msgid "Calibre-Web test e-mail"
-msgstr "Calibre-Web Test E-Mail"
+msgstr "Calibre-Web Test-E-Mail"
 
 #: cps/helper.py:131
 msgid "Test e-mail"
-msgstr "Test E-Mail"
+msgstr "Test-E-Mail"
 
 #: cps/helper.py:147
 msgid "Get Started with Calibre-Web"
@@ -670,11 +670,11 @@ msgstr "Zeige Kategorienauswahl"
 #: cps/templates/book_edit.html:71 cps/templates/search_form.html:53
 #: cps/ub.py:91
 msgid "Series"
-msgstr "Serien"
+msgstr "Reihen"
 
 #: cps/ub.py:93
 msgid "Show series selection"
-msgstr "Zeige Serienauswahl"
+msgstr "Zeige Reiheauswahl"
 
 #: cps/templates/index.xml:61 cps/ub.py:94
 msgid "Authors"
@@ -805,7 +805,7 @@ msgstr "Verlegerliste"
 
 #: cps/templates/index.xml:82 cps/web.py:666
 msgid "Series list"
-msgstr "Serienliste"
+msgstr "Reiheliste"
 
 #: cps/web.py:680
 msgid "Ratings list"
@@ -1209,7 +1209,7 @@ msgstr "Tags"
 
 #: cps/templates/book_edit.html:75
 msgid "Series id"
-msgstr "Serien-ID"
+msgstr "Reihen-ID"
 
 #: cps/templates/book_edit.html:79
 msgid "Rating"
