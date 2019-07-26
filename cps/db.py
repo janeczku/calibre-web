@@ -1,30 +1,38 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from sqlalchemy import *
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import *
+#  This file is part of the Calibre-Web (https://github.com/janeczku/calibre-web)
+#    Copyright (C) 2012-2019 mutschler, cervinko, ok11, jkrehm, nanu-c, Wineliva,
+#                            pjeby, elelay, idalin, Ozzieisaacs
+#
+#  This program is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License as published by
+#  the Free Software Foundation, either version 3 of the License, or
+#  (at your option) any later version.
+#
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU General Public License for more details.
+#
+#  You should have received a copy of the GNU General Public License
+#  along with this program. If not, see <http://www.gnu.org/licenses/>.
+
+from __future__ import division, print_function, unicode_literals
+import sys
 import os
 import re
 import ast
-from ub import config
-import ub
+
+from sqlalchemy import create_engine
+from sqlalchemy import Table, Column, ForeignKey
+from sqlalchemy import String, Integer, Boolean
+from sqlalchemy.orm import relationship, sessionmaker, scoped_session
+from sqlalchemy.ext.declarative import declarative_base
+
 
 session = None
-cc_exceptions = ['datetime', 'int', 'comments', 'float', 'composite', 'series']
-cc_classes = None
-engine = None
-
-
-# user defined sort function for calibre databases (Series, etc.)
-def title_sort(title):
-    # calibre sort stuff
-    title_pat = re.compile(config.config_title_regex, re.IGNORECASE)
-    match = title_pat.search(title)
-    if match:
-        prep = match.group(1)
-        title = title.replace(prep, '') + ', ' + prep
-    return title.strip()
+cc_exceptions = ['datetime', 'comments', 'float', 'composite', 'series']
+cc_classes = {}
 
 
 Base = declarative_base()
@@ -59,6 +67,7 @@ books_publishers_link = Table('books_publishers_link', Base.metadata,
     Column('publisher', Integer, ForeignKey('publishers.id'), primary_key=True)
     )
 
+
 class Identifiers(Base):
     __tablename__ = 'identifiers'
 
@@ -81,6 +90,12 @@ class Identifiers(Base):
             return u"DOI"
         elif self.type == "goodreads":
             return u"Goodreads"
+        elif self.type == "google":
+            return u"Google Books"
+        elif self.type == "kobo":
+            return u"Kobo"
+        if self.type == "lubimyczytac":
+            return u"Lubimyczytac"
         else:
             return self.type
 
@@ -95,6 +110,14 @@ class Identifiers(Base):
             return u"http://www.goodreads.com/book/show/{0}".format(self.val)
         elif self.type == "douban":
             return u"https://book.douban.com/subject/{0}".format(self.val)
+        elif self.type == "google":
+            return u"https://books.google.com/books?id={0}".format(self.val)
+        elif self.type == "kobo":
+            return u"https://www.kobo.com/ebook/{0}".format(self.val)
+        elif self.type == "lubimyczytac":
+            return u" http://lubimyczytac.pl/ksiazka/{0}".format(self.val)
+        elif self.type == "url":
+            return u"{0}".format(self.val)
         else:
             return u""
 
@@ -184,6 +207,7 @@ class Languages(Base):
     def __repr__(self):
         return u"<Languages('{0}')>".format(self.lang_code)
 
+
 class Publishers(Base):
     __tablename__ = 'publishers'
 
@@ -191,13 +215,12 @@ class Publishers(Base):
     name = Column(String)
     sort = Column(String)
 
-    def __init__(self, name,sort):
+    def __init__(self, name, sort):
         self.name = name
         self.sort = sort
 
     def __repr__(self):
         return u"<Publishers('{0},{1}')>".format(self.name, self.sort)
-
 
 
 class Data(Base):
@@ -222,6 +245,8 @@ class Data(Base):
 class Books(Base):
     __tablename__ = 'books'
 
+    DEFAULT_PUBDATE = "0101-01-01 00:00:00+00:00"
+
     id = Column(Integer, primary_key=True)
     title = Column(String)
     sort = Column(String)
@@ -235,7 +260,7 @@ class Books(Base):
     uuid = Column(String)
 
     authors = relationship('Authors', secondary=books_authors_link, backref='books')
-    tags = relationship('Tags', secondary=books_tags_link, backref='books')
+    tags = relationship('Tags', secondary=books_tags_link, backref='books',order_by="Tags.name")
     comments = relationship('Comments', backref='books')
     data = relationship('Data', backref='books')
     series = relationship('Series', secondary=books_series_link, backref='books')
@@ -245,7 +270,7 @@ class Books(Base):
     identifiers = relationship('Identifiers', backref='books')
 
     def __init__(self, title, sort, author_sort, timestamp, pubdate, series_index, last_modified, path, has_cover,
-                 authors, tags, languages = None):
+                 authors, tags, languages=None):
         self.title = title
         self.sort = sort
         self.author_sort = author_sort
@@ -261,6 +286,9 @@ class Books(Base):
                                                                  self.timestamp, self.pubdate, self.series_index,
                                                                  self.last_modified, self.path, self.has_cover)
 
+    @property
+    def atom_timestamp(self):
+        return (self.timestamp or '').replace(' ', 'T')
 
 class Custom_Columns(Base):
     __tablename__ = 'custom_columns'
@@ -277,41 +305,58 @@ class Custom_Columns(Base):
 
     def get_display_dict(self):
         display_dict = ast.literal_eval(self.display)
+        if sys.version_info < (3, 0):
+            display_dict['enum_values'] = [x.decode('unicode_escape') for x in display_dict['enum_values']]
         return display_dict
 
 
-def setup_db():
-    global engine
-    global session
-    global cc_classes
+def update_title_sort(config, conn=None):
+    # user defined sort function for calibre databases (Series, etc.)
+    def _title_sort(title):
+        # calibre sort stuff
+        title_pat = re.compile(config.config_title_regex, re.IGNORECASE)
+        match = title_pat.search(title)
+        if match:
+            prep = match.group(1)
+            title = title.replace(prep, '') + ', ' + prep
+        return title.strip()
 
-    if config.config_calibre_dir is None or config.config_calibre_dir ==  u'':
+    conn = conn or session.connection().connection.connection
+    conn.create_function("title_sort", 1, _title_sort)
+
+
+def setup_db(config):
+    dispose()
+
+    if not config.config_calibre_dir:
+        config.invalidate()
         return False
 
     dbpath = os.path.join(config.config_calibre_dir, "metadata.db")
-    #engine = create_engine('sqlite:///{0}'.format(dbpath.encode('utf-8')), echo=False, isolation_level="SERIALIZABLE")
-    engine = create_engine('sqlite:///'+ dbpath, echo=False, isolation_level="SERIALIZABLE")
-    try:
-        conn = engine.connect()
-    except Exception:
-        content = ub.session.query(ub.Settings).first()
-        content.config_calibre_dir = None
-        content.db_configured = False
-        ub.session.commit()
-        config.loadSettings()
+    if not os.path.exists(dbpath):
+        config.invalidate()
         return False
-    content = ub.session.query(ub.Settings).first()
-    content.db_configured = True
-    ub.session.commit()
-    config.loadSettings()
-    conn.connection.create_function('title_sort', 1, title_sort)
+
+    try:
+        engine = create_engine('sqlite:///{0}'.format(dbpath),
+                               echo=False,
+                               isolation_level="SERIALIZABLE",
+                               connect_args={'check_same_thread': False})
+        conn = engine.connect()
+    except:
+        config.invalidate()
+        return False
+
+    config.db_configured = True
+    update_title_sort(config, conn.connection)
+    # conn.connection.create_function('lower', 1, lcase)
+    # conn.connection.create_function('upper', 1, ucase)
 
     if not cc_classes:
         cc = conn.execute("SELECT id, datatype FROM custom_columns")
 
         cc_ids = []
         books_custom_column_links = {}
-        cc_classes = {}
         for row in cc:
             if row.datatype not in cc_exceptions:
                 books_custom_column_links[row.id] = Table('books_custom_column_' + str(row.id) + '_link', Base.metadata,
@@ -327,14 +372,19 @@ def setup_db():
                               'id': Column(Integer, primary_key=True),
                               'book': Column(Integer, ForeignKey('books.id')),
                               'value': Column(Boolean)}
+                elif row.datatype == 'int':
+                    ccdict = {'__tablename__': 'custom_column_' + str(row.id),
+                              'id': Column(Integer, primary_key=True),
+                              'book': Column(Integer, ForeignKey('books.id')),
+                              'value': Column(Integer)}
                 else:
                     ccdict = {'__tablename__': 'custom_column_' + str(row.id),
                               'id': Column(Integer, primary_key=True),
                               'value': Column(String)}
-                cc_classes[row.id] = type('Custom_Column_' + str(row.id), (Base,), ccdict)
+                cc_classes[row.id] = type(str('Custom_Column_' + str(row.id)), (Base,), ccdict)
 
         for cc_id in cc_ids:
-            if cc_id[1] == 'bool':
+            if (cc_id[1] == 'bool') or (cc_id[1] == 'int'):
                 setattr(Books, 'custom_column_' + str(cc_id[0]), relationship(cc_classes[cc_id[0]],
                                                                            primaryjoin=(
                                                                            Books.id == cc_classes[cc_id[0]].book),
@@ -344,8 +394,37 @@ def setup_db():
                                                                            secondary=books_custom_column_links[cc_id[0]],
                                                                            backref='books'))
 
-    # Base.metadata.create_all(engine)
-    Session = sessionmaker()
-    Session.configure(bind=engine)
+
+    global session
+    Session = scoped_session(sessionmaker(autocommit=False,
+                                             autoflush=False,
+                                             bind=engine))
     session = Session()
     return True
+
+
+def dispose():
+    global session
+
+    old_session = session
+    session = None
+    if old_session:
+        try: old_session.close()
+        except: pass
+        if old_session.bind:
+            try: old_session.bind.dispose()
+            except: pass
+
+    for attr in list(Books.__dict__.keys()):
+        if attr.startswith("custom_column_"):
+            setattr(Books, attr, None)
+
+    for db_class in cc_classes.values():
+        Base.metadata.remove(db_class.__table__)
+    cc_classes.clear()
+
+    for table in reversed(Base.metadata.sorted_tables):
+        name = table.key
+        if name.startswith("custom_column_") or name.startswith("books_custom_column_"):
+            if table is not None:
+                Base.metadata.remove(table)

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="{{ g.user.locale }}">
+  <head>
+    <title>{{instance}} | {{title}}</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+
+    <!-- Bootstrap -->
+    <link rel="apple-touch-icon" sizes="140x140" href="{{ url_for('static', filename='favicon.ico') }}">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <link href="{{ url_for('static', filename='css/libs/bootstrap.min.css') }}" rel="stylesheet" media="screen">
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet" media="screen">
+    {% if g.user.get_theme == 1 %}
+       <link href="{{ url_for('static', filename='css/caliBlur-style.css') }}" rel="stylesheet" media="screen">
+    {% endif %}
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+
+    {% block header %}{% endblock %}
+  </head>
+  <body class="{{ page }}">
+{% block body %}
+<div class="discover">
+  <h2>{{title}}</h2>
+  <div class="row">
+
+    {% for entry in entries %}
+    <div class="col-sm-3 col-lg-2 col-xs-6 book">
+
+      <div class="meta">
+        <p class="title">{{entry.title|shortentitle}}</p>
+        <p class="author">
+          {% for author in entry.authors %}
+            <a href="{{url_for('web.books_list',  data='author', sort='new', book_id=author.id) }}">{{author.name.replace('|',',')}}</a>
+            {% if not loop.last %}
+              &amp;
+            {% endif %}
+          {% endfor %}
+        </p>
+
+      </div>
+
+	  <div class="btn-group" role="group" aria-label="Download, send to Kindle, reading">
+          {% if g.user.role_download() %}
+            {% if entry.data|length %}
+            <div class="btn-group" role="group">
+                {% if entry.data|length < 2 %}
+
+                  {% for format in entry.data %}
+                  <a href="{{ url_for('web.download_link', book_id=entry.id, book_format=format.format|lower, anyname=entry.id|string+'.'+format.format|lower) }}" id="btnGroupDrop1{{format.format|lower}}" class="btn btn-primary" role="button">
+                    <span class="glyphicon glyphicon-download"></span>{{format.format}} ({{ format.uncompressed_size|filesizeformat }})
+                  </a>
+                  {% endfor %}
+                {% else %}
+                  <button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <span class="glyphicon glyphicon-download"></span> {{_('Download')}}
+                    <span class="caret"></span>
+                  </button>
+                  <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                  {% for format in entry.data %}
+                    <li><a href="{{ url_for('web.download_link', book_id=entry.id, book_format=format.format|lower, anyname=entry.id|string+'.'+format.format|lower) }}">{{format.format}} ({{ format.uncompressed_size|filesizeformat }})</a></li>
+                  {% endfor %}
+                  </ul>
+                {% endif %}
+            </div>
+            {% endif %}
+          {% endif %}
+       </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+
+{% endblock %}
+  </body>
+</html>

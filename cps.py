@@ -1,42 +1,68 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import os
+#  This file is part of the Calibre-Web (https://github.com/janeczku/calibre-web)
+#    Copyright (C) 2012-2019  OzzieIsaacs
+#
+#  This program is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License as published by
+#  the Free Software Foundation, either version 3 of the License, or
+#  (at your option) any later version.
+#
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU General Public License for more details.
+#
+#  You should have received a copy of the GNU General Public License
+#  along with this program. If not, see <http://www.gnu.org/licenses/>.
+
+from __future__ import absolute_import, division, print_function, unicode_literals
 import sys
+import os
 
-base_path = os.path.dirname(os.path.abspath(__file__))
+
 # Insert local directories into path
-sys.path.append(base_path)
-sys.path.append(os.path.join(base_path, 'cps'))
-sys.path.append(os.path.join(base_path, 'vendor'))
+if sys.version_info < (3, 0):
+    sys.path.append(os.path.dirname(os.path.abspath(__file__.decode('utf-8'))))
+    sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__.decode('utf-8'))), 'vendor'))
+else:
+    sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+    sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'vendor'))
 
-from cps import web
+
+from cps import create_app
+from cps import web_server
+from cps.opds import opds
+from cps.web import web
+from cps.jinjia import jinjia
+from cps.about import about
+from cps.shelf import shelf
+from cps.admin import admi
+from cps.gdrive import gdrive
+from cps.editbooks import editbook
 try:
-    from gevent.wsgi import WSGIServer
-    gevent_present = True
+    from cps.oauth_bb import oauth
+    oauth_available = True
 except ImportError:
-    from tornado.wsgi import WSGIContainer
-    from tornado.httpserver import HTTPServer
-    from tornado.ioloop import IOLoop
-    gevent_present = False
+    oauth_available = False
+
+
+def main():
+    app = create_app()
+    app.register_blueprint(web)
+    app.register_blueprint(opds)
+    app.register_blueprint(jinjia)
+    app.register_blueprint(about)
+    app.register_blueprint(shelf)
+    app.register_blueprint(admi)
+    app.register_blueprint(gdrive)
+    app.register_blueprint(editbook)
+    if oauth_available:
+        app.register_blueprint(oauth)
+    success = web_server.start()
+    sys.exit(0 if success else 1)
+
 
 if __name__ == '__main__':
-    if web.ub.DEVELOPMENT:
-        web.app.run(port=web.ub.config.config_port, debug=True)
-    else:
-        if gevent_present:
-            web.app.logger.info('Attempting to start gevent')
-            web.start_gevent()
-        else:
-            web.app.logger.info('Falling back to Tornado')
-            http_server = HTTPServer(WSGIContainer(web.app))
-            http_server.listen(web.ub.config.config_port)
-            IOLoop.instance().start()
-            IOLoop.instance().close(True)
-
-    if web.helper.global_task == 0:
-        web.app.logger.info("Performing restart of Calibre-web")
-        os.execl(sys.executable, sys.executable, *sys.argv)
-    else:
-        web.app.logger.info("Performing shutdown of Calibre-web")
-    sys.exit(0)
+    main()

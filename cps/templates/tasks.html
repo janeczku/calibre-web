@@ -1,0 +1,58 @@
+{% extends "layout.html" %}
+{% block header %}
+<link href="{{ url_for('static', filename='css/libs/bootstrap-table.min.css') }}" rel="stylesheet">
+{% endblock %}
+{% block body %}
+<div class="discover">
+    <h2>{{_('Tasks list')}}</h2>
+    <table class="table table-no-bordered" id="table" data-url="{{  url_for('web.get_email_status_json') }}"  data-sort-name="starttime" data-sort-order="asc">
+      <thead>
+        <tr>
+            {% if g.user.role_admin() %}
+            <th data-halign="right" data-align="right" data-field="user" data-sortable="true">{{_('User')}}</th>
+            {% endif %}
+            <th data-halign="right" data-align="right" data-field="taskMessage" data-sortable="true">{{_('Task')}}</th>
+            <th data-halign="right" data-align="right" data-field="status" data-sortable="true">{{_('Status')}}</th>
+            <th data-halign="right" data-align="right" data-field="progress" data-sortable="true" data-sorter="elementSorter">{{_('Progress')}}</th>
+            <th data-halign="right" data-align="right" data-field="runtime" data-sortable="true" data-sort-name="rt">{{_('Runtime')}}</th>
+            <th data-halign="right" data-align="right" data-field="starttime" data-sortable="true" data-sort-name="id">{{_('Starttime')}}</th>
+            <th data-field="id" data-visible="false"></th>
+            <th data-field="rt" data-visible="false"></th>
+        </tr>
+      </thead>
+    </table>
+  <!--div class="btn btn-default" id="tasks_delete">{{_('Delete finished tasks')}}</div>
+  <div class="btn btn-default" id="tasks_hide">{{_('Hide all tasks')}}</div-->
+</div>
+{% endblock %}
+{% block js %}
+<script src="{{ url_for('static', filename='js/libs/bootstrap-table/bootstrap-table.min.js') }}"></script>
+        <script>
+            // ToDo: Move to js file
+            $('#table').bootstrapTable({
+               formatNoMatches: function () {
+                return '';
+                },
+                striped: true
+            });
+            setInterval(function() {
+                $.ajax({
+                    method:"get",
+                    url: "{{ url_for('web.get_email_status_json')}}",
+                    async: true,
+                    timeout: 900,
+                    success:function(data){
+                    $('#table').bootstrapTable("load", data);
+                }
+                });
+            }, 1000);
+            function elementSorter(a, b) {
+                a = +a.slice(0, -2);
+                b = +b.slice(0, -2);
+                if (a > b) return 1;
+                if (a < b) return -1;
+                return 0;
+            }
+        </script>
+
+{% endblock %}

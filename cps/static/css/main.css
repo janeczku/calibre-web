@@ -104,7 +104,7 @@ body {
   height: 80%;
   /* margin-left: 10%; */
   margin: 0 auto;
-  max-width: 1250px;
+  /* max-width: 1250px; */
   z-index: 2;
   position: relative;
   overflow: hidden;
@@ -652,10 +652,10 @@ input:-ms-placeholder {
   padding: 4px;
 }
 
-@media only screen and (max-width: 1040px) {
+@media only screen and (max-width: 1040px) and (orientation: portrait) {
   #viewer{
-    width: 50%;
-    margin-left: 25%;
+    width: 80%;
+    margin-left: 10%;
   }
 
   #divider,
@@ -745,15 +745,63 @@ input:-ms-placeholder {
         height: 740px;
     }
 }
- /*For iPad landscape layouts only */
+ /*For iPad landscape layouts only *//*
 @media only screen and (min-device-width: 481px) and (max-device-width: 1024px) and (orientation: landscape) {
     #viewer iframe {
         width: 460px;
         height: 415px;
     }
+}*/
+
+@media only screen 
+and (min-device-width : 768px) 
+and (max-device-width : 1024px) 
+and (orientation : landscape)
+/*and (-webkit-min-device-pixel-ratio: 2)*/ {
+  #viewer{
+    width: 80%;
+    margin-left: 10%;
+  }
+  #divider,
+  #divider.show {
+    display: none;
+  }
 }
+
+ /*For iPad landscape layouts only */
+@media only screen and (min-device-width: 481px) and (max-device-width: 1024px) and (orientation: landscape) {
+    #viewer iframe {
+        width: 960px;
+        height: 515px;
+    }
+}
+
+/* For iPhone 6\6s portrait layouts only */
+@media only screen and (min-device-width : 375px) and (max-device-width : 667px) and (orientation: portrait) {
+    #viewer {
+      width: 300px;
+      height: 480px;
+    }
+    #viewer iframe {
+       width: 300px;
+       height: 480px;
+    }
+}
+
+/* For iPhone 6\6s landscape layouts only */
+@media only screen and (min-device-width : 375px) and (max-device-width : 667px) and (orientation: landscape) {
+    #viewer {
+      width: 450px;
+      height: 300px;
+    }
+    #viewer iframe {
+       width: 450px;
+       height: 300px;
+    }
+}
+
 /* For iPhone portrait layouts only */
-@media only screen and (max-device-width: 480px) and (orientation: portrait) {
+@media only screen and (max-device-width: 374px) and (orientation: portrait) {
     #viewer {
       width: 256px;
       height: 432px;
@@ -763,8 +811,9 @@ input:-ms-placeholder {
        height: 432px;
     }
 }
+
 /* For iPhone landscape layouts only */
-@media only screen and (max-device-width: 480px) and (orientation: landscape) {
+@media only screen and (max-device-width: 374px) and (orientation: landscape) {
     #viewer iframe {
         width: 256px;
         height: 124px;

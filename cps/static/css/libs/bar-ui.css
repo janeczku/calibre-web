@@ -1,0 +1,1001 @@
+﻿/**
+ * SoundManager 2: "Bar UI" player - CSS
+ * Copyright (c) 2014, Scott Schiller. All rights reserved.
+ * http://www.schillmania.com/projects/soundmanager2/
+ * Code provided under BSD license.
+ * http://schillmania.com/projects/soundmanager2/license.txt
+ */
+
+.sm2-bar-ui {
+ position: relative;
+ display: inline-block;
+ width: 100%;
+ font-family: helvetica, arial, verdana, sans-serif;
+ font-weight: normal;
+ /* prevent background border bleed */
+ -webkit-background-clip: padding-box;
+ background-clip: padding-box;
+ /* because indeed, fonts do look pretty "fat" otherwise in this case. */
+ -moz-osx-font-smoothing: grayscale;
+ -webkit-font-smoothing: antialiased;
+ /* general font niceness? */
+ font-smoothing: antialiased;
+ text-rendering: optimizeLegibility;
+ min-width: 20em;
+ max-width: 30em;
+ /* take out overflow if you want an absolutely-positioned playlist dropdown. */
+ border-radius: 2px;
+ overflow: hidden;
+ /* just for fun (animate normal / full-width) */
+ transition: max-width 0.2s ease-in-out;
+}
+
+.sm2-bar-ui .sm2-playlist li {
+ text-align: center;
+ margin-top: -2px;
+ font-size: 95%;
+ line-height: 1em;
+}
+
+.sm2-bar-ui.compact {
+ min-width: 1em;
+ max-width: 15em;
+}
+
+.sm2-bar-ui ul {
+ line-height: 1em;
+}
+
+/* want things left-aligned? */
+.sm2-bar-ui.left .sm2-playlist li {
+ text-align: left;
+}
+
+.sm2-bar-ui .sm2-playlist li .load-error {
+  cursor: help;
+}
+
+.sm2-bar-ui.full-width {
+ max-width: 100%;
+ z-index: 5;
+}
+
+.sm2-bar-ui.fixed {
+ position: fixed;
+ top: auto;
+ bottom: 0px;
+ left: 0px;
+ border-radius: 0px;
+ /* so the absolutely-positioned playlist can show... */
+ overflow: visible;
+ /* and this should probably have a high z-index. tweak as needed. */
+ z-index: 999;
+}
+
+.sm2-bar-ui.fixed .bd,
+.sm2-bar-ui.bottom .bd {
+ /* display: table; */
+ border-radius: 0px;
+ border-bottom: none;
+}
+
+.sm2-bar-ui.bottom {
+ /* absolute bottom-aligned UI */
+ top: auto;
+ bottom: 0px;
+ left: 0px;
+ border-radius: 0px;
+ /* so the absolutely-positioned playlist can show... */
+ overflow: visible;
+}
+
+.sm2-bar-ui.playlist-open .bd {
+ border-bottom-left-radius: 0px;
+ border-bottom-right-radius: 0px;
+ border-bottom-color: transparent;
+}
+
+.sm2-bar-ui .bd,
+.sm2-bar-ui .sm2-extra-controls {
+ position: relative;
+ background-color: #2288cc;
+ /*
+ transition: background 0.2s ease-in-out;
+ */
+}
+
+.sm2-bar-ui .sm2-inline-gradient {
+ /* gradient */
+ position: absolute;
+ left: 0px;
+ top: 0px;
+ width: 100%;
+ height: 100%;
+ background-image: linear-gradient(to bottom, rgba(255,255,255,0.125) 5%, rgba(255,255,255,0.125) 45%, rgba(255,255,255,0.15) 50%, rgba(0,0,0,0.1) 51%, rgba(0,0,0,0.1) 95%); /* W3C */
+}
+
+.sm2-bar-ui.flat .sm2-inline-gradient {
+ background-image: none;
+}
+
+.sm2-bar-ui.flat .sm2-box-shadow {
+ display: none;
+ box-shadow: none;
+}
+
+.sm2-bar-ui.no-volume .sm2-volume {
+ /* mobile devices (android + iOS) ignore attempts to set volume. */
+ display: none;
+}
+
+.sm2-bar-ui.textured .sm2-inline-texture {
+ position: absolute;
+ top: 0px;
+ left: 0px;
+ width: 100%;
+ height: 100%;
+ /* for example */
+ /* background-image: url(../image/wood_pattern_dark.png); */
+ /* additional opacity effects can be applied here. */
+ opacity: 0.75;
+
+}
+
+.sm2-bar-ui.textured.dark-text .sm2-inline-texture {
+ /* dark text + textured case: use light wood background (for example.) */
+ /* background-image: url(../image/patterns/wood_pattern.png); */
+}
+
+.sm2-bar-ui.textured.dark-text .sm2-playlist-wrapper {
+ /* dark text + textured case: ditch 10% dark on playlist body. */
+ background-color: transparent;
+}
+
+.sm2-bar-ui.textured.dark-text .sm2-playlist-wrapper ul li:hover a,
+.sm2-bar-ui.textured.dark-text .sm2-playlist-wrapper ul li.selected a {
+ /* dark + textured case: dark highlights */
+ background-color: rgba(0,0,0,0.1);
+ background-image: url(../images/black-10.png);
+ /* modern browsers don't neeed the image */
+ background-image: none, none;
+}
+
+.sm2-bar-ui .bd {
+ display: table;
+ border-bottom: none;
+}
+
+.sm2-bar-ui .sm2-playlist-wrapper {
+ background-color: rgba(0,0,0,0.1);
+}
+
+.sm2-bar-ui .sm2-extra-controls .bd {
+ background-color: rgba(0,0,0,0.2);
+}
+
+
+.sm2-bar-ui.textured .sm2-extra-controls .bd {
+ /* lighten extra color overlays */
+ background-color: rgba(0,0,0,0.05);
+}
+
+.sm2-bar-ui .sm2-extra-controls {
+ background-color: transparent;
+ border: none;
+}
+
+.sm2-bar-ui .sm2-extra-controls .bd {
+ /* override full-width table behaviour */
+ display: block;
+ border: none;
+}
+
+.sm2-bar-ui .sm2-extra-controls .sm2-inline-element {
+ display: inline-block;
+}
+
+.sm2-bar-ui,
+.sm2-bar-ui .bd a {
+ color: #fff;
+}
+
+.sm2-bar-ui.dark-text,
+.sm2-bar-ui.dark-text .bd a {
+ color: #000;
+}
+
+.sm2-bar-ui.dark-text .sm2-inline-button {
+ /* Warning/disclaimer: SVG might be fuzzy when inverted on Chrome, losing resolution on hi-DPI displays. */
+ -webkit-filter: invert(1);
+ /* SVG-based invert filter for Firefox */
+ filter: url("data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\'><filter id=\'invert\'><feColorMatrix in='SourceGraphic' type='matrix' values='-1 0 0 0 1 0 -1 0 0 1 0 0 -1 0 1 0 0 0 1 0'/></filter></svg>#invert");
+ /* IE 8 inverse filter, may only match pure black/white */
+ /* filter: xray; */
+ /* pending W3 standard */
+ filter: invert(1);
+ /* not you, IE < 10. */
+ filter: none\9;
+}
+
+.sm2-bar-ui .bd a {
+ text-decoration: none;
+}
+
+.sm2-bar-ui .bd .sm2-button-element:hover {
+ background-color: rgba(0,0,0,0.1);
+ background-image: url(../images/black-10.png);
+ background-image: none, none;
+}
+
+.sm2-bar-ui .bd .sm2-button-element:active {
+ background-color: rgba(0,0,0,0.25);
+ background-image: url(../images/black-25.png);
+ background-image: none, none;
+}
+
+.sm2-bar-ui .bd .sm2-extra-controls .sm2-button-element:active .sm2-inline-button,
+.sm2-bar-ui .bd .active .sm2-inline-button/*,
+.sm2-bar-ui.playlist-open .sm2-menu a */{
+ -ms-transform: scale(0.9);
+ -webkit-transform: scale(0.9);
+ -webkit-transform-origin: 50% 50%;
+ /* firefox doesn't scale quite right. */
+ transform: scale(0.9);
+ transform-origin: 50% 50%;
+ /* firefox doesn't scale quite right. */
+ -moz-transform: none;
+}
+
+.sm2-bar-ui .bd .sm2-extra-controls .sm2-button-element:hover,
+.sm2-bar-ui .bd .sm2-extra-controls .sm2-button-element:active,
+.sm2-bar-ui .bd .active {
+ background-color: rgba(0,0,0,0.1);
+ background-image: url(../images/black-10.png);
+ background-image: none, none;
+}
+
+.sm2-bar-ui .bd .sm2-extra-controls .sm2-button-element:active {
+ /* box shadow is excessive on smaller elements. */
+ box-shadow: none;
+}
+
+.sm2-bar-ui {
+ /* base font size */
+ font-size: 15px;
+ text-shadow: none;
+}
+
+.sm2-bar-ui .sm2-inline-element {
+ position: relative;
+ display: inline-block;
+ vertical-align: middle;
+ padding: 0px;
+ overflow: hidden;
+}
+
+.sm2-bar-ui .sm2-inline-element,
+.sm2-bar-ui .sm2-button-element .sm2-button-bd {
+ position: relative;
+ /**
+  * .sm2-button-bd exists because of a Firefox bug from 2000
+  * re: nested relative / absolute elements inside table cells.
+  * https://bugzilla.mozilla.org/show_bug.cgi?id=63895
+  */
+}
+
+.sm2-bar-ui .sm2-inline-element,
+.sm2-bar-ui .sm2-button-element .sm2-button-bd {
+ /**
+  * if you play with UI width/height, these are the important ones.
+  * NOTE: match these values if you want square UI buttons.
+  */
+ min-width: 2.8em;
+ min-height: 2.8em;
+}
+
+.sm2-bar-ui .sm2-inline-button {
+ position: absolute;
+ top: 0px;
+ left: 0px;
+ width: 100%;
+ height: 100%;
+}
+
+.sm2-bar-ui .sm2-extra-controls .bd {
+ /* don't double-layer. */
+ background-image: none;
+ background-color: rgba(0,0,0,0.15);
+}
+
+.sm2-bar-ui .sm2-extra-controls .sm2-inline-element {
+ width: 25px; /* bare minimum */
+ min-height: 1.75em;
+ min-width: 2.5em;
+}
+
+.sm2-bar-ui .sm2-inline-status {
+ line-height: 100%;
+ /* how much to allow before truncating song artist / title with ellipsis */
+ display: inline-block;
+ min-width: 200px;
+ max-width: 20em;
+ /* a little more spacing */
+ padding-left: 0.75em;
+ padding-right: 0.75em;
+}
+
+.sm2-bar-ui .sm2-inline-element {
+ /* extra-small em scales up nicely, vs. 1px which gets fat */
+ border-right: 0.075em dotted #666; /* legacy */
+ border-right: 0.075em solid rgba(0,0,0,0.1);
+}
+
+.sm2-bar-ui .sm2-inline-element.noborder {
+ border-right: none;
+}
+
+.sm2-bar-ui .sm2-inline-element.compact {
+ min-width: 2em;
+ padding: 0px 0.25em;
+}
+
+.sm2-bar-ui .sm2-inline-element:first-of-type {
+ border-top-left-radius: 3px;
+ border-bottom-left-radius: 3px;
+ overflow: hidden;
+}
+
+.sm2-bar-ui .sm2-inline-element:last-of-type {
+ border-right: none;
+ border-top-right-radius: 3px;
+ border-bottom-right-radius: 3px;
+}
+
+.sm2-bar-ui .sm2-inline-status a:hover {
+ background-color: transparent;
+ text-decoration: underline;
+}
+
+.sm2-inline-time,
+.sm2-inline-duration {
+ display: table-cell;
+ width: 1%;
+ font-size: 75%;
+ line-height: 0.9em;
+ min-width: 2em; /* if you have sounds > 10:00 in length, make this bigger. */
+ vertical-align: middle;
+}
+
+.sm2-bar-ui .sm2-playlist {
+ position: relative;
+ height: 1.45em;
+}
+
+.sm2-bar-ui .sm2-playlist-target {
+ /* initial render / empty case */
+ position: relative;
+ min-height: 1em;
+}
+
+.sm2-bar-ui .sm2-playlist ul {
+ position: absolute;
+ left: 0px;
+ top: 0px;
+ width: 100%;
+ list-style-type: none;
+ overflow: hidden;
+ white-space: nowrap;
+ text-overflow: ellipsis;
+}
+
+.sm2-bar-ui p,
+.sm2-bar-ui .sm2-playlist ul,
+.sm2-bar-ui .sm2-playlist ul li {
+ margin: 0px;
+ padding: 0px;
+}
+
+.sm2-bar-ui .sm2-playlist ul li {
+ position: relative;
+}
+
+.sm2-bar-ui .sm2-playlist ul li,
+.sm2-bar-ui .sm2-playlist ul li a {
+ position: relative;
+ display: block;
+ /* prevent clipping of characters like "g" */
+ height: 1.5em;
+ white-space: nowrap;
+ overflow: hidden;
+ text-overflow: ellipsis;
+ text-align: center;
+}
+
+.sm2-row {
+ position: relative;
+ display: table-row;
+}
+
+.sm2-progress-bd {
+ /* spacing between progress track/ball and time (position) */
+ padding: 0px 0.8em;
+}
+
+.sm2-progress .sm2-progress-track,
+.sm2-progress .sm2-progress-ball,
+.sm2-progress .sm2-progress-bar {
+ position: relative;
+ width: 100%;
+ height: 0.65em;
+ border-radius: 0.65em;
+}
+
+.sm2-progress .sm2-progress-bar {
+ /* element which follows the progres "ball" as it moves */
+ position: absolute;
+ left: 0px;
+ top: 0px;
+ width: 0px;
+ background-color: rgba(0,0,0,0.33);
+ background-image: url(../images/black-33.png);
+ background-image: none, none;
+}
+
+.volume-shade,
+.playing .sm2-progress .sm2-progress-track,
+.paused .sm2-progress .sm2-progress-track {
+ cursor: pointer;
+}
+
+.playing .sm2-progress .sm2-progress-ball {
+ cursor: -moz-grab;
+ cursor: -webkit-grab;
+ cursor: grab;
+}
+
+.sm2-progress .sm2-progress-ball {
+ position: absolute;
+ top: 0px;
+ left: 0px;
+ width: 1em;
+ height: 1em;
+ margin: -0.2em 0px 0px -0.5em;
+ width: 14px;
+ height: 14px;
+ margin: -2px 0px 0px -7px;
+ width: 0.9333em;
+ height: 0.9333em;
+ margin: -0.175em 0px 0px -0.466em;
+ background-color: #fff;
+ padding: 0px;
+/*
+ z-index: 1;
+*/
+ transition: transform 0.15s ease-in-out;
+}
+
+/*
+.sm2-bar-ui.dark-text .sm2-progress .sm2-progress-ball {
+ background-color: #000;
+}
+*/
+
+.sm2-progress .sm2-progress-track {
+ background-color: rgba(0,0,0,0.4);
+ background-image: url(../images/black-33.png); /* legacy */
+ background-image: none, none; /* modern browsers */
+}
+
+/* scrollbar rules have to be separate, browsers not supporting this syntax will skip them when combined. */
+.sm2-playlist-wrapper ul::-webkit-scrollbar-track {
+ background-color: rgba(0,0,0,0.4);
+}
+
+.playing.grabbing .sm2-progress .sm2-progress-track,
+.playing.grabbing .sm2-progress .sm2-progress-ball {
+ cursor: -moz-grabbing;
+ cursor: -webkit-grabbing;
+ cursor: grabbing;
+}
+
+.sm2-bar-ui.grabbing .sm2-progress .sm2-progress-ball {
+ -webkit-transform: scale(1.15);
+ transform: scale(1.15);
+}
+
+.sm2-inline-button {
+ background-position: 50% 50%;
+ background-repeat: no-repeat;
+ /* hide inner text */
+ line-height: 10em;
+ /**
+  * image-rendering seems to apply mostly to Firefox in this case. Use with caution.
+  * https://developer.mozilla.org/en-US/docs/Web/CSS/image-rendering#Browser_compatibility
+  */
+ image-rendering: -moz-crisp-edges;
+ image-rendering: -webkit-optimize-contrast;
+ image-rendering: crisp-edges;
+ -ms-interpolation-mode: nearest-neighbor;
+ -ms-interpolation-mode: bicubic;
+}
+
+.sm2-icon-play-pause,
+.sm2-icon-play-pause:hover,
+.paused .sm2-icon-play-pause:hover {
+ background-image: url(../images/icomoon/entypo-25px-ffffff/PNG/play.png);
+ background-image: none, url(../images/icomoon/entypo-25px-ffffff/SVG/play.svg);
+ background-size: 67.5%;
+ background-position: 40% 53%;
+}
+
+.playing .sm2-icon-play-pause {
+ background-image: url(../images/icomoon/entypo-25px-ffffff/PNG/pause.png);
+ background-image: none, url(../images/icomoon/entypo-25px-ffffff/SVG/pause.svg);
+ background-size: 57.6%;
+ background-position: 50% 53%;
+}
+
+.sm2-volume-control {
+ background-image: url(../images/icomoon/entypo-25px-ffffff/PNG/volume.png);
+ background-image: none, url(../images/icomoon/entypo-25px-ffffff/SVG/volume.svg);
+}
+
+.sm2-volume-control,
+.sm2-volume-shade {
+ background-position: 42% 50%;
+ background-size: 56%;
+}
+
+.volume-shade {
+ filter: alpha(opacity=33); /* <= IE 8 */
+ opacity: 0.33;
+/* -webkit-filter: invert(1);*/
+ background-image: url(../images/icomoon/entypo-25px-000000/PNG/volume.png);
+ background-image: none, url(../images/icomoon/entypo-25px-000000/SVG/volume.svg);
+}
+
+.sm2-icon-menu {
+ background-image: url(../images/icomoon/entypo-25px-ffffff/PNG/list2.png);
+ background-image: none, url(../images/icomoon/entypo-25px-ffffff/SVG/list2.svg);
+ background-size: 58%;
+ background-position: 54% 51%;
+}
+
+.sm2-icon-previous {
+ background-image: url(../images/icomoon/entypo-25px-ffffff/PNG/first.png);
+ background-image: none, url(../images/icomoon/entypo-25px-ffffff/SVG/first.svg);
+}
+
+.sm2-icon-next {
+ background-image: url(../images/icomoon/entypo-25px-ffffff/PNG/last.png);
+ background-image: none, url(../images/icomoon/entypo-25px-ffffff/SVG/last.svg);
+}
+
+.sm2-icon-previous,
+.sm2-icon-next {
+ background-size: 49.5%;
+ background-position: 50% 50%;
+}
+
+
+.sm2-extra-controls .sm2-icon-previous,
+.sm2-extra-controls .sm2-icon-next {
+ backgound-size: 53%;
+}
+
+.sm2-icon-shuffle {
+ background-image: url(../images/icomoon/entypo-25px-ffffff/PNG/shuffle.png);
+ background-image: none, url(../images/icomoon/entypo-25px-ffffff/SVG/shuffle.svg);
+ background-size: 45%;
+ background-position: 50% 50%;
+}
+
+.sm2-icon-repeat {
+ background-image: url(../images/icomoon/entypo-25px-ffffff/PNG/loop.png);
+ background-image: none, url(../images/icomoon/entypo-25px-ffffff/SVG/loop.svg);
+ background-position: 50% 43%;
+ background-size: 54%;
+}
+
+.sm2-extra-controls .sm2-icon-repeat {
+ background-position: 50% 45%;
+}
+
+.sm2-playlist-wrapper ul li .sm2-row {
+  display: table;
+  width: 100%;
+}
+
+.sm2-playlist-wrapper ul li .sm2-col {
+ display: table-cell;
+ vertical-align: top;
+ /* by default, collapse. */
+ width: 0%;
+}
+
+.sm2-playlist-wrapper ul li .sm2-col.sm2-wide {
+ /* take 100% width. */
+ width: 100%;
+}
+
+.sm2-playlist-wrapper ul li .sm2-icon {
+ display: inline-block;
+ overflow: hidden;
+ width: 2em;
+ color: transparent !important; /* hide text */
+ white-space: nowrap; /* don't let text affect height */
+ padding-left: 0px;
+ padding-right: 0px;
+ text-indent: 2em; /* IE 8, mostly */
+}
+
+.sm2-playlist-wrapper ul li .sm2-icon,
+.sm2-playlist-wrapper ul li:hover .sm2-icon,
+.sm2-playlist-wrapper ul li.selected .sm2-icon {
+ background-size: 55%;
+ background-position: 50% 50%;
+ background-repeat: no-repeat;
+}
+
+.sm2-playlist-wrapper ul li .sm2-col {
+ /* sibling table cells get borders. */
+ border-right: 1px solid rgba(0,0,0,0.075);
+}
+
+.sm2-playlist-wrapper ul li.selected .sm2-col {
+ border-color: rgba(255,255,255,0.075);
+}
+
+.sm2-playlist-wrapper ul li .sm2-col:last-of-type {
+  border-right: none;
+}
+
+.sm2-playlist-wrapper ul li .sm2-cart,
+.sm2-playlist-wrapper ul li:hover .sm2-cart,
+.sm2-playlist-wrapper ul li.selected .sm2-cart {
+ background-image: url(../images/icomoon/entypo-25px-ffffff/PNG/cart.png);
+ background-image: none, url(../images/icomoon/entypo-25px-ffffff/SVG/cart.svg);
+ /* slight alignment tweak */
+ background-position: 48% 50%;
+}
+
+.sm2-playlist-wrapper ul li .sm2-music,
+.sm2-playlist-wrapper ul li:hover .sm2-music,
+.sm2-playlist-wrapper ul li.selected .sm2-music {
+ background-image: url(../images/icomoon/entypo-25px-ffffff/PNG/music.png);
+ background-image: none, url(../images/icomoon/entypo-25px-ffffff/SVG/music.svg);
+}
+
+.sm2-bar-ui.dark-text .sm2-playlist-wrapper ul li .sm2-cart,
+.sm2-bar-ui.dark-text .sm2-playlist-wrapper ul li:hover .sm2-cart,
+.sm2-bar-ui.dark-text .sm2-playlist-wrapper ul li.selected .sm2-cart {
+ background-image: url(../images/icomoon/entypo-25px-000000/PNG/cart.png);
+ background-image: none, url(../images/icomoon/entypo-25px-000000/SVG/cart.svg);
+}
+
+.sm2-bar-ui.dark-text .sm2-playlist-wrapper ul li .sm2-music,
+.sm2-bar-ui.dark-text .sm2-playlist-wrapper ul li:hover .sm2-music,
+.sm2-bar-ui.dark-text .sm2-playlist-wrapper ul li.selected .sm2-music {
+ background-image: url(../images/icomoon/entypo-25px-000000/PNG/music.png);
+ background-image: none, url(../images/icomoon/entypo-25px-000000/SVG/music.svg);
+}
+
+
+.sm2-bar-ui.dark-text .sm2-playlist-wrapper ul li .sm2-col {
+ border-left-color: rgba(0,0,0,0.15);
+}
+
+.sm2-playlist-wrapper ul li .sm2-icon:hover {
+ background-color: rgba(0,0,0,0.33);
+}
+
+.sm2-bar-ui .sm2-playlist-wrapper ul li .sm2-icon:hover {
+ background-color: rgba(0,0,0,0.45);
+}
+
+.sm2-bar-ui.dark-text .sm2-playlist-wrapper ul li.selected .sm2-icon:hover {
+ background-color: rgba(255,255,255,0.25);
+ border-color: rgba(0,0,0,0.125);
+}
+
+.sm2-progress-ball .icon-overlay {
+ position: absolute;
+ width: 100%;
+ height: 100%;
+ top: 0px;
+ left: 0px;
+ background: none, url(../image/icomoon/free-25px-000000/SVG/spinner.svg);
+ background-size: 72%;
+ background-position: 50%;
+ background-repeat: no-repeat;
+ display: none;
+}
+
+.playing.buffering .sm2-progress-ball .icon-overlay {
+ display: block;
+ -webkit-animation: spin 0.6s linear infinite;
+ animation: spin 0.6s linear infinite;
+}
+
+@-webkit-keyframes spin {
+ 0% {
+  -webkit-transform: rotate(0deg);
+ }
+ 100% {
+  -webkit-transform: rotate(360deg);
+ }
+}
+
+@-moz-keyframes spin {
+ 0% {
+  transform: rotate(0deg);
+ }
+ 100% {
+  transform: rotate(360deg);
+ }
+}
+
+@keyframes spin {
+ 0% {
+  transform: rotate(0deg);
+ }
+ 100% {
+  transform: rotate(360deg);
+ }
+}
+
+.sm2-element ul {
+ font-size: 95%;
+ list-style-type: none;
+}
+
+.sm2-element ul,
+.sm2-element ul li {
+ margin: 0px;
+ padding: 0px;
+}
+
+.bd.sm2-playlist-drawer {
+ /* optional: absolute positioning */
+ /* position: absolute; */
+ z-index: 3;
+ border-radius: 0px;
+ width: 100%;
+ height: 0px;
+ border: none;
+ background-image: none;
+ display: block;
+ overflow: hidden;
+ transition: height 0.2s ease-in-out;
+}
+
+.sm2-bar-ui.fixed .bd.sm2-playlist-drawer,
+.sm2-bar-ui.bottom .bd.sm2-playlist-drawer {
+ position: absolute;
+}
+
+.sm2-bar-ui.fixed .sm2-playlist-wrapper,
+.sm2-bar-ui.bottom .sm2-playlist-wrapper {
+ padding-bottom: 0px;
+}
+
+.sm2-bar-ui.fixed .bd.sm2-playlist-drawer,
+.sm2-bar-ui.bottom .bd.sm2-playlist-drawer {
+ /* show playlist on top */
+ bottom: 2.8em;
+}
+
+.sm2-bar-ui .bd.sm2-playlist-drawer {
+ opacity: 0.5;
+ /* redraw fix for Chrome, background color doesn't always draw when playlist drawer open. */
+ transform: translateZ(0);
+}
+
+/* experimental, may not perform well. */
+/*
+.sm2-bar-ui .bd.sm2-playlist-drawer a {
+ -webkit-filter: blur(5px);
+}
+*/
+
+.sm2-bar-ui.playlist-open .bd.sm2-playlist-drawer {
+ height: auto;
+ opacity: 1;
+}
+
+.sm2-bar-ui.playlist-open .bd.sm2-playlist-drawer a {
+ -webkit-filter: none; /* blur(0px) was still blurred on retina displays, as of 07/2014 */
+}
+
+.sm2-bar-ui.fixed.playlist-open .bd.sm2-playlist-drawer .sm2-playlist-wrapper,
+.sm2-bar-ui.bottom.playlist-open .bd.sm2-playlist-drawer .sm2-playlist-wrapper {
+ /* extra padding when open */
+ padding-bottom: 0.5em;
+ box-shadow: none;
+}
+
+.sm2-bar-ui .bd.sm2-playlist-drawer {
+ transition: all 0.2s ease-in-out;
+ transition-property: transform, height, opacity, background-color, -webkit-filter;
+}
+
+.sm2-bar-ui .bd.sm2-playlist-drawer a {
+ transition: -webkit-filter 0.2s ease-in-out;
+}
+
+.sm2-bar-ui .bd.sm2-playlist-drawer .sm2-inline-texture {
+ /* negative offset for height of top bar, so background is seamless. */
+ background-position: 0px -2.8em;
+}
+
+.sm2-box-shadow {
+ position: absolute;
+ left: 0px;
+ top: 0px;
+ width: 100%;
+ height: 100%;
+ box-shadow: inset 0px 1px 6px rgba(0,0,0,0.15);
+}
+
+.sm2-playlist-wrapper {
+ position: relative;
+ padding: 0.5em 0.5em 0.5em 0.25em;
+ background-image: none, none;
+}
+
+.sm2-playlist-wrapper ul {
+ max-height: 9.25em;
+ overflow: auto;
+}
+
+.sm2-playlist-wrapper ul li {
+ border-bottom: 1px solid rgba(0,0,0,0.05);
+}
+
+.sm2-playlist-wrapper ul li:nth-child(odd) {
+ background-color: rgba(255,255,255,0.03);
+}
+
+.sm2-playlist-wrapper ul li a {
+ display: block;
+ padding: 0.5em 0.25em 0.5em 0.75em;
+ margin-right: 0px;
+ font-size: 90%;
+ vertical-align: middle;
+}
+
+.sm2-playlist-wrapper ul li a.sm2-exclude {
+ display: inline-block;
+}
+
+.sm2-playlist-wrapper ul li a.sm2-exclude .label {
+ font-size: 95%;
+ line-height: 1em;
+ margin-left: 0px;
+ padding: 2px 4px;
+}
+
+.sm2-playlist-wrapper ul li:hover a {
+ background-color: rgba(0,0,0,0.20);
+ background-image: url(../images/black-20.png);
+ background-image: none, none;
+}
+
+.sm2-bar-ui.dark-text .sm2-playlist-wrapper ul li:hover a {
+ background-color: rgba(255,255,255,0.1);
+ background-image: url(../images/black-10.png);
+ background-image: none, none;
+}
+
+.sm2-playlist-wrapper ul li.selected a {
+ background-color: rgba(0,0,0,0.25);
+ background-image: url(../images/black-20.png);
+ background-image: none, none;
+}
+
+.sm2-bar-ui.dark-text ul li.selected a {
+ background-color: rgba(255,255,255,0.1);
+ background-image: url(../images/black-10.png);
+ background-image: none, none;
+}
+
+.sm2-bar-ui .disabled {
+ filter: alpha(opacity=33); /* <= IE 8 */
+ opacity: 0.33;
+}
+
+.sm2-bar-ui .bd .sm2-button-element.disabled:hover {
+ background-color: transparent;
+}
+
+.sm2-bar-ui .active,
+/*.sm2-bar-ui.playlist-open .sm2-menu,*/
+.sm2-bar-ui.playlist-open .sm2-menu:hover {
+ /* depressed / "on" state */
+ box-shadow: inset 0px 0px 2px rgba(0,0,0,0.1);
+ background-image: none;
+}
+
+.firefox-fix {
+ /**
+  * This exists because of a Firefox bug from 2000
+  * re: nested relative / absolute elements inside table cells.
+  * https://bugzilla.mozilla.org/show_bug.cgi?id=63895
+  */
+ position: relative;
+ display: inline-block;
+ width: 100%;
+ height: 100%;
+}
+
+/* some custom scrollbar trickery, where supported */
+
+.sm2-playlist-wrapper ul::-webkit-scrollbar {
+ width: 10px;
+}
+
+.sm2-playlist-wrapper ul::-webkit-scrollbar-track {
+ background: rgba(0,0,0,0.33);
+ border-radius: 10px;
+}
+
+.sm2-playlist-wrapper ul::-webkit-scrollbar-thumb {
+ border-radius: 10px;
+ background: #fff;
+}
+
+.sm2-extra-controls {
+ font-size: 0px;
+ text-align: center;
+}
+
+.sm2-bar-ui .label {
+ position: relative;
+ display: inline-block;
+ font-size: 0.7em;
+ margin-left: 0.25em;
+ vertical-align: top;
+ background-color: rgba(0,0,0,0.25);
+ border-radius: 3px;
+ padding: 0px 3px;
+ box-sizing: padding-box;
+}
+
+.sm2-bar-ui.dark-text .label {
+ background-color: rgba(0,0,0,0.1);
+ background-image: url(../images/black-10.png);
+ background-image: none, none;
+}
+
+.sm2-bar-ui .sm2-playlist-drawer .label {
+ font-size: 0.8em;
+ padding: 0px 3px;
+}
+
+/* --- full width stuff --- */
+
+.sm2-bar-ui .sm2-inline-element {
+ display: table-cell;
+}
+
+.sm2-bar-ui .sm2-inline-element {
+ /* collapse */
+ width: 1%;
+}
+
+.sm2-bar-ui .sm2-inline-status {
+ /* full width */
+ width: 100%;
+ min-width: 100%;
+ max-width: 100%;
+}
+
+.sm2-bar-ui > .bd {
+ width: 100%;
+}
+
+.sm2-bar-ui .sm2-playlist-drawer {
+ /* re-hide playlist */
+ display: block;
+ overflow: hidden;
+}

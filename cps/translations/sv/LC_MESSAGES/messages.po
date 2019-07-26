@@ -1,0 +1,2379 @@
+# German translations for Calibre-Web.
+# Copyright (C) 2016 Ozzie Isaacs
+# This file is distributed under the same license as the Calibre-Web
+# project.
+# FIRST AUTHOR OzzieIsaacs, 2016.
+msgid ""
+msgstr ""
+"Project-Id-Version:  Calibre-Web\n"
+"Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
+"POT-Creation-Date: 2019-07-26 16:41+0200\n"
+"PO-Revision-Date: 2018-11-23 02:57+0100\n"
+"Last-Translator: Jonatan Nyberg <jonatan.nyberg.karl@gmail.com>\n"
+"Language: sv\n"
+"Language-Team: \n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.7.0\n"
+
+#: cps/about.py:70
+msgid "Statistics"
+msgstr "Statistik"
+
+#: cps/admin.py:90
+msgid "Server restarted, please reload page"
+msgstr "Server startas om, vänligen uppdatera sidan"
+
+#: cps/admin.py:92
+msgid "Performing shutdown of server, please close window"
+msgstr "Stänger servern, vänligen stäng fönstret"
+
+#: cps/admin.py:111 cps/updater.py:445
+msgid "Unknown"
+msgstr "Okänd"
+
+#: cps/admin.py:130
+msgid "Admin page"
+msgstr "Administrationssida"
+
+#: cps/admin.py:149 cps/templates/admin.html:102
+msgid "UI Configuration"
+msgstr "Användargränssnitt konfiguration"
+
+#: cps/admin.py:181 cps/admin.py:399
+msgid "Calibre-Web configuration updated"
+msgstr "Calibre-Web konfiguration uppdaterad"
+
+#: cps/admin.py:427 cps/templates/admin.html:101
+msgid "Basic Configuration"
+msgstr "Grundläggande konfiguration"
+
+#: cps/admin.py:450 cps/web.py:1050
+msgid "Please fill out all fields!"
+msgstr "Fyll i alla fält!"
+
+#: cps/admin.py:452 cps/admin.py:463 cps/admin.py:469 cps/admin.py:484
+#: cps/templates/admin.html:35
+msgid "Add new user"
+msgstr "Lägg till ny användare"
+
+#: cps/admin.py:461 cps/web.py:1253
+msgid "E-mail is not from valid domain"
+msgstr "E-posten är inte från giltig domän"
+
+#: cps/admin.py:467 cps/admin.py:478
+msgid "Found an existing account for this e-mail address or nickname."
+msgstr "Hittade ett befintligt konto för den här e-postadressen eller smeknamnet."
+
+#: cps/admin.py:474
+#, python-format
+msgid "User '%(user)s' created"
+msgstr "Användaren '%(user)s' skapad"
+
+#: cps/admin.py:494
+msgid "Edit e-mail server settings"
+msgstr "Redigera inställningar för e-postserver"
+
+#: cps/admin.py:520
+#, python-format
+msgid "Test e-mail successfully send to %(kindlemail)s"
+msgstr "Test-e-post skicka till %(kindlemail)s"
+
+#: cps/admin.py:523
+#, python-format
+msgid "There was an error sending the Test e-mail: %(res)s"
+msgstr "Det gick inte att skicka Testmeddelandet: %(res)s"
+
+#: cps/admin.py:525 cps/web.py:1033
+msgid "Please configure your kindle e-mail address first..."
+msgstr "Konfigurera din kindle-e-postadress först..."
+
+#: cps/admin.py:527
+msgid "E-mail server settings updated"
+msgstr "E-postserverinställningar uppdaterade"
+
+#: cps/admin.py:556
+#, python-format
+msgid "User '%(nick)s' deleted"
+msgstr "Användaren '%(nick)s' borttagen"
+
+#: cps/admin.py:559
+msgid "No admin user remaining, can't delete user"
+msgstr ""
+
+#: cps/admin.py:598 cps/web.py:1279
+msgid "Found an existing account for this e-mail address."
+msgstr "Hittade ett befintligt konto för den här e-postadressen."
+
+#: cps/admin.py:601 cps/admin.py:613
+#, python-format
+msgid "Edit User %(nick)s"
+msgstr "Redigera användaren %(nick)s"
+
+#: cps/admin.py:607
+#, python-format
+msgid "User '%(nick)s' updated"
+msgstr "Användaren '%(nick)s' uppdaterad"
+
+#: cps/admin.py:610
+msgid "An unknown error occured."
+msgstr "Ett okänt fel uppstod."
+
+#: cps/admin.py:629
+#, python-format
+msgid "Password for user %(user)s reset"
+msgstr "Lösenord för användaren %(user)s återställd"
+
+#: cps/admin.py:632 cps/web.py:1075
+msgid "An unknown error occurred. Please try again later."
+msgstr "Ett okänt fel uppstod. Försök igen senare."
+
+#: cps/admin.py:643
+msgid "Logfile viewer"
+msgstr ""
+
+#: cps/admin.py:678
+msgid "Requesting update package"
+msgstr "Begär uppdateringspaketet"
+
+#: cps/admin.py:679
+msgid "Downloading update package"
+msgstr "Hämtar uppdateringspaketet"
+
+#: cps/admin.py:680
+msgid "Unzipping update package"
+msgstr "Packar upp uppdateringspaketet"
+
+#: cps/admin.py:681
+msgid "Replacing files"
+msgstr "Ersätta filer"
+
+#: cps/admin.py:682
+msgid "Database connections are closed"
+msgstr "Databasanslutningarna är stängda"
+
+#: cps/admin.py:683
+msgid "Stopping server"
+msgstr "Stoppar server"
+
+#: cps/admin.py:684
+msgid "Update finished, please press okay and reload page"
+msgstr "Uppdatering klar, tryck på okej och uppdatera sidan"
+
+#: cps/admin.py:685 cps/admin.py:686 cps/admin.py:687 cps/admin.py:688
+msgid "Update failed:"
+msgstr "Uppdateringen misslyckades:"
+
+#: cps/admin.py:685 cps/updater.py:271 cps/updater.py:456 cps/updater.py:458
+msgid "HTTP Error"
+msgstr "HTTP-fel"
+
+#: cps/admin.py:686 cps/updater.py:273 cps/updater.py:460
+msgid "Connection error"
+msgstr "Anslutningsfel"
+
+#: cps/admin.py:687 cps/updater.py:275 cps/updater.py:462
+msgid "Timeout while establishing connection"
+msgstr "Tiden ute när du etablerade anslutning"
+
+#: cps/admin.py:688 cps/updater.py:277 cps/updater.py:464
+msgid "General error"
+msgstr "Allmänt fel"
+
+#: cps/editbooks.py:214 cps/editbooks.py:393
+msgid "Error opening eBook. File does not exist or file is not accessible"
+msgstr "Det gick inte att öppna e-boken. Filen finns inte eller filen är inte tillgänglig"
+
+#: cps/editbooks.py:242
+msgid "edit metadata"
+msgstr "redigera metadata"
+
+#: cps/editbooks.py:321 cps/editbooks.py:551
+#, python-format
+msgid "File extension '%(ext)s' is not allowed to be uploaded to this server"
+msgstr "Filändelsen '%(ext)s' får inte laddas upp till den här servern"
+
+#: cps/editbooks.py:325 cps/editbooks.py:555
+msgid "File to be uploaded must have an extension"
+msgstr "Filen som ska laddas upp måste ha en ändelse"
+
+#: cps/editbooks.py:337 cps/editbooks.py:575
+#, python-format
+msgid "Failed to create path %(path)s (Permission denied)."
+msgstr "Det gick inte att skapa sökväg %(path)s (behörighet nekad)."
+
+#: cps/editbooks.py:342
+#, python-format
+msgid "Failed to store file %(file)s."
+msgstr "Det gick inte att lagra filen %(file)s."
+
+#: cps/editbooks.py:359
+#, python-format
+msgid "File format %(ext)s added to %(book)s"
+msgstr "Filformatet %(ext)s lades till %(book)s"
+
+#: cps/editbooks.py:373
+msgid "Cover is not a supported imageformat (jpg/png/webp), can't save"
+msgstr ""
+
+#: cps/editbooks.py:406 cps/editbooks.py:415
+msgid "unknown"
+msgstr "okänd"
+
+#: cps/editbooks.py:447
+msgid "Cover is not a jpg file, can't save"
+msgstr ""
+
+#: cps/editbooks.py:490
+#, python-format
+msgid "%(langname)s is not a valid language"
+msgstr "%(langname)s är inte ett giltigt språk"
+
+#: cps/editbooks.py:521
+msgid "Metadata successfully updated"
+msgstr "Metadata uppdaterades"
+
+#: cps/editbooks.py:530
+msgid "Error editing book, please check logfile for details"
+msgstr "Det gick inte att redigera boken, kontrollera loggfilen för mer information"
+
+#: cps/editbooks.py:580
+#, python-format
+msgid "Failed to store file %(file)s (Permission denied)."
+msgstr "Det gick inte att lagra filen %(file)s (behörighet nekad)."
+
+#: cps/editbooks.py:585
+#, python-format
+msgid "Failed to delete file %(file)s (Permission denied)."
+msgstr "Det gick inte att ta bort filen %(file)s (behörighet nekad)."
+
+#: cps/editbooks.py:668
+#, python-format
+msgid "File %(file)s uploaded"
+msgstr ""
+
+#: cps/editbooks.py:697
+msgid "Source or destination format for conversion missing"
+msgstr "Källa eller målformat för konvertering saknas"
+
+#: cps/editbooks.py:705
+#, python-format
+msgid "Book successfully queued for converting to %(book_format)s"
+msgstr "Boken är i kö för konvertering till %(book_format)s"
+
+#: cps/editbooks.py:709
+#, python-format
+msgid "There was an error converting this book: %(res)s"
+msgstr "Det gick inte att konvertera den här boken: %(res)s"
+
+#: cps/gdrive.py:61
+msgid "Google Drive setup not completed, try to deactivate and activate Google Drive again"
+msgstr ""
+
+#: cps/gdrive.py:103
+msgid "Callback domain is not verified, please follow steps to verify domain in google developer console"
+msgstr "Återuppringningsdomänen är inte verifierad, följ stegen för att verifiera domänen i Google utvecklarkonsol"
+
+#: cps/helper.py:79
+#, python-format
+msgid "%(format)s format not found for book id: %(book)d"
+msgstr "%(format)s formatet hittades inte för bok-id: %(book)d"
+
+#: cps/helper.py:91
+#, python-format
+msgid "%(format)s not found on Google Drive: %(fn)s"
+msgstr "%(format)s hittades inte på Google Drive: %(fn)s"
+
+#: cps/helper.py:98 cps/helper.py:206 cps/templates/detail.html:41
+#: cps/templates/detail.html:45
+msgid "Send to Kindle"
+msgstr "Skicka till Kindle"
+
+#: cps/helper.py:99 cps/helper.py:117 cps/helper.py:208
+msgid "This e-mail has been sent via Calibre-Web."
+msgstr "Detta e-postmeddelande har skickats via Calibre-Web."
+
+#: cps/helper.py:110
+#, python-format
+msgid "%(format)s not found: %(fn)s"
+msgstr "%(format)s hittades inte: %(fn)s"
+
+#: cps/helper.py:115
+msgid "Calibre-Web test e-mail"
+msgstr "Calibre-Web test e-post"
+
+#: cps/helper.py:117
+msgid "Test e-mail"
+msgstr "Test e-post"
+
+#: cps/helper.py:132
+msgid "Get Started with Calibre-Web"
+msgstr "Kom igång med Calibre-Web"
+
+#: cps/helper.py:134
+#, python-format
+msgid "Registration e-mail for user: %(name)s"
+msgstr "Registrera e-post för användare: %(name)s"
+
+#: cps/helper.py:148 cps/helper.py:150 cps/helper.py:152 cps/helper.py:160
+#: cps/helper.py:162 cps/helper.py:164
+#, python-format
+msgid "Send %(format)s to Kindle"
+msgstr ""
+
+#: cps/helper.py:168
+#, python-format
+msgid "Convert %(orig)s to %(format)s and send to Kindle"
+msgstr ""
+
+#: cps/helper.py:208
+#, python-format
+msgid "E-mail: %(book)s"
+msgstr "E-post: %(book)s"
+
+#: cps/helper.py:210
+msgid "The requested file could not be read. Maybe wrong permissions?"
+msgstr "Den begärda filen kunde inte läsas. Kanske fel behörigheter?"
+
+#: cps/helper.py:317
+#, python-format
+msgid "Rename title from: '%(src)s' to '%(dest)s' failed with error: %(error)s"
+msgstr "Byt namn på titel från: \"%(src)s\" till \"%(dest)s\" misslyckades med fel: %(error)s"
+
+#: cps/helper.py:327
+#, python-format
+msgid "Rename author from: '%(src)s' to '%(dest)s' failed with error: %(error)s"
+msgstr "Byt namn på författare från: \"%(src)s\" till \"%(dest)s\" misslyckades med fel: %(error)s"
+
+#: cps/helper.py:341
+#, python-format
+msgid "Rename file in path '%(src)s' to '%(dest)s' failed with error: %(error)s"
+msgstr ""
+
+#: cps/helper.py:367 cps/helper.py:377 cps/helper.py:385
+#, python-format
+msgid "File %(file)s not found on Google Drive"
+msgstr "Filen %(file)s hittades inte på Google Drive"
+
+#: cps/helper.py:406
+#, python-format
+msgid "Book path %(path)s not found on Google Drive"
+msgstr "Boksökvägen %(path)s hittades inte på Google Drive"
+
+#: cps/helper.py:623
+msgid "Waiting"
+msgstr "Väntar"
+
+#: cps/helper.py:625
+msgid "Failed"
+msgstr "Misslyckades"
+
+#: cps/helper.py:627
+msgid "Started"
+msgstr "Startad"
+
+#: cps/helper.py:629
+msgid "Finished"
+msgstr "Klar"
+
+#: cps/helper.py:631
+msgid "Unknown Status"
+msgstr "Okänd status"
+
+#: cps/helper.py:636
+msgid "E-mail: "
+msgstr "E-post: "
+
+#: cps/helper.py:638 cps/helper.py:642
+msgid "Convert: "
+msgstr "Konvertera: "
+
+#: cps/helper.py:640
+msgid "Upload: "
+msgstr "Överför: "
+
+#: cps/helper.py:644
+msgid "Unknown Task: "
+msgstr "Okänd uppgift: "
+
+#: cps/oauth_bb.py:75
+#, python-format
+msgid "Register with %(provider)s"
+msgstr ""
+
+#: cps/oauth_bb.py:155
+msgid "Failed to log in with GitHub."
+msgstr ""
+
+#: cps/oauth_bb.py:160
+msgid "Failed to fetch user info from GitHub."
+msgstr ""
+
+#: cps/oauth_bb.py:171
+msgid "Failed to log in with Google."
+msgstr ""
+
+#: cps/oauth_bb.py:176
+msgid "Failed to fetch user info from Google."
+msgstr ""
+
+#: cps/oauth_bb.py:274
+#, python-format
+msgid "Unlink to %(oauth)s success."
+msgstr ""
+
+#: cps/oauth_bb.py:278
+#, python-format
+msgid "Unlink to %(oauth)s failed."
+msgstr ""
+
+#: cps/oauth_bb.py:281
+#, python-format
+msgid "Not linked to %(oauth)s."
+msgstr ""
+
+#: cps/oauth_bb.py:309
+msgid "GitHub Oauth error, please retry later."
+msgstr ""
+
+#: cps/oauth_bb.py:328
+msgid "Google Oauth error, please retry later."
+msgstr ""
+
+#: cps/shelf.py:46 cps/shelf.py:98
+msgid "Invalid shelf specified"
+msgstr "Ogiltig hylla specificerad"
+
+#: cps/shelf.py:53
+#, python-format
+msgid "Sorry you are not allowed to add a book to the the shelf: %(shelfname)s"
+msgstr ""
+
+#: cps/shelf.py:61
+msgid "You are not allowed to edit public shelves"
+msgstr "Du får inte redigera offentliga hyllor"
+
+#: cps/shelf.py:70
+#, python-format
+msgid "Book is already part of the shelf: %(shelfname)s"
+msgstr "Boken är redan en del av hyllan: %(shelfname)s"
+
+#: cps/shelf.py:84
+#, python-format
+msgid "Book has been added to shelf: %(sname)s"
+msgstr "Boken har lagts till i hyllan: %(sname)s"
+
+#: cps/shelf.py:103
+#, python-format
+msgid "You are not allowed to add a book to the the shelf: %(name)s"
+msgstr "Du får inte lägga till en bok i hyllan: %(name)s"
+
+#: cps/shelf.py:108
+msgid "User is not allowed to edit public shelves"
+msgstr "Användaren får inte redigera publika hyllor"
+
+#: cps/shelf.py:126
+#, python-format
+msgid "Books are already part of the shelf: %(name)s"
+msgstr "Böcker är redan en del av hyllan: %(name)s"
+
+#: cps/shelf.py:140
+#, python-format
+msgid "Books have been added to shelf: %(sname)s"
+msgstr "Böcker har lagts till hyllan: %(sname)s"
+
+#: cps/shelf.py:142
+#, python-format
+msgid "Could not add books to shelf: %(sname)s"
+msgstr "Kunde inte lägga till böcker till hyllan: %(sname)s"
+
+#: cps/shelf.py:179
+#, python-format
+msgid "Book has been removed from shelf: %(sname)s"
+msgstr "Boken har tagits bort från hyllan: %(sname)s"
+
+#: cps/shelf.py:185
+#, python-format
+msgid "Sorry you are not allowed to remove a book from this shelf: %(sname)s"
+msgstr "Tyvärr har du inte rätt att ta bort en bok från den här hyllan: %(sname)s"
+
+#: cps/shelf.py:206 cps/shelf.py:230
+#, python-format
+msgid "A shelf with the name '%(title)s' already exists."
+msgstr "En hylla med namnet '%(title)s' finns redan."
+
+#: cps/shelf.py:211
+#, python-format
+msgid "Shelf %(title)s created"
+msgstr "Hyllan %(title)s skapad"
+
+#: cps/shelf.py:213 cps/shelf.py:241
+msgid "There was an error"
+msgstr "Det fanns ett fel"
+
+#: cps/shelf.py:214 cps/shelf.py:216
+msgid "create a shelf"
+msgstr "skapa en hylla"
+
+#: cps/shelf.py:239
+#, python-format
+msgid "Shelf %(title)s changed"
+msgstr "Hyllan %(title)s ändrad"
+
+#: cps/shelf.py:242 cps/shelf.py:244
+msgid "Edit a shelf"
+msgstr "Redigera en hylla"
+
+#: cps/shelf.py:295
+#, python-format
+msgid "Shelf: '%(name)s'"
+msgstr "Hylla: '%(name)s'"
+
+#: cps/shelf.py:298
+msgid "Error opening shelf. Shelf does not exist or is not accessible"
+msgstr "Fel vid öppning av hyllan. Hylla finns inte eller är inte tillgänglig"
+
+#: cps/shelf.py:330
+#, python-format
+msgid "Change order of Shelf: '%(name)s'"
+msgstr "Ändra ordning på hyllan: '%(name)s'"
+
+#: cps/ub.py:57
+msgid "Recently Added"
+msgstr "Nyligen tillagda"
+
+#: cps/ub.py:59
+msgid "Show recent books"
+msgstr "Visa senaste böcker"
+
+#: cps/templates/index.xml:17 cps/ub.py:60
+msgid "Hot Books"
+msgstr "Heta böcker"
+
+#: cps/ub.py:61
+msgid "Show hot books"
+msgstr "Visa heta böcker"
+
+#: cps/templates/index.xml:24 cps/ub.py:64
+msgid "Best rated Books"
+msgstr "Bäst rankade böcker"
+
+#: cps/ub.py:66
+msgid "Show best rated books"
+msgstr "Visa böcker med bästa betyg"
+
+#: cps/templates/index.xml:46 cps/templates/index.xml:50 cps/ub.py:67
+#: cps/web.py:971
+msgid "Read Books"
+msgstr "Lästa böcker"
+
+#: cps/ub.py:69
+msgid "Show read and unread"
+msgstr "Visa lästa och olästa"
+
+#: cps/templates/index.xml:53 cps/templates/index.xml:57 cps/ub.py:71
+#: cps/web.py:975
+msgid "Unread Books"
+msgstr "Olästa böcker"
+
+#: cps/ub.py:73
+msgid "Show unread"
+msgstr ""
+
+#: cps/ub.py:74
+msgid "Discover"
+msgstr "Upptäck"
+
+#: cps/ub.py:76
+msgid "Show random books"
+msgstr "Visa slumpmässiga böcker"
+
+#: cps/ub.py:77
+msgid "Categories"
+msgstr "Kategorier"
+
+#: cps/ub.py:79
+msgid "Show category selection"
+msgstr "Visa kategorival"
+
+#: cps/templates/book_edit.html:71 cps/templates/search_form.html:53
+#: cps/ub.py:80
+msgid "Series"
+msgstr "Serier"
+
+#: cps/ub.py:82
+msgid "Show series selection"
+msgstr "Visa serieval"
+
+#: cps/templates/index.xml:61 cps/ub.py:83
+msgid "Authors"
+msgstr "Författare"
+
+#: cps/ub.py:85
+msgid "Show author selection"
+msgstr "Visa författarval"
+
+#: cps/templates/index.xml:68 cps/ub.py:87
+msgid "Publishers"
+msgstr "Förlag"
+
+#: cps/ub.py:89
+msgid "Show publisher selection"
+msgstr "Visa urval av förlag"
+
+#: cps/templates/search_form.html:74 cps/ub.py:90
+msgid "Languages"
+msgstr "Språk"
+
+#: cps/ub.py:93
+msgid "Show language selection"
+msgstr "Visa språkval"
+
+#: cps/ub.py:94
+msgid "Ratings"
+msgstr ""
+
+#: cps/ub.py:96
+msgid "Show ratings selection"
+msgstr ""
+
+#: cps/ub.py:97
+msgid "File formats"
+msgstr ""
+
+#: cps/ub.py:99
+msgid "Show file formats selection"
+msgstr ""
+
+#: cps/updater.py:251 cps/updater.py:358 cps/updater.py:371
+msgid "Unexpected data while reading update information"
+msgstr "Oväntade data vid läsning av uppdateringsinformation"
+
+#: cps/updater.py:258 cps/updater.py:364
+msgid "No update available. You already have the latest version installed"
+msgstr "Ingen uppdatering tillgänglig. Du har redan den senaste versionen installerad"
+
+#: cps/updater.py:284
+msgid "A new update is available. Click on the button below to update to the latest version."
+msgstr "En ny uppdatering är tillgänglig. Klicka på knappen nedan för att uppdatera till den senaste versionen."
+
+#: cps/updater.py:337
+msgid "Could not fetch update information"
+msgstr "Kunde inte hämta uppdateringsinformation"
+
+#: cps/updater.py:351
+msgid "No release information available"
+msgstr ""
+
+#: cps/updater.py:404 cps/updater.py:413
+#, python-format
+msgid "A new update is available. Click on the button below to update to version: %(version)s"
+msgstr ""
+
+#: cps/updater.py:423
+msgid "Click on the button below to update to the latest stable version."
+msgstr ""
+
+#: cps/uploader.py:213 cps/uploader.py:214 cps/uploader.py:218
+#: cps/uploader.py:222 cps/uploader.py:226
+msgid "not installed"
+msgstr "inte installerad"
+
+#: cps/web.py:460
+msgid "Recently Added Books"
+msgstr "Nyligen tillagda böcker"
+
+#: cps/web.py:488
+msgid "Best rated books"
+msgstr "Bäst rankade böcker"
+
+#: cps/templates/index.xml:38 cps/web.py:496
+msgid "Random Books"
+msgstr "Slumpmässiga böcker"
+
+#: cps/web.py:522
+msgid "Books"
+msgstr ""
+
+#: cps/web.py:549
+msgid "Hot Books (most downloaded)"
+msgstr "Heta böcker (mest hämtade)"
+
+#: cps/web.py:560 cps/web.py:1300 cps/web.py:1388
+msgid "Error opening eBook. File does not exist or file is not accessible:"
+msgstr "Fel vid öppnande av e-bok. Filen finns inte eller filen är inte tillgänglig:"
+
+#: cps/web.py:573
+#, python-format
+msgid "Author: %(name)s"
+msgstr ""
+
+#: cps/web.py:585
+#, python-format
+msgid "Publisher: %(name)s"
+msgstr "Förlag: %(name)s"
+
+#: cps/web.py:596
+#, python-format
+msgid "Series: %(serie)s"
+msgstr "Serier: %(serie)s"
+
+#: cps/web.py:607
+#, python-format
+msgid "Rating: %(rating)s stars"
+msgstr ""
+
+#: cps/web.py:618
+#, python-format
+msgid "File format: %(format)s"
+msgstr ""
+
+#: cps/web.py:630
+#, python-format
+msgid "Category: %(name)s"
+msgstr "Kategori: %(name)s"
+
+#: cps/web.py:647
+#, python-format
+msgid "Language: %(name)s"
+msgstr "Språk: %(name)s"
+
+#: cps/web.py:679
+msgid "Publisher list"
+msgstr "Lista över förlag"
+
+#: cps/templates/index.xml:82 cps/web.py:695
+msgid "Series list"
+msgstr "Serielista"
+
+#: cps/web.py:709
+msgid "Ratings list"
+msgstr ""
+
+#: cps/web.py:722
+msgid "File formats list"
+msgstr ""
+
+#: cps/web.py:750
+msgid "Available languages"
+msgstr "Tillgängliga språk"
+
+#: cps/templates/index.xml:75 cps/web.py:767
+msgid "Category list"
+msgstr "Kategorilista"
+
+#: cps/templates/layout.html:73 cps/web.py:781
+msgid "Tasks"
+msgstr "Uppgifter"
+
+#: cps/web.py:846
+msgid "Published after "
+msgstr "Publicerad efter "
+
+#: cps/web.py:853
+msgid "Published before "
+msgstr "Publicerad före "
+
+#: cps/web.py:867
+#, python-format
+msgid "Rating <= %(rating)s"
+msgstr "Betyg <= %(rating)s"
+
+#: cps/web.py:869
+#, python-format
+msgid "Rating >= %(rating)s"
+msgstr "Betyg >= %(rating)s"
+
+#: cps/web.py:929 cps/web.py:939
+msgid "search"
+msgstr "sök"
+
+#: cps/web.py:1022
+msgid "Please configure the SMTP mail settings first..."
+msgstr "Konfigurera SMTP-postinställningarna först..."
+
+#: cps/web.py:1027
+#, python-format
+msgid "Book successfully queued for sending to %(kindlemail)s"
+msgstr "Boken är i kö för att skicka till %(kindlemail)s"
+
+#: cps/web.py:1031
+#, python-format
+msgid "There was an error sending this book: %(res)s"
+msgstr "Det gick inte att skicka den här boken: %(res)s"
+
+#: cps/web.py:1051 cps/web.py:1076 cps/web.py:1080 cps/web.py:1085
+#: cps/web.py:1089
+msgid "register"
+msgstr "registrera"
+
+#: cps/web.py:1078
+msgid "Your e-mail is not allowed to register"
+msgstr "Din e-post är inte tillåten att registrera"
+
+#: cps/web.py:1081
+msgid "Confirmation e-mail was send to your e-mail account."
+msgstr "Bekräftelsemail skickades till ditt e-postkonto."
+
+#: cps/web.py:1084
+msgid "This username or e-mail address is already in use."
+msgstr "Det här användarnamnet eller e-postadressen är redan i bruk."
+
+#: cps/web.py:1099
+msgid "Cannot activate LDAP authentication"
+msgstr ""
+
+#: cps/web.py:1108 cps/web.py:1214
+#, python-format
+msgid "you are now logged in as: '%(nickname)s'"
+msgstr "du är nu inloggad som: \"%(nickname)s\""
+
+#: cps/web.py:1112
+msgid "Could not login. LDAP server down, please contact your administrator"
+msgstr ""
+
+#: cps/web.py:1116 cps/web.py:1124
+msgid "Wrong Username or Password"
+msgstr "Fel användarnamn eller lösenord"
+
+#: cps/web.py:1120
+#, python-format
+msgid "You are now logged in as: '%(nickname)s'"
+msgstr ""
+
+#: cps/web.py:1128 cps/web.py:1150
+msgid "login"
+msgstr "logga in"
+
+#: cps/web.py:1162 cps/web.py:1193
+msgid "Token not found"
+msgstr "Token hittades inte"
+
+#: cps/web.py:1170 cps/web.py:1201
+msgid "Token has expired"
+msgstr "Token har löpt ut"
+
+#: cps/web.py:1178
+msgid "Success! Please return to your device"
+msgstr "Lyckades! Vänligen återvänd till din enhet"
+
+#: cps/web.py:1255 cps/web.py:1282 cps/web.py:1286
+#, python-format
+msgid "%(name)s's profile"
+msgstr "%(name)ss profil"
+
+#: cps/web.py:1284
+msgid "Profile updated"
+msgstr "Profilen uppdaterad"
+
+#: cps/web.py:1310 cps/web.py:1312 cps/web.py:1314 cps/web.py:1320
+#: cps/web.py:1324
+msgid "Read a Book"
+msgstr "Läs en bok"
+
+#: cps/web.py:1334
+msgid "Error opening eBook. File does not exist or file is not accessible."
+msgstr ""
+
+#: cps/worker.py:328
+#, python-format
+msgid "Ebook-converter failed: %(error)s"
+msgstr "E-bokkonverteraren misslyckades: %(error)s"
+
+#: cps/worker.py:339
+#, python-format
+msgid "Kindlegen failed with Error %(error)s. Message: %(message)s"
+msgstr "Kindlegen misslyckades med fel %(error)s. Meddelande: %(message)s"
+
+#: cps/templates/admin.html:6
+msgid "User list"
+msgstr "Användarlista"
+
+#: cps/templates/admin.html:9
+msgid "Nickname"
+msgstr "Smeknamn"
+
+#: cps/templates/admin.html:10
+msgid "E-mail"
+msgstr "E-post"
+
+#: cps/templates/admin.html:11
+msgid "Kindle"
+msgstr "Kindle"
+
+#: cps/templates/admin.html:12
+msgid "DLS"
+msgstr "DLS"
+
+#: cps/templates/admin.html:13 cps/templates/layout.html:76
+msgid "Admin"
+msgstr "Administratör"
+
+#: cps/templates/admin.html:14 cps/templates/detail.html:18
+#: cps/templates/detail.html:27 cps/templates/shelf.html:6
+#: cps/templates/shelfdown.html:62
+msgid "Download"
+msgstr "Hämta"
+
+#: cps/templates/admin.html:15
+msgid "View Ebooks"
+msgstr ""
+
+#: cps/templates/admin.html:16 cps/templates/layout.html:65
+msgid "Upload"
+msgstr "Ladda upp"
+
+#: cps/templates/admin.html:17
+msgid "Edit"
+msgstr "Redigera"
+
+#: cps/templates/admin.html:41
+msgid "SMTP e-mail server settings"
+msgstr "Inställningar för SMTP-e-postserver"
+
+#: cps/templates/admin.html:44 cps/templates/email_edit.html:11
+msgid "SMTP hostname"
+msgstr "SMTP-värdnamn"
+
+#: cps/templates/admin.html:45
+msgid "SMTP port"
+msgstr "SMTP-port"
+
+#: cps/templates/admin.html:46
+msgid "SSL"
+msgstr "SSL"
+
+#: cps/templates/admin.html:47 cps/templates/email_edit.html:27
+msgid "SMTP login"
+msgstr "SMTP-inloggning"
+
+#: cps/templates/admin.html:48
+msgid "From mail"
+msgstr "Från meddelande"
+
+#: cps/templates/admin.html:58
+msgid "Change SMTP settings"
+msgstr "Ändra SMTP-inställningar"
+
+#: cps/templates/admin.html:64
+msgid "Configuration"
+msgstr "Konfiguration"
+
+#: cps/templates/admin.html:67
+msgid "Calibre DB dir"
+msgstr "Calibre DB dir"
+
+#: cps/templates/admin.html:71
+msgid "Log level"
+msgstr "Loggnivå"
+
+#: cps/templates/admin.html:75
+msgid "Port"
+msgstr "Port"
+
+#: cps/templates/admin.html:81 cps/templates/config_view_edit.html:23
+msgid "Books per page"
+msgstr "Böcker per sida"
+
+#: cps/templates/admin.html:85
+msgid "Uploading"
+msgstr "Laddar upp"
+
+#: cps/templates/admin.html:89
+msgid "Anonymous browsing"
+msgstr "Anonym surfning"
+
+#: cps/templates/admin.html:93
+msgid "Public registration"
+msgstr "Publik registrering"
+
+#: cps/templates/admin.html:97 cps/templates/remote_login.html:4
+msgid "Remote login"
+msgstr "Fjärrinloggning"
+
+#: cps/templates/admin.html:108
+msgid "Administration"
+msgstr "Administration"
+
+#: cps/templates/admin.html:109
+msgid "View Logfiles"
+msgstr ""
+
+#: cps/templates/admin.html:110
+msgid "Reconnect to Calibre DB"
+msgstr "Anslut till Calibre DB igen"
+
+#: cps/templates/admin.html:111
+msgid "Restart Calibre-Web"
+msgstr "Starta om Calibre-Web"
+
+#: cps/templates/admin.html:112
+msgid "Stop Calibre-Web"
+msgstr "Stoppa Calibre-Web"
+
+#: cps/templates/admin.html:118
+msgid "Update"
+msgstr "Uppdatera"
+
+#: cps/templates/admin.html:122
+msgid "Version"
+msgstr "Version"
+
+#: cps/templates/admin.html:123
+msgid "Details"
+msgstr "Detaljer"
+
+#: cps/templates/admin.html:129
+msgid "Current version"
+msgstr "Aktuell version"
+
+#: cps/templates/admin.html:135
+msgid "Check for update"
+msgstr "Sök efter uppdatering"
+
+#: cps/templates/admin.html:136
+msgid "Perform Update"
+msgstr "Utför uppdatering"
+
+#: cps/templates/admin.html:148
+msgid "Do you really want to restart Calibre-Web?"
+msgstr "Är du säker på att du vill starta om Calibre-Web?"
+
+#: cps/templates/admin.html:153 cps/templates/admin.html:167
+#: cps/templates/admin.html:187 cps/templates/shelf.html:72
+msgid "Ok"
+msgstr "Ok"
+
+#: cps/templates/admin.html:154 cps/templates/admin.html:168
+#: cps/templates/book_edit.html:174 cps/templates/book_edit.html:196
+#: cps/templates/config_edit.html:321 cps/templates/config_view_edit.html:147
+#: cps/templates/email_edit.html:40 cps/templates/email_edit.html:74
+#: cps/templates/layout.html:28 cps/templates/shelf.html:73
+#: cps/templates/shelf_edit.html:19 cps/templates/shelf_order.html:12
+#: cps/templates/user_edit.html:132
+msgid "Back"
+msgstr "Tillbaka"
+
+#: cps/templates/admin.html:166
+msgid "Do you really want to stop Calibre-Web?"
+msgstr "Är du säker på att du vill stoppa Calibre-Web?"
+
+#: cps/templates/admin.html:178
+msgid "Updating, please do not reload page"
+msgstr "Uppdaterar, vänligen uppdatera inte sidan"
+
+#: cps/templates/author.html:15
+msgid "via"
+msgstr "via"
+
+#: cps/templates/author.html:23
+msgid "In Library"
+msgstr "I biblioteket"
+
+#: cps/templates/author.html:34 cps/templates/list.html:14
+#: cps/templates/search.html:41
+msgid "All"
+msgstr ""
+
+#: cps/templates/author.html:58 cps/templates/author.html:110
+#: cps/templates/discover.html:27 cps/templates/index.html:26
+#: cps/templates/index.html:89 cps/templates/search.html:67
+#: cps/templates/shelf.html:36
+msgid "reduce"
+msgstr ""
+
+#: cps/templates/author.html:94
+msgid "More by"
+msgstr "Mer av"
+
+#: cps/templates/book_edit.html:12
+msgid "Delete Book"
+msgstr "Ta bort boken"
+
+#: cps/templates/book_edit.html:15
+msgid "Delete formats:"
+msgstr "Ta bort format:"
+
+#: cps/templates/book_edit.html:18 cps/templates/book_edit.html:195
+#: cps/templates/email_edit.html:73
+msgid "Delete"
+msgstr "Ta bort"
+
+#: cps/templates/book_edit.html:26
+msgid "Convert book format:"
+msgstr "Konvertera bokformat:"
+
+#: cps/templates/book_edit.html:30
+msgid "Convert from:"
+msgstr "Konvertera från:"
+
+#: cps/templates/book_edit.html:32 cps/templates/book_edit.html:39
+msgid "select an option"
+msgstr "välj ett alternativ"
+
+#: cps/templates/book_edit.html:37
+msgid "Convert to:"
+msgstr "Konvertera till:"
+
+#: cps/templates/book_edit.html:46
+msgid "Convert book"
+msgstr "Konvertera boken"
+
+#: cps/templates/book_edit.html:55 cps/templates/search_form.html:6
+msgid "Book Title"
+msgstr "Boktitel"
+
+#: cps/templates/book_edit.html:59 cps/templates/book_edit.html:255
+#: cps/templates/book_edit.html:273 cps/templates/search_form.html:10
+msgid "Author"
+msgstr "Författare"
+
+#: cps/templates/book_edit.html:63 cps/templates/book_edit.html:260
+#: cps/templates/book_edit.html:275 cps/templates/search_form.html:106
+msgid "Description"
+msgstr "Beskrivning"
+
+#: cps/templates/book_edit.html:67 cps/templates/search_form.html:33
+msgid "Tags"
+msgstr "Taggar"
+
+#: cps/templates/book_edit.html:75
+msgid "Series id"
+msgstr "Serier-id"
+
+#: cps/templates/book_edit.html:79
+msgid "Rating"
+msgstr "Betyg"
+
+#: cps/templates/book_edit.html:83
+msgid "Cover URL (jpg, cover is downloaded and stored in database, field is afterwards empty again)"
+msgstr "Omslagswebbadress (jpg, omslag hämtas och lagras i databasen, fältet är efteråt tomt igen)"
+
+#: cps/templates/book_edit.html:87
+msgid "Upload Cover from local drive"
+msgstr "Ladda upp omslag från lokal enhet"
+
+#: cps/templates/book_edit.html:92 cps/templates/detail.html:165
+msgid "Publishing date"
+msgstr "Publiceringsdatum"
+
+#: cps/templates/book_edit.html:99 cps/templates/book_edit.html:257
+#: cps/templates/book_edit.html:274 cps/templates/detail.html:156
+#: cps/templates/search_form.html:14
+msgid "Publisher"
+msgstr "Förlag"
+
+#: cps/templates/book_edit.html:103 cps/templates/user_edit.html:31
+msgid "Language"
+msgstr "Språk"
+
+#: cps/templates/book_edit.html:113 cps/templates/search_form.html:117
+msgid "Yes"
+msgstr "Ja"
+
+#: cps/templates/book_edit.html:114 cps/templates/search_form.html:118
+msgid "No"
+msgstr "Nej"
+
+#: cps/templates/book_edit.html:160
+msgid "Upload format"
+msgstr "Ladda upp format"
+
+#: cps/templates/book_edit.html:169
+msgid "view book after edit"
+msgstr "visa bok efter redigering"
+
+#: cps/templates/book_edit.html:172 cps/templates/book_edit.html:208
+msgid "Get metadata"
+msgstr "Hämta metadata"
+
+#: cps/templates/book_edit.html:173 cps/templates/config_edit.html:319
+#: cps/templates/config_view_edit.html:146 cps/templates/login.html:20
+#: cps/templates/search_form.html:150 cps/templates/shelf_edit.html:17
+#: cps/templates/user_edit.html:130
+msgid "Submit"
+msgstr "Skicka"
+
+#: cps/templates/book_edit.html:187
+msgid "Are you really sure?"
+msgstr "Är du verkligen säker?"
+
+#: cps/templates/book_edit.html:190
+msgid "Book will be deleted from Calibre database"
+msgstr "Boken kommer att tas bort från Calibre-databasen"
+
+#: cps/templates/book_edit.html:191
+msgid "and from hard disk"
+msgstr "och från hårddisken"
+
+#: cps/templates/book_edit.html:211
+msgid "Keyword"
+msgstr "Sökord"
+
+#: cps/templates/book_edit.html:212
+msgid " Search keyword "
+msgstr " Sök sökord "
+
+#: cps/templates/book_edit.html:214 cps/templates/layout.html:47
+msgid "Go!"
+msgstr "Kör!"
+
+#: cps/templates/book_edit.html:218
+msgid "Click the cover to load metadata to the form"
+msgstr "Klicka på omslaget för att läsa in metadata till formuläret"
+
+#: cps/templates/book_edit.html:230 cps/templates/book_edit.html:270
+msgid "Loading..."
+msgstr "Läser in..."
+
+#: cps/templates/book_edit.html:235 cps/templates/layout.html:187
+#: cps/templates/layout.html:219
+msgid "Close"
+msgstr "Stäng"
+
+#: cps/templates/book_edit.html:262 cps/templates/book_edit.html:276
+msgid "Source"
+msgstr "Källa"
+
+#: cps/templates/book_edit.html:271
+msgid "Search error!"
+msgstr "Sökningsfel!"
+
+#: cps/templates/book_edit.html:272
+msgid "No Result(s) found! Please try aonther keyword."
+msgstr "Inga resultat hittades! Försök med ett annat sökord."
+
+#: cps/templates/config_edit.html:12
+msgid "Library Configuration"
+msgstr "Bibliotekets konfiguration"
+
+#: cps/templates/config_edit.html:19
+msgid "Location of Calibre database"
+msgstr "Plats för Calibre-databasen"
+
+#: cps/templates/config_edit.html:25
+msgid "Use Google Drive?"
+msgstr "Använda Google Drive?"
+
+#: cps/templates/config_edit.html:31
+msgid "Google Drive config problem"
+msgstr "Google Drive-konfigurationsproblem"
+
+#: cps/templates/config_edit.html:37
+msgid "Authenticate Google Drive"
+msgstr "Autentisera Google Drive"
+
+#: cps/templates/config_edit.html:41
+msgid "Please hit submit to continue with setup"
+msgstr ""
+
+#: cps/templates/config_edit.html:44
+msgid "Please finish Google Drive setup after login"
+msgstr "Vänligen avsluta Google Drive-inställning efter inloggning"
+
+#: cps/templates/config_edit.html:49
+msgid "Google Drive Calibre folder"
+msgstr "Google Drive Calibre-mapp"
+
+#: cps/templates/config_edit.html:57
+msgid "Metadata Watch Channel ID"
+msgstr "Metadata Titta på kanal ID"
+
+#: cps/templates/config_edit.html:60
+msgid "Revoke"
+msgstr "Återkalla"
+
+#: cps/templates/config_edit.html:80
+msgid "Server Configuration"
+msgstr "Serverkonfiguration"
+
+#: cps/templates/config_edit.html:87
+msgid "Server Port"
+msgstr "Serverport"
+
+#: cps/templates/config_edit.html:91
+msgid "SSL certfile location (leave it empty for non-SSL Servers)"
+msgstr "SSL certfile plats (lämna den tom för icke-SSL-servrar)"
+
+#: cps/templates/config_edit.html:95
+msgid "SSL Keyfile location (leave it empty for non-SSL Servers)"
+msgstr "SSL Keyfile plats (lämna den tom för icke-SSL-servrar)"
+
+#: cps/templates/config_edit.html:99
+msgid "Update channel"
+msgstr ""
+
+#: cps/templates/config_edit.html:101
+msgid "Stable"
+msgstr ""
+
+#: cps/templates/config_edit.html:102
+msgid "Stable (Automatic)"
+msgstr ""
+
+#: cps/templates/config_edit.html:103
+msgid "Nightly"
+msgstr ""
+
+#: cps/templates/config_edit.html:104
+msgid "Nightly (Automatic)"
+msgstr ""
+
+#: cps/templates/config_edit.html:115
+msgid "Logfile Configuration"
+msgstr "Loggfil konfiguration"
+
+#: cps/templates/config_edit.html:122
+msgid "Log Level"
+msgstr "Loggnivå"
+
+#: cps/templates/config_edit.html:131
+msgid "Location and name of logfile (calibre-web.log for no entry)"
+msgstr "Plats och namn på loggfilen (calibre-web.log för ingen post)"
+
+#: cps/templates/config_edit.html:136
+msgid "Enable Access Log"
+msgstr ""
+
+#: cps/templates/config_edit.html:139
+msgid "Location and name of access logfile (access.log for no entry)"
+msgstr ""
+
+#: cps/templates/config_edit.html:150
+msgid "Feature Configuration"
+msgstr "Funktion konfiguration"
+
+#: cps/templates/config_edit.html:158
+msgid "Enable uploading"
+msgstr "Aktivera uppladdning"
+
+#: cps/templates/config_edit.html:162
+msgid "Enable anonymous browsing"
+msgstr "Aktivera anonym surfning"
+
+#: cps/templates/config_edit.html:166
+msgid "Enable public registration"
+msgstr "Aktivera offentlig registrering"
+
+#: cps/templates/config_edit.html:170
+msgid "Enable remote login (\"magic link\")"
+msgstr "Aktivera fjärrinloggning (\"magic link\")"
+
+#: cps/templates/config_edit.html:175
+msgid "Use"
+msgstr "Använd"
+
+#: cps/templates/config_edit.html:176
+msgid "Obtain an API Key"
+msgstr "Hämta en API-nyckel"
+
+#: cps/templates/config_edit.html:180
+msgid "Goodreads API Key"
+msgstr "Goodreads API-nyckel"
+
+#: cps/templates/config_edit.html:184
+msgid "Goodreads API Secret"
+msgstr "Goodreads API-hemlighet"
+
+#: cps/templates/config_edit.html:191
+msgid "Login type"
+msgstr ""
+
+#: cps/templates/config_edit.html:193
+msgid "Use standard Authentication"
+msgstr ""
+
+#: cps/templates/config_edit.html:195
+msgid "Use LDAP Authentication"
+msgstr ""
+
+#: cps/templates/config_edit.html:198
+msgid "Use OAuth"
+msgstr ""
+
+#: cps/templates/config_edit.html:205
+msgid "LDAP Server Host Name or IP Address"
+msgstr ""
+
+#: cps/templates/config_edit.html:209
+msgid "LDAP Server Port"
+msgstr ""
+
+#: cps/templates/config_edit.html:213
+msgid "LDAP schema (ldap or ldaps)"
+msgstr ""
+
+#: cps/templates/config_edit.html:217
+msgid "LDAP Admin username"
+msgstr ""
+
+#: cps/templates/config_edit.html:221
+msgid "LDAP Admin password"
+msgstr ""
+
+#: cps/templates/config_edit.html:226
+msgid "LDAP Server use SSL"
+msgstr ""
+
+#: cps/templates/config_edit.html:230
+msgid "LDAP Server use TLS"
+msgstr ""
+
+#: cps/templates/config_edit.html:234
+msgid "LDAP Server Certificate"
+msgstr ""
+
+#: cps/templates/config_edit.html:238
+msgid "LDAP SSL Certificate Path"
+msgstr ""
+
+#: cps/templates/config_edit.html:243
+msgid "LDAP Distinguished Name (DN)"
+msgstr ""
+
+#: cps/templates/config_edit.html:247
+msgid "LDAP User object filter"
+msgstr ""
+
+#: cps/templates/config_edit.html:252
+msgid "LDAP Server is OpenLDAP?"
+msgstr ""
+
+#: cps/templates/config_edit.html:260
+#, python-format
+msgid "Obtain %(provider)s OAuth Credential"
+msgstr ""
+
+#: cps/templates/config_edit.html:263
+#, python-format
+msgid "%(provider)s OAuth Client Id"
+msgstr ""
+
+#: cps/templates/config_edit.html:267
+#, python-format
+msgid "%(provider)s OAuth Client Secret"
+msgstr ""
+
+#: cps/templates/config_edit.html:282
+msgid "External binaries"
+msgstr "Externa binärer"
+
+#: cps/templates/config_edit.html:290
+msgid "No converter"
+msgstr "Ingen konverterare"
+
+#: cps/templates/config_edit.html:292
+msgid "Use Kindlegen"
+msgstr "Använd Kindlegen"
+
+#: cps/templates/config_edit.html:294
+msgid "Use calibre's ebook converter"
+msgstr "Använd calibres e-bokkonverterare"
+
+#: cps/templates/config_edit.html:298
+msgid "E-Book converter settings"
+msgstr "Inställningar för e-bokkonverteraren"
+
+#: cps/templates/config_edit.html:302
+msgid "Path to convertertool"
+msgstr "Sökväg till convertertool"
+
+#: cps/templates/config_edit.html:308
+msgid "Location of Unrar binary"
+msgstr "Plats för Unrar-binär"
+
+#: cps/templates/config_edit.html:324 cps/templates/layout.html:84
+#: cps/templates/login.html:4
+msgid "Login"
+msgstr "Logga in"
+
+#: cps/templates/config_view_edit.html:12
+msgid "View Configuration"
+msgstr "Visa konfiguration"
+
+#: cps/templates/config_view_edit.html:19 cps/templates/shelf_edit.html:7
+msgid "Title"
+msgstr "Titel"
+
+#: cps/templates/config_view_edit.html:27
+msgid "No. of random books to show"
+msgstr "Antal slumpmässiga böcker att visa"
+
+#: cps/templates/config_view_edit.html:31
+msgid "No. of authors to show before hiding (0=disable hiding)"
+msgstr ""
+
+#: cps/templates/config_view_edit.html:35 cps/templates/readcbr.html:112
+msgid "Theme"
+msgstr "Tema"
+
+#: cps/templates/config_view_edit.html:37
+msgid "Standard Theme"
+msgstr "Standard tema"
+
+#: cps/templates/config_view_edit.html:38
+msgid "caliBlur! Dark Theme"
+msgstr "caliBlur! Mörkt tema"
+
+#: cps/templates/config_view_edit.html:42
+msgid "Regular expression for ignoring columns"
+msgstr "Reguljärt uttryck för att ignorera kolumner"
+
+#: cps/templates/config_view_edit.html:46
+msgid "Link read/unread status to Calibre column"
+msgstr "Länka läst/oläst status till Calibre-kolumn"
+
+#: cps/templates/config_view_edit.html:55
+msgid "Regular expression for title sorting"
+msgstr "Reguljärt uttryck för titelsortering"
+
+#: cps/templates/config_view_edit.html:59
+msgid "Tags for Mature Content"
+msgstr "Taggar för vuxeninnehåll"
+
+#: cps/templates/config_view_edit.html:73
+msgid "Default settings for new users"
+msgstr "Standardinställningar för nya användare"
+
+#: cps/templates/config_view_edit.html:81 cps/templates/user_edit.html:83
+msgid "Admin user"
+msgstr "Adminstratör användare"
+
+#: cps/templates/config_view_edit.html:85 cps/templates/user_edit.html:92
+msgid "Allow Downloads"
+msgstr "Tillåt Hämtningar"
+
+#: cps/templates/config_view_edit.html:89 cps/templates/user_edit.html:96
+msgid "Allow book viewer"
+msgstr ""
+
+#: cps/templates/config_view_edit.html:93 cps/templates/user_edit.html:100
+msgid "Allow Uploads"
+msgstr "Tillåt Uppladdningar"
+
+#: cps/templates/config_view_edit.html:97 cps/templates/user_edit.html:104
+msgid "Allow Edit"
+msgstr "Tillåt Redigera"
+
+#: cps/templates/config_view_edit.html:101 cps/templates/user_edit.html:108
+msgid "Allow Delete books"
+msgstr "Tillåt Ta bort böcker"
+
+#: cps/templates/config_view_edit.html:105 cps/templates/user_edit.html:113
+msgid "Allow Changing Password"
+msgstr "Tillåt Ändra lösenord"
+
+#: cps/templates/config_view_edit.html:109 cps/templates/user_edit.html:117
+msgid "Allow Editing Public Shelfs"
+msgstr "Tillåt Redigering av offentliga hyllor"
+
+#: cps/templates/config_view_edit.html:119
+msgid "Default visibilities for new users"
+msgstr "Standardvisibiliteter för nya användare"
+
+#: cps/templates/config_view_edit.html:135 cps/templates/user_edit.html:75
+msgid "Show random books in detail view"
+msgstr "Visa slumpmässiga böcker i detaljvyn"
+
+#: cps/templates/config_view_edit.html:139 cps/templates/user_edit.html:88
+msgid "Show mature content"
+msgstr "Visa vuxeninnehåll"
+
+#: cps/templates/detail.html:59
+msgid "Read in browser"
+msgstr "Läs i webbläsaren"
+
+#: cps/templates/detail.html:72
+msgid "Listen in browser"
+msgstr ""
+
+#: cps/templates/detail.html:117
+msgid "Book"
+msgstr "Bok"
+
+#: cps/templates/detail.html:117
+msgid "of"
+msgstr "av"
+
+#: cps/templates/detail.html:123
+msgid "language"
+msgstr "språk"
+
+#: cps/templates/detail.html:200
+msgid "Mark As Unread"
+msgstr ""
+
+#: cps/templates/detail.html:200
+msgid "Mark As Read"
+msgstr ""
+
+#: cps/templates/detail.html:201
+msgid "Read"
+msgstr "Läst"
+
+#: cps/templates/detail.html:211 cps/templates/listenmp3.html:54
+msgid "Description:"
+msgstr "Beskrivning:"
+
+#: cps/templates/detail.html:224 cps/templates/search.html:14
+msgid "Add to shelf"
+msgstr "Lägg till hyllan"
+
+#: cps/templates/detail.html:286
+msgid "Edit metadata"
+msgstr "Redigera metadata"
+
+#: cps/templates/email_edit.html:15
+msgid "SMTP port (usually 25 for plain SMTP and 465 for SSL and 587 for STARTTLS)"
+msgstr "SMTP-port (vanligtvis 25 för vanlig SMTP och 465 för SSL och 587 för STARTTLS)"
+
+#: cps/templates/email_edit.html:19
+msgid "Encryption"
+msgstr "Kryptering"
+
+#: cps/templates/email_edit.html:21
+msgid "None"
+msgstr "Ingen"
+
+#: cps/templates/email_edit.html:22
+msgid "STARTTLS"
+msgstr "STARTTLS"
+
+#: cps/templates/email_edit.html:23
+msgid "SSL/TLS"
+msgstr "SSL/TLS"
+
+#: cps/templates/email_edit.html:31
+msgid "SMTP password"
+msgstr "SMTP-lösenord"
+
+#: cps/templates/email_edit.html:35
+msgid "From e-mail"
+msgstr "Från e-post"
+
+#: cps/templates/email_edit.html:38
+msgid "Save settings"
+msgstr "Spara inställningarna"
+
+#: cps/templates/email_edit.html:39
+msgid "Save settings and send Test E-Mail"
+msgstr "Spara inställningarna och skicka test-e-post"
+
+#: cps/templates/email_edit.html:43
+msgid "Allowed domains for registering"
+msgstr "Tillåtna domäner för registrering"
+
+#: cps/templates/email_edit.html:47
+msgid "Enter domainname"
+msgstr "Ange domännamn"
+
+#: cps/templates/email_edit.html:55
+msgid "Add Domain"
+msgstr "Lägg till domän"
+
+#: cps/templates/email_edit.html:58
+msgid "Add"
+msgstr "Lägg till"
+
+#: cps/templates/email_edit.html:72
+msgid "Do you really want to delete this domain rule?"
+msgstr "Är du säker på att du vill ta bort den här domänregeln?"
+
+#: cps/templates/feed.xml:21 cps/templates/layout.html:171
+msgid "Next"
+msgstr "Nästa"
+
+#: cps/templates/feed.xml:33 cps/templates/layout.html:44
+#: cps/templates/layout.html:45
+msgid "Search"
+msgstr "Sök"
+
+#: cps/templates/http_error.html:37
+msgid "Create issue"
+msgstr ""
+
+#: cps/templates/http_error.html:44
+msgid "Back to home"
+msgstr "Tillbaka till hemmet"
+
+#: cps/templates/index.html:5
+msgid "Discover (Random Books)"
+msgstr "Upptäck (slumpmässiga böcker)"
+
+#: cps/templates/index.html:64
+msgid "Group by series"
+msgstr ""
+
+#: cps/templates/index.xml:6
+msgid "Start"
+msgstr "Starta"
+
+#: cps/templates/index.xml:21
+msgid "Popular publications from this catalog based on Downloads."
+msgstr "Populära publikationer från den här katalogen baserad på hämtningar."
+
+#: cps/templates/index.xml:28
+msgid "Popular publications from this catalog based on Rating."
+msgstr "Populära publikationer från den här katalogen baserad på betyg."
+
+#: cps/templates/index.xml:31
+msgid "New Books"
+msgstr "Nya böcker"
+
+#: cps/templates/index.xml:35
+msgid "The latest Books"
+msgstr "De senaste böckerna"
+
+#: cps/templates/index.xml:42
+msgid "Show Random Books"
+msgstr "Visa slumpmässiga böcker"
+
+#: cps/templates/index.xml:65
+msgid "Books ordered by Author"
+msgstr "Böcker ordnade efter författare"
+
+#: cps/templates/index.xml:72
+msgid "Books ordered by publisher"
+msgstr "Böcker ordnade efter förlag"
+
+#: cps/templates/index.xml:79
+msgid "Books ordered by category"
+msgstr "Böcker ordnade efter kategori"
+
+#: cps/templates/index.xml:86
+msgid "Books ordered by series"
+msgstr "Böcker ordnade efter serier"
+
+#: cps/templates/index.xml:89 cps/templates/layout.html:132
+msgid "Public Shelves"
+msgstr "Offentliga hyllor"
+
+#: cps/templates/index.xml:93
+msgid "Books organized in public shelfs, visible to everyone"
+msgstr "Böcker organiserade i offentliga hyllor, synliga för alla"
+
+#: cps/templates/index.xml:97 cps/templates/layout.html:136
+msgid "Your Shelves"
+msgstr "Dina hyllor"
+
+#: cps/templates/index.xml:101
+msgid "User's own shelfs, only visible to the current user himself"
+msgstr "Användarens egna hyllor, endast synliga för den aktuella användaren själv"
+
+#: cps/templates/layout.html:28
+msgid "Home"
+msgstr ""
+
+#: cps/templates/layout.html:34
+msgid "Toggle navigation"
+msgstr "Växla navigering"
+
+#: cps/templates/layout.html:55
+msgid "Advanced Search"
+msgstr "Avancerad sökning"
+
+#: cps/templates/layout.html:76 cps/templates/read.html:71
+#: cps/templates/readcbr.html:83 cps/templates/readcbr.html:107
+msgid "Settings"
+msgstr "Inställningar"
+
+#: cps/templates/layout.html:78
+msgid "Account"
+msgstr ""
+
+#: cps/templates/layout.html:80
+msgid "Logout"
+msgstr "Logga ut"
+
+#: cps/templates/layout.html:85 cps/templates/register.html:14
+msgid "Register"
+msgstr "Registrera"
+
+#: cps/templates/layout.html:111 cps/templates/layout.html:218
+msgid "Uploading..."
+msgstr "Laddar upp..."
+
+#: cps/templates/layout.html:112
+msgid "please don't refresh the page"
+msgstr "uppdatera inte sidan"
+
+#: cps/templates/layout.html:122
+msgid "Browse"
+msgstr "Bläddra"
+
+#: cps/templates/layout.html:141
+msgid "Create a Shelf"
+msgstr "Skapa en hylla"
+
+#: cps/templates/layout.html:142 cps/templates/stats.html:3
+msgid "About"
+msgstr "Om"
+
+#: cps/templates/layout.html:156
+msgid "Previous"
+msgstr "Föregående"
+
+#: cps/templates/layout.html:183
+msgid "Book Details"
+msgstr "Bokdetaljer"
+
+#: cps/templates/layout.html:217
+msgid "Upload done, processing, please wait..."
+msgstr ""
+
+#: cps/templates/layout.html:220
+msgid "Error"
+msgstr ""
+
+#: cps/templates/listenmp3.html:66
+msgid "Play / pause"
+msgstr ""
+
+#: cps/templates/listenmp3.html:98
+msgid "volume"
+msgstr ""
+
+#: cps/templates/login.html:8 cps/templates/login.html:9
+#: cps/templates/register.html:7 cps/templates/user_edit.html:8
+msgid "Username"
+msgstr "Användarnamn"
+
+#: cps/templates/login.html:12 cps/templates/login.html:13
+#: cps/templates/user_edit.html:21
+msgid "Password"
+msgstr "Lösenord"
+
+#: cps/templates/login.html:17
+msgid "Remember me"
+msgstr "Kom ihåg mig"
+
+#: cps/templates/login.html:22
+msgid "Log in with magic link"
+msgstr "Logga in med magic link"
+
+#: cps/templates/logviewer.html:5
+msgid "Show Calibre-Web log"
+msgstr ""
+
+#: cps/templates/logviewer.html:8
+msgid "Show access log"
+msgstr ""
+
+#: cps/templates/osd.xml:5
+msgid "Calibre-Web ebook catalog"
+msgstr "Calibre-Web e-bokkatalog"
+
+#: cps/templates/read.html:74
+msgid "Reflow text when sidebars are open."
+msgstr "Fyll i texten igen när sidofält är öppna."
+
+#: cps/templates/readcbr.html:88
+msgid "Keyboard Shortcuts"
+msgstr "Kortkommandon"
+
+#: cps/templates/readcbr.html:91
+msgid "Previous Page"
+msgstr "Föregående sida"
+
+#: cps/templates/readcbr.html:92
+msgid "Next Page"
+msgstr "Nästa sida"
+
+#: cps/templates/readcbr.html:93
+msgid "Scale to Best"
+msgstr "Skala till bäst"
+
+#: cps/templates/readcbr.html:94
+msgid "Scale to Width"
+msgstr "Skala till bredd"
+
+#: cps/templates/readcbr.html:95
+msgid "Scale to Height"
+msgstr "Skala till höjd"
+
+#: cps/templates/readcbr.html:96
+msgid "Scale to Native"
+msgstr "Skala till ursprunglig"
+
+#: cps/templates/readcbr.html:97
+msgid "Rotate Right"
+msgstr "Rotera åt höger"
+
+#: cps/templates/readcbr.html:98
+msgid "Rotate Left"
+msgstr "Rotera åt vänster"
+
+#: cps/templates/readcbr.html:99
+msgid "Flip Image"
+msgstr "Vänd bilden"
+
+#: cps/templates/readcbr.html:115
+msgid "Light"
+msgstr "Ljust"
+
+#: cps/templates/readcbr.html:116
+msgid "Dark"
+msgstr "Mörkt"
+
+#: cps/templates/readcbr.html:121
+msgid "Scale"
+msgstr "Skala"
+
+#: cps/templates/readcbr.html:124
+msgid "Best"
+msgstr "Bäst"
+
+#: cps/templates/readcbr.html:125
+msgid "Width"
+msgstr "Bredd"
+
+#: cps/templates/readcbr.html:126
+msgid "Height"
+msgstr "Höjd"
+
+#: cps/templates/readcbr.html:127
+msgid "Native"
+msgstr "Ursprunglig"
+
+#: cps/templates/readcbr.html:132
+msgid "Rotate"
+msgstr "Rotera"
+
+#: cps/templates/readcbr.html:143
+msgid "Flip"
+msgstr "Vänd"
+
+#: cps/templates/readcbr.html:146
+msgid "Horizontal"
+msgstr "Horisontell"
+
+#: cps/templates/readcbr.html:147
+msgid "Vertical"
+msgstr "Vertikal"
+
+#: cps/templates/readcbr.html:152
+msgid "Direction"
+msgstr ""
+
+#: cps/templates/readcbr.html:155
+msgid "Left to Right"
+msgstr ""
+
+#: cps/templates/readcbr.html:156
+msgid "Right to Left"
+msgstr ""
+
+#: cps/templates/readpdf.html:29
+msgid "PDF reader"
+msgstr ""
+
+#: cps/templates/readtxt.html:6
+msgid "Basic txt Reader"
+msgstr "Grundläggande txt-läsare"
+
+#: cps/templates/register.html:4
+msgid "Register a new account"
+msgstr "Registrera ett nytt konto"
+
+#: cps/templates/register.html:8
+msgid "Choose a username"
+msgstr "Välj ett användarnamn"
+
+#: cps/templates/register.html:11 cps/templates/user_edit.html:13
+msgid "E-mail address"
+msgstr "E-postadress"
+
+#: cps/templates/register.html:12
+msgid "Your email address"
+msgstr "Din e-postadress"
+
+#: cps/templates/remote_login.html:6
+msgid "Use your other device, login and visit "
+msgstr ""
+
+#: cps/templates/remote_login.html:9
+msgid "Once you do so, you will automatically get logged in on this device."
+msgstr "När du gör det kommer du automatiskt att logga in på den här enheten."
+
+#: cps/templates/remote_login.html:12
+msgid "The link will expire after 10 minutes."
+msgstr ""
+
+#: cps/templates/search.html:5
+msgid "No Results for:"
+msgstr "Inga resultat för:"
+
+#: cps/templates/search.html:6
+msgid "Please try a different search"
+msgstr "Försök en annan sökning"
+
+#: cps/templates/search.html:8
+msgid "Results for:"
+msgstr "Resultat för:"
+
+#: cps/templates/search_form.html:19
+msgid "Publishing date from"
+msgstr "Publiceringsdatum från"
+
+#: cps/templates/search_form.html:26
+msgid "Publishing date to"
+msgstr "Publiceringsdatum till"
+
+#: cps/templates/search_form.html:43
+msgid "Exclude Tags"
+msgstr "Uteslut taggar"
+
+#: cps/templates/search_form.html:63
+msgid "Exclude Series"
+msgstr "Uteslut serier"
+
+#: cps/templates/search_form.html:84
+msgid "Exclude Languages"
+msgstr "Uteslut språk"
+
+#: cps/templates/search_form.html:97
+msgid "Rating bigger than"
+msgstr "Betyg större än"
+
+#: cps/templates/search_form.html:101
+msgid "Rating less than"
+msgstr "Betyg mindre än"
+
+#: cps/templates/shelf.html:10
+msgid "Delete this Shelf"
+msgstr "Ta bort den här hyllan"
+
+#: cps/templates/shelf.html:11
+msgid "Edit Shelf"
+msgstr "Redigera hyllan"
+
+#: cps/templates/shelf.html:12 cps/templates/shelf_order.html:11
+msgid "Change order"
+msgstr "Ändra ordningen"
+
+#: cps/templates/shelf.html:67
+msgid "Do you really want to delete the shelf?"
+msgstr "Är du säker på att du vill ta bort hyllan?"
+
+#: cps/templates/shelf.html:70
+msgid "Shelf will be lost for everybody and forever!"
+msgstr "Hylla kommer att gå förlorad för alla och för alltid!"
+
+#: cps/templates/shelf_edit.html:13
+msgid "should the shelf be public?"
+msgstr "ska hyllan vara offentlig?"
+
+#: cps/templates/shelf_order.html:5
+msgid "Drag 'n drop to rearrange order"
+msgstr "Drag och släpp för att ändra ordning"
+
+#: cps/templates/stats.html:7
+msgid "Calibre library statistics"
+msgstr "Calibre-biblioteksstatistik"
+
+#: cps/templates/stats.html:12
+msgid "Books in this Library"
+msgstr "Böcker i det här biblioteket"
+
+#: cps/templates/stats.html:16
+msgid "Authors in this Library"
+msgstr "Författare i det här biblioteket"
+
+#: cps/templates/stats.html:20
+msgid "Categories in this Library"
+msgstr "Kategorier i det här biblioteket"
+
+#: cps/templates/stats.html:24
+msgid "Series in this Library"
+msgstr "Serier i detta bibliotek"
+
+#: cps/templates/stats.html:28
+msgid "Linked libraries"
+msgstr "Länkade bibliotek"
+
+#: cps/templates/stats.html:32
+msgid "Program library"
+msgstr "Programbibliotek"
+
+#: cps/templates/stats.html:33
+msgid "Installed Version"
+msgstr "Installerad version"
+
+#: cps/templates/tasks.html:7
+msgid "Tasks list"
+msgstr "Uppgiftslista"
+
+#: cps/templates/tasks.html:12
+msgid "User"
+msgstr "Användare"
+
+#: cps/templates/tasks.html:14
+msgid "Task"
+msgstr "Uppgift"
+
+#: cps/templates/tasks.html:15
+msgid "Status"
+msgstr "Status"
+
+#: cps/templates/tasks.html:16
+msgid "Progress"
+msgstr "Förlopp"
+
+#: cps/templates/tasks.html:17
+msgid "Runtime"
+msgstr "Drifttid"
+
+#: cps/templates/tasks.html:18
+msgid "Starttime"
+msgstr "Starttid"
+
+#: cps/templates/tasks.html:24
+msgid "Delete finished tasks"
+msgstr "Ta bort färdiga uppgifter"
+
+#: cps/templates/tasks.html:25
+msgid "Hide all tasks"
+msgstr "Dölj alla uppgifter"
+
+#: cps/templates/user_edit.html:18
+msgid "Reset user Password"
+msgstr "Återställ användarlösenordet"
+
+#: cps/templates/user_edit.html:27
+msgid "Kindle E-Mail"
+msgstr "Kindle e-post"
+
+#: cps/templates/user_edit.html:40
+msgid "Show books with language"
+msgstr "Visa böcker med språk"
+
+#: cps/templates/user_edit.html:42
+msgid "Show all"
+msgstr "Visa alla"
+
+#: cps/templates/user_edit.html:52
+msgid "OAuth Settings"
+msgstr ""
+
+#: cps/templates/user_edit.html:54
+msgid "Link"
+msgstr ""
+
+#: cps/templates/user_edit.html:56
+msgid "Unlink"
+msgstr ""
+
+#: cps/templates/user_edit.html:124
+msgid "Delete this user"
+msgstr "Ta bort den här användaren"
+
+#: cps/templates/user_edit.html:139
+msgid "Recent Downloads"
+msgstr "Senaste hämtningar"
+
+#~ msgid "Current commit timestamp"
+#~ msgstr "Aktuelles Commit Datum"
+
+#~ msgid "Newest commit timestamp"
+#~ msgstr "Neuestes Commit Datum"
+
+#~ msgid "Convert: %(book)s"
+#~ msgstr "Konvertera: %(book)s"
+
+#~ msgid "Convert to %(format)s: %(book)s"
+#~ msgstr "Konvertera till %(format)s: %(book)s"
+
+#~ msgid "Files are replaced"
+#~ msgstr "Filer ersätts"
+
+#~ msgid "Server is stopped"
+#~ msgstr "Servern stoppas"
+
+#~ msgid "Convertertool %(converter)s not found"
+#~ msgstr "Convertertool %(converter)s hittades inte"
+
+#~ msgid "Choose a password"
+#~ msgstr "Välj ett lösenord"
+
+#~ msgid "Could not find any formats suitable for sending by e-mail"
+#~ msgstr "Det gick inte att hitta några format som är lämpliga för att skicka via e-post"
+
+#~ msgid "Sorry you are not allowed to add a book to the shelf: %(shelfname)s"
+#~ msgstr "Tyvärr får du inte lägga till en bok på hyllan: %(shelfname)s"
+
+#~ msgid "File %(file)s uploaded"
+#~ msgstr "Filen %(file)s uppladdad"
+
+#~ msgid "Send %(format)s to Kkindle"
+#~ msgstr ""
+
+#~ msgid "Author list"
+#~ msgstr "Författarlista"
+
+#~ msgid "Update done"
+#~ msgstr "Uppdatering klar"
+
+#~ msgid "Stable (Automatic))"
+#~ msgstr ""
+
+#~ msgid "Nightly (Automatic))"
+#~ msgstr ""
+
+#~ msgid "A new update is available. Click on the button below to update to version: "
+#~ msgstr ""
+
+#~ msgid "A new update is available. Click on the button below to update to version:  %(version)s"
+#~ msgstr ""
+
+#~ msgid "Failed to create path for cover %(path)s (Permission denied)."
+#~ msgstr ""
+
+#~ msgid "Failed to store cover-file %(cover)s."
+#~ msgstr ""
+
+#~ msgid "Cover-file is not a valid image file"
+#~ msgstr ""
+
+#~ msgid "Cover is not a jpg file, can't save"
+#~ msgstr "Omslag är inte en jpg-fil, kan inte spara"
+
+#~ msgid "Preparing document for printing..."
+#~ msgstr ""
+
+#~ msgid "Using your another device, visit"
+#~ msgstr "Använda en annan enhet, besök"
+
+#~ msgid "and log in"
+#~ msgstr "och logga in"
+
+#~ msgid "Using your another device, login and visit "
+#~ msgstr ""
+
+#~ msgid "Newest Books"
+#~ msgstr "Nyaste böcker"
+
+#~ msgid "Oldest Books"
+#~ msgstr "Äldsta böcker"
+
+#~ msgid "Books (A-Z)"
+#~ msgstr "Böcker (A-Ö)"
+
+#~ msgid "Books (Z-A)"
+#~ msgstr "Böcker (Ö-A)"
+
+#~ msgid "Error opening eBook. Fileformat is not supported."
+#~ msgstr ""
+
+#~ msgid "File %(title)s"
+#~ msgstr ""
+
+#~ msgid "Show sorted books"
+#~ msgstr "Visa sorterade böcker"
+
+#~ msgid "Sorted Books"
+#~ msgstr "Sorterade böcker"
+
+#~ msgid "Sort By"
+#~ msgstr "Sortera efter"
+
+#~ msgid "Newest"
+#~ msgstr "Nyast"
+
+#~ msgid "Oldest"
+#~ msgstr "Äldst"
+
+#~ msgid "Ascending"
+#~ msgstr "Stigande"
+
+#~ msgid "Descending"
+#~ msgstr "Fallande"
+
+#~ msgid "PDF.js viewer"
+#~ msgstr "PDF.js visare"
+
+#~ msgid "Please enter a LDAP provider and a DN"
+#~ msgstr ""
+
+#~ msgid "successfully deleted shelf %(name)s"
+#~ msgstr "tog bort hyllan %(name)s"
+
+#~ msgid "LDAP Provider URL"
+#~ msgstr ""
+
+#~ msgid "Register with %s, "
+#~ msgstr ""
+
+#~ msgid "Import of optional Google Drive requirements missing"
+#~ msgstr "Import av valfri Google Drive krav saknas"
+
+#~ msgid "client_secrets.json is missing or not readable"
+#~ msgstr "client_secrets.json saknas eller inte kan läsas"
+
+#~ msgid "client_secrets.json is not configured for web application"
+#~ msgstr "client_secrets.json är inte konfigurerad för webbapplikation"
+
+#~ msgid "Keyfile location is not valid, please enter correct path"
+#~ msgstr "Platsen för Keyfile är inte giltig, ange rätt sökväg"
+
+#~ msgid "Certfile location is not valid, please enter correct path"
+#~ msgstr "Platsen för Certfile är inte giltig, ange rätt sökväg"
+
+#~ msgid "Please enter a LDAP provider, port, DN and user object identifier"
+#~ msgstr ""
+
+#~ msgid "Please enter a LDAP service account and password"
+#~ msgstr ""
+
+#~ msgid "Please enter Github oauth credentials"
+#~ msgstr ""
+
+#~ msgid "Please enter Google oauth credentials"
+#~ msgstr ""
+
+#~ msgid "Logfile location is not valid, please enter correct path"
+#~ msgstr "Platsen för Logfile platsen är inte giltig, ange rätt sökväg"
+
+#~ msgid "Access Logfile location is not valid, please enter correct path"
+#~ msgstr ""
+
+#~ msgid "DB location is not valid, please enter correct path"
+#~ msgstr "Platsen för DB är inte giltig, ange rätt sökväg"
+
+#~ msgid "Excecution permissions missing"
+#~ msgstr "Utförande behörighet saknas"
+
+#~ msgid "not configured"
+#~ msgstr "inte konfigurerad"
+
+#~ msgid "Error excecuting UnRar"
+#~ msgstr "Fel vid körning av UnRar"
+
+#~ msgid "Unrar binary file not found"
+#~ msgstr "Unrar binärfil hittades inte"
+
+#~ msgid "Use GitHub OAuth"
+#~ msgstr ""
+
+#~ msgid "Use Google OAuth"
+#~ msgstr ""
+
+#~ msgid "Obtain GitHub OAuth Credential"
+#~ msgstr ""
+
+#~ msgid "GitHub OAuth Client Id"
+#~ msgstr ""
+
+#~ msgid "GitHub OAuth Client Secret"
+#~ msgstr ""
+
+#~ msgid "Obtain Google OAuth Credential"
+#~ msgstr ""
+
+#~ msgid "Google OAuth Client Id"
+#~ msgstr ""
+
+#~ msgid "Google OAuth Client Secret"
+#~ msgstr ""
+
