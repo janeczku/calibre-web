@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2019-07-26 16:41+0200\n"
+"POT-Creation-Date: 2019-07-26 17:19+0200\n"
 "PO-Revision-Date: 2019-06-22 19:54+0200\n"
 "Last-Translator: Ozzie Isaacs\n"
 "Language: de\n"
@@ -1744,7 +1744,7 @@ msgstr "Bücher nach Kategorien sortiert"
 
 #: cps/templates/index.xml:86
 msgid "Books ordered by series"
-msgstr "Bücher nach Reihen sortiert"
+msgstr "Bücher nach Serien sortiert"
 
 #: cps/templates/index.xml:89 cps/templates/layout.html:132
 msgid "Public Shelves"
