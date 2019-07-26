@@ -1,0 +1,3384 @@
+# Hungarian translations for PROJECT.
+# Copyright (C) 2018 ORGANIZATION
+# This file is distributed under the same license as the PROJECT project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2018.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2019-07-26 16:41+0200\n"
+"PO-Revision-Date: 2019-04-06 23:36+0200\n"
+"Last-Translator: \n"
+"Language: hu\n"
+"Language-Team: \n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.7.0\n"
+
+#: cps/about.py:70
+msgid "Statistics"
+msgstr "Statisztika"
+
+#: cps/admin.py:90
+msgid "Server restarted, please reload page"
+msgstr "A kiszolgáló újraindult, tölts be újra az oldalt!"
+
+#: cps/admin.py:92
+msgid "Performing shutdown of server, please close window"
+msgstr "A kiszolgáló leállítása folyamatban, zárd be ezt az ablakot"
+
+#: cps/admin.py:111 cps/updater.py:445
+msgid "Unknown"
+msgstr "Ismeretlen"
+
+#: cps/admin.py:130
+msgid "Admin page"
+msgstr "Rendszergazda oldala"
+
+#: cps/admin.py:149 cps/templates/admin.html:102
+msgid "UI Configuration"
+msgstr "Felhasználói felület beállításai"
+
+#: cps/admin.py:181 cps/admin.py:399
+msgid "Calibre-Web configuration updated"
+msgstr "A Calibre-Web konfigurációja frissítve."
+
+#: cps/admin.py:427 cps/templates/admin.html:101
+msgid "Basic Configuration"
+msgstr "Alapvető beállítások"
+
+#: cps/admin.py:450 cps/web.py:1050
+msgid "Please fill out all fields!"
+msgstr "Az összes mezőt ki kell tölteni!"
+
+#: cps/admin.py:452 cps/admin.py:463 cps/admin.py:469 cps/admin.py:484
+#: cps/templates/admin.html:35
+msgid "Add new user"
+msgstr "Új felhasználó hozzáadása"
+
+#: cps/admin.py:461 cps/web.py:1253
+msgid "E-mail is not from valid domain"
+msgstr "Az e-mail tartománya nem érvényes."
+
+#: cps/admin.py:467 cps/admin.py:478
+msgid "Found an existing account for this e-mail address or nickname."
+msgstr "Már létezik felhasználó ehhez az e-mail címhez vagy felhasználói névhez."
+
+#: cps/admin.py:474
+#, python-format
+msgid "User '%(user)s' created"
+msgstr "A következő felhasználó létrehozva: %(user)s"
+
+#: cps/admin.py:494
+msgid "Edit e-mail server settings"
+msgstr "Az e-mail kiszolgáló beállításainak módosítása"
+
+#: cps/admin.py:520
+#, python-format
+msgid "Test e-mail successfully send to %(kindlemail)s"
+msgstr "A teszt levél sikeresen elküldve ide: %(kindlemail)s"
+
+#: cps/admin.py:523
+#, python-format
+msgid "There was an error sending the Test e-mail: %(res)s"
+msgstr "Hiba történt a teszt levél küldése során: %(res)s"
+
+#: cps/admin.py:525 cps/web.py:1033
+msgid "Please configure your kindle e-mail address first..."
+msgstr "Először be kell állítani a kindle e-mail címet..."
+
+#: cps/admin.py:527
+msgid "E-mail server settings updated"
+msgstr "Az e-mail kiszolgáló beállításai frissítve."
+
+#: cps/admin.py:556
+#, python-format
+msgid "User '%(nick)s' deleted"
+msgstr "A felhasználó törölve: %(nick)s"
+
+#: cps/admin.py:559
+msgid "No admin user remaining, can't delete user"
+msgstr ""
+
+#: cps/admin.py:598 cps/web.py:1279
+msgid "Found an existing account for this e-mail address."
+msgstr "Már létezik felhasználó ehhez az e-mail címhez."
+
+#: cps/admin.py:601 cps/admin.py:613
+#, python-format
+msgid "Edit User %(nick)s"
+msgstr " A felhasználó szerkesztése: %(nick)s"
+
+#: cps/admin.py:607
+#, python-format
+msgid "User '%(nick)s' updated"
+msgstr "A felhasználó frissítve: %(nick)s"
+
+#: cps/admin.py:610
+msgid "An unknown error occured."
+msgstr "Ismeretlen hiba történt."
+
+#: cps/admin.py:629
+#, python-format
+msgid "Password for user %(user)s reset"
+msgstr "A(z) %(user)s felhasználó jelszavának alaphelyzetbe állítása"
+
+#: cps/admin.py:632 cps/web.py:1075
+msgid "An unknown error occurred. Please try again later."
+msgstr "Ismeretlen hiba történt. Próbáld újra később!"
+
+#: cps/admin.py:643
+msgid "Logfile viewer"
+msgstr ""
+
+#: cps/admin.py:678
+msgid "Requesting update package"
+msgstr "Frissítési csomag kérése"
+
+#: cps/admin.py:679
+msgid "Downloading update package"
+msgstr "Frissítési csomag letöltése"
+
+#: cps/admin.py:680
+msgid "Unzipping update package"
+msgstr "Frissítési csomag kitömörítése"
+
+#: cps/admin.py:681
+msgid "Replacing files"
+msgstr "Fájlok cserélése"
+
+#: cps/admin.py:682
+msgid "Database connections are closed"
+msgstr "Adatbázis kapcsolatok lezárva"
+
+#: cps/admin.py:683
+msgid "Stopping server"
+msgstr "Szerver leállítása"
+
+#: cps/admin.py:684
+msgid "Update finished, please press okay and reload page"
+msgstr "A frissítés települt, kattints az OK-ra és újra tölt az oldal"
+
+#: cps/admin.py:685 cps/admin.py:686 cps/admin.py:687 cps/admin.py:688
+msgid "Update failed:"
+msgstr "A frissítés nem sikerült:"
+
+#: cps/admin.py:685 cps/updater.py:271 cps/updater.py:456 cps/updater.py:458
+msgid "HTTP Error"
+msgstr "HTTP hiba"
+
+#: cps/admin.py:686 cps/updater.py:273 cps/updater.py:460
+msgid "Connection error"
+msgstr "Kapcsolódási hiba"
+
+#: cps/admin.py:687 cps/updater.py:275 cps/updater.py:462
+msgid "Timeout while establishing connection"
+msgstr "Időtúllépés a kapcsolódás során"
+
+#: cps/admin.py:688 cps/updater.py:277 cps/updater.py:464
+msgid "General error"
+msgstr "Általános hiba"
+
+#: cps/editbooks.py:214 cps/editbooks.py:393
+msgid "Error opening eBook. File does not exist or file is not accessible"
+msgstr "Hiba az ekönyv megnyitásakor. A fájl nem létezik vagy nem elérhető."
+
+#: cps/editbooks.py:242
+msgid "edit metadata"
+msgstr "Metaadatok szerkesztése"
+
+#: cps/editbooks.py:321 cps/editbooks.py:551
+#, python-format
+msgid "File extension '%(ext)s' is not allowed to be uploaded to this server"
+msgstr "A(z) \"%(ext)s\" kiterjesztésű fájlok feltöltése nincs engedélyezve ezen a szerveren."
+
+#: cps/editbooks.py:325 cps/editbooks.py:555
+msgid "File to be uploaded must have an extension"
+msgstr "A feltöltendő fájlnak kiterjesztéssel kell rendelkeznie!"
+
+#: cps/editbooks.py:337 cps/editbooks.py:575
+#, python-format
+msgid "Failed to create path %(path)s (Permission denied)."
+msgstr "Nem sikerült létrehozni az elérési utat (engedély megtagadva): %(path)s."
+
+#: cps/editbooks.py:342
+#, python-format
+msgid "Failed to store file %(file)s."
+msgstr "Nem sikerült elmenteni a %(file)s fájlt."
+
+#: cps/editbooks.py:359
+#, python-format
+msgid "File format %(ext)s added to %(book)s"
+msgstr "A(z) %(ext)s fájlformátum hozzáadva a könyvhez: %(book)s."
+
+#: cps/editbooks.py:373
+msgid "Cover is not a supported imageformat (jpg/png/webp), can't save"
+msgstr ""
+
+#: cps/editbooks.py:406 cps/editbooks.py:415
+msgid "unknown"
+msgstr "ismeretlen"
+
+#: cps/editbooks.py:447
+msgid "Cover is not a jpg file, can't save"
+msgstr ""
+
+#: cps/editbooks.py:490
+#, python-format
+msgid "%(langname)s is not a valid language"
+msgstr "A(z) %(langname)s nem érvényes nyelv"
+
+#: cps/editbooks.py:521
+msgid "Metadata successfully updated"
+msgstr "A metaadatok sikeresen frissültek"
+
+#: cps/editbooks.py:530
+msgid "Error editing book, please check logfile for details"
+msgstr "Hiba a könyv szerkesztése során, további részletek a naplófájlban."
+
+#: cps/editbooks.py:580
+#, python-format
+msgid "Failed to store file %(file)s (Permission denied)."
+msgstr "Nem sikerült elmenteni a %(file)s fájlt."
+
+#: cps/editbooks.py:585
+#, python-format
+msgid "Failed to delete file %(file)s (Permission denied)."
+msgstr "Nem sikerült törölni a %(file)s fájlt."
+
+#: cps/editbooks.py:668
+#, python-format
+msgid "File %(file)s uploaded"
+msgstr ""
+
+#: cps/editbooks.py:697
+msgid "Source or destination format for conversion missing"
+msgstr "Az átalakításhoz hiányzik a forrás- vagy a célformátum!"
+
+#: cps/editbooks.py:705
+#, python-format
+msgid "Book successfully queued for converting to %(book_format)s"
+msgstr "A könyv sikeresen átalakításra lett jelölve a következő formátumra: %(book_format)s"
+
+#: cps/editbooks.py:709
+#, python-format
+msgid "There was an error converting this book: %(res)s"
+msgstr "Hiba történt a könyv átalakításakor: %(res)s"
+
+#: cps/gdrive.py:61
+msgid "Google Drive setup not completed, try to deactivate and activate Google Drive again"
+msgstr "A Google Drive beállítása nem fejeződött be, próbáld kikapcsolni és újra aktíválni a Google Drive-ot."
+
+#: cps/gdrive.py:103
+msgid "Callback domain is not verified, please follow steps to verify domain in google developer console"
+msgstr "A visszahívási tartomány nem ellenőrzött, kövesd az alábbi lépéseket a tartomány ellenőrzéséhez a Google Developer Console-ban:"
+
+#: cps/helper.py:79
+#, python-format
+msgid "%(format)s format not found for book id: %(book)d"
+msgstr "A(z) %(format)s formátum nem található a következő könyvhöz: %(book)d"
+
+#: cps/helper.py:91
+#, python-format
+msgid "%(format)s not found on Google Drive: %(fn)s"
+msgstr "%(format)s nem található a Google Drive-on: %(fn)s"
+
+#: cps/helper.py:98 cps/helper.py:206 cps/templates/detail.html:41
+#: cps/templates/detail.html:45
+msgid "Send to Kindle"
+msgstr "Küldés Kindle-re"
+
+#: cps/helper.py:99 cps/helper.py:117 cps/helper.py:208
+msgid "This e-mail has been sent via Calibre-Web."
+msgstr "Ez az e-mail a Calibre-Web-en keresztül lett küldve."
+
+#: cps/helper.py:110
+#, python-format
+msgid "%(format)s not found: %(fn)s"
+msgstr "%(format)s nem található: %(fn)s"
+
+#: cps/helper.py:115
+msgid "Calibre-Web test e-mail"
+msgstr "Calibre-Web teszt e-mail"
+
+#: cps/helper.py:117
+msgid "Test e-mail"
+msgstr "Teszt e-mail"
+
+#: cps/helper.py:132
+msgid "Get Started with Calibre-Web"
+msgstr "Kezdő lépések a Calibre-Web-bel"
+
+#: cps/helper.py:134
+#, python-format
+msgid "Registration e-mail for user: %(name)s"
+msgstr "Regisztrációs e-mail a következő felhasználóhoz: %(name)s"
+
+#: cps/helper.py:148 cps/helper.py:150 cps/helper.py:152 cps/helper.py:160
+#: cps/helper.py:162 cps/helper.py:164
+#, python-format
+msgid "Send %(format)s to Kindle"
+msgstr "%(format)s küldése Kindle-re"
+
+#: cps/helper.py:168
+#, python-format
+msgid "Convert %(orig)s to %(format)s and send to Kindle"
+msgstr "%(orig)s konvertálása %(format)s-ra és küldés Kindle-re"
+
+#: cps/helper.py:208
+#, python-format
+msgid "E-mail: %(book)s"
+msgstr "E-mail: %(book)s"
+
+#: cps/helper.py:210
+msgid "The requested file could not be read. Maybe wrong permissions?"
+msgstr "A kért fájl nem olvasható. Esetleg jogosultsági probléma lenne?"
+
+#: cps/helper.py:317
+#, python-format
+msgid "Rename title from: '%(src)s' to '%(dest)s' failed with error: %(error)s"
+msgstr "A cím átnevezése \"%(src)s\"-ról \"%(dest)s\"-ra nem sikerült a következő hiba miatt: %(error)s"
+
+#: cps/helper.py:327
+#, python-format
+msgid "Rename author from: '%(src)s' to '%(dest)s' failed with error: %(error)s"
+msgstr "A szerző átnevezése \"%(src)s\"-ról \"%(dest)s\"-ra nem sikerült a következő hiba miatt: %(error)s"
+
+#: cps/helper.py:341
+#, python-format
+msgid "Rename file in path '%(src)s' to '%(dest)s' failed with error: %(error)s"
+msgstr "\"%(src)s\" fájl átnevezése \"%(dest)s\"-re nem sikerült a következő hiba miatt: %(error)s"
+
+#: cps/helper.py:367 cps/helper.py:377 cps/helper.py:385
+#, python-format
+msgid "File %(file)s not found on Google Drive"
+msgstr "A \"%(file)s\" fájl nem található a Google Drive-on"
+
+#: cps/helper.py:406
+#, python-format
+msgid "Book path %(path)s not found on Google Drive"
+msgstr "A könyv elérési útja (\"%(path)s\") nem található a Google Drive-on"
+
+#: cps/helper.py:623
+msgid "Waiting"
+msgstr "Várakozás"
+
+#: cps/helper.py:625
+msgid "Failed"
+msgstr "Nem sikerült"
+
+#: cps/helper.py:627
+msgid "Started"
+msgstr "Elindítva"
+
+#: cps/helper.py:629
+msgid "Finished"
+msgstr "Végrehajtva"
+
+#: cps/helper.py:631
+msgid "Unknown Status"
+msgstr "Ismeretlen állapot"
+
+#: cps/helper.py:636
+msgid "E-mail: "
+msgstr "E-mail cím: "
+
+#: cps/helper.py:638 cps/helper.py:642
+msgid "Convert: "
+msgstr "Konvertálás:"
+
+#: cps/helper.py:640
+msgid "Upload: "
+msgstr "Feltöltés:"
+
+#: cps/helper.py:644
+msgid "Unknown Task: "
+msgstr "Ismeretlen feladat:"
+
+#: cps/oauth_bb.py:75
+#, python-format
+msgid "Register with %(provider)s"
+msgstr ""
+
+#: cps/oauth_bb.py:155
+msgid "Failed to log in with GitHub."
+msgstr ""
+
+#: cps/oauth_bb.py:160
+msgid "Failed to fetch user info from GitHub."
+msgstr ""
+
+#: cps/oauth_bb.py:171
+msgid "Failed to log in with Google."
+msgstr ""
+
+#: cps/oauth_bb.py:176
+msgid "Failed to fetch user info from Google."
+msgstr ""
+
+#: cps/oauth_bb.py:274
+#, python-format
+msgid "Unlink to %(oauth)s success."
+msgstr ""
+
+#: cps/oauth_bb.py:278
+#, python-format
+msgid "Unlink to %(oauth)s failed."
+msgstr ""
+
+#: cps/oauth_bb.py:281
+#, python-format
+msgid "Not linked to %(oauth)s."
+msgstr ""
+
+#: cps/oauth_bb.py:309
+msgid "GitHub Oauth error, please retry later."
+msgstr ""
+
+#: cps/oauth_bb.py:328
+msgid "Google Oauth error, please retry later."
+msgstr ""
+
+#: cps/shelf.py:46 cps/shelf.py:98
+msgid "Invalid shelf specified"
+msgstr "A megadott polc érvénytelen!"
+
+#: cps/shelf.py:53
+#, python-format
+msgid "Sorry you are not allowed to add a book to the the shelf: %(shelfname)s"
+msgstr "Elnézést, nem vagy jogosult hozzáadni a könyvet a következő polcra: %(shelfname)s"
+
+#: cps/shelf.py:61
+msgid "You are not allowed to edit public shelves"
+msgstr "Nem vagy jogosult szerkeszteni nyilvános polcokat"
+
+#: cps/shelf.py:70
+#, python-format
+msgid "Book is already part of the shelf: %(shelfname)s"
+msgstr "A könyv már a következő polcon van: %(shelfname)s"
+
+#: cps/shelf.py:84
+#, python-format
+msgid "Book has been added to shelf: %(sname)s"
+msgstr "A könyv hozzá lett adva a következő polchoz: %(sname)s"
+
+#: cps/shelf.py:103
+#, python-format
+msgid "You are not allowed to add a book to the the shelf: %(name)s"
+msgstr "Nincs jogosultságod könyvet tenni a következő polcra: %(name)s."
+
+#: cps/shelf.py:108
+msgid "User is not allowed to edit public shelves"
+msgstr "A felhasználó nem szerkeszthet nyilvános polcokat"
+
+#: cps/shelf.py:126
+#, python-format
+msgid "Books are already part of the shelf: %(name)s"
+msgstr "A könyvek már a következő polcon vannak: %(name)s"
+
+#: cps/shelf.py:140
+#, python-format
+msgid "Books have been added to shelf: %(sname)s"
+msgstr "A könyvek hozzá lettek adva a következő polchoz: %(sname)s"
+
+#: cps/shelf.py:142
+#, python-format
+msgid "Could not add books to shelf: %(sname)s"
+msgstr "Nem sikerült hozzáadni a könyveket a polchoz: %(sname)s"
+
+#: cps/shelf.py:179
+#, python-format
+msgid "Book has been removed from shelf: %(sname)s"
+msgstr "A könyv el lett távolítva a polcról: %(sname)s"
+
+#: cps/shelf.py:185
+#, python-format
+msgid "Sorry you are not allowed to remove a book from this shelf: %(sname)s"
+msgstr "Sajnálom, nincs jogosultságot eltávolítani könyvet erről a polcról: %(sname)s"
+
+#: cps/shelf.py:206 cps/shelf.py:230
+#, python-format
+msgid "A shelf with the name '%(title)s' already exists."
+msgstr "Már létezik \"%(title)s\" nevű polc!"
+
+#: cps/shelf.py:211
+#, python-format
+msgid "Shelf %(title)s created"
+msgstr "A következő polc létre lett hozva: %(title)s"
+
+#: cps/shelf.py:213 cps/shelf.py:241
+msgid "There was an error"
+msgstr "Hiba történt"
+
+#: cps/shelf.py:214 cps/shelf.py:216
+msgid "create a shelf"
+msgstr "Polc készítése"
+
+#: cps/shelf.py:239
+#, python-format
+msgid "Shelf %(title)s changed"
+msgstr "A következő polc megváltoztatva: %(title)s"
+
+#: cps/shelf.py:242 cps/shelf.py:244
+msgid "Edit a shelf"
+msgstr "Polc szerkesztése"
+
+#: cps/shelf.py:295
+#, python-format
+msgid "Shelf: '%(name)s'"
+msgstr "Polc: '%(name)s'"
+
+#: cps/shelf.py:298
+msgid "Error opening shelf. Shelf does not exist or is not accessible"
+msgstr "Hiba a polc megnyitásakor. A polc nem létezik vagy nem elérhető."
+
+#: cps/shelf.py:330
+#, python-format
+msgid "Change order of Shelf: '%(name)s'"
+msgstr "A következő polc átrendezése: %(name)s"
+
+#: cps/ub.py:57
+msgid "Recently Added"
+msgstr "Legutóbb hozzáadott"
+
+#: cps/ub.py:59
+msgid "Show recent books"
+msgstr "Legutóbbi könyvek mutatása"
+
+#: cps/templates/index.xml:17 cps/ub.py:60
+msgid "Hot Books"
+msgstr "Kelendő könyvek"
+
+#: cps/ub.py:61
+msgid "Show hot books"
+msgstr "Kelendő könyvek mutatása"
+
+#: cps/templates/index.xml:24 cps/ub.py:64
+msgid "Best rated Books"
+msgstr "Legjobb könyvek"
+
+#: cps/ub.py:66
+msgid "Show best rated books"
+msgstr "Legjobbra értékelt könyvek mutatása"
+
+#: cps/templates/index.xml:46 cps/templates/index.xml:50 cps/ub.py:67
+#: cps/web.py:971
+msgid "Read Books"
+msgstr "Olvasott könyvek"
+
+#: cps/ub.py:69
+msgid "Show read and unread"
+msgstr "Mutassa az olvasva/olvasatlan állapotot"
+
+#: cps/templates/index.xml:53 cps/templates/index.xml:57 cps/ub.py:71
+#: cps/web.py:975
+msgid "Unread Books"
+msgstr "Olvasatlan könyvek"
+
+#: cps/ub.py:73
+msgid "Show unread"
+msgstr ""
+
+#: cps/ub.py:74
+msgid "Discover"
+msgstr "Felfedezés"
+
+#: cps/ub.py:76
+msgid "Show random books"
+msgstr "Könyvek találomra mutatása"
+
+#: cps/ub.py:77
+msgid "Categories"
+msgstr "Címkék"
+
+#: cps/ub.py:79
+msgid "Show category selection"
+msgstr "Címke választó mutatása"
+
+#: cps/templates/book_edit.html:71 cps/templates/search_form.html:53
+#: cps/ub.py:80
+msgid "Series"
+msgstr "Sorozatok"
+
+#: cps/ub.py:82
+msgid "Show series selection"
+msgstr "Sorozat választó mutatása"
+
+#: cps/templates/index.xml:61 cps/ub.py:83
+msgid "Authors"
+msgstr "Szerzők"
+
+#: cps/ub.py:85
+msgid "Show author selection"
+msgstr "Szerző választó mutatása"
+
+#: cps/templates/index.xml:68 cps/ub.py:87
+msgid "Publishers"
+msgstr "Kiadók"
+
+#: cps/ub.py:89
+msgid "Show publisher selection"
+msgstr "Kiadó választó mutatása"
+
+#: cps/templates/search_form.html:74 cps/ub.py:90
+msgid "Languages"
+msgstr "Nyelvek"
+
+#: cps/ub.py:93
+msgid "Show language selection"
+msgstr "Nyelv választó mutatása"
+
+#: cps/ub.py:94
+msgid "Ratings"
+msgstr ""
+
+#: cps/ub.py:96
+msgid "Show ratings selection"
+msgstr ""
+
+#: cps/ub.py:97
+msgid "File formats"
+msgstr ""
+
+#: cps/ub.py:99
+msgid "Show file formats selection"
+msgstr ""
+
+#: cps/updater.py:251 cps/updater.py:358 cps/updater.py:371
+msgid "Unexpected data while reading update information"
+msgstr "Ismeretlen adat a frissítési információk olvasásakor"
+
+#: cps/updater.py:258 cps/updater.py:364
+msgid "No update available. You already have the latest version installed"
+msgstr "Nem érhető el újabb frissítés. Már a legújabb verzió van telepítve."
+
+#: cps/updater.py:284
+msgid "A new update is available. Click on the button below to update to the latest version."
+msgstr "Egy új frissítés érhető el. Kattints a lenti gombra a legújabb verzió frissítésére"
+
+#: cps/updater.py:337
+msgid "Could not fetch update information"
+msgstr "Nem lehetett begyűjteni a frissítési információkat"
+
+#: cps/updater.py:351
+msgid "No release information available"
+msgstr "Nincs információ a kiadásról."
+
+#: cps/updater.py:404 cps/updater.py:413
+#, python-format
+msgid "A new update is available. Click on the button below to update to version: %(version)s"
+msgstr "Új frissítés érhető el. Kattints az alábbi gombra a frissítéshez a következő verzióra: %(version)s"
+
+#: cps/updater.py:423
+msgid "Click on the button below to update to the latest stable version."
+msgstr ""
+
+#: cps/uploader.py:213 cps/uploader.py:214 cps/uploader.py:218
+#: cps/uploader.py:222 cps/uploader.py:226
+msgid "not installed"
+msgstr "nincs telepítve"
+
+#: cps/web.py:460
+msgid "Recently Added Books"
+msgstr "Legutóbb hozzáadott könyvek"
+
+#: cps/web.py:488
+msgid "Best rated books"
+msgstr "Legjobbra értékelt könyvek"
+
+#: cps/templates/index.xml:38 cps/web.py:496
+msgid "Random Books"
+msgstr "Könyvek találomra"
+
+#: cps/web.py:522
+msgid "Books"
+msgstr ""
+
+#: cps/web.py:549
+msgid "Hot Books (most downloaded)"
+msgstr "Kelendő könyvek (legtöbbet letöltöttek)"
+
+#: cps/web.py:560 cps/web.py:1300 cps/web.py:1388
+msgid "Error opening eBook. File does not exist or file is not accessible:"
+msgstr "Hiba történt az e-könyv megnyitásakor. A fájl nem létezik vagy nem érhető el:"
+
+#: cps/web.py:573
+#, python-format
+msgid "Author: %(name)s"
+msgstr ""
+
+#: cps/web.py:585
+#, python-format
+msgid "Publisher: %(name)s"
+msgstr "Kiadó: %(name)s"
+
+#: cps/web.py:596
+#, python-format
+msgid "Series: %(serie)s"
+msgstr "Sorozat: %(serie)s"
+
+#: cps/web.py:607
+#, python-format
+msgid "Rating: %(rating)s stars"
+msgstr ""
+
+#: cps/web.py:618
+#, python-format
+msgid "File format: %(format)s"
+msgstr ""
+
+#: cps/web.py:630
+#, python-format
+msgid "Category: %(name)s"
+msgstr "Címke: %(name)s"
+
+#: cps/web.py:647
+#, python-format
+msgid "Language: %(name)s"
+msgstr "Nyelv: %(name)s"
+
+#: cps/web.py:679
+msgid "Publisher list"
+msgstr "Kiadók listája"
+
+#: cps/templates/index.xml:82 cps/web.py:695
+msgid "Series list"
+msgstr "Sorozatok listája"
+
+#: cps/web.py:709
+msgid "Ratings list"
+msgstr ""
+
+#: cps/web.py:722
+msgid "File formats list"
+msgstr ""
+
+#: cps/web.py:750
+msgid "Available languages"
+msgstr "Elérhető nyelvek"
+
+#: cps/templates/index.xml:75 cps/web.py:767
+msgid "Category list"
+msgstr "Címkék listája"
+
+#: cps/templates/layout.html:73 cps/web.py:781
+msgid "Tasks"
+msgstr "Feladatok"
+
+#: cps/web.py:846
+msgid "Published after "
+msgstr "Kiadva ezután: "
+
+#: cps/web.py:853
+msgid "Published before "
+msgstr "Kiadva ezelőtt: "
+
+#: cps/web.py:867
+#, python-format
+msgid "Rating <= %(rating)s"
+msgstr "Értékelés <= %(rating)s"
+
+#: cps/web.py:869
+#, python-format
+msgid "Rating >= %(rating)s"
+msgstr "Értékelés <= %(rating)s"
+
+#: cps/web.py:929 cps/web.py:939
+msgid "search"
+msgstr "keresés"
+
+#: cps/web.py:1022
+msgid "Please configure the SMTP mail settings first..."
+msgstr "Először be kell állítani az SMTP levelező beállításokat..."
+
+#: cps/web.py:1027
+#, python-format
+msgid "Book successfully queued for sending to %(kindlemail)s"
+msgstr "A könyv sikeresen küldésre lett jelölve a következő címre: %(kindlemail)s"
+
+#: cps/web.py:1031
+#, python-format
+msgid "There was an error sending this book: %(res)s"
+msgstr "Hiba történt a könyv küldésekor: %(res)s"
+
+#: cps/web.py:1051 cps/web.py:1076 cps/web.py:1080 cps/web.py:1085
+#: cps/web.py:1089
+msgid "register"
+msgstr "regisztrálás"
+
+#: cps/web.py:1078
+msgid "Your e-mail is not allowed to register"
+msgstr "Nem engedélyezett a megadott e-mail cím bejegyzése"
+
+#: cps/web.py:1081
+msgid "Confirmation e-mail was send to your e-mail account."
+msgstr "Jóváhagyó levél elküldve az email címedre."
+
+#: cps/web.py:1084
+msgid "This username or e-mail address is already in use."
+msgstr "Ez a felhasználónév vagy e-mail cím már használatban van."
+
+#: cps/web.py:1099
+msgid "Cannot activate LDAP authentication"
+msgstr ""
+
+#: cps/web.py:1108 cps/web.py:1214
+#, python-format
+msgid "you are now logged in as: '%(nickname)s'"
+msgstr "Be vagy jelentkezve mint: %(nickname)s"
+
+#: cps/web.py:1112
+msgid "Could not login. LDAP server down, please contact your administrator"
+msgstr ""
+
+#: cps/web.py:1116 cps/web.py:1124
+msgid "Wrong Username or Password"
+msgstr "Rossz felhasználó név vagy jelszó!"
+
+#: cps/web.py:1120
+#, python-format
+msgid "You are now logged in as: '%(nickname)s'"
+msgstr ""
+
+#: cps/web.py:1128 cps/web.py:1150
+msgid "login"
+msgstr "belépés"
+
+#: cps/web.py:1162 cps/web.py:1193
+msgid "Token not found"
+msgstr "A token nem található."
+
+#: cps/web.py:1170 cps/web.py:1201
+msgid "Token has expired"
+msgstr "A token érvényessége lejárt."
+
+#: cps/web.py:1178
+msgid "Success! Please return to your device"
+msgstr "Sikerült! Újra használható az eszköz."
+
+#: cps/web.py:1255 cps/web.py:1282 cps/web.py:1286
+#, python-format
+msgid "%(name)s's profile"
+msgstr "%(name)s profilja"
+
+#: cps/web.py:1284
+msgid "Profile updated"
+msgstr "A profil frissítve."
+
+#: cps/web.py:1310 cps/web.py:1312 cps/web.py:1314 cps/web.py:1320
+#: cps/web.py:1324
+msgid "Read a Book"
+msgstr "Egy olvasott könyv"
+
+#: cps/web.py:1334
+msgid "Error opening eBook. File does not exist or file is not accessible."
+msgstr ""
+
+#: cps/worker.py:328
+#, python-format
+msgid "Ebook-converter failed: %(error)s"
+msgstr "Az e-könyv átalakítás nem sikerült: %(error)s"
+
+#: cps/worker.py:339
+#, python-format
+msgid "Kindlegen failed with Error %(error)s. Message: %(message)s"
+msgstr "A Kindlegen futtatása nem sikerült a(z) %(error)s hiba miatt. Üzenet: %(message)s"
+
+#: cps/templates/admin.html:6
+msgid "User list"
+msgstr "Felhasználók listája"
+
+#: cps/templates/admin.html:9
+msgid "Nickname"
+msgstr "Felhasználói név"
+
+#: cps/templates/admin.html:10
+msgid "E-mail"
+msgstr "E-mail"
+
+#: cps/templates/admin.html:11
+msgid "Kindle"
+msgstr "Kindle"
+
+#: cps/templates/admin.html:12
+msgid "DLS"
+msgstr "Letöltések"
+
+#: cps/templates/admin.html:13 cps/templates/layout.html:76
+msgid "Admin"
+msgstr "Rendszergazda"
+
+#: cps/templates/admin.html:14 cps/templates/detail.html:18
+#: cps/templates/detail.html:27 cps/templates/shelf.html:6
+#: cps/templates/shelfdown.html:62
+msgid "Download"
+msgstr "Letöltés"
+
+#: cps/templates/admin.html:15
+msgid "View Ebooks"
+msgstr ""
+
+#: cps/templates/admin.html:16 cps/templates/layout.html:65
+msgid "Upload"
+msgstr "Feltöltés"
+
+#: cps/templates/admin.html:17
+msgid "Edit"
+msgstr "Szerkesztés"
+
+#: cps/templates/admin.html:41
+msgid "SMTP e-mail server settings"
+msgstr "SMTP e-mail kiszolgáló beállítások"
+
+#: cps/templates/admin.html:44 cps/templates/email_edit.html:11
+msgid "SMTP hostname"
+msgstr "SMTP szervernév"
+
+#: cps/templates/admin.html:45
+msgid "SMTP port"
+msgstr "SMTP port"
+
+#: cps/templates/admin.html:46
+msgid "SSL"
+msgstr "SSL"
+
+#: cps/templates/admin.html:47 cps/templates/email_edit.html:27
+msgid "SMTP login"
+msgstr "SMTP felhasználó"
+
+#: cps/templates/admin.html:48
+msgid "From mail"
+msgstr "Küldő e-mail cím"
+
+#: cps/templates/admin.html:58
+msgid "Change SMTP settings"
+msgstr "SMTP beállítások változtatása"
+
+#: cps/templates/admin.html:64
+msgid "Configuration"
+msgstr "Konfiguráció"
+
+#: cps/templates/admin.html:67
+msgid "Calibre DB dir"
+msgstr "Calibre adatbázis mappája:"
+
+#: cps/templates/admin.html:71
+msgid "Log level"
+msgstr "Naplózás szintje:"
+
+#: cps/templates/admin.html:75
+msgid "Port"
+msgstr "Port:"
+
+#: cps/templates/admin.html:81 cps/templates/config_view_edit.html:23
+msgid "Books per page"
+msgstr "Könyvek oldalanként:"
+
+#: cps/templates/admin.html:85
+msgid "Uploading"
+msgstr "Feltöltés:"
+
+#: cps/templates/admin.html:89
+msgid "Anonymous browsing"
+msgstr "Böngészés bejelentkezés nélkül:"
+
+#: cps/templates/admin.html:93
+msgid "Public registration"
+msgstr "Nyílvános regisztráció:"
+
+#: cps/templates/admin.html:97 cps/templates/remote_login.html:4
+msgid "Remote login"
+msgstr "Távoli belépés:"
+
+#: cps/templates/admin.html:108
+msgid "Administration"
+msgstr "Adminisztráció"
+
+#: cps/templates/admin.html:109
+msgid "View Logfiles"
+msgstr ""
+
+#: cps/templates/admin.html:110
+msgid "Reconnect to Calibre DB"
+msgstr "Újracsatlakozás a Calibre adatbázishoz"
+
+#: cps/templates/admin.html:111
+msgid "Restart Calibre-Web"
+msgstr "A Calibre adatbázis újraindítása"
+
+#: cps/templates/admin.html:112
+msgid "Stop Calibre-Web"
+msgstr "A Calibre adatbázis leállítása"
+
+#: cps/templates/admin.html:118
+msgid "Update"
+msgstr "Frissítés"
+
+#: cps/templates/admin.html:122
+msgid "Version"
+msgstr "Verzió"
+
+#: cps/templates/admin.html:123
+msgid "Details"
+msgstr "Részletek"
+
+#: cps/templates/admin.html:129
+msgid "Current version"
+msgstr "Jelenlegi verzió"
+
+#: cps/templates/admin.html:135
+msgid "Check for update"
+msgstr "Frissítés keresése"
+
+#: cps/templates/admin.html:136
+msgid "Perform Update"
+msgstr "Frissítés elkezdése"
+
+#: cps/templates/admin.html:148
+msgid "Do you really want to restart Calibre-Web?"
+msgstr "Valóban újra akarod indítani a Calibre-Web-et?"
+
+#: cps/templates/admin.html:153 cps/templates/admin.html:167
+#: cps/templates/admin.html:187 cps/templates/shelf.html:72
+msgid "Ok"
+msgstr "OK"
+
+#: cps/templates/admin.html:154 cps/templates/admin.html:168
+#: cps/templates/book_edit.html:174 cps/templates/book_edit.html:196
+#: cps/templates/config_edit.html:321 cps/templates/config_view_edit.html:147
+#: cps/templates/email_edit.html:40 cps/templates/email_edit.html:74
+#: cps/templates/layout.html:28 cps/templates/shelf.html:73
+#: cps/templates/shelf_edit.html:19 cps/templates/shelf_order.html:12
+#: cps/templates/user_edit.html:132
+msgid "Back"
+msgstr "Vissza"
+
+#: cps/templates/admin.html:166
+msgid "Do you really want to stop Calibre-Web?"
+msgstr "Valóban le akarod állítani a Calibre-Web-et?"
+
+#: cps/templates/admin.html:178
+msgid "Updating, please do not reload page"
+msgstr "Frissítés folyamatban, ne töltsd újra az oldalt"
+
+#: cps/templates/author.html:15
+msgid "via"
+msgstr "keresztül"
+
+#: cps/templates/author.html:23
+msgid "In Library"
+msgstr "Könyvtárban"
+
+#: cps/templates/author.html:34 cps/templates/list.html:14
+#: cps/templates/search.html:41
+msgid "All"
+msgstr ""
+
+#: cps/templates/author.html:58 cps/templates/author.html:110
+#: cps/templates/discover.html:27 cps/templates/index.html:26
+#: cps/templates/index.html:89 cps/templates/search.html:67
+#: cps/templates/shelf.html:36
+msgid "reduce"
+msgstr "csökkentsd"
+
+#: cps/templates/author.html:94
+msgid "More by"
+msgstr "Több eszerint:"
+
+#: cps/templates/book_edit.html:12
+msgid "Delete Book"
+msgstr "Könyv törlése"
+
+#: cps/templates/book_edit.html:15
+msgid "Delete formats:"
+msgstr "Formátumok törlése:"
+
+#: cps/templates/book_edit.html:18 cps/templates/book_edit.html:195
+#: cps/templates/email_edit.html:73
+msgid "Delete"
+msgstr "Törlés"
+
+#: cps/templates/book_edit.html:26
+msgid "Convert book format:"
+msgstr "Könyvformátum átalakítása:"
+
+#: cps/templates/book_edit.html:30
+msgid "Convert from:"
+msgstr "Konvertálás erről:"
+
+#: cps/templates/book_edit.html:32 cps/templates/book_edit.html:39
+msgid "select an option"
+msgstr "Válassz egy lehetőséget"
+
+#: cps/templates/book_edit.html:37
+msgid "Convert to:"
+msgstr "Konvertálás erre:"
+
+#: cps/templates/book_edit.html:46
+msgid "Convert book"
+msgstr "Könyv konvertálása"
+
+#: cps/templates/book_edit.html:55 cps/templates/search_form.html:6
+msgid "Book Title"
+msgstr "Könyv címe"
+
+#: cps/templates/book_edit.html:59 cps/templates/book_edit.html:255
+#: cps/templates/book_edit.html:273 cps/templates/search_form.html:10
+msgid "Author"
+msgstr "Szerző"
+
+#: cps/templates/book_edit.html:63 cps/templates/book_edit.html:260
+#: cps/templates/book_edit.html:275 cps/templates/search_form.html:106
+msgid "Description"
+msgstr "Leírás"
+
+#: cps/templates/book_edit.html:67 cps/templates/search_form.html:33
+msgid "Tags"
+msgstr "Címkék"
+
+#: cps/templates/book_edit.html:75
+msgid "Series id"
+msgstr "Sorozat azonosítója"
+
+#: cps/templates/book_edit.html:79
+msgid "Rating"
+msgstr "Értékelés"
+
+#: cps/templates/book_edit.html:83
+msgid "Cover URL (jpg, cover is downloaded and stored in database, field is afterwards empty again)"
+msgstr "Borító URL (jpg, borító letöltve és elmentve az adatbázisban, a mező újra üres lesz utána)"
+
+#: cps/templates/book_edit.html:87
+msgid "Upload Cover from local drive"
+msgstr "Borító feltöltése helyi meghajtóról"
+
+#: cps/templates/book_edit.html:92 cps/templates/detail.html:165
+msgid "Publishing date"
+msgstr "Kiadás éve"
+
+#: cps/templates/book_edit.html:99 cps/templates/book_edit.html:257
+#: cps/templates/book_edit.html:274 cps/templates/detail.html:156
+#: cps/templates/search_form.html:14
+msgid "Publisher"
+msgstr "Kiadó"
+
+#: cps/templates/book_edit.html:103 cps/templates/user_edit.html:31
+msgid "Language"
+msgstr "Nyelv"
+
+#: cps/templates/book_edit.html:113 cps/templates/search_form.html:117
+msgid "Yes"
+msgstr "Igen"
+
+#: cps/templates/book_edit.html:114 cps/templates/search_form.html:118
+msgid "No"
+msgstr "Nem"
+
+#: cps/templates/book_edit.html:160
+msgid "Upload format"
+msgstr "Feltöltés formátuma"
+
+#: cps/templates/book_edit.html:169
+msgid "view book after edit"
+msgstr "Könyv megnézése szerkesztés után"
+
+#: cps/templates/book_edit.html:172 cps/templates/book_edit.html:208
+msgid "Get metadata"
+msgstr "Metaadatok beszerzése"
+
+#: cps/templates/book_edit.html:173 cps/templates/config_edit.html:319
+#: cps/templates/config_view_edit.html:146 cps/templates/login.html:20
+#: cps/templates/search_form.html:150 cps/templates/shelf_edit.html:17
+#: cps/templates/user_edit.html:130
+msgid "Submit"
+msgstr "Küldés"
+
+#: cps/templates/book_edit.html:187
+msgid "Are you really sure?"
+msgstr "Biztosan?"
+
+#: cps/templates/book_edit.html:190
+msgid "Book will be deleted from Calibre database"
+msgstr "A könyv törölve lesz a Calibre adatbázisból"
+
+#: cps/templates/book_edit.html:191
+msgid "and from hard disk"
+msgstr " és a merevlemezről"
+
+#: cps/templates/book_edit.html:211
+msgid "Keyword"
+msgstr "Kulcsszó"
+
+#: cps/templates/book_edit.html:212
+msgid " Search keyword "
+msgstr " Keresési kulcsszó "
+
+#: cps/templates/book_edit.html:214 cps/templates/layout.html:47
+msgid "Go!"
+msgstr "Rajta!"
+
+#: cps/templates/book_edit.html:218
+msgid "Click the cover to load metadata to the form"
+msgstr "Kattints a borítóra a metadatok betöltésére"
+
+#: cps/templates/book_edit.html:230 cps/templates/book_edit.html:270
+msgid "Loading..."
+msgstr "Betöltés..."
+
+#: cps/templates/book_edit.html:235 cps/templates/layout.html:187
+#: cps/templates/layout.html:219
+msgid "Close"
+msgstr "Bezárás"
+
+#: cps/templates/book_edit.html:262 cps/templates/book_edit.html:276
+msgid "Source"
+msgstr "Forrás"
+
+#: cps/templates/book_edit.html:271
+msgid "Search error!"
+msgstr "Keresési hiba!"
+
+#: cps/templates/book_edit.html:272
+msgid "No Result(s) found! Please try aonther keyword."
+msgstr "Nincs találat! Próbálj másik kulcsszót."
+
+#: cps/templates/config_edit.html:12
+msgid "Library Configuration"
+msgstr "Könyvát beállításai"
+
+#: cps/templates/config_edit.html:19
+msgid "Location of Calibre database"
+msgstr "Calibra adatbázis helye"
+
+#: cps/templates/config_edit.html:25
+msgid "Use Google Drive?"
+msgstr "Használjon Google Drive-ot?"
+
+#: cps/templates/config_edit.html:31
+msgid "Google Drive config problem"
+msgstr "Google Drive beállítási probléma"
+
+#: cps/templates/config_edit.html:37
+msgid "Authenticate Google Drive"
+msgstr "Google Drive hitelesítés"
+
+#: cps/templates/config_edit.html:41
+msgid "Please hit submit to continue with setup"
+msgstr "A beállítás folytatásához kattints a Küldés gombra"
+
+#: cps/templates/config_edit.html:44
+msgid "Please finish Google Drive setup after login"
+msgstr "Belépés után fejezd be a Google Drive beállítást"
+
+#: cps/templates/config_edit.html:49
+msgid "Google Drive Calibre folder"
+msgstr "Google Drive Calibre mappa"
+
+#: cps/templates/config_edit.html:57
+msgid "Metadata Watch Channel ID"
+msgstr "Metadata Watch Channel ID"
+
+#: cps/templates/config_edit.html:60
+msgid "Revoke"
+msgstr "Visszavonás"
+
+#: cps/templates/config_edit.html:80
+msgid "Server Configuration"
+msgstr "Szerver beállítások"
+
+#: cps/templates/config_edit.html:87
+msgid "Server Port"
+msgstr "Szerver port"
+
+#: cps/templates/config_edit.html:91
+msgid "SSL certfile location (leave it empty for non-SSL Servers)"
+msgstr "SSL hitelesítő fájl helye (nem SSL szerverekhez üresen kell hagyni)"
+
+#: cps/templates/config_edit.html:95
+msgid "SSL Keyfile location (leave it empty for non-SSL Servers)"
+msgstr "SSL kulcsfájl helye (nem SSL szerverekhez üresen kell hagyni)"
+
+#: cps/templates/config_edit.html:99
+msgid "Update channel"
+msgstr "Frissítési forrás"
+
+#: cps/templates/config_edit.html:101
+msgid "Stable"
+msgstr "Stabil"
+
+#: cps/templates/config_edit.html:102
+msgid "Stable (Automatic)"
+msgstr "Stabil (automatikus)"
+
+#: cps/templates/config_edit.html:103
+msgid "Nightly"
+msgstr "Éjszakai"
+
+#: cps/templates/config_edit.html:104
+msgid "Nightly (Automatic)"
+msgstr "Éjszakai (automatikus)"
+
+#: cps/templates/config_edit.html:115
+msgid "Logfile Configuration"
+msgstr "Naplózási beállítások"
+
+#: cps/templates/config_edit.html:122
+msgid "Log Level"
+msgstr "Naplózás szintje"
+
+#: cps/templates/config_edit.html:131
+msgid "Location and name of logfile (calibre-web.log for no entry)"
+msgstr "Naplófájl helye és neve (üresen hagyva calibre-web.log)"
+
+#: cps/templates/config_edit.html:136
+msgid "Enable Access Log"
+msgstr ""
+
+#: cps/templates/config_edit.html:139
+msgid "Location and name of access logfile (access.log for no entry)"
+msgstr ""
+
+#: cps/templates/config_edit.html:150
+msgid "Feature Configuration"
+msgstr "Funkciók beállítása"
+
+#: cps/templates/config_edit.html:158
+msgid "Enable uploading"
+msgstr "Feltöltés engedélyezése"
+
+#: cps/templates/config_edit.html:162
+msgid "Enable anonymous browsing"
+msgstr "Böngészés bejelentkezés nélkül engedélyezése"
+
+#: cps/templates/config_edit.html:166
+msgid "Enable public registration"
+msgstr "Nyilvános regisztráció engedélyezése"
+
+#: cps/templates/config_edit.html:170
+msgid "Enable remote login (\"magic link\")"
+msgstr "Távoli belépés engedélyezése (\"varázs-hivatkozás\")"
+
+#: cps/templates/config_edit.html:175
+msgid "Use"
+msgstr "Engedélyezés"
+
+#: cps/templates/config_edit.html:176
+msgid "Obtain an API Key"
+msgstr "API-kulcs beszerzése"
+
+#: cps/templates/config_edit.html:180
+msgid "Goodreads API Key"
+msgstr "Goodreads API-kulcs"
+
+#: cps/templates/config_edit.html:184
+msgid "Goodreads API Secret"
+msgstr "Goodreads API titkos kód"
+
+#: cps/templates/config_edit.html:191
+msgid "Login type"
+msgstr ""
+
+#: cps/templates/config_edit.html:193
+msgid "Use standard Authentication"
+msgstr ""
+
+#: cps/templates/config_edit.html:195
+msgid "Use LDAP Authentication"
+msgstr ""
+
+#: cps/templates/config_edit.html:198
+msgid "Use OAuth"
+msgstr ""
+
+#: cps/templates/config_edit.html:205
+msgid "LDAP Server Host Name or IP Address"
+msgstr ""
+
+#: cps/templates/config_edit.html:209
+msgid "LDAP Server Port"
+msgstr ""
+
+#: cps/templates/config_edit.html:213
+msgid "LDAP schema (ldap or ldaps)"
+msgstr ""
+
+#: cps/templates/config_edit.html:217
+msgid "LDAP Admin username"
+msgstr ""
+
+#: cps/templates/config_edit.html:221
+msgid "LDAP Admin password"
+msgstr ""
+
+#: cps/templates/config_edit.html:226
+msgid "LDAP Server use SSL"
+msgstr ""
+
+#: cps/templates/config_edit.html:230
+msgid "LDAP Server use TLS"
+msgstr ""
+
+#: cps/templates/config_edit.html:234
+msgid "LDAP Server Certificate"
+msgstr ""
+
+#: cps/templates/config_edit.html:238
+msgid "LDAP SSL Certificate Path"
+msgstr ""
+
+#: cps/templates/config_edit.html:243
+msgid "LDAP Distinguished Name (DN)"
+msgstr ""
+
+#: cps/templates/config_edit.html:247
+msgid "LDAP User object filter"
+msgstr ""
+
+#: cps/templates/config_edit.html:252
+msgid "LDAP Server is OpenLDAP?"
+msgstr ""
+
+#: cps/templates/config_edit.html:260
+#, python-format
+msgid "Obtain %(provider)s OAuth Credential"
+msgstr ""
+
+#: cps/templates/config_edit.html:263
+#, python-format
+msgid "%(provider)s OAuth Client Id"
+msgstr ""
+
+#: cps/templates/config_edit.html:267
+#, python-format
+msgid "%(provider)s OAuth Client Secret"
+msgstr ""
+
+#: cps/templates/config_edit.html:282
+msgid "External binaries"
+msgstr "Külső futtatható fájlok"
+
+#: cps/templates/config_edit.html:290
+msgid "No converter"
+msgstr "Átalakítás nélkül"
+
+#: cps/templates/config_edit.html:292
+msgid "Use Kindlegen"
+msgstr "Kindlegen használata"
+
+#: cps/templates/config_edit.html:294
+msgid "Use calibre's ebook converter"
+msgstr "Calibre e-könyv átalakító használata"
+
+#: cps/templates/config_edit.html:298
+msgid "E-Book converter settings"
+msgstr "E-könyv átalakító beállításai"
+
+#: cps/templates/config_edit.html:302
+msgid "Path to convertertool"
+msgstr "Elérési út az átalakító-eszközhöz"
+
+#: cps/templates/config_edit.html:308
+msgid "Location of Unrar binary"
+msgstr "Az Unrar futtatási állományának helye"
+
+#: cps/templates/config_edit.html:324 cps/templates/layout.html:84
+#: cps/templates/login.html:4
+msgid "Login"
+msgstr "Belépés"
+
+#: cps/templates/config_view_edit.html:12
+msgid "View Configuration"
+msgstr "Általános beállítások"
+
+#: cps/templates/config_view_edit.html:19 cps/templates/shelf_edit.html:7
+msgid "Title"
+msgstr "Név"
+
+#: cps/templates/config_view_edit.html:27
+msgid "No. of random books to show"
+msgstr "Találomra mutatott könyvek száma"
+
+#: cps/templates/config_view_edit.html:31
+msgid "No. of authors to show before hiding (0=disable hiding)"
+msgstr "Mutatott szerzők száma (0=elrejtés kikapcsolása)"
+
+#: cps/templates/config_view_edit.html:35 cps/templates/readcbr.html:112
+msgid "Theme"
+msgstr "Téma"
+
+#: cps/templates/config_view_edit.html:37
+msgid "Standard Theme"
+msgstr "Alapértelmezett téma"
+
+#: cps/templates/config_view_edit.html:38
+msgid "caliBlur! Dark Theme"
+msgstr "caliBlur! sötét téma"
+
+#: cps/templates/config_view_edit.html:42
+msgid "Regular expression for ignoring columns"
+msgstr "Reguláris kifejezés oszlopok kihagyásához"
+
+#: cps/templates/config_view_edit.html:46
+msgid "Link read/unread status to Calibre column"
+msgstr "Olvasva/olvasatlan állapot hozzárendelése Calibre oszlophoz"
+
+#: cps/templates/config_view_edit.html:55
+msgid "Regular expression for title sorting"
+msgstr "Reguláris kifejezés címek sorbarendezéséhez"
+
+#: cps/templates/config_view_edit.html:59
+msgid "Tags for Mature Content"
+msgstr "Felnőtt tartalom címkéi"
+
+#: cps/templates/config_view_edit.html:73
+msgid "Default settings for new users"
+msgstr "Új felhasználók alapértelmezett beállításai"
+
+#: cps/templates/config_view_edit.html:81 cps/templates/user_edit.html:83
+msgid "Admin user"
+msgstr "Rendszergazda felhasználó"
+
+#: cps/templates/config_view_edit.html:85 cps/templates/user_edit.html:92
+msgid "Allow Downloads"
+msgstr "Letöltés engedélyezése"
+
+#: cps/templates/config_view_edit.html:89 cps/templates/user_edit.html:96
+msgid "Allow book viewer"
+msgstr ""
+
+#: cps/templates/config_view_edit.html:93 cps/templates/user_edit.html:100
+msgid "Allow Uploads"
+msgstr "Feltöltés engedélyezése"
+
+#: cps/templates/config_view_edit.html:97 cps/templates/user_edit.html:104
+msgid "Allow Edit"
+msgstr "Szerkesztés engedélyezése"
+
+#: cps/templates/config_view_edit.html:101 cps/templates/user_edit.html:108
+msgid "Allow Delete books"
+msgstr "Könyv törlés engedélyezése"
+
+#: cps/templates/config_view_edit.html:105 cps/templates/user_edit.html:113
+msgid "Allow Changing Password"
+msgstr "Jelszó változtatásának engedélyezése"
+
+#: cps/templates/config_view_edit.html:109 cps/templates/user_edit.html:117
+msgid "Allow Editing Public Shelfs"
+msgstr "Nyilvános polcok szerkesztésének engedélyezése"
+
+#: cps/templates/config_view_edit.html:119
+msgid "Default visibilities for new users"
+msgstr "Új felhasználók alapértelmezett látható elemei"
+
+#: cps/templates/config_view_edit.html:135 cps/templates/user_edit.html:75
+msgid "Show random books in detail view"
+msgstr "Mutasson könyveket találomra a részletes nézetben"
+
+#: cps/templates/config_view_edit.html:139 cps/templates/user_edit.html:88
+msgid "Show mature content"
+msgstr "Mutassa a felnőtt tartalmat"
+
+#: cps/templates/detail.html:59
+msgid "Read in browser"
+msgstr "Olvasás böngészőben"
+
+#: cps/templates/detail.html:72
+msgid "Listen in browser"
+msgstr ""
+
+#: cps/templates/detail.html:117
+msgid "Book"
+msgstr " "
+
+#: cps/templates/detail.html:117
+msgid "of"
+msgstr "kötete a sorozatnak:"
+
+#: cps/templates/detail.html:123
+msgid "language"
+msgstr "nyelv"
+
+#: cps/templates/detail.html:200
+msgid "Mark As Unread"
+msgstr "Legyen olvasatlan"
+
+#: cps/templates/detail.html:200
+msgid "Mark As Read"
+msgstr "Legyen olvasott"
+
+#: cps/templates/detail.html:201
+msgid "Read"
+msgstr "Olvasva"
+
+#: cps/templates/detail.html:211 cps/templates/listenmp3.html:54
+msgid "Description:"
+msgstr "Ismertető:"
+
+#: cps/templates/detail.html:224 cps/templates/search.html:14
+msgid "Add to shelf"
+msgstr "Hozzáadás polchoz"
+
+#: cps/templates/detail.html:286
+msgid "Edit metadata"
+msgstr "Metaadatok szerkesztése"
+
+#: cps/templates/email_edit.html:15
+msgid "SMTP port (usually 25 for plain SMTP and 465 for SSL and 587 for STARTTLS)"
+msgstr "SMTP port (egyszerű SMTP-hez rendszerint 25, SSL-hez 465 és STARTTLS-hez 587)"
+
+#: cps/templates/email_edit.html:19
+msgid "Encryption"
+msgstr "Titkosítás"
+
+#: cps/templates/email_edit.html:21
+msgid "None"
+msgstr "Nincs"
+
+#: cps/templates/email_edit.html:22
+msgid "STARTTLS"
+msgstr "STARTTLS"
+
+#: cps/templates/email_edit.html:23
+msgid "SSL/TLS"
+msgstr "SSL/TLS"
+
+#: cps/templates/email_edit.html:31
+msgid "SMTP password"
+msgstr "SMTP jelszó"
+
+#: cps/templates/email_edit.html:35
+msgid "From e-mail"
+msgstr "E-mail-ből"
+
+#: cps/templates/email_edit.html:38
+msgid "Save settings"
+msgstr "Beállítások mentése"
+
+#: cps/templates/email_edit.html:39
+msgid "Save settings and send Test E-Mail"
+msgstr "Beállítások mentése és teszt e-mail küldése"
+
+#: cps/templates/email_edit.html:43
+msgid "Allowed domains for registering"
+msgstr "Regisztráláshoz engedélyezett tartományok"
+
+#: cps/templates/email_edit.html:47
+msgid "Enter domainname"
+msgstr "Tartomány megadása"
+
+#: cps/templates/email_edit.html:55
+msgid "Add Domain"
+msgstr "Tartomány hozzáadása"
+
+#: cps/templates/email_edit.html:58
+msgid "Add"
+msgstr "Hozzáadás"
+
+#: cps/templates/email_edit.html:72
+msgid "Do you really want to delete this domain rule?"
+msgstr "Valóban törölni akarod ezt a tartomány-szabályt?"
+
+#: cps/templates/feed.xml:21 cps/templates/layout.html:171
+msgid "Next"
+msgstr "Következő"
+
+#: cps/templates/feed.xml:33 cps/templates/layout.html:44
+#: cps/templates/layout.html:45
+msgid "Search"
+msgstr "Keresés"
+
+#: cps/templates/http_error.html:37
+msgid "Create issue"
+msgstr ""
+
+#: cps/templates/http_error.html:44
+msgid "Back to home"
+msgstr "Vissza a kezdőlapra"
+
+#: cps/templates/index.html:5
+msgid "Discover (Random Books)"
+msgstr "Felfedezés (könyvek találomra)"
+
+#: cps/templates/index.html:64
+msgid "Group by series"
+msgstr ""
+
+#: cps/templates/index.xml:6
+msgid "Start"
+msgstr "Kezdés"
+
+#: cps/templates/index.xml:21
+msgid "Popular publications from this catalog based on Downloads."
+msgstr "Ebből a katalógusból származó népszerű kiadványok letöltések alapján."
+
+#: cps/templates/index.xml:28
+msgid "Popular publications from this catalog based on Rating."
+msgstr "Ebből a katalógusból származó népszerű kiadványok értékelések alapján."
+
+#: cps/templates/index.xml:31
+msgid "New Books"
+msgstr "Új könyvek"
+
+#: cps/templates/index.xml:35
+msgid "The latest Books"
+msgstr "A legfrissebb könyvek"
+
+#: cps/templates/index.xml:42
+msgid "Show Random Books"
+msgstr "Mutass könyveket találomra"
+
+#: cps/templates/index.xml:65
+msgid "Books ordered by Author"
+msgstr "Könyvek szerző szerint rendezve"
+
+#: cps/templates/index.xml:72
+msgid "Books ordered by publisher"
+msgstr "Könyvek kiadók szerint rendezve"
+
+#: cps/templates/index.xml:79
+msgid "Books ordered by category"
+msgstr "Könyvek címke szerint rendezve"
+
+#: cps/templates/index.xml:86
+msgid "Books ordered by series"
+msgstr "Könyvek sorozat szerint rendezve"
+
+#: cps/templates/index.xml:89 cps/templates/layout.html:132
+msgid "Public Shelves"
+msgstr "Nyilvános polcok"
+
+#: cps/templates/index.xml:93
+msgid "Books organized in public shelfs, visible to everyone"
+msgstr "Könyvek nyilvános polcokra rakva, mindenkinek látható"
+
+#: cps/templates/index.xml:97 cps/templates/layout.html:136
+msgid "Your Shelves"
+msgstr "Saját polcok"
+
+#: cps/templates/index.xml:101
+msgid "User's own shelfs, only visible to the current user himself"
+msgstr "A felhasználó saját polcai, csak a jelenlegi felhasználónak láthatóak"
+
+#: cps/templates/layout.html:28
+msgid "Home"
+msgstr "Kezdőlap"
+
+#: cps/templates/layout.html:34
+msgid "Toggle navigation"
+msgstr "Navigáció átkapcsolása"
+
+#: cps/templates/layout.html:55
+msgid "Advanced Search"
+msgstr "Részletes keresés"
+
+#: cps/templates/layout.html:76 cps/templates/read.html:71
+#: cps/templates/readcbr.html:83 cps/templates/readcbr.html:107
+msgid "Settings"
+msgstr "Beállítások"
+
+#: cps/templates/layout.html:78
+msgid "Account"
+msgstr "Felhasználói fiók"
+
+#: cps/templates/layout.html:80
+msgid "Logout"
+msgstr "Kilépés"
+
+#: cps/templates/layout.html:85 cps/templates/register.html:14
+msgid "Register"
+msgstr "Regisztrálás"
+
+#: cps/templates/layout.html:111 cps/templates/layout.html:218
+msgid "Uploading..."
+msgstr "Feltöltés..."
+
+#: cps/templates/layout.html:112
+msgid "please don't refresh the page"
+msgstr "Ne frissítsd az oldalt!"
+
+#: cps/templates/layout.html:122
+msgid "Browse"
+msgstr "Böngészés"
+
+#: cps/templates/layout.html:141
+msgid "Create a Shelf"
+msgstr "Polc készítése"
+
+#: cps/templates/layout.html:142 cps/templates/stats.html:3
+msgid "About"
+msgstr "Névjegy"
+
+#: cps/templates/layout.html:156
+msgid "Previous"
+msgstr "Előző"
+
+#: cps/templates/layout.html:183
+msgid "Book Details"
+msgstr "Könyv részletei"
+
+#: cps/templates/layout.html:217
+msgid "Upload done, processing, please wait..."
+msgstr "Feltöltés kész, feldolgozás alatt, kérlek várj..."
+
+#: cps/templates/layout.html:220
+msgid "Error"
+msgstr "Hiba"
+
+#: cps/templates/listenmp3.html:66
+msgid "Play / pause"
+msgstr ""
+
+#: cps/templates/listenmp3.html:98
+msgid "volume"
+msgstr ""
+
+#: cps/templates/login.html:8 cps/templates/login.html:9
+#: cps/templates/register.html:7 cps/templates/user_edit.html:8
+msgid "Username"
+msgstr "Felhasználó név"
+
+#: cps/templates/login.html:12 cps/templates/login.html:13
+#: cps/templates/user_edit.html:21
+msgid "Password"
+msgstr "Jelszó"
+
+#: cps/templates/login.html:17
+msgid "Remember me"
+msgstr "Emlékezz rám"
+
+#: cps/templates/login.html:22
+msgid "Log in with magic link"
+msgstr "Belépés varázshivatkozással"
+
+#: cps/templates/logviewer.html:5
+msgid "Show Calibre-Web log"
+msgstr ""
+
+#: cps/templates/logviewer.html:8
+msgid "Show access log"
+msgstr ""
+
+#: cps/templates/osd.xml:5
+msgid "Calibre-Web ebook catalog"
+msgstr "Calibre-Web e-könyv katalógus"
+
+#: cps/templates/read.html:74
+msgid "Reflow text when sidebars are open."
+msgstr "Szöveg újratördelése amikor az oldalsávok nyitva vannak"
+
+#: cps/templates/readcbr.html:88
+msgid "Keyboard Shortcuts"
+msgstr "Gyorsbillentyűk"
+
+#: cps/templates/readcbr.html:91
+msgid "Previous Page"
+msgstr "Előző oldal"
+
+#: cps/templates/readcbr.html:92
+msgid "Next Page"
+msgstr "Következő oldal"
+
+#: cps/templates/readcbr.html:93
+msgid "Scale to Best"
+msgstr "Méretezés a legjobbra"
+
+#: cps/templates/readcbr.html:94
+msgid "Scale to Width"
+msgstr "Méretezés a szélességre"
+
+#: cps/templates/readcbr.html:95
+msgid "Scale to Height"
+msgstr "Méretezés a magasságra"
+
+#: cps/templates/readcbr.html:96
+msgid "Scale to Native"
+msgstr "Méretezés a natívra"
+
+#: cps/templates/readcbr.html:97
+msgid "Rotate Right"
+msgstr "Forgatás balra"
+
+#: cps/templates/readcbr.html:98
+msgid "Rotate Left"
+msgstr "Forgatás jobbra"
+
+#: cps/templates/readcbr.html:99
+msgid "Flip Image"
+msgstr "Kép tükrözése"
+
+#: cps/templates/readcbr.html:115
+msgid "Light"
+msgstr "Világos"
+
+#: cps/templates/readcbr.html:116
+msgid "Dark"
+msgstr "Sötét"
+
+#: cps/templates/readcbr.html:121
+msgid "Scale"
+msgstr "Méretezés"
+
+#: cps/templates/readcbr.html:124
+msgid "Best"
+msgstr "Legjobb"
+
+#: cps/templates/readcbr.html:125
+msgid "Width"
+msgstr "Szélesség"
+
+#: cps/templates/readcbr.html:126
+msgid "Height"
+msgstr "Magasság"
+
+#: cps/templates/readcbr.html:127
+msgid "Native"
+msgstr "Natív"
+
+#: cps/templates/readcbr.html:132
+msgid "Rotate"
+msgstr "Forgatás"
+
+#: cps/templates/readcbr.html:143
+msgid "Flip"
+msgstr "Tökrözés"
+
+#: cps/templates/readcbr.html:146
+msgid "Horizontal"
+msgstr "Vízszintes"
+
+#: cps/templates/readcbr.html:147
+msgid "Vertical"
+msgstr "Függőleges"
+
+#: cps/templates/readcbr.html:152
+msgid "Direction"
+msgstr ""
+
+#: cps/templates/readcbr.html:155
+msgid "Left to Right"
+msgstr ""
+
+#: cps/templates/readcbr.html:156
+msgid "Right to Left"
+msgstr ""
+
+#: cps/templates/readpdf.html:29
+msgid "PDF reader"
+msgstr ""
+
+#: cps/templates/readtxt.html:6
+msgid "Basic txt Reader"
+msgstr "Egyszerű txt olvasó"
+
+#: cps/templates/register.html:4
+msgid "Register a new account"
+msgstr "Új felhasználó regisztrálása"
+
+#: cps/templates/register.html:8
+msgid "Choose a username"
+msgstr "Válassz egy felhasználónevet"
+
+#: cps/templates/register.html:11 cps/templates/user_edit.html:13
+msgid "E-mail address"
+msgstr "E-mail cím"
+
+#: cps/templates/register.html:12
+msgid "Your email address"
+msgstr "Az e-mail címed"
+
+#: cps/templates/remote_login.html:6
+msgid "Use your other device, login and visit "
+msgstr ""
+
+#: cps/templates/remote_login.html:9
+msgid "Once you do so, you will automatically get logged in on this device."
+msgstr "Az első belépés után automatikusan be leszel léptetve ezen az eszközön."
+
+#: cps/templates/remote_login.html:12
+msgid "The link will expire after 10 minutes."
+msgstr ""
+
+#: cps/templates/search.html:5
+msgid "No Results for:"
+msgstr "Nincs találatok a következőhöz:"
+
+#: cps/templates/search.html:6
+msgid "Please try a different search"
+msgstr "Próbálj másik keresést!"
+
+#: cps/templates/search.html:8
+msgid "Results for:"
+msgstr "Találatok a következőhöz:"
+
+#: cps/templates/search_form.html:19
+msgid "Publishing date from"
+msgstr "Kiadás éve ettől: "
+
+#: cps/templates/search_form.html:26
+msgid "Publishing date to"
+msgstr "Kiadás éve eddig: "
+
+#: cps/templates/search_form.html:43
+msgid "Exclude Tags"
+msgstr "Cimkék kizárása"
+
+#: cps/templates/search_form.html:63
+msgid "Exclude Series"
+msgstr "Sorozatok kizárása"
+
+#: cps/templates/search_form.html:84
+msgid "Exclude Languages"
+msgstr "Nyelvek kizárása"
+
+#: cps/templates/search_form.html:97
+msgid "Rating bigger than"
+msgstr "Értékelés nagyob mint"
+
+#: cps/templates/search_form.html:101
+msgid "Rating less than"
+msgstr "Értékelés kisebb mint"
+
+#: cps/templates/shelf.html:10
+msgid "Delete this Shelf"
+msgstr "Polc törlése"
+
+#: cps/templates/shelf.html:11
+msgid "Edit Shelf"
+msgstr "Polc szerkesztése"
+
+#: cps/templates/shelf.html:12 cps/templates/shelf_order.html:11
+msgid "Change order"
+msgstr "Sorrend változtatása"
+
+#: cps/templates/shelf.html:67
+msgid "Do you really want to delete the shelf?"
+msgstr "Valóban törölni akarod a polcot?"
+
+#: cps/templates/shelf.html:70
+msgid "Shelf will be lost for everybody and forever!"
+msgstr "A polc el fog tűnni mindenki számára és örökké!"
+
+#: cps/templates/shelf_edit.html:13
+msgid "should the shelf be public?"
+msgstr "Nyilvános polc"
+
+#: cps/templates/shelf_order.html:5
+msgid "Drag 'n drop to rearrange order"
+msgstr "Húzd és dob a sorrend változtatásához"
+
+#: cps/templates/stats.html:7
+msgid "Calibre library statistics"
+msgstr "A Calibre könyvár statisztikái"
+
+#: cps/templates/stats.html:12
+msgid "Books in this Library"
+msgstr "Könyvek ebben a könyvtárban"
+
+#: cps/templates/stats.html:16
+msgid "Authors in this Library"
+msgstr "Szerzők ebben a könyvtárban"
+
+#: cps/templates/stats.html:20
+msgid "Categories in this Library"
+msgstr "Címkék ebben a könyvtárban"
+
+#: cps/templates/stats.html:24
+msgid "Series in this Library"
+msgstr "Sorozatok ebben a könyvtárban"
+
+#: cps/templates/stats.html:28
+msgid "Linked libraries"
+msgstr "Hivatkozott könyvtárak"
+
+#: cps/templates/stats.html:32
+msgid "Program library"
+msgstr "Alkalmazás könyvtár"
+
+#: cps/templates/stats.html:33
+msgid "Installed Version"
+msgstr "Telepített verzió"
+
+#: cps/templates/tasks.html:7
+msgid "Tasks list"
+msgstr "Feladatlista"
+
+#: cps/templates/tasks.html:12
+msgid "User"
+msgstr "Felhasználó"
+
+#: cps/templates/tasks.html:14
+msgid "Task"
+msgstr "Feladat"
+
+#: cps/templates/tasks.html:15
+msgid "Status"
+msgstr "Állapot"
+
+#: cps/templates/tasks.html:16
+msgid "Progress"
+msgstr "Állapot"
+
+#: cps/templates/tasks.html:17
+msgid "Runtime"
+msgstr "Futásidő"
+
+#: cps/templates/tasks.html:18
+msgid "Starttime"
+msgstr "Indítás ideje"
+
+#: cps/templates/tasks.html:24
+msgid "Delete finished tasks"
+msgstr "Elvégzett feladatok törlése"
+
+#: cps/templates/tasks.html:25
+msgid "Hide all tasks"
+msgstr "Összes feladat elrejtése"
+
+#: cps/templates/user_edit.html:18
+msgid "Reset user Password"
+msgstr "Felhasználó jelszavának alaphelyzetbe állítása"
+
+#: cps/templates/user_edit.html:27
+msgid "Kindle E-Mail"
+msgstr "Kindle e-mail"
+
+#: cps/templates/user_edit.html:40
+msgid "Show books with language"
+msgstr "Mutasd a könyveket a következő nyelvvel"
+
+#: cps/templates/user_edit.html:42
+msgid "Show all"
+msgstr "Mindent mutass"
+
+#: cps/templates/user_edit.html:52
+msgid "OAuth Settings"
+msgstr ""
+
+#: cps/templates/user_edit.html:54
+msgid "Link"
+msgstr ""
+
+#: cps/templates/user_edit.html:56
+msgid "Unlink"
+msgstr ""
+
+#: cps/templates/user_edit.html:124
+msgid "Delete this user"
+msgstr "A felhasználó törlése"
+
+#: cps/templates/user_edit.html:139
+msgid "Recent Downloads"
+msgstr "Utolsó letöltések"
+
+#~ msgid "Afar"
+#~ msgstr "Afar"
+
+#~ msgid "Abkhazian"
+#~ msgstr "Abház"
+
+#~ msgid "Achinese"
+#~ msgstr "Akinéz"
+
+#~ msgid "Acoli"
+#~ msgstr "Acoli"
+
+#~ msgid "Adangme"
+#~ msgstr "Adangme"
+
+#~ msgid "Adyghe"
+#~ msgstr "Adyghe"
+
+#~ msgid "Afrihili"
+#~ msgstr "Afrihili"
+
+#~ msgid "Afrikaans"
+#~ msgstr "Afrikaans"
+
+#~ msgid "Ainu (Japan)"
+#~ msgstr "ainu (Japán)"
+
+#~ msgid "Akan"
+#~ msgstr "akan"
+
+#~ msgid "Akkadian"
+#~ msgstr "akkád"
+
+#~ msgid "Aleut"
+#~ msgstr "aleut"
+
+#~ msgid "Altai; Southern"
+#~ msgstr "altáji; déli"
+
+#~ msgid "Amharic"
+#~ msgstr "amhara"
+
+#~ msgid "English; Old (ca. 450-1100)"
+#~ msgstr "angol; óangol (kb. 450-1100)"
+
+#~ msgid "Angika"
+#~ msgstr "angika"
+
+#~ msgid "Arabic"
+#~ msgstr "arab"
+
+#~ msgid "Aramaic; Official (700-300 BCE)"
+#~ msgstr "arámi; hivatalos (i.e. 700- i.e. 300)"
+
+#~ msgid "Aragonese"
+#~ msgstr "aragóniai"
+
+#~ msgid "Arapaho"
+#~ msgstr "arapaho"
+
+#~ msgid "Arawak"
+#~ msgstr "arawak"
+
+#~ msgid "Assamese"
+#~ msgstr "asszámi"
+
+#~ msgid "Avaric"
+#~ msgstr "avar"
+
+#~ msgid "Avestan"
+#~ msgstr "avesztai"
+
+#~ msgid "Awadhi"
+#~ msgstr "avádi"
+
+#~ msgid "Aymara"
+#~ msgstr "ajmara"
+
+#~ msgid "Azerbaijani"
+#~ msgstr "azeri"
+
+#~ msgid "Bashkir"
+#~ msgstr "baskír"
+
+#~ msgid "Baluchi"
+#~ msgstr "baluchi"
+
+#~ msgid "Bambara"
+#~ msgstr "bambara"
+
+#~ msgid "Balinese"
+#~ msgstr "balinéz"
+
+#~ msgid "Beja"
+#~ msgstr "beja"
+
+#~ msgid "Belarusian"
+#~ msgstr "belarusz"
+
+#~ msgid "Bengali"
+#~ msgstr "bengáli"
+
+#~ msgid "Bhojpuri"
+#~ msgstr "bhodzspuri"
+
+#~ msgid "Bikol"
+#~ msgstr "bikol"
+
+#~ msgid "Bini"
+#~ msgstr "bini"
+
+#~ msgid "Bislama"
+#~ msgstr "biszlama"
+
+#~ msgid "Siksika"
+#~ msgstr "szikszika"
+
+#~ msgid "Tibetan"
+#~ msgstr "tibeti"
+
+#~ msgid "Bosnian"
+#~ msgstr "bosnyák"
+
+#~ msgid "Braj"
+#~ msgstr "bradzs"
+
+#~ msgid "Breton"
+#~ msgstr "breton"
+
+#~ msgid "Buriat"
+#~ msgstr "burját"
+
+#~ msgid "Buginese"
+#~ msgstr "buginéz"
+
+#~ msgid "Bulgarian"
+#~ msgstr "bolgár"
+
+#~ msgid "Caddo"
+#~ msgstr "caddo"
+
+#~ msgid "Catalan"
+#~ msgstr "katalán"
+
+#~ msgid "Cebuano"
+#~ msgstr "cebuano"
+
+#~ msgid "Czech"
+#~ msgstr "cseh"
+
+#~ msgid "Chamorro"
+#~ msgstr "csamorro"
+
+#~ msgid "Chibcha"
+#~ msgstr "csibcsa"
+
+#~ msgid "Chechen"
+#~ msgstr "csecsen"
+
+#~ msgid "Chagatai"
+#~ msgstr "chagati"
+
+#~ msgid "Chuukese"
+#~ msgstr "csukéz"
+
+#~ msgid "Chinook jargon"
+#~ msgstr "chinook zsargon"
+
+#~ msgid "Choctaw"
+#~ msgstr "csoktó"
+
+#~ msgid "Chipewyan"
+#~ msgstr "csippeva"
+
+#~ msgid "Cherokee"
+#~ msgstr "cserokí"
+
+#~ msgid "Slavonic; Old"
+#~ msgstr "szláv; ószláv"
+
+#~ msgid "Chuvash"
+#~ msgstr "csuvas"
+
+#~ msgid "Cheyenne"
+#~ msgstr "csejen"
+
+#~ msgid "Coptic"
+#~ msgstr "kopt"
+
+#~ msgid "Cornish"
+#~ msgstr "cornwalli"
+
+#~ msgid "Corsican"
+#~ msgstr "korzikai"
+
+#~ msgid "Cree"
+#~ msgstr "cree"
+
+#~ msgid "Kashubian"
+#~ msgstr "kasubi"
+
+#~ msgid "Welsh"
+#~ msgstr "velszi"
+
+#~ msgid "Dakota"
+#~ msgstr "dakota"
+
+#~ msgid "Danish"
+#~ msgstr "dán"
+
+#~ msgid "Dargwa"
+#~ msgstr "dargwa"
+
+#~ msgid "Delaware"
+#~ msgstr "delavár"
+
+#~ msgid "Slave (Athapascan)"
+#~ msgstr "Szolga (atapaszkán)"
+
+#~ msgid "German"
+#~ msgstr "német"
+
+#~ msgid "Dogrib"
+#~ msgstr "dogrib"
+
+#~ msgid "Dinka"
+#~ msgstr "dinka"
+
+#~ msgid "Duala"
+#~ msgstr "duala"
+
+#~ msgid "Dyula"
+#~ msgstr "djula"
+
+#~ msgid "Dzongkha"
+#~ msgstr "dzongka"
+
+#~ msgid "Efik"
+#~ msgstr "efik"
+
+#~ msgid "Egyptian (Ancient)"
+#~ msgstr "óegyiptomi"
+
+#~ msgid "Ekajuk"
+#~ msgstr "ekajuk"
+
+#~ msgid "Greek; Modern (1453-)"
+#~ msgstr "modern görög (1453-)"
+
+#~ msgid "Elamite"
+#~ msgstr "elamita"
+
+#~ msgid "English"
+#~ msgstr "angol"
+
+#~ msgid "English; Middle (1100-1500)"
+#~ msgstr "angol; középkori (1100-1500)"
+
+#~ msgid "Esperanto"
+#~ msgstr "eszperantó"
+
+#~ msgid "Estonian"
+#~ msgstr "észt"
+
+#~ msgid "Basque"
+#~ msgstr "Baszk"
+
+#~ msgid "Ewe"
+#~ msgstr "ewe"
+
+#~ msgid "Ewondo"
+#~ msgstr "ewondo"
+
+#~ msgid "Faroese"
+#~ msgstr "Feröeri"
+
+#~ msgid "Persian"
+#~ msgstr "perzsa"
+
+#~ msgid "Fanti"
+#~ msgstr "fanti"
+
+#~ msgid "Fijian"
+#~ msgstr "fidzsi"
+
+#~ msgid "Finnish"
+#~ msgstr "finn"
+
+#~ msgid "Fon"
+#~ msgstr "fon"
+
+#~ msgid "French"
+#~ msgstr "francia"
+
+#~ msgid "French; Old (842-ca. 1400)"
+#~ msgstr "francia; ófrancia (842- kb. 1400)"
+
+#~ msgid "Fulah"
+#~ msgstr "fula"
+
+#~ msgid "Friulian"
+#~ msgstr "friul"
+
+#~ msgid "Ga"
+#~ msgstr "ga"
+
+#~ msgid "Gayo"
+#~ msgstr "gajo"
+
+#~ msgid "Geez"
+#~ msgstr "gíz"
+
+#~ msgid "Gilbertese"
+#~ msgstr "gilberti"
+
+#~ msgid "Irish"
+#~ msgstr "ír"
+
+#~ msgid "Galician"
+#~ msgstr "galíciai"
+
+#~ msgid "Manx"
+#~ msgstr "manx"
+
+#~ msgid "German; Old High (ca. 750-1050)"
+#~ msgstr "német; ónémet (kb. 750-1050)"
+
+#~ msgid "Gondi"
+#~ msgstr "gondi"
+
+#~ msgid "Gorontalo"
+#~ msgstr "gorontalo"
+
+#~ msgid "Gothic"
+#~ msgstr "gót"
+
+#~ msgid "Grebo"
+#~ msgstr "grebo"
+
+#~ msgid "Greek; Ancient (to 1453)"
+#~ msgstr "ógörög (1453-ig)"
+
+#~ msgid "Guarani"
+#~ msgstr "guarani"
+
+#~ msgid "Gujarati"
+#~ msgstr "gudzsarati"
+
+#~ msgid "Haida"
+#~ msgstr "haida"
+
+#~ msgid "Hausa"
+#~ msgstr "hausza"
+
+#~ msgid "Hawaiian"
+#~ msgstr "hawaii"
+
+#~ msgid "Hebrew"
+#~ msgstr "héber"
+
+#~ msgid "Herero"
+#~ msgstr "herero"
+
+#~ msgid "Hiligaynon"
+#~ msgstr "hiligajnon"
+
+#~ msgid "Hindi"
+#~ msgstr "hindi"
+
+#~ msgid "Hittite"
+#~ msgstr "hettita"
+
+#~ msgid "Hmong"
+#~ msgstr "hmong"
+
+#~ msgid "Hiri Motu"
+#~ msgstr "hiri motu"
+
+#~ msgid "Croatian"
+#~ msgstr "horvát"
+
+#~ msgid "Hungarian"
+#~ msgstr "Magyar"
+
+#~ msgid "Hupa"
+#~ msgstr "hupa"
+
+#~ msgid "Armenian"
+#~ msgstr "örmény"
+
+#~ msgid "Iban"
+#~ msgstr "iba"
+
+#~ msgid "Igbo"
+#~ msgstr "igbo"
+
+#~ msgid "Ido"
+#~ msgstr "ido"
+
+#~ msgid "Inuktitut"
+#~ msgstr "inuktitut"
+
+#~ msgid "Interlingue"
+#~ msgstr "interlingva"
+
+#~ msgid "Iloko"
+#~ msgstr "iloko"
+
+#~ msgid "Interlingua (International Auxiliary Language Association)"
+#~ msgstr "interlingva (Nemzetközi Segédnyelv Egyesület)"
+
+#~ msgid "Indonesian"
+#~ msgstr "indonéz"
+
+#~ msgid "Ingush"
+#~ msgstr "ingus"
+
+#~ msgid "Inupiaq"
+#~ msgstr "inupiak"
+
+#~ msgid "Icelandic"
+#~ msgstr "izlandi"
+
+#~ msgid "Italian"
+#~ msgstr "olasz"
+
+#~ msgid "Javanese"
+#~ msgstr "jávai"
+
+#~ msgid "Lojban"
+#~ msgstr "lodzsban"
+
+#~ msgid "Japanese"
+#~ msgstr "japán"
+
+#~ msgid "Judeo-Persian"
+#~ msgstr "judeo-perzsa"
+
+#~ msgid "Judeo-Arabic"
+#~ msgstr "judeo-arab"
+
+#~ msgid "Kara-Kalpak"
+#~ msgstr "kara-kalpak"
+
+#~ msgid "Kabyle"
+#~ msgstr "kabile"
+
+#~ msgid "Kachin"
+#~ msgstr "kachin"
+
+#~ msgid "Kannada"
+#~ msgstr "kannada"
+
+#~ msgid "Kashmiri"
+#~ msgstr "kasmíri"
+
+#~ msgid "Georgian"
+#~ msgstr "grúz"
+
+#~ msgid "Kanuri"
+#~ msgstr "kanuri"
+
+#~ msgid "Kawi"
+#~ msgstr "kawi"
+
+#~ msgid "Kazakh"
+#~ msgstr "kazah"
+
+#~ msgid "Kabardian"
+#~ msgstr "kabardi"
+
+#~ msgid "Khasi"
+#~ msgstr "kazi"
+
+#~ msgid "Khotanese"
+#~ msgstr "kotáni"
+
+#~ msgid "Kikuyu"
+#~ msgstr "kikuyu"
+
+#~ msgid "Kinyarwanda"
+#~ msgstr "kinyarwanda"
+
+#~ msgid "Kirghiz"
+#~ msgstr "kirgiz"
+
+#~ msgid "Kimbundu"
+#~ msgstr "kimbundu"
+
+#~ msgid "Komi"
+#~ msgstr "komi"
+
+#~ msgid "Kongo"
+#~ msgstr "kongo"
+
+#~ msgid "Korean"
+#~ msgstr "koreai"
+
+#~ msgid "Kosraean"
+#~ msgstr "koszrai"
+
+#~ msgid "Kpelle"
+#~ msgstr "kpelle"
+
+#~ msgid "Karachay-Balkar"
+#~ msgstr "karacsai-balkar"
+
+#~ msgid "Karelian"
+#~ msgstr "kareliai"
+
+#~ msgid "Kurukh"
+#~ msgstr "kuruk"
+
+#~ msgid "Kuanyama"
+#~ msgstr "kuanyama"
+
+#~ msgid "Kumyk"
+#~ msgstr "kumyk"
+
+#~ msgid "Kurdish"
+#~ msgstr "kurd"
+
+#~ msgid "Kutenai"
+#~ msgstr "kutenai"
+
+#~ msgid "Ladino"
+#~ msgstr "ladino"
+
+#~ msgid "Lahnda"
+#~ msgstr "landa"
+
+#~ msgid "Lamba"
+#~ msgstr "lamba"
+
+#~ msgid "Lao"
+#~ msgstr "lao"
+
+#~ msgid "Latin"
+#~ msgstr "latin"
+
+#~ msgid "Latvian"
+#~ msgstr "lett"
+
+#~ msgid "Lezghian"
+#~ msgstr "lezgi"
+
+#~ msgid "Lingala"
+#~ msgstr "lingala"
+
+#~ msgid "Lithuanian"
+#~ msgstr "litván"
+
+#~ msgid "Mongo"
+#~ msgstr "mongo"
+
+#~ msgid "Lozi"
+#~ msgstr "lozi"
+
+#~ msgid "Luba-Lulua"
+#~ msgstr "luba-lulua"
+
+#~ msgid "Luba-Katanga"
+#~ msgstr "luba-katanga"
+
+#~ msgid "Ganda"
+#~ msgstr "ganda"
+
+#~ msgid "Luiseno"
+#~ msgstr "luisendo"
+
+#~ msgid "Lunda"
+#~ msgstr "lunda"
+
+#~ msgid "Luo (Kenya and Tanzania)"
+#~ msgstr "luo (Kenya és Tanzánia)"
+
+#~ msgid "Lushai"
+#~ msgstr "lushai"
+
+#~ msgid "Madurese"
+#~ msgstr "maduri"
+
+#~ msgid "Magahi"
+#~ msgstr "magahi"
+
+#~ msgid "Maithili"
+#~ msgstr "maithili"
+
+#~ msgid "Makasar"
+#~ msgstr "makasar"
+
+#~ msgid "Malayalam"
+#~ msgstr "malajalam"
+
+#~ msgid "Mandingo"
+#~ msgstr "mandingo"
+
+#~ msgid "Marathi"
+#~ msgstr "marathi"
+
+#~ msgid "Masai"
+#~ msgstr "maszáj"
+
+#~ msgid "Moksha"
+#~ msgstr "moksa"
+
+#~ msgid "Mandar"
+#~ msgstr "mandar"
+
+#~ msgid "Irish; Middle (900-1200)"
+#~ msgstr "közép-ír (900-1200)"
+
+#~ msgid "Minangkabau"
+#~ msgstr "minangkabau"
+
+#~ msgid "Macedonian"
+#~ msgstr "macedón"
+
+#~ msgid "Malagasy"
+#~ msgstr "malagasy"
+
+#~ msgid "Maltese"
+#~ msgstr "máltai"
+
+#~ msgid "Manchu"
+#~ msgstr "manchu"
+
+#~ msgid "Manipuri"
+#~ msgstr "manipuri"
+
+#~ msgid "Mohawk"
+#~ msgstr "mohawk"
+
+#~ msgid "Mongolian"
+#~ msgstr "mongol"
+
+#~ msgid "Mossi"
+#~ msgstr "mossi"
+
+#~ msgid "Maori"
+#~ msgstr "maori"
+
+#~ msgid "Multiple languages"
+#~ msgstr "több nyelv"
+
+#~ msgid "Creek"
+#~ msgstr "creek"
+
+#~ msgid "Mirandese"
+#~ msgstr "mirandese"
+
+#~ msgid "Marwari"
+#~ msgstr "marwari"
+
+#~ msgid "Burmese"
+#~ msgstr "burmai"
+
+#~ msgid "Erzya"
+#~ msgstr "erzija"
+
+#~ msgid "Neapolitan"
+#~ msgstr "nápolyi"
+
+#~ msgid "Nauru"
+#~ msgstr "nauru"
+
+#~ msgid "Ndebele; South"
+#~ msgstr "ndebele (déli)"
+
+#~ msgid "Ndebele; North"
+#~ msgstr "ndebele (északi)"
+
+#~ msgid "Ndonga"
+#~ msgstr "ndonga"
+
+#~ msgid "Nepali"
+#~ msgstr "nepáli"
+
+#~ msgid "Nias"
+#~ msgstr "nias"
+
+#~ msgid "Niuean"
+#~ msgstr "niuei"
+
+#~ msgid "Dutch"
+#~ msgstr "holland"
+
+#~ msgid "Norwegian Nynorsk"
+#~ msgstr "norvég (nynorsk)"
+
+#~ msgid "Nogai"
+#~ msgstr "nogai"
+
+#~ msgid "Norse; Old"
+#~ msgstr "norvég; ónorvég"
+
+#~ msgid "Norwegian"
+#~ msgstr "norvég"
+
+#~ msgid "Sotho; Northern"
+#~ msgstr "sotho (északi)"
+
+#~ msgid "Newari; Old"
+#~ msgstr "newari; ónewari"
+
+#~ msgid "Nyamwezi"
+#~ msgstr "nyamwezi"
+
+#~ msgid "Nyankole"
+#~ msgstr "nyankole"
+
+#~ msgid "Nyoro"
+#~ msgstr "nyoro"
+
+#~ msgid "Nzima"
+#~ msgstr "nzima"
+
+#~ msgid "Ojibwa"
+#~ msgstr "odzsibwa"
+
+#~ msgid "Oriya"
+#~ msgstr "orija"
+
+#~ msgid "Oromo"
+#~ msgstr "oromo"
+
+#~ msgid "Osage"
+#~ msgstr "oszage"
+
+#~ msgid "Turkish; Ottoman (1500-1928)"
+#~ msgstr "török (ottomán) (1500-1928)"
+
+#~ msgid "Pangasinan"
+#~ msgstr "pangasini"
+
+#~ msgid "Pahlavi"
+#~ msgstr "pahlavi"
+
+#~ msgid "Pampanga"
+#~ msgstr "pampanga"
+
+#~ msgid "Papiamento"
+#~ msgstr "papiamento"
+
+#~ msgid "Palauan"
+#~ msgstr "palaui"
+
+#~ msgid "Phoenician"
+#~ msgstr "főníciai"
+
+#~ msgid "Pali"
+#~ msgstr "pali"
+
+#~ msgid "Polish"
+#~ msgstr "lengyel"
+
+#~ msgid "Pohnpeian"
+#~ msgstr "ponpei"
+
+#~ msgid "Portuguese"
+#~ msgstr "portugál"
+
+#~ msgid "Provençal; Old (to 1500)"
+#~ msgstr "provanszál; ó (1500-ig)"
+
+#~ msgid "Pushto"
+#~ msgstr "pushto"
+
+#~ msgid "Quechua"
+#~ msgstr "kecsua"
+
+#~ msgid "Rajasthani"
+#~ msgstr "radzsasztani"
+
+#~ msgid "Rapanui"
+#~ msgstr "rapanui"
+
+#~ msgid "Romany"
+#~ msgstr "roma"
+
+#~ msgid "Romanian"
+#~ msgstr "román"
+
+#~ msgid "Rundi"
+#~ msgstr "rundi"
+
+#~ msgid "Russian"
+#~ msgstr "orosz"
+
+#~ msgid "Sandawe"
+#~ msgstr "sandawe"
+
+#~ msgid "Sango"
+#~ msgstr "szango"
+
+#~ msgid "Yakut"
+#~ msgstr "jakut"
+
+#~ msgid "Aramaic; Samaritan"
+#~ msgstr "arámi; szamaritánus"
+
+#~ msgid "Sanskrit"
+#~ msgstr "szankszrit"
+
+#~ msgid "Sasak"
+#~ msgstr "szaszak"
+
+#~ msgid "Santali"
+#~ msgstr "szantáli"
+
+#~ msgid "Sicilian"
+#~ msgstr "friuli"
+
+#~ msgid "Scots"
+#~ msgstr "skót"
+
+#~ msgid "Selkup"
+#~ msgstr "szelkup"
+
+#~ msgid "Irish; Old (to 900)"
+#~ msgstr "ír; óír (900-ig)"
+
+#~ msgid "Shan"
+#~ msgstr "shan"
+
+#~ msgid "Sidamo"
+#~ msgstr "szidamo"
+
+#~ msgid "Slovak"
+#~ msgstr "szlovák"
+
+#~ msgid "Slovenian"
+#~ msgstr "szlovén"
+
+#~ msgid "Lule Sami"
+#~ msgstr "lule szami"
+
+#~ msgid "Samoan"
+#~ msgstr "szamoai"
+
+#~ msgid "Shona"
+#~ msgstr "shona"
+
+#~ msgid "Sindhi"
+#~ msgstr "szindi"
+
+#~ msgid "Soninke"
+#~ msgstr "soninke"
+
+#~ msgid "Sogdian"
+#~ msgstr "sogdi"
+
+#~ msgid "Somali"
+#~ msgstr "szomáli"
+
+#~ msgid "Sotho; Southern"
+#~ msgstr "sotho; déli"
+
+#~ msgid "Spanish"
+#~ msgstr "spanyol"
+
+#~ msgid "Albanian"
+#~ msgstr "albán"
+
+#~ msgid "Sardinian"
+#~ msgstr "szardíniai"
+
+#~ msgid "Serbian"
+#~ msgstr "szerb"
+
+#~ msgid "Serer"
+#~ msgstr "serer"
+
+#~ msgid "Swati"
+#~ msgstr "swati"
+
+#~ msgid "Sukuma"
+#~ msgstr "sukuma"
+
+#~ msgid "Sundanese"
+#~ msgstr "szundanéz"
+
+#~ msgid "Susu"
+#~ msgstr "susu"
+
+#~ msgid "Sumerian"
+#~ msgstr "sumér"
+
+#~ msgid "Swedish"
+#~ msgstr "svéd"
+
+#~ msgid "Syriac"
+#~ msgstr "szír"
+
+#~ msgid "Tahitian"
+#~ msgstr "tahiti"
+
+#~ msgid "Tamil"
+#~ msgstr "tamil"
+
+#~ msgid "Tatar"
+#~ msgstr "tatár"
+
+#~ msgid "Telugu"
+#~ msgstr "telugu"
+
+#~ msgid "Timne"
+#~ msgstr "timne"
+
+#~ msgid "Tereno"
+#~ msgstr "tereno"
+
+#~ msgid "Tetum"
+#~ msgstr "tetum"
+
+#~ msgid "Tajik"
+#~ msgstr "tadzsik"
+
+#~ msgid "Tagalog"
+#~ msgstr "tagalog"
+
+#~ msgid "Thai"
+#~ msgstr "thai"
+
+#~ msgid "Tigre"
+#~ msgstr "tigre"
+
+#~ msgid "Tigrinya"
+#~ msgstr "tigrinya"
+
+#~ msgid "Tiv"
+#~ msgstr "tiv"
+
+#~ msgid "Tokelau"
+#~ msgstr "tokelau"
+
+#~ msgid "Tlingit"
+#~ msgstr "tlingit"
+
+#~ msgid "Tamashek"
+#~ msgstr "tamasek"
+
+#~ msgid "Tonga (Nyasa)"
+#~ msgstr "tonga (nyasza)"
+
+#~ msgid "Tonga (Tonga Islands)"
+#~ msgstr "tonga (Tonga-szigetek)"
+
+#~ msgid "Tok Pisin"
+#~ msgstr "tok pisin"
+
+#~ msgid "Tsimshian"
+#~ msgstr "cimsi"
+
+#~ msgid "Tswana"
+#~ msgstr "tswana"
+
+#~ msgid "Tsonga"
+#~ msgstr "tsonga"
+
+#~ msgid "Turkmen"
+#~ msgstr "türkmén"
+
+#~ msgid "Tumbuka"
+#~ msgstr "tumbuka"
+
+#~ msgid "Turkish"
+#~ msgstr "török"
+
+#~ msgid "Tuvalu"
+#~ msgstr "tuvalu"
+
+#~ msgid "Twi"
+#~ msgstr "twi"
+
+#~ msgid "Tuvinian"
+#~ msgstr "tuvini"
+
+#~ msgid "Udmurt"
+#~ msgstr "udmurt"
+
+#~ msgid "Ugaritic"
+#~ msgstr "uragi"
+
+#~ msgid "Uighur"
+#~ msgstr "ujgur"
+
+#~ msgid "Ukrainian"
+#~ msgstr "ukrán"
+
+#~ msgid "Umbundu"
+#~ msgstr "umbundu"
+
+#~ msgid "Undetermined"
+#~ msgstr "ismeretlen"
+
+#~ msgid "Urdu"
+#~ msgstr "urdu"
+
+#~ msgid "Uzbek"
+#~ msgstr "üzbég"
+
+#~ msgid "Vai"
+#~ msgstr "vai"
+
+#~ msgid "Venda"
+#~ msgstr "venda"
+
+#~ msgid "Vietnamese"
+#~ msgstr "vietnami"
+
+#~ msgid "Volapük"
+#~ msgstr "volapük"
+
+#~ msgid "Votic"
+#~ msgstr "vót"
+
+#~ msgid "Washo"
+#~ msgstr "washo"
+
+#~ msgid "Walloon"
+#~ msgstr "vallon"
+
+#~ msgid "Wolof"
+#~ msgstr "wolof"
+
+#~ msgid "Xhosa"
+#~ msgstr "xhosa"
+
+#~ msgid "Yao"
+#~ msgstr "yao"
+
+#~ msgid "Yapese"
+#~ msgstr "jap"
+
+#~ msgid "Yiddish"
+#~ msgstr "jiddis"
+
+#~ msgid "Yoruba"
+#~ msgstr "joruba"
+
+#~ msgid "Zapotec"
+#~ msgstr "Zapoték"
+
+#~ msgid "Zenaga"
+#~ msgstr "zenaga"
+
+#~ msgid "Zhuang"
+#~ msgstr "zsuang"
+
+#~ msgid "Chinese"
+#~ msgstr "kínai"
+
+#~ msgid "Zulu"
+#~ msgstr "Zulu"
+
+#~ msgid "Zuni"
+#~ msgstr "zuni"
+
+#~ msgid "Preparing document for printing..."
+#~ msgstr "Dokumentum előkészítése nyomtatásra..."
+
+#~ msgid "Failed to create path for cover %(path)s (Permission denied)."
+#~ msgstr ""
+
+#~ msgid "Failed to store cover-file %(cover)s."
+#~ msgstr ""
+
+#~ msgid "Cover-file is not a valid image file"
+#~ msgstr ""
+
+#~ msgid "Cover is not a jpg file, can't save"
+#~ msgstr "A borító nem jpg fájl, nem lehet elmenteni."
+
+#~ msgid "Using your another device, visit"
+#~ msgstr "Másik eszköz használatához látogass el"
+
+#~ msgid "and log in"
+#~ msgstr "és lépj be"
+
+#~ msgid "Using your another device, login and visit "
+#~ msgstr ""
+
+#~ msgid "Newest Books"
+#~ msgstr "Legújabb könyvek"
+
+#~ msgid "Oldest Books"
+#~ msgstr "Legrégebbi könyvek"
+
+#~ msgid "Books (A-Z)"
+#~ msgstr "Könyvek (A-Zs)"
+
+#~ msgid "Books (Z-A)"
+#~ msgstr "Könyvek (Zs-A)"
+
+#~ msgid "Error opening eBook. Fileformat is not supported."
+#~ msgstr ""
+
+#~ msgid "File %(title)s"
+#~ msgstr "Fájl: %(title)s"
+
+#~ msgid "Show sorted books"
+#~ msgstr "Rendezett könyvek mutatása"
+
+#~ msgid "Sorted Books"
+#~ msgstr "Rendezett könyvek"
+
+#~ msgid "Sort By"
+#~ msgstr "Sorbarendezés eszerint:"
+
+#~ msgid "Newest"
+#~ msgstr "Legújabbak"
+
+#~ msgid "Oldest"
+#~ msgstr "Legrégebbiek"
+
+#~ msgid "Ascending"
+#~ msgstr "Növekvő"
+
+#~ msgid "Descending"
+#~ msgstr "Csökkenő"
+
+#~ msgid "PDF.js viewer"
+#~ msgstr "PDF.js olvasó"
+
+#~ msgid "Please enter a LDAP provider and a DN"
+#~ msgstr ""
+
+#~ msgid "successfully deleted shelf %(name)s"
+#~ msgstr "A következő polc sikeresen törölve: %(name)s"
+
+#~ msgid "LDAP Provider URL"
+#~ msgstr ""
+
+#~ msgid "Register with %s, "
+#~ msgstr ""
+
+#~ msgid "Import of optional Google Drive requirements missing"
+#~ msgstr "Hiányzanak a Google Drive használatához szükséges komponensek"
+
+#~ msgid "client_secrets.json is missing or not readable"
+#~ msgstr "A client_secrets.json hiányzik vagy nem olvasható."
+
+#~ msgid "client_secrets.json is not configured for web application"
+#~ msgstr "A client_secrets.json nincs beállítva a web alkalmazáshoz."
+
+#~ msgid "Keyfile location is not valid, please enter correct path"
+#~ msgstr "A kulcsfájl helye nem érvényes, adj meg érvényes elérési utat"
+
+#~ msgid "Certfile location is not valid, please enter correct path"
+#~ msgstr "A tanusítványfájl helye nem érvényes, adj meg érvényes elérési utat"
+
+#~ msgid "Please enter a LDAP provider, port, DN and user object identifier"
+#~ msgstr ""
+
+#~ msgid "Please enter a LDAP service account and password"
+#~ msgstr ""
+
+#~ msgid "Please enter Github oauth credentials"
+#~ msgstr ""
+
+#~ msgid "Please enter Google oauth credentials"
+#~ msgstr ""
+
+#~ msgid "Logfile location is not valid, please enter correct path"
+#~ msgstr "A naplófájl helye nem érvényes, adj meg érvényes elérési utat"
+
+#~ msgid "Access Logfile location is not valid, please enter correct path"
+#~ msgstr ""
+
+#~ msgid "DB location is not valid, please enter correct path"
+#~ msgstr "Az adatbázis helye nem érvényes, adj meg érvényes elérési utat"
+
+#~ msgid "Excecution permissions missing"
+#~ msgstr "Nincs jogosultság a futtatáshoz"
+
+#~ msgid "not configured"
+#~ msgstr "nincs konfigurálva"
+
+#~ msgid "Error excecuting UnRar"
+#~ msgstr "Hiba az UnRar futtatásakor"
+
+#~ msgid "Unrar binary file not found"
+#~ msgstr "Az Unrar futtatható állománya nem található"
+
+#~ msgid "Use GitHub OAuth"
+#~ msgstr ""
+
+#~ msgid "Use Google OAuth"
+#~ msgstr ""
+
+#~ msgid "Obtain GitHub OAuth Credential"
+#~ msgstr ""
+
+#~ msgid "GitHub OAuth Client Id"
+#~ msgstr ""
+
+#~ msgid "GitHub OAuth Client Secret"
+#~ msgstr ""
+
+#~ msgid "Obtain Google OAuth Credential"
+#~ msgstr ""
+
+#~ msgid "Google OAuth Client Id"
+#~ msgstr ""
+
+#~ msgid "Google OAuth Client Secret"
+#~ msgstr ""
+

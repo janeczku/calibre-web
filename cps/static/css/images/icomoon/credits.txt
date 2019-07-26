@@ -1,0 +1,6 @@
+SVG icons via Icomoon
+https://icomoon.io/app
+
+Icons used from the following sets:
+* Entypo - Creative Commons BY-SA 3.0 http://creativecommons.org/licenses/by-sa/3.0/us/
+* IcoMoon - Free (GPL) http://www.gnu.org/licenses/gpl.html

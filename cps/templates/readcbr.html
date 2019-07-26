@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Comic Reader</title>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/libs/normalize.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}" type="text/css"/>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/kthoom.css') }}" type="text/css"/>
+
+  <script src="{{ url_for('static', filename='js/libs/jquery.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/libs/screenfull.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/kthoom.js') }}"></script>
+	<script src="{{ url_for('static', filename='js/archive/archive.js') }}"></script>
+  <script>
+    var updateArrows = function() {
+      if ($('input[name="direction"]:checked').val() === "0") {
+        $("#prev_page_key").html("&larr;");
+        $("#next_page_key").html("&rarr;");
+      } else {
+        $("#prev_page_key").html("&rarr;");
+        $("#next_page_key").html("&larr;");
+      }
+    };
+    document.onreadystatechange = function () {
+      if (document.readyState == "complete") {
+      	init("{{ url_for('web.serve_book', book_id=comicfile, book_format=extension) }}");
+      	updateArrows();
+      }
+    }
+  </script>
+</head>
+<body>
+<div id="sidebar">
+  <div id="tocView" class="view" tabindex="-1">
+    <ul id="thumbnails"></ul>
+  </div>
+  <div id="bookmarksView" class="view">
+    <ul id="bookmarks"></ul>
+  </div>
+</div>
+
+<div id="main" class="main">
+  <div id="titlebar" class="main">
+    <div id="opener">
+      <a id="slider" class="icon-menu">Menu</a>
+    </div>
+    <div id="metainfo">
+      <span id="book-title">{{ title | shortentitle }}</span>
+      <span id="title-seperator">&nbsp;&nbsp;–&nbsp;&nbsp;</span>
+      <span id="chapter-title"></span>
+    </div>
+    <div id="title-controls">
+      <a id="setting" class="icon-cog">Settings</a>
+      <a id="fullscreen" class="icon-resize-full">Fullscreen</a>
+    </div>
+    <div id="progress" role="progressbar" class="loading">
+      <div class="bar-load">
+        <div class="text load">
+          Loading...
+        </div>
+      </div>
+      <div class="bar-read">
+        <div class="text page"></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="mainContent" tabindex="-1">
+    <div id="mainText" style="display:none"></div>
+    <canvas id="mainImage"></canvas>
+  </div>
+  <div id="left" class="arrow" onclick="showLeftPage()">‹</div>
+  <div id="right" class="arrow" onclick="showRightPage()">›</div>
+</div>
+
+<div class="modal md-effect-1" id="settings-modal">
+  <div class="md-content">
+    <h3>{{_('Settings')}}</h3>
+    <div>
+      <div class="settings-column">
+        <table>
+          <thead>
+          <tr><th colspan="2">{{_('Keyboard Shortcuts')}}</th></tr>
+          </thead>
+          <tbody>
+          <tr><td id="prev_page_key">&larr;</td> <td>{{_('Previous Page')}}</td></tr>
+          <tr><td id="next_page_key">&rarr;</td> <td>{{_('Next Page')}}</td></tr>
+          <tr><td>B</td>      <td>{{_('Scale to Best')}}</td></tr>
+          <tr><td>W</td>      <td>{{_('Scale to Width')}}</td></tr>
+          <tr><td>H</td>      <td>{{_('Scale to Height')}}</td></tr>
+          <tr><td>N</td>      <td>{{_('Scale to Native')}}</td></tr>
+          <tr><td>R</td>      <td>{{_('Rotate Right')}}</td></tr>
+          <tr><td>L</td>      <td>{{_('Rotate Left')}}</td></tr>
+          <tr><td>F</td>      <td>{{_('Flip Image')}}</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="settings-column">
+        <table id="settings">
+          <thead>
+          <tr>
+            <th>{{_('Settings')}}</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <th>{{_('Theme')}}:</th>
+            <td>
+              <div class="inputs">
+                <label for="lightTheme"><input type="radio" id="lightTheme" name="theme" value="light" /> {{_('Light')}}</label>
+                <label for="darkTheme"><input type="radio" id="darkTheme" name="theme" value="dark" /> {{_('Dark')}}</label>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <th>{{_('Scale')}}:</th>
+            <td>
+              <div class="inputs">
+                <label for="fitBest"><input type="radio" id="fitBest" name="fitMode" value="66" /> {{_('Best')}}</label>
+                <label for="fitWidth"><input type="radio" id="fitWidth" name="fitMode" value="87" /> {{_('Width')}}</label>
+                <label for="fitHeight"><input type="radio" id="fitHeight" name="fitMode" value="72" /> {{_('Height')}}</label>
+                <label for="fitNative"><input type="radio" id="fitNative" name="fitMode" value="78" /> {{_('Native')}}</label>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <th>{{_('Rotate')}}:</th>
+            <td>
+              <div class="inputs">
+                <label for="r0"><input type="radio" id="r0" name="rotateTimes" value="0" /> 0&deg;</label>
+                <label for="r90"><input type="radio" id="r90" name="rotateTimes" value="1" /> 90&deg;</label>
+                <label for="r180"><input type="radio" id="r180" name="rotateTimes" value="2" /> 180&deg;</label>
+                <label for="r270"><input type="radio" id="r270" name="rotateTimes" value="3" /> 270&deg;</label>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <th>{{_('Flip')}}:</th>
+            <td>
+              <div class="inputs">
+                <label for="vflip"><input type="checkbox" id="vflip" name="vflip" /> {{_('Horizontal')}}</label>
+                <label for="hflip"><input type="checkbox" id="hflip" name="hflip" /> {{_('Vertical')}}</label>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <th>{{_('Direction')}}:</th>
+            <td>
+              <div class="inputs">
+                <label for="leftToRight"><input type="radio" id="leftToRight" name="direction" value="0" /> {{_('Left to Right')}}</label>
+                <label for="rightToLeft"><input type="radio" id="rightToLeft" name="direction" value="1" /> {{_('Right to Left')}}</label>
+              </div>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="closer icon-cancel-circled"></div>
+  </div>
+</div>
+<div class="overlay"></div>
+<script>
+  $('input[name="direction"]').change(function() {
+    updateArrows();
+  });
+</script>
+</body>
+</html>

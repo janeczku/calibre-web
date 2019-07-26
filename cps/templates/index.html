@@ -1,24 +1,38 @@
 {% extends "layout.html" %}
 {% block body %}
 {% if g.user.show_detail_random() %}
-<div class="discover">
-  <h2>{{_('Discover (Random Books)')}}</h2>
+<div class="discover random-books">
+  <h2 class="random-books">{{_('Discover (Random Books)')}}</h2>
   <div class="row">
-
-    {% for entry in random %}
-    <div id="books_rand" class="col-sm-3 col-lg-2 col-xs-6 book">
+   {% for entry in random %}
+    <div class="col-sm-3 col-lg-2 col-xs-6 book" id="books_rand">
       <div class="cover">
-          <a href="{{ url_for('show_book', book_id=entry.id) }}">
-            {% if entry.has_cover %}
-              <img src="{{ url_for('get_cover', cover_path=entry.path.replace('\\','/')) }}" />
-            {% else %}
-              <img src="{{ url_for('static', filename='generic_cover.jpg') }}" />
-            {% endif %}
+          <a href="{{ url_for('web.show_book', book_id=entry.id) }}" data-toggle="modal" data-target="#bookDetailsModal" data-remote="false">
+              <img src="{{ url_for('web.get_cover', book_id=entry.id) }}" alt="{{ entry.title }}" />
           </a>
       </div>
       <div class="meta">
-        <p class="title">{{entry.title|shortentitle}}</p>
-        <p class="author"><a href="{{url_for('author', book_id=entry.authors[0].id) }}">{{entry.authors[0].name}}</a></p>
+        <a href="{{ url_for('web.show_book', book_id=entry.id) }}" data-toggle="modal" data-target="#bookDetailsModal" data-remote="false">
+          <p class="title">{{entry.title|shortentitle}}</p>
+        </a>
+        <p class="author">
+          {% for author in entry.authors %}
+            {% if loop.index > g.config_authors_max and g.config_authors_max != 0 %}
+              {% if not loop.first %}
+                <span class="author-hidden-divider">&amp;</span>
+			  {% endif %}
+              <a class="author-name author-hidden" href="{{url_for('web.books_list',  data='author', sort='new', book_id=author.id) }}">{{author.name.replace('|',',')|shortentitle(30)}}</a>
+              {% if loop.last %}
+                <a href="#" class="author-expand" data-authors-max="{{g.config_authors_max}}" data-collapse-caption="({{_('reduce')}})">(...)</a>
+              {% endif %}
+            {% else %}
+              {% if not loop.first %}
+                <span>&amp;</span>
+              {% endif %}
+              <a class="author-name" href="{{url_for('web.books_list',  data='author', sort='new', book_id=author.id) }}">{{author.name.replace('|',',')|shortentitle(30)}}</a>
+            {% endif %}
+          {% endfor %}
+        </p>
         {% if entry.ratings.__len__() > 0 %}
         <div class="rating">
           {% for number in range((entry.ratings[0].rating/2)|int(2)) %}
@@ -38,29 +52,54 @@
 </div>
 {% endif %}
 <div class="discover load-more">
-  <h2>{{title}}</h2>
+  <h2 class="{{title}}">{{_(title)}}</h2>
+    <div class="filterheader hidden-xs hidden-sm">
+      <a data-toggle="tooltip" id="new" class="btn btn-primary" href="{{url_for('web.books_list', data=page, book_id=id, sort='new')}}"><span class="glyphicon glyphicon-book"></span> <span class="glyphicon glyphicon-calendar"></span><span class="glyphicon glyphicon-sort-by-order"></span></a>
+      <a id="old" class="btn btn-primary" href="{{url_for('web.books_list', data=page, book_id=id, sort='old')}}"><span class="glyphicon glyphicon-book"></span> <span class="glyphicon glyphicon-calendar"></span><span class="glyphicon glyphicon-sort-by-order-alt"></span></a>
+      <a id="asc" class="btn btn-primary" href="{{url_for('web.books_list', data=page, book_id=id, sort='abc')}}"><span class="glyphicon glyphicon-font"></span><span class="glyphicon glyphicon-sort-by-alphabet"></span></a>
+      <a id="desc" class="btn btn-primary" href="{{url_for('web.books_list', data=page, book_id=id, sort='zyx')}}"><span class="glyphicon glyphicon-font"></span><span class="glyphicon glyphicon-sort-by-alphabet-alt"></span></a>
+      <a id="pub_new" class="btn btn-primary" href="{{url_for('web.books_list', data=page, book_id=id, sort='pubnew')}}"><span class="glyphicon glyphicon-calendar"></span><span class="glyphicon glyphicon-sort-by-order"></span></a>
+      <a id="pub_old" class="btn btn-primary" href="{{url_for('web.books_list', data=page, book_id=id, sort='pubold')}}"><span class="glyphicon glyphicon-calendar"></span><span class="glyphicon glyphicon-sort-by-order-alt"></span></a>
+      <!--div class="btn-group character">
+        <a id="no_shelf" class="btn btn-primary" href="{{url_for('web.books_list', data=page, book_id=id, sort='pubold')}}"><span class="glyphicon glyphicon-list"></span> <b>{{_('Group by series')}}</b></a>
+      </div-->
+    </div>
+
   <div class="row">
     {% if entries[0] %}
     {% for entry in entries %}
-    <div id="books" class="col-sm-3 col-lg-2 col-xs-6 book">
+    <div class="col-sm-3 col-lg-2 col-xs-6 book" id="books">
       <div class="cover">
-          <a href="{{ url_for('show_book', book_id=entry.id) }}">
-            {% if entry.has_cover %}
-              <img src="{{ url_for('get_cover', cover_path=entry.path.replace('\\','/')) }}" />
-            {% else %}
-              <img src="{{ url_for('static', filename='generic_cover.jpg') }}" />
-            {% endif %}
+          <a href="{{ url_for('web.show_book', book_id=entry.id) }}" data-toggle="modal" data-target="#bookDetailsModal" data-remote="false">
+              <img src="{{ url_for('web.get_cover', book_id=entry.id) }}" alt="{{ entry.title }}"/>
           </a>
       </div>
       <div class="meta">
-        <p class="title">{{entry.title|shortentitle}}</p>
+        <a href="{{ url_for('web.show_book', book_id=entry.id) }}" data-toggle="modal" data-target="#bookDetailsModal" data-remote="false">
+          <p class="title">{{entry.title|shortentitle}}</p>
+        </a>
         <p class="author">
           {% for author in entry.authors %}
-            <a href="{{url_for('author', book_id=author.id) }}">{{author.name}}</a>
-            {% if not loop.last %}
-              &amp;
+            {% if loop.index > g.config_authors_max and g.config_authors_max != 0 %}
+              {% if not loop.first %}
+                <span class="author-hidden-divider">&amp;</span>
+			  {% endif %}
+              <a class="author-name author-hidden" href="{{url_for('web.books_list', data='author', book_id=author.id, sort='new') }}">{{author.name.replace('|',',')|shortentitle(30)}}</a>
+              {% if loop.last %}
+                <a href="#" class="author-expand" data-authors-max="{{g.config_authors_max}}" data-collapse-caption="({{_('reduce')}})">(...)</a>
+              {% endif %}
+            {% else %}
+              {% if not loop.first %}
+                <span>&amp;</span>
+              {% endif %}
+              <a class="author-name" href="{{url_for('web.books_list', data='author', book_id=author.id, sort='new') }}">{{author.name.replace('|',',')|shortentitle(30)}}</a>
             {% endif %}
           {% endfor %}
+          {% for format in entry.data %}
+            {% if format.format|lower == 'mp3' %}
+            <span class="glyphicon glyphicon-music"></span>
+            {% endif %}
+          {%endfor%}
         </p>
         {% if entry.ratings.__len__() > 0 %}
         <div class="rating">
