@@ -36,7 +36,7 @@
   "timestamp": "{{entry.timestamp}}",
   "thumbnail": "{{url_for('opds.feed_get_cover', book_id=entry.id)}}",
   "main_format": {
-    "{{entry.data[0].format|lower}}": "{{ url_for('web.download_link', book_id=entry.id, book_format=entry.data[0].format|lower)}}"
+    "{{entry.data[0].format|lower}}": "{{ url_for('opds.opds_download_link', book_id=entry.id, book_format=entry.data[0].format|lower)}}"
   },
   "rating":{% if entry.ratings.__len__() > 0 %} "{{entry.ratings[0].rating}}.0"{% else %}0.0{% endif %},
   "authors": [
@@ -47,7 +47,7 @@
   "other_formats": {
   {% if entry.data.__len__() > 1 %}
   {% for format in entry.data[1:] %}
-    "{{format.format|lower}}": "{{ url_for('web.download_link', book_id=entry.id, book_format=format.format|lower)}}"{% if not loop.last %},{% endif %}
+    "{{format.format|lower}}": "{{ url_for('opds.opds_download_link', book_id=entry.id, book_format=format.format|lower)}}"{% if not loop.last %},{% endif %}
   {% endfor %}
   {% endif %} },
   "title_sort": "{{entry.sort}}"
