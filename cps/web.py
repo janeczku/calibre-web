@@ -1115,7 +1115,7 @@ def login():
                 log.info('LDAP Login failed for user "%s" IP-adress: %s', form['username'], ipAdress)
                 flash(_(u"Wrong Username or Password"), category="error")
         else:
-            if user and check_password_hash(user.password, form['password']) and user.nickname != "Guest":
+            if user and check_password_hash(str(user.password), form['password']) and user.nickname != "Guest":
                 login_user(user, remember=True)
                 flash(_(u"You are now logged in as: '%(nickname)s'", nickname=user.nickname), category="success")
                 return redirect_back(url_for("web.index"))
