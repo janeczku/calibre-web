@@ -133,7 +133,7 @@ def load_user_from_header(header_val):
     except TypeError:
         pass
     user = ub.session.query(ub.User).filter(func.lower(ub.User.nickname) == basic_username.lower()).first()
-    if user and check_password_hash(user.password, basic_password):
+    if user and check_password_hash(str(user.password), basic_password):
         return user
     return
 
