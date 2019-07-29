@@ -24,8 +24,8 @@ $("#desc").click(function() {
     }
     var items = $(".sortable").get();
     $("#list").html(items.reverse());
-    return;
     direction = 0;
+    return;
 });
 
 $("#asc").click(function() {
@@ -34,8 +34,8 @@ $("#asc").click(function() {
     }
     var items = $(".sortable").get();
     $("#list").html(items.reverse());
-    return;
     direction = 1;
+    return;
 });
 
 $("#all").click(function() {
