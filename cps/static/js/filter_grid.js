@@ -15,26 +15,27 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-var direction = 0;  // Descending order
-var sort = 0;       // Show sorted entries
+var $list = $('#list').isotope({
+  itemSelector: '.book',
+  layoutMode: 'fitRows',
+  getSortData: {
+    title: '.title',
+  }
+});
 
 $("#desc").click(function() {
-    if (direction === 0) {
-        return;
-    }
-    var items = $(".sortable").get();
-    $("#list").html(items.reverse());
-    direction = 0;
+    $list.isotope({
+        sortBy: 'name',
+        sortAscending: false
+    });
     return;
 });
 
 $("#asc").click(function() {
-    if (direction === 1) {
-        return;
-    }
-    var items = $(".sortable").get();
-    $("#list").html(items.reverse());
-    direction = 1;
+    $list.isotope({
+        sortBy: 'name',
+        sortAscending: true
+    });
     return;
 });
 
