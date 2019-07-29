@@ -18,50 +18,6 @@
 var direction = 0;  // Descending order
 var sort = 0;       // Show sorted entries
 
-$("#sort_name").click(function() {
-    var count = 0;
-    var index = 0;
-    var store;
-    // Append 2nd half of list to first half for easier processing
-    var cnt = $("#second").contents();
-    $("#list").append(cnt);
-    // Count no of elements
-    var listItems = $("#list").children(".sortable");
-    var listlength = listItems.length;
-    // check for each element if its Starting character matches
-    $(".sortable").each(function() {
-        if ( sort === 1) {
-            store = this.attributes["data-name"];
-        } else {
-            store = this.attributes["data-id"];
-        }
-        $(this).find("a").html(store.value);
-        if ($(this).css("display") !== "none") {
-            count++;
-        }
-    });
-    /*listItems.sort(function(a,b){
-        return $(a).children()[1].innerText.localeCompare($(b).children()[1].innerText)
-    });*/
-    // Find count of middle element
-    if (count > 20) {
-        var middle = parseInt(count / 2) + (count % 2);
-        // search for the middle of all visibe elements
-        $(".sortable").each(function() {
-            index++;
-            if ($(this).css("display") !== "none") {
-                middle--;
-                if (middle <= 0) {
-                    return false;
-                }
-            }
-        });
-        // Move second half of visible elements
-        $("#second").append(listItems.slice(index, listlength));
-    }
-    sort = (sort + 1) % 2;
-});
-
 $("#desc").click(function() {
     if (direction === 0) {
         return;
@@ -102,5 +58,4 @@ $(".char").click(function() {
     });
     // We need to trigger the resize event to have all the grid item to re-align.
     window.dispatchEvent(new Event('resize'));
-
 });
