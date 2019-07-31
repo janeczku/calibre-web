@@ -179,6 +179,7 @@ class User(UserBase, Base):
     sidebar_view = Column(Integer, default=1)
     default_language = Column(String(3), default="all")
     mature_content = Column(Boolean, default=True)
+    series_view = Column(String(10), default="list")
 
 
 if oauth_support:
@@ -214,6 +215,7 @@ class Anonymous(AnonymousUserMixin, UserBase):
         self.locale = data.locale
         self.mature_content = data.mature_content
         self.kindle_mail = data.kindle_mail
+        self.series_view = data.series_view
 
         # settings = session.query(config).first()
         # self.anon_browse = settings.config_anonbrowse
@@ -321,7 +323,7 @@ class RemoteAuthToken(Base):
 
 
 # Migrate database to current version, has to be updated after every database change. Currently migration from
-# everywhere to curent should work. Migration is done by checking if relevant coloums are existing, and than adding
+# everywhere to current should work. Migration is done by checking if relevant columns are existing, and than adding
 # rows with SQL commands
 def migrate_Database(session):
     engine = session.bind
@@ -376,6 +378,12 @@ def migrate_Database(session):
         conn = engine.connect()
         conn.execute("ALTER TABLE user ADD column `mature_content` INTEGER DEFAULT 1")
 
+    try:
+        session.query(exists().where(User.series_view)).scalar()
+    except exc.OperationalError:
+        conn = engine.connect()
+        conn.execute("ALTER TABLE user ADD column `series_view` VARCHAR(10) DEFAULT 'list'")
+
     if session.query(User).filter(User.role.op('&')(constants.ROLE_ANONYMOUS) == constants.ROLE_ANONYMOUS).first() is None:
         create_anonymous_user(session)
     try:
@@ -395,13 +403,14 @@ def migrate_Database(session):
                             "sidebar_view INTEGER,"
                             "default_language VARCHAR(3),"
                             "mature_content BOOLEAN,"
+                            "series_view VARCHAR(10),"
                             "UNIQUE (nickname),"
                             "UNIQUE (email),"
                             "CHECK (mature_content IN (0, 1)))")
         conn.execute("INSERT INTO user_id(id, nickname, email, role, password, kindle_mail,locale,"
-                        "sidebar_view, default_language, mature_content) "
+                     "sidebar_view, default_language, mature_content, series_view) "
                      "SELECT id, nickname, email, role, password, kindle_mail, locale,"
-                        "sidebar_view, default_language, mature_content FROM user")
+                     "sidebar_view, default_language, mature_content FROM user")
         # delete old user table and rename new user_id table to user:
         conn.execute("DROP TABLE user")
         conn.execute("ALTER TABLE user_id RENAME TO user")
@@ -435,7 +444,7 @@ def delete_download(book_id):
     session.query(Downloads).filter(book_id == Downloads.book_id).delete()
     session.commit()
 
-# Generate user Guest (translated text), as anoymous user, no rights
+# Generate user Guest (translated text), as anonymous user, no rights
 def create_anonymous_user(session):
     user = User()
     user.nickname = "Guest"

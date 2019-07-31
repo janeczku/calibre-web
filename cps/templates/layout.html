@@ -15,6 +15,7 @@
     <link href="{{ url_for('static', filename='css/upload.css') }}" rel="stylesheet" media="screen">
     {% if g.current_theme == 1 %}
        <link href="{{ url_for('static', filename='css/caliBlur.min.css') }}" rel="stylesheet" media="screen">
+       <link href="{{ url_for('static', filename='css/caliBlur_override.css') }}" rel="stylesheet" media="screen">
     {% endif %}
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -25,7 +26,7 @@
 
     {% block header %}{% endblock %}
   </head>
-  <body class="{{ page }}" data-text="{{_('Home')}}" data-textback="{{_('Back')}}">
+  <body class="{{ page }} {{ bodyClass }}" data-text="{{_('Home')}}" data-textback="{{_('Back')}}">
     <!-- Static navbar -->
     <div class="navbar navbar-default navbar-static-top" role="navigation">
       <div class="container-fluid">
