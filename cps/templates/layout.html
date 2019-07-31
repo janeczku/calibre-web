@@ -70,14 +70,14 @@
                 {% endif %}
               {% endif %}
               {% if not g.user.is_anonymous %}
-                <li><a id="top_tasks" href="{{url_for('web.get_tasks_status')}}"><span class="glyphicon glyphicon-tasks"></span><span class="hidden-sm">{{_('Tasks')}}</span></a></li>
+                <li><a id="top_tasks" href="{{url_for('web.get_tasks_status')}}"><span class="glyphicon glyphicon-tasks"></span><span class="hidden-sm"> {{_('Tasks')}}</span></a></li>
               {% endif %}
               {% if g.user.role_admin() %}
-                <li><a id="top_admin" data-text="{{_('Settings')}}" href="{{url_for('admin.admin')}}"><span class="glyphicon glyphicon-dashboard"></span><span class="hidden-sm">{{_('Admin')}}</span></a></li>
+                <li><a id="top_admin" data-text="{{_('Settings')}}" href="{{url_for('admin.admin')}}"><span class="glyphicon glyphicon-dashboard"></span><span class="hidden-sm"> {{_('Admin')}}</span></a></li>
               {% endif %}
-              <li><a id="top_user" data-text="{{_('Account')}}" href="{{url_for('web.profile')}}"><span class="glyphicon glyphicon-user"></span><span class="hidden-sm">{{g.user.nickname}}</span></a></li>
+              <li><a id="top_user" data-text="{{_('Account')}}" href="{{url_for('web.profile')}}"><span class="glyphicon glyphicon-user"></span><span class="hidden-sm"> {{g.user.nickname}}</span></a></li>
               {% if not g.user.is_anonymous %}
-              <li><a id="logout" href="{{url_for('web.logout')}}"><span class="glyphicon glyphicon-log-out"></span><span class="hidden-sm">{{_('Logout')}}</span></a></li>
+              <li><a id="logout" href="{{url_for('web.logout')}}"><span class="glyphicon glyphicon-log-out"></span><span class="hidden-sm"> {{_('Logout')}}</span></a></li>
               {% endif %}
             {% endif %}
             {% if g.allow_registration and not g.user.is_authenticated %}
