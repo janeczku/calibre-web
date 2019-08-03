@@ -41,11 +41,13 @@ def extractCover(tmp_file_name, original_file_extension):
     if use_comic_meta:
         archive = ComicArchive(tmp_file_name)
         cover_data = None
-        ext = os.path.splitext(archive.getPageName(0))
-        if len(ext) > 1:
-            extension = ext[1].lower()
-            if extension == '.jpg' or extension == '.jpeg':
-                cover_data = archive.getPage(0)
+        for index, name in enumerate(archive.getPageNameList()):
+            ext = os.path.splitext(name)
+            if len(ext) > 1:
+                extension = ext[1].lower()
+                if extension == '.jpg' or extension == '.jpeg':
+                    cover_data = archive.getPage(index)
+                    break
     else:
         if original_file_extension.upper() == '.CBZ':
             cf = zipfile.ZipFile(tmp_file_name)
@@ -53,7 +55,7 @@ def extractCover(tmp_file_name, original_file_extension):
                 ext = os.path.splitext(name)
                 if len(ext) > 1:
                     extension = ext[1].lower()
-                    if extension == '.jpg':
+                    if extension == '.jpg' or extension == '.jpeg':
                         cover_data = cf.read(name)
                         break
         elif original_file_extension.upper() == '.CBT':
@@ -62,7 +64,7 @@ def extractCover(tmp_file_name, original_file_extension):
                 ext = os.path.splitext(name)
                 if len(ext) > 1:
                     extension = ext[1].lower()
-                    if extension == '.jpg':
+                    if extension == '.jpg' or extension == '.jpeg':
                         cover_data = cf.extractfile(name).read()
                         break
     prefix = os.path.dirname(tmp_file_name)
@@ -87,16 +89,17 @@ def get_comic_info(tmp_file_path, original_file_name, original_file_extension):
             else:
                 style = None
 
-            if style is not None:
-                loadedMetadata = archive.readMetadata(style)
+            # if style is not None:
+            loadedMetadata = archive.readMetadata(style)
 
-        lang = loadedMetadata.language
-        if len(lang) == 2:
-             loadedMetadata.language = isoLanguages.get(part1=lang).name
-        elif len(lang) == 3:
-             loadedMetadata.language = isoLanguages.get(part3=lang).name
-        else:
-             loadedMetadata.language = ""
+            lang = loadedMetadata.language
+            if lang:
+                if len(lang) == 2:
+                     loadedMetadata.language = isoLanguages.get(part1=lang).name
+                elif len(lang) == 3:
+                     loadedMetadata.language = isoLanguages.get(part3=lang).name
+            else:
+                 loadedMetadata.language = ""
 
         return BookMeta(
                 file_path=tmp_file_path,
