@@ -56,6 +56,7 @@ def requires_basic_auth_if_no_ano(f):
 
 
 @opds.route("/opds/")
+@opds.route("/opds")
 @requires_basic_auth_if_no_ano
 def feed_index():
     return render_xml_template('index.xml')

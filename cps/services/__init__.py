@@ -26,11 +26,13 @@ log = logger.create()
 
 try: from . import goodreads
 except ImportError as err:
-    log.warning("goodreads: %s", err)
+    log.debug("goodreads: %s", err)
     goodreads = None
 
 
 try: from . import simpleldap as ldap
 except ImportError as err:
-    log.warning("simpleldap: %s", err)
+    log.debug("simpleldap: %s", err)
     ldap = None
+
+
