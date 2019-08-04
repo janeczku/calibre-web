@@ -95,13 +95,6 @@ def setup(log_file, log_level=None):
     Configure the logging output.
     May be called multiple times.
     '''
-    # if debugging, start logging to stderr immediately
-    if os.environ.get('FLASK_DEBUG', None):
-        log_file = LOG_TO_STDERR
-        log_level = logging.DEBUG
-
-    log_file = _absolute_log_file(log_file, DEFAULT_LOG_FILE)
-
     log_level = log_level or DEFAULT_LOG_LEVEL
     logging.getLogger(__package__).setLevel(log_level)
 
@@ -109,6 +102,8 @@ def setup(log_file, log_level=None):
     if log_level >= logging.INFO or os.environ.get('FLASK_DEBUG'):
         # avoid spamming the log with debug messages from libraries
         r.setLevel(log_level)
+
+    log_file = _absolute_log_file(log_file, DEFAULT_LOG_FILE)
 
     previous_handler = r.handlers[0] if r.handlers else None
     if previous_handler:
@@ -167,3 +162,7 @@ class StderrLogger(object):
                 self.buffer += message
         except Exception:
             self.log.debug("Logging Error")
+
+
+# default configuration, before application settngs are applied
+setup(LOG_TO_STDERR, logging.DEBUG if os.environ.get('FLASK_DEBUG') else DEFAULT_LOG_LEVEL)

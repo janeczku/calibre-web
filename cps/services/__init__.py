@@ -26,17 +26,17 @@ log = logger.create()
 
 try: from . import goodreads
 except ImportError as err:
-    log.warning("goodreads: %s", err)
+    log.debug("cannot import goodreads, showing authors-metadata will not work: %s", err)
     goodreads = None
 
 
 try: from . import simpleldap as ldap
 except ImportError as err:
-    log.warning("simpleldap: %s", err)
+    log.debug("cannot import simpleldap, logging in with ldap will not work: %s", err)
     ldap = None
 
 
 try: from . import oauth
 except ImportError as err:
-    log.warning("oauth: %s", err)
+    log.debug("cannot import oauth, logging in with oauth will not work: %s", err)
     oauth = None
