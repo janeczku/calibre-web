@@ -35,6 +35,11 @@ try:
     from flask_login import __version__ as flask_loginVersion
 except ImportError:
     from flask_login.__about__ import __version__ as flask_loginVersion
+try:
+    import unidecode
+    unidecode_version = _(u'installed')
+except ImportError:
+    unidecode_version = _(u'not installed')
 
 about = flask.Blueprint('about', __name__)
 
@@ -54,6 +59,7 @@ _VERSIONS = OrderedDict(
     SQLite=sqlite3.sqlite_version,
     iso639=isoLanguages.__version__,
     pytz=pytz.__version__,
+    Unidecode = unidecode_version
 )
 _VERSIONS.update(uploader.get_versions())
 
