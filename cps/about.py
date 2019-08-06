@@ -41,6 +41,8 @@ try:
 except ImportError:
     unidecode_version = _(u'not installed')
 
+from . import services
+
 about = flask.Blueprint('about', __name__)
 
 
@@ -59,7 +61,9 @@ _VERSIONS = OrderedDict(
     SQLite=sqlite3.sqlite_version,
     iso639=isoLanguages.__version__,
     pytz=pytz.__version__,
-    Unidecode = unidecode_version
+    Unidecode = unidecode_version,
+    Flask_SimpleLDAP =  _(u'installed') if bool(services.ldap) else _(u'not installed'),
+    Goodreads = _(u'installed') if bool(services.goodreads) else _(u'not installed'),
 )
 _VERSIONS.update(uploader.get_versions())
 
