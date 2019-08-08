@@ -164,5 +164,5 @@ class StderrLogger(object):
             self.log.debug("Logging Error")
 
 
-# default configuration, before application settngs are applied
+# default configuration, before application settings are applied
 setup(LOG_TO_STDERR, logging.DEBUG if os.environ.get('FLASK_DEBUG') else DEFAULT_LOG_LEVEL)

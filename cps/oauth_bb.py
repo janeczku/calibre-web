@@ -84,7 +84,7 @@ if services.oauth:
         flash_text = None
         if isinstance(error, ValueError):
             if error.args[0] == "Cannot set OAuth token without an associated user":
-                flash("%s authorization successful." % provider.name, category="info")
+                # flash("%s authorization successful." % provider.name, category="info")
                 flash_text = "No associated local user found."
 
         if not flash_text:

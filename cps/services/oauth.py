@@ -8,6 +8,7 @@
 from __future__ import division, print_function, unicode_literals
 
 from flask import session as flask_session
+from flask_dance import __version__ as flask_dance_version
 from flask_dance.consumer import oauth_authorized, oauth_error
 from flask_dance.consumer.storage.sqla import SQLAlchemyStorage
 from flask_dance.contrib.github import make_github_blueprint

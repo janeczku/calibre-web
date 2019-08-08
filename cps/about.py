@@ -29,7 +29,7 @@ import babel, pytz, requests, sqlalchemy
 import werkzeug, flask, flask_login, flask_principal, jinja2
 from flask_babel import gettext as _
 
-from . import db, converter, uploader, server, isoLanguages
+from . import db, converter, uploader, server, isoLanguages, services
 from .web import render_title_template
 try:
     from flask_login import __version__ as flask_loginVersion
@@ -55,7 +55,9 @@ _VERSIONS = OrderedDict(
     iso639=isoLanguages.__version__,
     pytz=pytz.__version__,
 )
-_VERSIONS.update(uploader.get_versions())
+
+if services.oauth:
+    _VERSIONS["Flask-Dance"] = services.oauth.flask_dance_version
 
 
 @about.route("/stats")
@@ -65,6 +67,9 @@ def stats():
     authors = db.session.query(db.Authors).count()
     categorys = db.session.query(db.Tags).count()
     series = db.session.query(db.Series).count()
+    # uploader.get_versions() needs to be called during a request
+    # because it may return a translatable string
+    _VERSIONS.update(uploader.get_versions())
     _VERSIONS['ebook converter'] = _(converter.get_version())
     return render_title_template('stats.html', bookcounter=counter, authorcounter=authors, versions=_VERSIONS,
                                  categorycounter=categorys, seriecounter=series, title=_(u"Statistics"), page="stat")
