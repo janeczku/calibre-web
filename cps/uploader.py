@@ -224,11 +224,16 @@ def get_versions():
         PILVersion = 'v' + PILversion
     else:
         PILVersion = _(u'not installed')
+    if comic.use_comic_meta:
+        ComicVersion = _(u'installed')
+    else:
+        ComicVersion = _(u'not installed')
     return {'Image Magick': IVersion,
             'PyPdf': PVersion,
             'lxml':XVersion,
             'Wand': WVersion,
-            'Pillow': PILVersion}
+            'Pillow': PILVersion,
+            'Comic_API': ComicVersion}
 
 
 def upload(uploadfile):
