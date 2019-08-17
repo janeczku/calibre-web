@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2019-07-26 16:41+0200\n"
+"POT-Creation-Date: 2019-08-06 18:35+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,7 +17,16 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.7.0\n"
 
-#: cps/about.py:70
+#: cps/about.py:40
+msgid "installed"
+msgstr ""
+
+#: cps/about.py:42 cps/uploader.py:213 cps/uploader.py:214 cps/uploader.py:218
+#: cps/uploader.py:222 cps/uploader.py:226
+msgid "not installed"
+msgstr ""
+
+#: cps/about.py:76
 msgid "Statistics"
 msgstr ""
 
@@ -275,125 +284,133 @@ msgstr ""
 msgid "Callback domain is not verified, please follow steps to verify domain in google developer console"
 msgstr ""
 
-#: cps/helper.py:79
+#: cps/helper.py:53
+msgid "Installed"
+msgstr ""
+
+#: cps/helper.py:56
+msgid "Not installed"
+msgstr ""
+
+#: cps/helper.py:81
 #, python-format
 msgid "%(format)s format not found for book id: %(book)d"
 msgstr ""
 
-#: cps/helper.py:91
+#: cps/helper.py:93
 #, python-format
 msgid "%(format)s not found on Google Drive: %(fn)s"
 msgstr ""
 
-#: cps/helper.py:98 cps/helper.py:206 cps/templates/detail.html:41
+#: cps/helper.py:100 cps/helper.py:208 cps/templates/detail.html:41
 #: cps/templates/detail.html:45
 msgid "Send to Kindle"
 msgstr ""
 
-#: cps/helper.py:99 cps/helper.py:117 cps/helper.py:208
+#: cps/helper.py:101 cps/helper.py:119 cps/helper.py:210
 msgid "This e-mail has been sent via Calibre-Web."
 msgstr ""
 
-#: cps/helper.py:110
+#: cps/helper.py:112
 #, python-format
 msgid "%(format)s not found: %(fn)s"
 msgstr ""
 
-#: cps/helper.py:115
+#: cps/helper.py:117
 msgid "Calibre-Web test e-mail"
 msgstr ""
 
-#: cps/helper.py:117
+#: cps/helper.py:119
 msgid "Test e-mail"
 msgstr ""
 
-#: cps/helper.py:132
+#: cps/helper.py:134
 msgid "Get Started with Calibre-Web"
 msgstr ""
 
-#: cps/helper.py:134
+#: cps/helper.py:136
 #, python-format
 msgid "Registration e-mail for user: %(name)s"
 msgstr ""
 
-#: cps/helper.py:148 cps/helper.py:150 cps/helper.py:152 cps/helper.py:160
-#: cps/helper.py:162 cps/helper.py:164
+#: cps/helper.py:150 cps/helper.py:152 cps/helper.py:154 cps/helper.py:162
+#: cps/helper.py:164 cps/helper.py:166
 #, python-format
 msgid "Send %(format)s to Kindle"
 msgstr ""
 
-#: cps/helper.py:168
+#: cps/helper.py:170
 #, python-format
 msgid "Convert %(orig)s to %(format)s and send to Kindle"
 msgstr ""
 
-#: cps/helper.py:208
+#: cps/helper.py:210
 #, python-format
 msgid "E-mail: %(book)s"
 msgstr ""
 
-#: cps/helper.py:210
+#: cps/helper.py:212
 msgid "The requested file could not be read. Maybe wrong permissions?"
 msgstr ""
 
-#: cps/helper.py:317
+#: cps/helper.py:319
 #, python-format
 msgid "Rename title from: '%(src)s' to '%(dest)s' failed with error: %(error)s"
 msgstr ""
 
-#: cps/helper.py:327
+#: cps/helper.py:329
 #, python-format
 msgid "Rename author from: '%(src)s' to '%(dest)s' failed with error: %(error)s"
 msgstr ""
 
-#: cps/helper.py:341
+#: cps/helper.py:343
 #, python-format
 msgid "Rename file in path '%(src)s' to '%(dest)s' failed with error: %(error)s"
 msgstr ""
 
-#: cps/helper.py:367 cps/helper.py:377 cps/helper.py:385
+#: cps/helper.py:369 cps/helper.py:379 cps/helper.py:387
 #, python-format
 msgid "File %(file)s not found on Google Drive"
 msgstr ""
 
-#: cps/helper.py:406
+#: cps/helper.py:408
 #, python-format
 msgid "Book path %(path)s not found on Google Drive"
 msgstr ""
 
-#: cps/helper.py:623
+#: cps/helper.py:625
 msgid "Waiting"
 msgstr ""
 
-#: cps/helper.py:625
+#: cps/helper.py:627
 msgid "Failed"
 msgstr ""
 
-#: cps/helper.py:627
+#: cps/helper.py:629
 msgid "Started"
 msgstr ""
 
-#: cps/helper.py:629
+#: cps/helper.py:631
 msgid "Finished"
 msgstr ""
 
-#: cps/helper.py:631
+#: cps/helper.py:633
 msgid "Unknown Status"
 msgstr ""
 
-#: cps/helper.py:636
+#: cps/helper.py:638
 msgid "E-mail: "
 msgstr ""
 
-#: cps/helper.py:638 cps/helper.py:642
+#: cps/helper.py:640 cps/helper.py:644
 msgid "Convert: "
 msgstr ""
 
-#: cps/helper.py:640
+#: cps/helper.py:642
 msgid "Upload: "
 msgstr ""
 
-#: cps/helper.py:644
+#: cps/helper.py:646
 msgid "Unknown Task: "
 msgstr ""
 
@@ -673,11 +690,6 @@ msgstr ""
 
 #: cps/updater.py:423
 msgid "Click on the button below to update to the latest stable version."
-msgstr ""
-
-#: cps/uploader.py:213 cps/uploader.py:214 cps/uploader.py:218
-#: cps/uploader.py:222 cps/uploader.py:226
-msgid "not installed"
 msgstr ""
 
 #: cps/web.py:460
