@@ -268,7 +268,6 @@ def delete_shelf(shelf_id):
 # @shelf.route("/shelfdown/<int:shelf_id>")
 @shelf.route("/shelf/<int:shelf_id>", defaults={'shelf_type': 1})
 @shelf.route("/shelf/<int:shelf_id>/<int:shelf_type>")
-@login_required
 def show_shelf(shelf_type, shelf_id):
     if current_user.is_anonymous:
         shelf = ub.session.query(ub.Shelf).filter(ub.Shelf.is_public == 1, ub.Shelf.id == shelf_id).first()
