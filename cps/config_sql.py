@@ -104,6 +104,10 @@ class _Settings(_Base):
     config_calibre = Column(String)
     config_rarfile_location = Column(String)
 
+    config_automatic_kepub = Column(Boolean, default=False)
+    config_kepubify_path = Column(String)
+    config_kepub_cache_dir = Column(String)
+
     config_updatechannel = Column(Integer, default=constants.UPDATE_STABLE)
 
     def __repr__(self):
