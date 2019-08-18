@@ -1010,7 +1010,11 @@ def serve_book(book_id, book_format):
 @login_required_if_no_ano
 @download_required
 def download_link(book_id, book_format, anyname):
-    return get_download_link(book_id, book_format)
+    if (config.config_automatic_kepub and
+        "Kobo" in request.headers.get('User-Agent')):
+        client = "kobo"
+
+    return get_download_link(book_id, book_format, client)
 
 
 @web.route('/send/<int:book_id>/<book_format>/<int:convert>')

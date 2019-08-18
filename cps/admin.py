@@ -303,6 +303,10 @@ def _configuration_update_helper():
     _config_string("config_calibre")
     _config_string("config_converterpath")
 
+    _config_checkbox_int("config_automatic_kepub")
+    _config_string("config_kepubify_path")
+    _config_string("config_kepub_cache_dir")
+
     if _config_int("config_login_type"):
         reboot_required |= config.config_login_type != constants.LOGIN_STANDARD
 
