@@ -56,6 +56,7 @@ def requires_basic_auth_if_no_ano(f):
 
 
 @opds.route("/opds/")
+@opds.route("/opds")
 @requires_basic_auth_if_no_ano
 def feed_index():
     return render_xml_template('index.xml')
@@ -288,7 +289,7 @@ def check_auth(username, password):
         username=username.encode('windows-1252')
     user = ub.session.query(ub.User).filter(func.lower(ub.User.nickname) ==
                                             username.decode('utf-8').lower()).first()
-    return bool(user and check_password_hash(user.password, password))
+    return bool(user and check_password_hash(str(user.password), password))
 
 
 def authenticate():
