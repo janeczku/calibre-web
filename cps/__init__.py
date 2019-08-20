@@ -100,8 +100,10 @@ def create_app():
 
     if services.ldap:
         services.ldap.init_app(app, config)
-    if services.goodreads:
-        services.goodreads.connect(config.config_goodreads_api_key, config.config_goodreads_api_secret, config.config_use_goodreads)
+    if services.goodreads_support:
+        services.goodreads_support.connect(config.config_goodreads_api_key,
+                                           config.config_goodreads_api_secret,
+                                           config.config_use_goodreads)
 
     return app
 

@@ -55,7 +55,7 @@ from .redirect import redirect_back
 
 feature_support = {
         'ldap': False, # bool(services.ldap),
-        'goodreads': bool(services.goodreads)
+        'goodreads': bool(services.goodreads_support)
     }
 
 try:

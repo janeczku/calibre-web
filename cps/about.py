@@ -63,7 +63,7 @@ _VERSIONS = OrderedDict(
     pytz=pytz.__version__,
     Unidecode = unidecode_version,
     Flask_SimpleLDAP =  _(u'installed') if bool(services.ldap) else _(u'not installed'),
-    Goodreads = _(u'installed') if bool(services.goodreads) else _(u'not installed'),
+    Goodreads = _(u'installed') if bool(services.goodreads_support) else _(u'not installed'),
 )
 _VERSIONS.update(uploader.get_versions())
 
