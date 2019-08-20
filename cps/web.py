@@ -565,9 +565,9 @@ def render_author_books(page, author_id, order):
 
     author_info = None
     other_books = []
-    if services.goodreads and config.config_use_goodreads:
-        author_info = services.goodreads.get_author_info(author_name)
-        other_books = services.goodreads.get_other_books(author_info, entries)
+    if services.goodreads_support and config.config_use_goodreads:
+        author_info = services.goodreads_support.get_author_info(author_name)
+        other_books = services.goodreads_support.get_other_books(author_info, entries)
 
     return render_title_template('author.html', entries=entries, pagination=pagination, id=author_id,
                                  title=_(u"Author: %(name)s", name=author_name), author=author_info,
