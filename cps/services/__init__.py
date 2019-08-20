@@ -27,7 +27,7 @@ log = logger.create()
 try: from . import goodreads_support
 except ImportError as err:
     log.debug("cannot import goodreads, showing authors-metadata will not work: %s", err)
-    goodreads = None
+    goodreads_support = None
 
 
 try: from . import simpleldap as ldap
