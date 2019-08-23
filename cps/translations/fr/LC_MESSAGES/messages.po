@@ -1617,7 +1617,7 @@ msgstr "langue"
 
 #: cps/templates/detail.html:200
 msgid "Mark As Unread"
-msgstr "Marquer comme non-lu"
+msgstr "Marquer comme non lu"
 
 #: cps/templates/detail.html:200
 msgid "Mark As Read"
