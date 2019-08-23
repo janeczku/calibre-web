@@ -1706,7 +1706,7 @@ msgstr "Chercher"
 
 #: cps/templates/http_error.html:37
 msgid "Create issue"
-msgstr "Faire un signalement"
+msgstr "Signaler un problème"
 
 #: cps/templates/http_error.html:44
 msgid "Back to home"
