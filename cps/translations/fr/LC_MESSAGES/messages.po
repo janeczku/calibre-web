@@ -178,7 +178,7 @@ msgstr "Mise à jour terminée, merci d’appuyer sur okay et de rafraîchir la 
 
 #: cps/admin.py:685 cps/admin.py:686 cps/admin.py:687 cps/admin.py:688
 msgid "Update failed:"
-msgstr "La mise à jour à échouée :"
+msgstr "La mise à jour a échoué :"
 
 #: cps/admin.py:685 cps/updater.py:271 cps/updater.py:456 cps/updater.py:458
 msgid "HTTP Error"
