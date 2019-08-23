@@ -688,7 +688,7 @@ msgstr "Une nouvelle mise à jour est disponible. Cliquez sur le bouton ci-desso
 
 #: cps/updater.py:423
 msgid "Click on the button below to update to the latest stable version."
-msgstr "Cliquez sur le bouton ci-dessous pour mettre à jour la dernière version stable."
+msgstr "Téléchargez la dernière version en cliquant sur le bouton ci-dessous."
 
 #: cps/uploader.py:213 cps/uploader.py:214 cps/uploader.py:218
 #: cps/uploader.py:222 cps/uploader.py:226
