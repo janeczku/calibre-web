@@ -230,7 +230,7 @@ msgstr "Le format de fichier %(ext)s a été ajouté à %(book)s"
 
 #: cps/editbooks.py:373
 msgid "Cover is not a supported imageformat (jpg/png/webp), can't save"
-msgstr "La couverture n’est pas un format d’image supporté (jpg/png/webp), impossible d’enregistrer"
+msgstr "Le format d'image utilisé pour la couverture n'est pas supporté (jpg/png/webp uniquement). Sauvegarde impossible."
 
 #: cps/editbooks.py:406 cps/editbooks.py:415
 msgid "unknown"
