@@ -709,7 +709,7 @@ msgstr "Livres au hasard"
 
 #: cps/web.py:522
 msgid "Books"
-msgstr "LIvres"
+msgstr "Livres"
 
 #: cps/web.py:549
 msgid "Hot Books (most downloaded)"
