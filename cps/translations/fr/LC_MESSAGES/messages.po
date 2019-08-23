@@ -284,7 +284,7 @@ msgstr "Une erreur est survenue au cours de la conversion du livre : %(res)s"
 
 #: cps/gdrive.py:61
 msgid "Google Drive setup not completed, try to deactivate and activate Google Drive again"
-msgstr "La configuration du lecteur Google n’est pas terminée, essayez de désactiver et d’activer à nouveau le lecteur Google"
+msgstr "La configuration de Google Drive n’est pas terminée, essayez de désactiver et d’activer à nouveau Google Drive."
 
 #: cps/gdrive.py:103
 msgid "Callback domain is not verified, please follow steps to verify domain in google developer console"
