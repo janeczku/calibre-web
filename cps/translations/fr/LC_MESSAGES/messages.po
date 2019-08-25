@@ -737,7 +737,7 @@ msgstr "Séries : %(serie)s"
 #: cps/web.py:607
 #, python-format
 msgid "Rating: %(rating)s stars"
-msgstr "Notes: %(rating)s étoiles"
+msgstr "Note: %(rating)s étoiles"
 
 #: cps/web.py:618
 #, python-format
