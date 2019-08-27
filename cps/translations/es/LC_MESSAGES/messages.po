@@ -42,8 +42,7 @@ msgstr "Página de administración"
 
 #: cps/admin.py:149 cps/templates/admin.html:102
 msgid "UI Configuration"
-msgstr "Configuración de la interfePdaL003
-az del usuario"
+msgstr "Configuración de la interfaz del usuario"
 
 #: cps/admin.py:181 cps/admin.py:399
 msgid "Calibre-Web configuration updated"
