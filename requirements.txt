@@ -4,7 +4,7 @@ Flask-Login>=0.3.2
 Flask-Principal>=0.3.2
 singledispatch>=3.4.0.0
 backports_abc>=0.4
-Flask>=0.11
+Flask>=1.0.2
 iso-639>=0.4.5
 PyPDF2==1.26.0
 pytz>=2016.10
