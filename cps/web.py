@@ -943,7 +943,7 @@ def render_read_books(page, are_read, as_xml=False, order=None):
     order = order or []
     if not config.config_read_column:
         readBooks = ub.session.query(ub.ReadBook).filter(ub.ReadBook.user_id == int(current_user.id))\
-            .filter(ub.ReadBook.is_read is True).all()
+            .filter(ub.ReadBook.is_read == True).all()
         readBookIds = [x.book_id for x in readBooks]
     else:
         try:
