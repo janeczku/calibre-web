@@ -3,6 +3,7 @@
 # This file is distributed under the same license as the Calibre-Web
 # Juan F. Villa <juan.villa@paisdelconocimiento.org>, 2016.
 # victorhck <victorhck@mailbox.org>, 2018.
+# Angel Docampo <angel@docampo.net>, 2019.
 msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
@@ -102,7 +103,7 @@ msgstr "Usuario '%(nick)s' borrado"
 
 #: cps/admin.py:559
 msgid "No admin user remaining, can't delete user"
-msgstr ""
+msgstr "No queda ningún usuario administrador, no se puede eliminar usuario"
 
 #: cps/admin.py:598 cps/web.py:1279
 msgid "Found an existing account for this e-mail address."
@@ -351,7 +352,7 @@ msgstr "El renombrado del autor de: '%(src)s' a '%(dest)s' falló con errores: %
 #: cps/helper.py:341
 #, python-format
 msgid "Rename file in path '%(src)s' to '%(dest)s' failed with error: %(error)s"
-msgstr ""
+msgstr "Ha fallado el cambio de nombre del archivo '%(src)s' a '%(dest)s' con el error: %(error)s"
 
 #: cps/helper.py:367 cps/helper.py:377 cps/helper.py:385
 #, python-format
@@ -450,11 +451,11 @@ msgstr "Estante especificado inválido"
 #: cps/shelf.py:53
 #, python-format
 msgid "Sorry you are not allowed to add a book to the the shelf: %(shelfname)s"
-msgstr "Lo sentimos, no está permitido agregar un libro al estante: %(shelfname)s"
+msgstr "Lo sentimos, no tiene permisos para agregar un libro al estante: %(shelfname)s"
 
 #: cps/shelf.py:61
 msgid "You are not allowed to edit public shelves"
-msgstr "No está permitido editar estanterías públicas."
+msgstr "No puede editar estanterías públicas."
 
 #: cps/shelf.py:70
 #, python-format
@@ -597,7 +598,7 @@ msgstr "Categorías"
 
 #: cps/ub.py:79
 msgid "Show category selection"
-msgstr "Mostrar categorías elegidas"
+msgstr "Mostrar selección de categorías"
 
 #: cps/templates/book_edit.html:71 cps/templates/search_form.html:53
 #: cps/ub.py:80
@@ -606,7 +607,7 @@ msgstr "Series"
 
 #: cps/ub.py:82
 msgid "Show series selection"
-msgstr "Mostrar series seleccionadas"
+msgstr "Mostrar selección de series"
 
 #: cps/templates/index.xml:61 cps/ub.py:83
 msgid "Authors"
@@ -622,7 +623,7 @@ msgstr "Editoras"
 
 #: cps/ub.py:89
 msgid "Show publisher selection"
-msgstr "Mostrar selección de editor"
+msgstr "Mostrar selección de editores"
 
 #: cps/templates/search_form.html:74 cps/ub.py:90
 msgid "Languages"
@@ -630,7 +631,7 @@ msgstr "Idioma"
 
 #: cps/ub.py:93
 msgid "Show language selection"
-msgstr "Mostrar idioma seleccionado"
+msgstr "Mostrar selección de idiomas"
 
 #: cps/ub.py:94
 msgid "Ratings"
@@ -671,11 +672,11 @@ msgstr "No hay información del lanzamiento disponible"
 #: cps/updater.py:404 cps/updater.py:413
 #, python-format
 msgid "A new update is available. Click on the button below to update to version: %(version)s"
-msgstr "Una nueva actualización está disponible. Haga clic en el botón de abajo para actualizar a la versión: %(version)s"
+msgstr "Hay una nueva actualización disponible. Haz clic en el botón de abajo para actualizar a la versión: %(version)s"
 
 #: cps/updater.py:423
 msgid "Click on the button below to update to the latest stable version."
-msgstr "Haga clic en el botón de abajo para actualizar a la última versión estable."
+msgstr "Haz clic en el botón de abajo para actualizar a la última versión estable."
 
 #: cps/uploader.py:213 cps/uploader.py:214 cps/uploader.py:218
 #: cps/uploader.py:222 cps/uploader.py:226
@@ -684,7 +685,7 @@ msgstr "No instalado"
 
 #: cps/web.py:460
 msgid "Recently Added Books"
-msgstr "Libros recientemente añadidos"
+msgstr "Libros añadidos recientemente"
 
 #: cps/web.py:488
 msgid "Best rated books"
@@ -700,11 +701,11 @@ msgstr "Libros"
 
 #: cps/web.py:549
 msgid "Hot Books (most downloaded)"
-msgstr "Libros populares (los mas descargados)"
+msgstr "Libros populares (los más descargados)"
 
 #: cps/web.py:560 cps/web.py:1300 cps/web.py:1388
 msgid "Error opening eBook. File does not exist or file is not accessible:"
-msgstr "Error en la apertura del eBook. El archivo no existe o no es accesible:"
+msgstr "Error al abrir eBook. El archivo no existe o no es accesible:"
 
 #: cps/web.py:573
 #, python-format
@@ -724,7 +725,7 @@ msgstr "Series: %(serie)s"
 #: cps/web.py:607
 #, python-format
 msgid "Rating: %(rating)s stars"
-msgstr "Clasificación: %(rating)s estrellas"
+msgstr "Calificación: %(rating)s estrellas"
 
 #: cps/web.py:618
 #, python-format
@@ -751,7 +752,7 @@ msgstr "Lista de series"
 
 #: cps/web.py:709
 msgid "Ratings list"
-msgstr "Lista de clasificaciones"
+msgstr "Lista de calificaciones"
 
 #: cps/web.py:722
 msgid "File formats list"
@@ -771,21 +772,21 @@ msgstr "Tareas"
 
 #: cps/web.py:846
 msgid "Published after "
-msgstr "Publicado antes de"
+msgstr "Publicado después de"
 
 #: cps/web.py:853
 msgid "Published before "
-msgstr "Publicado después de"
+msgstr "Publicado antes de"
 
 #: cps/web.py:867
 #, python-format
 msgid "Rating <= %(rating)s"
-msgstr "Clasificación <= %(rating)s"
+msgstr "Calificación <= %(rating)s"
 
 #: cps/web.py:869
 #, python-format
 msgid "Rating >= %(rating)s"
-msgstr "Clasificación >= %(rating)s"
+msgstr "Calificación >= %(rating)s"
 
 #: cps/web.py:929 cps/web.py:939
 msgid "search"
@@ -793,7 +794,7 @@ msgstr "búsqueda"
 
 #: cps/web.py:1022
 msgid "Please configure the SMTP mail settings first..."
-msgstr "Configurar primero los parámetros SMTP por favor..."
+msgstr "Configura primero los parámetros del servidor SMTP..."
 
 #: cps/web.py:1027
 #, python-format
@@ -1071,7 +1072,7 @@ msgstr "via"
 
 #: cps/templates/author.html:23
 msgid "In Library"
-msgstr "en Library"
+msgstr "en Librería"
 
 #: cps/templates/author.html:34 cps/templates/list.html:14
 #: cps/templates/search.html:41
@@ -1087,7 +1088,7 @@ msgstr "reducir"
 
 #: cps/templates/author.html:94
 msgid "More by"
-msgstr "Más por"
+msgstr "Más de"
 
 #: cps/templates/book_edit.html:12
 msgid "Delete Book"
@@ -1215,7 +1216,7 @@ msgstr "Palabra clave"
 
 #: cps/templates/book_edit.html:212
 msgid " Search keyword "
-msgstr "Buscar palabras clave"
+msgstr "Buscar por palabras clave"
 
 #: cps/templates/book_edit.html:214 cps/templates/layout.html:47
 msgid "Go!"
@@ -1223,7 +1224,7 @@ msgstr "¡Vamos!"
 
 #: cps/templates/book_edit.html:218
 msgid "Click the cover to load metadata to the form"
-msgstr "Haga clic en la portada para cargar los metadatos en el formulario"
+msgstr "Haz clic en la portada para cargar los metadatos en el formulario"
 
 #: cps/templates/book_edit.html:230 cps/templates/book_edit.html:270
 msgid "Loading..."
@@ -1244,7 +1245,7 @@ msgstr "¡Error en la búsqueda!"
 
 #: cps/templates/book_edit.html:272
 msgid "No Result(s) found! Please try aonther keyword."
-msgstr "¡No se encontraron resultados! Por favor intente otra palabra clave."
+msgstr "¡No se encontraron resultados! Por favor intenta con otra palabra clave."
 
 #: cps/templates/config_edit.html:12
 msgid "Library Configuration"
@@ -1256,7 +1257,7 @@ msgstr "Ubicación de la base de datos de Calibre"
 
 #: cps/templates/config_edit.html:25
 msgid "Use Google Drive?"
-msgstr "¿Utiliza Google Drive?"
+msgstr "¿Usar Google Drive?"
 
 #: cps/templates/config_edit.html:31
 msgid "Google Drive config problem"
@@ -1268,7 +1269,7 @@ msgstr "Autentificar Google Drive"
 
 #: cps/templates/config_edit.html:41
 msgid "Please hit submit to continue with setup"
-msgstr ""
+msgstr "Por favor, pulsa enviar para continuar con la configuración"
 
 #: cps/templates/config_edit.html:44
 msgid "Please finish Google Drive setup after login"
@@ -1392,7 +1393,7 @@ msgstr "Usar autenticación LDAP"
 
 #: cps/templates/config_edit.html:198
 msgid "Use OAuth"
-msgstr ""
+msgstr "Usar OAuth"
 
 #: cps/templates/config_edit.html:205
 msgid "LDAP Server Host Name or IP Address"
@@ -1445,17 +1446,17 @@ msgstr "¿El servidor LDAP es OpenLDAP?"
 #: cps/templates/config_edit.html:260
 #, python-format
 msgid "Obtain %(provider)s OAuth Credential"
-msgstr ""
+msgstr "Obtener la Credencial OAuth de %(proveedor)"
 
 #: cps/templates/config_edit.html:263
 #, python-format
 msgid "%(provider)s OAuth Client Id"
-msgstr ""
+msgstr "Id. de cliente de OAuth de %(provider)"
 
 #: cps/templates/config_edit.html:267
 #, python-format
 msgid "%(provider)s OAuth Client Secret"
-msgstr ""
+msgstr "Secreto OAuth de Cliente de %(provider)"
 
 #: cps/templates/config_edit.html:282
 msgid "External binaries"
@@ -1693,7 +1694,7 @@ msgstr "Buscar"
 
 #: cps/templates/http_error.html:37
 msgid "Create issue"
-msgstr ""
+msgstr "Abrir una incidencia"
 
 #: cps/templates/http_error.html:44
 msgid "Back to home"
@@ -1830,11 +1831,11 @@ msgstr "Error"
 
 #: cps/templates/listenmp3.html:66
 msgid "Play / pause"
-msgstr ""
+msgstr "Reproducir / pausar"
 
 #: cps/templates/listenmp3.html:98
 msgid "volume"
-msgstr ""
+msgstr "volumen"
 
 #: cps/templates/login.html:8 cps/templates/login.html:9
 #: cps/templates/register.html:7 cps/templates/user_edit.html:8
@@ -1956,7 +1957,7 @@ msgstr "Vertical"
 
 #: cps/templates/readcbr.html:152
 msgid "Direction"
-msgstr ""
+msgstr "Dirección"
 
 #: cps/templates/readcbr.html:155
 msgid "Left to Right"
@@ -2277,7 +2278,7 @@ msgstr "Descargas recientes"
 #~ msgstr "y iniciar sesión"
 
 #~ msgid "Using your another device, login and visit "
-#~ msgstr ""
+#~ msgstr "Utilizando otro dispositivo, inicia sesión y visita "
 
 #~ msgid "Newest Books"
 #~ msgstr "Libros más nuevos"
