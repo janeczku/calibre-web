@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2019-07-26 16:41+0200\n"
+"POT-Creation-Date: 2019-09-06 19:03+0200\n"
 "PO-Revision-Date: 2018-08-27 17:06+0700\n"
 "Last-Translator: \n"
 "Language: km_KH\n"
@@ -19,7 +19,17 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.7.0\n"
 
-#: cps/about.py:70
+#: cps/about.py:40 cps/about.py:65 cps/about.py:66 cps/uploader.py:228
+msgid "installed"
+msgstr ""
+
+#: cps/about.py:42 cps/about.py:65 cps/about.py:66 cps/uploader.py:213
+#: cps/uploader.py:214 cps/uploader.py:218 cps/uploader.py:222
+#: cps/uploader.py:226 cps/uploader.py:230
+msgid "not installed"
+msgstr "មិនបានតម្លើង"
+
+#: cps/about.py:80
 msgid "Statistics"
 msgstr "ស្ថិតិ"
 
@@ -43,143 +53,143 @@ msgstr "ទំព័ររដ្ឋបាល"
 msgid "UI Configuration"
 msgstr "ការកំណត់ផ្ទាំងប្រើប្រាស់"
 
-#: cps/admin.py:181 cps/admin.py:399
+#: cps/admin.py:181 cps/admin.py:401
 msgid "Calibre-Web configuration updated"
 msgstr ""
 
-#: cps/admin.py:427 cps/templates/admin.html:101
+#: cps/admin.py:429 cps/templates/admin.html:101
 msgid "Basic Configuration"
 msgstr "ការកំណត់សាមញ្ញ"
 
-#: cps/admin.py:450 cps/web.py:1050
+#: cps/admin.py:452 cps/web.py:1050
 msgid "Please fill out all fields!"
 msgstr "សូមបំពេញចន្លោះទាំងអស់!"
 
-#: cps/admin.py:452 cps/admin.py:463 cps/admin.py:469 cps/admin.py:484
+#: cps/admin.py:454 cps/admin.py:465 cps/admin.py:471 cps/admin.py:486
 #: cps/templates/admin.html:35
 msgid "Add new user"
 msgstr "បន្ថែមអ្នកប្រើប្រាស់ថ្មី"
 
-#: cps/admin.py:461 cps/web.py:1253
+#: cps/admin.py:463 cps/web.py:1253
 msgid "E-mail is not from valid domain"
 msgstr ""
 
-#: cps/admin.py:467 cps/admin.py:478
+#: cps/admin.py:469 cps/admin.py:480
 msgid "Found an existing account for this e-mail address or nickname."
 msgstr ""
 
-#: cps/admin.py:474
+#: cps/admin.py:476
 #, python-format
 msgid "User '%(user)s' created"
 msgstr "បានបង្កើតអ្នកប្រើប្រាស់ ‘%(user)s’"
 
-#: cps/admin.py:494
+#: cps/admin.py:496
 msgid "Edit e-mail server settings"
 msgstr ""
 
-#: cps/admin.py:520
+#: cps/admin.py:522
 #, python-format
 msgid "Test e-mail successfully send to %(kindlemail)s"
 msgstr ""
 
-#: cps/admin.py:523
+#: cps/admin.py:525
 #, python-format
 msgid "There was an error sending the Test e-mail: %(res)s"
 msgstr ""
 
-#: cps/admin.py:525 cps/web.py:1033
+#: cps/admin.py:527 cps/web.py:1033
 msgid "Please configure your kindle e-mail address first..."
 msgstr ""
 
-#: cps/admin.py:527
+#: cps/admin.py:529
 msgid "E-mail server settings updated"
 msgstr ""
 
-#: cps/admin.py:556
+#: cps/admin.py:558
 #, python-format
 msgid "User '%(nick)s' deleted"
 msgstr "អ្នកប្រើប្រាស់ ‘%(nick)s’ ត្រូវបានលុប"
 
-#: cps/admin.py:559
+#: cps/admin.py:561
 msgid "No admin user remaining, can't delete user"
 msgstr ""
 
-#: cps/admin.py:598 cps/web.py:1279
+#: cps/admin.py:600 cps/web.py:1279
 msgid "Found an existing account for this e-mail address."
 msgstr ""
 
-#: cps/admin.py:601 cps/admin.py:613
+#: cps/admin.py:603 cps/admin.py:615
 #, python-format
 msgid "Edit User %(nick)s"
 msgstr "កែប្រែអ្នកប្រើប្រាស់ %(nick)s"
 
-#: cps/admin.py:607
+#: cps/admin.py:609
 #, python-format
 msgid "User '%(nick)s' updated"
 msgstr "អ្នកប្រើប្រាស់ ‘%(nick)s’ ត្រូវបានកែប្រែ"
 
-#: cps/admin.py:610
+#: cps/admin.py:612
 msgid "An unknown error occured."
 msgstr "បញ្ហាដែលមិនដឹងបានកើតឡើង។"
 
-#: cps/admin.py:629
+#: cps/admin.py:631
 #, python-format
 msgid "Password for user %(user)s reset"
 msgstr ""
 
-#: cps/admin.py:632 cps/web.py:1075
+#: cps/admin.py:634 cps/web.py:1075
 msgid "An unknown error occurred. Please try again later."
 msgstr ""
 
-#: cps/admin.py:643
+#: cps/admin.py:645
 msgid "Logfile viewer"
 msgstr ""
 
-#: cps/admin.py:678
+#: cps/admin.py:680
 msgid "Requesting update package"
 msgstr "កំពុងស្នើសុំឯកសារបច្ចុប្បន្នភាព"
 
-#: cps/admin.py:679
+#: cps/admin.py:681
 msgid "Downloading update package"
 msgstr "កំពុងទាញយកឯកសារបច្ចុប្បន្នភាព"
 
-#: cps/admin.py:680
+#: cps/admin.py:682
 msgid "Unzipping update package"
 msgstr "កំពុងពន្លាឯកសារបច្ចុប្បន្នភាព"
 
-#: cps/admin.py:681
+#: cps/admin.py:683
 msgid "Replacing files"
 msgstr ""
 
-#: cps/admin.py:682
+#: cps/admin.py:684
 msgid "Database connections are closed"
 msgstr "ទំនាក់ទំនងទៅមូលដ្ឋានទិន្នន័យត្រូវបានផ្តាច់"
 
-#: cps/admin.py:683
+#: cps/admin.py:685
 msgid "Stopping server"
 msgstr ""
 
-#: cps/admin.py:684
+#: cps/admin.py:686
 msgid "Update finished, please press okay and reload page"
 msgstr "ការធ្វើបច្ចុប្បន្នភាពបានបញ្ចប់ សូមចុច okay រួចបើកទំព័រជាថ្មី"
 
-#: cps/admin.py:685 cps/admin.py:686 cps/admin.py:687 cps/admin.py:688
+#: cps/admin.py:687 cps/admin.py:688 cps/admin.py:689 cps/admin.py:690
 msgid "Update failed:"
 msgstr ""
 
-#: cps/admin.py:685 cps/updater.py:271 cps/updater.py:456 cps/updater.py:458
+#: cps/admin.py:687 cps/updater.py:271 cps/updater.py:456 cps/updater.py:458
 msgid "HTTP Error"
 msgstr ""
 
-#: cps/admin.py:686 cps/updater.py:273 cps/updater.py:460
+#: cps/admin.py:688 cps/updater.py:273 cps/updater.py:460
 msgid "Connection error"
 msgstr ""
 
-#: cps/admin.py:687 cps/updater.py:275 cps/updater.py:462
+#: cps/admin.py:689 cps/updater.py:275 cps/updater.py:462
 msgid "Timeout while establishing connection"
 msgstr ""
 
-#: cps/admin.py:688 cps/updater.py:277 cps/updater.py:464
+#: cps/admin.py:690 cps/updater.py:277 cps/updater.py:464
 msgid "General error"
 msgstr ""
 
@@ -527,16 +537,16 @@ msgstr "ធ្នើឈ្មោះ %(title)s ត្រូវបានប្ត�
 msgid "Edit a shelf"
 msgstr "កែប្រែធ្នើ"
 
-#: cps/shelf.py:295
+#: cps/shelf.py:294
 #, python-format
 msgid "Shelf: '%(name)s'"
 msgstr "ធ្នើ៖ ‘%(name)s’"
 
-#: cps/shelf.py:298
+#: cps/shelf.py:297
 msgid "Error opening shelf. Shelf does not exist or is not accessible"
 msgstr "មានបញ្ហាពេលបើកធ្នើ។ ពុំមានធ្នើ ឬមិនអាចបើកបាន"
 
-#: cps/shelf.py:330
+#: cps/shelf.py:329
 #, python-format
 msgid "Change order of Shelf: '%(name)s'"
 msgstr "ប្តូរលំដាប់ធ្នើ៖ ‘%(name)s’"
@@ -676,11 +686,6 @@ msgstr ""
 #: cps/updater.py:423
 msgid "Click on the button below to update to the latest stable version."
 msgstr ""
-
-#: cps/uploader.py:213 cps/uploader.py:214 cps/uploader.py:218
-#: cps/uploader.py:222 cps/uploader.py:226
-msgid "not installed"
-msgstr "មិនបានតម្លើង"
 
 #: cps/web.py:460
 msgid "Recently Added Books"
@@ -1363,8 +1368,8 @@ msgid "Enable remote login (\"magic link\")"
 msgstr "អនុញ្ញាតការ login ពីចម្ងាយ (ឬ “magic link”)"
 
 #: cps/templates/config_edit.html:175
-msgid "Use"
-msgstr "ប្រើប្រាស់"
+msgid "Use Goodreads"
+msgstr ""
 
 #: cps/templates/config_edit.html:176
 msgid "Obtain an API Key"
@@ -2404,4 +2409,7 @@ msgstr "ការទាញយកថ្មីៗ"
 
 #~ msgid "Google OAuth Client Secret"
 #~ msgstr ""
+
+#~ msgid "Use"
+#~ msgstr "ប្រើប្រាស់"
 

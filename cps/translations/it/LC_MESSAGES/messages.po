@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2019-07-26 16:41+0200\n"
+"POT-Creation-Date: 2019-09-06 19:03+0200\n"
 "PO-Revision-Date: 2017-04-04 15:09+0200\n"
 "Last-Translator: Marco Picone <marcovendere@gmail.com>\n"
 "Language: it\n"
@@ -17,7 +17,17 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.7.0\n"
 
-#: cps/about.py:70
+#: cps/about.py:40 cps/about.py:65 cps/about.py:66 cps/uploader.py:228
+msgid "installed"
+msgstr ""
+
+#: cps/about.py:42 cps/about.py:65 cps/about.py:66 cps/uploader.py:213
+#: cps/uploader.py:214 cps/uploader.py:218 cps/uploader.py:222
+#: cps/uploader.py:226 cps/uploader.py:230
+msgid "not installed"
+msgstr "non installato"
+
+#: cps/about.py:80
 msgid "Statistics"
 msgstr "Statistica"
 
@@ -41,143 +51,143 @@ msgstr "Pagina di amministrazione"
 msgid "UI Configuration"
 msgstr "Configurazione dell'interfaccia utente"
 
-#: cps/admin.py:181 cps/admin.py:399
+#: cps/admin.py:181 cps/admin.py:401
 msgid "Calibre-Web configuration updated"
 msgstr "Aggiornamento della configurazione di Calibre-Web"
 
-#: cps/admin.py:427 cps/templates/admin.html:101
+#: cps/admin.py:429 cps/templates/admin.html:101
 msgid "Basic Configuration"
 msgstr "Configurazione di base"
 
-#: cps/admin.py:450 cps/web.py:1050
+#: cps/admin.py:452 cps/web.py:1050
 msgid "Please fill out all fields!"
 msgstr "Per favore compila tutti i campi!"
 
-#: cps/admin.py:452 cps/admin.py:463 cps/admin.py:469 cps/admin.py:484
+#: cps/admin.py:454 cps/admin.py:465 cps/admin.py:471 cps/admin.py:486
 #: cps/templates/admin.html:35
 msgid "Add new user"
 msgstr "Aggiungi un nuovo utente"
 
-#: cps/admin.py:461 cps/web.py:1253
+#: cps/admin.py:463 cps/web.py:1253
 msgid "E-mail is not from valid domain"
 msgstr "L'e-mail non proviene da un dominio valido"
 
-#: cps/admin.py:467 cps/admin.py:478
+#: cps/admin.py:469 cps/admin.py:480
 msgid "Found an existing account for this e-mail address or nickname."
 msgstr "Trovato un account esistente con questo e-mail o nome di utente"
 
-#: cps/admin.py:474
+#: cps/admin.py:476
 #, python-format
 msgid "User '%(user)s' created"
 msgstr "Utente '%(user)s' creato"
 
-#: cps/admin.py:494
+#: cps/admin.py:496
 msgid "Edit e-mail server settings"
 msgstr "Modifica la configurazione del server e-mail"
 
-#: cps/admin.py:520
+#: cps/admin.py:522
 #, python-format
 msgid "Test e-mail successfully send to %(kindlemail)s"
 msgstr "E-mail di test inviato con successo a %(kindlemail)s"
 
-#: cps/admin.py:523
+#: cps/admin.py:525
 #, python-format
 msgid "There was an error sending the Test e-mail: %(res)s"
 msgstr "Si è verificato un errore nell'invio dell'e-mail di test: %(res)s"
 
-#: cps/admin.py:525 cps/web.py:1033
+#: cps/admin.py:527 cps/web.py:1033
 msgid "Please configure your kindle e-mail address first..."
 msgstr "Per favore configura dapprima il tuo indirizzo e-mail di Kindle..."
 
-#: cps/admin.py:527
+#: cps/admin.py:529
 msgid "E-mail server settings updated"
 msgstr "Configurazione del server e-mail aggiornata"
 
-#: cps/admin.py:556
+#: cps/admin.py:558
 #, python-format
 msgid "User '%(nick)s' deleted"
 msgstr "Utente '%(nick)s' eliminato"
 
-#: cps/admin.py:559
+#: cps/admin.py:561
 msgid "No admin user remaining, can't delete user"
 msgstr ""
 
-#: cps/admin.py:598 cps/web.py:1279
+#: cps/admin.py:600 cps/web.py:1279
 msgid "Found an existing account for this e-mail address."
 msgstr "Ho trovato un account creato in precedenza con questo e-mail."
 
-#: cps/admin.py:601 cps/admin.py:613
+#: cps/admin.py:603 cps/admin.py:615
 #, python-format
 msgid "Edit User %(nick)s"
 msgstr "Modifica utente %(nick)s"
 
-#: cps/admin.py:607
+#: cps/admin.py:609
 #, python-format
 msgid "User '%(nick)s' updated"
 msgstr "Utente '%(nick)s' aggiornato"
 
-#: cps/admin.py:610
+#: cps/admin.py:612
 msgid "An unknown error occured."
 msgstr "Si è verificato un errore imprevisto."
 
-#: cps/admin.py:629
+#: cps/admin.py:631
 #, python-format
 msgid "Password for user %(user)s reset"
 msgstr "La password dell'utente %(user)s è stata resettata"
 
-#: cps/admin.py:632 cps/web.py:1075
+#: cps/admin.py:634 cps/web.py:1075
 msgid "An unknown error occurred. Please try again later."
 msgstr "Si è verificato un errore sconosciuto: per favore riprova."
 
-#: cps/admin.py:643
+#: cps/admin.py:645
 msgid "Logfile viewer"
 msgstr ""
 
-#: cps/admin.py:678
+#: cps/admin.py:680
 msgid "Requesting update package"
 msgstr "Richiesta del pacchetto di aggiornamento"
 
-#: cps/admin.py:679
+#: cps/admin.py:681
 msgid "Downloading update package"
 msgstr "Scarico il pacchetto di aggiornamento"
 
-#: cps/admin.py:680
+#: cps/admin.py:682
 msgid "Unzipping update package"
 msgstr "Decomprimo il pacchetto di aggiornamento"
 
-#: cps/admin.py:681
+#: cps/admin.py:683
 msgid "Replacing files"
 msgstr "Sostituzione files"
 
-#: cps/admin.py:682
+#: cps/admin.py:684
 msgid "Database connections are closed"
 msgstr "Le connessioni al database sono chiuse"
 
-#: cps/admin.py:683
+#: cps/admin.py:685
 msgid "Stopping server"
 msgstr "Arresta il server"
 
-#: cps/admin.py:684
+#: cps/admin.py:686
 msgid "Update finished, please press okay and reload page"
 msgstr "Aggiornamento completato, prego premere ok e ricaricare la pagina"
 
-#: cps/admin.py:685 cps/admin.py:686 cps/admin.py:687 cps/admin.py:688
+#: cps/admin.py:687 cps/admin.py:688 cps/admin.py:689 cps/admin.py:690
 msgid "Update failed:"
 msgstr "Aggiornamento fallito:"
 
-#: cps/admin.py:685 cps/updater.py:271 cps/updater.py:456 cps/updater.py:458
+#: cps/admin.py:687 cps/updater.py:271 cps/updater.py:456 cps/updater.py:458
 msgid "HTTP Error"
 msgstr "HTTP Error"
 
-#: cps/admin.py:686 cps/updater.py:273 cps/updater.py:460
+#: cps/admin.py:688 cps/updater.py:273 cps/updater.py:460
 msgid "Connection error"
 msgstr "Errore di connessione"
 
-#: cps/admin.py:687 cps/updater.py:275 cps/updater.py:462
+#: cps/admin.py:689 cps/updater.py:275 cps/updater.py:462
 msgid "Timeout while establishing connection"
 msgstr "Tempo scaduto nello stabilire la connessione"
 
-#: cps/admin.py:688 cps/updater.py:277 cps/updater.py:464
+#: cps/admin.py:690 cps/updater.py:277 cps/updater.py:464
 msgid "General error"
 msgstr "Errore generale"
 
@@ -525,16 +535,16 @@ msgstr "Lo scaffale %(title)s è stato modificato"
 msgid "Edit a shelf"
 msgstr "Modifica uno scaffale"
 
-#: cps/shelf.py:295
+#: cps/shelf.py:294
 #, python-format
 msgid "Shelf: '%(name)s'"
 msgstr "Scaffale: '%(name)s'"
 
-#: cps/shelf.py:298
+#: cps/shelf.py:297
 msgid "Error opening shelf. Shelf does not exist or is not accessible"
 msgstr "Errore durante l'apertura dello scaffale. Lo scaffale non esiste o non è accessibile"
 
-#: cps/shelf.py:330
+#: cps/shelf.py:329
 #, python-format
 msgid "Change order of Shelf: '%(name)s'"
 msgstr "Modificare l'ordine dello scaffale: '%(name)s'"
@@ -674,11 +684,6 @@ msgstr "Nuovo aggiornamento disponibile. Clicca sul pulsante sottostante per agg
 #: cps/updater.py:423
 msgid "Click on the button below to update to the latest stable version."
 msgstr ""
-
-#: cps/uploader.py:213 cps/uploader.py:214 cps/uploader.py:218
-#: cps/uploader.py:222 cps/uploader.py:226
-msgid "not installed"
-msgstr "non installato"
 
 #: cps/web.py:460
 msgid "Recently Added Books"
@@ -1361,8 +1366,8 @@ msgid "Enable remote login (\"magic link\")"
 msgstr "Attiva login remoto (\"magic link\")"
 
 #: cps/templates/config_edit.html:175
-msgid "Use"
-msgstr "Uso"
+msgid "Use Goodreads"
+msgstr ""
 
 #: cps/templates/config_edit.html:176
 msgid "Obtain an API Key"
@@ -3575,4 +3580,7 @@ msgstr "Download Recenti"
 
 #~ msgid "Google OAuth Client Secret"
 #~ msgstr ""
+
+#~ msgid "Use"
+#~ msgstr "Uso"
 
