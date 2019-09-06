@@ -108,7 +108,7 @@ def create_app():
     return app
 
 @babel.localeselector
-def negociate_locale():
+def get_locale():
     # if a user is logged in, use the locale from the user settings
     user = getattr(g, 'user', None)
     # user = None
@@ -126,10 +126,6 @@ def negociate_locale():
                 # preferred.append('en')
 
     return negotiate_locale(preferred or ['en'], _BABEL_TRANSLATIONS)
-
-
-def get_locale():
-    return request._locale
 
 
 @babel.timezoneselector
