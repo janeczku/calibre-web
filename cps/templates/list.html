@@ -3,7 +3,7 @@
 <h1 class="{{page}}">{{_(title)}}</h1>
 
     <div class="filterheader hidden-xs hidden-sm">
-      {% if entries.__len__ %}
+      {% if entries.__len__() %}
        {% if entries[0][0].sort %}
         <button id="sort_name" class="btn btn-success"><b>B,A <-> A B</b></button>
        {% endif %}
