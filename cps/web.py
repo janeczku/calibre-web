@@ -44,7 +44,7 @@ from werkzeug.datastructures import Headers
 from werkzeug.security import generate_password_hash, check_password_hash
 
 from . import constants, logger, isoLanguages, services, worker
-from . import searched_ids, lm, babel, db, ub, config, negociate_locale, get_locale, app
+from . import searched_ids, lm, babel, db, ub, config, get_locale, app
 from .gdriveutils import getFileFromEbooksFolder, do_gdrive_download
 from .helper import common_filters, get_search_results, fill_indexpage, speaking_language, check_valid_domain, \
         order_authors, get_typeahead, render_task_status, json_serial, get_cc_columns, \
@@ -242,8 +242,6 @@ def render_title_template(*args, **kwargs):
 
 @web.before_app_request
 def before_request():
-    # log.debug("before_request: %s %s %r", request.method, request.path, getattr(request, 'locale', None))
-    request._locale = negociate_locale()
     g.user = current_user
     g.allow_registration = config.config_public_reg
     g.allow_anonymous = config.config_anonbrowse
