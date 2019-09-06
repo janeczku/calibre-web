@@ -1,5 +1,5 @@
 # GDrive Integration
-google-api-python-client==1.6.1
+google-api-python-client==1.7.11
 gevent==1.2.1
 greenlet==0.4.12
 httplib2==0.9.2
