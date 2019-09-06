@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2019-08-06 18:35+0200\n"
+"POT-Creation-Date: 2019-09-06 19:03+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,16 +17,17 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.7.0\n"
 
-#: cps/about.py:40
+#: cps/about.py:40 cps/about.py:65 cps/about.py:66 cps/uploader.py:228
 msgid "installed"
 msgstr ""
 
-#: cps/about.py:42 cps/uploader.py:213 cps/uploader.py:214 cps/uploader.py:218
-#: cps/uploader.py:222 cps/uploader.py:226
+#: cps/about.py:42 cps/about.py:65 cps/about.py:66 cps/uploader.py:213
+#: cps/uploader.py:214 cps/uploader.py:218 cps/uploader.py:222
+#: cps/uploader.py:226 cps/uploader.py:230
 msgid "not installed"
 msgstr ""
 
-#: cps/about.py:76
+#: cps/about.py:80
 msgid "Statistics"
 msgstr ""
 
@@ -50,143 +51,143 @@ msgstr ""
 msgid "UI Configuration"
 msgstr ""
 
-#: cps/admin.py:181 cps/admin.py:399
+#: cps/admin.py:181 cps/admin.py:401
 msgid "Calibre-Web configuration updated"
 msgstr ""
 
-#: cps/admin.py:427 cps/templates/admin.html:101
+#: cps/admin.py:429 cps/templates/admin.html:101
 msgid "Basic Configuration"
 msgstr ""
 
-#: cps/admin.py:450 cps/web.py:1050
+#: cps/admin.py:452 cps/web.py:1050
 msgid "Please fill out all fields!"
 msgstr ""
 
-#: cps/admin.py:452 cps/admin.py:463 cps/admin.py:469 cps/admin.py:484
+#: cps/admin.py:454 cps/admin.py:465 cps/admin.py:471 cps/admin.py:486
 #: cps/templates/admin.html:35
 msgid "Add new user"
 msgstr ""
 
-#: cps/admin.py:461 cps/web.py:1253
+#: cps/admin.py:463 cps/web.py:1253
 msgid "E-mail is not from valid domain"
 msgstr ""
 
-#: cps/admin.py:467 cps/admin.py:478
+#: cps/admin.py:469 cps/admin.py:480
 msgid "Found an existing account for this e-mail address or nickname."
 msgstr ""
 
-#: cps/admin.py:474
+#: cps/admin.py:476
 #, python-format
 msgid "User '%(user)s' created"
 msgstr ""
 
-#: cps/admin.py:494
+#: cps/admin.py:496
 msgid "Edit e-mail server settings"
 msgstr ""
 
-#: cps/admin.py:520
+#: cps/admin.py:522
 #, python-format
 msgid "Test e-mail successfully send to %(kindlemail)s"
 msgstr ""
 
-#: cps/admin.py:523
+#: cps/admin.py:525
 #, python-format
 msgid "There was an error sending the Test e-mail: %(res)s"
 msgstr ""
 
-#: cps/admin.py:525 cps/web.py:1033
+#: cps/admin.py:527 cps/web.py:1033
 msgid "Please configure your kindle e-mail address first..."
 msgstr ""
 
-#: cps/admin.py:527
+#: cps/admin.py:529
 msgid "E-mail server settings updated"
 msgstr ""
 
-#: cps/admin.py:556
+#: cps/admin.py:558
 #, python-format
 msgid "User '%(nick)s' deleted"
 msgstr ""
 
-#: cps/admin.py:559
+#: cps/admin.py:561
 msgid "No admin user remaining, can't delete user"
 msgstr ""
 
-#: cps/admin.py:598 cps/web.py:1279
+#: cps/admin.py:600 cps/web.py:1279
 msgid "Found an existing account for this e-mail address."
 msgstr ""
 
-#: cps/admin.py:601 cps/admin.py:613
+#: cps/admin.py:603 cps/admin.py:615
 #, python-format
 msgid "Edit User %(nick)s"
 msgstr ""
 
-#: cps/admin.py:607
+#: cps/admin.py:609
 #, python-format
 msgid "User '%(nick)s' updated"
 msgstr ""
 
-#: cps/admin.py:610
+#: cps/admin.py:612
 msgid "An unknown error occured."
 msgstr ""
 
-#: cps/admin.py:629
+#: cps/admin.py:631
 #, python-format
 msgid "Password for user %(user)s reset"
 msgstr ""
 
-#: cps/admin.py:632 cps/web.py:1075
+#: cps/admin.py:634 cps/web.py:1075
 msgid "An unknown error occurred. Please try again later."
 msgstr ""
 
-#: cps/admin.py:643
+#: cps/admin.py:645
 msgid "Logfile viewer"
 msgstr ""
 
-#: cps/admin.py:678
+#: cps/admin.py:680
 msgid "Requesting update package"
 msgstr ""
 
-#: cps/admin.py:679
+#: cps/admin.py:681
 msgid "Downloading update package"
 msgstr ""
 
-#: cps/admin.py:680
+#: cps/admin.py:682
 msgid "Unzipping update package"
 msgstr ""
 
-#: cps/admin.py:681
+#: cps/admin.py:683
 msgid "Replacing files"
 msgstr ""
 
-#: cps/admin.py:682
+#: cps/admin.py:684
 msgid "Database connections are closed"
 msgstr ""
 
-#: cps/admin.py:683
+#: cps/admin.py:685
 msgid "Stopping server"
 msgstr ""
 
-#: cps/admin.py:684
+#: cps/admin.py:686
 msgid "Update finished, please press okay and reload page"
 msgstr ""
 
-#: cps/admin.py:685 cps/admin.py:686 cps/admin.py:687 cps/admin.py:688
+#: cps/admin.py:687 cps/admin.py:688 cps/admin.py:689 cps/admin.py:690
 msgid "Update failed:"
 msgstr ""
 
-#: cps/admin.py:685 cps/updater.py:271 cps/updater.py:456 cps/updater.py:458
+#: cps/admin.py:687 cps/updater.py:271 cps/updater.py:456 cps/updater.py:458
 msgid "HTTP Error"
 msgstr ""
 
-#: cps/admin.py:686 cps/updater.py:273 cps/updater.py:460
+#: cps/admin.py:688 cps/updater.py:273 cps/updater.py:460
 msgid "Connection error"
 msgstr ""
 
-#: cps/admin.py:687 cps/updater.py:275 cps/updater.py:462
+#: cps/admin.py:689 cps/updater.py:275 cps/updater.py:462
 msgid "Timeout while establishing connection"
 msgstr ""
 
-#: cps/admin.py:688 cps/updater.py:277 cps/updater.py:464
+#: cps/admin.py:690 cps/updater.py:277 cps/updater.py:464
 msgid "General error"
 msgstr ""
 
@@ -284,133 +285,125 @@ msgstr ""
 msgid "Callback domain is not verified, please follow steps to verify domain in google developer console"
 msgstr ""
 
-#: cps/helper.py:53
-msgid "Installed"
-msgstr ""
-
-#: cps/helper.py:56
-msgid "Not installed"
-msgstr ""
-
-#: cps/helper.py:81
+#: cps/helper.py:79
 #, python-format
 msgid "%(format)s format not found for book id: %(book)d"
 msgstr ""
 
-#: cps/helper.py:93
+#: cps/helper.py:91
 #, python-format
 msgid "%(format)s not found on Google Drive: %(fn)s"
 msgstr ""
 
-#: cps/helper.py:100 cps/helper.py:208 cps/templates/detail.html:41
+#: cps/helper.py:98 cps/helper.py:206 cps/templates/detail.html:41
 #: cps/templates/detail.html:45
 msgid "Send to Kindle"
 msgstr ""
 
-#: cps/helper.py:101 cps/helper.py:119 cps/helper.py:210
+#: cps/helper.py:99 cps/helper.py:117 cps/helper.py:208
 msgid "This e-mail has been sent via Calibre-Web."
 msgstr ""
 
-#: cps/helper.py:112
+#: cps/helper.py:110
 #, python-format
 msgid "%(format)s not found: %(fn)s"
 msgstr ""
 
-#: cps/helper.py:117
+#: cps/helper.py:115
 msgid "Calibre-Web test e-mail"
 msgstr ""
 
-#: cps/helper.py:119
+#: cps/helper.py:117
 msgid "Test e-mail"
 msgstr ""
 
-#: cps/helper.py:134
+#: cps/helper.py:132
 msgid "Get Started with Calibre-Web"
 msgstr ""
 
-#: cps/helper.py:136
+#: cps/helper.py:134
 #, python-format
 msgid "Registration e-mail for user: %(name)s"
 msgstr ""
 
-#: cps/helper.py:150 cps/helper.py:152 cps/helper.py:154 cps/helper.py:162
-#: cps/helper.py:164 cps/helper.py:166
+#: cps/helper.py:148 cps/helper.py:150 cps/helper.py:152 cps/helper.py:160
+#: cps/helper.py:162 cps/helper.py:164
 #, python-format
 msgid "Send %(format)s to Kindle"
 msgstr ""
 
-#: cps/helper.py:170
+#: cps/helper.py:168
 #, python-format
 msgid "Convert %(orig)s to %(format)s and send to Kindle"
 msgstr ""
 
-#: cps/helper.py:210
+#: cps/helper.py:208
 #, python-format
 msgid "E-mail: %(book)s"
 msgstr ""
 
-#: cps/helper.py:212
+#: cps/helper.py:210
 msgid "The requested file could not be read. Maybe wrong permissions?"
 msgstr ""
 
-#: cps/helper.py:319
+#: cps/helper.py:317
 #, python-format
 msgid "Rename title from: '%(src)s' to '%(dest)s' failed with error: %(error)s"
 msgstr ""
 
-#: cps/helper.py:329
+#: cps/helper.py:327
 #, python-format
 msgid "Rename author from: '%(src)s' to '%(dest)s' failed with error: %(error)s"
 msgstr ""
 
-#: cps/helper.py:343
+#: cps/helper.py:341
 #, python-format
 msgid "Rename file in path '%(src)s' to '%(dest)s' failed with error: %(error)s"
 msgstr ""
 
-#: cps/helper.py:369 cps/helper.py:379 cps/helper.py:387
+#: cps/helper.py:367 cps/helper.py:377 cps/helper.py:385
 #, python-format
 msgid "File %(file)s not found on Google Drive"
 msgstr ""
 
-#: cps/helper.py:408
+#: cps/helper.py:406
 #, python-format
 msgid "Book path %(path)s not found on Google Drive"
 msgstr ""
 
-#: cps/helper.py:625
+#: cps/helper.py:623
 msgid "Waiting"
 msgstr ""
 
-#: cps/helper.py:627
+#: cps/helper.py:625
 msgid "Failed"
 msgstr ""
 
-#: cps/helper.py:629
+#: cps/helper.py:627
 msgid "Started"
 msgstr ""
 
-#: cps/helper.py:631
+#: cps/helper.py:629
 msgid "Finished"
 msgstr ""
 
-#: cps/helper.py:633
+#: cps/helper.py:631
 msgid "Unknown Status"
 msgstr ""
 
-#: cps/helper.py:638
+#: cps/helper.py:636
 msgid "E-mail: "
 msgstr ""
 
-#: cps/helper.py:640 cps/helper.py:644
+#: cps/helper.py:638 cps/helper.py:642
 msgid "Convert: "
 msgstr ""
 
-#: cps/helper.py:642
+#: cps/helper.py:640
 msgid "Upload: "
 msgstr ""
 
-#: cps/helper.py:646
+#: cps/helper.py:644
 msgid "Unknown Task: "
 msgstr ""
 
@@ -542,16 +535,16 @@ msgstr ""
 msgid "Edit a shelf"
 msgstr ""
 
-#: cps/shelf.py:295
+#: cps/shelf.py:294
 #, python-format
 msgid "Shelf: '%(name)s'"
 msgstr ""
 
-#: cps/shelf.py:298
+#: cps/shelf.py:297
 msgid "Error opening shelf. Shelf does not exist or is not accessible"
 msgstr ""
 
-#: cps/shelf.py:330
+#: cps/shelf.py:329
 #, python-format
 msgid "Change order of Shelf: '%(name)s'"
 msgstr ""
@@ -1373,7 +1366,7 @@ msgid "Enable remote login (\"magic link\")"
 msgstr ""
 
 #: cps/templates/config_edit.html:175
-msgid "Use"
+msgid "Use Goodreads"
 msgstr ""
 
 #: cps/templates/config_edit.html:176
