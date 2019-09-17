@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2019-09-06 19:03+0200\n"
+"POT-Creation-Date: 2019-09-17 18:24+0200\n"
 "PO-Revision-Date: 2019-08-06 18:36+0200\n"
 "Last-Translator: Ozzie Isaacs\n"
 "Language: de\n"
@@ -60,7 +60,7 @@ msgstr "Konfiguration von Calibre-Web wurde aktualisiert"
 msgid "Basic Configuration"
 msgstr "Basiskonfiguration"
 
-#: cps/admin.py:452 cps/web.py:1050
+#: cps/admin.py:452 cps/web.py:1048
 msgid "Please fill out all fields!"
 msgstr "Bitte alle Felder ausfüllen!"
 
@@ -69,7 +69,7 @@ msgstr "Bitte alle Felder ausfüllen!"
 msgid "Add new user"
 msgstr "Neuen Benutzer hinzufügen"
 
-#: cps/admin.py:463 cps/web.py:1253
+#: cps/admin.py:463 cps/web.py:1251
 msgid "E-mail is not from valid domain"
 msgstr "E-Mail bezieht sich nicht auf eine gültige Domain"
 
@@ -96,7 +96,7 @@ msgstr "Test-E-Mail wurde erfolgreich an %(kindlemail)s versendet"
 msgid "There was an error sending the Test e-mail: %(res)s"
 msgstr "Es trat ein Fehler beim Versenden der Test-E-Mail auf: %(res)s"
 
-#: cps/admin.py:527 cps/web.py:1033
+#: cps/admin.py:527 cps/web.py:1031
 msgid "Please configure your kindle e-mail address first..."
 msgstr "Bitte zuerst die Kindle E-Mailadresse konfigurieren..."
 
@@ -113,7 +113,7 @@ msgstr "Benutzer '%(nick)s' gelöscht"
 msgid "No admin user remaining, can't delete user"
 msgstr "Benutzer kann nicht gelöscht werden, es wäre kein Admin Benutzer übrig"
 
-#: cps/admin.py:600 cps/web.py:1279
+#: cps/admin.py:600 cps/web.py:1277
 msgid "Found an existing account for this e-mail address."
 msgstr "Es existiert bereits ein Benutzer für diese E-Mailadresse."
 
@@ -136,7 +136,7 @@ msgstr "Es ist ein unbekannter Fehler aufgetreten."
 msgid "Password for user %(user)s reset"
 msgstr "Passwort für Benutzer %(user)s wurde zurückgesetzt"
 
-#: cps/admin.py:634 cps/web.py:1075
+#: cps/admin.py:634 cps/web.py:1073
 msgid "An unknown error occurred. Please try again later."
 msgstr "Es ist ein unbekannter Fehler aufgetreten. Bitte später erneut versuchen."
 
@@ -575,7 +575,7 @@ msgid "Show best rated books"
 msgstr "Zeige am besten bewertete Bücher"
 
 #: cps/templates/index.xml:46 cps/templates/index.xml:50 cps/ub.py:67
-#: cps/web.py:971
+#: cps/web.py:969
 msgid "Read Books"
 msgstr "Gelesene Bücher"
 
@@ -584,7 +584,7 @@ msgid "Show read and unread"
 msgstr "Zeige gelesene/ungelesene Bücher"
 
 #: cps/templates/index.xml:53 cps/templates/index.xml:57 cps/ub.py:71
-#: cps/web.py:975
+#: cps/web.py:973
 msgid "Unread Books"
 msgstr "Ungelesene Bücher"
 
@@ -686,199 +686,199 @@ msgstr "Ein neues Update ist verfügbar. Klicke auf den Button unten, um auf Ver
 msgid "Click on the button below to update to the latest stable version."
 msgstr "Klicke auf den Button unten, um auf die letzte stabile Version zu aktualisieren."
 
-#: cps/web.py:460
+#: cps/web.py:458
 msgid "Recently Added Books"
 msgstr "Kürzlich hinzugefügte Bücher"
 
-#: cps/web.py:488
+#: cps/web.py:486
 msgid "Best rated books"
 msgstr "Am besten bewertete Bücher"
 
-#: cps/templates/index.xml:38 cps/web.py:496
+#: cps/templates/index.xml:38 cps/web.py:494
 msgid "Random Books"
 msgstr "Zufällige Bücher"
 
-#: cps/web.py:522
+#: cps/web.py:520
 msgid "Books"
 msgstr "Bücher"
 
-#: cps/web.py:549
+#: cps/web.py:547
 msgid "Hot Books (most downloaded)"
 msgstr "Beliebte Bücher (am meisten Downloads)"
 
-#: cps/web.py:560 cps/web.py:1300 cps/web.py:1388
+#: cps/web.py:558 cps/web.py:1298 cps/web.py:1386
 msgid "Error opening eBook. File does not exist or file is not accessible:"
 msgstr "Öffnen des Buchs fehlgeschlagen. Datei existiert nicht oder ist nicht zugänglich:"
 
-#: cps/web.py:573
+#: cps/web.py:571
 #, python-format
 msgid "Author: %(name)s"
 msgstr "Author: %(name)s"
 
-#: cps/web.py:585
+#: cps/web.py:583
 #, python-format
 msgid "Publisher: %(name)s"
 msgstr "Verleger: %(name)s"
 
-#: cps/web.py:596
+#: cps/web.py:594
 #, python-format
 msgid "Series: %(serie)s"
 msgstr "Serie: %(serie)s"
 
-#: cps/web.py:607
+#: cps/web.py:605
 #, python-format
 msgid "Rating: %(rating)s stars"
 msgstr "Bewertung: %(rating)s Sterne"
 
-#: cps/web.py:618
+#: cps/web.py:616
 #, python-format
 msgid "File format: %(format)s"
 msgstr "Dateiformat: %(format)s"
 
-#: cps/web.py:630
+#: cps/web.py:628
 #, python-format
 msgid "Category: %(name)s"
 msgstr "Kategorie: %(name)s"
 
-#: cps/web.py:647
+#: cps/web.py:645
 #, python-format
 msgid "Language: %(name)s"
 msgstr "Sprache: %(name)s"
 
-#: cps/web.py:679
+#: cps/web.py:677
 msgid "Publisher list"
 msgstr "Verlegerliste"
 
-#: cps/templates/index.xml:82 cps/web.py:695
+#: cps/templates/index.xml:82 cps/web.py:693
 msgid "Series list"
 msgstr "Serienliste"
 
-#: cps/web.py:709
+#: cps/web.py:707
 msgid "Ratings list"
 msgstr "Bewertungsliste"
 
-#: cps/web.py:722
+#: cps/web.py:720
 msgid "File formats list"
 msgstr "Liste der Dateiformate"
 
-#: cps/web.py:750
+#: cps/web.py:748
 msgid "Available languages"
 msgstr "Verfügbare Sprachen"
 
-#: cps/templates/index.xml:75 cps/web.py:767
+#: cps/templates/index.xml:75 cps/web.py:765
 msgid "Category list"
 msgstr "Kategorienliste"
 
-#: cps/templates/layout.html:73 cps/web.py:781
+#: cps/templates/layout.html:73 cps/web.py:779
 msgid "Tasks"
 msgstr "Aufgaben"
 
-#: cps/web.py:846
+#: cps/web.py:844
 msgid "Published after "
 msgstr "Herausgegeben nach dem "
 
-#: cps/web.py:853
+#: cps/web.py:851
 msgid "Published before "
 msgstr "Herausgegeben vor dem "
 
-#: cps/web.py:867
+#: cps/web.py:865
 #, python-format
 msgid "Rating <= %(rating)s"
 msgstr "Bewertung <= %(rating)s"
 
-#: cps/web.py:869
+#: cps/web.py:867
 #, python-format
 msgid "Rating >= %(rating)s"
 msgstr "Bewertung >= %(rating)s"
 
-#: cps/web.py:929 cps/web.py:939
+#: cps/web.py:927 cps/web.py:937
 msgid "search"
 msgstr "Suche"
 
-#: cps/web.py:1022
+#: cps/web.py:1020
 msgid "Please configure the SMTP mail settings first..."
 msgstr "Bitte zuerst die SMTP-Einstellung konfigurieren ..."
 
-#: cps/web.py:1027
+#: cps/web.py:1025
 #, python-format
 msgid "Book successfully queued for sending to %(kindlemail)s"
 msgstr "Buch erfolgreich zum Senden an %(kindlemail)s eingereiht"
 
-#: cps/web.py:1031
+#: cps/web.py:1029
 #, python-format
 msgid "There was an error sending this book: %(res)s"
 msgstr "Beim Senden des Buchs trat ein Fehler auf: %(res)s"
 
-#: cps/web.py:1051 cps/web.py:1076 cps/web.py:1080 cps/web.py:1085
-#: cps/web.py:1089
+#: cps/web.py:1049 cps/web.py:1074 cps/web.py:1078 cps/web.py:1083
+#: cps/web.py:1087
 msgid "register"
 msgstr "Registieren"
 
-#: cps/web.py:1078
+#: cps/web.py:1076
 msgid "Your e-mail is not allowed to register"
 msgstr "Diese E-Mail ist nicht für die Registrierung zugelassen"
 
-#: cps/web.py:1081
+#: cps/web.py:1079
 msgid "Confirmation e-mail was send to your e-mail account."
 msgstr "Eine Bestätigungs-E-Mail wurde an deinen E-Mail Account versendet."
 
-#: cps/web.py:1084
+#: cps/web.py:1082
 msgid "This username or e-mail address is already in use."
 msgstr "Benutzername oder E-Mailadresse ist bereits in Verwendung."
 
-#: cps/web.py:1099
+#: cps/web.py:1097
 msgid "Cannot activate LDAP authentication"
 msgstr "LDAP-Authentifizierung kann nicht aktiviert werden"
 
-#: cps/web.py:1108 cps/web.py:1214
+#: cps/web.py:1106 cps/web.py:1212
 #, python-format
 msgid "you are now logged in as: '%(nickname)s'"
 msgstr "Du bist nun eingeloggt als '%(nickname)s'"
 
-#: cps/web.py:1112
+#: cps/web.py:1110
 msgid "Could not login. LDAP server down, please contact your administrator"
 msgstr "Login nicht erfolgreich, LDAP Server nicht erreichbar, bitte Administrator kontaktieren"
 
-#: cps/web.py:1116 cps/web.py:1124
+#: cps/web.py:1114 cps/web.py:1122
 msgid "Wrong Username or Password"
 msgstr "Falscher Benutzername oder Passwort"
 
-#: cps/web.py:1120
+#: cps/web.py:1118
 #, python-format
 msgid "You are now logged in as: '%(nickname)s'"
 msgstr "Eingeloggt als: '%(nickname)s'"
 
-#: cps/web.py:1128 cps/web.py:1150
+#: cps/web.py:1126 cps/web.py:1148
 msgid "login"
 msgstr "Login"
 
-#: cps/web.py:1162 cps/web.py:1193
+#: cps/web.py:1160 cps/web.py:1191
 msgid "Token not found"
 msgstr "Token wurde nicht gefunden"
 
-#: cps/web.py:1170 cps/web.py:1201
+#: cps/web.py:1168 cps/web.py:1199
 msgid "Token has expired"
 msgstr "Das Token ist abgelaufen"
 
-#: cps/web.py:1178
+#: cps/web.py:1176
 msgid "Success! Please return to your device"
 msgstr "Erfolg! Bitte zum Gerät zurückkehren"
 
-#: cps/web.py:1255 cps/web.py:1282 cps/web.py:1286
+#: cps/web.py:1253 cps/web.py:1280 cps/web.py:1284
 #, python-format
 msgid "%(name)s's profile"
 msgstr "%(name)s's Profil"
 
-#: cps/web.py:1284
+#: cps/web.py:1282
 msgid "Profile updated"
 msgstr "Profil aktualisiert"
 
-#: cps/web.py:1310 cps/web.py:1312 cps/web.py:1314 cps/web.py:1320
-#: cps/web.py:1324
+#: cps/web.py:1308 cps/web.py:1310 cps/web.py:1312 cps/web.py:1318
+#: cps/web.py:1322
 msgid "Read a Book"
 msgstr "Lese ein Buch"
 
-#: cps/web.py:1334
+#: cps/web.py:1332
 msgid "Error opening eBook. File does not exist or file is not accessible."
 msgstr "Fehler beim Öffnen des eBooks. Datei existiert nicht oder ist nicht zugänglich. "
 
@@ -1701,7 +1701,7 @@ msgstr ""
 
 #: cps/templates/http_error.html:44
 msgid "Back to home"
-msgstr "Zurück zur Hautseite"
+msgstr "Zurück zur Hauptseite"
 
 #: cps/templates/index.html:5
 msgid "Discover (Random Books)"
