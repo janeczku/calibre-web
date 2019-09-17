@@ -484,9 +484,9 @@ class WorkerThread(threading.Thread):
                 smtplib.stderr = logger.StderrLogger('worker.smtp')
 
             if use_ssl == 2:
-                self.asyncSMTP = email_SSL(obj['settings']["mail_server"], obj['settings']["mail_port"], timeout)
+                self.asyncSMTP = email_SSL(obj['settings']["mail_server"], obj['settings']["mail_port"], timeout=timeout)
             else:
-                self.asyncSMTP = email(obj['settings']["mail_server"], obj['settings']["mail_port"], timeout)
+                self.asyncSMTP = email(obj['settings']["mail_server"], obj['settings']["mail_port"], timeout=timeout)
 
             # link to logginglevel
             if logger.is_debug_enabled():
