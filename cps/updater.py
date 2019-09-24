@@ -168,8 +168,9 @@ class Updater(threading.Thread):
             for file_ in files:
                 src_file = os.path.join(src_dir, file_)
                 dst_file = os.path.join(dst_dir, file_)
-                permission = os.stat(dst_file)
                 if os.path.exists(dst_file):
+                    if change_permissions:
+                        permission = os.stat(dst_file)
                     log.debug('Remove file before copy: %s', dst_file)
                     os.remove(dst_file)
                 else:
