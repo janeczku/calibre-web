@@ -785,4 +785,7 @@ def get_download_link(book_id, book_format):
 ############### Database Helper functions
 
 def lcase(s):
-    return unidecode.unidecode(s.lower()) if use_unidecode else s.lower()
+    try:
+        return unidecode.unidecode(s.lower())
+    except Exception as e:
+        log.exception(e)
