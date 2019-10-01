@@ -35,7 +35,7 @@ from flask_login import login_required, current_user, logout_user
 from flask_babel import gettext as _
 from sqlalchemy import and_
 from sqlalchemy.exc import IntegrityError
-from sqlalchemy.sql.expression import func
+from sqlalchemy.sql.expression import func, exists
 from werkzeug.security import generate_password_hash
 
 from . import constants, logger, helper, services
@@ -563,7 +563,6 @@ def edit_user(user_id):
         else:
             if "password" in to_save and to_save["password"]:
                 content.password = generate_password_hash(to_save["password"])
-
             anonymous = content.is_anonymous
             content.role = constants.selected_roles(to_save)
             if anonymous:
@@ -601,6 +600,22 @@ def edit_user(user_id):
                     return render_title_template("user_edit.html", translations=translations, languages=languages,
                                                  new_user=0, content=content, downloads=downloads, registered_oauth=oauth_check,
                                                  title=_(u"Edit User %(nick)s", nick=content.nickname), page="edituser")
+            if "nickname" in to_save and to_save["nickname"] != content.nickname:
+                existing_nickname = ub.session.query(exists().where(
+                    ub.User.nickname == to_save["nickname"])).scalar()
+                if not existing_nickname:
+                    content.nickname = to_save["nickname"]
+                else:
+                    flash(_(u"This username is already taken."), category="error")
+                    return render_title_template("user_edit.html",
+                                                 translations=translations,
+                                                 languages=languages,
+                                                 new_user=0, content=content,
+                                                 downloads=downloads,
+                                                 registered_oauth=oauth_check,
+                                                 title=_(u"Edit User %(nick)s",
+                                                         nick=content.nickname),
+                                                 page="edituser")
 
             if "kindle_mail" in to_save and to_save["kindle_mail"] != content.kindle_mail:
                 content.kindle_mail = to_save["kindle_mail"]

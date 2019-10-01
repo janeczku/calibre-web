@@ -27,6 +27,7 @@ from flask import g
 from flask_babel import gettext as _
 from flask_login import AnonymousUserMixin
 from werkzeug.local import LocalProxy
+
 try:
     from flask_dance.consumer.backend.sqla import OAuthConsumerMixin
     oauth_support = True
