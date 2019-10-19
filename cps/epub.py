@@ -64,7 +64,12 @@ def get_epub_info(tmp_file_path, original_file_name, original_file_extension):
     for s in ['title', 'description', 'creator', 'language', 'subject']:
         tmp = p.xpath('dc:%s/text()' % s, namespaces=ns)
         if len(tmp) > 0:
-            epub_metadata[s] = p.xpath('dc:%s/text()' % s, namespaces=ns)[0]
+            if s == 'creator':
+                 epub_metadata[s] = ' & '.join(p.xpath('dc:%s/text()' % s, namespaces=ns))
+            elif s == 'language' or s == 'subject':
+                 epub_metadata[s] = ', '.join(p.xpath('dc:%s/text()' % s, namespaces=ns))
+            else:
+                epub_metadata[s] = p.xpath('dc:%s/text()' % s, namespaces=ns)[0]
         else:
             epub_metadata[s] = "Unknown"
 
