@@ -210,24 +210,24 @@ def get_versions():
         IVersion = ImageVersion.MAGICK_VERSION
         WVersion = ImageVersion.VERSION
     else:
-        IVersion = _(u'not installed')
-        WVersion = _(u'not installed')
+        IVersion = u'not installed'
+        WVersion = u'not installed'
     if use_pdf_meta:
         PVersion='v'+PyPdfVersion
     else:
-        PVersion=_(u'not installed')
+        PVersion=u'not installed'
     if lxmlversion:
         XVersion = 'v'+'.'.join(map(str, lxmlversion))
     else:
-        XVersion = _(u'not installed')
+        XVersion = u'not installed'
     if use_PIL:
         PILVersion = 'v' + PILversion
     else:
-        PILVersion = _(u'not installed')
+        PILVersion = u'not installed'
     if comic.use_comic_meta:
-        ComicVersion = _(u'installed')
+        ComicVersion = u'installed'
     else:
-        ComicVersion = _(u'not installed')
+        ComicVersion = u'not installed'
     return {'Image Magick': IVersion,
             'PyPdf': PVersion,
             'lxml':XVersion,

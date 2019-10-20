@@ -19,6 +19,7 @@
 from __future__ import division, print_function, unicode_literals
 import os
 import re
+from flask_babel import gettext as _
 
 from . import config, logger
 from .subproc_wrapper import process_wait
@@ -26,7 +27,8 @@ from .subproc_wrapper import process_wait
 
 log = logger.create()
 
-_NOT_CONFIGURED = 'not configured'
+# _() necessary to make babel aware of string for translation
+_NOT_CONFIGURED = _('not configured')
 _NOT_INSTALLED = 'not installed'
 _EXECUTION_ERROR = 'Execution permissions missing'
 
