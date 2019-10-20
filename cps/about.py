@@ -37,6 +37,7 @@ except ImportError:
     from flask_login.__about__ import __version__ as flask_loginVersion
 try:
     import unidecode
+    # _() necessary to make babel aware of string for translation
     unidecode_version = _(u'installed')
 except ImportError:
     unidecode_version = _(u'not installed')
@@ -62,8 +63,8 @@ _VERSIONS = OrderedDict(
     iso639=isoLanguages.__version__,
     pytz=pytz.__version__,
     Unidecode = unidecode_version,
-    Flask_SimpleLDAP =  _(u'installed') if bool(services.ldap) else _(u'not installed'),
-    Goodreads = _(u'installed') if bool(services.goodreads_support) else _(u'not installed'),
+    Flask_SimpleLDAP =  u'installed' if bool(services.ldap) else u'not installed',
+    Goodreads = u'installed' if bool(services.goodreads_support) else u'not installed',
 )
 _VERSIONS.update(uploader.get_versions())
 
