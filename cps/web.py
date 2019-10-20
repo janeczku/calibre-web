@@ -781,6 +781,12 @@ def get_tasks_status():
 
 # ################################### Search functions ################################################################
 
+@app.route("/reconnect")
+def reconnect():
+    db.session.close()
+    db.engine.dispose()
+    db.setup_db()
+    return json.dumps({})
 
 @web.route("/search", methods=["GET"])
 @login_required_if_no_ano
