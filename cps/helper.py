@@ -183,7 +183,7 @@ def check_read_formats(entry):
     bookformats = list()
     if len(entry.data):
         for ele in iter(entry.data):
-            if ele.format in EXTENSIONS_READER:
+            if ele.format.upper() in EXTENSIONS_READER:
                 bookformats.append(ele.format.lower())
     return bookformats
 
