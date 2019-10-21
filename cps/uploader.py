@@ -68,7 +68,7 @@ except ImportError as e:
     use_fb2_meta = False
 
 try:
-    from PIL import Image
+    from PIL import Image, ImageOps
     from PIL import __version__ as PILversion
     use_PIL = True
 except ImportError as e:
@@ -145,6 +145,10 @@ def pdf_meta(tmp_file_path, original_file_name, original_file_extension):
         languages="")
 
 
+def CMYKInvert(img):
+    return Image.merge(img.mode,[ImageOps.invert(b.convert('L')) for b in img.split()])
+
+
 def pdf_preview(tmp_file_path, tmp_dir):
     if use_generic_pdf_cover:
         return None
@@ -159,10 +163,11 @@ def pdf_preview(tmp_file_path, tmp_dir):
                     if xObject[obj]['/Subtype'] == '/Image':
                         size = (xObject[obj]['/Width'], xObject[obj]['/Height'])
                         data = xObject[obj]._data # xObject[obj].getData()
+                        mode = "P"
                         if xObject[obj]['/ColorSpace'] == '/DeviceRGB':
                             mode = "RGB"
-                        else:
-                            mode = "P"
+                        if xObject[obj]['/ColorSpace'] == '/DeviceCMYK':
+                            mode = "CMYK"
                         if '/Filter' in xObject[obj]:
                             if xObject[obj]['/Filter'] == '/FlateDecode':
                                 img = Image.frombytes(mode, size, data)
@@ -175,12 +180,20 @@ def pdf_preview(tmp_file_path, tmp_dir):
                                 img = open(cover_file_name, "wb")
                                 img.write(data)
                                 img.close()
+                                if mode == 'CMYK':
+                                    img2 = Image.open(cover_file_name)# .convert('RGB')
+                                    img2 = CMYKInvert(img2)
+                                    img2.save(cover_file_name)
                                 return cover_file_name
                             elif xObject[obj]['/Filter'] == '/JPXDecode':
                                 cover_file_name = os.path.splitext(tmp_file_path)[0] + ".cover.jp2"
                                 img = open(cover_file_name, "wb")
                                 img.write(data)
                                 img.close()
+                                if mode == 'CMYK':
+                                    img2 = Image.open(cover_file_name)# .convert('RGB')
+                                    img2 = CMYKInvert(img2)
+                                    img2.save(cover_file_name)
                                 return cover_file_name
                         else:
                             img = Image.frombytes(mode, size, data)
