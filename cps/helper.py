@@ -780,7 +780,17 @@ def get_download_link(book_id, book_format):
     else:
         abort(404)
 
+def check_exists_book(authr,title):
+    db.session.connection().connection.connection.create_function("lower", 1, lcase)
+    q = list()
+    authorterms = re.split(r'\s*&\s*', authr)
+    for authorterm in authorterms:
+        q.append(db.Books.authors.any(func.lower(db.Authors.name).ilike("%" + authorterm + "%")))
 
+    return db.session.query(db.Books).filter(
+        and_(db.Books.authors.any(and_(*q)),
+            func.lower(db.Books.title).ilike("%" + title + "%")
+            )).first()
 
 ############### Database Helper functions
 
