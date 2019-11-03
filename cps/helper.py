@@ -54,7 +54,7 @@ except ImportError:
     use_unidecode = False
 
 try:
-    from PIL import Image
+    from PIL import Image as PILImage
     use_PIL = True
 except ImportError:
     use_PIL = False
@@ -497,9 +497,9 @@ def save_cover(img, book_path):
         # convert to jpg because calibre only supports jpg
         if content_type in ('image/png', 'image/webp'):
             if hasattr(img,'stream'):
-                imgc = Image.open(img.stream)
+                imgc = PILImage.open(img.stream)
             else:
-                imgc = Image.open(io.BytesIO(img.content))
+                imgc = PILImage.open(io.BytesIO(img.content))
             im = imgc.convert('RGB')
             tmp_bytesio = io.BytesIO()
             im.save(tmp_bytesio, format='JPEG')
