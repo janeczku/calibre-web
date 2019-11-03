@@ -20,11 +20,7 @@
 from __future__ import division, print_function, unicode_literals
 import os
 import hashlib
-import struct
 from tempfile import gettempdir
-
-from flask_babel import gettext as _
-
 from . import logger, comic
 from .constants import BookMeta
 
@@ -69,15 +65,12 @@ except ImportError as e:
     use_fb2_meta = False
 
 try:
-    from PIL import Image, ImageOps
+    from PIL import PILImage
     from PIL import __version__ as PILversion
     use_PIL = True
 except ImportError as e:
     log.debug('cannot import Pillow, using png and webp images as cover will not work: %s', e)
-    use_generic_pdf_cover = True
     use_PIL = False
-
-
 
 __author__ = 'lemmsh'
 
@@ -146,119 +139,15 @@ def pdf_meta(tmp_file_path, original_file_name, original_file_extension):
         languages="")
 
 
-def CMYKInvert(img):
-    return Image.merge(img.mode,[ImageOps.invert(b.convert('L')) for b in img.split()])
-
-def tiff_header_for_CCITT(width, height, img_size, CCITT_group=4):
-    tiff_header_struct = '<' + '2s' + 'h' + 'l' + 'h' + 'hhll' * 8 + 'h'
-    return struct.pack(tiff_header_struct,
-                       b'II',  # Byte order indication: Little indian
-                       42,  # Version number (always 42)
-                       8,  # Offset to first IFD
-                       8,  # Number of tags in IFD
-                       256, 4, 1, width,  # ImageWidth, LONG, 1, width
-                       257, 4, 1, height,  # ImageLength, LONG, 1, lenght
-                       258, 3, 1, 1,  # BitsPerSample, SHORT, 1, 1
-                       259, 3, 1, CCITT_group,  # Compression, SHORT, 1, 4 = CCITT Group 4 fax encoding
-                       262, 3, 1, 0,  # Threshholding, SHORT, 1, 0 = WhiteIsZero
-                       273, 4, 1, struct.calcsize(tiff_header_struct),  # StripOffsets, LONG, 1, len of header
-                       278, 4, 1, height,  # RowsPerStrip, LONG, 1, lenght
-                       279, 4, 1, img_size,  # StripByteCounts, LONG, 1, size of image
-                       0  # last IFD
-                       )
-
 def pdf_preview(tmp_file_path, tmp_dir):
     if use_generic_pdf_cover:
         return None
     else:
-        if use_PIL:
-            try:
-                input1 = PdfFileReader(open(tmp_file_path, 'rb'), strict=False)
-                page0 = input1.getPage(0)
-                mediaBox = page0['/MediaBox']
-                box = page0['/CropBox'] if '/CropBox' in page0 else mediaBox
-                xObject = page0['/Resources']['/XObject'].getObject()
-
-                for obj in xObject:
-                    if xObject[obj]['/Subtype'] == '/Image':
-                        size = (xObject[obj]['/Width'], xObject[obj]['/Height'])
-                        data = xObject[obj]._data
-                        mode = "P"
-                        if xObject[obj]['/ColorSpace'] == '/DeviceRGB':
-                            mode = "RGB"
-                        if xObject[obj]['/ColorSpace'] == '/DeviceCMYK':
-                            mode = "CMYK"
-                        if '/Filter' in xObject[obj]:
-                            if xObject[obj]['/Filter'] == '/FlateDecode':
-                                img = Image.frombytes(mode, size, data)
-                                cover_file_name = os.path.splitext(tmp_file_path)[0] + ".cover.png"
-                                img.save(filename=os.path.join(tmp_dir, cover_file_name))
-                                return cover_file_name
-                                # img.save(obj[1:] + ".png")
-                            elif xObject[obj]['/Filter'] == '/DCTDecode':
-                                cover_file_name = os.path.splitext(tmp_file_path)[0] + ".cover.jpg"
-                                img = open(cover_file_name, "wb")
-                                img.write(data)
-                                img.close()
-                                # Post processing
-                                img2 = Image.open(cover_file_name)
-                                width, height = img2.size
-                                if mode == 'CMYK':
-                                    img2 = CMYKInvert(img2)
-                                img2 = img2.crop((box[0]/mediaBox[2]*width,
-                                                  box[1]/mediaBox[3]*height,
-                                                  box[2]/mediaBox[2]*width,
-                                                  box[3]/mediaBox[3]*height))
-                                img2.save(cover_file_name)
-                                return cover_file_name
-                            elif xObject[obj]['/Filter'] == '/JPXDecode':
-                                cover_file_name = os.path.splitext(tmp_file_path)[0] + ".cover.jp2"
-                                img = open(cover_file_name, "wb")
-                                img.write(data)
-                                img.close()
-                                # Post processing
-                                img2 = Image.open(cover_file_name)
-                                width, height = img2.size
-                                if mode == 'CMYK':
-                                    img2 = CMYKInvert(img2)
-                                img2 = img2.crop((box[0]/mediaBox[2]*width,
-                                                  box[1]/mediaBox[3]*height,
-                                                  box[2]/mediaBox[2]*width,
-                                                  box[3]/mediaBox[3]*height))
-                                img2.save(cover_file_name)
-                                return cover_file_name
-                            elif xObject[obj]['/Filter'] == '/CCITTFaxDecode':
-                                if xObject[obj]['/DecodeParms']['/K'] == -1:
-                                    CCITT_group = 4
-                                else:
-                                    CCITT_group = 3
-                                width = xObject[obj]['/Width']
-                                height = xObject[obj]['/Height']
-                                img_size = len(data)
-                                tiff_header = tiff_header_for_CCITT(width, height, img_size, CCITT_group)
-                                cover_file_name_tiff = os.path.splitext(tmp_file_path)[0] + obj[1:] + '.tiff'
-                                cover_file_name = os.path.splitext(tmp_file_path)[0] + obj[1:] + '.jpg'
-                                img = open(cover_file_name_tiff, "wb")
-                                img.write(tiff_header + data)
-                                img.close()
-                                # Post processing
-                                img2 = Image.open(cover_file_name_tiff)
-                                if img2.mode == '1':
-                                    img2 = ImageOps.invert(img2.convert('RGB'))
-                                img2.save(cover_file_name)
-                                return cover_file_name
-                        else:
-                            img = Image.frombytes(mode, size, data)
-                            cover_file_name = os.path.splitext(tmp_file_path)[0] + ".cover.png"
-                            img.save(filename=os.path.join(tmp_dir, cover_file_name))
-                            return cover_file_name
-                            # img.save(obj[1:] + ".png")
-            except Exception as ex:
-                print(ex)
-
         try:
             cover_file_name = os.path.splitext(tmp_file_path)[0] + ".cover.jpg"
-            with Image(filename=tmp_file_path + "[0]", resolution=150) as img:
+            with Image() as img:
+                img.options["pdf:use-cropbox"] = "true"
+                img.read(filename=tmp_file_path + '[0]', resolution = 150)
                 img.compression_quality = 88
                 img.save(filename=os.path.join(tmp_dir, cover_file_name))
             return cover_file_name
