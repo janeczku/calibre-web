@@ -13,3 +13,5 @@ SQLAlchemy>=1.1.0
 tornado>=4.1
 Wand>=0.4.4
 unidecode>=0.04.19
+b2sdk>=1.0.2,<2.0.0
+jsonschema>=3.2.0
