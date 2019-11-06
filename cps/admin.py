@@ -294,6 +294,8 @@ def _configuration_update_helper():
     reboot_required |= _config_string("config_certfile")
     if config.config_certfile and not os.path.isfile(config.config_certfile):
         return _configuration_result('Certfile location is not valid, please enter correct path', gdriveError)
+        
+    _config_string("config_server_url")
 
     _config_checkbox_int("config_uploading")
     _config_checkbox_int("config_anonbrowse")
