@@ -219,7 +219,7 @@ def feed_series(book_id):
 @requires_basic_auth_if_no_ano
 def feed_shelfindex(public):
     off = request.args.get("offset") or 0
-    if public is not 0:
+    if public != 0:
         shelf = g.public_shelfes
         number = len(shelf)
     else:
@@ -261,9 +261,10 @@ def opds_download_link(book_id, book_format):
     return get_download_link(book_id,book_format)
 
 
+@opds.route("/ajax/book/<string:uuid>/<library>")
 @opds.route("/ajax/book/<string:uuid>")
 @requires_basic_auth_if_no_ano
-def get_metadata_calibre_companion(uuid):
+def get_metadata_calibre_companion(uuid, library):
     entry = db.session.query(db.Books).filter(db.Books.uuid.like("%" + uuid + "%")).first()
     if entry is not None:
         js = render_template('json.txt', entry=entry)

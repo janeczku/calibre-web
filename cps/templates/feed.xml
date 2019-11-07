@@ -41,7 +41,7 @@
   {% for entry in entries %}
   <entry>
     <title>{{entry.title}}</title>
-    <id>{{entry.uuid}}</id>
+    <id>urn:uuid:{{entry.uuid}}</id>
     <updated>{{entry.atom_timestamp}}</updated>
     {% if entry.authors.__len__() > 0 %}
       <author>
