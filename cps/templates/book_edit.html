@@ -5,11 +5,7 @@
 
   <div class="col-sm-3 col-lg-3 col-xs-12">
     <div class="cover">
-      {% if book.has_cover %}
-        <img src="{{ url_for('get_cover', cover_path=book.path.replace('\\','/')) }}" alt="{{ book.title }}"/>
-      {% else %}
-        <img src="{{ url_for('static', filename='generic_cover.jpg') }}" alt="{{ book.title }}"/>
-      {% endif %}
+        <img src="{{ url_for('web.get_cover', book_id=book.id) }}" alt="{{ book.title }}"/>
     </div>
 {% if g.user.role_delete_books() %}
     <div class="text-center">
@@ -19,7 +15,7 @@
       <div class="text-center more-stuff"><h4>{{_('Delete formats:')}}</h4>
       {% for file in book.data %}
         <div class="form-group">
-          <a href="{{ url_for('delete_book', book_id=book.id, book_format=file.format) }}" class="btn btn-danger" type="button">{{_('Delete')}} - {{file.format}}</a>
+          <a href="{{ url_for('editbook.delete_book', book_id=book.id, book_format=file.format) }}" class="btn btn-danger" type="button">{{_('Delete')}} - {{file.format}}</a>
         </div>
       {% endfor %}
       </div>
@@ -28,7 +24,7 @@
 
 {%  if source_formats|length > 0 and conversion_formats|length > 0 %}
   <div class="text-center more-stuff"><h4>{{_('Convert book format:')}}</h4>
-      <form class="padded-bottom" action="{{ url_for('convert_bookformat', book_id=book.id) }}" method="post" id="book_convert_frm">
+      <form class="padded-bottom" action="{{ url_for('editbook.convert_bookformat', book_id=book.id) }}" method="post" id="book_convert_frm">
           <div class="form-group">
               <div class="text-left">
                   <label class="control-label" for="book_format_from">{{_('Convert from:')}}</label>
@@ -53,7 +49,7 @@
 {% endif %}
 
   </div>
-<form role="form" action="{{ url_for('edit_book', book_id=book.id) }}" method="post" enctype="multipart/form-data" id="book_edit_frm">
+<form role="form" action="{{ url_for('editbook.edit_book', book_id=book.id) }}" method="post" enctype="multipart/form-data" id="book_edit_frm">
   <div class="col-sm-9 col-xs-12">
     <div class="form-group">
       <label for="book_title">{{_('Book Title')}}</label>
@@ -77,7 +73,7 @@
     </div>
     <div class="form-group">
       <label for="series_index">{{_('Series id')}}</label>
-      <input type="number" step="0.1" min="0" class="form-control" name="series_index" id="series_index" value="{{book.series_index}}">
+      <input type="number" step="0.01" min="0" class="form-control" name="series_index" id="series_index" value="{{book.series_index}}">
     </div>
     <div class="form-group">
       <label for="rating">{{_('Rating')}}</label>
@@ -90,7 +86,7 @@
     <div class="form-group" aria-label="Upload cover from local drive">
         <label class="btn btn-primary btn-file" for="btn-upload-cover">{{ _('Upload Cover from local drive') }}</label>
         <div class="upload-cover-input-text" id="upload-cover"></div>
-        <input id="btn-upload-cover" name="btn-upload-cover" type="file">
+        <input id="btn-upload-cover" name="btn-upload-cover" type="file" accept=".jpg, .jpeg, .png, .webp">
     </div>
     <div class="form-group">
       <label for="pubdate">{{_('Publishing date')}}</label>
@@ -175,7 +171,7 @@
     </div>
     <a href="#" id="get_meta" class="btn btn-default" data-toggle="modal" data-target="#metaModal">{{_('Get metadata')}}</a>
     <button type="submit" id="submit" class="btn btn-default">{{_('Submit')}}</button>
-    <a href="{{ url_for('show_book', book_id=book.id) }}" class="btn btn-default">{{_('Back')}}</a>
+    <a href="{{ url_for('web.show_book', book_id=book.id) }}" class="btn btn-default">{{_('Back')}}</a>
   </div>
 </form>
 
@@ -196,7 +192,7 @@
         </div>
 
       <div class="modal-footer">
-        <a href="{{ url_for('delete_book', book_id=book.id) }}" class="btn btn-danger">{{_('Delete')}}</a>
+        <a href="{{ url_for('editbook.delete_book', book_id=book.id) }}" class="btn btn-danger">{{_('Delete')}}</a>
         <button type="button" class="btn btn-default" data-dismiss="modal">{{_('Back')}}</button>
       </div>
     </div>
@@ -219,12 +215,12 @@
             </span>
           </div>
         </form>
-        <div>{{_('Click the cover to load metadata to the form')}}</div>
+        <div class="text-center"><strong>{{_('Click the cover to load metadata to the form')}}</strong></div>
       </div>
       <div class="modal-body">
         <div class="text-center padded-bottom">
-          <input type="checkbox" id="show-douban" class="pill" data-control="douban" checked>
-          <label for="show-douban">Douban <span class="glyphicon glyphicon-ok"></span></label>
+          <!--input type="checkbox" id="show-douban" class="pill" data-control="douban" checked>
+          <label for="show-douban">Douban <span class="glyphicon glyphicon-ok"></span></label-->
 
           <input type="checkbox" id="show-google" class="pill" data-control="google" checked>
           <label for="show-google">Google <span class="glyphicon glyphicon-ok"></span></label>

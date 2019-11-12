@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <title>Comic Reader</title>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <title>Comic Reader</title>
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width, user-scalable=no">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -15,23 +15,27 @@
   <script src="{{ url_for('static', filename='js/libs/jquery.min.js') }}"></script>
   <script src="{{ url_for('static', filename='js/libs/screenfull.min.js') }}"></script>
   <script src="{{ url_for('static', filename='js/kthoom.js') }}"></script>
-	<script src="{{ url_for('static', filename='js/archive.js') }}"></script>
+	<script src="{{ url_for('static', filename='js/archive/archive.js') }}"></script>
   <script>
-    document.onreadystatechange = function () {
-      if (document.readyState == "complete") {
-                init("{{ url_for('serve_book', book_id=comicfile, book_format=extension) }}");                             
+    var updateArrows = function() {
+      if ($('input[name="direction"]:checked').val() === "0") {
+        $("#prev_page_key").html("&larr;");
+        $("#next_page_key").html("&rarr;");
+      } else {
+        $("#prev_page_key").html("&rarr;");
+        $("#next_page_key").html("&larr;");
       }
     };
+    document.onreadystatechange = function () {
+      if (document.readyState == "complete") {
+      	init("{{ url_for('web.serve_book', book_id=comicfile, book_format=extension) }}");
+      	updateArrows();
+      }
+    }
   </script>
 </head>
 <body>
 <div id="sidebar">
-  <!--
-  <div id="panels">
-     <a id="show-Toc" class="show_view icon-list-1 active" data-view="Toc">TOC</a>
-     <a id="show-Bookmarks" class="show_view icon-bookmark" data-view="Bookmarks">Bookmarks</a>
-  </div>
-  -->
   <div id="tocView" class="view" tabindex="-1">
     <ul id="thumbnails"></ul>
   </div>
@@ -70,8 +74,8 @@
     <div id="mainText" style="display:none"></div>
     <canvas id="mainImage"></canvas>
   </div>
-  <div id="prev" class="arrow" onclick="showPrevPage()">‹</div>
-  <div id="next" class="arrow" onclick="showNextPage()">›</div>
+  <div id="left" class="arrow" onclick="showLeftPage()">‹</div>
+  <div id="right" class="arrow" onclick="showRightPage()">›</div>
 </div>
 
 <div class="modal md-effect-1" id="settings-modal">
@@ -84,8 +88,8 @@
           <tr><th colspan="2">{{_('Keyboard Shortcuts')}}</th></tr>
           </thead>
           <tbody>
-          <tr><td>&larr;</td> <td>{{_('Previous Page')}}</td></tr>
-          <tr><td>&rarr;</td> <td>{{_('Next Page')}}</td></tr>
+          <tr><td id="prev_page_key">&larr;</td> <td>{{_('Previous Page')}}</td></tr>
+          <tr><td id="next_page_key">&rarr;</td> <td>{{_('Next Page')}}</td></tr>
           <tr><td>B</td>      <td>{{_('Scale to Best')}}</td></tr>
           <tr><td>W</td>      <td>{{_('Scale to Width')}}</td></tr>
           <tr><td>H</td>      <td>{{_('Scale to Height')}}</td></tr>
@@ -144,6 +148,15 @@
               </div>
             </td>
           </tr>
+          <tr>
+            <th>{{_('Direction')}}:</th>
+            <td>
+              <div class="inputs">
+                <label for="leftToRight"><input type="radio" id="leftToRight" name="direction" value="0" /> {{_('Left to Right')}}</label>
+                <label for="rightToLeft"><input type="radio" id="rightToLeft" name="direction" value="1" /> {{_('Right to Left')}}</label>
+              </div>
+            </td>
+          </tr>
           </tbody>
         </table>
       </div>
@@ -152,6 +165,10 @@
   </div>
 </div>
 <div class="overlay"></div>
-
+<script>
+  $('input[name="direction"]').change(function() {
+    updateArrows();
+  });
+</script>
 </body>
 </html>

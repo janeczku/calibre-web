@@ -1,3 +1,34 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+#  This file is part of the Calibre-Web (https://github.com/janeczku/calibre-web)
+#    Copyright (C) 2018 idalin, OzzieIsaacs
+#
+#  This program is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License as published by
+#  the Free Software Foundation, either version 3 of the License, or
+#  (at your option) any later version.
+#
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU General Public License for more details.
+#
+#  You should have received a copy of the GNU General Public License
+#  along with this program. If not, see <http://www.gnu.org/licenses/>.
+
+from __future__ import division, print_function, unicode_literals
+import os
+import json
+import shutil
+
+from flask import Response, stream_with_context
+from sqlalchemy import create_engine
+from sqlalchemy import Column, UniqueConstraint
+from sqlalchemy import String, Integer
+from sqlalchemy.orm import sessionmaker, scoped_session
+from sqlalchemy.ext.declarative import declarative_base
+
 try:
     from pydrive.auth import GoogleAuth
     from pydrive.drive import GoogleDrive
@@ -7,18 +38,16 @@ try:
 except ImportError:
     gdrive_support = False
 
-import os
-from ub import config
-import cli
-import shutil
-from flask import Response, stream_with_context
-
-from sqlalchemy import *
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import *
+from . import logger, cli, config
+from .constants import CONFIG_DIR as _CONFIG_DIR
 
 
-import web
+SETTINGS_YAML  = os.path.join(_CONFIG_DIR, 'settings.yaml')
+CREDENTIALS    = os.path.join(_CONFIG_DIR, 'gdrive_credentials')
+CLIENT_SECRETS = os.path.join(_CONFIG_DIR, 'client_secrets.json')
+
+log = logger.create()
+
 
 class Singleton:
     """
@@ -51,6 +80,9 @@ class Singleton:
         except AttributeError:
             self._instance = self._decorated()
             return self._instance
+        except ImportError as e:
+            log.debug(e)
+            return None
 
     def __call__(self):
         raise TypeError('Singletons must be accessed through `Instance()`.')
@@ -62,13 +94,16 @@ class Singleton:
 @Singleton
 class Gauth:
     def __init__(self):
-        self.auth = GoogleAuth(settings_file=os.path.join(config.get_main_dir,'settings.yaml'))
+        self.auth = GoogleAuth(settings_file=SETTINGS_YAML)
 
 
 @Singleton
 class Gdrive:
     def __init__(self):
         self.drive = getDrive(gauth=Gauth.Instance().auth)
+
+def is_gdrive_ready():
+    return os.path.exists(SETTINGS_YAML) and os.path.exists(CREDENTIALS)
 
 
 engine = create_engine('sqlite:///{0}'.format(cli.gdpath), echo=False)
@@ -112,7 +147,8 @@ def migrate():
                 sql=sql[0].replace(currUniqueConstraint, 'UNIQUE (gdrive_id, path)')
                 sql=sql.replace(GdriveId.__tablename__, GdriveId.__tablename__ + '2')
                 session.execute(sql)
-                session.execute('INSERT INTO gdrive_ids2 (id, gdrive_id, path) SELECT id, gdrive_id, path FROM gdrive_ids;')
+                session.execute("INSERT INTO gdrive_ids2 (id, gdrive_id, path) SELECT id, "
+                                "gdrive_id, path FROM gdrive_ids;")
                 session.commit()
                 session.execute('DROP TABLE %s' % 'gdrive_ids')
                 session.execute('ALTER TABLE gdrive_ids2 RENAME to gdrive_ids')
@@ -129,24 +165,27 @@ migrate()
 def getDrive(drive=None, gauth=None):
     if not drive:
         if not gauth:
-            gauth = GoogleAuth(settings_file=os.path.join(config.get_main_dir,'settings.yaml'))
+            gauth = GoogleAuth(settings_file=SETTINGS_YAML)
         # Try to load saved client credentials
-        gauth.LoadCredentialsFile(os.path.join(config.get_main_dir,'gdrive_credentials'))
+        gauth.LoadCredentialsFile(CREDENTIALS)
         if gauth.access_token_expired:
             # Refresh them if expired
             try:
                 gauth.Refresh()
             except RefreshError as e:
-                web.app.logger.error("Google Drive error: " + e.message)
+                log.error("Google Drive error: %s", e)
             except Exception as e:
-                web.app.logger.exception(e)
+                log.exception(e)
         else:
             # Initialize the saved creds
             gauth.Authorize()
         # Save the current credentials to a file
         return GoogleDrive(gauth)
     if drive.auth.access_token_expired:
-        drive.auth.Refresh()
+        try:
+            drive.auth.Refresh()
+        except RefreshError as e:
+            log.error("Google Drive error: %s", e)
     return drive
 
 def listRootFolders():
@@ -164,8 +203,9 @@ def getFolderInFolder(parentId, folderName, drive):
     # drive = getDrive(drive)
     query=""
     if folderName:
-        query = "title = '%s' and " % folderName.replace("'", "\\'")
-    folder = query + "'%s' in parents and mimeType = 'application/vnd.google-apps.folder' and trashed = false" % parentId
+        query = "title = '%s' and " % folderName.replace("'", r"\'")
+    folder = query + "'%s' in parents and mimeType = 'application/vnd.google-apps.folder'" \
+                     " and trashed = false" % parentId
     fileList = drive.ListFile({'q': folder}).GetList()
     if fileList.__len__() == 0:
         return None
@@ -182,7 +222,7 @@ def getEbooksFolderId(drive=None):
         try:
             gDriveId.gdrive_id = getEbooksFolder(drive)['id']
         except Exception:
-            web.app.logger.error('Error gDrive, root ID not found')
+            log.error('Error gDrive, root ID not found')
         gDriveId.path = '/'
         session.merge(gDriveId)
         session.commit()
@@ -190,8 +230,7 @@ def getEbooksFolderId(drive=None):
 
 
 def getFile(pathId, fileName, drive):
-    metaDataFile = "'%s' in parents and trashed = false and title = '%s'" % (pathId, fileName.replace("'", "\\'"))
-
+    metaDataFile = "'%s' in parents and trashed = false and title = '%s'" % (pathId, fileName.replace("'", r"\'"))
     fileList = drive.ListFile({'q': metaDataFile}).GetList()
     if fileList.__len__() == 0:
         return None
@@ -226,7 +265,7 @@ def getFolderId(path, drive):
                         dbChange = True
                         currentFolderId = currentFolder['id']
                     else:
-                        currentFolderId= None
+                        currentFolderId = None
                         break
         if dbChange:
             session.commit()
@@ -248,16 +287,9 @@ def getFileFromEbooksFolder(path, fileName):
         return None
 
 
-'''def copyDriveFileRemote(drive, origin_file_id, copy_title):
-    drive = getDrive(drive)
-    copied_file = {'title': copy_title}
-    try:
-        file_data = drive.auth.service.files().copy(
-        fileId = origin_file_id, body=copied_file).execute()
-        return drive.CreateFile({'id': file_data['id']})
-    except errors.HttpError as error:
-        print ('An error occurred: %s' % error)
-    return None'''
+def moveGdriveFileRemote(origin_file_id, new_title):
+    origin_file_id['title']= new_title
+    origin_file_id.Upload()
 
 
 # Download metadata.db from gdrive
@@ -269,9 +301,10 @@ def downloadFile(path, filename, output):
 def moveGdriveFolderRemote(origin_file, target_folder):
     drive = getDrive(Gdrive.Instance().drive)
     previous_parents = ",".join([parent["id"] for parent in origin_file.get('parents')])
+    children = drive.auth.service.children().list(folderId=previous_parents).execute()
     gFileTargetDir = getFileFromEbooksFolder(None, target_folder)
     if not gFileTargetDir:
-        # Folder is not exisiting, create, and move folder
+        # Folder is not existing, create, and move folder
         gFileTargetDir = drive.CreateFile(
             {'title': target_folder, 'parents': [{"kind": "drive#fileLink", 'id': getEbooksFolderId()}],
              "mimeType": "application/vnd.google-apps.folder"})
@@ -281,13 +314,10 @@ def moveGdriveFolderRemote(origin_file, target_folder):
                                       addParents=gFileTargetDir['id'],
                                       removeParents=previous_parents,
                                       fields='id, parents').execute()
-    # if previous_parents has no childs anymore, delete originfileparent
-    # is not working correctly, because of slow update on gdrive -> could cause trouble in gdrive.db
-    # (nonexisting folder has id)
-    # children = drive.auth.service.children().list(folderId=previous_parents).execute()
-    # if not len(children['items']):
-    #    drive.auth.service.files().delete(fileId=previous_parents).execute()
-
+    # if previous_parents has no childs anymore, delete original fileparent
+    if len(children['items']) == 1:
+        deleteDatabaseEntry(previous_parents)
+        drive.auth.service.files().delete(fileId=previous_parents).execute()
 
 
 def copyToDrive(drive, uploadFile, createRoot, replaceFiles,
@@ -299,9 +329,11 @@ def copyToDrive(drive, uploadFile, createRoot, replaceFiles,
     if not parent:
         parent = getEbooksFolder(drive)
     if os.path.isdir(os.path.join(prevDir,uploadFile)):
-        existingFolder = drive.ListFile({'q': "title = '%s' and '%s' in parents and trashed = false" % (os.path.basename(uploadFile), parent['id'])}).GetList()
+        existingFolder = drive.ListFile({'q': "title = '%s' and '%s' in parents and trashed = false" %
+                                              (os.path.basename(uploadFile).replace("'", r"\'"), parent['id'])}).GetList()
         if len(existingFolder) == 0 and (not isInitial or createRoot):
-            parent = drive.CreateFile({'title': os.path.basename(uploadFile), 'parents': [{"kind": "drive#fileLink", 'id': parent['id']}],
+            parent = drive.CreateFile({'title': os.path.basename(uploadFile),
+                                       'parents': [{"kind": "drive#fileLink", 'id': parent['id']}],
                 "mimeType": "application/vnd.google-apps.folder"})
             parent.Upload()
         else:
@@ -312,11 +344,13 @@ def copyToDrive(drive, uploadFile, createRoot, replaceFiles,
                 copyToDrive(drive, f, True, replaceFiles, ignoreFiles, parent, os.path.join(prevDir, uploadFile))
     else:
         if os.path.basename(uploadFile) not in ignoreFiles:
-            existingFiles = drive.ListFile({'q': "title = '%s' and '%s' in parents and trashed = false" % (os.path.basename(uploadFile), parent['id'])}).GetList()
+            existingFiles = drive.ListFile({'q': "title = '%s' and '%s' in parents and trashed = false" %
+                                                 (os.path.basename(uploadFile).replace("'", r"\'"), parent['id'])}).GetList()
             if len(existingFiles) > 0:
                 driveFile = existingFiles[0]
             else:
-                driveFile = drive.CreateFile({'title': os.path.basename(uploadFile), 'parents': [{"kind":"drive#fileLink", 'id': parent['id']}], })
+                driveFile = drive.CreateFile({'title': os.path.basename(uploadFile).replace("'", r"\'"),
+                                              'parents': [{"kind":"drive#fileLink", 'id': parent['id']}], })
             driveFile.SetContentFile(os.path.join(prevDir, uploadFile))
             driveFile.Upload()
 
@@ -327,7 +361,8 @@ def uploadFileToEbooksFolder(destFile, f):
     splitDir = destFile.split('/')
     for i, x in enumerate(splitDir):
         if i == len(splitDir)-1:
-            existingFiles = drive.ListFile({'q': "title = '%s' and '%s' in parents and trashed = false" % (x, parent['id'])}).GetList()
+            existingFiles = drive.ListFile({'q': "title = '%s' and '%s' in parents and trashed = false" %
+                                                 (x.replace("'", r"\'"), parent['id'])}).GetList()
             if len(existingFiles) > 0:
                 driveFile = existingFiles[0]
             else:
@@ -335,7 +370,8 @@ def uploadFileToEbooksFolder(destFile, f):
             driveFile.SetContentFile(f)
             driveFile.Upload()
         else:
-            existingFolder = drive.ListFile({'q': "title = '%s' and '%s' in parents and trashed = false" % (x, parent['id'])}).GetList()
+            existingFolder = drive.ListFile({'q': "title = '%s' and '%s' in parents and trashed = false" %
+                                                  (x.replace("'", r"\'"), parent['id'])}).GetList()
             if len(existingFolder) == 0:
                 parent = drive.CreateFile({'title': x, 'parents': [{"kind": "drive#fileLink", 'id': parent['id']}],
                     "mimeType": "application/vnd.google-apps.folder"})
@@ -426,8 +462,12 @@ def getChangeById (drive, change_id):
         change = drive.auth.service.changes().get(changeId=change_id).execute()
         return change
     except (errors.HttpError) as error:
-        web.app.logger.info(error.message)
+        log.error(error)
         return None
+    except Exception as e:
+        log.error(e)
+        return None
+
 
 # Deletes the local hashes database to force search for new folder names
 def deleteDatabaseOnChange():
@@ -442,9 +482,10 @@ def updateGdriveCalibreFromLocal():
 
 # update gdrive.db on edit of books title
 def updateDatabaseOnEdit(ID,newPath):
+    sqlCheckPath = newPath if newPath[-1] == '/' else newPath + u'/'
     storedPathName = session.query(GdriveId).filter(GdriveId.gdrive_id == ID).first()
     if storedPathName:
-        storedPathName.path = newPath
+        storedPathName.path = sqlCheckPath
         session.commit()
 
 
@@ -494,6 +535,54 @@ def do_gdrive_download(df, headers):
             if resp.status == 206:
                 yield content
             else:
-                web.app.logger.info('An error occurred: %s' % resp)
+                log.warning('An error occurred: %s', resp)
                 return
     return Response(stream_with_context(stream()), headers=headers)
+
+
+_SETTINGS_YAML_TEMPLATE = """
+client_config_backend: settings
+client_config_file: %(client_file)s
+client_config:
+  client_id: %(client_id)s
+  client_secret: %(client_secret)s
+  redirect_uri: %(redirect_uri)s
+
+save_credentials: True
+save_credentials_backend: file
+save_credentials_file: %(credential)s
+
+get_refresh_token: True
+
+oauth_scope:
+  - https://www.googleapis.com/auth/drive
+"""
+
+def update_settings(client_id, client_secret, redirect_uri):
+    if redirect_uri.endswith('/'):
+        redirect_uri = redirect_uri[:-1]
+    config_params = {
+                        'client_file': CLIENT_SECRETS,
+                        'client_id': client_id,
+                        'client_secret': client_secret,
+                        'redirect_uri': redirect_uri,
+                        'credential': CREDENTIALS
+                    }
+
+    with open(SETTINGS_YAML, 'w') as f:
+        f.write(_SETTINGS_YAML_TEMPLATE % config_params)
+
+
+def get_error_text(client_secrets=None):
+    if not gdrive_support:
+        return 'Import of optional Google Drive requirements missing'
+
+    if not os.path.isfile(CLIENT_SECRETS):
+        return 'client_secrets.json is missing or not readable'
+
+    with open(CLIENT_SECRETS, 'r') as settings:
+        filedata = json.load(settings)
+    if 'web' not in filedata:
+        return 'client_secrets.json is not configured for web application'
+    if client_secrets:
+        client_secrets.update(filedata['web'])
