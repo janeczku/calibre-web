@@ -1,4 +1,4 @@
-helper.py ident export-subst
+constants.py ident export-subst
 /test export-ignore
 cps/static/css/libs/* linguist-vendored
 cps/static/js/libs/* linguist-vendored

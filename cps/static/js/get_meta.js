@@ -1,24 +1,36 @@
+/* This file is part of the Calibre-Web (https://github.com/janeczku/calibre-web)
+ *    Copyright (C) 2018  idalin<dalin.lin@gmail.com>
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
 /*
  * Get Metadata from Douban Books api and Google Books api
- * Created by idalin<dalin.lin@gmail.com>
  * Google Books api document: https://developers.google.com/books/docs/v1/using
  * Douban Books api document: https://developers.douban.com/wiki/?title=book_v2 (Chinese Only)
 */
 /* global _, i18nMsg, tinymce */
-var dbResults = [];
+// var dbResults = [];
 var ggResults = [];
 
 $(function () {
     var msg = i18nMsg;
-    var douban = "https://api.douban.com";
-    var dbSearch = "/v2/book/search";
-    // var dbGetInfo = "/v2/book/";
-    // var db_get_info_by_isbn = "/v2/book/isbn/ ";
-    var dbDone = false;
+    /*var douban = "https://api.douban.com";
+    var dbSearch = "/v2/book/search";*/
+    // var dbDone = true;
 
-    var google = "https://www.googleapis.com/";
+    var google = "https://www.googleapis.com";
     var ggSearch = "/books/v1/volumes";
-    // var gg_get_info = "/books/v1/volumes/";
     var ggDone = false;
 
     var showFlag = 0;
@@ -44,11 +56,9 @@ $(function () {
         if (showFlag === 1) {
             $("#meta-info").html("<ul id=\"book-list\" class=\"media-list\"></ul>");
         }
-        if (ggDone && dbDone) {
-            if (!ggResults && !dbResults) {
-                $("#meta-info").html("<p class=\"text-danger\">" + msg.no_result + "</p>");
-                return;
-            }
+        if (!ggDone) {
+            $("#meta-info").html("<p class=\"text-danger\">" + msg.no_result + "</p>");
+            return;
         }
         if (ggDone && ggResults.length > 0) {
             ggResults.forEach(function(result) {
@@ -81,7 +91,7 @@ $(function () {
             });
             ggDone = false;
         }
-        if (dbDone && dbResults.length > 0) {
+        /*if (dbDone && dbResults.length > 0) {
             dbResults.forEach(function(result) {
                 var book = {
                     id: result.id,
@@ -115,7 +125,7 @@ $(function () {
                 $("#book-list").append($book);
             });
             dbDone = false;
-        }
+        }*/
     }
 
     function ggSearchBook (title) {
@@ -125,7 +135,10 @@ $(function () {
             dataType: "jsonp",
             jsonp: "callback",
             success: function success(data) {
-                ggResults = data.items;
+                if ("items" in data) {
+                    ggResults = data.items;
+                    ggDone = true;
+                }
             },
             complete: function complete() {
                 ggDone = true;
@@ -135,7 +148,7 @@ $(function () {
         });
     }
 
-    function dbSearchBook (title) {
+    /*function dbSearchBook (title) {
         $.ajax({
             url: douban + dbSearch + "?q=" + title + "&fields=all&count=10",
             type: "GET",
@@ -145,7 +158,7 @@ $(function () {
                 dbResults = data.books;
             },
             error: function error() {
-                $("#meta-info").html("<p class=\"text-danger\">" + msg.search_error + "!</p>");
+                $("#meta-info").html("<p class=\"text-danger\">" + msg.search_error + "!</p>"+ $("#meta-info")[0].innerHTML)
             },
             complete: function complete() {
                 dbDone = true;
@@ -153,14 +166,13 @@ $(function () {
                 $("#show-douban").trigger("change");
             }
         });
-    }
+    }*/
 
     function doSearch (keyword) {
         showFlag = 0;
         $("#meta-info").text(msg.loading);
-        // var keyword = $("#keyword").val();
         if (keyword) {
-            dbSearchBook(keyword);
+            // dbSearchBook(keyword);
             ggSearchBook(keyword);
         }
     }

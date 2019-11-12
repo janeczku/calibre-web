@@ -15,7 +15,9 @@
   * Typed Arrays: http://www.khronos.org/registry/typedarray/specs/latest/#6
 
 */
-/* global screenfull, bitjs */
+/* global screenfull, bitjs, Uint8Array, opera */
+/* exported init, event */
+
 
 if (window.opera) {
     window.console.log = function(str) {
@@ -66,7 +68,8 @@ var settings = {
     vflip: false,
     rotateTimes: 0,
     fitMode: kthoom.Key.B,
-    theme: "light"
+    theme: "light",
+    direction: 0 // 0 = Left to Right, 1 = Right to Left
 };
 
 kthoom.saveSettings = function() {
@@ -99,14 +102,15 @@ kthoom.setSettings = function() {
 };
 
 var createURLFromArray = function(array, mimeType) {
-    var offset = array.byteOffset, len = array.byteLength;
-    var url;
+    var offset = array.byteOffset;
+    var len = array.byteLength;
+    // var url;
     var blob;
 
-    if (mimeType === 'image/xml+svg') {
-        const xmlStr = new TextDecoder('utf-8').decode(array);
-        return 'data:image/svg+xml;UTF-8,' + encodeURIComponent(xmlStr);
-  }
+    if (mimeType === "image/xml+svg") {
+        var xmlStr = new TextDecoder("utf-8").decode(array);
+        return "data:image/svg+xml;UTF-8," + encodeURIComponent(xmlStr);
+    }
 
     // TODO: Move all this browser support testing to a common place
     //     and do it just once.
@@ -137,11 +141,13 @@ var createURLFromArray = function(array, mimeType) {
 kthoom.ImageFile = function(file) {
     this.filename = file.filename;
     var fileExtension = file.filename.split(".").pop().toLowerCase();
-    var mimeType = fileExtension === "png" ? "image/png" :
+    this.mimeType = fileExtension === "png" ? "image/png" :
         (fileExtension === "jpg" || fileExtension === "jpeg") ? "image/jpeg" :
-            fileExtension === "gif" ? "image/gif" : fileExtension == 'svg' ? 'image/xml+svg' : undefined;
-    this.dataURI = createURLFromArray(file.fileData, mimeType);
-    this.data = file;
+            fileExtension === "gif" ? "image/gif" : fileExtension === "svg" ? "image/xml+svg" : undefined;
+    if ( this.mimeType !== undefined) {
+        this.dataURI = createURLFromArray(file.fileData, this.mimeType);
+        this.data = file;
+    }
 };
 
 
@@ -151,16 +157,22 @@ function initProgressClick() {
         currentImage = page;
         updatePage();
     });
-};
+}
 
 function loadFromArrayBuffer(ab) {
     var start = (new Date).getTime();
     var h = new Uint8Array(ab, 0, 10);
-    var pathToBitJS = "../../static/js/";
+    var pathToBitJS = "../../static/js/archive/";
+    var lastCompletion = 0;
     if (h[0] === 0x52 && h[1] === 0x61 && h[2] === 0x72 && h[3] === 0x21) { //Rar!
         unarchiver = new bitjs.archive.Unrarrer(ab, pathToBitJS);
     } else if (h[0] === 80 && h[1] === 75) { //PK (Zip)
         unarchiver = new bitjs.archive.Unzipper(ab, pathToBitJS);
+    } else if (h[0] === 255 && h[1] === 216) { // JPEG
+        // ToDo: check
+        updateProgress(100);
+        lastCompletion = 100;
+        return;
     } else { // Try with tar
         unarchiver = new bitjs.archive.Untarrer(ab, pathToBitJS);
     }
@@ -169,33 +181,44 @@ function loadFromArrayBuffer(ab) {
         unarchiver.addEventListener(bitjs.archive.UnarchiveEvent.Type.PROGRESS,
             function(e) {
                 var percentage = e.currentBytesUnarchived / e.totalUncompressedBytesInArchive;
-                totalImages = e.totalFilesInArchive;
-                updateProgress(percentage *100);
+                if (totalImages === 0) {
+                    totalImages = e.totalFilesInArchive;
+                }
+                updateProgress(percentage * 100);
                 lastCompletion = percentage * 100;
+            });
+        unarchiver.addEventListener(bitjs.archive.UnarchiveEvent.Type.INFO,
+            function(e) {
+                // console.log(e.msg);  // Enable debug output here
             });
         unarchiver.addEventListener(bitjs.archive.UnarchiveEvent.Type.EXTRACT,
             function(e) {
-            // convert DecompressedFile into a bunch of ImageFiles
+                // convert DecompressedFile into a bunch of ImageFiles
                 if (e.unarchivedFile) {
                     var f = e.unarchivedFile;
                     // add any new pages based on the filename
                     if (imageFilenames.indexOf(f.filename) === -1) {
-                        imageFilenames.push(f.filename);
-                        imageFiles.push(new kthoom.ImageFile(f));
-        				// add thumbnails to the TOC list
-        				$("#thumbnails").append(
-            				"<li>" +
-                				"<a data-page='" + imageFiles.length + "'>" +
-                    				"<img src='" + imageFiles[imageFiles.length - 1].dataURI + "'/>" +
-                    				"<span>" + imageFiles.length + "</span>" +
-                				"</a>" +
-            				"</li>"
-        				);
+                        var test = new kthoom.ImageFile(f);
+                        if ( test.mimeType !== undefined) {
+                            imageFilenames.push(f.filename);
+                            imageFiles.push(test);
+                            // add thumbnails to the TOC list
+                            $("#thumbnails").append(
+                                "<li>" +
+                                    "<a data-page='" + imageFiles.length + "'>" +
+                                        "<img src='" + imageFiles[imageFiles.length - 1].dataURI + "'/>" +
+                                        "<span>" + imageFiles.length + "</span>" +
+                                    "</a>" +
+                                "</li>"
+                            );
+                            // display first page if we haven't yet
+                            if (imageFiles.length === currentImage + 1) {
+                                updatePage(lastCompletion);
+                            }
+                        } else {
+                            totalImages--;
+                        }
                     }
-                }
-                // display first page if we haven't yet
-                if (imageFiles.length === currentImage + 1) {
-                    updatePage(lastCompletion);
                 }
             });
         unarchiver.addEventListener(bitjs.archive.UnarchiveEvent.Type.FINISH,
@@ -211,22 +234,22 @@ function loadFromArrayBuffer(ab) {
 
 function scrollTocToActive() {
     // Scroll to the thumbnail in the TOC on page change
-    $('#tocView').stop().animate({
-        scrollTop: $('#tocView a.active').position().top
+    $("#tocView").stop().animate({
+        scrollTop: $("#tocView a.active").position().top
     }, 200);
 }
 
 function updatePage() {
-    $('.page').text((currentImage + 1 ) + "/" + totalImages);
+    $(".page").text((currentImage + 1 ) + "/" + totalImages);
 
     // Mark the current page in the TOC
-    $('#tocView a[data-page]')
+    $("#tocView a[data-page]")
     // Remove the currently active thumbnail
-        .removeClass('active')
+        .removeClass("active")
         // Find the new one
-        .filter('[data-page='+ (currentImage + 1) +']')
+        .filter("[data-page=" + (currentImage + 1) + "]")
         // Set it to active
-        .addClass('active');
+        .addClass("active");
 
     scrollTocToActive();
     updateProgress();
@@ -250,8 +273,8 @@ function updateProgress(loadPercentage) {
 
         if (loadPercentage === 100) {
             $("#progress")
-                .removeClass('loading')
-                .find(".load").text('');
+                .removeClass("loading")
+                .find(".load").text("");
         }
     }
 
@@ -306,7 +329,7 @@ function setImage(url) {
                     xhr.onload = function() {
                         $("#mainText").css("display", "");
                         $("#mainText").innerHTML("<iframe style=\"width:100%;height:700px;border:0\" src=\"data:text/html," + escape(xhr.responseText) + "\"></iframe>");
-                    }
+                    };
                     xhr.send(null);
                 } else if (!/(jpg|jpeg|png|gif)$/.test(imageFiles[currentImage].filename) && imageFiles[currentImage].data.uncompressedSize < 10 * 1024) {
                     xhr.open("GET", url, true);
@@ -353,6 +376,22 @@ function setImage(url) {
             };
             img.src = url;
         }
+    }
+}
+
+function showLeftPage() {
+    if (settings.direction === 0) {
+        showPrevPage();
+    } else {
+        showNextPage();
+    }
+}
+
+function showRightPage() {
+    if (settings.direction === 0) {
+        showNextPage();
+    } else {
+        showPrevPage();
     }
 }
 
@@ -410,11 +449,11 @@ function keyHandler(evt) {
     switch (evt.keyCode) {
         case kthoom.Key.LEFT:
             if (hasModifier) break;
-            showPrevPage();
+            showLeftPage();
             break;
         case kthoom.Key.RIGHT:
             if (hasModifier) break;
-            showNextPage();
+            showRightPage();
             break;
         case kthoom.Key.L:
             if (hasModifier) break;
@@ -468,18 +507,18 @@ function keyHandler(evt) {
             updateScale(false);
             break;
         case kthoom.Key.SPACE:
-            var container = $('#mainContent');
+            var container = $("#mainContent");
             var atTop = container.scrollTop() === 0;
             var atBottom = container.scrollTop() >= container[0].scrollHeight - container.height();
 
             if (evt.shiftKey && atTop) {
                 evt.preventDefault();
                 // If it's Shift + Space and the container is at the top of the page
-                showPrevPage();
+                showLeftPage();
             } else if (!evt.shiftKey && atBottom) {
                 evt.preventDefault();
                 // If you're at the bottom of the page and you only pressed space
-                showNextPage();
+                showRightPage();
                 container.scrollTop(0);
             }
             break;
@@ -541,9 +580,9 @@ function init(filename) {
         $(this).toggleClass("icon-menu icon-right");
 
         // We need this in a timeout because if we call it during the CSS transition, IE11 shakes the page ¯\_(ツ)_/¯
-        setTimeout(function(){
+        setTimeout(function() {
             // Focus on the TOC or the main content area, depending on which is open
-            $('#main:not(.closed) #mainContent, #sidebar.open #tocView').focus();
+            $("#main:not(.closed) #mainContent, #sidebar.open #tocView").focus();
             scrollTocToActive();
         }, 500);
     });
@@ -594,7 +633,7 @@ function init(filename) {
     }
 
     // Focus the scrollable area so that keyboard scrolling work as expected
-    $('#mainContent').focus();
+    $("#mainContent").focus();
 
     $("#mainImage").click(function(evt) {
         // Firefox does not support offsetX/Y so we have to manually calculate
@@ -610,25 +649,25 @@ function init(filename) {
 
         // Determine if the user clicked/tapped the left side or the
         // right side of the page.
-        var clickedPrev = false;
+        var clickedLeft = false;
         switch (settings.rotateTimes) {
             case 0:
-                clickedPrev = clickX < (comicWidth / 2);
+                clickedLeft = clickX < (comicWidth / 2);
                 break;
             case 1:
-                clickedPrev = clickY < (comicHeight / 2);
+                clickedLeft = clickY < (comicHeight / 2);
                 break;
             case 2:
-                clickedPrev = clickX > (comicWidth / 2);
+                clickedLeft = clickX > (comicWidth / 2);
                 break;
             case 3:
-                clickedPrev = clickY > (comicHeight / 2);
+                clickedLeft = clickY > (comicHeight / 2);
                 break;
         }
-        if (clickedPrev) {
-            showPrevPage();
+        if (clickedLeft) {
+            showLeftPage();
         } else {
-            showNextPage();
+            showRightPage();
         }
     });
 }

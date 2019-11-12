@@ -10,9 +10,10 @@
     {% endif %}
     <div class="row">
         <div class="col-xs-2 col-sm-2 col-md-1" align="left"><span class="badge">{{lang_counter[loop.index0].bookcount}}</span></div>
-        <div class="col-xs-10 col-sm-10 col-md-11"><a id="list_{{loop.index0}}" href="{{url_for('language', name=lang.lang_code)}}">{{lang.name}}</a></div>
+        <div class="col-xs-10 col-sm-10 col-md-11"><a id="list_{{loop.index0}}" href="{{url_for('web.books_list', book_id=lang.lang_code, data=data, sort='new')}}">{{lang.name}}</a></div>
     </div>
   {% endfor %}
   </div>
   </div>
 {% endblock %}
+

@@ -1,53 +1,53 @@
 {
-  "pubdate": "{{entry.pubdate}}", 
-  "title": "{{entry.title}}", 
+  "pubdate": "{{entry.pubdate}}",
+  "title": "{{entry.title}}",
   "format_metadata": {
-  {% for format in entry.data %}  
+  {% for format in entry.data %}
     "{{format.format}}": {
-      "mtime": "{{entry.last_modified}}", 
-      "size": {{format.uncompressed_size}}, 
+      "mtime": "{{entry.last_modified}}",
+      "size": {{format.uncompressed_size}},
       "path": ""
     }{% if not loop.last %},{% endif %}
     {% endfor %}
-  }, 
+  },
   "formats": [
-  {% for format in entry.data %}  
+  {% for format in entry.data %}
     "{{format.format}}"{% if not loop.last %},{% endif %}
-  {% endfor %}    
-  ], 
-  "series": null, 
-  "cover": "{{url_for('feed_get_cover', book_id=entry.id)}}",
+  {% endfor %}
+  ],
+  "series": null,
+  "cover": "{{url_for('opds.feed_get_cover', book_id=entry.id)}}",
   "languages": [
-  {% for lang in entry.languages %}  
+  {% for lang in entry.languages %}
     "{{lang.lang_code}}"{% if not loop.last %},{% endif %}
   {% endfor %}
-  ], 
+  ],
   "comments": "{% if entry.comments|length > 0 %}{{entry.comments[0].text.replace('"', '\\"')|safe}}{% endif %}",
   "tags": [
   {% for tag in entry.tags %}
     "{{tag.name}}"{% if not loop.last %},{% endif %}
-  {% endfor %}    
-  ], 
-  "application_id": {{entry.id}}, 
-  "series_index": {% if entry.series|length > 0 %}"{{entry.series_index}}"{% else %}null{% endif %}, 
-  "last_modified": "{{entry.last_modified}}", 
-  "author_sort": "{{entry.author_sort}}", 
-  "uuid": "{{entry.uuid}}", 
-  "timestamp": "{{entry.timestamp}}", 
-  "thumbnail": "{{url_for('feed_get_cover', book_id=entry.id)}}",
+  {% endfor %}
+  ],
+  "application_id": {{entry.id}},
+  "series_index": {% if entry.series|length > 0 %}"{{entry.series_index}}"{% else %}null{% endif %},
+  "last_modified": "{{entry.last_modified}}",
+  "author_sort": "{{entry.author_sort}}",
+  "uuid": "{{entry.uuid}}",
+  "timestamp": "{{entry.timestamp}}",
+  "thumbnail": "{{url_for('opds.feed_get_cover', book_id=entry.id)}}",
   "main_format": {
-    "{{entry.data[0].format|lower}}": "{{ url_for('get_opds_download_link', book_id=entry.id, book_format=entry.data[0].format|lower)}}"
+    "{{entry.data[0].format|lower}}": "{{ url_for('opds.opds_download_link', book_id=entry.id, book_format=entry.data[0].format|lower)}}"
   },
   "rating":{% if entry.ratings.__len__() > 0 %} "{{entry.ratings[0].rating}}.0"{% else %}0.0{% endif %},
   "authors": [
   {% for author in entry.authors %}
     "{{author.name.replace('|',',')}}"{% if not loop.last %},{% endif %}
-  {% endfor %}       
-  ], 
+  {% endfor %}
+  ],
   "other_formats": {
   {% if entry.data.__len__() > 1 %}
   {% for format in entry.data[1:] %}
-    "{{format.format|lower}}": "{{ url_for('get_opds_download_link', book_id=entry.id, book_format=format.format|lower)}}"{% if not loop.last %},{% endif %}
+    "{{format.format|lower}}": "{{ url_for('opds.opds_download_link', book_id=entry.id, book_format=format.format|lower)}}"{% if not loop.last %},{% endif %}
   {% endfor %}
   {% endif %} },
   "title_sort": "{{entry.sort}}"

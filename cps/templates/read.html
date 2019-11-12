@@ -7,6 +7,8 @@
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, user-scalable=no">
         <meta name="apple-mobile-web-app-capable" content="yes">
+        <link rel="apple-touch-icon" sizes="140x140" href="{{ url_for('static', filename='favicon.ico') }}">
+        <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
 
         <link rel="stylesheet" href="{{ url_for('static', filename='css/libs/normalize.css') }}">
         <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
@@ -77,22 +79,22 @@
       </div>
       <div class="overlay"></div>
 
+      <script src="{{ url_for('static', filename='js/libs/jszip.min.js') }}">
+      </script> <script src="{{ url_for('static', filename='js/libs/epub.min.js') }}"></script>
       <script type="text/javascript">
           window.calibre = {
               filePath: "{{ url_for('static', filename='js/libs/') }}",
               cssPath: "{{ url_for('static', filename='css/') }}",
-              bookmarkUrl: "{{ url_for('bookmark', book_id=bookid, book_format='EPUB') }}",
-              bookUrl: "{{ url_for('get_download_link_ext', book_id=bookid, book_format="epub", anyname='file.epub') }}",
+              bookmarkUrl: "{{ url_for('web.bookmark', book_id=bookid, book_format='EPUB') }}",
+              bookUrl: "{{ url_for('web.download_link', book_id=bookid, book_format='epub', anyname='file.epub') }}",
               bookmark: "{{ bookmark.bookmark_key if bookmark != None }}",
-              useBookmarks: {{ g.user.is_authenticated | tojson }}
+              useBookmarks: "{{ g.user.is_authenticated | tojson }}"
           };
       </script>
       <script src="{{ url_for('static', filename='js/libs/jquery.min.js') }}"></script>
       <script src="{{ url_for('static', filename='js/libs/jszip.min.js') }}"></script>
-      <script src="{{ url_for('static', filename='js/libs/zip.min.js') }}"></script>
       <script src="{{ url_for('static', filename='js/libs/screenfull.min.js') }}"></script>
       <script src="{{ url_for('static', filename='js/libs/epub.min.js') }}"></script>
-      <script src="{{ url_for('static', filename='js/libs/hooks.min.js') }}"></script>
       <script src="{{ url_for('static', filename='js/libs/reader.min.js') }}"></script>
       <script src="{{ url_for('static', filename='js/reading/epub.js') }}"></script>
     </body>
