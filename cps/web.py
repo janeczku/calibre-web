@@ -798,9 +798,9 @@ def search():
         for element in entries:
             ids.append(element.id)
         searched_ids[current_user.id] = ids
-        return render_title_template('search.html', searchterm=term, entries=entries, page="search")
+        return render_title_template('search.html', searchterm=term, entries=entries, title=_(u"Search"), page="search")
     else:
-        return render_title_template('search.html', searchterm="", page="search")
+        return render_title_template('search.html', searchterm="", title=_(u"Search"), page="search")
 
 
 @web.route("/advanced_search", methods=['GET'])
