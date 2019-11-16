@@ -140,7 +140,7 @@ msgstr "Ett okänt fel uppstod. Försök igen senare."
 
 #: cps/admin.py:645
 msgid "Logfile viewer"
-msgstr "Visaren för lggfiler"
+msgstr "Visaren för loggfil"
 
 #: cps/admin.py:680
 msgid "Requesting update package"
@@ -192,7 +192,7 @@ msgstr "Allmänt fel"
 
 #: cps/converter.py:31
 msgid "not configured"
-msgstr ""
+msgstr "inte konfigurerad"
 
 #: cps/editbooks.py:214 cps/editbooks.py:393
 msgid "Error opening eBook. File does not exist or file is not accessible"
