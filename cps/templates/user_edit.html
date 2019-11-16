@@ -3,7 +3,7 @@
 <div class="discover">
   <h1>{{title}}</h1>
   <form role="form" method="POST" autocomplete="off">
-    {% if g.user and g.user.role_admin() and new_user %}
+    {% if new_user or ( g.user and content.nickname != "Guest" and g.user.role_admin() ) %}
     <div class="form-group required">
       <label for="nickname">{{_('Username')}}</label>
       <input type="text" class="form-control" name="nickname" id="nickname" value="{{ content.nickname if content.nickname != None }}" autocomplete="off">
