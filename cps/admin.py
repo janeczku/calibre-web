@@ -563,7 +563,6 @@ def edit_user(user_id):
         else:
             if "password" in to_save and to_save["password"]:
                 content.password = generate_password_hash(to_save["password"])
-
             anonymous = content.is_anonymous
             content.role = constants.selected_roles(to_save)
             if anonymous:
@@ -601,6 +600,21 @@ def edit_user(user_id):
                     return render_title_template("user_edit.html", translations=translations, languages=languages,
                                                  new_user=0, content=content, downloads=downloads, registered_oauth=oauth_check,
                                                  title=_(u"Edit User %(nick)s", nick=content.nickname), page="edituser")
+            if "nickname" in to_save and to_save["nickname"] != content.nickname:
+                # Query User nickname, if not existing, change
+                if not ub.session.query(ub.User).filter(ub.User.nickname == to_save["nickname"]).scalar():
+                    content.nickname = to_save["nickname"]
+                else:
+                    flash(_(u"This username is already taken"), category="error")
+                    return render_title_template("user_edit.html",
+                                                 translations=translations,
+                                                 languages=languages,
+                                                 new_user=0, content=content,
+                                                 downloads=downloads,
+                                                 registered_oauth=oauth_check,
+                                                 title=_(u"Edit User %(nick)s",
+                                                         nick=content.nickname),
+                                                 page="edituser")
 
             if "kindle_mail" in to_save and to_save["kindle_mail"] != content.kindle_mail:
                 content.kindle_mail = to_save["kindle_mail"]

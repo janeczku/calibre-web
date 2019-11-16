@@ -38,7 +38,8 @@ from flask import render_template, request, redirect, send_from_directory, make_
 from flask_babel import gettext as _
 from flask_login import login_user, logout_user, login_required, current_user
 from sqlalchemy.exc import IntegrityError
-from sqlalchemy.sql.expression import text, func, true, false, not_, and_
+from sqlalchemy.sql.expression import text, func, true, false, not_, and_, \
+    exists
 from werkzeug.exceptions import default_exceptions
 from werkzeug.datastructures import Headers
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -1258,6 +1259,21 @@ def profile():
                 return render_title_template("user_edit.html", content=current_user, downloads=downloads,
                                              title=_(u"%(name)s's profile", name=current_user.nickname), page="me",
                                              registered_oauth=oauth_check, oauth_status=oauth_status)
+        if "nickname" in to_save and to_save["nickname"] != current_user.nickname:
+            # Query User nickname, if not existing, change
+            if not ub.session.query(ub.User).filter(ub.User.nickname == to_save["nickname"]).scalar():
+                current_user.nickname = to_save["nickname"]
+            else:
+                flash(_(u"This username is already taken"), category="error")
+                return render_title_template("user_edit.html",
+                                             translations=translations,
+                                             languages=languages,
+                                             new_user=0, content=current_user,
+                                             downloads=downloads,
+                                             registered_oauth=oauth_check,
+                                             title=_(u"Edit User %(nick)s",
+                                                     nick=current_user.nickname),
+                                             page="edituser")
             current_user.email = to_save["email"]
         if "show_random" in to_save and to_save["show_random"] == "on":
             current_user.random_books = 1
