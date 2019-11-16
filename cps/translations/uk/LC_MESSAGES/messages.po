@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/calibre-web\n"
-"POT-Creation-Date: 2019-09-06 19:03+0200\n"
+"POT-Creation-Date: 2019-11-16 07:24+0100\n"
 "PO-Revision-Date: 2017-04-30 00:47+0300\n"
 "Last-Translator: ABIS Team <biblio.if.abis@gmail.com>\n"
 "Language: uk\n"
@@ -17,17 +17,15 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.7.0\n"
 
-#: cps/about.py:40 cps/about.py:65 cps/about.py:66 cps/uploader.py:228
+#: cps/about.py:41
 msgid "installed"
 msgstr ""
 
-#: cps/about.py:42 cps/about.py:65 cps/about.py:66 cps/uploader.py:213
-#: cps/uploader.py:214 cps/uploader.py:218 cps/uploader.py:222
-#: cps/uploader.py:226 cps/uploader.py:230
+#: cps/about.py:43
 msgid "not installed"
 msgstr "не встановлено"
 
-#: cps/about.py:80
+#: cps/about.py:81
 msgid "Statistics"
 msgstr "Статистика"
 
@@ -39,7 +37,7 @@ msgstr "Сервер перезавантажено, будь-ласка, пер
 msgid "Performing shutdown of server, please close window"
 msgstr "Виконується зупинка серверу, будь-ласка, закрийте вікно"
 
-#: cps/admin.py:111 cps/updater.py:445
+#: cps/admin.py:111 cps/updater.py:446
 msgid "Unknown"
 msgstr "Невідомий"
 
@@ -59,7 +57,7 @@ msgstr ""
 msgid "Basic Configuration"
 msgstr "Настройки сервера"
 
-#: cps/admin.py:452 cps/web.py:1050
+#: cps/admin.py:452 cps/web.py:1054
 msgid "Please fill out all fields!"
 msgstr "Будь-ласка, заповніть всі поля!"
 
@@ -68,7 +66,7 @@ msgstr "Будь-ласка, заповніть всі поля!"
 msgid "Add new user"
 msgstr "Додати користувача"
 
-#: cps/admin.py:463 cps/web.py:1253
+#: cps/admin.py:463 cps/web.py:1257
 msgid "E-mail is not from valid domain"
 msgstr ""
 
@@ -95,7 +93,7 @@ msgstr ""
 msgid "There was an error sending the Test e-mail: %(res)s"
 msgstr ""
 
-#: cps/admin.py:527 cps/web.py:1033
+#: cps/admin.py:527 cps/web.py:1037
 msgid "Please configure your kindle e-mail address first..."
 msgstr ""
 
@@ -112,7 +110,7 @@ msgstr "Користувача '%(nick)s' видалено"
 msgid "No admin user remaining, can't delete user"
 msgstr ""
 
-#: cps/admin.py:600 cps/web.py:1279
+#: cps/admin.py:600 cps/web.py:1283
 msgid "Found an existing account for this e-mail address."
 msgstr ""
 
@@ -135,7 +133,7 @@ msgstr "Сталась невідома помилка"
 msgid "Password for user %(user)s reset"
 msgstr ""
 
-#: cps/admin.py:634 cps/web.py:1075
+#: cps/admin.py:634 cps/web.py:1079
 msgid "An unknown error occurred. Please try again later."
 msgstr ""
 
@@ -175,20 +173,24 @@ msgstr "Оновлення встановлені, натисніть ok і пе
 msgid "Update failed:"
 msgstr ""
 
-#: cps/admin.py:687 cps/updater.py:271 cps/updater.py:456 cps/updater.py:458
+#: cps/admin.py:687 cps/updater.py:272 cps/updater.py:457 cps/updater.py:459
 msgid "HTTP Error"
 msgstr ""
 
-#: cps/admin.py:688 cps/updater.py:273 cps/updater.py:460
+#: cps/admin.py:688 cps/updater.py:274 cps/updater.py:461
 msgid "Connection error"
 msgstr ""
 
-#: cps/admin.py:689 cps/updater.py:275 cps/updater.py:462
+#: cps/admin.py:689 cps/updater.py:276 cps/updater.py:463
 msgid "Timeout while establishing connection"
 msgstr ""
 
-#: cps/admin.py:690 cps/updater.py:277 cps/updater.py:464
+#: cps/admin.py:690 cps/updater.py:278 cps/updater.py:465
 msgid "General error"
+msgstr ""
+
+#: cps/converter.py:31
+msgid "not configured"
 msgstr ""
 
 #: cps/editbooks.py:214 cps/editbooks.py:393
@@ -574,7 +576,7 @@ msgid "Show best rated books"
 msgstr "Показувати книги з найвищим рейтингом"
 
 #: cps/templates/index.xml:46 cps/templates/index.xml:50 cps/ub.py:67
-#: cps/web.py:971
+#: cps/web.py:975
 msgid "Read Books"
 msgstr "Прочитані книги"
 
@@ -583,7 +585,7 @@ msgid "Show read and unread"
 msgstr "Показувати прочитані та непрочитані книги"
 
 #: cps/templates/index.xml:53 cps/templates/index.xml:57 cps/ub.py:71
-#: cps/web.py:975
+#: cps/web.py:979
 msgid "Unread Books"
 msgstr "Непрочитані книги"
 
@@ -656,228 +658,228 @@ msgstr ""
 msgid "Show file formats selection"
 msgstr ""
 
-#: cps/updater.py:251 cps/updater.py:358 cps/updater.py:371
+#: cps/updater.py:252 cps/updater.py:359 cps/updater.py:372
 msgid "Unexpected data while reading update information"
 msgstr ""
 
-#: cps/updater.py:258 cps/updater.py:364
+#: cps/updater.py:259 cps/updater.py:365
 msgid "No update available. You already have the latest version installed"
 msgstr ""
 
-#: cps/updater.py:284
+#: cps/updater.py:285
 msgid "A new update is available. Click on the button below to update to the latest version."
 msgstr ""
 
-#: cps/updater.py:337
+#: cps/updater.py:338
 msgid "Could not fetch update information"
 msgstr ""
 
-#: cps/updater.py:351
+#: cps/updater.py:352
 msgid "No release information available"
 msgstr ""
 
-#: cps/updater.py:404 cps/updater.py:413
+#: cps/updater.py:405 cps/updater.py:414
 #, python-format
 msgid "A new update is available. Click on the button below to update to version: %(version)s"
 msgstr ""
 
-#: cps/updater.py:423
+#: cps/updater.py:424
 msgid "Click on the button below to update to the latest stable version."
 msgstr ""
 
-#: cps/web.py:460
+#: cps/web.py:458
 msgid "Recently Added Books"
 msgstr "Нещодавно додані книги"
 
-#: cps/web.py:488
+#: cps/web.py:486
 msgid "Best rated books"
 msgstr "Книги з найкращим рейтингом"
 
-#: cps/templates/index.xml:38 cps/web.py:496
+#: cps/templates/index.xml:38 cps/web.py:494
 msgid "Random Books"
 msgstr "Випадковий список книг"
 
-#: cps/web.py:522
+#: cps/web.py:520
 msgid "Books"
 msgstr ""
 
-#: cps/web.py:549
+#: cps/web.py:547
 msgid "Hot Books (most downloaded)"
 msgstr "Популярні книги (найбільш завантажувані)"
 
-#: cps/web.py:560 cps/web.py:1300 cps/web.py:1388
+#: cps/web.py:558 cps/web.py:1304 cps/web.py:1392
 msgid "Error opening eBook. File does not exist or file is not accessible:"
 msgstr "Неможливо відкрити книгу. Файл не існує або немає доступу."
 
-#: cps/web.py:573
+#: cps/web.py:571
 #, python-format
 msgid "Author: %(name)s"
 msgstr ""
 
-#: cps/web.py:585
+#: cps/web.py:583
 #, python-format
 msgid "Publisher: %(name)s"
 msgstr ""
 
-#: cps/web.py:596
+#: cps/web.py:594
 #, python-format
 msgid "Series: %(serie)s"
 msgstr "Серії: %(serie)s"
 
-#: cps/web.py:607
+#: cps/web.py:605
 #, python-format
 msgid "Rating: %(rating)s stars"
 msgstr ""
 
-#: cps/web.py:618
+#: cps/web.py:616
 #, python-format
 msgid "File format: %(format)s"
 msgstr ""
 
-#: cps/web.py:630
+#: cps/web.py:628
 #, python-format
 msgid "Category: %(name)s"
 msgstr "Категорія: %(name)s"
 
-#: cps/web.py:647
+#: cps/web.py:645
 #, python-format
 msgid "Language: %(name)s"
 msgstr "Мова: %(name)s"
 
-#: cps/web.py:679
+#: cps/web.py:677
 msgid "Publisher list"
 msgstr ""
 
-#: cps/templates/index.xml:82 cps/web.py:695
+#: cps/templates/index.xml:82 cps/web.py:693
 msgid "Series list"
 msgstr "Список серій"
 
-#: cps/web.py:709
+#: cps/web.py:707
 msgid "Ratings list"
 msgstr ""
 
-#: cps/web.py:722
+#: cps/web.py:720
 msgid "File formats list"
 msgstr ""
 
-#: cps/web.py:750
+#: cps/web.py:748
 msgid "Available languages"
 msgstr "Доступні мови"
 
-#: cps/templates/index.xml:75 cps/web.py:767
+#: cps/templates/index.xml:75 cps/web.py:765
 msgid "Category list"
 msgstr "Список категорій"
 
-#: cps/templates/layout.html:73 cps/web.py:781
+#: cps/templates/layout.html:73 cps/web.py:779
 msgid "Tasks"
 msgstr ""
 
-#: cps/web.py:846
+#: cps/web.py:850
 msgid "Published after "
 msgstr ""
 
-#: cps/web.py:853
+#: cps/web.py:857
 msgid "Published before "
 msgstr "Опубліковано до"
 
-#: cps/web.py:867
+#: cps/web.py:871
 #, python-format
 msgid "Rating <= %(rating)s"
 msgstr ""
 
-#: cps/web.py:869
+#: cps/web.py:873
 #, python-format
 msgid "Rating >= %(rating)s"
 msgstr ""
 
-#: cps/web.py:929 cps/web.py:939
+#: cps/web.py:933 cps/web.py:943
 msgid "search"
 msgstr "пошук"
 
-#: cps/web.py:1022
+#: cps/web.py:1026
 msgid "Please configure the SMTP mail settings first..."
 msgstr "Будь-ласка, спочатку сконфігуруйте параметри SMTP"
 
-#: cps/web.py:1027
+#: cps/web.py:1031
 #, python-format
 msgid "Book successfully queued for sending to %(kindlemail)s"
 msgstr ""
 
-#: cps/web.py:1031
+#: cps/web.py:1035
 #, python-format
 msgid "There was an error sending this book: %(res)s"
 msgstr "Помилка при відправці книги: %(res)s"
 
-#: cps/web.py:1051 cps/web.py:1076 cps/web.py:1080 cps/web.py:1085
-#: cps/web.py:1089
+#: cps/web.py:1055 cps/web.py:1080 cps/web.py:1084 cps/web.py:1089
+#: cps/web.py:1093
 msgid "register"
 msgstr "зареєструватись"
 
-#: cps/web.py:1078
+#: cps/web.py:1082
 msgid "Your e-mail is not allowed to register"
 msgstr ""
 
-#: cps/web.py:1081
+#: cps/web.py:1085
 msgid "Confirmation e-mail was send to your e-mail account."
 msgstr ""
 
-#: cps/web.py:1084
+#: cps/web.py:1088
 msgid "This username or e-mail address is already in use."
 msgstr ""
 
-#: cps/web.py:1099
+#: cps/web.py:1103
 msgid "Cannot activate LDAP authentication"
 msgstr ""
 
-#: cps/web.py:1108 cps/web.py:1214
+#: cps/web.py:1112 cps/web.py:1218
 #, python-format
 msgid "you are now logged in as: '%(nickname)s'"
 msgstr "Ви увійшли як користувач: '%(nickname)s'"
 
-#: cps/web.py:1112
+#: cps/web.py:1116
 msgid "Could not login. LDAP server down, please contact your administrator"
 msgstr ""
 
-#: cps/web.py:1116 cps/web.py:1124
+#: cps/web.py:1120 cps/web.py:1128
 msgid "Wrong Username or Password"
 msgstr "Помилка в імені користувача або паролі"
 
-#: cps/web.py:1120
+#: cps/web.py:1124
 #, python-format
 msgid "You are now logged in as: '%(nickname)s'"
 msgstr ""
 
-#: cps/web.py:1128 cps/web.py:1150
+#: cps/web.py:1132 cps/web.py:1154
 msgid "login"
 msgstr "увійти"
 
-#: cps/web.py:1162 cps/web.py:1193
+#: cps/web.py:1166 cps/web.py:1197
 msgid "Token not found"
 msgstr "Токен не знайдено"
 
-#: cps/web.py:1170 cps/web.py:1201
+#: cps/web.py:1174 cps/web.py:1205
 msgid "Token has expired"
 msgstr "Час дії токено вичерпано"
 
-#: cps/web.py:1178
+#: cps/web.py:1182
 msgid "Success! Please return to your device"
 msgstr "Вдалося! Будь-ласка, поверніться до вашого пристрою"
 
-#: cps/web.py:1255 cps/web.py:1282 cps/web.py:1286
+#: cps/web.py:1259 cps/web.py:1286 cps/web.py:1290
 #, python-format
 msgid "%(name)s's profile"
 msgstr "Профіль %(name)s"
 
-#: cps/web.py:1284
+#: cps/web.py:1288
 msgid "Profile updated"
 msgstr "Профіль оновлено"
 
-#: cps/web.py:1310 cps/web.py:1312 cps/web.py:1314 cps/web.py:1320
-#: cps/web.py:1324
+#: cps/web.py:1314 cps/web.py:1316 cps/web.py:1318 cps/web.py:1324
+#: cps/web.py:1328
 msgid "Read a Book"
 msgstr "Читати книгу"
 
-#: cps/web.py:1334
+#: cps/web.py:1338
 msgid "Error opening eBook. File does not exist or file is not accessible."
 msgstr ""
 
@@ -1055,7 +1057,7 @@ msgstr "Ok"
 #: cps/templates/config_edit.html:321 cps/templates/config_view_edit.html:147
 #: cps/templates/email_edit.html:40 cps/templates/email_edit.html:74
 #: cps/templates/layout.html:28 cps/templates/shelf.html:73
-#: cps/templates/shelf_edit.html:19 cps/templates/shelf_order.html:12
+#: cps/templates/shelf_edit.html:19 cps/templates/shelf_order.html:32
 #: cps/templates/user_edit.html:132
 msgid "Back"
 msgstr "Назад"
@@ -2053,7 +2055,7 @@ msgstr "Видалити цю книжкову полицю"
 msgid "Edit Shelf"
 msgstr ""
 
-#: cps/templates/shelf.html:12 cps/templates/shelf_order.html:11
+#: cps/templates/shelf.html:12 cps/templates/shelf_order.html:31
 msgid "Change order"
 msgstr "Змінити порядок"
 

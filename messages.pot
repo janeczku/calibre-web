@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2019-09-17 18:24+0200\n"
+"POT-Creation-Date: 2019-11-16 07:24+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,17 +17,15 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.7.0\n"
 
-#: cps/about.py:40 cps/about.py:65 cps/about.py:66 cps/uploader.py:228
+#: cps/about.py:41
 msgid "installed"
 msgstr ""
 
-#: cps/about.py:42 cps/about.py:65 cps/about.py:66 cps/uploader.py:213
-#: cps/uploader.py:214 cps/uploader.py:218 cps/uploader.py:222
-#: cps/uploader.py:226 cps/uploader.py:230
+#: cps/about.py:43
 msgid "not installed"
 msgstr ""
 
-#: cps/about.py:80
+#: cps/about.py:81
 msgid "Statistics"
 msgstr ""
 
@@ -39,7 +37,7 @@ msgstr ""
 msgid "Performing shutdown of server, please close window"
 msgstr ""
 
-#: cps/admin.py:111 cps/updater.py:445
+#: cps/admin.py:111 cps/updater.py:446
 msgid "Unknown"
 msgstr ""
 
@@ -59,7 +57,7 @@ msgstr ""
 msgid "Basic Configuration"
 msgstr ""
 
-#: cps/admin.py:452 cps/web.py:1048
+#: cps/admin.py:452 cps/web.py:1054
 msgid "Please fill out all fields!"
 msgstr ""
 
@@ -68,7 +66,7 @@ msgstr ""
 msgid "Add new user"
 msgstr ""
 
-#: cps/admin.py:463 cps/web.py:1251
+#: cps/admin.py:463 cps/web.py:1257
 msgid "E-mail is not from valid domain"
 msgstr ""
 
@@ -95,7 +93,7 @@ msgstr ""
 msgid "There was an error sending the Test e-mail: %(res)s"
 msgstr ""
 
-#: cps/admin.py:527 cps/web.py:1031
+#: cps/admin.py:527 cps/web.py:1037
 msgid "Please configure your kindle e-mail address first..."
 msgstr ""
 
@@ -112,7 +110,7 @@ msgstr ""
 msgid "No admin user remaining, can't delete user"
 msgstr ""
 
-#: cps/admin.py:600 cps/web.py:1277
+#: cps/admin.py:600 cps/web.py:1283
 msgid "Found an existing account for this e-mail address."
 msgstr ""
 
@@ -135,7 +133,7 @@ msgstr ""
 msgid "Password for user %(user)s reset"
 msgstr ""
 
-#: cps/admin.py:634 cps/web.py:1073
+#: cps/admin.py:634 cps/web.py:1079
 msgid "An unknown error occurred. Please try again later."
 msgstr ""
 
@@ -175,20 +173,24 @@ msgstr ""
 msgid "Update failed:"
 msgstr ""
 
-#: cps/admin.py:687 cps/updater.py:271 cps/updater.py:456 cps/updater.py:458
+#: cps/admin.py:687 cps/updater.py:272 cps/updater.py:457 cps/updater.py:459
 msgid "HTTP Error"
 msgstr ""
 
-#: cps/admin.py:688 cps/updater.py:273 cps/updater.py:460
+#: cps/admin.py:688 cps/updater.py:274 cps/updater.py:461
 msgid "Connection error"
 msgstr ""
 
-#: cps/admin.py:689 cps/updater.py:275 cps/updater.py:462
+#: cps/admin.py:689 cps/updater.py:276 cps/updater.py:463
 msgid "Timeout while establishing connection"
 msgstr ""
 
-#: cps/admin.py:690 cps/updater.py:277 cps/updater.py:464
+#: cps/admin.py:690 cps/updater.py:278 cps/updater.py:465
 msgid "General error"
+msgstr ""
+
+#: cps/converter.py:31
+msgid "not configured"
 msgstr ""
 
 #: cps/editbooks.py:214 cps/editbooks.py:393
@@ -574,7 +576,7 @@ msgid "Show best rated books"
 msgstr ""
 
 #: cps/templates/index.xml:46 cps/templates/index.xml:50 cps/ub.py:67
-#: cps/web.py:969
+#: cps/web.py:975
 msgid "Read Books"
 msgstr ""
 
@@ -583,7 +585,7 @@ msgid "Show read and unread"
 msgstr ""
 
 #: cps/templates/index.xml:53 cps/templates/index.xml:57 cps/ub.py:71
-#: cps/web.py:973
+#: cps/web.py:979
 msgid "Unread Books"
 msgstr ""
 
@@ -656,32 +658,32 @@ msgstr ""
 msgid "Show file formats selection"
 msgstr ""
 
-#: cps/updater.py:251 cps/updater.py:358 cps/updater.py:371
+#: cps/updater.py:252 cps/updater.py:359 cps/updater.py:372
 msgid "Unexpected data while reading update information"
 msgstr ""
 
-#: cps/updater.py:258 cps/updater.py:364
+#: cps/updater.py:259 cps/updater.py:365
 msgid "No update available. You already have the latest version installed"
 msgstr ""
 
-#: cps/updater.py:284
+#: cps/updater.py:285
 msgid "A new update is available. Click on the button below to update to the latest version."
 msgstr ""
 
-#: cps/updater.py:337
+#: cps/updater.py:338
 msgid "Could not fetch update information"
 msgstr ""
 
-#: cps/updater.py:351
+#: cps/updater.py:352
 msgid "No release information available"
 msgstr ""
 
-#: cps/updater.py:404 cps/updater.py:413
+#: cps/updater.py:405 cps/updater.py:414
 #, python-format
 msgid "A new update is available. Click on the button below to update to version: %(version)s"
 msgstr ""
 
-#: cps/updater.py:423
+#: cps/updater.py:424
 msgid "Click on the button below to update to the latest stable version."
 msgstr ""
 
@@ -705,7 +707,7 @@ msgstr ""
 msgid "Hot Books (most downloaded)"
 msgstr ""
 
-#: cps/web.py:558 cps/web.py:1298 cps/web.py:1386
+#: cps/web.py:558 cps/web.py:1304 cps/web.py:1392
 msgid "Error opening eBook. File does not exist or file is not accessible:"
 msgstr ""
 
@@ -772,112 +774,112 @@ msgstr ""
 msgid "Tasks"
 msgstr ""
 
-#: cps/web.py:844
+#: cps/web.py:850
 msgid "Published after "
 msgstr ""
 
-#: cps/web.py:851
+#: cps/web.py:857
 msgid "Published before "
 msgstr ""
 
-#: cps/web.py:865
+#: cps/web.py:871
 #, python-format
 msgid "Rating <= %(rating)s"
 msgstr ""
 
-#: cps/web.py:867
+#: cps/web.py:873
 #, python-format
 msgid "Rating >= %(rating)s"
 msgstr ""
 
-#: cps/web.py:927 cps/web.py:937
+#: cps/web.py:933 cps/web.py:943
 msgid "search"
 msgstr ""
 
-#: cps/web.py:1020
+#: cps/web.py:1026
 msgid "Please configure the SMTP mail settings first..."
 msgstr ""
 
-#: cps/web.py:1025
+#: cps/web.py:1031
 #, python-format
 msgid "Book successfully queued for sending to %(kindlemail)s"
 msgstr ""
 
-#: cps/web.py:1029
+#: cps/web.py:1035
 #, python-format
 msgid "There was an error sending this book: %(res)s"
 msgstr ""
 
-#: cps/web.py:1049 cps/web.py:1074 cps/web.py:1078 cps/web.py:1083
-#: cps/web.py:1087
+#: cps/web.py:1055 cps/web.py:1080 cps/web.py:1084 cps/web.py:1089
+#: cps/web.py:1093
 msgid "register"
 msgstr ""
 
-#: cps/web.py:1076
+#: cps/web.py:1082
 msgid "Your e-mail is not allowed to register"
 msgstr ""
 
-#: cps/web.py:1079
+#: cps/web.py:1085
 msgid "Confirmation e-mail was send to your e-mail account."
 msgstr ""
 
-#: cps/web.py:1082
+#: cps/web.py:1088
 msgid "This username or e-mail address is already in use."
 msgstr ""
 
-#: cps/web.py:1097
+#: cps/web.py:1103
 msgid "Cannot activate LDAP authentication"
 msgstr ""
 
-#: cps/web.py:1106 cps/web.py:1212
+#: cps/web.py:1112 cps/web.py:1218
 #, python-format
 msgid "you are now logged in as: '%(nickname)s'"
 msgstr ""
 
-#: cps/web.py:1110
+#: cps/web.py:1116
 msgid "Could not login. LDAP server down, please contact your administrator"
 msgstr ""
 
-#: cps/web.py:1114 cps/web.py:1122
+#: cps/web.py:1120 cps/web.py:1128
 msgid "Wrong Username or Password"
 msgstr ""
 
-#: cps/web.py:1118
+#: cps/web.py:1124
 #, python-format
 msgid "You are now logged in as: '%(nickname)s'"
 msgstr ""
 
-#: cps/web.py:1126 cps/web.py:1148
+#: cps/web.py:1132 cps/web.py:1154
 msgid "login"
 msgstr ""
 
-#: cps/web.py:1160 cps/web.py:1191
+#: cps/web.py:1166 cps/web.py:1197
 msgid "Token not found"
 msgstr ""
 
-#: cps/web.py:1168 cps/web.py:1199
+#: cps/web.py:1174 cps/web.py:1205
 msgid "Token has expired"
 msgstr ""
 
-#: cps/web.py:1176
+#: cps/web.py:1182
 msgid "Success! Please return to your device"
 msgstr ""
 
-#: cps/web.py:1253 cps/web.py:1280 cps/web.py:1284
+#: cps/web.py:1259 cps/web.py:1286 cps/web.py:1290
 #, python-format
 msgid "%(name)s's profile"
 msgstr ""
 
-#: cps/web.py:1282
+#: cps/web.py:1288
 msgid "Profile updated"
 msgstr ""
 
-#: cps/web.py:1308 cps/web.py:1310 cps/web.py:1312 cps/web.py:1318
-#: cps/web.py:1322
+#: cps/web.py:1314 cps/web.py:1316 cps/web.py:1318 cps/web.py:1324
+#: cps/web.py:1328
 msgid "Read a Book"
 msgstr ""
 
-#: cps/web.py:1332
+#: cps/web.py:1338
 msgid "Error opening eBook. File does not exist or file is not accessible."
 msgstr ""
 
@@ -1055,7 +1057,7 @@ msgstr ""
 #: cps/templates/config_edit.html:321 cps/templates/config_view_edit.html:147
 #: cps/templates/email_edit.html:40 cps/templates/email_edit.html:74
 #: cps/templates/layout.html:28 cps/templates/shelf.html:73
-#: cps/templates/shelf_edit.html:19 cps/templates/shelf_order.html:12
+#: cps/templates/shelf_edit.html:19 cps/templates/shelf_order.html:32
 #: cps/templates/user_edit.html:132
 msgid "Back"
 msgstr ""
@@ -2053,7 +2055,7 @@ msgstr ""
 msgid "Edit Shelf"
 msgstr ""
 
-#: cps/templates/shelf.html:12 cps/templates/shelf_order.html:11
+#: cps/templates/shelf.html:12 cps/templates/shelf_order.html:31
 msgid "Change order"
 msgstr ""
 
