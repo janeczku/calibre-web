@@ -1,4 +1,7 @@
 {% extends "layout.html" %}
+{% block header %}
+<meta name="referrer" content="never">
+{% endblock %}
 {% block body %}
 <div class="discover">
     {% if entries|length < 1 %}
