@@ -65,7 +65,7 @@ except ImportError as e:
     use_fb2_meta = False
 
 try:
-    from PIL import PILImage
+    from PIL import Image as PILImage
     from PIL import __version__ as PILversion
     use_PIL = True
 except ImportError as e:
