@@ -1,0 +1,3 @@
+<a href="{{ url_for('web.show_book', book_id=entry.id) }}" data-toggle="modal" data-target="#bookDetailsModal" data-remote="false">
+	<span class="title">{{entry.title|shortentitle}}</span>
+</a>
