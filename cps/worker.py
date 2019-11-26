@@ -213,7 +213,7 @@ class WorkerThread(threading.Thread):
                 else:
                     self.doLock.release()
             except Exception as e:
-				log.exception(e)
+                log.exception(e)
                 self.doLock.release()
             if main_thread.is_alive():
                 time.sleep(1)
