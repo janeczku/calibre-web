@@ -567,7 +567,7 @@ def upload():
             filepath = os.path.join(config.config_calibre_dir, author_dir, title_dir)
             saved_filename = os.path.join(filepath, title_dir + meta.extension.lower())
 
-            if unicode(title) != u'Unknown' and unicode(authr) != u'Unknown':
+            if title != u'Unknown' and authr != u'Unknown':
                 entry = helper.check_exists_book(authr, title)
                 if entry:
                     book_html = flash(_(u"Uploaded book probably exists in the library, consider to change before upload new: ")
