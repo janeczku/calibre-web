@@ -992,10 +992,11 @@ def get_cover(book_id):
     return get_book_cover(book_id)
 
 
-@web.route("/show/<book_id>/<book_format>")
+@web.route("/show/<int:book_id>/<book_format>", defaults={'anyname': 'None'})
+@web.route("/show/<int:book_id>/<book_format>/<anyname>")
 @login_required_if_no_ano
 @viewer_required
-def serve_book(book_id, book_format):
+def serve_book(book_id, book_format, anyname):
     book_format = book_format.split(".")[0]
     book = db.session.query(db.Books).filter(db.Books.id == book_id).first()
     data = db.session.query(db.Data).filter(db.Data.book == book.id).filter(db.Data.format == book_format.upper())\
@@ -1010,11 +1011,11 @@ def serve_book(book_id, book_format):
         return send_from_directory(os.path.join(config.config_calibre_dir, book.path), data.name + "." + book_format)
 
 
-@web.route("/download/<int:book_id>/<book_format>", defaults={'anyname': 'None'})
-@web.route("/download/<int:book_id>/<book_format>/<anyname>")
+# @web.route("/download/<int:book_id>/<book_format>", defaults={'anyname': 'None'})
+@web.route("/download/<int:book_id>/<book_format>")
 @login_required_if_no_ano
 @download_required
-def download_link(book_id, book_format, anyname):
+def download_link(book_id, book_format):
     return get_download_link(book_id, book_format)
 
 
