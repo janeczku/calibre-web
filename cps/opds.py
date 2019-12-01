@@ -47,7 +47,7 @@ def requires_basic_auth_if_no_ano(f):
     def decorated(*args, **kwargs):
         auth = request.authorization
         if config.config_anonbrowse != 1:
-            if not auth or not check_auth(auth.username, auth.password):
+            if not auth or auth.type != 'basic' or not check_auth(auth.username, auth.password):
                 return authenticate()
         return f(*args, **kwargs)
     if config.config_login_type == constants.LOGIN_LDAP and services.ldap:
