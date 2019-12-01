@@ -86,7 +86,7 @@
               filePath: "{{ url_for('static', filename='js/libs/') }}",
               cssPath: "{{ url_for('static', filename='css/') }}",
               bookmarkUrl: "{{ url_for('web.bookmark', book_id=bookid, book_format='EPUB') }}",
-              bookUrl: "{{ url_for('web.download_link', book_id=bookid, book_format='epub', anyname='file.epub') }}",
+              bookUrl: "{{ url_for('web.serve_book', book_id=bookid, book_format='epub', anyname='file.epub') }}",
               bookmark: "{{ bookmark.bookmark_key if bookmark != None }}",
               useBookmarks: "{{ g.user.is_authenticated | tojson }}"
           };
