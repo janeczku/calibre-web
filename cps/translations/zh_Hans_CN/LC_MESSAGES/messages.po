@@ -20,7 +20,7 @@ msgstr ""
 
 #: cps/about.py:41
 msgid "installed"
-msgstr ""
+msgstr "已安装"
 
 #: cps/about.py:43
 msgid "not installed"
@@ -122,7 +122,7 @@ msgstr "编辑用户 %(nick)s"
 
 #: cps/admin.py:608 cps/web.py:1267
 msgid "This username is already taken"
-msgstr ""
+msgstr "此用户名已被使用"
 
 #: cps/admin.py:623
 #, python-format
@@ -232,7 +232,7 @@ msgstr "已添加 %(ext)s 格式到 %(book)s"
 
 #: cps/editbooks.py:373
 msgid "Cover is not a supported imageformat (jpg/png/webp), can't save"
-msgstr ""
+msgstr "封面不是一个被支持的图像格式(jpg/png/webp)，无法保存"
 
 #: cps/editbooks.py:406 cps/editbooks.py:415
 msgid "unknown"
@@ -240,7 +240,7 @@ msgstr "未知"
 
 #: cps/editbooks.py:447
 msgid "Cover is not a jpg file, can't save"
-msgstr ""
+msgstr "封面不是一个jpg文件，无法保存"
 
 #: cps/editbooks.py:490
 #, python-format
@@ -268,7 +268,7 @@ msgstr "删除文件 %(file)s 失败(权限拒绝)。"
 #: cps/editbooks.py:668
 #, python-format
 msgid "File %(file)s uploaded"
-msgstr ""
+msgstr "文件 %(file)s 已上传"
 
 #: cps/editbooks.py:697
 msgid "Source or destination format for conversion missing"
@@ -286,7 +286,7 @@ msgstr "转换此书时出现错误： %(res)s"
 
 #: cps/gdrive.py:61
 msgid "Google Drive setup not completed, try to deactivate and activate Google Drive again"
-msgstr ""
+msgstr "Google Drive 没有完成，试试重新关闭Google Drive再开启"
 
 #: cps/gdrive.py:103
 msgid "Callback domain is not verified, please follow steps to verify domain in google developer console"
@@ -337,12 +337,12 @@ msgstr "用户 %(name)s 的注册邮箱"
 #: cps/helper.py:162 cps/helper.py:164
 #, python-format
 msgid "Send %(format)s to Kindle"
-msgstr ""
+msgstr "发送 %(format)s 到Kindle"
 
 #: cps/helper.py:168
 #, python-format
 msgid "Convert %(orig)s to %(format)s and send to Kindle"
-msgstr ""
+msgstr "转换 %(orig)s 到 %(format)s 并发送到Kindle"
 
 #: cps/helper.py:208
 #, python-format
@@ -421,19 +421,19 @@ msgstr ""
 
 #: cps/oauth_bb.py:155
 msgid "Failed to log in with GitHub."
-msgstr ""
+msgstr "使用Github登录失败。"
 
 #: cps/oauth_bb.py:160
 msgid "Failed to fetch user info from GitHub."
-msgstr ""
+msgstr "从Github获取用户信息失败。"
 
 #: cps/oauth_bb.py:171
 msgid "Failed to log in with Google."
-msgstr ""
+msgstr "使用Google登录失败。"
 
 #: cps/oauth_bb.py:176
 msgid "Failed to fetch user info from Google."
-msgstr ""
+msgstr "从Google获取用户信息失败。"
 
 #: cps/oauth_bb.py:274
 #, python-format
@@ -452,11 +452,11 @@ msgstr ""
 
 #: cps/oauth_bb.py:309
 msgid "GitHub Oauth error, please retry later."
-msgstr ""
+msgstr "GitHub Oauth 错误，请重试。"
 
 #: cps/oauth_bb.py:328
 msgid "Google Oauth error, please retry later."
-msgstr ""
+msgstr "Google Oauth 错误，请重试。"
 
 #: cps/shelf.py:46 cps/shelf.py:98
 msgid "Invalid shelf specified"
@@ -596,7 +596,7 @@ msgstr "未读书籍"
 
 #: cps/ub.py:73
 msgid "Show unread"
-msgstr ""
+msgstr "显示未读"
 
 #: cps/ub.py:74
 msgid "Discover"
@@ -649,19 +649,19 @@ msgstr "显示语言选择"
 
 #: cps/ub.py:94
 msgid "Ratings"
-msgstr ""
+msgstr "评分"
 
 #: cps/ub.py:96
 msgid "Show ratings selection"
-msgstr ""
+msgstr "显示评分选择"
 
 #: cps/ub.py:97
 msgid "File formats"
-msgstr ""
+msgstr "文件格式"
 
 #: cps/ub.py:99
 msgid "Show file formats selection"
-msgstr ""
+msgstr "显示文件格式选择"
 
 #: cps/updater.py:252 cps/updater.py:359 cps/updater.py:372
 msgid "Unexpected data while reading update information"
@@ -681,16 +681,16 @@ msgstr "无法获取更新信息"
 
 #: cps/updater.py:352
 msgid "No release information available"
-msgstr ""
+msgstr "没有可用发布信息"
 
 #: cps/updater.py:405 cps/updater.py:414
 #, python-format
 msgid "A new update is available. Click on the button below to update to version: %(version)s"
-msgstr ""
+msgstr "一个新的更新可用。点击下面按钮更新到版本: %(version)s"
 
 #: cps/updater.py:424
 msgid "Click on the button below to update to the latest stable version."
-msgstr ""
+msgstr "点击下面按钮更新到最新稳定版本。"
 
 #: cps/web.py:459
 msgid "Recently Added Books"
@@ -719,7 +719,7 @@ msgstr "无法打开电子书。 文件不存在或者文件不可访问:"
 #: cps/web.py:572
 #, python-format
 msgid "Author: %(name)s"
-msgstr ""
+msgstr "作者: %(name)s"
 
 #: cps/web.py:584
 #, python-format
@@ -734,12 +734,12 @@ msgstr "丛书: %(serie)s"
 #: cps/web.py:606
 #, python-format
 msgid "Rating: %(rating)s stars"
-msgstr ""
+msgstr "评分: %(rating)s 星"
 
 #: cps/web.py:617
 #, python-format
 msgid "File format: %(format)s"
-msgstr ""
+msgstr "文件格式: %(format)s"
 
 #: cps/web.py:629
 #, python-format
@@ -761,11 +761,11 @@ msgstr "丛书列表"
 
 #: cps/web.py:708
 msgid "Ratings list"
-msgstr ""
+msgstr "评分列表"
 
 #: cps/web.py:721
 msgid "File formats list"
-msgstr ""
+msgstr "文件格式列表"
 
 #: cps/web.py:749
 msgid "Available languages"
@@ -839,7 +839,7 @@ msgstr "这个用户名或者邮箱已经被使用。"
 
 #: cps/web.py:1104
 msgid "Cannot activate LDAP authentication"
-msgstr ""
+msgstr "无法激活LDAP认证"
 
 #: cps/web.py:1113 cps/web.py:1219
 #, python-format
@@ -848,7 +848,7 @@ msgstr "您现在已以'%(nickname)s'身份登录"
 
 #: cps/web.py:1117
 msgid "Could not login. LDAP server down, please contact your administrator"
-msgstr ""
+msgstr "无法登录。LDAP服务器挂了，请联系您的管理员"
 
 #: cps/web.py:1121 cps/web.py:1129
 msgid "Wrong Username or Password"
@@ -857,7 +857,7 @@ msgstr "用户名或密码错误"
 #: cps/web.py:1125
 #, python-format
 msgid "You are now logged in as: '%(nickname)s'"
-msgstr ""
+msgstr "您已以 '%(nickname)s' 登录"
 
 #: cps/web.py:1133 cps/web.py:1155
 msgid "login"
@@ -891,7 +891,7 @@ msgstr "阅读一本书"
 
 #: cps/web.py:1354
 msgid "Error opening eBook. File does not exist or file is not accessible."
-msgstr ""
+msgstr "打开电子书错误。文件不存在或者无法访问。"
 
 #: cps/worker.py:328
 #, python-format
@@ -935,7 +935,7 @@ msgstr "下载"
 
 #: cps/templates/admin.html:15
 msgid "View Ebooks"
-msgstr ""
+msgstr "查看电子书"
 
 #: cps/templates/admin.html:16 cps/templates/layout.html:65
 msgid "Upload"
@@ -1015,7 +1015,7 @@ msgstr "管理"
 
 #: cps/templates/admin.html:109
 msgid "View Logfiles"
-msgstr ""
+msgstr "查看日志文件"
 
 #: cps/templates/admin.html:110
 msgid "Reconnect to Calibre DB"
@@ -1283,7 +1283,7 @@ msgstr "认证 Google Drive"
 
 #: cps/templates/config_edit.html:41
 msgid "Please hit submit to continue with setup"
-msgstr ""
+msgstr "请点击提交以继续设置"
 
 #: cps/templates/config_edit.html:44
 msgid "Please finish Google Drive setup after login"
@@ -1319,15 +1319,15 @@ msgstr "SSL Key文件位置(非SSL服务器请留空)"
 
 #: cps/templates/config_edit.html:99
 msgid "Update channel"
-msgstr ""
+msgstr "更新频道"
 
 #: cps/templates/config_edit.html:101
 msgid "Stable"
-msgstr ""
+msgstr "稳定版"
 
 #: cps/templates/config_edit.html:102
 msgid "Stable (Automatic)"
-msgstr ""
+msgstr "稳定版（自动）"
 
 #: cps/templates/config_edit.html:103
 msgid "Nightly"
@@ -1335,7 +1335,7 @@ msgstr ""
 
 #: cps/templates/config_edit.html:104
 msgid "Nightly (Automatic)"
-msgstr ""
+msgstr "Nightly (自动)"
 
 #: cps/templates/config_edit.html:115
 msgid "Logfile Configuration"
@@ -1351,11 +1351,11 @@ msgstr "日志文件位置和名称(默认为calibre-web.log)"
 
 #: cps/templates/config_edit.html:136
 msgid "Enable Access Log"
-msgstr ""
+msgstr "启用访问日志"
 
 #: cps/templates/config_edit.html:139
 msgid "Location and name of access logfile (access.log for no entry)"
-msgstr ""
+msgstr "访问日志位置和名称(默认为access.log)"
 
 #: cps/templates/config_edit.html:150
 msgid "Feature Configuration"
@@ -1379,7 +1379,7 @@ msgstr "启用远程登录 ('魔法链接')"
 
 #: cps/templates/config_edit.html:175
 msgid "Use Goodreads"
-msgstr ""
+msgstr "使用Goodreads"
 
 #: cps/templates/config_edit.html:176
 msgid "Obtain an API Key"
@@ -1395,27 +1395,27 @@ msgstr ""
 
 #: cps/templates/config_edit.html:191
 msgid "Login type"
-msgstr ""
+msgstr "登录类型"
 
 #: cps/templates/config_edit.html:193
 msgid "Use standard Authentication"
-msgstr ""
+msgstr "使用标准认证"
 
 #: cps/templates/config_edit.html:195
 msgid "Use LDAP Authentication"
-msgstr ""
+msgstr "使用LDAP认证"
 
 #: cps/templates/config_edit.html:198
 msgid "Use OAuth"
-msgstr ""
+msgstr "使用OAuth"
 
 #: cps/templates/config_edit.html:205
 msgid "LDAP Server Host Name or IP Address"
-msgstr ""
+msgstr "LDAP服务器名称或IP地址"
 
 #: cps/templates/config_edit.html:209
 msgid "LDAP Server Port"
-msgstr ""
+msgstr "LDAP服务器端口"
 
 #: cps/templates/config_edit.html:213
 msgid "LDAP schema (ldap or ldaps)"
@@ -1423,27 +1423,27 @@ msgstr ""
 
 #: cps/templates/config_edit.html:217
 msgid "LDAP Admin username"
-msgstr ""
+msgstr "LDAP Admin用户名"
 
 #: cps/templates/config_edit.html:221
 msgid "LDAP Admin password"
-msgstr ""
+msgstr "LDAP Admin密码"
 
 #: cps/templates/config_edit.html:226
 msgid "LDAP Server use SSL"
-msgstr ""
+msgstr "LDAP服务器使用SSL"
 
 #: cps/templates/config_edit.html:230
 msgid "LDAP Server use TLS"
-msgstr ""
+msgstr "LDAP服务器使用TLS"
 
 #: cps/templates/config_edit.html:234
 msgid "LDAP Server Certificate"
-msgstr ""
+msgstr "LDAP服务器证书"
 
 #: cps/templates/config_edit.html:238
 msgid "LDAP SSL Certificate Path"
-msgstr ""
+msgstr "LDAP SSL证书路径"
 
 #: cps/templates/config_edit.html:243
 msgid "LDAP Distinguished Name (DN)"
@@ -1619,15 +1619,15 @@ msgstr "语言"
 
 #: cps/templates/detail.html:200
 msgid "Mark As Unread"
-msgstr ""
+msgstr "标为未读"
 
 #: cps/templates/detail.html:200
 msgid "Mark As Read"
-msgstr ""
+msgstr "标为已读"
 
 #: cps/templates/detail.html:201
 msgid "Read"
-msgstr ""
+msgstr "阅读"
 
 #: cps/templates/detail.html:211 cps/templates/listenmp3.html:54
 msgid "Description:"
@@ -1703,11 +1703,11 @@ msgstr "下一个"
 
 #: cps/templates/http_error.html:37
 msgid "Create issue"
-msgstr ""
+msgstr "创建issue"
 
 #: cps/templates/http_error.html:44
 msgid "Back to home"
-msgstr ""
+msgstr "回到首页"
 
 #: cps/templates/index.html:5
 msgid "Discover (Random Books)"
@@ -1775,7 +1775,7 @@ msgstr "用户私有书架，只对当前用户本身可见"
 
 #: cps/templates/layout.html:28
 msgid "Home"
-msgstr ""
+msgstr "首页"
 
 #: cps/templates/layout.html:34
 msgid "Toggle navigation"
@@ -1792,7 +1792,7 @@ msgstr "设置"
 
 #: cps/templates/layout.html:78
 msgid "Account"
-msgstr ""
+msgstr "账号"
 
 #: cps/templates/layout.html:80
 msgid "Logout"
@@ -1832,19 +1832,19 @@ msgstr "书籍详情"
 
 #: cps/templates/layout.html:217
 msgid "Upload done, processing, please wait..."
-msgstr ""
+msgstr "上传完成，正在处理，请稍候..."
 
 #: cps/templates/layout.html:220
 msgid "Error"
-msgstr ""
+msgstr "错误"
 
 #: cps/templates/listenmp3.html:66
 msgid "Play / pause"
-msgstr ""
+msgstr "播放 / 暂停"
 
 #: cps/templates/listenmp3.html:98
 msgid "volume"
-msgstr ""
+msgstr "音量"
 
 #: cps/templates/login.html:8 cps/templates/login.html:9
 #: cps/templates/register.html:7 cps/templates/user_edit.html:8
@@ -1866,11 +1866,11 @@ msgstr "通过魔法链接登录"
 
 #: cps/templates/logviewer.html:5
 msgid "Show Calibre-Web log"
-msgstr ""
+msgstr "显示Calibre-Web日志"
 
 #: cps/templates/logviewer.html:8
 msgid "Show access log"
-msgstr ""
+msgstr "显示访问日志"
 
 #: cps/templates/osd.xml:5
 msgid "Calibre-Web ebook catalog"
@@ -1966,19 +1966,19 @@ msgstr "垂直"
 
 #: cps/templates/readcbr.html:152
 msgid "Direction"
-msgstr ""
+msgstr "方向"
 
 #: cps/templates/readcbr.html:155
 msgid "Left to Right"
-msgstr ""
+msgstr "从左到右"
 
 #: cps/templates/readcbr.html:156
 msgid "Right to Left"
-msgstr ""
+msgstr "从右到左"
 
 #: cps/templates/readpdf.html:29
 msgid "PDF reader"
-msgstr ""
+msgstr "PDF阅读器"
 
 #: cps/templates/readtxt.html:6
 msgid "Basic txt Reader"
@@ -2166,15 +2166,15 @@ msgstr "显示全部"
 
 #: cps/templates/user_edit.html:52
 msgid "OAuth Settings"
-msgstr ""
+msgstr "OAuth设置"
 
 #: cps/templates/user_edit.html:54
 msgid "Link"
-msgstr ""
+msgstr "链接"
 
 #: cps/templates/user_edit.html:56
 msgid "Unlink"
-msgstr ""
+msgstr "取消链接"
 
 #: cps/templates/user_edit.html:124
 msgid "Delete this user"
