@@ -56,7 +56,7 @@
           {% if config.config_google_drive_watch_changes_response %}
             <label for="config_google_drive_watch_changes_response">{{_('Metadata Watch Channel ID')}}</label>
             <div class="form-group input-group required">
-              <input type="text" class="form-control" name="config_google_drive_watch_changes_response" id="config_google_drive_watch_changes_response" value="{{ config.config_google_drive_watch_changes_response['id'] }} expires on {{ content.config_google_drive_watch_changes_response['expiration'] |  strftime }}" autocomplete="off" disabled="">
+              <input type="text" class="form-control" name="config_google_drive_watch_changes_response" id="config_google_drive_watch_changes_response" value="{{ config.config_google_drive_watch_changes_response['id'] }} expires on {{ config.config_google_drive_watch_changes_response['expiration'] |  strftime }}" autocomplete="off" disabled="">
               <span class="input-group-btn"><a href="{{ url_for('gdrive.revoke_watch_gdrive') }}" class="btn btn-primary">{{_('Revoke')}}</a></span>
             </div>
           {% else %}
