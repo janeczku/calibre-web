@@ -214,8 +214,10 @@ def get_metadata__v1(book_uuid):
     ]
     return jsonify([metadata])
 
-
 def get_download_url_for_book(book):
+    return "{url_base}/download/{book_id}/kepub".format(url_base=config.config_server_url, book_id=book.id)
+
+def get_download_url_for_book_b2(book):
     # TODO: Research what formats Kobo will support over the sync protocol.
     # For now let's just assume all books are converted to KEPUB.
     data = (
