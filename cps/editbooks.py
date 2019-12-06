@@ -360,6 +360,9 @@ def upload_single_file(request, book, book_id):
             worker.add_upload(current_user.nickname,
                 "<a href=\"" + url_for('web.show_book', book_id=book.id) + "\">" + uploadText + "</a>")
 
+            return uploader.process(
+                saved_filename, *os.path.splitext(requested_file.filename))
+
 
 def upload_cover(request, book):
     if 'btn-upload-cover' in request.files:
@@ -393,11 +396,12 @@ def edit_book(book_id):
         flash(_(u"Error opening eBook. File does not exist or file is not accessible"), category="error")
         return redirect(url_for("web.index"))
 
-    upload_single_file(request, book, book_id)
+    meta = upload_single_file(request, book, book_id)
     if upload_cover(request, book) is True:
         book.has_cover = 1
     try:
         to_save = request.form.to_dict()
+        merge_metadata(to_save, meta)
         # Update book
         edited_books_id = None
         #handle book title
@@ -529,6 +533,20 @@ def edit_book(book_id):
         db.session.rollback()
         flash(_("Error editing book, please check logfile for details"), category="error")
         return redirect(url_for('web.show_book', book_id=book.id))
+
+
+def merge_metadata(to_save, meta):
+    if to_save['author_name'].lower() == _(u'unknown'):
+        to_save['author_name'] = ''
+    if to_save['book_title'].lower() == _(u'unknown'):
+        to_save['book_title'] = ''
+    for s_field, m_field in [
+            ('tags', 'tags'), ('author_name', 'author'), ('series', 'series'),
+            ('series_index', 'series_id'), ('languages', 'languages'),
+            ('book_title', 'title')]:
+        to_save[s_field] = to_save[s_field] or getattr(meta, m_field, '')
+    to_save["description"] = to_save["description"] or Markup(
+        getattr(meta, 'description', '')).unescape()
 
 
 @editbook.route("/upload", methods=["GET", "POST"])
