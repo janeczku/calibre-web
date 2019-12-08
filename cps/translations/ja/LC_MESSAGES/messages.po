@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2019-11-16 08:00+0100\n"
+"POT-Creation-Date: 2019-12-08 10:07+0100\n"
 "PO-Revision-Date: 2018-02-07 02:20-0500\n"
 "Last-Translator: white <space_white@yahoo.com>\n"
 "Language: ja\n"
@@ -50,147 +50,147 @@ msgstr "管理者ページ"
 msgid "UI Configuration"
 msgstr "UI設定"
 
-#: cps/admin.py:181 cps/admin.py:401
+#: cps/admin.py:181 cps/admin.py:403
 msgid "Calibre-Web configuration updated"
 msgstr "Calibre-Web の設定を更新しました"
 
-#: cps/admin.py:429 cps/templates/admin.html:101
+#: cps/admin.py:432 cps/templates/admin.html:101
 msgid "Basic Configuration"
 msgstr "基本設定"
 
-#: cps/admin.py:452 cps/web.py:1055
+#: cps/admin.py:455 cps/web.py:1056
 msgid "Please fill out all fields!"
 msgstr "全ての項目を入力してください"
 
-#: cps/admin.py:454 cps/admin.py:465 cps/admin.py:471 cps/admin.py:486
+#: cps/admin.py:457 cps/admin.py:468 cps/admin.py:474 cps/admin.py:489
 #: cps/templates/admin.html:35
 msgid "Add new user"
 msgstr "新規ユーザ追加"
 
-#: cps/admin.py:463 cps/web.py:1258
+#: cps/admin.py:466 cps/web.py:1259
 msgid "E-mail is not from valid domain"
 msgstr "このメールは有効なドメインからのものではありません"
 
-#: cps/admin.py:469 cps/admin.py:480
+#: cps/admin.py:472 cps/admin.py:483
 msgid "Found an existing account for this e-mail address or nickname."
 msgstr "このメールアドレスかニックネームで登録されたアカウントが見つかりました"
 
-#: cps/admin.py:476
+#: cps/admin.py:479
 #, python-format
 msgid "User '%(user)s' created"
 msgstr "ユーザ '%(user)s' を作成しました"
 
-#: cps/admin.py:496
+#: cps/admin.py:499
 msgid "Edit e-mail server settings"
 msgstr "メールサーバの設定を編集"
 
-#: cps/admin.py:522
+#: cps/admin.py:525
 #, python-format
 msgid "Test e-mail successfully send to %(kindlemail)s"
 msgstr "テストメールが %(kindlemail)s に送信されました"
 
-#: cps/admin.py:525
+#: cps/admin.py:528
 #, python-format
 msgid "There was an error sending the Test e-mail: %(res)s"
 msgstr "テストメールを %(res)s に送信中にエラーが発生しました"
 
-#: cps/admin.py:527 cps/web.py:1038
+#: cps/admin.py:530 cps/web.py:1039
 msgid "Please configure your kindle e-mail address first..."
 msgstr "初めにKindleのメールアドレスを設定してください"
 
-#: cps/admin.py:529
+#: cps/admin.py:532
 msgid "E-mail server settings updated"
 msgstr "メールサーバの設定を更新しました"
 
-#: cps/admin.py:558
+#: cps/admin.py:561
 #, python-format
 msgid "User '%(nick)s' deleted"
 msgstr "ユーザ '%(nick)s' を削除しました"
 
-#: cps/admin.py:561
+#: cps/admin.py:564
 msgid "No admin user remaining, can't delete user"
 msgstr ""
 
-#: cps/admin.py:599 cps/web.py:1299
+#: cps/admin.py:602 cps/web.py:1300
 msgid "Found an existing account for this e-mail address."
 msgstr "このメールアドレスで登録されたアカウントがあります"
 
-#: cps/admin.py:602 cps/admin.py:615 cps/admin.py:629 cps/web.py:1274
+#: cps/admin.py:605 cps/admin.py:618 cps/admin.py:632 cps/web.py:1275
 #, python-format
 msgid "Edit User %(nick)s"
 msgstr "%(nick)s を編集"
 
-#: cps/admin.py:608 cps/web.py:1267
+#: cps/admin.py:611 cps/web.py:1268
 msgid "This username is already taken"
 msgstr ""
 
-#: cps/admin.py:623
+#: cps/admin.py:626
 #, python-format
 msgid "User '%(nick)s' updated"
 msgstr "ユーザ '%(nick)s' を更新しました"
 
-#: cps/admin.py:626
+#: cps/admin.py:629
 msgid "An unknown error occured."
 msgstr "不明なエラーが発生しました。"
 
-#: cps/admin.py:645
+#: cps/admin.py:648
 #, python-format
 msgid "Password for user %(user)s reset"
 msgstr "%(user)s 用のパスワードをリセット"
 
-#: cps/admin.py:648 cps/web.py:1080
+#: cps/admin.py:651 cps/web.py:1081
 msgid "An unknown error occurred. Please try again later."
 msgstr "不明なエラーが発生しました。あとで再試行してください。"
 
-#: cps/admin.py:659
+#: cps/admin.py:662
 msgid "Logfile viewer"
 msgstr ""
 
-#: cps/admin.py:694
+#: cps/admin.py:697
 msgid "Requesting update package"
 msgstr "更新データを要求中"
 
-#: cps/admin.py:695
+#: cps/admin.py:698
 msgid "Downloading update package"
 msgstr "更新データをダウンロード中"
 
-#: cps/admin.py:696
+#: cps/admin.py:699
 msgid "Unzipping update package"
 msgstr "更新データを展開中"
 
-#: cps/admin.py:697
+#: cps/admin.py:700
 msgid "Replacing files"
 msgstr "ファイルを置換中"
 
-#: cps/admin.py:698
+#: cps/admin.py:701
 msgid "Database connections are closed"
 msgstr "データベースの接続を切断完了"
 
-#: cps/admin.py:699
+#: cps/admin.py:702
 msgid "Stopping server"
 msgstr "サーバ停止中"
 
-#: cps/admin.py:700
+#: cps/admin.py:703
 msgid "Update finished, please press okay and reload page"
 msgstr "アップデート完了、OKを押してページをリロードしてください"
 
-#: cps/admin.py:701 cps/admin.py:702 cps/admin.py:703 cps/admin.py:704
+#: cps/admin.py:704 cps/admin.py:705 cps/admin.py:706 cps/admin.py:707
 msgid "Update failed:"
 msgstr "アップデート失敗:"
 
-#: cps/admin.py:701 cps/updater.py:272 cps/updater.py:457 cps/updater.py:459
+#: cps/admin.py:704 cps/updater.py:272 cps/updater.py:457 cps/updater.py:459
 msgid "HTTP Error"
 msgstr "HTTPエラー"
 
-#: cps/admin.py:702 cps/updater.py:274 cps/updater.py:461
+#: cps/admin.py:705 cps/updater.py:274 cps/updater.py:461
 msgid "Connection error"
 msgstr "接続エラー"
 
-#: cps/admin.py:703 cps/updater.py:276 cps/updater.py:463
+#: cps/admin.py:706 cps/updater.py:276 cps/updater.py:463
 msgid "Timeout while establishing connection"
 msgstr "接続を確立中にタイムアウトしました"
 
-#: cps/admin.py:704 cps/updater.py:278 cps/updater.py:465
+#: cps/admin.py:707 cps/updater.py:278 cps/updater.py:465
 msgid "General error"
 msgstr "エラー発生"
 
@@ -215,7 +215,7 @@ msgstr "ファイル拡張子 '%(ext)s' をこのサーバにアップロード�
 msgid "File to be uploaded must have an extension"
 msgstr "アップロードするファイルには拡張子が必要です"
 
-#: cps/editbooks.py:337 cps/editbooks.py:575
+#: cps/editbooks.py:337 cps/editbooks.py:589
 #, python-format
 msgid "Failed to create path %(path)s (Permission denied)."
 msgstr "%(path)s の作成に失敗しました (Permission denied)。"
@@ -255,31 +255,40 @@ msgstr "メタデータを更新しました"
 msgid "Error editing book, please check logfile for details"
 msgstr "本の編集でエラーが発生しました。詳細はログファイルを確認してください"
 
+#: cps/editbooks.py:563
+#, python-format
+msgid "File %(filename)s could not saved to temp dir"
+msgstr ""
+
 #: cps/editbooks.py:580
+msgid "Uploaded book probably exists in the library, consider to change before upload new: "
+msgstr ""
+
+#: cps/editbooks.py:595
 #, python-format
 msgid "Failed to store file %(file)s (Permission denied)."
 msgstr "ファイル %(file)s の保存に失敗しました (Permission denied)。"
 
-#: cps/editbooks.py:585
+#: cps/editbooks.py:601
 #, python-format
 msgid "Failed to delete file %(file)s (Permission denied)."
 msgstr "ファイル %(file)s の削除に失敗しました (Permission denied)。"
 
-#: cps/editbooks.py:668
+#: cps/editbooks.py:684
 #, python-format
 msgid "File %(file)s uploaded"
 msgstr ""
 
-#: cps/editbooks.py:697
+#: cps/editbooks.py:713
 msgid "Source or destination format for conversion missing"
 msgstr "変換元の形式または変換後の形式が指定されていません"
 
-#: cps/editbooks.py:705
+#: cps/editbooks.py:721
 #, python-format
 msgid "Book successfully queued for converting to %(book_format)s"
 msgstr "本の %(book_format)s への変換がキューに追加されました"
 
-#: cps/editbooks.py:709
+#: cps/editbooks.py:725
 #, python-format
 msgid "There was an error converting this book: %(res)s"
 msgstr "この本の変換中にエラーが発生しました: %(res)s"
@@ -712,7 +721,7 @@ msgstr ""
 msgid "Hot Books (most downloaded)"
 msgstr "話題(ダウンロード数順)"
 
-#: cps/web.py:559 cps/web.py:1320 cps/web.py:1408
+#: cps/web.py:559 cps/web.py:1321 cps/web.py:1409
 msgid "Error opening eBook. File does not exist or file is not accessible:"
 msgstr "電子書籍を開けません。ファイルが存在しないかアクセスできません:"
 
@@ -806,99 +815,99 @@ msgstr "評価 >= %(rating)s"
 msgid "search"
 msgstr "検索"
 
-#: cps/web.py:1027
+#: cps/web.py:1028
 msgid "Please configure the SMTP mail settings first..."
 msgstr "初めにSMTPメールの設定をしてください"
 
-#: cps/web.py:1032
+#: cps/web.py:1033
 #, python-format
 msgid "Book successfully queued for sending to %(kindlemail)s"
 msgstr "本の %(kindlemail)s への送信がキューに追加されました"
 
-#: cps/web.py:1036
+#: cps/web.py:1037
 #, python-format
 msgid "There was an error sending this book: %(res)s"
 msgstr "%(res)s を送信中にエラーが発生しました"
 
-#: cps/web.py:1056 cps/web.py:1081 cps/web.py:1085 cps/web.py:1090
-#: cps/web.py:1094
+#: cps/web.py:1057 cps/web.py:1082 cps/web.py:1086 cps/web.py:1091
+#: cps/web.py:1095
 msgid "register"
 msgstr "登録"
 
-#: cps/web.py:1083
+#: cps/web.py:1084
 msgid "Your e-mail is not allowed to register"
 msgstr "このメールアドレスは登録が許可されていません"
 
-#: cps/web.py:1086
+#: cps/web.py:1087
 msgid "Confirmation e-mail was send to your e-mail account."
 msgstr "確認メールがこのメールアドレスに送信されました。"
 
-#: cps/web.py:1089
+#: cps/web.py:1090
 msgid "This username or e-mail address is already in use."
 msgstr "このユーザ名またはメールアドレスはすでに使われています。"
 
-#: cps/web.py:1104
+#: cps/web.py:1105
 msgid "Cannot activate LDAP authentication"
 msgstr ""
 
-#: cps/web.py:1113 cps/web.py:1219
+#: cps/web.py:1114 cps/web.py:1220
 #, python-format
 msgid "you are now logged in as: '%(nickname)s'"
 msgstr "%(nickname)s としてログイン中"
 
-#: cps/web.py:1117
+#: cps/web.py:1118
 msgid "Could not login. LDAP server down, please contact your administrator"
 msgstr ""
 
-#: cps/web.py:1121 cps/web.py:1129
+#: cps/web.py:1122 cps/web.py:1130
 msgid "Wrong Username or Password"
 msgstr "ユーザ名またはパスワードが違います"
 
-#: cps/web.py:1125
+#: cps/web.py:1126
 #, python-format
 msgid "You are now logged in as: '%(nickname)s'"
 msgstr ""
 
-#: cps/web.py:1133 cps/web.py:1155
+#: cps/web.py:1134 cps/web.py:1156
 msgid "login"
 msgstr "ログイン"
 
-#: cps/web.py:1167 cps/web.py:1198
+#: cps/web.py:1168 cps/web.py:1199
 msgid "Token not found"
 msgstr "トークンが見つかりません"
 
-#: cps/web.py:1175 cps/web.py:1206
+#: cps/web.py:1176 cps/web.py:1207
 msgid "Token has expired"
 msgstr "トークンが無効です"
 
-#: cps/web.py:1183
+#: cps/web.py:1184
 msgid "Success! Please return to your device"
 msgstr "成功です！端末に戻ってください"
 
-#: cps/web.py:1260 cps/web.py:1302 cps/web.py:1306
+#: cps/web.py:1261 cps/web.py:1303 cps/web.py:1307
 #, python-format
 msgid "%(name)s's profile"
 msgstr "%(name)s のプロフィール"
 
-#: cps/web.py:1304
+#: cps/web.py:1305
 msgid "Profile updated"
 msgstr "プロフィールを更新しました"
 
-#: cps/web.py:1330 cps/web.py:1332 cps/web.py:1334 cps/web.py:1340
-#: cps/web.py:1344
+#: cps/web.py:1331 cps/web.py:1333 cps/web.py:1335 cps/web.py:1341
+#: cps/web.py:1345
 msgid "Read a Book"
 msgstr "本を読む"
 
-#: cps/web.py:1354
+#: cps/web.py:1355
 msgid "Error opening eBook. File does not exist or file is not accessible."
 msgstr ""
 
-#: cps/worker.py:328
+#: cps/worker.py:335
 #, python-format
 msgid "Ebook-converter failed: %(error)s"
 msgstr "Ebook-converter が失敗しました: %(error)s"
 
-#: cps/worker.py:339
+#: cps/worker.py:346
 #, python-format
 msgid "Kindlegen failed with Error %(error)s. Message: %(message)s"
 msgstr "Kindlegen が失敗しました。エラー: %(error)s, メッセージ: %(message)s"
@@ -1244,8 +1253,8 @@ msgstr "カバー画像をクリックしてメタデータをフォームに読
 msgid "Loading..."
 msgstr "読み込み中..."
 
-#: cps/templates/book_edit.html:235 cps/templates/layout.html:187
-#: cps/templates/layout.html:219
+#: cps/templates/book_edit.html:235 cps/templates/layout.html:192
+#: cps/templates/layout.html:224
 msgid "Close"
 msgstr "閉じる"
 
@@ -1629,7 +1638,7 @@ msgstr "既読に設定"
 msgid "Read"
 msgstr "読んだ"
 
-#: cps/templates/detail.html:211 cps/templates/listenmp3.html:54
+#: cps/templates/detail.html:211
 msgid "Description:"
 msgstr "詳細:"
 
@@ -1697,7 +1706,7 @@ msgstr "追加"
 msgid "Do you really want to delete this domain rule?"
 msgstr "このドメインルールを削除してもよろしいですか？"
 
-#: cps/templates/feed.xml:21 cps/templates/layout.html:171
+#: cps/templates/feed.xml:21 cps/templates/layout.html:176
 msgid "Next"
 msgstr "次"
 
@@ -1757,7 +1766,7 @@ msgstr "カテゴリ順"
 msgid "Books ordered by series"
 msgstr "シリーズ順"
 
-#: cps/templates/index.xml:89 cps/templates/layout.html:132
+#: cps/templates/index.xml:89 cps/templates/layout.html:137
 msgid "Public Shelves"
 msgstr "みんなの本棚"
 
@@ -1765,7 +1774,7 @@ msgstr "みんなの本棚"
 msgid "Books organized in public shelfs, visible to everyone"
 msgstr "みんなの本棚に入れた本棚は、他の人からも見えます"
 
-#: cps/templates/index.xml:97 cps/templates/layout.html:136
+#: cps/templates/index.xml:97 cps/templates/layout.html:141
 msgid "Your Shelves"
 msgstr "あなたの本棚"
 
@@ -1802,49 +1811,41 @@ msgstr "ログアウト"
 msgid "Register"
 msgstr "登録"
 
-#: cps/templates/layout.html:111 cps/templates/layout.html:218
+#: cps/templates/layout.html:116 cps/templates/layout.html:223
 msgid "Uploading..."
 msgstr "アップロード中..."
 
-#: cps/templates/layout.html:112
+#: cps/templates/layout.html:117
 msgid "please don't refresh the page"
 msgstr "ページを更新しないでください"
 
-#: cps/templates/layout.html:122
+#: cps/templates/layout.html:127
 msgid "Browse"
 msgstr "閲覧"
 
-#: cps/templates/layout.html:141
+#: cps/templates/layout.html:146
 msgid "Create a Shelf"
 msgstr "本棚を作成"
 
-#: cps/templates/layout.html:142 cps/templates/stats.html:3
+#: cps/templates/layout.html:147 cps/templates/stats.html:3
 msgid "About"
 msgstr "このサイトについて"
 
-#: cps/templates/layout.html:156
+#: cps/templates/layout.html:161
 msgid "Previous"
 msgstr "前"
 
-#: cps/templates/layout.html:183
+#: cps/templates/layout.html:188
 msgid "Book Details"
 msgstr "本の詳細"
 
-#: cps/templates/layout.html:217
+#: cps/templates/layout.html:222
 msgid "Upload done, processing, please wait..."
 msgstr "アップロード完了。現在処理中ですのでお待ち下さい..."
 
-#: cps/templates/layout.html:220
+#: cps/templates/layout.html:225
 msgid "Error"
 msgstr "エラー"
-
-#: cps/templates/listenmp3.html:66
-msgid "Play / pause"
-msgstr ""
-
-#: cps/templates/listenmp3.html:98
-msgid "volume"
-msgstr ""
 
 #: cps/templates/login.html:8 cps/templates/login.html:9
 #: cps/templates/register.html:7 cps/templates/user_edit.html:8
@@ -2336,4 +2337,10 @@ msgstr "最近のダウンロード"
 
 #~ msgid "Use"
 #~ msgstr "使う"
+
+#~ msgid "Play / pause"
+#~ msgstr ""
+
+#~ msgid "volume"
+#~ msgstr ""
 

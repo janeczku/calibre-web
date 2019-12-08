@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2019-11-16 08:00+0100\n"
+"POT-Creation-Date: 2019-12-08 10:07+0100\n"
 "PO-Revision-Date: 2019-11-14 18:50+0100\n"
 "Last-Translator: Jonatan Nyberg <jonatan.nyberg.karl@gmail.com>\n"
 "Language: sv\n"
@@ -50,147 +50,147 @@ msgstr "Administrationssida"
 msgid "UI Configuration"
 msgstr "Användargränssnitt konfiguration"
 
-#: cps/admin.py:181 cps/admin.py:401
+#: cps/admin.py:181 cps/admin.py:403
 msgid "Calibre-Web configuration updated"
 msgstr "Calibre-Web konfiguration uppdaterad"
 
-#: cps/admin.py:429 cps/templates/admin.html:101
+#: cps/admin.py:432 cps/templates/admin.html:101
 msgid "Basic Configuration"
 msgstr "Grundläggande konfiguration"
 
-#: cps/admin.py:452 cps/web.py:1055
+#: cps/admin.py:455 cps/web.py:1056
 msgid "Please fill out all fields!"
 msgstr "Fyll i alla fält!"
 
-#: cps/admin.py:454 cps/admin.py:465 cps/admin.py:471 cps/admin.py:486
+#: cps/admin.py:457 cps/admin.py:468 cps/admin.py:474 cps/admin.py:489
 #: cps/templates/admin.html:35
 msgid "Add new user"
 msgstr "Lägg till ny användare"
 
-#: cps/admin.py:463 cps/web.py:1258
+#: cps/admin.py:466 cps/web.py:1259
 msgid "E-mail is not from valid domain"
 msgstr "E-posten är inte från giltig domän"
 
-#: cps/admin.py:469 cps/admin.py:480
+#: cps/admin.py:472 cps/admin.py:483
 msgid "Found an existing account for this e-mail address or nickname."
 msgstr "Hittade ett befintligt konto för den här e-postadressen eller smeknamnet."
 
-#: cps/admin.py:476
+#: cps/admin.py:479
 #, python-format
 msgid "User '%(user)s' created"
 msgstr "Användaren '%(user)s' skapad"
 
-#: cps/admin.py:496
+#: cps/admin.py:499
 msgid "Edit e-mail server settings"
 msgstr "Redigera inställningar för e-postserver"
 
-#: cps/admin.py:522
+#: cps/admin.py:525
 #, python-format
 msgid "Test e-mail successfully send to %(kindlemail)s"
 msgstr "Test-e-post skicka till %(kindlemail)s"
 
-#: cps/admin.py:525
+#: cps/admin.py:528
 #, python-format
 msgid "There was an error sending the Test e-mail: %(res)s"
 msgstr "Det gick inte att skicka Testmeddelandet: %(res)s"
 
-#: cps/admin.py:527 cps/web.py:1038
+#: cps/admin.py:530 cps/web.py:1039
 msgid "Please configure your kindle e-mail address first..."
 msgstr "Konfigurera din kindle-e-postadress först..."
 
-#: cps/admin.py:529
+#: cps/admin.py:532
 msgid "E-mail server settings updated"
 msgstr "E-postserverinställningar uppdaterade"
 
-#: cps/admin.py:558
+#: cps/admin.py:561
 #, python-format
 msgid "User '%(nick)s' deleted"
 msgstr "Användaren '%(nick)s' borttagen"
 
-#: cps/admin.py:561
+#: cps/admin.py:564
 msgid "No admin user remaining, can't delete user"
 msgstr "Ingen adminstratörsanvändare kvar, kan inte ta bort användaren"
 
-#: cps/admin.py:599 cps/web.py:1299
+#: cps/admin.py:602 cps/web.py:1300
 msgid "Found an existing account for this e-mail address."
 msgstr "Hittade ett befintligt konto för den här e-postadressen."
 
-#: cps/admin.py:602 cps/admin.py:615 cps/admin.py:629 cps/web.py:1274
+#: cps/admin.py:605 cps/admin.py:618 cps/admin.py:632 cps/web.py:1275
 #, python-format
 msgid "Edit User %(nick)s"
 msgstr "Redigera användaren %(nick)s"
 
-#: cps/admin.py:608 cps/web.py:1267
+#: cps/admin.py:611 cps/web.py:1268
 msgid "This username is already taken"
 msgstr ""
 
-#: cps/admin.py:623
+#: cps/admin.py:626
 #, python-format
 msgid "User '%(nick)s' updated"
 msgstr "Användaren '%(nick)s' uppdaterad"
 
-#: cps/admin.py:626
+#: cps/admin.py:629
 msgid "An unknown error occured."
 msgstr "Ett okänt fel uppstod."
 
-#: cps/admin.py:645
+#: cps/admin.py:648
 #, python-format
 msgid "Password for user %(user)s reset"
 msgstr "Lösenord för användaren %(user)s återställd"
 
-#: cps/admin.py:648 cps/web.py:1080
+#: cps/admin.py:651 cps/web.py:1081
 msgid "An unknown error occurred. Please try again later."
 msgstr "Ett okänt fel uppstod. Försök igen senare."
 
-#: cps/admin.py:659
+#: cps/admin.py:662
 msgid "Logfile viewer"
 msgstr "Visaren för loggfil"
 
-#: cps/admin.py:694
+#: cps/admin.py:697
 msgid "Requesting update package"
 msgstr "Begär uppdateringspaketet"
 
-#: cps/admin.py:695
+#: cps/admin.py:698
 msgid "Downloading update package"
 msgstr "Hämtar uppdateringspaketet"
 
-#: cps/admin.py:696
+#: cps/admin.py:699
 msgid "Unzipping update package"
 msgstr "Packar upp uppdateringspaketet"
 
-#: cps/admin.py:697
+#: cps/admin.py:700
 msgid "Replacing files"
 msgstr "Ersätta filer"
 
-#: cps/admin.py:698
+#: cps/admin.py:701
 msgid "Database connections are closed"
 msgstr "Databasanslutningarna är stängda"
 
-#: cps/admin.py:699
+#: cps/admin.py:702
 msgid "Stopping server"
 msgstr "Stoppar server"
 
-#: cps/admin.py:700
+#: cps/admin.py:703
 msgid "Update finished, please press okay and reload page"
 msgstr "Uppdatering klar, tryck på okej och uppdatera sidan"
 
-#: cps/admin.py:701 cps/admin.py:702 cps/admin.py:703 cps/admin.py:704
+#: cps/admin.py:704 cps/admin.py:705 cps/admin.py:706 cps/admin.py:707
 msgid "Update failed:"
 msgstr "Uppdateringen misslyckades:"
 
-#: cps/admin.py:701 cps/updater.py:272 cps/updater.py:457 cps/updater.py:459
+#: cps/admin.py:704 cps/updater.py:272 cps/updater.py:457 cps/updater.py:459
 msgid "HTTP Error"
 msgstr "HTTP-fel"
 
-#: cps/admin.py:702 cps/updater.py:274 cps/updater.py:461
+#: cps/admin.py:705 cps/updater.py:274 cps/updater.py:461
 msgid "Connection error"
 msgstr "Anslutningsfel"
 
-#: cps/admin.py:703 cps/updater.py:276 cps/updater.py:463
+#: cps/admin.py:706 cps/updater.py:276 cps/updater.py:463
 msgid "Timeout while establishing connection"
 msgstr "Tiden ute när du etablerade anslutning"
 
-#: cps/admin.py:704 cps/updater.py:278 cps/updater.py:465
+#: cps/admin.py:707 cps/updater.py:278 cps/updater.py:465
 msgid "General error"
 msgstr "Allmänt fel"
 
@@ -215,7 +215,7 @@ msgstr "Filändelsen '%(ext)s' får inte laddas upp till den här servern"
 msgid "File to be uploaded must have an extension"
 msgstr "Filen som ska laddas upp måste ha en ändelse"
 
-#: cps/editbooks.py:337 cps/editbooks.py:575
+#: cps/editbooks.py:337 cps/editbooks.py:589
 #, python-format
 msgid "Failed to create path %(path)s (Permission denied)."
 msgstr "Det gick inte att skapa sökväg %(path)s (behörighet nekad)."
@@ -255,31 +255,40 @@ msgstr "Metadata uppdaterades"
 msgid "Error editing book, please check logfile for details"
 msgstr "Det gick inte att redigera boken, kontrollera loggfilen för mer information"
 
+#: cps/editbooks.py:563
+#, python-format
+msgid "File %(filename)s could not saved to temp dir"
+msgstr ""
+
 #: cps/editbooks.py:580
+msgid "Uploaded book probably exists in the library, consider to change before upload new: "
+msgstr ""
+
+#: cps/editbooks.py:595
 #, python-format
 msgid "Failed to store file %(file)s (Permission denied)."
 msgstr "Det gick inte att lagra filen %(file)s (behörighet nekad)."
 
-#: cps/editbooks.py:585
+#: cps/editbooks.py:601
 #, python-format
 msgid "Failed to delete file %(file)s (Permission denied)."
 msgstr "Det gick inte att ta bort filen %(file)s (behörighet nekad)."
 
-#: cps/editbooks.py:668
+#: cps/editbooks.py:684
 #, python-format
 msgid "File %(file)s uploaded"
 msgstr "Filen %(file)s uppladdad"
 
-#: cps/editbooks.py:697
+#: cps/editbooks.py:713
 msgid "Source or destination format for conversion missing"
 msgstr "Källa eller målformat för konvertering saknas"
 
-#: cps/editbooks.py:705
+#: cps/editbooks.py:721
 #, python-format
 msgid "Book successfully queued for converting to %(book_format)s"
 msgstr "Boken är i kö för konvertering till %(book_format)s"
 
-#: cps/editbooks.py:709
+#: cps/editbooks.py:725
 #, python-format
 msgid "There was an error converting this book: %(res)s"
 msgstr "Det gick inte att konvertera den här boken: %(res)s"
@@ -712,7 +721,7 @@ msgstr "Böcker"
 msgid "Hot Books (most downloaded)"
 msgstr "Heta böcker (mest hämtade)"
 
-#: cps/web.py:559 cps/web.py:1320 cps/web.py:1408
+#: cps/web.py:559 cps/web.py:1321 cps/web.py:1409
 msgid "Error opening eBook. File does not exist or file is not accessible:"
 msgstr "Fel vid öppnande av e-bok. Filen finns inte eller filen är inte tillgänglig:"
 
@@ -806,99 +815,99 @@ msgstr "Betyg >= %(rating)s"
 msgid "search"
 msgstr "sök"
 
-#: cps/web.py:1027
+#: cps/web.py:1028
 msgid "Please configure the SMTP mail settings first..."
 msgstr "Konfigurera SMTP-postinställningarna först..."
 
-#: cps/web.py:1032
+#: cps/web.py:1033
 #, python-format
 msgid "Book successfully queued for sending to %(kindlemail)s"
 msgstr "Boken är i kö för att skicka till %(kindlemail)s"
 
-#: cps/web.py:1036
+#: cps/web.py:1037
 #, python-format
 msgid "There was an error sending this book: %(res)s"
 msgstr "Det gick inte att skicka den här boken: %(res)s"
 
-#: cps/web.py:1056 cps/web.py:1081 cps/web.py:1085 cps/web.py:1090
-#: cps/web.py:1094
+#: cps/web.py:1057 cps/web.py:1082 cps/web.py:1086 cps/web.py:1091
+#: cps/web.py:1095
 msgid "register"
 msgstr "registrera"
 
-#: cps/web.py:1083
+#: cps/web.py:1084
 msgid "Your e-mail is not allowed to register"
 msgstr "Din e-post är inte tillåten att registrera"
 
-#: cps/web.py:1086
+#: cps/web.py:1087
 msgid "Confirmation e-mail was send to your e-mail account."
 msgstr "Bekräftelsemail skickades till ditt e-postkonto."
 
-#: cps/web.py:1089
+#: cps/web.py:1090
 msgid "This username or e-mail address is already in use."
 msgstr "Det här användarnamnet eller e-postadressen är redan i bruk."
 
-#: cps/web.py:1104
+#: cps/web.py:1105
 msgid "Cannot activate LDAP authentication"
 msgstr "Det går inte att aktivera LDAP-autentisering"
 
-#: cps/web.py:1113 cps/web.py:1219
+#: cps/web.py:1114 cps/web.py:1220
 #, python-format
 msgid "you are now logged in as: '%(nickname)s'"
 msgstr "du är nu inloggad som: \"%(nickname)s\""
 
-#: cps/web.py:1117
+#: cps/web.py:1118
 msgid "Could not login. LDAP server down, please contact your administrator"
 msgstr "Det gick inte att logga in. LDAP-servern är nere, kontakta din administratör"
 
-#: cps/web.py:1121 cps/web.py:1129
+#: cps/web.py:1122 cps/web.py:1130
 msgid "Wrong Username or Password"
 msgstr "Fel användarnamn eller lösenord"
 
-#: cps/web.py:1125
+#: cps/web.py:1126
 #, python-format
 msgid "You are now logged in as: '%(nickname)s'"
 msgstr "Du är nu inloggad som: \"%(nickname)s\""
 
-#: cps/web.py:1133 cps/web.py:1155
+#: cps/web.py:1134 cps/web.py:1156
 msgid "login"
 msgstr "logga in"
 
-#: cps/web.py:1167 cps/web.py:1198
+#: cps/web.py:1168 cps/web.py:1199
 msgid "Token not found"
 msgstr "Token hittades inte"
 
-#: cps/web.py:1175 cps/web.py:1206
+#: cps/web.py:1176 cps/web.py:1207
 msgid "Token has expired"
 msgstr "Token har löpt ut"
 
-#: cps/web.py:1183
+#: cps/web.py:1184
 msgid "Success! Please return to your device"
 msgstr "Lyckades! Vänligen återvänd till din enhet"
 
-#: cps/web.py:1260 cps/web.py:1302 cps/web.py:1306
+#: cps/web.py:1261 cps/web.py:1303 cps/web.py:1307
 #, python-format
 msgid "%(name)s's profile"
 msgstr "%(name)ss profil"
 
-#: cps/web.py:1304
+#: cps/web.py:1305
 msgid "Profile updated"
 msgstr "Profilen uppdaterad"
 
-#: cps/web.py:1330 cps/web.py:1332 cps/web.py:1334 cps/web.py:1340
-#: cps/web.py:1344
+#: cps/web.py:1331 cps/web.py:1333 cps/web.py:1335 cps/web.py:1341
+#: cps/web.py:1345
 msgid "Read a Book"
 msgstr "Läs en bok"
 
-#: cps/web.py:1354
+#: cps/web.py:1355
 msgid "Error opening eBook. File does not exist or file is not accessible."
 msgstr "Fel vid öppningen av e-boken. Filen finns inte eller filen är inte tillgänglig."
 
-#: cps/worker.py:328
+#: cps/worker.py:335
 #, python-format
 msgid "Ebook-converter failed: %(error)s"
 msgstr "E-bokkonverteraren misslyckades: %(error)s"
 
-#: cps/worker.py:339
+#: cps/worker.py:346
 #, python-format
 msgid "Kindlegen failed with Error %(error)s. Message: %(message)s"
 msgstr "Kindlegen misslyckades med fel %(error)s. Meddelande: %(message)s"
@@ -1244,8 +1253,8 @@ msgstr "Klicka på omslaget för att läsa in metadata till formuläret"
 msgid "Loading..."
 msgstr "Läser in..."
 
-#: cps/templates/book_edit.html:235 cps/templates/layout.html:187
-#: cps/templates/layout.html:219
+#: cps/templates/book_edit.html:235 cps/templates/layout.html:192
+#: cps/templates/layout.html:224
 msgid "Close"
 msgstr "Stäng"
 
@@ -1629,7 +1638,7 @@ msgstr "Markera som läst"
 msgid "Read"
 msgstr "Läst"
 
-#: cps/templates/detail.html:211 cps/templates/listenmp3.html:54
+#: cps/templates/detail.html:211
 msgid "Description:"
 msgstr "Beskrivning:"
 
@@ -1697,7 +1706,7 @@ msgstr "Lägg till"
 msgid "Do you really want to delete this domain rule?"
 msgstr "Är du säker på att du vill ta bort den här domänregeln?"
 
-#: cps/templates/feed.xml:21 cps/templates/layout.html:171
+#: cps/templates/feed.xml:21 cps/templates/layout.html:176
 msgid "Next"
 msgstr "Nästa"
 
@@ -1757,7 +1766,7 @@ msgstr "Böcker ordnade efter kategori"
 msgid "Books ordered by series"
 msgstr "Böcker ordnade efter serier"
 
-#: cps/templates/index.xml:89 cps/templates/layout.html:132
+#: cps/templates/index.xml:89 cps/templates/layout.html:137
 msgid "Public Shelves"
 msgstr "Offentliga hyllor"
 
@@ -1765,7 +1774,7 @@ msgstr "Offentliga hyllor"
 msgid "Books organized in public shelfs, visible to everyone"
 msgstr "Böcker organiserade i offentliga hyllor, synliga för alla"
 
-#: cps/templates/index.xml:97 cps/templates/layout.html:136
+#: cps/templates/index.xml:97 cps/templates/layout.html:141
 msgid "Your Shelves"
 msgstr "Dina hyllor"
 
@@ -1802,49 +1811,41 @@ msgstr "Logga ut"
 msgid "Register"
 msgstr "Registrera"
 
-#: cps/templates/layout.html:111 cps/templates/layout.html:218
+#: cps/templates/layout.html:116 cps/templates/layout.html:223
 msgid "Uploading..."
 msgstr "Laddar upp..."
 
-#: cps/templates/layout.html:112
+#: cps/templates/layout.html:117
 msgid "please don't refresh the page"
 msgstr "uppdatera inte sidan"
 
-#: cps/templates/layout.html:122
+#: cps/templates/layout.html:127
 msgid "Browse"
 msgstr "Bläddra"
 
-#: cps/templates/layout.html:141
+#: cps/templates/layout.html:146
 msgid "Create a Shelf"
 msgstr "Skapa en hylla"
 
-#: cps/templates/layout.html:142 cps/templates/stats.html:3
+#: cps/templates/layout.html:147 cps/templates/stats.html:3
 msgid "About"
 msgstr "Om"
 
-#: cps/templates/layout.html:156
+#: cps/templates/layout.html:161
 msgid "Previous"
 msgstr "Föregående"
 
-#: cps/templates/layout.html:183
+#: cps/templates/layout.html:188
 msgid "Book Details"
 msgstr "Bokdetaljer"
 
-#: cps/templates/layout.html:217
+#: cps/templates/layout.html:222
 msgid "Upload done, processing, please wait..."
 msgstr "Uppladdning klar, bearbetning, vänligen vänta ..."
 
-#: cps/templates/layout.html:220
+#: cps/templates/layout.html:225
 msgid "Error"
 msgstr "Fel"
-
-#: cps/templates/listenmp3.html:66
-msgid "Play / pause"
-msgstr "Spela / pausa"
-
-#: cps/templates/listenmp3.html:98
-msgid "volume"
-msgstr "volym"
 
 #: cps/templates/login.html:8 cps/templates/login.html:9
 #: cps/templates/register.html:7 cps/templates/user_edit.html:8
@@ -2390,4 +2391,10 @@ msgstr "Senaste hämtningar"
 
 #~ msgid "Use"
 #~ msgstr "Använd"
+
+#~ msgid "Play / pause"
+#~ msgstr "Spela / pausa"
+
+#~ msgid "volume"
+#~ msgstr "volym"
 
