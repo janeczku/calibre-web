@@ -445,7 +445,7 @@ def get_book_cover_with_uuid(book_uuid,
 
 def get_book_cover_internal(book,
                    use_generic_cover_on_failure):
-    if book.has_cover:
+    if book and book.has_cover:
         if config.config_use_google_drive:
             try:
                 if not gd.is_gdrive_ready():
