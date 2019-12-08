@@ -163,7 +163,11 @@ def HandleSyncRequest():
         .all()
     )
     for book in changed_entries:
-        entitlement = CreateEntitlement(book)
+        entitlement = {
+            "BookEntitlement": create_book_entitlement(book),
+            "BookMetadata": get_metadata(book),
+            "ReadingState": reading_state(book),
+        }
         if book.timestamp > sync_token.books_last_created:
             entitlements.append({"NewEntitlement": entitlement})
         else:
@@ -192,47 +196,26 @@ def HandleSyncRequest():
 @kobo.route("/v1/library/<book_uuid>/metadata")
 @login_required
 @download_required
-def get_metadata__v1(book_uuid):
+def HandleMetadataRequest(book_uuid):
     log.info("Kobo library metadata request received for book %s" % book_uuid)
     book = db.session.query(db.Books).filter(db.Books.uuid == book_uuid).first()
-    if not book:
+    if not book or not book.data:
         log.info(u"Book %s not found in database", book_uuid)
         return make_response("Book not found in database.", 404)
 
-    download_url = get_download_url_for_book(book)
-    if not download_url:
-        return make_response("Could not get a download url for book.", 500)
-
-    metadata = create_metadata(book)
-    metadata["DownloadUrls"] = [
-        {
-            "DrmType": "SignedNoDrm",
-            "Format": "KEPUB",
-            "Platform": "Android",
-            # TODO: Set the file size.
-            # "Size": file_info["contentLength"],
-            "Url": download_url,
-        }
-    ]
+    metadata = get_metadata(book)
     return jsonify([metadata])
 
 
-def get_download_url_for_book(book):
-    return "{url_base}/download/{book_id}/kepub".format(
-        url_base=config.config_server_url, book_id=book.id
+def get_download_url_for_book(book, book_format):
+    return "{url_base}/download/{book_id}/{book_format}".format(
+        url_base=config.config_server_url,
+        book_id=book.id,
+        book_format=book_format.lower(),
     )
 
 
-def get_download_url_for_book_b2(book):
-    # TODO: Research what formats Kobo will support over the sync protocol.
-    # For now let's just assume all books are converted to KEPUB.
-    data = (
-        db.session.query(db.Data)
-        .filter(db.Data.book == book.id)
-        .filter(db.Data.format == "KEPUB")
-        .first()
-    )
-
+def get_download_url_for_book_b2(book, book_format):
     if not data:
         log.info(u"Book %s does have a kepub format", book_uuid)
         return None
@@ -265,7 +248,7 @@ def get_download_url_for_book_b2(book):
     return download_url + "?Authorization=" + download_authorization
 
 
-def CreateBookEntitlement(book):
+def create_book_entitlement(book):
     book_uuid = book.uuid
     return {
         "Accessibility": "Full",
@@ -281,14 +264,6 @@ def CreateBookEntitlement(book):
         "OriginCategory": "Imported",
         "RevisionId": book_uuid,
         "Status": "Active",
-    }
-
-
-def CreateEntitlement(book):
-    return {
-        "BookEntitlement": CreateBookEntitlement(book),
-        "BookMetadata": create_metadata(book),
-        "ReadingState": reading_state(book),
     }
 
 
@@ -321,7 +296,22 @@ def get_series(book):
     return book.series[0].name
 
 
-def create_metadata(book):
+def get_metadata(book):
+    ALLOWED_FORMATS = {"KEPUB"}
+    download_urls = []
+
+    for book_data in book.data:
+        if book_data.format in ALLOWED_FORMATS:
+            download_urls.append(
+                {
+                    "Format": book_data.format,
+                    "Size": book_data.uncompressed_size,
+                    "Url": get_download_url_for_book(book, book_data.format),
+                    # "DrmType": "None", # Not required
+                    "Platform": "Android",  # Required field.
+                }
+            )
+
     book_uuid = book.uuid
     metadata = {
         "Categories": ["00000000-0000-0000-0000-000000000001",],
@@ -331,19 +321,7 @@ def create_metadata(book):
         "CurrentDisplayPrice": {"CurrencyCode": "USD", "TotalAmount": 0},
         "CurrentLoveDisplayPrice": {"TotalAmount": 0},
         "Description": get_description(book),
-        "DownloadUrls": [
-            # Looks like we need to pass at least one url in the
-            # v1/library/sync call. The new entitlement is ignored
-            # otherwise.
-            # May want to experiment more with this.
-            {
-                "DrmType": "None",
-                "Format": "KEPUB",
-                "Platform": "Android",
-                "Size": 1024775,
-                "Url": "https://google.com",
-            },
-        ],
+        "DownloadUrls": download_urls,
         "EntitlementId": book_uuid,
         "ExternalIds": [],
         "Genre": "00000000-0000-0000-0000-000000000001",
