@@ -173,6 +173,7 @@ class User(UserBase, Base):
     role = Column(SmallInteger, default=constants.ROLE_USER)
     password = Column(String)
     kindle_mail = Column(String(120), default="")
+    kobo_user_key_hash = Column(String, unique=True, default="")
     shelf = relationship('Shelf', backref='user', lazy='dynamic', order_by='Shelf.name')
     downloads = relationship('Downloads', backref='user', lazy='dynamic')
     locale = Column(String(2), default="en")
@@ -375,7 +376,12 @@ def migrate_Database(session):
     except exc.OperationalError:
         conn = engine.connect()
         conn.execute("ALTER TABLE user ADD column `mature_content` INTEGER DEFAULT 1")
-
+    try:
+        session.query(exists().where(User.kobo_user_key_hash)).scalar()
+    except exc.OperationalError:  # Database is not compatible, some rows are missing
+        conn = engine.connect()
+        conn.execute("ALTER TABLE user ADD column `kobo_user_key_hash` VARCHAR")
+        session.commit()
     if session.query(User).filter(User.role.op('&')(constants.ROLE_ANONYMOUS) == constants.ROLE_ANONYMOUS).first() is None:
         create_anonymous_user(session)
     try:
@@ -391,6 +397,7 @@ def migrate_Database(session):
                             "role SMALLINT,"
                             "password VARCHAR,"
                             "kindle_mail VARCHAR(120),"
+                            "kobo_user_key_hash VARCHAR,"
                             "locale VARCHAR(2),"
                             "sidebar_view INTEGER,"
                             "default_language VARCHAR(3),"
@@ -398,9 +405,9 @@ def migrate_Database(session):
                             "UNIQUE (nickname),"
                             "UNIQUE (email),"
                             "CHECK (mature_content IN (0, 1)))")
-        conn.execute("INSERT INTO user_id(id, nickname, email, role, password, kindle_mail,locale,"
+        conn.execute("INSERT INTO user_id(id, nickname, email, role, password, kindle_mail,kobo_user_key_hash, locale,"
                         "sidebar_view, default_language, mature_content) "
-                     "SELECT id, nickname, email, role, password, kindle_mail, locale,"
+                     "SELECT id, nickname, email, role, password, kindle_mail, kobo_user_key_hash, locale,"
                         "sidebar_view, default_language, mature_content FROM user")
         # delete old user table and rename new user_id table to user:
         conn.execute("DROP TABLE user")

@@ -2,9 +2,8 @@
 # -*- coding: utf-8 -*-
 
 from flask import Blueprint, request, flash, redirect, url_for
-from . import logger, ub, searched_ids, db, helper
-from . import config
-
+from . import config, logger, kobo_auth, ub, db, helper
+from .web import download_required
 from flask import make_response
 from flask import jsonify
 from flask import json
@@ -22,14 +21,16 @@ from .constants import CONFIG_DIR as _CONFIG_DIR
 import copy
 import jsonschema
 from sqlalchemy import func
+from flask_login import login_required
 
 B2_SECRETS = os.path.join(_CONFIG_DIR, "b2_secrets.json")
 
 kobo = Blueprint("kobo", __name__)
+kobo_auth.disable_failed_auth_redirect_for_blueprint(kobo)
+
 log = logger.create()
 
 import base64
-
 
 def b64encode(data):
     return base64.b64encode(data)
@@ -143,6 +144,8 @@ class SyncToken:
 
 
 @kobo.route("/v1/library/sync")
+@login_required
+@download_required
 def HandleSyncRequest():
     sync_token = SyncToken.from_headers(request.headers)
     log.info("Kobo library sync request received.")
@@ -190,6 +193,8 @@ def HandleSyncRequest():
 
 
 @kobo.route("/v1/library/<book_uuid>/metadata")
+@login_required
+@download_required
 def get_metadata__v1(book_uuid):
     log.info("Kobo library metadata request received for book %s" % book_uuid)
     book = db.session.query(db.Books).filter(db.Books.uuid == book_uuid).first()
