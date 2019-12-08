@@ -99,6 +99,11 @@
         <div id="flash_info" class="alert alert-info">{{ message[1] }}</div>
       </div>
       {%endif%}
+      {%if message[0] == "warning" %}
+      <div class="row-fluid text-center" style="margin-top: -20px;">
+        <div id="flash_warning" class="alert alert-warning">{{ message[1] }}</div>
+      </div>
+      {%endif%}
       {%if message[0] == "success" %}
       <div class="row-fluid text-center" style="margin-top: -20px;">
         <div id="flash_success" class="alert alert-success">{{ message[1] }}</div>

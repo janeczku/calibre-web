@@ -54,7 +54,7 @@ except ImportError:
     use_unidecode = False
 
 try:
-    from PIL import Image
+    from PIL import Image as PILImage
     use_PIL = True
 except ImportError:
     use_PIL = False
@@ -183,7 +183,7 @@ def check_read_formats(entry):
     bookformats = list()
     if len(entry.data):
         for ele in iter(entry.data):
-            if ele.format in EXTENSIONS_READER:
+            if ele.format.upper() in EXTENSIONS_READER:
                 bookformats.append(ele.format.lower())
     return bookformats
 
@@ -511,9 +511,9 @@ def save_cover(img, book_path):
         # convert to jpg because calibre only supports jpg
         if content_type in ('image/png', 'image/webp'):
             if hasattr(img,'stream'):
-                imgc = Image.open(img.stream)
+                imgc = PILImage.open(img.stream)
             else:
-                imgc = Image.open(io.BytesIO(img.content))
+                imgc = PILImage.open(io.BytesIO(img.content))
             im = imgc.convert('RGB')
             tmp_bytesio = io.BytesIO()
             im.save(tmp_bytesio, format='JPEG')
@@ -794,9 +794,22 @@ def get_download_link(book_id, book_format):
     else:
         abort(404)
 
+def check_exists_book(authr,title):
+    db.session.connection().connection.connection.create_function("lower", 1, lcase)
+    q = list()
+    authorterms = re.split(r'\s*&\s*', authr)
+    for authorterm in authorterms:
+        q.append(db.Books.authors.any(func.lower(db.Authors.name).ilike("%" + authorterm + "%")))
 
+    return db.session.query(db.Books).filter(
+        and_(db.Books.authors.any(and_(*q)),
+            func.lower(db.Books.title).ilike("%" + title + "%")
+            )).first()
 
 ############### Database Helper functions
 
 def lcase(s):
-    return unidecode.unidecode(s.lower()) if use_unidecode else s.lower()
+    try:
+        return unidecode.unidecode(s.lower())
+    except Exception as e:
+        log.exception(e)

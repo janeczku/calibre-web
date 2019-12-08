@@ -64,7 +64,12 @@ def get_epub_info(tmp_file_path, original_file_name, original_file_extension):
     for s in ['title', 'description', 'creator', 'language', 'subject']:
         tmp = p.xpath('dc:%s/text()' % s, namespaces=ns)
         if len(tmp) > 0:
-            epub_metadata[s] = p.xpath('dc:%s/text()' % s, namespaces=ns)[0]
+            if s == 'creator':
+                 epub_metadata[s] = ' & '.join(p.xpath('dc:%s/text()' % s, namespaces=ns))
+            elif s == 'subject':
+                 epub_metadata[s] = ', '.join(p.xpath('dc:%s/text()' % s, namespaces=ns))
+            else:
+                epub_metadata[s] = p.xpath('dc:%s/text()' % s, namespaces=ns)[0]
         else:
             epub_metadata[s] = "Unknown"
 
@@ -109,18 +114,20 @@ def get_epub_info(tmp_file_path, original_file_name, original_file_extension):
         meta_cover = tree.xpath("/pkg:package/pkg:metadata/pkg:meta[@name='cover']/@content", namespaces=ns)
         if len(meta_cover) > 0:
             coversection = tree.xpath("/pkg:package/pkg:manifest/pkg:item[@id='"+meta_cover[0]+"']/@href", namespaces=ns)
-            if len(coversection) > 0:
-                filetype = coversection[0].rsplit('.', 1)[-1]
-                if filetype == "xhtml" or filetype == "html":  # if cover is (x)html format
-                    markup = epubZip.read(os.path.join(coverpath, coversection[0]))
-                    markupTree = etree.fromstring(markup)
-                    # no matter xhtml or html with no namespace
-                    imgsrc = markupTree.xpath("//*[local-name() = 'img']/@src")
-                    # imgsrc maybe startwith "../"" so fullpath join then relpath to cwd
-                    filename = os.path.relpath(os.path.join(os.path.dirname(os.path.join(coverpath, coversection[0])), imgsrc[0]))
-                    coverfile = extractCover(epubZip, filename, "", tmp_file_path)
-                else:
-                    coverfile = extractCover(epubZip, coversection[0], coverpath, tmp_file_path)
+        else:
+            coversection = tree.xpath("/pkg:package/pkg:guide/pkg:reference/@href", namespaces=ns)
+        if len(coversection) > 0:
+            filetype = coversection[0].rsplit('.', 1)[-1]
+            if filetype == "xhtml" or filetype == "html":  # if cover is (x)html format
+                markup = epubZip.read(os.path.join(coverpath, coversection[0]))
+                markupTree = etree.fromstring(markup)
+                # no matter xhtml or html with no namespace
+                imgsrc = markupTree.xpath("//*[local-name() = 'img']/@src")
+                # imgsrc maybe startwith "../"" so fullpath join then relpath to cwd
+                filename = os.path.relpath(os.path.join(os.path.dirname(os.path.join(coverpath, coversection[0])), imgsrc[0]))
+                coverfile = extractCover(epubZip, filename, "", tmp_file_path)
+            else:
+                coverfile = extractCover(epubZip, coversection[0], coverpath, tmp_file_path)
 
     if not epub_metadata['title']:
         title = original_file_name

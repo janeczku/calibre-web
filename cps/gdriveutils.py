@@ -584,5 +584,7 @@ def get_error_text(client_secrets=None):
         filedata = json.load(settings)
     if 'web' not in filedata:
         return 'client_secrets.json is not configured for web application'
+    if 'redirect_uris' not in filedata['web']:
+        return 'Callback url (redirect url) is missing in client_secrets.json'
     if client_secrets:
         client_secrets.update(filedata['web'])
