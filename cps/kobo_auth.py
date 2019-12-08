@@ -50,6 +50,8 @@ from werkzeug.security import check_password_hash
 from . import logger, ub, lm
 
 USER_KEY_HEADER = "x-kobo-userkey"
+USER_KEY_URL_PARAM = "kobo_userkey"
+
 log = logger.create()
 
 
@@ -59,7 +61,7 @@ def disable_failed_auth_redirect_for_blueprint(bp):
 
 @lm.request_loader
 def load_user_from_kobo_request(request):
-    user_key = request.headers.get(USER_KEY_HEADER)
+    user_key = get_auth_token_from_request(request)
     if user_key:
         for user in (
             ub.session.query(ub.User).filter(ub.User.kobo_user_key_hash != "").all()
@@ -68,3 +70,20 @@ def load_user_from_kobo_request(request):
                 return user
     log.info("Received Kobo request without a recognizable UserKey.")
     return None
+
+
+def get_auth_token_from_request(request):
+    user_key = request.headers.get(USER_KEY_HEADER)
+    if not user_key:
+        user_key = request.args.get(USER_KEY_URL_PARAM)
+    return user_key
+
+
+def get_auth_url_param(request):
+    # Some of the API requests emitted by the Kobo device don't set any headers. To
+    # support those calls, authorization on those endpoints can only rely on URL params.
+    # Since the raw UserKey in already leaked in headers, it is probably not *that* much
+    # worse to also leak it over url params.
+    # Ideally however, we should be generating short-lived tokens that grant limited
+    # access instead..
+    return USER_KEY_URL_PARAM + "=" + get_auth_token_from_request(request)

@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import base64
 import copy
 import uuid
 import os
@@ -24,8 +25,6 @@ kobo = Blueprint("kobo", __name__)
 kobo_auth.disable_failed_auth_redirect_for_blueprint(kobo)
 
 log = logger.create()
-
-import base64
 
 
 def b64encode(data):
@@ -92,10 +91,12 @@ class SyncToken:
         if "." in sync_token_header:
             return SyncToken(raw_kobo_store_token=sync_token_header)
 
-        sync_token_json = json.loads(
-            base64.b64decode(sync_token_header + "=" * (-len(sync_token_header) % 4))
-        )
         try:
+            sync_token_json = json.loads(
+                base64.b64decode(
+                    sync_token_header + "=" * (-len(sync_token_header) % 4)
+                )
+            )
             validate(sync_token_json, SyncToken.token_schema)
             if sync_token_json["version"] < SyncToken.MIN_VERSION:
                 raise ValueError
@@ -217,8 +218,10 @@ def get_metadata__v1(book_uuid):
 
 
 def get_download_url_for_book(book):
-    return "{url_base}/download/{book_id}/kepub".format(
-        url_base=config.config_server_url, book_id=book.id
+    return "{url_base}/download/{book_id}/kepub?{auth_token_param}".format(
+        url_base=config.config_server_url,
+        book_id=book.id,
+        auth_token_param=kobo_auth.get_auth_url_param(request),
     )
 
 
