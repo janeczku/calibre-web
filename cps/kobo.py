@@ -218,10 +218,8 @@ def get_metadata__v1(book_uuid):
 
 
 def get_download_url_for_book(book):
-    return "{url_base}/download/{book_id}/kepub?{auth_token_param}".format(
-        url_base=config.config_server_url,
-        book_id=book.id,
-        auth_token_param=kobo_auth.get_auth_url_param(request),
+    return "{url_base}/download/{book_id}/kepub".format(
+        url_base=config.config_server_url, book_id=book.id
     )
 
 
