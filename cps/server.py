@@ -146,6 +146,9 @@ class WebServer(object):
                 self.unix_socket_file = None
 
     def _start_tornado(self):
+        if os.name == 'nt':
+            import asyncio
+            asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
         log.info('Starting Tornado server on %s', _readable_listen_address(self.listen_address, self.listen_port))
 
         # Max Buffersize set to 200MB            )

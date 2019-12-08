@@ -17,11 +17,6 @@
   <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
   <link href="{{ url_for('static', filename='css/libs/bootstrap.min.css') }}" rel="stylesheet" media="screen">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/libs/bar-ui.css') }}" />
-  <!--link rel="stylesheet" href="{{ url_for('static', filename='css/listen.css') }}" /-->
-
-  <!-- <link rel="stylesheet" href="{{ url_for('static', filename='css/libs/normalize.css') }}">
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/popup.css') }}"> -->
 
   <script>
     "use strict";
@@ -30,95 +25,6 @@
 </head>
 
 <body>
-  <!--div id="main">
-    <div class="content">
-      <h2>{{ entry.title }}</h2>
-
-      <div class="cover">
-        <img src="{{ url_for('web.get_cover', book_id=entry.id) }}" alt="{{ entry.title }}" />
-      </div>
-
-      {% if entry.ratings.__len__() > 0 %}
-      <div class="rating">
-        <p>
-          {% for number in range((entry.ratings[0].rating/2)|int(2)) %}
-          <span class="glyphicon glyphicon-star good"></span>
-          {% if loop.last and loop.index
-          < 5 %} {% for numer in range(5 - loop.index) %} <span class="glyphicon glyphicon-star">
-            </span>
-            {% endfor %} {% endif %} {% endfor %}
-        </p>
-      </div>
-      {% endif %}
-
-      <h3>{{_('Description:')}}</h3>
-      {{entry.comments[0].text|safe}}
-    </div-->
-<!--div class="sm2-bar-ui compact full-width">
-
- <div class="bd sm2-main-controls">
-
-  <div class="sm2-inline-texture"></div>
-  <div class="sm2-inline-gradient"></div>
-
-  <div class="sm2-inline-element sm2-button-element">
-   <div class="sm2-button-bd">
-    <a href="#play" class="sm2-inline-button sm2-icon-play-pause">{{_('Play / pause')}}</a>
-   </div>
-  </div>
-
-  <div class="sm2-inline-element sm2-inline-status">
-
-   <div class="sm2-playlist">
-    <div class="sm2-playlist-target">
-     <!-- playlist <ul> + <li> markup will be injected here -->
-     <!-- if you want default / non-JS content, you can put that here. -->
-     <!--noscript><p>JavaScript is required.</p></noscript>
-    </div>
-   </div>
-
-   <div class="sm2-progress">
-    <div class="sm2-row">
-    <div class="sm2-inline-time">0:00</div>
-     <div class="sm2-progress-bd">
-      <div class="sm2-progress-track">
-       <div class="sm2-progress-bar"></div>
-       <div class="sm2-progress-ball"><div class="icon-overlay"></div></div>
-      </div>
-     </div>
-     <div class="sm2-inline-duration">0:00</div>
-    </div>
-   </div>
-
-  </div>
-
-  <div class="sm2-inline-element sm2-button-element sm2-volume">
-   <div class="sm2-button-bd">
-    <span class="sm2-inline-button sm2-volume-control volume-shade"></span>
-    <a href="#volume" class="sm2-inline-button sm2-volume-control">{{_('volume')}}</a>
-   </div>
-  </div>
-
- </div>
-
- <div class="bd sm2-playlist-drawer sm2-element">
-
-  <div class="sm2-inline-texture">
-   <div class="sm2-box-shadow"></div>
-  </div>
-
-  <!-- playlist content is mirrored here -->
-
-  <!--div class="sm2-playlist-wrapper">
-    <ul class="sm2-playlist-bd">
-      <li><a href="{{ url_for('web.serve_book', book_id=mp3file,book_format=audioformat)}}"><b>{% for author in entry.authors %}{{author.name.replace('|',',')}}
-        {% if not loop.last %} & {% endif %} {% endfor %}</b> - {{entry.title}}</a></li>
-    </ul>
-  </div>
-
- </div>
-
-</div-->
 
 <div class="sm2-bar-ui full-width fixed">
 

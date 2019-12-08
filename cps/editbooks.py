@@ -567,6 +567,12 @@ def upload():
             filepath = os.path.join(config.config_calibre_dir, author_dir, title_dir)
             saved_filename = os.path.join(filepath, title_dir + meta.extension.lower())
 
+            if title != u'Unknown' and authr != u'Unknown':
+                entry = helper.check_exists_book(authr, title)
+                if entry:
+                    book_html = flash(_(u"Uploaded book probably exists in the library, consider to change before upload new: ")
+                        + Markup(render_title_template('book_exists_flash.html', entry=entry)), category="warning")
+
             # check if file path exists, otherwise create it, copy file to calibre path and delete temp file
             if not os.path.exists(filepath):
                 try:

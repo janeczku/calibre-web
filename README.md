@@ -10,12 +10,12 @@ Calibre-Web is a web app providing a clean interface for browsing, reading and d
 
 - Bootstrap 3 HTML5 interface
 - full graphical setup
-- User management with fine grained per-user permissions
+- User management with fine-grained per-user permissions
 - Admin interface
 - User Interface in dutch, english, french, german, hungarian, italian, japanese, khmer, polish, russian, simplified chinese, spanish, swedish, ukrainian
 - OPDS feed for eBook reader apps 
 - Filter and search by titles, authors, tags, series and language
-- Create custom book collection (shelves)
+- Create a custom book collection (shelves)
 - Support for editing eBook metadata and deleting eBooks from Calibre library
 - Support for converting eBooks through Calibre binaries
 - Restrict eBook download to logged-in users
@@ -25,7 +25,7 @@ Calibre-Web is a web app providing a clean interface for browsing, reading and d
 - Upload new books in many formats
 - Support for Calibre custom columns
 - Ability to hide content based on categories for certain users
-- Self update capability
+- Self-update capability
 - "Magic Link" login to make it easy to log on eReaders
 
 ## Quick start
@@ -50,11 +50,11 @@ Python 2.7+, python 3.x+
 
 Optionally, to enable on-the-fly conversion from one ebook format to another when using the send-to-kindle feature, or during editing of ebooks metadata:
 
-[Download and install](https://calibre-ebook.com/download) the Calibre desktop program for your platform and enter the folder including programm name (normally /opt/calibre/ebook-convert, or C:\Program Files\calibre\ebook-convert.exe) in the field "calibre's converter tool" on the setup page.
+[Download and install](https://calibre-ebook.com/download) the Calibre desktop program for your platform and enter the folder including program name (normally /opt/calibre/ebook-convert, or C:\Program Files\calibre\ebook-convert.exe) in the field "calibre's converter tool" on the setup page.
 
 \*** DEPRECATED \*** Support will be removed in future releases
 
-[Download](http://www.amazon.com/gp/feature.html?docId=1000765211) Amazon's KindleGen tool for your platform and place the binary named as `kindlegen` in the `vendor` folder.
+[Download](http://www.amazon.com/gp/feature.html?docId=1000765211) Amazon's KindleGen tool for your platform and place the binary named `kindlegen` in the `vendor` folder.
 
 ## Docker Images
 
@@ -82,4 +82,4 @@ Pre-built Docker images are available in these Docker Hub repositories:
 
 # Wiki
 
-For further informations, How To's and FAQ please check the [Wiki](https://github.com/janeczku/calibre-web/wiki)
+For further information, How To's and FAQ please check the [Wiki](https://github.com/janeczku/calibre-web/wiki)
