@@ -19,17 +19,23 @@ issue for a few years now https://www.mobileread.com/forums/showpost.php?p=34768
 (although this poster hypothesised that Kobo could blacklist a DeviceId, many endpoints
 will still grant access given the userkey.)
 
-Api authorization:
+Official Kobo Store Api authorization:
 * For most of the endpoints we care about (sync, metadata, tags, etc), the userKey is
 passed in the x-kobo-userkey header, and is sufficient to authorize the API call.
-* Some endpoints (e.g: AnnotationService) instead make use of Bearer tokens. To get a
-BearerToken, the device makes a POST request to the v1/auth/device endpoint with the
-secret UserKey and the device's DeviceId.
+* Some endpoints (e.g: AnnotationService) instead make use of Bearer tokens pass through
+an authorization header. To get a BearerToken, the device makes a POST request to the
+v1/auth/device endpoint with the secret UserKey and the device's DeviceId.
+* The book download endpoint passes an auth token as a URL param instead of a header.
 
 Our implementation:
-For now, we rely on the official Kobo store's UserKey for authentication. Because of the
-irrevocable power granted by the key, we only ever store and compare a hash of the key.
-To obtain their UserKey, a user can query the user table from the
+For now, we rely on the official Kobo store's UserKey for authentication.
+Once authenticated, we set the login cookie on the response that will be sent back for
+the duration of the session to authorize subsequent API calls.
+Ideally we'd only perform UserKey-based authentication for the v1/initialization or the
+v1/device/auth call, however sessions don't always start with those calls.
+
+Because of the irrevocable power granted by the key, we only ever store and compare a
+hash of the key. To obtain their UserKey, a user can query the user table from the
 .kobo/KoboReader.sqlite database found on their device.
 This isn't exactly user friendly however.
 
@@ -38,13 +44,14 @@ Some possible alternatives that require more research:
  provide a list of recent Kobo sync attempts in the calibre-web UI for users to
  authenticate sync attempts (e.g: 'this was me' button).
  * We may be able to craft a sign-in flow with a redirect back to the CalibreWeb
- server containing the KoboStore's UserKey. 
+ server containing the KoboStore's UserKey (if the same as the devices?). 
  * Can we create our own UserKey instead of relying on the real store's userkey?
   (Maybe using something like location.href=kobo://UserAuthenticated?userId=...?)
 """
 
 from functools import wraps
 from flask import request, make_response
+from flask_login import login_user
 from werkzeug.security import check_password_hash
 
 from . import logger, ub, lm
@@ -61,29 +68,15 @@ def disable_failed_auth_redirect_for_blueprint(bp):
 
 @lm.request_loader
 def load_user_from_kobo_request(request):
-    user_key = get_auth_token_from_request(request)
+    user_key = request.headers.get(USER_KEY_HEADER)
     if user_key:
         for user in (
             ub.session.query(ub.User).filter(ub.User.kobo_user_key_hash != "").all()
         ):
             if check_password_hash(str(user.kobo_user_key_hash), user_key):
+                # The Kobo device won't preserve the cookie accross sessions, even if we
+                # were to set remember_me=true.
+                login_user(user)
                 return user
     log.info("Received Kobo request without a recognizable UserKey.")
     return None
-
-
-def get_auth_token_from_request(request):
-    user_key = request.headers.get(USER_KEY_HEADER)
-    if not user_key:
-        user_key = request.args.get(USER_KEY_URL_PARAM)
-    return user_key
-
-
-def get_auth_url_param(request):
-    # Some of the API requests emitted by the Kobo device don't set any headers. To
-    # support those calls, authorization on those endpoints can only rely on URL params.
-    # Since the raw UserKey in already leaked in headers, it is probably not *that* much
-    # worse to also leak it over url params.
-    # Ideally however, we should be generating short-lived tokens that grant limited
-    # access instead..
-    return USER_KEY_URL_PARAM + "=" + get_auth_token_from_request(request)
