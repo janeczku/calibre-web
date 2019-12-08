@@ -1,27 +1,22 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from flask import Blueprint, request, flash, redirect, url_for
-from . import config, logger, kobo_auth, ub, db, helper
-from .web import download_required
-from flask import make_response
-from flask import jsonify
-from flask import json
-from flask import send_file
-from time import gmtime, strftime
+import copy
 import uuid
-from uuid import uuid4, uuid3
-from collections import defaultdict
+import os
+from datetime import datetime, tzinfo, timedelta
+from time import gmtime, strftime
+
 from b2sdk.account_info.in_memory import InMemoryAccountInfo
 from b2sdk.api import B2Api
-import os
-import subprocess
-from datetime import datetime, tzinfo, timedelta
-from .constants import CONFIG_DIR as _CONFIG_DIR
-import copy
-import jsonschema
-from sqlalchemy import func
+from jsonschema import validate, exceptions
+from flask import Blueprint, request, make_response, jsonify, json, send_file
 from flask_login import login_required
+from sqlalchemy import func
+
+from . import config, logger, kobo_auth, ub, db, helper
+from .constants import CONFIG_DIR as _CONFIG_DIR
+from .web import download_required
 
 B2_SECRETS = os.path.join(_CONFIG_DIR, "b2_secrets.json")
 
@@ -31,6 +26,7 @@ kobo_auth.disable_failed_auth_redirect_for_blueprint(kobo)
 log = logger.create()
 
 import base64
+
 
 def b64encode(data):
     return base64.b64encode(data)
@@ -100,13 +96,13 @@ class SyncToken:
             base64.b64decode(sync_token_header + "=" * (-len(sync_token_header) % 4))
         )
         try:
-            jsonschema.validate(sync_token_json, SyncToken.token_schema)
+            validate(sync_token_json, SyncToken.token_schema)
             if sync_token_json["version"] < SyncToken.MIN_VERSION:
                 raise ValueError
 
             data_json = sync_token_json["data"]
-            jsonschema.validate(sync_token_json, SyncToken.data_schema_v1)
-        except (jsonschema.exceptions.ValidationError, ValueError) as e:
+            validate(sync_token_json, SyncToken.data_schema_v1)
+        except (exceptions.ValidationError, ValueError) as e:
             log.error("Sync token contents do not follow the expected json schema.")
             return SyncToken()
 
@@ -219,8 +215,12 @@ def get_metadata__v1(book_uuid):
     ]
     return jsonify([metadata])
 
+
 def get_download_url_for_book(book):
-    return "{url_base}/download/{book_id}/kepub".format(url_base=config.config_server_url, book_id=book.id)
+    return "{url_base}/download/{book_id}/kepub".format(
+        url_base=config.config_server_url, book_id=book.id
+    )
+
 
 def get_download_url_for_book_b2(book):
     # TODO: Research what formats Kobo will support over the sync protocol.
@@ -365,7 +365,7 @@ def create_metadata(book):
             "Number": book.series_index,
             "NumberFloat": float(book.series_index),
             # Get a deterministic id based on the series name.
-            "Id": uuid3(uuid.NAMESPACE_DNS, get_series(book).encode("utf-8")),
+            "Id": uuid.uuid3(uuid.NAMESPACE_DNS, get_series(book).encode("utf-8")),
         }
 
     return metadata
@@ -436,7 +436,7 @@ def HandleDummyRequest(dummy=None):
 
 @kobo.route("/v1/auth/device", methods=["POST"])
 def HandleAuthRequest():
-    # Missing feature: Authentication :)
+    # This AuthRequest isn't used for most of our usecases.
     response = make_response(
         jsonify(
             {

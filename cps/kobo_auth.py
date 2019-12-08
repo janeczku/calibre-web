@@ -46,13 +46,16 @@ Some possible alternatives that require more research:
 from functools import wraps
 from flask import request, make_response
 from werkzeug.security import check_password_hash
+
 from . import logger, ub, lm
 
 USER_KEY_HEADER = "x-kobo-userkey"
 log = logger.create()
 
+
 def disable_failed_auth_redirect_for_blueprint(bp):
     lm.blueprint_login_views[bp.name] = None
+
 
 @lm.request_loader
 def load_user_from_kobo_request(request):
