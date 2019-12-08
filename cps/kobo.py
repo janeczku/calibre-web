@@ -371,40 +371,16 @@ def create_metadata(book):
     return metadata
 
 
-def get_single_cc_value(book, custom_column_name):
-    custom_column_values = get_custom_column_values(book, custom_column_name)
-    if custom_column_values:
-        return custom_column_values[0].value
-    return None
-
-
-def get_custom_column_values(book, custom_column_name):
-    custom_column = (
-        db.session.query(db.Custom_Columns)
-        .filter(db.Custom_Columns.label == custom_column_name)
-        .one()
-    )
-    cc_string = "custom_column_" + str(custom_column.id)
-
-    return getattr(book, cc_string)
-
-
 def reading_state(book):
-    # TODO: Make the state custom columns configurable.
-    # Possibly use calibre-web User db instead of the Calibre metadata.db?
+    # TODO: Implement
     reading_state = {
-        "StatusInfo": {
-            "LastModified": get_single_cc_value(book, "lastreadtimestamp"),
-            "Status": get_single_cc_value(book, "reading_status"),
-        }
+        # "StatusInfo": {
+        #     "LastModified": get_single_cc_value(book, "lastreadtimestamp"),
+        #     "Status": get_single_cc_value(book, "reading_status"),
+        # }
         # TODO: CurrentBookmark, Location
     }
     return reading_state
-
-
-# def get_shelves(book):
-#     shelves = get_custom_column_values(book, "myshelves")
-#     return shelves
 
 
 @kobo.route(
