@@ -550,13 +550,19 @@ def upload():
                     flash(
                         _("File extension '%(ext)s' is not allowed to be uploaded to this server",
                           ext=file_ext), category="error")
-                    return redirect(url_for('web.index'))
+                    return Response(json.dumps({"location": url_for("web.index")}), mimetype='application/json')
             else:
                 flash(_('File to be uploaded must have an extension'), category="error")
-                return redirect(url_for('web.index'))
+                return Response(json.dumps({"location": url_for("web.index")}), mimetype='application/json')
 
             # extract metadata from file
-            meta = uploader.upload(requested_file)
+            try:
+                meta = uploader.upload(requested_file)
+            except (IOError, OSError):
+                log.error("File %s could not saved to temp dir", requested_file.filename)
+                flash(_(u"File %(filename)s could not saved to temp dir",
+                        filename= requested_file.filename), category="error")
+                return Response(json.dumps({"location": url_for("web.index")}), mimetype='application/json')
             title = meta.title
             authr = meta.author
             tags = meta.tags
@@ -570,7 +576,8 @@ def upload():
             if title != u'Unknown' and authr != u'Unknown':
                 entry = helper.check_exists_book(authr, title)
                 if entry:
-                    book_html = flash(_(u"Uploaded book probably exists in the library, consider to change before upload new: ")
+                    log.info("Uploaded book probably exists in library")
+                    flash(_(u"Uploaded book probably exists in the library, consider to change before upload new: ")
                         + Markup(render_title_template('book_exists_flash.html', entry=entry)), category="warning")
 
             # check if file path exists, otherwise create it, copy file to calibre path and delete temp file
@@ -578,16 +585,19 @@ def upload():
                 try:
                     os.makedirs(filepath)
                 except OSError:
+                    log.error("Failed to create path %s (Permission denied)", filepath)
                     flash(_(u"Failed to create path %(path)s (Permission denied).", path=filepath), category="error")
-                    return redirect(url_for('web.index'))
+                    return Response(json.dumps({"location": url_for("web.index")}), mimetype='application/json')
             try:
                 copyfile(meta.file_path, saved_filename)
             except OSError:
+                log.error("Failed to store file %s (Permission denied)", saved_filename)
                 flash(_(u"Failed to store file %(file)s (Permission denied).", file=saved_filename), category="error")
-                return redirect(url_for('web.index'))
+                return Response(json.dumps({"location": url_for("web.index")}), mimetype='application/json')
             try:
                 os.unlink(meta.file_path)
             except OSError:
+                log.error("Failed to delete file %(file)s (Permission denied)", meta.file_path)
                 flash(_(u"Failed to delete file %(file)s (Permission denied).", file= meta.file_path),
                       category="warning")
 

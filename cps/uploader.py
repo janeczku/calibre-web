@@ -195,12 +195,12 @@ def upload(uploadfile):
 
     if not os.path.isdir(tmp_dir):
         os.mkdir(tmp_dir)
-
     filename = uploadfile.filename
     filename_root, file_extension = os.path.splitext(filename)
     md5 = hashlib.md5()
     md5.update(filename.encode('utf-8'))
     tmp_file_path = os.path.join(tmp_dir, md5.hexdigest())
+    log.debug("Temporary file: %s", tmp_file_path)
     uploadfile.save(tmp_file_path)
     meta = process(tmp_file_path, filename_root, file_extension)
     return meta

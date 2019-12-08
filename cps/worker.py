@@ -437,19 +437,15 @@ class WorkerThread(threading.Thread):
         if self.last >= 20:
             self._delete_completed_tasks()
         # progress=100%, runtime=0, and status finished
-        log.info("Last " + str(self.last))
-        log.info("Current " + str(self.current))
-        log.info("id" + str(self.id))
-        for i in range(0, len(self.queue)):
-            message = '%s:%s' % (i, self.queue[i].items())
-            log.info(message)
+        log.debug("Last " + str(self.last))
+        log.debug("Current " + str(self.current))
+        log.debug("id" + str(self.id))
 
         self.id += 1
         starttime = datetime.now()
         self.queue.append({'starttime': starttime, 'taskType': TASK_UPLOAD})
         self.UIqueue.append({'user': user_name, 'formStarttime': starttime, 'progress': "100 %", 'taskMess': taskMessage,
                              'runtime': '0 s', 'stat': STAT_FINISH_SUCCESS,'id': self.id, 'taskType': TASK_UPLOAD})
-        # self.UIqueue[self.current]['formStarttime'] = self.queue[self.current]['starttime']
         self.last=len(self.queue)
         self.doLock.release()
 
