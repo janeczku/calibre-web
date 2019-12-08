@@ -31,7 +31,7 @@ from sqlalchemy.ext.declarative import declarative_base
 
 
 session = None
-cc_exceptions = ['comments', 'float', 'composite', 'series']
+cc_exceptions = ['datetime', 'comments', 'float', 'composite', 'series']
 cc_classes = {}
 
 
@@ -353,7 +353,7 @@ def setup_db(config):
     # conn.connection.create_function('upper', 1, ucase)
 
     if not cc_classes:
-        cc = conn.execute("SELECT id, datatype, normalized FROM custom_columns")
+        cc = conn.execute("SELECT id, datatype FROM custom_columns")
 
         cc_ids = []
         books_custom_column_links = {}
@@ -366,7 +366,7 @@ def setup_db(config):
                                                                  ForeignKey('custom_column_' + str(row.id) + '.id'),
                                                                  primary_key=True)
                                                           )
-                cc_ids.append([row.id, row.datatype, row.normalized])
+                cc_ids.append([row.id, row.datatype])
                 if row.datatype == 'bool':
                     ccdict = {'__tablename__': 'custom_column_' + str(row.id),
                               'id': Column(Integer, primary_key=True),
@@ -377,11 +377,6 @@ def setup_db(config):
                               'id': Column(Integer, primary_key=True),
                               'book': Column(Integer, ForeignKey('books.id')),
                               'value': Column(Integer)}
-                elif not row.normalized:
-                    ccdict = {'__tablename__': 'custom_column_' + str(row.id),
-                              'id': Column(Integer, primary_key=True),
-                              'book': Column(Integer, ForeignKey('books.id')),
-                              'value': Column(String)}
                 else:
                     ccdict = {'__tablename__': 'custom_column_' + str(row.id),
                               'id': Column(Integer, primary_key=True),
@@ -389,8 +384,7 @@ def setup_db(config):
                 cc_classes[row.id] = type(str('Custom_Column_' + str(row.id)), (Base,), ccdict)
 
         for cc_id in cc_ids:
-            normalized = cc_id[2]
-            if (not normalized):
+            if (cc_id[1] == 'bool') or (cc_id[1] == 'int'):
                 setattr(Books, 'custom_column_' + str(cc_id[0]), relationship(cc_classes[cc_id[0]],
                                                                            primaryjoin=(
                                                                            Books.id == cc_classes[cc_id[0]].book),
@@ -399,16 +393,6 @@ def setup_db(config):
                 setattr(Books, 'custom_column_' + str(cc_id[0]), relationship(cc_classes[cc_id[0]],
                                                                            secondary=books_custom_column_links[cc_id[0]],
                                                                            backref='books'))
-        #for cc_id in cc_ids:
-        #    if (cc_id[1] == 'bool') or (cc_id[1] == 'int'):
-        #        setattr(Books, 'custom_column_' + str(cc_id[2]), relationship(cc_classes[cc_id[0]],
-        #                                                                   primaryjoin=(
-        #                                                                   Books.id == cc_classes[cc_id[0]].book),
-        #                                                                   backref='books'))
-        #    else:
-        #        setattr(Books, 'custom_column_' + str(cc_id[2]), relationship(cc_classes[cc_id[0]],
-        #                                                                   secondary=books_custom_column_links[cc_id[0]],
-        #                                                                   backref='books'))
 
 
     global session
