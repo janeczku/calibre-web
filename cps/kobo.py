@@ -1,19 +1,35 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import base64
-import copy
-import uuid
+#  This file is part of the Calibre-Web (https://github.com/janeczku/calibre-web)
+#    Copyright (C) 2018-2019 shavitmichael, OzzieIsaacs
+#
+#  This program is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License as published by
+#  the Free Software Foundation, either version 3 of the License, or
+#  (at your option) any later version.
+#
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU General Public License for more details.
+#
+#  You should have received a copy of the GNU General Public License
+#  along with this program. If not, see <http://www.gnu.org/licenses/>.
+
 import os
-from datetime import datetime, tzinfo, timedelta
+import sys
+import uuid
+from base64 import b64decode, b64encode
+from datetime import datetime
 from time import gmtime, strftime
 
 from jsonschema import validate, exceptions
-from flask import Blueprint, request, make_response, jsonify, json, send_file
+from flask import Blueprint, request, make_response, jsonify, json
 from flask_login import login_required
 from sqlalchemy import func
 
-from . import config, logger, kobo_auth, ub, db, helper
+from . import config, logger, kobo_auth, db, helper
 from .web import download_required
 
 kobo = Blueprint("kobo", __name__)
@@ -22,12 +38,11 @@ kobo_auth.disable_failed_auth_redirect_for_blueprint(kobo)
 log = logger.create()
 
 
-def b64encode(data):
-    return base64.b64encode(data)
-
-
 def b64encode_json(json_data):
-    return b64encode(json.dumps(json_data))
+    if sys.version_info < (3, 0):
+        return b64encode(json.dumps(json_data))
+    else:
+        return b64encode(json.dumps(json_data).encode())
 
 
 # Python3 has a timestamp() method we could be calling, however it's not avaiable in python2.
@@ -88,9 +103,7 @@ class SyncToken:
 
         try:
             sync_token_json = json.loads(
-                base64.b64decode(
-                    sync_token_header + "=" * (-len(sync_token_header) % 4)
-                )
+                b64decode(sync_token_header + "=" * (-len(sync_token_header) % 4))
             )
             validate(sync_token_json, SyncToken.token_schema)
             if sync_token_json["version"] < SyncToken.MIN_VERSION:
@@ -301,12 +314,16 @@ def get_metadata(book):
     }
 
     if get_series(book):
+        if sys.version_info < (3, 0):
+            name = get_series(book).encode("utf-8")
+        else:
+            name = get_series(book)
         metadata["Series"] = {
             "Name": get_series(book),
             "Number": book.series_index,
             "NumberFloat": float(book.series_index),
             # Get a deterministic id based on the series name.
-            "Id": uuid.uuid3(uuid.NAMESPACE_DNS, get_series(book).encode("utf-8")),
+            "Id": uuid.uuid3(uuid.NAMESPACE_DNS, name),
         }
 
     return metadata
