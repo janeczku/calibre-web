@@ -8,18 +8,13 @@ import os
 from datetime import datetime, tzinfo, timedelta
 from time import gmtime, strftime
 
-from b2sdk.account_info.in_memory import InMemoryAccountInfo
-from b2sdk.api import B2Api
 from jsonschema import validate, exceptions
 from flask import Blueprint, request, make_response, jsonify, json, send_file
 from flask_login import login_required
 from sqlalchemy import func
 
 from . import config, logger, kobo_auth, ub, db, helper
-from .constants import CONFIG_DIR as _CONFIG_DIR
 from .web import download_required
-
-B2_SECRETS = os.path.join(_CONFIG_DIR, "b2_secrets.json")
 
 kobo = Blueprint("kobo", __name__)
 kobo_auth.disable_failed_auth_redirect_for_blueprint(kobo)
@@ -213,39 +208,6 @@ def get_download_url_for_book(book, book_format):
         book_id=book.id,
         book_format=book_format.lower(),
     )
-
-
-def get_download_url_for_book_b2(book, book_format):
-    if not data:
-        log.info(u"Book %s does have a kepub format", book_uuid)
-        return None
-
-    file_name = data.name + ".kepub"
-    file_path = os.path.join(book.path, file_name)
-
-    if not os.path.isfile(B2_SECRETS):
-        log.error(u"b2 secret file not found")
-        return None
-    with open(B2_SECRETS, "r") as filedata:
-        secrets = json.load(filedata)
-
-    info = InMemoryAccountInfo()
-    b2_api = B2Api(info)
-    b2_api.authorize_account(
-        "production", secrets["application_key_id"], secrets["application_key"]
-    )
-    bucket = b2_api.get_bucket_by_name(secrets["bucket_name"])
-    if not bucket:
-        log.error(u"b2 bucket not found")
-        return None
-
-    download_url = b2_api.get_download_url_for_file_name(
-        secrets["bucket_name"], file_path
-    )
-    download_authorization = bucket.get_download_authorization(
-        file_path, valid_duration_in_seconds=600
-    )
-    return download_url + "?Authorization=" + download_authorization
 
 
 def create_book_entitlement(book):
