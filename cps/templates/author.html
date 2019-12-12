@@ -89,7 +89,7 @@
   </div>
 </div>
 
-{% if other_books %}
+{% if other_books and author is not none %}
 <div class="discover">
   <h3>{{_("More by")}} {{ author.name.replace('|',',')|safe }}</h3>
   <div class="row">
