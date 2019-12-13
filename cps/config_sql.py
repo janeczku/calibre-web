@@ -104,6 +104,9 @@ class _Settings(_Base):
     config_calibre = Column(String)
     config_rarfile_location = Column(String)
 
+    config_allow_reverse_proxy_header_login = Column(Boolean, default=False)
+    config_reverse_proxy_login_header_name = Column(String)
+
     config_updatechannel = Column(Integer, default=constants.UPDATE_STABLE)
 
     def __repr__(self):
