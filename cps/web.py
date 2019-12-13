@@ -135,7 +135,7 @@ def load_user_from_request(request):
     if config.config_allow_reverse_proxy_header_login:
         rp_header_name = config.config_reverse_proxy_login_header_name
         if rp_header_name:
-            rp_header = request.headers.get(rp_header_name)
+            rp_header_username = request.headers.get(rp_header_name)
             if rp_header_username:
                 user = _fetch_user_by_name(rp_header_username)
                 if user:
