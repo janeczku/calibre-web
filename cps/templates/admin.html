@@ -1,6 +1,6 @@
 {% extends "layout.html" %}
 {% macro display_bool_setting(setting_value) -%}
-    {% if setting_value %}<span class="glyphicon glyphicon-ok"></span>{% else %}<span class="glyphicon glyphicon-remove"></span>{% endif %}
+  {% if setting_value %}<span class="glyphicon glyphicon-ok"></span>{% else %}<span class="glyphicon glyphicon-remove"></span>{% endif %}
 {%- endmacro %}
 {% block body %}
 <div class="container-fluid">
