@@ -100,6 +100,16 @@
             <div class="col-xs-6 col-sm-7">{{_('Remote login')}}</div>
             <div class="col-xs-6 col-sm-5">{{ display_bool_setting(config.config_remote_login) }}</div>
         </div>
+        <div class="row">
+            <div class="col-xs-6 col-sm-7">{{_('Reverse proxy login')}}</div>
+            <div class="col-xs-6 col-sm-5">{{ display_bool_setting(config.config_allow_reverse_proxy_header_login) }}</div>
+        </div>
+        {% if config.config_allow_reverse_proxy_header_login %}
+        <div class="row">
+            <div class="col-xs-6 col-sm-7">{{_('Reverse proxy header name')}}</div>
+            <div class="col-xs-6 col-sm-5">{{ config.config_reverse_proxy_login_header_name }}</div>
+        </div>
+        {% endif %}
       </div>
       <div class="btn btn-default"><a id="basic_config" href="{{url_for('admin.configuration')}}">{{_('Basic Configuration')}}</a></div>
       <div class="btn btn-default"><a id="view_config" href="{{url_for('admin.view_configuration')}}">{{_('UI Configuration')}}</a></div>
