@@ -170,6 +170,9 @@ def update_view_configuration():
     _config_int("config_books_per_page")
     _config_int("config_authors_max")
 
+    if config.config_google_drive_watch_changes_response:
+        config.config_google_drive_watch_changes_response = json.dumps(config.config_google_drive_watch_changes_response)
+
     config.config_default_role = constants.selected_roles(to_save)
     config.config_default_role &= ~constants.ROLE_ANONYMOUS
 
@@ -258,6 +261,7 @@ def _configuration_update_helper():
     db_change = False
     to_save = request.form.to_dict()
 
+    # _config_dict = lambda x: config.set_from_dictionary(to_save, x, lambda y: y['id'])
     _config_string = lambda x: config.set_from_dictionary(to_save, x, lambda y: y.strip() if y else y)
     _config_int = lambda x: config.set_from_dictionary(to_save, x, int)
     _config_checkbox = lambda x: config.set_from_dictionary(to_save, x, lambda y: y == "on", False)
@@ -415,7 +419,8 @@ def _configuration_result(error_flash=None, gdriveError=None):
     if gdriveError:
         gdriveError = _(gdriveError)
     else:
-        if config.config_use_google_drive and not gdrive_authenticate:
+        # if config.config_use_google_drive and\
+        if not gdrive_authenticate:
             gdrivefolders = gdriveutils.listRootFolders()
 
     show_back_button = current_user.is_authenticated
