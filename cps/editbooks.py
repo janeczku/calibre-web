@@ -729,7 +729,7 @@ def convert_bookformat(book_id):
 
     if (book_format_from is None) or (book_format_to is None):
         flash(_(u"Source or destination format for conversion missing"), category="error")
-        return redirect(request.environ["HTTP_REFERER"])
+        return redirect(url_for('editbook.edit_book', book_id=book_id))
 
     log.info('converting: book id: %s from: %s to: %s', book_id, book_format_from, book_format_to)
     rtn = helper.convert_book_format(book_id, config.config_calibre_dir, book_format_from.upper(),
@@ -741,4 +741,4 @@ def convert_bookformat(book_id):
                     category="success")
     else:
         flash(_(u"There was an error converting this book: %(res)s", res=rtn), category="error")
-    return redirect(request.environ["HTTP_REFERER"])
+    return redirect(url_for('editbook.edit_book', book_id=book_id))
