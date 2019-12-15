@@ -36,11 +36,10 @@ from flask_babel import gettext as _
 from sqlalchemy import and_
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.sql.expression import func
-from werkzeug.security import generate_password_hash
 
 from . import constants, logger, helper, services
 from . import db, ub, web_server, get_locale, config, updater_thread, babel, gdriveutils
-from .helper import speaking_language, check_valid_domain, send_test_mail, generate_random_password, send_registration_mail
+from .helper import speaking_language, check_valid_domain, send_test_mail, reset_password, generate_password_hash
 from .gdriveutils import is_gdrive_ready, gdrive_support
 from .web import admin_required, render_title_template, before_request, unconfigured, login_required_if_no_ano
 
@@ -524,15 +523,15 @@ def update_mailsettings():
     config.save()
 
     if to_save.get("test"):
-        if current_user.kindle_mail:
-            result = send_test_mail(current_user.kindle_mail, current_user.nickname)
+        if current_user.email:
+            result = send_test_mail(current_user.email, current_user.nickname)
             if result is None:
-                flash(_(u"Test e-mail successfully send to %(kindlemail)s", kindlemail=current_user.kindle_mail),
+                flash(_(u"Test e-mail successfully send to %(kindlemail)s", kindlemail=current_user.email),
                       category="success")
             else:
                 flash(_(u"There was an error sending the Test e-mail: %(res)s", res=result), category="error")
         else:
-            flash(_(u"Please configure your kindle e-mail address first..."), category="error")
+            flash(_(u"Please configure your e-mail address first..."), category="error")
     else:
         flash(_(u"E-mail server settings updated"), category="success")
 
@@ -644,15 +643,10 @@ def reset_password(user_id):
     if not config.config_public_reg:
         abort(404)
     if current_user is not None and current_user.is_authenticated:
-        existing_user = ub.session.query(ub.User).filter(ub.User.id == user_id).first()
-        password = generate_random_password()
-        existing_user.password = generate_password_hash(password)
-        try:
-            ub.session.commit()
-            send_registration_mail(existing_user.email, existing_user.nickname, password, True)
-            flash(_(u"Password for user %(user)s reset", user=existing_user.nickname), category="success")
-        except Exception:
-            ub.session.rollback()
+        ret, message = reset_password(user_id)
+        if ret == 1:
+            flash(_(u"Password for user %(user)s reset", user=message), category="success")
+        else:
             flash(_(u"An unknown error occurred. Please try again later."), category="error")
     return redirect(url_for('admin.admin'))
 
