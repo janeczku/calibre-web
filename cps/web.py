@@ -431,6 +431,8 @@ def get_matching_tags():
         title_input = request.args.get('book_title')
         include_tag_inputs = request.args.getlist('include_tag')
         exclude_tag_inputs = request.args.getlist('exclude_tag')
+        include_extension_inputs = request.args.getlist('include_extension')
+        exclude_extension_inputs = request.args.getlist('exclude_extension')
         q = q.filter(db.Books.authors.any(func.lower(db.Authors.name).ilike("%" + author_input + "%")),
                      func.lower(db.Books.title).ilike("%" + title_input + "%"))
         if len(include_tag_inputs) > 0:
@@ -439,6 +441,12 @@ def get_matching_tags():
         if len(exclude_tag_inputs) > 0:
             for tag in exclude_tag_inputs:
                 q = q.filter(not_(db.Books.tags.any(db.Tags.id == tag)))
+        '''if len(include_extension_inputs) > 0:
+            for tag in exclude_tag_inputs:
+                q = q.filter(not_(db.Books.tags.any(db.Tags.id == tag)))
+        if len(exclude_extension_inputs) > 0:
+            for tag in exclude_tag_inputs:
+                q = q.filter(not_(db.Books.tags.any(db.Tags.id == tag)))'''
         for book in q:
             for tag in book.tags:
                 if tag.id not in tag_dict['tags']:
@@ -818,6 +826,8 @@ def advanced_search():
     exclude_series_inputs = request.args.getlist('exclude_serie')
     include_languages_inputs = request.args.getlist('include_language')
     exclude_languages_inputs = request.args.getlist('exclude_language')
+    include_extension_inputs = request.args.getlist('include_extension')
+    exclude_extension_inputs = request.args.getlist('exclude_extension')
 
     author_name = request.args.get("author_name")
     book_title = request.args.get("book_title")
@@ -843,7 +853,8 @@ def advanced_search():
 
     if include_tag_inputs or exclude_tag_inputs or include_series_inputs or exclude_series_inputs or \
             include_languages_inputs or exclude_languages_inputs or author_name or book_title or \
-            publisher or pub_start or pub_end or rating_low or rating_high or description or cc_present:
+            publisher or pub_start or pub_end or rating_low or rating_high or description or cc_present or \
+            include_extension_inputs or exclude_extension_inputs:
         searchterm = []
         searchterm.extend((author_name.replace('|', ','), book_title, publisher))
         if pub_start:
@@ -872,6 +883,8 @@ def advanced_search():
             searchterm.extend([_(u"Rating <= %(rating)s", rating=rating_high)])
         if rating_low:
             searchterm.extend([_(u"Rating >= %(rating)s", rating=rating_low)])
+        searchterm.extend(ext for ext in include_extension_inputs)
+        searchterm.extend(ext for ext in exclude_extension_inputs)
         # handle custom columns
         for c in cc:
             if request.args.get('custom_column_' + str(c.id)):
@@ -896,6 +909,10 @@ def advanced_search():
             q = q.filter(db.Books.series.any(db.Series.id == serie))
         for serie in exclude_series_inputs:
             q = q.filter(not_(db.Books.series.any(db.Series.id == serie)))
+        for extension in include_extension_inputs:
+            q = q.filter(db.Books.data.any(db.Data.format == extension))
+        for extension in exclude_extension_inputs:
+            q = q.filter(not_(db.Books.data.any(db.Data.format == extension)))
         if current_user.filter_language() != "all":
             q = q.filter(db.Books.languages.any(db.Languages.lang_code == current_user.filter_language()))
         else:
@@ -936,11 +953,13 @@ def advanced_search():
     # tags = db.session.query(db.Tags).order_by(db.Tags.name).all()
     tags = db.session.query(db.Tags).filter(tags_filters()).order_by(db.Tags.name).all()
     series = db.session.query(db.Series).order_by(db.Series.name).all()
+    extensions = db.session.query(db.Data) \
+        .group_by(db.Data.format).order_by(db.Data.format).all()
     if current_user.filter_language() == u"all":
         languages = speaking_language()
     else:
         languages = None
-    return render_title_template('search_form.html', tags=tags, languages=languages,
+    return render_title_template('search_form.html', tags=tags, languages=languages, extensions=extensions,
                                  series=series, title=_(u"search"), cc=cc, page="advsearch")
 
 
