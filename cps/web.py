@@ -38,8 +38,7 @@ from flask import render_template, request, redirect, send_from_directory, make_
 from flask_babel import gettext as _
 from flask_login import login_user, logout_user, login_required, current_user
 from sqlalchemy.exc import IntegrityError
-from sqlalchemy.sql.expression import text, func, true, false, not_, and_, \
-    exists
+from sqlalchemy.sql.expression import text, func, true, false, not_, and_, exists
 from werkzeug.exceptions import default_exceptions
 from werkzeug.datastructures import Headers
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -50,7 +49,7 @@ from .gdriveutils import getFileFromEbooksFolder, do_gdrive_download
 from .helper import common_filters, get_search_results, fill_indexpage, speaking_language, check_valid_domain, \
         order_authors, get_typeahead, render_task_status, json_serial, get_cc_columns, \
         get_book_cover, get_download_link, send_mail, generate_random_password, send_registration_mail, \
-        check_send_to_kindle, check_read_formats, lcase, tags_filters
+        check_send_to_kindle, check_read_formats, lcase, tags_filters, reset_password
 from .pagination import Pagination
 from .redirect import redirect_back
 
@@ -1043,7 +1042,7 @@ def download_link(book_id, book_format):
 @download_required
 def send_to_kindle(book_id, book_format, convert):
     settings = config.get_mail_settings()
-    if settings.get("mail_server", "mail.example.com") == "mail.example.com":
+    if settings.get("mail_server", "mail.example.org") == "mail.example.org":
         flash(_(u"Please configure the SMTP mail settings first..."), category="error")
     elif current_user.kindle_mail:
         result = send_mail(book_id, book_format, convert, current_user.kindle_mail, config.config_calibre_dir,
@@ -1140,17 +1139,33 @@ def login():
                 log.info('LDAP Login failed for user "%s" IP-adress: %s', form['username'], ipAdress)
                 flash(_(u"Wrong Username or Password"), category="error")
         else:
-            if user and check_password_hash(str(user.password), form['password']) and user.nickname != "Guest":
-                login_user(user, remember=True)
-                flash(_(u"You are now logged in as: '%(nickname)s'", nickname=user.nickname), category="success")
-                return redirect_back(url_for("web.index"))
             ipAdress = request.headers.get('X-Forwarded-For', request.remote_addr)
-            log.info('Login failed for user "%s" IP-adress: %s', form['username'], ipAdress)
-            flash(_(u"Wrong Username or Password"), category="error")
+            if 'forgot' in form and form['forgot'] == 'forgot':
+                if user != None and user.nickname != "Guest":
+                    ret, __ = reset_password(user.id)
+                    if ret == 1:
+                        flash(_(u"New Password was send to your email address"), category="info")
+                        log.info('Password reset for user "%s" IP-adress: %s', form['username'], ipAdress)
+                    else:
+                        flash(_(u"An unknown error occurred. Please try again later."), category="error")
+                else:
+                    flash(_(u"Please enter valid username to reset password"), category="error")
+                    log.info('Username missing for password reset IP-adress: %s', ipAdress)
+            else:
+                if user and check_password_hash(str(user.password), form['password']) and user.nickname != "Guest":
+                    login_user(user, remember=True)
+                    flash(_(u"You are now logged in as: '%(nickname)s'", nickname=user.nickname), category="success")
+                    return redirect_back(url_for("web.index"))
+                else:
+                    log.info('Login failed for user "%s" IP-adress: %s', form['username'], ipAdress)
+                    flash(_(u"Wrong Username or Password"), category="error")
+    settings = config.get_mail_settings()
+    mail_configured = bool(settings.get("mail_server", "mail.example.org") != "mail.example.org")
 
     next_url = url_for('web.index')
 
-    return render_title_template('login.html', title=_(u"login"), next_url=next_url, config=config, page="login")
+    return render_title_template('login.html', title=_(u"login"), next_url=next_url, config=config,
+                                 mail = mail_configured, page="login")
 
 
 @web.route('/logout')

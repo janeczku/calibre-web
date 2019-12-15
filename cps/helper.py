@@ -41,6 +41,7 @@ from flask_babel import gettext as _
 from flask_login import current_user
 from sqlalchemy.sql.expression import true, false, and_, or_, text, func
 from werkzeug.datastructures import Headers
+from werkzeug.security import generate_password_hash
 
 try:
     from urllib.parse import quote
@@ -405,6 +406,19 @@ def delete_book_gdrive(book, book_format):
     else:
         error =_(u'Book path %(path)s not found on Google Drive', path=book.path)  # file not found
     return error
+
+
+def reset_password(user_id):
+    existing_user = ub.session.query(ub.User).filter(ub.User.id == user_id).first()
+    password = generate_random_password()
+    existing_user.password = generate_password_hash(password)
+    try:
+        ub.session.commit()
+        send_registration_mail(existing_user.email, existing_user.nickname, password, True)
+        return (1, existing_user.nickname)
+    except Exception:
+        ub.session.rollback()
+        return (0, None)
 
 
 def generate_random_password():

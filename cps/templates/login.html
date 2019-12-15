@@ -18,6 +18,9 @@
       </label>
     </div>
     <button type="submit" name="submit" class="btn btn-default">{{_('Submit')}}</button>
+    {% if config.config_login_type == 0 and mail%}
+    <button type="submit" name="forgot" value="forgot" class="btn btn-default">{{_('Forgot password')}}</button>
+    {% endif %}
     {% if config.config_remote_login %}
     <a href="{{url_for('web.remote_login')}}" class="pull-right">{{_('Log in with magic link')}}</a>
     {% endif %}
