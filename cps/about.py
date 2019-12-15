@@ -22,6 +22,7 @@
 
 from __future__ import division, print_function, unicode_literals
 import sys
+import platform
 import sqlite3
 from collections import OrderedDict
 
@@ -48,6 +49,7 @@ about = flask.Blueprint('about', __name__)
 
 
 _VERSIONS = OrderedDict(
+    Platform = ' '.join(platform.uname()),
     Python=sys.version,
     WebServer=server.VERSION,
     Flask=flask.__version__,
@@ -65,6 +67,7 @@ _VERSIONS = OrderedDict(
     Unidecode = unidecode_version,
     Flask_SimpleLDAP =  u'installed' if bool(services.ldap) else u'not installed',
     Goodreads = u'installed' if bool(services.goodreads_support) else u'not installed',
+
 )
 _VERSIONS.update(uploader.get_versions())
 
