@@ -167,10 +167,10 @@ def check_send_to_kindle(entry):
                 if 'EPUB' in formats and not 'MOBI' in formats:
                     bookformats.append({'format': 'Mobi','convert':1,
                             'text':_('Convert %(orig)s to %(format)s and send to Kindle',orig='Epub',format='Mobi')})
-            '''if config.config_ebookconverter == 2:
-                if 'EPUB' in formats and not 'AZW3' in formats:
-                    bookformats.append({'format': 'Azw3','convert':1,
-                            'text':_('Convert %(orig)s to %(format)s and send to Kindle',orig='Epub',format='Azw3')})'''
+            if config.config_ebookconverter == 2:
+                if 'AZW3' in formats and not 'MOBI' in formats:
+                    bookformats.append({'format': 'Mobi','convert':2,
+                            'text':_('Convert %(orig)s to %(format)s and send to Kindle',orig='Azw3',format='Mobi')})
         return bookformats
     else:
         log.error(u'Cannot find book entry %d', entry.id)
@@ -197,9 +197,13 @@ def send_mail(book_id, book_format, convert, kindle_mail, calibrepath, user_id):
     """Send email with attachments"""
     book = db.session.query(db.Books).filter(db.Books.id == book_id).first()
 
-    if convert:
+    if convert == 1:
         # returns None if success, otherwise errormessage
         return convert_book_format(book_id, calibrepath, u'epub', book_format.lower(), user_id, kindle_mail)
+    if convert == 2:
+        # returns None if success, otherwise errormessage
+        return convert_book_format(book_id, calibrepath, u'azw3', book_format.lower(), user_id, kindle_mail)
+
 
     for entry in iter(book.data):
         if entry.format.upper() == book_format.upper():
