@@ -446,32 +446,46 @@ def delete_book(book, calibrepath, book_format):
         return delete_book_file(book, calibrepath, book_format)
 
 
+def get_cover_on_failure(use_generic_cover):
+    if use_generic_cover:
+        return send_from_directory(_STATIC_DIR, "generic_cover.jpg")
+    else:
+        return None
+
 def get_book_cover(book_id):
     book = db.session.query(db.Books).filter(db.Books.id == book_id).first()
-    if book.has_cover:
+    return get_book_cover_internal(book, use_generic_cover_on_failure=True)
 
+def get_book_cover_with_uuid(book_uuid,
+                   use_generic_cover_on_failure=True):
+    book = db.session.query(db.Books).filter(db.Books.uuid == book_uuid).first()
+    return get_book_cover_internal(book, use_generic_cover_on_failure)
+
+def get_book_cover_internal(book,
+                   use_generic_cover_on_failure):
+    if book and book.has_cover:
         if config.config_use_google_drive:
             try:
                 if not gd.is_gdrive_ready():
-                    return send_from_directory(_STATIC_DIR, "generic_cover.jpg")
+                    return get_cover_on_failure(use_generic_cover_on_failure)
                 path=gd.get_cover_via_gdrive(book.path)
                 if path:
                     return redirect(path)
                 else:
                     log.error('%s/cover.jpg not found on Google Drive', book.path)
-                    return send_from_directory(_STATIC_DIR, "generic_cover.jpg")
+                    return get_cover_on_failure(use_generic_cover_on_failure)
             except Exception as e:
                 log.exception(e)
                 # traceback.print_exc()
-                return send_from_directory(_STATIC_DIR,"generic_cover.jpg")
+                return get_cover_on_failure(use_generic_cover_on_failure)
         else:
             cover_file_path = os.path.join(config.config_calibre_dir, book.path)
             if os.path.isfile(os.path.join(cover_file_path, "cover.jpg")):
                 return send_from_directory(cover_file_path, "cover.jpg")
             else:
-                return send_from_directory(_STATIC_DIR,"generic_cover.jpg")
+                return get_cover_on_failure(use_generic_cover_on_failure)
     else:
-        return send_from_directory(_STATIC_DIR,"generic_cover.jpg")
+        return get_cover_on_failure(use_generic_cover_on_failure)
 
 
 # saves book cover from url

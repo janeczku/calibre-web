@@ -1288,6 +1288,8 @@ def profile():
                 current_user.password = generate_password_hash(to_save["password"])
         if "kindle_mail" in to_save and to_save["kindle_mail"] != current_user.kindle_mail:
             current_user.kindle_mail = to_save["kindle_mail"]
+        if "kobo_user_key" in to_save and to_save["kobo_user_key"]:
+                current_user.kobo_user_key_hash = generate_password_hash(to_save["kobo_user_key"])
         if to_save["email"] and to_save["email"] != current_user.email:
             if config.config_public_reg and not check_valid_domain(to_save["email"]):
                 flash(_(u"E-mail is not from valid domain"), category="error")
@@ -1331,7 +1333,7 @@ def profile():
             ub.session.commit()
         except IntegrityError:
             ub.session.rollback()
-            flash(_(u"Found an existing account for this e-mail address."), category="error")
+            flash(_(u"Found an existing account for this e-mail address or Kobo UserKey."), category="error")
             return render_title_template("user_edit.html", content=current_user, downloads=downloads,
                                          translations=translations,
                                          title=_(u"%(name)s's profile", name=current_user.nickname), page="me",
