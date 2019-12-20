@@ -33,6 +33,9 @@ from sqlalchemy import func
 from . import config, logger, kobo_auth, db, helper
 from .web import download_required
 
+#TODO: Test more formats :) .
+KOBO_SUPPORTED_FORMATS = {"KEPUB"}
+
 kobo = Blueprint("kobo", __name__, url_prefix="/kobo/<auth_token>")
 kobo_auth.disable_failed_auth_redirect_for_blueprint(kobo)
 kobo_auth.register_url_value_preprocessor(kobo)
@@ -169,7 +172,9 @@ def HandleSyncRequest():
     # the comparison because of the +00:00 suffix.
     changed_entries = (
         db.session.query(db.Books)
+        .join(db.Data)
         .filter(func.datetime(db.Books.last_modified) > sync_token.books_last_modified)
+        .filter(db.Data.format.in_(KOBO_SUPPORTED_FORMATS))
         .all()
     )
     for book in changed_entries:
@@ -275,11 +280,10 @@ def get_series(book):
 
 
 def get_metadata(book):
-    ALLOWED_FORMATS = {"KEPUB"}
     download_urls = []
 
     for book_data in book.data:
-        if book_data.format in ALLOWED_FORMATS:
+        if book_data.format in KOBO_SUPPORTED_FORMATS:
             download_urls.append(
                 {
                     "Format": book_data.format,
