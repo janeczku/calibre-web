@@ -27,7 +27,7 @@ from time import gmtime, strftime
 from jsonschema import validate, exceptions
 from flask import Blueprint, request, make_response, jsonify, json
 from flask_login import login_required
-from sqlalchemy import func
+from sqlalchemy import func, or_
 
 from . import config, logger, kobo_auth, db, helper
 from .web import download_required
@@ -166,8 +166,9 @@ def HandleSyncRequest():
     # It looks like it's treating the db.Books.last_modified field as a string and may fail
     # the comparison because of the +00:00 suffix.
     changed_entries = (
-        db.session.query(db.Books)
+        db.session.query(db.Books).join(db.Data)
         .filter(func.datetime(db.Books.last_modified) != sync_token.books_last_modified)
+        .filter(or_(db.Data.format == 'KEPUB', db.Data.format == 'EPUB'))
         .all()
     )
     for book in changed_entries:
@@ -217,9 +218,9 @@ def HandleMetadataRequest(book_uuid):
 
 def get_download_url_for_book(book, book_format):
     return "{url_base}/download/{book_id}/{book_format}".format(
-        url_base=request.environ['werkzeug.request'].base_url,
+        url_base=get_base_url(), # request.environ['werkzeug.request'].base_url,
         book_id=book.id,
-        book_format=book_format.lower(),
+        book_format="kepub",
     )
 
 
@@ -272,14 +273,14 @@ def get_series(book):
 
 
 def get_metadata(book):
-    ALLOWED_FORMATS = {"KEPUB"}
+    ALLOWED_FORMATS = {"KEPUB", "EPUB"}
     download_urls = []
 
     for book_data in book.data:
         if book_data.format in ALLOWED_FORMATS:
             download_urls.append(
                 {
-                    "Format": book_data.format,
+                    "Format": "KEPUB",
                     "Size": book_data.uncompressed_size,
                     "Url": get_download_url_for_book(book, book_data.format),
                     # "DrmType": "None", # Not required
@@ -385,9 +386,12 @@ def HandleAuthRequest():
     return response
 
 
+def get_base_url():
+    return "{root}:{port}".format(root=request.url_root[:-1], port=str(config.config_port))
+
 @kobo.route("/v1/initialization")
 def HandleInitRequest():
-    resources = NATIVE_KOBO_RESOURCES(calibre_web_url=config.config_server_url)
+    resources = NATIVE_KOBO_RESOURCES(calibre_web_url=get_base_url())
     response = make_response(jsonify({"Resources": resources}))
     response.headers["x-kobo-apitoken"] = "e30="
     return response
