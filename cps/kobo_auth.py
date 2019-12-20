@@ -70,10 +70,11 @@ from .web import render_title_template
 
 log = logger.create()
 
+
 def register_url_value_preprocessor(kobo):
     @kobo.url_value_preprocessor
     def pop_auth_token(endpoint, values):
-        g.auth_token = values.pop('auth_token')
+        g.auth_token = values.pop("auth_token")
 
 
 def disable_failed_auth_redirect_for_blueprint(bp):
@@ -82,31 +83,44 @@ def disable_failed_auth_redirect_for_blueprint(bp):
 
 @lm.request_loader
 def load_user_from_kobo_request(request):
-    if 'auth_token' in g:
-        auth_token = g.get('auth_token')
-        user = ub.session.query(ub.User).join(ub.RemoteAuthToken).filter(ub.RemoteAuthToken.auth_token == auth_token).first()
+    if "auth_token" in g:
+        auth_token = g.get("auth_token")
+        user = (
+            ub.session.query(ub.User)
+            .join(ub.RemoteAuthToken)
+            .filter(ub.RemoteAuthToken.auth_token == auth_token)
+            .first()
+        )
         if user is not None:
             login_user(user)
             return user
     log.info("Received Kobo request without a recognizable auth token.")
     return None
 
-kobo_auth = Blueprint("kobo_auth", __name__, url_prefix='/kobo_auth')
 
-@kobo_auth.route('/generate_auth_token')
+kobo_auth = Blueprint("kobo_auth", __name__, url_prefix="/kobo_auth")
+
+
+@kobo_auth.route("/generate_auth_token")
 @login_required
 def generate_auth_token():
     # Invalidate any prevously generated Kobo Auth token for this user.
-    ub.session.query(ub.RemoteAuthToken).filter(ub.RemoteAuthToken.user_id == current_user.id).delete()
+    ub.session.query(ub.RemoteAuthToken).filter(
+        ub.RemoteAuthToken.user_id == current_user.id
+    ).delete()
 
     auth_token = ub.RemoteAuthToken()
     auth_token.user_id = current_user.id
     auth_token.expiration = datetime.max
-    auth_token.auth_token = (hexlify(urandom(16))).decode('utf-8')
+    auth_token.auth_token = (hexlify(urandom(16))).decode("utf-8")
 
     ub.session.add(auth_token)
     ub.session.commit()
 
-
-    return render_title_template('generate_kobo_auth_url.html', title=_(u"Kobo Set-up"),
-                                 kobo_auth_url=url_for("kobo.TopLevelEndpoint", auth_token=auth_token.auth_token, _external=True))
+    return render_title_template(
+        "generate_kobo_auth_url.html",
+        title=_(u"Kobo Set-up"),
+        kobo_auth_url=url_for(
+            "kobo.TopLevelEndpoint", auth_token=auth_token.auth_token, _external=True
+        ),
+    )
