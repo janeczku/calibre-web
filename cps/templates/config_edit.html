@@ -104,10 +104,6 @@
                     <!--option-- value="3" {% if config.config_updatechannel == 3 %}selected{% endif %}>{{_('Nightly (Automatic)')}}</option-->
             </select>
         </div>
-        <div class="form-group">
-          <label for="config_server_url">{{_('Server Url. This is only used for the (experimental) Kobo device library sync')}}</label>
-          <input type="text" class="form-control" name="config_server_url" id="config_server_url" value="{% if config.config_server_url != None %}{{ config.config_server_url }}{% endif %}" autocomplete="off">
-        </div>
       </div>
     </div>
   </div>

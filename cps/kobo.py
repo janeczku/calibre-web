@@ -388,7 +388,7 @@ def HandleAuthRequest():
 
 @kobo.route("/v1/initialization")
 def HandleInitRequest():
-    resources = NATIVE_KOBO_RESOURCES(calibre_web_url=config.config_server_url)
+    resources = NATIVE_KOBO_RESOURCES(calibre_web_url=url_for("web.index", _external=True).strip("/"))
     response = make_response(jsonify({"Resources": resources}))
     response.headers["x-kobo-apitoken"] = "e30="
     return response
