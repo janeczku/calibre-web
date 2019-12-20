@@ -1029,11 +1029,13 @@ def serve_book(book_id, book_format, anyname):
         return send_from_directory(os.path.join(config.config_calibre_dir, book.path), data.name + "." + book_format)
 
 
-# @web.route("/download/<int:book_id>/<book_format>", defaults={'anyname': 'None'})
 @web.route("/download/<int:book_id>/<book_format>")
 @login_required_if_no_ano
 @download_required
 def download_link(book_id, book_format):
+    if book_format.lower() == "kepub":
+        book_format= "epub"
+    log.info("Book %s in format %s downloaded", str(book_id), book_format)
     return get_download_link(book_id, book_format)
 
 
