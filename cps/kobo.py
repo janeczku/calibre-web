@@ -25,15 +25,20 @@ from datetime import datetime
 from time import gmtime, strftime
 
 from jsonschema import validate, exceptions
-from flask import Blueprint, request, make_response, jsonify, json
+from flask import Blueprint, request, make_response, jsonify, json, current_app, url_for
+
 from flask_login import login_required
-from sqlalchemy import func, or_
+from sqlalchemy import func
 
 from . import config, logger, kobo_auth, db, helper
 from .web import download_required
 
-kobo = Blueprint("kobo", __name__)
+#TODO: Test more formats :) .
+KOBO_SUPPORTED_FORMATS = {"KEPUB"}
+
+kobo = Blueprint("kobo", __name__, url_prefix="/kobo/<auth_token>")
 kobo_auth.disable_failed_auth_redirect_for_blueprint(kobo)
+kobo_auth.register_url_value_preprocessor(kobo)
 
 log = logger.create()
 
@@ -166,9 +171,10 @@ def HandleSyncRequest():
     # It looks like it's treating the db.Books.last_modified field as a string and may fail
     # the comparison because of the +00:00 suffix.
     changed_entries = (
-        db.session.query(db.Books).join(db.Data)
-        .filter(func.datetime(db.Books.last_modified) != sync_token.books_last_modified)
-        .filter(or_(db.Data.format == 'KEPUB', db.Data.format == 'EPUB'))
+        db.session.query(db.Books)
+        .join(db.Data)
+        .filter(func.datetime(db.Books.last_modified) > sync_token.books_last_modified)
+        .filter(db.Data.format.in_(KOBO_SUPPORTED_FORMATS))
         .all()
     )
     for book in changed_entries:
@@ -217,10 +223,11 @@ def HandleMetadataRequest(book_uuid):
 
 
 def get_download_url_for_book(book, book_format):
-    return "{url_base}/download/{book_id}/{book_format}".format(
-        url_base=get_base_url(), # request.environ['werkzeug.request'].base_url,
+    return url_for(
+        "web.download_link",
         book_id=book.id,
-        book_format="kepub",
+        book_format=book_format.lower(),
+        _external=True,
     )
 
 
@@ -273,14 +280,13 @@ def get_series(book):
 
 
 def get_metadata(book):
-    ALLOWED_FORMATS = {"KEPUB", "EPUB"}
     download_urls = []
 
     for book_data in book.data:
-        if book_data.format in ALLOWED_FORMATS:
+        if book_data.format in KOBO_SUPPORTED_FORMATS:
             download_urls.append(
                 {
-                    "Format": "KEPUB",
+                    "Format": book_data.format,
                     "Size": book_data.uncompressed_size,
                     "Url": get_download_url_for_book(book, book_data.format),
                     # "DrmType": "None", # Not required
@@ -354,9 +360,14 @@ def HandleCoverImageRequest(book_uuid, horizontal, vertical, jpeg_quality, monoc
     return book_cover
 
 
+@kobo.route("")
+def TopLevelEndpoint():
+    return make_response(jsonify({}))
+
+
 @kobo.route("/v1/user/profile")
 @kobo.route("/v1/user/loyalty/benefits")
-@kobo.route("/v1/analytics/gettests", methods=["GET", "POST"])
+@kobo.route("/v1/analytics/gettests/", methods=["GET", "POST"])
 @kobo.route("/v1/user/wishlist")
 @kobo.route("/v1/user/<dummy>")
 @kobo.route("/v1/user/recommendations")
@@ -386,12 +397,11 @@ def HandleAuthRequest():
     return response
 
 
-def get_base_url():
-    return "{root}:{port}".format(root=request.url_root[:-1], port=str(config.config_port))
-
 @kobo.route("/v1/initialization")
 def HandleInitRequest():
-    resources = NATIVE_KOBO_RESOURCES(calibre_web_url=get_base_url())
+    resources = NATIVE_KOBO_RESOURCES(
+        calibre_web_url=url_for("web.index", _external=True).strip("/")
+    )
     response = make_response(jsonify({"Resources": resources}))
     response.headers["x-kobo-apitoken"] = "e30="
     return response
