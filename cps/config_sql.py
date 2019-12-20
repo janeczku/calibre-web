@@ -49,7 +49,6 @@ class _Settings(_Base):
     config_port = Column(Integer, default=constants.DEFAULT_PORT)
     config_certfile = Column(String)
     config_keyfile = Column(String)
-    config_server_url = Column(String, default='')
 
     config_calibre_web_title = Column(String, default=u'Calibre-Web')
     config_books_per_page = Column(Integer, default=60)
