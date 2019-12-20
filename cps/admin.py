@@ -596,17 +596,6 @@ def edit_user(user_id):
             if "locale" in to_save and to_save["locale"]:
                 content.locale = to_save["locale"]
 
-            if "kobo_user_key" in to_save and to_save["kobo_user_key"]:
-                kobo_user_key_hash = generate_password_hash(to_save["kobo_user_key"])
-                if kobo_user_key_hash != content.kobo_user_key_hash:
-                    existing_kobo_user_key = ub.session.query(ub.User).filter(ub.User.kobo_user_key_hash == kobo_user_key_hash).first()
-                    if not existing_kobo_user_key:
-                        content.kobo_user_key_hash = kobo_user_key_hash
-                    else:
-                        flash(_(u"Found an existing account for this Kobo UserKey."), category="error")
-                        return render_title_template("user_edit.html", translations=translations, languages=languages,
-                                                     new_user=0, content=content, downloads=downloads, registered_oauth=oauth_check,
-                                                     title=_(u"Edit User %(nick)s", nick=content.nickname), page="edituser")
             if to_save["email"] and to_save["email"] != content.email:
                 existing_email = ub.session.query(ub.User).filter(ub.User.email == to_save["email"].lower()) \
                     .first()

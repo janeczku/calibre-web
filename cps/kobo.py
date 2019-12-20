@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 #  This file is part of the Calibre-Web (https://github.com/janeczku/calibre-web)
-#    Copyright (C) 2018-2019 shavitmichael, OzzieIsaacs
+#    Copyright (C) 2018-2019 OzzieIsaacs
 #
 #  This program is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
@@ -25,15 +25,17 @@ from datetime import datetime
 from time import gmtime, strftime
 
 from jsonschema import validate, exceptions
-from flask import Blueprint, request, make_response, jsonify, json
+from flask import Blueprint, request, make_response, jsonify, json, current_app, url_for
+
 from flask_login import login_required
 from sqlalchemy import func
 
 from . import config, logger, kobo_auth, db, helper
 from .web import download_required
 
-kobo = Blueprint("kobo", __name__)
+kobo = Blueprint("kobo", __name__, url_prefix='/kobo/<auth_token>')
 kobo_auth.disable_failed_auth_redirect_for_blueprint(kobo)
+kobo_auth.register_url_value_preprocessor(kobo)
 
 log = logger.create()
 
@@ -216,11 +218,7 @@ def HandleMetadataRequest(book_uuid):
 
 
 def get_download_url_for_book(book, book_format):
-    return "{url_base}/download/{book_id}/{book_format}".format(
-        url_base=config.config_server_url,
-        book_id=book.id,
-        book_format=book_format.lower(),
-    )
+    return url_for("web.download_link", book_id=book.id, book_format=book_format.lower(), _external = True)
 
 
 def create_book_entitlement(book):
@@ -352,6 +350,9 @@ def HandleCoverImageRequest(book_uuid, horizontal, vertical, jpeg_quality, monoc
         return make_response()
     return book_cover
 
+@kobo.route("")
+def TopLevelEndpoint():
+    return make_response(jsonify({}))
 
 @kobo.route("/v1/user/profile")
 @kobo.route("/v1/user/loyalty/benefits")
