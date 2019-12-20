@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 #  This file is part of the Calibre-Web (https://github.com/janeczku/calibre-web)
-#    Copyright (C) 2018-2019 shavitmichael, OzzieIsaacs
+#    Copyright (C) 2018-2019 OzzieIsaacs
 #
 #  This program is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
@@ -29,7 +29,6 @@ which serves the following response:
     <script type='text/javascript'>location.href='kobo://UserAuthenticated?userId=<redacted>&userKey<redacted>&email=<redacted>&returnUrl=https%3a%2f%2fwww.kobo.com';</script>.
 And triggers the insertion of a userKey into the device's User table.
 
-IMPORTANT SECURITY CAUTION:
 Together, the device's DeviceId and UserKey act as an *irrevocable* authentication 
 token to most (if not all) Kobo APIs. In fact, in most cases only the UserKey is
 required to authorize the API call.
@@ -48,38 +47,33 @@ v1/auth/device endpoint with the secret UserKey and the device's DeviceId.
 * The book download endpoint passes an auth token as a URL param instead of a header.
 
 Our implementation:
-For now, we rely on the official Kobo store's UserKey for authentication.
-Once authenticated, we set the login cookie on the response that will be sent back for
-the duration of the session to authorize subsequent API calls.
-Ideally we'd only perform UserKey-based authentication for the v1/initialization or the
-v1/device/auth call, however sessions don't always start with those calls.
-
-Because of the irrevocable power granted by the key, we only ever store and compare a
-hash of the key. To obtain their UserKey, a user can query the user table from the
-.kobo/KoboReader.sqlite database found on their device.
-This isn't exactly user friendly however.
-
-Some possible alternatives that require more research:
- * Instead of having users query the device database to find out their UserKey, we could
- provide a list of recent Kobo sync attempts in the calibre-web UI for users to
- authenticate sync attempts (e.g: 'this was me' button).
- * We may be able to craft a sign-in flow with a redirect back to the CalibreWeb
- server containing the KoboStore's UserKey (if the same as the devices?). 
- * Can we create our own UserKey instead of relying on the real store's userkey?
-  (Maybe using something like location.href=kobo://UserAuthenticated?userId=...?)
+We pretty much ignore all of the above. To authenticate the user, we generate a random
+and unique token that they append to the CalibreWeb Url when setting up the api_store
+setting on the device.
+Thus, every request from the device to the api_store will hit CalibreWeb with the
+auth_token in the url (e.g: https://mylibrary.com/<auth_token>/v1/library/sync).
+In addition, once authenticated we also set the login cookie on the response that will
+be sent back for the duration of the session to authorize subsequent API calls (in
+particular calls to non-Kobo specific endpoints such as the CalibreWeb book download).
 """
 
-from functools import wraps
-from flask import request, make_response
-from flask_login import login_user
-from werkzeug.security import check_password_hash
+from binascii import hexlify
+from datetime import datetime
+from os import urandom
+
+from flask import g, Blueprint, url_for
+from flask_login import login_user, current_user, login_required
+from flask_babel import gettext as _
 
 from . import logger, ub, lm
-
-USER_KEY_HEADER = "x-kobo-userkey"
-USER_KEY_URL_PARAM = "kobo_userkey"
+from .web import render_title_template
 
 log = logger.create()
+
+def register_url_value_preprocessor(kobo):
+    @kobo.url_value_preprocessor
+    def pop_auth_token(endpoint, values):
+        g.auth_token = values.pop('auth_token')
 
 
 def disable_failed_auth_redirect_for_blueprint(bp):
@@ -88,15 +82,31 @@ def disable_failed_auth_redirect_for_blueprint(bp):
 
 @lm.request_loader
 def load_user_from_kobo_request(request):
-    user_key = request.headers.get(USER_KEY_HEADER)
-    if user_key:
-        for user in (
-            ub.session.query(ub.User).filter(ub.User.kobo_user_key_hash != "").all()
-        ):
-            if check_password_hash(str(user.kobo_user_key_hash), user_key):
-                # The Kobo device won't preserve the cookie accross sessions, even if we
-                # were to set remember_me=true.
-                login_user(user)
-                return user
-    log.info("Received Kobo request without a recognizable UserKey.")
+    if 'auth_token' in g:
+        auth_token = g.get('auth_token')
+        user = ub.session.query(ub.User).join(ub.RemoteAuthToken).filter(ub.RemoteAuthToken.auth_token == auth_token).first()
+        if user is not None:
+            login_user(user)
+            return user
+    log.info("Received Kobo request without a recognizable auth token.")
     return None
+
+kobo_auth = Blueprint("kobo_auth", __name__, url_prefix='/kobo_auth')
+
+@kobo_auth.route('/generate_auth_token')
+@login_required
+def generate_auth_token():
+    # Invalidate any prevously generated Kobo Auth token for this user.
+    ub.session.query(ub.RemoteAuthToken).filter(ub.RemoteAuthToken.user_id == current_user.id).delete()
+
+    auth_token = ub.RemoteAuthToken()
+    auth_token.user_id = current_user.id
+    auth_token.expiration = datetime.max
+    auth_token.auth_token = (hexlify(urandom(16))).decode('utf-8')
+
+    ub.session.add(auth_token)
+    ub.session.commit()
+
+
+    return render_title_template('generate_kobo_auth_url.html', title=_(u"Kobo Set-up"),
+                                 kobo_auth_url=url_for("kobo.TopLevelEndpoint", auth_token=auth_token.auth_token, _external=True))
