@@ -33,7 +33,7 @@ from sqlalchemy import func
 from . import config, logger, kobo_auth, db, helper
 from .web import download_required
 
-kobo = Blueprint("kobo", __name__, url_prefix='/kobo/<auth_token>')
+kobo = Blueprint("kobo", __name__, url_prefix="/kobo/<auth_token>")
 kobo_auth.disable_failed_auth_redirect_for_blueprint(kobo)
 kobo_auth.register_url_value_preprocessor(kobo)
 
@@ -218,7 +218,12 @@ def HandleMetadataRequest(book_uuid):
 
 
 def get_download_url_for_book(book, book_format):
-    return url_for("web.download_link", book_id=book.id, book_format=book_format.lower(), _external = True)
+    return url_for(
+        "web.download_link",
+        book_id=book.id,
+        book_format=book_format.lower(),
+        _external=True,
+    )
 
 
 def create_book_entitlement(book):
@@ -350,9 +355,11 @@ def HandleCoverImageRequest(book_uuid, horizontal, vertical, jpeg_quality, monoc
         return make_response()
     return book_cover
 
+
 @kobo.route("")
 def TopLevelEndpoint():
     return make_response(jsonify({}))
+
 
 @kobo.route("/v1/user/profile")
 @kobo.route("/v1/user/loyalty/benefits")
@@ -388,7 +395,9 @@ def HandleAuthRequest():
 
 @kobo.route("/v1/initialization")
 def HandleInitRequest():
-    resources = NATIVE_KOBO_RESOURCES(calibre_web_url=url_for("web.index", _external=True).strip("/"))
+    resources = NATIVE_KOBO_RESOURCES(
+        calibre_web_url=url_for("web.index", _external=True).strip("/")
+    )
     response = make_response(jsonify({"Resources": resources}))
     response.headers["x-kobo-apitoken"] = "e30="
     return response
