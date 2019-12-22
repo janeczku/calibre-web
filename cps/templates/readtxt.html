@@ -7,7 +7,7 @@
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width">
         <meta name="apple-mobile-web-app-capable" content="yes">
-
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}" type="text/css"/>
 
         <!-- EPUBJS Renderer -->
         <!--<script src="../build/epub.js"></script>-->
@@ -16,10 +16,10 @@
         <style type="text/css">
 
           body {
-            overflow: hidden;
+            background: white;
           }
 
-          #main {
+          #readmain {
             position: absolute;
             width: 100%;
             height: 100%;
@@ -36,35 +36,6 @@
             border: none;
           }
 
-          #prev {
-            left: 40px;
-          }
-
-          #next {
-            right: 40px;
-          }
-
-          .arrow {
-            position: absolute;
-            top: 50%;
-            margin-top: -32px;
-            font-size: 64px;
-            color: #E2E2E2;
-            font-family: arial, sans-serif;
-            font-weight: bold;
-            cursor: pointer;
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            user-select: none;
-          }
-
-          .arrow:hover {
-            color: #777;
-          }
-
-          .arrow:active {
-            color: #000;
-          }
           xmp, pre, plaintext {
             display: block;
             font-family: -moz-fixed;
@@ -90,16 +61,13 @@
 
          <script>
             "use strict";
-
-            //var Book = ePub("https://s3.amazonaws.com/moby-dick/");
-
         </script>
     </head>
     <body>
-        <div id="main">
-          <div id="prev" class="arrow" >‹</div>
+        <div id="readmain">
+          <div id="left" class="arrow" >‹</div>
           <div id="area"><pre id="content" class="content"></pre></div>
-          <div id="next" class="arrow">›</div>
+          <div id="right" class="arrow">›</div>
         </div>
 
         <script>
@@ -123,10 +91,10 @@
             }
           });
           //click
-          $( "#prev" ).click(function() {
+          $( "#left" ).click(function() {
             prevPage();
           });
-          $( "#next" ).click(function() {
+          $( "#right" ).click(function() {
             nextPage();
           });
           //bind mouse
@@ -156,6 +124,7 @@
           function nextPage(){
             leftoff = $("#content").offset().left;
             leftoff = leftoff-origwidth-gap;
+            if ( leftoff + $("#content")[0].scrollWidth < 0) { return;}
             $("#content").offset({left:leftoff});
           }
         });
