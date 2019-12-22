@@ -43,7 +43,7 @@ from werkzeug.exceptions import default_exceptions
 from werkzeug.datastructures import Headers
 from werkzeug.security import generate_password_hash, check_password_hash
 
-from . import constants, logger, isoLanguages, services, worker
+from . import constants, config, logger, isoLanguages, services, worker
 from . import searched_ids, lm, babel, db, ub, config, get_locale, app
 from .gdriveutils import getFileFromEbooksFolder, do_gdrive_download
 from .helper import common_filters, get_search_results, fill_indexpage, speaking_language, check_valid_domain, \
@@ -793,7 +793,7 @@ def get_tasks_status():
 def reconnect():
     db.session.close()
     db.engine.dispose()
-    db.setup_db()
+    db.setup_db(config)
     return json.dumps({})
 
 @web.route("/search", methods=["GET"])
