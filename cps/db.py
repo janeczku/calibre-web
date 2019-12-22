@@ -33,7 +33,7 @@ from sqlalchemy.ext.declarative import declarative_base
 session = None
 cc_exceptions = ['datetime', 'comments', 'float', 'composite', 'series']
 cc_classes = {}
-
+engine = None
 
 Base = declarative_base()
 
@@ -327,6 +327,7 @@ def update_title_sort(config, conn=None):
 
 def setup_db(config):
     dispose()
+    global engine
 
     if not config.config_calibre_dir:
         config.invalidate()
