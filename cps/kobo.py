@@ -227,6 +227,10 @@ def HandleSyncRequest():
     new_books_last_created = sync_token.books_last_created
     entitlements = []
 
+    # We reload the book database so that the user get's a fresh view of the library
+    # in case of external changes (e.g: adding a book through Calibre).
+    db.reconnect_db(config)
+
     # sqlite gives unexpected results when performing the last_modified comparison without the datetime cast.
     # It looks like it's treating the db.Books.last_modified field as a string and may fail
     # the comparison because of the +00:00 suffix.
