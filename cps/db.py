@@ -429,3 +429,8 @@ def dispose():
         if name.startswith("custom_column_") or name.startswith("books_custom_column_"):
             if table is not None:
                 Base.metadata.remove(table)
+
+def reconnect_db(config):
+    session.close()
+    engine.dispose()
+    setup_db(config)
