@@ -23,6 +23,10 @@ import uuid
 from base64 import b64decode, b64encode
 from datetime import datetime
 from time import gmtime, strftime
+try:
+    from urllib import unquote
+except ImportError:
+    from urllib.parse import unquote
 
 from jsonschema import validate, exceptions
 from flask import (
@@ -442,9 +446,10 @@ def reading_state(book):
 
 
 @kobo.route(
-    "/<book_uuid>/<horizontal>/<vertical>/<jpeg_quality>/<monochrome>/image.jpg"
+    "/<book_uuid>/image.jpg"
 )
-def HandleCoverImageRequest(book_uuid, horizontal, vertical, jpeg_quality, monochrome):
+@login_required
+def HandleCoverImageRequest(book_uuid):
     book_cover = helper.get_book_cover_with_uuid(
         book_uuid, use_generic_cover_on_failure=False
     )
@@ -476,6 +481,7 @@ def handle_404(err):
 
 
 @kobo.route("/v1/initialization")
+@login_required
 def HandleInitRequest():
     outgoing_headers = Headers(request.headers)
     outgoing_headers.remove("Host")
@@ -492,12 +498,11 @@ def HandleInitRequest():
 
         calibre_web_url = url_for("web.index", _external=True).strip("/")
         kobo_resources["image_host"] = calibre_web_url
-        kobo_resources["image_url_quality_template"] = (
-            calibre_web_url
-            + "/{ImageId}/{Width}/{Height}/{Quality}/{IsGreyscale}/image.jpg"
-        )
-        kobo_resources["image_url_template"] = (
-            calibre_web_url + "/{ImageId}/{Width}/{Height}/false/image.jpg"
-        )
+        kobo_resources["image_url_quality_template"] = unquote(url_for("kobo.HandleCoverImageRequest", _external=True,
+            auth_token = kobo_auth.get_auth_token(),
+            book_uuid="{ImageId}"))
+        kobo_resources["image_url_template"] = unquote(url_for("kobo.HandleCoverImageRequest", _external=True,
+            auth_token = kobo_auth.get_auth_token(),
+            book_uuid="{ImageId}"))
 
     return make_response(store_response_json, store_response.status_code)
