@@ -43,8 +43,7 @@ import requests
 from . import config, logger, kobo_auth, db, helper
 from .web import download_required
 
-# TODO: Test more formats :) .
-KOBO_SUPPORTED_FORMATS = {"KEPUB"}
+KOBO_FORMATS = {"KEPUB": ["KEPUB"], "EPUB": ["EPUB", "EPUB3"]}
 KOBO_STOREAPI_URL = "https://storeapi.kobo.com"
 
 kobo = Blueprint("kobo", __name__, url_prefix="/kobo/<auth_token>")
@@ -238,7 +237,7 @@ def HandleSyncRequest():
         db.session.query(db.Books)
         .join(db.Data)
         .filter(func.datetime(db.Books.last_modified) > sync_token.books_last_modified)
-        .filter(db.Data.format.in_(KOBO_SUPPORTED_FORMATS))
+        .filter(db.Data.format.in_(KOBO_FORMATS))
         .all()
     )
     for book in changed_entries:
@@ -374,14 +373,17 @@ def get_metadata(book):
     download_urls = []
 
     for book_data in book.data:
-        if book_data.format in KOBO_SUPPORTED_FORMATS:
+        if book_data.format not in KOBO_FORMATS:
+            continue
+        for kobo_format in KOBO_FORMATS[book_data.format]:
             download_urls.append(
                 {
-                    "Format": book_data.format,
+                    "Format": kobo_format,
                     "Size": book_data.uncompressed_size,
                     "Url": get_download_url_for_book(book, book_data.format),
+                    # The Kobo forma accepts platforms: (Generic, Android)
+                    "Platform": "Generic",
                     # "DrmType": "None", # Not required
-                    "Platform": "Android",  # Required field.
                 }
             )
 
@@ -404,7 +406,7 @@ def get_metadata(book):
         "IsSocialEnabled": True,
         "Language": "en",
         "PhoneticPronunciations": {},
-        "PublicationDate": "2019-02-03T00:25:03.0000000Z",  # current_time(),
+        "PublicationDate": book.pubdate,
         "Publisher": {"Imprint": "", "Name": get_publisher(book),},
         "RevisionId": book_uuid,
         "Title": book.title,
@@ -488,9 +490,14 @@ def HandleInitRequest():
     if "Resources" in store_response_json:
         kobo_resources = store_response_json["Resources"]
 
-        calibre_web_url=url_for("web.index", _external=True).strip("/")
+        calibre_web_url = url_for("web.index", _external=True).strip("/")
         kobo_resources["image_host"] = calibre_web_url
-        kobo_resources["image_url_quality_template"] = calibre_web_url + "/{ImageId}/{Width}/{Height}/{Quality}/{IsGreyscale}/image.jpg"
-        kobo_resources["image_url_template"] = calibre_web_url + "/{ImageId}/{Width}/{Height}/false/image.jpg"
+        kobo_resources["image_url_quality_template"] = (
+            calibre_web_url
+            + "/{ImageId}/{Width}/{Height}/{Quality}/{IsGreyscale}/image.jpg"
+        )
+        kobo_resources["image_url_template"] = (
+            calibre_web_url + "/{ImageId}/{Width}/{Height}/false/image.jpg"
+        )
 
     return make_response(store_response_json, store_response.status_code)
