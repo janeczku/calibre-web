@@ -43,7 +43,7 @@ from werkzeug.exceptions import default_exceptions
 from werkzeug.datastructures import Headers
 from werkzeug.security import generate_password_hash, check_password_hash
 
-from . import constants, logger, isoLanguages, services, worker
+from . import constants, config, logger, isoLanguages, services, worker
 from . import searched_ids, lm, babel, db, ub, config, get_locale, app
 from .gdriveutils import getFileFromEbooksFolder, do_gdrive_download
 from .helper import common_filters, get_search_results, fill_indexpage, speaking_language, check_valid_domain, \
@@ -93,12 +93,11 @@ def error_http(error):
 
 
 def internal_error(error):
-    __, __, tb = sys.exc_info()
     return render_template('http_error.html',
                         error_code="Internal Server Error",
                         error_name=str(error),
                         issue=True,
-                        error_stack=traceback.format_tb(tb),
+                        error_stack=traceback.format_exc().split("\n"),
                         instance=config.config_calibre_web_title
                         ), 500
 
@@ -791,9 +790,7 @@ def get_tasks_status():
 
 @app.route("/reconnect")
 def reconnect():
-    db.session.close()
-    db.engine.dispose()
-    db.setup_db()
+    db.reconnect_db(config)
     return json.dumps({})
 
 @web.route("/search", methods=["GET"])
@@ -985,10 +982,7 @@ def render_read_books(page, are_read, as_xml=False, order=None):
     entries, random, pagination = fill_indexpage(page, db.Books, db_filter, order)
 
     if as_xml:
-        xml = render_title_template('feed.xml', entries=entries, pagination=pagination)
-        response = make_response(xml)
-        response.headers["Content-Type"] = "application/xml; charset=utf-8"
-        return response
+        return entries, pagination
     else:
         if are_read:
             name = _(u'Read Books') + ' (' + str(len(readBookIds)) + ')'
