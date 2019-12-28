@@ -37,6 +37,8 @@ _Base = declarative_base()
 class _Settings(_Base):
     __tablename__ = 'settings'
 
+    config_is_initial = Column(Boolean, default=True)
+    
     id = Column(Integer, primary_key=True)
     mail_server = Column(String, default='mail.example.org')
     mail_port = Column(Integer, default=25)
@@ -86,18 +88,21 @@ class _Settings(_Base):
 
     # config_oauth_provider = Column(Integer)
 
-    config_ldap_provider_url = Column(String, default='localhost')
+    config_ldap_provider_url = Column(String, default='example.org')
     config_ldap_port = Column(SmallInteger, default=389)
     config_ldap_schema = Column(String, default='ldap')
-    config_ldap_serv_username = Column(String)
+    config_ldap_serv_username = Column(String, default='cn=admin,dc=example,dc=org')
     config_ldap_serv_password = Column(String)
     config_ldap_use_ssl = Column(Boolean, default=False)
     config_ldap_use_tls = Column(Boolean, default=False)
     config_ldap_require_cert = Column(Boolean, default=False)
     config_ldap_cert_path = Column(String)
-    config_ldap_dn = Column(String)
-    config_ldap_user_object = Column(String)
-    config_ldap_openldap = Column(Boolean, default=False)
+    config_ldap_dn = Column(String, default='dc=example,dc=org')
+    config_ldap_user_object = Column(String, default='uid=%s')
+    config_ldap_openldap = Column(Boolean, default=True)
+    config_ldap_group_object_filter = Column(String, default='(&(objectclass=posixGroup)(cn=%s))')
+    config_ldap_group_members_field = Column(String, default='memberUid')
+    config_ldap_group_name = Column(String, default='calibreweb')
 
     config_ebookconverter = Column(Integer, default=0)
     config_converterpath = Column(String)

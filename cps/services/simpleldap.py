@@ -35,8 +35,7 @@ def init_app(app, config):
     app.config['LDAP_HOST'] = config.config_ldap_provider_url
     app.config['LDAP_PORT'] = config.config_ldap_port
     app.config['LDAP_SCHEMA'] = config.config_ldap_schema
-    app.config['LDAP_USERNAME'] = config.config_ldap_user_object.replace('%s', config.config_ldap_serv_username)\
-                                  + ',' + config.config_ldap_dn
+    app.config['LDAP_USERNAME'] = config.config_ldap_serv_username
     app.config['LDAP_PASSWORD'] = base64.b64decode(config.config_ldap_serv_password)
     app.config['LDAP_REQUIRE_CERT'] = bool(config.config_ldap_require_cert)
     if config.config_ldap_require_cert:
@@ -46,9 +45,22 @@ def init_app(app, config):
     app.config['LDAP_USE_SSL'] = bool(config.config_ldap_use_ssl)
     app.config['LDAP_USE_TLS'] = bool(config.config_ldap_use_tls)
     app.config['LDAP_OPENLDAP'] = bool(config.config_ldap_openldap)
+    app.config['LDAP_GROUP_OBJECT_FILTER'] = config.config_ldap_group_object_filter
+    app.config['LDAP_GROUP_MEMBERS_FIELD'] = config.config_ldap_group_members_field
 
     _ldap.init_app(app)
 
+
+def get_object_details(user=None, group=None, query_filter=None, dn_only=False):
+    return _ldap.get_object_details(user, group, query_filter, dn_only)
+
+
+def bind():
+    return _ldap.bind()
+
+
+def get_group_members(group):
+    return _ldap.get_group_members(group)
 
 
 def basic_auth_required(func):
@@ -56,7 +68,6 @@ def basic_auth_required(func):
 
 
 def bind_user(username, password):
-    # ulf= _ldap.get_object_details('admin')
     '''Attempts a LDAP login.
 
     :returns: True if login succeeded, False if login failed, None if server unavailable.
