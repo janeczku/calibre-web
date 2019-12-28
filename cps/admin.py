@@ -44,7 +44,7 @@ from .gdriveutils import is_gdrive_ready, gdrive_support
 from .web import admin_required, render_title_template, before_request, unconfigured, login_required_if_no_ano
 
 feature_support = {
-        'ldap': False, # bool(services.ldap),
+        'ldap': bool(services.ldap),
         'goodreads': bool(services.goodreads_support)
     }
 
@@ -326,13 +326,16 @@ def _configuration_update_helper():
             return _configuration_result('Please enter a LDAP service account and password', gdriveError)
         config.set_from_dictionary(to_save, "config_ldap_serv_password", base64.b64encode)
 
-    _config_checkbox("config_ldap_use_ssl")
-    _config_checkbox("config_ldap_use_tls")
-    _config_checkbox("config_ldap_openldap")
-    _config_checkbox("config_ldap_require_cert")
-    _config_string("config_ldap_cert_path")
-    if config.config_ldap_cert_path and not os.path.isfile(config.config_ldap_cert_path):
-        return _configuration_result('LDAP Certfile location is not valid, please enter correct path', gdriveError)
+        _config_string("config_ldap_group_object_filter")
+        _config_string("config_ldap_group_members_field")
+        _config_string("config_ldap_group_name")
+        _config_checkbox("config_ldap_use_ssl")
+        _config_checkbox("config_ldap_use_tls")
+        _config_checkbox("config_ldap_openldap")
+        _config_checkbox("config_ldap_require_cert")
+        _config_string("config_ldap_cert_path")
+        if config.config_ldap_cert_path and not os.path.isfile(config.config_ldap_cert_path):
+            return _configuration_result('LDAP Certfile location is not valid, please enter correct path', gdriveError)
 
     # Remote login configuration
     _config_checkbox("config_remote_login")

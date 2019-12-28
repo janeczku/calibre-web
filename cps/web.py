@@ -54,7 +54,7 @@ from .pagination import Pagination
 from .redirect import redirect_back
 
 feature_support = {
-        'ldap': False, # bool(services.ldap),
+        'ldap': bool(services.ldap),
         'goodreads': bool(services.goodreads_support)
     }
 
@@ -253,6 +253,29 @@ def before_request():
         return redirect(url_for('admin.basic_configuration'))
 
 
+@app.route('/import_ldap_users')
+def import_ldap_users():
+    new_users = services.ldap.get_group_members(config.config_ldap_group_name)
+    for username in new_users:
+        user_data = services.ldap.get_object_details(user=username, group=None, query_filter=None, dn_only=False)
+        content = ub.User()
+        content.nickname = username
+        content.password = username # dummy password which will be replaced by ldap one
+        content.email = user_data['mail'][0]
+        if (len(user_data['mail']) > 1):
+            content.kindle_mail = user_data['mail'][1]
+        content.role = config.config_default_role
+        content.sidebar_view = config.config_default_show
+        content.mature_content = bool(config.config_default_show & constants.MATURE_CONTENT)
+        ub.session.add(content)
+        try:
+            ub.session.commit()
+        except Exception as e:
+            log.warning("Failed to create LDAP user: %s - %s", username, e)
+            ub.session.rollback()
+    return ""
+
+    
 # ################################### data provider functions #########################################################
 
 
@@ -1155,10 +1178,12 @@ def login():
                 if user and check_password_hash(str(user.password), form['password']) and user.nickname != "Guest":
                     login_user(user, remember=True)
                     flash(_(u"You are now logged in as: '%(nickname)s'", nickname=user.nickname), category="success")
+                    config.config_is_initial = False
                     return redirect_back(url_for("web.index"))
                 else:
                     log.info('Login failed for user "%s" IP-adress: %s', form['username'], ipAdress)
                     flash(_(u"Wrong Username or Password"), category="error")
+    
     settings = config.get_mail_settings()
     mail_configured = bool(settings.get("mail_server", "mail.example.org") != "mail.example.org")
 
