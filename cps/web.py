@@ -1155,7 +1155,11 @@ def login():
                 flash(_(u"you are now logged in as: '%(nickname)s'", nickname=user.nickname),
                       category="success")
                 return redirect_back(url_for("web.index"))
-            if login_result is None:
+            elif user and check_password_hash(str(user.password), form['password']) and user.nickname != "Guest":
+                login_user(user, remember=True)
+                flash(_(u"You are now logged in as: '%(nickname)s'", nickname=user.nickname), category="success")
+                return redirect_back(url_for("web.index"))
+            elif login_result is None:
                 flash(_(u"Could not login. LDAP server down, please contact your administrator"), category="error")
             else:
                 ipAdress = request.headers.get('X-Forwarded-For', request.remote_addr)
