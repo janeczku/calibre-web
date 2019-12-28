@@ -125,7 +125,7 @@ def send_registration_mail(e_mail, user_name, default_password, resend=False):
     if not resend:
         text += "Your new account at Calibre-Web has been created. Thanks for joining us!\r\n"
     text += "Please log in to your account using the following informations:\r\n"
-    text += "User name: %s\n" % user_name
+    text += "User name: %s\r\n" % user_name
     text += "Password: %s\r\n" % default_password
     text += "Don't forget to change your password after first login.\r\n"
     text += "Sincerely\r\n\r\n"
@@ -416,6 +416,8 @@ def reset_password(user_id):
     existing_user = ub.session.query(ub.User).filter(ub.User.id == user_id).first()
     password = generate_random_password()
     existing_user.password = generate_password_hash(password)
+    if not config.get_mail_server_configured():
+        return (2, None)
     try:
         ub.session.commit()
         send_registration_mail(existing_user.email, existing_user.nickname, password, True)

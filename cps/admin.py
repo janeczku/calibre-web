@@ -639,15 +639,20 @@ def edit_user(user_id):
 @admi.route("/admin/resetpassword/<int:user_id>")
 @login_required
 @admin_required
-def reset_password(user_id):
+def reset_user_password(user_id):
     if not config.config_public_reg:
         abort(404)
     if current_user is not None and current_user.is_authenticated:
         ret, message = reset_password(user_id)
         if ret == 1:
+            log.debug(u"Password for user %(user)s reset", user=message)
             flash(_(u"Password for user %(user)s reset", user=message), category="success")
-        else:
+        elif ret == 0:
+            log.error(u"An unknown error occurred. Please try again later.")
             flash(_(u"An unknown error occurred. Please try again later."), category="error")
+        else:
+            log.error(u"Please configure the SMTP mail settings first...")
+            flash(_(u"Please configure the SMTP mail settings first..."), category="error")
     return redirect(url_for('admin.admin'))
 
 
@@ -681,6 +686,7 @@ def send_logfile(logtype):
 @admi.route("/get_update_status", methods=['GET'])
 @login_required_if_no_ano
 def get_update_status():
+    log.info(u"Update status requested")
     return updater_thread.get_available_updates(request.method, locale=get_locale())
 
 
