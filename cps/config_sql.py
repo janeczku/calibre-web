@@ -38,7 +38,7 @@ class _Settings(_Base):
     __tablename__ = 'settings'
 
     id = Column(Integer, primary_key=True)
-    mail_server = Column(String, default='mail.example.org')
+    mail_server = Column(String, default=constants.DEFAULT_MAIL_SERVER)
     mail_port = Column(Integer, default=25)
     mail_use_ssl = Column(SmallInteger, default=0)
     mail_login = Column(String, default='mail@example.com')
@@ -188,6 +188,10 @@ class _ConfigSQL(object):
 
     def get_mail_settings(self):
         return {k:v for k, v in self.__dict__.items() if k.startswith('mail_')}
+
+    def get_mail_server_configured(self):
+        return not bool(self.mail_server == constants.DEFAULT_MAIL_SERVER)
+
 
     def set_from_dictionary(self, dictionary, field, convertor=None, default=None):
         '''Possibly updates a field of this object.

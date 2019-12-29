@@ -94,6 +94,7 @@ LOGIN_LDAP          = 1
 LOGIN_OAUTH         = 2
 # LOGIN_OAUTH_GOOGLE  = 3
 
+DEFAULT_MAIL_SERVER = "mail.example.org"
 
 DEFAULT_PASSWORD    = "admin123"
 DEFAULT_PORT        = 8083
@@ -103,6 +104,7 @@ try:
 except ValueError:
     print('Environment variable CALIBRE_PORT has invalid value (%s), faling back to default (8083)' % env_CALIBRE_PORT)
 del env_CALIBRE_PORT
+
 
 
 EXTENSIONS_AUDIO    = {'mp3', 'm4a', 'm4b'}
