@@ -231,7 +231,7 @@ class WorkerThread(threading.Thread):
                 self.queue.pop(index)
                 self.UIqueue.pop(index)
                 # if we are deleting entries before the current index, adjust the index
-                if index <= self.current and index:
+                if index <= self.current and self.current:
                     self.current -= 1
         self.last = len(self.queue)
 
