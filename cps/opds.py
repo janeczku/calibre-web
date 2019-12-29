@@ -318,7 +318,6 @@ def feed_shelf(book_id):
 
 @opds.route("/opds/download/<book_id>/<book_format>/")
 @requires_basic_auth_if_no_ano
-@download_required
 def opds_download_link(book_id, book_format):
     return get_download_link(book_id,book_format)
 
