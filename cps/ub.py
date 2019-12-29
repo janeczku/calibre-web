@@ -297,6 +297,7 @@ class Registration(Base):
 
     id = Column(Integer, primary_key=True)
     domain = Column(String)
+    allow = Column(Integer)
 
     def __repr__(self):
         return u"<Registration('{0}')>".format(self.domain)
@@ -332,24 +333,32 @@ def migrate_Database(session):
     if not engine.dialect.has_table(engine.connect(), "registration"):
         ReadBook.__table__.create(bind=engine)
         conn = engine.connect()
-        conn.execute("insert into registration (domain) values('%.%')")
+        conn.execute("insert into registration (domain, allow) values('%.%',1)")
+        session.commit()
+    try:
+        session.query(exists().where(Registration.allow)).scalar()
+        session.commit()
+    except exc.OperationalError:  # Database is not compatible, some columns are missing
+        conn = engine.connect()
+        conn.execute("ALTER TABLE registration ADD column 'allow' INTEGER")
+        conn.execute("update registration set 'allow' = 1")
         session.commit()
     # Handle table exists, but no content
     cnt = session.query(Registration).count()
     if not cnt:
         conn = engine.connect()
-        conn.execute("insert into registration (domain) values('%.%')")
+        conn.execute("insert into registration (domain, allow) values('%.%',1)")
         session.commit()
     try:
         session.query(exists().where(BookShelf.order)).scalar()
-    except exc.OperationalError:  # Database is not compatible, some rows are missing
+    except exc.OperationalError:  # Database is not compatible, some columns are missing
         conn = engine.connect()
         conn.execute("ALTER TABLE book_shelf_link ADD column 'order' INTEGER DEFAULT 1")
         session.commit()
     try:
         create = False
         session.query(exists().where(User.sidebar_view)).scalar()
-    except exc.OperationalError:  # Database is not compatible, some rows are missing
+    except exc.OperationalError:  # Database is not compatible, some columns are missing
         conn = engine.connect()
         conn.execute("ALTER TABLE user ADD column `sidebar_view` Integer DEFAULT 1")
         session.commit()

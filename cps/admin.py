@@ -190,10 +190,10 @@ def update_view_configuration():
     return view_configuration()
 
 
-@admi.route("/ajax/editdomain", methods=['POST'])
+@admi.route("/ajax/editdomain/<int:allow>", methods=['POST'])
 @login_required
 @admin_required
-def edit_domain():
+def edit_domain(allow):
     # POST /post
     # name:  'username',  //name of field (column in db)
     # pk:    1            //primary key (record id)
@@ -206,14 +206,14 @@ def edit_domain():
     return ""
 
 
-@admi.route("/ajax/adddomain", methods=['POST'])
+@admi.route("/ajax/adddomain/<int:allow>", methods=['POST'])
 @login_required
 @admin_required
-def add_domain():
+def add_domain(allow):
     domain_name = request.form.to_dict()['domainname'].replace('*', '%').replace('?', '_').lower()
-    check = ub.session.query(ub.Registration).filter(ub.Registration.domain == domain_name).first()
+    check = ub.session.query(ub.Registration).filter(ub.Registration.domain == domain_name).filter(ub.Registration.allow == allow).first()
     if not check:
-        new_domain = ub.Registration(domain=domain_name)
+        new_domain = ub.Registration(domain=domain_name, allow=allow)
         ub.session.add(new_domain)
         ub.session.commit()
     return ""
@@ -227,18 +227,18 @@ def delete_domain():
     ub.session.query(ub.Registration).filter(ub.Registration.id == domain_id).delete()
     ub.session.commit()
     # If last domain was deleted, add all domains by default
-    if not ub.session.query(ub.Registration).count():
-        new_domain = ub.Registration(domain="%.%")
+    if not ub.session.query(ub.Registration).filter(ub.Registration.allow==1).count():
+        new_domain = ub.Registration(domain="%.%",allow=1)
         ub.session.add(new_domain)
         ub.session.commit()
     return ""
 
 
-@admi.route("/ajax/domainlist")
+@admi.route("/ajax/domainlist/<int:allow>")
 @login_required
 @admin_required
-def list_domain():
-    answer = ub.session.query(ub.Registration).all()
+def list_domain(allow):
+    answer = ub.session.query(ub.Registration).filter(ub.Registration.allow == allow).all()
     json_dumps = json.dumps([{"domain": r.domain.replace('%', '*').replace('_', '?'), "id": r.id} for r in answer])
     js = json.dumps(json_dumps.replace('"', "'")).lstrip('"').strip('"')
     response = make_response(js.replace("'", '"'))
@@ -605,6 +605,7 @@ def edit_user(user_id):
                 else:
                     flash(_(u"Found an existing account for this e-mail address."), category="error")
                     return render_title_template("user_edit.html", translations=translations, languages=languages,
+                                                 mail_configured = config.get_mail_server_configured(),
                                                  new_user=0, content=content, downloads=downloads, registered_oauth=oauth_check,
                                                  title=_(u"Edit User %(nick)s", nick=content.nickname), page="edituser")
             if "nickname" in to_save and to_save["nickname"] != content.nickname:
@@ -616,11 +617,11 @@ def edit_user(user_id):
                     return render_title_template("user_edit.html",
                                                  translations=translations,
                                                  languages=languages,
+                                                 mail_configured=config.get_mail_server_configured(),
                                                  new_user=0, content=content,
                                                  downloads=downloads,
                                                  registered_oauth=oauth_check,
-                                                 title=_(u"Edit User %(nick)s",
-                                                         nick=content.nickname),
+                                                 title=_(u"Edit User %(nick)s", nick=content.nickname),
                                                  page="edituser")
 
             if "kindle_mail" in to_save and to_save["kindle_mail"] != content.kindle_mail:
@@ -633,6 +634,7 @@ def edit_user(user_id):
             flash(_(u"An unknown error occured."), category="error")
     return render_title_template("user_edit.html", translations=translations, languages=languages, new_user=0,
                                  content=content, downloads=downloads, registered_oauth=oauth_check,
+                                 mail_configured=config.get_mail_server_configured(),
                                  title=_(u"Edit User %(nick)s", nick=content.nickname), page="edituser")
 
 

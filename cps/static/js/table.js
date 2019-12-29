@@ -19,21 +19,41 @@
 
 $(function() {
 
-    $("#domain_submit").click(function(event) {
+    $("#domain_allow_submit").click(function(event) {
         event.preventDefault();
-        $("#domain_add").ajaxForm();
+        $("#domain_add_allow").ajaxForm();
         $(this).closest("form").submit();
         $.ajax ({
             method:"get",
-            url: window.location.pathname + "/../../ajax/domainlist",
+            url: window.location.pathname + "/../../ajax/domainlist/1",
             async: true,
             timeout: 900,
             success:function(data) {
-                $("#domain-table").bootstrapTable("load", data);
+                $("#domain-allow-table").bootstrapTable("load", data);
             }
         });
     });
-    $("#domain-table").bootstrapTable({
+    $("#domain-allow-table").bootstrapTable({
+        formatNoMatches: function () {
+            return "";
+        },
+        striped: false
+    });
+    $("#domain_deny_submit").click(function(event) {
+        event.preventDefault();
+        $("#domain_add_deny").ajaxForm();
+        $(this).closest("form").submit();
+        $.ajax ({
+            method:"get",
+            url: window.location.pathname + "/../../ajax/domainlist/0",
+            async: true,
+            timeout: 900,
+            success:function(data) {
+                $("#domain-deny-table").bootstrapTable("load", data);
+            }
+        });
+    });
+    $("#domain-deny-table").bootstrapTable({
         formatNoMatches: function () {
             return "";
         },
@@ -50,14 +70,22 @@ $(function() {
         $("#DeleteDomain").modal("hide");
         $.ajax({
             method:"get",
-            url: window.location.pathname + "/../../ajax/domainlist",
+            url: window.location.pathname + "/../../ajax/domainlist/1",
             async: true,
             timeout: 900,
             success:function(data) {
-                $("#domain-table").bootstrapTable("load", data);
+                $("#domain-allow-table").bootstrapTable("load", data);
             }
         });
-
+        $.ajax({
+            method:"get",
+            url: window.location.pathname + "/../../ajax/domainlist/0",
+            async: true,
+            timeout: 900,
+            success:function(data) {
+                $("#domain-deny-table").bootstrapTable("load", data);
+            }
+        });
     });
     //triggered when modal is about to be shown
     $("#DeleteDomain").on("show.bs.modal", function(e) {

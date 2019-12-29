@@ -701,9 +701,13 @@ def speaking_language(languages=None):
 # from https://code.luasoftware.com/tutorials/flask/execute-raw-sql-in-flask-sqlalchemy/
 def check_valid_domain(domain_text):
     domain_text = domain_text.split('@', 1)[-1].lower()
-    sql = "SELECT * FROM registration WHERE :domain LIKE domain;"
+    sql = "SELECT * FROM registration WHERE (:domain LIKE domain and allow = 1);"
     result = ub.session.query(ub.Registration).from_statement(text(sql)).params(domain=domain_text).all()
-    return len(result)
+    if not len(result):
+        return False
+    sql = "SELECT * FROM registration WHERE (:domain LIKE domain and allow = 0);"
+    result = ub.session.query(ub.Registration).from_statement(text(sql)).params(domain=domain_text).all()
+    return not len(result)
 
 
 # Orders all Authors in the list according to authors sort
