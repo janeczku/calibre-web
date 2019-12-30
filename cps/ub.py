@@ -157,6 +157,27 @@ class UserBase:
     def show_detail_random(self):
         return self.check_visibility(constants.DETAIL_RANDOM)
 
+    def list_restricted_tags(self):
+        # return [line in (line.strip("," ) for line in self.restricted_tags.split(",") if not line.startswith('~'))]
+        # return [line in (line.strip(",") for line in self.restricted_tags.split(",") if not line.startswith('~'))]
+        #return [p.strip(",") for p in self.restricted_tags.split(",") if not(p.startswith(starter))]
+        '''for line in self.restricted_tags.split(","):
+            if not line.startswith('~'):
+                continue'''
+        mct = self.restricted_tags.split(",")
+        return [t.strip() for t in mct]
+
+    def list_allowed_tags(self):
+        # return [line in (line.strip("," ) for line in self.restricted_tags.split(",") if not line.startswith('~'))]
+        # return [line in (line.strip(",") for line in self.restricted_tags.split(",") if not line.startswith('~'))]
+        #return [p.strip(",") for p in self.restricted_tags.split(",") if not(p.startswith(starter))]
+        '''for line in self.restricted_tags.split(","):
+            if not line.startswith('~'):
+                continue'''
+        mct = self.allowed_tags.split(",")
+        return [t.strip() for t in mct]
+
+
     def __repr__(self):
         return '<User %r>' % self.nickname
 
@@ -178,7 +199,11 @@ class User(UserBase, Base):
     locale = Column(String(2), default="en")
     sidebar_view = Column(Integer, default=1)
     default_language = Column(String(3), default="all")
-    mature_content = Column(Boolean, default=True)
+    # mature_content = Column(Boolean, default=True)
+    restricted_tags = Column(String, default="")
+    allowed_tags = Column(String, default="")
+    restricted_column_value = Column(String, default="")
+    allowed_column_value = Column(String, default="")
 
 
 if oauth_support:
@@ -212,11 +237,13 @@ class Anonymous(AnonymousUserMixin, UserBase):
         self.sidebar_view = data.sidebar_view
         self.default_language = data.default_language
         self.locale = data.locale
-        self.mature_content = data.mature_content
+        # self.mature_content = data.mature_content
         self.kindle_mail = data.kindle_mail
-
-        # settings = session.query(config).first()
-        # self.anon_browse = settings.config_anonbrowse
+        self.restricted_tags = data.restricted_tags
+        self.allowed_tags = data.allowed_tags
+        # self.restricted_column = data.restricted_column
+        self.restricted_column_value = data.restricted_column_value
+        self.allowed_column_value = data.allowed_column_value
 
     def role_admin(self):
         return False
@@ -370,11 +397,19 @@ def migrate_Database(session):
               'side_autor': constants.SIDEBAR_AUTHOR,
             'detail_random': constants.DETAIL_RANDOM})
         session.commit()
-    try:
+    '''try:
         session.query(exists().where(User.mature_content)).scalar()
     except exc.OperationalError:
         conn = engine.connect()
-        conn.execute("ALTER TABLE user ADD column `mature_content` INTEGER DEFAULT 1")
+        conn.execute("ALTER TABLE user ADD column `mature_content` INTEGER DEFAULT 1")'''
+    try:
+        session.query(exists().where(User.restricted_tags)).scalar()
+    except exc.OperationalError:  # Database is not compatible, some columns are missing
+        conn = engine.connect()
+        conn.execute("ALTER TABLE user ADD column `restricted_tags` String DEFAULT ''")
+        conn.execute("ALTER TABLE user ADD column `allowed_tags` String DEFAULT ''")
+        conn.execute("ALTER TABLE user ADD column `restricted_column_value` DEFAULT ''")
+        conn.execute("ALTER TABLE user ADD column `allowed_column_value` DEFAULT ''")
     if session.query(User).filter(User.role.op('&')(constants.ROLE_ANONYMOUS) == constants.ROLE_ANONYMOUS).first() is None:
         create_anonymous_user(session)
     try:

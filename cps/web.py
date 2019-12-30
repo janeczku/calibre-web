@@ -229,7 +229,6 @@ def edit_required(f):
 
     return inner
 
-
 # ################################### Helper functions ################################################################
 
 
@@ -1089,7 +1088,7 @@ def register():
                 content.password = generate_password_hash(password)
                 content.role = config.config_default_role
                 content.sidebar_view = config.config_default_show
-                content.mature_content = bool(config.config_default_show & constants.MATURE_CONTENT)
+                #content.mature_content = bool(config.config_default_show & constants.MATURE_CONTENT)
                 try:
                     ub.session.add(content)
                     ub.session.commit()
@@ -1290,8 +1289,8 @@ def profile():
                 current_user.password = generate_password_hash(to_save["password"])
         if "kindle_mail" in to_save and to_save["kindle_mail"] != current_user.kindle_mail:
             current_user.kindle_mail = to_save["kindle_mail"]
-        if "kobo_user_key" in to_save and to_save["kobo_user_key"]:
-                current_user.kobo_user_key_hash = generate_password_hash(to_save["kobo_user_key"])
+        if "allowed_tags" in to_save and to_save["allowed_tags"] != current_user.allowed_tags:
+            current_user.allowed_tags = to_save["allowed_tags"].strip()
         if to_save["email"] and to_save["email"] != current_user.email:
             if config.config_public_reg and not check_valid_domain(to_save["email"]):
                 flash(_(u"E-mail is not from valid domain"), category="error")
@@ -1329,7 +1328,7 @@ def profile():
         if "Show_detail_random" in to_save:
             current_user.sidebar_view += constants.DETAIL_RANDOM
 
-        current_user.mature_content = "Show_mature_content" in to_save
+        #current_user.mature_content = "Show_mature_content" in to_save
 
         try:
             ub.session.commit()

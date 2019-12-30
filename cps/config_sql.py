@@ -57,7 +57,7 @@ class _Settings(_Base):
     config_authors_max = Column(Integer, default=0)
     config_read_column = Column(Integer, default=0)
     config_title_regex = Column(String, default=u'^(A|The|An|Der|Die|Das|Den|Ein|Eine|Einen|Dem|Des|Einem|Eines)\s+')
-    config_mature_content_tags = Column(String, default='')
+    # config_mature_content_tags = Column(String, default='')
     config_theme = Column(Integer, default=0)
 
     config_log_level = Column(SmallInteger, default=logger.DEFAULT_LOG_LEVEL)
@@ -70,10 +70,13 @@ class _Settings(_Base):
     config_public_reg = Column(SmallInteger, default=0)
     config_remote_login = Column(Boolean, default=False)
 
-
     config_default_role = Column(SmallInteger, default=0)
     config_default_show = Column(SmallInteger, default=6143)
     config_columns_to_ignore = Column(String)
+    config_restricted_tags = Column(String)
+    config_restricted_column = Column(SmallInteger, default=0)
+    config_restricted_column_value = Column(String)
+    config_allowed_column_value = Column(String)
 
     config_use_google_drive = Column(Boolean, default=False)
     config_google_drive_folder = Column(String)
@@ -177,12 +180,12 @@ class _ConfigSQL(object):
     def show_detail_random(self):
         return self.show_element_new_user(constants.DETAIL_RANDOM)
 
-    def show_mature_content(self):
-        return self.show_element_new_user(constants.MATURE_CONTENT)
+    '''def show_mature_content(self):
+        return self.show_element_new_user(constants.MATURE_CONTENT)'''
 
-    def mature_content_tags(self):
+    '''def mature_content_tags(self):
         mct = self.config_mature_content_tags.split(",")
-        return [t.strip() for t in mct]
+        return [t.strip() for t in mct]'''
 
     def get_log_level(self):
         return logger.get_level_name(self.config_log_level)
