@@ -144,7 +144,10 @@ def configuration():
 def view_configuration():
     readColumn = db.session.query(db.Custom_Columns)\
             .filter(and_(db.Custom_Columns.datatype == 'bool',db.Custom_Columns.mark_for_delete == 0)).all()
+    restrictColumns= db.session.query(db.Custom_Columns)\
+            .filter(and_(db.Custom_Columns.datatype == 'text',db.Custom_Columns.mark_for_delete == 0)).all()
     return render_title_template("config_view_edit.html", conf=config, readColumns=readColumn,
+                                 restrictColumns=restrictColumns,
                                  title=_(u"UI Configuration"), page="uiconfig")
 
 
@@ -160,7 +163,7 @@ def update_view_configuration():
 
     _config_string("config_calibre_web_title")
     _config_string("config_columns_to_ignore")
-    _config_string("config_mature_content_tags")
+    # _config_string("config_mature_content_tags")
     reboot_required |= _config_string("config_title_regex")
 
     _config_int("config_read_column")
@@ -169,6 +172,10 @@ def update_view_configuration():
     _config_int("config_books_per_page")
     _config_int("config_authors_max")
 
+    _config_string("config_restricted_tags")
+    _config_int("config_restricted_column")
+    _config_string("config_restricted_column_value")
+
     if config.config_google_drive_watch_changes_response:
         config.config_google_drive_watch_changes_response = json.dumps(config.config_google_drive_watch_changes_response)
 
@@ -176,8 +183,8 @@ def update_view_configuration():
     config.config_default_role &= ~constants.ROLE_ANONYMOUS
 
     config.config_default_show = sum(int(k[5:]) for k in to_save if k.startswith('show_'))
-    if "Show_mature_content" in to_save:
-        config.config_default_show |= constants.MATURE_CONTENT
+    '''if "Show_mature_content" in to_save:
+        config.config_default_show |= constants.MATURE_CONTENT'''
 
     config.save()
     flash(_(u"Calibre-Web configuration updated"), category="success")
@@ -448,7 +455,7 @@ def new_user():
     if request.method == "POST":
         to_save = request.form.to_dict()
         content.default_language = to_save["default_language"]
-        content.mature_content = "Show_mature_content" in to_save
+        # content.mature_content = "Show_mature_content" in to_save
         content.locale = to_save.get("locale", content.locale)
 
         content.sidebar_view = sum(int(key[5:]) for key in to_save if key.startswith('show_'))
@@ -490,7 +497,10 @@ def new_user():
     else:
         content.role = config.config_default_role
         content.sidebar_view = config.config_default_show
-        content.mature_content = bool(config.config_default_show & constants.MATURE_CONTENT)
+        content.restricted_tags = config.config_restricted_tags
+        content.restricted_column = config.config_restricted_column
+        content.restricted_column_value = config.config_restricted_column_value
+        # content.mature_content = bool(config.config_default_show & constants.MATURE_CONTENT)
     return render_title_template("user_edit.html", new_user=1, content=content, translations=translations,
                                  languages=languages, title=_(u"Add new user"), page="newuser",
                                  registered_oauth=oauth_check)
@@ -593,7 +603,13 @@ def edit_user(user_id):
             else:
                 content.sidebar_view &= ~constants.DETAIL_RANDOM
 
-            content.mature_content = "Show_mature_content" in to_save
+            # content.mature_content = "Show_mature_content" in to_save
+            if "restricted_tags" in to_save:
+                content.restricted_tags = to_save["restricted_tags"]
+            if "config_restricted_column" in to_save:
+                content.restricted_tags = to_save["config_restricted_column"]
+            if "config_restricted_column_value" in to_save:
+                content.restricted_tags = to_save["config_restricted_column_value"]
 
             if "default_language" in to_save:
                 content.default_language = to_save["default_language"]

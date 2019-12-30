@@ -7,9 +7,11 @@ __pycache__/
 # Distribution / packaging
 .Python
 env/
+venv/
 eggs/
 dist/
 build/
+vendor/
 .eggs/
 *.egg-info/
 .installed.cfg
@@ -19,16 +21,12 @@ build/
 # calibre-web
 *.db
 *.log
-config.ini
-cps/static/[0-9]*
 
 .idea/
 *.bak
 *.log.*
-tags
 
 settings.yaml
 gdrive_credentials
-
-vendor
 client_secrets.json
+

@@ -71,7 +71,7 @@
       </div>
     </div>
   </div>
-
+    {% if show_back_button %}
   <div class="panel panel-default">
     <div class="panel-heading">
       <h4 class="panel-title">
@@ -316,11 +316,14 @@
       </div>
     </div>
   </div>
+  {% endif %}
 </div>
 
 
     <div class="col-sm-12">
+    {% if not show_login_button %}
     <button type="submit" name="submit" class="btn btn-default">{{_('Submit')}}</button>
+    {% endif %}
     {% if show_back_button %}
       <a href="{{ url_for('admin.admin') }}" class="btn btn-default">{{_('Back')}}</a>
     {% endif %}

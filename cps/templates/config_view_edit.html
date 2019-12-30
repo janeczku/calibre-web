@@ -52,15 +52,18 @@
               </select>
         </div>
         <div class="form-group">
+          <label for="config_restricted_column">{{_('View restriction based on Calibre column')}}</label>
+              <select name="config_restricted_column" id="config_restricted_column" class="form-control">
+                <option value="0" {% if conf.config_restricted_column == 0 %}selected{% endif %}>{{ _('None') }}</option>
+                {%  for restrictColumn in restrictColumns %}
+                <option value="{{ restrictColumn.id }}" {% if restrictColumn.id == conf.config_restricted_column %}selected{% endif %}>{{ restrictColumn.name }}</option>
+                {% endfor %}
+              </select>
+        </div>
+        <div class="form-group">
           <label for="config_title_regex">{{_('Regular expression for title sorting')}}</label>
           <input type="text" class="form-control" name="config_title_regex" id="config_title_regex" value="{% if conf.config_title_regex != None %}{{ conf.config_title_regex }}{% endif %}" autocomplete="off">
         </div>
-        <div class="form-group">
-          <label for="config_mature_content_tags">{{_('Tags for Mature Content')}}</label>
-          <input type="text" class="form-control" name="config_mature_content_tags" id="config_mature_content_tags"
-                 value="{% if conf.config_mature_content_tags != None%}{{ conf.config_mature_content_tags }}{% endif %}"
-                 autocomplete="off"
-          >
         </div>
       </div>
     </div>
@@ -108,6 +111,14 @@
           <input type="checkbox" name="edit_shelf_role" id="edit_shelf_role" {% if conf.role_edit_shelfs() %}checked{% endif %}>
           <label for="edit_shelf_role">{{_('Allow Editing Public Shelfs')}}</label>
         </div>
+        <div class="form-group">
+            <label for="config_restricted_tags">{{_('Restrict Tags')}}</label>
+            <input type="text" class="form-control" name="config_restricted_tags" id="config_restricted_tags" value="{{ conf.config_restricted_tags if conf.config_restricted_tags != None }}" autocomplete="off">
+        </div>
+        <div class="form-group">
+            <label for="config_restricted_column_value">{{_('Restricted Column Content')}}</label>
+            <input type="text" class="form-control" name="config_restricted_column_value" id="config_restricted_column_value" value="{{ conf.config_restricted_column_value if conf.config_restricted_column_value != None }}" autocomplete="off">
+        </div>
       </div>
     </div>
   </div>
@@ -134,14 +145,9 @@
             <input type="checkbox" name="Show_detail_random" id="Show_detail_random" {% if conf.show_detail_random() %}checked{% endif %}>
             <label for="Show_detail_random">{{_('Show random books in detail view')}}</label>
         </div>
-        <div class="form-group">
-            <input type="checkbox" name="Show_mature_content" id="Show_mature_content" {% if conf.show_mature_content() %}checked{% endif %}>
-            <label for="Show_mature_content">{{_('Show mature content')}}</label>
-        </div>
       </div>
     </div>
   </div>
-</div>
     <div class="col-sm-12">
     <button type="submit" name="submit" class="btn btn-default">{{_('Submit')}}</button>
     <a href="{{ url_for('admin.admin') }}" class="btn btn-default">{{_('Back')}}</a>
