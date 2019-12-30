@@ -33,7 +33,7 @@ from sqlalchemy.ext.declarative import declarative_base
 session = None
 cc_exceptions = ['datetime', 'comments', 'float', 'composite', 'series']
 cc_classes = {}
-
+engine = None
 
 Base = declarative_base()
 
@@ -288,7 +288,7 @@ class Books(Base):
 
     @property
     def atom_timestamp(self):
-        return (self.timestamp or '').replace(' ', 'T')
+        return (self.timestamp.strftime('%Y-%m-%dT%H:%M:%S+00:00') or '')
 
 class Custom_Columns(Base):
     __tablename__ = 'custom_columns'
@@ -327,6 +327,7 @@ def update_title_sort(config, conn=None):
 
 def setup_db(config):
     dispose()
+    global engine
 
     if not config.config_calibre_dir:
         config.invalidate()
@@ -428,3 +429,8 @@ def dispose():
         if name.startswith("custom_column_") or name.startswith("books_custom_column_"):
             if table is not None:
                 Base.metadata.remove(table)
+
+def reconnect_db(config):
+    session.close()
+    engine.dispose()
+    setup_db(config)
