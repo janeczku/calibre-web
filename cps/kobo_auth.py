@@ -81,10 +81,17 @@ def disable_failed_auth_redirect_for_blueprint(bp):
     lm.blueprint_login_views[bp.name] = None
 
 
+def get_auth_token():
+    if "auth_token" in g:
+        return g.get("auth_token")
+    else:
+        return None
+
+
 @lm.request_loader
 def load_user_from_kobo_request(request):
-    if "auth_token" in g:
-        auth_token = g.get("auth_token")
+    auth_token = get_auth_token()
+    if auth_token is not None:
         user = (
             ub.session.query(ub.User)
             .join(ub.RemoteAuthToken)

@@ -276,7 +276,7 @@ def feed_languages(book_id):
                     isoLanguages.get(part3=entry.languages[index].lang_code).name)'''
     return render_xml_template('feed.xml', entries=entries, pagination=pagination)
 
-@opds.route("/opds/shelfindex/", defaults={'public': 0})
+@opds.route("/opds/shelfindex", defaults={'public': 0})
 @opds.route("/opds/shelfindex/<string:public>")
 @requires_basic_auth_if_no_ano
 def feed_shelfindex(public):
@@ -378,14 +378,14 @@ def render_xml_template(*args, **kwargs):
 def feed_get_cover(book_id):
     return get_book_cover(book_id)
 
-@opds.route("/opds/readbooks/")
+@opds.route("/opds/readbooks")
 @requires_basic_auth_if_no_ano
 def feed_read_books():
     off = request.args.get("offset") or 0
     return render_read_books(int(off) / (int(config.config_books_per_page)) + 1, True, True)
 
 
-@opds.route("/opds/unreadbooks/")
+@opds.route("/opds/unreadbooks")
 @requires_basic_auth_if_no_ano
 def feed_unread_books():
     off = request.args.get("offset") or 0
