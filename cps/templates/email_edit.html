@@ -41,22 +41,40 @@
   </form>
     {% if g.allow_registration %}
     <h2>{{_('Allowed domains for registering')}}</h2>
-    <table class="table table-no-bordered" id="domain-table" data-url="{{url_for('admin.list_domain')}}" data-id-field="id" data-show-header="false" data-editable-mode="inline">
+    <form id="domain_add_allow" action="{{ url_for('admin.add_domain',allow=1)}}" method="POST">
+    <div class="form-group required">
+      <label for="domainname_allow">{{_('Add Domain')}}</label>
+      <input type="text" class="form-control" name="domainname" id="domainname_allow" >
+    </div>
+    <button id="domain_allow_submit" class="btn btn-default">{{_('Add')}}</button>
+    </form>
+  <table class="table table-no-bordered" id="domain-allow-table" data-url="{{url_for('admin.list_domain', allow=1)}}" data-id-field="id" data-show-header="false" data-editable-mode="inline">
+    <thead>
+    <tr>
+      <th data-field="domain" id="domain-allow" data-editable-type="text" data-editable-url="{{ url_for('admin.edit_domain', allow = 1)}}" data-editable="true" data-editable-title="{{_('Enter domainname')}}"></th>
+      <th data-field="id" id="id-allow" data-visible="false"></th>
+      <th data-align="right" data-formatter="TableActions"></th>
+    </tr>
+    </thead>
+  </table>
+  <h2>{{_('Denied domains for registering')}}</h2>
+    <table class="table table-no-bordered" id="domain-deny-table" data-url="{{url_for('admin.list_domain', allow=0)}}" data-id-field="id" data-show-header="false" data-editable-mode="inline">
       <thead>
         <tr>
-            <th data-field="domain" id="domain" data-editable-type="text" data-editable-url="{{ url_for('admin.edit_domain')}}" data-editable="true" data-editable-title="{{_('Enter domainname')}}"></th>
-            <th data-field="id" id="id" data-visible="false"></th>
+            <th data-field="domain" id="domain-deny" data-editable-type="text" data-editable-url="{{ url_for('admin.edit_domain', allow = 0)}}" data-editable="true" data-editable-title="{{_('Enter domainname')}}"></th>
+            <th data-field="id" id="id-deny" data-visible="false"></th>
             <th data-align="right" data-formatter="TableActions"></th>
         </tr>
       </thead>
     </table>
-    <form id="domain_add" action="{{ url_for('admin.add_domain')}}" method="POST">
+    <form id="domain_add_deny" action="{{ url_for('admin.add_domain',allow=0)}}" method="POST">
     <div class="form-group required">
-      <label for="domainname">{{_('Add Domain')}}</label>
-      <input type="text" class="form-control" name="domainname" id="domainname" >
+      <label for="domainname_deny">{{_('Add Domain')}}</label>
+      <input type="text" class="form-control" name="domainname" id="domainname_deny" >
     </div>
-    <button id="domain_submit" class="btn btn-default">{{_('Add')}}</button>
+    <button id="domain_deny_submit" class="btn btn-default">{{_('Add')}}</button>
     </form>
+
     {% endif %}
 </div>
 {% endblock %}

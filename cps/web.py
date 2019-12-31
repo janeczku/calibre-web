@@ -93,7 +93,6 @@ def error_http(error):
 
 
 def internal_error(error):
-    # __, __, tb = sys.exc_info()
     return render_template('http_error.html',
                         error_code="Internal Server Error",
                         error_name=str(error),
@@ -1041,8 +1040,7 @@ def download_link(book_id, book_format):
 @login_required
 @download_required
 def send_to_kindle(book_id, book_format, convert):
-    settings = config.get_mail_settings()
-    if settings.get("mail_server", "mail.example.org") == "mail.example.org":
+    if not config.get_mail_server_configured():
         flash(_(u"Please configure the SMTP mail settings first..."), category="error")
     elif current_user.kindle_mail:
         result = send_mail(book_id, book_format, convert, current_user.kindle_mail, config.config_calibre_dir,
@@ -1067,16 +1065,19 @@ def register():
         abort(404)
     if current_user is not None and current_user.is_authenticated:
         return redirect(url_for('web.index'))
+    if not config.get_mail_server_configured():
+        flash(_(u"E-Mail server is not configured, please contact your administrator!"), category="error")
+        return render_title_template('register.html', title=_(u"register"), page="register")
 
     if request.method == "POST":
         to_save = request.form.to_dict()
         if not to_save["nickname"] or not to_save["email"]:
             flash(_(u"Please fill out all fields!"), category="error")
             return render_title_template('register.html', title=_(u"register"), page="register")
-
         existing_user = ub.session.query(ub.User).filter(func.lower(ub.User.nickname) == to_save["nickname"]
                                                          .lower()).first()
         existing_email = ub.session.query(ub.User).filter(ub.User.email == to_save["email"].lower()).first()
+
         if not existing_user and not existing_email:
             content = ub.User()
             # content.password = generate_password_hash(to_save["password"])
@@ -1116,10 +1117,12 @@ def register():
 @web.route('/login', methods=['GET', 'POST'])
 def login():
     if not config.db_configured:
+        log.debug(u"Redirect to initial configuration")
         return redirect(url_for('admin.basic_configuration'))
     if current_user is not None and current_user.is_authenticated:
         return redirect(url_for('web.index'))
     if config.config_login_type == constants.LOGIN_LDAP and not services.ldap:
+        log.error(u"Cannot activate LDAP authentication")
         flash(_(u"Cannot activate LDAP authentication"), category="error")
     if request.method == "POST":
         form = request.form.to_dict()
@@ -1129,10 +1132,12 @@ def login():
             login_result = services.ldap.bind_user(form['username'], form['password'])
             if login_result:
                 login_user(user, remember=True)
+                log.debug(u"You are now logged in as: '%s'", user.nickname)
                 flash(_(u"you are now logged in as: '%(nickname)s'", nickname=user.nickname),
                       category="success")
                 return redirect_back(url_for("web.index"))
             if login_result is None:
+                log.error('Could not login. LDAP server down, please contact your administrator')
                 flash(_(u"Could not login. LDAP server down, please contact your administrator"), category="error")
             else:
                 ipAdress = request.headers.get('X-Forwarded-For', request.remote_addr)
@@ -1147,6 +1152,7 @@ def login():
                         flash(_(u"New Password was send to your email address"), category="info")
                         log.info('Password reset for user "%s" IP-adress: %s', form['username'], ipAdress)
                     else:
+                        log.info(u"An unknown error occurred. Please try again later.")
                         flash(_(u"An unknown error occurred. Please try again later."), category="error")
                 else:
                     flash(_(u"Please enter valid username to reset password"), category="error")
@@ -1154,18 +1160,16 @@ def login():
             else:
                 if user and check_password_hash(str(user.password), form['password']) and user.nickname != "Guest":
                     login_user(user, remember=True)
+                    log.debug(u"You are now logged in as: '%s'", user.nickname)
                     flash(_(u"You are now logged in as: '%(nickname)s'", nickname=user.nickname), category="success")
                     return redirect_back(url_for("web.index"))
                 else:
                     log.info('Login failed for user "%s" IP-adress: %s', form['username'], ipAdress)
                     flash(_(u"Wrong Username or Password"), category="error")
-    settings = config.get_mail_settings()
-    mail_configured = bool(settings.get("mail_server", "mail.example.org") != "mail.example.org")
 
     next_url = url_for('web.index')
-
     return render_title_template('login.html', title=_(u"login"), next_url=next_url, config=config,
-                                 mail = mail_configured, page="login")
+                                 mail = config.get_mail_server_configured(), page="login")
 
 
 @web.route('/logout')
@@ -1175,6 +1179,7 @@ def logout():
         logout_user()
         if feature_support['oauth'] and (config.config_login_type == 2 or config.config_login_type == 3):
             logout_oauth_user()
+    log.debug(u"User logged out")
     return redirect(url_for('web.login'))
 
 
@@ -1186,7 +1191,7 @@ def remote_login():
     ub.session.commit()
 
     verify_url = url_for('web.verify_token', token=auth_token.auth_token, _external=true)
-
+    log.debug(u"Remot Login request with token: %s", auth_token.auth_token)
     return render_title_template('remote_login.html', title=_(u"login"), token=auth_token.auth_token,
                                  verify_url=verify_url, page="remotelogin")
 
@@ -1200,6 +1205,7 @@ def verify_token(token):
     # Token not found
     if auth_token is None:
         flash(_(u"Token not found"), category="error")
+        log.error(u"Remote Login token not found")
         return redirect(url_for('web.index'))
 
     # Token expired
@@ -1208,6 +1214,7 @@ def verify_token(token):
         ub.session.commit()
 
         flash(_(u"Token has expired"), category="error")
+        log.error(u"Remote Login token expired")
         return redirect(url_for('web.index'))
 
     # Update token with user information
@@ -1216,6 +1223,7 @@ def verify_token(token):
     ub.session.commit()
 
     flash(_(u"Success! Please return to your device"), category="success")
+    log.debug(u"Remote Login token for userid %s verified", auth_token.user_id)
     return redirect(url_for('web.index'))
 
 
@@ -1251,6 +1259,7 @@ def token_verified():
         ub.session.commit()
 
         data['status'] = 'success'
+        log.debug(u"Remote Login for userid %s succeded", user.id)
         flash(_(u"you are now logged in as: '%(nickname)s'", nickname=user.nickname), category="success")
 
     response = make_response(json.dumps(data, ensure_ascii=False))
@@ -1278,8 +1287,6 @@ def profile():
             downloads.append(db.session.query(db.Books).filter(db.Books.id == book.book_id).first())
         else:
             ub.delete_download(book.book_id)
-            # ub.session.query(ub.Downloads).filter(book.book_id == ub.Downloads.book_id).delete()
-            # ub.session.commit()
     if request.method == "POST":
         to_save = request.form.to_dict()
         current_user.random_books = 0
@@ -1333,15 +1340,17 @@ def profile():
             ub.session.commit()
         except IntegrityError:
             ub.session.rollback()
-            flash(_(u"Found an existing account for this e-mail address or Kobo UserKey."), category="error")
+            flash(_(u"Found an existing account for this e-mail address."), category="error")
+            log.debug(u"Found an existing account for this e-mail address.")
             return render_title_template("user_edit.html", content=current_user, downloads=downloads,
                                          translations=translations,
                                          title=_(u"%(name)s's profile", name=current_user.nickname), page="me",
                                                  registered_oauth=oauth_check, oauth_status=oauth_status)
         flash(_(u"Profile updated"), category="success")
+        log.debug(u"Profile updated")
     return render_title_template("user_edit.html", translations=translations, profile=1, languages=languages,
-                                 content=current_user, downloads=downloads, title= _(u"%(name)s's profile",
-                                                                                           name=current_user.nickname),
+                                 content=current_user, downloads=downloads,
+                                 title= _(u"%(name)s's profile", name=current_user.nickname),
                                  page="me", registered_oauth=oauth_check, oauth_status=oauth_status)
 
 
@@ -1355,6 +1364,7 @@ def read_book(book_id, book_format):
     book = db.session.query(db.Books).filter(db.Books.id == book_id).filter(common_filters()).first()
     if not book:
         flash(_(u"Error opening eBook. File does not exist or file is not accessible:"), category="error")
+        log.debug(u"Error opening eBook. File does not exist or file is not accessible:")
         return redirect(url_for("web.index"))
 
     # check if book has bookmark
@@ -1364,20 +1374,25 @@ def read_book(book_id, book_format):
                                                              ub.Bookmark.book_id == book_id,
                                                              ub.Bookmark.format == book_format.upper())).first()
     if book_format.lower() == "epub":
+        log.debug(u"Start epub reader for %d", book_id)
         return render_title_template('read.html', bookid=book_id, title=_(u"Read a Book"), bookmark=bookmark)
     elif book_format.lower() == "pdf":
+        log.debug(u"Start pdf reader for %d", book_id)
         return render_title_template('readpdf.html', pdffile=book_id, title=_(u"Read a Book"))
     elif book_format.lower() == "txt":
+        log.debug(u"Start txt reader for %d", book_id)
         return render_title_template('readtxt.html', txtfile=book_id, title=_(u"Read a Book"))
     else:
         for fileExt in ["mp3", "m4b", "m4a"]:
             if book_format.lower() == fileExt:
                 entries = db.session.query(db.Books).filter(db.Books.id == book_id).filter(common_filters()).first()
+                log.debug(u"Start mp3 listening for %d", book_id)
                 return render_title_template('listenmp3.html', mp3file=book_id, audioformat=book_format.lower(),
                                              title=_(u"Read a Book"), entry=entries, bookmark=bookmark)
         for fileExt in ["cbr", "cbt", "cbz"]:
             if book_format.lower() == fileExt:
                 all_name = str(book_id)
+                log.debug(u"Start comic reader for %d", book_id)
                 return render_title_template('readcbr.html', comicfile=all_name, title=_(u"Read a Book"),
                                              extension=fileExt)
         # if feature_support['rar']:
@@ -1388,6 +1403,7 @@ def read_book(book_id, book_format):
         #     if book_format.lower() == fileext:
         #         return render_title_template('readcbr.html', comicfile=book_id,
         #         extension=fileext, title=_(u"Read a Book"), book=book)
+        log.debug(u"Error opening eBook. File does not exist or file is not accessible:")
         flash(_(u"Error opening eBook. File does not exist or file is not accessible."), category="error")
         return redirect(url_for("web.index"))
 
@@ -1420,7 +1436,7 @@ def show_book(book_id):
                     matching_have_read_book = getattr(entries, 'custom_column_'+str(config.config_read_column))
                     have_read = len(matching_have_read_book) > 0 and matching_have_read_book[0].value
                 except KeyError:
-                    log.error("Custom Column No.%d is not exisiting in calibre database", config.config_read_column)
+                    log.error("Custom Column No.%d is not existing in calibre database", config.config_read_column)
                     have_read = None
 
         else:
@@ -1442,5 +1458,6 @@ def show_book(book_id):
                                      is_xhr=request.is_xhr, title=entries.title, books_shelfs=book_in_shelfs,
                                      have_read=have_read, kindle_list=kindle_list, reader_list=reader_list, page="book")
     else:
+        log.debug(u"Error opening eBook. File does not exist or file is not accessible:")
         flash(_(u"Error opening eBook. File does not exist or file is not accessible:"), category="error")
         return redirect(url_for("web.index"))
