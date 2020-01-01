@@ -74,6 +74,7 @@ class _Settings(_Base):
     config_default_show = Column(SmallInteger, default=6143)
     config_columns_to_ignore = Column(String)
     config_restricted_tags = Column(String)
+    config_allowed_tags = Column(String)
     config_restricted_column = Column(SmallInteger, default=0)
     config_restricted_column_value = Column(String)
     config_allowed_column_value = Column(String)
@@ -180,12 +181,21 @@ class _ConfigSQL(object):
     def show_detail_random(self):
         return self.show_element_new_user(constants.DETAIL_RANDOM)
 
-    '''def show_mature_content(self):
-        return self.show_element_new_user(constants.MATURE_CONTENT)'''
+    def list_restricted_tags(self):
+        mct = self.config_restricted_tags.split(",")
+        return [t.strip() for t in mct]
 
-    '''def mature_content_tags(self):
-        mct = self.config_mature_content_tags.split(",")
-        return [t.strip() for t in mct]'''
+    def list_allowed_tags(self):
+        mct = self.config_allowed_tags.split(",")
+        return [t.strip() for t in mct]
+
+    def list_restricted_column_values(self):
+        mct = self.config_restricted_column_values().split(",")
+        return [t.strip() for t in mct]
+
+    def list_allowed_column_values(self):
+        mct = self.config_allowed_column_values().split(",")
+        return [t.strip() for t in mct]
 
     def get_log_level(self):
         return logger.get_level_name(self.config_log_level)

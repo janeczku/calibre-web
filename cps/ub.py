@@ -158,25 +158,20 @@ class UserBase:
         return self.check_visibility(constants.DETAIL_RANDOM)
 
     def list_restricted_tags(self):
-        # return [line in (line.strip("," ) for line in self.restricted_tags.split(",") if not line.startswith('~'))]
-        # return [line in (line.strip(",") for line in self.restricted_tags.split(",") if not line.startswith('~'))]
-        #return [p.strip(",") for p in self.restricted_tags.split(",") if not(p.startswith(starter))]
-        '''for line in self.restricted_tags.split(","):
-            if not line.startswith('~'):
-                continue'''
         mct = self.restricted_tags.split(",")
         return [t.strip() for t in mct]
 
     def list_allowed_tags(self):
-        # return [line in (line.strip("," ) for line in self.restricted_tags.split(",") if not line.startswith('~'))]
-        # return [line in (line.strip(",") for line in self.restricted_tags.split(",") if not line.startswith('~'))]
-        #return [p.strip(",") for p in self.restricted_tags.split(",") if not(p.startswith(starter))]
-        '''for line in self.restricted_tags.split(","):
-            if not line.startswith('~'):
-                continue'''
         mct = self.allowed_tags.split(",")
         return [t.strip() for t in mct]
 
+    def list_restricted_column_values(self):
+        mct = self.restricted_column_values().split(",")
+        return [t.strip() for t in mct]
+
+    def list_allowed_column_values(self):
+        mct = self.allowed_column_values().split(",")
+        return [t.strip() for t in mct]
 
     def __repr__(self):
         return '<User %r>' % self.nickname

@@ -207,7 +207,6 @@ def edit_domain(allow):
     # value: 'superuser!' //new value
     vals = request.form.to_dict()
     answer = ub.session.query(ub.Registration).filter(ub.Registration.id == vals['pk']).first()
-    # domain_name = request.args.get('domain')
     answer.domain = vals['value'].replace('*', '%').replace('?', '_').lower()
     ub.session.commit()
     return ""
@@ -252,6 +251,118 @@ def list_domain(allow):
     response.headers["Content-Type"] = "application/json; charset=utf-8"
     return response
 
+@admi.route("/ajax/editrestriction/<int:type>", methods=['POST'])
+@login_required
+@admin_required
+def edit_restriction(type):
+    element = request.form.to_dict()
+    if element['id'].startswith('a'):
+        if type == 0:  # Tags as template
+            elementlist = config.list_restricted_tags()
+            elementlist[id[1:]]=element['Element']
+            config.config_restricted_tags = ','.join(elementlist)
+        if type == 1:  # CustomC
+            pass
+        if type == 2:  # Tags per user
+            pass
+    if element['type'].startswith('d'):
+        if type == 0:  # Tags as template
+            elementlist = config.list_allowed_tags()
+            elementlist[id[1:]]=element['Element']
+            config.config_restricted_tags = ','.join(elementlist)
+        if type == 1:  # CustomC
+            pass
+        if type == 2:  # Tags per user
+            pass
+    config.save()
+    return ""
+
+
+@admi.route("/ajax/addrestriction/<int:type>", methods=['POST'])
+@login_required
+@admin_required
+def add_restriction(type):
+    log.info("Hit: " + str(type))
+    element = request.form.to_dict()
+    if type == 0:  # Tags as template
+        if 'submit_allow' in element:
+            elementlist = config.list_allowed_tags()
+            if elementlist == ['']:
+                elementlist= []
+            if not element['add_element'] in elementlist:
+                elementlist += [element['add_element']]
+                config.config_allowed_tags = ','.join(elementlist)
+        elif 'submit_deny' in element:
+            elementlist = config.list_restricted_tags()
+            if elementlist == ['']:
+                elementlist= []
+            if not element['add_element'] in elementlist:
+                elementlist+=[element['add_element']]
+                config.config_restricted_tags = ','.join(elementlist)
+        config.save()
+    if type == 1:  # CustomC
+        pass
+    if type == 2:  # Tags per user
+        pass
+    return ""
+
+
+@admi.route("/ajax/deleterestriction/<int:type>", methods=['POST'])
+@login_required
+@admin_required
+def delete_restriction(type):
+    element = request.form.to_dict()
+    if int(element['type']) == 1:
+        if type == 0:  # Tags as template
+            if element['id'].startswith('a'):
+                elementlist = config.list_allowed_tags()
+                if element['Element'] in elementlist:
+                    elementlist.remove(element['Element'])
+                config.config_allowed_tags = ','.join(elementlist)
+            elif element['id'].startswith('d'):
+                elementlist = config.list_restricted_tags()
+                if element['Element'] in elementlist:
+                    elementlist.remove(element['Element'])
+                config.config_restricted_tags = ','.join(elementlist)
+                config.save()
+        if type == 1:  # CustomC
+            pass
+        if type == 2:  # Tags per user
+            pass
+    if int(element['type'])== 2:
+        if type == 0:  # Tags as template
+            elementlist = config.list_allowed_tags()
+            if not element['Element'] in elementlist:
+                elementlist+=element['Element']
+                config.config_restricted_tags = ','.join(elementlist)
+        if type == 1:  # CustomC
+            pass
+        if type == 2:  # Tags per user
+            pass
+    return ""
+
+
+@admi.route("/ajax/listrestriction/<int:type>")
+@login_required
+@admin_required
+def list_restriction(type):
+    if type == 0:   # Tags as template
+        #for x, i in enumerate(config.list_restricted_tags()):
+        #    if x != '':
+        #        {'Element': x, 'type': '1', 'id': 'a' + str(i)}
+        restrict = [{'Element': x, 'type':'1', 'id': 'd'+str(i) } for i,x in enumerate(config.list_restricted_tags()) if x != '' ]
+        allow = [{'Element': x, 'type':'1', 'id': 'a'+str(i) } for i,x in enumerate(config.list_allowed_tags()) if x != '']
+        json_dumps = restrict + allow
+    elif type == 1:  # CustomC
+        json_dumps = ""
+    elif type == 2:  # Tags per user
+        json_dumps = ""
+    else:
+        json_dumps = ""
+    js = json.dumps(json_dumps)
+    response = make_response(js.replace("'", '"'))
+    response.headers["Content-Type"] = "application/json; charset=utf-8"
+    return response
 
 @admi.route("/config", methods=["GET", "POST"])
 @unconfigured
@@ -306,7 +417,7 @@ def _configuration_update_helper():
     reboot_required |= _config_string("config_certfile")
     if config.config_certfile and not os.path.isfile(config.config_certfile):
         return _configuration_result('Certfile location is not valid, please enter correct path', gdriveError)
-        
+
     _config_string("config_server_url")
 
     _config_checkbox_int("config_uploading")

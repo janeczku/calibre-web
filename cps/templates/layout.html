@@ -1,3 +1,4 @@
+{% from 'modal_restriction.html' import restrict_modal %}
 <!DOCTYPE html>
 <html lang="{{ g.user.locale }}">
   <head>
@@ -229,7 +230,6 @@
             });
         });
     </script>
-
     {% block js %}{% endblock %}
   </body>
 </html>

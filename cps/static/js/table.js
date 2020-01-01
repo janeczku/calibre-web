@@ -93,6 +93,73 @@ $(function() {
         var domainId = $(e.relatedTarget).data("domain-id");
         $(e.currentTarget).find("#btndeletedomain").data("domainId", domainId);
     });
+
+    $('#restrictModal').on('hidden.bs.modal', function () {
+        $('#restrict-elements-table').bootstrapTable('destroy');
+    });
+    // $('#table').bootstrapTable('destroy');
+    function startTable(type){
+        $("#restrict-elements-table").bootstrapTable({
+            formatNoMatches: function () {
+                return "";
+            },
+            url:window.location.pathname + "/../../ajax/listrestriction/" + type,
+            onClickCell: function (field, value, row, $element) {
+                // ...
+                if(field == 3){
+                    $.ajax ({
+                        type: 'Post',
+                        data: 'id=' + row.id + '&type=' + row.type + "&Element=" + row.Element,
+                        url: window.location.pathname + "/../../ajax/deleterestriction/" + type,
+                        async: true,
+                        timeout: 900,
+                        success:function(data) {
+                            $.ajax({
+                                method:"get",
+                                url: window.location.pathname + "/../../ajax/listrestriction/"+type,
+                                async: true,
+                                timeout: 900,
+                                success:function(data) {
+                                    $("#restrict-elements-table").bootstrapTable("load", data);
+                                }
+                            });
+                           }
+                        });
+                }
+            },
+            striped: false
+        });
+        $("[id^=submit_]").click(function(event) {
+            event.preventDefault();
+            console.log($(this)[0].name)
+            $.ajax({
+                url: window.location.pathname + "/../../ajax/addrestriction/"+type,
+                type: 'Post',
+                data: $(this).closest("form").serialize() + "&" + $(this)[0].name + "=",
+                success: function () {
+                $.ajax ({
+                    method:"get",
+                    url: window.location.pathname + "/../../ajax/listrestriction/"+type,
+                    async: true,
+                    timeout: 900,
+                    success:function(data) {
+                        $("#restrict-elements-table").bootstrapTable("load", data);
+                       }
+                    });
+                }
+            });
+            return;
+        });
+    }
+    $('#get_column_values').on('click',function()
+    {
+        startTable(1);
+    });
+
+    $('#get_tags').on('click',function()
+    {
+        startTable(0);
+    });
 });
 
 /* Function for deleting domain restrictions */
@@ -102,5 +169,14 @@ function TableActions (value, row, index) {
         + "\" title=\"Remove\">",
         "<i class=\"glyphicon glyphicon-trash\"></i>",
         "</a>"
+    ].join("");
+}
+
+/* Function for deleting domain restrictions */
+function RestrictionActions (value, row, index) {
+    return [
+        "<div class=\"danger remove\" data-restriction-id=\"" + row.id + "\" title=\"Remove\">",
+        "<i class=\"glyphicon glyphicon-trash\"></i>",
+        "</div>"
     ].join("");
 }

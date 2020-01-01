@@ -1,4 +1,8 @@
 {% extends "layout.html" %}
+{% block header %}
+<link href="{{ url_for('static', filename='css/libs/bootstrap-table.min.css') }}" rel="stylesheet">
+<link href="{{ url_for('static', filename='css/libs/bootstrap-editable.css') }}" rel="stylesheet">
+{% endblock %}
 {% block body %}
 <div class="discover">
   <h2>{{title}}</h2>
@@ -111,14 +115,17 @@
           <input type="checkbox" name="edit_shelf_role" id="edit_shelf_role" {% if conf.role_edit_shelfs() %}checked{% endif %}>
           <label for="edit_shelf_role">{{_('Allow Editing Public Shelfs')}}</label>
         </div>
-        <div class="form-group">
+        <!--div class="form-group">
             <label for="config_restricted_tags">{{_('Restrict Tags')}}</label>
             <input type="text" class="form-control" name="config_restricted_tags" id="config_restricted_tags" value="{{ conf.config_restricted_tags if conf.config_restricted_tags != None }}" autocomplete="off">
-        </div>
-        <div class="form-group">
+        </div-->
+            <a href="#" id="get_tags" class="btn btn-default" data-toggle="modal" data-target="#restrictModal">{{_('Add allowed/denied Tags')}}</a>
+            <a href="#" id="get_column_values" class="btn btn-default" data-toggle="modal" data-target="#restrictModal">{{_('Add allowed/denied custom column values')}}</a>
+
+        <!--div class="form-group">
             <label for="config_restricted_column_value">{{_('Restricted Column Content')}}</label>
             <input type="text" class="form-control" name="config_restricted_column_value" id="config_restricted_column_value" value="{{ conf.config_restricted_column_value if conf.config_restricted_column_value != None }}" autocomplete="off">
-        </div>
+        </div-->
       </div>
     </div>
   </div>
@@ -155,6 +162,9 @@
   </form>
 </div>
 {% endblock %}
+{% block modal %}
+{{ restrict_modal() }}
+{% endblock %}
 {% block js %}
 <script type="text/javascript">
         $('.collapse').on('shown.bs.collapse', function(){
@@ -163,4 +173,8 @@
         $(this).parent().find(".glyphicon-minus").removeClass("glyphicon-minus").addClass("glyphicon-plus");
         });
 </script>
+<script src="{{ url_for('static', filename='js/libs/bootstrap-table/bootstrap-table.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/libs/bootstrap-table/bootstrap-table-editable.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/libs/bootstrap-table/bootstrap-editable.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/table.js') }}"></script>
 {% endblock %}
