@@ -689,8 +689,7 @@ def upload():
             db.session.commit()
             db.update_title_sort(config)
             book = db.session.query(db.Books).filter(db.Books.id == book_id).filter(common_filters()).first()
-
-            # upload book to gdrive if nesseccary and add "(bookid)" to folder name
+            # upload book to gdrive if necessary and add "(bookid)" to folder name
             if config.config_use_google_drive:
                 gdriveutils.updateGdriveCalibreFromLocal()
             error = helper.update_dir_stucture(book.id, config.config_calibre_dir)

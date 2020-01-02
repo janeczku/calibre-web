@@ -981,11 +981,7 @@ def render_read_books(page, are_read, as_xml=False, order=None, *args, **kwargs)
     entries, random, pagination = fill_indexpage(page, db.Books, db_filter, order)
 
     if as_xml:
-        currtime = datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%S+00:00")
-        xml = render_template(current_time=currtime, instance=config.config_calibre_web_title, *args, **kwargs)
-        response = make_response(xml)
-        response.headers["Content-Type"] = "application/xml; charset=utf-8"
-        return response
+        return entries, pagination
     else:
         if are_read:
             name = _(u'Read Books') + ' (' + str(len(readBookIds)) + ')'
