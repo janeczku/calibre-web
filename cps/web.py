@@ -790,7 +790,9 @@ def get_tasks_status():
 
 @app.route("/reconnect")
 def reconnect():
-    db.reconnect_db(config)
+    db.session.close()
+    db.engine.dispose()
+    db.setup_db(config)
     return json.dumps({})
 
 @web.route("/search", methods=["GET"])
