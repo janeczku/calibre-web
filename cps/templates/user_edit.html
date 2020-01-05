@@ -31,17 +31,6 @@
         <label for="kobo_user_key">{{_('KoboStore UserKey')}}</label>
         <input type="password" class="form-control" name="kobo_user_key" id="kobo_user_key" value="" autocomplete="off">
     </div>
-    {% if ( g.user and g.user.role_admin() ) %}
-    <div class="form-group">
-        <label for="restricted_tags">{{_('Restricted Tags')}}</label>
-        <input type="text" class="form-control" name="restricted_tags" id="restricted_tags" value="{{ content.restricted_tags if content.restricted_tags != None }}" autocomplete="off">
-    </div>
-    <div class="form-group">
-        <label for="restricted_column_value">{{_('Restricted Column Content')}}</label>
-        <input type="text" class="form-control" name="restricted_column_value" id="restricted_column_value" value="{{ content.restricted_column_value if content.restricted_column_value != None }}" autocomplete="off">
-    </div>
-    {% endif %}
-
     <label for="locale">{{_('Language')}}</label>
         <select name="locale" id="locale" class="form-control">
             {%  for translation in translations %}
@@ -84,6 +73,10 @@
           <input type="checkbox" name="Show_detail_random" id="Show_detail_random" {% if content.show_detail_random() %}checked{% endif %}>
           <label for="Show_detail_random">{{_('Show random books in detail view')}}</label>
       </div>
+      {% if ( g.user and g.user.role_admin() ) %}
+      <a href="#" id="get_user_tags" class="btn btn-default" data-toggle="modal" data-target="#restrictModal">{{_('Add allowed/denied Tags')}}</a>
+      <a href="#" id="get_user_column_values" class="btn btn-default" data-toggle="modal" data-target="#restrictModal">{{_('Add allowed/denied custom column values')}}</a>
+      {% endif %}
     </div>
       <div class="col-sm-6">
     {% if g.user and g.user.role_admin() and not profile %}
@@ -93,10 +86,6 @@
       <label for="admin_role">{{_('Admin user')}}</label>
     </div>
     {% endif %}
-    <!--div class="form-group">
-        <input type="checkbox" name="Show_mature_content" id="Show_mature_content" {% if content.mature_content %}checked{% endif %}>
-        <label for="Show_mature_content">{{_('Show mature content')}}</label>
-    </div-->
     <div class="form-group">
       <input type="checkbox" name="download_role" id="download_role" {% if content.role_download() %}checked{% endif %}>
       <label for="download_role">{{_('Allow Downloads')}}</label>

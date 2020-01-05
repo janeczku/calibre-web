@@ -25,7 +25,7 @@ import sys
 from sqlalchemy import exc, Column, String, Integer, SmallInteger, Boolean
 from sqlalchemy.ext.declarative import declarative_base
 
-from . import constants, cli, logger
+from . import constants, cli, logger, ub
 
 
 log = logger.create()
@@ -57,7 +57,7 @@ class _Settings(_Base):
     config_authors_max = Column(Integer, default=0)
     config_read_column = Column(Integer, default=0)
     config_title_regex = Column(String, default=u'^(A|The|An|Der|Die|Das|Den|Ein|Eine|Einen|Dem|Des|Einem|Eines)\s+')
-    # config_mature_content_tags = Column(String, default='')
+    config_mature_content_tags = Column(String, default='')
     config_theme = Column(Integer, default=0)
 
     config_log_level = Column(SmallInteger, default=logger.DEFAULT_LOG_LEVEL)
@@ -73,6 +73,7 @@ class _Settings(_Base):
     config_default_role = Column(SmallInteger, default=0)
     config_default_show = Column(SmallInteger, default=6143)
     config_columns_to_ignore = Column(String)
+
     config_restricted_tags = Column(String, default="")
     config_allowed_tags = Column(String, default="")
     config_restricted_column = Column(SmallInteger, default=0)
@@ -193,11 +194,11 @@ class _ConfigSQL(object):
         return [t.strip() for t in mct]
 
     def list_restricted_column_values(self):
-        mct = self.config_restricted_column_values().split(",")
+        mct = self.config_restricted_column_value.split(",")
         return [t.strip() for t in mct]
 
     def list_allowed_column_values(self):
-        mct = self.config_allowed_column_values().split(",")
+        mct = self.config_allowed_column_value.split(",")
         return [t.strip() for t in mct]
 
     def get_log_level(self):
@@ -312,6 +313,7 @@ def _migrate_table(session, orm_class):
 
     if changed:
         session.commit()
+    session.query
 
 def autodetect_calibre_binary():
     if sys.platform == "win32":
@@ -337,5 +339,12 @@ def load_configuration(session):
     if not session.query(_Settings).count():
         session.add(_Settings())
         session.commit()
-
-    return _ConfigSQL(session)
+    conf = _ConfigSQL(session)
+    # Migrate from global restrictions to user based restrictions
+    if bool(conf.config_default_show & constants.MATURE_CONTENT) and conf.config_restricted_tags == "":
+        conf.config_restricted_tags = conf.config_mature_content_tags
+        conf.save()
+        session.query(ub.User).filter(ub.User.mature_content != True). \
+            update({"restricted_tags": conf.config_mature_content_tags}, synchronize_session=False)
+        session.commit()
+    return conf
