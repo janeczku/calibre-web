@@ -185,6 +185,8 @@ def update_view_configuration():
     config.config_default_show = sum(int(k[5:]) for k in to_save if k.startswith('show_'))
     '''if "Show_mature_content" in to_save:
         config.config_default_show |= constants.MATURE_CONTENT'''
+    if "Show_detail_random" in to_save:
+        config.config_default_show |= constants.DETAIL_RANDOM
 
     config.save()
     flash(_(u"Calibre-Web configuration updated"), category="success")
@@ -469,6 +471,10 @@ def _configuration_update_helper():
                                            config.config_use_goodreads)
 
     _config_int("config_updatechannel")
+
+    # Reverse proxy login configuration
+    _config_checkbox("config_allow_reverse_proxy_header_login")
+    _config_string("config_reverse_proxy_login_header_name")
 
     # GitHub OAuth configuration
     if config.config_login_type == constants.LOGIN_OAUTH:
