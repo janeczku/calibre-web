@@ -1,4 +1,7 @@
 {% extends "layout.html" %}
+{% macro display_bool_setting(setting_value) -%}
+  {% if setting_value %}<span class="glyphicon glyphicon-ok"></span>{% else %}<span class="glyphicon glyphicon-remove"></span>{% endif %}
+{%- endmacro %}
 {% block body %}
 <div class="container-fluid">
   <div class="row">
@@ -23,11 +26,11 @@
             <td>{{user.email}}</td>
             <td>{{user.kindle_mail}}</td>
             <td>{{user.downloads.count()}}</td>
-            <td class="hidden-xs">{% if user.role_admin() %}<span class="glyphicon glyphicon-ok"></span>{% else %}<span class="glyphicon glyphicon-remove"></span>{% endif %}</td>
-            <td class="hidden-xs">{% if user.role_download() %}<span class="glyphicon glyphicon-ok"></span>{% else %}<span class="glyphicon glyphicon-remove"></span>{% endif %}</td>
-            <td class="hidden-xs">{% if user.role_viewer() %}<span class="glyphicon glyphicon-ok"></span>{% else %}<span class="glyphicon glyphicon-remove"></span>{% endif %}</td>
-            <td class="hidden-xs">{% if user.role_upload() %}<span class="glyphicon glyphicon-ok"></span>{% else %}<span class="glyphicon glyphicon-remove"></span>{% endif %}</td>
-            <td class="hidden-xs">{% if user.role_edit() %}<span class="glyphicon glyphicon-ok"></span>{% else %}<span class="glyphicon glyphicon-remove"></span>{% endif %}</td>
+            <td class="hidden-xs">{{ display_bool_setting(user.role_admin()) }}</td>
+            <td class="hidden-xs">{{ display_bool_setting(user.role_download()) }}</td>
+            <td class="hidden-xs">{{ display_bool_setting(user.role_viewer()) }}</td>
+            <td class="hidden-xs">{{ display_bool_setting(user.role_upload()) }}</td>
+            <td class="hidden-xs">{{ display_bool_setting(user.role_edit()) }}</td>
           </tr>
           {% endif %}
         {% endfor %}
@@ -83,20 +86,30 @@
         </div>
         <div class="row">
             <div class="col-xs-6 col-sm-7">{{_('Uploading')}}</div>
-            <div class="col-xs-6 col-sm-5">{% if config.config_uploading %}<span class="glyphicon glyphicon-ok"></span>{% else %}<span class="glyphicon glyphicon-remove"></span>{% endif %}</div>
+            <div class="col-xs-6 col-sm-5">{{ display_bool_setting(config.config_uploading) }}</div>
         </div>
         <div class="row">
             <div class="col-xs-6 col-sm-7">{{_('Anonymous browsing')}}</div>
-            <div class="col-xs-6 col-sm-5">{% if config.config_anonbrowse %}<span class="glyphicon glyphicon-ok"></span>{% else %}<span class="glyphicon glyphicon-remove"></span>{% endif %}</div>
+            <div class="col-xs-6 col-sm-5">{{ display_bool_setting(config.config_anonbrowse) }}</div>
         </div>
         <div class="row">
             <div class="col-xs-6 col-sm-7">{{_('Public registration')}}</div>
-            <div class="col-xs-6 col-sm-5">{% if config.config_public_reg %}<span class="glyphicon glyphicon-ok"></span>{% else %}<span class="glyphicon glyphicon-remove"></span>{% endif %}</div>
+            <div class="col-xs-6 col-sm-5">{{ display_bool_setting(config.config_public_reg) }}</div>
         </div>
         <div class="row">
             <div class="col-xs-6 col-sm-7">{{_('Remote login')}}</div>
-            <div class="col-xs-6 col-sm-5">{% if config.config_remote_login %}<span class="glyphicon glyphicon-ok"></span>{% else %}<span class="glyphicon glyphicon-remove"></span>{% endif %}</div>
+            <div class="col-xs-6 col-sm-5">{{ display_bool_setting(config.config_remote_login) }}</div>
         </div>
+        <div class="row">
+            <div class="col-xs-6 col-sm-7">{{_('Reverse proxy login')}}</div>
+            <div class="col-xs-6 col-sm-5">{{ display_bool_setting(config.config_allow_reverse_proxy_header_login) }}</div>
+        </div>
+        {% if config.config_allow_reverse_proxy_header_login %}
+        <div class="row">
+            <div class="col-xs-6 col-sm-7">{{_('Reverse proxy header name')}}</div>
+            <div class="col-xs-6 col-sm-5">{{ config.config_reverse_proxy_login_header_name }}</div>
+        </div>
+        {% endif %}
       </div>
       <div class="btn btn-default"><a id="basic_config" href="{{url_for('admin.configuration')}}">{{_('Basic Configuration')}}</a></div>
       <div class="btn btn-default"><a id="view_config" href="{{url_for('admin.view_configuration')}}">{{_('UI Configuration')}}</a></div>
