@@ -30,7 +30,7 @@
     <label for="locale">{{_('Language')}}</label>
         <select name="locale" id="locale" class="form-control">
             {%  for translation in translations %}
-                <option value="{{translation}}" {% if translation|string == content.locale %}selected{% endif %} {% if new_user == 1 and loop.first %}selected{% endif %}>{{ translation.display_name }}</option>
+                <option value="{{translation}}" {% if translation|string == content.locale %}selected{% endif %} {% if new_user == 1 and loop.first %}selected{% endif %}>{{ translation.display_name|capitalize }}</option>
             {% endfor %}
         </select>
     </div>
