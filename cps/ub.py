@@ -166,11 +166,11 @@ class UserBase:
         return [t.strip() for t in mct]
 
     def list_restricted_column_values(self):
-        mct = self.restricted_column_values().split(",")
+        mct = self.restricted_column_value.split(",")
         return [t.strip() for t in mct]
 
     def list_allowed_column_values(self):
-        mct = self.allowed_column_values().split(",")
+        mct = self.allowed_column_value.split(",")
         return [t.strip() for t in mct]
 
     def __repr__(self):
@@ -194,7 +194,7 @@ class User(UserBase, Base):
     locale = Column(String(2), default="en")
     sidebar_view = Column(Integer, default=1)
     default_language = Column(String(3), default="all")
-    # mature_content = Column(Boolean, default=True)
+    mature_content = Column(Boolean, default=True)
     restricted_tags = Column(String, default="")
     allowed_tags = Column(String, default="")
     restricted_column_value = Column(String, default="")
@@ -232,11 +232,10 @@ class Anonymous(AnonymousUserMixin, UserBase):
         self.sidebar_view = data.sidebar_view
         self.default_language = data.default_language
         self.locale = data.locale
-        # self.mature_content = data.mature_content
+        self.mature_content = data.mature_content
         self.kindle_mail = data.kindle_mail
         self.restricted_tags = data.restricted_tags
         self.allowed_tags = data.allowed_tags
-        # self.restricted_column = data.restricted_column
         self.restricted_column_value = data.restricted_column_value
         self.allowed_column_value = data.allowed_column_value
 

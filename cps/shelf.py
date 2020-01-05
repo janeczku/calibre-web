@@ -315,9 +315,10 @@ def order_shelf(shelf_id):
                                                            ub.Shelf.id == shelf_id))).first()
     result = list()
     if shelf:
-        books_in_shelf2 = ub.session.query(ub.BookShelf).filter(ub.BookShelf.shelf == shelf_id) \
+        books_in_shelf = ub.session.query(ub.BookShelf).filter(ub.BookShelf.shelf == shelf_id) \
             .order_by(ub.BookShelf.order.asc()).all()
-        books_list = [ b.book_id for b in books_in_shelf2]
+        books_list = [ b.book_id for b in books_in_shelf]
+        # cover, title, series, name, all author names,
         result = db.session.query(db.Books).filter(db.Books.id.in_(books_list)).filter(common_filters()).all()
     return render_title_template('shelf_order.html', entries=result,
                                  title=_(u"Change order of Shelf: '%(name)s'", name=shelf.name),

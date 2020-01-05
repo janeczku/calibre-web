@@ -95,51 +95,79 @@ $(function() {
     });
 
     $('#restrictModal').on('hidden.bs.modal', function () {
+        // Destroy table and remove hooks for buttons
+        $("#restrict-elements-table").unbind();
         $('#restrict-elements-table').bootstrapTable('destroy');
+        $("[id^=submit_]").unbind();
+        $('#h1').addClass('hidden');
+        $('#h2').addClass('hidden');
+        $('#h3').addClass('hidden');
+        $('#h4').addClass('hidden');
     });
-    // $('#table').bootstrapTable('destroy');
     function startTable(type){
+        var pathname = document.getElementsByTagName("script"), src = pathname[pathname.length-1].src;
+        var path = src.substring(0,src.lastIndexOf("/"));
         $("#restrict-elements-table").bootstrapTable({
             formatNoMatches: function () {
                 return "";
             },
-            url:window.location.pathname + "/../../ajax/listrestriction/" + type,
+            url: path + "/../../ajax/listrestriction/" + type,
+            rowStyle: function(row, index) {
+                console.log('Reihe :' + row + ' Index :'+ index);
+                if (row.id.charAt(0) == 'a') {
+                    return {classes: 'bg-primary'}
+                }
+                else {
+                    return {classes: 'bg-dark-danger'}
+                }
+            },
             onClickCell: function (field, value, row, $element) {
-                // ...
                 if(field == 3){
+                    console.log("element")
                     $.ajax ({
                         type: 'Post',
                         data: 'id=' + row.id + '&type=' + row.type + "&Element=" + row.Element,
-                        url: window.location.pathname + "/../../ajax/deleterestriction/" + type,
+                        url: path + "/../../ajax/deleterestriction/" + type,
                         async: true,
                         timeout: 900,
                         success:function(data) {
                             $.ajax({
                                 method:"get",
-                                url: window.location.pathname + "/../../ajax/listrestriction/"+type,
+                                url: path + "/../../ajax/listrestriction/"+type,
                                 async: true,
                                 timeout: 900,
                                 success:function(data) {
                                     $("#restrict-elements-table").bootstrapTable("load", data);
                                 }
                             });
-                           }
-                        });
+                        }
+                    });
                 }
             },
             striped: false
         });
-        $("[id^=submit_]").click(function(event) {
-            event.preventDefault();
-            console.log($(this)[0].name)
+        $("#restrict-elements-table").removeClass('table-hover');
+        $("#restrict-elements-table").on('editable-save.bs.table', function (e, field, row, old, $el) {
+            console.log("Hallo");
             $.ajax({
-                url: window.location.pathname + "/../../ajax/addrestriction/"+type,
+                url: path + "/../../ajax/editrestriction/"+type,
+                type: 'Post',
+                data: row //$(this).closest("form").serialize() + "&" + $(this)[0].name + "=",
+            });
+        });
+        $("[id^=submit_]").click(function(event) {
+            // event.stopPropagation();
+            // event.preventDefault();
+            $(this)[0].blur();
+            console.log($(this)[0].name);
+            $.ajax({
+                url: path + "/../../ajax/addrestriction/"+type,
                 type: 'Post',
                 data: $(this).closest("form").serialize() + "&" + $(this)[0].name + "=",
                 success: function () {
                 $.ajax ({
                     method:"get",
-                    url: window.location.pathname + "/../../ajax/listrestriction/"+type,
+                    url: path + "/../../ajax/listrestriction/"+type,
                     async: true,
                     timeout: 900,
                     success:function(data) {
@@ -154,12 +182,27 @@ $(function() {
     $('#get_column_values').on('click',function()
     {
         startTable(1);
+        $('#h2').removeClass('hidden');
     });
 
     $('#get_tags').on('click',function()
     {
         startTable(0);
+        $('#h1').removeClass('hidden');
     });
+    $('#get_user_column_values').on('click',function()
+    {
+        startTable(3);
+        $('#h4').removeClass('hidden');
+    });
+
+    $('#get_user_tags').on('click',function()
+    {
+        startTable(2);
+        $(this)[0].blur();
+        $('#h3').removeClass('hidden');
+    });
+
 });
 
 /* Function for deleting domain restrictions */

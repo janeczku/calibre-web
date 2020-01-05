@@ -183,8 +183,6 @@ def update_view_configuration():
     config.config_default_role &= ~constants.ROLE_ANONYMOUS
 
     config.config_default_show = sum(int(k[5:]) for k in to_save if k.startswith('show_'))
-    '''if "Show_mature_content" in to_save:
-        config.config_default_show |= constants.MATURE_CONTENT'''
     if "Show_detail_random" in to_save:
         config.config_default_show |= constants.DETAIL_RANDOM
 
@@ -260,24 +258,83 @@ def edit_restriction(type):
     element = request.form.to_dict()
     if element['id'].startswith('a'):
         if type == 0:  # Tags as template
-            elementlist = config.list_restricted_tags()
-            elementlist[id[1:]]=element['Element']
-            config.config_restricted_tags = ','.join(elementlist)
-        if type == 1:  # CustomC
-            pass
-        if type == 2:  # Tags per user
-            pass
-    if element['type'].startswith('d'):
-        if type == 0:  # Tags as template
             elementlist = config.list_allowed_tags()
-            elementlist[id[1:]]=element['Element']
-            config.config_restricted_tags = ','.join(elementlist)
+            elementlist[int(element['id'][1:])]=element['Element']
+            config.config_allowed_tags = ','.join(elementlist)
+            config.save()
         if type == 1:  # CustomC
+            elementlist = config.list_allowed_column_values()
+            elementlist[int(element['id'][1:])]=element['Element']
+            config.config_allowed_column_value = ','.join(elementlist)
+            config.save()
+        if type == 2:  # Tags per user
+            usr_id = os.path.split(request.referrer)[-1]
+            if usr_id.isdigit() == True:
+                usr = ub.session.query(ub.User).filter(ub.User.id == int(usr_id)).first()
+            else:
+                usr = current_user
+            elementlist = usr.list_allowed_tags()
+            elementlist[int(element['id'][1:])]=element['Element']
+            usr.allowed_tags = ','.join(elementlist)
+            ub.session.commit()
+        if type == 3:  # CColumn per user
+            usr_id = os.path.split(request.referrer)[-1]
+            if usr_id.isdigit() == True:
+                usr = ub.session.query(ub.User).filter(ub.User.id == int(usr_id)).first()
+            else:
+                usr = current_user
+            elementlist = usr.list_allowed_column_values()
+            elementlist[int(element['id'][1:])]=element['Element']
+            usr.allowed_column_value = ','.join(elementlist)
+            ub.session.commit()
+    if element['id'].startswith('d'):
+        if type == 0:  # Tags as template
+            elementlist = config.list_restricted_tags()
+            elementlist[int(element['id'][1:])]=element['Element']
+            config.config_restricted_tags = ','.join(elementlist)
+            config.save()
+        if type == 1:  # CustomC
+            elementlist = config.list_restricted_column_values()
+            elementlist[int(element['id'][1:])]=element['Element']
+            config.config_restricted_column_value = ','.join(elementlist)
+            config.save()
             pass
         if type == 2:  # Tags per user
-            pass
-    config.save()
+            usr_id = os.path.split(request.referrer)[-1]
+            if usr_id.isdigit() == True:
+                usr = ub.session.query(ub.User).filter(ub.User.id == int(usr_id)).first()
+            else:
+                usr = current_user
+            elementlist = usr.list_restricted_tags()
+            elementlist[int(element['id'][1:])]=element['Element']
+            usr.restricted_tags = ','.join(elementlist)
+            ub.session.commit()
+        if type == 3:  # CColumn per user
+            usr_id = os.path.split(request.referrer)[-1]
+            if usr_id.isdigit() == True:
+                usr = ub.session.query(ub.User).filter(ub.User.id == int(usr_id)).first()
+            else:
+                usr = current_user
+            elementlist = usr.list_restricted_column_values()
+            elementlist[int(element['id'][1:])]=element['Element']
+            usr.restricted_column_value = ','.join(elementlist)
+            ub.session.commit()
     return ""
+
+def restriction_addition(element, list_func):
+    elementlist = list_func()
+    if elementlist == ['']:
+        elementlist = []
+    if not element['add_element'] in elementlist:
+        elementlist += [element['add_element']]
+    return ','.join(elementlist)
+
+
+def restriction_deletion(element, list_func):
+    elementlist = list_func()
+    if element['Element'] in elementlist:
+        elementlist.remove(element['Element'])
+    return ','.join(elementlist)
 
 
 @admi.route("/ajax/addrestriction/<int:type>", methods=['POST'])
@@ -288,79 +345,131 @@ def add_restriction(type):
     element = request.form.to_dict()
     if type == 0:  # Tags as template
         if 'submit_allow' in element:
-            elementlist = config.list_allowed_tags()
-            if elementlist == ['']:
-                elementlist= []
-            if not element['add_element'] in elementlist:
-                elementlist += [element['add_element']]
-                config.config_allowed_tags = ','.join(elementlist)
+            config.config_allowed_tags = restriction_addition(element, config.list_allowed_tags)
+            config.save()
         elif 'submit_deny' in element:
-            elementlist = config.list_restricted_tags()
-            if elementlist == ['']:
-                elementlist= []
-            if not element['add_element'] in elementlist:
-                elementlist+=[element['add_element']]
-                config.config_restricted_tags = ','.join(elementlist)
-        config.save()
-    if type == 1:  # CustomC
-        pass
+            config.config_restricted_tags = restriction_addition(element, config.list_restricted_tags)
+            config.save()
+    if type == 1:  # CCustom as template
+        if 'submit_allow' in element:
+            config.config_allowed_column_value = restriction_addition(element, config.list_restricted_column_values)
+            config.save()
+        elif 'submit_deny' in element:
+            config.config_restricted_column_value = restriction_addition(element, config.list_allowed_column_values)
+            config.save()
     if type == 2:  # Tags per user
-        pass
+        usr_id = os.path.split(request.referrer)[-1]
+        if usr_id.isdigit() == True:
+            usr = ub.session.query(ub.User).filter(ub.User.id == int(usr_id)).first()
+        else:
+            usr = current_user
+        if 'submit_allow' in element:
+            usr.allowed_tags = restriction_addition(element, usr.list_allowed_tags)
+            ub.session.commit()
+        elif 'submit_deny' in element:
+            usr.restricted_tags = restriction_addition(element, usr.list_restricted_tags)
+            ub.session.commit()
+    if type == 3:  # CustomC per user
+        usr_id = os.path.split(request.referrer)[-1]
+        if usr_id.isdigit() == True:
+            usr = ub.session.query(ub.User).filter(ub.User.id == int(usr_id)).first()
+        else:
+            usr = current_user
+        if 'submit_allow' in element:
+            usr.allowed_column_value = restriction_addition(element, usr.list_allowed_column_values)
+            ub.session.commit()
+        elif 'submit_deny' in element:
+            usr.restricted_column_value = restriction_addition(element, usr.list_restricted_column_values)
+            ub.session.commit()
     return ""
-
 
 @admi.route("/ajax/deleterestriction/<int:type>", methods=['POST'])
 @login_required
 @admin_required
 def delete_restriction(type):
     element = request.form.to_dict()
-    if int(element['type']) == 1:
-        if type == 0:  # Tags as template
-            if element['id'].startswith('a'):
-                elementlist = config.list_allowed_tags()
-                if element['Element'] in elementlist:
-                    elementlist.remove(element['Element'])
-                config.config_allowed_tags = ','.join(elementlist)
-            elif element['id'].startswith('d'):
-                elementlist = config.list_restricted_tags()
-                if element['Element'] in elementlist:
-                    elementlist.remove(element['Element'])
-                config.config_restricted_tags = ','.join(elementlist)
-                config.save()
-        if type == 1:  # CustomC
-            pass
-        if type == 2:  # Tags per user
-            pass
-    if int(element['type'])== 2:
-        if type == 0:  # Tags as template
-            elementlist = config.list_allowed_tags()
-            if not element['Element'] in elementlist:
-                elementlist+=element['Element']
-                config.config_restricted_tags = ','.join(elementlist)
-        if type == 1:  # CustomC
-            pass
-        if type == 2:  # Tags per user
-            pass
+    if type == 0:  # Tags as template
+        if element['id'].startswith('a'):
+            config.config_allowed_tags = restriction_deletion(element, config.list_allowed_tags)
+            config.save()
+        elif element['id'].startswith('d'):
+            config.config_restricted_tags = restriction_deletion(element, config.list_restricted_tags)
+            config.save()
+    elif type == 1:  # CustomC as template
+        if element['id'].startswith('a'):
+            config.config_allowed_column_value = restriction_deletion(element, config.list_allowed_column_values)
+            config.save()
+        elif element['id'].startswith('d'):
+            config.config_restricted_column_value = restriction_deletion(element, config.list_restricted_column_values)
+            config.save()
+    elif type == 2:  # Tags per user
+        usr_id = os.path.split(request.referrer)[-1]
+        if usr_id.isdigit() == True:
+            usr = ub.session.query(ub.User).filter(ub.User.id == int(usr_id)).first()
+        else:
+            usr = current_user
+        if element['id'].startswith('a'):
+            usr.allowed_tags = restriction_deletion(element, usr.list_allowed_tags)
+            ub.session.commit()
+        elif element['id'].startswith('d'):
+            usr.restricted_tags = restriction_deletion(element, usr.list_restricted_tags)
+            ub.session.commit()
+    elif type == 3:  # Columns per user
+        usr_id = os.path.split(request.referrer)[-1]
+        if usr_id.isdigit() == True:    # select current user if admins are editing their own rights
+            usr = ub.session.query(ub.User).filter(ub.User.id == int(usr_id)).first()
+        else:
+            usr = current_user
+        if element['id'].startswith('a'):
+            usr.allowed_column_value = restriction_deletion(element, usr.list_allowed_column_values)
+            ub.session.commit()
+        elif element['id'].startswith('d'):
+            usr.restricted_column_value = restriction_deletion(element, usr.list_restricted_column_values)
+            ub.session.commit()
     return ""
 
 
+#@admi.route("/ajax/listrestriction/<int:type>/<int:user_id>", defaults={'user_id': '0'})
 @admi.route("/ajax/listrestriction/<int:type>")
 @login_required
 @admin_required
 def list_restriction(type):
     if type == 0:   # Tags as template
-        #for x, i in enumerate(config.list_restricted_tags()):
-        #    if x != '':
-        #        {'Element': x, 'type': '1', 'id': 'a' + str(i)}
-        restrict = [{'Element': x, 'type':'1', 'id': 'd'+str(i) } for i,x in enumerate(config.list_restricted_tags()) if x != '' ]
-        allow = [{'Element': x, 'type':'1', 'id': 'a'+str(i) } for i,x in enumerate(config.list_allowed_tags()) if x != '']
+        restrict = [{'Element': x, 'type':'1', 'id': 'd'+str(i) }
+                    for i,x in enumerate(config.list_restricted_tags()) if x != '' ]
+        allow = [{'Element': x, 'type':'1', 'id': 'a'+str(i) }
+                 for i,x in enumerate(config.list_allowed_tags()) if x != '']
         json_dumps = restrict + allow
-    elif type == 1:  # CustomC
-        json_dumps = ""
+    elif type == 1:  # CustomC as template
+        restrict = [{'Element': x, 'type':'1', 'id': 'd'+str(i) }
+                    for i,x in enumerate(config.list_restricted_column_values()) if x != '' ]
+        allow = [{'Element': x, 'type':'1', 'id': 'a'+str(i) }
+                 for i,x in enumerate(config.list_allowed_column_values()) if x != '']
+        json_dumps = restrict + allow
     elif type == 2:  # Tags per user
-        json_dumps = ""
+        usr_id = os.path.split(request.referrer)[-1]
+        if usr_id.isdigit() == True:
+            usr = ub.session.query(ub.User).filter(ub.User.id == usr_id).first()
+        else:
+            usr = current_user
+        restrict = [{'Element': x, 'type':'2', 'id': 'd'+str(i) }
+                    for i,x in enumerate(usr.list_restricted_tags()) if x != '' ]
+        allow = [{'Element': x, 'type':'2', 'id': 'a'+str(i) }
+                 for i,x in enumerate(usr.list_allowed_tags()) if x != '']
+        json_dumps = restrict + allow
+    elif type == 3:  # CustomC per user
+        usr_id = os.path.split(request.referrer)[-1]
+        if usr_id.isdigit() == True:
+            usr = ub.session.query(ub.User).filter(ub.User.id==usr_id).first()
+        else:
+            usr = current_user
+        restrict = [{'Element': x, 'type':'2', 'id': 'd'+str(i) }
+                    for i,x in enumerate(usr.list_restricted_column_values()) if x != '' ]
+        allow = [{'Element': x, 'type':'2', 'id': 'a'+str(i) }
+                 for i,x in enumerate(usr.list_allowed_column_values()) if x != '']
+        json_dumps = restrict + allow
     else:
-        json_dumps = ""
+        json_dumps=""
     js = json.dumps(json_dumps)
     response = make_response(js.replace("'", '"'))
     response.headers["Content-Type"] = "application/json; charset=utf-8"
@@ -812,7 +921,9 @@ def view_logfile():
     logfiles = {}
     logfiles[0] = logger.get_logfile(config.config_logfile)
     logfiles[1] = logger.get_accesslogfile(config.config_access_logfile)
-    return render_title_template("logviewer.html",title=_(u"Logfile viewer"), accesslog_enable=config.config_access_log,
+    return render_title_template("logviewer.html",title=_(u"Logfile viewer"),
+                                 log_enable=bool(config.config_logfile != logger.LOG_TO_STDOUT),
+                                 accesslog_enable=config.config_access_log,
                                  logfiles=logfiles, page="logfile")
 
 
