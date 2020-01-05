@@ -470,6 +470,10 @@ def _configuration_update_helper():
 
     _config_int("config_updatechannel")
 
+    # Reverse proxy login configuration
+    _config_checkbox("config_allow_reverse_proxy_header_login")
+    _config_string("config_reverse_proxy_login_header_name")
+
     # GitHub OAuth configuration
     if config.config_login_type == constants.LOGIN_OAUTH:
         active_oauths = 0
