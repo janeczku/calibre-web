@@ -178,6 +178,8 @@ def update_view_configuration():
     config.config_default_show = sum(int(k[5:]) for k in to_save if k.startswith('show_'))
     if "Show_mature_content" in to_save:
         config.config_default_show |= constants.MATURE_CONTENT
+    if "Show_detail_random" in to_save:
+        config.config_default_show |= constants.DETAIL_RANDOM
 
     config.save()
     flash(_(u"Calibre-Web configuration updated"), category="success")
