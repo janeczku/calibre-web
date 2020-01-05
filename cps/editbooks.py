@@ -656,10 +656,16 @@ def upload():
                     db_language = db.Languages(input_language)
                     db.session.add(db_language)
 
+            # If the language of the file is excluded from the users view, it's not imported, to allow the user to view
+            # the book it's language is set to the filter language
+            if db_language != current_user.filter_language() and current_user.filter_language() != "all":
+                db_language = db.session.query(db.Languages).\
+                    filter(db.Languages.lang_code == current_user.filter_language()).first()
+
             # combine path and normalize path from windows systems
             path = os.path.join(author_dir, title_dir).replace('\\', '/')
             db_book = db.Books(title, "", db_author.sort, datetime.datetime.now(), datetime.datetime(101, 1, 1),
-                            series_index, datetime.datetime.now(), path, has_cover, db_author, [], db_language)
+                               series_index, datetime.datetime.now(), path, has_cover, db_author, [], db_language)
             db_book.authors.append(db_author)
             if db_series:
                 db_book.series.append(db_series)
@@ -688,8 +694,10 @@ def upload():
             # save data to database, reread data
             db.session.commit()
             db.update_title_sort(config)
-            book = db.session.query(db.Books).filter(db.Books.id == book_id).filter(common_filters()).first()
-            # upload book to gdrive if necessary and add "(bookid)" to folder name
+            # Reread book. It's important not to filter the result, as it could have language which hide it from
+            # current users view (tags are not stored/extracted from metadata and could also be limited)
+            book = db.session.query(db.Books).filter(db.Books.id == book_id).first()
+            # upload book to gdrive if nesseccary and add "(bookid)" to folder name
             if config.config_use_google_drive:
                 gdriveutils.updateGdriveCalibreFromLocal()
             error = helper.update_dir_stucture(book.id, config.config_calibre_dir)
