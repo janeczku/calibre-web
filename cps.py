@@ -41,8 +41,13 @@ from cps.shelf import shelf
 from cps.admin import admi
 from cps.gdrive import gdrive
 from cps.editbooks import editbook
-from cps.kobo import kobo
-from cps.kobo_auth import kobo_auth
+
+try:
+    from cps.kobo import kobo
+    from cps.kobo_auth import kobo_auth
+    kobo_available = True
+except ImportError:
+    kobo_available = False
 
 try:
     from cps.oauth_bb import oauth
@@ -61,8 +66,9 @@ def main():
     app.register_blueprint(admi)
     app.register_blueprint(gdrive)
     app.register_blueprint(editbook)
-    app.register_blueprint(kobo)
-    app.register_blueprint(kobo_auth)
+    if kobo_available:
+        app.register_blueprint(kobo)
+        app.register_blueprint(kobo_auth)
     if oauth_available:
         app.register_blueprint(oauth)
     success = web_server.start()

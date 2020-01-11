@@ -45,7 +45,8 @@ from .web import admin_required, render_title_template, before_request, unconfig
 
 feature_support = {
         'ldap': False, # bool(services.ldap),
-        'goodreads': bool(services.goodreads_support)
+        'goodreads': bool(services.goodreads_support),
+        'kobo':  bool(services.kobo)
     }
 
 # try:
@@ -61,6 +62,7 @@ except ImportError:
     feature_support['oauth'] = False
     oauthblueprints = []
     oauth_check = {}
+
 
 
 feature_support['gdrive'] = gdrive_support
@@ -568,7 +570,7 @@ def _configuration_update_helper():
     # Remote login configuration
     _config_checkbox("config_remote_login")
     if not config.config_remote_login:
-        ub.session.query(ub.RemoteAuthToken).delete()
+        ub.session.query(ub.RemoteAuthToken).filter(ub.RemoteAuthToken.token_type==0).delete()
 
     # Goodreads configuration
     _config_checkbox("config_use_goodreads")
@@ -693,7 +695,8 @@ def new_user():
         if not to_save["nickname"] or not to_save["email"] or not to_save["password"]:
             flash(_(u"Please fill out all fields!"), category="error")
             return render_title_template("user_edit.html", new_user=1, content=content, translations=translations,
-                                         registered_oauth=oauth_check, title=_(u"Add new user"))
+                                         registered_oauth=oauth_check, feature_support=feature_support,
+                                         title=_(u"Add new user"))
         content.password = generate_password_hash(to_save["password"])
         existing_user = ub.session.query(ub.User).filter(func.lower(ub.User.nickname) == to_save["nickname"].lower())\
             .first()
@@ -704,14 +707,15 @@ def new_user():
             if config.config_public_reg and not check_valid_domain(to_save["email"]):
                 flash(_(u"E-mail is not from valid domain"), category="error")
                 return render_title_template("user_edit.html", new_user=1, content=content, translations=translations,
-                                             registered_oauth=oauth_check, title=_(u"Add new user"))
+                                             registered_oauth=oauth_check, feature_support=feature_support,
+                                             title=_(u"Add new user"))
             else:
                 content.email = to_save["email"]
         else:
             flash(_(u"Found an existing account for this e-mail address or nickname."), category="error")
             return render_title_template("user_edit.html", new_user=1, content=content, translations=translations,
                                      languages=languages, title=_(u"Add new user"), page="newuser",
-                                     registered_oauth=oauth_check)
+                                     feature_support=feature_support, registered_oauth=oauth_check)
         try:
             ub.session.add(content)
             ub.session.commit()
@@ -729,7 +733,7 @@ def new_user():
         # content.mature_content = bool(config.config_default_show & constants.MATURE_CONTENT)
     return render_title_template("user_edit.html", new_user=1, content=content, translations=translations,
                                  languages=languages, title=_(u"Add new user"), page="newuser",
-                                 registered_oauth=oauth_check)
+                                 feature_support=feature_support, registered_oauth=oauth_check)
 
 
 @admi.route("/admin/mailsettings")
@@ -850,8 +854,14 @@ def edit_user(user_id):
                         content.kobo_user_key_hash = kobo_user_key_hash
                     else:
                         flash(_(u"Found an existing account for this Kobo UserKey."), category="error")
-                        return render_title_template("user_edit.html", translations=translations, languages=languages,
-                                                     new_user=0, content=content, downloads=downloads, registered_oauth=oauth_check,
+                        return render_title_template("user_edit.html",
+                                                     translations=translations,
+                                                     languages=languages,
+                                                     new_user=0,
+                                                     content=content,
+                                                     downloads=downloads,
+                                                     registered_oauth=oauth_check,
+                                                     feature_support=feature_support,
                                                      title=_(u"Edit User %(nick)s", nick=content.nickname), page="edituser")
             if to_save["email"] and to_save["email"] != content.email:
                 existing_email = ub.session.query(ub.User).filter(ub.User.email == to_save["email"].lower()) \
@@ -860,9 +870,15 @@ def edit_user(user_id):
                     content.email = to_save["email"]
                 else:
                     flash(_(u"Found an existing account for this e-mail address."), category="error")
-                    return render_title_template("user_edit.html", translations=translations, languages=languages,
+                    return render_title_template("user_edit.html",
+                                                 translations=translations,
+                                                 languages=languages,
                                                  mail_configured = config.get_mail_server_configured(),
-                                                 new_user=0, content=content, downloads=downloads, registered_oauth=oauth_check,
+                                                 feature_support=feature_support,
+                                                 new_user=0,
+                                                 content=content,
+                                                 downloads=downloads,
+                                                 registered_oauth=oauth_check,
                                                  title=_(u"Edit User %(nick)s", nick=content.nickname), page="edituser")
             if "nickname" in to_save and to_save["nickname"] != content.nickname:
                 # Query User nickname, if not existing, change
@@ -877,6 +893,7 @@ def edit_user(user_id):
                                                  new_user=0, content=content,
                                                  downloads=downloads,
                                                  registered_oauth=oauth_check,
+                                                 feature_support=feature_support,
                                                  title=_(u"Edit User %(nick)s", nick=content.nickname),
                                                  page="edituser")
 
@@ -888,9 +905,15 @@ def edit_user(user_id):
         except IntegrityError:
             ub.session.rollback()
             flash(_(u"An unknown error occured."), category="error")
-    return render_title_template("user_edit.html", translations=translations, languages=languages, new_user=0,
-                                 content=content, downloads=downloads, registered_oauth=oauth_check,
+    return render_title_template("user_edit.html",
+                                 translations=translations,
+                                 languages=languages,
+                                 new_user=0,
+                                 content=content,
+                                 downloads=downloads,
+                                 registered_oauth=oauth_check,
                                  mail_configured=config.get_mail_server_configured(),
+                                 feature_support=feature_support,
                                  title=_(u"Edit User %(nick)s", nick=content.nickname), page="edituser")
 
 

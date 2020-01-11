@@ -55,7 +55,8 @@ from .redirect import redirect_back
 
 feature_support = {
         'ldap': False, # bool(services.ldap),
-        'goodreads': bool(services.goodreads_support)
+        'goodreads': bool(services.goodreads_support),
+        'kobo':  bool(services.kobo)
     }
 
 try:
@@ -1319,6 +1320,7 @@ def profile():
                 flash(_(u"E-mail is not from valid domain"), category="error")
                 return render_title_template("user_edit.html", content=current_user, downloads=downloads,
                                              title=_(u"%(name)s's profile", name=current_user.nickname), page="me",
+                                             feature_support=feature_support,
                                              registered_oauth=oauth_check, oauth_status=oauth_status)
         if "nickname" in to_save and to_save["nickname"] != current_user.nickname:
             # Query User nickname, if not existing, change
@@ -1329,6 +1331,7 @@ def profile():
                 return render_title_template("user_edit.html",
                                              translations=translations,
                                              languages=languages,
+                                             feature_support=feature_support,
                                              new_user=0, content=current_user,
                                              downloads=downloads,
                                              registered_oauth=oauth_check,
@@ -1360,13 +1363,13 @@ def profile():
             flash(_(u"Found an existing account for this e-mail address."), category="error")
             log.debug(u"Found an existing account for this e-mail address.")
             return render_title_template("user_edit.html", content=current_user, downloads=downloads,
-                                         translations=translations,
+                                         translations=translations, feature_support=feature_support,
                                          title=_(u"%(name)s's profile", name=current_user.nickname), page="me",
                                                  registered_oauth=oauth_check, oauth_status=oauth_status)
         flash(_(u"Profile updated"), category="success")
         log.debug(u"Profile updated")
     return render_title_template("user_edit.html", translations=translations, profile=1, languages=languages,
-                                 content=current_user, downloads=downloads,
+                                 content=current_user, downloads=downloads, feature_support=feature_support,
                                  title= _(u"%(name)s's profile", name=current_user.nickname),
                                  page="me", registered_oauth=oauth_check, oauth_status=oauth_status)
 

@@ -17,10 +17,8 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-import os
 import sys
 import uuid
-from base64 import b64decode, b64encode
 from datetime import datetime
 from time import gmtime, strftime
 try:
@@ -28,14 +26,12 @@ try:
 except ImportError:
     from urllib.parse import unquote
 
-from jsonschema import validate, exceptions
 from flask import (
     Blueprint,
     request,
     make_response,
     jsonify,
     json,
-    current_app,
     url_for,
     redirect,
 )
@@ -44,7 +40,7 @@ from werkzeug.datastructures import Headers
 from sqlalchemy import func
 import requests
 
-from . import config, logger, kobo_auth, db, helper
+from . import config, logger, kobo_auth, db, helper, services
 from .web import download_required
 
 KOBO_FORMATS = {"KEPUB": ["KEPUB"], "EPUB": ["EPUB", "EPUB3"]}
@@ -55,19 +51,6 @@ kobo_auth.disable_failed_auth_redirect_for_blueprint(kobo)
 kobo_auth.register_url_value_preprocessor(kobo)
 
 log = logger.create()
-
-
-def b64encode_json(json_data):
-    if sys.version_info < (3, 0):
-        return b64encode(json.dumps(json_data))
-    else:
-        return b64encode(json.dumps(json_data).encode())
-
-
-# Python3 has a timestamp() method we could be calling, however it's not avaiable in python2.
-def to_epoch_timestamp(datetime_object):
-    return (datetime_object - datetime(1970, 1, 1)).total_seconds()
-
 
 def get_store_url_for_current_request():
     # Programmatically modify the current url to point to the official Kobo store
@@ -110,117 +93,11 @@ def redirect_or_proxy_request():
         )
 
 
-class SyncToken:
-    """ The SyncToken is used to persist state accross requests.
-    When serialized over the response headers, the Kobo device will propagate the token onto following requests to the service.
-    As an example use-case, the SyncToken is used to detect books that have been added to the library since the last time the device synced to the server.
-
-    Attributes:
-        books_last_created: Datetime representing the newest book that the device knows about.
-        books_last_modified: Datetime representing the last modified book that the device knows about.
-    """
-
-    SYNC_TOKEN_HEADER = "x-kobo-synctoken"
-    VERSION = "1-0-0"
-    MIN_VERSION = "1-0-0"
-
-    token_schema = {
-        "type": "object",
-        "properties": {"version": {"type": "string"}, "data": {"type": "object"},},
-    }
-    # This Schema doesn't contain enough information to detect and propagate book deletions from Calibre to the device.
-    # A potential solution might be to keep a list of all known book uuids in the token, and look for any missing from the db.
-    data_schema_v1 = {
-        "type": "object",
-        "properties": {
-            "raw_kobo_store_token": {"type": "string"},
-            "books_last_modified": {"type": "string"},
-            "books_last_created": {"type": "string"},
-        },
-    }
-
-    def __init__(
-        self,
-        raw_kobo_store_token="",
-        books_last_created=datetime.min,
-        books_last_modified=datetime.min,
-    ):
-        self.raw_kobo_store_token = raw_kobo_store_token
-        self.books_last_created = books_last_created
-        self.books_last_modified = books_last_modified
-
-    @staticmethod
-    def from_headers(headers):
-        sync_token_header = headers.get(SyncToken.SYNC_TOKEN_HEADER, "")
-        if sync_token_header == "":
-            return SyncToken()
-
-        # On the first sync from a Kobo device, we may receive the SyncToken
-        # from the official Kobo store. Without digging too deep into it, that
-        # token is of the form [b64encoded blob].[b64encoded blob 2]
-        if "." in sync_token_header:
-            return SyncToken(raw_kobo_store_token=sync_token_header)
-
-        try:
-            sync_token_json = json.loads(
-                b64decode(sync_token_header + "=" * (-len(sync_token_header) % 4))
-            )
-            validate(sync_token_json, SyncToken.token_schema)
-            if sync_token_json["version"] < SyncToken.MIN_VERSION:
-                raise ValueError
-
-            data_json = sync_token_json["data"]
-            validate(sync_token_json, SyncToken.data_schema_v1)
-        except (exceptions.ValidationError, ValueError) as e:
-            log.error("Sync token contents do not follow the expected json schema.")
-            return SyncToken()
-
-        raw_kobo_store_token = data_json["raw_kobo_store_token"]
-        try:
-            books_last_modified = datetime.utcfromtimestamp(
-                data_json["books_last_modified"]
-            )
-            books_last_created = datetime.utcfromtimestamp(
-                data_json["books_last_created"]
-            )
-        except TypeError:
-            log.error("SyncToken timestamps don't parse to a datetime.")
-            return SyncToken(raw_kobo_store_token=raw_kobo_store_token)
-
-        return SyncToken(
-            raw_kobo_store_token=raw_kobo_store_token,
-            books_last_created=books_last_created,
-            books_last_modified=books_last_modified,
-        )
-
-    def set_kobo_store_header(self, store_headers):
-        store_headers.set(SyncToken.SYNC_TOKEN_HEADER, self.raw_kobo_store_token)
-
-    def merge_from_store_response(self, store_response):
-        self.raw_kobo_store_token = store_response.headers.get(
-            SyncToken.SYNC_TOKEN_HEADER, ""
-        )
-
-    def to_headers(self, headers):
-        headers[SyncToken.SYNC_TOKEN_HEADER] = self.build_sync_token()
-
-    def build_sync_token(self):
-        token = {
-            "version": SyncToken.VERSION,
-            "data": {
-                "raw_kobo_store_token": self.raw_kobo_store_token,
-                "books_last_modified": to_epoch_timestamp(self.books_last_modified),
-                "books_last_created": to_epoch_timestamp(self.books_last_created),
-            },
-        }
-        return b64encode_json(token)
-
-
 @kobo.route("/v1/library/sync")
 @login_required
 @download_required
 def HandleSyncRequest():
-    sync_token = SyncToken.from_headers(request.headers)
+    sync_token = services.SyncToken.from_headers(request.headers)
     log.info("Kobo library sync request received.")
 
     # TODO: Limit the number of books return per sync call, and rely on the sync-continuatation header

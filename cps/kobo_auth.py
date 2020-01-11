@@ -23,13 +23,13 @@ This module also includes research notes into the auth protocol used by Kobo dev
 
 Log-in:
 When first booting a Kobo device the user must sign into a Kobo (or affiliate) account.
-Upon successful sign-in, the user is redirected to 
+Upon successful sign-in, the user is redirected to
     https://auth.kobobooks.com/CrossDomainSignIn?id=<some id>
 which serves the following response:
     <script type='text/javascript'>location.href='kobo://UserAuthenticated?userId=<redacted>&userKey<redacted>&email=<redacted>&returnUrl=https%3a%2f%2fwww.kobo.com';</script>.
 And triggers the insertion of a userKey into the device's User table.
 
-Together, the device's DeviceId and UserKey act as an *irrevocable* authentication 
+Together, the device's DeviceId and UserKey act as an *irrevocable* authentication
 token to most (if not all) Kobo APIs. In fact, in most cases only the UserKey is
 required to authorize the API call.
 
@@ -95,7 +95,7 @@ def load_user_from_kobo_request(request):
         user = (
             ub.session.query(ub.User)
             .join(ub.RemoteAuthToken)
-            .filter(ub.RemoteAuthToken.auth_token == auth_token)
+            .filter(ub.RemoteAuthToken.auth_token == auth_token).filter(ub.RemoteAuthToken.token_type==1)
             .first()
         )
         if user is not None:
@@ -108,21 +108,23 @@ def load_user_from_kobo_request(request):
 kobo_auth = Blueprint("kobo_auth", __name__, url_prefix="/kobo_auth")
 
 
-@kobo_auth.route("/generate_auth_token")
+@kobo_auth.route("/generate_auth_token/<int:user_id>")
 @login_required
-def generate_auth_token():
+def generate_auth_token(user_id):
     # Invalidate any prevously generated Kobo Auth token for this user.
-    ub.session.query(ub.RemoteAuthToken).filter(
-        ub.RemoteAuthToken.user_id == current_user.id
-    ).delete()
+    auth_token = ub.session.query(ub.RemoteAuthToken).filter(
+        ub.RemoteAuthToken.user_id == user_id
+    ).filter(ub.RemoteAuthToken.token_type==1).first()
 
-    auth_token = ub.RemoteAuthToken()
-    auth_token.user_id = current_user.id
-    auth_token.expiration = datetime.max
-    auth_token.auth_token = (hexlify(urandom(16))).decode("utf-8")
+    if not auth_token:
+        auth_token = ub.RemoteAuthToken()
+        auth_token.user_id = user_id
+        auth_token.expiration = datetime.max
+        auth_token.auth_token = (hexlify(urandom(16))).decode("utf-8")
+        auth_token.token_type = 1
 
-    ub.session.add(auth_token)
-    ub.session.commit()
+        ub.session.add(auth_token)
+        ub.session.commit()
 
     return render_title_template(
         "generate_kobo_auth_url.html",
@@ -131,3 +133,13 @@ def generate_auth_token():
             "kobo.TopLevelEndpoint", auth_token=auth_token.auth_token, _external=True
         ),
     )
+
+
+@kobo_auth.route("/deleteauthtoken/<int:user_id>")
+@login_required
+def delete_auth_token(user_id):
+    # Invalidate any prevously generated Kobo Auth token for this user.
+    ub.session.query(ub.RemoteAuthToken).filter(ub.RemoteAuthToken.user_id == user_id)\
+        .filter(ub.RemoteAuthToken.token_type==1).delete()
+    ub.session.commit()
+    return ""

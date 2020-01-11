@@ -199,6 +199,7 @@ class User(UserBase, Base):
     allowed_tags = Column(String, default="")
     restricted_column_value = Column(String, default="")
     allowed_column_value = Column(String, default="")
+    remote_auth_token = relationship('RemoteAuthToken', backref='user', lazy='dynamic')
 
 
 if oauth_support:
@@ -333,6 +334,7 @@ class RemoteAuthToken(Base):
     user_id = Column(Integer, ForeignKey('user.id'))
     verified = Column(Boolean, default=False)
     expiration = Column(DateTime)
+    token_type = Column(Integer, default=0)
 
     def __init__(self):
         self.auth_token = (hexlify(os.urandom(4))).decode('utf-8')
@@ -364,6 +366,15 @@ def migrate_Database(session):
         conn.execute("ALTER TABLE registration ADD column 'allow' INTEGER")
         conn.execute("update registration set 'allow' = 1")
         session.commit()
+    try:
+        session.query(exists().where(RemoteAuthToken.token_type)).scalar()
+        session.commit()
+    except exc.OperationalError:  # Database is not compatible, some columns are missing
+        conn = engine.connect()
+        conn.execute("ALTER TABLE remote_auth_token ADD column 'token_type' INTEGER DEFAULT 0")
+        conn.execute("update remote_auth_token set 'token_type' = 0")
+        session.commit()
+
     # Handle table exists, but no content
     cnt = session.query(Registration).count()
     if not cnt:
