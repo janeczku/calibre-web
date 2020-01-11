@@ -435,15 +435,15 @@ def delete_restriction(type):
 @admin_required
 def list_restriction(type):
     if type == 0:   # Tags as template
-        restrict = [{'Element': x, 'type':'1', 'id': 'd'+str(i) }
+        restrict = [{'Element': x, 'type':_('deny'), 'id': 'd'+str(i) }
                     for i,x in enumerate(config.list_restricted_tags()) if x != '' ]
-        allow = [{'Element': x, 'type':'1', 'id': 'a'+str(i) }
+        allow = [{'Element': x, 'type':_('allow'), 'id': 'a'+str(i) }
                  for i,x in enumerate(config.list_allowed_tags()) if x != '']
         json_dumps = restrict + allow
     elif type == 1:  # CustomC as template
-        restrict = [{'Element': x, 'type':'1', 'id': 'd'+str(i) }
+        restrict = [{'Element': x, 'type':_('deny'), 'id': 'd'+str(i) }
                     for i,x in enumerate(config.list_restricted_column_values()) if x != '' ]
-        allow = [{'Element': x, 'type':'1', 'id': 'a'+str(i) }
+        allow = [{'Element': x, 'type':_('allow'), 'id': 'a'+str(i) }
                  for i,x in enumerate(config.list_allowed_column_values()) if x != '']
         json_dumps = restrict + allow
     elif type == 2:  # Tags per user
@@ -452,9 +452,9 @@ def list_restriction(type):
             usr = ub.session.query(ub.User).filter(ub.User.id == usr_id).first()
         else:
             usr = current_user
-        restrict = [{'Element': x, 'type':'2', 'id': 'd'+str(i) }
+        restrict = [{'Element': x, 'type':_('deny'), 'id': 'd'+str(i) }
                     for i,x in enumerate(usr.list_restricted_tags()) if x != '' ]
-        allow = [{'Element': x, 'type':'2', 'id': 'a'+str(i) }
+        allow = [{'Element': x, 'type':_('allow'), 'id': 'a'+str(i) }
                  for i,x in enumerate(usr.list_allowed_tags()) if x != '']
         json_dumps = restrict + allow
     elif type == 3:  # CustomC per user
@@ -463,9 +463,9 @@ def list_restriction(type):
             usr = ub.session.query(ub.User).filter(ub.User.id==usr_id).first()
         else:
             usr = current_user
-        restrict = [{'Element': x, 'type':'2', 'id': 'd'+str(i) }
+        restrict = [{'Element': x, 'type':_('deny'), 'id': 'd'+str(i) }
                     for i,x in enumerate(usr.list_restricted_column_values()) if x != '' ]
-        allow = [{'Element': x, 'type':'2', 'id': 'a'+str(i) }
+        allow = [{'Element': x, 'type':_('allow'), 'id': 'a'+str(i) }
                  for i,x in enumerate(usr.list_allowed_column_values()) if x != '']
         json_dumps = restrict + allow
     else:

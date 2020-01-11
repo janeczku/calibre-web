@@ -736,7 +736,7 @@ def speaking_language(languages=None):
 # example SELECT * FROM @TABLE WHERE  'abcdefg' LIKE Name;
 # from https://code.luasoftware.com/tutorials/flask/execute-raw-sql-in-flask-sqlalchemy/
 def check_valid_domain(domain_text):
-    domain_text = domain_text.split('@', 1)[-1].lower()
+    # domain_text = domain_text.split('@', 1)[-1].lower()
     sql = "SELECT * FROM registration WHERE (:domain LIKE domain and allow = 1);"
     result = ub.session.query(ub.Registration).from_statement(text(sql)).params(domain=domain_text).all()
     if not len(result):
