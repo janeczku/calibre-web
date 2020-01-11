@@ -1010,7 +1010,7 @@ def render_read_books(page, are_read, as_xml=False, order=None, *args, **kwargs)
             name = _(u'Read Books') + ' (' + str(len(readBookIds)) + ')'
             pagename = "read"
         else:
-            total_books = db.session.query(func.count(db.Books.id)).scalar()
+            total_books = db.session.query(func.count(db.Books.id)).filter(common_filters()).scalar()
             name = _(u'Unread Books') + ' (' + str(total_books - len(readBookIds)) + ')'
             pagename = "unread"
         return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
