@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2019-12-08 10:07+0100\n"
+"POT-Creation-Date: 2020-01-12 13:57+0100\n"
 "PO-Revision-Date: 2018-12-14 16:26+0300\n"
 "Last-Translator: Pavel Korovin <p@tristero.se>\n"
 "Language: ru\n"
@@ -18,179 +18,185 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.7.0\n"
 
-#: cps/about.py:41
+#: cps/about.py:42
 msgid "installed"
 msgstr ""
 
-#: cps/about.py:43
+#: cps/about.py:44
 msgid "not installed"
 msgstr "не установлено"
 
-#: cps/about.py:81
+#: cps/about.py:84
 msgid "Statistics"
 msgstr "Статистика"
 
-#: cps/admin.py:90
+#: cps/admin.py:89
 msgid "Server restarted, please reload page"
 msgstr "Сервер перезагружен, пожалуйста, перезагрузите страницу"
 
-#: cps/admin.py:92
+#: cps/admin.py:91
 msgid "Performing shutdown of server, please close window"
 msgstr "Производится остановка сервера, пожалуйста, закройте окно"
 
-#: cps/admin.py:111 cps/updater.py:446
+#: cps/admin.py:110 cps/editbooks.py:410 cps/editbooks.py:419
+#: cps/editbooks.py:539 cps/editbooks.py:541 cps/editbooks.py:594
+#: cps/updater.py:446 cps/uploader.py:97 cps/uploader.py:108
 msgid "Unknown"
 msgstr "Неизвестно"
 
-#: cps/admin.py:130
+#: cps/admin.py:129
 msgid "Admin page"
 msgstr "Администрирование"
 
-#: cps/admin.py:149 cps/templates/admin.html:102
+#: cps/admin.py:148 cps/templates/admin.html:115
 msgid "UI Configuration"
 msgstr "Настройка интерфейса"
 
-#: cps/admin.py:181 cps/admin.py:403
+#: cps/admin.py:185 cps/admin.py:412
 msgid "Calibre-Web configuration updated"
 msgstr "Конфигурация Calibre-Web обновлена"
 
-#: cps/admin.py:432 cps/templates/admin.html:101
+#: cps/admin.py:442 cps/templates/admin.html:114
 msgid "Basic Configuration"
 msgstr "Настройки сервера"
 
-#: cps/admin.py:455 cps/web.py:1056
+#: cps/admin.py:465 cps/web.py:1093
 msgid "Please fill out all fields!"
 msgstr "Пожалуйста, заполните все поля!"
 
-#: cps/admin.py:457 cps/admin.py:468 cps/admin.py:474 cps/admin.py:489
-#: cps/templates/admin.html:35
+#: cps/admin.py:467 cps/admin.py:478 cps/admin.py:484 cps/admin.py:499
+#: cps/templates/admin.html:38
 msgid "Add new user"
 msgstr "Добавить пользователя"
 
-#: cps/admin.py:466 cps/web.py:1259
+#: cps/admin.py:476 cps/web.py:1318
 msgid "E-mail is not from valid domain"
 msgstr "E-mail не из существующей доменной зоны"
 
-#: cps/admin.py:472 cps/admin.py:483
+#: cps/admin.py:482 cps/admin.py:493
 msgid "Found an existing account for this e-mail address or nickname."
 msgstr "Для этого адреса электронной почты или логина уже есть аккаунт."
 
-#: cps/admin.py:479
+#: cps/admin.py:489
 #, python-format
 msgid "User '%(user)s' created"
 msgstr "Пользователь '%(user)s' добавлен"
 
-#: cps/admin.py:499
+#: cps/admin.py:509
 msgid "Edit e-mail server settings"
 msgstr "Изменить настройки e-mail сервера"
 
-#: cps/admin.py:525
+#: cps/admin.py:535
 #, python-format
 msgid "Test e-mail successfully send to %(kindlemail)s"
 msgstr "Тестовое письмо успешно отправлено на %(kindlemail)s"
 
-#: cps/admin.py:528
+#: cps/admin.py:538
 #, python-format
 msgid "There was an error sending the Test e-mail: %(res)s"
 msgstr "Произошла ошибка при отправке тестового письма на: %(res)s"
 
-#: cps/admin.py:530 cps/web.py:1039
-msgid "Please configure your kindle e-mail address first..."
-msgstr "Пожалуйста, сначала настройте e-mail на вашем kindle..."
+#: cps/admin.py:540
+msgid "Please configure your e-mail address first..."
+msgstr ""
 
-#: cps/admin.py:532
+#: cps/admin.py:542
 msgid "E-mail server settings updated"
 msgstr "Настройки E-mail сервера обновлены"
 
-#: cps/admin.py:561
+#: cps/admin.py:571
 #, python-format
 msgid "User '%(nick)s' deleted"
 msgstr "Пользователь '%(nick)s' удалён"
 
-#: cps/admin.py:564
+#: cps/admin.py:574
 msgid "No admin user remaining, can't delete user"
 msgstr ""
 
-#: cps/admin.py:602 cps/web.py:1300
+#: cps/admin.py:612 cps/web.py:1359
 msgid "Found an existing account for this e-mail address."
 msgstr "Этот адрес электронной почты уже зарегистрирован."
 
-#: cps/admin.py:605 cps/admin.py:618 cps/admin.py:632 cps/web.py:1275
+#: cps/admin.py:616 cps/admin.py:630 cps/admin.py:644 cps/web.py:1334
 #, python-format
 msgid "Edit User %(nick)s"
 msgstr "Изменить пользователя %(nick)s"
 
-#: cps/admin.py:611 cps/web.py:1268
+#: cps/admin.py:622 cps/web.py:1327
 msgid "This username is already taken"
 msgstr ""
 
-#: cps/admin.py:626
+#: cps/admin.py:637
 #, python-format
 msgid "User '%(nick)s' updated"
 msgstr "Пользователь '%(nick)s' обновлён"
 
-#: cps/admin.py:629
+#: cps/admin.py:640
 msgid "An unknown error occured."
 msgstr "Произошла неизвестная ошибка."
 
-#: cps/admin.py:648
+#: cps/admin.py:657
 #, python-format
 msgid "Password for user %(user)s reset"
 msgstr "Пароль для пользователя %(user)s сброшен"
 
-#: cps/admin.py:651 cps/web.py:1081
+#: cps/admin.py:660 cps/web.py:1118 cps/web.py:1174
 msgid "An unknown error occurred. Please try again later."
 msgstr "Неизвестная ошибка. Попробуйте позже."
 
-#: cps/admin.py:662
+#: cps/admin.py:663 cps/web.py:1062
+msgid "Please configure the SMTP mail settings first..."
+msgstr "Пожалуйста, сначала сконфигурируйте параметры SMTP"
+
+#: cps/admin.py:674
 msgid "Logfile viewer"
 msgstr ""
 
-#: cps/admin.py:697
+#: cps/admin.py:710
 msgid "Requesting update package"
 msgstr "Проверка обновлений"
 
-#: cps/admin.py:698
+#: cps/admin.py:711
 msgid "Downloading update package"
 msgstr "Загрузка обновлений"
 
-#: cps/admin.py:699
+#: cps/admin.py:712
 msgid "Unzipping update package"
 msgstr "Распаковка обновлений"
 
-#: cps/admin.py:700
+#: cps/admin.py:713
 msgid "Replacing files"
 msgstr "Замена файлов"
 
-#: cps/admin.py:701
+#: cps/admin.py:714
 msgid "Database connections are closed"
 msgstr "Соеднинения с базой данных закрыты"
 
-#: cps/admin.py:702
+#: cps/admin.py:715
 msgid "Stopping server"
 msgstr "Остановка сервера"
 
-#: cps/admin.py:703
+#: cps/admin.py:716
 msgid "Update finished, please press okay and reload page"
 msgstr "Обновления установлены, нажмите okay и перезагрузите страницу"
 
-#: cps/admin.py:704 cps/admin.py:705 cps/admin.py:706 cps/admin.py:707
+#: cps/admin.py:717 cps/admin.py:718 cps/admin.py:719 cps/admin.py:720
 msgid "Update failed:"
 msgstr "Ошибка обновления:"
 
-#: cps/admin.py:704 cps/updater.py:272 cps/updater.py:457 cps/updater.py:459
+#: cps/admin.py:717 cps/updater.py:272 cps/updater.py:457 cps/updater.py:459
 msgid "HTTP Error"
 msgstr "Ошибка HTTP"
 
-#: cps/admin.py:705 cps/updater.py:274 cps/updater.py:461
+#: cps/admin.py:718 cps/updater.py:274 cps/updater.py:461
 msgid "Connection error"
 msgstr "Ошибка соединения"
 
-#: cps/admin.py:706 cps/updater.py:276 cps/updater.py:463
+#: cps/admin.py:719 cps/updater.py:276 cps/updater.py:463
 msgid "Timeout while establishing connection"
 msgstr "Таймаут при установлении соединения"
 
-#: cps/admin.py:707 cps/updater.py:278 cps/updater.py:465
+#: cps/admin.py:720 cps/updater.py:278 cps/updater.py:465
 msgid "General error"
 msgstr "Общая ошибка"
 
@@ -198,7 +204,7 @@ msgstr "Общая ошибка"
 msgid "not configured"
 msgstr ""
 
-#: cps/editbooks.py:214 cps/editbooks.py:393
+#: cps/editbooks.py:214 cps/editbooks.py:396
 msgid "Error opening eBook. File does not exist or file is not accessible"
 msgstr "Ошибка при открытии eBook. Файл не существует или файл недоступен"
 
@@ -206,16 +212,16 @@ msgstr "Ошибка при открытии eBook. Файл не существ
 msgid "edit metadata"
 msgstr "изменить метаданные"
 
-#: cps/editbooks.py:321 cps/editbooks.py:551
+#: cps/editbooks.py:321 cps/editbooks.py:569
 #, python-format
 msgid "File extension '%(ext)s' is not allowed to be uploaded to this server"
 msgstr "Запрещена загрузка файлов с расширением '%(ext)s'"
 
-#: cps/editbooks.py:325 cps/editbooks.py:555
+#: cps/editbooks.py:325 cps/editbooks.py:573
 msgid "File to be uploaded must have an extension"
 msgstr "Загружаемый файл должен иметь расширение"
 
-#: cps/editbooks.py:337 cps/editbooks.py:589
+#: cps/editbooks.py:337 cps/editbooks.py:607
 #, python-format
 msgid "Failed to create path %(path)s (Permission denied)."
 msgstr "Ошибка при создании пути %(path)s (Доступ запрещён)."
@@ -230,196 +236,192 @@ msgstr "Не удалось сохранить файл %(file)s."
 msgid "File format %(ext)s added to %(book)s"
 msgstr "Формат файла %(ext)s добавлен в %(book)s"
 
-#: cps/editbooks.py:373
+#: cps/editbooks.py:376
 msgid "Cover is not a supported imageformat (jpg/png/webp), can't save"
 msgstr ""
 
-#: cps/editbooks.py:406 cps/editbooks.py:415
-msgid "unknown"
-msgstr "неизвестно"
-
-#: cps/editbooks.py:447
+#: cps/editbooks.py:451
 msgid "Cover is not a jpg file, can't save"
 msgstr ""
 
-#: cps/editbooks.py:490
+#: cps/editbooks.py:494
 #, python-format
 msgid "%(langname)s is not a valid language"
 msgstr "%(langname)s не допустимый язык"
 
-#: cps/editbooks.py:521
+#: cps/editbooks.py:525
 msgid "Metadata successfully updated"
 msgstr "Метаданные обновлены"
 
-#: cps/editbooks.py:530
+#: cps/editbooks.py:534
 msgid "Error editing book, please check logfile for details"
 msgstr "Ошибка редактирования книги. Пожалуйста, проверьте лог-файл для дополнительной информации"
 
-#: cps/editbooks.py:563
+#: cps/editbooks.py:581
 #, python-format
 msgid "File %(filename)s could not saved to temp dir"
 msgstr ""
 
-#: cps/editbooks.py:580
+#: cps/editbooks.py:598
 msgid "Uploaded book probably exists in the library, consider to change before upload new: "
 msgstr ""
 
-#: cps/editbooks.py:595
+#: cps/editbooks.py:613
 #, python-format
 msgid "Failed to store file %(file)s (Permission denied)."
 msgstr "Ошибка записи файла %(file)s (Доступ запрещён)."
 
-#: cps/editbooks.py:601
+#: cps/editbooks.py:619
 #, python-format
 msgid "Failed to delete file %(file)s (Permission denied)."
 msgstr "Ошибка удаления файла %(file)s (Доступ запрещён)."
 
-#: cps/editbooks.py:684
+#: cps/editbooks.py:710
 #, python-format
 msgid "File %(file)s uploaded"
 msgstr ""
 
-#: cps/editbooks.py:713
+#: cps/editbooks.py:739
 msgid "Source or destination format for conversion missing"
 msgstr "Исходный или целевой формат для конвертирования отсутствует"
 
-#: cps/editbooks.py:721
+#: cps/editbooks.py:747
 #, python-format
 msgid "Book successfully queued for converting to %(book_format)s"
 msgstr "Книга успешно поставлена в очередь для конвертирования в %(book_format)s"
 
-#: cps/editbooks.py:725
+#: cps/editbooks.py:751
 #, python-format
 msgid "There was an error converting this book: %(res)s"
 msgstr "Произошла ошибка при конвертирования этой книги: %(res)s"
 
-#: cps/gdrive.py:61
+#: cps/gdrive.py:62
 msgid "Google Drive setup not completed, try to deactivate and activate Google Drive again"
 msgstr ""
 
-#: cps/gdrive.py:103
+#: cps/gdrive.py:104
 msgid "Callback domain is not verified, please follow steps to verify domain in google developer console"
 msgstr "Не удалось проверить домен обратного вызова, пожалуйста, выполните шаги для проверки домена в консоли разработчика Google."
 
-#: cps/helper.py:79
+#: cps/helper.py:80
 #, python-format
 msgid "%(format)s format not found for book id: %(book)d"
 msgstr "%(format)s форма не найден для книги с id: %(book)d"
 
-#: cps/helper.py:91
+#: cps/helper.py:92
 #, python-format
 msgid "%(format)s not found on Google Drive: %(fn)s"
 msgstr "%(format)s не найден на Google Drive: %(fn)s"
 
-#: cps/helper.py:98 cps/helper.py:206 cps/templates/detail.html:41
+#: cps/helper.py:99 cps/helper.py:211 cps/templates/detail.html:41
 #: cps/templates/detail.html:45
 msgid "Send to Kindle"
 msgstr "Отправить на Kindle"
 
-#: cps/helper.py:99 cps/helper.py:117 cps/helper.py:208
+#: cps/helper.py:100 cps/helper.py:118 cps/helper.py:213
 msgid "This e-mail has been sent via Calibre-Web."
 msgstr "Это электронное письмо было отправлено через Caliber-Web."
 
-#: cps/helper.py:110
+#: cps/helper.py:111
 #, python-format
 msgid "%(format)s not found: %(fn)s"
 msgstr "%(format)s не найден: %(fn)s"
 
-#: cps/helper.py:115
+#: cps/helper.py:116
 msgid "Calibre-Web test e-mail"
 msgstr "Тестовый e-mail для Calibre-Web"
 
-#: cps/helper.py:117
+#: cps/helper.py:118
 msgid "Test e-mail"
 msgstr "Тестовый e-mail"
 
-#: cps/helper.py:132
+#: cps/helper.py:133
 msgid "Get Started with Calibre-Web"
 msgstr "Начать работать с Calibre-Web"
 
-#: cps/helper.py:134
+#: cps/helper.py:135
 #, python-format
 msgid "Registration e-mail for user: %(name)s"
 msgstr "Регистрационный e-mail для пользователя: %(name)s"
 
-#: cps/helper.py:148 cps/helper.py:150 cps/helper.py:152 cps/helper.py:160
-#: cps/helper.py:162 cps/helper.py:164
+#: cps/helper.py:149 cps/helper.py:151 cps/helper.py:153 cps/helper.py:161
+#: cps/helper.py:163 cps/helper.py:165
 #, python-format
 msgid "Send %(format)s to Kindle"
 msgstr ""
 
-#: cps/helper.py:168
+#: cps/helper.py:169 cps/helper.py:173
 #, python-format
 msgid "Convert %(orig)s to %(format)s and send to Kindle"
 msgstr ""
 
-#: cps/helper.py:208
+#: cps/helper.py:213
 #, python-format
 msgid "E-mail: %(book)s"
 msgstr "Эл. почта: %(book)s"
 
-#: cps/helper.py:210
+#: cps/helper.py:215
 msgid "The requested file could not be read. Maybe wrong permissions?"
 msgstr "Запрашиваемый файл не может быть прочитан. Возможно не верные разрешения?"
 
-#: cps/helper.py:317
+#: cps/helper.py:322
 #, python-format
 msgid "Rename title from: '%(src)s' to '%(dest)s' failed with error: %(error)s"
 msgstr "Переименовывание заголовка с: '%(src)s' на '%(dest)s' не удалось из-за ошибки: %(error)s"
 
-#: cps/helper.py:327
+#: cps/helper.py:332
 #, python-format
 msgid "Rename author from: '%(src)s' to '%(dest)s' failed with error: %(error)s"
 msgstr "Переименовывание автора с: '%(src)s' на '%(dest)s' не удалось из-за ошибки: %(error)s"
 
-#: cps/helper.py:341
+#: cps/helper.py:346
 #, python-format
 msgid "Rename file in path '%(src)s' to '%(dest)s' failed with error: %(error)s"
 msgstr ""
 
-#: cps/helper.py:367 cps/helper.py:377 cps/helper.py:385
+#: cps/helper.py:372 cps/helper.py:382 cps/helper.py:390
 #, python-format
 msgid "File %(file)s not found on Google Drive"
 msgstr "Файл %(file)s не найден на Google Drive"
 
-#: cps/helper.py:406
+#: cps/helper.py:411
 #, python-format
 msgid "Book path %(path)s not found on Google Drive"
 msgstr "Путь книги %(path)s не найден на Google Drive"
 
-#: cps/helper.py:623
+#: cps/helper.py:643
 msgid "Waiting"
 msgstr "Ожидание"
 
-#: cps/helper.py:625
+#: cps/helper.py:645
 msgid "Failed"
 msgstr "Неудачно"
 
-#: cps/helper.py:627
+#: cps/helper.py:647
 msgid "Started"
 msgstr "Начало"
 
-#: cps/helper.py:629
+#: cps/helper.py:649
 msgid "Finished"
 msgstr "Закончено"
 
-#: cps/helper.py:631
+#: cps/helper.py:651
 msgid "Unknown Status"
 msgstr "Неизвестный статус"
 
-#: cps/helper.py:636
+#: cps/helper.py:656
 msgid "E-mail: "
 msgstr "E-mail: "
 
-#: cps/helper.py:638 cps/helper.py:642
+#: cps/helper.py:658 cps/helper.py:662
 msgid "Convert: "
 msgstr "Конвертировать:"
 
-#: cps/helper.py:640
+#: cps/helper.py:660
 msgid "Upload: "
 msgstr "Загрузить:"
 
-#: cps/helper.py:644
+#: cps/helper.py:664
 msgid "Unknown Task: "
 msgstr "Неизвестная задача:"
 
@@ -467,100 +469,100 @@ msgstr ""
 msgid "Google Oauth error, please retry later."
 msgstr ""
 
-#: cps/shelf.py:46 cps/shelf.py:98
+#: cps/shelf.py:47 cps/shelf.py:99
 msgid "Invalid shelf specified"
 msgstr "Указана неверная полка"
 
-#: cps/shelf.py:53
+#: cps/shelf.py:54
 #, python-format
 msgid "Sorry you are not allowed to add a book to the the shelf: %(shelfname)s"
 msgstr "Извините, но вам не разрешено добавлять книгу на полку: %(shelfname)s"
 
-#: cps/shelf.py:61
+#: cps/shelf.py:62
 msgid "You are not allowed to edit public shelves"
 msgstr "Вы не можете редактировать общедоступные полки"
 
-#: cps/shelf.py:70
+#: cps/shelf.py:71
 #, python-format
 msgid "Book is already part of the shelf: %(shelfname)s"
 msgstr "Книги уже размещены на полке: %(shelfname)s"
 
-#: cps/shelf.py:84
+#: cps/shelf.py:85
 #, python-format
 msgid "Book has been added to shelf: %(sname)s"
 msgstr "Книга добавлена на книжную полку: %(sname)s"
 
-#: cps/shelf.py:103
+#: cps/shelf.py:104
 #, python-format
 msgid "You are not allowed to add a book to the the shelf: %(name)s"
 msgstr "Вам не разрешено добавлять книгу на полку: %(name)s"
 
-#: cps/shelf.py:108
+#: cps/shelf.py:109
 msgid "User is not allowed to edit public shelves"
 msgstr "Пользователь не может редактировать общедоступные полки"
 
-#: cps/shelf.py:126
+#: cps/shelf.py:127
 #, python-format
 msgid "Books are already part of the shelf: %(name)s"
 msgstr "Книги уже размещены на полке: %(name)s"
 
-#: cps/shelf.py:140
+#: cps/shelf.py:141
 #, python-format
 msgid "Books have been added to shelf: %(sname)s"
 msgstr "Книги добавлены в полку: %(sname)s"
 
-#: cps/shelf.py:142
+#: cps/shelf.py:143
 #, python-format
 msgid "Could not add books to shelf: %(sname)s"
 msgstr "Не удалось добавить книги на полку: %(sname)s"
 
-#: cps/shelf.py:179
+#: cps/shelf.py:180
 #, python-format
 msgid "Book has been removed from shelf: %(sname)s"
 msgstr "Книга удалена с полки: %(sname)s"
 
-#: cps/shelf.py:185
+#: cps/shelf.py:186
 #, python-format
 msgid "Sorry you are not allowed to remove a book from this shelf: %(sname)s"
 msgstr "Извините, вы не можете удалить книгу с полки: %(sname)s"
 
-#: cps/shelf.py:206 cps/shelf.py:230
+#: cps/shelf.py:207 cps/shelf.py:231
 #, python-format
 msgid "A shelf with the name '%(title)s' already exists."
 msgstr "Полка с названием '%(title)s' уже существует."
 
-#: cps/shelf.py:211
+#: cps/shelf.py:212
 #, python-format
 msgid "Shelf %(title)s created"
 msgstr "Создана полка %(title)s"
 
-#: cps/shelf.py:213 cps/shelf.py:241
+#: cps/shelf.py:214 cps/shelf.py:242
 msgid "There was an error"
 msgstr "Произошла ошибка"
 
-#: cps/shelf.py:214 cps/shelf.py:216
+#: cps/shelf.py:215 cps/shelf.py:217
 msgid "create a shelf"
 msgstr "создать полку"
 
-#: cps/shelf.py:239
+#: cps/shelf.py:240
 #, python-format
 msgid "Shelf %(title)s changed"
 msgstr "Колка %(title)s изменена"
 
-#: cps/shelf.py:242 cps/shelf.py:244
+#: cps/shelf.py:243 cps/shelf.py:245
 msgid "Edit a shelf"
 msgstr "Изменить полку"
 
-#: cps/shelf.py:294
+#: cps/shelf.py:289
 #, python-format
 msgid "Shelf: '%(name)s'"
 msgstr "Полка: '%(name)s'"
 
-#: cps/shelf.py:297
+#: cps/shelf.py:292
 msgid "Error opening shelf. Shelf does not exist or is not accessible"
 msgstr "Ошибка открытия Полки. Полка не существует или недоступна"
 
-#: cps/shelf.py:329
+#: cps/shelf.py:323
 #, python-format
 msgid "Change order of Shelf: '%(name)s'"
 msgstr "Изменить расположение полки '%(name)s'"
@@ -590,7 +592,7 @@ msgid "Show best rated books"
 msgstr "Показывать книги с наивысшим рейтингом"
 
 #: cps/templates/index.xml:46 cps/templates/index.xml:50 cps/ub.py:67
-#: cps/web.py:976
+#: cps/web.py:1011
 msgid "Read Books"
 msgstr "Прочитанные Книги"
 
@@ -599,7 +601,7 @@ msgid "Show read and unread"
 msgstr "Показывать прочитанные и непрочитанные"
 
 #: cps/templates/index.xml:53 cps/templates/index.xml:57 cps/ub.py:71
-#: cps/web.py:980
+#: cps/web.py:1015
 msgid "Unread Books"
 msgstr "Непрочитанные Книги"
 
@@ -615,7 +617,7 @@ msgstr "Обзор"
 msgid "Show random books"
 msgstr "Показывать случайные книги"
 
-#: cps/ub.py:77
+#: cps/templates/index.xml:75 cps/ub.py:77
 msgid "Categories"
 msgstr "Категории"
 
@@ -623,8 +625,8 @@ msgstr "Категории"
 msgid "Show category selection"
 msgstr "Показывать выбор категории"
 
-#: cps/templates/book_edit.html:71 cps/templates/search_form.html:53
-#: cps/ub.py:80
+#: cps/templates/book_edit.html:71 cps/templates/index.xml:82
+#: cps/templates/search_form.html:53 cps/ub.py:80
 msgid "Series"
 msgstr "Серии"
 
@@ -648,7 +650,7 @@ msgstr "Издатели"
 msgid "Show publisher selection"
 msgstr "Показать выбор издателя"
 
-#: cps/templates/search_form.html:74 cps/ub.py:90
+#: cps/templates/index.xml:89 cps/templates/search_form.html:74 cps/ub.py:90
 msgid "Languages"
 msgstr "Языки"
 
@@ -664,7 +666,7 @@ msgstr ""
 msgid "Show ratings selection"
 msgstr ""
 
-#: cps/ub.py:97
+#: cps/templates/index.xml:96 cps/ub.py:97
 msgid "File formats"
 msgstr ""
 
@@ -701,204 +703,216 @@ msgstr ""
 msgid "Click on the button below to update to the latest stable version."
 msgstr ""
 
-#: cps/web.py:459
+#: cps/web.py:486
 msgid "Recently Added Books"
 msgstr "Недавно Добавленные Книги"
 
-#: cps/web.py:487
+#: cps/web.py:514
 msgid "Best rated books"
 msgstr "Книги с наивысшим рейтингом"
 
-#: cps/templates/index.xml:38 cps/web.py:495
+#: cps/templates/index.xml:38 cps/web.py:522
 msgid "Random Books"
 msgstr "Случайный выбор"
 
-#: cps/web.py:521
+#: cps/web.py:548
 msgid "Books"
 msgstr ""
 
-#: cps/web.py:548
+#: cps/web.py:575
 msgid "Hot Books (most downloaded)"
 msgstr "Популярные книги (часто загружаемые)"
 
-#: cps/web.py:559 cps/web.py:1321 cps/web.py:1409
+#: cps/web.py:586 cps/web.py:1382 cps/web.py:1478
 msgid "Error opening eBook. File does not exist or file is not accessible:"
 msgstr "Невозможно открыть книгу. Файл не существует или недоступен."
 
-#: cps/web.py:572
+#: cps/web.py:599
 #, python-format
 msgid "Author: %(name)s"
 msgstr ""
 
-#: cps/web.py:584
+#: cps/web.py:611
 #, python-format
 msgid "Publisher: %(name)s"
 msgstr "Издатель: %(name)s"
 
-#: cps/web.py:595
+#: cps/web.py:622
 #, python-format
 msgid "Series: %(serie)s"
 msgstr "Серии: %(serie)s"
 
-#: cps/web.py:606
+#: cps/web.py:633
 #, python-format
 msgid "Rating: %(rating)s stars"
 msgstr ""
 
-#: cps/web.py:617
+#: cps/web.py:644
 #, python-format
 msgid "File format: %(format)s"
 msgstr ""
 
-#: cps/web.py:629
+#: cps/web.py:656
 #, python-format
 msgid "Category: %(name)s"
 msgstr "Категория: %(name)s"
 
-#: cps/web.py:646
+#: cps/web.py:673
 #, python-format
 msgid "Language: %(name)s"
 msgstr "Язык: %(name)s"
 
-#: cps/web.py:678
+#: cps/web.py:705
 msgid "Publisher list"
 msgstr "Список издателей"
 
-#: cps/templates/index.xml:82 cps/web.py:694
+#: cps/web.py:721
 msgid "Series list"
 msgstr "Серии"
 
-#: cps/web.py:708
+#: cps/web.py:735
 msgid "Ratings list"
 msgstr ""
 
-#: cps/web.py:721
+#: cps/web.py:748
 msgid "File formats list"
 msgstr ""
 
-#: cps/web.py:749
+#: cps/web.py:776
 msgid "Available languages"
 msgstr "Доступные языки"
 
-#: cps/templates/index.xml:75 cps/web.py:766
+#: cps/web.py:793
 msgid "Category list"
 msgstr "Категории"
 
-#: cps/templates/layout.html:73 cps/web.py:780
+#: cps/templates/layout.html:73 cps/web.py:807
 msgid "Tasks"
 msgstr "Задания"
 
 #: cps/templates/feed.xml:33 cps/templates/layout.html:44
-#: cps/templates/layout.html:45 cps/web.py:802 cps/web.py:804
+#: cps/templates/layout.html:45 cps/web.py:829 cps/web.py:831
 msgid "Search"
 msgstr "Поиск"
 
-#: cps/web.py:851
+#: cps/web.py:881
 msgid "Published after "
 msgstr "Опубликовано до "
 
-#: cps/web.py:858
+#: cps/web.py:888
 msgid "Published before "
 msgstr "Опубликовано после "
 
-#: cps/web.py:872
+#: cps/web.py:902
 #, python-format
 msgid "Rating <= %(rating)s"
 msgstr "Рейтинг <= %(rating)s"
 
-#: cps/web.py:874
+#: cps/web.py:904
 #, python-format
 msgid "Rating >= %(rating)s"
 msgstr "Рейтинг >= %(rating)s"
 
-#: cps/web.py:934 cps/web.py:944
+#: cps/web.py:970 cps/web.py:982
 msgid "search"
 msgstr "поиск"
 
-#: cps/web.py:1028
-msgid "Please configure the SMTP mail settings first..."
-msgstr "Пожалуйста, сначала сконфигурируйте параметры SMTP"
-
-#: cps/web.py:1033
+#: cps/web.py:1067
 #, python-format
 msgid "Book successfully queued for sending to %(kindlemail)s"
 msgstr "Книга успешно поставлена в очередь для отправки на %(kindlemail)s"
 
-#: cps/web.py:1037
+#: cps/web.py:1071
 #, python-format
 msgid "There was an error sending this book: %(res)s"
 msgstr "Ошибка при отправке книги: %(res)s"
 
-#: cps/web.py:1057 cps/web.py:1082 cps/web.py:1086 cps/web.py:1091
-#: cps/web.py:1095
+#: cps/web.py:1073
+msgid "Please configure your kindle e-mail address first..."
+msgstr "Пожалуйста, сначала настройте e-mail на вашем kindle..."
+
+#: cps/web.py:1087
+msgid "E-Mail server is not configured, please contact your administrator!"
+msgstr ""
+
+#: cps/web.py:1088 cps/web.py:1094 cps/web.py:1119 cps/web.py:1123
+#: cps/web.py:1128 cps/web.py:1132
 msgid "register"
 msgstr "регистрация"
 
-#: cps/web.py:1084
+#: cps/web.py:1121
 msgid "Your e-mail is not allowed to register"
 msgstr "Ваш e-mail не подходит для регистрации"
 
-#: cps/web.py:1087
+#: cps/web.py:1124
 msgid "Confirmation e-mail was send to your e-mail account."
 msgstr "Письмо с подтверждением отправлено вам на e-mail"
 
-#: cps/web.py:1090
+#: cps/web.py:1127
 msgid "This username or e-mail address is already in use."
 msgstr "Этот никнейм или e-mail уже используются"
 
-#: cps/web.py:1105
+#: cps/web.py:1144
 msgid "Cannot activate LDAP authentication"
 msgstr ""
 
-#: cps/web.py:1114 cps/web.py:1220
+#: cps/web.py:1154 cps/web.py:1281
 #, python-format
 msgid "you are now logged in as: '%(nickname)s'"
 msgstr "Вы вошли как пользователь '%(nickname)s'"
 
-#: cps/web.py:1118
+#: cps/web.py:1159
 msgid "Could not login. LDAP server down, please contact your administrator"
 msgstr ""
 
-#: cps/web.py:1122 cps/web.py:1130
+#: cps/web.py:1163 cps/web.py:1186
 msgid "Wrong Username or Password"
 msgstr "Ошибка в имени пользователя или пароле"
 
-#: cps/web.py:1126
+#: cps/web.py:1170
+msgid "New Password was send to your email address"
+msgstr ""
+
+#: cps/web.py:1176
+msgid "Please enter valid username to reset password"
+msgstr ""
+
+#: cps/web.py:1182
 #, python-format
 msgid "You are now logged in as: '%(nickname)s'"
 msgstr ""
 
-#: cps/web.py:1134 cps/web.py:1156
+#: cps/web.py:1189 cps/web.py:1213
 msgid "login"
 msgstr "войти"
 
-#: cps/web.py:1168 cps/web.py:1199
+#: cps/web.py:1225 cps/web.py:1259
 msgid "Token not found"
 msgstr "Ключ не найден"
 
-#: cps/web.py:1176 cps/web.py:1207
+#: cps/web.py:1234 cps/web.py:1267
 msgid "Token has expired"
 msgstr "Ключ просрочен"
 
-#: cps/web.py:1184
+#: cps/web.py:1243
 msgid "Success! Please return to your device"
 msgstr "Успешно! Пожалуйста, проверьте свое устройство"
 
-#: cps/web.py:1261 cps/web.py:1303 cps/web.py:1307
+#: cps/web.py:1320 cps/web.py:1363 cps/web.py:1369
 #, python-format
 msgid "%(name)s's profile"
 msgstr "Профиль %(name)s"
 
-#: cps/web.py:1305
+#: cps/web.py:1365
 msgid "Profile updated"
 msgstr "Профиль обновлён"
 
-#: cps/web.py:1331 cps/web.py:1333 cps/web.py:1335 cps/web.py:1341
-#: cps/web.py:1345
+#: cps/web.py:1394 cps/web.py:1397 cps/web.py:1400 cps/web.py:1407
+#: cps/web.py:1412
 msgid "Read a Book"
 msgstr "Читать Книгу"
 
-#: cps/web.py:1355
+#: cps/web.py:1423
 msgid "Error opening eBook. File does not exist or file is not accessible."
 msgstr ""
 
@@ -912,180 +926,188 @@ msgstr "Ошибка Ebook-конвертора: %(error)s"
 msgid "Kindlegen failed with Error %(error)s. Message: %(message)s"
 msgstr "Kindlegen - неудачно, с Ошибкой %(error)s. Сообщение: %(message)s"
 
-#: cps/templates/admin.html:6
+#: cps/templates/admin.html:9
 msgid "User list"
 msgstr "Список пользователей"
 
-#: cps/templates/admin.html:9
+#: cps/templates/admin.html:12
 msgid "Nickname"
 msgstr "Имя пользователя"
 
-#: cps/templates/admin.html:10
+#: cps/templates/admin.html:13
 msgid "E-mail"
 msgstr "Почта"
 
-#: cps/templates/admin.html:11
+#: cps/templates/admin.html:14
 msgid "Kindle"
 msgstr "Kindle"
 
-#: cps/templates/admin.html:12
+#: cps/templates/admin.html:15
 msgid "DLS"
 msgstr "DLS"
 
-#: cps/templates/admin.html:13 cps/templates/layout.html:76
+#: cps/templates/admin.html:16 cps/templates/layout.html:76
 msgid "Admin"
 msgstr "Управление"
 
-#: cps/templates/admin.html:14 cps/templates/detail.html:18
+#: cps/templates/admin.html:17 cps/templates/detail.html:18
 #: cps/templates/detail.html:27 cps/templates/shelf.html:6
 #: cps/templates/shelfdown.html:62
 msgid "Download"
 msgstr "Скачать"
 
-#: cps/templates/admin.html:15
+#: cps/templates/admin.html:18
 msgid "View Ebooks"
 msgstr ""
 
-#: cps/templates/admin.html:16 cps/templates/layout.html:65
+#: cps/templates/admin.html:19 cps/templates/layout.html:65
 msgid "Upload"
 msgstr "Загрузить"
 
-#: cps/templates/admin.html:17
+#: cps/templates/admin.html:20
 msgid "Edit"
 msgstr "Редактировать"
 
-#: cps/templates/admin.html:41
+#: cps/templates/admin.html:44
 msgid "SMTP e-mail server settings"
 msgstr "Настройки SMTP-сервера"
 
-#: cps/templates/admin.html:44 cps/templates/email_edit.html:11
+#: cps/templates/admin.html:47 cps/templates/email_edit.html:11
 msgid "SMTP hostname"
 msgstr "SMTP-сервер"
 
-#: cps/templates/admin.html:45
+#: cps/templates/admin.html:48
 msgid "SMTP port"
 msgstr "SMTP-порт"
 
-#: cps/templates/admin.html:46
+#: cps/templates/admin.html:49
 msgid "SSL"
 msgstr "SSL"
 
-#: cps/templates/admin.html:47 cps/templates/email_edit.html:27
+#: cps/templates/admin.html:50 cps/templates/email_edit.html:27
 msgid "SMTP login"
 msgstr "SMTP-логин"
 
-#: cps/templates/admin.html:48
+#: cps/templates/admin.html:51
 msgid "From mail"
 msgstr "Отправитель"
 
-#: cps/templates/admin.html:58
+#: cps/templates/admin.html:61
 msgid "Change SMTP settings"
 msgstr "Изменить настройки SMTP"
 
-#: cps/templates/admin.html:64
+#: cps/templates/admin.html:67
 msgid "Configuration"
 msgstr "Настройки сервера"
 
-#: cps/templates/admin.html:67
+#: cps/templates/admin.html:70
 msgid "Calibre DB dir"
 msgstr "Папка Calibre DB"
 
-#: cps/templates/admin.html:71
+#: cps/templates/admin.html:74
 msgid "Log level"
 msgstr "Уровень лога"
 
-#: cps/templates/admin.html:75
+#: cps/templates/admin.html:78
 msgid "Port"
 msgstr "Порт"
 
-#: cps/templates/admin.html:81 cps/templates/config_view_edit.html:23
+#: cps/templates/admin.html:84 cps/templates/config_view_edit.html:23
 msgid "Books per page"
 msgstr "Количество книг на странице"
 
-#: cps/templates/admin.html:85
+#: cps/templates/admin.html:88
 msgid "Uploading"
 msgstr "Загрузка на сервер"
 
-#: cps/templates/admin.html:89
+#: cps/templates/admin.html:92
 msgid "Anonymous browsing"
 msgstr "Анонимный просмотр"
 
-#: cps/templates/admin.html:93
+#: cps/templates/admin.html:96
 msgid "Public registration"
 msgstr "Публичная регистрация"
 
-#: cps/templates/admin.html:97 cps/templates/remote_login.html:4
+#: cps/templates/admin.html:100 cps/templates/remote_login.html:4
 msgid "Remote login"
 msgstr "Удалённый логин"
 
-#: cps/templates/admin.html:108
+#: cps/templates/admin.html:104
+msgid "Reverse proxy login"
+msgstr ""
+
+#: cps/templates/admin.html:109
+msgid "Reverse proxy header name"
+msgstr ""
+
+#: cps/templates/admin.html:121
 msgid "Administration"
 msgstr "Управление"
 
-#: cps/templates/admin.html:109
+#: cps/templates/admin.html:122
 msgid "View Logfiles"
 msgstr ""
 
-#: cps/templates/admin.html:110
+#: cps/templates/admin.html:123
 msgid "Reconnect to Calibre DB"
 msgstr "Переподключиться к БД Calibre"
 
-#: cps/templates/admin.html:111
+#: cps/templates/admin.html:124
 msgid "Restart Calibre-Web"
 msgstr "Перезагрузить Calibre-Web"
 
-#: cps/templates/admin.html:112
+#: cps/templates/admin.html:125
 msgid "Stop Calibre-Web"
 msgstr "Остановить Calibre-Web"
 
-#: cps/templates/admin.html:118
+#: cps/templates/admin.html:131
 msgid "Update"
 msgstr "Обновление"
 
-#: cps/templates/admin.html:122
+#: cps/templates/admin.html:135
 msgid "Version"
 msgstr "Версия"
 
-#: cps/templates/admin.html:123
+#: cps/templates/admin.html:136
 msgid "Details"
 msgstr "Подробности"
 
-#: cps/templates/admin.html:129
+#: cps/templates/admin.html:142
 msgid "Current version"
 msgstr "Текущая версия"
 
-#: cps/templates/admin.html:135
+#: cps/templates/admin.html:148
 msgid "Check for update"
 msgstr "Проверка обновлений"
 
-#: cps/templates/admin.html:136
+#: cps/templates/admin.html:149
 msgid "Perform Update"
 msgstr "Установить обновления"
 
-#: cps/templates/admin.html:148
+#: cps/templates/admin.html:161
 msgid "Do you really want to restart Calibre-Web?"
 msgstr "Вы действительно хотите перезагрузить Calibre-Web?"
 
-#: cps/templates/admin.html:153 cps/templates/admin.html:167
-#: cps/templates/admin.html:187 cps/templates/shelf.html:72
+#: cps/templates/admin.html:166 cps/templates/admin.html:180
+#: cps/templates/admin.html:200 cps/templates/shelf.html:72
 msgid "Ok"
 msgstr "Ok"
 
-#: cps/templates/admin.html:154 cps/templates/admin.html:168
+#: cps/templates/admin.html:167 cps/templates/admin.html:181
 #: cps/templates/book_edit.html:174 cps/templates/book_edit.html:196
-#: cps/templates/config_edit.html:321 cps/templates/config_view_edit.html:147
-#: cps/templates/email_edit.html:40 cps/templates/email_edit.html:74
+#: cps/templates/config_edit.html:331 cps/templates/config_view_edit.html:147
+#: cps/templates/email_edit.html:40 cps/templates/email_edit.html:92
 #: cps/templates/layout.html:28 cps/templates/shelf.html:73
 #: cps/templates/shelf_edit.html:19 cps/templates/shelf_order.html:32
-#: cps/templates/user_edit.html:132
+#: cps/templates/user_edit.html:131
 msgid "Back"
 msgstr "Назад"
 
-#: cps/templates/admin.html:166
+#: cps/templates/admin.html:179
 msgid "Do you really want to stop Calibre-Web?"
 msgstr "Вы действительно хотите остановить Calibre-Web?"
 
-#: cps/templates/admin.html:178
+#: cps/templates/admin.html:191
 msgid "Updating, please do not reload page"
 msgstr "Установка обновлений, пожалуйста, не обновляйте страницу."
 
@@ -1122,7 +1144,7 @@ msgid "Delete formats:"
 msgstr "Удалить форматы:"
 
 #: cps/templates/book_edit.html:18 cps/templates/book_edit.html:195
-#: cps/templates/email_edit.html:73
+#: cps/templates/email_edit.html:91
 msgid "Delete"
 msgstr "Удалить"
 
@@ -1156,7 +1178,7 @@ msgid "Author"
 msgstr "Автор"
 
 #: cps/templates/book_edit.html:63 cps/templates/book_edit.html:260
-#: cps/templates/book_edit.html:275 cps/templates/search_form.html:106
+#: cps/templates/book_edit.html:275 cps/templates/search_form.html:126
 msgid "Description"
 msgstr "Описание"
 
@@ -1190,15 +1212,15 @@ msgstr "Опубликовано"
 msgid "Publisher"
 msgstr "Издатель"
 
-#: cps/templates/book_edit.html:103 cps/templates/user_edit.html:31
+#: cps/templates/book_edit.html:103 cps/templates/user_edit.html:30
 msgid "Language"
 msgstr "Язык"
 
-#: cps/templates/book_edit.html:113 cps/templates/search_form.html:117
+#: cps/templates/book_edit.html:113 cps/templates/search_form.html:137
 msgid "Yes"
 msgstr "Да"
 
-#: cps/templates/book_edit.html:114 cps/templates/search_form.html:118
+#: cps/templates/book_edit.html:114 cps/templates/search_form.html:138
 msgid "No"
 msgstr "Нет"
 
@@ -1214,10 +1236,10 @@ msgstr "смотреть книгу после редактирования"
 msgid "Get metadata"
 msgstr "Получить метаданные"
 
-#: cps/templates/book_edit.html:173 cps/templates/config_edit.html:319
+#: cps/templates/book_edit.html:173 cps/templates/config_edit.html:329
 #: cps/templates/config_view_edit.html:146 cps/templates/login.html:20
-#: cps/templates/search_form.html:150 cps/templates/shelf_edit.html:17
-#: cps/templates/user_edit.html:130
+#: cps/templates/search_form.html:170 cps/templates/shelf_edit.html:17
+#: cps/templates/user_edit.html:129
 msgid "Submit"
 msgstr "Отправить"
 
@@ -1481,35 +1503,43 @@ msgstr ""
 msgid "%(provider)s OAuth Client Secret"
 msgstr ""
 
-#: cps/templates/config_edit.html:282
+#: cps/templates/config_edit.html:276
+msgid "Allow Reverse Proxy Authentication"
+msgstr ""
+
+#: cps/templates/config_edit.html:280
+msgid "Reverse Proxy Header Name"
+msgstr ""
+
+#: cps/templates/config_edit.html:292
 msgid "External binaries"
 msgstr "Внешние двоичные файлы"
 
-#: cps/templates/config_edit.html:290
+#: cps/templates/config_edit.html:300
 msgid "No converter"
 msgstr "Нет конвертера"
 
-#: cps/templates/config_edit.html:292
+#: cps/templates/config_edit.html:302
 msgid "Use Kindlegen"
 msgstr "Использовать Kindlegen"
 
-#: cps/templates/config_edit.html:294
+#: cps/templates/config_edit.html:304
 msgid "Use calibre's ebook converter"
 msgstr "Использовать конвертер calibre's ebook"
 
-#: cps/templates/config_edit.html:298
+#: cps/templates/config_edit.html:308
 msgid "E-Book converter settings"
 msgstr "Настройки конвертера E-Book"
 
-#: cps/templates/config_edit.html:302
+#: cps/templates/config_edit.html:312
 msgid "Path to convertertool"
 msgstr "Путь к конвертеру"
 
-#: cps/templates/config_edit.html:308
+#: cps/templates/config_edit.html:318
 msgid "Location of Unrar binary"
 msgstr "Расположение двоичного файла Unrar"
 
-#: cps/templates/config_edit.html:324 cps/templates/layout.html:84
+#: cps/templates/config_edit.html:334 cps/templates/layout.html:84
 #: cps/templates/login.html:4
 msgid "Login"
 msgstr "Логин"
@@ -1562,35 +1592,35 @@ msgstr "Теги для Зрелого Контента"
 msgid "Default settings for new users"
 msgstr "Настройки по умолчанию для новых пользователей"
 
-#: cps/templates/config_view_edit.html:81 cps/templates/user_edit.html:83
+#: cps/templates/config_view_edit.html:81 cps/templates/user_edit.html:82
 msgid "Admin user"
 msgstr "Управление сервером"
 
-#: cps/templates/config_view_edit.html:85 cps/templates/user_edit.html:92
+#: cps/templates/config_view_edit.html:85 cps/templates/user_edit.html:91
 msgid "Allow Downloads"
 msgstr "Разрешить скачивание с сервера"
 
-#: cps/templates/config_view_edit.html:89 cps/templates/user_edit.html:96
+#: cps/templates/config_view_edit.html:89 cps/templates/user_edit.html:95
 msgid "Allow book viewer"
 msgstr ""
 
-#: cps/templates/config_view_edit.html:93 cps/templates/user_edit.html:100
+#: cps/templates/config_view_edit.html:93 cps/templates/user_edit.html:99
 msgid "Allow Uploads"
 msgstr "Разрешить загрузку на сервер"
 
-#: cps/templates/config_view_edit.html:97 cps/templates/user_edit.html:104
+#: cps/templates/config_view_edit.html:97 cps/templates/user_edit.html:103
 msgid "Allow Edit"
 msgstr "Разрешить редактирование книг"
 
-#: cps/templates/config_view_edit.html:101 cps/templates/user_edit.html:108
+#: cps/templates/config_view_edit.html:101 cps/templates/user_edit.html:107
 msgid "Allow Delete books"
 msgstr "Разрешить удаление книг"
 
-#: cps/templates/config_view_edit.html:105 cps/templates/user_edit.html:113
+#: cps/templates/config_view_edit.html:105 cps/templates/user_edit.html:112
 msgid "Allow Changing Password"
 msgstr "Разрешить смену пароля"
 
-#: cps/templates/config_view_edit.html:109 cps/templates/user_edit.html:117
+#: cps/templates/config_view_edit.html:109 cps/templates/user_edit.html:116
 msgid "Allow Editing Public Shelfs"
 msgstr "Разрешить редактирование публичных книжных полок"
 
@@ -1598,11 +1628,11 @@ msgstr "Разрешить редактирование публичных кн�
 msgid "Default visibilities for new users"
 msgstr "Видимость для новых пользователей(по умолчанию)"
 
-#: cps/templates/config_view_edit.html:135 cps/templates/user_edit.html:75
+#: cps/templates/config_view_edit.html:135 cps/templates/user_edit.html:74
 msgid "Show random books in detail view"
 msgstr "Показывать случайные книги при просмотре деталей"
 
-#: cps/templates/config_view_edit.html:139 cps/templates/user_edit.html:88
+#: cps/templates/config_view_edit.html:139 cps/templates/user_edit.html:87
 msgid "Show mature content"
 msgstr "Показывать взрослый контент"
 
@@ -1690,19 +1720,23 @@ msgstr "Сохранить настройки и отправить тестов
 msgid "Allowed domains for registering"
 msgstr "Допустимые домены для регистрации"
 
-#: cps/templates/email_edit.html:47
-msgid "Enter domainname"
-msgstr "Введите доменное имя"
-
-#: cps/templates/email_edit.html:55
+#: cps/templates/email_edit.html:46 cps/templates/email_edit.html:72
 msgid "Add Domain"
 msgstr "Добавить Домен"
 
-#: cps/templates/email_edit.html:58
+#: cps/templates/email_edit.html:49 cps/templates/email_edit.html:75
 msgid "Add"
 msgstr "Добавить"
 
-#: cps/templates/email_edit.html:72
+#: cps/templates/email_edit.html:54 cps/templates/email_edit.html:64
+msgid "Enter domainname"
+msgstr "Введите доменное имя"
+
+#: cps/templates/email_edit.html:60
+msgid "Denied domains for registering"
+msgstr ""
+
+#: cps/templates/email_edit.html:90
 msgid "Do you really want to delete this domain rule?"
 msgstr "Вы действительно желаете удалить это правило домена?"
 
@@ -1739,8 +1773,8 @@ msgid "Popular publications from this catalog based on Rating."
 msgstr "Популярные книги из этого каталога на основании Рейтинга"
 
 #: cps/templates/index.xml:31
-msgid "New Books"
-msgstr "Новые Книги"
+msgid "Recently added Books"
+msgstr ""
 
 #: cps/templates/index.xml:35
 msgid "The latest Books"
@@ -1766,19 +1800,27 @@ msgstr "Книги, отсортированные по категории"
 msgid "Books ordered by series"
 msgstr "Книги, отсортированные по серии"
 
-#: cps/templates/index.xml:89 cps/templates/layout.html:137
+#: cps/templates/index.xml:93
+msgid "Books ordered by Languages"
+msgstr ""
+
+#: cps/templates/index.xml:100
+msgid "Books ordered by file formats"
+msgstr ""
+
+#: cps/templates/index.xml:103 cps/templates/layout.html:137
 msgid "Public Shelves"
 msgstr "Общие полки"
 
-#: cps/templates/index.xml:93
+#: cps/templates/index.xml:107
 msgid "Books organized in public shelfs, visible to everyone"
 msgstr "Книги размещены на полках, и доступны всем"
 
-#: cps/templates/index.xml:97 cps/templates/layout.html:141
+#: cps/templates/index.xml:111 cps/templates/layout.html:141
 msgid "Your Shelves"
 msgstr "Ваши полки"
 
-#: cps/templates/index.xml:101
+#: cps/templates/index.xml:115
 msgid "User's own shelfs, only visible to the current user himself"
 msgstr "Пользовательские полки, видимые только самому пользователю"
 
@@ -1862,6 +1904,10 @@ msgid "Remember me"
 msgstr "Запомнить меня"
 
 #: cps/templates/login.html:22
+msgid "Forgot password"
+msgstr ""
+
+#: cps/templates/login.html:25
 msgid "Log in with magic link"
 msgstr "Войти через магическую ссылку"
 
@@ -2045,11 +2091,19 @@ msgstr "Исключить серии"
 msgid "Exclude Languages"
 msgstr "Исключить языки"
 
-#: cps/templates/search_form.html:97
+#: cps/templates/search_form.html:95
+msgid "Extensions"
+msgstr ""
+
+#: cps/templates/search_form.html:105
+msgid "Exclude Extensions"
+msgstr ""
+
+#: cps/templates/search_form.html:117
 msgid "Rating bigger than"
 msgstr "Рейтинг больше чем"
 
-#: cps/templates/search_form.html:101
+#: cps/templates/search_form.html:121
 msgid "Rating less than"
 msgstr "Рейтинг меньше чем"
 
@@ -2153,35 +2207,35 @@ msgstr "Скрыть все задачи"
 msgid "Reset user Password"
 msgstr "Сбросить пароль пользователя"
 
-#: cps/templates/user_edit.html:27
+#: cps/templates/user_edit.html:26
 msgid "Kindle E-Mail"
 msgstr "Адрес почты Kindle"
 
-#: cps/templates/user_edit.html:40
+#: cps/templates/user_edit.html:39
 msgid "Show books with language"
 msgstr "Показать книги на языках"
 
-#: cps/templates/user_edit.html:42
+#: cps/templates/user_edit.html:41
 msgid "Show all"
 msgstr "Показать все"
 
-#: cps/templates/user_edit.html:52
+#: cps/templates/user_edit.html:51
 msgid "OAuth Settings"
 msgstr ""
 
-#: cps/templates/user_edit.html:54
+#: cps/templates/user_edit.html:53
 msgid "Link"
 msgstr ""
 
-#: cps/templates/user_edit.html:56
+#: cps/templates/user_edit.html:55
 msgid "Unlink"
 msgstr ""
 
-#: cps/templates/user_edit.html:124
+#: cps/templates/user_edit.html:123
 msgid "Delete this user"
 msgstr "Удалить этого пользователя"
 
-#: cps/templates/user_edit.html:139
+#: cps/templates/user_edit.html:138
 msgid "Recent Downloads"
 msgstr "Недавние скачивания"
 
@@ -3597,4 +3651,10 @@ msgstr "Недавние скачивания"
 
 #~ msgid "volume"
 #~ msgstr ""
+
+#~ msgid "unknown"
+#~ msgstr "неизвестно"
+
+#~ msgid "New Books"
+#~ msgstr "Новые Книги"
 
