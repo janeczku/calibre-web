@@ -147,6 +147,26 @@ def modify_database_object(input_elements, db_book_object, db_object, db_session
                 db_book_object.append(db_element)
 
 
+def modify_identifiers(input_identifiers, db_identifiers, db_session):
+    """Modify Identifiers to match input information.
+       input_identifiers is a list of read-to-persist Identifiers objects.
+       db_identifiers is a list of already persisted list of Identifiers objects."""
+    input_dict = dict([ (identifier.type.lower(), identifier) for identifier in input_identifiers ])
+    db_dict = dict([ (identifier.type.lower(), identifier) for identifier in db_identifiers ])
+    # delete db identifiers not present in input or modify them with input val
+    for identifier_type, identifier in db_dict.items():
+        if identifier_type not in input_dict.keys():
+            db_session.delete(identifier)
+        else:
+            input_identifier = input_dict[identifier_type]
+            identifier.type = input_identifier.type
+            identifier.val = input_identifier.val
+    # add input identifiers not present in db
+    for identifier_type, identifier in input_dict.items():
+        if identifier_type not in db_dict.keys():
+            db_session.add(identifier)
+
+
 @editbook.route("/delete/<int:book_id>/", defaults={'book_format': ""})
 @editbook.route("/delete/<int:book_id>/<string:book_format>/")
 @login_required
@@ -459,6 +479,10 @@ def edit_book(book_id):
             else:
                 book.comments.append(db.Comments(text=to_save["description"], book=book.id))
 
+            # Handle identifiers
+            input_identifiers = identifier_list(to_save, book)
+            modify_identifiers(input_identifiers, book.identifiers, db.session)
+
             # Handle book tags
             input_tags = to_save["tags"].split(',')
             input_tags = list(map(lambda it: it.strip(), input_tags))
@@ -548,6 +572,19 @@ def merge_metadata(to_save, meta):
     to_save["description"] = to_save["description"] or Markup(
         getattr(meta, 'description', '')).unescape()
 
+def identifier_list(to_save, book):
+    """Generate a list of Identifiers from form information"""
+    id_type_prefix = 'identifier-type-'
+    id_val_prefix = 'identifier-val-'
+    result = []
+    for type_key, type_value in to_save.items():
+        if not type_key.startswith(id_type_prefix):
+            continue
+        val_key = id_val_prefix + type_key[len(id_type_prefix):]
+        if val_key not in to_save.keys():
+            continue
+        result.append( db.Identifiers(to_save[val_key], type_value, book.id) )
+    return result
 
 @editbook.route("/upload", methods=["GET", "POST"])
 @login_required_if_no_ano
