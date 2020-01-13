@@ -1,0 +1,3593 @@
+# Traduzione in italiano per Calibre-Web.
+# Copyright (C) 2016 Smart Cities Community
+# This file is distributed under the same license as the Calibre-Web
+# Juan F. Villa <juan.villa@paisdelconocimiento.org>, 2016.
+msgid ""
+msgstr ""
+"Project-Id-Version:  Calibre-Web\n"
+"Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
+"POT-Creation-Date: 2020-01-12 13:57+0100\n"
+"PO-Revision-Date: 2020-01-08 11:37+0000\n"
+"Last-Translator: Lukas Heroudek <lukas.heroudek@gmail.com>\n"
+"Language: cs_CZ\n"
+"Language-Team: \n"
+"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n>=2 && n<=4 ? 1 : 2)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.7.0\n"
+
+#: cps/about.py:42
+msgid "installed"
+msgstr "nainstalováno"
+
+#: cps/about.py:44
+msgid "not installed"
+msgstr "není nainstalováno"
+
+#: cps/about.py:84
+msgid "Statistics"
+msgstr "Statistika"
+
+#: cps/admin.py:89
+msgid "Server restarted, please reload page"
+msgstr "Server restartován, znovu načtěte stránku"
+
+#: cps/admin.py:91
+msgid "Performing shutdown of server, please close window"
+msgstr "Vypínám server, zavřete okno"
+
+#: cps/admin.py:110 cps/editbooks.py:410 cps/editbooks.py:419
+#: cps/editbooks.py:539 cps/editbooks.py:541 cps/editbooks.py:594
+#: cps/updater.py:446 cps/uploader.py:97 cps/uploader.py:108
+msgid "Unknown"
+msgstr "Neznámý"
+
+#: cps/admin.py:129
+msgid "Admin page"
+msgstr "Stránka správce"
+
+#: cps/admin.py:148 cps/templates/admin.html:115
+msgid "UI Configuration"
+msgstr "Konfigurace uživatelského rozhraní"
+
+#: cps/admin.py:185 cps/admin.py:412
+msgid "Calibre-Web configuration updated"
+msgstr "Konfigurace Calibre-Web aktualizována"
+
+#: cps/admin.py:442 cps/templates/admin.html:114
+msgid "Basic Configuration"
+msgstr "Základní konfigurace"
+
+#: cps/admin.py:465 cps/web.py:1093
+msgid "Please fill out all fields!"
+msgstr "Vyplňte všechna pole!"
+
+#: cps/admin.py:467 cps/admin.py:478 cps/admin.py:484 cps/admin.py:499
+#: cps/templates/admin.html:38
+msgid "Add new user"
+msgstr "Přidat nového uživatele"
+
+#: cps/admin.py:476 cps/web.py:1318
+msgid "E-mail is not from valid domain"
+msgstr "E-mail není z platné domény"
+
+#: cps/admin.py:482 cps/admin.py:493
+msgid "Found an existing account for this e-mail address or nickname."
+msgstr "Byl nalezen existující účet pro tuto e-mailovou adresu nebo přezdívku."
+
+#: cps/admin.py:489
+#, python-format
+msgid "User '%(user)s' created"
+msgstr "Uživatel ‘%(user)s’ vytvořen"
+
+#: cps/admin.py:509
+msgid "Edit e-mail server settings"
+msgstr "Změnit nastavení e-mailového serveru"
+
+#: cps/admin.py:535
+#, python-format
+msgid "Test e-mail successfully send to %(kindlemail)s"
+msgstr "Zkušební e-mail úspěšně odeslán na %(kindlemail)s"
+
+#: cps/admin.py:538
+#, python-format
+msgid "There was an error sending the Test e-mail: %(res)s"
+msgstr "Při odesílání zkušebního e-mailu došlo k chybě: %(res)s"
+
+#: cps/admin.py:540
+msgid "Please configure your e-mail address first..."
+msgstr "Prvně nastavte svou e-mailovou adresu..."
+
+#: cps/admin.py:542
+msgid "E-mail server settings updated"
+msgstr "Nastavení e-mailového serveru aktualizováno"
+
+#: cps/admin.py:571
+#, python-format
+msgid "User '%(nick)s' deleted"
+msgstr "Uživatel '%(nick)s' smazán"
+
+#: cps/admin.py:574
+msgid "No admin user remaining, can't delete user"
+msgstr "Nezbývá žádný správce, nemůžete jej odstranit"
+
+#: cps/admin.py:612 cps/web.py:1359
+msgid "Found an existing account for this e-mail address."
+msgstr "Byl nalezen existující účet pro tuto e-mailovou adresu."
+
+#: cps/admin.py:616 cps/admin.py:630 cps/admin.py:644 cps/web.py:1334
+#, python-format
+msgid "Edit User %(nick)s"
+msgstr "Upravit uživatele %(nick)s"
+
+#: cps/admin.py:622 cps/web.py:1327
+msgid "This username is already taken"
+msgstr "Toto uživatelské jméno je již použito"
+
+#: cps/admin.py:637
+#, python-format
+msgid "User '%(nick)s' updated"
+msgstr "Uživatel %(nick)s’ aktualizován"
+
+#: cps/admin.py:640
+msgid "An unknown error occured."
+msgstr "Došlo k neznámé chybě."
+
+#: cps/admin.py:657
+#, python-format
+msgid "Password for user %(user)s reset"
+msgstr "Heslo pro uživatele %(user)s resetováno"
+
+#: cps/admin.py:660 cps/web.py:1118 cps/web.py:1174
+msgid "An unknown error occurred. Please try again later."
+msgstr "Neznámá chyba. Opakujte prosím později."
+
+#: cps/admin.py:663 cps/web.py:1062
+msgid "Please configure the SMTP mail settings first..."
+msgstr "Nejprve nakonfigurujte nastavení pošty SMTP..."
+
+#: cps/admin.py:674
+msgid "Logfile viewer"
+msgstr "Prohlížeč log souborů"
+
+#: cps/admin.py:710
+msgid "Requesting update package"
+msgstr "Požadování balíčku aktualizace"
+
+#: cps/admin.py:711
+msgid "Downloading update package"
+msgstr "Stahování balíčku aktualizace"
+
+#: cps/admin.py:712
+msgid "Unzipping update package"
+msgstr "Rozbalování balíčku aktualizace"
+
+#: cps/admin.py:713
+msgid "Replacing files"
+msgstr "Nahrazování souborů"
+
+#: cps/admin.py:714
+msgid "Database connections are closed"
+msgstr "Databázová připojení jsou uzavřena"
+
+#: cps/admin.py:715
+msgid "Stopping server"
+msgstr "Zastavuji server"
+
+#: cps/admin.py:716
+msgid "Update finished, please press okay and reload page"
+msgstr "Aktualizace dokončena, klepněte na tlačítko OK a znovu načtěte stránku"
+
+#: cps/admin.py:717 cps/admin.py:718 cps/admin.py:719 cps/admin.py:720
+msgid "Update failed:"
+msgstr "Aktualizace selhala:"
+
+#: cps/admin.py:717 cps/updater.py:272 cps/updater.py:457 cps/updater.py:459
+msgid "HTTP Error"
+msgstr "HTTP chyba"
+
+#: cps/admin.py:718 cps/updater.py:274 cps/updater.py:461
+msgid "Connection error"
+msgstr "Chyba připojení"
+
+#: cps/admin.py:719 cps/updater.py:276 cps/updater.py:463
+msgid "Timeout while establishing connection"
+msgstr "Vypršel časový limit při navazování spojení"
+
+#: cps/admin.py:720 cps/updater.py:278 cps/updater.py:465
+msgid "General error"
+msgstr "Všeobecná chyba"
+
+#: cps/converter.py:31
+msgid "not configured"
+msgstr "není nakonfigurováno"
+
+#: cps/editbooks.py:214 cps/editbooks.py:396
+msgid "Error opening eBook. File does not exist or file is not accessible"
+msgstr "Chyba otevírání eKnihy. Soubor neexistuje nebo není přístupný"
+
+#: cps/editbooks.py:242
+msgid "edit metadata"
+msgstr "upravit metadata"
+
+#: cps/editbooks.py:321 cps/editbooks.py:569
+#, python-format
+msgid "File extension '%(ext)s' is not allowed to be uploaded to this server"
+msgstr "Soubor s příponou ‘%(ext)s’ nelze odeslat na tento server"
+
+#: cps/editbooks.py:325 cps/editbooks.py:573
+msgid "File to be uploaded must have an extension"
+msgstr "Soubor, který má být odeslán, musí mít příponu"
+
+#: cps/editbooks.py:337 cps/editbooks.py:607
+#, python-format
+msgid "Failed to create path %(path)s (Permission denied)."
+msgstr "Nepodařilo se vytvořit cestu %(path)s (oprávnění odepřeno)."
+
+#: cps/editbooks.py:342
+#, python-format
+msgid "Failed to store file %(file)s."
+msgstr "Uložení souboru %(file)s se nezdařilo."
+
+#: cps/editbooks.py:359
+#, python-format
+msgid "File format %(ext)s added to %(book)s"
+msgstr "Formát souboru %(ext)s přidán do %(book)s"
+
+#: cps/editbooks.py:376
+msgid "Cover is not a supported imageformat (jpg/png/webp), can't save"
+msgstr "Obal není v podporovaném formátu (jpg/png/webp), nelze uložit"
+
+#: cps/editbooks.py:451
+msgid "Cover is not a jpg file, can't save"
+msgstr "Obal neni soubor jpg, nelze uložit"
+
+#: cps/editbooks.py:494
+#, python-format
+msgid "%(langname)s is not a valid language"
+msgstr "%(langname)s není platným jazykem"
+
+#: cps/editbooks.py:525
+msgid "Metadata successfully updated"
+msgstr "Metadata úspěšně aktualizována"
+
+#: cps/editbooks.py:534
+msgid "Error editing book, please check logfile for details"
+msgstr "Chyba při úpravách knihy, zkontrolujte prosím log pro podrobnosti"
+
+#: cps/editbooks.py:581
+#, python-format
+msgid "File %(filename)s could not saved to temp dir"
+msgstr "Soubor %(filename)s nemohl být uložen do dočasného adresáře"
+
+#: cps/editbooks.py:598
+msgid "Uploaded book probably exists in the library, consider to change before upload new: "
+msgstr "Nahraná kniha pravděpodobně existuje v knihovně, zvažte prosím změnu před nahráním nové: "
+
+#: cps/editbooks.py:613
+#, python-format
+msgid "Failed to store file %(file)s (Permission denied)."
+msgstr "Nepodařilo se uložit soubor %(file)s (Oprávnění odepřeno)."
+
+#: cps/editbooks.py:619
+#, python-format
+msgid "Failed to delete file %(file)s (Permission denied)."
+msgstr "Nepodařilo se smazat soubor %(file)s (Oprávnění odepřeno)."
+
+#: cps/editbooks.py:710
+#, python-format
+msgid "File %(file)s uploaded"
+msgstr "Soubor %(file)s nahrán"
+
+#: cps/editbooks.py:739
+msgid "Source or destination format for conversion missing"
+msgstr "Chybí zdrojový nebo cílový formát pro převod"
+
+#: cps/editbooks.py:747
+#, python-format
+msgid "Book successfully queued for converting to %(book_format)s"
+msgstr "Kniha byla úspěšně zařazena do fronty pro převod do %(book_format)s"
+
+#: cps/editbooks.py:751
+#, python-format
+msgid "There was an error converting this book: %(res)s"
+msgstr "Při převodu této knihy došlo k chybě: %(res)s"
+
+#: cps/gdrive.py:62
+msgid "Google Drive setup not completed, try to deactivate and activate Google Drive again"
+msgstr "Google Drive nastavení nebylo dokončeno, zkuste  znovu deaktivovat a aktivovat  Google Drive"
+
+#: cps/gdrive.py:104
+msgid "Callback domain is not verified, please follow steps to verify domain in google developer console"
+msgstr "Doména zpětného volání není ověřena, postupujte podle pokynů k ověření domény v konzole pro vývojáře google"
+
+#: cps/helper.py:80
+#, python-format
+msgid "%(format)s format not found for book id: %(book)d"
+msgstr "%(format)s formát pro knihu: %(book)d nenalezen"
+
+#: cps/helper.py:92
+#, python-format
+msgid "%(format)s not found on Google Drive: %(fn)s"
+msgstr "%(format)s nenalezen na Google Drive: %(fn)s"
+
+#: cps/helper.py:99 cps/helper.py:211 cps/templates/detail.html:41
+#: cps/templates/detail.html:45
+msgid "Send to Kindle"
+msgstr "Poslat do Kindle"
+
+#: cps/helper.py:100 cps/helper.py:118 cps/helper.py:213
+msgid "This e-mail has been sent via Calibre-Web."
+msgstr "Tento e-mail byl odeslán přes Calibre-Web."
+
+#: cps/helper.py:111
+#, python-format
+msgid "%(format)s not found: %(fn)s"
+msgstr "%(format)s nenalezen: %(fn)s"
+
+#: cps/helper.py:116
+msgid "Calibre-Web test e-mail"
+msgstr "Calibre-Web zkušební e-mail"
+
+#: cps/helper.py:118
+msgid "Test e-mail"
+msgstr "Zkušební e-mail"
+
+#: cps/helper.py:133
+msgid "Get Started with Calibre-Web"
+msgstr "Začínáme s Calibre-Web"
+
+#: cps/helper.py:135
+#, python-format
+msgid "Registration e-mail for user: %(name)s"
+msgstr "Registrační e-mail pro uživatele: %(name)s"
+
+#: cps/helper.py:149 cps/helper.py:151 cps/helper.py:153 cps/helper.py:161
+#: cps/helper.py:163 cps/helper.py:165
+#, python-format
+msgid "Send %(format)s to Kindle"
+msgstr "Poslat %(format)s do Kindle"
+
+#: cps/helper.py:169 cps/helper.py:173
+#, python-format
+msgid "Convert %(orig)s to %(format)s and send to Kindle"
+msgstr "Převést %(orig)s do %(format)s a poslat do Kindle"
+
+#: cps/helper.py:213
+#, python-format
+msgid "E-mail: %(book)s"
+msgstr "E-mail: %(book)s"
+
+#: cps/helper.py:215
+msgid "The requested file could not be read. Maybe wrong permissions?"
+msgstr "Požadovaný soubor nelze přečíst. Možná nesprávná oprávnění?"
+
+#: cps/helper.py:322
+#, python-format
+msgid "Rename title from: '%(src)s' to '%(dest)s' failed with error: %(error)s"
+msgstr "Přejmenování názvu z: ‘%(src)s‘ na ‘%(dest)s'  selhalo chybou: %(error)s"
+
+#: cps/helper.py:332
+#, python-format
+msgid "Rename author from: '%(src)s' to '%(dest)s' failed with error: %(error)s"
+msgstr "Přejmenovat autora z: ‘%(src)s‘ na ‘%(dest)s’ selhalo chybou: %(error)s"
+
+#: cps/helper.py:346
+#, python-format
+msgid "Rename file in path '%(src)s' to '%(dest)s' failed with error: %(error)s"
+msgstr "Přejmenování souboru v cestě ‘%(src)s‘ na ‘%(dest)s‘ selhalo  chybou: %(error)s"
+
+#: cps/helper.py:372 cps/helper.py:382 cps/helper.py:390
+#, python-format
+msgid "File %(file)s not found on Google Drive"
+msgstr "Soubor %(file)s nenalezen na Google Drive"
+
+#: cps/helper.py:411
+#, python-format
+msgid "Book path %(path)s not found on Google Drive"
+msgstr "Cesta ke knize %(path)s nebyla nalezena na Google Drive"
+
+#: cps/helper.py:643
+msgid "Waiting"
+msgstr "Čekám"
+
+#: cps/helper.py:645
+msgid "Failed"
+msgstr "Selhalo"
+
+#: cps/helper.py:647
+msgid "Started"
+msgstr "Spuštěno"
+
+#: cps/helper.py:649
+msgid "Finished"
+msgstr "Dokončeno"
+
+#: cps/helper.py:651
+msgid "Unknown Status"
+msgstr "Neznámý stav"
+
+#: cps/helper.py:656
+msgid "E-mail: "
+msgstr "E-mail: "
+
+#: cps/helper.py:658 cps/helper.py:662
+msgid "Convert: "
+msgstr "Převést:"
+
+#: cps/helper.py:660
+msgid "Upload: "
+msgstr "Nahrát:"
+
+#: cps/helper.py:664
+msgid "Unknown Task: "
+msgstr "Neznámá úloha:"
+
+#: cps/oauth_bb.py:75
+#, python-format
+msgid "Register with %(provider)s"
+msgstr "Registrovat s %(provider)s"
+
+#: cps/oauth_bb.py:155
+msgid "Failed to log in with GitHub."
+msgstr "Přihlášení pomocí GitHub selhalo"
+
+#: cps/oauth_bb.py:160
+msgid "Failed to fetch user info from GitHub."
+msgstr "Nepodařilo se načíst informace o uživateli z GitHub"
+
+#: cps/oauth_bb.py:171
+msgid "Failed to log in with Google."
+msgstr "Přihlášení pomocí Google selhalo"
+
+#: cps/oauth_bb.py:176
+msgid "Failed to fetch user info from Google."
+msgstr "Nepodařilo se načíst informace o uživateli z Google"
+
+#: cps/oauth_bb.py:274
+#, python-format
+msgid "Unlink to %(oauth)s success."
+msgstr "Odpojení %(oauth)s úspěšné."
+
+#: cps/oauth_bb.py:278
+#, python-format
+msgid "Unlink to %(oauth)s failed."
+msgstr "Odpojení %(oauth)s neúspěšné."
+
+#: cps/oauth_bb.py:281
+#, python-format
+msgid "Not linked to %(oauth)s."
+msgstr "Není propojeno s %(oauth)s."
+
+#: cps/oauth_bb.py:309
+msgid "GitHub Oauth error, please retry later."
+msgstr "GitHub Oauth chyba, prosím opakujte později"
+
+#: cps/oauth_bb.py:328
+msgid "Google Oauth error, please retry later."
+msgstr "Google Oauth chyba, prosím opakujte později"
+
+#: cps/shelf.py:47 cps/shelf.py:99
+msgid "Invalid shelf specified"
+msgstr "Zadána neplatná police"
+
+#: cps/shelf.py:54
+#, python-format
+msgid "Sorry you are not allowed to add a book to the the shelf: %(shelfname)s"
+msgstr "Lituji, nejste oprávněni přidat knihu do police: %(shelfname)s"
+
+#: cps/shelf.py:62
+msgid "You are not allowed to edit public shelves"
+msgstr "Nejste oprávněni upravovat veřejné police"
+
+#: cps/shelf.py:71
+#, python-format
+msgid "Book is already part of the shelf: %(shelfname)s"
+msgstr "Kniha je již součástí police: %(shelfname)s"
+
+#: cps/shelf.py:85
+#, python-format
+msgid "Book has been added to shelf: %(sname)s"
+msgstr "Kniha byla přidána do plice: %(sname)s"
+
+#: cps/shelf.py:104
+#, python-format
+msgid "You are not allowed to add a book to the the shelf: %(name)s"
+msgstr "Nejste oprávněni přidat knihu do police: %(name)s"
+
+#: cps/shelf.py:109
+msgid "User is not allowed to edit public shelves"
+msgstr "Uživatel není oprávněn upravovat veřejné police"
+
+#: cps/shelf.py:127
+#, python-format
+msgid "Books are already part of the shelf: %(name)s"
+msgstr "Knihy jsou již součástí police: %(name)s"
+
+#: cps/shelf.py:141
+#, python-format
+msgid "Books have been added to shelf: %(sname)s"
+msgstr "Knihy byly přidány do police: %(sname)s"
+
+#: cps/shelf.py:143
+#, python-format
+msgid "Could not add books to shelf: %(sname)s"
+msgstr "Nelze přidat knihy do police: %(sname)s"
+
+#: cps/shelf.py:180
+#, python-format
+msgid "Book has been removed from shelf: %(sname)s"
+msgstr "Kniha byla odebrána z police: %(sname)s"
+
+#: cps/shelf.py:186
+#, python-format
+msgid "Sorry you are not allowed to remove a book from this shelf: %(sname)s"
+msgstr "Lituji, nejste oprávněni odebrat knihu z této police: %(sname)s"
+
+#: cps/shelf.py:207 cps/shelf.py:231
+#, python-format
+msgid "A shelf with the name '%(title)s' already exists."
+msgstr "Police s názvem  ‘%(title)s’ již existuje."
+
+#: cps/shelf.py:212
+#, python-format
+msgid "Shelf %(title)s created"
+msgstr "Police %(title)s vytvořena"
+
+#: cps/shelf.py:214 cps/shelf.py:242
+msgid "There was an error"
+msgstr "Došlo k chybě"
+
+#: cps/shelf.py:215 cps/shelf.py:217
+msgid "create a shelf"
+msgstr "vytvořit polici"
+
+#: cps/shelf.py:240
+#, python-format
+msgid "Shelf %(title)s changed"
+msgstr "Police %(title)s změněna"
+
+#: cps/shelf.py:243 cps/shelf.py:245
+msgid "Edit a shelf"
+msgstr "Upravit polici"
+
+#: cps/shelf.py:289
+#, python-format
+msgid "Shelf: '%(name)s'"
+msgstr "Police: ’%(name)s’"
+
+#: cps/shelf.py:292
+msgid "Error opening shelf. Shelf does not exist or is not accessible"
+msgstr "Chyba otevírání police. Police neexistuje nebo není přístupná"
+
+#: cps/shelf.py:323
+#, python-format
+msgid "Change order of Shelf: '%(name)s'"
+msgstr "Změnit  pořadí Police: ‘%(name)s’"
+
+#: cps/ub.py:57
+msgid "Recently Added"
+msgstr "Nedávno přidáné"
+
+#: cps/ub.py:59
+msgid "Show recent books"
+msgstr "Zobrazit nedávné knihy"
+
+#: cps/templates/index.xml:17 cps/ub.py:60
+msgid "Hot Books"
+msgstr "Žhavé knihy"
+
+#: cps/ub.py:61
+msgid "Show hot books"
+msgstr "Zobrazit žhavé knihy"
+
+#: cps/templates/index.xml:24 cps/ub.py:64
+msgid "Best rated Books"
+msgstr "Nejlépe hodnocené knihy"
+
+#: cps/ub.py:66
+msgid "Show best rated books"
+msgstr "Zobrazit nejlépe hodnocené knihy"
+
+#: cps/templates/index.xml:46 cps/templates/index.xml:50 cps/ub.py:67
+#: cps/web.py:1011
+msgid "Read Books"
+msgstr "Přečtené knihy"
+
+#: cps/ub.py:69
+msgid "Show read and unread"
+msgstr "Zobrazit prečtené a nepřečtené"
+
+#: cps/templates/index.xml:53 cps/templates/index.xml:57 cps/ub.py:71
+#: cps/web.py:1015
+msgid "Unread Books"
+msgstr "Nepřečtené knihy"
+
+#: cps/ub.py:73
+msgid "Show unread"
+msgstr "Zobrazit nepřečtené"
+
+#: cps/ub.py:74
+msgid "Discover"
+msgstr "Objevte"
+
+#: cps/ub.py:76
+msgid "Show random books"
+msgstr "Zobrazit náhodné knihy"
+
+#: cps/templates/index.xml:75 cps/ub.py:77
+msgid "Categories"
+msgstr "Kategorie"
+
+#: cps/ub.py:79
+msgid "Show category selection"
+msgstr "Zobrazit výběr kategorie"
+
+#: cps/templates/book_edit.html:71 cps/templates/index.xml:82
+#: cps/templates/search_form.html:53 cps/ub.py:80
+msgid "Series"
+msgstr "Série"
+
+#: cps/ub.py:82
+msgid "Show series selection"
+msgstr "Zobrazit  výběr sérií"
+
+#: cps/templates/index.xml:61 cps/ub.py:83
+msgid "Authors"
+msgstr "Autoři"
+
+#: cps/ub.py:85
+msgid "Show author selection"
+msgstr "Zobrazit výběr autora"
+
+#: cps/templates/index.xml:68 cps/ub.py:87
+msgid "Publishers"
+msgstr "Vydavatelé"
+
+#: cps/ub.py:89
+msgid "Show publisher selection"
+msgstr "Zobrazit výběr vydavatele"
+
+#: cps/templates/index.xml:89 cps/templates/search_form.html:74 cps/ub.py:90
+msgid "Languages"
+msgstr "Jazyky"
+
+#: cps/ub.py:93
+msgid "Show language selection"
+msgstr "Zobrazit výběr jazyka"
+
+#: cps/ub.py:94
+msgid "Ratings"
+msgstr "Hodnocení"
+
+#: cps/ub.py:96
+msgid "Show ratings selection"
+msgstr "Zobrazit výběr hodnocení"
+
+#: cps/templates/index.xml:96 cps/ub.py:97
+msgid "File formats"
+msgstr "Formáty souborů"
+
+#: cps/ub.py:99
+msgid "Show file formats selection"
+msgstr "Zobrazit výběr formátů"
+
+#: cps/updater.py:252 cps/updater.py:359 cps/updater.py:372
+msgid "Unexpected data while reading update information"
+msgstr "Neočekávaná data při čtení informací o aktualizaci"
+
+#: cps/updater.py:259 cps/updater.py:365
+msgid "No update available. You already have the latest version installed"
+msgstr "Aktualizace není k dispozici. Máte nainstalovanou nejnovější verzi"
+
+#: cps/updater.py:285
+msgid "A new update is available. Click on the button below to update to the latest version."
+msgstr "Nová aktualizace k dispozici. Klepnutím na tlačítko níže aktualizujte na nejnovější verzi."
+
+#: cps/updater.py:338
+msgid "Could not fetch update information"
+msgstr "Nelze získat informace o aktualizaci"
+
+#: cps/updater.py:352
+msgid "No release information available"
+msgstr "Nejsou k dispozici žádné informace o verzi"
+
+#: cps/updater.py:405 cps/updater.py:414
+#, python-format
+msgid "A new update is available. Click on the button below to update to version: %(version)s"
+msgstr "Nová aktualizace k dispozici. Klepnutím na tlačítko níže aktualizujte na verzi: %(version)s"
+
+#: cps/updater.py:424
+msgid "Click on the button below to update to the latest stable version."
+msgstr "Klepnutím na tlačítko níže aktualizujte na nejnovější stabilní verzi."
+
+#: cps/web.py:486
+msgid "Recently Added Books"
+msgstr "Nedávno přidané knihy"
+
+#: cps/web.py:514
+msgid "Best rated books"
+msgstr "Nejlépe hodnocené knihy"
+
+#: cps/templates/index.xml:38 cps/web.py:522
+msgid "Random Books"
+msgstr "Náhodné knihy"
+
+#: cps/web.py:548
+msgid "Books"
+msgstr "Knihy"
+
+#: cps/web.py:575
+msgid "Hot Books (most downloaded)"
+msgstr "Žhavé knihy (nejstahovanější)"
+
+#: cps/web.py:586 cps/web.py:1382 cps/web.py:1478
+msgid "Error opening eBook. File does not exist or file is not accessible:"
+msgstr "Chyba při otevíraní eKnihy. Soubor neexistuje nebo neni přístupný:"
+
+#: cps/web.py:599
+#, python-format
+msgid "Author: %(name)s"
+msgstr "Autoři: %(name)s"
+
+#: cps/web.py:611
+#, python-format
+msgid "Publisher: %(name)s"
+msgstr "Vydavatel: %(name)s"
+
+#: cps/web.py:622
+#, python-format
+msgid "Series: %(serie)s"
+msgstr "Série: %(serie)s"
+
+#: cps/web.py:633
+#, python-format
+msgid "Rating: %(rating)s stars"
+msgstr "Hodnocení: %(rating)s stars"
+
+#: cps/web.py:644
+#, python-format
+msgid "File format: %(format)s"
+msgstr "Soubor formátů: %(format)s"
+
+#: cps/web.py:656
+#, python-format
+msgid "Category: %(name)s"
+msgstr "Kategorie: %(name)s"
+
+#: cps/web.py:673
+#, python-format
+msgid "Language: %(name)s"
+msgstr "Jazyky: %(name)s"
+
+#: cps/web.py:705
+msgid "Publisher list"
+msgstr "Seznam vydavatelů"
+
+#: cps/web.py:721
+msgid "Series list"
+msgstr "Seznam sérií"
+
+#: cps/web.py:735
+msgid "Ratings list"
+msgstr "Seznam hodnocení"
+
+#: cps/web.py:748
+msgid "File formats list"
+msgstr "Seznam formátů"
+
+#: cps/web.py:776
+msgid "Available languages"
+msgstr "Dostupné jazyky"
+
+#: cps/web.py:793
+msgid "Category list"
+msgstr "Seznam kategorií"
+
+#: cps/templates/layout.html:73 cps/web.py:807
+msgid "Tasks"
+msgstr "Úlohy"
+
+#: cps/templates/feed.xml:33 cps/templates/layout.html:44
+#: cps/templates/layout.html:45 cps/web.py:829 cps/web.py:831
+msgid "Search"
+msgstr "Hledat"
+
+#: cps/web.py:881
+msgid "Published after "
+msgstr "Vydáno po "
+
+#: cps/web.py:888
+msgid "Published before "
+msgstr "Vydáno před "
+
+#: cps/web.py:902
+#, python-format
+msgid "Rating <= %(rating)s"
+msgstr "Hodnocení <= %(rating)s"
+
+#: cps/web.py:904
+#, python-format
+msgid "Rating >= %(rating)s"
+msgstr "Hodnocení  >= %(rating)s"
+
+#: cps/web.py:970 cps/web.py:982
+msgid "search"
+msgstr "hledat"
+
+#: cps/web.py:1067
+#, python-format
+msgid "Book successfully queued for sending to %(kindlemail)s"
+msgstr "Kniha byla úspěšně zařazena do fronty pro odeslání na %(kindlemail)s"
+
+#: cps/web.py:1071
+#, python-format
+msgid "There was an error sending this book: %(res)s"
+msgstr "Při odesílání této knihy došlo k chybě: %(res)s"
+
+#: cps/web.py:1073
+msgid "Please configure your kindle e-mail address first..."
+msgstr "Nejprve nakonfigurujte vaši kindle e-mailovou adresu.."
+
+#: cps/web.py:1087
+msgid "E-Mail server is not configured, please contact your administrator!"
+msgstr "E-mailový server není nakonfigurován, kontaktujte svého správce!"
+
+#: cps/web.py:1088 cps/web.py:1094 cps/web.py:1119 cps/web.py:1123
+#: cps/web.py:1128 cps/web.py:1132
+msgid "register"
+msgstr "registrovat"
+
+#: cps/web.py:1121
+msgid "Your e-mail is not allowed to register"
+msgstr "Váš e-mail nemá povolení k registraci"
+
+#: cps/web.py:1124
+msgid "Confirmation e-mail was send to your e-mail account."
+msgstr "Potvrzovací e-mail byl odeslán na váš účet."
+
+#: cps/web.py:1127
+msgid "This username or e-mail address is already in use."
+msgstr "Toto uživatelské jméno nebo e-mailová adresa jsou již používány."
+
+#: cps/web.py:1144
+msgid "Cannot activate LDAP authentication"
+msgstr "Nelze aktivovat ověření LDAP"
+
+#: cps/web.py:1154 cps/web.py:1281
+#, python-format
+msgid "you are now logged in as: '%(nickname)s'"
+msgstr "nyní jste přihlášeni jako: ‘%(nickname)s’"
+
+#: cps/web.py:1159
+msgid "Could not login. LDAP server down, please contact your administrator"
+msgstr "Nelze se přihlásit. LDAP server neodpovídá, kontaktujte svého správce"
+
+#: cps/web.py:1163 cps/web.py:1186
+msgid "Wrong Username or Password"
+msgstr "Špatné uživatelské jméno nebo heslo"
+
+#: cps/web.py:1170
+msgid "New Password was send to your email address"
+msgstr "Nové heslo bylo zasláno na váši emailovou adresu"
+
+#: cps/web.py:1176
+msgid "Please enter valid username to reset password"
+msgstr "Zadejte platné uživatelské jméno pro obnovení hesla"
+
+#: cps/web.py:1182
+#, python-format
+msgid "You are now logged in as: '%(nickname)s'"
+msgstr "Nyní jste přihlášeni jako: '%(nickname)s'"
+
+#: cps/web.py:1189 cps/web.py:1213
+msgid "login"
+msgstr "přihlásit se"
+
+#: cps/web.py:1225 cps/web.py:1259
+msgid "Token not found"
+msgstr "Token nenalezen"
+
+#: cps/web.py:1234 cps/web.py:1267
+msgid "Token has expired"
+msgstr "Token vypršel"
+
+#: cps/web.py:1243
+msgid "Success! Please return to your device"
+msgstr "Úspěch! Vraťte se prosím do zařízení"
+
+#: cps/web.py:1320 cps/web.py:1363 cps/web.py:1369
+#, python-format
+msgid "%(name)s's profile"
+msgstr "%(name)s profil"
+
+#: cps/web.py:1365
+msgid "Profile updated"
+msgstr "Profil aktualizován"
+
+#: cps/web.py:1394 cps/web.py:1397 cps/web.py:1400 cps/web.py:1407
+#: cps/web.py:1412
+msgid "Read a Book"
+msgstr "Číst knihu"
+
+#: cps/web.py:1423
+msgid "Error opening eBook. File does not exist or file is not accessible."
+msgstr "Chyba při otevírání eKnihy. Soubor neexistuje nebo není přístupný"
+
+#: cps/worker.py:335
+#, python-format
+msgid "Ebook-converter failed: %(error)s"
+msgstr "Převaděč eknih selhal: %(error)s"
+
+#: cps/worker.py:346
+#, python-format
+msgid "Kindlegen failed with Error %(error)s. Message: %(message)s"
+msgstr "Kindlegen selhal chybou %(error)s. Zpráva: %(message)s"
+
+#: cps/templates/admin.html:9
+msgid "User list"
+msgstr "Seznam uživatelů"
+
+#: cps/templates/admin.html:12
+msgid "Nickname"
+msgstr "Přezdívka"
+
+#: cps/templates/admin.html:13
+msgid "E-mail"
+msgstr "E-mail"
+
+#: cps/templates/admin.html:14
+msgid "Kindle"
+msgstr "Kindle"
+
+#: cps/templates/admin.html:15
+msgid "DLS"
+msgstr "Staženo"
+
+#: cps/templates/admin.html:16 cps/templates/layout.html:76
+msgid "Admin"
+msgstr "Správce"
+
+#: cps/templates/admin.html:17 cps/templates/detail.html:18
+#: cps/templates/detail.html:27 cps/templates/shelf.html:6
+#: cps/templates/shelfdown.html:62
+msgid "Download"
+msgstr "Stáhovat"
+
+#: cps/templates/admin.html:18
+msgid "View Ebooks"
+msgstr "Prohlížet eknihy"
+
+#: cps/templates/admin.html:19 cps/templates/layout.html:65
+msgid "Upload"
+msgstr "Nahrávat"
+
+#: cps/templates/admin.html:20
+msgid "Edit"
+msgstr "Upravovat"
+
+#: cps/templates/admin.html:44
+msgid "SMTP e-mail server settings"
+msgstr "Nastavení e-mailového serveru SMTP"
+
+#: cps/templates/admin.html:47 cps/templates/email_edit.html:11
+msgid "SMTP hostname"
+msgstr "SMTP hostitel"
+
+#: cps/templates/admin.html:48
+msgid "SMTP port"
+msgstr "SMTP port"
+
+#: cps/templates/admin.html:49
+msgid "SSL"
+msgstr "SSL"
+
+#: cps/templates/admin.html:50 cps/templates/email_edit.html:27
+msgid "SMTP login"
+msgstr "SMTP přihlášení"
+
+#: cps/templates/admin.html:51
+msgid "From mail"
+msgstr "Z e-mailu"
+
+#: cps/templates/admin.html:61
+msgid "Change SMTP settings"
+msgstr "Změnit SMTP nastavení"
+
+#: cps/templates/admin.html:67
+msgid "Configuration"
+msgstr "Konfigurace"
+
+#: cps/templates/admin.html:70
+msgid "Calibre DB dir"
+msgstr "Calibre DB adresář"
+
+#: cps/templates/admin.html:74
+msgid "Log level"
+msgstr "Úroveň logu"
+
+#: cps/templates/admin.html:78
+msgid "Port"
+msgstr "Port"
+
+#: cps/templates/admin.html:84 cps/templates/config_view_edit.html:23
+msgid "Books per page"
+msgstr "Knihy na stránku"
+
+#: cps/templates/admin.html:88
+msgid "Uploading"
+msgstr "Nahrávání"
+
+#: cps/templates/admin.html:92
+msgid "Anonymous browsing"
+msgstr "Anonymní prohlížení"
+
+#: cps/templates/admin.html:96
+msgid "Public registration"
+msgstr "Veřejná registrace"
+
+#: cps/templates/admin.html:100 cps/templates/remote_login.html:4
+msgid "Remote login"
+msgstr "Vzdálené přihlášení"
+
+#: cps/templates/admin.html:104
+msgid "Reverse proxy login"
+msgstr "Reverzní proxy přihlášení"
+
+#: cps/templates/admin.html:109
+msgid "Reverse proxy header name"
+msgstr "Název záhlaví reverzního prixy"
+
+#: cps/templates/admin.html:121
+msgid "Administration"
+msgstr "Správa"
+
+#: cps/templates/admin.html:122
+msgid "View Logfiles"
+msgstr "Zobrazit log"
+
+#: cps/templates/admin.html:123
+msgid "Reconnect to Calibre DB"
+msgstr "Znovupřipojení ke Calibre DB"
+
+#: cps/templates/admin.html:124
+msgid "Restart Calibre-Web"
+msgstr "Restartovat Calibre-Web"
+
+#: cps/templates/admin.html:125
+msgid "Stop Calibre-Web"
+msgstr "Zastavit Calibre-Web"
+
+#: cps/templates/admin.html:131
+msgid "Update"
+msgstr "Aktualizovat"
+
+#: cps/templates/admin.html:135
+msgid "Version"
+msgstr "Verze"
+
+#: cps/templates/admin.html:136
+msgid "Details"
+msgstr "Detaily"
+
+#: cps/templates/admin.html:142
+msgid "Current version"
+msgstr "Současná verze"
+
+#: cps/templates/admin.html:148
+msgid "Check for update"
+msgstr "Zkontrolovat aktualizace"
+
+#: cps/templates/admin.html:149
+msgid "Perform Update"
+msgstr "Provést aktualizaci"
+
+#: cps/templates/admin.html:161
+msgid "Do you really want to restart Calibre-Web?"
+msgstr "Opravdu chcete restartovat Calibre-Web?"
+
+#: cps/templates/admin.html:166 cps/templates/admin.html:180
+#: cps/templates/admin.html:200 cps/templates/shelf.html:72
+msgid "Ok"
+msgstr "Ok"
+
+#: cps/templates/admin.html:167 cps/templates/admin.html:181
+#: cps/templates/book_edit.html:174 cps/templates/book_edit.html:196
+#: cps/templates/config_edit.html:331 cps/templates/config_view_edit.html:147
+#: cps/templates/email_edit.html:40 cps/templates/email_edit.html:92
+#: cps/templates/layout.html:28 cps/templates/shelf.html:73
+#: cps/templates/shelf_edit.html:19 cps/templates/shelf_order.html:32
+#: cps/templates/user_edit.html:131
+msgid "Back"
+msgstr "Zpět"
+
+#: cps/templates/admin.html:179
+msgid "Do you really want to stop Calibre-Web?"
+msgstr "Opravdu chcete zastavit Calibre-Web?"
+
+#: cps/templates/admin.html:191
+msgid "Updating, please do not reload page"
+msgstr "Probíhá aktualizace, prosím nenačítejte stránku znovu"
+
+#: cps/templates/author.html:15
+msgid "via"
+msgstr "přes"
+
+#: cps/templates/author.html:23
+msgid "In Library"
+msgstr "V knihovně"
+
+#: cps/templates/author.html:34 cps/templates/list.html:14
+#: cps/templates/search.html:41
+msgid "All"
+msgstr "Vše"
+
+#: cps/templates/author.html:58 cps/templates/author.html:110
+#: cps/templates/discover.html:27 cps/templates/index.html:26
+#: cps/templates/index.html:89 cps/templates/search.html:67
+#: cps/templates/shelf.html:36
+msgid "reduce"
+msgstr "redukovat"
+
+#: cps/templates/author.html:94
+msgid "More by"
+msgstr "Více od"
+
+#: cps/templates/book_edit.html:12
+msgid "Delete Book"
+msgstr "Smazat knihu"
+
+#: cps/templates/book_edit.html:15
+msgid "Delete formats:"
+msgstr "Smazat formáty:"
+
+#: cps/templates/book_edit.html:18 cps/templates/book_edit.html:195
+#: cps/templates/email_edit.html:91
+msgid "Delete"
+msgstr "Smazat"
+
+#: cps/templates/book_edit.html:26
+msgid "Convert book format:"
+msgstr "Převést formát knihy:"
+
+#: cps/templates/book_edit.html:30
+msgid "Convert from:"
+msgstr "Převest z:"
+
+#: cps/templates/book_edit.html:32 cps/templates/book_edit.html:39
+msgid "select an option"
+msgstr "vyberte možnost"
+
+#: cps/templates/book_edit.html:37
+msgid "Convert to:"
+msgstr "Převést do:"
+
+#: cps/templates/book_edit.html:46
+msgid "Convert book"
+msgstr "Převest knihu"
+
+#: cps/templates/book_edit.html:55 cps/templates/search_form.html:6
+msgid "Book Title"
+msgstr "Název knihy"
+
+#: cps/templates/book_edit.html:59 cps/templates/book_edit.html:255
+#: cps/templates/book_edit.html:273 cps/templates/search_form.html:10
+msgid "Author"
+msgstr "Autor"
+
+#: cps/templates/book_edit.html:63 cps/templates/book_edit.html:260
+#: cps/templates/book_edit.html:275 cps/templates/search_form.html:126
+msgid "Description"
+msgstr "Popis"
+
+#: cps/templates/book_edit.html:67 cps/templates/search_form.html:33
+msgid "Tags"
+msgstr "Štítky"
+
+#: cps/templates/book_edit.html:75
+msgid "Series id"
+msgstr "ID série"
+
+#: cps/templates/book_edit.html:79
+msgid "Rating"
+msgstr "Hodnocení"
+
+#: cps/templates/book_edit.html:83
+msgid "Cover URL (jpg, cover is downloaded and stored in database, field is afterwards empty again)"
+msgstr "Adresa URL obalu (jpg, obal je stažen a uložen v databázi, pole je potom opět prázdné)"
+
+#: cps/templates/book_edit.html:87
+msgid "Upload Cover from local drive"
+msgstr "Nahrát obal z místní jednotky"
+
+#: cps/templates/book_edit.html:92 cps/templates/detail.html:165
+msgid "Publishing date"
+msgstr "Datum vydání"
+
+#: cps/templates/book_edit.html:99 cps/templates/book_edit.html:257
+#: cps/templates/book_edit.html:274 cps/templates/detail.html:156
+#: cps/templates/search_form.html:14
+msgid "Publisher"
+msgstr "Vydavatel"
+
+#: cps/templates/book_edit.html:103 cps/templates/user_edit.html:30
+msgid "Language"
+msgstr "Jazyk"
+
+#: cps/templates/book_edit.html:113 cps/templates/search_form.html:137
+msgid "Yes"
+msgstr "Ano"
+
+#: cps/templates/book_edit.html:114 cps/templates/search_form.html:138
+msgid "No"
+msgstr "Ne"
+
+#: cps/templates/book_edit.html:160
+msgid "Upload format"
+msgstr "Nahrát formát"
+
+#: cps/templates/book_edit.html:169
+msgid "view book after edit"
+msgstr "zobrazit knihu po úpravě"
+
+#: cps/templates/book_edit.html:172 cps/templates/book_edit.html:208
+msgid "Get metadata"
+msgstr "Získat metadata"
+
+#: cps/templates/book_edit.html:173 cps/templates/config_edit.html:329
+#: cps/templates/config_view_edit.html:146 cps/templates/login.html:20
+#: cps/templates/search_form.html:170 cps/templates/shelf_edit.html:17
+#: cps/templates/user_edit.html:129
+msgid "Submit"
+msgstr "Odeslat"
+
+#: cps/templates/book_edit.html:187
+msgid "Are you really sure?"
+msgstr "Jste si opravdu jisti?"
+
+#: cps/templates/book_edit.html:190
+msgid "Book will be deleted from Calibre database"
+msgstr "Kniha bude smazána z Calibre databáze"
+
+#: cps/templates/book_edit.html:191
+msgid "and from hard disk"
+msgstr "a z hard disku"
+
+#: cps/templates/book_edit.html:211
+msgid "Keyword"
+msgstr "Klíčové slovo"
+
+#: cps/templates/book_edit.html:212
+msgid " Search keyword "
+msgstr "Hledat klíčové slovo"
+
+#: cps/templates/book_edit.html:214 cps/templates/layout.html:47
+msgid "Go!"
+msgstr "Go!"
+
+#: cps/templates/book_edit.html:218
+msgid "Click the cover to load metadata to the form"
+msgstr "Klepnutím na obal načtěte metadata do formuláře"
+
+#: cps/templates/book_edit.html:230 cps/templates/book_edit.html:270
+msgid "Loading..."
+msgstr "Načítání..."
+
+#: cps/templates/book_edit.html:235 cps/templates/layout.html:192
+#: cps/templates/layout.html:224
+msgid "Close"
+msgstr "Zavřít"
+
+#: cps/templates/book_edit.html:262 cps/templates/book_edit.html:276
+msgid "Source"
+msgstr "Zdroj"
+
+#: cps/templates/book_edit.html:271
+msgid "Search error!"
+msgstr "Chyba vyhledávání!"
+
+#: cps/templates/book_edit.html:272
+msgid "No Result(s) found! Please try aonther keyword."
+msgstr "Nebyly nalezeny žádné výsledky! Zadejte jiné klíčové slovo."
+
+#: cps/templates/config_edit.html:12
+msgid "Library Configuration"
+msgstr "Konfigurace knihovny"
+
+#: cps/templates/config_edit.html:19
+msgid "Location of Calibre database"
+msgstr "Umístění Calibre databáze"
+
+#: cps/templates/config_edit.html:25
+msgid "Use Google Drive?"
+msgstr "Použít Google Drive?"
+
+#: cps/templates/config_edit.html:31
+msgid "Google Drive config problem"
+msgstr "Potíže s konfigurací Google Drive"
+
+#: cps/templates/config_edit.html:37
+msgid "Authenticate Google Drive"
+msgstr "Ověřit Google Drive"
+
+#: cps/templates/config_edit.html:41
+msgid "Please hit submit to continue with setup"
+msgstr "Klikněte na odeslat pro pokračování v nastavení"
+
+#: cps/templates/config_edit.html:44
+msgid "Please finish Google Drive setup after login"
+msgstr "Po přihlášení dokončete nastavení Google Drive"
+
+#: cps/templates/config_edit.html:49
+msgid "Google Drive Calibre folder"
+msgstr "Google Drive Calibre složka"
+
+#: cps/templates/config_edit.html:57
+msgid "Metadata Watch Channel ID"
+msgstr "ID kanálu sledování metadat"
+
+#: cps/templates/config_edit.html:60
+msgid "Revoke"
+msgstr "Odvolat"
+
+#: cps/templates/config_edit.html:80
+msgid "Server Configuration"
+msgstr "Nastavení serveru"
+
+#: cps/templates/config_edit.html:87
+msgid "Server Port"
+msgstr "Server port"
+
+#: cps/templates/config_edit.html:91
+msgid "SSL certfile location (leave it empty for non-SSL Servers)"
+msgstr "Umístění certifikátu SSL (ponechejte prázdné u serverů jiných než SSL)"
+
+#: cps/templates/config_edit.html:95
+msgid "SSL Keyfile location (leave it empty for non-SSL Servers)"
+msgstr "Umístění souboru s klíčem SSL (ponechte prázdné pro servery jiné než SSL)"
+
+#: cps/templates/config_edit.html:99
+msgid "Update channel"
+msgstr "Aktualizovat kanál"
+
+#: cps/templates/config_edit.html:101
+msgid "Stable"
+msgstr "Stabilní"
+
+#: cps/templates/config_edit.html:102
+msgid "Stable (Automatic)"
+msgstr "Stabilní (Automaticky)"
+
+#: cps/templates/config_edit.html:103
+msgid "Nightly"
+msgstr "Noční"
+
+#: cps/templates/config_edit.html:104
+msgid "Nightly (Automatic)"
+msgstr "Noční (Automaticky)"
+
+#: cps/templates/config_edit.html:115
+msgid "Logfile Configuration"
+msgstr "Konfigurace log souboru"
+
+#: cps/templates/config_edit.html:122
+msgid "Log Level"
+msgstr "Log Level"
+
+#: cps/templates/config_edit.html:131
+msgid "Location and name of logfile (calibre-web.log for no entry)"
+msgstr "Umístění a jméno log souboru (calibre-web.log pro žádnou položku)"
+
+#: cps/templates/config_edit.html:136
+msgid "Enable Access Log"
+msgstr "Povolit log přístupů"
+
+#: cps/templates/config_edit.html:139
+msgid "Location and name of access logfile (access.log for no entry)"
+msgstr "Umístění a jméno logu přístupů (access.log pro žádnou položku)"
+
+#: cps/templates/config_edit.html:150
+msgid "Feature Configuration"
+msgstr "Konfigurace funkcí"
+
+#: cps/templates/config_edit.html:158
+msgid "Enable uploading"
+msgstr "Povolit nahrávání"
+
+#: cps/templates/config_edit.html:162
+msgid "Enable anonymous browsing"
+msgstr "Povolit anonymní prohlížení"
+
+#: cps/templates/config_edit.html:166
+msgid "Enable public registration"
+msgstr "Povolit veřejnou registraci"
+
+#: cps/templates/config_edit.html:170
+msgid "Enable remote login (\"magic link\")"
+msgstr "Povolit vzdálené přihlášení (\“magic link\”)"
+
+#: cps/templates/config_edit.html:175
+msgid "Use Goodreads"
+msgstr "Použít Goodreads"
+
+#: cps/templates/config_edit.html:176
+msgid "Obtain an API Key"
+msgstr "Získat API klíč"
+
+#: cps/templates/config_edit.html:180
+msgid "Goodreads API Key"
+msgstr "Goodreads API Klíč"
+
+#: cps/templates/config_edit.html:184
+msgid "Goodreads API Secret"
+msgstr "Goodreads API Secret"
+
+#: cps/templates/config_edit.html:191
+msgid "Login type"
+msgstr "Typ přihlášení"
+
+#: cps/templates/config_edit.html:193
+msgid "Use standard Authentication"
+msgstr "Použít standartní ověření"
+
+#: cps/templates/config_edit.html:195
+msgid "Use LDAP Authentication"
+msgstr "Použít ověření LDAP"
+
+#: cps/templates/config_edit.html:198
+msgid "Use OAuth"
+msgstr "Použít OAuth"
+
+#: cps/templates/config_edit.html:205
+msgid "LDAP Server Host Name or IP Address"
+msgstr "Název hostitele serveru LDAP nebo IP adresa"
+
+#: cps/templates/config_edit.html:209
+msgid "LDAP Server Port"
+msgstr "LDAP Server Port"
+
+#: cps/templates/config_edit.html:213
+msgid "LDAP schema (ldap or ldaps)"
+msgstr "LDAP schéma (ldap nebo ldaps)"
+
+#: cps/templates/config_edit.html:217
+msgid "LDAP Admin username"
+msgstr "Uživatelské jméno správce LDAP"
+
+#: cps/templates/config_edit.html:221
+msgid "LDAP Admin password"
+msgstr "Heslo správce LDAP"
+
+#: cps/templates/config_edit.html:226
+msgid "LDAP Server use SSL"
+msgstr "LDAP Server používá SSL"
+
+#: cps/templates/config_edit.html:230
+msgid "LDAP Server use TLS"
+msgstr "LDAP Server používá TLS"
+
+#: cps/templates/config_edit.html:234
+msgid "LDAP Server Certificate"
+msgstr "Certifikát serveru LDAP"
+
+#: cps/templates/config_edit.html:238
+msgid "LDAP SSL Certificate Path"
+msgstr "Cesta certifikátu LDAP SSL"
+
+#: cps/templates/config_edit.html:243
+msgid "LDAP Distinguished Name (DN)"
+msgstr "Rozlišující název LDAP (DN)"
+
+#: cps/templates/config_edit.html:247
+msgid "LDAP User object filter"
+msgstr "Filtr objektu uživatele LDAP"
+
+#: cps/templates/config_edit.html:252
+msgid "LDAP Server is OpenLDAP?"
+msgstr "Server LDAP je OpenLDAP?"
+
+#: cps/templates/config_edit.html:260
+#, python-format
+msgid "Obtain %(provider)s OAuth Credential"
+msgstr "Obtain %(provider)s OAuth Credential"
+
+#: cps/templates/config_edit.html:263
+#, python-format
+msgid "%(provider)s OAuth Client Id"
+msgstr "%(provider)s OAuth Client Id"
+
+#: cps/templates/config_edit.html:267
+#, python-format
+msgid "%(provider)s OAuth Client Secret"
+msgstr "%(provider)s OAuth Client Secret"
+
+#: cps/templates/config_edit.html:276
+msgid "Allow Reverse Proxy Authentication"
+msgstr "Povolit reverzní ověření proxy"
+
+#: cps/templates/config_edit.html:280
+msgid "Reverse Proxy Header Name"
+msgstr "Název záhlaví reverzního proxy"
+
+#: cps/templates/config_edit.html:292
+msgid "External binaries"
+msgstr "Externí binární soubory"
+
+#: cps/templates/config_edit.html:300
+msgid "No converter"
+msgstr "Žádný převaděč"
+
+#: cps/templates/config_edit.html:302
+msgid "Use Kindlegen"
+msgstr "Použít Kindlegen"
+
+#: cps/templates/config_edit.html:304
+msgid "Use calibre's ebook converter"
+msgstr "Použít calibre převaděč eknih"
+
+#: cps/templates/config_edit.html:308
+msgid "E-Book converter settings"
+msgstr "Nastavení převaděče eknih"
+
+#: cps/templates/config_edit.html:312
+msgid "Path to convertertool"
+msgstr "Cesta k převáděči"
+
+#: cps/templates/config_edit.html:318
+msgid "Location of Unrar binary"
+msgstr "Umístění Unrar binarních souborů"
+
+#: cps/templates/config_edit.html:334 cps/templates/layout.html:84
+#: cps/templates/login.html:4
+msgid "Login"
+msgstr "Přihlásit"
+
+#: cps/templates/config_view_edit.html:12
+msgid "View Configuration"
+msgstr "Prohlížet konfiguraci"
+
+#: cps/templates/config_view_edit.html:19 cps/templates/shelf_edit.html:7
+msgid "Title"
+msgstr "Název"
+
+#: cps/templates/config_view_edit.html:27
+msgid "No. of random books to show"
+msgstr "Počet náhodných knih k zobrazení"
+
+#: cps/templates/config_view_edit.html:31
+msgid "No. of authors to show before hiding (0=disable hiding)"
+msgstr "Počet autorů k zobrazení před skrytím (0 = zakázat skrytí)"
+
+#: cps/templates/config_view_edit.html:35 cps/templates/readcbr.html:112
+msgid "Theme"
+msgstr "Motiv"
+
+#: cps/templates/config_view_edit.html:37
+msgid "Standard Theme"
+msgstr "Standartní motiv"
+
+#: cps/templates/config_view_edit.html:38
+msgid "caliBlur! Dark Theme"
+msgstr "caliBlur! Tmavý motiv"
+
+#: cps/templates/config_view_edit.html:42
+msgid "Regular expression for ignoring columns"
+msgstr "Regulární výraz pro ignorování sloupců"
+
+#: cps/templates/config_view_edit.html:46
+msgid "Link read/unread status to Calibre column"
+msgstr "Propojit stav čtení/nepřečtení  do sloupce Calibre"
+
+#: cps/templates/config_view_edit.html:55
+msgid "Regular expression for title sorting"
+msgstr "Regulární výraz pro řazení názvů"
+
+#: cps/templates/config_view_edit.html:59
+msgid "Tags for Mature Content"
+msgstr "Štítky pro obsah pro dospělé"
+
+#: cps/templates/config_view_edit.html:73
+msgid "Default settings for new users"
+msgstr "Výchozí nastavení pro nového uživatele"
+
+#: cps/templates/config_view_edit.html:81 cps/templates/user_edit.html:82
+msgid "Admin user"
+msgstr "Uživatel admin"
+
+#: cps/templates/config_view_edit.html:85 cps/templates/user_edit.html:91
+msgid "Allow Downloads"
+msgstr "Povolit stahování"
+
+#: cps/templates/config_view_edit.html:89 cps/templates/user_edit.html:95
+msgid "Allow book viewer"
+msgstr "Povolit prohlížeč knih"
+
+#: cps/templates/config_view_edit.html:93 cps/templates/user_edit.html:99
+msgid "Allow Uploads"
+msgstr "Povolit nahrávání"
+
+#: cps/templates/config_view_edit.html:97 cps/templates/user_edit.html:103
+msgid "Allow Edit"
+msgstr "Povolit úpravy"
+
+#: cps/templates/config_view_edit.html:101 cps/templates/user_edit.html:107
+msgid "Allow Delete books"
+msgstr "Povolit mazání knih"
+
+#: cps/templates/config_view_edit.html:105 cps/templates/user_edit.html:112
+msgid "Allow Changing Password"
+msgstr "Povolit změnu hesla"
+
+#: cps/templates/config_view_edit.html:109 cps/templates/user_edit.html:116
+msgid "Allow Editing Public Shelfs"
+msgstr "Povolit úpravy veřejných polic"
+
+#: cps/templates/config_view_edit.html:119
+msgid "Default visibilities for new users"
+msgstr "Výchozí viditelnosti pro nové uživatele"
+
+#: cps/templates/config_view_edit.html:135 cps/templates/user_edit.html:74
+msgid "Show random books in detail view"
+msgstr "Zobrazit náhodné knihy v podrobném zobrazení"
+
+#: cps/templates/config_view_edit.html:139 cps/templates/user_edit.html:87
+msgid "Show mature content"
+msgstr "Zobrazit obsah pro dospělé"
+
+#: cps/templates/detail.html:59
+msgid "Read in browser"
+msgstr "Číst v prohližeči"
+
+#: cps/templates/detail.html:72
+msgid "Listen in browser"
+msgstr "Poslechnout v prohlížeči"
+
+#: cps/templates/detail.html:117
+msgid "Book"
+msgstr "Kniha"
+
+#: cps/templates/detail.html:117
+msgid "of"
+msgstr "z"
+
+#: cps/templates/detail.html:123
+msgid "language"
+msgstr "jazyk"
+
+#: cps/templates/detail.html:200
+msgid "Mark As Unread"
+msgstr "Označit jako nepřečtené"
+
+#: cps/templates/detail.html:200
+msgid "Mark As Read"
+msgstr "Označit jako přečtené"
+
+#: cps/templates/detail.html:201
+msgid "Read"
+msgstr "Číst"
+
+#: cps/templates/detail.html:211
+msgid "Description:"
+msgstr "Popis:"
+
+#: cps/templates/detail.html:224 cps/templates/search.html:14
+msgid "Add to shelf"
+msgstr "Přidat do police"
+
+#: cps/templates/detail.html:286
+msgid "Edit metadata"
+msgstr "Upravit metadata"
+
+#: cps/templates/email_edit.html:15
+msgid "SMTP port (usually 25 for plain SMTP and 465 for SSL and 587 for STARTTLS)"
+msgstr "SMTP port (obvykle 25 pro prostý SMTP a 465 pro SSL a 587 pro STARTTLS)"
+
+#: cps/templates/email_edit.html:19
+msgid "Encryption"
+msgstr "Šifrování"
+
+#: cps/templates/email_edit.html:21
+msgid "None"
+msgstr "Žádné"
+
+#: cps/templates/email_edit.html:22
+msgid "STARTTLS"
+msgstr "STARTTLS"
+
+#: cps/templates/email_edit.html:23
+msgid "SSL/TLS"
+msgstr "SSL/TLS"
+
+#: cps/templates/email_edit.html:31
+msgid "SMTP password"
+msgstr "SMTP heslo"
+
+#: cps/templates/email_edit.html:35
+msgid "From e-mail"
+msgstr "Z e-mailu"
+
+#: cps/templates/email_edit.html:38
+msgid "Save settings"
+msgstr "Uložit nastavení"
+
+#: cps/templates/email_edit.html:39
+msgid "Save settings and send Test E-Mail"
+msgstr "Uložit nastavení a odeslat zkušební e-mail"
+
+#: cps/templates/email_edit.html:43
+msgid "Allowed domains for registering"
+msgstr "Povolené domény pro registraci"
+
+#: cps/templates/email_edit.html:46 cps/templates/email_edit.html:72
+msgid "Add Domain"
+msgstr "Přidat doménu"
+
+#: cps/templates/email_edit.html:49 cps/templates/email_edit.html:75
+msgid "Add"
+msgstr "Přidat"
+
+#: cps/templates/email_edit.html:54 cps/templates/email_edit.html:64
+msgid "Enter domainname"
+msgstr "Zadejte jméno domény"
+
+#: cps/templates/email_edit.html:60
+msgid "Denied domains for registering"
+msgstr "Zakázané domény pro registraci"
+
+#: cps/templates/email_edit.html:90
+msgid "Do you really want to delete this domain rule?"
+msgstr "Opravdu chcete odstranit toto pravidlo domény?"
+
+#: cps/templates/feed.xml:21 cps/templates/layout.html:176
+msgid "Next"
+msgstr "Další"
+
+#: cps/templates/http_error.html:37
+msgid "Create issue"
+msgstr "Vytvořit problém"
+
+#: cps/templates/http_error.html:44
+msgid "Back to home"
+msgstr "Zpět domů"
+
+#: cps/templates/index.html:5
+msgid "Discover (Random Books)"
+msgstr "Objevte (Náhodné knihy)"
+
+#: cps/templates/index.html:64
+msgid "Group by series"
+msgstr "Seřadit podle serií"
+
+#: cps/templates/index.xml:6
+msgid "Start"
+msgstr "Start"
+
+#: cps/templates/index.xml:21
+msgid "Popular publications from this catalog based on Downloads."
+msgstr "Oblíbené publikace z tohoto katalogu založené na počtu stažení."
+
+#: cps/templates/index.xml:28
+msgid "Popular publications from this catalog based on Rating."
+msgstr "Oblíbené publikace z tohoto katalogu založené na hodnocení."
+
+#: cps/templates/index.xml:31
+msgid "Recently added Books"
+msgstr "Nedávno přidané knihy"
+
+#: cps/templates/index.xml:35
+msgid "The latest Books"
+msgstr "Nejnovější knihy"
+
+#: cps/templates/index.xml:42
+msgid "Show Random Books"
+msgstr "Zobrazit náhodné knihy"
+
+#: cps/templates/index.xml:65
+msgid "Books ordered by Author"
+msgstr "Knihy seřazené podle autora"
+
+#: cps/templates/index.xml:72
+msgid "Books ordered by publisher"
+msgstr "Knihy seřazené podle vydavatele"
+
+#: cps/templates/index.xml:79
+msgid "Books ordered by category"
+msgstr "Knihy seřazené podle kategorie"
+
+#: cps/templates/index.xml:86
+msgid "Books ordered by series"
+msgstr "Knihy seřazené podle série"
+
+#: cps/templates/index.xml:93
+msgid "Books ordered by Languages"
+msgstr "Knihy seřazené podle jazyků"
+
+#: cps/templates/index.xml:100
+msgid "Books ordered by file formats"
+msgstr "Knihy seřazené podle soboru formátů"
+
+#: cps/templates/index.xml:103 cps/templates/layout.html:137
+msgid "Public Shelves"
+msgstr "Veřejné police"
+
+#: cps/templates/index.xml:107
+msgid "Books organized in public shelfs, visible to everyone"
+msgstr "Knihy uspořádané do veřejných polic, viditelné všem"
+
+#: cps/templates/index.xml:111 cps/templates/layout.html:141
+msgid "Your Shelves"
+msgstr "Vaše police"
+
+#: cps/templates/index.xml:115
+msgid "User's own shelfs, only visible to the current user himself"
+msgstr "Vlastní police uživatele, viditelné pouze pro aktuálního uživatele"
+
+#: cps/templates/layout.html:28
+msgid "Home"
+msgstr "Domů"
+
+#: cps/templates/layout.html:34
+msgid "Toggle navigation"
+msgstr "Přepnout navigaci"
+
+#: cps/templates/layout.html:55
+msgid "Advanced Search"
+msgstr "Rozšířené hledání"
+
+#: cps/templates/layout.html:76 cps/templates/read.html:71
+#: cps/templates/readcbr.html:83 cps/templates/readcbr.html:107
+msgid "Settings"
+msgstr "Nastavení"
+
+#: cps/templates/layout.html:78
+msgid "Account"
+msgstr "Účet"
+
+#: cps/templates/layout.html:80
+msgid "Logout"
+msgstr "Odhlásit se"
+
+#: cps/templates/layout.html:85 cps/templates/register.html:14
+msgid "Register"
+msgstr "Registrovat"
+
+#: cps/templates/layout.html:116 cps/templates/layout.html:223
+msgid "Uploading..."
+msgstr "Nahrávání..."
+
+#: cps/templates/layout.html:117
+msgid "please don't refresh the page"
+msgstr "prosím neobnovujte stránku"
+
+#: cps/templates/layout.html:127
+msgid "Browse"
+msgstr "Procházet"
+
+#: cps/templates/layout.html:146
+msgid "Create a Shelf"
+msgstr "Vytvořit polici"
+
+#: cps/templates/layout.html:147 cps/templates/stats.html:3
+msgid "About"
+msgstr "O Calibre-Web"
+
+#: cps/templates/layout.html:161
+msgid "Previous"
+msgstr "Předchozí"
+
+#: cps/templates/layout.html:188
+msgid "Book Details"
+msgstr "Podrobnosti o knize"
+
+#: cps/templates/layout.html:222
+msgid "Upload done, processing, please wait..."
+msgstr "Nahrávání hotovo, zpracovávám, čekejte prosím..."
+
+#: cps/templates/layout.html:225
+msgid "Error"
+msgstr "Chyba"
+
+#: cps/templates/login.html:8 cps/templates/login.html:9
+#: cps/templates/register.html:7 cps/templates/user_edit.html:8
+msgid "Username"
+msgstr "Uživatelské jméno"
+
+#: cps/templates/login.html:12 cps/templates/login.html:13
+#: cps/templates/user_edit.html:21
+msgid "Password"
+msgstr "Heslo"
+
+#: cps/templates/login.html:17
+msgid "Remember me"
+msgstr "Zapamatovat si"
+
+#: cps/templates/login.html:22
+msgid "Forgot password"
+msgstr "Zapomenuté heslo"
+
+#: cps/templates/login.html:25
+msgid "Log in with magic link"
+msgstr "Přihlásit se pomocí magického odkazu"
+
+#: cps/templates/logviewer.html:5
+msgid "Show Calibre-Web log"
+msgstr "Zobrazit Calibre-Web log"
+
+#: cps/templates/logviewer.html:8
+msgid "Show access log"
+msgstr "Zobrazit log přístupu"
+
+#: cps/templates/osd.xml:5
+msgid "Calibre-Web ebook catalog"
+msgstr "Calibre-Web katalog eknih"
+
+#: cps/templates/read.html:74
+msgid "Reflow text when sidebars are open."
+msgstr "Po otevření postranních panelů přeformátujte text."
+
+#: cps/templates/readcbr.html:88
+msgid "Keyboard Shortcuts"
+msgstr "Klávesové zkratky"
+
+#: cps/templates/readcbr.html:91
+msgid "Previous Page"
+msgstr "Předchozí strana"
+
+#: cps/templates/readcbr.html:92
+msgid "Next Page"
+msgstr "Následujicí strana"
+
+#: cps/templates/readcbr.html:93
+msgid "Scale to Best"
+msgstr "Změnit měřítko na nejlepší"
+
+#: cps/templates/readcbr.html:94
+msgid "Scale to Width"
+msgstr "Změnit měřítko na šířku"
+
+#: cps/templates/readcbr.html:95
+msgid "Scale to Height"
+msgstr "Změnit měřítko na výšku"
+
+#: cps/templates/readcbr.html:96
+msgid "Scale to Native"
+msgstr "Změnit měřítko na nativní"
+
+#: cps/templates/readcbr.html:97
+msgid "Rotate Right"
+msgstr "Otočit doprava"
+
+#: cps/templates/readcbr.html:98
+msgid "Rotate Left"
+msgstr "Otočit doleva"
+
+#: cps/templates/readcbr.html:99
+msgid "Flip Image"
+msgstr "Převrátit obrázek"
+
+#: cps/templates/readcbr.html:115
+msgid "Light"
+msgstr "Světlý"
+
+#: cps/templates/readcbr.html:116
+msgid "Dark"
+msgstr "Tnavý"
+
+#: cps/templates/readcbr.html:121
+msgid "Scale"
+msgstr "Měřítko"
+
+#: cps/templates/readcbr.html:124
+msgid "Best"
+msgstr "Nejlepší"
+
+#: cps/templates/readcbr.html:125
+msgid "Width"
+msgstr "Šířka"
+
+#: cps/templates/readcbr.html:126
+msgid "Height"
+msgstr "Výška"
+
+#: cps/templates/readcbr.html:127
+msgid "Native"
+msgstr "Nativní"
+
+#: cps/templates/readcbr.html:132
+msgid "Rotate"
+msgstr "Otočit"
+
+#: cps/templates/readcbr.html:143
+msgid "Flip"
+msgstr "Převrátit"
+
+#: cps/templates/readcbr.html:146
+msgid "Horizontal"
+msgstr "Vodorovně"
+
+#: cps/templates/readcbr.html:147
+msgid "Vertical"
+msgstr "Svisle"
+
+#: cps/templates/readcbr.html:152
+msgid "Direction"
+msgstr "Směr"
+
+#: cps/templates/readcbr.html:155
+msgid "Left to Right"
+msgstr "Zleva doprava"
+
+#: cps/templates/readcbr.html:156
+msgid "Right to Left"
+msgstr "Zprava doleva"
+
+#: cps/templates/readpdf.html:29
+msgid "PDF reader"
+msgstr "Čtečka PDF"
+
+#: cps/templates/readtxt.html:6
+msgid "Basic txt Reader"
+msgstr "Základní txt čtečka"
+
+#: cps/templates/register.html:4
+msgid "Register a new account"
+msgstr "Založit nový účet"
+
+#: cps/templates/register.html:8
+msgid "Choose a username"
+msgstr "Zvolte uživatelské jméno"
+
+#: cps/templates/register.html:11 cps/templates/user_edit.html:13
+msgid "E-mail address"
+msgstr "E-mailová adresa"
+
+#: cps/templates/register.html:12
+msgid "Your email address"
+msgstr "Vaše e-mailová adresa"
+
+#: cps/templates/remote_login.html:6
+msgid "Use your other device, login and visit "
+msgstr "Použijte své druhé zařízení, přihlaste se a navštivte"
+
+#: cps/templates/remote_login.html:9
+msgid "Once you do so, you will automatically get logged in on this device."
+msgstr "Jakmile tak učiníte, budete automaticky přihlášeni na tomto zařízení."
+
+#: cps/templates/remote_login.html:12
+msgid "The link will expire after 10 minutes."
+msgstr "Odkaz vyprší za 10 minut"
+
+#: cps/templates/search.html:5
+msgid "No Results for:"
+msgstr "Žádné výsledky pro:"
+
+#: cps/templates/search.html:6
+msgid "Please try a different search"
+msgstr "Zkuste prosím jiné vyhledávání"
+
+#: cps/templates/search.html:8
+msgid "Results for:"
+msgstr "Výsledky pro:"
+
+#: cps/templates/search_form.html:19
+msgid "Publishing date from"
+msgstr "Datum vydání od"
+
+#: cps/templates/search_form.html:26
+msgid "Publishing date to"
+msgstr "Datum vydání do"
+
+#: cps/templates/search_form.html:43
+msgid "Exclude Tags"
+msgstr "Vynechat štítky"
+
+#: cps/templates/search_form.html:63
+msgid "Exclude Series"
+msgstr "Vynechat série"
+
+#: cps/templates/search_form.html:84
+msgid "Exclude Languages"
+msgstr "Vynechat jazyky"
+
+#: cps/templates/search_form.html:95
+msgid "Extensions"
+msgstr "Přípony"
+
+#: cps/templates/search_form.html:105
+msgid "Exclude Extensions"
+msgstr "Vynechat přípony"
+
+#: cps/templates/search_form.html:117
+msgid "Rating bigger than"
+msgstr "Hodnoceni více než"
+
+#: cps/templates/search_form.html:121
+msgid "Rating less than"
+msgstr "Hodnocení méně než"
+
+#: cps/templates/shelf.html:10
+msgid "Delete this Shelf"
+msgstr "Smazat tuto polici"
+
+#: cps/templates/shelf.html:11
+msgid "Edit Shelf"
+msgstr "Upravit polici"
+
+#: cps/templates/shelf.html:12 cps/templates/shelf_order.html:31
+msgid "Change order"
+msgstr "Změnit řazení"
+
+#: cps/templates/shelf.html:67
+msgid "Do you really want to delete the shelf?"
+msgstr "Opravdu chcete odstranit polici?"
+
+#: cps/templates/shelf.html:70
+msgid "Shelf will be lost for everybody and forever!"
+msgstr "Police budou ztracena pro všechny a navždy!"
+
+#: cps/templates/shelf_edit.html:13
+msgid "should the shelf be public?"
+msgstr "měla by být police veřejná?"
+
+#: cps/templates/shelf_order.html:5
+msgid "Drag 'n drop to rearrange order"
+msgstr "Přetažením uspořádáte pořadí"
+
+#: cps/templates/stats.html:7
+msgid "Calibre library statistics"
+msgstr "Statistika knihovny Calibre"
+
+#: cps/templates/stats.html:12
+msgid "Books in this Library"
+msgstr "Knihy v této knihovně"
+
+#: cps/templates/stats.html:16
+msgid "Authors in this Library"
+msgstr "Autoři v této knihovně"
+
+#: cps/templates/stats.html:20
+msgid "Categories in this Library"
+msgstr "Kategorie v této knihovně"
+
+#: cps/templates/stats.html:24
+msgid "Series in this Library"
+msgstr "Série v této knihovně"
+
+#: cps/templates/stats.html:28
+msgid "Linked libraries"
+msgstr "Propojené knihovny"
+
+#: cps/templates/stats.html:32
+msgid "Program library"
+msgstr "Knihovna programu"
+
+#: cps/templates/stats.html:33
+msgid "Installed Version"
+msgstr "Nainstalovaná verze"
+
+#: cps/templates/tasks.html:7
+msgid "Tasks list"
+msgstr "Seznam úkolů"
+
+#: cps/templates/tasks.html:12
+msgid "User"
+msgstr "Uživatel"
+
+#: cps/templates/tasks.html:14
+msgid "Task"
+msgstr "Úkol"
+
+#: cps/templates/tasks.html:15
+msgid "Status"
+msgstr "Stav"
+
+#: cps/templates/tasks.html:16
+msgid "Progress"
+msgstr "Průběh"
+
+#: cps/templates/tasks.html:17
+msgid "Runtime"
+msgstr "Doba spuštění"
+
+#: cps/templates/tasks.html:18
+msgid "Starttime"
+msgstr "Čas spuštění"
+
+#: cps/templates/tasks.html:24
+msgid "Delete finished tasks"
+msgstr "Odstranit dokončené úkoly"
+
+#: cps/templates/tasks.html:25
+msgid "Hide all tasks"
+msgstr "Skrýt všechny úkoly"
+
+#: cps/templates/user_edit.html:18
+msgid "Reset user Password"
+msgstr "Resetovat uživatelské heslo"
+
+#: cps/templates/user_edit.html:26
+msgid "Kindle E-Mail"
+msgstr "Kindle E-Mail"
+
+#: cps/templates/user_edit.html:39
+msgid "Show books with language"
+msgstr "Zobrazit knihy s jazykem"
+
+#: cps/templates/user_edit.html:41
+msgid "Show all"
+msgstr "Zobrazit vše"
+
+#: cps/templates/user_edit.html:51
+msgid "OAuth Settings"
+msgstr "Nastavení OAuth"
+
+#: cps/templates/user_edit.html:53
+msgid "Link"
+msgstr "Připojit"
+
+#: cps/templates/user_edit.html:55
+msgid "Unlink"
+msgstr "Odpojit"
+
+#: cps/templates/user_edit.html:123
+msgid "Delete this user"
+msgstr "Odstranit tohoto uživatele"
+
+#: cps/templates/user_edit.html:138
+msgid "Recent Downloads"
+msgstr "Nedávná stahování"
+
+#~ msgid "Excecution permissions missing"
+#~ msgstr "Chybí oprávnění k provedení"
+
+#~ msgid "Error excecuting UnRar"
+#~ msgstr "Chyba při provádění UnRar"
+
+#~ msgid "Unrar binary file not found"
+#~ msgstr "UnRar binární soubor nenalezen"
+
+#~ msgid "Newest Books"
+#~ msgstr "Nejnovější knihy"
+
+#~ msgid "Oldest Books"
+#~ msgstr "Nejstarší knihy"
+
+#~ msgid "Books (A-Z)"
+#~ msgstr "Knihy (A-Z)"
+
+#~ msgid "Books (Z-A)"
+#~ msgstr "Knihy (Z-A)"
+
+#~ msgid "successfully deleted shelf %(name)s"
+#~ msgstr "police %(name)s úspěšně smazána"
+
+#~ msgid "Import of optional Google Drive requirements missing"
+#~ msgstr "Chybí import volitelných požadavků Google Drive"
+
+#~ msgid "client_secrets.json is missing or not readable"
+#~ msgstr "client_secrets.json chybí nebo je nečitelný"
+
+#~ msgid "client_secrets.json is not configured for web application"
+#~ msgstr "client_secrets.json není nakonfigurován pro webovou aplikaci"
+
+#~ msgid "Keyfile location is not valid, please enter correct path"
+#~ msgstr "Umístění souboru s klíčem není platné, zadejte prosím správnou cestu"
+
+#~ msgid "Certfile location is not valid, please enter correct path"
+#~ msgstr "Umístění souboru certifikátu je neplatné, zadejte prosím správnou cestu"
+
+#~ msgid "Logfile location is not valid, please enter correct path"
+#~ msgstr "Umístění log souboru není platné, zadejte prosím správnou cestu"
+
+#~ msgid "DB location is not valid, please enter correct path"
+#~ msgstr "Umístění databáze je neplatné, zadejte prosím správnou cestu"
+
+#~ msgid "Failed to create path for cover %(path)s (Permission denied)."
+#~ msgstr "Nepodařilo se vytvořit cestu pro obal %(path)s (Oprávnění odepřeno)."
+
+#~ msgid "Failed to store cover-file %(cover)s."
+#~ msgstr "Uložení obalu %(cover)s se nezdařilo."
+
+#~ msgid "Cover-file is not a valid image file"
+#~ msgstr "Soubor obalu není platným souborem obrázku"
+
+#~ msgid "unknown"
+#~ msgstr "neznámý"
+
+#~ msgid "File %(title)s"
+#~ msgstr "Soubor %(title)s"
+
+#~ msgid "Use"
+#~ msgstr "Použít"
+
+#~ msgid "Show sorted books"
+#~ msgstr "Zobrazit seřazené knihy"
+
+#~ msgid "New Books"
+#~ msgstr "Nové knihy"
+
+#~ msgid "Sorted Books"
+#~ msgstr "Seřazené knihy"
+
+#~ msgid "Sort By"
+#~ msgstr "Seřadit podle"
+
+#~ msgid "Newest"
+#~ msgstr "Nejnovější"
+
+#~ msgid "Oldest"
+#~ msgstr "Nejstarší"
+
+#~ msgid "Ascending"
+#~ msgstr "Vzestupně"
+
+#~ msgid "Descending"
+#~ msgstr "Sestupně"
+
+#~ msgid "PDF.js viewer"
+#~ msgstr "Prohlížeč PDF.js"
+
+#~ msgid "Preparing document for printing..."
+#~ msgstr "Příprava dokumentu pro tisk …"
+
+#~ msgid "Using your another device, visit"
+#~ msgstr "Pomocí jiného zařízení navštivte"
+
+#~ msgid "and log in"
+#~ msgstr "a přihlašte se"
+
+#~ msgid "Afar"
+#~ msgstr "Afar"
+
+#~ msgid "Abkhazian"
+#~ msgstr "Abkhazian"
+
+#~ msgid "Achinese"
+#~ msgstr "Achinese"
+
+#~ msgid "Acoli"
+#~ msgstr "Acoli"
+
+#~ msgid "Adangme"
+#~ msgstr "Adangme"
+
+#~ msgid "Adyghe"
+#~ msgstr "Adyghe"
+
+#~ msgid "Afrihili"
+#~ msgstr "Afrihili"
+
+#~ msgid "Afrikaans"
+#~ msgstr "Afrikaans"
+
+#~ msgid "Ainu (Japan)"
+#~ msgstr "Ainu (Giappone)"
+
+#~ msgid "Akan"
+#~ msgstr "Akan"
+
+#~ msgid "Akkadian"
+#~ msgstr "Accadico"
+
+#~ msgid "Aleut"
+#~ msgstr "Aleut"
+
+#~ msgid "Altai; Southern"
+#~ msgstr "Altai meridionale"
+
+#~ msgid "Amharic"
+#~ msgstr "Amarico"
+
+#~ msgid "English; Old (ca. 450-1100)"
+#~ msgstr "Inglese antico (ca. 450-1100)"
+
+#~ msgid "Angika"
+#~ msgstr "Angika"
+
+#~ msgid "Arabic"
+#~ msgstr "Arabo"
+
+#~ msgid "Aramaic; Official (700-300 BCE)"
+#~ msgstr "Aramaico ufficiale (700-300 p.e.v.)"
+
+#~ msgid "Aragonese"
+#~ msgstr "Aragonese"
+
+#~ msgid "Mapudungun"
+#~ msgstr "Mapudungun"
+
+#~ msgid "Arapaho"
+#~ msgstr "Arapaho"
+
+#~ msgid "Arawak"
+#~ msgstr "Arawak"
+
+#~ msgid "Assamese"
+#~ msgstr "Assamese"
+
+#~ msgid "Asturian"
+#~ msgstr "Asturiano"
+
+#~ msgid "Avaric"
+#~ msgstr "Avarico"
+
+#~ msgid "Avestan"
+#~ msgstr "Avestano"
+
+#~ msgid "Awadhi"
+#~ msgstr "Awadhi"
+
+#~ msgid "Aymara"
+#~ msgstr "Aymara"
+
+#~ msgid "Azerbaijani"
+#~ msgstr "Azerbaijano"
+
+#~ msgid "Bashkir"
+#~ msgstr "Bashkir"
+
+#~ msgid "Baluchi"
+#~ msgstr "Baluchi"
+
+#~ msgid "Bambara"
+#~ msgstr "Bambara"
+
+#~ msgid "Balinese"
+#~ msgstr "Balinese"
+
+#~ msgid "Basa (Cameroon)"
+#~ msgstr "Basa (Cameru)"
+
+#~ msgid "Beja"
+#~ msgstr "Beja"
+
+#~ msgid "Belarusian"
+#~ msgstr "Bielorusso"
+
+#~ msgid "Bemba (Zambia)"
+#~ msgstr "Bemba (Zambia)"
+
+#~ msgid "Bengali"
+#~ msgstr "Bengalese"
+
+#~ msgid "Bhojpuri"
+#~ msgstr "Bhojpuri"
+
+#~ msgid "Bikol"
+#~ msgstr "Bikol"
+
+#~ msgid "Bini"
+#~ msgstr "Bini"
+
+#~ msgid "Bislama"
+#~ msgstr "Bislama"
+
+#~ msgid "Siksika"
+#~ msgstr "Siksika"
+
+#~ msgid "Tibetan"
+#~ msgstr "Tibetano"
+
+#~ msgid "Bosnian"
+#~ msgstr "Bosniaco"
+
+#~ msgid "Braj"
+#~ msgstr "Braj"
+
+#~ msgid "Breton"
+#~ msgstr "Bretone"
+
+#~ msgid "Buriat"
+#~ msgstr "Buriat"
+
+#~ msgid "Buginese"
+#~ msgstr "Buginese"
+
+#~ msgid "Bulgarian"
+#~ msgstr "Bulgaro"
+
+#~ msgid "Bilin"
+#~ msgstr "Bilin"
+
+#~ msgid "Caddo"
+#~ msgstr "Caddo"
+
+#~ msgid "Carib; Galibi"
+#~ msgstr "Carib (Galibi)"
+
+#~ msgid "Catalan"
+#~ msgstr "Catalano"
+
+#~ msgid "Cebuano"
+#~ msgstr "Cebuano"
+
+#~ msgid "Czech"
+#~ msgstr "Ceco"
+
+#~ msgid "Chamorro"
+#~ msgstr "Chamorro"
+
+#~ msgid "Chibcha"
+#~ msgstr "Chibcha"
+
+#~ msgid "Chechen"
+#~ msgstr "Chechen"
+
+#~ msgid "Chagatai"
+#~ msgstr "Ciagataico"
+
+#~ msgid "Chuukese"
+#~ msgstr "Chuukese"
+
+#~ msgid "Mari (Russia)"
+#~ msgstr "Mari (Russia)"
+
+#~ msgid "Chinook jargon"
+#~ msgstr "Chinook jargon"
+
+#~ msgid "Choctaw"
+#~ msgstr "Choctaw"
+
+#~ msgid "Chipewyan"
+#~ msgstr "Chipewyan"
+
+#~ msgid "Cherokee"
+#~ msgstr "Cherokee"
+
+#~ msgid "Slavonic; Old"
+#~ msgstr "Slavo antico"
+
+#~ msgid "Chuvash"
+#~ msgstr "Chuvash"
+
+#~ msgid "Cheyenne"
+#~ msgstr "Cheyenne"
+
+#~ msgid "Coptic"
+#~ msgstr "Copto"
+
+#~ msgid "Cornish"
+#~ msgstr "Cornish"
+
+#~ msgid "Corsican"
+#~ msgstr "Corso"
+
+#~ msgid "Cree"
+#~ msgstr "Cree"
+
+#~ msgid "Turkish; Crimean"
+#~ msgstr "Turco; Crimeo"
+
+#~ msgid "Kashubian"
+#~ msgstr "Kashubian"
+
+#~ msgid "Welsh"
+#~ msgstr "Gallese"
+
+#~ msgid "Dakota"
+#~ msgstr "Dakota"
+
+#~ msgid "Danish"
+#~ msgstr "Danese"
+
+#~ msgid "Dargwa"
+#~ msgstr "Dargwa"
+
+#~ msgid "Delaware"
+#~ msgstr "Delaware"
+
+#~ msgid "Slave (Athapascan)"
+#~ msgstr "Slave (Athapascan)"
+
+#~ msgid "German"
+#~ msgstr "Tedesco"
+
+#~ msgid "Dogrib"
+#~ msgstr "Dogrib"
+
+#~ msgid "Dinka"
+#~ msgstr "Dinca"
+
+#~ msgid "Dhivehi"
+#~ msgstr "Dhivehi"
+
+#~ msgid "Dogri (macrolanguage)"
+#~ msgstr "Dogri (macrolingua)"
+
+#~ msgid "Sorbian; Lower"
+#~ msgstr "Lusaziano inferiore"
+
+#~ msgid "Duala"
+#~ msgstr "Duala"
+
+#~ msgid "Dutch; Middle (ca. 1050-1350)"
+#~ msgstr "Olandese medio (ca. 1050-1350)"
+
+#~ msgid "Dyula"
+#~ msgstr "Diula"
+
+#~ msgid "Dzongkha"
+#~ msgstr "Dzongkha"
+
+#~ msgid "Efik"
+#~ msgstr "Efik"
+
+#~ msgid "Egyptian (Ancient)"
+#~ msgstr "Egiziano antico"
+
+#~ msgid "Ekajuk"
+#~ msgstr "Ekajuk"
+
+#~ msgid "Greek; Modern (1453-)"
+#~ msgstr "Greco moderno (1453-)"
+
+#~ msgid "Elamite"
+#~ msgstr "Elamitico"
+
+#~ msgid "English"
+#~ msgstr "Inglese"
+
+#~ msgid "English; Middle (1100-1500)"
+#~ msgstr "Inglese medio (1100-1500)"
+
+#~ msgid "Esperanto"
+#~ msgstr "Esperanto"
+
+#~ msgid "Estonian"
+#~ msgstr "Estone"
+
+#~ msgid "Basque"
+#~ msgstr "Basco"
+
+#~ msgid "Ewe"
+#~ msgstr "Ewe"
+
+#~ msgid "Ewondo"
+#~ msgstr "Ewondo"
+
+#~ msgid "Fang (Equatorial Guinea)"
+#~ msgstr "Fang (Guinea equatoriale)"
+
+#~ msgid "Faroese"
+#~ msgstr "Faroese"
+
+#~ msgid "Persian"
+#~ msgstr "Persiano"
+
+#~ msgid "Fanti"
+#~ msgstr "Fanti"
+
+#~ msgid "Fijian"
+#~ msgstr "Figiano"
+
+#~ msgid "Filipino"
+#~ msgstr "Filippino"
+
+#~ msgid "Finnish"
+#~ msgstr "Finlandese"
+
+#~ msgid "Fon"
+#~ msgstr "Fon"
+
+#~ msgid "French"
+#~ msgstr "Francese"
+
+#~ msgid "French; Middle (ca. 1400-1600)"
+#~ msgstr "Francese medio (ca. 1400-1600)"
+
+#~ msgid "French; Old (842-ca. 1400)"
+#~ msgstr "Francese antico (842-ca. 1400)"
+
+#~ msgid "Frisian; Northern"
+#~ msgstr "Frisone settentrionale"
+
+#~ msgid "Frisian; Eastern"
+#~ msgstr "Frisone orientale"
+
+#~ msgid "Frisian; Western"
+#~ msgstr "Frisone occidentale"
+
+#~ msgid "Fulah"
+#~ msgstr "Fulah"
+
+#~ msgid "Friulian"
+#~ msgstr "Friulano"
+
+#~ msgid "Ga"
+#~ msgstr "Ga"
+
+#~ msgid "Gayo"
+#~ msgstr "Gayo"
+
+#~ msgid "Gbaya (Central African Republic)"
+#~ msgstr "Gbaya (Repubblica centro africana)"
+
+#~ msgid "Geez"
+#~ msgstr "Geez"
+
+#~ msgid "Gilbertese"
+#~ msgstr "Gilbertese"
+
+#~ msgid "Gaelic; Scottish"
+#~ msgstr "Gaelico (Scozzese)"
+
+#~ msgid "Irish"
+#~ msgstr "Gaelico"
+
+#~ msgid "Galician"
+#~ msgstr "Galiziano"
+
+#~ msgid "Manx"
+#~ msgstr "Manx"
+
+#~ msgid "German; Middle High (ca. 1050-1500)"
+#~ msgstr "Tedesco medio alto (ca. 1050-1500)"
+
+#~ msgid "German; Old High (ca. 750-1050)"
+#~ msgstr "Tedesco antico alto (ca. 750-1050)"
+
+#~ msgid "Gondi"
+#~ msgstr "Gondi"
+
+#~ msgid "Gorontalo"
+#~ msgstr "Gorontalo"
+
+#~ msgid "Gothic"
+#~ msgstr "Gotico"
+
+#~ msgid "Grebo"
+#~ msgstr "Grebo"
+
+#~ msgid "Greek; Ancient (to 1453)"
+#~ msgstr "Greco antico (fino al 1453)"
+
+#~ msgid "Guarani"
+#~ msgstr "Guarani"
+
+#~ msgid "German; Swiss"
+#~ msgstr "Tedesco (Svizzera)"
+
+#~ msgid "Gujarati"
+#~ msgstr "Gujarati"
+
+#~ msgid "Gwichʼin"
+#~ msgstr "Gwichʼin"
+
+#~ msgid "Haida"
+#~ msgstr "Haida"
+
+#~ msgid "Creole; Haitian"
+#~ msgstr "Creolo (Haitiano)"
+
+#~ msgid "Hausa"
+#~ msgstr "Hausa"
+
+#~ msgid "Hawaiian"
+#~ msgstr "Hawaiian"
+
+#~ msgid "Hebrew"
+#~ msgstr "Ebraico"
+
+#~ msgid "Herero"
+#~ msgstr "Herero"
+
+#~ msgid "Hiligaynon"
+#~ msgstr "Hiligayna"
+
+#~ msgid "Hindi"
+#~ msgstr "Hindi"
+
+#~ msgid "Hittite"
+#~ msgstr "Hittite"
+
+#~ msgid "Hmong"
+#~ msgstr "Hmong"
+
+#~ msgid "Hiri Motu"
+#~ msgstr "Hiri motu"
+
+#~ msgid "Croatian"
+#~ msgstr "Croato"
+
+#~ msgid "Sorbian; Upper"
+#~ msgstr "Lusaziano superiore"
+
+#~ msgid "Hungarian"
+#~ msgstr "Ungherese"
+
+#~ msgid "Hupa"
+#~ msgstr "Hupa"
+
+#~ msgid "Armenian"
+#~ msgstr "Armenian"
+
+#~ msgid "Iban"
+#~ msgstr "Iban"
+
+#~ msgid "Igbo"
+#~ msgstr "Igbo"
+
+#~ msgid "Ido"
+#~ msgstr "Ido"
+
+#~ msgid "Yi; Sichuan"
+#~ msgstr "Yi; Sichuan"
+
+#~ msgid "Inuktitut"
+#~ msgstr "Inuktitut"
+
+#~ msgid "Interlingue"
+#~ msgstr "Interlingua"
+
+#~ msgid "Iloko"
+#~ msgstr "Ilocano"
+
+#~ msgid "Interlingua (International Auxiliary Language Association)"
+#~ msgstr "Interlingua (International Auxiliary Language Association)"
+
+#~ msgid "Indonesian"
+#~ msgstr "Indonesiano"
+
+#~ msgid "Ingush"
+#~ msgstr "Ingush"
+
+#~ msgid "Inupiaq"
+#~ msgstr "Inupiaq"
+
+#~ msgid "Icelandic"
+#~ msgstr "Islandese"
+
+#~ msgid "Italian"
+#~ msgstr "Italiano"
+
+#~ msgid "Javanese"
+#~ msgstr "Javanese"
+
+#~ msgid "Lojban"
+#~ msgstr "Lojban"
+
+#~ msgid "Japanese"
+#~ msgstr "Giapponese"
+
+#~ msgid "Judeo-Persian"
+#~ msgstr "Giudeo-persiano"
+
+#~ msgid "Judeo-Arabic"
+#~ msgstr "Giudeo-arabo"
+
+#~ msgid "Kara-Kalpak"
+#~ msgstr "Kara-Kalpak"
+
+#~ msgid "Kabyle"
+#~ msgstr "Kabyle"
+
+#~ msgid "Kachin"
+#~ msgstr "Kachin"
+
+#~ msgid "Kalaallisut"
+#~ msgstr "Kalaallisut"
+
+#~ msgid "Kamba (Kenya)"
+#~ msgstr "Kamba (Kenya)"
+
+#~ msgid "Kannada"
+#~ msgstr "Kannada"
+
+#~ msgid "Kashmiri"
+#~ msgstr "Kashmiri"
+
+#~ msgid "Georgian"
+#~ msgstr "Georgiano"
+
+#~ msgid "Kanuri"
+#~ msgstr "Kanuri"
+
+#~ msgid "Kawi"
+#~ msgstr "Kawi"
+
+#~ msgid "Kazakh"
+#~ msgstr "Kazako"
+
+#~ msgid "Kabardian"
+#~ msgstr "Kabardia"
+
+#~ msgid "Khasi"
+#~ msgstr "Khasi"
+
+#~ msgid "Khmer; Central"
+#~ msgstr "Khmer centrale"
+
+#~ msgid "Khotanese"
+#~ msgstr "Khotanese"
+
+#~ msgid "Kikuyu"
+#~ msgstr "Kikuyu"
+
+#~ msgid "Kinyarwanda"
+#~ msgstr "Kinyarwanda"
+
+#~ msgid "Kirghiz"
+#~ msgstr "Kirghiso"
+
+#~ msgid "Kimbundu"
+#~ msgstr "Kimbundu"
+
+#~ msgid "Konkani (macrolanguage)"
+#~ msgstr "Konkani (macrolinguaggio)"
+
+#~ msgid "Komi"
+#~ msgstr "Komi"
+
+#~ msgid "Kongo"
+#~ msgstr "Kongo"
+
+#~ msgid "Korean"
+#~ msgstr "Coreano"
+
+#~ msgid "Kosraean"
+#~ msgstr "Kosraean"
+
+#~ msgid "Kpelle"
+#~ msgstr "Kpelle"
+
+#~ msgid "Karachay-Balkar"
+#~ msgstr "Karachay-Balkar"
+
+#~ msgid "Karelian"
+#~ msgstr "Karelian"
+
+#~ msgid "Kurukh"
+#~ msgstr "Kurukh"
+
+#~ msgid "Kuanyama"
+#~ msgstr "Kuanyama"
+
+#~ msgid "Kumyk"
+#~ msgstr "Kumyk"
+
+#~ msgid "Kurdish"
+#~ msgstr "Curdo"
+
+#~ msgid "Kutenai"
+#~ msgstr "Kutenai"
+
+#~ msgid "Ladino"
+#~ msgstr "Ladino"
+
+#~ msgid "Lahnda"
+#~ msgstr "Lahnda"
+
+#~ msgid "Lamba"
+#~ msgstr "Lamba"
+
+#~ msgid "Lao"
+#~ msgstr "Lao"
+
+#~ msgid "Latin"
+#~ msgstr "Latino"
+
+#~ msgid "Latvian"
+#~ msgstr "Lettone"
+
+#~ msgid "Lezghian"
+#~ msgstr "Lezghian"
+
+#~ msgid "Limburgan"
+#~ msgstr "Limburgan"
+
+#~ msgid "Lingala"
+#~ msgstr "Lingala"
+
+#~ msgid "Lithuanian"
+#~ msgstr "Lituano"
+
+#~ msgid "Mongo"
+#~ msgstr "Mongo"
+
+#~ msgid "Lozi"
+#~ msgstr "Lozi"
+
+#~ msgid "Luxembourgish"
+#~ msgstr "Lussemburghese"
+
+#~ msgid "Luba-Lulua"
+#~ msgstr "Luba-lulua"
+
+#~ msgid "Luba-Katanga"
+#~ msgstr "Luba-katanga"
+
+#~ msgid "Ganda"
+#~ msgstr "Ganda"
+
+#~ msgid "Luiseno"
+#~ msgstr "Luiseno"
+
+#~ msgid "Lunda"
+#~ msgstr "Lunda"
+
+#~ msgid "Luo (Kenya and Tanzania)"
+#~ msgstr "Luo (Kenya e Tanzania)"
+
+#~ msgid "Lushai"
+#~ msgstr "Lushai"
+
+#~ msgid "Madurese"
+#~ msgstr "Madurese"
+
+#~ msgid "Magahi"
+#~ msgstr "Magahi"
+
+#~ msgid "Marshallese"
+#~ msgstr "Marshallese"
+
+#~ msgid "Maithili"
+#~ msgstr "Maithili"
+
+#~ msgid "Makasar"
+#~ msgstr "Makasar"
+
+#~ msgid "Malayalam"
+#~ msgstr "Malayalam"
+
+#~ msgid "Mandingo"
+#~ msgstr "Mandingo"
+
+#~ msgid "Marathi"
+#~ msgstr "Marathi"
+
+#~ msgid "Masai"
+#~ msgstr "Masai"
+
+#~ msgid "Moksha"
+#~ msgstr "Moksha"
+
+#~ msgid "Mandar"
+#~ msgstr "Mandar"
+
+#~ msgid "Mende (Sierra Leone)"
+#~ msgstr "Mende (Sierra Leone)"
+
+#~ msgid "Irish; Middle (900-1200)"
+#~ msgstr "Irlandese medio (900-1200)"
+
+#~ msgid "Mi'kmaq"
+#~ msgstr "Mi'kmaq"
+
+#~ msgid "Minangkabau"
+#~ msgstr "Minangkabau"
+
+#~ msgid "Uncoded languages"
+#~ msgstr "Lingue non codificate"
+
+#~ msgid "Macedonian"
+#~ msgstr "Macedone"
+
+#~ msgid "Malagasy"
+#~ msgstr "Malagasy"
+
+#~ msgid "Maltese"
+#~ msgstr "Maltese"
+
+#~ msgid "Manchu"
+#~ msgstr "Manchu"
+
+#~ msgid "Manipuri"
+#~ msgstr "Manipuri"
+
+#~ msgid "Mohawk"
+#~ msgstr "Mohawk"
+
+#~ msgid "Mongolian"
+#~ msgstr "Mongolo"
+
+#~ msgid "Mossi"
+#~ msgstr "Mossi"
+
+#~ msgid "Maori"
+#~ msgstr "Maori"
+
+#~ msgid "Malay (macrolanguage)"
+#~ msgstr "Malay (macrolingua)"
+
+#~ msgid "Multiple languages"
+#~ msgstr "Lingue multiple"
+
+#~ msgid "Creek"
+#~ msgstr "Creek"
+
+#~ msgid "Mirandese"
+#~ msgstr "Mirandese"
+
+#~ msgid "Marwari"
+#~ msgstr "Marwari"
+
+#~ msgid "Burmese"
+#~ msgstr "Burmese"
+
+#~ msgid "Erzya"
+#~ msgstr "Erzya"
+
+#~ msgid "Neapolitan"
+#~ msgstr "Napoletano"
+
+#~ msgid "Nauru"
+#~ msgstr "Nauru"
+
+#~ msgid "Navajo"
+#~ msgstr "Navajo"
+
+#~ msgid "Ndebele; South"
+#~ msgstr "Ndebele del Sud"
+
+#~ msgid "Ndebele; North"
+#~ msgstr "Ndebele del Nord"
+
+#~ msgid "Ndonga"
+#~ msgstr "Ndonga"
+
+#~ msgid "German; Low"
+#~ msgstr "Tedesco; Volgare"
+
+#~ msgid "Nepali"
+#~ msgstr "Nepali"
+
+#~ msgid "Bhasa; Nepal"
+#~ msgstr "Bhasa; Nepal"
+
+#~ msgid "Nias"
+#~ msgstr "Nias"
+
+#~ msgid "Niuean"
+#~ msgstr "Niuean"
+
+#~ msgid "Dutch"
+#~ msgstr "Olandese"
+
+#~ msgid "Norwegian Nynorsk"
+#~ msgstr "Norvegese nynorsk"
+
+#~ msgid "Norwegian Bokmål"
+#~ msgstr "Norvegese bokmål"
+
+#~ msgid "Nogai"
+#~ msgstr "Nogai"
+
+#~ msgid "Norse; Old"
+#~ msgstr "Norse antico"
+
+#~ msgid "Norwegian"
+#~ msgstr "Norvegese"
+
+#~ msgid "N'Ko"
+#~ msgstr "N'Ko"
+
+#~ msgid "Sotho; Northern"
+#~ msgstr "Sotho settentrionale"
+
+#~ msgid "Newari; Old"
+#~ msgstr "Newari antico"
+
+#~ msgid "Nyanja"
+#~ msgstr "Nyanja"
+
+#~ msgid "Nyamwezi"
+#~ msgstr "Nyamwezi"
+
+#~ msgid "Nyankole"
+#~ msgstr "Nyankole"
+
+#~ msgid "Nyoro"
+#~ msgstr "Nyoro"
+
+#~ msgid "Nzima"
+#~ msgstr "Nzima"
+
+#~ msgid "Occitan (post 1500)"
+#~ msgstr "Occitan (post 1500)"
+
+#~ msgid "Ojibwa"
+#~ msgstr "Ojibwa"
+
+#~ msgid "Oriya"
+#~ msgstr "Oriya"
+
+#~ msgid "Oromo"
+#~ msgstr "Oromo"
+
+#~ msgid "Osage"
+#~ msgstr "Osage"
+
+#~ msgid "Ossetian"
+#~ msgstr "Ossetian"
+
+#~ msgid "Turkish; Ottoman (1500-1928)"
+#~ msgstr "Turco ottomano (1500-1928)"
+
+#~ msgid "Pangasinan"
+#~ msgstr "Pangasinan"
+
+#~ msgid "Pahlavi"
+#~ msgstr "Pahlavi"
+
+#~ msgid "Pampanga"
+#~ msgstr "Pampanga"
+
+#~ msgid "Panjabi"
+#~ msgstr "Panjabi"
+
+#~ msgid "Papiamento"
+#~ msgstr "Papiamento"
+
+#~ msgid "Palauan"
+#~ msgstr "Palauan"
+
+#~ msgid "Persian; Old (ca. 600-400 B.C.)"
+#~ msgstr "Persiano antico (ca. 600-400 A.C.)"
+
+#~ msgid "Phoenician"
+#~ msgstr "Fenicio"
+
+#~ msgid "Pali"
+#~ msgstr "Pali"
+
+#~ msgid "Polish"
+#~ msgstr "Polacco"
+
+#~ msgid "Pohnpeian"
+#~ msgstr "Pohnpeian"
+
+#~ msgid "Portuguese"
+#~ msgstr "Portoghese"
+
+#~ msgid "Provençal; Old (to 1500)"
+#~ msgstr "Provençal antico (fino al 1500)"
+
+#~ msgid "Pushto"
+#~ msgstr "Pushto"
+
+#~ msgid "Quechua"
+#~ msgstr "Quechua"
+
+#~ msgid "Rajasthani"
+#~ msgstr "Rajasthani"
+
+#~ msgid "Rapanui"
+#~ msgstr "Rapanui"
+
+#~ msgid "Maori; Cook Islands"
+#~ msgstr "Maori (Isole Cook)"
+
+#~ msgid "Romansh"
+#~ msgstr "Romansh"
+
+#~ msgid "Romany"
+#~ msgstr "Romany"
+
+#~ msgid "Romanian"
+#~ msgstr "Rumeno"
+
+#~ msgid "Rundi"
+#~ msgstr "Rundi"
+
+#~ msgid "Romanian; Macedo-"
+#~ msgstr "Romanian; Macedo-"
+
+#~ msgid "Russian"
+#~ msgstr "Russo"
+
+#~ msgid "Sandawe"
+#~ msgstr "Sandawe"
+
+#~ msgid "Sango"
+#~ msgstr "Sango"
+
+#~ msgid "Yakut"
+#~ msgstr "Yakut"
+
+#~ msgid "Aramaic; Samaritan"
+#~ msgstr "Aramaico samaritano"
+
+#~ msgid "Sanskrit"
+#~ msgstr "Sanscrito"
+
+#~ msgid "Sasak"
+#~ msgstr "Sasak"
+
+#~ msgid "Santali"
+#~ msgstr "Santali"
+
+#~ msgid "Sicilian"
+#~ msgstr "Siciliano"
+
+#~ msgid "Scots"
+#~ msgstr "Scots"
+
+#~ msgid "Selkup"
+#~ msgstr "Selkup"
+
+#~ msgid "Irish; Old (to 900)"
+#~ msgstr "Irlandese antico (fino al ’900)"
+
+#~ msgid "Shan"
+#~ msgstr "Shan"
+
+#~ msgid "Sidamo"
+#~ msgstr "Sidamo"
+
+#~ msgid "Sinhala"
+#~ msgstr "Sinhala"
+
+#~ msgid "Slovak"
+#~ msgstr "Slovacco"
+
+#~ msgid "Slovenian"
+#~ msgstr "Sloveno"
+
+#~ msgid "Sami; Southern"
+#~ msgstr "Sami meridionale"
+
+#~ msgid "Sami; Northern"
+#~ msgstr "Sami settentrionale"
+
+#~ msgid "Lule Sami"
+#~ msgstr "Lule Sami"
+
+#~ msgid "Sami; Inari"
+#~ msgstr "Sami; Inari"
+
+#~ msgid "Samoan"
+#~ msgstr "Samoano"
+
+#~ msgid "Sami; Skolt"
+#~ msgstr "Sami; Skolt"
+
+#~ msgid "Shona"
+#~ msgstr "Shona"
+
+#~ msgid "Sindhi"
+#~ msgstr "Sindhi"
+
+#~ msgid "Soninke"
+#~ msgstr "Soninke"
+
+#~ msgid "Sogdian"
+#~ msgstr "Sogdian"
+
+#~ msgid "Somali"
+#~ msgstr "Somali"
+
+#~ msgid "Sotho; Southern"
+#~ msgstr "Sotho meridionale"
+
+#~ msgid "Spanish"
+#~ msgstr "Spagnolo"
+
+#~ msgid "Albanian"
+#~ msgstr "Albanese"
+
+#~ msgid "Sardinian"
+#~ msgstr "Sardo"
+
+#~ msgid "Sranan Tongo"
+#~ msgstr "Sranan Tongo"
+
+#~ msgid "Serbian"
+#~ msgstr "Serbo"
+
+#~ msgid "Serer"
+#~ msgstr "Serer"
+
+#~ msgid "Swati"
+#~ msgstr "Swati"
+
+#~ msgid "Sukuma"
+#~ msgstr "Sukuma"
+
+#~ msgid "Sundanese"
+#~ msgstr "Sundanese"
+
+#~ msgid "Susu"
+#~ msgstr "Susu"
+
+#~ msgid "Sumerian"
+#~ msgstr "Sumero"
+
+#~ msgid "Swahili (macrolanguage)"
+#~ msgstr "Swahili (macro-lingua)"
+
+#~ msgid "Swedish"
+#~ msgstr "Svedese"
+
+#~ msgid "Syriac; Classical"
+#~ msgstr "Siriaco classico"
+
+#~ msgid "Syriac"
+#~ msgstr "Siriaco"
+
+#~ msgid "Tahitian"
+#~ msgstr "Tahitian"
+
+#~ msgid "Tamil"
+#~ msgstr "Tamil"
+
+#~ msgid "Tatar"
+#~ msgstr "Tatarico"
+
+#~ msgid "Telugu"
+#~ msgstr "Telugu"
+
+#~ msgid "Timne"
+#~ msgstr "Temne"
+
+#~ msgid "Tereno"
+#~ msgstr "Tereno"
+
+#~ msgid "Tetum"
+#~ msgstr "Tetum"
+
+#~ msgid "Tajik"
+#~ msgstr "Tajik"
+
+#~ msgid "Tagalog"
+#~ msgstr "Tagalog"
+
+#~ msgid "Thai"
+#~ msgstr "Thailandese"
+
+#~ msgid "Tigre"
+#~ msgstr "Tigre"
+
+#~ msgid "Tigrinya"
+#~ msgstr "Tigrinya"
+
+#~ msgid "Tiv"
+#~ msgstr "Tiv"
+
+#~ msgid "Tokelau"
+#~ msgstr "Tokelau"
+
+#~ msgid "Klingon"
+#~ msgstr "Klingon"
+
+#~ msgid "Tlingit"
+#~ msgstr "Tlingit"
+
+#~ msgid "Tamashek"
+#~ msgstr "Tamashek"
+
+#~ msgid "Tonga (Nyasa)"
+#~ msgstr "Tonga (Nyasa)"
+
+#~ msgid "Tonga (Tonga Islands)"
+#~ msgstr "Tonga (Isole Tonga)"
+
+#~ msgid "Tok Pisin"
+#~ msgstr "Tok pisin"
+
+#~ msgid "Tsimshian"
+#~ msgstr "Tsimshian"
+
+#~ msgid "Tswana"
+#~ msgstr "Tswana"
+
+#~ msgid "Tsonga"
+#~ msgstr "Tsonga"
+
+#~ msgid "Turkmen"
+#~ msgstr "Turkmeno"
+
+#~ msgid "Tumbuka"
+#~ msgstr "Tumbuka"
+
+#~ msgid "Turkish"
+#~ msgstr "Turco"
+
+#~ msgid "Tuvalu"
+#~ msgstr "Tuvalu"
+
+#~ msgid "Twi"
+#~ msgstr "Twi"
+
+#~ msgid "Tuvinian"
+#~ msgstr "Tuvinian"
+
+#~ msgid "Udmurt"
+#~ msgstr "Udmurt"
+
+#~ msgid "Ugaritic"
+#~ msgstr "Ugaritico"
+
+#~ msgid "Uighur"
+#~ msgstr "Uighuro"
+
+#~ msgid "Ukrainian"
+#~ msgstr "Ucraino"
+
+#~ msgid "Umbundu"
+#~ msgstr "Umbundu"
+
+#~ msgid "Undetermined"
+#~ msgstr "Non determinato"
+
+#~ msgid "Urdu"
+#~ msgstr "Urdu"
+
+#~ msgid "Uzbek"
+#~ msgstr "Usbeco"
+
+#~ msgid "Vai"
+#~ msgstr "Vai"
+
+#~ msgid "Venda"
+#~ msgstr "Venda"
+
+#~ msgid "Vietnamese"
+#~ msgstr "Vietnamita"
+
+#~ msgid "Volapük"
+#~ msgstr "Volapük"
+
+#~ msgid "Votic"
+#~ msgstr "Votic"
+
+#~ msgid "Wolaytta"
+#~ msgstr "Wolaytta"
+
+#~ msgid "Waray (Philippines)"
+#~ msgstr "Waray (Filippine)"
+
+#~ msgid "Washo"
+#~ msgstr "Washo"
+
+#~ msgid "Walloon"
+#~ msgstr "Walloon"
+
+#~ msgid "Wolof"
+#~ msgstr "Wolof"
+
+#~ msgid "Kalmyk"
+#~ msgstr "Kalmyk"
+
+#~ msgid "Xhosa"
+#~ msgstr "Xhosa"
+
+#~ msgid "Yao"
+#~ msgstr "Yao"
+
+#~ msgid "Yapese"
+#~ msgstr "Yapese"
+
+#~ msgid "Yiddish"
+#~ msgstr "Yiddish"
+
+#~ msgid "Yoruba"
+#~ msgstr "Yoruba"
+
+#~ msgid "Zapotec"
+#~ msgstr "Zapoteco"
+
+#~ msgid "Blissymbols"
+#~ msgstr "Blissymbols"
+
+#~ msgid "Zenaga"
+#~ msgstr "Zenaga"
+
+#~ msgid "Zhuang"
+#~ msgstr "Zhuang"
+
+#~ msgid "Chinese"
+#~ msgstr "Cinese"
+
+#~ msgid "Zulu"
+#~ msgstr "Zulu"
+
+#~ msgid "Zuni"
+#~ msgstr "Zuni"
+
+#~ msgid "No linguistic content"
+#~ msgstr "Nessun contenuto linguistico"
+
+#~ msgid "Zaza"
+#~ msgstr "Zaza"
+
