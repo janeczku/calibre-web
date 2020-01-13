@@ -811,9 +811,7 @@ def get_tasks_status():
 
 @app.route("/reconnect")
 def reconnect():
-    db.session.close()
-    db.engine.dispose()
-    db.setup_db(config)
+    db.reconnect_db(config)
     return json.dumps({})
 
 @web.route("/search", methods=["GET"])
@@ -982,7 +980,7 @@ def advanced_search():
                                  series=series, title=_(u"search"), cc=cc, page="advsearch")
 
 
-def render_read_books(page, are_read, as_xml=False, order=None):
+def render_read_books(page, are_read, as_xml=False, order=None, *args, **kwargs):
     order = order or []
     if not config.config_read_column:
         readBooks = ub.session.query(ub.ReadBook).filter(ub.ReadBook.user_id == int(current_user.id))\
@@ -1011,7 +1009,7 @@ def render_read_books(page, are_read, as_xml=False, order=None):
             name = _(u'Read Books') + ' (' + str(len(readBookIds)) + ')'
             pagename = "read"
         else:
-            total_books = db.session.query(func.count(db.Books.id)).scalar()
+            total_books = db.session.query(func.count(db.Books.id)).filter(common_filters()).scalar()
             name = _(u'Unread Books') + ' (' + str(total_books - len(readBookIds)) + ')'
             pagename = "unread"
         return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
@@ -1046,7 +1044,6 @@ def serve_book(book_id, book_format, anyname):
         return send_from_directory(os.path.join(config.config_calibre_dir, book.path), data.name + "." + book_format)
 
 
-# @web.route("/download/<int:book_id>/<book_format>", defaults={'anyname': 'None'})
 @web.route("/download/<int:book_id>/<book_format>")
 @login_required_if_no_ano
 @download_required

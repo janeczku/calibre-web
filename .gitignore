@@ -7,9 +7,11 @@ __pycache__/
 # Distribution / packaging
 .Python
 env/
+venv/
 eggs/
 dist/
 build/
+vendor/
 .eggs/
 *.egg-info/
 .installed.cfg
@@ -29,6 +31,4 @@ tags
 
 settings.yaml
 gdrive_credentials
-
-vendor
 client_secrets.json
