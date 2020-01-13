@@ -1,0 +1,3495 @@
+# Finnish translations for Calibre-Web.
+# Copyright (C) 2019 Samuli Valavuo
+# This file is distributed under the same license as the Calibre-Web
+# project.
+# FIRST AUTHOR OzzieIsaacs, 2016.
+msgid ""
+msgstr ""
+"Project-Id-Version:  Calibre-Web\n"
+"Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
+"POT-Creation-Date: 2020-01-12 13:57+0100\n"
+"PO-Revision-Date: 2020-01-12 13:56+0100\n"
+"Last-Translator: Samuli Valavuo <svalavuo@gmail.com>\n"
+"Language: fi\n"
+"Language-Team: \n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.7.0\n"
+
+#: cps/about.py:42
+msgid "installed"
+msgstr "asennettu"
+
+#: cps/about.py:44
+msgid "not installed"
+msgstr "ei asennettu"
+
+#: cps/about.py:84
+msgid "Statistics"
+msgstr "Tilastot"
+
+#: cps/admin.py:89
+msgid "Server restarted, please reload page"
+msgstr "Palvelin uudelleenkäynnistetty, ole hyvä ja päivitä sivu"
+
+#: cps/admin.py:91
+msgid "Performing shutdown of server, please close window"
+msgstr "Palvelinta sammutetaan, ole hyvä ja sulje sivu"
+
+#: cps/admin.py:110 cps/editbooks.py:410 cps/editbooks.py:419
+#: cps/editbooks.py:539 cps/editbooks.py:541 cps/editbooks.py:594
+#: cps/updater.py:446 cps/uploader.py:97 cps/uploader.py:108
+msgid "Unknown"
+msgstr "Tuntematon"
+
+#: cps/admin.py:129
+msgid "Admin page"
+msgstr "Ylläpitosivu"
+
+#: cps/admin.py:148 cps/templates/admin.html:115
+msgid "UI Configuration"
+msgstr "Käyttöliittymän asetukset"
+
+#: cps/admin.py:185 cps/admin.py:412
+msgid "Calibre-Web configuration updated"
+msgstr "Calibre-Web asetukset päivitetty"
+
+#: cps/admin.py:442 cps/templates/admin.html:114
+msgid "Basic Configuration"
+msgstr "Perusasetukset"
+
+#: cps/admin.py:465 cps/web.py:1093
+msgid "Please fill out all fields!"
+msgstr "Ole hyvä ja täytä kaikki kentät!"
+
+#: cps/admin.py:467 cps/admin.py:478 cps/admin.py:484 cps/admin.py:499
+#: cps/templates/admin.html:38
+msgid "Add new user"
+msgstr "Lisää uusi käyttäjä"
+
+#: cps/admin.py:476 cps/web.py:1318
+msgid "E-mail is not from valid domain"
+msgstr "Sähköpostiosoite ei ole toimivasta domainista"
+
+#: cps/admin.py:482 cps/admin.py:493
+msgid "Found an existing account for this e-mail address or nickname."
+msgstr "Tälle sähköpostiosoitteelle tai tunnukselle löytyi jo tili."
+
+#: cps/admin.py:489
+#, python-format
+msgid "User '%(user)s' created"
+msgstr "Käyttäjä '%(user)s' lisätty"
+
+#: cps/admin.py:509
+msgid "Edit e-mail server settings"
+msgstr "Muuta sähköpostipalvelimen asetuksia"
+
+#: cps/admin.py:535
+#, python-format
+msgid "Test e-mail successfully send to %(kindlemail)s"
+msgstr "Testisähköposti lähetetty onnistuneesti osoitteeseen %(kindlemail)s"
+
+#: cps/admin.py:538
+#, python-format
+msgid "There was an error sending the Test e-mail: %(res)s"
+msgstr "Testisähköpostin lähetyksessä tapahtui virhe: %(res)s"
+
+#: cps/admin.py:540
+msgid "Please configure your e-mail address first..."
+msgstr ""
+
+#: cps/admin.py:542
+msgid "E-mail server settings updated"
+msgstr "Sähköpostipalvelimen tiedot päivitetty"
+
+#: cps/admin.py:571
+#, python-format
+msgid "User '%(nick)s' deleted"
+msgstr "Käyttäjä '%(nick)s' poistettu"
+
+#: cps/admin.py:574
+msgid "No admin user remaining, can't delete user"
+msgstr "Pääkäyttäjiä ei jää jäljelle, käyttäjää ei voi poistaa"
+
+#: cps/admin.py:612 cps/web.py:1359
+msgid "Found an existing account for this e-mail address."
+msgstr "Tälle sähköpostiosoitteelle läytyi jo käyttäjätunnus."
+
+#: cps/admin.py:616 cps/admin.py:630 cps/admin.py:644 cps/web.py:1334
+#, python-format
+msgid "Edit User %(nick)s"
+msgstr "Muokkaa käyttäjää %(nick)s"
+
+#: cps/admin.py:622 cps/web.py:1327
+msgid "This username is already taken"
+msgstr ""
+
+#: cps/admin.py:637
+#, python-format
+msgid "User '%(nick)s' updated"
+msgstr "Käyttäjä '%(nick)s' päivitetty"
+
+#: cps/admin.py:640
+msgid "An unknown error occured."
+msgstr "Tapahtui tuntematon virhe."
+
+#: cps/admin.py:657
+#, python-format
+msgid "Password for user %(user)s reset"
+msgstr "Käyttäjän %(user)s salasana palautettu"
+
+#: cps/admin.py:660 cps/web.py:1118 cps/web.py:1174
+msgid "An unknown error occurred. Please try again later."
+msgstr "Tapahtui tuntematon virhe. Yritä myöhemmin uudelleen."
+
+#: cps/admin.py:663 cps/web.py:1062
+msgid "Please configure the SMTP mail settings first..."
+msgstr "Ole hyvä ja aseta SMTP postiasetukset ensin..."
+
+#: cps/admin.py:674
+msgid "Logfile viewer"
+msgstr "Lokitiedoston katselin"
+
+#: cps/admin.py:710
+msgid "Requesting update package"
+msgstr "Haetaan päivitystiedostoa"
+
+#: cps/admin.py:711
+msgid "Downloading update package"
+msgstr "Ladataan päivitystiedostoa"
+
+#: cps/admin.py:712
+msgid "Unzipping update package"
+msgstr "Puretaan päivitystiedostoa"
+
+#: cps/admin.py:713
+msgid "Replacing files"
+msgstr "Korvataan tiedostoja"
+
+#: cps/admin.py:714
+msgid "Database connections are closed"
+msgstr "Tietokantayhteydet on katkaistu"
+
+#: cps/admin.py:715
+msgid "Stopping server"
+msgstr "Sammutetaan palvelin"
+
+#: cps/admin.py:716
+msgid "Update finished, please press okay and reload page"
+msgstr "Päivitys valmistui, ole hyvä ja paina OK ja lataa sivu uudelleen"
+
+#: cps/admin.py:717 cps/admin.py:718 cps/admin.py:719 cps/admin.py:720
+msgid "Update failed:"
+msgstr "Päivitys epäonnistui:"
+
+#: cps/admin.py:717 cps/updater.py:272 cps/updater.py:457 cps/updater.py:459
+msgid "HTTP Error"
+msgstr "HTTP virhe"
+
+#: cps/admin.py:718 cps/updater.py:274 cps/updater.py:461
+msgid "Connection error"
+msgstr "Yhteysvirhe"
+
+#: cps/admin.py:719 cps/updater.py:276 cps/updater.py:463
+msgid "Timeout while establishing connection"
+msgstr "Aikakatkaisu yhteyttä luotaessa"
+
+#: cps/admin.py:720 cps/updater.py:278 cps/updater.py:465
+msgid "General error"
+msgstr "Yleinen virhe"
+
+#: cps/converter.py:31
+msgid "not configured"
+msgstr ""
+
+#: cps/editbooks.py:214 cps/editbooks.py:396
+msgid "Error opening eBook. File does not exist or file is not accessible"
+msgstr "Virhe e-kirjaa avatessa. Tiedostoa ei löydy tai se ei ole saatavilla"
+
+#: cps/editbooks.py:242
+msgid "edit metadata"
+msgstr "muokkaa metadataa"
+
+#: cps/editbooks.py:321 cps/editbooks.py:569
+#, python-format
+msgid "File extension '%(ext)s' is not allowed to be uploaded to this server"
+msgstr "Tiedostopääte '%(ext)s' ei ole sallittujen palvelimelle ladattavien listalla"
+
+#: cps/editbooks.py:325 cps/editbooks.py:573
+msgid "File to be uploaded must have an extension"
+msgstr "Ladattavalla tiedostolla on oltava tiedostopääte"
+
+#: cps/editbooks.py:337 cps/editbooks.py:607
+#, python-format
+msgid "Failed to create path %(path)s (Permission denied)."
+msgstr "Polun %(path)s luonti epäonnistui (Ei oikeutta)."
+
+#: cps/editbooks.py:342
+#, python-format
+msgid "Failed to store file %(file)s."
+msgstr "Tiedoston %(file)s tallennus epäonnistui."
+
+#: cps/editbooks.py:359
+#, python-format
+msgid "File format %(ext)s added to %(book)s"
+msgstr "Tiedostoformaatti %(ext)s lisätty %(book)s"
+
+#: cps/editbooks.py:376
+msgid "Cover is not a supported imageformat (jpg/png/webp), can't save"
+msgstr "Kansi ei ole sallitussa tiedostomuodossa (jpg/png/webp), tallennus ei onnistu"
+
+#: cps/editbooks.py:451
+msgid "Cover is not a jpg file, can't save"
+msgstr "Kansi ei ole jpg tiedosto, tallennus ei onnistu"
+
+#: cps/editbooks.py:494
+#, python-format
+msgid "%(langname)s is not a valid language"
+msgstr "%(langname)s ei ole kelvollinen kieli"
+
+#: cps/editbooks.py:525
+msgid "Metadata successfully updated"
+msgstr "Metadata päivitetty onnistuneesti"
+
+#: cps/editbooks.py:534
+msgid "Error editing book, please check logfile for details"
+msgstr "Kirjan editoinnissa tapahtui virhe, tarkista virheilmoitus lokista"
+
+#: cps/editbooks.py:581
+#, python-format
+msgid "File %(filename)s could not saved to temp dir"
+msgstr ""
+
+#: cps/editbooks.py:598
+msgid "Uploaded book probably exists in the library, consider to change before upload new: "
+msgstr ""
+
+#: cps/editbooks.py:613
+#, python-format
+msgid "Failed to store file %(file)s (Permission denied)."
+msgstr "Tiedoston %(file)s tallentamisessa tapahtui virhe (Ei oikeutta)."
+
+#: cps/editbooks.py:619
+#, python-format
+msgid "Failed to delete file %(file)s (Permission denied)."
+msgstr "Tiedoston %(file)s poisto epäonnistui (Ei oikeutta)."
+
+#: cps/editbooks.py:710
+#, python-format
+msgid "File %(file)s uploaded"
+msgstr "Tiedosto %(file)s tallennettu"
+
+#: cps/editbooks.py:739
+msgid "Source or destination format for conversion missing"
+msgstr "Lähteen tai kohteen tiedostomuoto puuttuu"
+
+#: cps/editbooks.py:747
+#, python-format
+msgid "Book successfully queued for converting to %(book_format)s"
+msgstr "Kirja lisätty muutosjonoon muotoon %(book_format)s"
+
+#: cps/editbooks.py:751
+#, python-format
+msgid "There was an error converting this book: %(res)s"
+msgstr "Kirjan muunnoksessa tapahtui virhe: %(res)s"
+
+#: cps/gdrive.py:62
+msgid "Google Drive setup not completed, try to deactivate and activate Google Drive again"
+msgstr "Google Drive asetukset ei ole valmiit. Koita poistaa Google Drive käytöstä ja ottaa se uudelleen käyttöön"
+
+#: cps/gdrive.py:104
+msgid "Callback domain is not verified, please follow steps to verify domain in google developer console"
+msgstr "Paluuosoitteen domain ei ole varmistettu, seuraa ohjeita vamistaaksesi sen googlen kehittäjäkonsolissa"
+
+#: cps/helper.py:80
+#, python-format
+msgid "%(format)s format not found for book id: %(book)d"
+msgstr "%(format)s tiedostomuotoa ei löytynyt kirjalle: %(book)d"
+
+#: cps/helper.py:92
+#, python-format
+msgid "%(format)s not found on Google Drive: %(fn)s"
+msgstr "%(format)s ei löytynyt Google Drivesta: %(fn)s"
+
+#: cps/helper.py:99 cps/helper.py:211 cps/templates/detail.html:41
+#: cps/templates/detail.html:45
+msgid "Send to Kindle"
+msgstr "Lähetä Kindleen"
+
+#: cps/helper.py:100 cps/helper.py:118 cps/helper.py:213
+msgid "This e-mail has been sent via Calibre-Web."
+msgstr "Tämä sähköposti on lähetetty Calibre-Web:sta."
+
+#: cps/helper.py:111
+#, python-format
+msgid "%(format)s not found: %(fn)s"
+msgstr "%(format)s ei löydy: %(fn)s"
+
+#: cps/helper.py:116
+msgid "Calibre-Web test e-mail"
+msgstr "Calibre-Web testisähköposti"
+
+#: cps/helper.py:118
+msgid "Test e-mail"
+msgstr "Testi sähköposti"
+
+#: cps/helper.py:133
+msgid "Get Started with Calibre-Web"
+msgstr "Aloita Calibre-Web:in käyttö"
+
+#: cps/helper.py:135
+#, python-format
+msgid "Registration e-mail for user: %(name)s"
+msgstr "Rekiströintisähköposti käyttäjälle: %(name)s"
+
+#: cps/helper.py:149 cps/helper.py:151 cps/helper.py:153 cps/helper.py:161
+#: cps/helper.py:163 cps/helper.py:165
+#, python-format
+msgid "Send %(format)s to Kindle"
+msgstr "Lähetä %(format)s Kindleen"
+
+#: cps/helper.py:169 cps/helper.py:173
+#, python-format
+msgid "Convert %(orig)s to %(format)s and send to Kindle"
+msgstr "Muunna %(orig)s muotoon %(format)s ja lähetä Kindleen"
+
+#: cps/helper.py:213
+#, python-format
+msgid "E-mail: %(book)s"
+msgstr "Sähköposti: %(book)s"
+
+#: cps/helper.py:215
+msgid "The requested file could not be read. Maybe wrong permissions?"
+msgstr "Haettua tiedostoa ei pystytty lukemaan. Ehkä vaäärät oikeudet?"
+
+#: cps/helper.py:322
+#, python-format
+msgid "Rename title from: '%(src)s' to '%(dest)s' failed with error: %(error)s"
+msgstr "Tiedon muuttaminen arvosta: '%(src)s' arvoon '%(dest)s' epäonnistui virheeseen: %(error)s"
+
+#: cps/helper.py:332
+#, python-format
+msgid "Rename author from: '%(src)s' to '%(dest)s' failed with error: %(error)s"
+msgstr "Kirjailijan muuttaminen arvosta: \"%(src)s\" arvoon \"%(dest)s\" epäonnistui virheeseen: %(error)s"
+
+#: cps/helper.py:346
+#, python-format
+msgid "Rename file in path '%(src)s' to '%(dest)s' failed with error: %(error)s"
+msgstr "Tiedoston nimeäminen polusta '%(src)s' polkuun '%(dest)s' epäonnistui virheeseen: %(error)s"
+
+#: cps/helper.py:372 cps/helper.py:382 cps/helper.py:390
+#, python-format
+msgid "File %(file)s not found on Google Drive"
+msgstr "Tiedostoa %(file)s ei löytynyt Google Drivesta"
+
+#: cps/helper.py:411
+#, python-format
+msgid "Book path %(path)s not found on Google Drive"
+msgstr "Kirjan polkua %(path)s ei löytynyt Google Drivesta"
+
+#: cps/helper.py:643
+msgid "Waiting"
+msgstr "Odottaa"
+
+#: cps/helper.py:645
+msgid "Failed"
+msgstr "Epäonnistui"
+
+#: cps/helper.py:647
+msgid "Started"
+msgstr "Aloitettu"
+
+#: cps/helper.py:649
+msgid "Finished"
+msgstr "Valmistui"
+
+#: cps/helper.py:651
+msgid "Unknown Status"
+msgstr "Tuntematon tila"
+
+#: cps/helper.py:656
+msgid "E-mail: "
+msgstr "Sähköposti: "
+
+#: cps/helper.py:658 cps/helper.py:662
+msgid "Convert: "
+msgstr "Muunna: "
+
+#: cps/helper.py:660
+msgid "Upload: "
+msgstr "Lähetä: "
+
+#: cps/helper.py:664
+msgid "Unknown Task: "
+msgstr "Tuntematon tehtävä: "
+
+#: cps/oauth_bb.py:75
+#, python-format
+msgid "Register with %(provider)s"
+msgstr "Rekisteröi tuottajalle %(provider)s"
+
+#: cps/oauth_bb.py:155
+msgid "Failed to log in with GitHub."
+msgstr "GitHubiin kirjautuminen epäonnistui."
+
+#: cps/oauth_bb.py:160
+msgid "Failed to fetch user info from GitHub."
+msgstr "Käyttäjätietojen haku GitHubista epäonnistui"
+
+#: cps/oauth_bb.py:171
+msgid "Failed to log in with Google."
+msgstr "Googleen kirjautuminen epäonnistui."
+
+#: cps/oauth_bb.py:176
+msgid "Failed to fetch user info from Google."
+msgstr "Käyttäjätietojen haku Googlesta epäonnistui."
+
+#: cps/oauth_bb.py:274
+#, python-format
+msgid "Unlink to %(oauth)s success."
+msgstr "Linkityksen purku kohteesta %(oauth)s onnistui."
+
+#: cps/oauth_bb.py:278
+#, python-format
+msgid "Unlink to %(oauth)s failed."
+msgstr "Linkityksen purku kohteesta %(oauth)s epäonnistui."
+
+#: cps/oauth_bb.py:281
+#, python-format
+msgid "Not linked to %(oauth)s."
+msgstr "Ei linkitetty kohteeseen %(oauth)s."
+
+#: cps/oauth_bb.py:309
+msgid "GitHub Oauth error, please retry later."
+msgstr "GitHub Oauth virhe, yritä myöhemmin uudelleen."
+
+#: cps/oauth_bb.py:328
+msgid "Google Oauth error, please retry later."
+msgstr "Google Oauth virhe, yritä myöhemmin uudelleen."
+
+#: cps/shelf.py:47 cps/shelf.py:99
+msgid "Invalid shelf specified"
+msgstr "Virheellinen hylly valittu"
+
+#: cps/shelf.py:54
+#, python-format
+msgid "Sorry you are not allowed to add a book to the the shelf: %(shelfname)s"
+msgstr "Valitettavasti sinulla ei ole oikeutta lisätä kirjaa hyllyyn: %(shelfname)s"
+
+#: cps/shelf.py:62
+msgid "You are not allowed to edit public shelves"
+msgstr "Sinulla ei ole oikeutta muokata julkisia hyllyjä"
+
+#: cps/shelf.py:71
+#, python-format
+msgid "Book is already part of the shelf: %(shelfname)s"
+msgstr "Kirja on jo hyllyssä: %(shelfname)s"
+
+#: cps/shelf.py:85
+#, python-format
+msgid "Book has been added to shelf: %(sname)s"
+msgstr "Kirja on lisätty hyllyyn: %(sname)s"
+
+#: cps/shelf.py:104
+#, python-format
+msgid "You are not allowed to add a book to the the shelf: %(name)s"
+msgstr "Sinulla ei ole oikeutta lisätä kirjaa hyllyyn: %(name)s"
+
+#: cps/shelf.py:109
+msgid "User is not allowed to edit public shelves"
+msgstr "Käyttäjällä ei ole oikeutta muokata julkisia hyllyjä"
+
+#: cps/shelf.py:127
+#, python-format
+msgid "Books are already part of the shelf: %(name)s"
+msgstr "Kirjat on jo osa hyllyssä: %(name)s"
+
+#: cps/shelf.py:141
+#, python-format
+msgid "Books have been added to shelf: %(sname)s"
+msgstr "Kirjat on lisätty hyllyyn: %(sname)s"
+
+#: cps/shelf.py:143
+#, python-format
+msgid "Could not add books to shelf: %(sname)s"
+msgstr "Kirjojen lisäys hyllyyn: %(sname)s epäonnistui"
+
+#: cps/shelf.py:180
+#, python-format
+msgid "Book has been removed from shelf: %(sname)s"
+msgstr "Kirja on poistettu hyllystä: %(sname)s"
+
+#: cps/shelf.py:186
+#, python-format
+msgid "Sorry you are not allowed to remove a book from this shelf: %(sname)s"
+msgstr "Valitettavsti sinulla ei ole oikeutta poistaa kirjaa hyllystä: %(sname)s"
+
+#: cps/shelf.py:207 cps/shelf.py:231
+#, python-format
+msgid "A shelf with the name '%(title)s' already exists."
+msgstr "'%(title)s' niminen hylly on jo olemassa."
+
+#: cps/shelf.py:212
+#, python-format
+msgid "Shelf %(title)s created"
+msgstr "Hylly %(title)s luotu"
+
+#: cps/shelf.py:214 cps/shelf.py:242
+msgid "There was an error"
+msgstr "Tapahtui virhe"
+
+#: cps/shelf.py:215 cps/shelf.py:217
+msgid "create a shelf"
+msgstr "luo hylly"
+
+#: cps/shelf.py:240
+#, python-format
+msgid "Shelf %(title)s changed"
+msgstr "Hylly %(title)s muutettu"
+
+#: cps/shelf.py:243 cps/shelf.py:245
+msgid "Edit a shelf"
+msgstr "Muokkaa hyllyä"
+
+#: cps/shelf.py:289
+#, python-format
+msgid "Shelf: '%(name)s'"
+msgstr "Hylly: '%(name)s'"
+
+#: cps/shelf.py:292
+msgid "Error opening shelf. Shelf does not exist or is not accessible"
+msgstr "Virhe hyllyn avauksessa. Hyllyä ei ole tai se ei ole saatavilla"
+
+#: cps/shelf.py:323
+#, python-format
+msgid "Change order of Shelf: '%(name)s'"
+msgstr "Muuta hyllyn: '%(name)s' järjestystä"
+
+#: cps/ub.py:57
+msgid "Recently Added"
+msgstr "Viimeksi lisätty"
+
+#: cps/ub.py:59
+msgid "Show recent books"
+msgstr "Näytä viimeisimmät kirjat"
+
+#: cps/templates/index.xml:17 cps/ub.py:60
+msgid "Hot Books"
+msgstr "Kuumat kirjat"
+
+#: cps/ub.py:61
+msgid "Show hot books"
+msgstr "Näytä kuumat kirjat"
+
+#: cps/templates/index.xml:24 cps/ub.py:64
+msgid "Best rated Books"
+msgstr "Parhaiten arvioidut kirjat"
+
+#: cps/ub.py:66
+msgid "Show best rated books"
+msgstr "Näytä parhaiten arvioidut kirjat"
+
+#: cps/templates/index.xml:46 cps/templates/index.xml:50 cps/ub.py:67
+#: cps/web.py:1011
+msgid "Read Books"
+msgstr "Luetut kirjat"
+
+#: cps/ub.py:69
+msgid "Show read and unread"
+msgstr "Näytä luetut ja lukemattomat"
+
+#: cps/templates/index.xml:53 cps/templates/index.xml:57 cps/ub.py:71
+#: cps/web.py:1015
+msgid "Unread Books"
+msgstr "Lukemattomat kirjat"
+
+#: cps/ub.py:73
+msgid "Show unread"
+msgstr "Näyt lukemattomat"
+
+#: cps/ub.py:74
+msgid "Discover"
+msgstr "Löydä"
+
+#: cps/ub.py:76
+msgid "Show random books"
+msgstr "Näytä satunnaisia kirjoja"
+
+#: cps/templates/index.xml:75 cps/ub.py:77
+msgid "Categories"
+msgstr "Kategoriat"
+
+#: cps/ub.py:79
+msgid "Show category selection"
+msgstr "Näytä kategoriavalinta"
+
+#: cps/templates/book_edit.html:71 cps/templates/index.xml:82
+#: cps/templates/search_form.html:53 cps/ub.py:80
+msgid "Series"
+msgstr "Sarjat"
+
+#: cps/ub.py:82
+msgid "Show series selection"
+msgstr "Näytä sarjavalinta"
+
+#: cps/templates/index.xml:61 cps/ub.py:83
+msgid "Authors"
+msgstr "Kirjailijat"
+
+#: cps/ub.py:85
+msgid "Show author selection"
+msgstr "Näytä kirjailijavalinta"
+
+#: cps/templates/index.xml:68 cps/ub.py:87
+msgid "Publishers"
+msgstr "Julkaisijat"
+
+#: cps/ub.py:89
+msgid "Show publisher selection"
+msgstr "Näytä julkaisijavalinta"
+
+#: cps/templates/index.xml:89 cps/templates/search_form.html:74 cps/ub.py:90
+msgid "Languages"
+msgstr "Kielet"
+
+#: cps/ub.py:93
+msgid "Show language selection"
+msgstr "Näytä keilivalinta"
+
+#: cps/ub.py:94
+msgid "Ratings"
+msgstr "Arvostelut"
+
+#: cps/ub.py:96
+msgid "Show ratings selection"
+msgstr "Näytä arvosteluvalinta"
+
+#: cps/templates/index.xml:96 cps/ub.py:97
+msgid "File formats"
+msgstr "Tiedotomuodot"
+
+#: cps/ub.py:99
+msgid "Show file formats selection"
+msgstr "Näytä tiedostomuotovalinta"
+
+#: cps/updater.py:252 cps/updater.py:359 cps/updater.py:372
+msgid "Unexpected data while reading update information"
+msgstr "Odottamatonta tietoa luettaessa päivitystietoa"
+
+#: cps/updater.py:259 cps/updater.py:365
+msgid "No update available. You already have the latest version installed"
+msgstr "Ei päivitystä saatavilla. Sinulla on jo uusin versio"
+
+#: cps/updater.py:285
+msgid "A new update is available. Click on the button below to update to the latest version."
+msgstr "Uusi päivitys saatavilla. Paina alla olevaa nappia päivittääksesi uusimpaan versioon."
+
+#: cps/updater.py:338
+msgid "Could not fetch update information"
+msgstr "Päivitystiedon hakeminen epäonnistui"
+
+#: cps/updater.py:352
+msgid "No release information available"
+msgstr "Ei päivitystietoa saatavilla"
+
+#: cps/updater.py:405 cps/updater.py:414
+#, python-format
+msgid "A new update is available. Click on the button below to update to version: %(version)s"
+msgstr "Uusi päivitys saatavilla. Paina alla olevaa nappia päivittääksesi versioon: %(version)s"
+
+#: cps/updater.py:424
+msgid "Click on the button below to update to the latest stable version."
+msgstr "Paina alla olevaa nappia päivittääksesi uusimpaan vakaaseen versioon."
+
+#: cps/web.py:486
+msgid "Recently Added Books"
+msgstr "Viimeksi lisätyt kirjat"
+
+#: cps/web.py:514
+msgid "Best rated books"
+msgstr "Parhaiksi arvostellut kirjat"
+
+#: cps/templates/index.xml:38 cps/web.py:522
+msgid "Random Books"
+msgstr "Satunnaisia kirjoja"
+
+#: cps/web.py:548
+msgid "Books"
+msgstr "Kirjat"
+
+#: cps/web.py:575
+msgid "Hot Books (most downloaded)"
+msgstr "Kuumat kirjat (ladatuimmat)"
+
+#: cps/web.py:586 cps/web.py:1382 cps/web.py:1478
+msgid "Error opening eBook. File does not exist or file is not accessible:"
+msgstr "Virhe eKirjan avaamisessa. Tiedostoa ei ole tai se ei ole saatavilla:"
+
+#: cps/web.py:599
+#, python-format
+msgid "Author: %(name)s"
+msgstr "Kirjailija: %(name)s"
+
+#: cps/web.py:611
+#, python-format
+msgid "Publisher: %(name)s"
+msgstr "Julkaisija: %(name)s"
+
+#: cps/web.py:622
+#, python-format
+msgid "Series: %(serie)s"
+msgstr "Sarja: %(serie)s"
+
+#: cps/web.py:633
+#, python-format
+msgid "Rating: %(rating)s stars"
+msgstr "Arvostelu: %(rating)s tähteä"
+
+#: cps/web.py:644
+#, python-format
+msgid "File format: %(format)s"
+msgstr "Tiedostomuoto: %(format)s"
+
+#: cps/web.py:656
+#, python-format
+msgid "Category: %(name)s"
+msgstr "Kategoria: %(name)s"
+
+#: cps/web.py:673
+#, python-format
+msgid "Language: %(name)s"
+msgstr "Kieli: %(name)s"
+
+#: cps/web.py:705
+msgid "Publisher list"
+msgstr "Julkaisjalistaus"
+
+#: cps/web.py:721
+msgid "Series list"
+msgstr "Sarjalistaus"
+
+#: cps/web.py:735
+msgid "Ratings list"
+msgstr "Arvostelulistaus"
+
+#: cps/web.py:748
+msgid "File formats list"
+msgstr "Tiedostomuotolistaus"
+
+#: cps/web.py:776
+msgid "Available languages"
+msgstr "Tillgängliga språk"
+
+#: cps/web.py:793
+msgid "Category list"
+msgstr "Kategorilista"
+
+#: cps/templates/layout.html:73 cps/web.py:807
+msgid "Tasks"
+msgstr "Tehtävät"
+
+#: cps/templates/feed.xml:33 cps/templates/layout.html:44
+#: cps/templates/layout.html:45 cps/web.py:829 cps/web.py:831
+msgid "Search"
+msgstr "Hae"
+
+#: cps/web.py:881
+msgid "Published after "
+msgstr "Julkaistu alkaen "
+
+#: cps/web.py:888
+msgid "Published before "
+msgstr "Julkaisut ennen "
+
+#: cps/web.py:902
+#, python-format
+msgid "Rating <= %(rating)s"
+msgstr "Arvostelu <= %(rating)s"
+
+#: cps/web.py:904
+#, python-format
+msgid "Rating >= %(rating)s"
+msgstr "Arvostelu >= %(rating)s"
+
+#: cps/web.py:970 cps/web.py:982
+msgid "search"
+msgstr "hae"
+
+#: cps/web.py:1067
+#, python-format
+msgid "Book successfully queued for sending to %(kindlemail)s"
+msgstr "Kirja lisätty onnistuneeksi lähetettäväksi osoitteeseen %(kindlemail)s"
+
+#: cps/web.py:1071
+#, python-format
+msgid "There was an error sending this book: %(res)s"
+msgstr "Kirjan: %(res)s lähettämisessa tapahtui virhe"
+
+#: cps/web.py:1073
+msgid "Please configure your kindle e-mail address first..."
+msgstr "Ole hyvä ja aseta Kindle sähköpostiosoite ensin..."
+
+#: cps/web.py:1087
+msgid "E-Mail server is not configured, please contact your administrator!"
+msgstr ""
+
+#: cps/web.py:1088 cps/web.py:1094 cps/web.py:1119 cps/web.py:1123
+#: cps/web.py:1128 cps/web.py:1132
+msgid "register"
+msgstr "rekisteröidy"
+
+#: cps/web.py:1121
+msgid "Your e-mail is not allowed to register"
+msgstr "Sähköpostiosoitteellasi ei ole sallittua rekisteröityä"
+
+#: cps/web.py:1124
+msgid "Confirmation e-mail was send to your e-mail account."
+msgstr "Vahvistusviesti on lähetetty sähköpostiosoitteeseesi."
+
+#: cps/web.py:1127
+msgid "This username or e-mail address is already in use."
+msgstr "Käyttäjätunnus tai sähköpostiosoite on jo käytössä."
+
+#: cps/web.py:1144
+msgid "Cannot activate LDAP authentication"
+msgstr "LDAP autnetikoinnin aktivointi ei onnistu"
+
+#: cps/web.py:1154 cps/web.py:1281
+#, python-format
+msgid "you are now logged in as: '%(nickname)s'"
+msgstr "olet nyt kirjautunut tunnuksella: \"%(nickname)s\""
+
+#: cps/web.py:1159
+msgid "Could not login. LDAP server down, please contact your administrator"
+msgstr "Kirjautuminen epäonnistui. LDAP palvelin alhaalla, ot yhteyttä ylläpitoon"
+
+#: cps/web.py:1163 cps/web.py:1186
+msgid "Wrong Username or Password"
+msgstr "Väärä käyttäjätunnus tai salasana"
+
+#: cps/web.py:1170
+msgid "New Password was send to your email address"
+msgstr ""
+
+#: cps/web.py:1176
+msgid "Please enter valid username to reset password"
+msgstr ""
+
+#: cps/web.py:1182
+#, python-format
+msgid "You are now logged in as: '%(nickname)s'"
+msgstr "olet kirjautunut tunnuksella: '%(nickname)s'"
+
+#: cps/web.py:1189 cps/web.py:1213
+msgid "login"
+msgstr "kirjaudu"
+
+#: cps/web.py:1225 cps/web.py:1259
+msgid "Token not found"
+msgstr "Valtuutusta ei löytynyt"
+
+#: cps/web.py:1234 cps/web.py:1267
+msgid "Token has expired"
+msgstr "Valtuutus vanhentunut"
+
+#: cps/web.py:1243
+msgid "Success! Please return to your device"
+msgstr "Onnistui! Ole hyvä ja palaa laitteellesi"
+
+#: cps/web.py:1320 cps/web.py:1363 cps/web.py:1369
+#, python-format
+msgid "%(name)s's profile"
+msgstr "%(name)sn profiili"
+
+#: cps/web.py:1365
+msgid "Profile updated"
+msgstr "Profiili päivitetty"
+
+#: cps/web.py:1394 cps/web.py:1397 cps/web.py:1400 cps/web.py:1407
+#: cps/web.py:1412
+msgid "Read a Book"
+msgstr "Lue kirja"
+
+#: cps/web.py:1423
+msgid "Error opening eBook. File does not exist or file is not accessible."
+msgstr "Virhe kirjan avaamisessa. Tiedostoa ei ole tai se ei ole saatavilla."
+
+#: cps/worker.py:335
+#, python-format
+msgid "Ebook-converter failed: %(error)s"
+msgstr "E-kirjan muunnos epäonnistui: %(error)s"
+
+#: cps/worker.py:346
+#, python-format
+msgid "Kindlegen failed with Error %(error)s. Message: %(message)s"
+msgstr "Kindlegen epäonnistui virheeseen %(error)s. Viesti: %(message)s"
+
+#: cps/templates/admin.html:9
+msgid "User list"
+msgstr "Käyttäjälista"
+
+#: cps/templates/admin.html:12
+msgid "Nickname"
+msgstr "Lempinimi"
+
+#: cps/templates/admin.html:13
+msgid "E-mail"
+msgstr "Sähköposti"
+
+#: cps/templates/admin.html:14
+msgid "Kindle"
+msgstr "Kindle"
+
+#: cps/templates/admin.html:15
+msgid "DLS"
+msgstr "DLS"
+
+#: cps/templates/admin.html:16 cps/templates/layout.html:76
+msgid "Admin"
+msgstr "Ylläpito"
+
+#: cps/templates/admin.html:17 cps/templates/detail.html:18
+#: cps/templates/detail.html:27 cps/templates/shelf.html:6
+#: cps/templates/shelfdown.html:62
+msgid "Download"
+msgstr "Lataa"
+
+#: cps/templates/admin.html:18
+msgid "View Ebooks"
+msgstr "Näytä ekirjat"
+
+#: cps/templates/admin.html:19 cps/templates/layout.html:65
+msgid "Upload"
+msgstr "Lähetä"
+
+#: cps/templates/admin.html:20
+msgid "Edit"
+msgstr "Muokkaa"
+
+#: cps/templates/admin.html:44
+msgid "SMTP e-mail server settings"
+msgstr "SMTP sähköpostipalvelimen asetukset"
+
+#: cps/templates/admin.html:47 cps/templates/email_edit.html:11
+msgid "SMTP hostname"
+msgstr "SMTP palvein"
+
+#: cps/templates/admin.html:48
+msgid "SMTP port"
+msgstr "SMTP portti"
+
+#: cps/templates/admin.html:49
+msgid "SSL"
+msgstr "SSL"
+
+#: cps/templates/admin.html:50 cps/templates/email_edit.html:27
+msgid "SMTP login"
+msgstr "SMTP tunnus"
+
+#: cps/templates/admin.html:51
+msgid "From mail"
+msgstr "Lähettäjän sähköposti"
+
+#: cps/templates/admin.html:61
+msgid "Change SMTP settings"
+msgstr "Muuta SMTP asetuksia"
+
+#: cps/templates/admin.html:67
+msgid "Configuration"
+msgstr "Asetukset"
+
+#: cps/templates/admin.html:70
+msgid "Calibre DB dir"
+msgstr "Calibre DB hakemisto"
+
+#: cps/templates/admin.html:74
+msgid "Log level"
+msgstr "Lokitaso"
+
+#: cps/templates/admin.html:78
+msgid "Port"
+msgstr "Portti"
+
+#: cps/templates/admin.html:84 cps/templates/config_view_edit.html:23
+msgid "Books per page"
+msgstr "Kirjaa sivulla"
+
+#: cps/templates/admin.html:88
+msgid "Uploading"
+msgstr "Lähetetään"
+
+#: cps/templates/admin.html:92
+msgid "Anonymous browsing"
+msgstr "Nimetön selaus"
+
+#: cps/templates/admin.html:96
+msgid "Public registration"
+msgstr "Julkinen rekisteröinti"
+
+#: cps/templates/admin.html:100 cps/templates/remote_login.html:4
+msgid "Remote login"
+msgstr "Etäkirjautuminen"
+
+#: cps/templates/admin.html:104
+msgid "Reverse proxy login"
+msgstr ""
+
+#: cps/templates/admin.html:109
+msgid "Reverse proxy header name"
+msgstr ""
+
+#: cps/templates/admin.html:121
+msgid "Administration"
+msgstr "Ylläpito"
+
+#: cps/templates/admin.html:122
+msgid "View Logfiles"
+msgstr "Katsele lokitiedostoja"
+
+#: cps/templates/admin.html:123
+msgid "Reconnect to Calibre DB"
+msgstr "Uudelleenyhdistä Calibre DB"
+
+#: cps/templates/admin.html:124
+msgid "Restart Calibre-Web"
+msgstr "Uudellenkäynnistä Calibre-Web"
+
+#: cps/templates/admin.html:125
+msgid "Stop Calibre-Web"
+msgstr "Sammuta Calibre-Web"
+
+#: cps/templates/admin.html:131
+msgid "Update"
+msgstr "Päivitä"
+
+#: cps/templates/admin.html:135
+msgid "Version"
+msgstr "Versio"
+
+#: cps/templates/admin.html:136
+msgid "Details"
+msgstr "Yksityiskohdat"
+
+#: cps/templates/admin.html:142
+msgid "Current version"
+msgstr "Nykyinen versio"
+
+#: cps/templates/admin.html:148
+msgid "Check for update"
+msgstr "Tarkista päivitykset"
+
+#: cps/templates/admin.html:149
+msgid "Perform Update"
+msgstr "Päivitä"
+
+#: cps/templates/admin.html:161
+msgid "Do you really want to restart Calibre-Web?"
+msgstr "Haluatko varmasti uudelleenkäynnistää Calibre-Webin?"
+
+#: cps/templates/admin.html:166 cps/templates/admin.html:180
+#: cps/templates/admin.html:200 cps/templates/shelf.html:72
+msgid "Ok"
+msgstr "Ok"
+
+#: cps/templates/admin.html:167 cps/templates/admin.html:181
+#: cps/templates/book_edit.html:174 cps/templates/book_edit.html:196
+#: cps/templates/config_edit.html:331 cps/templates/config_view_edit.html:147
+#: cps/templates/email_edit.html:40 cps/templates/email_edit.html:92
+#: cps/templates/layout.html:28 cps/templates/shelf.html:73
+#: cps/templates/shelf_edit.html:19 cps/templates/shelf_order.html:32
+#: cps/templates/user_edit.html:131
+msgid "Back"
+msgstr "Palaa"
+
+#: cps/templates/admin.html:179
+msgid "Do you really want to stop Calibre-Web?"
+msgstr "Haluatko varmasti pysäyttää Calibre-Webin?"
+
+#: cps/templates/admin.html:191
+msgid "Updating, please do not reload page"
+msgstr "Päivitetään, älä päivitä sivua"
+
+#: cps/templates/author.html:15
+msgid "via"
+msgstr ""
+
+#: cps/templates/author.html:23
+msgid "In Library"
+msgstr "Kirjastossa"
+
+#: cps/templates/author.html:34 cps/templates/list.html:14
+#: cps/templates/search.html:41
+msgid "All"
+msgstr "Kaikki"
+
+#: cps/templates/author.html:58 cps/templates/author.html:110
+#: cps/templates/discover.html:27 cps/templates/index.html:26
+#: cps/templates/index.html:89 cps/templates/search.html:67
+#: cps/templates/shelf.html:36
+msgid "reduce"
+msgstr "vähennä"
+
+#: cps/templates/author.html:94
+msgid "More by"
+msgstr "Enemmän"
+
+#: cps/templates/book_edit.html:12
+msgid "Delete Book"
+msgstr "Poista kirja"
+
+#: cps/templates/book_edit.html:15
+msgid "Delete formats:"
+msgstr "Poista tiedostomuodot:"
+
+#: cps/templates/book_edit.html:18 cps/templates/book_edit.html:195
+#: cps/templates/email_edit.html:91
+msgid "Delete"
+msgstr "Poista"
+
+#: cps/templates/book_edit.html:26
+msgid "Convert book format:"
+msgstr "Muunna kirjan tiedostomuoto:"
+
+#: cps/templates/book_edit.html:30
+msgid "Convert from:"
+msgstr "Muunna muodosta:"
+
+#: cps/templates/book_edit.html:32 cps/templates/book_edit.html:39
+msgid "select an option"
+msgstr "valitse vaihtoehto"
+
+#: cps/templates/book_edit.html:37
+msgid "Convert to:"
+msgstr "Muunna muotoon:"
+
+#: cps/templates/book_edit.html:46
+msgid "Convert book"
+msgstr "Muunna kirja"
+
+#: cps/templates/book_edit.html:55 cps/templates/search_form.html:6
+msgid "Book Title"
+msgstr "Kirjan otsikko"
+
+#: cps/templates/book_edit.html:59 cps/templates/book_edit.html:255
+#: cps/templates/book_edit.html:273 cps/templates/search_form.html:10
+msgid "Author"
+msgstr "Kirjailija"
+
+#: cps/templates/book_edit.html:63 cps/templates/book_edit.html:260
+#: cps/templates/book_edit.html:275 cps/templates/search_form.html:126
+msgid "Description"
+msgstr "Kuvaus"
+
+#: cps/templates/book_edit.html:67 cps/templates/search_form.html:33
+msgid "Tags"
+msgstr "Tunnisteet"
+
+#: cps/templates/book_edit.html:75
+msgid "Series id"
+msgstr "Sarja-id"
+
+#: cps/templates/book_edit.html:79
+msgid "Rating"
+msgstr "Arvostelu"
+
+#: cps/templates/book_edit.html:83
+msgid "Cover URL (jpg, cover is downloaded and stored in database, field is afterwards empty again)"
+msgstr "Kannen osoite (jpg, kuva ladataan ja tallennetaan tietokantaan, kenttä jää uudelleen tyhjäksi)"
+
+#: cps/templates/book_edit.html:87
+msgid "Upload Cover from local drive"
+msgstr "Lataa kuva paikalliselta levyltä"
+
+#: cps/templates/book_edit.html:92 cps/templates/detail.html:165
+msgid "Publishing date"
+msgstr "Julkaisupäivä"
+
+#: cps/templates/book_edit.html:99 cps/templates/book_edit.html:257
+#: cps/templates/book_edit.html:274 cps/templates/detail.html:156
+#: cps/templates/search_form.html:14
+msgid "Publisher"
+msgstr "Julkaisija"
+
+#: cps/templates/book_edit.html:103 cps/templates/user_edit.html:30
+msgid "Language"
+msgstr "Kieli"
+
+#: cps/templates/book_edit.html:113 cps/templates/search_form.html:137
+msgid "Yes"
+msgstr "Kyllä"
+
+#: cps/templates/book_edit.html:114 cps/templates/search_form.html:138
+msgid "No"
+msgstr "Ei"
+
+#: cps/templates/book_edit.html:160
+msgid "Upload format"
+msgstr "Lataa tiedostomuoto"
+
+#: cps/templates/book_edit.html:169
+msgid "view book after edit"
+msgstr "katso kirjaa muokkauksen jälkeen"
+
+#: cps/templates/book_edit.html:172 cps/templates/book_edit.html:208
+msgid "Get metadata"
+msgstr "Hae metadata"
+
+#: cps/templates/book_edit.html:173 cps/templates/config_edit.html:329
+#: cps/templates/config_view_edit.html:146 cps/templates/login.html:20
+#: cps/templates/search_form.html:170 cps/templates/shelf_edit.html:17
+#: cps/templates/user_edit.html:129
+msgid "Submit"
+msgstr "Lähetä"
+
+#: cps/templates/book_edit.html:187
+msgid "Are you really sure?"
+msgstr "Oletko aivan varma?"
+
+#: cps/templates/book_edit.html:190
+msgid "Book will be deleted from Calibre database"
+msgstr "Kirja poistetaan Calibren tietokannasta"
+
+#: cps/templates/book_edit.html:191
+msgid "and from hard disk"
+msgstr "ja kiintolevyltä"
+
+#: cps/templates/book_edit.html:211
+msgid "Keyword"
+msgstr "Avainsana"
+
+#: cps/templates/book_edit.html:212
+msgid " Search keyword "
+msgstr " Hae avainsanaa "
+
+#: cps/templates/book_edit.html:214 cps/templates/layout.html:47
+msgid "Go!"
+msgstr "Mene!"
+
+#: cps/templates/book_edit.html:218
+msgid "Click the cover to load metadata to the form"
+msgstr "Klikkaa kantta ladataksesi metadata lomakkeelle"
+
+#: cps/templates/book_edit.html:230 cps/templates/book_edit.html:270
+msgid "Loading..."
+msgstr "Ladataan..."
+
+#: cps/templates/book_edit.html:235 cps/templates/layout.html:192
+#: cps/templates/layout.html:224
+msgid "Close"
+msgstr "Sulje"
+
+#: cps/templates/book_edit.html:262 cps/templates/book_edit.html:276
+msgid "Source"
+msgstr "Lähde"
+
+#: cps/templates/book_edit.html:271
+msgid "Search error!"
+msgstr "Hakuvirhe!"
+
+#: cps/templates/book_edit.html:272
+msgid "No Result(s) found! Please try aonther keyword."
+msgstr "Ei osumia! Kokeile jotain tosita hakusanaa."
+
+#: cps/templates/config_edit.html:12
+msgid "Library Configuration"
+msgstr "Kirjaston asetukset"
+
+#: cps/templates/config_edit.html:19
+msgid "Location of Calibre database"
+msgstr "Calibre -tietokannan paikka"
+
+#: cps/templates/config_edit.html:25
+msgid "Use Google Drive?"
+msgstr "Käytä Google Drivea?"
+
+#: cps/templates/config_edit.html:31
+msgid "Google Drive config problem"
+msgstr "Google Drive -asetuksissa ongelma"
+
+#: cps/templates/config_edit.html:37
+msgid "Authenticate Google Drive"
+msgstr "Autentikoi Google Drive"
+
+#: cps/templates/config_edit.html:41
+msgid "Please hit submit to continue with setup"
+msgstr "Ole hyvä ja paina lähetä jatkaaksesi asennusta"
+
+#: cps/templates/config_edit.html:44
+msgid "Please finish Google Drive setup after login"
+msgstr "Ole hyvä ja tee Google Drive asetukset loppuun kirjautumisen jälkeen"
+
+#: cps/templates/config_edit.html:49
+msgid "Google Drive Calibre folder"
+msgstr "Google Drive Calibre -kansio"
+
+#: cps/templates/config_edit.html:57
+msgid "Metadata Watch Channel ID"
+msgstr "Metadata Katso kanava ID"
+
+#: cps/templates/config_edit.html:60
+msgid "Revoke"
+msgstr "Kumoa"
+
+#: cps/templates/config_edit.html:80
+msgid "Server Configuration"
+msgstr "Palvelinasetukset"
+
+#: cps/templates/config_edit.html:87
+msgid "Server Port"
+msgstr "Palvelimen portti"
+
+#: cps/templates/config_edit.html:91
+msgid "SSL certfile location (leave it empty for non-SSL Servers)"
+msgstr "SSL sertifikaatin paikka (jätä tyhjäksi ei-SSL -palvelimella)"
+
+#: cps/templates/config_edit.html:95
+msgid "SSL Keyfile location (leave it empty for non-SSL Servers)"
+msgstr "SSL avaintiedoston paikka (jätä tyhjäksi ei-SSL -palvelimella)"
+
+#: cps/templates/config_edit.html:99
+msgid "Update channel"
+msgstr "Päivityskanava"
+
+#: cps/templates/config_edit.html:101
+msgid "Stable"
+msgstr "Vakaa"
+
+#: cps/templates/config_edit.html:102
+msgid "Stable (Automatic)"
+msgstr "Vakaa (Automaattinen)"
+
+#: cps/templates/config_edit.html:103
+msgid "Nightly"
+msgstr "Öinen"
+
+#: cps/templates/config_edit.html:104
+msgid "Nightly (Automatic)"
+msgstr "Öinen (Automaattinen)"
+
+#: cps/templates/config_edit.html:115
+msgid "Logfile Configuration"
+msgstr "Lokitiedoston asetukset"
+
+#: cps/templates/config_edit.html:122
+msgid "Log Level"
+msgstr "Lokitaso"
+
+#: cps/templates/config_edit.html:131
+msgid "Location and name of logfile (calibre-web.log for no entry)"
+msgstr "Lokitiedoston nimi ja paikka (calibre-web.log jos ei asetettu)"
+
+#: cps/templates/config_edit.html:136
+msgid "Enable Access Log"
+msgstr "Ota pääsyloki käyttöön"
+
+#: cps/templates/config_edit.html:139
+msgid "Location and name of access logfile (access.log for no entry)"
+msgstr "Pääsylokitiedoston nimi ja paikka (access.log jos ei asetettu)"
+
+#: cps/templates/config_edit.html:150
+msgid "Feature Configuration"
+msgstr "Ominaisuuksien asetukset"
+
+#: cps/templates/config_edit.html:158
+msgid "Enable uploading"
+msgstr "Salli lähetys"
+
+#: cps/templates/config_edit.html:162
+msgid "Enable anonymous browsing"
+msgstr "Salli nimetön selailu"
+
+#: cps/templates/config_edit.html:166
+msgid "Enable public registration"
+msgstr "Salli julkinen rekisteröinti"
+
+#: cps/templates/config_edit.html:170
+msgid "Enable remote login (\"magic link\")"
+msgstr "Salli etäkirjautuminen (\"magic link\")"
+
+#: cps/templates/config_edit.html:175
+msgid "Use Goodreads"
+msgstr "Käytä Goodreads -palvelua"
+
+#: cps/templates/config_edit.html:176
+msgid "Obtain an API Key"
+msgstr "Hae API-avain"
+
+#: cps/templates/config_edit.html:180
+msgid "Goodreads API Key"
+msgstr "Goodreads API-avain"
+
+#: cps/templates/config_edit.html:184
+msgid "Goodreads API Secret"
+msgstr "Goodreads API-salaisuus"
+
+#: cps/templates/config_edit.html:191
+msgid "Login type"
+msgstr "Kirjautumisen tyyppi"
+
+#: cps/templates/config_edit.html:193
+msgid "Use standard Authentication"
+msgstr "Käytä oletuskirjautumista"
+
+#: cps/templates/config_edit.html:195
+msgid "Use LDAP Authentication"
+msgstr "Käytä LDAP kirjautumista"
+
+#: cps/templates/config_edit.html:198
+msgid "Use OAuth"
+msgstr "Käytä OAuth kirjautumista"
+
+#: cps/templates/config_edit.html:205
+msgid "LDAP Server Host Name or IP Address"
+msgstr "LDAP palvelimen nimi tai IP osoite"
+
+#: cps/templates/config_edit.html:209
+msgid "LDAP Server Port"
+msgstr "LDAP Palveimen portti"
+
+#: cps/templates/config_edit.html:213
+msgid "LDAP schema (ldap or ldaps)"
+msgstr "LDAP skeema (ldap tai ldaps)"
+
+#: cps/templates/config_edit.html:217
+msgid "LDAP Admin username"
+msgstr "LDAP pääkäyttäjän käyttäjänimi"
+
+#: cps/templates/config_edit.html:221
+msgid "LDAP Admin password"
+msgstr "LDAP pääkäyttäjän salasana"
+
+#: cps/templates/config_edit.html:226
+msgid "LDAP Server use SSL"
+msgstr "LDAP palvelin käyttää SSL:ää"
+
+#: cps/templates/config_edit.html:230
+msgid "LDAP Server use TLS"
+msgstr "LDAP palvelin käyttää TLS:ää"
+
+#: cps/templates/config_edit.html:234
+msgid "LDAP Server Certificate"
+msgstr "LDAP palvelimen sertifikaatti"
+
+#: cps/templates/config_edit.html:238
+msgid "LDAP SSL Certificate Path"
+msgstr "LDAP SSL sertifikaatin polku"
+
+#: cps/templates/config_edit.html:243
+msgid "LDAP Distinguished Name (DN)"
+msgstr "LDAP DN"
+
+#: cps/templates/config_edit.html:247
+msgid "LDAP User object filter"
+msgstr "LDAP käyttäjä suodin (object filter)"
+
+#: cps/templates/config_edit.html:252
+msgid "LDAP Server is OpenLDAP?"
+msgstr "LDAP palvelin on OpenLDAP?"
+
+#: cps/templates/config_edit.html:260
+#, python-format
+msgid "Obtain %(provider)s OAuth Credential"
+msgstr "Hanki %(provider)s OAuth valtuutus"
+
+#: cps/templates/config_edit.html:263
+#, python-format
+msgid "%(provider)s OAuth Client Id"
+msgstr "%(provider)s OAuth asiakas Id"
+
+#: cps/templates/config_edit.html:267
+#, python-format
+msgid "%(provider)s OAuth Client Secret"
+msgstr "%(provider)s OAuth asiakas salaisuus"
+
+#: cps/templates/config_edit.html:276
+msgid "Allow Reverse Proxy Authentication"
+msgstr ""
+
+#: cps/templates/config_edit.html:280
+msgid "Reverse Proxy Header Name"
+msgstr ""
+
+#: cps/templates/config_edit.html:292
+msgid "External binaries"
+msgstr "Ulkoiset binäärit"
+
+#: cps/templates/config_edit.html:300
+msgid "No converter"
+msgstr "Ei muuntajaa"
+
+#: cps/templates/config_edit.html:302
+msgid "Use Kindlegen"
+msgstr "Käytä Kindlegen"
+
+#: cps/templates/config_edit.html:304
+msgid "Use calibre's ebook converter"
+msgstr "Käytä calibren e-kirjamuuntajaa"
+
+#: cps/templates/config_edit.html:308
+msgid "E-Book converter settings"
+msgstr "E-kirjamuuntajan asetukset"
+
+#: cps/templates/config_edit.html:312
+msgid "Path to convertertool"
+msgstr "Polku muunnintyökaluun"
+
+#: cps/templates/config_edit.html:318
+msgid "Location of Unrar binary"
+msgstr "Unrar binäärin paikka"
+
+#: cps/templates/config_edit.html:334 cps/templates/layout.html:84
+#: cps/templates/login.html:4
+msgid "Login"
+msgstr "Kirjaudu sisään"
+
+#: cps/templates/config_view_edit.html:12
+msgid "View Configuration"
+msgstr "Näytä konfiguraatio"
+
+#: cps/templates/config_view_edit.html:19 cps/templates/shelf_edit.html:7
+msgid "Title"
+msgstr "Otsikko"
+
+#: cps/templates/config_view_edit.html:27
+msgid "No. of random books to show"
+msgstr "Satunnaisten kirjojen näytön lukumäärä"
+
+#: cps/templates/config_view_edit.html:31
+msgid "No. of authors to show before hiding (0=disable hiding)"
+msgstr "Kirjailijoiden lukumäärä ennen piilotusta (0=poista piilotus)"
+
+#: cps/templates/config_view_edit.html:35 cps/templates/readcbr.html:112
+msgid "Theme"
+msgstr "Teema"
+
+#: cps/templates/config_view_edit.html:37
+msgid "Standard Theme"
+msgstr "oletusteema"
+
+#: cps/templates/config_view_edit.html:38
+msgid "caliBlur! Dark Theme"
+msgstr "caliBlur! Tumma teema"
+
+#: cps/templates/config_view_edit.html:42
+msgid "Regular expression for ignoring columns"
+msgstr "Regular expression sarakkeiden poisjättämiseen"
+
+#: cps/templates/config_view_edit.html:46
+msgid "Link read/unread status to Calibre column"
+msgstr "Linkitä luettu/ei luettu -tieto Calibren sarakkeeseen"
+
+#: cps/templates/config_view_edit.html:55
+msgid "Regular expression for title sorting"
+msgstr "Regular expression nimikkeiden järjestämiseen"
+
+#: cps/templates/config_view_edit.html:59
+msgid "Tags for Mature Content"
+msgstr "Aikusimateriaalin merkinnät"
+
+#: cps/templates/config_view_edit.html:73
+msgid "Default settings for new users"
+msgstr "Uuden käyttäjän oletusasetukset"
+
+#: cps/templates/config_view_edit.html:81 cps/templates/user_edit.html:82
+msgid "Admin user"
+msgstr "Pääkäyttäjä"
+
+#: cps/templates/config_view_edit.html:85 cps/templates/user_edit.html:91
+msgid "Allow Downloads"
+msgstr "Salli kirjojen lataukset"
+
+#: cps/templates/config_view_edit.html:89 cps/templates/user_edit.html:95
+msgid "Allow book viewer"
+msgstr "Salli kirjojen luku"
+
+#: cps/templates/config_view_edit.html:93 cps/templates/user_edit.html:99
+msgid "Allow Uploads"
+msgstr "Salli lisäykset"
+
+#: cps/templates/config_view_edit.html:97 cps/templates/user_edit.html:103
+msgid "Allow Edit"
+msgstr "Salli muutokset"
+
+#: cps/templates/config_view_edit.html:101 cps/templates/user_edit.html:107
+msgid "Allow Delete books"
+msgstr "Salli kirjojen poisto"
+
+#: cps/templates/config_view_edit.html:105 cps/templates/user_edit.html:112
+msgid "Allow Changing Password"
+msgstr "Salli sananan vaihto"
+
+#: cps/templates/config_view_edit.html:109 cps/templates/user_edit.html:116
+msgid "Allow Editing Public Shelfs"
+msgstr "Salli julkisten hyllyjen editointi"
+
+#: cps/templates/config_view_edit.html:119
+msgid "Default visibilities for new users"
+msgstr "Oletusnäkymä uusille käyttäjille"
+
+#: cps/templates/config_view_edit.html:135 cps/templates/user_edit.html:74
+msgid "Show random books in detail view"
+msgstr "Näytä satunnaisia kirjoja näkymässä"
+
+#: cps/templates/config_view_edit.html:139 cps/templates/user_edit.html:87
+msgid "Show mature content"
+msgstr "Näytä aikuismateriaali"
+
+#: cps/templates/detail.html:59
+msgid "Read in browser"
+msgstr "Lue selaimessa"
+
+#: cps/templates/detail.html:72
+msgid "Listen in browser"
+msgstr "Kuuntele selaimessa"
+
+#: cps/templates/detail.html:117
+msgid "Book"
+msgstr "Kirja"
+
+#: cps/templates/detail.html:117
+msgid "of"
+msgstr ""
+
+#: cps/templates/detail.html:123
+msgid "language"
+msgstr "kieli"
+
+#: cps/templates/detail.html:200
+msgid "Mark As Unread"
+msgstr "Merkitse lukemattomaksi"
+
+#: cps/templates/detail.html:200
+msgid "Mark As Read"
+msgstr "Merkitse luetuksi"
+
+#: cps/templates/detail.html:201
+msgid "Read"
+msgstr "Luettu"
+
+#: cps/templates/detail.html:211
+msgid "Description:"
+msgstr "Kuvaus:"
+
+#: cps/templates/detail.html:224 cps/templates/search.html:14
+msgid "Add to shelf"
+msgstr "Lisää hyllyyn"
+
+#: cps/templates/detail.html:286
+msgid "Edit metadata"
+msgstr "Muokkaa metadataa"
+
+#: cps/templates/email_edit.html:15
+msgid "SMTP port (usually 25 for plain SMTP and 465 for SSL and 587 for STARTTLS)"
+msgstr "SMTP-port (ylisimmin 25 normaalille SMTP:lle, 465 SSL:lle ja 587 STARTTLS:lle)"
+
+#: cps/templates/email_edit.html:19
+msgid "Encryption"
+msgstr "Salaus"
+
+#: cps/templates/email_edit.html:21
+msgid "None"
+msgstr "Ei mitään"
+
+#: cps/templates/email_edit.html:22
+msgid "STARTTLS"
+msgstr "STARTTLS"
+
+#: cps/templates/email_edit.html:23
+msgid "SSL/TLS"
+msgstr "SSL/TLS"
+
+#: cps/templates/email_edit.html:31
+msgid "SMTP password"
+msgstr "SMTP salasana"
+
+#: cps/templates/email_edit.html:35
+msgid "From e-mail"
+msgstr "Lähettäjän sähköpostiosoite"
+
+#: cps/templates/email_edit.html:38
+msgid "Save settings"
+msgstr "Tallenna asetukset"
+
+#: cps/templates/email_edit.html:39
+msgid "Save settings and send Test E-Mail"
+msgstr "Tallenna asetukset ja testaa sähköpostia"
+
+#: cps/templates/email_edit.html:43
+msgid "Allowed domains for registering"
+msgstr "Rekisteröinnissä sallitut domainit"
+
+#: cps/templates/email_edit.html:46 cps/templates/email_edit.html:72
+msgid "Add Domain"
+msgstr "Lisää domain"
+
+#: cps/templates/email_edit.html:49 cps/templates/email_edit.html:75
+msgid "Add"
+msgstr "Lisää"
+
+#: cps/templates/email_edit.html:54 cps/templates/email_edit.html:64
+msgid "Enter domainname"
+msgstr "Syötä domainnimi"
+
+#: cps/templates/email_edit.html:60
+msgid "Denied domains for registering"
+msgstr ""
+
+#: cps/templates/email_edit.html:90
+msgid "Do you really want to delete this domain rule?"
+msgstr "Haluatko todellakin poistaa tämän domainin säännön?"
+
+#: cps/templates/feed.xml:21 cps/templates/layout.html:176
+msgid "Next"
+msgstr "Seuraava"
+
+#: cps/templates/http_error.html:37
+msgid "Create issue"
+msgstr "Luo virheilmoitus"
+
+#: cps/templates/http_error.html:44
+msgid "Back to home"
+msgstr "Palaa kotiin"
+
+#: cps/templates/index.html:5
+msgid "Discover (Random Books)"
+msgstr "Löydä (satunnaiset kirjat)"
+
+#: cps/templates/index.html:64
+msgid "Group by series"
+msgstr "Ryhmitä sarjoittain"
+
+#: cps/templates/index.xml:6
+msgid "Start"
+msgstr "Aloita"
+
+#: cps/templates/index.xml:21
+msgid "Popular publications from this catalog based on Downloads."
+msgstr "Suositut julkaisut tästä kokoelmasta perustuen latauksiin."
+
+#: cps/templates/index.xml:28
+msgid "Popular publications from this catalog based on Rating."
+msgstr "Suositut julkaisut tästä kokoelmasta perustuen arvioihin."
+
+#: cps/templates/index.xml:31
+msgid "Recently added Books"
+msgstr ""
+
+#: cps/templates/index.xml:35
+msgid "The latest Books"
+msgstr "Viimeisimmät kirjat"
+
+#: cps/templates/index.xml:42
+msgid "Show Random Books"
+msgstr "Näytä satunnausia kirjoja"
+
+#: cps/templates/index.xml:65
+msgid "Books ordered by Author"
+msgstr "Kirjat kirjailijoittain"
+
+#: cps/templates/index.xml:72
+msgid "Books ordered by publisher"
+msgstr "Kirjat julkaisijoittain"
+
+#: cps/templates/index.xml:79
+msgid "Books ordered by category"
+msgstr "Kirjat kategorioittain"
+
+#: cps/templates/index.xml:86
+msgid "Books ordered by series"
+msgstr "Kirjat sarjoittain"
+
+#: cps/templates/index.xml:93
+msgid "Books ordered by Languages"
+msgstr ""
+
+#: cps/templates/index.xml:100
+msgid "Books ordered by file formats"
+msgstr ""
+
+#: cps/templates/index.xml:103 cps/templates/layout.html:137
+msgid "Public Shelves"
+msgstr "Julkiset hyllyt"
+
+#: cps/templates/index.xml:107
+msgid "Books organized in public shelfs, visible to everyone"
+msgstr "Kirjat julkisissa hyllyissä. Näkyy kaikille"
+
+#: cps/templates/index.xml:111 cps/templates/layout.html:141
+msgid "Your Shelves"
+msgstr "Omat hyllysi"
+
+#: cps/templates/index.xml:115
+msgid "User's own shelfs, only visible to the current user himself"
+msgstr "Käyttäjän omat hyllyt. Näkyy vain käyttäjäll eitselleen"
+
+#: cps/templates/layout.html:28
+msgid "Home"
+msgstr "Koti"
+
+#: cps/templates/layout.html:34
+msgid "Toggle navigation"
+msgstr "Vaihda navigointi"
+
+#: cps/templates/layout.html:55
+msgid "Advanced Search"
+msgstr "Edistynyt haku"
+
+#: cps/templates/layout.html:76 cps/templates/read.html:71
+#: cps/templates/readcbr.html:83 cps/templates/readcbr.html:107
+msgid "Settings"
+msgstr "Asetukset"
+
+#: cps/templates/layout.html:78
+msgid "Account"
+msgstr "Tili"
+
+#: cps/templates/layout.html:80
+msgid "Logout"
+msgstr "Kirjaudu ulos"
+
+#: cps/templates/layout.html:85 cps/templates/register.html:14
+msgid "Register"
+msgstr "Rekisteröi"
+
+#: cps/templates/layout.html:116 cps/templates/layout.html:223
+msgid "Uploading..."
+msgstr "Ladataan..."
+
+#: cps/templates/layout.html:117
+msgid "please don't refresh the page"
+msgstr "ole hyvä äläkä päivitä sivua"
+
+#: cps/templates/layout.html:127
+msgid "Browse"
+msgstr "Selaa"
+
+#: cps/templates/layout.html:146
+msgid "Create a Shelf"
+msgstr "Luo hylly"
+
+#: cps/templates/layout.html:147 cps/templates/stats.html:3
+msgid "About"
+msgstr "Tietoja"
+
+#: cps/templates/layout.html:161
+msgid "Previous"
+msgstr "Edellinen"
+
+#: cps/templates/layout.html:188
+msgid "Book Details"
+msgstr "Kirjan tiedot"
+
+#: cps/templates/layout.html:222
+msgid "Upload done, processing, please wait..."
+msgstr "Lataus tehty, prosessoidaan, ole hyvä ja odota..."
+
+#: cps/templates/layout.html:225
+msgid "Error"
+msgstr "Virhe"
+
+#: cps/templates/login.html:8 cps/templates/login.html:9
+#: cps/templates/register.html:7 cps/templates/user_edit.html:8
+msgid "Username"
+msgstr "Käyttäjänimi"
+
+#: cps/templates/login.html:12 cps/templates/login.html:13
+#: cps/templates/user_edit.html:21
+msgid "Password"
+msgstr "Salasana"
+
+#: cps/templates/login.html:17
+msgid "Remember me"
+msgstr "Muista minut"
+
+#: cps/templates/login.html:22
+msgid "Forgot password"
+msgstr ""
+
+#: cps/templates/login.html:25
+msgid "Log in with magic link"
+msgstr "Kirjadu käyttäen magic link"
+
+#: cps/templates/logviewer.html:5
+msgid "Show Calibre-Web log"
+msgstr "Näytä Calibre-Web loki"
+
+#: cps/templates/logviewer.html:8
+msgid "Show access log"
+msgstr "Näytä pääsyloki"
+
+#: cps/templates/osd.xml:5
+msgid "Calibre-Web ebook catalog"
+msgstr "Calibre-Web e-kirjaluettelo"
+
+#: cps/templates/read.html:74
+msgid "Reflow text when sidebars are open."
+msgstr "Uudelleenjärjestä teksti kun sivut on auki."
+
+#: cps/templates/readcbr.html:88
+msgid "Keyboard Shortcuts"
+msgstr "Näppäimistöpikakomennot"
+
+#: cps/templates/readcbr.html:91
+msgid "Previous Page"
+msgstr "Edellinen sivu"
+
+#: cps/templates/readcbr.html:92
+msgid "Next Page"
+msgstr "Seuraava sivu"
+
+#: cps/templates/readcbr.html:93
+msgid "Scale to Best"
+msgstr "Skaalaa parhaaseen"
+
+#: cps/templates/readcbr.html:94
+msgid "Scale to Width"
+msgstr "Skaalaa leveyteen"
+
+#: cps/templates/readcbr.html:95
+msgid "Scale to Height"
+msgstr "Skaalaa korkeuteen"
+
+#: cps/templates/readcbr.html:96
+msgid "Scale to Native"
+msgstr "Skaalaa alkuperäiseen"
+
+#: cps/templates/readcbr.html:97
+msgid "Rotate Right"
+msgstr "Käännä oikealle"
+
+#: cps/templates/readcbr.html:98
+msgid "Rotate Left"
+msgstr "Käännä vasemmalle"
+
+#: cps/templates/readcbr.html:99
+msgid "Flip Image"
+msgstr "Käännä kuva"
+
+#: cps/templates/readcbr.html:115
+msgid "Light"
+msgstr "Vaalea"
+
+#: cps/templates/readcbr.html:116
+msgid "Dark"
+msgstr "Tumma"
+
+#: cps/templates/readcbr.html:121
+msgid "Scale"
+msgstr "Skaalaa"
+
+#: cps/templates/readcbr.html:124
+msgid "Best"
+msgstr "Paras"
+
+#: cps/templates/readcbr.html:125
+msgid "Width"
+msgstr "Leveys"
+
+#: cps/templates/readcbr.html:126
+msgid "Height"
+msgstr "Korkeus"
+
+#: cps/templates/readcbr.html:127
+msgid "Native"
+msgstr "Alkuperäinen"
+
+#: cps/templates/readcbr.html:132
+msgid "Rotate"
+msgstr "Pyöritä"
+
+#: cps/templates/readcbr.html:143
+msgid "Flip"
+msgstr "Käännä"
+
+#: cps/templates/readcbr.html:146
+msgid "Horizontal"
+msgstr "Vaakasuunta"
+
+#: cps/templates/readcbr.html:147
+msgid "Vertical"
+msgstr "Pystysuunta"
+
+#: cps/templates/readcbr.html:152
+msgid "Direction"
+msgstr "Suunta"
+
+#: cps/templates/readcbr.html:155
+msgid "Left to Right"
+msgstr "Vasemmalta oikealle"
+
+#: cps/templates/readcbr.html:156
+msgid "Right to Left"
+msgstr "Oikealta vasemmalle"
+
+#: cps/templates/readpdf.html:29
+msgid "PDF reader"
+msgstr "PDF lukija"
+
+#: cps/templates/readtxt.html:6
+msgid "Basic txt Reader"
+msgstr "Perus txt -lukija"
+
+#: cps/templates/register.html:4
+msgid "Register a new account"
+msgstr "Rekisteröi uusi tili"
+
+#: cps/templates/register.html:8
+msgid "Choose a username"
+msgstr "Valitse käyttäjänimi"
+
+#: cps/templates/register.html:11 cps/templates/user_edit.html:13
+msgid "E-mail address"
+msgstr "Sähköpostiosoite"
+
+#: cps/templates/register.html:12
+msgid "Your email address"
+msgstr "Sähköpostiosoitteesi"
+
+#: cps/templates/remote_login.html:6
+msgid "Use your other device, login and visit "
+msgstr "Käytä toista laitetta, kirjaudu ja käy osoitteessa "
+
+#: cps/templates/remote_login.html:9
+msgid "Once you do so, you will automatically get logged in on this device."
+msgstr "Kun teet näin, sinut kirjataan automaattisesti sisään tälle laitteelle."
+
+#: cps/templates/remote_login.html:12
+msgid "The link will expire after 10 minutes."
+msgstr "Linkki vanhenee 10 minuutissa."
+
+#: cps/templates/search.html:5
+msgid "No Results for:"
+msgstr "Ei tuloksia haulle:"
+
+#: cps/templates/search.html:6
+msgid "Please try a different search"
+msgstr "Ole hyvä ja koita muuta hakua"
+
+#: cps/templates/search.html:8
+msgid "Results for:"
+msgstr "Tulosket haulle:"
+
+#: cps/templates/search_form.html:19
+msgid "Publishing date from"
+msgstr "Julkaisupäivästä"
+
+#: cps/templates/search_form.html:26
+msgid "Publishing date to"
+msgstr "Julkaisupäivään"
+
+#: cps/templates/search_form.html:43
+msgid "Exclude Tags"
+msgstr "Poissulje merkintä"
+
+#: cps/templates/search_form.html:63
+msgid "Exclude Series"
+msgstr "Poissulje sarja"
+
+#: cps/templates/search_form.html:84
+msgid "Exclude Languages"
+msgstr "Poissulje kieli"
+
+#: cps/templates/search_form.html:95
+msgid "Extensions"
+msgstr ""
+
+#: cps/templates/search_form.html:105
+msgid "Exclude Extensions"
+msgstr ""
+
+#: cps/templates/search_form.html:117
+msgid "Rating bigger than"
+msgstr "Arvio enemmän kun"
+
+#: cps/templates/search_form.html:121
+msgid "Rating less than"
+msgstr "Arvio vähemmän kun"
+
+#: cps/templates/shelf.html:10
+msgid "Delete this Shelf"
+msgstr "Poista tämä hylly"
+
+#: cps/templates/shelf.html:11
+msgid "Edit Shelf"
+msgstr "Muuta hyllyä"
+
+#: cps/templates/shelf.html:12 cps/templates/shelf_order.html:31
+msgid "Change order"
+msgstr "Muuta järjestystä"
+
+#: cps/templates/shelf.html:67
+msgid "Do you really want to delete the shelf?"
+msgstr "Oletko varma, että haluat poistaa hyllyn?"
+
+#: cps/templates/shelf.html:70
+msgid "Shelf will be lost for everybody and forever!"
+msgstr "Hylly poistetaan kaikilta ja ikuisesti!"
+
+#: cps/templates/shelf_edit.html:13
+msgid "should the shelf be public?"
+msgstr "pitäisikö hyllyn olla julkinen?"
+
+#: cps/templates/shelf_order.html:5
+msgid "Drag 'n drop to rearrange order"
+msgstr "Vedä ja pudota muuttaaksesi järjestystä"
+
+#: cps/templates/stats.html:7
+msgid "Calibre library statistics"
+msgstr "Calibre -kirjaston tilastot"
+
+#: cps/templates/stats.html:12
+msgid "Books in this Library"
+msgstr "Kirjat tässä kirjastossa"
+
+#: cps/templates/stats.html:16
+msgid "Authors in this Library"
+msgstr "Kirjailijat tässä kirjastossa"
+
+#: cps/templates/stats.html:20
+msgid "Categories in this Library"
+msgstr "Kategoriat tässä kirjastossa"
+
+#: cps/templates/stats.html:24
+msgid "Series in this Library"
+msgstr "Sarjat kirjastossa"
+
+#: cps/templates/stats.html:28
+msgid "Linked libraries"
+msgstr "Linkitetyt kirjastot"
+
+#: cps/templates/stats.html:32
+msgid "Program library"
+msgstr "Ohjelmiston luokka"
+
+#: cps/templates/stats.html:33
+msgid "Installed Version"
+msgstr "Asennettu versio"
+
+#: cps/templates/tasks.html:7
+msgid "Tasks list"
+msgstr "Tehtävälista"
+
+#: cps/templates/tasks.html:12
+msgid "User"
+msgstr "Käyttäjä"
+
+#: cps/templates/tasks.html:14
+msgid "Task"
+msgstr "Tehtävä"
+
+#: cps/templates/tasks.html:15
+msgid "Status"
+msgstr "Tila"
+
+#: cps/templates/tasks.html:16
+msgid "Progress"
+msgstr "Edistyminen"
+
+#: cps/templates/tasks.html:17
+msgid "Runtime"
+msgstr "Ajoaika"
+
+#: cps/templates/tasks.html:18
+msgid "Starttime"
+msgstr "Käynnistysaika"
+
+#: cps/templates/tasks.html:24
+msgid "Delete finished tasks"
+msgstr "Tyhjennä valmistuneet tehtävät"
+
+#: cps/templates/tasks.html:25
+msgid "Hide all tasks"
+msgstr "Piilota kaikki tehtävät"
+
+#: cps/templates/user_edit.html:18
+msgid "Reset user Password"
+msgstr "Nollaa käyttäjän salasana"
+
+#: cps/templates/user_edit.html:26
+msgid "Kindle E-Mail"
+msgstr "Kindle sähköposti"
+
+#: cps/templates/user_edit.html:39
+msgid "Show books with language"
+msgstr "Näytä kirjat kielellä"
+
+#: cps/templates/user_edit.html:41
+msgid "Show all"
+msgstr "Näytä kaikki"
+
+#: cps/templates/user_edit.html:51
+msgid "OAuth Settings"
+msgstr "OAuth asetukset"
+
+#: cps/templates/user_edit.html:53
+msgid "Link"
+msgstr "Linkitä"
+
+#: cps/templates/user_edit.html:55
+msgid "Unlink"
+msgstr "Poista linkitys"
+
+#: cps/templates/user_edit.html:123
+msgid "Delete this user"
+msgstr "Poista tämä käyttäjä"
+
+#: cps/templates/user_edit.html:138
+msgid "Recent Downloads"
+msgstr "Viimeisimmät lataukset"
+
+#~ msgid "Afar"
+#~ msgstr "afar"
+
+#~ msgid "Abkhazian"
+#~ msgstr "abhaasi"
+
+#~ msgid "Achinese"
+#~ msgstr "aceh"
+
+#~ msgid "Acoli"
+#~ msgstr "atšoli"
+
+#~ msgid "Adangme"
+#~ msgstr "adangme"
+
+#~ msgid "Adyghe"
+#~ msgstr "adyge"
+
+#~ msgid "Afrihili"
+#~ msgstr "afrihili"
+
+#~ msgid "Afrikaans"
+#~ msgstr "afrikaans"
+
+#~ msgid "Ainu (Japan)"
+#~ msgstr ""
+
+#~ msgid "Akan"
+#~ msgstr "Akan"
+
+#~ msgid "Akkadian"
+#~ msgstr "akkadi"
+
+#~ msgid "Aleut"
+#~ msgstr "aleutti"
+
+#~ msgid "Altai; Southern"
+#~ msgstr ""
+
+#~ msgid "Amharic"
+#~ msgstr "amhara"
+
+#~ msgid "English; Old (ca. 450-1100)"
+#~ msgstr ""
+
+#~ msgid "Angika"
+#~ msgstr "angika"
+
+#~ msgid "Arabic"
+#~ msgstr "arabia"
+
+#~ msgid "Aramaic; Official (700-300 BCE)"
+#~ msgstr ""
+
+#~ msgid "Aragonese"
+#~ msgstr "aragonia"
+
+#~ msgid "Mapudungun"
+#~ msgstr ""
+
+#~ msgid "Arapaho"
+#~ msgstr "arapaho"
+
+#~ msgid "Arawak"
+#~ msgstr "arawak"
+
+#~ msgid "Assamese"
+#~ msgstr "asami"
+
+#~ msgid "Asturian"
+#~ msgstr "asturia"
+
+#~ msgid "Avaric"
+#~ msgstr "avaari"
+
+#~ msgid "Avestan"
+#~ msgstr "avestan"
+
+#~ msgid "Awadhi"
+#~ msgstr "awadhi"
+
+#~ msgid "Aymara"
+#~ msgstr "Aymara"
+
+#~ msgid "Azerbaijani"
+#~ msgstr "azeri"
+
+#~ msgid "Bashkir"
+#~ msgstr "baškiiri"
+
+#~ msgid "Baluchi"
+#~ msgstr "belutši"
+
+#~ msgid "Bambara"
+#~ msgstr "Bambara"
+
+#~ msgid "Balinese"
+#~ msgstr "bali"
+
+#~ msgid "Basa (Cameroon)"
+#~ msgstr ""
+
+#~ msgid "Beja"
+#~ msgstr "beja"
+
+#~ msgid "Belarusian"
+#~ msgstr "valkovenäjä"
+
+#~ msgid "Bemba (Zambia)"
+#~ msgstr ""
+
+#~ msgid "Bengali"
+#~ msgstr "bengali"
+
+#~ msgid "Bhojpuri"
+#~ msgstr "bhojpuri"
+
+#~ msgid "Bikol"
+#~ msgstr "bikol"
+
+#~ msgid "Bini"
+#~ msgstr "bini"
+
+#~ msgid "Bislama"
+#~ msgstr "bislama"
+
+#~ msgid "Siksika"
+#~ msgstr "mustajalka (siksika)"
+
+#~ msgid "Tibetan"
+#~ msgstr "tiibetti"
+
+#~ msgid "Bosnian"
+#~ msgstr "bosnia"
+
+#~ msgid "Braj"
+#~ msgstr "bradž"
+
+#~ msgid "Breton"
+#~ msgstr "bretoni"
+
+#~ msgid "Buriat"
+#~ msgstr "burjaatti"
+
+#~ msgid "Buginese"
+#~ msgstr "bugi"
+
+#~ msgid "Bulgarian"
+#~ msgstr "bulgaria"
+
+#~ msgid "Bilin"
+#~ msgstr ""
+
+#~ msgid "Caddo"
+#~ msgstr "caddo"
+
+#~ msgid "Carib; Galibi"
+#~ msgstr ""
+
+#~ msgid "Catalan"
+#~ msgstr "katalaani"
+
+#~ msgid "Cebuano"
+#~ msgstr "cebuano"
+
+#~ msgid "Czech"
+#~ msgstr "tšekki"
+
+#~ msgid "Chamorro"
+#~ msgstr "chamorro"
+
+#~ msgid "Chibcha"
+#~ msgstr "chibcha"
+
+#~ msgid "Chechen"
+#~ msgstr "tšetšeeni"
+
+#~ msgid "Chagatai"
+#~ msgstr "Chagatai"
+
+#~ msgid "Chuukese"
+#~ msgstr "chuuk"
+
+#~ msgid "Mari (Russia)"
+#~ msgstr "mari (Venäjä)"
+
+#~ msgid "Chinook jargon"
+#~ msgstr "chinook-jargon"
+
+#~ msgid "Choctaw"
+#~ msgstr "choctaw"
+
+#~ msgid "Chipewyan"
+#~ msgstr "chipewyan"
+
+#~ msgid "Cherokee"
+#~ msgstr "cherokee"
+
+#~ msgid "Slavonic; Old"
+#~ msgstr ""
+
+#~ msgid "Chuvash"
+#~ msgstr "tšuvassi"
+
+#~ msgid "Cheyenne"
+#~ msgstr "cheyenne"
+
+#~ msgid "Coptic"
+#~ msgstr "kopti"
+
+#~ msgid "Cornish"
+#~ msgstr "korni"
+
+#~ msgid "Corsican"
+#~ msgstr "korsika"
+
+#~ msgid "Cree"
+#~ msgstr "cree"
+
+#~ msgid "Turkish; Crimean"
+#~ msgstr "krimintataari"
+
+#~ msgid "Kashubian"
+#~ msgstr "kašubi"
+
+#~ msgid "Welsh"
+#~ msgstr "kymri"
+
+#~ msgid "Dakota"
+#~ msgstr "dakota"
+
+#~ msgid "Danish"
+#~ msgstr "tanska"
+
+#~ msgid "Dargwa"
+#~ msgstr "dargva"
+
+#~ msgid "Delaware"
+#~ msgstr "delaware"
+
+#~ msgid "Slave (Athapascan)"
+#~ msgstr "athapaski-slavi"
+
+#~ msgid "German"
+#~ msgstr "saksa"
+
+#~ msgid "Dogrib"
+#~ msgstr "dogrib"
+
+#~ msgid "Dinka"
+#~ msgstr "Dinka"
+
+#~ msgid "Dhivehi"
+#~ msgstr ""
+
+#~ msgid "Dogri (macrolanguage)"
+#~ msgstr ""
+
+#~ msgid "Sorbian; Lower"
+#~ msgstr "alasorbi"
+
+#~ msgid "Duala"
+#~ msgstr "duala"
+
+#~ msgid "Dutch; Middle (ca. 1050-1350)"
+#~ msgstr ""
+
+#~ msgid "Dyula"
+#~ msgstr "dyula"
+
+#~ msgid "Dzongkha"
+#~ msgstr "dzongkha"
+
+#~ msgid "Efik"
+#~ msgstr "efik"
+
+#~ msgid "Egyptian (Ancient)"
+#~ msgstr "muinaisegypti"
+
+#~ msgid "Ekajuk"
+#~ msgstr "ekajuk"
+
+#~ msgid "Greek; Modern (1453-)"
+#~ msgstr "nykykreikka"
+
+#~ msgid "Elamite"
+#~ msgstr "elami"
+
+#~ msgid "English"
+#~ msgstr "englanti"
+
+#~ msgid "English; Middle (1100-1500)"
+#~ msgstr "keskienglanti"
+
+#~ msgid "Esperanto"
+#~ msgstr "esperanto"
+
+#~ msgid "Estonian"
+#~ msgstr "viro"
+
+#~ msgid "Basque"
+#~ msgstr "baski"
+
+#~ msgid "Ewe"
+#~ msgstr "ewe"
+
+#~ msgid "Ewondo"
+#~ msgstr "ewondo"
+
+#~ msgid "Fang (Equatorial Guinea)"
+#~ msgstr ""
+
+#~ msgid "Faroese"
+#~ msgstr "fääri"
+
+#~ msgid "Persian"
+#~ msgstr "persia"
+
+#~ msgid "Fanti"
+#~ msgstr "fanti"
+
+#~ msgid "Fijian"
+#~ msgstr "fidži"
+
+#~ msgid "Filipino"
+#~ msgstr "filipino"
+
+#~ msgid "Finnish"
+#~ msgstr "suomi"
+
+#~ msgid "Fon"
+#~ msgstr "fon"
+
+#~ msgid "French"
+#~ msgstr "ranska"
+
+#~ msgid "French; Middle (ca. 1400-1600)"
+#~ msgstr ""
+
+#~ msgid "French; Old (842-ca. 1400)"
+#~ msgstr ""
+
+#~ msgid "Frisian; Northern"
+#~ msgstr ""
+
+#~ msgid "Frisian; Eastern"
+#~ msgstr ""
+
+#~ msgid "Frisian; Western"
+#~ msgstr ""
+
+#~ msgid "Fulah"
+#~ msgstr "fulani"
+
+#~ msgid "Friulian"
+#~ msgstr "friuli"
+
+#~ msgid "Ga"
+#~ msgstr "gã"
+
+#~ msgid "Gayo"
+#~ msgstr "gayo"
+
+#~ msgid "Gbaya (Central African Republic)"
+#~ msgstr ""
+
+#~ msgid "Geez"
+#~ msgstr "ge'ez"
+
+#~ msgid "Gilbertese"
+#~ msgstr "kiribati"
+
+#~ msgid "Gaelic; Scottish"
+#~ msgstr ""
+
+#~ msgid "Irish"
+#~ msgstr "iiri"
+
+#~ msgid "Galician"
+#~ msgstr "galicia"
+
+#~ msgid "Manx"
+#~ msgstr "manksi"
+
+#~ msgid "German; Middle High (ca. 1050-1500)"
+#~ msgstr ""
+
+#~ msgid "German; Old High (ca. 750-1050)"
+#~ msgstr ""
+
+#~ msgid "Gondi"
+#~ msgstr "gondi"
+
+#~ msgid "Gorontalo"
+#~ msgstr "gorontalo"
+
+#~ msgid "Gothic"
+#~ msgstr "gootti"
+
+#~ msgid "Grebo"
+#~ msgstr "grebo"
+
+#~ msgid "Greek; Ancient (to 1453)"
+#~ msgstr "muinaiskreikka"
+
+#~ msgid "Guarani"
+#~ msgstr "guarani"
+
+#~ msgid "German; Swiss"
+#~ msgstr ""
+
+#~ msgid "Gujarati"
+#~ msgstr "gujarati"
+
+#~ msgid "Gwichʼin"
+#~ msgstr ""
+
+#~ msgid "Haida"
+#~ msgstr "haida"
+
+#~ msgid "Creole; Haitian"
+#~ msgstr ""
+
+#~ msgid "Hausa"
+#~ msgstr "hausa"
+
+#~ msgid "Hawaiian"
+#~ msgstr "havaiji"
+
+#~ msgid "Hebrew"
+#~ msgstr "heprea"
+
+#~ msgid "Herero"
+#~ msgstr "herero"
+
+#~ msgid "Hiligaynon"
+#~ msgstr "hiligaynon"
+
+#~ msgid "Hindi"
+#~ msgstr "hindi"
+
+#~ msgid "Hittite"
+#~ msgstr "heetti"
+
+#~ msgid "Hmong"
+#~ msgstr "hmong"
+
+#~ msgid "Hiri Motu"
+#~ msgstr "hiri-motu"
+
+#~ msgid "Croatian"
+#~ msgstr "kroatia"
+
+#~ msgid "Sorbian; Upper"
+#~ msgstr ""
+
+#~ msgid "Hungarian"
+#~ msgstr "unkari"
+
+#~ msgid "Hupa"
+#~ msgstr "hupa"
+
+#~ msgid "Armenian"
+#~ msgstr "armenia"
+
+#~ msgid "Iban"
+#~ msgstr "Iban"
+
+#~ msgid "Igbo"
+#~ msgstr "igbo"
+
+#~ msgid "Ido"
+#~ msgstr "ido"
+
+#~ msgid "Yi; Sichuan"
+#~ msgstr ""
+
+#~ msgid "Inuktitut"
+#~ msgstr "inuktitut"
+
+#~ msgid "Interlingue"
+#~ msgstr "interlingue"
+
+#~ msgid "Iloko"
+#~ msgstr "iloko"
+
+#~ msgid "Interlingua (International Auxiliary Language Association)"
+#~ msgstr "interlingua"
+
+#~ msgid "Indonesian"
+#~ msgstr "indonesia"
+
+#~ msgid "Ingush"
+#~ msgstr "inguuši"
+
+#~ msgid "Inupiaq"
+#~ msgstr "iñupiaq"
+
+#~ msgid "Icelandic"
+#~ msgstr "islanti"
+
+#~ msgid "Italian"
+#~ msgstr "italia"
+
+#~ msgid "Javanese"
+#~ msgstr "jaava"
+
+#~ msgid "Lojban"
+#~ msgstr "lojban"
+
+#~ msgid "Japanese"
+#~ msgstr "japani"
+
+#~ msgid "Judeo-Persian"
+#~ msgstr "juutalaispersia"
+
+#~ msgid "Judeo-Arabic"
+#~ msgstr "juutalaisarabia"
+
+#~ msgid "Kara-Kalpak"
+#~ msgstr "karakalpakki"
+
+#~ msgid "Kabyle"
+#~ msgstr "kabyyli"
+
+#~ msgid "Kachin"
+#~ msgstr "kachin"
+
+#~ msgid "Kalaallisut"
+#~ msgstr "grönlanti"
+
+#~ msgid "Kamba (Kenya)"
+#~ msgstr ""
+
+#~ msgid "Kannada"
+#~ msgstr "kannada"
+
+#~ msgid "Kashmiri"
+#~ msgstr "kashmiri"
+
+#~ msgid "Georgian"
+#~ msgstr "georgia"
+
+#~ msgid "Kanuri"
+#~ msgstr "kanuri"
+
+#~ msgid "Kawi"
+#~ msgstr "kavi"
+
+#~ msgid "Kazakh"
+#~ msgstr "kazakki"
+
+#~ msgid "Kabardian"
+#~ msgstr "kabardi"
+
+#~ msgid "Khasi"
+#~ msgstr "Khasi"
+
+#~ msgid "Khmer; Central"
+#~ msgstr ""
+
+#~ msgid "Khotanese"
+#~ msgstr "khotani"
+
+#~ msgid "Kikuyu"
+#~ msgstr "kikuyu"
+
+#~ msgid "Kinyarwanda"
+#~ msgstr "ruanda"
+
+#~ msgid "Kirghiz"
+#~ msgstr "kirgiisi"
+
+#~ msgid "Kimbundu"
+#~ msgstr "kimbundu"
+
+#~ msgid "Konkani (macrolanguage)"
+#~ msgstr ""
+
+#~ msgid "Komi"
+#~ msgstr "komi"
+
+#~ msgid "Kongo"
+#~ msgstr "Kongo"
+
+#~ msgid "Korean"
+#~ msgstr "korea"
+
+#~ msgid "Kosraean"
+#~ msgstr "kosrae"
+
+#~ msgid "Kpelle"
+#~ msgstr "kpelle"
+
+#~ msgid "Karachay-Balkar"
+#~ msgstr "karatšai-balkaari"
+
+#~ msgid "Karelian"
+#~ msgstr "karjala"
+
+#~ msgid "Kurukh"
+#~ msgstr "kurukh"
+
+#~ msgid "Kuanyama"
+#~ msgstr "kuanjama"
+
+#~ msgid "Kumyk"
+#~ msgstr "kumykki"
+
+#~ msgid "Kurdish"
+#~ msgstr "kurdi"
+
+#~ msgid "Kutenai"
+#~ msgstr "kutenai"
+
+#~ msgid "Ladino"
+#~ msgstr "ladino"
+
+#~ msgid "Lahnda"
+#~ msgstr "lahnda"
+
+#~ msgid "Lamba"
+#~ msgstr "lamba"
+
+#~ msgid "Lao"
+#~ msgstr "lao"
+
+#~ msgid "Latin"
+#~ msgstr "latina"
+
+#~ msgid "Latvian"
+#~ msgstr "latvia"
+
+#~ msgid "Lezghian"
+#~ msgstr "lezgi"
+
+#~ msgid "Limburgan"
+#~ msgstr ""
+
+#~ msgid "Lingala"
+#~ msgstr "lingala"
+
+#~ msgid "Lithuanian"
+#~ msgstr "liettua"
+
+#~ msgid "Mongo"
+#~ msgstr "mongo"
+
+#~ msgid "Lozi"
+#~ msgstr "lozi"
+
+#~ msgid "Luxembourgish"
+#~ msgstr "Luxemburg"
+
+#~ msgid "Luba-Lulua"
+#~ msgstr "luba (Lulua)"
+
+#~ msgid "Luba-Katanga"
+#~ msgstr "luba (Katanga)"
+
+#~ msgid "Ganda"
+#~ msgstr "Ganda"
+
+#~ msgid "Luiseno"
+#~ msgstr "luiseño"
+
+#~ msgid "Lunda"
+#~ msgstr "lunda"
+
+#~ msgid "Luo (Kenya and Tanzania)"
+#~ msgstr "luo"
+
+#~ msgid "Lushai"
+#~ msgstr "lushai"
+
+#~ msgid "Madurese"
+#~ msgstr "madura"
+
+#~ msgid "Magahi"
+#~ msgstr "magahi"
+
+#~ msgid "Marshallese"
+#~ msgstr ""
+
+#~ msgid "Maithili"
+#~ msgstr "maithili"
+
+#~ msgid "Makasar"
+#~ msgstr "Makasar"
+
+#~ msgid "Malayalam"
+#~ msgstr "malayalam"
+
+#~ msgid "Mandingo"
+#~ msgstr "mandingo"
+
+#~ msgid "Marathi"
+#~ msgstr "marathi"
+
+#~ msgid "Masai"
+#~ msgstr "masai"
+
+#~ msgid "Moksha"
+#~ msgstr "mokša"
+
+#~ msgid "Mandar"
+#~ msgstr "mandar"
+
+#~ msgid "Mende (Sierra Leone)"
+#~ msgstr ""
+
+#~ msgid "Irish; Middle (900-1200)"
+#~ msgstr "keski-iiri"
+
+#~ msgid "Mi'kmaq"
+#~ msgstr ""
+
+#~ msgid "Minangkabau"
+#~ msgstr "minangkabau"
+
+#~ msgid "Uncoded languages"
+#~ msgstr ""
+
+#~ msgid "Macedonian"
+#~ msgstr "makedonia"
+
+#~ msgid "Malagasy"
+#~ msgstr "malagassi"
+
+#~ msgid "Maltese"
+#~ msgstr "malta"
+
+#~ msgid "Manchu"
+#~ msgstr "mantšu"
+
+#~ msgid "Manipuri"
+#~ msgstr "manipuri"
+
+#~ msgid "Mohawk"
+#~ msgstr "mohawk"
+
+#~ msgid "Mongolian"
+#~ msgstr "Mongolian"
+
+#~ msgid "Mossi"
+#~ msgstr "mossi"
+
+#~ msgid "Maori"
+#~ msgstr "maori"
+
+#~ msgid "Malay (macrolanguage)"
+#~ msgstr ""
+
+#~ msgid "Multiple languages"
+#~ msgstr "monia kieliä"
+
+#~ msgid "Creek"
+#~ msgstr "muskogi"
+
+#~ msgid "Mirandese"
+#~ msgstr "mirandês"
+
+#~ msgid "Marwari"
+#~ msgstr "marwari"
+
+#~ msgid "Burmese"
+#~ msgstr "burma"
+
+#~ msgid "Erzya"
+#~ msgstr "ersä"
+
+#~ msgid "Neapolitan"
+#~ msgstr "napoli"
+
+#~ msgid "Nauru"
+#~ msgstr "nauru"
+
+#~ msgid "Navajo"
+#~ msgstr ""
+
+#~ msgid "Ndebele; South"
+#~ msgstr "ndebele; eteländebele"
+
+#~ msgid "Ndebele; North"
+#~ msgstr "ndebele; pohjoisndebele"
+
+#~ msgid "Ndonga"
+#~ msgstr "ndonga"
+
+#~ msgid "German; Low"
+#~ msgstr ""
+
+#~ msgid "Nepali"
+#~ msgstr "nepali"
+
+#~ msgid "Bhasa; Nepal"
+#~ msgstr ""
+
+#~ msgid "Nias"
+#~ msgstr "nias"
+
+#~ msgid "Niuean"
+#~ msgstr "niue"
+
+#~ msgid "Dutch"
+#~ msgstr "hollanti"
+
+#~ msgid "Norwegian Nynorsk"
+#~ msgstr "norja (uusnorja)"
+
+#~ msgid "Norwegian Bokmål"
+#~ msgstr ""
+
+#~ msgid "Nogai"
+#~ msgstr "nogai"
+
+#~ msgid "Norse; Old"
+#~ msgstr "muinaisnorja"
+
+#~ msgid "Norwegian"
+#~ msgstr "norja"
+
+#~ msgid "N'Ko"
+#~ msgstr ""
+
+#~ msgid "Sotho; Northern"
+#~ msgstr ""
+
+#~ msgid "Newari; Old"
+#~ msgstr ""
+
+#~ msgid "Nyanja"
+#~ msgstr ""
+
+#~ msgid "Nyamwezi"
+#~ msgstr "nyamwezi"
+
+#~ msgid "Nyankole"
+#~ msgstr "nyankole"
+
+#~ msgid "Nyoro"
+#~ msgstr "Nyoro"
+
+#~ msgid "Nzima"
+#~ msgstr "nzima"
+
+#~ msgid "Occitan (post 1500)"
+#~ msgstr ""
+
+#~ msgid "Ojibwa"
+#~ msgstr "Ojibwa"
+
+#~ msgid "Oriya"
+#~ msgstr "oriya"
+
+#~ msgid "Oromo"
+#~ msgstr "oromo"
+
+#~ msgid "Osage"
+#~ msgstr "osage"
+
+#~ msgid "Ossetian"
+#~ msgstr ""
+
+#~ msgid "Turkish; Ottoman (1500-1928)"
+#~ msgstr "osmaninturkki"
+
+#~ msgid "Pangasinan"
+#~ msgstr "pangasinan"
+
+#~ msgid "Pahlavi"
+#~ msgstr "pahlavi"
+
+#~ msgid "Pampanga"
+#~ msgstr "pampanga"
+
+#~ msgid "Panjabi"
+#~ msgstr ""
+
+#~ msgid "Papiamento"
+#~ msgstr "papiamentu"
+
+#~ msgid "Palauan"
+#~ msgstr "palau"
+
+#~ msgid "Persian; Old (ca. 600-400 B.C.)"
+#~ msgstr ""
+
+#~ msgid "Phoenician"
+#~ msgstr "foinikia"
+
+#~ msgid "Pali"
+#~ msgstr "Pali"
+
+#~ msgid "Polish"
+#~ msgstr "puola"
+
+#~ msgid "Pohnpeian"
+#~ msgstr "pohnpei"
+
+#~ msgid "Portuguese"
+#~ msgstr "portugali"
+
+#~ msgid "Provençal; Old (to 1500)"
+#~ msgstr "muinaisprovensaali"
+
+#~ msgid "Pushto"
+#~ msgstr "pašto"
+
+#~ msgid "Quechua"
+#~ msgstr "Quechua"
+
+#~ msgid "Rajasthani"
+#~ msgstr "rajasthani"
+
+#~ msgid "Rapanui"
+#~ msgstr "rapanui"
+
+#~ msgid "Maori; Cook Islands"
+#~ msgstr ""
+
+#~ msgid "Romansh"
+#~ msgstr ""
+
+#~ msgid "Romany"
+#~ msgstr "romani"
+
+#~ msgid "Romanian"
+#~ msgstr "romania"
+
+#~ msgid "Rundi"
+#~ msgstr "rundi"
+
+#~ msgid "Romanian; Macedo-"
+#~ msgstr ""
+
+#~ msgid "Russian"
+#~ msgstr "venäjä"
+
+#~ msgid "Sandawe"
+#~ msgstr "sandawe"
+
+#~ msgid "Sango"
+#~ msgstr "Sango"
+
+#~ msgid "Yakut"
+#~ msgstr "jakuutti"
+
+#~ msgid "Aramaic; Samaritan"
+#~ msgstr ""
+
+#~ msgid "Sanskrit"
+#~ msgstr "sanskrit"
+
+#~ msgid "Sasak"
+#~ msgstr "Sasak"
+
+#~ msgid "Santali"
+#~ msgstr "santali"
+
+#~ msgid "Sicilian"
+#~ msgstr "sisilia"
+
+#~ msgid "Scots"
+#~ msgstr "skotti"
+
+#~ msgid "Selkup"
+#~ msgstr "selkuppi"
+
+#~ msgid "Irish; Old (to 900)"
+#~ msgstr "muinaisiiri"
+
+#~ msgid "Shan"
+#~ msgstr "shan"
+
+#~ msgid "Sidamo"
+#~ msgstr "sidamo"
+
+#~ msgid "Sinhala"
+#~ msgstr ""
+
+#~ msgid "Slovak"
+#~ msgstr "slovakki"
+
+#~ msgid "Slovenian"
+#~ msgstr "sloveeni"
+
+#~ msgid "Sami; Southern"
+#~ msgstr "eteläsaame"
+
+#~ msgid "Sami; Northern"
+#~ msgstr "pohjoissaame"
+
+#~ msgid "Lule Sami"
+#~ msgstr "luulajansaame"
+
+#~ msgid "Sami; Inari"
+#~ msgstr "inarinsaame"
+
+#~ msgid "Samoan"
+#~ msgstr "samoa"
+
+#~ msgid "Sami; Skolt"
+#~ msgstr "koltansaami"
+
+#~ msgid "Shona"
+#~ msgstr "shona"
+
+#~ msgid "Sindhi"
+#~ msgstr "sindhi"
+
+#~ msgid "Soninke"
+#~ msgstr "soninke"
+
+#~ msgid "Sogdian"
+#~ msgstr "sogdi"
+
+#~ msgid "Somali"
+#~ msgstr "somali"
+
+#~ msgid "Sotho; Southern"
+#~ msgstr "eteläsotho"
+
+#~ msgid "Spanish"
+#~ msgstr "espanja"
+
+#~ msgid "Albanian"
+#~ msgstr "albania"
+
+#~ msgid "Sardinian"
+#~ msgstr "sardi"
+
+#~ msgid "Sranan Tongo"
+#~ msgstr ""
+
+#~ msgid "Serbian"
+#~ msgstr "serbia"
+
+#~ msgid "Serer"
+#~ msgstr "Serer"
+
+#~ msgid "Swati"
+#~ msgstr "swazi"
+
+#~ msgid "Sukuma"
+#~ msgstr "sukuma"
+
+#~ msgid "Sundanese"
+#~ msgstr "sunda"
+
+#~ msgid "Susu"
+#~ msgstr "susu"
+
+#~ msgid "Sumerian"
+#~ msgstr "sumeri"
+
+#~ msgid "Swahili (macrolanguage)"
+#~ msgstr ""
+
+#~ msgid "Swedish"
+#~ msgstr "ruotsi"
+
+#~ msgid "Syriac; Classical"
+#~ msgstr ""
+
+#~ msgid "Syriac"
+#~ msgstr "syyria"
+
+#~ msgid "Tahitian"
+#~ msgstr "tahiti"
+
+#~ msgid "Tamil"
+#~ msgstr "tamili"
+
+#~ msgid "Tatar"
+#~ msgstr "tataari"
+
+#~ msgid "Telugu"
+#~ msgstr "Telugu"
+
+#~ msgid "Timne"
+#~ msgstr "temne"
+
+#~ msgid "Tereno"
+#~ msgstr "tereno"
+
+#~ msgid "Tetum"
+#~ msgstr "tetum"
+
+#~ msgid "Tajik"
+#~ msgstr "tadžikki"
+
+#~ msgid "Tagalog"
+#~ msgstr "tagalog"
+
+#~ msgid "Thai"
+#~ msgstr "thai"
+
+#~ msgid "Tigre"
+#~ msgstr "tigre"
+
+#~ msgid "Tigrinya"
+#~ msgstr "tigrinya"
+
+#~ msgid "Tiv"
+#~ msgstr "tiv"
+
+#~ msgid "Tokelau"
+#~ msgstr "tokelau"
+
+#~ msgid "Klingon"
+#~ msgstr ""
+
+#~ msgid "Tlingit"
+#~ msgstr "tlinglit"
+
+#~ msgid "Tamashek"
+#~ msgstr "Tamashek"
+
+#~ msgid "Tonga (Nyasa)"
+#~ msgstr "Malawin tonga"
+
+#~ msgid "Tonga (Tonga Islands)"
+#~ msgstr "Tongan tonga"
+
+#~ msgid "Tok Pisin"
+#~ msgstr "tok-pisin"
+
+#~ msgid "Tsimshian"
+#~ msgstr "tsimshian"
+
+#~ msgid "Tswana"
+#~ msgstr "tswana"
+
+#~ msgid "Tsonga"
+#~ msgstr "tsonga"
+
+#~ msgid "Turkmen"
+#~ msgstr "turkmeeni"
+
+#~ msgid "Tumbuka"
+#~ msgstr "tumbuka"
+
+#~ msgid "Turkish"
+#~ msgstr "turkki"
+
+#~ msgid "Tuvalu"
+#~ msgstr "tuvalu"
+
+#~ msgid "Twi"
+#~ msgstr "twi"
+
+#~ msgid "Tuvinian"
+#~ msgstr "tuva"
+
+#~ msgid "Udmurt"
+#~ msgstr "udmurtti"
+
+#~ msgid "Ugaritic"
+#~ msgstr "ugarit"
+
+#~ msgid "Uighur"
+#~ msgstr "uiguuri"
+
+#~ msgid "Ukrainian"
+#~ msgstr "ukraina"
+
+#~ msgid "Umbundu"
+#~ msgstr "umbundu"
+
+#~ msgid "Undetermined"
+#~ msgstr "määrittämätön"
+
+#~ msgid "Urdu"
+#~ msgstr "urdu"
+
+#~ msgid "Uzbek"
+#~ msgstr "uzbekki"
+
+#~ msgid "Vai"
+#~ msgstr "vai"
+
+#~ msgid "Venda"
+#~ msgstr "venda"
+
+#~ msgid "Vietnamese"
+#~ msgstr "vietnam"
+
+#~ msgid "Volapük"
+#~ msgstr "volapük"
+
+#~ msgid "Votic"
+#~ msgstr "vatja"
+
+#~ msgid "Wolaytta"
+#~ msgstr ""
+
+#~ msgid "Waray (Philippines)"
+#~ msgstr ""
+
+#~ msgid "Washo"
+#~ msgstr "washo"
+
+#~ msgid "Walloon"
+#~ msgstr "valloni"
+
+#~ msgid "Wolof"
+#~ msgstr "wolof"
+
+#~ msgid "Kalmyk"
+#~ msgstr ""
+
+#~ msgid "Xhosa"
+#~ msgstr "xhosa"
+
+#~ msgid "Yao"
+#~ msgstr "mien"
+
+#~ msgid "Yapese"
+#~ msgstr "yap"
+
+#~ msgid "Yiddish"
+#~ msgstr "jiddiš"
+
+#~ msgid "Yoruba"
+#~ msgstr "yoruba"
+
+#~ msgid "Zapotec"
+#~ msgstr "Zapotec"
+
+#~ msgid "Blissymbols"
+#~ msgstr ""
+
+#~ msgid "Zenaga"
+#~ msgstr "zenaga"
+
+#~ msgid "Zhuang"
+#~ msgstr ""
+
+#~ msgid "Chinese"
+#~ msgstr "kiina"
+
+#~ msgid "Zulu"
+#~ msgstr "zulu"
+
+#~ msgid "Zuni"
+#~ msgstr "zuni"
+
+#~ msgid "No linguistic content"
+#~ msgstr ""
+
+#~ msgid "Zaza"
+#~ msgstr ""
+
