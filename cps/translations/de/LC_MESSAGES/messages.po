@@ -5,18 +5,19 @@
 # FIRST AUTHOR OzzieIsaacs, 2016.
 msgid ""
 msgstr ""
-"Project-Id-Version:  Calibre-Web\n"
+"Project-Id-Version: Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
 "POT-Creation-Date: 2020-01-12 13:57+0100\n"
-"PO-Revision-Date: 2019-12-08 10:07+0100\n"
+"PO-Revision-Date: 2020-01-13 18:24+0100\n"
 "Last-Translator: Ozzie Isaacs\n"
 "Language: de\n"
 "Language-Team: \n"
-"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.7.0\n"
+"X-Generator: Poedit 2.2.4\n"
 
 #: cps/about.py:42
 msgid "installed"
@@ -98,7 +99,7 @@ msgstr "Es trat ein Fehler beim Versenden der Test-E-Mail auf: %(res)s"
 
 #: cps/admin.py:540
 msgid "Please configure your e-mail address first..."
-msgstr ""
+msgstr "Bitte zuerst E-Mail Adresse konfigurieren..."
 
 #: cps/admin.py:542
 msgid "E-mail server settings updated"
@@ -833,7 +834,7 @@ msgstr "Bitte zuerst die Kindle E-Mailadresse konfigurieren..."
 
 #: cps/web.py:1087
 msgid "E-Mail server is not configured, please contact your administrator!"
-msgstr ""
+msgstr "Der E-Mail Server ist nicht konfigurierte, bitte den Administrator kontaktieren!"
 
 #: cps/web.py:1088 cps/web.py:1094 cps/web.py:1119 cps/web.py:1123
 #: cps/web.py:1128 cps/web.py:1132
@@ -871,11 +872,11 @@ msgstr "Falscher Benutzername oder Passwort"
 
 #: cps/web.py:1170
 msgid "New Password was send to your email address"
-msgstr ""
+msgstr "Das neue Passwort wurde an die E-Mail Adresse verschickt"
 
 #: cps/web.py:1176
 msgid "Please enter valid username to reset password"
-msgstr ""
+msgstr "Bitte einen gültigen Benutzernamen zum Zurücksetzen des Passworts angeben"
 
 #: cps/web.py:1182
 #, python-format
@@ -1034,11 +1035,11 @@ msgstr "Remotelogin"
 
 #: cps/templates/admin.html:104
 msgid "Reverse proxy login"
-msgstr ""
+msgstr "Reverse Proxy Login"
 
 #: cps/templates/admin.html:109
 msgid "Reverse proxy header name"
-msgstr ""
+msgstr "Reverse Proxy Header Name"
 
 #: cps/templates/admin.html:121
 msgid "Administration"
@@ -1505,11 +1506,11 @@ msgstr "%(provider)s OAuth Client Secret"
 
 #: cps/templates/config_edit.html:276
 msgid "Allow Reverse Proxy Authentication"
-msgstr ""
+msgstr "Reverse Proxy Authentifizierung zulassen"
 
 #: cps/templates/config_edit.html:280
 msgid "Reverse Proxy Header Name"
-msgstr ""
+msgstr "Reverse Proxy Header Name"
 
 #: cps/templates/config_edit.html:292
 msgid "External binaries"
@@ -1734,7 +1735,7 @@ msgstr "Domainnamen eingeben"
 
 #: cps/templates/email_edit.html:60
 msgid "Denied domains for registering"
-msgstr ""
+msgstr "Verbotene Domains für eine Registrierung"
 
 #: cps/templates/email_edit.html:90
 msgid "Do you really want to delete this domain rule?"
@@ -1774,7 +1775,7 @@ msgstr "Beliebte Veröffentlichungen dieses Katalogs basierend auf Bewertung."
 
 #: cps/templates/index.xml:31
 msgid "Recently added Books"
-msgstr ""
+msgstr "Kürzlich hinzugefügte Bücher"
 
 #: cps/templates/index.xml:35
 msgid "The latest Books"
@@ -1802,11 +1803,11 @@ msgstr "Bücher nach Serien sortiert"
 
 #: cps/templates/index.xml:93
 msgid "Books ordered by Languages"
-msgstr ""
+msgstr "Bücher nach Sprache sortiert"
 
 #: cps/templates/index.xml:100
 msgid "Books ordered by file formats"
-msgstr ""
+msgstr "Bücher nach Dateiformaten sortiert"
 
 #: cps/templates/index.xml:103 cps/templates/layout.html:137
 msgid "Public Shelves"
@@ -1905,7 +1906,7 @@ msgstr "Merken"
 
 #: cps/templates/login.html:22
 msgid "Forgot password"
-msgstr ""
+msgstr "Passwort vergessen"
 
 #: cps/templates/login.html:25
 msgid "Log in with magic link"
@@ -2093,11 +2094,11 @@ msgstr "Sprachen ausschließen"
 
 #: cps/templates/search_form.html:95
 msgid "Extensions"
-msgstr ""
+msgstr "Erweiterungen"
 
 #: cps/templates/search_form.html:105
 msgid "Exclude Extensions"
-msgstr ""
+msgstr "Erweiterungen ausschließen"
 
 #: cps/templates/search_form.html:117
 msgid "Rating bigger than"
@@ -2373,4 +2374,3 @@ msgstr "Letzte Downloads"
 
 #~ msgid "New Books"
 #~ msgstr "Neue Bücher"
-
