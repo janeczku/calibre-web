@@ -953,7 +953,7 @@ msgstr "Správce"
 #: cps/templates/detail.html:27 cps/templates/shelf.html:6
 #: cps/templates/shelfdown.html:62
 msgid "Download"
-msgstr "Stáhovat"
+msgstr "Stahovat"
 
 #: cps/templates/admin.html:18
 msgid "View Ebooks"
@@ -1665,7 +1665,7 @@ msgstr "Označit jako přečtené"
 
 #: cps/templates/detail.html:201
 msgid "Read"
-msgstr "Číst"
+msgstr "Přečteno"
 
 #: cps/templates/detail.html:211
 msgid "Description:"
@@ -2208,7 +2208,7 @@ msgstr "Resetovat uživatelské heslo"
 
 #: cps/templates/user_edit.html:26
 msgid "Kindle E-Mail"
-msgstr "Kindle E-Mail"
+msgstr "Kindle e-mail"
 
 #: cps/templates/user_edit.html:39
 msgid "Show books with language"
