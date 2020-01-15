@@ -175,7 +175,7 @@ def delete_book(book_id, book_format):
                     cc_string = "custom_column_" + str(c.id)
                     if not c.is_multiple:
                         if len(getattr(book, cc_string)) > 0:
-                            if c.datatype == 'bool' or c.datatype == 'integer':
+                            if c.datatype == 'bool' or c.datatype == 'integer' or c.datatype == 'float':
                                 del_cc = getattr(book, cc_string)[0]
                                 getattr(book, cc_string).remove(del_cc)
                                 db.session.delete(del_cc)
@@ -254,7 +254,7 @@ def edit_cc_data(book_id, book, to_save):
             else:
                 cc_db_value = None
             if to_save[cc_string].strip():
-                if c.datatype == 'int' or c.datatype == 'bool':
+                if c.datatype == 'int' or c.datatype == 'bool' or c.datatype == 'float':
                     if to_save[cc_string] == 'None':
                         to_save[cc_string] = None
                     elif c.datatype == 'bool':
