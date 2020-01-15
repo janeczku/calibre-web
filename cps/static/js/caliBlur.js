@@ -159,10 +159,12 @@ if ( $( 'body.book' ).length > 0 ) {
   real_custom_column = $( '.real_custom_columns' );
     // $( '.real_custom_columns' ).remove();
     $.each(real_custom_column, function(i, val) {
-        real_cc = $(this).text().split( ':' );
+        var split = $(this).text().split( ':' );
+        real_cc_key = split.shift();
+        real_cc_value = split.join(':');
         $( this ).text("");
-        if (real_cc.length > 1) {
-            $( this ).append( '<span>' + real_cc[0] + '</span><span>' + real_cc[1] + '</span>' );
+        if (real_cc_value != "") {
+            $( this ).append( '<span>' + real_cc_key + '</span><span>' + real_cc_value + '</span>' );
         }
     });
   //$( '.real_custom_columns:nth-child(3)' ).text(function() {
