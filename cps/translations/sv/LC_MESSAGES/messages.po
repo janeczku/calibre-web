@@ -1921,11 +1921,11 @@ msgstr "Visa åtkomstlogg: "
 
 #: cps/templates/logviewer.html:8
 msgid "Stream output, can't be displayed"
-msgstr ""
+msgstr "Strömutmatning kan inte visas"
 
 #: cps/templates/logviewer.html:12
 msgid "Show access log: "
-msgstr ""
+msgstr "Visa åtkomstlogg: "
 
 #: cps/templates/osd.xml:5
 msgid "Calibre-Web ebook catalog"
