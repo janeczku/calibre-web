@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2020-01-18 12:04+0100\n"
+"POT-Creation-Date: 2020-01-18 12:28+0100\n"
 "PO-Revision-Date: 2020-01-18 11:22+0100\n"
 "Last-Translator: Jonatan Nyberg <jonatan.nyberg.karl@gmail.com>\n"
 "Language: sv\n"
@@ -1921,11 +1921,11 @@ msgstr "Visa åtkomstlogg: "
 
 #: cps/templates/logviewer.html:8
 msgid "Stream output, can't be displayed"
-msgstr ""
+msgstr "Strömutmatning kan inte visas"
 
 #: cps/templates/logviewer.html:12
 msgid "Show access log: "
-msgstr ""
+msgstr "Visa åtkomstlogg: "
 
 #: cps/templates/osd.xml:5
 msgid "Calibre-Web ebook catalog"
