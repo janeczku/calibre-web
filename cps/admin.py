@@ -36,11 +36,10 @@ from flask_babel import gettext as _
 from sqlalchemy import and_
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.sql.expression import func
-from werkzeug.security import generate_password_hash
 
 from . import constants, logger, helper, services
 from . import db, ub, web_server, get_locale, config, updater_thread, babel, gdriveutils
-from .helper import speaking_language, check_valid_domain, send_test_mail, generate_random_password, send_registration_mail
+from .helper import speaking_language, check_valid_domain, send_test_mail, reset_password, generate_password_hash
 from .gdriveutils import is_gdrive_ready, gdrive_support
 from .web import admin_required, render_title_template, before_request, unconfigured, login_required_if_no_ano
 
@@ -170,12 +169,17 @@ def update_view_configuration():
     _config_int("config_books_per_page")
     _config_int("config_authors_max")
 
+    if config.config_google_drive_watch_changes_response:
+        config.config_google_drive_watch_changes_response = json.dumps(config.config_google_drive_watch_changes_response)
+
     config.config_default_role = constants.selected_roles(to_save)
     config.config_default_role &= ~constants.ROLE_ANONYMOUS
 
     config.config_default_show = sum(int(k[5:]) for k in to_save if k.startswith('show_'))
     if "Show_mature_content" in to_save:
         config.config_default_show |= constants.MATURE_CONTENT
+    if "Show_detail_random" in to_save:
+        config.config_default_show |= constants.DETAIL_RANDOM
 
     config.save()
     flash(_(u"Calibre-Web configuration updated"), category="success")
@@ -188,10 +192,10 @@ def update_view_configuration():
     return view_configuration()
 
 
-@admi.route("/ajax/editdomain", methods=['POST'])
+@admi.route("/ajax/editdomain/<int:allow>", methods=['POST'])
 @login_required
 @admin_required
-def edit_domain():
+def edit_domain(allow):
     # POST /post
     # name:  'username',  //name of field (column in db)
     # pk:    1            //primary key (record id)
@@ -204,14 +208,14 @@ def edit_domain():
     return ""
 
 
-@admi.route("/ajax/adddomain", methods=['POST'])
+@admi.route("/ajax/adddomain/<int:allow>", methods=['POST'])
 @login_required
 @admin_required
-def add_domain():
+def add_domain(allow):
     domain_name = request.form.to_dict()['domainname'].replace('*', '%').replace('?', '_').lower()
-    check = ub.session.query(ub.Registration).filter(ub.Registration.domain == domain_name).first()
+    check = ub.session.query(ub.Registration).filter(ub.Registration.domain == domain_name).filter(ub.Registration.allow == allow).first()
     if not check:
-        new_domain = ub.Registration(domain=domain_name)
+        new_domain = ub.Registration(domain=domain_name, allow=allow)
         ub.session.add(new_domain)
         ub.session.commit()
     return ""
@@ -225,18 +229,18 @@ def delete_domain():
     ub.session.query(ub.Registration).filter(ub.Registration.id == domain_id).delete()
     ub.session.commit()
     # If last domain was deleted, add all domains by default
-    if not ub.session.query(ub.Registration).count():
-        new_domain = ub.Registration(domain="%.%")
+    if not ub.session.query(ub.Registration).filter(ub.Registration.allow==1).count():
+        new_domain = ub.Registration(domain="%.%",allow=1)
         ub.session.add(new_domain)
         ub.session.commit()
     return ""
 
 
-@admi.route("/ajax/domainlist")
+@admi.route("/ajax/domainlist/<int:allow>")
 @login_required
 @admin_required
-def list_domain():
-    answer = ub.session.query(ub.Registration).all()
+def list_domain(allow):
+    answer = ub.session.query(ub.Registration).filter(ub.Registration.allow == allow).all()
     json_dumps = json.dumps([{"domain": r.domain.replace('%', '*').replace('_', '?'), "id": r.id} for r in answer])
     js = json.dumps(json_dumps.replace('"', "'")).lstrip('"').strip('"')
     response = make_response(js.replace("'", '"'))
@@ -258,6 +262,7 @@ def _configuration_update_helper():
     db_change = False
     to_save = request.form.to_dict()
 
+    # _config_dict = lambda x: config.set_from_dictionary(to_save, x, lambda y: y['id'])
     _config_string = lambda x: config.set_from_dictionary(to_save, x, lambda y: y.strip() if y else y)
     _config_int = lambda x: config.set_from_dictionary(to_save, x, int)
     _config_checkbox = lambda x: config.set_from_dictionary(to_save, x, lambda y: y == "on", False)
@@ -272,6 +277,8 @@ def _configuration_update_helper():
     gdrive_secrets = {}
     gdriveError = gdriveutils.get_error_text(gdrive_secrets)
     if "config_use_google_drive" in to_save and not config.config_use_google_drive and not gdriveError:
+        with open(gdriveutils.CLIENT_SECRETS, 'r') as settings:
+            gdrive_secrets = json.load(settings)['web']
         if not gdrive_secrets:
             return _configuration_result('client_secrets.json is not configured for web application')
         gdriveutils.update_settings(
@@ -345,6 +352,10 @@ def _configuration_update_helper():
 
     _config_int("config_updatechannel")
 
+    # Reverse proxy login configuration
+    _config_checkbox("config_allow_reverse_proxy_header_login")
+    _config_string("config_reverse_proxy_login_header_name")
+
     # GitHub OAuth configuration
     if config.config_login_type == constants.LOGIN_OAUTH:
         active_oauths = 0
@@ -413,7 +424,9 @@ def _configuration_result(error_flash=None, gdriveError=None):
     if gdriveError:
         gdriveError = _(gdriveError)
     else:
-        gdrivefolders = gdriveutils.listRootFolders()
+        # if config.config_use_google_drive and\
+        if not gdrive_authenticate:
+            gdrivefolders = gdriveutils.listRootFolders()
 
     show_back_button = current_user.is_authenticated
     show_login_button = config.db_configured and not current_user.is_authenticated
@@ -516,15 +529,15 @@ def update_mailsettings():
     config.save()
 
     if to_save.get("test"):
-        if current_user.kindle_mail:
-            result = send_test_mail(current_user.kindle_mail, current_user.nickname)
+        if current_user.email:
+            result = send_test_mail(current_user.email, current_user.nickname)
             if result is None:
-                flash(_(u"Test e-mail successfully send to %(kindlemail)s", kindlemail=current_user.kindle_mail),
+                flash(_(u"Test e-mail successfully send to %(kindlemail)s", kindlemail=current_user.email),
                       category="success")
             else:
                 flash(_(u"There was an error sending the Test e-mail: %(res)s", res=result), category="error")
         else:
-            flash(_(u"Please configure your kindle e-mail address first..."), category="error")
+            flash(_(u"Please configure your e-mail address first..."), category="error")
     else:
         flash(_(u"E-mail server settings updated"), category="success")
 
@@ -563,7 +576,6 @@ def edit_user(user_id):
         else:
             if "password" in to_save and to_save["password"]:
                 content.password = generate_password_hash(to_save["password"])
-
             anonymous = content.is_anonymous
             content.role = constants.selected_roles(to_save)
             if anonymous:
@@ -599,8 +611,24 @@ def edit_user(user_id):
                 else:
                     flash(_(u"Found an existing account for this e-mail address."), category="error")
                     return render_title_template("user_edit.html", translations=translations, languages=languages,
+                                                 mail_configured = config.get_mail_server_configured(),
                                                  new_user=0, content=content, downloads=downloads, registered_oauth=oauth_check,
                                                  title=_(u"Edit User %(nick)s", nick=content.nickname), page="edituser")
+            if "nickname" in to_save and to_save["nickname"] != content.nickname:
+                # Query User nickname, if not existing, change
+                if not ub.session.query(ub.User).filter(ub.User.nickname == to_save["nickname"]).scalar():
+                    content.nickname = to_save["nickname"]
+                else:
+                    flash(_(u"This username is already taken"), category="error")
+                    return render_title_template("user_edit.html",
+                                                 translations=translations,
+                                                 languages=languages,
+                                                 mail_configured=config.get_mail_server_configured(),
+                                                 new_user=0, content=content,
+                                                 downloads=downloads,
+                                                 registered_oauth=oauth_check,
+                                                 title=_(u"Edit User %(nick)s", nick=content.nickname),
+                                                 page="edituser")
 
             if "kindle_mail" in to_save and to_save["kindle_mail"] != content.kindle_mail:
                 content.kindle_mail = to_save["kindle_mail"]
@@ -612,26 +640,27 @@ def edit_user(user_id):
             flash(_(u"An unknown error occured."), category="error")
     return render_title_template("user_edit.html", translations=translations, languages=languages, new_user=0,
                                  content=content, downloads=downloads, registered_oauth=oauth_check,
+                                 mail_configured=config.get_mail_server_configured(),
                                  title=_(u"Edit User %(nick)s", nick=content.nickname), page="edituser")
 
 
 @admi.route("/admin/resetpassword/<int:user_id>")
 @login_required
 @admin_required
-def reset_password(user_id):
+def reset_user_password(user_id):
     if not config.config_public_reg:
         abort(404)
     if current_user is not None and current_user.is_authenticated:
-        existing_user = ub.session.query(ub.User).filter(ub.User.id == user_id).first()
-        password = generate_random_password()
-        existing_user.password = generate_password_hash(password)
-        try:
-            ub.session.commit()
-            send_registration_mail(existing_user.email, existing_user.nickname, password, True)
-            flash(_(u"Password for user %(user)s reset", user=existing_user.nickname), category="success")
-        except Exception:
-            ub.session.rollback()
+        ret, message = reset_password(user_id)
+        if ret == 1:
+            log.debug(u"Password for user %(user)s reset", user=message)
+            flash(_(u"Password for user %(user)s reset", user=message), category="success")
+        elif ret == 0:
+            log.error(u"An unknown error occurred. Please try again later.")
             flash(_(u"An unknown error occurred. Please try again later."), category="error")
+        else:
+            log.error(u"Please configure the SMTP mail settings first...")
+            flash(_(u"Please configure the SMTP mail settings first..."), category="error")
     return redirect(url_for('admin.admin'))
 
 
@@ -665,6 +694,7 @@ def send_logfile(logtype):
 @admi.route("/get_update_status", methods=['GET'])
 @login_required_if_no_ano
 def get_update_status():
+    log.info(u"Update status requested")
     return updater_thread.get_available_updates(request.method, locale=get_locale())
 
 

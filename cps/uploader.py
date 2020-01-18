@@ -21,6 +21,8 @@ from __future__ import division, print_function, unicode_literals
 import os
 import hashlib
 from tempfile import gettempdir
+from flask_babel import gettext as _
+
 from . import logger, comic
 from .constants import BookMeta
 
@@ -65,7 +67,7 @@ except ImportError as e:
     use_fb2_meta = False
 
 try:
-    from PIL import PILImage
+    from PIL import Image as PILImage
     from PIL import __version__ as PILversion
     use_PIL = True
 except ImportError as e:
@@ -91,6 +93,8 @@ def process(tmp_file_path, original_file_name, original_file_extension):
         log.warning('cannot parse metadata, using default: %s', ex)
 
     if meta and meta.title.strip() and meta.author.strip():
+        if meta.author.lower() == 'unknown':
+            meta = meta._replace(author=_(u'Unknown'))
         return meta
     else:
         return default_meta(tmp_file_path, original_file_name, original_file_extension)
@@ -101,7 +105,7 @@ def default_meta(tmp_file_path, original_file_name, original_file_extension):
         file_path=tmp_file_path,
         extension=original_file_extension,
         title=original_file_name,
-        author=u"Unknown",
+        author=_(u'Unknown'),
         cover=None,
         description="",
         tags="",
@@ -119,13 +123,14 @@ def pdf_meta(tmp_file_path, original_file_name, original_file_extension):
         doc_info = None
 
     if doc_info is not None:
-        author = doc_info.author if doc_info.author else u"Unknown"
+        author = doc_info.author if doc_info.author else u'Unknown'
         title = doc_info.title if doc_info.title else original_file_name
         subject = doc_info.subject
     else:
-        author = u"Unknown"
+        author = u'Unknown'
         title = original_file_name
         subject = ""
+
     return BookMeta(
         file_path=tmp_file_path,
         extension=original_file_extension,
@@ -195,12 +200,12 @@ def upload(uploadfile):
 
     if not os.path.isdir(tmp_dir):
         os.mkdir(tmp_dir)
-
     filename = uploadfile.filename
     filename_root, file_extension = os.path.splitext(filename)
     md5 = hashlib.md5()
     md5.update(filename.encode('utf-8'))
     tmp_file_path = os.path.join(tmp_dir, md5.hexdigest())
+    log.debug("Temporary file: %s", tmp_file_path)
     uploadfile.save(tmp_file_path)
     meta = process(tmp_file_path, filename_root, file_extension)
     return meta

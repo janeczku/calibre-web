@@ -219,8 +219,8 @@
       </div>
       <div class="modal-body">
         <div class="text-center padded-bottom">
-          <!--input type="checkbox" id="show-douban" class="pill" data-control="douban" checked>
-          <label for="show-douban">Douban <span class="glyphicon glyphicon-ok"></span></label-->
+          <input type="checkbox" id="show-douban" class="pill" data-control="douban" checked>
+          <label for="show-douban">Douban <span class="glyphicon glyphicon-ok"></span></label>
 
           <input type="checkbox" id="show-google" class="pill" data-control="google" checked>
           <label for="show-google">Google <span class="glyphicon glyphicon-ok"></span></label>
@@ -288,6 +288,7 @@
 <script src="{{ url_for('static', filename='js/edit_books.js') }}"></script>
 {% endblock %}
 {% block header %}
+<meta name="referrer" content="never">
 <link href="{{ url_for('static', filename='css/libs/typeahead.css') }}" rel="stylesheet" media="screen">
 <link href="{{ url_for('static', filename='css/libs/bootstrap-datepicker3.min.css') }}" rel="stylesheet" media="screen">
 {% endblock %}

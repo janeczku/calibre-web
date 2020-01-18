@@ -38,7 +38,7 @@ class _Settings(_Base):
     __tablename__ = 'settings'
 
     id = Column(Integer, primary_key=True)
-    mail_server = Column(String, default='mail.example.org')
+    mail_server = Column(String, default=constants.DEFAULT_MAIL_SERVER)
     mail_port = Column(Integer, default=25)
     mail_use_ssl = Column(SmallInteger, default=0)
     mail_login = Column(String, default='mail@example.com')
@@ -105,6 +105,9 @@ class _Settings(_Base):
     config_rarfile_location = Column(String)
 
     config_updatechannel = Column(Integer, default=constants.UPDATE_STABLE)
+
+    config_reverse_proxy_login_header_name = Column(String)
+    config_allow_reverse_proxy_header_login = Column(Boolean, default=False)
 
     def __repr__(self):
         return self.__class__.__name__
@@ -189,6 +192,10 @@ class _ConfigSQL(object):
     def get_mail_settings(self):
         return {k:v for k, v in self.__dict__.items() if k.startswith('mail_')}
 
+    def get_mail_server_configured(self):
+        return not bool(self.mail_server == constants.DEFAULT_MAIL_SERVER)
+
+
     def set_from_dictionary(self, dictionary, field, convertor=None, default=None):
         '''Possibly updates a field of this object.
         The new value, if present, is grabbed from the given dictionary, and optionally passed through a convertor.
@@ -246,8 +253,7 @@ class _ConfigSQL(object):
         for k, v in self.__dict__.items():
             if k[0] == '_':
                 continue
-            if hasattr(s, k):  # and getattr(s, k, None) != v:
-                # log.debug("_Settings save '%s' = %r", k, v)
+            if hasattr(s, k):
                 setattr(s, k, v)
 
         log.debug("_ConfigSQL updating storage")
@@ -270,12 +276,18 @@ def _migrate_table(session, orm_class):
             try:
                 session.query(column).first()
             except exc.OperationalError as err:
-                log.debug("%s: %s", column_name, err)
+                log.debug("%s: %s", column_name, err.args[0])
                 if column.default is not None:
                     if sys.version_info < (3, 0):
                         if isinstance(column.default.arg,unicode):
                             column.default.arg = column.default.arg.encode('utf-8')
-                column_default = "" if column.default is None else ("DEFAULT %r" % column.default.arg)
+                if column.default is None:
+                    column_default = ""
+                else:
+                    if isinstance(column.default.arg, bool):
+                        column_default = ("DEFAULT %r" % int(column.default.arg))
+                    else:
+                        column_default = ("DEFAULT %r" % column.default.arg)
                 alter_table = "ALTER TABLE %s ADD COLUMN `%s` %s %s" % (orm_class.__tablename__,
                                                                         column_name,
                                                                         column.type,

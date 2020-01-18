@@ -56,7 +56,7 @@
           {% if config.config_google_drive_watch_changes_response %}
             <label for="config_google_drive_watch_changes_response">{{_('Metadata Watch Channel ID')}}</label>
             <div class="form-group input-group required">
-              <input type="text" class="form-control" name="config_google_drive_watch_changes_response" id="config_google_drive_watch_changes_response" value="{{ config.config_google_drive_watch_changes_response['id'] }} expires on {{ content.config_google_drive_watch_changes_response['expiration'] |  strftime }}" autocomplete="off" disabled="">
+              <input type="text" class="form-control" name="config_google_drive_watch_changes_response" id="config_google_drive_watch_changes_response" value="{{ config.config_google_drive_watch_changes_response['id'] }} expires on {{ config.config_google_drive_watch_changes_response['expiration'] |  strftime }}" autocomplete="off" disabled="">
               <span class="input-group-btn"><a href="{{ url_for('gdrive.revoke_watch_gdrive') }}" class="btn btn-primary">{{_('Revoke')}}</a></span>
             </div>
           {% else %}
@@ -200,7 +200,7 @@
         </select>
       </div>
         {% if feature_support['ldap'] %}
-       <div data-related="login-settings-1">
+      <div data-related="login-settings-1">
         <div class="form-group">
           <label for="config_ldap_provider_url">{{_('LDAP Server Host Name or IP Address')}}</label>
           <input type="text" class="form-control" id="config_ldap_provider_url" name="config_ldap_provider_url" value="{% if config.config_ldap_provider_url != None %}{{ config.config_ldap_provider_url }}{% endif %}" autocomplete="off">
@@ -271,6 +271,16 @@
         </div>
       {% endif %}
     {% endif %}
+        <div class="form-group">
+          <input type="checkbox" id="config_allow_reverse_proxy_header_login" name="config_allow_reverse_proxy_header_login" data-control="reverse-proxy-login-settings" {% if config.config_allow_reverse_proxy_header_login %}checked{% endif %}>
+          <label for="config_allow_reverse_proxy_header_login">{{_('Allow Reverse Proxy Authentication')}}</label>
+        </div>
+        <div data-related="reverse-proxy-login-settings">
+          <div class="form-group">
+            <label for="config_reverse_proxy_login_header_name">{{_('Reverse Proxy Header Name')}}</label>
+            <input type="text" class="form-control" id="config_reverse_proxy_login_header_name" name="config_reverse_proxy_login_header_name" value="{% if config.config_reverse_proxy_login_header_name != None %}{{ config.config_reverse_proxy_login_header_name }}{% endif %}" autocomplete="off">
+          </div>
+        </div>
       </div>
     </div>
   </div>

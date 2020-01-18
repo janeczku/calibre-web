@@ -65,28 +65,6 @@
     right: 40px;
   }
 
-  .arrow {
-    position: absolute;
-    top: 50%;
-    margin-top: -32px;
-    font-size: 64px;
-    color: #E2E2E2;
-    font-family: arial, sans-serif;
-    font-weight: bold;
-    cursor: pointer;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    user-select: none;
-  }
-
-  .arrow:hover {
-    color: #777;
-  }
-
-  .arrow:active {
-    color: #000;
-  }
-
   xmp,
   pre,
   plaintext {

@@ -31,7 +31,7 @@
         </div>
     </div>
     <label for="include_tag">{{_('Tags')}}</label>
-    <div class="form-group" id="test">
+    <div class="form-group" id="tag">
       <div class="btn-toolbar btn-toolbar-lg" data-toggle="buttons">
         {% for tag in tags %}
           <label id="tag_{{tag.id}}" class="btn btn-primary tags_click">
@@ -92,6 +92,26 @@
         </div>
       </div>
     {% endif%}
+    <label for="include_extension">{{_('Extensions')}}</label>
+    <div class="form-group" id="extension">
+      <div class="btn-toolbar btn-toolbar-lg" data-toggle="buttons">
+        {% for extension in extensions %}
+          <label id="extension_{{extension.format}}" class="btn btn-primary extension_click">
+            <input type="checkbox" autocomplete="off" name="include_extension" id="include_extension" value="{{extension.format}}">{{extension.format}}</input>
+          </label>
+        {% endfor %}
+      </div>
+    </div>
+    <label for="exclude_extension">{{_('Exclude Extensions')}}</label>
+    <div class="form-group">
+      <div class="btn-toolbar btn-toolbar-lg" data-toggle="buttons">
+        {% for extension in extensions %}
+          <label id="exclude_extension_{{extension.format}}" class="btn btn-danger extension_click">
+            <input type="checkbox" autocomplete="off" name="exclude_extension" id="exclude_extension" value="{{extension.format}}">{{extension.format}}</input>
+          </label>
+        {% endfor %}
+      </div>
+    </div>
     <div class="row">
         <div class="form-group col-sm-6">
           <label for="ratinghigh">{{_('Rating bigger than')}}</label>

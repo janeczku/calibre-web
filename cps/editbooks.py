@@ -360,6 +360,9 @@ def upload_single_file(request, book, book_id):
             worker.add_upload(current_user.nickname,
                 "<a href=\"" + url_for('web.show_book', book_id=book.id) + "\">" + uploadText + "</a>")
 
+            return uploader.process(
+                saved_filename, *os.path.splitext(requested_file.filename))
+
 
 def upload_cover(request, book):
     if 'btn-upload-cover' in request.files:
@@ -393,17 +396,18 @@ def edit_book(book_id):
         flash(_(u"Error opening eBook. File does not exist or file is not accessible"), category="error")
         return redirect(url_for("web.index"))
 
-    upload_single_file(request, book, book_id)
+    meta = upload_single_file(request, book, book_id)
     if upload_cover(request, book) is True:
         book.has_cover = 1
     try:
         to_save = request.form.to_dict()
+        merge_metadata(to_save, meta)
         # Update book
         edited_books_id = None
         #handle book title
         if book.title != to_save["book_title"].rstrip().strip():
             if to_save["book_title"] == '':
-                to_save["book_title"] = _(u'unknown')
+                to_save["book_title"] = _(u'Unknown')
             book.title = to_save["book_title"].rstrip().strip()
             edited_books_id = book.id
 
@@ -412,7 +416,7 @@ def edit_book(book_id):
         input_authors = list(map(lambda it: it.strip().replace(',', '|'), input_authors))
         # we have all author names now
         if input_authors == ['']:
-            input_authors = [_(u'unknown')]  # prevent empty Author
+            input_authors = [_(u'Unknown')]  # prevent empty Author
 
         modify_database_object(input_authors, book.authors, db.Authors, db.session, 'author')
 
@@ -531,6 +535,20 @@ def edit_book(book_id):
         return redirect(url_for('web.show_book', book_id=book.id))
 
 
+def merge_metadata(to_save, meta):
+    if to_save['author_name'] == _(u'Unknown'):
+        to_save['author_name'] = ''
+    if to_save['book_title'] == _(u'Unknown'):
+        to_save['book_title'] = ''
+    for s_field, m_field in [
+            ('tags', 'tags'), ('author_name', 'author'), ('series', 'series'),
+            ('series_index', 'series_id'), ('languages', 'languages'),
+            ('book_title', 'title')]:
+        to_save[s_field] = to_save[s_field] or getattr(meta, m_field, '')
+    to_save["description"] = to_save["description"] or Markup(
+        getattr(meta, 'description', '')).unescape()
+
+
 @editbook.route("/upload", methods=["GET", "POST"])
 @login_required_if_no_ano
 @upload_required
@@ -550,13 +568,19 @@ def upload():
                     flash(
                         _("File extension '%(ext)s' is not allowed to be uploaded to this server",
                           ext=file_ext), category="error")
-                    return redirect(url_for('web.index'))
+                    return Response(json.dumps({"location": url_for("web.index")}), mimetype='application/json')
             else:
                 flash(_('File to be uploaded must have an extension'), category="error")
-                return redirect(url_for('web.index'))
+                return Response(json.dumps({"location": url_for("web.index")}), mimetype='application/json')
 
             # extract metadata from file
-            meta = uploader.upload(requested_file)
+            try:
+                meta = uploader.upload(requested_file)
+            except (IOError, OSError):
+                log.error("File %s could not saved to temp dir", requested_file.filename)
+                flash(_(u"File %(filename)s could not saved to temp dir",
+                        filename= requested_file.filename), category="error")
+                return Response(json.dumps({"location": url_for("web.index")}), mimetype='application/json')
             title = meta.title
             authr = meta.author
             tags = meta.tags
@@ -567,21 +591,31 @@ def upload():
             filepath = os.path.join(config.config_calibre_dir, author_dir, title_dir)
             saved_filename = os.path.join(filepath, title_dir + meta.extension.lower())
 
+            if title != _(u'Unknown') and authr != _(u'Unknown'):
+                entry = helper.check_exists_book(authr, title)
+                if entry:
+                    log.info("Uploaded book probably exists in library")
+                    flash(_(u"Uploaded book probably exists in the library, consider to change before upload new: ")
+                        + Markup(render_title_template('book_exists_flash.html', entry=entry)), category="warning")
+
             # check if file path exists, otherwise create it, copy file to calibre path and delete temp file
             if not os.path.exists(filepath):
                 try:
                     os.makedirs(filepath)
                 except OSError:
+                    log.error("Failed to create path %s (Permission denied)", filepath)
                     flash(_(u"Failed to create path %(path)s (Permission denied).", path=filepath), category="error")
-                    return redirect(url_for('web.index'))
+                    return Response(json.dumps({"location": url_for("web.index")}), mimetype='application/json')
             try:
                 copyfile(meta.file_path, saved_filename)
             except OSError:
+                log.error("Failed to store file %s (Permission denied)", saved_filename)
                 flash(_(u"Failed to store file %(file)s (Permission denied).", file=saved_filename), category="error")
-                return redirect(url_for('web.index'))
+                return Response(json.dumps({"location": url_for("web.index")}), mimetype='application/json')
             try:
                 os.unlink(meta.file_path)
             except OSError:
+                log.error("Failed to delete file %(file)s (Permission denied)", meta.file_path)
                 flash(_(u"Failed to delete file %(file)s (Permission denied).", file= meta.file_path),
                       category="warning")
 
@@ -622,10 +656,16 @@ def upload():
                     db_language = db.Languages(input_language)
                     db.session.add(db_language)
 
+            # If the language of the file is excluded from the users view, it's not imported, to allow the user to view
+            # the book it's language is set to the filter language
+            if db_language != current_user.filter_language() and current_user.filter_language() != "all":
+                db_language = db.session.query(db.Languages).\
+                    filter(db.Languages.lang_code == current_user.filter_language()).first()
+
             # combine path and normalize path from windows systems
             path = os.path.join(author_dir, title_dir).replace('\\', '/')
             db_book = db.Books(title, "", db_author.sort, datetime.datetime.now(), datetime.datetime(101, 1, 1),
-                            series_index, datetime.datetime.now(), path, has_cover, db_author, [], db_language)
+                               series_index, datetime.datetime.now(), path, has_cover, db_author, [], db_language)
             db_book.authors.append(db_author)
             if db_series:
                 db_book.series.append(db_series)
@@ -654,7 +694,9 @@ def upload():
             # save data to database, reread data
             db.session.commit()
             db.update_title_sort(config)
-            book = db.session.query(db.Books).filter(db.Books.id == book_id).filter(common_filters()).first()
+            # Reread book. It's important not to filter the result, as it could have language which hide it from
+            # current users view (tags are not stored/extracted from metadata and could also be limited)
+            book = db.session.query(db.Books).filter(db.Books.id == book_id).first()
 
             # upload book to gdrive if nesseccary and add "(bookid)" to folder name
             if config.config_use_google_drive:
@@ -695,7 +737,7 @@ def convert_bookformat(book_id):
 
     if (book_format_from is None) or (book_format_to is None):
         flash(_(u"Source or destination format for conversion missing"), category="error")
-        return redirect(request.environ["HTTP_REFERER"])
+        return redirect(url_for('editbook.edit_book', book_id=book_id))
 
     log.info('converting: book id: %s from: %s to: %s', book_id, book_format_from, book_format_to)
     rtn = helper.convert_book_format(book_id, config.config_calibre_dir, book_format_from.upper(),
@@ -707,4 +749,4 @@ def convert_bookformat(book_id):
                     category="success")
     else:
         flash(_(u"There was an error converting this book: %(res)s", res=rtn), category="error")
-    return redirect(request.environ["HTTP_REFERER"])
+    return redirect(url_for('editbook.edit_book', book_id=book_id))

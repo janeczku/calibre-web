@@ -23,6 +23,7 @@
 
 from __future__ import division, print_function, unicode_literals
 import os
+import sys
 import hashlib
 import json
 import tempfile
@@ -141,7 +142,10 @@ def on_received_watch_confirmation():
                 response = gdriveutils.getChangeById(gdriveutils.Gdrive.Instance().drive, j['id'])
                 log.debug('%r', response)
                 if response:
-                    dbpath = os.path.join(config.config_calibre_dir, "metadata.db")
+                    if sys.version_info < (3, 0):
+                        dbpath = os.path.join(config.config_calibre_dir, "metadata.db")
+                    else:
+                        dbpath = os.path.join(config.config_calibre_dir, "metadata.db").encode()
                     if not response['deleted'] and response['file']['title'] == 'metadata.db' and response['file']['md5Checksum'] != hashlib.md5(dbpath):
                         tmpDir = tempfile.gettempdir()
                         log.info('Database file updated')

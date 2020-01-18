@@ -193,21 +193,27 @@ class WorkerThread(threading.Thread):
     def run(self):
         main_thread = _get_main_thread()
         while main_thread.is_alive():
-            self.doLock.acquire()
-            if self.current != self.last:
-                index = self.current
-                self.doLock.release()
-                if self.queue[index]['taskType'] == TASK_EMAIL:
-                    self._send_raw_email()
-                if self.queue[index]['taskType'] == TASK_CONVERT:
-                    self._convert_any_format()
-                if self.queue[index]['taskType'] == TASK_CONVERT_ANY:
-                    self._convert_any_format()
-                # TASK_UPLOAD is handled implicitly
+            try:
                 self.doLock.acquire()
-                self.current += 1
-                self.doLock.release()
-            else:
+                if self.current != self.last:
+                    index = self.current
+                    self.doLock.release()
+                    if self.queue[index]['taskType'] == TASK_EMAIL:
+                        self._send_raw_email()
+                    if self.queue[index]['taskType'] == TASK_CONVERT:
+                        self._convert_any_format()
+                    if self.queue[index]['taskType'] == TASK_CONVERT_ANY:
+                        self._convert_any_format()
+                    # TASK_UPLOAD is handled implicitly
+                    self.doLock.acquire()
+                    self.current += 1
+                    if self.current > self.last:
+                        self.current = self.last
+                    self.doLock.release()
+                else:
+                    self.doLock.release()
+            except Exception as e:
+                log.exception(e)
                 self.doLock.release()
             if main_thread.is_alive():
                 time.sleep(1)
@@ -225,7 +231,8 @@ class WorkerThread(threading.Thread):
                 self.queue.pop(index)
                 self.UIqueue.pop(index)
                 # if we are deleting entries before the current index, adjust the index
-                self.current -= 1
+                if index <= self.current and self.current:
+                    self.current -= 1
         self.last = len(self.queue)
 
     def get_taskstatus(self):
@@ -248,7 +255,7 @@ class WorkerThread(threading.Thread):
         self.doLock.release()
         self.UIqueue[index]['stat'] = STAT_STARTED
         self.queue[index]['starttime'] = datetime.now()
-        self.UIqueue[index]['formStarttime'] = self.queue[self.current]['starttime']
+        self.UIqueue[index]['formStarttime'] = self.queue[index]['starttime']
         curr_task = self.queue[index]['taskType']
         filename = self._convert_ebook_format()
         if filename:
@@ -390,8 +397,7 @@ class WorkerThread(threading.Thread):
 
 
     def add_convert(self, file_path, bookid, user_name, taskMessage, settings, kindle_mail=None):
-        addLock = threading.Lock()
-        addLock.acquire()
+        self.doLock.acquire()
         if self.last >= 20:
             self._delete_completed_tasks()
         # progress, runtime, and status = 0
@@ -405,13 +411,12 @@ class WorkerThread(threading.Thread):
                              'runtime': '0 s', 'stat': STAT_WAITING,'id': self.id, 'taskType': task } )
 
         self.last=len(self.queue)
-        addLock.release()
+        self.doLock.release()
 
     def add_email(self, subject, filepath, attachment, settings, recipient, user_name, taskMessage,
                   text):
         # if more than 20 entries in the list, clean the list
-        addLock = threading.Lock()
-        addLock.acquire()
+        self.doLock.acquire()
         if self.last >= 20:
             self._delete_completed_tasks()
         # progress, runtime, and status = 0
@@ -422,23 +427,27 @@ class WorkerThread(threading.Thread):
         self.UIqueue.append({'user': user_name, 'formStarttime': '', 'progress': " 0 %", 'taskMess': taskMessage,
                              'runtime': '0 s', 'stat': STAT_WAITING,'id': self.id, 'taskType': TASK_EMAIL })
         self.last=len(self.queue)
-        addLock.release()
+        self.doLock.release()
 
     def add_upload(self, user_name, taskMessage):
         # if more than 20 entries in the list, clean the list
-        addLock = threading.Lock()
-        addLock.acquire()
+        self.doLock.acquire()
+
+
         if self.last >= 20:
             self._delete_completed_tasks()
         # progress=100%, runtime=0, and status finished
-        self.id += 1
-        self.queue.append({'starttime': datetime.now(), 'taskType': TASK_UPLOAD})
-        self.UIqueue.append({'user': user_name, 'formStarttime': '', 'progress': "100 %", 'taskMess': taskMessage,
-                             'runtime': '0 s', 'stat': STAT_FINISH_SUCCESS,'id': self.id, 'taskType': TASK_UPLOAD})
-        self.UIqueue[self.current]['formStarttime'] = self.queue[self.current]['starttime']
-        self.last=len(self.queue)
-        addLock.release()
+        log.debug("Last " + str(self.last))
+        log.debug("Current " + str(self.current))
+        log.debug("id" + str(self.id))
 
+        self.id += 1
+        starttime = datetime.now()
+        self.queue.append({'starttime': starttime, 'taskType': TASK_UPLOAD})
+        self.UIqueue.append({'user': user_name, 'formStarttime': starttime, 'progress': "100 %", 'taskMess': taskMessage,
+                             'runtime': '0 s', 'stat': STAT_FINISH_SUCCESS,'id': self.id, 'taskType': TASK_UPLOAD})
+        self.last=len(self.queue)
+        self.doLock.release()
 
     def _send_raw_email(self):
         self.doLock.acquire()
@@ -525,7 +534,7 @@ class WorkerThread(threading.Thread):
         self.doLock.release()
         self.UIqueue[index]['stat'] = STAT_FAIL
         self.UIqueue[index]['progress'] = "100 %"
-        self.UIqueue[index]['formRuntime'] = datetime.now() - self.queue[self.current]['starttime']
+        self.UIqueue[index]['formRuntime'] = datetime.now() - self.queue[index]['starttime']
         self.UIqueue[index]['message'] = error_message
 
     def _handleSuccess(self):
@@ -534,7 +543,7 @@ class WorkerThread(threading.Thread):
         self.doLock.release()
         self.UIqueue[index]['stat'] = STAT_FINISH_SUCCESS
         self.UIqueue[index]['progress'] = "100 %"
-        self.UIqueue[index]['formRuntime'] = datetime.now() - self.queue[self.current]['starttime']
+        self.UIqueue[index]['formRuntime'] = datetime.now() - self.queue[index]['starttime']
 
 
 _worker = WorkerThread()

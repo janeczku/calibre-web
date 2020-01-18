@@ -15,16 +15,10 @@ body {
 }
 
 #main {
-  /* height: 500px; */
   position: absolute;
   width: 100%;
   height: 100%;
   right: 0;
-  /* left: 40px; */
-/*   -webkit-transform: translate(40px, 0);
-  -moz-transform: translate(40px, 0); */
-
-  /* border-radius: 5px 0px 0px 5px; */
   border-radius: 5px;
   background: #fff;
   overflow: hidden;
@@ -114,18 +108,20 @@ body {
   border: none;
 }
 
-#prev {
+#left,#prev {
   left: 40px;
+  padding-right:80px;
 }
 
-#next {
+#right,#next {
   right: 40px;
+  padding-left:80px;
 }
 
 .arrow {
   position: absolute;
   top: 50%;
-  margin-top: -32px;
+  margin-top: -192px;
   font-size: 64px;
   color: #E2E2E2;
   font-family: arial, sans-serif;
@@ -136,6 +132,8 @@ body {
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
+  padding-top: 160px;
+  padding-bottom: 160px;
 }
 
 .arrow:hover {
@@ -753,9 +751,9 @@ input:-ms-placeholder {
     }
 }*/
 
-@media only screen 
-and (min-device-width : 768px) 
-and (max-device-width : 1024px) 
+@media only screen
+and (min-device-width : 768px)
+and (max-device-width : 1024px)
 and (orientation : landscape)
 /*and (-webkit-min-device-pixel-ratio: 2)*/ {
   #viewer{

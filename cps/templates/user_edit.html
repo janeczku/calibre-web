@@ -3,7 +3,7 @@
 <div class="discover">
   <h1>{{title}}</h1>
   <form role="form" method="POST" autocomplete="off">
-    {% if g.user and g.user.role_admin() and new_user %}
+    {% if new_user or ( g.user and content.nickname != "Guest" and g.user.role_admin() ) %}
     <div class="form-group required">
       <label for="nickname">{{_('Username')}}</label>
       <input type="text" class="form-control" name="nickname" id="nickname" value="{{ content.nickname if content.nickname != None }}" autocomplete="off">
@@ -14,27 +14,28 @@
       <input type="email" class="form-control" name="email" id="email" value="{{ content.email if content.email != None }}" autocomplete="off">
     </div>
     {% if ( g.user and g.user.role_passwd() or g.user.role_admin() ) and not content.role_anonymous() %}
-      {% if g.user and g.user.role_admin() and g.allow_registration and not new_user and not profile %}
-        <div class="btn btn-default" id="resend_password"><a href="{{url_for('admin.reset_password', user_id = content.id) }}">{{_('Reset user Password')}}</a></div>
-      {% else %}
+      {% if g.user and g.user.role_admin() and not new_user and not profile and ( mail_configured and content.email if content.email != None ) %}
+        <div class="btn btn-default" id="resend_password"><a href="{{url_for('admin.reset_user_password', user_id = content.id) }}">{{_('Reset user Password')}}</a></div>
+      {% endif %}
         <div class="form-group">
           <label for="password">{{_('Password')}}</label>
           <input type="password" class="form-control" name="password" id="password" value="" autocomplete="off">
         </div>
     {% endif %}
-    {% endif %}
     <div class="form-group">
       <label for="kindle_mail">{{_('Kindle E-Mail')}}</label>
       <input type="email" class="form-control" name="kindle_mail" id="kindle_mail" value="{{ content.kindle_mail if content.kindle_mail != None }}">
     </div>
+    {% if not content.role_anonymous() %}
     <div class="form-group">
     <label for="locale">{{_('Language')}}</label>
         <select name="locale" id="locale" class="form-control">
             {%  for translation in translations %}
-                <option value="{{translation}}" {% if translation|string == content.locale %}selected{% endif %} {% if new_user == 1 and loop.first %}selected{% endif %}>{{ translation.display_name }}</option>
+                <option value="{{translation}}" {% if translation|string == content.locale %}selected{% endif %} {% if new_user == 1 and loop.first %}selected{% endif %}>{{ translation.display_name|capitalize }}</option>
             {% endfor %}
         </select>
     </div>
+    {% endif %}
 
     <div class="form-group">
       <label for="default_language">{{_('Show books with language')}}</label>
