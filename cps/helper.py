@@ -41,6 +41,7 @@ from flask_babel import gettext as _
 from flask_login import current_user
 from sqlalchemy.sql.expression import true, false, and_, or_, text, func
 from werkzeug.datastructures import Headers
+from werkzeug.security import generate_password_hash
 
 try:
     from urllib.parse import quote
@@ -124,7 +125,7 @@ def send_registration_mail(e_mail, user_name, default_password, resend=False):
     if not resend:
         text += "Your new account at Calibre-Web has been created. Thanks for joining us!\r\n"
     text += "Please log in to your account using the following informations:\r\n"
-    text += "User name: %s\n" % user_name
+    text += "User name: %s\r\n" % user_name
     text += "Password: %s\r\n" % default_password
     text += "Don't forget to change your password after first login.\r\n"
     text += "Sincerely\r\n\r\n"
@@ -166,10 +167,10 @@ def check_send_to_kindle(entry):
                 if 'EPUB' in formats and not 'MOBI' in formats:
                     bookformats.append({'format': 'Mobi','convert':1,
                             'text':_('Convert %(orig)s to %(format)s and send to Kindle',orig='Epub',format='Mobi')})
-            '''if config.config_ebookconverter == 2:
-                if 'EPUB' in formats and not 'AZW3' in formats:
-                    bookformats.append({'format': 'Azw3','convert':1,
-                            'text':_('Convert %(orig)s to %(format)s and send to Kindle',orig='Epub',format='Azw3')})'''
+            if config.config_ebookconverter == 2:
+                if 'AZW3' in formats and not 'MOBI' in formats:
+                    bookformats.append({'format': 'Mobi','convert':2,
+                            'text':_('Convert %(orig)s to %(format)s and send to Kindle',orig='Azw3',format='Mobi')})
         return bookformats
     else:
         log.error(u'Cannot find book entry %d', entry.id)
@@ -196,9 +197,13 @@ def send_mail(book_id, book_format, convert, kindle_mail, calibrepath, user_id):
     """Send email with attachments"""
     book = db.session.query(db.Books).filter(db.Books.id == book_id).first()
 
-    if convert:
+    if convert == 1:
         # returns None if success, otherwise errormessage
         return convert_book_format(book_id, calibrepath, u'epub', book_format.lower(), user_id, kindle_mail)
+    if convert == 2:
+        # returns None if success, otherwise errormessage
+        return convert_book_format(book_id, calibrepath, u'azw3', book_format.lower(), user_id, kindle_mail)
+
 
     for entry in iter(book.data):
         if entry.format.upper() == book_format.upper():
@@ -405,6 +410,21 @@ def delete_book_gdrive(book, book_format):
     else:
         error =_(u'Book path %(path)s not found on Google Drive', path=book.path)  # file not found
     return error
+
+
+def reset_password(user_id):
+    existing_user = ub.session.query(ub.User).filter(ub.User.id == user_id).first()
+    password = generate_random_password()
+    existing_user.password = generate_password_hash(password)
+    if not config.get_mail_server_configured():
+        return (2, None)
+    try:
+        ub.session.commit()
+        send_registration_mail(existing_user.email, existing_user.nickname, password, True)
+        return (1, existing_user.nickname)
+    except Exception:
+        ub.session.rollback()
+        return (0, None)
 
 
 def generate_random_password():
@@ -680,10 +700,14 @@ def speaking_language(languages=None):
 # example SELECT * FROM @TABLE WHERE  'abcdefg' LIKE Name;
 # from https://code.luasoftware.com/tutorials/flask/execute-raw-sql-in-flask-sqlalchemy/
 def check_valid_domain(domain_text):
-    domain_text = domain_text.split('@', 1)[-1].lower()
-    sql = "SELECT * FROM registration WHERE :domain LIKE domain;"
+    # domain_text = domain_text.split('@', 1)[-1].lower()
+    sql = "SELECT * FROM registration WHERE (:domain LIKE domain and allow = 1);"
     result = ub.session.query(ub.Registration).from_statement(text(sql)).params(domain=domain_text).all()
-    return len(result)
+    if not len(result):
+        return False
+    sql = "SELECT * FROM registration WHERE (:domain LIKE domain and allow = 0);"
+    result = ub.session.query(ub.Registration).from_statement(text(sql)).params(domain=domain_text).all()
+    return not len(result)
 
 
 # Orders all Authors in the list according to authors sort
@@ -780,7 +804,17 @@ def get_download_link(book_id, book_format):
     else:
         abort(404)
 
+def check_exists_book(authr,title):
+    db.session.connection().connection.connection.create_function("lower", 1, lcase)
+    q = list()
+    authorterms = re.split(r'\s*&\s*', authr)
+    for authorterm in authorterms:
+        q.append(db.Books.authors.any(func.lower(db.Authors.name).ilike("%" + authorterm + "%")))
 
+    return db.session.query(db.Books).filter(
+        and_(db.Books.authors.any(and_(*q)),
+            func.lower(db.Books.title).ilike("%" + title + "%")
+            )).first()
 
 ############### Database Helper functions
 

@@ -31,11 +31,13 @@ from flask_login import current_user
 from sqlalchemy.sql.expression import func, text, or_, and_
 from werkzeug.security import check_password_hash
 
-from . import constants, logger, config, db, ub, services
-from .helper import fill_indexpage, get_download_link, get_book_cover
+from . import constants, logger, config, db, ub, services, get_locale, isoLanguages
+from .helper import fill_indexpage, get_download_link, get_book_cover, speaking_language
 from .pagination import Pagination
 from .web import common_filters, get_search_results, render_read_books, download_required
-
+from flask_babel import gettext as _
+from babel import Locale as LC
+from babel.core import UnknownLocaleError
 
 opds = Blueprint('opds', __name__)
 
@@ -47,7 +49,7 @@ def requires_basic_auth_if_no_ano(f):
     def decorated(*args, **kwargs):
         auth = request.authorization
         if config.config_anonbrowse != 1:
-            if not auth or not check_auth(auth.username, auth.password):
+            if not auth or auth.type != 'basic' or not check_auth(auth.username, auth.password):
                 return authenticate()
         return f(*args, **kwargs)
     if config.config_login_type == constants.LOGIN_LDAP and services.ldap:
@@ -213,8 +215,68 @@ def feed_series(book_id):
                     db.Books, db.Books.series.any(db.Series.id == book_id), [db.Books.series_index])
     return render_xml_template('feed.xml', entries=entries, pagination=pagination)
 
+@opds.route("/opds/formats")
+@requires_basic_auth_if_no_ano
+def feed_formatindex():
+    off = request.args.get("offset") or 0
+    entries = db.session.query(db.Data).join(db.Books).filter(common_filters()) \
+        .group_by(db.Data.format).order_by(db.Data.format).all()
+    pagination = Pagination((int(off) / (int(config.config_books_per_page)) + 1), config.config_books_per_page,
+                            len(entries))
+    for entry in entries:
+        entry.name = entry.format
+        entry.id = entry.format
+    return render_xml_template('feed.xml', listelements=entries, folder='opds.feed_format', pagination=pagination)
 
-@opds.route("/opds/shelfindex/", defaults={'public': 0})
+
+@opds.route("/opds/formats/<book_id>")
+@requires_basic_auth_if_no_ano
+def feed_format(book_id):
+    off = request.args.get("offset") or 0
+    entries, __, pagination = fill_indexpage((int(off) / (int(config.config_books_per_page)) + 1),
+                    db.Books, db.Books.data.any(db.Data.format == book_id.upper()), [db.Books.timestamp.desc()])
+    return render_xml_template('feed.xml', entries=entries, pagination=pagination)
+
+@opds.route("/opds/language")
+@opds.route("/opds/language/")
+@requires_basic_auth_if_no_ano
+def feed_languagesindex():
+    off = request.args.get("offset") or 0
+    if current_user.filter_language() == u"all":
+        languages = speaking_language()
+    else:
+        try:
+            cur_l = LC.parse(current_user.filter_language())
+        except UnknownLocaleError:
+            cur_l = None
+        languages = db.session.query(db.Languages).filter(
+            db.Languages.lang_code == current_user.filter_language()).all()
+        if cur_l:
+            languages[0].name = cur_l.get_language_name(get_locale())
+        else:
+            languages[0].name = _(isoLanguages.get(part3=languages[0].lang_code).name)
+    pagination = Pagination((int(off) / (int(config.config_books_per_page)) + 1), config.config_books_per_page,
+                            len(languages))
+    return render_xml_template('feed.xml', listelements=languages, folder='opds.feed_languages', pagination=pagination)
+
+
+@opds.route("/opds/language/<int:book_id>")
+@requires_basic_auth_if_no_ano
+def feed_languages(book_id):
+    off = request.args.get("offset") or 0
+    entries, __, pagination = fill_indexpage((int(off) / (int(config.config_books_per_page)) + 1),
+                    db.Books, db.Books.languages.any(db.Languages.id == book_id), [db.Books.timestamp.desc()])
+    '''for entry in entries:
+        for index in range(0, len(entry.languages)):
+            try:
+                entry.languages[index].language_name = LC.parse(entry.languages[index].lang_code).get_language_name(
+                    get_locale())
+            except UnknownLocaleError:
+                entry.languages[index].language_name = _(
+                    isoLanguages.get(part3=entry.languages[index].lang_code).name)'''
+    return render_xml_template('feed.xml', entries=entries, pagination=pagination)
+
+@opds.route("/opds/shelfindex", defaults={'public': 0})
 @opds.route("/opds/shelfindex/<string:public>")
 @requires_basic_auth_if_no_ano
 def feed_shelfindex(public):
@@ -316,15 +378,16 @@ def render_xml_template(*args, **kwargs):
 def feed_get_cover(book_id):
     return get_book_cover(book_id)
 
-@opds.route("/opds/readbooks/")
+@opds.route("/opds/readbooks")
 @requires_basic_auth_if_no_ano
 def feed_read_books():
     off = request.args.get("offset") or 0
-    return render_read_books(int(off) / (int(config.config_books_per_page)) + 1, True, True)
+    result, pagination =  render_read_books(int(off) / (int(config.config_books_per_page)) + 1, True, True)
+    return render_xml_template('feed.xml', entries=result, pagination=pagination)
 
-
-@opds.route("/opds/unreadbooks/")
+@opds.route("/opds/unreadbooks")
 @requires_basic_auth_if_no_ano
 def feed_unread_books():
     off = request.args.get("offset") or 0
-    return render_read_books(int(off) / (int(config.config_books_per_page)) + 1, False, True)
+    result, pagination = render_read_books(int(off) / (int(config.config_books_per_page)) + 1, False, True)
+    return render_xml_template('feed.xml', entries=result, pagination=pagination)

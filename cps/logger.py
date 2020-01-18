@@ -18,6 +18,7 @@
 
 from __future__ import division, print_function, unicode_literals
 import os
+import sys
 import inspect
 import logging
 from logging import Formatter, StreamHandler
@@ -34,6 +35,7 @@ DEFAULT_LOG_LEVEL   = logging.INFO
 DEFAULT_LOG_FILE    = os.path.join(_CONFIG_DIR, "calibre-web.log")
 DEFAULT_ACCESS_LOG  = os.path.join(_CONFIG_DIR, "access.log")
 LOG_TO_STDERR       = '/dev/stderr'
+LOG_TO_STDOUT       = '/dev/stdout'
 
 logging.addLevelName(logging.WARNING, "WARN")
 logging.addLevelName(logging.CRITICAL, "CRIT")
@@ -112,9 +114,13 @@ def setup(log_file, log_level=None):
             return
         logging.debug("logging to %s level %s", log_file, r.level)
 
-    if log_file == LOG_TO_STDERR:
-        file_handler = StreamHandler()
-        file_handler.baseFilename = LOG_TO_STDERR
+    if log_file == LOG_TO_STDERR or log_file == LOG_TO_STDOUT:
+        if log_file == LOG_TO_STDOUT:
+            file_handler = StreamHandler(sys.stdout)
+            file_handler.baseFilename = log_file
+        else:
+            file_handler = StreamHandler()
+            file_handler.baseFilename = log_file
     else:
         try:
             file_handler = RotatingFileHandler(log_file, maxBytes=50000, backupCount=2)
@@ -164,5 +170,5 @@ class StderrLogger(object):
             self.log.debug("Logging Error")
 
 
-# default configuration, before application settngs are applied
+# default configuration, before application settings are applied
 setup(LOG_TO_STDERR, logging.DEBUG if os.environ.get('FLASK_DEBUG') else DEFAULT_LOG_LEVEL)

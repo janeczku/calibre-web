@@ -71,19 +71,19 @@ def get_epub_info(tmp_file_path, original_file_name, original_file_extension):
             else:
                 epub_metadata[s] = p.xpath('dc:%s/text()' % s, namespaces=ns)[0]
         else:
-            epub_metadata[s] = "Unknown"
+            epub_metadata[s] = u'Unknown'
 
-    if epub_metadata['subject'] == "Unknown":
+    if epub_metadata['subject'] == u'Unknown':
         epub_metadata['subject'] = ''
 
-    if epub_metadata['description'] == "Unknown":
+    if epub_metadata['description'] == u'Unknown':
         description = tree.xpath("//*[local-name() = 'description']/text()")
         if len(description) > 0:
             epub_metadata['description'] = description
         else:
             epub_metadata['description'] = ""
 
-    if epub_metadata['language'] == "Unknown":
+    if epub_metadata['language'] == u'Unknown':
         epub_metadata['language'] = ""
     else:
         lang = epub_metadata['language'].split('-', 1)[0].lower()

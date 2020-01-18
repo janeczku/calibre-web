@@ -19,15 +19,15 @@
  * Google Books api document: https://developers.google.com/books/docs/v1/using
  * Douban Books api document: https://developers.douban.com/wiki/?title=book_v2 (Chinese Only)
 */
-/* global _, i18nMsg, tinymce */
-// var dbResults = [];
+/* global _, i18nMsg, tinymce */ 
+var dbResults = [];
 var ggResults = [];
 
 $(function () {
     var msg = i18nMsg;
-    /*var douban = "https://api.douban.com";
-    var dbSearch = "/v2/book/search";*/
-    // var dbDone = true;
+    var douban = "https://api.douban.com";
+    var dbSearch = "/v2/book/search";
+    var dbDone = true;
 
     var google = "https://www.googleapis.com";
     var ggSearch = "/books/v1/volumes";
@@ -43,12 +43,22 @@ $(function () {
 
     function populateForm (book) {
         tinymce.get("description").setContent(book.description);
+        var uniqueTags = [];
+        $.each(book.tags, function(i, el) {
+            if ($.inArray(el, uniqueTags) === -1) uniqueTags.push(el);
+        });
+
         $("#bookAuthor").val(book.authors);
         $("#book_title").val(book.title);
-        $("#tags").val(book.tags.join(","));
+        $("#tags").val(uniqueTags.join(","));
         $("#rating").data("rating").setValue(Math.round(book.rating));
         $(".cover img").attr("src", book.cover);
         $("#cover_url").val(book.cover);
+        $("#pubdate").val(book.publishedDate);
+        $("#publisher").val(book.publisher)
+        if (book.series != undefined) {
+            $("#series").val(book.series)
+        }
     }
 
     function showResult () {
@@ -56,10 +66,24 @@ $(function () {
         if (showFlag === 1) {
             $("#meta-info").html("<ul id=\"book-list\" class=\"media-list\"></ul>");
         }
-        if (!ggDone) {
+        if (!ggDone && !dbDone) {
             $("#meta-info").html("<p class=\"text-danger\">" + msg.no_result + "</p>");
             return;
         }
+        function formatDate (date) {
+            var d = new Date(date),
+                month = '' + (d.getMonth() + 1),
+                day = '' + d.getDate(),
+                year = d.getFullYear();
+        
+            if (month.length < 2) 
+                month = '0' + month;
+            if (day.length < 2) 
+                day = '0' + day;
+        
+            return [year, month, day].join('-');
+        }
+
         if (ggDone && ggResults.length > 0) {
             ggResults.forEach(function(result) {
                 var book = {
@@ -72,8 +96,7 @@ $(function () {
                     tags: result.volumeInfo.categories || [],
                     rating: result.volumeInfo.averageRating || 0,
                     cover: result.volumeInfo.imageLinks ?
-                        result.volumeInfo.imageLinks.thumbnail :
-                        "/static/generic_cover.jpg",
+                        result.volumeInfo.imageLinks.thumbnail : "/static/generic_cover.jpg",
                     url: "https://books.google.com/books?id=" + result.id,
                     source: {
                         id: "google",
@@ -91,19 +114,30 @@ $(function () {
             });
             ggDone = false;
         }
-        /*if (dbDone && dbResults.length > 0) {
+        if (dbDone && dbResults.length > 0) {
             dbResults.forEach(function(result) {
+                if (result.series){
+                    var series_title = result.series.title
+                }
+                var date_fomers = result.pubdate.split("-")
+                var publishedYear = parseInt(date_fomers[0])
+                var publishedMonth = parseInt(date_fomers[1])
+                var publishedDate = new Date(publishedYear, publishedMonth-1, 1)
+
+                publishedDate = formatDate(publishedDate)
+               
                 var book = {
                     id: result.id,
                     title: result.title,
                     authors: result.author || [],
                     description: result.summary,
                     publisher: result.publisher || "",
-                    publishedDate: result.pubdate || "",
+                    publishedDate: publishedDate || "",
                     tags: result.tags.map(function(tag) {
-                        return tag.title;
+                        return tag.title.toLowerCase().replace(/,/g, "_");
                     }),
                     rating: result.rating.average || 0,
+                    series: series_title || "",
                     cover: result.image,
                     url: "https://book.douban.com/subject/" + result.id,
                     source: {
@@ -125,7 +159,7 @@ $(function () {
                 $("#book-list").append($book);
             });
             dbDone = false;
-        }*/
+        }
     }
 
     function ggSearchBook (title) {
@@ -148,9 +182,10 @@ $(function () {
         });
     }
 
-    /*function dbSearchBook (title) {
+    function dbSearchBook (title) {
+        apikey="0df993c66c0c636e29ecbb5344252a4a"
         $.ajax({
-            url: douban + dbSearch + "?q=" + title + "&fields=all&count=10",
+            url: douban + dbSearch + "?apikey=" + apikey + "&q=" + title + "&fields=all&count=10",
             type: "GET",
             dataType: "jsonp",
             jsonp: "callback",
@@ -166,13 +201,13 @@ $(function () {
                 $("#show-douban").trigger("change");
             }
         });
-    }*/
+    }
 
     function doSearch (keyword) {
         showFlag = 0;
         $("#meta-info").text(msg.loading);
         if (keyword) {
-            // dbSearchBook(keyword);
+            dbSearchBook(keyword);
             ggSearchBook(keyword);
         }
     }

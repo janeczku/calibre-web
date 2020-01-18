@@ -47,6 +47,10 @@ CREDENTIALS    = os.path.join(_CONFIG_DIR, 'gdrive_credentials')
 CLIENT_SECRETS = os.path.join(_CONFIG_DIR, 'client_secrets.json')
 
 log = logger.create()
+if gdrive_support:
+    logger.get('googleapiclient.discovery_cache').setLevel(logger.logging.ERROR)
+    if not logger.is_debug_enabled():
+        logger.get('googleapiclient.discovery').setLevel(logger.logging.ERROR)
 
 
 class Singleton:
@@ -584,5 +588,7 @@ def get_error_text(client_secrets=None):
         filedata = json.load(settings)
     if 'web' not in filedata:
         return 'client_secrets.json is not configured for web application'
+    if 'redirect_uris' not in filedata['web']:
+        return 'Callback url (redirect url) is missing in client_secrets.json'
     if client_secrets:
         client_secrets.update(filedata['web'])
