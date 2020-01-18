@@ -5,18 +5,19 @@
 # FIRST AUTHOR OzzieIsaacs, 2016.
 msgid ""
 msgstr ""
-"Project-Id-Version:  Calibre-Web\n"
+"Project-Id-Version: Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
 "POT-Creation-Date: 2020-01-12 13:57+0100\n"
-"PO-Revision-Date: 2019-11-14 18:50+0100\n"
+"PO-Revision-Date: 2020-01-18 11:22+0100\n"
 "Last-Translator: Jonatan Nyberg <jonatan.nyberg.karl@gmail.com>\n"
 "Language: sv\n"
 "Language-Team: \n"
-"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.7.0\n"
+"X-Generator: Poedit 2.2.4\n"
 
 #: cps/about.py:42
 msgid "installed"
@@ -98,7 +99,7 @@ msgstr "Det gick inte att skicka Testmeddelandet: %(res)s"
 
 #: cps/admin.py:540
 msgid "Please configure your e-mail address first..."
-msgstr ""
+msgstr "Vänligen konfigurera din e-postadress först..."
 
 #: cps/admin.py:542
 msgid "E-mail server settings updated"
@@ -124,7 +125,7 @@ msgstr "Redigera användaren %(nick)s"
 
 #: cps/admin.py:622 cps/web.py:1327
 msgid "This username is already taken"
-msgstr ""
+msgstr "Detta användarnamn är redan taget"
 
 #: cps/admin.py:637
 #, python-format
@@ -260,11 +261,11 @@ msgstr "Det gick inte att redigera boken, kontrollera loggfilen för mer informa
 #: cps/editbooks.py:581
 #, python-format
 msgid "File %(filename)s could not saved to temp dir"
-msgstr ""
+msgstr "Filen %(filename)s kunde inte sparas i temp dir"
 
 #: cps/editbooks.py:598
 msgid "Uploaded book probably exists in the library, consider to change before upload new: "
-msgstr ""
+msgstr "Uppladdad bok finns förmodligen i biblioteket, överväg att ändra innan du laddar upp nya: "
 
 #: cps/editbooks.py:613
 #, python-format
@@ -833,7 +834,7 @@ msgstr "Konfigurera din kindle-e-postadress först..."
 
 #: cps/web.py:1087
 msgid "E-Mail server is not configured, please contact your administrator!"
-msgstr ""
+msgstr "E-postservern är inte konfigurerad, kontakta din administratör!"
 
 #: cps/web.py:1088 cps/web.py:1094 cps/web.py:1119 cps/web.py:1123
 #: cps/web.py:1128 cps/web.py:1132
@@ -871,11 +872,11 @@ msgstr "Fel användarnamn eller lösenord"
 
 #: cps/web.py:1170
 msgid "New Password was send to your email address"
-msgstr ""
+msgstr "Nytt lösenord skickades till din e-postadress"
 
 #: cps/web.py:1176
 msgid "Please enter valid username to reset password"
-msgstr ""
+msgstr "Ange giltigt användarnamn för att återställa lösenordet"
 
 #: cps/web.py:1182
 #, python-format
@@ -1034,11 +1035,11 @@ msgstr "Fjärrinloggning"
 
 #: cps/templates/admin.html:104
 msgid "Reverse proxy login"
-msgstr ""
+msgstr "Omvänd proxy inloggning"
 
 #: cps/templates/admin.html:109
 msgid "Reverse proxy header name"
-msgstr ""
+msgstr "Omvänt proxy rubriknamn"
 
 #: cps/templates/admin.html:121
 msgid "Administration"
@@ -1505,11 +1506,11 @@ msgstr "%(provider)s OAuth-klient-hemlighet"
 
 #: cps/templates/config_edit.html:276
 msgid "Allow Reverse Proxy Authentication"
-msgstr ""
+msgstr "Tillåt omvänd proxyautentisering"
 
 #: cps/templates/config_edit.html:280
 msgid "Reverse Proxy Header Name"
-msgstr ""
+msgstr "Omvänt proxy rubriknamn"
 
 #: cps/templates/config_edit.html:292
 msgid "External binaries"
@@ -1734,7 +1735,7 @@ msgstr "Ange domännamn"
 
 #: cps/templates/email_edit.html:60
 msgid "Denied domains for registering"
-msgstr ""
+msgstr "Nekade domäner för registrering"
 
 #: cps/templates/email_edit.html:90
 msgid "Do you really want to delete this domain rule?"
@@ -1774,7 +1775,7 @@ msgstr "Populära publikationer från den här katalogen baserad på betyg."
 
 #: cps/templates/index.xml:31
 msgid "Recently added Books"
-msgstr ""
+msgstr "Senaste tillagda böcker"
 
 #: cps/templates/index.xml:35
 msgid "The latest Books"
@@ -1802,11 +1803,11 @@ msgstr "Böcker ordnade efter serier"
 
 #: cps/templates/index.xml:93
 msgid "Books ordered by Languages"
-msgstr ""
+msgstr "Böcker ordnade efter språk"
 
 #: cps/templates/index.xml:100
 msgid "Books ordered by file formats"
-msgstr ""
+msgstr "Böcker ordnade av filformat"
 
 #: cps/templates/index.xml:103 cps/templates/layout.html:137
 msgid "Public Shelves"
@@ -1905,7 +1906,7 @@ msgstr "Kom ihåg mig"
 
 #: cps/templates/login.html:22
 msgid "Forgot password"
-msgstr ""
+msgstr "Glömt lösenord"
 
 #: cps/templates/login.html:25
 msgid "Log in with magic link"
@@ -2093,11 +2094,11 @@ msgstr "Uteslut språk"
 
 #: cps/templates/search_form.html:95
 msgid "Extensions"
-msgstr ""
+msgstr "Tillägg"
 
 #: cps/templates/search_form.html:105
 msgid "Exclude Extensions"
-msgstr ""
+msgstr "Uteslut tillägg"
 
 #: cps/templates/search_form.html:117
 msgid "Rating bigger than"
@@ -2457,4 +2458,3 @@ msgstr "Senaste hämtningar"
 
 #~ msgid "New Books"
 #~ msgstr "Nya böcker"
-
