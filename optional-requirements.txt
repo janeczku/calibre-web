@@ -31,4 +31,4 @@ rarfile>=2.7
 
 # other
 natsort>=2.2.0
-git+https://github.com/OzzieIsaacs/comicapi.git@5346716578b2843f54d522f44d01bc8d25001d24#egg=comicapi
+git+https://github.com/OzzieIsaacs/comicapi.git@ad8bfe5a1c31db882480433f86db2c5c57634a3f#egg=comicapi
