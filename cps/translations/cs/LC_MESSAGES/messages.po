@@ -128,7 +128,7 @@ msgstr "Toto uživatelské jméno je již použito"
 #: cps/admin.py:637
 #, python-format
 msgid "User '%(nick)s' updated"
-msgstr "Uživatel %(nick)s’ aktualizován"
+msgstr "Uživatel '(nick)s' aktualizován"
 
 #: cps/admin.py:640
 msgid "An unknown error occured."
@@ -241,7 +241,7 @@ msgstr "Obal není v podporovaném formátu (jpg/png/webp), nelze uložit"
 
 #: cps/editbooks.py:451
 msgid "Cover is not a jpg file, can't save"
-msgstr "Obal neni soubor jpg, nelze uložit"
+msgstr "Obal není soubor jpg, nelze uložit"
 
 #: cps/editbooks.py:494
 #, python-format
@@ -2148,19 +2148,19 @@ msgstr "Statistika knihovny Calibre"
 
 #: cps/templates/stats.html:12
 msgid "Books in this Library"
-msgstr "Knihy v této knihovně"
+msgstr "Knih v této knihovně"
 
 #: cps/templates/stats.html:16
 msgid "Authors in this Library"
-msgstr "Autoři v této knihovně"
+msgstr "Autorů v této knihovně"
 
 #: cps/templates/stats.html:20
 msgid "Categories in this Library"
-msgstr "Kategorie v této knihovně"
+msgstr "Kategorií v této knihovně"
 
 #: cps/templates/stats.html:24
 msgid "Series in this Library"
-msgstr "Série v této knihovně"
+msgstr "Sérií v této knihovně"
 
 #: cps/templates/stats.html:28
 msgid "Linked libraries"
