@@ -489,7 +489,7 @@ msgstr "Kniha je již součástí police: %(shelfname)s"
 #: cps/shelf.py:85
 #, python-format
 msgid "Book has been added to shelf: %(sname)s"
-msgstr "Kniha byla přidána do plice: %(sname)s"
+msgstr "Kniha byla přidána do police: %(sname)s"
 
 #: cps/shelf.py:104
 #, python-format
@@ -957,7 +957,7 @@ msgstr "Stahovat"
 
 #: cps/templates/admin.html:18
 msgid "View Ebooks"
-msgstr "Prohlížet eknihy"
+msgstr "Prohlížet"
 
 #: cps/templates/admin.html:19 cps/templates/layout.html:65
 msgid "Upload"
@@ -1980,7 +1980,7 @@ msgstr "Světlý"
 
 #: cps/templates/readcbr.html:116
 msgid "Dark"
-msgstr "Tnavý"
+msgstr "Tmavý"
 
 #: cps/templates/readcbr.html:121
 msgid "Scale"
