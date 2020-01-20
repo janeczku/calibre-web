@@ -250,6 +250,7 @@ def edit_required(f):
 
     return inner
 
+
 # ################################### Helper functions ################################################################
 
 
@@ -460,12 +461,6 @@ def get_matching_tags():
         if len(exclude_tag_inputs) > 0:
             for tag in exclude_tag_inputs:
                 q = q.filter(not_(db.Books.tags.any(db.Tags.id == tag)))
-        '''if len(include_extension_inputs) > 0:
-            for tag in exclude_tag_inputs:
-                q = q.filter(not_(db.Books.tags.any(db.Tags.id == tag)))
-        if len(exclude_extension_inputs) > 0:
-            for tag in exclude_tag_inputs:
-                q = q.filter(not_(db.Books.tags.any(db.Tags.id == tag)))'''
         for book in q:
             for tag in book.tags:
                 if tag.id not in tag_dict['tags']:
@@ -1048,9 +1043,6 @@ def serve_book(book_id, book_format, anyname):
 @login_required_if_no_ano
 @download_required
 def download_link(book_id, book_format):
-    if book_format.lower() == "kepub":
-        book_format= "epub"
-    log.info("Book %s in format %s downloaded", str(book_id), book_format)
     return get_download_link(book_id, book_format)
 
 
@@ -1092,10 +1084,10 @@ def register():
         if not to_save["nickname"] or not to_save["email"]:
             flash(_(u"Please fill out all fields!"), category="error")
             return render_title_template('register.html', title=_(u"register"), page="register")
+
         existing_user = ub.session.query(ub.User).filter(func.lower(ub.User.nickname) == to_save["nickname"]
                                                          .lower()).first()
         existing_email = ub.session.query(ub.User).filter(ub.User.email == to_save["email"].lower()).first()
-
         if not existing_user and not existing_email:
             content = ub.User()
             # content.password = generate_password_hash(to_save["password"])

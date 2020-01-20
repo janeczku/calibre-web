@@ -68,7 +68,6 @@ _VERSIONS = OrderedDict(
     Flask_SimpleLDAP =  u'installed' if bool(services.ldap) else u'not installed',
     Goodreads = u'installed' if bool(services.goodreads_support) else u'not installed',
     jsonschema = services.SyncToken.__version__  if bool(services.SyncToken) else u'not installed',
-
 )
 _VERSIONS.update(uploader.get_versions())
 
