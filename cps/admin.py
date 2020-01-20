@@ -64,7 +64,6 @@ except ImportError:
     oauth_check = {}
 
 
-
 feature_support['gdrive'] = gdrive_support
 admi = Blueprint('admin', __name__)
 log = logger.create()
@@ -491,7 +490,6 @@ def _configuration_update_helper():
     db_change = False
     to_save = request.form.to_dict()
 
-    # _config_dict = lambda x: config.set_from_dictionary(to_save, x, lambda y: y['id'])
     _config_string = lambda x: config.set_from_dictionary(to_save, x, lambda y: y.strip() if y else y)
     _config_int = lambda x: config.set_from_dictionary(to_save, x, int)
     _config_checkbox = lambda x: config.set_from_dictionary(to_save, x, lambda y: y == "on", False)
@@ -530,8 +528,6 @@ def _configuration_update_helper():
     reboot_required |= _config_string("config_certfile")
     if config.config_certfile and not os.path.isfile(config.config_certfile):
         return _configuration_result('Certfile location is not valid, please enter correct path', gdriveError)
-
-    _config_string("config_server_url")
 
     _config_checkbox_int("config_uploading")
     _config_checkbox_int("config_anonbrowse")
@@ -845,24 +841,6 @@ def edit_user(user_id):
                 content.default_language = to_save["default_language"]
             if "locale" in to_save and to_save["locale"]:
                 content.locale = to_save["locale"]
-
-            if "kobo_user_key" in to_save and to_save["kobo_user_key"]:
-                kobo_user_key_hash = generate_password_hash(to_save["kobo_user_key"])
-                if kobo_user_key_hash != content.kobo_user_key_hash:
-                    existing_kobo_user_key = ub.session.query(ub.User).filter(ub.User.kobo_user_key_hash == kobo_user_key_hash).first()
-                    if not existing_kobo_user_key:
-                        content.kobo_user_key_hash = kobo_user_key_hash
-                    else:
-                        flash(_(u"Found an existing account for this Kobo UserKey."), category="error")
-                        return render_title_template("user_edit.html",
-                                                     translations=translations,
-                                                     languages=languages,
-                                                     new_user=0,
-                                                     content=content,
-                                                     downloads=downloads,
-                                                     registered_oauth=oauth_check,
-                                                     feature_support=feature_support,
-                                                     title=_(u"Edit User %(nick)s", nick=content.nickname), page="edituser")
             if to_save["email"] and to_save["email"] != content.email:
                 existing_email = ub.session.query(ub.User).filter(ub.User.email == to_save["email"].lower()) \
                     .first()

@@ -27,10 +27,6 @@
       <input type="email" class="form-control" name="kindle_mail" id="kindle_mail" value="{{ content.kindle_mail if content.kindle_mail != None }}">
     </div>
     <div class="form-group">
-    <div class="form-group">
-        <label for="kobo_user_key">{{_('KoboStore UserKey')}}</label>
-        <input type="password" class="form-control" name="kobo_user_key" id="kobo_user_key" value="" autocomplete="off">
-    </div>
     <label for="locale">{{_('Language')}}</label>
         <select name="locale" id="locale" class="form-control">
             {%  for translation in translations %}

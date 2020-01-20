@@ -40,7 +40,8 @@ from werkzeug.datastructures import Headers
 from sqlalchemy import func
 import requests
 
-from . import config, logger, kobo_auth, db, helper, services
+from . import config, logger, kobo_auth, db, helper
+from .services import SyncToken as SyncToken
 from .web import download_required
 
 KOBO_FORMATS = {"KEPUB": ["KEPUB"], "EPUB": ["EPUB", "EPUB3"]}
@@ -72,6 +73,8 @@ CONNECTION_SPECIFIC_HEADERS = [
 def redirect_or_proxy_request():
     if request.method == "GET":
         return redirect(get_store_url_for_current_request(), 307)
+    if request.method == "DELETE":
+        return make_response(jsonify({}))
     else:
         # The Kobo device turns other request types into GET requests on redirects, so we instead proxy to the Kobo store ourselves.
         outgoing_headers = Headers(request.headers)
@@ -97,7 +100,7 @@ def redirect_or_proxy_request():
 @login_required
 @download_required
 def HandleSyncRequest():
-    sync_token = services.SyncToken.from_headers(request.headers)
+    sync_token = SyncToken.SyncToken.from_headers(request.headers)
     log.info("Kobo library sync request received.")
 
     # TODO: Limit the number of books return per sync call, and rely on the sync-continuatation header
@@ -117,7 +120,7 @@ def HandleSyncRequest():
     changed_entries = (
         db.session.query(db.Books)
         .join(db.Data)
-        .filter(func.datetime(db.Books.last_modified) > sync_token.books_last_modified)
+        .filter(func.datetime(db.Books.last_modified) != sync_token.books_last_modified)
         .filter(db.Data.format.in_(KOBO_FORMATS))
         .all()
     )
@@ -322,11 +325,10 @@ def reading_state(book):
     return reading_state
 
 
-@kobo.route(
-    "/<book_uuid>/image.jpg"
-)
+@kobo.route("/<book_uuid>/image.jpg")
 @login_required
 def HandleCoverImageRequest(book_uuid):
+    log.debug("Cover request received for book %s" % book_uuid)
     book_cover = helper.get_book_cover_with_uuid(
         book_uuid, use_generic_cover_on_failure=False
     )
@@ -346,7 +348,7 @@ def TopLevelEndpoint():
 @kobo.route("/v1/library/tags", methods=["POST"])
 @kobo.route("/v1/library/tags/<shelf_name>", methods=["POST"])
 @kobo.route("/v1/library/tags/<tag_id>", methods=["DELETE"])
-def HandleUnimplementedRequest(book_uuid=None, shelf_name=None, tag_id=None):
+def HandleUnimplementedRequest(dummy=None, book_uuid=None, shelf_name=None, tag_id=None):
     return redirect_or_proxy_request()
 
 

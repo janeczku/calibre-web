@@ -330,7 +330,7 @@ class RemoteAuthToken(Base):
     __tablename__ = 'remote_auth_token'
 
     id = Column(Integer, primary_key=True)
-    auth_token = Column(String, unique=True)        # IMPORTANT: ToDo:check length restríction id not valid for string
+    auth_token = Column(String, unique=True)
     user_id = Column(Integer, ForeignKey('user.id'))
     verified = Column(Boolean, default=False)
     expiration = Column(DateTime)
