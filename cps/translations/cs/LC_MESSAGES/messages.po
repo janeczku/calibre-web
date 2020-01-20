@@ -128,7 +128,7 @@ msgstr "Toto uživatelské jméno je již použito"
 #: cps/admin.py:637
 #, python-format
 msgid "User '%(nick)s' updated"
-msgstr "Uživatel '(nick)s' aktualizován"
+msgstr "Uživatel '%(nick)s' aktualizován"
 
 #: cps/admin.py:640
 msgid "An unknown error occured."
