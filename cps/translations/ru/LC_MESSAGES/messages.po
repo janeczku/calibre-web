@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
 "POT-Creation-Date: 2019-12-08 10:07+0100\n"
-"PO-Revision-Date: 2020-01-10 05:09+0400\n"
+"PO-Revision-Date: 2020-01-21 22:27+0400\n"
 "Last-Translator: ZIZA\n"
 "Language: ru\n"
 "Language-Team: \n"
@@ -264,7 +264,7 @@ msgstr "Файл %(filename)s не удалось сохранить во вре
 
 #: cps/editbooks.py:580
 msgid "Uploaded book probably exists in the library, consider to change before upload new: "
-msgstr "Загруженная книга, вероятно, существует в библиотеке, перед изменением добавьте новую:"
+msgstr "Загруженная книга, вероятно, существует в библиотеке, перед тем как загрузить новую, рассмотрите возможность изменения:"
 
 #: cps/editbooks.py:595
 #, python-format
@@ -2211,9 +2211,6 @@ msgstr "Последние загрузки"
 #~ msgid "Afrikaans"
 #~ msgstr "Африкаанс"
 
-#~ msgid "Ainu (Japan)"
-#~ msgstr ""
-
 #~ msgid "Akan"
 #~ msgstr "Акан"
 
@@ -2223,14 +2220,8 @@ msgstr "Последние загрузки"
 #~ msgid "Aleut"
 #~ msgstr "Алеутский"
 
-#~ msgid "Altai; Southern"
-#~ msgstr ""
-
 #~ msgid "Amharic"
 #~ msgstr "Амхарский (Амаринья)"
-
-#~ msgid "English; Old (ca. 450-1100)"
-#~ msgstr ""
 
 #~ msgid "Angika"
 #~ msgstr "Анжика"
@@ -2243,9 +2234,6 @@ msgstr "Последние загрузки"
 
 #~ msgid "Aragonese"
 #~ msgstr "Арагонский"
-
-#~ msgid "Mapudungun"
-#~ msgstr ""
 
 #~ msgid "Arapaho"
 #~ msgstr "Арапахо"
@@ -2276,9 +2264,6 @@ msgstr "Последние загрузки"
 
 #~ msgid "Bashkir"
 #~ msgstr "Башкирский"
-
-#~ msgid "Baluchi"
-#~ msgstr ""
 
 #~ msgid "Bambara"
 #~ msgstr "Бамбара"
@@ -2337,14 +2322,8 @@ msgstr "Последние загрузки"
 #~ msgid "Bulgarian"
 #~ msgstr "Болгарский"
 
-#~ msgid "Bilin"
-#~ msgstr ""
-
 #~ msgid "Caddo"
 #~ msgstr "Каддо"
-
-#~ msgid "Carib; Galibi"
-#~ msgstr ""
 
 #~ msgid "Catalan"
 #~ msgstr "Каталанский"
@@ -2385,9 +2364,6 @@ msgstr "Последние загрузки"
 #~ msgid "Cherokee"
 #~ msgstr "Чероки"
 
-#~ msgid "Slavonic; Old"
-#~ msgstr ""
-
 #~ msgid "Chuvash"
 #~ msgstr "Чувашский"
 
@@ -2405,9 +2381,6 @@ msgstr "Последние загрузки"
 
 #~ msgid "Cree"
 #~ msgstr "Кри"
-
-#~ msgid "Turkish; Crimean"
-#~ msgstr ""
 
 #~ msgid "Kashubian"
 #~ msgstr "Кашубианский"
@@ -2439,20 +2412,8 @@ msgstr "Последние загрузки"
 #~ msgid "Dinka"
 #~ msgstr "Динка"
 
-#~ msgid "Dhivehi"
-#~ msgstr ""
-
-#~ msgid "Dogri (macrolanguage)"
-#~ msgstr ""
-
-#~ msgid "Sorbian; Lower"
-#~ msgstr ""
-
 #~ msgid "Duala"
 #~ msgstr "Дуала"
-
-#~ msgid "Dutch; Middle (ca. 1050-1350)"
-#~ msgstr ""
 
 #~ msgid "Dyula"
 #~ msgstr "Диула (Дьюла)"
@@ -2496,9 +2457,6 @@ msgstr "Последние загрузки"
 #~ msgid "Ewondo"
 #~ msgstr "Эвондо"
 
-#~ msgid "Fang (Equatorial Guinea)"
-#~ msgstr ""
-
 #~ msgid "Faroese"
 #~ msgstr "Фарерский"
 
@@ -2511,9 +2469,6 @@ msgstr "Последние загрузки"
 #~ msgid "Fijian"
 #~ msgstr "Фиджийский"
 
-#~ msgid "Filipino"
-#~ msgstr ""
-
 #~ msgid "Finnish"
 #~ msgstr "Финский"
 
@@ -2522,21 +2477,6 @@ msgstr "Последние загрузки"
 
 #~ msgid "French"
 #~ msgstr "Французский"
-
-#~ msgid "French; Middle (ca. 1400-1600)"
-#~ msgstr ""
-
-#~ msgid "French; Old (842-ca. 1400)"
-#~ msgstr ""
-
-#~ msgid "Frisian; Northern"
-#~ msgstr ""
-
-#~ msgid "Frisian; Eastern"
-#~ msgstr ""
-
-#~ msgid "Frisian; Western"
-#~ msgstr ""
 
 #~ msgid "Fulah"
 #~ msgstr "Фулах"
@@ -2550,32 +2490,17 @@ msgstr "Последние загрузки"
 #~ msgid "Gayo"
 #~ msgstr "Гайо"
 
-#~ msgid "Gbaya (Central African Republic)"
-#~ msgstr ""
-
 #~ msgid "Geez"
 #~ msgstr "Геэз"
 
 #~ msgid "Gilbertese"
 #~ msgstr "Гильбертский"
 
-#~ msgid "Gaelic; Scottish"
-#~ msgstr ""
-
 #~ msgid "Irish"
 #~ msgstr "Ирландский"
 
-#~ msgid "Galician"
-#~ msgstr ""
-
 #~ msgid "Manx"
 #~ msgstr "Мэнкский"
-
-#~ msgid "German; Middle High (ca. 1050-1500)"
-#~ msgstr ""
-
-#~ msgid "German; Old High (ca. 750-1050)"
-#~ msgstr ""
 
 #~ msgid "Gondi"
 #~ msgstr "Гонди"
@@ -2595,20 +2520,11 @@ msgstr "Последние загрузки"
 #~ msgid "Guarani"
 #~ msgstr "Гуарани"
 
-#~ msgid "German; Swiss"
-#~ msgstr ""
-
 #~ msgid "Gujarati"
 #~ msgstr "Гуджарати"
 
-#~ msgid "Gwichʼin"
-#~ msgstr ""
-
 #~ msgid "Haida"
 #~ msgstr "Хайда"
-
-#~ msgid "Creole; Haitian"
-#~ msgstr ""
 
 #~ msgid "Hausa"
 #~ msgstr "Хауса"
@@ -2640,9 +2556,6 @@ msgstr "Последние загрузки"
 #~ msgid "Croatian"
 #~ msgstr "Хорватский"
 
-#~ msgid "Sorbian; Upper"
-#~ msgstr ""
-
 #~ msgid "Hungarian"
 #~ msgstr "Венгерский"
 
@@ -2660,9 +2573,6 @@ msgstr "Последние загрузки"
 
 #~ msgid "Ido"
 #~ msgstr "Идо"
-
-#~ msgid "Yi; Sichuan"
-#~ msgstr ""
 
 #~ msgid "Inuktitut"
 #~ msgstr "Инуктитут"
@@ -2715,12 +2625,6 @@ msgstr "Последние загрузки"
 #~ msgid "Kachin"
 #~ msgstr "Качинский"
 
-#~ msgid "Kalaallisut"
-#~ msgstr ""
-
-#~ msgid "Kamba (Kenya)"
-#~ msgstr ""
-
 #~ msgid "Kannada"
 #~ msgstr "Каннада"
 
@@ -2745,9 +2649,6 @@ msgstr "Последние загрузки"
 #~ msgid "Khasi"
 #~ msgstr "Кхаси"
 
-#~ msgid "Khmer; Central"
-#~ msgstr ""
-
 #~ msgid "Khotanese"
 #~ msgstr "Хотанский"
 
@@ -2762,9 +2663,6 @@ msgstr "Последние загрузки"
 
 #~ msgid "Kimbundu"
 #~ msgstr "Кимбунду"
-
-#~ msgid "Konkani (macrolanguage)"
-#~ msgstr ""
 
 #~ msgid "Komi"
 #~ msgstr "Коми"
@@ -2823,9 +2721,6 @@ msgstr "Последние загрузки"
 #~ msgid "Lezghian"
 #~ msgstr "Лезгинский"
 
-#~ msgid "Limburgan"
-#~ msgstr ""
-
 #~ msgid "Lingala"
 #~ msgstr "Лингала"
 
@@ -2837,9 +2732,6 @@ msgstr "Последние загрузки"
 
 #~ msgid "Lozi"
 #~ msgstr "Лози"
-
-#~ msgid "Luxembourgish"
-#~ msgstr ""
 
 #~ msgid "Luba-Lulua"
 #~ msgstr "Луба-Лулуа"
@@ -2868,9 +2760,6 @@ msgstr "Последние загрузки"
 #~ msgid "Magahi"
 #~ msgstr "Магахи"
 
-#~ msgid "Marshallese"
-#~ msgstr ""
-
 #~ msgid "Maithili"
 #~ msgstr "Майтхили"
 
@@ -2895,20 +2784,11 @@ msgstr "Последние загрузки"
 #~ msgid "Mandar"
 #~ msgstr "Мандарский"
 
-#~ msgid "Mende (Sierra Leone)"
-#~ msgstr ""
-
 #~ msgid "Irish; Middle (900-1200)"
 #~ msgstr "Среднеирландский (900-1200)"
 
-#~ msgid "Mi'kmaq"
-#~ msgstr ""
-
 #~ msgid "Minangkabau"
 #~ msgstr "Минангкабау"
-
-#~ msgid "Uncoded languages"
-#~ msgstr ""
 
 #~ msgid "Macedonian"
 #~ msgstr "Македонский"
@@ -2937,9 +2817,6 @@ msgstr "Последние загрузки"
 #~ msgid "Maori"
 #~ msgstr "Маори"
 
-#~ msgid "Malay (macrolanguage)"
-#~ msgstr ""
-
 #~ msgid "Multiple languages"
 #~ msgstr "Разных семей языки"
 
@@ -2964,9 +2841,6 @@ msgstr "Последние загрузки"
 #~ msgid "Nauru"
 #~ msgstr "Науру"
 
-#~ msgid "Navajo"
-#~ msgstr ""
-
 #~ msgid "Ndebele; South"
 #~ msgstr "Ндебеле южный"
 
@@ -2976,14 +2850,8 @@ msgstr "Последние загрузки"
 #~ msgid "Ndonga"
 #~ msgstr "Ндунга"
 
-#~ msgid "German; Low"
-#~ msgstr ""
-
 #~ msgid "Nepali"
 #~ msgstr "Непальский"
-
-#~ msgid "Bhasa; Nepal"
-#~ msgstr ""
 
 #~ msgid "Nias"
 #~ msgstr "Ниас"
@@ -2997,9 +2865,6 @@ msgstr "Последние загрузки"
 #~ msgid "Norwegian Nynorsk"
 #~ msgstr "Норвежский Нюнорск"
 
-#~ msgid "Norwegian Bokmål"
-#~ msgstr ""
-
 #~ msgid "Nogai"
 #~ msgstr "Ногайский"
 
@@ -3011,15 +2876,6 @@ msgstr "Последние загрузки"
 
 #~ msgid "N'Ko"
 #~ msgstr "Н'ко"
-
-#~ msgid "Sotho; Northern"
-#~ msgstr ""
-
-#~ msgid "Newari; Old"
-#~ msgstr ""
-
-#~ msgid "Nyanja"
-#~ msgstr ""
 
 #~ msgid "Nyamwezi"
 #~ msgstr "Ньямвези"
@@ -3033,9 +2889,6 @@ msgstr "Последние загрузки"
 #~ msgid "Nzima"
 #~ msgstr "Нзима"
 
-#~ msgid "Occitan (post 1500)"
-#~ msgstr ""
-
 #~ msgid "Ojibwa"
 #~ msgstr "Оджибва"
 
@@ -3047,9 +2900,6 @@ msgstr "Последние загрузки"
 
 #~ msgid "Osage"
 #~ msgstr "Оседжи"
-
-#~ msgid "Ossetian"
-#~ msgstr ""
 
 #~ msgid "Turkish; Ottoman (1500-1928)"
 #~ msgstr "Турецкий; Отомангский (1500-1928)"
@@ -3063,17 +2913,11 @@ msgstr "Последние загрузки"
 #~ msgid "Pampanga"
 #~ msgstr "Пампанга"
 
-#~ msgid "Panjabi"
-#~ msgstr ""
-
 #~ msgid "Papiamento"
 #~ msgstr "Папьяменто"
 
 #~ msgid "Palauan"
 #~ msgstr "Палау"
-
-#~ msgid "Persian; Old (ca. 600-400 B.C.)"
-#~ msgstr ""
 
 #~ msgid "Phoenician"
 #~ msgstr "Финикийский"
@@ -3105,12 +2949,6 @@ msgstr "Последние загрузки"
 #~ msgid "Rapanui"
 #~ msgstr "Рапаню"
 
-#~ msgid "Maori; Cook Islands"
-#~ msgstr ""
-
-#~ msgid "Romansh"
-#~ msgstr ""
-
 #~ msgid "Romany"
 #~ msgstr "Цыганский"
 
@@ -3119,9 +2957,6 @@ msgstr "Последние загрузки"
 
 #~ msgid "Rundi"
 #~ msgstr "Рунди"
-
-#~ msgid "Romanian; Macedo-"
-#~ msgstr ""
 
 #~ msgid "Russian"
 #~ msgstr "Русский"
@@ -3134,9 +2969,6 @@ msgstr "Последние загрузки"
 
 #~ msgid "Yakut"
 #~ msgstr "Якутский"
-
-#~ msgid "Aramaic; Samaritan"
-#~ msgstr ""
 
 #~ msgid "Sanskrit"
 #~ msgstr "Санскрит"
@@ -3174,23 +3006,11 @@ msgstr "Последние загрузки"
 #~ msgid "Slovenian"
 #~ msgstr "Словенский"
 
-#~ msgid "Sami; Southern"
-#~ msgstr ""
-
-#~ msgid "Sami; Northern"
-#~ msgstr ""
-
 #~ msgid "Lule Sami"
 #~ msgstr "Люле-саамский"
 
-#~ msgid "Sami; Inari"
-#~ msgstr ""
-
 #~ msgid "Samoan"
 #~ msgstr "Самоанский"
-
-#~ msgid "Sami; Skolt"
-#~ msgstr ""
 
 #~ msgid "Shona"
 #~ msgstr "Шона"
@@ -3219,9 +3039,6 @@ msgstr "Последние загрузки"
 #~ msgid "Sardinian"
 #~ msgstr "Сардинский"
 
-#~ msgid "Sranan Tongo"
-#~ msgstr ""
-
 #~ msgid "Serbian"
 #~ msgstr "Сербский"
 
@@ -3243,14 +3060,8 @@ msgstr "Последние загрузки"
 #~ msgid "Sumerian"
 #~ msgstr "Шумерский"
 
-#~ msgid "Swahili (macrolanguage)"
-#~ msgstr ""
-
 #~ msgid "Swedish"
 #~ msgstr "Шведский"
-
-#~ msgid "Syriac; Classical"
-#~ msgstr ""
 
 #~ msgid "Syriac"
 #~ msgstr "Сирийский"
@@ -3296,9 +3107,6 @@ msgstr "Последние загрузки"
 
 #~ msgid "Tokelau"
 #~ msgstr "Токелау"
-
-#~ msgid "Klingon"
-#~ msgstr ""
 
 #~ msgid "Tlingit"
 #~ msgstr "Тлингит"
@@ -3381,12 +3189,6 @@ msgstr "Последние загрузки"
 #~ msgid "Votic"
 #~ msgstr "Вотик"
 
-#~ msgid "Wolaytta"
-#~ msgstr ""
-
-#~ msgid "Waray (Philippines)"
-#~ msgstr ""
-
 #~ msgid "Washo"
 #~ msgstr "Вашо"
 
@@ -3395,9 +3197,6 @@ msgstr "Последние загрузки"
 
 #~ msgid "Wolof"
 #~ msgstr "Волоф"
-
-#~ msgid "Kalmyk"
-#~ msgstr ""
 
 #~ msgid "Xhosa"
 #~ msgstr "Коса"
@@ -3416,9 +3215,6 @@ msgstr "Последние загрузки"
 
 #~ msgid "Zapotec"
 #~ msgstr "Сапотекский"
-
-#~ msgid "Blissymbols"
-#~ msgstr ""
 
 #~ msgid "Zenaga"
 #~ msgstr "Зенагский"
@@ -3441,26 +3237,11 @@ msgstr "Последние загрузки"
 #~ msgid "Zaza"
 #~ msgstr "Зазаки"
 
-#~ msgid "Failed to create path for cover %(path)s (Permission denied)."
-#~ msgstr ""
-
-#~ msgid "Failed to store cover-file %(cover)s."
-#~ msgstr ""
-
-#~ msgid "Cover-file is not a valid image file"
-#~ msgstr ""
-
-#~ msgid "Preparing document for printing..."
-#~ msgstr ""
-
 #~ msgid "Using your another device, visit"
 #~ msgstr "Используйте другое устройство, посетите"
 
 #~ msgid "and log in"
 #~ msgstr "и войти"
-
-#~ msgid "Using your another device, login and visit "
-#~ msgstr ""
 
 #~ msgid "Newest Books"
 #~ msgstr "Новые Книги"
@@ -3473,12 +3254,6 @@ msgstr "Последние загрузки"
 
 #~ msgid "Books (Z-A)"
 #~ msgstr "Книги (Я-А)"
-
-#~ msgid "Error opening eBook. Fileformat is not supported."
-#~ msgstr ""
-
-#~ msgid "File %(title)s"
-#~ msgstr ""
 
 #~ msgid "Show sorted books"
 #~ msgstr "Показывать отсортированные книги"
@@ -3504,17 +3279,8 @@ msgstr "Последние загрузки"
 #~ msgid "PDF.js viewer"
 #~ msgstr "Просмотровщик PDF.js"
 
-#~ msgid "Please enter a LDAP provider and a DN"
-#~ msgstr ""
-
 #~ msgid "successfully deleted shelf %(name)s"
 #~ msgstr "удачно удалена полка %(name)s"
-
-#~ msgid "LDAP Provider URL"
-#~ msgstr ""
-
-#~ msgid "Register with %s, "
-#~ msgstr ""
 
 #~ msgid "Import of optional Google Drive requirements missing"
 #~ msgstr "Импорт дополнительных требований к Google Диску отсутствует"
@@ -3531,23 +3297,8 @@ msgstr "Последние загрузки"
 #~ msgid "Certfile location is not valid, please enter correct path"
 #~ msgstr "Неверное расположение сертификата, введите правильный путь"
 
-#~ msgid "Please enter a LDAP provider, port, DN and user object identifier"
-#~ msgstr ""
-
-#~ msgid "Please enter a LDAP service account and password"
-#~ msgstr ""
-
-#~ msgid "Please enter Github oauth credentials"
-#~ msgstr ""
-
-#~ msgid "Please enter Google oauth credentials"
-#~ msgstr ""
-
 #~ msgid "Logfile location is not valid, please enter correct path"
 #~ msgstr "Неверное расположение лог-файла, введите правильный путь"
-
-#~ msgid "Access Logfile location is not valid, please enter correct path"
-#~ msgstr ""
 
 #~ msgid "DB location is not valid, please enter correct path"
 #~ msgstr "Неверное расположение базы данных, введите правильный путь"
@@ -3561,35 +3312,5 @@ msgstr "Последние загрузки"
 #~ msgid "Unrar binary file not found"
 #~ msgstr "Unrar двочиный файл не найден"
 
-#~ msgid "Use GitHub OAuth"
-#~ msgstr ""
-
-#~ msgid "Use Google OAuth"
-#~ msgstr ""
-
-#~ msgid "Obtain GitHub OAuth Credential"
-#~ msgstr ""
-
-#~ msgid "GitHub OAuth Client Id"
-#~ msgstr ""
-
-#~ msgid "GitHub OAuth Client Secret"
-#~ msgstr ""
-
-#~ msgid "Obtain Google OAuth Credential"
-#~ msgstr ""
-
-#~ msgid "Google OAuth Client Id"
-#~ msgstr ""
-
-#~ msgid "Google OAuth Client Secret"
-#~ msgstr ""
-
 #~ msgid "Use"
 #~ msgstr "Использовать"
-
-#~ msgid "Play / pause"
-#~ msgstr ""
-
-#~ msgid "volume"
-#~ msgstr ""
