@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
 "POT-Creation-Date: 2019-12-08 10:07+0100\n"
-"PO-Revision-Date: 2020-01-21 22:27+0400\n"
+"PO-Revision-Date: 2020-01-21 23:03+0400\n"
 "Last-Translator: ZIZA\n"
 "Language: ru\n"
 "Language-Team: \n"
@@ -1558,7 +1558,7 @@ msgstr "Regexp для сортировки по названию"
 
 #: cps/templates/config_view_edit.html:59
 msgid "Tags for Mature Content"
-msgstr "Теги для Зрелого Контента"
+msgstr "Теги для Взрослого Контента"
 
 #: cps/templates/config_view_edit.html:73
 msgid "Default settings for new users"
@@ -2105,11 +2105,11 @@ msgstr "Серий в этой Библиотеке"
 
 #: cps/templates/stats.html:28
 msgid "Linked libraries"
-msgstr "Установленное ПО"
+msgstr "Связанные библиотеки"
 
 #: cps/templates/stats.html:32
 msgid "Program library"
-msgstr "Название"
+msgstr "Программа"
 
 #: cps/templates/stats.html:33
 msgid "Installed Version"
