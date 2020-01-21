@@ -1,7 +1,5 @@
 # About
 
-Fork of the project https://github.com/janeczku/calibre-web
-
 Calibre-Web is a web app providing a clean interface for browsing, reading and downloading eBooks using an existing [Calibre](https://calibre-ebook.com) database.
 
 *This software is a fork of [library](https://github.com/mutschler/calibreserver) and licensed under the GPL v3 License.*
