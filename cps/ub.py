@@ -300,6 +300,15 @@ class Bookmark(Base):
     format = Column(String(collation='NOCASE'))
     bookmark_key = Column(String)
 
+# Baseclass representing books that are archived on the user's Kobo device.
+class ArchivedBook(Base):
+    __tablename__ = 'archived_book'
+
+    id = Column(Integer, primary_key=True)
+    user_id = Column(Integer, ForeignKey('user.id'))
+    book_id = Column(Integer)
+    is_archived = Column(Boolean, unique=False)
+
 
 # Baseclass representing Downloads from calibre-web in app.db
 class Downloads(Base):
@@ -353,6 +362,8 @@ def migrate_Database(session):
         ReadBook.__table__.create(bind=engine)
     if not engine.dialect.has_table(engine.connect(), "bookmark"):
         Bookmark.__table__.create(bind=engine)
+    if not engine.dialect.has_table(engine.connect(), "archived_book"):
+        ArchivedBook.__table__.create(bind=engine)
     if not engine.dialect.has_table(engine.connect(), "registration"):
         ReadBook.__table__.create(bind=engine)
         conn = engine.connect()
