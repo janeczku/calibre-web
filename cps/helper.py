@@ -683,7 +683,19 @@ def render_task_status(tasklist):
 
 
 # Language and content filters for displaying in the UI
-def common_filters():
+def common_filters(allow_show_archived=False):
+    if not allow_show_archived:
+        archived_books = (
+            ub.session.query(ub.ArchivedBook)
+            .filter(ub.ArchivedBook.user_id == int(current_user.id))
+            .filter(ub.ArchivedBook.is_archived == True)
+            .all()
+        )
+        archived_book_ids = [archived_book.book_id for archived_book in archived_books]
+        archived_filter = db.Books.id.notin_(archived_book_ids)
+    else:
+        archived_filter = true()
+
     if current_user.filter_language() != "all":
         lang_filter = db.Books.languages.any(db.Languages.lang_code == current_user.filter_language())
     else:
@@ -708,7 +720,7 @@ def common_filters():
         pos_content_cc_filter = true()
         neg_content_cc_filter = false()
     return and_(lang_filter, pos_content_tags_filter, ~neg_content_tags_filter,
-                pos_content_cc_filter, ~neg_content_cc_filter)
+                pos_content_cc_filter, ~neg_content_cc_filter, archived_filter)
 
 
 def tags_filters():
@@ -765,15 +777,19 @@ def order_authors(entry):
 
 # Fill indexpage with all requested data from database
 def fill_indexpage(page, database, db_filter, order, *join):
+    return fill_indexpage_with_archived_books(page, database, db_filter, order, False, *join)
+
+
+def fill_indexpage_with_archived_books(page, database, db_filter, order, allow_show_archived, *join):
     if current_user.show_detail_random():
-        randm = db.session.query(db.Books).filter(common_filters())\
+        randm = db.session.query(db.Books).filter(common_filters(allow_show_archived))\
             .order_by(func.random()).limit(config.config_random_books)
     else:
         randm = false()
     off = int(int(config.config_books_per_page) * (page - 1))
     pagination = Pagination(page, config.config_books_per_page,
-                            len(db.session.query(database).filter(db_filter).filter(common_filters()).all()))
-    entries = db.session.query(database).join(*join, isouter=True).filter(db_filter).filter(common_filters()).\
+                            len(db.session.query(database).filter(db_filter).filter(common_filters(allow_show_archived)).all()))
+    entries = db.session.query(database).join(*join, isouter=True).filter(db_filter).filter(common_filters(allow_show_archived)).\
         order_by(*order).offset(off).limit(config.config_books_per_page).all()
     for book in entries:
         book = order_authors(book)
