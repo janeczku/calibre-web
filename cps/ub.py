@@ -97,8 +97,11 @@ def get_sidebar_config(kwargs=None):
     sidebar.append({"glyph": "glyphicon-file", "text": _('File formats'), "link": 'web.formats_list', "id": "format",
                     "visibility": constants.SIDEBAR_FORMAT, 'public': True,
                     "page": "format", "show_text": _('Show file formats selection'), "config_show":True})
+    sidebar.append(
+        {"glyph": "glyphicon-trash", "text": _('Archived Books'), "link": 'web.books_list', "id": "archived",
+         "visibility": constants.SIDEBAR_ARCHIVED, 'public': (not g.user.is_anonymous), "page": "archived",
+         "show_text": _('Show archived books'), "config_show": True})
     return sidebar
-
 
 
 class UserBase:

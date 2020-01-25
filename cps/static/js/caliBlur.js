@@ -216,6 +216,8 @@ if ( $( 'body.book' ).length > 0 ) {
     .prependTo( '[aria-label^="Download, send"]' );
   $( '#have_read_cb' )
     .after( '<label class="block-label readLbl" for="#have_read_cb"></label>' );
+  $( '#archived_cb' )
+    .after( '<label class="block-label readLbl" for="#archived_cb"></label>' );
   $( '#shelf-actions' ).prependTo( '[aria-label^="Download, send"]' );
 
 
@@ -586,6 +588,20 @@ $( '#have_read_cb:checked' ).attr({
   'data-viewport': '.btn-toolbar' })
   .addClass('readunread-btn-tooltip');
 
+  $( '#archived_cb' ).attr({
+    'data-toggle': 'tooltip',
+    'title': $( '#archived_cb').attr('data-unchecked'),
+    'data-placement': 'bottom',
+    'data-viewport': '.btn-toolbar' })
+    .addClass('readunread-btn-tooltip');
+
+  $( '#archived_cb:checked' ).attr({
+    'data-toggle': 'tooltip',
+    'title': $( '#archived_cb').attr('data-checked'),
+    'data-placement': 'bottom',
+    'data-viewport': '.btn-toolbar' })
+    .addClass('readunread-btn-tooltip');
+
   $( 'button#delete' ).attr({
     'data-toggle-two': 'tooltip',
     'title': $( 'button#delete' ).text(),           //'Delete'
@@ -598,6 +614,14 @@ $( '#have_read_cb' ).click(function() {
       $( this ).attr('data-original-title', $('#have_read_cb').attr('data-checked'));
   } else {
       $( this).attr('data-original-title', $('#have_read_cb').attr('data-unchecked'));
+  }
+});
+
+$( '#archived_cb' ).click(function() {
+  if ( $( '#archived_cb:checked' ).length > 0 ) {
+      $( this ).attr('data-original-title', $('#archived_cb').attr('data-checked'));
+  } else {
+      $( this).attr('data-original-title', $('#archived_cb').attr('data-unchecked'));
   }
 });
 
