@@ -120,7 +120,7 @@ def HandleSyncRequest():
     changed_entries = (
         db.session.query(db.Books)
         .join(db.Data)
-        .filter(func.datetime(db.Books.last_modified) != sync_token.books_last_modified)
+        .filter(func.datetime(db.Books.last_modified) > sync_token.books_last_modified)
         .filter(db.Data.format.in_(KOBO_FORMATS))
         .all()
     )
@@ -138,7 +138,7 @@ def HandleSyncRequest():
         new_books_last_modified = max(
             book.last_modified, sync_token.books_last_modified
         )
-        new_books_last_created = max(book.timestamp, sync_token.books_last_modified)
+        new_books_last_created = max(book.timestamp, sync_token.books_last_created)
 
     sync_token.books_last_created = new_books_last_created
     sync_token.books_last_modified = new_books_last_modified
