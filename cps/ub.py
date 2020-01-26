@@ -464,7 +464,8 @@ def migrate_Database(session):
 def clean_database(session):
     # Remove expired remote login tokens
     now = datetime.datetime.now()
-    session.query(RemoteAuthToken).filter(now > RemoteAuthToken.expiration).delete()
+    session.query(RemoteAuthToken).filter(now > RemoteAuthToken.expiration).\
+        filter(RemoteAuthToken.token_type !=1 ).delete()
     session.commit()
 
 
