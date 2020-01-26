@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2020-01-12 13:57+0100\n"
+"POT-Creation-Date: 2020-01-26 19:32+0100\n"
 "PO-Revision-Date: 2019-07-26 11:44+0100\n"
 "Last-Translator: minakmostoles <xxx@xxx.com>\n"
 "Language: es\n"
@@ -62,7 +62,7 @@ msgstr "Configuración de Calibre-Web actualizada"
 msgid "Basic Configuration"
 msgstr "Configuración básica"
 
-#: cps/admin.py:465 cps/web.py:1093
+#: cps/admin.py:465 cps/web.py:1090
 msgid "Please fill out all fields!"
 msgstr "¡Por favor completar todos los campos!"
 
@@ -71,7 +71,7 @@ msgstr "¡Por favor completar todos los campos!"
 msgid "Add new user"
 msgstr "Agregar un nuevo usuario"
 
-#: cps/admin.py:476 cps/web.py:1318
+#: cps/admin.py:476 cps/web.py:1315
 msgid "E-mail is not from valid domain"
 msgstr "El correo electrónico no tiene un nombre de dominio válido"
 
@@ -115,16 +115,16 @@ msgstr "Usuario '%(nick)s' borrado"
 msgid "No admin user remaining, can't delete user"
 msgstr "No queda ningún usuario administrador, no se puede eliminar usuario"
 
-#: cps/admin.py:612 cps/web.py:1359
+#: cps/admin.py:612 cps/web.py:1356
 msgid "Found an existing account for this e-mail address."
 msgstr "Encontrada una cuenta existente para esa dirección de correo electrónico."
 
-#: cps/admin.py:616 cps/admin.py:630 cps/admin.py:644 cps/web.py:1334
+#: cps/admin.py:616 cps/admin.py:630 cps/admin.py:644 cps/web.py:1331
 #, python-format
 msgid "Edit User %(nick)s"
 msgstr "Editar Usuario %(nick)s"
 
-#: cps/admin.py:622 cps/web.py:1327
+#: cps/admin.py:622 cps/web.py:1324
 msgid "This username is already taken"
 msgstr ""
 
@@ -142,11 +142,11 @@ msgstr "Ocurrió un error inesperado."
 msgid "Password for user %(user)s reset"
 msgstr "Contraseña para el usuario %(user)s reinicializada"
 
-#: cps/admin.py:660 cps/web.py:1118 cps/web.py:1174
+#: cps/admin.py:660 cps/web.py:1115 cps/web.py:1171
 msgid "An unknown error occurred. Please try again later."
 msgstr "Ha ocurrido un error desconocido. Por favor vuelva a intentarlo más tarde."
 
-#: cps/admin.py:663 cps/web.py:1062
+#: cps/admin.py:663 cps/web.py:1059
 msgid "Please configure the SMTP mail settings first..."
 msgstr "Configura primero los parámetros del servidor SMTP..."
 
@@ -594,7 +594,7 @@ msgid "Show best rated books"
 msgstr "Mostrar libros mejor valorados"
 
 #: cps/templates/index.xml:46 cps/templates/index.xml:50 cps/ub.py:67
-#: cps/web.py:1011
+#: cps/web.py:1009
 msgid "Read Books"
 msgstr "Libros leídos"
 
@@ -603,7 +603,7 @@ msgid "Show read and unread"
 msgstr "Mostrar leídos y no leídos"
 
 #: cps/templates/index.xml:53 cps/templates/index.xml:57 cps/ub.py:71
-#: cps/web.py:1015
+#: cps/web.py:1013
 msgid "Unread Books"
 msgstr "Libros no leídos"
 
@@ -725,7 +725,7 @@ msgstr "Libros"
 msgid "Hot Books (most downloaded)"
 msgstr "Libros populares (los más descargados)"
 
-#: cps/web.py:586 cps/web.py:1382 cps/web.py:1478
+#: cps/web.py:586 cps/web.py:1379 cps/web.py:1475
 msgid "Error opening eBook. File does not exist or file is not accessible:"
 msgstr "Error al abrir eBook. El archivo no existe o no es accesible:"
 
@@ -793,128 +793,128 @@ msgid "Tasks"
 msgstr "Tareas"
 
 #: cps/templates/feed.xml:33 cps/templates/layout.html:44
-#: cps/templates/layout.html:45 cps/web.py:829 cps/web.py:831
+#: cps/templates/layout.html:45 cps/web.py:827 cps/web.py:829
 msgid "Search"
 msgstr "Buscar"
 
-#: cps/web.py:881
+#: cps/web.py:879
 msgid "Published after "
 msgstr "Publicado después de"
 
-#: cps/web.py:888
+#: cps/web.py:886
 msgid "Published before "
 msgstr "Publicado antes de"
 
-#: cps/web.py:902
+#: cps/web.py:900
 #, python-format
 msgid "Rating <= %(rating)s"
 msgstr "Calificación <= %(rating)s"
 
-#: cps/web.py:904
+#: cps/web.py:902
 #, python-format
 msgid "Rating >= %(rating)s"
 msgstr "Calificación >= %(rating)s"
 
-#: cps/web.py:970 cps/web.py:982
+#: cps/web.py:968 cps/web.py:980
 msgid "search"
 msgstr "búsqueda"
 
-#: cps/web.py:1067
+#: cps/web.py:1064
 #, python-format
 msgid "Book successfully queued for sending to %(kindlemail)s"
 msgstr "Libro puesto en la cola de envío a %(kindlemail)s"
 
-#: cps/web.py:1071
+#: cps/web.py:1068
 #, python-format
 msgid "There was an error sending this book: %(res)s"
 msgstr "Ha sucedido un error en el envío del libro: %(res)s"
 
-#: cps/web.py:1073
+#: cps/web.py:1070
 msgid "Please configure your kindle e-mail address first..."
 msgstr "Por favor configure primero la dirección de correo de su kindle..."
 
-#: cps/web.py:1087
+#: cps/web.py:1084
 msgid "E-Mail server is not configured, please contact your administrator!"
 msgstr ""
 
-#: cps/web.py:1088 cps/web.py:1094 cps/web.py:1119 cps/web.py:1123
-#: cps/web.py:1128 cps/web.py:1132
+#: cps/web.py:1085 cps/web.py:1091 cps/web.py:1116 cps/web.py:1120
+#: cps/web.py:1125 cps/web.py:1129
 msgid "register"
 msgstr "registrarse"
 
-#: cps/web.py:1121
+#: cps/web.py:1118
 msgid "Your e-mail is not allowed to register"
 msgstr "Su correo electrónico no está permitido para registrarse"
 
-#: cps/web.py:1124
+#: cps/web.py:1121
 msgid "Confirmation e-mail was send to your e-mail account."
 msgstr "Se ha enviado un correo electrónico de verificación a su cuenta de correo electrónico."
 
-#: cps/web.py:1127
+#: cps/web.py:1124
 msgid "This username or e-mail address is already in use."
 msgstr "Este nombre de usuario o correo electrónico ya están en uso."
 
-#: cps/web.py:1144
+#: cps/web.py:1141
 msgid "Cannot activate LDAP authentication"
 msgstr "No se puede activar la autenticación LDAP"
 
-#: cps/web.py:1154 cps/web.py:1281
+#: cps/web.py:1151 cps/web.py:1278
 #, python-format
 msgid "you are now logged in as: '%(nickname)s'"
 msgstr "Sesión iniciada como : '%(nickname)s'"
 
-#: cps/web.py:1159
+#: cps/web.py:1156
 msgid "Could not login. LDAP server down, please contact your administrator"
 msgstr "No pude entrar a la cuenta. El servidor LDAP está inactivo, por favor contacte a su administrador"
 
-#: cps/web.py:1163 cps/web.py:1186
+#: cps/web.py:1160 cps/web.py:1183
 msgid "Wrong Username or Password"
 msgstr "Usuario o contraseña inválido"
 
-#: cps/web.py:1170
+#: cps/web.py:1167
 msgid "New Password was send to your email address"
 msgstr ""
 
-#: cps/web.py:1176
+#: cps/web.py:1173
 msgid "Please enter valid username to reset password"
 msgstr ""
 
-#: cps/web.py:1182
+#: cps/web.py:1179
 #, python-format
 msgid "You are now logged in as: '%(nickname)s'"
 msgstr "Ahora estás conectado como: '%(nickname)s'"
 
-#: cps/web.py:1189 cps/web.py:1213
+#: cps/web.py:1186 cps/web.py:1210
 msgid "login"
 msgstr "Iniciar sesión"
 
-#: cps/web.py:1225 cps/web.py:1259
+#: cps/web.py:1222 cps/web.py:1256
 msgid "Token not found"
 msgstr "Token no encontrado"
 
-#: cps/web.py:1234 cps/web.py:1267
+#: cps/web.py:1231 cps/web.py:1264
 msgid "Token has expired"
 msgstr "El token ha expirado"
 
-#: cps/web.py:1243
+#: cps/web.py:1240
 msgid "Success! Please return to your device"
 msgstr "¡Correcto! Por favor regrese a su dispositivo"
 
-#: cps/web.py:1320 cps/web.py:1363 cps/web.py:1369
+#: cps/web.py:1317 cps/web.py:1360 cps/web.py:1366
 #, python-format
 msgid "%(name)s's profile"
 msgstr "Perfil de %(name)s"
 
-#: cps/web.py:1365
+#: cps/web.py:1362
 msgid "Profile updated"
 msgstr "Perfil actualizado"
 
-#: cps/web.py:1394 cps/web.py:1397 cps/web.py:1400 cps/web.py:1407
-#: cps/web.py:1412
+#: cps/web.py:1391 cps/web.py:1394 cps/web.py:1397 cps/web.py:1404
+#: cps/web.py:1409
 msgid "Read a Book"
 msgstr "Leer un libro"
 
-#: cps/web.py:1423
+#: cps/web.py:1420
 msgid "Error opening eBook. File does not exist or file is not accessible."
 msgstr "Error al abrir el eBook. El archivo no existe o el archivo no es accesible."
 
@@ -1101,7 +1101,7 @@ msgstr "Ok"
 #: cps/templates/email_edit.html:40 cps/templates/email_edit.html:92
 #: cps/templates/layout.html:28 cps/templates/shelf.html:73
 #: cps/templates/shelf_edit.html:19 cps/templates/shelf_order.html:32
-#: cps/templates/user_edit.html:131
+#: cps/templates/user_edit.html:133
 msgid "Back"
 msgstr "Regresar"
 
@@ -1214,7 +1214,7 @@ msgstr "Fecha de publicación"
 msgid "Publisher"
 msgstr "Editor"
 
-#: cps/templates/book_edit.html:103 cps/templates/user_edit.html:30
+#: cps/templates/book_edit.html:103 cps/templates/user_edit.html:31
 msgid "Language"
 msgstr "Idioma"
 
@@ -1241,7 +1241,7 @@ msgstr "Obtener metadatos"
 #: cps/templates/book_edit.html:173 cps/templates/config_edit.html:329
 #: cps/templates/config_view_edit.html:146 cps/templates/login.html:20
 #: cps/templates/search_form.html:170 cps/templates/shelf_edit.html:17
-#: cps/templates/user_edit.html:129
+#: cps/templates/user_edit.html:131
 msgid "Submit"
 msgstr "Enviar"
 
@@ -1594,35 +1594,35 @@ msgstr "Etiquetas para contenido para adultos"
 msgid "Default settings for new users"
 msgstr "Ajustes por defecto para nuevos usuarios"
 
-#: cps/templates/config_view_edit.html:81 cps/templates/user_edit.html:82
+#: cps/templates/config_view_edit.html:81 cps/templates/user_edit.html:84
 msgid "Admin user"
 msgstr "Usuario administrador"
 
-#: cps/templates/config_view_edit.html:85 cps/templates/user_edit.html:91
+#: cps/templates/config_view_edit.html:85 cps/templates/user_edit.html:93
 msgid "Allow Downloads"
 msgstr "Permitir descargas"
 
-#: cps/templates/config_view_edit.html:89 cps/templates/user_edit.html:95
+#: cps/templates/config_view_edit.html:89 cps/templates/user_edit.html:97
 msgid "Allow book viewer"
 msgstr "Permitir visor de libros"
 
-#: cps/templates/config_view_edit.html:93 cps/templates/user_edit.html:99
+#: cps/templates/config_view_edit.html:93 cps/templates/user_edit.html:101
 msgid "Allow Uploads"
 msgstr "Permitir subidas de archivos"
 
-#: cps/templates/config_view_edit.html:97 cps/templates/user_edit.html:103
+#: cps/templates/config_view_edit.html:97 cps/templates/user_edit.html:105
 msgid "Allow Edit"
 msgstr "Permitir editar"
 
-#: cps/templates/config_view_edit.html:101 cps/templates/user_edit.html:107
+#: cps/templates/config_view_edit.html:101 cps/templates/user_edit.html:109
 msgid "Allow Delete books"
 msgstr "Permitir eliminar libros"
 
-#: cps/templates/config_view_edit.html:105 cps/templates/user_edit.html:112
+#: cps/templates/config_view_edit.html:105 cps/templates/user_edit.html:114
 msgid "Allow Changing Password"
 msgstr "Permitir cambiar la contraseña"
 
-#: cps/templates/config_view_edit.html:109 cps/templates/user_edit.html:116
+#: cps/templates/config_view_edit.html:109 cps/templates/user_edit.html:118
 msgid "Allow Editing Public Shelfs"
 msgstr "Permitir editar estantes públicos"
 
@@ -1630,11 +1630,11 @@ msgstr "Permitir editar estantes públicos"
 msgid "Default visibilities for new users"
 msgstr "Visibilidad predeterminada para nuevos usuarios"
 
-#: cps/templates/config_view_edit.html:135 cps/templates/user_edit.html:74
+#: cps/templates/config_view_edit.html:135 cps/templates/user_edit.html:76
 msgid "Show random books in detail view"
 msgstr "Mostrar libros aleatorios con vista detallada"
 
-#: cps/templates/config_view_edit.html:139 cps/templates/user_edit.html:87
+#: cps/templates/config_view_edit.html:139 cps/templates/user_edit.html:89
 msgid "Show mature content"
 msgstr "Mostrar contenido para adulto"
 
@@ -1913,13 +1913,21 @@ msgstr ""
 msgid "Log in with magic link"
 msgstr "Iniciar sesión con \"magic link\""
 
-#: cps/templates/logviewer.html:5
-msgid "Show Calibre-Web log"
-msgstr "Mostrar registro de Calibre-Web"
+#: cps/templates/logviewer.html:6
+msgid "Show Calibre-Web log: "
+msgstr ""
 
 #: cps/templates/logviewer.html:8
-msgid "Show access log"
-msgstr "Mostrar registro de acceso"
+msgid "Calibre-Web log: "
+msgstr ""
+
+#: cps/templates/logviewer.html:8
+msgid "Stream output, can't be displayed"
+msgstr ""
+
+#: cps/templates/logviewer.html:12
+msgid "Show access log: "
+msgstr ""
 
 #: cps/templates/osd.xml:5
 msgid "Calibre-Web ebook catalog"
@@ -2213,31 +2221,31 @@ msgstr "Resetear contraseña de usuario"
 msgid "Kindle E-Mail"
 msgstr "Correo del Kindle"
 
-#: cps/templates/user_edit.html:39
+#: cps/templates/user_edit.html:41
 msgid "Show books with language"
 msgstr "Mostrar libros con idioma"
 
-#: cps/templates/user_edit.html:41
+#: cps/templates/user_edit.html:43
 msgid "Show all"
 msgstr "Mostrar todo"
 
-#: cps/templates/user_edit.html:51
+#: cps/templates/user_edit.html:53
 msgid "OAuth Settings"
 msgstr "Ajustes OAuth"
 
-#: cps/templates/user_edit.html:53
+#: cps/templates/user_edit.html:55
 msgid "Link"
 msgstr "Vincular"
 
-#: cps/templates/user_edit.html:55
+#: cps/templates/user_edit.html:57
 msgid "Unlink"
 msgstr "Desvincular"
 
-#: cps/templates/user_edit.html:123
+#: cps/templates/user_edit.html:125
 msgid "Delete this user"
 msgstr "Borrar este usuario"
 
-#: cps/templates/user_edit.html:138
+#: cps/templates/user_edit.html:140
 msgid "Recent Downloads"
 msgstr "Descargas recientes"
 
@@ -2486,4 +2494,10 @@ msgstr "Descargas recientes"
 
 #~ msgid "New Books"
 #~ msgstr "Libros nuevos"
+
+#~ msgid "Show Calibre-Web log"
+#~ msgstr "Mostrar registro de Calibre-Web"
+
+#~ msgid "Show access log"
+#~ msgstr "Mostrar registro de acceso"
 
