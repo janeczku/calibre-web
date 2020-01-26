@@ -77,9 +77,6 @@ def redirect_or_proxy_request():
     if config.config_kobo_proxy:
         if request.method == "GET":
             return redirect(get_store_url_for_current_request(), 307)
-        if request.method == "DELETE":
-            log.info('Delete Book')
-            return make_response(jsonify({}))
         else:
             # The Kobo device turns other request types into GET requests on redirects, so we instead proxy to the Kobo store ourselves.
             outgoing_headers = Headers(request.headers)
