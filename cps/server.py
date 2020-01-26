@@ -24,7 +24,7 @@ import signal
 import socket
 
 try:
-    from gevent.pylwsgi import WSGIServer
+    from gevent.pywsgi import WSGIServer
     from gevent.pool import Pool
     from gevent import __version__ as _version
     VERSION = 'Gevent ' + _version
