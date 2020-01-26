@@ -62,7 +62,7 @@ from datetime import datetime
 from os import urandom
 
 from flask import g, Blueprint, url_for
-from flask_login import login_user, current_user, login_required
+from flask_login import login_user, login_required
 from flask_babel import gettext as _
 
 from . import logger, ub, lm
@@ -102,8 +102,7 @@ def load_user_from_kobo_request(request):
             login_user(user)
             return user
     log.info("Received Kobo request without a recognizable auth token.")
-    return None
-
+    return
 
 kobo_auth = Blueprint("kobo_auth", __name__, url_prefix="/kobo_auth")
 

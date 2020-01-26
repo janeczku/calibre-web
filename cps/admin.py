@@ -532,6 +532,9 @@ def _configuration_update_helper():
     _config_checkbox_int("config_uploading")
     _config_checkbox_int("config_anonbrowse")
     _config_checkbox_int("config_public_reg")
+    _config_checkbox_int("config_kobo_sync")
+    _config_checkbox_int("config_kobo_proxy")
+
 
     _config_int("config_ebookconverter")
     _config_string("config_calibre")
