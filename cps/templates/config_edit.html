@@ -1,6 +1,6 @@
 {% extends "layout.html" %}
 {% block body %}
-<div class="discover">
+<div class="discover" xmlns:text-indent="http://www.w3.org/1999/xhtml">
   <h2>{{title}}</h2>
   <form role="form" method="POST" autocomplete="off">
 <div class="panel-group">
@@ -175,7 +175,7 @@
       <label for="config_kobo_sync">{{_('Enable Kobo sync')}}</label>
     </div>
     <div data-related="kobo-settings">
-      <div class="form-group">
+      <div class="form-group" style="text-indent:10px;">
         <input type="checkbox" id="config_kobo_proxy" name="config_kobo_proxy"  {% if config.config_kobo_proxy %}checked{% endif %}>
         <label for="config_kobo_proxy">{{_('Proxy unknown requests to Kobo Store')}}</label>
       </div>
