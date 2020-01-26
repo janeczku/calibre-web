@@ -68,6 +68,7 @@ class _Settings(_Base):
     config_anonbrowse = Column(SmallInteger, default=0)
     config_public_reg = Column(SmallInteger, default=0)
     config_remote_login = Column(Boolean, default=False)
+    config_kobo_sync = Column(Boolean, default=False)
 
     config_default_role = Column(SmallInteger, default=0)
     config_default_show = Column(SmallInteger, default=38911)
@@ -89,7 +90,8 @@ class _Settings(_Base):
 
     config_login_type = Column(Integer, default=0)
 
-    # config_oauth_provider = Column(Integer)
+    config_kobo_proxy = Column(Boolean, default=False)
+
 
     config_ldap_provider_url = Column(String, default='localhost')
     config_ldap_port = Column(SmallInteger, default=389)
