@@ -185,8 +185,16 @@
           <span>{{_('Are you really sure?')}}</span>
       </div>
         <div class="modal-body text-center">
-          <span>{{_('Book will be deleted from Calibre database')}}</span>
-          <span>{{_('and from hard disk')}}</span>
+          <p>
+            <span>{{_('Book will be deleted from Calibre database')}}</span>
+            <span>{{_('and from hard disk')}}</span>
+          </p>
+          {% if config.config_kobo_sync %}
+          <p>
+            <span>{{_('Important Kobo Note: deleted books will remain on any paired Kobo device.')}}</span>
+            <span>{{_('Books must first be archived and the device synced before a book can safely be deleted.')}}</span>
+          </p>
+          {% endif %}
         </div>
 
       <div class="modal-footer">
