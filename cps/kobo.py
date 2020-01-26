@@ -39,6 +39,7 @@ from flask import (
 from flask_login import login_required, current_user
 from werkzeug.datastructures import Headers
 from sqlalchemy import func
+from sqlalchemy.sql.expression import or_
 import requests
 
 from . import config, logger, kobo_auth, db, helper, ub
@@ -119,10 +120,23 @@ def HandleSyncRequest():
     archived_books = (
         ub.session.query(ub.ArchivedBook)
         .filter(ub.ArchivedBook.user_id == int(current_user.id))
-        .filter(ub.ArchivedBook.is_archived == True)
         .all()
     )
-    archived_book_ids = [archived_book.book_id for archived_book in archived_books]
+
+    # We join-in books that have had their Archived bit recently modified in order to either:
+    #   * Restore them to the user's device.
+    #   * Delete them from the user's device.
+    # (Ideally we would use a join for this logic, however cross-database joins don't look trivial in SqlAlchemy.)
+    recently_restored_or_archived_books = []
+    archived_book_ids = {}
+    new_archived_last_modified = datetime.min
+    for archived_book in archived_books:
+        if archived_book.last_modified > sync_token.archive_last_modified:
+            recently_restored_or_archived_books.append(archived_book.book_id)
+        if archived_book.is_archived:
+            archived_book_ids[archived_book.book_id] = True
+        new_archived_last_modified = max(
+            new_archived_last_modified, archived_book.last_modified)
 
     # sqlite gives unexpected results when performing the last_modified comparison without the datetime cast.
     # It looks like it's treating the db.Books.last_modified field as a string and may fail
@@ -130,14 +144,14 @@ def HandleSyncRequest():
     changed_entries = (
         db.session.query(db.Books)
         .join(db.Data)
-        .filter(func.datetime(db.Books.last_modified) > sync_token.books_last_modified)
+        .filter(or_(func.datetime(db.Books.last_modified) > sync_token.books_last_modified,
+                    db.Books.id.in_(recently_restored_or_archived_books)))
         .filter(db.Data.format.in_(KOBO_FORMATS))
-        .filter(db.Books.id.notin_(archived_book_ids))
         .all()
     )
     for book in changed_entries:
         entitlement = {
-            "BookEntitlement": create_book_entitlement(book),
+            "BookEntitlement": create_book_entitlement(book, archived=(book.id in archived_book_ids)),
             "BookMetadata": get_metadata(book),
             "ReadingState": reading_state(book),
         }
@@ -153,8 +167,7 @@ def HandleSyncRequest():
 
     sync_token.books_last_created = new_books_last_created
     sync_token.books_last_modified = new_books_last_modified
-
-    # Missing feature: Detect server-side book deletions.
+    sync_token.archive_last_modified = new_archived_last_modified
 
     return generate_sync_response(request, sync_token, entitlements)
 
@@ -216,7 +229,7 @@ def get_download_url_for_book(book, book_format):
     )
 
 
-def create_book_entitlement(book):
+def create_book_entitlement(book, archived):
     book_uuid = book.uuid
     return {
         "Accessibility": "Full",
@@ -224,10 +237,9 @@ def create_book_entitlement(book):
         "Created": book.timestamp,
         "CrossRevisionId": book_uuid,
         "Id": book_uuid,
+        "IsRemoved": archived,
         "IsHiddenFromArchive": False,
         "IsLocked": False,
-        # Setting this to true removes from the device.
-        "IsRemoved": False,
         "LastModified": book.last_modified,
         "OriginCategory": "Imported",
         "RevisionId": book_uuid,
@@ -370,8 +382,9 @@ def HandleBookDeletionRequest(book_uuid):
     )
     if not archived_book:
         archived_book = ub.ArchivedBook(user_id=current_user.id, book_id=book_id)
-        archived_book.book_id = book_id
     archived_book.is_archived = True
+    archived_book.last_modified = datetime.utcnow()
+
     ub.session.merge(archived_book)
     ub.session.commit()
 

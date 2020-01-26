@@ -311,6 +311,7 @@ class ArchivedBook(Base):
     user_id = Column(Integer, ForeignKey('user.id'))
     book_id = Column(Integer)
     is_archived = Column(Boolean, unique=False)
+    last_modified = Column(DateTime, default=datetime.datetime.utcnow)
 
 
 # Baseclass representing Downloads from calibre-web in app.db
