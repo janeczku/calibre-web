@@ -169,6 +169,18 @@
       <input type="checkbox" id="config_remote_login" name="config_remote_login" {% if config.config_remote_login %}checked{% endif %}>
       <label for="config_remote_login">{{_('Enable remote login ("magic link")')}}</label>
     </div>
+    {% if feature_support['kobo'] %}
+    <div class="form-group">
+      <input type="checkbox" id="config_kobo_sync" name="config_kobo_sync" data-control="kobo-settings" {% if config.config_kobo_sync %}checked{% endif %}>
+      <label for="config_kobo_sync">{{_('Enable Kobo sync')}}</label>
+    </div>
+    <div data-related="kobo-settings">
+      <div class="form-group">
+        <input type="checkbox" id="config_kobo_proxy" name="config_kobo_proxy"  {% if config.config_kobo_proxy %}checked{% endif %}>
+        <label for="config_kobo_proxy">{{_('Proxy unknown requests to Kobo Store')}}</label>
+      </div>
+    </div>
+    {% endif %}
     {% if feature_support['goodreads'] %}
     <div class="form-group">
       <input type="checkbox" id="config_use_goodreads" name="config_use_goodreads" data-control="goodreads-settings" {% if config.config_use_goodreads %}checked{% endif %}>
