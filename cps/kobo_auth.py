@@ -26,7 +26,9 @@ When first booting a Kobo device the user must sign into a Kobo (or affiliate) a
 Upon successful sign-in, the user is redirected to
     https://auth.kobobooks.com/CrossDomainSignIn?id=<some id>
 which serves the following response:
-    <script type='text/javascript'>location.href='kobo://UserAuthenticated?userId=<redacted>&userKey<redacted>&email=<redacted>&returnUrl=https%3a%2f%2fwww.kobo.com';</script>.
+    <script type='text/javascript'>
+        location.href='kobo://UserAuthenticated?userId=<redacted>&userKey<redacted>&email=<redacted>&returnUrl=https%3a%2f%2fwww.kobo.com';
+    </script>
 And triggers the insertion of a userKey into the device's User table.
 
 Together, the device's DeviceId and UserKey act as an *irrevocable* authentication

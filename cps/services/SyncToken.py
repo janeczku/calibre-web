@@ -84,7 +84,7 @@ class SyncToken():
     @staticmethod
     def from_headers(headers):
         sync_token_header = headers.get(SyncToken.SYNC_TOKEN_HEADER, "")
-        if sync_token_header == "":
+        if not sync_token_header:
             return SyncToken()
 
         # On the first sync from a Kobo device, we may receive the SyncToken
@@ -103,7 +103,7 @@ class SyncToken():
 
             data_json = sync_token_json["data"]
             validate(sync_token_json, SyncToken.data_schema_v1)
-        except (exceptions.ValidationError, ValueError) as e:
+        except (exceptions.ValidationError, ValueError):
             log.error("Sync token contents do not follow the expected json schema.")
             return SyncToken()
 

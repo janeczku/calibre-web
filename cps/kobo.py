@@ -31,7 +31,6 @@ from flask import (
     request,
     make_response,
     jsonify,
-    json,
     url_for,
     redirect,
 )
