@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2020-01-26 19:32+0100\n"
+"POT-Creation-Date: 2020-01-27 18:16+0100\n"
 "PO-Revision-Date: 2020-01-21 23:03+0400\n"
 "Last-Translator: ZIZA\n"
 "Language: ru\n"
@@ -149,55 +149,55 @@ msgstr "Неизвестная ошибка. Попробуйте позже."
 msgid "Please configure the SMTP mail settings first..."
 msgstr "Пожалуйста, сначала сконфигурируйте параметры SMTP"
 
-#: cps/admin.py:674
+#: cps/admin.py:675
 msgid "Logfile viewer"
 msgstr "Просмотр лога"
 
-#: cps/admin.py:710
+#: cps/admin.py:714
 msgid "Requesting update package"
 msgstr "Проверка обновлений"
 
-#: cps/admin.py:711
+#: cps/admin.py:715
 msgid "Downloading update package"
 msgstr "Загрузка обновлений"
 
-#: cps/admin.py:712
+#: cps/admin.py:716
 msgid "Unzipping update package"
 msgstr "Распаковка обновлений"
 
-#: cps/admin.py:713
+#: cps/admin.py:717
 msgid "Replacing files"
 msgstr "Замена файлов"
 
-#: cps/admin.py:714
+#: cps/admin.py:718
 msgid "Database connections are closed"
 msgstr "Соеднинения с базой данных закрыты"
 
-#: cps/admin.py:715
+#: cps/admin.py:719
 msgid "Stopping server"
 msgstr "Остановка сервера"
 
-#: cps/admin.py:716
+#: cps/admin.py:720
 msgid "Update finished, please press okay and reload page"
 msgstr "Обновления установлены, нажмите ок и перезагрузите страницу"
 
-#: cps/admin.py:717 cps/admin.py:718 cps/admin.py:719 cps/admin.py:720
+#: cps/admin.py:721 cps/admin.py:722 cps/admin.py:723 cps/admin.py:724
 msgid "Update failed:"
 msgstr "Ошибка обновления:"
 
-#: cps/admin.py:717 cps/updater.py:272 cps/updater.py:457 cps/updater.py:459
+#: cps/admin.py:721 cps/updater.py:272 cps/updater.py:457 cps/updater.py:459
 msgid "HTTP Error"
 msgstr "Ошибка HTTP"
 
-#: cps/admin.py:718 cps/updater.py:274 cps/updater.py:461
+#: cps/admin.py:722 cps/updater.py:274 cps/updater.py:461
 msgid "Connection error"
 msgstr "Ошибка соединения"
 
-#: cps/admin.py:719 cps/updater.py:276 cps/updater.py:463
+#: cps/admin.py:723 cps/updater.py:276 cps/updater.py:463
 msgid "Timeout while establishing connection"
 msgstr "Таймаут при установлении соединения"
 
-#: cps/admin.py:720 cps/updater.py:278 cps/updater.py:465
+#: cps/admin.py:724 cps/updater.py:278 cps/updater.py:465
 msgid "General error"
 msgstr "Общая ошибка"
 
