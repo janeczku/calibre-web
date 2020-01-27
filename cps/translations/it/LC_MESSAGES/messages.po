@@ -6,9 +6,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2020-01-26 19:32+0100\n"
+"POT-Creation-Date: 2020-01-27 18:16+0100\n"
 "PO-Revision-Date: 2017-04-04 15:09+0200\n"
-"Last-Translator: Marco Picone <marcovendere@gmail.com>\n"
+"Last-Translator: ElQuimm <quimm@webtaste.com>\n"
 "Language: it\n"
 "Language-Team: \n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
@@ -147,55 +147,55 @@ msgstr "Si è verificato un errore sconosciuto: per favore riprova."
 msgid "Please configure the SMTP mail settings first..."
 msgstr "Configurare dapprima le impostazioni del server SMTP..."
 
-#: cps/admin.py:674
+#: cps/admin.py:675
 msgid "Logfile viewer"
 msgstr "Visualizzatore del Logfile"
 
-#: cps/admin.py:710
+#: cps/admin.py:714
 msgid "Requesting update package"
-msgstr "Richiedo del pacchetto di aggiornamento"
+msgstr "Richiedo il pacchetto di aggiornamento"
 
-#: cps/admin.py:711
+#: cps/admin.py:715
 msgid "Downloading update package"
 msgstr "Scarico il pacchetto di aggiornamento"
 
-#: cps/admin.py:712
+#: cps/admin.py:716
 msgid "Unzipping update package"
 msgstr "Decomprimo il pacchetto di aggiornamento"
 
-#: cps/admin.py:713
+#: cps/admin.py:717
 msgid "Replacing files"
 msgstr "Sostituzione files"
 
-#: cps/admin.py:714
+#: cps/admin.py:718
 msgid "Database connections are closed"
 msgstr "Le connessioni al database sono chiuse"
 
-#: cps/admin.py:715
+#: cps/admin.py:719
 msgid "Stopping server"
 msgstr "Arresta il server"
 
-#: cps/admin.py:716
+#: cps/admin.py:720
 msgid "Update finished, please press okay and reload page"
 msgstr "Aggiornamento completato, prego premere ok e ricaricare la pagina"
 
-#: cps/admin.py:717 cps/admin.py:718 cps/admin.py:719 cps/admin.py:720
+#: cps/admin.py:721 cps/admin.py:722 cps/admin.py:723 cps/admin.py:724
 msgid "Update failed:"
 msgstr "Aggiornamento fallito:"
 
-#: cps/admin.py:717 cps/updater.py:272 cps/updater.py:457 cps/updater.py:459
+#: cps/admin.py:721 cps/updater.py:272 cps/updater.py:457 cps/updater.py:459
 msgid "HTTP Error"
 msgstr "HTTP Error"
 
-#: cps/admin.py:718 cps/updater.py:274 cps/updater.py:461
+#: cps/admin.py:722 cps/updater.py:274 cps/updater.py:461
 msgid "Connection error"
 msgstr "Errore di connessione"
 
-#: cps/admin.py:719 cps/updater.py:276 cps/updater.py:463
+#: cps/admin.py:723 cps/updater.py:276 cps/updater.py:463
 msgid "Timeout while establishing connection"
 msgstr "Tempo scaduto nello stabilire la connessione"
 
-#: cps/admin.py:720 cps/updater.py:278 cps/updater.py:465
+#: cps/admin.py:724 cps/updater.py:278 cps/updater.py:465
 msgid "General error"
 msgstr "Errore generale"
 
@@ -366,12 +366,12 @@ msgstr "Il file richiesto non può essere letto. I permessi sono corretti?"
 #: cps/helper.py:322
 #, python-format
 msgid "Rename title from: '%(src)s' to '%(dest)s' failed with error: %(error)s"
-msgstr "La modifica del titolo da: '%(src)s' a '%(dest)s' è terminata con l'errore: %(error)s"
+msgstr "La modifica del titolo da '%(src)s' a '%(dest)s' è terminata con l'errore: %(error)s"
 
 #: cps/helper.py:332
 #, python-format
 msgid "Rename author from: '%(src)s' to '%(dest)s' failed with error: %(error)s"
-msgstr "La modifica dell'autore da: '%(src)s' a '%(dest)s' è terminata con l'errore: %(error)s"
+msgstr "La modifica dell'autore da '%(src)s' a '%(dest)s' è terminata con l'errore: %(error)s"
 
 #: cps/helper.py:346
 #, python-format
@@ -470,7 +470,7 @@ msgstr "Google Oauth error, per favore riprova più tardi."
 
 #: cps/shelf.py:47 cps/shelf.py:99
 msgid "Invalid shelf specified"
-msgstr "Lo scaffale specificato non è valevole"
+msgstr "Lo scaffale specificato non è valido"
 
 #: cps/shelf.py:54
 #, python-format
@@ -564,7 +564,7 @@ msgstr "Errore durante l'apertura dello scaffale. Lo scaffale non esiste o non �
 #: cps/shelf.py:323
 #, python-format
 msgid "Change order of Shelf: '%(name)s'"
-msgstr "Modificare l'ordine dello scaffale: '%(name)s'"
+msgstr "Modifica l'ordine dello scaffale: '%(name)s'"
 
 #: cps/ub.py:57
 msgid "Recently Added"
@@ -588,7 +588,7 @@ msgstr "Libri più votati"
 
 #: cps/ub.py:66
 msgid "Show best rated books"
-msgstr "Mostra la sezione dei libri più votati"
+msgstr "Mostra i libri più votati"
 
 #: cps/templates/index.xml:46 cps/templates/index.xml:50 cps/ub.py:67
 #: cps/web.py:1009
@@ -909,7 +909,7 @@ msgstr "Profilo aggiornato"
 #: cps/web.py:1391 cps/web.py:1394 cps/web.py:1397 cps/web.py:1404
 #: cps/web.py:1409
 msgid "Read a Book"
-msgstr "Leggere un libro"
+msgstr "Leggi un libro"
 
 #: cps/web.py:1420
 msgid "Error opening eBook. File does not exist or file is not accessible."
@@ -1229,7 +1229,7 @@ msgstr "Carica formato"
 
 #: cps/templates/book_edit.html:169
 msgid "view book after edit"
-msgstr "visualizzare il libro dopo la modifica"
+msgstr "visualizza il libro dopo la modifica"
 
 #: cps/templates/book_edit.html:172 cps/templates/book_edit.html:208
 msgid "Get metadata"
@@ -1301,7 +1301,7 @@ msgstr "Posizione del database di Calibre"
 
 #: cps/templates/config_edit.html:25
 msgid "Use Google Drive?"
-msgstr "Usa Google Drive?"
+msgstr "Utilizzo Google Drive?"
 
 #: cps/templates/config_edit.html:31
 msgid "Google Drive config problem"
@@ -1341,7 +1341,7 @@ msgstr "Porta del server"
 
 #: cps/templates/config_edit.html:91
 msgid "SSL certfile location (leave it empty for non-SSL Servers)"
-msgstr "Percorso del certfile SSL (lascia vuoto per una configurazione del server senza SSL)"
+msgstr "Percorso del Certfile SSL (lascia vuoto per una configurazione del server senza SSL)"
 
 #: cps/templates/config_edit.html:95
 msgid "SSL Keyfile location (leave it empty for non-SSL Servers)"
@@ -1413,7 +1413,7 @@ msgstr "Utilizza Goodreads"
 
 #: cps/templates/config_edit.html:176
 msgid "Obtain an API Key"
-msgstr "Ottenere una chiave API"
+msgstr "Otteni una chiave API"
 
 #: cps/templates/config_edit.html:180
 msgid "Goodreads API Key"
@@ -1425,7 +1425,7 @@ msgstr "Goodreads API Secret"
 
 #: cps/templates/config_edit.html:191
 msgid "Login type"
-msgstr ""
+msgstr "Tipo di login"
 
 #: cps/templates/config_edit.html:193
 msgid "Use standard Authentication"
@@ -1485,7 +1485,7 @@ msgstr "LDAP User object filter"
 
 #: cps/templates/config_edit.html:252
 msgid "LDAP Server is OpenLDAP?"
-msgstr "Il server LDAP e un server OpenLDAP?"
+msgstr "Il server LDAP è un server OpenLDAP?"
 
 #: cps/templates/config_edit.html:260
 #, python-format
@@ -1581,11 +1581,11 @@ msgstr "Collega lo stato letto/non letto nella colonna di Calibre"
 
 #: cps/templates/config_view_edit.html:55
 msgid "Regular expression for title sorting"
-msgstr "Espressione regolare per 'ordine di visualizzazione del titolo"
+msgstr "Espressione regolare per ordinare la visualizzazione del titolo"
 
 #: cps/templates/config_view_edit.html:59
 msgid "Tags for Mature Content"
-msgstr "Tags per libri per adulti"
+msgstr "Tags per i libri per adulti"
 
 #: cps/templates/config_view_edit.html:73
 msgid "Default settings for new users"
@@ -1601,7 +1601,7 @@ msgstr "Permetti il download"
 
 #: cps/templates/config_view_edit.html:89 cps/templates/user_edit.html:97
 msgid "Allow book viewer"
-msgstr "Permetti il visualizzatore di libri"
+msgstr "Permetti l'utilizzo del visualizzatore di libri"
 
 #: cps/templates/config_view_edit.html:93 cps/templates/user_edit.html:101
 msgid "Allow Uploads"
@@ -1633,15 +1633,15 @@ msgstr "Mostra libri a caso nella vista dettagliata"
 
 #: cps/templates/config_view_edit.html:139 cps/templates/user_edit.html:89
 msgid "Show mature content"
-msgstr "Mostra sezione adulti"
+msgstr "Mostra sezione per adulti"
 
 #: cps/templates/detail.html:59
 msgid "Read in browser"
-msgstr "Leggere nel browser"
+msgstr "Leggi nel navigatore"
 
 #: cps/templates/detail.html:72
 msgid "Listen in browser"
-msgstr "Ascoltare nel navigatore"
+msgstr "Ascolta nel navigatore"
 
 #: cps/templates/detail.html:117
 msgid "Book"
@@ -1713,7 +1713,7 @@ msgstr "Salva le impostazioni"
 
 #: cps/templates/email_edit.html:39
 msgid "Save settings and send Test E-Mail"
-msgstr "Salvare le impostazioni e inviare e-mail di test"
+msgstr "Salva le impostazioni e invia e-mail di test"
 
 #: cps/templates/email_edit.html:43
 msgid "Allowed domains for registering"
@@ -1745,7 +1745,7 @@ msgstr "Prossimo"
 
 #: cps/templates/http_error.html:37
 msgid "Create issue"
-msgstr "Crea un problema"
+msgstr "Crea-segnala un problema"
 
 #: cps/templates/http_error.html:44
 msgid "Back to home"
@@ -1753,7 +1753,7 @@ msgstr "Ritorno alla pagina principale"
 
 #: cps/templates/index.html:5
 msgid "Discover (Random Books)"
-msgstr "Scoprire (libri casuali)"
+msgstr "Scopri (libri casuali)"
 
 #: cps/templates/index.html:64
 msgid "Group by series"
@@ -1769,7 +1769,7 @@ msgstr "Pubblicazioni popolari di questo catalogo in base ai download."
 
 #: cps/templates/index.xml:28
 msgid "Popular publications from this catalog based on Rating."
-msgstr "Pubblicazioni popolari di questo catalogo basate sui voti."
+msgstr "Pubblicazioni popolari di questo catalogo in base ai voti."
 
 #: cps/templates/index.xml:31
 msgid "Recently added Books"
@@ -1777,7 +1777,7 @@ msgstr "Libri aggiunti di recente"
 
 #: cps/templates/index.xml:35
 msgid "The latest Books"
-msgstr "Gli ultimi Libri"
+msgstr "Gli ultimi libri"
 
 #: cps/templates/index.xml:42
 msgid "Show Random Books"
@@ -1789,7 +1789,7 @@ msgstr "Libri ordinati per autore"
 
 #: cps/templates/index.xml:72
 msgid "Books ordered by publisher"
-msgstr "Libri ordinati per editori"
+msgstr "Libri ordinati per editore"
 
 #: cps/templates/index.xml:79
 msgid "Books ordered by category"
@@ -1850,11 +1850,11 @@ msgstr "Logout"
 
 #: cps/templates/layout.html:85 cps/templates/register.html:14
 msgid "Register"
-msgstr "Registrare"
+msgstr "Registra"
 
 #: cps/templates/layout.html:116 cps/templates/layout.html:223
 msgid "Uploading..."
-msgstr "Caricare"
+msgstr "Carica"
 
 #: cps/templates/layout.html:117
 msgid "please don't refresh the page"
@@ -1862,7 +1862,7 @@ msgstr "per favore non aggiornare la pagina"
 
 #: cps/templates/layout.html:127
 msgid "Browse"
-msgstr "Navigare"
+msgstr "Naviga"
 
 #: cps/templates/layout.html:146
 msgid "Create a Shelf"
@@ -1878,7 +1878,7 @@ msgstr "Precedente"
 
 #: cps/templates/layout.html:188
 msgid "Book Details"
-msgstr "Dettagli ebook"
+msgstr "Dettagli libro"
 
 #: cps/templates/layout.html:222
 msgid "Upload done, processing, please wait..."
@@ -1916,15 +1916,15 @@ msgstr ""
 
 #: cps/templates/logviewer.html:8
 msgid "Calibre-Web log: "
-msgstr ""
+msgstr "Mostra il log Calibre-Web"
 
 #: cps/templates/logviewer.html:8
 msgid "Stream output, can't be displayed"
-msgstr ""
+msgstr "Flusso attivo, non può essere visualizzato"
 
 #: cps/templates/logviewer.html:12
 msgid "Show access log: "
-msgstr ""
+msgstr "Mostra il log di accesso"
 
 #: cps/templates/osd.xml:5
 msgid "Calibre-Web ebook catalog"
@@ -1996,7 +1996,7 @@ msgstr "Larghezza"
 
 #: cps/templates/readcbr.html:126
 msgid "Height"
-msgstr "Alteszza"
+msgstr "Altezza"
 
 #: cps/templates/readcbr.html:127
 msgid "Native"
@@ -2244,7 +2244,7 @@ msgstr "Elimina questo utente"
 
 #: cps/templates/user_edit.html:140
 msgid "Recent Downloads"
-msgstr "Download Recenti"
+msgstr "Download recenti"
 
 #~ msgid "Afar"
 #~ msgstr "Afar"
@@ -3507,7 +3507,7 @@ msgstr "Download Recenti"
 #~ msgstr "Fallito il salvataggio della copertina %(cover)s."
 
 #~ msgid "Cover-file is not a valid image file"
-#~ msgstr "Il file della copertina non è un file di immagine valido"
+#~ msgstr "Il file della copertina non è un file d'immagine valido"
 
 #~ msgid "Cover is not a jpg file, can't save"
 #~ msgstr "La copertina non è un file in formato jpg: non posso salvare"
@@ -3516,7 +3516,7 @@ msgstr "Download Recenti"
 #~ msgstr "Preparo documento per la stampa..."
 
 #~ msgid "Using your another device, visit"
-#~ msgstr "Utilizzando il tuo altro dispositivo, visita"
+#~ msgstr "Utilizza il tuo altro dispositivo, visita"
 
 #~ msgid "and log in"
 #~ msgstr "e accedi"
@@ -3612,7 +3612,7 @@ msgstr "Download Recenti"
 #~ msgstr "Il percorso per l'Acces Logfile non è corretto: per favore indica il percorso corretto"
 
 #~ msgid "DB location is not valid, please enter correct path"
-#~ msgstr "La posizione DB non è corretta: per favore indica il percorso corretto"
+#~ msgstr "La posizione del DB non è corretta: per favore indica il percorso corretto"
 
 #~ msgid "Excecution permissions missing"
 #~ msgstr "Mancano le autorizzazioni di esecuzione"
@@ -3657,7 +3657,7 @@ msgstr "Download Recenti"
 #~ msgstr "Play / pausa"
 
 #~ msgid "volume"
-#~ msgstr "valume"
+#~ msgstr "volume"
 
 #~ msgid "unknown"
 #~ msgstr "sconosciuto"

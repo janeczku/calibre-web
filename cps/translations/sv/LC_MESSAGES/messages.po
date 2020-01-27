@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2020-01-26 19:32+0100\n"
+"POT-Creation-Date: 2020-01-27 18:16+0100\n"
 "PO-Revision-Date: 2020-01-18 11:22+0100\n"
 "Last-Translator: Jonatan Nyberg <jonatan.nyberg.karl@gmail.com>\n"
 "Language: sv\n"
@@ -148,55 +148,55 @@ msgstr "Ett okänt fel uppstod. Försök igen senare."
 msgid "Please configure the SMTP mail settings first..."
 msgstr "Konfigurera SMTP-postinställningarna först..."
 
-#: cps/admin.py:674
+#: cps/admin.py:675
 msgid "Logfile viewer"
 msgstr "Visaren för loggfil"
 
-#: cps/admin.py:710
+#: cps/admin.py:714
 msgid "Requesting update package"
 msgstr "Begär uppdateringspaketet"
 
-#: cps/admin.py:711
+#: cps/admin.py:715
 msgid "Downloading update package"
 msgstr "Hämtar uppdateringspaketet"
 
-#: cps/admin.py:712
+#: cps/admin.py:716
 msgid "Unzipping update package"
 msgstr "Packar upp uppdateringspaketet"
 
-#: cps/admin.py:713
+#: cps/admin.py:717
 msgid "Replacing files"
 msgstr "Ersätta filer"
 
-#: cps/admin.py:714
+#: cps/admin.py:718
 msgid "Database connections are closed"
 msgstr "Databasanslutningarna är stängda"
 
-#: cps/admin.py:715
+#: cps/admin.py:719
 msgid "Stopping server"
 msgstr "Stoppar server"
 
-#: cps/admin.py:716
+#: cps/admin.py:720
 msgid "Update finished, please press okay and reload page"
 msgstr "Uppdatering klar, tryck på okej och uppdatera sidan"
 
-#: cps/admin.py:717 cps/admin.py:718 cps/admin.py:719 cps/admin.py:720
+#: cps/admin.py:721 cps/admin.py:722 cps/admin.py:723 cps/admin.py:724
 msgid "Update failed:"
 msgstr "Uppdateringen misslyckades:"
 
-#: cps/admin.py:717 cps/updater.py:272 cps/updater.py:457 cps/updater.py:459
+#: cps/admin.py:721 cps/updater.py:272 cps/updater.py:457 cps/updater.py:459
 msgid "HTTP Error"
 msgstr "HTTP-fel"
 
-#: cps/admin.py:718 cps/updater.py:274 cps/updater.py:461
+#: cps/admin.py:722 cps/updater.py:274 cps/updater.py:461
 msgid "Connection error"
 msgstr "Anslutningsfel"
 
-#: cps/admin.py:719 cps/updater.py:276 cps/updater.py:463
+#: cps/admin.py:723 cps/updater.py:276 cps/updater.py:463
 msgid "Timeout while establishing connection"
 msgstr "Tiden ute när du etablerade anslutning"
 
-#: cps/admin.py:720 cps/updater.py:278 cps/updater.py:465
+#: cps/admin.py:724 cps/updater.py:278 cps/updater.py:465
 msgid "General error"
 msgstr "Allmänt fel"
 
