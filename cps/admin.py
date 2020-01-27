@@ -925,10 +925,12 @@ def view_logfile():
     logfiles = {}
     logfiles[0] = logger.get_logfile(config.config_logfile)
     logfiles[1] = logger.get_accesslogfile(config.config_access_logfile)
-    return render_title_template("logviewer.html",title=_(u"Logfile viewer"),
-                                 log_enable=bool(config.config_logfile != logger.LOG_TO_STDOUT),
+    return render_title_template("logviewer.html",
+                                 title=_(u"Logfile viewer"),
                                  accesslog_enable=config.config_access_log,
-                                 logfiles=logfiles, page="logfile")
+                                 log_enable=bool(config.config_logfile != logger.LOG_TO_STDOUT),
+                                 logfiles=logfiles,
+                                 page="logfile")
 
 
 @admi.route("/ajax/log/<int:logtype>")

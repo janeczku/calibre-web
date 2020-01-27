@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Calibre Web - polski (POT: 2019-08-06 18:35)\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-01-26 19:32+0100\n"
+"POT-Creation-Date: 2020-01-27 18:16+0100\n"
 "PO-Revision-Date: 2019-08-18 22:06+0200\n"
 "Last-Translator: Radosław Kierznowski <radek.kierznowski@outlook.com>\n"
 "Language: pl\n"
@@ -151,56 +151,56 @@ msgstr "Wystąpił nieznany błąd. Spróbuj ponownie później."
 msgid "Please configure the SMTP mail settings first..."
 msgstr "Proszę najpierw skonfigurować ustawienia SMTP poczty e-mail..."
 
-#: cps/admin.py:674
+#: cps/admin.py:675
 msgid "Logfile viewer"
 msgstr "Przeglądanie plików Logu"
 
-#: cps/admin.py:710
+#: cps/admin.py:714
 msgid "Requesting update package"
 msgstr "Żądanie o pakiet aktualizacji"
 
-#: cps/admin.py:711
+#: cps/admin.py:715
 msgid "Downloading update package"
 msgstr "Pobieranie pakietu aktualizacji"
 
-#: cps/admin.py:712
+#: cps/admin.py:716
 msgid "Unzipping update package"
 msgstr "Rozpakowywanie pakietu aktualizacji"
 
 # ???
-#: cps/admin.py:713
+#: cps/admin.py:717
 msgid "Replacing files"
 msgstr "Zastępowanie plików"
 
-#: cps/admin.py:714
+#: cps/admin.py:718
 msgid "Database connections are closed"
 msgstr "Połączenia z bazą danych zostały zakończone"
 
-#: cps/admin.py:715
+#: cps/admin.py:719
 msgid "Stopping server"
 msgstr "Zatrzymywanie serwera"
 
-#: cps/admin.py:716
+#: cps/admin.py:720
 msgid "Update finished, please press okay and reload page"
 msgstr "Aktualizacja zakończona, proszę nacisnąć OK i odświeżyć stronę"
 
-#: cps/admin.py:717 cps/admin.py:718 cps/admin.py:719 cps/admin.py:720
+#: cps/admin.py:721 cps/admin.py:722 cps/admin.py:723 cps/admin.py:724
 msgid "Update failed:"
 msgstr "Aktualizacja nieudana:"
 
-#: cps/admin.py:717 cps/updater.py:272 cps/updater.py:457 cps/updater.py:459
+#: cps/admin.py:721 cps/updater.py:272 cps/updater.py:457 cps/updater.py:459
 msgid "HTTP Error"
 msgstr ""
 
-#: cps/admin.py:718 cps/updater.py:274 cps/updater.py:461
+#: cps/admin.py:722 cps/updater.py:274 cps/updater.py:461
 msgid "Connection error"
 msgstr ""
 
-#: cps/admin.py:719 cps/updater.py:276 cps/updater.py:463
+#: cps/admin.py:723 cps/updater.py:276 cps/updater.py:463
 msgid "Timeout while establishing connection"
 msgstr "Przekroczono limit czasu podczas nawiązywania połączenia"
 
-#: cps/admin.py:720 cps/updater.py:278 cps/updater.py:465
+#: cps/admin.py:724 cps/updater.py:278 cps/updater.py:465
 msgid "General error"
 msgstr ""
 

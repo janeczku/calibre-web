@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-01-26 19:32+0100\n"
+"POT-Creation-Date: 2020-01-27 18:16+0100\n"
 "PO-Revision-Date: 2019-04-06 23:36+0200\n"
 "Last-Translator: \n"
 "Language: hu\n"
@@ -148,55 +148,55 @@ msgstr "Ismeretlen hiba történt. Próbáld újra később!"
 msgid "Please configure the SMTP mail settings first..."
 msgstr "Először be kell állítani az SMTP levelező beállításokat..."
 
-#: cps/admin.py:674
+#: cps/admin.py:675
 msgid "Logfile viewer"
 msgstr ""
 
-#: cps/admin.py:710
+#: cps/admin.py:714
 msgid "Requesting update package"
 msgstr "Frissítési csomag kérése"
 
-#: cps/admin.py:711
+#: cps/admin.py:715
 msgid "Downloading update package"
 msgstr "Frissítési csomag letöltése"
 
-#: cps/admin.py:712
+#: cps/admin.py:716
 msgid "Unzipping update package"
 msgstr "Frissítési csomag kitömörítése"
 
-#: cps/admin.py:713
+#: cps/admin.py:717
 msgid "Replacing files"
 msgstr "Fájlok cserélése"
 
-#: cps/admin.py:714
+#: cps/admin.py:718
 msgid "Database connections are closed"
 msgstr "Adatbázis kapcsolatok lezárva"
 
-#: cps/admin.py:715
+#: cps/admin.py:719
 msgid "Stopping server"
 msgstr "Szerver leállítása"
 
-#: cps/admin.py:716
+#: cps/admin.py:720
 msgid "Update finished, please press okay and reload page"
 msgstr "A frissítés települt, kattints az OK-ra és újra tölt az oldal"
 
-#: cps/admin.py:717 cps/admin.py:718 cps/admin.py:719 cps/admin.py:720
+#: cps/admin.py:721 cps/admin.py:722 cps/admin.py:723 cps/admin.py:724
 msgid "Update failed:"
 msgstr "A frissítés nem sikerült:"
 
-#: cps/admin.py:717 cps/updater.py:272 cps/updater.py:457 cps/updater.py:459
+#: cps/admin.py:721 cps/updater.py:272 cps/updater.py:457 cps/updater.py:459
 msgid "HTTP Error"
 msgstr "HTTP hiba"
 
-#: cps/admin.py:718 cps/updater.py:274 cps/updater.py:461
+#: cps/admin.py:722 cps/updater.py:274 cps/updater.py:461
 msgid "Connection error"
 msgstr "Kapcsolódási hiba"
 
-#: cps/admin.py:719 cps/updater.py:276 cps/updater.py:463
+#: cps/admin.py:723 cps/updater.py:276 cps/updater.py:463
 msgid "Timeout while establishing connection"
 msgstr "Időtúllépés a kapcsolódás során"
 
-#: cps/admin.py:720 cps/updater.py:278 cps/updater.py:465
+#: cps/admin.py:724 cps/updater.py:278 cps/updater.py:465
 msgid "General error"
 msgstr "Általános hiba"
 
