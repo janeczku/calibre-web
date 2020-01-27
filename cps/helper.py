@@ -810,7 +810,7 @@ def get_cc_columns():
         cc = []
         for col in tmpcc:
             r = re.compile(config.config_columns_to_ignore)
-            if r.match(col.label):
+            if not r.match(col.name):
                 cc.append(col)
     else:
         cc = tmpcc
