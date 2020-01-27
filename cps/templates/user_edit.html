@@ -58,7 +58,7 @@
       {% endfor %}
     </div>
     {% endif %}
-    {% if feature_support['kobo'] and not new_user %}
+    {% if kobo_support and not new_user %}
     <label>{{ _('Kobo Sync Token')}}</label>
     <div class="form-group col">
       <a class="btn btn-default" id="config_create_kobo_token" data-toggle="modal" data-target="#modal_kobo_token" data-remote="false" href="{{ url_for('kobo_auth.generate_auth_token', user_id=content.id) }}">{{_('Create/View')}}</a>

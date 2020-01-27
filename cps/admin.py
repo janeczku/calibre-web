@@ -532,7 +532,7 @@ def _configuration_update_helper():
     _config_checkbox_int("config_uploading")
     _config_checkbox_int("config_anonbrowse")
     _config_checkbox_int("config_public_reg")
-    _config_checkbox_int("config_kobo_sync")
+    reboot_required |= _config_checkbox_int("config_kobo_sync")
     _config_checkbox_int("config_kobo_proxy")
 
 
@@ -679,6 +679,7 @@ def new_user():
     content = ub.User()
     languages = speaking_language()
     translations = [LC('en')] + babel.list_translations()
+    kobo_support = feature_support['kobo'] and config.config_kobo_sync
     if request.method == "POST":
         to_save = request.form.to_dict()
         content.default_language = to_save["default_language"]
@@ -694,7 +695,7 @@ def new_user():
         if not to_save["nickname"] or not to_save["email"] or not to_save["password"]:
             flash(_(u"Please fill out all fields!"), category="error")
             return render_title_template("user_edit.html", new_user=1, content=content, translations=translations,
-                                         registered_oauth=oauth_check, feature_support=feature_support,
+                                         registered_oauth=oauth_check, kobo_support=kobo_support,
                                          title=_(u"Add new user"))
         content.password = generate_password_hash(to_save["password"])
         existing_user = ub.session.query(ub.User).filter(func.lower(ub.User.nickname) == to_save["nickname"].lower())\
@@ -706,7 +707,7 @@ def new_user():
             if config.config_public_reg and not check_valid_domain(to_save["email"]):
                 flash(_(u"E-mail is not from valid domain"), category="error")
                 return render_title_template("user_edit.html", new_user=1, content=content, translations=translations,
-                                             registered_oauth=oauth_check, feature_support=feature_support,
+                                             registered_oauth=oauth_check, kobo_support=kobo_support,
                                              title=_(u"Add new user"))
             else:
                 content.email = to_save["email"]
@@ -714,7 +715,7 @@ def new_user():
             flash(_(u"Found an existing account for this e-mail address or nickname."), category="error")
             return render_title_template("user_edit.html", new_user=1, content=content, translations=translations,
                                      languages=languages, title=_(u"Add new user"), page="newuser",
-                                     feature_support=feature_support, registered_oauth=oauth_check)
+                                     kobo_support=kobo_support, registered_oauth=oauth_check)
         try:
             ub.session.add(content)
             ub.session.commit()
@@ -732,7 +733,7 @@ def new_user():
         # content.mature_content = bool(config.config_default_show & constants.MATURE_CONTENT)
     return render_title_template("user_edit.html", new_user=1, content=content, translations=translations,
                                  languages=languages, title=_(u"Add new user"), page="newuser",
-                                 feature_support=feature_support, registered_oauth=oauth_check)
+                                 kobo_support=kobo_support, registered_oauth=oauth_check)
 
 
 @admi.route("/admin/mailsettings")
@@ -787,6 +788,7 @@ def edit_user(user_id):
     downloads = list()
     languages = speaking_language()
     translations = babel.list_translations() + [LC('en')]
+    kobo_support = feature_support['kobo'] and config.config_kobo_sync
     for book in content.downloads:
         downloadbook = db.session.query(db.Books).filter(db.Books.id == book.book_id).first()
         if downloadbook:
@@ -855,7 +857,7 @@ def edit_user(user_id):
                                                  translations=translations,
                                                  languages=languages,
                                                  mail_configured = config.get_mail_server_configured(),
-                                                 feature_support=feature_support,
+                                                 kobo_support=kobo_support,
                                                  new_user=0,
                                                  content=content,
                                                  downloads=downloads,
@@ -874,7 +876,7 @@ def edit_user(user_id):
                                                  new_user=0, content=content,
                                                  downloads=downloads,
                                                  registered_oauth=oauth_check,
-                                                 feature_support=feature_support,
+                                                 kobo_support=kobo_support,
                                                  title=_(u"Edit User %(nick)s", nick=content.nickname),
                                                  page="edituser")
 
@@ -894,7 +896,7 @@ def edit_user(user_id):
                                  downloads=downloads,
                                  registered_oauth=oauth_check,
                                  mail_configured=config.get_mail_server_configured(),
-                                 feature_support=feature_support,
+                                 kobo_support=kobo_support,
                                  title=_(u"Edit User %(nick)s", nick=content.nickname), page="edituser")
 
 

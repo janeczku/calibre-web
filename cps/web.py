@@ -43,7 +43,7 @@ from werkzeug.exceptions import default_exceptions
 from werkzeug.datastructures import Headers
 from werkzeug.security import generate_password_hash, check_password_hash
 
-from . import constants, config, logger, isoLanguages, services, worker
+from . import constants, logger, isoLanguages, services, worker
 from . import searched_ids, lm, babel, db, ub, config, get_locale, app
 from .gdriveutils import getFileFromEbooksFolder, do_gdrive_download
 from .helper import common_filters, get_search_results, fill_indexpage, speaking_language, check_valid_domain, \
@@ -1287,10 +1287,12 @@ def profile():
     downloads = list()
     languages = speaking_language()
     translations = babel.list_translations() + [LC('en')]
+    kobo_support = feature_support['kobo'] and config.config_kobo_sync
     if feature_support['oauth']:
         oauth_status = get_oauth_status()
     else:
         oauth_status = None
+
     for book in current_user.downloads:
         downloadBook = db.session.query(db.Books).filter(db.Books.id == book.book_id).first()
         if downloadBook:
@@ -1312,7 +1314,7 @@ def profile():
                 flash(_(u"E-mail is not from valid domain"), category="error")
                 return render_title_template("user_edit.html", content=current_user, downloads=downloads,
                                              title=_(u"%(name)s's profile", name=current_user.nickname), page="me",
-                                             feature_support=feature_support,
+                                             kobo_support=kobo_support,
                                              registered_oauth=oauth_check, oauth_status=oauth_status)
         if "nickname" in to_save and to_save["nickname"] != current_user.nickname:
             # Query User nickname, if not existing, change
@@ -1323,7 +1325,7 @@ def profile():
                 return render_title_template("user_edit.html",
                                              translations=translations,
                                              languages=languages,
-                                             feature_support=feature_support,
+                                             kobo_support=kobo_support,
                                              new_user=0, content=current_user,
                                              downloads=downloads,
                                              registered_oauth=oauth_check,
@@ -1355,13 +1357,13 @@ def profile():
             flash(_(u"Found an existing account for this e-mail address."), category="error")
             log.debug(u"Found an existing account for this e-mail address.")
             return render_title_template("user_edit.html", content=current_user, downloads=downloads,
-                                         translations=translations, feature_support=feature_support,
+                                         translations=translations, kobo_support=kobo_support,
                                          title=_(u"%(name)s's profile", name=current_user.nickname), page="me",
                                                  registered_oauth=oauth_check, oauth_status=oauth_status)
         flash(_(u"Profile updated"), category="success")
         log.debug(u"Profile updated")
     return render_title_template("user_edit.html", translations=translations, profile=1, languages=languages,
-                                 content=current_user, downloads=downloads, feature_support=feature_support,
+                                 content=current_user, downloads=downloads, kobo_support=kobo_support,
                                  title= _(u"%(name)s's profile", name=current_user.nickname),
                                  page="me", registered_oauth=oauth_check, oauth_status=oauth_status)
 

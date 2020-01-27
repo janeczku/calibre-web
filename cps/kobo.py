@@ -69,6 +69,8 @@ CONNECTION_SPECIFIC_HEADERS = [
     "transfer-encoding",
 ]
 
+def get_kobo_activated():
+    return config.config_kobo_sync
 
 def redirect_or_proxy_request():
     if config.config_kobo_proxy:
