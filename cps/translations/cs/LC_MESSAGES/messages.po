@@ -79,7 +79,7 @@ msgstr "Byl nalezen existující účet pro tuto e-mailovou adresu nebo přezdí
 #: cps/admin.py:489
 #, python-format
 msgid "User '%(user)s' created"
-msgstr "Uživatel ‘%(user)s’ vytvořen"
+msgstr "Uživatel '%(user)s' vytvořen"
 
 #: cps/admin.py:509
 msgid "Edit e-mail server settings"
@@ -205,7 +205,7 @@ msgstr "není nakonfigurováno"
 
 #: cps/editbooks.py:214 cps/editbooks.py:396
 msgid "Error opening eBook. File does not exist or file is not accessible"
-msgstr "Chyba otevírání eKnihy. Soubor neexistuje nebo není přístupný"
+msgstr "Chyba otevírání eknihy. Soubor neexistuje nebo není přístupný"
 
 #: cps/editbooks.py:242
 msgid "edit metadata"
@@ -214,11 +214,11 @@ msgstr "upravit metadata"
 #: cps/editbooks.py:321 cps/editbooks.py:569
 #, python-format
 msgid "File extension '%(ext)s' is not allowed to be uploaded to this server"
-msgstr "Soubor s příponou ‘%(ext)s’ nelze odeslat na tento server"
+msgstr "Soubor s příponou '%(ext)s' nelze odeslat na tento server"
 
 #: cps/editbooks.py:325 cps/editbooks.py:573
 msgid "File to be uploaded must have an extension"
-msgstr "Soubor, který má být odeslán, musí mít příponu"
+msgstr "Soubor, který má být odeslán musí mít příponu"
 
 #: cps/editbooks.py:337 cps/editbooks.py:607
 #, python-format
@@ -296,7 +296,7 @@ msgstr "Při převodu této knihy došlo k chybě: %(res)s"
 
 #: cps/gdrive.py:62
 msgid "Google Drive setup not completed, try to deactivate and activate Google Drive again"
-msgstr "Google Drive nastavení nebylo dokončeno, zkuste  znovu deaktivovat a aktivovat  Google Drive"
+msgstr "Google Drive nastavení nebylo dokončeno, zkuste  znovu deaktivovat a aktivovat Google Drive"
 
 #: cps/gdrive.py:104
 msgid "Callback domain is not verified, please follow steps to verify domain in google developer console"
@@ -366,17 +366,17 @@ msgstr "Požadovaný soubor nelze přečíst. Možná nesprávná oprávnění?"
 #: cps/helper.py:322
 #, python-format
 msgid "Rename title from: '%(src)s' to '%(dest)s' failed with error: %(error)s"
-msgstr "Přejmenování názvu z: ‘%(src)s‘ na ‘%(dest)s'  selhalo chybou: %(error)s"
+msgstr "Přejmenování názvu z: '%(src)s' na '%(dest)s'  selhalo chybou: %(error)s"
 
 #: cps/helper.py:332
 #, python-format
 msgid "Rename author from: '%(src)s' to '%(dest)s' failed with error: %(error)s"
-msgstr "Přejmenovat autora z: ‘%(src)s‘ na ‘%(dest)s’ selhalo chybou: %(error)s"
+msgstr "Přejmenovat autora z: '%(src)s' na '%(dest)s' selhalo chybou: %(error)s"
 
 #: cps/helper.py:346
 #, python-format
 msgid "Rename file in path '%(src)s' to '%(dest)s' failed with error: %(error)s"
-msgstr "Přejmenování souboru v cestě ‘%(src)s‘ na ‘%(dest)s‘ selhalo  chybou: %(error)s"
+msgstr "Přejmenování souboru v cestě '%(src)s' na '%(dest)s' selhalo  chybou: %(error)s"
 
 #: cps/helper.py:372 cps/helper.py:382 cps/helper.py:390
 #, python-format
@@ -528,7 +528,7 @@ msgstr "Lituji, nejste oprávněni odebrat knihu z této police: %(sname)s"
 #: cps/shelf.py:207 cps/shelf.py:231
 #, python-format
 msgid "A shelf with the name '%(title)s' already exists."
-msgstr "Police s názvem  ‘%(title)s’ již existuje."
+msgstr "Police s názvem  '%(title)s' již existuje."
 
 #: cps/shelf.py:212
 #, python-format
@@ -555,7 +555,7 @@ msgstr "Upravit polici"
 #: cps/shelf.py:289
 #, python-format
 msgid "Shelf: '%(name)s'"
-msgstr "Police: ’%(name)s’"
+msgstr "Police: '%(name)s'"
 
 #: cps/shelf.py:292
 msgid "Error opening shelf. Shelf does not exist or is not accessible"
@@ -564,7 +564,7 @@ msgstr "Chyba otevírání police. Police neexistuje nebo není přístupná"
 #: cps/shelf.py:323
 #, python-format
 msgid "Change order of Shelf: '%(name)s'"
-msgstr "Změnit  pořadí Police: ‘%(name)s’"
+msgstr "Změnit  pořadí Police: '%(name)s'"
 
 #: cps/ub.py:57
 msgid "Recently Added"
@@ -858,7 +858,7 @@ msgstr "Nelze aktivovat ověření LDAP"
 #: cps/web.py:1151 cps/web.py:1278
 #, python-format
 msgid "you are now logged in as: '%(nickname)s'"
-msgstr "nyní jste přihlášeni jako: ‘%(nickname)s’"
+msgstr "nyní jste přihlášeni jako: '%(nickname)s'"
 
 #: cps/web.py:1156
 msgid "Could not login. LDAP server down, please contact your administrator"
@@ -1153,7 +1153,7 @@ msgstr "Převést formát knihy:"
 
 #: cps/templates/book_edit.html:30
 msgid "Convert from:"
-msgstr "Převest z:"
+msgstr "Převést z:"
 
 #: cps/templates/book_edit.html:32 cps/templates/book_edit.html:39
 msgid "select an option"
@@ -1165,7 +1165,7 @@ msgstr "Převést do:"
 
 #: cps/templates/book_edit.html:46
 msgid "Convert book"
-msgstr "Převest knihu"
+msgstr "Převést knihu"
 
 #: cps/templates/book_edit.html:55 cps/templates/search_form.html:6
 msgid "Book Title"
@@ -1341,7 +1341,7 @@ msgstr "Server port"
 
 #: cps/templates/config_edit.html:91
 msgid "SSL certfile location (leave it empty for non-SSL Servers)"
-msgstr "Umístění certifikátu SSL (ponechejte prázdné u serverů jiných než SSL)"
+msgstr "Umístění certifikátu SSL (ponechte prázdné pro servery jiné než SSL)"
 
 #: cps/templates/config_edit.html:95
 msgid "SSL Keyfile location (leave it empty for non-SSL Servers)"
@@ -1405,7 +1405,7 @@ msgstr "Povolit veřejnou registraci"
 
 #: cps/templates/config_edit.html:170
 msgid "Enable remote login (\"magic link\")"
-msgstr "Povolit vzdálené přihlášení (\\“magic link\\”)"
+msgstr "Povolit vzdálené přihlášení (\\"magic link\\")"
 
 #: cps/templates/config_edit.html:175
 msgid "Use Goodreads"
@@ -1495,12 +1495,12 @@ msgstr "Obtain %(provider)s OAuth Credential"
 #: cps/templates/config_edit.html:263
 #, python-format
 msgid "%(provider)s OAuth Client Id"
-msgstr "%(provider)s OAuth Client Id"
+msgstr "%(provider)s OAuth Klient Id"
 
 #: cps/templates/config_edit.html:267
 #, python-format
 msgid "%(provider)s OAuth Client Secret"
-msgstr "%(provider)s OAuth Client Secret"
+msgstr "%(provider)s OAuth Klient Tajemství"
 
 #: cps/templates/config_edit.html:276
 msgid "Allow Reverse Proxy Authentication"
@@ -1532,7 +1532,7 @@ msgstr "Nastavení převaděče eknih"
 
 #: cps/templates/config_edit.html:312
 msgid "Path to convertertool"
-msgstr "Cesta k převáděči"
+msgstr "Cesta k převaděči"
 
 #: cps/templates/config_edit.html:318
 msgid "Location of Unrar binary"
@@ -1577,7 +1577,7 @@ msgstr "Regulární výraz pro ignorování sloupců"
 
 #: cps/templates/config_view_edit.html:46
 msgid "Link read/unread status to Calibre column"
-msgstr "Propojit stav čtení/nepřečtení  do sloupce Calibre"
+msgstr "Propojit stav čtení/nepřečtení do sloupce Calibre"
 
 #: cps/templates/config_view_edit.html:55
 msgid "Regular expression for title sorting"
@@ -1625,7 +1625,7 @@ msgstr "Povolit úpravy veřejných polic"
 
 #: cps/templates/config_view_edit.html:119
 msgid "Default visibilities for new users"
-msgstr "Výchozí viditelnosti pro nové uživatele"
+msgstr "Výchozí zobrazení pro nové uživatele"
 
 #: cps/templates/config_view_edit.html:135 cps/templates/user_edit.html:76
 msgid "Show random books in detail view"
@@ -2337,7 +2337,7 @@ msgstr "Nedávná stahování"
 #~ msgstr "Prohlížeč PDF.js"
 
 #~ msgid "Preparing document for printing..."
-#~ msgstr "Příprava dokumentu pro tisk …"
+#~ msgstr "Příprava dokumentu pro tisk..."
 
 #~ msgid "Using your another device, visit"
 #~ msgstr "Pomocí jiného zařízení navštivte"
@@ -3315,7 +3315,7 @@ msgstr "Nedávná stahování"
 #~ msgstr "Selkup"
 
 #~ msgid "Irish; Old (to 900)"
-#~ msgstr "Irlandese antico (fino al ’900)"
+#~ msgstr "Irlandese antico (fino al 900)"
 
 #~ msgid "Shan"
 #~ msgstr "Shan"
