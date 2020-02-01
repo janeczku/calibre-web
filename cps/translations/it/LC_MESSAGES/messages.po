@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2020-01-27 18:16+0100\n"
+"POT-Creation-Date: 2020-02-01 15:02+0100\n"
 "PO-Revision-Date: 2017-04-04 15:09+0200\n"
 "Last-Translator: ElQuimm <quimm@webtaste.com>\n"
 "Language: it\n"
@@ -1916,7 +1916,7 @@ msgstr "Mostra il log di Calibre-Web: "
 
 #: cps/templates/logviewer.html:8
 msgid "Calibre-Web log: "
-msgstr "Calibre-Web" log: "
+msgstr "Calibre-Web\" log: "
 
 #: cps/templates/logviewer.html:8
 msgid "Stream output, can't be displayed"
