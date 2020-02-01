@@ -314,12 +314,15 @@ def toggle_read(book_id):
         book = ub.session.query(ub.ReadBook).filter(and_(ub.ReadBook.user_id == int(current_user.id),
                                                          ub.ReadBook.book_id == book_id)).first()
         if book:
-            book.is_read = not book.is_read
+            if book.read_status == ub.ReadBook.STATUS_FINISHED:
+                book.read_status = ub.ReadBook.STATUS_UNREAD
+            else:
+                book.read_status = ub.ReadBook.STATUS_FINISHED
         else:
             readBook = ub.ReadBook()
             readBook.user_id = int(current_user.id)
             readBook.book_id = book_id
-            readBook.is_read = True
+            readBook.read_status = ub.ReadBook.STATUS_FINISHED
             book = readBook
         ub.session.merge(book)
         ub.session.commit()
@@ -980,7 +983,7 @@ def render_read_books(page, are_read, as_xml=False, order=None, *args, **kwargs)
     order = order or []
     if not config.config_read_column:
         readBooks = ub.session.query(ub.ReadBook).filter(ub.ReadBook.user_id == int(current_user.id))\
-            .filter(ub.ReadBook.is_read == True).all()
+            .filter(ub.ReadBook.read_status == ub.ReadBook.STATUS_FINISHED).all()
         readBookIds = [x.book_id for x in readBooks]
     else:
         try:
@@ -1448,7 +1451,8 @@ def show_book(book_id):
             if not config.config_read_column:
                 matching_have_read_book = ub.session.query(ub.ReadBook).\
                     filter(and_(ub.ReadBook.user_id == int(current_user.id), ub.ReadBook.book_id == book_id)).all()
-                have_read = len(matching_have_read_book) > 0 and matching_have_read_book[0].is_read
+                have_read = len(
+                    matching_have_read_book) > 0 and matching_have_read_book[0].read_status == ub.ReadBook.STATUS_FINISHED
             else:
                 try:
                     matching_have_read_book = getattr(entries, 'custom_column_'+str(config.config_read_column))

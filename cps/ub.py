@@ -34,8 +34,9 @@ except ImportError:
 from sqlalchemy import create_engine, exc, exists
 from sqlalchemy import Column, ForeignKey
 from sqlalchemy import String, Integer, SmallInteger, Boolean, DateTime
-from sqlalchemy.orm import relationship, sessionmaker
+from sqlalchemy.orm import foreign, relationship, remote, sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.sql.expression import and_
 from werkzeug.security import generate_password_hash
 
 from . import constants # , config
@@ -284,10 +285,15 @@ class BookShelf(Base):
 class ReadBook(Base):
     __tablename__ = 'book_read_link'
 
+    STATUS_UNREAD = 0
+    STATUS_FINISHED = 1
+    STATUS_IN_PROGRESS = 2
+
     id = Column(Integer, primary_key=True)
     book_id = Column(Integer, unique=False)
     user_id = Column(Integer, ForeignKey('user.id'), unique=False)
     is_read = Column(Boolean, unique=False)
+    read_status = Column(Integer, unique=False, default=STATUS_UNREAD)
 
 
 class Bookmark(Base):
@@ -372,6 +378,13 @@ def migrate_Database(session):
         conn = engine.connect()
         conn.execute("ALTER TABLE remote_auth_token ADD column 'token_type' INTEGER DEFAULT 0")
         conn.execute("update remote_auth_token set 'token_type' = 0")
+        session.commit()
+    try:
+        session.query(exists().where(ReadBook.read_status)).scalar()
+    except exc.OperationalError:  # Database is not compatible, some columns are missing
+        conn = engine.connect()
+        conn.execute("ALTER TABLE book_read_link ADD column 'read_status' INTEGER DEFAULT 0")
+        conn.execute("UPDATE book_read_link SET 'read_status' = 1 WHERE is_read")
         session.commit()
 
     # Handle table exists, but no content
