@@ -284,8 +284,14 @@ def show_shelf(shelf_type, shelf_id):
 
         books_in_shelf = ub.session.query(ub.BookShelf).filter(ub.BookShelf.shelf == shelf_id)\
             .order_by(ub.BookShelf.order.asc()).all()
-        books_list = [ b.book_id for b in books_in_shelf]
-        result = db.session.query(db.Books).filter(db.Books.id.in_(books_list)).filter(common_filters()).all()
+        for book in books_in_shelf:
+            cur_book = db.session.query(db.Books).filter(db.Books.id == book.book_id).filter(common_filters()).first()
+            if cur_book:
+                result.append(cur_book)
+            else:
+                log.info('Not existing book %s in %s deleted', book.book_id, shelf)
+                ub.session.query(ub.BookShelf).filter(ub.BookShelf.book_id == book.book_id).delete()
+                ub.session.commit()
         return render_title_template(page, entries=result, title=_(u"Shelf: '%(name)s'", name=shelf.name),
                                  shelf=shelf, page="shelf")
     else:
@@ -317,8 +323,11 @@ def order_shelf(shelf_id):
     if shelf:
         books_in_shelf2 = ub.session.query(ub.BookShelf).filter(ub.BookShelf.shelf == shelf_id) \
             .order_by(ub.BookShelf.order.asc()).all()
-        books_list = [ b.book_id for b in books_in_shelf2]
-        result = db.session.query(db.Books).filter(db.Books.id.in_(books_list)).filter(common_filters()).all()
+        for book in books_in_shelf2:
+            cur_book = db.session.query(db.Books).filter(db.Books.id == book.book_id).filter(common_filters()).first()
+            result.append(cur_book)
+        #books_list = [ b.book_id for b in books_in_shelf2]
+        #result = db.session.query(db.Books).filter(db.Books.id.in_(books_list)).filter(common_filters()).all()
     return render_title_template('shelf_order.html', entries=result,
                                  title=_(u"Change order of Shelf: '%(name)s'", name=shelf.name),
                                  shelf=shelf, page="shelforder")
