@@ -150,7 +150,7 @@ def load_user_from_auth_header(header_val):
         header_val = base64.b64decode(header_val).decode('utf-8')
         basic_username = header_val.split(':')[0]
         basic_password = header_val.split(':')[1]
-    except TypeError:
+    except (TypeError, UnicodeDecodeError):
         pass
     user = _fetch_user_by_name(basic_username)
     if user and check_password_hash(str(user.password), basic_password):
