@@ -511,7 +511,7 @@ def books_list(data, sort, book_id, page):
             entries, random, pagination = fill_indexpage(page, db.Books, db.Books.ratings.any(db.Ratings.rating > 9),
                                                          order)
             return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
-                                         id=book_id, title=_(u"Best rated books"), page="rated")
+                                         id=book_id, title=_(u"Top Rated Books"), page="rated")
         else:
             abort(404)
     elif data == "discover":
@@ -519,7 +519,7 @@ def books_list(data, sort, book_id, page):
             entries, __, pagination = fill_indexpage(page, db.Books, True, [func.randomblob(2)])
             pagination = Pagination(1, config.config_books_per_page, config.config_books_per_page)
             return render_title_template('discover.html', entries=entries, pagination=pagination, id=book_id,
-                                         title=_(u"Random Books"), page="discover")
+                                         title=_(u"Discover (Random Books)"), page="discover")
         else:
             abort(404)
     elif data == "unread":
@@ -572,7 +572,7 @@ def render_hot_books(page):
         numBooks = entries.__len__()
         pagination = Pagination(page, config.config_books_per_page, numBooks)
         return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
-                                     title=_(u"Hot Books (most downloaded)"), page="hot")
+                                     title=_(u"Hot Books (Most Downloaded)"), page="hot")
     else:
         abort(404)
 
@@ -583,7 +583,7 @@ def render_author_books(page, author_id, order):
                                              [order[0], db.Series.name, db.Books.series_index],
                                              db.books_series_link, db.Series)
     if entries is None or not len(entries):
-        flash(_(u"Error opening eBook. File does not exist or file is not accessible:"), category="error")
+        flash(_(u"Oops! Selected book title is unavailable. File does not exist or is not accessible"), category="error")
         return redirect(url_for("web.index"))
 
     author = db.session.query(db.Authors).get(author_id)
@@ -686,7 +686,7 @@ def author_list():
         for entry in entries:
             entry.Authors.name = entry.Authors.name.replace('|', ',')
         return render_title_template('list.html', entries=entries, folder='web.books_list', charlist=charlist,
-                                     title=u"Author list", page="authorlist", data='author')
+                                     title=u"Authors", page="authorlist", data='author')
     else:
         abort(404)
 
@@ -702,7 +702,7 @@ def publisher_list():
             .join(db.books_publishers_link).join(db.Books).filter(common_filters()) \
             .group_by(func.upper(func.substr(db.Publishers.name,1,1))).all()
         return render_title_template('list.html', entries=entries, folder='web.books_list', charlist=charlist,
-                                     title=_(u"Publisher list"), page="publisherlist", data="publisher")
+                                     title=_(u"Publishers"), page="publisherlist", data="publisher")
     else:
         abort(404)
 
@@ -718,7 +718,7 @@ def series_list():
             .join(db.books_series_link).join(db.Books).filter(common_filters()) \
             .group_by(func.upper(func.substr(db.Series.sort,1,1))).all()
         return render_title_template('list.html', entries=entries, folder='web.books_list', charlist=charlist,
-                                     title=_(u"Series list"), page="serieslist", data="series")
+                                     title=_(u"Series"), page="serieslist", data="series")
     else:
         abort(404)
 
@@ -773,7 +773,7 @@ def language_overview():
                                         func.count('books_languages_link.book').label('bookcount')).group_by(
             text('books_languages_link.lang_code')).all()
         return render_title_template('languages.html', languages=languages, lang_counter=lang_counter,
-                                     charlist=charlist, title=_(u"Available languages"), page="langlist",
+                                     charlist=charlist, title=_(u"Languages"), page="langlist",
                                      data="language")
     else:
         abort(404)
@@ -790,7 +790,7 @@ def category_list():
             .join(db.books_tags_link).join(db.Books).filter(common_filters()) \
             .group_by(func.upper(func.substr(db.Tags.name,1,1))).all()
         return render_title_template('list.html', entries=entries, folder='web.books_list', charlist=charlist,
-                                     title=_(u"Category list"), page="catlist", data="category")
+                                     title=_(u"Categories"), page="catlist", data="category")
     else:
         abort(404)
 

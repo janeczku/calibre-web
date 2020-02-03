@@ -56,7 +56,7 @@
           {% if reader_list and g.user.role_viewer() %}
               <div class="btn-group" role="group">
                 <button id="read-in-browser" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  <span class="glyphicon glyphicon-eye-open"></span> {{_('Read in browser')}}
+                  <span class="glyphicon glyphicon-eye-open"></span> {{_('Read in Browser')}}
                   <span class="caret"></span>
                 </button>
                     <ul class="dropdown-menu" aria-labelledby="read-in-browser">
@@ -69,7 +69,7 @@
             {% if audioentries|length > 0 %}
               <div class="btn-group" role="group">
                 <button id="listen-in-browser" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  <span class="glyphicon glyphicon-music"></span> {{_('Listen in browser')}}
+                  <span class="glyphicon glyphicon-music"></span> {{_('Listen in Browser')}}
                   <span class="caret"></span>
                 </button>
                     <ul class="dropdown-menu" aria-labelledby="read-in-browser">
@@ -120,7 +120,7 @@
       {% if entry.languages.__len__() > 0 %}
        <div class="languages">
        <p>
-      <span class="label label-default">{{_('language')}}: {% for language in entry.languages %}{{language.language_name}}{% if not loop.last %}, {% endif %}{% endfor %}</span>
+      <span class="label label-default">{{_('Language')}}: {% for language in entry.languages %}{{language.language_name}}{% if not loop.last %}, {% endif %}{% endfor %}</span>
       </p>
       </div>
       {% endif %}
@@ -162,7 +162,7 @@
 
       {% if entry.pubdate[:10] != '0101-01-01' %}
       <div class="publishing-date">
-        <p>{{_('Publishing date')}}: {{entry.pubdate|formatdate}} </p>
+        <p>{{_('Published')}}: {{entry.pubdate|formatdate}} </p>
       </div>
       {% endif %}
       {% if cc|length > 0 %}
@@ -283,7 +283,7 @@
       {% if g.user.role_edit() %}
       <div class="btn-toolbar" role="toolbar">
         <div class="btn-group" role="group" aria-label="Edit/Delete book">
-          <a href="{{ url_for('editbook.edit_book', book_id=entry.id) }}" class="btn btn-sm btn-warning" id="edit_book" role="button"><span class="glyphicon glyphicon-edit"></span> {{_('Edit metadata')}}</a>
+          <a href="{{ url_for('editbook.edit_book', book_id=entry.id) }}" class="btn btn-sm btn-warning" id="edit_book" role="button"><span class="glyphicon glyphicon-edit"></span> {{_('Edit Metadata')}}</a>
         </div>
       </div>
       {% endif %}
