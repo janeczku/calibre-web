@@ -8,11 +8,11 @@
   <h1>{{title}}</h1>
   <form role="form" method="POST">
     <div class="form-group">
-      <label for="mail_server">{{_('SMTP hostname')}}</label>
+      <label for="mail_server">{{_('SMTP Hostname')}}</label>
       <input type="text" class="form-control" name="mail_server" id="mail_server" value="{{content.mail_server}}">
     </div>
     <div class="form-group">
-      <label for="mail_port">{{_('SMTP port (usually 25 for plain SMTP and 465 for SSL and 587 for STARTTLS)')}}</label>
+      <label for="mail_port">{{_('SMTP Port')}}</label>
       <input type="text" class="form-control" name="mail_port" id="mail_port" value="{{content.mail_port}}">
     </div>
     <div class="form-group">
@@ -24,23 +24,23 @@
         </select>
     </div>
     <div class="form-group">
-      <label for="mail_login">{{_('SMTP login')}}</label>
+      <label for="mail_login">{{_('SMTP Login')}}</label>
       <input type="text" class="form-control" name="mail_login" id="mail_login" value="{{content.mail_login}}">
     </div>
     <div class="form-group">
-      <label for="mail_password">{{_('SMTP password')}}</label>
+      <label for="mail_password">{{_('SMTP Password')}}</label>
       <input type="password" class="form-control" name="mail_password" id="mail_password" value="{{content.mail_password}}">
     </div>
     <div class="form-group">
-      <label for="mail_from">{{_('From e-mail')}}</label>
+      <label for="mail_from">{{_('From E-mail')}}</label>
       <input type="text" class="form-control" name="mail_from" id="mail_from" value="{{content.mail_from}}">
     </div>
-    <button type="submit" name="submit" value="submit" class="btn btn-default">{{_('Save settings')}}</button>
-    <button type="submit" name="test" value="test" class="btn btn-default">{{_('Save settings and send Test E-Mail')}}</button>
-    <a href="{{ url_for('admin.admin') }}" id="back" class="btn btn-default">{{_('Back')}}</a>
+    <button type="submit" name="submit" value="submit" class="btn btn-default">{{_('Save')}}</button>
+    <button type="submit" name="test" value="test" class="btn btn-default">{{_('Save and Send Test E-mail')}}</button>
+    <a href="{{ url_for('admin.admin') }}" id="back" class="btn btn-default">{{_('Cancel')}}</a>
   </form>
     {% if g.allow_registration %}
-    <h2>{{_('Allowed domains for registering')}}</h2>
+    <h2>{{_('Allowed Domains (Whitelist)')}}</h2>
     <form id="domain_add_allow" action="{{ url_for('admin.add_domain',allow=1)}}" method="POST">
     <div class="form-group required">
       <label for="domainname_allow">{{_('Add Domain')}}</label>
@@ -57,7 +57,7 @@
     </tr>
     </thead>
   </table>
-  <h2>{{_('Denied domains for registering')}}</h2>
+  <h2>{{_('Denied Domains (Blacklist))')}}</h2>
     <table class="table table-no-bordered" id="domain-deny-table" data-url="{{url_for('admin.list_domain', allow=0)}}" data-id-field="id" data-show-header="false" data-editable-mode="inline">
       <thead>
         <tr>
@@ -87,9 +87,9 @@
       <div class="modal-header bg-danger">
       </div>
       <div class="modal-body text-center">
-        <p>{{_('Do you really want to delete this domain rule?')}}</p>
+        <p>{{_('Are you sure you want to delete this domain?')}}</p>
         <button type="button" class="btn btn-danger" id="btndeletedomain" >{{_('Delete')}}</button>
-        <button type="button" class="btn btn-default" id="btncancel" data-dismiss="modal">{{_('Back')}}</button>
+        <button type="button" class="btn btn-default" id="btncancel" data-dismiss="modal">{{_('Cancel')}}</button>
       </div>
     </div>
   </div>
@@ -104,4 +104,3 @@
 <script src="{{ url_for('static', filename='js/table.js') }}"></script>
 {% endif %}
 {% endblock %}
-
