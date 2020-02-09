@@ -151,7 +151,7 @@ def load_user_from_auth_header(header_val):
         header_val = base64.b64decode(header_val).decode('utf-8')
         basic_username = header_val.split(':')[0]
         basic_password = header_val.split(':')[1]
-    except TypeError:
+    except (TypeError, UnicodeDecodeError):
         pass
     user = _fetch_user_by_name(basic_username)
     if user and check_password_hash(str(user.password), basic_password):
@@ -173,7 +173,7 @@ def remote_login_required(f):
     def inner(*args, **kwargs):
         if config.config_remote_login:
             return f(*args, **kwargs)
-        if request.is_xhr:
+        if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
             data = {'status': 'error', 'message': 'Forbidden'}
             response = make_response(json.dumps(data, ensure_ascii=False))
             response.headers["Content-Type"] = "application/json; charset=utf-8"
@@ -1469,7 +1469,7 @@ def show_book(book_id):
                 audioentries.append(media_format.format.lower())
 
         return render_title_template('detail.html', entry=entries, audioentries=audioentries, cc=cc,
-                                     is_xhr=request.is_xhr, title=entries.title, books_shelfs=book_in_shelfs,
+                                     is_xhr=request.headers.get('X-Requested-With')=='XMLHttpRequest', title=entries.title, books_shelfs=book_in_shelfs,
                                      have_read=have_read, kindle_list=kindle_list, reader_list=reader_list, page="book")
     else:
         log.debug(u"Error opening eBook. File does not exist or file is not accessible:")
