@@ -455,7 +455,7 @@ def get_cover_on_failure(use_generic_cover):
         return None
 
 def get_book_cover(book_id):
-    book = db.session.query(db.Books).filter(db.Books.id == book_id).first()
+    book = db.session.query(db.Books).filter(db.Books.id == book_id).filter(common_filters()).first()
     return get_book_cover_internal(book, use_generic_cover_on_failure=True)
 
 def get_book_cover_with_uuid(book_uuid,
