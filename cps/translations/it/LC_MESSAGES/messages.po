@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2020-01-27 18:16+0100\n"
+"POT-Creation-Date: 2020-02-01 15:02+0100\n"
 "PO-Revision-Date: 2017-04-04 15:09+0200\n"
 "Last-Translator: ElQuimm <quimm@webtaste.com>\n"
 "Language: it\n"
@@ -165,7 +165,7 @@ msgstr "Decomprimo il pacchetto di aggiornamento"
 
 #: cps/admin.py:717
 msgid "Replacing files"
-msgstr "Sostituzione files"
+msgstr "Sostituisco i file"
 
 #: cps/admin.py:718
 msgid "Database connections are closed"
@@ -177,7 +177,7 @@ msgstr "Arresta il server"
 
 #: cps/admin.py:720
 msgid "Update finished, please press okay and reload page"
-msgstr "Aggiornamento completato, prego premere ok e ricaricare la pagina"
+msgstr "Aggiornamento completato, prego premi ok e ricarica la pagina"
 
 #: cps/admin.py:721 cps/admin.py:722 cps/admin.py:723 cps/admin.py:724
 msgid "Update failed:"
@@ -268,7 +268,7 @@ msgstr "Probabilmnete il libro caricato esiste già nella libreria; considera di
 #: cps/editbooks.py:613
 #, python-format
 msgid "Failed to store file %(file)s (Permission denied)."
-msgstr "Impossibile salvare il file %(file)s (autorizzazione negata)"
+msgstr "Impossibile salvare il file %(file)s (autorizzazione negata)."
 
 #: cps/editbooks.py:619
 #, python-format
@@ -305,7 +305,7 @@ msgstr "Callback domain non è stato verificato. Per favore intraprendi il neces
 #: cps/helper.py:80
 #, python-format
 msgid "%(format)s format not found for book id: %(book)d"
-msgstr "%(format)s formato non trovato per il libro: %(book)d"
+msgstr "Formato %(format)s non trovato per il libro: %(book)d"
 
 #: cps/helper.py:92
 #, python-format
@@ -341,7 +341,7 @@ msgstr "Inizia con Calibre-Web"
 #: cps/helper.py:135
 #, python-format
 msgid "Registration e-mail for user: %(name)s"
-msgstr "E-mail di registrazione per l'utente: %(name)s"
+msgstr "E-mail di registrazione dell'utente: %(name)s"
 
 #: cps/helper.py:149 cps/helper.py:151 cps/helper.py:153 cps/helper.py:161
 #: cps/helper.py:163 cps/helper.py:165
@@ -386,15 +386,15 @@ msgstr "File %(file)s non trovato su Google Drive"
 #: cps/helper.py:411
 #, python-format
 msgid "Book path %(path)s not found on Google Drive"
-msgstr "Non ho trovato la cartella %(path)s su Google Drive"
+msgstr "Non ho trovato la cartella %(path)s del libro su Google Drive"
 
 #: cps/helper.py:643
 msgid "Waiting"
-msgstr "Attendere"
+msgstr "Attendi"
 
 #: cps/helper.py:645
 msgid "Failed"
-msgstr "Fallito"
+msgstr "Non riuscito"
 
 #: cps/helper.py:647
 msgid "Started"
@@ -431,19 +431,19 @@ msgstr "Registra con %(provider)s"
 
 #: cps/oauth_bb.py:155
 msgid "Failed to log in with GitHub."
-msgstr "Fallito l'accesso con GitHub."
+msgstr "Accesso con GitHub non riuscito."
 
 #: cps/oauth_bb.py:160
 msgid "Failed to fetch user info from GitHub."
-msgstr "Fallito il recupero delle informazioni dell'utente da GitHub."
+msgstr "Il recupero delle informazioni dell'utente da GitHub non è riuscito."
 
 #: cps/oauth_bb.py:171
 msgid "Failed to log in with Google."
-msgstr "Fallito l'accesso con Google."
+msgstr "Accesso con Google non riuscito."
 
 #: cps/oauth_bb.py:176
 msgid "Failed to fetch user info from Google."
-msgstr "Fallito il recupero delle informazioni da Google."
+msgstr "Il recupero delle informazioni dell'utente da Google non è riuscito."
 
 #: cps/oauth_bb.py:274
 #, python-format
@@ -453,7 +453,7 @@ msgstr "Scollegato da %(oauth)s con successo."
 #: cps/oauth_bb.py:278
 #, python-format
 msgid "Unlink to %(oauth)s failed."
-msgstr "Scollegamento da %(oauth)s fallito.\""
+msgstr "Scollegamento da %(oauth)s fallito."
 
 #: cps/oauth_bb.py:281
 #, python-format
@@ -462,11 +462,11 @@ msgstr "Non collegato a %(oauth)s."
 
 #: cps/oauth_bb.py:309
 msgid "GitHub Oauth error, please retry later."
-msgstr "GitHub Oauth error, per favore riprova più tardi."
+msgstr "GitHub errore Oauth, per favore riprova più tardi."
 
 #: cps/oauth_bb.py:328
 msgid "Google Oauth error, please retry later."
-msgstr "Google Oauth error, per favore riprova più tardi."
+msgstr "Google errore Oauth, per favore riprova più tardi."
 
 #: cps/shelf.py:47 cps/shelf.py:99
 msgid "Invalid shelf specified"
@@ -572,7 +572,7 @@ msgstr "Aggiunto recentemente"
 
 #: cps/ub.py:59
 msgid "Show recent books"
-msgstr "Mostra i libri recenti"
+msgstr "Mostra i libri più recenti"
 
 #: cps/templates/index.xml:17 cps/ub.py:60
 msgid "Hot Books"
@@ -614,7 +614,7 @@ msgstr "Per scoprire"
 
 #: cps/ub.py:76
 msgid "Show random books"
-msgstr "Mostra libro a caso"
+msgstr "Mostra libri a caso"
 
 #: cps/templates/index.xml:75 cps/ub.py:77
 msgid "Categories"
@@ -667,11 +667,11 @@ msgstr "Mostra la selezione della valutazione"
 
 #: cps/templates/index.xml:96 cps/ub.py:97
 msgid "File formats"
-msgstr "Formati dei file"
+msgstr "Formato file"
 
 #: cps/ub.py:99
 msgid "Show file formats selection"
-msgstr "Mostra la selezione dei formati dei file"
+msgstr "Mostra la selezione del formato dei file"
 
 #: cps/updater.py:252 cps/updater.py:359 cps/updater.py:372
 msgid "Unexpected data while reading update information"
@@ -708,11 +708,11 @@ msgstr "Libri aggiunti di recente"
 
 #: cps/web.py:514
 msgid "Best rated books"
-msgstr "I libri con le migliori valutazioni"
+msgstr "Libri con le migliori valutazioni"
 
 #: cps/templates/index.xml:38 cps/web.py:522
 msgid "Random Books"
-msgstr "Libri a caso"
+msgstr "Libri casuali"
 
 #: cps/web.py:548
 msgid "Books"
@@ -763,19 +763,19 @@ msgstr "Lingua: %(name)s"
 
 #: cps/web.py:705
 msgid "Publisher list"
-msgstr "Lista degli editori"
+msgstr "Elenco degli editori"
 
 #: cps/web.py:721
 msgid "Series list"
-msgstr "Lista delle serie"
+msgstr "Elenco delle serie"
 
 #: cps/web.py:735
 msgid "Ratings list"
-msgstr "Lista delle valutazioni"
+msgstr "Elenco delle valutazioni"
 
 #: cps/web.py:748
 msgid "File formats list"
-msgstr "Lista dei formati di file"
+msgstr "Elenco dei formati"
 
 #: cps/web.py:776
 msgid "Available languages"
@@ -783,7 +783,7 @@ msgstr "Lingue disponibili"
 
 #: cps/web.py:793
 msgid "Category list"
-msgstr "Elenco categorie"
+msgstr "Elenco delle categorie"
 
 #: cps/templates/layout.html:73 cps/web.py:807
 msgid "Tasks"
@@ -895,7 +895,7 @@ msgstr "Il token è scaduto"
 
 #: cps/web.py:1240
 msgid "Success! Please return to your device"
-msgstr "Successo! Torna al tuo dispositivo"
+msgstr "Riuscito! Torna al tuo dispositivo"
 
 #: cps/web.py:1317 cps/web.py:1360 cps/web.py:1366
 #, python-format
@@ -1045,7 +1045,7 @@ msgstr "Amministrazione"
 
 #: cps/templates/admin.html:122
 msgid "View Logfiles"
-msgstr "Visualizza LogFiles"
+msgstr "Visualizza LogFile"
 
 #: cps/templates/admin.html:123
 msgid "Reconnect to Calibre DB"
@@ -1217,7 +1217,7 @@ msgstr "Lingua"
 
 #: cps/templates/book_edit.html:113 cps/templates/search_form.html:137
 msgid "Yes"
-msgstr "Si"
+msgstr "Sì"
 
 #: cps/templates/book_edit.html:114 cps/templates/search_form.html:138
 msgid "No"
@@ -1377,7 +1377,7 @@ msgstr "Livello di Log"
 
 #: cps/templates/config_edit.html:131
 msgid "Location and name of logfile (calibre-web.log for no entry)"
-msgstr "Percorso e nome del logfile (senza indicazioni sarà calibre-web.log)"
+msgstr "Percorso e nome del Logfile (senza indicazioni sarà calibre-web.log)"
 
 #: cps/templates/config_edit.html:136
 msgid "Enable Access Log"
@@ -1385,11 +1385,11 @@ msgstr "Abilita l'Access Log"
 
 #: cps/templates/config_edit.html:139
 msgid "Location and name of access logfile (access.log for no entry)"
-msgstr "Percorso e nome del logfile di accesso (senza indicazioni sarà access.log)"
+msgstr "Percorso e nome del Logfile di accesso (senza indicazioni sarà access.log)"
 
 #: cps/templates/config_edit.html:150
 msgid "Feature Configuration"
-msgstr "Configurazione della caratteristica"
+msgstr "Ulteriori opzioni"
 
 #: cps/templates/config_edit.html:158
 msgid "Enable uploading"
@@ -1528,7 +1528,7 @@ msgstr "Utilizza il convertitore di Calibre"
 
 #: cps/templates/config_edit.html:308
 msgid "E-Book converter settings"
-msgstr "Configurazione del convertitore di e-book"
+msgstr "Configurazione del convertitore di libri"
 
 #: cps/templates/config_edit.html:312
 msgid "Path to convertertool"
@@ -1585,7 +1585,7 @@ msgstr "Espressione regolare per ordinare la visualizzazione del titolo"
 
 #: cps/templates/config_view_edit.html:59
 msgid "Tags for Mature Content"
-msgstr "Tags per i libri per adulti"
+msgstr "Tags dei libri per adulti"
 
 #: cps/templates/config_view_edit.html:73
 msgid "Default settings for new users"
@@ -1629,7 +1629,7 @@ msgstr "Visibilità di base per i nuovi utenti"
 
 #: cps/templates/config_view_edit.html:135 cps/templates/user_edit.html:76
 msgid "Show random books in detail view"
-msgstr "Mostra libri a caso nella vista dettagliata"
+msgstr "Mostra libri scelti alleatoriamente nella vista dettagliata"
 
 #: cps/templates/config_view_edit.html:139 cps/templates/user_edit.html:89
 msgid "Show mature content"
@@ -1705,7 +1705,7 @@ msgstr "password SMTP"
 
 #: cps/templates/email_edit.html:35
 msgid "From e-mail"
-msgstr "Dall'email"
+msgstr "E-mail mittente"
 
 #: cps/templates/email_edit.html:38
 msgid "Save settings"
@@ -1717,7 +1717,7 @@ msgstr "Salva le impostazioni e invia e-mail di test"
 
 #: cps/templates/email_edit.html:43
 msgid "Allowed domains for registering"
-msgstr "Dominii autorizzti alla registrazione"
+msgstr "Dominii autorizzati alla registrazione"
 
 #: cps/templates/email_edit.html:46 cps/templates/email_edit.html:72
 msgid "Add Domain"
@@ -1749,7 +1749,7 @@ msgstr "Crea-segnala un problema"
 
 #: cps/templates/http_error.html:44
 msgid "Back to home"
-msgstr "Ritorno alla pagina principale"
+msgstr "Ritorna alla pagina principale"
 
 #: cps/templates/index.html:5
 msgid "Discover (Random Books)"
@@ -1781,7 +1781,7 @@ msgstr "Gli ultimi libri"
 
 #: cps/templates/index.xml:42
 msgid "Show Random Books"
-msgstr "Mostra libri casuali"
+msgstr "Mostra libri casualmente"
 
 #: cps/templates/index.xml:65
 msgid "Books ordered by Author"
@@ -1854,7 +1854,7 @@ msgstr "Registra"
 
 #: cps/templates/layout.html:116 cps/templates/layout.html:223
 msgid "Uploading..."
-msgstr "Carica"
+msgstr "Carico..."
 
 #: cps/templates/layout.html:117
 msgid "please don't refresh the page"
@@ -1912,11 +1912,11 @@ msgstr "Accedi con magic link"
 
 #: cps/templates/logviewer.html:6
 msgid "Show Calibre-Web log: "
-msgstr ""
+msgstr "Mostra il log di Calibre-Web: "
 
 #: cps/templates/logviewer.html:8
 msgid "Calibre-Web log: "
-msgstr "Mostra il log Calibre-Web"
+msgstr "Calibre-Web\" log: "
 
 #: cps/templates/logviewer.html:8
 msgid "Stream output, can't be displayed"
@@ -1924,7 +1924,7 @@ msgstr "Flusso attivo, non può essere visualizzato"
 
 #: cps/templates/logviewer.html:12
 msgid "Show access log: "
-msgstr "Mostra il log di accesso"
+msgstr "Mostra il log di accesso: "
 
 #: cps/templates/osd.xml:5
 msgid "Calibre-Web ebook catalog"
@@ -2072,7 +2072,7 @@ msgstr "Nessun risultato per:"
 
 #: cps/templates/search.html:6
 msgid "Please try a different search"
-msgstr "Prova una ricerca diversa"
+msgstr "Prova una ricerca differente"
 
 #: cps/templates/search.html:8
 msgid "Results for:"
@@ -2116,7 +2116,7 @@ msgstr "Valutazione inferiore a"
 
 #: cps/templates/shelf.html:10
 msgid "Delete this Shelf"
-msgstr "Cancellare questo scaffale"
+msgstr "Cancella questo scaffale"
 
 #: cps/templates/shelf.html:11
 msgid "Edit Shelf"
@@ -2144,7 +2144,7 @@ msgstr "Riordina tramite drag and drop"
 
 #: cps/templates/stats.html:7
 msgid "Calibre library statistics"
-msgstr "Statistiche libreria Calibre"
+msgstr "Statistiche della libreria di Calibre"
 
 #: cps/templates/stats.html:12
 msgid "Books in this Library"
@@ -2220,11 +2220,11 @@ msgstr "E-mail di Kindle"
 
 #: cps/templates/user_edit.html:41
 msgid "Show books with language"
-msgstr "Mostra libri per lingua"
+msgstr "Mostra libri in "
 
 #: cps/templates/user_edit.html:43
 msgid "Show all"
-msgstr "Mostra tutto"
+msgstr "Mostra libri in tutte le lingue presenti"
 
 #: cps/templates/user_edit.html:53
 msgid "OAuth Settings"
@@ -3513,7 +3513,7 @@ msgstr "Download recenti"
 #~ msgstr "La copertina non è un file in formato jpg: non posso salvare"
 
 #~ msgid "Preparing document for printing..."
-#~ msgstr "Preparo documento per la stampa..."
+#~ msgstr "Preparo il documento per la stampa..."
 
 #~ msgid "Using your another device, visit"
 #~ msgstr "Utilizza il tuo altro dispositivo, visita"
@@ -3522,10 +3522,10 @@ msgstr "Download recenti"
 #~ msgstr "e accedi"
 
 #~ msgid "Using your another device, login and visit "
-#~ msgstr "Utilizza il tuo altro apparecchio, collegati e visita"
+#~ msgstr "Utilizza il tuo altro apparecchio, collegati e visita "
 
 #~ msgid "Newest Books"
-#~ msgstr "I libri più nuovi"
+#~ msgstr "I libri più recenti"
 
 #~ msgid "Oldest Books"
 #~ msgstr "I libri più vecchi"
