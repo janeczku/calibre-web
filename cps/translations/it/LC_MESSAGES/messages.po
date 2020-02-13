@@ -27,7 +27,7 @@ msgstr "non installato"
 
 #: cps/about.py:84
 msgid "Statistics"
-msgstr "Statistica"
+msgstr "Statistiche"
 
 #: cps/admin.py:89
 msgid "Server restarted, please reload page"
@@ -173,7 +173,7 @@ msgstr "Le connessioni al database sono chiuse"
 
 #: cps/admin.py:719
 msgid "Stopping server"
-msgstr "Arresta il server"
+msgstr "Arresto il server"
 
 #: cps/admin.py:720
 msgid "Update finished, please press okay and reload page"
@@ -282,7 +282,7 @@ msgstr "Il file %(file)s è stato caricato"
 
 #: cps/editbooks.py:739
 msgid "Source or destination format for conversion missing"
-msgstr "Il formato sorgente o quello di destinazione per la conversione mancano"
+msgstr "Il formato sorgente o quello di destinazione necessari alla conversione mancano"
 
 #: cps/editbooks.py:747
 #, python-format
@@ -435,15 +435,15 @@ msgstr "Accesso con GitHub non riuscito."
 
 #: cps/oauth_bb.py:160
 msgid "Failed to fetch user info from GitHub."
-msgstr "Il recupero delle informazioni dell'utente da GitHub non è riuscito."
+msgstr "Fallito il recupero delle informazioni dell'utente da GitHub."
 
 #: cps/oauth_bb.py:171
 msgid "Failed to log in with Google."
-msgstr "Accesso con Google non riuscito."
+msgstr "Fallito l'accesso con Google."
 
 #: cps/oauth_bb.py:176
 msgid "Failed to fetch user info from Google."
-msgstr "Il recupero delle informazioni dell'utente da Google non è riuscito."
+msgstr "Fallito il recupero delle informazioni dell'utente da Google."
 
 #: cps/oauth_bb.py:274
 #, python-format
@@ -618,7 +618,7 @@ msgstr "Mostra libri a caso"
 
 #: cps/templates/index.xml:75 cps/ub.py:77
 msgid "Categories"
-msgstr "Categoria"
+msgstr "Categorie"
 
 #: cps/ub.py:79
 msgid "Show category selection"
@@ -879,7 +879,7 @@ msgstr "Per favore digita un nome di utente valido per resettare la password"
 #: cps/web.py:1179
 #, python-format
 msgid "You are now logged in as: '%(nickname)s'"
-msgstr "Ora sei connesso come '%(nickname)s"
+msgstr "Ora sei connesso come '%(nickname)s'"
 
 #: cps/web.py:1186 cps/web.py:1210
 msgid "login"
@@ -993,7 +993,7 @@ msgstr "E-mail da"
 
 #: cps/templates/admin.html:61
 msgid "Change SMTP settings"
-msgstr "Modificare le impostazioni SMTP"
+msgstr "Modifica le impostazioni SMTP"
 
 #: cps/templates/admin.html:67
 msgid "Configuration"
@@ -1081,7 +1081,7 @@ msgstr "Ricerca aggiornamenti"
 
 #: cps/templates/admin.html:149
 msgid "Perform Update"
-msgstr "Esegui aggiornamento"
+msgstr "Esegui l'aggiornamento"
 
 #: cps/templates/admin.html:161
 msgid "Do you really want to restart Calibre-Web?"
@@ -1545,7 +1545,7 @@ msgstr "Accesso"
 
 #: cps/templates/config_view_edit.html:12
 msgid "View Configuration"
-msgstr "Visualizza configurazione"
+msgstr "Configurazione aspetto biblioteca"
 
 #: cps/templates/config_view_edit.html:19 cps/templates/shelf_edit.html:7
 msgid "Title"
@@ -1916,7 +1916,7 @@ msgstr "Mostra il log di Calibre-Web: "
 
 #: cps/templates/logviewer.html:8
 msgid "Calibre-Web log: "
-msgstr "Calibre-Web\" log: "
+msgstr "Calibre-Web log: "
 
 #: cps/templates/logviewer.html:8
 msgid "Stream output, can't be displayed"
@@ -2060,7 +2060,7 @@ msgstr "Utilizza il tuo altro apparecchio, accedi e visita"
 
 #: cps/templates/remote_login.html:9
 msgid "Once you do so, you will automatically get logged in on this device."
-msgstr "Una volta fatto questo, verrai automaticamente connesso con questo dispositivo."
+msgstr "Una volta completato, verrai automaticamente connesso con questo dispositivo."
 
 #: cps/templates/remote_login.html:12
 msgid "The link will expire after 10 minutes."
@@ -2088,7 +2088,7 @@ msgstr "Data di pubblicazione fino a"
 
 #: cps/templates/search_form.html:43
 msgid "Exclude Tags"
-msgstr "Elimina i tag"
+msgstr "Escludi i tag"
 
 #: cps/templates/search_form.html:63
 msgid "Exclude Series"
@@ -2096,7 +2096,7 @@ msgstr "Escludi serie"
 
 #: cps/templates/search_form.html:84
 msgid "Exclude Languages"
-msgstr "Elimina lingue"
+msgstr "Escludi lingue"
 
 #: cps/templates/search_form.html:95
 msgid "Extensions"
@@ -3579,7 +3579,7 @@ msgstr "Download recenti"
 #~ msgstr "Registra con %s, "
 
 #~ msgid "Import of optional Google Drive requirements missing"
-#~ msgstr "Importa parametri mancanti per Google Drive"
+#~ msgstr "Importa i parametri mancanti per Google Drive"
 
 #~ msgid "client_secrets.json is missing or not readable"
 #~ msgstr "client_secrets.json manca o è inaccessibile"
