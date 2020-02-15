@@ -55,6 +55,7 @@ class WebServer(object):
     def __init__(self):
         signal.signal(signal.SIGINT, self._killServer)
         signal.signal(signal.SIGTERM, self._killServer)
+        signal.signal(signal.SIGQUIT, self._killServer)
 
         self.wsgiserver = None
         self.access_logger = None
@@ -156,7 +157,7 @@ class WebServer(object):
                                  max_buffer_size=209700000,
                                  ssl_options=self.ssl_args)
         http_server.listen(self.listen_port, self.listen_address)
-        self.wsgiserver = IOLoop.instance()
+        self.wsgiserver = IOLoop.current()
         self.wsgiserver.start()
         # wait for stop signal
         self.wsgiserver.close(True)
@@ -197,4 +198,4 @@ class WebServer(object):
             if _GEVENT:
                 self.wsgiserver.close()
             else:
-                self.wsgiserver.add_callback(self.wsgiserver.stop)
+                self.wsgiserver.add_callback_from_signal(self.wsgiserver.stop)

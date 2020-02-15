@@ -723,7 +723,8 @@ def tags_filters():
 # Creates for all stored languages a translated speaking name in the array for the UI
 def speaking_language(languages=None):
     if not languages:
-        languages = db.session.query(db.Languages).all()
+        languages = db.session.query(db.Languages).join(db.books_languages_link).join(db.Books).filter(common_filters())\
+        .group_by(text('books_languages_link.lang_code')).all()
     for lang in languages:
         try:
             cur_l = LC.parse(lang.lang_code)

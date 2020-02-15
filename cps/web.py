@@ -962,11 +962,13 @@ def advanced_search():
         return render_title_template('search.html', searchterm=searchterm,
                                      entries=q, title=_(u"search"), page="search")
     # prepare data for search-form
-    # tags = db.session.query(db.Tags).order_by(db.Tags.name).all()
-    tags = db.session.query(db.Tags).filter(tags_filters()).order_by(db.Tags.name).all()
-    series = db.session.query(db.Series).order_by(db.Series.name).all()
-    extensions = db.session.query(db.Data) \
+    tags = db.session.query(db.Tags).join(db.books_tags_link).join(db.Books).filter(common_filters())\
+        .group_by(text('books_tags_link.tag')).order_by(db.Tags.name).all()
+    series = db.session.query(db.Series).join(db.books_series_link).join(db.Books).filter(common_filters())\
+        .group_by(text('books_series_link.series')).order_by(db.Series.name).filter(common_filters()).all()
+    extensions = db.session.query(db.Data).join(db.Books).filter(common_filters())\
         .group_by(db.Data.format).order_by(db.Data.format).all()
+
     if current_user.filter_language() == u"all":
         languages = speaking_language()
     else:
