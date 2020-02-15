@@ -338,7 +338,6 @@ def restriction_deletion(element, list_func):
 @login_required
 @admin_required
 def add_restriction(type):
-    log.info("Hit: " + str(type))
     element = request.form.to_dict()
     if type == 0:  # Tags as template
         if 'submit_allow' in element:
@@ -713,6 +712,10 @@ def new_user():
                                      languages=languages, title=_(u"Add new user"), page="newuser",
                                      kobo_support=kobo_support, registered_oauth=oauth_check)
         try:
+            content.allowed_tags = config.config_allowed_tags
+            content.denied_tags = config.config_denied_tags
+            content.allowed_column_value = config.config_allowed_column_value
+            content.denied_column_value = config.config_denied_column_value
             ub.session.add(content)
             ub.session.commit()
             flash(_(u"User '%(user)s' created", user=content.nickname), category="success")
@@ -723,10 +726,6 @@ def new_user():
     else:
         content.role = config.config_default_role
         content.sidebar_view = config.config_default_show
-        content.allowed_tags = config.config_allowed_tags
-        content.denied_tags = config.config_denied_tags
-        content.allowed_column_value = config.config_allowed_column_value
-        content.allowed_column_value = config.config_denied_column_value
     return render_title_template("user_edit.html", new_user=1, content=content, translations=translations,
                                  languages=languages, title=_(u"Add new user"), page="newuser",
                                  kobo_support=kobo_support, registered_oauth=oauth_check)

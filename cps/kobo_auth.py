@@ -101,7 +101,7 @@ def load_user_from_kobo_request(request):
         if user is not None:
             login_user(user)
             return user
-    log.info("Received Kobo request without a recognizable auth token.")
+    log.debug("Received Kobo request without a recognizable auth token.")
     return
 
 kobo_auth = Blueprint("kobo_auth", __name__, url_prefix="/kobo_auth")
