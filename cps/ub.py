@@ -157,16 +157,16 @@ class UserBase:
     def show_detail_random(self):
         return self.check_visibility(constants.DETAIL_RANDOM)
 
-    def list_restricted_tags(self):
-        mct = self.restricted_tags.split(",")
+    def list_denied_tags(self):
+        mct = self.denied_tags.split(",")
         return [t.strip() for t in mct]
 
     def list_allowed_tags(self):
         mct = self.allowed_tags.split(",")
         return [t.strip() for t in mct]
 
-    def list_restricted_column_values(self):
-        mct = self.restricted_column_value.split(",")
+    def list_denied_column_values(self):
+        mct = self.denied_column_value.split(",")
         return [t.strip() for t in mct]
 
     def list_allowed_column_values(self):
@@ -195,9 +195,9 @@ class User(UserBase, Base):
     sidebar_view = Column(Integer, default=1)
     default_language = Column(String(3), default="all")
     mature_content = Column(Boolean, default=True)
-    restricted_tags = Column(String, default="")
+    denied_tags = Column(String, default="")
     allowed_tags = Column(String, default="")
-    restricted_column_value = Column(String, default="")
+    denied_column_value = Column(String, default="")
     allowed_column_value = Column(String, default="")
     remote_auth_token = relationship('RemoteAuthToken', backref='user', lazy='dynamic')
 
@@ -235,9 +235,9 @@ class Anonymous(AnonymousUserMixin, UserBase):
         self.locale = data.locale
         self.mature_content = data.mature_content
         self.kindle_mail = data.kindle_mail
-        self.restricted_tags = data.restricted_tags
+        self.denied_tags = data.denied_tags
         self.allowed_tags = data.allowed_tags
-        self.restricted_column_value = data.restricted_column_value
+        self.denied_column_value = data.denied_column_value
         self.allowed_column_value = data.allowed_column_value
 
     def role_admin(self):
@@ -417,12 +417,12 @@ def migrate_Database(session):
         conn = engine.connect()
         conn.execute("ALTER TABLE user ADD column `mature_content` INTEGER DEFAULT 1")'''
     try:
-        session.query(exists().where(User.restricted_tags)).scalar()
+        session.query(exists().where(User.denied_tags)).scalar()
     except exc.OperationalError:  # Database is not compatible, some columns are missing
         conn = engine.connect()
-        conn.execute("ALTER TABLE user ADD column `restricted_tags` String DEFAULT ''")
+        conn.execute("ALTER TABLE user ADD column `denied_tags` String DEFAULT ''")
         conn.execute("ALTER TABLE user ADD column `allowed_tags` String DEFAULT ''")
-        conn.execute("ALTER TABLE user ADD column `restricted_column_value` DEFAULT ''")
+        conn.execute("ALTER TABLE user ADD column `denied_column_value` DEFAULT ''")
         conn.execute("ALTER TABLE user ADD column `allowed_column_value` DEFAULT ''")
     if session.query(User).filter(User.role.op('&')(constants.ROLE_ANONYMOUS) == constants.ROLE_ANONYMOUS).first() is None:
         create_anonymous_user(session)

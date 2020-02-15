@@ -171,10 +171,7 @@ def update_view_configuration():
     _config_int("config_random_books")
     _config_int("config_books_per_page")
     _config_int("config_authors_max")
-
-    _config_string("config_restricted_tags")
     _config_int("config_restricted_column")
-    _config_string("config_restricted_column_value")
 
     if config.config_google_drive_watch_changes_response:
         config.config_google_drive_watch_changes_response = json.dumps(config.config_google_drive_watch_changes_response)
@@ -289,14 +286,14 @@ def edit_restriction(type):
             ub.session.commit()
     if element['id'].startswith('d'):
         if type == 0:  # Tags as template
-            elementlist = config.list_restricted_tags()
+            elementlist = config.list_denied_tags()
             elementlist[int(element['id'][1:])]=element['Element']
-            config.config_restricted_tags = ','.join(elementlist)
+            config.config_denied_tags = ','.join(elementlist)
             config.save()
         if type == 1:  # CustomC
-            elementlist = config.list_restricted_column_values()
+            elementlist = config.list_denied_column_values()
             elementlist[int(element['id'][1:])]=element['Element']
-            config.config_restricted_column_value = ','.join(elementlist)
+            config.config_denied_column_value = ','.join(elementlist)
             config.save()
             pass
         if type == 2:  # Tags per user
@@ -305,9 +302,9 @@ def edit_restriction(type):
                 usr = ub.session.query(ub.User).filter(ub.User.id == int(usr_id)).first()
             else:
                 usr = current_user
-            elementlist = usr.list_restricted_tags()
+            elementlist = usr.list_denied_tags()
             elementlist[int(element['id'][1:])]=element['Element']
-            usr.restricted_tags = ','.join(elementlist)
+            usr.denied_tags = ','.join(elementlist)
             ub.session.commit()
         if type == 3:  # CColumn per user
             usr_id = os.path.split(request.referrer)[-1]
@@ -315,9 +312,9 @@ def edit_restriction(type):
                 usr = ub.session.query(ub.User).filter(ub.User.id == int(usr_id)).first()
             else:
                 usr = current_user
-            elementlist = usr.list_restricted_column_values()
+            elementlist = usr.list_denied_column_values()
             elementlist[int(element['id'][1:])]=element['Element']
-            usr.restricted_column_value = ','.join(elementlist)
+            usr.denied_column_value = ','.join(elementlist)
             ub.session.commit()
     return ""
 
@@ -348,14 +345,14 @@ def add_restriction(type):
             config.config_allowed_tags = restriction_addition(element, config.list_allowed_tags)
             config.save()
         elif 'submit_deny' in element:
-            config.config_restricted_tags = restriction_addition(element, config.list_restricted_tags)
+            config.config_denied_tags = restriction_addition(element, config.list_denied_tags)
             config.save()
     if type == 1:  # CCustom as template
         if 'submit_allow' in element:
-            config.config_allowed_column_value = restriction_addition(element, config.list_restricted_column_values)
+            config.config_allowed_column_value = restriction_addition(element, config.list_denied_column_values)
             config.save()
         elif 'submit_deny' in element:
-            config.config_restricted_column_value = restriction_addition(element, config.list_allowed_column_values)
+            config.config_denied_column_value = restriction_addition(element, config.list_allowed_column_values)
             config.save()
     if type == 2:  # Tags per user
         usr_id = os.path.split(request.referrer)[-1]
@@ -367,7 +364,7 @@ def add_restriction(type):
             usr.allowed_tags = restriction_addition(element, usr.list_allowed_tags)
             ub.session.commit()
         elif 'submit_deny' in element:
-            usr.restricted_tags = restriction_addition(element, usr.list_restricted_tags)
+            usr.denied_tags = restriction_addition(element, usr.list_denied_tags)
             ub.session.commit()
     if type == 3:  # CustomC per user
         usr_id = os.path.split(request.referrer)[-1]
@@ -379,7 +376,7 @@ def add_restriction(type):
             usr.allowed_column_value = restriction_addition(element, usr.list_allowed_column_values)
             ub.session.commit()
         elif 'submit_deny' in element:
-            usr.restricted_column_value = restriction_addition(element, usr.list_restricted_column_values)
+            usr.denied_column_value = restriction_addition(element, usr.list_denied_column_values)
             ub.session.commit()
     return ""
 
@@ -393,14 +390,14 @@ def delete_restriction(type):
             config.config_allowed_tags = restriction_deletion(element, config.list_allowed_tags)
             config.save()
         elif element['id'].startswith('d'):
-            config.config_restricted_tags = restriction_deletion(element, config.list_restricted_tags)
+            config.config_denied_tags = restriction_deletion(element, config.list_denied_tags)
             config.save()
     elif type == 1:  # CustomC as template
         if element['id'].startswith('a'):
             config.config_allowed_column_value = restriction_deletion(element, config.list_allowed_column_values)
             config.save()
         elif element['id'].startswith('d'):
-            config.config_restricted_column_value = restriction_deletion(element, config.list_restricted_column_values)
+            config.config_denied_column_value = restriction_deletion(element, config.list_denied_column_values)
             config.save()
     elif type == 2:  # Tags per user
         usr_id = os.path.split(request.referrer)[-1]
@@ -412,7 +409,7 @@ def delete_restriction(type):
             usr.allowed_tags = restriction_deletion(element, usr.list_allowed_tags)
             ub.session.commit()
         elif element['id'].startswith('d'):
-            usr.restricted_tags = restriction_deletion(element, usr.list_restricted_tags)
+            usr.denied_tags = restriction_deletion(element, usr.list_denied_tags)
             ub.session.commit()
     elif type == 3:  # Columns per user
         usr_id = os.path.split(request.referrer)[-1]
@@ -424,7 +421,7 @@ def delete_restriction(type):
             usr.allowed_column_value = restriction_deletion(element, usr.list_allowed_column_values)
             ub.session.commit()
         elif element['id'].startswith('d'):
-            usr.restricted_column_value = restriction_deletion(element, usr.list_restricted_column_values)
+            usr.denied_column_value = restriction_deletion(element, usr.list_denied_column_values)
             ub.session.commit()
     return ""
 
@@ -436,13 +433,13 @@ def delete_restriction(type):
 def list_restriction(type):
     if type == 0:   # Tags as template
         restrict = [{'Element': x, 'type':_('deny'), 'id': 'd'+str(i) }
-                    for i,x in enumerate(config.list_restricted_tags()) if x != '' ]
+                    for i,x in enumerate(config.list_denied_tags()) if x != '' ]
         allow = [{'Element': x, 'type':_('allow'), 'id': 'a'+str(i) }
                  for i,x in enumerate(config.list_allowed_tags()) if x != '']
         json_dumps = restrict + allow
     elif type == 1:  # CustomC as template
         restrict = [{'Element': x, 'type':_('deny'), 'id': 'd'+str(i) }
-                    for i,x in enumerate(config.list_restricted_column_values()) if x != '' ]
+                    for i,x in enumerate(config.list_denied_column_values()) if x != '' ]
         allow = [{'Element': x, 'type':_('allow'), 'id': 'a'+str(i) }
                  for i,x in enumerate(config.list_allowed_column_values()) if x != '']
         json_dumps = restrict + allow
@@ -453,7 +450,7 @@ def list_restriction(type):
         else:
             usr = current_user
         restrict = [{'Element': x, 'type':_('deny'), 'id': 'd'+str(i) }
-                    for i,x in enumerate(usr.list_restricted_tags()) if x != '' ]
+                    for i,x in enumerate(usr.list_denied_tags()) if x != '' ]
         allow = [{'Element': x, 'type':_('allow'), 'id': 'a'+str(i) }
                  for i,x in enumerate(usr.list_allowed_tags()) if x != '']
         json_dumps = restrict + allow
@@ -464,7 +461,7 @@ def list_restriction(type):
         else:
             usr = current_user
         restrict = [{'Element': x, 'type':_('deny'), 'id': 'd'+str(i) }
-                    for i,x in enumerate(usr.list_restricted_column_values()) if x != '' ]
+                    for i,x in enumerate(usr.list_denied_column_values()) if x != '' ]
         allow = [{'Element': x, 'type':_('allow'), 'id': 'a'+str(i) }
                  for i,x in enumerate(usr.list_allowed_column_values()) if x != '']
         json_dumps = restrict + allow
@@ -726,10 +723,10 @@ def new_user():
     else:
         content.role = config.config_default_role
         content.sidebar_view = config.config_default_show
-        content.restricted_tags = config.config_restricted_tags
-        content.restricted_column = config.config_restricted_column
-        content.restricted_column_value = config.config_restricted_column_value
-        # content.mature_content = bool(config.config_default_show & constants.MATURE_CONTENT)
+        content.allowed_tags = config.config_allowed_tags
+        content.denied_tags = config.config_denied_tags
+        content.allowed_column_value = config.config_allowed_column_value
+        content.allowed_column_value = config.config_denied_column_value
     return render_title_template("user_edit.html", new_user=1, content=content, translations=translations,
                                  languages=languages, title=_(u"Add new user"), page="newuser",
                                  kobo_support=kobo_support, registered_oauth=oauth_check)
@@ -832,14 +829,6 @@ def edit_user(user_id):
                 content.sidebar_view |= constants.DETAIL_RANDOM
             else:
                 content.sidebar_view &= ~constants.DETAIL_RANDOM
-
-            # content.mature_content = "Show_mature_content" in to_save
-            if "restricted_tags" in to_save:
-                content.restricted_tags = to_save["restricted_tags"]
-            if "config_restricted_column" in to_save:
-                content.restricted_tags = to_save["config_restricted_column"]
-            if "config_restricted_column_value" in to_save:
-                content.restricted_tags = to_save["config_restricted_column_value"]
 
             if "default_language" in to_save:
                 content.default_language = to_save["default_language"]
