@@ -688,20 +688,17 @@ def common_filters():
         lang_filter = db.Books.languages.any(db.Languages.lang_code == current_user.filter_language())
     else:
         lang_filter = true()
-    negtags_list = current_user.list_restricted_tags()
+    negtags_list = current_user.list_denied_tags()
     postags_list = current_user.list_allowed_tags()
     neg_content_tags_filter = false() if negtags_list == [''] else db.Books.tags.any(db.Tags.name.in_(negtags_list))
     pos_content_tags_filter = true() if postags_list == [''] else db.Books.tags.any(db.Tags.name.in_(postags_list))
-    # db.session.query(db.Books).filter(db.Books.custom_column_5.any(db.cc_classes[5].value == 'nikto')).first()
-    # db.session.query(db.Books).filter(
-    #    getattr(db.Books, 'custom_column_' + str(5)).any(db.cc_classes[5].value == 'nikto').first())
     if config.config_restricted_column:
         pos_cc_list = current_user.allowed_column_value.split(',')
         pos_content_cc_filter = true() if pos_cc_list == [''] else \
             getattr(db.Books, 'custom_column_' + str(config.config_restricted_column)).\
                 any(db.cc_classes[config.config_restricted_column].value.in_(pos_cc_list))
-        neg_cc_list = current_user.restricted_column_value.split(',')
-        neg_content_cc_filter = true() if neg_cc_list == [''] else \
+        neg_cc_list = current_user.denied_column_value.split(',')
+        neg_content_cc_filter = false() if neg_cc_list == [''] else \
             getattr(db.Books, 'custom_column_' + str(config.config_restricted_column)).\
                 any(db.cc_classes[config.config_restricted_column].value.in_(neg_cc_list))
     else:
@@ -712,7 +709,7 @@ def common_filters():
 
 
 def tags_filters():
-    negtags_list = current_user.list_restricted_tags()
+    negtags_list = current_user.list_denied_tags()
     postags_list = current_user.list_allowed_tags()
     neg_content_tags_filter = false() if negtags_list == [''] else db.Tags.name.in_(negtags_list)
     pos_content_tags_filter = true() if postags_list == [''] else db.Tags.name.in_(postags_list)
