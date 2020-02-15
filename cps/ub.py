@@ -20,6 +20,7 @@
 from __future__ import division, print_function, unicode_literals
 import os
 import datetime
+import itertools
 from binascii import hexlify
 
 from flask import g
@@ -31,10 +32,10 @@ try:
     oauth_support = True
 except ImportError:
     oauth_support = False
-from sqlalchemy import create_engine, exc, exists
+from sqlalchemy import create_engine, exc, exists, event
 from sqlalchemy import Column, ForeignKey
-from sqlalchemy import String, Integer, SmallInteger, Boolean, DateTime
-from sqlalchemy.orm import foreign, relationship, remote, sessionmaker
+from sqlalchemy import String, Integer, SmallInteger, Boolean, DateTime, Float
+from sqlalchemy.orm import backref, foreign, relationship, remote, sessionmaker, Session
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.sql.expression import and_
 from werkzeug.security import generate_password_hash
@@ -292,8 +293,12 @@ class ReadBook(Base):
     id = Column(Integer, primary_key=True)
     book_id = Column(Integer, unique=False)
     user_id = Column(Integer, ForeignKey('user.id'), unique=False)
-    is_read = Column(Boolean, unique=False)
-    read_status = Column(Integer, unique=False, default=STATUS_UNREAD)
+    read_status = Column(Integer, unique=False, default=STATUS_UNREAD, nullable=False)
+    kobo_reading_state = relationship("KoboReadingState", uselist=False, primaryjoin="and_(ReadBook.user_id == foreign(KoboReadingState.user_id), "
+                                "ReadBook.book_id == foreign(KoboReadingState.book_id))", cascade="all", backref=backref("book_read_link", uselist=False))
+    last_modified = Column(DateTime, default=datetime.datetime.utcnow, onupdate=datetime.datetime.utcnow)
+    last_time_started_reading = Column(DateTime, nullable=True)
+    times_started_reading = Column(Integer, default=0, nullable=False)
 
 
 class Bookmark(Base):
@@ -304,6 +309,54 @@ class Bookmark(Base):
     book_id = Column(Integer)
     format = Column(String(collation='NOCASE'))
     bookmark_key = Column(String)
+
+
+# The Kobo ReadingState API keeps track of 4 timestamped entities:
+#   ReadingState, StatusInfo, Statistics, CurrentBookmark
+# Which we map to the following 4 tables:
+#   KoboReadingState, ReadBook, KoboStatistics and KoboBookmark
+class KoboReadingState(Base):
+    __tablename__ = 'kobo_reading_state'
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    user_id = Column(Integer, ForeignKey('user.id'))
+    book_id = Column(Integer)
+    last_modified = Column(DateTime, default=datetime.datetime.utcnow, onupdate=datetime.datetime.utcnow)
+    priority_timestamp = Column(DateTime, default=datetime.datetime.utcnow, onupdate=datetime.datetime.utcnow)
+    current_bookmark = relationship("KoboBookmark", uselist=False, backref="kobo_reading_state", cascade="all")
+    statistics = relationship("KoboStatistics", uselist=False, backref="kobo_reading_state", cascade="all")
+
+
+class KoboBookmark(Base):
+    __tablename__ = 'kobo_bookmark'
+
+    id = Column(Integer, primary_key=True)
+    kobo_reading_state_id = Column(Integer, ForeignKey('kobo_reading_state.id'))
+    last_modified = Column(DateTime, default=datetime.datetime.utcnow, onupdate=datetime.datetime.utcnow)
+    location_source = Column(String)
+    location_type = Column(String)
+    location_value = Column(String)
+    progress_percent = Column(Float)
+    content_source_progress_percent = Column(Float)
+
+
+class KoboStatistics(Base):
+    __tablename__ = 'kobo_statistics'
+
+    id = Column(Integer, primary_key=True)
+    kobo_reading_state_id = Column(Integer, ForeignKey('kobo_reading_state.id'))
+    last_modified = Column(DateTime, default=datetime.datetime.utcnow, onupdate=datetime.datetime.utcnow)
+    remaining_time_minutes = Column(Integer)
+    spent_reading_minutes = Column(Integer)
+
+
+# Updates the last_modified timestamp in the KoboReadingState table if any of its children tables are modified.
+@event.listens_for(Session, 'before_flush')
+def receive_before_flush(session, flush_context, instances):
+    for change in itertools.chain(session.new, session.dirty):
+        if isinstance(change, (ReadBook, KoboStatistics, KoboBookmark)):
+            if change.kobo_reading_state:
+                change.kobo_reading_state.last_modified = datetime.datetime.utcnow()
 
 
 # Baseclass representing Downloads from calibre-web in app.db
@@ -358,6 +411,12 @@ def migrate_Database(session):
         ReadBook.__table__.create(bind=engine)
     if not engine.dialect.has_table(engine.connect(), "bookmark"):
         Bookmark.__table__.create(bind=engine)
+    if not engine.dialect.has_table(engine.connect(), "kobo_reading_state"):
+        KoboReadingState.__table__.create(bind=engine)
+    if not engine.dialect.has_table(engine.connect(), "kobo_bookmark"):
+        KoboBookmark.__table__.create(bind=engine)
+    if not engine.dialect.has_table(engine.connect(), "kobo_statistics"):
+        KoboStatistics.__table__.create(bind=engine)
     if not engine.dialect.has_table(engine.connect(), "registration"):
         ReadBook.__table__.create(bind=engine)
         conn = engine.connect()
@@ -381,10 +440,13 @@ def migrate_Database(session):
         session.commit()
     try:
         session.query(exists().where(ReadBook.read_status)).scalar()
-    except exc.OperationalError:  # Database is not compatible, some columns are missing
+    except exc.OperationalError:
         conn = engine.connect()
         conn.execute("ALTER TABLE book_read_link ADD column 'read_status' INTEGER DEFAULT 0")
         conn.execute("UPDATE book_read_link SET 'read_status' = 1 WHERE is_read")
+        conn.execute("ALTER TABLE book_read_link ADD column 'last_modified' DATETIME")
+        conn.execute("ALTER TABLE book_read_link ADD column 'last_time_started_reading' DATETIME")
+        conn.execute("ALTER TABLE book_read_link ADD column 'times_started_reading' INTEGER DEFAULT 0")    
         session.commit()
 
     # Handle table exists, but no content

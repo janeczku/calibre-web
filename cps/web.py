@@ -319,11 +319,14 @@ def toggle_read(book_id):
             else:
                 book.read_status = ub.ReadBook.STATUS_FINISHED
         else:
-            readBook = ub.ReadBook()
-            readBook.user_id = int(current_user.id)
-            readBook.book_id = book_id
+            readBook = ub.ReadBook(user_id=current_user.id, book_id = book_id)
             readBook.read_status = ub.ReadBook.STATUS_FINISHED
             book = readBook
+        if not book.kobo_reading_state:
+            kobo_reading_state = ub.KoboReadingState(user_id=current_user.id, book_id=book_id)
+            kobo_reading_state.current_bookmark = ub.KoboBookmark()
+            kobo_reading_state.statistics = ub.KoboStatistics()
+            book.kobo_reading_state = kobo_reading_state
         ub.session.merge(book)
         ub.session.commit()
     else:
