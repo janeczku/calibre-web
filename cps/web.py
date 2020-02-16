@@ -1067,7 +1067,10 @@ def send_to_kindle(book_id, book_format, convert):
             flash(_(u"There was an error sending this book: %(res)s", res=result), category="error")
     else:
         flash(_(u"Please configure your kindle e-mail address first..."), category="error")
-    return redirect(request.environ["HTTP_REFERER"])
+    if "HTTP_REFERER" in request.environ:
+        return redirect(request.environ["HTTP_REFERER"])
+    else:
+        return redirect(url_for('web.index'))
 
 
 # ################################### Login Logout ##################################################################
