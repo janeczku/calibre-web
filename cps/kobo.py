@@ -43,6 +43,7 @@ import requests
 from . import config, logger, kobo_auth, db, helper
 from .services import SyncToken as SyncToken
 from .web import download_required
+from .kobo_auth import requires_kobo_auth
 
 KOBO_FORMATS = {"KEPUB": ["KEPUB"], "EPUB": ["EPUB3", "EPUB"]}
 KOBO_STOREAPI_URL = "https://storeapi.kobo.com"
@@ -72,8 +73,8 @@ CONNECTION_SPECIFIC_HEADERS = [
 def get_kobo_activated():
     return config.config_kobo_sync
 
-def redirect_or_proxy_request():
-    if config.config_kobo_proxy:
+def redirect_or_proxy_request(proxy=False):
+    if config.config_kobo_proxy or proxy == True:
         if request.method == "GET":
             return redirect(get_store_url_for_current_request(), 307)
         if request.method == "DELETE":
@@ -102,7 +103,7 @@ def redirect_or_proxy_request():
         return make_response(jsonify({}))
 
 @kobo.route("/v1/library/sync")
-@login_required
+@requires_kobo_auth
 @download_required
 def HandleSyncRequest():
     sync_token = SyncToken.SyncToken.from_headers(request.headers)
@@ -193,7 +194,7 @@ def generate_sync_response(request, sync_token, entitlements):
 
 
 @kobo.route("/v1/library/<book_uuid>/metadata")
-@login_required
+@requires_kobo_auth
 @download_required
 def HandleMetadataRequest(book_uuid):
     if not current_app.wsgi_app.is_proxied:
@@ -347,7 +348,7 @@ def reading_state(book):
 
 
 @kobo.route("/<book_uuid>/image.jpg")
-@login_required
+@requires_kobo_auth
 def HandleCoverImageRequest(book_uuid):
     log.debug("Cover request received for book %s" % book_uuid)
     book_cover = helper.get_book_cover_with_uuid(
@@ -393,9 +394,13 @@ def handle_404(err):
     log.debug("Unknown Request received: %s", request.base_url)
     return redirect_or_proxy_request()
 
+@kobo.route("/v1/auth/device", methods=["POST"])
+def login_auth_token():
+    log.info('Auth')
+    return redirect_or_proxy_request(proxy=True)
 
 @kobo.route("/v1/initialization")
-@login_required
+@requires_kobo_auth
 def HandleInitRequest():
     if not current_app.wsgi_app.is_proxied:
         log.debug('Kobo: Received unproxied request, changed request port to server port')
