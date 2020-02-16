@@ -1666,7 +1666,7 @@ msgstr "标为已读"
 
 #: cps/templates/detail.html:201
 msgid "Read"
-msgstr "阅读"
+msgstr "已读"
 
 #: cps/templates/detail.html:211
 msgid "Description:"
