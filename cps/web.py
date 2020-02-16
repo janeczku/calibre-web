@@ -132,7 +132,7 @@ def load_user_from_request(request):
                 user = _fetch_user_by_name(rp_header_username)
                 if user:
                     return user
-    
+
     auth_header = request.headers.get("Authorization")
     if auth_header:
         user = load_user_from_auth_header(auth_header)
