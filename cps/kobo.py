@@ -73,8 +73,26 @@ CONNECTION_SPECIFIC_HEADERS = [
 def get_kobo_activated():
     return config.config_kobo_sync
 
-def redirect_or_proxy_request(proxy=False):
-    if config.config_kobo_proxy or proxy == True:
+
+def make_request_to_kobo_store(sync_token=None):
+    outgoing_headers = Headers(request.headers)
+    outgoing_headers.remove("Host")
+    if sync_token:
+        sync_token.set_kobo_store_header(outgoing_headers)
+
+    store_response = requests.request(
+        method=request.method,
+        url=get_store_url_for_current_request(),
+        headers=outgoing_headers,
+        data=request.get_data(),
+        allow_redirects=False,
+        timeout=(2, 10)
+    )
+    return store_response
+
+
+def redirect_or_proxy_request():
+    if config.config_kobo_proxy:
         if request.method == "GET":
             return redirect(get_store_url_for_current_request(), 307)
         if request.method == "DELETE":
@@ -82,15 +100,7 @@ def redirect_or_proxy_request(proxy=False):
             return make_response(jsonify({}))
         else:
             # The Kobo device turns other request types into GET requests on redirects, so we instead proxy to the Kobo store ourselves.
-            outgoing_headers = Headers(request.headers)
-            outgoing_headers.remove("Host")
-            store_response = requests.request(
-                method=request.method,
-                url=get_store_url_for_current_request(),
-                headers=outgoing_headers,
-                data=request.get_data(),
-                allow_redirects=False,
-            )
+            store_response = make_request_to_kobo_store()
 
             response_headers = store_response.headers
             for header_key in CONNECTION_SPECIFIC_HEADERS:
@@ -101,6 +111,7 @@ def redirect_or_proxy_request(proxy=False):
             )
     else:
         return make_response(jsonify({}))
+
 
 @kobo.route("/v1/library/sync")
 @requires_kobo_auth
@@ -160,35 +171,24 @@ def HandleSyncRequest():
 
 
 def generate_sync_response(request, sync_token, entitlements):
-    # We first merge in sync results from the official Kobo store.
-    outgoing_headers = Headers(request.headers)
-    outgoing_headers.remove("Host")
-    sync_token.set_kobo_store_header(outgoing_headers)
-    store_response = requests.request(
-        method=request.method,
-        url=get_store_url_for_current_request(),
-        headers=outgoing_headers,
-        data=request.get_data(),
-    )
+    extra_headers = {}
+    if config.config_kobo_proxy:
+        # Merge in sync results from the official Kobo store.
+        try:
+            store_response = make_request_to_kobo_store(sync_token)
 
-    store_entitlements = store_response.json()
-    entitlements += store_entitlements
-    sync_token.merge_from_store_response(store_response)
+            store_entitlements = store_response.json()
+            entitlements += store_entitlements
+            sync_token.merge_from_store_response(store_response)
+            extra_headers["x-kobo-sync"] = store_response.headers.get("x-kobo-sync")
+            extra_headers["x-kobo-sync-mode"] = store_response.headers.get("x-kobo-sync-mode")
+            extra_headers["x-kobo-recent-reads"] = store_response.headers.get("x-kobo-recent-reads")
 
-    response = make_response(jsonify(entitlements))
+        except Exception as e:
+            log.error("Failed to receive or parse response from Kobo's sync endpoint: " + str(e))
+    sync_token.to_headers(extra_headers)
 
-    sync_token.to_headers(response.headers)
-    try:
-        # These headers could probably use some more investigation.
-        response.headers["x-kobo-sync"] = store_response.headers["x-kobo-sync"]
-        response.headers["x-kobo-sync-mode"] = store_response.headers[
-            "x-kobo-sync-mode"
-        ]
-        response.headers["x-kobo-recent-reads"] = store_response.headers[
-            "x-kobo-recent-reads"
-        ]
-    except KeyError:
-        pass
+    response = make_response(jsonify(entitlements), extra_headers)
 
     return response
 
@@ -377,6 +377,7 @@ def HandleUnimplementedRequest(dummy=None, book_uuid=None, shelf_name=None, tag_
     log.debug("Alternative Request received:")
     return redirect_or_proxy_request()
 
+
 # TODO: Implement the following routes
 @kobo.route("/v1/user/loyalty/<dummy>", methods=["GET", "POST"])
 @kobo.route("/v1/user/profile", methods=["GET", "POST"])
@@ -384,8 +385,20 @@ def HandleUnimplementedRequest(dummy=None, book_uuid=None, shelf_name=None, tag_
 @kobo.route("/v1/user/recommendations", methods=["GET", "POST"])
 @kobo.route("/v1/analytics/<dummy>", methods=["GET", "POST"])
 def HandleUserRequest(dummy=None):
-    log.debug("Unimplemented Request received: %s", request.base_url)
+    log.debug("Unimplemented User Request received: %s", request.base_url)
     return redirect_or_proxy_request()
+
+
+@kobo.route("/v1/products/<dummy>/prices", methods=["GET", "POST"])
+@kobo.route("/v1/products/<dummy>/recommendations", methods=["GET", "POST"])
+@kobo.route("/v1/products/<dummy>/nextread", methods=["GET", "POST"])
+@kobo.route("/v1/products/<dummy>/reviews", methods=["GET", "POST"])
+@kobo.route("/v1/products/books/<dummy>", methods=["GET", "POST"])
+@kobo.route("/v1/products/dailydeal", methods=["GET", "POST"])
+def HandleProductsRequest(dummy=None):
+    log.debug("Unimplemented Products Request received: %s", request.base_url)
+    return redirect_or_proxy_request()
+
 
 @kobo.app_errorhandler(404)
 def handle_404(err):
@@ -394,14 +407,45 @@ def handle_404(err):
     log.debug("Unknown Request received: %s", request.base_url)
     return redirect_or_proxy_request()
 
+
+def make_calibre_web_auth_response():
+    # As described in kobo_auth.py, CalibreWeb doesn't make use practical use of this auth/device API call for
+    # authentation (nor for authorization). We return a dummy response just to keep the device happy.
+    return make_response(
+            jsonify(
+                {
+                    "AccessToken": "abcde",
+                    "RefreshToken": "abcde",
+                    "TokenType": "Bearer",
+                    "TrackingId": "abcde",
+                    "UserKey": "abcdefgeh",
+                }
+            )
+        )
+
 @kobo.route("/v1/auth/device", methods=["POST"])
-def login_auth_token():
+def HandleAuthRequest():
     log.info('Auth')
-    return redirect_or_proxy_request(proxy=True)
+    if config.config_kobo_proxy:
+        try:
+            return redirect_or_proxy_request()
+        except:
+            log.error("Failed to receive or parse response from Kobo's auth endpoint. Falling back to un-proxied mode.")
+    return make_calibre_web_auth_response()
+
+
+def make_calibre_web_init_response(calibre_web_url):
+        resources = NATIVE_KOBO_RESOURCES(calibre_web_url)
+        response = make_response(jsonify({"Resources": resources}))
+        response.headers["x-kobo-apitoken"] = "e30="
+        return response
+
 
 @kobo.route("/v1/initialization")
 @requires_kobo_auth
 def HandleInitRequest():
+    log.info('Init')
+
     if not current_app.wsgi_app.is_proxied:
         log.debug('Kobo: Received unproxied request, changed request port to server port')
         calibre_web_url = "{url_scheme}://{url_base}:{url_port}".format(
@@ -411,34 +455,29 @@ def HandleInitRequest():
         )
     else:
         calibre_web_url = url_for("web.index", _external=True).strip("/")
+
     if config.config_kobo_proxy:
-        outgoing_headers = Headers(request.headers)
-        outgoing_headers.remove("Host")
-        store_response = requests.request(
-            method=request.method,
-            url=get_store_url_for_current_request(),
-            headers=outgoing_headers,
-            data=request.get_data(),
-        )
+        try:
+            store_response = make_request_to_kobo_store()
 
-        store_response_json = store_response.json()
-        if "Resources" in store_response_json:
-            kobo_resources = store_response_json["Resources"]
-            # calibre_web_url = url_for("web.index", _external=True).strip("/")
-            kobo_resources["image_host"] = calibre_web_url
-            kobo_resources["image_url_quality_template"] = unquote(calibre_web_url + url_for("kobo.HandleCoverImageRequest",
-                auth_token = kobo_auth.get_auth_token(),
-                book_uuid="{ImageId}"))
-            kobo_resources["image_url_template"] = unquote(calibre_web_url + url_for("kobo.HandleCoverImageRequest",
-                auth_token = kobo_auth.get_auth_token(),
-                book_uuid="{ImageId}"))
+            store_response_json = store_response.json()
+            if "Resources" in store_response_json:
+                kobo_resources = store_response_json["Resources"]
+                # calibre_web_url = url_for("web.index", _external=True).strip("/")
+                kobo_resources["image_host"] = calibre_web_url
+                kobo_resources["image_url_quality_template"] = unquote(calibre_web_url + url_for("kobo.HandleCoverImageRequest",
+                    auth_token = kobo_auth.get_auth_token(),
+                    book_uuid="{ImageId}"))
+                kobo_resources["image_url_template"] = unquote(calibre_web_url + url_for("kobo.HandleCoverImageRequest",
+                    auth_token = kobo_auth.get_auth_token(),
+                    book_uuid="{ImageId}"))
 
-        return make_response(store_response_json, store_response.status_code)
-    else:
-        resources = NATIVE_KOBO_RESOURCES(calibre_web_url)
-        response = make_response(jsonify({"Resources": resources}))
-        response.headers["x-kobo-apitoken"] = "e30="
-        return response
+            return make_response(store_response_json, store_response.status_code)
+        except:
+            log.error("Failed to receive or parse response from Kobo's init endpoint. Falling back to un-proxied mode.")
+
+    return make_calibre_web_init_response(calibre_web_url)
+
 
 def NATIVE_KOBO_RESOURCES(calibre_web_url):
     return {
