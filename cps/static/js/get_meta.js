@@ -19,7 +19,7 @@
  * Google Books api document: https://developers.google.com/books/docs/v1/using
  * Douban Books api document: https://developers.douban.com/wiki/?title=book_v2 (Chinese Only)
 */
-/* global _, i18nMsg, tinymce */ 
+/* global _, i18nMsg, tinymce */
 var dbResults = [];
 var ggResults = [];
 
@@ -55,9 +55,9 @@ $(function () {
         $(".cover img").attr("src", book.cover);
         $("#cover_url").val(book.cover);
         $("#pubdate").val(book.publishedDate);
-        $("#publisher").val(book.publisher)
-        if (book.series != undefined) {
-            $("#series").val(book.series)
+        $("#publisher").val(book.publisher);
+        if (typeof book.series !== "undefined") {
+            $("#series").val(book.series);
         }
     }
 
@@ -72,16 +72,18 @@ $(function () {
         }
         function formatDate (date) {
             var d = new Date(date),
-                month = '' + (d.getMonth() + 1),
-                day = '' + d.getDate(),
+                month = "" + (d.getMonth() + 1),
+                day = "" + d.getDate(),
                 year = d.getFullYear();
-        
-            if (month.length < 2) 
-                month = '0' + month;
-            if (day.length < 2) 
-                day = '0' + day;
-        
-            return [year, month, day].join('-');
+
+            if (month.length < 2) {
+                month = "0" + month;
+            }
+            if (day.length < 2) {
+                day = "0" + day;
+            }
+
+            return [year, month, day].join("-");
         }
 
         if (ggDone && ggResults.length > 0) {
@@ -116,16 +118,17 @@ $(function () {
         }
         if (dbDone && dbResults.length > 0) {
             dbResults.forEach(function(result) {
-                if (result.series){
-                    var series_title = result.series.title
+                var seriesTitle = "";
+                if (result.series) {
+                    seriesTitle = result.series.title;
                 }
-                var date_fomers = result.pubdate.split("-")
-                var publishedYear = parseInt(date_fomers[0])
-                var publishedMonth = parseInt(date_fomers[1])
-                var publishedDate = new Date(publishedYear, publishedMonth-1, 1)
+                var dateFomers = result.pubdate.split("-");
+                var publishedYear = parseInt(dateFomers[0]);
+                var publishedMonth = parseInt(dateFomers[1]);
+                var publishedDate = new Date(publishedYear, publishedMonth - 1, 1);
 
-                publishedDate = formatDate(publishedDate)
-               
+                publishedDate = formatDate(publishedDate);
+
                 var book = {
                     id: result.id,
                     title: result.title,
@@ -137,7 +140,7 @@ $(function () {
                         return tag.title.toLowerCase().replace(/,/g, "_");
                     }),
                     rating: result.rating.average || 0,
-                    series: series_title || "",
+                    series: seriesTitle || "",
                     cover: result.image,
                     url: "https://book.douban.com/subject/" + result.id,
                     source: {
@@ -183,7 +186,7 @@ $(function () {
     }
 
     function dbSearchBook (title) {
-        apikey="0df993c66c0c636e29ecbb5344252a4a"
+        var apikey = "0df993c66c0c636e29ecbb5344252a4a";
         $.ajax({
             url: douban + dbSearch + "?apikey=" + apikey + "&q=" + title + "&fields=all&count=10",
             type: "GET",
@@ -193,7 +196,7 @@ $(function () {
                 dbResults = data.books;
             },
             error: function error() {
-                $("#meta-info").html("<p class=\"text-danger\">" + msg.search_error + "!</p>"+ $("#meta-info")[0].innerHTML)
+                $("#meta-info").html("<p class=\"text-danger\">" + msg.search_error + "!</p>" + $("#meta-info")[0].innerHTML);
             },
             complete: function complete() {
                 dbDone = true;

@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 #  This file is part of the Calibre-Web (https://github.com/janeczku/calibre-web)
@@ -50,7 +49,7 @@ def oauth_required(f):
     def inner(*args, **kwargs):
         if config.config_login_type == constants.LOGIN_OAUTH:
             return f(*args, **kwargs)
-        if request.is_xhr:
+        if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
             data = {'status': 'error', 'message': 'Not Found'}
             response = make_response(json.dumps(data, ensure_ascii=False))
             response.headers["Content-Type"] = "application/json; charset=utf-8"
