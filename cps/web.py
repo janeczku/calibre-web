@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 #  This file is part of the Calibre-Web (https://github.com/janeczku/calibre-web)
@@ -125,12 +124,6 @@ def load_user(user_id):
 
 @lm.request_loader
 def load_user_from_request(request):
-    auth_header = request.headers.get("Authorization")
-    if auth_header:
-        user = load_user_from_auth_header(auth_header)
-        if user:
-            return user
-
     if config.config_allow_reverse_proxy_header_login:
         rp_header_name = config.config_reverse_proxy_login_header_name
         if rp_header_name:
@@ -139,6 +132,12 @@ def load_user_from_request(request):
                 user = _fetch_user_by_name(rp_header_username)
                 if user:
                     return user
+
+    auth_header = request.headers.get("Authorization")
+    if auth_header:
+        user = load_user_from_auth_header(auth_header)
+        if user:
+            return user
 
     return
 
@@ -1065,7 +1064,10 @@ def send_to_kindle(book_id, book_format, convert):
             flash(_(u"There was an error sending this book: %(res)s", res=result), category="error")
     else:
         flash(_(u"Please configure your kindle e-mail address first..."), category="error")
-    return redirect(request.environ["HTTP_REFERER"])
+    if "HTTP_REFERER" in request.environ:
+        return redirect(request.environ["HTTP_REFERER"])
+    else:
+        return redirect(url_for('web.index'))
 
 
 # ################################### Login Logout ##################################################################

@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 #  This file is part of the Calibre-Web (https://github.com/janeczku/calibre-web)
@@ -180,7 +179,10 @@ def remove_from_shelf(shelf_id, book_id):
 
         if not xhr:
             flash(_(u"Book has been removed from shelf: %(sname)s", sname=shelf.name), category="success")
-            return redirect(request.environ["HTTP_REFERER"])
+            if "HTTP_REFERER" in request.environ:
+                return redirect(request.environ["HTTP_REFERER"])
+            else:
+                return redirect(url_for('web.index'))
         return "", 204
     else:
         log.error("User %s not allowed to remove a book from %s", current_user, shelf)
