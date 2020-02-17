@@ -65,6 +65,10 @@ span.glyphicon.glyphicon-tags {padding-right: 5px;color: #999;vertical-align: te
 .navbar-default .navbar-toggle {border-color: #000;}
 .cover { margin-bottom: 10px;}
 .cover-height { max-height: 100px;}
+.col-sm-2 a .cover-small {
+    margin:5px;
+    max-height: 200px;
+}
 
 .btn-file {position: relative; overflow: hidden;}
 .btn-file input[type=file] {position: absolute; top: 0; right: 0; min-width: 100%; min-height: 100%; font-size: 100px; text-align: right; filter: alpha(opacity=0); opacity: 0; outline: none; background: white; cursor: inherit; display: block;}
