@@ -61,12 +61,18 @@ from binascii import hexlify
 from datetime import datetime
 from os import urandom
 
-from flask import g, Blueprint, url_for
+from flask import g, Blueprint, url_for, abort
 from flask_login import login_user, login_required
 from flask_babel import gettext as _
 
 from . import logger, ub, lm
 from .web import render_title_template
+
+try:
+    from functools import wraps
+except ImportError:
+    pass  # We're not using Python 3
+
 
 log = logger.create()
 
@@ -88,21 +94,24 @@ def get_auth_token():
         return None
 
 
-@lm.request_loader
-def load_user_from_kobo_request(request):
-    auth_token = get_auth_token()
-    if auth_token is not None:
-        user = (
-            ub.session.query(ub.User)
-            .join(ub.RemoteAuthToken)
-            .filter(ub.RemoteAuthToken.auth_token == auth_token).filter(ub.RemoteAuthToken.token_type==1)
-            .first()
-        )
-        if user is not None:
-            login_user(user)
-            return user
-    log.info("Received Kobo request without a recognizable auth token.")
-    return
+def requires_kobo_auth(f):
+    @wraps(f)
+    def inner(*args, **kwargs):
+        auth_token = get_auth_token()
+        if auth_token is not None:
+            user = (
+                ub.session.query(ub.User)
+                .join(ub.RemoteAuthToken)
+                .filter(ub.RemoteAuthToken.auth_token == auth_token).filter(ub.RemoteAuthToken.token_type==1)
+                .first()
+            )
+            if user is not None:
+                login_user(user)
+                return f(*args, **kwargs)
+            log.debug("Received Kobo request without a recognizable auth token.")
+            return abort(401)
+    return inner
+
 
 kobo_auth = Blueprint("kobo_auth", __name__, url_prefix="/kobo_auth")
 

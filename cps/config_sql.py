@@ -74,10 +74,10 @@ class _Settings(_Base):
     config_default_show = Column(SmallInteger, default=38911)
     config_columns_to_ignore = Column(String)
 
-    config_restricted_tags = Column(String, default="")
+    config_denied_tags = Column(String, default="")
     config_allowed_tags = Column(String, default="")
     config_restricted_column = Column(SmallInteger, default=0)
-    config_restricted_column_value = Column(String, default="")
+    config_denied_column_value = Column(String, default="")
     config_allowed_column_value = Column(String, default="")
 
     config_use_google_drive = Column(Boolean, default=False)
@@ -186,16 +186,16 @@ class _ConfigSQL(object):
     def show_detail_random(self):
         return self.show_element_new_user(constants.DETAIL_RANDOM)
 
-    def list_restricted_tags(self):
-        mct = self.config_restricted_tags.split(",")
+    def list_denied_tags(self):
+        mct = self.config_denied_tags.split(",")
         return [t.strip() for t in mct]
 
     def list_allowed_tags(self):
         mct = self.config_allowed_tags.split(",")
         return [t.strip() for t in mct]
 
-    def list_restricted_column_values(self):
-        mct = self.config_restricted_column_value.split(",")
+    def list_denied_column_values(self):
+        mct = self.config_denied_column_value.split(",")
         return [t.strip() for t in mct]
 
     def list_allowed_column_values(self):
@@ -341,8 +341,8 @@ def load_configuration(session):
         session.commit()
     conf = _ConfigSQL(session)
     # Migrate from global restrictions to user based restrictions
-    if bool(conf.config_default_show & constants.MATURE_CONTENT) and conf.config_restricted_tags == "":
-        conf.config_restricted_tags = conf.config_mature_content_tags
+    if bool(conf.config_default_show & constants.MATURE_CONTENT) and conf.config_denied_tags == "":
+        conf.config_denied_tags = conf.config_mature_content_tags
         conf.save()
         session.query(ub.User).filter(ub.User.mature_content != True). \
             update({"restricted_tags": conf.config_mature_content_tags}, synchronize_session=False)
