@@ -58,7 +58,7 @@
       {% endfor %}
     </div>
     {% endif %}
-    {% if feature_support['kobo'] and not new_user %}
+    {% if kobo_support and not new_user %}
     <label>{{ _('Kobo Sync Token')}}</label>
     <div class="form-group col">
       <a class="btn btn-default" id="config_create_kobo_token" data-toggle="modal" data-target="#modal_kobo_token" data-remote="false" href="{{ url_for('kobo_auth.generate_auth_token', user_id=content.id) }}">{{_('Create/View')}}</a>
@@ -79,7 +79,7 @@
           <input type="checkbox" name="Show_detail_random" id="Show_detail_random" {% if content.show_detail_random() %}checked{% endif %}>
           <label for="Show_detail_random">{{_('Show random books in detail view')}}</label>
       </div>
-      {% if ( g.user and g.user.role_admin() ) %}
+      {% if ( g.user and g.user.role_admin() and not new_user ) %}
       <a href="#" id="get_user_tags" class="btn btn-default" data-toggle="modal" data-target="#restrictModal">{{_('Add allowed/denied Tags')}}</a>
       <a href="#" id="get_user_column_values" class="btn btn-default" data-toggle="modal" data-target="#restrictModal">{{_('Add allowed/denied custom column values')}}</a>
       {% endif %}

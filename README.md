@@ -30,7 +30,7 @@ Calibre-Web is a web app providing a clean interface for browsing, reading and d
 
 ## Quick start
 
-1. Install dependencies by running `pip3 install --target vendor -r requirements.txt`.
+1. Install dependencies by running `pip3 install --target vendor -r requirements.txt` (python3.x) or `pip install --target vendor -r requirements.txt` (python2.7).
 2. Execute the command: `python cps.py` (or `nohup python cps.py` - recommended if you want to exit the terminal window)
 3. Point your browser to `http://localhost:8083` or `http://localhost:8083/opds` for the OPDS catalog
 4. Set `Location of Calibre database` to the path of the folder where your Calibre library (metadata.db) lives, push "submit" button\

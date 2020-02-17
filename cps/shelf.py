@@ -40,17 +40,18 @@ log = logger.create()
 @shelf.route("/shelf/add/<int:shelf_id>/<int:book_id>")
 @login_required
 def add_to_shelf(shelf_id, book_id):
+    xhr = request.headers.get('X-Requested-With') == 'XMLHttpRequest'
     shelf = ub.session.query(ub.Shelf).filter(ub.Shelf.id == shelf_id).first()
     if shelf is None:
         log.error("Invalid shelf specified: %s", shelf_id)
-        if not request.is_xhr:
+        if not xhr:
             flash(_(u"Invalid shelf specified"), category="error")
             return redirect(url_for('web.index'))
         return "Invalid shelf specified", 400
 
     if not shelf.is_public and not shelf.user_id == int(current_user.id):
         log.error("User %s not allowed to add a book to %s", current_user, shelf)
-        if not request.is_xhr:
+        if not xhr:
             flash(_(u"Sorry you are not allowed to add a book to the the shelf: %(shelfname)s", shelfname=shelf.name),
                   category="error")
             return redirect(url_for('web.index'))
@@ -58,7 +59,7 @@ def add_to_shelf(shelf_id, book_id):
 
     if shelf.is_public and not current_user.role_edit_shelfs():
         log.info("User %s not allowed to edit public shelves", current_user)
-        if not request.is_xhr:
+        if not xhr:
             flash(_(u"You are not allowed to edit public shelves"), category="error")
             return redirect(url_for('web.index'))
         return "User is not allowed to edit public shelves", 403
@@ -67,7 +68,7 @@ def add_to_shelf(shelf_id, book_id):
                                           ub.BookShelf.book_id == book_id).first()
     if book_in_shelf:
         log.error("Book %s is already part of %s", book_id, shelf)
-        if not request.is_xhr:
+        if not xhr:
             flash(_(u"Book is already part of the shelf: %(shelfname)s", shelfname=shelf.name), category="error")
             return redirect(url_for('web.index'))
         return "Book is already part of the shelf: %s" % shelf.name, 400
@@ -81,7 +82,7 @@ def add_to_shelf(shelf_id, book_id):
     ins = ub.BookShelf(shelf=shelf.id, book_id=book_id, order=maxOrder + 1)
     ub.session.add(ins)
     ub.session.commit()
-    if not request.is_xhr:
+    if not xhr:
         flash(_(u"Book has been added to shelf: %(sname)s", sname=shelf.name), category="success")
         if "HTTP_REFERER" in request.environ:
             return redirect(request.environ["HTTP_REFERER"])
@@ -147,10 +148,11 @@ def search_to_shelf(shelf_id):
 @shelf.route("/shelf/remove/<int:shelf_id>/<int:book_id>")
 @login_required
 def remove_from_shelf(shelf_id, book_id):
+    xhr = request.headers.get('X-Requested-With') == 'XMLHttpRequest'
     shelf = ub.session.query(ub.Shelf).filter(ub.Shelf.id == shelf_id).first()
     if shelf is None:
         log.error("Invalid shelf specified: %s", shelf_id)
-        if not request.is_xhr:
+        if not xhr:
             return redirect(url_for('web.index'))
         return "Invalid shelf specified", 400
 
@@ -169,20 +171,20 @@ def remove_from_shelf(shelf_id, book_id):
 
         if book_shelf is None:
             log.error("Book %s already removed from %s", book_id, shelf)
-            if not request.is_xhr:
+            if not xhr:
                 return redirect(url_for('web.index'))
             return "Book already removed from shelf", 410
 
         ub.session.delete(book_shelf)
         ub.session.commit()
 
-        if not request.is_xhr:
+        if not xhr:
             flash(_(u"Book has been removed from shelf: %(sname)s", sname=shelf.name), category="success")
             return redirect(request.environ["HTTP_REFERER"])
         return "", 204
     else:
         log.error("User %s not allowed to remove a book from %s", current_user, shelf)
-        if not request.is_xhr:
+        if not xhr:
             flash(_(u"Sorry you are not allowed to remove a book from this shelf: %(sname)s", sname=shelf.name),
                   category="error")
             return redirect(url_for('web.index'))
@@ -284,8 +286,16 @@ def show_shelf(shelf_type, shelf_id):
 
         books_in_shelf = ub.session.query(ub.BookShelf).filter(ub.BookShelf.shelf == shelf_id)\
             .order_by(ub.BookShelf.order.asc()).all()
-        books_list = [ b.book_id for b in books_in_shelf]
-        result = db.session.query(db.Books).filter(db.Books.id.in_(books_list)).filter(common_filters()).all()
+        for book in books_in_shelf:
+            cur_book = db.session.query(db.Books).filter(db.Books.id == book.book_id).filter(common_filters()).first()
+            if cur_book:
+                result.append(cur_book)
+            else:
+                cur_book = db.session.query(db.Books).filter(db.Books.id == book.book_id).first()
+                if not cur_book:
+                    log.info('Not existing book %s in %s deleted', book.book_id, shelf)
+                    ub.session.query(ub.BookShelf).filter(ub.BookShelf.book_id == book.book_id).delete()
+                    ub.session.commit()
         return render_title_template(page, entries=result, title=_(u"Shelf: '%(name)s'", name=shelf.name),
                                  shelf=shelf, page="shelf")
     else:
@@ -315,11 +325,22 @@ def order_shelf(shelf_id):
                                                            ub.Shelf.id == shelf_id))).first()
     result = list()
     if shelf:
-        books_in_shelf = ub.session.query(ub.BookShelf).filter(ub.BookShelf.shelf == shelf_id) \
+        books_in_shelf2 = ub.session.query(ub.BookShelf).filter(ub.BookShelf.shelf == shelf_id) \
             .order_by(ub.BookShelf.order.asc()).all()
-        books_list = [ b.book_id for b in books_in_shelf]
-        # cover, title, series, name, all author names,
-        result = db.session.query(db.Books).filter(db.Books.id.in_(books_list)).filter(common_filters()).all()
+        for book in books_in_shelf2:
+            cur_book = db.session.query(db.Books).filter(db.Books.id == book.book_id).filter(common_filters()).first()
+            if cur_book:
+                result.append({'title':cur_book.title,
+                               'id':cur_book.id,
+                               'author':cur_book.authors,
+                               'series':cur_book.series,
+                               'series_index':cur_book.series_index})
+            else:
+                cur_book = db.session.query(db.Books).filter(db.Books.id == book.book_id).first()
+                result.append({'title':_('Hidden Book'),
+                               'id':cur_book.id,
+                               'author':[],
+                               'series':[]})
     return render_title_template('shelf_order.html', entries=result,
                                  title=_(u"Change order of Shelf: '%(name)s'", name=shelf.name),
                                  shelf=shelf, page="shelforder")

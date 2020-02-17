@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 #  This file is part of the Calibre-Web (https://github.com/janeczku/calibre-web)
@@ -172,10 +171,7 @@ def update_view_configuration():
     _config_int("config_random_books")
     _config_int("config_books_per_page")
     _config_int("config_authors_max")
-
-    _config_string("config_restricted_tags")
     _config_int("config_restricted_column")
-    _config_string("config_restricted_column_value")
 
     if config.config_google_drive_watch_changes_response:
         config.config_google_drive_watch_changes_response = json.dumps(config.config_google_drive_watch_changes_response)
@@ -290,14 +286,14 @@ def edit_restriction(type):
             ub.session.commit()
     if element['id'].startswith('d'):
         if type == 0:  # Tags as template
-            elementlist = config.list_restricted_tags()
+            elementlist = config.list_denied_tags()
             elementlist[int(element['id'][1:])]=element['Element']
-            config.config_restricted_tags = ','.join(elementlist)
+            config.config_denied_tags = ','.join(elementlist)
             config.save()
         if type == 1:  # CustomC
-            elementlist = config.list_restricted_column_values()
+            elementlist = config.list_denied_column_values()
             elementlist[int(element['id'][1:])]=element['Element']
-            config.config_restricted_column_value = ','.join(elementlist)
+            config.config_denied_column_value = ','.join(elementlist)
             config.save()
             pass
         if type == 2:  # Tags per user
@@ -306,9 +302,9 @@ def edit_restriction(type):
                 usr = ub.session.query(ub.User).filter(ub.User.id == int(usr_id)).first()
             else:
                 usr = current_user
-            elementlist = usr.list_restricted_tags()
+            elementlist = usr.list_denied_tags()
             elementlist[int(element['id'][1:])]=element['Element']
-            usr.restricted_tags = ','.join(elementlist)
+            usr.denied_tags = ','.join(elementlist)
             ub.session.commit()
         if type == 3:  # CColumn per user
             usr_id = os.path.split(request.referrer)[-1]
@@ -316,9 +312,9 @@ def edit_restriction(type):
                 usr = ub.session.query(ub.User).filter(ub.User.id == int(usr_id)).first()
             else:
                 usr = current_user
-            elementlist = usr.list_restricted_column_values()
+            elementlist = usr.list_denied_column_values()
             elementlist[int(element['id'][1:])]=element['Element']
-            usr.restricted_column_value = ','.join(elementlist)
+            usr.denied_column_value = ','.join(elementlist)
             ub.session.commit()
     return ""
 
@@ -342,21 +338,20 @@ def restriction_deletion(element, list_func):
 @login_required
 @admin_required
 def add_restriction(type):
-    log.info("Hit: " + str(type))
     element = request.form.to_dict()
     if type == 0:  # Tags as template
         if 'submit_allow' in element:
             config.config_allowed_tags = restriction_addition(element, config.list_allowed_tags)
             config.save()
         elif 'submit_deny' in element:
-            config.config_restricted_tags = restriction_addition(element, config.list_restricted_tags)
+            config.config_denied_tags = restriction_addition(element, config.list_denied_tags)
             config.save()
     if type == 1:  # CCustom as template
         if 'submit_allow' in element:
-            config.config_allowed_column_value = restriction_addition(element, config.list_restricted_column_values)
+            config.config_allowed_column_value = restriction_addition(element, config.list_denied_column_values)
             config.save()
         elif 'submit_deny' in element:
-            config.config_restricted_column_value = restriction_addition(element, config.list_allowed_column_values)
+            config.config_denied_column_value = restriction_addition(element, config.list_allowed_column_values)
             config.save()
     if type == 2:  # Tags per user
         usr_id = os.path.split(request.referrer)[-1]
@@ -368,7 +363,7 @@ def add_restriction(type):
             usr.allowed_tags = restriction_addition(element, usr.list_allowed_tags)
             ub.session.commit()
         elif 'submit_deny' in element:
-            usr.restricted_tags = restriction_addition(element, usr.list_restricted_tags)
+            usr.denied_tags = restriction_addition(element, usr.list_denied_tags)
             ub.session.commit()
     if type == 3:  # CustomC per user
         usr_id = os.path.split(request.referrer)[-1]
@@ -380,7 +375,7 @@ def add_restriction(type):
             usr.allowed_column_value = restriction_addition(element, usr.list_allowed_column_values)
             ub.session.commit()
         elif 'submit_deny' in element:
-            usr.restricted_column_value = restriction_addition(element, usr.list_restricted_column_values)
+            usr.denied_column_value = restriction_addition(element, usr.list_denied_column_values)
             ub.session.commit()
     return ""
 
@@ -394,14 +389,14 @@ def delete_restriction(type):
             config.config_allowed_tags = restriction_deletion(element, config.list_allowed_tags)
             config.save()
         elif element['id'].startswith('d'):
-            config.config_restricted_tags = restriction_deletion(element, config.list_restricted_tags)
+            config.config_denied_tags = restriction_deletion(element, config.list_denied_tags)
             config.save()
     elif type == 1:  # CustomC as template
         if element['id'].startswith('a'):
             config.config_allowed_column_value = restriction_deletion(element, config.list_allowed_column_values)
             config.save()
         elif element['id'].startswith('d'):
-            config.config_restricted_column_value = restriction_deletion(element, config.list_restricted_column_values)
+            config.config_denied_column_value = restriction_deletion(element, config.list_denied_column_values)
             config.save()
     elif type == 2:  # Tags per user
         usr_id = os.path.split(request.referrer)[-1]
@@ -413,7 +408,7 @@ def delete_restriction(type):
             usr.allowed_tags = restriction_deletion(element, usr.list_allowed_tags)
             ub.session.commit()
         elif element['id'].startswith('d'):
-            usr.restricted_tags = restriction_deletion(element, usr.list_restricted_tags)
+            usr.denied_tags = restriction_deletion(element, usr.list_denied_tags)
             ub.session.commit()
     elif type == 3:  # Columns per user
         usr_id = os.path.split(request.referrer)[-1]
@@ -425,7 +420,7 @@ def delete_restriction(type):
             usr.allowed_column_value = restriction_deletion(element, usr.list_allowed_column_values)
             ub.session.commit()
         elif element['id'].startswith('d'):
-            usr.restricted_column_value = restriction_deletion(element, usr.list_restricted_column_values)
+            usr.denied_column_value = restriction_deletion(element, usr.list_denied_column_values)
             ub.session.commit()
     return ""
 
@@ -437,13 +432,13 @@ def delete_restriction(type):
 def list_restriction(type):
     if type == 0:   # Tags as template
         restrict = [{'Element': x, 'type':_('deny'), 'id': 'd'+str(i) }
-                    for i,x in enumerate(config.list_restricted_tags()) if x != '' ]
+                    for i,x in enumerate(config.list_denied_tags()) if x != '' ]
         allow = [{'Element': x, 'type':_('allow'), 'id': 'a'+str(i) }
                  for i,x in enumerate(config.list_allowed_tags()) if x != '']
         json_dumps = restrict + allow
     elif type == 1:  # CustomC as template
         restrict = [{'Element': x, 'type':_('deny'), 'id': 'd'+str(i) }
-                    for i,x in enumerate(config.list_restricted_column_values()) if x != '' ]
+                    for i,x in enumerate(config.list_denied_column_values()) if x != '' ]
         allow = [{'Element': x, 'type':_('allow'), 'id': 'a'+str(i) }
                  for i,x in enumerate(config.list_allowed_column_values()) if x != '']
         json_dumps = restrict + allow
@@ -454,7 +449,7 @@ def list_restriction(type):
         else:
             usr = current_user
         restrict = [{'Element': x, 'type':_('deny'), 'id': 'd'+str(i) }
-                    for i,x in enumerate(usr.list_restricted_tags()) if x != '' ]
+                    for i,x in enumerate(usr.list_denied_tags()) if x != '' ]
         allow = [{'Element': x, 'type':_('allow'), 'id': 'a'+str(i) }
                  for i,x in enumerate(usr.list_allowed_tags()) if x != '']
         json_dumps = restrict + allow
@@ -465,7 +460,7 @@ def list_restriction(type):
         else:
             usr = current_user
         restrict = [{'Element': x, 'type':_('deny'), 'id': 'd'+str(i) }
-                    for i,x in enumerate(usr.list_restricted_column_values()) if x != '' ]
+                    for i,x in enumerate(usr.list_denied_column_values()) if x != '' ]
         allow = [{'Element': x, 'type':_('allow'), 'id': 'a'+str(i) }
                  for i,x in enumerate(usr.list_allowed_column_values()) if x != '']
         json_dumps = restrict + allow
@@ -532,7 +527,7 @@ def _configuration_update_helper():
     _config_checkbox_int("config_uploading")
     _config_checkbox_int("config_anonbrowse")
     _config_checkbox_int("config_public_reg")
-    _config_checkbox_int("config_kobo_sync")
+    reboot_required |= _config_checkbox_int("config_kobo_sync")
     _config_checkbox_int("config_kobo_proxy")
 
 
@@ -679,6 +674,7 @@ def new_user():
     content = ub.User()
     languages = speaking_language()
     translations = [LC('en')] + babel.list_translations()
+    kobo_support = feature_support['kobo'] and config.config_kobo_sync
     if request.method == "POST":
         to_save = request.form.to_dict()
         content.default_language = to_save["default_language"]
@@ -694,7 +690,7 @@ def new_user():
         if not to_save["nickname"] or not to_save["email"] or not to_save["password"]:
             flash(_(u"Please fill out all fields!"), category="error")
             return render_title_template("user_edit.html", new_user=1, content=content, translations=translations,
-                                         registered_oauth=oauth_check, feature_support=feature_support,
+                                         registered_oauth=oauth_check, kobo_support=kobo_support,
                                          title=_(u"Add new user"))
         content.password = generate_password_hash(to_save["password"])
         existing_user = ub.session.query(ub.User).filter(func.lower(ub.User.nickname) == to_save["nickname"].lower())\
@@ -706,7 +702,7 @@ def new_user():
             if config.config_public_reg and not check_valid_domain(to_save["email"]):
                 flash(_(u"E-mail is not from valid domain"), category="error")
                 return render_title_template("user_edit.html", new_user=1, content=content, translations=translations,
-                                             registered_oauth=oauth_check, feature_support=feature_support,
+                                             registered_oauth=oauth_check, kobo_support=kobo_support,
                                              title=_(u"Add new user"))
             else:
                 content.email = to_save["email"]
@@ -714,8 +710,12 @@ def new_user():
             flash(_(u"Found an existing account for this e-mail address or nickname."), category="error")
             return render_title_template("user_edit.html", new_user=1, content=content, translations=translations,
                                      languages=languages, title=_(u"Add new user"), page="newuser",
-                                     feature_support=feature_support, registered_oauth=oauth_check)
+                                     kobo_support=kobo_support, registered_oauth=oauth_check)
         try:
+            content.allowed_tags = config.config_allowed_tags
+            content.denied_tags = config.config_denied_tags
+            content.allowed_column_value = config.config_allowed_column_value
+            content.denied_column_value = config.config_denied_column_value
             ub.session.add(content)
             ub.session.commit()
             flash(_(u"User '%(user)s' created", user=content.nickname), category="success")
@@ -726,13 +726,9 @@ def new_user():
     else:
         content.role = config.config_default_role
         content.sidebar_view = config.config_default_show
-        content.restricted_tags = config.config_restricted_tags
-        content.restricted_column = config.config_restricted_column
-        content.restricted_column_value = config.config_restricted_column_value
-        # content.mature_content = bool(config.config_default_show & constants.MATURE_CONTENT)
     return render_title_template("user_edit.html", new_user=1, content=content, translations=translations,
                                  languages=languages, title=_(u"Add new user"), page="newuser",
-                                 feature_support=feature_support, registered_oauth=oauth_check)
+                                 kobo_support=kobo_support, registered_oauth=oauth_check)
 
 
 @admi.route("/admin/mailsettings")
@@ -787,6 +783,7 @@ def edit_user(user_id):
     downloads = list()
     languages = speaking_language()
     translations = babel.list_translations() + [LC('en')]
+    kobo_support = feature_support['kobo'] and config.config_kobo_sync
     for book in content.downloads:
         downloadbook = db.session.query(db.Books).filter(db.Books.id == book.book_id).first()
         if downloadbook:
@@ -832,14 +829,6 @@ def edit_user(user_id):
             else:
                 content.sidebar_view &= ~constants.DETAIL_RANDOM
 
-            # content.mature_content = "Show_mature_content" in to_save
-            if "restricted_tags" in to_save:
-                content.restricted_tags = to_save["restricted_tags"]
-            if "config_restricted_column" in to_save:
-                content.restricted_tags = to_save["config_restricted_column"]
-            if "config_restricted_column_value" in to_save:
-                content.restricted_tags = to_save["config_restricted_column_value"]
-
             if "default_language" in to_save:
                 content.default_language = to_save["default_language"]
             if "locale" in to_save and to_save["locale"]:
@@ -855,7 +844,7 @@ def edit_user(user_id):
                                                  translations=translations,
                                                  languages=languages,
                                                  mail_configured = config.get_mail_server_configured(),
-                                                 feature_support=feature_support,
+                                                 kobo_support=kobo_support,
                                                  new_user=0,
                                                  content=content,
                                                  downloads=downloads,
@@ -874,7 +863,7 @@ def edit_user(user_id):
                                                  new_user=0, content=content,
                                                  downloads=downloads,
                                                  registered_oauth=oauth_check,
-                                                 feature_support=feature_support,
+                                                 kobo_support=kobo_support,
                                                  title=_(u"Edit User %(nick)s", nick=content.nickname),
                                                  page="edituser")
 
@@ -894,7 +883,7 @@ def edit_user(user_id):
                                  downloads=downloads,
                                  registered_oauth=oauth_check,
                                  mail_configured=config.get_mail_server_configured(),
-                                 feature_support=feature_support,
+                                 kobo_support=kobo_support,
                                  title=_(u"Edit User %(nick)s", nick=content.nickname), page="edituser")
 
 
@@ -925,10 +914,12 @@ def view_logfile():
     logfiles = {}
     logfiles[0] = logger.get_logfile(config.config_logfile)
     logfiles[1] = logger.get_accesslogfile(config.config_access_logfile)
-    return render_title_template("logviewer.html",title=_(u"Logfile viewer"),
-                                 log_enable=bool(config.config_logfile != logger.LOG_TO_STDOUT),
+    return render_title_template("logviewer.html",
+                                 title=_(u"Logfile viewer"),
                                  accesslog_enable=config.config_access_log,
-                                 logfiles=logfiles, page="logfile")
+                                 log_enable=bool(config.config_logfile != logger.LOG_TO_STDOUT),
+                                 logfiles=logfiles,
+                                 page="logfile")
 
 
 @admi.route("/ajax/log/<int:logtype>")

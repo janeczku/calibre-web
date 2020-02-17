@@ -41,3 +41,4 @@ try:
 except ImportError as err:
     log.debug("cannot import SyncToken, syncing books with Kobo Devices will not work: %s", err)
     kobo = None
+    SyncToken = None

@@ -455,7 +455,7 @@ def get_cover_on_failure(use_generic_cover):
         return None
 
 def get_book_cover(book_id):
-    book = db.session.query(db.Books).filter(db.Books.id == book_id).first()
+    book = db.session.query(db.Books).filter(db.Books.id == book_id).filter(common_filters()).first()
     return get_book_cover_internal(book, use_generic_cover_on_failure=True)
 
 def get_book_cover_with_uuid(book_uuid,
@@ -700,20 +700,17 @@ def common_filters(allow_show_archived=False):
         lang_filter = db.Books.languages.any(db.Languages.lang_code == current_user.filter_language())
     else:
         lang_filter = true()
-    negtags_list = current_user.list_restricted_tags()
+    negtags_list = current_user.list_denied_tags()
     postags_list = current_user.list_allowed_tags()
     neg_content_tags_filter = false() if negtags_list == [''] else db.Books.tags.any(db.Tags.name.in_(negtags_list))
     pos_content_tags_filter = true() if postags_list == [''] else db.Books.tags.any(db.Tags.name.in_(postags_list))
-    # db.session.query(db.Books).filter(db.Books.custom_column_5.any(db.cc_classes[5].value == 'nikto')).first()
-    # db.session.query(db.Books).filter(
-    #    getattr(db.Books, 'custom_column_' + str(5)).any(db.cc_classes[5].value == 'nikto').first())
     if config.config_restricted_column:
         pos_cc_list = current_user.allowed_column_value.split(',')
         pos_content_cc_filter = true() if pos_cc_list == [''] else \
             getattr(db.Books, 'custom_column_' + str(config.config_restricted_column)).\
                 any(db.cc_classes[config.config_restricted_column].value.in_(pos_cc_list))
-        neg_cc_list = current_user.restricted_column_value.split(',')
-        neg_content_cc_filter = true() if neg_cc_list == [''] else \
+        neg_cc_list = current_user.denied_column_value.split(',')
+        neg_content_cc_filter = false() if neg_cc_list == [''] else \
             getattr(db.Books, 'custom_column_' + str(config.config_restricted_column)).\
                 any(db.cc_classes[config.config_restricted_column].value.in_(neg_cc_list))
     else:
@@ -724,7 +721,7 @@ def common_filters(allow_show_archived=False):
 
 
 def tags_filters():
-    negtags_list = current_user.list_restricted_tags()
+    negtags_list = current_user.list_denied_tags()
     postags_list = current_user.list_allowed_tags()
     neg_content_tags_filter = false() if negtags_list == [''] else db.Tags.name.in_(negtags_list)
     pos_content_tags_filter = true() if postags_list == [''] else db.Tags.name.in_(postags_list)
@@ -735,7 +732,8 @@ def tags_filters():
 # Creates for all stored languages a translated speaking name in the array for the UI
 def speaking_language(languages=None):
     if not languages:
-        languages = db.session.query(db.Languages).all()
+        languages = db.session.query(db.Languages).join(db.books_languages_link).join(db.Books).filter(common_filters())\
+        .group_by(text('books_languages_link.lang_code')).all()
     for lang in languages:
         try:
             cur_l = LC.parse(lang.lang_code)
@@ -826,7 +824,7 @@ def get_cc_columns():
         cc = []
         for col in tmpcc:
             r = re.compile(config.config_columns_to_ignore)
-            if r.match(col.label):
+            if not r.match(col.name):
                 cc.append(col)
     else:
         cc = tmpcc
