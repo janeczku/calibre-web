@@ -146,7 +146,7 @@ class WebServer(object):
                 self.unix_socket_file = None
 
     def _start_tornado(self):
-        if os.name == 'nt':
+        if os.name == 'nt' and sys.version_info > (3, 7):
             import asyncio
             asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
         log.info('Starting Tornado server on %s', _readable_listen_address(self.listen_address, self.listen_port))

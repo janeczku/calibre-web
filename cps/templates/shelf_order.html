@@ -28,8 +28,8 @@
           </div>
         {% endfor %}
       </div>
-        <button onclick="sendData('{{ url_for('shelf.order_shelf', shelf_id=shelf.id) }}')" class="btn btn-default" id="ChangeOrder">{{_('Change Order')}}</button>
-        <a href="{{ url_for('shelf.show_shelf', shelf_id=shelf.id) }}" class="btn btn-default">{{_('Cancel')}}</a>
+        <button onclick="sendData('{{ url_for('shelf.order_shelf', shelf_id=shelf.id) }}')" class="btn btn-default" id="ChangeOrder">{{_('Change order')}}</button>
+        <a href="{{ url_for('shelf.show_shelf', shelf_id=shelf.id) }}" id="shelf_back" class="btn btn-default">{{_('Back')}}</a>
   </div>
 {% endblock %}
 

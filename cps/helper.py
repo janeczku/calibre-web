@@ -798,8 +798,8 @@ def get_download_link(book_id, book_format):
         file_name = get_valid_filename(file_name)
         headers = Headers()
         headers["Content-Type"] = mimetypes.types_map.get('.' + book_format, "application/octet-stream")
-        headers["Content-Disposition"] = "attachment; filename*=UTF-8''%s.%s" % (quote(file_name.encode('utf-8')),
-                                                                                 book_format)
+        headers["Content-Disposition"] = "attachment; filename=%s.%s; filename*=UTF-8''%s.%s" % (
+            quote(file_name.encode('utf-8')), book_format, quote(file_name.encode('utf-8')), book_format)
         return do_download_file(book, book_format, data, headers)
     else:
         abort(404)
