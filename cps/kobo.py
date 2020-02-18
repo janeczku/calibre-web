@@ -18,6 +18,8 @@
 #  along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 import sys
+import base64
+import os
 import uuid
 from time import gmtime, strftime
 try:
@@ -394,10 +396,31 @@ def handle_404(err):
     log.debug("Unknown Request received: %s", request.base_url)
     return redirect_or_proxy_request()
 
+
 @kobo.route("/v1/auth/device", methods=["POST"])
-def login_auth_token():
-    log.info('Auth')
-    return redirect_or_proxy_request(proxy=True)
+@requires_kobo_auth
+def HandleAuthRequest():
+    # Missing feature: Authentication :)
+    log.debug('Kobo Auth request')
+    content = request.get_json()
+    AccessToken = base64.b64encode(os.urandom(24)).decode('utf-8')
+    RefreshToken = base64.b64encode(os.urandom(24)).decode('utf-8')
+    if config.config_kobo_proxy:
+        return redirect_or_proxy_request(proxy=True)
+    else:
+        response = make_response(
+            jsonify(
+                {
+                    "AccessToken": AccessToken,
+                    "RefreshToken": RefreshToken,
+                    "TokenType": "Bearer",
+                    "TrackingId": str(uuid.uuid4()),
+                    "UserKey": content['UserKey'],
+                }
+            )
+        )
+        return response
+
 
 @kobo.route("/v1/initialization")
 @requires_kobo_auth

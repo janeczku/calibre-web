@@ -60,8 +60,9 @@ particular calls to non-Kobo specific endpoints such as the CalibreWeb book down
 from binascii import hexlify
 from datetime import datetime
 from os import urandom
+import os
 
-from flask import g, Blueprint, url_for, abort
+from flask import g, Blueprint, url_for, abort, request
 from flask_login import login_user, login_required
 from flask_babel import gettext as _
 
@@ -119,28 +120,37 @@ kobo_auth = Blueprint("kobo_auth", __name__, url_prefix="/kobo_auth")
 @kobo_auth.route("/generate_auth_token/<int:user_id>")
 @login_required
 def generate_auth_token(user_id):
-    # Invalidate any prevously generated Kobo Auth token for this user.
-    auth_token = ub.session.query(ub.RemoteAuthToken).filter(
-        ub.RemoteAuthToken.user_id == user_id
-    ).filter(ub.RemoteAuthToken.token_type==1).first()
+    host = ':'.join(request.host.rsplit(':')[0:-1])
+    if host == '127.0.0.1' or host.lower() == 'localhost' or host =='[::ffff:7f00:1]':
+        warning = _('PLease access calibre-web from non localhost to get valid api_endpoint for kobo device')
+        return render_title_template(
+            "generate_kobo_auth_url.html",
+            title=_(u"Kobo Set-up"),
+            warning = warning
+        )
+    else:
+        # Invalidate any prevously generated Kobo Auth token for this user.
+        auth_token = ub.session.query(ub.RemoteAuthToken).filter(
+            ub.RemoteAuthToken.user_id == user_id
+        ).filter(ub.RemoteAuthToken.token_type==1).first()
 
-    if not auth_token:
-        auth_token = ub.RemoteAuthToken()
-        auth_token.user_id = user_id
-        auth_token.expiration = datetime.max
-        auth_token.auth_token = (hexlify(urandom(16))).decode("utf-8")
-        auth_token.token_type = 1
+        if not auth_token:
+            auth_token = ub.RemoteAuthToken()
+            auth_token.user_id = user_id
+            auth_token.expiration = datetime.max
+            auth_token.auth_token = (hexlify(urandom(16))).decode("utf-8")
+            auth_token.token_type = 1
 
-        ub.session.add(auth_token)
-        ub.session.commit()
-
-    return render_title_template(
-        "generate_kobo_auth_url.html",
-        title=_(u"Kobo Set-up"),
-        kobo_auth_url=url_for(
-            "kobo.TopLevelEndpoint", auth_token=auth_token.auth_token, _external=True
-        ),
-    )
+            ub.session.add(auth_token)
+            ub.session.commit()
+        return render_title_template(
+            "generate_kobo_auth_url.html",
+            title=_(u"Kobo Set-up"),
+            kobo_auth_url=url_for(
+                "kobo.TopLevelEndpoint", auth_token=auth_token.auth_token, _external=True
+            ),
+            warning = False
+        )
 
 
 @kobo_auth.route("/deleteauthtoken/<int:user_id>")
