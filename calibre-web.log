@@ -1,0 +1,122 @@
+[2020-01-27 01:15:22,252]  INFO {cps.server:194} webserver stop (restart=False)
+[2020-01-27 01:15:22,253]  INFO {cps.server:179} Performing shutdown of Calibre-Web
+[2020-01-27 01:15:22,627] ERROR {asyncio:1703} Task was destroyed but it is pending!
+task: <Task pending name='Task-1' coro=<HTTP1ServerConnection._server_request_loop() running at /usr/lib/python3.8/site-packages/tornado/http1connection.py:817> wait_for=<Future pending cb=[<TaskWakeupMethWrapper object at 0x7fb7114cddc0>()]> cb=[IOLoop.add_future.<locals>.<lambda>() at /usr/lib/python3.8/site-packages/tornado/ioloop.py:690]>
+[2020-01-27 01:15:22,628] ERROR {asyncio:1703} Task was destroyed but it is pending!
+task: <Task pending name='Task-2' coro=<HTTP1ServerConnection._server_request_loop() running at /usr/lib/python3.8/site-packages/tornado/http1connection.py:817> wait_for=<Future pending cb=[<TaskWakeupMethWrapper object at 0x7fb7113a02b0>()]> cb=[IOLoop.add_future.<locals>.<lambda>() at /usr/lib/python3.8/site-packages/tornado/ioloop.py:690]>
+[2020-01-27 01:15:22,628] ERROR {asyncio:1703} Task was destroyed but it is pending!
+task: <Task pending name='Task-3' coro=<HTTP1ServerConnection._server_request_loop() running at /usr/lib/python3.8/site-packages/tornado/http1connection.py:817> wait_for=<Future pending cb=[<TaskWakeupMethWrapper object at 0x7fb7113a0520>()]> cb=[IOLoop.add_future.<locals>.<lambda>() at /usr/lib/python3.8/site-packages/tornado/ioloop.py:690]>
+[2020-01-27 01:15:22,628] ERROR {asyncio:1703} Task was destroyed but it is pending!
+task: <Task pending name='Task-4' coro=<HTTP1ServerConnection._server_request_loop() running at /usr/lib/python3.8/site-packages/tornado/http1connection.py:817> wait_for=<Future pending cb=[<TaskWakeupMethWrapper object at 0x7fb7113ce220>()]> cb=[IOLoop.add_future.<locals>.<lambda>() at /usr/lib/python3.8/site-packages/tornado/ioloop.py:690]>
+[2020-01-27 01:15:22,628] ERROR {asyncio:1703} Task was destroyed but it is pending!
+task: <Task pending name='Task-5' coro=<HTTP1ServerConnection._server_request_loop() running at /usr/lib/python3.8/site-packages/tornado/http1connection.py:817> wait_for=<Future pending cb=[<TaskWakeupMethWrapper object at 0x7fb7113a0a00>()]> cb=[IOLoop.add_future.<locals>.<lambda>() at /usr/lib/python3.8/site-packages/tornado/ioloop.py:690]>
+[2020-01-27 01:15:22,628] ERROR {asyncio:1703} Task was destroyed but it is pending!
+task: <Task pending name='Task-6' coro=<HTTP1ServerConnection._server_request_loop() running at /usr/lib/python3.8/site-packages/tornado/http1connection.py:817> wait_for=<Future pending cb=[<TaskWakeupMethWrapper object at 0x7fb719ded130>()]> cb=[IOLoop.add_future.<locals>.<lambda>() at /usr/lib/python3.8/site-packages/tornado/ioloop.py:690]>
+[2020-01-27 18:31:50,323]  INFO {cps:89} Starting Calibre Web...
+[2020-01-27 18:31:50,575]  INFO {cps.server:152} Starting Tornado server on :8083
+[2020-01-27 23:25:37,267]  INFO {cps.admin:697} Update status requested
+[2020-01-27 23:26:47,517]  INFO {cps.server:194} webserver stop (restart=True)
+[2020-01-27 23:26:47,518]  INFO {cps.server:182} Performing restart of Calibre-Web
+[2020-01-27 23:26:57,755]  INFO {cps:89} Starting Calibre Web...
+[2020-01-27 23:26:57,893]  INFO {cps.server:152} Starting Tornado server on :8083
+[2020-01-27 23:39:55,733]  INFO {cps.admin:701} Update status requested
+[2020-01-28 00:05:35,140]  INFO {cps.server:194} webserver stop (restart=False)
+[2020-01-28 00:05:35,154]  INFO {cps.server:179} Performing shutdown of Calibre-Web
+[2020-01-28 00:05:35,500] ERROR {asyncio:1703} Task was destroyed but it is pending!
+task: <Task pending name='Task-9' coro=<HTTP1ServerConnection._server_request_loop() done, defined at /usr/lib/python3.8/site-packages/tornado/http1connection.py:809> wait_for=<Future pending cb=[<TaskWakeupMethWrapper object at 0x7f2e0948aa30>()]> cb=[IOLoop.add_future.<locals>.<lambda>() at /usr/lib/python3.8/site-packages/tornado/ioloop.py:690]>
+[2020-01-29 15:02:46,368]  INFO {cps:89} Starting Calibre Web...
+[2020-01-29 15:02:46,572]  INFO {cps.server:152} Starting Tornado server on :8083
+[2020-01-29 18:22:15,048]  INFO {cps.admin:701} Update status requested
+[2020-01-29 18:22:19,441]  INFO {cps.server:194} webserver stop (restart=False)
+[2020-01-29 18:22:19,442]  INFO {cps.server:179} Performing shutdown of Calibre-Web
+[2020-01-29 18:22:19,721] ERROR {asyncio:1703} Task was destroyed but it is pending!
+task: <Task pending name='Task-1' coro=<HTTP1ServerConnection._server_request_loop() running at /usr/lib/python3.8/site-packages/tornado/http1connection.py:817> wait_for=<Future pending cb=[<TaskWakeupMethWrapper object at 0x7fd16c8747f0>()]> cb=[IOLoop.add_future.<locals>.<lambda>() at /usr/lib/python3.8/site-packages/tornado/ioloop.py:690]>
+[2020-01-29 18:22:19,722] ERROR {asyncio:1703} Task was destroyed but it is pending!
+task: <Task pending name='Task-2' coro=<HTTP1ServerConnection._server_request_loop() running at /usr/lib/python3.8/site-packages/tornado/http1connection.py:817> wait_for=<Future pending cb=[<TaskWakeupMethWrapper object at 0x7fd16c8bbdf0>()]> cb=[IOLoop.add_future.<locals>.<lambda>() at /usr/lib/python3.8/site-packages/tornado/ioloop.py:690]>
+[2020-01-29 18:22:19,722] ERROR {asyncio:1703} Task was destroyed but it is pending!
+task: <Task pending name='Task-3' coro=<HTTP1ServerConnection._server_request_loop() running at /usr/lib/python3.8/site-packages/tornado/http1connection.py:817> wait_for=<Future pending cb=[<TaskWakeupMethWrapper object at 0x7fd16c874bb0>()]> cb=[IOLoop.add_future.<locals>.<lambda>() at /usr/lib/python3.8/site-packages/tornado/ioloop.py:690]>
+[2020-01-29 18:22:19,722] ERROR {asyncio:1703} Task was destroyed but it is pending!
+task: <Task pending name='Task-4' coro=<HTTP1ServerConnection._server_request_loop() running at /usr/lib/python3.8/site-packages/tornado/http1connection.py:817> wait_for=<Future pending cb=[<TaskWakeupMethWrapper object at 0x7fd16c874d90>()]> cb=[IOLoop.add_future.<locals>.<lambda>() at /usr/lib/python3.8/site-packages/tornado/ioloop.py:690]>
+[2020-01-29 18:22:19,722] ERROR {asyncio:1703} Task was destroyed but it is pending!
+task: <Task pending name='Task-5' coro=<HTTP1ServerConnection._server_request_loop() running at /usr/lib/python3.8/site-packages/tornado/http1connection.py:817> wait_for=<Future pending cb=[<TaskWakeupMethWrapper object at 0x7fd16c891430>()]> cb=[IOLoop.add_future.<locals>.<lambda>() at /usr/lib/python3.8/site-packages/tornado/ioloop.py:690]>
+[2020-01-29 18:22:19,722] ERROR {asyncio:1703} Task was destroyed but it is pending!
+task: <Task pending name='Task-6' coro=<HTTP1ServerConnection._server_request_loop() running at /usr/lib/python3.8/site-packages/tornado/http1connection.py:817> wait_for=<Future pending cb=[<TaskWakeupMethWrapper object at 0x7fd16c874b50>()]> cb=[IOLoop.add_future.<locals>.<lambda>() at /usr/lib/python3.8/site-packages/tornado/ioloop.py:690]>
+[2020-01-30 18:21:47,784]  INFO {cps:89} Starting Calibre Web...
+[2020-01-30 18:21:48,004]  INFO {cps.server:152} Starting Tornado server on :8083
+[2020-01-30 18:24:04,466]  INFO {cps.admin:701} Update status requested
+[2020-01-30 18:24:09,093]  INFO {cps.server:194} webserver stop (restart=False)
+[2020-01-30 18:24:09,095]  INFO {cps.server:179} Performing shutdown of Calibre-Web
+[2020-01-30 18:24:09,329] ERROR {asyncio:1703} Task was destroyed but it is pending!
+task: <Task pending name='Task-1' coro=<HTTP1ServerConnection._server_request_loop() running at /usr/lib/python3.8/site-packages/tornado/http1connection.py:817> wait_for=<Future pending cb=[<TaskWakeupMethWrapper object at 0x7f473963b7c0>()]> cb=[IOLoop.add_future.<locals>.<lambda>() at /usr/lib/python3.8/site-packages/tornado/ioloop.py:690]>
+[2020-01-30 18:24:09,330] ERROR {asyncio:1703} Task was destroyed but it is pending!
+task: <Task pending name='Task-2' coro=<HTTP1ServerConnection._server_request_loop() running at /usr/lib/python3.8/site-packages/tornado/http1connection.py:817> wait_for=<Future pending cb=[<TaskWakeupMethWrapper object at 0x7f4742287040>()]> cb=[IOLoop.add_future.<locals>.<lambda>() at /usr/lib/python3.8/site-packages/tornado/ioloop.py:690]>
+[2020-01-30 18:24:09,330] ERROR {asyncio:1703} Task was destroyed but it is pending!
+task: <Task pending name='Task-3' coro=<HTTP1ServerConnection._server_request_loop() running at /usr/lib/python3.8/site-packages/tornado/http1connection.py:817> wait_for=<Future pending cb=[<TaskWakeupMethWrapper object at 0x7f473963b820>()]> cb=[IOLoop.add_future.<locals>.<lambda>() at /usr/lib/python3.8/site-packages/tornado/ioloop.py:690]>
+[2020-01-30 18:24:09,330] ERROR {asyncio:1703} Task was destroyed but it is pending!
+task: <Task pending name='Task-4' coro=<HTTP1ServerConnection._server_request_loop() running at /usr/lib/python3.8/site-packages/tornado/http1connection.py:817> wait_for=<Future pending cb=[<TaskWakeupMethWrapper object at 0x7f473965b6a0>()]> cb=[IOLoop.add_future.<locals>.<lambda>() at /usr/lib/python3.8/site-packages/tornado/ioloop.py:690]>
+[2020-01-30 18:24:09,330] ERROR {asyncio:1703} Task was destroyed but it is pending!
+task: <Task pending name='Task-5' coro=<HTTP1ServerConnection._server_request_loop() running at /usr/lib/python3.8/site-packages/tornado/http1connection.py:817> wait_for=<Future pending cb=[<TaskWakeupMethWrapper object at 0x7f473965bbe0>()]> cb=[IOLoop.add_future.<locals>.<lambda>() at /usr/lib/python3.8/site-packages/tornado/ioloop.py:690]>
+[2020-01-30 18:24:09,330] ERROR {asyncio:1703} Task was destroyed but it is pending!
+task: <Task pending name='Task-6' coro=<HTTP1ServerConnection._server_request_loop() running at /usr/lib/python3.8/site-packages/tornado/http1connection.py:817> wait_for=<Future pending cb=[<TaskWakeupMethWrapper object at 0x7f47396cd3d0>()]> cb=[IOLoop.add_future.<locals>.<lambda>() at /usr/lib/python3.8/site-packages/tornado/ioloop.py:690]>
+[2020-01-31 21:39:20,895]  INFO {cps:89} Starting Calibre Web...
+[2020-01-31 21:39:22,817]  INFO {cps.server:152} Starting Tornado server on :8083
+[2020-01-31 23:11:31,340]  INFO {cps.admin:701} Update status requested
+[2020-01-31 23:11:35,605]  INFO {cps.server:194} webserver stop (restart=False)
+[2020-01-31 23:11:35,607]  INFO {cps.server:179} Performing shutdown of Calibre-Web
+[2020-01-31 23:11:36,470] ERROR {asyncio:1703} Task was destroyed but it is pending!
+task: <Task pending name='Task-1' coro=<HTTP1ServerConnection._server_request_loop() running at /usr/lib/python3.8/site-packages/tornado/http1connection.py:817> wait_for=<Future pending cb=[<TaskWakeupMethWrapper object at 0x7f13e3d1deb0>()]> cb=[IOLoop.add_future.<locals>.<lambda>() at /usr/lib/python3.8/site-packages/tornado/ioloop.py:690]>
+[2020-01-31 23:11:36,471] ERROR {asyncio:1703} Task was destroyed but it is pending!
+task: <Task pending name='Task-2' coro=<HTTP1ServerConnection._server_request_loop() running at /usr/lib/python3.8/site-packages/tornado/http1connection.py:817> wait_for=<Future pending cb=[<TaskWakeupMethWrapper object at 0x7f13db03af10>()]> cb=[IOLoop.add_future.<locals>.<lambda>() at /usr/lib/python3.8/site-packages/tornado/ioloop.py:690]>
+[2020-01-31 23:11:36,471] ERROR {asyncio:1703} Task was destroyed but it is pending!
+task: <Task pending name='Task-3' coro=<HTTP1ServerConnection._server_request_loop() running at /usr/lib/python3.8/site-packages/tornado/http1connection.py:817> wait_for=<Future pending cb=[<TaskWakeupMethWrapper object at 0x7f13db03d2e0>()]> cb=[IOLoop.add_future.<locals>.<lambda>() at /usr/lib/python3.8/site-packages/tornado/ioloop.py:690]>
+[2020-01-31 23:11:36,471] ERROR {asyncio:1703} Task was destroyed but it is pending!
+task: <Task pending name='Task-6' coro=<HTTP1ServerConnection._server_request_loop() running at /usr/lib/python3.8/site-packages/tornado/http1connection.py:817> wait_for=<Future pending cb=[<TaskWakeupMethWrapper object at 0x7f13db03ad30>()]> cb=[IOLoop.add_future.<locals>.<lambda>() at /usr/lib/python3.8/site-packages/tornado/ioloop.py:690]>
+[2020-02-04 16:24:32,990]  INFO {cps:89} Starting Calibre Web...
+[2020-02-04 16:24:36,741]  INFO {cps.server:152} Starting Tornado server on :8083
+[2020-02-04 16:26:02,638]  INFO {cps.admin:701} Update status requested
+[2020-02-04 16:32:48,252]  INFO {cps.server:194} webserver stop (restart=True)
+[2020-02-04 16:32:48,253]  INFO {cps.server:182} Performing restart of Calibre-Web
+[2020-02-04 16:33:01,905]  INFO {cps:89} Starting Calibre Web...
+[2020-02-04 16:33:01,972]  INFO {cps.server:152} Starting Tornado server on :8083
+[2020-02-04 18:23:42,119]  INFO {cps.web:1037} Serving book: Zabavnoie Ievanghieliie - Lieo Taksil'
+[2020-02-04 23:10:19,079]  INFO {cps.server:194} webserver stop (restart=False)
+[2020-02-04 23:10:19,447]  INFO {cps.server:194} webserver stop (restart=False)
+[2020-02-04 23:10:19,895]  INFO {cps.server:194} webserver stop (restart=False)
+[2020-02-06 02:03:43,342]  INFO {cps:89} Starting Calibre Web...
+[2020-02-06 02:03:43,544]  INFO {cps.server:152} Starting Tornado server on :8083
+[2020-02-06 02:04:18,551]  INFO {cps.admin:701} Update status requested
+[2020-02-06 02:40:36,458]  INFO {cps.server:194} webserver stop (restart=False)
+[2020-02-06 02:40:36,460]  INFO {cps.server:179} Performing shutdown of Calibre-Web
+[2020-02-06 02:40:36,796] ERROR {asyncio:1703} Task was destroyed but it is pending!
+task: <Task pending name='Task-7' coro=<HTTP1ServerConnection._server_request_loop() running at /usr/lib/python3.8/site-packages/tornado/http1connection.py:817> wait_for=<Future pending cb=[<TaskWakeupMethWrapper object at 0x7f63bada74f0>()]> cb=[IOLoop.add_future.<locals>.<lambda>() at /usr/lib/python3.8/site-packages/tornado/ioloop.py:690]>
+[2020-02-06 02:40:36,796] ERROR {asyncio:1703} Task was destroyed but it is pending!
+task: <Task pending name='Task-8' coro=<HTTP1ServerConnection._server_request_loop() running at /usr/lib/python3.8/site-packages/tornado/http1connection.py:817> wait_for=<Future pending cb=[<TaskWakeupMethWrapper object at 0x7f63bb0e4610>()]> cb=[IOLoop.add_future.<locals>.<lambda>() at /usr/lib/python3.8/site-packages/tornado/ioloop.py:690]>
+[2020-02-06 02:40:36,796] ERROR {asyncio:1703} Task was destroyed but it is pending!
+task: <Task pending name='Task-9' coro=<HTTP1ServerConnection._server_request_loop() running at /usr/lib/python3.8/site-packages/tornado/http1connection.py:817> wait_for=<Future pending cb=[<TaskWakeupMethWrapper object at 0x7f63bada7520>()]> cb=[IOLoop.add_future.<locals>.<lambda>() at /usr/lib/python3.8/site-packages/tornado/ioloop.py:690]>
+[2020-02-06 02:40:36,796] ERROR {asyncio:1703} Task was destroyed but it is pending!
+task: <Task pending name='Task-10' coro=<HTTP1ServerConnection._server_request_loop() running at /usr/lib/python3.8/site-packages/tornado/http1connection.py:817> wait_for=<Future pending cb=[<TaskWakeupMethWrapper object at 0x7f63bada7c40>()]> cb=[IOLoop.add_future.<locals>.<lambda>() at /usr/lib/python3.8/site-packages/tornado/ioloop.py:690]>
+[2020-02-06 02:40:36,797] ERROR {asyncio:1703} Task was destroyed but it is pending!
+task: <Task pending name='Task-11' coro=<HTTP1ServerConnection._server_request_loop() running at /usr/lib/python3.8/site-packages/tornado/http1connection.py:817> wait_for=<Future pending cb=[<TaskWakeupMethWrapper object at 0x7f63bada7250>()]> cb=[IOLoop.add_future.<locals>.<lambda>() at /usr/lib/python3.8/site-packages/tornado/ioloop.py:690]>
+[2020-02-06 02:40:36,797] ERROR {asyncio:1703} Task was destroyed but it is pending!
+task: <Task pending name='Task-12' coro=<HTTP1ServerConnection._server_request_loop() running at /usr/lib/python3.8/site-packages/tornado/http1connection.py:817> wait_for=<Future pending cb=[<TaskWakeupMethWrapper object at 0x7f63bada70d0>()]> cb=[IOLoop.add_future.<locals>.<lambda>() at /usr/lib/python3.8/site-packages/tornado/ioloop.py:690]>
+[2020-02-13 10:06:10,898]  INFO {cps:89} Starting Calibre Web...
+[2020-02-13 10:06:11,144]  INFO {cps.server:152} Starting Tornado server on :8083
+[2020-02-13 10:06:36,518]  INFO {cps.admin:701} Update status requested
+[2020-02-13 10:09:16,596]  INFO {cps.server:194} webserver stop (restart=True)
+[2020-02-13 10:09:16,597]  INFO {cps.server:182} Performing restart of Calibre-Web
+[2020-02-13 10:09:17,751]  INFO {cps:89} Starting Calibre Web...
+[2020-02-13 10:09:17,827]  INFO {cps.server:152} Starting Tornado server on :8083
+[2020-02-13 10:09:49,674]  INFO {cps.admin:700} Update status requested
+[2020-02-13 10:13:22,224]  INFO {cps.server:194} webserver stop (restart=False)
+[2020-02-13 10:13:22,226]  INFO {cps.server:179} Performing shutdown of Calibre-Web
+[2020-02-13 10:13:22,733] ERROR {asyncio:1703} Task was destroyed but it is pending!
+task: <Task pending name='Task-7' coro=<HTTP1ServerConnection._server_request_loop() done, defined at /usr/lib/python3.8/site-packages/tornado/http1connection.py:809> wait_for=<Future pending cb=[<TaskWakeupMethWrapper object at 0x7f64a42598b0>()]> cb=[IOLoop.add_future.<locals>.<lambda>() at /usr/lib/python3.8/site-packages/tornado/ioloop.py:690]>
+[2020-02-18 14:34:53,682]  INFO {cps:89} Starting Calibre Web...
+[2020-02-18 14:34:53,986]  INFO {cps.server:152} Starting Tornado server on :8083
+[2020-02-18 15:10:33,964]  INFO {cps.admin:700} Update status requested
+[2020-02-18 15:16:05,959]  INFO {cps.admin:700} Update status requested
+[2020-02-18 15:16:21,314]  INFO {cps.server:194} webserver stop (restart=True)
+[2020-02-18 15:16:21,315]  INFO {cps.server:182} Performing restart of Calibre-Web
+[2020-02-18 15:16:31,736]  INFO {cps:89} Starting Calibre Web...
+[2020-02-18 15:16:32,185]  INFO {cps.server:152} Starting Tornado server on :8083
+[2020-02-18 15:16:44,979]  INFO {cps.admin:700} Update status requested
