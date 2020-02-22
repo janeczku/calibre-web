@@ -7,8 +7,8 @@ assignees: ''
 
 ---
 
-**Describe the bug**
-A clear and concise description of what the bug is.
+**Describe the bug/problem**
+A clear and concise description of what the bug is. If you are asking for support, please check our [Wiki](https://github.com/janeczku/calibre-web/wiki) if your question is already answered there.
 
 **To Reproduce**
 Steps to reproduce the behavior:
