@@ -121,7 +121,7 @@ kobo_auth = Blueprint("kobo_auth", __name__, url_prefix="/kobo_auth")
 @login_required
 def generate_auth_token(user_id):
     host = ':'.join(request.host.rsplit(':')[0:-1])
-    if host == '127.0.0.1' or host.lower() == 'localhost' or host =='[::ffff:7f00:1]':
+    if host.startswith('127.') or host.lower() == 'localhost' or host.startswith('[::ffff:7f'):
         warning = _('PLease access calibre-web from non localhost to get valid api_endpoint for kobo device')
         return render_title_template(
             "generate_kobo_auth_url.html",

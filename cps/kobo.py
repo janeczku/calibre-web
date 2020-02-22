@@ -416,20 +416,17 @@ def make_calibre_web_auth_response():
     content = request.get_json()
     AccessToken = base64.b64encode(os.urandom(24)).decode('utf-8')
     RefreshToken = base64.b64encode(os.urandom(24)).decode('utf-8')
-    if config.config_kobo_proxy:
-        return redirect_or_proxy_request(proxy=True)
-    else:
-        response = make_response(
-            jsonify(
-                {
-                    "AccessToken": AccessToken,
-                    "RefreshToken": RefreshToken,
-                    "TokenType": "Bearer",
-                    "TrackingId": str(uuid.uuid4()),
-                    "UserKey": content['UserKey'],
-                }
-            )
+    return  make_response(
+        jsonify(
+            {
+                "AccessToken": AccessToken,
+                "RefreshToken": RefreshToken,
+                "TokenType": "Bearer",
+                "TrackingId": str(uuid.uuid4()),
+                "UserKey": content['UserKey'],
+            }
         )
+    )
 
 
 @kobo.route("/v1/auth/device", methods=["POST"])
@@ -458,11 +455,15 @@ def HandleInitRequest():
 
     if not current_app.wsgi_app.is_proxied:
         log.debug('Kobo: Received unproxied request, changed request port to server port')
-        calibre_web_url = "{url_scheme}://{url_base}:{url_port}".format(
-            url_scheme=request.environ['wsgi.url_scheme'],
-            url_base=request.environ['SERVER_NAME'],
-            url_port=config.config_port
-        )
+        if request.environ['SERVER_NAME'] != '::':
+            calibre_web_url = "{url_scheme}://{url_base}:{url_port}".format(
+                url_scheme=request.environ['wsgi.url_scheme'],
+                url_base=request.environ['SERVER_NAME'],
+                url_port=config.config_port
+            )
+        else:
+            log.debug('Kobo: Received unproxied request, on IPV6 host')
+            calibre_web_url = url_for("web.index", _external=True).strip("/")
     else:
         calibre_web_url = url_for("web.index", _external=True).strip("/")
 

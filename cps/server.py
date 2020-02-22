@@ -178,6 +178,8 @@ class WebServer(object):
 
         if not self.restart:
             log.info("Performing shutdown of Calibre-Web")
+            # prevent irritiating log of pending tasks message from asyncio
+            logger.get('asyncio').setLevel(logger.logging.CRITICAL)
             return True
 
         log.info("Performing restart of Calibre-Web")
