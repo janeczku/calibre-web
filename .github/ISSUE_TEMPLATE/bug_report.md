@@ -24,12 +24,12 @@ A clear and concise description of what you expected to happen.
 If applicable, add screenshots to help explain your problem.
 
 **Environment (please complete the following information):**
- - OS: [e.g. Windows 10]
+ - OS: [e.g. Windows 10/raspian]
  - Python version [e.g. python2.7]
- - Docker container [ None/Technosoft2000/Linuxuser]:
  - Calibre-Web version [e.g. 0.6.5 or master@16.02.20, 19:55 ]:
+ - Docker container [ None/Technosoft2000/Linuxuser]:
+ - Special Hardware [e.g. Rasperry Pi Zero]
  - Browser [e.g. chrome, safari]
- - Version [e.g. 22]
 
 **Additional context**
-Add any other context about the problem here.
+Add any other context about the problem here. [e.g. access via reverse proxy]
