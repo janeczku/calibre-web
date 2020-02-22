@@ -1,5 +1,5 @@
 ---
-name: Bug report
+name: Bug/Problem report
 about: Create a report to help us improve Calibre-Web
 title: ''
 labels: ''
