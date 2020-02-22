@@ -48,7 +48,8 @@ from .gdriveutils import getFileFromEbooksFolder, do_gdrive_download
 from .helper import common_filters, get_search_results, fill_indexpage, speaking_language, check_valid_domain, \
         order_authors, get_typeahead, render_task_status, json_serial, get_cc_columns, \
         get_book_cover, get_download_link, send_mail, generate_random_password, send_registration_mail, \
-        check_send_to_kindle, check_read_formats, lcase, tags_filters, reset_password
+        check_send_to_kindle, check_read_formats, lcase, tags_filters, reset_password, \
+        get_readbooks_ids
 from .pagination import Pagination
 from .redirect import redirect_back
 
@@ -256,7 +257,7 @@ def edit_required(f):
 # Returns the template for rendering and includes the instance name
 def render_title_template(*args, **kwargs):
     sidebar=ub.get_sidebar_config(kwargs)
-    return render_template(instance=config.config_calibre_web_title, sidebar=sidebar, accept=constants.EXTENSIONS_UPLOAD,
+    return render_template(instance=config.config_calibre_web_title, sidebar=sidebar, accept=constants.EXTENSIONS_UPLOAD, readBookIds=set(get_readbooks_ids()),
                            *args, **kwargs)
 
 
@@ -978,18 +979,7 @@ def advanced_search():
 
 def render_read_books(page, are_read, as_xml=False, order=None, *args, **kwargs):
     order = order or []
-    if not config.config_read_column:
-        readBooks = ub.session.query(ub.ReadBook).filter(ub.ReadBook.user_id == int(current_user.id))\
-            .filter(ub.ReadBook.is_read == True).all()
-        readBookIds = [x.book_id for x in readBooks]
-    else:
-        try:
-            readBooks = db.session.query(db.cc_classes[config.config_read_column])\
-                .filter(db.cc_classes[config.config_read_column].value == True).all()
-            readBookIds = [x.book for x in readBooks]
-        except KeyError:
-            log.error("Custom Column No.%d is not existing in calibre database", config.config_read_column)
-            readBookIds = []
+    readBookIds = get_readbooks_ids()
 
     if are_read:
         db_filter = db.Books.id.in_(readBookIds)

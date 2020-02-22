@@ -82,6 +82,14 @@
           {% endfor %}
         </div>
         {% endif %}
+        <div class="read">
+          <span>Read:</span>
+        {% if entry.id in readBookIds %}
+          <span class="glyphicon glyphicon-ok"></span>
+        {% else %}
+          <span class="glyphicon glyphicon-remove"></span>
+        {% endif %}
+        </div>        
       </div>
     </div>
     {% endfor %}
@@ -123,6 +131,14 @@
           {% endfor %}
           {% endif %}
           {% endfor %}
+        </div>
+        <div class="read">
+          <span>Read:</span>
+        {% if entry.id in readBookIds %}
+          <span class="glyphicon glyphicon-ok"></span>
+        {% else %}
+          <span class="glyphicon glyphicon-remove"></span>
+        {% endif %}
         </div>
       </div>
     </div>

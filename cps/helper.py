@@ -855,6 +855,20 @@ def check_exists_book(authr,title):
             func.lower(db.Books.title).ilike("%" + title + "%")
             )).first()
 
+def get_readbooks_ids():
+    if not config.config_read_column:
+        readBooks = ub.session.query(ub.ReadBook).filter(ub.ReadBook.user_id == int(current_user.id))\
+            .filter(ub.ReadBook.is_read == True).all()
+        return [x.book_id for x in readBooks]
+    else:
+        try:
+            readBooks = db.session.query(db.cc_classes[config.config_read_column])\
+                .filter(db.cc_classes[config.config_read_column].value == True).all()
+            return [x.book for x in readBooks]
+        except KeyError:
+            log.error("Custom Column No.%d is not existing in calibre database", config.config_read_column)
+            return []
+
 ############### Database Helper functions
 
 def lcase(s):
