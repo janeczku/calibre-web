@@ -27,7 +27,7 @@ import datetime
 import json
 import mimetypes
 import traceback
-import sys
+import binascii
 
 from babel import Locale as LC
 from babel.dates import format_date
@@ -42,7 +42,7 @@ from werkzeug.exceptions import default_exceptions
 from werkzeug.datastructures import Headers
 from werkzeug.security import generate_password_hash, check_password_hash
 
-from . import constants, config, logger, isoLanguages, services, worker
+from . import constants, logger, isoLanguages, services, worker
 from . import searched_ids, lm, babel, db, ub, config, get_locale, app
 from .gdriveutils import getFileFromEbooksFolder, do_gdrive_download
 from .helper import common_filters, get_search_results, fill_indexpage, speaking_language, check_valid_domain, \
@@ -54,7 +54,8 @@ from .redirect import redirect_back
 
 feature_support = {
         'ldap': False, # bool(services.ldap),
-        'goodreads': bool(services.goodreads_support)
+        'goodreads': bool(services.goodreads_support),
+        'kobo':  bool(services.kobo)
     }
 
 try:
@@ -149,7 +150,7 @@ def load_user_from_auth_header(header_val):
         header_val = base64.b64decode(header_val).decode('utf-8')
         basic_username = header_val.split(':')[0]
         basic_password = header_val.split(':')[1]
-    except (TypeError, UnicodeDecodeError):
+    except (TypeError, UnicodeDecodeError, binascii.Error):
         pass
     user = _fetch_user_by_name(basic_username)
     if user and check_password_hash(str(user.password), basic_password):
@@ -459,12 +460,6 @@ def get_matching_tags():
         if len(exclude_tag_inputs) > 0:
             for tag in exclude_tag_inputs:
                 q = q.filter(not_(db.Books.tags.any(db.Tags.id == tag)))
-        '''if len(include_extension_inputs) > 0:
-            for tag in exclude_tag_inputs:
-                q = q.filter(not_(db.Books.tags.any(db.Tags.id == tag)))
-        if len(exclude_extension_inputs) > 0:
-            for tag in exclude_tag_inputs:
-                q = q.filter(not_(db.Books.tags.any(db.Tags.id == tag)))'''
         for book in q:
             for tag in book.tags:
                 if tag.id not in tag_dict['tags']:
@@ -966,11 +961,13 @@ def advanced_search():
         return render_title_template('search.html', searchterm=searchterm,
                                      entries=q, title=_(u"search"), page="search")
     # prepare data for search-form
-    # tags = db.session.query(db.Tags).order_by(db.Tags.name).all()
-    tags = db.session.query(db.Tags).filter(tags_filters()).order_by(db.Tags.name).all()
-    series = db.session.query(db.Series).order_by(db.Series.name).all()
-    extensions = db.session.query(db.Data) \
+    tags = db.session.query(db.Tags).join(db.books_tags_link).join(db.Books).filter(common_filters())\
+        .group_by(text('books_tags_link.tag')).order_by(db.Tags.name).all()
+    series = db.session.query(db.Series).join(db.books_series_link).join(db.Books).filter(common_filters())\
+        .group_by(text('books_series_link.series')).order_by(db.Series.name).filter(common_filters()).all()
+    extensions = db.session.query(db.Data).join(db.Books).filter(common_filters())\
         .group_by(db.Data.format).order_by(db.Data.format).all()
+
     if current_user.filter_language() == u"all":
         languages = speaking_language()
     else:
@@ -1091,10 +1088,10 @@ def register():
         if not to_save["nickname"] or not to_save["email"]:
             flash(_(u"Please fill out all fields!"), category="error")
             return render_title_template('register.html', title=_(u"register"), page="register")
+
         existing_user = ub.session.query(ub.User).filter(func.lower(ub.User.nickname) == to_save["nickname"]
                                                          .lower()).first()
         existing_email = ub.session.query(ub.User).filter(ub.User.email == to_save["email"].lower()).first()
-
         if not existing_user and not existing_email:
             content = ub.User()
             # content.password = generate_password_hash(to_save["password"])
@@ -1105,7 +1102,7 @@ def register():
                 content.password = generate_password_hash(password)
                 content.role = config.config_default_role
                 content.sidebar_view = config.config_default_show
-                content.mature_content = bool(config.config_default_show & constants.MATURE_CONTENT)
+                #content.mature_content = bool(config.config_default_show & constants.MATURE_CONTENT)
                 try:
                     ub.session.add(content)
                     ub.session.commit()
@@ -1294,10 +1291,12 @@ def profile():
     downloads = list()
     languages = speaking_language()
     translations = babel.list_translations() + [LC('en')]
+    kobo_support = feature_support['kobo'] and config.config_kobo_sync
     if feature_support['oauth']:
         oauth_status = get_oauth_status()
     else:
         oauth_status = None
+
     for book in current_user.downloads:
         downloadBook = db.session.query(db.Books).filter(db.Books.id == book.book_id).first()
         if downloadBook:
@@ -1312,11 +1311,14 @@ def profile():
                 current_user.password = generate_password_hash(to_save["password"])
         if "kindle_mail" in to_save and to_save["kindle_mail"] != current_user.kindle_mail:
             current_user.kindle_mail = to_save["kindle_mail"]
+        if "allowed_tags" in to_save and to_save["allowed_tags"] != current_user.allowed_tags:
+            current_user.allowed_tags = to_save["allowed_tags"].strip()
         if to_save["email"] and to_save["email"] != current_user.email:
             if config.config_public_reg and not check_valid_domain(to_save["email"]):
                 flash(_(u"E-mail is not from valid domain"), category="error")
                 return render_title_template("user_edit.html", content=current_user, downloads=downloads,
                                              title=_(u"%(name)s's profile", name=current_user.nickname), page="me",
+                                             kobo_support=kobo_support,
                                              registered_oauth=oauth_check, oauth_status=oauth_status)
         if "nickname" in to_save and to_save["nickname"] != current_user.nickname:
             # Query User nickname, if not existing, change
@@ -1327,6 +1329,7 @@ def profile():
                 return render_title_template("user_edit.html",
                                              translations=translations,
                                              languages=languages,
+                                             kobo_support=kobo_support,
                                              new_user=0, content=current_user,
                                              downloads=downloads,
                                              registered_oauth=oauth_check,
@@ -1349,7 +1352,7 @@ def profile():
         if "Show_detail_random" in to_save:
             current_user.sidebar_view += constants.DETAIL_RANDOM
 
-        current_user.mature_content = "Show_mature_content" in to_save
+        #current_user.mature_content = "Show_mature_content" in to_save
 
         try:
             ub.session.commit()
@@ -1358,13 +1361,13 @@ def profile():
             flash(_(u"Found an existing account for this e-mail address."), category="error")
             log.debug(u"Found an existing account for this e-mail address.")
             return render_title_template("user_edit.html", content=current_user, downloads=downloads,
-                                         translations=translations,
+                                         translations=translations, kobo_support=kobo_support,
                                          title=_(u"%(name)s's profile", name=current_user.nickname), page="me",
                                                  registered_oauth=oauth_check, oauth_status=oauth_status)
         flash(_(u"Profile updated"), category="success")
         log.debug(u"Profile updated")
     return render_title_template("user_edit.html", translations=translations, profile=1, languages=languages,
-                                 content=current_user, downloads=downloads,
+                                 content=current_user, downloads=downloads, kobo_support=kobo_support,
                                  title= _(u"%(name)s's profile", name=current_user.nickname),
                                  page="me", registered_oauth=oauth_check, oauth_status=oauth_status)
 

@@ -1,0 +1,39 @@
+{% macro restrict_modal() %}
+<div class="modal fade" id="restrictModal" tabindex="-1" role="dialog" aria-labelledby="restrictModalLabel">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title hidden" id="h1">{{_('Select allowed/denied Tags')}}</h4>
+        <h4 class="modal-title hidden" id="h2">{{_('Select allowed/denied Custom Column values')}}</h4>
+        <h4 class="modal-title hidden" id="h3">{{_('Select allowed/denied Tags of user')}}</h4>
+        <h4 class="modal-title hidden" id="h4">{{_('Select allowed/denied Custom Column values of user')}}</h4>
+      </div>
+      <div class="modal-body">
+          <table class="table table-no-bordered" id="restrict-elements-table" data-id-field="id" data-show-header="false" data-editable-mode="inline">
+            <thead>
+              <tr>
+                  <th data-field="Element" id="Element" data-editable-type="text" data-editable="true" data-editable-title="{{_('Enter Tag')}}"></th>
+                  <th data-field="type" id="type" data-visible="true"></th>
+                  <th data-field="id" id="id" data-visible="false"></th>
+                  <th data-align="right" data-formatter="RestrictionActions"></th>
+              </tr>
+            </thead>
+          </table>
+          <form id="add_restriction" action="" method="POST">
+          <div class="form-group required">
+            <label for="add_element">{{_('Add View Restriction')}}</label>
+            <input type="text" class="form-control" name="add_element" id="add_element" >
+          </div>
+          <div class="form-group required">
+            <input type="button" class="btn btn-default" value="{{_('Allow')}}" name="submit_allow" id="submit_allow" data-dismiss="static">
+            <input type="button" class="btn btn-default" value="{{_('Deny')}}" name="submit_deny" id="submit_restrict" data-dismiss="static">
+          </div>
+          </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" id="restrict_close" class="btn btn-default" data-dismiss="modal">{{_('Close')}}</button>
+      </div>
+    </div>
+  </div>
+</div>
+{% endmacro %}
