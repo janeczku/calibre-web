@@ -55,7 +55,6 @@ class WebServer(object):
     def __init__(self):
         signal.signal(signal.SIGINT, self._killServer)
         signal.signal(signal.SIGTERM, self._killServer)
-        signal.signal(signal.SIGQUIT, self._killServer)
 
         self.wsgiserver = None
         self.access_logger = None
