@@ -198,7 +198,7 @@ class Updater(threading.Thread):
         )
         additional_path = self.is_venv()
         if additional_path:
-            exclude = exclude + (additional_path)
+            exclude = exclude + (additional_path,)
         for root, dirs, files in os.walk(destination, topdown=True):
             for name in files:
                 old_list.append(os.path.join(root, name).replace(destination, ''))
