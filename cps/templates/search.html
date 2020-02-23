@@ -3,7 +3,7 @@
 <div class="discover">
     {% if entries|length < 1 %}
       <h2>{{_('No Results Found')}} {{searchterm}}</h2>
-      <p>{{_('Search Term::')}} {{searchterm}}</p>
+      <p>{{_('Search Term:')}} {{searchterm}}</p>
     {% else %}
       <h2>{{entries|length}} {{_('Results for:')}} {{searchterm}}</h2>
       {% if g.user.is_authenticated %}
