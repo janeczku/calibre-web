@@ -30,7 +30,7 @@ import babel, pytz, requests, sqlalchemy
 import werkzeug, flask, flask_login, flask_principal, jinja2
 from flask_babel import gettext as _
 
-from . import db, converter, uploader, server, isoLanguages
+from . import db, converter, uploader, server, isoLanguages, constants
 from .web import render_title_template
 try:
     from flask_login import __version__ as flask_loginVersion
@@ -49,8 +49,11 @@ about = flask.Blueprint('about', __name__)
 
 
 _VERSIONS = OrderedDict(
-    Platform = ' '.join(platform.uname()),
+    Platform = '{0.system} {0.release} {0.version} {0.processor} {0.machine}'.format(platform.uname()),
     Python=sys.version,
+    Calibre_Web=constants.STABLE_VERSION['version'] + ' - '
+                + constants.NIGHTLY_VERSION[0].replace('%','%%') + ' - '
+                + constants.NIGHTLY_VERSION[1].replace('%','%%'),
     WebServer=server.VERSION,
     Flask=flask.__version__,
     Flask_Login=flask_loginVersion,
