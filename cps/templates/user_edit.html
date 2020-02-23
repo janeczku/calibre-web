@@ -46,7 +46,6 @@
             {% endfor %}
         </select>
     </div>
-
     {% if registered_oauth.keys()| length > 0 %}
       {% for id, name in registered_oauth.items() %}
     <div class="form-group">
@@ -60,7 +59,6 @@
     </div>
 
     {% endif %}
-
     <div class="col-sm-6">
         {% for element in sidebar %}
           {% if element['config_show'] %}

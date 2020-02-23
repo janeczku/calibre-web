@@ -21,14 +21,12 @@ vendor/
 # calibre-web
 *.db
 *.log
-config.ini
-cps/static/[0-9]*
 
 .idea/
 *.bak
 *.log.*
-tags
 
 settings.yaml
 gdrive_credentials
 client_secrets.json
+

@@ -1,8 +1,6 @@
 {% extends "layout.html" %}
 {% block body %}
 {% if book %}
-
-
   <div class="col-sm-3 col-lg-3 col-xs-12">
     <div class="cover">
         <img src="{{ url_for('web.get_cover', book_id=book.id) }}" alt="{{ book.title }}"/>
@@ -115,8 +113,8 @@
               </select>
             {% endif %}
 
-            {% if c.datatype == 'int' %}
-              <input type="number" step="1" class="form-control" name="{{ 'custom_column_' ~ c.id }}" id="{{ 'custom_column_' ~ c.id }}" value="{% if book['custom_column_' ~ c.id]|length > 0 %}{{ book['custom_column_' ~ c.id][0].value }}{% endif %}">
+            {% if c.datatype == 'int' or c.datatype == 'float' %}
+	    <input type="number" step="{% if c.datatype == 'float' %}0.01{% else %}1{% endif %}" class="form-control" name="{{ 'custom_column_' ~ c.id }}" id="{{ 'custom_column_' ~ c.id }}" value="{% if book['custom_column_' ~ c.id]|length > 0 %}{{ book['custom_column_' ~ c.id][0].value }}{% endif %}">
             {% endif %}
 
             {% if c.datatype in ['text', 'series'] and not c.is_multiple %}
