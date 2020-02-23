@@ -58,12 +58,12 @@ msgstr "Aggiornamento della configurazione di Calibre-Web"
 #: cps/admin.py:434 cps/admin.py:440 cps/admin.py:451 cps/admin.py:462
 #: cps/templates/modal_restriction.html:29
 msgid "Deny"
-msgstr ""
+msgstr "Nega"
 
 #: cps/admin.py:436 cps/admin.py:442 cps/admin.py:453 cps/admin.py:464
 #: cps/templates/modal_restriction.html:28
 msgid "Allow"
-msgstr ""
+msgstr "Permetti"
 
 #: cps/admin.py:667
 msgid "Basic Configuration"
@@ -186,7 +186,7 @@ msgstr "Arresto il server"
 
 #: cps/admin.py:963
 msgid "Update finished, please press okay and reload page"
-msgstr "Aggiornamento completato, prego premi ok e ricarica la pagina"
+msgstr "Aggiornamento completato, per favore premi ok e ricarica la pagina"
 
 #: cps/admin.py:964 cps/admin.py:965 cps/admin.py:966 cps/admin.py:967
 msgid "Update failed:"
@@ -435,11 +435,11 @@ msgstr "Processo sconosciuto: "
 
 #: cps/kobo_auth.py:127
 msgid "PLease access calibre-web from non localhost to get valid api_endpoint for kobo device"
-msgstr ""
+msgstr "Per favore, per ottenere un valido api-endpoint per Kobo, accedi a Calibre-web non da localhost"
 
 #: cps/kobo_auth.py:130 cps/kobo_auth.py:150
 msgid "Kobo Setup"
-msgstr ""
+msgstr "Configurazione di Kobo"
 
 #: cps/oauth_bb.py:74
 #, python-format
@@ -580,7 +580,7 @@ msgstr "Errore durante l'apertura dello scaffale. Lo scaffale non esiste o non �
 
 #: cps/shelf.py:342
 msgid "Hidden Book"
-msgstr ""
+msgstr "Libro nascosto"
 
 #: cps/shelf.py:347
 #, python-format
@@ -609,7 +609,7 @@ msgstr "Libri meglio valutati"
 
 #: cps/ub.py:65
 msgid "Show Top Rated Books"
-msgstr "Mostra l'opzione per la selezione dei libri meglio votati"
+msgstr "Mostra l'opzione per la selezione dei libri meglio valutati"
 
 #: cps/templates/index.xml:46 cps/templates/index.xml:50 cps/ub.py:66
 #: cps/web.py:1005
@@ -911,7 +911,7 @@ msgstr "Profilo aggiornato"
 
 #: cps/web.py:1384 cps/web.py:1480
 msgid "Error opening eBook. File does not exist or file is not accessible:"
-msgstr ""
+msgstr "Errore nell'aprire il libro. Il file non esiste o il file non è accessibile."
 
 #: cps/web.py:1396 cps/web.py:1399 cps/web.py:1402 cps/web.py:1409
 #: cps/web.py:1414
@@ -940,7 +940,7 @@ msgstr "Elenco utenti"
 #: cps/templates/login.html:9 cps/templates/register.html:7
 #: cps/templates/user_edit.html:8
 msgid "Username"
-msgstr "Nickname"
+msgstr "Utente"
 
 #: cps/templates/admin.html:13 cps/templates/register.html:11
 #: cps/templates/user_edit.html:13
@@ -949,11 +949,11 @@ msgstr "E-mail"
 
 #: cps/templates/admin.html:14 cps/templates/user_edit.html:26
 msgid "Send to Kindle E-mail Address"
-msgstr "Kindle"
+msgstr "Invia all'email di Kindle"
 
 #: cps/templates/admin.html:15
 msgid "Downloads"
-msgstr "DLS"
+msgstr "Downloads"
 
 #: cps/templates/admin.html:16 cps/templates/layout.html:76
 msgid "Admin"
@@ -979,7 +979,7 @@ msgstr "Modifica"
 
 #: cps/templates/admin.html:38
 msgid "Add New User"
-msgstr ""
+msgstr "Aggiungi un nuovo utente"
 
 #: cps/templates/admin.html:44
 msgid "E-mail Server Settings"
@@ -1015,7 +1015,7 @@ msgstr "Configurazione"
 
 #: cps/templates/admin.html:70
 msgid "Calibre Database Directory"
-msgstr "Cartella DB Calibre"
+msgstr "Cartella del database di Calibre"
 
 #: cps/templates/admin.html:74 cps/templates/config_edit.html:122
 msgid "Log Level"
@@ -1031,7 +1031,7 @@ msgstr "Libri per pagina"
 
 #: cps/templates/admin.html:88
 msgid "Uploads"
-msgstr "Uploading"
+msgstr "Uploads"
 
 #: cps/templates/admin.html:92
 msgid "Anonymous Browsing"
@@ -1043,7 +1043,7 @@ msgstr "Registrazione pubblica"
 
 #: cps/templates/admin.html:100
 msgid "Magic Link Remote Login"
-msgstr "Login remoto"
+msgstr "Magic Link Login remoto"
 
 #: cps/templates/admin.html:104
 msgid "Reverse Proxy Login"
@@ -1055,11 +1055,11 @@ msgstr "Nome intestazione reverse proxy"
 
 #: cps/templates/admin.html:114
 msgid "Edit Basic Configuration"
-msgstr ""
+msgstr "Edita la configurazione di base"
 
 #: cps/templates/admin.html:115
 msgid "Edit UI Configuration"
-msgstr ""
+msgstr "Edita la configurazione dell'interfaccia utente"
 
 #: cps/templates/admin.html:121
 msgid "Administration"
@@ -1071,7 +1071,7 @@ msgstr "Visualizza Logfile"
 
 #: cps/templates/admin.html:123
 msgid "Reconnect Calibre Database"
-msgstr "Ricollegare al DB Calibre"
+msgstr "Ricollega al database di Calibre"
 
 #: cps/templates/admin.html:124
 msgid "Restart"
@@ -1121,7 +1121,7 @@ msgstr "Ok"
 #: cps/templates/shelf.html:73 cps/templates/shelf_edit.html:19
 #: cps/templates/user_edit.html:137
 msgid "Cancel"
-msgstr ""
+msgstr "Annulla"
 
 #: cps/templates/admin.html:179
 msgid "Are you sure you want to shutdown?"
@@ -1179,7 +1179,7 @@ msgstr "Converti da:"
 
 #: cps/templates/book_edit.html:30 cps/templates/book_edit.html:37
 msgid "select an option"
-msgstr "seleziona un'opzione"
+msgstr "seleziona un formato"
 
 #: cps/templates/book_edit.html:35
 msgid "Convert to:"
@@ -1209,7 +1209,7 @@ msgstr "Categorie"
 
 #: cps/templates/book_edit.html:73
 msgid "Series ID"
-msgstr ""
+msgstr "ID della serie"
 
 #: cps/templates/book_edit.html:77
 msgid "Rating"
@@ -1262,7 +1262,7 @@ msgstr "Ottieni metadati"
 #: cps/templates/config_view_edit.html:150 cps/templates/email_edit.html:38
 #: cps/templates/shelf_edit.html:17 cps/templates/user_edit.html:135
 msgid "Save"
-msgstr ""
+msgstr "Salva"
 
 #: cps/templates/book_edit.html:185
 msgid "Are you really sure?"
@@ -1282,7 +1282,7 @@ msgstr "Parola chiave"
 
 #: cps/templates/book_edit.html:210
 msgid " Search keyword "
-msgstr "Cerca parola chiave"
+msgstr " ricerca parola chiave "
 
 #: cps/templates/book_edit.html:216
 msgid "Click the cover to load metadata to the form"
@@ -1424,11 +1424,11 @@ msgstr "Attiva login remoto (\"magic link\")"
 
 #: cps/templates/config_edit.html:175
 msgid "Enable Kobo sync"
-msgstr ""
+msgstr "Abilita la sincronia per Kobo"
 
 #: cps/templates/config_edit.html:180
 msgid "Proxy unknown requests to Kobo Store"
-msgstr ""
+msgstr "Richieste proxy sconosciute allo store di Kobo"
 
 #: cps/templates/config_edit.html:187
 msgid "Use Goodreads"
@@ -1592,7 +1592,7 @@ msgstr "Tema standard"
 
 #: cps/templates/config_view_edit.html:42
 msgid "caliBlur! Dark Theme"
-msgstr "caliBlur! Dark Theme"
+msgstr "Tema caliBlur! Dark"
 
 #: cps/templates/config_view_edit.html:46
 msgid "Regular Expression for Ignoring Columns"
@@ -1604,7 +1604,7 @@ msgstr "Collega lo stato letto/non letto nella colonna di Calibre"
 
 #: cps/templates/config_view_edit.html:59
 msgid "View Restrictions based on Calibre column"
-msgstr ""
+msgstr "Visualizza le restrizioni basate sulla colonna di Calibre"
 
 #: cps/templates/config_view_edit.html:61 cps/templates/email_edit.html:21
 msgid "None"
@@ -1640,7 +1640,7 @@ msgstr "Permetti la modifica"
 
 #: cps/templates/config_view_edit.html:108 cps/templates/user_edit.html:113
 msgid "Allow Delete Books"
-msgstr ""
+msgstr "Permetti l'eliminazione di libri"
 
 #: cps/templates/config_view_edit.html:112 cps/templates/user_edit.html:118
 msgid "Allow Changing Password"
@@ -1660,11 +1660,11 @@ msgstr "Mostra libri scelti aleatoriamente nella vista dettagliata"
 
 #: cps/templates/config_view_edit.html:144
 msgid "Add Allowed/Denied Tags"
-msgstr ""
+msgstr "Aggiungi Permetti/Nega etichette"
 
 #: cps/templates/config_view_edit.html:145
 msgid "Add Allowed/Denied custom column values"
-msgstr ""
+msgstr "Aggiungi Permetti/Nega valori personali nelle colonne"
 
 #: cps/templates/detail.html:59
 msgid "Read in Browser"
@@ -1684,7 +1684,7 @@ msgstr "di"
 
 #: cps/templates/detail.html:165
 msgid "Published"
-msgstr ""
+msgstr "Pubblicato"
 
 #: cps/templates/detail.html:200
 msgid "Mark As Unread"
@@ -1728,7 +1728,7 @@ msgstr "Salva le impostazioni e invia e-mail di test"
 
 #: cps/templates/email_edit.html:43
 msgid "Allowed Domains (Whitelist)"
-msgstr "Dominii autorizzati alla registrazione"
+msgstr "Dominii autorizzati alla registrazione (Whitelist)"
 
 #: cps/templates/email_edit.html:46 cps/templates/email_edit.html:72
 msgid "Add Domain"
@@ -1744,7 +1744,7 @@ msgstr "Digita il nome di dominio"
 
 #: cps/templates/email_edit.html:60
 msgid "Denied Domains (Blacklist)"
-msgstr "Dominii bloccati per la registrazione"
+msgstr "Dominii bloccati per la registrazione (Blacklist)"
 
 #: cps/templates/email_edit.html:90
 msgid "Are you sure you want to delete this domain?"
@@ -1756,11 +1756,11 @@ msgstr "Prossimo"
 
 #: cps/templates/generate_kobo_auth_url.html:5
 msgid "Open the .kobo/Kobo eReader.conf file in a text editor and add (or edit):"
-msgstr ""
+msgstr "Apri il fime .kobo/Kobo eReader.conf in un editre di testi e aggiungi (o edita):"
 
 #: cps/templates/generate_kobo_auth_url.html:11
 msgid "Please note that every visit to this current page invalidates any previously generated Authentication url for this user."
-msgstr ""
+msgstr "Prendi nota che ad ogni visita di questa pagina l'url di autenticazione precedentemente generato viene invalidato"
 
 #: cps/templates/http_error.html:38
 msgid "Create Issue"
@@ -1784,7 +1784,7 @@ msgstr "Pubblicazioni popolari di questo catalogo in base ai download."
 
 #: cps/templates/index.xml:28
 msgid "Popular publications from this catalog based on Rating."
-msgstr "Pubblicazioni popolari di questo catalogo in base ai voti."
+msgstr "Pubblicazioni popolari di questo catalogo in base alle valutazioni."
 
 #: cps/templates/index.xml:31
 msgid "Recently added Books"
@@ -1857,7 +1857,7 @@ msgstr "Alterna navigazione"
 
 #: cps/templates/layout.html:45
 msgid "Search Library"
-msgstr ""
+msgstr "Ricerca nella libreria"
 
 #: cps/templates/layout.html:55
 msgid "Advanced Search"
@@ -1886,7 +1886,7 @@ msgstr "Uploading..."
 
 #: cps/templates/layout.html:117
 msgid "Please do not refresh the page"
-msgstr ""
+msgstr "Per favore non aggiornare la pagina"
 
 #: cps/templates/layout.html:127
 msgid "Browse"
@@ -1906,7 +1906,7 @@ msgstr "Precedente"
 
 #: cps/templates/layout.html:187
 msgid "Book Details"
-msgstr "Dettagli libro"
+msgstr "Dettagli del libro"
 
 #: cps/templates/layout.html:221
 msgid "Upload done, processing, please wait..."
@@ -1951,27 +1951,27 @@ msgstr "Mostra il log di accesso: "
 
 #: cps/templates/modal_restriction.html:6
 msgid "Select allowed/denied Tags"
-msgstr ""
+msgstr "Seleziona le etichette consentite/negate"
 
 #: cps/templates/modal_restriction.html:7
 msgid "Select allowed/denied Custom Column values"
-msgstr ""
+msgstr "Seleziona i valori personali per le colonne consentiti/negati"
 
 #: cps/templates/modal_restriction.html:8
 msgid "Select allowed/denied Tags of user"
-msgstr ""
+msgstr "Seleziona le etichette consentite/negate per l'utente"
 
 #: cps/templates/modal_restriction.html:9
 msgid "Select allowed/denied Custom Column values of user"
-msgstr ""
+msgstr "Seleziona i valori personali per le colonne consentiti/nehati per l'utente"
 
 #: cps/templates/modal_restriction.html:15
 msgid "Enter Tag"
-msgstr ""
+msgstr "Digita etichetta"
 
 #: cps/templates/modal_restriction.html:24
 msgid "Add View Restriction"
-msgstr ""
+msgstr "Aggiungi visualizza restrizioni"
 
 #: cps/templates/osd.xml:5
 msgid "Calibre-Web eBook Catalog"
@@ -2083,7 +2083,7 @@ msgstr "Lettore PDF"
 
 #: cps/templates/readtxt.html:6
 msgid "Basic txt Reader"
-msgstr "Lettore di base txt"
+msgstr "Lettore di base di testi"
 
 #: cps/templates/register.html:4
 msgid "Register New Account"
@@ -2099,7 +2099,7 @@ msgstr "Il tuo indirizzo e-mail"
 
 #: cps/templates/remote_login.html:4
 msgid "Magic Link - Authorise New Device"
-msgstr ""
+msgstr "Magic Link - Autorizza un nuovo apparecchio"
 
 #: cps/templates/remote_login.html:6
 msgid "On another device, login and visit:"
@@ -2115,11 +2115,11 @@ msgstr "Il link scadrà tra 10 minuti."
 
 #: cps/templates/search.html:5
 msgid "No Results Found"
-msgstr ""
+msgstr "Nessun risultato"
 
 #: cps/templates/search.html:6
 msgid "Search Term:"
-msgstr ""
+msgstr "Termine di ricerca:"
 
 #: cps/templates/search.html:8
 msgid "Results for:"
@@ -2279,19 +2279,19 @@ msgstr "Scollega"
 
 #: cps/templates/user_edit.html:62
 msgid "Kobo Sync Token"
-msgstr ""
+msgstr "Token Kobo Sync"
 
 #: cps/templates/user_edit.html:64
 msgid "Create/View"
-msgstr ""
+msgstr "Crea/Visualizza"
 
 #: cps/templates/user_edit.html:83
 msgid "Add allowed/denied Tags"
-msgstr ""
+msgstr "Aggiungi Permetti/Nega etichette"
 
 #: cps/templates/user_edit.html:84
 msgid "Add allowed/denied custom column values"
-msgstr ""
+msgstr "Aggiungi Permetti/Nega valori personali nelle colonne"
 
 #: cps/templates/user_edit.html:129
 msgid "Delete User"
@@ -2303,11 +2303,11 @@ msgstr "Download recenti"
 
 #: cps/templates/user_edit.html:160
 msgid "Generate Kobo Auth URL"
-msgstr ""
+msgstr "Genera un URL di autenticazione per Kobo"
 
 #: cps/templates/user_edit.html:176
 msgid "Do you really want to delete the Kobo Token?"
-msgstr ""
+msgstr "Vuoi veramente eliminare questo token di Kobo?"
 
 #~ msgid "Afar"
 #~ msgstr "Afar"
@@ -3741,13 +3741,13 @@ msgstr ""
 #~ msgstr "Mostra sezione per adulti"
 
 #~ msgid "deny"
-#~ msgstr ""
+#~ msgstr "nega"
 
 #~ msgid "allow"
-#~ msgstr ""
+#~ msgstr "permetti"
 
 #~ msgid "Kobo Set-up"
-#~ msgstr ""
+#~ msgstr "Configurazione di Kobo"
 
 #~ msgid "Publisher list"
 #~ msgstr "Elenco degli editori"
@@ -3786,7 +3786,7 @@ msgstr ""
 #~ msgstr "Salva le impostazioni"
 
 #~ msgid "api_endpoint="
-#~ msgstr ""
+#~ msgstr "api_endpoint="
 
 #~ msgid "please don't refresh the page"
 #~ msgstr "per favore non aggiornare la pagina"
