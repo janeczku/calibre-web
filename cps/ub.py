@@ -57,12 +57,12 @@ def get_sidebar_config(kwargs=None):
                     "visibility": constants.SIDEBAR_RECENT, 'public': True, "page": "root",
                     "show_text": _('Show recent books'), "config_show":True})
     sidebar.append({"glyph": "glyphicon-fire", "text": _('Hot Books'), "link": 'web.books_list', "id": "hot",
-                    "visibility": constants.SIDEBAR_HOT, 'public': True, "page": "hot", "show_text": _('Show hot books'),
+                    "visibility": constants.SIDEBAR_HOT, 'public': True, "page": "hot", "show_text": _('Show Hot Books'),
                     "config_show":True})
     sidebar.append(
-        {"glyph": "glyphicon-star", "text": _('Best rated Books'), "link": 'web.books_list', "id": "rated",
+        {"glyph": "glyphicon-star", "text": _('Top Rated Books'), "link": 'web.books_list', "id": "rated",
          "visibility": constants.SIDEBAR_BEST_RATED, 'public': True, "page": "rated",
-         "show_text": _('Show best rated books'), "config_show":True})
+         "show_text": _('Show Top Rated Books'), "config_show":True})
     sidebar.append({"glyph": "glyphicon-eye-open", "text": _('Read Books'), "link": 'web.books_list', "id": "read",
                     "visibility": constants.SIDEBAR_READ_AND_UNREAD, 'public': (not g.user.is_anonymous), "page": "read",
                     "show_text": _('Show read and unread'), "config_show": content})
