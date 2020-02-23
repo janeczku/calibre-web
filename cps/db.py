@@ -25,7 +25,7 @@ import ast
 
 from sqlalchemy import create_engine
 from sqlalchemy import Table, Column, ForeignKey
-from sqlalchemy import String, Integer, Boolean, Float
+from sqlalchemy import String, Integer, Boolean, TIMESTAMP, Float
 from sqlalchemy.orm import relationship, sessionmaker, scoped_session
 from sqlalchemy.ext.declarative import declarative_base
 
@@ -251,10 +251,10 @@ class Books(Base):
     title = Column(String)
     sort = Column(String)
     author_sort = Column(String)
-    timestamp = Column(String)
+    timestamp = Column(TIMESTAMP)
     pubdate = Column(String)
     series_index = Column(String)
-    last_modified = Column(String)
+    last_modified = Column(TIMESTAMP)
     path = Column(String)
     has_cover = Column(Integer)
     uuid = Column(String)
