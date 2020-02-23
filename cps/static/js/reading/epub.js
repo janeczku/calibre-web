@@ -42,5 +42,4 @@ var reader;
             alert(error);
         });
     }
-    // reader.book.package.metadata.direction= "rtl"; wait for reader reader before changing reading direction
 })();
