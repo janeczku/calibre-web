@@ -103,7 +103,7 @@ class SyncToken():
 
             data_json = sync_token_json["data"]
             validate(sync_token_json, SyncToken.data_schema_v1)
-        except (exceptions.ValidationError, ValueError) as e:
+        except (exceptions.ValidationError, ValueError):
             log.error("Sync token contents do not follow the expected json schema.")
             return SyncToken()
 
