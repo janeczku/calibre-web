@@ -127,7 +127,7 @@ def generate_auth_token(user_id):
         warning = _('PLease access calibre-web from non localhost to get valid api_endpoint for kobo device')
         return render_title_template(
             "generate_kobo_auth_url.html",
-            title=_(u"Kobo Set-up"),
+            title=_(u"Kobo Setup"),
             warning = warning
         )
     else:
@@ -147,7 +147,7 @@ def generate_auth_token(user_id):
             ub.session.commit()
         return render_title_template(
             "generate_kobo_auth_url.html",
-            title=_(u"Kobo Set-up"),
+            title=_(u"Kobo Setup"),
             kobo_auth_url=url_for(
                 "kobo.TopLevelEndpoint", auth_token=auth_token.auth_token, _external=True
             ),
