@@ -228,6 +228,41 @@ $(function() {
             $(this).find(".modal-body").html("...");
         });
 
+    $("#modal_kobo_token")
+        .on("show.bs.modal", function(e) {
+            var $modalBody = $(this).find(".modal-body");
+
+            // Prevent static assets from loading multiple times
+            var useCache = function(options) {
+                options.async = true;
+                options.cache = true;
+            };
+            preFilters.add(useCache);
+
+            $.get(e.relatedTarget.href).done(function(content) {
+                $modalBody.html(content);
+                preFilters.remove(useCache);
+            });
+        })
+        .on("hidden.bs.modal", function() {
+            $(this).find(".modal-body").html("...");
+             $("#config_delete_kobo_token").show();
+        });
+
+    $("#btndeletetoken").click(function() {
+        //get data-id attribute of the clicked element
+        var pathname = document.getElementsByTagName("script"), src = pathname[pathname.length-1].src;
+        var path = src.substring(0,src.lastIndexOf("/"));
+        // var domainId = $(this).value("domainId");
+        $.ajax({
+            method:"get",
+            url: path + "/../../kobo_auth/deleteauthtoken/" + this.value,
+        });
+        $("#modalDeleteToken").modal("hide");
+        $("#config_delete_kobo_token").hide();
+
+    });
+
     $(window).resize(function() {
         $(".discover .row").isotope("layout");
     });

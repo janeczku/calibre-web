@@ -116,14 +116,13 @@ def get_locale():
         if user.nickname != 'Guest':   # if the account is the guest account bypass the config lang settings
             return user.locale
 
-    preferred = set()
+    preferred = list()
     if request.accept_languages:
         for x in request.accept_languages.values():
             try:
-                preferred.add(str(LC.parse(x.replace('-', '_'))))
+                preferred.append(str(LC.parse(x.replace('-', '_'))))
             except (UnknownLocaleError, ValueError) as e:
-                log.warning('Could not parse locale "%s": %s', x, e)
-                # preferred.append('en')
+                log.debug('Could not parse locale "%s": %s', x, e)
 
     return negotiate_locale(preferred or ['en'], _BABEL_TRANSLATIONS)
 

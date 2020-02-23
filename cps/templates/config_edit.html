@@ -1,6 +1,6 @@
 {% extends "layout.html" %}
 {% block body %}
-<div class="discover">
+<div class="discover" xmlns:text-indent="http://www.w3.org/1999/xhtml">
   <h2>{{title}}</h2>
   <form role="form" method="POST" autocomplete="off">
 <div class="panel-group">
@@ -71,7 +71,7 @@
       </div>
     </div>
   </div>
-
+    {% if show_back_button %}
   <div class="panel panel-default">
     <div class="panel-heading">
       <h4 class="panel-title">
@@ -169,6 +169,18 @@
       <input type="checkbox" id="config_remote_login" name="config_remote_login" {% if config.config_remote_login %}checked{% endif %}>
       <label for="config_remote_login">{{_('Enable remote login ("magic link")')}}</label>
     </div>
+    {% if feature_support['kobo'] %}
+    <div class="form-group">
+      <input type="checkbox" id="config_kobo_sync" name="config_kobo_sync" data-control="kobo-settings" {% if config.config_kobo_sync %}checked{% endif %}>
+      <label for="config_kobo_sync">{{_('Enable Kobo sync')}}</label>
+    </div>
+    <div data-related="kobo-settings">
+      <div class="form-group" style="text-indent:10px;">
+        <input type="checkbox" id="config_kobo_proxy" name="config_kobo_proxy"  {% if config.config_kobo_proxy %}checked{% endif %}>
+        <label for="config_kobo_proxy">{{_('Proxy unknown requests to Kobo Store')}}</label>
+      </div>
+    </div>
+    {% endif %}
     {% if feature_support['goodreads'] %}
     <div class="form-group">
       <input type="checkbox" id="config_use_goodreads" name="config_use_goodreads" data-control="goodreads-settings" {% if config.config_use_goodreads %}checked{% endif %}>
@@ -322,11 +334,14 @@
       </div>
     </div>
   </div>
+  {% endif %}
 </div>
 
 
     <div class="col-sm-12">
+    {% if not show_login_button %}
     <button type="submit" name="submit" class="btn btn-default">{{_('Submit')}}</button>
+    {% endif %}
     {% if show_back_button %}
       <a href="{{ url_for('admin.admin') }}" class="btn btn-default">{{_('Back')}}</a>
     {% endif %}

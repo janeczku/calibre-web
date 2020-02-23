@@ -120,3 +120,22 @@ task: <Task pending name='Task-7' coro=<HTTP1ServerConnection._server_request_lo
 [2020-02-18 15:16:31,736]  INFO {cps:89} Starting Calibre Web...
 [2020-02-18 15:16:32,185]  INFO {cps.server:152} Starting Tornado server on :8083
 [2020-02-18 15:16:44,979]  INFO {cps.admin:700} Update status requested
+[2020-02-18 15:57:22,283]  INFO {cps.server:194} webserver stop (restart=False)
+[2020-02-18 15:57:22,300]  INFO {cps.server:179} Performing shutdown of Calibre-Web
+[2020-02-18 15:57:22,996] ERROR {asyncio:1703} Task was destroyed but it is pending!
+task: <Task pending name='Task-7' coro=<HTTP1ServerConnection._server_request_loop() done, defined at /usr/lib/python3.8/site-packages/tornado/http1connection.py:809> wait_for=<Future pending cb=[<TaskWakeupMethWrapper object at 0x7f1291b48190>()]> cb=[IOLoop.add_future.<locals>.<lambda>() at /usr/lib/python3.8/site-packages/tornado/ioloop.py:690]>
+[2020-02-23 18:58:52,598]  INFO {cps.server:194} webserver stop (restart=False)
+[2020-02-23 18:58:58,811]  INFO {cps.server:194} webserver stop (restart=False)
+[2020-02-23 18:58:58,836]  INFO {cps:89} Starting Calibre Web...
+[2020-02-23 18:58:59,148]  INFO {cps.server:194} webserver stop (restart=False)
+[2020-02-23 18:58:59,696]  INFO {cps.server:194} webserver stop (restart=False)
+[2020-02-23 18:58:59,741]  INFO {cps.server:194} webserver stop (restart=False)
+[2020-02-23 18:58:59,908]  INFO {cps.server:194} webserver stop (restart=False)
+[2020-02-23 18:59:01,019]  INFO {cps.server:152} Starting Tornado server on :8083
+[2020-02-23 18:59:33,760]  INFO {cps:89} Starting Calibre Web...
+[2020-02-23 18:59:33,840]  INFO {cps.server:152} Starting Tornado server on :8083
+[2020-02-23 19:00:10,364]  INFO {cps.admin:700} Update status requested
+[2020-02-23 19:00:39,606]  INFO {cps.server:194} webserver stop (restart=True)
+[2020-02-23 19:00:39,607]  INFO {cps.server:182} Performing restart of Calibre-Web
+[2020-02-23 19:00:42,221]  INFO {cps:89} Starting Calibre Web...
+[2020-02-23 19:00:42,304]  INFO {cps.server:153} Starting Tornado server on :8083

@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 #  Flask License
@@ -60,10 +59,13 @@ class ReverseProxied(object):
 
     def __init__(self, application):
         self.app = application
+        self.proxied = False
 
     def __call__(self, environ, start_response):
+        self.proxied = False
         script_name = environ.get('HTTP_X_SCRIPT_NAME', '')
         if script_name:
+            self.proxied = True
             environ['SCRIPT_NAME'] = script_name
             path_info = environ.get('PATH_INFO', '')
             if path_info and path_info.startswith(script_name):
@@ -76,3 +78,7 @@ class ReverseProxied(object):
         if servr:
             environ['HTTP_HOST'] = servr
         return self.app(environ, start_response)
+
+    @property
+    def is_proxied(self):
+        return self.proxied
