@@ -44,7 +44,7 @@
               <label for="query" class="sr-only">{{_('Search')}}</label>
               <input type="text" class="form-control" id="query" name="query" placeholder="{{_('Search')}}">
               <span class="input-group-btn">
-                <button type="submit" class="btn btn-default">{{_('Go!')}}</button>
+                <button type="submit" id="query_submit" class="btn btn-default">{{_('Go!')}}</button>
               </span>
             </div>
           </form>
@@ -52,7 +52,7 @@
         <div class="navbar-collapse collapse">
           {% if g.user.is_authenticated or g.allow_anonymous %}
           <ul class="nav navbar-nav ">
-            <li><a href="{{url_for('web.advanced_search')}}"><span class="glyphicon glyphicon-search"></span><span class="hidden-sm">{{_('Advanced Search')}}</span></a></li>
+            <li><a href="{{url_for('web.advanced_search')}}" id="advanced_search"><span class="glyphicon glyphicon-search"></span><span class="hidden-sm">{{_('Advanced Search')}}</span></a></li>
           </ul>
           {% endif %}
           <ul class="nav navbar-nav navbar-right" id="main-nav">
@@ -229,7 +229,6 @@
             });
         });
     </script>
-
     {% block js %}{% endblock %}
   </body>
 </html>

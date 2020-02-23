@@ -5,19 +5,19 @@
     <div>{{_('Drag \'n drop to rearrange order')}}</div>
       <div id="sortTrue" class="list-group">
         {% for entry in entries %}
-          <div id="{{entry.id}}" class="list-group-item">
+          <div id="{{entry['id']}}" class="list-group-item">
             <div class="row">
               <div class="col-lg-2 col-sm-4 hidden-xs">
-                  <img class="cover-height" src="{{ url_for('web.get_cover', book_id=entry.id) }}">
+                  <img class="cover-height" src="{{ url_for('web.get_cover', book_id=entry['id']) }}">
               </div>
               <div class="col-lg-10 col-sm-8 col-xs-12">
-                  {{entry.title}}
-                  {% if entry.series|length > 0 %}
+                  {{entry['title']}}
+                  {% if entry['series']|length > 0 %}
                     <br>
-                    {{entry.series_index}} - {{entry.series[0].name}}
+                    {{entry['series_index']}} - {{entry['series'][0].name}}
                   {% endif %}
                   <br>
-                  {% for author in entry.authors %}
+                  {% for author in entry['authors'] %}
                     {{author.name.replace('|',',')}}
                     {% if not loop.last %}
                       &amp;
