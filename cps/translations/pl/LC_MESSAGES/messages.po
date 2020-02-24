@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Calibre Web - polski (POT: 2019-08-06 18:35)\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-02-23 20:05+0100\n"
+"POT-Creation-Date: 2020-02-24 19:37+0100\n"
 "PO-Revision-Date: 2019-08-18 22:06+0200\n"
 "Last-Translator: Jerzy Piątek <jerzy.piatek@gmail.com>\n"
 "Language: pl\n"
@@ -1774,10 +1774,6 @@ msgstr "Następne"
 msgid "Open the .kobo/Kobo eReader.conf file in a text editor and add (or edit):"
 msgstr ""
 
-#: cps/templates/generate_kobo_auth_url.html:11
-msgid "Please note that every visit to this current page invalidates any previously generated Authentication url for this user."
-msgstr ""
-
 # | msgid "Create a Shelf"
 #: cps/templates/http_error.html:38
 #, fuzzy
@@ -2453,4 +2449,7 @@ msgstr ""
 
 #~ msgid "Kindle E-Mail"
 #~ msgstr "Adres e-mail Kindle"
+
+#~ msgid "Please note that every visit to this current page invalidates any previously generated Authentication url for this user."
+#~ msgstr ""
 

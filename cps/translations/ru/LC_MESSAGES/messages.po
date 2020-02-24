@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2020-02-23 20:05+0100\n"
-"PO-Revision-Date: 2020-01-21 23:03+0400\n"
+"POT-Creation-Date: 2020-02-24 19:37+0100\n"
+"PO-Revision-Date: 2020-02-23 19:20+0400\n"
 "Last-Translator: ZIZA\n"
 "Language: ru\n"
 "Language-Team: \n"
@@ -108,7 +108,7 @@ msgstr "Произошла ошибка при отправке тестовог
 
 #: cps/admin.py:771
 msgid "Please configure your e-mail address first..."
-msgstr ""
+msgstr "Пожалуйста, сначала настройте свой адрес электронной почты ..."
 
 #: cps/admin.py:773
 msgid "E-mail server settings updated"
@@ -837,7 +837,7 @@ msgstr "Пожалуйста, сначала настройте e-mail на ва
 
 #: cps/web.py:1083
 msgid "E-Mail server is not configured, please contact your administrator!"
-msgstr ""
+msgstr "Сервер электронной почты не настроен, обратитесь к администратору !"
 
 #: cps/web.py:1084 cps/web.py:1090 cps/web.py:1115 cps/web.py:1119
 #: cps/web.py:1124 cps/web.py:1128
@@ -875,11 +875,11 @@ msgstr "Ошибка в имени пользователя или пароле"
 
 #: cps/web.py:1166
 msgid "New Password was send to your email address"
-msgstr ""
+msgstr "Новый пароль был отправлен на ваш адрес электронной почты"
 
 #: cps/web.py:1172
 msgid "Please enter valid username to reset password"
-msgstr ""
+msgstr "Пожалуйста, введите действительное имя пользователя для сброса пароля"
 
 #: cps/web.py:1178
 #, python-format
@@ -1053,7 +1053,7 @@ msgstr ""
 
 #: cps/templates/admin.html:109
 msgid "Reverse proxy header name"
-msgstr ""
+msgstr "Имя заголовка обратного прокси"
 
 #: cps/templates/admin.html:114
 msgid "Edit Basic Configuration"
@@ -1529,11 +1529,11 @@ msgstr "%(provider)s OAuth Секрет клиента"
 
 #: cps/templates/config_edit.html:288
 msgid "Allow Reverse Proxy Authentication"
-msgstr ""
+msgstr "Разрешить обратную аутентификацию прокси"
 
 #: cps/templates/config_edit.html:292
 msgid "Reverse Proxy Header Name"
-msgstr ""
+msgstr "Имя заголовка обратного прокси"
 
 #: cps/templates/config_edit.html:304
 msgid "External binaries"
@@ -1618,7 +1618,7 @@ msgstr "Regexp для сортировки по названию"
 
 #: cps/templates/config_view_edit.html:80
 msgid "Default Settings for New Users"
-msgstr "Настройки по умолчанию для новых пользователей"
+msgstr ""
 
 #: cps/templates/config_view_edit.html:88 cps/templates/user_edit.html:92
 msgid "Admin User"
@@ -1760,10 +1760,6 @@ msgstr "Дальше"
 msgid "Open the .kobo/Kobo eReader.conf file in a text editor and add (or edit):"
 msgstr ""
 
-#: cps/templates/generate_kobo_auth_url.html:11
-msgid "Please note that every visit to this current page invalidates any previously generated Authentication url for this user."
-msgstr ""
-
 #: cps/templates/http_error.html:38
 msgid "Create Issue"
 msgstr "Создать запись"
@@ -1790,7 +1786,7 @@ msgstr "Популярные книги из этого каталога на о
 
 #: cps/templates/index.xml:31
 msgid "Recently added Books"
-msgstr ""
+msgstr "Недавно добавленные книги"
 
 #: cps/templates/index.xml:35
 msgid "The latest Books"
@@ -1822,11 +1818,11 @@ msgstr "Книги, отсортированные по серии"
 
 #: cps/templates/index.xml:93
 msgid "Books ordered by Languages"
-msgstr ""
+msgstr "Книги отсортированы по языкам"
 
 #: cps/templates/index.xml:100
 msgid "Books ordered by file formats"
-msgstr ""
+msgstr "Книги отсортированы по формату файла"
 
 #: cps/templates/index.xml:103 cps/templates/layout.html:136
 msgid "Public Shelves"
@@ -1945,7 +1941,7 @@ msgstr ""
 
 #: cps/templates/logviewer.html:8
 msgid "Stream output, can't be displayed"
-msgstr ""
+msgstr "Выходной поток, не может быть отображен"
 
 #: cps/templates/logviewer.html:12
 msgid "Show Access Log: "
@@ -2149,11 +2145,11 @@ msgstr "Исключить языки"
 
 #: cps/templates/search_form.html:95
 msgid "Extensions"
-msgstr ""
+msgstr "Расширения"
 
 #: cps/templates/search_form.html:105
 msgid "Exclude Extensions"
-msgstr ""
+msgstr "Исключить расширения"
 
 #: cps/templates/search_form.html:117
 msgid "Rating Above"
@@ -2311,1160 +2307,8 @@ msgstr ""
 msgid "Do you really want to delete the Kobo Token?"
 msgstr ""
 
-#~ msgid "Afar"
-#~ msgstr "Афар"
-
-#~ msgid "Abkhazian"
-#~ msgstr "Абхазский"
-
-#~ msgid "Achinese"
-#~ msgstr "Ачехский"
-
-#~ msgid "Acoli"
-#~ msgstr "Ачоли"
-
-#~ msgid "Adangme"
-#~ msgstr "Адангме"
-
-#~ msgid "Adyghe"
-#~ msgstr "Адыгейский"
-
-#~ msgid "Afrihili"
-#~ msgstr "Африхили"
-
-#~ msgid "Afrikaans"
-#~ msgstr "Африкаанс"
-
-#~ msgid "Akan"
-#~ msgstr "Акан"
-
-#~ msgid "Akkadian"
-#~ msgstr "Аккадский"
-
-#~ msgid "Aleut"
-#~ msgstr "Алеутский"
-
-#~ msgid "Amharic"
-#~ msgstr "Амхарский (Амаринья)"
-
-#~ msgid "Angika"
-#~ msgstr "Анжика"
-
-#~ msgid "Arabic"
-#~ msgstr "Арабский"
-
-#~ msgid "Aramaic; Official (700-300 BCE)"
-#~ msgstr "Арамейский; Официальный"
-
-#~ msgid "Aragonese"
-#~ msgstr "Арагонский"
-
-#~ msgid "Arapaho"
-#~ msgstr "Арапахо"
-
-#~ msgid "Arawak"
-#~ msgstr "Аравакский"
-
-#~ msgid "Assamese"
-#~ msgstr "Ассамский"
-
-#~ msgid "Asturian"
-#~ msgstr "Астурийский"
-
-#~ msgid "Avaric"
-#~ msgstr "Аварский"
-
-#~ msgid "Avestan"
-#~ msgstr "Авестийский"
-
-#~ msgid "Awadhi"
-#~ msgstr "Авадхи"
-
-#~ msgid "Aymara"
-#~ msgstr "Аймара"
-
-#~ msgid "Azerbaijani"
-#~ msgstr "Азербайджанский"
-
-#~ msgid "Bashkir"
-#~ msgstr "Башкирский"
-
-#~ msgid "Bambara"
-#~ msgstr "Бамбара"
-
-#~ msgid "Balinese"
-#~ msgstr "Балийский"
-
-#~ msgid "Basa (Cameroon)"
-#~ msgstr "Баса (Камерун)"
-
-#~ msgid "Beja"
-#~ msgstr "Беджа"
-
-#~ msgid "Belarusian"
-#~ msgstr "Белорусский"
-
-#~ msgid "Bemba (Zambia)"
-#~ msgstr "Бемба (Замбия)"
-
-#~ msgid "Bengali"
-#~ msgstr "Бенгальский"
-
-#~ msgid "Bhojpuri"
-#~ msgstr "Бходжпури"
-
-#~ msgid "Bikol"
-#~ msgstr "Бикольский"
-
-#~ msgid "Bini"
-#~ msgstr "Бини"
-
-#~ msgid "Bislama"
-#~ msgstr "Бислама"
-
-#~ msgid "Siksika"
-#~ msgstr "Сиксика"
-
-#~ msgid "Tibetan"
-#~ msgstr "Тибетский"
-
-#~ msgid "Bosnian"
-#~ msgstr "Боснийский"
-
-#~ msgid "Braj"
-#~ msgstr "Браун"
-
-#~ msgid "Breton"
-#~ msgstr "Бретонский"
-
-#~ msgid "Buriat"
-#~ msgstr "Бурятский"
-
-#~ msgid "Buginese"
-#~ msgstr "Бугийский"
-
-#~ msgid "Bulgarian"
-#~ msgstr "Болгарский"
-
-#~ msgid "Caddo"
-#~ msgstr "Каддо"
-
-#~ msgid "Catalan"
-#~ msgstr "Каталанский"
-
-#~ msgid "Cebuano"
-#~ msgstr "Себуано"
-
-#~ msgid "Czech"
-#~ msgstr "Чешский"
-
-#~ msgid "Chamorro"
-#~ msgstr "Чаморро"
-
-#~ msgid "Chibcha"
-#~ msgstr "Чибча"
-
-#~ msgid "Chechen"
-#~ msgstr "Чеченский"
-
-#~ msgid "Chagatai"
-#~ msgstr "Чагатайский"
-
-#~ msgid "Chuukese"
-#~ msgstr "Трукский"
-
-#~ msgid "Mari (Russia)"
-#~ msgstr "Марийский (Россия)"
-
-#~ msgid "Chinook jargon"
-#~ msgstr "Чинук жаргон"
-
-#~ msgid "Choctaw"
-#~ msgstr "Чоктав"
-
-#~ msgid "Chipewyan"
-#~ msgstr "Чипевианский"
-
-#~ msgid "Cherokee"
-#~ msgstr "Чероки"
-
-#~ msgid "Chuvash"
-#~ msgstr "Чувашский"
-
-#~ msgid "Cheyenne"
-#~ msgstr "Чейенн"
-
-#~ msgid "Coptic"
-#~ msgstr "Коптский"
-
-#~ msgid "Cornish"
-#~ msgstr "Корнский"
-
-#~ msgid "Corsican"
-#~ msgstr "Корсиканский"
-
-#~ msgid "Cree"
-#~ msgstr "Кри"
-
-#~ msgid "Kashubian"
-#~ msgstr "Кашубианский"
-
-#~ msgid "Welsh"
-#~ msgstr "Уэльский (Валлийский)"
-
-#~ msgid "Dakota"
-#~ msgstr "Дакота"
-
-#~ msgid "Danish"
-#~ msgstr "Датский"
-
-#~ msgid "Dargwa"
-#~ msgstr "Даргва"
-
-#~ msgid "Delaware"
-#~ msgstr "Делаварский"
-
-#~ msgid "Slave (Athapascan)"
-#~ msgstr "Атапачские языки"
-
-#~ msgid "German"
-#~ msgstr "Немецкий"
-
-#~ msgid "Dogrib"
-#~ msgstr "Догриб"
-
-#~ msgid "Dinka"
-#~ msgstr "Динка"
-
-#~ msgid "Duala"
-#~ msgstr "Дуала"
-
-#~ msgid "Dyula"
-#~ msgstr "Диула (Дьюла)"
-
-#~ msgid "Dzongkha"
-#~ msgstr "Дзонг-кэ"
-
-#~ msgid "Efik"
-#~ msgstr "Эфик"
-
-#~ msgid "Egyptian (Ancient)"
-#~ msgstr "Древнеегипетский"
-
-#~ msgid "Ekajuk"
-#~ msgstr "Экаджук"
-
-#~ msgid "Greek; Modern (1453-)"
-#~ msgstr "Новогреческий (с 1453)"
-
-#~ msgid "Elamite"
-#~ msgstr "Эламский"
-
-#~ msgid "English"
-#~ msgstr "Английский"
-
-#~ msgid "English; Middle (1100-1500)"
-#~ msgstr "Среднеанглийский (1100-1500)"
-
-#~ msgid "Esperanto"
-#~ msgstr "Эсперанто"
-
-#~ msgid "Estonian"
-#~ msgstr "Эстонский"
-
-#~ msgid "Basque"
-#~ msgstr "Баскский"
-
-#~ msgid "Ewe"
-#~ msgstr "Эве"
-
-#~ msgid "Ewondo"
-#~ msgstr "Эвондо"
-
-#~ msgid "Faroese"
-#~ msgstr "Фарерский"
-
-#~ msgid "Persian"
-#~ msgstr "Персидский"
-
-#~ msgid "Fanti"
-#~ msgstr "Фанти"
-
-#~ msgid "Fijian"
-#~ msgstr "Фиджийский"
-
-#~ msgid "Finnish"
-#~ msgstr "Финский"
-
-#~ msgid "Fon"
-#~ msgstr "Фон"
-
-#~ msgid "French"
-#~ msgstr "Французский"
-
-#~ msgid "Fulah"
-#~ msgstr "Фулах"
-
-#~ msgid "Friulian"
-#~ msgstr "Фриулианский"
-
-#~ msgid "Ga"
-#~ msgstr "Га"
-
-#~ msgid "Gayo"
-#~ msgstr "Гайо"
-
-#~ msgid "Geez"
-#~ msgstr "Геэз"
-
-#~ msgid "Gilbertese"
-#~ msgstr "Гильбертский"
-
-#~ msgid "Irish"
-#~ msgstr "Ирландский"
-
-#~ msgid "Manx"
-#~ msgstr "Мэнкский"
-
-#~ msgid "Gondi"
-#~ msgstr "Гонди"
-
-#~ msgid "Gorontalo"
-#~ msgstr "Горонтало"
-
-#~ msgid "Gothic"
-#~ msgstr "Готский"
-
-#~ msgid "Grebo"
-#~ msgstr "Гребо"
-
-#~ msgid "Greek; Ancient (to 1453)"
-#~ msgstr "Древнегреческий (по 1453)"
-
-#~ msgid "Guarani"
-#~ msgstr "Гуарани"
-
-#~ msgid "Gujarati"
-#~ msgstr "Гуджарати"
-
-#~ msgid "Haida"
-#~ msgstr "Хайда"
-
-#~ msgid "Hausa"
-#~ msgstr "Хауса"
-
-#~ msgid "Hawaiian"
-#~ msgstr "Гавайский"
-
-#~ msgid "Hebrew"
-#~ msgstr "Иврит"
-
-#~ msgid "Herero"
-#~ msgstr "Гереро"
-
-#~ msgid "Hiligaynon"
-#~ msgstr "Хилигайнон"
-
-#~ msgid "Hindi"
-#~ msgstr "Хинди"
-
-#~ msgid "Hittite"
-#~ msgstr "Хиттит"
-
-#~ msgid "Hmong"
-#~ msgstr "Хмонг"
-
-#~ msgid "Hiri Motu"
-#~ msgstr "Хири Моту"
-
-#~ msgid "Croatian"
-#~ msgstr "Хорватский"
-
-#~ msgid "Hungarian"
-#~ msgstr "Венгерский"
-
-#~ msgid "Hupa"
-#~ msgstr "Хупа"
-
-#~ msgid "Armenian"
-#~ msgstr "Армянский"
-
-#~ msgid "Iban"
-#~ msgstr "Ибанский"
-
-#~ msgid "Igbo"
-#~ msgstr "Игбо"
-
-#~ msgid "Ido"
-#~ msgstr "Идо"
-
-#~ msgid "Inuktitut"
-#~ msgstr "Инуктитут"
-
-#~ msgid "Interlingue"
-#~ msgstr "Интерлингве"
-
-#~ msgid "Iloko"
-#~ msgstr "Илоко"
-
-#~ msgid "Interlingua (International Auxiliary Language Association)"
-#~ msgstr "Интерлингва (Ассоциация международного вспомогательного языка)"
-
-#~ msgid "Indonesian"
-#~ msgstr "Индонезийский"
-
-#~ msgid "Ingush"
-#~ msgstr "Ингушский"
-
-#~ msgid "Inupiaq"
-#~ msgstr "Инулиак"
-
-#~ msgid "Icelandic"
-#~ msgstr "Исландский"
-
-#~ msgid "Italian"
-#~ msgstr "Итальянский"
-
-#~ msgid "Javanese"
-#~ msgstr "Яванский"
-
-#~ msgid "Lojban"
-#~ msgstr "Лоджбан"
-
-#~ msgid "Japanese"
-#~ msgstr "Японский"
-
-#~ msgid "Judeo-Persian"
-#~ msgstr "Еврейско-персидский"
-
-#~ msgid "Judeo-Arabic"
-#~ msgstr "Еврейско-арабский"
-
-#~ msgid "Kara-Kalpak"
-#~ msgstr "Каракалпакский"
-
-#~ msgid "Kabyle"
-#~ msgstr "Кабильский"
-
-#~ msgid "Kachin"
-#~ msgstr "Качинский"
-
-#~ msgid "Kannada"
-#~ msgstr "Каннада"
-
-#~ msgid "Kashmiri"
-#~ msgstr "Кашмири"
-
-#~ msgid "Georgian"
-#~ msgstr "Грузинский"
-
-#~ msgid "Kanuri"
-#~ msgstr "Канури"
-
-#~ msgid "Kawi"
-#~ msgstr "Кави"
-
-#~ msgid "Kazakh"
-#~ msgstr "Казахский"
-
-#~ msgid "Kabardian"
-#~ msgstr "Кабардинский"
-
-#~ msgid "Khasi"
-#~ msgstr "Кхаси"
-
-#~ msgid "Khotanese"
-#~ msgstr "Хотанский"
-
-#~ msgid "Kikuyu"
-#~ msgstr "Кикуйю"
-
-#~ msgid "Kinyarwanda"
-#~ msgstr "Киньяруанда"
-
-#~ msgid "Kirghiz"
-#~ msgstr "Киргизский"
-
-#~ msgid "Kimbundu"
-#~ msgstr "Кимбунду"
-
-#~ msgid "Komi"
-#~ msgstr "Коми"
-
-#~ msgid "Kongo"
-#~ msgstr "Конго"
-
-#~ msgid "Korean"
-#~ msgstr "Корейский"
-
-#~ msgid "Kosraean"
-#~ msgstr "Косраинский"
-
-#~ msgid "Kpelle"
-#~ msgstr "Кпелле"
-
-#~ msgid "Karachay-Balkar"
-#~ msgstr "Карачаево-балкарский"
-
-#~ msgid "Karelian"
-#~ msgstr "Карельский"
-
-#~ msgid "Kurukh"
-#~ msgstr "Курух"
-
-#~ msgid "Kuanyama"
-#~ msgstr "Киньяма"
-
-#~ msgid "Kumyk"
-#~ msgstr "Кумыкский"
-
-#~ msgid "Kurdish"
-#~ msgstr "Курдский"
-
-#~ msgid "Kutenai"
-#~ msgstr "Кутенаи"
-
-#~ msgid "Ladino"
-#~ msgstr "Ладино"
-
-#~ msgid "Lahnda"
-#~ msgstr "Лахнда"
-
-#~ msgid "Lamba"
-#~ msgstr "Ламба"
-
-#~ msgid "Lao"
-#~ msgstr "Лаосский"
-
-#~ msgid "Latin"
-#~ msgstr "Латинский"
-
-#~ msgid "Latvian"
-#~ msgstr "Латвийский"
-
-#~ msgid "Lezghian"
-#~ msgstr "Лезгинский"
-
-#~ msgid "Lingala"
-#~ msgstr "Лингала"
-
-#~ msgid "Lithuanian"
-#~ msgstr "Литовский"
-
-#~ msgid "Mongo"
-#~ msgstr "Монго"
-
-#~ msgid "Lozi"
-#~ msgstr "Лози"
-
-#~ msgid "Luba-Lulua"
-#~ msgstr "Луба-Лулуа"
-
-#~ msgid "Luba-Katanga"
-#~ msgstr "Луба-Катанга"
-
-#~ msgid "Ganda"
-#~ msgstr "Ганда"
-
-#~ msgid "Luiseno"
-#~ msgstr "Луисеньо"
-
-#~ msgid "Lunda"
-#~ msgstr "Лунда"
-
-#~ msgid "Luo (Kenya and Tanzania)"
-#~ msgstr "Луо (Кения и Танзания)"
-
-#~ msgid "Lushai"
-#~ msgstr "Лушай"
-
-#~ msgid "Madurese"
-#~ msgstr "Мадурский"
-
-#~ msgid "Magahi"
-#~ msgstr "Магахи"
-
-#~ msgid "Maithili"
-#~ msgstr "Майтхили"
-
-#~ msgid "Makasar"
-#~ msgstr "Макассарский"
-
-#~ msgid "Malayalam"
-#~ msgstr "Малаялам"
-
-#~ msgid "Mandingo"
-#~ msgstr "Мандинго"
-
-#~ msgid "Marathi"
-#~ msgstr "Маратхи"
-
-#~ msgid "Masai"
-#~ msgstr "Масаи"
-
-#~ msgid "Moksha"
-#~ msgstr "Мокшанский"
-
-#~ msgid "Mandar"
-#~ msgstr "Мандарский"
-
-#~ msgid "Irish; Middle (900-1200)"
-#~ msgstr "Среднеирландский (900-1200)"
-
-#~ msgid "Minangkabau"
-#~ msgstr "Минангкабау"
-
-#~ msgid "Macedonian"
-#~ msgstr "Македонский"
-
-#~ msgid "Malagasy"
-#~ msgstr "Малагаси"
-
-#~ msgid "Maltese"
-#~ msgstr "Мальтийский"
-
-#~ msgid "Manchu"
-#~ msgstr "Манчу"
-
-#~ msgid "Manipuri"
-#~ msgstr "Манипури"
-
-#~ msgid "Mohawk"
-#~ msgstr "Мохаук"
-
-#~ msgid "Mongolian"
-#~ msgstr "Монгольский"
-
-#~ msgid "Mossi"
-#~ msgstr "Моей"
-
-#~ msgid "Maori"
-#~ msgstr "Маори"
-
-#~ msgid "Multiple languages"
-#~ msgstr "Разных семей языки"
-
-#~ msgid "Creek"
-#~ msgstr "Крик"
-
-#~ msgid "Mirandese"
-#~ msgstr "Мирандские"
-
-#~ msgid "Marwari"
-#~ msgstr "Марвари"
-
-#~ msgid "Burmese"
-#~ msgstr "Бирманский"
-
-#~ msgid "Erzya"
-#~ msgstr "Эрзянский"
-
-#~ msgid "Neapolitan"
-#~ msgstr "Неаполитанский"
-
-#~ msgid "Nauru"
-#~ msgstr "Науру"
-
-#~ msgid "Ndebele; South"
-#~ msgstr "Ндебеле южный"
-
-#~ msgid "Ndebele; North"
-#~ msgstr "Ндебеле северный"
-
-#~ msgid "Ndonga"
-#~ msgstr "Ндунга"
-
-#~ msgid "Nepali"
-#~ msgstr "Непальский"
-
-#~ msgid "Nias"
-#~ msgstr "Ниас"
-
-#~ msgid "Niuean"
-#~ msgstr "Ниуэ"
-
-#~ msgid "Dutch"
-#~ msgstr "Нидерландский"
-
-#~ msgid "Norwegian Nynorsk"
-#~ msgstr "Норвежский Нюнорск"
-
-#~ msgid "Nogai"
-#~ msgstr "Ногайский"
-
-#~ msgid "Norse; Old"
-#~ msgstr "Старонорвежский"
-
-#~ msgid "Norwegian"
-#~ msgstr "Норвежский"
-
-#~ msgid "N'Ko"
-#~ msgstr "Н'ко"
-
-#~ msgid "Nyamwezi"
-#~ msgstr "Ньямвези"
-
-#~ msgid "Nyankole"
-#~ msgstr "Ньянколе"
-
-#~ msgid "Nyoro"
-#~ msgstr "Ньоро"
-
-#~ msgid "Nzima"
-#~ msgstr "Нзима"
-
-#~ msgid "Ojibwa"
-#~ msgstr "Оджибва"
-
-#~ msgid "Oriya"
-#~ msgstr "Ория"
-
-#~ msgid "Oromo"
-#~ msgstr "Оромо"
-
-#~ msgid "Osage"
-#~ msgstr "Оседжи"
-
-#~ msgid "Turkish; Ottoman (1500-1928)"
-#~ msgstr "Турецкий; Отомангский (1500-1928)"
-
-#~ msgid "Pangasinan"
-#~ msgstr "Пангасинан"
-
-#~ msgid "Pahlavi"
-#~ msgstr "Пехлевийский"
-
-#~ msgid "Pampanga"
-#~ msgstr "Пампанга"
-
-#~ msgid "Papiamento"
-#~ msgstr "Папьяменто"
-
-#~ msgid "Palauan"
-#~ msgstr "Палау"
-
-#~ msgid "Phoenician"
-#~ msgstr "Финикийский"
-
-#~ msgid "Pali"
-#~ msgstr "Пали"
-
-#~ msgid "Polish"
-#~ msgstr "Польский"
-
-#~ msgid "Pohnpeian"
-#~ msgstr "Фонпейский"
-
-#~ msgid "Portuguese"
-#~ msgstr "Португальский"
-
-#~ msgid "Provençal; Old (to 1500)"
-#~ msgstr "Старопровансальский (по 1500)"
-
-#~ msgid "Pushto"
-#~ msgstr "Пушту"
-
-#~ msgid "Quechua"
-#~ msgstr "Кечуа"
-
-#~ msgid "Rajasthani"
-#~ msgstr "Раджастхани"
-
-#~ msgid "Rapanui"
-#~ msgstr "Рапаню"
-
-#~ msgid "Romany"
-#~ msgstr "Цыганский"
-
-#~ msgid "Romanian"
-#~ msgstr "Румынский"
-
-#~ msgid "Rundi"
-#~ msgstr "Рунди"
-
-#~ msgid "Russian"
-#~ msgstr "Русский"
-
-#~ msgid "Sandawe"
-#~ msgstr "Сандаве"
-
-#~ msgid "Sango"
-#~ msgstr "Санго"
-
-#~ msgid "Yakut"
-#~ msgstr "Якутский"
-
-#~ msgid "Sanskrit"
-#~ msgstr "Санскрит"
-
-#~ msgid "Sasak"
-#~ msgstr "Сасакский"
-
-#~ msgid "Santali"
-#~ msgstr "Сантали"
-
-#~ msgid "Sicilian"
-#~ msgstr "Сицилийский"
-
-#~ msgid "Scots"
-#~ msgstr "Шотландский"
-
-#~ msgid "Selkup"
-#~ msgstr "Селкапский"
-
-#~ msgid "Irish; Old (to 900)"
-#~ msgstr "Староирландский (по 900)"
-
-#~ msgid "Shan"
-#~ msgstr "Шанский"
-
-#~ msgid "Sidamo"
-#~ msgstr "Сидама"
-
-#~ msgid "Sinhala"
-#~ msgstr "Сингальский"
-
-#~ msgid "Slovak"
-#~ msgstr "Словацкий"
-
-#~ msgid "Slovenian"
-#~ msgstr "Словенский"
-
-#~ msgid "Lule Sami"
-#~ msgstr "Люле-саамский"
-
-#~ msgid "Samoan"
-#~ msgstr "Самоанский"
-
-#~ msgid "Shona"
-#~ msgstr "Шона"
-
-#~ msgid "Sindhi"
-#~ msgstr "Синдхи"
-
-#~ msgid "Soninke"
-#~ msgstr "Сонинк"
-
-#~ msgid "Sogdian"
-#~ msgstr "Согдийский"
-
-#~ msgid "Somali"
-#~ msgstr "Сомали"
-
-#~ msgid "Sotho; Southern"
-#~ msgstr "Сото Южный"
-
-#~ msgid "Spanish"
-#~ msgstr "Испанский"
-
-#~ msgid "Albanian"
-#~ msgstr "Албанский"
-
-#~ msgid "Sardinian"
-#~ msgstr "Сардинский"
-
-#~ msgid "Serbian"
-#~ msgstr "Сербский"
-
-#~ msgid "Serer"
-#~ msgstr "Серер"
-
-#~ msgid "Swati"
-#~ msgstr "Свати"
-
-#~ msgid "Sukuma"
-#~ msgstr "Сукума"
-
-#~ msgid "Sundanese"
-#~ msgstr "Сунданский"
-
-#~ msgid "Susu"
-#~ msgstr "Сусу"
-
-#~ msgid "Sumerian"
-#~ msgstr "Шумерский"
-
-#~ msgid "Swedish"
-#~ msgstr "Шведский"
-
-#~ msgid "Syriac"
-#~ msgstr "Сирийский"
-
-#~ msgid "Tahitian"
-#~ msgstr "Таитянский"
-
-#~ msgid "Tamil"
-#~ msgstr "Тамильский"
-
-#~ msgid "Tatar"
-#~ msgstr "Татарский"
-
-#~ msgid "Telugu"
-#~ msgstr "Телугу"
-
-#~ msgid "Timne"
-#~ msgstr "Темне"
-
-#~ msgid "Tereno"
-#~ msgstr "Терено"
-
-#~ msgid "Tetum"
-#~ msgstr "Тетумский"
-
-#~ msgid "Tajik"
-#~ msgstr "Таджикский"
-
-#~ msgid "Tagalog"
-#~ msgstr "Тагалог"
-
-#~ msgid "Thai"
-#~ msgstr "Таи"
-
-#~ msgid "Tigre"
-#~ msgstr "Тигре"
-
-#~ msgid "Tigrinya"
-#~ msgstr "Тигринья"
-
-#~ msgid "Tiv"
-#~ msgstr "Тив"
-
-#~ msgid "Tokelau"
-#~ msgstr "Токелау"
-
-#~ msgid "Tlingit"
-#~ msgstr "Тлингит"
-
-#~ msgid "Tamashek"
-#~ msgstr "Тамашек"
-
-#~ msgid "Tonga (Nyasa)"
-#~ msgstr "Тонга (Ньяса)"
-
-#~ msgid "Tonga (Tonga Islands)"
-#~ msgstr "Тонга (острова Тонга)"
-
-#~ msgid "Tok Pisin"
-#~ msgstr "Ток Писин"
-
-#~ msgid "Tsimshian"
-#~ msgstr "Цимшиан"
-
-#~ msgid "Tswana"
-#~ msgstr "Тсвана"
-
-#~ msgid "Tsonga"
-#~ msgstr "Тсонга"
-
-#~ msgid "Turkmen"
-#~ msgstr "Туркменский"
-
-#~ msgid "Tumbuka"
-#~ msgstr "Тумбука"
-
-#~ msgid "Turkish"
-#~ msgstr "Турецкий"
-
-#~ msgid "Tuvalu"
-#~ msgstr "Тувалу"
-
-#~ msgid "Twi"
-#~ msgstr "Тви"
-
-#~ msgid "Tuvinian"
-#~ msgstr "Тувинский"
-
-#~ msgid "Udmurt"
-#~ msgstr "Удмуртский"
-
-#~ msgid "Ugaritic"
-#~ msgstr "Угаритский"
-
-#~ msgid "Uighur"
-#~ msgstr "Уйгурский"
-
-#~ msgid "Ukrainian"
-#~ msgstr "Украинский"
-
-#~ msgid "Umbundu"
-#~ msgstr "Умбунду"
-
-#~ msgid "Undetermined"
-#~ msgstr "Неидентифицированный"
-
-#~ msgid "Urdu"
-#~ msgstr "Урду"
-
-#~ msgid "Uzbek"
-#~ msgstr "Узбекский"
-
-#~ msgid "Vai"
-#~ msgstr "Ваи"
-
-#~ msgid "Venda"
-#~ msgstr "Венда"
-
-#~ msgid "Vietnamese"
-#~ msgstr "Вьетнамский"
-
-#~ msgid "Volapük"
-#~ msgstr "Волапюк"
-
-#~ msgid "Votic"
-#~ msgstr "Вотик"
-
-#~ msgid "Washo"
-#~ msgstr "Вашо"
-
-#~ msgid "Walloon"
-#~ msgstr "Валлун"
-
-#~ msgid "Wolof"
-#~ msgstr "Волоф"
-
-#~ msgid "Xhosa"
-#~ msgstr "Коса"
-
-#~ msgid "Yao"
-#~ msgstr "Яо"
-
-#~ msgid "Yapese"
-#~ msgstr "Яапийский"
-
-#~ msgid "Yiddish"
-#~ msgstr "Идиш"
-
-#~ msgid "Yoruba"
-#~ msgstr "Йоруба"
-
-#~ msgid "Zapotec"
-#~ msgstr "Сапотекский"
-
-#~ msgid "Zenaga"
-#~ msgstr "Зенагский"
-
-#~ msgid "Zhuang"
-#~ msgstr "Чжуанский"
-
-#~ msgid "Chinese"
-#~ msgstr "Китайский"
-
-#~ msgid "Zulu"
-#~ msgstr "Зулусский"
-
-#~ msgid "Zuni"
-#~ msgstr "Зуньи"
-
-#~ msgid "No linguistic content"
-#~ msgstr "Нет языкового содержимого"
-
-#~ msgid "Zaza"
-#~ msgstr "Зазаки"
-
-#~ msgid "Using your another device, visit"
-#~ msgstr "Используйте другое устройство, посетите"
-
-#~ msgid "and log in"
-#~ msgstr "и войти"
-
-#~ msgid "Newest Books"
-#~ msgstr "Новые Книги"
-
-#~ msgid "Oldest Books"
-#~ msgstr "Старые Книги"
-
-#~ msgid "Books (A-Z)"
-#~ msgstr "Книги (А-Я)"
-
-#~ msgid "Books (Z-A)"
-#~ msgstr "Книги (Я-А)"
-
-#~ msgid "Show sorted books"
-#~ msgstr "Показывать отсортированные книги"
-
-#~ msgid "Sorted Books"
-#~ msgstr "Сортировка Книг"
-
-#~ msgid "Sort By"
-#~ msgstr "Отсортировано по"
-
-#~ msgid "Newest"
-#~ msgstr "Новинки"
-
-#~ msgid "Oldest"
-#~ msgstr "Старое"
-
-#~ msgid "Ascending"
-#~ msgstr "По возрастанию"
-
-#~ msgid "Descending"
-#~ msgstr "По убыванию"
-
-#~ msgid "PDF.js viewer"
-#~ msgstr "Просмотровщик PDF.js"
-
-#~ msgid "successfully deleted shelf %(name)s"
-#~ msgstr "удачно удалена полка %(name)s"
-
-#~ msgid "Import of optional Google Drive requirements missing"
-#~ msgstr "Импорт дополнительных требований к Google Диску отсутствует"
-
-#~ msgid "client_secrets.json is missing or not readable"
-#~ msgstr "client_secrets.json отсутствует или его невозможно прочесть"
-
-#~ msgid "client_secrets.json is not configured for web application"
-#~ msgstr "client_secrets.json не настроен для веб-приложения"
-
-#~ msgid "Keyfile location is not valid, please enter correct path"
-#~ msgstr "Неверное расположение файла-ключа, введите правильный путь"
-
-#~ msgid "Certfile location is not valid, please enter correct path"
-#~ msgstr "Неверное расположение сертификата, введите правильный путь"
-
-#~ msgid "Logfile location is not valid, please enter correct path"
-#~ msgstr "Неверное расположение лог-файла, введите правильный путь"
-
-#~ msgid "DB location is not valid, please enter correct path"
-#~ msgstr "Неверное расположение базы данных, введите правильный путь"
-
-#~ msgid "Excecution permissions missing"
-#~ msgstr "Отсутствуют разрешения на выполнение"
-
-#~ msgid "Error excecuting UnRar"
-#~ msgstr "Ошибка извлечения UnRar"
-
-#~ msgid "Unrar binary file not found"
-#~ msgstr "Unrar двочиный файл не найден"
-
-#~ msgid "Use"
-#~ msgstr "Использовать"
-
-#~ msgid "unknown"
-#~ msgstr "неизвестно"
-
-#~ msgid "New Books"
-#~ msgstr "Новые Книги"
-
-#~ msgid "Show Calibre-Web log"
-#~ msgstr "Показать Calibre-Web лог"
-
-#~ msgid "Show access log"
-#~ msgstr "Показать журнал доступа"
-
-#~ msgid "Tags for Mature Content"
-#~ msgstr "Теги для Взрослого Контента"
-
-#~ msgid "Show mature content"
-#~ msgstr "Показывать взрослый контент"
-
-#~ msgid "deny"
-#~ msgstr ""
-
-#~ msgid "allow"
-#~ msgstr ""
-
-#~ msgid "Kobo Set-up"
-#~ msgstr ""
+#~ msgid "Best rated books"
+#~ msgstr "Книги с наивысшим рейтингом"
 
 #~ msgid "Publisher list"
 #~ msgstr "Список издателей"
@@ -3478,17 +2322,29 @@ msgstr ""
 #~ msgid "Category list"
 #~ msgstr "Категории"
 
+#~ msgid "Reverse proxy login"
+#~ msgstr "Логин обратного прокси"
+
 #~ msgid "Series id"
 #~ msgstr "Серия"
-
-#~ msgid "Submit"
-#~ msgstr "Отправить"
 
 #~ msgid "Go!"
 #~ msgstr "Старт!"
 
+#~ msgid "No. of random books to show"
+#~ msgstr "Количество отображаемых случайных книг"
+
+#~ msgid "Tags for Mature Content"
+#~ msgstr "Теги для Взрослого Контента"
+
+#~ msgid "Default settings for new users"
+#~ msgstr "Настройки по умолчанию для новых пользователей"
+
 #~ msgid "Allow Delete books"
 #~ msgstr "Разрешить удаление книг"
+
+#~ msgid "Show mature content"
+#~ msgstr "Показывать взрослый контент"
 
 #~ msgid "language"
 #~ msgstr "Язык"
@@ -3502,11 +2358,23 @@ msgstr ""
 #~ msgid "Save settings"
 #~ msgstr "Сохранить настройки"
 
-#~ msgid "api_endpoint="
+#~ msgid "Denied domains for registering"
+#~ msgstr "Запрещённые домены для регистрации"
+
+#~ msgid "Please note that every visit to this current page invalidates any previously generated Authentication url for this user."
 #~ msgstr ""
 
 #~ msgid "please don't refresh the page"
 #~ msgstr "пожалуйста не обновляйте страницу"
+
+#~ msgid "Forgot password"
+#~ msgstr "Забыл пароль"
+
+#~ msgid "Show Calibre-Web log: "
+#~ msgstr "Показать журнал Caliber-Web:"
+
+#~ msgid "Calibre-Web log: "
+#~ msgstr "Журнал Caliber-Web:"
 
 #~ msgid "E-mail address"
 #~ msgstr "E-mail адрес"

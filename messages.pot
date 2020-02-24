@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-02-23 20:05+0100\n"
+"POT-Creation-Date: 2020-02-24 19:37+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1756,10 +1756,6 @@ msgstr ""
 
 #: cps/templates/generate_kobo_auth_url.html:5
 msgid "Open the .kobo/Kobo eReader.conf file in a text editor and add (or edit):"
-msgstr ""
-
-#: cps/templates/generate_kobo_auth_url.html:11
-msgid "Please note that every visit to this current page invalidates any previously generated Authentication url for this user."
 msgstr ""
 
 #: cps/templates/http_error.html:38
