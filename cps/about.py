@@ -49,7 +49,7 @@ about = flask.Blueprint('about', __name__)
 
 
 _VERSIONS = OrderedDict(
-    Platform = '{0.system} {0.release} {0.version} {0.processor} {0.machine}'.format(platform.uname()),
+    Platform = '{0[0]} {0[2]} {0[3]} {0[4]} {0[5]}'.format(platform.uname()),
     Python=sys.version,
     Calibre_Web=constants.STABLE_VERSION['version'] + ' - '
                 + constants.NIGHTLY_VERSION[0].replace('%','%%') + ' - '
