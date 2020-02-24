@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2020-02-23 20:05+0100\n"
+"POT-Creation-Date: 2020-02-24 19:37+0100\n"
 "PO-Revision-Date: 2017-04-04 15:09+0200\n"
 "Last-Translator: ElQuimm <quimm@webtaste.com>\n"
 "Language: it\n"
@@ -58,12 +58,12 @@ msgstr "Aggiornamento della configurazione di Calibre-Web"
 #: cps/admin.py:434 cps/admin.py:440 cps/admin.py:451 cps/admin.py:462
 #: cps/templates/modal_restriction.html:29
 msgid "Deny"
-msgstr ""
+msgstr "Nega"
 
 #: cps/admin.py:436 cps/admin.py:442 cps/admin.py:453 cps/admin.py:464
 #: cps/templates/modal_restriction.html:28
 msgid "Allow"
-msgstr ""
+msgstr "Permetti"
 
 #: cps/admin.py:667
 msgid "Basic Configuration"
@@ -186,7 +186,7 @@ msgstr "Arresto il server"
 
 #: cps/admin.py:963
 msgid "Update finished, please press okay and reload page"
-msgstr "Aggiornamento completato, prego premi ok e ricarica la pagina"
+msgstr "Aggiornamento completato, per favore premi ok e ricarica la pagina"
 
 #: cps/admin.py:964 cps/admin.py:965 cps/admin.py:966 cps/admin.py:967
 msgid "Update failed:"
@@ -435,11 +435,11 @@ msgstr "Processo sconosciuto: "
 
 #: cps/kobo_auth.py:127
 msgid "PLease access calibre-web from non localhost to get valid api_endpoint for kobo device"
-msgstr ""
+msgstr "Per favore, per ottenere un valido api-endpoint per Kobo, accedi a Calibre-web non da localhost"
 
 #: cps/kobo_auth.py:130 cps/kobo_auth.py:150
 msgid "Kobo Setup"
-msgstr ""
+msgstr "Configurazione di Kobo"
 
 #: cps/oauth_bb.py:74
 #, python-format
@@ -580,7 +580,7 @@ msgstr "Errore durante l'apertura dello scaffale. Lo scaffale non esiste o non �
 
 #: cps/shelf.py:342
 msgid "Hidden Book"
-msgstr ""
+msgstr "Libro nascosto"
 
 #: cps/shelf.py:347
 #, python-format
@@ -609,7 +609,7 @@ msgstr "Libri meglio valutati"
 
 #: cps/ub.py:65
 msgid "Show Top Rated Books"
-msgstr "Mostra l'opzione per la selezione dei libri meglio votati"
+msgstr "Mostra l'opzione per la selezione dei libri meglio valutati"
 
 #: cps/templates/index.xml:46 cps/templates/index.xml:50 cps/ub.py:66
 #: cps/web.py:1005
@@ -911,7 +911,7 @@ msgstr "Profilo aggiornato"
 
 #: cps/web.py:1384 cps/web.py:1480
 msgid "Error opening eBook. File does not exist or file is not accessible:"
-msgstr ""
+msgstr "Errore nell'aprire il libro. Il file non esiste o il file non è accessibile."
 
 #: cps/web.py:1396 cps/web.py:1399 cps/web.py:1402 cps/web.py:1409
 #: cps/web.py:1414
@@ -940,7 +940,7 @@ msgstr "Elenco utenti"
 #: cps/templates/login.html:9 cps/templates/register.html:7
 #: cps/templates/user_edit.html:8
 msgid "Username"
-msgstr "Nickname"
+msgstr "Utente"
 
 #: cps/templates/admin.html:13 cps/templates/register.html:11
 #: cps/templates/user_edit.html:13
@@ -949,11 +949,11 @@ msgstr "E-mail"
 
 #: cps/templates/admin.html:14 cps/templates/user_edit.html:26
 msgid "Send to Kindle E-mail Address"
-msgstr "Kindle"
+msgstr "Invia all'email di Kindle"
 
 #: cps/templates/admin.html:15
 msgid "Downloads"
-msgstr "DLS"
+msgstr "Downloads"
 
 #: cps/templates/admin.html:16 cps/templates/layout.html:76
 msgid "Admin"
@@ -979,7 +979,7 @@ msgstr "Modifica"
 
 #: cps/templates/admin.html:38
 msgid "Add New User"
-msgstr ""
+msgstr "Aggiungi un nuovo utente"
 
 #: cps/templates/admin.html:44
 msgid "E-mail Server Settings"
@@ -1015,7 +1015,7 @@ msgstr "Configurazione"
 
 #: cps/templates/admin.html:70
 msgid "Calibre Database Directory"
-msgstr "Cartella DB Calibre"
+msgstr "Cartella del database di Calibre"
 
 #: cps/templates/admin.html:74 cps/templates/config_edit.html:122
 msgid "Log Level"
@@ -1031,7 +1031,7 @@ msgstr "Libri per pagina"
 
 #: cps/templates/admin.html:88
 msgid "Uploads"
-msgstr "Uploading"
+msgstr "Uploads"
 
 #: cps/templates/admin.html:92
 msgid "Anonymous Browsing"
@@ -1043,7 +1043,7 @@ msgstr "Registrazione pubblica"
 
 #: cps/templates/admin.html:100
 msgid "Magic Link Remote Login"
-msgstr "Login remoto"
+msgstr "Magic Link Login remoto"
 
 #: cps/templates/admin.html:104
 msgid "Reverse Proxy Login"
@@ -1055,11 +1055,11 @@ msgstr "Nome intestazione reverse proxy"
 
 #: cps/templates/admin.html:114
 msgid "Edit Basic Configuration"
-msgstr ""
+msgstr "Edita la configurazione di base"
 
 #: cps/templates/admin.html:115
 msgid "Edit UI Configuration"
-msgstr ""
+msgstr "Edita la configurazione dell'interfaccia utente"
 
 #: cps/templates/admin.html:121
 msgid "Administration"
@@ -1071,7 +1071,7 @@ msgstr "Visualizza Logfile"
 
 #: cps/templates/admin.html:123
 msgid "Reconnect Calibre Database"
-msgstr "Ricollegare al DB Calibre"
+msgstr "Ricollega al database di Calibre"
 
 #: cps/templates/admin.html:124
 msgid "Restart"
@@ -1121,7 +1121,7 @@ msgstr "Ok"
 #: cps/templates/shelf.html:73 cps/templates/shelf_edit.html:19
 #: cps/templates/user_edit.html:137
 msgid "Cancel"
-msgstr ""
+msgstr "Annulla"
 
 #: cps/templates/admin.html:179
 msgid "Are you sure you want to shutdown?"
@@ -1179,7 +1179,7 @@ msgstr "Converti da:"
 
 #: cps/templates/book_edit.html:30 cps/templates/book_edit.html:37
 msgid "select an option"
-msgstr "seleziona un'opzione"
+msgstr "seleziona un formato"
 
 #: cps/templates/book_edit.html:35
 msgid "Convert to:"
@@ -1209,7 +1209,7 @@ msgstr "Categorie"
 
 #: cps/templates/book_edit.html:73
 msgid "Series ID"
-msgstr ""
+msgstr "ID della serie"
 
 #: cps/templates/book_edit.html:77
 msgid "Rating"
@@ -1262,7 +1262,7 @@ msgstr "Ottieni metadati"
 #: cps/templates/config_view_edit.html:150 cps/templates/email_edit.html:38
 #: cps/templates/shelf_edit.html:17 cps/templates/user_edit.html:135
 msgid "Save"
-msgstr ""
+msgstr "Salva"
 
 #: cps/templates/book_edit.html:185
 msgid "Are you really sure?"
@@ -1282,7 +1282,7 @@ msgstr "Parola chiave"
 
 #: cps/templates/book_edit.html:210
 msgid " Search keyword "
-msgstr "Cerca parola chiave"
+msgstr " ricerca parola chiave "
 
 #: cps/templates/book_edit.html:216
 msgid "Click the cover to load metadata to the form"
@@ -1424,11 +1424,11 @@ msgstr "Attiva login remoto (\"magic link\")"
 
 #: cps/templates/config_edit.html:175
 msgid "Enable Kobo sync"
-msgstr ""
+msgstr "Abilita la sincronia per Kobo"
 
 #: cps/templates/config_edit.html:180
 msgid "Proxy unknown requests to Kobo Store"
-msgstr ""
+msgstr "Richieste proxy sconosciute allo store di Kobo"
 
 #: cps/templates/config_edit.html:187
 msgid "Use Goodreads"
@@ -1592,7 +1592,7 @@ msgstr "Tema standard"
 
 #: cps/templates/config_view_edit.html:42
 msgid "caliBlur! Dark Theme"
-msgstr "caliBlur! Dark Theme"
+msgstr "Tema caliBlur! Dark"
 
 #: cps/templates/config_view_edit.html:46
 msgid "Regular Expression for Ignoring Columns"
@@ -1604,7 +1604,7 @@ msgstr "Collega lo stato letto/non letto nella colonna di Calibre"
 
 #: cps/templates/config_view_edit.html:59
 msgid "View Restrictions based on Calibre column"
-msgstr ""
+msgstr "Visualizza le restrizioni basate sulla colonna di Calibre"
 
 #: cps/templates/config_view_edit.html:61 cps/templates/email_edit.html:21
 msgid "None"
@@ -1640,7 +1640,7 @@ msgstr "Permetti la modifica"
 
 #: cps/templates/config_view_edit.html:108 cps/templates/user_edit.html:113
 msgid "Allow Delete Books"
-msgstr ""
+msgstr "Permetti l'eliminazione di libri"
 
 #: cps/templates/config_view_edit.html:112 cps/templates/user_edit.html:118
 msgid "Allow Changing Password"
@@ -1660,11 +1660,11 @@ msgstr "Mostra libri scelti aleatoriamente nella vista dettagliata"
 
 #: cps/templates/config_view_edit.html:144
 msgid "Add Allowed/Denied Tags"
-msgstr ""
+msgstr "Aggiungi Permetti/Nega etichette"
 
 #: cps/templates/config_view_edit.html:145
 msgid "Add Allowed/Denied custom column values"
-msgstr ""
+msgstr "Aggiungi Permetti/Nega valori personali nelle colonne"
 
 #: cps/templates/detail.html:59
 msgid "Read in Browser"
@@ -1684,7 +1684,7 @@ msgstr "di"
 
 #: cps/templates/detail.html:165
 msgid "Published"
-msgstr ""
+msgstr "Pubblicato"
 
 #: cps/templates/detail.html:200
 msgid "Mark As Unread"
@@ -1728,7 +1728,7 @@ msgstr "Salva le impostazioni e invia e-mail di test"
 
 #: cps/templates/email_edit.html:43
 msgid "Allowed Domains (Whitelist)"
-msgstr "Dominii autorizzati alla registrazione"
+msgstr "Dominii autorizzati alla registrazione (Whitelist)"
 
 #: cps/templates/email_edit.html:46 cps/templates/email_edit.html:72
 msgid "Add Domain"
@@ -1744,7 +1744,7 @@ msgstr "Digita il nome di dominio"
 
 #: cps/templates/email_edit.html:60
 msgid "Denied Domains (Blacklist)"
-msgstr "Dominii bloccati per la registrazione"
+msgstr "Dominii bloccati per la registrazione (Blacklist)"
 
 #: cps/templates/email_edit.html:90
 msgid "Are you sure you want to delete this domain?"
@@ -1756,11 +1756,7 @@ msgstr "Prossimo"
 
 #: cps/templates/generate_kobo_auth_url.html:5
 msgid "Open the .kobo/Kobo eReader.conf file in a text editor and add (or edit):"
-msgstr ""
-
-#: cps/templates/generate_kobo_auth_url.html:11
-msgid "Please note that every visit to this current page invalidates any previously generated Authentication url for this user."
-msgstr ""
+msgstr "Apri il fime .kobo/Kobo eReader.conf in un editre di testi e aggiungi (o edita):"
 
 #: cps/templates/http_error.html:38
 msgid "Create Issue"
@@ -1784,7 +1780,7 @@ msgstr "Pubblicazioni popolari di questo catalogo in base ai download."
 
 #: cps/templates/index.xml:28
 msgid "Popular publications from this catalog based on Rating."
-msgstr "Pubblicazioni popolari di questo catalogo in base ai voti."
+msgstr "Pubblicazioni popolari di questo catalogo in base alle valutazioni."
 
 #: cps/templates/index.xml:31
 msgid "Recently added Books"
@@ -1857,7 +1853,7 @@ msgstr "Alterna navigazione"
 
 #: cps/templates/layout.html:45
 msgid "Search Library"
-msgstr ""
+msgstr "Ricerca nella libreria"
 
 #: cps/templates/layout.html:55
 msgid "Advanced Search"
@@ -1886,7 +1882,7 @@ msgstr "Uploading..."
 
 #: cps/templates/layout.html:117
 msgid "Please do not refresh the page"
-msgstr ""
+msgstr "Per favore non aggiornare la pagina"
 
 #: cps/templates/layout.html:127
 msgid "Browse"
@@ -1906,7 +1902,7 @@ msgstr "Precedente"
 
 #: cps/templates/layout.html:187
 msgid "Book Details"
-msgstr "Dettagli libro"
+msgstr "Dettagli del libro"
 
 #: cps/templates/layout.html:221
 msgid "Upload done, processing, please wait..."
@@ -1951,27 +1947,27 @@ msgstr "Mostra il log di accesso: "
 
 #: cps/templates/modal_restriction.html:6
 msgid "Select allowed/denied Tags"
-msgstr ""
+msgstr "Seleziona le etichette consentite/negate"
 
 #: cps/templates/modal_restriction.html:7
 msgid "Select allowed/denied Custom Column values"
-msgstr ""
+msgstr "Seleziona i valori personali per le colonne consentiti/negati"
 
 #: cps/templates/modal_restriction.html:8
 msgid "Select allowed/denied Tags of user"
-msgstr ""
+msgstr "Seleziona le etichette consentite/negate per l'utente"
 
 #: cps/templates/modal_restriction.html:9
 msgid "Select allowed/denied Custom Column values of user"
-msgstr ""
+msgstr "Seleziona i valori personali per le colonne consentiti/nehati per l'utente"
 
 #: cps/templates/modal_restriction.html:15
 msgid "Enter Tag"
-msgstr ""
+msgstr "Digita etichetta"
 
 #: cps/templates/modal_restriction.html:24
 msgid "Add View Restriction"
-msgstr ""
+msgstr "Aggiungi visualizza restrizioni"
 
 #: cps/templates/osd.xml:5
 msgid "Calibre-Web eBook Catalog"
@@ -2083,7 +2079,7 @@ msgstr "Lettore PDF"
 
 #: cps/templates/readtxt.html:6
 msgid "Basic txt Reader"
-msgstr "Lettore di base txt"
+msgstr "Lettore di base di testi"
 
 #: cps/templates/register.html:4
 msgid "Register New Account"
@@ -2099,7 +2095,7 @@ msgstr "Il tuo indirizzo e-mail"
 
 #: cps/templates/remote_login.html:4
 msgid "Magic Link - Authorise New Device"
-msgstr ""
+msgstr "Magic Link - Autorizza un nuovo apparecchio"
 
 #: cps/templates/remote_login.html:6
 msgid "On another device, login and visit:"
@@ -2115,11 +2111,11 @@ msgstr "Il link scadrà tra 10 minuti."
 
 #: cps/templates/search.html:5
 msgid "No Results Found"
-msgstr ""
+msgstr "Nessun risultato"
 
 #: cps/templates/search.html:6
 msgid "Search Term:"
-msgstr ""
+msgstr "Termine di ricerca:"
 
 #: cps/templates/search.html:8
 msgid "Results for:"
@@ -2279,19 +2275,19 @@ msgstr "Scollega"
 
 #: cps/templates/user_edit.html:62
 msgid "Kobo Sync Token"
-msgstr ""
+msgstr "Token Kobo Sync"
 
 #: cps/templates/user_edit.html:64
 msgid "Create/View"
-msgstr ""
+msgstr "Crea/Visualizza"
 
 #: cps/templates/user_edit.html:83
 msgid "Add allowed/denied Tags"
-msgstr ""
+msgstr "Aggiungi Permetti/Nega etichette"
 
 #: cps/templates/user_edit.html:84
 msgid "Add allowed/denied custom column values"
-msgstr ""
+msgstr "Aggiungi Permetti/Nega valori personali nelle colonne"
 
 #: cps/templates/user_edit.html:129
 msgid "Delete User"
@@ -2303,1506 +2299,12 @@ msgstr "Download recenti"
 
 #: cps/templates/user_edit.html:160
 msgid "Generate Kobo Auth URL"
-msgstr ""
+msgstr "Genera un URL di autenticazione per Kobo"
 
 #: cps/templates/user_edit.html:176
 msgid "Do you really want to delete the Kobo Token?"
-msgstr ""
+msgstr "Vuoi veramente eliminare questo token di Kobo?"
 
-#~ msgid "Afar"
-#~ msgstr "Afar"
-
-#~ msgid "Abkhazian"
-#~ msgstr "Abkhazian"
-
-#~ msgid "Achinese"
-#~ msgstr "Achinese"
-
-#~ msgid "Acoli"
-#~ msgstr "Acoli"
-
-#~ msgid "Adangme"
-#~ msgstr "Adangme"
-
-#~ msgid "Adyghe"
-#~ msgstr "Adyghe"
-
-#~ msgid "Afrihili"
-#~ msgstr "Afrihili"
-
-#~ msgid "Afrikaans"
-#~ msgstr "Afrikaans"
-
-#~ msgid "Ainu (Japan)"
-#~ msgstr "Ainu (Giappone)"
-
-#~ msgid "Akan"
-#~ msgstr "Akan"
-
-#~ msgid "Akkadian"
-#~ msgstr "Accadico"
-
-#~ msgid "Aleut"
-#~ msgstr "Aleut"
-
-#~ msgid "Altai; Southern"
-#~ msgstr "Altai meridionale"
-
-#~ msgid "Amharic"
-#~ msgstr "Amarico"
-
-#~ msgid "English; Old (ca. 450-1100)"
-#~ msgstr "Inglese antico (ca. 450-1100)"
-
-#~ msgid "Angika"
-#~ msgstr "Angika"
-
-#~ msgid "Arabic"
-#~ msgstr "Arabo"
-
-#~ msgid "Aramaic; Official (700-300 BCE)"
-#~ msgstr "Aramaico ufficiale (700-300 p.e.v.)"
-
-#~ msgid "Aragonese"
-#~ msgstr "Aragonese"
-
-#~ msgid "Mapudungun"
-#~ msgstr "Mapudungun"
-
-#~ msgid "Arapaho"
-#~ msgstr "Arapaho"
-
-#~ msgid "Arawak"
-#~ msgstr "Arawak"
-
-#~ msgid "Assamese"
-#~ msgstr "Assamese"
-
-#~ msgid "Asturian"
-#~ msgstr "Asturiano"
-
-#~ msgid "Avaric"
-#~ msgstr "Avarico"
-
-#~ msgid "Avestan"
-#~ msgstr "Avestano"
-
-#~ msgid "Awadhi"
-#~ msgstr "Awadhi"
-
-#~ msgid "Aymara"
-#~ msgstr "Aymara"
-
-#~ msgid "Azerbaijani"
-#~ msgstr "Azerbaijano"
-
-#~ msgid "Bashkir"
-#~ msgstr "Bashkir"
-
-#~ msgid "Baluchi"
-#~ msgstr "Baluchi"
-
-#~ msgid "Bambara"
-#~ msgstr "Bambara"
-
-#~ msgid "Balinese"
-#~ msgstr "Balinese"
-
-#~ msgid "Basa (Cameroon)"
-#~ msgstr "Basa (Cameru)"
-
-#~ msgid "Beja"
-#~ msgstr "Beja"
-
-#~ msgid "Belarusian"
-#~ msgstr "Bielorusso"
-
-#~ msgid "Bemba (Zambia)"
-#~ msgstr "Bemba (Zambia)"
-
-#~ msgid "Bengali"
-#~ msgstr "Bengalese"
-
-#~ msgid "Bhojpuri"
-#~ msgstr "Bhojpuri"
-
-#~ msgid "Bikol"
-#~ msgstr "bicol"
-
-#~ msgid "Bini"
-#~ msgstr "Bini"
-
-#~ msgid "Bislama"
-#~ msgstr "bislama"
-
-#~ msgid "Siksika"
-#~ msgstr "Siksika"
-
-#~ msgid "Tibetan"
-#~ msgstr "Tibetano"
-
-#~ msgid "Bosnian"
-#~ msgstr "Bosniaco"
-
-#~ msgid "Braj"
-#~ msgstr "braj"
-
-#~ msgid "Breton"
-#~ msgstr "Bretone"
-
-#~ msgid "Buriat"
-#~ msgstr "Buriat"
-
-#~ msgid "Buginese"
-#~ msgstr "Buginese"
-
-#~ msgid "Bulgarian"
-#~ msgstr "Bulgaro"
-
-#~ msgid "Bilin"
-#~ msgstr "Bilin"
-
-#~ msgid "Caddo"
-#~ msgstr "caddo"
-
-#~ msgid "Carib; Galibi"
-#~ msgstr "Carib (Galibi)"
-
-#~ msgid "Catalan"
-#~ msgstr "Catalano"
-
-#~ msgid "Cebuano"
-#~ msgstr "Cebuano"
-
-#~ msgid "Czech"
-#~ msgstr "Ceco"
-
-#~ msgid "Chamorro"
-#~ msgstr "Chamorro"
-
-#~ msgid "Chibcha"
-#~ msgstr "Chibcha"
-
-#~ msgid "Chechen"
-#~ msgstr "Chechen"
-
-#~ msgid "Chagatai"
-#~ msgstr "Ciagataico"
-
-#~ msgid "Chuukese"
-#~ msgstr "Chuukese"
-
-#~ msgid "Mari (Russia)"
-#~ msgstr "Mari (Russia)"
-
-#~ msgid "Chinook jargon"
-#~ msgstr "Chinook jargon"
-
-#~ msgid "Choctaw"
-#~ msgstr "Choctaw"
-
-#~ msgid "Chipewyan"
-#~ msgstr "Chipewyan"
-
-#~ msgid "Cherokee"
-#~ msgstr "Cherokee"
-
-#~ msgid "Slavonic; Old"
-#~ msgstr "Slavo antico"
-
-#~ msgid "Chuvash"
-#~ msgstr "Chuvash"
-
-#~ msgid "Cheyenne"
-#~ msgstr "Cheyenne"
-
-#~ msgid "Coptic"
-#~ msgstr "Copto"
-
-#~ msgid "Cornish"
-#~ msgstr "Cornish"
-
-#~ msgid "Corsican"
-#~ msgstr "Corso"
-
-#~ msgid "Cree"
-#~ msgstr "Cree"
-
-#~ msgid "Turkish; Crimean"
-#~ msgstr "Turco; Crimeo"
-
-#~ msgid "Kashubian"
-#~ msgstr "kashubian"
-
-#~ msgid "Welsh"
-#~ msgstr "Gallese"
-
-#~ msgid "Dakota"
-#~ msgstr "Dakota"
-
-#~ msgid "Danish"
-#~ msgstr "Danese"
-
-#~ msgid "Dargwa"
-#~ msgstr "Dargwa"
-
-#~ msgid "Delaware"
-#~ msgstr "delaware"
-
-#~ msgid "Slave (Athapascan)"
-#~ msgstr "Slave (Athapascan)"
-
-#~ msgid "German"
-#~ msgstr "Tedesco"
-
-#~ msgid "Dogrib"
-#~ msgstr "Dogrib"
-
-#~ msgid "Dinka"
-#~ msgstr "Dinca"
-
-#~ msgid "Dhivehi"
-#~ msgstr "Dhivehi"
-
-#~ msgid "Dogri (macrolanguage)"
-#~ msgstr "Dogri (macrolingua)"
-
-#~ msgid "Sorbian; Lower"
-#~ msgstr "Lusaziano inferiore"
-
-#~ msgid "Duala"
-#~ msgstr "Duala"
-
-#~ msgid "Dutch; Middle (ca. 1050-1350)"
-#~ msgstr "Olandese medio (ca. 1050-1350)"
-
-#~ msgid "Dyula"
-#~ msgstr "Diula"
-
-#~ msgid "Dzongkha"
-#~ msgstr "Dzongkha"
-
-#~ msgid "Efik"
-#~ msgstr "Efik"
-
-#~ msgid "Egyptian (Ancient)"
-#~ msgstr "Egiziano antico"
-
-#~ msgid "Ekajuk"
-#~ msgstr "Ekajuk"
-
-#~ msgid "Greek; Modern (1453-)"
-#~ msgstr "Greco moderno (1453-)"
-
-#~ msgid "Elamite"
-#~ msgstr "Elamitico"
-
-#~ msgid "English"
-#~ msgstr "Inglese"
-
-#~ msgid "English; Middle (1100-1500)"
-#~ msgstr "Inglese medio (1100-1500)"
-
-#~ msgid "Esperanto"
-#~ msgstr "Esperanto"
-
-#~ msgid "Estonian"
-#~ msgstr "Estone"
-
-#~ msgid "Basque"
-#~ msgstr "Basco"
-
-#~ msgid "Ewe"
-#~ msgstr "Ewe"
-
-#~ msgid "Ewondo"
-#~ msgstr "Ewondo"
-
-#~ msgid "Fang (Equatorial Guinea)"
-#~ msgstr "Fang (Guinea equatoriale)"
-
-#~ msgid "Faroese"
-#~ msgstr "Faroese"
-
-#~ msgid "Persian"
-#~ msgstr "Persiano"
-
-#~ msgid "Fanti"
-#~ msgstr "Fanti"
-
-#~ msgid "Fijian"
-#~ msgstr "Figiano"
-
-#~ msgid "Filipino"
-#~ msgstr "Filippino"
-
-#~ msgid "Finnish"
-#~ msgstr "Finlandese"
-
-#~ msgid "Fon"
-#~ msgstr "Fon"
-
-#~ msgid "French"
-#~ msgstr "Francese"
-
-#~ msgid "French; Middle (ca. 1400-1600)"
-#~ msgstr "Francese medio (ca. 1400-1600)"
-
-#~ msgid "French; Old (842-ca. 1400)"
-#~ msgstr "Francese antico (842-ca. 1400)"
-
-#~ msgid "Frisian; Northern"
-#~ msgstr "Frisone settentrionale"
-
-#~ msgid "Frisian; Eastern"
-#~ msgstr "Frisone orientale"
-
-#~ msgid "Frisian; Western"
-#~ msgstr "Frisone occidentale"
-
-#~ msgid "Fulah"
-#~ msgstr "Fulah"
-
-#~ msgid "Friulian"
-#~ msgstr "Friulano"
-
-#~ msgid "Ga"
-#~ msgstr "ga"
-
-#~ msgid "Gayo"
-#~ msgstr "gayo"
-
-#~ msgid "Gbaya (Central African Republic)"
-#~ msgstr "Gbaya (Repubblica centro africana)"
-
-#~ msgid "Geez"
-#~ msgstr "Geez"
-
-#~ msgid "Gilbertese"
-#~ msgstr "Gilbertese"
-
-#~ msgid "Gaelic; Scottish"
-#~ msgstr "Gaelico (Scozzese)"
-
-#~ msgid "Irish"
-#~ msgstr "Gaelico"
-
-#~ msgid "Galician"
-#~ msgstr "Galiziano"
-
-#~ msgid "Manx"
-#~ msgstr "Manx"
-
-#~ msgid "German; Middle High (ca. 1050-1500)"
-#~ msgstr "Tedesco medio alto (ca. 1050-1500)"
-
-#~ msgid "German; Old High (ca. 750-1050)"
-#~ msgstr "Tedesco antico alto (ca. 750-1050)"
-
-#~ msgid "Gondi"
-#~ msgstr "Gondi"
-
-#~ msgid "Gorontalo"
-#~ msgstr "Gorontalo"
-
-#~ msgid "Gothic"
-#~ msgstr "Gotico"
-
-#~ msgid "Grebo"
-#~ msgstr "Grebo"
-
-#~ msgid "Greek; Ancient (to 1453)"
-#~ msgstr "Greco antico (fino al 1453)"
-
-#~ msgid "Guarani"
-#~ msgstr "Guarani"
-
-#~ msgid "German; Swiss"
-#~ msgstr "Tedesco (Svizzera)"
-
-#~ msgid "Gujarati"
-#~ msgstr "Gujarati"
-
-#~ msgid "Gwichʼin"
-#~ msgstr "Gwichʼin"
-
-#~ msgid "Haida"
-#~ msgstr "Haida"
-
-#~ msgid "Creole; Haitian"
-#~ msgstr "Creolo (Haitiano)"
-
-#~ msgid "Hausa"
-#~ msgstr "Hausa"
-
-#~ msgid "Hawaiian"
-#~ msgstr "hawaiano"
-
-#~ msgid "Hebrew"
-#~ msgstr "Ebraico"
-
-#~ msgid "Herero"
-#~ msgstr "Herero"
-
-#~ msgid "Hiligaynon"
-#~ msgstr "Hiligayna"
-
-#~ msgid "Hindi"
-#~ msgstr "Hindi"
-
-#~ msgid "Hittite"
-#~ msgstr "hittite"
-
-#~ msgid "Hmong"
-#~ msgstr "Hmong"
-
-#~ msgid "Hiri Motu"
-#~ msgstr "Hiri motu"
-
-#~ msgid "Croatian"
-#~ msgstr "Croato"
-
-#~ msgid "Sorbian; Upper"
-#~ msgstr "Lusaziano superiore"
-
-#~ msgid "Hungarian"
-#~ msgstr "Ungherese"
-
-#~ msgid "Hupa"
-#~ msgstr "Hupa"
-
-#~ msgid "Armenian"
-#~ msgstr "armeno"
-
-#~ msgid "Iban"
-#~ msgstr "Iban"
-
-#~ msgid "Igbo"
-#~ msgstr "Igbo"
-
-#~ msgid "Ido"
-#~ msgstr "Ido"
-
-#~ msgid "Yi; Sichuan"
-#~ msgstr "Yi; Sichuan"
-
-#~ msgid "Inuktitut"
-#~ msgstr "inuktitut"
-
-#~ msgid "Interlingue"
-#~ msgstr "Interlingua"
-
-#~ msgid "Iloko"
-#~ msgstr "Ilocano"
-
-#~ msgid "Interlingua (International Auxiliary Language Association)"
-#~ msgstr "Interlingua (International Auxiliary Language Association)"
-
-#~ msgid "Indonesian"
-#~ msgstr "Indonesiano"
-
-#~ msgid "Ingush"
-#~ msgstr "Ingush"
-
-#~ msgid "Inupiaq"
-#~ msgstr "Inupiaq"
-
-#~ msgid "Icelandic"
-#~ msgstr "Islandese"
-
-#~ msgid "Italian"
-#~ msgstr "Italiano"
-
-#~ msgid "Javanese"
-#~ msgstr "Javanese"
-
-#~ msgid "Lojban"
-#~ msgstr "lojban"
-
-#~ msgid "Japanese"
-#~ msgstr "Giapponese"
-
-#~ msgid "Judeo-Persian"
-#~ msgstr "Giudeo-persiano"
-
-#~ msgid "Judeo-Arabic"
-#~ msgstr "Giudeo-arabo"
-
-#~ msgid "Kara-Kalpak"
-#~ msgstr "Kara-Kalpak"
-
-#~ msgid "Kabyle"
-#~ msgstr "Kabyle"
-
-#~ msgid "Kachin"
-#~ msgstr "Kachin"
-
-#~ msgid "Kalaallisut"
-#~ msgstr "Kalaallisut"
-
-#~ msgid "Kamba (Kenya)"
-#~ msgstr "Kamba (Kenya)"
-
-#~ msgid "Kannada"
-#~ msgstr "kannada"
-
-#~ msgid "Kashmiri"
-#~ msgstr "kashmiri"
-
-#~ msgid "Georgian"
-#~ msgstr "Georgiano"
-
-#~ msgid "Kanuri"
-#~ msgstr "Kanuri"
-
-#~ msgid "Kawi"
-#~ msgstr "Kawi"
-
-#~ msgid "Kazakh"
-#~ msgstr "Kazako"
-
-#~ msgid "Kabardian"
-#~ msgstr "Kabardia"
-
-#~ msgid "Khasi"
-#~ msgstr "Khasi"
-
-#~ msgid "Khmer; Central"
-#~ msgstr "Khmer centrale"
-
-#~ msgid "Khotanese"
-#~ msgstr "Khotanese"
-
-#~ msgid "Kikuyu"
-#~ msgstr "Kikuyu"
-
-#~ msgid "Kinyarwanda"
-#~ msgstr "Kinyarwanda"
-
-#~ msgid "Kirghiz"
-#~ msgstr "Kirghiso"
-
-#~ msgid "Kimbundu"
-#~ msgstr "Kimbundu"
-
-#~ msgid "Konkani (macrolanguage)"
-#~ msgstr "Konkani (macrolinguaggio)"
-
-#~ msgid "Komi"
-#~ msgstr "Komi"
-
-#~ msgid "Kongo"
-#~ msgstr "Kongo"
-
-#~ msgid "Korean"
-#~ msgstr "Coreano"
-
-#~ msgid "Kosraean"
-#~ msgstr "Kosraean"
-
-#~ msgid "Kpelle"
-#~ msgstr "Kpelle"
-
-#~ msgid "Karachay-Balkar"
-#~ msgstr "karachay-Balkar"
-
-#~ msgid "Karelian"
-#~ msgstr "Karelian"
-
-#~ msgid "Kurukh"
-#~ msgstr "Kurukh"
-
-#~ msgid "Kuanyama"
-#~ msgstr "Kuanyama"
-
-#~ msgid "Kumyk"
-#~ msgstr "kumyk"
-
-#~ msgid "Kurdish"
-#~ msgstr "Curdo"
-
-#~ msgid "Kutenai"
-#~ msgstr "kutenai"
-
-#~ msgid "Ladino"
-#~ msgstr "Ladino"
-
-#~ msgid "Lahnda"
-#~ msgstr "lahnda"
-
-#~ msgid "Lamba"
-#~ msgstr "Lamba"
-
-#~ msgid "Lao"
-#~ msgstr "Lao"
-
-#~ msgid "Latin"
-#~ msgstr "Latino"
-
-#~ msgid "Latvian"
-#~ msgstr "Lettone"
-
-#~ msgid "Lezghian"
-#~ msgstr "Lezghian"
-
-#~ msgid "Limburgan"
-#~ msgstr "Limburgan"
-
-#~ msgid "Lingala"
-#~ msgstr "Lingala"
-
-#~ msgid "Lithuanian"
-#~ msgstr "Lituano"
-
-#~ msgid "Mongo"
-#~ msgstr "Mongo"
-
-#~ msgid "Lozi"
-#~ msgstr "Lozi"
-
-#~ msgid "Luxembourgish"
-#~ msgstr "Lussemburghese"
-
-#~ msgid "Luba-Lulua"
-#~ msgstr "Luba-lulua"
-
-#~ msgid "Luba-Katanga"
-#~ msgstr "Luba-katanga"
-
-#~ msgid "Ganda"
-#~ msgstr "Ganda"
-
-#~ msgid "Luiseno"
-#~ msgstr "Luiseno"
-
-#~ msgid "Lunda"
-#~ msgstr "Lunda"
-
-#~ msgid "Luo (Kenya and Tanzania)"
-#~ msgstr "Luo (Kenya e Tanzania)"
-
-#~ msgid "Lushai"
-#~ msgstr "Lushai"
-
-#~ msgid "Madurese"
-#~ msgstr "Madurese"
-
-#~ msgid "Magahi"
-#~ msgstr "Magahi"
-
-#~ msgid "Marshallese"
-#~ msgstr "Marshallese"
-
-#~ msgid "Maithili"
-#~ msgstr "Maithili"
-
-#~ msgid "Makasar"
-#~ msgstr "Makasar"
-
-#~ msgid "Malayalam"
-#~ msgstr "Malayalam"
-
-#~ msgid "Mandingo"
-#~ msgstr "Mandingo"
-
-#~ msgid "Marathi"
-#~ msgstr "Marathi"
-
-#~ msgid "Masai"
-#~ msgstr "Masai"
-
-#~ msgid "Moksha"
-#~ msgstr "Moksha"
-
-#~ msgid "Mandar"
-#~ msgstr "Mandar"
-
-#~ msgid "Mende (Sierra Leone)"
-#~ msgstr "Mende (Sierra Leone)"
-
-#~ msgid "Irish; Middle (900-1200)"
-#~ msgstr "Irlandese medio (900-1200)"
-
-#~ msgid "Mi'kmaq"
-#~ msgstr "Mi'kmaq"
-
-#~ msgid "Minangkabau"
-#~ msgstr "Minangkabau"
-
-#~ msgid "Uncoded languages"
-#~ msgstr "Lingue non codificate"
-
-#~ msgid "Macedonian"
-#~ msgstr "Macedone"
-
-#~ msgid "Malagasy"
-#~ msgstr "malagasy"
-
-#~ msgid "Maltese"
-#~ msgstr "Maltese"
-
-#~ msgid "Manchu"
-#~ msgstr "Manchu"
-
-#~ msgid "Manipuri"
-#~ msgstr "Manipuri"
-
-#~ msgid "Mohawk"
-#~ msgstr "mohawk"
-
-#~ msgid "Mongolian"
-#~ msgstr "Mongolo"
-
-#~ msgid "Mossi"
-#~ msgstr "Mossi"
-
-#~ msgid "Maori"
-#~ msgstr "Maori"
-
-#~ msgid "Malay (macrolanguage)"
-#~ msgstr "Malay (macrolingua)"
-
-#~ msgid "Multiple languages"
-#~ msgstr "Lingue multiple"
-
-#~ msgid "Creek"
-#~ msgstr "Creek"
-
-#~ msgid "Mirandese"
-#~ msgstr "Mirandese"
-
-#~ msgid "Marwari"
-#~ msgstr "Marwari"
-
-#~ msgid "Burmese"
-#~ msgstr "Burmese"
-
-#~ msgid "Erzya"
-#~ msgstr "Erzya"
-
-#~ msgid "Neapolitan"
-#~ msgstr "Napoletano"
-
-#~ msgid "Nauru"
-#~ msgstr "Nauru"
-
-#~ msgid "Navajo"
-#~ msgstr "Navajo"
-
-#~ msgid "Ndebele; South"
-#~ msgstr "Ndebele del Sud"
-
-#~ msgid "Ndebele; North"
-#~ msgstr "Ndebele del Nord"
-
-#~ msgid "Ndonga"
-#~ msgstr "Ndonga"
-
-#~ msgid "German; Low"
-#~ msgstr "Tedesco; Volgare"
-
-#~ msgid "Nepali"
-#~ msgstr "Nepali"
-
-#~ msgid "Bhasa; Nepal"
-#~ msgstr "Bhasa; Nepal"
-
-#~ msgid "Nias"
-#~ msgstr "Nias"
-
-#~ msgid "Niuean"
-#~ msgstr "Niuean"
-
-#~ msgid "Dutch"
-#~ msgstr "Olandese"
-
-#~ msgid "Norwegian Nynorsk"
-#~ msgstr "Norvegese nynorsk"
-
-#~ msgid "Norwegian Bokmål"
-#~ msgstr "Norvegese bokmål"
-
-#~ msgid "Nogai"
-#~ msgstr "Nogai"
-
-#~ msgid "Norse; Old"
-#~ msgstr "Norse antico"
-
-#~ msgid "Norwegian"
-#~ msgstr "Norvegese"
-
-#~ msgid "N'Ko"
-#~ msgstr "N'Ko"
-
-#~ msgid "Sotho; Northern"
-#~ msgstr "Sotho settentrionale"
-
-#~ msgid "Newari; Old"
-#~ msgstr "Newari antico"
-
-#~ msgid "Nyanja"
-#~ msgstr "Nyanja"
-
-#~ msgid "Nyamwezi"
-#~ msgstr "Nyamwezi"
-
-#~ msgid "Nyankole"
-#~ msgstr "Nyankole"
-
-#~ msgid "Nyoro"
-#~ msgstr "Nyoro"
-
-#~ msgid "Nzima"
-#~ msgstr "Nzima"
-
-#~ msgid "Occitan (post 1500)"
-#~ msgstr "Occitan (post 1500)"
-
-#~ msgid "Ojibwa"
-#~ msgstr "Ojibwa"
-
-#~ msgid "Oriya"
-#~ msgstr "Oriya"
-
-#~ msgid "Oromo"
-#~ msgstr "Oromo"
-
-#~ msgid "Osage"
-#~ msgstr "Osage"
-
-#~ msgid "Ossetian"
-#~ msgstr "Ossetian"
-
-#~ msgid "Turkish; Ottoman (1500-1928)"
-#~ msgstr "Turco ottomano (1500-1928)"
-
-#~ msgid "Pangasinan"
-#~ msgstr "Pangasinan"
-
-#~ msgid "Pahlavi"
-#~ msgstr "Pahlavi"
-
-#~ msgid "Pampanga"
-#~ msgstr "pampanga"
-
-#~ msgid "Panjabi"
-#~ msgstr "Panjabi"
-
-#~ msgid "Papiamento"
-#~ msgstr "Papiamento"
-
-#~ msgid "Palauan"
-#~ msgstr "Palauan"
-
-#~ msgid "Persian; Old (ca. 600-400 B.C.)"
-#~ msgstr "Persiano antico (ca. 600-400 A.C.)"
-
-#~ msgid "Phoenician"
-#~ msgstr "Fenicio"
-
-#~ msgid "Pali"
-#~ msgstr "Pali"
-
-#~ msgid "Polish"
-#~ msgstr "Polacco"
-
-#~ msgid "Pohnpeian"
-#~ msgstr "Pohnpeian"
-
-#~ msgid "Portuguese"
-#~ msgstr "Portoghese"
-
-#~ msgid "Provençal; Old (to 1500)"
-#~ msgstr "Provençal antico (fino al 1500)"
-
-#~ msgid "Pushto"
-#~ msgstr "Pushto"
-
-#~ msgid "Quechua"
-#~ msgstr "Quechua"
-
-#~ msgid "Rajasthani"
-#~ msgstr "rajasthani"
-
-#~ msgid "Rapanui"
-#~ msgstr "Rapanui"
-
-#~ msgid "Maori; Cook Islands"
-#~ msgstr "Maori (Isole Cook)"
-
-#~ msgid "Romansh"
-#~ msgstr "Romansh"
-
-#~ msgid "Romany"
-#~ msgstr "Romany"
-
-#~ msgid "Romanian"
-#~ msgstr "Rumeno"
-
-#~ msgid "Rundi"
-#~ msgstr "Rundi"
-
-#~ msgid "Romanian; Macedo-"
-#~ msgstr "Rumeno macedone"
-
-#~ msgid "Russian"
-#~ msgstr "Russo"
-
-#~ msgid "Sandawe"
-#~ msgstr "Sandawe"
-
-#~ msgid "Sango"
-#~ msgstr "Sango"
-
-#~ msgid "Yakut"
-#~ msgstr "Yakut"
-
-#~ msgid "Aramaic; Samaritan"
-#~ msgstr "Aramaico samaritano"
-
-#~ msgid "Sanskrit"
-#~ msgstr "Sanscrito"
-
-#~ msgid "Sasak"
-#~ msgstr "Sasak"
-
-#~ msgid "Santali"
-#~ msgstr "Santali"
-
-#~ msgid "Sicilian"
-#~ msgstr "Siciliano"
-
-#~ msgid "Scots"
-#~ msgstr "Scots"
-
-#~ msgid "Selkup"
-#~ msgstr "Selkup"
-
-#~ msgid "Irish; Old (to 900)"
-#~ msgstr "Irlandese antico (fino al ’900)"
-
-#~ msgid "Shan"
-#~ msgstr "Shan"
-
-#~ msgid "Sidamo"
-#~ msgstr "Sidamo"
-
-#~ msgid "Sinhala"
-#~ msgstr "Sinhala"
-
-#~ msgid "Slovak"
-#~ msgstr "Slovacco"
-
-#~ msgid "Slovenian"
-#~ msgstr "Sloveno"
-
-#~ msgid "Sami; Southern"
-#~ msgstr "Sami meridionale"
-
-#~ msgid "Sami; Northern"
-#~ msgstr "Sami settentrionale"
-
-#~ msgid "Lule Sami"
-#~ msgstr "sami lule"
-
-#~ msgid "Sami; Inari"
-#~ msgstr "Sami; Inari"
-
-#~ msgid "Samoan"
-#~ msgstr "Samoano"
-
-#~ msgid "Sami; Skolt"
-#~ msgstr "Sami; Skolt"
-
-#~ msgid "Shona"
-#~ msgstr "Shona"
-
-#~ msgid "Sindhi"
-#~ msgstr "Sindhi"
-
-#~ msgid "Soninke"
-#~ msgstr "Soninke"
-
-#~ msgid "Sogdian"
-#~ msgstr "Sogdian"
-
-#~ msgid "Somali"
-#~ msgstr "Somali"
-
-#~ msgid "Sotho; Southern"
-#~ msgstr "Sotho meridionale"
-
-#~ msgid "Spanish"
-#~ msgstr "Spagnolo"
-
-#~ msgid "Albanian"
-#~ msgstr "Albanese"
-
-#~ msgid "Sardinian"
-#~ msgstr "Sardo"
-
-#~ msgid "Sranan Tongo"
-#~ msgstr "Sranan Tongo"
-
-#~ msgid "Serbian"
-#~ msgstr "Serbo"
-
-#~ msgid "Serer"
-#~ msgstr "Serer"
-
-#~ msgid "Swati"
-#~ msgstr "Swati"
-
-#~ msgid "Sukuma"
-#~ msgstr "sukuma"
-
-#~ msgid "Sundanese"
-#~ msgstr "Sundanese"
-
-#~ msgid "Susu"
-#~ msgstr "Susu"
-
-#~ msgid "Sumerian"
-#~ msgstr "Sumero"
-
-#~ msgid "Swahili (macrolanguage)"
-#~ msgstr "Swahili (macro-lingua)"
-
-#~ msgid "Swedish"
-#~ msgstr "Svedese"
-
-#~ msgid "Syriac; Classical"
-#~ msgstr "Siriaco classico"
-
-#~ msgid "Syriac"
-#~ msgstr "Siriaco"
-
-#~ msgid "Tahitian"
-#~ msgstr "Tahitian"
-
-#~ msgid "Tamil"
-#~ msgstr "Tamil"
-
-#~ msgid "Tatar"
-#~ msgstr "Tatarico"
-
-#~ msgid "Telugu"
-#~ msgstr "Telugu"
-
-#~ msgid "Timne"
-#~ msgstr "Temne"
-
-#~ msgid "Tereno"
-#~ msgstr "Tereno"
-
-#~ msgid "Tetum"
-#~ msgstr "Tetum"
-
-#~ msgid "Tajik"
-#~ msgstr "Tajik"
-
-#~ msgid "Tagalog"
-#~ msgstr "Tagalog"
-
-#~ msgid "Thai"
-#~ msgstr "Thailandese"
-
-#~ msgid "Tigre"
-#~ msgstr "Tigre"
-
-#~ msgid "Tigrinya"
-#~ msgstr "Tigrinya"
-
-#~ msgid "Tiv"
-#~ msgstr "Tiv"
-
-#~ msgid "Tokelau"
-#~ msgstr "Tokelau"
-
-#~ msgid "Klingon"
-#~ msgstr "Klingon"
-
-#~ msgid "Tlingit"
-#~ msgstr "Tlingit"
-
-#~ msgid "Tamashek"
-#~ msgstr "Tamashek"
-
-#~ msgid "Tonga (Nyasa)"
-#~ msgstr "Tonga (Nyasa)"
-
-#~ msgid "Tonga (Tonga Islands)"
-#~ msgstr "Tonga (Isole Tonga)"
-
-#~ msgid "Tok Pisin"
-#~ msgstr "Tok pisin"
-
-#~ msgid "Tsimshian"
-#~ msgstr "Tsimshian"
-
-#~ msgid "Tswana"
-#~ msgstr "Tswana"
-
-#~ msgid "Tsonga"
-#~ msgstr "Tsonga"
-
-#~ msgid "Turkmen"
-#~ msgstr "Turkmeno"
-
-#~ msgid "Tumbuka"
-#~ msgstr "Tumbuka"
-
-#~ msgid "Turkish"
-#~ msgstr "Turco"
-
-#~ msgid "Tuvalu"
-#~ msgstr "Tuvalu"
-
-#~ msgid "Twi"
-#~ msgstr "Twi"
-
-#~ msgid "Tuvinian"
-#~ msgstr "Tuvinian"
-
-#~ msgid "Udmurt"
-#~ msgstr "Udmurt"
-
-#~ msgid "Ugaritic"
-#~ msgstr "Ugaritico"
-
-#~ msgid "Uighur"
-#~ msgstr "Uighuro"
-
-#~ msgid "Ukrainian"
-#~ msgstr "Ucraino"
-
-#~ msgid "Umbundu"
-#~ msgstr "Umbundu"
-
-#~ msgid "Undetermined"
-#~ msgstr "Non determinato"
-
-#~ msgid "Urdu"
-#~ msgstr "Urdu"
-
-#~ msgid "Uzbek"
-#~ msgstr "Usbeco"
-
-#~ msgid "Vai"
-#~ msgstr "Vai"
-
-#~ msgid "Venda"
-#~ msgstr "venda"
-
-#~ msgid "Vietnamese"
-#~ msgstr "Vietnamita"
-
-#~ msgid "Volapük"
-#~ msgstr "Volapük"
-
-#~ msgid "Votic"
-#~ msgstr "Votic"
-
-#~ msgid "Wolaytta"
-#~ msgstr "Wolaytta"
-
-#~ msgid "Waray (Philippines)"
-#~ msgstr "Waray (Filippine)"
-
-#~ msgid "Washo"
-#~ msgstr "Washo"
-
-#~ msgid "Walloon"
-#~ msgstr "Walloon"
-
-#~ msgid "Wolof"
-#~ msgstr "Wolof"
-
-#~ msgid "Kalmyk"
-#~ msgstr "Kalmyk"
-
-#~ msgid "Xhosa"
-#~ msgstr "Xhosa"
-
-#~ msgid "Yao"
-#~ msgstr "Yao"
-
-#~ msgid "Yapese"
-#~ msgstr "Yapese"
-
-#~ msgid "Yiddish"
-#~ msgstr "Yiddish"
-
-#~ msgid "Yoruba"
-#~ msgstr "Yoruba"
-
-#~ msgid "Zapotec"
-#~ msgstr "Zapoteco"
-
-#~ msgid "Blissymbols"
-#~ msgstr "Blissymbols"
-
-#~ msgid "Zenaga"
-#~ msgstr "Zenaga"
-
-#~ msgid "Zhuang"
-#~ msgstr "Zhuang"
-
-#~ msgid "Chinese"
-#~ msgstr "Cinese"
-
-#~ msgid "Zulu"
-#~ msgstr "Zulu"
-
-#~ msgid "Zuni"
-#~ msgstr "Zuni"
-
-#~ msgid "No linguistic content"
-#~ msgstr "Nessun contenuto linguistico"
-
-#~ msgid "Zaza"
-#~ msgstr "Zaza"
-
-#~ msgid "Failed to create path for cover %(path)s (Permission denied)."
-#~ msgstr "La creazione del percorso per la copertina %(path)s è fallita (permesso negato)."
-
-#~ msgid "Failed to store cover-file %(cover)s."
-#~ msgstr "Errore nel salvare la copertina %(cover)s."
-
-#~ msgid "Cover-file is not a valid image file"
-#~ msgstr "Il file della copertina non è un file d'immagine valido"
-
-#~ msgid "Cover is not a jpg file, can't save"
-#~ msgstr "La copertina non è un file in formato jpg: non posso salvare"
-
-#~ msgid "Preparing document for printing..."
-#~ msgstr "Preparo il documento per la stampa..."
-
-#~ msgid "Using your another device, visit"
-#~ msgstr "Utilizza il tuo altro dispositivo, visita"
-
-#~ msgid "and log in"
-#~ msgstr "e accedi"
-
-#~ msgid "Using your another device, login and visit "
-#~ msgstr "Utilizza il tuo altro apparecchio, collegati e visita "
-
-#~ msgid "Newest Books"
-#~ msgstr "I libri più recenti"
-
-#~ msgid "Oldest Books"
-#~ msgstr "I libri più vecchi"
-
-#~ msgid "Books (A-Z)"
-#~ msgstr "Libri (A-Z)"
-
-#~ msgid "Books (Z-A)"
-#~ msgstr "Libri (Z-A)"
-
-#~ msgid "Error opening eBook. Fileformat is not supported."
-#~ msgstr "Errore nell'aprire il libro. Il formato del file non è supportato."
-
-#~ msgid "File %(title)s"
-#~ msgstr "File %(title)s"
-
-#~ msgid "Show sorted books"
-#~ msgstr "Mostra i libri ordinati"
-
-#~ msgid "Sorted Books"
-#~ msgstr "Libri ordinati"
-
-#~ msgid "Sort By"
-#~ msgstr "Ordina per"
-
-#~ msgid "Newest"
-#~ msgstr "i più nuovi"
-
-#~ msgid "Oldest"
-#~ msgstr "i più vecchi"
-
-#~ msgid "Ascending"
-#~ msgstr "Ascendente"
-
-#~ msgid "Descending"
-#~ msgstr "Discendente"
-
-#~ msgid "PDF.js viewer"
-#~ msgstr "Visore PDF.js"
-
-#~ msgid "Please enter a LDAP provider and a DN"
-#~ msgstr "Per favore digita il provider LDAP e un DN"
-
-#~ msgid "successfully deleted shelf %(name)s"
-#~ msgstr "lo scaffale %(name)s è stato eliminato con successo"
-
-#~ msgid "LDAP Provider URL"
-#~ msgstr "URL del provider LDAP"
-
-#~ msgid "Register with %s, "
-#~ msgstr "Registra con %s, "
-
-#~ msgid "Import of optional Google Drive requirements missing"
-#~ msgstr "Importa i parametri mancanti per Google Drive"
-
-#~ msgid "client_secrets.json is missing or not readable"
-#~ msgstr "client_secrets.json manca o è inaccessibile"
-
-#~ msgid "client_secrets.json is not configured for web application"
-#~ msgstr "client_secrets.json non è configurato per questa applicazione web"
-
-#~ msgid "Keyfile location is not valid, please enter correct path"
-#~ msgstr "La posizione del Keyfile non è corretta: per favore indica il percorso corretto"
-
-#~ msgid "Certfile location is not valid, please enter correct path"
-#~ msgstr "La posizione del Cerfile non è corretta: per favore indica il percorso corretto"
-
-#~ msgid "Please enter a LDAP provider, port, DN and user object identifier"
-#~ msgstr "Per favore digita un provider LDAP, DN e un user object identifier"
-
-#~ msgid "Please enter a LDAP service account and password"
-#~ msgstr "Per favore digita il nome utente e la password LDAP"
-
-#~ msgid "Please enter Github oauth credentials"
-#~ msgstr "Per favore digita le credenziali Github oauth"
-
-#~ msgid "Please enter Google oauth credentials"
-#~ msgstr "Per favore digita le credenziali Google oauth"
-
-#~ msgid "Logfile location is not valid, please enter correct path"
-#~ msgstr "La posizione del Logfile non è corretta: per favore indica il percorso corretto"
-
-#~ msgid "Access Logfile location is not valid, please enter correct path"
-#~ msgstr "Il percorso per l'Acces Logfile non è corretto: per favore indica il percorso corretto"
-
-#~ msgid "DB location is not valid, please enter correct path"
-#~ msgstr "La posizione del DB non è corretta: per favore indica il percorso corretto"
-
-#~ msgid "Excecution permissions missing"
-#~ msgstr "Mancano le autorizzazioni di esecuzione"
-
-#~ msgid "not configured"
-#~ msgstr "non configurato"
-
-#~ msgid "Error excecuting UnRar"
-#~ msgstr "Errore nell'esecuzione di UnRar"
-
-#~ msgid "Unrar binary file not found"
-#~ msgstr "Non ho trovato il file binario di UnRar"
-
-#~ msgid "Use GitHub OAuth"
-#~ msgstr "Utilizza GitHub OAuth"
-
-#~ msgid "Use Google OAuth"
-#~ msgstr "Utilizza Google OAuth"
-
-#~ msgid "Obtain GitHub OAuth Credential"
-#~ msgstr "Ottieni le credenziali GitHub OAuth"
-
-#~ msgid "GitHub OAuth Client Id"
-#~ msgstr "GitHub OAuth Client Id"
-
-#~ msgid "GitHub OAuth Client Secret"
-#~ msgstr "GitHub OAuth Client Secret"
-
-#~ msgid "Obtain Google OAuth Credential"
-#~ msgstr "Ottieni le credenziali Google OAuth"
-
-#~ msgid "Google OAuth Client Id"
-#~ msgstr "Google OAuth Client Id"
-
-#~ msgid "Google OAuth Client Secret"
-#~ msgstr "Google OAuth Client Secret"
-
-#~ msgid "Use"
-#~ msgstr "Uso"
-
-#~ msgid "Play / pause"
-#~ msgstr "Play / pausa"
-
-#~ msgid "volume"
-#~ msgstr "volume"
-
-#~ msgid "unknown"
-#~ msgstr "sconosciuto"
-
-#~ msgid "New Books"
-#~ msgstr "Nuovi libri"
-
-#~ msgid "Show Calibre-Web log"
-#~ msgstr "Mostra il log Calibre-Web"
-
-#~ msgid "Show access log"
-#~ msgstr "Mostra il log di accesso"
-
-#~ msgid "Tags for Mature Content"
-#~ msgstr "Categorie che definiscono i libri per adulti"
-
-#~ msgid "Show mature content"
-#~ msgstr "Mostra sezione per adulti"
-
-#~ msgid "deny"
-#~ msgstr ""
-
-#~ msgid "allow"
-#~ msgstr ""
-
-#~ msgid "Kobo Set-up"
-#~ msgstr ""
-
-#~ msgid "Publisher list"
-#~ msgstr "Elenco degli editori"
-
-#~ msgid "Series list"
-#~ msgstr "Elenco delle serie"
-
-#~ msgid "Available languages"
-#~ msgstr "Lingue disponibili"
-
-#~ msgid "Category list"
-#~ msgstr "Elenco delle categorie"
-
-#~ msgid "Series id"
-#~ msgstr "Serie id"
-
-#~ msgid "Submit"
-#~ msgstr "Invia"
-
-#~ msgid "Go!"
-#~ msgstr "Vai!"
-
-#~ msgid "Allow Delete books"
-#~ msgstr "Permetti l'eliminazione di libri"
-
-#~ msgid "language"
-#~ msgstr "lingua"
-
-#~ msgid "SMTP port (usually 25 for plain SMTP and 465 for SSL and 587 for STARTTLS)"
-#~ msgstr "Porta SMTP (normalmente 25 senza codifica, 465 per codifica SSL e 587 per STARTTLS)"
-
-#~ msgid "From e-mail"
-#~ msgstr "E-mail mittente"
-
-#~ msgid "Save settings"
-#~ msgstr "Salva le impostazioni"
-
-#~ msgid "api_endpoint="
-#~ msgstr ""
-
-#~ msgid "please don't refresh the page"
-#~ msgstr "per favore non aggiornare la pagina"
-
-#~ msgid "E-mail address"
-#~ msgstr "Indirizzo e-mail"
-
-#~ msgid "No Results for:"
-#~ msgstr "Nessun risultato per:"
-
-#~ msgid "Please try a different search"
-#~ msgstr "Prova una ricerca differente"
-
-#~ msgid "Tasks list"
-#~ msgstr "Lista delle operazioni"
-
-#~ msgid "Kindle E-Mail"
-#~ msgstr "E-mail di Kindle"
+#~ msgid "Please note that every visit to this current page invalidates any previously generated Authentication url for this user."
+#~ msgstr "Prendi nota che ad ogni visita di questa pagina l'url di autenticazione precedentemente generato viene invalidato"
 
