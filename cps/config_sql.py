@@ -345,6 +345,6 @@ def load_configuration(session):
         conf.config_denied_tags = conf.config_mature_content_tags
         conf.save()
         session.query(ub.User).filter(ub.User.mature_content != True). \
-            update({"restricted_tags": conf.config_mature_content_tags}, synchronize_session=False)
+            update({"denied_tags": conf.config_mature_content_tags}, synchronize_session=False)
         session.commit()
     return conf
