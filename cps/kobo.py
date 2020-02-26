@@ -214,13 +214,22 @@ def HandleMetadataRequest(book_uuid):
 
 def get_download_url_for_book(book, book_format):
     if not current_app.wsgi_app.is_proxied:
-        return "{url_scheme}://{url_base}:{url_port}/download/{book_id}/{book_format}".format(
-            url_scheme=request.environ['wsgi.url_scheme'],
-            url_base=request.environ['SERVER_NAME'],
-            url_port=config.config_port,
-            book_id=book.id,
-            book_format=book_format.lower()
-        )
+        if request.environ['SERVER_NAME'] != '::':
+            return "{url_scheme}://{url_base}:{url_port}/download/{book_id}/{book_format}".format(
+                url_scheme=request.environ['wsgi.url_scheme'],
+                url_base=request.environ['SERVER_NAME'],
+                url_port=config.config_port,
+                book_id=book.id,
+                book_format=book_format.lower()
+            )
+        else:
+            return "{url_scheme}://{url_base}:{url_port}/download/{book_id}/{book_format}".format(
+                url_scheme=request.environ['wsgi.url_scheme'],
+                url_base=request.host,          # ToDo: both server ??
+                url_port=config.config_port,
+                book_id=book.id,
+                book_format=book_format.lower()
+            )
     else:
         return url_for(
             "web.download_link",
@@ -377,7 +386,7 @@ def TopLevelEndpoint():
 @kobo.route("/v1/library/tags/<shelf_name>", methods=["POST"])
 @kobo.route("/v1/library/tags/<tag_id>", methods=["DELETE"])
 def HandleUnimplementedRequest(dummy=None, book_uuid=None, shelf_name=None, tag_id=None):
-    log.debug("Alternative Request received:")
+    log.debug("Unimplemented Library Request received: %s", request.base_url)
     return redirect_or_proxy_request()
 
 
