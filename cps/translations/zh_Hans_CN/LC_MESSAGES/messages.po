@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2020-02-24 19:37+0100\n"
+"POT-Creation-Date: 2020-02-26 18:00+0100\n"
 "PO-Revision-Date: 2017-01-06 17:00+0000\n"
 "Last-Translator: dalin <dalin.lin@gmail.com>\n"
 "Language: zh_Hans_CN\n"
@@ -59,12 +59,12 @@ msgstr "Calibre-Web配置已更新"
 #: cps/admin.py:434 cps/admin.py:440 cps/admin.py:451 cps/admin.py:462
 #: cps/templates/modal_restriction.html:29
 msgid "Deny"
-msgstr ""
+msgstr "限制"
 
 #: cps/admin.py:436 cps/admin.py:442 cps/admin.py:453 cps/admin.py:464
 #: cps/templates/modal_restriction.html:28
 msgid "Allow"
-msgstr ""
+msgstr "允许"
 
 #: cps/admin.py:667
 msgid "Basic Configuration"
@@ -107,7 +107,7 @@ msgstr "发送测试邮件出错了: %(res)s"
 
 #: cps/admin.py:771
 msgid "Please configure your e-mail address first..."
-msgstr ""
+msgstr "请先配置有效的邮箱地址..."
 
 #: cps/admin.py:773
 msgid "E-mail server settings updated"
@@ -120,7 +120,7 @@ msgstr "用户 '%(nick)s' 已被删除"
 
 #: cps/admin.py:806
 msgid "No admin user remaining, can't delete user"
-msgstr ""
+msgstr "admin账户不存在，无法删除用户"
 
 #: cps/admin.py:842 cps/web.py:1361
 msgid "Found an existing account for this e-mail address."
@@ -159,7 +159,7 @@ msgstr "请先配置SMTP邮箱..."
 
 #: cps/admin.py:918
 msgid "Logfile viewer"
-msgstr ""
+msgstr "日志文件查看器"
 
 #: cps/admin.py:957
 msgid "Requesting update package"
@@ -211,7 +211,7 @@ msgstr "一般错误"
 
 #: cps/converter.py:31
 msgid "not configured"
-msgstr ""
+msgstr "配置为空"
 
 #: cps/editbooks.py:214 cps/editbooks.py:396
 msgid "Error opening eBook. File does not exist or file is not accessible"
@@ -269,11 +269,11 @@ msgstr "编辑书籍出错，详情请检查日志文件"
 #: cps/editbooks.py:581
 #, python-format
 msgid "File %(filename)s could not saved to temp dir"
-msgstr ""
+msgstr "文件 %(filename)s 无法保存到临时目录"
 
 #: cps/editbooks.py:598
 msgid "Uploaded book probably exists in the library, consider to change before upload new: "
-msgstr ""
+msgstr "上传的书籍可能已经存在，建议修改后重新上传："
 
 #: cps/editbooks.py:613
 #, python-format
@@ -386,7 +386,7 @@ msgstr "将作者从'%(src)s'改为'%(dest)s'时失败，出错信息: %(error)s
 #: cps/helper.py:346
 #, python-format
 msgid "Rename file in path '%(src)s' to '%(dest)s' failed with error: %(error)s"
-msgstr ""
+msgstr "从 '%(src)s' 重命名为 '%(dest)s' 失败，报错信息: %(error)s"
 
 #: cps/helper.py:372 cps/helper.py:382 cps/helper.py:390
 #, python-format
@@ -436,7 +436,7 @@ msgstr "未知任务："
 
 #: cps/kobo_auth.py:127
 msgid "PLease access calibre-web from non localhost to get valid api_endpoint for kobo device"
-msgstr ""
+msgstr "请不要使用localhost访问calibre-web，以便kobo设备能获取有效的api_endpoint"
 
 #: cps/kobo_auth.py:130 cps/kobo_auth.py:150
 msgid "Kobo Setup"
@@ -445,7 +445,7 @@ msgstr ""
 #: cps/oauth_bb.py:74
 #, python-format
 msgid "Register with %(provider)s"
-msgstr ""
+msgstr "使用 %(provider)s 注册"
 
 #: cps/oauth_bb.py:154
 msgid "Failed to log in with GitHub."
@@ -466,17 +466,17 @@ msgstr "从Google获取用户信息失败。"
 #: cps/oauth_bb.py:273
 #, python-format
 msgid "Unlink to %(oauth)s success."
-msgstr ""
+msgstr "从 %(oauth)s 登出成功"
 
 #: cps/oauth_bb.py:277
 #, python-format
 msgid "Unlink to %(oauth)s failed."
-msgstr ""
+msgstr "从 %(oauth)s 登出失败"
 
 #: cps/oauth_bb.py:280
 #, python-format
 msgid "Not linked to %(oauth)s."
-msgstr ""
+msgstr "没有连接到 %(oauth)s."
 
 #: cps/oauth_bb.py:308
 msgid "GitHub Oauth error, please retry later."
@@ -581,7 +581,7 @@ msgstr "打开书架出错。书架不存在或不可访问"
 
 #: cps/shelf.py:342
 msgid "Hidden Book"
-msgstr ""
+msgstr "隐藏书籍"
 
 #: cps/shelf.py:347
 #, python-format
@@ -739,7 +739,7 @@ msgstr ""
 
 #: cps/web.py:569
 msgid "Hot Books (Most Downloaded)"
-msgstr ""
+msgstr "热门书籍（最多下载）"
 
 #: cps/web.py:580
 msgid "Oops! Selected book title is unavailable. File does not exist or is not accessible"
@@ -836,7 +836,7 @@ msgstr "请先配置您的kindle邮箱..."
 
 #: cps/web.py:1083
 msgid "E-Mail server is not configured, please contact your administrator!"
-msgstr ""
+msgstr "邮件服务未配置，请联系网站管理员"
 
 #: cps/web.py:1084 cps/web.py:1090 cps/web.py:1115 cps/web.py:1119
 #: cps/web.py:1124 cps/web.py:1128
@@ -874,11 +874,11 @@ msgstr "用户名或密码错误"
 
 #: cps/web.py:1166
 msgid "New Password was send to your email address"
-msgstr ""
+msgstr "新密码已发送到您的邮箱"
 
 #: cps/web.py:1172
 msgid "Please enter valid username to reset password"
-msgstr ""
+msgstr "请输入有效的用户名进行密码重置"
 
 #: cps/web.py:1178
 #, python-format
@@ -912,7 +912,7 @@ msgstr "资料已更新"
 
 #: cps/web.py:1384 cps/web.py:1480
 msgid "Error opening eBook. File does not exist or file is not accessible:"
-msgstr ""
+msgstr "打开电子书错误。文件不存在或者无法访问："
 
 #: cps/web.py:1396 cps/web.py:1399 cps/web.py:1402 cps/web.py:1409
 #: cps/web.py:1414
@@ -946,15 +946,15 @@ msgstr "昵称"
 #: cps/templates/admin.html:13 cps/templates/register.html:11
 #: cps/templates/user_edit.html:13
 msgid "E-mail Address"
-msgstr ""
+msgstr "邮箱"
 
 #: cps/templates/admin.html:14 cps/templates/user_edit.html:26
 msgid "Send to Kindle E-mail Address"
-msgstr ""
+msgstr "Send to Kindle邮箱"
 
 #: cps/templates/admin.html:15
 msgid "Downloads"
-msgstr ""
+msgstr "下载量"
 
 #: cps/templates/admin.html:16 cps/templates/layout.html:76
 msgid "Admin"
@@ -980,7 +980,7 @@ msgstr "编辑"
 
 #: cps/templates/admin.html:38
 msgid "Add New User"
-msgstr ""
+msgstr "新建用户"
 
 #: cps/templates/admin.html:44
 msgid "E-mail Server Settings"
@@ -996,7 +996,7 @@ msgstr "SMTP端口"
 
 #: cps/templates/admin.html:49 cps/templates/email_edit.html:19
 msgid "Encryption"
-msgstr ""
+msgstr "加密"
 
 #: cps/templates/admin.html:50 cps/templates/email_edit.html:27
 msgid "SMTP Login"
@@ -1048,19 +1048,19 @@ msgstr "远程登录"
 
 #: cps/templates/admin.html:104
 msgid "Reverse Proxy Login"
-msgstr ""
+msgstr "反向代理登录"
 
 #: cps/templates/admin.html:109
 msgid "Reverse proxy header name"
-msgstr ""
+msgstr "反向代理header name"
 
 #: cps/templates/admin.html:114
 msgid "Edit Basic Configuration"
-msgstr ""
+msgstr "修改基本配置"
 
 #: cps/templates/admin.html:115
 msgid "Edit UI Configuration"
-msgstr ""
+msgstr "修改界面配置"
 
 #: cps/templates/admin.html:121
 msgid "Administration"
@@ -1122,7 +1122,7 @@ msgstr "确定"
 #: cps/templates/shelf.html:73 cps/templates/shelf_edit.html:19
 #: cps/templates/user_edit.html:137
 msgid "Cancel"
-msgstr ""
+msgstr "取消"
 
 #: cps/templates/admin.html:179
 msgid "Are you sure you want to shutdown?"
@@ -1143,7 +1143,7 @@ msgstr ""
 #: cps/templates/author.html:34 cps/templates/list.html:14
 #: cps/templates/search.html:41
 msgid "All"
-msgstr ""
+msgstr "全部"
 
 #: cps/templates/author.html:58 cps/templates/author.html:110
 #: cps/templates/discover.html:27 cps/templates/index.html:26
@@ -1245,7 +1245,7 @@ msgstr "确认"
 
 #: cps/templates/book_edit.html:112 cps/templates/search_form.html:138
 msgid "No"
-msgstr ""
+msgstr "无"
 
 #: cps/templates/book_edit.html:158
 msgid "Upload Format"
@@ -1263,7 +1263,7 @@ msgstr "获取元数据"
 #: cps/templates/config_view_edit.html:150 cps/templates/email_edit.html:38
 #: cps/templates/shelf_edit.html:17 cps/templates/user_edit.html:135
 msgid "Save"
-msgstr ""
+msgstr "保存"
 
 #: cps/templates/book_edit.html:185
 msgid "Are you really sure?"
@@ -1271,11 +1271,11 @@ msgstr "您真的确认？"
 
 #: cps/templates/book_edit.html:188
 msgid "This book will be permanently erased from database"
-msgstr "书籍会被从Calibre数据库和硬盘中删除"
+msgstr "书籍会从Calibre数据库中删除"
 
 #: cps/templates/book_edit.html:189
 msgid "and hard disk"
-msgstr ""
+msgstr "，包括从硬盘中"
 
 #: cps/templates/book_edit.html:209
 msgid "Keyword"
@@ -1413,7 +1413,7 @@ msgstr "启用上传"
 
 #: cps/templates/config_edit.html:162
 msgid "Enable Anonymous Browsing"
-msgstr ""
+msgstr "允许匿名浏览"
 
 #: cps/templates/config_edit.html:166
 msgid "Enable Public Registration"
@@ -1425,7 +1425,7 @@ msgstr "启用远程登录 ('魔法链接')"
 
 #: cps/templates/config_edit.html:175
 msgid "Enable Kobo sync"
-msgstr ""
+msgstr "启用Kobo同步"
 
 #: cps/templates/config_edit.html:180
 msgid "Proxy unknown requests to Kobo Store"
@@ -1477,11 +1477,11 @@ msgstr ""
 
 #: cps/templates/config_edit.html:229
 msgid "LDAP Administrator Username"
-msgstr ""
+msgstr "LDAP管理员用户名"
 
 #: cps/templates/config_edit.html:233
 msgid "LDAP Administrator Password"
-msgstr ""
+msgstr "LDAP管理员密码"
 
 #: cps/templates/config_edit.html:238
 msgid "LDAP Server Enable SSL"
@@ -1514,7 +1514,7 @@ msgstr ""
 #: cps/templates/config_edit.html:272
 #, python-format
 msgid "Obtain %(provider)s OAuth Credential"
-msgstr ""
+msgstr "获取 %(provider)s OAuth Credential"
 
 #: cps/templates/config_edit.html:275
 #, python-format
@@ -1528,11 +1528,11 @@ msgstr ""
 
 #: cps/templates/config_edit.html:288
 msgid "Allow Reverse Proxy Authentication"
-msgstr ""
+msgstr "允许反向代理认证方式"
 
 #: cps/templates/config_edit.html:292
 msgid "Reverse Proxy Header Name"
-msgstr ""
+msgstr "反向代理Header Name"
 
 #: cps/templates/config_edit.html:304
 msgid "External binaries"
@@ -1577,11 +1577,11 @@ msgstr "标题"
 
 #: cps/templates/config_view_edit.html:31
 msgid "No. of Random Books to Display"
-msgstr ""
+msgstr "随机书籍显示数量"
 
 #: cps/templates/config_view_edit.html:35
 msgid "No. of Authors to Display Before Hiding (0=Disable Hiding)"
-msgstr ""
+msgstr "作者数量显示上限（0=不隐藏）"
 
 #: cps/templates/config_view_edit.html:39 cps/templates/readcbr.html:112
 msgid "Theme"
@@ -1605,7 +1605,7 @@ msgstr "链接 已读/未读 状态到Calibre栏"
 
 #: cps/templates/config_view_edit.html:59
 msgid "View Restrictions based on Calibre column"
-msgstr ""
+msgstr "根据Calibre column设定查看限制"
 
 #: cps/templates/config_view_edit.html:61 cps/templates/email_edit.html:21
 msgid "None"
@@ -1629,7 +1629,7 @@ msgstr "允许下载"
 
 #: cps/templates/config_view_edit.html:96 cps/templates/user_edit.html:101
 msgid "Allow eBook Viewer"
-msgstr ""
+msgstr "允许eBook Viewer"
 
 #: cps/templates/config_view_edit.html:100 cps/templates/user_edit.html:105
 msgid "Allow Uploads"
@@ -1661,19 +1661,19 @@ msgstr "在详情页显示随机书籍"
 
 #: cps/templates/config_view_edit.html:144
 msgid "Add Allowed/Denied Tags"
-msgstr ""
+msgstr "添加（允许/禁止）标签"
 
 #: cps/templates/config_view_edit.html:145
 msgid "Add Allowed/Denied custom column values"
-msgstr ""
+msgstr "添加（允许/禁止）自定义栏值"
 
 #: cps/templates/detail.html:59
 msgid "Read in Browser"
-msgstr "在浏览器中阅读"
+msgstr "在线浏览"
 
 #: cps/templates/detail.html:72
 msgid "Listen in Browser"
-msgstr ""
+msgstr "在线听书"
 
 #: cps/templates/detail.html:117
 msgid "Book"
@@ -1685,7 +1685,7 @@ msgstr ""
 
 #: cps/templates/detail.html:165
 msgid "Published"
-msgstr ""
+msgstr "出版"
 
 #: cps/templates/detail.html:200
 msgid "Mark As Unread"
@@ -1745,7 +1745,7 @@ msgstr "输入域名"
 
 #: cps/templates/email_edit.html:60
 msgid "Denied Domains (Blacklist)"
-msgstr ""
+msgstr "禁用的域名（黑名单）"
 
 #: cps/templates/email_edit.html:90
 msgid "Are you sure you want to delete this domain?"
@@ -1757,7 +1757,7 @@ msgstr "下一个"
 
 #: cps/templates/generate_kobo_auth_url.html:5
 msgid "Open the .kobo/Kobo eReader.conf file in a text editor and add (or edit):"
-msgstr ""
+msgstr "在文本编辑器中打开.kobo/Kobo eReader.conf，增加（修改为）:"
 
 #: cps/templates/http_error.html:38
 msgid "Create Issue"
@@ -1769,7 +1769,7 @@ msgstr "回到首页"
 
 #: cps/templates/index.html:64
 msgid "Group by series"
-msgstr ""
+msgstr "根据系列分组"
 
 #: cps/templates/index.xml:6
 msgid "Start"
@@ -1785,7 +1785,7 @@ msgstr "基于评分的热门书籍"
 
 #: cps/templates/index.xml:31
 msgid "Recently added Books"
-msgstr ""
+msgstr "最近添加的书籍"
 
 #: cps/templates/index.xml:35
 msgid "The latest Books"
@@ -1817,11 +1817,11 @@ msgstr "书籍按丛书排序"
 
 #: cps/templates/index.xml:93
 msgid "Books ordered by Languages"
-msgstr ""
+msgstr "根据语言排序书籍"
 
 #: cps/templates/index.xml:100
 msgid "Books ordered by file formats"
-msgstr ""
+msgstr "根据文件类型排序书籍"
 
 #: cps/templates/index.xml:103 cps/templates/layout.html:136
 msgid "Public Shelves"
@@ -1854,7 +1854,7 @@ msgstr "切换导航"
 
 #: cps/templates/layout.html:45
 msgid "Search Library"
-msgstr ""
+msgstr "搜索书库"
 
 #: cps/templates/layout.html:55
 msgid "Advanced Search"
@@ -1924,7 +1924,7 @@ msgstr "记住我"
 
 #: cps/templates/login.html:22
 msgid "Forgot Password?"
-msgstr ""
+msgstr "忘记密码？"
 
 #: cps/templates/login.html:25
 msgid "Log in with Magic Link"
@@ -1932,7 +1932,7 @@ msgstr "通过魔法链接登录"
 
 #: cps/templates/logviewer.html:6
 msgid "Show Calibre-Web Log: "
-msgstr ""
+msgstr "显示Calibre-Web Log"
 
 #: cps/templates/logviewer.html:8
 msgid "Calibre-Web Log: "
@@ -1944,31 +1944,31 @@ msgstr ""
 
 #: cps/templates/logviewer.html:12
 msgid "Show Access Log: "
-msgstr ""
+msgstr "显示Access Log: "
 
 #: cps/templates/modal_restriction.html:6
 msgid "Select allowed/denied Tags"
-msgstr ""
+msgstr "选择（允许/禁止）标签"
 
 #: cps/templates/modal_restriction.html:7
 msgid "Select allowed/denied Custom Column values"
-msgstr ""
+msgstr "选择（允许/禁止）自定义栏值"
 
 #: cps/templates/modal_restriction.html:8
 msgid "Select allowed/denied Tags of user"
-msgstr ""
+msgstr "选择（允许/禁止）用户标签"
 
 #: cps/templates/modal_restriction.html:9
 msgid "Select allowed/denied Custom Column values of user"
-msgstr ""
+msgstr "选择（允许/禁止）用户自定义栏值"
 
 #: cps/templates/modal_restriction.html:15
 msgid "Enter Tag"
-msgstr ""
+msgstr "输入标签"
 
 #: cps/templates/modal_restriction.html:24
 msgid "Add View Restriction"
-msgstr ""
+msgstr "输入查看限制"
 
 #: cps/templates/osd.xml:5
 msgid "Calibre-Web eBook Catalog"
@@ -1976,7 +1976,7 @@ msgstr "Caliebre-Web电子书目录"
 
 #: cps/templates/read.html:74
 msgid "Reflow text when sidebars are open."
-msgstr ""
+msgstr "侧栏打开时重排文本"
 
 #: cps/templates/readcbr.html:88
 msgid "Keyboard Shortcuts"
@@ -2004,7 +2004,7 @@ msgstr "按高度缩放"
 
 #: cps/templates/readcbr.html:96
 msgid "Scale to Native"
-msgstr ""
+msgstr "缩放到原始大小"
 
 #: cps/templates/readcbr.html:97
 msgid "Rotate Right"
@@ -2044,7 +2044,7 @@ msgstr "高度"
 
 #: cps/templates/readcbr.html:127
 msgid "Native"
-msgstr ""
+msgstr "原始"
 
 #: cps/templates/readcbr.html:132
 msgid "Rotate"
@@ -2096,27 +2096,27 @@ msgstr "您的邮箱地址"
 
 #: cps/templates/remote_login.html:4
 msgid "Magic Link - Authorise New Device"
-msgstr ""
+msgstr "魔法链接 - 授权新设备"
 
 #: cps/templates/remote_login.html:6
 msgid "On another device, login and visit:"
-msgstr ""
+msgstr "在另一个设备上，登录并访问:"
 
 #: cps/templates/remote_login.html:10
 msgid "Once verified, you will automatically be logged in on this device."
-msgstr ""
+msgstr "验证后，您将自动在新设备上登录。"
 
 #: cps/templates/remote_login.html:13
 msgid "This verification link will expire in 10 minutes."
-msgstr ""
+msgstr "此验证链接将在10分钟后失效。"
 
 #: cps/templates/search.html:5
 msgid "No Results Found"
-msgstr ""
+msgstr "搜索无结果"
 
 #: cps/templates/search.html:6
 msgid "Search Term:"
-msgstr ""
+msgstr "搜索项："
 
 #: cps/templates/search.html:8
 msgid "Results for:"
@@ -2124,11 +2124,11 @@ msgstr "结果:"
 
 #: cps/templates/search_form.html:19
 msgid "Published Date From"
-msgstr ""
+msgstr "出版日期从"
 
 #: cps/templates/search_form.html:26
 msgid "Published Date To"
-msgstr ""
+msgstr "出版日期到"
 
 #: cps/templates/search_form.html:43
 msgid "Exclude Tags"
@@ -2144,11 +2144,11 @@ msgstr "排除语言"
 
 #: cps/templates/search_form.html:95
 msgid "Extensions"
-msgstr ""
+msgstr "后缀名"
 
 #: cps/templates/search_form.html:105
 msgid "Exclude Extensions"
-msgstr ""
+msgstr "排除后缀名"
 
 #: cps/templates/search_form.html:117
 msgid "Rating Above"
@@ -2280,15 +2280,15 @@ msgstr ""
 
 #: cps/templates/user_edit.html:64
 msgid "Create/View"
-msgstr ""
+msgstr "新建/查看"
 
 #: cps/templates/user_edit.html:83
 msgid "Add allowed/denied Tags"
-msgstr ""
+msgstr "添加（允许/禁止）标签"
 
 #: cps/templates/user_edit.html:84
 msgid "Add allowed/denied custom column values"
-msgstr ""
+msgstr "添加（允许/禁止）自定义栏值"
 
 #: cps/templates/user_edit.html:129
 msgid "Delete User"
@@ -2300,105 +2300,10 @@ msgstr "最近下载"
 
 #: cps/templates/user_edit.html:160
 msgid "Generate Kobo Auth URL"
-msgstr ""
+msgstr "生成Kobo Auth URL"
 
 #: cps/templates/user_edit.html:176
 msgid "Do you really want to delete the Kobo Token?"
-msgstr ""
+msgstr "您确定删除Kobo Token吗？"
 
-#~ msgid "deny"
-#~ msgstr ""
-
-#~ msgid "allow"
-#~ msgstr ""
-
-#~ msgid "Best rated books"
-#~ msgstr "最高评分书籍"
-
-#~ msgid "Hot Books (most downloaded)"
-#~ msgstr "热门书籍(最多下载)"
-
-#~ msgid "Publisher list"
-#~ msgstr "出版社列表"
-
-#~ msgid "Series list"
-#~ msgstr "丛书列表"
-
-#~ msgid "Available languages"
-#~ msgstr "可用语言"
-
-#~ msgid "Category list"
-#~ msgstr "分类列表"
-
-#~ msgid "Series id"
-#~ msgstr "丛书ID"
-
-#~ msgid "Submit"
-#~ msgstr "提交"
-
-#~ msgid "Go!"
-#~ msgstr "走起！"
-
-#~ msgid "Update channel"
-#~ msgstr "更新频道"
-
-#~ msgid "Enable AnonymousBbrowsing"
-#~ msgstr "启用匿名浏览"
-
-#~ msgid "LDAP Schema (LDAP or LDAPS)"
-#~ msgstr ""
-
-#~ msgid "LDAP Admin Username"
-#~ msgstr "LDAP Admin用户名"
-
-#~ msgid "LDAP Admin Password"
-#~ msgstr "LDAP Admin密码"
-
-#~ msgid "No. of Random Books to Show"
-#~ msgstr "随机书籍显示数量"
-
-#~ msgid "Allow Book Viewer"
-#~ msgstr ""
-
-#~ msgid "language"
-#~ msgstr "语言"
-
-#~ msgid "SMTP port (usually 25 for plain SMTP and 465 for SSL and 587 for STARTTLS)"
-#~ msgstr "SMTP端口(无加密SMTP通常是25, SSL加密是465, STARTTLS加密是587)"
-
-#~ msgid "From e-mail"
-#~ msgstr "来自邮箱"
-
-#~ msgid "Save settings"
-#~ msgstr "保存设置"
-
-#~ msgid "api_endpoint="
-#~ msgstr ""
-
-#~ msgid "E-mail address"
-#~ msgstr "邮箱地址"
-
-#~ msgid "Use your other device, login and visit "
-#~ msgstr ""
-
-#~ msgid "Once you do so, you will automatically get logged in on this device."
-#~ msgstr "一旦您这样做了，您在这个设备上会自动登录。"
-
-#~ msgid "The link will expire after 10 minutes."
-#~ msgstr ""
-
-#~ msgid "No Results for:"
-#~ msgstr "找不到结果:"
-
-#~ msgid "Please try a different search"
-#~ msgstr "请尝试别的关键字"
-
-#~ msgid "Tasks list"
-#~ msgstr "任务列表"
-
-#~ msgid "Kindle E-Mail"
-#~ msgstr ""
-
-#~ msgid "Please note that every visit to this current page invalidates any previously generated Authentication url for this user."
-#~ msgstr ""
 
