@@ -21,6 +21,7 @@ import sys
 import base64
 import os
 import uuid
+from datetime import datetime
 from time import gmtime, strftime
 try:
     from urllib import unquote
@@ -234,14 +235,14 @@ def create_book_entitlement(book):
     return {
         "Accessibility": "Full",
         "ActivePeriod": {"From": current_time(),},
-        "Created": book.timestamp,
+        "Created": book.timestamp.strftime("%Y-%m-%dT%H:%M:%SZ"),
         "CrossRevisionId": book_uuid,
         "Id": book_uuid,
         "IsHiddenFromArchive": False,
         "IsLocked": False,
         # Setting this to true removes from the device.
         "IsRemoved": False,
-        "LastModified": book.last_modified,
+        "LastModified": book.last_modified.strftime("%Y-%m-%dT%H:%M:%SZ"),
         "OriginCategory": "Imported",
         "RevisionId": book_uuid,
         "Status": "Active",
@@ -397,6 +398,7 @@ def HandleUserRequest(dummy=None):
 @kobo.route("/v1/products/<dummy>/reviews", methods=["GET", "POST"])
 @kobo.route("/v1/products/books/<dummy>", methods=["GET", "POST"])
 @kobo.route("/v1/products/dailydeal", methods=["GET", "POST"])
+@kobo.route("/v1/products", methods=["GET", "POST"])
 def HandleProductsRequest(dummy=None):
     log.debug("Unimplemented Products Request received: %s", request.base_url)
     return redirect_or_proxy_request()
