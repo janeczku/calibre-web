@@ -33,20 +33,20 @@ See https://github.com/adobe-type-tools/cmap-resources
 
     <!--script src="{{ url_for('static', filename='js/libs/compatibility.js') }}"></script-->
 
-<!-- This snippet is used in production (included from viewer.html) -->
-    <link rel="resource" type="application/l10n" href="{{ url_for('static', filename='locale/locale.properties') }}">
+	  <!-- This snippet is used in production (included from viewer.html) -->
+	  <link rel="resource" type="application/l10n" href="{{ url_for('static', filename='locale/locale.properties') }}">
+	  <script src="{{ url_for('static', filename='js/libs/pdf.js') }}"></script>
+
     <script type="text/javascript">
-    window.addEventListener('load', function() {
+    window.addEventListener('webviewerloaded', function() {
         PDFViewerApplicationOptions.set('sidebarViewOnLoad', 0);
         PDFViewerApplicationOptions.set('imageResourcesPath', "{{ url_for('static', filename='css/images/') }}");
         PDFViewerApplicationOptions.set('workerSrc', "{{ url_for('static', filename='js/libs/pdf.worker.js') }}");
         PDFViewerApplicationOptions.set('defaultUrl',"{{ url_for('web.serve_book', book_id=pdffile, book_format='pdf') }}")
     });
     </script>
-    <script src="{{ url_for('static', filename='js/libs/pdf.js') }}"></script>
+
     <script src="{{ url_for('static', filename='js/libs/viewer.js') }}"></script>
-
-
 
   </head>
 
