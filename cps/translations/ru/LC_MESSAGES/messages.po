@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
 "POT-Creation-Date: 2020-02-26 18:00+0100\n"
-"PO-Revision-Date: 2020-02-29 20:25+0400\n"
+"PO-Revision-Date: 2020-02-29 20:40+0400\n"
 "Last-Translator: ZIZA\n"
 "Language: ru\n"
 "Language-Team: \n"
@@ -34,7 +34,7 @@ msgstr "Статистика"
 
 #: cps/admin.py:89
 msgid "Server restarted, please reload page"
-msgstr "Сервер перезагружен, пожалуйста, перезагрузите страницу"
+msgstr "Сервер перезагружен, пожалуйста, обновите страницу"
 
 #: cps/admin.py:91
 msgid "Performing shutdown of server, please close window"
