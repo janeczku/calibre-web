@@ -565,7 +565,9 @@ def _configuration_update_helper():
     _config_checkbox("config_remote_login")
     if not config.config_remote_login:
         ub.session.query(ub.RemoteAuthToken).filter(ub.RemoteAuthToken.token_type==0).delete()
-
+        
+    # Sitemap configuration
+    _config_checkbox("config_sitemap")
     # Goodreads configuration
     _config_checkbox("config_use_goodreads")
     _config_string("config_goodreads_api_key")

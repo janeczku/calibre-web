@@ -101,7 +101,14 @@
             <div class="col-xs-6 col-sm-5">{{ display_bool_setting(config.config_remote_login) }}</div>
         </div>
         <div class="row">
+            <div class="col-xs-6 col-sm-7">{{_('Sitemap')}}</div>
+            <div class="col-xs-6 col-sm-5">{{ display_bool_setting(config.config_sitemap) }}</div>
+        </div>
+        <div class="row">
             <div class="col-xs-6 col-sm-7">{{_('Reverse Proxy Login')}}</div>
+        </div>
+        <div class="row">
+            <div class="col-xs-6 col-sm-7">{{_('Reverse proxy login')}}</div>
             <div class="col-xs-6 col-sm-5">{{ display_bool_setting(config.config_allow_reverse_proxy_header_login) }}</div>
         </div>
         {% if config.config_allow_reverse_proxy_header_login %}

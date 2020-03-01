@@ -92,6 +92,7 @@ class _Settings(_Base):
 
     config_kobo_proxy = Column(Boolean, default=False)
 
+    config_sitemap = Column(Boolean, default=False)
 
     config_ldap_provider_url = Column(String, default='localhost')
     config_ldap_port = Column(SmallInteger, default=389)

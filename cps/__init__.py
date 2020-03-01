@@ -32,11 +32,11 @@ from flask import Flask, request, g
 from flask_login import LoginManager
 from flask_babel import Babel
 from flask_principal import Principal
+from flask_sitemap import Sitemap
 
 from . import logger, cache_buster, cli, config_sql, ub, db, services
 from .reverseproxy import ReverseProxied
 from .server import WebServer
-
 
 mimetypes.init()
 mimetypes.add_type('application/xhtml+xml', '.xhtml')
@@ -62,7 +62,6 @@ lm = LoginManager()
 lm.login_view = 'web.login'
 lm.anonymous_user = ub.Anonymous
 
-
 ub.init_db(cli.settingspath)
 # pylint: disable=no-member
 config = config_sql.load_configuration(ub.session)
@@ -75,6 +74,8 @@ _BABEL_TRANSLATIONS = set()
 
 log = logger.create()
 
+sitemap = Sitemap()
+
 
 def create_app():
     app.wsgi_app = ReverseProxied(app.wsgi_app)
@@ -82,7 +83,7 @@ def create_app():
     if sys.version_info < (3, 0):
         app.static_folder = app.static_folder.decode('utf-8')
         app.root_path = app.root_path.decode('utf-8')
-        app.instance_path = app.instance_path .decode('utf-8')
+        app.instance_path = app.instance_path.decode('utf-8')
 
     cache_buster.init_cache_busting(app)
 
@@ -93,6 +94,9 @@ def create_app():
 
     web_server.init_app(app, config)
     db.setup_db(config)
+
+    sitemap.init_app(app)
+    app.config['SITEMAP_INCLUDE_RULES_WITHOUT_PARAMS'] = config.config_sitemap
 
     babel.init_app(app)
     _BABEL_TRANSLATIONS.update(str(item) for item in babel.list_translations())
@@ -107,13 +111,14 @@ def create_app():
 
     return app
 
+
 @babel.localeselector
 def get_locale():
     # if a user is logged in, use the locale from the user settings
     user = getattr(g, 'user', None)
     # user = None
     if user is not None and hasattr(user, "locale"):
-        if user.nickname != 'Guest':   # if the account is the guest account bypass the config lang settings
+        if user.nickname != 'Guest':  # if the account is the guest account bypass the config lang settings
             return user.locale
 
     preferred = list()
@@ -132,8 +137,8 @@ def get_timezone():
     user = getattr(g, 'user', None)
     return user.timezone if user else None
 
+
 from .updater import Updater
 updater_thread = Updater()
-
 
 __all__ = ['app']
