@@ -16,14 +16,14 @@
     </div>
     <div class="row">
         <div class="form-group col-sm-6">
-          <label for="Publishstart">{{_('Publishing date from')}}</label>
+          <label for="Publishstart">{{_('Published Date From')}}</label>
           <div style="position: relative">
             <input type="date" class="form-control" name="Publishstart" id="Publishstart" value="">
             <input type="text" class="form-control fake-input hidden" id="fake_Publishstart" value="">
           </div>
         </div>
         <div class="form-group col-sm-6">
-          <label for="Publishend">{{_('Publishing date to')}}</label>
+          <label for="Publishend">{{_('Published Date To')}}</label>
           <div style="position: relative">
             <input type="date" class="form-control" name="Publishend" id="Publishend" value="">
             <input type="text" class="form-control fake-input hidden" id="fake_Publishend" value="">
@@ -114,11 +114,11 @@
     </div>
     <div class="row">
         <div class="form-group col-sm-6">
-          <label for="ratinghigh">{{_('Rating bigger than')}}</label>
+          <label for="ratinghigh">{{_('Rating Above')}}</label>
           <input type="number"  name="ratinghigh" id="ratinghigh" class="rating input-lg" data-clearable="" >
         </div>
         <div class="form-group col-sm-6">
-          <label for="ratinglow">{{_('Rating less than')}}</label>
+          <label for="ratinglow">{{_('Rating Below')}}</label>
           <input type="number"  name="ratinglow" id="ratinglow" class="rating input-lg" data-clearable="" >
         </div>
     </div>
@@ -167,7 +167,7 @@
       {% endfor %}
     {% endif %}
 
-    <button type="submit" class="btn btn-default">{{_('Submit')}}</button>
+    <button type="submit" id="adv_submit" class="btn btn-default">{{_('Search')}}</button>
   </form>
 </div>
 {% endblock %}

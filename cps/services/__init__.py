@@ -35,4 +35,10 @@ except ImportError as err:
     log.debug("cannot import simpleldap, logging in with ldap will not work: %s", err)
     ldap = None
 
-
+try:
+    from . import SyncToken as SyncToken
+    kobo = True
+except ImportError as err:
+    log.debug("cannot import SyncToken, syncing books with Kobo Devices will not work: %s", err)
+    kobo = None
+    SyncToken = None

@@ -21,7 +21,7 @@
     <content type="text">{{_('Popular publications from this catalog based on Downloads.')}}</content>
   </entry>
   <entry>
-    <title>{{_('Best rated Books')}}</title>
+    <title>{{_('Top Rated Books')}}</title>
     <link href="{{url_for('opds.feed_best_rated')}}" type="application/atom+xml;profile=opds-catalog"/>
     <id>{{url_for('opds.feed_best_rated')}}</id>
     <updated>{{ current_time }}</updated>

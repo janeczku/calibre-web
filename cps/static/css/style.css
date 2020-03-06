@@ -26,7 +26,7 @@ html.http-error {
 
 body{background:#f2f2f2}body h2{font-weight:normal;color:#444}
 body { margin-bottom: 40px;}
-a{color: #45b29d}a:hover{color: #444;}
+a{color: #45b29d} /*a:hover{color: #444;}*/
 .navigation .nav-head{text-transform:uppercase;color:#999;margin:20px 0}.navigation .nav-head:nth-child(1n+2){border-top:1px solid #ccc;padding-top:20px}
 .navigation li a{color:#444;text-decoration:none;display:block;padding:10px}.navigation li a:hover{background:rgba(153,153,153,0.4);border-radius:5px}
 .navigation li a span{margin-right:10px}
@@ -65,6 +65,10 @@ span.glyphicon.glyphicon-tags {padding-right: 5px;color: #999;vertical-align: te
 .navbar-default .navbar-toggle {border-color: #000;}
 .cover { margin-bottom: 10px;}
 .cover-height { max-height: 100px;}
+.col-sm-2 a .cover-small {
+    margin:5px;
+    max-height: 200px;
+}
 
 .btn-file {position: relative; overflow: hidden;}
 .btn-file input[type=file] {position: absolute; top: 0; right: 0; min-width: 100%; min-height: 100%; font-size: 100px; text-align: right; filter: alpha(opacity=0); opacity: 0; outline: none; background: white; cursor: inherit; display: block;}
@@ -77,6 +81,12 @@ span.glyphicon.glyphicon-tags {padding-right: 5px;color: #999;vertical-align: te
 .panel-body {background-color: #f5f5f5;}
 .spinner {margin:0 41%;}
 .spinner2 {margin:0 41%;}
+
+table .bg-dark-danger {background-color: #d9534f; color: #fff;}
+table .bg-dark-danger a {color: #fff;}
+table .bg-dark-danger:hover {background-color: #c9302c;}
+table .bg-primary:hover {background-color: #1C5484;}
+table .bg-primary a {color: #fff;}
 
 .block-label {display: block;}
 .fake-input {position: absolute; pointer-events: none; top: 0;}

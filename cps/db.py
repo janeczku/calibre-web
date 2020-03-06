@@ -25,13 +25,13 @@ import ast
 
 from sqlalchemy import create_engine
 from sqlalchemy import Table, Column, ForeignKey
-from sqlalchemy import String, Integer, Boolean
+from sqlalchemy import String, Integer, Boolean, TIMESTAMP, Float
 from sqlalchemy.orm import relationship, sessionmaker, scoped_session
 from sqlalchemy.ext.declarative import declarative_base
 
 
 session = None
-cc_exceptions = ['datetime', 'comments', 'float', 'composite', 'series']
+cc_exceptions = ['datetime', 'comments', 'composite', 'series']
 cc_classes = {}
 engine = None
 
@@ -251,10 +251,10 @@ class Books(Base):
     title = Column(String)
     sort = Column(String)
     author_sort = Column(String)
-    timestamp = Column(String)
+    timestamp = Column(TIMESTAMP)
     pubdate = Column(String)
     series_index = Column(String)
-    last_modified = Column(String)
+    last_modified = Column(TIMESTAMP)
     path = Column(String)
     has_cover = Column(Integer)
     uuid = Column(String)
@@ -378,6 +378,11 @@ def setup_db(config):
                               'id': Column(Integer, primary_key=True),
                               'book': Column(Integer, ForeignKey('books.id')),
                               'value': Column(Integer)}
+                elif row.datatype == 'float':
+                    ccdict = {'__tablename__': 'custom_column_' + str(row.id),
+                              'id': Column(Integer, primary_key=True),
+                              'book': Column(Integer, ForeignKey('books.id')),
+                              'value': Column(Float)}
                 else:
                     ccdict = {'__tablename__': 'custom_column_' + str(row.id),
                               'id': Column(Integer, primary_key=True),
@@ -385,7 +390,7 @@ def setup_db(config):
                 cc_classes[row.id] = type(str('Custom_Column_' + str(row.id)), (Base,), ccdict)
 
         for cc_id in cc_ids:
-            if (cc_id[1] == 'bool') or (cc_id[1] == 'int'):
+            if (cc_id[1] == 'bool') or (cc_id[1] == 'int') or (cc_id[1] == 'float'):
                 setattr(Books, 'custom_column_' + str(cc_id[0]), relationship(cc_classes[cc_id[0]],
                                                                            primaryjoin=(
                                                                            Books.id == cc_classes[cc_id[0]].book),

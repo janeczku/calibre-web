@@ -27,7 +27,7 @@ import datetime
 import json
 import mimetypes
 import traceback
-import sys
+import binascii
 
 from babel import Locale as LC
 from babel.dates import format_date
@@ -42,7 +42,7 @@ from werkzeug.exceptions import default_exceptions
 from werkzeug.datastructures import Headers
 from werkzeug.security import generate_password_hash, check_password_hash
 
-from . import constants, config, logger, isoLanguages, services, worker
+from . import constants, logger, isoLanguages, services, worker
 from . import searched_ids, lm, babel, db, ub, config, get_locale, app
 from .gdriveutils import getFileFromEbooksFolder, do_gdrive_download
 from .helper import common_filters, get_search_results, fill_indexpage, speaking_language, check_valid_domain, \
@@ -54,7 +54,8 @@ from .redirect import redirect_back
 
 feature_support = {
         'ldap': False, # bool(services.ldap),
-        'goodreads': bool(services.goodreads_support)
+        'goodreads': bool(services.goodreads_support),
+        'kobo':  bool(services.kobo)
     }
 
 try:
@@ -123,12 +124,6 @@ def load_user(user_id):
 
 @lm.request_loader
 def load_user_from_request(request):
-    auth_header = request.headers.get("Authorization")
-    if auth_header:
-        user = load_user_from_auth_header(auth_header)
-        if user:
-            return user
-
     if config.config_allow_reverse_proxy_header_login:
         rp_header_name = config.config_reverse_proxy_login_header_name
         if rp_header_name:
@@ -137,6 +132,12 @@ def load_user_from_request(request):
                 user = _fetch_user_by_name(rp_header_username)
                 if user:
                     return user
+
+    auth_header = request.headers.get("Authorization")
+    if auth_header:
+        user = load_user_from_auth_header(auth_header)
+        if user:
+            return user
 
     return
 
@@ -149,7 +150,7 @@ def load_user_from_auth_header(header_val):
         header_val = base64.b64decode(header_val).decode('utf-8')
         basic_username = header_val.split(':')[0]
         basic_password = header_val.split(':')[1]
-    except (TypeError, UnicodeDecodeError):
+    except (TypeError, UnicodeDecodeError, binascii.Error):
         pass
     user = _fetch_user_by_name(basic_username)
     if user and check_password_hash(str(user.password), basic_password):
@@ -459,12 +460,6 @@ def get_matching_tags():
         if len(exclude_tag_inputs) > 0:
             for tag in exclude_tag_inputs:
                 q = q.filter(not_(db.Books.tags.any(db.Tags.id == tag)))
-        '''if len(include_extension_inputs) > 0:
-            for tag in exclude_tag_inputs:
-                q = q.filter(not_(db.Books.tags.any(db.Tags.id == tag)))
-        if len(exclude_extension_inputs) > 0:
-            for tag in exclude_tag_inputs:
-                q = q.filter(not_(db.Books.tags.any(db.Tags.id == tag)))'''
         for book in q:
             for tag in book.tags:
                 if tag.id not in tag_dict['tags']:
@@ -510,7 +505,7 @@ def books_list(data, sort, book_id, page):
             entries, random, pagination = fill_indexpage(page, db.Books, db.Books.ratings.any(db.Ratings.rating > 9),
                                                          order)
             return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
-                                         id=book_id, title=_(u"Best rated books"), page="rated")
+                                         id=book_id, title=_(u"Top Rated Books"), page="rated")
         else:
             abort(404)
     elif data == "discover":
@@ -518,7 +513,7 @@ def books_list(data, sort, book_id, page):
             entries, __, pagination = fill_indexpage(page, db.Books, True, [func.randomblob(2)])
             pagination = Pagination(1, config.config_books_per_page, config.config_books_per_page)
             return render_title_template('discover.html', entries=entries, pagination=pagination, id=book_id,
-                                         title=_(u"Random Books"), page="discover")
+                                         title=_(u"Discover (Random Books)"), page="discover")
         else:
             abort(404)
     elif data == "unread":
@@ -571,7 +566,7 @@ def render_hot_books(page):
         numBooks = entries.__len__()
         pagination = Pagination(page, config.config_books_per_page, numBooks)
         return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
-                                     title=_(u"Hot Books (most downloaded)"), page="hot")
+                                     title=_(u"Hot Books (Most Downloaded)"), page="hot")
     else:
         abort(404)
 
@@ -582,7 +577,7 @@ def render_author_books(page, author_id, order):
                                              [order[0], db.Series.name, db.Books.series_index],
                                              db.books_series_link, db.Series)
     if entries is None or not len(entries):
-        flash(_(u"Error opening eBook. File does not exist or file is not accessible:"), category="error")
+        flash(_(u"Oops! Selected book title is unavailable. File does not exist or is not accessible"), category="error")
         return redirect(url_for("web.index"))
 
     author = db.session.query(db.Authors).get(author_id)
@@ -685,7 +680,7 @@ def author_list():
         for entry in entries:
             entry.Authors.name = entry.Authors.name.replace('|', ',')
         return render_title_template('list.html', entries=entries, folder='web.books_list', charlist=charlist,
-                                     title=u"Author list", page="authorlist", data='author')
+                                     title=u"Authors", page="authorlist", data='author')
     else:
         abort(404)
 
@@ -701,7 +696,7 @@ def publisher_list():
             .join(db.books_publishers_link).join(db.Books).filter(common_filters()) \
             .group_by(func.upper(func.substr(db.Publishers.name,1,1))).all()
         return render_title_template('list.html', entries=entries, folder='web.books_list', charlist=charlist,
-                                     title=_(u"Publisher list"), page="publisherlist", data="publisher")
+                                     title=_(u"Publishers"), page="publisherlist", data="publisher")
     else:
         abort(404)
 
@@ -717,7 +712,7 @@ def series_list():
             .join(db.books_series_link).join(db.Books).filter(common_filters()) \
             .group_by(func.upper(func.substr(db.Series.sort,1,1))).all()
         return render_title_template('list.html', entries=entries, folder='web.books_list', charlist=charlist,
-                                     title=_(u"Series list"), page="serieslist", data="series")
+                                     title=_(u"Series"), page="serieslist", data="series")
     else:
         abort(404)
 
@@ -772,7 +767,7 @@ def language_overview():
                                         func.count('books_languages_link.book').label('bookcount')).group_by(
             text('books_languages_link.lang_code')).all()
         return render_title_template('languages.html', languages=languages, lang_counter=lang_counter,
-                                     charlist=charlist, title=_(u"Available languages"), page="langlist",
+                                     charlist=charlist, title=_(u"Languages"), page="langlist",
                                      data="language")
     else:
         abort(404)
@@ -789,7 +784,7 @@ def category_list():
             .join(db.books_tags_link).join(db.Books).filter(common_filters()) \
             .group_by(func.upper(func.substr(db.Tags.name,1,1))).all()
         return render_title_template('list.html', entries=entries, folder='web.books_list', charlist=charlist,
-                                     title=_(u"Category list"), page="catlist", data="category")
+                                     title=_(u"Categories"), page="catlist", data="category")
     else:
         abort(404)
 
@@ -966,11 +961,13 @@ def advanced_search():
         return render_title_template('search.html', searchterm=searchterm,
                                      entries=q, title=_(u"search"), page="search")
     # prepare data for search-form
-    # tags = db.session.query(db.Tags).order_by(db.Tags.name).all()
-    tags = db.session.query(db.Tags).filter(tags_filters()).order_by(db.Tags.name).all()
-    series = db.session.query(db.Series).order_by(db.Series.name).all()
-    extensions = db.session.query(db.Data) \
+    tags = db.session.query(db.Tags).join(db.books_tags_link).join(db.Books).filter(common_filters())\
+        .group_by(text('books_tags_link.tag')).order_by(db.Tags.name).all()
+    series = db.session.query(db.Series).join(db.books_series_link).join(db.Books).filter(common_filters())\
+        .group_by(text('books_series_link.series')).order_by(db.Series.name).filter(common_filters()).all()
+    extensions = db.session.query(db.Data).join(db.Books).filter(common_filters())\
         .group_by(db.Data.format).order_by(db.Data.format).all()
+
     if current_user.filter_language() == u"all":
         languages = speaking_language()
     else:
@@ -1067,7 +1064,10 @@ def send_to_kindle(book_id, book_format, convert):
             flash(_(u"There was an error sending this book: %(res)s", res=result), category="error")
     else:
         flash(_(u"Please configure your kindle e-mail address first..."), category="error")
-    return redirect(request.environ["HTTP_REFERER"])
+    if "HTTP_REFERER" in request.environ:
+        return redirect(request.environ["HTTP_REFERER"])
+    else:
+        return redirect(url_for('web.index'))
 
 
 # ################################### Login Logout ##################################################################
@@ -1088,10 +1088,10 @@ def register():
         if not to_save["nickname"] or not to_save["email"]:
             flash(_(u"Please fill out all fields!"), category="error")
             return render_title_template('register.html', title=_(u"register"), page="register")
+
         existing_user = ub.session.query(ub.User).filter(func.lower(ub.User.nickname) == to_save["nickname"]
                                                          .lower()).first()
         existing_email = ub.session.query(ub.User).filter(ub.User.email == to_save["email"].lower()).first()
-
         if not existing_user and not existing_email:
             content = ub.User()
             # content.password = generate_password_hash(to_save["password"])
@@ -1102,7 +1102,7 @@ def register():
                 content.password = generate_password_hash(password)
                 content.role = config.config_default_role
                 content.sidebar_view = config.config_default_show
-                content.mature_content = bool(config.config_default_show & constants.MATURE_CONTENT)
+                #content.mature_content = bool(config.config_default_show & constants.MATURE_CONTENT)
                 try:
                     ub.session.add(content)
                     ub.session.commit()
@@ -1291,10 +1291,12 @@ def profile():
     downloads = list()
     languages = speaking_language()
     translations = babel.list_translations() + [LC('en')]
+    kobo_support = feature_support['kobo'] and config.config_kobo_sync
     if feature_support['oauth']:
         oauth_status = get_oauth_status()
     else:
         oauth_status = None
+
     for book in current_user.downloads:
         downloadBook = db.session.query(db.Books).filter(db.Books.id == book.book_id).first()
         if downloadBook:
@@ -1309,11 +1311,14 @@ def profile():
                 current_user.password = generate_password_hash(to_save["password"])
         if "kindle_mail" in to_save and to_save["kindle_mail"] != current_user.kindle_mail:
             current_user.kindle_mail = to_save["kindle_mail"]
+        if "allowed_tags" in to_save and to_save["allowed_tags"] != current_user.allowed_tags:
+            current_user.allowed_tags = to_save["allowed_tags"].strip()
         if to_save["email"] and to_save["email"] != current_user.email:
             if config.config_public_reg and not check_valid_domain(to_save["email"]):
                 flash(_(u"E-mail is not from valid domain"), category="error")
                 return render_title_template("user_edit.html", content=current_user, downloads=downloads,
                                              title=_(u"%(name)s's profile", name=current_user.nickname), page="me",
+                                             kobo_support=kobo_support,
                                              registered_oauth=oauth_check, oauth_status=oauth_status)
         if "nickname" in to_save and to_save["nickname"] != current_user.nickname:
             # Query User nickname, if not existing, change
@@ -1324,6 +1329,7 @@ def profile():
                 return render_title_template("user_edit.html",
                                              translations=translations,
                                              languages=languages,
+                                             kobo_support=kobo_support,
                                              new_user=0, content=current_user,
                                              downloads=downloads,
                                              registered_oauth=oauth_check,
@@ -1346,7 +1352,7 @@ def profile():
         if "Show_detail_random" in to_save:
             current_user.sidebar_view += constants.DETAIL_RANDOM
 
-        current_user.mature_content = "Show_mature_content" in to_save
+        #current_user.mature_content = "Show_mature_content" in to_save
 
         try:
             ub.session.commit()
@@ -1355,13 +1361,13 @@ def profile():
             flash(_(u"Found an existing account for this e-mail address."), category="error")
             log.debug(u"Found an existing account for this e-mail address.")
             return render_title_template("user_edit.html", content=current_user, downloads=downloads,
-                                         translations=translations,
+                                         translations=translations, kobo_support=kobo_support,
                                          title=_(u"%(name)s's profile", name=current_user.nickname), page="me",
                                                  registered_oauth=oauth_check, oauth_status=oauth_status)
         flash(_(u"Profile updated"), category="success")
         log.debug(u"Profile updated")
     return render_title_template("user_edit.html", translations=translations, profile=1, languages=languages,
-                                 content=current_user, downloads=downloads,
+                                 content=current_user, downloads=downloads, kobo_support=kobo_support,
                                  title= _(u"%(name)s's profile", name=current_user.nickname),
                                  page="me", registered_oauth=oauth_check, oauth_status=oauth_status)
 

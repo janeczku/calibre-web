@@ -25,7 +25,7 @@ import sys
 from sqlalchemy import exc, Column, String, Integer, SmallInteger, Boolean
 from sqlalchemy.ext.declarative import declarative_base
 
-from . import constants, cli, logger
+from . import constants, cli, logger, ub
 
 
 log = logger.create()
@@ -68,11 +68,17 @@ class _Settings(_Base):
     config_anonbrowse = Column(SmallInteger, default=0)
     config_public_reg = Column(SmallInteger, default=0)
     config_remote_login = Column(Boolean, default=False)
-
+    config_kobo_sync = Column(Boolean, default=False)
 
     config_default_role = Column(SmallInteger, default=0)
     config_default_show = Column(SmallInteger, default=6143)
     config_columns_to_ignore = Column(String)
+
+    config_denied_tags = Column(String, default="")
+    config_allowed_tags = Column(String, default="")
+    config_restricted_column = Column(SmallInteger, default=0)
+    config_denied_column_value = Column(String, default="")
+    config_allowed_column_value = Column(String, default="")
 
     config_use_google_drive = Column(Boolean, default=False)
     config_google_drive_folder = Column(String)
@@ -84,7 +90,8 @@ class _Settings(_Base):
 
     config_login_type = Column(Integer, default=0)
 
-    # config_oauth_provider = Column(Integer)
+    config_kobo_proxy = Column(Boolean, default=False)
+
 
     config_ldap_provider_url = Column(String, default='localhost')
     config_ldap_port = Column(SmallInteger, default=389)
@@ -179,11 +186,20 @@ class _ConfigSQL(object):
     def show_detail_random(self):
         return self.show_element_new_user(constants.DETAIL_RANDOM)
 
-    def show_mature_content(self):
-        return self.show_element_new_user(constants.MATURE_CONTENT)
+    def list_denied_tags(self):
+        mct = self.config_denied_tags.split(",")
+        return [t.strip() for t in mct]
 
-    def mature_content_tags(self):
-        mct = self.config_mature_content_tags.split(",")
+    def list_allowed_tags(self):
+        mct = self.config_allowed_tags.split(",")
+        return [t.strip() for t in mct]
+
+    def list_denied_column_values(self):
+        mct = self.config_denied_column_value.split(",")
+        return [t.strip() for t in mct]
+
+    def list_allowed_column_values(self):
+        mct = self.config_allowed_column_value.split(",")
         return [t.strip() for t in mct]
 
     def get_log_level(self):
@@ -323,5 +339,12 @@ def load_configuration(session):
     if not session.query(_Settings).count():
         session.add(_Settings())
         session.commit()
-
-    return _ConfigSQL(session)
+    conf = _ConfigSQL(session)
+    # Migrate from global restrictions to user based restrictions
+    if bool(conf.config_default_show & constants.MATURE_CONTENT) and conf.config_denied_tags == "":
+        conf.config_denied_tags = conf.config_mature_content_tags
+        conf.save()
+        session.query(ub.User).filter(ub.User.mature_content != True). \
+            update({"denied_tags": conf.config_mature_content_tags}, synchronize_session=False)
+        session.commit()
+    return conf

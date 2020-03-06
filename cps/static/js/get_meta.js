@@ -48,7 +48,8 @@ $(function () {
             if ($.inArray(el, uniqueTags) === -1) uniqueTags.push(el);
         });
 
-        $("#bookAuthor").val(book.authors);
+        var ampSeparatedAuthors = (book.authors || []).join(" & ");
+        $("#bookAuthor").val(ampSeparatedAuthors);
         $("#book_title").val(book.title);
         $("#tags").val(uniqueTags.join(","));
         $("#rating").data("rating").setValue(Math.round(book.rating));
