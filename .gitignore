@@ -23,6 +23,7 @@ vendor/
 *.log
 config.ini
 cps/static/[0-9]*
+!dockerinit/*.db
 
 .idea/
 *.bak
