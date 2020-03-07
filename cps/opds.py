@@ -56,6 +56,20 @@ def requires_basic_auth_if_no_ano(f):
     return decorated
 
 
+class FeedObject():
+    def __init__(self,rating_id , rating_name):
+        self.rating_id = rating_id
+        self.rating_name = rating_name
+
+    @property
+    def id(self):
+        return self.rating_id
+
+    @property
+    def name(self):
+        return self.rating_name
+
+
 @opds.route("/opds/")
 @opds.route("/opds")
 @requires_basic_auth_if_no_ano
@@ -214,6 +228,31 @@ def feed_series(book_id):
                     db.Books, db.Books.series.any(db.Series.id == book_id), [db.Books.series_index])
     return render_xml_template('feed.xml', entries=entries, pagination=pagination)
 
+@opds.route("/opds/ratings")
+@requires_basic_auth_if_no_ano
+def feed_ratingindex():
+    off = request.args.get("offset") or 0
+    entries = db.session.query(db.Ratings, func.count('books_ratings_link.book').label('count'),
+                               (db.Ratings.rating / 2).label('name')) \
+        .join(db.books_ratings_link).join(db.Books).filter(common_filters()) \
+        .group_by(text('books_ratings_link.rating')).order_by(db.Ratings.rating).all()
+
+    pagination = Pagination((int(off) / (int(config.config_books_per_page)) + 1), config.config_books_per_page,
+                            len(entries))
+    element = list()
+    for entry in entries:
+        element.append(FeedObject(entry[0].id, "{} Stars".format(entry.name)))
+    return render_xml_template('feed.xml', listelements=element, folder='opds.feed_ratings', pagination=pagination)
+
+@opds.route("/opds/ratings/<book_id>")
+@requires_basic_auth_if_no_ano
+def feed_ratings(book_id):
+    off = request.args.get("offset") or 0
+    entries, __, pagination = fill_indexpage((int(off) / (int(config.config_books_per_page)) + 1),
+                    db.Books, db.Books.ratings.any(db.Ratings.id == book_id),[db.Books.timestamp.desc()])
+    return render_xml_template('feed.xml', entries=entries, pagination=pagination)
+
+
 @opds.route("/opds/formats")
 @requires_basic_auth_if_no_ano
 def feed_formatindex():
@@ -222,10 +261,11 @@ def feed_formatindex():
         .group_by(db.Data.format).order_by(db.Data.format).all()
     pagination = Pagination((int(off) / (int(config.config_books_per_page)) + 1), config.config_books_per_page,
                             len(entries))
+
+    element = list()
     for entry in entries:
-        entry.name = entry.format
-        entry.id = entry.format
-    return render_xml_template('feed.xml', listelements=entries, folder='opds.feed_format', pagination=pagination)
+        element.append(FeedObject(entry.format, entry.format))
+    return render_xml_template('feed.xml', listelements=element, folder='opds.feed_format', pagination=pagination)
 
 
 @opds.route("/opds/formats/<book_id>")
@@ -265,15 +305,8 @@ def feed_languages(book_id):
     off = request.args.get("offset") or 0
     entries, __, pagination = fill_indexpage((int(off) / (int(config.config_books_per_page)) + 1),
                     db.Books, db.Books.languages.any(db.Languages.id == book_id), [db.Books.timestamp.desc()])
-    '''for entry in entries:
-        for index in range(0, len(entry.languages)):
-            try:
-                entry.languages[index].language_name = LC.parse(entry.languages[index].lang_code).get_language_name(
-                    get_locale())
-            except UnknownLocaleError:
-                entry.languages[index].language_name = _(
-                    isoLanguages.get(part3=entry.languages[index].lang_code).name)'''
     return render_xml_template('feed.xml', entries=entries, pagination=pagination)
+
 
 @opds.route("/opds/shelfindex", defaults={'public': 0})
 @opds.route("/opds/shelfindex/<string:public>")
@@ -319,11 +352,11 @@ def feed_shelf(book_id):
 @requires_basic_auth_if_no_ano
 @download_required
 def opds_download_link(book_id, book_format):
-    return get_download_link(book_id,book_format)
+    return get_download_link(book_id,book_format.lower())
 
 
 @opds.route("/ajax/book/<string:uuid>/<library>")
-@opds.route("/ajax/book/<string:uuid>")
+@opds.route("/ajax/book/<string:uuid>",defaults={'library': ""})
 @requires_basic_auth_if_no_ano
 def get_metadata_calibre_companion(uuid, library):
     entry = db.session.query(db.Books).filter(db.Books.uuid.like("%" + uuid + "%")).first()

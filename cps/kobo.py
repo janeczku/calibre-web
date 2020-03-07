@@ -214,29 +214,19 @@ def HandleMetadataRequest(book_uuid):
 
 def get_download_url_for_book(book, book_format):
     if not current_app.wsgi_app.is_proxied:
-        if request.environ['SERVER_NAME'] != '::':
-            return "{url_scheme}://{url_base}:{url_port}/download/{book_id}/{book_format}".format(
-                url_scheme=request.environ['wsgi.url_scheme'],
-                url_base=request.environ['SERVER_NAME'],
-                url_port=config.config_port,
-                book_id=book.id,
-                book_format=book_format.lower()
-            )
-        else:
-            return "{url_scheme}://{url_base}:{url_port}/download/{book_id}/{book_format}".format(
-                url_scheme=request.environ['wsgi.url_scheme'],
-                url_base=request.host,          # ToDo: both server ??
-                url_port=config.config_port,
-                book_id=book.id,
-                book_format=book_format.lower()
-            )
-    else:
-        return url_for(
-            "web.download_link",
+        return "{url_scheme}://{url_base}:{url_port}/download/{book_id}/{book_format}".format(
+            url_scheme=request.scheme,
+            url_base=request.host,
+            url_port=config.config_port,
             book_id=book.id,
-            book_format=book_format.lower(),
-            _external=True,
+            book_format=book_format.lower()
         )
+    return url_for(
+        "web.download_link",
+        book_id=book.id,
+        book_format=book_format.lower(),
+        _external=True,
+    )
 
 
 def create_book_entitlement(book):
@@ -466,15 +456,11 @@ def HandleInitRequest():
 
     if not current_app.wsgi_app.is_proxied:
         log.debug('Kobo: Received unproxied request, changed request port to server port')
-        if request.environ['SERVER_NAME'] != '::':
-            calibre_web_url = "{url_scheme}://{url_base}:{url_port}".format(
-                url_scheme=request.environ['wsgi.url_scheme'],
-                url_base=request.environ['SERVER_NAME'],
-                url_port=config.config_port
-            )
-        else:
-            log.debug('Kobo: Received unproxied request, on IPV6 host')
-            calibre_web_url = url_for("web.index", _external=True).strip("/")
+        calibre_web_url = "{url_scheme}://{url_base}:{url_port}".format(
+            url_scheme=request.scheme,
+            url_base=request.host,
+            url_port=config.config_port
+        )
     else:
         calibre_web_url = url_for("web.index", _external=True).strip("/")
 
