@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Calibre Web - polski (POT: 2019-08-06 18:35)\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-02-23 20:05+0100\n"
+"POT-Creation-Date: 2020-03-07 11:20+0100\n"
 "PO-Revision-Date: 2019-08-18 22:06+0200\n"
 "Last-Translator: Jerzy Piątek <jerzy.piatek@gmail.com>\n"
 "Language: pl\n"
@@ -249,11 +249,6 @@ msgstr "Nie można zapisać pliku %(file)s."
 msgid "File format %(ext)s added to %(book)s"
 msgstr "Format pliku %(ext)s dodany do %(book)s"
 
-# ???
-#: cps/editbooks.py:376
-msgid "Cover is not a supported imageformat (jpg/png/webp), can't save"
-msgstr "Nie można zapisać. Okładka jest w niewspieranym formacie (jpg/png/webp)"
-
 #: cps/editbooks.py:451
 msgid "Cover is not a jpg file, can't save"
 msgstr "Okładka nie jest plikiem jpg, nie można zapisać"
@@ -405,39 +400,59 @@ msgstr ""
 msgid "Book path %(path)s not found on Google Drive"
 msgstr ""
 
-#: cps/helper.py:657
+#: cps/helper.py:511
+msgid "Failed to create path for cover"
+msgstr ""
+
+#: cps/helper.py:516
+msgid "Cover-file is not a valid image file"
+msgstr ""
+
+#: cps/helper.py:519
+msgid "Failed to store cover-file"
+msgstr ""
+
+#: cps/helper.py:530
+msgid "Only jpg/jpeg/png/webp files are supported as coverfile"
+msgstr ""
+
+#: cps/helper.py:544
+msgid "Only jpg/jpeg files are supported as coverfile"
+msgstr ""
+
+#: cps/helper.py:658
 msgid "Waiting"
 msgstr "Oczekiwanie"
 
-#: cps/helper.py:659
+#: cps/helper.py:660
 msgid "Failed"
 msgstr "Nieudane"
 
-#: cps/helper.py:661
+#: cps/helper.py:662
 msgid "Started"
 msgstr "Rozpoczynanie"
 
-#: cps/helper.py:663
+#: cps/helper.py:664
 msgid "Finished"
 msgstr ""
 
-#: cps/helper.py:665
+#: cps/helper.py:666
 msgid "Unknown Status"
 msgstr "Ststus nieznany"
 
-#: cps/helper.py:670
+#: cps/helper.py:671
 msgid "E-mail: "
 msgstr "E-mail: "
 
-#: cps/helper.py:672 cps/helper.py:676
+#: cps/helper.py:673 cps/helper.py:677
 msgid "Convert: "
 msgstr "Konwertowanie: "
 
-#: cps/helper.py:674
+#: cps/helper.py:675
 msgid "Upload: "
 msgstr "Wgrywanie: "
 
-#: cps/helper.py:678
+#: cps/helper.py:679
 msgid "Unknown Task: "
 msgstr "Nieznane zadanie: "
 
@@ -688,7 +703,7 @@ msgstr "Języki"
 msgid "Show language selection"
 msgstr "Pokaż menu wyboru języka"
 
-#: cps/ub.py:93
+#: cps/templates/index.xml:96 cps/ub.py:93
 msgid "Ratings"
 msgstr "Ocena"
 
@@ -696,7 +711,7 @@ msgstr "Ocena"
 msgid "Show ratings selection"
 msgstr "Pokaż menu listy ocen"
 
-#: cps/templates/index.xml:96 cps/ub.py:96
+#: cps/templates/index.xml:104 cps/ub.py:96
 msgid "File formats"
 msgstr "Format plików"
 
@@ -1774,10 +1789,6 @@ msgstr "Następne"
 msgid "Open the .kobo/Kobo eReader.conf file in a text editor and add (or edit):"
 msgstr ""
 
-#: cps/templates/generate_kobo_auth_url.html:11
-msgid "Please note that every visit to this current page invalidates any previously generated Authentication url for this user."
-msgstr ""
-
 # | msgid "Create a Shelf"
 #: cps/templates/http_error.html:38
 #, fuzzy
@@ -1842,22 +1853,26 @@ msgid "Books ordered by Languages"
 msgstr "Ksiązki posortowane według języka"
 
 #: cps/templates/index.xml:100
+msgid "Books ordered by Rating"
+msgstr ""
+
+#: cps/templates/index.xml:108
 msgid "Books ordered by file formats"
 msgstr "Ksiązki posortowane według formatu"
 
-#: cps/templates/index.xml:103 cps/templates/layout.html:136
+#: cps/templates/index.xml:111 cps/templates/layout.html:136
 msgid "Public Shelves"
 msgstr "Publiczne półki"
 
-#: cps/templates/index.xml:107
+#: cps/templates/index.xml:115
 msgid "Books organized in public shelfs, visible to everyone"
 msgstr "Książki na półkach publicznych, widoczne dla wszystkich"
 
-#: cps/templates/index.xml:111 cps/templates/layout.html:140
+#: cps/templates/index.xml:119 cps/templates/layout.html:140
 msgid "Your Shelves"
 msgstr "Twoje półki"
 
-#: cps/templates/index.xml:115
+#: cps/templates/index.xml:123
 msgid "User's own shelfs, only visible to the current user himself"
 msgstr "Własne półki, widoczne tylko dla bieżącego użytkownika"
 
@@ -2334,123 +2349,7 @@ msgstr ""
 msgid "Do you really want to delete the Kobo Token?"
 msgstr ""
 
-#~ msgid "Keyfile location is not valid, please enter correct path"
-#~ msgstr "Lokalizacja pliku kluczy jest nieprawidłowa, wprowadź poprawną ścieżkę"
-
-#~ msgid "Certfile location is not valid, please enter correct path"
-#~ msgstr "Lokalizacja pliku certyfikatu jest nieprawidłowa, wprowadź poprawną ścieżkę"
-
-#~ msgid "Logfile location is not valid, please enter correct path"
-#~ msgstr "Lokalizacja pliku loga jest nieprawidłowa, wprowadź poprawną ścieżkę"
-
-#~ msgid "Access Logfile location is not valid, please enter correct path"
-#~ msgstr "Lokalizacja pliku Access loga jest nieprawidłowa, wprowadź poprawną ścieżkę"
-
-#~ msgid "DB location is not valid, please enter correct path"
-#~ msgstr "Lokalizacja bazy danych jest nieprawidłowa, wpisz poprawną ścieżkę"
-
-#~ msgid "Excecution permissions missing"
-#~ msgstr "Brak uprawnień do tego zadania"
-
-#~ msgid "not configured"
-#~ msgstr "nie skonfigurowane"
-
-#~ msgid "Installed"
-#~ msgstr "Zainstalowane"
-
-#~ msgid "Not installed"
-#~ msgstr "Nie zainstalowane"
-
-#~ msgid "Use"
-#~ msgstr ""
-
-#~ msgid "Play / pause"
-#~ msgstr ""
-
-#~ msgid "volume"
-#~ msgstr ""
-
-#~ msgid "unknown"
-#~ msgstr "nieznany"
-
-#~ msgid "New Books"
-#~ msgstr "Nowe książki"
-
-#~ msgid "Show Calibre-Web log"
-#~ msgstr "Zdarzenia z logu Calibre-Web"
-
-#~ msgid "Show access log"
-#~ msgstr "Zdarzenia z logu Access"
-
-#~ msgid "Tags for Mature Content"
-#~ msgstr "Tagi dla Treści dla dorosłych"
-
-#~ msgid "Show mature content"
-#~ msgstr "Pokaż Treści dla dorosłych"
-
-#~ msgid "deny"
-#~ msgstr ""
-
-#~ msgid "allow"
-#~ msgstr ""
-
-#~ msgid "Kobo Set-up"
-#~ msgstr ""
-
-#~ msgid "Publisher list"
-#~ msgstr "Lista wydawców"
-
-#~ msgid "Series list"
-#~ msgstr "Lista serii"
-
-#~ msgid "Available languages"
-#~ msgstr "Dostępne języki"
-
-#~ msgid "Category list"
-#~ msgstr "Lista kategorii"
-
-#~ msgid "Series id"
-#~ msgstr "ID serii"
-
-#~ msgid "Submit"
-#~ msgstr "Zatwierdź"
-
-#~ msgid "Go!"
-#~ msgstr "Idź!"
-
-#~ msgid "Allow Delete books"
-#~ msgstr "Zezwalaj na usuwanie książek"
-
-#~ msgid "language"
-#~ msgstr "język"
-
-#~ msgid "SMTP port (usually 25 for plain SMTP and 465 for SSL and 587 for STARTTLS)"
-#~ msgstr "Port serwera SMTP (używane 25 dla jawnego SMTP i 465 dla połączenia SSL i 587 dla połączenia STARTTLS)"
-
-#~ msgid "From e-mail"
-#~ msgstr "Z adresu e-mail"
-
-#~ msgid "Save settings"
-#~ msgstr "Zapisz ustawienia"
-
-#~ msgid "api_endpoint="
-#~ msgstr ""
-
-#~ msgid "please don't refresh the page"
-#~ msgstr "proszę nie odświeżać strony"
-
-#~ msgid "E-mail address"
-#~ msgstr "Adres e-mail"
-
-#~ msgid "No Results for:"
-#~ msgstr "Brak wyników dla:"
-
-#~ msgid "Please try a different search"
-#~ msgstr "Proszę wypróbować podobne wyszukiwanie"
-
-#~ msgid "Tasks list"
-#~ msgstr "Lista zadań"
-
-#~ msgid "Kindle E-Mail"
-#~ msgstr "Adres e-mail Kindle"
+# ???
+#~ msgid "Cover is not a supported imageformat (jpg/png/webp), can't save"
+#~ msgstr "Nie można zapisać. Okładka jest w niewspieranym formacie (jpg/png/webp)"
 

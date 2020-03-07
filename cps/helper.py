@@ -508,16 +508,16 @@ def save_cover_from_filestorage(filepath, saved_filename, img):
                 os.makedirs(filepath)
             except OSError:
                 log.error(u"Failed to create path for cover")
-                return False
+                return False, _(u"Failed to create path for cover")
         try:
             img.save(os.path.join(filepath, saved_filename))
         except IOError:
             log.error(u"Cover-file is not a valid image file")
-            return False
+            return False, _(u"Cover-file is not a valid image file")
         except OSError:
             log.error(u"Failed to store cover-file")
-            return False
-    return True
+            return False, _(u"Failed to store cover-file")
+    return True, None
 
 
 # saves book cover to gdrive or locally
@@ -527,7 +527,7 @@ def save_cover(img, book_path):
     if use_PIL:
         if content_type not in ('image/jpeg', 'image/png', 'image/webp'):
             log.error("Only jpg/jpeg/png/webp files are supported as coverfile")
-            return False
+            return False, _("Only jpg/jpeg/png/webp files are supported as coverfile")
         # convert to jpg because calibre only supports jpg
         if content_type in ('image/png', 'image/webp'):
             if hasattr(img,'stream'):
@@ -541,17 +541,18 @@ def save_cover(img, book_path):
     else:
         if content_type not in ('image/jpeg'):
             log.error("Only jpg/jpeg files are supported as coverfile")
-            return False
+            return False, _("Only jpg/jpeg files are supported as coverfile")
 
     if config.config_use_google_drive:
         tmpDir = gettempdir()
-        if save_cover_from_filestorage(tmpDir, "uploaded_cover.jpg", img) is True:
+        ret, message = save_cover_from_filestorage(tmpDir, "uploaded_cover.jpg", img)
+        if ret is True:
             gd.uploadFileToEbooksFolder(os.path.join(book_path, 'cover.jpg'),
                                         os.path.join(tmpDir, "uploaded_cover.jpg"))
             log.info("Cover is saved on Google Drive")
-            return True
+            return True, None
         else:
-            return False
+            return False, message
     else:
         return save_cover_from_filestorage(os.path.join(config.config_calibre_dir, book_path), "cover.jpg", img)
 
@@ -818,11 +819,11 @@ def get_download_link(book_id, book_format):
     book_format = book_format.split(".")[0]
     book = db.session.query(db.Books).filter(db.Books.id == book_id).filter(common_filters()).first()
     if book:
-        data = db.session.query(db.Data).filter(db.Data.book == book.id)\
+        data1 = db.session.query(db.Data).filter(db.Data.book == book.id)\
             .filter(db.Data.format == book_format.upper()).first()
     else:
         abort(404)
-    if data:
+    if data1:
         # collect downloaded books only for registered user and not for anonymous user
         if current_user.is_authenticated:
             ub.update_download(book_id, int(current_user.id))
@@ -834,7 +835,7 @@ def get_download_link(book_id, book_format):
         headers["Content-Type"] = mimetypes.types_map.get('.' + book_format, "application/octet-stream")
         headers["Content-Disposition"] = "attachment; filename=%s.%s; filename*=UTF-8''%s.%s" % (
             quote(file_name.encode('utf-8')), book_format, quote(file_name.encode('utf-8')), book_format)
-        return do_download_file(book, book_format, data, headers)
+        return do_download_file(book, book_format, data1, headers)
     else:
         abort(404)
 

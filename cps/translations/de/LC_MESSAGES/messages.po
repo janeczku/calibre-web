@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2020-02-23 20:05+0100\n"
-"PO-Revision-Date: 2020-02-23 17:07+0100\n"
+"POT-Creation-Date: 2020-03-07 11:20+0100\n"
+"PO-Revision-Date: 2020-03-07 11:20+0100\n"
 "Last-Translator: Ozzie Isaacs\n"
 "Language: de\n"
 "Language-Team: \n"
@@ -245,10 +245,6 @@ msgstr "Fehler beim Speichern der Datei %(file)s."
 msgid "File format %(ext)s added to %(book)s"
 msgstr "Dateiformat %(ext)s zu %(book)s hinzugefügt"
 
-#: cps/editbooks.py:376
-msgid "Cover is not a supported imageformat (jpg/png/webp), can't save"
-msgstr "Cover hat kein unterstütztes Bildformat (jpg/png/webp), kann nicht gespeichert werden"
-
 #: cps/editbooks.py:451
 msgid "Cover is not a jpg file, can't save"
 msgstr "Cover ist keine JPG Datei, konnte nicht gespeichert werden"
@@ -398,49 +394,69 @@ msgstr "Datei %(file)s wurde nicht auf Google Drive gefunden"
 msgid "Book path %(path)s not found on Google Drive"
 msgstr "Buchpfad %(path)s wurde nicht auf Google Drive gefunden"
 
-#: cps/helper.py:657
+#: cps/helper.py:511
+msgid "Failed to create path for cover"
+msgstr "Fehler beim Erzeugen des Ordners für die Coverdatei"
+
+#: cps/helper.py:516
+msgid "Cover-file is not a valid image file"
+msgstr "Cover Datei hat kein gültiges Bildformat"
+
+#: cps/helper.py:519
+msgid "Failed to store cover-file"
+msgstr "Fehler beim speichern der Cover Datei"
+
+#: cps/helper.py:530
+msgid "Only jpg/jpeg/png/webp files are supported as coverfile"
+msgstr "Es werden nur jpg/jpeg/png/webp Dateien als Cover untertützt"
+
+#: cps/helper.py:544
+msgid "Only jpg/jpeg files are supported as coverfile"
+msgstr "Es werden nur jpg/jpeg Dateien als Cover untertützt"
+
+#: cps/helper.py:658
 msgid "Waiting"
 msgstr "Wartend"
 
-#: cps/helper.py:659
+#: cps/helper.py:660
 msgid "Failed"
 msgstr "Fehlgeschlagen"
 
-#: cps/helper.py:661
+#: cps/helper.py:662
 msgid "Started"
 msgstr "Gestartet"
 
-#: cps/helper.py:663
+#: cps/helper.py:664
 msgid "Finished"
 msgstr "Beendet"
 
-#: cps/helper.py:665
+#: cps/helper.py:666
 msgid "Unknown Status"
 msgstr "Unbekannter Status"
 
-#: cps/helper.py:670
+#: cps/helper.py:671
 msgid "E-mail: "
 msgstr "E-Mail: "
 
-#: cps/helper.py:672 cps/helper.py:676
+#: cps/helper.py:673 cps/helper.py:677
 msgid "Convert: "
 msgstr "Konvertiere: "
 
-#: cps/helper.py:674
+#: cps/helper.py:675
 msgid "Upload: "
 msgstr "Upload: "
 
-#: cps/helper.py:678
+#: cps/helper.py:679
 msgid "Unknown Task: "
 msgstr "Unbekannte Aufgabe: "
 
 #: cps/kobo_auth.py:127
 msgid "PLease access calibre-web from non localhost to get valid api_endpoint for kobo device"
-msgstr ""
+msgstr "Bitte nicht von \"localhost\" auf Calibre-Web zugreifen, um einen gültigen  api_endpoint für Kobo Geräte zu erhalten"
 
 #: cps/kobo_auth.py:130 cps/kobo_auth.py:150
 msgid "Kobo Setup"
-msgstr ""
+msgstr "Kobo Setup"
 
 #: cps/oauth_bb.py:74
 #, python-format
@@ -581,7 +597,7 @@ msgstr "Fehler beim Öffnen des Bücherregals. Bücherregal exisitert nicht oder
 
 #: cps/shelf.py:342
 msgid "Hidden Book"
-msgstr ""
+msgstr "Verstecktes Buch"
 
 #: cps/shelf.py:347
 #, python-format
@@ -610,7 +626,7 @@ msgstr "Best bewertete Bücher"
 
 #: cps/ub.py:65
 msgid "Show Top Rated Books"
-msgstr ""
+msgstr "Bestbewertete Bücher anzeigen"
 
 #: cps/templates/index.xml:46 cps/templates/index.xml:50 cps/ub.py:66
 #: cps/web.py:1005
@@ -680,7 +696,7 @@ msgstr "Sprachen"
 msgid "Show language selection"
 msgstr "Zeige Sprachauswahl"
 
-#: cps/ub.py:93
+#: cps/templates/index.xml:96 cps/ub.py:93
 msgid "Ratings"
 msgstr "Bewertungen"
 
@@ -688,7 +704,7 @@ msgstr "Bewertungen"
 msgid "Show ratings selection"
 msgstr "Zeige Bewertungsauswahl"
 
-#: cps/templates/index.xml:96 cps/ub.py:96
+#: cps/templates/index.xml:104 cps/ub.py:96
 msgid "File formats"
 msgstr "Dateiformate"
 
@@ -921,7 +937,7 @@ msgstr "Lese ein Buch"
 
 #: cps/web.py:1425
 msgid "Error opening eBook. File does not exist or file is not accessible."
-msgstr ""
+msgstr "Fehler beim Öffnen des eBooks. Datei existiert nicht oder ist nicht zugänglich."
 
 #: cps/worker.py:335
 #, python-format
@@ -968,7 +984,7 @@ msgstr "Download"
 
 #: cps/templates/admin.html:18
 msgid "View eBooks"
-msgstr ""
+msgstr "Bücher ansehen"
 
 #: cps/templates/admin.html:19 cps/templates/layout.html:65
 msgid "Upload"
@@ -980,7 +996,7 @@ msgstr "Editieren"
 
 #: cps/templates/admin.html:38
 msgid "Add New User"
-msgstr ""
+msgstr "Neuen Benutzer hinzufügen"
 
 #: cps/templates/admin.html:44
 msgid "E-mail Server Settings"
@@ -1044,7 +1060,7 @@ msgstr "Öffentliche Registrierung"
 
 #: cps/templates/admin.html:100
 msgid "Magic Link Remote Login"
-msgstr ""
+msgstr "Remotelogin ('Magischer Link')"
 
 #: cps/templates/admin.html:104
 msgid "Reverse Proxy Login"
@@ -1056,11 +1072,11 @@ msgstr "Reverse Proxy Header Name"
 
 #: cps/templates/admin.html:114
 msgid "Edit Basic Configuration"
-msgstr ""
+msgstr "Basiskonfiguration"
 
 #: cps/templates/admin.html:115
 msgid "Edit UI Configuration"
-msgstr ""
+msgstr "Benutzeroberflächenkonfiguration"
 
 #: cps/templates/admin.html:121
 msgid "Administration"
@@ -1068,7 +1084,7 @@ msgstr "Administration"
 
 #: cps/templates/admin.html:122
 msgid "View Logs"
-msgstr ""
+msgstr "Logdateien ansehen"
 
 #: cps/templates/admin.html:123
 msgid "Reconnect Calibre Database"
@@ -1076,7 +1092,7 @@ msgstr "Calibre-DB neu verbinden"
 
 #: cps/templates/admin.html:124
 msgid "Restart"
-msgstr ""
+msgstr "Neustart"
 
 #: cps/templates/admin.html:125
 msgid "Shutdown"
@@ -1100,7 +1116,7 @@ msgstr "Aktuelle Version"
 
 #: cps/templates/admin.html:148
 msgid "Check for Update"
-msgstr ""
+msgstr "Nach Update suchen"
 
 #: cps/templates/admin.html:149
 msgid "Perform Update"
@@ -1210,7 +1226,7 @@ msgstr "Tags"
 
 #: cps/templates/book_edit.html:73
 msgid "Series ID"
-msgstr ""
+msgstr "Serien ID"
 
 #: cps/templates/book_edit.html:77
 msgid "Rating"
@@ -1222,7 +1238,7 @@ msgstr "Cover-URL (jpg, Cover wird heruntergeladen und in der Datenbank gespeich
 
 #: cps/templates/book_edit.html:85
 msgid "Upload Cover from Local Disk"
-msgstr ""
+msgstr "Coverdatei von Lokalem Laufwerk hochladen"
 
 #: cps/templates/book_edit.html:90
 msgid "Published Date"
@@ -1275,7 +1291,7 @@ msgstr "Das Buch wird aus der Calibre-Datenbank"
 
 #: cps/templates/book_edit.html:189
 msgid "and hard disk"
-msgstr ""
+msgstr "und von der Festplatte gelöscht"
 
 #: cps/templates/book_edit.html:209
 msgid "Keyword"
@@ -1317,7 +1333,7 @@ msgstr "Bibliothekskonfiguration"
 
 #: cps/templates/config_edit.html:19
 msgid "Location of Calibre Database"
-msgstr ""
+msgstr "Speicherort der Calibre-Datenbank"
 
 #: cps/templates/config_edit.html:25
 msgid "Use Google Drive?"
@@ -1425,11 +1441,11 @@ msgstr "Remotelogin ('Magischer Link') aktivieren"
 
 #: cps/templates/config_edit.html:175
 msgid "Enable Kobo sync"
-msgstr ""
+msgstr "Synchronisation mit Kobo aktivieren"
 
 #: cps/templates/config_edit.html:180
 msgid "Proxy unknown requests to Kobo Store"
-msgstr ""
+msgstr "Unbekannte Anfragen an Kobo.com weiterleiten"
 
 #: cps/templates/config_edit.html:187
 msgid "Use Goodreads"
@@ -1453,7 +1469,7 @@ msgstr "Logintyp"
 
 #: cps/templates/config_edit.html:205
 msgid "Use Standard Authentication"
-msgstr ""
+msgstr "Benutze Standard Authentifizierung"
 
 #: cps/templates/config_edit.html:207
 msgid "Use LDAP Authentication"
@@ -1477,11 +1493,11 @@ msgstr "LDAP-Schema (ldap oder ldaps)"
 
 #: cps/templates/config_edit.html:229
 msgid "LDAP Administrator Username"
-msgstr ""
+msgstr "LDAP Administrator Benutzername"
 
 #: cps/templates/config_edit.html:233
 msgid "LDAP Administrator Password"
-msgstr ""
+msgstr "LDAP Administrator Passwort"
 
 #: cps/templates/config_edit.html:238
 msgid "LDAP Server Enable SSL"
@@ -1605,7 +1621,7 @@ msgstr "Verknüpfe Gelesen/Ungelesen-Status mit Calibre-Spalte"
 
 #: cps/templates/config_view_edit.html:59
 msgid "View Restrictions based on Calibre column"
-msgstr ""
+msgstr "Sichtbarkeitsbeschränkung basierend auf Calibre Spalte"
 
 #: cps/templates/config_view_edit.html:61 cps/templates/email_edit.html:21
 msgid "None"
@@ -1613,7 +1629,7 @@ msgstr "Keine"
 
 #: cps/templates/config_view_edit.html:68
 msgid "Regular Expression for Title Sorting"
-msgstr ""
+msgstr "Regulärer Ausdruck für Titelsortierung"
 
 #: cps/templates/config_view_edit.html:80
 msgid "Default Settings for New Users"
@@ -1661,11 +1677,11 @@ msgstr "Zeige zufällige Bücher in der Detailansicht"
 
 #: cps/templates/config_view_edit.html:144
 msgid "Add Allowed/Denied Tags"
-msgstr ""
+msgstr "Erlaubte/Verbotene Tags hinzufügen"
 
 #: cps/templates/config_view_edit.html:145
 msgid "Add Allowed/Denied custom column values"
-msgstr ""
+msgstr "Erlaubte/Verbotene Calibre Spalten hinzufügen"
 
 #: cps/templates/detail.html:59
 msgid "Read in Browser"
@@ -1685,7 +1701,7 @@ msgstr "von"
 
 #: cps/templates/detail.html:165
 msgid "Published"
-msgstr ""
+msgstr "Herausgabedatum"
 
 #: cps/templates/detail.html:200
 msgid "Mark As Unread"
@@ -1757,15 +1773,11 @@ msgstr "Nächste"
 
 #: cps/templates/generate_kobo_auth_url.html:5
 msgid "Open the .kobo/Kobo eReader.conf file in a text editor and add (or edit):"
-msgstr ""
-
-#: cps/templates/generate_kobo_auth_url.html:11
-msgid "Please note that every visit to this current page invalidates any previously generated Authentication url for this user."
-msgstr ""
+msgstr "Öffne ddie .kobo/Kobo eReader.conf Datei in einem Texteditor und füge hinzu (oder ersetze):"
 
 #: cps/templates/http_error.html:38
 msgid "Create Issue"
-msgstr ""
+msgstr "Issue erzeuge"
 
 #: cps/templates/http_error.html:45
 msgid "Return to Home"
@@ -1824,22 +1836,26 @@ msgid "Books ordered by Languages"
 msgstr "Bücher nach Sprache sortiert"
 
 #: cps/templates/index.xml:100
+msgid "Books ordered by Rating"
+msgstr "Bücher nach Bewertungen sortiert"
+
+#: cps/templates/index.xml:108
 msgid "Books ordered by file formats"
 msgstr "Bücher nach Dateiformaten sortiert"
 
-#: cps/templates/index.xml:103 cps/templates/layout.html:136
+#: cps/templates/index.xml:111 cps/templates/layout.html:136
 msgid "Public Shelves"
 msgstr "Öffentliche Bücherregale"
 
-#: cps/templates/index.xml:107
+#: cps/templates/index.xml:115
 msgid "Books organized in public shelfs, visible to everyone"
 msgstr "Bücher, die in öffentlichen Bücherregal organisiert und für jedermann sichtbar sind"
 
-#: cps/templates/index.xml:111 cps/templates/layout.html:140
+#: cps/templates/index.xml:119 cps/templates/layout.html:140
 msgid "Your Shelves"
 msgstr "Deine Bücherregale"
 
-#: cps/templates/index.xml:115
+#: cps/templates/index.xml:123
 msgid "User's own shelfs, only visible to the current user himself"
 msgstr "Persönliches Bücherregal des Benutzers, nur sichtbar für den aktuellen Benutzer"
 
@@ -1850,7 +1866,7 @@ msgstr "Home"
 #: cps/templates/layout.html:28 cps/templates/shelf_order.html:32
 #: cps/templates/user_edit.html:178
 msgid "Back"
-msgstr ""
+msgstr "Zurück"
 
 #: cps/templates/layout.html:34
 msgid "Toggle Navigation"
@@ -1858,7 +1874,7 @@ msgstr "Nagivation umschalten"
 
 #: cps/templates/layout.html:45
 msgid "Search Library"
-msgstr ""
+msgstr "Bibiliothek durchsuchen"
 
 #: cps/templates/layout.html:55
 msgid "Advanced Search"
@@ -1952,27 +1968,27 @@ msgstr "Zugriffslogbuch anzeigen: "
 
 #: cps/templates/modal_restriction.html:6
 msgid "Select allowed/denied Tags"
-msgstr ""
+msgstr "Erlaubte/verbotene Tags auswählen"
 
 #: cps/templates/modal_restriction.html:7
 msgid "Select allowed/denied Custom Column values"
-msgstr ""
+msgstr "Erlaubte/Verbotene Calibre Spalten auswählen"
 
 #: cps/templates/modal_restriction.html:8
 msgid "Select allowed/denied Tags of user"
-msgstr ""
+msgstr "Erlaubte/Verbotene Tags des Benutzers auswählen"
 
 #: cps/templates/modal_restriction.html:9
 msgid "Select allowed/denied Custom Column values of user"
-msgstr ""
+msgstr "Erlaubte/Verbotene Calibre Spalten des Benutzers auswählen"
 
 #: cps/templates/modal_restriction.html:15
 msgid "Enter Tag"
-msgstr ""
+msgstr "Tag eingeben"
 
 #: cps/templates/modal_restriction.html:24
 msgid "Add View Restriction"
-msgstr ""
+msgstr "Sichtbeschränkung hinzufügen"
 
 #: cps/templates/osd.xml:5
 msgid "Calibre-Web eBook Catalog"
@@ -2100,7 +2116,7 @@ msgstr "Deine E-Mail-Adresse"
 
 #: cps/templates/remote_login.html:4
 msgid "Magic Link - Authorise New Device"
-msgstr ""
+msgstr "Magischer Link - Neues Gerät autorisieren"
 
 #: cps/templates/remote_login.html:6
 msgid "On another device, login and visit:"
@@ -2120,7 +2136,7 @@ msgstr "Keine Ergebnisse"
 
 #: cps/templates/search.html:6
 msgid "Search Term:"
-msgstr ""
+msgstr "Suchbegriff:"
 
 #: cps/templates/search.html:8
 msgid "Results for:"
@@ -2192,7 +2208,7 @@ msgstr "Drag 'n drop um Reihenfolge zu ändern"
 
 #: cps/templates/stats.html:7
 msgid "Library Statistics"
-msgstr ""
+msgstr "Bibiliotheksstatistiken"
 
 #: cps/templates/stats.html:12
 msgid "Books in this Library"
@@ -2216,7 +2232,7 @@ msgstr "Dynamische Bibliotheken"
 
 #: cps/templates/stats.html:32
 msgid "Program Library"
-msgstr ""
+msgstr "Programm Bibliothek"
 
 #: cps/templates/stats.html:33
 msgid "Installed Version"
@@ -2280,19 +2296,19 @@ msgstr "Verknüpfung entfernen"
 
 #: cps/templates/user_edit.html:62
 msgid "Kobo Sync Token"
-msgstr ""
+msgstr "Kobo Sync Token"
 
 #: cps/templates/user_edit.html:64
 msgid "Create/View"
-msgstr ""
+msgstr "Erzeugen/Ansehen"
 
 #: cps/templates/user_edit.html:83
 msgid "Add allowed/denied Tags"
-msgstr ""
+msgstr "Erlaubte/Verbotene Tags"
 
 #: cps/templates/user_edit.html:84
 msgid "Add allowed/denied custom column values"
-msgstr ""
+msgstr "Erlaubte/Verbotene Calibre Spalten hinzufügen"
 
 #: cps/templates/user_edit.html:129
 msgid "Delete User"
@@ -2304,12 +2320,12 @@ msgstr "Letzte Downloads"
 
 #: cps/templates/user_edit.html:160
 msgid "Generate Kobo Auth URL"
-msgstr ""
+msgstr "Kobo Auth URL erzeugen"
 
 #: cps/templates/user_edit.html:176
 msgid "Do you really want to delete the Kobo Token?"
-msgstr ""
+msgstr "Möchten Sie wirklich den Kobo Token löschen?"
 
-#~ msgid "Best rated Books"
-#~ msgstr ""
+#~ msgid "Cover is not a supported imageformat (jpg/png/webp), can't save"
+#~ msgstr "Cover hat kein unterstütztes Bildformat (jpg/png/webp), kann nicht gespeichert werden"
 
