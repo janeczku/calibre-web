@@ -93,6 +93,14 @@
     <content type="text">{{_('Books ordered by Languages')}}</content>
   </entry>
   <entry>
+    <title>{{_('Ratings')}}</title>
+    <link href="{{url_for('opds.feed_ratingindex')}}" type="application/atom+xml;profile=opds-catalog"/>
+    <id>{{url_for('opds.feed_ratingindex')}}</id>
+    <updated>{{ current_time }}</updated>
+    <content type="text">{{_('Books ordered by Rating')}}</content>
+  </entry>
+
+  <entry>
     <title>{{_('File formats')}}</title>
     <link href="{{url_for('opds.feed_formatindex')}}" type="application/atom+xml;profile=opds-catalog"/>
     <id>{{url_for('opds.feed_formatindex')}}</id>

@@ -369,11 +369,11 @@ def upload_cover(request, book):
         requested_file = request.files['btn-upload-cover']
         # check for empty request
         if requested_file.filename != '':
-            if helper.save_cover(requested_file, book.path) is True:
+            ret, message = helper.save_cover(requested_file, book.path)
+            if ret is True:
                 return True
             else:
-                # ToDo Message not always coorect
-                flash(_(u"Cover is not a supported imageformat (jpg/png/webp), can't save"), category="error")
+                flash(message, category="error")
                 return False
     return None
 

@@ -1044,7 +1044,7 @@ def serve_book(book_id, book_format, anyname):
 @login_required_if_no_ano
 @download_required
 def download_link(book_id, book_format):
-    return get_download_link(book_id, book_format)
+    return get_download_link(book_id, book_format.lower())
 
 
 @web.route('/send/<int:book_id>/<book_format>/<int:convert>')
