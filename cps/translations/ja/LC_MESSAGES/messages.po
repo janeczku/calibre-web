@@ -1324,7 +1324,7 @@ msgid "Search error!"
 msgstr "検索エラー"
 
 #: cps/templates/book_edit.html:270
-msgid "No Result(s) found! Please try aonther keyword."
+msgid "No Result(s) found! Please try another keyword."
 msgstr "検索結果が見つかりません。別のキーワードで検索してみてください。"
 
 #: cps/templates/config_edit.html:12

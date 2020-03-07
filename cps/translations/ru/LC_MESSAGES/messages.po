@@ -1325,7 +1325,7 @@ msgid "Search error!"
 msgstr "Ошибка поиска!"
 
 #: cps/templates/book_edit.html:270
-msgid "No Result(s) found! Please try aonther keyword."
+msgid "No Result(s) found! Please try another keyword."
 msgstr "Результат(ы) не найдены! Попробуйте другое ключевое слово."
 
 #: cps/templates/config_edit.html:12

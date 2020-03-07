@@ -1325,7 +1325,7 @@ msgid "Search error!"
 msgstr "ការស្វែងរកមានកំហុស!"
 
 #: cps/templates/book_edit.html:270
-msgid "No Result(s) found! Please try aonther keyword."
+msgid "No Result(s) found! Please try another keyword."
 msgstr ""
 
 #: cps/templates/config_edit.html:12
