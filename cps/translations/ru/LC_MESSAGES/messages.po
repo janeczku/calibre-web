@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2020-02-23 20:05+0100\n"
-"PO-Revision-Date: 2020-01-21 23:03+0400\n"
+"POT-Creation-Date: 2020-03-07 11:20+0100\n"
+"PO-Revision-Date: 2020-03-07 11:12+0100\n"
 "Last-Translator: ZIZA\n"
 "Language: ru\n"
 "Language-Team: \n"
@@ -33,7 +33,7 @@ msgstr "Статистика"
 
 #: cps/admin.py:89
 msgid "Server restarted, please reload page"
-msgstr "Сервер перезагружен, пожалуйста, перезагрузите страницу"
+msgstr "Сервер перезагружен, пожалуйста, обновите страницу"
 
 #: cps/admin.py:91
 msgid "Performing shutdown of server, please close window"
@@ -60,12 +60,12 @@ msgstr "Конфигурация Calibre-Web обновлена"
 #: cps/admin.py:434 cps/admin.py:440 cps/admin.py:451 cps/admin.py:462
 #: cps/templates/modal_restriction.html:29
 msgid "Deny"
-msgstr ""
+msgstr "Запретить"
 
 #: cps/admin.py:436 cps/admin.py:442 cps/admin.py:453 cps/admin.py:464
 #: cps/templates/modal_restriction.html:28
 msgid "Allow"
-msgstr ""
+msgstr "Разрешить"
 
 #: cps/admin.py:667
 msgid "Basic Configuration"
@@ -85,7 +85,7 @@ msgstr "E-mail не из существующей доменной зоны"
 
 #: cps/admin.py:710 cps/admin.py:725
 msgid "Found an existing account for this e-mail address or nickname."
-msgstr "Для этого адреса электронной почты или логина уже есть аккаунт."
+msgstr "Для этого адреса электронной почты или логина уже есть учётная запись."
 
 #: cps/admin.py:721
 #, python-format
@@ -108,7 +108,7 @@ msgstr "Произошла ошибка при отправке тестовог
 
 #: cps/admin.py:771
 msgid "Please configure your e-mail address first..."
-msgstr ""
+msgstr "Пожалуйста, сначала настройте свой адрес электронной почты ..."
 
 #: cps/admin.py:773
 msgid "E-mail server settings updated"
@@ -156,7 +156,7 @@ msgstr "Неизвестная ошибка. Попробуйте позже."
 
 #: cps/admin.py:906 cps/web.py:1055
 msgid "Please configure the SMTP mail settings first..."
-msgstr "Пожалуйста, сначала сконфигурируйте параметры SMTP"
+msgstr "Пожалуйста, сперва настройте параметры SMTP"
 
 #: cps/admin.py:918
 msgid "Logfile viewer"
@@ -180,7 +180,7 @@ msgstr "Замена файлов"
 
 #: cps/admin.py:961
 msgid "Database connections are closed"
-msgstr "Соеднинения с базой данных закрыты"
+msgstr "Соединения с базой данных закрыты"
 
 #: cps/admin.py:962
 msgid "Stopping server"
@@ -204,7 +204,7 @@ msgstr "Ошибка соединения"
 
 #: cps/admin.py:966 cps/updater.py:286 cps/updater.py:473
 msgid "Timeout while establishing connection"
-msgstr "Таймаут при установлении соединения"
+msgstr "Тайм-аут при установлении соединения"
 
 #: cps/admin.py:967 cps/updater.py:288 cps/updater.py:475
 msgid "General error"
@@ -245,10 +245,6 @@ msgstr "Не удалось сохранить файл %(file)s."
 #, python-format
 msgid "File format %(ext)s added to %(book)s"
 msgstr "Формат файла %(ext)s добавлен в %(book)s"
-
-#: cps/editbooks.py:376
-msgid "Cover is not a supported imageformat (jpg/png/webp), can't save"
-msgstr "Обложка не содержит поддерживаемый формат изображения (JPG / PNG / WebP), невозможно сохранить"
 
 #: cps/editbooks.py:451
 msgid "Cover is not a jpg file, can't save"
@@ -347,7 +343,7 @@ msgstr "Тестовый e-mail"
 
 #: cps/helper.py:133
 msgid "Get Started with Calibre-Web"
-msgstr "Начать работать с Calibre-Web"
+msgstr "Начать работу с Calibre-Web"
 
 #: cps/helper.py:135
 #, python-format
@@ -372,7 +368,7 @@ msgstr "Эл. почта: %(book)s"
 
 #: cps/helper.py:215
 msgid "The requested file could not be read. Maybe wrong permissions?"
-msgstr "Запрашиваемый файл не может быть прочитан. Возможно не верные разрешения?"
+msgstr "Запрашиваемый файл не может быть прочитан. Возможно у вас нет разрешения?"
 
 #: cps/helper.py:322
 #, python-format
@@ -399,49 +395,69 @@ msgstr "Файл %(file)s не найден на Google Drive"
 msgid "Book path %(path)s not found on Google Drive"
 msgstr "Путь книги %(path)s не найден на Google Drive"
 
-#: cps/helper.py:657
+#: cps/helper.py:511
+msgid "Failed to create path for cover"
+msgstr ""
+
+#: cps/helper.py:516
+msgid "Cover-file is not a valid image file"
+msgstr ""
+
+#: cps/helper.py:519
+msgid "Failed to store cover-file"
+msgstr ""
+
+#: cps/helper.py:530
+msgid "Only jpg/jpeg/png/webp files are supported as coverfile"
+msgstr ""
+
+#: cps/helper.py:544
+msgid "Only jpg/jpeg files are supported as coverfile"
+msgstr ""
+
+#: cps/helper.py:658
 msgid "Waiting"
 msgstr "Ожидание"
 
-#: cps/helper.py:659
+#: cps/helper.py:660
 msgid "Failed"
 msgstr "Неудачно"
 
-#: cps/helper.py:661
+#: cps/helper.py:662
 msgid "Started"
 msgstr "Начало"
 
-#: cps/helper.py:663
+#: cps/helper.py:664
 msgid "Finished"
-msgstr "Закончено"
+msgstr "Завершено"
 
-#: cps/helper.py:665
+#: cps/helper.py:666
 msgid "Unknown Status"
 msgstr "Неизвестный статус"
 
-#: cps/helper.py:670
+#: cps/helper.py:671
 msgid "E-mail: "
 msgstr "E-mail: "
 
-#: cps/helper.py:672 cps/helper.py:676
+#: cps/helper.py:673 cps/helper.py:677
 msgid "Convert: "
 msgstr "Конвертировать:"
 
-#: cps/helper.py:674
+#: cps/helper.py:675
 msgid "Upload: "
 msgstr "Загрузить:"
 
-#: cps/helper.py:678
+#: cps/helper.py:679
 msgid "Unknown Task: "
 msgstr "Неизвестная задача:"
 
 #: cps/kobo_auth.py:127
 msgid "PLease access calibre-web from non localhost to get valid api_endpoint for kobo device"
-msgstr ""
+msgstr "Пожалуйста, подключитесь к Calibre-Web не с локального хоста, чтобы получить действительный api_endpoint для устройства Kobo"
 
 #: cps/kobo_auth.py:130 cps/kobo_auth.py:150
 msgid "Kobo Setup"
-msgstr ""
+msgstr "Настройка Kobo"
 
 #: cps/oauth_bb.py:74
 #, python-format
@@ -494,7 +510,7 @@ msgstr "Указана неверная полка"
 #: cps/shelf.py:54
 #, python-format
 msgid "Sorry you are not allowed to add a book to the the shelf: %(shelfname)s"
-msgstr "Извините, но вам не разрешено добавлять книгу на полку: %(shelfname)s"
+msgstr "Извините, но вам не разрешено добавлять книги на полку: %(shelfname)s"
 
 #: cps/shelf.py:62
 msgid "You are not allowed to edit public shelves"
@@ -527,7 +543,7 @@ msgstr "Книги уже размещены на полке: %(name)s"
 #: cps/shelf.py:141
 #, python-format
 msgid "Books have been added to shelf: %(sname)s"
-msgstr "Книги добавлены в полку: %(sname)s"
+msgstr "Книги добавлены на полку: %(sname)s"
 
 #: cps/shelf.py:143
 #, python-format
@@ -582,7 +598,7 @@ msgstr "Ошибка открытия Полки. Полка не существ
 
 #: cps/shelf.py:342
 msgid "Hidden Book"
-msgstr ""
+msgstr "Скрытая книга"
 
 #: cps/shelf.py:347
 #, python-format
@@ -681,7 +697,7 @@ msgstr "Языки"
 msgid "Show language selection"
 msgstr "Показывать выбор языка"
 
-#: cps/ub.py:93
+#: cps/templates/index.xml:96 cps/ub.py:93
 msgid "Ratings"
 msgstr "Рейтинги"
 
@@ -689,7 +705,7 @@ msgstr "Рейтинги"
 msgid "Show ratings selection"
 msgstr "Показать выбор рейтинга"
 
-#: cps/templates/index.xml:96 cps/ub.py:96
+#: cps/templates/index.xml:104 cps/ub.py:96
 msgid "File formats"
 msgstr "Форматы файлов"
 
@@ -703,11 +719,11 @@ msgstr "Некорректные данные при чтении информа
 
 #: cps/updater.py:269 cps/updater.py:375
 msgid "No update available. You already have the latest version installed"
-msgstr "Нет доступных обнавлений. Вы используете самую новую версию"
+msgstr "Нет доступных обновлений. Вы используете последнюю версию"
 
 #: cps/updater.py:295
 msgid "A new update is available. Click on the button below to update to the latest version."
-msgstr "Доступно обновление. Нажмите на кнопку, что бы обновиться до последней версии."
+msgstr "Новое обновление доступно. Нажмите на кнопку ниже, чтобы обновить до последней версии."
 
 #: cps/updater.py:348
 msgid "Could not fetch update information"
@@ -801,11 +817,11 @@ msgstr "Поиск"
 
 #: cps/web.py:873
 msgid "Published after "
-msgstr "Опубликовано до "
+msgstr "Опубликовано после"
 
 #: cps/web.py:880
 msgid "Published before "
-msgstr "Опубликовано после "
+msgstr "Опубликовано до"
 
 #: cps/web.py:894
 #, python-format
@@ -829,7 +845,7 @@ msgstr "Книга успешно поставлена в очередь для 
 #: cps/web.py:1064
 #, python-format
 msgid "There was an error sending this book: %(res)s"
-msgstr "Ошибка при отправке книги: %(res)s"
+msgstr "При отправке этой книги произошла ошибка: %(res)s"
 
 #: cps/web.py:1066
 msgid "Please configure your kindle e-mail address first..."
@@ -837,7 +853,7 @@ msgstr "Пожалуйста, сначала настройте e-mail на ва
 
 #: cps/web.py:1083
 msgid "E-Mail server is not configured, please contact your administrator!"
-msgstr ""
+msgstr "Сервер электронной почты не настроен, обратитесь к администратору !"
 
 #: cps/web.py:1084 cps/web.py:1090 cps/web.py:1115 cps/web.py:1119
 #: cps/web.py:1124 cps/web.py:1128
@@ -875,11 +891,11 @@ msgstr "Ошибка в имени пользователя или пароле"
 
 #: cps/web.py:1166
 msgid "New Password was send to your email address"
-msgstr ""
+msgstr "Новый пароль был отправлен на ваш адрес электронной почты"
 
 #: cps/web.py:1172
 msgid "Please enter valid username to reset password"
-msgstr ""
+msgstr "Пожалуйста, введите действительное имя пользователя для сброса пароля"
 
 #: cps/web.py:1178
 #, python-format
@@ -905,7 +921,7 @@ msgstr "Успешно! Пожалуйста, проверьте свое уст
 #: cps/web.py:1320 cps/web.py:1365 cps/web.py:1371
 #, python-format
 msgid "%(name)s's profile"
-msgstr "Профиль %(name)s"
+msgstr "Профиль %(name)s's"
 
 #: cps/web.py:1367
 msgid "Profile updated"
@@ -913,7 +929,7 @@ msgstr "Профиль обновлён"
 
 #: cps/web.py:1384 cps/web.py:1480
 msgid "Error opening eBook. File does not exist or file is not accessible:"
-msgstr ""
+msgstr "Ошибка открытия электронной книги. Файл не существует или файл недоступен:"
 
 #: cps/web.py:1396 cps/web.py:1399 cps/web.py:1402 cps/web.py:1409
 #: cps/web.py:1414
@@ -932,7 +948,7 @@ msgstr "Ошибка Ebook-конвертора: %(error)s"
 #: cps/worker.py:346
 #, python-format
 msgid "Kindlegen failed with Error %(error)s. Message: %(message)s"
-msgstr "Kindlegen - неудачно, с Ошибкой %(error)s. Сообщение: %(message)s"
+msgstr "Kindlegen - неудачно, с ошибкой %(error)s. Сообщение: %(message)s"
 
 #: cps/templates/admin.html:9
 msgid "Users"
@@ -947,15 +963,15 @@ msgstr "Имя пользователя"
 #: cps/templates/admin.html:13 cps/templates/register.html:11
 #: cps/templates/user_edit.html:13
 msgid "E-mail Address"
-msgstr "Почта"
+msgstr "Адрес электронной почты"
 
 #: cps/templates/admin.html:14 cps/templates/user_edit.html:26
 msgid "Send to Kindle E-mail Address"
-msgstr "Kindle"
+msgstr "Отправить на Kindle Адрес электронной почты"
 
 #: cps/templates/admin.html:15
 msgid "Downloads"
-msgstr "DLS"
+msgstr "Скачать"
 
 #: cps/templates/admin.html:16 cps/templates/layout.html:76
 msgid "Admin"
@@ -981,7 +997,7 @@ msgstr "Редактировать"
 
 #: cps/templates/admin.html:38
 msgid "Add New User"
-msgstr ""
+msgstr "Добавить нового пользователя"
 
 #: cps/templates/admin.html:44
 msgid "E-mail Server Settings"
@@ -1017,7 +1033,7 @@ msgstr "Настройки сервера"
 
 #: cps/templates/admin.html:70
 msgid "Calibre Database Directory"
-msgstr "Папка Calibre DB"
+msgstr "Расположение базы данных Calibre"
 
 #: cps/templates/admin.html:74 cps/templates/config_edit.html:122
 msgid "Log Level"
@@ -1049,19 +1065,19 @@ msgstr "Удалённый логин"
 
 #: cps/templates/admin.html:104
 msgid "Reverse Proxy Login"
-msgstr ""
+msgstr "Логин обратного прокси"
 
 #: cps/templates/admin.html:109
 msgid "Reverse proxy header name"
-msgstr ""
+msgstr "Имя заголовка обратного прокси"
 
 #: cps/templates/admin.html:114
 msgid "Edit Basic Configuration"
-msgstr ""
+msgstr "Изменить основные настройки"
 
 #: cps/templates/admin.html:115
 msgid "Edit UI Configuration"
-msgstr ""
+msgstr "Изменить настройки интерфейса"
 
 #: cps/templates/admin.html:121
 msgid "Administration"
@@ -1073,7 +1089,7 @@ msgstr "Просмотреть лог файл"
 
 #: cps/templates/admin.html:123
 msgid "Reconnect Calibre Database"
-msgstr "Переподключиться к БД Calibre"
+msgstr "Пере подключиться к базе жанных Calibre"
 
 #: cps/templates/admin.html:124
 msgid "Restart"
@@ -1123,7 +1139,7 @@ msgstr "Ok"
 #: cps/templates/shelf.html:73 cps/templates/shelf_edit.html:19
 #: cps/templates/user_edit.html:137
 msgid "Cancel"
-msgstr ""
+msgstr "Отмена"
 
 #: cps/templates/admin.html:179
 msgid "Are you sure you want to shutdown?"
@@ -1211,7 +1227,7 @@ msgstr "Теги"
 
 #: cps/templates/book_edit.html:73
 msgid "Series ID"
-msgstr ""
+msgstr "ID Серии"
 
 #: cps/templates/book_edit.html:77
 msgid "Rating"
@@ -1264,7 +1280,7 @@ msgstr "Получить метаданные"
 #: cps/templates/config_view_edit.html:150 cps/templates/email_edit.html:38
 #: cps/templates/shelf_edit.html:17 cps/templates/user_edit.html:135
 msgid "Save"
-msgstr ""
+msgstr "Сохранить"
 
 #: cps/templates/book_edit.html:185
 msgid "Are you really sure?"
@@ -1272,7 +1288,7 @@ msgstr "Вы действительно уверены?"
 
 #: cps/templates/book_edit.html:188
 msgid "This book will be permanently erased from database"
-msgstr "Книга будет удалена из БД Calibre"
+msgstr "Книга будет удалена из базы данных Calibre"
 
 #: cps/templates/book_edit.html:189
 msgid "and hard disk"
@@ -1318,7 +1334,7 @@ msgstr "Настройки библотеки"
 
 #: cps/templates/config_edit.html:19
 msgid "Location of Calibre Database"
-msgstr "Расположение БД Calibre"
+msgstr "Расположение базы данных Calibre"
 
 #: cps/templates/config_edit.html:25
 msgid "Use Google Drive?"
@@ -1338,11 +1354,11 @@ msgstr "Пожалуйста, нажмите «Отправить», чтобы 
 
 #: cps/templates/config_edit.html:44
 msgid "Please finish Google Drive setup after login"
-msgstr "Завершите настройку Google Диска после входа в систему"
+msgstr "Пожалуйста завершите настройку Google Диска после входа в систему"
 
 #: cps/templates/config_edit.html:49
 msgid "Google Drive Calibre folder"
-msgstr "Google Диск Calibre папка"
+msgstr "Папка на Google Диске для Calibre"
 
 #: cps/templates/config_edit.html:57
 msgid "Metadata Watch Channel ID"
@@ -1370,7 +1386,7 @@ msgstr "Расположение SSL файла-ключа (оставьте е�
 
 #: cps/templates/config_edit.html:99
 msgid "Update Channel"
-msgstr "Ветка обнавлений"
+msgstr "Ветка обновлений"
 
 #: cps/templates/config_edit.html:101
 msgid "Stable"
@@ -1382,11 +1398,11 @@ msgstr "Стабильная (Автоматически)"
 
 #: cps/templates/config_edit.html:103
 msgid "Nightly"
-msgstr "Теставая"
+msgstr "Тестовая"
 
 #: cps/templates/config_edit.html:104
 msgid "Nightly (Automatic)"
-msgstr "Теставая (Автоматически)"
+msgstr "Тестовая (Автоматически)"
 
 #: cps/templates/config_edit.html:115
 msgid "Logfile Configuration"
@@ -1426,11 +1442,11 @@ msgstr "Включить удаленный логин (\"magic link\")"
 
 #: cps/templates/config_edit.html:175
 msgid "Enable Kobo sync"
-msgstr ""
+msgstr "Включить Kobo sync"
 
 #: cps/templates/config_edit.html:180
 msgid "Proxy unknown requests to Kobo Store"
-msgstr ""
+msgstr "Неизвестный прокси запрос к Kobo Store"
 
 #: cps/templates/config_edit.html:187
 msgid "Use Goodreads"
@@ -1529,15 +1545,15 @@ msgstr "%(provider)s OAuth Секрет клиента"
 
 #: cps/templates/config_edit.html:288
 msgid "Allow Reverse Proxy Authentication"
-msgstr ""
+msgstr "Разрешить обратную аутентификацию прокси"
 
 #: cps/templates/config_edit.html:292
 msgid "Reverse Proxy Header Name"
-msgstr ""
+msgstr "Имя заголовка обратного прокси"
 
 #: cps/templates/config_edit.html:304
 msgid "External binaries"
-msgstr "Настройки конвертации"
+msgstr "Внешний бинарный файл"
 
 #: cps/templates/config_edit.html:312
 msgid "No Converter"
@@ -1557,11 +1573,11 @@ msgstr "Настройки конвертера E-Book"
 
 #: cps/templates/config_edit.html:324
 msgid "Path to convertertool"
-msgstr "Путь к конвертеру"
+msgstr "Путь к инструменту конвертации"
 
 #: cps/templates/config_edit.html:330
 msgid "Location of Unrar binary"
-msgstr "Расположение двоичного файла Unrar"
+msgstr "Расположение бинарного файла Unrar"
 
 #: cps/templates/config_edit.html:349 cps/templates/layout.html:84
 #: cps/templates/login.html:4 cps/templates/login.html:20
@@ -1598,7 +1614,7 @@ msgstr "caliBlur! Темная тема"
 
 #: cps/templates/config_view_edit.html:46
 msgid "Regular Expression for Ignoring Columns"
-msgstr "Regexp для игнорирования столбцов"
+msgstr "Регулярное выражение для игнорирования столбцов"
 
 #: cps/templates/config_view_edit.html:50
 msgid "Link Read/Unread Status to Calibre Column"
@@ -1606,7 +1622,7 @@ msgstr "Ссылка на чтение/непрочитанный статус �
 
 #: cps/templates/config_view_edit.html:59
 msgid "View Restrictions based on Calibre column"
-msgstr ""
+msgstr "Просмотр ограничений на основе столбца Caliber"
 
 #: cps/templates/config_view_edit.html:61 cps/templates/email_edit.html:21
 msgid "None"
@@ -1614,7 +1630,7 @@ msgstr "Нет"
 
 #: cps/templates/config_view_edit.html:68
 msgid "Regular Expression for Title Sorting"
-msgstr "Regexp для сортировки по названию"
+msgstr "Регулярное выражение для сортировки заголовков"
 
 #: cps/templates/config_view_edit.html:80
 msgid "Default Settings for New Users"
@@ -1642,7 +1658,7 @@ msgstr "Разрешить редактирование книг"
 
 #: cps/templates/config_view_edit.html:108 cps/templates/user_edit.html:113
 msgid "Allow Delete Books"
-msgstr ""
+msgstr "Разрешить удаление книг"
 
 #: cps/templates/config_view_edit.html:112 cps/templates/user_edit.html:118
 msgid "Allow Changing Password"
@@ -1662,11 +1678,11 @@ msgstr "Показывать случайные книги при просмот
 
 #: cps/templates/config_view_edit.html:144
 msgid "Add Allowed/Denied Tags"
-msgstr ""
+msgstr "Добавить разрешенные / запрещенные теги"
 
 #: cps/templates/config_view_edit.html:145
 msgid "Add Allowed/Denied custom column values"
-msgstr ""
+msgstr "Добавить разрешенные / запрещенные значения индивидуальных столбцов"
 
 #: cps/templates/detail.html:59
 msgid "Read in Browser"
@@ -1674,7 +1690,7 @@ msgstr "Читать"
 
 #: cps/templates/detail.html:72
 msgid "Listen in Browser"
-msgstr "Ждите сигнала от браузера"
+msgstr "Ждите сигнал от браузера"
 
 #: cps/templates/detail.html:117
 msgid "Book"
@@ -1686,7 +1702,7 @@ msgstr "из"
 
 #: cps/templates/detail.html:165
 msgid "Published"
-msgstr ""
+msgstr "Опубликованный"
 
 #: cps/templates/detail.html:200
 msgid "Mark As Unread"
@@ -1698,7 +1714,7 @@ msgstr "Отметить как прочитанное"
 
 #: cps/templates/detail.html:201
 msgid "Read"
-msgstr "Прочитано"
+msgstr "Прочесть"
 
 #: cps/templates/detail.html:211
 msgid "Description:"
@@ -1746,7 +1762,7 @@ msgstr "Введите доменное имя"
 
 #: cps/templates/email_edit.html:60
 msgid "Denied Domains (Blacklist)"
-msgstr ""
+msgstr "Запрещенные домены (черный список)"
 
 #: cps/templates/email_edit.html:90
 msgid "Are you sure you want to delete this domain?"
@@ -1754,15 +1770,11 @@ msgstr "Вы действительно желаете удалить это п�
 
 #: cps/templates/feed.xml:21 cps/templates/layout.html:175
 msgid "Next"
-msgstr "Дальше"
+msgstr "Далее"
 
 #: cps/templates/generate_kobo_auth_url.html:5
 msgid "Open the .kobo/Kobo eReader.conf file in a text editor and add (or edit):"
-msgstr ""
-
-#: cps/templates/generate_kobo_auth_url.html:11
-msgid "Please note that every visit to this current page invalidates any previously generated Authentication url for this user."
-msgstr ""
+msgstr "Откройте файл .kobo / Kobo eReader.conf в текстовом редакторе и добавьте (или отредактируйте):"
 
 #: cps/templates/http_error.html:38
 msgid "Create Issue"
@@ -1790,7 +1802,7 @@ msgstr "Популярные книги из этого каталога на о
 
 #: cps/templates/index.xml:31
 msgid "Recently added Books"
-msgstr ""
+msgstr "Недавно добавленные книги"
 
 #: cps/templates/index.xml:35
 msgid "The latest Books"
@@ -1802,7 +1814,7 @@ msgstr "Случайный выбор"
 
 #: cps/templates/index.xml:42 cps/templates/user_edit.html:80
 msgid "Show Random Books"
-msgstr "Показывать Случайные Сниги"
+msgstr "Показывать Случайные Книги"
 
 #: cps/templates/index.xml:65
 msgid "Books ordered by Author"
@@ -1822,25 +1834,29 @@ msgstr "Книги, отсортированные по серии"
 
 #: cps/templates/index.xml:93
 msgid "Books ordered by Languages"
-msgstr ""
+msgstr "Книги отсортированы по языкам"
 
 #: cps/templates/index.xml:100
-msgid "Books ordered by file formats"
+msgid "Books ordered by Rating"
 msgstr ""
 
-#: cps/templates/index.xml:103 cps/templates/layout.html:136
+#: cps/templates/index.xml:108
+msgid "Books ordered by file formats"
+msgstr "Книги отсортированы по формату файла"
+
+#: cps/templates/index.xml:111 cps/templates/layout.html:136
 msgid "Public Shelves"
 msgstr "Общие полки"
 
-#: cps/templates/index.xml:107
+#: cps/templates/index.xml:115
 msgid "Books organized in public shelfs, visible to everyone"
 msgstr "Книги размещены на полках, и доступны всем"
 
-#: cps/templates/index.xml:111 cps/templates/layout.html:140
+#: cps/templates/index.xml:119 cps/templates/layout.html:140
 msgid "Your Shelves"
 msgstr "Ваши полки"
 
-#: cps/templates/index.xml:115
+#: cps/templates/index.xml:123
 msgid "User's own shelfs, only visible to the current user himself"
 msgstr "Пользовательские полки, видимые только самому пользователю"
 
@@ -1859,7 +1875,7 @@ msgstr "Включить навигацию"
 
 #: cps/templates/layout.html:45
 msgid "Search Library"
-msgstr ""
+msgstr "Поиск в библиотеке"
 
 #: cps/templates/layout.html:55
 msgid "Advanced Search"
@@ -1888,7 +1904,7 @@ msgstr "Загружается..."
 
 #: cps/templates/layout.html:117
 msgid "Please do not refresh the page"
-msgstr ""
+msgstr "Пожалуйста не обновляйте страницу"
 
 #: cps/templates/layout.html:127
 msgid "Browse"
@@ -1929,7 +1945,7 @@ msgstr "Запомнить меня"
 
 #: cps/templates/login.html:22
 msgid "Forgot Password?"
-msgstr ""
+msgstr "Забыли пароль ?"
 
 #: cps/templates/login.html:25
 msgid "Log in with Magic Link"
@@ -1937,43 +1953,43 @@ msgstr "Войти через магическую ссылку"
 
 #: cps/templates/logviewer.html:6
 msgid "Show Calibre-Web Log: "
-msgstr ""
+msgstr "Показать журнал Caliber-Web:"
 
 #: cps/templates/logviewer.html:8
 msgid "Calibre-Web Log: "
-msgstr ""
+msgstr "Журнал Caliber-Web:"
 
 #: cps/templates/logviewer.html:8
 msgid "Stream output, can't be displayed"
-msgstr ""
+msgstr "Выходной поток, не может быть отображен"
 
 #: cps/templates/logviewer.html:12
 msgid "Show Access Log: "
-msgstr ""
+msgstr "Показать журнал доступа:"
 
 #: cps/templates/modal_restriction.html:6
 msgid "Select allowed/denied Tags"
-msgstr ""
+msgstr "Выбрать разрешенные / запрещенные теги"
 
 #: cps/templates/modal_restriction.html:7
 msgid "Select allowed/denied Custom Column values"
-msgstr ""
+msgstr "Выбрать разрешенные / запрещенные значения индивидуальных столбцов"
 
 #: cps/templates/modal_restriction.html:8
 msgid "Select allowed/denied Tags of user"
-msgstr ""
+msgstr "Выбрать разрешенные / запрещенные теги пользователя"
 
 #: cps/templates/modal_restriction.html:9
 msgid "Select allowed/denied Custom Column values of user"
-msgstr ""
+msgstr "Выбрать разрешенные / запрещенные значения индивидуальных столбцов пользователя"
 
 #: cps/templates/modal_restriction.html:15
 msgid "Enter Tag"
-msgstr ""
+msgstr "Введите тег"
 
 #: cps/templates/modal_restriction.html:24
 msgid "Add View Restriction"
-msgstr ""
+msgstr "Добавить ограничение просмотра"
 
 #: cps/templates/osd.xml:5
 msgid "Calibre-Web eBook Catalog"
@@ -2101,7 +2117,7 @@ msgstr "Ваш email-адрес"
 
 #: cps/templates/remote_login.html:4
 msgid "Magic Link - Authorise New Device"
-msgstr ""
+msgstr "Magic Link - авторизация нового устройства"
 
 #: cps/templates/remote_login.html:6
 msgid "On another device, login and visit:"
@@ -2117,11 +2133,11 @@ msgstr "Срок действия ссылки истекает через 10 м
 
 #: cps/templates/search.html:5
 msgid "No Results Found"
-msgstr ""
+msgstr "Результаты не найдены"
 
 #: cps/templates/search.html:6
 msgid "Search Term:"
-msgstr ""
+msgstr "Выражение для поиска:"
 
 #: cps/templates/search.html:8
 msgid "Results for:"
@@ -2149,11 +2165,11 @@ msgstr "Исключить языки"
 
 #: cps/templates/search_form.html:95
 msgid "Extensions"
-msgstr ""
+msgstr "Расширения"
 
 #: cps/templates/search_form.html:105
 msgid "Exclude Extensions"
-msgstr ""
+msgstr "Исключить расширения"
 
 #: cps/templates/search_form.html:117
 msgid "Rating Above"
@@ -2185,7 +2201,7 @@ msgstr "Книжная полка будет безвозвратно удале
 
 #: cps/templates/shelf_edit.html:13
 msgid "Share with Everyone"
-msgstr "сделать книжную полку доступной для всех?"
+msgstr "Сделать книжную полку доступной для всех?"
 
 #: cps/templates/shelf_order.html:5
 msgid "Drag to Rearrange Order"
@@ -2281,19 +2297,19 @@ msgstr "Разъединить"
 
 #: cps/templates/user_edit.html:62
 msgid "Kobo Sync Token"
-msgstr ""
+msgstr "Kobo Sync Token"
 
 #: cps/templates/user_edit.html:64
 msgid "Create/View"
-msgstr ""
+msgstr "Создать/Просмотреть"
 
 #: cps/templates/user_edit.html:83
 msgid "Add allowed/denied Tags"
-msgstr ""
+msgstr "Добавить разрешенные / запрещенные теги"
 
 #: cps/templates/user_edit.html:84
 msgid "Add allowed/denied custom column values"
-msgstr ""
+msgstr "Добавить разрешенные / запрещенные значения индивидуальных столбцов"
 
 #: cps/templates/user_edit.html:129
 msgid "Delete User"
@@ -2305,1166 +2321,14 @@ msgstr "Последние загрузки"
 
 #: cps/templates/user_edit.html:160
 msgid "Generate Kobo Auth URL"
-msgstr ""
+msgstr "Создать Kobo Auth URL"
 
 #: cps/templates/user_edit.html:176
 msgid "Do you really want to delete the Kobo Token?"
-msgstr ""
+msgstr "Вы действительно хотите удалить Kobo Token ?"
 
-#~ msgid "Afar"
-#~ msgstr "Афар"
-
-#~ msgid "Abkhazian"
-#~ msgstr "Абхазский"
-
-#~ msgid "Achinese"
-#~ msgstr "Ачехский"
-
-#~ msgid "Acoli"
-#~ msgstr "Ачоли"
-
-#~ msgid "Adangme"
-#~ msgstr "Адангме"
-
-#~ msgid "Adyghe"
-#~ msgstr "Адыгейский"
-
-#~ msgid "Afrihili"
-#~ msgstr "Африхили"
-
-#~ msgid "Afrikaans"
-#~ msgstr "Африкаанс"
-
-#~ msgid "Akan"
-#~ msgstr "Акан"
-
-#~ msgid "Akkadian"
-#~ msgstr "Аккадский"
-
-#~ msgid "Aleut"
-#~ msgstr "Алеутский"
-
-#~ msgid "Amharic"
-#~ msgstr "Амхарский (Амаринья)"
-
-#~ msgid "Angika"
-#~ msgstr "Анжика"
-
-#~ msgid "Arabic"
-#~ msgstr "Арабский"
-
-#~ msgid "Aramaic; Official (700-300 BCE)"
-#~ msgstr "Арамейский; Официальный"
-
-#~ msgid "Aragonese"
-#~ msgstr "Арагонский"
-
-#~ msgid "Arapaho"
-#~ msgstr "Арапахо"
-
-#~ msgid "Arawak"
-#~ msgstr "Аравакский"
-
-#~ msgid "Assamese"
-#~ msgstr "Ассамский"
-
-#~ msgid "Asturian"
-#~ msgstr "Астурийский"
-
-#~ msgid "Avaric"
-#~ msgstr "Аварский"
-
-#~ msgid "Avestan"
-#~ msgstr "Авестийский"
-
-#~ msgid "Awadhi"
-#~ msgstr "Авадхи"
-
-#~ msgid "Aymara"
-#~ msgstr "Аймара"
-
-#~ msgid "Azerbaijani"
-#~ msgstr "Азербайджанский"
-
-#~ msgid "Bashkir"
-#~ msgstr "Башкирский"
-
-#~ msgid "Bambara"
-#~ msgstr "Бамбара"
-
-#~ msgid "Balinese"
-#~ msgstr "Балийский"
-
-#~ msgid "Basa (Cameroon)"
-#~ msgstr "Баса (Камерун)"
-
-#~ msgid "Beja"
-#~ msgstr "Беджа"
-
-#~ msgid "Belarusian"
-#~ msgstr "Белорусский"
-
-#~ msgid "Bemba (Zambia)"
-#~ msgstr "Бемба (Замбия)"
-
-#~ msgid "Bengali"
-#~ msgstr "Бенгальский"
-
-#~ msgid "Bhojpuri"
-#~ msgstr "Бходжпури"
-
-#~ msgid "Bikol"
-#~ msgstr "Бикольский"
-
-#~ msgid "Bini"
-#~ msgstr "Бини"
-
-#~ msgid "Bislama"
-#~ msgstr "Бислама"
-
-#~ msgid "Siksika"
-#~ msgstr "Сиксика"
-
-#~ msgid "Tibetan"
-#~ msgstr "Тибетский"
-
-#~ msgid "Bosnian"
-#~ msgstr "Боснийский"
-
-#~ msgid "Braj"
-#~ msgstr "Браун"
-
-#~ msgid "Breton"
-#~ msgstr "Бретонский"
-
-#~ msgid "Buriat"
-#~ msgstr "Бурятский"
-
-#~ msgid "Buginese"
-#~ msgstr "Бугийский"
-
-#~ msgid "Bulgarian"
-#~ msgstr "Болгарский"
-
-#~ msgid "Caddo"
-#~ msgstr "Каддо"
-
-#~ msgid "Catalan"
-#~ msgstr "Каталанский"
-
-#~ msgid "Cebuano"
-#~ msgstr "Себуано"
-
-#~ msgid "Czech"
-#~ msgstr "Чешский"
-
-#~ msgid "Chamorro"
-#~ msgstr "Чаморро"
-
-#~ msgid "Chibcha"
-#~ msgstr "Чибча"
-
-#~ msgid "Chechen"
-#~ msgstr "Чеченский"
-
-#~ msgid "Chagatai"
-#~ msgstr "Чагатайский"
-
-#~ msgid "Chuukese"
-#~ msgstr "Трукский"
-
-#~ msgid "Mari (Russia)"
-#~ msgstr "Марийский (Россия)"
-
-#~ msgid "Chinook jargon"
-#~ msgstr "Чинук жаргон"
-
-#~ msgid "Choctaw"
-#~ msgstr "Чоктав"
-
-#~ msgid "Chipewyan"
-#~ msgstr "Чипевианский"
-
-#~ msgid "Cherokee"
-#~ msgstr "Чероки"
-
-#~ msgid "Chuvash"
-#~ msgstr "Чувашский"
-
-#~ msgid "Cheyenne"
-#~ msgstr "Чейенн"
-
-#~ msgid "Coptic"
-#~ msgstr "Коптский"
-
-#~ msgid "Cornish"
-#~ msgstr "Корнский"
-
-#~ msgid "Corsican"
-#~ msgstr "Корсиканский"
-
-#~ msgid "Cree"
-#~ msgstr "Кри"
-
-#~ msgid "Kashubian"
-#~ msgstr "Кашубианский"
-
-#~ msgid "Welsh"
-#~ msgstr "Уэльский (Валлийский)"
-
-#~ msgid "Dakota"
-#~ msgstr "Дакота"
-
-#~ msgid "Danish"
-#~ msgstr "Датский"
-
-#~ msgid "Dargwa"
-#~ msgstr "Даргва"
-
-#~ msgid "Delaware"
-#~ msgstr "Делаварский"
-
-#~ msgid "Slave (Athapascan)"
-#~ msgstr "Атапачские языки"
-
-#~ msgid "German"
-#~ msgstr "Немецкий"
-
-#~ msgid "Dogrib"
-#~ msgstr "Догриб"
-
-#~ msgid "Dinka"
-#~ msgstr "Динка"
-
-#~ msgid "Duala"
-#~ msgstr "Дуала"
-
-#~ msgid "Dyula"
-#~ msgstr "Диула (Дьюла)"
-
-#~ msgid "Dzongkha"
-#~ msgstr "Дзонг-кэ"
-
-#~ msgid "Efik"
-#~ msgstr "Эфик"
-
-#~ msgid "Egyptian (Ancient)"
-#~ msgstr "Древнеегипетский"
-
-#~ msgid "Ekajuk"
-#~ msgstr "Экаджук"
-
-#~ msgid "Greek; Modern (1453-)"
-#~ msgstr "Новогреческий (с 1453)"
-
-#~ msgid "Elamite"
-#~ msgstr "Эламский"
-
-#~ msgid "English"
-#~ msgstr "Английский"
-
-#~ msgid "English; Middle (1100-1500)"
-#~ msgstr "Среднеанглийский (1100-1500)"
-
-#~ msgid "Esperanto"
-#~ msgstr "Эсперанто"
-
-#~ msgid "Estonian"
-#~ msgstr "Эстонский"
-
-#~ msgid "Basque"
-#~ msgstr "Баскский"
-
-#~ msgid "Ewe"
-#~ msgstr "Эве"
-
-#~ msgid "Ewondo"
-#~ msgstr "Эвондо"
-
-#~ msgid "Faroese"
-#~ msgstr "Фарерский"
-
-#~ msgid "Persian"
-#~ msgstr "Персидский"
-
-#~ msgid "Fanti"
-#~ msgstr "Фанти"
-
-#~ msgid "Fijian"
-#~ msgstr "Фиджийский"
-
-#~ msgid "Finnish"
-#~ msgstr "Финский"
-
-#~ msgid "Fon"
-#~ msgstr "Фон"
-
-#~ msgid "French"
-#~ msgstr "Французский"
-
-#~ msgid "Fulah"
-#~ msgstr "Фулах"
-
-#~ msgid "Friulian"
-#~ msgstr "Фриулианский"
-
-#~ msgid "Ga"
-#~ msgstr "Га"
-
-#~ msgid "Gayo"
-#~ msgstr "Гайо"
-
-#~ msgid "Geez"
-#~ msgstr "Геэз"
-
-#~ msgid "Gilbertese"
-#~ msgstr "Гильбертский"
-
-#~ msgid "Irish"
-#~ msgstr "Ирландский"
-
-#~ msgid "Manx"
-#~ msgstr "Мэнкский"
-
-#~ msgid "Gondi"
-#~ msgstr "Гонди"
-
-#~ msgid "Gorontalo"
-#~ msgstr "Горонтало"
-
-#~ msgid "Gothic"
-#~ msgstr "Готский"
-
-#~ msgid "Grebo"
-#~ msgstr "Гребо"
-
-#~ msgid "Greek; Ancient (to 1453)"
-#~ msgstr "Древнегреческий (по 1453)"
-
-#~ msgid "Guarani"
-#~ msgstr "Гуарани"
-
-#~ msgid "Gujarati"
-#~ msgstr "Гуджарати"
-
-#~ msgid "Haida"
-#~ msgstr "Хайда"
-
-#~ msgid "Hausa"
-#~ msgstr "Хауса"
-
-#~ msgid "Hawaiian"
-#~ msgstr "Гавайский"
-
-#~ msgid "Hebrew"
-#~ msgstr "Иврит"
-
-#~ msgid "Herero"
-#~ msgstr "Гереро"
-
-#~ msgid "Hiligaynon"
-#~ msgstr "Хилигайнон"
-
-#~ msgid "Hindi"
-#~ msgstr "Хинди"
-
-#~ msgid "Hittite"
-#~ msgstr "Хиттит"
-
-#~ msgid "Hmong"
-#~ msgstr "Хмонг"
-
-#~ msgid "Hiri Motu"
-#~ msgstr "Хири Моту"
-
-#~ msgid "Croatian"
-#~ msgstr "Хорватский"
-
-#~ msgid "Hungarian"
-#~ msgstr "Венгерский"
-
-#~ msgid "Hupa"
-#~ msgstr "Хупа"
-
-#~ msgid "Armenian"
-#~ msgstr "Армянский"
-
-#~ msgid "Iban"
-#~ msgstr "Ибанский"
-
-#~ msgid "Igbo"
-#~ msgstr "Игбо"
-
-#~ msgid "Ido"
-#~ msgstr "Идо"
-
-#~ msgid "Inuktitut"
-#~ msgstr "Инуктитут"
-
-#~ msgid "Interlingue"
-#~ msgstr "Интерлингве"
-
-#~ msgid "Iloko"
-#~ msgstr "Илоко"
-
-#~ msgid "Interlingua (International Auxiliary Language Association)"
-#~ msgstr "Интерлингва (Ассоциация международного вспомогательного языка)"
-
-#~ msgid "Indonesian"
-#~ msgstr "Индонезийский"
-
-#~ msgid "Ingush"
-#~ msgstr "Ингушский"
-
-#~ msgid "Inupiaq"
-#~ msgstr "Инулиак"
-
-#~ msgid "Icelandic"
-#~ msgstr "Исландский"
-
-#~ msgid "Italian"
-#~ msgstr "Итальянский"
-
-#~ msgid "Javanese"
-#~ msgstr "Яванский"
-
-#~ msgid "Lojban"
-#~ msgstr "Лоджбан"
-
-#~ msgid "Japanese"
-#~ msgstr "Японский"
-
-#~ msgid "Judeo-Persian"
-#~ msgstr "Еврейско-персидский"
-
-#~ msgid "Judeo-Arabic"
-#~ msgstr "Еврейско-арабский"
-
-#~ msgid "Kara-Kalpak"
-#~ msgstr "Каракалпакский"
-
-#~ msgid "Kabyle"
-#~ msgstr "Кабильский"
-
-#~ msgid "Kachin"
-#~ msgstr "Качинский"
-
-#~ msgid "Kannada"
-#~ msgstr "Каннада"
-
-#~ msgid "Kashmiri"
-#~ msgstr "Кашмири"
-
-#~ msgid "Georgian"
-#~ msgstr "Грузинский"
-
-#~ msgid "Kanuri"
-#~ msgstr "Канури"
-
-#~ msgid "Kawi"
-#~ msgstr "Кави"
-
-#~ msgid "Kazakh"
-#~ msgstr "Казахский"
-
-#~ msgid "Kabardian"
-#~ msgstr "Кабардинский"
-
-#~ msgid "Khasi"
-#~ msgstr "Кхаси"
-
-#~ msgid "Khotanese"
-#~ msgstr "Хотанский"
-
-#~ msgid "Kikuyu"
-#~ msgstr "Кикуйю"
-
-#~ msgid "Kinyarwanda"
-#~ msgstr "Киньяруанда"
-
-#~ msgid "Kirghiz"
-#~ msgstr "Киргизский"
-
-#~ msgid "Kimbundu"
-#~ msgstr "Кимбунду"
-
-#~ msgid "Komi"
-#~ msgstr "Коми"
-
-#~ msgid "Kongo"
-#~ msgstr "Конго"
-
-#~ msgid "Korean"
-#~ msgstr "Корейский"
-
-#~ msgid "Kosraean"
-#~ msgstr "Косраинский"
-
-#~ msgid "Kpelle"
-#~ msgstr "Кпелле"
-
-#~ msgid "Karachay-Balkar"
-#~ msgstr "Карачаево-балкарский"
-
-#~ msgid "Karelian"
-#~ msgstr "Карельский"
-
-#~ msgid "Kurukh"
-#~ msgstr "Курух"
-
-#~ msgid "Kuanyama"
-#~ msgstr "Киньяма"
-
-#~ msgid "Kumyk"
-#~ msgstr "Кумыкский"
-
-#~ msgid "Kurdish"
-#~ msgstr "Курдский"
-
-#~ msgid "Kutenai"
-#~ msgstr "Кутенаи"
-
-#~ msgid "Ladino"
-#~ msgstr "Ладино"
-
-#~ msgid "Lahnda"
-#~ msgstr "Лахнда"
-
-#~ msgid "Lamba"
-#~ msgstr "Ламба"
-
-#~ msgid "Lao"
-#~ msgstr "Лаосский"
-
-#~ msgid "Latin"
-#~ msgstr "Латинский"
-
-#~ msgid "Latvian"
-#~ msgstr "Латвийский"
-
-#~ msgid "Lezghian"
-#~ msgstr "Лезгинский"
-
-#~ msgid "Lingala"
-#~ msgstr "Лингала"
-
-#~ msgid "Lithuanian"
-#~ msgstr "Литовский"
-
-#~ msgid "Mongo"
-#~ msgstr "Монго"
-
-#~ msgid "Lozi"
-#~ msgstr "Лози"
-
-#~ msgid "Luba-Lulua"
-#~ msgstr "Луба-Лулуа"
-
-#~ msgid "Luba-Katanga"
-#~ msgstr "Луба-Катанга"
-
-#~ msgid "Ganda"
-#~ msgstr "Ганда"
-
-#~ msgid "Luiseno"
-#~ msgstr "Луисеньо"
-
-#~ msgid "Lunda"
-#~ msgstr "Лунда"
-
-#~ msgid "Luo (Kenya and Tanzania)"
-#~ msgstr "Луо (Кения и Танзания)"
-
-#~ msgid "Lushai"
-#~ msgstr "Лушай"
-
-#~ msgid "Madurese"
-#~ msgstr "Мадурский"
-
-#~ msgid "Magahi"
-#~ msgstr "Магахи"
-
-#~ msgid "Maithili"
-#~ msgstr "Майтхили"
-
-#~ msgid "Makasar"
-#~ msgstr "Макассарский"
-
-#~ msgid "Malayalam"
-#~ msgstr "Малаялам"
-
-#~ msgid "Mandingo"
-#~ msgstr "Мандинго"
-
-#~ msgid "Marathi"
-#~ msgstr "Маратхи"
-
-#~ msgid "Masai"
-#~ msgstr "Масаи"
-
-#~ msgid "Moksha"
-#~ msgstr "Мокшанский"
-
-#~ msgid "Mandar"
-#~ msgstr "Мандарский"
-
-#~ msgid "Irish; Middle (900-1200)"
-#~ msgstr "Среднеирландский (900-1200)"
-
-#~ msgid "Minangkabau"
-#~ msgstr "Минангкабау"
-
-#~ msgid "Macedonian"
-#~ msgstr "Македонский"
-
-#~ msgid "Malagasy"
-#~ msgstr "Малагаси"
-
-#~ msgid "Maltese"
-#~ msgstr "Мальтийский"
-
-#~ msgid "Manchu"
-#~ msgstr "Манчу"
-
-#~ msgid "Manipuri"
-#~ msgstr "Манипури"
-
-#~ msgid "Mohawk"
-#~ msgstr "Мохаук"
-
-#~ msgid "Mongolian"
-#~ msgstr "Монгольский"
-
-#~ msgid "Mossi"
-#~ msgstr "Моей"
-
-#~ msgid "Maori"
-#~ msgstr "Маори"
-
-#~ msgid "Multiple languages"
-#~ msgstr "Разных семей языки"
-
-#~ msgid "Creek"
-#~ msgstr "Крик"
-
-#~ msgid "Mirandese"
-#~ msgstr "Мирандские"
-
-#~ msgid "Marwari"
-#~ msgstr "Марвари"
-
-#~ msgid "Burmese"
-#~ msgstr "Бирманский"
-
-#~ msgid "Erzya"
-#~ msgstr "Эрзянский"
-
-#~ msgid "Neapolitan"
-#~ msgstr "Неаполитанский"
-
-#~ msgid "Nauru"
-#~ msgstr "Науру"
-
-#~ msgid "Ndebele; South"
-#~ msgstr "Ндебеле южный"
-
-#~ msgid "Ndebele; North"
-#~ msgstr "Ндебеле северный"
-
-#~ msgid "Ndonga"
-#~ msgstr "Ндунга"
-
-#~ msgid "Nepali"
-#~ msgstr "Непальский"
-
-#~ msgid "Nias"
-#~ msgstr "Ниас"
-
-#~ msgid "Niuean"
-#~ msgstr "Ниуэ"
-
-#~ msgid "Dutch"
-#~ msgstr "Нидерландский"
-
-#~ msgid "Norwegian Nynorsk"
-#~ msgstr "Норвежский Нюнорск"
-
-#~ msgid "Nogai"
-#~ msgstr "Ногайский"
-
-#~ msgid "Norse; Old"
-#~ msgstr "Старонорвежский"
-
-#~ msgid "Norwegian"
-#~ msgstr "Норвежский"
-
-#~ msgid "N'Ko"
-#~ msgstr "Н'ко"
-
-#~ msgid "Nyamwezi"
-#~ msgstr "Ньямвези"
-
-#~ msgid "Nyankole"
-#~ msgstr "Ньянколе"
-
-#~ msgid "Nyoro"
-#~ msgstr "Ньоро"
-
-#~ msgid "Nzima"
-#~ msgstr "Нзима"
-
-#~ msgid "Ojibwa"
-#~ msgstr "Оджибва"
-
-#~ msgid "Oriya"
-#~ msgstr "Ория"
-
-#~ msgid "Oromo"
-#~ msgstr "Оромо"
-
-#~ msgid "Osage"
-#~ msgstr "Оседжи"
-
-#~ msgid "Turkish; Ottoman (1500-1928)"
-#~ msgstr "Турецкий; Отомангский (1500-1928)"
-
-#~ msgid "Pangasinan"
-#~ msgstr "Пангасинан"
-
-#~ msgid "Pahlavi"
-#~ msgstr "Пехлевийский"
-
-#~ msgid "Pampanga"
-#~ msgstr "Пампанга"
-
-#~ msgid "Papiamento"
-#~ msgstr "Папьяменто"
-
-#~ msgid "Palauan"
-#~ msgstr "Палау"
-
-#~ msgid "Phoenician"
-#~ msgstr "Финикийский"
-
-#~ msgid "Pali"
-#~ msgstr "Пали"
-
-#~ msgid "Polish"
-#~ msgstr "Польский"
-
-#~ msgid "Pohnpeian"
-#~ msgstr "Фонпейский"
-
-#~ msgid "Portuguese"
-#~ msgstr "Португальский"
-
-#~ msgid "Provençal; Old (to 1500)"
-#~ msgstr "Старопровансальский (по 1500)"
-
-#~ msgid "Pushto"
-#~ msgstr "Пушту"
-
-#~ msgid "Quechua"
-#~ msgstr "Кечуа"
-
-#~ msgid "Rajasthani"
-#~ msgstr "Раджастхани"
-
-#~ msgid "Rapanui"
-#~ msgstr "Рапаню"
-
-#~ msgid "Romany"
-#~ msgstr "Цыганский"
-
-#~ msgid "Romanian"
-#~ msgstr "Румынский"
-
-#~ msgid "Rundi"
-#~ msgstr "Рунди"
-
-#~ msgid "Russian"
-#~ msgstr "Русский"
-
-#~ msgid "Sandawe"
-#~ msgstr "Сандаве"
-
-#~ msgid "Sango"
-#~ msgstr "Санго"
-
-#~ msgid "Yakut"
-#~ msgstr "Якутский"
-
-#~ msgid "Sanskrit"
-#~ msgstr "Санскрит"
-
-#~ msgid "Sasak"
-#~ msgstr "Сасакский"
-
-#~ msgid "Santali"
-#~ msgstr "Сантали"
-
-#~ msgid "Sicilian"
-#~ msgstr "Сицилийский"
-
-#~ msgid "Scots"
-#~ msgstr "Шотландский"
-
-#~ msgid "Selkup"
-#~ msgstr "Селкапский"
-
-#~ msgid "Irish; Old (to 900)"
-#~ msgstr "Староирландский (по 900)"
-
-#~ msgid "Shan"
-#~ msgstr "Шанский"
-
-#~ msgid "Sidamo"
-#~ msgstr "Сидама"
-
-#~ msgid "Sinhala"
-#~ msgstr "Сингальский"
-
-#~ msgid "Slovak"
-#~ msgstr "Словацкий"
-
-#~ msgid "Slovenian"
-#~ msgstr "Словенский"
-
-#~ msgid "Lule Sami"
-#~ msgstr "Люле-саамский"
-
-#~ msgid "Samoan"
-#~ msgstr "Самоанский"
-
-#~ msgid "Shona"
-#~ msgstr "Шона"
-
-#~ msgid "Sindhi"
-#~ msgstr "Синдхи"
-
-#~ msgid "Soninke"
-#~ msgstr "Сонинк"
-
-#~ msgid "Sogdian"
-#~ msgstr "Согдийский"
-
-#~ msgid "Somali"
-#~ msgstr "Сомали"
-
-#~ msgid "Sotho; Southern"
-#~ msgstr "Сото Южный"
-
-#~ msgid "Spanish"
-#~ msgstr "Испанский"
-
-#~ msgid "Albanian"
-#~ msgstr "Албанский"
-
-#~ msgid "Sardinian"
-#~ msgstr "Сардинский"
-
-#~ msgid "Serbian"
-#~ msgstr "Сербский"
-
-#~ msgid "Serer"
-#~ msgstr "Серер"
-
-#~ msgid "Swati"
-#~ msgstr "Свати"
-
-#~ msgid "Sukuma"
-#~ msgstr "Сукума"
-
-#~ msgid "Sundanese"
-#~ msgstr "Сунданский"
-
-#~ msgid "Susu"
-#~ msgstr "Сусу"
-
-#~ msgid "Sumerian"
-#~ msgstr "Шумерский"
-
-#~ msgid "Swedish"
-#~ msgstr "Шведский"
-
-#~ msgid "Syriac"
-#~ msgstr "Сирийский"
-
-#~ msgid "Tahitian"
-#~ msgstr "Таитянский"
-
-#~ msgid "Tamil"
-#~ msgstr "Тамильский"
-
-#~ msgid "Tatar"
-#~ msgstr "Татарский"
-
-#~ msgid "Telugu"
-#~ msgstr "Телугу"
-
-#~ msgid "Timne"
-#~ msgstr "Темне"
-
-#~ msgid "Tereno"
-#~ msgstr "Терено"
-
-#~ msgid "Tetum"
-#~ msgstr "Тетумский"
-
-#~ msgid "Tajik"
-#~ msgstr "Таджикский"
-
-#~ msgid "Tagalog"
-#~ msgstr "Тагалог"
-
-#~ msgid "Thai"
-#~ msgstr "Таи"
-
-#~ msgid "Tigre"
-#~ msgstr "Тигре"
-
-#~ msgid "Tigrinya"
-#~ msgstr "Тигринья"
-
-#~ msgid "Tiv"
-#~ msgstr "Тив"
-
-#~ msgid "Tokelau"
-#~ msgstr "Токелау"
-
-#~ msgid "Tlingit"
-#~ msgstr "Тлингит"
-
-#~ msgid "Tamashek"
-#~ msgstr "Тамашек"
-
-#~ msgid "Tonga (Nyasa)"
-#~ msgstr "Тонга (Ньяса)"
-
-#~ msgid "Tonga (Tonga Islands)"
-#~ msgstr "Тонга (острова Тонга)"
-
-#~ msgid "Tok Pisin"
-#~ msgstr "Ток Писин"
-
-#~ msgid "Tsimshian"
-#~ msgstr "Цимшиан"
-
-#~ msgid "Tswana"
-#~ msgstr "Тсвана"
-
-#~ msgid "Tsonga"
-#~ msgstr "Тсонга"
-
-#~ msgid "Turkmen"
-#~ msgstr "Туркменский"
-
-#~ msgid "Tumbuka"
-#~ msgstr "Тумбука"
-
-#~ msgid "Turkish"
-#~ msgstr "Турецкий"
-
-#~ msgid "Tuvalu"
-#~ msgstr "Тувалу"
-
-#~ msgid "Twi"
-#~ msgstr "Тви"
-
-#~ msgid "Tuvinian"
-#~ msgstr "Тувинский"
-
-#~ msgid "Udmurt"
-#~ msgstr "Удмуртский"
-
-#~ msgid "Ugaritic"
-#~ msgstr "Угаритский"
-
-#~ msgid "Uighur"
-#~ msgstr "Уйгурский"
-
-#~ msgid "Ukrainian"
-#~ msgstr "Украинский"
-
-#~ msgid "Umbundu"
-#~ msgstr "Умбунду"
-
-#~ msgid "Undetermined"
-#~ msgstr "Неидентифицированный"
-
-#~ msgid "Urdu"
-#~ msgstr "Урду"
-
-#~ msgid "Uzbek"
-#~ msgstr "Узбекский"
-
-#~ msgid "Vai"
-#~ msgstr "Ваи"
-
-#~ msgid "Venda"
-#~ msgstr "Венда"
-
-#~ msgid "Vietnamese"
-#~ msgstr "Вьетнамский"
-
-#~ msgid "Volapük"
-#~ msgstr "Волапюк"
-
-#~ msgid "Votic"
-#~ msgstr "Вотик"
-
-#~ msgid "Washo"
-#~ msgstr "Вашо"
-
-#~ msgid "Walloon"
-#~ msgstr "Валлун"
-
-#~ msgid "Wolof"
-#~ msgstr "Волоф"
-
-#~ msgid "Xhosa"
-#~ msgstr "Коса"
-
-#~ msgid "Yao"
-#~ msgstr "Яо"
-
-#~ msgid "Yapese"
-#~ msgstr "Яапийский"
-
-#~ msgid "Yiddish"
-#~ msgstr "Идиш"
-
-#~ msgid "Yoruba"
-#~ msgstr "Йоруба"
-
-#~ msgid "Zapotec"
-#~ msgstr "Сапотекский"
-
-#~ msgid "Zenaga"
-#~ msgstr "Зенагский"
-
-#~ msgid "Zhuang"
-#~ msgstr "Чжуанский"
-
-#~ msgid "Chinese"
-#~ msgstr "Китайский"
-
-#~ msgid "Zulu"
-#~ msgstr "Зулусский"
-
-#~ msgid "Zuni"
-#~ msgstr "Зуньи"
-
-#~ msgid "No linguistic content"
-#~ msgstr "Нет языкового содержимого"
-
-#~ msgid "Zaza"
-#~ msgstr "Зазаки"
-
-#~ msgid "Using your another device, visit"
-#~ msgstr "Используйте другое устройство, посетите"
-
-#~ msgid "and log in"
-#~ msgstr "и войти"
-
-#~ msgid "Newest Books"
-#~ msgstr "Новые Книги"
-
-#~ msgid "Oldest Books"
-#~ msgstr "Старые Книги"
-
-#~ msgid "Books (A-Z)"
-#~ msgstr "Книги (А-Я)"
-
-#~ msgid "Books (Z-A)"
-#~ msgstr "Книги (Я-А)"
-
-#~ msgid "Show sorted books"
-#~ msgstr "Показывать отсортированные книги"
-
-#~ msgid "Sorted Books"
-#~ msgstr "Сортировка Книг"
-
-#~ msgid "Sort By"
-#~ msgstr "Отсортировано по"
-
-#~ msgid "Newest"
-#~ msgstr "Новинки"
-
-#~ msgid "Oldest"
-#~ msgstr "Старое"
-
-#~ msgid "Ascending"
-#~ msgstr "По возрастанию"
-
-#~ msgid "Descending"
-#~ msgstr "По убыванию"
-
-#~ msgid "PDF.js viewer"
-#~ msgstr "Просмотровщик PDF.js"
-
-#~ msgid "successfully deleted shelf %(name)s"
-#~ msgstr "удачно удалена полка %(name)s"
-
-#~ msgid "Import of optional Google Drive requirements missing"
-#~ msgstr "Импорт дополнительных требований к Google Диску отсутствует"
-
-#~ msgid "client_secrets.json is missing or not readable"
-#~ msgstr "client_secrets.json отсутствует или его невозможно прочесть"
-
-#~ msgid "client_secrets.json is not configured for web application"
-#~ msgstr "client_secrets.json не настроен для веб-приложения"
-
-#~ msgid "Keyfile location is not valid, please enter correct path"
-#~ msgstr "Неверное расположение файла-ключа, введите правильный путь"
-
-#~ msgid "Certfile location is not valid, please enter correct path"
-#~ msgstr "Неверное расположение сертификата, введите правильный путь"
-
-#~ msgid "Logfile location is not valid, please enter correct path"
-#~ msgstr "Неверное расположение лог-файла, введите правильный путь"
-
-#~ msgid "DB location is not valid, please enter correct path"
-#~ msgstr "Неверное расположение базы данных, введите правильный путь"
-
-#~ msgid "Excecution permissions missing"
-#~ msgstr "Отсутствуют разрешения на выполнение"
-
-#~ msgid "Error excecuting UnRar"
-#~ msgstr "Ошибка извлечения UnRar"
-
-#~ msgid "Unrar binary file not found"
-#~ msgstr "Unrar двочиный файл не найден"
-
-#~ msgid "Use"
-#~ msgstr "Использовать"
-
-#~ msgid "unknown"
-#~ msgstr "неизвестно"
-
-#~ msgid "New Books"
-#~ msgstr "Новые Книги"
-
-#~ msgid "Show Calibre-Web log"
-#~ msgstr "Показать Calibre-Web лог"
-
-#~ msgid "Show access log"
-#~ msgstr "Показать журнал доступа"
-
-#~ msgid "Tags for Mature Content"
-#~ msgstr "Теги для Взрослого Контента"
-
-#~ msgid "Show mature content"
-#~ msgstr "Показывать взрослый контент"
-
-#~ msgid "deny"
-#~ msgstr ""
-
-#~ msgid "allow"
-#~ msgstr ""
-
-#~ msgid "Kobo Set-up"
-#~ msgstr ""
+#~ msgid "Best rated books"
+#~ msgstr "Книги с наивысшим рейтингом"
 
 #~ msgid "Publisher list"
 #~ msgstr "Список издателей"
@@ -3478,17 +2342,29 @@ msgstr ""
 #~ msgid "Category list"
 #~ msgstr "Категории"
 
+#~ msgid "Reverse proxy login"
+#~ msgstr "Логин обратного прокси"
+
 #~ msgid "Series id"
 #~ msgstr "Серия"
-
-#~ msgid "Submit"
-#~ msgstr "Отправить"
 
 #~ msgid "Go!"
 #~ msgstr "Старт!"
 
+#~ msgid "No. of random books to show"
+#~ msgstr "Количество отображаемых случайных книг"
+
+#~ msgid "Tags for Mature Content"
+#~ msgstr "Теги для Взрослого Контента"
+
+#~ msgid "Default settings for new users"
+#~ msgstr "Настройки по умолчанию для новых пользователей"
+
 #~ msgid "Allow Delete books"
 #~ msgstr "Разрешить удаление книг"
+
+#~ msgid "Show mature content"
+#~ msgstr "Показывать взрослый контент"
 
 #~ msgid "language"
 #~ msgstr "Язык"
@@ -3502,11 +2378,20 @@ msgstr ""
 #~ msgid "Save settings"
 #~ msgstr "Сохранить настройки"
 
-#~ msgid "api_endpoint="
-#~ msgstr ""
+#~ msgid "Denied domains for registering"
+#~ msgstr "Запрещённые домены для регистрации"
 
 #~ msgid "please don't refresh the page"
 #~ msgstr "пожалуйста не обновляйте страницу"
+
+#~ msgid "Forgot password"
+#~ msgstr "Забыл пароль"
+
+#~ msgid "Show Calibre-Web log: "
+#~ msgstr "Показать журнал Caliber-Web:"
+
+#~ msgid "Calibre-Web log: "
+#~ msgstr "Журнал Caliber-Web:"
 
 #~ msgid "E-mail address"
 #~ msgstr "E-mail адрес"
@@ -3522,4 +2407,7 @@ msgstr ""
 
 #~ msgid "Kindle E-Mail"
 #~ msgstr "Адрес почты Kindle"
+
+#~ msgid "Cover is not a supported imageformat (jpg/png/webp), can't save"
+#~ msgstr "Обложка не содержит поддерживаемый формат изображения (JPG / PNG / WebP), невозможно сохранить"
 

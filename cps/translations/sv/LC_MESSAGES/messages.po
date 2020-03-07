@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2020-02-23 20:05+0100\n"
+"POT-Creation-Date: 2020-03-07 11:20+0100\n"
 "PO-Revision-Date: 2020-01-18 11:22+0100\n"
 "Last-Translator: Jonatan Nyberg <jonatan.nyberg.karl@gmail.com>\n"
 "Language: sv\n"
@@ -245,10 +245,6 @@ msgstr "Det gick inte att lagra filen %(file)s."
 msgid "File format %(ext)s added to %(book)s"
 msgstr "Filformatet %(ext)s lades till %(book)s"
 
-#: cps/editbooks.py:376
-msgid "Cover is not a supported imageformat (jpg/png/webp), can't save"
-msgstr "Omslaget är inte ett bildformat som stöds (jpg/png/webp), kan inte spara"
-
 #: cps/editbooks.py:451
 msgid "Cover is not a jpg file, can't save"
 msgstr "Omslaget är inte en jpg-fil, kan inte spara"
@@ -398,39 +394,59 @@ msgstr "Filen %(file)s hittades inte på Google Drive"
 msgid "Book path %(path)s not found on Google Drive"
 msgstr "Boksökvägen %(path)s hittades inte på Google Drive"
 
-#: cps/helper.py:657
+#: cps/helper.py:511
+msgid "Failed to create path for cover"
+msgstr ""
+
+#: cps/helper.py:516
+msgid "Cover-file is not a valid image file"
+msgstr ""
+
+#: cps/helper.py:519
+msgid "Failed to store cover-file"
+msgstr ""
+
+#: cps/helper.py:530
+msgid "Only jpg/jpeg/png/webp files are supported as coverfile"
+msgstr ""
+
+#: cps/helper.py:544
+msgid "Only jpg/jpeg files are supported as coverfile"
+msgstr ""
+
+#: cps/helper.py:658
 msgid "Waiting"
 msgstr "Väntar"
 
-#: cps/helper.py:659
+#: cps/helper.py:660
 msgid "Failed"
 msgstr "Misslyckades"
 
-#: cps/helper.py:661
+#: cps/helper.py:662
 msgid "Started"
 msgstr "Startad"
 
-#: cps/helper.py:663
+#: cps/helper.py:664
 msgid "Finished"
 msgstr "Klar"
 
-#: cps/helper.py:665
+#: cps/helper.py:666
 msgid "Unknown Status"
 msgstr "Okänd status"
 
-#: cps/helper.py:670
+#: cps/helper.py:671
 msgid "E-mail: "
 msgstr "E-post: "
 
-#: cps/helper.py:672 cps/helper.py:676
+#: cps/helper.py:673 cps/helper.py:677
 msgid "Convert: "
 msgstr "Konvertera: "
 
-#: cps/helper.py:674
+#: cps/helper.py:675
 msgid "Upload: "
 msgstr "Överför: "
 
-#: cps/helper.py:678
+#: cps/helper.py:679
 msgid "Unknown Task: "
 msgstr "Okänd uppgift: "
 
@@ -680,7 +696,7 @@ msgstr "Språk"
 msgid "Show language selection"
 msgstr "Visa språkval"
 
-#: cps/ub.py:93
+#: cps/templates/index.xml:96 cps/ub.py:93
 msgid "Ratings"
 msgstr "Betyg"
 
@@ -688,7 +704,7 @@ msgstr "Betyg"
 msgid "Show ratings selection"
 msgstr "Visa val av betyg"
 
-#: cps/templates/index.xml:96 cps/ub.py:96
+#: cps/templates/index.xml:104 cps/ub.py:96
 msgid "File formats"
 msgstr "Filformat"
 
@@ -1759,10 +1775,6 @@ msgstr "Nästa"
 msgid "Open the .kobo/Kobo eReader.conf file in a text editor and add (or edit):"
 msgstr ""
 
-#: cps/templates/generate_kobo_auth_url.html:11
-msgid "Please note that every visit to this current page invalidates any previously generated Authentication url for this user."
-msgstr ""
-
 #: cps/templates/http_error.html:38
 msgid "Create Issue"
 msgstr "Skapa ärende"
@@ -1824,22 +1836,26 @@ msgid "Books ordered by Languages"
 msgstr "Böcker ordnade efter språk"
 
 #: cps/templates/index.xml:100
+msgid "Books ordered by Rating"
+msgstr ""
+
+#: cps/templates/index.xml:108
 msgid "Books ordered by file formats"
 msgstr "Böcker ordnade av filformat"
 
-#: cps/templates/index.xml:103 cps/templates/layout.html:136
+#: cps/templates/index.xml:111 cps/templates/layout.html:136
 msgid "Public Shelves"
 msgstr "Offentliga hyllor"
 
-#: cps/templates/index.xml:107
+#: cps/templates/index.xml:115
 msgid "Books organized in public shelfs, visible to everyone"
 msgstr "Böcker organiserade i offentliga hyllor, synliga för alla"
 
-#: cps/templates/index.xml:111 cps/templates/layout.html:140
+#: cps/templates/index.xml:119 cps/templates/layout.html:140
 msgid "Your Shelves"
 msgstr "Dina hyllor"
 
-#: cps/templates/index.xml:115
+#: cps/templates/index.xml:123
 msgid "User's own shelfs, only visible to the current user himself"
 msgstr "Användarens egna hyllor, endast synliga för den aktuella användaren själv"
 
@@ -2310,300 +2326,6 @@ msgstr ""
 msgid "Do you really want to delete the Kobo Token?"
 msgstr ""
 
-#~ msgid "Current commit timestamp"
-#~ msgstr "Aktuelles Commit Datum"
-
-#~ msgid "Newest commit timestamp"
-#~ msgstr "Neuestes Commit Datum"
-
-#~ msgid "Convert: %(book)s"
-#~ msgstr "Konvertera: %(book)s"
-
-#~ msgid "Convert to %(format)s: %(book)s"
-#~ msgstr "Konvertera till %(format)s: %(book)s"
-
-#~ msgid "Files are replaced"
-#~ msgstr "Filer ersätts"
-
-#~ msgid "Server is stopped"
-#~ msgstr "Servern stoppas"
-
-#~ msgid "Convertertool %(converter)s not found"
-#~ msgstr "Convertertool %(converter)s hittades inte"
-
-#~ msgid "Choose a password"
-#~ msgstr "Välj ett lösenord"
-
-#~ msgid "Could not find any formats suitable for sending by e-mail"
-#~ msgstr "Det gick inte att hitta några format som är lämpliga för att skicka via e-post"
-
-#~ msgid "Sorry you are not allowed to add a book to the shelf: %(shelfname)s"
-#~ msgstr "Tyvärr får du inte lägga till en bok på hyllan: %(shelfname)s"
-
-#~ msgid "File %(file)s uploaded"
-#~ msgstr "Filen %(file)s uppladdad"
-
-#~ msgid "Send %(format)s to Kkindle"
-#~ msgstr ""
-
-#~ msgid "Author list"
-#~ msgstr "Författarlista"
-
-#~ msgid "Update done"
-#~ msgstr "Uppdatering klar"
-
-#~ msgid "Stable (Automatic))"
-#~ msgstr ""
-
-#~ msgid "Nightly (Automatic))"
-#~ msgstr ""
-
-#~ msgid "A new update is available. Click on the button below to update to version: "
-#~ msgstr ""
-
-#~ msgid "A new update is available. Click on the button below to update to version:  %(version)s"
-#~ msgstr ""
-
-#~ msgid "Failed to create path for cover %(path)s (Permission denied)."
-#~ msgstr ""
-
-#~ msgid "Failed to store cover-file %(cover)s."
-#~ msgstr ""
-
-#~ msgid "Cover-file is not a valid image file"
-#~ msgstr ""
-
-#~ msgid "Cover is not a jpg file, can't save"
-#~ msgstr "Omslag är inte en jpg-fil, kan inte spara"
-
-#~ msgid "Preparing document for printing..."
-#~ msgstr ""
-
-#~ msgid "Using your another device, visit"
-#~ msgstr "Använda en annan enhet, besök"
-
-#~ msgid "and log in"
-#~ msgstr "och logga in"
-
-#~ msgid "Using your another device, login and visit "
-#~ msgstr ""
-
-#~ msgid "Newest Books"
-#~ msgstr "Nyaste böcker"
-
-#~ msgid "Oldest Books"
-#~ msgstr "Äldsta böcker"
-
-#~ msgid "Books (A-Z)"
-#~ msgstr "Böcker (A-Ö)"
-
-#~ msgid "Books (Z-A)"
-#~ msgstr "Böcker (Ö-A)"
-
-#~ msgid "Error opening eBook. Fileformat is not supported."
-#~ msgstr ""
-
-#~ msgid "File %(title)s"
-#~ msgstr ""
-
-#~ msgid "Show sorted books"
-#~ msgstr "Visa sorterade böcker"
-
-#~ msgid "Sorted Books"
-#~ msgstr "Sorterade böcker"
-
-#~ msgid "Sort By"
-#~ msgstr "Sortera efter"
-
-#~ msgid "Newest"
-#~ msgstr "Nyast"
-
-#~ msgid "Oldest"
-#~ msgstr "Äldst"
-
-#~ msgid "Ascending"
-#~ msgstr "Stigande"
-
-#~ msgid "Descending"
-#~ msgstr "Fallande"
-
-#~ msgid "PDF.js viewer"
-#~ msgstr "PDF.js visare"
-
-#~ msgid "Please enter a LDAP provider and a DN"
-#~ msgstr ""
-
-#~ msgid "successfully deleted shelf %(name)s"
-#~ msgstr "tog bort hyllan %(name)s"
-
-#~ msgid "LDAP Provider URL"
-#~ msgstr ""
-
-#~ msgid "Register with %s, "
-#~ msgstr ""
-
-#~ msgid "Import of optional Google Drive requirements missing"
-#~ msgstr "Import av valfri Google Drive krav saknas"
-
-#~ msgid "client_secrets.json is missing or not readable"
-#~ msgstr "client_secrets.json saknas eller inte kan läsas"
-
-#~ msgid "client_secrets.json is not configured for web application"
-#~ msgstr "client_secrets.json är inte konfigurerad för webbapplikation"
-
-#~ msgid "Keyfile location is not valid, please enter correct path"
-#~ msgstr "Platsen för Keyfile är inte giltig, ange rätt sökväg"
-
-#~ msgid "Certfile location is not valid, please enter correct path"
-#~ msgstr "Platsen för Certfile är inte giltig, ange rätt sökväg"
-
-#~ msgid "Please enter a LDAP provider, port, DN and user object identifier"
-#~ msgstr ""
-
-#~ msgid "Please enter a LDAP service account and password"
-#~ msgstr ""
-
-#~ msgid "Please enter Github oauth credentials"
-#~ msgstr ""
-
-#~ msgid "Please enter Google oauth credentials"
-#~ msgstr ""
-
-#~ msgid "Logfile location is not valid, please enter correct path"
-#~ msgstr "Platsen för Logfile platsen är inte giltig, ange rätt sökväg"
-
-#~ msgid "Access Logfile location is not valid, please enter correct path"
-#~ msgstr ""
-
-#~ msgid "DB location is not valid, please enter correct path"
-#~ msgstr "Platsen för DB är inte giltig, ange rätt sökväg"
-
-#~ msgid "Excecution permissions missing"
-#~ msgstr "Utförande behörighet saknas"
-
-#~ msgid "not configured"
-#~ msgstr "inte konfigurerad"
-
-#~ msgid "Error excecuting UnRar"
-#~ msgstr "Fel vid körning av UnRar"
-
-#~ msgid "Unrar binary file not found"
-#~ msgstr "Unrar binärfil hittades inte"
-
-#~ msgid "Use GitHub OAuth"
-#~ msgstr ""
-
-#~ msgid "Use Google OAuth"
-#~ msgstr ""
-
-#~ msgid "Obtain GitHub OAuth Credential"
-#~ msgstr ""
-
-#~ msgid "GitHub OAuth Client Id"
-#~ msgstr ""
-
-#~ msgid "GitHub OAuth Client Secret"
-#~ msgstr ""
-
-#~ msgid "Obtain Google OAuth Credential"
-#~ msgstr ""
-
-#~ msgid "Google OAuth Client Id"
-#~ msgstr ""
-
-#~ msgid "Google OAuth Client Secret"
-#~ msgstr ""
-
-#~ msgid "Use"
-#~ msgstr "Använd"
-
-#~ msgid "Play / pause"
-#~ msgstr "Spela / pausa"
-
-#~ msgid "volume"
-#~ msgstr "volym"
-
-#~ msgid "unknown"
-#~ msgstr "okänd"
-
-#~ msgid "New Books"
-#~ msgstr "Nya böcker"
-
-#~ msgid "Show Calibre-Web log"
-#~ msgstr "Visa Calibre-Web-logg"
-
-#~ msgid "Show access log"
-#~ msgstr "Visa åtkomstlogg"
-
-#~ msgid "Tags for Mature Content"
-#~ msgstr "Taggar för vuxeninnehåll"
-
-#~ msgid "Show mature content"
-#~ msgstr "Visa vuxeninnehåll"
-
-#~ msgid "deny"
-#~ msgstr ""
-
-#~ msgid "allow"
-#~ msgstr ""
-
-#~ msgid "Kobo Set-up"
-#~ msgstr ""
-
-#~ msgid "Publisher list"
-#~ msgstr "Lista över förlag"
-
-#~ msgid "Series list"
-#~ msgstr "Serielista"
-
-#~ msgid "Available languages"
-#~ msgstr "Tillgängliga språk"
-
-#~ msgid "Category list"
-#~ msgstr "Kategorilista"
-
-#~ msgid "Series id"
-#~ msgstr "Serier-id"
-
-#~ msgid "Submit"
-#~ msgstr "Skicka"
-
-#~ msgid "Go!"
-#~ msgstr "Kör!"
-
-#~ msgid "Allow Delete books"
-#~ msgstr "Tillåt Ta bort böcker"
-
-#~ msgid "language"
-#~ msgstr "språk"
-
-#~ msgid "SMTP port (usually 25 for plain SMTP and 465 for SSL and 587 for STARTTLS)"
-#~ msgstr "SMTP-port (vanligtvis 25 för vanlig SMTP och 465 för SSL och 587 för STARTTLS)"
-
-#~ msgid "From e-mail"
-#~ msgstr "Från e-post"
-
-#~ msgid "Save settings"
-#~ msgstr "Spara inställningarna"
-
-#~ msgid "api_endpoint="
-#~ msgstr ""
-
-#~ msgid "please don't refresh the page"
-#~ msgstr "uppdatera inte sidan"
-
-#~ msgid "E-mail address"
-#~ msgstr "E-postadress"
-
-#~ msgid "No Results for:"
-#~ msgstr "Inga resultat för:"
-
-#~ msgid "Please try a different search"
-#~ msgstr "Försök en annan sökning"
-
-#~ msgid "Tasks list"
-#~ msgstr "Uppgiftslista"
-
-#~ msgid "Kindle E-Mail"
-#~ msgstr "Kindle e-post"
+#~ msgid "Cover is not a supported imageformat (jpg/png/webp), can't save"
+#~ msgstr "Omslaget är inte ett bildformat som stöds (jpg/png/webp), kan inte spara"
 

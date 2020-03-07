@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2020-02-23 20:05+0100\n"
+"POT-Creation-Date: 2020-03-07 11:20+0100\n"
 "PO-Revision-Date: 2019-07-26 11:44+0100\n"
 "Last-Translator: minakmostoles <xxx@xxx.com>\n"
 "Language: es\n"
@@ -247,10 +247,6 @@ msgstr "Falla al guardar el archivo %(file)s."
 msgid "File format %(ext)s added to %(book)s"
 msgstr "Fichero con formato %(ext)s añadido a %(book)s"
 
-#: cps/editbooks.py:376
-msgid "Cover is not a supported imageformat (jpg/png/webp), can't save"
-msgstr "La portada no soporta es formato de imagen (jpg/png/webp), no se guardaron cambios"
-
 #: cps/editbooks.py:451
 msgid "Cover is not a jpg file, can't save"
 msgstr "La portada no es un fichero jpg, no se guardaron cambios"
@@ -400,39 +396,59 @@ msgstr "Fichero %(file)s no encontrado en Google Drive"
 msgid "Book path %(path)s not found on Google Drive"
 msgstr "La ruta %(path)s del libro no fue encontrada en Google Drive"
 
-#: cps/helper.py:657
+#: cps/helper.py:511
+msgid "Failed to create path for cover"
+msgstr ""
+
+#: cps/helper.py:516
+msgid "Cover-file is not a valid image file"
+msgstr ""
+
+#: cps/helper.py:519
+msgid "Failed to store cover-file"
+msgstr ""
+
+#: cps/helper.py:530
+msgid "Only jpg/jpeg/png/webp files are supported as coverfile"
+msgstr ""
+
+#: cps/helper.py:544
+msgid "Only jpg/jpeg files are supported as coverfile"
+msgstr ""
+
+#: cps/helper.py:658
 msgid "Waiting"
 msgstr "Esperando"
 
-#: cps/helper.py:659
+#: cps/helper.py:660
 msgid "Failed"
 msgstr "Fallido"
 
-#: cps/helper.py:661
+#: cps/helper.py:662
 msgid "Started"
 msgstr "Comenzado"
 
-#: cps/helper.py:663
+#: cps/helper.py:664
 msgid "Finished"
 msgstr "Finalizado"
 
-#: cps/helper.py:665
+#: cps/helper.py:666
 msgid "Unknown Status"
 msgstr "Estado desconocido"
 
-#: cps/helper.py:670
+#: cps/helper.py:671
 msgid "E-mail: "
 msgstr "E-mail "
 
-#: cps/helper.py:672 cps/helper.py:676
+#: cps/helper.py:673 cps/helper.py:677
 msgid "Convert: "
 msgstr "Convertir: "
 
-#: cps/helper.py:674
+#: cps/helper.py:675
 msgid "Upload: "
 msgstr "Subir: "
 
-#: cps/helper.py:678
+#: cps/helper.py:679
 msgid "Unknown Task: "
 msgstr "Tarea desconocida"
 
@@ -682,7 +698,7 @@ msgstr "Idioma"
 msgid "Show language selection"
 msgstr "Mostrar selección de idiomas"
 
-#: cps/ub.py:93
+#: cps/templates/index.xml:96 cps/ub.py:93
 msgid "Ratings"
 msgstr "Calificaciones"
 
@@ -690,7 +706,7 @@ msgstr "Calificaciones"
 msgid "Show ratings selection"
 msgstr "Mostrar selección de calificaciones"
 
-#: cps/templates/index.xml:96 cps/ub.py:96
+#: cps/templates/index.xml:104 cps/ub.py:96
 msgid "File formats"
 msgstr "Formatos de archivo"
 
@@ -1761,10 +1777,6 @@ msgstr "Siguiente"
 msgid "Open the .kobo/Kobo eReader.conf file in a text editor and add (or edit):"
 msgstr ""
 
-#: cps/templates/generate_kobo_auth_url.html:11
-msgid "Please note that every visit to this current page invalidates any previously generated Authentication url for this user."
-msgstr ""
-
 #: cps/templates/http_error.html:38
 msgid "Create Issue"
 msgstr "Abrir una incidencia"
@@ -1826,22 +1838,26 @@ msgid "Books ordered by Languages"
 msgstr ""
 
 #: cps/templates/index.xml:100
+msgid "Books ordered by Rating"
+msgstr ""
+
+#: cps/templates/index.xml:108
 msgid "Books ordered by file formats"
 msgstr ""
 
-#: cps/templates/index.xml:103 cps/templates/layout.html:136
+#: cps/templates/index.xml:111 cps/templates/layout.html:136
 msgid "Public Shelves"
 msgstr "Estantes públicos"
 
-#: cps/templates/index.xml:107
+#: cps/templates/index.xml:115
 msgid "Books organized in public shelfs, visible to everyone"
 msgstr "Libros organizados en estantes públicos, visibles para todo el mundo"
 
-#: cps/templates/index.xml:111 cps/templates/layout.html:140
+#: cps/templates/index.xml:119 cps/templates/layout.html:140
 msgid "Your Shelves"
 msgstr "Sus estantes"
 
-#: cps/templates/index.xml:115
+#: cps/templates/index.xml:123
 msgid "User's own shelfs, only visible to the current user himself"
 msgstr "Los estantes propios del usuario, solo visibles para el propio usuario actual"
 
@@ -2635,4 +2651,10 @@ msgstr ""
 
 #~ msgid "Kindle E-Mail"
 #~ msgstr "Correo del Kindle"
+
+#~ msgid "Please note that every visit to this current page invalidates any previously generated Authentication url for this user."
+#~ msgstr ""
+
+#~ msgid "Cover is not a supported imageformat (jpg/png/webp), can't save"
+#~ msgstr "La portada no soporta es formato de imagen (jpg/png/webp), no se guardaron cambios"
 
