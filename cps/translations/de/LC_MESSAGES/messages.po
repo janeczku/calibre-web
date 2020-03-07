@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2020-02-26 18:00+0100\n"
-"PO-Revision-Date: 2020-02-24 19:34+0100\n"
+"POT-Creation-Date: 2020-03-07 11:20+0100\n"
+"PO-Revision-Date: 2020-03-07 11:20+0100\n"
 "Last-Translator: Ozzie Isaacs\n"
 "Language: de\n"
 "Language-Team: \n"
@@ -245,10 +245,6 @@ msgstr "Fehler beim Speichern der Datei %(file)s."
 msgid "File format %(ext)s added to %(book)s"
 msgstr "Dateiformat %(ext)s zu %(book)s hinzugefügt"
 
-#: cps/editbooks.py:376
-msgid "Cover is not a supported imageformat (jpg/png/webp), can't save"
-msgstr "Cover hat kein unterstütztes Bildformat (jpg/png/webp), kann nicht gespeichert werden"
-
 #: cps/editbooks.py:451
 msgid "Cover is not a jpg file, can't save"
 msgstr "Cover ist keine JPG Datei, konnte nicht gespeichert werden"
@@ -398,39 +394,59 @@ msgstr "Datei %(file)s wurde nicht auf Google Drive gefunden"
 msgid "Book path %(path)s not found on Google Drive"
 msgstr "Buchpfad %(path)s wurde nicht auf Google Drive gefunden"
 
-#: cps/helper.py:657
+#: cps/helper.py:511
+msgid "Failed to create path for cover"
+msgstr "Fehler beim Erzeugen des Ordners für die Coverdatei"
+
+#: cps/helper.py:516
+msgid "Cover-file is not a valid image file"
+msgstr "Cover Datei hat kein gültiges Bildformat"
+
+#: cps/helper.py:519
+msgid "Failed to store cover-file"
+msgstr "Fehler beim speichern der Cover Datei"
+
+#: cps/helper.py:530
+msgid "Only jpg/jpeg/png/webp files are supported as coverfile"
+msgstr "Es werden nur jpg/jpeg/png/webp Dateien als Cover untertützt"
+
+#: cps/helper.py:544
+msgid "Only jpg/jpeg files are supported as coverfile"
+msgstr "Es werden nur jpg/jpeg Dateien als Cover untertützt"
+
+#: cps/helper.py:658
 msgid "Waiting"
 msgstr "Wartend"
 
-#: cps/helper.py:659
+#: cps/helper.py:660
 msgid "Failed"
 msgstr "Fehlgeschlagen"
 
-#: cps/helper.py:661
+#: cps/helper.py:662
 msgid "Started"
 msgstr "Gestartet"
 
-#: cps/helper.py:663
+#: cps/helper.py:664
 msgid "Finished"
 msgstr "Beendet"
 
-#: cps/helper.py:665
+#: cps/helper.py:666
 msgid "Unknown Status"
 msgstr "Unbekannter Status"
 
-#: cps/helper.py:670
+#: cps/helper.py:671
 msgid "E-mail: "
 msgstr "E-Mail: "
 
-#: cps/helper.py:672 cps/helper.py:676
+#: cps/helper.py:673 cps/helper.py:677
 msgid "Convert: "
 msgstr "Konvertiere: "
 
-#: cps/helper.py:674
+#: cps/helper.py:675
 msgid "Upload: "
 msgstr "Upload: "
 
-#: cps/helper.py:678
+#: cps/helper.py:679
 msgid "Unknown Task: "
 msgstr "Unbekannte Aufgabe: "
 
@@ -680,7 +696,7 @@ msgstr "Sprachen"
 msgid "Show language selection"
 msgstr "Zeige Sprachauswahl"
 
-#: cps/ub.py:93
+#: cps/templates/index.xml:96 cps/ub.py:93
 msgid "Ratings"
 msgstr "Bewertungen"
 
@@ -688,7 +704,7 @@ msgstr "Bewertungen"
 msgid "Show ratings selection"
 msgstr "Zeige Bewertungsauswahl"
 
-#: cps/templates/index.xml:96 cps/ub.py:96
+#: cps/templates/index.xml:104 cps/ub.py:96
 msgid "File formats"
 msgstr "Dateiformate"
 
@@ -1820,22 +1836,26 @@ msgid "Books ordered by Languages"
 msgstr "Bücher nach Sprache sortiert"
 
 #: cps/templates/index.xml:100
+msgid "Books ordered by Rating"
+msgstr "Bücher nach Bewertungen sortiert"
+
+#: cps/templates/index.xml:108
 msgid "Books ordered by file formats"
 msgstr "Bücher nach Dateiformaten sortiert"
 
-#: cps/templates/index.xml:103 cps/templates/layout.html:136
+#: cps/templates/index.xml:111 cps/templates/layout.html:136
 msgid "Public Shelves"
 msgstr "Öffentliche Bücherregale"
 
-#: cps/templates/index.xml:107
+#: cps/templates/index.xml:115
 msgid "Books organized in public shelfs, visible to everyone"
 msgstr "Bücher, die in öffentlichen Bücherregal organisiert und für jedermann sichtbar sind"
 
-#: cps/templates/index.xml:111 cps/templates/layout.html:140
+#: cps/templates/index.xml:119 cps/templates/layout.html:140
 msgid "Your Shelves"
 msgstr "Deine Bücherregale"
 
-#: cps/templates/index.xml:115
+#: cps/templates/index.xml:123
 msgid "User's own shelfs, only visible to the current user himself"
 msgstr "Persönliches Bücherregal des Benutzers, nur sichtbar für den aktuellen Benutzer"
 
@@ -2306,6 +2326,6 @@ msgstr "Kobo Auth URL erzeugen"
 msgid "Do you really want to delete the Kobo Token?"
 msgstr "Möchten Sie wirklich den Kobo Token löschen?"
 
-#~ msgid "Please note that every visit to this current page invalidates any previously generated Authentication url for this user."
-#~ msgstr ""
+#~ msgid "Cover is not a supported imageformat (jpg/png/webp), can't save"
+#~ msgstr "Cover hat kein unterstütztes Bildformat (jpg/png/webp), kann nicht gespeichert werden"
 

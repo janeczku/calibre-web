@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Calibre Web - polski (POT: 2019-08-06 18:35)\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-02-26 18:00+0100\n"
+"POT-Creation-Date: 2020-03-07 11:20+0100\n"
 "PO-Revision-Date: 2019-08-18 22:06+0200\n"
 "Last-Translator: Jerzy Piątek <jerzy.piatek@gmail.com>\n"
 "Language: pl\n"
@@ -249,11 +249,6 @@ msgstr "Nie można zapisać pliku %(file)s."
 msgid "File format %(ext)s added to %(book)s"
 msgstr "Format pliku %(ext)s dodany do %(book)s"
 
-# ???
-#: cps/editbooks.py:376
-msgid "Cover is not a supported imageformat (jpg/png/webp), can't save"
-msgstr "Nie można zapisać. Okładka jest w niewspieranym formacie (jpg/png/webp)"
-
 #: cps/editbooks.py:451
 msgid "Cover is not a jpg file, can't save"
 msgstr "Okładka nie jest plikiem jpg, nie można zapisać"
@@ -405,39 +400,59 @@ msgstr ""
 msgid "Book path %(path)s not found on Google Drive"
 msgstr ""
 
-#: cps/helper.py:657
+#: cps/helper.py:511
+msgid "Failed to create path for cover"
+msgstr ""
+
+#: cps/helper.py:516
+msgid "Cover-file is not a valid image file"
+msgstr ""
+
+#: cps/helper.py:519
+msgid "Failed to store cover-file"
+msgstr ""
+
+#: cps/helper.py:530
+msgid "Only jpg/jpeg/png/webp files are supported as coverfile"
+msgstr ""
+
+#: cps/helper.py:544
+msgid "Only jpg/jpeg files are supported as coverfile"
+msgstr ""
+
+#: cps/helper.py:658
 msgid "Waiting"
 msgstr "Oczekiwanie"
 
-#: cps/helper.py:659
+#: cps/helper.py:660
 msgid "Failed"
 msgstr "Nieudane"
 
-#: cps/helper.py:661
+#: cps/helper.py:662
 msgid "Started"
 msgstr "Rozpoczynanie"
 
-#: cps/helper.py:663
+#: cps/helper.py:664
 msgid "Finished"
 msgstr ""
 
-#: cps/helper.py:665
+#: cps/helper.py:666
 msgid "Unknown Status"
 msgstr "Ststus nieznany"
 
-#: cps/helper.py:670
+#: cps/helper.py:671
 msgid "E-mail: "
 msgstr "E-mail: "
 
-#: cps/helper.py:672 cps/helper.py:676
+#: cps/helper.py:673 cps/helper.py:677
 msgid "Convert: "
 msgstr "Konwertowanie: "
 
-#: cps/helper.py:674
+#: cps/helper.py:675
 msgid "Upload: "
 msgstr "Wgrywanie: "
 
-#: cps/helper.py:678
+#: cps/helper.py:679
 msgid "Unknown Task: "
 msgstr "Nieznane zadanie: "
 
@@ -688,7 +703,7 @@ msgstr "Języki"
 msgid "Show language selection"
 msgstr "Pokaż menu wyboru języka"
 
-#: cps/ub.py:93
+#: cps/templates/index.xml:96 cps/ub.py:93
 msgid "Ratings"
 msgstr "Ocena"
 
@@ -696,7 +711,7 @@ msgstr "Ocena"
 msgid "Show ratings selection"
 msgstr "Pokaż menu listy ocen"
 
-#: cps/templates/index.xml:96 cps/ub.py:96
+#: cps/templates/index.xml:104 cps/ub.py:96
 msgid "File formats"
 msgstr "Format plików"
 
@@ -1838,22 +1853,26 @@ msgid "Books ordered by Languages"
 msgstr "Ksiązki posortowane według języka"
 
 #: cps/templates/index.xml:100
+msgid "Books ordered by Rating"
+msgstr ""
+
+#: cps/templates/index.xml:108
 msgid "Books ordered by file formats"
 msgstr "Ksiązki posortowane według formatu"
 
-#: cps/templates/index.xml:103 cps/templates/layout.html:136
+#: cps/templates/index.xml:111 cps/templates/layout.html:136
 msgid "Public Shelves"
 msgstr "Publiczne półki"
 
-#: cps/templates/index.xml:107
+#: cps/templates/index.xml:115
 msgid "Books organized in public shelfs, visible to everyone"
 msgstr "Książki na półkach publicznych, widoczne dla wszystkich"
 
-#: cps/templates/index.xml:111 cps/templates/layout.html:140
+#: cps/templates/index.xml:119 cps/templates/layout.html:140
 msgid "Your Shelves"
 msgstr "Twoje półki"
 
-#: cps/templates/index.xml:115
+#: cps/templates/index.xml:123
 msgid "User's own shelfs, only visible to the current user himself"
 msgstr "Własne półki, widoczne tylko dla bieżącego użytkownika"
 
@@ -2330,4 +2349,7 @@ msgstr ""
 msgid "Do you really want to delete the Kobo Token?"
 msgstr ""
 
+# ???
+#~ msgid "Cover is not a supported imageformat (jpg/png/webp), can't save"
+#~ msgstr "Nie można zapisać. Okładka jest w niewspieranym formacie (jpg/png/webp)"
 

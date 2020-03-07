@@ -20,7 +20,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-02-26 18:00+0100\n"
+"POT-Creation-Date: 2020-03-07 11:20+0100\n"
 "PO-Revision-Date: 2019-08-21 15:20+0100\n"
 "Last-Translator: Nicolas Roudninski <nicoroud@gmail.com>\n"
 "Language: fr\n"
@@ -258,10 +258,6 @@ msgstr "Echec de la sauvegarde du fichier %(file)s."
 msgid "File format %(ext)s added to %(book)s"
 msgstr "Le format de fichier %(ext)s a été ajouté à %(book)s"
 
-#: cps/editbooks.py:376
-msgid "Cover is not a supported imageformat (jpg/png/webp), can't save"
-msgstr "Le format d'image utilisé pour la couverture n'est pas supporté (jpg/png/webp uniquement). Sauvegarde impossible."
-
 #: cps/editbooks.py:451
 msgid "Cover is not a jpg file, can't save"
 msgstr "La couverture n’est pas un fichier jpg, je ne peux pas l’enregistrer"
@@ -411,39 +407,59 @@ msgstr ""
 msgid "Book path %(path)s not found on Google Drive"
 msgstr ""
 
-#: cps/helper.py:657
+#: cps/helper.py:511
+msgid "Failed to create path for cover"
+msgstr ""
+
+#: cps/helper.py:516
+msgid "Cover-file is not a valid image file"
+msgstr ""
+
+#: cps/helper.py:519
+msgid "Failed to store cover-file"
+msgstr ""
+
+#: cps/helper.py:530
+msgid "Only jpg/jpeg/png/webp files are supported as coverfile"
+msgstr ""
+
+#: cps/helper.py:544
+msgid "Only jpg/jpeg files are supported as coverfile"
+msgstr ""
+
+#: cps/helper.py:658
 msgid "Waiting"
 msgstr "Patienter"
 
-#: cps/helper.py:659
+#: cps/helper.py:660
 msgid "Failed"
 msgstr "Echoué"
 
-#: cps/helper.py:661
+#: cps/helper.py:662
 msgid "Started"
 msgstr "Débué"
 
-#: cps/helper.py:663
+#: cps/helper.py:664
 msgid "Finished"
 msgstr "Terminé"
 
-#: cps/helper.py:665
+#: cps/helper.py:666
 msgid "Unknown Status"
 msgstr "Statut inconnu"
 
-#: cps/helper.py:670
+#: cps/helper.py:671
 msgid "E-mail: "
 msgstr "Courriel : "
 
-#: cps/helper.py:672 cps/helper.py:676
+#: cps/helper.py:673 cps/helper.py:677
 msgid "Convert: "
 msgstr "Convertir vers : "
 
-#: cps/helper.py:674
+#: cps/helper.py:675
 msgid "Upload: "
 msgstr "Téléverser : "
 
-#: cps/helper.py:678
+#: cps/helper.py:679
 msgid "Unknown Task: "
 msgstr "Tâche inconnue : "
 
@@ -693,7 +709,7 @@ msgstr "Langues"
 msgid "Show language selection"
 msgstr "Montrer la sélection par langue"
 
-#: cps/ub.py:93
+#: cps/templates/index.xml:96 cps/ub.py:93
 msgid "Ratings"
 msgstr "Notes"
 
@@ -701,7 +717,7 @@ msgstr "Notes"
 msgid "Show ratings selection"
 msgstr "Afficher la sélection des notes"
 
-#: cps/templates/index.xml:96 cps/ub.py:96
+#: cps/templates/index.xml:104 cps/ub.py:96
 msgid "File formats"
 msgstr "Format de fichier"
 
@@ -1833,22 +1849,26 @@ msgid "Books ordered by Languages"
 msgstr ""
 
 #: cps/templates/index.xml:100
+msgid "Books ordered by Rating"
+msgstr ""
+
+#: cps/templates/index.xml:108
 msgid "Books ordered by file formats"
 msgstr ""
 
-#: cps/templates/index.xml:103 cps/templates/layout.html:136
+#: cps/templates/index.xml:111 cps/templates/layout.html:136
 msgid "Public Shelves"
 msgstr "Étagères publiques"
 
-#: cps/templates/index.xml:107
+#: cps/templates/index.xml:115
 msgid "Books organized in public shelfs, visible to everyone"
 msgstr "Livres disponibles dans les étagères publiques, visibles par tous"
 
-#: cps/templates/index.xml:111 cps/templates/layout.html:140
+#: cps/templates/index.xml:119 cps/templates/layout.html:140
 msgid "Your Shelves"
 msgstr "Vos étagères"
 
-#: cps/templates/index.xml:115
+#: cps/templates/index.xml:123
 msgid "User's own shelfs, only visible to the current user himself"
 msgstr "Etagères personnelles, seulement visible de l’utilisateur propréitaire"
 
@@ -2414,4 +2434,7 @@ msgstr ""
 
 #~ msgid "Please note that every visit to this current page invalidates any previously generated Authentication url for this user."
 #~ msgstr ""
+
+#~ msgid "Cover is not a supported imageformat (jpg/png/webp), can't save"
+#~ msgstr "Le format d'image utilisé pour la couverture n'est pas supporté (jpg/png/webp uniquement). Sauvegarde impossible."
 

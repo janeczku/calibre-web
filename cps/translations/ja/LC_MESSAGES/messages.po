@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2020-02-26 18:00+0100\n"
+"POT-Creation-Date: 2020-03-07 11:20+0100\n"
 "PO-Revision-Date: 2018-02-07 02:20-0500\n"
 "Last-Translator: white <space_white@yahoo.com>\n"
 "Language: ja\n"
@@ -245,10 +245,6 @@ msgstr "%(file)s を保存できません。"
 msgid "File format %(ext)s added to %(book)s"
 msgstr "ファイル形式 %(ext)s が %(book)s に追加されました"
 
-#: cps/editbooks.py:376
-msgid "Cover is not a supported imageformat (jpg/png/webp), can't save"
-msgstr ""
-
 #: cps/editbooks.py:451
 msgid "Cover is not a jpg file, can't save"
 msgstr ""
@@ -398,39 +394,59 @@ msgstr "ファイル %(file)s はGoogleドライブ上にありません"
 msgid "Book path %(path)s not found on Google Drive"
 msgstr "本のパス %(path)s はGoogleドライブ上にありません"
 
-#: cps/helper.py:657
+#: cps/helper.py:511
+msgid "Failed to create path for cover"
+msgstr ""
+
+#: cps/helper.py:516
+msgid "Cover-file is not a valid image file"
+msgstr ""
+
+#: cps/helper.py:519
+msgid "Failed to store cover-file"
+msgstr ""
+
+#: cps/helper.py:530
+msgid "Only jpg/jpeg/png/webp files are supported as coverfile"
+msgstr ""
+
+#: cps/helper.py:544
+msgid "Only jpg/jpeg files are supported as coverfile"
+msgstr ""
+
+#: cps/helper.py:658
 msgid "Waiting"
 msgstr "待機中"
 
-#: cps/helper.py:659
+#: cps/helper.py:660
 msgid "Failed"
 msgstr "失敗"
 
-#: cps/helper.py:661
+#: cps/helper.py:662
 msgid "Started"
 msgstr "開始"
 
-#: cps/helper.py:663
+#: cps/helper.py:664
 msgid "Finished"
 msgstr "終了"
 
-#: cps/helper.py:665
+#: cps/helper.py:666
 msgid "Unknown Status"
 msgstr "不明"
 
-#: cps/helper.py:670
+#: cps/helper.py:671
 msgid "E-mail: "
 msgstr "メール: "
 
-#: cps/helper.py:672 cps/helper.py:676
+#: cps/helper.py:673 cps/helper.py:677
 msgid "Convert: "
 msgstr "変換: "
 
-#: cps/helper.py:674
+#: cps/helper.py:675
 msgid "Upload: "
 msgstr "アップロード: "
 
-#: cps/helper.py:678
+#: cps/helper.py:679
 msgid "Unknown Task: "
 msgstr "不明なタスク: "
 
@@ -680,7 +696,7 @@ msgstr "言語"
 msgid "Show language selection"
 msgstr "言語選択を表示"
 
-#: cps/ub.py:93
+#: cps/templates/index.xml:96 cps/ub.py:93
 msgid "Ratings"
 msgstr ""
 
@@ -688,7 +704,7 @@ msgstr ""
 msgid "Show ratings selection"
 msgstr ""
 
-#: cps/templates/index.xml:96 cps/ub.py:96
+#: cps/templates/index.xml:104 cps/ub.py:96
 msgid "File formats"
 msgstr ""
 
@@ -1820,22 +1836,26 @@ msgid "Books ordered by Languages"
 msgstr ""
 
 #: cps/templates/index.xml:100
+msgid "Books ordered by Rating"
+msgstr ""
+
+#: cps/templates/index.xml:108
 msgid "Books ordered by file formats"
 msgstr ""
 
-#: cps/templates/index.xml:103 cps/templates/layout.html:136
+#: cps/templates/index.xml:111 cps/templates/layout.html:136
 msgid "Public Shelves"
 msgstr "みんなの本棚"
 
-#: cps/templates/index.xml:107
+#: cps/templates/index.xml:115
 msgid "Books organized in public shelfs, visible to everyone"
 msgstr "みんなの本棚に入れた本棚は、他の人からも見えます"
 
-#: cps/templates/index.xml:111 cps/templates/layout.html:140
+#: cps/templates/index.xml:119 cps/templates/layout.html:140
 msgid "Your Shelves"
 msgstr "あなたの本棚"
 
-#: cps/templates/index.xml:115
+#: cps/templates/index.xml:123
 msgid "User's own shelfs, only visible to the current user himself"
 msgstr "ユーザ自身の本棚は、自分にのみ見えます"
 
@@ -2868,5 +2888,8 @@ msgstr ""
 #~ msgstr "このユーザを削除"
 
 #~ msgid "Please note that every visit to this current page invalidates any previously generated Authentication url for this user."
+#~ msgstr ""
+
+#~ msgid "Cover is not a supported imageformat (jpg/png/webp), can't save"
 #~ msgstr ""
 
