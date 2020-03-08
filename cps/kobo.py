@@ -159,18 +159,14 @@ def HandleSyncRequest():
             entitlements.append({"ChangedEntitlement": entitlement})
 
         new_books_last_modified = max(
-            book.last_modified, sync_token.books_last_modified
+            book.last_modified, new_books_last_modified
         )
-        new_books_last_created = max(book.timestamp, sync_token.books_last_created)
+        new_books_last_created = max(book.timestamp, new_books_last_created)
 
     sync_token.books_last_created = new_books_last_created
     sync_token.books_last_modified = new_books_last_modified
 
-    if config.config_kobo_proxy:
-        return generate_sync_response(request, sync_token, entitlements)
-
-    return make_response(jsonify(entitlements))
-    # Missing feature: Detect server-side book deletions.
+    return generate_sync_response(request, sync_token, entitlements)
 
 
 def generate_sync_response(request, sync_token, entitlements):
