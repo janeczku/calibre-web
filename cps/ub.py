@@ -21,6 +21,7 @@ from __future__ import division, print_function, unicode_literals
 import os
 import datetime
 import itertools
+import uuid
 from binascii import hexlify
 
 from flask import g
@@ -35,8 +36,8 @@ except ImportError:
 from sqlalchemy import create_engine, exc, exists, event
 from sqlalchemy import Column, ForeignKey
 from sqlalchemy import String, Integer, SmallInteger, Boolean, DateTime, Float
-from sqlalchemy.orm import backref, foreign, relationship, remote, sessionmaker, Session
 from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import backref, foreign, relationship, remote, sessionmaker, Session
 from sqlalchemy.sql.expression import and_
 from werkzeug.security import generate_password_hash
 
@@ -265,9 +266,13 @@ class Shelf(Base):
     __tablename__ = 'shelf'
 
     id = Column(Integer, primary_key=True)
+    uuid = Column(String, default=lambda : str(uuid.uuid4()))
     name = Column(String)
     is_public = Column(Integer, default=0)
     user_id = Column(Integer, ForeignKey('user.id'))
+    books = relationship("BookShelf", backref="ub_shelf", cascade="all, delete-orphan", lazy="dynamic")
+    created = Column(DateTime, default=datetime.datetime.utcnow)
+    last_modified = Column(DateTime, default=datetime.datetime.utcnow, onupdate=datetime.datetime.utcnow)
 
     def __repr__(self):
         return '<Shelf %d:%r>' % (self.id, self.name)
@@ -281,9 +286,20 @@ class BookShelf(Base):
     book_id = Column(Integer)
     order = Column(Integer)
     shelf = Column(Integer, ForeignKey('shelf.id'))
+    date_added = Column(DateTime, default=datetime.datetime.utcnow)
 
     def __repr__(self):
         return '<Book %r>' % self.id
+
+
+# This table keeps track of deleted Shelves so that deletes can be propagated to any paired Kobo device.
+class ShelfArchive(Base):
+    __tablename__ = 'shelf_archive'
+
+    id = Column(Integer, primary_key=True)
+    uuid = Column(String)
+    user_id = Column(Integer, ForeignKey('user.id'))
+    last_modified = Column(DateTime, default=datetime.datetime.utcnow)
 
 
 class ReadBook(Base):
@@ -370,6 +386,10 @@ def receive_before_flush(session, flush_context, instances):
         if isinstance(change, (ReadBook, KoboStatistics, KoboBookmark)):
             if change.kobo_reading_state:
                 change.kobo_reading_state.last_modified = datetime.datetime.utcnow()
+    # Maintain the last_modified bit for the Shelf table.
+    for change in itertools.chain(session.new, session.deleted):
+        if isinstance(change, BookShelf):
+            change.ub_shelf.last_modified = datetime.datetime.utcnow()
 
 
 # Baseclass representing Downloads from calibre-web in app.db
@@ -463,7 +483,21 @@ def migrate_Database(session):
         conn.execute("ALTER TABLE book_read_link ADD column 'last_time_started_reading' DATETIME")
         conn.execute("ALTER TABLE book_read_link ADD column 'times_started_reading' INTEGER DEFAULT 0")    
         session.commit()
-
+    try:
+        session.query(exists().where(Shelf.uuid)).scalar()
+    except exc.OperationalError:
+        conn = engine.connect()
+        conn.execute("ALTER TABLE shelf ADD column 'uuid' STRING")
+        conn.execute("ALTER TABLE shelf ADD column 'created' DATETIME")
+        conn.execute("ALTER TABLE shelf ADD column 'last_modified' DATETIME")
+        conn.execute("ALTER TABLE book_shelf_link ADD column 'date_added' DATETIME")
+        for shelf in session.query(Shelf).all():
+            shelf.uuid = str(uuid.uuid4())
+            shelf.created = datetime.datetime.now()
+            shelf.last_modified = datetime.datetime.now()
+        for book_shelf in session.query(BookShelf).all():
+            book_shelf.date_added = datetime.datetime.now()
+        session.commit()
     # Handle table exists, but no content
     cnt = session.query(Registration).count()
     if not cnt:
