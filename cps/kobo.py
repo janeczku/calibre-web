@@ -39,10 +39,10 @@ from flask import (
     redirect,
     abort
 )
-from flask_login import login_required, current_user
+from flask_login import current_user, login_required
 from werkzeug.datastructures import Headers
 from sqlalchemy import func
-from sqlalchemy.sql.expression import or_
+from sqlalchemy.sql.expression import and_, or_
 import requests
 
 from . import config, logger, kobo_auth, db, helper, ub
@@ -152,7 +152,7 @@ def HandleSyncRequest():
     # (Ideally we would use a join for this logic, however cross-database joins don't look trivial in SqlAlchemy.)
     recently_restored_or_archived_books = []
     archived_book_ids = {}
-    new_archived_last_modified = datetime.min
+    new_archived_last_modified = datetime.datetime.min
     for archived_book in archived_books:
         if archived_book.last_modified > sync_token.archive_last_modified:
             recently_restored_or_archived_books.append(archived_book.book_id)
@@ -213,6 +213,7 @@ def HandleSyncRequest():
     sync_token.books_last_created = new_books_last_created
     sync_token.books_last_modified = new_books_last_modified
     sync_token.archive_last_modified = new_archived_last_modified
+    sync_token.reading_state_last_modified = new_reading_state_last_modified
 
     if config.config_kobo_proxy:
         return generate_sync_response(request, sync_token, sync_results)
@@ -288,7 +289,7 @@ def create_book_entitlement(book, archived):
         "IsRemoved": archived,
         "IsHiddenFromArchive": False,
         "IsLocked": False,
-        "LastModified": book.last_modified,
+        "LastModified": convert_to_kobo_timestamp_string(book.last_modified),
         "OriginCategory": "Imported",
         "RevisionId": book_uuid,
         "Status": "Active",
@@ -568,7 +569,7 @@ def HandleBookDeletionRequest(book_uuid):
     if not archived_book:
         archived_book = ub.ArchivedBook(user_id=current_user.id, book_id=book_id)
     archived_book.is_archived = True
-    archived_book.last_modified = datetime.utcnow()
+    archived_book.last_modified = datetime.datetime.utcnow()
 
     ub.session.merge(archived_book)
     ub.session.commit()
@@ -577,12 +578,12 @@ def HandleBookDeletionRequest(book_uuid):
 
 
 # TODO: Implement the following routes
-@kobo.route("/v1/library/<book_uuid>/state", methods=["PUT"])
+@kobo.route("/v1/library/<dummy>", methods=["DELETE", "GET"])
 @kobo.route("/v1/library/tags", methods=["POST"])
 @kobo.route("/v1/library/tags/<shelf_name>", methods=["POST"])
 @kobo.route("/v1/library/tags/<tag_id>", methods=["DELETE"])
-def HandleUnimplementedRequest(book_uuid=None, shelf_name=None, tag_id=None):
-    log.debug("Alternative Request received:")
+def HandleUnimplementedRequest(dummy=None, book_uuid=None, shelf_name=None, tag_id=None):
+    log.debug("Unimplemented Library Request received: %s", request.base_url)
     return redirect_or_proxy_request()
 
 
