@@ -71,7 +71,7 @@ class _Settings(_Base):
     config_kobo_sync = Column(Boolean, default=False)
 
     config_default_role = Column(SmallInteger, default=0)
-    config_default_show = Column(SmallInteger, default=6143)
+    config_default_show = Column(SmallInteger, default=38911)
     config_columns_to_ignore = Column(String)
 
     config_denied_tags = Column(String, default="")

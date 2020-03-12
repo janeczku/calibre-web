@@ -76,7 +76,7 @@ class SyncToken():
             "raw_kobo_store_token": {"type": "string"},
             "books_last_modified": {"type": "string"},
             "books_last_created": {"type": "string"},
-            "reading_state_last_modified": {"type": "string"},
+            "archive_last_modified": {"type": "string"},
         },
     }
 
@@ -85,13 +85,12 @@ class SyncToken():
         raw_kobo_store_token="",
         books_last_created=datetime.min,
         books_last_modified=datetime.min,
-        reading_state_last_modified=datetime.min,
+        archive_last_modified=datetime.min,
     ):
         self.raw_kobo_store_token = raw_kobo_store_token
         self.books_last_created = books_last_created
         self.books_last_modified = books_last_modified
-        self.reading_state_last_modified = reading_state_last_modified
-
+        self.archive_last_modified = archive_last_modified
 
     @staticmethod
     def from_headers(headers):
@@ -123,7 +122,7 @@ class SyncToken():
         try:
             books_last_modified = get_datetime_from_json(data_json, "books_last_modified")
             books_last_created = get_datetime_from_json(data_json, "books_last_created")
-            reading_state_last_modified = get_datetime_from_json(data_json, "reading_state_last_modified")
+            archive_last_modified = get_datetime_from_json(data_json, "archive_last_modified")
         except TypeError:
             log.error("SyncToken timestamps don't parse to a datetime.")
             return SyncToken(raw_kobo_store_token=raw_kobo_store_token)
@@ -132,7 +131,7 @@ class SyncToken():
             raw_kobo_store_token=raw_kobo_store_token,
             books_last_created=books_last_created,
             books_last_modified=books_last_modified,
-            reading_state_last_modified=reading_state_last_modified
+            archive_last_modified=archive_last_modified
         )
 
     def set_kobo_store_header(self, store_headers):
@@ -153,7 +152,7 @@ class SyncToken():
                 "raw_kobo_store_token": self.raw_kobo_store_token,
                 "books_last_modified": to_epoch_timestamp(self.books_last_modified),
                 "books_last_created": to_epoch_timestamp(self.books_last_created),
-                "reading_state_last_modified": to_epoch_timestamp(self.reading_state_last_modified)
+                "archive_last_modified": to_epoch_timestamp(self.archive_last_modified)
             },
         }
         return b64encode_json(token)
