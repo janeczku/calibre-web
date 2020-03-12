@@ -17,11 +17,11 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program. If not, see <http://www.gnu.org/licenses/>.
 
+import datetime
 import sys
 import base64
 import os
 import uuid
-from datetime import datetime
 from time import gmtime, strftime
 try:
     from urllib import unquote
@@ -38,12 +38,13 @@ from flask import (
     redirect,
     abort
 )
-from flask_login import login_required
+from flask_login import current_user, login_required
 from werkzeug.datastructures import Headers
 from sqlalchemy import func
+from sqlalchemy.sql.expression import and_
 import requests
 
-from . import config, logger, kobo_auth, db, helper
+from . import config, logger, kobo_auth, db, helper, ub
 from .services import SyncToken as SyncToken
 from .web import download_required
 from .kobo_auth import requires_kobo_auth
@@ -116,6 +117,9 @@ def redirect_or_proxy_request():
         return make_response(jsonify({}))
 
 
+def convert_to_kobo_timestamp_string(timestamp):
+    return timestamp.strftime("%Y-%m-%dT%H:%M:%SZ")
+
 @kobo.route("/v1/library/sync")
 @requires_kobo_auth
 @download_required
@@ -130,7 +134,8 @@ def HandleSyncRequest():
 
     new_books_last_modified = sync_token.books_last_modified
     new_books_last_created = sync_token.books_last_created
-    entitlements = []
+    new_reading_state_last_modified = sync_token.reading_state_last_modified
+    sync_results = []
 
     # We reload the book database so that the user get's a fresh view of the library
     # in case of external changes (e.g: adding a book through Calibre).
@@ -147,37 +152,63 @@ def HandleSyncRequest():
         .all()
     )
 
+    reading_states_in_new_entitlements = []
     for book in changed_entries:
+        kobo_reading_state = get_or_create_reading_state(book.id)
         entitlement = {
             "BookEntitlement": create_book_entitlement(book),
             "BookMetadata": get_metadata(book),
-            "ReadingState": reading_state(book),
         }
+
+        if kobo_reading_state.last_modified > sync_token.reading_state_last_modified:
+            entitlement["ReadingState"] = get_kobo_reading_state_response(book, kobo_reading_state)
+            new_reading_state_last_modified = max(new_reading_state_last_modified, kobo_reading_state.last_modified)
+            reading_states_in_new_entitlements.append(book.id)
+
         if book.timestamp > sync_token.books_last_created:
-            entitlements.append({"NewEntitlement": entitlement})
+            sync_results.append({"NewEntitlement": entitlement})
         else:
-            entitlements.append({"ChangedEntitlement": entitlement})
+            sync_results.append({"ChangedEntitlement": entitlement})
 
         new_books_last_modified = max(
             book.last_modified, new_books_last_modified
         )
         new_books_last_created = max(book.timestamp, new_books_last_created)
 
+    changed_reading_states = (
+        ub.session.query(ub.KoboReadingState)
+        .filter(and_(func.datetime(ub.KoboReadingState.last_modified) > sync_token.reading_state_last_modified,
+                     ub.KoboReadingState.user_id == current_user.id,
+                     ub.KoboReadingState.book_id.notin_(reading_states_in_new_entitlements))))
+    for kobo_reading_state in changed_reading_states.all():
+        book = db.session.query(db.Books).filter(db.Books.id == kobo_reading_state.book_id).one()
+        sync_results.append({
+            "ChangedReadingState": {
+                "ReadingState": get_kobo_reading_state_response(book, kobo_reading_state)
+            }
+        })
+        new_reading_state_last_modified = max(new_reading_state_last_modified, kobo_reading_state.last_modified)
+
     sync_token.books_last_created = new_books_last_created
     sync_token.books_last_modified = new_books_last_modified
+    sync_token.reading_state_last_modified = new_reading_state_last_modified
 
-    return generate_sync_response(request, sync_token, entitlements)
+    if config.config_kobo_proxy:
+        return generate_sync_response(request, sync_token, sync_results)
+
+    return make_response(jsonify(sync_results))
+    # Missing feature: Detect server-side book deletions.
 
 
-def generate_sync_response(request, sync_token, entitlements):
+def generate_sync_response(request, sync_token, sync_results):
     extra_headers = {}
     if config.config_kobo_proxy:
         # Merge in sync results from the official Kobo store.
         try:
             store_response = make_request_to_kobo_store(sync_token)
 
-            store_entitlements = store_response.json()
-            entitlements += store_entitlements
+            store_sync_results = store_response.json()
+            sync_results += store_sync_results
             sync_token.merge_from_store_response(store_response)
             extra_headers["x-kobo-sync"] = store_response.headers.get("x-kobo-sync")
             extra_headers["x-kobo-sync-mode"] = store_response.headers.get("x-kobo-sync-mode")
@@ -187,7 +218,7 @@ def generate_sync_response(request, sync_token, entitlements):
             log.error("Failed to receive or parse response from Kobo's sync endpoint: " + str(e))
     sync_token.to_headers(extra_headers)
 
-    response = make_response(jsonify(entitlements), extra_headers)
+    response = make_response(jsonify(sync_results), extra_headers)
 
     return response
 
@@ -229,23 +260,19 @@ def create_book_entitlement(book):
     book_uuid = book.uuid
     return {
         "Accessibility": "Full",
-        "ActivePeriod": {"From": current_time(),},
-        "Created": book.timestamp.strftime("%Y-%m-%dT%H:%M:%SZ"),
+        "ActivePeriod": {"From": convert_to_kobo_timestamp_string(datetime.datetime.now())},
+        "Created": convert_to_kobo_timestamp_string(book.timestamp),
         "CrossRevisionId": book_uuid,
         "Id": book_uuid,
         "IsHiddenFromArchive": False,
         "IsLocked": False,
         # Setting this to true removes from the device.
         "IsRemoved": False,
-        "LastModified": book.last_modified.strftime("%Y-%m-%dT%H:%M:%SZ"),
+        "LastModified": convert_to_kobo_timestamp_string(book.last_modified),
         "OriginCategory": "Imported",
         "RevisionId": book_uuid,
         "Status": "Active",
     }
-
-
-def current_time():
-    return strftime("%Y-%m-%dT%H:%M:%SZ", gmtime())
 
 
 def get_description(book):
@@ -310,6 +337,8 @@ def get_metadata(book):
         "IsSocialEnabled": True,
         "Language": "en",
         "PhoneticPronunciations": {},
+        # TODO: Fix book.pubdate to return a datetime object so that we can easily
+        # convert it to the format Kobo devices expect.
         "PublicationDate": book.pubdate,
         "Publisher": {"Imprint": "", "Name": get_publisher(book),},
         "RevisionId": book_uuid,
@@ -333,16 +362,148 @@ def get_metadata(book):
     return metadata
 
 
-def reading_state(book):
-    # TODO: Implement
-    reading_state = {
-        # "StatusInfo": {
-        #     "LastModified": get_single_cc_value(book, "lastreadtimestamp"),
-        #     "Status": get_single_cc_value(book, "reading_status"),
-        # }
-        # TODO: CurrentBookmark, Location
+@kobo.route("/v1/library/<book_uuid>/state", methods=["GET", "PUT"])
+@login_required
+def HandleStateRequest(book_uuid):
+    book = db.session.query(db.Books).filter(db.Books.uuid == book_uuid).first()
+    if not book or not book.data:
+        log.info(u"Book %s not found in database", book_uuid)
+        return redirect_or_proxy_request()
+
+    kobo_reading_state = get_or_create_reading_state(book.id)
+
+    if request.method == "GET":
+        return jsonify([get_kobo_reading_state_response(book, kobo_reading_state)])
+    else:
+        update_results_response = {"EntitlementId": book_uuid}
+
+        request_data = request.json
+        if "ReadingStates" not in request_data:
+            abort(400, description="Malformed request data is missing 'ReadingStates' key")
+        request_reading_state = request_data["ReadingStates"][0]
+
+        request_bookmark = request_reading_state.get("CurrentBookmark")
+        if request_bookmark:
+            current_bookmark = kobo_reading_state.current_bookmark
+            current_bookmark.progress_percent = request_bookmark.get("ProgressPercent")
+            current_bookmark.content_source_progress_percent = request_bookmark.get("ContentSourceProgressPercent")
+            location = request_bookmark.get("Location")
+            if location:
+                current_bookmark.location_value = location.get("Value")
+                current_bookmark.location_type = location.get("Type")
+                current_bookmark.location_source = location.get("Source")
+            update_results_response["CurrentBookmarkResult"] = {"Result": "Success"}
+
+        request_statistics = request_reading_state.get("Statistics")
+        if request_statistics:
+            statistics = kobo_reading_state.statistics
+            statistics.spent_reading_minutes = request_statistics.get("SpentReadingMinutes")
+            statistics.remaining_time_minutes = request_statistics.get("RemainingTimeMinutes")
+            update_results_response["StatisticsResult"] = {"Result": "Success"}
+
+        request_status_info = request_reading_state.get("StatusInfo")
+        if request_status_info:
+            book_read = kobo_reading_state.book_read_link
+            new_book_read_status = get_ub_read_status(request_status_info.get("Status"))
+            if new_book_read_status == ub.ReadBook.STATUS_IN_PROGRESS and new_book_read_status != book_read.read_status:
+                book_read.times_started_reading += 1
+                book_read.last_time_started_reading = datetime.datetime.utcnow()
+            book_read.read_status = new_book_read_status
+            update_results_response["StatusInfoResult"] = {"Result": "Success"}
+
+        ub.session.merge(kobo_reading_state)
+        ub.session.commit()
+        return jsonify({
+            "RequestResult": "Success",
+            "UpdateResults": [update_results_response],
+        })
+
+
+def get_read_status_for_kobo(ub_book_read):
+    enum_to_string_map = {
+        None: "ReadyToRead",
+        ub.ReadBook.STATUS_UNREAD: "ReadyToRead",
+        ub.ReadBook.STATUS_FINISHED: "Finished",
+        ub.ReadBook.STATUS_IN_PROGRESS: "Reading",
     }
-    return reading_state
+    return enum_to_string_map[ub_book_read.read_status]
+
+
+def get_ub_read_status(kobo_read_status):
+    string_to_enum_map = {
+        None: None,
+        "ReadyToRead": ub.ReadBook.STATUS_UNREAD,
+        "Finished": ub.ReadBook.STATUS_FINISHED,
+        "Reading": ub.ReadBook.STATUS_IN_PROGRESS,
+    }
+    return string_to_enum_map[kobo_read_status]
+
+
+def get_or_create_reading_state(book_id):
+    book_read = ub.session.query(ub.ReadBook).filter(and_(ub.ReadBook.book_id == book_id,
+                                                          ub.ReadBook.user_id == current_user.id)).one_or_none()
+    if not book_read:
+        book_read = ub.ReadBook(user_id=current_user.id, book_id=book_id)
+    if not book_read.kobo_reading_state:
+        kobo_reading_state = ub.KoboReadingState(user_id=book_read.user_id, book_id=book_id)
+        kobo_reading_state.current_bookmark = ub.KoboBookmark()
+        kobo_reading_state.statistics = ub.KoboStatistics()
+        book_read.kobo_reading_state = kobo_reading_state
+    ub.session.add(book_read)
+    ub.session.commit()
+    return book_read.kobo_reading_state
+
+
+def get_kobo_reading_state_response(book, kobo_reading_state):
+    return {
+        "EntitlementId": book.uuid,
+        "Created": convert_to_kobo_timestamp_string(book.timestamp),
+        "LastModified": convert_to_kobo_timestamp_string(kobo_reading_state.last_modified),
+        # AFAICT PriorityTimestamp is always equal to LastModified.
+        "PriorityTimestamp": convert_to_kobo_timestamp_string(kobo_reading_state.priority_timestamp),
+        "StatusInfo": get_status_info_response(kobo_reading_state.book_read_link),
+        "Statistics": get_statistics_response(kobo_reading_state.statistics),
+        "CurrentBookmark": get_current_bookmark_response(kobo_reading_state.current_bookmark),
+    }
+
+
+def get_status_info_response(book_read):
+    resp = {
+        "LastModified": convert_to_kobo_timestamp_string(book_read.last_modified),
+        "Status": get_read_status_for_kobo(book_read),
+        "TimesStartedReading": book_read.times_started_reading,
+    }
+    if book_read.last_time_started_reading:
+        resp["LastTimeStartedReading"] = convert_to_kobo_timestamp_string(book_read.last_time_started_reading)
+    return resp
+
+
+def get_statistics_response(statistics):
+    resp = {
+        "LastModified": convert_to_kobo_timestamp_string(statistics.last_modified),
+    }
+    if statistics.spent_reading_minutes:
+        resp["SpentReadingMinutes"] = statistics.spent_reading_minutes
+    if statistics.remaining_time_minutes:
+        resp["RemainingTimeMinutes"] = statistics.remaining_time_minutes
+    return resp
+
+
+def get_current_bookmark_response(current_bookmark):
+    resp = {
+        "LastModified": convert_to_kobo_timestamp_string(current_bookmark.last_modified),
+    }
+    if current_bookmark.progress_percent:
+        resp["ProgressPercent"] = current_bookmark.progress_percent
+    if current_bookmark.content_source_progress_percent:
+        resp["ContentSourceProgressPercent"] = current_bookmark.content_source_progress_percent
+    if current_bookmark.location_value:
+        resp["Location"] = {
+            "Value": current_bookmark.location_value,
+            "Type": current_bookmark.location_type,
+            "Source": current_bookmark.location_source,
+        }
+    return resp
 
 
 @kobo.route("/<book_uuid>/image.jpg")
@@ -367,7 +528,6 @@ def TopLevelEndpoint():
 
 # TODO: Implement the following routes
 @kobo.route("/v1/library/<dummy>", methods=["DELETE", "GET"])
-@kobo.route("/v1/library/<book_uuid>/state", methods=["PUT"])
 @kobo.route("/v1/library/tags", methods=["POST"])
 @kobo.route("/v1/library/tags/<shelf_name>", methods=["POST"])
 @kobo.route("/v1/library/tags/<tag_id>", methods=["DELETE"])
