@@ -45,10 +45,10 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from . import constants, logger, isoLanguages, services, worker
 from . import searched_ids, lm, babel, db, ub, config, get_locale, app
 from .gdriveutils import getFileFromEbooksFolder, do_gdrive_download
-from .helper import common_filters, get_search_results, fill_indexpage, speaking_language, check_valid_domain, \
-        order_authors, get_typeahead, render_task_status, json_serial, get_cc_columns, \
-        get_book_cover, get_download_link, send_mail, generate_random_password, send_registration_mail, \
-        check_send_to_kindle, check_read_formats, lcase, tags_filters, reset_password
+from .helper import common_filters, get_search_results, fill_indexpage, fill_indexpage_with_archived_books, \
+    speaking_language, check_valid_domain, order_authors, get_typeahead, render_task_status, json_serial, \
+    get_cc_columns, get_book_cover, get_download_link, send_mail, generate_random_password, \
+    send_registration_mail, check_send_to_kindle, check_read_formats, lcase, tags_filters, reset_password
 from .pagination import Pagination
 from .redirect import redirect_back
 
@@ -347,6 +347,22 @@ def toggle_read(book_id):
     return ""
 
 
+@web.route("/ajax/togglearchived/<int:book_id>", methods=['POST'])
+@login_required
+def toggle_archived(book_id):
+    archived_book = ub.session.query(ub.ArchivedBook).filter(and_(ub.ArchivedBook.user_id == int(current_user.id),
+                                                                  ub.ArchivedBook.book_id == book_id)).first()
+    if archived_book:
+        archived_book.is_archived = not archived_book.is_archived
+        archived_book.last_modified = datetime.datetime.utcnow()
+    else:
+        archived_book = ub.ArchivedBook(user_id=current_user.id, book_id=book_id)
+        archived_book.is_archived = True
+    ub.session.merge(archived_book)
+    ub.session.commit()
+    return ""
+
+
 '''
 @web.route("/ajax/getcomic/<int:book_id>/<book_format>/<int:page>")
 @login_required
@@ -542,6 +558,8 @@ def books_list(data, sort, book_id, page):
         return render_category_books(page, book_id, order)
     elif data == "language":
         return render_language_books(page, book_id, order)
+    elif data == "archived":
+        return render_archived_books(page, order)
     else:
         entries, random, pagination = fill_indexpage(page, db.Books, True, order)
         return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
@@ -1018,6 +1036,26 @@ def render_read_books(page, are_read, as_xml=False, order=None, *args, **kwargs)
                                      title=name, page=pagename)
 
 
+def render_archived_books(page, order):
+    order = order or []
+    archived_books = (
+        ub.session.query(ub.ArchivedBook)
+        .filter(ub.ArchivedBook.user_id == int(current_user.id))
+        .filter(ub.ArchivedBook.is_archived == True)
+        .all()
+    )
+    archived_book_ids = [archived_book.book_id for archived_book in archived_books]
+
+    archived_filter = db.Books.id.in_(archived_book_ids)
+
+    entries, random, pagination = fill_indexpage_with_archived_books(page, db.Books, archived_filter, order,
+                                                                     allow_show_archived=True)
+
+    name = _(u'Archived Books') + ' (' + str(len(archived_book_ids)) + ')'
+    pagename = "archived"
+    return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
+                                 title=name, page=pagename)
+
 # ################################### Download/Send ##################################################################
 
 
@@ -1435,7 +1473,8 @@ def read_book(book_id, book_format):
 @web.route("/book/<int:book_id>")
 @login_required_if_no_ano
 def show_book(book_id):
-    entries = db.session.query(db.Books).filter(db.Books.id == book_id).filter(common_filters()).first()
+    entries = db.session.query(db.Books).filter(and_(db.Books.id == book_id,
+                                                     common_filters(allow_show_archived=True))).first()
     if entries:
         for index in range(0, len(entries.languages)):
             try:
@@ -1464,8 +1503,14 @@ def show_book(book_id):
                     log.error("Custom Column No.%d is not existing in calibre database", config.config_read_column)
                     have_read = None
 
+            archived_book = ub.session.query(ub.ArchivedBook).\
+                filter(and_(ub.ArchivedBook.user_id == int(current_user.id),
+                            ub.ArchivedBook.book_id == book_id)).first()
+            is_archived = archived_book and archived_book.is_archived
+
         else:
             have_read = None
+            is_archived = None
 
         entries.tags = sort(entries.tags, key=lambda tag: tag.name)
 
@@ -1481,7 +1526,7 @@ def show_book(book_id):
 
         return render_title_template('detail.html', entry=entries, audioentries=audioentries, cc=cc,
                                      is_xhr=request.headers.get('X-Requested-With')=='XMLHttpRequest', title=entries.title, books_shelfs=book_in_shelfs,
-                                     have_read=have_read, kindle_list=kindle_list, reader_list=reader_list, page="book")
+                                     have_read=have_read, is_archived=is_archived, kindle_list=kindle_list, reader_list=reader_list, page="book")
     else:
         log.debug(u"Error opening eBook. File does not exist or file is not accessible:")
         flash(_(u"Error opening eBook. File does not exist or file is not accessible:"), category="error")

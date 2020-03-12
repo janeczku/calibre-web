@@ -25,6 +25,14 @@ $("#have_read_cb").on("change", function() {
     $(this).closest("form").submit();
 });
 
+$(function() {
+    $("#archived_form").ajaxForm();
+});
+
+$("#archived_cb").on("change", function() {
+    $(this).closest("form").submit();
+});
+
 (function() {
     var templates = {
         add: _.template(

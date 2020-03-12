@@ -23,6 +23,7 @@ import base64
 import os
 import uuid
 from time import gmtime, strftime
+
 try:
     from urllib import unquote
 except ImportError:
@@ -38,10 +39,10 @@ from flask import (
     redirect,
     abort
 )
-from flask_login import current_user, login_required
+from flask_login import login_required, current_user
 from werkzeug.datastructures import Headers
 from sqlalchemy import func
-from sqlalchemy.sql.expression import and_
+from sqlalchemy.sql.expression import or_
 import requests
 
 from . import config, logger, kobo_auth, db, helper, ub
@@ -57,6 +58,7 @@ kobo_auth.disable_failed_auth_redirect_for_blueprint(kobo)
 kobo_auth.register_url_value_preprocessor(kobo)
 
 log = logger.create()
+
 
 def get_store_url_for_current_request():
     # Programmatically modify the current url to point to the official Kobo store
@@ -99,9 +101,6 @@ def redirect_or_proxy_request():
     if config.config_kobo_proxy:
         if request.method == "GET":
             return redirect(get_store_url_for_current_request(), 307)
-        if request.method == "DELETE":
-            log.info('Delete Book')
-            return make_response(jsonify({}))
         else:
             # The Kobo device turns other request types into GET requests on redirects, so we instead proxy to the Kobo store ourselves.
             store_response = make_request_to_kobo_store()
@@ -141,13 +140,35 @@ def HandleSyncRequest():
     # in case of external changes (e.g: adding a book through Calibre).
     db.reconnect_db(config)
 
+    archived_books = (
+        ub.session.query(ub.ArchivedBook)
+        .filter(ub.ArchivedBook.user_id == int(current_user.id))
+        .all()
+    )
+
+    # We join-in books that have had their Archived bit recently modified in order to either:
+    #   * Restore them to the user's device.
+    #   * Delete them from the user's device.
+    # (Ideally we would use a join for this logic, however cross-database joins don't look trivial in SqlAlchemy.)
+    recently_restored_or_archived_books = []
+    archived_book_ids = {}
+    new_archived_last_modified = datetime.min
+    for archived_book in archived_books:
+        if archived_book.last_modified > sync_token.archive_last_modified:
+            recently_restored_or_archived_books.append(archived_book.book_id)
+        if archived_book.is_archived:
+            archived_book_ids[archived_book.book_id] = True
+        new_archived_last_modified = max(
+            new_archived_last_modified, archived_book.last_modified)
+
     # sqlite gives unexpected results when performing the last_modified comparison without the datetime cast.
     # It looks like it's treating the db.Books.last_modified field as a string and may fail
     # the comparison because of the +00:00 suffix.
     changed_entries = (
         db.session.query(db.Books)
         .join(db.Data)
-        .filter(func.datetime(db.Books.last_modified) > sync_token.books_last_modified)
+        .filter(or_(func.datetime(db.Books.last_modified) > sync_token.books_last_modified,
+                    db.Books.id.in_(recently_restored_or_archived_books)))
         .filter(db.Data.format.in_(KOBO_FORMATS))
         .all()
     )
@@ -156,7 +177,7 @@ def HandleSyncRequest():
     for book in changed_entries:
         kobo_reading_state = get_or_create_reading_state(book.id)
         entitlement = {
-            "BookEntitlement": create_book_entitlement(book),
+            "BookEntitlement": create_book_entitlement(book, archived=(book.id in archived_book_ids)),
             "BookMetadata": get_metadata(book),
         }
 
@@ -191,7 +212,7 @@ def HandleSyncRequest():
 
     sync_token.books_last_created = new_books_last_created
     sync_token.books_last_modified = new_books_last_modified
-    sync_token.reading_state_last_modified = new_reading_state_last_modified
+    sync_token.archive_last_modified = new_archived_last_modified
 
     if config.config_kobo_proxy:
         return generate_sync_response(request, sync_token, sync_results)
@@ -256,7 +277,7 @@ def get_download_url_for_book(book, book_format):
     )
 
 
-def create_book_entitlement(book):
+def create_book_entitlement(book, archived):
     book_uuid = book.uuid
     return {
         "Accessibility": "Full",
@@ -264,15 +285,18 @@ def create_book_entitlement(book):
         "Created": convert_to_kobo_timestamp_string(book.timestamp),
         "CrossRevisionId": book_uuid,
         "Id": book_uuid,
+        "IsRemoved": archived,
         "IsHiddenFromArchive": False,
         "IsLocked": False,
-        # Setting this to true removes from the device.
-        "IsRemoved": False,
-        "LastModified": convert_to_kobo_timestamp_string(book.last_modified),
+        "LastModified": book.last_modified,
         "OriginCategory": "Imported",
         "RevisionId": book_uuid,
         "Status": "Active",
     }
+
+
+def current_time():
+    return strftime("%Y-%m-%dT%H:%M:%SZ", gmtime())
 
 
 def get_description(book):
@@ -526,13 +550,39 @@ def TopLevelEndpoint():
     return make_response(jsonify({}))
 
 
+@kobo.route("/v1/library/<book_uuid>", methods=["DELETE"])
+@login_required
+def HandleBookDeletionRequest(book_uuid):
+    log.info("Kobo book deletion request received for book %s" % book_uuid)
+    book = db.session.query(db.Books).filter(db.Books.uuid == book_uuid).first()
+    if not book:
+        log.info(u"Book %s not found in database", book_uuid)
+        return redirect_or_proxy_request()
+
+    book_id = book.id
+    archived_book = (
+        ub.session.query(ub.ArchivedBook)
+        .filter(ub.ArchivedBook.book_id == book_id)
+        .first()
+    )
+    if not archived_book:
+        archived_book = ub.ArchivedBook(user_id=current_user.id, book_id=book_id)
+    archived_book.is_archived = True
+    archived_book.last_modified = datetime.utcnow()
+
+    ub.session.merge(archived_book)
+    ub.session.commit()
+
+    return ("", 204)
+
+
 # TODO: Implement the following routes
-@kobo.route("/v1/library/<dummy>", methods=["DELETE", "GET"])
+@kobo.route("/v1/library/<book_uuid>/state", methods=["PUT"])
 @kobo.route("/v1/library/tags", methods=["POST"])
 @kobo.route("/v1/library/tags/<shelf_name>", methods=["POST"])
 @kobo.route("/v1/library/tags/<tag_id>", methods=["DELETE"])
-def HandleUnimplementedRequest(dummy=None, book_uuid=None, shelf_name=None, tag_id=None):
-    log.debug("Unimplemented Library Request received: %s", request.base_url)
+def HandleUnimplementedRequest(book_uuid=None, shelf_name=None, tag_id=None):
+    log.debug("Alternative Request received:")
     return redirect_or_proxy_request()
 
 

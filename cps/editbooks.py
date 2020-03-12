@@ -179,6 +179,7 @@ def delete_book(book_id, book_format):
                 # delete book from Shelfs, Downloads, Read list
                 ub.session.query(ub.BookShelf).filter(ub.BookShelf.book_id == book_id).delete()
                 ub.session.query(ub.ReadBook).filter(ub.ReadBook.book_id == book_id).delete()
+                ub.session.query(ub.ArchivedBook).filter(ub.ReadBook.book_id == book_id).delete()
                 ub.delete_download(book_id)
                 ub.session.commit()
 
@@ -261,6 +262,7 @@ def render_edit_book(book_id):
     return render_title_template('book_edit.html', book=book, authors=author_names, cc=cc,
                                  title=_(u"edit metadata"), page="editbook",
                                  conversion_formats=allowed_conversion_formats,
+                                 config=config,
                                  source_formats=valid_source_formats)
 
 

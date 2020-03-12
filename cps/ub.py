@@ -98,8 +98,11 @@ def get_sidebar_config(kwargs=None):
     sidebar.append({"glyph": "glyphicon-file", "text": _('File formats'), "link": 'web.formats_list', "id": "format",
                     "visibility": constants.SIDEBAR_FORMAT, 'public': True,
                     "page": "format", "show_text": _('Show file formats selection'), "config_show":True})
+    sidebar.append(
+        {"glyph": "glyphicon-trash", "text": _('Archived Books'), "link": 'web.books_list', "id": "archived",
+         "visibility": constants.SIDEBAR_ARCHIVED, 'public': (not g.user.is_anonymous), "page": "archived",
+         "show_text": _('Show archived books'), "config_show": True})
     return sidebar
-
 
 
 class UserBase:
@@ -310,6 +313,16 @@ class Bookmark(Base):
     format = Column(String(collation='NOCASE'))
     bookmark_key = Column(String)
 
+# Baseclass representing books that are archived on the user's Kobo device.
+class ArchivedBook(Base):
+    __tablename__ = 'archived_book'
+
+    id = Column(Integer, primary_key=True)
+    user_id = Column(Integer, ForeignKey('user.id'))
+    book_id = Column(Integer)
+    is_archived = Column(Boolean, unique=False)
+    last_modified = Column(DateTime, default=datetime.datetime.utcnow)
+
 
 # The Kobo ReadingState API keeps track of 4 timestamped entities:
 #   ReadingState, StatusInfo, Statistics, CurrentBookmark
@@ -417,6 +430,8 @@ def migrate_Database(session):
         KoboBookmark.__table__.create(bind=engine)
     if not engine.dialect.has_table(engine.connect(), "kobo_statistics"):
         KoboStatistics.__table__.create(bind=engine)
+    if not engine.dialect.has_table(engine.connect(), "archived_book"):
+        ArchivedBook.__table__.create(bind=engine)
     if not engine.dialect.has_table(engine.connect(), "registration"):
         ReadBook.__table__.create(bind=engine)
         conn = engine.connect()
