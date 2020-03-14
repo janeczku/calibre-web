@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 #  This file is part of the Calibre-Web (https://github.com/janeczku/calibre-web)
@@ -58,12 +57,12 @@ def get_sidebar_config(kwargs=None):
                     "visibility": constants.SIDEBAR_RECENT, 'public': True, "page": "root",
                     "show_text": _('Show recent books'), "config_show":True})
     sidebar.append({"glyph": "glyphicon-fire", "text": _('Hot Books'), "link": 'web.books_list', "id": "hot",
-                    "visibility": constants.SIDEBAR_HOT, 'public': True, "page": "hot", "show_text": _('Show hot books'),
+                    "visibility": constants.SIDEBAR_HOT, 'public': True, "page": "hot", "show_text": _('Show Hot Books'),
                     "config_show":True})
     sidebar.append(
-        {"glyph": "glyphicon-star", "text": _('Best rated Books'), "link": 'web.books_list', "id": "rated",
+        {"glyph": "glyphicon-star", "text": _('Top Rated Books'), "link": 'web.books_list', "id": "rated",
          "visibility": constants.SIDEBAR_BEST_RATED, 'public': True, "page": "rated",
-         "show_text": _('Show best rated books'), "config_show":True})
+         "show_text": _('Show Top Rated Books'), "config_show":True})
     sidebar.append({"glyph": "glyphicon-eye-open", "text": _('Read Books'), "link": 'web.books_list', "id": "read",
                     "visibility": constants.SIDEBAR_READ_AND_UNREAD, 'public': (not g.user.is_anonymous), "page": "read",
                     "show_text": _('Show read and unread'), "config_show": content})
@@ -157,6 +156,22 @@ class UserBase:
     def show_detail_random(self):
         return self.check_visibility(constants.DETAIL_RANDOM)
 
+    def list_denied_tags(self):
+        mct = self.denied_tags.split(",")
+        return [t.strip() for t in mct]
+
+    def list_allowed_tags(self):
+        mct = self.allowed_tags.split(",")
+        return [t.strip() for t in mct]
+
+    def list_denied_column_values(self):
+        mct = self.denied_column_value.split(",")
+        return [t.strip() for t in mct]
+
+    def list_allowed_column_values(self):
+        mct = self.allowed_column_value.split(",")
+        return [t.strip() for t in mct]
+
     def __repr__(self):
         return '<User %r>' % self.nickname
 
@@ -179,6 +194,11 @@ class User(UserBase, Base):
     sidebar_view = Column(Integer, default=1)
     default_language = Column(String(3), default="all")
     mature_content = Column(Boolean, default=True)
+    denied_tags = Column(String, default="")
+    allowed_tags = Column(String, default="")
+    denied_column_value = Column(String, default="")
+    allowed_column_value = Column(String, default="")
+    remote_auth_token = relationship('RemoteAuthToken', backref='user', lazy='dynamic')
 
 
 if oauth_support:
@@ -214,9 +234,10 @@ class Anonymous(AnonymousUserMixin, UserBase):
         self.locale = data.locale
         self.mature_content = data.mature_content
         self.kindle_mail = data.kindle_mail
-
-        # settings = session.query(config).first()
-        # self.anon_browse = settings.config_anonbrowse
+        self.denied_tags = data.denied_tags
+        self.allowed_tags = data.allowed_tags
+        self.denied_column_value = data.denied_column_value
+        self.allowed_column_value = data.allowed_column_value
 
     def role_admin(self):
         return False
@@ -308,10 +329,11 @@ class RemoteAuthToken(Base):
     __tablename__ = 'remote_auth_token'
 
     id = Column(Integer, primary_key=True)
-    auth_token = Column(String(8), unique=True)
+    auth_token = Column(String, unique=True)
     user_id = Column(Integer, ForeignKey('user.id'))
     verified = Column(Boolean, default=False)
     expiration = Column(DateTime)
+    token_type = Column(Integer, default=0)
 
     def __init__(self):
         self.auth_token = (hexlify(os.urandom(4))).decode('utf-8')
@@ -343,6 +365,15 @@ def migrate_Database(session):
         conn.execute("ALTER TABLE registration ADD column 'allow' INTEGER")
         conn.execute("update registration set 'allow' = 1")
         session.commit()
+    try:
+        session.query(exists().where(RemoteAuthToken.token_type)).scalar()
+        session.commit()
+    except exc.OperationalError:  # Database is not compatible, some columns are missing
+        conn = engine.connect()
+        conn.execute("ALTER TABLE remote_auth_token ADD column 'token_type' INTEGER DEFAULT 0")
+        conn.execute("update remote_auth_token set 'token_type' = 0")
+        session.commit()
+
     # Handle table exists, but no content
     cnt = session.query(Registration).count()
     if not cnt:
@@ -379,12 +410,19 @@ def migrate_Database(session):
               'side_autor': constants.SIDEBAR_AUTHOR,
             'detail_random': constants.DETAIL_RANDOM})
         session.commit()
-    try:
+    '''try:
         session.query(exists().where(User.mature_content)).scalar()
     except exc.OperationalError:
         conn = engine.connect()
-        conn.execute("ALTER TABLE user ADD column `mature_content` INTEGER DEFAULT 1")
-
+        conn.execute("ALTER TABLE user ADD column `mature_content` INTEGER DEFAULT 1")'''
+    try:
+        session.query(exists().where(User.denied_tags)).scalar()
+    except exc.OperationalError:  # Database is not compatible, some columns are missing
+        conn = engine.connect()
+        conn.execute("ALTER TABLE user ADD column `denied_tags` String DEFAULT ''")
+        conn.execute("ALTER TABLE user ADD column `allowed_tags` String DEFAULT ''")
+        conn.execute("ALTER TABLE user ADD column `denied_column_value` DEFAULT ''")
+        conn.execute("ALTER TABLE user ADD column `allowed_column_value` DEFAULT ''")
     if session.query(User).filter(User.role.op('&')(constants.ROLE_ANONYMOUS) == constants.ROLE_ANONYMOUS).first() is None:
         create_anonymous_user(session)
     try:
@@ -425,7 +463,8 @@ def migrate_Database(session):
 def clean_database(session):
     # Remove expired remote login tokens
     now = datetime.datetime.now()
-    session.query(RemoteAuthToken).filter(now > RemoteAuthToken.expiration).delete()
+    session.query(RemoteAuthToken).filter(now > RemoteAuthToken.expiration).\
+        filter(RemoteAuthToken.token_type !=1 ).delete()
     session.commit()
 
 

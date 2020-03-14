@@ -448,32 +448,46 @@ def delete_book(book, calibrepath, book_format):
         return delete_book_file(book, calibrepath, book_format)
 
 
-def get_book_cover(book_id):
-    book = db.session.query(db.Books).filter(db.Books.id == book_id).first()
-    if book.has_cover:
+def get_cover_on_failure(use_generic_cover):
+    if use_generic_cover:
+        return send_from_directory(_STATIC_DIR, "generic_cover.jpg")
+    else:
+        return None
 
+def get_book_cover(book_id):
+    book = db.session.query(db.Books).filter(db.Books.id == book_id).filter(common_filters()).first()
+    return get_book_cover_internal(book, use_generic_cover_on_failure=True)
+
+def get_book_cover_with_uuid(book_uuid,
+                   use_generic_cover_on_failure=True):
+    book = db.session.query(db.Books).filter(db.Books.uuid == book_uuid).first()
+    return get_book_cover_internal(book, use_generic_cover_on_failure)
+
+def get_book_cover_internal(book,
+                   use_generic_cover_on_failure):
+    if book and book.has_cover:
         if config.config_use_google_drive:
             try:
                 if not gd.is_gdrive_ready():
-                    return send_from_directory(_STATIC_DIR, "generic_cover.jpg")
+                    return get_cover_on_failure(use_generic_cover_on_failure)
                 path=gd.get_cover_via_gdrive(book.path)
                 if path:
                     return redirect(path)
                 else:
                     log.error('%s/cover.jpg not found on Google Drive', book.path)
-                    return send_from_directory(_STATIC_DIR, "generic_cover.jpg")
+                    return get_cover_on_failure(use_generic_cover_on_failure)
             except Exception as e:
                 log.exception(e)
                 # traceback.print_exc()
-                return send_from_directory(_STATIC_DIR,"generic_cover.jpg")
+                return get_cover_on_failure(use_generic_cover_on_failure)
         else:
             cover_file_path = os.path.join(config.config_calibre_dir, book.path)
             if os.path.isfile(os.path.join(cover_file_path, "cover.jpg")):
                 return send_from_directory(cover_file_path, "cover.jpg")
             else:
-                return send_from_directory(_STATIC_DIR,"generic_cover.jpg")
+                return get_cover_on_failure(use_generic_cover_on_failure)
     else:
-        return send_from_directory(_STATIC_DIR,"generic_cover.jpg")
+        return get_cover_on_failure(use_generic_cover_on_failure)
 
 
 # saves book cover from url
@@ -494,16 +508,16 @@ def save_cover_from_filestorage(filepath, saved_filename, img):
                 os.makedirs(filepath)
             except OSError:
                 log.error(u"Failed to create path for cover")
-                return False
+                return False, _(u"Failed to create path for cover")
         try:
             img.save(os.path.join(filepath, saved_filename))
         except IOError:
             log.error(u"Cover-file is not a valid image file")
-            return False
+            return False, _(u"Cover-file is not a valid image file")
         except OSError:
             log.error(u"Failed to store cover-file")
-            return False
-    return True
+            return False, _(u"Failed to store cover-file")
+    return True, None
 
 
 # saves book cover to gdrive or locally
@@ -513,7 +527,7 @@ def save_cover(img, book_path):
     if use_PIL:
         if content_type not in ('image/jpeg', 'image/png', 'image/webp'):
             log.error("Only jpg/jpeg/png/webp files are supported as coverfile")
-            return False
+            return False, _("Only jpg/jpeg/png/webp files are supported as coverfile")
         # convert to jpg because calibre only supports jpg
         if content_type in ('image/png', 'image/webp'):
             if hasattr(img,'stream'):
@@ -527,17 +541,18 @@ def save_cover(img, book_path):
     else:
         if content_type not in ('image/jpeg'):
             log.error("Only jpg/jpeg files are supported as coverfile")
-            return False
+            return False, _("Only jpg/jpeg files are supported as coverfile")
 
     if config.config_use_google_drive:
         tmpDir = gettempdir()
-        if save_cover_from_filestorage(tmpDir, "uploaded_cover.jpg", img) is True:
+        ret, message = save_cover_from_filestorage(tmpDir, "uploaded_cover.jpg", img)
+        if ret is True:
             gd.uploadFileToEbooksFolder(os.path.join(book_path, 'cover.jpg'),
                                         os.path.join(tmpDir, "uploaded_cover.jpg"))
             log.info("Cover is saved on Google Drive")
-            return True
+            return True, None
         else:
-            return False
+            return False, message
     else:
         return save_cover_from_filestorage(os.path.join(config.config_calibre_dir, book_path), "cover.jpg", img)
 
@@ -674,20 +689,40 @@ def common_filters():
         lang_filter = db.Books.languages.any(db.Languages.lang_code == current_user.filter_language())
     else:
         lang_filter = true()
-    content_rating_filter = false() if current_user.mature_content else \
-        db.Books.tags.any(db.Tags.name.in_(config.mature_content_tags()))
-    return and_(lang_filter, ~content_rating_filter)
+    negtags_list = current_user.list_denied_tags()
+    postags_list = current_user.list_allowed_tags()
+    neg_content_tags_filter = false() if negtags_list == [''] else db.Books.tags.any(db.Tags.name.in_(negtags_list))
+    pos_content_tags_filter = true() if postags_list == [''] else db.Books.tags.any(db.Tags.name.in_(postags_list))
+    if config.config_restricted_column:
+        pos_cc_list = current_user.allowed_column_value.split(',')
+        pos_content_cc_filter = true() if pos_cc_list == [''] else \
+            getattr(db.Books, 'custom_column_' + str(config.config_restricted_column)).\
+                any(db.cc_classes[config.config_restricted_column].value.in_(pos_cc_list))
+        neg_cc_list = current_user.denied_column_value.split(',')
+        neg_content_cc_filter = false() if neg_cc_list == [''] else \
+            getattr(db.Books, 'custom_column_' + str(config.config_restricted_column)).\
+                any(db.cc_classes[config.config_restricted_column].value.in_(neg_cc_list))
+    else:
+        pos_content_cc_filter = true()
+        neg_content_cc_filter = false()
+    return and_(lang_filter, pos_content_tags_filter, ~neg_content_tags_filter,
+                pos_content_cc_filter, ~neg_content_cc_filter)
+
 
 def tags_filters():
-    return ~(false() if current_user.mature_content else \
-        db.Tags.name.in_(config.mature_content_tags()))
-    # return db.session.query(db.Tags).filter(~content_rating_filter).order_by(db.Tags.name).all()
+    negtags_list = current_user.list_denied_tags()
+    postags_list = current_user.list_allowed_tags()
+    neg_content_tags_filter = false() if negtags_list == [''] else db.Tags.name.in_(negtags_list)
+    pos_content_tags_filter = true() if postags_list == [''] else db.Tags.name.in_(postags_list)
+    return and_(pos_content_tags_filter, ~neg_content_tags_filter)
+    # return ~(false()) if postags_list == [''] else db.Tags.in_(postags_list)
 
 
 # Creates for all stored languages a translated speaking name in the array for the UI
 def speaking_language(languages=None):
     if not languages:
-        languages = db.session.query(db.Languages).all()
+        languages = db.session.query(db.Languages).join(db.books_languages_link).join(db.Books).filter(common_filters())\
+        .group_by(text('books_languages_link.lang_code')).all()
     for lang in languages:
         try:
             cur_l = LC.parse(lang.lang_code)
@@ -774,7 +809,7 @@ def get_cc_columns():
         cc = []
         for col in tmpcc:
             r = re.compile(config.config_columns_to_ignore)
-            if r.match(col.label):
+            if not r.match(col.name):
                 cc.append(col)
     else:
         cc = tmpcc
@@ -784,11 +819,11 @@ def get_download_link(book_id, book_format):
     book_format = book_format.split(".")[0]
     book = db.session.query(db.Books).filter(db.Books.id == book_id).filter(common_filters()).first()
     if book:
-        data = db.session.query(db.Data).filter(db.Data.book == book.id)\
+        data1 = db.session.query(db.Data).filter(db.Data.book == book.id)\
             .filter(db.Data.format == book_format.upper()).first()
     else:
         abort(404)
-    if data:
+    if data1:
         # collect downloaded books only for registered user and not for anonymous user
         if current_user.is_authenticated:
             ub.update_download(book_id, int(current_user.id))
@@ -798,9 +833,9 @@ def get_download_link(book_id, book_format):
         file_name = get_valid_filename(file_name)
         headers = Headers()
         headers["Content-Type"] = mimetypes.types_map.get('.' + book_format, "application/octet-stream")
-        headers["Content-Disposition"] = "attachment; filename*=UTF-8''%s.%s" % (quote(file_name.encode('utf-8')),
-                                                                                 book_format)
-        return do_download_file(book, book_format, data, headers)
+        headers["Content-Disposition"] = "attachment; filename=%s.%s; filename*=UTF-8''%s.%s" % (
+            quote(file_name.encode('utf-8')), book_format, quote(file_name.encode('utf-8')), book_format)
+        return do_download_file(book, book_format, data1, headers)
     else:
         abort(404)
 

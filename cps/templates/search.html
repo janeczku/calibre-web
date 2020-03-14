@@ -2,8 +2,8 @@
 {% block body %}
 <div class="discover">
     {% if entries|length < 1 %}
-      <h2>{{_('No Results for:')}} {{searchterm}}</h2>
-      <p>{{_('Please try a different search')}}</p>
+      <h2>{{_('No Results Found')}} {{searchterm}}</h2>
+      <p>{{_('Search Term:')}} {{searchterm}}</p>
     {% else %}
       <h2>{{entries|length}} {{_('Results for:')}} {{searchterm}}</h2>
       {% if g.user.is_authenticated %}

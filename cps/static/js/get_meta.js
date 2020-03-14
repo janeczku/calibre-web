@@ -15,13 +15,15 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 /*
- * Get Metadata from Douban Books api and Google Books api
+ * Get Metadata from Douban Books api and Google Books api and ComicVine
  * Google Books api document: https://developers.google.com/books/docs/v1/using
  * Douban Books api document: https://developers.douban.com/wiki/?title=book_v2 (Chinese Only)
+ * ComicVine api document: https://comicvine.gamespot.com/api/documentation
 */
-/* global _, i18nMsg, tinymce */ 
+/* global _, i18nMsg, tinymce */
 var dbResults = [];
 var ggResults = [];
+var cvResults = [];
 
 $(function () {
     var msg = i18nMsg;
@@ -32,6 +34,10 @@ $(function () {
     var google = "https://www.googleapis.com";
     var ggSearch = "/books/v1/volumes";
     var ggDone = false;
+
+    var comicvine = "https://comicvine.gamespot.com";
+    var cvSearch = "/api/search/";
+    var cvDone = false;
 
     var showFlag = 0;
 
@@ -48,16 +54,17 @@ $(function () {
             if ($.inArray(el, uniqueTags) === -1) uniqueTags.push(el);
         });
 
-        $("#bookAuthor").val(book.authors);
+        var ampSeparatedAuthors = (book.authors || []).join(" & ");
+        $("#bookAuthor").val(ampSeparatedAuthors);
         $("#book_title").val(book.title);
         $("#tags").val(uniqueTags.join(","));
         $("#rating").data("rating").setValue(Math.round(book.rating));
         $(".cover img").attr("src", book.cover);
         $("#cover_url").val(book.cover);
         $("#pubdate").val(book.publishedDate);
-        $("#publisher").val(book.publisher)
-        if (book.series != undefined) {
-            $("#series").val(book.series)
+        $("#publisher").val(book.publisher);
+        if (typeof book.series !== "undefined") {
+            $("#series").val(book.series);
         }
     }
 
@@ -72,16 +79,18 @@ $(function () {
         }
         function formatDate (date) {
             var d = new Date(date),
-                month = '' + (d.getMonth() + 1),
-                day = '' + d.getDate(),
+                month = "" + (d.getMonth() + 1),
+                day = "" + d.getDate(),
                 year = d.getFullYear();
-        
-            if (month.length < 2) 
-                month = '0' + month;
-            if (day.length < 2) 
-                day = '0' + day;
-        
-            return [year, month, day].join('-');
+
+            if (month.length < 2) {
+                month = "0" + month;
+            }
+            if (day.length < 2) {
+                day = "0" + day;
+            }
+
+            return [year, month, day].join("-");
         }
 
         if (ggDone && ggResults.length > 0) {
@@ -116,16 +125,17 @@ $(function () {
         }
         if (dbDone && dbResults.length > 0) {
             dbResults.forEach(function(result) {
-                if (result.series){
-                    var series_title = result.series.title
+                var seriesTitle = "";
+                if (result.series) {
+                    seriesTitle = result.series.title;
                 }
-                var date_fomers = result.pubdate.split("-")
-                var publishedYear = parseInt(date_fomers[0])
-                var publishedMonth = parseInt(date_fomers[1])
-                var publishedDate = new Date(publishedYear, publishedMonth-1, 1)
+                var dateFomers = result.pubdate.split("-");
+                var publishedYear = parseInt(dateFomers[0]);
+                var publishedMonth = parseInt(dateFomers[1]);
+                var publishedDate = new Date(publishedYear, publishedMonth - 1, 1);
 
-                publishedDate = formatDate(publishedDate)
-               
+                publishedDate = formatDate(publishedDate);
+
                 var book = {
                     id: result.id,
                     title: result.title,
@@ -137,7 +147,7 @@ $(function () {
                         return tag.title.toLowerCase().replace(/,/g, "_");
                     }),
                     rating: result.rating.average || 0,
-                    series: series_title || "",
+                    series: seriesTitle || "",
                     cover: result.image,
                     url: "https://book.douban.com/subject/" + result.id,
                     source: {
@@ -159,6 +169,52 @@ $(function () {
                 $("#book-list").append($book);
             });
             dbDone = false;
+        }
+        if (cvDone && cvResults.length > 0) {
+            cvResults.forEach(function(result) {
+                var seriesTitle = "";
+                if (result.volume.name) {
+                    seriesTitle = result.volume.name;
+                }
+                var dateFomers = "";
+                if (result.store_date) {
+                    dateFomers = result.store_date.split("-");
+                }else{
+                    dateFomers = result.date_added.split("-");
+                }
+                var publishedYear = parseInt(dateFomers[0]);
+                var publishedMonth = parseInt(dateFomers[1]);
+                var publishedDate = new Date(publishedYear, publishedMonth - 1, 1);
+                
+                publishedDate = formatDate(publishedDate);
+
+                var book = {
+                    id: result.id,
+                    title: seriesTitle + ' #' +('00' + result.issue_number).slice(-3) + ' - ' + result.name,
+                    authors: result.author || [],
+                    description: result.description,
+                    publisher: "",
+                    publishedDate: publishedDate || "",
+                    tags: ['Comics', seriesTitle],
+                    rating: 0,
+                    series: seriesTitle || "",
+                    cover: result.image.original_url,
+                    url: result.site_detail_url,
+                    source: {
+                        id: "comicvine",
+                        description: "ComicVine Books",
+                        url: "https://comicvine.gamespot.com/"
+                    }
+                };
+
+                var $book = $(templates.bookResult(book));
+                $book.find("img").on("click", function () {
+                    populateForm(book);
+                });
+
+                $("#book-list").append($book);
+            });
+            cvDone = false;
         }
     }
 
@@ -183,7 +239,7 @@ $(function () {
     }
 
     function dbSearchBook (title) {
-        apikey="0df993c66c0c636e29ecbb5344252a4a"
+        var apikey = "0df993c66c0c636e29ecbb5344252a4a";
         $.ajax({
             url: douban + dbSearch + "?apikey=" + apikey + "&q=" + title + "&fields=all&count=10",
             type: "GET",
@@ -193,12 +249,34 @@ $(function () {
                 dbResults = data.books;
             },
             error: function error() {
-                $("#meta-info").html("<p class=\"text-danger\">" + msg.search_error + "!</p>"+ $("#meta-info")[0].innerHTML)
+                $("#meta-info").html("<p class=\"text-danger\">" + msg.search_error + "!</p>" + $("#meta-info")[0].innerHTML);
             },
             complete: function complete() {
                 dbDone = true;
                 showResult();
                 $("#show-douban").trigger("change");
+            }
+        });
+    }
+
+    function cvSearchBook (title) {
+        var apikey = "57558043c53943d5d1e96a9ad425b0eb85532ee6";
+        title = encodeURIComponent(title);
+        $.ajax({
+            url: comicvine + cvSearch + "?api_key=" + apikey + "&resources=issue&query=" + title + "&sort=name:desc&format=jsonp",
+            type: "GET",
+            dataType: "jsonp",
+            jsonp: "json_callback",
+            success: function success(data) {
+                cvResults = data.results;
+            },
+            error: function error() {
+                $("#meta-info").html("<p class=\"text-danger\">" + msg.search_error + "!</p>" + $("#meta-info")[0].innerHTML);
+            },
+            complete: function complete() {
+                cvDone = true;
+                showResult();
+                $("#show-comics").trigger("change");
             }
         });
     }
@@ -209,6 +287,7 @@ $(function () {
         if (keyword) {
             dbSearchBook(keyword);
             ggSearchBook(keyword);
+            cvSearchBook(keyword);
         }
     }
 

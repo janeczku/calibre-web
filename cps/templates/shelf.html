@@ -64,13 +64,13 @@
   <div class="modal-dialog modal-sm">
     <div class="modal-content">
       <div class="modal-header bg-danger text-center">
-      <span>{{_('Do you really want to delete the shelf?')}}</span>
+      <span>{{_('Are you sure you want to delete this shelf?')}}</span>
       </div>
       <div class="modal-body text-center">
-        <span>{{_('Shelf will be lost for everybody and forever!')}}</span>
+        <span>{{_('Shelf will be deleted for all users')}}</span>
           <p></p>
-        <a id="confirm" href="{{ url_for('shelf.delete_shelf', shelf_id=shelf.id) }}" class="btn btn-danger">{{_('Ok')}}</a>
-        <button type="button" class="btn btn-default" data-dismiss="modal">{{_('Back')}}</button>
+        <a id="confirm" href="{{ url_for('shelf.delete_shelf', shelf_id=shelf.id) }}" class="btn btn-danger">{{_('OK')}}</a>
+        <button type="button" class="btn btn-default" data-dismiss="modal">{{_('Cancel')}}</button>
       </div>
     </div>
   </div>
