@@ -2,22 +2,22 @@
 {% block body %}
   <div class="col-sm-8 col-lg-8 col-xs-12">
     <h2>{{title}}</h2>
-    <div>{{_('Drag \'n drop to rearrange order')}}</div>
+    <div>{{_('Drag to Rearrange Order')}}</div>
       <div id="sortTrue" class="list-group">
         {% for entry in entries %}
-          <div id="{{entry.id}}" class="list-group-item">
+          <div id="{{entry['id']}}" class="list-group-item">
             <div class="row">
               <div class="col-lg-2 col-sm-4 hidden-xs">
-                  <img class="cover-height" src="{{ url_for('web.get_cover', book_id=entry.id) }}">
+                  <img class="cover-height" src="{{ url_for('web.get_cover', book_id=entry['id']) }}">
               </div>
               <div class="col-lg-10 col-sm-8 col-xs-12">
-                  {{entry.title}}
-                  {% if entry.series|length > 0 %}
+                  {{entry['title']}}
+                  {% if entry['series']|length > 0 %}
                     <br>
-                    {{entry.series_index}} - {{entry.series[0].name}}
+                    {{entry['series_index']}} - {{entry['series'][0].name}}
                   {% endif %}
                   <br>
-                  {% for author in entry.authors %}
+                  {% for author in entry['authors'] %}
                     {{author.name.replace('|',',')}}
                     {% if not loop.last %}
                       &amp;
@@ -29,7 +29,7 @@
         {% endfor %}
       </div>
         <button onclick="sendData('{{ url_for('shelf.order_shelf', shelf_id=shelf.id) }}')" class="btn btn-default" id="ChangeOrder">{{_('Change order')}}</button>
-        <a href="{{ url_for('shelf.show_shelf', shelf_id=shelf.id) }}" class="btn btn-default">{{_('Back')}}</a>
+        <a href="{{ url_for('shelf.show_shelf', shelf_id=shelf.id) }}" id="shelf_back" class="btn btn-default">{{_('Back')}}</a>
   </div>
 {% endblock %}
 
@@ -37,6 +37,3 @@
 <script src="{{ url_for('static', filename='js/libs/Sortable.min.js') }}"></script>
 <script src="{{ url_for('static', filename='js/shelforder.js') }}"></script>
 {% endblock %}
-
-
-

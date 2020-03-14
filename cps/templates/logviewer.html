@@ -3,13 +3,13 @@
    <div id="log_group" class="inputs">
      {% if log_enable %}
       <div><input type="radio" name="log_radio" id="log1" value="0" checked>
-      <label for="log1">{{_('Show Calibre-Web log: ')}}</label>{{logfiles[0]}}</div>
+      <label for="log1">{{_('Show Calibre-Web Log: ')}}</label>{{logfiles[0]}}</div>
      {% else %}
-     <div><label for="log1">{{_('Calibre-Web log: ')}}</label> {{_("Stream output, can't be displayed")}}</div>
+     <div><label for="log1">{{_('Calibre-Web Log: ')}}</label> {{_("Stream output, can't be displayed")}}</div>
      {% endif %}
      {% if accesslog_enable %}
       <div><input type="radio" name="log_radio" id="log0" value="1" {% if not log_enable %}checked{% endif %}>
-      <label for="log0">{{_('Show access log: ')}}</label>{{logfiles[1]}}</div>
+      <label for="log0">{{_('Show Access Log: ')}}</label>{{logfiles[1]}}</div>
      {% endif %}
    </div>
    <div id="renderer" class="log"></div>

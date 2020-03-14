@@ -20,6 +20,7 @@
   <div class="container-fluid">
   <div class="row">
     <div class="col">
+        <h1  class="text-center">{{instance}}</h1>
         <h1  class="text-center">{{ error_code }}</h1>
         <h3>{{ error_name }}</h3>
     </div>
@@ -34,14 +35,14 @@
   {% if issue %}
     <div class="row">
     <div class="col errorlink">Please report this issue with all related information:
-        <a href="https://github.com/janeczku/calibre-web/issues/new">{{_('Create issue')}}</a>
+        <a href="https://github.com/janeczku/calibre-web/issues/new?assignees=&labels=&template=bug_report.md&title=">{{_('Create Issue')}}</a>
     </div>
       </div>
     {% endif %}
 
   <div class="row">
     <div class="col errorlink">
-        <a href="{{url_for('web.index')}}" title="{{ _('Back to home') }}">{{_('Back to home')}}</a>
+        <a href="{{url_for('web.index')}}" title="{{ _('Return to Home') }}">{{_('Return to Home')}}</a>
     </div>
   </div>
 

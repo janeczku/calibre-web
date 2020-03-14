@@ -175,7 +175,7 @@ def delete_book(book_id, book_format):
                     cc_string = "custom_column_" + str(c.id)
                     if not c.is_multiple:
                         if len(getattr(book, cc_string)) > 0:
-                            if c.datatype == 'bool' or c.datatype == 'integer':
+                            if c.datatype == 'bool' or c.datatype == 'integer' or c.datatype == 'float':
                                 del_cc = getattr(book, cc_string)[0]
                                 getattr(book, cc_string).remove(del_cc)
                                 db.session.delete(del_cc)
@@ -254,7 +254,7 @@ def edit_cc_data(book_id, book, to_save):
             else:
                 cc_db_value = None
             if to_save[cc_string].strip():
-                if c.datatype == 'int' or c.datatype == 'bool':
+                if c.datatype == 'int' or c.datatype == 'bool' or c.datatype == 'float':
                     if to_save[cc_string] == 'None':
                         to_save[cc_string] = None
                     elif c.datatype == 'bool':
@@ -369,11 +369,11 @@ def upload_cover(request, book):
         requested_file = request.files['btn-upload-cover']
         # check for empty request
         if requested_file.filename != '':
-            if helper.save_cover(requested_file, book.path) is True:
+            ret, message = helper.save_cover(requested_file, book.path)
+            if ret is True:
                 return True
             else:
-                # ToDo Message not always coorect
-                flash(_(u"Cover is not a supported imageformat (jpg/png/webp), can't save"), category="error")
+                flash(message, category="error")
                 return False
     return None
 
@@ -697,7 +697,6 @@ def upload():
             # Reread book. It's important not to filter the result, as it could have language which hide it from
             # current users view (tags are not stored/extracted from metadata and could also be limited)
             book = db.session.query(db.Books).filter(db.Books.id == book_id).first()
-
             # upload book to gdrive if nesseccary and add "(bookid)" to folder name
             if config.config_use_google_drive:
                 gdriveutils.updateGdriveCalibreFromLocal()

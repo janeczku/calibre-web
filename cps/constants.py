@@ -106,7 +106,6 @@ except ValueError:
 del env_CALIBRE_PORT
 
 
-
 EXTENSIONS_AUDIO    = {'mp3', 'm4a', 'm4b'}
 EXTENSIONS_CONVERT  = {'pdf', 'epub', 'mobi', 'azw3', 'docx', 'rtf', 'fb2', 'lit', 'lrf', 'txt', 'htmlz', 'rtf', 'odt'}
 EXTENSIONS_UPLOAD   = {'txt', 'pdf', 'epub', 'mobi', 'azw', 'azw3', 'cbr', 'cbz', 'cbt', 'djvu', 'prc', 'doc', 'docx',
@@ -126,7 +125,7 @@ def selected_roles(dictionary):
 BookMeta = namedtuple('BookMeta', 'file_path, extension, title, author, cover, description, tags, series, '
                                   'series_id, languages')
 
-STABLE_VERSION = {'version': '0.6.5 Beta'}
+STABLE_VERSION = {'version': '0.6.7 Beta'}
 
 NIGHTLY_VERSION = {}
 NIGHTLY_VERSION[0] = '$Format:%H$'

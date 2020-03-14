@@ -43,7 +43,7 @@ parser.add_argument('-k', metavar='path',
                     help='path and name to SSL keyfile, e.g. /opt/test.key, works only in combination with certfile')
 parser.add_argument('-v', '--version', action='version', help='Shows version number and exits Calibre-web',
                     version=version_info())
-parser.add_argument('-i', metavar='ip-adress', help='Server IP-Adress to listen')
+parser.add_argument('-i', metavar='ip-address', help='Server IP-Address to listen')
 parser.add_argument('-s', metavar='user:pass', help='Sets specific username to new password')
 args = parser.parse_args()
 

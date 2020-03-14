@@ -14,15 +14,15 @@
     </div>
     <div class="checkbox">
       <label>
-        <input type="checkbox" name="remember_me" checked> {{_('Remember me')}}
+        <input type="checkbox" name="remember_me" checked> {{_('Remember Me')}}
       </label>
     </div>
-    <button type="submit" name="submit" class="btn btn-default">{{_('Submit')}}</button>
+    <button type="submit" name="submit" class="btn btn-default">{{_('Login')}}</button>
     {% if config.config_login_type == 0 and mail%}
-    <button type="submit" name="forgot" value="forgot" class="btn btn-default">{{_('Forgot password')}}</button>
+    <button type="submit" name="forgot" value="forgot" class="btn btn-default">{{_('Forgot Password?')}}</button>
     {% endif %}
     {% if config.config_remote_login %}
-    <a href="{{url_for('web.remote_login')}}" class="pull-right">{{_('Log in with magic link')}}</a>
+    <a href="{{url_for('web.remote_login')}}" class="pull-right">{{_('Log in with Magic Link')}}</a>
     {% endif %}
     {% if config.config_login_type == 2 %}
     <a href="{{url_for('oauth.github_login')}}" class="pull-right">
