@@ -5,18 +5,19 @@
 # FIRST AUTHOR OzzieIsaacs, 2016.
 msgid ""
 msgstr ""
-"Project-Id-Version:  Calibre-Web\n"
+"Project-Id-Version: Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
 "POT-Creation-Date: 2020-03-12 20:31+0100\n"
-"PO-Revision-Date: 2020-01-18 11:22+0100\n"
+"PO-Revision-Date: 2020-03-14 09:30+0100\n"
 "Last-Translator: Jonatan Nyberg <jonatan.nyberg.karl@gmail.com>\n"
 "Language: sv\n"
 "Language-Team: \n"
-"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.8.0\n"
+"X-Generator: Poedit 2.3\n"
 
 #: cps/about.py:42
 msgid "installed"
@@ -59,12 +60,12 @@ msgstr "Calibre-Web konfiguration uppdaterad"
 #: cps/admin.py:434 cps/admin.py:440 cps/admin.py:451 cps/admin.py:462
 #: cps/templates/modal_restriction.html:29
 msgid "Deny"
-msgstr ""
+msgstr "Förneka"
 
 #: cps/admin.py:436 cps/admin.py:442 cps/admin.py:453 cps/admin.py:464
 #: cps/templates/modal_restriction.html:28
 msgid "Allow"
-msgstr ""
+msgstr "Tillåt"
 
 #: cps/admin.py:667
 msgid "Basic Configuration"
@@ -382,7 +383,7 @@ msgstr "Byt namn på författare från: \"%(src)s\" till \"%(dest)s\" misslyckad
 #: cps/helper.py:346
 #, python-format
 msgid "Rename file in path '%(src)s' to '%(dest)s' failed with error: %(error)s"
-msgstr "Byt namn på fil i sökvägen '%(src)s' till '%(dest)s' misslyckades med fel:% (error) s"
+msgstr "Byt namn på fil i sökvägen '%(src)s' till '%(dest)s' misslyckades med fel: %(error)s"
 
 #: cps/helper.py:372 cps/helper.py:382 cps/helper.py:390
 #, python-format
@@ -396,23 +397,23 @@ msgstr "Boksökvägen %(path)s hittades inte på Google Drive"
 
 #: cps/helper.py:511
 msgid "Failed to create path for cover"
-msgstr ""
+msgstr "Det gick inte att skapa sökväg för omslag"
 
 #: cps/helper.py:516
 msgid "Cover-file is not a valid image file"
-msgstr ""
+msgstr "Omslagsfilen är inte en giltig bildfil"
 
 #: cps/helper.py:519
 msgid "Failed to store cover-file"
-msgstr ""
+msgstr "Det gick inte att lagra omslagsfilen"
 
 #: cps/helper.py:530
 msgid "Only jpg/jpeg/png/webp files are supported as coverfile"
-msgstr ""
+msgstr "Endast jpg/jpeg/png/webp-filer stöds som omslagsfil"
 
 #: cps/helper.py:544
 msgid "Only jpg/jpeg files are supported as coverfile"
-msgstr ""
+msgstr "Endast jpg/jpeg-filer stöds som omslagsfil"
 
 #: cps/helper.py:658
 msgid "Waiting"
@@ -452,11 +453,11 @@ msgstr "Okänd uppgift: "
 
 #: cps/kobo_auth.py:127
 msgid "PLease access calibre-web from non localhost to get valid api_endpoint for kobo device"
-msgstr ""
+msgstr "Vänligen få tillgång till calibre-web från icke localhost för att få giltig api_endpoint för Kobo-enhet"
 
 #: cps/kobo_auth.py:130 cps/kobo_auth.py:150
 msgid "Kobo Setup"
-msgstr ""
+msgstr "Kobo-installation"
 
 #: cps/oauth_bb.py:74
 #, python-format
@@ -597,7 +598,7 @@ msgstr "Fel vid öppning av hyllan. Hylla finns inte eller är inte tillgänglig
 
 #: cps/shelf.py:342
 msgid "Hidden Book"
-msgstr ""
+msgstr "Dold bok"
 
 #: cps/shelf.py:347
 #, python-format
@@ -759,7 +760,7 @@ msgstr "Heta böcker (mest hämtade)"
 
 #: cps/web.py:580
 msgid "Oops! Selected book title is unavailable. File does not exist or is not accessible"
-msgstr "Fel vid öppnande av e-bok. Filen finns inte eller filen är inte tillgänglig:"
+msgstr "Hoppsan! Vald boktitel är inte tillgänglig. Filen finns inte eller är inte tillgänglig"
 
 #: cps/web.py:593
 #, python-format
@@ -928,7 +929,7 @@ msgstr "Profilen uppdaterad"
 
 #: cps/web.py:1384 cps/web.py:1480
 msgid "Error opening eBook. File does not exist or file is not accessible:"
-msgstr ""
+msgstr "Fel vid öppningen av e-boken. Filen finns inte eller filen är inte tillgänglig:"
 
 #: cps/web.py:1396 cps/web.py:1399 cps/web.py:1402 cps/web.py:1409
 #: cps/web.py:1414
@@ -996,7 +997,7 @@ msgstr "Redigera"
 
 #: cps/templates/admin.html:38
 msgid "Add New User"
-msgstr ""
+msgstr "Lägg till ny användare"
 
 #: cps/templates/admin.html:44
 msgid "E-mail Server Settings"
@@ -1072,11 +1073,11 @@ msgstr "Omvänt proxy rubriknamn"
 
 #: cps/templates/admin.html:114
 msgid "Edit Basic Configuration"
-msgstr ""
+msgstr "Redigera grundläggande konfiguration"
 
 #: cps/templates/admin.html:115
 msgid "Edit UI Configuration"
-msgstr ""
+msgstr "Redigera UI-konfiguration"
 
 #: cps/templates/admin.html:121
 msgid "Administration"
@@ -1138,7 +1139,7 @@ msgstr "Ok"
 #: cps/templates/shelf.html:73 cps/templates/shelf_edit.html:19
 #: cps/templates/user_edit.html:137
 msgid "Cancel"
-msgstr ""
+msgstr "Avbryt"
 
 #: cps/templates/admin.html:179
 msgid "Are you sure you want to shutdown?"
@@ -1226,7 +1227,7 @@ msgstr "Taggar"
 
 #: cps/templates/book_edit.html:73
 msgid "Series ID"
-msgstr ""
+msgstr "Serie-ID"
 
 #: cps/templates/book_edit.html:77
 msgid "Rating"
@@ -1269,7 +1270,7 @@ msgstr "Ladda upp format"
 
 #: cps/templates/book_edit.html:167
 msgid "View Book on Save"
-msgstr "visa bok efter redigering"
+msgstr "Visa bok vid Spara"
 
 #: cps/templates/book_edit.html:170 cps/templates/book_edit.html:206
 msgid "Fetch Metadata"
@@ -1279,7 +1280,7 @@ msgstr "Hämta metadata"
 #: cps/templates/config_view_edit.html:150 cps/templates/email_edit.html:38
 #: cps/templates/shelf_edit.html:17 cps/templates/user_edit.html:135
 msgid "Save"
-msgstr ""
+msgstr "Spara"
 
 #: cps/templates/book_edit.html:185
 msgid "Are you really sure?"
@@ -1441,11 +1442,11 @@ msgstr "Aktivera fjärrinloggning (\"magisk länk\")"
 
 #: cps/templates/config_edit.html:175
 msgid "Enable Kobo sync"
-msgstr ""
+msgstr "Aktivera Kobo sync"
 
 #: cps/templates/config_edit.html:180
 msgid "Proxy unknown requests to Kobo Store"
-msgstr ""
+msgstr "Proxy okänd begäran till Kobo Store"
 
 #: cps/templates/config_edit.html:187
 msgid "Use Goodreads"
@@ -1621,7 +1622,7 @@ msgstr "Länka läst/oläst-status till Calibre-kolumn"
 
 #: cps/templates/config_view_edit.html:59
 msgid "View Restrictions based on Calibre column"
-msgstr ""
+msgstr "Visa begränsningar baserade på calibre-kolumnen"
 
 #: cps/templates/config_view_edit.html:61 cps/templates/email_edit.html:21
 msgid "None"
@@ -1657,7 +1658,7 @@ msgstr "Tillåt Redigera"
 
 #: cps/templates/config_view_edit.html:108 cps/templates/user_edit.html:113
 msgid "Allow Delete Books"
-msgstr ""
+msgstr "Tillåt borttagning av böcker"
 
 #: cps/templates/config_view_edit.html:112 cps/templates/user_edit.html:118
 msgid "Allow Changing Password"
@@ -1677,11 +1678,11 @@ msgstr "Visa slumpmässiga böcker i detaljvyn"
 
 #: cps/templates/config_view_edit.html:144
 msgid "Add Allowed/Denied Tags"
-msgstr ""
+msgstr "Lägg till tillåtna/avvisade taggar"
 
 #: cps/templates/config_view_edit.html:145
 msgid "Add Allowed/Denied custom column values"
-msgstr ""
+msgstr "Lägg till tillåtna/avvisade anpassade kolumnvärden"
 
 #: cps/templates/detail.html:59
 msgid "Read in Browser"
@@ -1701,7 +1702,7 @@ msgstr "av"
 
 #: cps/templates/detail.html:165
 msgid "Published"
-msgstr ""
+msgstr "Publicerad"
 
 #: cps/templates/detail.html:200
 msgid "Mark As Unread"
@@ -1773,7 +1774,7 @@ msgstr "Nästa"
 
 #: cps/templates/generate_kobo_auth_url.html:5
 msgid "Open the .kobo/Kobo eReader.conf file in a text editor and add (or edit):"
-msgstr ""
+msgstr "Öppna filen .kobo/Kobo eReader.conf i en textredigerare och lägg till (eller redigera):"
 
 #: cps/templates/http_error.html:38
 msgid "Create Issue"
@@ -1837,7 +1838,7 @@ msgstr "Böcker ordnade efter språk"
 
 #: cps/templates/index.xml:100
 msgid "Books ordered by Rating"
-msgstr ""
+msgstr "Böcker sorterade efter Betyg"
 
 #: cps/templates/index.xml:108
 msgid "Books ordered by file formats"
@@ -1874,7 +1875,7 @@ msgstr "Växla navigering"
 
 #: cps/templates/layout.html:45
 msgid "Search Library"
-msgstr ""
+msgstr "Sök i bibliotek"
 
 #: cps/templates/layout.html:55
 msgid "Advanced Search"
@@ -1903,7 +1904,7 @@ msgstr "Laddar upp..."
 
 #: cps/templates/layout.html:117
 msgid "Please do not refresh the page"
-msgstr ""
+msgstr "Vänligen uppdatera inte sidan"
 
 #: cps/templates/layout.html:127
 msgid "Browse"
@@ -1944,7 +1945,7 @@ msgstr "Kom ihåg mig"
 
 #: cps/templates/login.html:22
 msgid "Forgot Password?"
-msgstr "Glömt lösenord"
+msgstr "Glömt lösenord?"
 
 #: cps/templates/login.html:25
 msgid "Log in with Magic Link"
@@ -1968,27 +1969,27 @@ msgstr "Visa åtkomstlogg: "
 
 #: cps/templates/modal_restriction.html:6
 msgid "Select allowed/denied Tags"
-msgstr ""
+msgstr "Välj tillåtna/avvisade taggar"
 
 #: cps/templates/modal_restriction.html:7
 msgid "Select allowed/denied Custom Column values"
-msgstr ""
+msgstr "Välj tillåtna/avvisade anpassade kolumnvärden"
 
 #: cps/templates/modal_restriction.html:8
 msgid "Select allowed/denied Tags of user"
-msgstr ""
+msgstr "Välj tillåtna/avvisade användarens taggar"
 
 #: cps/templates/modal_restriction.html:9
 msgid "Select allowed/denied Custom Column values of user"
-msgstr ""
+msgstr "Välj tillåtna/avvisade anpassade kolumnvärden för användaren"
 
 #: cps/templates/modal_restriction.html:15
 msgid "Enter Tag"
-msgstr ""
+msgstr "Ange tagg"
 
 #: cps/templates/modal_restriction.html:24
 msgid "Add View Restriction"
-msgstr ""
+msgstr "Lägg till visningsbegränsning"
 
 #: cps/templates/osd.xml:5
 msgid "Calibre-Web eBook Catalog"
@@ -2116,11 +2117,11 @@ msgstr "Din e-postadress"
 
 #: cps/templates/remote_login.html:4
 msgid "Magic Link - Authorise New Device"
-msgstr ""
+msgstr "Magic Link - Auktorisera ny enhet"
 
 #: cps/templates/remote_login.html:6
 msgid "On another device, login and visit:"
-msgstr "Använd din andra enhet, logga in och besök "
+msgstr "På en annan enhet, logga in och besök:"
 
 #: cps/templates/remote_login.html:10
 msgid "Once verified, you will automatically be logged in on this device."
@@ -2132,11 +2133,11 @@ msgstr "Länken går ut efter 10 minuter."
 
 #: cps/templates/search.html:5
 msgid "No Results Found"
-msgstr ""
+msgstr "Inga resultat hittades"
 
 #: cps/templates/search.html:6
 msgid "Search Term:"
-msgstr ""
+msgstr "Sökterm:"
 
 #: cps/templates/search.html:8
 msgid "Results for:"
@@ -2196,11 +2197,11 @@ msgstr "Är du säker på att du vill ta bort hyllan?"
 
 #: cps/templates/shelf.html:70
 msgid "Shelf will be deleted for all users"
-msgstr "Hylla kommer att gå förlorad för alla och för alltid!"
+msgstr "Hylla kommer att tas bort för alla användare"
 
 #: cps/templates/shelf_edit.html:13
 msgid "Share with Everyone"
-msgstr "ska hyllan vara offentlig?"
+msgstr "Dela med alla"
 
 #: cps/templates/shelf_order.html:5
 msgid "Drag to Rearrange Order"
@@ -2296,19 +2297,19 @@ msgstr "Koppla bort"
 
 #: cps/templates/user_edit.html:62
 msgid "Kobo Sync Token"
-msgstr ""
+msgstr "Kobo Sync Token"
 
 #: cps/templates/user_edit.html:64
 msgid "Create/View"
-msgstr ""
+msgstr "Skapa/Visa"
 
 #: cps/templates/user_edit.html:83
 msgid "Add allowed/denied Tags"
-msgstr ""
+msgstr "Lägg till tillåtna/avvisade taggar"
 
 #: cps/templates/user_edit.html:84
 msgid "Add allowed/denied custom column values"
-msgstr ""
+msgstr "Lägg till tillåtna/avvisade anpassade kolumnvärden"
 
 #: cps/templates/user_edit.html:129
 msgid "Delete User"
@@ -2320,12 +2321,11 @@ msgstr "Senaste hämtningar"
 
 #: cps/templates/user_edit.html:160
 msgid "Generate Kobo Auth URL"
-msgstr ""
+msgstr "Skapa Kobo Auth URL"
 
 #: cps/templates/user_edit.html:176
 msgid "Do you really want to delete the Kobo Token?"
-msgstr ""
+msgstr "Vill du verkligen ta bort Kobo-token?"
 
 #~ msgid "Cover is not a supported imageformat (jpg/png/webp), can't save"
 #~ msgstr "Omslaget är inte ett bildformat som stöds (jpg/png/webp), kan inte spara"
-
