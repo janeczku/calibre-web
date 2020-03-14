@@ -20,7 +20,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-03-12 20:31+0100\n"
+"POT-Creation-Date: 2020-03-14 10:34+0100\n"
 "PO-Revision-Date: 2019-08-21 15:20+0100\n"
 "Last-Translator: Nicolas Roudninski <nicoroud@gmail.com>\n"
 "Language: fr\n"
@@ -2338,103 +2338,4 @@ msgstr ""
 #: cps/templates/user_edit.html:176
 msgid "Do you really want to delete the Kobo Token?"
 msgstr ""
-
-#~ msgid "Use"
-#~ msgstr "Utiliser"
-
-#~ msgid "Play / pause"
-#~ msgstr "Lecture / pause"
-
-#~ msgid "volume"
-#~ msgstr "volume"
-
-#~ msgid "unknown"
-#~ msgstr "inconnu"
-
-#~ msgid "New Books"
-#~ msgstr "Nouveaux livres"
-
-#~ msgid "Show Calibre-Web log"
-#~ msgstr "Afficher le journal Calibre-Web"
-
-#~ msgid "Show access log"
-#~ msgstr "Afficher le journal des accès"
-
-#~ msgid "Tags for Mature Content"
-#~ msgstr "Mots clés pour contenue pour adulte"
-
-#~ msgid "Show mature content"
-#~ msgstr "Montrer le contenu pour adulte"
-
-#~ msgid "deny"
-#~ msgstr ""
-
-#~ msgid "allow"
-#~ msgstr ""
-
-#~ msgid "Kobo Set-up"
-#~ msgstr ""
-
-#~ msgid "Publisher list"
-#~ msgstr "Liste des éditeurs"
-
-#~ msgid "Series list"
-#~ msgstr "Liste des séries"
-
-#~ msgid "Available languages"
-#~ msgstr "Langues disponibles"
-
-#~ msgid "Category list"
-#~ msgstr "Liste des catégories"
-
-#~ msgid "Series id"
-#~ msgstr "Numéro dans la série"
-
-#~ msgid "Submit"
-#~ msgstr "Soumettre"
-
-#~ msgid "Go!"
-#~ msgstr "Allez !"
-
-#~ msgid "Allow Delete books"
-#~ msgstr "Autoriser la suppression des livres"
-
-#~ msgid "language"
-#~ msgstr "langue"
-
-#~ msgid "SMTP port (usually 25 for plain SMTP and 465 for SSL and 587 for STARTTLS)"
-#~ msgstr "Port SMTP (habituellement 25 pour strict SMTP et 465 pour SSL et 587 pour STARTTLS)"
-
-#~ msgid "From e-mail"
-#~ msgstr "Adresse de l’expéditeur des courriels"
-
-#~ msgid "Save settings"
-#~ msgstr "Sauvegarder les réglages"
-
-#~ msgid "api_endpoint="
-#~ msgstr ""
-
-#~ msgid "please don't refresh the page"
-#~ msgstr "veuillez ne pas rafraîchir la page"
-
-#~ msgid "E-mail address"
-#~ msgstr "Adresse de courriel"
-
-#~ msgid "No Results for:"
-#~ msgstr "Aucun résultat pour :"
-
-#~ msgid "Please try a different search"
-#~ msgstr "Essayer une recherche différente"
-
-#~ msgid "Tasks list"
-#~ msgstr "Liste des tâches"
-
-#~ msgid "Kindle E-Mail"
-#~ msgstr "Adresse de courriel Kindle"
-
-#~ msgid "Please note that every visit to this current page invalidates any previously generated Authentication url for this user."
-#~ msgstr ""
-
-#~ msgid "Cover is not a supported imageformat (jpg/png/webp), can't save"
-#~ msgstr "Le format d'image utilisé pour la couverture n'est pas supporté (jpg/png/webp uniquement). Sauvegarde impossible."
 

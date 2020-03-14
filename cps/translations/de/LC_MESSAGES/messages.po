@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2020-03-12 20:31+0100\n"
+"POT-Creation-Date: 2020-03-14 10:34+0100\n"
 "PO-Revision-Date: 2020-03-07 11:20+0100\n"
 "Last-Translator: Ozzie Isaacs\n"
 "Language: de\n"
@@ -2325,7 +2325,4 @@ msgstr "Kobo Auth URL erzeugen"
 #: cps/templates/user_edit.html:176
 msgid "Do you really want to delete the Kobo Token?"
 msgstr "Möchten Sie wirklich den Kobo Token löschen?"
-
-#~ msgid "Cover is not a supported imageformat (jpg/png/webp), can't save"
-#~ msgstr "Cover hat kein unterstütztes Bildformat (jpg/png/webp), kann nicht gespeichert werden"
 

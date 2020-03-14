@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2020-03-12 20:31+0100\n"
+"POT-Creation-Date: 2020-03-14 10:34+0100\n"
 "PO-Revision-Date: 2020-03-07 11:12+0100\n"
 "Last-Translator: ZIZA\n"
 "Language: ru\n"
@@ -1690,7 +1690,7 @@ msgstr "Читать"
 
 #: cps/templates/detail.html:72
 msgid "Listen in Browser"
-msgstr "Ждите сигнал от браузера"
+msgstr "Прослушать в браузере"
 
 #: cps/templates/detail.html:117
 msgid "Book"
@@ -2326,88 +2326,4 @@ msgstr "Создать Kobo Auth URL"
 #: cps/templates/user_edit.html:176
 msgid "Do you really want to delete the Kobo Token?"
 msgstr "Вы действительно хотите удалить Kobo Token ?"
-
-#~ msgid "Best rated books"
-#~ msgstr "Книги с наивысшим рейтингом"
-
-#~ msgid "Publisher list"
-#~ msgstr "Список издателей"
-
-#~ msgid "Series list"
-#~ msgstr "Серии"
-
-#~ msgid "Available languages"
-#~ msgstr "Доступные языки"
-
-#~ msgid "Category list"
-#~ msgstr "Категории"
-
-#~ msgid "Reverse proxy login"
-#~ msgstr "Логин обратного прокси"
-
-#~ msgid "Series id"
-#~ msgstr "Серия"
-
-#~ msgid "Go!"
-#~ msgstr "Старт!"
-
-#~ msgid "No. of random books to show"
-#~ msgstr "Количество отображаемых случайных книг"
-
-#~ msgid "Tags for Mature Content"
-#~ msgstr "Теги для Взрослого Контента"
-
-#~ msgid "Default settings for new users"
-#~ msgstr "Настройки по умолчанию для новых пользователей"
-
-#~ msgid "Allow Delete books"
-#~ msgstr "Разрешить удаление книг"
-
-#~ msgid "Show mature content"
-#~ msgstr "Показывать взрослый контент"
-
-#~ msgid "language"
-#~ msgstr "Язык"
-
-#~ msgid "SMTP port (usually 25 for plain SMTP and 465 for SSL and 587 for STARTTLS)"
-#~ msgstr "SMTP-порт (обычно 25 для SMTP, 465 для SSL и 587 для STARTTLS)"
-
-#~ msgid "From e-mail"
-#~ msgstr "Адрес отправителя"
-
-#~ msgid "Save settings"
-#~ msgstr "Сохранить настройки"
-
-#~ msgid "Denied domains for registering"
-#~ msgstr "Запрещённые домены для регистрации"
-
-#~ msgid "please don't refresh the page"
-#~ msgstr "пожалуйста не обновляйте страницу"
-
-#~ msgid "Forgot password"
-#~ msgstr "Забыл пароль"
-
-#~ msgid "Show Calibre-Web log: "
-#~ msgstr "Показать журнал Caliber-Web:"
-
-#~ msgid "Calibre-Web log: "
-#~ msgstr "Журнал Caliber-Web:"
-
-#~ msgid "E-mail address"
-#~ msgstr "E-mail адрес"
-
-#~ msgid "No Results for:"
-#~ msgstr "Ничего не найдено по запросу:"
-
-#~ msgid "Please try a different search"
-#~ msgstr "Попробуйте изменить критерии поиска"
-
-#~ msgid "Tasks list"
-#~ msgstr "Список задач"
-
-#~ msgid "Kindle E-Mail"
-#~ msgstr "Адрес почты Kindle"
-
-#~ msgid "Cover is not a supported imageformat (jpg/png/webp), can't save"
-#~ msgstr "Обложка не содержит поддерживаемый формат изображения (JPG / PNG / WebP), невозможно сохранить"
 
