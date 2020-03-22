@@ -73,7 +73,7 @@ $(function () {
         if (showFlag === 1) {
             $("#meta-info").html("<ul id=\"book-list\" class=\"media-list\"></ul>");
         }
-        if (!ggDone && !dbDone) {
+        if (showFlag === 0) {
             $("#meta-info").html("<p class=\"text-danger\">" + msg.no_result + "</p>");
             return;
         }
