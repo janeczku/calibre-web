@@ -33,10 +33,9 @@ from flask_login import LoginManager
 from flask_babel import Babel
 from flask_principal import Principal
 
-from . import logger, cache_buster, cli, config_sql, ub, db, services
+from . import config_sql, logger, cache_buster, cli, ub, db
 from .reverseproxy import ReverseProxied
 from .server import WebServer
-
 
 mimetypes.init()
 mimetypes.add_type('application/xhtml+xml', '.xhtml')
@@ -62,7 +61,6 @@ lm = LoginManager()
 lm.login_view = 'web.login'
 lm.anonymous_user = ub.Anonymous
 
-
 ub.init_db(cli.settingspath)
 # pylint: disable=no-member
 config = config_sql.load_configuration(ub.session)
@@ -75,6 +73,7 @@ _BABEL_TRANSLATIONS = set()
 
 log = logger.create()
 
+from . import services
 
 def create_app():
     app.wsgi_app = ReverseProxied(app.wsgi_app)
