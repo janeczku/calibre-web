@@ -604,8 +604,8 @@ def _configuration_update_helper():
                     {"active":0})
                 element["active"] = 0
 
-    _config_int("config_log_level")
-    _config_string("config_logfile")
+    reboot_required |= _config_int("config_log_level")
+    reboot_required |= _config_string("config_logfile")
     if not logger.is_valid_logfile(config.config_logfile):
         return _configuration_result('Logfile location is not valid, please enter correct path', gdriveError)
 
@@ -968,7 +968,7 @@ def get_updater_status():
             }
             status['text'] = text
             updater_thread.status = 0
-            updater_thread.start()
+            updater_thread.resume()
             status['status'] = updater_thread.get_update_status()
     elif request.method == "GET":
         try:

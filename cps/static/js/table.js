@@ -15,7 +15,7 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* exported TableActions */
+/* exported TableActions, RestrictionActions*/
 
 $(function() {
 
@@ -94,46 +94,44 @@ $(function() {
         $(e.currentTarget).find("#btndeletedomain").data("domainId", domainId);
     });
 
-    $('#restrictModal').on('hidden.bs.modal', function () {
+    $("#restrictModal").on("hidden.bs.modal", function () {
         // Destroy table and remove hooks for buttons
         $("#restrict-elements-table").unbind();
-        $('#restrict-elements-table').bootstrapTable('destroy');
+        $("#restrict-elements-table").bootstrapTable("destroy");
         $("[id^=submit_]").unbind();
-        $('#h1').addClass('hidden');
-        $('#h2').addClass('hidden');
-        $('#h3').addClass('hidden');
-        $('#h4').addClass('hidden');
+        $("#h1").addClass("hidden");
+        $("#h2").addClass("hidden");
+        $("#h3").addClass("hidden");
+        $("#h4").addClass("hidden");
     });
-    function startTable(type){
-        var pathname = document.getElementsByTagName("script"), src = pathname[pathname.length-1].src;
-        var path = src.substring(0,src.lastIndexOf("/"));
+    function startTable(type) {
+        var pathname = document.getElementsByTagName("script"), src = pathname[pathname.length - 1].src;
+        var path = src.substring(0, src.lastIndexOf("/"));
         $("#restrict-elements-table").bootstrapTable({
             formatNoMatches: function () {
                 return "";
             },
             url: path + "/../../ajax/listrestriction/" + type,
             rowStyle: function(row, index) {
-                console.log('Reihe :' + row + ' Index :'+ index);
-                if (row.id.charAt(0) == 'a') {
-                    return {classes: 'bg-primary'}
-                }
-                else {
-                    return {classes: 'bg-dark-danger'}
+                // console.log('Reihe :' + row + " Index :" + index);
+                if (row.id.charAt(0) === "a") {
+                    return {classes: "bg-primary"};
+                } else {
+                    return {classes: "bg-dark-danger"};
                 }
             },
             onClickCell: function (field, value, row, $element) {
-                if(field == 3){
-                    console.log("element")
+                if (field == 3) {
                     $.ajax ({
-                        type: 'Post',
-                        data: 'id=' + row.id + '&type=' + row.type + "&Element=" + row.Element,
+                        type: "Post",
+                        data: "id=" + row.id + "&type=" + row.type + "&Element=" + row.Element,
                         url: path + "/../../ajax/deleterestriction/" + type,
                         async: true,
                         timeout: 900,
                         success:function(data) {
                             $.ajax({
                                 method:"get",
-                                url: path + "/../../ajax/listrestriction/"+type,
+                                url: path + "/../../ajax/listrestriction/" + type,
                                 async: true,
                                 timeout: 900,
                                 success:function(data) {
@@ -146,12 +144,11 @@ $(function() {
             },
             striped: false
         });
-        $("#restrict-elements-table").removeClass('table-hover');
-        $("#restrict-elements-table").on('editable-save.bs.table', function (e, field, row, old, $el) {
-            console.log("Hallo");
+        $("#restrict-elements-table").removeClass("table-hover");
+        $("#restrict-elements-table").on("editable-save.bs.table", function (e, field, row, old, $el) {
             $.ajax({
-                url: path + "/../../ajax/editrestriction/"+type,
-                type: 'Post',
+                url: path + "/../../ajax/editrestriction/" + type,
+                type: "Post",
                 data: row //$(this).closest("form").serialize() + "&" + $(this)[0].name + "=",
             });
         });
@@ -159,48 +156,43 @@ $(function() {
             // event.stopPropagation();
             // event.preventDefault();
             $(this)[0].blur();
-            console.log($(this)[0].name);
             $.ajax({
-                url: path + "/../../ajax/addrestriction/"+type,
-                type: 'Post',
+                url: path + "/../../ajax/addrestriction/" + type,
+                type: "Post",
                 data: $(this).closest("form").serialize() + "&" + $(this)[0].name + "=",
                 success: function () {
-                $.ajax ({
-                    method:"get",
-                    url: path + "/../../ajax/listrestriction/"+type,
-                    async: true,
-                    timeout: 900,
-                    success:function(data) {
-                        $("#restrict-elements-table").bootstrapTable("load", data);
-                       }
+                    $.ajax ({
+                        method:"get",
+                        url: path + "/../../ajax/listrestriction/" + type,
+                        async: true,
+                        timeout: 900,
+                        success:function(data) {
+                            $("#restrict-elements-table").bootstrapTable("load", data);
+                        }
                     });
                 }
             });
             return;
         });
     }
-    $('#get_column_values').on('click',function()
-    {
+    $("#get_column_values").on("click", function() {
         startTable(1);
-        $('#h2').removeClass('hidden');
+        $("#h2").removeClass("hidden");
     });
 
-    $('#get_tags').on('click',function()
-    {
+    $("#get_tags").on("click", function() {
         startTable(0);
-        $('#h1').removeClass('hidden');
+        $("#h1").removeClass("hidden");
     });
-    $('#get_user_column_values').on('click',function()
-    {
+    $("#get_user_column_values").on("click", function() {
         startTable(3);
-        $('#h4').removeClass('hidden');
+        $("#h4").removeClass("hidden");
     });
 
-    $('#get_user_tags').on('click',function()
-    {
+    $("#get_user_tags").on("click", function() {
         startTable(2);
         $(this)[0].blur();
-        $('#h3').removeClass('hidden');
+        $("#h3").removeClass("hidden");
     });
 
 });

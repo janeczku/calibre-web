@@ -492,7 +492,7 @@ def get_book_cover_internal(book,
 
 # saves book cover from url
 def save_cover_from_url(url, book_path):
-    img = requests.get(url)
+    img = requests.get(url, timeout=10)      # ToDo: Error Handling
     return save_cover(img, book_path)
 
 

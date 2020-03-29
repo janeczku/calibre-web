@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2020-03-07 11:20+0100\n"
+"POT-Creation-Date: 2020-03-14 10:38+0100\n"
 "PO-Revision-Date: 2020-03-07 11:12+0100\n"
 "Last-Translator: ZIZA\n"
 "Language: ru\n"
@@ -1211,13 +1211,13 @@ msgstr "Конвертировать книгу"
 msgid "Book Title"
 msgstr "Название"
 
-#: cps/templates/book_edit.html:57 cps/templates/book_edit.html:253
-#: cps/templates/book_edit.html:271 cps/templates/search_form.html:10
+#: cps/templates/book_edit.html:57 cps/templates/book_edit.html:256
+#: cps/templates/book_edit.html:274 cps/templates/search_form.html:10
 msgid "Author"
 msgstr "Автор"
 
-#: cps/templates/book_edit.html:61 cps/templates/book_edit.html:258
-#: cps/templates/book_edit.html:273 cps/templates/search_form.html:126
+#: cps/templates/book_edit.html:61 cps/templates/book_edit.html:261
+#: cps/templates/book_edit.html:276 cps/templates/search_form.html:126
 msgid "Description"
 msgstr "Описание"
 
@@ -1245,8 +1245,8 @@ msgstr "Загрузить обложку с диска"
 msgid "Published Date"
 msgstr "Опубликовано"
 
-#: cps/templates/book_edit.html:97 cps/templates/book_edit.html:255
-#: cps/templates/book_edit.html:272 cps/templates/detail.html:156
+#: cps/templates/book_edit.html:97 cps/templates/book_edit.html:258
+#: cps/templates/book_edit.html:275 cps/templates/detail.html:156
 #: cps/templates/search_form.html:14
 msgid "Publisher"
 msgstr "Издатель"
@@ -1306,26 +1306,26 @@ msgstr " Поиск по ключевому слову "
 msgid "Click the cover to load metadata to the form"
 msgstr "Нажмите на обложку, чтобы получить метаданные"
 
-#: cps/templates/book_edit.html:228 cps/templates/book_edit.html:268
+#: cps/templates/book_edit.html:231 cps/templates/book_edit.html:271
 msgid "Loading..."
 msgstr "Загрузка..."
 
-#: cps/templates/book_edit.html:233 cps/templates/layout.html:191
+#: cps/templates/book_edit.html:236 cps/templates/layout.html:191
 #: cps/templates/layout.html:223 cps/templates/modal_restriction.html:34
 #: cps/templates/user_edit.html:164
 msgid "Close"
 msgstr "Закрыть"
 
-#: cps/templates/book_edit.html:260 cps/templates/book_edit.html:274
+#: cps/templates/book_edit.html:263 cps/templates/book_edit.html:277
 msgid "Source"
 msgstr "Источник"
 
-#: cps/templates/book_edit.html:269
+#: cps/templates/book_edit.html:272
 msgid "Search error!"
 msgstr "Ошибка поиска!"
 
-#: cps/templates/book_edit.html:270
-msgid "No Result(s) found! Please try aonther keyword."
+#: cps/templates/book_edit.html:273
+msgid "No Result(s) found! Please try another keyword."
 msgstr "Результат(ы) не найдены! Попробуйте другое ключевое слово."
 
 #: cps/templates/config_edit.html:12
@@ -1690,7 +1690,7 @@ msgstr "Читать"
 
 #: cps/templates/detail.html:72
 msgid "Listen in Browser"
-msgstr "Ждите сигнал от браузера"
+msgstr "Прослушать в браузере"
 
 #: cps/templates/detail.html:117
 msgid "Book"
@@ -2326,88 +2326,4 @@ msgstr "Создать Kobo Auth URL"
 #: cps/templates/user_edit.html:176
 msgid "Do you really want to delete the Kobo Token?"
 msgstr "Вы действительно хотите удалить Kobo Token ?"
-
-#~ msgid "Best rated books"
-#~ msgstr "Книги с наивысшим рейтингом"
-
-#~ msgid "Publisher list"
-#~ msgstr "Список издателей"
-
-#~ msgid "Series list"
-#~ msgstr "Серии"
-
-#~ msgid "Available languages"
-#~ msgstr "Доступные языки"
-
-#~ msgid "Category list"
-#~ msgstr "Категории"
-
-#~ msgid "Reverse proxy login"
-#~ msgstr "Логин обратного прокси"
-
-#~ msgid "Series id"
-#~ msgstr "Серия"
-
-#~ msgid "Go!"
-#~ msgstr "Старт!"
-
-#~ msgid "No. of random books to show"
-#~ msgstr "Количество отображаемых случайных книг"
-
-#~ msgid "Tags for Mature Content"
-#~ msgstr "Теги для Взрослого Контента"
-
-#~ msgid "Default settings for new users"
-#~ msgstr "Настройки по умолчанию для новых пользователей"
-
-#~ msgid "Allow Delete books"
-#~ msgstr "Разрешить удаление книг"
-
-#~ msgid "Show mature content"
-#~ msgstr "Показывать взрослый контент"
-
-#~ msgid "language"
-#~ msgstr "Язык"
-
-#~ msgid "SMTP port (usually 25 for plain SMTP and 465 for SSL and 587 for STARTTLS)"
-#~ msgstr "SMTP-порт (обычно 25 для SMTP, 465 для SSL и 587 для STARTTLS)"
-
-#~ msgid "From e-mail"
-#~ msgstr "Адрес отправителя"
-
-#~ msgid "Save settings"
-#~ msgstr "Сохранить настройки"
-
-#~ msgid "Denied domains for registering"
-#~ msgstr "Запрещённые домены для регистрации"
-
-#~ msgid "please don't refresh the page"
-#~ msgstr "пожалуйста не обновляйте страницу"
-
-#~ msgid "Forgot password"
-#~ msgstr "Забыл пароль"
-
-#~ msgid "Show Calibre-Web log: "
-#~ msgstr "Показать журнал Caliber-Web:"
-
-#~ msgid "Calibre-Web log: "
-#~ msgstr "Журнал Caliber-Web:"
-
-#~ msgid "E-mail address"
-#~ msgstr "E-mail адрес"
-
-#~ msgid "No Results for:"
-#~ msgstr "Ничего не найдено по запросу:"
-
-#~ msgid "Please try a different search"
-#~ msgstr "Попробуйте изменить критерии поиска"
-
-#~ msgid "Tasks list"
-#~ msgstr "Список задач"
-
-#~ msgid "Kindle E-Mail"
-#~ msgstr "Адрес почты Kindle"
-
-#~ msgid "Cover is not a supported imageformat (jpg/png/webp), can't save"
-#~ msgstr "Обложка не содержит поддерживаемый формат изображения (JPG / PNG / WebP), невозможно сохранить"
 

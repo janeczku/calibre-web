@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2020-03-07 11:20+0100\n"
+"POT-Creation-Date: 2020-03-14 10:38+0100\n"
 "PO-Revision-Date: 2020-01-08 11:37+0000\n"
 "Last-Translator: Lukas Heroudek <lukas.heroudek@gmail.com>\n"
 "Language: cs_CZ\n"
@@ -1209,13 +1209,13 @@ msgstr "Převést knihu"
 msgid "Book Title"
 msgstr "Název knihy"
 
-#: cps/templates/book_edit.html:57 cps/templates/book_edit.html:253
-#: cps/templates/book_edit.html:271 cps/templates/search_form.html:10
+#: cps/templates/book_edit.html:57 cps/templates/book_edit.html:256
+#: cps/templates/book_edit.html:274 cps/templates/search_form.html:10
 msgid "Author"
 msgstr "Autor"
 
-#: cps/templates/book_edit.html:61 cps/templates/book_edit.html:258
-#: cps/templates/book_edit.html:273 cps/templates/search_form.html:126
+#: cps/templates/book_edit.html:61 cps/templates/book_edit.html:261
+#: cps/templates/book_edit.html:276 cps/templates/search_form.html:126
 msgid "Description"
 msgstr "Popis"
 
@@ -1243,8 +1243,8 @@ msgstr "Nahrát obal z místní jednotky"
 msgid "Published Date"
 msgstr "Datum vydání"
 
-#: cps/templates/book_edit.html:97 cps/templates/book_edit.html:255
-#: cps/templates/book_edit.html:272 cps/templates/detail.html:156
+#: cps/templates/book_edit.html:97 cps/templates/book_edit.html:258
+#: cps/templates/book_edit.html:275 cps/templates/detail.html:156
 #: cps/templates/search_form.html:14
 msgid "Publisher"
 msgstr "Vydavatel"
@@ -1304,26 +1304,26 @@ msgstr "Hledat klíčové slovo"
 msgid "Click the cover to load metadata to the form"
 msgstr "Klepnutím na obal načtěte metadata do formuláře"
 
-#: cps/templates/book_edit.html:228 cps/templates/book_edit.html:268
+#: cps/templates/book_edit.html:231 cps/templates/book_edit.html:271
 msgid "Loading..."
 msgstr "Načítání..."
 
-#: cps/templates/book_edit.html:233 cps/templates/layout.html:191
+#: cps/templates/book_edit.html:236 cps/templates/layout.html:191
 #: cps/templates/layout.html:223 cps/templates/modal_restriction.html:34
 #: cps/templates/user_edit.html:164
 msgid "Close"
 msgstr "Zavřít"
 
-#: cps/templates/book_edit.html:260 cps/templates/book_edit.html:274
+#: cps/templates/book_edit.html:263 cps/templates/book_edit.html:277
 msgid "Source"
 msgstr "Zdroj"
 
-#: cps/templates/book_edit.html:269
+#: cps/templates/book_edit.html:272
 msgid "Search error!"
 msgstr "Chyba vyhledávání!"
 
-#: cps/templates/book_edit.html:270
-msgid "No Result(s) found! Please try aonther keyword."
+#: cps/templates/book_edit.html:273
+msgid "No Result(s) found! Please try another keyword."
 msgstr "Nebyly nalezeny žádné výsledky! Zadejte jiné klíčové slovo."
 
 #: cps/templates/config_edit.html:12
@@ -2324,85 +2324,4 @@ msgstr ""
 #: cps/templates/user_edit.html:176
 msgid "Do you really want to delete the Kobo Token?"
 msgstr ""
-
-#~ msgid "allow"
-#~ msgstr ""
-
-#~ msgid "Show hot books"
-#~ msgstr "Zobrazit žhavé knihy"
-
-#~ msgid "Best rated Books"
-#~ msgstr "Nejlépe hodnocené knihy"
-
-#~ msgid "Show best rated books"
-#~ msgstr "Zobrazit nejlépe hodnocené knihy"
-
-#~ msgid "Best rated books"
-#~ msgstr "Nejlépe hodnocené knihy"
-
-#~ msgid "Hot Books (most downloaded)"
-#~ msgstr "Žhavé knihy (nejstahovanější)"
-
-#~ msgid "Publisher list"
-#~ msgstr "Seznam vydavatelů"
-
-#~ msgid "Series list"
-#~ msgstr "Seznam sérií"
-
-#~ msgid "Available languages"
-#~ msgstr "Dostupné jazyky"
-
-#~ msgid "Category list"
-#~ msgstr "Seznam kategorií"
-
-#~ msgid "View Ebooks"
-#~ msgstr "Prohlížet"
-
-#~ msgid "Series id"
-#~ msgstr "ID série"
-
-#~ msgid "Submit"
-#~ msgstr "Odeslat"
-
-#~ msgid "Go!"
-#~ msgstr "Go!"
-
-#~ msgid "Location of Calibre database"
-#~ msgstr "Umístění Calibre databáze"
-
-#~ msgid "language"
-#~ msgstr "jazyk"
-
-#~ msgid "SMTP port (usually 25 for plain SMTP and 465 for SSL and 587 for STARTTLS)"
-#~ msgstr "SMTP port (obvykle 25 pro prostý SMTP a 465 pro SSL a 587 pro STARTTLS)"
-
-#~ msgid "From e-mail"
-#~ msgstr "Z e-mailu"
-
-#~ msgid "Save settings"
-#~ msgstr "Uložit nastavení"
-
-#~ msgid "api_endpoint="
-#~ msgstr ""
-
-#~ msgid "E-mail address"
-#~ msgstr "E-mailová adresa"
-
-#~ msgid "Please try a different search"
-#~ msgstr "Zkuste prosím jiné vyhledávání"
-
-#~ msgid "Do you really want to delete the shelf?"
-#~ msgstr "Opravdu chcete odstranit polici?"
-
-#~ msgid "Tasks list"
-#~ msgstr "Seznam úkolů"
-
-#~ msgid "Kindle E-Mail"
-#~ msgstr "Kindle e-mail"
-
-#~ msgid "Please note that every visit to this current page invalidates any previously generated Authentication url for this user."
-#~ msgstr ""
-
-#~ msgid "Cover is not a supported imageformat (jpg/png/webp), can't save"
-#~ msgstr "Obal není v podporovaném formátu (jpg/png/webp), nelze uložit"
 

@@ -133,6 +133,4 @@ def get_timezone():
 
 from .updater import Updater
 updater_thread = Updater()
-
-
-__all__ = ['app']
+updater_thread.start()

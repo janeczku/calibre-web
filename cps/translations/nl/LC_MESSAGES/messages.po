@@ -7,10 +7,10 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Calibre-Web (GPLV3)\n"
-"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-03-07 11:20+0100\n"
-"PO-Revision-Date: 2020-03-07 11:13+0100\n"
-"Last-Translator: Marcel Maas <marcel.maas@outlook.com>\n"
+"Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
+"POT-Creation-Date: 2020-03-14 10:41+0100\n"
+"PO-Revision-Date: 2020-03-06 19:28+0100\n"
+"Last-Translator: Ed Driesen <ed.driesen@telenet.be>\n"
 "Language: nl\n"
 "Language-Team: ed.driesen@telenet.be\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
@@ -21,7 +21,7 @@ msgstr ""
 
 #: cps/about.py:42
 msgid "installed"
-msgstr ""
+msgstr "geïnstalleerd"
 
 #: cps/about.py:44
 msgid "not installed"
@@ -60,12 +60,12 @@ msgstr "Calibre-Web-configuratie bijgewerkt"
 #: cps/admin.py:434 cps/admin.py:440 cps/admin.py:451 cps/admin.py:462
 #: cps/templates/modal_restriction.html:29
 msgid "Deny"
-msgstr ""
+msgstr "Weigeren"
 
 #: cps/admin.py:436 cps/admin.py:442 cps/admin.py:453 cps/admin.py:464
 #: cps/templates/modal_restriction.html:28
 msgid "Allow"
-msgstr ""
+msgstr "Toestaan"
 
 #: cps/admin.py:667
 msgid "Basic Configuration"
@@ -108,7 +108,7 @@ msgstr "Fout opgetreden bij het versturen van de test-e-mail: %(res)s"
 
 #: cps/admin.py:771
 msgid "Please configure your e-mail address first..."
-msgstr ""
+msgstr "Gelieve eerst je e-mail adres configureren..."
 
 #: cps/admin.py:773
 msgid "E-mail server settings updated"
@@ -134,7 +134,7 @@ msgstr "Gebruiker '%(nick)s' bewerken"
 
 #: cps/admin.py:858 cps/web.py:1328
 msgid "This username is already taken"
-msgstr ""
+msgstr "Deze gebruikersnaam is reeds ingenomen door iemand"
 
 #: cps/admin.py:874
 #, python-format
@@ -160,7 +160,7 @@ msgstr "Stel eerst SMTP-mail in..."
 
 #: cps/admin.py:918
 msgid "Logfile viewer"
-msgstr ""
+msgstr "Logbestand lezer"
 
 #: cps/admin.py:957
 msgid "Requesting update package"
@@ -212,7 +212,7 @@ msgstr "Algemene fout"
 
 #: cps/converter.py:31
 msgid "not configured"
-msgstr ""
+msgstr "niet geconfigureerd"
 
 #: cps/editbooks.py:214 cps/editbooks.py:396
 msgid "Error opening eBook. File does not exist or file is not accessible"
@@ -266,11 +266,11 @@ msgstr "Kan het boek niet bewerken; controleer het logbestand"
 #: cps/editbooks.py:581
 #, python-format
 msgid "File %(filename)s could not saved to temp dir"
-msgstr ""
+msgstr "Bestand %(filename)s kon niet in de tijdelijke map opgeslaan worden"
 
 #: cps/editbooks.py:598
 msgid "Uploaded book probably exists in the library, consider to change before upload new: "
-msgstr ""
+msgstr "Geüpload boek bestaat waarschijnlijk in de bibliotheek, overweeg wijzigingen alvorens opnieuw te proberen: "
 
 #: cps/editbooks.py:613
 #, python-format
@@ -307,7 +307,7 @@ msgstr "Het instellen van Google Drive is niet afgerond; heractiveer Google Driv
 
 #: cps/gdrive.py:103
 msgid "Callback domain is not verified, please follow steps to verify domain in google developer console"
-msgstr "Het callback-domein is niet geverifieerd. Volg de stappen in de Google-ontwikkelaarsconsole om het domein te verifiëren."
+msgstr "Het callback-domein is niet geverifieerd. Volg de stappen in de Google-ontwikkelaarsconsole om het domein te verifiëren"
 
 #: cps/helper.py:80
 #, python-format
@@ -453,11 +453,11 @@ msgstr "Onbekende taak: "
 
 #: cps/kobo_auth.py:127
 msgid "PLease access calibre-web from non localhost to get valid api_endpoint for kobo device"
-msgstr ""
+msgstr "Gelieve calibre-web van elders dan localhost te benaderen om een geldige api_endpoint te verkrijgen voor je kobo toestel"
 
 #: cps/kobo_auth.py:130 cps/kobo_auth.py:150
 msgid "Kobo Setup"
-msgstr ""
+msgstr "Kobo Instellen"
 
 #: cps/oauth_bb.py:74
 #, python-format
@@ -470,7 +470,7 @@ msgstr "Aanmelden bij GitHub mislukt."
 
 #: cps/oauth_bb.py:159
 msgid "Failed to fetch user info from GitHub."
-msgstr "Opvragen gebruikersinfo bij GitHub mislukt"
+msgstr "Opvragen gebruikersinfo bij GitHub mislukt."
 
 #: cps/oauth_bb.py:170
 msgid "Failed to log in with Google."
@@ -483,25 +483,25 @@ msgstr "Opvragen gebruikersinfo bij Google mislukt."
 #: cps/oauth_bb.py:273
 #, python-format
 msgid "Unlink to %(oauth)s success."
-msgstr ""
+msgstr "Link naar %(oauth)s verbreken succesvol."
 
 #: cps/oauth_bb.py:277
 #, python-format
 msgid "Unlink to %(oauth)s failed."
-msgstr ""
+msgstr "Link naar %(oauth)s verbreken mislukt."
 
 #: cps/oauth_bb.py:280
 #, python-format
 msgid "Not linked to %(oauth)s."
-msgstr ""
+msgstr "Niet gelinkt aan %(oauth)s."
 
 #: cps/oauth_bb.py:308
 msgid "GitHub Oauth error, please retry later."
-msgstr ""
+msgstr "GitHub Oauth fout, probeer het later nog eens."
 
 #: cps/oauth_bb.py:327
 msgid "Google Oauth error, please retry later."
-msgstr ""
+msgstr "Google Oauth fout, probeer het later nog eens."
 
 #: cps/shelf.py:47 cps/shelf.py:99
 msgid "Invalid shelf specified"
@@ -510,7 +510,7 @@ msgstr "Ongeldige boekenplank opgegeven"
 #: cps/shelf.py:54
 #, python-format
 msgid "Sorry you are not allowed to add a book to the the shelf: %(shelfname)s"
-msgstr "Sorry, je mag geen boeken toevoegen aan de boekenplank '%(shelfname)s'"
+msgstr "Sorry, je mag geen boeken toevoegen aan boekenplank: %(shelfname)s"
 
 #: cps/shelf.py:62
 msgid "You are not allowed to edit public shelves"
@@ -519,17 +519,17 @@ msgstr "Je mag openbare boekenplanken niet bewerken"
 #: cps/shelf.py:71
 #, python-format
 msgid "Book is already part of the shelf: %(shelfname)s"
-msgstr "Dit boek maakt al deel uit van de boekenplank '%(shelfname)s'"
+msgstr "Dit boek maakt al deel uit van boekenplank: %(shelfname)s"
 
 #: cps/shelf.py:85
 #, python-format
 msgid "Book has been added to shelf: %(sname)s"
-msgstr "Het boek is toegevoegd aan de boekenplank '%(sname)s'"
+msgstr "Het boek is toegevoegd aan boekenplank: %(sname)s"
 
 #: cps/shelf.py:104
 #, python-format
 msgid "You are not allowed to add a book to the the shelf: %(name)s"
-msgstr "Je mag geen boeken plaatsen op de boekenplank '%(name)s'"
+msgstr "Je mag geen boeken plaatsen op boekenplank: '%(name)s"
 
 #: cps/shelf.py:109
 msgid "User is not allowed to edit public shelves"
@@ -538,22 +538,22 @@ msgstr "Gebruiker is niet toegestaan om openbare boekenplanken aan te passen"
 #: cps/shelf.py:127
 #, python-format
 msgid "Books are already part of the shelf: %(name)s"
-msgstr "Deze boeken maken al deel uit van de boekenplank '%(name)s'"
+msgstr "Deze boeken maken al deel uit van boekenplank: %(name)s"
 
 #: cps/shelf.py:141
 #, python-format
 msgid "Books have been added to shelf: %(sname)s"
-msgstr "De boeken zijn toegevoegd aan de boekenplank '%(sname)s'"
+msgstr "De boeken zijn toegevoegd aan boekenplank %(sname)s"
 
 #: cps/shelf.py:143
 #, python-format
 msgid "Could not add books to shelf: %(sname)s"
-msgstr "Kan boeken niet toevoegen aan boekenplank '%(sname)s'"
+msgstr "Kan boeken niet toevoegen aan boekenplank: %(sname)s"
 
 #: cps/shelf.py:181
 #, python-format
 msgid "Book has been removed from shelf: %(sname)s"
-msgstr "Het boek werd verwijderd van de boekenplank '%(sname)s'"
+msgstr "Het boek werd verwijderd van boekenplank: %(sname)s"
 
 #: cps/shelf.py:190
 #, python-format
@@ -598,7 +598,7 @@ msgstr "Kan boekenplank niet openen: de boekenplank bestaat niet of is ontoegank
 
 #: cps/shelf.py:342
 msgid "Hidden Book"
-msgstr ""
+msgstr "Verborgen boek"
 
 #: cps/shelf.py:347
 #, python-format
@@ -760,7 +760,7 @@ msgstr "Populaire boeken (meest gedownload)"
 
 #: cps/web.py:580
 msgid "Oops! Selected book title is unavailable. File does not exist or is not accessible"
-msgstr "Kan e-boek niet openen. Het bestand bestaat niet of is niet toegankelijk:"
+msgstr "Oeps! Geselecteerd boek is niet beschikbaar. Bestand bestaat niet of is niet toegankelijk"
 
 #: cps/web.py:593
 #, python-format
@@ -853,7 +853,7 @@ msgstr "Stel je kindle-e-mailadres in..."
 
 #: cps/web.py:1083
 msgid "E-Mail server is not configured, please contact your administrator!"
-msgstr ""
+msgstr "E-Mail server is niet geconfigureerd, contacteer alstublieft je administrator!"
 
 #: cps/web.py:1084 cps/web.py:1090 cps/web.py:1115 cps/web.py:1119
 #: cps/web.py:1124 cps/web.py:1128
@@ -874,7 +874,7 @@ msgstr "Deze gebruikersnaam of e-mailadres is al in gebruik."
 
 #: cps/web.py:1140
 msgid "Cannot activate LDAP authentication"
-msgstr ""
+msgstr "Kan de LDAP authenticatie niet activeren"
 
 #: cps/web.py:1150 cps/web.py:1277
 #, python-format
@@ -891,11 +891,11 @@ msgstr "Verkeerde gebruikersnaam of wachtwoord"
 
 #: cps/web.py:1166
 msgid "New Password was send to your email address"
-msgstr ""
+msgstr "Een nieuw wachtwoord werd verzonden naar je email adres"
 
 #: cps/web.py:1172
 msgid "Please enter valid username to reset password"
-msgstr ""
+msgstr "Gelieve een geldige gebruikersnaam opgeven om je wachtwoord te resetten"
 
 #: cps/web.py:1178
 #, python-format
@@ -929,7 +929,7 @@ msgstr "Profiel bijgewerkt"
 
 #: cps/web.py:1384 cps/web.py:1480
 msgid "Error opening eBook. File does not exist or file is not accessible:"
-msgstr ""
+msgstr "Fout tijdens het openen van eBook. Bestand bestaat niet of is niet toegankelijk:"
 
 #: cps/web.py:1396 cps/web.py:1399 cps/web.py:1402 cps/web.py:1409
 #: cps/web.py:1414
@@ -938,7 +938,7 @@ msgstr "Lees een boek"
 
 #: cps/web.py:1425
 msgid "Error opening eBook. File does not exist or file is not accessible."
-msgstr ""
+msgstr "Fout tijdens het openen van eBook. Bestand bestaat niet of is niet toegankelijk."
 
 #: cps/worker.py:335
 #, python-format
@@ -963,7 +963,7 @@ msgstr "Gebruikersnaam"
 #: cps/templates/admin.html:13 cps/templates/register.html:11
 #: cps/templates/user_edit.html:13
 msgid "E-mail Address"
-msgstr "e-mailadres"
+msgstr "E-mailadres"
 
 #: cps/templates/admin.html:14 cps/templates/user_edit.html:26
 msgid "Send to Kindle E-mail Address"
@@ -997,7 +997,7 @@ msgstr "Bewerken"
 
 #: cps/templates/admin.html:38
 msgid "Add New User"
-msgstr ""
+msgstr "Voeg Nieuwe Gebruiker toe"
 
 #: cps/templates/admin.html:44
 msgid "E-mail Server Settings"
@@ -1065,19 +1065,19 @@ msgstr "Inloggen op afstand"
 
 #: cps/templates/admin.html:104
 msgid "Reverse Proxy Login"
-msgstr ""
+msgstr "Reverse Proxy Login"
 
 #: cps/templates/admin.html:109
 msgid "Reverse proxy header name"
-msgstr ""
+msgstr "Reverse proxy header naam"
 
 #: cps/templates/admin.html:114
 msgid "Edit Basic Configuration"
-msgstr ""
+msgstr "Bewerk Basis Configuratie"
 
 #: cps/templates/admin.html:115
 msgid "Edit UI Configuration"
-msgstr ""
+msgstr "Bewerk Gebruikersinterface Configuratie"
 
 #: cps/templates/admin.html:121
 msgid "Administration"
@@ -1139,7 +1139,7 @@ msgstr "Oké"
 #: cps/templates/shelf.html:73 cps/templates/shelf_edit.html:19
 #: cps/templates/user_edit.html:137
 msgid "Cancel"
-msgstr ""
+msgstr "Annuleren"
 
 #: cps/templates/admin.html:179
 msgid "Are you sure you want to shutdown?"
@@ -1160,7 +1160,7 @@ msgstr "In bibliotheek"
 #: cps/templates/author.html:34 cps/templates/list.html:14
 #: cps/templates/search.html:41
 msgid "All"
-msgstr ""
+msgstr "Alles"
 
 #: cps/templates/author.html:58 cps/templates/author.html:110
 #: cps/templates/discover.html:27 cps/templates/index.html:26
@@ -1211,13 +1211,13 @@ msgstr "Boek converteren"
 msgid "Book Title"
 msgstr "Boektitel"
 
-#: cps/templates/book_edit.html:57 cps/templates/book_edit.html:253
-#: cps/templates/book_edit.html:271 cps/templates/search_form.html:10
+#: cps/templates/book_edit.html:57 cps/templates/book_edit.html:256
+#: cps/templates/book_edit.html:274 cps/templates/search_form.html:10
 msgid "Author"
 msgstr "Auteur"
 
-#: cps/templates/book_edit.html:61 cps/templates/book_edit.html:258
-#: cps/templates/book_edit.html:273 cps/templates/search_form.html:126
+#: cps/templates/book_edit.html:61 cps/templates/book_edit.html:261
+#: cps/templates/book_edit.html:276 cps/templates/search_form.html:126
 msgid "Description"
 msgstr "Omschrijving"
 
@@ -1227,7 +1227,7 @@ msgstr "Labels"
 
 #: cps/templates/book_edit.html:73
 msgid "Series ID"
-msgstr ""
+msgstr "Series ID"
 
 #: cps/templates/book_edit.html:77
 msgid "Rating"
@@ -1245,8 +1245,8 @@ msgstr "Omslag uploaden vanaf computer"
 msgid "Published Date"
 msgstr "Publicatiedatum"
 
-#: cps/templates/book_edit.html:97 cps/templates/book_edit.html:255
-#: cps/templates/book_edit.html:272 cps/templates/detail.html:156
+#: cps/templates/book_edit.html:97 cps/templates/book_edit.html:258
+#: cps/templates/book_edit.html:275 cps/templates/detail.html:156
 #: cps/templates/search_form.html:14
 msgid "Publisher"
 msgstr "Uitgever"
@@ -1270,7 +1270,7 @@ msgstr "Uploadformaat"
 
 #: cps/templates/book_edit.html:167
 msgid "View Book on Save"
-msgstr "boek inkijken na bewerking"
+msgstr "Boek inkijken na bewerking"
 
 #: cps/templates/book_edit.html:170 cps/templates/book_edit.html:206
 msgid "Fetch Metadata"
@@ -1280,7 +1280,7 @@ msgstr "Metagegevens ophalen"
 #: cps/templates/config_view_edit.html:150 cps/templates/email_edit.html:38
 #: cps/templates/shelf_edit.html:17 cps/templates/user_edit.html:135
 msgid "Save"
-msgstr ""
+msgstr "Opslaan"
 
 #: cps/templates/book_edit.html:185
 msgid "Are you really sure?"
@@ -1306,26 +1306,26 @@ msgstr " Trefwoord zoeken "
 msgid "Click the cover to load metadata to the form"
 msgstr "Klik op de omslag om de metagegevens in het formulier te laden"
 
-#: cps/templates/book_edit.html:228 cps/templates/book_edit.html:268
+#: cps/templates/book_edit.html:231 cps/templates/book_edit.html:271
 msgid "Loading..."
 msgstr "Bezig met laden..."
 
-#: cps/templates/book_edit.html:233 cps/templates/layout.html:191
+#: cps/templates/book_edit.html:236 cps/templates/layout.html:191
 #: cps/templates/layout.html:223 cps/templates/modal_restriction.html:34
 #: cps/templates/user_edit.html:164
 msgid "Close"
 msgstr "Sluiten"
 
-#: cps/templates/book_edit.html:260 cps/templates/book_edit.html:274
+#: cps/templates/book_edit.html:263 cps/templates/book_edit.html:277
 msgid "Source"
 msgstr "Bron"
 
-#: cps/templates/book_edit.html:269
+#: cps/templates/book_edit.html:272
 msgid "Search error!"
 msgstr "Zoekfout!"
 
-#: cps/templates/book_edit.html:270
-msgid "No Result(s) found! Please try aonther keyword."
+#: cps/templates/book_edit.html:273
+msgid "No Result(s) found! Please try another keyword."
 msgstr "Geen resultaten gevonden! Gebruik een ander trefwoord."
 
 #: cps/templates/config_edit.html:12
@@ -1414,11 +1414,11 @@ msgstr "Locatie en naam van logbestand (calibre-web.log indien leeg)"
 
 #: cps/templates/config_edit.html:136
 msgid "Enable Access Log"
-msgstr ""
+msgstr "Toegangslog aanzetten"
 
 #: cps/templates/config_edit.html:139
 msgid "Location and name of access logfile (access.log for no entry)"
-msgstr ""
+msgstr "Locatie en naam van het toegangslog (access.log indien niet gespecificeerd)"
 
 #: cps/templates/config_edit.html:150
 msgid "Feature Configuration"
@@ -1442,15 +1442,15 @@ msgstr "Inloggen op afstand inschakelen ('magic link')"
 
 #: cps/templates/config_edit.html:175
 msgid "Enable Kobo sync"
-msgstr ""
+msgstr "Zet Kobo sync aan"
 
 #: cps/templates/config_edit.html:180
 msgid "Proxy unknown requests to Kobo Store"
-msgstr ""
+msgstr "Proxy onbekende verzoeken naar Kobo winkel"
 
 #: cps/templates/config_edit.html:187
 msgid "Use Goodreads"
-msgstr ""
+msgstr "Gebruik Goodreads"
 
 #: cps/templates/config_edit.html:188
 msgid "Create an API Key"
@@ -1466,7 +1466,7 @@ msgstr "Goodreads API-geheim"
 
 #: cps/templates/config_edit.html:203
 msgid "Login type"
-msgstr ""
+msgstr "Login type"
 
 #: cps/templates/config_edit.html:205
 msgid "Use Standard Authentication"
@@ -1494,62 +1494,62 @@ msgstr "LDAP schema (ldap of ldaps)"
 
 #: cps/templates/config_edit.html:229
 msgid "LDAP Administrator Username"
-msgstr ""
+msgstr "LDAP Administrator naam"
 
 #: cps/templates/config_edit.html:233
 msgid "LDAP Administrator Password"
-msgstr ""
+msgstr "LDAP Administrator wachtwoord"
 
 #: cps/templates/config_edit.html:238
 msgid "LDAP Server Enable SSL"
-msgstr ""
+msgstr "LDAP server SSL aanzetten"
 
 #: cps/templates/config_edit.html:242
 msgid "LDAP Server Enable TLS"
-msgstr ""
+msgstr "LDAP server TLS aanzetten"
 
 #: cps/templates/config_edit.html:246
 msgid "LDAP Server Certificate"
-msgstr ""
+msgstr "LDAP server certificaat"
 
 #: cps/templates/config_edit.html:250
 msgid "LDAP SSL Certificate Path"
-msgstr ""
+msgstr "LDAP SSL Certificaat pad"
 
 #: cps/templates/config_edit.html:255
 msgid "LDAP Distinguished Name (DN)"
-msgstr ""
+msgstr "LDAP Distinguished Name (DN)"
 
 #: cps/templates/config_edit.html:259
 msgid "LDAP User Object Filter"
-msgstr ""
+msgstr "LDAP User Object Filter"
 
 #: cps/templates/config_edit.html:264
 msgid "LDAP Server is OpenLDAP?"
-msgstr ""
+msgstr "LDAP Server is OpenLDAP?"
 
 #: cps/templates/config_edit.html:272
 #, python-format
 msgid "Obtain %(provider)s OAuth Credential"
-msgstr ""
+msgstr "Verkrijg %(provider)s OAuth Verificatiegegevens"
 
 #: cps/templates/config_edit.html:275
 #, python-format
 msgid "%(provider)s OAuth Client Id"
-msgstr ""
+msgstr "%(provider)s OAuth Client Id"
 
 #: cps/templates/config_edit.html:279
 #, python-format
 msgid "%(provider)s OAuth Client Secret"
-msgstr ""
+msgstr "%(provider)s OAuth Client geheim"
 
 #: cps/templates/config_edit.html:288
 msgid "Allow Reverse Proxy Authentication"
-msgstr ""
+msgstr "Reverse Proxy authenticatie toestaann"
 
 #: cps/templates/config_edit.html:292
 msgid "Reverse Proxy Header Name"
-msgstr ""
+msgstr "Reverse proxy header naam"
 
 #: cps/templates/config_edit.html:304
 msgid "External binaries"
@@ -1622,7 +1622,7 @@ msgstr "Gelezen/Ongelezen-status koppelen aan Calibre-kolom"
 
 #: cps/templates/config_view_edit.html:59
 msgid "View Restrictions based on Calibre column"
-msgstr ""
+msgstr "Bekijk restricties gebaseerd op Calibre kolommen"
 
 #: cps/templates/config_view_edit.html:61 cps/templates/email_edit.html:21
 msgid "None"
@@ -1658,7 +1658,7 @@ msgstr "Bewerken toestaan"
 
 #: cps/templates/config_view_edit.html:108 cps/templates/user_edit.html:113
 msgid "Allow Delete Books"
-msgstr ""
+msgstr "Het verwijderen van boeken toestaan"
 
 #: cps/templates/config_view_edit.html:112 cps/templates/user_edit.html:118
 msgid "Allow Changing Password"
@@ -1678,11 +1678,11 @@ msgstr "Willekeurige boeken tonen in gedetailleerde weergave"
 
 #: cps/templates/config_view_edit.html:144
 msgid "Add Allowed/Denied Tags"
-msgstr ""
+msgstr "Voeg Toegestaan/Geweigerd tags toe"
 
 #: cps/templates/config_view_edit.html:145
 msgid "Add Allowed/Denied custom column values"
-msgstr ""
+msgstr "Voeg Toegestaan/Geweigerd aangepaste kolom waarden toe"
 
 #: cps/templates/detail.html:59
 msgid "Read in Browser"
@@ -1702,7 +1702,7 @@ msgstr "van"
 
 #: cps/templates/detail.html:165
 msgid "Published"
-msgstr ""
+msgstr "Gepubliceerd"
 
 #: cps/templates/detail.html:200
 msgid "Mark As Unread"
@@ -1762,7 +1762,7 @@ msgstr "Voer domeinnaam in"
 
 #: cps/templates/email_edit.html:60
 msgid "Denied Domains (Blacklist)"
-msgstr ""
+msgstr "Geweigerde domeinen (zwarte lijst/ \"blacklist\")"
 
 #: cps/templates/email_edit.html:90
 msgid "Are you sure you want to delete this domain?"
@@ -1774,7 +1774,7 @@ msgstr "Volgende"
 
 #: cps/templates/generate_kobo_auth_url.html:5
 msgid "Open the .kobo/Kobo eReader.conf file in a text editor and add (or edit):"
-msgstr ""
+msgstr "Open het .kobo/Kobo eReader.conf bestand in een teksteditor en voeg toe (of bewerk):"
 
 #: cps/templates/http_error.html:38
 msgid "Create Issue"
@@ -1802,7 +1802,7 @@ msgstr "Populaire publicaties uit deze catalogus, gebaseerd op Beoordeling."
 
 #: cps/templates/index.xml:31
 msgid "Recently added Books"
-msgstr ""
+msgstr "Recent Toegevoegde Boeken"
 
 #: cps/templates/index.xml:35
 msgid "The latest Books"
@@ -1834,7 +1834,7 @@ msgstr "Boeken gesorteerd op reeks"
 
 #: cps/templates/index.xml:93
 msgid "Books ordered by Languages"
-msgstr ""
+msgstr "Boeken gesorteerd op Taal"
 
 #: cps/templates/index.xml:100
 msgid "Books ordered by Rating"
@@ -1842,7 +1842,7 @@ msgstr ""
 
 #: cps/templates/index.xml:108
 msgid "Books ordered by file formats"
-msgstr ""
+msgstr "Boeken gesorteerd op bestandsformaat"
 
 #: cps/templates/index.xml:111 cps/templates/layout.html:136
 msgid "Public Shelves"
@@ -1875,7 +1875,7 @@ msgstr "Navigatie aanpassen"
 
 #: cps/templates/layout.html:45
 msgid "Search Library"
-msgstr ""
+msgstr "Zoek in bibliotheek"
 
 #: cps/templates/layout.html:55
 msgid "Advanced Search"
@@ -1904,7 +1904,7 @@ msgstr "Bezig met uploaden..."
 
 #: cps/templates/layout.html:117
 msgid "Please do not refresh the page"
-msgstr ""
+msgstr "Gelieve de pagina niet te vernieuwen"
 
 #: cps/templates/layout.html:127
 msgid "Browse"
@@ -1945,7 +1945,7 @@ msgstr "Mij onthouden"
 
 #: cps/templates/login.html:22
 msgid "Forgot Password?"
-msgstr ""
+msgstr "Wachtwoord Vergeten?"
 
 #: cps/templates/login.html:25
 msgid "Log in with Magic Link"
@@ -1953,43 +1953,43 @@ msgstr "Inloggen met magische koppeling"
 
 #: cps/templates/logviewer.html:6
 msgid "Show Calibre-Web Log: "
-msgstr ""
+msgstr "Toon Calibre-Web logbestand: "
 
 #: cps/templates/logviewer.html:8
 msgid "Calibre-Web Log: "
-msgstr ""
+msgstr "Calibre-Web Logbestand: "
 
 #: cps/templates/logviewer.html:8
 msgid "Stream output, can't be displayed"
-msgstr ""
+msgstr "Stream uitvoer, kan niet worden weergegeven"
 
 #: cps/templates/logviewer.html:12
 msgid "Show Access Log: "
-msgstr ""
+msgstr "Toon Toegangslog: "
 
 #: cps/templates/modal_restriction.html:6
 msgid "Select allowed/denied Tags"
-msgstr ""
+msgstr "Selecteer Toegestaan/Geweigerd tags toe"
 
 #: cps/templates/modal_restriction.html:7
 msgid "Select allowed/denied Custom Column values"
-msgstr ""
+msgstr "Selecteer Toegestaan/Geweigerd aangepaste kolom waarden"
 
 #: cps/templates/modal_restriction.html:8
 msgid "Select allowed/denied Tags of user"
-msgstr ""
+msgstr "Selecteer Toegestaan/Geweigerd tags van gebruikers"
 
 #: cps/templates/modal_restriction.html:9
 msgid "Select allowed/denied Custom Column values of user"
-msgstr ""
+msgstr "Selecteer Toegestaan/Geweigerd aangepaste kolom waarden van gebruikers"
 
 #: cps/templates/modal_restriction.html:15
 msgid "Enter Tag"
-msgstr ""
+msgstr "Voer Tag in"
 
 #: cps/templates/modal_restriction.html:24
 msgid "Add View Restriction"
-msgstr ""
+msgstr "Voeg inkijk restrictie toe"
 
 #: cps/templates/osd.xml:5
 msgid "Calibre-Web eBook Catalog"
@@ -2097,7 +2097,7 @@ msgstr "Rechts-naar-links"
 
 #: cps/templates/readpdf.html:29
 msgid "PDF reader"
-msgstr ""
+msgstr "PDF lezer"
 
 #: cps/templates/readtxt.html:6
 msgid "Basic txt Reader"
@@ -2117,11 +2117,11 @@ msgstr "Je e-mailadres"
 
 #: cps/templates/remote_login.html:4
 msgid "Magic Link - Authorise New Device"
-msgstr ""
+msgstr "Magische link - autoriseer nieuw toestel"
 
 #: cps/templates/remote_login.html:6
 msgid "On another device, login and visit:"
-msgstr "Pak je andere apparaat, log in en ga naar "
+msgstr "Op een ander apparaat inloggen en gaan naar:"
 
 #: cps/templates/remote_login.html:10
 msgid "Once verified, you will automatically be logged in on this device."
@@ -2133,11 +2133,11 @@ msgstr "De link vervalt na 10 minuten."
 
 #: cps/templates/search.html:5
 msgid "No Results Found"
-msgstr ""
+msgstr "Geen resultaten gevonden"
 
 #: cps/templates/search.html:6
 msgid "Search Term:"
-msgstr ""
+msgstr "Zoekterm:"
 
 #: cps/templates/search.html:8
 msgid "Results for:"
@@ -2165,11 +2165,11 @@ msgstr "Talen uitsluiten"
 
 #: cps/templates/search_form.html:95
 msgid "Extensions"
-msgstr ""
+msgstr "Extenties"
 
 #: cps/templates/search_form.html:105
 msgid "Exclude Extensions"
-msgstr ""
+msgstr "Excludeer Extenties"
 
 #: cps/templates/search_form.html:117
 msgid "Rating Above"
@@ -2197,11 +2197,11 @@ msgstr "Weet je zeker dat je deze boekenplank wilt verwijderen?"
 
 #: cps/templates/shelf.html:70
 msgid "Shelf will be deleted for all users"
-msgstr "De boekenplank wordt permanent verwijderd voor iedereen!"
+msgstr "Boekenplank wordt permanent verwijderd alle gebruikers"
 
 #: cps/templates/shelf_edit.html:13
 msgid "Share with Everyone"
-msgstr "moet de boekenplank openbaar zijn?"
+msgstr "Delen met iedereen"
 
 #: cps/templates/shelf_order.html:5
 msgid "Drag to Rearrange Order"
@@ -2297,19 +2297,19 @@ msgstr "Ontkoppelen"
 
 #: cps/templates/user_edit.html:62
 msgid "Kobo Sync Token"
-msgstr ""
+msgstr "Kobo Sync Token"
 
 #: cps/templates/user_edit.html:64
 msgid "Create/View"
-msgstr ""
+msgstr "Aanmaken/Bekijk"
 
 #: cps/templates/user_edit.html:83
 msgid "Add allowed/denied Tags"
-msgstr ""
+msgstr "Voeg Toegestaan/Geweigerd tags toe"
 
 #: cps/templates/user_edit.html:84
 msgid "Add allowed/denied custom column values"
-msgstr ""
+msgstr "Voeg Toegestaan/Geweigerd aangepaste kolom waarden toe"
 
 #: cps/templates/user_edit.html:129
 msgid "Delete User"
@@ -2321,12 +2321,9 @@ msgstr "Recente downloads"
 
 #: cps/templates/user_edit.html:160
 msgid "Generate Kobo Auth URL"
-msgstr ""
+msgstr "Genereer Kobo Auth URL"
 
 #: cps/templates/user_edit.html:176
 msgid "Do you really want to delete the Kobo Token?"
-msgstr ""
-
-#~ msgid "Cover is not a supported imageformat (jpg/png/webp), can't save"
-#~ msgstr "Het omslagbestand is een niet-ondersteund afbeeldingsformaat (jpg/png/webp); kan niet opslaan"
+msgstr "Wil je werkelijk je Kobo Token verwijderen?"
 

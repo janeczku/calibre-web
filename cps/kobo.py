@@ -263,9 +263,13 @@ def HandleMetadataRequest(book_uuid):
 
 def get_download_url_for_book(book, book_format):
     if not current_app.wsgi_app.is_proxied:
+        if ':' in request.host and not request.host.endswith(']') :
+            host = "".join(request.host.split(':')[:-1])
+        else:
+            host = request.host
         return "{url_scheme}://{url_base}:{url_port}/download/{book_id}/{book_format}".format(
             url_scheme=request.scheme,
-            url_base=request.host,
+            url_base=host,
             url_port=config.config_port,
             book_id=book.id,
             book_format=book_format.lower()
@@ -534,15 +538,17 @@ def get_current_bookmark_response(current_bookmark):
 @kobo.route("/<book_uuid>/image.jpg")
 @requires_kobo_auth
 def HandleCoverImageRequest(book_uuid):
-    log.debug("Cover request received for book %s" % book_uuid)
     book_cover = helper.get_book_cover_with_uuid(
         book_uuid, use_generic_cover_on_failure=False
     )
     if not book_cover:
         if config.config_kobo_proxy:
+            log.debug("Cover for unknown book: %s proxied to kobo" % book_uuid)
             return redirect(get_store_url_for_current_request(), 307)
         else:
-            abort(404)
+            log.debug("Cover for unknown book: %s requested" % book_uuid)
+            return redirect_or_proxy_request()
+    log.debug("Cover request received for book %s" % book_uuid)
     return book_cover
 
 
@@ -663,9 +669,13 @@ def HandleInitRequest():
 
     if not current_app.wsgi_app.is_proxied:
         log.debug('Kobo: Received unproxied request, changed request port to server port')
+        if ':' in request.host and not request.host.endswith(']'):
+            host = "".join(request.host.split(':')[:-1])
+        else:
+            host = request.host
         calibre_web_url = "{url_scheme}://{url_base}:{url_port}".format(
             url_scheme=request.scheme,
-            url_base=request.host,
+            url_base=host,
             url_port=config.config_port
         )
     else:
