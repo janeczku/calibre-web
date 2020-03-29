@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/calibre-web\n"
-"POT-Creation-Date: 2020-03-07 11:20+0100\n"
+"POT-Creation-Date: 2020-03-14 10:38+0100\n"
 "PO-Revision-Date: 2017-04-30 00:47+0300\n"
 "Last-Translator: ABIS Team <biblio.if.abis@gmail.com>\n"
 "Language: uk\n"
@@ -1209,13 +1209,13 @@ msgstr ""
 msgid "Book Title"
 msgstr "Назва книги"
 
-#: cps/templates/book_edit.html:57 cps/templates/book_edit.html:253
-#: cps/templates/book_edit.html:271 cps/templates/search_form.html:10
+#: cps/templates/book_edit.html:57 cps/templates/book_edit.html:256
+#: cps/templates/book_edit.html:274 cps/templates/search_form.html:10
 msgid "Author"
 msgstr "Автор"
 
-#: cps/templates/book_edit.html:61 cps/templates/book_edit.html:258
-#: cps/templates/book_edit.html:273 cps/templates/search_form.html:126
+#: cps/templates/book_edit.html:61 cps/templates/book_edit.html:261
+#: cps/templates/book_edit.html:276 cps/templates/search_form.html:126
 msgid "Description"
 msgstr "Опис"
 
@@ -1243,8 +1243,8 @@ msgstr ""
 msgid "Published Date"
 msgstr "Опубліковано"
 
-#: cps/templates/book_edit.html:97 cps/templates/book_edit.html:255
-#: cps/templates/book_edit.html:272 cps/templates/detail.html:156
+#: cps/templates/book_edit.html:97 cps/templates/book_edit.html:258
+#: cps/templates/book_edit.html:275 cps/templates/detail.html:156
 #: cps/templates/search_form.html:14
 msgid "Publisher"
 msgstr "Видавець"
@@ -1304,26 +1304,26 @@ msgstr " Пошук по ключовому слову"
 msgid "Click the cover to load metadata to the form"
 msgstr "Натисніть на обкладинку, щоб отримати метадані"
 
-#: cps/templates/book_edit.html:228 cps/templates/book_edit.html:268
+#: cps/templates/book_edit.html:231 cps/templates/book_edit.html:271
 msgid "Loading..."
 msgstr "Завантаження..."
 
-#: cps/templates/book_edit.html:233 cps/templates/layout.html:191
+#: cps/templates/book_edit.html:236 cps/templates/layout.html:191
 #: cps/templates/layout.html:223 cps/templates/modal_restriction.html:34
 #: cps/templates/user_edit.html:164
 msgid "Close"
 msgstr "Закрити"
 
-#: cps/templates/book_edit.html:260 cps/templates/book_edit.html:274
+#: cps/templates/book_edit.html:263 cps/templates/book_edit.html:277
 msgid "Source"
 msgstr "Джерело"
 
-#: cps/templates/book_edit.html:269
+#: cps/templates/book_edit.html:272
 msgid "Search error!"
 msgstr "Помилка пошуку!"
 
-#: cps/templates/book_edit.html:270
-msgid "No Result(s) found! Please try aonther keyword."
+#: cps/templates/book_edit.html:273
+msgid "No Result(s) found! Please try another keyword."
 msgstr ""
 
 #: cps/templates/config_edit.html:12
@@ -2324,7 +2324,4 @@ msgstr ""
 #: cps/templates/user_edit.html:176
 msgid "Do you really want to delete the Kobo Token?"
 msgstr ""
-
-#~ msgid "Cover is not a supported imageformat (jpg/png/webp), can't save"
-#~ msgstr ""
 

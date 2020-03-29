@@ -20,7 +20,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-03-07 11:20+0100\n"
+"POT-Creation-Date: 2020-03-14 10:38+0100\n"
 "PO-Revision-Date: 2019-08-21 15:20+0100\n"
 "Last-Translator: Nicolas Roudninski <nicoroud@gmail.com>\n"
 "Language: fr\n"
@@ -1223,13 +1223,13 @@ msgstr "Convertir le livre"
 msgid "Book Title"
 msgstr "Titre du livre"
 
-#: cps/templates/book_edit.html:57 cps/templates/book_edit.html:253
-#: cps/templates/book_edit.html:271 cps/templates/search_form.html:10
+#: cps/templates/book_edit.html:57 cps/templates/book_edit.html:256
+#: cps/templates/book_edit.html:274 cps/templates/search_form.html:10
 msgid "Author"
 msgstr "Auteur"
 
-#: cps/templates/book_edit.html:61 cps/templates/book_edit.html:258
-#: cps/templates/book_edit.html:273 cps/templates/search_form.html:126
+#: cps/templates/book_edit.html:61 cps/templates/book_edit.html:261
+#: cps/templates/book_edit.html:276 cps/templates/search_form.html:126
 msgid "Description"
 msgstr "Description"
 
@@ -1257,8 +1257,8 @@ msgstr "Téléverser la couverture depuis un fichier en local"
 msgid "Published Date"
 msgstr "Date de publication"
 
-#: cps/templates/book_edit.html:97 cps/templates/book_edit.html:255
-#: cps/templates/book_edit.html:272 cps/templates/detail.html:156
+#: cps/templates/book_edit.html:97 cps/templates/book_edit.html:258
+#: cps/templates/book_edit.html:275 cps/templates/detail.html:156
 #: cps/templates/search_form.html:14
 msgid "Publisher"
 msgstr "Editeur"
@@ -1318,26 +1318,26 @@ msgstr " Rechercher le mot-clé "
 msgid "Click the cover to load metadata to the form"
 msgstr "Cliquer sur la couverture pour importer les métadonnées dans le formulaire"
 
-#: cps/templates/book_edit.html:228 cps/templates/book_edit.html:268
+#: cps/templates/book_edit.html:231 cps/templates/book_edit.html:271
 msgid "Loading..."
 msgstr "Chargement…"
 
-#: cps/templates/book_edit.html:233 cps/templates/layout.html:191
+#: cps/templates/book_edit.html:236 cps/templates/layout.html:191
 #: cps/templates/layout.html:223 cps/templates/modal_restriction.html:34
 #: cps/templates/user_edit.html:164
 msgid "Close"
 msgstr "Fermer"
 
-#: cps/templates/book_edit.html:260 cps/templates/book_edit.html:274
+#: cps/templates/book_edit.html:263 cps/templates/book_edit.html:277
 msgid "Source"
 msgstr "Source"
 
-#: cps/templates/book_edit.html:269
+#: cps/templates/book_edit.html:272
 msgid "Search error!"
 msgstr "Rechercher les erreur!"
 
-#: cps/templates/book_edit.html:270
-msgid "No Result(s) found! Please try aonther keyword."
+#: cps/templates/book_edit.html:273
+msgid "No Result(s) found! Please try another keyword."
 msgstr "Aucun résultat. Veuillez essayer avec un nouveau mot clé."
 
 #: cps/templates/config_edit.html:12
@@ -2338,103 +2338,4 @@ msgstr ""
 #: cps/templates/user_edit.html:176
 msgid "Do you really want to delete the Kobo Token?"
 msgstr ""
-
-#~ msgid "Use"
-#~ msgstr "Utiliser"
-
-#~ msgid "Play / pause"
-#~ msgstr "Lecture / pause"
-
-#~ msgid "volume"
-#~ msgstr "volume"
-
-#~ msgid "unknown"
-#~ msgstr "inconnu"
-
-#~ msgid "New Books"
-#~ msgstr "Nouveaux livres"
-
-#~ msgid "Show Calibre-Web log"
-#~ msgstr "Afficher le journal Calibre-Web"
-
-#~ msgid "Show access log"
-#~ msgstr "Afficher le journal des accès"
-
-#~ msgid "Tags for Mature Content"
-#~ msgstr "Mots clés pour contenue pour adulte"
-
-#~ msgid "Show mature content"
-#~ msgstr "Montrer le contenu pour adulte"
-
-#~ msgid "deny"
-#~ msgstr ""
-
-#~ msgid "allow"
-#~ msgstr ""
-
-#~ msgid "Kobo Set-up"
-#~ msgstr ""
-
-#~ msgid "Publisher list"
-#~ msgstr "Liste des éditeurs"
-
-#~ msgid "Series list"
-#~ msgstr "Liste des séries"
-
-#~ msgid "Available languages"
-#~ msgstr "Langues disponibles"
-
-#~ msgid "Category list"
-#~ msgstr "Liste des catégories"
-
-#~ msgid "Series id"
-#~ msgstr "Numéro dans la série"
-
-#~ msgid "Submit"
-#~ msgstr "Soumettre"
-
-#~ msgid "Go!"
-#~ msgstr "Allez !"
-
-#~ msgid "Allow Delete books"
-#~ msgstr "Autoriser la suppression des livres"
-
-#~ msgid "language"
-#~ msgstr "langue"
-
-#~ msgid "SMTP port (usually 25 for plain SMTP and 465 for SSL and 587 for STARTTLS)"
-#~ msgstr "Port SMTP (habituellement 25 pour strict SMTP et 465 pour SSL et 587 pour STARTTLS)"
-
-#~ msgid "From e-mail"
-#~ msgstr "Adresse de l’expéditeur des courriels"
-
-#~ msgid "Save settings"
-#~ msgstr "Sauvegarder les réglages"
-
-#~ msgid "api_endpoint="
-#~ msgstr ""
-
-#~ msgid "please don't refresh the page"
-#~ msgstr "veuillez ne pas rafraîchir la page"
-
-#~ msgid "E-mail address"
-#~ msgstr "Adresse de courriel"
-
-#~ msgid "No Results for:"
-#~ msgstr "Aucun résultat pour :"
-
-#~ msgid "Please try a different search"
-#~ msgstr "Essayer une recherche différente"
-
-#~ msgid "Tasks list"
-#~ msgstr "Liste des tâches"
-
-#~ msgid "Kindle E-Mail"
-#~ msgstr "Adresse de courriel Kindle"
-
-#~ msgid "Please note that every visit to this current page invalidates any previously generated Authentication url for this user."
-#~ msgstr ""
-
-#~ msgid "Cover is not a supported imageformat (jpg/png/webp), can't save"
-#~ msgstr "Le format d'image utilisé pour la couverture n'est pas supporté (jpg/png/webp uniquement). Sauvegarde impossible."
 

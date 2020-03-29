@@ -15,13 +15,15 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 /*
- * Get Metadata from Douban Books api and Google Books api
+ * Get Metadata from Douban Books api and Google Books api and ComicVine
  * Google Books api document: https://developers.google.com/books/docs/v1/using
  * Douban Books api document: https://developers.douban.com/wiki/?title=book_v2 (Chinese Only)
+ * ComicVine api document: https://comicvine.gamespot.com/api/documentation
 */
 /* global _, i18nMsg, tinymce */
 var dbResults = [];
 var ggResults = [];
+var cvResults = [];
 
 $(function () {
     var msg = i18nMsg;
@@ -32,6 +34,10 @@ $(function () {
     var google = "https://www.googleapis.com";
     var ggSearch = "/books/v1/volumes";
     var ggDone = false;
+
+    var comicvine = "https://comicvine.gamespot.com";
+    var cvSearch = "/api/search/";
+    var cvDone = false;
 
     var showFlag = 0;
 
@@ -164,6 +170,52 @@ $(function () {
             });
             dbDone = false;
         }
+        if (cvDone && cvResults.length > 0) {
+            cvResults.forEach(function(result) {
+                var seriesTitle = "";
+                if (result.volume.name) {
+                    seriesTitle = result.volume.name;
+                }
+                var dateFomers = "";
+                if (result.store_date) {
+                    dateFomers = result.store_date.split("-");
+                }else{
+                    dateFomers = result.date_added.split("-");
+                }
+                var publishedYear = parseInt(dateFomers[0]);
+                var publishedMonth = parseInt(dateFomers[1]);
+                var publishedDate = new Date(publishedYear, publishedMonth - 1, 1);
+                
+                publishedDate = formatDate(publishedDate);
+
+                var book = {
+                    id: result.id,
+                    title: seriesTitle + ' #' +('00' + result.issue_number).slice(-3) + ' - ' + result.name,
+                    authors: result.author || [],
+                    description: result.description,
+                    publisher: "",
+                    publishedDate: publishedDate || "",
+                    tags: ['Comics', seriesTitle],
+                    rating: 0,
+                    series: seriesTitle || "",
+                    cover: result.image.original_url,
+                    url: result.site_detail_url,
+                    source: {
+                        id: "comicvine",
+                        description: "ComicVine Books",
+                        url: "https://comicvine.gamespot.com/"
+                    }
+                };
+
+                var $book = $(templates.bookResult(book));
+                $book.find("img").on("click", function () {
+                    populateForm(book);
+                });
+
+                $("#book-list").append($book);
+            });
+            cvDone = false;
+        }
     }
 
     function ggSearchBook (title) {
@@ -207,12 +259,35 @@ $(function () {
         });
     }
 
+    function cvSearchBook (title) {
+        var apikey = "57558043c53943d5d1e96a9ad425b0eb85532ee6";
+        title = encodeURIComponent(title);
+        $.ajax({
+            url: comicvine + cvSearch + "?api_key=" + apikey + "&resources=issue&query=" + title + "&sort=name:desc&format=jsonp",
+            type: "GET",
+            dataType: "jsonp",
+            jsonp: "json_callback",
+            success: function success(data) {
+                cvResults = data.results;
+            },
+            error: function error() {
+                $("#meta-info").html("<p class=\"text-danger\">" + msg.search_error + "!</p>" + $("#meta-info")[0].innerHTML);
+            },
+            complete: function complete() {
+                cvDone = true;
+                showResult();
+                $("#show-comics").trigger("change");
+            }
+        });
+    }
+
     function doSearch (keyword) {
         showFlag = 0;
         $("#meta-info").text(msg.loading);
         if (keyword) {
             dbSearchBook(keyword);
             ggSearchBook(keyword);
+            cvSearchBook(keyword);
         }
     }
 

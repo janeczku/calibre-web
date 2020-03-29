@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2020-03-07 11:20+0100\n"
+"POT-Creation-Date: 2020-03-14 10:38+0100\n"
 "PO-Revision-Date: 2018-08-27 17:06+0700\n"
 "Last-Translator: \n"
 "Language: km_KH\n"
@@ -1211,13 +1211,13 @@ msgstr ""
 msgid "Book Title"
 msgstr "ចំណងជើងសៀវភៅ"
 
-#: cps/templates/book_edit.html:57 cps/templates/book_edit.html:253
-#: cps/templates/book_edit.html:271 cps/templates/search_form.html:10
+#: cps/templates/book_edit.html:57 cps/templates/book_edit.html:256
+#: cps/templates/book_edit.html:274 cps/templates/search_form.html:10
 msgid "Author"
 msgstr "អ្នកនិពន្ធ"
 
-#: cps/templates/book_edit.html:61 cps/templates/book_edit.html:258
-#: cps/templates/book_edit.html:273 cps/templates/search_form.html:126
+#: cps/templates/book_edit.html:61 cps/templates/book_edit.html:261
+#: cps/templates/book_edit.html:276 cps/templates/search_form.html:126
 msgid "Description"
 msgstr "ពិពណ៌នា"
 
@@ -1245,8 +1245,8 @@ msgstr ""
 msgid "Published Date"
 msgstr "ថ្ងៃបោះពុម្ភ"
 
-#: cps/templates/book_edit.html:97 cps/templates/book_edit.html:255
-#: cps/templates/book_edit.html:272 cps/templates/detail.html:156
+#: cps/templates/book_edit.html:97 cps/templates/book_edit.html:258
+#: cps/templates/book_edit.html:275 cps/templates/detail.html:156
 #: cps/templates/search_form.html:14
 msgid "Publisher"
 msgstr "អ្នកបោះពុម្ភ"
@@ -1306,26 +1306,26 @@ msgstr "ស្វែងរកពាក្យគន្លឹះ"
 msgid "Click the cover to load metadata to the form"
 msgstr "ចុចលើគម្របដើម្បីបញ្ចូលទិន្នន័យមេតាទៅក្នុង form"
 
-#: cps/templates/book_edit.html:228 cps/templates/book_edit.html:268
+#: cps/templates/book_edit.html:231 cps/templates/book_edit.html:271
 msgid "Loading..."
 msgstr "កំពុងដំណើរការ..."
 
-#: cps/templates/book_edit.html:233 cps/templates/layout.html:191
+#: cps/templates/book_edit.html:236 cps/templates/layout.html:191
 #: cps/templates/layout.html:223 cps/templates/modal_restriction.html:34
 #: cps/templates/user_edit.html:164
 msgid "Close"
 msgstr "បិទ"
 
-#: cps/templates/book_edit.html:260 cps/templates/book_edit.html:274
+#: cps/templates/book_edit.html:263 cps/templates/book_edit.html:277
 msgid "Source"
 msgstr "ប្រភព"
 
-#: cps/templates/book_edit.html:269
+#: cps/templates/book_edit.html:272
 msgid "Search error!"
 msgstr "ការស្វែងរកមានកំហុស!"
 
-#: cps/templates/book_edit.html:270
-msgid "No Result(s) found! Please try aonther keyword."
+#: cps/templates/book_edit.html:273
+msgid "No Result(s) found! Please try another keyword."
 msgstr ""
 
 #: cps/templates/config_edit.html:12
@@ -2326,79 +2326,4 @@ msgstr ""
 #: cps/templates/user_edit.html:176
 msgid "Do you really want to delete the Kobo Token?"
 msgstr ""
-
-#~ msgid "deny"
-#~ msgstr ""
-
-#~ msgid "allow"
-#~ msgstr ""
-
-#~ msgid "Best rated books"
-#~ msgstr "សៀវភៅដែលត្រូវបានវាយតម្លៃល្អជាងគេ"
-
-#~ msgid "Publisher list"
-#~ msgstr ""
-
-#~ msgid "Series list"
-#~ msgstr "បញ្ជីស៊េរី"
-
-#~ msgid "Available languages"
-#~ msgstr "ភាសាដែលមាន"
-
-#~ msgid "Category list"
-#~ msgstr "បញ្ជីប្រភេទ"
-
-#~ msgid "E-mail"
-#~ msgstr ""
-
-#~ msgid "Submit"
-#~ msgstr "បញ្ចូល"
-
-#~ msgid "Go!"
-#~ msgstr "ទៅ!"
-
-#~ msgid "Enable uploading"
-#~ msgstr "អនុញ្ញាតការអាប់ឡូត"
-
-#~ msgid "View restriction based on Calibre column"
-#~ msgstr ""
-
-#~ msgid "language"
-#~ msgstr "ភាសា"
-
-#~ msgid "SMTP port (usually 25 for plain SMTP and 465 for SSL and 587 for STARTTLS)"
-#~ msgstr "លេខ port SMTP (ជាធម្មតាលេខ 25 សម្រាប់ SMTP ធម្មតា ឬ 465 សម្រាប់ SSL ឬ 587 សម្រាប់ STARTTLS)"
-
-#~ msgid "From e-mail"
-#~ msgstr "ពីអ៊ីមែល"
-
-#~ msgid "Save settings"
-#~ msgstr "រក្សាទុកការកំណត់"
-
-#~ msgid "api_endpoint="
-#~ msgstr ""
-
-#~ msgid "please don't refresh the page"
-#~ msgstr "សូមកុំបើកទំព័រជាថ្មី"
-
-#~ msgid "E-mail address"
-#~ msgstr ""
-
-#~ msgid "No Results for:"
-#~ msgstr "គ្មានលទ្ធផលសម្រាប់៖"
-
-#~ msgid "Please try a different search"
-#~ msgstr "សូមសាកល្បងស្វែងរកផ្សេងទៀត"
-
-#~ msgid "Tasks list"
-#~ msgstr "បញ្ជីការងារ"
-
-#~ msgid "Kindle E-Mail"
-#~ msgstr "អ៊ីមែល Kindle"
-
-#~ msgid "Please note that every visit to this current page invalidates any previously generated Authentication url for this user."
-#~ msgstr ""
-
-#~ msgid "Cover is not a supported imageformat (jpg/png/webp), can't save"
-#~ msgstr ""
 

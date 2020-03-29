@@ -61,6 +61,20 @@ $(function() {
         $("#RestartDialog").modal("hide");
     }
 
+    function cleanUp() {
+        clearInterval(updateTimerID);
+        $("#spinner2").hide();
+        $("#updateFinished").removeClass("hidden");
+        $("#check_for_update").removeClass("hidden");
+        $("#perform_update").addClass("hidden");
+        $("#message").alert("close");
+        $("#update_table > tbody > tr").each(function () {
+            if ($(this).attr("id") !== "current_version") {
+                $(this).closest("tr").remove();
+            }
+        });
+    }
+
     function updateTimer() {
         $.ajax({
             dataType: "json",
@@ -69,21 +83,12 @@ $(function() {
                 // console.log(data.status);
                 $("#Updatecontent").html(updateText[data.status]);
                 if (data.status > 6) {
-                    clearInterval(updateTimerID);
-                    $("#spinner2").hide();
-                    $("#updateFinished").removeClass("hidden");
-                    $("#check_for_update").removeClass("hidden");
-                    $("#perform_update").addClass("hidden");
+                    cleanUp();
                 }
             },
             error: function error() {
-                // console.log('Done');
-                clearInterval(updateTimerID);
-                $("#spinner2").hide();
                 $("#Updatecontent").html(updateText[7]);
-                $("#updateFinished").removeClass("hidden");
-                $("#check_for_update").removeClass("hidden");
-                $("#perform_update").addClass("hidden");
+                cleanUp();
             },
             timeout: 2000
         });
@@ -141,6 +146,8 @@ $(function() {
         var $this = $(this);
         var buttonText = $this.html();
         $this.html("...");
+        $("#Updatecontent").html("");
+        $("#updateFinished").addClass("hidden");
         $("#update_error").addClass("hidden");
         if ($("#message").length) {
             $("#message").alert("close");
@@ -246,13 +253,13 @@ $(function() {
         })
         .on("hidden.bs.modal", function() {
             $(this).find(".modal-body").html("...");
-             $("#config_delete_kobo_token").show();
+            $("#config_delete_kobo_token").show();
         });
 
     $("#btndeletetoken").click(function() {
         //get data-id attribute of the clicked element
-        var pathname = document.getElementsByTagName("script"), src = pathname[pathname.length-1].src;
-        var path = src.substring(0,src.lastIndexOf("/"));
+        var pathname = document.getElementsByTagName("script"), src = pathname[pathname.length - 1].src;
+        var path = src.substring(0, src.lastIndexOf("/"));
         // var domainId = $(this).value("domainId");
         $.ajax({
             method:"get",
