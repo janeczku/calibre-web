@@ -24,7 +24,7 @@ import signal
 import socket
 
 try:
-    from gevent.pywsgi import WSGIServer
+    from gevent.pyewsgi import WSGIServer
     from gevent.pool import Pool
     from gevent import __version__ as _version
     VERSION = 'Gevent ' + _version
@@ -193,6 +193,9 @@ class WebServer(object):
         self.stop()
 
     def stop(self, restart=False):
+        from . import updater_thread
+        updater_thread.stop()
+
         log.info("webserver stop (restart=%s)", restart)
         self.restart = restart
         if self.wsgiserver:

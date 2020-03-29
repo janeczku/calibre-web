@@ -53,8 +53,13 @@ class Updater(threading.Thread):
 
     def __init__(self):
         threading.Thread.__init__(self)
+        self.paused = False
+        # self.pause_cond = threading.Condition(threading.Lock())
+        self.can_run = threading.Event()
+        self.pause()
         self.status = -1
         self.updateIndex = None
+        # self.run()
 
     def get_current_version_info(self):
         if config.config_updatechannel == constants.UPDATE_STABLE:
@@ -66,12 +71,12 @@ class Updater(threading.Thread):
             return self._stable_available_updates(request_method)
         return self._nightly_available_updates(request_method,locale)
 
-    def run(self):
+    def do_work(self):
         try:
             self.status = 1
             log.debug(u'Download update file')
             headers = {'Accept': 'application/vnd.github.v3+json'}
-            r = requests.get(self._get_request_path(), stream=True, headers=headers)
+            r = requests.get(self._get_request_path(), stream=True, headers=headers, timeout=(10, 600))
             r.raise_for_status()
 
             self.status = 2
@@ -85,7 +90,8 @@ class Updater(threading.Thread):
             if not os.path.isdir(foldername):
                 self.status = 11
                 log.info(u'Extracted contents of zipfile not found in temp folder')
-                return
+                self.pause()
+                return False
             self.status = 4
             log.debug(u'Replacing files')
             self.update_source(foldername, constants.BASE_DIR)
@@ -95,6 +101,7 @@ class Updater(threading.Thread):
             web_server.stop(True)
             self.status = 7
             time.sleep(2)
+            return True
         except requests.exceptions.HTTPError as ex:
             log.info(u'HTTP Error %s', ex)
             self.status = 8
@@ -104,9 +111,31 @@ class Updater(threading.Thread):
         except requests.exceptions.Timeout:
             log.info(u'Timeout while establishing connection')
             self.status = 10
-        except requests.exceptions.RequestException:
+        except (requests.exceptions.RequestException, zipfile.BadZipFile):
             self.status = 11
             log.info(u'General error')
+        self.pause()
+        return False
+
+    def run(self):
+        while True:
+            self.can_run.wait()
+            if self.status > -1:
+                if self.do_work():
+                    break   # stop loop and end thread for restart
+            else:
+                break
+
+    def pause(self):
+        self.can_run.clear()
+
+    #should just resume the thread
+    def resume(self):
+        self.can_run.set()
+
+    def stop(self):
+        self.status = -2
+        self.can_run.set()
 
     def get_update_status(self):
         return self.status
@@ -258,16 +287,19 @@ class Updater(threading.Thread):
             parents = []
             if status['message'] != '':
                 return json.dumps(status)
-            if 'object' not in commit:
+            if 'object' not in commit or 'url' not in commit['object']:
                 status['message'] = _(u'Unexpected data while reading update information')
                 return json.dumps(status)
-
-            if commit['object']['sha'] == status['current_commit_hash']:
-                status.update({
-                    'update': False,
-                    'success': True,
-                    'message': _(u'No update available. You already have the latest version installed')
-                })
+            try:
+                if commit['object']['sha'] == status['current_commit_hash']:
+                    status.update({
+                        'update': False,
+                        'success': True,
+                        'message': _(u'No update available. You already have the latest version installed')
+                    })
+                    return json.dumps(status)
+            except (TypeError, KeyError):
+                status['message'] = _(u'Unexpected data while reading update information')
                 return json.dumps(status)
 
             # a new update is available
@@ -275,22 +307,25 @@ class Updater(threading.Thread):
 
             try:
                 headers = {'Accept': 'application/vnd.github.v3+json'}
-                r = requests.get(repository_url + '/git/commits/' + commit['object']['sha'], headers=headers)
+                r = requests.get(repository_url + '/git/commits/' + commit['object']['sha'],
+                                 headers=headers,
+                                 timeout=10)
                 r.raise_for_status()
                 update_data = r.json()
             except requests.exceptions.HTTPError as e:
-                status['error'] = _(u'HTTP Error') + ' ' + str(e)
+                status['message'] = _(u'HTTP Error') + ' ' + str(e)
             except requests.exceptions.ConnectionError:
-                status['error'] = _(u'Connection error')
+                status['message'] = _(u'Connection error')
             except requests.exceptions.Timeout:
-                status['error'] = _(u'Timeout while establishing connection')
-            except requests.exceptions.RequestException:
-                status['error'] = _(u'General error')
+                status['message'] = _(u'Timeout while establishing connection')
+            except (requests.exceptions.RequestException, ValueError):
+                status['message'] = _(u'General error')
 
             if status['message'] != '':
                 return json.dumps(status)
 
-            if 'committer' in update_data and 'message' in update_data:
+            # if 'committer' in update_data and 'message' in update_data:
+            try:
                 status['success'] = True
                 status['message'] = _(
                     u'A new update is available. Click on the button below to update to the latest version.')
@@ -304,14 +339,13 @@ class Updater(threading.Thread):
                         update_data['sha']
                     ]
                 )
-
                 # it only makes sense to analyze the parents if we know the current commit hash
                 if status['current_commit_hash'] != '':
                     try:
                         parent_commit = update_data['parents'][0]
                         # limit the maximum search depth
                         remaining_parents_cnt = 10
-                    except IndexError:
+                    except (IndexError, KeyError):
                         remaining_parents_cnt = None
 
                     if remaining_parents_cnt is not None:
@@ -323,7 +357,7 @@ class Updater(threading.Thread):
                             if parent_commit['sha'] != status['current_commit_hash']:
                                 try:
                                     headers = {'Accept': 'application/vnd.github.v3+json'}
-                                    r = requests.get(parent_commit['url'], headers=headers)
+                                    r = requests.get(parent_commit['url'], headers=headers, timeout=10)
                                     r.raise_for_status()
                                     parent_data = r.json()
 
@@ -343,7 +377,7 @@ class Updater(threading.Thread):
                                 # parent is our current version
                                 break
                 status['history'] = parents[::-1]
-            else:
+            except (IndexError, KeyError):
                 status['success'] = False
                 status['message'] = _(u'Could not fetch update information')
             return json.dumps(status)
@@ -377,8 +411,9 @@ class Updater(threading.Thread):
                 return json.dumps(status)
 
             i = len(commit) - 1
+            newer = False
             while i >= 0:
-                if 'tag_name' not in commit[i] or 'body' not in commit[i]:
+                if 'tag_name' not in commit[i] or 'body' not in commit[i] or 'zipball_url' not in commit[i]:
                     status['message'] = _(u'Unexpected data while reading update information')
                     return json.dumps(status)
                 major_version_update = int(commit[i]['tag_name'].split('.')[0])
@@ -392,12 +427,13 @@ class Updater(threading.Thread):
                 except ValueError:
                     current_version[2] = int(current_version[2].split(' ')[0])-1
 
-                # Check if major versions are identical search for newest nonenqual commit and update to this one
+                # Check if major versions are identical search for newest non equal commit and update to this one
                 if major_version_update == current_version[0]:
                     if (minor_version_update == current_version[1] and
                             patch_version_update > current_version[2]) or \
                             minor_version_update > current_version[1]:
                         parents.append([commit[i]['tag_name'], commit[i]['body'].replace('\r\n', '<p>')])
+                        newer=True
                     i -= 1
                     continue
                 if major_version_update < current_version[0]:
@@ -406,7 +442,9 @@ class Updater(threading.Thread):
                 if major_version_update > current_version[0]:
                     # found update update to last version before major update, unless current version is on last version
                     # before major update
-                    if commit[i+1]['tag_name'].split('.')[1] == current_version[1]:
+                    if i == (len(commit) - 1):
+                        i -= 1
+                    if int(commit[i+1]['tag_name'].split('.')[1]) == current_version[1]:
                         parents.append([commit[i]['tag_name'],
                                         commit[i]['body'].replace('\r\n', '<p>').replace('\n', '<p>')])
                         status.update({
@@ -418,16 +456,18 @@ class Updater(threading.Thread):
                         })
                         self.updateFile = commit[i]['zipball_url']
                     else:
+                        parents.append([commit[i+1]['tag_name'],
+                                        commit[i+1]['body'].replace('\r\n', '<p>').replace('\n', '<p>')])
                         status.update({
                             'update': True,
                             'success': True,
                             'message': _(u'A new update is available. Click on the button below to '
-                                         u'update to version: %(version)s', version=commit[i]['tag_name']),
+                                         u'update to version: %(version)s', version=commit[i+1]['tag_name']),
                             'history': parents
                         })
                         self.updateFile = commit[i+1]['zipball_url']
                     break
-            if i == -1:
+            if i == -1 and newer == False:
                 status.update({
                     'update': True,
                     'success': True,
@@ -436,6 +476,16 @@ class Updater(threading.Thread):
                     'history': parents
                 })
                 self.updateFile = commit[0]['zipball_url']
+            elif i == -1 and newer == True:
+                status.update({
+                    'update': True,
+                    'success': True,
+                    'message': _(u'A new update is available. Click on the button below to '
+                                 u'update to version: %(version)s', version=commit[0]['tag_name']),
+                    'history': parents
+                })
+                self.updateFile = commit[0]['zipball_url']
+
         return json.dumps(status)
 
     def _get_request_path(self):
@@ -458,7 +508,7 @@ class Updater(threading.Thread):
             status['current_commit_hash'] = version['version']
         try:
             headers = {'Accept': 'application/vnd.github.v3+json'}
-            r = requests.get(repository_url, headers=headers)
+            r = requests.get(repository_url, headers=headers, timeout=10)
             commit = r.json()
             r.raise_for_status()
         except requests.exceptions.HTTPError as e:
@@ -471,7 +521,7 @@ class Updater(threading.Thread):
             status['message'] = _(u'Connection error')
         except requests.exceptions.Timeout:
             status['message'] = _(u'Timeout while establishing connection')
-        except requests.exceptions.RequestException:
+        except (requests.exceptions.RequestException, ValueError):
             status['message'] = _(u'General error')
-
+        log.debug('Updater status: %s', status['message'])
         return status, commit
