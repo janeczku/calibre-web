@@ -964,7 +964,8 @@ def get_updater_status():
                 "8": _(u'Update failed:') + u' ' + _(u'HTTP Error'),
                 "9": _(u'Update failed:') + u' ' + _(u'Connection error'),
                 "10": _(u'Update failed:') + u' ' + _(u'Timeout while establishing connection'),
-                "11": _(u'Update failed:') + u' ' + _(u'General error')
+                "11": _(u'Update failed:') + u' ' + _(u'General error'),
+                "12": _(u'Update failed:') + u' ' + _(u'Update File Could Not be Saved in Temp Dir')
             }
             status['text'] = text
             updater_thread.status = 0

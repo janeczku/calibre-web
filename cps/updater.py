@@ -114,6 +114,9 @@ class Updater(threading.Thread):
         except (requests.exceptions.RequestException, zipfile.BadZipFile):
             self.status = 11
             log.info(u'General error')
+        except (IOError, OSError):
+            self.status = 12
+            log.info(u'Update File Could Not be Saved in Temp Dir')
         self.pause()
         return False
 
