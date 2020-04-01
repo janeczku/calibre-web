@@ -30,3 +30,5 @@ settings.yaml
 gdrive_credentials
 client_secrets.json
 
+.vscode/settings.json
+.vscode/launch.json
