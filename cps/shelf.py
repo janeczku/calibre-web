@@ -204,12 +204,24 @@ def create_shelf():
             shelf.is_public = 1
         shelf.name = to_save["title"]
         shelf.user_id = int(current_user.id)
-        existing_shelf = ub.session.query(ub.Shelf).filter(
-            or_((ub.Shelf.name == to_save["title"]) & (ub.Shelf.is_public == 1),
-                (ub.Shelf.name == to_save["title"]) & (ub.Shelf.user_id == int(current_user.id)))).first()
-        if existing_shelf:
-            flash(_(u"A shelf with the name '%(title)s' already exists.", title=to_save["title"]), category="error")
+
+        is_shelf_name_unique = False
+        if shelf.is_public == 1:
+            is_shelf_name_unique = ub.session.query(ub.Shelf) \
+                .filter((ub.Shelf.name == to_save["title"]) & (ub.Shelf.is_public == 1)) \
+                .first() is None
+
+            if not is_shelf_name_unique:
+                flash(_(u"A public shelf with the name '%(title)s' already exists.", title=to_save["title"]), category="error")
         else:
+            is_shelf_name_unique = ub.session.query(ub.Shelf) \
+                .filter((ub.Shelf.name == to_save["title"]) & (ub.Shelf.is_public == 0) & (ub.Shelf.user_id == int(current_user.id))) \
+                .first() is None
+
+            if not is_shelf_name_unique:
+                flash(_(u"A private shelf with the name '%(title)s' already exists.", title=to_save["title"]), category="error")
+
+        if is_shelf_name_unique:
             try:
                 ub.session.add(shelf)
                 ub.session.commit()
@@ -227,13 +239,26 @@ def edit_shelf(shelf_id):
     shelf = ub.session.query(ub.Shelf).filter(ub.Shelf.id == shelf_id).first()
     if request.method == "POST":
         to_save = request.form.to_dict()
-        existing_shelf = ub.session.query(ub.Shelf).filter(
-            or_((ub.Shelf.name == to_save["title"]) & (ub.Shelf.is_public == 1),
-                (ub.Shelf.name == to_save["title"]) & (ub.Shelf.user_id == int(current_user.id)))).filter(
-            ub.Shelf.id != shelf_id).first()
-        if existing_shelf:
-            flash(_(u"A shelf with the name '%(title)s' already exists.", title=to_save["title"]), category="error")
+
+        is_shelf_name_unique = False
+        if shelf.is_public == 1:
+            is_shelf_name_unique = ub.session.query(ub.Shelf) \
+                .filter((ub.Shelf.name == to_save["title"]) & (ub.Shelf.is_public == 1)) \
+                .filter(ub.Shelf.id != shelf_id) \
+                .first() is None
+
+            if not is_shelf_name_unique:
+                flash(_(u"A public shelf with the name '%(title)s' already exists.", title=to_save["title"]), category="error")
         else:
+            is_shelf_name_unique = ub.session.query(ub.Shelf) \
+                .filter((ub.Shelf.name == to_save["title"]) & (ub.Shelf.is_public == 0) & (ub.Shelf.user_id == int(current_user.id))) \
+                .filter(ub.Shelf.id != shelf_id) \
+                .first() is None
+
+            if not is_shelf_name_unique:
+                flash(_(u"A private shelf with the name '%(title)s' already exists.", title=to_save["title"]), category="error")
+
+        if is_shelf_name_unique:
             shelf.name = to_save["title"]
             if "is_public" in to_save:
                 shelf.is_public = 1

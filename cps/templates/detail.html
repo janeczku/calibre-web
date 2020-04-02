@@ -217,7 +217,7 @@
       <div class="more-stuff">
 
       {% if g.user.is_authenticated %}
-      {% if g.user.shelf.all() or g.public_shelfes %}
+      {% if g.user.shelf.all() or g.shelves_access %}
       <div id="shelf-actions" class="btn-toolbar" role="toolbar">
         <div class="btn-group" role="group" aria-label="Add to shelves">
           <button id="add-to-shelf" type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -237,7 +237,7 @@
                 </li>
               {% endif %}
             {%endfor%}
-            {% for shelf in g.public_shelfes %}
+            {% for shelf in g.shelves_access %}
               {% if not shelf.id in books_shelfs %}
                 <li>
                   <a href="{{ url_for('shelf.add_to_shelf', book_id=entry.id, shelf_id=shelf.id) }}"
@@ -263,7 +263,7 @@
                 </a>
               {% endif %}
             {%endfor%}
-            {% for shelf in g.public_shelfes %}
+            {% for shelf in g.shelves_access %}
               {% if shelf.id in books_shelfs %}
                 <a href="{{ url_for('shelf.remove_from_shelf', book_id=entry.id, shelf_id=shelf.id) }}"
                    data-add-href="{{ url_for('shelf.add_to_shelf', book_id=entry.id, shelf_id=shelf.id) }}"

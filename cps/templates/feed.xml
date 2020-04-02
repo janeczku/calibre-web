@@ -75,7 +75,11 @@
   {% endif %}
   {% for entry in listelements %}
   <entry>
+    {% if entry.__class__.__name__ == 'Shelf' and entry.is_public == 1 %}
+    <title>{{entry.name}} {{_('(Public)')}}</title>
+    {% else %}
     <title>{{entry.name}}</title>
+    {% endif %}
     <id>{{ url_for(folder, book_id=entry.id) }}</id>
     <link rel="subsection" type="application/atom+xml;profile=opds-catalog" href="{{url_for(folder, book_id=entry.id)}}"/>
   </entry>

@@ -37,7 +37,7 @@ from flask import render_template, request, redirect, send_from_directory, make_
 from flask_babel import gettext as _
 from flask_login import login_user, logout_user, login_required, current_user
 from sqlalchemy.exc import IntegrityError
-from sqlalchemy.sql.expression import text, func, true, false, not_, and_, exists
+from sqlalchemy.sql.expression import text, func, true, false, not_, and_, exists, or_
 from werkzeug.exceptions import default_exceptions
 from werkzeug.datastructures import Headers
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -268,7 +268,7 @@ def before_request():
     g.allow_upload = config.config_uploading
     g.current_theme = config.config_theme
     g.config_authors_max = config.config_authors_max
-    g.public_shelfes = ub.session.query(ub.Shelf).filter(ub.Shelf.is_public == 1).order_by(ub.Shelf.name).all()
+    g.shelves_access = ub.session.query(ub.Shelf).filter(or_(ub.Shelf.is_public == 1, ub.Shelf.user_id == current_user.id)).order_by(ub.Shelf.name).all()
     if not config.db_configured and request.endpoint not in ('admin.basic_configuration', 'login') and '/static/' not in request.path:
         return redirect(url_for('admin.basic_configuration'))
 
