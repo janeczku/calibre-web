@@ -7,7 +7,7 @@
     {% else %}
       <h2>{{entries|length}} {{_('Results for:')}} {{searchterm}}</h2>
       {% if g.user.is_authenticated %}
-        {% if g.user.shelf.all() or g.public_shelfes %}
+        {% if g.user.shelf.all() or g.shelves_access %}
           <div id="shelf-actions" class="btn-toolbar" role="toolbar">
             <div class="btn-group" role="group" aria-label="Add to shelves">
               <button id="add-to-shelf" type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -20,7 +20,7 @@
                     <li><a href="{{ url_for('shelf.search_to_shelf', shelf_id=shelf.id) }}"> {{shelf.name}}</a></li>
                   {% endif %}
                 {% endfor %}
-                {% for shelf in g.public_shelfes %}
+                {% for shelf in g.shelves_access %}
                   <li><a href="{{ url_for('shelf.search_to_shelf', shelf_id=shelf.id) }}">{{shelf.name}}</a></li>
                 {% endfor %}
               </ul>
