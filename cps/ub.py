@@ -31,7 +31,7 @@ try:
     oauth_support = True
 except ImportError:
     oauth_support = False
-from sqlalchemy import create_engine, exc, exists
+from sqlalchemy import create_engine, exc, exists, inspect
 from sqlalchemy import Column, ForeignKey
 from sqlalchemy import String, Integer, SmallInteger, Boolean, DateTime
 from sqlalchemy.orm import relationship, sessionmaker
@@ -296,7 +296,7 @@ class Bookmark(Base):
     id = Column(Integer, primary_key=True)
     user_id = Column(Integer, ForeignKey('user.id'))
     book_id = Column(Integer)
-    format = Column(String(collation='NOCASE'))
+    format = Column(String())
     bookmark_key = Column(String)
 
 
@@ -358,7 +358,7 @@ def migrate_Database(session):
         conn.execute("insert into registration (domain, allow) values('%.%',1)")
         session.commit()
     try:
-        session.query(exists().where(Registration.allow)).scalar()
+        session.query(exists().where(Registration.allow == 1)).scalar()
         session.commit()
     except exc.OperationalError:  # Database is not compatible, some columns are missing
         conn = engine.connect()
@@ -366,7 +366,7 @@ def migrate_Database(session):
         conn.execute("update registration set 'allow' = 1")
         session.commit()
     try:
-        session.query(exists().where(RemoteAuthToken.token_type)).scalar()
+        session.query(exists().where(RemoteAuthToken.token_type == 0)).scalar()
         session.commit()
     except exc.OperationalError:  # Database is not compatible, some columns are missing
         conn = engine.connect()
@@ -378,17 +378,17 @@ def migrate_Database(session):
     cnt = session.query(Registration).count()
     if not cnt:
         conn = engine.connect()
-        conn.execute("insert into registration (domain, allow) values('%.%',1)")
+        Registration.__table__.insert().values(domain='%.%', allow='1')
         session.commit()
     try:
-        session.query(exists().where(BookShelf.order)).scalar()
+        session.query(exists().where(BookShelf.order == 1)).scalar()
     except exc.OperationalError:  # Database is not compatible, some columns are missing
         conn = engine.connect()
         conn.execute("ALTER TABLE book_shelf_link ADD column 'order' INTEGER DEFAULT 1")
         session.commit()
     try:
         create = False
-        session.query(exists().where(User.sidebar_view)).scalar()
+        session.query(exists().where(User.sidebar_view == 1)).scalar()
     except exc.OperationalError:  # Database is not compatible, some columns are missing
         conn = engine.connect()
         conn.execute("ALTER TABLE user ADD column `sidebar_view` Integer DEFAULT 1")
@@ -428,7 +428,10 @@ def migrate_Database(session):
     try:
         # check if one table with autoincrement is existing (should be user table)
         conn = engine.connect()
-        conn.execute("SELECT COUNT(*) FROM sqlite_sequence WHERE name='user'")
+        inspector = inspect(engine)
+        id_column = next((x for x in inspector.get_columns('user') if x['name'] == "id"), None) # will throw sqlalchemy.exc.NoSuchTableError: user if not exist
+        if not id_column['autoincrement']:
+            raise exc.OperationalError()
     except exc.OperationalError:
         # Create new table user_id and copy contents of table user into it
         conn = engine.connect()
@@ -456,8 +459,10 @@ def migrate_Database(session):
 
     # Remove login capability of user Guest
     conn = engine.connect()
-    conn.execute("UPDATE user SET password='' where nickname = 'Guest' and password !=''")
-    session.commit()
+    row = session.query(User).filter(User.nickname == 'Guest').first()
+    if row.password != '':
+        row.password = ''
+        session.commit()
 
 
 def clean_database(session):
@@ -518,13 +523,17 @@ def init_db(app_db_path):
     # Open session for database connection
     global session
 
-    engine = create_engine(u'sqlite:///{0}'.format(app_db_path), echo=False)
+    engine = create_engine(
+        os.getenv('SETTINGS_DB_ENGINE_URI',
+                  u'sqlite:///{0}'.format(app_db_path)),
+        echo=False)
 
     Session = sessionmaker()
     Session.configure(bind=engine)
     session = Session()
+    is_existing_db = not engine.dialect.has_table(engine, 'user')
 
-    if os.path.exists(app_db_path):
+    if is_existing_db:
         Base.metadata.create_all(engine)
         migrate_Database(session)
         clean_database(session)
