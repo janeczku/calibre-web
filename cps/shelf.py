@@ -226,6 +226,7 @@ def create_shelf():
                 ub.session.add(shelf)
                 ub.session.commit()
                 flash(_(u"Shelf %(title)s created", title=to_save["title"]), category="success")
+                return redirect(url_for('shelf.show_shelf', shelf_id = shelf.id ))
             except Exception:
                 flash(_(u"There was an error"), category="error")
         return render_title_template('shelf_edit.html', shelf=shelf, title=_(u"create a shelf"), page="shelfcreate")
