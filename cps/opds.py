@@ -25,7 +25,7 @@ import sys
 import datetime
 from functools import wraps
 
-from flask import Blueprint, request, render_template, Response, g, make_response, abort
+from flask import Blueprint, request, render_template, Response, g, make_response
 from flask_login import current_user
 from sqlalchemy.sql.expression import func, text, or_, and_
 from werkzeug.security import check_password_hash
@@ -165,10 +165,7 @@ def feed_author(book_id):
     off = request.args.get("offset") or 0
     entries, __, pagination = fill_indexpage((int(off) / (int(config.config_books_per_page)) + 1),
                     db.Books, db.Books.authors.any(db.Authors.id == book_id), [db.Books.timestamp.desc()])
-    if len(entries):
-        return render_xml_template('feed.xml', entries=entries, pagination=pagination)
-    else:
-        return abort(404)
+    return render_xml_template('feed.xml', entries=entries, pagination=pagination)
 
 
 @opds.route("/opds/publisher")
@@ -189,10 +186,7 @@ def feed_publisher(book_id):
     entries, __, pagination = fill_indexpage((int(off) / (int(config.config_books_per_page)) + 1),
                                              db.Books, db.Books.publishers.any(db.Publishers.id == book_id),
                                              [db.Books.timestamp.desc()])
-    if len(entries):
-        return render_xml_template('feed.xml', entries=entries, pagination=pagination)
-    else:
-        return abort(404)
+    return render_xml_template('feed.xml', entries=entries, pagination=pagination)
 
 
 @opds.route("/opds/category")
@@ -212,10 +206,7 @@ def feed_category(book_id):
     off = request.args.get("offset") or 0
     entries, __, pagination = fill_indexpage((int(off) / (int(config.config_books_per_page)) + 1),
                     db.Books, db.Books.tags.any(db.Tags.id == book_id), [db.Books.timestamp.desc()])
-    if len(entries):
-        return render_xml_template('feed.xml', entries=entries, pagination=pagination)
-    else:
-        return abort(404)
+    return render_xml_template('feed.xml', entries=entries, pagination=pagination)
 
 
 @opds.route("/opds/series")
@@ -235,10 +226,7 @@ def feed_series(book_id):
     off = request.args.get("offset") or 0
     entries, __, pagination = fill_indexpage((int(off) / (int(config.config_books_per_page)) + 1),
                     db.Books, db.Books.series.any(db.Series.id == book_id), [db.Books.series_index])
-    if len(entries):
-        return render_xml_template('feed.xml', entries=entries, pagination=pagination)
-    else:
-        return abort(404)
+    return render_xml_template('feed.xml', entries=entries, pagination=pagination)
 
 @opds.route("/opds/ratings")
 @requires_basic_auth_if_no_ano
@@ -262,10 +250,7 @@ def feed_ratings(book_id):
     off = request.args.get("offset") or 0
     entries, __, pagination = fill_indexpage((int(off) / (int(config.config_books_per_page)) + 1),
                     db.Books, db.Books.ratings.any(db.Ratings.id == book_id),[db.Books.timestamp.desc()])
-    if len(entries):
-        return render_xml_template('feed.xml', entries=entries, pagination=pagination)
-    else:
-        return abort(404)
+    return render_xml_template('feed.xml', entries=entries, pagination=pagination)
 
 
 
@@ -290,10 +275,7 @@ def feed_format(book_id):
     off = request.args.get("offset") or 0
     entries, __, pagination = fill_indexpage((int(off) / (int(config.config_books_per_page)) + 1),
                     db.Books, db.Books.data.any(db.Data.format == book_id.upper()), [db.Books.timestamp.desc()])
-    if len(entries):
-        return render_xml_template('feed.xml', entries=entries, pagination=pagination)
-    else:
-        return abort(404)
+    return render_xml_template('feed.xml', entries=entries, pagination=pagination)
 
 
 @opds.route("/opds/language")
@@ -325,10 +307,7 @@ def feed_languages(book_id):
     off = request.args.get("offset") or 0
     entries, __, pagination = fill_indexpage((int(off) / (int(config.config_books_per_page)) + 1),
                     db.Books, db.Books.languages.any(db.Languages.id == book_id), [db.Books.timestamp.desc()])
-    if len(entries):
-        return render_xml_template('feed.xml', entries=entries, pagination=pagination)
-    else:
-        return abort(404)
+    return render_xml_template('feed.xml', entries=entries, pagination=pagination)
 
 
 @opds.route("/opds/shelfindex") #, defaults={'public': 0})
@@ -366,11 +345,9 @@ def feed_shelf(book_id):
         for book in books_in_shelf:
             cur_book = db.session.query(db.Books).filter(db.Books.id == book.book_id).first()
             result.append(cur_book)
-        pagination = Pagination((int(off) / (int(config.config_books_per_page)) + 1), config.config_books_per_page,
-                                len(result))
-        return render_xml_template('feed.xml', entries=result, pagination=pagination)
-    else:
-        return abort(404)
+    pagination = Pagination((int(off) / (int(config.config_books_per_page)) + 1), config.config_books_per_page,
+                            len(result))
+    return render_xml_template('feed.xml', entries=result, pagination=pagination)
 
 
 @opds.route("/opds/download/<book_id>/<book_format>/")
