@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2020-03-14 10:38+0100\n"
+"POT-Creation-Date: 2020-04-03 19:26+0200\n"
 "PO-Revision-Date: 2020-03-07 11:12+0100\n"
 "Last-Translator: ZIZA\n"
 "Language: ru\n"
@@ -41,7 +41,7 @@ msgstr "Производится остановка сервера, пожалу
 
 #: cps/admin.py:110 cps/editbooks.py:410 cps/editbooks.py:419
 #: cps/editbooks.py:539 cps/editbooks.py:541 cps/editbooks.py:594
-#: cps/updater.py:456 cps/uploader.py:96 cps/uploader.py:107
+#: cps/updater.py:509 cps/uploader.py:96 cps/uploader.py:107
 msgid "Unknown"
 msgstr "Неизвестно"
 
@@ -191,24 +191,29 @@ msgid "Update finished, please press okay and reload page"
 msgstr "Обновления установлены, нажмите ок и перезагрузите страницу"
 
 #: cps/admin.py:964 cps/admin.py:965 cps/admin.py:966 cps/admin.py:967
+#: cps/admin.py:968
 msgid "Update failed:"
 msgstr "Ошибка обновления:"
 
-#: cps/admin.py:964 cps/updater.py:282 cps/updater.py:467 cps/updater.py:469
+#: cps/admin.py:964 cps/updater.py:319 cps/updater.py:520 cps/updater.py:522
 msgid "HTTP Error"
 msgstr "Ошибка HTTP"
 
-#: cps/admin.py:965 cps/updater.py:284 cps/updater.py:471
+#: cps/admin.py:965 cps/updater.py:321 cps/updater.py:524
 msgid "Connection error"
 msgstr "Ошибка соединения"
 
-#: cps/admin.py:966 cps/updater.py:286 cps/updater.py:473
+#: cps/admin.py:966 cps/updater.py:323 cps/updater.py:526
 msgid "Timeout while establishing connection"
 msgstr "Тайм-аут при установлении соединения"
 
-#: cps/admin.py:967 cps/updater.py:288 cps/updater.py:475
+#: cps/admin.py:967 cps/updater.py:325 cps/updater.py:528
 msgid "General error"
 msgstr "Общая ошибка"
+
+#: cps/admin.py:968
+msgid "Update File Could Not be Saved in Temp Dir"
+msgstr ""
 
 #: cps/converter.py:31
 msgid "not configured"
@@ -560,47 +565,52 @@ msgstr "Книга удалена с полки: %(sname)s"
 msgid "Sorry you are not allowed to remove a book from this shelf: %(sname)s"
 msgstr "Извините, вы не можете удалить книгу с полки: %(sname)s"
 
-#: cps/shelf.py:211 cps/shelf.py:235
+#: cps/shelf.py:215 cps/shelf.py:252
 #, python-format
-msgid "A shelf with the name '%(title)s' already exists."
-msgstr "Полка с названием '%(title)s' уже существует."
+msgid "A public shelf with the name '%(title)s' already exists."
+msgstr ""
 
-#: cps/shelf.py:216
+#: cps/shelf.py:222 cps/shelf.py:260
+#, python-format
+msgid "A private shelf with the name '%(title)s' already exists."
+msgstr ""
+
+#: cps/shelf.py:228
 #, python-format
 msgid "Shelf %(title)s created"
 msgstr "Создана полка %(title)s"
 
-#: cps/shelf.py:218 cps/shelf.py:246
+#: cps/shelf.py:231 cps/shelf.py:272
 msgid "There was an error"
 msgstr "Произошла ошибка"
 
-#: cps/shelf.py:219 cps/shelf.py:221
+#: cps/shelf.py:232 cps/shelf.py:234
 msgid "create a shelf"
 msgstr "создать полку"
 
-#: cps/shelf.py:244
+#: cps/shelf.py:270
 #, python-format
 msgid "Shelf %(title)s changed"
 msgstr "Колка %(title)s изменена"
 
-#: cps/shelf.py:247 cps/shelf.py:249
+#: cps/shelf.py:273 cps/shelf.py:275
 msgid "Edit a shelf"
 msgstr "Изменить полку"
 
-#: cps/shelf.py:301
+#: cps/shelf.py:327
 #, python-format
 msgid "Shelf: '%(name)s'"
 msgstr "Полка: '%(name)s'"
 
-#: cps/shelf.py:304
+#: cps/shelf.py:330
 msgid "Error opening shelf. Shelf does not exist or is not accessible"
 msgstr "Ошибка открытия Полки. Полка не существует или недоступна"
 
-#: cps/shelf.py:342
+#: cps/shelf.py:368
 msgid "Hidden Book"
 msgstr "Скрытая книга"
 
-#: cps/shelf.py:347
+#: cps/shelf.py:373
 #, python-format
 msgid "Change order of Shelf: '%(name)s'"
 msgstr "Изменить расположение полки '%(name)s'"
@@ -713,32 +723,32 @@ msgstr "Форматы файлов"
 msgid "Show file formats selection"
 msgstr "Показать выбор форматов файлов"
 
-#: cps/updater.py:262 cps/updater.py:369 cps/updater.py:382
+#: cps/updater.py:294 cps/updater.py:305 cps/updater.py:406 cps/updater.py:420
 msgid "Unexpected data while reading update information"
 msgstr "Некорректные данные при чтении информации об обновлении"
 
-#: cps/updater.py:269 cps/updater.py:375
+#: cps/updater.py:301 cps/updater.py:412
 msgid "No update available. You already have the latest version installed"
 msgstr "Нет доступных обновлений. Вы используете последнюю версию"
 
-#: cps/updater.py:295
+#: cps/updater.py:333
 msgid "A new update is available. Click on the button below to update to the latest version."
 msgstr "Новое обновление доступно. Нажмите на кнопку ниже, чтобы обновить до последней версии."
 
-#: cps/updater.py:348
+#: cps/updater.py:385
 msgid "Could not fetch update information"
 msgstr "Не удалось получить информацию об обновлении"
 
-#: cps/updater.py:362
+#: cps/updater.py:399
 msgid "No release information available"
 msgstr "Информация о выпуске недоступна"
 
-#: cps/updater.py:415 cps/updater.py:424
+#: cps/updater.py:456 cps/updater.py:467 cps/updater.py:486
 #, python-format
 msgid "A new update is available. Click on the button below to update to version: %(version)s"
 msgstr "Новое обновление доступно. Нажмите на кнопку ниже, чтобы обновиться до версии: %(version)s"
 
-#: cps/updater.py:434
+#: cps/updater.py:477
 msgid "Click on the button below to update to the latest stable version."
 msgstr "Нажмите на кнопку ниже для обновления до последней стабильной версии"
 
@@ -1310,8 +1320,8 @@ msgstr "Нажмите на обложку, чтобы получить мета
 msgid "Loading..."
 msgstr "Загрузка..."
 
-#: cps/templates/book_edit.html:236 cps/templates/layout.html:191
-#: cps/templates/layout.html:223 cps/templates/modal_restriction.html:34
+#: cps/templates/book_edit.html:236 cps/templates/layout.html:189
+#: cps/templates/layout.html:221 cps/templates/modal_restriction.html:34
 #: cps/templates/user_edit.html:164
 msgid "Close"
 msgstr "Закрыть"
@@ -1768,9 +1778,14 @@ msgstr "Запрещенные домены (черный список)"
 msgid "Are you sure you want to delete this domain?"
 msgstr "Вы действительно желаете удалить это правило домена?"
 
-#: cps/templates/feed.xml:21 cps/templates/layout.html:175
+#: cps/templates/feed.xml:21 cps/templates/layout.html:173
 msgid "Next"
 msgstr "Далее"
+
+#: cps/templates/feed.xml:79 cps/templates/layout.html:136
+#: cps/templates/layout.html:140
+msgid "(Public)"
+msgstr ""
 
 #: cps/templates/generate_kobo_auth_url.html:5
 msgid "Open the .kobo/Kobo eReader.conf file in a text editor and add (or edit):"
@@ -1844,21 +1859,13 @@ msgstr ""
 msgid "Books ordered by file formats"
 msgstr "Книги отсортированы по формату файла"
 
-#: cps/templates/index.xml:111 cps/templates/layout.html:136
-msgid "Public Shelves"
-msgstr "Общие полки"
+#: cps/templates/index.xml:111 cps/templates/layout.html:134
+msgid "Shelves"
+msgstr ""
 
 #: cps/templates/index.xml:115
-msgid "Books organized in public shelfs, visible to everyone"
-msgstr "Книги размещены на полках, и доступны всем"
-
-#: cps/templates/index.xml:119 cps/templates/layout.html:140
-msgid "Your Shelves"
-msgstr "Ваши полки"
-
-#: cps/templates/index.xml:123
-msgid "User's own shelfs, only visible to the current user himself"
-msgstr "Пользовательские полки, видимые только самому пользователю"
+msgid "Books organized in shelves"
+msgstr ""
 
 #: cps/templates/layout.html:28
 msgid "Home"
@@ -1898,7 +1905,7 @@ msgstr "Выход"
 msgid "Register"
 msgstr "Зарегистрироваться"
 
-#: cps/templates/layout.html:116 cps/templates/layout.html:222
+#: cps/templates/layout.html:116 cps/templates/layout.html:220
 msgid "Uploading..."
 msgstr "Загружается..."
 
@@ -1910,27 +1917,31 @@ msgstr "Пожалуйста не обновляйте страницу"
 msgid "Browse"
 msgstr "Просмотр"
 
-#: cps/templates/layout.html:145
+#: cps/templates/layout.html:138
+msgid "Your Shelves"
+msgstr "Ваши полки"
+
+#: cps/templates/layout.html:143
 msgid "Create a Shelf"
 msgstr "Создать книжную полку"
 
-#: cps/templates/layout.html:146 cps/templates/stats.html:3
+#: cps/templates/layout.html:144 cps/templates/stats.html:3
 msgid "About"
 msgstr "О программе"
 
-#: cps/templates/layout.html:160
+#: cps/templates/layout.html:158
 msgid "Previous"
 msgstr "Предыдущий"
 
-#: cps/templates/layout.html:187
+#: cps/templates/layout.html:185
 msgid "Book Details"
 msgstr "Подробнее о книге"
 
-#: cps/templates/layout.html:221
+#: cps/templates/layout.html:219
 msgid "Upload done, processing, please wait..."
 msgstr "Загрузка завершена, обработка, пожалуйста, подождите..."
 
-#: cps/templates/layout.html:224
+#: cps/templates/layout.html:222
 msgid "Error"
 msgstr "Ошибка"
 
