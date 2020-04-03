@@ -584,7 +584,7 @@ msgid "There was an error"
 msgstr "Es trat ein Fehler auf"
 
 #: cps/shelf.py:232 cps/shelf.py:234
-msgid "create a shelf"
+msgid "Create a Shelf"
 msgstr "Bücherregal erzeugen"
 
 #: cps/shelf.py:270
@@ -853,11 +853,11 @@ msgstr "Buch erfolgreich zum Senden an %(kindlemail)s eingereiht"
 
 #: cps/web.py:1064
 #, python-format
-msgid "There was an error sending this book: %(res)s"
+msgid "Oops! There was an error sending this book: %(res)s"
 msgstr "Beim Senden des Buchs trat ein Fehler auf: %(res)s"
 
 #: cps/web.py:1066
-msgid "Please configure your kindle e-mail address first..."
+msgid "Please update your profile with a valid Send to Kindle E-mail Address."
 msgstr "Bitte zuerst die Kindle E-Mailadresse konfigurieren..."
 
 #: cps/web.py:1083
@@ -993,7 +993,7 @@ msgid "Download"
 msgstr "Download"
 
 #: cps/templates/admin.html:18
-msgid "View eBooks"
+msgid "View Books"
 msgstr "Bücher ansehen"
 
 #: cps/templates/admin.html:19 cps/templates/layout.html:65
@@ -1033,7 +1033,7 @@ msgid "From E-mail"
 msgstr "Absenderadresse"
 
 #: cps/templates/admin.html:61
-msgid "Change SMTP settings"
+msgid "Edit E-mail Server Settings"
 msgstr "SMTP-Einstellungen ändern"
 
 #: cps/templates/admin.html:67
@@ -1978,19 +1978,19 @@ msgid "Show Access Log: "
 msgstr "Zugriffslogbuch anzeigen: "
 
 #: cps/templates/modal_restriction.html:6
-msgid "Select allowed/denied Tags"
+msgid "Select Allowed/Denied Tags"
 msgstr "Erlaubte/verbotene Tags auswählen"
 
 #: cps/templates/modal_restriction.html:7
-msgid "Select allowed/denied Custom Column values"
+msgid "Select Allowed/Denied Custom Column Values"
 msgstr "Erlaubte/Verbotene Calibre Spalten auswählen"
 
 #: cps/templates/modal_restriction.html:8
-msgid "Select allowed/denied Tags of user"
+msgid "Select Allowed/Denied Tags of User"
 msgstr "Erlaubte/Verbotene Tags des Benutzers auswählen"
 
 #: cps/templates/modal_restriction.html:9
-msgid "Select allowed/denied Custom Column values of user"
+msgid "Select Allowed/Denied Custom Column Values of User"
 msgstr "Erlaubte/Verbotene Calibre Spalten des Benutzers auswählen"
 
 #: cps/templates/modal_restriction.html:15
@@ -2314,11 +2314,11 @@ msgid "Create/View"
 msgstr "Erzeugen/Ansehen"
 
 #: cps/templates/user_edit.html:83
-msgid "Add allowed/denied Tags"
+msgid "Add Allowed/Denied Tags"
 msgstr "Erlaubte/Verbotene Tags"
 
 #: cps/templates/user_edit.html:84
-msgid "Add allowed/denied custom column values"
+msgid "Add allowed/Denied Custom Column Values"
 msgstr "Erlaubte/Verbotene Calibre Spalten hinzufügen"
 
 #: cps/templates/user_edit.html:129

@@ -585,7 +585,7 @@ msgid "There was an error"
 msgstr "Er is een fout opgetreden"
 
 #: cps/shelf.py:232 cps/shelf.py:234
-msgid "create a shelf"
+msgid "Create a Shelf"
 msgstr "creëer een boekenplank"
 
 #: cps/shelf.py:270
@@ -854,11 +854,11 @@ msgstr "Het boek is in de wachtrij geplaatst om te worden verstuurd aan %(kindle
 
 #: cps/web.py:1064
 #, python-format
-msgid "There was an error sending this book: %(res)s"
+msgid "Oops! There was an error sending this book: %(res)s"
 msgstr "Fout opgetreden bij het versturen van dit boek: %(res)s"
 
 #: cps/web.py:1066
-msgid "Please configure your kindle e-mail address first..."
+msgid "Please update your profile with a valid Send to Kindle E-mail Address."
 msgstr "Stel je kindle-e-mailadres in..."
 
 #: cps/web.py:1083
@@ -994,7 +994,7 @@ msgid "Download"
 msgstr "Downloaden"
 
 #: cps/templates/admin.html:18
-msgid "View eBooks"
+msgid "View Books"
 msgstr "Boeken lezen"
 
 #: cps/templates/admin.html:19 cps/templates/layout.html:65
@@ -1034,7 +1034,7 @@ msgid "From E-mail"
 msgstr "Van e-mail"
 
 #: cps/templates/admin.html:61
-msgid "Change SMTP settings"
+msgid "Edit E-mail Server Settings"
 msgstr "SMTP-instellingen bewerken"
 
 #: cps/templates/admin.html:67
@@ -1979,19 +1979,19 @@ msgid "Show Access Log: "
 msgstr "Toon Toegangslog: "
 
 #: cps/templates/modal_restriction.html:6
-msgid "Select allowed/denied Tags"
+msgid "Select Allowed/Denied Tags"
 msgstr "Selecteer Toegestaan/Geweigerd tags toe"
 
 #: cps/templates/modal_restriction.html:7
-msgid "Select allowed/denied Custom Column values"
+msgid "Select Allowed/Denied Custom Column Values"
 msgstr "Selecteer Toegestaan/Geweigerd aangepaste kolom waarden"
 
 #: cps/templates/modal_restriction.html:8
-msgid "Select allowed/denied Tags of user"
+msgid "Select Allowed/Denied Tags of User"
 msgstr "Selecteer Toegestaan/Geweigerd tags van gebruikers"
 
 #: cps/templates/modal_restriction.html:9
-msgid "Select allowed/denied Custom Column values of user"
+msgid "Select Allowed/Denied Custom Column Values of User"
 msgstr "Selecteer Toegestaan/Geweigerd aangepaste kolom waarden van gebruikers"
 
 #: cps/templates/modal_restriction.html:15
@@ -2315,11 +2315,11 @@ msgid "Create/View"
 msgstr "Aanmaken/Bekijk"
 
 #: cps/templates/user_edit.html:83
-msgid "Add allowed/denied Tags"
+msgid "Add Allowed/Denied Tags"
 msgstr "Voeg Toegestaan/Geweigerd tags toe"
 
 #: cps/templates/user_edit.html:84
-msgid "Add allowed/denied custom column values"
+msgid "Add allowed/Denied Custom Column Values"
 msgstr "Voeg Toegestaan/Geweigerd aangepaste kolom waarden toe"
 
 #: cps/templates/user_edit.html:129
