@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2020-04-03 19:26+0200\n"
+"POT-Creation-Date: 2020-04-03 19:49+0200\n"
 "PO-Revision-Date: 2018-08-27 17:06+0700\n"
 "Last-Translator: \n"
 "Language: km_KH\n"
@@ -584,7 +584,7 @@ msgstr "ធ្នើឈ្មោះ %(title)s ត្រូវបានបង្�
 msgid "There was an error"
 msgstr "មានបញ្ហា"
 
-#: cps/shelf.py:232 cps/shelf.py:234
+#: cps/shelf.py:232 cps/shelf.py:234 cps/templates/layout.html:143
 msgid "Create a Shelf"
 msgstr "បង្កើតធ្នើ"
 
@@ -1686,7 +1686,7 @@ msgstr "ភាពមើលឃើញដែលមកស្រាប់សម្រ
 msgid "Show Random Books in Detail View"
 msgstr "បង្ហាញសៀវភៅចៃដន្យក្នុងការបង្ហាញជាពិស្តារ"
 
-#: cps/templates/config_view_edit.html:144
+#: cps/templates/config_view_edit.html:144 cps/templates/user_edit.html:83
 msgid "Add Allowed/Denied Tags"
 msgstr ""
 
@@ -1920,10 +1920,6 @@ msgstr "រុករក"
 #: cps/templates/layout.html:138
 msgid "Your Shelves"
 msgstr "ធ្នើរបស់អ្នក"
-
-#: cps/templates/layout.html:143
-msgid "Create a Shelf"
-msgstr "បង្កើតធ្នើ"
 
 #: cps/templates/layout.html:144 cps/templates/stats.html:3
 msgid "About"
@@ -2312,10 +2308,6 @@ msgstr ""
 
 #: cps/templates/user_edit.html:64
 msgid "Create/View"
-msgstr ""
-
-#: cps/templates/user_edit.html:83
-msgid "Add Allowed/Denied Tags"
 msgstr ""
 
 #: cps/templates/user_edit.html:84

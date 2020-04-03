@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2020-04-03 19:26+0200\n"
+"POT-Creation-Date: 2020-04-03 19:49+0200\n"
 "PO-Revision-Date: 2017-01-06 17:00+0000\n"
 "Last-Translator: dalin <dalin.lin@gmail.com>\n"
 "Language: zh_Hans_CN\n"
@@ -583,7 +583,7 @@ msgstr "书架 %(title)s 已被创建"
 msgid "There was an error"
 msgstr "发生错误"
 
-#: cps/shelf.py:232 cps/shelf.py:234
+#: cps/shelf.py:232 cps/shelf.py:234 cps/templates/layout.html:143
 msgid "Create a Shelf"
 msgstr "创建书架"
 
@@ -1685,7 +1685,7 @@ msgstr "新用户的默认显示权限"
 msgid "Show Random Books in Detail View"
 msgstr "在详情页显示随机书籍"
 
-#: cps/templates/config_view_edit.html:144
+#: cps/templates/config_view_edit.html:144 cps/templates/user_edit.html:83
 msgid "Add Allowed/Denied Tags"
 msgstr "添加（允许/禁止）标签"
 
@@ -1919,10 +1919,6 @@ msgstr "浏览"
 #: cps/templates/layout.html:138
 msgid "Your Shelves"
 msgstr "您的书架"
-
-#: cps/templates/layout.html:143
-msgid "Create a Shelf"
-msgstr "创建书架"
 
 #: cps/templates/layout.html:144 cps/templates/stats.html:3
 msgid "About"
@@ -2312,10 +2308,6 @@ msgstr ""
 #: cps/templates/user_edit.html:64
 msgid "Create/View"
 msgstr "新建/查看"
-
-#: cps/templates/user_edit.html:83
-msgid "Add Allowed/Denied Tags"
-msgstr "添加（允许/禁止）标签"
 
 #: cps/templates/user_edit.html:84
 msgid "Add allowed/Denied Custom Column Values"

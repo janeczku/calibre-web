@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/calibre-web\n"
-"POT-Creation-Date: 2020-04-03 19:26+0200\n"
+"POT-Creation-Date: 2020-04-03 19:49+0200\n"
 "PO-Revision-Date: 2017-04-30 00:47+0300\n"
 "Last-Translator: ABIS Team <biblio.if.abis@gmail.com>\n"
 "Language: uk\n"
@@ -582,7 +582,7 @@ msgstr "Створена книжкова полиця %(title)s"
 msgid "There was an error"
 msgstr "Сталась помилка"
 
-#: cps/shelf.py:232 cps/shelf.py:234
+#: cps/shelf.py:232 cps/shelf.py:234 cps/templates/layout.html:143
 msgid "Create a Shelf"
 msgstr "створити книжкову полицю"
 
@@ -1684,7 +1684,7 @@ msgstr "Можливості за замовчуванням для нових �
 msgid "Show Random Books in Detail View"
 msgstr "Показувати випадкові книги при перегляді деталей"
 
-#: cps/templates/config_view_edit.html:144
+#: cps/templates/config_view_edit.html:144 cps/templates/user_edit.html:83
 msgid "Add Allowed/Denied Tags"
 msgstr ""
 
@@ -1918,10 +1918,6 @@ msgstr "Перегляд"
 #: cps/templates/layout.html:138
 msgid "Your Shelves"
 msgstr "Ваші книжкові полиці"
-
-#: cps/templates/layout.html:143
-msgid "Create a Shelf"
-msgstr "Створити книжкову полицю"
 
 #: cps/templates/layout.html:144 cps/templates/stats.html:3
 msgid "About"
@@ -2310,10 +2306,6 @@ msgstr ""
 
 #: cps/templates/user_edit.html:64
 msgid "Create/View"
-msgstr ""
-
-#: cps/templates/user_edit.html:83
-msgid "Add Allowed/Denied Tags"
 msgstr ""
 
 #: cps/templates/user_edit.html:84

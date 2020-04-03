@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2020-04-03 19:26+0200\n"
+"POT-Creation-Date: 2020-04-03 19:49+0200\n"
 "PO-Revision-Date: 2020-01-08 11:37+0000\n"
 "Last-Translator: Lukas Heroudek <lukas.heroudek@gmail.com>\n"
 "Language: cs_CZ\n"
@@ -582,7 +582,7 @@ msgstr "Police %(title)s vytvořena"
 msgid "There was an error"
 msgstr "Došlo k chybě"
 
-#: cps/shelf.py:232 cps/shelf.py:234
+#: cps/shelf.py:232 cps/shelf.py:234 cps/templates/layout.html:143
 msgid "Create a Shelf"
 msgstr "vytvořit polici"
 
@@ -1684,7 +1684,7 @@ msgstr "Výchozí zobrazení pro nové uživatele"
 msgid "Show Random Books in Detail View"
 msgstr "Zobrazit náhodné knihy v podrobném zobrazení"
 
-#: cps/templates/config_view_edit.html:144
+#: cps/templates/config_view_edit.html:144 cps/templates/user_edit.html:83
 msgid "Add Allowed/Denied Tags"
 msgstr ""
 
@@ -1918,10 +1918,6 @@ msgstr "Procházet"
 #: cps/templates/layout.html:138
 msgid "Your Shelves"
 msgstr "Vaše police"
-
-#: cps/templates/layout.html:143
-msgid "Create a Shelf"
-msgstr "Vytvořit polici"
 
 #: cps/templates/layout.html:144 cps/templates/stats.html:3
 msgid "About"
@@ -2310,10 +2306,6 @@ msgstr ""
 
 #: cps/templates/user_edit.html:64
 msgid "Create/View"
-msgstr ""
-
-#: cps/templates/user_edit.html:83
-msgid "Add Allowed/Denied Tags"
 msgstr ""
 
 #: cps/templates/user_edit.html:84

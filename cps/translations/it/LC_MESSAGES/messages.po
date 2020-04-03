@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2020-04-03 19:26+0200\n"
+"POT-Creation-Date: 2020-04-03 19:49+0200\n"
 "PO-Revision-Date: 2017-04-04 15:09+0200\n"
 "Last-Translator: ElQuimm <quimm@webtaste.com>\n"
 "Language: it\n"
@@ -582,7 +582,7 @@ msgstr "Lo scaffale %(title)s è stato creato"
 msgid "There was an error"
 msgstr "C'era un errore"
 
-#: cps/shelf.py:232 cps/shelf.py:234
+#: cps/shelf.py:232 cps/shelf.py:234 cps/templates/layout.html:143
 msgid "Create a Shelf"
 msgstr "Crea uno scaffale"
 
@@ -1684,7 +1684,7 @@ msgstr "Visibilità di base per i nuovi utenti"
 msgid "Show Random Books in Detail View"
 msgstr "Mostra libri scelti aleatoriamente nella vista dettagliata"
 
-#: cps/templates/config_view_edit.html:144
+#: cps/templates/config_view_edit.html:144 cps/templates/user_edit.html:83
 msgid "Add Allowed/Denied Tags"
 msgstr "Aggiungi categorie permesse/negate"
 
@@ -1918,10 +1918,6 @@ msgstr "Naviga"
 #: cps/templates/layout.html:138
 msgid "Your Shelves"
 msgstr "I tuoi scaffali"
-
-#: cps/templates/layout.html:143
-msgid "Create a Shelf"
-msgstr "Crea uno scaffale"
 
 #: cps/templates/layout.html:144 cps/templates/stats.html:3
 msgid "About"
@@ -2311,10 +2307,6 @@ msgstr "Token Kobo Sync"
 #: cps/templates/user_edit.html:64
 msgid "Create/View"
 msgstr "Crea/Visualizza"
-
-#: cps/templates/user_edit.html:83
-msgid "Add Allowed/Denied Tags"
-msgstr "Aggiungi categorie permesse/negate"
 
 #: cps/templates/user_edit.html:84
 msgid "Add allowed/Denied Custom Column Values"

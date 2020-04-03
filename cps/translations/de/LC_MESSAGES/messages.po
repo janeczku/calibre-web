@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2020-04-03 19:26+0200\n"
-"PO-Revision-Date: 2020-03-07 11:20+0100\n"
+"POT-Creation-Date: 2020-04-03 19:49+0200\n"
+"PO-Revision-Date: 2020-04-03 19:49+0200\n"
 "Last-Translator: Ozzie Isaacs\n"
 "Language: de\n"
 "Language-Team: \n"
@@ -212,7 +212,7 @@ msgstr "Allgemeiner Fehler"
 
 #: cps/admin.py:968
 msgid "Update File Could Not be Saved in Temp Dir"
-msgstr ""
+msgstr "Updatedatei konnte nicht in Temporärem Ordner gespeichert werden"
 
 #: cps/converter.py:31
 msgid "not configured"
@@ -567,12 +567,12 @@ msgstr "Dir ist es nicht erlaubt, Bücher aus dem Bücherregal %(sname)s zu entf
 #: cps/shelf.py:215 cps/shelf.py:252
 #, python-format
 msgid "A public shelf with the name '%(title)s' already exists."
-msgstr ""
+msgstr "Es existiert bereit ein öffentliches Bücherregal mit dem Name '%(title)s'."
 
 #: cps/shelf.py:222 cps/shelf.py:260
 #, python-format
 msgid "A private shelf with the name '%(title)s' already exists."
-msgstr ""
+msgstr "Es existiert bereit ein privates Bücherregal mit dem Name '%(title)s'."
 
 #: cps/shelf.py:228
 #, python-format
@@ -583,7 +583,7 @@ msgstr "Bücherregal %(title)s erzeugt"
 msgid "There was an error"
 msgstr "Es trat ein Fehler auf"
 
-#: cps/shelf.py:232 cps/shelf.py:234
+#: cps/shelf.py:232 cps/shelf.py:234 cps/templates/layout.html:143
 msgid "Create a Shelf"
 msgstr "Bücherregal erzeugen"
 
@@ -1685,7 +1685,7 @@ msgstr "Standard-Sichtbarkeiten für neue Benutzer"
 msgid "Show Random Books in Detail View"
 msgstr "Zeige zufällige Bücher in der Detailansicht"
 
-#: cps/templates/config_view_edit.html:144
+#: cps/templates/config_view_edit.html:144 cps/templates/user_edit.html:83
 msgid "Add Allowed/Denied Tags"
 msgstr "Erlaubte/Verbotene Tags hinzufügen"
 
@@ -1784,7 +1784,7 @@ msgstr "Nächste"
 #: cps/templates/feed.xml:79 cps/templates/layout.html:136
 #: cps/templates/layout.html:140
 msgid "(Public)"
-msgstr ""
+msgstr "(Öffentlich)"
 
 #: cps/templates/generate_kobo_auth_url.html:5
 msgid "Open the .kobo/Kobo eReader.conf file in a text editor and add (or edit):"
@@ -1860,11 +1860,11 @@ msgstr "Bücher nach Dateiformaten sortiert"
 
 #: cps/templates/index.xml:111 cps/templates/layout.html:134
 msgid "Shelves"
-msgstr ""
+msgstr "Bücherregale"
 
 #: cps/templates/index.xml:115
 msgid "Books organized in shelves"
-msgstr ""
+msgstr "Bücher in Bücherregalen organisiert"
 
 #: cps/templates/layout.html:28
 msgid "Home"
@@ -1919,10 +1919,6 @@ msgstr "Durchsuchen"
 #: cps/templates/layout.html:138
 msgid "Your Shelves"
 msgstr "Deine Bücherregale"
-
-#: cps/templates/layout.html:143
-msgid "Create a Shelf"
-msgstr "Bücherregal erzeugen"
 
 #: cps/templates/layout.html:144 cps/templates/stats.html:3
 msgid "About"
@@ -2312,10 +2308,6 @@ msgstr "Kobo Sync Token"
 #: cps/templates/user_edit.html:64
 msgid "Create/View"
 msgstr "Erzeugen/Ansehen"
-
-#: cps/templates/user_edit.html:83
-msgid "Add Allowed/Denied Tags"
-msgstr "Erlaubte/Verbotene Tags"
 
 #: cps/templates/user_edit.html:84
 msgid "Add allowed/Denied Custom Column Values"

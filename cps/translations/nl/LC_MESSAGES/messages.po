@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Calibre-Web (GPLV3)\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2020-04-03 19:26+0200\n"
+"POT-Creation-Date: 2020-04-03 19:49+0200\n"
 "PO-Revision-Date: 2020-03-06 19:28+0100\n"
 "Last-Translator: Ed Driesen <ed.driesen@telenet.be>\n"
 "Language: nl\n"
@@ -584,7 +584,7 @@ msgstr "Boekenplank '%(title)s' is aangemaakt"
 msgid "There was an error"
 msgstr "Er is een fout opgetreden"
 
-#: cps/shelf.py:232 cps/shelf.py:234
+#: cps/shelf.py:232 cps/shelf.py:234 cps/templates/layout.html:143
 msgid "Create a Shelf"
 msgstr "creëer een boekenplank"
 
@@ -1686,7 +1686,7 @@ msgstr "Standaard zichtbaar voor nieuwe gebruikers"
 msgid "Show Random Books in Detail View"
 msgstr "Willekeurige boeken tonen in gedetailleerde weergave"
 
-#: cps/templates/config_view_edit.html:144
+#: cps/templates/config_view_edit.html:144 cps/templates/user_edit.html:83
 msgid "Add Allowed/Denied Tags"
 msgstr "Voeg Toegestaan/Geweigerd tags toe"
 
@@ -1920,10 +1920,6 @@ msgstr "Verkennen"
 #: cps/templates/layout.html:138
 msgid "Your Shelves"
 msgstr "Jouw boekenplanken"
-
-#: cps/templates/layout.html:143
-msgid "Create a Shelf"
-msgstr "Boekenplank aanmaken"
 
 #: cps/templates/layout.html:144 cps/templates/stats.html:3
 msgid "About"
@@ -2313,10 +2309,6 @@ msgstr "Kobo Sync Token"
 #: cps/templates/user_edit.html:64
 msgid "Create/View"
 msgstr "Aanmaken/Bekijk"
-
-#: cps/templates/user_edit.html:83
-msgid "Add Allowed/Denied Tags"
-msgstr "Voeg Toegestaan/Geweigerd tags toe"
 
 #: cps/templates/user_edit.html:84
 msgid "Add allowed/Denied Custom Column Values"
