@@ -229,9 +229,9 @@ def create_shelf():
                 return redirect(url_for('shelf.show_shelf', shelf_id = shelf.id ))
             except Exception:
                 flash(_(u"There was an error"), category="error")
-        return render_title_template('shelf_edit.html', shelf=shelf, title=_(u"create a shelf"), page="shelfcreate")
+        return render_title_template('shelf_edit.html', shelf=shelf, title=_(u"Create a Shelf"), page="shelfcreate")
     else:
-        return render_title_template('shelf_edit.html', shelf=shelf, title=_(u"create a shelf"), page="shelfcreate")
+        return render_title_template('shelf_edit.html', shelf=shelf, title=_(u"Create a Shelf"), page="shelfcreate")
 
 
 @shelf.route("/shelf/edit/<int:shelf_id>", methods=["GET", "POST"])

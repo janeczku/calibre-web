@@ -584,7 +584,7 @@ msgid "There was an error"
 msgstr "Hiba történt"
 
 #: cps/shelf.py:232 cps/shelf.py:234
-msgid "create a shelf"
+msgid "Create a Shelf"
 msgstr "Polc készítése"
 
 #: cps/shelf.py:270
@@ -853,11 +853,11 @@ msgstr "A könyv sikeresen küldésre lett jelölve a következő címre: %(kind
 
 #: cps/web.py:1064
 #, python-format
-msgid "There was an error sending this book: %(res)s"
+msgid "Oops! There was an error sending this book: %(res)s"
 msgstr "Hiba történt a könyv küldésekor: %(res)s"
 
 #: cps/web.py:1066
-msgid "Please configure your kindle e-mail address first..."
+msgid "Please update your profile with a valid Send to Kindle E-mail Address."
 msgstr "Először be kell állítani a kindle e-mail címet..."
 
 #: cps/web.py:1083
@@ -993,7 +993,7 @@ msgid "Download"
 msgstr "Letöltés"
 
 #: cps/templates/admin.html:18
-msgid "View eBooks"
+msgid "View Books"
 msgstr ""
 
 #: cps/templates/admin.html:19 cps/templates/layout.html:65
@@ -1033,7 +1033,7 @@ msgid "From E-mail"
 msgstr "Küldő e-mail cím"
 
 #: cps/templates/admin.html:61
-msgid "Change SMTP settings"
+msgid "Edit E-mail Server Settings"
 msgstr "SMTP beállítások változtatása"
 
 #: cps/templates/admin.html:67
@@ -1978,19 +1978,19 @@ msgid "Show Access Log: "
 msgstr ""
 
 #: cps/templates/modal_restriction.html:6
-msgid "Select allowed/denied Tags"
+msgid "Select Allowed/Denied Tags"
 msgstr ""
 
 #: cps/templates/modal_restriction.html:7
-msgid "Select allowed/denied Custom Column values"
+msgid "Select Allowed/Denied Custom Column Values"
 msgstr ""
 
 #: cps/templates/modal_restriction.html:8
-msgid "Select allowed/denied Tags of user"
+msgid "Select Allowed/Denied Tags of User"
 msgstr ""
 
 #: cps/templates/modal_restriction.html:9
-msgid "Select allowed/denied Custom Column values of user"
+msgid "Select Allowed/Denied Custom Column Values of User"
 msgstr ""
 
 #: cps/templates/modal_restriction.html:15
@@ -2314,11 +2314,11 @@ msgid "Create/View"
 msgstr ""
 
 #: cps/templates/user_edit.html:83
-msgid "Add allowed/denied Tags"
+msgid "Add Allowed/Denied Tags"
 msgstr ""
 
 #: cps/templates/user_edit.html:84
-msgid "Add allowed/denied custom column values"
+msgid "Add allowed/Denied Custom Column Values"
 msgstr ""
 
 #: cps/templates/user_edit.html:129

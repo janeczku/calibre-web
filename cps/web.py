@@ -1061,9 +1061,9 @@ def send_to_kindle(book_id, book_format, convert):
                   category="success")
             ub.update_download(book_id, int(current_user.id))
         else:
-            flash(_(u"There was an error sending this book: %(res)s", res=result), category="error")
+            flash(_(u"Oops! There was an error sending this book: %(res)s", res=result), category="error")
     else:
-        flash(_(u"Please configure your kindle e-mail address first..."), category="error")
+        flash(_(u"Please update your profile with a valid Send to Kindle E-mail Address."), category="error")
     if "HTTP_REFERER" in request.environ:
         return redirect(request.environ["HTTP_REFERER"])
     else:

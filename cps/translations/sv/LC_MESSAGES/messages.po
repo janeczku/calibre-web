@@ -584,7 +584,7 @@ msgid "There was an error"
 msgstr "Det fanns ett fel"
 
 #: cps/shelf.py:232 cps/shelf.py:234
-msgid "create a shelf"
+msgid "Create a Shelf"
 msgstr "skapa en hylla"
 
 #: cps/shelf.py:270
@@ -853,11 +853,11 @@ msgstr "Boken är i kö för att skicka till %(kindlemail)s"
 
 #: cps/web.py:1064
 #, python-format
-msgid "There was an error sending this book: %(res)s"
+msgid "Oops! There was an error sending this book: %(res)s"
 msgstr "Det gick inte att skicka den här boken: %(res)s"
 
 #: cps/web.py:1066
-msgid "Please configure your kindle e-mail address first..."
+msgid "Please update your profile with a valid Send to Kindle E-mail Address."
 msgstr "Konfigurera din kindle-e-postadress först..."
 
 #: cps/web.py:1083
@@ -993,7 +993,7 @@ msgid "Download"
 msgstr "Hämta"
 
 #: cps/templates/admin.html:18
-msgid "View eBooks"
+msgid "View Books"
 msgstr "Visa e-böcker"
 
 #: cps/templates/admin.html:19 cps/templates/layout.html:65
@@ -1033,7 +1033,7 @@ msgid "From E-mail"
 msgstr "Från meddelande"
 
 #: cps/templates/admin.html:61
-msgid "Change SMTP settings"
+msgid "Edit E-mail Server Settings"
 msgstr "Ändra SMTP-inställningar"
 
 #: cps/templates/admin.html:67
@@ -1978,19 +1978,19 @@ msgid "Show Access Log: "
 msgstr "Visa åtkomstlogg: "
 
 #: cps/templates/modal_restriction.html:6
-msgid "Select allowed/denied Tags"
+msgid "Select Allowed/Denied Tags"
 msgstr "Välj tillåtna/avvisade taggar"
 
 #: cps/templates/modal_restriction.html:7
-msgid "Select allowed/denied Custom Column values"
+msgid "Select Allowed/Denied Custom Column Values"
 msgstr "Välj tillåtna/avvisade anpassade kolumnvärden"
 
 #: cps/templates/modal_restriction.html:8
-msgid "Select allowed/denied Tags of user"
+msgid "Select Allowed/Denied Tags of User"
 msgstr "Välj tillåtna/avvisade användarens taggar"
 
 #: cps/templates/modal_restriction.html:9
-msgid "Select allowed/denied Custom Column values of user"
+msgid "Select Allowed/Denied Custom Column Values of User"
 msgstr "Välj tillåtna/avvisade anpassade kolumnvärden för användaren"
 
 #: cps/templates/modal_restriction.html:15
@@ -2314,11 +2314,11 @@ msgid "Create/View"
 msgstr "Skapa/Visa"
 
 #: cps/templates/user_edit.html:83
-msgid "Add allowed/denied Tags"
+msgid "Add Allowed/Denied Tags"
 msgstr "Lägg till tillåtna/avvisade taggar"
 
 #: cps/templates/user_edit.html:84
-msgid "Add allowed/denied custom column values"
+msgid "Add allowed/Denied Custom Column Values"
 msgstr "Lägg till tillåtna/avvisade anpassade kolumnvärden"
 
 #: cps/templates/user_edit.html:129
