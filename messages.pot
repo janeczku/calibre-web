@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-03-14 10:41+0100\n"
+"POT-Creation-Date: 2020-04-03 19:26+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -39,7 +39,7 @@ msgstr ""
 
 #: cps/admin.py:110 cps/editbooks.py:410 cps/editbooks.py:419
 #: cps/editbooks.py:539 cps/editbooks.py:541 cps/editbooks.py:594
-#: cps/updater.py:456 cps/uploader.py:96 cps/uploader.py:107
+#: cps/updater.py:509 cps/uploader.py:96 cps/uploader.py:107
 msgid "Unknown"
 msgstr ""
 
@@ -189,23 +189,28 @@ msgid "Update finished, please press okay and reload page"
 msgstr ""
 
 #: cps/admin.py:964 cps/admin.py:965 cps/admin.py:966 cps/admin.py:967
+#: cps/admin.py:968
 msgid "Update failed:"
 msgstr ""
 
-#: cps/admin.py:964 cps/updater.py:282 cps/updater.py:467 cps/updater.py:469
+#: cps/admin.py:964 cps/updater.py:319 cps/updater.py:520 cps/updater.py:522
 msgid "HTTP Error"
 msgstr ""
 
-#: cps/admin.py:965 cps/updater.py:284 cps/updater.py:471
+#: cps/admin.py:965 cps/updater.py:321 cps/updater.py:524
 msgid "Connection error"
 msgstr ""
 
-#: cps/admin.py:966 cps/updater.py:286 cps/updater.py:473
+#: cps/admin.py:966 cps/updater.py:323 cps/updater.py:526
 msgid "Timeout while establishing connection"
 msgstr ""
 
-#: cps/admin.py:967 cps/updater.py:288 cps/updater.py:475
+#: cps/admin.py:967 cps/updater.py:325 cps/updater.py:528
 msgid "General error"
+msgstr ""
+
+#: cps/admin.py:968
+msgid "Update File Could Not be Saved in Temp Dir"
 msgstr ""
 
 #: cps/converter.py:31
@@ -558,47 +563,52 @@ msgstr ""
 msgid "Sorry you are not allowed to remove a book from this shelf: %(sname)s"
 msgstr ""
 
-#: cps/shelf.py:211 cps/shelf.py:235
+#: cps/shelf.py:215 cps/shelf.py:252
 #, python-format
-msgid "A shelf with the name '%(title)s' already exists."
+msgid "A public shelf with the name '%(title)s' already exists."
 msgstr ""
 
-#: cps/shelf.py:216
+#: cps/shelf.py:222 cps/shelf.py:260
+#, python-format
+msgid "A private shelf with the name '%(title)s' already exists."
+msgstr ""
+
+#: cps/shelf.py:228
 #, python-format
 msgid "Shelf %(title)s created"
 msgstr ""
 
-#: cps/shelf.py:218 cps/shelf.py:246
+#: cps/shelf.py:231 cps/shelf.py:272
 msgid "There was an error"
 msgstr ""
 
-#: cps/shelf.py:219 cps/shelf.py:221
+#: cps/shelf.py:232 cps/shelf.py:234
 msgid "create a shelf"
 msgstr ""
 
-#: cps/shelf.py:244
+#: cps/shelf.py:270
 #, python-format
 msgid "Shelf %(title)s changed"
 msgstr ""
 
-#: cps/shelf.py:247 cps/shelf.py:249
+#: cps/shelf.py:273 cps/shelf.py:275
 msgid "Edit a shelf"
 msgstr ""
 
-#: cps/shelf.py:301
+#: cps/shelf.py:327
 #, python-format
 msgid "Shelf: '%(name)s'"
 msgstr ""
 
-#: cps/shelf.py:304
+#: cps/shelf.py:330
 msgid "Error opening shelf. Shelf does not exist or is not accessible"
 msgstr ""
 
-#: cps/shelf.py:342
+#: cps/shelf.py:368
 msgid "Hidden Book"
 msgstr ""
 
-#: cps/shelf.py:347
+#: cps/shelf.py:373
 #, python-format
 msgid "Change order of Shelf: '%(name)s'"
 msgstr ""
@@ -711,32 +721,32 @@ msgstr ""
 msgid "Show file formats selection"
 msgstr ""
 
-#: cps/updater.py:262 cps/updater.py:369 cps/updater.py:382
+#: cps/updater.py:294 cps/updater.py:305 cps/updater.py:406 cps/updater.py:420
 msgid "Unexpected data while reading update information"
 msgstr ""
 
-#: cps/updater.py:269 cps/updater.py:375
+#: cps/updater.py:301 cps/updater.py:412
 msgid "No update available. You already have the latest version installed"
 msgstr ""
 
-#: cps/updater.py:295
+#: cps/updater.py:333
 msgid "A new update is available. Click on the button below to update to the latest version."
 msgstr ""
 
-#: cps/updater.py:348
+#: cps/updater.py:385
 msgid "Could not fetch update information"
 msgstr ""
 
-#: cps/updater.py:362
+#: cps/updater.py:399
 msgid "No release information available"
 msgstr ""
 
-#: cps/updater.py:415 cps/updater.py:424
+#: cps/updater.py:456 cps/updater.py:467 cps/updater.py:486
 #, python-format
 msgid "A new update is available. Click on the button below to update to version: %(version)s"
 msgstr ""
 
-#: cps/updater.py:434
+#: cps/updater.py:477
 msgid "Click on the button below to update to the latest stable version."
 msgstr ""
 
@@ -1308,8 +1318,8 @@ msgstr ""
 msgid "Loading..."
 msgstr ""
 
-#: cps/templates/book_edit.html:236 cps/templates/layout.html:191
-#: cps/templates/layout.html:223 cps/templates/modal_restriction.html:34
+#: cps/templates/book_edit.html:236 cps/templates/layout.html:189
+#: cps/templates/layout.html:221 cps/templates/modal_restriction.html:34
 #: cps/templates/user_edit.html:164
 msgid "Close"
 msgstr ""
@@ -1766,8 +1776,13 @@ msgstr ""
 msgid "Are you sure you want to delete this domain?"
 msgstr ""
 
-#: cps/templates/feed.xml:21 cps/templates/layout.html:175
+#: cps/templates/feed.xml:21 cps/templates/layout.html:173
 msgid "Next"
+msgstr ""
+
+#: cps/templates/feed.xml:79 cps/templates/layout.html:136
+#: cps/templates/layout.html:140
+msgid "(Public)"
 msgstr ""
 
 #: cps/templates/generate_kobo_auth_url.html:5
@@ -1842,20 +1857,12 @@ msgstr ""
 msgid "Books ordered by file formats"
 msgstr ""
 
-#: cps/templates/index.xml:111 cps/templates/layout.html:136
-msgid "Public Shelves"
+#: cps/templates/index.xml:111 cps/templates/layout.html:134
+msgid "Shelves"
 msgstr ""
 
 #: cps/templates/index.xml:115
-msgid "Books organized in public shelfs, visible to everyone"
-msgstr ""
-
-#: cps/templates/index.xml:119 cps/templates/layout.html:140
-msgid "Your Shelves"
-msgstr ""
-
-#: cps/templates/index.xml:123
-msgid "User's own shelfs, only visible to the current user himself"
+msgid "Books organized in shelves"
 msgstr ""
 
 #: cps/templates/layout.html:28
@@ -1896,7 +1903,7 @@ msgstr ""
 msgid "Register"
 msgstr ""
 
-#: cps/templates/layout.html:116 cps/templates/layout.html:222
+#: cps/templates/layout.html:116 cps/templates/layout.html:220
 msgid "Uploading..."
 msgstr ""
 
@@ -1908,27 +1915,31 @@ msgstr ""
 msgid "Browse"
 msgstr ""
 
-#: cps/templates/layout.html:145
+#: cps/templates/layout.html:138
+msgid "Your Shelves"
+msgstr ""
+
+#: cps/templates/layout.html:143
 msgid "Create a Shelf"
 msgstr ""
 
-#: cps/templates/layout.html:146 cps/templates/stats.html:3
+#: cps/templates/layout.html:144 cps/templates/stats.html:3
 msgid "About"
 msgstr ""
 
-#: cps/templates/layout.html:160
+#: cps/templates/layout.html:158
 msgid "Previous"
 msgstr ""
 
-#: cps/templates/layout.html:187
+#: cps/templates/layout.html:185
 msgid "Book Details"
 msgstr ""
 
-#: cps/templates/layout.html:221
+#: cps/templates/layout.html:219
 msgid "Upload done, processing, please wait..."
 msgstr ""
 
-#: cps/templates/layout.html:224
+#: cps/templates/layout.html:222
 msgid "Error"
 msgstr ""
 
