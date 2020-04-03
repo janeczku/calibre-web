@@ -20,7 +20,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-04-03 19:26+0200\n"
+"POT-Creation-Date: 2020-04-03 19:49+0200\n"
 "PO-Revision-Date: 2019-08-21 15:20+0100\n"
 "Last-Translator: Nicolas Roudninski <nicoroud@gmail.com>\n"
 "Language: fr\n"
@@ -596,7 +596,7 @@ msgstr "Étagère %(title)s créée"
 msgid "There was an error"
 msgstr "Il y a eu une erreur"
 
-#: cps/shelf.py:232 cps/shelf.py:234
+#: cps/shelf.py:232 cps/shelf.py:234 cps/templates/layout.html:143
 msgid "Create a Shelf"
 msgstr "créer une étagère"
 
@@ -1698,7 +1698,7 @@ msgstr "Mode de visualisation par défaut pour les nouveaux utilisateurs"
 msgid "Show Random Books in Detail View"
 msgstr "Montrer aléatoirement des livres dans la vue détaillée"
 
-#: cps/templates/config_view_edit.html:144
+#: cps/templates/config_view_edit.html:144 cps/templates/user_edit.html:83
 msgid "Add Allowed/Denied Tags"
 msgstr ""
 
@@ -1932,10 +1932,6 @@ msgstr "Explorer"
 #: cps/templates/layout.html:138
 msgid "Your Shelves"
 msgstr "Vos étagères"
-
-#: cps/templates/layout.html:143
-msgid "Create a Shelf"
-msgstr "Créer une étagère"
 
 #: cps/templates/layout.html:144 cps/templates/stats.html:3
 msgid "About"
@@ -2324,10 +2320,6 @@ msgstr ""
 
 #: cps/templates/user_edit.html:64
 msgid "Create/View"
-msgstr ""
-
-#: cps/templates/user_edit.html:83
-msgid "Add Allowed/Denied Tags"
 msgstr ""
 
 #: cps/templates/user_edit.html:84

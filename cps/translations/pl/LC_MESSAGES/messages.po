@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Calibre Web - polski (POT: 2019-08-06 18:35)\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-04-03 19:26+0200\n"
+"POT-Creation-Date: 2020-04-03 19:49+0200\n"
 "PO-Revision-Date: 2020-03-31 21:50+0200\n"
 "Last-Translator: Jerzy Piątek <jerzy.piatek@gmail.com>\n"
 "Language: pl\n"
@@ -590,7 +590,7 @@ msgstr "Półka %(title)s została utworzona"
 msgid "There was an error"
 msgstr "Wystąpił błąd"
 
-#: cps/shelf.py:232 cps/shelf.py:234
+#: cps/shelf.py:232 cps/shelf.py:234 cps/templates/layout.html:143
 msgid "Create a Shelf"
 msgstr "utwórz półkę"
 
@@ -1699,7 +1699,7 @@ msgstr "Domyślne ustawienia widoku dla nowych użytkowników"
 msgid "Show Random Books in Detail View"
 msgstr "Pokaz losowe książki w widoku szczegółowym"
 
-#: cps/templates/config_view_edit.html:144
+#: cps/templates/config_view_edit.html:144 cps/templates/user_edit.html:83
 msgid "Add Allowed/Denied Tags"
 msgstr "Dodaj dozwolone/zabronione etykiety"
 
@@ -1935,10 +1935,6 @@ msgstr "Przeglądaj"
 #: cps/templates/layout.html:138
 msgid "Your Shelves"
 msgstr "Twoje półki"
-
-#: cps/templates/layout.html:143
-msgid "Create a Shelf"
-msgstr "Utwórz półkę"
 
 #: cps/templates/layout.html:144 cps/templates/stats.html:3
 msgid "About"
@@ -2332,10 +2328,6 @@ msgstr "Token Kobo Sync"
 #: cps/templates/user_edit.html:64
 msgid "Create/View"
 msgstr "Utwórz/Przeglądaj"
-
-#: cps/templates/user_edit.html:83
-msgid "Add Allowed/Denied Tags"
-msgstr "Dodaj dozwolone/zabronione etykiety"
 
 #: cps/templates/user_edit.html:84
 msgid "Add allowed/Denied Custom Column Values"

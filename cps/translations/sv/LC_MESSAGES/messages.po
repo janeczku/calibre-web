@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2020-04-03 19:26+0200\n"
+"POT-Creation-Date: 2020-04-03 19:49+0200\n"
 "PO-Revision-Date: 2020-03-14 09:30+0100\n"
 "Last-Translator: Jonatan Nyberg <jonatan.nyberg.karl@gmail.com>\n"
 "Language: sv\n"
@@ -583,7 +583,7 @@ msgstr "Hyllan %(title)s skapad"
 msgid "There was an error"
 msgstr "Det fanns ett fel"
 
-#: cps/shelf.py:232 cps/shelf.py:234
+#: cps/shelf.py:232 cps/shelf.py:234 cps/templates/layout.html:143
 msgid "Create a Shelf"
 msgstr "skapa en hylla"
 
@@ -1685,7 +1685,7 @@ msgstr "Standardvisibiliteter för nya användare"
 msgid "Show Random Books in Detail View"
 msgstr "Visa slumpmässiga böcker i detaljvyn"
 
-#: cps/templates/config_view_edit.html:144
+#: cps/templates/config_view_edit.html:144 cps/templates/user_edit.html:83
 msgid "Add Allowed/Denied Tags"
 msgstr "Lägg till tillåtna/avvisade taggar"
 
@@ -1919,10 +1919,6 @@ msgstr "Bläddra"
 #: cps/templates/layout.html:138
 msgid "Your Shelves"
 msgstr "Dina hyllor"
-
-#: cps/templates/layout.html:143
-msgid "Create a Shelf"
-msgstr "Skapa en hylla"
 
 #: cps/templates/layout.html:144 cps/templates/stats.html:3
 msgid "About"
@@ -2312,10 +2308,6 @@ msgstr "Kobo Sync Token"
 #: cps/templates/user_edit.html:64
 msgid "Create/View"
 msgstr "Skapa/Visa"
-
-#: cps/templates/user_edit.html:83
-msgid "Add Allowed/Denied Tags"
-msgstr "Lägg till tillåtna/avvisade taggar"
 
 #: cps/templates/user_edit.html:84
 msgid "Add allowed/Denied Custom Column Values"

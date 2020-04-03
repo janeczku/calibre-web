@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2020-04-03 19:26+0200\n"
+"POT-Creation-Date: 2020-04-03 19:49+0200\n"
 "PO-Revision-Date: 2019-07-26 11:44+0100\n"
 "Last-Translator: minakmostoles <xxx@xxx.com>\n"
 "Language: es\n"
@@ -585,7 +585,7 @@ msgstr "Estante %(title)s creado"
 msgid "There was an error"
 msgstr "Ha sucedido un error"
 
-#: cps/shelf.py:232 cps/shelf.py:234
+#: cps/shelf.py:232 cps/shelf.py:234 cps/templates/layout.html:143
 msgid "Create a Shelf"
 msgstr "crear un estante"
 
@@ -1687,7 +1687,7 @@ msgstr "Visibilidad predeterminada para nuevos usuarios"
 msgid "Show Random Books in Detail View"
 msgstr "Mostrar libros aleatorios con vista detallada"
 
-#: cps/templates/config_view_edit.html:144
+#: cps/templates/config_view_edit.html:144 cps/templates/user_edit.html:83
 msgid "Add Allowed/Denied Tags"
 msgstr ""
 
@@ -1921,10 +1921,6 @@ msgstr "Navegar"
 #: cps/templates/layout.html:138
 msgid "Your Shelves"
 msgstr "Sus estantes"
-
-#: cps/templates/layout.html:143
-msgid "Create a Shelf"
-msgstr "Crear un estante"
 
 #: cps/templates/layout.html:144 cps/templates/stats.html:3
 msgid "About"
@@ -2313,10 +2309,6 @@ msgstr ""
 
 #: cps/templates/user_edit.html:64
 msgid "Create/View"
-msgstr ""
-
-#: cps/templates/user_edit.html:83
-msgid "Add Allowed/Denied Tags"
 msgstr ""
 
 #: cps/templates/user_edit.html:84
