@@ -37,7 +37,7 @@ from flask import render_template, request, redirect, send_from_directory, make_
 from flask_babel import gettext as _
 from flask_login import login_user, logout_user, login_required, current_user
 from sqlalchemy.exc import IntegrityError
-from sqlalchemy.sql.expression import text, func, true, false, not_, and_, exists
+from sqlalchemy.sql.expression import text, func, true, false, not_, and_, exists, or_
 from werkzeug.exceptions import default_exceptions
 from werkzeug.datastructures import Headers
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -268,7 +268,7 @@ def before_request():
     g.allow_upload = config.config_uploading
     g.current_theme = config.config_theme
     g.config_authors_max = config.config_authors_max
-    g.public_shelfes = ub.session.query(ub.Shelf).filter(ub.Shelf.is_public == 1).order_by(ub.Shelf.name).all()
+    g.shelves_access = ub.session.query(ub.Shelf).filter(or_(ub.Shelf.is_public == 1, ub.Shelf.user_id == current_user.id)).order_by(ub.Shelf.name).all()
     if not config.db_configured and request.endpoint not in ('admin.basic_configuration', 'login') and '/static/' not in request.path:
         return redirect(url_for('admin.basic_configuration'))
 
@@ -1083,11 +1083,11 @@ def serve_book(book_id, book_format, anyname):
     else:
         return send_from_directory(os.path.join(config.config_calibre_dir, book.path), data.name + "." + book_format)
 
-
-@web.route("/download/<int:book_id>/<book_format>")
+@web.route("/download/<int:book_id>/<book_format>", defaults={'anyname': 'None'})
+@web.route("/download/<int:book_id>/<book_format>/<anyname>")
 @login_required_if_no_ano
 @download_required
-def download_link(book_id, book_format):
+def download_link(book_id, book_format, anyname):
     return get_download_link(book_id, book_format.lower())
 
 
@@ -1105,9 +1105,9 @@ def send_to_kindle(book_id, book_format, convert):
                   category="success")
             ub.update_download(book_id, int(current_user.id))
         else:
-            flash(_(u"There was an error sending this book: %(res)s", res=result), category="error")
+            flash(_(u"Oops! There was an error sending this book: %(res)s", res=result), category="error")
     else:
-        flash(_(u"Please configure your kindle e-mail address first..."), category="error")
+        flash(_(u"Please update your profile with a valid Send to Kindle E-mail Address."), category="error")
     if "HTTP_REFERER" in request.environ:
         return redirect(request.environ["HTTP_REFERER"])
     else:
