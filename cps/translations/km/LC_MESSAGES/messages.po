@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2020-03-14 10:38+0100\n"
+"POT-Creation-Date: 2020-04-03 19:49+0200\n"
 "PO-Revision-Date: 2018-08-27 17:06+0700\n"
 "Last-Translator: \n"
 "Language: km_KH\n"
@@ -41,7 +41,7 @@ msgstr "កំពុងបិទម៉ាស៊ីន server សូមបិទ�
 
 #: cps/admin.py:110 cps/editbooks.py:410 cps/editbooks.py:419
 #: cps/editbooks.py:539 cps/editbooks.py:541 cps/editbooks.py:594
-#: cps/updater.py:456 cps/uploader.py:96 cps/uploader.py:107
+#: cps/updater.py:509 cps/uploader.py:96 cps/uploader.py:107
 msgid "Unknown"
 msgstr "មិនដឹង"
 
@@ -191,23 +191,28 @@ msgid "Update finished, please press okay and reload page"
 msgstr "ការធ្វើបច្ចុប្បន្នភាពបានបញ្ចប់ សូមចុច okay រួចបើកទំព័រជាថ្មី"
 
 #: cps/admin.py:964 cps/admin.py:965 cps/admin.py:966 cps/admin.py:967
+#: cps/admin.py:968
 msgid "Update failed:"
 msgstr ""
 
-#: cps/admin.py:964 cps/updater.py:282 cps/updater.py:467 cps/updater.py:469
+#: cps/admin.py:964 cps/updater.py:319 cps/updater.py:520 cps/updater.py:522
 msgid "HTTP Error"
 msgstr ""
 
-#: cps/admin.py:965 cps/updater.py:284 cps/updater.py:471
+#: cps/admin.py:965 cps/updater.py:321 cps/updater.py:524
 msgid "Connection error"
 msgstr ""
 
-#: cps/admin.py:966 cps/updater.py:286 cps/updater.py:473
+#: cps/admin.py:966 cps/updater.py:323 cps/updater.py:526
 msgid "Timeout while establishing connection"
 msgstr ""
 
-#: cps/admin.py:967 cps/updater.py:288 cps/updater.py:475
+#: cps/admin.py:967 cps/updater.py:325 cps/updater.py:528
 msgid "General error"
+msgstr ""
+
+#: cps/admin.py:968
+msgid "Update File Could Not be Saved in Temp Dir"
 msgstr ""
 
 #: cps/converter.py:31
@@ -560,47 +565,52 @@ msgstr "សៀវភៅត្រូវបានដកចេញពីធ្នើ
 msgid "Sorry you are not allowed to remove a book from this shelf: %(sname)s"
 msgstr "សូមអភ័យទោស អ្នកមិនមានសិទ្ធិដកសៀវភៅចេញពីធ្នើនេះទេ៖ %(sname)s"
 
-#: cps/shelf.py:211 cps/shelf.py:235
+#: cps/shelf.py:215 cps/shelf.py:252
 #, python-format
-msgid "A shelf with the name '%(title)s' already exists."
-msgstr "មានធ្នើដែលមានឈ្មោះ ‘%(title)s’ រួចហើយ។"
+msgid "A public shelf with the name '%(title)s' already exists."
+msgstr ""
 
-#: cps/shelf.py:216
+#: cps/shelf.py:222 cps/shelf.py:260
+#, python-format
+msgid "A private shelf with the name '%(title)s' already exists."
+msgstr ""
+
+#: cps/shelf.py:228
 #, python-format
 msgid "Shelf %(title)s created"
 msgstr "ធ្នើឈ្មោះ %(title)s ត្រូវបានបង្កើត"
 
-#: cps/shelf.py:218 cps/shelf.py:246
+#: cps/shelf.py:231 cps/shelf.py:272
 msgid "There was an error"
 msgstr "មានបញ្ហា"
 
-#: cps/shelf.py:219 cps/shelf.py:221
-msgid "create a shelf"
+#: cps/shelf.py:232 cps/shelf.py:234 cps/templates/layout.html:143
+msgid "Create a Shelf"
 msgstr "បង្កើតធ្នើ"
 
-#: cps/shelf.py:244
+#: cps/shelf.py:270
 #, python-format
 msgid "Shelf %(title)s changed"
 msgstr "ធ្នើឈ្មោះ %(title)s ត្រូវបានប្តូរ"
 
-#: cps/shelf.py:247 cps/shelf.py:249
+#: cps/shelf.py:273 cps/shelf.py:275
 msgid "Edit a shelf"
 msgstr "កែប្រែធ្នើ"
 
-#: cps/shelf.py:301
+#: cps/shelf.py:327
 #, python-format
 msgid "Shelf: '%(name)s'"
 msgstr "ធ្នើ៖ ‘%(name)s’"
 
-#: cps/shelf.py:304
+#: cps/shelf.py:330
 msgid "Error opening shelf. Shelf does not exist or is not accessible"
 msgstr "មានបញ្ហាពេលបើកធ្នើ។ ពុំមានធ្នើ ឬមិនអាចបើកបាន"
 
-#: cps/shelf.py:342
+#: cps/shelf.py:368
 msgid "Hidden Book"
 msgstr ""
 
-#: cps/shelf.py:347
+#: cps/shelf.py:373
 #, python-format
 msgid "Change order of Shelf: '%(name)s'"
 msgstr "ប្តូរលំដាប់ធ្នើ៖ ‘%(name)s’"
@@ -713,32 +723,32 @@ msgstr ""
 msgid "Show file formats selection"
 msgstr ""
 
-#: cps/updater.py:262 cps/updater.py:369 cps/updater.py:382
+#: cps/updater.py:294 cps/updater.py:305 cps/updater.py:406 cps/updater.py:420
 msgid "Unexpected data while reading update information"
 msgstr ""
 
-#: cps/updater.py:269 cps/updater.py:375
+#: cps/updater.py:301 cps/updater.py:412
 msgid "No update available. You already have the latest version installed"
 msgstr ""
 
-#: cps/updater.py:295
+#: cps/updater.py:333
 msgid "A new update is available. Click on the button below to update to the latest version."
 msgstr ""
 
-#: cps/updater.py:348
+#: cps/updater.py:385
 msgid "Could not fetch update information"
 msgstr ""
 
-#: cps/updater.py:362
+#: cps/updater.py:399
 msgid "No release information available"
 msgstr ""
 
-#: cps/updater.py:415 cps/updater.py:424
+#: cps/updater.py:456 cps/updater.py:467 cps/updater.py:486
 #, python-format
 msgid "A new update is available. Click on the button below to update to version: %(version)s"
 msgstr ""
 
-#: cps/updater.py:434
+#: cps/updater.py:477
 msgid "Click on the button below to update to the latest stable version."
 msgstr ""
 
@@ -844,11 +854,11 @@ msgstr "សៀវភៅបានចូលជួរសម្រាប់ផ្ញ
 
 #: cps/web.py:1064
 #, python-format
-msgid "There was an error sending this book: %(res)s"
+msgid "Oops! There was an error sending this book: %(res)s"
 msgstr "មានបញ្ហានៅពេលផ្ញើសៀវភៅនេះ៖ %(res)s"
 
 #: cps/web.py:1066
-msgid "Please configure your kindle e-mail address first..."
+msgid "Please update your profile with a valid Send to Kindle E-mail Address."
 msgstr ""
 
 #: cps/web.py:1083
@@ -984,7 +994,7 @@ msgid "Download"
 msgstr "ទាញយក"
 
 #: cps/templates/admin.html:18
-msgid "View eBooks"
+msgid "View Books"
 msgstr ""
 
 #: cps/templates/admin.html:19 cps/templates/layout.html:65
@@ -1024,7 +1034,7 @@ msgid "From E-mail"
 msgstr "ពីអ៊ីមែល"
 
 #: cps/templates/admin.html:61
-msgid "Change SMTP settings"
+msgid "Edit E-mail Server Settings"
 msgstr "ប្តូរការកំណត់ SMTP"
 
 #: cps/templates/admin.html:67
@@ -1310,8 +1320,8 @@ msgstr "ចុចលើគម្របដើម្បីបញ្ចូលទិ
 msgid "Loading..."
 msgstr "កំពុងដំណើរការ..."
 
-#: cps/templates/book_edit.html:236 cps/templates/layout.html:191
-#: cps/templates/layout.html:223 cps/templates/modal_restriction.html:34
+#: cps/templates/book_edit.html:236 cps/templates/layout.html:189
+#: cps/templates/layout.html:221 cps/templates/modal_restriction.html:34
 #: cps/templates/user_edit.html:164
 msgid "Close"
 msgstr "បិទ"
@@ -1676,7 +1686,7 @@ msgstr "ភាពមើលឃើញដែលមកស្រាប់សម្រ
 msgid "Show Random Books in Detail View"
 msgstr "បង្ហាញសៀវភៅចៃដន្យក្នុងការបង្ហាញជាពិស្តារ"
 
-#: cps/templates/config_view_edit.html:144
+#: cps/templates/config_view_edit.html:144 cps/templates/user_edit.html:83
 msgid "Add Allowed/Denied Tags"
 msgstr ""
 
@@ -1768,9 +1778,14 @@ msgstr ""
 msgid "Are you sure you want to delete this domain?"
 msgstr ""
 
-#: cps/templates/feed.xml:21 cps/templates/layout.html:175
+#: cps/templates/feed.xml:21 cps/templates/layout.html:173
 msgid "Next"
 msgstr "បន្ទាប់"
+
+#: cps/templates/feed.xml:79 cps/templates/layout.html:136
+#: cps/templates/layout.html:140
+msgid "(Public)"
+msgstr ""
 
 #: cps/templates/generate_kobo_auth_url.html:5
 msgid "Open the .kobo/Kobo eReader.conf file in a text editor and add (or edit):"
@@ -1844,21 +1859,13 @@ msgstr ""
 msgid "Books ordered by file formats"
 msgstr ""
 
-#: cps/templates/index.xml:111 cps/templates/layout.html:136
-msgid "Public Shelves"
-msgstr "ធ្នើសាធារណៈ"
+#: cps/templates/index.xml:111 cps/templates/layout.html:134
+msgid "Shelves"
+msgstr ""
 
 #: cps/templates/index.xml:115
-msgid "Books organized in public shelfs, visible to everyone"
-msgstr "សៀវភៅដែលរៀបចំនៅក្នុងធ្នើសាធារណៈ អាចមើលឃើញដោយគ្រប់គ្នា"
-
-#: cps/templates/index.xml:119 cps/templates/layout.html:140
-msgid "Your Shelves"
-msgstr "ធ្នើរបស់អ្នក"
-
-#: cps/templates/index.xml:123
-msgid "User's own shelfs, only visible to the current user himself"
-msgstr "ធ្នើផ្ទាល់ខ្លួនរបស់អ្នកប្រើប្រាស់ អាចមើលឃើញដោយអ្នកប្រើប្រាស់នេះប៉ុណ្ណោះ"
+msgid "Books organized in shelves"
+msgstr ""
 
 #: cps/templates/layout.html:28
 msgid "Home"
@@ -1898,7 +1905,7 @@ msgstr "ចេញពីការប្រើប្រាស់"
 msgid "Register"
 msgstr "ចុះឈ្មោះ"
 
-#: cps/templates/layout.html:116 cps/templates/layout.html:222
+#: cps/templates/layout.html:116 cps/templates/layout.html:220
 msgid "Uploading..."
 msgstr "កំពុងអាប់ឡូត..."
 
@@ -1910,27 +1917,27 @@ msgstr ""
 msgid "Browse"
 msgstr "រុករក"
 
-#: cps/templates/layout.html:145
-msgid "Create a Shelf"
-msgstr "បង្កើតធ្នើ"
+#: cps/templates/layout.html:138
+msgid "Your Shelves"
+msgstr "ធ្នើរបស់អ្នក"
 
-#: cps/templates/layout.html:146 cps/templates/stats.html:3
+#: cps/templates/layout.html:144 cps/templates/stats.html:3
 msgid "About"
 msgstr "អំពី"
 
-#: cps/templates/layout.html:160
+#: cps/templates/layout.html:158
 msgid "Previous"
 msgstr "មុន"
 
-#: cps/templates/layout.html:187
+#: cps/templates/layout.html:185
 msgid "Book Details"
 msgstr "ព័ត៌មានលម្អិតរបស់សៀវភៅ"
 
-#: cps/templates/layout.html:221
+#: cps/templates/layout.html:219
 msgid "Upload done, processing, please wait..."
 msgstr ""
 
-#: cps/templates/layout.html:224
+#: cps/templates/layout.html:222
 msgid "Error"
 msgstr ""
 
@@ -1968,19 +1975,19 @@ msgid "Show Access Log: "
 msgstr ""
 
 #: cps/templates/modal_restriction.html:6
-msgid "Select allowed/denied Tags"
+msgid "Select Allowed/Denied Tags"
 msgstr ""
 
 #: cps/templates/modal_restriction.html:7
-msgid "Select allowed/denied Custom Column values"
+msgid "Select Allowed/Denied Custom Column Values"
 msgstr ""
 
 #: cps/templates/modal_restriction.html:8
-msgid "Select allowed/denied Tags of user"
+msgid "Select Allowed/Denied Tags of User"
 msgstr ""
 
 #: cps/templates/modal_restriction.html:9
-msgid "Select allowed/denied Custom Column values of user"
+msgid "Select Allowed/Denied Custom Column Values of User"
 msgstr ""
 
 #: cps/templates/modal_restriction.html:15
@@ -2303,12 +2310,8 @@ msgstr ""
 msgid "Create/View"
 msgstr ""
 
-#: cps/templates/user_edit.html:83
-msgid "Add allowed/denied Tags"
-msgstr ""
-
 #: cps/templates/user_edit.html:84
-msgid "Add allowed/denied custom column values"
+msgid "Add allowed/Denied Custom Column Values"
 msgstr ""
 
 #: cps/templates/user_edit.html:129

@@ -24,7 +24,7 @@ import signal
 import socket
 
 try:
-    from gevent.pyewsgi import WSGIServer
+    from gevent.pywsgi import WSGIServer
     from gevent.pool import Pool
     from gevent import __version__ as _version
     VERSION = 'Gevent ' + _version
@@ -171,6 +171,7 @@ class WebServer(object):
         except Exception as ex:
             log.error("Error starting server: %s", ex)
             print("Error starting server: %s" % ex)
+            self.stop()
             return False
         finally:
             self.wsgiserver = None

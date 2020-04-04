@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2020-03-14 10:38+0100\n"
+"POT-Creation-Date: 2020-04-03 19:49+0200\n"
 "PO-Revision-Date: 2017-01-06 17:00+0000\n"
 "Last-Translator: dalin <dalin.lin@gmail.com>\n"
 "Language: zh_Hans_CN\n"
@@ -40,7 +40,7 @@ msgstr "正在关闭服务器，请关闭窗口"
 
 #: cps/admin.py:110 cps/editbooks.py:410 cps/editbooks.py:419
 #: cps/editbooks.py:539 cps/editbooks.py:541 cps/editbooks.py:594
-#: cps/updater.py:456 cps/uploader.py:96 cps/uploader.py:107
+#: cps/updater.py:509 cps/uploader.py:96 cps/uploader.py:107
 msgid "Unknown"
 msgstr "未知"
 
@@ -190,24 +190,29 @@ msgid "Update finished, please press okay and reload page"
 msgstr "更新完成，请按确定并刷新页面"
 
 #: cps/admin.py:964 cps/admin.py:965 cps/admin.py:966 cps/admin.py:967
+#: cps/admin.py:968
 msgid "Update failed:"
 msgstr "更新失败："
 
-#: cps/admin.py:964 cps/updater.py:282 cps/updater.py:467 cps/updater.py:469
+#: cps/admin.py:964 cps/updater.py:319 cps/updater.py:520 cps/updater.py:522
 msgid "HTTP Error"
 msgstr "HTTP错误"
 
-#: cps/admin.py:965 cps/updater.py:284 cps/updater.py:471
+#: cps/admin.py:965 cps/updater.py:321 cps/updater.py:524
 msgid "Connection error"
 msgstr "连接错误"
 
-#: cps/admin.py:966 cps/updater.py:286 cps/updater.py:473
+#: cps/admin.py:966 cps/updater.py:323 cps/updater.py:526
 msgid "Timeout while establishing connection"
 msgstr "建立连接超时"
 
-#: cps/admin.py:967 cps/updater.py:288 cps/updater.py:475
+#: cps/admin.py:967 cps/updater.py:325 cps/updater.py:528
 msgid "General error"
 msgstr "一般错误"
+
+#: cps/admin.py:968
+msgid "Update File Could Not be Saved in Temp Dir"
+msgstr ""
 
 #: cps/converter.py:31
 msgid "not configured"
@@ -559,47 +564,52 @@ msgstr "此书已从书架 %(sname)s 中删除"
 msgid "Sorry you are not allowed to remove a book from this shelf: %(sname)s"
 msgstr "对不起，您没有从书架 %(sname)s 中删除书籍的权限"
 
-#: cps/shelf.py:211 cps/shelf.py:235
+#: cps/shelf.py:215 cps/shelf.py:252
 #, python-format
-msgid "A shelf with the name '%(title)s' already exists."
-msgstr "已存在书架 '%(title)s'。"
+msgid "A public shelf with the name '%(title)s' already exists."
+msgstr ""
 
-#: cps/shelf.py:216
+#: cps/shelf.py:222 cps/shelf.py:260
+#, python-format
+msgid "A private shelf with the name '%(title)s' already exists."
+msgstr ""
+
+#: cps/shelf.py:228
 #, python-format
 msgid "Shelf %(title)s created"
 msgstr "书架 %(title)s 已被创建"
 
-#: cps/shelf.py:218 cps/shelf.py:246
+#: cps/shelf.py:231 cps/shelf.py:272
 msgid "There was an error"
 msgstr "发生错误"
 
-#: cps/shelf.py:219 cps/shelf.py:221
-msgid "create a shelf"
+#: cps/shelf.py:232 cps/shelf.py:234 cps/templates/layout.html:143
+msgid "Create a Shelf"
 msgstr "创建书架"
 
-#: cps/shelf.py:244
+#: cps/shelf.py:270
 #, python-format
 msgid "Shelf %(title)s changed"
 msgstr "书架 %(title)s 已被修改"
 
-#: cps/shelf.py:247 cps/shelf.py:249
+#: cps/shelf.py:273 cps/shelf.py:275
 msgid "Edit a shelf"
 msgstr "编辑书架"
 
-#: cps/shelf.py:301
+#: cps/shelf.py:327
 #, python-format
 msgid "Shelf: '%(name)s'"
 msgstr "书架: '%(name)s'"
 
-#: cps/shelf.py:304
+#: cps/shelf.py:330
 msgid "Error opening shelf. Shelf does not exist or is not accessible"
 msgstr "打开书架出错。书架不存在或不可访问"
 
-#: cps/shelf.py:342
+#: cps/shelf.py:368
 msgid "Hidden Book"
 msgstr "隐藏书籍"
 
-#: cps/shelf.py:347
+#: cps/shelf.py:373
 #, python-format
 msgid "Change order of Shelf: '%(name)s'"
 msgstr "修改书架 '%(name)s' 顺序"
@@ -712,32 +722,32 @@ msgstr "文件格式"
 msgid "Show file formats selection"
 msgstr "显示文件格式选择"
 
-#: cps/updater.py:262 cps/updater.py:369 cps/updater.py:382
+#: cps/updater.py:294 cps/updater.py:305 cps/updater.py:406 cps/updater.py:420
 msgid "Unexpected data while reading update information"
 msgstr "读取更新信息时出现异常数据"
 
-#: cps/updater.py:269 cps/updater.py:375
+#: cps/updater.py:301 cps/updater.py:412
 msgid "No update available. You already have the latest version installed"
 msgstr "没有可用更新。您已经安装了最新版本"
 
-#: cps/updater.py:295
+#: cps/updater.py:333
 msgid "A new update is available. Click on the button below to update to the latest version."
 msgstr "有一个更新可用。点击正文按钮更新到最新版本。"
 
-#: cps/updater.py:348
+#: cps/updater.py:385
 msgid "Could not fetch update information"
 msgstr "无法获取更新信息"
 
-#: cps/updater.py:362
+#: cps/updater.py:399
 msgid "No release information available"
 msgstr "没有可用发布信息"
 
-#: cps/updater.py:415 cps/updater.py:424
+#: cps/updater.py:456 cps/updater.py:467 cps/updater.py:486
 #, python-format
 msgid "A new update is available. Click on the button below to update to version: %(version)s"
 msgstr "一个新的更新可用。点击下面按钮更新到版本: %(version)s"
 
-#: cps/updater.py:434
+#: cps/updater.py:477
 msgid "Click on the button below to update to the latest stable version."
 msgstr "点击下面按钮更新到最新稳定版本。"
 
@@ -843,11 +853,11 @@ msgstr "书籍已经被成功加入 %(kindlemail)s 的发送队列"
 
 #: cps/web.py:1064
 #, python-format
-msgid "There was an error sending this book: %(res)s"
+msgid "Oops! There was an error sending this book: %(res)s"
 msgstr "发送这本书的时候出现错误: %(res)s"
 
 #: cps/web.py:1066
-msgid "Please configure your kindle e-mail address first..."
+msgid "Please update your profile with a valid Send to Kindle E-mail Address."
 msgstr "请先配置您的kindle邮箱..."
 
 #: cps/web.py:1083
@@ -983,7 +993,7 @@ msgid "Download"
 msgstr "下载"
 
 #: cps/templates/admin.html:18
-msgid "View eBooks"
+msgid "View Books"
 msgstr "查看电子书"
 
 #: cps/templates/admin.html:19 cps/templates/layout.html:65
@@ -1023,7 +1033,7 @@ msgid "From E-mail"
 msgstr "来自邮箱"
 
 #: cps/templates/admin.html:61
-msgid "Change SMTP settings"
+msgid "Edit E-mail Server Settings"
 msgstr "修改SMTP设置"
 
 #: cps/templates/admin.html:67
@@ -1309,8 +1319,8 @@ msgstr "点击封面加载元数据到表单"
 msgid "Loading..."
 msgstr "加载中..."
 
-#: cps/templates/book_edit.html:236 cps/templates/layout.html:191
-#: cps/templates/layout.html:223 cps/templates/modal_restriction.html:34
+#: cps/templates/book_edit.html:236 cps/templates/layout.html:189
+#: cps/templates/layout.html:221 cps/templates/modal_restriction.html:34
 #: cps/templates/user_edit.html:164
 msgid "Close"
 msgstr "关闭"
@@ -1675,7 +1685,7 @@ msgstr "新用户的默认显示权限"
 msgid "Show Random Books in Detail View"
 msgstr "在详情页显示随机书籍"
 
-#: cps/templates/config_view_edit.html:144
+#: cps/templates/config_view_edit.html:144 cps/templates/user_edit.html:83
 msgid "Add Allowed/Denied Tags"
 msgstr "添加（允许/禁止）标签"
 
@@ -1767,9 +1777,14 @@ msgstr "禁用的域名（黑名单）"
 msgid "Are you sure you want to delete this domain?"
 msgstr "您确定要删除这条域名规则吗？"
 
-#: cps/templates/feed.xml:21 cps/templates/layout.html:175
+#: cps/templates/feed.xml:21 cps/templates/layout.html:173
 msgid "Next"
 msgstr "下一个"
+
+#: cps/templates/feed.xml:79 cps/templates/layout.html:136
+#: cps/templates/layout.html:140
+msgid "(Public)"
+msgstr ""
 
 #: cps/templates/generate_kobo_auth_url.html:5
 msgid "Open the .kobo/Kobo eReader.conf file in a text editor and add (or edit):"
@@ -1843,21 +1858,13 @@ msgstr ""
 msgid "Books ordered by file formats"
 msgstr "根据文件类型排序书籍"
 
-#: cps/templates/index.xml:111 cps/templates/layout.html:136
-msgid "Public Shelves"
-msgstr "公开书架"
+#: cps/templates/index.xml:111 cps/templates/layout.html:134
+msgid "Shelves"
+msgstr ""
 
 #: cps/templates/index.xml:115
-msgid "Books organized in public shelfs, visible to everyone"
-msgstr "公开书架中的书籍，对所有人都可见"
-
-#: cps/templates/index.xml:119 cps/templates/layout.html:140
-msgid "Your Shelves"
-msgstr "您的书架"
-
-#: cps/templates/index.xml:123
-msgid "User's own shelfs, only visible to the current user himself"
-msgstr "用户私有书架，只对当前用户本身可见"
+msgid "Books organized in shelves"
+msgstr ""
 
 #: cps/templates/layout.html:28
 msgid "Home"
@@ -1897,7 +1904,7 @@ msgstr "注销"
 msgid "Register"
 msgstr "注册"
 
-#: cps/templates/layout.html:116 cps/templates/layout.html:222
+#: cps/templates/layout.html:116 cps/templates/layout.html:220
 msgid "Uploading..."
 msgstr "上传中..."
 
@@ -1909,27 +1916,27 @@ msgstr "请不要刷新页面"
 msgid "Browse"
 msgstr "浏览"
 
-#: cps/templates/layout.html:145
-msgid "Create a Shelf"
-msgstr "创建书架"
+#: cps/templates/layout.html:138
+msgid "Your Shelves"
+msgstr "您的书架"
 
-#: cps/templates/layout.html:146 cps/templates/stats.html:3
+#: cps/templates/layout.html:144 cps/templates/stats.html:3
 msgid "About"
 msgstr "关于"
 
-#: cps/templates/layout.html:160
+#: cps/templates/layout.html:158
 msgid "Previous"
 msgstr "上一个"
 
-#: cps/templates/layout.html:187
+#: cps/templates/layout.html:185
 msgid "Book Details"
 msgstr "书籍详情"
 
-#: cps/templates/layout.html:221
+#: cps/templates/layout.html:219
 msgid "Upload done, processing, please wait..."
 msgstr "上传完成，正在处理，请稍候..."
 
-#: cps/templates/layout.html:224
+#: cps/templates/layout.html:222
 msgid "Error"
 msgstr "错误"
 
@@ -1967,19 +1974,19 @@ msgid "Show Access Log: "
 msgstr "显示Access Log: "
 
 #: cps/templates/modal_restriction.html:6
-msgid "Select allowed/denied Tags"
+msgid "Select Allowed/Denied Tags"
 msgstr "选择（允许/禁止）标签"
 
 #: cps/templates/modal_restriction.html:7
-msgid "Select allowed/denied Custom Column values"
+msgid "Select Allowed/Denied Custom Column Values"
 msgstr "选择（允许/禁止）自定义栏值"
 
 #: cps/templates/modal_restriction.html:8
-msgid "Select allowed/denied Tags of user"
+msgid "Select Allowed/Denied Tags of User"
 msgstr "选择（允许/禁止）用户标签"
 
 #: cps/templates/modal_restriction.html:9
-msgid "Select allowed/denied Custom Column values of user"
+msgid "Select Allowed/Denied Custom Column Values of User"
 msgstr "选择（允许/禁止）用户自定义栏值"
 
 #: cps/templates/modal_restriction.html:15
@@ -2302,12 +2309,8 @@ msgstr ""
 msgid "Create/View"
 msgstr "新建/查看"
 
-#: cps/templates/user_edit.html:83
-msgid "Add allowed/denied Tags"
-msgstr "添加（允许/禁止）标签"
-
 #: cps/templates/user_edit.html:84
-msgid "Add allowed/denied custom column values"
+msgid "Add allowed/Denied Custom Column Values"
 msgstr "添加（允许/禁止）自定义栏值"
 
 #: cps/templates/user_edit.html:129

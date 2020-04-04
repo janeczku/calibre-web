@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2020-03-14 10:38+0100\n"
+"POT-Creation-Date: 2020-04-03 19:49+0200\n"
 "PO-Revision-Date: 2020-01-08 11:37+0000\n"
 "Last-Translator: Lukas Heroudek <lukas.heroudek@gmail.com>\n"
 "Language: cs_CZ\n"
@@ -39,7 +39,7 @@ msgstr "Vypínám server, zavřete okno"
 
 #: cps/admin.py:110 cps/editbooks.py:410 cps/editbooks.py:419
 #: cps/editbooks.py:539 cps/editbooks.py:541 cps/editbooks.py:594
-#: cps/updater.py:456 cps/uploader.py:96 cps/uploader.py:107
+#: cps/updater.py:509 cps/uploader.py:96 cps/uploader.py:107
 msgid "Unknown"
 msgstr "Neznámý"
 
@@ -189,24 +189,29 @@ msgid "Update finished, please press okay and reload page"
 msgstr "Aktualizace dokončena, klepněte na tlačítko OK a znovu načtěte stránku"
 
 #: cps/admin.py:964 cps/admin.py:965 cps/admin.py:966 cps/admin.py:967
+#: cps/admin.py:968
 msgid "Update failed:"
 msgstr "Aktualizace selhala:"
 
-#: cps/admin.py:964 cps/updater.py:282 cps/updater.py:467 cps/updater.py:469
+#: cps/admin.py:964 cps/updater.py:319 cps/updater.py:520 cps/updater.py:522
 msgid "HTTP Error"
 msgstr "HTTP chyba"
 
-#: cps/admin.py:965 cps/updater.py:284 cps/updater.py:471
+#: cps/admin.py:965 cps/updater.py:321 cps/updater.py:524
 msgid "Connection error"
 msgstr "Chyba připojení"
 
-#: cps/admin.py:966 cps/updater.py:286 cps/updater.py:473
+#: cps/admin.py:966 cps/updater.py:323 cps/updater.py:526
 msgid "Timeout while establishing connection"
 msgstr "Vypršel časový limit při navazování spojení"
 
-#: cps/admin.py:967 cps/updater.py:288 cps/updater.py:475
+#: cps/admin.py:967 cps/updater.py:325 cps/updater.py:528
 msgid "General error"
 msgstr "Všeobecná chyba"
+
+#: cps/admin.py:968
+msgid "Update File Could Not be Saved in Temp Dir"
+msgstr ""
 
 #: cps/converter.py:31
 msgid "not configured"
@@ -558,47 +563,52 @@ msgstr "Kniha byla odebrána z police: %(sname)s"
 msgid "Sorry you are not allowed to remove a book from this shelf: %(sname)s"
 msgstr "Lituji, nejste oprávněni odebrat knihu z této police: %(sname)s"
 
-#: cps/shelf.py:211 cps/shelf.py:235
+#: cps/shelf.py:215 cps/shelf.py:252
 #, python-format
-msgid "A shelf with the name '%(title)s' already exists."
-msgstr "Police s názvem  '%(title)s' již existuje."
+msgid "A public shelf with the name '%(title)s' already exists."
+msgstr ""
 
-#: cps/shelf.py:216
+#: cps/shelf.py:222 cps/shelf.py:260
+#, python-format
+msgid "A private shelf with the name '%(title)s' already exists."
+msgstr ""
+
+#: cps/shelf.py:228
 #, python-format
 msgid "Shelf %(title)s created"
 msgstr "Police %(title)s vytvořena"
 
-#: cps/shelf.py:218 cps/shelf.py:246
+#: cps/shelf.py:231 cps/shelf.py:272
 msgid "There was an error"
 msgstr "Došlo k chybě"
 
-#: cps/shelf.py:219 cps/shelf.py:221
-msgid "create a shelf"
+#: cps/shelf.py:232 cps/shelf.py:234 cps/templates/layout.html:143
+msgid "Create a Shelf"
 msgstr "vytvořit polici"
 
-#: cps/shelf.py:244
+#: cps/shelf.py:270
 #, python-format
 msgid "Shelf %(title)s changed"
 msgstr "Police %(title)s změněna"
 
-#: cps/shelf.py:247 cps/shelf.py:249
+#: cps/shelf.py:273 cps/shelf.py:275
 msgid "Edit a shelf"
 msgstr "Upravit polici"
 
-#: cps/shelf.py:301
+#: cps/shelf.py:327
 #, python-format
 msgid "Shelf: '%(name)s'"
 msgstr "Police: '%(name)s'"
 
-#: cps/shelf.py:304
+#: cps/shelf.py:330
 msgid "Error opening shelf. Shelf does not exist or is not accessible"
 msgstr "Chyba otevírání police. Police neexistuje nebo není přístupná"
 
-#: cps/shelf.py:342
+#: cps/shelf.py:368
 msgid "Hidden Book"
 msgstr ""
 
-#: cps/shelf.py:347
+#: cps/shelf.py:373
 #, python-format
 msgid "Change order of Shelf: '%(name)s'"
 msgstr "Změnit  pořadí Police: '%(name)s'"
@@ -711,32 +721,32 @@ msgstr "Formáty souborů"
 msgid "Show file formats selection"
 msgstr "Zobrazit výběr formátů"
 
-#: cps/updater.py:262 cps/updater.py:369 cps/updater.py:382
+#: cps/updater.py:294 cps/updater.py:305 cps/updater.py:406 cps/updater.py:420
 msgid "Unexpected data while reading update information"
 msgstr "Neočekávaná data při čtení informací o aktualizaci"
 
-#: cps/updater.py:269 cps/updater.py:375
+#: cps/updater.py:301 cps/updater.py:412
 msgid "No update available. You already have the latest version installed"
 msgstr "Aktualizace není k dispozici. Máte nainstalovanou nejnovější verzi"
 
-#: cps/updater.py:295
+#: cps/updater.py:333
 msgid "A new update is available. Click on the button below to update to the latest version."
 msgstr "Nová aktualizace k dispozici. Klepnutím na tlačítko níže aktualizujte na nejnovější verzi."
 
-#: cps/updater.py:348
+#: cps/updater.py:385
 msgid "Could not fetch update information"
 msgstr "Nelze získat informace o aktualizaci"
 
-#: cps/updater.py:362
+#: cps/updater.py:399
 msgid "No release information available"
 msgstr "Nejsou k dispozici žádné informace o verzi"
 
-#: cps/updater.py:415 cps/updater.py:424
+#: cps/updater.py:456 cps/updater.py:467 cps/updater.py:486
 #, python-format
 msgid "A new update is available. Click on the button below to update to version: %(version)s"
 msgstr "Nová aktualizace k dispozici. Klepnutím na tlačítko níže aktualizujte na verzi: %(version)s"
 
-#: cps/updater.py:434
+#: cps/updater.py:477
 msgid "Click on the button below to update to the latest stable version."
 msgstr "Klepnutím na tlačítko níže aktualizujte na nejnovější stabilní verzi."
 
@@ -842,11 +852,11 @@ msgstr "Kniha byla úspěšně zařazena do fronty pro odeslání na %(kindlemai
 
 #: cps/web.py:1064
 #, python-format
-msgid "There was an error sending this book: %(res)s"
+msgid "Oops! There was an error sending this book: %(res)s"
 msgstr "Při odesílání této knihy došlo k chybě: %(res)s"
 
 #: cps/web.py:1066
-msgid "Please configure your kindle e-mail address first..."
+msgid "Please update your profile with a valid Send to Kindle E-mail Address."
 msgstr "Nejprve nakonfigurujte vaši kindle e-mailovou adresu.."
 
 #: cps/web.py:1083
@@ -982,7 +992,7 @@ msgid "Download"
 msgstr "Stahovat"
 
 #: cps/templates/admin.html:18
-msgid "View eBooks"
+msgid "View Books"
 msgstr ""
 
 #: cps/templates/admin.html:19 cps/templates/layout.html:65
@@ -1022,7 +1032,7 @@ msgid "From E-mail"
 msgstr "Z e-mailu"
 
 #: cps/templates/admin.html:61
-msgid "Change SMTP settings"
+msgid "Edit E-mail Server Settings"
 msgstr "Změnit SMTP nastavení"
 
 #: cps/templates/admin.html:67
@@ -1308,8 +1318,8 @@ msgstr "Klepnutím na obal načtěte metadata do formuláře"
 msgid "Loading..."
 msgstr "Načítání..."
 
-#: cps/templates/book_edit.html:236 cps/templates/layout.html:191
-#: cps/templates/layout.html:223 cps/templates/modal_restriction.html:34
+#: cps/templates/book_edit.html:236 cps/templates/layout.html:189
+#: cps/templates/layout.html:221 cps/templates/modal_restriction.html:34
 #: cps/templates/user_edit.html:164
 msgid "Close"
 msgstr "Zavřít"
@@ -1674,7 +1684,7 @@ msgstr "Výchozí zobrazení pro nové uživatele"
 msgid "Show Random Books in Detail View"
 msgstr "Zobrazit náhodné knihy v podrobném zobrazení"
 
-#: cps/templates/config_view_edit.html:144
+#: cps/templates/config_view_edit.html:144 cps/templates/user_edit.html:83
 msgid "Add Allowed/Denied Tags"
 msgstr ""
 
@@ -1766,9 +1776,14 @@ msgstr "Zakázané domény pro registraci"
 msgid "Are you sure you want to delete this domain?"
 msgstr "Opravdu chcete odstranit toto pravidlo domény?"
 
-#: cps/templates/feed.xml:21 cps/templates/layout.html:175
+#: cps/templates/feed.xml:21 cps/templates/layout.html:173
 msgid "Next"
 msgstr "Další"
+
+#: cps/templates/feed.xml:79 cps/templates/layout.html:136
+#: cps/templates/layout.html:140
+msgid "(Public)"
+msgstr ""
 
 #: cps/templates/generate_kobo_auth_url.html:5
 msgid "Open the .kobo/Kobo eReader.conf file in a text editor and add (or edit):"
@@ -1842,21 +1857,13 @@ msgstr ""
 msgid "Books ordered by file formats"
 msgstr "Knihy seřazené podle soboru formátů"
 
-#: cps/templates/index.xml:111 cps/templates/layout.html:136
-msgid "Public Shelves"
-msgstr "Veřejné police"
+#: cps/templates/index.xml:111 cps/templates/layout.html:134
+msgid "Shelves"
+msgstr ""
 
 #: cps/templates/index.xml:115
-msgid "Books organized in public shelfs, visible to everyone"
-msgstr "Knihy uspořádané do veřejných polic, viditelné všem"
-
-#: cps/templates/index.xml:119 cps/templates/layout.html:140
-msgid "Your Shelves"
-msgstr "Vaše police"
-
-#: cps/templates/index.xml:123
-msgid "User's own shelfs, only visible to the current user himself"
-msgstr "Vlastní police uživatele, viditelné pouze pro aktuálního uživatele"
+msgid "Books organized in shelves"
+msgstr ""
 
 #: cps/templates/layout.html:28
 msgid "Home"
@@ -1896,7 +1903,7 @@ msgstr "Odhlásit se"
 msgid "Register"
 msgstr "Registrovat"
 
-#: cps/templates/layout.html:116 cps/templates/layout.html:222
+#: cps/templates/layout.html:116 cps/templates/layout.html:220
 msgid "Uploading..."
 msgstr "Nahrávání..."
 
@@ -1908,27 +1915,27 @@ msgstr "prosím neobnovujte stránku"
 msgid "Browse"
 msgstr "Procházet"
 
-#: cps/templates/layout.html:145
-msgid "Create a Shelf"
-msgstr "Vytvořit polici"
+#: cps/templates/layout.html:138
+msgid "Your Shelves"
+msgstr "Vaše police"
 
-#: cps/templates/layout.html:146 cps/templates/stats.html:3
+#: cps/templates/layout.html:144 cps/templates/stats.html:3
 msgid "About"
 msgstr "O Calibre-Web"
 
-#: cps/templates/layout.html:160
+#: cps/templates/layout.html:158
 msgid "Previous"
 msgstr "Předchozí"
 
-#: cps/templates/layout.html:187
+#: cps/templates/layout.html:185
 msgid "Book Details"
 msgstr "Podrobnosti o knize"
 
-#: cps/templates/layout.html:221
+#: cps/templates/layout.html:219
 msgid "Upload done, processing, please wait..."
 msgstr "Nahrávání hotovo, zpracovávám, čekejte prosím..."
 
-#: cps/templates/layout.html:224
+#: cps/templates/layout.html:222
 msgid "Error"
 msgstr "Chyba"
 
@@ -1966,19 +1973,19 @@ msgid "Show Access Log: "
 msgstr "Zobrazit log přístupu: "
 
 #: cps/templates/modal_restriction.html:6
-msgid "Select allowed/denied Tags"
+msgid "Select Allowed/Denied Tags"
 msgstr ""
 
 #: cps/templates/modal_restriction.html:7
-msgid "Select allowed/denied Custom Column values"
+msgid "Select Allowed/Denied Custom Column Values"
 msgstr ""
 
 #: cps/templates/modal_restriction.html:8
-msgid "Select allowed/denied Tags of user"
+msgid "Select Allowed/Denied Tags of User"
 msgstr ""
 
 #: cps/templates/modal_restriction.html:9
-msgid "Select allowed/denied Custom Column values of user"
+msgid "Select Allowed/Denied Custom Column Values of User"
 msgstr ""
 
 #: cps/templates/modal_restriction.html:15
@@ -2301,12 +2308,8 @@ msgstr ""
 msgid "Create/View"
 msgstr ""
 
-#: cps/templates/user_edit.html:83
-msgid "Add allowed/denied Tags"
-msgstr ""
-
 #: cps/templates/user_edit.html:84
-msgid "Add allowed/denied custom column values"
+msgid "Add allowed/Denied Custom Column Values"
 msgstr ""
 
 #: cps/templates/user_edit.html:129

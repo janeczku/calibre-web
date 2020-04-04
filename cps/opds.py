@@ -253,6 +253,7 @@ def feed_ratings(book_id):
     return render_xml_template('feed.xml', entries=entries, pagination=pagination)
 
 
+
 @opds.route("/opds/formats")
 @requires_basic_auth_if_no_ano
 def feed_formatindex():
@@ -275,6 +276,7 @@ def feed_format(book_id):
     entries, __, pagination = fill_indexpage((int(off) / (int(config.config_books_per_page)) + 1),
                     db.Books, db.Books.data.any(db.Data.format == book_id.upper()), [db.Books.timestamp.desc()])
     return render_xml_template('feed.xml', entries=entries, pagination=pagination)
+
 
 @opds.route("/opds/language")
 @opds.route("/opds/language/")
@@ -308,17 +310,12 @@ def feed_languages(book_id):
     return render_xml_template('feed.xml', entries=entries, pagination=pagination)
 
 
-@opds.route("/opds/shelfindex", defaults={'public': 0})
-@opds.route("/opds/shelfindex/<string:public>")
+@opds.route("/opds/shelfindex")
 @requires_basic_auth_if_no_ano
-def feed_shelfindex(public):
+def feed_shelfindex():
     off = request.args.get("offset") or 0
-    if public != 0:
-        shelf = g.public_shelfes
-        number = len(shelf)
-    else:
-        shelf = g.user.shelf
-        number = shelf.count()
+    shelf = g.shelves_access
+    number = len(shelf)
     pagination = Pagination((int(off) / (int(config.config_books_per_page)) + 1), config.config_books_per_page,
                             number)
     return render_xml_template('feed.xml', listelements=shelf, folder='opds.feed_shelf', pagination=pagination)
@@ -343,9 +340,9 @@ def feed_shelf(book_id):
         for book in books_in_shelf:
             cur_book = db.session.query(db.Books).filter(db.Books.id == book.book_id).first()
             result.append(cur_book)
-        pagination = Pagination((int(off) / (int(config.config_books_per_page)) + 1), config.config_books_per_page,
-                                len(result))
-        return render_xml_template('feed.xml', entries=result, pagination=pagination)
+    pagination = Pagination((int(off) / (int(config.config_books_per_page)) + 1), config.config_books_per_page,
+                            len(result))
+    return render_xml_template('feed.xml', entries=result, pagination=pagination)
 
 
 @opds.route("/opds/download/<book_id>/<book_format>/")
