@@ -52,6 +52,7 @@ from .kobo_auth import requires_kobo_auth
 
 KOBO_FORMATS = {"KEPUB": ["KEPUB"], "EPUB": ["EPUB3", "EPUB"]}
 KOBO_STOREAPI_URL = "https://storeapi.kobo.com"
+KOBO_IMAGEHOST_URL = "https://kbimages1-a.akamaihd.net"
 
 kobo = Blueprint("kobo", __name__, url_prefix="/kobo/<auth_token>")
 kobo_auth.disable_failed_auth_redirect_for_blueprint(kobo)
@@ -534,17 +535,20 @@ def get_current_bookmark_response(current_bookmark):
         }
     return resp
 
-
-@kobo.route("/<book_uuid>/image.jpg")
+@kobo.route("/<book_uuid>/<width>/<height>/<isGreyscale>/image.jpg", defaults={'Quality': ""})
+@kobo.route("/<book_uuid>/<width>/<height>/<Quality>/<isGreyscale>/image.jpg")
 @requires_kobo_auth
-def HandleCoverImageRequest(book_uuid):
+def HandleCoverImageRequest(book_uuid, width, height,Quality, isGreyscale):
     book_cover = helper.get_book_cover_with_uuid(
         book_uuid, use_generic_cover_on_failure=False
     )
     if not book_cover:
         if config.config_kobo_proxy:
             log.debug("Cover for unknown book: %s proxied to kobo" % book_uuid)
-            return redirect(get_store_url_for_current_request(), 307)
+            return redirect(KOBO_IMAGEHOST_URL +
+                            "/{book_uuid}/{width}/{height}/false/image.jpg".format(book_uuid=book_uuid,
+                                                                                   width=width,
+                                                                                   height=height), 307)
         else:
             log.debug("Cover for unknown book: %s requested" % book_uuid)
             return redirect_or_proxy_request()
@@ -655,17 +659,22 @@ def HandleAuthRequest():
     return make_calibre_web_auth_response()
 
 
-def make_calibre_web_init_response(calibre_web_url):
-        resources = NATIVE_KOBO_RESOURCES(calibre_web_url)
-        response = make_response(jsonify({"Resources": resources}))
-        response.headers["x-kobo-apitoken"] = "e30="
-        return response
-
-
 @kobo.route("/v1/initialization")
 @requires_kobo_auth
 def HandleInitRequest():
     log.info('Init')
+
+    kobo_resources = None
+    if config.config_kobo_proxy:
+        try:
+            store_response = make_request_to_kobo_store()
+            store_response_json = store_response.json()
+            if "Resources" in store_response_json:
+                kobo_resources = store_response_json["Resources"]
+        except:
+            log.error("Failed to receive or parse response from Kobo's init endpoint. Falling back to un-proxied mode.")
+    if not kobo_resources:
+        kobo_resources = NATIVE_KOBO_RESOURCES()
 
     if not current_app.wsgi_app.is_proxied:
         log.debug('Kobo: Received unproxied request, changed request port to server port')
@@ -678,33 +687,47 @@ def HandleInitRequest():
             url_base=host,
             url_port=config.config_port
         )
+        kobo_resources["image_host"] = calibre_web_url
+        kobo_resources["image_url_quality_template"] = unquote(calibre_web_url +
+                                                               url_for("kobo.HandleCoverImageRequest",
+                                                                       auth_token=kobo_auth.get_auth_token(),
+                                                                       book_uuid="{ImageId}",
+                                                                       width="{width}",
+                                                                       height="{height}",
+                                                                       Quality='{Quality}',
+                                                                       isGreyscale='isGreyscale'
+                                                               ))
+        kobo_resources["image_url_template"] = unquote(calibre_web_url +
+                                                       url_for("kobo.HandleCoverImageRequest",
+                                                               auth_token=kobo_auth.get_auth_token(),
+                                                               book_uuid="{ImageId}",
+                                                               width="{width}",
+                                                               height="{height}",
+                                                               isGreyscale='false'
+                                                       ))
     else:
-        calibre_web_url = url_for("web.index", _external=True).strip("/")
-
-    if config.config_kobo_proxy:
-        try:
-            store_response = make_request_to_kobo_store()
-
-            store_response_json = store_response.json()
-            if "Resources" in store_response_json:
-                kobo_resources = store_response_json["Resources"]
-                # calibre_web_url = url_for("web.index", _external=True).strip("/")
-                kobo_resources["image_host"] = calibre_web_url
-                kobo_resources["image_url_quality_template"] = unquote(calibre_web_url + url_for("kobo.HandleCoverImageRequest",
-                    auth_token = kobo_auth.get_auth_token(),
-                    book_uuid="{ImageId}"))
-                kobo_resources["image_url_template"] = unquote(calibre_web_url + url_for("kobo.HandleCoverImageRequest",
-                    auth_token = kobo_auth.get_auth_token(),
-                    book_uuid="{ImageId}"))
-
-            return make_response(store_response_json, store_response.status_code)
-        except:
-            log.error("Failed to receive or parse response from Kobo's init endpoint. Falling back to un-proxied mode.")
-
-    return make_calibre_web_init_response(calibre_web_url)
+        kobo_resources["image_host"] = url_for("web.index", _external=True).strip("/")
+        kobo_resources["image_url_quality_template"] = unquote(url_for("kobo.HandleCoverImageRequest",
+                                                                       auth_token=kobo_auth.get_auth_token(),
+                                                                       book_uuid="{ImageId}",
+                                                                       width="{width}",
+                                                                       height="{height}",
+                                                                       _external=True))
+        kobo_resources["image_url_template"] = unquote(url_for("kobo.HandleCoverImageRequest",
+                                                               auth_token=kobo_auth.get_auth_token(),
+                                                               book_uuid="{ImageId}",
+                                                               width="{width}",
+                                                               height="{height}",
+                                                               _external=True))
 
 
-def NATIVE_KOBO_RESOURCES(calibre_web_url):
+    response = make_response(jsonify({"Resources": kobo_resources}))
+    response.headers["x-kobo-apitoken"] = "e30="
+
+    return response
+
+
+def NATIVE_KOBO_RESOURCES():
     return {
         "account_page": "https://secure.kobobooks.com/profile",
         "account_page_rakuten": "https://my.rakuten.co.jp/",
@@ -755,13 +778,6 @@ def NATIVE_KOBO_RESOURCES(calibre_web_url):
         "giftcard_epd_redeem_url": "https://www.kobo.com/{storefront}/{language}/redeem-ereader",
         "giftcard_redeem_url": "https://www.kobo.com/{storefront}/{language}/redeem",
         "help_page": "http://www.kobo.com/help",
-        "image_host": calibre_web_url,
-        "image_url_quality_template": unquote(calibre_web_url + url_for("kobo.HandleCoverImageRequest",
-                auth_token = kobo_auth.get_auth_token(),
-                book_uuid="{ImageId}")),
-        "image_url_template":  unquote(calibre_web_url + url_for("kobo.HandleCoverImageRequest",
-                auth_token = kobo_auth.get_auth_token(),
-                book_uuid="{ImageId}")),
         "kobo_audiobooks_enabled": "False",
         "kobo_audiobooks_orange_deal_enabled": "False",
         "kobo_audiobooks_subscriptions_enabled": "False",
