@@ -275,13 +275,13 @@ def before_request():
 
 @app.route('/import_ldap_users')
 def import_ldap_users():
+    showtext = {}
     try:
         new_users = services.ldap.get_group_members(config.config_ldap_group_name)
     except services.ldap.LDAPException as e:
         log.debug(e)
-        return ""
-    except Exception as e:
-        print('pass')
+        showtext['text'] = _(u'Error : %(ldaperror)s', ldaperror=e)
+        return json.dumps(showtext)
 
     for username in new_users:
         user_data = services.ldap.get_object_details(user=username, group=None, query_filter=None, dn_only=False)
@@ -300,7 +300,10 @@ def import_ldap_users():
         except Exception as e:
             log.warning("Failed to create LDAP user: %s - %s", username, e)
             ub.session.rollback()
-    return ""
+            showtext['text'] = _(u'Failed to create at least one LDAP user')
+    if not showtext:
+        showtext['text'] = _(u'User successfully imported')
+    return json.dumps(showtext)
 
 
 # ################################### data provider functions #########################################################

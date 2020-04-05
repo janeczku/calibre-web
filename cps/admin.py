@@ -79,12 +79,12 @@ def admin_forbidden():
 @admin_required
 def shutdown():
     task = int(request.args.get("parameter").strip())
+    showtext = {}
     if task in (0, 1):  # valid commandos received
         # close all database connections
         db.dispose()
         ub.dispose()
 
-        showtext = {}
         if task == 0:
             showtext['text'] = _(u'Server restarted, please reload page')
         else:
@@ -96,9 +96,11 @@ def shutdown():
     if task == 2:
         log.warning("reconnecting to calibre database")
         db.setup_db(config)
-        return '{}'
+        showtext['text'] = _(u'Reconnect successful')
+        return json.dumps(showtext)
 
-    abort(404)
+    showtext['text'] = _(u'Unknown command')
+    return json.dumps(showtext), 400
 
 
 @admi.route("/admin/view")
