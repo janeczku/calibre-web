@@ -76,7 +76,7 @@ $(function() {
     function cleanUp() {
         clearInterval(updateTimerID);
         $("#spinner2").hide();
-        $("#updateFinished").removeClass("hidden");
+        $("#DialogFinished").removeClass("hidden");
         $("#check_for_update").removeClass("hidden");
         $("#perform_update").addClass("hidden");
         $("#message").alert("close");
@@ -93,13 +93,13 @@ $(function() {
             url: window.location.pathname + "/../../get_updater_status",
             success: function success(data) {
                 // console.log(data.status);
-                $("#Updatecontent").html(updateText[data.status]);
+                $("#DialogContent").html(updateText[data.status]);
                 if (data.status > 6) {
                     cleanUp();
                 }
             },
             error: function error() {
-                $("#Updatecontent").html(updateText[7]);
+                $("#DialogContent").html(updateText[7]);
                 cleanUp();
             },
             timeout: 2000
@@ -158,8 +158,8 @@ $(function() {
         var $this = $(this);
         var buttonText = $this.html();
         $this.html("...");
-        $("#Updatecontent").html("");
-        $("#updateFinished").addClass("hidden");
+        $("#DialogContent").html("");
+        $("#DialogFinished").addClass("hidden");
         $("#update_error").addClass("hidden");
         if ($("#message").length) {
             $("#message").alert("close");
@@ -201,13 +201,24 @@ $(function() {
         });
     });
     $("#restart_database").click(function() {
+        $("#DialogHeader").addClass("hidden");
+        $("#DialogFinished").addClass("hidden");
+        $("#DialogContent").html("");
+        $("#spinner2").show();
         $.ajax({
             dataType: "json",
             url: window.location.pathname + "/../../shutdown",
-            data: {"parameter":2}
+            data: {"parameter":2},
+            success: function success(data) {
+                $("#spinner2").hide();
+                ResultText = data.text;
+                $("#DialogContent").html(ResultText);
+                $("#DialogFinished").removeClass("hidden");
+            }
         });
     });
     $("#perform_update").click(function() {
+        $("#DialogHeader").removeClass("hidden");
         $("#spinner2").show();
         $.ajax({
             type: "POST",
@@ -216,7 +227,7 @@ $(function() {
             url: window.location.pathname + "/../../get_updater_status",
             success: function success(data) {
                 updateText = data.text;
-                $("#Updatecontent").html(updateText[data.status]);
+                $("#DialogContent").html(updateText[data.status]);
                 // console.log(data.status);
                 updateTimerID = setInterval(updateTimer, 2000);
             }
@@ -288,17 +299,23 @@ $(function() {
     });
 
     $('#import_ldap_users').click(function() {
+        $("#DialogHeader").addClass("hidden");
+        $("#DialogFinished").addClass("hidden");
+        $("#DialogContent").html("");
+        $("#spinner2").show();
         var pathname = document.getElementsByTagName("script"), src = pathname[pathname.length - 1].src;
         var path = src.substring(0, src.lastIndexOf("/"));
-        /*$.ajax({
+        $.ajax({
             method:"get",
+            dataType: "json",
             url: path + "/../../import_ldap_users",
-        });*/
-        $.getJSON(path + "/../../import_ldap_users",
-            function(data) {
-                location.reload();
+            success: function success(data) {
+                $("#spinner2").hide();
+                ResultText = data.text;
+                $("#DialogContent").html(ResultText);
+                $("#DialogFinished").removeClass("hidden");
             }
-        );
+        });
     });
 
     $(".author-expand").click(function() {

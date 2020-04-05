@@ -17,6 +17,9 @@ Steps to reproduce the behavior:
 3. Scroll down to '....'
 4. See error
 
+**Logfile**
+Add content of calibre-web.log file or the relevant error, try to reproduce your problem with "debug" log-level to get more output.
+
 **Expected behavior**
 A clear and concise description of what you expected to happen.
 
