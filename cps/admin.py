@@ -43,7 +43,7 @@ from .gdriveutils import is_gdrive_ready, gdrive_support
 from .web import admin_required, render_title_template, before_request, unconfigured, login_required_if_no_ano
 
 feature_support = {
-        'ldap': False, # bool(services.ldap),
+        'ldap': bool(services.ldap),
         'goodreads': bool(services.goodreads_support),
         'kobo':  bool(services.kobo)
     }
@@ -542,24 +542,43 @@ def _configuration_update_helper():
     if config.config_login_type == constants.LOGIN_LDAP:
         _config_string("config_ldap_provider_url")
         _config_int("config_ldap_port")
-        _config_string("config_ldap_schema")
+        # _config_string("config_ldap_schema")
         _config_string("config_ldap_dn")
         _config_string("config_ldap_user_object")
-        if not config.config_ldap_provider_url or not config.config_ldap_port or not config.config_ldap_dn or not config.config_ldap_user_object:
-            return _configuration_result('Please enter a LDAP provider, port, DN and user object identifier', gdriveError)
+        if not config.config_ldap_provider_url \
+            or not config.config_ldap_port \
+            or not config.config_ldap_dn \
+            or not config.config_ldap_user_object:
+                return _configuration_result('Please enter a LDAP provider, '
+                                             'port, DN and user object identifier', gdriveError)
 
         _config_string("config_ldap_serv_username")
-        if not config.config_ldap_serv_username or "config_ldap_serv_password" not in to_save:
-            return _configuration_result('Please enter a LDAP service account and password', gdriveError)
-        config.set_from_dictionary(to_save, "config_ldap_serv_password", base64.b64encode)
+        if "config_ldap_serv_password" in to_save and to_save["config_ldap_serv_password"]:
+            config.set_from_dictionary(to_save, "config_ldap_serv_password", base64.b64encode, encode='UTF-8')
 
-    _config_checkbox("config_ldap_use_ssl")
-    _config_checkbox("config_ldap_use_tls")
-    _config_checkbox("config_ldap_openldap")
-    _config_checkbox("config_ldap_require_cert")
-    _config_string("config_ldap_cert_path")
-    if config.config_ldap_cert_path and not os.path.isfile(config.config_ldap_cert_path):
-        return _configuration_result('LDAP Certfile location is not valid, please enter correct path', gdriveError)
+        if not config.config_ldap_serv_username and not config.config_ldap_serv_password:
+            return _configuration_result('Please enter a LDAP service account and password', gdriveError)
+
+        _config_string("config_ldap_group_object_filter")
+        _config_string("config_ldap_group_members_field")
+        _config_string("config_ldap_group_name")
+        #_config_checkbox("config_ldap_use_ssl")
+        #_config_checkbox("config_ldap_use_tls")
+        _config_int("config_ldap_encryption")
+        _config_checkbox("config_ldap_openldap")
+        # _config_checkbox("config_ldap_require_cert")
+        _config_string("config_ldap_cert_path")
+
+        if config.config_ldap_group_object_filter.count("%s") != 1:
+            return _configuration_result('LDAP Group Object Filter Needs to Have One "%s" Format Identifier',
+                                         gdriveError)
+
+        if config.config_ldap_user_object.count("%s") != 1:
+            return _configuration_result('LDAP User Object Filter needs to Have One "%s" Format Identifier',
+                                         gdriveError)
+
+        if config.config_ldap_cert_path and not os.path.isfile(config.config_ldap_cert_path):
+            return _configuration_result('LDAP Certfile location is not valid, please enter correct path', gdriveError)
 
     # Remote login configuration
     _config_checkbox("config_remote_login")
