@@ -53,7 +53,7 @@ from .pagination import Pagination
 from .redirect import redirect_back
 
 feature_support = {
-        'ldap': False, # bool(services.ldap),
+        'ldap': bool(services.ldap),
         'goodreads': bool(services.goodreads_support),
         'kobo':  bool(services.kobo)
     }
@@ -271,6 +271,36 @@ def before_request():
     g.shelves_access = ub.session.query(ub.Shelf).filter(or_(ub.Shelf.is_public == 1, ub.Shelf.user_id == current_user.id)).order_by(ub.Shelf.name).all()
     if not config.db_configured and request.endpoint not in ('admin.basic_configuration', 'login') and '/static/' not in request.path:
         return redirect(url_for('admin.basic_configuration'))
+
+
+@app.route('/import_ldap_users')
+def import_ldap_users():
+    try:
+        new_users = services.ldap.get_group_members(config.config_ldap_group_name)
+    except services.ldap.LDAPException as e:
+        log.debug(e)
+        return ""
+    except Exception as e:
+        print('pass')
+
+    for username in new_users:
+        user_data = services.ldap.get_object_details(user=username, group=None, query_filter=None, dn_only=False)
+        content = ub.User()
+        content.nickname = username
+        content.password = username # dummy password which will be replaced by ldap one
+        content.email = user_data['mail'][0]
+        if (len(user_data['mail']) > 1):
+            content.kindle_mail = user_data['mail'][1]
+        content.role = config.config_default_role
+        content.sidebar_view = config.config_default_show
+        content.mature_content = bool(config.config_default_show & constants.MATURE_CONTENT)
+        ub.session.add(content)
+        try:
+            ub.session.commit()
+        except Exception as e:
+            log.warning("Failed to create LDAP user: %s - %s", username, e)
+            ub.session.rollback()
+    return ""
 
 
 # ################################### data provider functions #########################################################
@@ -1150,8 +1180,15 @@ def login():
                 flash(_(u"you are now logged in as: '%(nickname)s'", nickname=user.nickname),
                       category="success")
                 return redirect_back(url_for("web.index"))
-            if login_result is None:
-                log.error('Could not login. LDAP server down, please contact your administrator')
+            elif user and check_password_hash(str(user.password), form['password']) and user.nickname != "Guest":
+                login_user(user, remember=True)
+                log.info("LDAP Server Down, Fallback Login as: %(nickname)s", user.nickname)
+                flash(_(u"LDAP Server Down, Fallback Login as: '%(nickname)s'",
+                        nickname=user.nickname),
+                        category="warning")
+                return redirect_back(url_for("web.index"))
+            elif login_result is None:
+                log.info("Could not login. LDAP server down")
                 flash(_(u"Could not login. LDAP server down, please contact your administrator"), category="error")
             else:
                 ipAdress = request.headers.get('X-Forwarded-For', request.remote_addr)
@@ -1166,7 +1203,7 @@ def login():
                         flash(_(u"New Password was send to your email address"), category="info")
                         log.info('Password reset for user "%s" IP-adress: %s', form['username'], ipAdress)
                     else:
-                        log.info(u"An unknown error occurred. Please try again later.")
+                        log.info(u"An unknown error occurred. Please try again later")
                         flash(_(u"An unknown error occurred. Please try again later."), category="error")
                 else:
                     flash(_(u"Please enter valid username to reset password"), category="error")
@@ -1176,6 +1213,7 @@ def login():
                     login_user(user, remember=True)
                     log.debug(u"You are now logged in as: '%s'", user.nickname)
                     flash(_(u"You are now logged in as: '%(nickname)s'", nickname=user.nickname), category="success")
+                    config.config_is_initial = False
                     return redirect_back(url_for("web.index"))
                 else:
                     log.info('Login failed for user "%s" IP-adress: %s', form['username'], ipAdress)

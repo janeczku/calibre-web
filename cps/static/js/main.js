@@ -29,7 +29,6 @@ $(document).on("change", "input[type=\"checkbox\"][data-control]", function () {
     });
 });
 
-
 // Generic control/related handler to show/hide fields based on a select' value
 $(document).on("change", "select[data-control]", function() {
     var $this = $(this);
@@ -39,10 +38,23 @@ $(document).on("change", "select[data-control]", function() {
     for (var i = 0; i < $(this)[0].length; i++) {
         var element = parseInt($(this)[0][i].value);
         if (element === showOrHide) {
-            $("[data-related=" + name + "-" + element + "]").show();
+            $("[data-related^=" + name + "][data-related*=-" + element + "]").show();
         } else {
-            $("[data-related=" + name + "-" + element + "]").hide();
+            $("[data-related^=" + name + "][data-related*=-" + element + "]").hide();
         }
+    }
+});
+
+// Generic control/related handler to show/hide fields based on a select' value
+// this one is made to show all values if select value is not 0
+$(document).on("change", "select[data-controlall]", function() {
+    var $this = $(this);
+    var name = $this.data("controlall");
+    var showOrHide = parseInt($this.val());
+    if (showOrHide) {
+        $("[data-related=" + name + "]").show();
+    } else {
+        $("[data-related=" + name + "]").hide();
     }
 });
 
@@ -214,6 +226,7 @@ $(function() {
     // Init all data control handlers to default
     $("input[data-control]").trigger("change");
     $("select[data-control]").trigger("change");
+    $("select[data-controlall]").trigger("change");
 
     $("#bookDetailsModal")
         .on("show.bs.modal", function(e) {
@@ -272,6 +285,20 @@ $(function() {
 
     $(window).resize(function() {
         $(".discover .row").isotope("layout");
+    });
+
+    $('#import_ldap_users').click(function() {
+        var pathname = document.getElementsByTagName("script"), src = pathname[pathname.length - 1].src;
+        var path = src.substring(0, src.lastIndexOf("/"));
+        /*$.ajax({
+            method:"get",
+            url: path + "/../../import_ldap_users",
+        });*/
+        $.getJSON(path + "/../../import_ldap_users",
+            function(data) {
+                location.reload();
+            }
+        );
     });
 
     $(".author-expand").click(function() {
