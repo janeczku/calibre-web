@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2020-04-03 19:49+0200\n"
+"POT-Creation-Date: 2020-04-08 23:10+0800\n"
 "PO-Revision-Date: 2017-01-06 17:00+0000\n"
 "Last-Translator: dalin <dalin.lin@gmail.com>\n"
 "Language: zh_Hans_CN\n"
@@ -273,7 +273,9 @@ msgid "File %(filename)s could not saved to temp dir"
 msgstr "文件 %(filename)s 无法保存到临时目录"
 
 #: cps/editbooks.py:598
-msgid "Uploaded book probably exists in the library, consider to change before upload new: "
+msgid ""
+"Uploaded book probably exists in the library, consider to change before "
+"upload new: "
 msgstr "上传的书籍可能已经存在，建议修改后重新上传："
 
 #: cps/editbooks.py:613
@@ -306,11 +308,15 @@ msgid "There was an error converting this book: %(res)s"
 msgstr "转换此书时出现错误： %(res)s"
 
 #: cps/gdrive.py:61
-msgid "Google Drive setup not completed, try to deactivate and activate Google Drive again"
+msgid ""
+"Google Drive setup not completed, try to deactivate and activate Google "
+"Drive again"
 msgstr "Google Drive 没有完成，试试重新关闭Google Drive再开启"
 
 #: cps/gdrive.py:103
-msgid "Callback domain is not verified, please follow steps to verify domain in google developer console"
+msgid ""
+"Callback domain is not verified, please follow steps to verify domain in "
+"google developer console"
 msgstr "回调域名尚未被校验，请在google开发者控制台按步骤校验域名"
 
 #: cps/helper.py:80
@@ -456,7 +462,9 @@ msgid "Unknown Task: "
 msgstr "未知任务："
 
 #: cps/kobo_auth.py:127
-msgid "PLease access calibre-web from non localhost to get valid api_endpoint for kobo device"
+msgid ""
+"PLease access calibre-web from non localhost to get valid api_endpoint "
+"for kobo device"
 msgstr "请不要使用localhost访问calibre-web，以便kobo设备能获取有效的api_endpoint"
 
 #: cps/kobo_auth.py:130 cps/kobo_auth.py:150
@@ -622,7 +630,7 @@ msgstr "最近添加"
 msgid "Show recent books"
 msgstr "显示最近书籍"
 
-#: cps/templates/index.xml:17 cps/ub.py:59
+#: cps/ub.py:59
 msgid "Hot Books"
 msgstr "热门书籍"
 
@@ -630,7 +638,7 @@ msgstr "热门书籍"
 msgid "Show Hot Books"
 msgstr "显示热门书籍"
 
-#: cps/templates/index.xml:24 cps/ub.py:63 cps/web.py:508
+#: cps/ub.py:63 cps/web.py:508
 msgid "Top Rated Books"
 msgstr "最高评分书籍"
 
@@ -638,8 +646,7 @@ msgstr "最高评分书籍"
 msgid "Show Top Rated Books"
 msgstr "显示最高评分书籍"
 
-#: cps/templates/index.xml:46 cps/templates/index.xml:50 cps/ub.py:66
-#: cps/web.py:1005
+#: cps/ub.py:66 cps/web.py:1005
 msgid "Read Books"
 msgstr "已读书籍"
 
@@ -647,8 +654,7 @@ msgstr "已读书籍"
 msgid "Show read and unread"
 msgstr "显示已读和未读"
 
-#: cps/templates/index.xml:53 cps/templates/index.xml:57 cps/ub.py:70
-#: cps/web.py:1009
+#: cps/ub.py:70 cps/web.py:1009
 msgid "Unread Books"
 msgstr "未读书籍"
 
@@ -664,7 +670,7 @@ msgstr "发现"
 msgid "Show random books"
 msgstr "显示随机书籍"
 
-#: cps/templates/index.xml:75 cps/ub.py:76 cps/web.py:787
+#: cps/ub.py:76 cps/web.py:787
 msgid "Categories"
 msgstr "分类"
 
@@ -672,8 +678,8 @@ msgstr "分类"
 msgid "Show category selection"
 msgstr "显示分类选择"
 
-#: cps/templates/book_edit.html:69 cps/templates/index.xml:82
-#: cps/templates/search_form.html:53 cps/ub.py:79 cps/web.py:715
+#: cps/templates/book_edit.html:69 cps/templates/search_form.html:53
+#: cps/ub.py:79 cps/web.py:715
 msgid "Series"
 msgstr "丛书"
 
@@ -681,7 +687,7 @@ msgstr "丛书"
 msgid "Show series selection"
 msgstr "显示丛书选择"
 
-#: cps/templates/index.xml:61 cps/ub.py:82
+#: cps/ub.py:82
 msgid "Authors"
 msgstr "作者"
 
@@ -689,7 +695,7 @@ msgstr "作者"
 msgid "Show author selection"
 msgstr "显示作者选择"
 
-#: cps/templates/index.xml:68 cps/ub.py:86 cps/web.py:699
+#: cps/ub.py:86 cps/web.py:699
 msgid "Publishers"
 msgstr "出版社"
 
@@ -697,8 +703,7 @@ msgstr "出版社"
 msgid "Show publisher selection"
 msgstr "显示出版社选择"
 
-#: cps/templates/index.xml:89 cps/templates/search_form.html:74 cps/ub.py:89
-#: cps/web.py:770
+#: cps/templates/search_form.html:74 cps/ub.py:89 cps/web.py:770
 msgid "Languages"
 msgstr "语言"
 
@@ -706,7 +711,7 @@ msgstr "语言"
 msgid "Show language selection"
 msgstr "显示语言选择"
 
-#: cps/templates/index.xml:96 cps/ub.py:93
+#: cps/ub.py:93
 msgid "Ratings"
 msgstr "评分"
 
@@ -714,7 +719,7 @@ msgstr "评分"
 msgid "Show ratings selection"
 msgstr "显示评分选择"
 
-#: cps/templates/index.xml:104 cps/ub.py:96
+#: cps/ub.py:96
 msgid "File formats"
 msgstr "文件格式"
 
@@ -731,7 +736,9 @@ msgid "No update available. You already have the latest version installed"
 msgstr "没有可用更新。您已经安装了最新版本"
 
 #: cps/updater.py:333
-msgid "A new update is available. Click on the button below to update to the latest version."
+msgid ""
+"A new update is available. Click on the button below to update to the "
+"latest version."
 msgstr "有一个更新可用。点击正文按钮更新到最新版本。"
 
 #: cps/updater.py:385
@@ -744,7 +751,9 @@ msgstr "没有可用发布信息"
 
 #: cps/updater.py:456 cps/updater.py:467 cps/updater.py:486
 #, python-format
-msgid "A new update is available. Click on the button below to update to version: %(version)s"
+msgid ""
+"A new update is available. Click on the button below to update to "
+"version: %(version)s"
 msgstr "一个新的更新可用。点击下面按钮更新到版本: %(version)s"
 
 #: cps/updater.py:477
@@ -768,7 +777,9 @@ msgid "Hot Books (Most Downloaded)"
 msgstr "热门书籍（最多下载）"
 
 #: cps/web.py:580
-msgid "Oops! Selected book title is unavailable. File does not exist or is not accessible"
+msgid ""
+"Oops! Selected book title is unavailable. File does not exist or is not "
+"accessible"
 msgstr "无法打开电子书。 文件不存在或者文件不可访问:"
 
 #: cps/web.py:593
@@ -818,9 +829,9 @@ msgstr "文件格式列表"
 msgid "Tasks"
 msgstr "任务"
 
-#: cps/templates/book_edit.html:212 cps/templates/feed.xml:33
-#: cps/templates/layout.html:44 cps/templates/layout.html:47
-#: cps/templates/search_form.html:170 cps/web.py:821 cps/web.py:823
+#: cps/templates/book_edit.html:212 cps/templates/layout.html:44
+#: cps/templates/layout.html:47 cps/templates/search_form.html:170
+#: cps/web.py:821 cps/web.py:823
 msgid "Search"
 msgstr "搜索"
 
@@ -959,189 +970,189 @@ msgstr "电子书转换器失败： %(error)s"
 msgid "Kindlegen failed with Error %(error)s. Message: %(message)s"
 msgstr "Kindlegen 因为错误 %(error)s 失败。消息： %(message)s"
 
-#: cps/templates/admin.html:9
+#: cps/templates/admin.html:8
 msgid "Users"
 msgstr "用户列表"
 
-#: cps/templates/admin.html:12 cps/templates/login.html:8
+#: cps/templates/admin.html:11 cps/templates/login.html:8
 #: cps/templates/login.html:9 cps/templates/register.html:7
 #: cps/templates/user_edit.html:8
 msgid "Username"
 msgstr "昵称"
 
-#: cps/templates/admin.html:13 cps/templates/register.html:11
+#: cps/templates/admin.html:12 cps/templates/register.html:11
 #: cps/templates/user_edit.html:13
 msgid "E-mail Address"
 msgstr "邮箱"
 
-#: cps/templates/admin.html:14 cps/templates/user_edit.html:26
+#: cps/templates/admin.html:13 cps/templates/user_edit.html:26
 msgid "Send to Kindle E-mail Address"
 msgstr "Send to Kindle邮箱"
 
-#: cps/templates/admin.html:15
+#: cps/templates/admin.html:14
 msgid "Downloads"
 msgstr "下载量"
 
-#: cps/templates/admin.html:16 cps/templates/layout.html:76
+#: cps/templates/admin.html:15 cps/templates/layout.html:76
 msgid "Admin"
 msgstr "管理"
 
-#: cps/templates/admin.html:17 cps/templates/detail.html:18
+#: cps/templates/admin.html:16 cps/templates/detail.html:18
 #: cps/templates/detail.html:27 cps/templates/shelf.html:6
 #: cps/templates/shelfdown.html:62
 msgid "Download"
 msgstr "下载"
 
-#: cps/templates/admin.html:18
+#: cps/templates/admin.html:17
 msgid "View Books"
 msgstr "查看电子书"
 
-#: cps/templates/admin.html:19 cps/templates/layout.html:65
+#: cps/templates/admin.html:18 cps/templates/layout.html:65
 msgid "Upload"
 msgstr "上传"
 
-#: cps/templates/admin.html:20
+#: cps/templates/admin.html:19
 msgid "Edit"
 msgstr "编辑"
 
-#: cps/templates/admin.html:38
+#: cps/templates/admin.html:37
 msgid "Add New User"
 msgstr "新建用户"
 
-#: cps/templates/admin.html:44
+#: cps/templates/admin.html:43
 msgid "E-mail Server Settings"
 msgstr "SMTP邮件服务器设置"
 
-#: cps/templates/admin.html:47 cps/templates/email_edit.html:11
+#: cps/templates/admin.html:46 cps/templates/email_edit.html:11
 msgid "SMTP Hostname"
 msgstr "SMTP地址"
 
-#: cps/templates/admin.html:48 cps/templates/email_edit.html:15
+#: cps/templates/admin.html:47 cps/templates/email_edit.html:15
 msgid "SMTP Port"
 msgstr "SMTP端口"
 
-#: cps/templates/admin.html:49 cps/templates/email_edit.html:19
+#: cps/templates/admin.html:48 cps/templates/email_edit.html:19
 msgid "Encryption"
 msgstr "加密"
 
-#: cps/templates/admin.html:50 cps/templates/email_edit.html:27
+#: cps/templates/admin.html:49 cps/templates/email_edit.html:27
 msgid "SMTP Login"
 msgstr "SMTP用户名"
 
-#: cps/templates/admin.html:51 cps/templates/email_edit.html:35
+#: cps/templates/admin.html:50 cps/templates/email_edit.html:35
 msgid "From E-mail"
 msgstr "来自邮箱"
 
-#: cps/templates/admin.html:61
+#: cps/templates/admin.html:60
 msgid "Edit E-mail Server Settings"
 msgstr "修改SMTP设置"
 
-#: cps/templates/admin.html:67
+#: cps/templates/admin.html:66
 msgid "Configuration"
 msgstr "配置"
 
-#: cps/templates/admin.html:70
+#: cps/templates/admin.html:69
 msgid "Calibre Database Directory"
 msgstr "Calibre DB目录"
 
-#: cps/templates/admin.html:74 cps/templates/config_edit.html:122
+#: cps/templates/admin.html:73 cps/templates/config_edit.html:122
 msgid "Log Level"
 msgstr "日志级别"
 
-#: cps/templates/admin.html:78
+#: cps/templates/admin.html:77
 msgid "Port"
 msgstr "端口"
 
-#: cps/templates/admin.html:84 cps/templates/config_view_edit.html:27
+#: cps/templates/admin.html:83 cps/templates/config_view_edit.html:27
 msgid "Books per Page"
 msgstr "每页书籍数"
 
-#: cps/templates/admin.html:88
+#: cps/templates/admin.html:87
 msgid "Uploads"
 msgstr "上传"
 
-#: cps/templates/admin.html:92
+#: cps/templates/admin.html:91
 msgid "Anonymous Browsing"
 msgstr "匿名浏览"
 
-#: cps/templates/admin.html:96
+#: cps/templates/admin.html:95
 msgid "Public Registration"
 msgstr "开放注册"
 
-#: cps/templates/admin.html:100
+#: cps/templates/admin.html:99
 msgid "Magic Link Remote Login"
 msgstr "远程登录"
 
-#: cps/templates/admin.html:104
+#: cps/templates/admin.html:103
 msgid "Reverse Proxy Login"
 msgstr "反向代理登录"
 
-#: cps/templates/admin.html:109
+#: cps/templates/admin.html:108
 msgid "Reverse proxy header name"
 msgstr "反向代理header name"
 
-#: cps/templates/admin.html:114
+#: cps/templates/admin.html:113
 msgid "Edit Basic Configuration"
 msgstr "修改基本配置"
 
-#: cps/templates/admin.html:115
+#: cps/templates/admin.html:114
 msgid "Edit UI Configuration"
 msgstr "修改界面配置"
 
-#: cps/templates/admin.html:121
+#: cps/templates/admin.html:120
 msgid "Administration"
 msgstr "管理"
 
-#: cps/templates/admin.html:122
+#: cps/templates/admin.html:121
 msgid "View Logs"
 msgstr "查看日志文件"
 
-#: cps/templates/admin.html:123
+#: cps/templates/admin.html:122
 msgid "Reconnect Calibre Database"
 msgstr "重新连接到Calibre数据库"
 
-#: cps/templates/admin.html:124
+#: cps/templates/admin.html:123
 msgid "Restart"
 msgstr "重启 Calibre-Web"
 
-#: cps/templates/admin.html:125
+#: cps/templates/admin.html:124
 msgid "Shutdown"
 msgstr "停止 Calibre-Web"
 
-#: cps/templates/admin.html:131
+#: cps/templates/admin.html:130
 msgid "Update"
 msgstr "更新"
 
-#: cps/templates/admin.html:135
+#: cps/templates/admin.html:134
 msgid "Version"
 msgstr "版本"
 
-#: cps/templates/admin.html:136
+#: cps/templates/admin.html:135
 msgid "Details"
 msgstr "详情"
 
-#: cps/templates/admin.html:142
+#: cps/templates/admin.html:141
 msgid "Current version"
 msgstr "当前版本"
 
-#: cps/templates/admin.html:148
+#: cps/templates/admin.html:147
 msgid "Check for Update"
 msgstr "检查更新"
 
-#: cps/templates/admin.html:149
+#: cps/templates/admin.html:148
 msgid "Perform Update"
 msgstr "执行更新"
 
-#: cps/templates/admin.html:161
+#: cps/templates/admin.html:160
 msgid "Are you sure you want to restart?"
 msgstr "您确定要重启 Calibre-Web 吗？"
 
-#: cps/templates/admin.html:166 cps/templates/admin.html:180
-#: cps/templates/admin.html:200 cps/templates/shelf.html:72
+#: cps/templates/admin.html:165 cps/templates/admin.html:179
+#: cps/templates/admin.html:199 cps/templates/shelf.html:72
 msgid "OK"
 msgstr "确定"
 
-#: cps/templates/admin.html:167 cps/templates/admin.html:181
+#: cps/templates/admin.html:166 cps/templates/admin.html:180
 #: cps/templates/book_edit.html:172 cps/templates/book_edit.html:194
 #: cps/templates/config_edit.html:346 cps/templates/config_view_edit.html:151
 #: cps/templates/email_edit.html:40 cps/templates/email_edit.html:92
@@ -1150,11 +1161,11 @@ msgstr "确定"
 msgid "Cancel"
 msgstr "取消"
 
-#: cps/templates/admin.html:179
+#: cps/templates/admin.html:178
 msgid "Are you sure you want to shutdown?"
 msgstr "您确定要关闭 Calibre-Web 吗？"
 
-#: cps/templates/admin.html:191
+#: cps/templates/admin.html:190
 msgid "Updating, please do not reload this page"
 msgstr "正在更新，请不要刷新页面"
 
@@ -1243,7 +1254,9 @@ msgid "Rating"
 msgstr "评分"
 
 #: cps/templates/book_edit.html:81
-msgid "Fetch Cover from URL (JPEG - Image will be downloaded and stored in database)"
+msgid ""
+"Fetch Cover from URL (JPEG - Image will be downloaded and stored in "
+"database)"
 msgstr "封面URL(jpg,封面会被下载被保存在数据库中，然后字段会被重新清空)"
 
 #: cps/templates/book_edit.html:85
@@ -1777,15 +1790,6 @@ msgstr "禁用的域名（黑名单）"
 msgid "Are you sure you want to delete this domain?"
 msgstr "您确定要删除这条域名规则吗？"
 
-#: cps/templates/feed.xml:21 cps/templates/layout.html:173
-msgid "Next"
-msgstr "下一个"
-
-#: cps/templates/feed.xml:79 cps/templates/layout.html:136
-#: cps/templates/layout.html:140
-msgid "(Public)"
-msgstr ""
-
 #: cps/templates/generate_kobo_auth_url.html:5
 msgid "Open the .kobo/Kobo eReader.conf file in a text editor and add (or edit):"
 msgstr "在文本编辑器中打开.kobo/Kobo eReader.conf，增加（修改为）:"
@@ -1801,70 +1805,6 @@ msgstr "回到首页"
 #: cps/templates/index.html:64
 msgid "Group by series"
 msgstr "根据系列分组"
-
-#: cps/templates/index.xml:6
-msgid "Start"
-msgstr "开始"
-
-#: cps/templates/index.xml:21
-msgid "Popular publications from this catalog based on Downloads."
-msgstr "基于下载数的热门书籍"
-
-#: cps/templates/index.xml:28
-msgid "Popular publications from this catalog based on Rating."
-msgstr "基于评分的热门书籍"
-
-#: cps/templates/index.xml:31
-msgid "Recently added Books"
-msgstr "最近添加的书籍"
-
-#: cps/templates/index.xml:35
-msgid "The latest Books"
-msgstr "最新书籍"
-
-#: cps/templates/index.xml:38
-msgid "Random Books"
-msgstr "随机书籍"
-
-#: cps/templates/index.xml:42 cps/templates/user_edit.html:80
-msgid "Show Random Books"
-msgstr "显示随机书籍"
-
-#: cps/templates/index.xml:65
-msgid "Books ordered by Author"
-msgstr "书籍按作者排序"
-
-#: cps/templates/index.xml:72
-msgid "Books ordered by publisher"
-msgstr "书籍按出版社排版"
-
-#: cps/templates/index.xml:79
-msgid "Books ordered by category"
-msgstr "书籍按分类排序"
-
-#: cps/templates/index.xml:86
-msgid "Books ordered by series"
-msgstr "书籍按丛书排序"
-
-#: cps/templates/index.xml:93
-msgid "Books ordered by Languages"
-msgstr "根据语言排序书籍"
-
-#: cps/templates/index.xml:100
-msgid "Books ordered by Rating"
-msgstr ""
-
-#: cps/templates/index.xml:108
-msgid "Books ordered by file formats"
-msgstr "根据文件类型排序书籍"
-
-#: cps/templates/index.xml:111 cps/templates/layout.html:134
-msgid "Shelves"
-msgstr ""
-
-#: cps/templates/index.xml:115
-msgid "Books organized in shelves"
-msgstr ""
 
 #: cps/templates/layout.html:28
 msgid "Home"
@@ -1916,6 +1856,14 @@ msgstr "请不要刷新页面"
 msgid "Browse"
 msgstr "浏览"
 
+#: cps/templates/layout.html:134
+msgid "Shelves"
+msgstr ""
+
+#: cps/templates/layout.html:136 cps/templates/layout.html:140
+msgid "(Public)"
+msgstr ""
+
 #: cps/templates/layout.html:138
 msgid "Your Shelves"
 msgstr "您的书架"
@@ -1927,6 +1875,10 @@ msgstr "关于"
 #: cps/templates/layout.html:158
 msgid "Previous"
 msgstr "上一个"
+
+#: cps/templates/layout.html:173
+msgid "Next"
+msgstr "下一个"
 
 #: cps/templates/layout.html:185
 msgid "Book Details"
@@ -2309,6 +2261,10 @@ msgstr ""
 msgid "Create/View"
 msgstr "新建/查看"
 
+#: cps/templates/user_edit.html:80
+msgid "Show Random Books"
+msgstr "显示随机书籍"
+
 #: cps/templates/user_edit.html:84
 msgid "Add allowed/Denied Custom Column Values"
 msgstr "添加（允许/禁止）自定义栏值"
@@ -2328,4 +2284,208 @@ msgstr "生成Kobo Auth URL"
 #: cps/templates/user_edit.html:176
 msgid "Do you really want to delete the Kobo Token?"
 msgstr "您确定删除Kobo Token吗？"
+
+#: vendor/tornado/locale.py:285
+msgid "January"
+msgstr ""
+
+#: vendor/tornado/locale.py:286
+msgid "February"
+msgstr ""
+
+#: vendor/tornado/locale.py:287
+msgid "March"
+msgstr ""
+
+#: vendor/tornado/locale.py:288
+msgid "April"
+msgstr ""
+
+#: vendor/tornado/locale.py:289
+msgid "May"
+msgstr ""
+
+#: vendor/tornado/locale.py:290
+msgid "June"
+msgstr ""
+
+#: vendor/tornado/locale.py:291
+msgid "July"
+msgstr ""
+
+#: vendor/tornado/locale.py:292
+msgid "August"
+msgstr ""
+
+#: vendor/tornado/locale.py:293
+msgid "September"
+msgstr ""
+
+#: vendor/tornado/locale.py:294
+msgid "October"
+msgstr ""
+
+#: vendor/tornado/locale.py:295
+msgid "November"
+msgstr ""
+
+#: vendor/tornado/locale.py:296
+msgid "December"
+msgstr ""
+
+#: vendor/tornado/locale.py:299
+msgid "Monday"
+msgstr ""
+
+#: vendor/tornado/locale.py:300
+msgid "Tuesday"
+msgstr ""
+
+#: vendor/tornado/locale.py:301
+msgid "Wednesday"
+msgstr ""
+
+#: vendor/tornado/locale.py:302
+msgid "Thursday"
+msgstr ""
+
+#: vendor/tornado/locale.py:303
+msgid "Friday"
+msgstr ""
+
+#: vendor/tornado/locale.py:304
+msgid "Saturday"
+msgstr ""
+
+#: vendor/tornado/locale.py:305
+msgid "Sunday"
+msgstr ""
+
+#: vendor/tornado/locale.py:368
+msgid "1 second ago"
+msgstr ""
+
+#: vendor/tornado/locale.py:374
+msgid "1 minute ago"
+msgstr ""
+
+#: vendor/tornado/locale.py:379
+msgid "1 hour ago"
+msgstr ""
+
+#: vendor/tornado/locale.py:382
+#, python-format
+msgid "%(time)s"
+msgstr ""
+
+#: vendor/tornado/locale.py:384
+msgid "yesterday"
+msgstr ""
+
+#: vendor/tornado/locale.py:384
+#, python-format
+msgid "yesterday at %(time)s"
+msgstr ""
+
+#: vendor/tornado/locale.py:386
+#, python-format
+msgid "%(weekday)s"
+msgstr ""
+
+#: vendor/tornado/locale.py:386
+#, python-format
+msgid "%(weekday)s at %(time)s"
+msgstr ""
+
+#: vendor/tornado/locale.py:389 vendor/tornado/locale.py:442
+#, python-format
+msgid "%(month_name)s %(day)s"
+msgstr ""
+
+#: vendor/tornado/locale.py:391
+#, python-format
+msgid "%(month_name)s %(day)s at %(time)s"
+msgstr ""
+
+#: vendor/tornado/locale.py:396
+#, python-format
+msgid "%(month_name)s %(day)s, %(year)s"
+msgstr ""
+
+#: vendor/tornado/locale.py:398
+#, python-format
+msgid "%(month_name)s %(day)s, %(year)s at %(time)s"
+msgstr ""
+
+#: vendor/tornado/locale.py:436
+#, python-format
+msgid "%(weekday)s, %(month_name)s %(day)s"
+msgstr ""
+
+#: vendor/tornado/locale.py:459
+#, python-format
+msgid "%(commas)s and %(last)s"
+msgstr ""
+
+#: vendor/tornado/test/locale_test.py:68
+msgctxt "law"
+msgid "right"
+msgstr ""
+
+#: vendor/tornado/test/locale_test.py:69
+msgctxt "good"
+msgid "right"
+msgstr ""
+
+#: vendor/tornado/test/locale_test.py:71 vendor/tornado/test/locale_test.py:74
+msgctxt "organization"
+msgid "club"
+msgstr ""
+
+#: vendor/tornado/test/locale_test.py:76 vendor/tornado/test/locale_test.py:77
+msgctxt "stick"
+msgid "club"
+msgstr ""
+
+#~ msgid "Start"
+#~ msgstr "开始"
+
+#~ msgid "Popular publications from this catalog based on Downloads."
+#~ msgstr "基于下载数的热门书籍"
+
+#~ msgid "Popular publications from this catalog based on Rating."
+#~ msgstr "基于评分的热门书籍"
+
+#~ msgid "Recently added Books"
+#~ msgstr "最近添加的书籍"
+
+#~ msgid "The latest Books"
+#~ msgstr "最新书籍"
+
+#~ msgid "Random Books"
+#~ msgstr "随机书籍"
+
+#~ msgid "Books ordered by Author"
+#~ msgstr "书籍按作者排序"
+
+#~ msgid "Books ordered by publisher"
+#~ msgstr "书籍按出版社排版"
+
+#~ msgid "Books ordered by category"
+#~ msgstr "书籍按分类排序"
+
+#~ msgid "Books ordered by series"
+#~ msgstr "书籍按丛书排序"
+
+#~ msgid "Books ordered by Languages"
+#~ msgstr "根据语言排序书籍"
+
+#~ msgid "Books ordered by Rating"
+#~ msgstr ""
+
+#~ msgid "Books ordered by file formats"
+#~ msgstr "根据文件类型排序书籍"
+
+#~ msgid "Books organized in shelves"
+#~ msgstr ""
 
