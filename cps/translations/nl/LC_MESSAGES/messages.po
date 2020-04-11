@@ -213,7 +213,7 @@ msgstr "Algemene fout"
 
 #: cps/admin.py:968
 msgid "Update File Could Not be Saved in Temp Dir"
-msgstr ""
+msgstr "Geüpload bestand kon niet opgeslagen worden in tijdelijke map"
 
 #: cps/converter.py:31
 msgid "not configured"
@@ -271,7 +271,7 @@ msgstr "Kan het boek niet bewerken; controleer het logbestand"
 #: cps/editbooks.py:581
 #, python-format
 msgid "File %(filename)s could not saved to temp dir"
-msgstr "Bestand %(filename)s kon niet in de tijdelijke map opgeslaan worden"
+msgstr "Bestand %(filename)s kon niet in de tijdelijke map opgeslagen worden"
 
 #: cps/editbooks.py:598
 msgid "Uploaded book probably exists in the library, consider to change before upload new: "
@@ -568,12 +568,12 @@ msgstr "Sorry, je mag geen boeken verwijderen van deze boekenplank: %(sname)s"
 #: cps/shelf.py:215 cps/shelf.py:252
 #, python-format
 msgid "A public shelf with the name '%(title)s' already exists."
-msgstr ""
+msgstr "Een openbare boekenplank met de naam '%(title)s' bestaat al."
 
 #: cps/shelf.py:222 cps/shelf.py:260
 #, python-format
 msgid "A private shelf with the name '%(title)s' already exists."
-msgstr ""
+msgstr "Een persoonlijke boekenplank met de naam '%(title)s' bestaat al."
 
 #: cps/shelf.py:228
 #, python-format
@@ -586,7 +586,7 @@ msgstr "Er is een fout opgetreden"
 
 #: cps/shelf.py:232 cps/shelf.py:234 cps/templates/layout.html:143
 msgid "Create a Shelf"
-msgstr "creëer een boekenplank"
+msgstr "Maak een boekenplank"
 
 #: cps/shelf.py:270
 #, python-format
@@ -1007,7 +1007,7 @@ msgstr "Bewerken"
 
 #: cps/templates/admin.html:38
 msgid "Add New User"
-msgstr "Voeg Nieuwe Gebruiker toe"
+msgstr "Gebruiker toevoegen"
 
 #: cps/templates/admin.html:44
 msgid "E-mail Server Settings"
@@ -1785,7 +1785,7 @@ msgstr "Volgende"
 #: cps/templates/feed.xml:79 cps/templates/layout.html:136
 #: cps/templates/layout.html:140
 msgid "(Public)"
-msgstr ""
+msgstr "(Openbaar)"
 
 #: cps/templates/generate_kobo_auth_url.html:5
 msgid "Open the .kobo/Kobo eReader.conf file in a text editor and add (or edit):"
@@ -1849,11 +1849,11 @@ msgstr "Boeken gesorteerd op reeks"
 
 #: cps/templates/index.xml:93
 msgid "Books ordered by Languages"
-msgstr "Boeken gesorteerd op Taal"
+msgstr "Boeken gesorteerd op taal"
 
 #: cps/templates/index.xml:100
 msgid "Books ordered by Rating"
-msgstr ""
+msgstr "Boeken gesorteerd op beoordeling"
 
 #: cps/templates/index.xml:108
 msgid "Books ordered by file formats"
@@ -1861,7 +1861,7 @@ msgstr "Boeken gesorteerd op bestandsformaat"
 
 #: cps/templates/index.xml:111 cps/templates/layout.html:134
 msgid "Shelves"
-msgstr ""
+msgstr "Boekenplanken"
 
 #: cps/templates/index.xml:115
 msgid "Books organized in shelves"
@@ -1976,7 +1976,7 @@ msgstr "Toon Toegangslog: "
 
 #: cps/templates/modal_restriction.html:6
 msgid "Select Allowed/Denied Tags"
-msgstr "Selecteer Toegestaan/Geweigerd tags toe"
+msgstr "Selecteer Toegestane/Geweigerde tags"
 
 #: cps/templates/modal_restriction.html:7
 msgid "Select Allowed/Denied Custom Column Values"
@@ -1984,11 +1984,11 @@ msgstr "Selecteer Toegestaan/Geweigerd aangepaste kolom waarden"
 
 #: cps/templates/modal_restriction.html:8
 msgid "Select Allowed/Denied Tags of User"
-msgstr "Selecteer Toegestaan/Geweigerd tags van gebruikers"
+msgstr "Selecteer Toegestane/Geweigerde tags van gebruikers"
 
 #: cps/templates/modal_restriction.html:9
 msgid "Select Allowed/Denied Custom Column Values of User"
-msgstr "Selecteer Toegestaan/Geweigerd aangepaste kolom waarden van gebruikers"
+msgstr "Selecteer Toegestane/Geweigerde aangepaste kolom waarden van gebruikers"
 
 #: cps/templates/modal_restriction.html:15
 msgid "Enter Tag"
@@ -2036,11 +2036,11 @@ msgstr "Ware grootte"
 
 #: cps/templates/readcbr.html:97
 msgid "Rotate Right"
-msgstr "Naar rechts draaien"
+msgstr "Rechtsom draaien"
 
 #: cps/templates/readcbr.html:98
 msgid "Rotate Left"
-msgstr "Naar links draaien"
+msgstr "Linksom draaien"
 
 #: cps/templates/readcbr.html:99
 msgid "Flip Image"
