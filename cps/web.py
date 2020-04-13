@@ -36,7 +36,7 @@ from flask import Blueprint
 from flask import render_template, request, redirect, send_from_directory, make_response, g, flash, abort, url_for
 from flask_babel import gettext as _
 from flask_login import login_user, logout_user, login_required, current_user
-from sqlalchemy.exc import IntegrityError
+from sqlalchemy.exc import IntegrityError, InvalidRequestError
 from sqlalchemy.sql.expression import text, func, true, false, not_, and_, exists, or_
 from werkzeug.exceptions import default_exceptions
 from werkzeug.datastructures import Headers
@@ -339,6 +339,25 @@ def toggle_read(book_id):
         except KeyError:
             log.error(u"Custom Column No.%d is not exisiting in calibre database", config.config_read_column)
     return ""
+
+
+@web.route("/ajax/view", methods=["POST"])
+@login_required
+def update_view():
+    to_save = request.form.to_dict()
+    allowed_view = ['grid', 'list']
+    if "series_view" in to_save and to_save["series_view"] in allowed_view:
+        current_user.series_view = to_save["series_view"]
+    else:
+        log.error("Invalid request received: %r %r", request, to_save)
+        return "Invalid request", 400
+
+    try:
+        ub.session.commit()
+    except InvalidRequestError:
+        log.error("Invalid request received: %r ", request, )
+        return "Invalid request", 400
+    return "", 200
 
 
 '''
@@ -705,14 +724,50 @@ def publisher_list():
 @login_required_if_no_ano
 def series_list():
     if current_user.check_visibility(constants.SIDEBAR_SERIES):
-        entries = db.session.query(db.Series, func.count('books_series_link.book').label('count'))\
-            .join(db.books_series_link).join(db.Books).filter(common_filters())\
-            .group_by(text('books_series_link.series')).order_by(db.Series.sort).all()
-        charlist = db.session.query(func.upper(func.substr(db.Series.sort,1,1)).label('char')) \
+        charlist = db.session.query(func.upper(func.substr(db.Series.sort, 1, 1)).label('char')) \
             .join(db.books_series_link).join(db.Books).filter(common_filters()) \
-            .group_by(func.upper(func.substr(db.Series.sort,1,1))).all()
-        return render_title_template('list.html', entries=entries, folder='web.books_list', charlist=charlist,
-                                     title=_(u"Series"), page="serieslist", data="series")
+            .group_by(func.upper(func.substr(db.Series.sort, 1, 1))).all()
+
+        if current_user.series_view == 'list':
+            entries = db.session.query(db.Series, func.count('books_series_link.book').label('count'))\
+                .join(db.books_series_link).join(db.Books).filter(common_filters())\
+                .group_by(text('books_series_link.series')).order_by(db.Series.sort).all()
+            return render_title_template(
+                'list.html',
+                entries=entries,
+                folder='web.books_list',
+                charlist=charlist,
+                title=_(u"Series list"),
+                page="serieslist",
+                data="series",
+                bodyClass="list-view"
+            )
+        else:
+            entries = db.session.query(
+                db.Books,
+                func.count('books_series_link').label('count')
+            ).join(
+                db.books_series_link
+            ).join(
+                db.Series
+            ).filter(
+                common_filters()
+            ).group_by(
+                text('books_series_link.series')
+            ).order_by(
+                db.Series.sort
+            ).all()
+
+            return render_title_template(
+                'grid.html',
+                entries=entries,
+                folder='web.books_list',
+                charlist=charlist,
+                title=_(u"Series list"),
+                page="serieslist",
+                data="series",
+                bodyClass="grid-view"
+            )    
     else:
         abort(404)
 
