@@ -204,6 +204,7 @@ class User(UserBase, Base):
     denied_column_value = Column(String, default="")
     allowed_column_value = Column(String, default="")
     remote_auth_token = relationship('RemoteAuthToken', backref='user', lazy='dynamic')
+    series_view = Column(String(10), default="list")
 
 
 if oauth_support:
@@ -243,6 +244,7 @@ class Anonymous(AnonymousUserMixin, UserBase):
         self.allowed_tags = data.allowed_tags
         self.denied_column_value = data.denied_column_value
         self.allowed_column_value = data.allowed_column_value
+        self.series_view = data.series_view
 
     def role_admin(self):
         return False
@@ -349,7 +351,7 @@ class RemoteAuthToken(Base):
 
 
 # Migrate database to current version, has to be updated after every database change. Currently migration from
-# everywhere to curent should work. Migration is done by checking if relevant coloums are existing, and than adding
+# everywhere to current should work. Migration is done by checking if relevant columns are existing, and than adding
 # rows with SQL commands
 def migrate_Database(session):
     engine = session.bind
@@ -428,6 +430,12 @@ def migrate_Database(session):
         conn.execute("ALTER TABLE user ADD column `allowed_tags` String DEFAULT ''")
         conn.execute("ALTER TABLE user ADD column `denied_column_value` DEFAULT ''")
         conn.execute("ALTER TABLE user ADD column `allowed_column_value` DEFAULT ''")
+    try:
+        session.query(exists().where(User.series_view)).scalar()
+    except exc.OperationalError:
+        conn = engine.connect()
+        conn.execute("ALTER TABLE user ADD column `series_view` VARCHAR(10) DEFAULT 'list'")
+
     if session.query(User).filter(User.role.op('&')(constants.ROLE_ANONYMOUS) == constants.ROLE_ANONYMOUS).first() is None:
         create_anonymous_user(session)
     try:
@@ -446,10 +454,11 @@ def migrate_Database(session):
                             "locale VARCHAR(2),"
                             "sidebar_view INTEGER,"
                             "default_language VARCHAR(3),"
+                            "series_view VARCHAR(10),"
                             "UNIQUE (nickname),"
                             "UNIQUE (email))")
         conn.execute("INSERT INTO user_id(id, nickname, email, role, password, kindle_mail,locale,"
-                        "sidebar_view, default_language) "
+                        "sidebar_view, default_language, series_view) "
                      "SELECT id, nickname, email, role, password, kindle_mail, locale,"
                         "sidebar_view, default_language FROM user")
         # delete old user table and rename new user_id table to user:
@@ -486,7 +495,7 @@ def delete_download(book_id):
     session.query(Downloads).filter(book_id == Downloads.book_id).delete()
     session.commit()
 
-# Generate user Guest (translated text), as anoymous user, no rights
+# Generate user Guest (translated text), as anonymous user, no rights
 def create_anonymous_user(session):
     user = User()
     user.nickname = "Guest"
