@@ -232,7 +232,7 @@ class Anonymous(AnonymousUserMixin, UserBase):
         self.sidebar_view = data.sidebar_view
         self.default_language = data.default_language
         self.locale = data.locale
-        self.mature_content = data.mature_content
+        # self.mature_content = data.mature_content
         self.kindle_mail = data.kindle_mail
         self.denied_tags = data.denied_tags
         self.allowed_tags = data.allowed_tags
@@ -441,14 +441,12 @@ def migrate_Database(session):
                             "locale VARCHAR(2),"
                             "sidebar_view INTEGER,"
                             "default_language VARCHAR(3),"
-                            "mature_content BOOLEAN,"
                             "UNIQUE (nickname),"
-                            "UNIQUE (email),"
-                            "CHECK (mature_content IN (0, 1)))")
+                            "UNIQUE (email))")
         conn.execute("INSERT INTO user_id(id, nickname, email, role, password, kindle_mail,locale,"
-                        "sidebar_view, default_language, mature_content) "
+                        "sidebar_view, default_language) "
                      "SELECT id, nickname, email, role, password, kindle_mail, locale,"
-                        "sidebar_view, default_language, mature_content FROM user")
+                        "sidebar_view, default_language FROM user")
         # delete old user table and rename new user_id table to user:
         conn.execute("DROP TABLE user")
         conn.execute("ALTER TABLE user_id RENAME TO user")

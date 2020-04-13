@@ -28,6 +28,7 @@ import json
 import mimetypes
 import traceback
 import binascii
+import re
 
 from babel import Locale as LC
 from babel.dates import format_date
@@ -278,31 +279,66 @@ def import_ldap_users():
     showtext = {}
     try:
         new_users = services.ldap.get_group_members(config.config_ldap_group_name)
-    except services.ldap.LDAPException as e:
+    except (services.ldap.LDAPException, TypeError, AttributeError) as e:
         log.debug(e)
-        showtext['text'] = _(u'Error : %(ldaperror)s', ldaperror=e)
+        showtext['text'] = _(u'Error: %(ldaperror)s', ldaperror=e)
+        return json.dumps(showtext)
+    if not new_users:
+        log.debug('LDAP empty response')
+        showtext['text'] = _(u'Error: No user returned in response of LDAP server')
         return json.dumps(showtext)
 
     for username in new_users:
-        user_data = services.ldap.get_object_details(user=username, group=None, query_filter=None, dn_only=False)
-        content = ub.User()
-        content.nickname = username
-        content.password = username # dummy password which will be replaced by ldap one
-        content.email = user_data['mail'][0]
-        if (len(user_data['mail']) > 1):
-            content.kindle_mail = user_data['mail'][1]
-        content.role = config.config_default_role
-        content.sidebar_view = config.config_default_show
-        content.mature_content = bool(config.config_default_show & constants.MATURE_CONTENT)
-        ub.session.add(content)
-        try:
-            ub.session.commit()
-        except Exception as e:
-            log.warning("Failed to create LDAP user: %s - %s", username, e)
-            ub.session.rollback()
-            showtext['text'] = _(u'Failed to create at least one LDAP user')
+        user = username.decode('utf-8')
+        if '=' in user:
+            match = re.search("([a-zA-Z0-9-]+)=%s", config.config_ldap_user_object, re.IGNORECASE | re.UNICODE)
+            if match:
+                match_filter = match.group(1)
+                match = re.search(match_filter + "=([[\d\w-]+)", user, re.IGNORECASE | re.UNICODE)
+                if match:
+                    user = match.group(1)
+                else:
+                    log.warning("Could Not Parse LDAP User: %s", user)
+                    continue
+            else:
+                log.warning("Could Not Parse LDAP User: %s", user)
+                continue
+        if ub.session.query(ub.User).filter(ub.User.nickname == user.lower()).first():
+            log.warning("LDAP User: %s Already in Database", user)
+            continue
+        user_data = services.ldap.get_object_details(user=user,
+                                                     group=None,
+                                                     query_filter=None,
+                                                     dn_only=False)
+        if user_data:
+            content = ub.User()
+            content.nickname = user
+            content.password = '' # dummy password which will be replaced by ldap one
+            if 'mail' in user_data:
+                content.email = user_data['mail'][0].decode('utf-8')
+                if (len(user_data['mail']) > 1):
+                    content.kindle_mail = user_data['mail'][1].decode('utf-8')
+            else:
+                log.debug('No Mail Field Found in LDAP Response')
+                content.email = user + '@email.com'
+            content.role = config.config_default_role
+            content.sidebar_view = config.config_default_show
+            content.allowed_tags = config.config_allowed_tags
+            content.denied_tags = config.config_denied_tags
+            content.allowed_column_value = config.config_allowed_column_value
+            content.denied_column_value = config.config_denied_column_value
+            ub.session.add(content)
+            try:
+                ub.session.commit()
+            except Exception as e:
+                log.warning("Failed to create LDAP user: %s - %s", user, e)
+                ub.session.rollback()
+                showtext['text'] = _(u'Failed to Create at Least One LDAP User')
+        else:
+            log.warning("LDAP User: %s Not Found", user)
+            showtext['text'] = _(u'At Least One LDAP User Not Found in Database')
     if not showtext:
-        showtext['text'] = _(u'User successfully imported')
+        showtext['text'] = _(u'User Successfully Imported')
     return json.dumps(showtext)
 
 
@@ -844,8 +880,9 @@ def reconnect():
 @web.route("/search", methods=["GET"])
 @login_required_if_no_ano
 def search():
-    term = request.args.get("query").strip().lower()
+    term = request.args.get("query")
     if term:
+        term.strip().lower()
         entries = get_search_results(term)
         ids = list()
         for element in entries:
@@ -1175,24 +1212,27 @@ def login():
         form = request.form.to_dict()
         user = ub.session.query(ub.User).filter(func.lower(ub.User.nickname) == form['username'].strip().lower())\
             .first()
-        if config.config_login_type == constants.LOGIN_LDAP and services.ldap and user:
-            login_result = services.ldap.bind_user(form['username'], form['password'])
+        if config.config_login_type == constants.LOGIN_LDAP and services.ldap and user and form['password'] != "":
+            login_result, error = services.ldap.bind_user(form['username'], form['password'])
+            # None if credentials are not matching
+            # -1 if LDAP Server error
+            # 0 if wrong passwort
             if login_result:
                 login_user(user, remember=True)
                 log.debug(u"You are now logged in as: '%s'", user.nickname)
                 flash(_(u"you are now logged in as: '%(nickname)s'", nickname=user.nickname),
                       category="success")
                 return redirect_back(url_for("web.index"))
-            elif user and check_password_hash(str(user.password), form['password']) and user.nickname != "Guest":
+            elif login_result is None and user and check_password_hash(str(user.password), form['password']) and user.nickname != "Guest":
                 login_user(user, remember=True)
-                log.info("LDAP Server Down, Fallback Login as: %(nickname)s", user.nickname)
-                flash(_(u"LDAP Server Down, Fallback Login as: '%(nickname)s'",
+                log.info("Local Fallback Login as: '%s'", user.nickname)
+                flash(_(u"Fallback Login as: '%(nickname)s', LDAP Server not reachable, or user not known",
                         nickname=user.nickname),
                         category="warning")
                 return redirect_back(url_for("web.index"))
             elif login_result is None:
-                log.info("Could not login. LDAP server down")
-                flash(_(u"Could not login. LDAP server down, please contact your administrator"), category="error")
+                log.info(error)
+                flash(_(u"Could not login: %(message)s", message=error), category="error")
             else:
                 ipAdress = request.headers.get('X-Forwarded-For', request.remote_addr)
                 log.info('LDAP Login failed for user "%s" IP-adress: %s', form['username'], ipAdress)

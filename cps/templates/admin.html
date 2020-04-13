@@ -35,9 +35,8 @@
           {% endif %}
         {% endfor %}
       </table>
-      {% if not (config.config_login_type == 1) %}
         <div class="btn btn-default" id="admin_new_user"><a href="{{url_for('admin.new_user')}}">{{_('Add New User')}}</a></div>
-      {% else %}
+      {% if (config.config_login_type == 1) %}
         <div class="btn btn-default" id="import_ldap_users" data-toggle="modal" data-target="#StatusDialog">{{_('Import LDAP Users')}}</div>
         <!--a href="#" id="import_ldap_users" name="import_ldap_users"><button type="submit" class="btn btn-default">{{_('Import LDAP Users')}}</button></a-->
       {% endif %}

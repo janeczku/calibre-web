@@ -69,6 +69,7 @@ _VERSIONS = OrderedDict(
     pytz=pytz.__version__,
     Unidecode = unidecode_version,
     Flask_SimpleLDAP =  u'installed' if bool(services.ldap) else u'not installed',
+    python_LDAP = services.ldapVersion if bool(services.ldapVersion) else u'not installed',
     Goodreads = u'installed' if bool(services.goodreads_support) else u'not installed',
     jsonschema = services.SyncToken.__version__  if bool(services.SyncToken) else u'not installed',
 )

@@ -23,6 +23,10 @@ from flask_simpleldap import LDAP, LDAPException
 
 from .. import constants, logger
 
+try:
+    from ldap.pkginfo import __version__ as ldapVersion
+except ImportError:
+    pass
 
 log = logger.create()
 _ldap = LDAP()
@@ -34,14 +38,16 @@ def init_app(app, config):
 
     app.config['LDAP_HOST'] = config.config_ldap_provider_url
     app.config['LDAP_PORT'] = config.config_ldap_port
-    if config.config_ldap_encryption:
+    if config.config_ldap_encryption == 2:
         app.config['LDAP_SCHEMA'] = 'ldaps'
     else:
         app.config['LDAP_SCHEMA'] = 'ldap'
     # app.config['LDAP_SCHEMA'] = config.config_ldap_schema
     app.config['LDAP_USERNAME'] = config.config_ldap_serv_username
+    if config.config_ldap_serv_password is None:
+        config.config_ldap_serv_password = ''
     app.config['LDAP_PASSWORD'] = base64.b64decode(config.config_ldap_serv_password)
-    if config.config_ldap_cert_path:
+    if bool(config.config_ldap_cert_path):
         app.config['LDAP_REQUIRE_CERT'] = True
         app.config['LDAP_CERT_PATH'] = config.config_ldap_cert_path
     app.config['LDAP_BASE_DN'] = config.config_ldap_dn
@@ -52,6 +58,7 @@ def init_app(app, config):
     app.config['LDAP_OPENLDAP'] = bool(config.config_ldap_openldap)
     app.config['LDAP_GROUP_OBJECT_FILTER'] = config.config_ldap_group_object_filter
     app.config['LDAP_GROUP_MEMBERS_FIELD'] = config.config_ldap_group_members_field
+    # app.config['LDAP_CUSTOM_OPTIONS'] = {'OPT_NETWORK_TIMEOUT': 10}
 
     _ldap.init_app(app)
 
@@ -78,16 +85,22 @@ def bind_user(username, password):
     :returns: True if login succeeded, False if login failed, None if server unavailable.
     '''
     try:
-        result = _ldap.bind_user(username, password)
-        log.debug("LDAP login '%s': %r", username, result)
-        return result is not None
+        if _ldap.get_object_details(username):
+            result = _ldap.bind_user(username, password)
+            log.debug("LDAP login '%s': %r", username, result)
+            return result is not None, None
+        return None, None       # User not found
+    except (TypeError, AttributeError) as ex:
+        error = ("LDAP bind_user: %s" % ex)
+        return None, error
     except LDAPException as ex:
         if ex.message == 'Invalid credentials':
-            log.info("LDAP login '%s' failed: %s", username, ex)
-            return False
+            error = ("LDAP admin login failed")
+            return None, error
         if ex.message == "Can't contact LDAP server":
-            log.warning('LDAP Server down: %s', ex)
-            return None
+            # log.warning('LDAP Server down: %s', ex)
+            error = ('LDAP Server down: %s' % ex)
+            return None,  error
         else:
-            log.warning('LDAP Server error: %s', ex.message)
-            return None
+            error = ('LDAP Server error: %s' % ex.message)
+            return None, error

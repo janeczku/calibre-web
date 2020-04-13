@@ -504,7 +504,7 @@ def _configuration_update_helper():
         with open(gdriveutils.CLIENT_SECRETS, 'r') as settings:
             gdrive_secrets = json.load(settings)['web']
         if not gdrive_secrets:
-            return _configuration_result('client_secrets.json is not configured for web application')
+            return _configuration_result(_('client_secrets.json Is Not Configured For Web Application'))
         gdriveutils.update_settings(
                             gdrive_secrets['client_id'],
                             gdrive_secrets['client_secret'],
@@ -520,11 +520,11 @@ def _configuration_update_helper():
 
     reboot_required |= _config_string("config_keyfile")
     if config.config_keyfile and not os.path.isfile(config.config_keyfile):
-        return _configuration_result('Keyfile location is not valid, please enter correct path', gdriveError)
+        return _configuration_result(_('Keyfile Location is not Valid, Please Enter Correct Path'), gdriveError)
 
     reboot_required |= _config_string("config_certfile")
     if config.config_certfile and not os.path.isfile(config.config_certfile):
-        return _configuration_result('Certfile location is not valid, please enter correct path', gdriveError)
+        return _configuration_result(_('Certfile Location is not Valid, Please Enter Correct Path'), gdriveError)
 
     _config_checkbox_int("config_uploading")
     _config_checkbox_int("config_anonbrowse")
@@ -542,45 +542,57 @@ def _configuration_update_helper():
 
     #LDAP configurator,
     if config.config_login_type == constants.LOGIN_LDAP:
-        _config_string("config_ldap_provider_url")
-        _config_int("config_ldap_port")
+        reboot_required |= _config_string("config_ldap_provider_url")
+        reboot_required |= _config_int("config_ldap_port")
         # _config_string("config_ldap_schema")
-        _config_string("config_ldap_dn")
-        _config_string("config_ldap_user_object")
+        reboot_required |= _config_string("config_ldap_dn")
+        reboot_required |= _config_string("config_ldap_serv_username")
+        reboot_required |= _config_string("config_ldap_user_object")
+        reboot_required |= _config_string("config_ldap_group_object_filter")
+        reboot_required |= _config_string("config_ldap_group_members_field")
+        reboot_required |= _config_checkbox("config_ldap_openldap")
+        reboot_required |= _config_int("config_ldap_encryption")
+        reboot_required |= _config_string("config_ldap_cert_path")
+        _config_string("config_ldap_group_name")
+        if "config_ldap_serv_password" in to_save and to_save["config_ldap_serv_password"] != "":
+            reboot_required |= 1
+            config.set_from_dictionary(to_save, "config_ldap_serv_password", base64.b64encode, encode='UTF-8')
+        config.save()
+
         if not config.config_ldap_provider_url \
             or not config.config_ldap_port \
             or not config.config_ldap_dn \
             or not config.config_ldap_user_object:
-                return _configuration_result('Please enter a LDAP provider, '
-                                             'port, DN and user object identifier', gdriveError)
+                return _configuration_result(_('Please Enter a LDAP Provider, '
+                                             'Port, DN and User Object Identifier'), gdriveError)
 
-        _config_string("config_ldap_serv_username")
-        if "config_ldap_serv_password" in to_save and to_save["config_ldap_serv_password"]:
-            config.set_from_dictionary(to_save, "config_ldap_serv_password", base64.b64encode, encode='UTF-8')
 
-        if not config.config_ldap_serv_username and not config.config_ldap_serv_password:
-            return _configuration_result('Please enter a LDAP service account and password', gdriveError)
+        if not config.config_ldap_serv_username or not bool(config.config_ldap_serv_password):
+            return _configuration_result('Please Enter a LDAP Service Account and Password', gdriveError)
 
-        _config_string("config_ldap_group_object_filter")
-        _config_string("config_ldap_group_members_field")
-        _config_string("config_ldap_group_name")
         #_config_checkbox("config_ldap_use_ssl")
         #_config_checkbox("config_ldap_use_tls")
-        _config_int("config_ldap_encryption")
-        _config_checkbox("config_ldap_openldap")
+        # reboot_required |= _config_checkbox("config_ldap_openldap")
         # _config_checkbox("config_ldap_require_cert")
-        _config_string("config_ldap_cert_path")
 
-        if config.config_ldap_group_object_filter.count("%s") != 1:
-            return _configuration_result('LDAP Group Object Filter Needs to Have One "%s" Format Identifier',
-                                         gdriveError)
+        if config.config_ldap_group_object_filter:
+            if config.config_ldap_group_object_filter.count("%s") != 1:
+                return _configuration_result(_('LDAP Group Object Filter Needs to Have One "%s" Format Identifier'),
+                                             gdriveError)
+            if config.config_ldap_group_object_filter.count("(") != config.config_ldap_group_object_filter.count(")"):
+                return _configuration_result(_('LDAP Group Object Filter Has Unmatched Parenthesis'),
+                                             gdriveError)
 
         if config.config_ldap_user_object.count("%s") != 1:
-            return _configuration_result('LDAP User Object Filter needs to Have One "%s" Format Identifier',
+            return _configuration_result(_('LDAP User Object Filter needs to Have One "%s" Format Identifier'),
+                                         gdriveError)
+        if config.config_ldap_user_object.count("(") != config.config_ldap_user_object.count(")"):
+            return _configuration_result(_('LDAP User Object Filter Has Unmatched Parenthesis'),
                                          gdriveError)
 
-        if config.config_ldap_cert_path and not os.path.isfile(config.config_ldap_cert_path):
-            return _configuration_result('LDAP Certfile location is not valid, please enter correct path', gdriveError)
+        if config.config_ldap_cert_path and not os.path.isdir(config.config_ldap_cert_path):
+            return _configuration_result(_('LDAP Certificate Location is not Valid, Please Enter Correct Path'),
+                                         gdriveError)
 
     # Remote login configuration
     _config_checkbox("config_remote_login")
@@ -628,12 +640,12 @@ def _configuration_update_helper():
     reboot_required |= _config_int("config_log_level")
     reboot_required |= _config_string("config_logfile")
     if not logger.is_valid_logfile(config.config_logfile):
-        return _configuration_result('Logfile location is not valid, please enter correct path', gdriveError)
+        return _configuration_result(_('Logfile Location is not Valid, Please Enter Correct Path'), gdriveError)
 
     reboot_required |= _config_checkbox_int("config_access_log")
     reboot_required |= _config_string("config_access_logfile")
     if not logger.is_valid_logfile(config.config_access_logfile):
-        return _configuration_result('Access Logfile location is not valid, please enter correct path', gdriveError)
+        return _configuration_result(_('Access Logfile Location is not Valid, Please Enter Correct Path'), gdriveError)
 
     # Rarfile Content configuration
     _config_string("config_rarfile_location")
@@ -652,7 +664,7 @@ def _configuration_update_helper():
     if db_change:
         # reload(db)
         if not db.setup_db(config):
-            return _configuration_result('DB location is not valid, please enter correct path', gdriveError)
+            return _configuration_result(_('DB Location is not Valid, Please Enter Correct Path'), gdriveError)
 
     config.save()
     flash(_(u"Calibre-Web configuration updated"), category="success")
@@ -678,7 +690,7 @@ def _configuration_result(error_flash=None, gdriveError=None):
     show_login_button = config.db_configured and not current_user.is_authenticated
     if error_flash:
         config.load()
-        flash(_(error_flash), category="error")
+        flash(error_flash, category="error")
         show_login_button = False
 
     return render_title_template("config_edit.html", config=config, provider=oauthblueprints,

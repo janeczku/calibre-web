@@ -230,18 +230,11 @@
         </div>
         <div class="form-group">
           <label for="config_ldap_port">{{_('LDAP Server Port')}}</label>
-          <input type="text" class="form-control" id="config_ldap_port" name="config_ldap_port" value="{% if config.config_ldap_port != None %}{{ config.config_ldap_port }}{% endif %}" autocomplete="off">
+          <input type="number" min="1" max="65535" class="form-control" id="config_ldap_port" name="config_ldap_port" value="{% if config.config_ldap_port != None %}{{ config.config_ldap_port }}{% endif %}" autocomplete="off" required>
         </div>
         <div class="form-group">
-          <label for="config_ldap_serv_username">{{_('LDAP Administrator Username')}}</label>
-          <input type="text" class="form-control" id="config_ldap_serv_username" name="config_ldap_serv_username" value="{% if config.config_ldap_serv_username != None %}{{ config.config_ldap_serv_username }}{% endif %}" autocomplete="off">
-        </div>
-        <div class="form-group">
-          <label for="config_ldap_serv_password">{{_('LDAP Administrator Password')}}</label>
-          <input type="password" class="form-control" id="config_ldap_serv_password" name="config_ldap_serv_password" value="" autocomplete="off">
-        </div>
-        <div class="form-group">
-          <label for="config_ldap_encryption">{{_('Encryption')}}</label>
+          <label for="config_ldap_encryption">{{_('LDAP Encryption')}}</label>
+          <label for="config_ldap_encryption">{{_('LDAP Encryption')}}</label>
             <select name="config_ldap_encryption" id="config_ldap_encryption" class="form-control" data-controlall="ldap-cert-settings">
                 <option value="0" {% if config.config_ldap_encryption == 0 %}selected{% endif %}>{{ _('None') }}</option>
                 <option value="1" {% if config.config_ldap_encryption == 1 %}selected{% endif %}>{{ _('TLS') }}</option>
@@ -250,9 +243,18 @@
         </div>
         <div data-related="ldap-cert-settings">
           <div class="form-group">
-            <label for="config_ldap_cert_path">{{_('LDAP SSL Certificate Path')}}</label>
+            <label for="config_ldap_cert_path">{{_('LDAP Certificate Path')}}</label>
             <input type="text" class="form-control" id="config_ldap_cert_path" name="config_ldap_cert_path" value="{% if config.config_ldap_cert_path != None %}{{ config.config_ldap_cert_path }}{% endif %}" autocomplete="off">
           </div>
+        </div>
+
+        <div class="form-group">
+          <label for="config_ldap_serv_username">{{_('LDAP Administrator Username')}}</label>
+          <input type="text" class="form-control" id="config_ldap_serv_username" name="config_ldap_serv_username" value="{% if config.config_ldap_serv_username != None %}{{ config.config_ldap_serv_username }}{% endif %}" autocomplete="off">
+        </div>
+        <div class="form-group">
+          <label for="config_ldap_serv_password">{{_('LDAP Administrator Password')}}</label>
+          <input type="password" class="form-control" id="config_ldap_serv_password" name="config_ldap_serv_password" value="" autocomplete="off">
         </div>
         <div class="form-group">
           <label for="config_ldap_dn">{{_('LDAP Distinguished Name (DN)')}}</label>
@@ -266,18 +268,19 @@
           <input type="checkbox" id="config_ldap_openldap" name="config_ldap_openldap" {% if config.config_ldap_openldap %}checked{% endif %}>
           <label for="config_ldap_openldap">{{_('LDAP Server is OpenLDAP?')}}</label>
         </div>
-        <div class="form-group">
-          <label for="config_ldap_group_object_filter">{{_('LDAP Group Object Filter')}}</label>
-          <input type="text" class="form-control" id="config_ldap_group_object_filter" name="config_ldap_group_object_filter" value="{% if config.config_ldap_group_object_filter != None %}{{ config.config_ldap_group_object_filter }}{% endif %}" autocomplete="off">
-        </div>
-        <div class="form-group">
-          <label for="config_ldap_group_members_field">{{_('LDAP Group Members Field')}}</label>
-          <input type="text" class="form-control" id="config_ldap_group_members_field" name="config_ldap_group_members_field" value="{% if config.config_ldap_group_members_field != None %}{{ config.config_ldap_group_members_field }}{% endif %}" autocomplete="off">
-        </div>
-        <div class="form-group">
-          <label for="config_ldap_group_name">{{_('LDAP Group Name')}}</label>
-          <input type="text" class="form-control" id="config_ldap_group_name" name="config_ldap_group_name" value="{% if config.config_ldap_group_name != None %}{{ config.config_ldap_group_name }}{% endif %}" autocomplete="off">
-        </div>
+          <h4 class="text-center">{{_('Following Settings are Needed For User Import')}}</h4>
+          <div class="form-group">
+            <label for="config_ldap_group_object_filter">{{_('LDAP Group Object Filter')}}</label>
+            <input type="text" class="form-control" id="config_ldap_group_object_filter" name="config_ldap_group_object_filter" value="{% if config.config_ldap_group_object_filter != None %}{{ config.config_ldap_group_object_filter }}{% endif %}" autocomplete="off">
+          </div>
+          <div class="form-group">
+            <label for="config_ldap_group_name">{{_('LDAP Group Name')}}</label>
+            <input type="text" class="form-control" id="config_ldap_group_name" name="config_ldap_group_name" value="{% if config.config_ldap_group_name != None %}{{ config.config_ldap_group_name }}{% endif %}" autocomplete="off">
+          </div>
+          <div class="form-group">
+            <label for="config_ldap_group_members_field">{{_('LDAP Group Members Field')}}</label>
+            <input type="text" class="form-control" id="config_ldap_group_members_field" name="config_ldap_group_members_field" value="{% if config.config_ldap_group_members_field != None %}{{ config.config_ldap_group_members_field }}{% endif %}" autocomplete="off">
+          </div>
       </div>
       {% endif %}
       {% if feature_support['oauth'] %}
