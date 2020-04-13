@@ -344,14 +344,13 @@ def setup_db(config):
                                isolation_level="SERIALIZABLE",
                                connect_args={'check_same_thread': False})
         conn = engine.connect()
-    except:
-        config.invalidate()
+        # conn.text_factory = lambda b: b.decode(errors = 'ignore') possible fix for #1302
+    except Exception as e:
+        config.invalidate(e)
         return False
 
     config.db_configured = True
     update_title_sort(config, conn.connection)
-    # conn.connection.create_function('lower', 1, lcase)
-    # conn.connection.create_function('upper', 1, ucase)
 
     if not cc_classes:
         cc = conn.execute("SELECT id, datatype FROM custom_columns")
