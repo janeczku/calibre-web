@@ -64,6 +64,12 @@ span.glyphicon.glyphicon-tags {padding-right: 5px;color: #999;vertical-align: te
 .navbar-default .navbar-toggle .icon-bar {background-color: #000;}
 .navbar-default .navbar-toggle {border-color: #000;}
 .cover { margin-bottom: 10px;}
+.cover .badge{
+   position: absolute;
+   top: 10px;
+   right: 10px;
+   background-color: #45b29d;
+}
 .cover-height { max-height: 100px;}
 .col-sm-2 a .cover-small {
     margin:5px;

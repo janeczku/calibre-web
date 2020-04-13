@@ -1,0 +1,54 @@
+{% extends "layout.html" %}
+{% block body %}
+<div class="discover load-more grid-view">
+  <h2 class="{{title}}">{{_(title)}}</h2>
+
+    <div class="filterheader hidden-xs hidden-sm">
+      <button id="asc" class="btn btn-success"><span class="glyphicon glyphicon-sort-by-alphabet"></span></button>
+      <button id="desc" class="btn btn-success"><span class="glyphicon glyphicon-sort-by-alphabet-alt"></span></button>
+      {% if charlist|length %}
+      <button id="all" class="btn btn-success">{{_('All')}}</button>
+      {% endif %}
+      <div class="btn-group character" role="group">
+        {% for char in charlist%}
+        <button class="btn btn-success char">{{char.char}}</button>
+        {% endfor %}
+      </div>
+
+        <!-- View selection -->
+        <div class="btn-group">
+          <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            View <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu">
+            <li><a class="update-view" href="#" data-target="series_view" data-view="grid">{{_('Grid')}}</a></li>
+            <li><a class="update-view" href="#"  data-target="series_view" data-view="list">{{_('List')}}</a></li>
+          </ul>
+        </div>
+    </div>
+
+    {% if entries[0] %}
+        <div id="list" class="row">
+          {% for entry in entries %}
+              <div class="col-sm-3 col-lg-2 col-xs-6 book sortable" {% if entry[0].sort %}data-name="{{entry[0].series[0].name}}"{% endif %} data-id="{% if entry[0].series[0].name %}{{entry[0].series[0].name}}{% endif %}">
+                  <div class="cover">
+                      <a href="{{url_for('web.books_list', data=data, sort='new', book_id=entry[0].series[0].id )}}">
+                          <img src="{{ url_for('web.get_cover', book_id=entry[0].id) }}" alt="{{ entry[0].name }}"/>
+                          <span class="badge">{{entry.count}}</span>
+                      </a>
+                  </div>
+                  <div class="meta">
+                      <a href="{{url_for('web.books_list', data=data, sort='new', book_id=entry[0].series[0].id )}}">
+                          <p class="title">{{entry[0].series[0].name|shortentitle}}</p>
+                      </a>
+                  </div>
+              </div>
+        {% endfor %}
+        </div>
+    {% endif %}
+
+
+{% endblock %}
+{% block js %}
+<script src="{{ url_for('static', filename='js/filter_grid.js') }}"></script>
+{% endblock %}
