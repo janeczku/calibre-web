@@ -26,7 +26,7 @@ log = logger.create()
 
 try: from . import goodreads_support
 except ImportError as err:
-    log.debug("cannot import goodreads, showing authors-metadata will not work: %s", err)
+    log.debug("Cannot import goodreads, showing authors-metadata will not work: %s", err)
     goodreads_support = None
 
 
@@ -34,7 +34,7 @@ try:
     from . import simpleldap as ldap
     from .simpleldap import ldapVersion
 except ImportError as err:
-    log.debug("cannot import simpleldap, logging in with ldap will not work: %s", err)
+    log.debug("Cannot import simpleldap, logging in with ldap will not work: %s", err)
     ldap = None
     ldapVersion = None
 
@@ -42,6 +42,6 @@ try:
     from . import SyncToken as SyncToken
     kobo = True
 except ImportError as err:
-    log.debug("cannot import SyncToken, syncing books with Kobo Devices will not work: %s", err)
+    log.debug("Cannot import SyncToken, syncing books with Kobo Devices will not work: %s", err)
     kobo = None
     SyncToken = None

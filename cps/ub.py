@@ -30,7 +30,12 @@ try:
     from flask_dance.consumer.backend.sqla import OAuthConsumerMixin
     oauth_support = True
 except ImportError:
-    oauth_support = False
+    # fails on flask-dance >1.3, due to renaming
+    try:
+        from flask_dance.consumer.storage.sqla import OAuthConsumerMixin
+        oauth_support = True
+    except ImportError:
+        oauth_support = False
 from sqlalchemy import create_engine, exc, exists
 from sqlalchemy import Column, ForeignKey
 from sqlalchemy import String, Integer, SmallInteger, Boolean, DateTime
