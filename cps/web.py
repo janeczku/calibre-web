@@ -465,74 +465,70 @@ def get_comic_book(book_id, book_format, page):
 # ################################### Typeahead ##################################################################
 
 
-@web.route("/get_authors_json")
+@web.route("/get_authors_json", methods=['GET'])
 @login_required_if_no_ano
 def get_authors_json():
-    if request.method == "GET":
-        return get_typeahead(db.Authors, request.args.get('q'), ('|', ','))
+    return get_typeahead(db.Authors, request.args.get('q'), ('|', ','))
 
 
-@web.route("/get_publishers_json")
+@web.route("/get_publishers_json", methods=['GET'])
 @login_required_if_no_ano
 def get_publishers_json():
-    if request.method == "GET":
-        return get_typeahead(db.Publishers, request.args.get('q'), ('|', ','))
+    return get_typeahead(db.Publishers, request.args.get('q'), ('|', ','))
 
 
-@web.route("/get_tags_json")
+
+@web.route("/get_tags_json", methods=['GET'])
 @login_required_if_no_ano
 def get_tags_json():
-    if request.method == "GET":
-        return get_typeahead(db.Tags, request.args.get('q'),tag_filter=tags_filters())
+    return get_typeahead(db.Tags, request.args.get('q'),tag_filter=tags_filters())
 
 
-@web.route("/get_series_json")
+@web.route("/get_series_json", methods=['GET'])
 @login_required_if_no_ano
 def get_series_json():
-    if request.method == "GET":
-        return get_typeahead(db.Series, request.args.get('q'))
+    return get_typeahead(db.Series, request.args.get('q'))
 
 
-@web.route("/get_languages_json", methods=['GET', 'POST'])
+@web.route("/get_languages_json", methods=['GET'])
 @login_required_if_no_ano
 def get_languages_json():
-    if request.method == "GET":
-        query = request.args.get('q').lower()
-        language_names = isoLanguages.get_language_names(get_locale())
-        entries_start = [s for key, s in language_names.items() if s.lower().startswith(query.lower())]
-        if len(entries_start) < 5:
-            entries = [s for key, s in language_names.items() if query in s.lower()]
-            entries_start.extend(entries[0:(5-len(entries_start))])
-            entries_start = list(set(entries_start))
-        json_dumps = json.dumps([dict(name=r) for r in entries_start[0:5]])
-        return json_dumps
+    query = (request.args.get('q') or '').lower()
+    language_names = isoLanguages.get_language_names(get_locale())
+    entries_start = [s for key, s in language_names.items() if s.lower().startswith(query.lower())]
+    if len(entries_start) < 5:
+
+        entries = [s for key, s in language_names.items() if query in s.lower()]
+        entries_start.extend(entries[0:(5-len(entries_start))])
+        entries_start = list(set(entries_start))
+    json_dumps = json.dumps([dict(name=r) for r in entries_start[0:5]])
+    return json_dumps
 
 
-@web.route("/get_matching_tags", methods=['GET', 'POST'])
+@web.route("/get_matching_tags", methods=['GET'])
 @login_required_if_no_ano
 def get_matching_tags():
     tag_dict = {'tags': []}
-    if request.method == "GET":
-        q = db.session.query(db.Books)
-        db.session.connection().connection.connection.create_function("lower", 1, lcase)
-        author_input = request.args.get('author_name')
-        title_input = request.args.get('book_title')
-        include_tag_inputs = request.args.getlist('include_tag')
-        exclude_tag_inputs = request.args.getlist('exclude_tag')
-        include_extension_inputs = request.args.getlist('include_extension')
-        exclude_extension_inputs = request.args.getlist('exclude_extension')
-        q = q.filter(db.Books.authors.any(func.lower(db.Authors.name).ilike("%" + author_input + "%")),
-                     func.lower(db.Books.title).ilike("%" + title_input + "%"))
-        if len(include_tag_inputs) > 0:
-            for tag in include_tag_inputs:
-                q = q.filter(db.Books.tags.any(db.Tags.id == tag))
-        if len(exclude_tag_inputs) > 0:
-            for tag in exclude_tag_inputs:
-                q = q.filter(not_(db.Books.tags.any(db.Tags.id == tag)))
-        for book in q:
-            for tag in book.tags:
-                if tag.id not in tag_dict['tags']:
-                    tag_dict['tags'].append(tag.id)
+    q = db.session.query(db.Books)
+    db.session.connection().connection.connection.create_function("lower", 1, lcase)
+    author_input = request.args.get('author_name') or ''
+    title_input = request.args.get('book_title') or ''
+    include_tag_inputs = request.args.getlist('include_tag') or ''
+    exclude_tag_inputs = request.args.getlist('exclude_tag') or ''
+    # include_extension_inputs = request.args.getlist('include_extension') or ''
+    # exclude_extension_inputs = request.args.getlist('exclude_extension') or ''
+    q = q.filter(db.Books.authors.any(func.lower(db.Authors.name).ilike("%" + author_input + "%")),
+                 func.lower(db.Books.title).ilike("%" + title_input + "%"))
+    if len(include_tag_inputs) > 0:
+        for tag in include_tag_inputs:
+            q = q.filter(db.Books.tags.any(db.Tags.id == tag))
+    if len(exclude_tag_inputs) > 0:
+        for tag in exclude_tag_inputs:
+            q = q.filter(not_(db.Books.tags.any(db.Tags.id == tag)))
+    for book in q:
+        for tag in book.tags:
+            if tag.id not in tag_dict['tags']:
+                tag_dict['tags'].append(tag.id)
     json_dumps = json.dumps(tag_dict)
     return json_dumps
 

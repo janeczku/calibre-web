@@ -780,6 +780,7 @@ def fill_indexpage(page, database, db_filter, order, *join):
 
 
 def get_typeahead(database, query, replace=('',''), tag_filter=true()):
+    query = query or ''
     db.session.connection().connection.connection.create_function("lower", 1, lcase)
     entries = db.session.query(database).filter(tag_filter).filter(func.lower(database.name).ilike("%" + query + "%")).all()
     json_dumps = json.dumps([dict(name=r.name.replace(*replace)) for r in entries])
