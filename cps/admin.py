@@ -42,6 +42,8 @@ from .helper import speaking_language, check_valid_domain, send_test_mail, reset
 from .gdriveutils import is_gdrive_ready, gdrive_support
 from .web import admin_required, render_title_template, before_request, unconfigured, login_required_if_no_ano
 
+log = logger.create()
+
 feature_support = {
         'ldap': bool(services.ldap),
         'goodreads': bool(services.goodreads_support),
@@ -57,7 +59,8 @@ feature_support = {
 try:
     from .oauth_bb import oauth_check, oauthblueprints
     feature_support['oauth'] = True
-except ImportError:
+except ImportError as err:
+    log.debug('Cannot import Flask-Dance, login with Oauth will not work: %s', err)
     feature_support['oauth'] = False
     oauthblueprints = []
     oauth_check = {}
@@ -65,7 +68,7 @@ except ImportError:
 
 feature_support['gdrive'] = gdrive_support
 admi = Blueprint('admin', __name__)
-log = logger.create()
+
 
 
 @admi.route("/admin")

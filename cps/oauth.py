@@ -23,7 +23,16 @@ from flask import session
 try:
     from flask_dance.consumer.backend.sqla import SQLAlchemyBackend, first, _get_real_user
     from sqlalchemy.orm.exc import NoResultFound
+except ImportError:
+    # fails on flask-dance >1.3, due to renaming
+    try:
+        from flask_dance.consumer.storage.sqla import SQLAlchemyStorage as SQLAlchemyBackend
+        from flask_dance.consumer.storage.sqla import first, _get_real_user
+        from sqlalchemy.orm.exc import NoResultFound
+    except ImportError:
+        pass
 
+try:
     class OAuthBackend(SQLAlchemyBackend):
         """
         Stores and retrieves OAuth tokens using a relational database through
@@ -152,5 +161,5 @@ try:
                 blueprint=blueprint, user=user, user_id=user_id,
             ))
 
-except ImportError:
+except Exception:
     pass
