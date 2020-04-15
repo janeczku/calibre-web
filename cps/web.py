@@ -47,20 +47,21 @@ from . import constants, logger, isoLanguages, services, worker
 from . import searched_ids, lm, babel, db, ub, config, get_locale, app
 from .gdriveutils import getFileFromEbooksFolder, do_gdrive_download
 from .helper import common_filters, get_search_results, fill_indexpage, speaking_language, check_valid_domain, \
-        order_authors, get_typeahead, render_task_status, json_serial, get_cc_columns, \
-        get_book_cover, get_download_link, send_mail, generate_random_password, send_registration_mail, \
-        check_send_to_kindle, check_read_formats, lcase, tags_filters, reset_password
+    order_authors, get_typeahead, render_task_status, json_serial, get_cc_columns, \
+    get_book_cover, get_download_link, send_mail, generate_random_password, send_registration_mail, \
+    check_send_to_kindle, check_read_formats, lcase, tags_filters, reset_password
 from .pagination import Pagination
 from .redirect import redirect_back
 
 feature_support = {
-        'ldap': bool(services.ldap),
-        'goodreads': bool(services.goodreads_support),
-        'kobo':  bool(services.kobo)
-    }
+    'ldap': bool(services.ldap),
+    'goodreads': bool(services.goodreads_support),
+    'kobo': bool(services.kobo)
+}
 
 try:
     from .oauth_bb import oauth_check, register_user_with_oauth, logout_oauth_user, get_oauth_status
+
     feature_support['oauth'] = True
 except ImportError:
     feature_support['oauth'] = False
@@ -80,27 +81,27 @@ except ImportError:
 try:
     from natsort import natsorted as sort
 except ImportError:
-    sort = sorted # Just use regular sort then, may cause issues with badly named pages in cbz/cbr files
+    sort = sorted  # Just use regular sort then, may cause issues with badly named pages in cbz/cbr files
 
 
 # custom error page
 def error_http(error):
     return render_template('http_error.html',
-                            error_code="Error {0}".format(error.code),
-                            error_name=error.name,
-                            issue=False,
-                            instance=config.config_calibre_web_title
-                            ), error.code
+                           error_code="Error {0}".format(error.code),
+                           error_name=error.name,
+                           issue=False,
+                           instance=config.config_calibre_web_title
+                           ), error.code
 
 
 def internal_error(error):
     return render_template('http_error.html',
-                        error_code="Internal Server Error",
-                        error_name=str(error),
-                        issue=True,
-                        error_stack=traceback.format_exc().split("\n"),
-                        instance=config.config_calibre_web_title
-                        ), 500
+                           error_code="Internal Server Error",
+                           error_name=str(error),
+                           issue=True,
+                           error_stack=traceback.format_exc().split("\n"),
+                           instance=config.config_calibre_web_title
+                           ), 500
 
 
 # http error handling
@@ -108,15 +109,16 @@ for ex in default_exceptions:
     if ex < 500:
         app.register_error_handler(ex, error_http)
     elif ex == 500:
-         app.register_error_handler(ex, internal_error)
-
+        app.register_error_handler(ex, internal_error)
 
 web = Blueprint('web', __name__)
 log = logger.create()
 
+
 # ################################### Login logic and rights management ###############################################
 def _fetch_user_by_name(username):
     return ub.session.query(ub.User).filter(func.lower(ub.User.nickname) == username.lower()).first()
+
 
 @lm.user_loader
 def load_user(user_id):
@@ -165,6 +167,7 @@ def login_required_if_no_ano(func):
         if config.config_anonbrowse == 1:
             return func(*args, **kwargs)
         return login_required(func)(*args, **kwargs)
+
     return decorated_view
 
 
@@ -256,8 +259,9 @@ def edit_required(f):
 
 # Returns the template for rendering and includes the instance name
 def render_title_template(*args, **kwargs):
-    sidebar=ub.get_sidebar_config(kwargs)
-    return render_template(instance=config.config_calibre_web_title, sidebar=sidebar, accept=constants.EXTENSIONS_UPLOAD,
+    sidebar = ub.get_sidebar_config(kwargs)
+    return render_template(instance=config.config_calibre_web_title, sidebar=sidebar,
+                           accept=constants.EXTENSIONS_UPLOAD,
                            *args, **kwargs)
 
 
@@ -269,8 +273,10 @@ def before_request():
     g.allow_upload = config.config_uploading
     g.current_theme = config.config_theme
     g.config_authors_max = config.config_authors_max
-    g.shelves_access = ub.session.query(ub.Shelf).filter(or_(ub.Shelf.is_public == 1, ub.Shelf.user_id == current_user.id)).order_by(ub.Shelf.name).all()
-    if not config.db_configured and request.endpoint not in ('admin.basic_configuration', 'login') and '/static/' not in request.path:
+    g.shelves_access = ub.session.query(ub.Shelf).filter(
+        or_(ub.Shelf.is_public == 1, ub.Shelf.user_id == current_user.id)).order_by(ub.Shelf.name).all()
+    if not config.db_configured and request.endpoint not in (
+        'admin.basic_configuration', 'login') and '/static/' not in request.path:
         return redirect(url_for('admin.basic_configuration'))
 
 
@@ -313,7 +319,7 @@ def import_ldap_users():
         if user_data:
             content = ub.User()
             content.nickname = user
-            content.password = '' # dummy password which will be replaced by ldap one
+            content.password = ''  # dummy password which will be replaced by ldap one
             if 'mail' in user_data:
                 content.email = user_data['mail'][0].decode('utf-8')
                 if (len(user_data['mail']) > 1):
@@ -477,11 +483,10 @@ def get_publishers_json():
     return get_typeahead(db.Publishers, request.args.get('q'), ('|', ','))
 
 
-
 @web.route("/get_tags_json", methods=['GET'])
 @login_required_if_no_ano
 def get_tags_json():
-    return get_typeahead(db.Tags, request.args.get('q'),tag_filter=tags_filters())
+    return get_typeahead(db.Tags, request.args.get('q'), tag_filter=tags_filters())
 
 
 @web.route("/get_series_json", methods=['GET'])
@@ -497,9 +502,8 @@ def get_languages_json():
     language_names = isoLanguages.get_language_names(get_locale())
     entries_start = [s for key, s in language_names.items() if s.lower().startswith(query.lower())]
     if len(entries_start) < 5:
-
         entries = [s for key, s in language_names.items() if query in s.lower()]
-        entries_start.extend(entries[0:(5-len(entries_start))])
+        entries_start.extend(entries[0:(5 - len(entries_start))])
         entries_start = list(set(entries_start))
     json_dumps = json.dumps([dict(name=r) for r in entries_start[0:5]])
     return json_dumps
@@ -604,7 +608,7 @@ def books_list(data, sort, book_id, page):
     else:
         entries, random, pagination = fill_indexpage(page, db.Books, True, order)
         return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
-                                 title=_(u"Books"), page="newest")
+                                     title=_(u"Books"), page="newest")
 
 
 def render_hot_books(page):
@@ -636,13 +640,13 @@ def render_hot_books(page):
         abort(404)
 
 
-
 def render_author_books(page, author_id, order):
     entries, __, pagination = fill_indexpage(page, db.Books, db.Books.authors.any(db.Authors.id == author_id),
                                              [order[0], db.Series.name, db.Books.series_index],
                                              db.books_series_link, db.Series)
     if entries is None or not len(entries):
-        flash(_(u"Oops! Selected book title is unavailable. File does not exist or is not accessible"), category="error")
+        flash(_(u"Oops! Selected book title is unavailable. File does not exist or is not accessible"),
+              category="error")
         return redirect(url_for("web.index"))
 
     author = db.session.query(db.Authors).get(author_id)
@@ -686,10 +690,10 @@ def render_series_books(page, book_id, order):
 def render_ratings_books(page, book_id, order):
     name = db.session.query(db.Ratings).filter(db.Ratings.id == book_id).first()
     entries, random, pagination = fill_indexpage(page, db.Books, db.Books.ratings.any(db.Ratings.id == book_id),
-                                             [db.Books.timestamp.desc(), order[0]])
+                                                 [db.Books.timestamp.desc(), order[0]])
     if name and name.rating <= 10:
         return render_title_template('index.html', random=random, pagination=pagination, entries=entries, id=book_id,
-                                 title=_(u"Rating: %(rating)s stars", rating=int(name.rating/2)), page="ratings")
+                                     title=_(u"Rating: %(rating)s stars", rating=int(name.rating / 2)), page="ratings")
     else:
         abort(404)
 
@@ -697,8 +701,9 @@ def render_ratings_books(page, book_id, order):
 def render_formats_books(page, book_id, order):
     name = db.session.query(db.Data).filter(db.Data.format == book_id.upper()).first()
     if name:
-        entries, random, pagination = fill_indexpage(page, db.Books, db.Books.data.any(db.Data.format == book_id.upper()),
-                                                 [db.Books.timestamp.desc(), order[0]])
+        entries, random, pagination = fill_indexpage(page, db.Books,
+                                                     db.Books.data.any(db.Data.format == book_id.upper()),
+                                                     [db.Books.timestamp.desc(), order[0]])
         return render_title_template('index.html', random=random, pagination=pagination, entries=entries, id=book_id,
                                      title=_(u"File format: %(format)s", format=name.format), page="formats")
     else:
@@ -712,7 +717,7 @@ def render_category_books(page, book_id, order):
                                                      [db.Series.name, db.Books.series_index, order[0]],
                                                      db.books_series_link, db.Series)
         return render_title_template('index.html', random=random, entries=entries, pagination=pagination, id=book_id,
-                                 title=_(u"Category: %(name)s", name=name.name), page="category")
+                                     title=_(u"Category: %(name)s", name=name.name), page="category")
     else:
         abort(404)
 
@@ -736,12 +741,12 @@ def render_language_books(page, name, order):
 @login_required_if_no_ano
 def author_list():
     if current_user.check_visibility(constants.SIDEBAR_AUTHOR):
-        entries = db.session.query(db.Authors, func.count('books_authors_link.book').label('count'))\
-            .join(db.books_authors_link).join(db.Books).filter(common_filters())\
-            .group_by(text('books_authors_link.author')).order_by(db.Authors.sort).all()
-        charlist = db.session.query(func.upper(func.substr(db.Authors.sort,1,1)).label('char')) \
+        entries = db.session.query(db.Authors, func.count('books_authors_link.book').label('count')) \
             .join(db.books_authors_link).join(db.Books).filter(common_filters()) \
-            .group_by(func.upper(func.substr(db.Authors.sort,1,1))).all()
+            .group_by(text('books_authors_link.author')).order_by(db.Authors.sort).all()
+        charlist = db.session.query(func.upper(func.substr(db.Authors.sort, 1, 1)).label('char')) \
+            .join(db.books_authors_link).join(db.Books).filter(common_filters()) \
+            .group_by(func.upper(func.substr(db.Authors.sort, 1, 1))).all()
         for entry in entries:
             entry.Authors.name = entry.Authors.name.replace('|', ',')
         return render_title_template('list.html', entries=entries, folder='web.books_list', charlist=charlist,
@@ -754,12 +759,12 @@ def author_list():
 @login_required_if_no_ano
 def publisher_list():
     if current_user.check_visibility(constants.SIDEBAR_PUBLISHER):
-        entries = db.session.query(db.Publishers, func.count('books_publishers_link.book').label('count'))\
-            .join(db.books_publishers_link).join(db.Books).filter(common_filters())\
-            .group_by(text('books_publishers_link.publisher')).order_by(db.Publishers.sort).all()
-        charlist = db.session.query(func.upper(func.substr(db.Publishers.name,1,1)).label('char')) \
+        entries = db.session.query(db.Publishers, func.count('books_publishers_link.book').label('count')) \
             .join(db.books_publishers_link).join(db.Books).filter(common_filters()) \
-            .group_by(func.upper(func.substr(db.Publishers.name,1,1))).all()
+            .group_by(text('books_publishers_link.publisher')).order_by(db.Publishers.sort).all()
+        charlist = db.session.query(func.upper(func.substr(db.Publishers.name, 1, 1)).label('char')) \
+            .join(db.books_publishers_link).join(db.Books).filter(common_filters()) \
+            .group_by(func.upper(func.substr(db.Publishers.name, 1, 1))).all()
         return render_title_template('list.html', entries=entries, folder='web.books_list', charlist=charlist,
                                      title=_(u"Publishers"), page="publisherlist", data="publisher")
     else:
@@ -770,12 +775,12 @@ def publisher_list():
 @login_required_if_no_ano
 def series_list():
     if current_user.check_visibility(constants.SIDEBAR_SERIES):
-        entries = db.session.query(db.Series, func.count('books_series_link.book').label('count'))\
-            .join(db.books_series_link).join(db.Books).filter(common_filters())\
-            .group_by(text('books_series_link.series')).order_by(db.Series.sort).all()
-        charlist = db.session.query(func.upper(func.substr(db.Series.sort,1,1)).label('char')) \
+        entries = db.session.query(db.Series, func.count('books_series_link.book').label('count')) \
             .join(db.books_series_link).join(db.Books).filter(common_filters()) \
-            .group_by(func.upper(func.substr(db.Series.sort,1,1))).all()
+            .group_by(text('books_series_link.series')).order_by(db.Series.sort).all()
+        charlist = db.session.query(func.upper(func.substr(db.Series.sort, 1, 1)).label('char')) \
+            .join(db.books_series_link).join(db.Books).filter(common_filters()) \
+            .group_by(func.upper(func.substr(db.Series.sort, 1, 1))).all()
         return render_title_template('list.html', entries=entries, folder='web.books_list', charlist=charlist,
                                      title=_(u"Series"), page="serieslist", data="series")
     else:
@@ -787,8 +792,8 @@ def series_list():
 def ratings_list():
     if current_user.check_visibility(constants.SIDEBAR_RATING):
         entries = db.session.query(db.Ratings, func.count('books_ratings_link.book').label('count'),
-                                   (db.Ratings.rating/2).label('name'))\
-            .join(db.books_ratings_link).join(db.Books).filter(common_filters())\
+                                   (db.Ratings.rating / 2).label('name')) \
+            .join(db.books_ratings_link).join(db.Books).filter(common_filters()) \
             .group_by(text('books_ratings_link.rating')).order_by(db.Ratings.rating).all()
         return render_title_template('list.html', entries=entries, folder='web.books_list', charlist=list(),
                                      title=_(u"Ratings list"), page="ratingslist", data="ratings")
@@ -800,8 +805,8 @@ def ratings_list():
 @login_required_if_no_ano
 def formats_list():
     if current_user.check_visibility(constants.SIDEBAR_FORMAT):
-        entries = db.session.query(db.Data, func.count('data.book').label('count'),db.Data.format.label('format'))\
-            .join(db.Books).filter(common_filters())\
+        entries = db.session.query(db.Data, func.count('data.book').label('count'), db.Data.format.label('format')) \
+            .join(db.Books).filter(common_filters()) \
             .group_by(db.Data.format).order_by(db.Data.format).all()
         return render_title_template('list.html', entries=entries, folder='web.books_list', charlist=list(),
                                      title=_(u"File formats list"), page="formatslist", data="formats")
@@ -842,12 +847,12 @@ def language_overview():
 @login_required_if_no_ano
 def category_list():
     if current_user.check_visibility(constants.SIDEBAR_CATEGORY):
-        entries = db.session.query(db.Tags, func.count('books_tags_link.book').label('count'))\
-            .join(db.books_tags_link).join(db.Books).order_by(db.Tags.name).filter(common_filters())\
+        entries = db.session.query(db.Tags, func.count('books_tags_link.book').label('count')) \
+            .join(db.books_tags_link).join(db.Books).order_by(db.Tags.name).filter(common_filters()) \
             .group_by(text('books_tags_link.tag')).all()
-        charlist = db.session.query(func.upper(func.substr(db.Tags.name,1,1)).label('char')) \
+        charlist = db.session.query(func.upper(func.substr(db.Tags.name, 1, 1)).label('char')) \
             .join(db.books_tags_link).join(db.Books).filter(common_filters()) \
-            .group_by(func.upper(func.substr(db.Tags.name,1,1))).all()
+            .group_by(func.upper(func.substr(db.Tags.name, 1, 1))).all()
         return render_title_template('list.html', entries=entries, folder='web.books_list', charlist=charlist,
                                      title=_(u"Categories"), page="catlist", data="category")
     else:
@@ -872,6 +877,7 @@ def get_tasks_status():
 def reconnect():
     db.reconnect_db(config)
     return json.dumps({})
+
 
 @web.route("/search", methods=["GET"])
 @login_required_if_no_ano
@@ -915,7 +921,7 @@ def advanced_search():
     rating_high = request.args.get("ratinglow")
     description = request.args.get("comment")
     if author_name:
-        author_name = author_name.strip().lower().replace(',','|')
+        author_name = author_name.strip().lower().replace(',', '|')
     if book_title:
         book_title = book_title.strip().lower()
     if publisher:
@@ -929,22 +935,22 @@ def advanced_search():
             cc_present = True
 
     if include_tag_inputs or exclude_tag_inputs or include_series_inputs or exclude_series_inputs or \
-            include_languages_inputs or exclude_languages_inputs or author_name or book_title or \
-            publisher or pub_start or pub_end or rating_low or rating_high or description or cc_present or \
-            include_extension_inputs or exclude_extension_inputs:
+        include_languages_inputs or exclude_languages_inputs or author_name or book_title or \
+        publisher or pub_start or pub_end or rating_low or rating_high or description or cc_present or \
+        include_extension_inputs or exclude_extension_inputs:
         searchterm = []
         searchterm.extend((author_name.replace('|', ','), book_title, publisher))
         if pub_start:
             try:
                 searchterm.extend([_(u"Published after ") +
-                                   format_date(datetime.datetime.strptime(pub_start,"%Y-%m-%d"),
+                                   format_date(datetime.datetime.strptime(pub_start, "%Y-%m-%d"),
                                                format='medium', locale=get_locale())])
             except ValueError:
                 pub_start = u""
         if pub_end:
             try:
                 searchterm.extend([_(u"Published before ") +
-                                   format_date(datetime.datetime.strptime(pub_end,"%Y-%m-%d"),
+                                   format_date(datetime.datetime.strptime(pub_end, "%Y-%m-%d"),
                                                format='medium', locale=get_locale())])
             except ValueError:
                 pub_start = u""
@@ -1011,13 +1017,13 @@ def advanced_search():
             custom_query = request.args.get('custom_column_' + str(c.id))
             if custom_query:
                 if c.datatype == 'bool':
-                    q = q.filter(getattr(db.Books, 'custom_column_'+str(c.id)).any(
+                    q = q.filter(getattr(db.Books, 'custom_column_' + str(c.id)).any(
                         db.cc_classes[c.id].value == (custom_query == "True")))
                 elif c.datatype == 'int':
-                    q = q.filter(getattr(db.Books, 'custom_column_'+str(c.id)).any(
+                    q = q.filter(getattr(db.Books, 'custom_column_' + str(c.id)).any(
                         db.cc_classes[c.id].value == custom_query))
                 else:
-                    q = q.filter(getattr(db.Books, 'custom_column_'+str(c.id)).any(
+                    q = q.filter(getattr(db.Books, 'custom_column_' + str(c.id)).any(
                         func.lower(db.cc_classes[c.id].value).ilike("%" + custom_query + "%")))
         q = q.all()
         ids = list()
@@ -1027,11 +1033,11 @@ def advanced_search():
         return render_title_template('search.html', searchterm=searchterm,
                                      entries=q, title=_(u"search"), page="search")
     # prepare data for search-form
-    tags = db.session.query(db.Tags).join(db.books_tags_link).join(db.Books).filter(common_filters())\
+    tags = db.session.query(db.Tags).join(db.books_tags_link).join(db.Books).filter(common_filters()) \
         .group_by(text('books_tags_link.tag')).order_by(db.Tags.name).all()
-    series = db.session.query(db.Series).join(db.books_series_link).join(db.Books).filter(common_filters())\
+    series = db.session.query(db.Series).join(db.books_series_link).join(db.Books).filter(common_filters()) \
         .group_by(text('books_series_link.series')).order_by(db.Series.name).filter(common_filters()).all()
-    extensions = db.session.query(db.Data).join(db.Books).filter(common_filters())\
+    extensions = db.session.query(db.Data).join(db.Books).filter(common_filters()) \
         .group_by(db.Data.format).order_by(db.Data.format).all()
 
     if current_user.filter_language() == u"all":
@@ -1045,12 +1051,12 @@ def advanced_search():
 def render_read_books(page, are_read, as_xml=False, order=None, *args, **kwargs):
     order = order or []
     if not config.config_read_column:
-        readBooks = ub.session.query(ub.ReadBook).filter(ub.ReadBook.user_id == int(current_user.id))\
+        readBooks = ub.session.query(ub.ReadBook).filter(ub.ReadBook.user_id == int(current_user.id)) \
             .filter(ub.ReadBook.is_read == True).all()
         readBookIds = [x.book_id for x in readBooks]
     else:
         try:
-            readBooks = db.session.query(db.cc_classes[config.config_read_column])\
+            readBooks = db.session.query(db.cc_classes[config.config_read_column]) \
                 .filter(db.cc_classes[config.config_read_column].value == True).all()
             readBookIds = [x.book for x in readBooks]
         except KeyError:
@@ -1094,7 +1100,7 @@ def get_cover(book_id):
 def serve_book(book_id, book_format, anyname):
     book_format = book_format.split(".")[0]
     book = db.session.query(db.Books).filter(db.Books.id == book_id).first()
-    data = db.session.query(db.Data).filter(db.Data.book == book.id).filter(db.Data.format == book_format.upper())\
+    data = db.session.query(db.Data).filter(db.Data.book == book.id).filter(db.Data.format == book_format.upper()) \
         .first()
     log.info('Serving book: %s', data.name)
     if config.config_use_google_drive:
@@ -1104,6 +1110,7 @@ def serve_book(book_id, book_format, anyname):
         return do_gdrive_download(df, headers)
     else:
         return send_from_directory(os.path.join(config.config_calibre_dir, book.path), data.name + "." + book_format)
+
 
 @web.route("/download/<int:book_id>/<book_format>", defaults={'anyname': 'None'})
 @web.route("/download/<int:book_id>/<book_format>/<anyname>")
@@ -1121,7 +1128,7 @@ def send_to_kindle(book_id, book_format, convert):
         flash(_(u"Please configure the SMTP mail settings first..."), category="error")
     elif current_user.kindle_mail:
         result = send_mail(book_id, book_format, convert, current_user.kindle_mail, config.config_calibre_dir,
-                                  current_user.nickname)
+                           current_user.nickname)
         if result is None:
             flash(_(u"Book successfully queued for sending to %(kindlemail)s", kindlemail=current_user.kindle_mail),
                   category="success")
@@ -1168,7 +1175,7 @@ def register():
                 content.password = generate_password_hash(password)
                 content.role = config.config_default_role
                 content.sidebar_view = config.config_default_show
-                #content.mature_content = bool(config.config_default_show & constants.MATURE_CONTENT)
+                # content.mature_content = bool(config.config_default_show & constants.MATURE_CONTENT)
                 try:
                     ub.session.add(content)
                     ub.session.commit()
@@ -1206,25 +1213,23 @@ def login():
         flash(_(u"Cannot activate LDAP authentication"), category="error")
     if request.method == "POST":
         form = request.form.to_dict()
-        user = ub.session.query(ub.User).filter(func.lower(ub.User.nickname) == form['username'].strip().lower())\
+        user = ub.session.query(ub.User).filter(func.lower(ub.User.nickname) == form['username'].strip().lower()) \
             .first()
         if config.config_login_type == constants.LOGIN_LDAP and services.ldap and user and form['password'] != "":
             login_result, error = services.ldap.bind_user(form['username'], form['password'])
-            # None if credentials are not matching
-            # -1 if LDAP Server error
-            # 0 if wrong passwort
             if login_result:
                 login_user(user, remember=True)
                 log.debug(u"You are now logged in as: '%s'", user.nickname)
                 flash(_(u"you are now logged in as: '%(nickname)s'", nickname=user.nickname),
                       category="success")
                 return redirect_back(url_for("web.index"))
-            elif login_result is None and user and check_password_hash(str(user.password), form['password']) and user.nickname != "Guest":
+            elif login_result is None and user and check_password_hash(str(user.password), form['password']) \
+                and user.nickname != "Guest":
                 login_user(user, remember=True)
                 log.info("Local Fallback Login as: '%s'", user.nickname)
                 flash(_(u"Fallback Login as: '%(nickname)s', LDAP Server not reachable, or user not known",
                         nickname=user.nickname),
-                        category="warning")
+                      category="warning")
                 return redirect_back(url_for("web.index"))
             elif login_result is None:
                 log.info(error)
@@ -1258,9 +1263,18 @@ def login():
                     log.info('Login failed for user "%s" IP-adress: %s', form['username'], ipAdress)
                     flash(_(u"Wrong Username or Password"), category="error")
 
+    if feature_support['oauth']:
+        oauth_status = get_oauth_status()
+    else:
+        oauth_status = None
     next_url = url_for('web.index')
-    return render_title_template('login.html', title=_(u"login"), next_url=next_url, config=config,
-                                 mail = config.get_mail_server_configured(), page="login")
+    return render_title_template('login.html',
+                                 title=_(u"login"),
+                                 next_url=next_url,
+                                 config=config,
+                                 # oauth_status=oauth_status,
+                                 oauth_check=oauth_check,
+                                 mail=config.get_mail_server_configured(), page="login")
 
 
 @web.route('/logout')
@@ -1429,7 +1443,7 @@ def profile():
         if "Show_detail_random" in to_save:
             current_user.sidebar_view += constants.DETAIL_RANDOM
 
-        #current_user.mature_content = "Show_mature_content" in to_save
+        # current_user.mature_content = "Show_mature_content" in to_save
 
         try:
             ub.session.commit()
@@ -1440,12 +1454,12 @@ def profile():
             return render_title_template("user_edit.html", content=current_user, downloads=downloads,
                                          translations=translations, kobo_support=kobo_support,
                                          title=_(u"%(name)s's profile", name=current_user.nickname), page="me",
-                                                 registered_oauth=oauth_check, oauth_status=oauth_status)
+                                         registered_oauth=oauth_check, oauth_status=oauth_status)
         flash(_(u"Profile updated"), category="success")
         log.debug(u"Profile updated")
     return render_title_template("user_edit.html", translations=translations, profile=1, languages=languages,
                                  content=current_user, downloads=downloads, kobo_support=kobo_support,
-                                 title= _(u"%(name)s's profile", name=current_user.nickname),
+                                 title=_(u"%(name)s's profile", name=current_user.nickname),
                                  page="me", registered_oauth=oauth_check, oauth_status=oauth_status)
 
 
@@ -1523,12 +1537,12 @@ def show_book(book_id):
 
         if not current_user.is_anonymous:
             if not config.config_read_column:
-                matching_have_read_book = ub.session.query(ub.ReadBook).\
+                matching_have_read_book = ub.session.query(ub.ReadBook). \
                     filter(and_(ub.ReadBook.user_id == int(current_user.id), ub.ReadBook.book_id == book_id)).all()
                 have_read = len(matching_have_read_book) > 0 and matching_have_read_book[0].is_read
             else:
                 try:
-                    matching_have_read_book = getattr(entries, 'custom_column_'+str(config.config_read_column))
+                    matching_have_read_book = getattr(entries, 'custom_column_' + str(config.config_read_column))
                     have_read = len(matching_have_read_book) > 0 and matching_have_read_book[0].value
                 except KeyError:
                     log.error("Custom Column No.%d is not existing in calibre database", config.config_read_column)
@@ -1550,7 +1564,8 @@ def show_book(book_id):
                 audioentries.append(media_format.format.lower())
 
         return render_title_template('detail.html', entry=entries, audioentries=audioentries, cc=cc,
-                                     is_xhr=request.headers.get('X-Requested-With')=='XMLHttpRequest', title=entries.title, books_shelfs=book_in_shelfs,
+                                     is_xhr=request.headers.get('X-Requested-With') == 'XMLHttpRequest',
+                                     title=entries.title, books_shelfs=book_in_shelfs,
                                      have_read=have_read, kindle_list=kindle_list, reader_list=reader_list, page="book")
     else:
         log.debug(u"Error opening eBook. File does not exist or file is not accessible:")
