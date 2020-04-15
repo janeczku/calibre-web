@@ -53,7 +53,7 @@ msgstr "Configurazione dell'interfaccia utente"
 
 #: cps/admin.py:187 cps/admin.py:637
 msgid "Calibre-Web configuration updated"
-msgstr "Aggiornamento della configurazione di Calibre-Web"
+msgstr "La configurazione di Calibre-Web è aggiornata"
 
 #: cps/admin.py:434 cps/admin.py:440 cps/admin.py:451 cps/admin.py:462
 #: cps/templates/modal_restriction.html:29
@@ -88,7 +88,7 @@ msgstr "Trovato un account esistente con questo e-mail o nome di utente"
 #: cps/admin.py:721
 #, python-format
 msgid "User '%(user)s' created"
-msgstr "Utente '%(user)s' creato"
+msgstr "Creato l'utente '%(user)s'"
 
 #: cps/admin.py:740
 msgid "Edit e-mail server settings"
@@ -211,7 +211,7 @@ msgstr "Errore generale"
 
 #: cps/admin.py:968
 msgid "Update File Could Not be Saved in Temp Dir"
-msgstr ""
+msgstr "Il file di aggiornamento non può essere salvato nella cartella temporanea"
 
 #: cps/converter.py:31
 msgid "not configured"
@@ -237,7 +237,7 @@ msgstr "Il file da caricare deve avere un'estensione"
 #: cps/editbooks.py:337 cps/editbooks.py:607
 #, python-format
 msgid "Failed to create path %(path)s (Permission denied)."
-msgstr "Impossibile creare il percorso %(path)s (autorizzazione negata)."
+msgstr "Impossibile creare la cartella %(path)s (autorizzazione negata)."
 
 #: cps/editbooks.py:342
 #, python-format
@@ -400,7 +400,7 @@ msgstr "Non ho trovato la cartella %(path)s del libro su Google Drive"
 
 #: cps/helper.py:511
 msgid "Failed to create path for cover"
-msgstr "Errore nel creare il percorso per la copertina"
+msgstr "Errore nel creare la cartella per la copertina"
 
 #: cps/helper.py:516
 msgid "Cover-file is not a valid image file"
@@ -566,12 +566,12 @@ msgstr "Spiacente, ma non sei autorizzato a togliere libri dallo scaffale: %(sna
 #: cps/shelf.py:215 cps/shelf.py:252
 #, python-format
 msgid "A public shelf with the name '%(title)s' already exists."
-msgstr ""
+msgstr "Uno scaffale pubblico denominato '%(title)s' esiste già."
 
 #: cps/shelf.py:222 cps/shelf.py:260
 #, python-format
 msgid "A private shelf with the name '%(title)s' already exists."
-msgstr ""
+msgstr "Uno scaffale privato denominato '%(title)s' esiste già."
 
 #: cps/shelf.py:228
 #, python-format
@@ -768,7 +768,7 @@ msgstr "I libri più richiesti"
 
 #: cps/web.py:580
 msgid "Oops! Selected book title is unavailable. File does not exist or is not accessible"
-msgstr "Oops! Errore durante l'apertura del libro selezionato. Il file non esiste o il file non è accessibile"
+msgstr "Errore durante l'apertura del libro selezionato. Il file non esiste o il file non è accessibile"
 
 #: cps/web.py:593
 #, python-format
@@ -857,7 +857,7 @@ msgstr "Si è verificato un errore durante l'invio di questo libro: %(res)s"
 
 #: cps/web.py:1066
 msgid "Please update your profile with a valid Send to Kindle E-mail Address."
-msgstr "Per favore configura dapprima il tuo indirizzo e-mail di Kindle..."
+msgstr "Per favore aggiorna il tuo profilo con un indirizzo e-mail Kindle a cui inviare i libri."
 
 #: cps/web.py:1083
 msgid "E-Mail server is not configured, please contact your administrator!"
@@ -870,7 +870,7 @@ msgstr "registra"
 
 #: cps/web.py:1117
 msgid "Your e-mail is not allowed to register"
-msgstr "Il tuo e-mail non può essere utilizzato per la registrazione"
+msgstr "Il tuo e-mail non è autorizzato alla registrazione"
 
 #: cps/web.py:1120
 msgid "Confirmation e-mail was send to your e-mail account."
@@ -1638,7 +1638,7 @@ msgstr "Nessuna"
 
 #: cps/templates/config_view_edit.html:68
 msgid "Regular Expression for Title Sorting"
-msgstr "Espressione regolare per ordinare la visualizzazione del titolo"
+msgstr "Espressione regolare per ordinare la visualizzazione dei titoli"
 
 #: cps/templates/config_view_edit.html:80
 msgid "Default Settings for New Users"
@@ -1690,7 +1690,7 @@ msgstr "Aggiungi categorie permesse/negate"
 
 #: cps/templates/config_view_edit.html:145
 msgid "Add Allowed/Denied custom column values"
-msgstr "Aggiungi valori personali nelle colonne permessi/negati"
+msgstr "Aggiungi valori personali permetti/nega nelle colonne"
 
 #: cps/templates/detail.html:59
 msgid "Read in Browser"
@@ -1758,7 +1758,7 @@ msgstr "Dominii autorizzati alla registrazione (Whitelist)"
 
 #: cps/templates/email_edit.html:46 cps/templates/email_edit.html:72
 msgid "Add Domain"
-msgstr "Aggiungi il dominio"
+msgstr "Aggiungi dominio"
 
 #: cps/templates/email_edit.html:49 cps/templates/email_edit.html:75
 msgid "Add"
@@ -1774,7 +1774,7 @@ msgstr "Dominii bloccati per la registrazione (Blacklist)"
 
 #: cps/templates/email_edit.html:90
 msgid "Are you sure you want to delete this domain?"
-msgstr "Vuoi veramente eliminare questa regola di dominio?"
+msgstr "Se sicuro di voler eliminare questo dominio?"
 
 #: cps/templates/feed.xml:21 cps/templates/layout.html:173
 msgid "Next"
@@ -1783,7 +1783,7 @@ msgstr "Prossimo"
 #: cps/templates/feed.xml:79 cps/templates/layout.html:136
 #: cps/templates/layout.html:140
 msgid "(Public)"
-msgstr ""
+msgstr "(Pubblico)"
 
 #: cps/templates/generate_kobo_auth_url.html:5
 msgid "Open the .kobo/Kobo eReader.conf file in a text editor and add (or edit):"
@@ -1859,11 +1859,11 @@ msgstr "Libri ordinati per formato"
 
 #: cps/templates/index.xml:111 cps/templates/layout.html:134
 msgid "Shelves"
-msgstr ""
+msgstr "Scaffali"
 
 #: cps/templates/index.xml:115
 msgid "Books organized in shelves"
-msgstr ""
+msgstr "Libri organizzati in scaffali"
 
 #: cps/templates/layout.html:28
 msgid "Home"
@@ -1978,7 +1978,7 @@ msgstr "Seleziona le categorie consentite/negate"
 
 #: cps/templates/modal_restriction.html:7
 msgid "Select Allowed/Denied Custom Column Values"
-msgstr "Seleziona i valori personali per le colonne consentiti/negati"
+msgstr "Seleziona i valori personali consentiti/negati per le colonne"
 
 #: cps/templates/modal_restriction.html:8
 msgid "Select Allowed/Denied Tags of User"
@@ -1986,7 +1986,7 @@ msgstr "Seleziona le categorie consentite/negate per l'utente"
 
 #: cps/templates/modal_restriction.html:9
 msgid "Select Allowed/Denied Custom Column Values of User"
-msgstr "Seleziona i valori personali per le colonne consentiti/negati per l'utente"
+msgstr "Seleziona i valori personali consentiti/negati per le colonne dell'utente"
 
 #: cps/templates/modal_restriction.html:15
 msgid "Enter Tag"
@@ -2310,7 +2310,7 @@ msgstr "Crea/Visualizza"
 
 #: cps/templates/user_edit.html:84
 msgid "Add allowed/Denied Custom Column Values"
-msgstr "Aggiungi valori personali nelle colonne permessi/negati"
+msgstr "Aggiungi valori personali permessi/negati nelle colonne"
 
 #: cps/templates/user_edit.html:129
 msgid "Delete User"
@@ -2326,5 +2326,5 @@ msgstr "Genera un URL di autenticazione per Kobo"
 
 #: cps/templates/user_edit.html:176
 msgid "Do you really want to delete the Kobo Token?"
-msgstr "Vuoi veramente eliminare questo token di Kobo?"
+msgstr "Vuoi veramente eliminare il token di Kobo?"
 
