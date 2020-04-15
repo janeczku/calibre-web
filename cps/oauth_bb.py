@@ -36,7 +36,6 @@ from sqlalchemy.orm.exc import NoResultFound
 from . import constants, logger, config, app, ub
 from .web import login_required
 from .oauth import OAuthBackend
-# from .web import github_oauth_required
 
 
 oauth_check = {}
@@ -59,29 +58,29 @@ def oauth_required(f):
     return inner
 
 
-def register_oauth_blueprint(id, show_name):
-    oauth_check[id] = show_name
+def register_oauth_blueprint(cid, show_name):
+    oauth_check[cid] = show_name
 
 
 def register_user_with_oauth(user=None):
     all_oauth = {}
-    for oauth in oauth_check.keys():
-        if str(oauth) + '_oauth_user_id' in session and session[str(oauth) + '_oauth_user_id'] != '':
-            all_oauth[oauth] = oauth_check[oauth]
+    for oauth_key in oauth_check.keys():
+        if str(oauth_key) + '_oauth_user_id' in session and session[str(oauth_key) + '_oauth_user_id'] != '':
+            all_oauth[oauth_key] = oauth_check[oauth_key]
     if len(all_oauth.keys()) == 0:
         return
     if user is None:
         flash(_(u"Register with %(provider)s", provider=", ".join(list(all_oauth.values()))), category="success")
     else:
-        for oauth in all_oauth.keys():
+        for oauth_key in all_oauth.keys():
             # Find this OAuth token in the database, or create it
             query = ub.session.query(ub.OAuth).filter_by(
-                provider=oauth,
-                provider_user_id=session[str(oauth) + "_oauth_user_id"],
+                provider=oauth_key,
+                provider_user_id=session[str(oauth_key) + "_oauth_user_id"],
             )
             try:
-                oauth = query.one()
-                oauth.user_id = user.id
+                oauth_key = query.one()
+                oauth_key.user_id = user.id
             except NoResultFound:
                 # no found, return error
                 return
@@ -93,39 +92,40 @@ def register_user_with_oauth(user=None):
 
 
 def logout_oauth_user():
-    for oauth in oauth_check.keys():
-        if str(oauth) + '_oauth_user_id' in session:
-            session.pop(str(oauth) + '_oauth_user_id')
+    for oauth_key in oauth_check.keys():
+        if str(oauth_key) + '_oauth_user_id' in session:
+            session.pop(str(oauth_key) + '_oauth_user_id')
+
 
 if ub.oauth_support:
-    oauthblueprints =[]
+    oauthblueprints = []
     if not ub.session.query(ub.OAuthProvider).count():
-        oauth = ub.OAuthProvider()
-        oauth.provider_name = "github"
-        oauth.active = False
-        ub.session.add(oauth)
+        oauthProvider = ub.OAuthProvider()
+        oauthProvider.provider_name = "github"
+        oauthProvider.active = False
+        ub.session.add(oauthProvider)
         ub.session.commit()
-        oauth = ub.OAuthProvider()
-        oauth.provider_name = "google"
-        oauth.active = False
-        ub.session.add(oauth)
+        oauthProvider = ub.OAuthProvider()
+        oauthProvider.provider_name = "google"
+        oauthProvider.active = False
+        ub.session.add(oauthProvider)
         ub.session.commit()
 
     oauth_ids = ub.session.query(ub.OAuthProvider).all()
-    ele1=dict(provider_name='github',
-              id=oauth_ids[0].id,
-              active=oauth_ids[0].active,
-              oauth_client_id=oauth_ids[0].oauth_client_id,
-              scope=None,
-              oauth_client_secret=oauth_ids[0].oauth_client_secret,
-              obtain_link='https://github.com/settings/developers')
-    ele2=dict(provider_name='google',
-              id=oauth_ids[1].id,
-              active=oauth_ids[1].active,
-              scope=["https://www.googleapis.com/auth/plus.me", "https://www.googleapis.com/auth/userinfo.email"],
-              oauth_client_id=oauth_ids[1].oauth_client_id,
-              oauth_client_secret=oauth_ids[1].oauth_client_secret,
-              obtain_link='https://github.com/settings/developers')
+    ele1 = dict(provider_name='github',
+                id=oauth_ids[0].id,
+                active=oauth_ids[0].active,
+                oauth_client_id=oauth_ids[0].oauth_client_id,
+                scope=None,
+                oauth_client_secret=oauth_ids[0].oauth_client_secret,
+                obtain_link='https://github.com/settings/developers')
+    ele2 = dict(provider_name='google',
+                id=oauth_ids[1].id,
+                active=oauth_ids[1].active,
+                scope=["https://www.googleapis.com/auth/plus.me", "https://www.googleapis.com/auth/userinfo.email"],
+                oauth_client_id=oauth_ids[1].oauth_client_id,
+                oauth_client_secret=oauth_ids[1].oauth_client_secret,
+                obtain_link='https://github.com/settings/developers')
     oauthblueprints.append(ele1)
     oauthblueprints.append(ele2)
 
@@ -138,9 +138,9 @@ if ub.oauth_support:
             client_id=element['oauth_client_id'],
             client_secret=element['oauth_client_secret'],
             redirect_to="oauth."+element['provider_name']+"_login",
-            scope = element['scope']
+            scope=element['scope']
         )
-        element['blueprint']=blueprint
+        element['blueprint'] = blueprint
         app.register_blueprint(blueprint, url_prefix="/login")
         element['blueprint'].backend = OAuthBackend(ub.OAuth, ub.session, str(element['id']),
                                                     user=current_user, user_required=True)
@@ -190,17 +190,17 @@ if ub.oauth_support:
             provider_user_id=provider_user_id,
         )
         try:
-            oauth = query.one()
+            oauth_entry = query.one()
             # update token
-            oauth.token = token
+            oauth_entry.token = token
         except NoResultFound:
-            oauth = ub.OAuth(
+            oauth_entry = ub.OAuth(
                 provider=provider_id,
                 provider_user_id=provider_user_id,
                 token=token,
             )
         try:
-            ub.session.add(oauth)
+            ub.session.add(oauth_entry)
             ub.session.commit()
         except Exception as e:
             log.exception(e)
@@ -216,25 +216,25 @@ if ub.oauth_support:
             provider_user_id=provider_user_id,
         )
         try:
-            oauth = query.one()
+            oauth_entry = query.one()
             # already bind with user, just login
-            if oauth.user:
-                login_user(oauth.user)
+            if oauth_entry.user:
+                login_user(oauth_entry.user)
                 return redirect(url_for('web.index'))
             else:
                 # bind to current user
                 if current_user and current_user.is_authenticated:
-                    oauth.user = current_user
+                    oauth_entry.user = current_user
                     try:
-                        ub.session.add(oauth)
+                        ub.session.add(oauth_entry)
                         ub.session.commit()
                     except Exception as e:
                         log.exception(e)
                         ub.session.rollback()
                     return redirect(url_for('web.login'))
-                #if config.config_public_reg:
+                # if config.config_public_reg:
                 #   return redirect(url_for('web.register'))
-                #else:
+                # else:
                 #    flash(_(u"Public registration is not enabled"), category="error")
                 #    return redirect(url_for(redirect_url))
         except NoResultFound:
@@ -248,8 +248,8 @@ if ub.oauth_support:
         )
         try:
             oauths = query.all()
-            for oauth in oauths:
-                status.append(int(oauth.provider))
+            for oauth_entry in oauths:
+                status.append(int(oauth_entry.provider))
             return status
         except NoResultFound:
             return None
@@ -263,11 +263,11 @@ if ub.oauth_support:
             user_id=current_user.id,
         )
         try:
-            oauth = query.one()
+            oauth_entry = query.one()
             if current_user and current_user.is_authenticated:
-                oauth.user = current_user
+                oauth_entry.user = current_user
                 try:
-                    ub.session.delete(oauth)
+                    ub.session.delete(oauth_entry)
                     ub.session.commit()
                     logout_oauth_user()
                     flash(_(u"Unlink to %(oauth)s success.", oauth=oauth_check[provider]), category="success")
@@ -292,7 +292,7 @@ if ub.oauth_support:
             error=error,
             description=error_description,
             uri=error_uri,
-        ) # ToDo: Translate
+        )  # ToDo: Translate
         flash(msg, category="error")
 
 
@@ -338,7 +338,7 @@ if ub.oauth_support:
             error=error,
             description=error_description,
             uri=error_uri,
-        ) # ToDo: Translate
+        )  # ToDo: Translate
         flash(msg, category="error")
 
 

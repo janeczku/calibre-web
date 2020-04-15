@@ -43,6 +43,11 @@ try:
 except ImportError:
     unidecode_version = _(u'not installed')
 
+try:
+    from flask_dance import __version__ as flask_danceVersion
+except ImportError:
+    flask_danceVersion = None
+
 from . import services
 
 about = flask.Blueprint('about', __name__)
@@ -68,10 +73,11 @@ _VERSIONS = OrderedDict(
     iso639=isoLanguages.__version__,
     pytz=pytz.__version__,
     Unidecode = unidecode_version,
-    Flask_SimpleLDAP =  u'installed' if bool(services.ldap) else u'not installed',
-    python_LDAP = services.ldapVersion if bool(services.ldapVersion) else u'not installed',
-    Goodreads = u'installed' if bool(services.goodreads_support) else u'not installed',
-    jsonschema = services.SyncToken.__version__  if bool(services.SyncToken) else u'not installed',
+    Flask_SimpleLDAP =  u'installed' if bool(services.ldap) else None,
+    python_LDAP = services.ldapVersion if bool(services.ldapVersion) else None,
+    Goodreads = u'installed' if bool(services.goodreads_support) else None,
+    jsonschema = services.SyncToken.__version__  if bool(services.SyncToken) else None,
+    flask_dance = flask_danceVersion
 )
 _VERSIONS.update(uploader.get_versions())
 

@@ -622,23 +622,22 @@ def _configuration_update_helper():
         active_oauths = 0
 
         for element in oauthblueprints:
+            if to_save["config_" + str(element['id']) + "_oauth_client_id"] != element['oauth_client_id'] \
+                or to_save["config_" + str(element['id']) + "_oauth_client_secret"] != element['oauth_client_secret']:
+                reboot_required = True
+                element['oauth_client_id'] = to_save["config_" + str(element['id']) + "_oauth_client_id"]
+                element['oauth_client_secret'] = to_save["config_" + str(element['id']) + "_oauth_client_secret"]
             if to_save["config_"+str(element['id'])+"_oauth_client_id"] \
                and to_save["config_"+str(element['id'])+"_oauth_client_secret"]:
                 active_oauths += 1
                 element["active"] = 1
-                ub.session.query(ub.OAuthProvider).filter(ub.OAuthProvider.id == element['id']).update(
-                    {"oauth_client_id":to_save["config_"+str(element['id'])+"_oauth_client_id"],
-                    "oauth_client_secret":to_save["config_"+str(element['id'])+"_oauth_client_secret"],
-                    "active":1})
-                if to_save["config_" + str(element['id']) + "_oauth_client_id"] != element['oauth_client_id'] \
-                    or to_save["config_" + str(element['id']) + "_oauth_client_secret"] != element['oauth_client_secret']:
-                    reboot_required = True
-                    element['oauth_client_id'] = to_save["config_"+str(element['id'])+"_oauth_client_id"]
-                    element['oauth_client_secret'] = to_save["config_"+str(element['id'])+"_oauth_client_secret"]
             else:
-                ub.session.query(ub.OAuthProvider).filter(ub.OAuthProvider.id == element['id']).update(
-                    {"active":0})
                 element["active"] = 0
+            ub.session.query(ub.OAuthProvider).filter(ub.OAuthProvider.id == element['id']).update(
+                {"oauth_client_id":to_save["config_"+str(element['id'])+"_oauth_client_id"],
+                "oauth_client_secret":to_save["config_"+str(element['id'])+"_oauth_client_secret"],
+                "active":element["active"]})
+
 
     reboot_required |= _config_int("config_log_level")
     reboot_required |= _config_string("config_logfile")
