@@ -35,10 +35,12 @@
   </thead>
   <tbody>
   {% for library,version in versions.items() %}
+  {% if version %}
     <tr>
       <th>{{library}}</th>
       <td>{{_(version)}}</td>
     </tr>
+  {% endif %}
   {% endfor %}
   </tbody>
 </table>

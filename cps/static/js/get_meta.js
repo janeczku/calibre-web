@@ -29,15 +29,15 @@ $(function () {
     var msg = i18nMsg;
     var douban = "https://api.douban.com";
     var dbSearch = "/v2/book/search";
-    var dbDone = true;
+    var dbDone = 0;
 
     var google = "https://www.googleapis.com";
     var ggSearch = "/books/v1/volumes";
-    var ggDone = false;
+    var ggDone = 0;
 
     var comicvine = "https://comicvine.gamespot.com";
     var cvSearch = "/api/search/";
-    var cvDone = false;
+    var cvDone = 0;
 
     var showFlag = 0;
 
@@ -73,7 +73,9 @@ $(function () {
         if (showFlag === 1) {
             $("#meta-info").html("<ul id=\"book-list\" class=\"media-list\"></ul>");
         }
-        if (!ggDone && !dbDone) {
+        if ((ggDone == 3 || (ggDone == 1 && ggResults.length === 0)) &&
+            (dbDone == 3 || (ggDone == 1 && dbResults.length === 0)) &&
+            (cvDone == 3 || (ggDone == 1 && cvResults.length === 0))) {
             $("#meta-info").html("<p class=\"text-danger\">" + msg.no_result + "</p>");
             return;
         }
@@ -93,128 +95,141 @@ $(function () {
             return [year, month, day].join("-");
         }
 
-        if (ggDone && ggResults.length > 0) {
-            ggResults.forEach(function(result) {
-                var book = {
-                    id: result.id,
-                    title: result.volumeInfo.title,
-                    authors: result.volumeInfo.authors || [],
-                    description: result.volumeInfo.description || "",
-                    publisher: result.volumeInfo.publisher || "",
-                    publishedDate: result.volumeInfo.publishedDate || "",
-                    tags: result.volumeInfo.categories || [],
-                    rating: result.volumeInfo.averageRating || 0,
-                    cover: result.volumeInfo.imageLinks ?
-                        result.volumeInfo.imageLinks.thumbnail : "/static/generic_cover.jpg",
-                    url: "https://books.google.com/books?id=" + result.id,
-                    source: {
-                        id: "google",
-                        description: "Google Books",
-                        url: "https://books.google.com/"
-                    }
-                };
+        if (ggResults.length > 0) {
+            if (ggDone < 2) {
+                ggResults.forEach(function(result) {
+                    var book = {
+                        id: result.id,
+                        title: result.volumeInfo.title,
+                        authors: result.volumeInfo.authors || [],
+                        description: result.volumeInfo.description || "",
+                        publisher: result.volumeInfo.publisher || "",
+                        publishedDate: result.volumeInfo.publishedDate || "",
+                        tags: result.volumeInfo.categories || [],
+                        rating: result.volumeInfo.averageRating || 0,
+                        cover: result.volumeInfo.imageLinks ?
+                            result.volumeInfo.imageLinks.thumbnail : "/static/generic_cover.jpg",
+                        url: "https://books.google.com/books?id=" + result.id,
+                        source: {
+                            id: "google",
+                            description: "Google Books",
+                            url: "https://books.google.com/"
+                        }
+                    };
 
-                var $book = $(templates.bookResult(book));
-                $book.find("img").on("click", function () {
-                    populateForm(book);
+                    var $book = $(templates.bookResult(book));
+                    $book.find("img").on("click", function () {
+                        populateForm(book);
+                    });
+
+                    $("#book-list").append($book);
                 });
-
-                $("#book-list").append($book);
-            });
-            ggDone = false;
+                ggDone = 2;
+            } else {
+                ggDone = 3;
+            }
         }
-        if (dbDone && dbResults.length > 0) {
-            dbResults.forEach(function(result) {
-                var seriesTitle = "";
-                if (result.series) {
-                    seriesTitle = result.series.title;
-                }
-                var dateFomers = result.pubdate.split("-");
-                var publishedYear = parseInt(dateFomers[0]);
-                var publishedMonth = parseInt(dateFomers[1]);
-                var publishedDate = new Date(publishedYear, publishedMonth - 1, 1);
 
-                publishedDate = formatDate(publishedDate);
-
-                var book = {
-                    id: result.id,
-                    title: result.title,
-                    authors: result.author || [],
-                    description: result.summary,
-                    publisher: result.publisher || "",
-                    publishedDate: publishedDate || "",
-                    tags: result.tags.map(function(tag) {
-                        return tag.title.toLowerCase().replace(/,/g, "_");
-                    }),
-                    rating: result.rating.average || 0,
-                    series: seriesTitle || "",
-                    cover: result.image,
-                    url: "https://book.douban.com/subject/" + result.id,
-                    source: {
-                        id: "douban",
-                        description: "Douban Books",
-                        url: "https://book.douban.com/"
+        if (dbResults.length > 0) {
+            if (dbDone < 2) {
+                dbResults.forEach(function(result) {
+                    var seriesTitle = "";
+                    if (result.series) {
+                        seriesTitle = result.series.title;
                     }
-                };
+                    var dateFomers = result.pubdate.split("-");
+                    var publishedYear = parseInt(dateFomers[0]);
+                    var publishedMonth = parseInt(dateFomers[1]);
+                    var publishedDate = new Date(publishedYear, publishedMonth - 1, 1);
 
-                if (book.rating > 0) {
-                    book.rating /= 2;
-                }
+                    publishedDate = formatDate(publishedDate);
 
-                var $book = $(templates.bookResult(book));
-                $book.find("img").on("click", function () {
-                    populateForm(book);
+                    var book = {
+                        id: result.id,
+                        title: result.title,
+                        authors: result.author || [],
+                        description: result.summary,
+                        publisher: result.publisher || "",
+                        publishedDate: publishedDate || "",
+                        tags: result.tags.map(function(tag) {
+                            return tag.title.toLowerCase().replace(/,/g, "_");
+                        }),
+                        rating: result.rating.average || 0,
+                        series: seriesTitle || "",
+                        cover: result.image,
+                        url: "https://book.douban.com/subject/" + result.id,
+                        source: {
+                            id: "douban",
+                            description: "Douban Books",
+                            url: "https://book.douban.com/"
+                        }
+                    };
+
+                    if (book.rating > 0) {
+                        book.rating /= 2;
+                    }
+
+                    var $book = $(templates.bookResult(book));
+                    $book.find("img").on("click", function () {
+                        populateForm(book);
+                    });
+
+                    $("#book-list").append($book);
                 });
-
-                $("#book-list").append($book);
-            });
-            dbDone = false;
+                dbDone = 2;
+            } else {
+                dbDone = 3;
+            }
         }
-        if (cvDone && cvResults.length > 0) {
-            cvResults.forEach(function(result) {
-                var seriesTitle = "";
-                if (result.volume.name) {
-                    seriesTitle = result.volume.name;
-                }
-                var dateFomers = "";
-                if (result.store_date) {
-                    dateFomers = result.store_date.split("-");
-                }else{
-                    dateFomers = result.date_added.split("-");
-                }
-                var publishedYear = parseInt(dateFomers[0]);
-                var publishedMonth = parseInt(dateFomers[1]);
-                var publishedDate = new Date(publishedYear, publishedMonth - 1, 1);
-                
-                publishedDate = formatDate(publishedDate);
-
-                var book = {
-                    id: result.id,
-                    title: seriesTitle + ' #' +('00' + result.issue_number).slice(-3) + ' - ' + result.name,
-                    authors: result.author || [],
-                    description: result.description,
-                    publisher: "",
-                    publishedDate: publishedDate || "",
-                    tags: ['Comics', seriesTitle],
-                    rating: 0,
-                    series: seriesTitle || "",
-                    cover: result.image.original_url,
-                    url: result.site_detail_url,
-                    source: {
-                        id: "comicvine",
-                        description: "ComicVine Books",
-                        url: "https://comicvine.gamespot.com/"
+        if (cvResults.length > 0) {
+            if (cvDone < 2) {
+                cvResults.forEach(function(result) {
+                    var seriesTitle = "";
+                    if (result.volume.name) {
+                        seriesTitle = result.volume.name;
                     }
-                };
+                    var dateFomers = "";
+                    if (result.store_date) {
+                        dateFomers = result.store_date.split("-");
+                    }else{
+                        dateFomers = result.date_added.split("-");
+                    }
+                    var publishedYear = parseInt(dateFomers[0]);
+                    var publishedMonth = parseInt(dateFomers[1]);
+                    var publishedDate = new Date(publishedYear, publishedMonth - 1, 1);
 
-                var $book = $(templates.bookResult(book));
-                $book.find("img").on("click", function () {
-                    populateForm(book);
+                    publishedDate = formatDate(publishedDate);
+
+                    var book = {
+                        id: result.id,
+                        title: seriesTitle + ' #' +('00' + result.issue_number).slice(-3) + ' - ' + result.name,
+                        authors: result.author || [],
+                        description: result.description,
+                        publisher: "",
+                        publishedDate: publishedDate || "",
+                        tags: ['Comics', seriesTitle],
+                        rating: 0,
+                        series: seriesTitle || "",
+                        cover: result.image.original_url,
+                        url: result.site_detail_url,
+                        source: {
+                            id: "comicvine",
+                            description: "ComicVine Books",
+                            url: "https://comicvine.gamespot.com/"
+                        }
+                    };
+
+                    var $book = $(templates.bookResult(book));
+                    $book.find("img").on("click", function () {
+                        populateForm(book);
+                    });
+
+                    $("#book-list").append($book);
                 });
-
-                $("#book-list").append($book);
-            });
-            cvDone = false;
+                cvDone = 2;
+            } else {
+                cvDone = 3;
+            }
         }
     }
 
@@ -227,11 +242,10 @@ $(function () {
             success: function success(data) {
                 if ("items" in data) {
                     ggResults = data.items;
-                    ggDone = true;
                 }
             },
             complete: function complete() {
-                ggDone = true;
+                ggDone = 1;
                 showResult();
                 $("#show-google").trigger("change");
             }
@@ -252,7 +266,7 @@ $(function () {
                 $("#meta-info").html("<p class=\"text-danger\">" + msg.search_error + "!</p>" + $("#meta-info")[0].innerHTML);
             },
             complete: function complete() {
-                dbDone = true;
+                dbDone = 1;
                 showResult();
                 $("#show-douban").trigger("change");
             }
@@ -274,7 +288,7 @@ $(function () {
                 $("#meta-info").html("<p class=\"text-danger\">" + msg.search_error + "!</p>" + $("#meta-info")[0].innerHTML);
             },
             complete: function complete() {
-                cvDone = true;
+                cvDone = 1;
                 showResult();
                 $("#show-comics").trigger("change");
             }
@@ -283,6 +297,10 @@ $(function () {
 
     function doSearch (keyword) {
         showFlag = 0;
+        dbDone = ggDone = cvDone = 0;
+        dbResults = [];
+        ggResults = [];
+        cvResults = [];
         $("#meta-info").text(msg.loading);
         if (keyword) {
             dbSearchBook(keyword);
