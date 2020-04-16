@@ -23,12 +23,14 @@ from flask import session
 try:
     from flask_dance.consumer.backend.sqla import SQLAlchemyBackend, first, _get_real_user
     from sqlalchemy.orm.exc import NoResultFound
+    backend_resultcode = False       # prevent storing values with this resultcode
 except ImportError:
     # fails on flask-dance >1.3, due to renaming
     try:
         from flask_dance.consumer.storage.sqla import SQLAlchemyStorage as SQLAlchemyBackend
         from flask_dance.consumer.storage.sqla import first, _get_real_user
         from sqlalchemy.orm.exc import NoResultFound
+        backend_resultcode = True # prevent storing values with this resultcode
     except ImportError:
         pass
 
@@ -48,7 +50,7 @@ try:
 
         def get(self, blueprint, user=None, user_id=None):
             if self.provider_id + '_oauth_token' in session and session[self.provider_id + '_oauth_token'] != '':
-                return session[blueprint.name + '_oauth_token']
+                return session[self.provider_id + '_oauth_token']
             # check cache
             cache_key = self.make_cache_key(blueprint=blueprint, user=user, user_id=user_id)
             token = self.cache.get(cache_key)

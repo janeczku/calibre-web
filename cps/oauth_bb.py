@@ -35,7 +35,7 @@ from sqlalchemy.orm.exc import NoResultFound
 
 from . import constants, logger, config, app, ub
 from .web import login_required
-from .oauth import OAuthBackend
+from .oauth import OAuthBackend, backend_resultcode
 
 
 oauth_check = {}
@@ -141,9 +141,9 @@ if ub.oauth_support:
             scope=element['scope']
         )
         element['blueprint'] = blueprint
-        app.register_blueprint(blueprint, url_prefix="/login")
         element['blueprint'].backend = OAuthBackend(ub.OAuth, ub.session, str(element['id']),
                                                     user=current_user, user_required=True)
+        app.register_blueprint(blueprint, url_prefix="/login")
         if element['active']:
             register_oauth_blueprint(element['id'], element['provider_name'])
 
@@ -207,19 +207,23 @@ if ub.oauth_support:
             ub.session.rollback()
 
         # Disable Flask-Dance's default behavior for saving the OAuth token
-        return False
+        # Value differrs depending on flask-dance version
+        return backend_resultcode
 
 
-    def bind_oauth_or_register(provider_id, provider_user_id, redirect_url):
+    def bind_oauth_or_register(provider_id, provider_user_id, redirect_url, provider_name):
         query = ub.session.query(ub.OAuth).filter_by(
             provider=provider_id,
             provider_user_id=provider_user_id,
         )
         try:
-            oauth_entry = query.one()
+            oauth_entry = query.first()
             # already bind with user, just login
             if oauth_entry.user:
                 login_user(oauth_entry.user)
+                log.debug(u"You are now logged in as: '%s'", oauth_entry.user.nickname)
+                flash(_(u"you are now logged in as: '%(nickname)s'", nickname= oauth_entry.user.nickname),
+                      category="success")
                 return redirect(url_for('web.index'))
             else:
                 # bind to current user
@@ -228,16 +232,22 @@ if ub.oauth_support:
                     try:
                         ub.session.add(oauth_entry)
                         ub.session.commit()
+                        flash(_(u"Link to %(oauth)s Succeeded", oauth=provider_name), category="success")
+                        return redirect(url_for('web.profile'))
                     except Exception as e:
                         log.exception(e)
                         ub.session.rollback()
-                    return redirect(url_for('web.login'))
+                else:
+                    flash(_(u"Login failed, No User Linked With OAuth Account"), category="error")
+                log.info('Login failed, No User Linked With OAuth Account')
+                return redirect(url_for('web.login'))
+                # return redirect(url_for('web.login'))
                 # if config.config_public_reg:
                 #   return redirect(url_for('web.register'))
                 # else:
                 #    flash(_(u"Public registration is not enabled"), category="error")
                 #    return redirect(url_for(redirect_url))
-        except NoResultFound:
+        except (NoResultFound, AttributeError):
             return redirect(url_for(redirect_url))
 
 
@@ -270,14 +280,14 @@ if ub.oauth_support:
                     ub.session.delete(oauth_entry)
                     ub.session.commit()
                     logout_oauth_user()
-                    flash(_(u"Unlink to %(oauth)s success.", oauth=oauth_check[provider]), category="success")
+                    flash(_(u"Unlink to %(oauth)s Succeeded", oauth=oauth_check[provider]), category="success")
                 except Exception as e:
                     log.exception(e)
                     ub.session.rollback()
-                    flash(_(u"Unlink to %(oauth)s failed.", oauth=oauth_check[provider]), category="error")
+                    flash(_(u"Unlink to %(oauth)s Failed", oauth=oauth_check[provider]), category="error")
         except NoResultFound:
-            log.warning("oauth %s for user %d not fount", provider, current_user.id)
-            flash(_(u"Not linked to %(oauth)s.", oauth=oauth_check[provider]), category="error")
+            log.warning("oauth %s for user %d not found", provider, current_user.id)
+            flash(_(u"Not Linked to %(oauth)s.", oauth=oauth_check[provider]), category="error")
         return redirect(url_for('web.profile'))
 
 
@@ -296,7 +306,7 @@ if ub.oauth_support:
         flash(msg, category="error")
 
 
-    @oauth.route('/github')
+    @oauth.route('/link/github')
     @oauth_required
     def github_login():
         if not github.authorized:
@@ -304,7 +314,7 @@ if ub.oauth_support:
         account_info = github.get('/user')
         if account_info.ok:
             account_info_json = account_info.json()
-            return bind_oauth_or_register(oauthblueprints[0]['id'], account_info_json['id'], 'github.login')
+            return bind_oauth_or_register(oauthblueprints[0]['id'], account_info_json['id'], 'github.login', 'github')
         flash(_(u"GitHub Oauth error, please retry later."), category="error")
         return redirect(url_for('web.login'))
 
@@ -315,7 +325,7 @@ if ub.oauth_support:
         return unlink_oauth(oauthblueprints[0]['id'])
 
 
-    @oauth.route('/login/google')
+    @oauth.route('/link/google')
     @oauth_required
     def google_login():
         if not google.authorized:
@@ -323,7 +333,7 @@ if ub.oauth_support:
         resp = google.get("/oauth2/v2/userinfo")
         if resp.ok:
             account_info_json = resp.json()
-            return bind_oauth_or_register(oauthblueprints[1]['id'], account_info_json['id'], 'google.login')
+            return bind_oauth_or_register(oauthblueprints[1]['id'], account_info_json['id'], 'google.login', 'google')
         flash(_(u"Google Oauth error, please retry later."), category="error")
         return redirect(url_for('web.login'))
 
