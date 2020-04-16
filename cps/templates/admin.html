@@ -35,7 +35,11 @@
           {% endif %}
         {% endfor %}
       </table>
-      <div class="btn btn-default" id="admin_new_user"><a href="{{url_for('admin.new_user')}}">{{_('Add New User')}}</a></div>
+        <div class="btn btn-default" id="admin_new_user"><a href="{{url_for('admin.new_user')}}">{{_('Add New User')}}</a></div>
+      {% if (config.config_login_type == 1) %}
+        <div class="btn btn-default" id="import_ldap_users" data-toggle="modal" data-target="#StatusDialog">{{_('Import LDAP Users')}}</div>
+        <!--a href="#" id="import_ldap_users" name="import_ldap_users"><button type="submit" class="btn btn-default">{{_('Import LDAP Users')}}</button></a-->
+      {% endif %}
     </div>
   </div>
 
@@ -120,7 +124,7 @@
     <div class="col">
       <h2>{{_('Administration')}}</h2>
       <div class="btn btn-default"><a id="logfile" href="{{url_for('admin.view_logfile')}}">{{_('View Logs')}}</a></div>
-      <div class="btn btn-default" id="restart_database">{{_('Reconnect Calibre Database')}}</div>
+      <div class="btn btn-default" id="restart_database" data-toggle="modal" data-target="#StatusDialog">{{_('Reconnect Calibre Database')}}</div>
       <div class="btn btn-default" id="admin_restart" data-toggle="modal" data-target="#RestartDialog">{{_('Restart')}}</div>
       <div class="btn btn-default" id="admin_stop" data-toggle="modal" data-target="#ShutdownDialog">{{_('Shutdown')}}</div>
     </div>
@@ -146,7 +150,7 @@
 
       <div class="hidden" id="update_error"> <span>{{update_error}}</span></div>
       <div class="btn btn-default" id="check_for_update">{{_('Check for Update')}}</div>
-      <div class="btn btn-default hidden" id="perform_update" data-toggle="modal" data-target="#UpdateprogressDialog">{{_('Perform Update')}}</div>
+      <div class="btn btn-default hidden" id="perform_update" data-toggle="modal" data-target="#StatusDialog">{{_('Perform Update')}}</div>
     </div>
   </div>
 </div>
@@ -183,21 +187,21 @@
     </div>
   </div>
 </div>
-<div id="UpdateprogressDialog" class="modal fade" role="dialog">
+<div id="StatusDialog" class="modal fade" role="dialog">
   <div class="modal-dialog modal-sm">
     <!-- Modal content-->
     <div class="modal-content">
       <div class="modal-header bg-info text-center">
-      <span>{{_('Updating, please do not reload this page')}}</span>
+      <span id="DialogHeader">{{_('Updating, please do not reload this page')}}</span>
       </div>
       <div class="modal-body text-center">
           <div id="spinner2" class="spinner2"  style="display:none;">
                 <img id="img-spinner2" src="{{ url_for('static', filename='css/libs/images/loading-icon.gif') }}"/>
           </div>
           <p></p>
-         <div id="Updatecontent"></div>
+         <div id="DialogContent"></div>
           <p></p>
-        <button type="button" class="btn btn-default hidden" id="updateFinished" data-dismiss="modal">{{_('OK')}}</button>
+        <button type="button" class="btn btn-default hidden" id="DialogFinished" data-dismiss="modal">{{_('OK')}}</button>
       </div>
     </div>
   </div>

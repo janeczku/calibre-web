@@ -23,12 +23,12 @@ Calibre-Web is a web app providing a clean interface for browsing, reading and d
 - Send eBooks to Kindle devices with the click of a button
 - Sync your Kobo devices through Calibre-Web with your Calibre library
 - Support for reading eBooks directly in the browser (.txt, .epub, .pdf, .cbr, .cbt, .cbz)
-- Upload new books in many formats
-- Support for Calibre custom columns
+- Upload new books in many formats, including audio formats (.mp3, .m4a, .m4b)
+- Support for Calibre Custom Columns
 - Ability to hide content based on categories and Custom Column content per user
 - Self-update capability
 - "Magic Link" login to make it easy to log on eReaders
-- Login via google/github oauth and via proxy authentication
+- Login via LDAP, google/github oauth and via proxy authentication
 
 ## Quick start
 

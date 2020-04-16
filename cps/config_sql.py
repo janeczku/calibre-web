@@ -71,7 +71,7 @@ class _Settings(_Base):
     config_kobo_sync = Column(Boolean, default=False)
 
     config_default_role = Column(SmallInteger, default=0)
-    config_default_show = Column(SmallInteger, default=38911)
+    config_default_show = Column(SmallInteger, default=constants.ADMIN_USER_SIDEBAR)
     config_columns_to_ignore = Column(String)
 
     config_denied_tags = Column(String, default="")
@@ -93,18 +93,21 @@ class _Settings(_Base):
     config_kobo_proxy = Column(Boolean, default=False)
 
 
-    config_ldap_provider_url = Column(String, default='localhost')
+    config_ldap_provider_url = Column(String, default='example.org')
     config_ldap_port = Column(SmallInteger, default=389)
-    config_ldap_schema = Column(String, default='ldap')
-    config_ldap_serv_username = Column(String)
-    config_ldap_serv_password = Column(String)
-    config_ldap_use_ssl = Column(Boolean, default=False)
-    config_ldap_use_tls = Column(Boolean, default=False)
-    config_ldap_require_cert = Column(Boolean, default=False)
-    config_ldap_cert_path = Column(String)
-    config_ldap_dn = Column(String)
-    config_ldap_user_object = Column(String)
-    config_ldap_openldap = Column(Boolean, default=False)
+    # config_ldap_schema = Column(String, default='ldap')
+    config_ldap_serv_username = Column(String, default='cn=admin,dc=example,dc=org')
+    config_ldap_serv_password = Column(String, default="")
+    config_ldap_encryption = Column(SmallInteger, default=0)
+    # config_ldap_use_tls = Column(Boolean, default=False)
+    # config_ldap_require_cert = Column(Boolean, default=False)
+    config_ldap_cert_path = Column(String, default="")
+    config_ldap_dn = Column(String, default='dc=example,dc=org')
+    config_ldap_user_object = Column(String, default='uid=%s')
+    config_ldap_openldap = Column(Boolean, default=True)
+    config_ldap_group_object_filter = Column(String, default='(&(objectclass=posixGroup)(cn=%s))')
+    config_ldap_group_members_field = Column(String, default='memberUid')
+    config_ldap_group_name = Column(String, default='calibreweb')
 
     config_ebookconverter = Column(Integer, default=0)
     config_converterpath = Column(String)
@@ -212,7 +215,7 @@ class _ConfigSQL(object):
         return not bool(self.mail_server == constants.DEFAULT_MAIL_SERVER)
 
 
-    def set_from_dictionary(self, dictionary, field, convertor=None, default=None):
+    def set_from_dictionary(self, dictionary, field, convertor=None, default=None, encode=None):
         '''Possibly updates a field of this object.
         The new value, if present, is grabbed from the given dictionary, and optionally passed through a convertor.
 
@@ -228,7 +231,10 @@ class _ConfigSQL(object):
             return False
 
         if convertor is not None:
-            new_value = convertor(new_value)
+            if encode:
+                new_value = convertor(new_value.encode(encode))
+            else:
+                new_value = convertor(new_value)
 
         current_value = self.__dict__.get(field)
         if current_value == new_value:
@@ -277,7 +283,9 @@ class _ConfigSQL(object):
         self._session.commit()
         self.load()
 
-    def invalidate(self):
+    def invalidate(self, error=None):
+        if error:
+            log.error(error)
         log.warning("invalidating configuration")
         self.db_configured = False
         self.config_calibre_dir = None
