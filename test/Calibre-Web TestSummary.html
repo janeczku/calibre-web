@@ -36,17 +36,17 @@
       <div class="col-xs-12 col-sm-6">
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3" style="margin-top:50px;">
-            <p class='text-justify attribute'><strong>Start Time: </strong>2020-04-15 20:58:24</p>
+            <p class='text-justify attribute'><strong>Start Time: </strong>2020-04-16 21:05:16</p>
         </div>
       </div>
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3">
-            <p class='text-justify attribute'><strong>Stop Time: </strong>2020-04-15 21:44:34</p>
+            <p class='text-justify attribute'><strong>Stop Time: </strong>2020-04-16 21:53:03</p>
         </div>
       </div>
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3">
-           <p class='text-justify attribute'><strong>Duration: </strong>2409.70 s</p>
+           <p class='text-justify attribute'><strong>Duration: </strong>41:12 min</p>
         </div>
       </div>
       </div>
@@ -1006,9 +1006,9 @@
                         <pre class="text-left">Traceback (most recent call last):
   File "/home/matthias/Entwicklung/calibre-web-test/test/test_kobo_sync.py", line 89, in test_check_sync
     self.assertEqual(r.json()['Resources']['image_url_quality_template'], self.kobo_adress+"/{ImageId}/{width}/{height}/image.jpg")
-AssertionError: 'http[35 chars]4304a11f244beb23c60f4b7b0/{ImageId}/image.jpg' != 'http[35 chars]4304a11f244beb23c60f4b7b0/{ImageId}/{width}/{height}/image.jpg'
-- http://192.168.188.33:8083/kobo/1b4c3e84304a11f244beb23c60f4b7b0/{ImageId}/image.jpg
-+ http://192.168.188.33:8083/kobo/1b4c3e84304a11f244beb23c60f4b7b0/{ImageId}/{width}/{height}/image.jpg
+AssertionError: 'http[35 chars]4dd7bb34f15173d3cfcccd48b/{ImageId}/image.jpg' != 'http[35 chars]4dd7bb34f15173d3cfcccd48b/{ImageId}/{width}/{height}/image.jpg'
+- http://192.168.188.33:8083/kobo/0c877fb4dd7bb34f15173d3cfcccd48b/{ImageId}/image.jpg
++ http://192.168.188.33:8083/kobo/0c877fb4dd7bb34f15173d3cfcccd48b/{ImageId}/{width}/{height}/image.jpg
 ?                                                                            +++++++++++++++++</pre>
                     </div>
                     <div class="clearfix"></div>
@@ -1310,14 +1310,14 @@ AssertionError: False is not true : logfile config value is not empty after rese
 
 
     <tr class="result['header']['style']">
-        <td>test_opds_feed.test_opds_feed</td>
-        <td class="text-center">20</td>
-        <td class="text-center">20</td>
+        <td>test_oauth.test_outh_login</td>
+        <td class="text-center">2</td>
+        <td class="text-center">2</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c12', 20)">Detail</a>
+            <a onclick="showClassDetail('c12', 2)">Detail</a>
         </td>
     </tr>
 
@@ -1325,7 +1325,7 @@ AssertionError: False is not true : logfile config value is not empty after rese
     
         <tr id='pt12.1' class='hiddenRow bg-success'>
             <td>
-                <div class='testcase'>test_opds</div>
+                <div class='testcase'>test_oauth_about</div>
             </td>
             <td colspan='6' align='center'>PASS</td>
         </tr>
@@ -1334,6 +1334,39 @@ AssertionError: False is not true : logfile config value is not empty after rese
     
         <tr id='pt12.2' class='hiddenRow bg-success'>
             <td>
+                <div class='testcase'>test_visible_oauth</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+
+
+    <tr class="result['header']['style']">
+        <td>test_opds_feed.test_opds_feed</td>
+        <td class="text-center">20</td>
+        <td class="text-center">20</td>
+        <td class="text-center">0</td>
+        <td class="text-center">0</td>
+        <td class="text-center">0</td>
+        <td class="text-center">
+            <a onclick="showClassDetail('c13', 20)">Detail</a>
+        </td>
+    </tr>
+
+    
+    
+        <tr id='pt13.1' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>test_opds</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt13.2' class='hiddenRow bg-success'>
+            <td>
                 <div class='testcase'>test_opds_author</div>
             </td>
             <td colspan='6' align='center'>PASS</td>
@@ -1341,7 +1374,7 @@ AssertionError: False is not true : logfile config value is not empty after rese
     
     
     
-        <tr id='pt12.3' class='hiddenRow bg-success'>
+        <tr id='pt13.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_opds_calibre_companion</div>
             </td>
@@ -1350,7 +1383,7 @@ AssertionError: False is not true : logfile config value is not empty after rese
     
     
     
-        <tr id='pt12.4' class='hiddenRow bg-success'>
+        <tr id='pt13.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_opds_cover</div>
             </td>
@@ -1359,7 +1392,7 @@ AssertionError: False is not true : logfile config value is not empty after rese
     
     
     
-        <tr id='pt12.5' class='hiddenRow bg-success'>
+        <tr id='pt13.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_opds_download_book</div>
             </td>
@@ -1368,7 +1401,7 @@ AssertionError: False is not true : logfile config value is not empty after rese
     
     
     
-        <tr id='pt12.6' class='hiddenRow bg-success'>
+        <tr id='pt13.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_opds_formats</div>
             </td>
@@ -1377,7 +1410,7 @@ AssertionError: False is not true : logfile config value is not empty after rese
     
     
     
-        <tr id='pt12.7' class='hiddenRow bg-success'>
+        <tr id='pt13.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_opds_guest_user</div>
             </td>
@@ -1386,7 +1419,7 @@ AssertionError: False is not true : logfile config value is not empty after rese
     
     
     
-        <tr id='pt12.8' class='hiddenRow bg-success'>
+        <tr id='pt13.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_opds_hot</div>
             </td>
@@ -1395,7 +1428,7 @@ AssertionError: False is not true : logfile config value is not empty after rese
     
     
     
-        <tr id='pt12.9' class='hiddenRow bg-success'>
+        <tr id='pt13.9' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_opds_language</div>
             </td>
@@ -1404,7 +1437,7 @@ AssertionError: False is not true : logfile config value is not empty after rese
     
     
     
-        <tr id='pt12.10' class='hiddenRow bg-success'>
+        <tr id='pt13.10' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_opds_non_admin</div>
             </td>
@@ -1413,7 +1446,7 @@ AssertionError: False is not true : logfile config value is not empty after rese
     
     
     
-        <tr id='pt12.11' class='hiddenRow bg-success'>
+        <tr id='pt13.11' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_opds_publisher</div>
             </td>
@@ -1422,7 +1455,7 @@ AssertionError: False is not true : logfile config value is not empty after rese
     
     
     
-        <tr id='pt12.12' class='hiddenRow bg-success'>
+        <tr id='pt13.12' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_opds_random</div>
             </td>
@@ -1431,7 +1464,7 @@ AssertionError: False is not true : logfile config value is not empty after rese
     
     
     
-        <tr id='pt12.13' class='hiddenRow bg-success'>
+        <tr id='pt13.13' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_opds_ratings</div>
             </td>
@@ -1440,7 +1473,7 @@ AssertionError: False is not true : logfile config value is not empty after rese
     
     
     
-        <tr id='pt12.14' class='hiddenRow bg-success'>
+        <tr id='pt13.14' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_opds_read_unread</div>
             </td>
@@ -1449,7 +1482,7 @@ AssertionError: False is not true : logfile config value is not empty after rese
     
     
     
-        <tr id='pt12.15' class='hiddenRow bg-success'>
+        <tr id='pt13.15' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_opds_search</div>
             </td>
@@ -1458,7 +1491,7 @@ AssertionError: False is not true : logfile config value is not empty after rese
     
     
     
-        <tr id='pt12.16' class='hiddenRow bg-success'>
+        <tr id='pt13.16' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_opds_series</div>
             </td>
@@ -1467,7 +1500,7 @@ AssertionError: False is not true : logfile config value is not empty after rese
     
     
     
-        <tr id='pt12.17' class='hiddenRow bg-success'>
+        <tr id='pt13.17' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_opds_shelf_access</div>
             </td>
@@ -1476,7 +1509,7 @@ AssertionError: False is not true : logfile config value is not empty after rese
     
     
     
-        <tr id='pt12.18' class='hiddenRow bg-success'>
+        <tr id='pt13.18' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_opds_tags</div>
             </td>
@@ -1485,7 +1518,7 @@ AssertionError: False is not true : logfile config value is not empty after rese
     
     
     
-        <tr id='pt12.19' class='hiddenRow bg-success'>
+        <tr id='pt13.19' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_opds_top_rated</div>
             </td>
@@ -1494,7 +1527,7 @@ AssertionError: False is not true : logfile config value is not empty after rese
     
     
     
-        <tr id='pt12.20' class='hiddenRow bg-success'>
+        <tr id='pt13.20' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_recently_added</div>
             </td>
@@ -1512,13 +1545,13 @@ AssertionError: False is not true : logfile config value is not empty after rese
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c13', 6)">Detail</a>
+            <a onclick="showClassDetail('c14', 6)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt13.1' class='hiddenRow bg-success'>
+        <tr id='pt14.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_forgot_password</div>
             </td>
@@ -1527,7 +1560,7 @@ AssertionError: False is not true : logfile config value is not empty after rese
     
     
     
-        <tr id='pt13.2' class='hiddenRow bg-success'>
+        <tr id='pt14.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_limit_domain</div>
             </td>
@@ -1536,7 +1569,7 @@ AssertionError: False is not true : logfile config value is not empty after rese
     
     
     
-        <tr id='pt13.3' class='hiddenRow bg-success'>
+        <tr id='pt14.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_register_no_server</div>
             </td>
@@ -1545,7 +1578,7 @@ AssertionError: False is not true : logfile config value is not empty after rese
     
     
     
-        <tr id='pt13.4' class='hiddenRow bg-success'>
+        <tr id='pt14.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_registering_user</div>
             </td>
@@ -1554,7 +1587,7 @@ AssertionError: False is not true : logfile config value is not empty after rese
     
     
     
-        <tr id='pt13.5' class='hiddenRow bg-success'>
+        <tr id='pt14.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_registering_user_fail</div>
             </td>
@@ -1563,7 +1596,7 @@ AssertionError: False is not true : logfile config value is not empty after rese
     
     
     
-        <tr id='pt13.6' class='hiddenRow bg-success'>
+        <tr id='pt14.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_user_change_password</div>
             </td>
@@ -1581,13 +1614,13 @@ AssertionError: False is not true : logfile config value is not empty after rese
         <td class="text-center">0</td>
         <td class="text-center">1</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c14', 8)">Detail</a>
+            <a onclick="showClassDetail('c15', 8)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt14.1' class='hiddenRow bg-success'>
+        <tr id='pt15.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_arrange_shelf</div>
             </td>
@@ -1596,7 +1629,7 @@ AssertionError: False is not true : logfile config value is not empty after rese
     
     
     
-        <tr id='pt14.2' class='hiddenRow bg-success'>
+        <tr id='pt15.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_delete_book_of_shelf</div>
             </td>
@@ -1605,7 +1638,7 @@ AssertionError: False is not true : logfile config value is not empty after rese
     
     
     
-        <tr id='pt14.3' class='hiddenRow bg-success'>
+        <tr id='pt15.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_private_shelf</div>
             </td>
@@ -1614,7 +1647,7 @@ AssertionError: False is not true : logfile config value is not empty after rese
     
     
     
-        <tr id='pt14.4' class='hiddenRow bg-success'>
+        <tr id='pt15.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_public_private_shelf</div>
             </td>
@@ -1623,7 +1656,7 @@ AssertionError: False is not true : logfile config value is not empty after rese
     
     
     
-        <tr id='pt14.5' class='hiddenRow bg-success'>
+        <tr id='pt15.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_public_shelf</div>
             </td>
@@ -1632,7 +1665,7 @@ AssertionError: False is not true : logfile config value is not empty after rese
     
     
     
-        <tr id='pt14.6' class='hiddenRow bg-success'>
+        <tr id='pt15.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_rename_shelf</div>
             </td>
@@ -1641,19 +1674,19 @@ AssertionError: False is not true : logfile config value is not empty after rese
     
     
     
-        <tr id='st14.7' class='none bg-warning'>
+        <tr id='st15.7' class='none bg-warning'>
             <td>
                 <div class='testcase'>test_shelf_database_change</div>
             </td>
             <td colspan='6'>
                 <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st14.7')">SKIP</a>
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st15.7')">SKIP</a>
                 </div>
                 <!--css div popup start-->
-                <div id='div_st14.7' class="popup_window test_output" style="display:none;">
+                <div id='div_st15.7' class="popup_window test_output" style="display:none;">
                     <div class='close_button pull-right'>
                         <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                                onclick="document.getElementById('div_st14.7').style.display='none'"><span
+                                onclick="document.getElementById('div_st15.7').style.display='none'"><span
                                 aria-hidden="true">&times;</span></button>
                     </div>
                     <div class="text-left pull-left">
@@ -1667,7 +1700,7 @@ AssertionError: False is not true : logfile config value is not empty after rese
     
     
     
-        <tr id='pt14.8' class='hiddenRow bg-success'>
+        <tr id='pt15.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_shelf_long_name</div>
             </td>
@@ -1685,13 +1718,13 @@ AssertionError: False is not true : logfile config value is not empty after rese
         <td class="text-center">0</td>
         <td class="text-center">1</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c15', 7)">Detail</a>
+            <a onclick="showClassDetail('c16', 7)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt15.1' class='hiddenRow bg-success'>
+        <tr id='pt16.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_check_update_nightly_errors</div>
             </td>
@@ -1700,7 +1733,7 @@ AssertionError: False is not true : logfile config value is not empty after rese
     
     
     
-        <tr id='pt15.2' class='hiddenRow bg-success'>
+        <tr id='pt16.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_check_update_nightly_request_errors</div>
             </td>
@@ -1709,7 +1742,7 @@ AssertionError: False is not true : logfile config value is not empty after rese
     
     
     
-        <tr id='pt15.3' class='hiddenRow bg-success'>
+        <tr id='pt16.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_check_update_stable_errors</div>
             </td>
@@ -1718,7 +1751,7 @@ AssertionError: False is not true : logfile config value is not empty after rese
     
     
     
-        <tr id='pt15.4' class='hiddenRow bg-success'>
+        <tr id='pt16.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_check_update_stable_versions</div>
             </td>
@@ -1727,7 +1760,7 @@ AssertionError: False is not true : logfile config value is not empty after rese
     
     
     
-        <tr id='pt15.5' class='hiddenRow bg-success'>
+        <tr id='pt16.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_perform_update</div>
             </td>
@@ -1736,7 +1769,7 @@ AssertionError: False is not true : logfile config value is not empty after rese
     
     
     
-        <tr id='pt15.6' class='hiddenRow bg-success'>
+        <tr id='pt16.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_perform_update_stable_errors</div>
             </td>
@@ -1745,19 +1778,19 @@ AssertionError: False is not true : logfile config value is not empty after rese
     
     
     
-        <tr id='st15.7' class='none bg-warning'>
+        <tr id='st16.7' class='none bg-warning'>
             <td>
                 <div class='testcase'>test_perform_update_timeout</div>
             </td>
             <td colspan='6'>
                 <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st15.7')">SKIP</a>
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st16.7')">SKIP</a>
                 </div>
                 <!--css div popup start-->
-                <div id='div_st15.7' class="popup_window test_output" style="display:none;">
+                <div id='div_st16.7' class="popup_window test_output" style="display:none;">
                     <div class='close_button pull-right'>
                         <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                                onclick="document.getElementById('div_st15.7').style.display='none'"><span
+                                onclick="document.getElementById('div_st16.7').style.display='none'"><span
                                 aria-hidden="true">&times;</span></button>
                     </div>
                     <div class="text-left pull-left">
@@ -1780,13 +1813,13 @@ AssertionError: False is not true : logfile config value is not empty after rese
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c16', 17)">Detail</a>
+            <a onclick="showClassDetail('c17', 17)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt16.1' class='hiddenRow bg-success'>
+        <tr id='pt17.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_allow_column_restriction</div>
             </td>
@@ -1795,7 +1828,7 @@ AssertionError: False is not true : logfile config value is not empty after rese
     
     
     
-        <tr id='pt16.2' class='hiddenRow bg-success'>
+        <tr id='pt17.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_allow_tag_restriction</div>
             </td>
@@ -1804,7 +1837,7 @@ AssertionError: False is not true : logfile config value is not empty after rese
     
     
     
-        <tr id='pt16.3' class='hiddenRow bg-success'>
+        <tr id='pt17.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_author_user_template</div>
             </td>
@@ -1813,7 +1846,7 @@ AssertionError: False is not true : logfile config value is not empty after rese
     
     
     
-        <tr id='pt16.4' class='hiddenRow bg-success'>
+        <tr id='pt17.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_best_user_template</div>
             </td>
@@ -1822,7 +1855,7 @@ AssertionError: False is not true : logfile config value is not empty after rese
     
     
     
-        <tr id='pt16.5' class='hiddenRow bg-success'>
+        <tr id='pt17.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_category_user_template</div>
             </td>
@@ -1831,7 +1864,7 @@ AssertionError: False is not true : logfile config value is not empty after rese
     
     
     
-        <tr id='pt16.6' class='hiddenRow bg-success'>
+        <tr id='pt17.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_deny_column_restriction</div>
             </td>
@@ -1840,7 +1873,7 @@ AssertionError: False is not true : logfile config value is not empty after rese
     
     
     
-        <tr id='pt16.7' class='hiddenRow bg-success'>
+        <tr id='pt17.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_deny_tag_restriction</div>
             </td>
@@ -1849,7 +1882,7 @@ AssertionError: False is not true : logfile config value is not empty after rese
     
     
     
-        <tr id='pt16.8' class='hiddenRow bg-success'>
+        <tr id='pt17.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_detail_random_user_template</div>
             </td>
@@ -1858,7 +1891,7 @@ AssertionError: False is not true : logfile config value is not empty after rese
     
     
     
-        <tr id='pt16.9' class='hiddenRow bg-success'>
+        <tr id='pt17.9' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_hot_user_template</div>
             </td>
@@ -1867,7 +1900,7 @@ AssertionError: False is not true : logfile config value is not empty after rese
     
     
     
-        <tr id='pt16.10' class='hiddenRow bg-success'>
+        <tr id='pt17.10' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_language_user_template</div>
             </td>
@@ -1876,7 +1909,7 @@ AssertionError: False is not true : logfile config value is not empty after rese
     
     
     
-        <tr id='pt16.11' class='hiddenRow bg-success'>
+        <tr id='pt17.11' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_limit_book_languages</div>
             </td>
@@ -1885,7 +1918,7 @@ AssertionError: False is not true : logfile config value is not empty after rese
     
     
     
-        <tr id='pt16.12' class='hiddenRow bg-success'>
+        <tr id='pt17.12' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_publisher_user_template</div>
             </td>
@@ -1894,7 +1927,7 @@ AssertionError: False is not true : logfile config value is not empty after rese
     
     
     
-        <tr id='pt16.13' class='hiddenRow bg-success'>
+        <tr id='pt17.13' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_random_user_template</div>
             </td>
@@ -1903,7 +1936,7 @@ AssertionError: False is not true : logfile config value is not empty after rese
     
     
     
-        <tr id='pt16.14' class='hiddenRow bg-success'>
+        <tr id='pt17.14' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_read_user_template</div>
             </td>
@@ -1912,7 +1945,7 @@ AssertionError: False is not true : logfile config value is not empty after rese
     
     
     
-        <tr id='pt16.15' class='hiddenRow bg-success'>
+        <tr id='pt17.15' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_recent_user_template</div>
             </td>
@@ -1921,7 +1954,7 @@ AssertionError: False is not true : logfile config value is not empty after rese
     
     
     
-        <tr id='pt16.16' class='hiddenRow bg-success'>
+        <tr id='pt17.16' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_series_user_template</div>
             </td>
@@ -1930,7 +1963,7 @@ AssertionError: False is not true : logfile config value is not empty after rese
     
     
     
-        <tr id='pt16.17' class='hiddenRow bg-success'>
+        <tr id='pt17.17' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_ui_language_settings</div>
             </td>
@@ -1948,13 +1981,13 @@ AssertionError: False is not true : logfile config value is not empty after rese
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c17', 23)">Detail</a>
+            <a onclick="showClassDetail('c18', 23)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt17.1' class='hiddenRow bg-success'>
+        <tr id='pt18.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_about</div>
             </td>
@@ -1963,7 +1996,7 @@ AssertionError: False is not true : logfile config value is not empty after rese
     
     
     
-        <tr id='pt17.2' class='hiddenRow bg-success'>
+        <tr id='pt18.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_admin_SMTP_Settings</div>
             </td>
@@ -1972,7 +2005,7 @@ AssertionError: False is not true : logfile config value is not empty after rese
     
     
     
-        <tr id='pt17.3' class='hiddenRow bg-success'>
+        <tr id='pt18.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_admin_add_user</div>
             </td>
@@ -1981,7 +2014,7 @@ AssertionError: False is not true : logfile config value is not empty after rese
     
     
     
-        <tr id='pt17.4' class='hiddenRow bg-success'>
+        <tr id='pt18.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_admin_change_password</div>
             </td>
@@ -1990,7 +2023,7 @@ AssertionError: False is not true : logfile config value is not empty after rese
     
     
     
-        <tr id='pt17.5' class='hiddenRow bg-success'>
+        <tr id='pt18.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_admin_change_visibility_authors</div>
             </td>
@@ -1999,7 +2032,7 @@ AssertionError: False is not true : logfile config value is not empty after rese
     
     
     
-        <tr id='pt17.6' class='hiddenRow bg-success'>
+        <tr id='pt18.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_admin_change_visibility_category</div>
             </td>
@@ -2008,7 +2041,7 @@ AssertionError: False is not true : logfile config value is not empty after rese
     
     
     
-        <tr id='pt17.7' class='hiddenRow bg-success'>
+        <tr id='pt18.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_admin_change_visibility_file_formats</div>
             </td>
@@ -2017,7 +2050,7 @@ AssertionError: False is not true : logfile config value is not empty after rese
     
     
     
-        <tr id='pt17.8' class='hiddenRow bg-success'>
+        <tr id='pt18.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_admin_change_visibility_hot</div>
             </td>
@@ -2026,7 +2059,7 @@ AssertionError: False is not true : logfile config value is not empty after rese
     
     
     
-        <tr id='pt17.9' class='hiddenRow bg-success'>
+        <tr id='pt18.9' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_admin_change_visibility_language</div>
             </td>
@@ -2035,7 +2068,7 @@ AssertionError: False is not true : logfile config value is not empty after rese
     
     
     
-        <tr id='pt17.10' class='hiddenRow bg-success'>
+        <tr id='pt18.10' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_admin_change_visibility_publisher</div>
             </td>
@@ -2044,7 +2077,7 @@ AssertionError: False is not true : logfile config value is not empty after rese
     
     
     
-        <tr id='pt17.11' class='hiddenRow bg-success'>
+        <tr id='pt18.11' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_admin_change_visibility_rated</div>
             </td>
@@ -2053,7 +2086,7 @@ AssertionError: False is not true : logfile config value is not empty after rese
     
     
     
-        <tr id='pt17.12' class='hiddenRow bg-success'>
+        <tr id='pt18.12' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_admin_change_visibility_rating</div>
             </td>
@@ -2062,7 +2095,7 @@ AssertionError: False is not true : logfile config value is not empty after rese
     
     
     
-        <tr id='pt17.13' class='hiddenRow bg-success'>
+        <tr id='pt18.13' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_admin_change_visibility_read</div>
             </td>
@@ -2071,7 +2104,7 @@ AssertionError: False is not true : logfile config value is not empty after rese
     
     
     
-        <tr id='pt17.14' class='hiddenRow bg-success'>
+        <tr id='pt18.14' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_admin_change_visibility_series</div>
             </td>
@@ -2080,7 +2113,7 @@ AssertionError: False is not true : logfile config value is not empty after rese
     
     
     
-        <tr id='pt17.15' class='hiddenRow bg-success'>
+        <tr id='pt18.15' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_allow_columns</div>
             </td>
@@ -2089,7 +2122,7 @@ AssertionError: False is not true : logfile config value is not empty after rese
     
     
     
-        <tr id='pt17.16' class='hiddenRow bg-success'>
+        <tr id='pt18.16' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_allow_tags</div>
             </td>
@@ -2098,7 +2131,7 @@ AssertionError: False is not true : logfile config value is not empty after rese
     
     
     
-        <tr id='pt17.17' class='hiddenRow bg-success'>
+        <tr id='pt18.17' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_checked_logged_in</div>
             </td>
@@ -2107,7 +2140,7 @@ AssertionError: False is not true : logfile config value is not empty after rese
     
     
     
-        <tr id='pt17.18' class='hiddenRow bg-success'>
+        <tr id='pt18.18' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_random_books_available</div>
             </td>
@@ -2116,7 +2149,7 @@ AssertionError: False is not true : logfile config value is not empty after rese
     
     
     
-        <tr id='pt17.19' class='hiddenRow bg-success'>
+        <tr id='pt18.19' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_restrict_columns</div>
             </td>
@@ -2125,7 +2158,7 @@ AssertionError: False is not true : logfile config value is not empty after rese
     
     
     
-        <tr id='pt17.20' class='hiddenRow bg-success'>
+        <tr id='pt18.20' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_restrict_tags</div>
             </td>
@@ -2134,7 +2167,7 @@ AssertionError: False is not true : logfile config value is not empty after rese
     
     
     
-        <tr id='pt17.21' class='hiddenRow bg-success'>
+        <tr id='pt18.21' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_search_functions</div>
             </td>
@@ -2143,7 +2176,7 @@ AssertionError: False is not true : logfile config value is not empty after rese
     
     
     
-        <tr id='pt17.22' class='hiddenRow bg-success'>
+        <tr id='pt18.22' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_user_email_available</div>
             </td>
@@ -2152,7 +2185,7 @@ AssertionError: False is not true : logfile config value is not empty after rese
     
     
     
-        <tr id='pt17.23' class='hiddenRow bg-success'>
+        <tr id='pt18.23' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_user_visibility_sidebar</div>
             </td>
@@ -2163,8 +2196,8 @@ AssertionError: False is not true : logfile config value is not empty after rese
 
     <tr id='total_row' class="text-center bg-grey">
         <td>Total</td>
-        <td>183</td>
-        <td>174</td>
+        <td>185</td>
+        <td>176</td>
         <td>2</td>
         <td>0</td>
         <td>7</td>
@@ -2315,7 +2348,7 @@ AssertionError: False is not true : logfile config value is not empty after rese
 </div>
 
 <script>
-    drawCircle(174, 2, 0, 7);
+    drawCircle(176, 2, 0, 7);
 </script>
 
 </div>
