@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2020-04-03 19:49+0200\n"
+"POT-Creation-Date: 2020-04-16 20:14+0200\n"
 "PO-Revision-Date: 2020-01-12 13:56+0100\n"
 "Last-Translator: Samuli Valavuo <svalavuo@gmail.com>\n"
 "Language: fi\n"
@@ -26,191 +26,249 @@ msgstr "asennettu"
 msgid "not installed"
 msgstr "ei asennettu"
 
-#: cps/about.py:87
+#: cps/about.py:94
 msgid "Statistics"
 msgstr "Tilastot"
 
-#: cps/admin.py:89
+#: cps/admin.py:92
 msgid "Server restarted, please reload page"
 msgstr "Palvelin uudelleenkäynnistetty, ole hyvä ja päivitä sivu"
 
-#: cps/admin.py:91
+#: cps/admin.py:94
 msgid "Performing shutdown of server, please close window"
 msgstr "Palvelinta sammutetaan, ole hyvä ja sulje sivu"
 
-#: cps/admin.py:110 cps/editbooks.py:410 cps/editbooks.py:419
-#: cps/editbooks.py:539 cps/editbooks.py:541 cps/editbooks.py:594
+#: cps/admin.py:102
+msgid "Reconnect successful"
+msgstr ""
+
+#: cps/admin.py:105
+msgid "Unknown command"
+msgstr ""
+
+#: cps/admin.py:115 cps/editbooks.py:432 cps/editbooks.py:441
+#: cps/editbooks.py:565 cps/editbooks.py:567 cps/editbooks.py:633
 #: cps/updater.py:509 cps/uploader.py:96 cps/uploader.py:107
 msgid "Unknown"
 msgstr "Tuntematon"
 
-#: cps/admin.py:129
+#: cps/admin.py:134
 msgid "Admin page"
 msgstr "Ylläpitosivu"
 
-#: cps/admin.py:151
+#: cps/admin.py:156
 msgid "UI Configuration"
 msgstr "Käyttöliittymän asetukset"
 
-#: cps/admin.py:187 cps/admin.py:637
+#: cps/admin.py:192 cps/admin.py:672
 msgid "Calibre-Web configuration updated"
 msgstr "Calibre-Web asetukset päivitetty"
 
-#: cps/admin.py:434 cps/admin.py:440 cps/admin.py:451 cps/admin.py:462
+#: cps/admin.py:439 cps/admin.py:445 cps/admin.py:456 cps/admin.py:467
 #: cps/templates/modal_restriction.html:29
 msgid "Deny"
 msgstr ""
 
-#: cps/admin.py:436 cps/admin.py:442 cps/admin.py:453 cps/admin.py:464
+#: cps/admin.py:441 cps/admin.py:447 cps/admin.py:458 cps/admin.py:469
 #: cps/templates/modal_restriction.html:28
 msgid "Allow"
 msgstr ""
 
-#: cps/admin.py:667
+#: cps/admin.py:510
+msgid "client_secrets.json Is Not Configured For Web Application"
+msgstr ""
+
+#: cps/admin.py:526
+msgid "Keyfile Location is not Valid, Please Enter Correct Path"
+msgstr ""
+
+#: cps/admin.py:530
+msgid "Certfile Location is not Valid, Please Enter Correct Path"
+msgstr ""
+
+#: cps/admin.py:569
+msgid "Please Enter a LDAP Provider, Port, DN and User Object Identifier"
+msgstr ""
+
+#: cps/admin.py:583
+#, python-format
+msgid "LDAP Group Object Filter Needs to Have One \"%s\" Format Identifier"
+msgstr ""
+
+#: cps/admin.py:586
+msgid "LDAP Group Object Filter Has Unmatched Parenthesis"
+msgstr ""
+
+#: cps/admin.py:590
+#, python-format
+msgid "LDAP User Object Filter needs to Have One \"%s\" Format Identifier"
+msgstr ""
+
+#: cps/admin.py:593
+msgid "LDAP User Object Filter Has Unmatched Parenthesis"
+msgstr ""
+
+#: cps/admin.py:597
+msgid "LDAP Certificate Location is not Valid, Please Enter Correct Path"
+msgstr ""
+
+#: cps/admin.py:645
+msgid "Logfile Location is not Valid, Please Enter Correct Path"
+msgstr ""
+
+#: cps/admin.py:650
+msgid "Access Logfile Location is not Valid, Please Enter Correct Path"
+msgstr ""
+
+#: cps/admin.py:669
+msgid "DB Location is not Valid, Please Enter Correct Path"
+msgstr ""
+
+#: cps/admin.py:702
 msgid "Basic Configuration"
 msgstr "Perusasetukset"
 
-#: cps/admin.py:691 cps/web.py:1089
+#: cps/admin.py:726 cps/web.py:1206
 msgid "Please fill out all fields!"
 msgstr "Ole hyvä ja täytä kaikki kentät!"
 
-#: cps/admin.py:694 cps/admin.py:706 cps/admin.py:712 cps/admin.py:730
+#: cps/admin.py:729 cps/admin.py:741 cps/admin.py:747 cps/admin.py:765
 msgid "Add new user"
 msgstr "Lisää uusi käyttäjä"
 
-#: cps/admin.py:703 cps/web.py:1318
+#: cps/admin.py:738 cps/web.py:1453
 msgid "E-mail is not from valid domain"
 msgstr "Sähköpostiosoite ei ole toimivasta domainista"
 
-#: cps/admin.py:710 cps/admin.py:725
+#: cps/admin.py:745 cps/admin.py:760
 msgid "Found an existing account for this e-mail address or nickname."
 msgstr "Tälle sähköpostiosoitteelle tai tunnukselle löytyi jo tili."
 
-#: cps/admin.py:721
+#: cps/admin.py:756
 #, python-format
 msgid "User '%(user)s' created"
 msgstr "Käyttäjä '%(user)s' lisätty"
 
-#: cps/admin.py:740
+#: cps/admin.py:775
 msgid "Edit e-mail server settings"
 msgstr "Muuta sähköpostipalvelimen asetuksia"
 
-#: cps/admin.py:766
+#: cps/admin.py:801
 #, python-format
 msgid "Test e-mail successfully send to %(kindlemail)s"
 msgstr "Testisähköposti lähetetty onnistuneesti osoitteeseen %(kindlemail)s"
 
-#: cps/admin.py:769
+#: cps/admin.py:804
 #, python-format
 msgid "There was an error sending the Test e-mail: %(res)s"
 msgstr "Testisähköpostin lähetyksessä tapahtui virhe: %(res)s"
 
-#: cps/admin.py:771
+#: cps/admin.py:806
 msgid "Please configure your e-mail address first..."
 msgstr ""
 
-#: cps/admin.py:773
+#: cps/admin.py:808
 msgid "E-mail server settings updated"
 msgstr "Sähköpostipalvelimen tiedot päivitetty"
 
-#: cps/admin.py:803
+#: cps/admin.py:838
 #, python-format
 msgid "User '%(nick)s' deleted"
 msgstr "Käyttäjä '%(nick)s' poistettu"
 
-#: cps/admin.py:806
+#: cps/admin.py:841
 msgid "No admin user remaining, can't delete user"
 msgstr "Pääkäyttäjiä ei jää jäljelle, käyttäjää ei voi poistaa"
 
-#: cps/admin.py:842 cps/web.py:1361
+#: cps/admin.py:877 cps/web.py:1496
 msgid "Found an existing account for this e-mail address."
 msgstr "Tälle sähköpostiosoitteelle läytyi jo käyttäjätunnus."
 
-#: cps/admin.py:852 cps/admin.py:867 cps/admin.py:887 cps/web.py:1336
+#: cps/admin.py:887 cps/admin.py:902 cps/admin.py:922 cps/web.py:1471
 #, python-format
 msgid "Edit User %(nick)s"
 msgstr "Muokkaa käyttäjää %(nick)s"
 
-#: cps/admin.py:858 cps/web.py:1328
+#: cps/admin.py:893 cps/web.py:1463
 msgid "This username is already taken"
 msgstr ""
 
-#: cps/admin.py:874
+#: cps/admin.py:909
 #, python-format
 msgid "User '%(nick)s' updated"
 msgstr "Käyttäjä '%(nick)s' päivitetty"
 
-#: cps/admin.py:877
+#: cps/admin.py:912
 msgid "An unknown error occured."
 msgstr "Tapahtui tuntematon virhe."
 
-#: cps/admin.py:900
+#: cps/admin.py:935
 #, python-format
 msgid "Password for user %(user)s reset"
 msgstr "Käyttäjän %(user)s salasana palautettu"
 
-#: cps/admin.py:903 cps/web.py:1114 cps/web.py:1170
+#: cps/admin.py:938 cps/web.py:1231 cps/web.py:1295
 msgid "An unknown error occurred. Please try again later."
 msgstr "Tapahtui tuntematon virhe. Yritä myöhemmin uudelleen."
 
-#: cps/admin.py:906 cps/web.py:1055
+#: cps/admin.py:941 cps/web.py:1172
 msgid "Please configure the SMTP mail settings first..."
 msgstr "Ole hyvä ja aseta SMTP postiasetukset ensin..."
 
-#: cps/admin.py:918
+#: cps/admin.py:953
 msgid "Logfile viewer"
 msgstr "Lokitiedoston katselin"
 
-#: cps/admin.py:957
+#: cps/admin.py:992
 msgid "Requesting update package"
 msgstr "Haetaan päivitystiedostoa"
 
-#: cps/admin.py:958
+#: cps/admin.py:993
 msgid "Downloading update package"
 msgstr "Ladataan päivitystiedostoa"
 
-#: cps/admin.py:959
+#: cps/admin.py:994
 msgid "Unzipping update package"
 msgstr "Puretaan päivitystiedostoa"
 
-#: cps/admin.py:960
+#: cps/admin.py:995
 msgid "Replacing files"
 msgstr "Korvataan tiedostoja"
 
-#: cps/admin.py:961
+#: cps/admin.py:996
 msgid "Database connections are closed"
 msgstr "Tietokantayhteydet on katkaistu"
 
-#: cps/admin.py:962
+#: cps/admin.py:997
 msgid "Stopping server"
 msgstr "Sammutetaan palvelin"
 
-#: cps/admin.py:963
+#: cps/admin.py:998
 msgid "Update finished, please press okay and reload page"
 msgstr "Päivitys valmistui, ole hyvä ja paina OK ja lataa sivu uudelleen"
 
-#: cps/admin.py:964 cps/admin.py:965 cps/admin.py:966 cps/admin.py:967
-#: cps/admin.py:968
+#: cps/admin.py:999 cps/admin.py:1000 cps/admin.py:1001 cps/admin.py:1002
+#: cps/admin.py:1003
 msgid "Update failed:"
 msgstr "Päivitys epäonnistui:"
 
-#: cps/admin.py:964 cps/updater.py:319 cps/updater.py:520 cps/updater.py:522
+#: cps/admin.py:999 cps/updater.py:319 cps/updater.py:520 cps/updater.py:522
 msgid "HTTP Error"
 msgstr "HTTP virhe"
 
-#: cps/admin.py:965 cps/updater.py:321 cps/updater.py:524
+#: cps/admin.py:1000 cps/updater.py:321 cps/updater.py:524
 msgid "Connection error"
 msgstr "Yhteysvirhe"
 
-#: cps/admin.py:966 cps/updater.py:323 cps/updater.py:526
+#: cps/admin.py:1001 cps/updater.py:323 cps/updater.py:526
 msgid "Timeout while establishing connection"
 msgstr "Aikakatkaisu yhteyttä luotaessa"
 
-#: cps/admin.py:967 cps/updater.py:325 cps/updater.py:528
+#: cps/admin.py:1002 cps/updater.py:325 cps/updater.py:528
 msgid "General error"
 msgstr "Yleinen virhe"
 
-#: cps/admin.py:968
+#: cps/admin.py:1003
 msgid "Update File Could Not be Saved in Temp Dir"
 msgstr ""
 
@@ -218,89 +276,89 @@ msgstr ""
 msgid "not configured"
 msgstr ""
 
-#: cps/editbooks.py:214 cps/editbooks.py:396
+#: cps/editbooks.py:235 cps/editbooks.py:418
 msgid "Error opening eBook. File does not exist or file is not accessible"
 msgstr "Virhe e-kirjaa avatessa. Tiedostoa ei löydy tai se ei ole saatavilla"
 
-#: cps/editbooks.py:242
+#: cps/editbooks.py:263
 msgid "edit metadata"
 msgstr "muokkaa metadataa"
 
-#: cps/editbooks.py:321 cps/editbooks.py:569
+#: cps/editbooks.py:343 cps/editbooks.py:608
 #, python-format
 msgid "File extension '%(ext)s' is not allowed to be uploaded to this server"
 msgstr "Tiedostopääte '%(ext)s' ei ole sallittujen palvelimelle ladattavien listalla"
 
-#: cps/editbooks.py:325 cps/editbooks.py:573
+#: cps/editbooks.py:347 cps/editbooks.py:612
 msgid "File to be uploaded must have an extension"
 msgstr "Ladattavalla tiedostolla on oltava tiedostopääte"
 
-#: cps/editbooks.py:337 cps/editbooks.py:607
+#: cps/editbooks.py:359 cps/editbooks.py:646
 #, python-format
 msgid "Failed to create path %(path)s (Permission denied)."
 msgstr "Polun %(path)s luonti epäonnistui (Ei oikeutta)."
 
-#: cps/editbooks.py:342
+#: cps/editbooks.py:364
 #, python-format
 msgid "Failed to store file %(file)s."
 msgstr "Tiedoston %(file)s tallennus epäonnistui."
 
-#: cps/editbooks.py:359
+#: cps/editbooks.py:381
 #, python-format
 msgid "File format %(ext)s added to %(book)s"
 msgstr "Tiedostoformaatti %(ext)s lisätty %(book)s"
 
-#: cps/editbooks.py:451
+#: cps/editbooks.py:473
 msgid "Cover is not a jpg file, can't save"
 msgstr "Kansi ei ole jpg tiedosto, tallennus ei onnistu"
 
-#: cps/editbooks.py:494
+#: cps/editbooks.py:520
 #, python-format
 msgid "%(langname)s is not a valid language"
 msgstr "%(langname)s ei ole kelvollinen kieli"
 
-#: cps/editbooks.py:525
+#: cps/editbooks.py:551
 msgid "Metadata successfully updated"
 msgstr "Metadata päivitetty onnistuneesti"
 
-#: cps/editbooks.py:534
+#: cps/editbooks.py:560
 msgid "Error editing book, please check logfile for details"
 msgstr "Kirjan editoinnissa tapahtui virhe, tarkista virheilmoitus lokista"
 
-#: cps/editbooks.py:581
+#: cps/editbooks.py:620
 #, python-format
 msgid "File %(filename)s could not saved to temp dir"
 msgstr ""
 
-#: cps/editbooks.py:598
+#: cps/editbooks.py:637
 msgid "Uploaded book probably exists in the library, consider to change before upload new: "
 msgstr ""
 
-#: cps/editbooks.py:613
+#: cps/editbooks.py:652
 #, python-format
 msgid "Failed to store file %(file)s (Permission denied)."
 msgstr "Tiedoston %(file)s tallentamisessa tapahtui virhe (Ei oikeutta)."
 
-#: cps/editbooks.py:619
+#: cps/editbooks.py:658
 #, python-format
 msgid "Failed to delete file %(file)s (Permission denied)."
 msgstr "Tiedoston %(file)s poisto epäonnistui (Ei oikeutta)."
 
-#: cps/editbooks.py:709
+#: cps/editbooks.py:748
 #, python-format
 msgid "File %(file)s uploaded"
 msgstr "Tiedosto %(file)s tallennettu"
 
-#: cps/editbooks.py:738
+#: cps/editbooks.py:777
 msgid "Source or destination format for conversion missing"
 msgstr "Lähteen tai kohteen tiedostomuoto puuttuu"
 
-#: cps/editbooks.py:746
+#: cps/editbooks.py:785
 #, python-format
 msgid "Book successfully queued for converting to %(book_format)s"
 msgstr "Kirja lisätty muutosjonoon muotoon %(book_format)s"
 
-#: cps/editbooks.py:750
+#: cps/editbooks.py:789
 #, python-format
 msgid "There was an error converting this book: %(res)s"
 msgstr "Kirjan muunnoksessa tapahtui virhe: %(res)s"
@@ -463,7 +521,7 @@ msgstr ""
 msgid "Kobo Setup"
 msgstr ""
 
-#: cps/oauth_bb.py:74
+#: cps/oauth_bb.py:73
 #, python-format
 msgid "Register with %(provider)s"
 msgstr "Rekisteröi tuottajalle %(provider)s"
@@ -484,26 +542,40 @@ msgstr "Googleen kirjautuminen epäonnistui."
 msgid "Failed to fetch user info from Google."
 msgstr "Käyttäjätietojen haku Googlesta epäonnistui."
 
-#: cps/oauth_bb.py:273
+#: cps/oauth_bb.py:225 cps/web.py:1267 cps/web.py:1412
 #, python-format
-msgid "Unlink to %(oauth)s success."
-msgstr "Linkityksen purku kohteesta %(oauth)s onnistui."
+msgid "you are now logged in as: '%(nickname)s'"
+msgstr "olet nyt kirjautunut tunnuksella: \"%(nickname)s\""
 
-#: cps/oauth_bb.py:277
+#: cps/oauth_bb.py:235
 #, python-format
-msgid "Unlink to %(oauth)s failed."
-msgstr "Linkityksen purku kohteesta %(oauth)s epäonnistui."
+msgid "Link to %(oauth)s Succeeded"
+msgstr ""
 
-#: cps/oauth_bb.py:280
+#: cps/oauth_bb.py:241
+msgid "Login failed, No User Linked With OAuth Account"
+msgstr ""
+
+#: cps/oauth_bb.py:283
 #, python-format
-msgid "Not linked to %(oauth)s."
-msgstr "Ei linkitetty kohteeseen %(oauth)s."
+msgid "Unlink to %(oauth)s Succeeded"
+msgstr ""
 
-#: cps/oauth_bb.py:308
+#: cps/oauth_bb.py:287
+#, python-format
+msgid "Unlink to %(oauth)s Failed"
+msgstr ""
+
+#: cps/oauth_bb.py:290
+#, python-format
+msgid "Not Linked to %(oauth)s."
+msgstr ""
+
+#: cps/oauth_bb.py:318
 msgid "GitHub Oauth error, please retry later."
 msgstr "GitHub Oauth virhe, yritä myöhemmin uudelleen."
 
-#: cps/oauth_bb.py:327
+#: cps/oauth_bb.py:337
 msgid "Google Oauth error, please retry later."
 msgstr "Google Oauth virhe, yritä myöhemmin uudelleen."
 
@@ -614,113 +686,121 @@ msgstr ""
 msgid "Change order of Shelf: '%(name)s'"
 msgstr "Muuta hyllyn: '%(name)s' järjestystä"
 
-#: cps/ub.py:56
+#: cps/ub.py:63
 msgid "Recently Added"
 msgstr "Viimeksi lisätty"
 
-#: cps/ub.py:58
+#: cps/ub.py:65
 msgid "Show recent books"
 msgstr "Näytä viimeisimmät kirjat"
 
-#: cps/templates/index.xml:17 cps/ub.py:59
+#: cps/templates/index.xml:17 cps/ub.py:66
 msgid "Hot Books"
 msgstr "Kuumat kirjat"
 
-#: cps/ub.py:60
+#: cps/ub.py:67
 msgid "Show Hot Books"
 msgstr "Näytä kuumat kirjat"
 
-#: cps/templates/index.xml:24 cps/ub.py:63 cps/web.py:508
+#: cps/templates/index.xml:24 cps/ub.py:70 cps/web.py:599
 msgid "Top Rated Books"
 msgstr "Parhaiten arvioidut kirjat"
 
-#: cps/ub.py:65
+#: cps/ub.py:72
 msgid "Show Top Rated Books"
 msgstr "Näytä parhaiten arvioidut kirjat"
 
-#: cps/templates/index.xml:46 cps/templates/index.xml:50 cps/ub.py:66
-#: cps/web.py:1005
+#: cps/templates/index.xml:46 cps/templates/index.xml:50 cps/ub.py:73
+#: cps/web.py:1101
 msgid "Read Books"
 msgstr "Luetut kirjat"
 
-#: cps/ub.py:68
+#: cps/ub.py:75
 msgid "Show read and unread"
 msgstr "Näytä luetut ja lukemattomat"
 
-#: cps/templates/index.xml:53 cps/templates/index.xml:57 cps/ub.py:70
-#: cps/web.py:1009
+#: cps/templates/index.xml:53 cps/templates/index.xml:57 cps/ub.py:77
+#: cps/web.py:1105
 msgid "Unread Books"
 msgstr "Lukemattomat kirjat"
 
-#: cps/ub.py:72
+#: cps/ub.py:79
 msgid "Show unread"
 msgstr "Näyt lukemattomat"
 
-#: cps/ub.py:73
+#: cps/ub.py:80
 msgid "Discover"
 msgstr "Löydä"
 
-#: cps/ub.py:75
+#: cps/ub.py:82
 msgid "Show random books"
 msgstr "Näytä satunnaisia kirjoja"
 
-#: cps/templates/index.xml:75 cps/ub.py:76 cps/web.py:787
+#: cps/templates/index.xml:75 cps/ub.py:83 cps/web.py:881
 msgid "Categories"
 msgstr "Kategoriat"
 
-#: cps/ub.py:78
+#: cps/ub.py:85
 msgid "Show category selection"
 msgstr "Näytä kategoriavalinta"
 
-#: cps/templates/book_edit.html:69 cps/templates/index.xml:82
-#: cps/templates/search_form.html:53 cps/ub.py:79 cps/web.py:715
+#: cps/templates/book_edit.html:84 cps/templates/index.xml:82
+#: cps/templates/search_form.html:53 cps/ub.py:86 cps/web.py:809
 msgid "Series"
 msgstr "Sarjat"
 
-#: cps/ub.py:81
+#: cps/ub.py:88
 msgid "Show series selection"
 msgstr "Näytä sarjavalinta"
 
-#: cps/templates/index.xml:61 cps/ub.py:82
+#: cps/templates/index.xml:61 cps/ub.py:89
 msgid "Authors"
 msgstr "Kirjailijat"
 
-#: cps/ub.py:84
+#: cps/ub.py:91
 msgid "Show author selection"
 msgstr "Näytä kirjailijavalinta"
 
-#: cps/templates/index.xml:68 cps/ub.py:86 cps/web.py:699
+#: cps/templates/index.xml:68 cps/ub.py:93 cps/web.py:793
 msgid "Publishers"
 msgstr "Julkaisijat"
 
-#: cps/ub.py:88
+#: cps/ub.py:95
 msgid "Show publisher selection"
 msgstr "Näytä julkaisijavalinta"
 
-#: cps/templates/index.xml:89 cps/templates/search_form.html:74 cps/ub.py:89
-#: cps/web.py:770
+#: cps/templates/index.xml:89 cps/templates/search_form.html:74 cps/ub.py:96
+#: cps/web.py:864
 msgid "Languages"
 msgstr "Kielet"
 
-#: cps/ub.py:92
+#: cps/ub.py:99
 msgid "Show language selection"
 msgstr "Näytä keilivalinta"
 
-#: cps/templates/index.xml:96 cps/ub.py:93
+#: cps/templates/index.xml:96 cps/ub.py:100
 msgid "Ratings"
 msgstr "Arvostelut"
 
-#: cps/ub.py:95
+#: cps/ub.py:102
 msgid "Show ratings selection"
 msgstr "Näytä arvosteluvalinta"
 
-#: cps/templates/index.xml:104 cps/ub.py:96
+#: cps/templates/index.xml:104 cps/ub.py:103
 msgid "File formats"
 msgstr "Tiedotomuodot"
 
-#: cps/ub.py:98
+#: cps/ub.py:105
 msgid "Show file formats selection"
 msgstr "Näytä tiedostomuotovalinta"
+
+#: cps/ub.py:107 cps/web.py:1126
+msgid "Archived Books"
+msgstr ""
+
+#: cps/ub.py:109
+msgid "Show archived books"
+msgstr ""
 
 #: cps/updater.py:294 cps/updater.py:305 cps/updater.py:406 cps/updater.py:420
 msgid "Unexpected data while reading update information"
@@ -751,201 +831,223 @@ msgstr "Uusi päivitys saatavilla. Paina alla olevaa nappia päivittääksesi ve
 msgid "Click on the button below to update to the latest stable version."
 msgstr "Paina alla olevaa nappia päivittääksesi uusimpaan vakaaseen versioon."
 
-#: cps/web.py:480
+#: cps/web.py:290
+#, python-format
+msgid "Error: %(ldaperror)s"
+msgstr ""
+
+#: cps/web.py:294
+msgid "Error: No user returned in response of LDAP server"
+msgstr ""
+
+#: cps/web.py:342
+msgid "Failed to Create at Least One LDAP User"
+msgstr ""
+
+#: cps/web.py:345
+msgid "At Least One LDAP User Not Found in Database"
+msgstr ""
+
+#: cps/web.py:347
+msgid "User Successfully Imported"
+msgstr ""
+
+#: cps/web.py:571
 msgid "Recently Added Books"
 msgstr "Viimeksi lisätyt kirjat"
 
-#: cps/templates/index.html:5 cps/web.py:516
+#: cps/templates/index.html:5 cps/web.py:607
 msgid "Discover (Random Books)"
 msgstr "Löydä (satunnaiset kirjat)"
 
-#: cps/web.py:542
+#: cps/web.py:635
 msgid "Books"
 msgstr "Kirjat"
 
-#: cps/web.py:569
+#: cps/web.py:662
 msgid "Hot Books (Most Downloaded)"
 msgstr "Kuumat kirjat (ladatuimmat)"
 
-#: cps/web.py:580
+#: cps/web.py:672
 msgid "Oops! Selected book title is unavailable. File does not exist or is not accessible"
 msgstr "Virhe eKirjan avaamisessa. Tiedostoa ei ole tai se ei ole saatavilla:"
 
-#: cps/web.py:593
+#: cps/web.py:686
 #, python-format
 msgid "Author: %(name)s"
 msgstr "Kirjailija: %(name)s"
 
-#: cps/web.py:605
+#: cps/web.py:698
 #, python-format
 msgid "Publisher: %(name)s"
 msgstr "Julkaisija: %(name)s"
 
-#: cps/web.py:616
+#: cps/web.py:709
 #, python-format
 msgid "Series: %(serie)s"
 msgstr "Sarja: %(serie)s"
 
-#: cps/web.py:627
+#: cps/web.py:720
 #, python-format
 msgid "Rating: %(rating)s stars"
 msgstr "Arvostelu: %(rating)s tähteä"
 
-#: cps/web.py:638
+#: cps/web.py:732
 #, python-format
 msgid "File format: %(format)s"
 msgstr "Tiedostomuoto: %(format)s"
 
-#: cps/web.py:650
+#: cps/web.py:744
 #, python-format
 msgid "Category: %(name)s"
 msgstr "Kategoria: %(name)s"
 
-#: cps/web.py:667
+#: cps/web.py:761
 #, python-format
 msgid "Language: %(name)s"
 msgstr "Kieli: %(name)s"
 
-#: cps/web.py:729
+#: cps/web.py:823
 msgid "Ratings list"
 msgstr "Arvostelulistaus"
 
-#: cps/web.py:742
+#: cps/web.py:836
 msgid "File formats list"
 msgstr "Tiedostomuotolistaus"
 
-#: cps/templates/layout.html:73 cps/templates/tasks.html:7 cps/web.py:801
+#: cps/templates/layout.html:73 cps/templates/tasks.html:7 cps/web.py:895
 msgid "Tasks"
 msgstr "Tehtävät"
 
-#: cps/templates/book_edit.html:212 cps/templates/feed.xml:33
+#: cps/templates/book_edit.html:235 cps/templates/feed.xml:33
 #: cps/templates/layout.html:44 cps/templates/layout.html:47
-#: cps/templates/search_form.html:170 cps/web.py:821 cps/web.py:823
+#: cps/templates/search_form.html:170 cps/web.py:917 cps/web.py:919
 msgid "Search"
 msgstr "Hae"
 
-#: cps/web.py:873
+#: cps/web.py:969
 msgid "Published after "
 msgstr "Julkaistu alkaen "
 
-#: cps/web.py:880
+#: cps/web.py:976
 msgid "Published before "
 msgstr "Julkaisut ennen "
 
-#: cps/web.py:894
+#: cps/web.py:990
 #, python-format
 msgid "Rating <= %(rating)s"
 msgstr "Arvostelu <= %(rating)s"
 
-#: cps/web.py:896
+#: cps/web.py:992
 #, python-format
 msgid "Rating >= %(rating)s"
 msgstr "Arvostelu >= %(rating)s"
 
-#: cps/web.py:962 cps/web.py:976
+#: cps/web.py:1058 cps/web.py:1072
 msgid "search"
 msgstr "hae"
 
-#: cps/web.py:1060
+#: cps/web.py:1177
 #, python-format
 msgid "Book successfully queued for sending to %(kindlemail)s"
 msgstr "Kirja lisätty onnistuneeksi lähetettäväksi osoitteeseen %(kindlemail)s"
 
-#: cps/web.py:1064
+#: cps/web.py:1181
 #, python-format
 msgid "Oops! There was an error sending this book: %(res)s"
 msgstr "Kirjan: %(res)s lähettämisessa tapahtui virhe"
 
-#: cps/web.py:1066
+#: cps/web.py:1183
 msgid "Please update your profile with a valid Send to Kindle E-mail Address."
 msgstr "Ole hyvä ja aseta Kindle sähköpostiosoite ensin..."
 
-#: cps/web.py:1083
+#: cps/web.py:1200
 msgid "E-Mail server is not configured, please contact your administrator!"
 msgstr ""
 
-#: cps/web.py:1084 cps/web.py:1090 cps/web.py:1115 cps/web.py:1119
-#: cps/web.py:1124 cps/web.py:1128
+#: cps/web.py:1201 cps/web.py:1207 cps/web.py:1232 cps/web.py:1236
+#: cps/web.py:1241 cps/web.py:1245
 msgid "register"
 msgstr "rekisteröidy"
 
-#: cps/web.py:1117
+#: cps/web.py:1234
 msgid "Your e-mail is not allowed to register"
 msgstr "Sähköpostiosoitteellasi ei ole sallittua rekisteröityä"
 
-#: cps/web.py:1120
+#: cps/web.py:1237
 msgid "Confirmation e-mail was send to your e-mail account."
 msgstr "Vahvistusviesti on lähetetty sähköpostiosoitteeseesi."
 
-#: cps/web.py:1123
+#: cps/web.py:1240
 msgid "This username or e-mail address is already in use."
 msgstr "Käyttäjätunnus tai sähköpostiosoite on jo käytössä."
 
-#: cps/web.py:1140
+#: cps/web.py:1257
 msgid "Cannot activate LDAP authentication"
 msgstr "LDAP autnetikoinnin aktivointi ei onnistu"
 
-#: cps/web.py:1150 cps/web.py:1277
+#: cps/web.py:1274
 #, python-format
-msgid "you are now logged in as: '%(nickname)s'"
-msgstr "olet nyt kirjautunut tunnuksella: \"%(nickname)s\""
+msgid "Fallback Login as: '%(nickname)s', LDAP Server not reachable, or user not known"
+msgstr ""
 
-#: cps/web.py:1155
-msgid "Could not login. LDAP server down, please contact your administrator"
-msgstr "Kirjautuminen epäonnistui. LDAP palvelin alhaalla, ot yhteyttä ylläpitoon"
+#: cps/web.py:1280
+#, python-format
+msgid "Could not login: %(message)s"
+msgstr ""
 
-#: cps/web.py:1159 cps/web.py:1182
+#: cps/web.py:1284 cps/web.py:1308
 msgid "Wrong Username or Password"
 msgstr "Väärä käyttäjätunnus tai salasana"
 
-#: cps/web.py:1166
+#: cps/web.py:1291
 msgid "New Password was send to your email address"
 msgstr ""
 
-#: cps/web.py:1172
+#: cps/web.py:1297
 msgid "Please enter valid username to reset password"
 msgstr ""
 
-#: cps/web.py:1178
+#: cps/web.py:1303
 #, python-format
 msgid "You are now logged in as: '%(nickname)s'"
 msgstr "olet kirjautunut tunnuksella: '%(nickname)s'"
 
-#: cps/web.py:1185 cps/web.py:1209
+#: cps/web.py:1316 cps/web.py:1344
 msgid "login"
 msgstr "kirjaudu"
 
-#: cps/web.py:1221 cps/web.py:1255
+#: cps/web.py:1356 cps/web.py:1390
 msgid "Token not found"
 msgstr "Valtuutusta ei löytynyt"
 
-#: cps/web.py:1230 cps/web.py:1263
+#: cps/web.py:1365 cps/web.py:1398
 msgid "Token has expired"
 msgstr "Valtuutus vanhentunut"
 
-#: cps/web.py:1239
+#: cps/web.py:1374
 msgid "Success! Please return to your device"
 msgstr "Onnistui! Ole hyvä ja palaa laitteellesi"
 
-#: cps/web.py:1320 cps/web.py:1365 cps/web.py:1371
+#: cps/web.py:1455 cps/web.py:1500 cps/web.py:1506
 #, python-format
 msgid "%(name)s's profile"
 msgstr "%(name)sn profiili"
 
-#: cps/web.py:1367
+#: cps/web.py:1502
 msgid "Profile updated"
 msgstr "Profiili päivitetty"
 
-#: cps/web.py:1384 cps/web.py:1480
+#: cps/web.py:1519 cps/web.py:1623
 msgid "Error opening eBook. File does not exist or file is not accessible:"
 msgstr ""
 
-#: cps/web.py:1396 cps/web.py:1399 cps/web.py:1402 cps/web.py:1409
-#: cps/web.py:1414
+#: cps/web.py:1531 cps/web.py:1534 cps/web.py:1537 cps/web.py:1544
+#: cps/web.py:1549
 msgid "Read a Book"
 msgstr "Lue kirja"
 
-#: cps/web.py:1425
+#: cps/web.py:1560
 msgid "Error opening eBook. File does not exist or file is not accessible."
 msgstr "Virhe kirjan avaamisessa. Tiedostoa ei ole tai se ei ole saatavilla."
 
@@ -1008,153 +1110,157 @@ msgstr "Muokkaa"
 msgid "Add New User"
 msgstr ""
 
-#: cps/templates/admin.html:44
+#: cps/templates/admin.html:40 cps/templates/admin.html:41
+msgid "Import LDAP Users"
+msgstr ""
+
+#: cps/templates/admin.html:48
 msgid "E-mail Server Settings"
 msgstr "SMTP sähköpostipalvelimen asetukset"
 
-#: cps/templates/admin.html:47 cps/templates/email_edit.html:11
+#: cps/templates/admin.html:51 cps/templates/email_edit.html:11
 msgid "SMTP Hostname"
 msgstr "SMTP palvein"
 
-#: cps/templates/admin.html:48 cps/templates/email_edit.html:15
+#: cps/templates/admin.html:52 cps/templates/email_edit.html:15
 msgid "SMTP Port"
 msgstr "SMTP portti"
 
-#: cps/templates/admin.html:49 cps/templates/email_edit.html:19
+#: cps/templates/admin.html:53 cps/templates/email_edit.html:19
 msgid "Encryption"
 msgstr "SSL"
 
-#: cps/templates/admin.html:50 cps/templates/email_edit.html:27
+#: cps/templates/admin.html:54 cps/templates/email_edit.html:27
 msgid "SMTP Login"
 msgstr "SMTP tunnus"
 
-#: cps/templates/admin.html:51 cps/templates/email_edit.html:35
+#: cps/templates/admin.html:55 cps/templates/email_edit.html:35
 msgid "From E-mail"
 msgstr "Lähettäjän sähköposti"
 
-#: cps/templates/admin.html:61
+#: cps/templates/admin.html:65
 msgid "Edit E-mail Server Settings"
 msgstr "Muuta SMTP asetuksia"
 
-#: cps/templates/admin.html:67
+#: cps/templates/admin.html:71
 msgid "Configuration"
 msgstr "Asetukset"
 
-#: cps/templates/admin.html:70
+#: cps/templates/admin.html:74
 msgid "Calibre Database Directory"
 msgstr "Calibre DB hakemisto"
 
-#: cps/templates/admin.html:74 cps/templates/config_edit.html:122
+#: cps/templates/admin.html:78 cps/templates/config_edit.html:122
 msgid "Log Level"
 msgstr "Lokitaso"
 
-#: cps/templates/admin.html:78
+#: cps/templates/admin.html:82
 msgid "Port"
 msgstr "Portti"
 
-#: cps/templates/admin.html:84 cps/templates/config_view_edit.html:27
+#: cps/templates/admin.html:88 cps/templates/config_view_edit.html:27
 msgid "Books per Page"
 msgstr "Kirjaa sivulla"
 
-#: cps/templates/admin.html:88
+#: cps/templates/admin.html:92
 msgid "Uploads"
 msgstr "Lähetetään"
 
-#: cps/templates/admin.html:92
+#: cps/templates/admin.html:96
 msgid "Anonymous Browsing"
 msgstr "Nimetön selaus"
 
-#: cps/templates/admin.html:96
+#: cps/templates/admin.html:100
 msgid "Public Registration"
 msgstr "Julkinen rekisteröinti"
 
-#: cps/templates/admin.html:100
+#: cps/templates/admin.html:104
 msgid "Magic Link Remote Login"
 msgstr "Etäkirjautuminen"
 
-#: cps/templates/admin.html:104
+#: cps/templates/admin.html:108
 msgid "Reverse Proxy Login"
 msgstr ""
 
-#: cps/templates/admin.html:109
+#: cps/templates/admin.html:113
 msgid "Reverse proxy header name"
 msgstr ""
 
-#: cps/templates/admin.html:114
+#: cps/templates/admin.html:118
 msgid "Edit Basic Configuration"
 msgstr ""
 
-#: cps/templates/admin.html:115
+#: cps/templates/admin.html:119
 msgid "Edit UI Configuration"
 msgstr ""
 
-#: cps/templates/admin.html:121
+#: cps/templates/admin.html:125
 msgid "Administration"
 msgstr "Ylläpito"
 
-#: cps/templates/admin.html:122
+#: cps/templates/admin.html:126
 msgid "View Logs"
 msgstr "Katsele lokitiedostoja"
 
-#: cps/templates/admin.html:123
+#: cps/templates/admin.html:127
 msgid "Reconnect Calibre Database"
 msgstr "Uudelleenyhdistä Calibre DB"
 
-#: cps/templates/admin.html:124
+#: cps/templates/admin.html:128
 msgid "Restart"
 msgstr "Uudellenkäynnistä Calibre-Web"
 
-#: cps/templates/admin.html:125
+#: cps/templates/admin.html:129
 msgid "Shutdown"
 msgstr "Sammuta Calibre-Web"
 
-#: cps/templates/admin.html:131
+#: cps/templates/admin.html:135
 msgid "Update"
 msgstr "Päivitä"
 
-#: cps/templates/admin.html:135
+#: cps/templates/admin.html:139
 msgid "Version"
 msgstr "Versio"
 
-#: cps/templates/admin.html:136
+#: cps/templates/admin.html:140
 msgid "Details"
 msgstr "Yksityiskohdat"
 
-#: cps/templates/admin.html:142
+#: cps/templates/admin.html:146
 msgid "Current version"
 msgstr "Nykyinen versio"
 
-#: cps/templates/admin.html:148
+#: cps/templates/admin.html:152
 msgid "Check for Update"
 msgstr "Tarkista päivitykset"
 
-#: cps/templates/admin.html:149
+#: cps/templates/admin.html:153
 msgid "Perform Update"
 msgstr "Päivitä"
 
-#: cps/templates/admin.html:161
+#: cps/templates/admin.html:165
 msgid "Are you sure you want to restart?"
 msgstr "Haluatko varmasti uudelleenkäynnistää Calibre-Webin?"
 
-#: cps/templates/admin.html:166 cps/templates/admin.html:180
-#: cps/templates/admin.html:200 cps/templates/shelf.html:72
+#: cps/templates/admin.html:170 cps/templates/admin.html:184
+#: cps/templates/admin.html:204 cps/templates/shelf.html:72
 msgid "OK"
 msgstr "Ok"
 
-#: cps/templates/admin.html:167 cps/templates/admin.html:181
-#: cps/templates/book_edit.html:172 cps/templates/book_edit.html:194
-#: cps/templates/config_edit.html:346 cps/templates/config_view_edit.html:151
+#: cps/templates/admin.html:171 cps/templates/admin.html:185
+#: cps/templates/book_edit.html:187 cps/templates/book_edit.html:217
+#: cps/templates/config_edit.html:355 cps/templates/config_view_edit.html:151
 #: cps/templates/email_edit.html:40 cps/templates/email_edit.html:92
 #: cps/templates/shelf.html:73 cps/templates/shelf_edit.html:19
 #: cps/templates/user_edit.html:137
 msgid "Cancel"
 msgstr ""
 
-#: cps/templates/admin.html:179
+#: cps/templates/admin.html:183
 msgid "Are you sure you want to shutdown?"
 msgstr "Haluatko varmasti pysäyttää Calibre-Webin?"
 
-#: cps/templates/admin.html:191
+#: cps/templates/admin.html:195
 msgid "Updating, please do not reload this page"
 msgstr "Päivitetään, älä päivitä sivua"
 
@@ -1190,7 +1296,7 @@ msgstr "Poista kirja"
 msgid "Delete formats:"
 msgstr "Poista tiedostomuodot:"
 
-#: cps/templates/book_edit.html:16 cps/templates/book_edit.html:193
+#: cps/templates/book_edit.html:16 cps/templates/book_edit.html:216
 #: cps/templates/email_edit.html:91 cps/templates/user_edit.html:65
 #: cps/templates/user_edit.html:177
 msgid "Delete"
@@ -1220,120 +1326,148 @@ msgstr "Muunna kirja"
 msgid "Book Title"
 msgstr "Kirjan otsikko"
 
-#: cps/templates/book_edit.html:57 cps/templates/book_edit.html:256
-#: cps/templates/book_edit.html:274 cps/templates/search_form.html:10
+#: cps/templates/book_edit.html:57 cps/templates/book_edit.html:279
+#: cps/templates/book_edit.html:297 cps/templates/search_form.html:10
 msgid "Author"
 msgstr "Kirjailija"
 
-#: cps/templates/book_edit.html:61 cps/templates/book_edit.html:261
-#: cps/templates/book_edit.html:276 cps/templates/search_form.html:126
+#: cps/templates/book_edit.html:61 cps/templates/book_edit.html:284
+#: cps/templates/book_edit.html:299 cps/templates/search_form.html:126
 msgid "Description"
 msgstr "Kuvaus"
 
-#: cps/templates/book_edit.html:65 cps/templates/search_form.html:33
+#: cps/templates/book_edit.html:66
+msgid "Identifiers"
+msgstr ""
+
+#: cps/templates/book_edit.html:70 cps/templates/book_edit.html:308
+msgid "Identifier Type"
+msgstr ""
+
+#: cps/templates/book_edit.html:71 cps/templates/book_edit.html:309
+msgid "Identifier Value"
+msgstr ""
+
+#: cps/templates/book_edit.html:72 cps/templates/book_edit.html:310
+msgid "Remove"
+msgstr ""
+
+#: cps/templates/book_edit.html:76
+msgid "Add Identifier"
+msgstr ""
+
+#: cps/templates/book_edit.html:80 cps/templates/search_form.html:33
 msgid "Tags"
 msgstr "Tunnisteet"
 
-#: cps/templates/book_edit.html:73
+#: cps/templates/book_edit.html:88
 msgid "Series ID"
 msgstr ""
 
-#: cps/templates/book_edit.html:77
+#: cps/templates/book_edit.html:92
 msgid "Rating"
 msgstr "Arvostelu"
 
-#: cps/templates/book_edit.html:81
+#: cps/templates/book_edit.html:96
 msgid "Fetch Cover from URL (JPEG - Image will be downloaded and stored in database)"
 msgstr "Kannen osoite (jpg, kuva ladataan ja tallennetaan tietokantaan, kenttä jää uudelleen tyhjäksi)"
 
-#: cps/templates/book_edit.html:85
+#: cps/templates/book_edit.html:100
 msgid "Upload Cover from Local Disk"
 msgstr "Lataa kuva paikalliselta levyltä"
 
-#: cps/templates/book_edit.html:90
+#: cps/templates/book_edit.html:105
 msgid "Published Date"
 msgstr "Julkaisupäivä"
 
-#: cps/templates/book_edit.html:97 cps/templates/book_edit.html:258
-#: cps/templates/book_edit.html:275 cps/templates/detail.html:156
+#: cps/templates/book_edit.html:112 cps/templates/book_edit.html:281
+#: cps/templates/book_edit.html:298 cps/templates/detail.html:156
 #: cps/templates/search_form.html:14
 msgid "Publisher"
 msgstr "Julkaisija"
 
-#: cps/templates/book_edit.html:101 cps/templates/detail.html:123
+#: cps/templates/book_edit.html:116 cps/templates/detail.html:123
 #: cps/templates/user_edit.html:31
 msgid "Language"
 msgstr "Kieli"
 
-#: cps/templates/book_edit.html:111 cps/templates/search_form.html:137
+#: cps/templates/book_edit.html:126 cps/templates/search_form.html:137
 msgid "Yes"
 msgstr "Kyllä"
 
-#: cps/templates/book_edit.html:112 cps/templates/search_form.html:138
+#: cps/templates/book_edit.html:127 cps/templates/search_form.html:138
 msgid "No"
 msgstr "Ei"
 
-#: cps/templates/book_edit.html:158
+#: cps/templates/book_edit.html:173
 msgid "Upload Format"
 msgstr "Lataa tiedostomuoto"
 
-#: cps/templates/book_edit.html:167
+#: cps/templates/book_edit.html:182
 msgid "View Book on Save"
 msgstr "katso kirjaa muokkauksen jälkeen"
 
-#: cps/templates/book_edit.html:170 cps/templates/book_edit.html:206
+#: cps/templates/book_edit.html:185 cps/templates/book_edit.html:229
 msgid "Fetch Metadata"
 msgstr "Hae metadata"
 
-#: cps/templates/book_edit.html:171 cps/templates/config_edit.html:343
+#: cps/templates/book_edit.html:186 cps/templates/config_edit.html:352
 #: cps/templates/config_view_edit.html:150 cps/templates/email_edit.html:38
 #: cps/templates/shelf_edit.html:17 cps/templates/user_edit.html:135
 msgid "Save"
 msgstr ""
 
-#: cps/templates/book_edit.html:185
+#: cps/templates/book_edit.html:200
 msgid "Are you really sure?"
 msgstr "Oletko aivan varma?"
 
-#: cps/templates/book_edit.html:188
+#: cps/templates/book_edit.html:204
 msgid "This book will be permanently erased from database"
 msgstr "Kirja poistetaan Calibren tietokannasta"
 
-#: cps/templates/book_edit.html:189
+#: cps/templates/book_edit.html:205
 msgid "and hard disk"
 msgstr "ja kiintolevyltä"
 
 #: cps/templates/book_edit.html:209
+msgid "Important Kobo Note: deleted books will remain on any paired Kobo device."
+msgstr ""
+
+#: cps/templates/book_edit.html:210
+msgid "Books must first be archived and the device synced before a book can safely be deleted."
+msgstr ""
+
+#: cps/templates/book_edit.html:232
 msgid "Keyword"
 msgstr "Avainsana"
 
-#: cps/templates/book_edit.html:210
+#: cps/templates/book_edit.html:233
 msgid " Search keyword "
 msgstr " Hae avainsanaa "
 
-#: cps/templates/book_edit.html:216
+#: cps/templates/book_edit.html:239
 msgid "Click the cover to load metadata to the form"
 msgstr "Klikkaa kantta ladataksesi metadata lomakkeelle"
 
-#: cps/templates/book_edit.html:231 cps/templates/book_edit.html:271
+#: cps/templates/book_edit.html:254 cps/templates/book_edit.html:294
 msgid "Loading..."
 msgstr "Ladataan..."
 
-#: cps/templates/book_edit.html:236 cps/templates/layout.html:189
+#: cps/templates/book_edit.html:259 cps/templates/layout.html:189
 #: cps/templates/layout.html:221 cps/templates/modal_restriction.html:34
 #: cps/templates/user_edit.html:164
 msgid "Close"
 msgstr "Sulje"
 
-#: cps/templates/book_edit.html:263 cps/templates/book_edit.html:277
+#: cps/templates/book_edit.html:286 cps/templates/book_edit.html:300
 msgid "Source"
 msgstr "Lähde"
 
-#: cps/templates/book_edit.html:272
+#: cps/templates/book_edit.html:295
 msgid "Search error!"
 msgstr "Hakuvirhe!"
 
-#: cps/templates/book_edit.html:273
+#: cps/templates/book_edit.html:296
 msgid "No Result(s) found! Please try another keyword."
 msgstr "Ei osumia! Kokeile jotain tosita hakusanaa."
 
@@ -1474,121 +1608,138 @@ msgid "Goodreads API Secret"
 msgstr "Goodreads API-salaisuus"
 
 #: cps/templates/config_edit.html:203
+msgid "Allow Reverse Proxy Authentication"
+msgstr ""
+
+#: cps/templates/config_edit.html:207
+msgid "Reverse Proxy Header Name"
+msgstr ""
+
+#: cps/templates/config_edit.html:214
 msgid "Login type"
 msgstr "Kirjautumisen tyyppi"
 
-#: cps/templates/config_edit.html:205
+#: cps/templates/config_edit.html:216
 msgid "Use Standard Authentication"
 msgstr "Käytä oletuskirjautumista"
 
-#: cps/templates/config_edit.html:207
+#: cps/templates/config_edit.html:218
 msgid "Use LDAP Authentication"
 msgstr "Käytä LDAP kirjautumista"
 
-#: cps/templates/config_edit.html:210
+#: cps/templates/config_edit.html:221
 msgid "Use OAuth"
 msgstr "Käytä OAuth kirjautumista"
 
-#: cps/templates/config_edit.html:217
+#: cps/templates/config_edit.html:228
 msgid "LDAP Server Host Name or IP Address"
 msgstr "LDAP palvelimen nimi tai IP osoite"
 
-#: cps/templates/config_edit.html:221
+#: cps/templates/config_edit.html:232
 msgid "LDAP Server Port"
 msgstr "LDAP Palveimen portti"
 
-#: cps/templates/config_edit.html:225
-msgid "LDAP Schema (LDAP or LPAPS)"
-msgstr "LDAP skeema (ldap tai ldaps)"
+#: cps/templates/config_edit.html:236 cps/templates/config_edit.html:237
+msgid "LDAP Encryption"
+msgstr ""
 
-#: cps/templates/config_edit.html:229
+#: cps/templates/config_edit.html:239 cps/templates/config_view_edit.html:61
+#: cps/templates/email_edit.html:21
+msgid "None"
+msgstr "Ei mitään"
+
+#: cps/templates/config_edit.html:240
+msgid "TLS"
+msgstr ""
+
+#: cps/templates/config_edit.html:241
+msgid "SSL"
+msgstr ""
+
+#: cps/templates/config_edit.html:246
+msgid "LDAP Certificate Path"
+msgstr ""
+
+#: cps/templates/config_edit.html:252
 msgid "LDAP Administrator Username"
 msgstr "LDAP pääkäyttäjän käyttäjänimi"
 
-#: cps/templates/config_edit.html:233
+#: cps/templates/config_edit.html:256
 msgid "LDAP Administrator Password"
 msgstr "LDAP pääkäyttäjän salasana"
 
-#: cps/templates/config_edit.html:238
-msgid "LDAP Server Enable SSL"
-msgstr "LDAP palvelin käyttää SSL:ää"
-
-#: cps/templates/config_edit.html:242
-msgid "LDAP Server Enable TLS"
-msgstr "LDAP palvelin käyttää TLS:ää"
-
-#: cps/templates/config_edit.html:246
-msgid "LDAP Server Certificate"
-msgstr "LDAP palvelimen sertifikaatti"
-
-#: cps/templates/config_edit.html:250
-msgid "LDAP SSL Certificate Path"
-msgstr "LDAP SSL sertifikaatin polku"
-
-#: cps/templates/config_edit.html:255
+#: cps/templates/config_edit.html:260
 msgid "LDAP Distinguished Name (DN)"
 msgstr "LDAP DN"
 
-#: cps/templates/config_edit.html:259
+#: cps/templates/config_edit.html:264
 msgid "LDAP User Object Filter"
 msgstr "LDAP käyttäjä suodin (object filter)"
 
-#: cps/templates/config_edit.html:264
+#: cps/templates/config_edit.html:269
 msgid "LDAP Server is OpenLDAP?"
 msgstr "LDAP palvelin on OpenLDAP?"
 
-#: cps/templates/config_edit.html:272
+#: cps/templates/config_edit.html:271
+msgid "Following Settings are Needed For User Import"
+msgstr ""
+
+#: cps/templates/config_edit.html:273
+msgid "LDAP Group Object Filter"
+msgstr ""
+
+#: cps/templates/config_edit.html:277
+msgid "LDAP Group Name"
+msgstr ""
+
+#: cps/templates/config_edit.html:281
+msgid "LDAP Group Members Field"
+msgstr ""
+
+#: cps/templates/config_edit.html:290
 #, python-format
 msgid "Obtain %(provider)s OAuth Credential"
 msgstr "Hanki %(provider)s OAuth valtuutus"
 
-#: cps/templates/config_edit.html:275
+#: cps/templates/config_edit.html:293
 #, python-format
 msgid "%(provider)s OAuth Client Id"
 msgstr "%(provider)s OAuth asiakas Id"
 
-#: cps/templates/config_edit.html:279
+#: cps/templates/config_edit.html:297
 #, python-format
 msgid "%(provider)s OAuth Client Secret"
 msgstr "%(provider)s OAuth asiakas salaisuus"
 
-#: cps/templates/config_edit.html:288
-msgid "Allow Reverse Proxy Authentication"
-msgstr ""
-
-#: cps/templates/config_edit.html:292
-msgid "Reverse Proxy Header Name"
-msgstr ""
-
-#: cps/templates/config_edit.html:304
+#: cps/templates/config_edit.html:313
 msgid "External binaries"
 msgstr "Ulkoiset binäärit"
 
-#: cps/templates/config_edit.html:312
+#: cps/templates/config_edit.html:321
 msgid "No Converter"
 msgstr "Ei muuntajaa"
 
-#: cps/templates/config_edit.html:314
+#: cps/templates/config_edit.html:323
 msgid "Use Kindlegen"
 msgstr "Käytä Kindlegen"
 
-#: cps/templates/config_edit.html:316
+#: cps/templates/config_edit.html:325
 msgid "Use calibre's ebook converter"
 msgstr "Käytä calibren e-kirjamuuntajaa"
 
-#: cps/templates/config_edit.html:320
+#: cps/templates/config_edit.html:329
 msgid "E-Book converter settings"
 msgstr "E-kirjamuuntajan asetukset"
 
-#: cps/templates/config_edit.html:324
+#: cps/templates/config_edit.html:333
 msgid "Path to convertertool"
 msgstr "Polku muunnintyökaluun"
 
-#: cps/templates/config_edit.html:330
+#: cps/templates/config_edit.html:339
 msgid "Location of Unrar binary"
 msgstr "Unrar binäärin paikka"
 
-#: cps/templates/config_edit.html:349 cps/templates/layout.html:84
+#: cps/templates/config_edit.html:358 cps/templates/layout.html:84
 #: cps/templates/login.html:4 cps/templates/login.html:20
 msgid "Login"
 msgstr "Kirjaudu sisään"
@@ -1632,10 +1783,6 @@ msgstr "Linkitä luettu/ei luettu -tieto Calibren sarakkeeseen"
 #: cps/templates/config_view_edit.html:59
 msgid "View Restrictions based on Calibre column"
 msgstr ""
-
-#: cps/templates/config_view_edit.html:61 cps/templates/email_edit.html:21
-msgid "None"
-msgstr "Ei mitään"
 
 #: cps/templates/config_view_edit.html:68
 msgid "Regular Expression for Title Sorting"
@@ -1725,15 +1872,27 @@ msgstr "Merkitse luetuksi"
 msgid "Read"
 msgstr "Luettu"
 
-#: cps/templates/detail.html:211
+#: cps/templates/detail.html:208
+msgid "Restore from archive"
+msgstr ""
+
+#: cps/templates/detail.html:208
+msgid "Add to archive"
+msgstr ""
+
+#: cps/templates/detail.html:209
+msgid "Archived"
+msgstr ""
+
+#: cps/templates/detail.html:219
 msgid "Description:"
 msgstr "Kuvaus:"
 
-#: cps/templates/detail.html:224 cps/templates/search.html:14
+#: cps/templates/detail.html:232 cps/templates/search.html:14
 msgid "Add to shelf"
 msgstr "Lisää hyllyyn"
 
-#: cps/templates/detail.html:286
+#: cps/templates/detail.html:294
 msgid "Edit Metadata"
 msgstr "Muokkaa metadataa"
 
