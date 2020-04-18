@@ -77,7 +77,7 @@
 
       <div class="form-group">
           <input type="checkbox" name="Show_detail_random" id="Show_detail_random" {% if content.show_detail_random() %}checked{% endif %}>
-          <label for="Show_detail_random">{{_('Show Random Books')}}</label>
+          <label for="Show_detail_random">{{_('Show Random Books in Detail View')}}</label>
       </div>
       {% if ( g.user and g.user.role_admin() and not new_user ) %}
       <a href="#" id="get_user_tags" class="btn btn-default" data-toggle="modal" data-target="#restrictModal">{{_('Add Allowed/Denied Tags')}}</a>
