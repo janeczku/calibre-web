@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2020-04-16 20:16+0200\n"
+"POT-Creation-Date: 2020-04-18 11:48+0200\n"
 "PO-Revision-Date: 2018-02-07 02:20-0500\n"
 "Last-Translator: white <space_white@yahoo.com>\n"
 "Language: ja\n"
@@ -60,7 +60,7 @@ msgstr "管理者ページ"
 msgid "UI Configuration"
 msgstr "UI設定"
 
-#: cps/admin.py:192 cps/admin.py:672
+#: cps/admin.py:192 cps/admin.py:676
 msgid "Calibre-Web configuration updated"
 msgstr "Calibre-Web の設定を更新しました"
 
@@ -90,185 +90,185 @@ msgstr ""
 msgid "Please Enter a LDAP Provider, Port, DN and User Object Identifier"
 msgstr ""
 
-#: cps/admin.py:583
+#: cps/admin.py:587
 #, python-format
 msgid "LDAP Group Object Filter Needs to Have One \"%s\" Format Identifier"
 msgstr ""
 
-#: cps/admin.py:586
+#: cps/admin.py:590
 msgid "LDAP Group Object Filter Has Unmatched Parenthesis"
 msgstr ""
 
-#: cps/admin.py:590
+#: cps/admin.py:594
 #, python-format
 msgid "LDAP User Object Filter needs to Have One \"%s\" Format Identifier"
 msgstr ""
 
-#: cps/admin.py:593
+#: cps/admin.py:597
 msgid "LDAP User Object Filter Has Unmatched Parenthesis"
 msgstr ""
 
-#: cps/admin.py:597
+#: cps/admin.py:601
 msgid "LDAP Certificate Location is not Valid, Please Enter Correct Path"
 msgstr ""
 
-#: cps/admin.py:645
+#: cps/admin.py:649
 msgid "Logfile Location is not Valid, Please Enter Correct Path"
 msgstr ""
 
-#: cps/admin.py:650
+#: cps/admin.py:654
 msgid "Access Logfile Location is not Valid, Please Enter Correct Path"
 msgstr ""
 
-#: cps/admin.py:669
+#: cps/admin.py:673
 msgid "DB Location is not Valid, Please Enter Correct Path"
 msgstr ""
 
-#: cps/admin.py:702
+#: cps/admin.py:706
 msgid "Basic Configuration"
 msgstr "基本設定"
 
-#: cps/admin.py:726 cps/web.py:1162
+#: cps/admin.py:730 cps/web.py:1162
 msgid "Please fill out all fields!"
 msgstr "全ての項目を入力してください"
 
-#: cps/admin.py:729 cps/admin.py:741 cps/admin.py:747 cps/admin.py:765
+#: cps/admin.py:733 cps/admin.py:745 cps/admin.py:751 cps/admin.py:769
 msgid "Add new user"
 msgstr "新規ユーザ追加"
 
-#: cps/admin.py:738 cps/web.py:1409
+#: cps/admin.py:742 cps/web.py:1409
 msgid "E-mail is not from valid domain"
 msgstr "このメールは有効なドメインからのものではありません"
 
-#: cps/admin.py:745 cps/admin.py:760
+#: cps/admin.py:749 cps/admin.py:764
 msgid "Found an existing account for this e-mail address or nickname."
 msgstr "このメールアドレスかニックネームで登録されたアカウントが見つかりました"
 
-#: cps/admin.py:756
+#: cps/admin.py:760
 #, python-format
 msgid "User '%(user)s' created"
 msgstr "ユーザ '%(user)s' を作成しました"
 
-#: cps/admin.py:775
+#: cps/admin.py:779
 msgid "Edit e-mail server settings"
 msgstr "メールサーバの設定を編集"
 
-#: cps/admin.py:801
+#: cps/admin.py:805
 #, python-format
 msgid "Test e-mail successfully send to %(kindlemail)s"
 msgstr "テストメールが %(kindlemail)s に送信されました"
 
-#: cps/admin.py:804
+#: cps/admin.py:808
 #, python-format
 msgid "There was an error sending the Test e-mail: %(res)s"
 msgstr "テストメールを %(res)s に送信中にエラーが発生しました"
 
-#: cps/admin.py:806
+#: cps/admin.py:810
 msgid "Please configure your e-mail address first..."
 msgstr ""
 
-#: cps/admin.py:808
+#: cps/admin.py:812
 msgid "E-mail server settings updated"
 msgstr "メールサーバの設定を更新しました"
 
-#: cps/admin.py:838
+#: cps/admin.py:842
 #, python-format
 msgid "User '%(nick)s' deleted"
 msgstr "ユーザ '%(nick)s' を削除しました"
 
-#: cps/admin.py:841
+#: cps/admin.py:845
 msgid "No admin user remaining, can't delete user"
 msgstr ""
 
-#: cps/admin.py:877 cps/web.py:1452
+#: cps/admin.py:881 cps/web.py:1452
 msgid "Found an existing account for this e-mail address."
 msgstr "このメールアドレスで登録されたアカウントがあります"
 
-#: cps/admin.py:887 cps/admin.py:902 cps/admin.py:922 cps/web.py:1427
+#: cps/admin.py:891 cps/admin.py:906 cps/admin.py:926 cps/web.py:1427
 #, python-format
 msgid "Edit User %(nick)s"
 msgstr "%(nick)s を編集"
 
-#: cps/admin.py:893 cps/web.py:1419
+#: cps/admin.py:897 cps/web.py:1419
 msgid "This username is already taken"
 msgstr ""
 
-#: cps/admin.py:909
+#: cps/admin.py:913
 #, python-format
 msgid "User '%(nick)s' updated"
 msgstr "ユーザ '%(nick)s' を更新しました"
 
-#: cps/admin.py:912
+#: cps/admin.py:916
 msgid "An unknown error occured."
 msgstr "不明なエラーが発生しました。"
 
-#: cps/admin.py:935
+#: cps/admin.py:939
 #, python-format
 msgid "Password for user %(user)s reset"
 msgstr "%(user)s 用のパスワードをリセット"
 
-#: cps/admin.py:938 cps/web.py:1187 cps/web.py:1251
+#: cps/admin.py:942 cps/web.py:1187 cps/web.py:1251
 msgid "An unknown error occurred. Please try again later."
 msgstr "不明なエラーが発生しました。あとで再試行してください。"
 
-#: cps/admin.py:941 cps/web.py:1128
+#: cps/admin.py:945 cps/web.py:1128
 msgid "Please configure the SMTP mail settings first..."
 msgstr "初めにSMTPメールの設定をしてください"
 
-#: cps/admin.py:953
+#: cps/admin.py:957
 msgid "Logfile viewer"
 msgstr ""
 
-#: cps/admin.py:992
+#: cps/admin.py:996
 msgid "Requesting update package"
 msgstr "更新データを要求中"
 
-#: cps/admin.py:993
+#: cps/admin.py:997
 msgid "Downloading update package"
 msgstr "更新データをダウンロード中"
 
-#: cps/admin.py:994
+#: cps/admin.py:998
 msgid "Unzipping update package"
 msgstr "更新データを展開中"
 
-#: cps/admin.py:995
+#: cps/admin.py:999
 msgid "Replacing files"
 msgstr "ファイルを置換中"
 
-#: cps/admin.py:996
+#: cps/admin.py:1000
 msgid "Database connections are closed"
 msgstr "データベースの接続を切断完了"
 
-#: cps/admin.py:997
+#: cps/admin.py:1001
 msgid "Stopping server"
 msgstr "サーバ停止中"
 
-#: cps/admin.py:998
+#: cps/admin.py:1002
 msgid "Update finished, please press okay and reload page"
 msgstr "アップデート完了、OKを押してページをリロードしてください"
 
-#: cps/admin.py:999 cps/admin.py:1000 cps/admin.py:1001 cps/admin.py:1002
-#: cps/admin.py:1003
+#: cps/admin.py:1003 cps/admin.py:1004 cps/admin.py:1005 cps/admin.py:1006
+#: cps/admin.py:1007
 msgid "Update failed:"
 msgstr "アップデート失敗:"
 
-#: cps/admin.py:999 cps/updater.py:319 cps/updater.py:520 cps/updater.py:522
+#: cps/admin.py:1003 cps/updater.py:319 cps/updater.py:520 cps/updater.py:522
 msgid "HTTP Error"
 msgstr "HTTPエラー"
 
-#: cps/admin.py:1000 cps/updater.py:321 cps/updater.py:524
+#: cps/admin.py:1004 cps/updater.py:321 cps/updater.py:524
 msgid "Connection error"
 msgstr "接続エラー"
 
-#: cps/admin.py:1001 cps/updater.py:323 cps/updater.py:526
+#: cps/admin.py:1005 cps/updater.py:323 cps/updater.py:526
 msgid "Timeout while establishing connection"
 msgstr "接続を確立中にタイムアウトしました"
 
-#: cps/admin.py:1002 cps/updater.py:325 cps/updater.py:528
+#: cps/admin.py:1006 cps/updater.py:325 cps/updater.py:528
 msgid "General error"
 msgstr "エラー発生"
 
-#: cps/admin.py:1003
+#: cps/admin.py:1007
 msgid "Update File Could Not be Saved in Temp Dir"
 msgstr ""
 
@@ -1241,7 +1241,7 @@ msgstr ""
 
 #: cps/templates/admin.html:171 cps/templates/admin.html:185
 #: cps/templates/book_edit.html:172 cps/templates/book_edit.html:194
-#: cps/templates/config_edit.html:355 cps/templates/config_view_edit.html:151
+#: cps/templates/config_edit.html:365 cps/templates/config_view_edit.html:151
 #: cps/templates/email_edit.html:40 cps/templates/email_edit.html:92
 #: cps/templates/shelf.html:73 cps/templates/shelf_edit.html:19
 #: cps/templates/user_edit.html:137
@@ -1383,7 +1383,7 @@ msgstr ""
 msgid "Fetch Metadata"
 msgstr ""
 
-#: cps/templates/book_edit.html:171 cps/templates/config_edit.html:352
+#: cps/templates/book_edit.html:171 cps/templates/config_edit.html:362
 #: cps/templates/config_view_edit.html:150 cps/templates/email_edit.html:38
 #: cps/templates/shelf_edit.html:17 cps/templates/user_edit.html:135
 msgid "Save"
@@ -1603,107 +1603,123 @@ msgstr ""
 msgid "LDAP Server Port"
 msgstr ""
 
-#: cps/templates/config_edit.html:236 cps/templates/config_edit.html:237
+#: cps/templates/config_edit.html:236
 msgid "LDAP Encryption"
 msgstr ""
 
-#: cps/templates/config_edit.html:239 cps/templates/config_view_edit.html:61
+#: cps/templates/config_edit.html:238 cps/templates/config_view_edit.html:61
 #: cps/templates/email_edit.html:21
 msgid "None"
 msgstr "なし"
 
-#: cps/templates/config_edit.html:240
+#: cps/templates/config_edit.html:239
 msgid "TLS"
 msgstr ""
 
-#: cps/templates/config_edit.html:241
+#: cps/templates/config_edit.html:240
 msgid "SSL"
 msgstr ""
 
-#: cps/templates/config_edit.html:246
+#: cps/templates/config_edit.html:245
 msgid "LDAP Certificate Path"
 msgstr ""
 
+#: cps/templates/config_edit.html:250
+msgid "LDAP Authentication"
+msgstr ""
+
 #: cps/templates/config_edit.html:252
+msgid "Anonymous"
+msgstr ""
+
+#: cps/templates/config_edit.html:253
+msgid "Unauthenticated"
+msgstr ""
+
+#: cps/templates/config_edit.html:254
+msgid "Simple"
+msgstr ""
+
+#: cps/templates/config_edit.html:259
 msgid "LDAP Administrator Username"
 msgstr ""
 
-#: cps/templates/config_edit.html:256
+#: cps/templates/config_edit.html:265
 msgid "LDAP Administrator Password"
 msgstr ""
 
-#: cps/templates/config_edit.html:260
+#: cps/templates/config_edit.html:270
 msgid "LDAP Distinguished Name (DN)"
 msgstr ""
 
-#: cps/templates/config_edit.html:264
+#: cps/templates/config_edit.html:274
 msgid "LDAP User Object Filter"
 msgstr ""
 
-#: cps/templates/config_edit.html:269
+#: cps/templates/config_edit.html:279
 msgid "LDAP Server is OpenLDAP?"
 msgstr ""
 
-#: cps/templates/config_edit.html:271
+#: cps/templates/config_edit.html:281
 msgid "Following Settings are Needed For User Import"
 msgstr ""
 
-#: cps/templates/config_edit.html:273
+#: cps/templates/config_edit.html:283
 msgid "LDAP Group Object Filter"
 msgstr ""
 
-#: cps/templates/config_edit.html:277
+#: cps/templates/config_edit.html:287
 msgid "LDAP Group Name"
 msgstr ""
 
-#: cps/templates/config_edit.html:281
+#: cps/templates/config_edit.html:291
 msgid "LDAP Group Members Field"
 msgstr ""
 
-#: cps/templates/config_edit.html:290
+#: cps/templates/config_edit.html:300
 #, python-format
 msgid "Obtain %(provider)s OAuth Credential"
 msgstr ""
 
-#: cps/templates/config_edit.html:293
+#: cps/templates/config_edit.html:303
 #, python-format
 msgid "%(provider)s OAuth Client Id"
 msgstr ""
 
-#: cps/templates/config_edit.html:297
+#: cps/templates/config_edit.html:307
 #, python-format
 msgid "%(provider)s OAuth Client Secret"
 msgstr ""
 
-#: cps/templates/config_edit.html:313
+#: cps/templates/config_edit.html:323
 msgid "External binaries"
 msgstr "外部バイナリ"
 
-#: cps/templates/config_edit.html:321
+#: cps/templates/config_edit.html:331
 msgid "No Converter"
 msgstr ""
 
-#: cps/templates/config_edit.html:323
+#: cps/templates/config_edit.html:333
 msgid "Use Kindlegen"
 msgstr "Kindlegenを使う"
 
-#: cps/templates/config_edit.html:325
+#: cps/templates/config_edit.html:335
 msgid "Use calibre's ebook converter"
 msgstr "calibreのebook converterを使う"
 
-#: cps/templates/config_edit.html:329
+#: cps/templates/config_edit.html:339
 msgid "E-Book converter settings"
 msgstr "E-Book converterの設定"
 
-#: cps/templates/config_edit.html:333
+#: cps/templates/config_edit.html:343
 msgid "Path to convertertool"
 msgstr "convertertoolのパス"
 
-#: cps/templates/config_edit.html:339
+#: cps/templates/config_edit.html:349
 msgid "Location of Unrar binary"
 msgstr "Unrarバイナリのパス"
 
-#: cps/templates/config_edit.html:358 cps/templates/layout.html:84
+#: cps/templates/config_edit.html:368 cps/templates/layout.html:84
 #: cps/templates/login.html:4 cps/templates/login.html:20
 msgid "Login"
 msgstr "ログイン"

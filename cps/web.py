@@ -285,7 +285,7 @@ def import_ldap_users():
     showtext = {}
     try:
         new_users = services.ldap.get_group_members(config.config_ldap_group_name)
-    except (services.ldap.LDAPException, TypeError, AttributeError) as e:
+    except (services.ldap.LDAPException, TypeError, AttributeError, KeyError) as e:
         log.debug(e)
         showtext['text'] = _(u'Error: %(ldaperror)s', ldaperror=e)
         return json.dumps(showtext)

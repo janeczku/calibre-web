@@ -571,11 +571,11 @@ def _configuration_update_helper():
 
         if config.config_ldap_authentication > constants.LDAP_AUTH_ANONYMOUS:
             if config.config_ldap_authentication > constants.LDAP_AUTH_UNAUTHENTICATE:
-                if not config.config_ldap_serv_username:
-                    return _configuration_result('Please Enter a LDAP Service Account', gdriveError)
-            else:
                 if not config.config_ldap_serv_username or not bool(config.config_ldap_serv_password):
                     return _configuration_result('Please Enter a LDAP Service Account and Password', gdriveError)
+            else:
+                if not config.config_ldap_serv_username:
+                    return _configuration_result('Please Enter a LDAP Service Account', gdriveError)
 
         #_config_checkbox("config_ldap_use_ssl")
         #_config_checkbox("config_ldap_use_tls")
