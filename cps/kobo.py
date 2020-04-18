@@ -17,9 +17,11 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-import datetime
-import sys
 import base64
+import datetime
+import itertools
+import json
+import sys
 import os
 import uuid
 from time import gmtime, strftime
@@ -45,7 +47,7 @@ from sqlalchemy import func
 from sqlalchemy.sql.expression import and_, or_
 import requests
 
-from . import config, logger, kobo_auth, db, helper, ub
+from . import config, logger, kobo_auth, db, helper, shelf as shelf_lib, ub
 from .services import SyncToken as SyncToken
 from .web import download_required
 from .kobo_auth import requires_kobo_auth
@@ -119,6 +121,7 @@ def redirect_or_proxy_request():
 
 def convert_to_kobo_timestamp_string(timestamp):
     return timestamp.strftime("%Y-%m-%dT%H:%M:%SZ")
+
 
 @kobo.route("/v1/library/sync")
 @requires_kobo_auth
@@ -203,24 +206,23 @@ def HandleSyncRequest():
                      ub.KoboReadingState.user_id == current_user.id,
                      ub.KoboReadingState.book_id.notin_(reading_states_in_new_entitlements))))
     for kobo_reading_state in changed_reading_states.all():
-        book = db.session.query(db.Books).filter(db.Books.id == kobo_reading_state.book_id).one()
-        sync_results.append({
-            "ChangedReadingState": {
-                "ReadingState": get_kobo_reading_state_response(book, kobo_reading_state)
-            }
-        })
-        new_reading_state_last_modified = max(new_reading_state_last_modified, kobo_reading_state.last_modified)
+        book = db.session.query(db.Books).filter(db.Books.id == kobo_reading_state.book_id).one_or_none()
+        if book:
+            sync_results.append({
+                "ChangedReadingState": {
+                    "ReadingState": get_kobo_reading_state_response(book, kobo_reading_state)
+                }
+            })
+            new_reading_state_last_modified = max(new_reading_state_last_modified, kobo_reading_state.last_modified)
+
+    sync_shelves(sync_token, sync_results)
 
     sync_token.books_last_created = new_books_last_created
     sync_token.books_last_modified = new_books_last_modified
     sync_token.archive_last_modified = new_archived_last_modified
     sync_token.reading_state_last_modified = new_reading_state_last_modified
 
-    if config.config_kobo_proxy:
-        return generate_sync_response(request, sync_token, sync_results)
-
-    return make_response(jsonify(sync_results))
-    # Missing feature: Detect server-side book deletions.
+    return generate_sync_response(request, sync_token, sync_results)
 
 
 def generate_sync_response(request, sync_token, sync_results):
@@ -390,6 +392,222 @@ def get_metadata(book):
         }
 
     return metadata
+
+
+@kobo.route("/v1/library/tags", methods=["POST"])
+@login_required
+# Creates a Shelf with the given items, and returns the shelf's uuid.
+def HandleTagCreate():
+    shelf_request = request.json
+    name, items = None, None
+    try:
+        name = shelf_request["Name"]
+        items = shelf_request["Items"]
+    except KeyError:
+        log.debug("Received malformed v1/library/tags request.")
+        abort(400, description="Malformed tags POST request. Data is missing 'Name' or 'Items' field")
+
+    shelf = ub.session.query(ub.Shelf).filter(and_(ub.Shelf.name) == name, ub.Shelf.user_id ==
+                                              current_user.id).one_or_none()
+    if shelf and not shelf_lib.check_shelf_edit_permissions(shelf):
+        abort(401, description="User is unauthaurized to edit shelf.")
+
+    if not shelf:
+        shelf = ub.Shelf(user_id=current_user.id, name=name, uuid=uuid.uuid4())
+        ub.session.add(shelf)
+
+    items_unknown_to_calibre = add_items_to_shelf(items, shelf)
+    if items_unknown_to_calibre:
+        log.debug("Received request to add unknown books to a collection. Silently ignoring items.")
+    ub.session.commit()
+
+    return make_response(jsonify(str(shelf.uuid)), 201)
+
+
+@kobo.route("/v1/library/tags/<tag_id>", methods=["DELETE", "PUT"])
+def HandleTagUpdate(tag_id):
+    shelf = ub.session.query(ub.Shelf).filter(and_(ub.Shelf.uuid) == tag_id,
+                                              ub.Shelf.user_id == current_user.id).one_or_none()
+    if not shelf:
+        log.debug("Received Kobo tag update request on a collection unknown to CalibreWeb")
+        if config.config_kobo_proxy:
+            return redirect_or_proxy_request()
+        else:
+            abort(404, description="Collection isn't known to CalibreWeb")
+
+    if not shelf_lib.check_shelf_edit_permissions(shelf):
+        abort(401, description="User is unauthaurized to edit shelf.")
+
+    if request.method == "DELETE":
+        shelf_lib.delete_shelf_helper(shelf)
+    else:
+        shelf_request = request.json
+        name = None
+        try:
+            name = shelf_request["Name"]
+        except KeyError:
+            log.debug("Received malformed v1/library/tags rename request.")
+            abort(400, description="Malformed tags POST request. Data is missing 'Name' field")
+
+        shelf.name = name
+        ub.session.merge(shelf)
+        ub.session.commit()
+
+    return make_response(' ', 200)
+
+
+# Adds items to the given shelf.
+def add_items_to_shelf(items, shelf):
+    book_ids_already_in_shelf = set([book_shelf.book_id for book_shelf in shelf.books])
+    items_unknown_to_calibre = []
+    for item in items:
+        if item["Type"] != "ProductRevisionTagItem":
+            items_unknown_to_calibre.append(item)
+            continue
+
+        book = db.session.query(db.Books).filter(db.Books.uuid == item["RevisionId"]).one_or_none()
+        if not book:
+            items_unknown_to_calibre.append(item)
+            continue
+
+        book_id = book.id
+        if book_id not in book_ids_already_in_shelf:
+            shelf.books.append(ub.BookShelf(book_id=book_id))
+    return items_unknown_to_calibre
+
+
+@kobo.route("/v1/library/tags/<tag_id>/items", methods=["POST"])
+@login_required
+def HandleTagAddItem(tag_id):
+    tag_request = request.json
+    items = None
+    try:
+        items = tag_request["Items"]
+    except KeyError:
+        log.debug("Received malformed v1/library/tags/<tag_id>/items/delete request.")
+        abort(400, description="Malformed tags POST request. Data is missing 'Items' field")
+
+    shelf = ub.session.query(ub.Shelf).filter(and_(ub.Shelf.uuid) == tag_id,
+                                              ub.Shelf.user_id == current_user.id).one_or_none()
+    if not shelf:
+        log.debug("Received Kobo request on a collection unknown to CalibreWeb")
+        abort(404, description="Collection isn't known to CalibreWeb")
+
+    if not shelf_lib.check_shelf_edit_permissions(shelf):
+        abort(401, description="User is unauthaurized to edit shelf.")
+
+    items_unknown_to_calibre = add_items_to_shelf(items, shelf)
+    if items_unknown_to_calibre:
+        log.debug("Received request to add an unknown book to a collecition. Silently ignoring item.")
+
+    ub.session.merge(shelf)
+    ub.session.commit()
+
+    return make_response('', 201)
+
+
+@kobo.route("/v1/library/tags/<tag_id>/items/delete", methods=["POST"])
+@login_required
+def HandleTagRemoveItem(tag_id):
+    tag_request = request.json
+    items = None
+    try:
+        items = tag_request["Items"]
+    except KeyError:
+        log.debug("Received malformed v1/library/tags/<tag_id>/items/delete request.")
+        abort(400, description="Malformed tags POST request. Data is missing 'Items' field")
+
+    shelf = ub.session.query(ub.Shelf).filter(ub.Shelf.uuid == tag_id,
+                                              ub.Shelf.user_id == current_user.id).one_or_none()
+    if not shelf:
+        log.debug(
+            "Received a request to remove an item from a Collection unknown to CalibreWeb.")
+        abort(404, description="Collection isn't known to CalibreWeb")
+
+    if not shelf_lib.check_shelf_edit_permissions(shelf):
+        abort(401, description="User is unauthaurized to edit shelf.")
+
+    items_unknown_to_calibre = []
+    for item in items:
+        if item["Type"] != "ProductRevisionTagItem":
+            items_unknown_to_calibre.append(item)
+            continue
+
+        book = db.session.query(db.Books).filter(db.Books.uuid == item["RevisionId"]).one_or_none()
+        if not book:
+            items_unknown_to_calibre.append(item)
+            continue
+
+        shelf.books.filter(ub.BookShelf.book_id == book.id).delete()
+    ub.session.commit()
+
+    if items_unknown_to_calibre:
+        log.debug("Received request to remove an unknown book to a collecition. Silently ignoring item.")
+
+    return make_response('', 200)
+
+
+# Add new, changed, or deleted shelves to the sync_results.
+# Note: Public shelves that aren't owned by the user aren't supported.
+def sync_shelves(sync_token, sync_results):
+    new_tags_last_modified = sync_token.tags_last_modified
+
+    for shelf in ub.session.query(ub.ShelfArchive).filter(func.datetime(ub.ShelfArchive.last_modified) > sync_token.tags_last_modified, ub.ShelfArchive.user_id == current_user.id):
+        new_tags_last_modified = max(shelf.last_modified, new_tags_last_modified)
+
+        sync_results.append({
+            "DeletedTag": {
+                "Tag": {
+                    "Id": shelf.uuid,
+                    "LastModified": convert_to_kobo_timestamp_string(shelf.last_modified)
+                }
+            }
+        })
+
+    for shelf in ub.session.query(ub.Shelf).filter(func.datetime(ub.Shelf.last_modified) > sync_token.tags_last_modified, ub.Shelf.user_id == current_user.id):
+        if not shelf_lib.check_shelf_view_permissions(shelf):
+            continue
+
+        new_tags_last_modified = max(shelf.last_modified, new_tags_last_modified)
+
+        tag = create_kobo_tag(shelf)
+        if not tag:
+            continue
+
+        if shelf.created > sync_token.tags_last_modified:
+            sync_results.append({
+                "NewTag": tag
+            })
+        else:
+            sync_results.append({
+                "ChangedTag": tag
+            })
+    sync_token.tags_last_modified = new_tags_last_modified
+    ub.session.commit()
+
+
+# Creates a Kobo "Tag" object from a ub.Shelf object
+def create_kobo_tag(shelf):
+    tag = {
+        "Created": convert_to_kobo_timestamp_string(shelf.created),
+        "Id": shelf.uuid,
+        "Items": [],
+        "LastModified": convert_to_kobo_timestamp_string(shelf.last_modified),
+        "Name": shelf.name,
+        "Type": "UserTag"
+    }
+    for book_shelf in shelf.books:
+        book = db.session.query(db.Books).filter(db.Books.id == book_shelf.book_id).one_or_none()
+        if not book:
+            log.info(u"Book (id: %s) in BookShelf (id: %s) not found in book database",  book_shelf.book_id, shelf.id)
+            return None
+        tag["Items"].append(
+            {
+                "RevisionId": book.uuid,
+                "Type": "ProductRevisionTagItem"
+            }
+        )
+    return {"Tag": tag}
 
 
 @kobo.route("/v1/library/<book_uuid>/state", methods=["GET", "PUT"])
@@ -589,10 +807,7 @@ def HandleBookDeletionRequest(book_uuid):
 
 # TODO: Implement the following routes
 @kobo.route("/v1/library/<dummy>", methods=["DELETE", "GET"])
-@kobo.route("/v1/library/tags", methods=["POST"])
-@kobo.route("/v1/library/tags/<shelf_name>", methods=["POST"])
-@kobo.route("/v1/library/tags/<tag_id>", methods=["DELETE"])
-def HandleUnimplementedRequest(dummy=None, book_uuid=None, shelf_name=None, tag_id=None):
+def HandleUnimplementedRequest(dummy=None):
     log.debug("Unimplemented Library Request received: %s", request.base_url)
     return redirect_or_proxy_request()
 
@@ -612,6 +827,7 @@ def HandleUserRequest(dummy=None):
 @kobo.route("/v1/products/<dummy>/recommendations", methods=["GET", "POST"])
 @kobo.route("/v1/products/<dummy>/nextread", methods=["GET", "POST"])
 @kobo.route("/v1/products/<dummy>/reviews", methods=["GET", "POST"])
+@kobo.route("/v1/products/books/series/<dummy>", methods=["GET", "POST"])
 @kobo.route("/v1/products/books/<dummy>", methods=["GET", "POST"])
 @kobo.route("/v1/products/dailydeal", methods=["GET", "POST"])
 @kobo.route("/v1/products", methods=["GET", "POST"])
@@ -624,7 +840,7 @@ def HandleProductsRequest(dummy=None):
 def handle_404(err):
     # This handler acts as a catch-all for endpoints that we don't have an interest in
     # implementing (e.g: v1/analytics/gettests, v1/user/recommendations, etc)
-    log.debug("Unknown Request received: %s", request.base_url)
+    log.debug("Unknown Request received: %s, method: %s, data: %s", request.base_url, request.method, request.data)
     return redirect_or_proxy_request()
 
 
