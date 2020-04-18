@@ -36,17 +36,17 @@
       <div class="col-xs-12 col-sm-6">
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3" style="margin-top:50px;">
-            <p class='text-justify attribute'><strong>Start Time: </strong>2020-04-16 21:05:16</p>
+            <p class='text-justify attribute'><strong>Start Time: </strong>2020-04-18 10:46:25</p>
         </div>
       </div>
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3">
-            <p class='text-justify attribute'><strong>Stop Time: </strong>2020-04-16 21:53:03</p>
+            <p class='text-justify attribute'><strong>Stop Time: </strong>2020-04-18 11:34:54</p>
         </div>
       </div>
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3">
-           <p class='text-justify attribute'><strong>Duration: </strong>41:12 min</p>
+           <p class='text-justify attribute'><strong>Duration: </strong>41:54 min</p>
         </div>
       </div>
       </div>
@@ -1006,9 +1006,9 @@
                         <pre class="text-left">Traceback (most recent call last):
   File "/home/matthias/Entwicklung/calibre-web-test/test/test_kobo_sync.py", line 89, in test_check_sync
     self.assertEqual(r.json()['Resources']['image_url_quality_template'], self.kobo_adress+"/{ImageId}/{width}/{height}/image.jpg")
-AssertionError: 'http[35 chars]4dd7bb34f15173d3cfcccd48b/{ImageId}/image.jpg' != 'http[35 chars]4dd7bb34f15173d3cfcccd48b/{ImageId}/{width}/{height}/image.jpg'
-- http://192.168.188.33:8083/kobo/0c877fb4dd7bb34f15173d3cfcccd48b/{ImageId}/image.jpg
-+ http://192.168.188.33:8083/kobo/0c877fb4dd7bb34f15173d3cfcccd48b/{ImageId}/{width}/{height}/image.jpg
+AssertionError: 'http[35 chars]65c2703d57c660b93b6ebdafa/{ImageId}/image.jpg' != 'http[35 chars]65c2703d57c660b93b6ebdafa/{ImageId}/{width}/{height}/image.jpg'
+- http://192.168.188.33:8083/kobo/8e590a265c2703d57c660b93b6ebdafa/{ImageId}/image.jpg
++ http://192.168.188.33:8083/kobo/8e590a265c2703d57c660b93b6ebdafa/{ImageId}/{width}/{height}/image.jpg
 ?                                                                            +++++++++++++++++</pre>
                     </div>
                     <div class="clearfix"></div>
@@ -1040,13 +1040,13 @@ AssertionError: 'http[35 chars]4dd7bb34f15173d3cfcccd48b/{ImageId}/image.jpg' !=
 
     <tr class="result['header']['style']">
         <td>test_ldap.test_ldap_login</td>
-        <td class="text-center">7</td>
-        <td class="text-center">7</td>
+        <td class="text-center">8</td>
+        <td class="text-center">8</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c9', 7)">Detail</a>
+            <a onclick="showClassDetail('c9', 8)">Detail</a>
         </td>
     </tr>
 
@@ -1109,6 +1109,15 @@ AssertionError: 'http[35 chars]4dd7bb34f15173d3cfcccd48b/{ImageId}/image.jpg' !=
         <tr id='pt9.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_ldap_about</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt9.8' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>test_ldap_authentication</div>
             </td>
             <td colspan='6' align='center'>PASS</td>
         </tr>
@@ -1310,7 +1319,7 @@ AssertionError: False is not true : logfile config value is not empty after rese
 
 
     <tr class="result['header']['style']">
-        <td>test_oauth.test_outh_login</td>
+        <td>test_oauth.test_OAuth_login</td>
         <td class="text-center">2</td>
         <td class="text-center">2</td>
         <td class="text-center">0</td>
@@ -2196,8 +2205,8 @@ AssertionError: False is not true : logfile config value is not empty after rese
 
     <tr id='total_row' class="text-center bg-grey">
         <td>Total</td>
-        <td>185</td>
-        <td>176</td>
+        <td>186</td>
+        <td>177</td>
         <td>2</td>
         <td>0</td>
         <td>7</td>
@@ -2340,6 +2349,30 @@ AssertionError: False is not true : logfile config value is not empty after rese
               <td>test_kobo_sync</td>
             </tr>
           
+            <tr>
+              <th>Flask-SimpleLDAP</th>
+              <td>1.4.0</td>
+              <td>test_ldap_login</td>
+            </tr>
+          
+            <tr>
+              <th>python-ldap</th>
+              <td>3.2.0</td>
+              <td>test_ldap_login</td>
+            </tr>
+          
+            <tr>
+              <th>Flask-Dance</th>
+              <td>3.0.0</td>
+              <td>test_OAuth_login</td>
+            </tr>
+          
+            <tr>
+              <th>SQLAlchemy-Utils</th>
+              <td>0.36.3</td>
+              <td>test_OAuth_login</td>
+            </tr>
+          
           </tbody>
         </table>
       </div>
@@ -2348,7 +2381,7 @@ AssertionError: False is not true : logfile config value is not empty after rese
 </div>
 
 <script>
-    drawCircle(176, 2, 0, 7);
+    drawCircle(177, 2, 0, 7);
 </script>
 
 </div>
