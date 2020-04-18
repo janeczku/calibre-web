@@ -326,12 +326,12 @@ def feed_shelfindex():
 def feed_shelf(book_id):
     off = request.args.get("offset") or 0
     if current_user.is_anonymous:
-        shelf = ub.session.query(ub.Shelf).filter(ub.Shelf.is_public == 1, ub.Shelf.id == book_id).first()
+        shelf = ub.session.query(ub.Shelf).filter(ub.Shelf.is_public == 1, ub.Shelf.id == book_id, not ub.Shelf.deleted).first()
     else:
         shelf = ub.session.query(ub.Shelf).filter(or_(and_(ub.Shelf.user_id == int(current_user.id),
                                                            ub.Shelf.id == book_id),
                                                       and_(ub.Shelf.is_public == 1,
-                                                           ub.Shelf.id == book_id))).first()
+                                                           ub.Shelf.id == book_id)), not ub.Shelf.deleted).first()
     result = list()
     # user is allowed to access shelf
     if shelf:
