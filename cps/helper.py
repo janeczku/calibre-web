@@ -802,7 +802,7 @@ def get_search_results(term):
             db.Books.authors.any(and_(*q)),
             db.Books.publishers.any(func.lower(db.Publishers.name).ilike("%" + term + "%")),
             func.lower(db.Books.title).ilike("%" + term + "%")
-            )).all()
+            )).order_by(db.Books.sort).all()
 
 def get_cc_columns():
     tmpcc = db.session.query(db.Custom_Columns).filter(db.Custom_Columns.datatype.notin_(db.cc_exceptions)).all()
