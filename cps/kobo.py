@@ -385,7 +385,7 @@ def get_metadata(book):
             name = get_series(book)
         metadata["Series"] = {
             "Name": get_series(book),
-            "Number": book.series_index,
+            "Number": book.series_index,        # ToDo Check int() ?
             "NumberFloat": float(book.series_index),
             # Get a deterministic id based on the series name.
             "Id": uuid.uuid3(uuid.NAMESPACE_DNS, name),
@@ -407,8 +407,10 @@ def HandleTagCreate():
         log.debug("Received malformed v1/library/tags request.")
         abort(400, description="Malformed tags POST request. Data is missing 'Name' or 'Items' field")
 
+    # ToDO: Names are not unique ! -> filter only private shelfs
     shelf = ub.session.query(ub.Shelf).filter(and_(ub.Shelf.name) == name, ub.Shelf.user_id ==
-                                              current_user.id).one_or_none()
+                                              current_user.id).one_or_none() # ToDO: shouldn't it ) at the end
+
     if shelf and not shelf_lib.check_shelf_edit_permissions(shelf):
         abort(401, description="User is unauthaurized to edit shelf.")
 
@@ -517,6 +519,7 @@ def HandleTagRemoveItem(tag_id):
         log.debug("Received malformed v1/library/tags/<tag_id>/items/delete request.")
         abort(400, description="Malformed tags POST request. Data is missing 'Items' field")
 
+    # insconsitent to above requests
     shelf = ub.session.query(ub.Shelf).filter(ub.Shelf.uuid == tag_id,
                                               ub.Shelf.user_id == current_user.id).one_or_none()
     if not shelf:
@@ -552,7 +555,8 @@ def HandleTagRemoveItem(tag_id):
 def sync_shelves(sync_token, sync_results):
     new_tags_last_modified = sync_token.tags_last_modified
 
-    for shelf in ub.session.query(ub.ShelfArchive).filter(func.datetime(ub.ShelfArchive.last_modified) > sync_token.tags_last_modified, ub.ShelfArchive.user_id == current_user.id):
+    for shelf in ub.session.query(ub.ShelfArchive).filter(func.datetime(ub.ShelfArchive.last_modified) > sync_token.tags_last_modified,
+                                                          ub.ShelfArchive.user_id == current_user.id):
         new_tags_last_modified = max(shelf.last_modified, new_tags_last_modified)
 
         sync_results.append({
@@ -564,7 +568,8 @@ def sync_shelves(sync_token, sync_results):
             }
         })
 
-    for shelf in ub.session.query(ub.Shelf).filter(func.datetime(ub.Shelf.last_modified) > sync_token.tags_last_modified, ub.Shelf.user_id == current_user.id):
+    for shelf in ub.session.query(ub.Shelf).filter(func.datetime(ub.Shelf.last_modified) > sync_token.tags_last_modified,
+                                                   ub.Shelf.user_id == current_user.id):
         if not shelf_lib.check_shelf_view_permissions(shelf):
             continue
 
@@ -600,6 +605,7 @@ def create_kobo_tag(shelf):
         book = db.session.query(db.Books).filter(db.Books.id == book_shelf.book_id).one_or_none()
         if not book:
             log.info(u"Book (id: %s) in BookShelf (id: %s) not found in book database",  book_shelf.book_id, shelf.id)
+            # ToDo shouldn't it continue?
             return None
         tag["Items"].append(
             {
@@ -769,7 +775,8 @@ def HandleCoverImageRequest(book_uuid, width, height,Quality, isGreyscale):
                                                                                    height=height), 307)
         else:
             log.debug("Cover for unknown book: %s requested" % book_uuid)
-            return redirect_or_proxy_request()
+            # additional proxy request make no sense, -> direct return
+            return make_response(jsonify({}))
     log.debug("Cover request received for book %s" % book_uuid)
     return book_cover
 

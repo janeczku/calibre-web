@@ -25,7 +25,7 @@ from __future__ import division, print_function, unicode_literals
 from flask import Blueprint, request, flash, redirect, url_for
 from flask_babel import gettext as _
 from flask_login import login_required, current_user
-from sqlalchemy.sql.expression import func, or_, and_
+from sqlalchemy.sql.expression import func
 
 from . import logger, ub, searched_ids, db
 from .web import render_title_template
@@ -34,6 +34,7 @@ from .helper import common_filters
 
 shelf = Blueprint('shelf', __name__)
 log = logger.create()
+
 
 def check_shelf_edit_permissions(cur_shelf):
     if not cur_shelf.is_public and not cur_shelf.user_id == int(current_user.id):
@@ -74,7 +75,7 @@ def add_to_shelf(shelf_id, book_id):
         return "Sorry you are not allowed to add a book to the the shelf: %s" % shelf.name, 403
 
     book_in_shelf = ub.session.query(ub.BookShelf).filter(ub.BookShelf.shelf == shelf_id,
-                                          ub.BookShelf.book_id == book_id).first()
+                                                          ub.BookShelf.book_id == book_id).first()
     if book_in_shelf:
         log.error("Book %s is already part of %s", book_id, shelf)
         if not xhr:
@@ -195,7 +196,6 @@ def remove_from_shelf(shelf_id, book_id):
         return "Sorry you are not allowed to remove a book from this shelf: %s" % shelf.name, 403
 
 
-
 @shelf.route("/shelf/create", methods=["GET", "POST"])
 @login_required
 def create_shelf():
@@ -214,21 +214,24 @@ def create_shelf():
                 .first() is None
 
             if not is_shelf_name_unique:
-                flash(_(u"A public shelf with the name '%(title)s' already exists.", title=to_save["title"]), category="error")
+                flash(_(u"A public shelf with the name '%(title)s' already exists.", title=to_save["title"]),
+                      category="error")
         else:
             is_shelf_name_unique = ub.session.query(ub.Shelf) \
-                .filter((ub.Shelf.name == to_save["title"]) & (ub.Shelf.is_public == 0) & (ub.Shelf.user_id == int(current_user.id))) \
-                .first() is None
+                .filter((ub.Shelf.name == to_save["title"]) & (ub.Shelf.is_public == 0) &
+                        (ub.Shelf.user_id == int(current_user.id)))\
+                                       .first() is None
 
             if not is_shelf_name_unique:
-                flash(_(u"A private shelf with the name '%(title)s' already exists.", title=to_save["title"]), category="error")
+                flash(_(u"A private shelf with the name '%(title)s' already exists.", title=to_save["title"]),
+                      category="error")
 
         if is_shelf_name_unique:
             try:
                 ub.session.add(shelf)
                 ub.session.commit()
                 flash(_(u"Shelf %(title)s created", title=to_save["title"]), category="success")
-                return redirect(url_for('shelf.show_shelf', shelf_id = shelf.id ))
+                return redirect(url_for('shelf.show_shelf', shelf_id=shelf.id))
             except Exception:
                 flash(_(u"There was an error"), category="error")
         return render_title_template('shelf_edit.html', shelf=shelf, title=_(u"Create a Shelf"), page="shelfcreate")
@@ -240,7 +243,7 @@ def create_shelf():
 @login_required
 def edit_shelf(shelf_id):
     shelf = ub.session.query(ub.Shelf).filter(ub.Shelf.id == shelf_id).first()
-    if request.method == "POST":            
+    if request.method == "POST":
         to_save = request.form.to_dict()
 
         is_shelf_name_unique = False
@@ -251,15 +254,18 @@ def edit_shelf(shelf_id):
                 .first() is None
 
             if not is_shelf_name_unique:
-                flash(_(u"A public shelf with the name '%(title)s' already exists.", title=to_save["title"]), category="error")
+                flash(_(u"A public shelf with the name '%(title)s' already exists.", title=to_save["title"]),
+                      category="error")
         else:
             is_shelf_name_unique = ub.session.query(ub.Shelf) \
-                .filter((ub.Shelf.name == to_save["title"]) & (ub.Shelf.is_public == 0) & (ub.Shelf.user_id == int(current_user.id))) \
-                .filter(ub.Shelf.id != shelf_id) \
-                .first() is None
+                .filter((ub.Shelf.name == to_save["title"]) & (ub.Shelf.is_public == 0) &
+                        (ub.Shelf.user_id == int(current_user.id)))\
+                                       .filter(ub.Shelf.id != shelf_id)\
+                                       .first() is None
 
             if not is_shelf_name_unique:
-                flash(_(u"A private shelf with the name '%(title)s' already exists.", title=to_save["title"]), category="error")
+                flash(_(u"A private shelf with the name '%(title)s' already exists.", title=to_save["title"]),
+                      category="error")
 
         if is_shelf_name_unique:
             shelf.name = to_save["title"]
@@ -283,7 +289,7 @@ def delete_shelf_helper(cur_shelf):
     shelf_id = cur_shelf.id
     ub.session.delete(cur_shelf)
     ub.session.query(ub.BookShelf).filter(ub.BookShelf.shelf == shelf_id).delete()
-    ub.session.add(ub.ShelfArchive(uuid = cur_shelf.uuid, user_id = cur_shelf.uuid))
+    ub.session.add(ub.ShelfArchive(uuid=cur_shelf.uuid, user_id=cur_shelf.uuid))
     ub.session.commit()
     log.info("successfully deleted %s", cur_shelf)
 
@@ -295,7 +301,7 @@ def delete_shelf(shelf_id):
     delete_shelf_helper(cur_shelf)
     return redirect(url_for('web.index'))
 
-# @shelf.route("/shelfdown/<int:shelf_id>")
+
 @shelf.route("/shelf/<int:shelf_id>", defaults={'shelf_type': 1})
 @shelf.route("/shelf/<int:shelf_id>/<int:shelf_type>")
 def show_shelf(shelf_type, shelf_id):
@@ -319,11 +325,10 @@ def show_shelf(shelf_type, shelf_id):
                     ub.session.query(ub.BookShelf).filter(ub.BookShelf.book_id == book.book_id).delete()
                     ub.session.commit()
         return render_title_template(page, entries=result, title=_(u"Shelf: '%(name)s'", name=shelf.name),
-                                 shelf=shelf, page="shelf")
+                                     shelf=shelf, page="shelf")
     else:
         flash(_(u"Error opening shelf. Shelf does not exist or is not accessible"), category="error")
         return redirect(url_for("web.index"))
-
 
 
 @shelf.route("/shelf/order/<int:shelf_id>", methods=["GET", "POST"])
@@ -347,17 +352,17 @@ def order_shelf(shelf_id):
         for book in books_in_shelf2:
             cur_book = db.session.query(db.Books).filter(db.Books.id == book.book_id).filter(common_filters()).first()
             if cur_book:
-                result.append({'title':cur_book.title,
-                               'id':cur_book.id,
-                               'author':cur_book.authors,
-                               'series':cur_book.series,
-                               'series_index':cur_book.series_index})
+                result.append({'title': cur_book.title,
+                               'id': cur_book.id,
+                               'author': cur_book.authors,
+                               'series': cur_book.series,
+                               'series_index': cur_book.series_index})
             else:
                 cur_book = db.session.query(db.Books).filter(db.Books.id == book.book_id).first()
-                result.append({'title':_('Hidden Book'),
-                               'id':cur_book.id,
-                               'author':[],
-                               'series':[]})
+                result.append({'title': _('Hidden Book'),
+                               'id': cur_book.id,
+                               'author': [],
+                               'series': []})
     return render_title_template('shelf_order.html', entries=result,
                                  title=_(u"Change order of Shelf: '%(name)s'", name=shelf.name),
                                  shelf=shelf, page="shelforder")

@@ -43,7 +43,6 @@ from . import logger
 log = logger.create()
 
 
-
 def _readable_listen_address(address, port):
     if ':' in address:
         address = "[" + address + "]"
@@ -84,7 +83,8 @@ class WebServer(object):
             if os.path.isfile(certfile_path) and os.path.isfile(keyfile_path):
                 self.ssl_args = dict(certfile=certfile_path, keyfile=keyfile_path)
             else:
-                log.warning('The specified paths for the ssl certificate file and/or key file seem to be broken. Ignoring ssl.')
+                log.warning('The specified paths for the ssl certificate file and/or key file seem to be broken. '
+                            'Ignoring ssl.')
                 log.warning('Cert path: %s', certfile_path)
                 log.warning('Key path:  %s', keyfile_path)
 

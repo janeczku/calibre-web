@@ -49,10 +49,11 @@ def get_datetime_from_json(json_object, field_name):
         return datetime.min
 
 
-class SyncToken():
+class SyncToken:
     """ The SyncToken is used to persist state accross requests.
-    When serialized over the response headers, the Kobo device will propagate the token onto following requests to the service.
-    As an example use-case, the SyncToken is used to detect books that have been added to the library since the last time the device synced to the server.
+    When serialized over the response headers, the Kobo device will propagate the token onto following
+    requests to the service. As an example use-case, the SyncToken is used to detect books that have been added
+    to the library since the last time the device synced to the server.
 
     Attributes:
         books_last_created: Datetime representing the newest book that the device knows about.
@@ -66,10 +67,11 @@ class SyncToken():
 
     token_schema = {
         "type": "object",
-        "properties": {"version": {"type": "string"}, "data": {"type": "object"},},
+        "properties": {"version": {"type": "string"}, "data": {"type": "object"}, },
     }
     # This Schema doesn't contain enough information to detect and propagate book deletions from Calibre to the device.
-    # A potential solution might be to keep a list of all known book uuids in the token, and look for any missing from the db.
+    # A potential solution might be to keep a list of all known book uuids in the token, and look for any missing
+    # from the db.
     data_schema_v1 = {
         "type": "object",
         "properties": {

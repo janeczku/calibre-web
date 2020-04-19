@@ -42,11 +42,10 @@ from sqlalchemy import create_engine, exc, exists, event
 from sqlalchemy import Column, ForeignKey
 from sqlalchemy import String, Integer, SmallInteger, Boolean, DateTime, Float
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import backref, foreign, relationship, remote, sessionmaker, Session
-from sqlalchemy.sql.expression import and_
+from sqlalchemy.orm import backref, relationship, sessionmaker, Session
 from werkzeug.security import generate_password_hash
 
-from . import constants # , config
+from . import constants
 
 
 session = None
@@ -57,39 +56,39 @@ def get_sidebar_config(kwargs=None):
     kwargs = kwargs or []
     if 'content' in kwargs:
         content = kwargs['content']
-        content = isinstance(content, (User,LocalProxy)) and not content.role_anonymous()
+        content = isinstance(content, (User, LocalProxy)) and not content.role_anonymous()
     else:
         content = 'conf' in kwargs
     sidebar = list()
     sidebar.append({"glyph": "glyphicon-book", "text": _('Recently Added'), "link": 'web.index', "id": "new",
                     "visibility": constants.SIDEBAR_RECENT, 'public': True, "page": "root",
-                    "show_text": _('Show recent books'), "config_show":True})
+                    "show_text": _('Show recent books'), "config_show": True})
     sidebar.append({"glyph": "glyphicon-fire", "text": _('Hot Books'), "link": 'web.books_list', "id": "hot",
-                    "visibility": constants.SIDEBAR_HOT, 'public': True, "page": "hot", "show_text": _('Show Hot Books'),
-                    "config_show":True})
+                    "visibility": constants.SIDEBAR_HOT, 'public': True, "page": "hot",
+                    "show_text": _('Show Hot Books'), "config_show": True})
     sidebar.append(
         {"glyph": "glyphicon-star", "text": _('Top Rated Books'), "link": 'web.books_list', "id": "rated",
          "visibility": constants.SIDEBAR_BEST_RATED, 'public': True, "page": "rated",
-         "show_text": _('Show Top Rated Books'), "config_show":True})
+         "show_text": _('Show Top Rated Books'), "config_show": True})
     sidebar.append({"glyph": "glyphicon-eye-open", "text": _('Read Books'), "link": 'web.books_list', "id": "read",
                     "visibility": constants.SIDEBAR_READ_AND_UNREAD, 'public': (not g.user.is_anonymous), "page": "read",
                     "show_text": _('Show read and unread'), "config_show": content})
     sidebar.append(
         {"glyph": "glyphicon-eye-close", "text": _('Unread Books'), "link": 'web.books_list', "id": "unread",
          "visibility": constants.SIDEBAR_READ_AND_UNREAD, 'public': (not g.user.is_anonymous), "page": "unread",
-         "show_text": _('Show unread'), "config_show":False})
+         "show_text": _('Show unread'), "config_show": False})
     sidebar.append({"glyph": "glyphicon-random", "text": _('Discover'), "link": 'web.books_list', "id": "rand",
                     "visibility": constants.SIDEBAR_RANDOM, 'public': True, "page": "discover",
-                    "show_text": _('Show random books'), "config_show":True})
+                    "show_text": _('Show random books'), "config_show": True})
     sidebar.append({"glyph": "glyphicon-inbox", "text": _('Categories'), "link": 'web.category_list', "id": "cat",
                     "visibility": constants.SIDEBAR_CATEGORY, 'public': True, "page": "category",
-                    "show_text": _('Show category selection'), "config_show":True})
+                    "show_text": _('Show category selection'), "config_show": True})
     sidebar.append({"glyph": "glyphicon-bookmark", "text": _('Series'), "link": 'web.series_list', "id": "serie",
                     "visibility": constants.SIDEBAR_SERIES, 'public': True, "page": "series",
-                    "show_text": _('Show series selection'), "config_show":True})
+                    "show_text": _('Show series selection'), "config_show": True})
     sidebar.append({"glyph": "glyphicon-user", "text": _('Authors'), "link": 'web.author_list', "id": "author",
                     "visibility": constants.SIDEBAR_AUTHOR, 'public': True, "page": "author",
-                    "show_text": _('Show author selection'), "config_show":True})
+                    "show_text": _('Show author selection'), "config_show": True})
     sidebar.append(
         {"glyph": "glyphicon-text-size", "text": _('Publishers'), "link": 'web.publisher_list', "id": "publisher",
          "visibility": constants.SIDEBAR_PUBLISHER, 'public': True, "page": "publisher",
@@ -97,13 +96,13 @@ def get_sidebar_config(kwargs=None):
     sidebar.append({"glyph": "glyphicon-flag", "text": _('Languages'), "link": 'web.language_overview', "id": "lang",
                     "visibility": constants.SIDEBAR_LANGUAGE, 'public': (g.user.filter_language() == 'all'),
                     "page": "language",
-                    "show_text": _('Show language selection'), "config_show":True})
+                    "show_text": _('Show language selection'), "config_show": True})
     sidebar.append({"glyph": "glyphicon-star-empty", "text": _('Ratings'), "link": 'web.ratings_list', "id": "rate",
                     "visibility": constants.SIDEBAR_RATING, 'public': True,
-                    "page": "rating", "show_text": _('Show ratings selection'), "config_show":True})
+                    "page": "rating", "show_text": _('Show ratings selection'), "config_show": True})
     sidebar.append({"glyph": "glyphicon-file", "text": _('File formats'), "link": 'web.formats_list', "id": "format",
                     "visibility": constants.SIDEBAR_FORMAT, 'public': True,
-                    "page": "format", "show_text": _('Show file formats selection'), "config_show":True})
+                    "page": "format", "show_text": _('Show file formats selection'), "config_show": True})
     sidebar.append(
         {"glyph": "glyphicon-trash", "text": _('Archived Books'), "link": 'web.books_list', "id": "archived",
          "visibility": constants.SIDEBAR_ARCHIVED, 'public': (not g.user.is_anonymous), "page": "archived",
@@ -236,7 +235,8 @@ class Anonymous(AnonymousUserMixin, UserBase):
         self.loadSettings()
 
     def loadSettings(self):
-        data = session.query(User).filter(User.role.op('&')(constants.ROLE_ANONYMOUS) == constants.ROLE_ANONYMOUS).first()  # type: User
+        data = session.query(User).filter(User.role.op('&')(constants.ROLE_ANONYMOUS) == constants.ROLE_ANONYMOUS)\
+            .first()  # type: User
         self.nickname = data.nickname
         self.role = data.role
         self.id=data.id
@@ -259,7 +259,7 @@ class Anonymous(AnonymousUserMixin, UserBase):
 
     @property
     def is_anonymous(self):
-        return True # self.anon_browse
+        return True
 
     @property
     def is_authenticated(self):
@@ -271,7 +271,7 @@ class Shelf(Base):
     __tablename__ = 'shelf'
 
     id = Column(Integer, primary_key=True)
-    uuid = Column(String, default=lambda : str(uuid.uuid4()))
+    uuid = Column(String, default=lambda: str(uuid.uuid4()))
     name = Column(String)
     is_public = Column(Integer, default=0)
     user_id = Column(Integer, ForeignKey('user.id'))
@@ -318,8 +318,12 @@ class ReadBook(Base):
     book_id = Column(Integer, unique=False)
     user_id = Column(Integer, ForeignKey('user.id'), unique=False)
     read_status = Column(Integer, unique=False, default=STATUS_UNREAD, nullable=False)
-    kobo_reading_state = relationship("KoboReadingState", uselist=False, primaryjoin="and_(ReadBook.user_id == foreign(KoboReadingState.user_id), "
-                                "ReadBook.book_id == foreign(KoboReadingState.book_id))", cascade="all", backref=backref("book_read_link", uselist=False))
+    kobo_reading_state = relationship("KoboReadingState", uselist=False,
+                                      primaryjoin="and_(ReadBook.user_id == foreign(KoboReadingState.user_id), "
+                                                  "ReadBook.book_id == foreign(KoboReadingState.book_id))",
+                                      cascade="all",
+                                      backref=backref("book_read_link",
+                                                      uselist=False))
     last_modified = Column(DateTime, default=datetime.datetime.utcnow, onupdate=datetime.datetime.utcnow)
     last_time_started_reading = Column(DateTime, nullable=True)
     times_started_reading = Column(Integer, default=0, nullable=False)
@@ -333,6 +337,7 @@ class Bookmark(Base):
     book_id = Column(Integer)
     format = Column(String(collation='NOCASE'))
     bookmark_key = Column(String)
+
 
 # Baseclass representing books that are archived on the user's Kobo device.
 class ArchivedBook(Base):
@@ -421,7 +426,6 @@ class Registration(Base):
         return u"<Registration('{0}')>".format(self.domain)
 
 
-
 class RemoteAuthToken(Base):
     __tablename__ = 'remote_auth_token'
 
@@ -486,7 +490,7 @@ def migrate_Database(session):
         conn.execute("UPDATE book_read_link SET 'read_status' = 1 WHERE is_read")
         conn.execute("ALTER TABLE book_read_link ADD column 'last_modified' DATETIME")
         conn.execute("ALTER TABLE book_read_link ADD column 'last_time_started_reading' DATETIME")
-        conn.execute("ALTER TABLE book_read_link ADD column 'times_started_reading' INTEGER DEFAULT 0")    
+        conn.execute("ALTER TABLE book_read_link ADD column 'times_started_reading' INTEGER DEFAULT 0")
         session.commit()
     try:
         session.query(exists().where(Shelf.uuid)).scalar()
@@ -531,19 +535,13 @@ def migrate_Database(session):
     except exc.OperationalError:
         conn = engine.connect()
         conn.execute("UPDATE user SET 'sidebar_view' = (random_books* :side_random + language_books * :side_lang "
-            "+ series_books * :side_series + category_books * :side_category + hot_books * "
-            ":side_hot + :side_autor + :detail_random)"
-            ,{'side_random': constants.SIDEBAR_RANDOM, 'side_lang': constants.SIDEBAR_LANGUAGE,
-              'side_series': constants.SIDEBAR_SERIES,
-            'side_category': constants.SIDEBAR_CATEGORY, 'side_hot': constants.SIDEBAR_HOT,
-              'side_autor': constants.SIDEBAR_AUTHOR,
-            'detail_random': constants.DETAIL_RANDOM})
+                     "+ series_books * :side_series + category_books * :side_category + hot_books * "
+                     ":side_hot + :side_autor + :detail_random)",
+                     {'side_random': constants.SIDEBAR_RANDOM, 'side_lang': constants.SIDEBAR_LANGUAGE,
+                      'side_series': constants.SIDEBAR_SERIES, 'side_category': constants.SIDEBAR_CATEGORY,
+                      'side_hot': constants.SIDEBAR_HOT, 'side_autor': constants.SIDEBAR_AUTHOR,
+                      'detail_random': constants.DETAIL_RANDOM})
         session.commit()
-    '''try:
-        session.query(exists().where(User.mature_content)).scalar()
-    except exc.OperationalError:
-        conn = engine.connect()
-        conn.execute("ALTER TABLE user ADD column `mature_content` INTEGER DEFAULT 1")'''
     try:
         session.query(exists().where(User.denied_tags)).scalar()
     except exc.OperationalError:  # Database is not compatible, some columns are missing
@@ -552,7 +550,8 @@ def migrate_Database(session):
         conn.execute("ALTER TABLE user ADD column `allowed_tags` String DEFAULT ''")
         conn.execute("ALTER TABLE user ADD column `denied_column_value` DEFAULT ''")
         conn.execute("ALTER TABLE user ADD column `allowed_column_value` DEFAULT ''")
-    if session.query(User).filter(User.role.op('&')(constants.ROLE_ANONYMOUS) == constants.ROLE_ANONYMOUS).first() is None:
+    if session.query(User).filter(User.role.op('&')(constants.ROLE_ANONYMOUS) == constants.ROLE_ANONYMOUS).first() \
+        is None:
         create_anonymous_user(session)
     try:
         # check if one table with autoincrement is existing (should be user table)
@@ -562,20 +561,20 @@ def migrate_Database(session):
         # Create new table user_id and copy contents of table user into it
         conn = engine.connect()
         conn.execute("CREATE TABLE user_id (id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,"
-                            "nickname VARCHAR(64),"
-                            "email VARCHAR(120),"
-                            "role SMALLINT,"
-                            "password VARCHAR,"
-                            "kindle_mail VARCHAR(120),"
-                            "locale VARCHAR(2),"
-                            "sidebar_view INTEGER,"
-                            "default_language VARCHAR(3),"
-                            "UNIQUE (nickname),"
-                            "UNIQUE (email))")
+                     " nickname VARCHAR(64),"
+                     "email VARCHAR(120),"
+                     "role SMALLINT,"
+                     "password VARCHAR,"
+                     "kindle_mail VARCHAR(120),"
+                     "locale VARCHAR(2),"
+                     "sidebar_view INTEGER,"
+                     "default_language VARCHAR(3),"
+                     "UNIQUE (nickname),"
+                     "UNIQUE (email))")
         conn.execute("INSERT INTO user_id(id, nickname, email, role, password, kindle_mail,locale,"
-                        "sidebar_view, default_language) "
+                     "sidebar_view, default_language) "
                      "SELECT id, nickname, email, role, password, kindle_mail, locale,"
-                        "sidebar_view, default_language FROM user")
+                     "sidebar_view, default_language FROM user")
         # delete old user table and rename new user_id table to user:
         conn.execute("DROP TABLE user")
         conn.execute("ALTER TABLE user_id RENAME TO user")
@@ -591,24 +590,25 @@ def clean_database(session):
     # Remove expired remote login tokens
     now = datetime.datetime.now()
     session.query(RemoteAuthToken).filter(now > RemoteAuthToken.expiration).\
-        filter(RemoteAuthToken.token_type !=1 ).delete()
+        filter(RemoteAuthToken.token_type != 1).delete()
     session.commit()
 
 
 # Save downloaded books per user in calibre-web's own database
 def update_download(book_id, user_id):
-    check = session.query(Downloads).filter(Downloads.user_id == user_id).filter(Downloads.book_id ==
-                                                                                          book_id).first()
+    check = session.query(Downloads).filter(Downloads.user_id == user_id).filter(Downloads.book_id == book_id).first()
 
     if not check:
         new_download = Downloads(user_id=user_id, book_id=book_id)
         session.add(new_download)
         session.commit()
 
+
 # Delete non exisiting downloaded books in calibre-web's own database
 def delete_download(book_id):
     session.query(Downloads).filter(book_id == Downloads.book_id).delete()
     session.commit()
+
 
 # Generate user Guest (translated text), as anoymous user, no rights
 def create_anonymous_user(session):
@@ -667,8 +667,12 @@ def dispose():
     old_session = session
     session = None
     if old_session:
-        try: old_session.close()
-        except: pass
+        try:
+            old_session.close()
+        except Exception:
+            pass
         if old_session.bind:
-            try: old_session.bind.dispose()
-            except: pass
+            try:
+                old_session.bind.dispose()
+            except Exception:
+                pass
