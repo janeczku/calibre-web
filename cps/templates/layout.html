@@ -42,7 +42,7 @@
           <form class="navbar-form navbar-left" role="search" action="{{url_for('web.search')}}" method="GET">
             <div class="form-group input-group input-group-sm">
               <label for="query" class="sr-only">{{_('Search')}}</label>
-              <input type="text" class="form-control" id="query" name="query" placeholder="{{_('Search Library')}}">
+              <input type="text" class="form-control" id="query" name="query" placeholder="{{_('Search Library')}}" value="{{searchterm}}">
               <span class="input-group-btn">
                 <button type="submit" id="query_submit" class="btn btn-default">{{_('Search')}}</button>
               </span>
@@ -223,6 +223,11 @@
             });
             $("#btn-upload").change(function() {
                 $("#form-upload").submit();
+            });
+            $(document).ready(function() {
+              var inp = $('#query').first()
+              var val = inp.val()
+              inp.val('').blur().focus().val(val)
             });
         });
     </script>
