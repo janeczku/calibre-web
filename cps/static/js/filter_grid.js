@@ -26,7 +26,7 @@ var $list = $("#list").isotope({
 $("#desc").click(function() {
     $list.isotope({
         sortBy: "name",
-        sortAscending: false
+        sortAscending: true
     });
     return;
 });
@@ -34,29 +34,21 @@ $("#desc").click(function() {
 $("#asc").click(function() {
     $list.isotope({
         sortBy: "name",
-        sortAscending: true
+        sortAscending: false
     });
     return;
 });
 
 $("#all").click(function() {
     // go through all elements and make them visible
-    $(".sortable").each(function() {
-        $(this).show();
-    });
-    // We need to trigger the resize event to have all the grid item to re-align.
-    window.dispatchEvent(new Event('resize'));
+    $list.isotope({ filter: function() {
+        return true;
+      } })
 });
 
 $(".char").click(function() {
     var character = this.innerText;
-    $(".sortable").each(function() {
-        if (this.attributes["data-id"].value.charAt(0).toUpperCase() !== character) {
-            $(this).hide();
-        } else {
-            $(this).show();
-        }
-    });
-    // We need to trigger the resize event to have all the grid item to re-align.
-    window.dispatchEvent(new Event("resize"));
+    $list.isotope({ filter: function() {
+        return this.attributes["data-id"].value.charAt(0).toUpperCase() == character;
+      } })
 });
