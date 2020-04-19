@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2020-04-18 11:48+0200\n"
+"POT-Creation-Date: 2020-04-19 19:11+0200\n"
 "PO-Revision-Date: 2020-04-03 19:49+0200\n"
 "Last-Translator: Ozzie Isaacs\n"
 "Language: de\n"
@@ -1808,7 +1808,7 @@ msgstr "Editieren öffentlicher Bücherregale erlauben"
 msgid "Default Visibilities for New Users"
 msgstr "Standard-Sichtbarkeiten für neue Benutzer"
 
-#: cps/templates/config_view_edit.html:142
+#: cps/templates/config_view_edit.html:142 cps/templates/user_edit.html:80
 msgid "Show Random Books in Detail View"
 msgstr "Zeige zufällige Bücher in der Detailansicht"
 
@@ -1860,7 +1860,7 @@ msgstr "Beschreibung:"
 msgid "Add to shelf"
 msgstr "Zu Bücherregal hinzufügen"
 
-#: cps/templates/detail.html:286
+#: cps/templates/detail.html:264
 msgid "Edit Metadata"
 msgstr "Metadaten bearbeiten"
 
@@ -1953,7 +1953,7 @@ msgstr "Die neuesten Bücher"
 msgid "Random Books"
 msgstr "Zufällige Bücher"
 
-#: cps/templates/index.xml:42 cps/templates/user_edit.html:80
+#: cps/templates/index.xml:42
 msgid "Show Random Books"
 msgstr "Zeige zufällige Bücher"
 

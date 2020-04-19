@@ -20,7 +20,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-04-18 11:48+0200\n"
+"POT-Creation-Date: 2020-04-19 19:11+0200\n"
 "PO-Revision-Date: 2019-08-21 15:20+0100\n"
 "Last-Translator: Nicolas Roudninski <nicoroud@gmail.com>\n"
 "Language: fr\n"
@@ -1821,7 +1821,7 @@ msgstr "Autoriser la modification d’étagères publiques"
 msgid "Default Visibilities for New Users"
 msgstr "Mode de visualisation par défaut pour les nouveaux utilisateurs"
 
-#: cps/templates/config_view_edit.html:142
+#: cps/templates/config_view_edit.html:142 cps/templates/user_edit.html:80
 msgid "Show Random Books in Detail View"
 msgstr "Montrer aléatoirement des livres dans la vue détaillée"
 
@@ -1873,7 +1873,7 @@ msgstr "Description :"
 msgid "Add to shelf"
 msgstr "Ajouter à l'étagère"
 
-#: cps/templates/detail.html:286
+#: cps/templates/detail.html:264
 msgid "Edit Metadata"
 msgstr "Éditer les métadonnées"
 
@@ -1966,7 +1966,7 @@ msgstr "Les derniers livres"
 msgid "Random Books"
 msgstr "Livres au hasard"
 
-#: cps/templates/index.xml:42 cps/templates/user_edit.html:80
+#: cps/templates/index.xml:42
 msgid "Show Random Books"
 msgstr "Montrer des livres au hasard"
 
