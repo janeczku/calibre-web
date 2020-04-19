@@ -19,7 +19,9 @@
         {% endfor %}
       </div>
 
+      {% if title == "Series list" %}
       <button class="update-view btn btn-success" href="#" data-target="series_view" data-view="grid">List</button>
+      {% endif %}
     </div>
   <div class="container">
     <div id="list" class="col-xs-12 col-sm-6">
