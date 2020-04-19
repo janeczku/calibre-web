@@ -458,9 +458,9 @@ def migrate_Database(session):
                             "UNIQUE (nickname),"
                             "UNIQUE (email))")
         conn.execute("INSERT INTO user_id(id, nickname, email, role, password, kindle_mail,locale,"
-                        "sidebar_view, default_language, series_view) "
+                     "sidebar_view, default_language, series_view) "
                      "SELECT id, nickname, email, role, password, kindle_mail, locale,"
-                        "sidebar_view, default_language FROM user")
+                     "sidebar_view, default_language FROM user")
         # delete old user table and rename new user_id table to user:
         conn.execute("DROP TABLE user")
         conn.execute("ALTER TABLE user_id RENAME TO user")
