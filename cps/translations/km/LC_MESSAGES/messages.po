@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2020-04-18 11:48+0200\n"
+"POT-Creation-Date: 2020-04-19 19:11+0200\n"
 "PO-Revision-Date: 2018-08-27 17:06+0700\n"
 "Last-Translator: \n"
 "Language: km_KH\n"
@@ -1809,7 +1809,7 @@ msgstr "អនុញ្ញាតឲកែប្រែធ្នើសាធារ
 msgid "Default Visibilities for New Users"
 msgstr "ភាពមើលឃើញដែលមកស្រាប់សម្រាប់អ្នកប្រើប្រាស់ថ្មី"
 
-#: cps/templates/config_view_edit.html:142
+#: cps/templates/config_view_edit.html:142 cps/templates/user_edit.html:80
 msgid "Show Random Books in Detail View"
 msgstr "បង្ហាញសៀវភៅចៃដន្យក្នុងការបង្ហាញជាពិស្តារ"
 
@@ -1861,7 +1861,7 @@ msgstr "ពិពណ៌នា"
 msgid "Add to shelf"
 msgstr "បន្ថែមទៅធ្នើ"
 
-#: cps/templates/detail.html:286
+#: cps/templates/detail.html:264
 msgid "Edit Metadata"
 msgstr "កែប្រែទិន្នន័យមេតា"
 
@@ -1954,7 +1954,7 @@ msgstr "សៀវភៅចុងក្រោយគេ"
 msgid "Random Books"
 msgstr "សៀវភៅចៃដន្យ"
 
-#: cps/templates/index.xml:42 cps/templates/user_edit.html:80
+#: cps/templates/index.xml:42
 msgid "Show Random Books"
 msgstr "បង្ហាញសៀវភៅចៃដន្យ"
 

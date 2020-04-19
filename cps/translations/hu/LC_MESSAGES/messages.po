@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-04-18 11:48+0200\n"
+"POT-Creation-Date: 2020-04-19 19:11+0200\n"
 "PO-Revision-Date: 2019-04-06 23:36+0200\n"
 "Last-Translator: \n"
 "Language: hu\n"
@@ -1808,7 +1808,7 @@ msgstr "Nyilvános polcok szerkesztésének engedélyezése"
 msgid "Default Visibilities for New Users"
 msgstr "Új felhasználók alapértelmezett látható elemei"
 
-#: cps/templates/config_view_edit.html:142
+#: cps/templates/config_view_edit.html:142 cps/templates/user_edit.html:80
 msgid "Show Random Books in Detail View"
 msgstr "Mutasson könyveket találomra a részletes nézetben"
 
@@ -1860,7 +1860,7 @@ msgstr "Ismertető:"
 msgid "Add to shelf"
 msgstr "Hozzáadás polchoz"
 
-#: cps/templates/detail.html:286
+#: cps/templates/detail.html:264
 msgid "Edit Metadata"
 msgstr "Metaadatok szerkesztése"
 
@@ -1953,7 +1953,7 @@ msgstr "A legfrissebb könyvek"
 msgid "Random Books"
 msgstr "Könyvek találomra"
 
-#: cps/templates/index.xml:42 cps/templates/user_edit.html:80
+#: cps/templates/index.xml:42
 msgid "Show Random Books"
 msgstr "Mutass könyveket találomra"
 

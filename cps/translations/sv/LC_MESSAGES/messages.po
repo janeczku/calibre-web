@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2020-04-18 11:48+0200\n"
+"POT-Creation-Date: 2020-04-19 19:11+0200\n"
 "PO-Revision-Date: 2020-03-14 09:30+0100\n"
 "Last-Translator: Jonatan Nyberg <jonatan.nyberg.karl@gmail.com>\n"
 "Language: sv\n"
@@ -1808,7 +1808,7 @@ msgstr "Tillåt Redigering av offentliga hyllor"
 msgid "Default Visibilities for New Users"
 msgstr "Standardvisibiliteter för nya användare"
 
-#: cps/templates/config_view_edit.html:142
+#: cps/templates/config_view_edit.html:142 cps/templates/user_edit.html:80
 msgid "Show Random Books in Detail View"
 msgstr "Visa slumpmässiga böcker i detaljvyn"
 
@@ -1860,7 +1860,7 @@ msgstr "Beskrivning:"
 msgid "Add to shelf"
 msgstr "Lägg till hyllan"
 
-#: cps/templates/detail.html:286
+#: cps/templates/detail.html:264
 msgid "Edit Metadata"
 msgstr "Redigera metadata"
 
@@ -1953,7 +1953,7 @@ msgstr "De senaste böckerna"
 msgid "Random Books"
 msgstr "Slumpmässiga böcker"
 
-#: cps/templates/index.xml:42 cps/templates/user_edit.html:80
+#: cps/templates/index.xml:42
 msgid "Show Random Books"
 msgstr "Visa slumpmässiga böcker"
 

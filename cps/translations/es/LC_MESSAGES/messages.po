@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2020-04-18 11:48+0200\n"
+"POT-Creation-Date: 2020-04-19 19:11+0200\n"
 "PO-Revision-Date: 2019-07-26 11:44+0100\n"
 "Last-Translator: minakmostoles <xxx@xxx.com>\n"
 "Language: es\n"
@@ -1810,7 +1810,7 @@ msgstr "Permitir editar estantes públicos"
 msgid "Default Visibilities for New Users"
 msgstr "Visibilidad predeterminada para nuevos usuarios"
 
-#: cps/templates/config_view_edit.html:142
+#: cps/templates/config_view_edit.html:142 cps/templates/user_edit.html:80
 msgid "Show Random Books in Detail View"
 msgstr "Mostrar libros aleatorios con vista detallada"
 
@@ -1862,7 +1862,7 @@ msgstr "Descripción:"
 msgid "Add to shelf"
 msgstr "Agregar al estante"
 
-#: cps/templates/detail.html:286
+#: cps/templates/detail.html:264
 msgid "Edit Metadata"
 msgstr "Editar metadatos"
 
@@ -1955,7 +1955,7 @@ msgstr "Libros recientes"
 msgid "Random Books"
 msgstr "Libros al azar"
 
-#: cps/templates/index.xml:42 cps/templates/user_edit.html:80
+#: cps/templates/index.xml:42
 msgid "Show Random Books"
 msgstr "Mostrar libros al azar"
 

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2020-04-18 11:48+0200\n"
+"POT-Creation-Date: 2020-04-19 19:11+0200\n"
 "PO-Revision-Date: 2017-01-06 17:00+0000\n"
 "Last-Translator: dalin <dalin.lin@gmail.com>\n"
 "Language: zh_Hans_CN\n"
@@ -1808,7 +1808,7 @@ msgstr "允许编辑公共书架"
 msgid "Default Visibilities for New Users"
 msgstr "新用户的默认显示权限"
 
-#: cps/templates/config_view_edit.html:142
+#: cps/templates/config_view_edit.html:142 cps/templates/user_edit.html:80
 msgid "Show Random Books in Detail View"
 msgstr "在详情页显示随机书籍"
 
@@ -1860,7 +1860,7 @@ msgstr "简介:"
 msgid "Add to shelf"
 msgstr "添加到书架"
 
-#: cps/templates/detail.html:286
+#: cps/templates/detail.html:264
 msgid "Edit Metadata"
 msgstr "编辑元数据"
 
@@ -1953,7 +1953,7 @@ msgstr "最新书籍"
 msgid "Random Books"
 msgstr "随机书籍"
 
-#: cps/templates/index.xml:42 cps/templates/user_edit.html:80
+#: cps/templates/index.xml:42
 msgid "Show Random Books"
 msgstr "显示随机书籍"
 

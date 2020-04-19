@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/calibre-web\n"
-"POT-Creation-Date: 2020-04-18 11:48+0200\n"
+"POT-Creation-Date: 2020-04-19 19:11+0200\n"
 "PO-Revision-Date: 2017-04-30 00:47+0300\n"
 "Last-Translator: ABIS Team <biblio.if.abis@gmail.com>\n"
 "Language: uk\n"
@@ -1807,7 +1807,7 @@ msgstr "Дозволити редагування публічних книжк�
 msgid "Default Visibilities for New Users"
 msgstr "Можливості за замовчуванням для нових користувачів"
 
-#: cps/templates/config_view_edit.html:142
+#: cps/templates/config_view_edit.html:142 cps/templates/user_edit.html:80
 msgid "Show Random Books in Detail View"
 msgstr "Показувати випадкові книги при перегляді деталей"
 
@@ -1859,7 +1859,7 @@ msgstr "Опис:"
 msgid "Add to shelf"
 msgstr "Додати на книжкову полицю"
 
-#: cps/templates/detail.html:286
+#: cps/templates/detail.html:264
 msgid "Edit Metadata"
 msgstr "Редагувати метадані"
 
@@ -1952,7 +1952,7 @@ msgstr "Останні книги"
 msgid "Random Books"
 msgstr "Випадковий список книг"
 
-#: cps/templates/index.xml:42 cps/templates/user_edit.html:80
+#: cps/templates/index.xml:42
 msgid "Show Random Books"
 msgstr "Показувати випадкові книги"
 

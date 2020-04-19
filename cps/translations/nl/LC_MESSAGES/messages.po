@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Calibre-Web (GPLV3)\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2020-04-18 11:48+0200\n"
+"POT-Creation-Date: 2020-04-19 19:11+0200\n"
 "PO-Revision-Date: 2020-03-06 19:28+0100\n"
 "Last-Translator: Ed Driesen <ed.driesen@telenet.be>\n"
 "Language: nl\n"
@@ -1809,7 +1809,7 @@ msgstr "Bewerken van openbare boekenplanken toestaan"
 msgid "Default Visibilities for New Users"
 msgstr "Standaard zichtbaar voor nieuwe gebruikers"
 
-#: cps/templates/config_view_edit.html:142
+#: cps/templates/config_view_edit.html:142 cps/templates/user_edit.html:80
 msgid "Show Random Books in Detail View"
 msgstr "Willekeurige boeken tonen in gedetailleerde weergave"
 
@@ -1861,7 +1861,7 @@ msgstr "Beschrijving:"
 msgid "Add to shelf"
 msgstr "Toevoegen aan boekenplank"
 
-#: cps/templates/detail.html:286
+#: cps/templates/detail.html:264
 msgid "Edit Metadata"
 msgstr "Metagegevens bewerken"
 
@@ -1954,7 +1954,7 @@ msgstr "Recentste boeken"
 msgid "Random Books"
 msgstr "Willekeurige boeken"
 
-#: cps/templates/index.xml:42 cps/templates/user_edit.html:80
+#: cps/templates/index.xml:42
 msgid "Show Random Books"
 msgstr "Willekeurige boeken tonen"
 
