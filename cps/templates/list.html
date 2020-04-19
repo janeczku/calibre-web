@@ -19,16 +19,7 @@
         {% endfor %}
       </div>
 
-        <!-- View selection -->
-        <div class="btn-group">
-          <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            View <span class="caret"></span>
-          </button>
-          <ul class="dropdown-menu">
-            <li><a class="update-view" href="#" data-target="series_view" data-view="grid">{{_('Grid')}}</a></li>
-            <li><a class="update-view" href="#"  data-target="series_view" data-view="list">{{_('List')}}</a></li>
-          </ul>
-        </div>
+      <button class="update-view btn btn-success" href="#" data-target="series_view" data-view="grid">List</button>
     </div>
   <div class="container">
     <div id="list" class="col-xs-12 col-sm-6">
