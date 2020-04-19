@@ -1,11 +1,15 @@
 {% extends "layout.html" %}
 {% block body %}
-<div class="discover load-more grid-view">
-  <h2 class="{{title}}">{{_(title)}}</h2>
+<h1 class="{{page}}">{{_(title)}}</h1>
 
     <div class="filterheader hidden-xs hidden-sm">
-      <button id="asc" class="btn btn-success"><span class="glyphicon glyphicon-sort-by-alphabet"></span></button>
-      <button id="desc" class="btn btn-success"><span class="glyphicon glyphicon-sort-by-alphabet-alt"></span></button>
+      {% if entries.__len__() %}
+       {% if entries[0][0].sort %}
+        <button id="sort_name" class="btn btn-success"><b>B,A <-> A B</b></button>
+       {% endif %}
+      {% endif %}
+      <button id="desc" class="btn btn-success"><span class="glyphicon glyphicon-sort-by-alphabet"></span></button>
+      <button id="asc" class="btn btn-success"><span class="glyphicon glyphicon-sort-by-alphabet-alt"></span></button>
       {% if charlist|length %}
       <button id="all" class="btn btn-success">{{_('All')}}</button>
       {% endif %}
@@ -15,16 +19,7 @@
         {% endfor %}
       </div>
 
-        <!-- View selection -->
-        <div class="btn-group">
-          <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            View <span class="caret"></span>
-          </button>
-          <ul class="dropdown-menu">
-            <li><a class="update-view" href="#" data-target="series_view" data-view="grid">{{_('Grid')}}</a></li>
-            <li><a class="update-view" href="#"  data-target="series_view" data-view="list">{{_('List')}}</a></li>
-          </ul>
-        </div>
+        <button class="update-view btn btn-success" href="#" data-target="series_view" data-view="list">Grid</button>
     </div>
 
     {% if entries[0] %}
