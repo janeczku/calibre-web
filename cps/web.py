@@ -901,7 +901,7 @@ def advanced_search():
     # Build custom columns names
     cc = get_cc_columns()
     db.session.connection().connection.connection.create_function("lower", 1, lcase)
-    q = db.session.query(db.Books).filter(common_filters())
+    q = db.session.query(db.Books).filter(common_filters()).order_by(db.Books.sort)
 
     include_tag_inputs = request.args.getlist('include_tag')
     exclude_tag_inputs = request.args.getlist('exclude_tag')
