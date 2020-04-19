@@ -39,11 +39,11 @@ msgstr "Eseguo l'arresto del server, per favore chiudi la finestra"
 
 #: cps/admin.py:102
 msgid "Reconnect successful"
-msgstr ""
+msgstr "Ricollegato con successo"
 
 #: cps/admin.py:105
 msgid "Unknown command"
-msgstr ""
+msgstr "Comando sconosciuto"
 
 #: cps/admin.py:115 cps/editbooks.py:410 cps/editbooks.py:419
 #: cps/editbooks.py:539 cps/editbooks.py:541 cps/editbooks.py:594
@@ -61,7 +61,7 @@ msgstr "Configurazione dell'interfaccia utente"
 
 #: cps/admin.py:192 cps/admin.py:676
 msgid "Calibre-Web configuration updated"
-msgstr "La configurazione di Calibre-Web è aggiornata"
+msgstr "La configurazione di Calibre-Web è stata aggiornata"
 
 #: cps/admin.py:439 cps/admin.py:445 cps/admin.py:456 cps/admin.py:467
 #: cps/templates/modal_restriction.html:29
@@ -75,53 +75,53 @@ msgstr "Permetti"
 
 #: cps/admin.py:510
 msgid "client_secrets.json Is Not Configured For Web Application"
-msgstr ""
+msgstr "client_secrets.json non è configurato per Web Application"
 
 #: cps/admin.py:526
 msgid "Keyfile Location is not Valid, Please Enter Correct Path"
-msgstr ""
+msgstr "La posizione del Keyfile non è valida, per favore indica il percorso corretto"
 
 #: cps/admin.py:530
 msgid "Certfile Location is not Valid, Please Enter Correct Path"
-msgstr ""
+msgstr "La posizione del Certfile non è valida, per favore indica il percorso corretto"
 
 #: cps/admin.py:569
 msgid "Please Enter a LDAP Provider, Port, DN and User Object Identifier"
-msgstr ""
+msgstr "Per favore digita un Provider LDAP, porta, DN e User Object Identifier"
 
 #: cps/admin.py:587
 #, python-format
 msgid "LDAP Group Object Filter Needs to Have One \"%s\" Format Identifier"
-msgstr ""
+msgstr "LDAP Group Object Filter deve avere un \"%s\" Format Identifier"
 
 #: cps/admin.py:590
 msgid "LDAP Group Object Filter Has Unmatched Parenthesis"
-msgstr ""
+msgstr "LDAP Group Object Filter contiene una parentesi senza la corrispettiva"
 
 #: cps/admin.py:594
 #, python-format
 msgid "LDAP User Object Filter needs to Have One \"%s\" Format Identifier"
-msgstr ""
+msgstr "LDAP User Object Filter deve avere un \"%s\" Format Identifier"
 
 #: cps/admin.py:597
 msgid "LDAP User Object Filter Has Unmatched Parenthesis"
-msgstr ""
+msgstr "LDAP User Object Filter contiene una parentesi senza la corrispettiva"
 
 #: cps/admin.py:601
 msgid "LDAP Certificate Location is not Valid, Please Enter Correct Path"
-msgstr ""
+msgstr "La posizione del certificato LDAP non è valida, per favore indica il percorso corretto"
 
 #: cps/admin.py:649
 msgid "Logfile Location is not Valid, Please Enter Correct Path"
-msgstr ""
+msgstr "La posizione del Logfile non è valida, per favore indica il percorso corretto"
 
 #: cps/admin.py:654
 msgid "Access Logfile Location is not Valid, Please Enter Correct Path"
-msgstr ""
+msgstr "La posizione dell'Access Logfile non è valida, per favore indica il percorso corretto"
 
 #: cps/admin.py:673
 msgid "DB Location is not Valid, Please Enter Correct Path"
-msgstr ""
+msgstr "La posizione del DB non è valida, per favore indica il percorso corretto"
 
 #: cps/admin.py:706
 msgid "Basic Configuration"
@@ -549,26 +549,26 @@ msgstr "ora sei connesso come: '%(nickname)s'"
 #: cps/oauth_bb.py:235
 #, python-format
 msgid "Link to %(oauth)s Succeeded"
-msgstr ""
+msgstr "Collegamento a %(oauth)s avvenuto con successo"
 
 #: cps/oauth_bb.py:241
 msgid "Login failed, No User Linked With OAuth Account"
-msgstr ""
+msgstr "Accesso fallito, non c'è un utente collegato all'account OAuth"
 
 #: cps/oauth_bb.py:283
 #, python-format
 msgid "Unlink to %(oauth)s Succeeded"
-msgstr ""
+msgstr "Scollegamento da  %(oauth)s avvenuto con successo"
 
 #: cps/oauth_bb.py:287
 #, python-format
 msgid "Unlink to %(oauth)s Failed"
-msgstr ""
+msgstr "Scollegamento da  %(oauth)s fallito"
 
 #: cps/oauth_bb.py:290
 #, python-format
 msgid "Not Linked to %(oauth)s."
-msgstr ""
+msgstr "Non collegato a %(oauth)s."
 
 #: cps/oauth_bb.py:318
 msgid "GitHub Oauth error, please retry later."
@@ -799,7 +799,7 @@ msgstr "Dati inattesi durante il processo di aggiornamento"
 
 #: cps/updater.py:301 cps/updater.py:412
 msgid "No update available. You already have the latest version installed"
-msgstr "Nessun aggiornamento disponibile. L'ultima versione è già installata"
+msgstr "Nessun aggiornamento disponibile. Hai già installata l'ultima versione disponibile"
 
 #: cps/updater.py:333
 msgid "A new update is available. Click on the button below to update to the latest version."
@@ -825,23 +825,23 @@ msgstr "Clicca sul pulsante per aggiornare all'ultima versione stabile."
 #: cps/web.py:290
 #, python-format
 msgid "Error: %(ldaperror)s"
-msgstr ""
+msgstr "Errore: %(ldaperror)s"
 
 #: cps/web.py:294
 msgid "Error: No user returned in response of LDAP server"
-msgstr ""
+msgstr "Errore: nessun utente restituito in risposta dal server LDAP"
 
 #: cps/web.py:342
 msgid "Failed to Create at Least One LDAP User"
-msgstr ""
+msgstr "Fallita la creazione di almeno un utente LDAP"
 
 #: cps/web.py:345
 msgid "At Least One LDAP User Not Found in Database"
-msgstr ""
+msgstr "Almeno un utente LDAP non è stato trovato nel database"
 
 #: cps/web.py:347
 msgid "User Successfully Imported"
-msgstr ""
+msgstr "Utente importato con successo"
 
 #: cps/web.py:549
 msgid "Recently Added Books"
@@ -980,12 +980,12 @@ msgstr "Non posso attivare l'autenticazione LDAP"
 #: cps/web.py:1230
 #, python-format
 msgid "Fallback Login as: '%(nickname)s', LDAP Server not reachable, or user not known"
-msgstr ""
+msgstr "Login come: '%(nickname)s', il server LDAP non è raggiungibile o l'utente è sconosciuto"
 
 #: cps/web.py:1236
 #, python-format
 msgid "Could not login: %(message)s"
-msgstr ""
+msgstr "Non posso accedere: %(message)s"
 
 #: cps/web.py:1240 cps/web.py:1264
 msgid "Wrong Username or Password"
@@ -1103,7 +1103,7 @@ msgstr "Aggiungi un nuovo utente"
 
 #: cps/templates/admin.html:40 cps/templates/admin.html:41
 msgid "Import LDAP Users"
-msgstr ""
+msgstr "Importa gli utenti LDAP"
 
 #: cps/templates/admin.html:48
 msgid "E-mail Server Settings"
@@ -1111,11 +1111,11 @@ msgstr "Configurazione server SMTP"
 
 #: cps/templates/admin.html:51 cps/templates/email_edit.html:11
 msgid "SMTP Hostname"
-msgstr "indirizzo server SMTP"
+msgstr "Indirizzo server SMTP"
 
 #: cps/templates/admin.html:52 cps/templates/email_edit.html:15
 msgid "SMTP Port"
-msgstr "porta SMTP"
+msgstr "Porta SMTP"
 
 #: cps/templates/admin.html:53 cps/templates/email_edit.html:19
 msgid "Encryption"
@@ -1123,7 +1123,7 @@ msgstr "SSL"
 
 #: cps/templates/admin.html:54 cps/templates/email_edit.html:27
 msgid "SMTP Login"
-msgstr "login SMTP"
+msgstr "Login SMTP"
 
 #: cps/templates/admin.html:55 cps/templates/email_edit.html:35
 msgid "From E-mail"
@@ -1604,7 +1604,7 @@ msgstr "Porta del server LDAP"
 
 #: cps/templates/config_edit.html:236
 msgid "LDAP Encryption"
-msgstr ""
+msgstr "Cifratura LDAP"
 
 #: cps/templates/config_edit.html:238 cps/templates/config_view_edit.html:61
 #: cps/templates/email_edit.html:21
@@ -1613,31 +1613,31 @@ msgstr "Nessuna"
 
 #: cps/templates/config_edit.html:239
 msgid "TLS"
-msgstr ""
+msgstr "TLS"
 
 #: cps/templates/config_edit.html:240
 msgid "SSL"
-msgstr ""
+msgstr "SSL"
 
 #: cps/templates/config_edit.html:245
 msgid "LDAP Certificate Path"
-msgstr ""
+msgstr "Cartella del certificato LDAP"
 
 #: cps/templates/config_edit.html:250
 msgid "LDAP Authentication"
-msgstr ""
+msgstr "Autenticazione LDAP"
 
 #: cps/templates/config_edit.html:252
 msgid "Anonymous"
-msgstr ""
+msgstr "Anonimo"
 
 #: cps/templates/config_edit.html:253
 msgid "Unauthenticated"
-msgstr ""
+msgstr "Non autenticato"
 
 #: cps/templates/config_edit.html:254
 msgid "Simple"
-msgstr ""
+msgstr "Semplice"
 
 #: cps/templates/config_edit.html:259
 msgid "LDAP Administrator Username"
@@ -1661,19 +1661,19 @@ msgstr "Il server LDAP è un server OpenLDAP?"
 
 #: cps/templates/config_edit.html:281
 msgid "Following Settings are Needed For User Import"
-msgstr ""
+msgstr "I seguenti parametri sono necessari per importare utenti"
 
 #: cps/templates/config_edit.html:283
 msgid "LDAP Group Object Filter"
-msgstr ""
+msgstr "LDAP Group Object Filter"
 
 #: cps/templates/config_edit.html:287
 msgid "LDAP Group Name"
-msgstr ""
+msgstr "LDAP Group Name"
 
 #: cps/templates/config_edit.html:291
 msgid "LDAP Group Members Field"
-msgstr ""
+msgstr "LDAP Group Members Field"
 
 #: cps/templates/config_edit.html:300
 #, python-format
@@ -1873,7 +1873,7 @@ msgstr "SSL/TLS"
 
 #: cps/templates/email_edit.html:31
 msgid "SMTP Password"
-msgstr "password SMTP"
+msgstr "Password SMTP"
 
 #: cps/templates/email_edit.html:39
 msgid "Save and Send Test E-mail"
