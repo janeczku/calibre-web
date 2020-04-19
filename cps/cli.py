@@ -34,7 +34,7 @@ def version_info():
 
 
 parser = argparse.ArgumentParser(description='Calibre Web is a web app'
-                    ' providing a interface for browsing, reading and downloading eBooks\n', prog='cps.py')
+                                 ' providing a interface for browsing, reading and downloading eBooks\n', prog='cps.py')
 parser.add_argument('-p', metavar='path', help='path and name to settings db, e.g. /opt/cw.db')
 parser.add_argument('-g', metavar='path', help='path and name to gdrive db, e.g. /opt/gd.db')
 parser.add_argument('-c', metavar='path',

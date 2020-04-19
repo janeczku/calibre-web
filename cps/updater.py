@@ -69,7 +69,7 @@ class Updater(threading.Thread):
     def get_available_updates(self, request_method, locale):
         if config.config_updatechannel == constants.UPDATE_STABLE:
             return self._stable_available_updates(request_method)
-        return self._nightly_available_updates(request_method,locale)
+        return self._nightly_available_updates(request_method, locale)
 
     def do_work(self):
         try:
@@ -132,7 +132,7 @@ class Updater(threading.Thread):
     def pause(self):
         self.can_run.clear()
 
-    #should just resume the thread
+    # should just resume the thread
     def resume(self):
         self.can_run.set()
 
@@ -268,7 +268,7 @@ class Updater(threading.Thread):
 
     def is_venv(self):
         if (hasattr(sys, 'real_prefix')) or (hasattr(sys, 'base_prefix') and sys.base_prefix != sys.prefix):
-            return os.sep + os.path.relpath(sys.prefix,constants.BASE_DIR)
+            return os.sep + os.path.relpath(sys.prefix, constants.BASE_DIR)
         else:
             return False
 
@@ -280,7 +280,7 @@ class Updater(threading.Thread):
 
     @classmethod
     def _stable_version_info(cls):
-        return constants.STABLE_VERSION # Current version
+        return constants.STABLE_VERSION  # Current version
 
     def _nightly_available_updates(self, request_method, locale):
         tz = datetime.timedelta(seconds=time.timezone if (time.localtime().tm_isdst == 0) else time.altzone)
@@ -436,7 +436,7 @@ class Updater(threading.Thread):
                             patch_version_update > current_version[2]) or \
                             minor_version_update > current_version[1]:
                         parents.append([commit[i]['tag_name'], commit[i]['body'].replace('\r\n', '<p>')])
-                        newer=True
+                        newer = True
                     i -= 1
                     continue
                 if major_version_update < current_version[0]:

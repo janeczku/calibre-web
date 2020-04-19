@@ -108,7 +108,7 @@ def setup(log_file, log_level=None):
         r.setLevel(log_level)
 
     # Otherwise name get's destroyed on windows
-    if log_file != LOG_TO_STDERR and log_file !=  LOG_TO_STDOUT:
+    if log_file != LOG_TO_STDERR and log_file != LOG_TO_STDOUT:
         log_file = _absolute_log_file(log_file, DEFAULT_LOG_FILE)
 
     previous_handler = r.handlers[0] if r.handlers else None
