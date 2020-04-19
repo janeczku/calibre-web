@@ -812,7 +812,7 @@ def series_list():
                 .group_by(func.upper(func.substr(db.Series.sort, 1, 1))).all()
 
             return render_title_template('grid.html', entries=entries, folder='web.books_list', charlist=charlist,
-                                         title=_(u"Series list"), page="serieslist", data="series", bodyClass="grid-view")
+                                         title=_(u"Series"), page="serieslist", data="series", bodyClass="grid-view")
     else:
         abort(404)
 
