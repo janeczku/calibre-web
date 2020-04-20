@@ -23,7 +23,7 @@
 from __future__ import division, print_function, unicode_literals
 import os
 import base64
-import datetime
+from datetime import datetime
 import json
 import mimetypes
 import traceback
@@ -967,14 +967,14 @@ def advanced_search():
         if pub_start:
             try:
                 searchterm.extend([_(u"Published after ") +
-                                   format_date(datetime.datetime.strptime(pub_start, "%Y-%m-%d"),
+                                   format_date(datetime.strptime(pub_start, "%Y-%m-%d"),
                                                format='medium', locale=get_locale())])
             except ValueError:
                 pub_start = u""
         if pub_end:
             try:
                 searchterm.extend([_(u"Published before ") +
-                                   format_date(datetime.datetime.strptime(pub_end, "%Y-%m-%d"),
+                                   format_date(datetime.strptime(pub_end, "%Y-%m-%d"),
                                                format='medium', locale=get_locale())])
             except ValueError:
                 pub_start = u""
@@ -1358,7 +1358,7 @@ def verify_token(token):
         return redirect(url_for('web.index'))
 
     # Token expired
-    if datetime.datetime.now() > auth_token.expiration:
+    if datetime.now() > auth_token.expiration:
         ub.session.delete(auth_token)
         ub.session.commit()
 
@@ -1390,7 +1390,7 @@ def token_verified():
         data['message'] = _(u"Token not found")
 
     # Token expired
-    elif datetime.datetime.now() > auth_token.expiration:
+    elif datetime.now() > auth_token.expiration:
         ub.session.delete(auth_token)
         ub.session.commit()
 
