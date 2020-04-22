@@ -283,7 +283,7 @@ def delete_shelf_helper(cur_shelf):
     shelf_id = cur_shelf.id
     ub.session.delete(cur_shelf)
     ub.session.query(ub.BookShelf).filter(ub.BookShelf.shelf == shelf_id).delete()
-    ub.session.add(ub.ShelfArchive(uuid = cur_shelf.uuid, user_id = cur_shelf.uuid))
+    ub.session.add(ub.ShelfArchive(uuid = cur_shelf.uuid, user_id = cur_shelf.user_id))
     ub.session.commit()
     log.info("successfully deleted %s", cur_shelf)
 
