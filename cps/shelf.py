@@ -240,7 +240,7 @@ def create_shelf():
 @login_required
 def edit_shelf(shelf_id):
     shelf = ub.session.query(ub.Shelf).filter(ub.Shelf.id == shelf_id).first()
-    if request.method == "POST":            
+    if request.method == "POST":
         to_save = request.form.to_dict()
 
         is_shelf_name_unique = False
