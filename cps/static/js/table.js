@@ -149,12 +149,10 @@ $(function() {
             $.ajax({
                 url: path + "/../../ajax/editrestriction/" + type,
                 type: "Post",
-                data: row //$(this).closest("form").serialize() + "&" + $(this)[0].name + "=",
+                data: row
             });
         });
         $("[id^=submit_]").click(function(event) {
-            // event.stopPropagation();
-            // event.preventDefault();
             $(this)[0].blur();
             $.ajax({
                 url: path + "/../../ajax/addrestriction/" + type,
