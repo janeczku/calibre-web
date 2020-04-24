@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-04-19 19:11+0200\n"
+"POT-Creation-Date: 2020-04-24 22:12+0200\n"
 "PO-Revision-Date: 2019-04-06 23:36+0200\n"
 "Last-Translator: \n"
 "Language: hu\n"
@@ -128,7 +128,7 @@ msgstr ""
 msgid "Basic Configuration"
 msgstr "Alapvető beállítások"
 
-#: cps/admin.py:730 cps/web.py:1162
+#: cps/admin.py:730 cps/web.py:1165
 msgid "Please fill out all fields!"
 msgstr "Az összes mezőt ki kell tölteni!"
 
@@ -136,7 +136,7 @@ msgstr "Az összes mezőt ki kell tölteni!"
 msgid "Add new user"
 msgstr "Új felhasználó hozzáadása"
 
-#: cps/admin.py:742 cps/web.py:1409
+#: cps/admin.py:742 cps/web.py:1412
 msgid "E-mail is not from valid domain"
 msgstr "Az e-mail tartománya nem érvényes."
 
@@ -180,16 +180,16 @@ msgstr "A felhasználó törölve: %(nick)s"
 msgid "No admin user remaining, can't delete user"
 msgstr ""
 
-#: cps/admin.py:881 cps/web.py:1452
+#: cps/admin.py:881 cps/web.py:1455
 msgid "Found an existing account for this e-mail address."
 msgstr "Már létezik felhasználó ehhez az e-mail címhez."
 
-#: cps/admin.py:891 cps/admin.py:906 cps/admin.py:926 cps/web.py:1427
+#: cps/admin.py:891 cps/admin.py:906 cps/admin.py:926 cps/web.py:1430
 #, python-format
 msgid "Edit User %(nick)s"
 msgstr " A felhasználó szerkesztése: %(nick)s"
 
-#: cps/admin.py:897 cps/web.py:1419
+#: cps/admin.py:897 cps/web.py:1422
 msgid "This username is already taken"
 msgstr ""
 
@@ -207,11 +207,11 @@ msgstr "Ismeretlen hiba történt."
 msgid "Password for user %(user)s reset"
 msgstr "A(z) %(user)s felhasználó jelszavának alaphelyzetbe állítása"
 
-#: cps/admin.py:942 cps/web.py:1187 cps/web.py:1251
+#: cps/admin.py:942 cps/web.py:1190 cps/web.py:1254
 msgid "An unknown error occurred. Please try again later."
 msgstr "Ismeretlen hiba történt. Próbáld újra később!"
 
-#: cps/admin.py:945 cps/web.py:1128
+#: cps/admin.py:945 cps/web.py:1131
 msgid "Please configure the SMTP mail settings first..."
 msgstr "Először be kell állítani az SMTP levelező beállításokat..."
 
@@ -542,7 +542,7 @@ msgstr ""
 msgid "Failed to fetch user info from Google."
 msgstr ""
 
-#: cps/oauth_bb.py:225 cps/web.py:1223 cps/web.py:1368
+#: cps/oauth_bb.py:225 cps/web.py:1226 cps/web.py:1371
 #, python-format
 msgid "you are now logged in as: '%(nickname)s'"
 msgstr "Be vagy jelentkezve mint: %(nickname)s"
@@ -702,7 +702,7 @@ msgstr "Kelendő könyvek"
 msgid "Show Hot Books"
 msgstr "Kelendő könyvek mutatása"
 
-#: cps/templates/index.xml:24 cps/ub.py:68 cps/web.py:577
+#: cps/templates/index.xml:24 cps/ub.py:68 cps/web.py:580
 msgid "Top Rated Books"
 msgstr "Legjobb könyvek"
 
@@ -711,7 +711,7 @@ msgid "Show Top Rated Books"
 msgstr "Legjobbra értékelt könyvek mutatása"
 
 #: cps/templates/index.xml:46 cps/templates/index.xml:50 cps/ub.py:71
-#: cps/web.py:1077
+#: cps/web.py:1080
 msgid "Read Books"
 msgstr "Olvasott könyvek"
 
@@ -720,7 +720,7 @@ msgid "Show read and unread"
 msgstr "Mutassa az olvasva/olvasatlan állapotot"
 
 #: cps/templates/index.xml:53 cps/templates/index.xml:57 cps/ub.py:75
-#: cps/web.py:1081
+#: cps/web.py:1084
 msgid "Unread Books"
 msgstr "Olvasatlan könyvek"
 
@@ -736,7 +736,7 @@ msgstr "Felfedezés"
 msgid "Show random books"
 msgstr "Könyvek találomra mutatása"
 
-#: cps/templates/index.xml:75 cps/ub.py:81 cps/web.py:857
+#: cps/templates/index.xml:75 cps/ub.py:81 cps/web.py:860
 msgid "Categories"
 msgstr "Címkék"
 
@@ -745,7 +745,7 @@ msgid "Show category selection"
 msgstr "Címke választó mutatása"
 
 #: cps/templates/book_edit.html:69 cps/templates/index.xml:82
-#: cps/templates/search_form.html:53 cps/ub.py:84 cps/web.py:785
+#: cps/templates/search_form.html:53 cps/ub.py:84 cps/web.py:788
 msgid "Series"
 msgstr "Sorozatok"
 
@@ -761,7 +761,7 @@ msgstr "Szerzők"
 msgid "Show author selection"
 msgstr "Szerző választó mutatása"
 
-#: cps/templates/index.xml:68 cps/ub.py:91 cps/web.py:769
+#: cps/templates/index.xml:68 cps/ub.py:91 cps/web.py:772
 msgid "Publishers"
 msgstr "Kiadók"
 
@@ -770,7 +770,7 @@ msgid "Show publisher selection"
 msgstr "Kiadó választó mutatása"
 
 #: cps/templates/index.xml:89 cps/templates/search_form.html:74 cps/ub.py:94
-#: cps/web.py:840
+#: cps/web.py:843
 msgid "Languages"
 msgstr "Nyelvek"
 
@@ -823,223 +823,223 @@ msgstr "Új frissítés érhető el. Kattints az alábbi gombra a frissítéshez
 msgid "Click on the button below to update to the latest stable version."
 msgstr ""
 
-#: cps/web.py:290
+#: cps/web.py:293
 #, python-format
 msgid "Error: %(ldaperror)s"
 msgstr ""
 
-#: cps/web.py:294
+#: cps/web.py:297
 msgid "Error: No user returned in response of LDAP server"
 msgstr ""
 
-#: cps/web.py:342
+#: cps/web.py:345
 msgid "Failed to Create at Least One LDAP User"
 msgstr ""
 
-#: cps/web.py:345
+#: cps/web.py:348
 msgid "At Least One LDAP User Not Found in Database"
 msgstr ""
 
-#: cps/web.py:347
+#: cps/web.py:350
 msgid "User Successfully Imported"
 msgstr ""
 
-#: cps/web.py:549
+#: cps/web.py:552
 msgid "Recently Added Books"
 msgstr "Legutóbb hozzáadott könyvek"
 
-#: cps/templates/index.html:5 cps/web.py:585
+#: cps/templates/index.html:5 cps/web.py:588
 msgid "Discover (Random Books)"
 msgstr "Felfedezés (könyvek találomra)"
 
-#: cps/web.py:611
+#: cps/web.py:614
 msgid "Books"
 msgstr ""
 
-#: cps/web.py:638
+#: cps/web.py:641
 msgid "Hot Books (Most Downloaded)"
 msgstr "Kelendő könyvek (legtöbbet letöltöttek)"
 
-#: cps/web.py:648
+#: cps/web.py:651
 msgid "Oops! Selected book title is unavailable. File does not exist or is not accessible"
 msgstr "Hiba történt az e-könyv megnyitásakor. A fájl nem létezik vagy nem érhető el:"
 
-#: cps/web.py:662
+#: cps/web.py:665
 #, python-format
 msgid "Author: %(name)s"
 msgstr ""
 
-#: cps/web.py:674
+#: cps/web.py:677
 #, python-format
 msgid "Publisher: %(name)s"
 msgstr "Kiadó: %(name)s"
 
-#: cps/web.py:685
+#: cps/web.py:688
 #, python-format
 msgid "Series: %(serie)s"
 msgstr "Sorozat: %(serie)s"
 
-#: cps/web.py:696
+#: cps/web.py:699
 #, python-format
 msgid "Rating: %(rating)s stars"
 msgstr ""
 
-#: cps/web.py:708
+#: cps/web.py:711
 #, python-format
 msgid "File format: %(format)s"
 msgstr ""
 
-#: cps/web.py:720
+#: cps/web.py:723
 #, python-format
 msgid "Category: %(name)s"
 msgstr "Címke: %(name)s"
 
-#: cps/web.py:737
+#: cps/web.py:740
 #, python-format
 msgid "Language: %(name)s"
 msgstr "Nyelv: %(name)s"
 
-#: cps/web.py:799
+#: cps/web.py:802
 msgid "Ratings list"
 msgstr ""
 
-#: cps/web.py:812
+#: cps/web.py:815
 msgid "File formats list"
 msgstr ""
 
-#: cps/templates/layout.html:73 cps/templates/tasks.html:7 cps/web.py:871
+#: cps/templates/layout.html:73 cps/templates/tasks.html:7 cps/web.py:874
 msgid "Tasks"
 msgstr "Feladatok"
 
 #: cps/templates/book_edit.html:212 cps/templates/feed.xml:33
 #: cps/templates/layout.html:44 cps/templates/layout.html:47
-#: cps/templates/search_form.html:170 cps/web.py:893 cps/web.py:895
+#: cps/templates/search_form.html:170 cps/web.py:896 cps/web.py:898
 msgid "Search"
 msgstr "Keresés"
 
-#: cps/web.py:945
+#: cps/web.py:948
 msgid "Published after "
 msgstr "Kiadva ezután: "
 
-#: cps/web.py:952
+#: cps/web.py:955
 msgid "Published before "
 msgstr "Kiadva ezelőtt: "
 
-#: cps/web.py:966
+#: cps/web.py:969
 #, python-format
 msgid "Rating <= %(rating)s"
 msgstr "Értékelés <= %(rating)s"
 
-#: cps/web.py:968
+#: cps/web.py:971
 #, python-format
 msgid "Rating >= %(rating)s"
 msgstr "Értékelés <= %(rating)s"
 
-#: cps/web.py:1034 cps/web.py:1048
+#: cps/web.py:1037 cps/web.py:1051
 msgid "search"
 msgstr "keresés"
 
-#: cps/web.py:1133
+#: cps/web.py:1136
 #, python-format
 msgid "Book successfully queued for sending to %(kindlemail)s"
 msgstr "A könyv sikeresen küldésre lett jelölve a következő címre: %(kindlemail)s"
 
-#: cps/web.py:1137
+#: cps/web.py:1140
 #, python-format
 msgid "Oops! There was an error sending this book: %(res)s"
 msgstr "Hiba történt a könyv küldésekor: %(res)s"
 
-#: cps/web.py:1139
+#: cps/web.py:1142
 msgid "Please update your profile with a valid Send to Kindle E-mail Address."
 msgstr "Először be kell állítani a kindle e-mail címet..."
 
-#: cps/web.py:1156
+#: cps/web.py:1159
 msgid "E-Mail server is not configured, please contact your administrator!"
 msgstr ""
 
-#: cps/web.py:1157 cps/web.py:1163 cps/web.py:1188 cps/web.py:1192
-#: cps/web.py:1197 cps/web.py:1201
+#: cps/web.py:1160 cps/web.py:1166 cps/web.py:1191 cps/web.py:1195
+#: cps/web.py:1200 cps/web.py:1204
 msgid "register"
 msgstr "regisztrálás"
 
-#: cps/web.py:1190
+#: cps/web.py:1193
 msgid "Your e-mail is not allowed to register"
 msgstr "Nem engedélyezett a megadott e-mail cím bejegyzése"
 
-#: cps/web.py:1193
+#: cps/web.py:1196
 msgid "Confirmation e-mail was send to your e-mail account."
 msgstr "Jóváhagyó levél elküldve az email címedre."
 
-#: cps/web.py:1196
+#: cps/web.py:1199
 msgid "This username or e-mail address is already in use."
 msgstr "Ez a felhasználónév vagy e-mail cím már használatban van."
 
-#: cps/web.py:1213
+#: cps/web.py:1216
 msgid "Cannot activate LDAP authentication"
 msgstr ""
 
-#: cps/web.py:1230
+#: cps/web.py:1233
 #, python-format
 msgid "Fallback Login as: '%(nickname)s', LDAP Server not reachable, or user not known"
 msgstr ""
 
-#: cps/web.py:1236
+#: cps/web.py:1239
 #, python-format
 msgid "Could not login: %(message)s"
 msgstr ""
 
-#: cps/web.py:1240 cps/web.py:1264
+#: cps/web.py:1243 cps/web.py:1267
 msgid "Wrong Username or Password"
 msgstr "Rossz felhasználó név vagy jelszó!"
 
-#: cps/web.py:1247
+#: cps/web.py:1250
 msgid "New Password was send to your email address"
 msgstr ""
 
-#: cps/web.py:1253
+#: cps/web.py:1256
 msgid "Please enter valid username to reset password"
 msgstr ""
 
-#: cps/web.py:1259
+#: cps/web.py:1262
 #, python-format
 msgid "You are now logged in as: '%(nickname)s'"
 msgstr ""
 
-#: cps/web.py:1272 cps/web.py:1300
+#: cps/web.py:1275 cps/web.py:1303
 msgid "login"
 msgstr "belépés"
 
-#: cps/web.py:1312 cps/web.py:1346
+#: cps/web.py:1315 cps/web.py:1349
 msgid "Token not found"
 msgstr "A token nem található."
 
-#: cps/web.py:1321 cps/web.py:1354
+#: cps/web.py:1324 cps/web.py:1357
 msgid "Token has expired"
 msgstr "A token érvényessége lejárt."
 
-#: cps/web.py:1330
+#: cps/web.py:1333
 msgid "Success! Please return to your device"
 msgstr "Sikerült! Újra használható az eszköz."
 
-#: cps/web.py:1411 cps/web.py:1456 cps/web.py:1462
+#: cps/web.py:1414 cps/web.py:1459 cps/web.py:1465
 #, python-format
 msgid "%(name)s's profile"
 msgstr "%(name)s profilja"
 
-#: cps/web.py:1458
+#: cps/web.py:1461
 msgid "Profile updated"
 msgstr "A profil frissítve."
 
-#: cps/web.py:1475 cps/web.py:1572
+#: cps/web.py:1478 cps/web.py:1575
 msgid "Error opening eBook. File does not exist or file is not accessible:"
 msgstr ""
 
-#: cps/web.py:1487 cps/web.py:1490 cps/web.py:1493 cps/web.py:1500
-#: cps/web.py:1505
+#: cps/web.py:1490 cps/web.py:1493 cps/web.py:1496 cps/web.py:1503
+#: cps/web.py:1508
 msgid "Read a Book"
 msgstr "Egy olvasott könyv"
 
-#: cps/web.py:1516
+#: cps/web.py:1519
 msgid "Error opening eBook. File does not exist or file is not accessible."
 msgstr ""
 
