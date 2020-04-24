@@ -181,7 +181,7 @@ def delete_book(book_id, book_format):
                 # delete book from Shelfs, Downloads, Read list
                 ub.session.query(ub.BookShelf).filter(ub.BookShelf.book_id == book_id).delete()
                 ub.session.query(ub.ReadBook).filter(ub.ReadBook.book_id == book_id).delete()
-                ub.session.query(ub.ArchivedBook).filter(ub.ReadBook.book_id == book_id).delete()
+                ub.session.query(ub.ArchivedBook).filter(ub.ArchivedBook.book_id == book_id).delete()
                 ub.delete_download(book_id)
                 ub.session.commit()
 
