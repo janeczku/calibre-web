@@ -82,7 +82,7 @@ SIDEBAR_RATING          = 1 << 13
 SIDEBAR_FORMAT          = 1 << 14
 SIDEBAR_ARCHIVED        = 1 << 15
 
-ADMIN_USER_ROLES        = sum(r for r in ALL_ROLES.values()) & ~ROLE_EDIT_SHELFS & ~ROLE_ANONYMOUS
+ADMIN_USER_ROLES        = sum(r for r in ALL_ROLES.values()) & ~ROLE_ANONYMOUS
 ADMIN_USER_SIDEBAR      = (SIDEBAR_ARCHIVED << 1) - 1
 
 UPDATE_STABLE       = 0 << 0

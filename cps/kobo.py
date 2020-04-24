@@ -407,10 +407,8 @@ def HandleTagCreate():
         log.debug("Received malformed v1/library/tags request.")
         abort(400, description="Malformed tags POST request. Data is missing 'Name' or 'Items' field")
 
-    # ToDO: Names are not unique ! -> filter only private shelfs
-    shelf = ub.session.query(ub.Shelf).filter(and_(ub.Shelf.name) == name, ub.Shelf.user_id ==
-                                              current_user.id).one_or_none() # ToDO: shouldn't it ) at the end
-
+    shelf = ub.session.query(ub.Shelf).filter(ub.Shelf.name == name, ub.Shelf.user_id ==
+                                              current_user.id).one_or_none()
     if shelf and not shelf_lib.check_shelf_edit_permissions(shelf):
         abort(401, description="User is unauthaurized to edit shelf.")
 
@@ -428,7 +426,7 @@ def HandleTagCreate():
 
 @kobo.route("/v1/library/tags/<tag_id>", methods=["DELETE", "PUT"])
 def HandleTagUpdate(tag_id):
-    shelf = ub.session.query(ub.Shelf).filter(and_(ub.Shelf.uuid) == tag_id,
+    shelf = ub.session.query(ub.Shelf).filter(ub.Shelf.uuid == tag_id,
                                               ub.Shelf.user_id == current_user.id).one_or_none()
     if not shelf:
         log.debug("Received Kobo tag update request on a collection unknown to CalibreWeb")
@@ -489,7 +487,7 @@ def HandleTagAddItem(tag_id):
         log.debug("Received malformed v1/library/tags/<tag_id>/items/delete request.")
         abort(400, description="Malformed tags POST request. Data is missing 'Items' field")
 
-    shelf = ub.session.query(ub.Shelf).filter(and_(ub.Shelf.uuid) == tag_id,
+    shelf = ub.session.query(ub.Shelf).filter(ub.Shelf.uuid == tag_id,
                                               ub.Shelf.user_id == current_user.id).one_or_none()
     if not shelf:
         log.debug("Received Kobo request on a collection unknown to CalibreWeb")
@@ -500,7 +498,7 @@ def HandleTagAddItem(tag_id):
 
     items_unknown_to_calibre = add_items_to_shelf(items, shelf)
     if items_unknown_to_calibre:
-        log.debug("Received request to add an unknown book to a collecition. Silently ignoring item.")
+        log.debug("Received request to add an unknown book to a collection. Silently ignoring item.")
 
     ub.session.merge(shelf)
     ub.session.commit()
@@ -605,8 +603,7 @@ def create_kobo_tag(shelf):
         book = db.session.query(db.Books).filter(db.Books.id == book_shelf.book_id).one_or_none()
         if not book:
             log.info(u"Book (id: %s) in BookShelf (id: %s) not found in book database",  book_shelf.book_id, shelf.id)
-            # ToDo shouldn't it continue?
-            return None
+            continue
         tag["Items"].append(
             {
                 "RevisionId": book.uuid,

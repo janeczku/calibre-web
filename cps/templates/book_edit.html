@@ -213,7 +213,7 @@
         </div>
 
       <div class="modal-footer">
-        <a href="{{ url_for('editbook.delete_book', book_id=book.id) }}" class="btn btn-danger">{{_('Delete')}}</a>
+        <a href="{{ url_for('editbook.delete_book', book_id=book.id) }}" id="delete_confirm" class="btn btn-danger">{{_('Delete')}}</a>
         <button type="button" class="btn btn-default" data-dismiss="modal">{{_('Cancel')}}</button>
       </div>
     </div>
@@ -313,7 +313,7 @@
   });
   function removeIdentifierLine(el) {
     $(el).parent().parent().remove();
-  } 
+  }
 
 </script>
 <script src="{{ url_for('static', filename='js/libs/typeahead.bundle.js') }}"></script>

@@ -21,6 +21,7 @@
 #  along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 from __future__ import division, print_function, unicode_literals
+from datetime import datetime
 
 from flask import Blueprint, request, flash, redirect, url_for
 from flask_babel import gettext as _
@@ -90,6 +91,7 @@ def add_to_shelf(shelf_id, book_id):
         maxOrder = maxOrder[0]
 
     shelf.books.append(ub.BookShelf(shelf=shelf.id, book_id=book_id, order=maxOrder + 1))
+    shelf.last_modified = datetime.utcnow()
     ub.session.merge(shelf)
     ub.session.commit()
     if not xhr:
@@ -141,6 +143,7 @@ def search_to_shelf(shelf_id):
         for book in books_for_shelf:
             maxOrder = maxOrder + 1
             shelf.books.append(ub.BookShelf(shelf=shelf.id, book_id=book, order=maxOrder))
+        shelf.last_modified = datetime.utcnow()
         ub.session.merge(shelf)
         ub.session.commit()
         flash(_(u"Books have been added to shelf: %(sname)s", sname=shelf.name), category="success")
@@ -179,6 +182,7 @@ def remove_from_shelf(shelf_id, book_id):
             return "Book already removed from shelf", 410
 
         ub.session.delete(book_shelf)
+        shelf.last_modified = datetime.utcnow()
         ub.session.commit()
 
         if not xhr:
@@ -269,6 +273,7 @@ def edit_shelf(shelf_id):
 
         if is_shelf_name_unique:
             shelf.name = to_save["title"]
+            shelf.last_modified = datetime.utcnow()
             if "is_public" in to_save:
                 shelf.is_public = 1
             else:
@@ -289,7 +294,7 @@ def delete_shelf_helper(cur_shelf):
     shelf_id = cur_shelf.id
     ub.session.delete(cur_shelf)
     ub.session.query(ub.BookShelf).filter(ub.BookShelf.shelf == shelf_id).delete()
-    ub.session.add(ub.ShelfArchive(uuid=cur_shelf.uuid, user_id=cur_shelf.uuid))
+    ub.session.add(ub.ShelfArchive(uuid=cur_shelf.uuid, user_id=cur_shelf.user_id))
     ub.session.commit()
     log.info("successfully deleted %s", cur_shelf)
 
@@ -342,6 +347,7 @@ def order_shelf(shelf_id):
         for book in books_in_shelf:
             setattr(book, 'order', to_save[str(book.book_id)])
             counter += 1
+            # if order diffrent from before -> shelf.last_modified = datetime.utcnow()
         ub.session.commit()
 
     shelf = ub.session.query(ub.Shelf).filter(ub.Shelf.id == shelf_id).first()
