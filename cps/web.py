@@ -157,7 +157,7 @@ def load_user_from_auth_header(header_val):
         pass
     user = _fetch_user_by_name(basic_username)
     if config.config_login_type == constants.LOGIN_LDAP and services.ldap:
-        if services.ldap.bind_user(str(user.password), basic_password)
+        if services.ldap.bind_user(str(user.password), basic_password):
             return user
     if user and check_password_hash(str(user.password), basic_password):
         return user
