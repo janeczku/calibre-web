@@ -211,8 +211,7 @@ $(function() {
             data: {"parameter":2},
             success: function success(data) {
                 $("#spinner2").hide();
-                ResultText = data.text;
-                $("#DialogContent").html(ResultText);
+                $("#DialogContent").html(data.text);
                 $("#DialogFinished").removeClass("hidden");
             }
         });
@@ -311,8 +310,7 @@ $(function() {
             url: path + "/../../import_ldap_users",
             success: function success(data) {
                 $("#spinner2").hide();
-                ResultText = data.text;
-                $("#DialogContent").html(ResultText);
+                $("#DialogContent").html(data.text);
                 $("#DialogFinished").removeClass("hidden");
             }
         });
