@@ -39,7 +39,7 @@ from flask_babel import gettext as _
 from flask_login import login_user, logout_user, login_required, current_user
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.sql.expression import text, func, true, false, not_, and_, exists, or_
-from werkzeug.exceptions import default_exceptions
+from werkzeug.exceptions import default_exceptions, FailedDependency
 from werkzeug.datastructures import Headers
 from werkzeug.security import generate_password_hash, check_password_hash
 
@@ -111,6 +111,14 @@ for ex in default_exceptions:
     elif ex == 500:
         app.register_error_handler(ex, internal_error)
 
+
+# Only way of catching the LDAPException upon logging in with LDAP server down
+@app.errorhandler(services.ldap.LDAPException)
+def handle_exception(e):
+    log.debug('LDAP server not accessible while trying to login to opds feed')
+    return error_http(FailedDependency())
+
+
 web = Blueprint('web', __name__)
 log = logger.create()
 
@@ -156,7 +164,7 @@ def load_user_from_auth_header(header_val):
     except (TypeError, UnicodeDecodeError, binascii.Error):
         pass
     user = _fetch_user_by_name(basic_username)
-    if config.config_login_type == constants.LOGIN_LDAP and services.ldap:
+    if user and config.config_login_type == constants.LOGIN_LDAP and services.ldap:
         if services.ldap.bind_user(str(user.password), basic_password):
             return user
     if user and check_password_hash(str(user.password), basic_password):
