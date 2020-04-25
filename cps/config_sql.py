@@ -95,12 +95,10 @@ class _Settings(_Base):
 
     config_ldap_provider_url = Column(String, default='example.org')
     config_ldap_port = Column(SmallInteger, default=389)
-    # config_ldap_schema = Column(String, default='ldap')
+    config_ldap_authentication = Column(SmallInteger, default=constants.LDAP_AUTH_SIMPLE)
     config_ldap_serv_username = Column(String, default='cn=admin,dc=example,dc=org')
     config_ldap_serv_password = Column(String, default="")
     config_ldap_encryption = Column(SmallInteger, default=0)
-    # config_ldap_use_tls = Column(Boolean, default=False)
-    # config_ldap_require_cert = Column(Boolean, default=False)
     config_ldap_cert_path = Column(String, default="")
     config_ldap_dn = Column(String, default='dc=example,dc=org')
     config_ldap_user_object = Column(String, default='uid=%s')

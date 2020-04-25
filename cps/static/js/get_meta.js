@@ -73,9 +73,9 @@ $(function () {
         if (showFlag === 1) {
             $("#meta-info").html("<ul id=\"book-list\" class=\"media-list\"></ul>");
         }
-        if ((ggDone == 3 || (ggDone == 1 && ggResults.length === 0)) &&
-            (dbDone == 3 || (ggDone == 1 && dbResults.length === 0)) &&
-            (cvDone == 3 || (ggDone == 1 && cvResults.length === 0))) {
+        if ((ggDone === 3 || (ggDone === 1 && ggResults.length === 0)) &&
+            (dbDone === 3 || (ggDone === 1 && dbResults.length === 0)) &&
+            (cvDone === 3 || (ggDone === 1 && cvResults.length === 0))) {
             $("#meta-info").html("<p class=\"text-danger\">" + msg.no_result + "</p>");
             return;
         }
@@ -191,7 +191,7 @@ $(function () {
                     var dateFomers = "";
                     if (result.store_date) {
                         dateFomers = result.store_date.split("-");
-                    }else{
+                    } else {
                         dateFomers = result.date_added.split("-");
                     }
                     var publishedYear = parseInt(dateFomers[0]);
@@ -202,12 +202,12 @@ $(function () {
 
                     var book = {
                         id: result.id,
-                        title: seriesTitle + ' #' +('00' + result.issue_number).slice(-3) + ' - ' + result.name,
+                        title: seriesTitle + " #" + ("00" + result.issue_number).slice(-3) + " - " + result.name,
                         authors: result.author || [],
                         description: result.description,
                         publisher: "",
                         publishedDate: publishedDate || "",
-                        tags: ['Comics', seriesTitle],
+                        tags: ["Comics", seriesTitle],
                         rating: 0,
                         series: seriesTitle || "",
                         cover: result.image.original_url,

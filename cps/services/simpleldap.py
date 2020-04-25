@@ -42,11 +42,17 @@ def init_app(app, config):
         app.config['LDAP_SCHEMA'] = 'ldaps'
     else:
         app.config['LDAP_SCHEMA'] = 'ldap'
-    # app.config['LDAP_SCHEMA'] = config.config_ldap_schema
-    app.config['LDAP_USERNAME'] = config.config_ldap_serv_username
-    if config.config_ldap_serv_password is None:
-        config.config_ldap_serv_password = ''
-    app.config['LDAP_PASSWORD'] = base64.b64decode(config.config_ldap_serv_password)
+    if config.config_ldap_authentication > constants.LDAP_AUTH_ANONYMOUS:
+        if config.config_ldap_authentication > constants.LDAP_AUTH_UNAUTHENTICATE:
+            if config.config_ldap_serv_password is None:
+                config.config_ldap_serv_password = ''
+            app.config['LDAP_PASSWORD'] = base64.b64decode(config.config_ldap_serv_password)
+        else:
+            app.config['LDAP_PASSWORD'] = base64.b64decode("")
+        app.config['LDAP_USERNAME'] = config.config_ldap_serv_username
+    else:
+        app.config['LDAP_USERNAME'] = ""
+        app.config['LDAP_PASSWORD'] = base64.b64decode("")
     if bool(config.config_ldap_cert_path):
         app.config['LDAP_REQUIRE_CERT'] = True
         app.config['LDAP_CERT_PATH'] = config.config_ldap_cert_path
@@ -90,7 +96,7 @@ def bind_user(username, password):
             log.debug("LDAP login '%s': %r", username, result)
             return result is not None, None
         return None, None       # User not found
-    except (TypeError, AttributeError) as ex:
+    except (TypeError, AttributeError, KeyError) as ex:
         error = ("LDAP bind_user: %s" % ex)
         return None, error
     except LDAPException as ex:

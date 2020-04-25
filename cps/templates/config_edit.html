@@ -234,7 +234,6 @@
         </div>
         <div class="form-group">
           <label for="config_ldap_encryption">{{_('LDAP Encryption')}}</label>
-          <label for="config_ldap_encryption">{{_('LDAP Encryption')}}</label>
             <select name="config_ldap_encryption" id="config_ldap_encryption" class="form-control" data-controlall="ldap-cert-settings">
                 <option value="0" {% if config.config_ldap_encryption == 0 %}selected{% endif %}>{{ _('None') }}</option>
                 <option value="1" {% if config.config_ldap_encryption == 1 %}selected{% endif %}>{{ _('TLS') }}</option>
@@ -247,14 +246,25 @@
             <input type="text" class="form-control" id="config_ldap_cert_path" name="config_ldap_cert_path" value="{% if config.config_ldap_cert_path != None %}{{ config.config_ldap_cert_path }}{% endif %}" autocomplete="off">
           </div>
         </div>
-
         <div class="form-group">
-          <label for="config_ldap_serv_username">{{_('LDAP Administrator Username')}}</label>
-          <input type="text" class="form-control" id="config_ldap_serv_username" name="config_ldap_serv_username" value="{% if config.config_ldap_serv_username != None %}{{ config.config_ldap_serv_username }}{% endif %}" autocomplete="off">
+          <label for="config_ldap_authentication">{{_('LDAP Authentication')}}</label>
+            <select name="config_ldap_authentication" id="config_ldap_authentication" class="form-control" data-control="ldap-auth-password" data-controlall="ldap-auth-settings">
+                <option value="0" {% if config.config_ldap_authentication == 0 %}selected{% endif %}>{{ _('Anonymous') }}</option>
+                <option value="1" {% if config.config_ldap_authentication == 1 %}selected{% endif %}>{{ _('Unauthenticated') }}</option>
+                <option value="2" {% if config.config_ldap_authentication == 2 %}selected{% endif %}>{{ _('Simple') }}</option>
+            </select>
         </div>
-        <div class="form-group">
-          <label for="config_ldap_serv_password">{{_('LDAP Administrator Password')}}</label>
-          <input type="password" class="form-control" id="config_ldap_serv_password" name="config_ldap_serv_password" value="" autocomplete="off">
+        <div data-related="ldap-auth-settings">
+          <div class="form-group">
+            <label for="config_ldap_serv_username">{{_('LDAP Administrator Username')}}</label>
+            <input type="text" class="form-control" id="config_ldap_serv_username" name="config_ldap_serv_username" value="{% if config.config_ldap_serv_username != None %}{{ config.config_ldap_serv_username }}{% endif %}" autocomplete="off">
+          </div>
+        </div>
+        <div data-related="ldap-auth-password-2">
+          <div class="form-group">
+            <label for="config_ldap_serv_password">{{_('LDAP Administrator Password')}}</label>
+            <input type="password" class="form-control" id="config_ldap_serv_password" name="config_ldap_serv_password" value="" autocomplete="off">
+          </div>
         </div>
         <div class="form-group">
           <label for="config_ldap_dn">{{_('LDAP Distinguished Name (DN)')}}</label>

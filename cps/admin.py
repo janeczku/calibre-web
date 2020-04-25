@@ -547,7 +547,7 @@ def _configuration_update_helper():
     if config.config_login_type == constants.LOGIN_LDAP:
         reboot_required |= _config_string("config_ldap_provider_url")
         reboot_required |= _config_int("config_ldap_port")
-        # _config_string("config_ldap_schema")
+        reboot_required |= _config_int("config_ldap_authentication")
         reboot_required |= _config_string("config_ldap_dn")
         reboot_required |= _config_string("config_ldap_serv_username")
         reboot_required |= _config_string("config_ldap_user_object")
@@ -569,9 +569,13 @@ def _configuration_update_helper():
                 return _configuration_result(_('Please Enter a LDAP Provider, '
                                              'Port, DN and User Object Identifier'), gdriveError)
 
-
-        if not config.config_ldap_serv_username or not bool(config.config_ldap_serv_password):
-            return _configuration_result('Please Enter a LDAP Service Account and Password', gdriveError)
+        if config.config_ldap_authentication > constants.LDAP_AUTH_ANONYMOUS:
+            if config.config_ldap_authentication > constants.LDAP_AUTH_UNAUTHENTICATE:
+                if not config.config_ldap_serv_username or not bool(config.config_ldap_serv_password):
+                    return _configuration_result('Please Enter a LDAP Service Account and Password', gdriveError)
+            else:
+                if not config.config_ldap_serv_username:
+                    return _configuration_result('Please Enter a LDAP Service Account', gdriveError)
 
         #_config_checkbox("config_ldap_use_ssl")
         #_config_checkbox("config_ldap_use_tls")
@@ -830,9 +834,8 @@ def edit_user(user_id):
     if request.method == "POST":
         to_save = request.form.to_dict()
         if "delete" in to_save:
-            if ub.session.query(ub.User).filter(and_(ub.User.role.op('&')
-                                                             (constants.ROLE_ADMIN)== constants.ROLE_ADMIN,
-                                                         ub.User.id != content.id)).count():
+            if ub.session.query(ub.User).filter(ub.User.role.op('&')(constants.ROLE_ADMIN) == constants.ROLE_ADMIN,
+                                                ub.User.id != content.id).count():
                 ub.session.query(ub.User).filter(ub.User.id == content.id).delete()
                 ub.session.commit()
                 flash(_(u"User '%(nick)s' deleted", nick=content.nickname), category="success")
@@ -841,6 +844,12 @@ def edit_user(user_id):
                 flash(_(u"No admin user remaining, can't delete user", nick=content.nickname), category="error")
                 return redirect(url_for('admin.admin'))
         else:
+            if not ub.session.query(ub.User).filter(ub.User.role.op('&')(constants.ROLE_ADMIN) == constants.ROLE_ADMIN,
+                                                    ub.User.id != content.id).count() and \
+                not 'admin_role' in to_save:
+                flash(_(u"No admin user remaining, can't remove admin role", nick=content.nickname), category="error")
+                return redirect(url_for('admin.admin'))
+
             if "password" in to_save and to_save["password"]:
                 content.password = generate_password_hash(to_save["password"])
             anonymous = content.is_anonymous
