@@ -834,9 +834,8 @@ def edit_user(user_id):
     if request.method == "POST":
         to_save = request.form.to_dict()
         if "delete" in to_save:
-            if ub.session.query(ub.User).filter(and_(ub.User.role.op('&')
-                                                             (constants.ROLE_ADMIN)== constants.ROLE_ADMIN,
-                                                         ub.User.id != content.id)).count():
+            if ub.session.query(ub.User).filter(ub.User.role.op('&')(constants.ROLE_ADMIN) == constants.ROLE_ADMIN,
+                                                ub.User.id != content.id).count():
                 ub.session.query(ub.User).filter(ub.User.id == content.id).delete()
                 ub.session.commit()
                 flash(_(u"User '%(nick)s' deleted", nick=content.nickname), category="success")
@@ -845,6 +844,12 @@ def edit_user(user_id):
                 flash(_(u"No admin user remaining, can't delete user", nick=content.nickname), category="error")
                 return redirect(url_for('admin.admin'))
         else:
+            if not ub.session.query(ub.User).filter(ub.User.role.op('&')(constants.ROLE_ADMIN) == constants.ROLE_ADMIN,
+                                                    ub.User.id != content.id).count() and \
+                not 'admin_role' in to_save:
+                flash(_(u"No admin user remaining, can't remove admin role", nick=content.nickname), category="error")
+                return redirect(url_for('admin.admin'))
+
             if "password" in to_save and to_save["password"]:
                 content.password = generate_password_hash(to_save["password"])
             anonymous = content.is_anonymous
