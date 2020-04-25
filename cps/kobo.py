@@ -45,6 +45,7 @@ from flask_login import current_user, login_required
 from werkzeug.datastructures import Headers
 from sqlalchemy import func
 from sqlalchemy.sql.expression import and_, or_
+from sqlalchemy.exc import StatementError
 import requests
 
 from . import config, logger, kobo_auth, db, helper, shelf as shelf_lib, ub
@@ -222,10 +223,10 @@ def HandleSyncRequest():
     sync_token.archive_last_modified = new_archived_last_modified
     sync_token.reading_state_last_modified = new_reading_state_last_modified
 
-    return generate_sync_response(request, sync_token, sync_results)
+    return generate_sync_response(sync_token, sync_results)
 
 
-def generate_sync_response(request, sync_token, sync_results):
+def generate_sync_response(sync_token, sync_results):
     extra_headers = {}
     if config.config_kobo_proxy:
         # Merge in sync results from the official Kobo store.
@@ -394,26 +395,31 @@ def get_metadata(book):
     return metadata
 
 
-@kobo.route("/v1/library/tags", methods=["POST"])
+@kobo.route("/v1/library/tags", methods=["POST", "DELETE"])
 @login_required
 # Creates a Shelf with the given items, and returns the shelf's uuid.
 def HandleTagCreate():
-    shelf_request = request.json
+    # catch delete requests, otherwise the are handeld in the book delete handler
+    if request.method == "DELETE":
+        abort(405)
     name, items = None, None
     try:
+        shelf_request = request.json
         name = shelf_request["Name"]
         items = shelf_request["Items"]
-    except KeyError:
+        if not name:
+            raise TypeError
+    except (KeyError, TypeError):
         log.debug("Received malformed v1/library/tags request.")
-        abort(400, description="Malformed tags POST request. Data is missing 'Name' or 'Items' field")
+        abort(400, description="Malformed tags POST request. Data has empty 'Name', missing 'Name' or 'Items' field")
 
     shelf = ub.session.query(ub.Shelf).filter(ub.Shelf.name == name, ub.Shelf.user_id ==
                                               current_user.id).one_or_none()
     if shelf and not shelf_lib.check_shelf_edit_permissions(shelf):
-        abort(401, description="User is unauthaurized to edit shelf.")
+        abort(401, description="User is unauthaurized to create shelf.")
 
     if not shelf:
-        shelf = ub.Shelf(user_id=current_user.id, name=name, uuid=uuid.uuid4())
+        shelf = ub.Shelf(user_id=current_user.id, name=name, uuid=str(uuid.uuid4()))
         ub.session.add(shelf)
 
     items_unknown_to_calibre = add_items_to_shelf(items, shelf)
@@ -441,18 +447,17 @@ def HandleTagUpdate(tag_id):
     if request.method == "DELETE":
         shelf_lib.delete_shelf_helper(shelf)
     else:
-        shelf_request = request.json
         name = None
         try:
+            shelf_request = request.json
             name = shelf_request["Name"]
-        except KeyError:
+        except (KeyError, TypeError):
             log.debug("Received malformed v1/library/tags rename request.")
             abort(400, description="Malformed tags POST request. Data is missing 'Name' field")
 
         shelf.name = name
         ub.session.merge(shelf)
         ub.session.commit()
-
     return make_response(' ', 200)
 
 
@@ -461,29 +466,32 @@ def add_items_to_shelf(items, shelf):
     book_ids_already_in_shelf = set([book_shelf.book_id for book_shelf in shelf.books])
     items_unknown_to_calibre = []
     for item in items:
-        if item["Type"] != "ProductRevisionTagItem":
-            items_unknown_to_calibre.append(item)
-            continue
+        try:
+            if item["Type"] != "ProductRevisionTagItem":
+                items_unknown_to_calibre.append(item)
+                continue
 
-        book = db.session.query(db.Books).filter(db.Books.uuid == item["RevisionId"]).one_or_none()
-        if not book:
-            items_unknown_to_calibre.append(item)
-            continue
+            book = db.session.query(db.Books).filter(db.Books.uuid == item["RevisionId"]).one_or_none()
+            if not book:
+                items_unknown_to_calibre.append(item)
+                continue
 
-        book_id = book.id
-        if book_id not in book_ids_already_in_shelf:
-            shelf.books.append(ub.BookShelf(book_id=book_id))
+            book_id = book.id
+            if book_id not in book_ids_already_in_shelf:
+                shelf.books.append(ub.BookShelf(book_id=book_id))
+        except KeyError:
+            items_unknown_to_calibre.append(item)
     return items_unknown_to_calibre
 
 
 @kobo.route("/v1/library/tags/<tag_id>/items", methods=["POST"])
 @login_required
 def HandleTagAddItem(tag_id):
-    tag_request = request.json
     items = None
     try:
+        tag_request = request.json
         items = tag_request["Items"]
-    except KeyError:
+    except (KeyError, TypeError):
         log.debug("Received malformed v1/library/tags/<tag_id>/items/delete request.")
         abort(400, description="Malformed tags POST request. Data is missing 'Items' field")
 
@@ -509,15 +517,14 @@ def HandleTagAddItem(tag_id):
 @kobo.route("/v1/library/tags/<tag_id>/items/delete", methods=["POST"])
 @login_required
 def HandleTagRemoveItem(tag_id):
-    tag_request = request.json
     items = None
     try:
+        tag_request = request.json
         items = tag_request["Items"]
-    except KeyError:
+    except (KeyError, TypeError):
         log.debug("Received malformed v1/library/tags/<tag_id>/items/delete request.")
         abort(400, description="Malformed tags POST request. Data is missing 'Items' field")
 
-    # insconsitent to above requests
     shelf = ub.session.query(ub.Shelf).filter(ub.Shelf.uuid == tag_id,
                                               ub.Shelf.user_id == current_user.id).one_or_none()
     if not shelf:
@@ -530,16 +537,19 @@ def HandleTagRemoveItem(tag_id):
 
     items_unknown_to_calibre = []
     for item in items:
-        if item["Type"] != "ProductRevisionTagItem":
-            items_unknown_to_calibre.append(item)
-            continue
+        try:
+            if item["Type"] != "ProductRevisionTagItem":
+                items_unknown_to_calibre.append(item)
+                continue
 
-        book = db.session.query(db.Books).filter(db.Books.uuid == item["RevisionId"]).one_or_none()
-        if not book:
-            items_unknown_to_calibre.append(item)
-            continue
+            book = db.session.query(db.Books).filter(db.Books.uuid == item["RevisionId"]).one_or_none()
+            if not book:
+                items_unknown_to_calibre.append(item)
+                continue
 
-        shelf.books.filter(ub.BookShelf.book_id == book.id).delete()
+            shelf.books.filter(ub.BookShelf.book_id == book.id).delete()
+        except KeyError:
+            items_unknown_to_calibre.append(item)
     ub.session.commit()
 
     if items_unknown_to_calibre:
@@ -628,39 +638,43 @@ def HandleStateRequest(book_uuid):
     else:
         update_results_response = {"EntitlementId": book_uuid}
 
-        request_data = request.json
-        if "ReadingStates" not in request_data:
+        try:
+            request_data = request.json
+            request_reading_state = request_data["ReadingStates"][0]
+
+            request_bookmark = request_reading_state["CurrentBookmark"]
+            if request_bookmark:
+                current_bookmark = kobo_reading_state.current_bookmark
+                current_bookmark.progress_percent = request_bookmark["ProgressPercent"]
+                current_bookmark.content_source_progress_percent = request_bookmark["ContentSourceProgressPercent"]
+                location = request_bookmark["Location"]
+                if location:
+                    current_bookmark.location_value = location["Value"]
+                    current_bookmark.location_type = location["Type"]
+                    current_bookmark.location_source = location["Source"]
+                update_results_response["CurrentBookmarkResult"] = {"Result": "Success"}
+
+            request_statistics = request_reading_state["Statistics"]
+            if request_statistics:
+                statistics = kobo_reading_state.statistics
+                statistics.spent_reading_minutes = int(request_statistics["SpentReadingMinutes"])
+                statistics.remaining_time_minutes = int(request_statistics["RemainingTimeMinutes"])
+                update_results_response["StatisticsResult"] = {"Result": "Success"}
+
+            request_status_info = request_reading_state["StatusInfo"]
+            if request_status_info:
+                book_read = kobo_reading_state.book_read_link
+                new_book_read_status = get_ub_read_status(request_status_info["Status"])
+                if new_book_read_status == ub.ReadBook.STATUS_IN_PROGRESS \
+                    and new_book_read_status != book_read.read_status:
+                    book_read.times_started_reading += 1
+                    book_read.last_time_started_reading = datetime.datetime.utcnow()
+                book_read.read_status = new_book_read_status
+                update_results_response["StatusInfoResult"] = {"Result": "Success"}
+        except (KeyError, TypeError, ValueError, StatementError):
+            log.debug("Received malformed v1/library/<book_uuid>/state request.")
+            ub.session.rollback()
             abort(400, description="Malformed request data is missing 'ReadingStates' key")
-        request_reading_state = request_data["ReadingStates"][0]
-
-        request_bookmark = request_reading_state.get("CurrentBookmark")
-        if request_bookmark:
-            current_bookmark = kobo_reading_state.current_bookmark
-            current_bookmark.progress_percent = request_bookmark.get("ProgressPercent")
-            current_bookmark.content_source_progress_percent = request_bookmark.get("ContentSourceProgressPercent")
-            location = request_bookmark.get("Location")
-            if location:
-                current_bookmark.location_value = location.get("Value")
-                current_bookmark.location_type = location.get("Type")
-                current_bookmark.location_source = location.get("Source")
-            update_results_response["CurrentBookmarkResult"] = {"Result": "Success"}
-
-        request_statistics = request_reading_state.get("Statistics")
-        if request_statistics:
-            statistics = kobo_reading_state.statistics
-            statistics.spent_reading_minutes = request_statistics.get("SpentReadingMinutes")
-            statistics.remaining_time_minutes = request_statistics.get("RemainingTimeMinutes")
-            update_results_response["StatisticsResult"] = {"Result": "Success"}
-
-        request_status_info = request_reading_state.get("StatusInfo")
-        if request_status_info:
-            book_read = kobo_reading_state.book_read_link
-            new_book_read_status = get_ub_read_status(request_status_info.get("Status"))
-            if new_book_read_status == ub.ReadBook.STATUS_IN_PROGRESS and new_book_read_status != book_read.read_status:
-                book_read.times_started_reading += 1
-                book_read.last_time_started_reading = datetime.datetime.utcnow()
-            book_read.read_status = new_book_read_status
-            update_results_response["StatusInfoResult"] = {"Result": "Success"}
 
         ub.session.merge(kobo_reading_state)
         ub.session.commit()
@@ -691,8 +705,8 @@ def get_ub_read_status(kobo_read_status):
 
 
 def get_or_create_reading_state(book_id):
-    book_read = ub.session.query(ub.ReadBook).filter(and_(ub.ReadBook.book_id == book_id,
-                                                          ub.ReadBook.user_id == current_user.id)).one_or_none()
+    book_read = ub.session.query(ub.ReadBook).filter(ub.ReadBook.book_id == book_id,
+                                                          ub.ReadBook.user_id == current_user.id).one_or_none()
     if not book_read:
         book_read = ub.ReadBook(user_id=current_user.id, book_id=book_id)
     if not book_read.kobo_reading_state:
@@ -840,12 +854,15 @@ def HandleProductsRequest(dummy=None):
     return redirect_or_proxy_request()
 
 
-@kobo.app_errorhandler(404)
+'''@kobo.errorhandler(404)
 def handle_404(err):
     # This handler acts as a catch-all for endpoints that we don't have an interest in
     # implementing (e.g: v1/analytics/gettests, v1/user/recommendations, etc)
+    if err:
+        print('404')
+        return jsonify(error=str(err)), 404
     log.debug("Unknown Request received: %s, method: %s, data: %s", request.base_url, request.method, request.data)
-    return redirect_or_proxy_request()
+    return redirect_or_proxy_request()'''
 
 
 def make_calibre_web_auth_response():
