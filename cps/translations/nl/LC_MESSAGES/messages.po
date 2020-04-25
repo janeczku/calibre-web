@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Calibre-Web (GPLV3)\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2020-04-16 20:14+0200\n"
+"POT-Creation-Date: 2020-04-24 22:12+0200\n"
 "PO-Revision-Date: 2020-03-06 19:28+0100\n"
 "Last-Translator: Ed Driesen <ed.driesen@telenet.be>\n"
 "Language: nl\n"
@@ -47,8 +47,8 @@ msgstr ""
 msgid "Unknown command"
 msgstr ""
 
-#: cps/admin.py:115 cps/editbooks.py:432 cps/editbooks.py:441
-#: cps/editbooks.py:565 cps/editbooks.py:567 cps/editbooks.py:633
+#: cps/admin.py:115 cps/editbooks.py:410 cps/editbooks.py:419
+#: cps/editbooks.py:539 cps/editbooks.py:541 cps/editbooks.py:594
 #: cps/updater.py:509 cps/uploader.py:96 cps/uploader.py:107
 msgid "Unknown"
 msgstr "Onbekend"
@@ -61,7 +61,7 @@ msgstr "Systeembeheer"
 msgid "UI Configuration"
 msgstr "Uiterlijk aanpassen"
 
-#: cps/admin.py:192 cps/admin.py:672
+#: cps/admin.py:192 cps/admin.py:676
 msgid "Calibre-Web configuration updated"
 msgstr "Calibre-Web-configuratie bijgewerkt"
 
@@ -91,275 +91,275 @@ msgstr ""
 msgid "Please Enter a LDAP Provider, Port, DN and User Object Identifier"
 msgstr ""
 
-#: cps/admin.py:583
+#: cps/admin.py:587
 #, python-format
 msgid "LDAP Group Object Filter Needs to Have One \"%s\" Format Identifier"
 msgstr ""
 
-#: cps/admin.py:586
+#: cps/admin.py:590
 msgid "LDAP Group Object Filter Has Unmatched Parenthesis"
 msgstr ""
 
-#: cps/admin.py:590
+#: cps/admin.py:594
 #, python-format
 msgid "LDAP User Object Filter needs to Have One \"%s\" Format Identifier"
 msgstr ""
 
-#: cps/admin.py:593
+#: cps/admin.py:597
 msgid "LDAP User Object Filter Has Unmatched Parenthesis"
 msgstr ""
 
-#: cps/admin.py:597
+#: cps/admin.py:601
 msgid "LDAP Certificate Location is not Valid, Please Enter Correct Path"
 msgstr ""
 
-#: cps/admin.py:645
+#: cps/admin.py:649
 msgid "Logfile Location is not Valid, Please Enter Correct Path"
 msgstr ""
 
-#: cps/admin.py:650
+#: cps/admin.py:654
 msgid "Access Logfile Location is not Valid, Please Enter Correct Path"
 msgstr ""
 
-#: cps/admin.py:669
+#: cps/admin.py:673
 msgid "DB Location is not Valid, Please Enter Correct Path"
 msgstr ""
 
-#: cps/admin.py:702
+#: cps/admin.py:706
 msgid "Basic Configuration"
 msgstr "Basis configuratie"
 
-#: cps/admin.py:726 cps/web.py:1206
+#: cps/admin.py:730 cps/web.py:1165
 msgid "Please fill out all fields!"
 msgstr "Vul alle velden in!"
 
-#: cps/admin.py:729 cps/admin.py:741 cps/admin.py:747 cps/admin.py:765
+#: cps/admin.py:733 cps/admin.py:745 cps/admin.py:751 cps/admin.py:769
 msgid "Add new user"
 msgstr "Nieuwe gebruiker toevoegen"
 
-#: cps/admin.py:738 cps/web.py:1453
+#: cps/admin.py:742 cps/web.py:1412
 msgid "E-mail is not from valid domain"
 msgstr "Het e-mailadres bevat geen geldige domeinnaam"
 
-#: cps/admin.py:745 cps/admin.py:760
+#: cps/admin.py:749 cps/admin.py:764
 msgid "Found an existing account for this e-mail address or nickname."
 msgstr "Er is een bestaand account met dit e-mailadres of deze gebruikersnaam aangetroffen."
 
-#: cps/admin.py:756
+#: cps/admin.py:760
 #, python-format
 msgid "User '%(user)s' created"
 msgstr "Gebruiker '%(user)s' aangemaakt"
 
-#: cps/admin.py:775
+#: cps/admin.py:779
 msgid "Edit e-mail server settings"
 msgstr "E-mailserverinstellingen bewerken"
 
-#: cps/admin.py:801
+#: cps/admin.py:805
 #, python-format
 msgid "Test e-mail successfully send to %(kindlemail)s"
 msgstr "Test-e-mail verstuurd naar %(kindlemail)s"
 
-#: cps/admin.py:804
+#: cps/admin.py:808
 #, python-format
 msgid "There was an error sending the Test e-mail: %(res)s"
 msgstr "Fout opgetreden bij het versturen van de test-e-mail: %(res)s"
 
-#: cps/admin.py:806
+#: cps/admin.py:810
 msgid "Please configure your e-mail address first..."
 msgstr "Gelieve eerst je e-mail adres configureren..."
 
-#: cps/admin.py:808
+#: cps/admin.py:812
 msgid "E-mail server settings updated"
 msgstr "E-mailserverinstellingen bijgewerkt"
 
-#: cps/admin.py:838
+#: cps/admin.py:842
 #, python-format
 msgid "User '%(nick)s' deleted"
 msgstr "Gebruiker '%(nick)s' is verwijderd"
 
-#: cps/admin.py:841
+#: cps/admin.py:845
 msgid "No admin user remaining, can't delete user"
 msgstr "Kan laatste systeembeheerder niet verwijderen"
 
-#: cps/admin.py:877 cps/web.py:1496
+#: cps/admin.py:881 cps/web.py:1455
 msgid "Found an existing account for this e-mail address."
 msgstr "Bestaand account met dit e-mailadres aangetroffen."
 
-#: cps/admin.py:887 cps/admin.py:902 cps/admin.py:922 cps/web.py:1471
+#: cps/admin.py:891 cps/admin.py:906 cps/admin.py:926 cps/web.py:1430
 #, python-format
 msgid "Edit User %(nick)s"
 msgstr "Gebruiker '%(nick)s' bewerken"
 
-#: cps/admin.py:893 cps/web.py:1463
+#: cps/admin.py:897 cps/web.py:1422
 msgid "This username is already taken"
 msgstr "Deze gebruikersnaam is reeds ingenomen door iemand"
 
-#: cps/admin.py:909
+#: cps/admin.py:913
 #, python-format
 msgid "User '%(nick)s' updated"
 msgstr "Gebruiker '%(nick)s' bijgewerkt"
 
-#: cps/admin.py:912
+#: cps/admin.py:916
 msgid "An unknown error occured."
 msgstr "Er is een onbekende fout opgetreden."
 
-#: cps/admin.py:935
+#: cps/admin.py:939
 #, python-format
 msgid "Password for user %(user)s reset"
 msgstr "Wachtwoord voor gebruiker %(user)s is hersteld"
 
-#: cps/admin.py:938 cps/web.py:1231 cps/web.py:1295
+#: cps/admin.py:942 cps/web.py:1190 cps/web.py:1254
 msgid "An unknown error occurred. Please try again later."
 msgstr "Onbekende fout opgetreden. Probeer het later nog eens."
 
-#: cps/admin.py:941 cps/web.py:1172
+#: cps/admin.py:945 cps/web.py:1131
 msgid "Please configure the SMTP mail settings first..."
 msgstr "Stel eerst SMTP-mail in..."
 
-#: cps/admin.py:953
+#: cps/admin.py:957
 msgid "Logfile viewer"
 msgstr "Logbestand lezer"
 
-#: cps/admin.py:992
+#: cps/admin.py:996
 msgid "Requesting update package"
 msgstr "Bezig met opvragen van updatepakket"
 
-#: cps/admin.py:993
+#: cps/admin.py:997
 msgid "Downloading update package"
 msgstr "Bezig met downloaden van updatepakket"
 
-#: cps/admin.py:994
+#: cps/admin.py:998
 msgid "Unzipping update package"
 msgstr "Bezig met uitpakken van updatepakket"
 
-#: cps/admin.py:995
+#: cps/admin.py:999
 msgid "Replacing files"
 msgstr "Bezig met bestandsvervanging"
 
-#: cps/admin.py:996
+#: cps/admin.py:1000
 msgid "Database connections are closed"
 msgstr "Databankverbindingen zijn gesloten"
 
-#: cps/admin.py:997
+#: cps/admin.py:1001
 msgid "Stopping server"
 msgstr "Bezig met stoppen van server"
 
-#: cps/admin.py:998
+#: cps/admin.py:1002
 msgid "Update finished, please press okay and reload page"
 msgstr "Update voltooid; klik op 'Oké' en vernieuw de pagina"
 
-#: cps/admin.py:999 cps/admin.py:1000 cps/admin.py:1001 cps/admin.py:1002
-#: cps/admin.py:1003
+#: cps/admin.py:1003 cps/admin.py:1004 cps/admin.py:1005 cps/admin.py:1006
+#: cps/admin.py:1007
 msgid "Update failed:"
 msgstr "Update mislukt:"
 
-#: cps/admin.py:999 cps/updater.py:319 cps/updater.py:520 cps/updater.py:522
+#: cps/admin.py:1003 cps/updater.py:319 cps/updater.py:520 cps/updater.py:522
 msgid "HTTP Error"
 msgstr "HTTP-fout"
 
-#: cps/admin.py:1000 cps/updater.py:321 cps/updater.py:524
+#: cps/admin.py:1004 cps/updater.py:321 cps/updater.py:524
 msgid "Connection error"
 msgstr "Verbindingsfout"
 
-#: cps/admin.py:1001 cps/updater.py:323 cps/updater.py:526
+#: cps/admin.py:1005 cps/updater.py:323 cps/updater.py:526
 msgid "Timeout while establishing connection"
 msgstr "Time-out tijdens maken van verbinding"
 
-#: cps/admin.py:1002 cps/updater.py:325 cps/updater.py:528
+#: cps/admin.py:1006 cps/updater.py:325 cps/updater.py:528
 msgid "General error"
 msgstr "Algemene fout"
 
-#: cps/admin.py:1003
+#: cps/admin.py:1007
 msgid "Update File Could Not be Saved in Temp Dir"
-msgstr "Geüpload bestand kon niet opgeslagen worden in tijdelijke map"
+msgstr ""
 
 #: cps/converter.py:31
 msgid "not configured"
 msgstr "niet geconfigureerd"
 
-#: cps/editbooks.py:235 cps/editbooks.py:418
+#: cps/editbooks.py:214 cps/editbooks.py:396
 msgid "Error opening eBook. File does not exist or file is not accessible"
 msgstr "Kan e-boek niet openen: het bestand bestaat niet of is ontoegankelijk"
 
-#: cps/editbooks.py:263
+#: cps/editbooks.py:242
 msgid "edit metadata"
 msgstr "metagegevens bewerken"
 
-#: cps/editbooks.py:343 cps/editbooks.py:608
+#: cps/editbooks.py:321 cps/editbooks.py:569
 #, python-format
 msgid "File extension '%(ext)s' is not allowed to be uploaded to this server"
 msgstr "De bestandsextensie '%(ext)s' is niet toegestaan op deze server"
 
-#: cps/editbooks.py:347 cps/editbooks.py:612
+#: cps/editbooks.py:325 cps/editbooks.py:573
 msgid "File to be uploaded must have an extension"
 msgstr "Het te uploaden bestand moet voorzien zijn van een extensie"
 
-#: cps/editbooks.py:359 cps/editbooks.py:646
+#: cps/editbooks.py:337 cps/editbooks.py:607
 #, python-format
 msgid "Failed to create path %(path)s (Permission denied)."
 msgstr "Kan het pad '%(path)s' niet creëren (niet gemachtigd)."
 
-#: cps/editbooks.py:364
+#: cps/editbooks.py:342
 #, python-format
 msgid "Failed to store file %(file)s."
 msgstr "Kan %(file)s niet opslaan."
 
-#: cps/editbooks.py:381
+#: cps/editbooks.py:359
 #, python-format
 msgid "File format %(ext)s added to %(book)s"
 msgstr "Bestandsformaat %(ext)s toegevoegd aan %(book)s"
 
-#: cps/editbooks.py:473
+#: cps/editbooks.py:451
 msgid "Cover is not a jpg file, can't save"
 msgstr "Cover is geen jpg bestand, opslaan niet mogelijk"
 
-#: cps/editbooks.py:520
+#: cps/editbooks.py:494
 #, python-format
 msgid "%(langname)s is not a valid language"
 msgstr "%(langname)s is geen geldige taal"
 
-#: cps/editbooks.py:551
+#: cps/editbooks.py:525
 msgid "Metadata successfully updated"
 msgstr "De metagegevens zijn bijgewerkt"
 
-#: cps/editbooks.py:560
+#: cps/editbooks.py:534
 msgid "Error editing book, please check logfile for details"
 msgstr "Kan het boek niet bewerken; controleer het logbestand"
 
-#: cps/editbooks.py:620
+#: cps/editbooks.py:581
 #, python-format
 msgid "File %(filename)s could not saved to temp dir"
-msgstr "Bestand %(filename)s kon niet in de tijdelijke map opgeslagen worden"
+msgstr "Bestand %(filename)s kon niet in de tijdelijke map opgeslaan worden"
 
-#: cps/editbooks.py:637
+#: cps/editbooks.py:598
 msgid "Uploaded book probably exists in the library, consider to change before upload new: "
 msgstr "Geüpload boek bestaat waarschijnlijk in de bibliotheek, overweeg wijzigingen alvorens opnieuw te proberen: "
 
-#: cps/editbooks.py:652
+#: cps/editbooks.py:613
 #, python-format
 msgid "Failed to store file %(file)s (Permission denied)."
 msgstr "Kan %(file)s niet opslaan (niet gemachtigd)."
 
-#: cps/editbooks.py:658
+#: cps/editbooks.py:619
 #, python-format
 msgid "Failed to delete file %(file)s (Permission denied)."
 msgstr "Kan %(file)s niet verwijderen (niet gemachtigd)."
 
-#: cps/editbooks.py:748
+#: cps/editbooks.py:709
 #, python-format
 msgid "File %(file)s uploaded"
 msgstr "Bestand %(file)s geüpload"
 
-#: cps/editbooks.py:777
+#: cps/editbooks.py:738
 msgid "Source or destination format for conversion missing"
 msgstr "Bron- of doelformaat ontbreekt voor conversie"
 
-#: cps/editbooks.py:785
+#: cps/editbooks.py:746
 #, python-format
 msgid "Book successfully queued for converting to %(book_format)s"
 msgstr "Het boek is in de wachtrij geplaatst voor conversie naar %(book_format)s"
 
-#: cps/editbooks.py:789
+#: cps/editbooks.py:750
 #, python-format
 msgid "There was an error converting this book: %(res)s"
 msgstr "Er is een fout opgetreden bij het converteren van dit boek: %(res)s"
@@ -543,7 +543,7 @@ msgstr "Aanmelden bij Google mislukt."
 msgid "Failed to fetch user info from Google."
 msgstr "Opvragen gebruikersinfo bij Google mislukt."
 
-#: cps/oauth_bb.py:225 cps/web.py:1267 cps/web.py:1412
+#: cps/oauth_bb.py:225 cps/web.py:1226 cps/web.py:1371
 #, python-format
 msgid "you are now logged in as: '%(nickname)s'"
 msgstr "je bent ingelogd als: '%(nickname)s'"
@@ -640,12 +640,12 @@ msgstr "Sorry, je mag geen boeken verwijderen van deze boekenplank: %(sname)s"
 #: cps/shelf.py:215 cps/shelf.py:252
 #, python-format
 msgid "A public shelf with the name '%(title)s' already exists."
-msgstr "Een openbare boekenplank met de naam '%(title)s' bestaat al."
+msgstr ""
 
 #: cps/shelf.py:222 cps/shelf.py:260
 #, python-format
 msgid "A private shelf with the name '%(title)s' already exists."
-msgstr "Een persoonlijke boekenplank met de naam '%(title)s' bestaat al."
+msgstr ""
 
 #: cps/shelf.py:228
 #, python-format
@@ -658,7 +658,7 @@ msgstr "Er is een fout opgetreden"
 
 #: cps/shelf.py:232 cps/shelf.py:234 cps/templates/layout.html:143
 msgid "Create a Shelf"
-msgstr "Maak een boekenplank"
+msgstr "creëer een boekenplank"
 
 #: cps/shelf.py:270
 #, python-format
@@ -687,121 +687,113 @@ msgstr "Verborgen boek"
 msgid "Change order of Shelf: '%(name)s'"
 msgstr "Volgorde bewerken van boekenplank '%(name)s'"
 
-#: cps/ub.py:63
+#: cps/ub.py:61
 msgid "Recently Added"
 msgstr "Recent toegevoegd"
 
-#: cps/ub.py:65
+#: cps/ub.py:63
 msgid "Show recent books"
 msgstr "Recent toegevoegde boeken tonen"
 
-#: cps/templates/index.xml:17 cps/ub.py:66
+#: cps/templates/index.xml:17 cps/ub.py:64
 msgid "Hot Books"
 msgstr "Populaire boeken"
 
-#: cps/ub.py:67
+#: cps/ub.py:65
 msgid "Show Hot Books"
 msgstr "Populaire boeken tonen"
 
-#: cps/templates/index.xml:24 cps/ub.py:70 cps/web.py:599
+#: cps/templates/index.xml:24 cps/ub.py:68 cps/web.py:580
 msgid "Top Rated Books"
 msgstr "Best beoordeelde boeken"
 
-#: cps/ub.py:72
+#: cps/ub.py:70
 msgid "Show Top Rated Books"
 msgstr "Best beoordeelde boeken tonen"
 
-#: cps/templates/index.xml:46 cps/templates/index.xml:50 cps/ub.py:73
-#: cps/web.py:1101
+#: cps/templates/index.xml:46 cps/templates/index.xml:50 cps/ub.py:71
+#: cps/web.py:1080
 msgid "Read Books"
 msgstr "Gelezen boeken"
 
-#: cps/ub.py:75
+#: cps/ub.py:73
 msgid "Show read and unread"
 msgstr "Gelezen/Ongelezen boeken tonen"
 
-#: cps/templates/index.xml:53 cps/templates/index.xml:57 cps/ub.py:77
-#: cps/web.py:1105
+#: cps/templates/index.xml:53 cps/templates/index.xml:57 cps/ub.py:75
+#: cps/web.py:1084
 msgid "Unread Books"
 msgstr "Ongelezen boeken"
 
-#: cps/ub.py:79
+#: cps/ub.py:77
 msgid "Show unread"
 msgstr "Ongelezen boeken tonen"
 
-#: cps/ub.py:80
+#: cps/ub.py:78
 msgid "Discover"
 msgstr "Willekeurige boeken"
 
-#: cps/ub.py:82
+#: cps/ub.py:80
 msgid "Show random books"
 msgstr "Willekeurige boeken tonen"
 
-#: cps/templates/index.xml:75 cps/ub.py:83 cps/web.py:881
+#: cps/templates/index.xml:75 cps/ub.py:81 cps/web.py:860
 msgid "Categories"
 msgstr "Categorieën"
 
-#: cps/ub.py:85
+#: cps/ub.py:83
 msgid "Show category selection"
 msgstr "Categoriekeuze tonen"
 
-#: cps/templates/book_edit.html:84 cps/templates/index.xml:82
-#: cps/templates/search_form.html:53 cps/ub.py:86 cps/web.py:809
+#: cps/templates/book_edit.html:69 cps/templates/index.xml:82
+#: cps/templates/search_form.html:53 cps/ub.py:84 cps/web.py:788
 msgid "Series"
 msgstr "Boekenreeksen"
 
-#: cps/ub.py:88
+#: cps/ub.py:86
 msgid "Show series selection"
 msgstr "Boekenreeksen keuze tonen"
 
-#: cps/templates/index.xml:61 cps/ub.py:89
+#: cps/templates/index.xml:61 cps/ub.py:87
 msgid "Authors"
 msgstr "Auteurs"
 
-#: cps/ub.py:91
+#: cps/ub.py:89
 msgid "Show author selection"
 msgstr "Auteurkeuze tonen"
 
-#: cps/templates/index.xml:68 cps/ub.py:93 cps/web.py:793
+#: cps/templates/index.xml:68 cps/ub.py:91 cps/web.py:772
 msgid "Publishers"
 msgstr "Uitgevers"
 
-#: cps/ub.py:95
+#: cps/ub.py:93
 msgid "Show publisher selection"
 msgstr "Uitgeverskeuze tonen"
 
-#: cps/templates/index.xml:89 cps/templates/search_form.html:74 cps/ub.py:96
-#: cps/web.py:864
+#: cps/templates/index.xml:89 cps/templates/search_form.html:74 cps/ub.py:94
+#: cps/web.py:843
 msgid "Languages"
 msgstr "Talen"
 
-#: cps/ub.py:99
+#: cps/ub.py:97
 msgid "Show language selection"
 msgstr "Taalkeuze tonen"
 
-#: cps/templates/index.xml:96 cps/ub.py:100
+#: cps/templates/index.xml:96 cps/ub.py:98
 msgid "Ratings"
 msgstr "Beoordelingen"
 
-#: cps/ub.py:102
+#: cps/ub.py:100
 msgid "Show ratings selection"
 msgstr "Beoordelingen tonen"
 
-#: cps/templates/index.xml:104 cps/ub.py:103
+#: cps/templates/index.xml:104 cps/ub.py:101
 msgid "File formats"
 msgstr "Bestandsformaten"
 
-#: cps/ub.py:105
+#: cps/ub.py:103
 msgid "Show file formats selection"
 msgstr "Bestandsformaten tonen"
-
-#: cps/ub.py:107 cps/web.py:1126
-msgid "Archived Books"
-msgstr ""
-
-#: cps/ub.py:109
-msgid "Show archived books"
-msgstr ""
 
 #: cps/updater.py:294 cps/updater.py:305 cps/updater.py:406 cps/updater.py:420
 msgid "Unexpected data while reading update information"
@@ -832,223 +824,223 @@ msgstr "Er is een update beschikbaar. Klik op de knop hieronder om te updaten na
 msgid "Click on the button below to update to the latest stable version."
 msgstr "Druk op onderstaande knop om de laatste stabiele versie te installeren."
 
-#: cps/web.py:290
+#: cps/web.py:293
 #, python-format
 msgid "Error: %(ldaperror)s"
 msgstr ""
 
-#: cps/web.py:294
+#: cps/web.py:297
 msgid "Error: No user returned in response of LDAP server"
 msgstr ""
 
-#: cps/web.py:342
+#: cps/web.py:345
 msgid "Failed to Create at Least One LDAP User"
 msgstr ""
 
-#: cps/web.py:345
+#: cps/web.py:348
 msgid "At Least One LDAP User Not Found in Database"
 msgstr ""
 
-#: cps/web.py:347
+#: cps/web.py:350
 msgid "User Successfully Imported"
 msgstr ""
 
-#: cps/web.py:571
+#: cps/web.py:552
 msgid "Recently Added Books"
 msgstr "Recent toegevoegde boeken"
 
-#: cps/templates/index.html:5 cps/web.py:607
+#: cps/templates/index.html:5 cps/web.py:588
 msgid "Discover (Random Books)"
 msgstr "Verkennen (willekeurige boeken)"
 
-#: cps/web.py:635
+#: cps/web.py:614
 msgid "Books"
 msgstr "Boeken"
 
-#: cps/web.py:662
+#: cps/web.py:641
 msgid "Hot Books (Most Downloaded)"
 msgstr "Populaire boeken (meest gedownload)"
 
-#: cps/web.py:672
+#: cps/web.py:651
 msgid "Oops! Selected book title is unavailable. File does not exist or is not accessible"
 msgstr "Oeps! Geselecteerd boek is niet beschikbaar. Bestand bestaat niet of is niet toegankelijk"
 
-#: cps/web.py:686
+#: cps/web.py:665
 #, python-format
 msgid "Author: %(name)s"
 msgstr "Auteur: %(name)s"
 
-#: cps/web.py:698
+#: cps/web.py:677
 #, python-format
 msgid "Publisher: %(name)s"
 msgstr "Uitgever: %(name)s"
 
-#: cps/web.py:709
+#: cps/web.py:688
 #, python-format
 msgid "Series: %(serie)s"
 msgstr "Reeks: %(serie)s"
 
-#: cps/web.py:720
+#: cps/web.py:699
 #, python-format
 msgid "Rating: %(rating)s stars"
 msgstr "Beoordeling: %(rating)s sterren"
 
-#: cps/web.py:732
+#: cps/web.py:711
 #, python-format
 msgid "File format: %(format)s"
 msgstr "Bestandsformaat: %(format)s"
 
-#: cps/web.py:744
+#: cps/web.py:723
 #, python-format
 msgid "Category: %(name)s"
 msgstr "Categorie: %(name)s"
 
-#: cps/web.py:761
+#: cps/web.py:740
 #, python-format
 msgid "Language: %(name)s"
 msgstr "Taal: %(name)s"
 
-#: cps/web.py:823
+#: cps/web.py:802
 msgid "Ratings list"
 msgstr "Beoordelingen"
 
-#: cps/web.py:836
+#: cps/web.py:815
 msgid "File formats list"
 msgstr "Alle bestandsformaten"
 
-#: cps/templates/layout.html:73 cps/templates/tasks.html:7 cps/web.py:895
+#: cps/templates/layout.html:73 cps/templates/tasks.html:7 cps/web.py:874
 msgid "Tasks"
 msgstr "Taken"
 
-#: cps/templates/book_edit.html:235 cps/templates/feed.xml:33
+#: cps/templates/book_edit.html:212 cps/templates/feed.xml:33
 #: cps/templates/layout.html:44 cps/templates/layout.html:47
-#: cps/templates/search_form.html:170 cps/web.py:917 cps/web.py:919
+#: cps/templates/search_form.html:170 cps/web.py:896 cps/web.py:898
 msgid "Search"
 msgstr "Zoeken"
 
-#: cps/web.py:969
+#: cps/web.py:948
 msgid "Published after "
 msgstr "Gepubliceerd na "
 
-#: cps/web.py:976
+#: cps/web.py:955
 msgid "Published before "
 msgstr "Gepubliceerd vóór "
 
-#: cps/web.py:990
+#: cps/web.py:969
 #, python-format
 msgid "Rating <= %(rating)s"
 msgstr "Beoordeling <= %(rating)s"
 
-#: cps/web.py:992
+#: cps/web.py:971
 #, python-format
 msgid "Rating >= %(rating)s"
 msgstr "Beoordeling >= %(rating)s"
 
-#: cps/web.py:1058 cps/web.py:1072
+#: cps/web.py:1037 cps/web.py:1051
 msgid "search"
 msgstr "zoeken"
 
-#: cps/web.py:1177
+#: cps/web.py:1136
 #, python-format
 msgid "Book successfully queued for sending to %(kindlemail)s"
 msgstr "Het boek is in de wachtrij geplaatst om te worden verstuurd aan %(kindlemail)s"
 
-#: cps/web.py:1181
+#: cps/web.py:1140
 #, python-format
 msgid "Oops! There was an error sending this book: %(res)s"
 msgstr "Fout opgetreden bij het versturen van dit boek: %(res)s"
 
-#: cps/web.py:1183
+#: cps/web.py:1142
 msgid "Please update your profile with a valid Send to Kindle E-mail Address."
 msgstr "Stel je kindle-e-mailadres in..."
 
-#: cps/web.py:1200
+#: cps/web.py:1159
 msgid "E-Mail server is not configured, please contact your administrator!"
 msgstr "E-Mail server is niet geconfigureerd, contacteer alstublieft je administrator!"
 
-#: cps/web.py:1201 cps/web.py:1207 cps/web.py:1232 cps/web.py:1236
-#: cps/web.py:1241 cps/web.py:1245
+#: cps/web.py:1160 cps/web.py:1166 cps/web.py:1191 cps/web.py:1195
+#: cps/web.py:1200 cps/web.py:1204
 msgid "register"
 msgstr "registreren"
 
-#: cps/web.py:1234
+#: cps/web.py:1193
 msgid "Your e-mail is not allowed to register"
 msgstr "Dit e-mailadres mag niet worden gebruikt voor registratie"
 
-#: cps/web.py:1237
+#: cps/web.py:1196
 msgid "Confirmation e-mail was send to your e-mail account."
 msgstr "Er is een bevestigingse-mail verstuurd naar je e-mailadres."
 
-#: cps/web.py:1240
+#: cps/web.py:1199
 msgid "This username or e-mail address is already in use."
 msgstr "Deze gebruikersnaam of e-mailadres is al in gebruik."
 
-#: cps/web.py:1257
+#: cps/web.py:1216
 msgid "Cannot activate LDAP authentication"
 msgstr "Kan de LDAP authenticatie niet activeren"
 
-#: cps/web.py:1274
+#: cps/web.py:1233
 #, python-format
 msgid "Fallback Login as: '%(nickname)s', LDAP Server not reachable, or user not known"
 msgstr ""
 
-#: cps/web.py:1280
+#: cps/web.py:1239
 #, python-format
 msgid "Could not login: %(message)s"
 msgstr ""
 
-#: cps/web.py:1284 cps/web.py:1308
+#: cps/web.py:1243 cps/web.py:1267
 msgid "Wrong Username or Password"
 msgstr "Verkeerde gebruikersnaam of wachtwoord"
 
-#: cps/web.py:1291
+#: cps/web.py:1250
 msgid "New Password was send to your email address"
 msgstr "Een nieuw wachtwoord werd verzonden naar je email adres"
 
-#: cps/web.py:1297
+#: cps/web.py:1256
 msgid "Please enter valid username to reset password"
 msgstr "Gelieve een geldige gebruikersnaam opgeven om je wachtwoord te resetten"
 
-#: cps/web.py:1303
+#: cps/web.py:1262
 #, python-format
 msgid "You are now logged in as: '%(nickname)s'"
 msgstr "Je bent ingelogd als: '%(nickname)s'"
 
-#: cps/web.py:1316 cps/web.py:1344
+#: cps/web.py:1275 cps/web.py:1303
 msgid "login"
 msgstr "inloggen"
 
-#: cps/web.py:1356 cps/web.py:1390
+#: cps/web.py:1315 cps/web.py:1349
 msgid "Token not found"
 msgstr "Toegangssleutel niet gevonden"
 
-#: cps/web.py:1365 cps/web.py:1398
+#: cps/web.py:1324 cps/web.py:1357
 msgid "Token has expired"
 msgstr "Toegangssleutel is verlopen"
 
-#: cps/web.py:1374
+#: cps/web.py:1333
 msgid "Success! Please return to your device"
 msgstr "Gelukt! Ga terug naar je apparaat"
 
-#: cps/web.py:1455 cps/web.py:1500 cps/web.py:1506
+#: cps/web.py:1414 cps/web.py:1459 cps/web.py:1465
 #, python-format
 msgid "%(name)s's profile"
 msgstr "%(name)s's profiel"
 
-#: cps/web.py:1502
+#: cps/web.py:1461
 msgid "Profile updated"
 msgstr "Profiel bijgewerkt"
 
-#: cps/web.py:1519 cps/web.py:1623
+#: cps/web.py:1478 cps/web.py:1575
 msgid "Error opening eBook. File does not exist or file is not accessible:"
 msgstr "Fout tijdens het openen van eBook. Bestand bestaat niet of is niet toegankelijk:"
 
-#: cps/web.py:1531 cps/web.py:1534 cps/web.py:1537 cps/web.py:1544
-#: cps/web.py:1549
+#: cps/web.py:1490 cps/web.py:1493 cps/web.py:1496 cps/web.py:1503
+#: cps/web.py:1508
 msgid "Read a Book"
 msgstr "Lees een boek"
 
-#: cps/web.py:1560
+#: cps/web.py:1519
 msgid "Error opening eBook. File does not exist or file is not accessible."
 msgstr "Fout tijdens het openen van eBook. Bestand bestaat niet of is niet toegankelijk."
 
@@ -1109,7 +1101,7 @@ msgstr "Bewerken"
 
 #: cps/templates/admin.html:38
 msgid "Add New User"
-msgstr "Gebruiker toevoegen"
+msgstr "Voeg Nieuwe Gebruiker toe"
 
 #: cps/templates/admin.html:40 cps/templates/admin.html:41
 msgid "Import LDAP Users"
@@ -1249,8 +1241,8 @@ msgid "OK"
 msgstr "Oké"
 
 #: cps/templates/admin.html:171 cps/templates/admin.html:185
-#: cps/templates/book_edit.html:187 cps/templates/book_edit.html:217
-#: cps/templates/config_edit.html:355 cps/templates/config_view_edit.html:151
+#: cps/templates/book_edit.html:172 cps/templates/book_edit.html:194
+#: cps/templates/config_edit.html:365 cps/templates/config_view_edit.html:151
 #: cps/templates/email_edit.html:40 cps/templates/email_edit.html:92
 #: cps/templates/shelf.html:73 cps/templates/shelf_edit.html:19
 #: cps/templates/user_edit.html:137
@@ -1297,7 +1289,7 @@ msgstr "Boek verwijderen"
 msgid "Delete formats:"
 msgstr "Formaten verwijderen:"
 
-#: cps/templates/book_edit.html:16 cps/templates/book_edit.html:216
+#: cps/templates/book_edit.html:16 cps/templates/book_edit.html:193
 #: cps/templates/email_edit.html:91 cps/templates/user_edit.html:65
 #: cps/templates/user_edit.html:177
 msgid "Delete"
@@ -1327,148 +1319,120 @@ msgstr "Boek converteren"
 msgid "Book Title"
 msgstr "Boektitel"
 
-#: cps/templates/book_edit.html:57 cps/templates/book_edit.html:279
-#: cps/templates/book_edit.html:297 cps/templates/search_form.html:10
+#: cps/templates/book_edit.html:57 cps/templates/book_edit.html:256
+#: cps/templates/book_edit.html:274 cps/templates/search_form.html:10
 msgid "Author"
 msgstr "Auteur"
 
-#: cps/templates/book_edit.html:61 cps/templates/book_edit.html:284
-#: cps/templates/book_edit.html:299 cps/templates/search_form.html:126
+#: cps/templates/book_edit.html:61 cps/templates/book_edit.html:261
+#: cps/templates/book_edit.html:276 cps/templates/search_form.html:126
 msgid "Description"
 msgstr "Omschrijving"
 
-#: cps/templates/book_edit.html:66
-msgid "Identifiers"
-msgstr ""
-
-#: cps/templates/book_edit.html:70 cps/templates/book_edit.html:308
-msgid "Identifier Type"
-msgstr ""
-
-#: cps/templates/book_edit.html:71 cps/templates/book_edit.html:309
-msgid "Identifier Value"
-msgstr ""
-
-#: cps/templates/book_edit.html:72 cps/templates/book_edit.html:310
-msgid "Remove"
-msgstr ""
-
-#: cps/templates/book_edit.html:76
-msgid "Add Identifier"
-msgstr ""
-
-#: cps/templates/book_edit.html:80 cps/templates/search_form.html:33
+#: cps/templates/book_edit.html:65 cps/templates/search_form.html:33
 msgid "Tags"
 msgstr "Labels"
 
-#: cps/templates/book_edit.html:88
+#: cps/templates/book_edit.html:73
 msgid "Series ID"
 msgstr "Series ID"
 
-#: cps/templates/book_edit.html:92
+#: cps/templates/book_edit.html:77
 msgid "Rating"
 msgstr "Beoordeling"
 
-#: cps/templates/book_edit.html:96
+#: cps/templates/book_edit.html:81
 msgid "Fetch Cover from URL (JPEG - Image will be downloaded and stored in database)"
 msgstr "Boekomslag-url (jpg - de omslag wordt gedownload en opgeslagen in de databank; het invoerveld is nadien leeg)"
 
-#: cps/templates/book_edit.html:100
+#: cps/templates/book_edit.html:85
 msgid "Upload Cover from Local Disk"
 msgstr "Omslag uploaden vanaf computer"
 
-#: cps/templates/book_edit.html:105
+#: cps/templates/book_edit.html:90
 msgid "Published Date"
 msgstr "Publicatiedatum"
 
-#: cps/templates/book_edit.html:112 cps/templates/book_edit.html:281
-#: cps/templates/book_edit.html:298 cps/templates/detail.html:156
+#: cps/templates/book_edit.html:97 cps/templates/book_edit.html:258
+#: cps/templates/book_edit.html:275 cps/templates/detail.html:156
 #: cps/templates/search_form.html:14
 msgid "Publisher"
 msgstr "Uitgever"
 
-#: cps/templates/book_edit.html:116 cps/templates/detail.html:123
+#: cps/templates/book_edit.html:101 cps/templates/detail.html:123
 #: cps/templates/user_edit.html:31
 msgid "Language"
 msgstr "Taal"
 
-#: cps/templates/book_edit.html:126 cps/templates/search_form.html:137
+#: cps/templates/book_edit.html:111 cps/templates/search_form.html:137
 msgid "Yes"
 msgstr "Ja"
 
-#: cps/templates/book_edit.html:127 cps/templates/search_form.html:138
+#: cps/templates/book_edit.html:112 cps/templates/search_form.html:138
 msgid "No"
 msgstr "Nee"
 
-#: cps/templates/book_edit.html:173
+#: cps/templates/book_edit.html:158
 msgid "Upload Format"
 msgstr "Uploadformaat"
 
-#: cps/templates/book_edit.html:182
+#: cps/templates/book_edit.html:167
 msgid "View Book on Save"
 msgstr "Boek inkijken na bewerking"
 
-#: cps/templates/book_edit.html:185 cps/templates/book_edit.html:229
+#: cps/templates/book_edit.html:170 cps/templates/book_edit.html:206
 msgid "Fetch Metadata"
 msgstr "Metagegevens ophalen"
 
-#: cps/templates/book_edit.html:186 cps/templates/config_edit.html:352
+#: cps/templates/book_edit.html:171 cps/templates/config_edit.html:362
 #: cps/templates/config_view_edit.html:150 cps/templates/email_edit.html:38
 #: cps/templates/shelf_edit.html:17 cps/templates/user_edit.html:135
 msgid "Save"
 msgstr "Opslaan"
 
-#: cps/templates/book_edit.html:200
+#: cps/templates/book_edit.html:185
 msgid "Are you really sure?"
 msgstr "Weet je het zeker?"
 
-#: cps/templates/book_edit.html:204
+#: cps/templates/book_edit.html:188
 msgid "This book will be permanently erased from database"
 msgstr "Het boek wordt verwijderd uit de Calibre-database"
 
-#: cps/templates/book_edit.html:205
+#: cps/templates/book_edit.html:189
 msgid "and hard disk"
 msgstr "en van de harde schijf"
 
 #: cps/templates/book_edit.html:209
-msgid "Important Kobo Note: deleted books will remain on any paired Kobo device."
-msgstr ""
-
-#: cps/templates/book_edit.html:210
-msgid "Books must first be archived and the device synced before a book can safely be deleted."
-msgstr ""
-
-#: cps/templates/book_edit.html:232
 msgid "Keyword"
 msgstr "Trefwoord"
 
-#: cps/templates/book_edit.html:233
+#: cps/templates/book_edit.html:210
 msgid " Search keyword "
 msgstr " Trefwoord zoeken "
 
-#: cps/templates/book_edit.html:239
+#: cps/templates/book_edit.html:216
 msgid "Click the cover to load metadata to the form"
 msgstr "Klik op de omslag om de metagegevens in het formulier te laden"
 
-#: cps/templates/book_edit.html:254 cps/templates/book_edit.html:294
+#: cps/templates/book_edit.html:231 cps/templates/book_edit.html:271
 msgid "Loading..."
 msgstr "Bezig met laden..."
 
-#: cps/templates/book_edit.html:259 cps/templates/layout.html:189
+#: cps/templates/book_edit.html:236 cps/templates/layout.html:189
 #: cps/templates/layout.html:221 cps/templates/modal_restriction.html:34
 #: cps/templates/user_edit.html:164
 msgid "Close"
 msgstr "Sluiten"
 
-#: cps/templates/book_edit.html:286 cps/templates/book_edit.html:300
+#: cps/templates/book_edit.html:263 cps/templates/book_edit.html:277
 msgid "Source"
 msgstr "Bron"
 
-#: cps/templates/book_edit.html:295
+#: cps/templates/book_edit.html:272
 msgid "Search error!"
 msgstr "Zoekfout!"
 
-#: cps/templates/book_edit.html:296
+#: cps/templates/book_edit.html:273
 msgid "No Result(s) found! Please try another keyword."
 msgstr "Geen resultaten gevonden! Gebruik een ander trefwoord."
 
@@ -1640,107 +1604,123 @@ msgstr "LDAP Server hostnaam of IP-adres"
 msgid "LDAP Server Port"
 msgstr "LDAP Server Poort"
 
-#: cps/templates/config_edit.html:236 cps/templates/config_edit.html:237
+#: cps/templates/config_edit.html:236
 msgid "LDAP Encryption"
 msgstr ""
 
-#: cps/templates/config_edit.html:239 cps/templates/config_view_edit.html:61
+#: cps/templates/config_edit.html:238 cps/templates/config_view_edit.html:61
 #: cps/templates/email_edit.html:21
 msgid "None"
 msgstr "Geen"
 
-#: cps/templates/config_edit.html:240
+#: cps/templates/config_edit.html:239
 msgid "TLS"
 msgstr ""
 
-#: cps/templates/config_edit.html:241
+#: cps/templates/config_edit.html:240
 msgid "SSL"
 msgstr ""
 
-#: cps/templates/config_edit.html:246
+#: cps/templates/config_edit.html:245
 msgid "LDAP Certificate Path"
 msgstr ""
 
+#: cps/templates/config_edit.html:250
+msgid "LDAP Authentication"
+msgstr ""
+
 #: cps/templates/config_edit.html:252
+msgid "Anonymous"
+msgstr ""
+
+#: cps/templates/config_edit.html:253
+msgid "Unauthenticated"
+msgstr ""
+
+#: cps/templates/config_edit.html:254
+msgid "Simple"
+msgstr ""
+
+#: cps/templates/config_edit.html:259
 msgid "LDAP Administrator Username"
 msgstr "LDAP Administrator naam"
 
-#: cps/templates/config_edit.html:256
+#: cps/templates/config_edit.html:265
 msgid "LDAP Administrator Password"
 msgstr "LDAP Administrator wachtwoord"
 
-#: cps/templates/config_edit.html:260
+#: cps/templates/config_edit.html:270
 msgid "LDAP Distinguished Name (DN)"
 msgstr "LDAP Distinguished Name (DN)"
 
-#: cps/templates/config_edit.html:264
+#: cps/templates/config_edit.html:274
 msgid "LDAP User Object Filter"
 msgstr "LDAP User Object Filter"
 
-#: cps/templates/config_edit.html:269
+#: cps/templates/config_edit.html:279
 msgid "LDAP Server is OpenLDAP?"
 msgstr "LDAP Server is OpenLDAP?"
 
-#: cps/templates/config_edit.html:271
+#: cps/templates/config_edit.html:281
 msgid "Following Settings are Needed For User Import"
 msgstr ""
 
-#: cps/templates/config_edit.html:273
+#: cps/templates/config_edit.html:283
 msgid "LDAP Group Object Filter"
 msgstr ""
 
-#: cps/templates/config_edit.html:277
+#: cps/templates/config_edit.html:287
 msgid "LDAP Group Name"
 msgstr ""
 
-#: cps/templates/config_edit.html:281
+#: cps/templates/config_edit.html:291
 msgid "LDAP Group Members Field"
 msgstr ""
 
-#: cps/templates/config_edit.html:290
+#: cps/templates/config_edit.html:300
 #, python-format
 msgid "Obtain %(provider)s OAuth Credential"
 msgstr "Verkrijg %(provider)s OAuth Verificatiegegevens"
 
-#: cps/templates/config_edit.html:293
+#: cps/templates/config_edit.html:303
 #, python-format
 msgid "%(provider)s OAuth Client Id"
 msgstr "%(provider)s OAuth Client Id"
 
-#: cps/templates/config_edit.html:297
+#: cps/templates/config_edit.html:307
 #, python-format
 msgid "%(provider)s OAuth Client Secret"
 msgstr "%(provider)s OAuth Client geheim"
 
-#: cps/templates/config_edit.html:313
+#: cps/templates/config_edit.html:323
 msgid "External binaries"
 msgstr "Externe programma's"
 
-#: cps/templates/config_edit.html:321
+#: cps/templates/config_edit.html:331
 msgid "No Converter"
 msgstr "Geen conversieprogramma"
 
-#: cps/templates/config_edit.html:323
+#: cps/templates/config_edit.html:333
 msgid "Use Kindlegen"
 msgstr "KindleGen"
 
-#: cps/templates/config_edit.html:325
+#: cps/templates/config_edit.html:335
 msgid "Use calibre's ebook converter"
 msgstr "Calibre's e-boekconversie gebruiken"
 
-#: cps/templates/config_edit.html:329
+#: cps/templates/config_edit.html:339
 msgid "E-Book converter settings"
 msgstr "Conversie-instellingen"
 
-#: cps/templates/config_edit.html:333
+#: cps/templates/config_edit.html:343
 msgid "Path to convertertool"
 msgstr "Locatie van conversieprogramma"
 
-#: cps/templates/config_edit.html:339
+#: cps/templates/config_edit.html:349
 msgid "Location of Unrar binary"
 msgstr "Locatie van Unrar-programma"
 
-#: cps/templates/config_edit.html:358 cps/templates/layout.html:84
+#: cps/templates/config_edit.html:368 cps/templates/layout.html:84
 #: cps/templates/login.html:4 cps/templates/login.html:20
 msgid "Login"
 msgstr "Inloggen"
@@ -1829,7 +1809,7 @@ msgstr "Bewerken van openbare boekenplanken toestaan"
 msgid "Default Visibilities for New Users"
 msgstr "Standaard zichtbaar voor nieuwe gebruikers"
 
-#: cps/templates/config_view_edit.html:142
+#: cps/templates/config_view_edit.html:142 cps/templates/user_edit.html:80
 msgid "Show Random Books in Detail View"
 msgstr "Willekeurige boeken tonen in gedetailleerde weergave"
 
@@ -1873,27 +1853,15 @@ msgstr "Markeren als gelezen"
 msgid "Read"
 msgstr "Gelezen"
 
-#: cps/templates/detail.html:208
-msgid "Restore from archive"
-msgstr ""
-
-#: cps/templates/detail.html:208
-msgid "Add to archive"
-msgstr ""
-
-#: cps/templates/detail.html:209
-msgid "Archived"
-msgstr ""
-
-#: cps/templates/detail.html:219
+#: cps/templates/detail.html:211
 msgid "Description:"
 msgstr "Beschrijving:"
 
-#: cps/templates/detail.html:232 cps/templates/search.html:14
+#: cps/templates/detail.html:224 cps/templates/search.html:14
 msgid "Add to shelf"
 msgstr "Toevoegen aan boekenplank"
 
-#: cps/templates/detail.html:294
+#: cps/templates/detail.html:264
 msgid "Edit Metadata"
 msgstr "Metagegevens bewerken"
 
@@ -1944,7 +1912,7 @@ msgstr "Volgende"
 #: cps/templates/feed.xml:79 cps/templates/layout.html:136
 #: cps/templates/layout.html:140
 msgid "(Public)"
-msgstr "(Openbaar)"
+msgstr ""
 
 #: cps/templates/generate_kobo_auth_url.html:5
 msgid "Open the .kobo/Kobo eReader.conf file in a text editor and add (or edit):"
@@ -1986,7 +1954,7 @@ msgstr "Recentste boeken"
 msgid "Random Books"
 msgstr "Willekeurige boeken"
 
-#: cps/templates/index.xml:42 cps/templates/user_edit.html:80
+#: cps/templates/index.xml:42
 msgid "Show Random Books"
 msgstr "Willekeurige boeken tonen"
 
@@ -2008,11 +1976,11 @@ msgstr "Boeken gesorteerd op reeks"
 
 #: cps/templates/index.xml:93
 msgid "Books ordered by Languages"
-msgstr "Boeken gesorteerd op taal"
+msgstr "Boeken gesorteerd op Taal"
 
 #: cps/templates/index.xml:100
 msgid "Books ordered by Rating"
-msgstr "Boeken gesorteerd op beoordeling"
+msgstr ""
 
 #: cps/templates/index.xml:108
 msgid "Books ordered by file formats"
@@ -2020,7 +1988,7 @@ msgstr "Boeken gesorteerd op bestandsformaat"
 
 #: cps/templates/index.xml:111 cps/templates/layout.html:134
 msgid "Shelves"
-msgstr "Boekenplanken"
+msgstr ""
 
 #: cps/templates/index.xml:115
 msgid "Books organized in shelves"
@@ -2135,7 +2103,7 @@ msgstr "Toon Toegangslog: "
 
 #: cps/templates/modal_restriction.html:6
 msgid "Select Allowed/Denied Tags"
-msgstr "Selecteer Toegestane/Geweigerde tags"
+msgstr "Selecteer Toegestaan/Geweigerd tags toe"
 
 #: cps/templates/modal_restriction.html:7
 msgid "Select Allowed/Denied Custom Column Values"
@@ -2143,11 +2111,11 @@ msgstr "Selecteer Toegestaan/Geweigerd aangepaste kolom waarden"
 
 #: cps/templates/modal_restriction.html:8
 msgid "Select Allowed/Denied Tags of User"
-msgstr "Selecteer Toegestane/Geweigerde tags van gebruikers"
+msgstr "Selecteer Toegestaan/Geweigerd tags van gebruikers"
 
 #: cps/templates/modal_restriction.html:9
 msgid "Select Allowed/Denied Custom Column Values of User"
-msgstr "Selecteer Toegestane/Geweigerde aangepaste kolom waarden van gebruikers"
+msgstr "Selecteer Toegestaan/Geweigerd aangepaste kolom waarden van gebruikers"
 
 #: cps/templates/modal_restriction.html:15
 msgid "Enter Tag"
@@ -2195,11 +2163,11 @@ msgstr "Ware grootte"
 
 #: cps/templates/readcbr.html:97
 msgid "Rotate Right"
-msgstr "Rechtsom draaien"
+msgstr "Naar rechts draaien"
 
 #: cps/templates/readcbr.html:98
 msgid "Rotate Left"
-msgstr "Linksom draaien"
+msgstr "Naar links draaien"
 
 #: cps/templates/readcbr.html:99
 msgid "Flip Image"
