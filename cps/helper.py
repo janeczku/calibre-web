@@ -283,6 +283,9 @@ def delete_book_file(book, calibrepath, book_format=None):
                     log.error("Deleting book %s failed, path has subfolders: %s", book.id, book.path)
                     return False
                 shutil.rmtree(path, ignore_errors=True)
+                authorpath = os.path.join(calibrepath, os.path.split(book.path)[0])
+                if not os.listdir(authorpath):
+                    shutil.rmtree(authorpath, ignore_errors=True)
                 return True
             else:
                 log.error("Deleting book %s failed, book path not valid: %s", book.id, book.path)

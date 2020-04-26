@@ -154,47 +154,59 @@ def delete_book(book_id, book_format):
     if current_user.role_delete_books():
         book = db.session.query(db.Books).filter(db.Books.id == book_id).first()
         if book:
-            helper.delete_book(book, config.config_calibre_dir, book_format=book_format.upper())
-            if not book_format:
-                # delete book from Shelfs, Downloads, Read list
-                ub.session.query(ub.BookShelf).filter(ub.BookShelf.book_id == book_id).delete()
-                ub.session.query(ub.ReadBook).filter(ub.ReadBook.book_id == book_id).delete()
-                ub.delete_download(book_id)
-                ub.session.commit()
+            try:
+                helper.delete_book(book, config.config_calibre_dir, book_format=book_format.upper())
+                if not book_format:
+                    # delete book from Shelfs, Downloads, Read list
+                    ub.session.query(ub.BookShelf).filter(ub.BookShelf.book_id == book_id).delete()
+                    ub.session.query(ub.ReadBook).filter(ub.ReadBook.book_id == book_id).delete()
+                    ub.delete_download(book_id)
+                    ub.session.commit()
 
-                # check if only this book links to:
-                # author, language, series, tags, custom columns
-                modify_database_object([u''], book.authors, db.Authors, db.session, 'author')
-                modify_database_object([u''], book.tags, db.Tags, db.session, 'tags')
-                modify_database_object([u''], book.series, db.Series, db.session, 'series')
-                modify_database_object([u''], book.languages, db.Languages, db.session, 'languages')
-                modify_database_object([u''], book.publishers, db.Publishers, db.session, 'publishers')
+                    # check if only this book links to:
+                    # author, language, series, tags, custom columns
+                    modify_database_object([u''], book.authors, db.Authors, db.session, 'author')
+                    modify_database_object([u''], book.tags, db.Tags, db.session, 'tags')
+                    modify_database_object([u''], book.series, db.Series, db.session, 'series')
+                    modify_database_object([u''], book.languages, db.Languages, db.session, 'languages')
+                    modify_database_object([u''], book.publishers, db.Publishers, db.session, 'publishers')
 
-                cc = db.session.query(db.Custom_Columns).filter(db.Custom_Columns.datatype.notin_(db.cc_exceptions)).all()
-                for c in cc:
-                    cc_string = "custom_column_" + str(c.id)
-                    if not c.is_multiple:
-                        if len(getattr(book, cc_string)) > 0:
-                            if c.datatype == 'bool' or c.datatype == 'integer' or c.datatype == 'float':
-                                del_cc = getattr(book, cc_string)[0]
-                                getattr(book, cc_string).remove(del_cc)
-                                db.session.delete(del_cc)
-                            elif c.datatype == 'rating':
-                                del_cc = getattr(book, cc_string)[0]
-                                getattr(book, cc_string).remove(del_cc)
-                                if len(del_cc.books) == 0:
+                    cc = db.session.query(db.Custom_Columns).\
+                        filter(db.Custom_Columns.datatype.notin_(db.cc_exceptions)).all()
+                    for c in cc:
+                        cc_string = "custom_column_" + str(c.id)
+                        if not c.is_multiple:
+                            if len(getattr(book, cc_string)) > 0:
+                                if c.datatype == 'bool' or c.datatype == 'int' or c.datatype == 'float':
+                                    del_cc = getattr(book, cc_string)[0]
+                                    getattr(book, cc_string).remove(del_cc)
+                                    log.debug('remove ' + str(c.id))
                                     db.session.delete(del_cc)
-                            else:
-                                del_cc = getattr(book, cc_string)[0]
-                                getattr(book, cc_string).remove(del_cc)
-                                db.session.delete(del_cc)
-                    else:
-                        modify_database_object([u''], getattr(book, cc_string), db.cc_classes[c.id],
-                                               db.session, 'custom')
-                db.session.query(db.Books).filter(db.Books.id == book_id).delete()
-            else:
-                db.session.query(db.Data).filter(db.Data.book == book.id).filter(db.Data.format == book_format).delete()
-            db.session.commit()
+                                    db.session.commit()
+                                elif c.datatype == 'rating':
+                                    del_cc = getattr(book, cc_string)[0]
+                                    getattr(book, cc_string).remove(del_cc)
+                                    if len(del_cc.books) == 0:
+                                        log.debug('remove ' + str(c.id))
+                                        db.session.delete(del_cc)
+                                        db.session.commit()
+                                else:
+                                    del_cc = getattr(book, cc_string)[0]
+                                    getattr(book, cc_string).remove(del_cc)
+                                    log.debug('remove ' + str(c.id))
+                                    db.session.delete(del_cc)
+                                    db.session.commit()
+                        else:
+                            modify_database_object([u''], getattr(book, cc_string), db.cc_classes[c.id],
+                                                   db.session, 'custom')
+                    db.session.query(db.Books).filter(db.Books.id == book_id).delete()
+                else:
+                    db.session.query(db.Data).filter(db.Data.book == book.id).\
+                        filter(db.Data.format == book_format).delete()
+                db.session.commit()
+            except Exception as e:
+                log.debug(e)
+                db.session.rollback()
         else:
             # book not found
             log.error('Book with id "%s" could not be deleted: not found', book_id)
