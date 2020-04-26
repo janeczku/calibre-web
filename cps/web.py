@@ -717,7 +717,7 @@ def render_category_books(page, book_id, order):
     name = db.session.query(db.Tags).filter(db.Tags.id == book_id).first()
     if name:
         entries, random, pagination = fill_indexpage(page, db.Books, db.Books.tags.any(db.Tags.id == book_id),
-                                                     [db.Series.name, db.Books.series_index, order[0]],
+                                                     [order[0], db.Series.name, db.Books.series_index],
                                                      db.books_series_link, db.Series)
         return render_title_template('index.html', random=random, entries=entries, pagination=pagination, id=book_id,
                                      title=_(u"Category: %(name)s", name=name.name), page="category")
