@@ -112,11 +112,12 @@ for ex in default_exceptions:
         app.register_error_handler(ex, internal_error)
 
 
-# Only way of catching the LDAPException upon logging in with LDAP server down
-@app.errorhandler(services.ldap.LDAPException)
-def handle_exception(e):
-    log.debug('LDAP server not accessible while trying to login to opds feed')
-    return error_http(FailedDependency())
+if feature_support['ldap']:
+    # Only way of catching the LDAPException upon logging in with LDAP server down
+    @app.errorhandler(services.ldap.LDAPException)
+    def handle_exception(e):
+        log.debug('LDAP server not accessible while trying to login to opds feed')
+        return error_http(FailedDependency())
 
 
 web = Blueprint('web', __name__)
