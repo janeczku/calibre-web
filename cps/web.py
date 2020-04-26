@@ -441,7 +441,7 @@ def toggle_archived(book_id):
                                                                   ub.ArchivedBook.book_id == book_id)).first()
     if archived_book:
         archived_book.is_archived = not archived_book.is_archived
-        archived_book.last_modified = datetime.datetime.utcnow()
+        archived_book.last_modified = datetime.utcnow()
     else:
         archived_book = ub.ArchivedBook(user_id=current_user.id, book_id=book_id)
         archived_book.is_archived = True
