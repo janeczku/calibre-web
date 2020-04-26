@@ -540,8 +540,7 @@ def _configuration_update_helper():
     _config_string("config_calibre")
     _config_string("config_converterpath")
 
-    if _config_int("config_login_type"):
-        reboot_required |= config.config_login_type != constants.LOGIN_STANDARD
+    reboot_required |= _config_int("config_login_type")
 
     #LDAP configurator,
     if config.config_login_type == constants.LOGIN_LDAP:
