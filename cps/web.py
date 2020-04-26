@@ -893,9 +893,17 @@ def search():
         for element in entries:
             ids.append(element.id)
         searched_ids[current_user.id] = ids
-        return render_title_template('search.html', searchterm=term, entries=entries, title=_(u"Search"), page="search")
+        return render_title_template('search.html',
+                                     searchterm=term,
+                                     adv_searchterm=term,
+                                     entries=entries,
+                                     title=_(u"Search"),
+                                     page="search")
     else:
-        return render_title_template('search.html', searchterm="", title=_(u"Search"), page="search")
+        return render_title_template('search.html',
+                                     searchterm="",
+                                     title=_(u"Search"),
+                                     page="search")
 
 
 @web.route("/advanced_search", methods=['GET'])
@@ -1033,7 +1041,7 @@ def advanced_search():
         for element in q:
             ids.append(element.id)
         searched_ids[current_user.id] = ids
-        return render_title_template('search.html', searchterm=searchterm,
+        return render_title_template('search.html', adv_searchterm=searchterm,
                                      entries=q, title=_(u"search"), page="search")
     # prepare data for search-form
     tags = db.session.query(db.Tags).join(db.books_tags_link).join(db.Books).filter(common_filters()) \
