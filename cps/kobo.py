@@ -21,7 +21,6 @@ import sys
 import base64
 import os
 import uuid
-from datetime import datetime
 from time import gmtime, strftime
 try:
     from urllib import unquote
@@ -35,10 +34,9 @@ from flask import (
     jsonify,
     current_app,
     url_for,
-    redirect,
-    abort
+    redirect
 )
-from flask_login import login_required
+
 from werkzeug.datastructures import Headers
 from sqlalchemy import func
 import requests
@@ -59,8 +57,8 @@ log = logger.create()
 
 def get_store_url_for_current_request():
     # Programmatically modify the current url to point to the official Kobo store
-    base, sep, request_path_with_auth_token = request.full_path.rpartition("/kobo/")
-    auth_token, sep, request_path = request_path_with_auth_token.rstrip("?").partition(
+    __, __, request_path_with_auth_token = request.full_path.rpartition("/kobo/")
+    __, __, request_path = request_path_with_auth_token.rstrip("?").partition(
         "/"
     )
     return KOBO_STOREAPI_URL + "/" + request_path

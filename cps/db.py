@@ -418,7 +418,7 @@ def dispose():
         except: pass
         if old_session.bind:
             try: old_session.bind.dispose()
-            except: pass
+            except Exception: pass
 
     for attr in list(Books.__dict__.keys()):
         if attr.startswith("custom_column_"):
