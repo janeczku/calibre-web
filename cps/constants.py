@@ -101,8 +101,8 @@ DEFAULT_MAIL_SERVER = "mail.example.org"
 
 DEFAULT_PASSWORD    = "admin123"
 DEFAULT_PORT        = 8083
+env_CALIBRE_PORT = os.environ.get("CALIBRE_PORT", DEFAULT_PORT)
 try:
-    env_CALIBRE_PORT = os.environ.get("CALIBRE_PORT", DEFAULT_PORT)
     DEFAULT_PORT = int(env_CALIBRE_PORT)
 except ValueError:
     print('Environment variable CALIBRE_PORT has invalid value (%s), faling back to default (8083)' % env_CALIBRE_PORT)
