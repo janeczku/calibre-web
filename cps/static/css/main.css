@@ -99,12 +99,14 @@ body {
   border: none;
 }
 
-#left, #prev {
+#left,
+#prev {
   left: 40px;
   padding-right: 80px;
 }
 
-#right,#next {
+#right,
+#next {
   right: 40px;
   padding-left: 80px;
 }
@@ -179,10 +181,10 @@ body {
   width: 100%;
   padding: 13px 0;
   height: 14px;
-  -moz-box-shadow: 0px 1px 3px rgba(0,0,0,.6);
-  -webkit-box-shadow: 0px 1px 3px rgba(0,0,0,.6);
-  -ms-box-shadow: 0px 1px 3px rgba(0,0,0,.6);
-  box-shadow: 0px 1px 3px rgba(0,0,0,.6);
+  -moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+  -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+  -ms-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
 }
 
 #opener {
@@ -209,16 +211,16 @@ body {
 }
 
 #panels a::before { visibility: visible; }
-#panels a:hover { color: #AAA; }
+#panels a:hover { color: #aaa; }
 
 #panels a:active {
-  color: #AAA;
+  color: #aaa;
   margin: 1px 0 -1px 6px;
 }
 
 #panels a.active,
 #panels a.active:hover {
-  color: #AAA;
+  color: #aaa;
 }
 
 #searchBox {
@@ -266,9 +268,9 @@ input:-ms-placeholder { color: #454545; }
   width: 25%;
   height: 100%;
   visibility: hidden;
-  -webkit-transition: visibility 0 ease .5s;
-  -moz-transition: visibility 0 ease .5s;
-  -ms-transition: visibility 0 ease .5s;
+  -webkit-transition: visibility 0 ease 0.5s;
+  -moz-transition: visibility 0 ease 0.5s;
+  -ms-transition: visibility 0 ease 0.5s;
 }
 
 #sidebar.open #tocView,
@@ -308,7 +310,7 @@ input:-ms-placeholder { color: #454545; }
 }
 
 .list_item a {
-  color: #AAA;
+  color: #aaa;
   text-decoration: none;
 }
 
@@ -317,7 +319,7 @@ input:-ms-placeholder { color: #454545; }
 }
 
 .list_item a.section {
-  font-size: .8em;
+  font-size: 0.8em;
 }
 
 .list_item.currentChapter > a,
@@ -327,7 +329,7 @@ input:-ms-placeholder { color: #454545; }
 
 /* #tocView li.openChapter > a, */
 .list_item a:hover {
-  color: #E2E2E2;
+  color: #e2e2e2;
 }
 
 .list_item ul {
@@ -388,7 +390,7 @@ input:-ms-placeholder { color: #454545; }
 }
 
 #searchResults a {
-  color: #AAA;
+  color: #aaa;
   text-decoration: none;
 }
 
@@ -404,11 +406,11 @@ input:-ms-placeholder { color: #454545; }
 }
 
 #searchResults li > p {
-  color: #AAA;
+  color: #aaa;
 }
 
 #searchResults li a:hover {
-  color: #E2E2E2;
+  color: #e2e2e2;
 }
 
 #searchView.shown {
@@ -453,7 +455,7 @@ input:-ms-placeholder { color: #454545; }
 }
 
 #note-text[disabled], #note-text[disabled="disabled"]{
-    opacity: .5;
+    opacity: 0.5;
 }
 
 #note-anchor {
@@ -513,7 +515,7 @@ input:-ms-placeholder { color: #454545; }
   left: 0;
   z-index: 1000;
   opacity: 0;
-  background: rgba(255,255,255,0.8);
+  background: rgba(255, 255, 255, 0.8);
   -webkit-transition: all 0.3s;
   -moz-transition: all 0.3s;
   -ms-transition: all 0.3s;
@@ -546,7 +548,7 @@ input:-ms-placeholder { color: #454545; }
   font-size: 22px;
   font-weight: 300;
   opacity: 0.8;
-  background: rgba(0,0,0,0.1);
+  background: rgba(0, 0, 0, 0.1);
   border-radius: 3px 3px 0 0;
 }
 
@@ -780,22 +782,17 @@ and (orientation : landscape)
     font-style: normal;
     font-weight: normal;
     speak: none;
-
     display: inline-block;
     text-decoration: inherit;
     width: 1em;
     margin-right: 0.2em;
     text-align: center;
-    /* opacity: .8; */
-
     /* For safety - reset parent styles, that can break glyph codes*/
     font-variant: normal;
     text-transform: none;
-
     /* you can be more comfortable with increased icons size */
     font-size: 112%;
 }
-
 
 .icon-search:before { content: '\e807'; } /* '' */
 .icon-resize-full-1:before { content: '\e804'; } /* '' */
