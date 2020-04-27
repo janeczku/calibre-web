@@ -151,8 +151,6 @@ def check_send_to_kindle(entry):
                     bookformats.append({'format':'Pdf','convert':0,'text':_('Send %(format)s to Kindle',format='Pdf')})
                 if 'AZW' in ele.format:
                     bookformats.append({'format':'Azw','convert':0,'text':_('Send %(format)s to Kindle',format='Azw')})
-                '''if 'AZW3' in ele.format:
-                    bookformats.append({'format':'Azw3','convert':0,'text':_('Send %(format)s to Kindle',format='Azw3')})'''
         else:
             formats = list()
             for ele in iter(entry.data):
@@ -514,12 +512,9 @@ def save_cover_from_filestorage(filepath, saved_filename, img):
                 return False, _(u"Failed to create path for cover")
         try:
             img.save(os.path.join(filepath, saved_filename))
-        except IOError:
-            log.error(u"Cover-file is not a valid image file")
-            return False, _(u"Cover-file is not a valid image file")
-        except OSError:
-            log.error(u"Failed to store cover-file")
-            return False, _(u"Failed to store cover-file")
+        except (IOError, OSError):
+            log.error(u"Cover-file is not a valid image file, or could not be stored")
+            return False, _(u"Cover-file is not a valid image file, or could not be stored")
     return True, None
 
 

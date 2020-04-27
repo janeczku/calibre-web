@@ -300,11 +300,6 @@ class WorkerThread(threading.Thread):
             # check which converter to use kindlegen is "1"
             if format_old_ext == '.epub' and format_new_ext == '.mobi':
                 if config.config_ebookconverter == 1:
-                    '''if os.name == 'nt':
-                        command = config.config_converterpath + u' "' + file_path + u'.epub"'
-                        if sys.version_info < (3, 0):
-                            command = command.encode(sys.getfilesystemencoding())
-                    else:'''
                     command = [config.config_converterpath, file_path + u'.epub']
                     quotes = [1]
             if config.config_ebookconverter == 2:
@@ -314,12 +309,6 @@ class WorkerThread(threading.Thread):
                 # windows py 3.x no encode and as string with quotes empty element for parameters is okay
                 # separate handling for windows and linux
                 quotes = [1,2]
-                '''if os.name == 'nt':
-                    command = config.config_converterpath + u' "' + file_path + format_old_ext + u'" "' + \
-                              file_path + format_new_ext + u'" ' + config.config_calibre
-                    if sys.version_info < (3, 0):
-                        command = command.encode(sys.getfilesystemencoding())
-                else:'''
                 command = [config.config_converterpath, (file_path + format_old_ext),
                     (file_path + format_new_ext)]
                 quotes_index = 3

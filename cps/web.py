@@ -38,7 +38,7 @@ from flask import render_template, request, redirect, send_from_directory, make_
 from flask_babel import gettext as _
 from flask_login import login_user, logout_user, login_required, current_user
 from sqlalchemy.exc import IntegrityError
-from sqlalchemy.sql.expression import text, func, true, false, not_, and_, exists, or_
+from sqlalchemy.sql.expression import text, func, true, false, not_, and_, or_
 from werkzeug.exceptions import default_exceptions
 from werkzeug.datastructures import Headers
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -1274,16 +1274,11 @@ def login():
                     log.info('Login failed for user "%s" IP-adress: %s', form['username'], ipAdress)
                     flash(_(u"Wrong Username or Password"), category="error")
 
-    if feature_support['oauth']:
-        oauth_status = get_oauth_status()
-    else:
-        oauth_status = None
     next_url = url_for('web.index')
     return render_title_template('login.html',
                                  title=_(u"login"),
                                  next_url=next_url,
                                  config=config,
-                                 # oauth_status=oauth_status,
                                  oauth_check=oauth_check,
                                  mail=config.get_mail_server_configured(), page="login")
 

@@ -415,11 +415,6 @@ def migrate_Database(session):
               'side_autor': constants.SIDEBAR_AUTHOR,
             'detail_random': constants.DETAIL_RANDOM})
         session.commit()
-    '''try:
-        session.query(exists().where(User.mature_content)).scalar()
-    except exc.OperationalError:
-        conn = engine.connect()
-        conn.execute("ALTER TABLE user ADD column `mature_content` INTEGER DEFAULT 1")'''
     try:
         session.query(exists().where(User.denied_tags)).scalar()
     except exc.OperationalError:  # Database is not compatible, some columns are missing
@@ -497,7 +492,7 @@ def create_anonymous_user(session):
     session.add(user)
     try:
         session.commit()
-    except Exception as e:
+    except Exception:
         session.rollback()
 
 
@@ -544,7 +539,7 @@ def dispose():
     session = None
     if old_session:
         try: old_session.close()
-        except: pass
+        except Exception: pass
         if old_session.bind:
             try: old_session.bind.dispose()
-            except: pass
+            except Exception: pass
