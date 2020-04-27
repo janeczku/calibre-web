@@ -37,9 +37,9 @@ except ImportError as e:
 
 
 def extractCover(tmp_file_name, original_file_extension):
+    cover_data = extension = None
     if use_comic_meta:
         archive = ComicArchive(tmp_file_name)
-        cover_data = None
         for index, name in enumerate(archive.getPageNameList()):
             ext = os.path.splitext(name)
             if len(ext) > 1:
