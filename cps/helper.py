@@ -304,8 +304,8 @@ def update_dir_structure_file(book_id, calibrepath, first_author):
     new_titledir = get_valid_filename(localbook.title) + " (" + str(book_id) + ")"
 
     if titledir != new_titledir:
+        new_title_path = os.path.join(os.path.dirname(path), new_titledir)
         try:
-            new_title_path = os.path.join(os.path.dirname(path), new_titledir)
             if not os.path.exists(new_title_path):
                 os.renames(path, new_title_path)
             else:
@@ -322,8 +322,8 @@ def update_dir_structure_file(book_id, calibrepath, first_author):
             return _("Rename title from: '%(src)s' to '%(dest)s' failed with error: %(error)s",
                      src=path, dest=new_title_path, error=str(ex))
     if authordir != new_authordir:
+        new_author_path = os.path.join(calibrepath, new_authordir, os.path.basename(path))
         try:
-            new_author_path = os.path.join(calibrepath, new_authordir, os.path.basename(path))
             os.renames(path, new_author_path)
             localbook.path = new_authordir + '/' + localbook.path.split('/')[1]
         except OSError as ex:
