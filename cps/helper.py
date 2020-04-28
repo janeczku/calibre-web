@@ -602,7 +602,7 @@ def check_unrar(unrarLocation):
         return
 
     if not os.path.exists(unrarLocation):
-        return 'Unrar binary file not found'
+        return _('Unrar binary file not found')
 
     try:
         if sys.version_info < (3, 0):
@@ -615,7 +615,7 @@ def check_unrar(unrarLocation):
                 log.debug("unrar version %s", version)
     except OSError as err:
         log.exception(err)
-        return 'Error excecuting UnRar'
+        return _('Error excecuting UnRar')
 
 
 def json_serial(obj):
