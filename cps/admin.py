@@ -50,11 +50,11 @@ feature_support = {
         'kobo':  bool(services.kobo)
     }
 
-# try:
-#     import rarfile
-#     feature_support['rar'] = True
-# except ImportError:
-#     feature_support['rar'] = False
+try:
+    import rarfile
+    feature_support['rar'] = True
+except ImportError:
+    feature_support['rar'] = False
 
 try:
     from .oauth_bb import oauth_check, oauthblueprints

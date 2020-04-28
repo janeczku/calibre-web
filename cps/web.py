@@ -72,11 +72,11 @@ try:
 except ImportError:
     pass  # We're not using Python 3
 
-# try:
-#     import rarfile
-#     feature_support['rar'] = True
-# except ImportError:
-#     feature_support['rar'] = False
+#try:
+#    import rarfile
+#    feature_support['rar'] = True
+#except ImportError:
+#    feature_support['rar'] = False
 
 try:
     from natsort import natsorted as sort

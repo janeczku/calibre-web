@@ -76,7 +76,7 @@ except ImportError as e:
 __author__ = 'lemmsh'
 
 
-def process(tmp_file_path, original_file_name, original_file_extension):
+def process(tmp_file_path, original_file_name, original_file_extension, rarExcecutable):
     meta = None
     try:
         if ".PDF" == original_file_extension.upper():
@@ -85,8 +85,11 @@ def process(tmp_file_path, original_file_name, original_file_extension):
             meta = epub.get_epub_info(tmp_file_path, original_file_name, original_file_extension)
         if ".FB2" == original_file_extension.upper() and use_fb2_meta is True:
             meta = fb2.get_fb2_info(tmp_file_path, original_file_extension)
-        if original_file_extension.upper() in ['.CBZ', '.CBT']:
-            meta = comic.get_comic_info(tmp_file_path, original_file_name, original_file_extension)
+        if original_file_extension.upper() in ['.CBZ', '.CBT', '.CBR']:
+            meta = comic.get_comic_info(tmp_file_path,
+                                        original_file_name,
+                                        original_file_extension,
+                                        rarExcecutable)
 
     except Exception as ex:
         log.warning('cannot parse metadata, using default: %s', ex)
@@ -194,7 +197,7 @@ def get_versions():
             'Comic_API': ComicVersion}
 
 
-def upload(uploadfile):
+def upload(uploadfile, rarExcecutable):
     tmp_dir = os.path.join(gettempdir(), 'calibre_web')
 
     if not os.path.isdir(tmp_dir):
@@ -206,5 +209,5 @@ def upload(uploadfile):
     tmp_file_path = os.path.join(tmp_dir, md5.hexdigest())
     log.debug("Temporary file: %s", tmp_file_path)
     uploadfile.save(tmp_file_path)
-    meta = process(tmp_file_path, filename_root, file_extension)
+    meta = process(tmp_file_path, filename_root, file_extension, rarExcecutable)
     return meta

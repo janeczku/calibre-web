@@ -588,7 +588,7 @@ def upload():
 
             # extract metadata from file
             try:
-                meta = uploader.upload(requested_file)
+                meta = uploader.upload(requested_file, config.config_rarfile_location)
             except (IOError, OSError):
                 log.error("File %s could not saved to temp dir", requested_file.filename)
                 flash(_(u"File %(filename)s could not saved to temp dir",
