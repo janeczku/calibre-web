@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Calibre-Web (GPLV3)\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2020-04-27 21:14+0200\n"
+"POT-Creation-Date: 2020-04-29 12:05+0200\n"
 "PO-Revision-Date: 2020-03-06 19:28+0100\n"
 "Last-Translator: Ed Driesen <ed.driesen@telenet.be>\n"
 "Language: nl\n"
@@ -49,7 +49,7 @@ msgstr ""
 
 #: cps/admin.py:115 cps/editbooks.py:422 cps/editbooks.py:431
 #: cps/editbooks.py:552 cps/editbooks.py:554 cps/editbooks.py:607
-#: cps/updater.py:509 cps/uploader.py:96 cps/uploader.py:107
+#: cps/updater.py:509 cps/uploader.py:99 cps/uploader.py:110
 msgid "Unknown"
 msgstr "Onbekend"
 
@@ -472,6 +472,14 @@ msgstr ""
 
 #: cps/helper.py:542
 msgid "Only jpg/jpeg files are supported as coverfile"
+msgstr ""
+
+#: cps/helper.py:586
+msgid "Unrar binary file not found"
+msgstr ""
+
+#: cps/helper.py:599
+msgid "Error excecuting UnRar"
 msgstr ""
 
 #: cps/helper.py:656
