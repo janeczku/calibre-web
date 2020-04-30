@@ -89,7 +89,10 @@ def create_app():
     log.info('Starting Calibre Web...')
     Principal(app)
     lm.init_app(app)
-    app.secret_key = os.getenv('SECRET_KEY', 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT')
+    if os.environ.get('FLASK_DEBUG'):
+        app.secret_key = os.getenv('SECRET_KEY', 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT')
+    else:
+        app.secret_key = os.getenv('SECRET_KEY', os.urandom(32))
 
     web_server.init_app(app, config)
     db.setup_db(config)
