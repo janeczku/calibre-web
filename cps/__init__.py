@@ -36,7 +36,10 @@ from flask_principal import Principal
 from . import logger, cache_buster, cli, config_sql, ub, db, services
 from .reverseproxy import ReverseProxied
 from .server import WebServer
-from werkzeug.middleware.proxy_fix import ProxyFix
+try:
+    from werkzeug.middleware.proxy_fix import ProxyFix
+except ImportError:
+    from werkzeug.contrib.fixers import ProxyFix
 
 mimetypes.init()
 mimetypes.add_type('application/xhtml+xml', '.xhtml')
@@ -77,7 +80,10 @@ log = logger.create()
 
 
 def create_app():
-    app.wsgi_app = ReverseProxied(ProxyFix(app.wsgi_app, x_for=1, x_host=1))
+    try:
+        app.wsgi_app = ReverseProxied(ProxyFix(app.wsgi_app, x_for=1, x_host=1))
+    except ValueError:
+        app.wsgi_app = ReverseProxied(ProxyFix(app.wsgi_app))
     # For python2 convert path to unicode
     if sys.version_info < (3, 0):
         app.static_folder = app.static_folder.decode('utf-8')
