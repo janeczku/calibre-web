@@ -45,7 +45,7 @@ $("#sort_name").click(function() {
     });*/
     // Find count of middle element
     if (count > 20) {
-        var middle = parseInt(count / 2) + (count % 2);
+        var middle = parseInt(count / 2, 10) + (count % 2);
         // search for the middle of all visibe elements
         $(".row").each(function() {
             index++;
@@ -146,7 +146,7 @@ $("#all").click(function() {
     // Find count of middle element
     var listItems = $("#list").children(".row");
     var listlength = listItems.length;
-    var middle = parseInt(listlength / 2) + (listlength % 2);
+    var middle = parseInt(listlength / 2, 10) + (listlength % 2);
     // go through all elements and make them visible
     listItems.each(function() {
         $(this).show();
@@ -178,7 +178,7 @@ $(".char").click(function() {
     });
     if (count > 20) {
         // Find count of middle element
-        var middle = parseInt(count / 2) + (count % 2);
+        var middle = parseInt(count / 2, 10) + (count % 2);
         // search for the middle of all visibe elements
         $(".row").each(function() {
             index++;

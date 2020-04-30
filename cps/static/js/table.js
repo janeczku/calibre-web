@@ -112,7 +112,7 @@ $(function() {
                 return "";
             },
             url: path + "/../../ajax/listrestriction/" + type,
-            rowStyle: function(row, index) {
+            rowStyle: function(row) {
                 // console.log('Reihe :' + row + " Index :" + index);
                 if (row.id.charAt(0) === "a") {
                     return {classes: "bg-primary"};
@@ -120,15 +120,15 @@ $(function() {
                     return {classes: "bg-dark-danger"};
                 }
             },
-            onClickCell: function (field, value, row, $element) {
-                if (field == 3) {
+            onClickCell: function (field, value, row) {
+                if (field === 3) {
                     $.ajax ({
                         type: "Post",
                         data: "id=" + row.id + "&type=" + row.type + "&Element=" + row.Element,
                         url: path + "/../../ajax/deleterestriction/" + type,
                         async: true,
                         timeout: 900,
-                        success:function(data) {
+                        success:function() {
                             $.ajax({
                                 method:"get",
                                 url: path + "/../../ajax/listrestriction/" + type,
@@ -145,14 +145,14 @@ $(function() {
             striped: false
         });
         $("#restrict-elements-table").removeClass("table-hover");
-        $("#restrict-elements-table").on("editable-save.bs.table", function (e, field, row, old, $el) {
+        $("#restrict-elements-table").on("editable-save.bs.table", function (e, field, row) {
             $.ajax({
                 url: path + "/../../ajax/editrestriction/" + type,
                 type: "Post",
                 data: row
             });
         });
-        $("[id^=submit_]").click(function(event) {
+        $("[id^=submit_]").click(function() {
             $(this)[0].blur();
             $.ajax({
                 url: path + "/../../ajax/addrestriction/" + type,
@@ -196,7 +196,7 @@ $(function() {
 });
 
 /* Function for deleting domain restrictions */
-function TableActions (value, row, index) {
+function TableActions (value, row) {
     return [
         "<a class=\"danger remove\" data-toggle=\"modal\" data-target=\"#DeleteDomain\" data-domain-id=\"" + row.id
         + "\" title=\"Remove\">",
@@ -206,7 +206,7 @@ function TableActions (value, row, index) {
 }
 
 /* Function for deleting domain restrictions */
-function RestrictionActions (value, row, index) {
+function RestrictionActions (value, row) {
     return [
         "<div class=\"danger remove\" data-restriction-id=\"" + row.id + "\" title=\"Remove\">",
         "<i class=\"glyphicon glyphicon-trash\"></i>",

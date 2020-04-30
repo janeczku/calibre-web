@@ -298,6 +298,9 @@ def delete_book_file(book, calibrepath, book_format=None):
                     log.error("Deleting book %s failed, path has subfolders: %s", book.id, book.path)
                     return False
                 shutil.rmtree(path, ignore_errors=True)
+                authorpath = os.path.join(calibrepath, os.path.split(book.path)[0])
+                if not os.listdir(authorpath):
+                    shutil.rmtree(authorpath, ignore_errors=True)
                 return True
             else:
                 log.error("Deleting book %s failed, book path not valid: %s", book.id, book.path)
@@ -318,8 +321,8 @@ def update_dir_structure_file(book_id, calibrepath, first_author):
     new_titledir = get_valid_filename(localbook.title) + " (" + str(book_id) + ")"
 
     if titledir != new_titledir:
+        new_title_path = os.path.join(os.path.dirname(path), new_titledir)
         try:
-            new_title_path = os.path.join(os.path.dirname(path), new_titledir)
             if not os.path.exists(new_title_path):
                 os.renames(path, new_title_path)
             else:
@@ -336,8 +339,8 @@ def update_dir_structure_file(book_id, calibrepath, first_author):
             return _("Rename title from: '%(src)s' to '%(dest)s' failed with error: %(error)s",
                      src=path, dest=new_title_path, error=str(ex))
     if authordir != new_authordir:
+        new_author_path = os.path.join(calibrepath, new_authordir, os.path.basename(path))
         try:
-            new_author_path = os.path.join(calibrepath, new_authordir, os.path.basename(path))
             os.renames(path, new_author_path)
             localbook.path = new_authordir + '/' + localbook.path.split('/')[1]
         except OSError as ex:
@@ -530,12 +533,9 @@ def save_cover_from_filestorage(filepath, saved_filename, img):
                 return False, _(u"Failed to create path for cover")
         try:
             img.save(os.path.join(filepath, saved_filename))
-        except IOError:
-            log.error(u"Cover-file is not a valid image file")
-            return False, _(u"Cover-file is not a valid image file")
-        except OSError:
-            log.error(u"Failed to store cover-file")
-            return False, _(u"Failed to store cover-file")
+        except (IOError, OSError):
+            log.error(u"Cover-file is not a valid image file, or could not be stored")
+            return False, _(u"Cover-file is not a valid image file, or could not be stored")
     return True, None
 
 
@@ -840,7 +840,7 @@ def get_search_results(term):
             db.Books.authors.any(and_(*q)),
             db.Books.publishers.any(func.lower(db.Publishers.name).ilike("%" + term + "%")),
             func.lower(db.Books.title).ilike("%" + term + "%")
-            )).all()
+            )).order_by(db.Books.sort).all()
 
 
 def get_cc_columns():

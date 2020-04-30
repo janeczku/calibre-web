@@ -62,7 +62,6 @@ particular calls to non-Kobo specific endpoints such as the CalibreWeb book down
 from binascii import hexlify
 from datetime import datetime
 from os import urandom
-import os
 
 from flask import g, Blueprint, url_for, abort, request
 from flask_login import login_user, login_required
@@ -82,7 +81,7 @@ log = logger.create()
 
 def register_url_value_preprocessor(kobo):
     @kobo.url_value_preprocessor
-    def pop_auth_token(endpoint, values):
+    def pop_auth_token(__, values):
         g.auth_token = values.pop("auth_token")
 
 
