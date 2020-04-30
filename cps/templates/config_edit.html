@@ -344,7 +344,7 @@
                 <input type="text" class="form-control" id="config_converterpath" name="config_converterpath" value="{% if config.config_converterpath != None %}{{ config.config_converterpath }}{% endif %}" autocomplete="off">
             </div>
           </div>
-          {% if rarfile_support %}
+          {% if feature_support['rar'] %}
             <div class="form-group">
                 <label for="config_rarfile_location">{{_('Location of Unrar binary')}}</label>
                 <input type="text" class="form-control" name="config_rarfile_location" id="config_rarfile_location" value="{% if config.config_rarfile_location != None %}{{ config.config_rarfile_location }}{% endif %}" autocomplete="off">

@@ -50,11 +50,11 @@ feature_support = {
         'kobo':  bool(services.kobo)
     }
 
-# try:
-#     import rarfile
-#     feature_support['rar'] = True
-# except ImportError:
-#     feature_support['rar'] = False
+try:
+    import rarfile
+    feature_support['rar'] = True
+except ImportError:
+    feature_support['rar'] = False
 
 try:
     from .oauth_bb import oauth_check, oauthblueprints
@@ -253,23 +253,23 @@ def list_domain(allow):
     response.headers["Content-Type"] = "application/json; charset=utf-8"
     return response
 
-@admi.route("/ajax/editrestriction/<int:type>", methods=['POST'])
+@admi.route("/ajax/editrestriction/<int:res_type>", methods=['POST'])
 @login_required
 @admin_required
-def edit_restriction(type):
+def edit_restriction(res_type):
     element = request.form.to_dict()
     if element['id'].startswith('a'):
-        if type == 0:  # Tags as template
+        if res_type == 0:  # Tags as template
             elementlist = config.list_allowed_tags()
             elementlist[int(element['id'][1:])]=element['Element']
             config.config_allowed_tags = ','.join(elementlist)
             config.save()
-        if type == 1:  # CustomC
+        if res_type == 1:  # CustomC
             elementlist = config.list_allowed_column_values()
             elementlist[int(element['id'][1:])]=element['Element']
             config.config_allowed_column_value = ','.join(elementlist)
             config.save()
-        if type == 2:  # Tags per user
+        if res_type == 2:  # Tags per user
             usr_id = os.path.split(request.referrer)[-1]
             if usr_id.isdigit() == True:
                 usr = ub.session.query(ub.User).filter(ub.User.id == int(usr_id)).first()
@@ -279,7 +279,7 @@ def edit_restriction(type):
             elementlist[int(element['id'][1:])]=element['Element']
             usr.allowed_tags = ','.join(elementlist)
             ub.session.commit()
-        if type == 3:  # CColumn per user
+        if res_type == 3:  # CColumn per user
             usr_id = os.path.split(request.referrer)[-1]
             if usr_id.isdigit() == True:
                 usr = ub.session.query(ub.User).filter(ub.User.id == int(usr_id)).first()
@@ -290,18 +290,17 @@ def edit_restriction(type):
             usr.allowed_column_value = ','.join(elementlist)
             ub.session.commit()
     if element['id'].startswith('d'):
-        if type == 0:  # Tags as template
+        if res_type == 0:  # Tags as template
             elementlist = config.list_denied_tags()
             elementlist[int(element['id'][1:])]=element['Element']
             config.config_denied_tags = ','.join(elementlist)
             config.save()
-        if type == 1:  # CustomC
+        if res_type == 1:  # CustomC
             elementlist = config.list_denied_column_values()
             elementlist[int(element['id'][1:])]=element['Element']
             config.config_denied_column_value = ','.join(elementlist)
             config.save()
-            pass
-        if type == 2:  # Tags per user
+        if res_type == 2:  # Tags per user
             usr_id = os.path.split(request.referrer)[-1]
             if usr_id.isdigit() == True:
                 usr = ub.session.query(ub.User).filter(ub.User.id == int(usr_id)).first()
@@ -311,7 +310,7 @@ def edit_restriction(type):
             elementlist[int(element['id'][1:])]=element['Element']
             usr.denied_tags = ','.join(elementlist)
             ub.session.commit()
-        if type == 3:  # CColumn per user
+        if res_type == 3:  # CColumn per user
             usr_id = os.path.split(request.referrer)[-1]
             if usr_id.isdigit() == True:
                 usr = ub.session.query(ub.User).filter(ub.User.id == int(usr_id)).first()
@@ -339,26 +338,26 @@ def restriction_deletion(element, list_func):
     return ','.join(elementlist)
 
 
-@admi.route("/ajax/addrestriction/<int:type>", methods=['POST'])
+@admi.route("/ajax/addrestriction/<int:res_type>", methods=['POST'])
 @login_required
 @admin_required
-def add_restriction(type):
+def add_restriction(res_type):
     element = request.form.to_dict()
-    if type == 0:  # Tags as template
+    if res_type == 0:  # Tags as template
         if 'submit_allow' in element:
             config.config_allowed_tags = restriction_addition(element, config.list_allowed_tags)
             config.save()
         elif 'submit_deny' in element:
             config.config_denied_tags = restriction_addition(element, config.list_denied_tags)
             config.save()
-    if type == 1:  # CCustom as template
+    if res_type == 1:  # CCustom as template
         if 'submit_allow' in element:
             config.config_allowed_column_value = restriction_addition(element, config.list_denied_column_values)
             config.save()
         elif 'submit_deny' in element:
             config.config_denied_column_value = restriction_addition(element, config.list_allowed_column_values)
             config.save()
-    if type == 2:  # Tags per user
+    if res_type == 2:  # Tags per user
         usr_id = os.path.split(request.referrer)[-1]
         if usr_id.isdigit() == True:
             usr = ub.session.query(ub.User).filter(ub.User.id == int(usr_id)).first()
@@ -370,7 +369,7 @@ def add_restriction(type):
         elif 'submit_deny' in element:
             usr.denied_tags = restriction_addition(element, usr.list_denied_tags)
             ub.session.commit()
-    if type == 3:  # CustomC per user
+    if res_type == 3:  # CustomC per user
         usr_id = os.path.split(request.referrer)[-1]
         if usr_id.isdigit() == True:
             usr = ub.session.query(ub.User).filter(ub.User.id == int(usr_id)).first()
@@ -384,26 +383,26 @@ def add_restriction(type):
             ub.session.commit()
     return ""
 
-@admi.route("/ajax/deleterestriction/<int:type>", methods=['POST'])
+@admi.route("/ajax/deleterestriction/<int:res_type>", methods=['POST'])
 @login_required
 @admin_required
-def delete_restriction(type):
+def delete_restriction(res_type):
     element = request.form.to_dict()
-    if type == 0:  # Tags as template
+    if res_type == 0:  # Tags as template
         if element['id'].startswith('a'):
             config.config_allowed_tags = restriction_deletion(element, config.list_allowed_tags)
             config.save()
         elif element['id'].startswith('d'):
             config.config_denied_tags = restriction_deletion(element, config.list_denied_tags)
             config.save()
-    elif type == 1:  # CustomC as template
+    elif res_type == 1:  # CustomC as template
         if element['id'].startswith('a'):
             config.config_allowed_column_value = restriction_deletion(element, config.list_allowed_column_values)
             config.save()
         elif element['id'].startswith('d'):
             config.config_denied_column_value = restriction_deletion(element, config.list_denied_column_values)
             config.save()
-    elif type == 2:  # Tags per user
+    elif res_type == 2:  # Tags per user
         usr_id = os.path.split(request.referrer)[-1]
         if usr_id.isdigit() == True:
             usr = ub.session.query(ub.User).filter(ub.User.id == int(usr_id)).first()
@@ -415,7 +414,7 @@ def delete_restriction(type):
         elif element['id'].startswith('d'):
             usr.denied_tags = restriction_deletion(element, usr.list_denied_tags)
             ub.session.commit()
-    elif type == 3:  # Columns per user
+    elif res_type == 3:  # Columns per user
         usr_id = os.path.split(request.referrer)[-1]
         if usr_id.isdigit() == True:    # select current user if admins are editing their own rights
             usr = ub.session.query(ub.User).filter(ub.User.id == int(usr_id)).first()
@@ -431,23 +430,23 @@ def delete_restriction(type):
 
 
 #@admi.route("/ajax/listrestriction/<int:type>/<int:user_id>", defaults={'user_id': '0'})
-@admi.route("/ajax/listrestriction/<int:type>")
+@admi.route("/ajax/listrestriction/<int:res_type>")
 @login_required
 @admin_required
-def list_restriction(type):
-    if type == 0:   # Tags as template
+def list_restriction(res_type):
+    if res_type == 0:   # Tags as template
         restrict = [{'Element': x, 'type':_('Deny'), 'id': 'd'+str(i) }
                     for i,x in enumerate(config.list_denied_tags()) if x != '' ]
         allow = [{'Element': x, 'type':_('Allow'), 'id': 'a'+str(i) }
                  for i,x in enumerate(config.list_allowed_tags()) if x != '']
         json_dumps = restrict + allow
-    elif type == 1:  # CustomC as template
+    elif res_type == 1:  # CustomC as template
         restrict = [{'Element': x, 'type':_('Deny'), 'id': 'd'+str(i) }
                     for i,x in enumerate(config.list_denied_column_values()) if x != '' ]
         allow = [{'Element': x, 'type':_('Allow'), 'id': 'a'+str(i) }
                  for i,x in enumerate(config.list_allowed_column_values()) if x != '']
         json_dumps = restrict + allow
-    elif type == 2:  # Tags per user
+    elif res_type == 2:  # Tags per user
         usr_id = os.path.split(request.referrer)[-1]
         if usr_id.isdigit() == True:
             usr = ub.session.query(ub.User).filter(ub.User.id == usr_id).first()
@@ -458,7 +457,7 @@ def list_restriction(type):
         allow = [{'Element': x, 'type':_('Allow'), 'id': 'a'+str(i) }
                  for i,x in enumerate(usr.list_allowed_tags()) if x != '']
         json_dumps = restrict + allow
-    elif type == 3:  # CustomC per user
+    elif res_type == 3:  # CustomC per user
         usr_id = os.path.split(request.referrer)[-1]
         if usr_id.isdigit() == True:
             usr = ub.session.query(ub.User).filter(ub.User.id==usr_id).first()
@@ -540,8 +539,7 @@ def _configuration_update_helper():
     _config_string("config_calibre")
     _config_string("config_converterpath")
 
-    if _config_int("config_login_type"):
-        reboot_required |= config.config_login_type != constants.LOGIN_STANDARD
+    reboot_required |= _config_int("config_login_type")
 
     #LDAP configurator,
     if config.config_login_type == constants.LOGIN_LDAP:

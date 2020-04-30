@@ -85,7 +85,7 @@ def process(tmp_file_path, original_file_name, original_file_extension, rarExcec
             meta = epub.get_epub_info(tmp_file_path, original_file_name, original_file_extension)
         if ".FB2" == original_file_extension.upper() and use_fb2_meta is True:
             meta = fb2.get_fb2_info(tmp_file_path, original_file_extension)
-        if original_file_extension.upper() in ['.CBZ', '.CBT', 'CBR']:
+        if original_file_extension.upper() in ['.CBZ', '.CBT', '.CBR']:
             meta = comic.get_comic_info(tmp_file_path,
                                         original_file_name,
                                         original_file_extension,

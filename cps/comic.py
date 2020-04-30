@@ -43,9 +43,9 @@ except ImportError as e:
 
 
 def _extractCover(tmp_file_name, original_file_extension, rarExceutable):
+    cover_data = extension = None
     if use_comic_meta:
         archive = ComicArchive(tmp_file_name)
-        cover_data = None
         for index, name in enumerate(archive.getPageNameList()):
             ext = os.path.splitext(name)
             if len(ext) > 1:
@@ -81,7 +81,7 @@ def _extractCover(tmp_file_name, original_file_extension, rarExceutable):
                     if len(ext) > 1:
                         extension = ext[1].lower()
                         if extension == '.jpg' or extension == '.jpeg':
-                            cover_data = cf.extractfile(name).read()
+                            cover_data = cf.read(name)
                             break
             except Exception as e:
                 log.debug('Rarfile failed with error: %s', e)
@@ -99,7 +99,7 @@ def _extractCover(tmp_file_name, original_file_extension, rarExceutable):
 
 def get_comic_info(tmp_file_path, original_file_name, original_file_extension, rarExceutable):
     if use_comic_meta:
-        archive = ComicArchive(tmp_file_path)
+        archive = ComicArchive(tmp_file_path, rar_exe_path=rarExceutable)
         if archive.seemsToBeAComicArchive():
             if archive.hasMetadata(MetaDataStyle.CIX):
                 style = MetaDataStyle.CIX
@@ -120,7 +120,7 @@ def get_comic_info(tmp_file_path, original_file_name, original_file_extension, r
             else:
                  loadedMetadata.language = ""
 
-        return BookMeta(
+            return BookMeta(
                 file_path=tmp_file_path,
                 extension=original_file_extension,
                 title=loadedMetadata.title or original_file_name,
@@ -131,16 +131,15 @@ def get_comic_info(tmp_file_path, original_file_name, original_file_extension, r
                 series=loadedMetadata.series or "",
                 series_id=loadedMetadata.issue or "",
                 languages=loadedMetadata.language)
-    else:
 
-        return BookMeta(
-            file_path=tmp_file_path,
-            extension=original_file_extension,
-            title=original_file_name,
-            author=u'Unknown',
-            cover=_extractCover(tmp_file_path, original_file_extension, rarExceutable),
-            description="",
-            tags="",
-            series="",
-            series_id="",
-            languages="")
+    return BookMeta(
+        file_path=tmp_file_path,
+        extension=original_file_extension,
+        title=original_file_name,
+        author=u'Unknown',
+        cover=_extractCover(tmp_file_path, original_file_extension, rarExceutable),
+        description="",
+        tags="",
+        series="",
+        series_id="",
+        languages="")

@@ -38,8 +38,12 @@ from flask import render_template, request, redirect, send_from_directory, make_
 from flask_babel import gettext as _
 from flask_login import login_user, logout_user, login_required, current_user
 from sqlalchemy.exc import IntegrityError
-from sqlalchemy.sql.expression import text, func, true, false, not_, and_, exists, or_
-from werkzeug.exceptions import default_exceptions, FailedDependency
+from sqlalchemy.sql.expression import text, func, true, false, not_, and_, or_
+from werkzeug.exceptions import default_exceptions
+try:
+    from werkzeug.exceptions import FailedDependency
+except ImportError:
+    from werkzeug.exceptions import UnprocessableEntity as FailedDependency
 from werkzeug.datastructures import Headers
 from werkzeug.security import generate_password_hash, check_password_hash
 
@@ -72,11 +76,11 @@ try:
 except ImportError:
     pass  # We're not using Python 3
 
-# try:
-#     import rarfile
-#     feature_support['rar'] = True
-# except ImportError:
-#     feature_support['rar'] = False
+#try:
+#    import rarfile
+#    feature_support['rar'] = True
+#except ImportError:
+#    feature_support['rar'] = False
 
 try:
     from natsort import natsorted as sort
@@ -750,7 +754,7 @@ def render_category_books(page, book_id, order):
     name = db.session.query(db.Tags).filter(db.Tags.id == book_id).first()
     if name:
         entries, random, pagination = fill_indexpage(page, db.Books, db.Books.tags.any(db.Tags.id == book_id),
-                                                     [db.Series.name, db.Books.series_index, order[0]],
+                                                     [order[0], db.Series.name, db.Books.series_index],
                                                      db.books_series_link, db.Series)
         return render_title_template('index.html', random=random, entries=entries, pagination=pagination, id=book_id,
                                      title=_(u"Category: %(name)s", name=name.name), page="category")
@@ -926,9 +930,17 @@ def search():
         for element in entries:
             ids.append(element.id)
         searched_ids[current_user.id] = ids
-        return render_title_template('search.html', searchterm=term, entries=entries, title=_(u"Search"), page="search")
+        return render_title_template('search.html',
+                                     searchterm=term,
+                                     adv_searchterm=term,
+                                     entries=entries,
+                                     title=_(u"Search"),
+                                     page="search")
     else:
-        return render_title_template('search.html', searchterm="", title=_(u"Search"), page="search")
+        return render_title_template('search.html',
+                                     searchterm="",
+                                     title=_(u"Search"),
+                                     page="search")
 
 
 @web.route("/advanced_search", methods=['GET'])
@@ -937,7 +949,7 @@ def advanced_search():
     # Build custom columns names
     cc = get_cc_columns()
     db.session.connection().connection.connection.create_function("lower", 1, lcase)
-    q = db.session.query(db.Books).filter(common_filters())
+    q = db.session.query(db.Books).filter(common_filters()).order_by(db.Books.sort)
 
     include_tag_inputs = request.args.getlist('include_tag')
     exclude_tag_inputs = request.args.getlist('exclude_tag')
@@ -1066,7 +1078,7 @@ def advanced_search():
         for element in q:
             ids.append(element.id)
         searched_ids[current_user.id] = ids
-        return render_title_template('search.html', searchterm=searchterm,
+        return render_title_template('search.html', adv_searchterm=searchterm,
                                      entries=q, title=_(u"search"), page="search")
     # prepare data for search-form
     tags = db.session.query(db.Tags).join(db.books_tags_link).join(db.Books).filter(common_filters()) \
@@ -1319,16 +1331,11 @@ def login():
                     log.info('Login failed for user "%s" IP-adress: %s', form['username'], ipAdress)
                     flash(_(u"Wrong Username or Password"), category="error")
 
-    if feature_support['oauth']:
-        oauth_status = get_oauth_status()
-    else:
-        oauth_status = None
     next_url = url_for('web.index')
     return render_title_template('login.html',
                                  title=_(u"login"),
                                  next_url=next_url,
                                  config=config,
-                                 # oauth_status=oauth_status,
                                  oauth_check=oauth_check,
                                  mail=config.get_mail_server_configured(), page="login")
 

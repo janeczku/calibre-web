@@ -66,8 +66,8 @@ log = logger.create()
 
 def get_store_url_for_current_request():
     # Programmatically modify the current url to point to the official Kobo store
-    base, sep, request_path_with_auth_token = request.full_path.rpartition("/kobo/")
-    auth_token, sep, request_path = request_path_with_auth_token.rstrip("?").partition(
+    __, __, request_path_with_auth_token = request.full_path.rpartition("/kobo/")
+    __, __, request_path = request_path_with_auth_token.rstrip("?").partition(
         "/"
     )
     return KOBO_STOREAPI_URL + "/" + request_path

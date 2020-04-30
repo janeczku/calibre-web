@@ -28,7 +28,7 @@ $( 'body.mailset' ).addClass( 'admin' );
 curHref = window.location.href.split('/');
 prevHref = document.referrer.split('/');
 $( '.navbar-form.navbar-left' )
-  .before( '<div class="plexBack"><a href="' + document.referrer + '"></a></div>' );
+  .before( '<div class="plexBack"><a href="' + encodeURI(document.referrer) + '"></a></div>' );
 if ( history.length === 1 ||
     curHref[0] +
     curHref[1] +
@@ -43,7 +43,7 @@ if ( history.length === 1 ||
 //Weird missing a after pressing back from edit.
 setTimeout(function() {
   if ( $( '.plexBack a').length < 1 ) {
-    $( '.plexBack' ).append('<a href="' + document.referrer + '"></a>');
+    $( '.plexBack' ).append('<a href="' + encodeURI(document.referrer) + '"></a>');
   }
 },10);
 
