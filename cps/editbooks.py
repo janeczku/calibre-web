@@ -22,7 +22,7 @@
 
 from __future__ import division, print_function, unicode_literals
 import os
-import datetime
+from datetime import datetime
 import json
 from shutil import move, copyfile
 from uuid import uuid4
@@ -47,7 +47,7 @@ def modify_database_object(input_elements, db_book_object, db_object, db_session
     # passing input_elements not as a list may lead to undesired results
     if not isinstance(input_elements, list):
         raise TypeError(str(input_elements) + " should be passed as a list")
-
+    changed = False
     input_elements = [x for x in input_elements if x != '']
     # we have all input element (authors, series, tags) names now
     # 1. search for elements to remove
@@ -88,6 +88,7 @@ def modify_database_object(input_elements, db_book_object, db_object, db_session
     if len(del_elements) > 0:
         for del_element in del_elements:
             db_book_object.remove(del_element)
+            changed = True
             if len(del_element.books) == 0:
                 db_session.delete(del_element)
     # if there are elements to add, we add them now!
@@ -114,37 +115,58 @@ def modify_database_object(input_elements, db_book_object, db_object, db_session
             else:  # db_type should be tag or language
                 new_element = db_object(add_element)
             if db_element is None:
+                changed = True
                 db_session.add(new_element)
                 db_book_object.append(new_element)
             else:
                 if db_type == 'custom':
                     if db_element.value != add_element:
                         new_element.value = add_element
-                        # new_element = db_element
                 elif db_type == 'languages':
                     if db_element.lang_code != add_element:
                         db_element.lang_code = add_element
-                        # new_element = db_element
                 elif db_type == 'series':
                     if db_element.name != add_element:
-                        db_element.name = add_element # = add_element # new_element = db_object(add_element, add_element)
+                        db_element.name = add_element
                         db_element.sort = add_element
-                        # new_element = db_element
                 elif db_type == 'author':
                     if db_element.name != add_element:
                         db_element.name = add_element
                         db_element.sort = add_element.replace('|', ',')
-                        # new_element = db_element
                 elif db_type == 'publisher':
                     if db_element.name != add_element:
                         db_element.name = add_element
                         db_element.sort = None
-                        # new_element = db_element
                 elif db_element.name != add_element:
                     db_element.name = add_element
-                    # new_element = db_element
                 # add element to book
+                changed = True
                 db_book_object.append(db_element)
+    return changed
+
+
+def modify_identifiers(input_identifiers, db_identifiers, db_session):
+    """Modify Identifiers to match input information.
+       input_identifiers is a list of read-to-persist Identifiers objects.
+       db_identifiers is a list of already persisted list of Identifiers objects."""
+    changed = False
+    input_dict = dict([ (identifier.type.lower(), identifier) for identifier in input_identifiers ])
+    db_dict = dict([ (identifier.type.lower(), identifier) for identifier in db_identifiers ])
+    # delete db identifiers not present in input or modify them with input val
+    for identifier_type, identifier in db_dict.items():
+        if identifier_type not in input_dict.keys():
+            db_session.delete(identifier)
+            changed = True
+        else:
+            input_identifier = input_dict[identifier_type]
+            identifier.type = input_identifier.type
+            identifier.val = input_identifier.val
+    # add input identifiers not present in db
+    for identifier_type, identifier in input_dict.items():
+        if identifier_type not in db_dict.keys():
+            db_session.add(identifier)
+            changed = True
+    return changed
 
 
 @editbook.route("/delete/<int:book_id>/", defaults={'book_format': ""})
@@ -155,7 +177,10 @@ def delete_book(book_id, book_format):
         book = db.session.query(db.Books).filter(db.Books.id == book_id).first()
         if book:
             try:
-                helper.delete_book(book, config.config_calibre_dir, book_format=book_format.upper())
+                result, error = helper.delete_book(book, config.config_calibre_dir, book_format=book_format.upper())
+                if not result:
+                    flash(error, category="error")
+                    return redirect(url_for('editbook.edit_book', book_id=book_id))
                 if not book_format:
                     # delete book from Shelfs, Downloads, Read list
                     ub.session.query(ub.BookShelf).filter(ub.BookShelf.book_id == book_id).delete()
@@ -177,7 +202,7 @@ def delete_book(book_id, book_format):
                         cc_string = "custom_column_" + str(c.id)
                         if not c.is_multiple:
                             if len(getattr(book, cc_string)) > 0:
-                                if c.datatype == 'bool' or c.datatype == 'int' or c.datatype == 'float':
+                                if c.datatype == 'bool' or c.datatype == 'integer' or c.datatype == 'float':
                                     del_cc = getattr(book, cc_string)[0]
                                     getattr(book, cc_string).remove(del_cc)
                                     log.debug('remove ' + str(c.id))
@@ -211,8 +236,10 @@ def delete_book(book_id, book_format):
             # book not found
             log.error('Book with id "%s" could not be deleted: not found', book_id)
     if book_format:
+        flash(_('Book Format Successfully Deleted'), category="success")
         return redirect(url_for('editbook.edit_book', book_id=book_id))
     else:
+        flash(_('Book Successfully Deleted'), category="success")
         return redirect(url_for('web.index'))
 
 
@@ -253,10 +280,57 @@ def render_edit_book(book_id):
     return render_title_template('book_edit.html', book=book, authors=author_names, cc=cc,
                                  title=_(u"edit metadata"), page="editbook",
                                  conversion_formats=allowed_conversion_formats,
+                                 config=config,
                                  source_formats=valid_source_formats)
 
 
+def edit_book_ratings(to_save, book):
+    changed = False
+    if to_save["rating"].strip():
+        old_rating = False
+        if len(book.ratings) > 0:
+            old_rating = book.ratings[0].rating
+        ratingx2 = int(float(to_save["rating"]) * 2)
+        if ratingx2 != old_rating:
+            changed = True
+            is_rating = db.session.query(db.Ratings).filter(db.Ratings.rating == ratingx2).first()
+            if is_rating:
+                book.ratings.append(is_rating)
+            else:
+                new_rating = db.Ratings(rating=ratingx2)
+                book.ratings.append(new_rating)
+            if old_rating:
+                book.ratings.remove(book.ratings[0])
+    else:
+        if len(book.ratings) > 0:
+            book.ratings.remove(book.ratings[0])
+            changed = True
+    return changed
+
+
+def edit_book_languages(to_save, book):
+    input_languages = to_save["languages"].split(',')
+    unknown_languages = []
+    input_l = isoLanguages.get_language_codes(get_locale(), input_languages, unknown_languages)
+    for l in unknown_languages:
+        log.error('%s is not a valid language', l)
+        flash(_(u"%(langname)s is not a valid language", langname=l), category="error")
+    return modify_database_object(list(input_l), book.languages, db.Languages, db.session, 'languages')
+
+
+def edit_book_publisher(to_save, book):
+    changed = False
+    if to_save["publisher"]:
+        publisher = to_save["publisher"].rstrip().strip()
+        if len(book.publishers) == 0 or (len(book.publishers) > 0 and publisher != book.publishers[0].name):
+            changed |= modify_database_object([publisher], book.publishers, db.Publishers, db.session, 'publisher')
+    elif len(book.publishers):
+        changed |= modify_database_object([], book.publishers, db.Publishers, db.session, 'publisher')
+    return changed
+
+
 def edit_cc_data(book_id, book, to_save):
+    changed = False
     cc = db.session.query(db.Custom_Columns).filter(db.Custom_Columns.datatype.notin_(db.cc_exceptions)).all()
     for c in cc:
         cc_string = "custom_column_" + str(c.id)
@@ -276,14 +350,17 @@ def edit_cc_data(book_id, book, to_save):
                         if cc_db_value is not None:
                             if to_save[cc_string] is not None:
                                 setattr(getattr(book, cc_string)[0], 'value', to_save[cc_string])
+                                changed = True
                             else:
                                 del_cc = getattr(book, cc_string)[0]
                                 getattr(book, cc_string).remove(del_cc)
                                 db.session.delete(del_cc)
+                                changed = True
                         else:
                             cc_class = db.cc_classes[c.id]
                             new_cc = cc_class(value=to_save[cc_string], book=book_id)
                             db.session.add(new_cc)
+                            changed = True
 
                 else:
                     if c.datatype == 'rating':
@@ -295,6 +372,7 @@ def edit_cc_data(book_id, book, to_save):
                             getattr(book, cc_string).remove(del_cc)
                             if len(del_cc.books) == 0:
                                 db.session.delete(del_cc)
+                                changed = True
                         cc_class = db.cc_classes[c.id]
                         new_cc = db.session.query(cc_class).filter(
                             cc_class.value == to_save[cc_string].strip()).first()
@@ -302,6 +380,7 @@ def edit_cc_data(book_id, book, to_save):
                         if new_cc is None:
                             new_cc = cc_class(value=to_save[cc_string].strip())
                             db.session.add(new_cc)
+                            changed = True
                             db.session.flush()
                             new_cc = db.session.query(cc_class).filter(
                                 cc_class.value == to_save[cc_string].strip()).first()
@@ -314,12 +393,13 @@ def edit_cc_data(book_id, book, to_save):
                     getattr(book, cc_string).remove(del_cc)
                     if not del_cc.books or len(del_cc.books) == 0:
                         db.session.delete(del_cc)
+                        changed = True
         else:
             input_tags = to_save[cc_string].split(',')
             input_tags = list(map(lambda it: it.strip(), input_tags))
-            modify_database_object(input_tags, getattr(book, cc_string), db.cc_classes[c.id], db.session,
+            changed |= modify_database_object(input_tags, getattr(book, cc_string), db.cc_classes[c.id], db.session,
                                    'custom')
-    return cc
+    return changed
 
 def upload_single_file(request, book, book_id):
     # Check and handle Uploaded file
@@ -394,6 +474,7 @@ def upload_cover(request, book):
 @login_required_if_no_ano
 @edit_required
 def edit_book(book_id):
+    modif_date = False
     # Show form
     if request.method != 'POST':
         return render_edit_book(book_id)
@@ -411,6 +492,7 @@ def edit_book(book_id):
     meta = upload_single_file(request, book, book_id)
     if upload_cover(request, book) is True:
         book.has_cover = 1
+        modif_date = True
     try:
         to_save = request.form.to_dict()
         merge_metadata(to_save, meta)
@@ -422,6 +504,7 @@ def edit_book(book_id):
                 to_save["book_title"] = _(u'Unknown')
             book.title = to_save["book_title"].rstrip().strip()
             edited_books_id = book.id
+            modif_date = True
 
         # handle author(s)
         input_authors = to_save["author_name"].split('&')
@@ -430,7 +513,7 @@ def edit_book(book_id):
         if input_authors == ['']:
             input_authors = [_(u'Unknown')]  # prevent empty Author
 
-        modify_database_object(input_authors, book.authors, db.Authors, db.session, 'author')
+        modif_date |= modify_database_object(input_authors, book.authors, db.Authors, db.session, 'author')
 
         # Search for each author if author is in database, if not, authorname and sorted authorname is generated new
         # everything then is assembled for sorted author field in database
@@ -446,7 +529,7 @@ def edit_book(book_id):
         if book.author_sort != sort_authors:
             edited_books_id = book.id
             book.author_sort = sort_authors
-
+            modif_date = True
 
         if config.config_use_google_drive:
             gdriveutils.updateGdriveCalibreFromLocal()
@@ -460,75 +543,60 @@ def edit_book(book_id):
                 result, error = helper.save_cover_from_url(to_save["cover_url"], book.path)
                 if result is True:
                     book.has_cover = 1
+                    modif_date = True
                 else:
                     flash(error, category="error")
 
             if book.series_index != to_save["series_index"]:
                 book.series_index = to_save["series_index"]
+                modif_date = True
 
             # Handle book comments/description
             if len(book.comments):
-                book.comments[0].text = to_save["description"]
+                if book.comments[0].text != to_save["description"]:
+                    book.comments[0].text = to_save["description"]
+                    modif_date = True
             else:
-                book.comments.append(db.Comments(text=to_save["description"], book=book.id))
+                if to_save["description"]:
+                    book.comments.append(db.Comments(text=to_save["description"], book=book.id))
+                    modif_date = True
+
+                    # Handle identifiers
+            input_identifiers = identifier_list(to_save, book)
+            modif_date |= modify_identifiers(input_identifiers, book.identifiers, db.session)
 
             # Handle book tags
             input_tags = to_save["tags"].split(',')
             input_tags = list(map(lambda it: it.strip(), input_tags))
-            modify_database_object(input_tags, book.tags, db.Tags, db.session, 'tags')
+            modif_date |= modify_database_object(input_tags, book.tags, db.Tags, db.session, 'tags')
 
             # Handle book series
             input_series = [to_save["series"].strip()]
             input_series = [x for x in input_series if x != '']
-            modify_database_object(input_series, book.series, db.Series, db.session, 'series')
+            modif_date |= modify_database_object(input_series, book.series, db.Series, db.session, 'series')
 
             if to_save["pubdate"]:
                 try:
-                    book.pubdate = datetime.datetime.strptime(to_save["pubdate"], "%Y-%m-%d")
+                    book.pubdate = datetime.strptime(to_save["pubdate"], "%Y-%m-%d")
                 except ValueError:
                     book.pubdate = db.Books.DEFAULT_PUBDATE
             else:
                 book.pubdate = db.Books.DEFAULT_PUBDATE
 
-            if to_save["publisher"]:
-                publisher = to_save["publisher"].rstrip().strip()
-                if len(book.publishers) == 0 or (len(book.publishers) > 0 and publisher != book.publishers[0].name):
-                    modify_database_object([publisher], book.publishers, db.Publishers, db.session, 'publisher')
-            elif len(book.publishers):
-                modify_database_object([], book.publishers, db.Publishers, db.session, 'publisher')
-
+            # handle book publisher
+            modif_date |= edit_book_publisher(to_save, book)
 
             # handle book languages
-            input_languages = to_save["languages"].split(',')
-            unknown_languages = []
-            input_l = isoLanguages.get_language_codes(get_locale(), input_languages, unknown_languages)
-            for l in unknown_languages:
-                log.error('%s is not a valid language', l)
-                flash(_(u"%(langname)s is not a valid language", langname=l), category="error")
-            modify_database_object(list(input_l), book.languages, db.Languages, db.session, 'languages')
+            modif_date |= edit_book_languages(to_save, book)
 
             # handle book ratings
-            if to_save["rating"].strip():
-                old_rating = False
-                if len(book.ratings) > 0:
-                    old_rating = book.ratings[0].rating
-                ratingx2 = int(float(to_save["rating"]) * 2)
-                if ratingx2 != old_rating:
-                    is_rating = db.session.query(db.Ratings).filter(db.Ratings.rating == ratingx2).first()
-                    if is_rating:
-                        book.ratings.append(is_rating)
-                    else:
-                        new_rating = db.Ratings(rating=ratingx2)
-                        book.ratings.append(new_rating)
-                    if old_rating:
-                        book.ratings.remove(book.ratings[0])
-            else:
-                if len(book.ratings) > 0:
-                    book.ratings.remove(book.ratings[0])
+            modif_date |= edit_book_ratings(to_save, book)
 
             # handle cc data
-            edit_cc_data(book_id, book, to_save)
+            modif_date |= edit_cc_data(book_id, book, to_save)
 
+            if modif_date:
+                book.last_modified = datetime.utcnow()
             db.session.commit()
             if config.config_use_google_drive:
                 gdriveutils.updateGdriveCalibreFromLocal()
@@ -561,6 +629,19 @@ def merge_metadata(to_save, meta):
     to_save["description"] = to_save["description"] or Markup(
         getattr(meta, 'description', '')).unescape()
 
+def identifier_list(to_save, book):
+    """Generate a list of Identifiers from form information"""
+    id_type_prefix = 'identifier-type-'
+    id_val_prefix = 'identifier-val-'
+    result = []
+    for type_key, type_value in to_save.items():
+        if not type_key.startswith(id_type_prefix):
+            continue
+        val_key = id_val_prefix + type_key[len(id_type_prefix):]
+        if val_key not in to_save.keys():
+            continue
+        result.append( db.Identifiers(to_save[val_key], type_value, book.id) )
+    return result
 
 @editbook.route("/upload", methods=["GET", "POST"])
 @login_required_if_no_ano
@@ -677,8 +758,9 @@ def upload():
 
             # combine path and normalize path from windows systems
             path = os.path.join(author_dir, title_dir).replace('\\', '/')
-            db_book = db.Books(title, "", db_author.sort, datetime.datetime.now(), datetime.datetime(101, 1, 1),
-                               series_index, datetime.datetime.now(), path, has_cover, db_author, [], db_language)
+            # Calibre adds books with utc as timezone
+            db_book = db.Books(title, "", db_author.sort, datetime.utcnow(), datetime(101, 1, 1),
+                               series_index, datetime.utcnow(), path, has_cover, db_author, [], db_language)
             db_book.authors.append(db_author)
             if db_series:
                 db_book.series.append(db_series)

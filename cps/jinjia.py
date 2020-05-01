@@ -80,8 +80,12 @@ def formatdate_filter(val):
         formatdate = datetime.datetime.strptime(conformed_timestamp[:15], "%Y%m%d %H%M%S")
         return format_date(formatdate, format='medium', locale=get_locale())
     except AttributeError as e:
-        log.error('Babel error: %s, Current user locale: %s, Current User: %s', e, current_user.locale, current_user.nickname)
+        log.error('Babel error: %s, Current user locale: %s, Current User: %s', e,
+                  current_user.locale,
+                  current_user.nickname
+                  )
         return formatdate
+
 
 @jinjia.app_template_filter('formatdateinput')
 def format_date_input(val):

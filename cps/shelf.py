@@ -21,11 +21,12 @@
 #  along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 from __future__ import division, print_function, unicode_literals
+from datetime import datetime
 
 from flask import Blueprint, request, flash, redirect, url_for
 from flask_babel import gettext as _
 from flask_login import login_required, current_user
-from sqlalchemy.sql.expression import func, or_, and_
+from sqlalchemy.sql.expression import func
 
 from . import logger, ub, searched_ids, db
 from .web import render_title_template
@@ -34,6 +35,25 @@ from .helper import common_filters
 
 shelf = Blueprint('shelf', __name__)
 log = logger.create()
+
+
+def check_shelf_edit_permissions(cur_shelf):
+    if not cur_shelf.is_public and not cur_shelf.user_id == int(current_user.id):
+        log.error("User %s not allowed to edit shelf %s", current_user, cur_shelf)
+        return False
+    if cur_shelf.is_public and not current_user.role_edit_shelfs():
+        log.info("User %s not allowed to edit public shelves", current_user)
+        return False
+    return True
+
+
+def check_shelf_view_permissions(cur_shelf):
+    if cur_shelf.is_public:
+        return True
+    if current_user.is_anonymous or cur_shelf.user_id != current_user.id:
+        log.error("User is unauthorized to view non-public shelf: %s", cur_shelf)
+        return False
+    return True
 
 
 @shelf.route("/shelf/add/<int:shelf_id>/<int:book_id>")
@@ -48,23 +68,15 @@ def add_to_shelf(shelf_id, book_id):
             return redirect(url_for('web.index'))
         return "Invalid shelf specified", 400
 
-    if not shelf.is_public and not shelf.user_id == int(current_user.id):
-        log.error("User %s not allowed to add a book to %s", current_user, shelf)
+    if not check_shelf_edit_permissions(shelf):
         if not xhr:
             flash(_(u"Sorry you are not allowed to add a book to the the shelf: %(shelfname)s", shelfname=shelf.name),
                   category="error")
             return redirect(url_for('web.index'))
         return "Sorry you are not allowed to add a book to the the shelf: %s" % shelf.name, 403
 
-    if shelf.is_public and not current_user.role_edit_shelfs():
-        log.info("User %s not allowed to edit public shelves", current_user)
-        if not xhr:
-            flash(_(u"You are not allowed to edit public shelves"), category="error")
-            return redirect(url_for('web.index'))
-        return "User is not allowed to edit public shelves", 403
-
     book_in_shelf = ub.session.query(ub.BookShelf).filter(ub.BookShelf.shelf == shelf_id,
-                                          ub.BookShelf.book_id == book_id).first()
+                                                          ub.BookShelf.book_id == book_id).first()
     if book_in_shelf:
         log.error("Book %s is already part of %s", book_id, shelf)
         if not xhr:
@@ -78,8 +90,9 @@ def add_to_shelf(shelf_id, book_id):
     else:
         maxOrder = maxOrder[0]
 
-    ins = ub.BookShelf(shelf=shelf.id, book_id=book_id, order=maxOrder + 1)
-    ub.session.add(ins)
+    shelf.books.append(ub.BookShelf(shelf=shelf.id, book_id=book_id, order=maxOrder + 1))
+    shelf.last_modified = datetime.utcnow()
+    ub.session.merge(shelf)
     ub.session.commit()
     if not xhr:
         flash(_(u"Book has been added to shelf: %(sname)s", sname=shelf.name), category="success")
@@ -99,14 +112,8 @@ def search_to_shelf(shelf_id):
         flash(_(u"Invalid shelf specified"), category="error")
         return redirect(url_for('web.index'))
 
-    if not shelf.is_public and not shelf.user_id == int(current_user.id):
-        log.error("User %s not allowed to add a book to %s", current_user, shelf)
+    if not check_shelf_edit_permissions(shelf):
         flash(_(u"You are not allowed to add a book to the the shelf: %(name)s", name=shelf.name), category="error")
-        return redirect(url_for('web.index'))
-
-    if shelf.is_public and not current_user.role_edit_shelfs():
-        log.error("User %s not allowed to edit public shelves", current_user)
-        flash(_(u"User is not allowed to edit public shelves"), category="error")
         return redirect(url_for('web.index'))
 
     if current_user.id in searched_ids and searched_ids[current_user.id]:
@@ -135,8 +142,9 @@ def search_to_shelf(shelf_id):
 
         for book in books_for_shelf:
             maxOrder = maxOrder + 1
-            ins = ub.BookShelf(shelf=shelf.id, book_id=book, order=maxOrder)
-            ub.session.add(ins)
+            shelf.books.append(ub.BookShelf(shelf=shelf.id, book_id=book, order=maxOrder))
+        shelf.last_modified = datetime.utcnow()
+        ub.session.merge(shelf)
         ub.session.commit()
         flash(_(u"Books have been added to shelf: %(sname)s", sname=shelf.name), category="success")
     else:
@@ -163,8 +171,7 @@ def remove_from_shelf(shelf_id, book_id):
     #   true         0             x             1
     #   false        0             x             0
 
-    if (not shelf.is_public and shelf.user_id == int(current_user.id)) \
-            or (shelf.is_public and current_user.role_edit_shelfs()):
+    if check_shelf_edit_permissions(shelf):
         book_shelf = ub.session.query(ub.BookShelf).filter(ub.BookShelf.shelf == shelf_id,
                                                            ub.BookShelf.book_id == book_id).first()
 
@@ -175,6 +182,7 @@ def remove_from_shelf(shelf_id, book_id):
             return "Book already removed from shelf", 410
 
         ub.session.delete(book_shelf)
+        shelf.last_modified = datetime.utcnow()
         ub.session.commit()
 
         if not xhr:
@@ -185,13 +193,11 @@ def remove_from_shelf(shelf_id, book_id):
                 return redirect(url_for('web.index'))
         return "", 204
     else:
-        log.error("User %s not allowed to remove a book from %s", current_user, shelf)
         if not xhr:
             flash(_(u"Sorry you are not allowed to remove a book from this shelf: %(sname)s", sname=shelf.name),
                   category="error")
             return redirect(url_for('web.index'))
         return "Sorry you are not allowed to remove a book from this shelf: %s" % shelf.name, 403
-
 
 
 @shelf.route("/shelf/create", methods=["GET", "POST"])
@@ -212,21 +218,24 @@ def create_shelf():
                 .first() is None
 
             if not is_shelf_name_unique:
-                flash(_(u"A public shelf with the name '%(title)s' already exists.", title=to_save["title"]), category="error")
+                flash(_(u"A public shelf with the name '%(title)s' already exists.", title=to_save["title"]),
+                      category="error")
         else:
             is_shelf_name_unique = ub.session.query(ub.Shelf) \
-                .filter((ub.Shelf.name == to_save["title"]) & (ub.Shelf.is_public == 0) & (ub.Shelf.user_id == int(current_user.id))) \
-                .first() is None
+                .filter((ub.Shelf.name == to_save["title"]) & (ub.Shelf.is_public == 0) &
+                        (ub.Shelf.user_id == int(current_user.id)))\
+                                       .first() is None
 
             if not is_shelf_name_unique:
-                flash(_(u"A private shelf with the name '%(title)s' already exists.", title=to_save["title"]), category="error")
+                flash(_(u"A private shelf with the name '%(title)s' already exists.", title=to_save["title"]),
+                      category="error")
 
         if is_shelf_name_unique:
             try:
                 ub.session.add(shelf)
                 ub.session.commit()
                 flash(_(u"Shelf %(title)s created", title=to_save["title"]), category="success")
-                return redirect(url_for('shelf.show_shelf', shelf_id = shelf.id ))
+                return redirect(url_for('shelf.show_shelf', shelf_id=shelf.id))
             except Exception:
                 flash(_(u"There was an error"), category="error")
         return render_title_template('shelf_edit.html', shelf=shelf, title=_(u"Create a Shelf"), page="shelfcreate")
@@ -249,18 +258,22 @@ def edit_shelf(shelf_id):
                 .first() is None
 
             if not is_shelf_name_unique:
-                flash(_(u"A public shelf with the name '%(title)s' already exists.", title=to_save["title"]), category="error")
+                flash(_(u"A public shelf with the name '%(title)s' already exists.", title=to_save["title"]),
+                      category="error")
         else:
             is_shelf_name_unique = ub.session.query(ub.Shelf) \
-                .filter((ub.Shelf.name == to_save["title"]) & (ub.Shelf.is_public == 0) & (ub.Shelf.user_id == int(current_user.id))) \
-                .filter(ub.Shelf.id != shelf_id) \
-                .first() is None
+                .filter((ub.Shelf.name == to_save["title"]) & (ub.Shelf.is_public == 0) &
+                        (ub.Shelf.user_id == int(current_user.id)))\
+                                       .filter(ub.Shelf.id != shelf_id)\
+                                       .first() is None
 
             if not is_shelf_name_unique:
-                flash(_(u"A private shelf with the name '%(title)s' already exists.", title=to_save["title"]), category="error")
+                flash(_(u"A private shelf with the name '%(title)s' already exists.", title=to_save["title"]),
+                      category="error")
 
         if is_shelf_name_unique:
             shelf.name = to_save["title"]
+            shelf.last_modified = datetime.utcnow()
             if "is_public" in to_save:
                 shelf.is_public = 1
             else:
@@ -275,41 +288,33 @@ def edit_shelf(shelf_id):
         return render_title_template('shelf_edit.html', shelf=shelf, title=_(u"Edit a shelf"), page="shelfedit")
 
 
+def delete_shelf_helper(cur_shelf):
+    if not cur_shelf or not check_shelf_edit_permissions(cur_shelf):
+        return
+    shelf_id = cur_shelf.id
+    ub.session.delete(cur_shelf)
+    ub.session.query(ub.BookShelf).filter(ub.BookShelf.shelf == shelf_id).delete()
+    ub.session.add(ub.ShelfArchive(uuid=cur_shelf.uuid, user_id=cur_shelf.user_id))
+    ub.session.commit()
+    log.info("successfully deleted %s", cur_shelf)
+
+
 @shelf.route("/shelf/delete/<int:shelf_id>")
 @login_required
 def delete_shelf(shelf_id):
     cur_shelf = ub.session.query(ub.Shelf).filter(ub.Shelf.id == shelf_id).first()
-    deleted = None
-    if current_user.role_admin():
-        deleted = ub.session.query(ub.Shelf).filter(ub.Shelf.id == shelf_id).delete()
-    else:
-        if (not cur_shelf.is_public and cur_shelf.user_id == int(current_user.id)) \
-                or (cur_shelf.is_public and current_user.role_edit_shelfs()):
-            deleted = ub.session.query(ub.Shelf).filter(or_(and_(ub.Shelf.user_id == int(current_user.id),
-                                                                 ub.Shelf.id == shelf_id),
-                                                            and_(ub.Shelf.is_public == 1,
-                                                                 ub.Shelf.id == shelf_id))).delete()
-
-    if deleted:
-        ub.session.query(ub.BookShelf).filter(ub.BookShelf.shelf == shelf_id).delete()
-        ub.session.commit()
-        log.info("successfully deleted %s", cur_shelf)
+    delete_shelf_helper(cur_shelf)
     return redirect(url_for('web.index'))
 
-# @shelf.route("/shelfdown/<int:shelf_id>")
+
 @shelf.route("/shelf/<int:shelf_id>", defaults={'shelf_type': 1})
 @shelf.route("/shelf/<int:shelf_id>/<int:shelf_type>")
 def show_shelf(shelf_type, shelf_id):
-    if current_user.is_anonymous:
-        shelf = ub.session.query(ub.Shelf).filter(ub.Shelf.is_public == 1, ub.Shelf.id == shelf_id).first()
-    else:
-        shelf = ub.session.query(ub.Shelf).filter(or_(and_(ub.Shelf.user_id == int(current_user.id),
-                                                           ub.Shelf.id == shelf_id),
-                                                      and_(ub.Shelf.is_public == 1,
-                                                           ub.Shelf.id == shelf_id))).first()
+    shelf = ub.session.query(ub.Shelf).filter(ub.Shelf.id == shelf_id).first()
+
     result = list()
     # user is allowed to access shelf
-    if shelf:
+    if shelf and check_shelf_view_permissions(shelf):
         page = "shelf.html" if shelf_type == 1 else 'shelfdown.html'
 
         books_in_shelf = ub.session.query(ub.BookShelf).filter(ub.BookShelf.shelf == shelf_id)\
@@ -325,11 +330,10 @@ def show_shelf(shelf_type, shelf_id):
                     ub.session.query(ub.BookShelf).filter(ub.BookShelf.book_id == book.book_id).delete()
                     ub.session.commit()
         return render_title_template(page, entries=result, title=_(u"Shelf: '%(name)s'", name=shelf.name),
-                                 shelf=shelf, page="shelf")
+                                     shelf=shelf, page="shelf")
     else:
         flash(_(u"Error opening shelf. Shelf does not exist or is not accessible"), category="error")
         return redirect(url_for("web.index"))
-
 
 
 @shelf.route("/shelf/order/<int:shelf_id>", methods=["GET", "POST"])
@@ -343,32 +347,28 @@ def order_shelf(shelf_id):
         for book in books_in_shelf:
             setattr(book, 'order', to_save[str(book.book_id)])
             counter += 1
+            # if order diffrent from before -> shelf.last_modified = datetime.utcnow()
         ub.session.commit()
-    if current_user.is_anonymous:
-        shelf = ub.session.query(ub.Shelf).filter(ub.Shelf.is_public == 1, ub.Shelf.id == shelf_id).first()
-    else:
-        shelf = ub.session.query(ub.Shelf).filter(or_(and_(ub.Shelf.user_id == int(current_user.id),
-                                                           ub.Shelf.id == shelf_id),
-                                                      and_(ub.Shelf.is_public == 1,
-                                                           ub.Shelf.id == shelf_id))).first()
+
+    shelf = ub.session.query(ub.Shelf).filter(ub.Shelf.id == shelf_id).first()
     result = list()
-    if shelf:
+    if shelf and check_shelf_view_permissions(shelf):
         books_in_shelf2 = ub.session.query(ub.BookShelf).filter(ub.BookShelf.shelf == shelf_id) \
             .order_by(ub.BookShelf.order.asc()).all()
         for book in books_in_shelf2:
             cur_book = db.session.query(db.Books).filter(db.Books.id == book.book_id).filter(common_filters()).first()
             if cur_book:
-                result.append({'title':cur_book.title,
-                               'id':cur_book.id,
-                               'author':cur_book.authors,
-                               'series':cur_book.series,
-                               'series_index':cur_book.series_index})
+                result.append({'title': cur_book.title,
+                               'id': cur_book.id,
+                               'author': cur_book.authors,
+                               'series': cur_book.series,
+                               'series_index': cur_book.series_index})
             else:
                 cur_book = db.session.query(db.Books).filter(db.Books.id == book.book_id).first()
-                result.append({'title':_('Hidden Book'),
-                               'id':cur_book.id,
-                               'author':[],
-                               'series':[]})
+                result.append({'title': _('Hidden Book'),
+                               'id': cur_book.id,
+                               'author': [],
+                               'series': []})
     return render_title_template('shelf_order.html', entries=result,
                                  title=_(u"Change order of Shelf: '%(name)s'", name=shelf.name),
                                  shelf=shelf, page="shelforder")

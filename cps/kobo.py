@@ -17,11 +17,15 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-import sys
 import base64
+import datetime
+import itertools
+import json
+import sys
 import os
 import uuid
 from time import gmtime, strftime
+
 try:
     from urllib import unquote
 except ImportError:
@@ -34,26 +38,31 @@ from flask import (
     jsonify,
     current_app,
     url_for,
-    redirect
+    redirect,
+    abort
 )
-
+from flask_login import current_user, login_required
 from werkzeug.datastructures import Headers
 from sqlalchemy import func
+from sqlalchemy.sql.expression import and_, or_
+from sqlalchemy.exc import StatementError
 import requests
 
-from . import config, logger, kobo_auth, db, helper
+from . import config, logger, kobo_auth, db, helper, shelf as shelf_lib, ub
 from .services import SyncToken as SyncToken
 from .web import download_required
 from .kobo_auth import requires_kobo_auth
 
 KOBO_FORMATS = {"KEPUB": ["KEPUB"], "EPUB": ["EPUB3", "EPUB"]}
 KOBO_STOREAPI_URL = "https://storeapi.kobo.com"
+KOBO_IMAGEHOST_URL = "https://kbimages1-a.akamaihd.net"
 
 kobo = Blueprint("kobo", __name__, url_prefix="/kobo/<auth_token>")
 kobo_auth.disable_failed_auth_redirect_for_blueprint(kobo)
 kobo_auth.register_url_value_preprocessor(kobo)
 
 log = logger.create()
+
 
 def get_store_url_for_current_request():
     # Programmatically modify the current url to point to the official Kobo store
@@ -96,9 +105,6 @@ def redirect_or_proxy_request():
     if config.config_kobo_proxy:
         if request.method == "GET":
             return redirect(get_store_url_for_current_request(), 307)
-        if request.method == "DELETE":
-            log.info('Delete Book')
-            return make_response(jsonify({}))
         else:
             # The Kobo device turns other request types into GET requests on redirects, so we instead proxy to the Kobo store ourselves.
             store_response = make_request_to_kobo_store()
@@ -112,6 +118,10 @@ def redirect_or_proxy_request():
             )
     else:
         return make_response(jsonify({}))
+
+
+def convert_to_kobo_timestamp_string(timestamp):
+    return timestamp.strftime("%Y-%m-%dT%H:%M:%SZ")
 
 
 @kobo.route("/v1/library/sync")
@@ -128,11 +138,33 @@ def HandleSyncRequest():
 
     new_books_last_modified = sync_token.books_last_modified
     new_books_last_created = sync_token.books_last_created
-    entitlements = []
+    new_reading_state_last_modified = sync_token.reading_state_last_modified
+    sync_results = []
 
     # We reload the book database so that the user get's a fresh view of the library
     # in case of external changes (e.g: adding a book through Calibre).
     db.reconnect_db(config)
+
+    archived_books = (
+        ub.session.query(ub.ArchivedBook)
+        .filter(ub.ArchivedBook.user_id == int(current_user.id))
+        .all()
+    )
+
+    # We join-in books that have had their Archived bit recently modified in order to either:
+    #   * Restore them to the user's device.
+    #   * Delete them from the user's device.
+    # (Ideally we would use a join for this logic, however cross-database joins don't look trivial in SqlAlchemy.)
+    recently_restored_or_archived_books = []
+    archived_book_ids = {}
+    new_archived_last_modified = datetime.datetime.min
+    for archived_book in archived_books:
+        if archived_book.last_modified > sync_token.archive_last_modified:
+            recently_restored_or_archived_books.append(archived_book.book_id)
+        if archived_book.is_archived:
+            archived_book_ids[archived_book.book_id] = True
+        new_archived_last_modified = max(
+            new_archived_last_modified, archived_book.last_modified)
 
     # sqlite gives unexpected results when performing the last_modified comparison without the datetime cast.
     # It looks like it's treating the db.Books.last_modified field as a string and may fail
@@ -140,46 +172,69 @@ def HandleSyncRequest():
     changed_entries = (
         db.session.query(db.Books)
         .join(db.Data)
-        .filter(func.datetime(db.Books.last_modified) > sync_token.books_last_modified)
+        .filter(or_(func.datetime(db.Books.last_modified) > sync_token.books_last_modified,
+                    db.Books.id.in_(recently_restored_or_archived_books)))
         .filter(db.Data.format.in_(KOBO_FORMATS))
         .all()
     )
 
+    reading_states_in_new_entitlements = []
     for book in changed_entries:
+        kobo_reading_state = get_or_create_reading_state(book.id)
         entitlement = {
-            "BookEntitlement": create_book_entitlement(book),
+            "BookEntitlement": create_book_entitlement(book, archived=(book.id in archived_book_ids)),
             "BookMetadata": get_metadata(book),
-            "ReadingState": reading_state(book),
         }
+
+        if kobo_reading_state.last_modified > sync_token.reading_state_last_modified:
+            entitlement["ReadingState"] = get_kobo_reading_state_response(book, kobo_reading_state)
+            new_reading_state_last_modified = max(new_reading_state_last_modified, kobo_reading_state.last_modified)
+            reading_states_in_new_entitlements.append(book.id)
+
         if book.timestamp > sync_token.books_last_created:
-            entitlements.append({"NewEntitlement": entitlement})
+            sync_results.append({"NewEntitlement": entitlement})
         else:
-            entitlements.append({"ChangedEntitlement": entitlement})
+            sync_results.append({"ChangedEntitlement": entitlement})
 
         new_books_last_modified = max(
-            book.last_modified, sync_token.books_last_modified
+            book.last_modified, new_books_last_modified
         )
-        new_books_last_created = max(book.timestamp, sync_token.books_last_created)
+        new_books_last_created = max(book.timestamp, new_books_last_created)
+
+    changed_reading_states = (
+        ub.session.query(ub.KoboReadingState)
+        .filter(and_(func.datetime(ub.KoboReadingState.last_modified) > sync_token.reading_state_last_modified,
+                     ub.KoboReadingState.user_id == current_user.id,
+                     ub.KoboReadingState.book_id.notin_(reading_states_in_new_entitlements))))
+    for kobo_reading_state in changed_reading_states.all():
+        book = db.session.query(db.Books).filter(db.Books.id == kobo_reading_state.book_id).one_or_none()
+        if book:
+            sync_results.append({
+                "ChangedReadingState": {
+                    "ReadingState": get_kobo_reading_state_response(book, kobo_reading_state)
+                }
+            })
+            new_reading_state_last_modified = max(new_reading_state_last_modified, kobo_reading_state.last_modified)
+
+    sync_shelves(sync_token, sync_results)
 
     sync_token.books_last_created = new_books_last_created
     sync_token.books_last_modified = new_books_last_modified
+    sync_token.archive_last_modified = new_archived_last_modified
+    sync_token.reading_state_last_modified = new_reading_state_last_modified
 
-    if config.config_kobo_proxy:
-        return generate_sync_response(request, sync_token, entitlements)
-
-    return make_response(jsonify(entitlements))
-    # Missing feature: Detect server-side book deletions.
+    return generate_sync_response(sync_token, sync_results)
 
 
-def generate_sync_response(request, sync_token, entitlements):
+def generate_sync_response(sync_token, sync_results):
     extra_headers = {}
     if config.config_kobo_proxy:
         # Merge in sync results from the official Kobo store.
         try:
             store_response = make_request_to_kobo_store(sync_token)
 
-            store_entitlements = store_response.json()
-            entitlements += store_entitlements
+            store_sync_results = store_response.json()
+            sync_results += store_sync_results
             sync_token.merge_from_store_response(store_response)
             extra_headers["x-kobo-sync"] = store_response.headers.get("x-kobo-sync")
             extra_headers["x-kobo-sync-mode"] = store_response.headers.get("x-kobo-sync-mode")
@@ -189,7 +244,7 @@ def generate_sync_response(request, sync_token, entitlements):
             log.error("Failed to receive or parse response from Kobo's sync endpoint: " + str(e))
     sync_token.to_headers(extra_headers)
 
-    response = make_response(jsonify(entitlements), extra_headers)
+    response = make_response(jsonify(sync_results), extra_headers)
 
     return response
 
@@ -231,19 +286,18 @@ def get_download_url_for_book(book, book_format):
     )
 
 
-def create_book_entitlement(book):
+def create_book_entitlement(book, archived):
     book_uuid = book.uuid
     return {
         "Accessibility": "Full",
-        "ActivePeriod": {"From": current_time(),},
-        "Created": book.timestamp.strftime("%Y-%m-%dT%H:%M:%SZ"),
+        "ActivePeriod": {"From": convert_to_kobo_timestamp_string(datetime.datetime.now())},
+        "Created": convert_to_kobo_timestamp_string(book.timestamp),
         "CrossRevisionId": book_uuid,
         "Id": book_uuid,
+        "IsRemoved": archived,
         "IsHiddenFromArchive": False,
         "IsLocked": False,
-        # Setting this to true removes from the device.
-        "IsRemoved": False,
-        "LastModified": book.last_modified.strftime("%Y-%m-%dT%H:%M:%SZ"),
+        "LastModified": convert_to_kobo_timestamp_string(book.last_modified),
         "OriginCategory": "Imported",
         "RevisionId": book_uuid,
         "Status": "Active",
@@ -316,6 +370,8 @@ def get_metadata(book):
         "IsSocialEnabled": True,
         "Language": "en",
         "PhoneticPronunciations": {},
+        # TODO: Fix book.pubdate to return a datetime object so that we can easily
+        # convert it to the format Kobo devices expect.
         "PublicationDate": book.pubdate,
         "Publisher": {"Imprint": "", "Name": get_publisher(book),},
         "RevisionId": book_uuid,
@@ -330,7 +386,7 @@ def get_metadata(book):
             name = get_series(book)
         metadata["Series"] = {
             "Name": get_series(book),
-            "Number": book.series_index,
+            "Number": book.series_index,        # ToDo Check int() ?
             "NumberFloat": float(book.series_index),
             # Get a deterministic id based on the series name.
             "Id": uuid.uuid3(uuid.NAMESPACE_DNS, name),
@@ -339,31 +395,399 @@ def get_metadata(book):
     return metadata
 
 
-def reading_state(book):
-    # TODO: Implement
-    reading_state = {
-        # "StatusInfo": {
-        #     "LastModified": get_single_cc_value(book, "lastreadtimestamp"),
-        #     "Status": get_single_cc_value(book, "reading_status"),
-        # }
-        # TODO: CurrentBookmark, Location
+@kobo.route("/v1/library/tags", methods=["POST", "DELETE"])
+@login_required
+# Creates a Shelf with the given items, and returns the shelf's uuid.
+def HandleTagCreate():
+    # catch delete requests, otherwise the are handeld in the book delete handler
+    if request.method == "DELETE":
+        abort(405)
+    name, items = None, None
+    try:
+        shelf_request = request.json
+        name = shelf_request["Name"]
+        items = shelf_request["Items"]
+        if not name:
+            raise TypeError
+    except (KeyError, TypeError):
+        log.debug("Received malformed v1/library/tags request.")
+        abort(400, description="Malformed tags POST request. Data has empty 'Name', missing 'Name' or 'Items' field")
+
+    shelf = ub.session.query(ub.Shelf).filter(ub.Shelf.name == name, ub.Shelf.user_id ==
+                                              current_user.id).one_or_none()
+    if shelf and not shelf_lib.check_shelf_edit_permissions(shelf):
+        abort(401, description="User is unauthaurized to create shelf.")
+
+    if not shelf:
+        shelf = ub.Shelf(user_id=current_user.id, name=name, uuid=str(uuid.uuid4()))
+        ub.session.add(shelf)
+
+    items_unknown_to_calibre = add_items_to_shelf(items, shelf)
+    if items_unknown_to_calibre:
+        log.debug("Received request to add unknown books to a collection. Silently ignoring items.")
+    ub.session.commit()
+
+    return make_response(jsonify(str(shelf.uuid)), 201)
+
+
+@kobo.route("/v1/library/tags/<tag_id>", methods=["DELETE", "PUT"])
+def HandleTagUpdate(tag_id):
+    shelf = ub.session.query(ub.Shelf).filter(ub.Shelf.uuid == tag_id,
+                                              ub.Shelf.user_id == current_user.id).one_or_none()
+    if not shelf:
+        log.debug("Received Kobo tag update request on a collection unknown to CalibreWeb")
+        if config.config_kobo_proxy:
+            return redirect_or_proxy_request()
+        else:
+            abort(404, description="Collection isn't known to CalibreWeb")
+
+    if not shelf_lib.check_shelf_edit_permissions(shelf):
+        abort(401, description="User is unauthaurized to edit shelf.")
+
+    if request.method == "DELETE":
+        shelf_lib.delete_shelf_helper(shelf)
+    else:
+        name = None
+        try:
+            shelf_request = request.json
+            name = shelf_request["Name"]
+        except (KeyError, TypeError):
+            log.debug("Received malformed v1/library/tags rename request.")
+            abort(400, description="Malformed tags POST request. Data is missing 'Name' field")
+
+        shelf.name = name
+        ub.session.merge(shelf)
+        ub.session.commit()
+    return make_response(' ', 200)
+
+
+# Adds items to the given shelf.
+def add_items_to_shelf(items, shelf):
+    book_ids_already_in_shelf = set([book_shelf.book_id for book_shelf in shelf.books])
+    items_unknown_to_calibre = []
+    for item in items:
+        try:
+            if item["Type"] != "ProductRevisionTagItem":
+                items_unknown_to_calibre.append(item)
+                continue
+
+            book = db.session.query(db.Books).filter(db.Books.uuid == item["RevisionId"]).one_or_none()
+            if not book:
+                items_unknown_to_calibre.append(item)
+                continue
+
+            book_id = book.id
+            if book_id not in book_ids_already_in_shelf:
+                shelf.books.append(ub.BookShelf(book_id=book_id))
+        except KeyError:
+            items_unknown_to_calibre.append(item)
+    return items_unknown_to_calibre
+
+
+@kobo.route("/v1/library/tags/<tag_id>/items", methods=["POST"])
+@login_required
+def HandleTagAddItem(tag_id):
+    items = None
+    try:
+        tag_request = request.json
+        items = tag_request["Items"]
+    except (KeyError, TypeError):
+        log.debug("Received malformed v1/library/tags/<tag_id>/items/delete request.")
+        abort(400, description="Malformed tags POST request. Data is missing 'Items' field")
+
+    shelf = ub.session.query(ub.Shelf).filter(ub.Shelf.uuid == tag_id,
+                                              ub.Shelf.user_id == current_user.id).one_or_none()
+    if not shelf:
+        log.debug("Received Kobo request on a collection unknown to CalibreWeb")
+        abort(404, description="Collection isn't known to CalibreWeb")
+
+    if not shelf_lib.check_shelf_edit_permissions(shelf):
+        abort(401, description="User is unauthaurized to edit shelf.")
+
+    items_unknown_to_calibre = add_items_to_shelf(items, shelf)
+    if items_unknown_to_calibre:
+        log.debug("Received request to add an unknown book to a collection. Silently ignoring item.")
+
+    ub.session.merge(shelf)
+    ub.session.commit()
+
+    return make_response('', 201)
+
+
+@kobo.route("/v1/library/tags/<tag_id>/items/delete", methods=["POST"])
+@login_required
+def HandleTagRemoveItem(tag_id):
+    items = None
+    try:
+        tag_request = request.json
+        items = tag_request["Items"]
+    except (KeyError, TypeError):
+        log.debug("Received malformed v1/library/tags/<tag_id>/items/delete request.")
+        abort(400, description="Malformed tags POST request. Data is missing 'Items' field")
+
+    shelf = ub.session.query(ub.Shelf).filter(ub.Shelf.uuid == tag_id,
+                                              ub.Shelf.user_id == current_user.id).one_or_none()
+    if not shelf:
+        log.debug(
+            "Received a request to remove an item from a Collection unknown to CalibreWeb.")
+        abort(404, description="Collection isn't known to CalibreWeb")
+
+    if not shelf_lib.check_shelf_edit_permissions(shelf):
+        abort(401, description="User is unauthaurized to edit shelf.")
+
+    items_unknown_to_calibre = []
+    for item in items:
+        try:
+            if item["Type"] != "ProductRevisionTagItem":
+                items_unknown_to_calibre.append(item)
+                continue
+
+            book = db.session.query(db.Books).filter(db.Books.uuid == item["RevisionId"]).one_or_none()
+            if not book:
+                items_unknown_to_calibre.append(item)
+                continue
+
+            shelf.books.filter(ub.BookShelf.book_id == book.id).delete()
+        except KeyError:
+            items_unknown_to_calibre.append(item)
+    ub.session.commit()
+
+    if items_unknown_to_calibre:
+        log.debug("Received request to remove an unknown book to a collecition. Silently ignoring item.")
+
+    return make_response('', 200)
+
+
+# Add new, changed, or deleted shelves to the sync_results.
+# Note: Public shelves that aren't owned by the user aren't supported.
+def sync_shelves(sync_token, sync_results):
+    new_tags_last_modified = sync_token.tags_last_modified
+
+    for shelf in ub.session.query(ub.ShelfArchive).filter(func.datetime(ub.ShelfArchive.last_modified) > sync_token.tags_last_modified,
+                                                          ub.ShelfArchive.user_id == current_user.id):
+        new_tags_last_modified = max(shelf.last_modified, new_tags_last_modified)
+
+        sync_results.append({
+            "DeletedTag": {
+                "Tag": {
+                    "Id": shelf.uuid,
+                    "LastModified": convert_to_kobo_timestamp_string(shelf.last_modified)
+                }
+            }
+        })
+
+    for shelf in ub.session.query(ub.Shelf).filter(func.datetime(ub.Shelf.last_modified) > sync_token.tags_last_modified,
+                                                   ub.Shelf.user_id == current_user.id):
+        if not shelf_lib.check_shelf_view_permissions(shelf):
+            continue
+
+        new_tags_last_modified = max(shelf.last_modified, new_tags_last_modified)
+
+        tag = create_kobo_tag(shelf)
+        if not tag:
+            continue
+
+        if shelf.created > sync_token.tags_last_modified:
+            sync_results.append({
+                "NewTag": tag
+            })
+        else:
+            sync_results.append({
+                "ChangedTag": tag
+            })
+    sync_token.tags_last_modified = new_tags_last_modified
+    ub.session.commit()
+
+
+# Creates a Kobo "Tag" object from a ub.Shelf object
+def create_kobo_tag(shelf):
+    tag = {
+        "Created": convert_to_kobo_timestamp_string(shelf.created),
+        "Id": shelf.uuid,
+        "Items": [],
+        "LastModified": convert_to_kobo_timestamp_string(shelf.last_modified),
+        "Name": shelf.name,
+        "Type": "UserTag"
     }
-    return reading_state
+    for book_shelf in shelf.books:
+        book = db.session.query(db.Books).filter(db.Books.id == book_shelf.book_id).one_or_none()
+        if not book:
+            log.info(u"Book (id: %s) in BookShelf (id: %s) not found in book database",  book_shelf.book_id, shelf.id)
+            continue
+        tag["Items"].append(
+            {
+                "RevisionId": book.uuid,
+                "Type": "ProductRevisionTagItem"
+            }
+        )
+    return {"Tag": tag}
 
 
-@kobo.route("/<book_uuid>/image.jpg")
+@kobo.route("/v1/library/<book_uuid>/state", methods=["GET", "PUT"])
+@login_required
+def HandleStateRequest(book_uuid):
+    book = db.session.query(db.Books).filter(db.Books.uuid == book_uuid).first()
+    if not book or not book.data:
+        log.info(u"Book %s not found in database", book_uuid)
+        return redirect_or_proxy_request()
+
+    kobo_reading_state = get_or_create_reading_state(book.id)
+
+    if request.method == "GET":
+        return jsonify([get_kobo_reading_state_response(book, kobo_reading_state)])
+    else:
+        update_results_response = {"EntitlementId": book_uuid}
+
+        try:
+            request_data = request.json
+            request_reading_state = request_data["ReadingStates"][0]
+
+            request_bookmark = request_reading_state["CurrentBookmark"]
+            if request_bookmark:
+                current_bookmark = kobo_reading_state.current_bookmark
+                current_bookmark.progress_percent = request_bookmark["ProgressPercent"]
+                current_bookmark.content_source_progress_percent = request_bookmark["ContentSourceProgressPercent"]
+                location = request_bookmark["Location"]
+                if location:
+                    current_bookmark.location_value = location["Value"]
+                    current_bookmark.location_type = location["Type"]
+                    current_bookmark.location_source = location["Source"]
+                update_results_response["CurrentBookmarkResult"] = {"Result": "Success"}
+
+            request_statistics = request_reading_state["Statistics"]
+            if request_statistics:
+                statistics = kobo_reading_state.statistics
+                statistics.spent_reading_minutes = int(request_statistics["SpentReadingMinutes"])
+                statistics.remaining_time_minutes = int(request_statistics["RemainingTimeMinutes"])
+                update_results_response["StatisticsResult"] = {"Result": "Success"}
+
+            request_status_info = request_reading_state["StatusInfo"]
+            if request_status_info:
+                book_read = kobo_reading_state.book_read_link
+                new_book_read_status = get_ub_read_status(request_status_info["Status"])
+                if new_book_read_status == ub.ReadBook.STATUS_IN_PROGRESS \
+                    and new_book_read_status != book_read.read_status:
+                    book_read.times_started_reading += 1
+                    book_read.last_time_started_reading = datetime.datetime.utcnow()
+                book_read.read_status = new_book_read_status
+                update_results_response["StatusInfoResult"] = {"Result": "Success"}
+        except (KeyError, TypeError, ValueError, StatementError):
+            log.debug("Received malformed v1/library/<book_uuid>/state request.")
+            ub.session.rollback()
+            abort(400, description="Malformed request data is missing 'ReadingStates' key")
+
+        ub.session.merge(kobo_reading_state)
+        ub.session.commit()
+        return jsonify({
+            "RequestResult": "Success",
+            "UpdateResults": [update_results_response],
+        })
+
+
+def get_read_status_for_kobo(ub_book_read):
+    enum_to_string_map = {
+        None: "ReadyToRead",
+        ub.ReadBook.STATUS_UNREAD: "ReadyToRead",
+        ub.ReadBook.STATUS_FINISHED: "Finished",
+        ub.ReadBook.STATUS_IN_PROGRESS: "Reading",
+    }
+    return enum_to_string_map[ub_book_read.read_status]
+
+
+def get_ub_read_status(kobo_read_status):
+    string_to_enum_map = {
+        None: None,
+        "ReadyToRead": ub.ReadBook.STATUS_UNREAD,
+        "Finished": ub.ReadBook.STATUS_FINISHED,
+        "Reading": ub.ReadBook.STATUS_IN_PROGRESS,
+    }
+    return string_to_enum_map[kobo_read_status]
+
+
+def get_or_create_reading_state(book_id):
+    book_read = ub.session.query(ub.ReadBook).filter(ub.ReadBook.book_id == book_id,
+                                                          ub.ReadBook.user_id == current_user.id).one_or_none()
+    if not book_read:
+        book_read = ub.ReadBook(user_id=current_user.id, book_id=book_id)
+    if not book_read.kobo_reading_state:
+        kobo_reading_state = ub.KoboReadingState(user_id=book_read.user_id, book_id=book_id)
+        kobo_reading_state.current_bookmark = ub.KoboBookmark()
+        kobo_reading_state.statistics = ub.KoboStatistics()
+        book_read.kobo_reading_state = kobo_reading_state
+    ub.session.add(book_read)
+    ub.session.commit()
+    return book_read.kobo_reading_state
+
+
+def get_kobo_reading_state_response(book, kobo_reading_state):
+    return {
+        "EntitlementId": book.uuid,
+        "Created": convert_to_kobo_timestamp_string(book.timestamp),
+        "LastModified": convert_to_kobo_timestamp_string(kobo_reading_state.last_modified),
+        # AFAICT PriorityTimestamp is always equal to LastModified.
+        "PriorityTimestamp": convert_to_kobo_timestamp_string(kobo_reading_state.priority_timestamp),
+        "StatusInfo": get_status_info_response(kobo_reading_state.book_read_link),
+        "Statistics": get_statistics_response(kobo_reading_state.statistics),
+        "CurrentBookmark": get_current_bookmark_response(kobo_reading_state.current_bookmark),
+    }
+
+
+def get_status_info_response(book_read):
+    resp = {
+        "LastModified": convert_to_kobo_timestamp_string(book_read.last_modified),
+        "Status": get_read_status_for_kobo(book_read),
+        "TimesStartedReading": book_read.times_started_reading,
+    }
+    if book_read.last_time_started_reading:
+        resp["LastTimeStartedReading"] = convert_to_kobo_timestamp_string(book_read.last_time_started_reading)
+    return resp
+
+
+def get_statistics_response(statistics):
+    resp = {
+        "LastModified": convert_to_kobo_timestamp_string(statistics.last_modified),
+    }
+    if statistics.spent_reading_minutes:
+        resp["SpentReadingMinutes"] = statistics.spent_reading_minutes
+    if statistics.remaining_time_minutes:
+        resp["RemainingTimeMinutes"] = statistics.remaining_time_minutes
+    return resp
+
+
+def get_current_bookmark_response(current_bookmark):
+    resp = {
+        "LastModified": convert_to_kobo_timestamp_string(current_bookmark.last_modified),
+    }
+    if current_bookmark.progress_percent:
+        resp["ProgressPercent"] = current_bookmark.progress_percent
+    if current_bookmark.content_source_progress_percent:
+        resp["ContentSourceProgressPercent"] = current_bookmark.content_source_progress_percent
+    if current_bookmark.location_value:
+        resp["Location"] = {
+            "Value": current_bookmark.location_value,
+            "Type": current_bookmark.location_type,
+            "Source": current_bookmark.location_source,
+        }
+    return resp
+
+@kobo.route("/<book_uuid>/<width>/<height>/<isGreyscale>/image.jpg", defaults={'Quality': ""})
+@kobo.route("/<book_uuid>/<width>/<height>/<Quality>/<isGreyscale>/image.jpg")
 @requires_kobo_auth
-def HandleCoverImageRequest(book_uuid):
+def HandleCoverImageRequest(book_uuid, width, height,Quality, isGreyscale):
     book_cover = helper.get_book_cover_with_uuid(
         book_uuid, use_generic_cover_on_failure=False
     )
     if not book_cover:
         if config.config_kobo_proxy:
             log.debug("Cover for unknown book: %s proxied to kobo" % book_uuid)
-            return redirect(get_store_url_for_current_request(), 307)
+            return redirect(KOBO_IMAGEHOST_URL +
+                            "/{book_uuid}/{width}/{height}/false/image.jpg".format(book_uuid=book_uuid,
+                                                                                   width=width,
+                                                                                   height=height), 307)
         else:
             log.debug("Cover for unknown book: %s requested" % book_uuid)
-            return redirect_or_proxy_request()
+            # additional proxy request make no sense, -> direct return
+            return make_response(jsonify({}))
     log.debug("Cover request received for book %s" % book_uuid)
     return book_cover
 
@@ -373,13 +797,35 @@ def TopLevelEndpoint():
     return make_response(jsonify({}))
 
 
+@kobo.route("/v1/library/<book_uuid>", methods=["DELETE"])
+@login_required
+def HandleBookDeletionRequest(book_uuid):
+    log.info("Kobo book deletion request received for book %s" % book_uuid)
+    book = db.session.query(db.Books).filter(db.Books.uuid == book_uuid).first()
+    if not book:
+        log.info(u"Book %s not found in database", book_uuid)
+        return redirect_or_proxy_request()
+
+    book_id = book.id
+    archived_book = (
+        ub.session.query(ub.ArchivedBook)
+        .filter(ub.ArchivedBook.book_id == book_id)
+        .first()
+    )
+    if not archived_book:
+        archived_book = ub.ArchivedBook(user_id=current_user.id, book_id=book_id)
+    archived_book.is_archived = True
+    archived_book.last_modified = datetime.datetime.utcnow()
+
+    ub.session.merge(archived_book)
+    ub.session.commit()
+
+    return ("", 204)
+
+
 # TODO: Implement the following routes
 @kobo.route("/v1/library/<dummy>", methods=["DELETE", "GET"])
-@kobo.route("/v1/library/<book_uuid>/state", methods=["PUT"])
-@kobo.route("/v1/library/tags", methods=["POST"])
-@kobo.route("/v1/library/tags/<shelf_name>", methods=["POST"])
-@kobo.route("/v1/library/tags/<tag_id>", methods=["DELETE"])
-def HandleUnimplementedRequest(dummy=None, book_uuid=None, shelf_name=None, tag_id=None):
+def HandleUnimplementedRequest(dummy=None):
     log.debug("Unimplemented Library Request received: %s", request.base_url)
     return redirect_or_proxy_request()
 
@@ -399,6 +845,7 @@ def HandleUserRequest(dummy=None):
 @kobo.route("/v1/products/<dummy>/recommendations", methods=["GET", "POST"])
 @kobo.route("/v1/products/<dummy>/nextread", methods=["GET", "POST"])
 @kobo.route("/v1/products/<dummy>/reviews", methods=["GET", "POST"])
+@kobo.route("/v1/products/books/series/<dummy>", methods=["GET", "POST"])
 @kobo.route("/v1/products/books/<dummy>", methods=["GET", "POST"])
 @kobo.route("/v1/products/dailydeal", methods=["GET", "POST"])
 @kobo.route("/v1/products", methods=["GET", "POST"])
@@ -407,12 +854,15 @@ def HandleProductsRequest(dummy=None):
     return redirect_or_proxy_request()
 
 
-@kobo.app_errorhandler(404)
+'''@kobo.errorhandler(404)
 def handle_404(err):
     # This handler acts as a catch-all for endpoints that we don't have an interest in
     # implementing (e.g: v1/analytics/gettests, v1/user/recommendations, etc)
-    log.debug("Unknown Request received: %s", request.base_url)
-    return redirect_or_proxy_request()
+    if err:
+        print('404')
+        return jsonify(error=str(err)), 404
+    log.debug("Unknown Request received: %s, method: %s, data: %s", request.base_url, request.method, request.data)
+    return redirect_or_proxy_request()'''
 
 
 def make_calibre_web_auth_response():
@@ -446,17 +896,22 @@ def HandleAuthRequest():
     return make_calibre_web_auth_response()
 
 
-def make_calibre_web_init_response(calibre_web_url):
-        resources = NATIVE_KOBO_RESOURCES(calibre_web_url)
-        response = make_response(jsonify({"Resources": resources}))
-        response.headers["x-kobo-apitoken"] = "e30="
-        return response
-
-
 @kobo.route("/v1/initialization")
 @requires_kobo_auth
 def HandleInitRequest():
     log.info('Init')
+
+    kobo_resources = None
+    if config.config_kobo_proxy:
+        try:
+            store_response = make_request_to_kobo_store()
+            store_response_json = store_response.json()
+            if "Resources" in store_response_json:
+                kobo_resources = store_response_json["Resources"]
+        except:
+            log.error("Failed to receive or parse response from Kobo's init endpoint. Falling back to un-proxied mode.")
+    if not kobo_resources:
+        kobo_resources = NATIVE_KOBO_RESOURCES()
 
     if not current_app.wsgi_app.is_proxied:
         log.debug('Kobo: Received unproxied request, changed request port to server port')
@@ -469,33 +924,47 @@ def HandleInitRequest():
             url_base=host,
             url_port=config.config_port
         )
+        kobo_resources["image_host"] = calibre_web_url
+        kobo_resources["image_url_quality_template"] = unquote(calibre_web_url +
+                                                               url_for("kobo.HandleCoverImageRequest",
+                                                                       auth_token=kobo_auth.get_auth_token(),
+                                                                       book_uuid="{ImageId}",
+                                                                       width="{width}",
+                                                                       height="{height}",
+                                                                       Quality='{Quality}',
+                                                                       isGreyscale='isGreyscale'
+                                                               ))
+        kobo_resources["image_url_template"] = unquote(calibre_web_url +
+                                                       url_for("kobo.HandleCoverImageRequest",
+                                                               auth_token=kobo_auth.get_auth_token(),
+                                                               book_uuid="{ImageId}",
+                                                               width="{width}",
+                                                               height="{height}",
+                                                               isGreyscale='false'
+                                                       ))
     else:
-        calibre_web_url = url_for("web.index", _external=True).strip("/")
-
-    if config.config_kobo_proxy:
-        try:
-            store_response = make_request_to_kobo_store()
-
-            store_response_json = store_response.json()
-            if "Resources" in store_response_json:
-                kobo_resources = store_response_json["Resources"]
-                # calibre_web_url = url_for("web.index", _external=True).strip("/")
-                kobo_resources["image_host"] = calibre_web_url
-                kobo_resources["image_url_quality_template"] = unquote(calibre_web_url + url_for("kobo.HandleCoverImageRequest",
-                    auth_token = kobo_auth.get_auth_token(),
-                    book_uuid="{ImageId}"))
-                kobo_resources["image_url_template"] = unquote(calibre_web_url + url_for("kobo.HandleCoverImageRequest",
-                    auth_token = kobo_auth.get_auth_token(),
-                    book_uuid="{ImageId}"))
-
-            return make_response(store_response_json, store_response.status_code)
-        except:
-            log.error("Failed to receive or parse response from Kobo's init endpoint. Falling back to un-proxied mode.")
-
-    return make_calibre_web_init_response(calibre_web_url)
+        kobo_resources["image_host"] = url_for("web.index", _external=True).strip("/")
+        kobo_resources["image_url_quality_template"] = unquote(url_for("kobo.HandleCoverImageRequest",
+                                                                       auth_token=kobo_auth.get_auth_token(),
+                                                                       book_uuid="{ImageId}",
+                                                                       width="{width}",
+                                                                       height="{height}",
+                                                                       _external=True))
+        kobo_resources["image_url_template"] = unquote(url_for("kobo.HandleCoverImageRequest",
+                                                               auth_token=kobo_auth.get_auth_token(),
+                                                               book_uuid="{ImageId}",
+                                                               width="{width}",
+                                                               height="{height}",
+                                                               _external=True))
 
 
-def NATIVE_KOBO_RESOURCES(calibre_web_url):
+    response = make_response(jsonify({"Resources": kobo_resources}))
+    response.headers["x-kobo-apitoken"] = "e30="
+
+    return response
+
+
+def NATIVE_KOBO_RESOURCES():
     return {
         "account_page": "https://secure.kobobooks.com/profile",
         "account_page_rakuten": "https://my.rakuten.co.jp/",
@@ -546,13 +1015,6 @@ def NATIVE_KOBO_RESOURCES(calibre_web_url):
         "giftcard_epd_redeem_url": "https://www.kobo.com/{storefront}/{language}/redeem-ereader",
         "giftcard_redeem_url": "https://www.kobo.com/{storefront}/{language}/redeem",
         "help_page": "http://www.kobo.com/help",
-        "image_host": calibre_web_url,
-        "image_url_quality_template": unquote(calibre_web_url + url_for("kobo.HandleCoverImageRequest",
-                auth_token = kobo_auth.get_auth_token(),
-                book_uuid="{ImageId}")),
-        "image_url_template":  unquote(calibre_web_url + url_for("kobo.HandleCoverImageRequest",
-                auth_token = kobo_auth.get_auth_token(),
-                book_uuid="{ImageId}")),
         "kobo_audiobooks_enabled": "False",
         "kobo_audiobooks_orange_deal_enabled": "False",
         "kobo_audiobooks_subscriptions_enabled": "False",

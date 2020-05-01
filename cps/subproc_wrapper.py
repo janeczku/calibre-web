@@ -45,10 +45,10 @@ def process_open(command, quotes=(), env=None, sout=subprocess.PIPE, serr=subpro
 
 
 def process_wait(command, serr=subprocess.PIPE):
-    '''Run command, wait for process to terminate, and return an iterator over lines of its output.'''
+    # Run command, wait for process to terminate, and return an iterator over lines of its output.
     p = process_open(command, serr=serr)
     p.wait()
-    for l in p.stdout.readlines():
-        if isinstance(l, bytes):
-            l = l.decode('utf-8')
-        yield l
+    for line in p.stdout.readlines():
+        if isinstance(line, bytes):
+            line = line.decode('utf-8')
+        yield line

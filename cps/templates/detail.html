@@ -202,6 +202,14 @@
             </label>
           </form>
           </p>
+          <p>
+            <form id="archived_form" action="{{ url_for('web.toggle_archived', book_id=entry.id)}}" method="POST">
+              <label class="block-label">
+                <input id="archived_cb" data-checked="{{_('Restore from archive')}}" data-unchecked="{{_('Add to archive')}}" type="checkbox" {% if is_archived %}checked{% endif %} >
+                <span>{{_('Archived')}}</span>
+              </label>
+            </form>
+          </p>
         </div>
       {% endif %}
 

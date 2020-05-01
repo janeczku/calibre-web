@@ -817,6 +817,9 @@ def update_mailsettings():
 @admin_required
 def edit_user(user_id):
     content = ub.session.query(ub.User).filter(ub.User.id == int(user_id)).first()  # type: ub.User
+    if not content:
+        flash(_(u"User not found"), category="error")
+        return redirect(url_for('admin.admin'))
     downloads = list()
     languages = speaking_language()
     translations = babel.list_translations() + [LC('en')]
@@ -933,8 +936,6 @@ def edit_user(user_id):
 @login_required
 @admin_required
 def reset_user_password(user_id):
-    if not config.config_public_reg:
-        abort(404)
     if current_user is not None and current_user.is_authenticated:
         ret, message = reset_password(user_id)
         if ret == 1:
