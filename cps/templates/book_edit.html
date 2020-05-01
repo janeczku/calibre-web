@@ -184,7 +184,7 @@
     </div>
     <a href="#" id="get_meta" class="btn btn-default" data-toggle="modal" data-target="#metaModal">{{_('Fetch Metadata')}}</a>
     <button type="submit" id="submit" class="btn btn-default">{{_('Save')}}</button>
-    <a href="{{ url_for('web.show_book', book_id=book.id) }}" class="btn btn-default">{{_('Cancel')}}</a>
+    <a href="{{ url_for('web.show_book', book_id=book.id) }}" id="edit_cancel" class="btn btn-default">{{_('Cancel')}}</a>
   </div>
 </form>
 
