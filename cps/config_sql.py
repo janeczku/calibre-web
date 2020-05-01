@@ -37,8 +37,6 @@ _Base = declarative_base()
 class _Settings(_Base):
     __tablename__ = 'settings'
 
-    # config_is_initial = Column(Boolean, default=True)
-
     id = Column(Integer, primary_key=True)
     mail_server = Column(String, default=constants.DEFAULT_MAIL_SERVER)
     mail_port = Column(Integer, default=25)

@@ -61,6 +61,21 @@
       <label for="description">{{_('Description')}}</label>
       <textarea class="form-control" name="description" id="description" rows="7">{% if book.comments %}{{book.comments[0].text}}{%endif%}</textarea>
     </div>
+
+    <div class="form-group">
+      <label>{{_('Identifiers')}}</label>
+      <table class="table" id="identifier-table">
+	{% for identifier in book.identifiers %}
+	<tr>
+          <td><input type="text" class="form-control" name="identifier-type-{{identifier.type}}" value="{{identifier.type}}" required="required" placeholder="{{_('Identifier Type')}}"></td>
+	  <td><input type="text" class="form-control" name="identifier-val-{{identifier.type}}" value="{{identifier.val}}" required="required" placeholder="{{_('Identifier Value')}}"></td>
+	  <td><a class="btn btn-default" onclick="removeIdentifierLine(this)">{{_('Remove')}}</a></td>
+	</tr>
+	{% endfor %}
+      </table>
+      <a id="add-identifier-line" class="btn btn-default">{{_('Add Identifier')}}</a>
+    </div>
+
     <div class="form-group">
       <label for="tags">{{_('Tags')}}</label>
       <input type="text" class="form-control typeahead" name="tags" id="tags" value="{% for tag in book.tags %}{{tag.name.strip()}}{% if not loop.last %}, {% endif %}{% endfor %}">
@@ -169,7 +184,7 @@
     </div>
     <a href="#" id="get_meta" class="btn btn-default" data-toggle="modal" data-target="#metaModal">{{_('Fetch Metadata')}}</a>
     <button type="submit" id="submit" class="btn btn-default">{{_('Save')}}</button>
-    <a href="{{ url_for('web.show_book', book_id=book.id) }}" class="btn btn-default">{{_('Cancel')}}</a>
+    <a href="{{ url_for('web.show_book', book_id=book.id) }}" id="edit_cancel" class="btn btn-default">{{_('Cancel')}}</a>
   </div>
 </form>
 
@@ -185,12 +200,20 @@
           <span>{{_('Are you really sure?')}}</span>
       </div>
         <div class="modal-body text-center">
+          <p>
           <span>{{_('This book will be permanently erased from database')}}</span>
           <span>{{_('and hard disk')}}</span>
+		  </p>
+          {% if config.config_kobo_sync %}
+          <p>
+            <span>{{_('Important Kobo Note: deleted books will remain on any paired Kobo device.')}}</span>
+            <span>{{_('Books must first be archived and the device synced before a book can safely be deleted.')}}</span>
+          </p>
+          {% endif %}
         </div>
 
       <div class="modal-footer">
-        <a href="{{ url_for('editbook.delete_book', book_id=book.id) }}" class="btn btn-danger">{{_('Delete')}}</a>
+        <a href="{{ url_for('editbook.delete_book', book_id=book.id) }}" id="delete_confirm" class="btn btn-danger">{{_('Delete')}}</a>
         <button type="button" class="btn btn-default" data-dismiss="modal">{{_('Cancel')}}</button>
       </div>
     </div>
@@ -277,6 +300,21 @@
     'source': {{_('Source')|safe|tojson}},
   };
   var language = '{{ g.user.locale }}';
+
+  $("#add-identifier-line").click(function() {
+    // create a random identifier type to have a valid name in form. This will not be used when dealing with the form
+    var rand_id = Math.floor(Math.random() * 1000000).toString();
+    var line = '<tr>';
+    line += '<td><input type="text" class="form-control" name="identifier-type-'+ rand_id +'" required="required" placeholder="{{_('Identifier Type')}}"></td>';
+    line += '<td><input type="text" class="form-control" name="identifier-val-'+ rand_id +'" required="required" placeholder="{{_('Identifier Value')}}"></td>';
+    line += '<td><a class="btn btn-default" onclick="removeIdentifierLine(this)">{{_('Remove')}}</a></td>';
+    line += '</tr>';
+    $("#identifier-table").append(line);
+  });
+  function removeIdentifierLine(el) {
+    $(el).parent().parent().remove();
+  }
+
 </script>
 <script src="{{ url_for('static', filename='js/libs/typeahead.bundle.js') }}"></script>
 <script src="{{ url_for('static', filename='js/libs/bootstrap-rating-input.min.js') }}"></script>

@@ -30,7 +30,7 @@ except ImportError:
         from flask_dance.consumer.storage.sqla import SQLAlchemyStorage as SQLAlchemyBackend
         from flask_dance.consumer.storage.sqla import first, _get_real_user
         from sqlalchemy.orm.exc import NoResultFound
-        backend_resultcode = True # prevent storing values with this resultcode
+        backend_resultcode = True  # prevent storing values with this resultcode
     except ImportError:
         pass
 
@@ -97,7 +97,7 @@ try:
         def set(self, blueprint, token, user=None, user_id=None):
             uid = first([user_id, self.user_id, blueprint.config.get("user_id")])
             u = first(_get_real_user(ref, self.anon_user)
-                        for ref in (user, self.user, blueprint.config.get("user")))
+                      for ref in (user, self.user, blueprint.config.get("user")))
 
             if self.user_required and not u and not uid:
                 raise ValueError("Cannot set OAuth token without an associated user")

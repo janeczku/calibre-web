@@ -67,6 +67,8 @@ def get_level_name(level):
 
 
 def is_valid_logfile(file_path):
+    if file_path == LOG_TO_STDERR or file_path == LOG_TO_STDOUT:
+        return True
     if not file_path:
         return True
     if os.path.isdir(file_path):
@@ -105,7 +107,9 @@ def setup(log_file, log_level=None):
         # avoid spamming the log with debug messages from libraries
         r.setLevel(log_level)
 
-    log_file = _absolute_log_file(log_file, DEFAULT_LOG_FILE)
+    # Otherwise name get's destroyed on windows
+    if log_file != LOG_TO_STDERR and log_file != LOG_TO_STDOUT:
+        log_file = _absolute_log_file(log_file, DEFAULT_LOG_FILE)
 
     previous_handler = r.handlers[0] if r.handlers else None
     if previous_handler:
@@ -119,7 +123,7 @@ def setup(log_file, log_level=None):
             file_handler = StreamHandler(sys.stdout)
             file_handler.baseFilename = log_file
         else:
-            file_handler = StreamHandler()
+            file_handler = StreamHandler(sys.stderr)
             file_handler.baseFilename = log_file
     else:
         try:

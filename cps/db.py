@@ -25,7 +25,7 @@ import ast
 
 from sqlalchemy import create_engine
 from sqlalchemy import Table, Column, ForeignKey
-from sqlalchemy import String, Integer, Boolean, TIMESTAMP, Float
+from sqlalchemy import String, Integer, Boolean, TIMESTAMP, Float, DateTime
 from sqlalchemy.orm import relationship, sessionmaker, scoped_session
 from sqlalchemy.ext.declarative import declarative_base
 
