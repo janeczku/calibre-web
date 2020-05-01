@@ -177,7 +177,10 @@ def delete_book(book_id, book_format):
         book = db.session.query(db.Books).filter(db.Books.id == book_id).first()
         if book:
             try:
-                helper.delete_book(book, config.config_calibre_dir, book_format=book_format.upper())
+                result, error = helper.delete_book(book, config.config_calibre_dir, book_format=book_format.upper())
+                if not result:
+                    flash(error, category="error")
+                    return redirect(url_for('editbook.edit_book', book_id=book_id))
                 if not book_format:
                     # delete book from Shelfs, Downloads, Read list
                     ub.session.query(ub.BookShelf).filter(ub.BookShelf.book_id == book_id).delete()
@@ -233,8 +236,10 @@ def delete_book(book_id, book_format):
             # book not found
             log.error('Book with id "%s" could not be deleted: not found', book_id)
     if book_format:
+        flash(_('Book Format Successfully Deleted'), category="success")
         return redirect(url_for('editbook.edit_book', book_id=book_id))
     else:
+        flash(_('Book Successfully Deleted'), category="success")
         return redirect(url_for('web.index'))
 
 
