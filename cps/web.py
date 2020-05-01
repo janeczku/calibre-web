@@ -1593,7 +1593,7 @@ def show_book(book_id):
             except UnknownLocaleError:
                 entries.languages[index].language_name = _(
                     isoLanguages.get(part3=entries.languages[index].lang_code).name)
-        cc = get_cc_columns()
+        cc = get_cc_columns(filter_config_custom_read=True)
         book_in_shelfs = []
         shelfs = ub.session.query(ub.BookShelf).filter(ub.BookShelf.book_id == book_id).all()
         for entry in shelfs:
