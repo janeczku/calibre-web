@@ -860,16 +860,20 @@ def get_search_results(term):
             )).order_by(db.Books.sort).all()
 
 
-def get_cc_columns():
+def get_cc_columns(filter_config_custom_read=False):
     tmpcc = db.session.query(db.Custom_Columns).filter(db.Custom_Columns.datatype.notin_(db.cc_exceptions)).all()
+    cc = []
+    r = None
     if config.config_columns_to_ignore:
-        cc = []
-        for col in tmpcc:
-            r = re.compile(config.config_columns_to_ignore)
-            if not r.match(col.name):
-                cc.append(col)
-    else:
-        cc = tmpcc
+        r = re.compile(config.config_columns_to_ignore)
+
+    for col in tmpcc:
+        if filter_config_custom_read and config.config_read_column and config.config_read_column == col.id:
+            continue
+        if r and r.match(col.label):
+            continue
+        cc.append(col)
+
     return cc
 
 
