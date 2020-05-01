@@ -82,7 +82,7 @@ from . import services
 def create_app():
     try:
         app.wsgi_app = ReverseProxied(ProxyFix(app.wsgi_app, x_for=1, x_host=1))
-    except TypeError:
+    except (ValueError, TypeError):
         app.wsgi_app = ReverseProxied(ProxyFix(app.wsgi_app))
     # For python2 convert path to unicode
     if sys.version_info < (3, 0):
