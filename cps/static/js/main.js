@@ -323,4 +323,17 @@ $(function() {
         $(".discover .row").isotope("layout");
     });
 
+    $(".update-view").click(function(e) {
+        var target = $(this).data("target");
+        var view = $(this).data("view");
+
+        e.preventDefault();
+        e.stopPropagation();
+        var data = {};
+        data[target] = view;
+        console.debug("Updating view data: ", data);
+        $.post( "/ajax/view", data).done(function( ) {
+            location.reload();
+        });
+    });
 });

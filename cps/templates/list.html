@@ -18,6 +18,10 @@
         <button class="btn btn-primary char">{{char.char}}</button>
         {% endfor %}
       </div>
+
+      {% if title == "Series" %}
+      <button class="update-view btn btn-primary" href="#" data-target="series_view" data-view="grid">Grid</button>
+      {% endif %}
     </div>
   <div class="container">
     <div id="list" class="col-xs-12 col-sm-6">
