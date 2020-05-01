@@ -933,8 +933,6 @@ def edit_user(user_id):
 @login_required
 @admin_required
 def reset_user_password(user_id):
-    if not config.get_mail_server_configured():
-        abort(404)
     if current_user is not None and current_user.is_authenticated:
         ret, message = reset_password(user_id)
         if ret == 1:

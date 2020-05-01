@@ -296,15 +296,29 @@ def delete_book_file(book, calibrepath, book_format=None):
             if os.path.isdir(path):
                 if len(next(os.walk(path))[1]):
                     log.error("Deleting book %s failed, path has subfolders: %s", book.id, book.path)
-                    return False
-                shutil.rmtree(path, ignore_errors=True)
+                    return False , _("Deleting book %(id)s failed, path has subfolders: %(path)s",
+                                     id=book.id,
+                                     path=book.path)
+                try:
+                    for root, __, files in os.walk(path):
+                        for f in files:
+                            os.unlink(os.path.join(root, f))
+                    shutil.rmtree(path)
+                except (IOError, OSError) as e:
+                    log.error("Deleting book %s failed: %s", book.id, e)
+                    return False, _("Deleting book %(id)s failed: %(message)s", id=book.id, message=e)
                 authorpath = os.path.join(calibrepath, os.path.split(book.path)[0])
                 if not os.listdir(authorpath):
-                    shutil.rmtree(authorpath, ignore_errors=True)
-                return True
+                    try:
+                        shutil.rmtree(authorpath)
+                    except (IOError, OSError) as e:
+                        log.error("Deleting authorpath for book %s failed: %s", book.id, e)
+                return True, None
             else:
                 log.error("Deleting book %s failed, book path not valid: %s", book.id, book.path)
-                return False
+                return False, _("Deleting book %(id)s failed, book path not valid: %(path)s",
+                                     id=book.id,
+                                     path=book.path)
 
 
 def update_dir_structure_file(book_id, calibrepath, first_author):
@@ -413,7 +427,7 @@ def update_dir_structure_gdrive(book_id, first_author):
 
 
 def delete_book_gdrive(book, book_format):
-    error = False
+    error = None
     if book_format:
         name = ''
         for entry in book.data:
@@ -427,7 +441,8 @@ def delete_book_gdrive(book, book_format):
         gFile.Trash()
     else:
         error = _(u'Book path %(path)s not found on Google Drive', path=book.path)  # file not found
-    return error
+
+    return error is None, error
 
 
 def reset_password(user_id):
