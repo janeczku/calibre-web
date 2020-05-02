@@ -73,8 +73,6 @@ except ImportError as e:
     log.debug('cannot import Pillow, using png and webp images as cover will not work: %s', e)
     use_PIL = False
 
-__author__ = 'lemmsh'
-
 
 def process(tmp_file_path, original_file_name, original_file_extension, rarExcecutable):
     meta = None
