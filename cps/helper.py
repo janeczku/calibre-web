@@ -142,7 +142,7 @@ def check_send_to_kindle(entry):
     """
     if len(entry.data):
         bookformats = list()
-        if config.config_ebookconverter == 0:
+        if not config.config_converterpath:
             # no converter - only for mobi and pdf formats
             for ele in iter(entry.data):
                 if 'MOBI' in ele.format:
@@ -173,7 +173,7 @@ def check_send_to_kindle(entry):
                 bookformats.append({'format': 'Pdf',
                                     'convert': 0,
                                     'text': _('Send %(format)s to Kindle', format='Pdf')})
-            if config.config_ebookconverter == 2:
+            if config.config_converterpath:
                 if 'EPUB' in formats and not 'MOBI' in formats:
                     bookformats.append({'format': 'Mobi',
                                         'convert':1,

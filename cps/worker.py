@@ -297,7 +297,7 @@ class WorkerThread(threading.Thread):
             return
 
         try:
-            if config.config_ebookconverter == 2:
+            if config.config_converterpath:
                 # Linux py2.7 encode as list without quotes no empty element for parameters
                 # linux py3.x no encode and as list without quotes no empty element for parameters
                 # windows py2.7 encode as string with quotes empty element for parameters is okay
@@ -341,11 +341,7 @@ class WorkerThread(threading.Thread):
             if not ele.startswith('Traceback') and not ele.startswith('  File'):
                 error_message = "Calibre failed with error: %s" % ele.strip('\n')
 
-        # kindlegen returncodes
-        # 0 = Info(prcgen):I1036: Mobi file built successfully
-        # 1 = Info(prcgen):I1037: Mobi file built with WARNINGS!
-        # 2 = Info(prcgen):I1038: MOBI file could not be generated because of errors!
-        if check == 0 and config.config_ebookconverter == 2:
+        if check == 0:
             cur_book = db.session.query(db.Books).filter(db.Books.id == bookid).first()
             if os.path.isfile(file_path + format_new_ext):
                 new_format = db.Data(name=cur_book.data[0].name,

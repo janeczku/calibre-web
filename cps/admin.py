@@ -534,10 +534,9 @@ def _configuration_update_helper():
     reboot_required |= _config_checkbox_int("config_kobo_sync")
     _config_checkbox_int("config_kobo_proxy")
 
-
-    _config_int("config_ebookconverter")
     _config_string("config_calibre")
     _config_string("config_converterpath")
+    _config_string("config_kepubifypath")
 
     reboot_required |= _config_int("config_login_type")
 
