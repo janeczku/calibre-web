@@ -112,7 +112,7 @@ class _Settings(_Base):
     config_converterpath = Column(String)
     config_calibre = Column(String)
     config_rarfile_location = Column(String)
-    config_upload_formats = Column(String)
+    config_upload_formats = Column(String, default=constants.EXTENSIONS_UPLOAD)
 
     config_updatechannel = Column(Integer, default=constants.UPDATE_STABLE)
 
