@@ -154,16 +154,28 @@
     <div id="collapsefive" class="panel-collapse collapse">
       <div class="panel-body">
     <div class="form-group">
-        <input type="checkbox" id="config_uploading" name="config_uploading" {% if config.config_uploading %}checked{% endif %}>
+        <input type="checkbox" id="config_uploading" data-control="upload_settings" name="config_uploading" {% if config.config_uploading %}checked{% endif %}>
         <label for="config_uploading">{{_('Enable Uploads')}}</label>
+    </div>
+    <div data-related="upload_settings">
+      <div class="form-group">
+        <label for="config_upload_formats">{{_('Allowed Upload Fileformats')}}</label>
+        <input type="text" class="form-control" name="config_upload_formats" id="config_upload_formats" value="{% if config.config_upload_formats != None %}{{ config.config_upload_formats }}{% endif %}" autocomplete="off">
+      </div>
     </div>
     <div class="form-group">
         <input type="checkbox" id="config_anonbrowse" name="config_anonbrowse" {% if config.config_anonbrowse %}checked{% endif %}>
         <label for="config_anonbrowse">{{_('Enable Anonymous Browsing')}}</label>
     </div>
     <div class="form-group">
-        <input type="checkbox" id="config_public_reg" name="config_public_reg" {% if config.config_public_reg %}checked{% endif %}>
+        <input type="checkbox" id="config_public_reg" data-control="register_settings" name="config_public_reg" {% if config.config_public_reg %}checked{% endif %}>
         <label for="config_public_reg">{{_('Enable Public Registration')}}</label>
+    </div>
+    <div data-related="register_settings">
+      <div class="form-group">
+        <input type="checkbox" id="config_register_email" name="config_register_email" {% if config.config_register_email %}checked{% endif %}>
+        <label for="config_register_email">{{_('Use E-Mail as Username')}}</label>
+      </div>
     </div>
     <div class="form-group">
       <input type="checkbox" id="config_remote_login" name="config_remote_login" {% if config.config_remote_login %}checked{% endif %}>
@@ -327,27 +339,23 @@
     <div id="collapseeight" class="panel-collapse collapse">
       <div class="panel-body">
           <div class="form-group">
-              <div><input type="radio" name="config_ebookconverter" id="converter0" value="0" {% if config.config_ebookconverter == 0 %}checked{% endif %}>
-              <label for="converter0">{{_('No Converter')}}</label></div>
-              <div><input type="radio" name="config_ebookconverter" id="converter2" value="2" {% if config.config_ebookconverter == 2 %}checked{% endif %}>
-              <label for="converter2">{{_('Use calibre\'s ebook converter')}}</label></div>
+              <label for="config_calibre">{{_('Calibre E-Book Converter Settings')}}</label>
+              <input type="text" class="form-control" id="config_calibre" name="config_calibre" value="{% if config.config_calibre != None %}{{ config.config_calibre }}{% endif %}" autocomplete="off">
           </div>
-          <div data-related="calibre">
-            <div class="form-group">
-                <label for="config_calibre">{{_('E-Book converter settings')}}</label>
-                <input type="text" class="form-control" id="config_calibre" name="config_calibre" value="{% if config.config_calibre != None %}{{ config.config_calibre }}{% endif %}" autocomplete="off">
-            </div>
-            <div class="form-group">
-                <label for="config_calibre">{{_('Path to convertertool')}}</label>
-                <input type="text" class="form-control" id="config_converterpath" name="config_converterpath" value="{% if config.config_converterpath != None %}{{ config.config_converterpath }}{% endif %}" autocomplete="off">
-            </div>
+          <div class="form-group">
+              <label for="config_converterpath">{{_('Path to Calibre E-Book Converter')}}</label>
+              <input type="text" class="form-control" id="config_converterpath" name="config_converterpath" value="{% if config.config_converterpath != None %}{{ config.config_converterpath }}{% endif %}" autocomplete="off">
           </div>
-          {% if feature_support['rar'] %}
-            <div class="form-group">
-                <label for="config_rarfile_location">{{_('Location of Unrar binary')}}</label>
-                <input type="text" class="form-control" name="config_rarfile_location" id="config_rarfile_location" value="{% if config.config_rarfile_location != None %}{{ config.config_rarfile_location }}{% endif %}" autocomplete="off">
-            </div>
-          {% endif %}
+          <div class="form-group">
+              <label for="config_calibre">{{_('Path to Kepubify E-Book Converter')}}</label>
+              <input type="text" class="form-control" id="config_kepubifypath" name="config_converterpath" value="{% if config.config_kepubifypath != None %}{{ config.config_kepubifypath }}{% endif %}" autocomplete="off">
+          </div>
+        {% if feature_support['rar'] %}
+          <div class="form-group">
+              <label for="config_rarfile_location">{{_('Location of Unrar binary')}}</label>
+              <input type="text" class="form-control" name="config_rarfile_location" id="config_rarfile_location" value="{% if config.config_rarfile_location != None %}{{ config.config_rarfile_location }}{% endif %}" autocomplete="off">
+          </div>
+        {% endif %}
       </div>
     </div>
   </div>

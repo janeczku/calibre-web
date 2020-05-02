@@ -29,8 +29,8 @@ log = logger.create()
 
 # _() necessary to make babel aware of string for translation
 _NOT_CONFIGURED = _('not configured')
-_NOT_INSTALLED = 'not installed'
-_EXECUTION_ERROR = 'Execution permissions missing'
+_NOT_INSTALLED = _('not installed')
+_EXECUTION_ERROR = _('Execution permissions missing')
 
 
 def _get_command_version(path, pattern, argument=None):
@@ -49,14 +49,11 @@ def _get_command_version(path, pattern, argument=None):
 
 
 def get_calibre_version():
-    version = None
-    if config.config_ebookconverter == 2:
-        version = _get_command_version(config.config_converterpath, r'ebook-convert.*\(calibre', '--version')
-    return version or _NOT_CONFIGURED
+    # version = None
+    # if config.config_ebookconverter == 2:
+    return _get_command_version(config.config_converterpath, r'ebook-convert.*\(calibre', '--version') \
+           or _NOT_CONFIGURED
 
 
 def get_unrar_version():
-    version = None
-    if config.config_ebookconverter == 2:
-        version = _get_command_version(config.config_converterpath, r'ebook-convert.*\(calibre', '--version')
-    return version or _NOT_CONFIGURED
+    return _get_command_version(config.config_rarfile_location, r'UNRAR.*\d') or _NOT_CONFIGURED

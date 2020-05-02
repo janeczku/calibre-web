@@ -87,7 +87,7 @@ class _Settings(_Base):
     config_use_goodreads = Column(Boolean, default=False)
     config_goodreads_api_key = Column(String)
     config_goodreads_api_secret = Column(String)
-
+    config_register_email = Column(Boolean, default=False)
     config_login_type = Column(Integer, default=0)
 
     config_kobo_proxy = Column(Boolean, default=False)
@@ -107,10 +107,12 @@ class _Settings(_Base):
     config_ldap_group_members_field = Column(String, default='memberUid')
     config_ldap_group_name = Column(String, default='calibreweb')
 
-    config_ebookconverter = Column(Integer, default=0)
+    # config_ebookconverter = Column(Integer, default=0)
+    config_kepubifypath = Column(String)
     config_converterpath = Column(String)
     config_calibre = Column(String)
     config_rarfile_location = Column(String)
+    config_upload_formats = Column(String)
 
     config_updatechannel = Column(Integer, default=constants.UPDATE_STABLE)
 

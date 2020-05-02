@@ -264,7 +264,7 @@ def render_edit_book(book_id):
 
     # Option for showing convertbook button
     valid_source_formats=list()
-    if config.config_ebookconverter == 2:
+    if config.config_converterpath:
         for file in book.data:
             if file.format.lower() in constants.EXTENSIONS_CONVERT:
                 valid_source_formats.append(file.format.lower())
