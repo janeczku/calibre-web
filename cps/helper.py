@@ -173,14 +173,13 @@ def check_send_to_kindle(entry):
                 bookformats.append({'format': 'Pdf',
                                     'convert': 0,
                                     'text': _('Send %(format)s to Kindle', format='Pdf')})
-            if config.config_ebookconverter >= 1:
+            if config.config_ebookconverter == 2:
                 if 'EPUB' in formats and not 'MOBI' in formats:
                     bookformats.append({'format': 'Mobi',
                                         'convert':1,
                                         'text': _('Convert %(orig)s to %(format)s and send to Kindle',
                                                   orig='Epub',
                                                   format='Mobi')})
-            if config.config_ebookconverter == 2:
                 if 'AZW3' in formats and not 'MOBI' in formats:
                     bookformats.append({'format': 'Mobi',
                                         'convert': 2,

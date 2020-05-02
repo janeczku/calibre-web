@@ -89,6 +89,7 @@ def stats():
     authors = db.session.query(db.Authors).count()
     categorys = db.session.query(db.Tags).count()
     series = db.session.query(db.Series).count()
-    _VERSIONS['ebook converter'] = _(converter.get_version())
+    _VERSIONS['ebook converter'] = _(converter.get_calibre_version())
+    _VERSIONS['unrar'] = _(converter.get_version())
     return render_title_template('stats.html', bookcounter=counter, authorcounter=authors, versions=_VERSIONS,
                                  categorycounter=categorys, seriecounter=series, title=_(u"Statistics"), page="stat")
