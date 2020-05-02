@@ -48,10 +48,15 @@ def _get_command_version(path, pattern, argument=None):
     return _NOT_INSTALLED
 
 
-def get_version():
+def get_calibre_version():
     version = None
-    if config.config_ebookconverter == 1:
-        version = _get_command_version(config.config_converterpath, r'Amazon kindlegen\(')
-    elif config.config_ebookconverter == 2:
+    if config.config_ebookconverter == 2:
+        version = _get_command_version(config.config_converterpath, r'ebook-convert.*\(calibre', '--version')
+    return version or _NOT_CONFIGURED
+
+
+def get_unrar_version():
+    version = None
+    if config.config_ebookconverter == 2:
         version = _get_command_version(config.config_converterpath, r'ebook-convert.*\(calibre', '--version')
     return version or _NOT_CONFIGURED

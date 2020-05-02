@@ -719,7 +719,6 @@ def upload():
                          os.path.join(filepath, "cover.jpg"))
             else:
                 has_cover = 1
-                move(meta.cover, os.path.join(filepath, "cover.jpg"))
 
             # handle authors
             is_author = db.session.query(db.Authors).filter(db.Authors.name == authr).first()
@@ -796,6 +795,10 @@ def upload():
             if config.config_use_google_drive:
                 gdriveutils.updateGdriveCalibreFromLocal()
             error = helper.update_dir_stucture(book.id, config.config_calibre_dir)
+
+            # move cover to final directory, including book id
+            if has_cover:
+                move(meta.cover, os.path.join(filepath+ ' ({})'.format(book_id), "cover.jpg"))
             db.session.commit()
             if config.config_use_google_drive:
                 gdriveutils.updateGdriveCalibreFromLocal()
