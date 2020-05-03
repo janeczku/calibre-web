@@ -172,7 +172,7 @@ msgstr "Configurazione del server e-mail aggiornata"
 
 #: cps/admin.py:821
 msgid "User not found"
-msgstr ""
+msgstr "Utente non trovato"
 
 #: cps/admin.py:842
 #, python-format
@@ -185,7 +185,7 @@ msgstr "Non rimarrebbe nessun utente amministratore, non posso eliminare l'utent
 
 #: cps/admin.py:851
 msgid "No admin user remaining, can't remove admin role"
-msgstr ""
+msgstr "Non rimarrebbe nessun utente amministratore, non posso eliminare il ruolo di amministratore"
 
 #: cps/admin.py:887 cps/web.py:1515
 msgid "Found an existing account for this e-mail address."
@@ -285,11 +285,11 @@ msgstr "non configurato"
 
 #: cps/editbooks.py:239
 msgid "Book Format Successfully Deleted"
-msgstr ""
+msgstr "Il formato del libro è stato eliminato con successo"
 
 #: cps/editbooks.py:242
 msgid "Book Successfully Deleted"
-msgstr ""
+msgstr "Il libro é stato eliminato con successo"
 
 #: cps/editbooks.py:253 cps/editbooks.py:489
 msgid "Error opening eBook. File does not exist or file is not accessible"
@@ -321,12 +321,12 @@ msgstr "Impossibile creare la cartella %(path)s (autorizzazione negata)."
 #: cps/editbooks.py:434
 #, python-format
 msgid "Failed to store file %(file)s."
-msgstr "Il salvataggio del file %(file)s è fallito."
+msgstr "Il salvataggio del file %(file)s non è riuscito."
 
 #: cps/editbooks.py:451
 #, python-format
 msgid "File format %(ext)s added to %(book)s"
-msgstr "Ho aggiunto l'estensione %(ext)s al libro %(book)s"
+msgstr "Ho aggiunto il formato %(ext)s al libro %(book)s"
 
 #: cps/editbooks.py:606
 msgid "Metadata successfully updated"
@@ -362,7 +362,7 @@ msgstr "Il file %(file)s è stato caricato"
 
 #: cps/editbooks.py:833
 msgid "Source or destination format for conversion missing"
-msgstr "Il formato sorgente o quello di destinazione, necessari alla conversione, mancano"
+msgstr "Mancano o il formato sorgente o quello di destinazione, necessari alla conversione"
 
 #: cps/editbooks.py:841
 #, python-format
@@ -446,17 +446,17 @@ msgstr "Il file richiesto non può essere letto. I permessi sono corretti?"
 #: cps/helper.py:299
 #, python-format
 msgid "Deleting book %(id)s failed, path has subfolders: %(path)s"
-msgstr ""
+msgstr "L'eliminazione del libro %(id)s non è riuscita, poiché il percorso ha delle sottocartelle: %(path)s"
 
 #: cps/helper.py:309
 #, python-format
 msgid "Deleting book %(id)s failed: %(message)s"
-msgstr ""
+msgstr "L'eliminazione del libro %(id)s non è riuscita: %(message)s"
 
 #: cps/helper.py:319
 #, python-format
 msgid "Deleting book %(id)s failed, book path not valid: %(path)s"
-msgstr ""
+msgstr "L'eliminazione del libro %(id)s non è riuscita, poiché il percorso non è valido: %(path)s"
 
 #: cps/helper.py:354
 #, python-format
@@ -489,7 +489,7 @@ msgstr "Errore nel creare la cartella per la copertina"
 
 #: cps/helper.py:555
 msgid "Cover-file is not a valid image file, or could not be stored"
-msgstr ""
+msgstr "Il file della copertina non è in un formato immagine valido o non può essere salvato"
 
 #: cps/helper.py:566
 msgid "Only jpg/jpeg/png/webp files are supported as coverfile"
@@ -501,11 +501,11 @@ msgstr "Solamente i file nei formati jpg/jpeg sono supportati per le copertine"
 
 #: cps/helper.py:622
 msgid "Unrar binary file not found"
-msgstr ""
+msgstr "Non ho trovato il file binario di UnRar"
 
 #: cps/helper.py:635
 msgid "Error excecuting UnRar"
-msgstr ""
+msgstr "Errore nell'eseguire UnRar"
 
 #: cps/helper.py:691
 msgid "Waiting"
@@ -558,19 +558,19 @@ msgstr "Registra con %(provider)s"
 
 #: cps/oauth_bb.py:154
 msgid "Failed to log in with GitHub."
-msgstr "Accesso con GitHub non riuscito."
+msgstr "Accesso con GitHub non è riuscito."
 
 #: cps/oauth_bb.py:159
 msgid "Failed to fetch user info from GitHub."
-msgstr "Fallito il recupero delle informazioni dell'utente da GitHub."
+msgstr "Il recupero delle informazioni dell'utente da GitHub non è riuscito."
 
 #: cps/oauth_bb.py:170
 msgid "Failed to log in with Google."
-msgstr "Fallito l'accesso con Google."
+msgstr "L'accesso con Google non è riuscito."
 
 #: cps/oauth_bb.py:175
 msgid "Failed to fetch user info from Google."
-msgstr "Fallito il recupero delle informazioni dell'utente da Google."
+msgstr "Il recupero delle informazioni dell'utente da Google non è riuscito."
 
 #: cps/oauth_bb.py:225 cps/web.py:1291 cps/web.py:1431
 #, python-format
@@ -584,7 +584,7 @@ msgstr "Collegamento a %(oauth)s avvenuto con successo"
 
 #: cps/oauth_bb.py:241
 msgid "Login failed, No User Linked With OAuth Account"
-msgstr "Accesso fallito, non c'è un utente collegato all'account OAuth"
+msgstr "Accesso non riuscito, non c'è un utente collegato all'account OAuth"
 
 #: cps/oauth_bb.py:283
 #, python-format
@@ -594,7 +594,7 @@ msgstr "Scollegamento da  %(oauth)s avvenuto con successo"
 #: cps/oauth_bb.py:287
 #, python-format
 msgid "Unlink to %(oauth)s Failed"
-msgstr "Scollegamento da  %(oauth)s fallito"
+msgstr "Scollegamento da  %(oauth)s non riuscito"
 
 #: cps/oauth_bb.py:290
 #, python-format
@@ -818,11 +818,11 @@ msgstr "Mostra la selezione del formato dei file"
 
 #: cps/ub.py:107 cps/web.py:1150
 msgid "Archived Books"
-msgstr ""
+msgstr "Libri archiviati"
 
 #: cps/ub.py:109
 msgid "Show archived books"
-msgstr ""
+msgstr "Mostra l'opzione per la selezione dei libri archiviati"
 
 #: cps/updater.py:294 cps/updater.py:305 cps/updater.py:406 cps/updater.py:420
 msgid "Unexpected data while reading update information"
@@ -1360,23 +1360,23 @@ msgstr "Descrizione"
 
 #: cps/templates/book_edit.html:66
 msgid "Identifiers"
-msgstr ""
+msgstr "Identificatori"
 
 #: cps/templates/book_edit.html:70 cps/templates/book_edit.html:308
 msgid "Identifier Type"
-msgstr ""
+msgstr "Tipo di identificatore"
 
 #: cps/templates/book_edit.html:71 cps/templates/book_edit.html:309
 msgid "Identifier Value"
-msgstr ""
+msgstr "Valore dell'identificatore"
 
 #: cps/templates/book_edit.html:72 cps/templates/book_edit.html:310
 msgid "Remove"
-msgstr ""
+msgstr "Rimuovi"
 
 #: cps/templates/book_edit.html:76
 msgid "Add Identifier"
-msgstr ""
+msgstr "Aggiungi un identificatore"
 
 #: cps/templates/book_edit.html:80 cps/templates/search_form.html:33
 msgid "Tags"
@@ -1453,11 +1453,11 @@ msgstr "e dal disco rigido"
 
 #: cps/templates/book_edit.html:209
 msgid "Important Kobo Note: deleted books will remain on any paired Kobo device."
-msgstr ""
+msgstr "Oservazione importante riguardo Kobo: i libri eliminati, rimarranno in ogni lettore Kobo accoppiato."
 
 #: cps/templates/book_edit.html:210
 msgid "Books must first be archived and the device synced before a book can safely be deleted."
-msgstr ""
+msgstr "Prima di poter elimnare in sicurezza un libro, prima occorre che il libro venga archiviato e che l'apparecchio venga sincronizzato."
 
 #: cps/templates/book_edit.html:232
 msgid "Keyword"
@@ -1775,7 +1775,7 @@ msgstr "Percorso del convertitore"
 
 #: cps/templates/config_edit.html:349
 msgid "Location of Unrar binary"
-msgstr "Percorso di UnRar"
+msgstr "Percorso del file binario di UnRar"
 
 #: cps/templates/config_edit.html:368 cps/templates/layout.html:84
 #: cps/templates/login.html:4 cps/templates/login.html:20
@@ -1912,15 +1912,15 @@ msgstr "da leggere"
 
 #: cps/templates/detail.html:208
 msgid "Restore from archive"
-msgstr ""
+msgstr "Ripristina dall'archivio"
 
 #: cps/templates/detail.html:208
 msgid "Add to archive"
-msgstr ""
+msgstr "Aggiungi all'archivio"
 
 #: cps/templates/detail.html:209
 msgid "Archived"
-msgstr ""
+msgstr "Archiviato"
 
 #: cps/templates/detail.html:219
 msgid "Description:"
@@ -2252,7 +2252,7 @@ msgstr "Scuro"
 
 #: cps/templates/readcbr.html:121
 msgid "Scale"
-msgstr "Adatta"
+msgstr "Scala"
 
 #: cps/templates/readcbr.html:124
 msgid "Best"
@@ -2396,7 +2396,7 @@ msgstr "Cambia ordine"
 
 #: cps/templates/shelf.html:67
 msgid "Are you sure you want to delete this shelf?"
-msgstr "Vuoi davvero eliminare lo scaffale?"
+msgstr "Vuoi davvero eliminare questo scaffale?"
 
 #: cps/templates/shelf.html:70
 msgid "Shelf will be deleted for all users"
