@@ -30,6 +30,7 @@ from uuid import uuid4
 from flask import Blueprint, request, flash, redirect, url_for, abort, Markup, Response
 from flask_babel import gettext as _
 from flask_login import current_user, login_required
+from sqlalchemy import func
 
 from . import constants, logger, isoLanguages, gdriveutils, uploader, helper
 from . import config, get_locale, db, ub, worker
@@ -680,10 +681,6 @@ def upload():
             tags = meta.tags
             series = meta.series
             series_index = meta.series_id
-            title_dir = helper.get_valid_filename(title)
-            author_dir = helper.get_valid_filename(authr)
-            filepath = os.path.join(config.config_calibre_dir, author_dir, title_dir)
-            saved_filename = os.path.join(filepath, title_dir + meta.extension.lower())
 
             if title != _(u'Unknown') and authr != _(u'Unknown'):
                 entry = helper.check_exists_book(authr, title)
@@ -691,6 +688,11 @@ def upload():
                     log.info("Uploaded book probably exists in library")
                     flash(_(u"Uploaded book probably exists in the library, consider to change before upload new: ")
                         + Markup(render_title_template('book_exists_flash.html', entry=entry)), category="warning")
+
+            title_dir = helper.get_valid_filename(title)
+            author_dir = helper.get_valid_filename(authr)
+            filepath = os.path.join(config.config_calibre_dir, author_dir, title_dir)
+            saved_filename = os.path.join(filepath, title_dir + meta.extension.lower())
 
             # check if file path exists, otherwise create it, copy file to calibre path and delete temp file
             if not os.path.exists(filepath):
@@ -721,7 +723,7 @@ def upload():
                 has_cover = 1
 
             # handle authors
-            is_author = db.session.query(db.Authors).filter(db.Authors.name == authr).first()
+            is_author = db.session.query(db.Authors).filter(db.Authors.name == func.binary(authr)).first()
             if is_author:
                 db_author = is_author
             else:
