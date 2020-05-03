@@ -22,10 +22,11 @@ import sys
 import os
 import re
 import ast
+from datetime import datetime
 
 from sqlalchemy import create_engine
-from sqlalchemy import Table, Column, ForeignKey
-from sqlalchemy import String, Integer, Boolean, TIMESTAMP, Float, DateTime
+from sqlalchemy import Table, Column, ForeignKey, CheckConstraint
+from sqlalchemy import String, Integer, Boolean, TIMESTAMP, Float, DateTime, REAL
 from sqlalchemy.orm import relationship, sessionmaker, scoped_session
 from sqlalchemy.ext.declarative import declarative_base
 
@@ -72,9 +73,9 @@ class Identifiers(Base):
     __tablename__ = 'identifiers'
 
     id = Column(Integer, primary_key=True)
-    type = Column(String)
-    val = Column(String)
-    book = Column(Integer, ForeignKey('books.id'))
+    type = Column(String(collation='NOCASE'), nullable=False, default="isbn")
+    val = Column(String(collation='NOCASE'), nullable=False)
+    book = Column(Integer, ForeignKey('books.id'), nullable=False)
 
     def __init__(self, val, id_type, book):
         self.val = val
@@ -126,8 +127,8 @@ class Comments(Base):
     __tablename__ = 'comments'
 
     id = Column(Integer, primary_key=True)
-    text = Column(String)
-    book = Column(Integer, ForeignKey('books.id'))
+    text = Column(String(collation='NOCASE'), nullable=False)
+    book = Column(Integer, ForeignKey('books.id'), nullable=False)
 
     def __init__(self, text, book):
         self.text = text
@@ -141,7 +142,7 @@ class Tags(Base):
     __tablename__ = 'tags'
 
     id = Column(Integer, primary_key=True, autoincrement=True)
-    name = Column(String)
+    name = Column(String(collation='NOCASE'), unique=True, nullable=False)
 
     def __init__(self, name):
         self.name = name
@@ -154,9 +155,9 @@ class Authors(Base):
     __tablename__ = 'authors'
 
     id = Column(Integer, primary_key=True)
-    name = Column(String)
-    sort = Column(String)
-    link = Column(String)
+    name = Column(String(collation='NOCASE'), unique=True, nullable=False)
+    sort = Column(String(collation='NOCASE'))
+    link = Column(String, nullable=False, default="")
 
     def __init__(self, name, sort, link):
         self.name = name
@@ -171,8 +172,8 @@ class Series(Base):
     __tablename__ = 'series'
 
     id = Column(Integer, primary_key=True)
-    name = Column(String)
-    sort = Column(String)
+    name = Column(String(collation='NOCASE'), unique=True, nullable=False)
+    sort = Column(String(collation='NOCASE'))
 
     def __init__(self, name, sort):
         self.name = name
@@ -186,7 +187,7 @@ class Ratings(Base):
     __tablename__ = 'ratings'
 
     id = Column(Integer, primary_key=True)
-    rating = Column(Integer)
+    rating = Column(Integer, CheckConstraint('rating>-1 AND rating<11'), unique=True)
 
     def __init__(self, rating):
         self.rating = rating
@@ -199,7 +200,7 @@ class Languages(Base):
     __tablename__ = 'languages'
 
     id = Column(Integer, primary_key=True)
-    lang_code = Column(String)
+    lang_code = Column(String(collation='NOCASE'), nullable=False, unique=True)
 
     def __init__(self, lang_code):
         self.lang_code = lang_code
@@ -212,8 +213,8 @@ class Publishers(Base):
     __tablename__ = 'publishers'
 
     id = Column(Integer, primary_key=True)
-    name = Column(String)
-    sort = Column(String)
+    name = Column(String(collation='NOCASE'), nullable=False, unique=True)
+    sort = Column(String(collation='NOCASE'))
 
     def __init__(self, name, sort):
         self.name = name
@@ -227,10 +228,10 @@ class Data(Base):
     __tablename__ = 'data'
 
     id = Column(Integer, primary_key=True)
-    book = Column(Integer, ForeignKey('books.id'))
-    format = Column(String)
-    uncompressed_size = Column(Integer)
-    name = Column(String)
+    book = Column(Integer, ForeignKey('books.id'), nullable=False)
+    format = Column(String(collation='NOCASE'), nullable=False)
+    uncompressed_size = Column(Integer, nullable=False)
+    name = Column(String, nullable=False)
 
     def __init__(self, book, book_format, uncompressed_size, name):
         self.book = book
@@ -247,17 +248,20 @@ class Books(Base):
 
     DEFAULT_PUBDATE = "0101-01-01 00:00:00+00:00"
 
-    id = Column(Integer, primary_key=True)
-    title = Column(String)
-    sort = Column(String)
-    author_sort = Column(String)
-    timestamp = Column(TIMESTAMP)
-    pubdate = Column(String)
-    series_index = Column(String)
-    last_modified = Column(TIMESTAMP)
-    path = Column(String)
-    has_cover = Column(Integer)
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    title = Column(String(collation='NOCASE'), nullable=False, default='Unknown')
+    sort = Column(String(collation='NOCASE'))
+    author_sort = Column(String(collation='NOCASE'))
+    timestamp = Column(TIMESTAMP, default=datetime.utcnow)
+    pubdate = Column(TIMESTAMP, default=datetime.utcnow)
+    series_index = Column(REAL, nullable=False, default=1.0)
+    last_modified = Column(TIMESTAMP, default=datetime.utcnow)
+    path = Column(String, default="", nullable=False)
+    has_cover = Column(Integer, default=0)
     uuid = Column(String)
+    isbn = Column(String(collation='NOCASE'), default="")
+    # Iccn = Column(String(collation='NOCASE'), default="")
+    flags = Column(Integer, nullable=False, default=1)
 
     authors = relationship('Authors', secondary=books_authors_link, backref='books')
     tags = relationship('Tags', secondary=books_tags_link, backref='books',order_by="Tags.name")

@@ -772,8 +772,7 @@ def new_user():
 @admin_required
 def edit_mailsettings():
     content = config.get_mail_settings()
-    # log.debug("edit_mailsettings %r", content)
-    return render_title_template("email_edit.html", content=content, title=_(u"Edit e-mail server settings"),
+    return render_title_template("email_edit.html", content=content, title=_(u"Edit E-mail Server Settings"),
                                  page="mailset")
 
 
