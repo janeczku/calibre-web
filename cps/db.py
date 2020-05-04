@@ -26,7 +26,7 @@ from datetime import datetime
 
 from sqlalchemy import create_engine
 from sqlalchemy import Table, Column, ForeignKey, CheckConstraint
-from sqlalchemy import String, Integer, Boolean, TIMESTAMP, Float, DateTime, REAL
+from sqlalchemy import String, Integer, Boolean, TIMESTAMP, Float, DateTime
 from sqlalchemy.orm import relationship, sessionmaker, scoped_session
 from sqlalchemy.ext.declarative import declarative_base
 
@@ -253,8 +253,8 @@ class Books(Base):
     sort = Column(String(collation='NOCASE'))
     author_sort = Column(String(collation='NOCASE'))
     timestamp = Column(TIMESTAMP, default=datetime.utcnow)
-    pubdate = Column(TIMESTAMP, default=datetime.utcnow)
-    series_index = Column(REAL, nullable=False, default=1.0)
+    pubdate = Column(String) # , default=datetime.utcnow)
+    series_index = Column(String, nullable=False, default="1.0")
     last_modified = Column(TIMESTAMP, default=datetime.utcnow)
     path = Column(String, default="", nullable=False)
     has_cover = Column(Integer, default=0)

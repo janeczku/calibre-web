@@ -30,7 +30,6 @@ from uuid import uuid4
 from flask import Blueprint, request, flash, redirect, url_for, abort, Markup, Response
 from flask_babel import gettext as _
 from flask_login import current_user, login_required
-from sqlalchemy import func
 
 from . import constants, logger, isoLanguages, gdriveutils, uploader, helper
 from . import config, get_locale, db, ub, worker
@@ -182,6 +181,8 @@ def delete_book(book_id, book_format):
                 if not result:
                     flash(error, category="error")
                     return redirect(url_for('editbook.edit_book', book_id=book_id))
+                if error:
+                    flash(error, category="warning")
                 if not book_format:
                     # delete book from Shelfs, Downloads, Read list
                     ub.session.query(ub.BookShelf).filter(ub.BookShelf.book_id == book_id).delete()
@@ -689,6 +690,15 @@ def upload():
                     flash(_(u"Uploaded book probably exists in the library, consider to change before upload new: ")
                         + Markup(render_title_template('book_exists_flash.html', entry=entry)), category="warning")
 
+            # handle authors
+            is_author = db.session.query(db.Authors).filter(db.Authors.name == authr).first()
+            if is_author:
+                db_author = is_author
+                authr= is_author.name
+            else:
+                db_author = db.Authors(authr, helper.get_sorted_author(authr), "")
+                db.session.add(db_author)
+
             title_dir = helper.get_valid_filename(title)
             author_dir = helper.get_valid_filename(authr)
             filepath = os.path.join(config.config_calibre_dir, author_dir, title_dir)
@@ -721,14 +731,6 @@ def upload():
                          os.path.join(filepath, "cover.jpg"))
             else:
                 has_cover = 1
-
-            # handle authors
-            is_author = db.session.query(db.Authors).filter(db.Authors.name == func.binary(authr)).first()
-            if is_author:
-                db_author = is_author
-            else:
-                db_author = db.Authors(authr, helper.get_sorted_author(authr), "")
-                db.session.add(db_author)
 
             # handle series
             db_series = None
