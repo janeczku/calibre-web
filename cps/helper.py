@@ -315,7 +315,7 @@ def delete_book_file(book, calibrepath, book_format=None):
                 return True, None
             else:
                 log.error("Deleting book %s failed, book path not valid: %s", book.id, book.path)
-                return False, _("Deleting book %(id)s failed, book path not valid: %(path)s",
+                return True, _("Deleting book %(id)s, book path not valid: %(path)s",
                                      id=book.id,
                                      path=book.path)
 
