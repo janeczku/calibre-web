@@ -1920,7 +1920,7 @@ msgstr "Aggiungi all'archivio"
 
 #: cps/templates/detail.html:209
 msgid "Archived"
-msgstr "Archiviato"
+msgstr "da archiviare"
 
 #: cps/templates/detail.html:219
 msgid "Description:"
