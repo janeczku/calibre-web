@@ -702,16 +702,11 @@ def upload():
                     return Response(json.dumps({"location": url_for("web.index")}), mimetype='application/json')
             try:
                 copyfile(meta.file_path, saved_filename)
-            except OSError:
-                log.error("Failed to store file %s (Permission denied)", saved_filename)
-                flash(_(u"Failed to store file %(file)s (Permission denied).", file=saved_filename), category="error")
-                return Response(json.dumps({"location": url_for("web.index")}), mimetype='application/json')
-            try:
                 os.unlink(meta.file_path)
-            except OSError:
-                log.error("Failed to delete file %(file)s (Permission denied)", meta.file_path)
-                flash(_(u"Failed to delete file %(file)s (Permission denied).", file= meta.file_path),
-                      category="warning")
+            except OSError as e:
+                log.error("Failed to move file %s: %s", saved_filename, e)
+                flash(_(u"Failed to Move File %(file)s: %(error)s", file=saved_filename, error=e), category="error")
+                return Response(json.dumps({"location": url_for("web.index")}), mimetype='application/json')
 
             if meta.cover is None:
                 has_cover = 0
@@ -719,7 +714,15 @@ def upload():
                          os.path.join(filepath, "cover.jpg"))
             else:
                 has_cover = 1
-                move(meta.cover, os.path.join(filepath, "cover.jpg"))
+                try:
+                    copyfile(meta.cover, os.path.join(filepath, "cover.jpg"))
+                    os.unlink(meta.cover)
+                except OSError as e:
+                    log.error("Failed to move cover file %s: %s", os.path.join(filepath, "cover.jpg"), e)
+                    flash(_(u"Failed to Move Cover File %(file)s: %(error)s", file=os.path.join(filepath, "cover.jpg"),
+                            error=e),
+                          category="error")
+                    return Response(json.dumps({"location": url_for("web.index")}), mimetype='application/json')
 
             # handle authors
             is_author = db.session.query(db.Authors).filter(db.Authors.name == authr).first()
