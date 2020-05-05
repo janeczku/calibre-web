@@ -453,7 +453,7 @@ def upload_single_file(request, book, book_id):
                 "<a href=\"" + url_for('web.show_book', book_id=book.id) + "\">" + uploadText + "</a>")
 
             return uploader.process(
-                saved_filename, *os.path.splitext(requested_file.filename))
+                saved_filename, *os.path.splitext(requested_file.filename), config.config_rarfile_location)
 
 
 def upload_cover(request, book):

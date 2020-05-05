@@ -292,6 +292,7 @@ def delete_book_file(book, calibrepath, book_format=None):
             for file in os.listdir(path):
                 if file.upper().endswith("."+book_format):
                     os.remove(os.path.join(path, file))
+            return True, None
         else:
             if os.path.isdir(path):
                 if len(next(os.walk(path))[1]):
