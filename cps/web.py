@@ -37,9 +37,9 @@ from flask import Blueprint
 from flask import render_template, request, redirect, send_from_directory, make_response, g, flash, abort, url_for
 from flask_babel import gettext as _
 from flask_login import login_user, logout_user, login_required, current_user
-from sqlalchemy.exc import IntegrityError, InvalidRequestError
+from sqlalchemy.exc import IntegrityError, InvalidRequestError, OperationalError
 from sqlalchemy.sql.expression import text, func, true, false, not_, and_, or_
-from werkzeug.exceptions import default_exceptions
+from werkzeug.exceptions import default_exceptions, InternalServerError
 try:
     from werkzeug.exceptions import FailedDependency
 except ImportError:
@@ -119,9 +119,16 @@ for ex in default_exceptions:
 if feature_support['ldap']:
     # Only way of catching the LDAPException upon logging in with LDAP server down
     @app.errorhandler(services.ldap.LDAPException)
-    def handle_exception(e):
-        log.debug('LDAP server not accessible while trying to login to opds feed')
-        return error_http(FailedDependency())
+    def handle_LDAP_exception(e):
+        log.debug('LDAP server not accssible while trying to login to opds feed %s', e)
+        return error_http(e)
+
+# @app.errorhandler(InvalidRequestError)
+#@app.errorhandler(OperationalError)
+#def handle_db_exception(e):
+#    db.session.rollback()
+#    log.error('Database request error: %s',e)
+#    return internal_error(InternalServerError(e))
 
 
 web = Blueprint('web', __name__)
@@ -435,6 +442,10 @@ def toggle_read(book_id):
                 db.session.commit()
         except KeyError:
             log.error(u"Custom Column No.%d is not exisiting in calibre database", config.config_read_column)
+        except OperationalError as e:
+            db.session.rollback()
+            log.error(u"Read status could not set: %e", e)
+
     return ""
 
 @web.route("/ajax/togglearchived/<int:book_id>", methods=['POST'])

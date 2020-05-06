@@ -22,7 +22,7 @@ import os
 import json
 import sys
 
-from sqlalchemy import exc, Column, String, Integer, SmallInteger, Boolean
+from sqlalchemy import exc, Column, String, Integer, SmallInteger, Boolean, BLOB
 from sqlalchemy.ext.declarative import declarative_base
 
 from . import constants, cli, logger, ub
@@ -30,6 +30,15 @@ from . import constants, cli, logger, ub
 
 log = logger.create()
 _Base = declarative_base()
+
+class _Flask_Settings(_Base):
+    __tablename__ = 'flask_settings'
+
+    id = Column(Integer, primary_key=True)
+    flask_session_key = Column(BLOB, default="")
+
+    def __init__(self, key):
+        self.flask_session_key = key
 
 
 # Baseclass for representing settings in app.db with email server settings and Calibre database settings
@@ -304,7 +313,7 @@ def _migrate_table(session, orm_class):
                 log.debug("%s: %s", column_name, err.args[0])
                 if column.default is not None:
                     if sys.version_info < (3, 0):
-                        if isinstance(column.default.arg,unicode):
+                        if isinstance(column.default.arg, unicode):
                             column.default.arg = column.default.arg.encode('utf-8')
                 if column.default is None:
                     column_default = ""
@@ -340,6 +349,7 @@ def _migrate_database(session):
     # make sure the table is created, if it does not exist
     _Base.metadata.create_all(session.bind)
     _migrate_table(session, _Settings)
+    _migrate_table(session, _Flask_Settings)
 
 
 def load_configuration(session):
@@ -357,3 +367,11 @@ def load_configuration(session):
             update({"denied_tags": conf.config_mature_content_tags}, synchronize_session=False)
         session.commit()
     return conf
+
+def get_flask_session_key(session):
+    flask_settings = session.query(_Flask_Settings).one_or_none()
+    if flask_settings == None:
+        flask_settings = _Flask_Settings(os.urandom(32))
+        session.add(flask_settings)
+        session.commit()
+    return flask_settings.flask_session_key
