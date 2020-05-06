@@ -36,10 +36,6 @@ from flask_principal import Principal
 from . import config_sql, logger, cache_buster, cli, ub, db
 from .reverseproxy import ReverseProxied
 from .server import WebServer
-try:
-    from werkzeug.middleware.proxy_fix import ProxyFix
-except ImportError:
-    from werkzeug.contrib.fixers import ProxyFix
 
 mimetypes.init()
 mimetypes.add_type('application/xhtml+xml', '.xhtml')
@@ -80,10 +76,7 @@ log = logger.create()
 from . import services
 
 def create_app():
-    try:
-        app.wsgi_app = ReverseProxied(ProxyFix(app.wsgi_app, x_for=1, x_host=1))
-    except (ValueError, TypeError):
-        app.wsgi_app = ReverseProxied(ProxyFix(app.wsgi_app))
+    app.wsgi_app = ReverseProxied(app.wsgi_app)
     # For python2 convert path to unicode
     if sys.version_info < (3, 0):
         app.static_folder = app.static_folder.decode('utf-8')
@@ -95,7 +88,7 @@ def create_app():
     log.info('Starting Calibre Web...')
     Principal(app)
     lm.init_app(app)
-    app.secret_key = os.getenv('SECRET_KEY', 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT')
+    app.secret_key = os.getenv('SECRET_KEY', config_sql.get_flask_session_key(ub.session))
 
     web_server.init_app(app, config)
     db.setup_db(config)

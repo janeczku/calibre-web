@@ -127,7 +127,7 @@ def selected_roles(dictionary):
 BookMeta = namedtuple('BookMeta', 'file_path, extension, title, author, cover, description, tags, series, '
                                   'series_id, languages')
 
-STABLE_VERSION = {'version': '0.6.7 Beta'}
+STABLE_VERSION = {'version': '0.6.8 Beta'}
 
 NIGHTLY_VERSION = {}
 NIGHTLY_VERSION[0] = '$Format:%H$'

@@ -35,12 +35,12 @@
       <label for="mail_from">{{_('From E-mail')}}</label>
       <input type="text" class="form-control" name="mail_from" id="mail_from" value="{{content.mail_from}}">
     </div>
+    <label for="mail_size">{{_('Attachment Size Limit')}}</label>
      <div class="form-group input-group">
-      <label for="mail_size" class="sr-only">{{_('Attachment Size Limit')}}</label>
       <input type="number" min="1" max="600" class="form-control" name="attachment_size" id="mail_size" value="{% if config.mail_size != None %}{{ config.mail_size }}{% endif %}">
-          <span class="input-group-btn">
-            <button type="button" id="certfile_path" class="btn btn-default" disabled>MB</button>
-          </span>
+      <span class="input-group-btn">
+        <button type="button" id="certfile_path" class="btn btn-default" disabled>MB</button>
+      </span>
     </div>
     <button type="submit" name="submit" value="submit" class="btn btn-default">{{_('Save')}}</button>
     <button type="submit" name="test" value="test" class="btn btn-default">{{_('Save and Send Test E-mail')}}</button>
