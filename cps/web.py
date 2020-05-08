@@ -838,7 +838,7 @@ def publisher_list():
     if current_user.check_visibility(constants.SIDEBAR_PUBLISHER):
         entries = db.session.query(db.Publishers, func.count('books_publishers_link.book').label('count')) \
             .join(db.books_publishers_link).join(db.Books).filter(common_filters()) \
-            .group_by(text('books_publishers_link.publisher')).order_by(db.Publishers.sort).all()
+            .group_by(text('books_publishers_link.publisher')).order_by(db.Publishers.name).all()
         charlist = db.session.query(func.upper(func.substr(db.Publishers.name, 1, 1)).label('char')) \
             .join(db.books_publishers_link).join(db.Books).filter(common_filters()) \
             .group_by(func.upper(func.substr(db.Publishers.name, 1, 1))).all()
