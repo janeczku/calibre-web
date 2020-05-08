@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2020-05-04 20:19+0200\n"
+"POT-Creation-Date: 2020-05-08 14:54+0200\n"
 "PO-Revision-Date: 2017-04-04 15:09+0200\n"
 "Last-Translator: ElQuimm <quimm@webtaste.com>\n"
 "Language: it\n"
@@ -45,8 +45,8 @@ msgstr "Ricollegato con successo"
 msgid "Unknown command"
 msgstr "Comando sconosciuto"
 
-#: cps/admin.py:115 cps/editbooks.py:504 cps/editbooks.py:514
-#: cps/editbooks.py:620 cps/editbooks.py:622 cps/editbooks.py:688
+#: cps/admin.py:115 cps/editbooks.py:505 cps/editbooks.py:515
+#: cps/editbooks.py:621 cps/editbooks.py:623 cps/editbooks.py:689
 #: cps/updater.py:509 cps/uploader.py:99 cps/uploader.py:110
 msgid "Unknown"
 msgstr "Sconosciuto"
@@ -291,7 +291,7 @@ msgstr "Il formato del libro è stato eliminato con successo"
 msgid "Book Successfully Deleted"
 msgstr "Il libro é stato eliminato con successo"
 
-#: cps/editbooks.py:253 cps/editbooks.py:489
+#: cps/editbooks.py:253 cps/editbooks.py:490
 msgid "Error opening eBook. File does not exist or file is not accessible"
 msgstr "Errore durante l'apertura del libro. Il file non esiste o il file non è accessibile"
 
@@ -304,16 +304,16 @@ msgstr "Modifica i metadati"
 msgid "%(langname)s is not a valid language"
 msgstr "%(langname)s non è una lingua valida"
 
-#: cps/editbooks.py:413 cps/editbooks.py:663
+#: cps/editbooks.py:413 cps/editbooks.py:664
 #, python-format
 msgid "File extension '%(ext)s' is not allowed to be uploaded to this server"
 msgstr "Non è consentito caricare file con l'estensione '%(ext)s' su questo server"
 
-#: cps/editbooks.py:417 cps/editbooks.py:667
+#: cps/editbooks.py:417 cps/editbooks.py:668
 msgid "File to be uploaded must have an extension"
 msgstr "Il file da caricare deve avere un'estensione"
 
-#: cps/editbooks.py:429 cps/editbooks.py:701
+#: cps/editbooks.py:429 cps/editbooks.py:702
 #, python-format
 msgid "Failed to create path %(path)s (Permission denied)."
 msgstr "Impossibile creare la cartella %(path)s (autorizzazione negata)."
@@ -328,48 +328,48 @@ msgstr "Il salvataggio del file %(file)s non è riuscito."
 msgid "File format %(ext)s added to %(book)s"
 msgstr "Ho aggiunto il formato %(ext)s al libro %(book)s"
 
-#: cps/editbooks.py:606
+#: cps/editbooks.py:607
 msgid "Metadata successfully updated"
 msgstr "I metadati sono stati aggiornati con successo"
 
-#: cps/editbooks.py:615
+#: cps/editbooks.py:616
 msgid "Error editing book, please check logfile for details"
 msgstr "Errore nella modifica del libro. Per favore verifica i dettagli nel file di registro (logfile)"
 
-#: cps/editbooks.py:675
+#: cps/editbooks.py:676
 #, python-format
 msgid "File %(filename)s could not saved to temp dir"
 msgstr "Il file %(filename)s non può essere salvato nella cartella temporanea"
 
-#: cps/editbooks.py:692
+#: cps/editbooks.py:693
 msgid "Uploaded book probably exists in the library, consider to change before upload new: "
 msgstr "Probabilmnete il libro caricato esiste già nella libreria; considera di cambiare prima di sottoporlo nuovamente: "
 
-#: cps/editbooks.py:707
+#: cps/editbooks.py:709
 #, python-format
-msgid "Failed to store file %(file)s (Permission denied)."
-msgstr "Impossibile salvare il file %(file)s (autorizzazione negata)."
+msgid "Failed to Move File %(file)s: %(error)s"
+msgstr ""
 
-#: cps/editbooks.py:713
+#: cps/editbooks.py:723
 #, python-format
-msgid "Failed to delete file %(file)s (Permission denied)."
-msgstr "Impossibile eliminare il file %(file)s (autorizzazione negata)."
+msgid "Failed to Move Cover File %(file)s: %(error)s"
+msgstr ""
 
-#: cps/editbooks.py:804
+#: cps/editbooks.py:808
 #, python-format
 msgid "File %(file)s uploaded"
 msgstr "Il file %(file)s è stato caricato"
 
-#: cps/editbooks.py:833
+#: cps/editbooks.py:837
 msgid "Source or destination format for conversion missing"
 msgstr "Mancano o il formato sorgente o quello di destinazione, necessari alla conversione"
 
-#: cps/editbooks.py:841
+#: cps/editbooks.py:845
 #, python-format
 msgid "Book successfully queued for converting to %(book_format)s"
 msgstr "Libro accodato con successo per essere convertito in %(book_format)s"
 
-#: cps/editbooks.py:845
+#: cps/editbooks.py:849
 #, python-format
 msgid "There was an error converting this book: %(res)s"
 msgstr "Si è verificato un errore durante la conversione del libro: %(res)s"
@@ -443,103 +443,103 @@ msgstr "E-mail: %(book)s"
 msgid "The requested file could not be read. Maybe wrong permissions?"
 msgstr "Il file richiesto non può essere letto. I permessi sono corretti?"
 
-#: cps/helper.py:299
+#: cps/helper.py:300
 #, python-format
 msgid "Deleting book %(id)s failed, path has subfolders: %(path)s"
 msgstr "L'eliminazione del libro %(id)s non è riuscita, poiché il percorso ha delle sottocartelle: %(path)s"
 
-#: cps/helper.py:309
+#: cps/helper.py:310
 #, python-format
 msgid "Deleting book %(id)s failed: %(message)s"
 msgstr "L'eliminazione del libro %(id)s non è riuscita: %(message)s"
 
-#: cps/helper.py:319
+#: cps/helper.py:320
 #, python-format
 msgid "Deleting book %(id)s failed, book path not valid: %(path)s"
 msgstr "L'eliminazione del libro %(id)s non è riuscita, poiché il percorso non è valido: %(path)s"
 
-#: cps/helper.py:354
+#: cps/helper.py:355
 #, python-format
 msgid "Rename title from: '%(src)s' to '%(dest)s' failed with error: %(error)s"
 msgstr "La modifica del titolo da '%(src)s' a '%(dest)s' è terminata con l'errore: %(error)s"
 
-#: cps/helper.py:364
+#: cps/helper.py:365
 #, python-format
 msgid "Rename author from: '%(src)s' to '%(dest)s' failed with error: %(error)s"
 msgstr "La modifica dell'autore da '%(src)s' a '%(dest)s' è terminata con l'errore: %(error)s"
 
-#: cps/helper.py:378
+#: cps/helper.py:379
 #, python-format
 msgid "Rename file in path '%(src)s' to '%(dest)s' failed with error: %(error)s"
 msgstr "La modifica del file nella cartella da '%(src)s' a '%(dest)s' è terminata con l'errore: %(error)s"
 
-#: cps/helper.py:404 cps/helper.py:414 cps/helper.py:422
+#: cps/helper.py:405 cps/helper.py:415 cps/helper.py:423
 #, python-format
 msgid "File %(file)s not found on Google Drive"
 msgstr "File %(file)s non trovato su Google Drive"
 
-#: cps/helper.py:443
+#: cps/helper.py:444
 #, python-format
 msgid "Book path %(path)s not found on Google Drive"
 msgstr "Non ho trovato la cartella %(path)s del libro su Google Drive"
 
-#: cps/helper.py:550
+#: cps/helper.py:551
 msgid "Failed to create path for cover"
 msgstr "Errore nel creare la cartella per la copertina"
 
-#: cps/helper.py:555
+#: cps/helper.py:556
 msgid "Cover-file is not a valid image file, or could not be stored"
 msgstr "Il file della copertina non è in un formato immagine valido o non può essere salvato"
 
-#: cps/helper.py:566
+#: cps/helper.py:567
 msgid "Only jpg/jpeg/png/webp files are supported as coverfile"
 msgstr "Solamente i file nei formati jpg/jpeg/png/webp sono supportati per le copertine"
 
-#: cps/helper.py:580
+#: cps/helper.py:581
 msgid "Only jpg/jpeg files are supported as coverfile"
 msgstr "Solamente i file nei formati jpg/jpeg sono supportati per le copertine"
 
-#: cps/helper.py:622
+#: cps/helper.py:623
 msgid "Unrar binary file not found"
 msgstr "Non ho trovato il file binario di UnRar"
 
-#: cps/helper.py:635
+#: cps/helper.py:636
 msgid "Error excecuting UnRar"
 msgstr "Errore nell'eseguire UnRar"
 
-#: cps/helper.py:691
+#: cps/helper.py:692
 msgid "Waiting"
 msgstr "Attendi"
 
-#: cps/helper.py:693
+#: cps/helper.py:694
 msgid "Failed"
 msgstr "Non riuscito"
 
-#: cps/helper.py:695
+#: cps/helper.py:696
 msgid "Started"
 msgstr "Avviato"
 
-#: cps/helper.py:697
+#: cps/helper.py:698
 msgid "Finished"
 msgstr "Terminato"
 
-#: cps/helper.py:699
+#: cps/helper.py:700
 msgid "Unknown Status"
 msgstr "Stato sconosciuto"
 
-#: cps/helper.py:704
+#: cps/helper.py:705
 msgid "E-mail: "
 msgstr "E-mail: "
 
-#: cps/helper.py:706 cps/helper.py:710
+#: cps/helper.py:707 cps/helper.py:711
 msgid "Convert: "
 msgstr "Conversione: "
 
-#: cps/helper.py:708
+#: cps/helper.py:709
 msgid "Upload: "
 msgstr "Upload: "
 
-#: cps/helper.py:712
+#: cps/helper.py:713
 msgid "Unknown Task: "
 msgstr "Processo sconosciuto: "
 
@@ -1920,7 +1920,7 @@ msgstr "Aggiungi all'archivio"
 
 #: cps/templates/detail.html:209
 msgid "Archived"
-msgstr "Archiviato"
+msgstr "da archiviare"
 
 #: cps/templates/detail.html:219
 msgid "Description:"
