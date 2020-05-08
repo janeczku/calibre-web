@@ -130,6 +130,14 @@ if feature_support['ldap']:
 #    log.error('Database request error: %s',e)
 #    return internal_error(InternalServerError(e))
 
+@app.after_request
+def add_security_headers(resp):
+    # resp.headers['Content-Security-Policy']= "script-src 'self' https://www.googleapis.com https://api.douban.com https://comicvine.gamespot.com;"
+    resp.headers['X-Content-Type-Options'] = 'nosniff'
+    resp.headers['X-Frame-Options'] = 'SAMEORIGIN'
+    resp.headers['X-XSS-Protection'] = '1; mode=block'
+    # resp.headers['Strict-Transport-Security'] = 'max-age=31536000; includeSubDomains'
+    return resp
 
 web = Blueprint('web', __name__)
 log = logger.create()
