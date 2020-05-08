@@ -124,6 +124,10 @@ class _Settings(_Base):
     config_rarfile_location = Column(String)
     config_upload_formats = Column(String, default=','.join(constants.EXTENSIONS_UPLOAD))
 
+    config_automatic_kepub = Column(Boolean, default=False)
+    config_kepubify_path = Column(String)
+    config_kepub_cache_dir = Column(String)
+
     config_updatechannel = Column(Integer, default=constants.UPDATE_STABLE)
 
     config_reverse_proxy_login_header_name = Column(String)

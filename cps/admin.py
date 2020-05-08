@@ -538,6 +538,11 @@ def _configuration_update_helper():
     _config_string("config_converterpath")
     _config_string("config_kepubifypath")
 
+
+    _config_checkbox_int("config_automatic_kepub")
+    _config_string("config_kepubify_path")
+    _config_string("config_kepub_cache_dir")
+
     reboot_required |= _config_int("config_login_type")
 
     #LDAP configurator,

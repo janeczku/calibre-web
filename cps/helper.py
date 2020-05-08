@@ -593,7 +593,8 @@ def save_cover(img, book_path):
         return save_cover_from_filestorage(os.path.join(config.config_calibre_dir, book_path), "cover.jpg", img)
 
 
-def do_download_file(book, book_format, data, headers):
+
+def do_download_file(book, book_format, client, data, headers):
     if config.config_use_google_drive:
         startTime = time.time()
         df = gd.getFileFromEbooksFolder(book.path, data.name + "." + book_format)
@@ -607,7 +608,18 @@ def do_download_file(book, book_format, data, headers):
         if not os.path.isfile(os.path.join(filename, data.name + "." + book_format)):
             # ToDo: improve error handling
             log.error('File not found: %s', os.path.join(filename, data.name + "." + book_format))
+
+        if client == "kobo" and book_format == "epub":
+            filename = config.config_kepub_cache_dir
+            os.system('{0} "{1}" -o {2}'.format( 
+                    config.config_kepubify_path,
+                    os.path.join(filename, data.name + "." + book_format),
+                    filename))
+            book_format = "kepub.epub"
+            headers["Content-Disposition"] = headers["Content-Disposition"].replace(".epub", ".kepub.epub")
+
         response = make_response(send_from_directory(filename, data.name + "." + book_format))
+
         response.headers = headers
         return response
 
@@ -876,8 +888,7 @@ def get_cc_columns(filter_config_custom_read=False):
 
     return cc
 
-
-def get_download_link(book_id, book_format):
+def get_download_link(book_id, book_format, client):
     book_format = book_format.split(".")[0]
     book = db.session.query(db.Books).filter(db.Books.id == book_id).filter(common_filters()).first()
     if book:
@@ -897,7 +908,7 @@ def get_download_link(book_id, book_format):
         headers["Content-Type"] = mimetypes.types_map.get('.' + book_format, "application/octet-stream")
         headers["Content-Disposition"] = "attachment; filename=%s.%s; filename*=UTF-8''%s.%s" % (
             quote(file_name.encode('utf-8')), book_format, quote(file_name.encode('utf-8')), book_format)
-        return do_download_file(book, book_format, data1, headers)
+        return do_download_file(book, book_format, client, data1, headers)
     else:
         abort(404)
 

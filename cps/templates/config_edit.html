@@ -363,6 +363,18 @@
               <button type="button" id="kepubify_path" class="btn btn-default"><span class="glyphicon glyphicon-folder-open"></span></button>
             </span>
           </div>
+            <div class="form-group">
+                <input type="checkbox" id="config_automatic_kepub" name="config_automatic_kepub" {% if config.config_automatic_kepub %}checked{% endif %}>
+                <label for="config_uploading">{{_('Enable automatic kobo epub conversion')}}</label>
+            </div>
+            <div class="form-group">
+                <label for="config_kepubify_path">{{_('Path to kepubify')}}</label>
+                <input type="text" class="form-control" id="config_kepubify_path" name="config_kepubify_path" value="{% if config.config_kepubify_path != None %}{{ config.config_kepubify_path }}{% endif %}" autocomplete="off">
+            </div>
+            <div class="form-group">
+                <label for="config_kepub_cache_dir">{{_('Path to kepubify')}}</label>
+                <input type="text" class="form-control" id="config_kepub_cache_dir" name="config_kepub_cache_dir" value="{% if config.config_kepub_cache_dir != None %}{{ config.config_kepub_cache_dir }}{% endif %}" autocomplete="off">
+            </div>          
         {% if feature_support['rar'] %}
             <label for="config_rarfile_location">{{_('Location of Unrar binary')}}</label>
            <div class="form-group input-group">
