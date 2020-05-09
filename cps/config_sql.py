@@ -142,6 +142,22 @@ class _ConfigSQL(object):
         self.config_calibre_dir = None
         self.load()
 
+        change = False
+        if self.config_converterpath == None:
+            change = True
+            self.config_converterpath = autodetect_calibre_binary()
+
+        if self.config_kepubifypath == None:
+            change = True
+            self.config_kepubifypath = autodetect_kepubify_binary()
+
+        if self.config_rarfile_location == None:
+            change = True
+            self.config_rarfile_location = autodetect_unrar_binary()
+        if change:
+            self.save()
+
+
     def _read_from_storage(self):
         if self._settings is None:
             log.debug("_ConfigSQL._read_from_storage")
@@ -275,16 +291,6 @@ class _ConfigSQL(object):
                 db_file = os.path.join(self.config_calibre_dir, 'metadata.db')
                 have_metadata_db = os.path.isfile(db_file)
         self.db_configured = have_metadata_db
-
-        if self.config_converterpath == None:
-            self.config_converterpath = autodetect_calibre_binary()
-
-        if self.config_kepubifypath == None:
-            self.config_kepubifypath = autodetect_kepubify_binary()
-
-        if self.config_rarfile_location == None:
-            self.config_rarfile_location = autodetect_unrar_binary()
-
 
         logger.setup(self.config_logfile, self.config_log_level)
 
