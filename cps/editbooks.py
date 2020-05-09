@@ -24,7 +24,7 @@ from __future__ import division, print_function, unicode_literals
 import os
 from datetime import datetime
 import json
-from shutil import move, copyfile
+from shutil import copyfile
 from uuid import uuid4
 
 from flask import Blueprint, request, flash, redirect, url_for, abort, Markup, Response
@@ -267,19 +267,27 @@ def render_edit_book(book_id):
 
     # Option for showing convertbook button
     valid_source_formats=list()
+    allowed_conversion_formats = list()
+    kepub_possible=None
     if config.config_converterpath:
         for file in book.data:
             if file.format.lower() in constants.EXTENSIONS_CONVERT:
                 valid_source_formats.append(file.format.lower())
+    if config.config_kepubifypath and 'epub' in [file.format.lower() for file in book.data]:
+        kepub_possible = True
+        if not config.config_converterpath:
+            valid_source_formats.append('epub')
 
     # Determine what formats don't already exist
-    allowed_conversion_formats = constants.EXTENSIONS_CONVERT.copy()
-    for file in book.data:
-        try:
-            allowed_conversion_formats.remove(file.format.lower())
-        except Exception:
-            log.warning('%s already removed from list.', file.format.lower())
-
+    if config.config_converterpath:
+        allowed_conversion_formats = constants.EXTENSIONS_CONVERT.copy()
+        for file in book.data:
+            try:
+                allowed_conversion_formats.remove(file.format.lower())
+            except Exception:
+                log.warning('%s already removed from list.', file.format.lower())
+    if kepub_possible:
+        allowed_conversion_formats.append('kepub')
     return render_title_template('book_edit.html', book=book, authors=author_names, cc=cc,
                                  title=_(u"edit metadata"), page="editbook",
                                  conversion_formats=allowed_conversion_formats,
