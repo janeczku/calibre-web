@@ -22,6 +22,7 @@
 
 from __future__ import division, print_function, unicode_literals
 import os
+import re
 import base64
 import json
 import time
@@ -615,6 +616,7 @@ def _configuration_update_helper():
     db_change = False
     to_save = request.form.to_dict()
 
+    to_save['config_calibre_dir'] = re.sub('[[\\/]metadata\.db$', '', to_save['config_calibre_dir'], flags=re.IGNORECASE)
     db_change |= _config_string(to_save, "config_calibre_dir")
 
     # Google drive setup
@@ -691,6 +693,8 @@ def _configuration_update_helper():
     if db_change:
         if not db.setup_db(config):
             return _configuration_result(_('DB Location is not Valid, Please Enter Correct Path'), gdriveError)
+        if not os.access(os.path.join(config.config_calibre_dir, "metadata.db"), os.W_OK):
+            flash(_(u"DB is not writeable"), category="warning")
 
     config.save()
     flash(_(u"Calibre-Web configuration updated"), category="success")
