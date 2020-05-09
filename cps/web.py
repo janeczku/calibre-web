@@ -814,6 +814,12 @@ def render_language_books(page, name, order):
                                  title=_(u"Language: %(name)s", name=lang_name), page="language")
 
 
+@web.route("/table")
+@login_required_if_no_ano
+def books_table():
+    return render_title_template('index.html', random=random, entries=entries, pagination=pagination, id=name,
+                                 title=_(u"Language: %(name)s", name=lang_name), page="language")
+
 @web.route("/author")
 @login_required_if_no_ano
 def author_list():
@@ -1233,8 +1239,7 @@ def serve_book(book_id, book_format, anyname):
 @login_required_if_no_ano
 @download_required
 def download_link(book_id, book_format, anyname):
-    if (config.config_automatic_kepub and
-        "Kobo" in request.headers.get('User-Agent')):
+    if "Kobo" in request.headers.get('User-Agent'):
         client = "kobo"
 
     return get_download_link(book_id, book_format, client)

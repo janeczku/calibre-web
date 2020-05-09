@@ -609,14 +609,8 @@ def do_download_file(book, book_format, client, data, headers):
             # ToDo: improve error handling
             log.error('File not found: %s', os.path.join(filename, data.name + "." + book_format))
 
-        if client == "kobo" and book_format == "epub":
-            filename = config.config_kepub_cache_dir
-            os.system('{0} "{1}" -o {2}'.format( 
-                    config.config_kepubify_path,
-                    os.path.join(filename, data.name + "." + book_format),
-                    filename))
-            book_format = "kepub.epub"
-            headers["Content-Disposition"] = headers["Content-Disposition"].replace(".epub", ".kepub.epub")
+        if client == "kobo" and book_format == "kepub":
+            headers["Content-Disposition"] = headers["Content-Disposition"].replace(".kepub", ".kepub.epub")
 
         response = make_response(send_from_directory(filename, data.name + "." + book_format))
 

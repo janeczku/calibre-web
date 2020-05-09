@@ -168,7 +168,6 @@ def update_view_configuration():
 
     _config_string("config_calibre_web_title")
     _config_string("config_columns_to_ignore")
-    # _config_string("config_mature_content_tags")
     reboot_required |= _config_string("config_title_regex")
 
     _config_int("config_read_column")
@@ -179,7 +178,8 @@ def update_view_configuration():
     _config_int("config_restricted_column")
 
     if config.config_google_drive_watch_changes_response:
-        config.config_google_drive_watch_changes_response = json.dumps(config.config_google_drive_watch_changes_response)
+        config.config_google_drive_watch_changes_response = \
+            json.dumps(config.config_google_drive_watch_changes_response)
 
     config.config_default_role = constants.selected_roles(to_save)
     config.config_default_role &= ~constants.ROLE_ANONYMOUS
@@ -538,11 +538,6 @@ def _configuration_update_helper():
     _config_string("config_converterpath")
     _config_string("config_kepubifypath")
 
-
-    _config_checkbox_int("config_automatic_kepub")
-    _config_string("config_kepubify_path")
-    _config_string("config_kepub_cache_dir")
-
     reboot_required |= _config_int("config_login_type")
 
     #LDAP configurator,
@@ -578,11 +573,6 @@ def _configuration_update_helper():
             else:
                 if not config.config_ldap_serv_username:
                     return _configuration_result('Please Enter a LDAP Service Account', gdriveError)
-
-        #_config_checkbox("config_ldap_use_ssl")
-        #_config_checkbox("config_ldap_use_tls")
-        # reboot_required |= _config_checkbox("config_ldap_openldap")
-        # _config_checkbox("config_ldap_require_cert")
 
         if config.config_ldap_group_object_filter:
             if config.config_ldap_group_object_filter.count("%s") != 1:

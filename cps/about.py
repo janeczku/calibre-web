@@ -91,5 +91,6 @@ def stats():
     series = db.session.query(db.Series).count()
     _VERSIONS['ebook converter'] = _(converter.get_calibre_version())
     _VERSIONS['unrar'] = _(converter.get_unrar_version())
+    _VERSIONS['kepubify'] = _(converter.get_kepubify_version())
     return render_title_template('stats.html', bookcounter=counter, authorcounter=authors, versions=_VERSIONS,
                                  categorycounter=categorys, seriecounter=series, title=_(u"Statistics"), page="stat")

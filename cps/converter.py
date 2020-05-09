@@ -19,6 +19,7 @@
 from __future__ import division, print_function, unicode_literals
 import os
 import re
+import sys
 from flask_babel import gettext as _
 
 from . import config, logger
@@ -49,11 +50,14 @@ def _get_command_version(path, pattern, argument=None):
 
 
 def get_calibre_version():
-    # version = None
-    # if config.config_ebookconverter == 2:
     return _get_command_version(config.config_converterpath, r'ebook-convert.*\(calibre', '--version') \
            or _NOT_CONFIGURED
 
 
 def get_unrar_version():
     return _get_command_version(config.config_rarfile_location, r'UNRAR.*\d') or _NOT_CONFIGURED
+
+def get_kepubify_version():
+    return _get_command_version(config.config_kepubifypath, r'kepubify\s','--version') or _NOT_CONFIGURED
+
+
