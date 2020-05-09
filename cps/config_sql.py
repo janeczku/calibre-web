@@ -117,16 +117,11 @@ class _Settings(_Base):
     config_ldap_group_members_field = Column(String, default='memberUid')
     config_ldap_group_name = Column(String, default='calibreweb')
 
-    # config_ebookconverter = Column(Integer, default=0)
-    config_kepubifypath = Column(String)
-    config_converterpath = Column(String)
+    config_kepubifypath = Column(String, default=None)
+    config_converterpath = Column(String, default=None)
     config_calibre = Column(String)
-    config_rarfile_location = Column(String)
+    config_rarfile_location = Column(String, default=None)
     config_upload_formats = Column(String, default=','.join(constants.EXTENSIONS_UPLOAD))
-
-    config_automatic_kepub = Column(Boolean, default=False)
-    config_kepubify_path = Column(String)
-    config_kepub_cache_dir = Column(String)
 
     config_updatechannel = Column(Integer, default=constants.UPDATE_STABLE)
 
@@ -271,7 +266,8 @@ class _ConfigSQL(object):
                 setattr(self, k, v)
 
         if self.config_google_drive_watch_changes_response:
-            self.config_google_drive_watch_changes_response = json.loads(self.config_google_drive_watch_changes_response)
+            self.config_google_drive_watch_changes_response = \
+                json.loads(self.config_google_drive_watch_changes_response)
 
         have_metadata_db = bool(self.config_calibre_dir)
         if have_metadata_db:
@@ -279,6 +275,16 @@ class _ConfigSQL(object):
                 db_file = os.path.join(self.config_calibre_dir, 'metadata.db')
                 have_metadata_db = os.path.isfile(db_file)
         self.db_configured = have_metadata_db
+
+        if self.config_converterpath == None:
+            self.config_converterpath = autodetect_calibre_binary()
+
+        if self.config_kepubifypath == None:
+            self.config_kepubifypath = autodetect_kepubify_binary()
+
+        if self.config_rarfile_location == None:
+            self.config_rarfile_location = autodetect_unrar_binary()
+
 
         logger.setup(self.config_logfile, self.config_log_level)
 
@@ -337,6 +343,7 @@ def _migrate_table(session, orm_class):
     if changed:
         session.commit()
 
+
 def autodetect_calibre_binary():
     if sys.platform == "win32":
         calibre_path = ["C:\\program files\calibre\calibre-convert.exe",
@@ -346,8 +353,29 @@ def autodetect_calibre_binary():
     for element in calibre_path:
         if os.path.isfile(element) and os.access(element, os.X_OK):
             return element
-    return None
+    return ""
 
+def autodetect_unrar_binary():
+    if sys.platform == "win32":
+        calibre_path = ["C:\\program files\\WinRar\\unRAR.exe",
+                        "C:\\program files(x86)\\WinRar\\unRAR.exe"]
+    else:
+        calibre_path = ["/usr/bin/unrar"]
+    for element in calibre_path:
+        if os.path.isfile(element) and os.access(element, os.X_OK):
+            return element
+    return ""
+
+def autodetect_kepubify_binary():
+    if sys.platform == "win32":
+        calibre_path = ["C:\\program files\\kepubify\\kepubify-windows-64Bit.exe",
+                        "C:\\program files(x86)\\kepubify\\kepubify-windows-64Bit.exe"]
+    else:
+        calibre_path = ["/opt/kepubify/kepubify-linux-64bit", "/opt/kepubify/kepubify-linux-32bit"]
+    for element in calibre_path:
+        if os.path.isfile(element) and os.access(element, os.X_OK):
+            return element
+    return ""
 
 def _migrate_database(session):
     # make sure the table is created, if it does not exist
