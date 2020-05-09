@@ -485,8 +485,8 @@ def basic_configuration():
     return _configuration_result()
 
 
-def _config_int(to_save, x):
-    return config.set_from_dictionary(to_save, x, int)
+def _config_int(to_save, x, func=int):
+    return config.set_from_dictionary(to_save, x, func)
 
 
 def _config_checkbox(to_save, x):
@@ -694,7 +694,7 @@ def _configuration_update_helper():
         if not db.setup_db(config):
             return _configuration_result(_('DB Location is not Valid, Please Enter Correct Path'), gdriveError)
         if not os.access(os.path.join(config.config_calibre_dir, "metadata.db"), os.W_OK):
-            flash(_(u"DB is not writeable"), category="warning")
+            flash(_(u"DB is not Writeable"), category="warning")
 
     config.save()
     flash(_(u"Calibre-Web configuration updated"), category="success")
@@ -901,7 +901,7 @@ def edit_mailsettings():
 @admin_required
 def update_mailsettings():
     to_save = request.form.to_dict()
-    log.debug("update_mailsettings %r", to_save)
+    # log.debug("update_mailsettings %r", to_save)
 
     _config_string(to_save, "mail_server")
     _config_int(to_save, "mail_port")
@@ -909,6 +909,7 @@ def update_mailsettings():
     _config_string(to_save, "mail_login")
     _config_string(to_save, "mail_password")
     _config_string(to_save, "mail_from")
+    _config_int(to_save, "mail_size", lambda y: int(y)*1024*1024)
     config.save()
 
     if to_save.get("test"):

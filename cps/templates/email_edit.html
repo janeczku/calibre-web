@@ -13,7 +13,7 @@
     </div>
     <div class="form-group">
       <label for="mail_port">{{_('SMTP Port')}}</label>
-      <input type="number" min="1" max="65535" class="form-control" name="mail_port" id="mail_port" value="{% if config.mail_port != None %}{{ config.mail_port }}{% endif %}" autocomplete="off">
+      <input type="number" min="1" max="65535" step="1" class="form-control" name="mail_port" id="mail_port" value="{% if content.mail_port != None %}{{ content.mail_port }}{% endif %}" autocomplete="off">
     </div>
     <div class="form-group">
       <label for="mail_use_ssl">{{_('Encryption')}}</label>
@@ -37,9 +37,9 @@
     </div>
     <label for="mail_size">{{_('Attachment Size Limit')}}</label>
      <div class="form-group input-group">
-      <input type="number" min="1" max="600" class="form-control" name="attachment_size" id="mail_size" value="{% if config.mail_size != None %}{{ config.mail_size }}{% endif %}">
+      <input type="number" min="1" max="600" step="1" class="form-control" name="mail_size" id="mail_size" value="{% if content.mail_size != None %}{{ (content.mail_size / 1024 / 1024)|int }}{% endif %}">
       <span class="input-group-btn">
-        <button type="button" id="certfile_path" class="btn btn-default" disabled>MB</button>
+        <button type="button" id="attachement_size" class="btn btn-default" disabled>MB</button>
       </span>
     </div>
     <button type="submit" name="submit" value="submit" class="btn btn-default">{{_('Save')}}</button>
