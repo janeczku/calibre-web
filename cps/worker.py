@@ -24,7 +24,10 @@ import smtplib
 import socket
 import time
 import threading
+from glob import glob
+from shutil import copyfile
 from datetime import datetime
+from sqlalchemy.exc import OperationalError
 
 try:
     from StringIO import StringIO
@@ -43,9 +46,9 @@ from email.utils import make_msgid
 from email.generator import Generator
 from flask_babel import gettext as _
 
-from . import logger, config, db, gdriveutils
+from . import db, logger, config
 from .subproc_wrapper import process_open
-
+from . import gdriveutils
 
 log = logger.create()
 
@@ -288,36 +291,74 @@ class WorkerThread(threading.Thread):
             self._handleSuccess()
             return file_path + format_new_ext
         else:
-            log.info("Book id %d - target format of %s does not exist. Moving forward with convert.", bookid, format_new_ext)
+            log.info("Book id %d - target format of %s does not exist. Moving forward with convert.",
+                     bookid,
+                     format_new_ext)
 
-        # check if converter-executable is existing
-        if not os.path.exists(config.config_converterpath):
-            # ToDo Text is not translated
-            self._handleError(u"Convertertool %s not found" % config.config_converterpath)
-            return
+        if config.config_kepubifypath and format_old_ext == '.epub' and format_new_ext == '.kepub':
+            check, error_message = self._convert_kepubify(file_path,
+                                                          format_old_ext,
+                                                          format_new_ext,
+                                                          index)
+        else:
+            # check if calibre converter-executable is existing
+            if not os.path.exists(config.config_converterpath):
+                # ToDo Text is not translated
+                self._handleError(_(u"Calibre ebook-convert %(tool)s not found", tool=config.config_converterpath))
+                return
+            check, error_message = self._convert_calibre(file_path, format_old_ext, format_new_ext, index)
 
+        if check == 0:
+            cur_book = db.session.query(db.Books).filter(db.Books.id == bookid).first()
+            if os.path.isfile(file_path + format_new_ext):
+                new_format = db.Data(name=cur_book.data[0].name,
+                                         book_format=self.queue[index]['settings']['new_book_format'].upper(),
+                                         book=bookid, uncompressed_size=os.path.getsize(file_path + format_new_ext))
+                cur_book.data.append(new_format)
+                try:
+                    db.session.commit()
+                except OperationalError as e:
+                    db.session.rollback()
+                    log.error("Database error: %s", e)
+                    self._handleError(_(u"Database error: %(error)s.", error=e))
+                    return
+
+                self.queue[index]['path'] = cur_book.path
+                self.queue[index]['title'] = cur_book.title
+                if config.config_use_google_drive:
+                    os.remove(file_path + format_old_ext)
+                self._handleSuccess()
+                return file_path + format_new_ext
+            else:
+                error_message = format_new_ext.upper() + ' format not found on disk'
+        log.info("ebook converter failed with error while converting book")
+        if not error_message:
+            error_message = 'Ebook converter failed with unknown error'
+        self._handleError(error_message)
+        return
+
+
+    def _convert_calibre(self, file_path, format_old_ext, format_new_ext, index):
         try:
-            if config.config_converterpath:
-                # Linux py2.7 encode as list without quotes no empty element for parameters
-                # linux py3.x no encode and as list without quotes no empty element for parameters
-                # windows py2.7 encode as string with quotes empty element for parameters is okay
-                # windows py 3.x no encode and as string with quotes empty element for parameters is okay
-                # separate handling for windows and linux
-                quotes = [1,2]
-                command = [config.config_converterpath, (file_path + format_old_ext),
-                    (file_path + format_new_ext)]
-                quotes_index = 3
-                if config.config_calibre:
-                    parameters = config.config_calibre.split(" ")
-                    for param in parameters:
-                        command.append(param)
-                        quotes.append(quotes_index)
-                        quotes_index += 1
+            # Linux py2.7 encode as list without quotes no empty element for parameters
+            # linux py3.x no encode and as list without quotes no empty element for parameters
+            # windows py2.7 encode as string with quotes empty element for parameters is okay
+            # windows py 3.x no encode and as string with quotes empty element for parameters is okay
+            # separate handling for windows and linux
+            quotes = [1, 2]
+            command = [config.config_converterpath, (file_path + format_old_ext),
+                       (file_path + format_new_ext)]
+            quotes_index = 3
+            if config.config_calibre:
+                parameters = config.config_calibre.split(" ")
+                for param in parameters:
+                    command.append(param)
+                    quotes.append(quotes_index)
+                    quotes_index += 1
+
             p = process_open(command, quotes)
-            # p = subprocess.Popen(command, stdout=subprocess.PIPE, universal_newlines=True)
         except OSError as e:
-            self._handleError(_(u"Ebook-converter failed: %(error)s", error=e))
-            return
+            return 1, _(u"Ebook-converter failed: %(error)s", error=e)
 
         while p.poll() is None:
             nextline = p.stdout.readline()
@@ -340,28 +381,41 @@ class WorkerThread(threading.Thread):
             log.debug(ele.strip('\n'))
             if not ele.startswith('Traceback') and not ele.startswith('  File'):
                 error_message = "Calibre failed with error: %s" % ele.strip('\n')
+        return check, error_message
 
+
+    def _convert_kepubify(self, file_path, format_old_ext, format_new_ext, index):
+        quotes = [1, 3]
+        command = [config.config_kepubifypath, (file_path + format_old_ext), '-o', os.path.dirname(file_path)]
+        try:
+            p = process_open(command, quotes)
+        except OSError as e:
+            return 1, _(u"Kepubify-converter failed: %(error)s", error=e)
+        self.UIqueue[index]['progress'] = '1 %'
+        while True:
+            nextline = p.stdout.readlines()
+            nextline = [x.strip('\n') for x in nextline if x != '\n']
+            if sys.version_info < (3, 0):
+                nextline = [x.decode('utf-8') for x in nextline]
+            for line in nextline:
+                log.debug(line)
+            if p.poll() is not None:
+                break
+
+        # ToD Handle
+        # process returncode
+        check = p.returncode
+
+        # move file
         if check == 0:
-            cur_book = db.session.query(db.Books).filter(db.Books.id == bookid).first()
-            if os.path.isfile(file_path + format_new_ext):
-                new_format = db.Data(name=cur_book.data[0].name,
-                                         book_format=self.queue[index]['settings']['new_book_format'].upper(),
-                                         book=bookid, uncompressed_size=os.path.getsize(file_path + format_new_ext))
-                cur_book.data.append(new_format)
-                db.session.commit()
-                self.queue[index]['path'] = cur_book.path
-                self.queue[index]['title'] = cur_book.title
-                if config.config_use_google_drive:
-                    os.remove(file_path + format_old_ext)
-                self._handleSuccess()
-                return file_path + format_new_ext
+            converted_file = glob(os.path.join(os.path.dirname(file_path), "*.kepub.epub"))
+            if len(converted_file) == 1:
+                copyfile(converted_file[0], (file_path + format_new_ext))
+                os.unlink(converted_file[0])
             else:
-                error_message = format_new_ext.upper() + ' format not found on disk'
-        log.info("ebook converter failed with error while converting book")
-        if not error_message:
-            error_message = 'Ebook converter failed with unknown error'
-        self._handleError(error_message)
-        return
+                return 1, _(u"Converted file not found or more than one file in folder %(folder)s",
+                            folder=os.path.dirname(file_path))
+        return check, None
 
 
     def add_convert(self, file_path, bookid, user_name, taskMessage, settings, kindle_mail=None):
@@ -514,10 +568,6 @@ class WorkerThread(threading.Thread):
         self.UIqueue[index]['formRuntime'] = datetime.now() - self.queue[index]['starttime']
 
 
-_worker = WorkerThread()
-_worker.start()
-
-
 def get_taskstatus():
     return _worker.get_taskstatus()
 
@@ -532,3 +582,7 @@ def add_upload(user_name, taskMessage):
 
 def add_convert(file_path, bookid, user_name, taskMessage, settings, kindle_mail=None):
     return _worker.add_convert(file_path, bookid, user_name, taskMessage, settings, kindle_mail)
+
+
+_worker = WorkerThread()
+_worker.start()
