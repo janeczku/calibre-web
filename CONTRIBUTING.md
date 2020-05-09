@@ -32,7 +32,7 @@ If you're unable to find an **open issue** addressing the problem, open a [new o
 
 ### **Feature Request**
 
-If there is afeature missing in Calibre-Web and you can't find a feature request in the [Issues](https://github.com/janeczku/calibre-web/issues) section, you could create a [feature request](https://github.com/janeczku/calibre-web/issues/new?assignees=&labels=&template=feature_request.md&title=). 
+If there is a feature missing in Calibre-Web and you can't find a feature request in the [Issues](https://github.com/janeczku/calibre-web/issues) section, you could create a [feature request](https://github.com/janeczku/calibre-web/issues/new?assignees=&labels=&template=feature_request.md&title=). 
 We will not extend Calibre-Web with any more login abilitys or add further files storages, or file syncing ability. Furthermore Calibre-Web is made for home usage for company inhouse usage, so requests regarding any sorts of social interaction capability, payment routines, search engine or web site analytics integration will not be implemeted. 
 
 ### **Contributing code to Calibre-Web**
