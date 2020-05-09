@@ -542,7 +542,7 @@ def _configuration_oauth_helper(to_save):
              "oauth_client_secret": to_save["config_" + str(element['id']) + "_oauth_client_secret"],
              "active": element["active"]})
 
-def _configuration_logfile_helper(gdriveError, to_save):
+def _configuration_logfile_helper(to_save, gdriveError):
     reboot_required = False
     reboot_required |= _config_int(to_save, "config_log_level")
     reboot_required |= _config_string(to_save, "config_logfile")
@@ -615,12 +615,10 @@ def _configuration_update_helper():
     db_change = False
     to_save = request.form.to_dict()
 
-
     db_change |= _config_string(to_save, "config_calibre_dir")
 
     # Google drive setup
     gdriveError = _configuration_gdrive_helper(to_save)
-
 
     reboot_required |= _config_int(to_save, "config_port")
 
@@ -637,6 +635,9 @@ def _configuration_update_helper():
     _config_checkbox_int(to_save, "config_public_reg")
     reboot_required |= _config_checkbox_int(to_save, "config_kobo_sync")
     _config_checkbox_int(to_save, "config_kobo_proxy")
+
+    _config_string(to_save, "config_upload_formats")
+    constants.EXTENSIONS_UPLOAD = [x.lstrip().rstrip() for x in config.config_upload_formats.split(',')]
 
     _config_string(to_save, "config_calibre")
     _config_string(to_save, "config_converterpath")

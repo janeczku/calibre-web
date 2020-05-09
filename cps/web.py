@@ -1241,6 +1241,8 @@ def serve_book(book_id, book_format, anyname):
 def download_link(book_id, book_format, anyname):
     if "Kobo" in request.headers.get('User-Agent'):
         client = "kobo"
+    else:
+        client=""
 
     return get_download_link(book_id, book_format, client)
 
