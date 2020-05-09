@@ -81,9 +81,10 @@ SIDEBAR_PUBLISHER       = 1 << 12
 SIDEBAR_RATING          = 1 << 13
 SIDEBAR_FORMAT          = 1 << 14
 SIDEBAR_ARCHIVED        = 1 << 15
+SIDEBAR_LIST            = 1 << 16
 
 ADMIN_USER_ROLES        = sum(r for r in ALL_ROLES.values()) & ~ROLE_ANONYMOUS
-ADMIN_USER_SIDEBAR      = (SIDEBAR_ARCHIVED << 1) - 1
+ADMIN_USER_SIDEBAR      = (SIDEBAR_LIST << 1) - 1
 
 UPDATE_STABLE       = 0 << 0
 AUTO_UPDATE_STABLE  = 1 << 0
@@ -111,9 +112,9 @@ del env_CALIBRE_PORT
 
 
 EXTENSIONS_AUDIO    = {'mp3', 'm4a', 'm4b'}
-EXTENSIONS_CONVERT  = {'pdf', 'epub', 'mobi', 'azw3', 'docx', 'rtf', 'fb2', 'lit', 'lrf', 'txt', 'htmlz', 'rtf', 'odt'}
-EXTENSIONS_UPLOAD   = {'txt', 'pdf', 'epub', 'mobi', 'azw', 'azw3', 'cbr', 'cbz', 'cbt', 'djvu', 'prc', 'doc', 'docx',
-                       'fb2', 'html', 'rtf', 'lit', 'odt', 'mp3',  'm4a', 'm4b'}
+EXTENSIONS_CONVERT  = ['pdf', 'epub', 'mobi', 'azw3', 'docx', 'rtf', 'fb2', 'lit', 'lrf', 'txt', 'htmlz', 'rtf', 'odt']
+EXTENSIONS_UPLOAD   = {'txt', 'pdf', 'epub', 'kepub', 'mobi', 'azw', 'azw3', 'cbr', 'cbz', 'cbt', 'djvu', 'prc', 'doc',
+                       'docx', 'fb2', 'html', 'rtf', 'lit', 'odt', 'mp3',  'm4a', 'm4b'}
 
 
 def has_flag(value, bit_flag):

@@ -79,11 +79,13 @@ def process(tmp_file_path, original_file_name, original_file_extension, rarExcec
     try:
         if ".PDF" == original_file_extension.upper():
             meta = pdf_meta(tmp_file_path, original_file_name, original_file_extension)
-        if ".EPUB" == original_file_extension.upper() and use_epub_meta is True:
+        elif ".EPUB" == original_file_extension.upper() and use_epub_meta is True:
             meta = epub.get_epub_info(tmp_file_path, original_file_name, original_file_extension)
-        if ".FB2" == original_file_extension.upper() and use_fb2_meta is True:
+        elif ".KEPUB" == original_file_extension.upper() and use_epub_meta is True:
+            meta = epub.get_epub_info(tmp_file_path, original_file_name, original_file_extension)
+        elif ".FB2" == original_file_extension.upper() and use_fb2_meta is True:
             meta = fb2.get_fb2_info(tmp_file_path, original_file_extension)
-        if original_file_extension.upper() in ['.CBZ', '.CBT', '.CBR']:
+        elif original_file_extension.upper() in ['.CBZ', '.CBT', '.CBR']:
             meta = comic.get_comic_info(tmp_file_path,
                                         original_file_name,
                                         original_file_extension,
