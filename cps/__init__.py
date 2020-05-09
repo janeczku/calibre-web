@@ -60,6 +60,7 @@ app = Flask(__name__)
 lm = LoginManager()
 lm.login_view = 'web.login'
 lm.anonymous_user = ub.Anonymous
+lm.session_protection = 'strong'
 
 ub.init_db(cli.settingspath)
 # pylint: disable=no-member
