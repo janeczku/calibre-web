@@ -53,7 +53,7 @@ class _Settings(_Base):
     mail_login = Column(String, default='mail@example.com')
     mail_password = Column(String, default='mypassword')
     mail_from = Column(String, default='automailer <mail@example.com>')
-    mail_size = Column(Integer, default=25)
+    mail_size = Column(Integer, default=25*1024*1024)
 
     config_calibre_dir = Column(String)
     config_port = Column(Integer, default=constants.DEFAULT_PORT)

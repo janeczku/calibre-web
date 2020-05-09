@@ -145,22 +145,24 @@ def check_send_to_kindle(entry):
         if not config.config_converterpath:
             # no converter - only for mobi and pdf formats
             for ele in iter(entry.data):
-                if 'MOBI' in ele.format:
-                    bookformats.append({'format': 'Mobi',
-                                        'convert': 0,
-                                        'text': _('Send %(format)s to Kindle', format='Mobi')})
-                if 'PDF' in ele.format:
-                    bookformats.append({'format': 'Pdf',
-                                        'convert': 0,
-                                        'text': _('Send %(format)s to Kindle', format='Pdf')})
-                if 'AZW' in ele.format:
-                    bookformats.append({'format': 'Azw',
-                                        'convert': 0,
-                                        'text': _('Send %(format)s to Kindle', format='Azw')})
+                if ele.uncompressed_size < config.mail_size:
+                    if 'MOBI' in ele.format:
+                        bookformats.append({'format': 'Mobi',
+                                            'convert': 0,
+                                            'text': _('Send %(format)s to Kindle', format='Mobi')})
+                    if 'PDF' in ele.format:
+                        bookformats.append({'format': 'Pdf',
+                                            'convert': 0,
+                                            'text': _('Send %(format)s to Kindle', format='Pdf')})
+                    if 'AZW' in ele.format:
+                        bookformats.append({'format': 'Azw',
+                                            'convert': 0,
+                                            'text': _('Send %(format)s to Kindle', format='Azw')})
         else:
             formats = list()
             for ele in iter(entry.data):
-                formats.append(ele.format)
+                if ele.uncompressed_size < config.mail_size:
+                    formats.append(ele.format)
             if 'MOBI' in formats:
                 bookformats.append({'format': 'Mobi',
                                     'convert': 0,
