@@ -140,9 +140,9 @@ if ( $( 'body.book' ).length > 0 ) {
   // Sexy blurred backgrounds
   cover = $( '.cover img' ).attr( 'src' );
   $( '#loader + .container-fluid' )
-    .prepend( '<div class="blur-wrapper"></div' );
+    .prepend( '<div class="blur-wrapper"></div>' );
   $( '.blur-wrapper' )
-    .prepend( '<div><img class="bg-blur" src="' + cover + '"></div>' );
+    .prepend( '<div><img alt="Blurred cover" class="bg-blur" src="' + cover + '"></div>' );
 
   // Fix-up book detail headings
   publisher = $( '.publishers p span' ).text().split( ':' );
@@ -442,7 +442,7 @@ if ( $( 'body.author' ).length >0 ) {
   cover = $( '.author-bio img' ).attr( 'src' );
   $( '#loader + .container-fluid' )
     .prepend( '<div class="blur-wrapper"></div>' );
-  $( '.blur-wrapper' ).prepend( '<img class="bg-blur" src="' + cover + '">' );
+  $( '.blur-wrapper' ).prepend( '<img alt="Blurred author bio" class="bg-blur" src="' + cover + '">' );
   // Place undefined cover images inside container
   if ( $( '.bg-blur[src="undefined"]' ).length > 0 ) {
     $( '.bg-blur' ).before( '<div class="bg-blur undefined-img"></div>' );
