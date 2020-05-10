@@ -609,7 +609,9 @@ def do_download_file(book, book_format, data, headers):
             # ToDo: improve error handling
             log.error('File not found: %s', os.path.join(filename, data.name + "." + book_format))
         response = make_response(send_from_directory(filename, data.name + "." + book_format))
-        response.headers = headers
+        # ToDo Check headers parameter
+        for element in headers:
+            response.headers[element[0]] = element[1]
         return response
 
 ##################################
