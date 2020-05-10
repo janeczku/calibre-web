@@ -466,7 +466,7 @@ def reset_password(user_id):
 def generate_random_password():
     s = "abcdefghijklmnopqrstuvwxyz01234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%&*()?"
     passlen = 8
-    return "".join(random.sample(s, passlen))
+    return "".join(s[c % len(s)] for c in os.urandom(passlen))
 
 ################################## External interface
 
