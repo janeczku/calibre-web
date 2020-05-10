@@ -890,10 +890,11 @@ def get_download_link(book_id, book_format):
         if len(book.authors) > 0:
             file_name = book.authors[0].name + '_' + file_name
         file_name = get_valid_filename(file_name)
+        real_book_format = book_format + '.epub' if book_format == 'kepub' else book_format
         headers = Headers()
         headers["Content-Type"] = mimetypes.types_map.get('.' + book_format, "application/octet-stream")
         headers["Content-Disposition"] = "attachment; filename=%s.%s; filename*=UTF-8''%s.%s" % (
-            quote(file_name.encode('utf-8')), book_format, quote(file_name.encode('utf-8')), book_format)
+            quote(file_name.encode('utf-8')), real_book_format, quote(file_name.encode('utf-8')), real_book_format)
         return do_download_file(book, book_format, data1, headers)
     else:
         abort(404)
