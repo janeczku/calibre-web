@@ -467,7 +467,7 @@ def reset_password(user_id):
 def generate_random_password():
     s = "abcdefghijklmnopqrstuvwxyz01234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%&*()?"
     passlen = 8
-    return "".join(random.sample(s, passlen))
+    return "".join(s[c % len(s)] for c in os.urandom(passlen))
 
 ################################## External interface
 
@@ -615,8 +615,9 @@ def do_download_file(book, book_format, client, data, headers):
             headers["Content-Disposition"] = headers["Content-Disposition"].replace(".kepub", ".kepub.epub")
 
         response = make_response(send_from_directory(filename, data.name + "." + book_format))
-
-        response.headers = headers
+        # ToDo Check headers parameter
+        for element in headers:
+            response.headers[element[0]] = element[1]
         return response
 
 ##################################
