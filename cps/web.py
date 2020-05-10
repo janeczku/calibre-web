@@ -1467,7 +1467,7 @@ def profile():
             current_user.kindle_mail = to_save["kindle_mail"]
         if "allowed_tags" in to_save and to_save["allowed_tags"] != current_user.allowed_tags:
             current_user.allowed_tags = to_save["allowed_tags"].strip()
-        if to_save["email"] and to_save["email"] != current_user.email:
+        if "email" in to_save and to_save["email"] != current_user.email:
             if config.config_public_reg and not check_valid_domain(to_save["email"]):
                 flash(_(u"E-mail is not from valid domain"), category="error")
                 return render_title_template("user_edit.html", content=current_user, downloads=downloads,
