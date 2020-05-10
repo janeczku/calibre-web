@@ -104,11 +104,11 @@ class Identifiers(Base):
         if self.type == "amazon":
             return u"https://amzn.com/{0}".format(self.val)
         elif self.type == "isbn":
-            return u"http://www.worldcat.org/isbn/{0}".format(self.val)
+            return u"https://www.worldcat.org/isbn/{0}".format(self.val)
         elif self.type == "doi":
-            return u"http://dx.doi.org/{0}".format(self.val)
+            return u"https://dx.doi.org/{0}".format(self.val)
         elif self.type == "goodreads":
-            return u"http://www.goodreads.com/book/show/{0}".format(self.val)
+            return u"https://www.goodreads.com/book/show/{0}".format(self.val)
         elif self.type == "douban":
             return u"https://book.douban.com/subject/{0}".format(self.val)
         elif self.type == "google":
@@ -116,7 +116,7 @@ class Identifiers(Base):
         elif self.type == "kobo":
             return u"https://www.kobo.com/ebook/{0}".format(self.val)
         elif self.type == "lubimyczytac":
-            return u" http://lubimyczytac.pl/ksiazka/{0}".format(self.val)
+            return u" https://lubimyczytac.pl/ksiazka/{0}".format(self.val)
         elif self.type == "url":
             return u"{0}".format(self.val)
         else:

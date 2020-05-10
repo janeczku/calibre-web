@@ -36,17 +36,17 @@
       <div class="col-xs-12 col-sm-6">
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3" style="margin-top:50px;">
-            <p class='text-justify attribute'><strong>Start Time: </strong>2020-05-05 19:02:03</p>
+            <p class='text-justify attribute'><strong>Start Time: </strong>2020-05-10 13:45:56</p>
         </div>
       </div>
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3">
-            <p class='text-justify attribute'><strong>Stop Time: </strong>2020-05-05 19:58:37</p>
+            <p class='text-justify attribute'><strong>Stop Time: </strong>2020-05-10 14:42:12</p>
         </div>
       </div>
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3">
-           <p class='text-justify attribute'><strong>Duration: </strong>47:42 min</p>
+           <p class='text-justify attribute'><strong>Duration: </strong>47:37 min</p>
         </div>
       </div>
       </div>
@@ -457,8 +457,8 @@
     <tr class="result['header']['style']">
         <td>test_edit_books.test_edit_books</td>
         <td class="text-center">30</td>
-        <td class="text-center">28</td>
-        <td class="text-center">0</td>
+        <td class="text-center">27</td>
+        <td class="text-center">1</td>
         <td class="text-center">0</td>
         <td class="text-center">2</td>
         <td class="text-center">
@@ -763,11 +763,33 @@
     
     
     
-        <tr id='pt5.30' class='hiddenRow bg-success'>
+        <tr id='ft5.30' class='none bg-danger'>
             <td>
                 <div class='testcase'>test_upload_cover_hdd</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft5.30')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id='div_ft5.30' class="popup_window test_output" style="display:none;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
+                                onclick="document.getElementById('div_ft5.30').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File "/home/matthias/Entwicklung/calibre-web-test/test/test_edit_books.py", line 654, in test_upload_cover_hdd
+    self.assertEqual('20317',resp.headers['Content-Length'])
+AssertionError: '20317' != '5232'
+- 20317
++ 5232</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
@@ -1829,8 +1851,8 @@ AssertionError: False is not true : logfile config value is not empty after rese
     <tr class="result['header']['style']">
         <td>test_updater.test_updater</td>
         <td class="text-center">7</td>
-        <td class="text-center">5</td>
-        <td class="text-center">1</td>
+        <td class="text-center">6</td>
+        <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">1</td>
         <td class="text-center">
@@ -1867,33 +1889,11 @@ AssertionError: False is not true : logfile config value is not empty after rese
     
     
     
-        <tr id='ft18.4' class='none bg-danger'>
+        <tr id='pt18.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_check_update_stable_versions</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft18.4')">FAIL</a>
-                </div>
-                <!--css div popup start-->
-                <div id='div_ft18.4' class="popup_window test_output" style="display:none;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                                onclick="document.getElementById('div_ft18.4').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File "/home/matthias/Entwicklung/calibre-web-test/test/test_updater.py", line 150, in test_check_update_stable_versions
-    self.check_updater('latest version installed', "alert-warning")
-  File "/home/matthias/Entwicklung/calibre-web-test/test/test_updater.py", line 60, in check_updater
-    self.assertTrue(self.check_element_on_page((By.CLASS_NAME, className)))
-AssertionError: False is not true</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -2521,6 +2521,12 @@ AssertionError: False is not true</pre>
             </tr>
           
             <tr>
+              <th>comicapi</th>
+              <td>2.1</td>
+              <td>test_edit_additional_books</td>
+            </tr>
+          
+            <tr>
               <th>lxml</th>
               <td>4.5.0</td>
               <td>test_edit_additional_books</td>
@@ -2548,6 +2554,12 @@ AssertionError: False is not true</pre>
               <th>Pillow</th>
               <td>7.1.2</td>
               <td>test_edit_books</td>
+            </tr>
+          
+            <tr>
+              <th>goodreads</th>
+              <td>0.3.2</td>
+              <td>test_goodreads</td>
             </tr>
           
             <tr>
