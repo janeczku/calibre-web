@@ -331,7 +331,7 @@ def import_ldap_users():
             match = re.search("([a-zA-Z0-9-]+)=%s", config.config_ldap_user_object, re.IGNORECASE | re.UNICODE)
             if match:
                 match_filter = match.group(1)
-                match = re.search(match_filter + "=([[\d\w-]+)", user, re.IGNORECASE | re.UNICODE)
+                match = re.search(match_filter + "=([\d\s\w-]+)", user, re.IGNORECASE | re.UNICODE)
                 if match:
                     user = match.group(1)
                 else:
