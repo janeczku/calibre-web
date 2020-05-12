@@ -15,14 +15,11 @@
                 <span class="caret"></span>
               </button>
               <ul id="add-to-shelves" class="dropdown-menu" aria-labelledby="add-to-shelf">
-                {% for shelf in g.user.shelf %}
-                  {% if shelf.is_public != 1 %}
-                    <li><a href="{{ url_for('shelf.search_to_shelf', shelf_id=shelf.id) }}"> {{shelf.name}}</a></li>
-                  {% endif %}
-                {% endfor %}
                 {% for shelf in g.shelves_access %}
-                  <li><a href="{{ url_for('shelf.search_to_shelf', shelf_id=shelf.id) }}">{{shelf.name}}</a></li>
-                {% endfor %}
+                  {% if not shelf.id in books_shelfs and ( not shelf.is_public or g.user.role_edit_shelfs() ) %}
+                    <li><a href="{{ url_for('shelf.search_to_shelf', shelf_id=shelf.id) }}"> {{shelf.name}}{% if shelf.is_public == 1 %} {{_('(Public)')}}{% endif %}</a></li>
+                  {% endif %}
+                {%endfor%}
               </ul>
             </div>
           </div>
