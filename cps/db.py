@@ -100,7 +100,7 @@ class Identifiers(Base):
             return self.type
 
     def __repr__(self):
-        if self.type == "amazon":
+        if self.type == "amazon" or self.type == "asin":
             return u"https://amzn.com/{0}".format(self.val)
         elif self.type == "isbn":
             return u"https://www.worldcat.org/isbn/{0}".format(self.val)
