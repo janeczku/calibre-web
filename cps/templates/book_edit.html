@@ -305,9 +305,9 @@
     // create a random identifier type to have a valid name in form. This will not be used when dealing with the form
     var rand_id = Math.floor(Math.random() * 1000000).toString();
     var line = '<tr>';
-    line += '<td><input type="text" class="form-control" name="identifier-type-'+ rand_id +'" required="required" placeholder="{{_('Identifier Type')|forceescape}}"></td>';
-    line += '<td><input type="text" class="form-control" name="identifier-val-'+ rand_id +'" required="required" placeholder="{{_('Identifier Value')|forceescape}}"></td>';
-    line += '<td><a class="btn btn-default" onclick="removeIdentifierLine(this)">{{_('Remove')|forceescape}}</a></td>';
+    line += '<td><input type="text" class="form-control" name="identifier-type-'+ rand_id +'" required="required" placeholder={{_('Identifier Type')|safe|tojson}}></td>';
+    line += '<td><input type="text" class="form-control" name="identifier-val-'+ rand_id +'" required="required" placeholder={{_('Identifier Value')|safe|tojson}}></td>';
+    line += '<td><a class="btn btn-default" onclick="removeIdentifierLine(this)">{{_('Remove')}}</a></td>';
     line += '</tr>';
     $("#identifier-table").append(line);
   });
