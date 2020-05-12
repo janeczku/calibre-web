@@ -242,7 +242,7 @@
                      data-remove-href="{{ url_for('shelf.remove_from_shelf', book_id=entry.id, shelf_id=shelf.id) }}"
                      data-shelf-action="add"
                   >
-                    {{shelf.name}}
+                    {{shelf.name}}{% if shelf.is_public == 1 %} {{_('(Public)')}}{% endif %}
                   </a>
                 </li>
               {% endif %}
@@ -259,7 +259,7 @@
                 >
                   <span {% if not shelf.is_public or g.user.role_edit_shelfs() %}
                         class="glyphicon glyphicon-remove"
-                        {% endif %}></span> {{shelf.name}}
+                        {% endif %}></span> {{shelf.name}}{% if shelf.is_public == 1 %} {{_('(Public)')}}{% endif %}
                 </a>
               {% endif %}
             {%endfor%}
