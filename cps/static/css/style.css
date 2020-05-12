@@ -213,7 +213,7 @@ span.glyphicon.glyphicon-tags {
 .panel-body {background-color: #f5f5f5; }
 .spinner {margin: 0 41%; }
 .spinner2 {margin: 0 41%; }
-
+.intend-form { margin-left:20px; }
 table .bg-dark-danger {background-color: #d9534f; color: #fff; }
 table .bg-dark-danger a {color: #fff; }
 table .bg-dark-danger:hover {background-color: #c9302c; }
@@ -302,3 +302,4 @@ div.log {
   white-space: nowrap;
   padding: 0.5em;
 }
+

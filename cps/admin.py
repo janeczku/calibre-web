@@ -635,6 +635,7 @@ def _configuration_update_helper():
     _config_checkbox_int(to_save, "config_uploading")
     _config_checkbox_int(to_save, "config_anonbrowse")
     _config_checkbox_int(to_save, "config_public_reg")
+    _config_checkbox_int(to_save, "config_register_email")
     reboot_required |= _config_checkbox_int(to_save, "config_kobo_sync")
     _config_checkbox_int(to_save, "config_kobo_proxy")
 
