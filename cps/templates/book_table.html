@@ -1,0 +1,59 @@
+{% extends "layout.html" %}
+{% block body %}
+<h1 class="{{page}}">{{_(title)}}</h1>
+
+    <div class="filterheader hidden-xs hidden-sm">
+      {% if entries.__len__() %}
+       {% if data == 'author' %}
+        <button id="sort_name" class="btn btn-primary"><b>B,A <-> A B</b></button>
+       {% endif %}
+      {% endif %}
+      <button id="desc" class="btn btn-primary"><span class="glyphicon glyphicon-sort-by-alphabet"></span></button>
+      <button id="asc" class="btn btn-primary"><span class="glyphicon glyphicon-sort-by-alphabet-alt"></span></button>
+      {% if charlist|length %}
+      <button id="all" class="btn btn-primary">{{_('All')}}</button>
+      {% endif %}
+      <div class="btn-group character" role="group">
+        {% for char in charlist%}
+        <button class="btn btn-primary char">{{char.char}}</button>
+        {% endfor %}
+      </div>
+
+      {% if title == "Series" %}
+      <button class="update-view btn btn-primary" href="#" data-target="series_view" data-view="grid">Grid</button>
+      {% endif %}
+    </div>
+  <div class="container">
+    <div id="list" class="col-xs-12 col-sm-6">
+    {% for entry in entries %}
+      {% if loop.index0 == (loop.length/2+loop.length%2)|int and loop.length > 20 %}
+        </div>
+        <div id="second" class="col-xs-12 col-sm-6">
+      {% endif %}
+      <div class="row" {% if entry[0].sort %}data-name="{{entry[0].name}}"{% endif %} data-id="{% if entry[0].sort %}{{entry[0].sort}}{% else %}{% if entry.name %}{{entry.name}}{% else %}{{entry[0].name}}{% endif %}{% endif %}">
+        <div class="col-xs-2 col-sm-2 col-md-1" align="left"><span class="badge">{{entry.count}}</span></div>
+        <div class="col-xs-10 col-sm-10 col-md-11"><a id="list_{{loop.index0}}" href="{% if entry.format %}{{url_for('web.books_list', data=data, sort='new', book_id=entry.format )}}{% else %}{{url_for('web.books_list', data=data, sort='new', book_id=entry[0].id )}}{% endif %}">
+          {% if entry.name %}
+          <div class="rating">
+          {% for number in range(entry.name) %}
+            <span class="glyphicon glyphicon-star good"></span>
+            {% if loop.last and loop.index < 5 %}
+              {% for numer in range(5 - loop.index) %}
+                <span class="glyphicon glyphicon-star"></span>
+              {% endfor %}
+            {% endif %}
+          {% endfor %}
+          </div>
+          {% else %}
+          {% if entry.format %}
+            {{entry.format}}
+          {% else %}
+            {{entry[0].name}}{% endif %}{% endif %}</a></div>
+      </div>
+    {% endfor %}
+    </div>
+  </div>
+{% endblock %}
+{% block js %}
+<script src="{{ url_for('static', filename='js/filter_list.js') }}"></script>
+{% endblock %}
