@@ -450,11 +450,11 @@ def reset_password(user_id):
     existing_user = ub.session.query(ub.User).filter(ub.User.id == user_id).first()
     if not existing_user:
         return 0, None
-    password = generate_random_password()
-    existing_user.password = generate_password_hash(password)
     if not config.get_mail_server_configured():
         return 2, None
     try:
+        password = generate_random_password()
+        existing_user.password = generate_password_hash(password)
         ub.session.commit()
         send_registration_mail(existing_user.email, existing_user.nickname, password, True)
         return 1, existing_user.nickname
