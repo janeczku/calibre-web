@@ -939,7 +939,7 @@ def reset_user_password(user_id):
     if current_user is not None and current_user.is_authenticated:
         ret, message = reset_password(user_id)
         if ret == 1:
-            log.debug(u"Password for user %(user)s reset", user=message)
+            log.debug(u"Password for user %s reset", message)
             flash(_(u"Password for user %(user)s reset", user=message), category="success")
         elif ret == 0:
             log.error(u"An unknown error occurred. Please try again later.")
