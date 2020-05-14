@@ -23,7 +23,7 @@ $("body.uiconfig").addClass("admin");
 $("body.advsearch").addClass("advanced_search");
 $("body.newuser").addClass("admin");
 $("body.mailset").addClass("admin");
-$('.filterheader').attr('style','margin: 40px 0 !important; padding: 0 10px 0 40px !important;');
+$("body > div.container-fluid > div > div.col-sm-10 > div.filterheader").attr("style","margin: 40px 0 !important; padding: 0 10px 0 40px !important;");
 
 
 // Back button
