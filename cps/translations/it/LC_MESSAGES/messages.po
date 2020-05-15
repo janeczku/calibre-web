@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2020-05-08 14:54+0200\n"
+"POT-Creation-Date: 2020-05-15 20:33+0200\n"
 "PO-Revision-Date: 2017-04-04 15:09+0200\n"
 "Last-Translator: ElQuimm <quimm@webtaste.com>\n"
 "Language: it\n"
@@ -499,47 +499,47 @@ msgstr "Solamente i file nei formati jpg/jpeg/png/webp sono supportati per le co
 msgid "Only jpg/jpeg files are supported as coverfile"
 msgstr "Solamente i file nei formati jpg/jpeg sono supportati per le copertine"
 
-#: cps/helper.py:623
+#: cps/helper.py:625
 msgid "Unrar binary file not found"
 msgstr "Non ho trovato il file binario di UnRar"
 
-#: cps/helper.py:636
+#: cps/helper.py:638
 msgid "Error excecuting UnRar"
 msgstr "Errore nell'eseguire UnRar"
 
-#: cps/helper.py:692
+#: cps/helper.py:694
 msgid "Waiting"
 msgstr "Attendi"
 
-#: cps/helper.py:694
+#: cps/helper.py:696
 msgid "Failed"
 msgstr "Non riuscito"
 
-#: cps/helper.py:696
+#: cps/helper.py:698
 msgid "Started"
 msgstr "Avviato"
 
-#: cps/helper.py:698
+#: cps/helper.py:700
 msgid "Finished"
 msgstr "Terminato"
 
-#: cps/helper.py:700
+#: cps/helper.py:702
 msgid "Unknown Status"
 msgstr "Stato sconosciuto"
 
-#: cps/helper.py:705
+#: cps/helper.py:707
 msgid "E-mail: "
 msgstr "E-mail: "
 
-#: cps/helper.py:707 cps/helper.py:711
+#: cps/helper.py:709 cps/helper.py:713
 msgid "Convert: "
 msgstr "Conversione: "
 
-#: cps/helper.py:709
+#: cps/helper.py:711
 msgid "Upload: "
 msgstr "Upload: "
 
-#: cps/helper.py:713
+#: cps/helper.py:715
 msgid "Unknown Task: "
 msgstr "Processo sconosciuto: "
 
@@ -1295,13 +1295,13 @@ msgid "In Library"
 msgstr "Nella libreria"
 
 #: cps/templates/author.html:34 cps/templates/list.html:14
-#: cps/templates/search.html:41
+#: cps/templates/search.html:38
 msgid "All"
 msgstr "Tutti"
 
 #: cps/templates/author.html:58 cps/templates/author.html:110
 #: cps/templates/discover.html:27 cps/templates/index.html:26
-#: cps/templates/index.html:89 cps/templates/search.html:67
+#: cps/templates/index.html:89 cps/templates/search.html:64
 #: cps/templates/shelf.html:36
 msgid "reduce"
 msgstr "riduci"
@@ -1930,6 +1930,12 @@ msgstr "Descrizione:"
 msgid "Add to shelf"
 msgstr "Aggiungi allo scaffale"
 
+#: cps/templates/detail.html:243 cps/templates/detail.html:260
+#: cps/templates/feed.xml:79 cps/templates/layout.html:136
+#: cps/templates/layout.html:140 cps/templates/search.html:20
+msgid "(Public)"
+msgstr "(Pubblico)"
+
 #: cps/templates/detail.html:274
 msgid "Edit Metadata"
 msgstr "Modifica metadati"
@@ -1977,11 +1983,6 @@ msgstr "Se sicuro di voler eliminare questo dominio?"
 #: cps/templates/feed.xml:21 cps/templates/layout.html:173
 msgid "Next"
 msgstr "Prossimo"
-
-#: cps/templates/feed.xml:79 cps/templates/layout.html:136
-#: cps/templates/layout.html:140
-msgid "(Public)"
-msgstr "(Pubblico)"
 
 #: cps/templates/generate_kobo_auth_url.html:5
 msgid "Open the .kobo/Kobo eReader.conf file in a text editor and add (or edit):"

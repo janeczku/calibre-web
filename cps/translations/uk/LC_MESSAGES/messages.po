@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/calibre-web\n"
-"POT-Creation-Date: 2020-05-01 17:15+0200\n"
+"POT-Creation-Date: 2020-05-15 20:33+0200\n"
 "PO-Revision-Date: 2017-04-30 00:47+0300\n"
 "Last-Translator: ABIS Team <biblio.if.abis@gmail.com>\n"
 "Language: uk\n"
@@ -45,8 +45,8 @@ msgstr ""
 msgid "Unknown command"
 msgstr ""
 
-#: cps/admin.py:115 cps/editbooks.py:504 cps/editbooks.py:514
-#: cps/editbooks.py:620 cps/editbooks.py:622 cps/editbooks.py:688
+#: cps/admin.py:115 cps/editbooks.py:505 cps/editbooks.py:515
+#: cps/editbooks.py:621 cps/editbooks.py:623 cps/editbooks.py:689
 #: cps/updater.py:509 cps/uploader.py:99 cps/uploader.py:110
 msgid "Unknown"
 msgstr "Невідомий"
@@ -291,7 +291,7 @@ msgstr ""
 msgid "Book Successfully Deleted"
 msgstr ""
 
-#: cps/editbooks.py:253 cps/editbooks.py:489
+#: cps/editbooks.py:253 cps/editbooks.py:490
 msgid "Error opening eBook. File does not exist or file is not accessible"
 msgstr "Сталась помилка при відкриванні eBook. Файл не існує або відсутній доступ до нього"
 
@@ -304,16 +304,16 @@ msgstr "змінити метадані"
 msgid "%(langname)s is not a valid language"
 msgstr ""
 
-#: cps/editbooks.py:413 cps/editbooks.py:663
+#: cps/editbooks.py:413 cps/editbooks.py:664
 #, python-format
 msgid "File extension '%(ext)s' is not allowed to be uploaded to this server"
 msgstr ""
 
-#: cps/editbooks.py:417 cps/editbooks.py:667
+#: cps/editbooks.py:417 cps/editbooks.py:668
 msgid "File to be uploaded must have an extension"
 msgstr "Завантажувальний файл повинен мати розширення"
 
-#: cps/editbooks.py:429 cps/editbooks.py:701
+#: cps/editbooks.py:429 cps/editbooks.py:702
 #, python-format
 msgid "Failed to create path %(path)s (Permission denied)."
 msgstr ""
@@ -328,48 +328,48 @@ msgstr ""
 msgid "File format %(ext)s added to %(book)s"
 msgstr ""
 
-#: cps/editbooks.py:606
+#: cps/editbooks.py:607
 msgid "Metadata successfully updated"
 msgstr ""
 
-#: cps/editbooks.py:615
+#: cps/editbooks.py:616
 msgid "Error editing book, please check logfile for details"
 msgstr "Сталась помилка при редагуванні книги. Будь-ласка, перевірте лог-файл для деталей"
 
-#: cps/editbooks.py:675
+#: cps/editbooks.py:676
 #, python-format
 msgid "File %(filename)s could not saved to temp dir"
 msgstr ""
 
-#: cps/editbooks.py:692
+#: cps/editbooks.py:693
 msgid "Uploaded book probably exists in the library, consider to change before upload new: "
 msgstr ""
 
-#: cps/editbooks.py:707
+#: cps/editbooks.py:709
 #, python-format
-msgid "Failed to store file %(file)s (Permission denied)."
+msgid "Failed to Move File %(file)s: %(error)s"
 msgstr ""
 
-#: cps/editbooks.py:713
+#: cps/editbooks.py:723
 #, python-format
-msgid "Failed to delete file %(file)s (Permission denied)."
+msgid "Failed to Move Cover File %(file)s: %(error)s"
 msgstr ""
 
-#: cps/editbooks.py:804
+#: cps/editbooks.py:808
 #, python-format
 msgid "File %(file)s uploaded"
 msgstr ""
 
-#: cps/editbooks.py:833
+#: cps/editbooks.py:837
 msgid "Source or destination format for conversion missing"
 msgstr ""
 
-#: cps/editbooks.py:841
+#: cps/editbooks.py:845
 #, python-format
 msgid "Book successfully queued for converting to %(book_format)s"
 msgstr ""
 
-#: cps/editbooks.py:845
+#: cps/editbooks.py:849
 #, python-format
 msgid "There was an error converting this book: %(res)s"
 msgstr ""
@@ -443,103 +443,103 @@ msgstr ""
 msgid "The requested file could not be read. Maybe wrong permissions?"
 msgstr ""
 
-#: cps/helper.py:299
+#: cps/helper.py:300
 #, python-format
 msgid "Deleting book %(id)s failed, path has subfolders: %(path)s"
 msgstr ""
 
-#: cps/helper.py:309
+#: cps/helper.py:310
 #, python-format
 msgid "Deleting book %(id)s failed: %(message)s"
 msgstr ""
 
-#: cps/helper.py:319
+#: cps/helper.py:320
 #, python-format
 msgid "Deleting book %(id)s failed, book path not valid: %(path)s"
 msgstr ""
 
-#: cps/helper.py:354
+#: cps/helper.py:355
 #, python-format
 msgid "Rename title from: '%(src)s' to '%(dest)s' failed with error: %(error)s"
 msgstr ""
 
-#: cps/helper.py:364
+#: cps/helper.py:365
 #, python-format
 msgid "Rename author from: '%(src)s' to '%(dest)s' failed with error: %(error)s"
 msgstr ""
 
-#: cps/helper.py:378
+#: cps/helper.py:379
 #, python-format
 msgid "Rename file in path '%(src)s' to '%(dest)s' failed with error: %(error)s"
 msgstr ""
 
-#: cps/helper.py:404 cps/helper.py:414 cps/helper.py:422
+#: cps/helper.py:405 cps/helper.py:415 cps/helper.py:423
 #, python-format
 msgid "File %(file)s not found on Google Drive"
 msgstr ""
 
-#: cps/helper.py:443
+#: cps/helper.py:444
 #, python-format
 msgid "Book path %(path)s not found on Google Drive"
 msgstr ""
 
-#: cps/helper.py:550
+#: cps/helper.py:551
 msgid "Failed to create path for cover"
 msgstr ""
 
-#: cps/helper.py:555
+#: cps/helper.py:556
 msgid "Cover-file is not a valid image file, or could not be stored"
 msgstr ""
 
-#: cps/helper.py:566
+#: cps/helper.py:567
 msgid "Only jpg/jpeg/png/webp files are supported as coverfile"
 msgstr ""
 
-#: cps/helper.py:580
+#: cps/helper.py:581
 msgid "Only jpg/jpeg files are supported as coverfile"
 msgstr ""
 
-#: cps/helper.py:622
+#: cps/helper.py:625
 msgid "Unrar binary file not found"
 msgstr ""
 
-#: cps/helper.py:635
+#: cps/helper.py:638
 msgid "Error excecuting UnRar"
 msgstr ""
 
-#: cps/helper.py:691
+#: cps/helper.py:694
 msgid "Waiting"
 msgstr ""
 
-#: cps/helper.py:693
+#: cps/helper.py:696
 msgid "Failed"
 msgstr ""
 
-#: cps/helper.py:695
+#: cps/helper.py:698
 msgid "Started"
 msgstr ""
 
-#: cps/helper.py:697
+#: cps/helper.py:700
 msgid "Finished"
 msgstr ""
 
-#: cps/helper.py:699
+#: cps/helper.py:702
 msgid "Unknown Status"
 msgstr ""
 
-#: cps/helper.py:704
+#: cps/helper.py:707
 msgid "E-mail: "
 msgstr ""
 
-#: cps/helper.py:706 cps/helper.py:710
+#: cps/helper.py:709 cps/helper.py:713
 msgid "Convert: "
 msgstr ""
 
-#: cps/helper.py:708
+#: cps/helper.py:711
 msgid "Upload: "
 msgstr ""
 
-#: cps/helper.py:712
+#: cps/helper.py:715
 msgid "Unknown Task: "
 msgstr ""
 
@@ -1295,13 +1295,13 @@ msgid "In Library"
 msgstr "У бібліотеці"
 
 #: cps/templates/author.html:34 cps/templates/list.html:14
-#: cps/templates/search.html:41
+#: cps/templates/search.html:38
 msgid "All"
 msgstr ""
 
 #: cps/templates/author.html:58 cps/templates/author.html:110
 #: cps/templates/discover.html:27 cps/templates/index.html:26
-#: cps/templates/index.html:89 cps/templates/search.html:67
+#: cps/templates/index.html:89 cps/templates/search.html:64
 #: cps/templates/shelf.html:36
 msgid "reduce"
 msgstr ""
@@ -1930,6 +1930,12 @@ msgstr "Опис:"
 msgid "Add to shelf"
 msgstr "Додати на книжкову полицю"
 
+#: cps/templates/detail.html:243 cps/templates/detail.html:260
+#: cps/templates/feed.xml:79 cps/templates/layout.html:136
+#: cps/templates/layout.html:140 cps/templates/search.html:20
+msgid "(Public)"
+msgstr ""
+
 #: cps/templates/detail.html:274
 msgid "Edit Metadata"
 msgstr "Редагувати метадані"
@@ -1977,11 +1983,6 @@ msgstr ""
 #: cps/templates/feed.xml:21 cps/templates/layout.html:173
 msgid "Next"
 msgstr "Далі"
-
-#: cps/templates/feed.xml:79 cps/templates/layout.html:136
-#: cps/templates/layout.html:140
-msgid "(Public)"
-msgstr ""
 
 #: cps/templates/generate_kobo_auth_url.html:5
 msgid "Open the .kobo/Kobo eReader.conf file in a text editor and add (or edit):"
