@@ -178,9 +178,6 @@ def update_view_configuration():
     _config_int("config_authors_max")
     _config_int("config_restricted_column")
 
-    if config.config_google_drive_watch_changes_response:
-        config.config_google_drive_watch_changes_response = json.dumps(config.config_google_drive_watch_changes_response)
-
     config.config_default_role = constants.selected_roles(to_save)
     config.config_default_role &= ~constants.ROLE_ANONYMOUS
 
