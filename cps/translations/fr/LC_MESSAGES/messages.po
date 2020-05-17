@@ -20,7 +20,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-05-09 16:09+0200\n"
+"POT-Creation-Date: 2020-05-15 20:33+0200\n"
 "PO-Revision-Date: 2020-05-08 14:36+0200\n"
 "Last-Translator: Dekani <dekani1500@gmail.com>\n"
 "Language: fr\n"
@@ -513,47 +513,47 @@ msgstr "Seuls les fichiers jpg/jpeg/png/webp sont supportés comme fichier de co
 msgid "Only jpg/jpeg files are supported as coverfile"
 msgstr "Seuls les fichiers jpg/jpeg sont supportés comme fichier de couverture"
 
-#: cps/helper.py:623
+#: cps/helper.py:625
 msgid "Unrar binary file not found"
 msgstr "Fichier binaire Unrar non trouvé"
 
-#: cps/helper.py:636
+#: cps/helper.py:638
 msgid "Error excecuting UnRar"
 msgstr "Une erreur est survenue lors de l'exécution d'UnRar"
 
-#: cps/helper.py:692
+#: cps/helper.py:694
 msgid "Waiting"
 msgstr "En attente"
 
-#: cps/helper.py:694
+#: cps/helper.py:696
 msgid "Failed"
 msgstr "Echoué"
 
-#: cps/helper.py:696
+#: cps/helper.py:698
 msgid "Started"
 msgstr "Débuté"
 
-#: cps/helper.py:698
+#: cps/helper.py:700
 msgid "Finished"
 msgstr "Terminé"
 
-#: cps/helper.py:700
+#: cps/helper.py:702
 msgid "Unknown Status"
 msgstr "Statut inconnu"
 
-#: cps/helper.py:705
+#: cps/helper.py:707
 msgid "E-mail: "
 msgstr "Courriel : "
 
-#: cps/helper.py:707 cps/helper.py:711
+#: cps/helper.py:709 cps/helper.py:713
 msgid "Convert: "
 msgstr "Convertir vers : "
 
-#: cps/helper.py:709
+#: cps/helper.py:711
 msgid "Upload: "
 msgstr "Téléverser : "
 
-#: cps/helper.py:713
+#: cps/helper.py:715
 msgid "Unknown Task: "
 msgstr "Tâche inconnue : "
 
@@ -1309,13 +1309,13 @@ msgid "In Library"
 msgstr "Dans la librairie"
 
 #: cps/templates/author.html:34 cps/templates/list.html:14
-#: cps/templates/search.html:41
+#: cps/templates/search.html:38
 msgid "All"
 msgstr "Tout"
 
 #: cps/templates/author.html:58 cps/templates/author.html:110
 #: cps/templates/discover.html:27 cps/templates/index.html:26
-#: cps/templates/index.html:89 cps/templates/search.html:67
+#: cps/templates/index.html:89 cps/templates/search.html:64
 #: cps/templates/shelf.html:36
 msgid "reduce"
 msgstr "réduire"
@@ -1944,6 +1944,12 @@ msgstr "Description :"
 msgid "Add to shelf"
 msgstr "Ajouter à l'étagère"
 
+#: cps/templates/detail.html:243 cps/templates/detail.html:260
+#: cps/templates/feed.xml:79 cps/templates/layout.html:136
+#: cps/templates/layout.html:140 cps/templates/search.html:20
+msgid "(Public)"
+msgstr "(Public)"
+
 #: cps/templates/detail.html:274
 msgid "Edit Metadata"
 msgstr "Éditer les métadonnées"
@@ -1991,11 +1997,6 @@ msgstr "Souhaitez-vous vraiment supprimer cette règle de domaine ?"
 #: cps/templates/feed.xml:21 cps/templates/layout.html:173
 msgid "Next"
 msgstr "Suivant"
-
-#: cps/templates/feed.xml:79 cps/templates/layout.html:136
-#: cps/templates/layout.html:140
-msgid "(Public)"
-msgstr "(Public)"
 
 #: cps/templates/generate_kobo_auth_url.html:5
 msgid "Open the .kobo/Kobo eReader.conf file in a text editor and add (or edit):"

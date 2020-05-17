@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Calibre Web - polski (POT: 2019-08-06 18:35)\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-05-01 17:15+0200\n"
+"POT-Creation-Date: 2020-05-15 20:33+0200\n"
 "PO-Revision-Date: 2020-03-31 21:50+0200\n"
 "Last-Translator: Jerzy Piątek <jerzy.piatek@gmail.com>\n"
 "Language: pl\n"
@@ -48,8 +48,8 @@ msgid "Unknown command"
 msgstr ""
 
 # ???
-#: cps/admin.py:115 cps/editbooks.py:504 cps/editbooks.py:514
-#: cps/editbooks.py:620 cps/editbooks.py:622 cps/editbooks.py:688
+#: cps/admin.py:115 cps/editbooks.py:505 cps/editbooks.py:515
+#: cps/editbooks.py:621 cps/editbooks.py:623 cps/editbooks.py:689
 #: cps/updater.py:509 cps/uploader.py:99 cps/uploader.py:110
 msgid "Unknown"
 msgstr "Nieznany"
@@ -296,7 +296,7 @@ msgstr ""
 msgid "Book Successfully Deleted"
 msgstr ""
 
-#: cps/editbooks.py:253 cps/editbooks.py:489
+#: cps/editbooks.py:253 cps/editbooks.py:490
 msgid "Error opening eBook. File does not exist or file is not accessible"
 msgstr "Błąd podczas otwierania e-booka. Plik nie istnieje lub jest niedostępny"
 
@@ -309,16 +309,16 @@ msgstr "edytuj metadane"
 msgid "%(langname)s is not a valid language"
 msgstr "%(langname)s nie jest prawidłowym językiem"
 
-#: cps/editbooks.py:413 cps/editbooks.py:663
+#: cps/editbooks.py:413 cps/editbooks.py:664
 #, python-format
 msgid "File extension '%(ext)s' is not allowed to be uploaded to this server"
 msgstr "Rozszerzenie pliku '%(ext)s' nie jest dozwolone do wysłania na ten serwer"
 
-#: cps/editbooks.py:417 cps/editbooks.py:667
+#: cps/editbooks.py:417 cps/editbooks.py:668
 msgid "File to be uploaded must have an extension"
 msgstr "Plik do wysłania musi mieć rozszerzenie"
 
-#: cps/editbooks.py:429 cps/editbooks.py:701
+#: cps/editbooks.py:429 cps/editbooks.py:702
 #, python-format
 msgid "Failed to create path %(path)s (Permission denied)."
 msgstr "Nie udało się utworzyć łącza %(path)s (Odmowa dostępu)."
@@ -333,48 +333,48 @@ msgstr "Nie można zapisać pliku %(file)s."
 msgid "File format %(ext)s added to %(book)s"
 msgstr "Format pliku %(ext)s dodany do %(book)s"
 
-#: cps/editbooks.py:606
+#: cps/editbooks.py:607
 msgid "Metadata successfully updated"
 msgstr "Metadane zostały pomyślnie zaktualizowane"
 
-#: cps/editbooks.py:615
+#: cps/editbooks.py:616
 msgid "Error editing book, please check logfile for details"
 msgstr "Błąd podczas edycji książki, sprawdź plik dziennika, aby uzyskać szczegółowe informacje"
 
-#: cps/editbooks.py:675
+#: cps/editbooks.py:676
 #, python-format
 msgid "File %(filename)s could not saved to temp dir"
 msgstr "Nie można zapisać pliku %(filename)s w katalogu tymczasowym"
 
-#: cps/editbooks.py:692
+#: cps/editbooks.py:693
 msgid "Uploaded book probably exists in the library, consider to change before upload new: "
 msgstr "Wysłana książka prawdopodobnie istnieje w bibliotece, rozważ zmianę przed przesłaniem nowej: "
 
-#: cps/editbooks.py:707
+#: cps/editbooks.py:709
 #, python-format
-msgid "Failed to store file %(file)s (Permission denied)."
-msgstr "Nie można przechowywać pliku %(file)s (Odmowa dostępu)."
+msgid "Failed to Move File %(file)s: %(error)s"
+msgstr ""
 
-#: cps/editbooks.py:713
+#: cps/editbooks.py:723
 #, python-format
-msgid "Failed to delete file %(file)s (Permission denied)."
-msgstr "Nie udało się usunąć pliku %(file)s (Odmowa dostępu)."
+msgid "Failed to Move Cover File %(file)s: %(error)s"
+msgstr ""
 
-#: cps/editbooks.py:804
+#: cps/editbooks.py:808
 #, python-format
 msgid "File %(file)s uploaded"
 msgstr "Wysłano plik %(file)s"
 
-#: cps/editbooks.py:833
+#: cps/editbooks.py:837
 msgid "Source or destination format for conversion missing"
 msgstr "Brak formatu źródłowego lub docelowego do konwersji"
 
-#: cps/editbooks.py:841
+#: cps/editbooks.py:845
 #, python-format
 msgid "Book successfully queued for converting to %(book_format)s"
 msgstr "Książka została pomyślnie umieszczona w zadaniach do konwersji %(book_format)s"
 
-#: cps/editbooks.py:845
+#: cps/editbooks.py:849
 #, python-format
 msgid "There was an error converting this book: %(res)s"
 msgstr "Podczas konwersji książki wystąpił błąd: %(res)s"
@@ -450,103 +450,103 @@ msgstr "E-mail: %(book)s"
 msgid "The requested file could not be read. Maybe wrong permissions?"
 msgstr "Żądany plik nie mógł zostać odczytany. Sprawdź uprawnienia?"
 
-#: cps/helper.py:299
+#: cps/helper.py:300
 #, python-format
 msgid "Deleting book %(id)s failed, path has subfolders: %(path)s"
 msgstr ""
 
-#: cps/helper.py:309
+#: cps/helper.py:310
 #, python-format
 msgid "Deleting book %(id)s failed: %(message)s"
 msgstr ""
 
-#: cps/helper.py:319
+#: cps/helper.py:320
 #, python-format
 msgid "Deleting book %(id)s failed, book path not valid: %(path)s"
 msgstr ""
 
-#: cps/helper.py:354
+#: cps/helper.py:355
 #, python-format
 msgid "Rename title from: '%(src)s' to '%(dest)s' failed with error: %(error)s"
 msgstr "Zmiana nazwy tytułu z: „%(src)s” na „%(dest)s” zakończyła się niepowodzeniem z błędem: %(error)s"
 
-#: cps/helper.py:364
+#: cps/helper.py:365
 #, python-format
 msgid "Rename author from: '%(src)s' to '%(dest)s' failed with error: %(error)s"
 msgstr "Zmiana autora z: '%(src)s' na '%(dest)s' zakończyło się błędem: %(error)s"
 
-#: cps/helper.py:378
+#: cps/helper.py:379
 #, python-format
 msgid "Rename file in path '%(src)s' to '%(dest)s' failed with error: %(error)s"
 msgstr "Zmiana nazwy pliku w ścieżce '%(src)s' na '%(dest)s' zakończyło się błędem: %(error)s"
 
-#: cps/helper.py:404 cps/helper.py:414 cps/helper.py:422
+#: cps/helper.py:405 cps/helper.py:415 cps/helper.py:423
 #, python-format
 msgid "File %(file)s not found on Google Drive"
 msgstr "Nie znaleziono pliku %(file)s na Google Drive"
 
-#: cps/helper.py:443
+#: cps/helper.py:444
 #, python-format
 msgid "Book path %(path)s not found on Google Drive"
 msgstr "Nie znaleziono ścieżki do książki %(path)s na Google Drive"
 
-#: cps/helper.py:550
+#: cps/helper.py:551
 msgid "Failed to create path for cover"
 msgstr "Nie udało się utworzyć ścieżki dla okładki"
 
-#: cps/helper.py:555
+#: cps/helper.py:556
 msgid "Cover-file is not a valid image file, or could not be stored"
 msgstr ""
 
-#: cps/helper.py:566
+#: cps/helper.py:567
 msgid "Only jpg/jpeg/png/webp files are supported as coverfile"
 msgstr "Jako plik okładki dopuszczalne są jedynie pliki jpg/jpeg/png/webp"
 
-#: cps/helper.py:580
+#: cps/helper.py:581
 msgid "Only jpg/jpeg files are supported as coverfile"
 msgstr "Jako plik okładki dopuszczalne są jedynie pliki jpg/jpeg"
 
-#: cps/helper.py:622
+#: cps/helper.py:625
 msgid "Unrar binary file not found"
 msgstr ""
 
-#: cps/helper.py:635
+#: cps/helper.py:638
 msgid "Error excecuting UnRar"
 msgstr ""
 
-#: cps/helper.py:691
+#: cps/helper.py:694
 msgid "Waiting"
 msgstr "Oczekiwanie"
 
-#: cps/helper.py:693
+#: cps/helper.py:696
 msgid "Failed"
 msgstr "Nieudane"
 
-#: cps/helper.py:695
+#: cps/helper.py:698
 msgid "Started"
 msgstr "Rozpoczynanie"
 
-#: cps/helper.py:697
+#: cps/helper.py:700
 msgid "Finished"
 msgstr "Zakończone"
 
-#: cps/helper.py:699
+#: cps/helper.py:702
 msgid "Unknown Status"
 msgstr "Ststus nieznany"
 
-#: cps/helper.py:704
+#: cps/helper.py:707
 msgid "E-mail: "
 msgstr "E-mail: "
 
-#: cps/helper.py:706 cps/helper.py:710
+#: cps/helper.py:709 cps/helper.py:713
 msgid "Convert: "
 msgstr "Konwertowanie: "
 
-#: cps/helper.py:708
+#: cps/helper.py:711
 msgid "Upload: "
 msgstr "Wyślij: "
 
-#: cps/helper.py:712
+#: cps/helper.py:715
 msgid "Unknown Task: "
 msgstr "Nieznane zadanie: "
 
@@ -1306,13 +1306,13 @@ msgstr "W Bibliotece"
 
 # ???
 #: cps/templates/author.html:34 cps/templates/list.html:14
-#: cps/templates/search.html:41
+#: cps/templates/search.html:38
 msgid "All"
 msgstr "Wszystko"
 
 #: cps/templates/author.html:58 cps/templates/author.html:110
 #: cps/templates/discover.html:27 cps/templates/index.html:26
-#: cps/templates/index.html:89 cps/templates/search.html:67
+#: cps/templates/index.html:89 cps/templates/search.html:64
 #: cps/templates/shelf.html:36
 msgid "reduce"
 msgstr "zwiń"
@@ -1945,6 +1945,12 @@ msgstr "Opis:"
 msgid "Add to shelf"
 msgstr "Dodaj do półki"
 
+#: cps/templates/detail.html:243 cps/templates/detail.html:260
+#: cps/templates/feed.xml:79 cps/templates/layout.html:136
+#: cps/templates/layout.html:140 cps/templates/search.html:20
+msgid "(Public)"
+msgstr ""
+
 #: cps/templates/detail.html:274
 msgid "Edit Metadata"
 msgstr "Edytuj metadane"
@@ -1992,11 +1998,6 @@ msgstr "Czy na pewno chcesz usunąć tę domenę?"
 #: cps/templates/feed.xml:21 cps/templates/layout.html:173
 msgid "Next"
 msgstr "Następne"
-
-#: cps/templates/feed.xml:79 cps/templates/layout.html:136
-#: cps/templates/layout.html:140
-msgid "(Public)"
-msgstr ""
 
 #: cps/templates/generate_kobo_auth_url.html:5
 msgid "Open the .kobo/Kobo eReader.conf file in a text editor and add (or edit):"

@@ -332,6 +332,9 @@ def get_series(book):
         return None
     return book.series[0].name
 
+def get_seriesindex(book):
+    return book.series_index or 1
+
 
 def get_metadata(book):
     download_urls = []
@@ -386,8 +389,8 @@ def get_metadata(book):
             name = get_series(book)
         metadata["Series"] = {
             "Name": get_series(book),
-            "Number": book.series_index,        # ToDo Check int() ?
-            "NumberFloat": float(book.series_index),
+            "Number": get_seriesindex(book),        # ToDo Check int() ?
+            "NumberFloat": float(get_seriesindex(book)),
             # Get a deterministic id based on the series name.
             "Id": uuid.uuid3(uuid.NAMESPACE_DNS, name),
         }

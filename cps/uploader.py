@@ -74,23 +74,21 @@ except ImportError as e:
     use_PIL = False
 
 
-def process(tmp_file_path, original_file_name, original_file_extension, rarExcecutable):
+def process(tmp_file_path, original_file_name, original_file_extension, rarExecutable):
     meta = None
+    extension_upper = original_file_extension.upper()
     try:
-        if ".PDF" == original_file_extension.upper():
+        if ".PDF" == extension_upper:
             meta = pdf_meta(tmp_file_path, original_file_name, original_file_extension)
-        elif ".EPUB" == original_file_extension.upper() and use_epub_meta is True:
+        elif extension_upper in [".KEPUB", ".EPUB"] and use_epub_meta is True:
             meta = epub.get_epub_info(tmp_file_path, original_file_name, original_file_extension)
-        elif ".KEPUB" == original_file_extension.upper() and use_epub_meta is True:
-            meta = epub.get_epub_info(tmp_file_path, original_file_name, original_file_extension)
-        elif ".FB2" == original_file_extension.upper() and use_fb2_meta is True:
+        elif ".FB2" == extension_upper and use_fb2_meta is True:
             meta = fb2.get_fb2_info(tmp_file_path, original_file_extension)
-        elif original_file_extension.upper() in ['.CBZ', '.CBT', '.CBR']:
+        elif extension_upper in ['.CBZ', '.CBT', '.CBR']:
             meta = comic.get_comic_info(tmp_file_path,
                                         original_file_name,
                                         original_file_extension,
-                                        rarExcecutable)
-
+                                        rarExecutable)
     except Exception as ex:
         log.warning('cannot parse metadata, using default: %s', ex)
 
@@ -98,8 +96,7 @@ def process(tmp_file_path, original_file_name, original_file_extension, rarExcec
         if meta.author.lower() == 'unknown':
             meta = meta._replace(author=_(u'Unknown'))
         return meta
-    else:
-        return default_meta(tmp_file_path, original_file_name, original_file_extension)
+    return default_meta(tmp_file_path, original_file_name, original_file_extension)
 
 
 def default_meta(tmp_file_path, original_file_name, original_file_extension):
@@ -117,14 +114,11 @@ def default_meta(tmp_file_path, original_file_name, original_file_extension):
 
 
 def pdf_meta(tmp_file_path, original_file_name, original_file_extension):
-
+    doc_info = None
     if use_pdf_meta:
-        pdf = PdfFileReader(open(tmp_file_path, 'rb'))
-        doc_info = pdf.getDocumentInfo()
-    else:
-        doc_info = None
+        doc_info = PdfFileReader(open(tmp_file_path, 'rb')).getDocumentInfo()
 
-    if doc_info is not None:
+    if doc_info:
         author = doc_info.author if doc_info.author else u'Unknown'
         title = doc_info.title if doc_info.title else original_file_name
         subject = doc_info.subject
@@ -149,21 +143,20 @@ def pdf_meta(tmp_file_path, original_file_name, original_file_extension):
 def pdf_preview(tmp_file_path, tmp_dir):
     if use_generic_pdf_cover:
         return None
-    else:
-        try:
-            cover_file_name = os.path.splitext(tmp_file_path)[0] + ".cover.jpg"
-            with Image() as img:
-                img.options["pdf:use-cropbox"] = "true"
-                img.read(filename=tmp_file_path + '[0]', resolution = 150)
-                img.compression_quality = 88
-                img.save(filename=os.path.join(tmp_dir, cover_file_name))
-            return cover_file_name
-        except PolicyError as ex:
-            log.warning('Pdf extraction forbidden by Imagemagick policy: %s', ex)
-            return None
-        except Exception as ex:
-            log.warning('Cannot extract cover image, using default: %s', ex)
-            return None
+    try:
+        cover_file_name = os.path.splitext(tmp_file_path)[0] + ".cover.jpg"
+        with Image() as img:
+            img.options["pdf:use-cropbox"] = "true"
+            img.read(filename=tmp_file_path + '[0]', resolution=150)
+            img.compression_quality = 88
+            img.save(filename=os.path.join(tmp_dir, cover_file_name))
+        return cover_file_name
+    except PolicyError as ex:
+        log.warning('Pdf extraction forbidden by Imagemagick policy: %s', ex)
+        return None
+    except Exception as ex:
+        log.warning('Cannot extract cover image, using default: %s', ex)
+        return None
 
 
 def get_versions():
@@ -202,12 +195,11 @@ def upload(uploadfile, rarExcecutable):
 
     if not os.path.isdir(tmp_dir):
         os.mkdir(tmp_dir)
+
     filename = uploadfile.filename
     filename_root, file_extension = os.path.splitext(filename)
-    md5 = hashlib.md5()
-    md5.update(filename.encode('utf-8'))
-    tmp_file_path = os.path.join(tmp_dir, md5.hexdigest())
+    md5 = hashlib.md5(filename.encode('utf-8')).hexdigest()
+    tmp_file_path = os.path.join(tmp_dir, md5)
     log.debug("Temporary file: %s", tmp_file_path)
     uploadfile.save(tmp_file_path)
-    meta = process(tmp_file_path, filename_root, file_extension, rarExcecutable)
-    return meta
+    return process(tmp_file_path, filename_root, file_extension, rarExcecutable)
