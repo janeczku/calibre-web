@@ -110,10 +110,10 @@ except ValueError:
 del env_CALIBRE_PORT
 
 
-EXTENSIONS_AUDIO    = {'mp3', 'm4a', 'm4b'}
+EXTENSIONS_AUDIO    = {'mp3', 'mp4', 'ogg', 'opus', 'wav', 'flac'}
 EXTENSIONS_CONVERT  = {'pdf', 'epub', 'mobi', 'azw3', 'docx', 'rtf', 'fb2', 'lit', 'lrf', 'txt', 'htmlz', 'rtf', 'odt'}
 EXTENSIONS_UPLOAD   = {'txt', 'pdf', 'epub', 'mobi', 'azw', 'azw3', 'cbr', 'cbz', 'cbt', 'djvu', 'prc', 'doc', 'docx',
-                       'fb2', 'html', 'rtf', 'lit', 'odt', 'mp3',  'm4a', 'm4b'}
+                       'fb2', 'html', 'rtf', 'lit', 'odt', 'mp3', 'mp4', 'ogg', 'opus', 'wav', 'flac'}
 # EXTENSIONS_READER = set(['txt', 'pdf', 'epub', 'zip', 'cbz', 'tar', 'cbt'] +
 #                         (['rar','cbr'] if feature_support['rar'] else []))
 
