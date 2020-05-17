@@ -1555,7 +1555,7 @@ def read_book(book_id, book_format):
         log.debug(u"Start txt reader for %d", book_id)
         return render_title_template('readtxt.html', txtfile=book_id, title=_(u"Read a Book"))
     else:
-        for fileExt in ["mp3", "m4b", "m4a"]:
+        for fileExt in constants.EXTENSIONS_AUDIO:
             if book_format.lower() == fileExt:
                 entries = db.session.query(db.Books).filter(db.Books.id == book_id).filter(common_filters()).first()
                 log.debug(u"Start mp3 listening for %d", book_id)
