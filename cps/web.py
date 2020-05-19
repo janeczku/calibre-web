@@ -40,6 +40,7 @@ from flask_login import login_user, logout_user, login_required, current_user
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.sql.expression import text, func, true, false, not_, and_, or_
 from werkzeug.exceptions import default_exceptions
+from sqlalchemy.sql.functions import coalesce
 try:
     from werkzeug.exceptions import FailedDependency
 except ImportError:
@@ -1102,31 +1103,35 @@ def render_read_books(page, are_read, as_xml=False, order=None, *args, **kwargs)
         readBooks = ub.session.query(ub.ReadBook).filter(ub.ReadBook.user_id == int(current_user.id))\
             .filter(ub.ReadBook.read_status == ub.ReadBook.STATUS_FINISHED).all()
         readBookIds = [x.book_id for x in readBooks]
+        if are_read:
+            db_filter = db.Books.id.in_(readBookIds)
+        else:
+            db_filter = ~db.Books.id.in_(readBookIds)
+        entries, random, pagination = fill_indexpage(page, db.Books, db_filter, order)
     else:
         try:
-            readBooks = db.session.query(db.cc_classes[config.config_read_column]) \
-                .filter(db.cc_classes[config.config_read_column].value == True).all()
-            readBookIds = [x.book for x in readBooks]
+            if are_read:
+                db_filter = db.cc_classes[config.config_read_column].value == True
+            else:
+                db_filter = coalesce(db.cc_classes[config.config_read_column].value, False) != True
+            # book_count = db.session.query(func.count(db.Books.id)).filter(common_filters()).filter(db_filter).scalar()
+            entries, random, pagination = fill_indexpage(page, db.Books,
+                                                         db_filter,
+                                                         order,
+                                                         db.cc_classes[config.config_read_column])
         except KeyError:
             log.error("Custom Column No.%d is not existing in calibre database", config.config_read_column)
-            readBookIds = []
+            book_count = 0
 
-    if are_read:
-        db_filter = db.Books.id.in_(readBookIds)
-    else:
-        db_filter = ~db.Books.id.in_(readBookIds)
-
-    entries, random, pagination = fill_indexpage(page, db.Books, db_filter, order)
 
     if as_xml:
         return entries, pagination
     else:
         if are_read:
-            name = _(u'Read Books') + ' (' + str(len(readBookIds)) + ')'
+            name = _(u'Read Books') + ' (' + str(pagination.total_count) + ')'
             pagename = "read"
         else:
-            total_books = db.session.query(func.count(db.Books.id)).filter(common_filters()).scalar()
-            name = _(u'Unread Books') + ' (' + str(total_books - len(readBookIds)) + ')'
+            name = _(u'Unread Books') + ' (' + str(pagination.total_count) + ')'
             pagename = "unread"
         return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
                                      title=name, page=pagename)
