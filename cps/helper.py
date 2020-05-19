@@ -830,12 +830,12 @@ def fill_indexpage_with_archived_books(page, database, db_filter, order, allow_s
     else:
         randm = false()
     off = int(int(config.config_books_per_page) * (page - 1))
+    query = db.session.query(database).join(*join, isouter=True).\
+        filter(db_filter).\
+        filter(common_filters(allow_show_archived))
     pagination = Pagination(page, config.config_books_per_page,
-                            len(db.session.query(database).filter(db_filter)
-                                .filter(common_filters(allow_show_archived)).all()))
-    entries = db.session.query(database).join(*join, isouter=True).filter(db_filter)\
-        .filter(common_filters(allow_show_archived))\
-        .order_by(*order).offset(off).limit(config.config_books_per_page).all()
+                            len(query.all()))
+    entries = query.order_by(*order).offset(off).limit(config.config_books_per_page).all()
     for book in entries:
         book = order_authors(book)
     return entries, randm, pagination
