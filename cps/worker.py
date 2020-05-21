@@ -333,7 +333,6 @@ class WorkerThread(threading.Thread):
                 task = {'task':'add_format','id': bookid, 'format': new_format}
                 self.db_queue.put(task)
                 # To Do how to handle error?
-                print('finished')
 
                 '''cur_book.data.append(new_format)
                 try:

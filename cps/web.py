@@ -121,9 +121,9 @@ for ex in default_exceptions:
 if feature_support['ldap']:
     # Only way of catching the LDAPException upon logging in with LDAP server down
     @app.errorhandler(services.ldap.LDAPException)
-    def handle_LDAP_exception(e):
-        log.debug('LDAP server not accssible while trying to login to opds feed %s', e)
-        return error_http(e)
+    def handle_exception(e):
+        log.debug('LDAP server not accessible while trying to login to opds feed')
+        return error_http(FailedDependency())
 
 # @app.errorhandler(InvalidRequestError)
 #@app.errorhandler(OperationalError)
@@ -889,7 +889,7 @@ def ratings_list():
     if current_user.check_visibility(constants.SIDEBAR_RATING):
         entries = calibre_db.session.query(db.Ratings, func.count('books_ratings_link.book').label('count'),
                                    (db.Ratings.rating / 2).label('name')) \
-            .join(calibre_db.books_ratings_link).join(db.Books).filter(common_filters()) \
+            .join(db.books_ratings_link).join(db.Books).filter(common_filters()) \
             .group_by(text('books_ratings_link.rating')).order_by(db.Ratings.rating).all()
         return render_title_template('list.html', entries=entries, folder='web.books_list', charlist=list(),
                                      title=_(u"Ratings list"), page="ratingslist", data="ratings")

@@ -879,7 +879,7 @@ def get_cc_columns(filter_config_custom_read=False):
     for col in tmpcc:
         if filter_config_custom_read and config.config_read_column and config.config_read_column == col.id:
             continue
-        if r and r.match(col.label):
+        if r and r.match(col.name):
             continue
         cc.append(col)
 

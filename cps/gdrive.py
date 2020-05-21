@@ -39,7 +39,7 @@ try:
 except ImportError:
     pass
 
-from . import logger, gdriveutils, config, db, ub
+from . import logger, gdriveutils, config, ub, calibre_db
 from .web import admin_required
 
 
@@ -155,7 +155,7 @@ def on_received_watch_confirmation():
                         log.info('Setting up new DB')
                         # prevent error on windows, as os.rename does on exisiting files
                         move(os.path.join(tmpDir, "tmp_metadata.db"), dbpath)
-                        db.setup_db(config, ub.app_DB_path)
+                        calibre_db.setup_db(config, ub.app_DB_path)
             except Exception as e:
                 log.exception(e)
         updateMetaData()

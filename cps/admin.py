@@ -522,6 +522,7 @@ def _configuration_gdrive_helper(to_save):
 
 def _configuration_oauth_helper(to_save):
     active_oauths = 0
+    reboot_required = False
     for element in oauthblueprints:
         if to_save["config_" + str(element['id']) + "_oauth_client_id"] != element['oauth_client_id'] \
             or to_save["config_" + str(element['id']) + "_oauth_client_secret"] != element['oauth_client_secret']:
@@ -538,6 +539,7 @@ def _configuration_oauth_helper(to_save):
             {"oauth_client_id": to_save["config_" + str(element['id']) + "_oauth_client_id"],
              "oauth_client_secret": to_save["config_" + str(element['id']) + "_oauth_client_secret"],
              "active": element["active"]})
+    return reboot_required
 
 def _configuration_logfile_helper(to_save, gdriveError):
     reboot_required = False
@@ -552,7 +554,7 @@ def _configuration_logfile_helper(to_save, gdriveError):
         return reboot_required, _configuration_result(_('Access Logfile Location is not Valid, Please Enter Correct Path'), gdriveError)
     return reboot_required, None
 
-def _configuration_ldap_helper(gdriveError, to_save):
+def _configuration_ldap_helper(to_save, gdriveError):
     reboot_required = False
     reboot_required |= _config_string(to_save, "config_ldap_provider_url")
     reboot_required |= _config_int(to_save, "config_ldap_port")
@@ -575,36 +577,36 @@ def _configuration_ldap_helper(gdriveError, to_save):
         or not config.config_ldap_port \
         or not config.config_ldap_dn \
         or not config.config_ldap_user_object:
-        return _configuration_result(_('Please Enter a LDAP Provider, '
+        return reboot_required, _configuration_result(_('Please Enter a LDAP Provider, '
                                        'Port, DN and User Object Identifier'), gdriveError)
 
     if config.config_ldap_authentication > constants.LDAP_AUTH_ANONYMOUS:
         if config.config_ldap_authentication > constants.LDAP_AUTH_UNAUTHENTICATE:
             if not config.config_ldap_serv_username or not bool(config.config_ldap_serv_password):
-                return _configuration_result('Please Enter a LDAP Service Account and Password', gdriveError)
+                return reboot_required, _configuration_result('Please Enter a LDAP Service Account and Password', gdriveError)
         else:
             if not config.config_ldap_serv_username:
-                return _configuration_result('Please Enter a LDAP Service Account', gdriveError)
+                return reboot_required, _configuration_result('Please Enter a LDAP Service Account', gdriveError)
 
     if config.config_ldap_group_object_filter:
         if config.config_ldap_group_object_filter.count("%s") != 1:
-            return _configuration_result(_('LDAP Group Object Filter Needs to Have One "%s" Format Identifier'),
+            return reboot_required, _configuration_result(_('LDAP Group Object Filter Needs to Have One "%s" Format Identifier'),
                                          gdriveError)
         if config.config_ldap_group_object_filter.count("(") != config.config_ldap_group_object_filter.count(")"):
-            return _configuration_result(_('LDAP Group Object Filter Has Unmatched Parenthesis'),
+            return reboot_required, _configuration_result(_('LDAP Group Object Filter Has Unmatched Parenthesis'),
                                          gdriveError)
 
     if config.config_ldap_user_object.count("%s") != 1:
-        return _configuration_result(_('LDAP User Object Filter needs to Have One "%s" Format Identifier'),
+        return reboot_required, _configuration_result(_('LDAP User Object Filter needs to Have One "%s" Format Identifier'),
                                      gdriveError)
     if config.config_ldap_user_object.count("(") != config.config_ldap_user_object.count(")"):
-        return _configuration_result(_('LDAP User Object Filter Has Unmatched Parenthesis'),
+        return reboot_required, _configuration_result(_('LDAP User Object Filter Has Unmatched Parenthesis'),
                                      gdriveError)
 
     if config.config_ldap_cert_path and not os.path.isdir(config.config_ldap_cert_path):
-        return _configuration_result(_('LDAP Certificate Location is not Valid, Please Enter Correct Path'),
+        return reboot_required, _configuration_result(_('LDAP Certificate Location is not Valid, Please Enter Correct Path'),
                                      gdriveError)
-    return reboot_required
+    return reboot_required, None
 
 
 def _configuration_update_helper():
@@ -612,7 +614,7 @@ def _configuration_update_helper():
     db_change = False
     to_save = request.form.to_dict()
 
-    to_save['config_calibre_dir'] = re.sub('[[\\/]metadata\.db$', '', to_save['config_calibre_dir'], flags=re.IGNORECASE)
+    to_save['config_calibre_dir'] = re.sub('[\\/]metadata\.db$', '', to_save['config_calibre_dir'], flags=re.IGNORECASE)
     db_change |= _config_string(to_save, "config_calibre_dir")
 
     # Google drive setup
@@ -673,7 +675,7 @@ def _configuration_update_helper():
 
     # OAuth configuration
     if config.config_login_type == constants.LOGIN_OAUTH:
-        _configuration_oauth_helper(to_save)
+        reboot_required |= _configuration_oauth_helper(to_save)
 
     reboot, message = _configuration_logfile_helper(to_save, gdriveError)
     if message:
@@ -694,7 +696,7 @@ def _configuration_update_helper():
         return _configuration_result('%s' % e, gdriveError)
 
     if db_change:
-        if not db.setup_db(config, ub.app_DB_path):
+        if not calibre_db.setup_db(config, ub.app_DB_path):
             return _configuration_result(_('DB Location is not Valid, Please Enter Correct Path'), gdriveError)
         if not os.access(os.path.join(config.config_calibre_dir, "metadata.db"), os.W_OK):
             flash(_(u"DB is not Writeable"), category="warning")
