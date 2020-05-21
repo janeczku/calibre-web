@@ -33,7 +33,8 @@ from flask_login import current_user, login_required
 from sqlalchemy.exc import OperationalError
 
 from . import constants, logger, isoLanguages, gdriveutils, uploader, helper
-from . import config, get_locale, db, ub, worker
+from . import config, get_locale, ub, worker, db
+from . import calibre_db
 from .helper import order_authors, common_filters
 from .web import login_required_if_no_ano, render_title_template, edit_required, upload_required
 
@@ -175,7 +176,7 @@ def modify_identifiers(input_identifiers, db_identifiers, db_session):
 @login_required
 def delete_book(book_id, book_format):
     if current_user.role_delete_books():
-        book = db.session.query(db.Books).filter(db.Books.id == book_id).first()
+        book = calibre_db.session.query(db.Books).filter(db.Books.id == book_id).first()
         if book:
             try:
                 result, error = helper.delete_book(book, config.config_calibre_dir, book_format=book_format.upper())
@@ -193,13 +194,13 @@ def delete_book(book_id, book_format):
 
                     # check if only this book links to:
                     # author, language, series, tags, custom columns
-                    modify_database_object([u''], book.authors, db.Authors, db.session, 'author')
-                    modify_database_object([u''], book.tags, db.Tags, db.session, 'tags')
-                    modify_database_object([u''], book.series, db.Series, db.session, 'series')
-                    modify_database_object([u''], book.languages, db.Languages, db.session, 'languages')
-                    modify_database_object([u''], book.publishers, db.Publishers, db.session, 'publishers')
+                    modify_database_object([u''], book.authors, db.Authors, calibre_db.session, 'author')
+                    modify_database_object([u''], book.tags, db.Tags, calibre_db.session, 'tags')
+                    modify_database_object([u''], book.series, db.Series, calibre_db.session, 'series')
+                    modify_database_object([u''], book.languages, db.Languages, calibre_db.session, 'languages')
+                    modify_database_object([u''], book.publishers, db.Publishers, calibre_db.session, 'publishers')
 
-                    cc = db.session.query(db.Custom_Columns).\
+                    cc = calibre_db.session.query(db.Custom_Columns).\
                         filter(db.Custom_Columns.datatype.notin_(db.cc_exceptions)).all()
                     for c in cc:
                         cc_string = "custom_column_" + str(c.id)
@@ -209,32 +210,32 @@ def delete_book(book_id, book_format):
                                     del_cc = getattr(book, cc_string)[0]
                                     getattr(book, cc_string).remove(del_cc)
                                     log.debug('remove ' + str(c.id))
-                                    db.session.delete(del_cc)
-                                    db.session.commit()
+                                    calibre_db.session.delete(del_cc)
+                                    calibre_db.session.commit()
                                 elif c.datatype == 'rating':
                                     del_cc = getattr(book, cc_string)[0]
                                     getattr(book, cc_string).remove(del_cc)
                                     if len(del_cc.books) == 0:
                                         log.debug('remove ' + str(c.id))
-                                        db.session.delete(del_cc)
-                                        db.session.commit()
+                                        calibre_db.session.delete(del_cc)
+                                        calibre_db.session.commit()
                                 else:
                                     del_cc = getattr(book, cc_string)[0]
                                     getattr(book, cc_string).remove(del_cc)
                                     log.debug('remove ' + str(c.id))
-                                    db.session.delete(del_cc)
-                                    db.session.commit()
+                                    calibre_db.session.delete(del_cc)
+                                    calibre_db.session.commit()
                         else:
                             modify_database_object([u''], getattr(book, cc_string), db.cc_classes[c.id],
-                                                   db.session, 'custom')
-                    db.session.query(db.Books).filter(db.Books.id == book_id).delete()
+                                                   calibre_db.session, 'custom')
+                    calibre_db.session.query(db.Books).filter(db.Books.id == book_id).delete()
                 else:
-                    db.session.query(db.Data).filter(db.Data.book == book.id).\
+                    calibre_db.session.query(db.Data).filter(db.Data.book == book.id).\
                         filter(db.Data.format == book_format).delete()
-                db.session.commit()
+                calibre_db.session.commit()
             except Exception as e:
                 log.debug(e)
-                db.session.rollback()
+                calibre_db.session.rollback()
         else:
             # book not found
             log.error('Book with id "%s" could not be deleted: not found', book_id)
@@ -247,9 +248,9 @@ def delete_book(book_id, book_format):
 
 
 def render_edit_book(book_id):
-    db.update_title_sort(config)
-    cc = db.session.query(db.Custom_Columns).filter(db.Custom_Columns.datatype.notin_(db.cc_exceptions)).all()
-    book = db.session.query(db.Books)\
+    calibre_db.update_title_sort(config)
+    cc = calibre_db.session.query(db.Custom_Columns).filter(db.Custom_Columns.datatype.notin_(db.cc_exceptions)).all()
+    book = calibre_db.session.query(db.Books)\
         .filter(db.Books.id == book_id).filter(common_filters()).first()
 
     if not book:
@@ -304,7 +305,7 @@ def edit_book_ratings(to_save, book):
         ratingx2 = int(float(to_save["rating"]) * 2)
         if ratingx2 != old_rating:
             changed = True
-            is_rating = db.session.query(db.Ratings).filter(db.Ratings.rating == ratingx2).first()
+            is_rating = calibre_db.session.query(db.Ratings).filter(db.Ratings.rating == ratingx2).first()
             if is_rating:
                 book.ratings.append(is_rating)
             else:
@@ -326,7 +327,7 @@ def edit_book_languages(to_save, book):
     for l in unknown_languages:
         log.error('%s is not a valid language', l)
         flash(_(u"%(langname)s is not a valid language", langname=l), category="error")
-    return modify_database_object(list(input_l), book.languages, db.Languages, db.session, 'languages')
+    return modify_database_object(list(input_l), book.languages, db.Languages, calibre_db.session, 'languages')
 
 
 def edit_book_publisher(to_save, book):
@@ -334,15 +335,15 @@ def edit_book_publisher(to_save, book):
     if to_save["publisher"]:
         publisher = to_save["publisher"].rstrip().strip()
         if len(book.publishers) == 0 or (len(book.publishers) > 0 and publisher != book.publishers[0].name):
-            changed |= modify_database_object([publisher], book.publishers, db.Publishers, db.session, 'publisher')
+            changed |= modify_database_object([publisher], book.publishers, db.Publishers, calibre_db.session, 'publisher')
     elif len(book.publishers):
-        changed |= modify_database_object([], book.publishers, db.Publishers, db.session, 'publisher')
+        changed |= modify_database_object([], book.publishers, db.Publishers, calibre_db.session, 'publisher')
     return changed
 
 
 def edit_cc_data(book_id, book, to_save):
     changed = False
-    cc = db.session.query(db.Custom_Columns).filter(db.Custom_Columns.datatype.notin_(db.cc_exceptions)).all()
+    cc = calibre_db.session.query(db.Custom_Columns).filter(db.Custom_Columns.datatype.notin_(db.cc_exceptions)).all()
     for c in cc:
         cc_string = "custom_column_" + str(c.id)
         if not c.is_multiple:
@@ -365,12 +366,12 @@ def edit_cc_data(book_id, book, to_save):
                             else:
                                 del_cc = getattr(book, cc_string)[0]
                                 getattr(book, cc_string).remove(del_cc)
-                                db.session.delete(del_cc)
+                                calibre_db.session.delete(del_cc)
                                 changed = True
                         else:
                             cc_class = db.cc_classes[c.id]
                             new_cc = cc_class(value=to_save[cc_string], book=book_id)
-                            db.session.add(new_cc)
+                            calibre_db.session.add(new_cc)
                             changed = True
 
                 else:
@@ -382,18 +383,18 @@ def edit_cc_data(book_id, book, to_save):
                             del_cc = getattr(book, cc_string)[0]
                             getattr(book, cc_string).remove(del_cc)
                             if len(del_cc.books) == 0:
-                                db.session.delete(del_cc)
+                                calibre_db.session.delete(del_cc)
                                 changed = True
                         cc_class = db.cc_classes[c.id]
-                        new_cc = db.session.query(cc_class).filter(
+                        new_cc = calibre_db.session.query(cc_class).filter(
                             cc_class.value == to_save[cc_string].strip()).first()
                         # if no cc val is found add it
                         if new_cc is None:
                             new_cc = cc_class(value=to_save[cc_string].strip())
-                            db.session.add(new_cc)
+                            calibre_db.session.add(new_cc)
                             changed = True
-                            db.session.flush()
-                            new_cc = db.session.query(cc_class).filter(
+                            calibre_db.session.flush()
+                            new_cc = calibre_db.session.query(cc_class).filter(
                                 cc_class.value == to_save[cc_string].strip()).first()
                         # add cc value to book
                         getattr(book, cc_string).append(new_cc)
@@ -403,12 +404,12 @@ def edit_cc_data(book_id, book, to_save):
                     del_cc = getattr(book, cc_string)[0]
                     getattr(book, cc_string).remove(del_cc)
                     if not del_cc.books or len(del_cc.books) == 0:
-                        db.session.delete(del_cc)
+                        calibre_db.session.delete(del_cc)
                         changed = True
         else:
             input_tags = to_save[cc_string].split(',')
             input_tags = list(map(lambda it: it.strip(), input_tags))
-            changed |= modify_database_object(input_tags, getattr(book, cc_string), db.cc_classes[c.id], db.session,
+            changed |= modify_database_object(input_tags, getattr(book, cc_string), db.cc_classes[c.id], calibre_db.session,
                                    'custom')
     return changed
 
@@ -446,7 +447,7 @@ def upload_single_file(request, book, book_id):
                 return redirect(url_for('web.show_book', book_id=book.id))
 
             file_size = os.path.getsize(saved_filename)
-            is_format = db.session.query(db.Data).filter(db.Data.book == book_id).\
+            is_format = calibre_db.session.query(db.Data).filter(db.Data.book == book_id).\
                 filter(db.Data.format == file_ext.upper()).first()
 
             # Format entry already exists, no need to update the database
@@ -455,11 +456,11 @@ def upload_single_file(request, book, book_id):
             else:
                 try:
                     db_format = db.Data(book_id, file_ext.upper(), file_size, file_name)
-                    db.session.add(db_format)
-                    db.session.commit()
-                    db.update_title_sort(config)
+                    calibre_db.session.add(db_format)
+                    calibre_db.session.commit()
+                    calibre_db.update_title_sort(config)
                 except OperationalError as e:
-                    db.session.rollback()
+                    calibre_db.session.rollback()
                     log.error('Database error: %s', e)
                     flash(_(u"Database error: %(error)s.", error=e), category="error")
                     return redirect(url_for('web.show_book', book_id=book.id))
@@ -498,8 +499,8 @@ def edit_book(book_id):
         return render_edit_book(book_id)
 
     # create the function for sorting...
-    db.update_title_sort(config)
-    book = db.session.query(db.Books)\
+    calibre_db.update_title_sort(config)
+    book = calibre_db.session.query(db.Books)\
         .filter(db.Books.id == book_id).filter(common_filters()).first()
 
     # Book not found
@@ -531,13 +532,13 @@ def edit_book(book_id):
         if input_authors == ['']:
             input_authors = [_(u'Unknown')]  # prevent empty Author
 
-        modif_date |= modify_database_object(input_authors, book.authors, db.Authors, db.session, 'author')
+        modif_date |= modify_database_object(input_authors, book.authors, db.Authors, calibre_db.session, 'author')
 
         # Search for each author if author is in database, if not, authorname and sorted authorname is generated new
         # everything then is assembled for sorted author field in database
         sort_authors_list = list()
         for inp in input_authors:
-            stored_author = db.session.query(db.Authors).filter(db.Authors.name == inp).first()
+            stored_author = calibre_db.session.query(db.Authors).filter(db.Authors.name == inp).first()
             if not stored_author:
                 stored_author = helper.get_sorted_author(inp)
             else:
@@ -581,17 +582,17 @@ def edit_book(book_id):
 
                     # Handle identifiers
             input_identifiers = identifier_list(to_save, book)
-            modif_date |= modify_identifiers(input_identifiers, book.identifiers, db.session)
+            modif_date |= modify_identifiers(input_identifiers, book.identifiers, calibre_db.session)
 
             # Handle book tags
             input_tags = to_save["tags"].split(',')
             input_tags = list(map(lambda it: it.strip(), input_tags))
-            modif_date |= modify_database_object(input_tags, book.tags, db.Tags, db.session, 'tags')
+            modif_date |= modify_database_object(input_tags, book.tags, db.Tags, calibre_db.session, 'tags')
 
             # Handle book series
             input_series = [to_save["series"].strip()]
             input_series = [x for x in input_series if x != '']
-            modif_date |= modify_database_object(input_series, book.series, db.Series, db.session, 'series')
+            modif_date |= modify_database_object(input_series, book.series, db.Series, calibre_db.session, 'series')
 
             if to_save["pubdate"]:
                 try:
@@ -615,7 +616,7 @@ def edit_book(book_id):
 
             if modif_date:
                 book.last_modified = datetime.utcnow()
-            db.session.commit()
+            calibre_db.session.commit()
             if config.config_use_google_drive:
                 gdriveutils.updateGdriveCalibreFromLocal()
             if "detail_view" in to_save:
@@ -624,12 +625,12 @@ def edit_book(book_id):
                 flash(_("Metadata successfully updated"), category="success")
                 return render_edit_book(book_id)
         else:
-            db.session.rollback()
+            calibre_db.session.rollback()
             flash(error, category="error")
             return render_edit_book(book_id)
     except Exception as e:
         log.exception(e)
-        db.session.rollback()
+        calibre_db.session.rollback()
         flash(_("Error editing book, please check logfile for details"), category="error")
         return redirect(url_for('web.show_book', book_id=book.id))
 
@@ -671,8 +672,8 @@ def upload():
         for requested_file in request.files.getlist("btn-upload"):
             try:
                 # create the function for sorting...
-                db.update_title_sort(config)
-                db.session.connection().connection.connection.create_function('uuid4', 0, lambda: str(uuid4()))
+                calibre_db.update_title_sort(config)
+                calibre_db.session.connection().connection.connection.create_function('uuid4', 0, lambda: str(uuid4()))
 
                 # check if file extension is correct
                 if '.' in requested_file.filename:
@@ -708,13 +709,13 @@ def upload():
                             + Markup(render_title_template('book_exists_flash.html', entry=entry)), category="warning")
 
                 # handle authors
-                is_author = db.session.query(db.Authors).filter(db.Authors.name == authr).first()
+                is_author = calibre_db.session.query(db.Authors).filter(db.Authors.name == authr).first()
                 if is_author:
                     db_author = is_author
                     authr= is_author.name
                 else:
                     db_author = db.Authors(authr, helper.get_sorted_author(authr), "")
-                    db.session.add(db_author)
+                    calibre_db.session.add(db_author)
 
                 title_dir = helper.get_valid_filename(title)
                 author_dir = helper.get_valid_filename(authr)
@@ -746,29 +747,29 @@ def upload():
 
                 # handle series
                 db_series = None
-                is_series = db.session.query(db.Series).filter(db.Series.name == series).first()
+                is_series = calibre_db.session.query(db.Series).filter(db.Series.name == series).first()
                 if is_series:
                     db_series = is_series
                 elif series != '':
                     db_series = db.Series(series, "")
-                    db.session.add(db_series)
+                    calibre_db.session.add(db_series)
 
                 # add language actually one value in list
                 input_language = meta.languages
                 db_language = None
                 if input_language != "":
                     input_language = isoLanguages.get(name=input_language).part3
-                    hasLanguage = db.session.query(db.Languages).filter(db.Languages.lang_code == input_language).first()
+                    hasLanguage = calibre_db.session.query(db.Languages).filter(db.Languages.lang_code == input_language).first()
                     if hasLanguage:
                         db_language = hasLanguage
                     else:
                         db_language = db.Languages(input_language)
-                        db.session.add(db_language)
+                        calibre_db.session.add(db_language)
 
                 # If the language of the file is excluded from the users view, it's not imported, to allow the user to view
                 # the book it's language is set to the filter language
                 if db_language != current_user.filter_language() and current_user.filter_language() != "all":
-                    db_language = db.session.query(db.Languages).\
+                    db_language = calibre_db.session.query(db.Languages).\
                         filter(db.Languages.lang_code == current_user.filter_language()).first()
 
                 # combine path and normalize path from windows systems
@@ -788,25 +789,25 @@ def upload():
                 input_tags = tags.split(',')
                 input_tags = list(map(lambda it: it.strip(), input_tags))
                 if input_tags[0] !="":
-                    modify_database_object(input_tags, db_book.tags, db.Tags, db.session, 'tags')
+                    modify_database_object(input_tags, db_book.tags, db.Tags, calibre_db.session, 'tags')
 
                 # flush content, get db_book.id available
                 db_book.data.append(db_data)
-                db.session.add(db_book)
-                db.session.flush()
+                calibre_db.session.add(db_book)
+                calibre_db.session.flush()
 
                 # add comment
                 book_id = db_book.id
                 upload_comment = Markup(meta.description).unescape()
                 if upload_comment != "":
-                    db.session.add(db.Comments(upload_comment, book_id))
+                    calibre_db.session.add(db.Comments(upload_comment, book_id))
 
                 # save data to database, reread data
-                db.session.commit()
-                db.update_title_sort(config)
+                calibre_db.session.commit()
+                calibre_db.update_title_sort(config)
                 # Reread book. It's important not to filter the result, as it could have language which hide it from
                 # current users view (tags are not stored/extracted from metadata and could also be limited)
-                book = db.session.query(db.Books).filter(db.Books.id == book_id).first()
+                book = calibre_db.session.query(db.Books).filter(db.Books.id == book_id).first()
                 # upload book to gdrive if nesseccary and add "(bookid)" to folder name
                 if config.config_use_google_drive:
                     gdriveutils.updateGdriveCalibreFromLocal()
@@ -823,7 +824,7 @@ def upload():
                         flash(_(u"Failed to Move Cover File %(file)s: %(error)s", file=new_coverpath,
                                 error=e),
                               category="error")
-                db.session.commit()
+                calibre_db.session.commit()
                 if config.config_use_google_drive:
                     gdriveutils.updateGdriveCalibreFromLocal()
                 if error:
@@ -846,7 +847,7 @@ def upload():
                         resp = {"location": url_for('web.show_book', book_id=db_book.id)}
                         return Response(json.dumps(resp), mimetype='application/json')
             except OperationalError as e:
-                db.session.rollback()
+                calibre_db.session.rollback()
                 log.error("Database error: %s", e)
                 flash(_(u"Database error: %(error)s.", error=e), category="error")
         return Response(json.dumps({"location": url_for("web.index")}), mimetype='application/json')

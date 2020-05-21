@@ -23,18 +23,22 @@ import os
 import re
 import ast
 from datetime import datetime
+import threading
+import time
+import queue
 
-from sqlalchemy import create_engine, event
+from sqlalchemy import create_engine
 from sqlalchemy import Table, Column, ForeignKey, CheckConstraint
 from sqlalchemy import String, Integer, Boolean, TIMESTAMP, Float
 from sqlalchemy.orm import relationship, sessionmaker, scoped_session
 from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.exc import OperationalError
 
-
-session = None
+from . import logger
+# session = None
 cc_exceptions = ['datetime', 'comments', 'composite', 'series']
 cc_classes = {}
-engine = None
+# engine = None
 
 Base = declarative_base()
 
@@ -226,6 +230,7 @@ class Publishers(Base):
 
 class Data(Base):
     __tablename__ = 'data'
+    __table_args__ = {'schema':'calibre'}
 
     id = Column(Integer, primary_key=True)
     book = Column(Integer, ForeignKey('books.id'), nullable=False)
@@ -314,136 +319,170 @@ class Custom_Columns(Base):
         return display_dict
 
 
-def update_title_sort(config, conn=None):
-    # user defined sort function for calibre databases (Series, etc.)
-    def _title_sort(title):
-        # calibre sort stuff
-        title_pat = re.compile(config.config_title_regex, re.IGNORECASE)
-        match = title_pat.search(title)
-        if match:
-            prep = match.group(1)
-            title = title.replace(prep, '') + ', ' + prep
-        return title.strip()
+class CalibreDB(threading.Thread):
 
-    conn = conn or session.connection().connection.connection
-    conn.create_function("title_sort", 1, _title_sort)
+    def __init__(self):
+        threading.Thread.__init__(self)
+        self.engine = None
+        self.session = None
+        self.queue = None
+        self.log = None
+
+    def add_queue(self,queue):
+        self.queue = queue
+        self.log = logger.create()
+
+    def run(self):
+        while True:
+            i = self.queue.get()
+            if i == 'dummy':
+                self.queue.task_done()
+                break
+            if i['task'] == 'add_format':
+                cur_book = self.session.query(Books).filter(Books.id == i['id']).first()
+                cur_book.data.append(i['format'])
+                try:
+                    # db.session.merge(cur_book)
+                    self.session.commit()
+                except OperationalError as e:
+                    self.session.rollback()
+                    self.log.error("Database error: %s", e)
+                    # self._handleError(_(u"Database error: %(error)s.", error=e))
+                    # return
+            self.queue.task_done()
 
 
-def setup_db(config, app_db_path):
-    dispose()
-    global engine
+    def stop(self):
+        self.queue.put('dummy')
 
-    if not config.config_calibre_dir:
-        config.invalidate()
-        return False
+    def setup_db(self, config, app_db_path):
+        self.dispose()
+        # global engine
 
-    dbpath = os.path.join(config.config_calibre_dir, "metadata.db")
-    if not os.path.exists(dbpath):
-        config.invalidate()
-        return False
+        if not config.config_calibre_dir:
+            config.invalidate()
+            return False
 
-    try:
-        #engine = create_engine('sqlite:///{0}'.format(dbpath),
-        engine = create_engine('sqlite://',
-                               echo=False,
-                               isolation_level="SERIALIZABLE",
-                               connect_args={'check_same_thread': False})
-        engine.execute("attach database '{}' as calibre;".format(dbpath))
-        engine.execute("attach database '{}' as app_settings;".format(app_db_path))
+        dbpath = os.path.join(config.config_calibre_dir, "metadata.db")
+        if not os.path.exists(dbpath):
+            config.invalidate()
+            return False
 
-        conn = engine.connect()
-        # conn.text_factory = lambda b: b.decode(errors = 'ignore') possible fix for #1302
-    except Exception as e:
-        config.invalidate(e)
-        return False
+        try:
+            #engine = create_engine('sqlite:///{0}'.format(dbpath),
+            self.engine = create_engine('sqlite://',
+                                   echo=False,
+                                   isolation_level="SERIALIZABLE",
+                                   connect_args={'check_same_thread': False})
+            self.engine.execute("attach database '{}' as calibre;".format(dbpath))
+            self.engine.execute("attach database '{}' as app_settings;".format(app_db_path))
 
-    config.db_configured = True
-    update_title_sort(config, conn.connection)
+            conn = self.engine.connect()
+            # conn.text_factory = lambda b: b.decode(errors = 'ignore') possible fix for #1302
+        except Exception as e:
+            config.invalidate(e)
+            return False
 
-    if not cc_classes:
-        cc = conn.execute("SELECT id, datatype FROM custom_columns")
+        config.db_configured = True
+        self.update_title_sort(config, conn.connection)
 
-        cc_ids = []
-        books_custom_column_links = {}
-        for row in cc:
-            if row.datatype not in cc_exceptions:
-                books_custom_column_links[row.id] = Table('books_custom_column_' + str(row.id) + '_link', Base.metadata,
-                                                          Column('book', Integer, ForeignKey('books.id'),
-                                                                 primary_key=True),
-                                                          Column('value', Integer,
-                                                                 ForeignKey('custom_column_' + str(row.id) + '.id'),
-                                                                 primary_key=True)
-                                                          )
-                cc_ids.append([row.id, row.datatype])
-                if row.datatype == 'bool':
-                    ccdict = {'__tablename__': 'custom_column_' + str(row.id),
-                              'id': Column(Integer, primary_key=True),
-                              'book': Column(Integer, ForeignKey('books.id')),
-                              'value': Column(Boolean)}
-                elif row.datatype == 'int':
-                    ccdict = {'__tablename__': 'custom_column_' + str(row.id),
-                              'id': Column(Integer, primary_key=True),
-                              'book': Column(Integer, ForeignKey('books.id')),
-                              'value': Column(Integer)}
-                elif row.datatype == 'float':
-                    ccdict = {'__tablename__': 'custom_column_' + str(row.id),
-                              'id': Column(Integer, primary_key=True),
-                              'book': Column(Integer, ForeignKey('books.id')),
-                              'value': Column(Float)}
+        if not cc_classes:
+            cc = conn.execute("SELECT id, datatype FROM custom_columns")
+
+            cc_ids = []
+            books_custom_column_links = {}
+            for row in cc:
+                if row.datatype not in cc_exceptions:
+                    books_custom_column_links[row.id] = Table('books_custom_column_' + str(row.id) + '_link', Base.metadata,
+                                                              Column('book', Integer, ForeignKey('books.id'),
+                                                                     primary_key=True),
+                                                              Column('value', Integer,
+                                                                     ForeignKey('custom_column_' + str(row.id) + '.id'),
+                                                                     primary_key=True)
+                                                              )
+                    cc_ids.append([row.id, row.datatype])
+                    if row.datatype == 'bool':
+                        ccdict = {'__tablename__': 'custom_column_' + str(row.id),
+                                  'id': Column(Integer, primary_key=True),
+                                  'book': Column(Integer, ForeignKey('books.id')),
+                                  'value': Column(Boolean)}
+                    elif row.datatype == 'int':
+                        ccdict = {'__tablename__': 'custom_column_' + str(row.id),
+                                  'id': Column(Integer, primary_key=True),
+                                  'book': Column(Integer, ForeignKey('books.id')),
+                                  'value': Column(Integer)}
+                    elif row.datatype == 'float':
+                        ccdict = {'__tablename__': 'custom_column_' + str(row.id),
+                                  'id': Column(Integer, primary_key=True),
+                                  'book': Column(Integer, ForeignKey('books.id')),
+                                  'value': Column(Float)}
+                    else:
+                        ccdict = {'__tablename__': 'custom_column_' + str(row.id),
+                                  'id': Column(Integer, primary_key=True),
+                                  'value': Column(String)}
+                    cc_classes[row.id] = type(str('Custom_Column_' + str(row.id)), (Base,), ccdict)
+
+            for cc_id in cc_ids:
+                if (cc_id[1] == 'bool') or (cc_id[1] == 'int') or (cc_id[1] == 'float'):
+                    setattr(Books, 'custom_column_' + str(cc_id[0]), relationship(cc_classes[cc_id[0]],
+                                                                               primaryjoin=(
+                                                                               Books.id == cc_classes[cc_id[0]].book),
+                                                                               backref='books'))
                 else:
-                    ccdict = {'__tablename__': 'custom_column_' + str(row.id),
-                              'id': Column(Integer, primary_key=True),
-                              'value': Column(String)}
-                cc_classes[row.id] = type(str('Custom_Column_' + str(row.id)), (Base,), ccdict)
-
-        for cc_id in cc_ids:
-            if (cc_id[1] == 'bool') or (cc_id[1] == 'int') or (cc_id[1] == 'float'):
-                setattr(Books, 'custom_column_' + str(cc_id[0]), relationship(cc_classes[cc_id[0]],
-                                                                           primaryjoin=(
-                                                                           Books.id == cc_classes[cc_id[0]].book),
-                                                                           backref='books'))
-            else:
-                setattr(Books, 'custom_column_' + str(cc_id[0]), relationship(cc_classes[cc_id[0]],
-                                                                           secondary=books_custom_column_links[cc_id[0]],
-                                                                           backref='books'))
+                    setattr(Books, 'custom_column_' + str(cc_id[0]), relationship(cc_classes[cc_id[0]],
+                                                                               secondary=books_custom_column_links[cc_id[0]],
+                                                                               backref='books'))
 
 
-    global session
-    Session = scoped_session(sessionmaker(autocommit=False,
-                                             autoflush=False,
-                                             bind=engine))
-    session = Session()
-    return True
+        # global session
+        Session = scoped_session(sessionmaker(autocommit=False,
+                                                 autoflush=False,
+                                                 bind=self.engine))
+        self.session = Session()
+        return True
+
+    def update_title_sort(self, config, conn=None):
+        # user defined sort function for calibre databases (Series, etc.)
+        def _title_sort(title):
+            # calibre sort stuff
+            title_pat = re.compile(config.config_title_regex, re.IGNORECASE)
+            match = title_pat.search(title)
+            if match:
+                prep = match.group(1)
+                title = title.replace(prep, '') + ', ' + prep
+            return title.strip()
+
+        conn = conn or self.session.connection().connection.connection
+        conn.create_function("title_sort", 1, _title_sort)
+
+    def dispose(self):
+        # global session
+
+        old_session = self.session
+        self.session = None
+        if old_session:
+            try: old_session.close()
+            except: pass
+            if old_session.bind:
+                try: old_session.bind.dispose()
+                except Exception: pass
+
+        for attr in list(Books.__dict__.keys()):
+            if attr.startswith("custom_column_"):
+                setattr(Books, attr, None)
+
+        for db_class in cc_classes.values():
+            Base.metadata.remove(db_class.__table__)
+        cc_classes.clear()
+
+        for table in reversed(Base.metadata.sorted_tables):
+            name = table.key
+            if name.startswith("custom_column_") or name.startswith("books_custom_column_"):
+                if table is not None:
+                    Base.metadata.remove(table)
 
 
-def dispose():
-    global session
-
-    old_session = session
-    session = None
-    if old_session:
-        try: old_session.close()
-        except: pass
-        if old_session.bind:
-            try: old_session.bind.dispose()
-            except Exception: pass
-
-    for attr in list(Books.__dict__.keys()):
-        if attr.startswith("custom_column_"):
-            setattr(Books, attr, None)
-
-    for db_class in cc_classes.values():
-        Base.metadata.remove(db_class.__table__)
-    cc_classes.clear()
-
-    for table in reversed(Base.metadata.sorted_tables):
-        name = table.key
-        if name.startswith("custom_column_") or name.startswith("books_custom_column_"):
-            if table is not None:
-                Base.metadata.remove(table)
-
-
-def reconnect_db(config, app_db_path):
-    session.close()
-    engine.dispose()
-    setup_db(config, app_db_path)
+    def reconnect_db(self, config, app_db_path):
+        self.session.close()
+        self.engine.dispose()
+        self.setup_db(config, app_db_path)

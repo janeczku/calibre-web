@@ -23,7 +23,6 @@ import os
 import io
 import json
 import mimetypes
-import random
 import re
 import shutil
 import time
@@ -42,6 +41,7 @@ from flask_login import current_user
 from sqlalchemy.sql.expression import true, false, and_, or_, text, func
 from werkzeug.datastructures import Headers
 from werkzeug.security import generate_password_hash
+from . import calibre_db
 
 try:
     from urllib.parse import quote
@@ -74,8 +74,8 @@ log = logger.create()
 
 # Convert existing book entry to new format
 def convert_book_format(book_id, calibrepath, old_book_format, new_book_format, user_id, kindle_mail=None):
-    book = db.session.query(db.Books).filter(db.Books.id == book_id).first()
-    data = db.session.query(db.Data).filter(db.Data.book == book.id).filter(db.Data.format == old_book_format).first()
+    book = calibre_db.session.query(db.Books).filter(db.Books.id == book_id).first()
+    data = calibre_db.session.query(db.Data).filter(db.Data.book == book.id).filter(db.Data.format == old_book_format).first()
     if not data:
         error_message = _(u"%(format)s format not found for book id: %(book)d", format=old_book_format, book=book_id)
         log.error("convert_book_format: %s", error_message)
@@ -212,7 +212,7 @@ def check_read_formats(entry):
 # 3: If Pdf file is existing, it's directly send to kindle email
 def send_mail(book_id, book_format, convert, kindle_mail, calibrepath, user_id):
     """Send email with attachments"""
-    book = db.session.query(db.Books).filter(db.Books.id == book_id).first()
+    book = calibre_db.session.query(db.Books).filter(db.Books.id == book_id).first()
 
     if convert == 1:
         # returns None if success, otherwise errormessage
@@ -324,7 +324,7 @@ def delete_book_file(book, calibrepath, book_format=None):
 
 
 def update_dir_structure_file(book_id, calibrepath, first_author):
-    localbook = db.session.query(db.Books).filter(db.Books.id == book_id).first()
+    localbook = calibre_db.session.query(db.Books).filter(db.Books.id == book_id).first()
     path = os.path.join(calibrepath, localbook.path)
 
     authordir = localbook.path.split('/')[0]
@@ -383,7 +383,7 @@ def update_dir_structure_file(book_id, calibrepath, first_author):
 
 def update_dir_structure_gdrive(book_id, first_author):
     error = False
-    book = db.session.query(db.Books).filter(db.Books.id == book_id).first()
+    book = calibre_db.session.query(db.Books).filter(db.Books.id == book_id).first()
     path = book.path
 
     authordir = book.path.split('/')[0]
@@ -494,13 +494,13 @@ def get_cover_on_failure(use_generic_cover):
 
 
 def get_book_cover(book_id):
-    book = db.session.query(db.Books).filter(db.Books.id == book_id).filter(common_filters(allow_show_archived=True)).first()
+    book = calibre_db.session.query(db.Books).filter(db.Books.id == book_id).filter(common_filters(allow_show_archived=True)).first()
     return get_book_cover_internal(book, use_generic_cover_on_failure=True)
 
 
 def get_book_cover_with_uuid(book_uuid,
                              use_generic_cover_on_failure=True):
-    book = db.session.query(db.Books).filter(db.Books.uuid == book_uuid).first()
+    book = calibre_db.session.query(db.Books).filter(db.Books.uuid == book_uuid).first()
     return get_book_cover_internal(book, use_generic_cover_on_failure)
 
 
@@ -775,7 +775,7 @@ def tags_filters():
 # Creates for all stored languages a translated speaking name in the array for the UI
 def speaking_language(languages=None):
     if not languages:
-        languages = db.session.query(db.Languages).join(db.books_languages_link).join(db.Books)\
+        languages = calibre_db.session.query(db.Languages).join(db.books_languages_link).join(db.Books)\
             .filter(common_filters())\
             .group_by(text('books_languages_link.lang_code')).all()
     for lang in languages:
@@ -808,7 +808,7 @@ def order_authors(entry):
     error = False
     for auth in sort_authors:
         # ToDo: How to handle not found authorname
-        result = db.session.query(db.Authors).filter(db.Authors.sort == auth.lstrip().strip()).first()
+        result = calibre_db.session.query(db.Authors).filter(db.Authors.sort == auth.lstrip().strip()).first()
         if not result:
             error = True
             break
@@ -825,12 +825,12 @@ def fill_indexpage(page, database, db_filter, order, *join):
 
 def fill_indexpage_with_archived_books(page, database, db_filter, order, allow_show_archived, *join):
     if current_user.show_detail_random():
-        randm = db.session.query(db.Books).filter(common_filters(allow_show_archived))\
+        randm = calibre_db.session.query(db.Books).filter(common_filters(allow_show_archived))\
             .order_by(func.random()).limit(config.config_random_books)
     else:
         randm = false()
     off = int(int(config.config_books_per_page) * (page - 1))
-    query = db.session.query(database).join(*join, isouter=True).\
+    query = calibre_db.session.query(database).join(*join, isouter=True).\
         filter(db_filter).\
         filter(common_filters(allow_show_archived))
     pagination = Pagination(page, config.config_books_per_page,
@@ -843,8 +843,8 @@ def fill_indexpage_with_archived_books(page, database, db_filter, order, allow_s
 
 def get_typeahead(database, query, replace=('', ''), tag_filter=true()):
     query = query or ''
-    db.session.connection().connection.connection.create_function("lower", 1, lcase)
-    entries = db.session.query(database).filter(tag_filter).\
+    calibre_db.session.connection().connection.connection.create_function("lower", 1, lcase)
+    entries = calibre_db.session.query(database).filter(tag_filter).\
         filter(func.lower(database.name).ilike("%" + query + "%")).all()
     json_dumps = json.dumps([dict(name=r.name.replace(*replace)) for r in entries])
     return json_dumps
@@ -852,7 +852,7 @@ def get_typeahead(database, query, replace=('', ''), tag_filter=true()):
 
 # read search results from calibre-database and return it (function is used for feed and simple search
 def get_search_results(term):
-    db.session.connection().connection.connection.create_function("lower", 1, lcase)
+    calibre_db.session.connection().connection.connection.create_function("lower", 1, lcase)
     q = list()
     authorterms = re.split("[, ]+", term)
     for authorterm in authorterms:
@@ -860,7 +860,7 @@ def get_search_results(term):
 
     db.Books.authors.any(func.lower(db.Authors.name).ilike("%" + term + "%"))
 
-    return db.session.query(db.Books).filter(common_filters()).filter(
+    return calibre_db.session.query(db.Books).filter(common_filters()).filter(
         or_(db.Books.tags.any(func.lower(db.Tags.name).ilike("%" + term + "%")),
             db.Books.series.any(func.lower(db.Series.name).ilike("%" + term + "%")),
             db.Books.authors.any(and_(*q)),
@@ -870,7 +870,7 @@ def get_search_results(term):
 
 
 def get_cc_columns(filter_config_custom_read=False):
-    tmpcc = db.session.query(db.Custom_Columns).filter(db.Custom_Columns.datatype.notin_(db.cc_exceptions)).all()
+    tmpcc = calibre_db.session.query(db.Custom_Columns).filter(db.Custom_Columns.datatype.notin_(db.cc_exceptions)).all()
     cc = []
     r = None
     if config.config_columns_to_ignore:
@@ -887,9 +887,9 @@ def get_cc_columns(filter_config_custom_read=False):
 
 def get_download_link(book_id, book_format, client):
     book_format = book_format.split(".")[0]
-    book = db.session.query(db.Books).filter(db.Books.id == book_id).filter(common_filters()).first()
+    book = calibre_db.session.query(db.Books).filter(db.Books.id == book_id).filter(common_filters()).first()
     if book:
-        data1 = db.session.query(db.Data).filter(db.Data.book == book.id)\
+        data1 = calibre_db.session.query(db.Data).filter(db.Data.book == book.id)\
             .filter(db.Data.format == book_format.upper()).first()
     else:
         abort(404)
@@ -911,13 +911,13 @@ def get_download_link(book_id, book_format, client):
 
 
 def check_exists_book(authr, title):
-    db.session.connection().connection.connection.create_function("lower", 1, lcase)
+    calibre_db.session.connection().connection.connection.create_function("lower", 1, lcase)
     q = list()
     authorterms = re.split(r'\s*&\s*', authr)
     for authorterm in authorterms:
         q.append(db.Books.authors.any(func.lower(db.Authors.name).ilike("%" + authorterm + "%")))
 
-    return db.session.query(db.Books).filter(
+    return calibre_db.session.query(db.Books).filter(
         and_(db.Books.authors.any(and_(*q)),
              func.lower(db.Books.title).ilike("%" + title + "%")
              )).first()

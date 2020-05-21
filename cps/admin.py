@@ -38,7 +38,7 @@ from sqlalchemy.exc import IntegrityError
 from sqlalchemy.sql.expression import func
 
 from . import constants, logger, helper, services
-from . import db, ub, web_server, get_locale, config, updater_thread, babel, gdriveutils
+from . import db, calibre_db, ub, web_server, get_locale, config, updater_thread, babel, gdriveutils
 from .helper import speaking_language, check_valid_domain, send_test_mail, reset_password, generate_password_hash
 from .gdriveutils import is_gdrive_ready, gdrive_support
 from .web import admin_required, render_title_template, before_request, unconfigured, login_required_if_no_ano
@@ -86,7 +86,7 @@ def shutdown():
     showtext = {}
     if task in (0, 1):  # valid commandos received
         # close all database connections
-        db.dispose()
+        calibre_db.dispose()
         ub.dispose()
 
         if task == 0:
@@ -99,7 +99,7 @@ def shutdown():
 
     if task == 2:
         log.warning("reconnecting to calibre database")
-        db.setup_db(config, ub.app_DB_path)
+        calibre_db.setup_db(config, ub.app_DB_path)
         showtext['text'] = _(u'Reconnect successful')
         return json.dumps(showtext)
 
@@ -148,9 +148,9 @@ def configuration():
 @login_required
 @admin_required
 def view_configuration():
-    readColumn = db.session.query(db.Custom_Columns)\
+    readColumn = calibre_db.session.query(db.Custom_Columns)\
             .filter(and_(db.Custom_Columns.datatype == 'bool',db.Custom_Columns.mark_for_delete == 0)).all()
-    restrictColumns= db.session.query(db.Custom_Columns)\
+    restrictColumns= calibre_db.session.query(db.Custom_Columns)\
             .filter(and_(db.Custom_Columns.datatype == 'text',db.Custom_Columns.mark_for_delete == 0)).all()
     return render_title_template("config_view_edit.html", conf=config, readColumns=readColumn,
                                  restrictColumns=restrictColumns,
@@ -944,7 +944,7 @@ def edit_user(user_id):
     translations = babel.list_translations() + [LC('en')]
     kobo_support = feature_support['kobo'] and config.config_kobo_sync
     for book in content.downloads:
-        downloadbook = db.session.query(db.Books).filter(db.Books.id == book.book_id).first()
+        downloadbook = calibre_db.session.query(db.Books).filter(db.Books.id == book.book_id).first()
         if downloadbook:
             downloads.append(downloadbook)
         else:
