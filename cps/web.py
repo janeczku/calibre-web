@@ -970,7 +970,7 @@ def get_tasks_status():
 
 @app.route("/reconnect")
 def reconnect():
-    db.reconnect_db(config)
+    db.reconnect_db(config, ub.app_DB_path)
     return json.dumps({})
 
 
@@ -1154,30 +1154,33 @@ def advanced_search():
 def render_read_books(page, are_read, as_xml=False, order=None, *args, **kwargs):
     order = order or []
     if not config.config_read_column:
-        readBooks = ub.session.query(ub.ReadBook).filter(ub.ReadBook.user_id == int(current_user.id))\
-            .filter(ub.ReadBook.read_status == ub.ReadBook.STATUS_FINISHED).all()
-        readBookIds = [x.book_id for x in readBooks]
         if are_read:
-            db_filter = db.Books.id.in_(readBookIds)
+            db_filter = and_(ub.ReadBook.user_id == int(current_user.id),
+                             ub.ReadBook.read_status == ub.ReadBook.STATUS_FINISHED)
         else:
-            db_filter = ~db.Books.id.in_(readBookIds)
-        entries, random, pagination = fill_indexpage(page, db.Books, db_filter, order)
+            db_filter = coalesce(ub.ReadBook.read_status, 0) != ub.ReadBook.STATUS_FINISHED
+        entries, random, pagination = fill_indexpage(page, db.Books,
+                                                     db_filter,
+                                                     order,
+                                                     ub.ReadBook, db.Books.id==ub.ReadBook.book_id)
     else:
         try:
             if are_read:
                 db_filter = db.cc_classes[config.config_read_column].value == True
             else:
                 db_filter = coalesce(db.cc_classes[config.config_read_column].value, False) != True
-            # book_count = db.session.query(func.count(db.Books.id)).filter(common_filters()).filter(db_filter).scalar()
             entries, random, pagination = fill_indexpage(page, db.Books,
                                                          db_filter,
                                                          order,
                                                          db.cc_classes[config.config_read_column])
         except KeyError:
             log.error("Custom Column No.%d is not existing in calibre database", config.config_read_column)
-            book_count = 0
-
-
+            if not as_xml:
+                flash(_("Custom Column No.%(column)d is not existing in calibre database",
+                        column=config.config_read_column),
+                      category="error")
+                return redirect(url_for("web.index"))
+            # ToDo: Handle error Case for opds
     if as_xml:
         return entries, pagination
     else:

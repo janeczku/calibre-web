@@ -99,7 +99,7 @@ def shutdown():
 
     if task == 2:
         log.warning("reconnecting to calibre database")
-        db.setup_db(config)
+        db.setup_db(config, ub.app_DB_path)
         showtext['text'] = _(u'Reconnect successful')
         return json.dumps(showtext)
 
@@ -688,7 +688,7 @@ def _configuration_update_helper():
         return _configuration_result('%s' % e, gdriveError)
 
     if db_change:
-        if not db.setup_db(config):
+        if not db.setup_db(config, ub.app_DB_path):
             return _configuration_result(_('DB Location is not Valid, Please Enter Correct Path'), gdriveError)
         if not os.access(os.path.join(config.config_calibre_dir, "metadata.db"), os.W_OK):
             flash(_(u"DB is not Writeable"), category="warning")

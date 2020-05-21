@@ -24,7 +24,7 @@ import re
 import ast
 from datetime import datetime
 
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, event
 from sqlalchemy import Table, Column, ForeignKey, CheckConstraint
 from sqlalchemy import String, Integer, Boolean, TIMESTAMP, Float
 from sqlalchemy.orm import relationship, sessionmaker, scoped_session
@@ -329,7 +329,7 @@ def update_title_sort(config, conn=None):
     conn.create_function("title_sort", 1, _title_sort)
 
 
-def setup_db(config):
+def setup_db(config, app_db_path):
     dispose()
     global engine
 
@@ -343,10 +343,14 @@ def setup_db(config):
         return False
 
     try:
-        engine = create_engine('sqlite:///{0}'.format(dbpath),
+        #engine = create_engine('sqlite:///{0}'.format(dbpath),
+        engine = create_engine('sqlite://',
                                echo=False,
                                isolation_level="SERIALIZABLE",
                                connect_args={'check_same_thread': False})
+        engine.execute("attach database '{}' as calibre;".format(dbpath))
+        engine.execute("attach database '{}' as app_settings;".format(app_db_path))
+
         conn = engine.connect()
         # conn.text_factory = lambda b: b.decode(errors = 'ignore') possible fix for #1302
     except Exception as e:
@@ -438,7 +442,8 @@ def dispose():
             if table is not None:
                 Base.metadata.remove(table)
 
-def reconnect_db(config):
+
+def reconnect_db(config, app_db_path):
     session.close()
     engine.dispose()
-    setup_db(config)
+    setup_db(config, app_db_path)
