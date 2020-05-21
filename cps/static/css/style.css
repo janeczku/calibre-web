@@ -109,7 +109,7 @@ a { color: #45b29d; }
 
 .container-fluid .book .cover img {
   border: 1px solid #fff;
-  box-sizeing: border-box;
+  box-sizing: border-box;
   height: 100%;
   bottom: 0;
   position: absolute;
@@ -165,7 +165,7 @@ span.glyphicon.glyphicon-tags {
 
 .container-fluid .single .cover img {
   border: 1px solid #fff;
-  box-sizeing: border-box;
+  box-sizing: border-box;
   -webkit-box-shadow: 0 5px 8px -6px #777;
   -moz-box-shadow: 0 5px 8px -6px #777;
   box-shadow: 0 5px 8px -6px #777;
