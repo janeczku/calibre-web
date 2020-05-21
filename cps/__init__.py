@@ -37,6 +37,9 @@ from . import config_sql, logger, cache_buster, cli, ub, db
 from .reverseproxy import ReverseProxied
 from .server import WebServer
 
+# import queue
+# queue = queue.Queue()
+
 mimetypes.init()
 mimetypes.add_type('application/xhtml+xml', '.xhtml')
 mimetypes.add_type('application/epub+zip', '.epub')
@@ -82,6 +85,8 @@ log = logger.create()
 
 from . import services
 
+calibre_db = db.CalibreDB()
+
 def create_app():
     app.wsgi_app = ReverseProxied(app.wsgi_app)
     # For python2 convert path to unicode
@@ -98,7 +103,8 @@ def create_app():
     app.secret_key = os.getenv('SECRET_KEY', config_sql.get_flask_session_key(ub.session))
 
     web_server.init_app(app, config)
-    db.setup_db(config, cli.settingspath)
+    calibre_db.setup_db(config, cli.settingspath)
+    calibre_db.start()
 
     babel.init_app(app)
     _BABEL_TRANSLATIONS.update(str(item) for item in babel.list_translations())

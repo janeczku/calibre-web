@@ -24,10 +24,10 @@ import smtplib
 import socket
 import time
 import threading
+import queue
 from glob import glob
 from shutil import copyfile
 from datetime import datetime
-from sqlalchemy.exc import OperationalError
 
 try:
     from StringIO import StringIO
@@ -46,7 +46,8 @@ from email.utils import make_msgid
 from email.generator import Generator
 from flask_babel import gettext as _
 
-from . import db, logger, config
+from . import calibre_db, db
+from . import logger, config
 from .subproc_wrapper import process_open
 from . import gdriveutils
 
@@ -190,6 +191,8 @@ class WorkerThread(threading.Thread):
         self.UIqueue = list()
         self.asyncSMTP = None
         self.id = 0
+        self.db_queue = queue.Queue()
+        calibre_db.add_queue(self.db_queue)
         self.doLock = threading.Lock()
 
     # Main thread loop starting the different tasks
@@ -275,6 +278,18 @@ class WorkerThread(threading.Thread):
         self.doLock.acquire()
         index = self.current
         self.doLock.release()
+        '''dbpath = os.path.join(config.config_calibre_dir, "metadata.db")
+        engine = create_engine('sqlite://',
+                               echo=False,
+                               isolation_level="SERIALIZABLE",
+                               connect_args={'check_same_thread': True})
+        engine.execute("attach database '{}' as calibre;".format(dbpath))
+        conn = engine.connect()
+        Session = scoped_session(sessionmaker(autocommit=False,
+                                              autoflush=False,
+                                              bind=engine))
+        w_session = Session()
+        engine.execute("attach database '{}' as calibre;".format(dbpath))'''
         file_path = self.queue[index]['file_path']
         bookid = self.queue[index]['bookid']
         format_old_ext = u'.' + self.queue[index]['settings']['old_book_format'].lower()
@@ -285,7 +300,7 @@ class WorkerThread(threading.Thread):
         # this will allow send to kindle workflow to continue to work
         if os.path.isfile(file_path + format_new_ext):
             log.info("Book id %d already converted to %s", bookid, format_new_ext)
-            cur_book = db.session.query(db.Books).filter(db.Books.id == bookid).first()
+            cur_book = calibre_db.session.query(db.Books).filter(db.Books.id == bookid).first()
             self.queue[index]['path'] = file_path
             self.queue[index]['title'] = cur_book.title
             self._handleSuccess()
@@ -309,19 +324,26 @@ class WorkerThread(threading.Thread):
             check, error_message = self._convert_calibre(file_path, format_old_ext, format_new_ext, index)
 
         if check == 0:
-            cur_book = db.session.query(db.Books).filter(db.Books.id == bookid).first()
+            cur_book = calibre_db.session.query(db.Books).filter(db.Books.id == bookid).first()
             if os.path.isfile(file_path + format_new_ext):
+                # self.db_queue.join()
                 new_format = db.Data(name=cur_book.data[0].name,
                                          book_format=self.queue[index]['settings']['new_book_format'].upper(),
                                          book=bookid, uncompressed_size=os.path.getsize(file_path + format_new_ext))
-                cur_book.data.append(new_format)
+                task = {'task':'add_format','id': bookid, 'format': new_format}
+                self.db_queue.put(task)
+                # To Do how to handle error?
+                print('finished')
+
+                '''cur_book.data.append(new_format)
                 try:
-                    db.session.commit()
+                    # db.session.merge(cur_book)
+                    calibre_db.session.commit()
                 except OperationalError as e:
-                    db.session.rollback()
+                    calibre_db.session.rollback()
                     log.error("Database error: %s", e)
                     self._handleError(_(u"Database error: %(error)s.", error=e))
-                    return
+                    return'''
 
                 self.queue[index]['path'] = cur_book.path
                 self.queue[index]['title'] = cur_book.title
@@ -375,6 +397,7 @@ class WorkerThread(threading.Thread):
         # process returncode
         check = p.returncode
         calibre_traceback = p.stderr.readlines()
+        error_message = ""
         for ele in calibre_traceback:
             if sys.version_info < (3, 0):
                 ele = ele.decode('utf-8')
