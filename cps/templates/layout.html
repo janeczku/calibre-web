@@ -228,7 +228,9 @@
             $(document).ready(function() {
               var inp = $('#query').first()
               var val = inp.val()
-              inp.val('').blur().focus().val(val)
+              if (val.length) {
+                  inp.val('').blur().focus().val(val)
+              }
             });
         });
     </script>
