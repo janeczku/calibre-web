@@ -318,7 +318,7 @@ def update_title_sort(config, conn=None):
         match = title_pat.search(title)
         if match:
             prep = match.group(1)
-            title = title.replace(prep, '') + ', ' + prep
+            title = title[len(prep):] + ', ' + prep
         return title.strip()
 
     conn = conn or session.connection().connection.connection
