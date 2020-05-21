@@ -449,7 +449,7 @@ class CalibreDB(threading.Thread):
             match = title_pat.search(title)
             if match:
                 prep = match.group(1)
-                title = title.replace(prep, '') + ', ' + prep
+                title = title[len(prep):] + ', ' + prep
             return title.strip()
 
         conn = conn or self.session.connection().connection.connection
