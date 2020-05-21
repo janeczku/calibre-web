@@ -143,7 +143,7 @@ def HandleSyncRequest():
 
     # We reload the book database so that the user get's a fresh view of the library
     # in case of external changes (e.g: adding a book through Calibre).
-    db.reconnect_db(config)
+    db.reconnect_db(config, ub.app_DB_path)
 
     archived_books = (
         ub.session.query(ub.ArchivedBook)

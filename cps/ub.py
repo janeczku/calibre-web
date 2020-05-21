@@ -49,6 +49,7 @@ from . import constants
 
 
 session = None
+app_DB_path = None
 Base = declarative_base()
 
 
@@ -664,8 +665,12 @@ def create_admin_user(session):
 def init_db(app_db_path):
     # Open session for database connection
     global session
+    global app_DB_path
 
+    app_DB_path = app_db_path
     engine = create_engine(u'sqlite:///{0}'.format(app_db_path), echo=False)
+    # engine.execute("attach database '{0}' as app_settings;".format(app_db_path))
+
 
     Session = sessionmaker()
     Session.configure(bind=engine)

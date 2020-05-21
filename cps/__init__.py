@@ -98,7 +98,7 @@ def create_app():
     app.secret_key = os.getenv('SECRET_KEY', config_sql.get_flask_session_key(ub.session))
 
     web_server.init_app(app, config)
-    db.setup_db(config)
+    db.setup_db(config, cli.settingspath)
 
     babel.init_app(app)
     _BABEL_TRANSLATIONS.update(str(item) for item in babel.list_translations())
