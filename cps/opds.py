@@ -367,7 +367,11 @@ def feed_shelf(book_id):
 @requires_basic_auth_if_no_ano
 @download_required
 def opds_download_link(book_id, book_format):
-    return get_download_link(book_id, book_format.lower())
+    if "Kobo" in request.headers.get('User-Agent'):
+        client = "kobo"
+    else:
+        client = ""
+    return get_download_link(book_id, book_format.lower(), client)
 
 
 @opds.route("/ajax/book/<string:uuid>/<library>")

@@ -36,17 +36,17 @@
       <div class="col-xs-12 col-sm-6">
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3" style="margin-top:50px;">
-            <p class='text-justify attribute'><strong>Start Time: </strong>2020-05-10 13:45:56</p>
+            <p class='text-justify attribute'><strong>Start Time: </strong>2020-05-21 10:39:39</p>
         </div>
       </div>
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3">
-            <p class='text-justify attribute'><strong>Stop Time: </strong>2020-05-10 14:42:12</p>
+            <p class='text-justify attribute'><strong>Stop Time: </strong>2020-05-21 11:31:09</p>
         </div>
       </div>
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3">
-           <p class='text-justify attribute'><strong>Duration: </strong>47:37 min</p>
+           <p class='text-justify attribute'><strong>Duration: </strong>42:16 min</p>
         </div>
       </div>
       </div>
@@ -223,13 +223,13 @@
 
     <tr class="result['header']['style']">
         <td>test_cli.test_cli</td>
+        <td class="text-center">7</td>
         <td class="text-center">6</td>
-        <td class="text-center">5</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">1</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c2', 6)">Detail</a>
+            <a onclick="showClassDetail('c2', 7)">Detail</a>
         </td>
     </tr>
 
@@ -246,7 +246,7 @@
     
         <tr id='pt2.2' class='hiddenRow bg-success'>
             <td>
-                <div class='testcase'>test_cli_SSL_files</div>
+                <div class='testcase'>test_bind_to_single_interface</div>
             </td>
             <td colspan='6' align='center'>PASS</td>
         </tr>
@@ -255,7 +255,7 @@
     
         <tr id='pt2.3' class='hiddenRow bg-success'>
             <td>
-                <div class='testcase'>test_cli_different_folder</div>
+                <div class='testcase'>test_cli_SSL_files</div>
             </td>
             <td colspan='6' align='center'>PASS</td>
         </tr>
@@ -264,6 +264,15 @@
     
         <tr id='pt2.4' class='hiddenRow bg-success'>
             <td>
+                <div class='testcase'>test_cli_different_folder</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt2.5' class='hiddenRow bg-success'>
+            <td>
                 <div class='testcase'>test_cli_different_settings_database</div>
             </td>
             <td colspan='6' align='center'>PASS</td>
@@ -271,19 +280,19 @@
     
     
     
-        <tr id='st2.5' class='none bg-warning'>
+        <tr id='st2.6' class='none bg-warning'>
             <td>
                 <div class='testcase'>test_cli_gdrive_location</div>
             </td>
             <td colspan='6'>
                 <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st2.5')">SKIP</a>
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st2.6')">SKIP</a>
                 </div>
                 <!--css div popup start-->
-                <div id='div_st2.5' class="popup_window test_output" style="display:none;">
+                <div id='div_st2.6' class="popup_window test_output" style="display:none;">
                     <div class='close_button pull-right'>
                         <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                                onclick="document.getElementById('div_st2.5').style.display='none'"><span
+                                onclick="document.getElementById('div_st2.6').style.display='none'"><span
                                 aria-hidden="true">&times;</span></button>
                     </div>
                     <div class="text-left pull-left">
@@ -297,7 +306,7 @@
     
     
     
-        <tr id='pt2.6' class='hiddenRow bg-success'>
+        <tr id='pt2.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_environ_port_setting</div>
             </td>
@@ -310,8 +319,8 @@
     <tr class="result['header']['style']">
         <td>test_ebook_convert.test_ebook_convert</td>
         <td class="text-center">11</td>
-        <td class="text-center">11</td>
-        <td class="text-center">0</td>
+        <td class="text-center">3</td>
+        <td class="text-center">8</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
@@ -339,74 +348,248 @@
     
     
     
-        <tr id='pt3.3' class='hiddenRow bg-success'>
+        <tr id='ft3.3' class='none bg-danger'>
             <td>
                 <div class='testcase'>test_convert_deactivate</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft3.3')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id='div_ft3.3' class="popup_window test_output" style="display:none;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
+                                onclick="document.getElementById('div_ft3.3').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File "/home/matthias/Entwicklung/calibre-web-test/test/test_ebook_convert.py", line 77, in test_convert_deactivate
+    self.assertFalse(details['kindlebtn'])
+AssertionError: <selenium.webdriver.firefox.webelement.FirefoxWebElement (session="fed9d95d-b4c7-4e93-83ca-ab49235560aa", element="b847d427-30f1-4e63-86a6-30144bf98563")> is not false</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
     
-        <tr id='pt3.4' class='hiddenRow bg-success'>
+        <tr id='ft3.4' class='none bg-danger'>
             <td>
                 <div class='testcase'>test_convert_email</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft3.4')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id='div_ft3.4' class="popup_window test_output" style="display:none;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
+                                onclick="document.getElementById('div_ft3.4').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File "/home/matthias/Entwicklung/calibre-web-test/test/test_ebook_convert.py", line 195, in test_convert_email
+    self.assertEqual(ret[-1]['result'], 'Finished')
+AssertionError: 'Started' != 'Finished'
+- Started
++ Finished</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
     
-        <tr id='pt3.5' class='hiddenRow bg-success'>
+        <tr id='ft3.5' class='none bg-danger'>
             <td>
                 <div class='testcase'>test_convert_failed_and_email</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft3.5')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id='div_ft3.5' class="popup_window test_output" style="display:none;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
+                                onclick="document.getElementById('div_ft3.5').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File "/home/matthias/Entwicklung/calibre-web-test/test/test_ebook_convert.py", line 241, in test_convert_failed_and_email
+    self.assertEqual(ret[-1]['result'], 'Failed')
+AssertionError: 'Waiting' != 'Failed'
+- Waiting
++ Failed</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
     
-        <tr id='pt3.6' class='hiddenRow bg-success'>
+        <tr id='ft3.6' class='none bg-danger'>
             <td>
                 <div class='testcase'>test_convert_only</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft3.6')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id='div_ft3.6' class="popup_window test_output" style="display:none;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
+                                onclick="document.getElementById('div_ft3.6').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File "/home/matthias/Entwicklung/calibre-web-test/test/test_ebook_convert.py", line 324, in test_convert_only
+    self.assertEqual(ret[-6]['result'], 'Finished')
+AssertionError: 'Waiting' != 'Finished'
+- Waiting
++ Finished</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
     
-        <tr id='pt3.7' class='hiddenRow bg-success'>
+        <tr id='ft3.7' class='none bg-danger'>
             <td>
                 <div class='testcase'>test_convert_parameter</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft3.7')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id='div_ft3.7' class="popup_window test_output" style="display:none;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
+                                onclick="document.getElementById('div_ft3.7').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File "/home/matthias/Entwicklung/calibre-web-test/test/test_ebook_convert.py", line 158, in test_convert_parameter
+    self.assertEqual(ret[-1]['result'], 'Finished')
+AssertionError: 'Waiting' != 'Finished'
+- Waiting
++ Finished</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
     
-        <tr id='pt3.8' class='hiddenRow bg-success'>
+        <tr id='ft3.8' class='none bg-danger'>
             <td>
                 <div class='testcase'>test_convert_wrong_excecutable</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft3.8')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id='div_ft3.8' class="popup_window test_output" style="display:none;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
+                                onclick="document.getElementById('div_ft3.8').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File "/home/matthias/Entwicklung/calibre-web-test/test/test_ebook_convert.py", line 137, in test_convert_wrong_excecutable
+    self.assertEqual(ret[-2]['result'], 'Failed')
+AssertionError: 'Waiting' != 'Failed'
+- Waiting
++ Failed</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
     
-        <tr id='pt3.9' class='hiddenRow bg-success'>
+        <tr id='ft3.9' class='none bg-danger'>
             <td>
                 <div class='testcase'>test_email_failed</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft3.9')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id='div_ft3.9' class="popup_window test_output" style="display:none;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
+                                onclick="document.getElementById('div_ft3.9').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File "/home/matthias/Entwicklung/calibre-web-test/test/test_ebook_convert.py", line 423, in test_email_failed
+    self.assertEqual(ret[-1]['result'], 'Failed')
+AssertionError: 'Waiting' != 'Failed'
+- Waiting
++ Failed</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
     
-        <tr id='pt3.10' class='hiddenRow bg-success'>
+        <tr id='ft3.10' class='none bg-danger'>
             <td>
                 <div class='testcase'>test_email_only</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft3.10')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id='div_ft3.10' class="popup_window test_output" style="display:none;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
+                                onclick="document.getElementById('div_ft3.10').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File "/home/matthias/Entwicklung/calibre-web-test/test/test_ebook_convert.py", line 382, in test_email_only
+    self.assertEqual(ret[-1]['result'], 'Finished')
+AssertionError: 'Waiting' != 'Finished'
+- Waiting
++ Finished</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
@@ -423,13 +606,13 @@
 
     <tr class="result['header']['style']">
         <td>test_edit_additional_books.test_edit_additional_books</td>
+        <td class="text-center">3</td>
+        <td class="text-center">1</td>
         <td class="text-center">2</td>
-        <td class="text-center">2</td>
-        <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c4', 2)">Detail</a>
+            <a onclick="showClassDetail('c4', 3)">Detail</a>
         </td>
     </tr>
 
@@ -444,11 +627,64 @@
     
     
     
-        <tr id='pt4.2' class='hiddenRow bg-success'>
+        <tr id='ft4.2' class='none bg-danger'>
             <td>
-                <div class='testcase'>test_upload_book_cbr</div>
+                <div class='testcase'>test_upload_metadata_cbt</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft4.2')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id='div_ft4.2' class="popup_window test_output" style="display:none;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
+                                onclick="document.getElementById('div_ft4.2').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File "/home/matthias/Entwicklung/calibre-web-test/test/test_edit_additional_books.py", line 88, in test_upload_metadata_cbt
+    self.assertEqual('Test 执book', details['title'])
+AssertionError: 'Test 执book' != 'book'
+- Test 执book
++ book</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
+        </tr>
+    
+    
+    
+        <tr id='ft4.3' class='none bg-danger'>
+            <td>
+                <div class='testcase'>test_upload_metadate_cbr</div>
+            </td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft4.3')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id='div_ft4.3' class="popup_window test_output" style="display:none;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
+                                onclick="document.getElementById('div_ft4.3').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File "/home/matthias/Entwicklung/calibre-web-test/test/test_edit_additional_books.py", line 64, in test_upload_metadate_cbr
+    self.assertEqual('Test 执book', details['title'])
+AssertionError: 'Test 执book' != 'book'
+- Test 执book
++ book</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
@@ -780,11 +1016,9 @@
                     </div>
                     <div class="text-left pull-left">
                         <pre class="text-left">Traceback (most recent call last):
-  File "/home/matthias/Entwicklung/calibre-web-test/test/test_edit_books.py", line 654, in test_upload_cover_hdd
-    self.assertEqual('20317',resp.headers['Content-Length'])
-AssertionError: '20317' != '5232'
-- 20317
-+ 5232</pre>
+  File "/home/matthias/Entwicklung/calibre-web-test/test/test_edit_books.py", line 662, in test_upload_cover_hdd
+    self.assertTrue(False,"Browser-Cache Problem: Old Cover is displayed instead of New Cover")
+AssertionError: False is not true : Browser-Cache Problem: Old Cover is displayed instead of New Cover</pre>
                     </div>
                     <div class="clearfix"></div>
                 </div>
@@ -1152,9 +1386,9 @@ AssertionError: '20317' != '5232'
     <tr class="result['header']['style']">
         <td>test_ldap.test_ldap_login</td>
         <td class="text-center">9</td>
-        <td class="text-center">9</td>
         <td class="text-center">0</td>
-        <td class="text-center">0</td>
+        <td class="text-center">1</td>
+        <td class="text-center">8</td>
         <td class="text-center">0</td>
         <td class="text-center">
             <a onclick="showClassDetail('c11', 9)">Detail</a>
@@ -1163,83 +1397,402 @@ AssertionError: '20317' != '5232'
 
     
     
-        <tr id='pt11.1' class='hiddenRow bg-success'>
+        <tr id='et11.1' class='none bg-info'>
             <td>
                 <div class='testcase'>test_LDAP_SSL</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et11.1')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id='div_et11.1' class="popup_window test_output" style="display:none;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
+                                onclick="document.getElementById('div_et11.1').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File "/home/matthias/Entwicklung/calibre-web-test/test/test_ldap.py", line 430, in test_LDAP_SSL
+    'config_ldap_encryption': 'SSL'
+  File "/home/matthias/Entwicklung/calibre-web-test/test/helper_ui.py", line 322, in fill_basic_config
+    cls.fill_initial_config(elements)
+  File "/home/matthias/Entwicklung/calibre-web-test/test/helper_ui.py", line 241, in fill_initial_config
+    WebDriverWait(cls.driver, 5).until(EC.presence_of_element_located((By.ID, "config_calibre_dir")))
+  File "/usr/local/lib/python3.7/dist-packages/selenium/webdriver/support/wait.py", line 80, in until
+    raise TimeoutException(message, screen, stacktrace)
+selenium.common.exceptions.TimeoutException: Message:</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
     
-        <tr id='pt11.2' class='hiddenRow bg-success'>
+        <tr id='et11.2' class='none bg-info'>
             <td>
                 <div class='testcase'>test_LDAP_STARTTLS</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et11.2')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id='div_et11.2' class="popup_window test_output" style="display:none;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
+                                onclick="document.getElementById('div_et11.2').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File "/home/matthias/Entwicklung/calibre-web-test/test/test_ldap.py", line 477, in test_LDAP_STARTTLS
+    'config_ldap_encryption': 'TLS'
+  File "/home/matthias/Entwicklung/calibre-web-test/test/helper_ui.py", line 322, in fill_basic_config
+    cls.fill_initial_config(elements)
+  File "/home/matthias/Entwicklung/calibre-web-test/test/helper_ui.py", line 241, in fill_initial_config
+    WebDriverWait(cls.driver, 5).until(EC.presence_of_element_located((By.ID, "config_calibre_dir")))
+  File "/usr/local/lib/python3.7/dist-packages/selenium/webdriver/support/wait.py", line 80, in until
+    raise TimeoutException(message, screen, stacktrace)
+selenium.common.exceptions.TimeoutException: Message:</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
     
-        <tr id='pt11.3' class='hiddenRow bg-success'>
+        <tr id='et11.3' class='none bg-info'>
             <td>
                 <div class='testcase'>test_LDAP_fallback_Login</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et11.3')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id='div_et11.3' class="popup_window test_output" style="display:none;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
+                                onclick="document.getElementById('div_et11.3').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File "/home/matthias/Entwicklung/calibre-web-test/test/test_ldap.py", line 143, in test_LDAP_fallback_Login
+    self.login("admin", "admin123")
+  File "/home/matthias/Entwicklung/calibre-web-test/test/helper_ui.py", line 63, in login
+    WebDriverWait(cls.driver, 5).until(EC.presence_of_element_located((By.ID, "username")))
+  File "/usr/local/lib/python3.7/dist-packages/selenium/webdriver/support/wait.py", line 80, in until
+    raise TimeoutException(message, screen, stacktrace)
+selenium.common.exceptions.TimeoutException: Message:</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
     
-        <tr id='pt11.4' class='hiddenRow bg-success'>
+        <tr id='et11.4' class='none bg-info'>
             <td>
                 <div class='testcase'>test_LDAP_import</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et11.4')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id='div_et11.4' class="popup_window test_output" style="display:none;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
+                                onclick="document.getElementById('div_et11.4').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File "/home/matthias/Entwicklung/calibre-web-test/test/test_ldap.py", line 225, in test_LDAP_import
+    'config_ldap_encryption': 'None'
+  File "/home/matthias/Entwicklung/calibre-web-test/test/helper_ui.py", line 322, in fill_basic_config
+    cls.fill_initial_config(elements)
+  File "/home/matthias/Entwicklung/calibre-web-test/test/helper_ui.py", line 241, in fill_initial_config
+    WebDriverWait(cls.driver, 5).until(EC.presence_of_element_located((By.ID, "config_calibre_dir")))
+  File "/usr/local/lib/python3.7/dist-packages/selenium/webdriver/support/wait.py", line 80, in until
+    raise TimeoutException(message, screen, stacktrace)
+selenium.common.exceptions.TimeoutException: Message:</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
     
-        <tr id='pt11.5' class='hiddenRow bg-success'>
+        <tr id='et11.5' class='none bg-info'>
             <td>
                 <div class='testcase'>test_LDAP_login</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et11.5')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id='div_et11.5' class="popup_window test_output" style="display:none;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
+                                onclick="document.getElementById('div_et11.5').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File "/home/matthias/Entwicklung/calibre-web-test/test/test_ldap.py", line 156, in test_LDAP_login
+    'config_ldap_openldap': 1
+  File "/home/matthias/Entwicklung/calibre-web-test/test/helper_ui.py", line 322, in fill_basic_config
+    cls.fill_initial_config(elements)
+  File "/home/matthias/Entwicklung/calibre-web-test/test/helper_ui.py", line 241, in fill_initial_config
+    WebDriverWait(cls.driver, 5).until(EC.presence_of_element_located((By.ID, "config_calibre_dir")))
+  File "/usr/local/lib/python3.7/dist-packages/selenium/webdriver/support/wait.py", line 80, in until
+    raise TimeoutException(message, screen, stacktrace)
+selenium.common.exceptions.TimeoutException: Message:</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
     
-        <tr id='pt11.6' class='hiddenRow bg-success'>
+        <tr id='et11.6' class='none bg-info'>
             <td>
                 <div class='testcase'>test_invalid_LDAP</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et11.6')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id='div_et11.6' class="popup_window test_output" style="display:none;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
+                                onclick="document.getElementById('div_et11.6').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File "/home/matthias/Entwicklung/calibre-web-test/test/test_ldap.py", line 62, in test_invalid_LDAP
+    'config_ldap_group_members_field': 'memberUid'
+  File "/home/matthias/Entwicklung/calibre-web-test/test/helper_ui.py", line 322, in fill_basic_config
+    cls.fill_initial_config(elements)
+  File "/home/matthias/Entwicklung/calibre-web-test/test/helper_ui.py", line 241, in fill_initial_config
+    WebDriverWait(cls.driver, 5).until(EC.presence_of_element_located((By.ID, "config_calibre_dir")))
+  File "/usr/local/lib/python3.7/dist-packages/selenium/webdriver/support/wait.py", line 80, in until
+    raise TimeoutException(message, screen, stacktrace)
+selenium.common.exceptions.TimeoutException: Message:</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
     
-        <tr id='pt11.7' class='hiddenRow bg-success'>
+        <tr id='ft11.7' class='none bg-danger'>
             <td>
                 <div class='testcase'>test_ldap_about</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft11.7')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id='div_ft11.7' class="popup_window test_output" style="display:none;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
+                                onclick="document.getElementById('div_ft11.7').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File "/home/matthias/Entwicklung/calibre-web-test/test/test_ldap.py", line 573, in test_ldap_about
+    self.assertTrue(self.goto_page('nav_about'))
+AssertionError: False is not true</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
     
-        <tr id='pt11.8' class='hiddenRow bg-success'>
+        <tr id='et11.8' class='none bg-info'>
             <td>
                 <div class='testcase'>test_ldap_authentication</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et11.8')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id='div_et11.8' class="popup_window test_output" style="display:none;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
+                                onclick="document.getElementById('div_et11.8').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File "/home/matthias/Entwicklung/calibre-web-test/test/test_ldap.py", line 583, in test_ldap_authentication
+    'config_ldap_encryption': 'None'
+  File "/home/matthias/Entwicklung/calibre-web-test/test/helper_ui.py", line 322, in fill_basic_config
+    cls.fill_initial_config(elements)
+  File "/home/matthias/Entwicklung/calibre-web-test/test/helper_ui.py", line 241, in fill_initial_config
+    WebDriverWait(cls.driver, 5).until(EC.presence_of_element_located((By.ID, "config_calibre_dir")))
+  File "/usr/local/lib/python3.7/dist-packages/selenium/webdriver/support/wait.py", line 80, in until
+    raise TimeoutException(message, screen, stacktrace)
+selenium.common.exceptions.TimeoutException: Message:</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
     
-        <tr id='pt11.9' class='hiddenRow bg-success'>
+        <tr id='et11.9' class='none bg-info'>
             <td>
                 <div class='testcase'>test_ldap_opds_download_book</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et11.9')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id='div_et11.9' class="popup_window test_output" style="display:none;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
+                                onclick="document.getElementById('div_et11.9').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File "/home/matthias/Entwicklung/calibre-web-test/test/test_ldap.py", line 663, in test_ldap_opds_download_book
+    'config_ldap_openldap': 1
+  File "/home/matthias/Entwicklung/calibre-web-test/test/helper_ui.py", line 322, in fill_basic_config
+    cls.fill_initial_config(elements)
+  File "/home/matthias/Entwicklung/calibre-web-test/test/helper_ui.py", line 241, in fill_initial_config
+    WebDriverWait(cls.driver, 5).until(EC.presence_of_element_located((By.ID, "config_calibre_dir")))
+  File "/usr/local/lib/python3.7/dist-packages/selenium/webdriver/support/wait.py", line 80, in until
+    raise TimeoutException(message, screen, stacktrace)
+selenium.common.exceptions.TimeoutException: Message:</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
+        </tr>
+    
+    
+
+
+    <tr class="result['header']['style']">
+        <td>unittest.suite._ErrorHolder</td>
+        <td class="text-center">2</td>
+        <td class="text-center">0</td>
+        <td class="text-center">0</td>
+        <td class="text-center">2</td>
+        <td class="text-center">0</td>
+        <td class="text-center">
+            <a onclick="showClassDetail('c12', 2)">Detail</a>
+        </td>
+    </tr>
+
+    
+    
+        <tr id='et12.1' class='none bg-info'>
+            <td>
+                <div class='testcase'>tearDownClass (test_ldap)</div>
+            </td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et12.1')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id='div_et12.1' class="popup_window test_output" style="display:none;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
+                                onclick="document.getElementById('div_et12.1').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File "/home/matthias/Entwicklung/calibre-web-test/test/test_ldap.py", line 36, in tearDownClass
+    cls.stop_calibre_web()
+  File "/home/matthias/Entwicklung/calibre-web-test/test/helper_ui.py", line 397, in stop_calibre_web
+    cls.driver.find_element_by_id('admin_stop').click()
+  File "/usr/local/lib/python3.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 360, in find_element_by_id
+    return self.find_element(by=By.ID, value=id_)
+  File "/usr/local/lib/python3.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 978, in find_element
+    'value': value})['value']
+  File "/usr/local/lib/python3.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 321, in execute
+    self.error_handler.check_response(response)
+  File "/usr/local/lib/python3.7/dist-packages/selenium/webdriver/remote/errorhandler.py", line 242, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.NoSuchElementException: Message: Unable to locate element: [id="admin_stop"]</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
+        </tr>
+    
+    
+    
+        <tr id='et12.2' class='none bg-info'>
+            <td>
+                <div class='testcase'>tearDownClass (test_logging)</div>
+            </td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et12.2')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id='div_et12.2' class="popup_window test_output" style="display:none;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
+                                onclick="document.getElementById('div_et12.2').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File "/home/matthias/Entwicklung/calibre-web-test/test/test_logging.py", line 39, in tearDownClass
+    cls.stop_calibre_web()
+  File "/home/matthias/Entwicklung/calibre-web-test/test/helper_ui.py", line 397, in stop_calibre_web
+    cls.driver.find_element_by_id('admin_stop').click()
+  File "/usr/local/lib/python3.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 360, in find_element_by_id
+    return self.find_element(by=By.ID, value=id_)
+  File "/usr/local/lib/python3.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 978, in find_element
+    'value': value})['value']
+  File "/usr/local/lib/python3.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 321, in execute
+    self.error_handler.check_response(response)
+  File "/usr/local/lib/python3.7/dist-packages/selenium/webdriver/remote/errorhandler.py", line 242, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.NoSuchElementException: Message: Unable to locate element: [id="admin_stop"]</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
@@ -1248,18 +1801,18 @@ AssertionError: '20317' != '5232'
     <tr class="result['header']['style']">
         <td>test_logging.test_logging</td>
         <td class="text-center">6</td>
-        <td class="text-center">4</td>
-        <td class="text-center">1</td>
+        <td class="text-center">3</td>
         <td class="text-center">0</td>
+        <td class="text-center">2</td>
         <td class="text-center">1</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c12', 6)">Detail</a>
+            <a onclick="showClassDetail('c13', 6)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt12.1' class='hiddenRow bg-success'>
+        <tr id='pt13.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_debug_log</div>
             </td>
@@ -1268,7 +1821,7 @@ AssertionError: '20317' != '5232'
     
     
     
-        <tr id='pt12.2' class='hiddenRow bg-success'>
+        <tr id='pt13.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_failed_login</div>
             </td>
@@ -1277,19 +1830,19 @@ AssertionError: '20317' != '5232'
     
     
     
-        <tr id='st12.3' class='none bg-warning'>
+        <tr id='st13.3' class='none bg-warning'>
             <td>
                 <div class='testcase'>test_failed_register</div>
             </td>
             <td colspan='6'>
                 <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st12.3')">SKIP</a>
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st13.3')">SKIP</a>
                 </div>
                 <!--css div popup start-->
-                <div id='div_st12.3' class="popup_window test_output" style="display:none;">
+                <div id='div_st13.3' class="popup_window test_output" style="display:none;">
                     <div class='close_button pull-right'>
                         <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                                onclick="document.getElementById('div_st12.3').style.display='none'"><span
+                                onclick="document.getElementById('div_st13.3').style.display='none'"><span
                                 aria-hidden="true">&times;</span></button>
                     </div>
                     <div class="text-left pull-left">
@@ -1303,7 +1856,7 @@ AssertionError: '20317' != '5232'
     
     
     
-        <tr id='pt12.4' class='hiddenRow bg-success'>
+        <tr id='pt13.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_logfile_change</div>
             </td>
@@ -1312,26 +1865,32 @@ AssertionError: '20317' != '5232'
     
     
     
-        <tr id='ft12.5' class='none bg-danger'>
+        <tr id='et13.5' class='none bg-info'>
             <td>
                 <div class='testcase'>test_logfile_recover</div>
             </td>
             <td colspan='6'>
                 <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft12.5')">FAIL</a>
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et13.5')">ERROR</a>
                 </div>
                 <!--css div popup start-->
-                <div id='div_ft12.5' class="popup_window test_output" style="display:none;">
+                <div id='div_et13.5' class="popup_window test_output" style="display:none;">
                     <div class='close_button pull-right'>
                         <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                                onclick="document.getElementById('div_ft12.5').style.display='none'"><span
+                                onclick="document.getElementById('div_et13.5').style.display='none'"><span
                                 aria-hidden="true">&times;</span></button>
                     </div>
                     <div class="text-left pull-left">
                         <pre class="text-left">Traceback (most recent call last):
-  File "/home/matthias/Entwicklung/calibre-web-test/test/test_logging.py", line 137, in test_logfile_recover
-    self.assertTrue(logpath=="", "logfile config value is not empty after reseting to default")
-AssertionError: False is not true : logfile config value is not empty after reseting to default</pre>
+  File "/home/matthias/Entwicklung/calibre-web-test/test/test_logging.py", line 121, in test_logfile_recover
+    self.fill_basic_config({'config_logfile': os.path.join(CALIBRE_WEB_PATH, 'hü lo', 'lö g')})
+  File "/home/matthias/Entwicklung/calibre-web-test/test/helper_ui.py", line 322, in fill_basic_config
+    cls.fill_initial_config(elements)
+  File "/home/matthias/Entwicklung/calibre-web-test/test/helper_ui.py", line 241, in fill_initial_config
+    WebDriverWait(cls.driver, 5).until(EC.presence_of_element_located((By.ID, "config_calibre_dir")))
+  File "/usr/local/lib/python3.7/dist-packages/selenium/webdriver/support/wait.py", line 80, in until
+    raise TimeoutException(message, screen, stacktrace)
+selenium.common.exceptions.TimeoutException: Message:</pre>
                     </div>
                     <div class="clearfix"></div>
                 </div>
@@ -1341,11 +1900,37 @@ AssertionError: False is not true : logfile config value is not empty after rese
     
     
     
-        <tr id='pt12.6' class='hiddenRow bg-success'>
+        <tr id='et13.6' class='none bg-info'>
             <td>
                 <div class='testcase'>test_logviewer</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et13.6')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id='div_et13.6' class="popup_window test_output" style="display:none;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
+                                onclick="document.getElementById('div_et13.6').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File "/home/matthias/Entwicklung/calibre-web-test/test/test_logging.py", line 142, in test_logviewer
+    'config_access_logfile':'access.log'})
+  File "/home/matthias/Entwicklung/calibre-web-test/test/helper_ui.py", line 322, in fill_basic_config
+    cls.fill_initial_config(elements)
+  File "/home/matthias/Entwicklung/calibre-web-test/test/helper_ui.py", line 241, in fill_initial_config
+    WebDriverWait(cls.driver, 5).until(EC.presence_of_element_located((By.ID, "config_calibre_dir")))
+  File "/usr/local/lib/python3.7/dist-packages/selenium/webdriver/support/wait.py", line 80, in until
+    raise TimeoutException(message, screen, stacktrace)
+selenium.common.exceptions.TimeoutException: Message:</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
@@ -1353,19 +1938,19 @@ AssertionError: False is not true : logfile config value is not empty after rese
 
     <tr class="result['header']['style']">
         <td>test_login.test_login</td>
-        <td class="text-center">8</td>
-        <td class="text-center">8</td>
+        <td class="text-center">9</td>
+        <td class="text-center">9</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c13', 8)">Detail</a>
+            <a onclick="showClassDetail('c14', 9)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt13.1' class='hiddenRow bg-success'>
+        <tr id='pt14.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_digest_login</div>
             </td>
@@ -1374,7 +1959,7 @@ AssertionError: False is not true : logfile config value is not empty after rese
     
     
     
-        <tr id='pt13.2' class='hiddenRow bg-success'>
+        <tr id='pt14.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_login_capital_letters_user_unicode_password_passwort</div>
             </td>
@@ -1383,7 +1968,7 @@ AssertionError: False is not true : logfile config value is not empty after rese
     
     
     
-        <tr id='pt13.3' class='hiddenRow bg-success'>
+        <tr id='pt14.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_login_delete_admin</div>
             </td>
@@ -1392,7 +1977,7 @@ AssertionError: False is not true : logfile config value is not empty after rese
     
     
     
-        <tr id='pt13.4' class='hiddenRow bg-success'>
+        <tr id='pt14.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_login_empty_password</div>
             </td>
@@ -1401,7 +1986,7 @@ AssertionError: False is not true : logfile config value is not empty after rese
     
     
     
-        <tr id='pt13.5' class='hiddenRow bg-success'>
+        <tr id='pt14.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_login_locale_select</div>
             </td>
@@ -1410,7 +1995,7 @@ AssertionError: False is not true : logfile config value is not empty after rese
     
     
     
-        <tr id='pt13.6' class='hiddenRow bg-success'>
+        <tr id='pt14.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_login_protected</div>
             </td>
@@ -1419,7 +2004,16 @@ AssertionError: False is not true : logfile config value is not empty after rese
     
     
     
-        <tr id='pt13.7' class='hiddenRow bg-success'>
+        <tr id='pt14.7' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>test_login_rename_user</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt14.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_login_unicode_user_space_end_passwort</div>
             </td>
@@ -1428,7 +2022,7 @@ AssertionError: False is not true : logfile config value is not empty after rese
     
     
     
-        <tr id='pt13.8' class='hiddenRow bg-success'>
+        <tr id='pt14.9' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_login_user_with_space_passwort_end_space</div>
             </td>
@@ -1441,18 +2035,18 @@ AssertionError: False is not true : logfile config value is not empty after rese
     <tr class="result['header']['style']">
         <td>test_oauth.test_OAuth_login</td>
         <td class="text-center">2</td>
-        <td class="text-center">2</td>
-        <td class="text-center">0</td>
+        <td class="text-center">1</td>
+        <td class="text-center">1</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c14', 2)">Detail</a>
+            <a onclick="showClassDetail('c15', 2)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt14.1' class='hiddenRow bg-success'>
+        <tr id='pt15.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_oauth_about</div>
             </td>
@@ -1461,11 +2055,31 @@ AssertionError: False is not true : logfile config value is not empty after rese
     
     
     
-        <tr id='pt14.2' class='hiddenRow bg-success'>
+        <tr id='ft15.2' class='none bg-danger'>
             <td>
                 <div class='testcase'>test_visible_oauth</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft15.2')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id='div_ft15.2' class="popup_window test_output" style="display:none;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
+                                onclick="document.getElementById('div_ft15.2').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File "/home/matthias/Entwicklung/calibre-web-test/test/test_oauth.py", line 47, in test_visible_oauth
+    self.assertTrue(self.check_element_on_page((By.ID, "config_1_oauth")))
+AssertionError: False is not true</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
@@ -1474,18 +2088,18 @@ AssertionError: False is not true : logfile config value is not empty after rese
     <tr class="result['header']['style']">
         <td>test_opds_feed.test_opds_feed</td>
         <td class="text-center">20</td>
-        <td class="text-center">20</td>
-        <td class="text-center">0</td>
+        <td class="text-center">18</td>
+        <td class="text-center">2</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c15', 20)">Detail</a>
+            <a onclick="showClassDetail('c16', 20)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt15.1' class='hiddenRow bg-success'>
+        <tr id='pt16.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_opds</div>
             </td>
@@ -1494,7 +2108,7 @@ AssertionError: False is not true : logfile config value is not empty after rese
     
     
     
-        <tr id='pt15.2' class='hiddenRow bg-success'>
+        <tr id='pt16.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_opds_author</div>
             </td>
@@ -1503,7 +2117,7 @@ AssertionError: False is not true : logfile config value is not empty after rese
     
     
     
-        <tr id='pt15.3' class='hiddenRow bg-success'>
+        <tr id='pt16.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_opds_calibre_companion</div>
             </td>
@@ -1512,7 +2126,7 @@ AssertionError: False is not true : logfile config value is not empty after rese
     
     
     
-        <tr id='pt15.4' class='hiddenRow bg-success'>
+        <tr id='pt16.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_opds_cover</div>
             </td>
@@ -1521,16 +2135,36 @@ AssertionError: False is not true : logfile config value is not empty after rese
     
     
     
-        <tr id='pt15.5' class='hiddenRow bg-success'>
+        <tr id='ft16.5' class='none bg-danger'>
             <td>
                 <div class='testcase'>test_opds_download_book</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft16.5')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id='div_ft16.5' class="popup_window test_output" style="display:none;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
+                                onclick="document.getElementById('div_ft16.5').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File "/home/matthias/Entwicklung/calibre-web-test/test/test_opds_feed.py", line 398, in test_opds_download_book
+    self.assertEqual(len(r.content), 28590)
+AssertionError: 3775 != 28590</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
     
-        <tr id='pt15.6' class='hiddenRow bg-success'>
+        <tr id='pt16.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_opds_formats</div>
             </td>
@@ -1539,7 +2173,7 @@ AssertionError: False is not true : logfile config value is not empty after rese
     
     
     
-        <tr id='pt15.7' class='hiddenRow bg-success'>
+        <tr id='pt16.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_opds_guest_user</div>
             </td>
@@ -1548,16 +2182,36 @@ AssertionError: False is not true : logfile config value is not empty after rese
     
     
     
-        <tr id='pt15.8' class='hiddenRow bg-success'>
+        <tr id='ft16.8' class='none bg-danger'>
             <td>
                 <div class='testcase'>test_opds_hot</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft16.8')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id='div_ft16.8' class="popup_window test_output" style="display:none;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
+                                onclick="document.getElementById('div_ft16.8').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File "/home/matthias/Entwicklung/calibre-web-test/test/test_opds_feed.py", line 142, in test_opds_hot
+    self.assertEqual(len(entries['elements']),1)
+AssertionError: 0 != 1</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
     
-        <tr id='pt15.9' class='hiddenRow bg-success'>
+        <tr id='pt16.9' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_opds_language</div>
             </td>
@@ -1566,7 +2220,7 @@ AssertionError: False is not true : logfile config value is not empty after rese
     
     
     
-        <tr id='pt15.10' class='hiddenRow bg-success'>
+        <tr id='pt16.10' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_opds_non_admin</div>
             </td>
@@ -1575,7 +2229,7 @@ AssertionError: False is not true : logfile config value is not empty after rese
     
     
     
-        <tr id='pt15.11' class='hiddenRow bg-success'>
+        <tr id='pt16.11' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_opds_publisher</div>
             </td>
@@ -1584,7 +2238,7 @@ AssertionError: False is not true : logfile config value is not empty after rese
     
     
     
-        <tr id='pt15.12' class='hiddenRow bg-success'>
+        <tr id='pt16.12' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_opds_random</div>
             </td>
@@ -1593,7 +2247,7 @@ AssertionError: False is not true : logfile config value is not empty after rese
     
     
     
-        <tr id='pt15.13' class='hiddenRow bg-success'>
+        <tr id='pt16.13' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_opds_ratings</div>
             </td>
@@ -1602,7 +2256,7 @@ AssertionError: False is not true : logfile config value is not empty after rese
     
     
     
-        <tr id='pt15.14' class='hiddenRow bg-success'>
+        <tr id='pt16.14' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_opds_read_unread</div>
             </td>
@@ -1611,7 +2265,7 @@ AssertionError: False is not true : logfile config value is not empty after rese
     
     
     
-        <tr id='pt15.15' class='hiddenRow bg-success'>
+        <tr id='pt16.15' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_opds_search</div>
             </td>
@@ -1620,7 +2274,7 @@ AssertionError: False is not true : logfile config value is not empty after rese
     
     
     
-        <tr id='pt15.16' class='hiddenRow bg-success'>
+        <tr id='pt16.16' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_opds_series</div>
             </td>
@@ -1629,7 +2283,7 @@ AssertionError: False is not true : logfile config value is not empty after rese
     
     
     
-        <tr id='pt15.17' class='hiddenRow bg-success'>
+        <tr id='pt16.17' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_opds_shelf_access</div>
             </td>
@@ -1638,7 +2292,7 @@ AssertionError: False is not true : logfile config value is not empty after rese
     
     
     
-        <tr id='pt15.18' class='hiddenRow bg-success'>
+        <tr id='pt16.18' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_opds_tags</div>
             </td>
@@ -1647,7 +2301,7 @@ AssertionError: False is not true : logfile config value is not empty after rese
     
     
     
-        <tr id='pt15.19' class='hiddenRow bg-success'>
+        <tr id='pt16.19' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_opds_top_rated</div>
             </td>
@@ -1656,7 +2310,7 @@ AssertionError: False is not true : logfile config value is not empty after rese
     
     
     
-        <tr id='pt15.20' class='hiddenRow bg-success'>
+        <tr id='pt16.20' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_recently_added</div>
             </td>
@@ -1674,13 +2328,13 @@ AssertionError: False is not true : logfile config value is not empty after rese
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c16', 6)">Detail</a>
+            <a onclick="showClassDetail('c17', 6)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt16.1' class='hiddenRow bg-success'>
+        <tr id='pt17.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_forgot_password</div>
             </td>
@@ -1689,7 +2343,7 @@ AssertionError: False is not true : logfile config value is not empty after rese
     
     
     
-        <tr id='pt16.2' class='hiddenRow bg-success'>
+        <tr id='pt17.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_limit_domain</div>
             </td>
@@ -1698,7 +2352,7 @@ AssertionError: False is not true : logfile config value is not empty after rese
     
     
     
-        <tr id='pt16.3' class='hiddenRow bg-success'>
+        <tr id='pt17.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_register_no_server</div>
             </td>
@@ -1707,7 +2361,7 @@ AssertionError: False is not true : logfile config value is not empty after rese
     
     
     
-        <tr id='pt16.4' class='hiddenRow bg-success'>
+        <tr id='pt17.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_registering_user</div>
             </td>
@@ -1716,7 +2370,7 @@ AssertionError: False is not true : logfile config value is not empty after rese
     
     
     
-        <tr id='pt16.5' class='hiddenRow bg-success'>
+        <tr id='pt17.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_registering_user_fail</div>
             </td>
@@ -1725,7 +2379,7 @@ AssertionError: False is not true : logfile config value is not empty after rese
     
     
     
-        <tr id='pt16.6' class='hiddenRow bg-success'>
+        <tr id='pt17.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_user_change_password</div>
             </td>
@@ -1737,19 +2391,28 @@ AssertionError: False is not true : logfile config value is not empty after rese
 
     <tr class="result['header']['style']">
         <td>test_shelf.test_shelf</td>
+        <td class="text-center">10</td>
         <td class="text-center">9</td>
-        <td class="text-center">8</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">1</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c17', 9)">Detail</a>
+            <a onclick="showClassDetail('c18', 10)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt17.1' class='hiddenRow bg-success'>
+        <tr id='pt18.1' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>test_add_shelf_from_search</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt18.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_arrange_shelf</div>
             </td>
@@ -1758,7 +2421,7 @@ AssertionError: False is not true : logfile config value is not empty after rese
     
     
     
-        <tr id='pt17.2' class='hiddenRow bg-success'>
+        <tr id='pt18.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_delete_book_of_shelf</div>
             </td>
@@ -1767,7 +2430,7 @@ AssertionError: False is not true : logfile config value is not empty after rese
     
     
     
-        <tr id='pt17.3' class='hiddenRow bg-success'>
+        <tr id='pt18.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_private_shelf</div>
             </td>
@@ -1776,7 +2439,7 @@ AssertionError: False is not true : logfile config value is not empty after rese
     
     
     
-        <tr id='pt17.4' class='hiddenRow bg-success'>
+        <tr id='pt18.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_public_private_shelf</div>
             </td>
@@ -1785,7 +2448,7 @@ AssertionError: False is not true : logfile config value is not empty after rese
     
     
     
-        <tr id='pt17.5' class='hiddenRow bg-success'>
+        <tr id='pt18.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_public_shelf</div>
             </td>
@@ -1794,7 +2457,7 @@ AssertionError: False is not true : logfile config value is not empty after rese
     
     
     
-        <tr id='pt17.6' class='hiddenRow bg-success'>
+        <tr id='pt18.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_rename_shelf</div>
             </td>
@@ -1803,7 +2466,7 @@ AssertionError: False is not true : logfile config value is not empty after rese
     
     
     
-        <tr id='pt17.7' class='hiddenRow bg-success'>
+        <tr id='pt18.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_shelf_action_non_shelf_edit_role</div>
             </td>
@@ -1812,19 +2475,19 @@ AssertionError: False is not true : logfile config value is not empty after rese
     
     
     
-        <tr id='st17.8' class='none bg-warning'>
+        <tr id='st18.9' class='none bg-warning'>
             <td>
                 <div class='testcase'>test_shelf_database_change</div>
             </td>
             <td colspan='6'>
                 <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st17.8')">SKIP</a>
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st18.9')">SKIP</a>
                 </div>
                 <!--css div popup start-->
-                <div id='div_st17.8' class="popup_window test_output" style="display:none;">
+                <div id='div_st18.9' class="popup_window test_output" style="display:none;">
                     <div class='close_button pull-right'>
                         <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                                onclick="document.getElementById('div_st17.8').style.display='none'"><span
+                                onclick="document.getElementById('div_st18.9').style.display='none'"><span
                                 aria-hidden="true">&times;</span></button>
                     </div>
                     <div class="text-left pull-left">
@@ -1838,7 +2501,7 @@ AssertionError: False is not true : logfile config value is not empty after rese
     
     
     
-        <tr id='pt17.9' class='hiddenRow bg-success'>
+        <tr id='pt18.10' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_shelf_long_name</div>
             </td>
@@ -1856,13 +2519,13 @@ AssertionError: False is not true : logfile config value is not empty after rese
         <td class="text-center">0</td>
         <td class="text-center">1</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c18', 7)">Detail</a>
+            <a onclick="showClassDetail('c19', 7)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt18.1' class='hiddenRow bg-success'>
+        <tr id='pt19.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_check_update_nightly_errors</div>
             </td>
@@ -1871,7 +2534,7 @@ AssertionError: False is not true : logfile config value is not empty after rese
     
     
     
-        <tr id='pt18.2' class='hiddenRow bg-success'>
+        <tr id='pt19.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_check_update_nightly_request_errors</div>
             </td>
@@ -1880,7 +2543,7 @@ AssertionError: False is not true : logfile config value is not empty after rese
     
     
     
-        <tr id='pt18.3' class='hiddenRow bg-success'>
+        <tr id='pt19.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_check_update_stable_errors</div>
             </td>
@@ -1889,7 +2552,7 @@ AssertionError: False is not true : logfile config value is not empty after rese
     
     
     
-        <tr id='pt18.4' class='hiddenRow bg-success'>
+        <tr id='pt19.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_check_update_stable_versions</div>
             </td>
@@ -1898,7 +2561,7 @@ AssertionError: False is not true : logfile config value is not empty after rese
     
     
     
-        <tr id='pt18.5' class='hiddenRow bg-success'>
+        <tr id='pt19.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_perform_update</div>
             </td>
@@ -1907,7 +2570,7 @@ AssertionError: False is not true : logfile config value is not empty after rese
     
     
     
-        <tr id='pt18.6' class='hiddenRow bg-success'>
+        <tr id='pt19.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_perform_update_stable_errors</div>
             </td>
@@ -1916,19 +2579,19 @@ AssertionError: False is not true : logfile config value is not empty after rese
     
     
     
-        <tr id='st18.7' class='none bg-warning'>
+        <tr id='st19.7' class='none bg-warning'>
             <td>
                 <div class='testcase'>test_perform_update_timeout</div>
             </td>
             <td colspan='6'>
                 <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st18.7')">SKIP</a>
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st19.7')">SKIP</a>
                 </div>
                 <!--css div popup start-->
-                <div id='div_st18.7' class="popup_window test_output" style="display:none;">
+                <div id='div_st19.7' class="popup_window test_output" style="display:none;">
                     <div class='close_button pull-right'>
                         <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                                onclick="document.getElementById('div_st18.7').style.display='none'"><span
+                                onclick="document.getElementById('div_st19.7').style.display='none'"><span
                                 aria-hidden="true">&times;</span></button>
                     </div>
                     <div class="text-left pull-left">
@@ -1951,13 +2614,13 @@ AssertionError: False is not true : logfile config value is not empty after rese
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c19', 19)">Detail</a>
+            <a onclick="showClassDetail('c20', 19)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt19.1' class='hiddenRow bg-success'>
+        <tr id='pt20.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_allow_column_restriction</div>
             </td>
@@ -1966,7 +2629,7 @@ AssertionError: False is not true : logfile config value is not empty after rese
     
     
     
-        <tr id='pt19.2' class='hiddenRow bg-success'>
+        <tr id='pt20.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_allow_tag_restriction</div>
             </td>
@@ -1975,7 +2638,7 @@ AssertionError: False is not true : logfile config value is not empty after rese
     
     
     
-        <tr id='pt19.3' class='hiddenRow bg-success'>
+        <tr id='pt20.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_archived_format_template</div>
             </td>
@@ -1984,7 +2647,7 @@ AssertionError: False is not true : logfile config value is not empty after rese
     
     
     
-        <tr id='pt19.4' class='hiddenRow bg-success'>
+        <tr id='pt20.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_author_user_template</div>
             </td>
@@ -1993,7 +2656,7 @@ AssertionError: False is not true : logfile config value is not empty after rese
     
     
     
-        <tr id='pt19.5' class='hiddenRow bg-success'>
+        <tr id='pt20.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_best_user_template</div>
             </td>
@@ -2002,7 +2665,7 @@ AssertionError: False is not true : logfile config value is not empty after rese
     
     
     
-        <tr id='pt19.6' class='hiddenRow bg-success'>
+        <tr id='pt20.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_category_user_template</div>
             </td>
@@ -2011,7 +2674,7 @@ AssertionError: False is not true : logfile config value is not empty after rese
     
     
     
-        <tr id='pt19.7' class='hiddenRow bg-success'>
+        <tr id='pt20.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_deny_column_restriction</div>
             </td>
@@ -2020,7 +2683,7 @@ AssertionError: False is not true : logfile config value is not empty after rese
     
     
     
-        <tr id='pt19.8' class='hiddenRow bg-success'>
+        <tr id='pt20.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_deny_tag_restriction</div>
             </td>
@@ -2029,7 +2692,7 @@ AssertionError: False is not true : logfile config value is not empty after rese
     
     
     
-        <tr id='pt19.9' class='hiddenRow bg-success'>
+        <tr id='pt20.9' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_detail_random_user_template</div>
             </td>
@@ -2038,7 +2701,7 @@ AssertionError: False is not true : logfile config value is not empty after rese
     
     
     
-        <tr id='pt19.10' class='hiddenRow bg-success'>
+        <tr id='pt20.10' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_format_user_template</div>
             </td>
@@ -2047,7 +2710,7 @@ AssertionError: False is not true : logfile config value is not empty after rese
     
     
     
-        <tr id='pt19.11' class='hiddenRow bg-success'>
+        <tr id='pt20.11' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_hot_user_template</div>
             </td>
@@ -2056,7 +2719,7 @@ AssertionError: False is not true : logfile config value is not empty after rese
     
     
     
-        <tr id='pt19.12' class='hiddenRow bg-success'>
+        <tr id='pt20.12' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_language_user_template</div>
             </td>
@@ -2065,7 +2728,7 @@ AssertionError: False is not true : logfile config value is not empty after rese
     
     
     
-        <tr id='pt19.13' class='hiddenRow bg-success'>
+        <tr id='pt20.13' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_limit_book_languages</div>
             </td>
@@ -2074,7 +2737,7 @@ AssertionError: False is not true : logfile config value is not empty after rese
     
     
     
-        <tr id='pt19.14' class='hiddenRow bg-success'>
+        <tr id='pt20.14' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_publisher_user_template</div>
             </td>
@@ -2083,7 +2746,7 @@ AssertionError: False is not true : logfile config value is not empty after rese
     
     
     
-        <tr id='pt19.15' class='hiddenRow bg-success'>
+        <tr id='pt20.15' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_random_user_template</div>
             </td>
@@ -2092,7 +2755,7 @@ AssertionError: False is not true : logfile config value is not empty after rese
     
     
     
-        <tr id='pt19.16' class='hiddenRow bg-success'>
+        <tr id='pt20.16' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_read_user_template</div>
             </td>
@@ -2101,7 +2764,7 @@ AssertionError: False is not true : logfile config value is not empty after rese
     
     
     
-        <tr id='pt19.17' class='hiddenRow bg-success'>
+        <tr id='pt20.17' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_recent_user_template</div>
             </td>
@@ -2110,7 +2773,7 @@ AssertionError: False is not true : logfile config value is not empty after rese
     
     
     
-        <tr id='pt19.18' class='hiddenRow bg-success'>
+        <tr id='pt20.18' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_series_user_template</div>
             </td>
@@ -2119,7 +2782,7 @@ AssertionError: False is not true : logfile config value is not empty after rese
     
     
     
-        <tr id='pt19.19' class='hiddenRow bg-success'>
+        <tr id='pt20.19' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_ui_language_settings</div>
             </td>
@@ -2131,19 +2794,19 @@ AssertionError: False is not true : logfile config value is not empty after rese
 
     <tr class="result['header']['style']">
         <td>test_visiblilitys.calibre_web_visibilitys</td>
+        <td class="text-center">28</td>
         <td class="text-center">25</td>
-        <td class="text-center">25</td>
-        <td class="text-center">0</td>
+        <td class="text-center">3</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c20', 25)">Detail</a>
+            <a onclick="showClassDetail('c21', 28)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt20.1' class='hiddenRow bg-success'>
+        <tr id='pt21.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_about</div>
             </td>
@@ -2152,7 +2815,7 @@ AssertionError: False is not true : logfile config value is not empty after rese
     
     
     
-        <tr id='pt20.2' class='hiddenRow bg-success'>
+        <tr id='pt21.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_admin_SMTP_Settings</div>
             </td>
@@ -2161,16 +2824,36 @@ AssertionError: False is not true : logfile config value is not empty after rese
     
     
     
-        <tr id='pt20.3' class='hiddenRow bg-success'>
+        <tr id='ft21.3' class='none bg-danger'>
             <td>
                 <div class='testcase'>test_admin_add_user</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft21.3')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id='div_ft21.3' class="popup_window test_output" style="display:none;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
+                                onclick="document.getElementById('div_ft21.3').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File "/home/matthias/Entwicklung/calibre-web-test/test/test_visiblilitys.py", line 358, in test_admin_add_user
+    self.assertIsNone("Error creating new users")
+AssertionError: 'Error creating new users' is not None</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
     
-        <tr id='pt20.4' class='hiddenRow bg-success'>
+        <tr id='pt21.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_admin_change_password</div>
             </td>
@@ -2179,7 +2862,7 @@ AssertionError: False is not true : logfile config value is not empty after rese
     
     
     
-        <tr id='pt20.5' class='hiddenRow bg-success'>
+        <tr id='pt21.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_admin_change_visibility_archived</div>
             </td>
@@ -2188,7 +2871,7 @@ AssertionError: False is not true : logfile config value is not empty after rese
     
     
     
-        <tr id='pt20.6' class='hiddenRow bg-success'>
+        <tr id='pt21.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_admin_change_visibility_authors</div>
             </td>
@@ -2197,7 +2880,7 @@ AssertionError: False is not true : logfile config value is not empty after rese
     
     
     
-        <tr id='pt20.7' class='hiddenRow bg-success'>
+        <tr id='pt21.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_admin_change_visibility_category</div>
             </td>
@@ -2206,7 +2889,7 @@ AssertionError: False is not true : logfile config value is not empty after rese
     
     
     
-        <tr id='pt20.8' class='hiddenRow bg-success'>
+        <tr id='pt21.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_admin_change_visibility_file_formats</div>
             </td>
@@ -2215,7 +2898,7 @@ AssertionError: False is not true : logfile config value is not empty after rese
     
     
     
-        <tr id='pt20.9' class='hiddenRow bg-success'>
+        <tr id='pt21.9' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_admin_change_visibility_hot</div>
             </td>
@@ -2224,7 +2907,7 @@ AssertionError: False is not true : logfile config value is not empty after rese
     
     
     
-        <tr id='pt20.10' class='hiddenRow bg-success'>
+        <tr id='pt21.10' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_admin_change_visibility_language</div>
             </td>
@@ -2233,7 +2916,7 @@ AssertionError: False is not true : logfile config value is not empty after rese
     
     
     
-        <tr id='pt20.11' class='hiddenRow bg-success'>
+        <tr id='pt21.11' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_admin_change_visibility_publisher</div>
             </td>
@@ -2242,7 +2925,7 @@ AssertionError: False is not true : logfile config value is not empty after rese
     
     
     
-        <tr id='pt20.12' class='hiddenRow bg-success'>
+        <tr id='pt21.12' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_admin_change_visibility_rated</div>
             </td>
@@ -2251,7 +2934,7 @@ AssertionError: False is not true : logfile config value is not empty after rese
     
     
     
-        <tr id='pt20.13' class='hiddenRow bg-success'>
+        <tr id='pt21.13' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_admin_change_visibility_rating</div>
             </td>
@@ -2260,7 +2943,7 @@ AssertionError: False is not true : logfile config value is not empty after rese
     
     
     
-        <tr id='pt20.14' class='hiddenRow bg-success'>
+        <tr id='pt21.14' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_admin_change_visibility_read</div>
             </td>
@@ -2269,7 +2952,7 @@ AssertionError: False is not true : logfile config value is not empty after rese
     
     
     
-        <tr id='pt20.15' class='hiddenRow bg-success'>
+        <tr id='pt21.15' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_admin_change_visibility_series</div>
             </td>
@@ -2278,7 +2961,7 @@ AssertionError: False is not true : logfile config value is not empty after rese
     
     
     
-        <tr id='pt20.16' class='hiddenRow bg-success'>
+        <tr id='pt21.16' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_allow_columns</div>
             </td>
@@ -2287,7 +2970,7 @@ AssertionError: False is not true : logfile config value is not empty after rese
     
     
     
-        <tr id='pt20.17' class='hiddenRow bg-success'>
+        <tr id='pt21.17' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_allow_tags</div>
             </td>
@@ -2296,7 +2979,16 @@ AssertionError: False is not true : logfile config value is not empty after rese
     
     
     
-        <tr id='pt20.18' class='hiddenRow bg-success'>
+        <tr id='pt21.18' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>test_authors_max_settings</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt21.19' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_checked_logged_in</div>
             </td>
@@ -2305,7 +2997,65 @@ AssertionError: False is not true : logfile config value is not empty after rese
     
     
     
-        <tr id='pt20.19' class='hiddenRow bg-success'>
+        <tr id='ft21.20' class='none bg-danger'>
+            <td>
+                <div class='testcase'>test_hide_custom_column</div>
+            </td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft21.20')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id='div_ft21.20' class="popup_window test_output" style="display:none;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
+                                onclick="document.getElementById('div_ft21.20').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File "/home/matthias/Entwicklung/calibre-web-test/test/test_visiblilitys.py", line 725, in test_hide_custom_column
+    self.assertFalse(search['cust_columns'].get('Custom Rating 人物'))
+AssertionError: <selenium.webdriver.firefox.webelement.FirefoxWebElement (session="d72025bd-db90-42af-8de2-52637980bb3b", element="03d4f1dd-da76-47f3-8bb2-c852840495f6")> is not false</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
+        </tr>
+    
+    
+    
+        <tr id='ft21.21' class='none bg-danger'>
+            <td>
+                <div class='testcase'>test_link_column_to_read_status</div>
+            </td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft21.21')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id='div_ft21.21' class="popup_window test_output" style="display:none;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
+                                onclick="document.getElementById('div_ft21.21').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File "/home/matthias/Entwicklung/calibre-web-test/test/test_visiblilitys.py", line 676, in test_link_column_to_read_status
+    self.assertEqual(len(details['cust_columns']),0)
+AssertionError: 5 != 0</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
+        </tr>
+    
+    
+    
+        <tr id='pt21.22' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_random_books_available</div>
             </td>
@@ -2314,7 +3064,7 @@ AssertionError: False is not true : logfile config value is not empty after rese
     
     
     
-        <tr id='pt20.20' class='hiddenRow bg-success'>
+        <tr id='pt21.23' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_restrict_columns</div>
             </td>
@@ -2323,7 +3073,7 @@ AssertionError: False is not true : logfile config value is not empty after rese
     
     
     
-        <tr id='pt20.21' class='hiddenRow bg-success'>
+        <tr id='pt21.24' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_restrict_tags</div>
             </td>
@@ -2332,7 +3082,7 @@ AssertionError: False is not true : logfile config value is not empty after rese
     
     
     
-        <tr id='pt20.22' class='hiddenRow bg-success'>
+        <tr id='pt21.25' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_search_functions</div>
             </td>
@@ -2341,7 +3091,7 @@ AssertionError: False is not true : logfile config value is not empty after rese
     
     
     
-        <tr id='pt20.23' class='hiddenRow bg-success'>
+        <tr id='pt21.26' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_search_string</div>
             </td>
@@ -2350,7 +3100,7 @@ AssertionError: False is not true : logfile config value is not empty after rese
     
     
     
-        <tr id='pt20.24' class='hiddenRow bg-success'>
+        <tr id='pt21.27' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_user_email_available</div>
             </td>
@@ -2359,7 +3109,7 @@ AssertionError: False is not true : logfile config value is not empty after rese
     
     
     
-        <tr id='pt20.25' class='hiddenRow bg-success'>
+        <tr id='pt21.28' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_user_visibility_sidebar</div>
             </td>
@@ -2370,10 +3120,10 @@ AssertionError: False is not true : logfile config value is not empty after rese
 
     <tr id='total_row' class="text-center bg-grey">
         <td>Total</td>
-        <td>203</td>
-        <td>195</td>
-        <td>2</td>
-        <td>0</td>
+        <td>212</td>
+        <td>176</td>
+        <td>18</td>
+        <td>12</td>
         <td>6</td>
         <td>&nbsp;</td>
     </tr>
@@ -2402,7 +3152,7 @@ AssertionError: False is not true : logfile config value is not empty after rese
           
             <tr>
               <th>Platform</th>
-              <td>Linux 5.3.0-51-generic #44~18.04.2-Ubuntu SMP Thu Apr 23 14:27:18 UTC 2020 x86_64 x86_64</td>
+              <td>Linux 5.3.0-53-generic #47~18.04.1-Ubuntu SMP Thu May 7 13:10:50 UTC 2020 x86_64 x86_64</td>
               <td>Basic</td>
             </tr>
           
@@ -2492,7 +3242,7 @@ AssertionError: False is not true : logfile config value is not empty after rese
           
             <tr>
               <th>SQLAlchemy</th>
-              <td>1.3.16</td>
+              <td>1.3.17</td>
               <td>Basic</td>
             </tr>
           
@@ -2528,7 +3278,7 @@ AssertionError: False is not true : logfile config value is not empty after rese
           
             <tr>
               <th>lxml</th>
-              <td>4.5.0</td>
+              <td>4.5.1</td>
               <td>test_edit_additional_books</td>
             </tr>
           
@@ -2546,7 +3296,7 @@ AssertionError: False is not true : logfile config value is not empty after rese
           
             <tr>
               <th>lxml</th>
-              <td>4.5.0</td>
+              <td>4.5.1</td>
               <td>test_edit_books</td>
             </tr>
           
@@ -2600,7 +3350,7 @@ AssertionError: False is not true : logfile config value is not empty after rese
 </div>
 
 <script>
-    drawCircle(195, 2, 0, 6);
+    drawCircle(176, 18, 12, 6);
 </script>
 
 </div>

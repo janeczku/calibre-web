@@ -544,13 +544,13 @@ def _configuration_logfile_helper(to_save, gdriveError):
     reboot_required |= _config_int(to_save, "config_log_level")
     reboot_required |= _config_string(to_save, "config_logfile")
     if not logger.is_valid_logfile(config.config_logfile):
-        return _configuration_result(_('Logfile Location is not Valid, Please Enter Correct Path'), gdriveError)
+        return reboot_required, _configuration_result(_('Logfile Location is not Valid, Please Enter Correct Path'), gdriveError)
 
     reboot_required |= _config_checkbox_int(to_save, "config_access_log")
     reboot_required |= _config_string(to_save, "config_access_logfile")
     if not logger.is_valid_logfile(config.config_access_logfile):
-        return _configuration_result(_('Access Logfile Location is not Valid, Please Enter Correct Path'), gdriveError)
-    return reboot_required
+        return reboot_required, _configuration_result(_('Access Logfile Location is not Valid, Please Enter Correct Path'), gdriveError)
+    return reboot_required, None
 
 def _configuration_ldap_helper(gdriveError, to_save):
     reboot_required = False
@@ -646,7 +646,10 @@ def _configuration_update_helper():
 
     #LDAP configurator,
     if config.config_login_type == constants.LOGIN_LDAP:
-        reboot_required |= _configuration_ldap_helper(to_save, gdriveError)
+        reboot, message = _configuration_ldap_helper(to_save, gdriveError)
+        if message:
+            return message
+        reboot_required |= reboot
 
     # Remote login configuration
     _config_checkbox(to_save, "config_remote_login")
@@ -672,7 +675,10 @@ def _configuration_update_helper():
     if config.config_login_type == constants.LOGIN_OAUTH:
         _configuration_oauth_helper(to_save)
 
-    reboot_required |= _configuration_logfile_helper(to_save, gdriveError)
+    reboot, message = _configuration_logfile_helper(to_save, gdriveError)
+    if message:
+        return message
+    reboot_required |= reboot
     # Rarfile Content configuration
     _config_string(to_save, "config_rarfile_location")
     unrar_status = helper.check_unrar(config.config_rarfile_location)
