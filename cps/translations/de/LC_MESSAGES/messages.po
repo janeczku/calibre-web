@@ -1860,7 +1860,7 @@ msgid "Allow Changing Password"
 msgstr "Ändern des Passworts erlauben"
 
 #: cps/templates/config_view_edit.html:116 cps/templates/user_edit.html:122
-msgid "Allow Editing Public Shelfs"
+msgid "Allow Editing Public Shelves"
 msgstr "Editieren öffentlicher Bücherregale erlauben"
 
 #: cps/templates/config_view_edit.html:126

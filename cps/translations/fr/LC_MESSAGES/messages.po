@@ -1873,7 +1873,7 @@ msgid "Allow Changing Password"
 msgstr "Permettre le changement de mot de passe"
 
 #: cps/templates/config_view_edit.html:116 cps/templates/user_edit.html:122
-msgid "Allow Editing Public Shelfs"
+msgid "Allow Editing Public Shelves"
 msgstr "Autoriser la modification d’étagères publiques"
 
 #: cps/templates/config_view_edit.html:126
