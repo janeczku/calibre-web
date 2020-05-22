@@ -1861,7 +1861,7 @@ msgid "Allow Changing Password"
 msgstr "Разрешить смену пароля"
 
 #: cps/templates/config_view_edit.html:116 cps/templates/user_edit.html:122
-msgid "Allow Editing Public Shelfs"
+msgid "Allow Editing Public Shelves"
 msgstr "Разрешить редактирование публичных книжных полок"
 
 #: cps/templates/config_view_edit.html:126

@@ -1859,7 +1859,7 @@ msgid "Allow Changing Password"
 msgstr "Povolit změnu hesla"
 
 #: cps/templates/config_view_edit.html:116 cps/templates/user_edit.html:122
-msgid "Allow Editing Public Shelfs"
+msgid "Allow Editing Public Shelves"
 msgstr "Povolit úpravy veřejných polic"
 
 #: cps/templates/config_view_edit.html:126

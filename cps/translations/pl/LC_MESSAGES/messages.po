@@ -1874,7 +1874,7 @@ msgid "Allow Changing Password"
 msgstr "Zezwalaj na zmianę hasła"
 
 #: cps/templates/config_view_edit.html:116 cps/templates/user_edit.html:122
-msgid "Allow Editing Public Shelfs"
+msgid "Allow Editing Public Shelves"
 msgstr "Zezwalaj na edycję półek publicznych"
 
 #: cps/templates/config_view_edit.html:126
