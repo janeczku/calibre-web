@@ -1714,7 +1714,7 @@ def show_book(book_id):
 
         entries.tags = sort(entries.tags, key=lambda tag: tag.name)
 
-        entries = order_authors(entries)
+        entries = calibre_db.order_authors(entries)
 
         kindle_list = check_send_to_kindle(entries)
         reader_list = check_read_formats(entries)
