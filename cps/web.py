@@ -984,12 +984,13 @@ def get_tasks_status():
     return render_title_template('tasks.html', entries=answer, title=_(u"Tasks"), page="tasks")
 
 
-# ################################### Search functions ################################################################
-
 @app.route("/reconnect")
 def reconnect():
     db.reconnect_db(config, ub.app_DB_path)
     return json.dumps({})
+
+
+# ################################### Search functions ################################################################
 
 
 @web.route("/search", methods=["GET"])
@@ -1019,7 +1020,7 @@ def search():
 @login_required_if_no_ano
 def advanced_search():
     # Build custom columns names
-    cc = get_cc_columns()
+    cc = get_cc_columns(filter_config_custom_read=True)
     calibre_db.session.connection().connection.connection.create_function("lower", 1, db.lcase)
     q = calibre_db.session.query(db.Books).filter(calibre_db.common_filters()).order_by(db.Books.sort)
 
