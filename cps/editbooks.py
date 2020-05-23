@@ -280,10 +280,8 @@ def render_edit_book(book_id):
     if config.config_converterpath:
         allowed_conversion_formats = constants.EXTENSIONS_CONVERT.copy()
         for file in book.data:
-            try:
+            if file.format.lower() in allowed_conversion_formats:
                 allowed_conversion_formats.remove(file.format.lower())
-            except Exception:
-                log.warning('%s already removed from list.', file.format.lower())
     if kepub_possible:
         allowed_conversion_formats.append('kepub')
     return render_title_template('book_edit.html', book=book, authors=author_names, cc=cc,

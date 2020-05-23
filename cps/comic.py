@@ -36,15 +36,19 @@ log = logger.create()
 try:
     from comicapi.comicarchive import ComicArchive, MetaDataStyle
     use_comic_meta = True
+    try:
+        from comicapi import __version__ as comic_version
+    except (ImportError):
+        comic_version = ''
 except ImportError as e:
-    log.debug('cannot import comicapi, extracting comic metadata will not work: %s', e)
+    log.debug('Cannot import comicapi, extracting comic metadata will not work: %s', e)
     import zipfile
     import tarfile
     try:
         import rarfile
         use_rarfile = True
     except ImportError as e:
-        log.debug('cannot import rarfile, extracting cover files from rar files will not work: %s', e)
+        log.debug('Cannot import rarfile, extracting cover files from rar files will not work: %s', e)
         use_rarfile = False
     use_comic_meta = False
 
