@@ -36,17 +36,17 @@
       <div class="col-xs-12 col-sm-6">
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3" style="margin-top:50px;">
-            <p class='text-justify attribute'><strong>Start Time: </strong>2020-05-22 18:17:02</p>
+            <p class='text-justify attribute'><strong>Start Time: </strong>2020-05-23 12:52:51</p>
         </div>
       </div>
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3">
-            <p class='text-justify attribute'><strong>Stop Time: </strong>2020-05-22 19:14:53</p>
+            <p class='text-justify attribute'><strong>Stop Time: </strong>2020-05-23 13:50:07</p>
         </div>
       </div>
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3">
-           <p class='text-justify attribute'><strong>Duration: </strong>48:49 min</p>
+           <p class='text-justify attribute'><strong>Duration: </strong>48:28 min</p>
         </div>
       </div>
       </div>
@@ -442,8 +442,8 @@
     <tr class="result['header']['style']">
         <td>test_edit_additional_books.test_edit_additional_books</td>
         <td class="text-center">3</td>
-        <td class="text-center">1</td>
         <td class="text-center">2</td>
+        <td class="text-center">1</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
@@ -480,9 +480,9 @@
                     <div class="text-left pull-left">
                         <pre class="text-left">Traceback (most recent call last):
   File "/home/matthias/Entwicklung/calibre-web-test/test/test_edit_additional_books.py", line 88, in test_upload_metadata_cbt
-    self.assertEqual('Test 执book', details['title'])
-AssertionError: 'Test 执book' != 'book'
-- Test 执book
+    self.assertEqual('Test 执 to', details['title'])
+AssertionError: 'Test 执 to' != 'book'
+- Test 执 to
 + book</pre>
                     </div>
                     <div class="clearfix"></div>
@@ -493,33 +493,11 @@ AssertionError: 'Test 执book' != 'book'
     
     
     
-        <tr id='ft4.3' class='none bg-danger'>
+        <tr id='pt4.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_upload_metadate_cbr</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft4.3')">FAIL</a>
-                </div>
-                <!--css div popup start-->
-                <div id='div_ft4.3' class="popup_window test_output" style="display:none;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                                onclick="document.getElementById('div_ft4.3').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File "/home/matthias/Entwicklung/calibre-web-test/test/test_edit_additional_books.py", line 64, in test_upload_metadate_cbr
-    self.assertEqual('Test 执book', details['title'])
-AssertionError: 'Test 执book' != 'book'
-- Test 执book
-+ book</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -1134,8 +1112,8 @@ AssertionError: False is not true : Browser-Cache Problem: Old Cover is displaye
     <tr class="result['header']['style']">
         <td>test_kobo_sync.test_kobo_sync</td>
         <td class="text-center">8</td>
-        <td class="text-center">8</td>
-        <td class="text-center">0</td>
+        <td class="text-center">7</td>
+        <td class="text-center">1</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
@@ -1190,11 +1168,31 @@ AssertionError: False is not true : Browser-Cache Problem: Old Cover is displaye
     
     
     
-        <tr id='pt10.6' class='hiddenRow bg-success'>
+        <tr id='ft10.6' class='none bg-danger'>
             <td>
                 <div class='testcase'>test_sync_shelf</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft10.6')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id='div_ft10.6' class="popup_window test_output" style="display:none;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
+                                onclick="document.getElementById('div_ft10.6').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File "/home/matthias/Entwicklung/calibre-web-test/test/test_kobo_sync.py", line 323, in test_sync_shelf
+    self.assertEqual(1, len(data[0]['ChangedTag']['Tag']['Items']))
+AssertionError: 1 != 0</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     

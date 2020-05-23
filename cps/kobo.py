@@ -613,7 +613,7 @@ def create_kobo_tag(shelf):
         "Type": "UserTag"
     }
     for book_shelf in shelf.books:
-        book = calibre_db.get_book_by_uuid(book_shelf.book_id)
+        book = calibre_db.get_book(book_shelf.book_id)
         if not book:
             log.info(u"Book (id: %s) in BookShelf (id: %s) not found in book database",  book_shelf.book_id, shelf.id)
             continue
