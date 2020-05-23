@@ -546,14 +546,14 @@ class CalibreDB(threading.Thread):
 
     def get_typeahead(self, database, query, replace=('', ''), tag_filter=true()):
         query = query or ''
-        self.session.connection().connection.connection.create_function("lower", 1, self.lcase)
+        self.session.connection().connection.connection.create_function("lower", 1, lcase)
         entries = self.session.query(database).filter(tag_filter). \
             filter(func.lower(database.name).ilike("%" + query + "%")).all()
         json_dumps = json.dumps([dict(name=r.name.replace(*replace)) for r in entries])
         return json_dumps
 
     def check_exists_book(self, authr, title):
-        self.session.connection().connection.connection.create_function("lower", 1, self.lcase)
+        self.session.connection().connection.connection.create_function("lower", 1, lcase)
         q = list()
         authorterms = re.split(r'\s*&\s*', authr)
         for authorterm in authorterms:
@@ -565,7 +565,7 @@ class CalibreDB(threading.Thread):
     # read search results from calibre-database and return it (function is used for feed and simple search
     def get_search_results(self, term):
         term.strip().lower()
-        self.session.connection().connection.connection.create_function("lower", 1, self.lcase)
+        self.session.connection().connection.connection.create_function("lower", 1, lcase)
         q = list()
         authorterms = re.split("[, ]+", term)
         for authorterm in authorterms:
@@ -642,8 +642,10 @@ class CalibreDB(threading.Thread):
         self.engine.dispose()
         self.setup_db(config, app_db_path)
 
-    def lcase(self, s):
-        try:
-            return unidecode.unidecode(s.lower())
-        except Exception as e:
-            self.log.exception(e)
+def lcase(s):
+    try:
+        return unidecode.unidecode(s.lower())
+    except Exception as e:
+        log = logger.create()
+        log.exception(e)
+        return s.lower()

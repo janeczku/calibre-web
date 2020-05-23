@@ -590,7 +590,7 @@ def get_languages_json():
 def get_matching_tags():
     tag_dict = {'tags': []}
     q = calibre_db.session.query(db.Books)
-    calibre_db.session.connection().connection.connection.create_function("lower", 1, calibre_db.lcase)
+    calibre_db.session.connection().connection.connection.create_function("lower", 1, db.lcase)
     author_input = request.args.get('author_name') or ''
     title_input = request.args.get('book_title') or ''
     include_tag_inputs = request.args.getlist('include_tag') or ''
@@ -1020,7 +1020,7 @@ def search():
 def advanced_search():
     # Build custom columns names
     cc = get_cc_columns()
-    calibre_db.session.connection().connection.connection.create_function("lower", 1, calibre_db.lcase)
+    calibre_db.session.connection().connection.connection.create_function("lower", 1, db.lcase)
     q = calibre_db.session.query(db.Books).filter(calibre_db.common_filters()).order_by(db.Books.sort)
 
     include_tag_inputs = request.args.getlist('include_tag')
