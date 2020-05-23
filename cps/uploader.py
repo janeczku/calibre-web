@@ -40,7 +40,7 @@ try:
     from wand.exceptions import PolicyError
     use_generic_pdf_cover = False
 except (ImportError, RuntimeError) as e:
-    log.debug('cannot import Image, generating pdf covers for pdf uploads will not work: %s', e)
+    log.debug('Cannot import Image, generating pdf covers for pdf uploads will not work: %s', e)
     use_generic_pdf_cover = True
 
 try:
@@ -48,21 +48,21 @@ try:
     from PyPDF2 import __version__ as PyPdfVersion
     use_pdf_meta = True
 except ImportError as e:
-    log.debug('cannot import PyPDF2, extracting pdf metadata will not work: %s', e)
+    log.debug('Cannot import PyPDF2, extracting pdf metadata will not work: %s', e)
     use_pdf_meta = False
 
 try:
     from . import epub
     use_epub_meta = True
 except ImportError as e:
-    log.debug('cannot import epub, extracting epub metadata will not work: %s', e)
+    log.debug('Cannot import epub, extracting epub metadata will not work: %s', e)
     use_epub_meta = False
 
 try:
     from . import fb2
     use_fb2_meta = True
 except ImportError as e:
-    log.debug('cannot import fb2, extracting fb2 metadata will not work: %s', e)
+    log.debug('Cannot import fb2, extracting fb2 metadata will not work: %s', e)
     use_fb2_meta = False
 
 try:
@@ -70,7 +70,7 @@ try:
     from PIL import __version__ as PILversion
     use_PIL = True
 except ImportError as e:
-    log.debug('cannot import Pillow, using png and webp images as cover will not work: %s', e)
+    log.debug('Cannot import Pillow, using png and webp images as cover will not work: %s', e)
     use_PIL = False
 
 
@@ -179,7 +179,7 @@ def get_versions():
     else:
         PILVersion = u'not installed'
     if comic.use_comic_meta:
-        ComicVersion = u'installed'
+        ComicVersion = comic.comic_version or u'installed'
     else:
         ComicVersion = u'not installed'
     return {'Image Magick': IVersion,
