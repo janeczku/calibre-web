@@ -291,7 +291,7 @@ class WorkerThread(threading.Thread):
         w_session = Session()
         engine.execute("attach database '{}' as calibre;".format(dbpath))'''
         file_path = self.queue[index]['file_path']
-        bookid = self.queue[index]['bookid']
+        book_id = self.queue[index]['bookid']
         format_old_ext = u'.' + self.queue[index]['settings']['old_book_format'].lower()
         format_new_ext = u'.' + self.queue[index]['settings']['new_book_format'].lower()
 
@@ -299,15 +299,15 @@ class WorkerThread(threading.Thread):
         # if it does - mark the conversion task as complete and return a success
         # this will allow send to kindle workflow to continue to work
         if os.path.isfile(file_path + format_new_ext):
-            log.info("Book id %d already converted to %s", bookid, format_new_ext)
-            cur_book = calibre_db.session.query(db.Books).filter(db.Books.id == bookid).first()
+            log.info("Book id %d already converted to %s", book_id, format_new_ext)
+            cur_book = calibre_db.get_book(book_id)
             self.queue[index]['path'] = file_path
             self.queue[index]['title'] = cur_book.title
             self._handleSuccess()
             return file_path + format_new_ext
         else:
             log.info("Book id %d - target format of %s does not exist. Moving forward with convert.",
-                     bookid,
+                     book_id,
                      format_new_ext)
 
         if config.config_kepubifypath and format_old_ext == '.epub' and format_new_ext == '.kepub':
@@ -324,13 +324,13 @@ class WorkerThread(threading.Thread):
             check, error_message = self._convert_calibre(file_path, format_old_ext, format_new_ext, index)
 
         if check == 0:
-            cur_book = calibre_db.session.query(db.Books).filter(db.Books.id == bookid).first()
+            cur_book = calibre_db.get_book(book_id)
             if os.path.isfile(file_path + format_new_ext):
                 # self.db_queue.join()
                 new_format = db.Data(name=cur_book.data[0].name,
                                          book_format=self.queue[index]['settings']['new_book_format'].upper(),
-                                         book=bookid, uncompressed_size=os.path.getsize(file_path + format_new_ext))
-                task = {'task':'add_format','id': bookid, 'format': new_format}
+                                         book=book_id, uncompressed_size=os.path.getsize(file_path + format_new_ext))
+                task = {'task':'add_format','id': book_id, 'format': new_format}
                 self.db_queue.put(task)
                 # To Do how to handle error?
 

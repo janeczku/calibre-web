@@ -22,10 +22,9 @@ import sys
 import os
 import re
 import ast
+import json
 from datetime import datetime
 import threading
-import time
-import queue
 
 from sqlalchemy import create_engine
 from sqlalchemy import Table, Column, ForeignKey, CheckConstraint
@@ -33,12 +32,24 @@ from sqlalchemy import String, Integer, Boolean, TIMESTAMP, Float
 from sqlalchemy.orm import relationship, sessionmaker, scoped_session
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.exc import OperationalError
+from flask_login import current_user
+from sqlalchemy.sql.expression import and_, true, false, text, func, or_
+from babel import Locale as LC
+from babel.core import UnknownLocaleError
+from flask_babel import gettext as _
 
-from . import logger
-# session = None
+from . import logger, ub, isoLanguages
+from .pagination import Pagination
+
+try:
+    import unidecode
+    use_unidecode = True
+except ImportError:
+    use_unidecode = False
+
+
 cc_exceptions = ['datetime', 'comments', 'composite', 'series']
 cc_classes = {}
-# engine = None
 
 Base = declarative_base()
 
@@ -327,6 +338,7 @@ class CalibreDB(threading.Thread):
         self.session = None
         self.queue = None
         self.log = None
+        self.config = None
 
     def add_queue(self,queue):
         self.queue = queue
@@ -356,6 +368,7 @@ class CalibreDB(threading.Thread):
         self.queue.put('dummy')
 
     def setup_db(self, config, app_db_path):
+        self.config = config
         self.dispose()
         # global engine
 
@@ -441,6 +454,149 @@ class CalibreDB(threading.Thread):
         self.session = Session()
         return True
 
+    def get_book(self, book_id):
+        return self.session.query(Books).filter(Books.id == book_id).first()
+
+    def get_filtered_book(self, book_id, allow_show_archived=False):
+        return self.session.query(Books).filter(Books.id == book_id).\
+            filter(self.common_filters(allow_show_archived)).first()
+
+    def get_book_by_uuid(self, book_uuid):
+        return self.session.query(Books).filter(Books.uuid == book_uuid).first()
+
+    def get_book_format(self, book_id, format):
+        return self.session.query(Data).filter(Data.book == book_id).filter(Data.format == format).first()
+
+    # Language and content filters for displaying in the UI
+    def common_filters(self, allow_show_archived=False):
+        if not allow_show_archived:
+            archived_books = (
+                ub.session.query(ub.ArchivedBook)
+                    .filter(ub.ArchivedBook.user_id == int(current_user.id))
+                    .filter(ub.ArchivedBook.is_archived == True)
+                    .all()
+            )
+            archived_book_ids = [archived_book.book_id for archived_book in archived_books]
+            archived_filter = Books.id.notin_(archived_book_ids)
+        else:
+            archived_filter = true()
+
+        if current_user.filter_language() != "all":
+            lang_filter = Books.languages.any(Languages.lang_code == current_user.filter_language())
+        else:
+            lang_filter = true()
+        negtags_list = current_user.list_denied_tags()
+        postags_list = current_user.list_allowed_tags()
+        neg_content_tags_filter = false() if negtags_list == [''] else Books.tags.any(Tags.name.in_(negtags_list))
+        pos_content_tags_filter = true() if postags_list == [''] else Books.tags.any(Tags.name.in_(postags_list))
+        if self.config.config_restricted_column:
+            pos_cc_list = current_user.allowed_column_value.split(',')
+            pos_content_cc_filter = true() if pos_cc_list == [''] else \
+                getattr(Books, 'custom_column_' + str(self.config.config_restricted_column)). \
+                    any(cc_classes[self.config.config_restricted_column].value.in_(pos_cc_list))
+            neg_cc_list = current_user.denied_column_value.split(',')
+            neg_content_cc_filter = false() if neg_cc_list == [''] else \
+                getattr(Books, 'custom_column_' + str(self.config.config_restricted_column)). \
+                    any(cc_classes[self.config.config_restricted_column].value.in_(neg_cc_list))
+        else:
+            pos_content_cc_filter = true()
+            neg_content_cc_filter = false()
+        return and_(lang_filter, pos_content_tags_filter, ~neg_content_tags_filter,
+                    pos_content_cc_filter, ~neg_content_cc_filter, archived_filter)
+
+    # Fill indexpage with all requested data from database
+    def fill_indexpage(self, page, database, db_filter, order, *join):
+        return self.fill_indexpage_with_archived_books(page, database, db_filter, order, False, *join)
+
+    def fill_indexpage_with_archived_books(self, page, database, db_filter, order, allow_show_archived, *join):
+        if current_user.show_detail_random():
+            randm = self.session.query(Books) \
+                .filter(self.common_filters(allow_show_archived)) \
+                .order_by(func.random()) \
+                .limit(self.config.config_random_books)
+        else:
+            randm = false()
+        off = int(int(self.config.config_books_per_page) * (page - 1))
+        query = self.session.query(database) \
+            .join(*join, isouter=True) \
+            .filter(db_filter) \
+            .filter(self.common_filters(allow_show_archived))
+        pagination = Pagination(page, self.config.config_books_per_page,
+                                len(query.all()))
+        entries = query.order_by(*order).offset(off).limit(self.config.config_books_per_page).all()
+        for book in entries:
+            book = self.order_authors(book)
+        return entries, randm, pagination
+
+    # Orders all Authors in the list according to authors sort
+    def order_authors(self, entry):
+        sort_authors = entry.author_sort.split('&')
+        authors_ordered = list()
+        error = False
+        for auth in sort_authors:
+            # ToDo: How to handle not found authorname
+            result = self.session.query(Authors).filter(Authors.sort == auth.lstrip().strip()).first()
+            if not result:
+                error = True
+                break
+            authors_ordered.append(result)
+        if not error:
+            entry.authors = authors_ordered
+        return entry
+
+    def get_typeahead(self, database, query, replace=('', ''), tag_filter=true()):
+        query = query or ''
+        self.session.connection().connection.connection.create_function("lower", 1, self.lcase)
+        entries = self.session.query(database).filter(tag_filter). \
+            filter(func.lower(database.name).ilike("%" + query + "%")).all()
+        json_dumps = json.dumps([dict(name=r.name.replace(*replace)) for r in entries])
+        return json_dumps
+
+    def check_exists_book(self, authr, title):
+        self.session.connection().connection.connection.create_function("lower", 1, self.lcase)
+        q = list()
+        authorterms = re.split(r'\s*&\s*', authr)
+        for authorterm in authorterms:
+            q.append(Books.authors.any(func.lower(Authors.name).ilike("%" + authorterm + "%")))
+
+        return self.session.query(Books)\
+            .filter(and_(Books.authors.any(and_(*q)), func.lower(Books.title).ilike("%" + title + "%"))).first()
+
+    # read search results from calibre-database and return it (function is used for feed and simple search
+    def get_search_results(self, term):
+        term.strip().lower()
+        self.session.connection().connection.connection.create_function("lower", 1, self.lcase)
+        q = list()
+        authorterms = re.split("[, ]+", term)
+        for authorterm in authorterms:
+            q.append(Books.authors.any(func.lower(Authors.name).ilike("%" + authorterm + "%")))
+
+        return self.session.query(Books).filter(self.common_filters()).filter(
+            or_(Books.tags.any(func.lower(Tags.name).ilike("%" + term + "%")),
+                Books.series.any(func.lower(Series.name).ilike("%" + term + "%")),
+                Books.authors.any(and_(*q)),
+                Books.publishers.any(func.lower(Publishers.name).ilike("%" + term + "%")),
+                func.lower(Books.title).ilike("%" + term + "%")
+                )).order_by(Books.sort).all()
+
+    # Creates for all stored languages a translated speaking name in the array for the UI
+    def speaking_language(self, languages=None):
+        from . import get_locale
+
+        if not languages:
+            languages = self.session.query(Languages) \
+                .join(books_languages_link) \
+                .join(Books) \
+                .filter(self.common_filters()) \
+                .group_by(text('books_languages_link.lang_code')).all()
+        for lang in languages:
+            try:
+                cur_l = LC.parse(lang.lang_code)
+                lang.name = cur_l.get_language_name(get_locale())
+            except UnknownLocaleError:
+                lang.name = _(isoLanguages.get(part3=lang.lang_code).name)
+        return languages
+
     def update_title_sort(self, config, conn=None):
         # user defined sort function for calibre databases (Series, etc.)
         def _title_sort(title):
@@ -481,8 +637,13 @@ class CalibreDB(threading.Thread):
                 if table is not None:
                     Base.metadata.remove(table)
 
-
     def reconnect_db(self, config, app_db_path):
         self.session.close()
         self.engine.dispose()
         self.setup_db(config, app_db_path)
+
+    def lcase(self, s):
+        try:
+            return unidecode.unidecode(s.lower())
+        except Exception as e:
+            self.log.exception(e)

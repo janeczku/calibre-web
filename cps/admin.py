@@ -39,7 +39,7 @@ from sqlalchemy.sql.expression import func
 
 from . import constants, logger, helper, services
 from . import db, calibre_db, ub, web_server, get_locale, config, updater_thread, babel, gdriveutils
-from .helper import speaking_language, check_valid_domain, send_test_mail, reset_password, generate_password_hash
+from .helper import check_valid_domain, send_test_mail, reset_password, generate_password_hash
 from .gdriveutils import is_gdrive_ready, gdrive_support
 from .web import admin_required, render_title_template, before_request, unconfigured, login_required_if_no_ano
 
@@ -149,9 +149,9 @@ def configuration():
 @admin_required
 def view_configuration():
     readColumn = calibre_db.session.query(db.Custom_Columns)\
-            .filter(and_(db.Custom_Columns.datatype == 'bool',db.Custom_Columns.mark_for_delete == 0)).all()
+            .filter(and_(db.Custom_Columns.datatype == 'bool', db.Custom_Columns.mark_for_delete == 0)).all()
     restrictColumns= calibre_db.session.query(db.Custom_Columns)\
-            .filter(and_(db.Custom_Columns.datatype == 'text',db.Custom_Columns.mark_for_delete == 0)).all()
+            .filter(and_(db.Custom_Columns.datatype == 'text', db.Custom_Columns.mark_for_delete == 0)).all()
     return render_title_template("config_view_edit.html", conf=config, readColumns=readColumn,
                                  restrictColumns=restrictColumns,
                                  title=_(u"UI Configuration"), page="uiconfig")
@@ -878,7 +878,7 @@ def _handle_edit_user(to_save, content,languages, translations, kobo_support, do
 @admin_required
 def new_user():
     content = ub.User()
-    languages = speaking_language()
+    languages = calibre_db.speaking_language()
     translations = [LC('en')] + babel.list_translations()
     kobo_support = feature_support['kobo'] and config.config_kobo_sync
     if request.method == "POST":
@@ -942,11 +942,11 @@ def edit_user(user_id):
         flash(_(u"User not found"), category="error")
         return redirect(url_for('admin.admin'))
     downloads = list()
-    languages = speaking_language()
+    languages = calibre_db.speaking_language()
     translations = babel.list_translations() + [LC('en')]
     kobo_support = feature_support['kobo'] and config.config_kobo_sync
     for book in content.downloads:
-        downloadbook = calibre_db.session.query(db.Books).filter(db.Books.id == book.book_id).first()
+        downloadbook = calibre_db.get_book(book.book_id)
         if downloadbook:
             downloads.append(downloadbook)
         else:

@@ -35,7 +35,6 @@ from sqlalchemy.exc import OperationalError
 from . import constants, logger, isoLanguages, gdriveutils, uploader, helper
 from . import config, get_locale, ub, worker, db
 from . import calibre_db
-from .helper import order_authors, common_filters
 from .web import login_required_if_no_ano, render_title_template, edit_required, upload_required
 
 
@@ -176,7 +175,7 @@ def modify_identifiers(input_identifiers, db_identifiers, db_session):
 @login_required
 def delete_book(book_id, book_format):
     if current_user.role_delete_books():
-        book = calibre_db.session.query(db.Books).filter(db.Books.id == book_id).first()
+        book = calibre_db.get_book(book_id)
         if book:
             try:
                 result, error = helper.delete_book(book, config.config_calibre_dir, book_format=book_format.upper())
@@ -250,9 +249,7 @@ def delete_book(book_id, book_format):
 def render_edit_book(book_id):
     calibre_db.update_title_sort(config)
     cc = calibre_db.session.query(db.Custom_Columns).filter(db.Custom_Columns.datatype.notin_(db.cc_exceptions)).all()
-    book = calibre_db.session.query(db.Books)\
-        .filter(db.Books.id == book_id).filter(common_filters()).first()
-
+    book = calibre_db.get_filtered_book(book_id)
     if not book:
         flash(_(u"Error opening eBook. File does not exist or file is not accessible"), category="error")
         return redirect(url_for("web.index"))
@@ -260,7 +257,7 @@ def render_edit_book(book_id):
     for lang in book.languages:
         lang.language_name = isoLanguages.get_language_name(get_locale(), lang.lang_code)
 
-    book = order_authors(book)
+    book = calibre_db.order_authors(book)
 
     author_names = []
     for authr in book.authors:
@@ -447,8 +444,7 @@ def upload_single_file(request, book, book_id):
                 return redirect(url_for('web.show_book', book_id=book.id))
 
             file_size = os.path.getsize(saved_filename)
-            is_format = calibre_db.session.query(db.Data).filter(db.Data.book == book_id).\
-                filter(db.Data.format == file_ext.upper()).first()
+            is_format = calibre_db.get_book_format(book_id, file_ext.upper())
 
             # Format entry already exists, no need to update the database
             if is_format:
@@ -500,8 +496,7 @@ def edit_book(book_id):
 
     # create the function for sorting...
     calibre_db.update_title_sort(config)
-    book = calibre_db.session.query(db.Books)\
-        .filter(db.Books.id == book_id).filter(common_filters()).first()
+    book = calibre_db.get_filtered_book(book_id)
 
     # Book not found
     if not book:
@@ -702,7 +697,7 @@ def upload():
                 series_index = meta.series_id
 
                 if title != _(u'Unknown') and authr != _(u'Unknown'):
-                    entry = helper.check_exists_book(authr, title)
+                    entry = calibre_db.check_exists_book(authr, title)
                     if entry:
                         log.info("Uploaded book probably exists in library")
                         flash(_(u"Uploaded book probably exists in the library, consider to change before upload new: ")
@@ -807,7 +802,7 @@ def upload():
                 calibre_db.update_title_sort(config)
                 # Reread book. It's important not to filter the result, as it could have language which hide it from
                 # current users view (tags are not stored/extracted from metadata and could also be limited)
-                book = calibre_db.session.query(db.Books).filter(db.Books.id == book_id).first()
+                book = calibre_db.get_book(book_id)
                 # upload book to gdrive if nesseccary and add "(bookid)" to folder name
                 if config.config_use_google_drive:
                     gdriveutils.updateGdriveCalibreFromLocal()
