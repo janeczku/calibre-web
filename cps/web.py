@@ -1135,13 +1135,16 @@ def advanced_search():
         # search custom culumns
         for c in cc:
             custom_query = request.args.get('custom_column_' + str(c.id))
-            if custom_query:
+            if custom_query != '' and custom_query is not None:
                 if c.datatype == 'bool':
                     q = q.filter(getattr(db.Books, 'custom_column_' + str(c.id)).any(
                         db.cc_classes[c.id].value == (custom_query == "True")))
-                elif c.datatype == 'int':
+                elif c.datatype == 'int' or c.datatype == 'float':
                     q = q.filter(getattr(db.Books, 'custom_column_' + str(c.id)).any(
                         db.cc_classes[c.id].value == custom_query))
+                elif c.datatype == 'rating':
+                    q = q.filter(getattr(db.Books, 'custom_column_' + str(c.id)).any(
+                        db.cc_classes[c.id].value == int(custom_query) * 2))
                 else:
                     q = q.filter(getattr(db.Books, 'custom_column_' + str(c.id)).any(
                         func.lower(db.cc_classes[c.id].value).ilike("%" + custom_query + "%")))
