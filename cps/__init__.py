@@ -37,8 +37,6 @@ from . import config_sql, logger, cache_buster, cli, ub, db
 from .reverseproxy import ReverseProxied
 from .server import WebServer
 
-# import queue
-# queue = queue.Queue()
 
 mimetypes.init()
 mimetypes.add_type('application/xhtml+xml', '.xhtml')

@@ -256,7 +256,7 @@ def HandleMetadataRequest(book_uuid):
     if not current_app.wsgi_app.is_proxied:
         log.debug('Kobo: Received unproxied request, changed request port to server port')
     log.info("Kobo library metadata request received for book %s" % book_uuid)
-    book = calibre_db.session.query(db.Books).filter(db.Books.uuid == book_uuid).first()
+    book = calibre_db.get_book_by_uuid(book_uuid)
     if not book or not book.data:
         log.info(u"Book %s not found in database", book_uuid)
         return redirect_or_proxy_request()
@@ -474,7 +474,7 @@ def add_items_to_shelf(items, shelf):
                 items_unknown_to_calibre.append(item)
                 continue
 
-            book = calibre_db.session.query(db.Books).filter(db.Books.uuid == item["RevisionId"]).one_or_none()
+            book = calibre_db.get_book_by_uuid(item["RevisionId"])
             if not book:
                 items_unknown_to_calibre.append(item)
                 continue
@@ -545,7 +545,7 @@ def HandleTagRemoveItem(tag_id):
                 items_unknown_to_calibre.append(item)
                 continue
 
-            book = calibre_db.session.query(db.Books).filter(db.Books.uuid == item["RevisionId"]).one_or_none()
+            book = calibre_db.get_book_by_uuid(item["RevisionId"])
             if not book:
                 items_unknown_to_calibre.append(item)
                 continue
@@ -613,7 +613,7 @@ def create_kobo_tag(shelf):
         "Type": "UserTag"
     }
     for book_shelf in shelf.books:
-        book = calibre_db.session.query(db.Books).filter(db.Books.id == book_shelf.book_id).one_or_none()
+        book = calibre_db.get_book_by_uuid(book_shelf.book_id)
         if not book:
             log.info(u"Book (id: %s) in BookShelf (id: %s) not found in book database",  book_shelf.book_id, shelf.id)
             continue
@@ -629,7 +629,7 @@ def create_kobo_tag(shelf):
 @kobo.route("/v1/library/<book_uuid>/state", methods=["GET", "PUT"])
 @login_required
 def HandleStateRequest(book_uuid):
-    book = calibre_db.session.query(db.Books).filter(db.Books.uuid == book_uuid).first()
+    book = calibre_db.get_book_by_uuid(book_uuid)
     if not book or not book.data:
         log.info(u"Book %s not found in database", book_uuid)
         return redirect_or_proxy_request()
@@ -804,7 +804,7 @@ def TopLevelEndpoint():
 @login_required
 def HandleBookDeletionRequest(book_uuid):
     log.info("Kobo book deletion request received for book %s" % book_uuid)
-    book = calibre_db.session.query(db.Books).filter(db.Books.uuid == book_uuid).first()
+    book = calibre_db.get_book_by_uuid(book_uuid)
     if not book:
         log.info(u"Book %s not found in database", book_uuid)
         return redirect_or_proxy_request()
