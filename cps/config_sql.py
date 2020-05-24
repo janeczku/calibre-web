@@ -293,7 +293,12 @@ class _ConfigSQL(object):
                 have_metadata_db = os.path.isfile(db_file)
         self.db_configured = have_metadata_db
         constants.EXTENSIONS_UPLOAD = [x.lstrip().rstrip() for x in self.config_upload_formats.split(',')]
-        logger.setup(self.config_logfile, self.config_log_level)
+        logfile = logger.setup(self.config_logfile, self.config_log_level)
+        if logfile != self.config_logfile:
+            log.warning("Log path %s not valid, falling back to default", self.config_logfile)
+            self.config_logfile = logfile
+            self._session.merge(s)
+            self._session.commit()
 
     def save(self):
         '''Apply all configuration values to the underlying storage.'''

@@ -48,7 +48,7 @@ except ImportError:
 from werkzeug.datastructures import Headers
 from werkzeug.security import generate_password_hash, check_password_hash
 
-from . import constants, logger, isoLanguages, services, worker
+from . import constants, logger, isoLanguages, services, worker, cli
 from . import searched_ids, lm, babel, db, ub, config, get_locale, app
 from . import calibre_db
 from .gdriveutils import getFileFromEbooksFolder, do_gdrive_download
@@ -1157,13 +1157,24 @@ def advanced_search():
         return render_title_template('search.html', adv_searchterm=searchterm,
                                      entries=q, title=_(u"search"), page="search")
     # prepare data for search-form
-    tags = calibre_db.session.query(db.Tags).join(db.books_tags_link).join(db.Books).filter(calibre_db.common_filters()) \
-        .group_by(text('books_tags_link.tag')).order_by(db.Tags.name).all()
-    series = calibre_db.session.query(db.Series).join(db.books_series_link).join(db.Books).filter(calibre_db.common_filters()) \
-        .group_by(text('books_series_link.series')).order_by(db.Series.name).filter(calibre_db.common_filters()).all()
-    extensions = calibre_db.session.query(db.Data).join(db.Books).filter(calibre_db.common_filters()) \
-        .group_by(db.Data.format).order_by(db.Data.format).all()
-
+    tags = calibre_db.session.query(db.Tags)\
+        .join(db.books_tags_link)\
+        .join(db.Books)\
+        .filter(calibre_db.common_filters()) \
+        .group_by(text('books_tags_link.tag'))\
+        .order_by(db.Tags.name).all()
+    series = calibre_db.session.query(db.Series)\
+        .join(db.books_series_link)\
+        .join(db.Books)\
+        .filter(calibre_db.common_filters()) \
+        .group_by(text('books_series_link.series'))\
+        .order_by(db.Series.name)\
+        .filter(calibre_db.common_filters()).all()
+    extensions = calibre_db.session.query(db.Data)\
+        .join(db.Books)\
+        .filter(calibre_db.common_filters()) \
+        .group_by(db.Data.format)\
+        .order_by(db.Data.format).all()
     if current_user.filter_language() == u"all":
         languages = calibre_db.speaking_language()
     else:
