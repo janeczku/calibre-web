@@ -314,15 +314,59 @@ def edit_book_ratings(to_save, book):
             changed = True
     return changed
 
+def edit_book_tags(tags, book):
+    input_tags = tags.split(',')
+    input_tags = list(map(lambda it: it.strip(), input_tags))
+    # if input_tags[0] !="": ??
+    return modify_database_object(input_tags, book.tags, db.Tags, calibre_db.session, 'tags')
 
-def edit_book_languages(to_save, book):
-    input_languages = to_save["languages"].split(',')
+
+def edit_book_series(series, book):
+    input_series = [series.strip()]
+    input_series = [x for x in input_series if x != '']
+    return modify_database_object(input_series, book.series, db.Series, calibre_db.session, 'series')
+
+
+def edit_book_series_index(series_index, book):
+    # Add default series_index to book
+    modif_date = False
+    series_index = series_index or '1'
+    #if series_index == '':
+    #    series_index = '1'
+    if book.series_index != series_index:
+        book.series_index = series_index
+        modif_date = True
+    return modif_date
+
+# Handle book comments/description
+def edit_book_comments(comments, book):
+    modif_date = False
+    if len(book.comments):
+        if book.comments[0].text != comments:
+            book.comments[0].text = comments
+            modif_date = True
+    else:
+        if comments:
+            book.comments.append(db.Comments(text=comments, book=book.id))
+            modif_date = True
+    return modif_date
+
+
+def edit_book_languages(languages, book, upload=False):
+    input_languages = languages.split(',')
     unknown_languages = []
     input_l = isoLanguages.get_language_codes(get_locale(), input_languages, unknown_languages)
     for l in unknown_languages:
         log.error('%s is not a valid language', l)
-        flash(_(u"%(langname)s is not a valid language", langname=l), category="error")
-    return modify_database_object(list(input_l), book.languages, db.Languages, calibre_db.session, 'languages')
+        flash(_(u"%(langname)s is not a valid language", langname=l), category="warning")
+    # ToDo: Not working correct
+    if upload and len(input_l) == 1:
+        # If the language of the file is excluded from the users view, it's not imported, to allow the user to view
+        # the book it's language is set to the filter language
+        if input_l[0] != current_user.filter_language() and current_user.filter_language() != "all":
+            input_l[0] = calibre_db.session.query(db.Languages). \
+                filter(db.Languages.lang_code == current_user.filter_language()).first()
+    return modify_database_object(input_l, book.languages, db.Languages, calibre_db.session, 'languages')
 
 
 def edit_book_publisher(to_save, book):
@@ -559,33 +603,21 @@ def edit_book(book_id):
                 else:
                     flash(error, category="error")
 
-            if book.series_index != to_save["series_index"]:
-                book.series_index = to_save["series_index"]
-                modif_date = True
+            # Add default series_index to book
+            modif_date |= edit_book_series_index(to_save["series_index"], book)
 
             # Handle book comments/description
-            if len(book.comments):
-                if book.comments[0].text != to_save["description"]:
-                    book.comments[0].text = to_save["description"]
-                    modif_date = True
-            else:
-                if to_save["description"]:
-                    book.comments.append(db.Comments(text=to_save["description"], book=book.id))
-                    modif_date = True
+            modif_date |= edit_book_comments(to_save["description"], book)
 
                     # Handle identifiers
             input_identifiers = identifier_list(to_save, book)
             modif_date |= modify_identifiers(input_identifiers, book.identifiers, calibre_db.session)
 
             # Handle book tags
-            input_tags = to_save["tags"].split(',')
-            input_tags = list(map(lambda it: it.strip(), input_tags))
-            modif_date |= modify_database_object(input_tags, book.tags, db.Tags, calibre_db.session, 'tags')
+            modif_date |= edit_book_tags(to_save['tags'], book)
 
             # Handle book series
-            input_series = [to_save["series"].strip()]
-            input_series = [x for x in input_series if x != '']
-            modif_date |= modify_database_object(input_series, book.series, db.Series, calibre_db.session, 'series')
+            modif_date |= edit_book_series(to_save["series"], book)
 
             if to_save["pubdate"]:
                 try:
@@ -599,7 +631,7 @@ def edit_book(book_id):
             modif_date |= edit_book_publisher(to_save, book)
 
             # handle book languages
-            modif_date |= edit_book_languages(to_save, book)
+            modif_date |= edit_book_languages(to_save['languages'], book)
 
             # handle book ratings
             modif_date |= edit_book_ratings(to_save, book)
@@ -664,6 +696,7 @@ def upload():
     if request.method == 'POST' and 'btn-upload' in request.files:
         for requested_file in request.files.getlist("btn-upload"):
             try:
+                modif_date = False
                 # create the function for sorting...
                 calibre_db.update_title_sort(config)
                 calibre_db.session.connection().connection.connection.create_function('uuid4', 0, lambda: str(uuid4()))
@@ -690,9 +723,6 @@ def upload():
                     return Response(json.dumps({"location": url_for("web.index")}), mimetype='application/json')
                 title = meta.title
                 authr = meta.author
-                tags = meta.tags
-                series = meta.series
-                series_index = meta.series_id
 
                 if title != _(u'Unknown') and authr != _(u'Unknown'):
                     entry = calibre_db.check_exists_book(authr, title)
@@ -702,16 +732,32 @@ def upload():
                             + Markup(render_title_template('book_exists_flash.html', entry=entry)), category="warning")
 
                 # handle authors
-                is_author = calibre_db.session.query(db.Authors).filter(db.Authors.name == authr).first()
-                if is_author:
-                    db_author = is_author
-                    authr= is_author.name
-                else:
-                    db_author = db.Authors(authr, helper.get_sorted_author(authr), "")
-                    calibre_db.session.add(db_author)
+                input_authors = authr.split('&')
+                # handle_authors(input_authors)
+                input_authors = list(map(lambda it: it.strip().replace(',', '|'), input_authors))
+                # we have all author names now
+                if input_authors == ['']:
+                    input_authors = [_(u'Unknown')]  # prevent empty Author
+
+                sort_authors_list=list()
+                db_author = None
+                for inp in input_authors:
+                    stored_author = calibre_db.session.query(db.Authors).filter(db.Authors.name == inp).first()
+                    if not stored_author:
+                        if not db_author:
+                            db_author = db.Authors(inp, helper.get_sorted_author(inp), "")
+                            calibre_db.session.add(db_author)
+                            calibre_db.session.commit()
+                        sort_author = helper.get_sorted_author(inp)
+                    else:
+                        if not db_author:
+                            db_author = stored_author
+                        sort_author = stored_author.sort
+                    sort_authors_list.append(sort_author) # helper.get_sorted_author(sort_author))
+                sort_authors = ' & '.join(sort_authors_list)
 
                 title_dir = helper.get_valid_filename(title)
-                author_dir = helper.get_valid_filename(authr)
+                author_dir = helper.get_valid_filename(db_author.name)
                 filepath = os.path.join(config.config_calibre_dir, author_dir, title_dir)
                 saved_filename = os.path.join(filepath, title_dir + meta.extension.lower())
 
@@ -738,78 +784,45 @@ def upload():
                 else:
                     has_cover = 1
 
-                # handle series
-                db_series = None
-                is_series = calibre_db.session.query(db.Series).filter(db.Series.name == series).first()
-                if is_series:
-                    db_series = is_series
-                elif series != '':
-                    db_series = db.Series(series, "")
-                    calibre_db.session.add(db_series)
-
-                # add language actually one value in list
-                input_language = meta.languages
-                db_language = None
-                if input_language != "":
-                    input_language = isoLanguages.get(name=input_language).part3
-                    hasLanguage = calibre_db.session.query(db.Languages).filter(db.Languages.lang_code == input_language).first()
-                    if hasLanguage:
-                        db_language = hasLanguage
-                    else:
-                        db_language = db.Languages(input_language)
-                        calibre_db.session.add(db_language)
-
-                # If the language of the file is excluded from the users view, it's not imported, to allow the user to view
-                # the book it's language is set to the filter language
-                if db_language != current_user.filter_language() and current_user.filter_language() != "all":
-                    db_language = calibre_db.session.query(db.Languages).\
-                        filter(db.Languages.lang_code == current_user.filter_language()).first()
-
                 # combine path and normalize path from windows systems
                 path = os.path.join(author_dir, title_dir).replace('\\', '/')
                 # Calibre adds books with utc as timezone
-                db_book = db.Books(title, "", db_author.sort, datetime.utcnow(), datetime(101, 1, 1),
-                                   series_index, datetime.utcnow(), path, has_cover, db_author, [], db_language)
-                db_book.authors.append(db_author)
-                if db_series:
-                    db_book.series.append(db_series)
-                if db_language is not None:
-                    db_book.languages.append(db_language)
-                file_size = os.path.getsize(saved_filename)
-                db_data = db.Data(db_book, meta.extension.upper()[1:], file_size, title_dir)
+                db_book = db.Books(title, "", sort_authors, datetime.utcnow(), datetime(101, 1, 1),
+                                   '1', datetime.utcnow(), path, has_cover, db_author, [], "")
+
+                modif_date |= modify_database_object(input_authors, db_book.authors, db.Authors, calibre_db.session,
+                                                     'author')
+
+                # Add series_index to book
+                modif_date |= edit_book_series_index(meta.series_id, db_book)
+
+                # add languages
+                modif_date |= edit_book_languages(meta.languages, db_book, upload=True)
 
                 # handle tags
-                input_tags = tags.split(',')
-                input_tags = list(map(lambda it: it.strip(), input_tags))
-                if input_tags[0] !="":
-                    modify_database_object(input_tags, db_book.tags, db.Tags, calibre_db.session, 'tags')
+                modif_date |= edit_book_tags(meta.tags, db_book)
+
+                # handle series
+                modif_date |= edit_book_series(meta.series, db_book)
 
                 # flush content, get db_book.id available
+                file_size = os.path.getsize(saved_filename)
+                db_data = db.Data(db_book, meta.extension.upper()[1:], file_size, title_dir)
                 db_book.data.append(db_data)
+
+                # Comments needs book id therfore only possiblw after flush
+                modif_date |= edit_book_comments(Markup(meta.description).unescape(), db_book)
+
                 calibre_db.session.add(db_book)
                 calibre_db.session.flush()
-
-                # add comment
                 book_id = db_book.id
-                upload_comment = Markup(meta.description).unescape()
-                if upload_comment != "":
-                    calibre_db.session.add(db.Comments(upload_comment, book_id))
 
-                # save data to database, reread data
-                calibre_db.session.commit()
-                calibre_db.update_title_sort(config)
-                # Reread book. It's important not to filter the result, as it could have language which hide it from
-                # current users view (tags are not stored/extracted from metadata and could also be limited)
-                book = calibre_db.get_book(book_id)
-                # upload book to gdrive if nesseccary and add "(bookid)" to folder name
-                if config.config_use_google_drive:
-                    gdriveutils.updateGdriveCalibreFromLocal()
-                error = helper.update_dir_stucture(book.id, config.config_calibre_dir)
+                error = helper.update_dir_stucture(book_id, config.config_calibre_dir, input_authors[0])
 
                 # move cover to final directory, including book id
                 if has_cover:
                     try:
-                        new_coverpath = os.path.join(filepath+ ' ({})'.format(book_id), "cover.jpg")
+                        new_coverpath = os.path.join(config.config_calibre_dir, db_book.path, "cover.jpg")
                         copyfile(meta.cover, new_coverpath)
                         os.unlink(meta.cover)
                     except OSError as e:
@@ -817,7 +830,13 @@ def upload():
                         flash(_(u"Failed to Move Cover File %(file)s: %(error)s", file=new_coverpath,
                                 error=e),
                               category="error")
+
+                # save data to database, reread data
                 calibre_db.session.commit()
+                calibre_db.setup_db(config, ub.app_DB_path)
+                # Reread book. It's important not to filter the result, as it could have language which hide it from
+                # current users view (tags are not stored/extracted from metadata and could also be limited)
+                book = calibre_db.get_book(book_id)
                 if config.config_use_google_drive:
                     gdriveutils.updateGdriveCalibreFromLocal()
                 if error:
@@ -826,18 +845,12 @@ def upload():
                 worker.add_upload(current_user.nickname,
                     "<a href=\"" + url_for('web.show_book', book_id=book.id) + "\">" + uploadText + "</a>")
 
-                # create data for displaying display Full language name instead of iso639.part3language
-                if db_language is not None:
-                    book.languages[0].language_name = _(meta.languages)
-                author_names = []
-                for author in db_book.authors:
-                    author_names.append(author.name)
                 if len(request.files.getlist("btn-upload")) < 2:
                     if current_user.role_edit() or current_user.role_admin():
-                        resp = {"location": url_for('editbook.edit_book', book_id=db_book.id)}
+                        resp = {"location": url_for('editbook.edit_book', book_id=book.id)}
                         return Response(json.dumps(resp), mimetype='application/json')
                     else:
-                        resp = {"location": url_for('web.show_book', book_id=db_book.id)}
+                        resp = {"location": url_for('web.show_book', book_id=book.id)}
                         return Response(json.dumps(resp), mimetype='application/json')
             except OperationalError as e:
                 calibre_db.session.rollback()

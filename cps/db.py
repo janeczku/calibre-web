@@ -437,20 +437,22 @@ class CalibreDB(threading.Thread):
 
             for cc_id in cc_ids:
                 if (cc_id[1] == 'bool') or (cc_id[1] == 'int') or (cc_id[1] == 'float'):
-                    setattr(Books, 'custom_column_' + str(cc_id[0]), relationship(cc_classes[cc_id[0]],
-                                                                               primaryjoin=(
-                                                                               Books.id == cc_classes[cc_id[0]].book),
-                                                                               backref='books'))
+                    setattr(Books,
+                            'custom_column_' + str(cc_id[0]),
+                            relationship(cc_classes[cc_id[0]],
+                                         primaryjoin=(
+                                         Books.id == cc_classes[cc_id[0]].book),
+                                         backref='books'))
                 else:
-                    setattr(Books, 'custom_column_' + str(cc_id[0]), relationship(cc_classes[cc_id[0]],
-                                                                               secondary=books_custom_column_links[cc_id[0]],
-                                                                               backref='books'))
+                    setattr(Books,
+                            'custom_column_' + str(cc_id[0]),
+                            relationship(cc_classes[cc_id[0]],
+                                         secondary=books_custom_column_links[cc_id[0]],
+                                         backref='books'))
 
-
-        # global session
         Session = scoped_session(sessionmaker(autocommit=False,
-                                                 autoflush=False,
-                                                 bind=self.engine))
+                                              autoflush=False,
+                                              bind=self.engine))
         self.session = Session()
         return True
 
