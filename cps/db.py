@@ -100,14 +100,14 @@ class Identifiers(Base):
             return self.type
 
     def __repr__(self):
-        if self.type == "amazon":
+        if self.type == "amazon" or self.type == "asin":
             return u"https://amzn.com/{0}".format(self.val)
         elif self.type == "isbn":
-            return u"http://www.worldcat.org/isbn/{0}".format(self.val)
+            return u"https://www.worldcat.org/isbn/{0}".format(self.val)
         elif self.type == "doi":
-            return u"http://dx.doi.org/{0}".format(self.val)
+            return u"https://dx.doi.org/{0}".format(self.val)
         elif self.type == "goodreads":
-            return u"http://www.goodreads.com/book/show/{0}".format(self.val)
+            return u"https://www.goodreads.com/book/show/{0}".format(self.val)
         elif self.type == "douban":
             return u"https://book.douban.com/subject/{0}".format(self.val)
         elif self.type == "google":
@@ -115,7 +115,7 @@ class Identifiers(Base):
         elif self.type == "kobo":
             return u"https://www.kobo.com/ebook/{0}".format(self.val)
         elif self.type == "lubimyczytac":
-            return u" http://lubimyczytac.pl/ksiazka/{0}".format(self.val)
+            return u" https://lubimyczytac.pl/ksiazka/{0}".format(self.val)
         elif self.type == "url":
             return u"{0}".format(self.val)
         else:
@@ -318,7 +318,7 @@ def update_title_sort(config, conn=None):
         match = title_pat.search(title)
         if match:
             prep = match.group(1)
-            title = title.replace(prep, '') + ', ' + prep
+            title = title[len(prep):] + ', ' + prep
         return title.strip()
 
     conn = conn or session.connection().connection.connection

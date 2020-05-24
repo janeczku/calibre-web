@@ -494,6 +494,10 @@ def migrate_Database(session):
         conn.execute("ALTER TABLE book_read_link ADD column 'last_time_started_reading' DATETIME")
         conn.execute("ALTER TABLE book_read_link ADD column 'times_started_reading' INTEGER DEFAULT 0")
         session.commit()
+    test = session.query(ReadBook).filter(ReadBook.last_modified == None).all()
+    for book in test:
+        book.last_modified = datetime.datetime.utcnow()
+    session.commit()
     try:
         session.query(exists().where(Shelf.uuid)).scalar()
     except exc.OperationalError:
@@ -552,6 +556,7 @@ def migrate_Database(session):
         conn.execute("ALTER TABLE user ADD column `allowed_tags` String DEFAULT ''")
         conn.execute("ALTER TABLE user ADD column `denied_column_value` DEFAULT ''")
         conn.execute("ALTER TABLE user ADD column `allowed_column_value` DEFAULT ''")
+        session.commit()
     if session.query(User).filter(User.role.op('&')(constants.ROLE_ANONYMOUS) == constants.ROLE_ANONYMOUS).first() \
         is None:
         create_anonymous_user(session)

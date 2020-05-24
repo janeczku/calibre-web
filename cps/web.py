@@ -40,6 +40,7 @@ from flask_login import login_user, logout_user, login_required, current_user
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.sql.expression import text, func, true, false, not_, and_, or_
 from werkzeug.exceptions import default_exceptions
+from sqlalchemy.sql.functions import coalesce
 try:
     from werkzeug.exceptions import FailedDependency
 except ImportError:
@@ -316,7 +317,7 @@ def import_ldap_users():
             match = re.search("([a-zA-Z0-9-]+)=%s", config.config_ldap_user_object, re.IGNORECASE | re.UNICODE)
             if match:
                 match_filter = match.group(1)
-                match = re.search(match_filter + "=([[\d\w-]+)", user, re.IGNORECASE | re.UNICODE)
+                match = re.search(match_filter + "=([\d\s\w-]+)", user, re.IGNORECASE | re.UNICODE)
                 if match:
                     user = match.group(1)
                 else:
@@ -801,7 +802,7 @@ def publisher_list():
     if current_user.check_visibility(constants.SIDEBAR_PUBLISHER):
         entries = db.session.query(db.Publishers, func.count('books_publishers_link.book').label('count')) \
             .join(db.books_publishers_link).join(db.Books).filter(common_filters()) \
-            .group_by(text('books_publishers_link.publisher')).order_by(db.Publishers.sort).all()
+            .group_by(text('books_publishers_link.publisher')).order_by(db.Publishers.name).all()
         charlist = db.session.query(func.upper(func.substr(db.Publishers.name, 1, 1)).label('char')) \
             .join(db.books_publishers_link).join(db.Books).filter(common_filters()) \
             .group_by(func.upper(func.substr(db.Publishers.name, 1, 1))).all()
@@ -1102,31 +1103,35 @@ def render_read_books(page, are_read, as_xml=False, order=None, *args, **kwargs)
         readBooks = ub.session.query(ub.ReadBook).filter(ub.ReadBook.user_id == int(current_user.id))\
             .filter(ub.ReadBook.read_status == ub.ReadBook.STATUS_FINISHED).all()
         readBookIds = [x.book_id for x in readBooks]
+        if are_read:
+            db_filter = db.Books.id.in_(readBookIds)
+        else:
+            db_filter = ~db.Books.id.in_(readBookIds)
+        entries, random, pagination = fill_indexpage(page, db.Books, db_filter, order)
     else:
         try:
-            readBooks = db.session.query(db.cc_classes[config.config_read_column]) \
-                .filter(db.cc_classes[config.config_read_column].value == True).all()
-            readBookIds = [x.book for x in readBooks]
+            if are_read:
+                db_filter = db.cc_classes[config.config_read_column].value == True
+            else:
+                db_filter = coalesce(db.cc_classes[config.config_read_column].value, False) != True
+            # book_count = db.session.query(func.count(db.Books.id)).filter(common_filters()).filter(db_filter).scalar()
+            entries, random, pagination = fill_indexpage(page, db.Books,
+                                                         db_filter,
+                                                         order,
+                                                         db.cc_classes[config.config_read_column])
         except KeyError:
             log.error("Custom Column No.%d is not existing in calibre database", config.config_read_column)
-            readBookIds = []
+            book_count = 0
 
-    if are_read:
-        db_filter = db.Books.id.in_(readBookIds)
-    else:
-        db_filter = ~db.Books.id.in_(readBookIds)
-
-    entries, random, pagination = fill_indexpage(page, db.Books, db_filter, order)
 
     if as_xml:
         return entries, pagination
     else:
         if are_read:
-            name = _(u'Read Books') + ' (' + str(len(readBookIds)) + ')'
+            name = _(u'Read Books') + ' (' + str(pagination.total_count) + ')'
             pagename = "read"
         else:
-            total_books = db.session.query(func.count(db.Books.id)).filter(common_filters()).scalar()
-            name = _(u'Unread Books') + ' (' + str(total_books - len(readBookIds)) + ')'
+            name = _(u'Unread Books') + ' (' + str(pagination.total_count) + ')'
             pagename = "unread"
         return render_title_template('index.html', random=random, entries=entries, pagination=pagination,
                                      title=name, page=pagename)
@@ -1467,7 +1472,7 @@ def profile():
             current_user.kindle_mail = to_save["kindle_mail"]
         if "allowed_tags" in to_save and to_save["allowed_tags"] != current_user.allowed_tags:
             current_user.allowed_tags = to_save["allowed_tags"].strip()
-        if to_save["email"] and to_save["email"] != current_user.email:
+        if "email" in to_save and to_save["email"] != current_user.email:
             if config.config_public_reg and not check_valid_domain(to_save["email"]):
                 flash(_(u"E-mail is not from valid domain"), category="error")
                 return render_title_template("user_edit.html", content=current_user, downloads=downloads,
@@ -1555,7 +1560,7 @@ def read_book(book_id, book_format):
         log.debug(u"Start txt reader for %d", book_id)
         return render_title_template('readtxt.html', txtfile=book_id, title=_(u"Read a Book"))
     else:
-        for fileExt in ["mp3", "m4b", "m4a"]:
+        for fileExt in constants.EXTENSIONS_AUDIO:
             if book_format.lower() == fileExt:
                 entries = db.session.query(db.Books).filter(db.Books.id == book_id).filter(common_filters()).first()
                 log.debug(u"Start mp3 listening for %d", book_id)

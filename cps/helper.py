@@ -450,11 +450,11 @@ def reset_password(user_id):
     existing_user = ub.session.query(ub.User).filter(ub.User.id == user_id).first()
     if not existing_user:
         return 0, None
-    password = generate_random_password()
-    existing_user.password = generate_password_hash(password)
     if not config.get_mail_server_configured():
         return 2, None
     try:
+        password = generate_random_password()
+        existing_user.password = generate_password_hash(password)
         ub.session.commit()
         send_registration_mail(existing_user.email, existing_user.nickname, password, True)
         return 1, existing_user.nickname
@@ -466,7 +466,7 @@ def reset_password(user_id):
 def generate_random_password():
     s = "abcdefghijklmnopqrstuvwxyz01234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%&*()?"
     passlen = 8
-    return "".join(random.sample(s, passlen))
+    return "".join(s[c % len(s)] for c in os.urandom(passlen))
 
 ################################## External interface
 
@@ -493,7 +493,7 @@ def get_cover_on_failure(use_generic_cover):
 
 
 def get_book_cover(book_id):
-    book = db.session.query(db.Books).filter(db.Books.id == book_id).filter(common_filters()).first()
+    book = db.session.query(db.Books).filter(db.Books.id == book_id).filter(common_filters(allow_show_archived=True)).first()
     return get_book_cover_internal(book, use_generic_cover_on_failure=True)
 
 
@@ -609,7 +609,9 @@ def do_download_file(book, book_format, data, headers):
             # ToDo: improve error handling
             log.error('File not found: %s', os.path.join(filename, data.name + "." + book_format))
         response = make_response(send_from_directory(filename, data.name + "." + book_format))
-        response.headers = headers
+        # ToDo Check headers parameter
+        for element in headers:
+            response.headers[element[0]] = element[1]
         return response
 
 ##################################
@@ -822,12 +824,12 @@ def fill_indexpage_with_archived_books(page, database, db_filter, order, allow_s
     else:
         randm = false()
     off = int(int(config.config_books_per_page) * (page - 1))
+    query = db.session.query(database).join(*join, isouter=True).\
+        filter(db_filter).\
+        filter(common_filters(allow_show_archived))
     pagination = Pagination(page, config.config_books_per_page,
-                            len(db.session.query(database).filter(db_filter)
-                                .filter(common_filters(allow_show_archived)).all()))
-    entries = db.session.query(database).join(*join, isouter=True).filter(db_filter)\
-        .filter(common_filters(allow_show_archived))\
-        .order_by(*order).offset(off).limit(config.config_books_per_page).all()
+                            len(query.all()))
+    entries = query.order_by(*order).offset(off).limit(config.config_books_per_page).all()
     for book in entries:
         book = order_authors(book)
     return entries, randm, pagination
