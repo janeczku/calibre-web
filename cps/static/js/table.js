@@ -124,7 +124,7 @@ $(function() {
                 if (field === 3) {
                     $.ajax ({
                         type: "Post",
-                        data: "id=" + row.id + "&type=" + row.type + "&Element=" + row.Element,
+                        data: "id=" + row.id + "&type=" + row.type + "&Element=" + encodeURIComponent(row.Element),
                         url: path + "/../../ajax/deleterestriction/" + type,
                         async: true,
                         timeout: 900,

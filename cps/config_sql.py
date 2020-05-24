@@ -279,6 +279,10 @@ class _ConfigSQL(object):
         '''Apply all configuration values to the underlying storage.'''
         s = self._read_from_storage()  # type: _Settings
 
+        if self.config_google_drive_watch_changes_response:
+            self.config_google_drive_watch_changes_response = json.dumps(
+                self.config_google_drive_watch_changes_response)
+
         for k, v in self.__dict__.items():
             if k[0] == '_':
                 continue

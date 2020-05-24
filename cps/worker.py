@@ -96,7 +96,7 @@ def get_attachment(bookpath, filename):
             data = file_.read()
             file_.close()
         except IOError as e:
-            log.exception(e) # traceback.print_exc()
+            log.exception(e)
             log.error(u'The requested file could not be read. Maybe wrong permissions?')
             return None
 
@@ -426,10 +426,6 @@ class WorkerThread(threading.Thread):
         if self.last >= 20:
             self._delete_completed_tasks()
         # progress=100%, runtime=0, and status finished
-        log.debug("Last " + str(self.last))
-        log.debug("Current " + str(self.current))
-        log.debug("id" + str(self.id))
-
         self.id += 1
         starttime = datetime.now()
         self.queue.append({'starttime': starttime, 'taskType': TASK_UPLOAD})
@@ -501,7 +497,8 @@ class WorkerThread(threading.Thread):
                 smtplib.stderr = org_smtpstderr
 
         except (MemoryError) as e:
-            self._handleError(u'Error sending email: ' + e.message)
+            log.exception(e)
+            self._handleError(u'MemoryError sending email: ' + str(e))
             return None
         except (smtplib.SMTPException, smtplib.SMTPAuthenticationError) as e:
             if hasattr(e, "smtp_error"):
@@ -509,11 +506,12 @@ class WorkerThread(threading.Thread):
             elif hasattr(e, "message"):
                 text = e.message
             else:
+                log.exception(e)
                 text = ''
-            self._handleError(u'Error sending email: ' + text)
+            self._handleError(u'Smtplib Error sending email: ' + text)
             return None
         except (socket.error) as e:
-            self._handleError(u'Error sending email: ' + e.strerror)
+            self._handleError(u'Socket Error sending email: ' + e.strerror)
             return None
 
     def _handleError(self, error_message):
