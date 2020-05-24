@@ -448,8 +448,11 @@ def edit_cc_data(book_id, book, to_save):
         else:
             input_tags = to_save[cc_string].split(',')
             input_tags = list(map(lambda it: it.strip(), input_tags))
-            changed |= modify_database_object(input_tags, getattr(book, cc_string), db.cc_classes[c.id], calibre_db.session,
-                                   'custom')
+            changed |= modify_database_object(input_tags,
+                                              getattr(book, cc_string),
+                                              db.cc_classes[c.id],
+                                              calibre_db.session,
+                                              'custom')
     return changed
 
 def upload_single_file(request, book, book_id):
@@ -510,7 +513,7 @@ def upload_single_file(request, book, book_id):
 
             return uploader.process(
                 saved_filename, *os.path.splitext(requested_file.filename),
-                rarExcecutable=config.config_rarfile_location)
+                rarExecutable=config.config_rarfile_location)
 
 
 def upload_cover(request, book):
@@ -805,16 +808,18 @@ def upload():
                 # handle series
                 modif_date |= edit_book_series(meta.series, db_book)
 
-                # flush content, get db_book.id available
+                # Add file to book
                 file_size = os.path.getsize(saved_filename)
                 db_data = db.Data(db_book, meta.extension.upper()[1:], file_size, title_dir)
                 db_book.data.append(db_data)
+                calibre_db.session.add(db_book)
+
+                # flush content, get db_book.id available
+                calibre_db.session.flush()
 
                 # Comments needs book id therfore only possiblw after flush
                 modif_date |= edit_book_comments(Markup(meta.description).unescape(), db_book)
 
-                calibre_db.session.add(db_book)
-                calibre_db.session.flush()
                 book_id = db_book.id
                 title = db_book.title
 
