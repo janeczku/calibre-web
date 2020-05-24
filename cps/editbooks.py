@@ -816,6 +816,7 @@ def upload():
                 calibre_db.session.add(db_book)
                 calibre_db.session.flush()
                 book_id = db_book.id
+                title = db_book.title
 
                 error = helper.update_dir_stucture(book_id, config.config_calibre_dir, input_authors[0])
 
@@ -833,24 +834,24 @@ def upload():
 
                 # save data to database, reread data
                 calibre_db.session.commit()
-                calibre_db.setup_db(config, ub.app_DB_path)
+                #calibre_db.setup_db(config, ub.app_DB_path)
                 # Reread book. It's important not to filter the result, as it could have language which hide it from
                 # current users view (tags are not stored/extracted from metadata and could also be limited)
-                book = calibre_db.get_book(book_id)
+                #book = calibre_db.get_book(book_id)
                 if config.config_use_google_drive:
                     gdriveutils.updateGdriveCalibreFromLocal()
                 if error:
                     flash(error, category="error")
-                uploadText=_(u"File %(file)s uploaded", file=book.title)
+                uploadText=_(u"File %(file)s uploaded", file=title)
                 worker.add_upload(current_user.nickname,
-                    "<a href=\"" + url_for('web.show_book', book_id=book.id) + "\">" + uploadText + "</a>")
+                    "<a href=\"" + url_for('web.show_book', book_id=book_id) + "\">" + uploadText + "</a>")
 
                 if len(request.files.getlist("btn-upload")) < 2:
                     if current_user.role_edit() or current_user.role_admin():
-                        resp = {"location": url_for('editbook.edit_book', book_id=book.id)}
+                        resp = {"location": url_for('editbook.edit_book', book_id=book_id)}
                         return Response(json.dumps(resp), mimetype='application/json')
                     else:
-                        resp = {"location": url_for('web.show_book', book_id=book.id)}
+                        resp = {"location": url_for('web.show_book', book_id=book_id)}
                         return Response(json.dumps(resp), mimetype='application/json')
             except OperationalError as e:
                 calibre_db.session.rollback()
