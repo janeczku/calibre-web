@@ -111,10 +111,3 @@ def timestamptodate(date, fmt=None):
 @jinjia.app_template_filter('yesno')
 def yesno(value, yes, no):
     return yes if value else no
-
-
-'''@jinjia.app_template_filter('canread')
-def canread(ext):
-    if isinstance(ext, db.Data):
-        ext = ext.format
-    return ext.lower() in EXTENSIONS_READER'''

@@ -39,7 +39,7 @@ try:
 except ImportError:
     pass
 
-from . import logger, gdriveutils, config, db
+from . import logger, gdriveutils, config, ub, calibre_db
 from .web import admin_required
 
 
@@ -145,7 +145,8 @@ def on_received_watch_confirmation():
                         dbpath = os.path.join(config.config_calibre_dir, "metadata.db")
                     else:
                         dbpath = os.path.join(config.config_calibre_dir, "metadata.db").encode()
-                    if not response['deleted'] and response['file']['title'] == 'metadata.db' and response['file']['md5Checksum'] != hashlib.md5(dbpath):
+                    if not response['deleted'] and response['file']['title'] == 'metadata.db' \
+                       and response['file']['md5Checksum'] != hashlib.md5(dbpath):
                         tmpDir = tempfile.gettempdir()
                         log.info('Database file updated')
                         copyfile(dbpath, os.path.join(tmpDir, "metadata.db_" + str(current_milli_time())))
@@ -154,7 +155,7 @@ def on_received_watch_confirmation():
                         log.info('Setting up new DB')
                         # prevent error on windows, as os.rename does on exisiting files
                         move(os.path.join(tmpDir, "tmp_metadata.db"), dbpath)
-                        db.setup_db(config)
+                        calibre_db.setup_db(config, ub.app_DB_path)
             except Exception as e:
                 log.exception(e)
         updateMetaData()
