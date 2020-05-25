@@ -72,7 +72,11 @@ class WebServer(object):
         if config.config_access_log:
             log_name = "gevent.access" if _GEVENT else "tornado.access"
             formatter = logger.ACCESS_FORMATTER_GEVENT if _GEVENT else logger.ACCESS_FORMATTER_TORNADO
-            self.access_logger = logger.create_access_log(config.config_access_logfile, log_name, formatter)
+            self.access_logger, logfile = logger.create_access_log(config.config_access_logfile, log_name, formatter)
+            if logfile != config.config_access_logfile:
+                log.warning("Accesslog path %s not valid, falling back to default", config.config_access_logfile)
+                config.config_access_logfile = logfile
+                config.save()
         else:
             if not _GEVENT:
                 logger.get('tornado.access').disabled = True
@@ -196,6 +200,9 @@ class WebServer(object):
     def stop(self, restart=False):
         from . import updater_thread
         updater_thread.stop()
+        from . import calibre_db
+        calibre_db.stop()
+
 
         log.info("webserver stop (restart=%s)", restart)
         self.restart = restart

@@ -49,6 +49,7 @@ from . import constants
 
 
 session = None
+app_DB_path = None
 Base = declarative_base()
 
 
@@ -107,6 +108,11 @@ def get_sidebar_config(kwargs=None):
         {"glyph": "glyphicon-trash", "text": _('Archived Books'), "link": 'web.books_list', "id": "archived",
          "visibility": constants.SIDEBAR_ARCHIVED, 'public': (not g.user.is_anonymous), "page": "archived",
          "show_text": _('Show archived books'), "config_show": content})
+    '''sidebar.append(
+        {"glyph": "glyphicon-th-list", "text": _('Books List'), "link": 'web.books_list', "id": "list",
+         "visibility": constants.SIDEBAR_LIST, 'public': (not g.user.is_anonymous), "page": "list",
+         "show_text": _('Show Books List'), "config_show": content})'''
+
     return sidebar
 
 
@@ -211,6 +217,7 @@ class User(UserBase, Base):
     denied_column_value = Column(String, default="")
     allowed_column_value = Column(String, default="")
     remote_auth_token = relationship('RemoteAuthToken', backref='user', lazy='dynamic')
+    series_view = Column(String(10), default="list")
 
 
 if oauth_support:
@@ -251,6 +258,7 @@ class Anonymous(AnonymousUserMixin, UserBase):
         self.allowed_tags = data.allowed_tags
         self.denied_column_value = data.denied_column_value
         self.allowed_column_value = data.allowed_column_value
+        self.series_view = data.series_view
 
     def role_admin(self):
         return False
@@ -447,7 +455,7 @@ class RemoteAuthToken(Base):
 
 
 # Migrate database to current version, has to be updated after every database change. Currently migration from
-# everywhere to curent should work. Migration is done by checking if relevant coloums are existing, and than adding
+# everywhere to current should work. Migration is done by checking if relevant columns are existing, and than adding
 # rows with SQL commands
 def migrate_Database(session):
     engine = session.bind
@@ -557,6 +565,12 @@ def migrate_Database(session):
         conn.execute("ALTER TABLE user ADD column `denied_column_value` DEFAULT ''")
         conn.execute("ALTER TABLE user ADD column `allowed_column_value` DEFAULT ''")
         session.commit()
+    try:
+        session.query(exists().where(User.series_view)).scalar()
+    except exc.OperationalError:
+        conn = engine.connect()
+        conn.execute("ALTER TABLE user ADD column `series_view` VARCHAR(10) DEFAULT 'list'")
+
     if session.query(User).filter(User.role.op('&')(constants.ROLE_ANONYMOUS) == constants.ROLE_ANONYMOUS).first() \
         is None:
         create_anonymous_user(session)
@@ -568,7 +582,7 @@ def migrate_Database(session):
         # Create new table user_id and copy contents of table user into it
         conn = engine.connect()
         conn.execute("CREATE TABLE user_id (id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,"
-                     " nickname VARCHAR(64),"
+                     "nickname VARCHAR(64),"
                      "email VARCHAR(120),"
                      "role SMALLINT,"
                      "password VARCHAR,"
@@ -576,10 +590,11 @@ def migrate_Database(session):
                      "locale VARCHAR(2),"
                      "sidebar_view INTEGER,"
                      "default_language VARCHAR(3),"
+                     "series_view VARCHAR(10),"
                      "UNIQUE (nickname),"
                      "UNIQUE (email))")
         conn.execute("INSERT INTO user_id(id, nickname, email, role, password, kindle_mail,locale,"
-                     "sidebar_view, default_language) "
+                     "sidebar_view, default_language, series_view) "
                      "SELECT id, nickname, email, role, password, kindle_mail, locale,"
                      "sidebar_view, default_language FROM user")
         # delete old user table and rename new user_id table to user:
@@ -616,8 +631,7 @@ def delete_download(book_id):
     session.query(Downloads).filter(book_id == Downloads.book_id).delete()
     session.commit()
 
-
-# Generate user Guest (translated text), as anoymous user, no rights
+# Generate user Guest (translated text), as anonymous user, no rights
 def create_anonymous_user(session):
     user = User()
     user.nickname = "Guest"
@@ -651,7 +665,9 @@ def create_admin_user(session):
 def init_db(app_db_path):
     # Open session for database connection
     global session
+    global app_DB_path
 
+    app_DB_path = app_db_path
     engine = create_engine(u'sqlite:///{0}'.format(app_db_path), echo=False)
 
     Session = sessionmaker()
