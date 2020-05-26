@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2020-05-25 21:52+0200\n"
+"POT-Creation-Date: 2020-05-26 18:39+0200\n"
 "PO-Revision-Date: 2017-04-04 15:09+0200\n"
 "Last-Translator: ElQuimm <quimm@webtaste.com>\n"
 "Language: it\n"
@@ -126,7 +126,7 @@ msgstr "La posizione del DB non è valida, per favore indica il percorso corrett
 
 #: cps/admin.py:702
 msgid "DB is not Writeable"
-msgstr ""
+msgstr "Il DB non è scrivibile"
 
 #: cps/admin.py:735
 msgid "Basic Configuration"
@@ -164,7 +164,7 @@ msgstr "Non rimarrebbe nessun utente amministratore, non posso eliminare l'utent
 
 #: cps/admin.py:802
 msgid "No admin user remaining, can't remove admin role"
-msgstr "Non rimarrebbe nessun utente amministratore, non posso eliminare il ruolo di amministratore"
+msgstr "Non rimarrebbe nessun utente amministratore, non posso rimuovere il ruolo di amministratore"
 
 #: cps/admin.py:838 cps/web.py:1621
 msgid "Found an existing account for this e-mail address."
@@ -173,7 +173,7 @@ msgstr "Ho trovato un account creato in precedenza con questo e-mail."
 #: cps/admin.py:848 cps/admin.py:863 cps/admin.py:966 cps/web.py:1596
 #, python-format
 msgid "Edit User %(nick)s"
-msgstr "Modifica utente %(nick)s"
+msgstr "Modifica l'utente %(nick)s"
 
 #: cps/admin.py:854 cps/web.py:1588
 msgid "This username is already taken"
@@ -290,7 +290,7 @@ msgstr "non configurato"
 
 #: cps/converter.py:34
 msgid "Execution permissions missing"
-msgstr ""
+msgstr "Mancano i peremssi di esecuzione"
 
 #: cps/editbooks.py:242
 msgid "Book Format Successfully Deleted"
@@ -335,7 +335,7 @@ msgstr "Il salvataggio del file %(file)s non è riuscito."
 #: cps/editbooks.py:506 cps/editbooks.py:864
 #, python-format
 msgid "Database error: %(error)s."
-msgstr ""
+msgstr "Errore nel database: %(error)s."
 
 #: cps/editbooks.py:510
 #, python-format
@@ -362,12 +362,12 @@ msgstr "Probabilmnete il libro caricato esiste già nella libreria; considera di
 #: cps/editbooks.py:780
 #, python-format
 msgid "Failed to Move File %(file)s: %(error)s"
-msgstr ""
+msgstr "Impossibile spostare il file %(file)s: %(error)s"
 
 #: cps/editbooks.py:836
 #, python-format
 msgid "Failed to Move Cover File %(file)s: %(error)s"
-msgstr ""
+msgstr "Impossibile spostare il file della copertina %(file)s: %(error)s"
 
 #: cps/editbooks.py:850
 #, python-format
@@ -470,7 +470,7 @@ msgstr "L'eliminazione del libro %(id)s non è riuscita: %(message)s"
 #: cps/helper.py:321
 #, python-format
 msgid "Deleting book %(id)s, book path not valid: %(path)s"
-msgstr ""
+msgstr "Eliminazione del libro %(id)s. Il percorso del libro non è valido: %(path)s"
 
 #: cps/helper.py:356
 #, python-format
@@ -986,7 +986,7 @@ msgstr "ricerca"
 #: cps/web.py:1213
 #, python-format
 msgid "Custom Column No.%(column)d is not existing in calibre database"
-msgstr ""
+msgstr "La colonna personale no.%(column)d non esiste nel database di Calibre"
 
 #: cps/web.py:1304
 #, python-format
@@ -1092,25 +1092,25 @@ msgstr "Leggi un libro"
 msgid "Error opening eBook. File does not exist or file is not accessible."
 msgstr "Errore nell'aprire il libro. Il file non esiste o il file non è accessibile."
 
-#: cps/worker.py:310
+#: cps/worker.py:313
 #, python-format
 msgid "Calibre ebook-convert %(tool)s not found"
-msgstr ""
+msgstr "Non ho trovato il convertitore %(tool)s di libri di Calibre"
 
-#: cps/worker.py:370
+#: cps/worker.py:373
 #, python-format
 msgid "Ebook-converter failed: %(error)s"
 msgstr "Errore nel convertitore: %(error)s"
 
-#: cps/worker.py:403
+#: cps/worker.py:406
 #, python-format
 msgid "Kepubify-converter failed: %(error)s"
-msgstr ""
+msgstr "Si è verificato un errore con il convertitore Kepubify: %(error)s"
 
-#: cps/worker.py:427
+#: cps/worker.py:430
 #, python-format
 msgid "Converted file not found or more than one file in folder %(folder)s"
-msgstr ""
+msgstr "Non ho trovato il file convertito o più di un file nella cartella %(folder)s"
 
 #: cps/templates/admin.html:9
 msgid "Users"
@@ -1170,7 +1170,7 @@ msgstr "Elimina"
 
 #: cps/templates/admin.html:23
 msgid "Public Shelf"
-msgstr ""
+msgstr "Scaffale pubblico"
 
 #: cps/templates/admin.html:44
 msgid "Add New User"
@@ -1622,7 +1622,7 @@ msgstr "Abilita il caricamento"
 
 #: cps/templates/config_edit.html:169
 msgid "Allowed Upload Fileformats"
-msgstr ""
+msgstr "Formati di file autorizzati ad essere caricati"
 
 #: cps/templates/config_edit.html:175
 msgid "Enable Anonymous Browsing"
@@ -1634,7 +1634,7 @@ msgstr "Abilita la registrazione pubblica"
 
 #: cps/templates/config_edit.html:184
 msgid "Use E-Mail as Username"
-msgstr ""
+msgstr "Utilizza l'e-mail quale nome di utente"
 
 #: cps/templates/config_edit.html:189
 msgid "Enable Magic Link Remote Login"
@@ -1790,15 +1790,15 @@ msgstr "Files binari esterni"
 
 #: cps/templates/config_edit.html:348
 msgid "Path to Calibre E-Book Converter"
-msgstr ""
+msgstr "Percorso del convertitore di libri di Calibre"
 
 #: cps/templates/config_edit.html:356
 msgid "Calibre E-Book Converter Settings"
-msgstr ""
+msgstr "Configurazione del convertitore di libri di Calibre"
 
 #: cps/templates/config_edit.html:359
 msgid "Path to Kepubify E-Book Converter"
-msgstr ""
+msgstr "Percorso del convertitore di libri Kepubify"
 
 #: cps/templates/config_edit.html:367
 msgid "Location of Unrar binary"
@@ -1981,7 +1981,7 @@ msgstr "Password SMTP"
 
 #: cps/templates/email_edit.html:38
 msgid "Attachment Size Limit"
-msgstr ""
+msgstr "Dimensione massima dell'allegato"
 
 #: cps/templates/email_edit.html:46
 msgid "Save and Send Test E-mail"
