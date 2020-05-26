@@ -24,7 +24,10 @@ import smtplib
 import socket
 import time
 import threading
-import queue
+try:
+    import queue
+except ImportError:
+    import Queue as queue
 from glob import glob
 from shutil import copyfile
 from datetime import datetime
