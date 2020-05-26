@@ -1,3 +1,7 @@
+[![LGTM alerts](https://img.shields.io/lgtm/alerts/g/janeczku/calibre-web.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/janeczku/calibre-web/alerts/)
+[![Coverity alerts](https://scan.coverity.com/projects/calibre-web)](https://scan.coverity.com/projects/21211/badge.svg)
+
+
 # About
 
 Calibre-Web is a web app providing a clean interface for browsing, reading and downloading eBooks using an existing [Calibre](https://calibre-ebook.com) database.
