@@ -450,7 +450,7 @@ msgstr "Enviado %(format)s al Kindle"
 #: cps/helper.py:182 cps/helper.py:188
 #, python-format
 msgid "Convert %(orig)s to %(format)s and send to Kindle"
-msgstr "Convertido %(orig)s a %(format)s y enviado al Kindle"
+msgstr "Convertir %(orig)s a %(format)s y enviar al Kindle"
 
 #: cps/helper.py:229
 #, python-format
@@ -459,7 +459,7 @@ msgstr "Correo electrónico: %(book)s"
 
 #: cps/helper.py:231
 msgid "The requested file could not be read. Maybe wrong permissions?"
-msgstr "El fichero solicitado no puede ser leído. ¿Quizás existen problemas con los permisos?"
+msgstr "El archivo solicitado no puede ser leído. ¿Quizás existen problemas con los permisos?"
 
 #: cps/helper.py:301
 #, python-format
@@ -474,7 +474,7 @@ msgstr "El borrado del libro %(id)s falló: %(message)s"
 #: cps/helper.py:321
 #, python-format
 msgid "Deleting book %(id)s, book path not valid: %(path)s"
-msgstr ""
+msgstr "Borrando el libro %(id)s, la ruta del libro es inválida: %(path)s"
 
 #: cps/helper.py:356
 #, python-format
@@ -1590,7 +1590,7 @@ msgstr "Ubicación del archivo clave SSL (dejar en blanco si no hay un servidor 
 
 #: cps/templates/config_edit.html:108
 msgid "Update Channel"
-msgstr "Actualizar canal"
+msgstr "Canal de actualización"
 
 #: cps/templates/config_edit.html:110
 msgid "Stable"
@@ -1598,7 +1598,7 @@ msgstr "Estable"
 
 #: cps/templates/config_edit.html:111
 msgid "Nightly"
-msgstr "Nocturno"
+msgstr "Nocturno (versiones en desarrollo)"
 
 #: cps/templates/config_edit.html:122
 msgid "Logfile Configuration"
@@ -1939,7 +1939,7 @@ msgstr "Marcar como leido"
 
 #: cps/templates/detail.html:201
 msgid "Read"
-msgstr "Leer"
+msgstr "Leído"
 
 #: cps/templates/detail.html:209
 msgid "Restore from archive"
