@@ -572,8 +572,7 @@ class CalibreDB(threading.Thread):
         authorterms = re.split("[, ]+", term)
         for authorterm in authorterms:
             q.append(Books.authors.any(func.lower(Authors.name).ilike("%" + authorterm + "%")))
-
-        return self.session.query(Books).filter(self.common_filters()).filter(
+        return self.session.query(Books).filter(self.common_filters(True)).filter(
             or_(Books.tags.any(func.lower(Tags.name).ilike("%" + term + "%")),
                 Books.series.any(func.lower(Series.name).ilike("%" + term + "%")),
                 Books.authors.any(and_(*q)),
