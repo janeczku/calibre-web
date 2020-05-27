@@ -589,7 +589,7 @@ def get_languages_json():
 @login_required_if_no_ano
 def get_matching_tags():
     tag_dict = {'tags': []}
-    q = calibre_db.session.query(db.Books)
+    q = calibre_db.session.query(db.Books).filter(calibre_db.common_filters(True))
     calibre_db.session.connection().connection.connection.create_function("lower", 1, db.lcase)
     author_input = request.args.get('author_name') or ''
     title_input = request.args.get('book_title') or ''
@@ -1022,7 +1022,7 @@ def advanced_search():
     # Build custom columns names
     cc = get_cc_columns(filter_config_custom_read=True)
     calibre_db.session.connection().connection.connection.create_function("lower", 1, db.lcase)
-    q = calibre_db.session.query(db.Books).filter(calibre_db.common_filters()).order_by(db.Books.sort)
+    q = calibre_db.session.query(db.Books).filter(calibre_db.common_filters(True)).order_by(db.Books.sort)
 
     include_tag_inputs = request.args.getlist('include_tag')
     exclude_tag_inputs = request.args.getlist('exclude_tag')
@@ -1641,8 +1641,8 @@ def profile():
 def read_book(book_id, book_format):
     book = calibre_db.get_filtered_book(book_id)
     if not book:
-        flash(_(u"Error opening eBook. File does not exist or file is not accessible:"), category="error")
-        log.debug(u"Error opening eBook. File does not exist or file is not accessible:")
+        flash(_(u"Error opening eBook. File does not exist or file is not accessible"), category="error")
+        log.debug(u"Error opening eBook. File does not exist or file is not accessible")
         return redirect(url_for("web.index"))
 
     # check if book has bookmark
@@ -1681,8 +1681,8 @@ def read_book(book_id, book_format):
         #     if book_format.lower() == fileext:
         #         return render_title_template('readcbr.html', comicfile=book_id,
         #         extension=fileext, title=_(u"Read a Book"), book=book)
-        log.debug(u"Error opening eBook. File does not exist or file is not accessible:")
-        flash(_(u"Error opening eBook. File does not exist or file is not accessible."), category="error")
+        log.debug(u"Error opening eBook. File does not exist or file is not accessible")
+        flash(_(u"Error opening eBook. File does not exist or file is not accessible"), category="error")
         return redirect(url_for("web.index"))
 
 
@@ -1693,8 +1693,8 @@ def show_book(book_id):
     if entries:
         for index in range(0, len(entries.languages)):
             try:
-                entries.languages[index].language_name = LC.parse(entries.languages[index].lang_code).get_language_name(
-                    get_locale())
+                entries.languages[index].language_name = LC.parse(entries.languages[index].lang_code)\
+                    .get_language_name(get_locale())
             except UnknownLocaleError:
                 entries.languages[index].language_name = _(
                     isoLanguages.get(part3=entries.languages[index].lang_code).name)
@@ -1743,6 +1743,6 @@ def show_book(book_id):
                                      is_xhr=request.headers.get('X-Requested-With')=='XMLHttpRequest', title=entries.title, books_shelfs=book_in_shelfs,
                                      have_read=have_read, is_archived=is_archived, kindle_list=kindle_list, reader_list=reader_list, page="book")
     else:
-        log.debug(u"Error opening eBook. File does not exist or file is not accessible:")
-        flash(_(u"Error opening eBook. File does not exist or file is not accessible:"), category="error")
+        log.debug(u"Error opening eBook. File does not exist or file is not accessible")
+        flash(_(u"Error opening eBook. File does not exist or file is not accessible"), category="error")
         return redirect(url_for("web.index"))
