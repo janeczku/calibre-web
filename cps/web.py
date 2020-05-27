@@ -657,7 +657,7 @@ def books_list(data, sort, book_id, page):
             abort(404)
     elif data == "discover":
         if current_user.check_visibility(constants.SIDEBAR_RANDOM):
-            entries, __, pagination = calibre_db.calibre_db.fill_indexpage(page, db.Books, True, [func.randomblob(2)])
+            entries, __, pagination = calibre_db.fill_indexpage(page, db.Books, True, [func.randomblob(2)])
             pagination = Pagination(1, config.config_books_per_page, config.config_books_per_page)
             return render_title_template('discover.html', entries=entries, pagination=pagination, id=book_id,
                                          title=_(u"Discover (Random Books)"), page="discover")
