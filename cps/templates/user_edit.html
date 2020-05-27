@@ -3,6 +3,7 @@
 <div class="discover">
   <h1>{{title}}</h1>
   <form role="form" method="POST" autocomplete="off">
+    <div class="col-md-10 col-lg-8">
     {% if new_user or ( g.user and content.nickname != "Guest" and g.user.role_admin() ) %}
     <div class="form-group required">
       <label for="nickname">{{_('Username')}}</label>
@@ -65,6 +66,7 @@
       <div class="btn btn-danger" id="config_delete_kobo_token" data-toggle="modal" data-target="#modalDeleteToken" data-remote="false" {% if not content.remote_auth_token.first() %} style="display: none;" {% endif %}>{{_('Delete')}}</div>
     </div>
     {% endif %}
+    </div>
     <div class="col-sm-6">
         {% for element in sidebar %}
           {% if element['config_show'] %}

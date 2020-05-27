@@ -82,7 +82,6 @@ def _absolute_log_file(log_file, default_log_file):
         if not os.path.dirname(log_file):
             log_file = os.path.join(_CONFIG_DIR, log_file)
         return os.path.abspath(log_file)
-
     return default_log_file
 
 
@@ -115,7 +114,7 @@ def setup(log_file, log_level=None):
     if previous_handler:
         # if the log_file has not changed, don't create a new handler
         if getattr(previous_handler, 'baseFilename', None) == log_file:
-            return
+            return "" if log_file == DEFAULT_LOG_FILE else log_file
         logging.debug("logging to %s level %s", log_file, r.level)
 
     if log_file == LOG_TO_STDERR or log_file == LOG_TO_STDOUT:
@@ -132,12 +131,14 @@ def setup(log_file, log_level=None):
             if log_file == DEFAULT_LOG_FILE:
                 raise
             file_handler = RotatingFileHandler(DEFAULT_LOG_FILE, maxBytes=50000, backupCount=2)
+            log_file = ""
     file_handler.setFormatter(FORMATTER)
 
     for h in r.handlers:
         r.removeHandler(h)
         h.close()
     r.addHandler(file_handler)
+    return "" if log_file == DEFAULT_LOG_FILE else log_file
 
 
 def create_access_log(log_file, log_name, formatter):
@@ -150,11 +151,18 @@ def create_access_log(log_file, log_name, formatter):
     access_log = logging.getLogger(log_name)
     access_log.propagate = False
     access_log.setLevel(logging.INFO)
+    try:
+        file_handler = RotatingFileHandler(log_file, maxBytes=50000, backupCount=2)
+    except IOError:
+        if log_file == DEFAULT_ACCESS_LOG:
+            raise
+        file_handler = RotatingFileHandler(DEFAULT_ACCESS_LOG, maxBytes=50000, backupCount=2)
+        log_file = ""
 
-    file_handler = RotatingFileHandler(log_file, maxBytes=50000, backupCount=2)
     file_handler.setFormatter(formatter)
     access_log.addHandler(file_handler)
-    return access_log
+    return access_log, \
+           "" if _absolute_log_file(log_file, DEFAULT_ACCESS_LOG) == DEFAULT_ACCESS_LOG else log_file
 
 
 # Enable logging of smtp lib debug output

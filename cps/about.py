@@ -30,7 +30,7 @@ import babel, pytz, requests, sqlalchemy
 import werkzeug, flask, flask_login, flask_principal, jinja2
 from flask_babel import gettext as _
 
-from . import db, converter, uploader, server, isoLanguages, constants
+from . import db, calibre_db, converter, uploader, server, isoLanguages, constants
 from .web import render_title_template
 try:
     from flask_login import __version__ as flask_loginVersion
@@ -85,10 +85,12 @@ _VERSIONS.update(uploader.get_versions())
 @about.route("/stats")
 @flask_login.login_required
 def stats():
-    counter = db.session.query(db.Books).count()
-    authors = db.session.query(db.Authors).count()
-    categorys = db.session.query(db.Tags).count()
-    series = db.session.query(db.Series).count()
-    _VERSIONS['ebook converter'] = _(converter.get_version())
+    counter = calibre_db.session.query(db.Books).count()
+    authors = calibre_db.session.query(db.Authors).count()
+    categorys = calibre_db.session.query(db.Tags).count()
+    series = calibre_db.session.query(db.Series).count()
+    _VERSIONS['ebook converter'] = _(converter.get_calibre_version())
+    _VERSIONS['unrar'] = _(converter.get_unrar_version())
+    _VERSIONS['kepubify'] = _(converter.get_kepubify_version())
     return render_title_template('stats.html', bookcounter=counter, authorcounter=authors, versions=_VERSIONS,
                                  categorycounter=categorys, seriecounter=series, title=_(u"Statistics"), page="stat")

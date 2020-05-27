@@ -3,7 +3,7 @@
 <div class="discover">
   <h2>{{title}}</h2>
   <form role="form" method="POST" autocomplete="off">
-<div class="panel-group">
+<div class="panel-group col-md-10 col-lg-6">
   <div class="panel panel-default">
     <div class="panel-heading">
       <h4 class="panel-title">
@@ -15,10 +15,13 @@
     </div>
     <div id="collapseOne" class="panel-collapse collapse in">
       <div class="panel-body">
-    <div class="form-group required">
-      <label for="config_calibre_dir">{{_('Location of Calibre Database')}}</label>
-      <input type="text" class="form-control" name="config_calibre_dir" id="config_calibre_dir" value="{% if config.config_calibre_dir != None %}{{ config.config_calibre_dir }}{% endif %}" autocomplete="off">
-    </div>
+       <div class="form-group required input-group">
+        <label for="config_calibre_dir" class="sr-only">{{_('Location of Calibre Database')}}</label>
+        <input type="text" class="form-control" id="config_calibre_dir" name="config_calibre_dir" value="{% if config.config_calibre_dir != None %}{{ config.config_calibre_dir }}{% endif %}" autocomplete="off">
+        <span class="input-group-btn">
+          <button type="button" id="library_path" class="btn btn-default"><span class="glyphicon glyphicon-folder-open"></span></button>
+        </span>
+      </div>
     {% if feature_support['gdrive']  %}
     <div class="form-group required">
       <input type="checkbox" id="config_use_google_drive" name="config_use_google_drive" data-control="gdrive_settings" {% if config.config_use_google_drive %}checked{% endif %} >
@@ -87,21 +90,25 @@
           <label for="config_port">{{_('Server Port')}}</label>
           <input type="number" min="1" max="65535" class="form-control" name="config_port" id="config_port" value="{% if config.config_port != None %}{{ config.config_port }}{% endif %}" autocomplete="off" required>
         </div>
-        <div class="form-group">
-          <label for="config_certfile">{{_('SSL certfile location (leave it empty for non-SSL Servers)')}}</label>
-          <input type="text" class="form-control" name="config_certfile" id="config_certfile" value="{% if config.config_certfile != None %}{{ config.config_certfile }}{% endif %}" autocomplete="off">
+        <label for="config_certfile">{{_('SSL certfile location (leave it empty for non-SSL Servers)')}}</label>
+         <div class="form-group input-group">
+          <input type="text" class="form-control" id="config_certfile" name="config_certfile" value="{% if config.config_certfile != None %}{{ config.config_certfile }}{% endif %}" autocomplete="off">
+          <span class="input-group-btn">
+            <button type="button" id="certfile_path" class="btn btn-default"><span class="glyphicon glyphicon-folder-open"></span></button>
+          </span>
         </div>
-        <div class="form-group">
-          <label for="config_keyfile">{{_('SSL Keyfile location (leave it empty for non-SSL Servers)')}}</label>
-          <input type="text" class="form-control" name="config_keyfile" id="config_keyfile" value="{% if config.config_keyfile != None %}{{ config.config_keyfile }}{% endif %}" autocomplete="off">
+          <label for="config_calibre_dir" >{{_('SSL Keyfile location (leave it empty for non-SSL Servers)')}}</label>
+         <div class="form-group input-group">
+          <input type="text" class="form-control" id="config_keyfile" name="config_keyfile" value="{% if config.config_keyfile != None %}{{ config.config_keyfile }}{% endif %}" autocomplete="off">
+          <span class="input-group-btn">
+            <button type="button" id="keyfile_path" class="btn btn-default"><span class="glyphicon glyphicon-folder-open"></span></button>
+          </span>
         </div>
         <div class="form-group">
           <label for="config_updatechannel">{{_('Update Channel')}}</label>
             <select name="config_updatechannel" id="config_updatechannel" class="form-control">
-                    <option value="0" {% if config.config_updatechannel == 0 %}selected{% endif %}>{{_('Stable')}}</option>
-                    <!--option value="1" {% if config.config_updatechannel == 1 %}selected{% endif %}>{{_('Stable (Automatic)')}}</option-->
-                    <option value="2" {% if config.config_updatechannel == 2 %}selected{% endif %}>{{_('Nightly')}}</option>
-                    <!--option-- value="3" {% if config.config_updatechannel == 3 %}selected{% endif %}>{{_('Nightly (Automatic)')}}</option-->
+              <option value="0" {% if config.config_updatechannel == 0 %}selected{% endif %}>{{_('Stable')}}</option>
+              <option value="2" {% if config.config_updatechannel == 2 %}selected{% endif %}>{{_('Nightly')}}</option>
             </select>
         </div>
       </div>
@@ -154,16 +161,28 @@
     <div id="collapsefive" class="panel-collapse collapse">
       <div class="panel-body">
     <div class="form-group">
-        <input type="checkbox" id="config_uploading" name="config_uploading" {% if config.config_uploading %}checked{% endif %}>
+        <input type="checkbox" id="config_uploading" data-control="upload_settings" name="config_uploading" {% if config.config_uploading %}checked{% endif %}>
         <label for="config_uploading">{{_('Enable Uploads')}}</label>
+    </div>
+    <div data-related="upload_settings">
+      <div class="form-group">
+        <label for="config_upload_formats">{{_('Allowed Upload Fileformats')}}</label>
+        <input type="text" class="form-control" name="config_upload_formats" id="config_upload_formats" value="{% if config.config_upload_formats != None %}{{ config.config_upload_formats }}{% endif %}" autocomplete="off">
+      </div>
     </div>
     <div class="form-group">
         <input type="checkbox" id="config_anonbrowse" name="config_anonbrowse" {% if config.config_anonbrowse %}checked{% endif %}>
         <label for="config_anonbrowse">{{_('Enable Anonymous Browsing')}}</label>
     </div>
     <div class="form-group">
-        <input type="checkbox" id="config_public_reg" name="config_public_reg" {% if config.config_public_reg %}checked{% endif %}>
+        <input type="checkbox" id="config_public_reg" data-control="register_settings" name="config_public_reg" {% if config.config_public_reg %}checked{% endif %}>
         <label for="config_public_reg">{{_('Enable Public Registration')}}</label>
+    </div>
+    <div data-related="register_settings">
+      <div class="form-group intend-form">
+        <input type="checkbox" id="config_register_email" name="config_register_email" {% if config.config_register_email %}checked{% endif %}>
+        <label for="config_register_email">{{_('Use E-Mail as Username')}}</label>
+      </div>
     </div>
     <div class="form-group">
       <input type="checkbox" id="config_remote_login" name="config_remote_login" {% if config.config_remote_login %}checked{% endif %}>
@@ -326,30 +345,33 @@
     </div>
     <div id="collapseeight" class="panel-collapse collapse">
       <div class="panel-body">
-          <div class="form-group">
-              <div><input type="radio" name="config_ebookconverter" id="converter0" value="0" {% if config.config_ebookconverter == 0 %}checked{% endif %}>
-              <label for="converter0">{{_('No Converter')}}</label></div>
-              <div><input type="radio" name="config_ebookconverter" id="converter1" value="1" {% if config.config_ebookconverter == 1 %}checked{% endif %}>
-              <label for="converter1">{{_('Use Kindlegen')}}</label></div>
-              <div><input type="radio" name="config_ebookconverter" id="converter2" value="2" {% if config.config_ebookconverter == 2 %}checked{% endif %}>
-              <label for="converter2">{{_('Use calibre\'s ebook converter')}}</label></div>
+           <label for="config_converterpath">{{_('Path to Calibre E-Book Converter')}}</label>
+           <div class="form-group input-group">
+            <input type="text" class="form-control" id="config_converterpath" name="config_converterpath" value="{% if config.config_converterpath != None %}{{ config.config_converterpath }}{% endif %}" autocomplete="off">
+            <span class="input-group-btn">
+              <button type="button" id="converter_path" class="btn btn-default"><span class="glyphicon glyphicon-folder-open"></span></button>
+            </span>
+           </div>
+           <div class="form-group">
+              <label for="config_calibre">{{_('Calibre E-Book Converter Settings')}}</label>
+              <input type="text" class="form-control" id="config_calibre" name="config_calibre" value="{% if config.config_calibre != None %}{{ config.config_calibre }}{% endif %}" autocomplete="off">
+           </div>
+        <label for="config_kepubifypath">{{_('Path to Kepubify E-Book Converter')}}</label>
+           <div class="form-group input-group">
+            <input type="text" class="form-control" id="config_kepubifypath" name="config_kepubifypath" value="{% if config.config_kepubifypath != None %}{{ config.config_kepubifypath }}{% endif %}" autocomplete="off">
+            <span class="input-group-btn">
+              <button type="button" id="kepubify_path" class="btn btn-default"><span class="glyphicon glyphicon-folder-open"></span></button>
+            </span>
           </div>
-          <div data-related="calibre">
-            <div class="form-group">
-                <label for="config_calibre">{{_('E-Book converter settings')}}</label>
-                <input type="text" class="form-control" id="config_calibre" name="config_calibre" value="{% if config.config_calibre != None %}{{ config.config_calibre }}{% endif %}" autocomplete="off">
-            </div>
-            <div class="form-group">
-                <label for="config_calibre">{{_('Path to convertertool')}}</label>
-                <input type="text" class="form-control" id="config_converterpath" name="config_converterpath" value="{% if config.config_converterpath != None %}{{ config.config_converterpath }}{% endif %}" autocomplete="off">
-            </div>
+        {% if feature_support['rar'] %}
+            <label for="config_rarfile_location">{{_('Location of Unrar binary')}}</label>
+           <div class="form-group input-group">
+            <input type="text" class="form-control" id="config_rarfile_location" name="config_rarfile_location" value="{% if config.config_rarfile_location != None %}{{ config.config_rarfile_location }}{% endif %}" autocomplete="off">
+            <span class="input-group-btn">
+              <button type="button" id="unrar_path" class="btn btn-default"><span class="glyphicon glyphicon-folder-open"></span></button>
+            </span>
           </div>
-          {% if feature_support['rar'] %}
-            <div class="form-group">
-                <label for="config_rarfile_location">{{_('Location of Unrar binary')}}</label>
-                <input type="text" class="form-control" name="config_rarfile_location" id="config_rarfile_location" value="{% if config.config_rarfile_location != None %}{{ config.config_rarfile_location }}{% endif %}" autocomplete="off">
-            </div>
-          {% endif %}
+        {% endif %}
       </div>
     </div>
   </div>
