@@ -6,14 +6,14 @@
 {% block body %}
 <div class="discover">
   <h1>{{title}}</h1>
-  <form role="form" method="POST">
+  <form role="form" class="col-md-10 col-lg-6" method="POST">
     <div class="form-group">
       <label for="mail_server">{{_('SMTP Hostname')}}</label>
       <input type="text" class="form-control" name="mail_server" id="mail_server" value="{{content.mail_server}}">
     </div>
     <div class="form-group">
       <label for="mail_port">{{_('SMTP Port')}}</label>
-      <input type="text" class="form-control" name="mail_port" id="mail_port" value="{{content.mail_port}}">
+      <input type="number" min="1" max="65535" step="1" class="form-control" name="mail_port" id="mail_port" value="{% if content.mail_port != None %}{{ content.mail_port }}{% endif %}" autocomplete="off">
     </div>
     <div class="form-group">
       <label for="mail_use_ssl">{{_('Encryption')}}</label>
@@ -35,11 +35,19 @@
       <label for="mail_from">{{_('From E-mail')}}</label>
       <input type="text" class="form-control" name="mail_from" id="mail_from" value="{{content.mail_from}}">
     </div>
+    <label for="mail_size">{{_('Attachment Size Limit')}}</label>
+     <div class="form-group input-group">
+      <input type="number" min="1" max="600" step="1" class="form-control" name="mail_size" id="mail_size" value="{% if content.mail_size != None %}{{ (content.mail_size / 1024 / 1024)|int }}{% endif %}">
+      <span class="input-group-btn">
+        <button type="button" id="attachement_size" class="btn btn-default" disabled>MB</button>
+      </span>
+    </div>
     <button type="submit" name="submit" value="submit" class="btn btn-default">{{_('Save')}}</button>
     <button type="submit" name="test" value="test" class="btn btn-default">{{_('Save and Send Test E-mail')}}</button>
     <a href="{{ url_for('admin.admin') }}" id="back" class="btn btn-default">{{_('Cancel')}}</a>
   </form>
     {% if g.allow_registration %}
+  <div class="col-md-10 col-lg-6">
     <h2>{{_('Allowed Domains (Whitelist)')}}</h2>
     <form id="domain_add_allow" action="{{ url_for('admin.add_domain',allow=1)}}" method="POST">
     <div class="form-group required">
@@ -74,6 +82,7 @@
     </div>
     <button id="domain_deny_submit" class="btn btn-default">{{_('Add')}}</button>
     </form>
+    </div>
 
     {% endif %}
 </div>

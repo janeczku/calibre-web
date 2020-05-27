@@ -31,7 +31,7 @@ rarfile>=2.7
 
 # other
 natsort>=2.2.0,<7.1.0
-git+https://github.com/OzzieIsaacs/comicapi.git@15dff9ce4e1ffed29ba4a2feadfcdb6bed00bcad#egg=comicapi
+git+https://github.com/OzzieIsaacs/comicapi.git@3e15b950b72724b1b8ca619c36580b5fbaba9784#egg=comicapi
 
 #Kobo integration
 jsonschema>=3.2.0,<3.3.0

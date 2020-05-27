@@ -19,6 +19,7 @@
 from __future__ import division, print_function, unicode_literals
 import os
 import re
+import sys
 from flask_babel import gettext as _
 
 from . import config, logger
@@ -29,8 +30,8 @@ log = logger.create()
 
 # _() necessary to make babel aware of string for translation
 _NOT_CONFIGURED = _('not configured')
-_NOT_INSTALLED = 'not installed'
-_EXECUTION_ERROR = 'Execution permissions missing'
+_NOT_INSTALLED = _('not installed')
+_EXECUTION_ERROR = _('Execution permissions missing')
 
 
 def _get_command_version(path, pattern, argument=None):
@@ -48,10 +49,15 @@ def _get_command_version(path, pattern, argument=None):
     return _NOT_INSTALLED
 
 
-def get_version():
-    version = None
-    if config.config_ebookconverter == 1:
-        version = _get_command_version(config.config_converterpath, r'Amazon kindlegen\(')
-    elif config.config_ebookconverter == 2:
-        version = _get_command_version(config.config_converterpath, r'ebook-convert.*\(calibre', '--version')
-    return version or _NOT_CONFIGURED
+def get_calibre_version():
+    return _get_command_version(config.config_converterpath, r'ebook-convert.*\(calibre', '--version') \
+           or _NOT_CONFIGURED
+
+
+def get_unrar_version():
+    return _get_command_version(config.config_rarfile_location, r'UNRAR.*\d') or _NOT_CONFIGURED
+
+def get_kepubify_version():
+    return _get_command_version(config.config_kepubifypath, r'kepubify\s','--version') or _NOT_CONFIGURED
+
+

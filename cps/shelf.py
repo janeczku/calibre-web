@@ -28,9 +28,8 @@ from flask_babel import gettext as _
 from flask_login import login_required, current_user
 from sqlalchemy.sql.expression import func
 
-from . import logger, ub, searched_ids, db
+from . import logger, ub, searched_ids, db, calibre_db
 from .web import render_title_template
-from .helper import common_filters
 
 
 shelf = Blueprint('shelf', __name__)
@@ -320,11 +319,11 @@ def show_shelf(shelf_type, shelf_id):
         books_in_shelf = ub.session.query(ub.BookShelf).filter(ub.BookShelf.shelf == shelf_id)\
             .order_by(ub.BookShelf.order.asc()).all()
         for book in books_in_shelf:
-            cur_book = db.session.query(db.Books).filter(db.Books.id == book.book_id).filter(common_filters()).first()
+            cur_book = calibre_db.get_filtered_book(book.book_id)
             if cur_book:
                 result.append(cur_book)
             else:
-                cur_book = db.session.query(db.Books).filter(db.Books.id == book.book_id).first()
+                cur_book = calibre_db.get_book(book.book_id)
                 if not cur_book:
                     log.info('Not existing book %s in %s deleted', book.book_id, shelf)
                     ub.session.query(ub.BookShelf).filter(ub.BookShelf.book_id == book.book_id).delete()
@@ -356,7 +355,7 @@ def order_shelf(shelf_id):
         books_in_shelf2 = ub.session.query(ub.BookShelf).filter(ub.BookShelf.shelf == shelf_id) \
             .order_by(ub.BookShelf.order.asc()).all()
         for book in books_in_shelf2:
-            cur_book = db.session.query(db.Books).filter(db.Books.id == book.book_id).filter(common_filters()).first()
+            cur_book = calibre_db.get_filtered_book(book.book_id)
             if cur_book:
                 result.append({'title': cur_book.title,
                                'id': cur_book.id,
@@ -364,7 +363,7 @@ def order_shelf(shelf_id):
                                'series': cur_book.series,
                                'series_index': cur_book.series_index})
             else:
-                cur_book = db.session.query(db.Books).filter(db.Books.id == book.book_id).first()
+                cur_book = calibre_db.get_book(book.book_id)
                 result.append({'title': _('Hidden Book'),
                                'id': cur_book.id,
                                'author': [],

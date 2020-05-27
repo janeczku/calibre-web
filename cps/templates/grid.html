@@ -1,0 +1,49 @@
+{% extends "layout.html" %}
+{% block body %}
+<h1 class="{{page}}">{{_(title)}}</h1>
+
+    <div class="filterheader hidden-xs hidden-sm">
+      {% if entries.__len__() %}
+       {% if entries[0][0].sort %}
+        <button id="sort_name" class="btn btn-primary"><b>B,A <-> A B</b></button>
+       {% endif %}
+      {% endif %}
+      <button id="desc" class="btn btn-primary"><span class="glyphicon glyphicon-sort-by-alphabet"></span></button>
+      <button id="asc" class="btn btn-primary"><span class="glyphicon glyphicon-sort-by-alphabet-alt"></span></button>
+      {% if charlist|length %}
+      <button id="all" class="btn btn-primary">{{_('All')}}</button>
+      {% endif %}
+      <div class="btn-group character" role="group">
+        {% for char in charlist%}
+        <button class="btn btn-primary char">{{char.char}}</button>
+        {% endfor %}
+      </div>
+
+        <button class="update-view btn btn-primary" href="#" data-target="series_view" data-view="list">List</button>
+    </div>
+
+    {% if entries[0] %}
+        <div id="list" class="row">
+          {% for entry in entries %}
+              <div class="col-sm-3 col-lg-2 col-xs-6 book sortable" {% if entry[0].sort %}data-name="{{entry[0].series[0].name}}"{% endif %} data-id="{% if entry[0].series[0].name %}{{entry[0].series[0].name}}{% endif %}">
+                  <div class="cover">
+                      <a href="{{url_for('web.books_list', data=data, sort='new', book_id=entry[0].series[0].id )}}">
+                          <img src="{{ url_for('web.get_cover', book_id=entry[0].id) }}" alt="{{ entry[0].name }}"/>
+                          <span class="badge">{{entry.count}}</span>
+                      </a>
+                  </div>
+                  <div class="meta">
+                      <a href="{{url_for('web.books_list', data=data, sort='new', book_id=entry[0].series[0].id )}}">
+                          <p class="title">{{entry[0].series[0].name|shortentitle}}</p>
+                      </a>
+                  </div>
+              </div>
+        {% endfor %}
+        </div>
+    {% endif %}
+
+
+{% endblock %}
+{% block js %}
+<script src="{{ url_for('static', filename='js/filter_grid.js') }}"></script>
+{% endblock %}

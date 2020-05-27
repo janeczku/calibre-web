@@ -24,6 +24,12 @@ import smtplib
 import socket
 import time
 import threading
+try:
+    import queue
+except ImportError:
+    import Queue as queue
+from glob import glob
+from shutil import copyfile
 from datetime import datetime
 
 try:
@@ -43,9 +49,10 @@ from email.utils import make_msgid
 from email.generator import Generator
 from flask_babel import gettext as _
 
-from . import logger, config, db, gdriveutils
+from . import calibre_db, db
+from . import logger, config
 from .subproc_wrapper import process_open
-
+from . import gdriveutils
 
 log = logger.create()
 
@@ -187,6 +194,8 @@ class WorkerThread(threading.Thread):
         self.UIqueue = list()
         self.asyncSMTP = None
         self.id = 0
+        self.db_queue = queue.Queue()
+        calibre_db.add_queue(self.db_queue)
         self.doLock = threading.Lock()
 
     # Main thread loop starting the different tasks
@@ -273,7 +282,7 @@ class WorkerThread(threading.Thread):
         index = self.current
         self.doLock.release()
         file_path = self.queue[index]['file_path']
-        bookid = self.queue[index]['bookid']
+        book_id = self.queue[index]['bookid']
         format_old_ext = u'.' + self.queue[index]['settings']['old_book_format'].lower()
         format_new_ext = u'.' + self.queue[index]['settings']['new_book_format'].lower()
 
@@ -281,95 +290,51 @@ class WorkerThread(threading.Thread):
         # if it does - mark the conversion task as complete and return a success
         # this will allow send to kindle workflow to continue to work
         if os.path.isfile(file_path + format_new_ext):
-            log.info("Book id %d already converted to %s", bookid, format_new_ext)
-            cur_book = db.session.query(db.Books).filter(db.Books.id == bookid).first()
+            log.info("Book id %d already converted to %s", book_id, format_new_ext)
+            cur_book = calibre_db.get_book(book_id)
             self.queue[index]['path'] = file_path
             self.queue[index]['title'] = cur_book.title
             self._handleSuccess()
             return file_path + format_new_ext
         else:
-            log.info("Book id %d - target format of %s does not exist. Moving forward with convert.", bookid, format_new_ext)
+            log.info("Book id %d - target format of %s does not exist. Moving forward with convert.",
+                     book_id,
+                     format_new_ext)
 
-        # check if converter-executable is existing
-        if not os.path.exists(config.config_converterpath):
-            # ToDo Text is not translated
-            self._handleError(u"Convertertool %s not found" % config.config_converterpath)
-            return
-
-        try:
-            # check which converter to use kindlegen is "1"
-            if format_old_ext == '.epub' and format_new_ext == '.mobi':
-                if config.config_ebookconverter == 1:
-                    command = [config.config_converterpath, file_path + u'.epub']
-                    quotes = [1]
-            if config.config_ebookconverter == 2:
-                # Linux py2.7 encode as list without quotes no empty element for parameters
-                # linux py3.x no encode and as list without quotes no empty element for parameters
-                # windows py2.7 encode as string with quotes empty element for parameters is okay
-                # windows py 3.x no encode and as string with quotes empty element for parameters is okay
-                # separate handling for windows and linux
-                quotes = [1,2]
-                command = [config.config_converterpath, (file_path + format_old_ext),
-                    (file_path + format_new_ext)]
-                quotes_index = 3
-                if config.config_calibre:
-                    parameters = config.config_calibre.split(" ")
-                    for param in parameters:
-                        command.append(param)
-                        quotes.append(quotes_index)
-                        quotes_index += 1
-            p = process_open(command, quotes)
-            # p = subprocess.Popen(command, stdout=subprocess.PIPE, universal_newlines=True)
-        except OSError as e:
-            self._handleError(_(u"Ebook-converter failed: %(error)s", error=e))
-            return
-
-        if config.config_ebookconverter == 1:
-            nextline = p.communicate()[0]
-            # Format of error message (kindlegen translates its output texts):
-            # Error(prcgen):E23006: Language not recognized in metadata.The dc:Language field is mandatory.Aborting.
-            conv_error = re.search(r".*\(.*\):(E\d+):\s(.*)", nextline, re.MULTILINE)
-            # If error occoures, store error message for logfile
-            if conv_error:
-                error_message = _(u"Kindlegen failed with Error %(error)s. Message: %(message)s",
-                                  error=conv_error.group(1), message=conv_error.group(2).strip())
-            log.debug("convert_kindlegen: %s", nextline)
+        if config.config_kepubifypath and format_old_ext == '.epub' and format_new_ext == '.kepub':
+            check, error_message = self._convert_kepubify(file_path,
+                                                          format_old_ext,
+                                                          format_new_ext,
+                                                          index)
         else:
-            while p.poll() is None:
-                nextline = p.stdout.readline()
-                if os.name == 'nt' and sys.version_info < (3, 0):
-                    nextline = nextline.decode('windows-1252')
-                elif os.name == 'posix' and sys.version_info < (3, 0):
-                    nextline = nextline.decode('utf-8')
-                log.debug(nextline.strip('\r\n'))
-                # parse progress string from calibre-converter
-                progress = re.search(r"(\d+)%\s.*", nextline)
-                if progress:
-                    self.UIqueue[index]['progress'] = progress.group(1) + ' %'
+            # check if calibre converter-executable is existing
+            if not os.path.exists(config.config_converterpath):
+                # ToDo Text is not translated
+                self._handleError(_(u"Calibre ebook-convert %(tool)s not found", tool=config.config_converterpath))
+                return
+            check, error_message = self._convert_calibre(file_path, format_old_ext, format_new_ext, index)
 
-        # process returncode
-        check = p.returncode
-        calibre_traceback = p.stderr.readlines()
-        for ele in calibre_traceback:
-            if sys.version_info < (3, 0):
-                ele = ele.decode('utf-8')
-            log.debug(ele.strip('\n'))
-            if not ele.startswith('Traceback') and not ele.startswith('  File'):
-                error_message = "Calibre failed with error: %s" % ele.strip('\n')
-
-        # kindlegen returncodes
-        # 0 = Info(prcgen):I1036: Mobi file built successfully
-        # 1 = Info(prcgen):I1037: Mobi file built with WARNINGS!
-        # 2 = Info(prcgen):I1038: MOBI file could not be generated because of errors!
-        if (check < 2 and config.config_ebookconverter == 1) or \
-            (check == 0 and config.config_ebookconverter == 2):
-            cur_book = db.session.query(db.Books).filter(db.Books.id == bookid).first()
+        if check == 0:
+            cur_book = calibre_db.get_book(book_id)
             if os.path.isfile(file_path + format_new_ext):
+                # self.db_queue.join()
                 new_format = db.Data(name=cur_book.data[0].name,
                                          book_format=self.queue[index]['settings']['new_book_format'].upper(),
-                                         book=bookid, uncompressed_size=os.path.getsize(file_path + format_new_ext))
-                cur_book.data.append(new_format)
-                db.session.commit()
+                                         book=book_id, uncompressed_size=os.path.getsize(file_path + format_new_ext))
+                task = {'task':'add_format','id': book_id, 'format': new_format}
+                self.db_queue.put(task)
+                # To Do how to handle error?
+
+                '''cur_book.data.append(new_format)
+                try:
+                    # db.session.merge(cur_book)
+                    calibre_db.session.commit()
+                except OperationalError as e:
+                    calibre_db.session.rollback()
+                    log.error("Database error: %s", e)
+                    self._handleError(_(u"Database error: %(error)s.", error=e))
+                    return'''
+
                 self.queue[index]['path'] = cur_book.path
                 self.queue[index]['title'] = cur_book.title
                 if config.config_use_google_drive:
@@ -383,6 +348,87 @@ class WorkerThread(threading.Thread):
             error_message = 'Ebook converter failed with unknown error'
         self._handleError(error_message)
         return
+
+
+    def _convert_calibre(self, file_path, format_old_ext, format_new_ext, index):
+        try:
+            # Linux py2.7 encode as list without quotes no empty element for parameters
+            # linux py3.x no encode and as list without quotes no empty element for parameters
+            # windows py2.7 encode as string with quotes empty element for parameters is okay
+            # windows py 3.x no encode and as string with quotes empty element for parameters is okay
+            # separate handling for windows and linux
+            quotes = [1, 2]
+            command = [config.config_converterpath, (file_path + format_old_ext),
+                       (file_path + format_new_ext)]
+            quotes_index = 3
+            if config.config_calibre:
+                parameters = config.config_calibre.split(" ")
+                for param in parameters:
+                    command.append(param)
+                    quotes.append(quotes_index)
+                    quotes_index += 1
+
+            p = process_open(command, quotes)
+        except OSError as e:
+            return 1, _(u"Ebook-converter failed: %(error)s", error=e)
+
+        while p.poll() is None:
+            nextline = p.stdout.readline()
+            if os.name == 'nt' and sys.version_info < (3, 0):
+                nextline = nextline.decode('windows-1252')
+            elif os.name == 'posix' and sys.version_info < (3, 0):
+                nextline = nextline.decode('utf-8')
+            log.debug(nextline.strip('\r\n'))
+            # parse progress string from calibre-converter
+            progress = re.search(r"(\d+)%\s.*", nextline)
+            if progress:
+                self.UIqueue[index]['progress'] = progress.group(1) + ' %'
+
+        # process returncode
+        check = p.returncode
+        calibre_traceback = p.stderr.readlines()
+        error_message = ""
+        for ele in calibre_traceback:
+            if sys.version_info < (3, 0):
+                ele = ele.decode('utf-8')
+            log.debug(ele.strip('\n'))
+            if not ele.startswith('Traceback') and not ele.startswith('  File'):
+                error_message = "Calibre failed with error: %s" % ele.strip('\n')
+        return check, error_message
+
+
+    def _convert_kepubify(self, file_path, format_old_ext, format_new_ext, index):
+        quotes = [1, 3]
+        command = [config.config_kepubifypath, (file_path + format_old_ext), '-o', os.path.dirname(file_path)]
+        try:
+            p = process_open(command, quotes)
+        except OSError as e:
+            return 1, _(u"Kepubify-converter failed: %(error)s", error=e)
+        self.UIqueue[index]['progress'] = '1 %'
+        while True:
+            nextline = p.stdout.readlines()
+            nextline = [x.strip('\n') for x in nextline if x != '\n']
+            if sys.version_info < (3, 0):
+                nextline = [x.decode('utf-8') for x in nextline]
+            for line in nextline:
+                log.debug(line)
+            if p.poll() is not None:
+                break
+
+        # ToD Handle
+        # process returncode
+        check = p.returncode
+
+        # move file
+        if check == 0:
+            converted_file = glob(os.path.join(os.path.dirname(file_path), "*.kepub.epub"))
+            if len(converted_file) == 1:
+                copyfile(converted_file[0], (file_path + format_new_ext))
+                os.unlink(converted_file[0])
+            else:
+                return 1, _(u"Converted file not found or more than one file in folder %(folder)s",
+                            folder=os.path.dirname(file_path))
+        return check, None
 
 
     def add_convert(self, file_path, bookid, user_name, taskMessage, settings, kindle_mail=None):
@@ -533,10 +579,6 @@ class WorkerThread(threading.Thread):
         self.UIqueue[index]['formRuntime'] = datetime.now() - self.queue[index]['starttime']
 
 
-_worker = WorkerThread()
-_worker.start()
-
-
 def get_taskstatus():
     return _worker.get_taskstatus()
 
@@ -551,3 +593,7 @@ def add_upload(user_name, taskMessage):
 
 def add_convert(file_path, bookid, user_name, taskMessage, settings, kindle_mail=None):
     return _worker.add_convert(file_path, bookid, user_name, taskMessage, settings, kindle_mail)
+
+
+_worker = WorkerThread()
+_worker.start()
