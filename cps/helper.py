@@ -532,7 +532,14 @@ def get_book_cover_internal(book, use_generic_cover_on_failure):
 
 # saves book cover from url
 def save_cover_from_url(url, book_path):
-    img = requests.get(url, timeout=10)      # ToDo: Error Handling
+    try:
+        img = requests.get(url, timeout=(10, 200))      # ToDo: Error Handling
+        img.raise_for_status()
+    except (requests.exceptions.HTTPError,
+            requests.exceptions.ConnectionError,
+            requests.exceptions.Timeout) as ex:
+        log.info(u'Cover Download Error %s', ex)
+        return False, _("Error Downloading Cover")
     return save_cover(img, book_path)
 
 
