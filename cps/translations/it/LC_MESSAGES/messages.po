@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2020-05-26 18:39+0200\n"
+"POT-Creation-Date: 2020-05-28 18:49+0200\n"
 "PO-Revision-Date: 2017-04-04 15:09+0200\n"
 "Last-Translator: ElQuimm <quimm@webtaste.com>\n"
 "Language: it\n"
@@ -300,7 +300,8 @@ msgstr "Il formato del libro è stato eliminato con successo"
 msgid "Book Successfully Deleted"
 msgstr "Il libro é stato eliminato con successo"
 
-#: cps/editbooks.py:254 cps/editbooks.py:548
+#: cps/editbooks.py:254 cps/editbooks.py:548 cps/web.py:1644 cps/web.py:1685
+#: cps/web.py:1747
 msgid "Error opening eBook. File does not exist or file is not accessible"
 msgstr "Errore durante l'apertura del libro. Il file non esiste o il file non è accessibile"
 
@@ -497,63 +498,67 @@ msgstr "File %(file)s non trovato su Google Drive"
 msgid "Book path %(path)s not found on Google Drive"
 msgstr "Non ho trovato la cartella %(path)s del libro su Google Drive"
 
-#: cps/helper.py:551
+#: cps/helper.py:542
+msgid "Error Downloading Cover"
+msgstr ""
+
+#: cps/helper.py:558
 msgid "Failed to create path for cover"
 msgstr "Errore nel creare la cartella per la copertina"
 
-#: cps/helper.py:556
+#: cps/helper.py:563
 msgid "Cover-file is not a valid image file, or could not be stored"
 msgstr "Il file della copertina non è in un formato immagine valido o non può essere salvato"
 
-#: cps/helper.py:567
+#: cps/helper.py:574
 msgid "Only jpg/jpeg/png/webp files are supported as coverfile"
 msgstr "Solamente i file nei formati jpg/jpeg/png/webp sono supportati per le copertine"
 
-#: cps/helper.py:581
+#: cps/helper.py:588
 msgid "Only jpg/jpeg files are supported as coverfile"
 msgstr "Solamente i file nei formati jpg/jpeg sono supportati per le copertine"
 
-#: cps/helper.py:630
+#: cps/helper.py:637
 msgid "Unrar binary file not found"
 msgstr "Non ho trovato il file binario di UnRar"
 
-#: cps/helper.py:644
+#: cps/helper.py:651
 msgid "Error excecuting UnRar"
 msgstr "Errore nell'eseguire UnRar"
 
-#: cps/helper.py:700
+#: cps/helper.py:707
 msgid "Waiting"
 msgstr "Attendi"
 
-#: cps/helper.py:702
+#: cps/helper.py:709
 msgid "Failed"
 msgstr "Non riuscito"
 
-#: cps/helper.py:704
+#: cps/helper.py:711
 msgid "Started"
 msgstr "Avviato"
 
-#: cps/helper.py:706
+#: cps/helper.py:713
 msgid "Finished"
 msgstr "Terminato"
 
-#: cps/helper.py:708
+#: cps/helper.py:715
 msgid "Unknown Status"
 msgstr "Stato sconosciuto"
 
-#: cps/helper.py:713
+#: cps/helper.py:720
 msgid "E-mail: "
 msgstr "E-mail: "
 
-#: cps/helper.py:715 cps/helper.py:719
+#: cps/helper.py:722 cps/helper.py:726
 msgid "Convert: "
 msgstr "Conversione: "
 
-#: cps/helper.py:717
+#: cps/helper.py:724
 msgid "Upload: "
 msgstr "Upload: "
 
-#: cps/helper.py:721
+#: cps/helper.py:728
 msgid "Unknown Task: "
 msgstr "Processo sconosciuto: "
 
@@ -1079,18 +1084,10 @@ msgstr "Profilo di %(name)s"
 msgid "Profile updated"
 msgstr "Profilo aggiornato"
 
-#: cps/web.py:1644 cps/web.py:1747
-msgid "Error opening eBook. File does not exist or file is not accessible:"
-msgstr "Errore nell'aprire il libro. Il file non esiste o il file non è accessibile:"
-
 #: cps/web.py:1656 cps/web.py:1659 cps/web.py:1662 cps/web.py:1669
 #: cps/web.py:1674
 msgid "Read a Book"
 msgstr "Leggi un libro"
-
-#: cps/web.py:1685
-msgid "Error opening eBook. File does not exist or file is not accessible."
-msgstr "Errore nell'aprire il libro. Il file non esiste o il file non è accessibile."
 
 #: cps/worker.py:313
 #, python-format

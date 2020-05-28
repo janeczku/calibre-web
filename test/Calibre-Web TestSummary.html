@@ -36,17 +36,17 @@
       <div class="col-xs-12 col-sm-6">
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3" style="margin-top:50px;">
-            <p class='text-justify attribute'><strong>Start Time: </strong>2020-05-25 20:05:46</p>
+            <p class='text-justify attribute'><strong>Start Time: </strong>2020-05-27 20:44:05</p>
         </div>
       </div>
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3">
-            <p class='text-justify attribute'><strong>Stop Time: </strong>2020-05-25 21:04:57</p>
+            <p class='text-justify attribute'><strong>Stop Time: </strong>2020-05-27 21:43:26</p>
         </div>
       </div>
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3">
-           <p class='text-justify attribute'><strong>Duration: </strong>50:9 min</p>
+           <p class='text-justify attribute'><strong>Duration: </strong>50:20 min</p>
         </div>
       </div>
       </div>
@@ -484,8 +484,8 @@
     <tr class="result['header']['style']">
         <td>test_edit_books.test_edit_books</td>
         <td class="text-center">33</td>
-        <td class="text-center">30</td>
-        <td class="text-center">1</td>
+        <td class="text-center">29</td>
+        <td class="text-center">2</td>
         <td class="text-center">0</td>
         <td class="text-center">2</td>
         <td class="text-center">
@@ -647,11 +647,33 @@
     
     
     
-        <tr id='pt5.16' class='hiddenRow bg-success'>
+        <tr id='ft5.16' class='none bg-danger'>
             <td>
                 <div class='testcase'>test_edit_series</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft5.16')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id='div_ft5.16' class="popup_window test_output" style="display:none;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
+                                onclick="document.getElementById('div_ft5.16').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File "/home/matthias/Entwicklung/calibre-web-test/test/test_edit_books.py", line 277, in test_edit_series
+    self.assertEqual(u'book6', ele.text)
+AssertionError: 'book6' != ''
+- book6
++</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
@@ -1300,8 +1322,8 @@ AssertionError: False is not true : Browser-Cache Problem: Old Cover is displaye
     <tr class="result['header']['style']">
         <td>test_logging.test_logging</td>
         <td class="text-center">7</td>
-        <td class="text-center">5</td>
-        <td class="text-center">1</td>
+        <td class="text-center">6</td>
+        <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">1</td>
         <td class="text-center">
@@ -1311,32 +1333,11 @@ AssertionError: False is not true : Browser-Cache Problem: Old Cover is displaye
 
     
     
-        <tr id='ft12.1' class='none bg-danger'>
+        <tr id='pt12.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_access_log_recover</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft12.1')">FAIL</a>
-                </div>
-                <!--css div popup start-->
-                <div id='div_ft12.1' class="popup_window test_output" style="display:none;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                                onclick="document.getElementById('div_ft12.1').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File "/home/matthias/Entwicklung/calibre-web-test/test/test_logging.py", line 161, in test_access_log_recover
-    self.assertEqual(logpath, "access.log", "Access logfile config value is not empty after reseting to default")
-AssertionError: '' != 'access.log'
-+ access.log : Access logfile config value is not empty after reseting to default</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -2220,13 +2221,13 @@ AssertionError: '' != 'access.log'
 
     <tr class="result['header']['style']">
         <td>test_visiblilitys.calibre_web_visibilitys</td>
-        <td class="text-center">28</td>
-        <td class="text-center">28</td>
-        <td class="text-center">0</td>
-        <td class="text-center">0</td>
+        <td class="text-center">30</td>
+        <td class="text-center">23</td>
+        <td class="text-center">2</td>
+        <td class="text-center">5</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c20', 28)">Detail</a>
+            <a onclick="showClassDetail('c20', 30)">Detail</a>
         </td>
     </tr>
 
@@ -2333,7 +2334,7 @@ AssertionError: '' != 'access.log'
     
         <tr id='pt20.12' class='hiddenRow bg-success'>
             <td>
-                <div class='testcase'>test_admin_change_visibility_rated</div>
+                <div class='testcase'>test_admin_change_visibility_random</div>
             </td>
             <td colspan='6' align='center'>PASS</td>
         </tr>
@@ -2342,7 +2343,7 @@ AssertionError: '' != 'access.log'
     
         <tr id='pt20.13' class='hiddenRow bg-success'>
             <td>
-                <div class='testcase'>test_admin_change_visibility_rating</div>
+                <div class='testcase'>test_admin_change_visibility_rated</div>
             </td>
             <td colspan='6' align='center'>PASS</td>
         </tr>
@@ -2351,7 +2352,7 @@ AssertionError: '' != 'access.log'
     
         <tr id='pt20.14' class='hiddenRow bg-success'>
             <td>
-                <div class='testcase'>test_admin_change_visibility_read</div>
+                <div class='testcase'>test_admin_change_visibility_rating</div>
             </td>
             <td colspan='6' align='center'>PASS</td>
         </tr>
@@ -2360,7 +2361,7 @@ AssertionError: '' != 'access.log'
     
         <tr id='pt20.15' class='hiddenRow bg-success'>
             <td>
-                <div class='testcase'>test_admin_change_visibility_series</div>
+                <div class='testcase'>test_admin_change_visibility_read</div>
             </td>
             <td colspan='6' align='center'>PASS</td>
         </tr>
@@ -2369,7 +2370,7 @@ AssertionError: '' != 'access.log'
     
         <tr id='pt20.16' class='hiddenRow bg-success'>
             <td>
-                <div class='testcase'>test_allow_columns</div>
+                <div class='testcase'>test_admin_change_visibility_series</div>
             </td>
             <td colspan='6' align='center'>PASS</td>
         </tr>
@@ -2378,7 +2379,7 @@ AssertionError: '' != 'access.log'
     
         <tr id='pt20.17' class='hiddenRow bg-success'>
             <td>
-                <div class='testcase'>test_allow_tags</div>
+                <div class='testcase'>test_allow_columns</div>
             </td>
             <td colspan='6' align='center'>PASS</td>
         </tr>
@@ -2387,7 +2388,7 @@ AssertionError: '' != 'access.log'
     
         <tr id='pt20.18' class='hiddenRow bg-success'>
             <td>
-                <div class='testcase'>test_authors_max_settings</div>
+                <div class='testcase'>test_allow_tags</div>
             </td>
             <td colspan='6' align='center'>PASS</td>
         </tr>
@@ -2396,6 +2397,44 @@ AssertionError: '' != 'access.log'
     
         <tr id='pt20.19' class='hiddenRow bg-success'>
             <td>
+                <div class='testcase'>test_archive_books</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='et20.20' class='none bg-info'>
+            <td>
+                <div class='testcase'>test_authors_max_settings</div>
+            </td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et20.20')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id='div_et20.20' class="popup_window test_output" style="display:none;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
+                                onclick="document.getElementById('div_et20.20').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File "/home/matthias/Entwicklung/calibre-web-test/test/test_visiblilitys.py", line 780, in test_authors_max_settings
+    self.assertEqual(len(list_element[1][10]['author']), 4)
+IndexError: list index out of range</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
+        </tr>
+    
+    
+    
+        <tr id='pt20.21' class='hiddenRow bg-success'>
+            <td>
                 <div class='testcase'>test_checked_logged_in</div>
             </td>
             <td colspan='6' align='center'>PASS</td>
@@ -2403,52 +2442,156 @@ AssertionError: '' != 'access.log'
     
     
     
-        <tr id='pt20.20' class='hiddenRow bg-success'>
+        <tr id='et20.22' class='none bg-info'>
             <td>
                 <div class='testcase'>test_hide_custom_column</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et20.22')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id='div_et20.22' class="popup_window test_output" style="display:none;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
+                                onclick="document.getElementById('div_et20.22').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File "/home/matthias/Entwicklung/calibre-web-test/test/test_visiblilitys.py", line 728, in test_hide_custom_column
+    'Custom Text 人物 *\'()&': 'Tedo'
+  File "/home/matthias/Entwicklung/calibre-web-test/test/helper_ui.py", line 1373, in edit_book
+    submit.click()
+AttributeError: 'bool' object has no attribute 'click'</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
     
-        <tr id='pt20.21' class='hiddenRow bg-success'>
+        <tr id='et20.23' class='none bg-info'>
             <td>
                 <div class='testcase'>test_link_column_to_read_status</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et20.23')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id='div_et20.23' class="popup_window test_output" style="display:none;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
+                                onclick="document.getElementById('div_et20.23').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File "/home/matthias/Entwicklung/calibre-web-test/test/test_visiblilitys.py", line 675, in test_link_column_to_read_status
+    self.edit_book(custom_content={u'Custom Bool 1 Ä':u'No'})
+  File "/home/matthias/Entwicklung/calibre-web-test/test/helper_ui.py", line 1373, in edit_book
+    submit.click()
+AttributeError: 'bool' object has no attribute 'click'</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
     
-        <tr id='pt20.22' class='hiddenRow bg-success'>
+        <tr id='et20.24' class='none bg-info'>
             <td>
                 <div class='testcase'>test_random_books_available</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et20.24')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id='div_et20.24' class="popup_window test_output" style="display:none;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
+                                onclick="document.getElementById('div_et20.24').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File "/home/matthias/Entwicklung/calibre-web-test/test/test_visiblilitys.py", line 97, in test_random_books_available
+    list_element[0].click()
+IndexError: list index out of range</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
     
-        <tr id='pt20.23' class='hiddenRow bg-success'>
+        <tr id='ft20.25' class='none bg-danger'>
             <td>
                 <div class='testcase'>test_restrict_columns</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft20.25')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id='div_ft20.25' class="popup_window test_output" style="display:none;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
+                                onclick="document.getElementById('div_ft20.25').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File "/home/matthias/Entwicklung/calibre-web-test/test/test_visiblilitys.py", line 572, in test_restrict_columns
+    self.assertEqual(len(books[1]),11)
+AssertionError: 10 != 11</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
     
-        <tr id='pt20.24' class='hiddenRow bg-success'>
+        <tr id='ft20.26' class='none bg-danger'>
             <td>
                 <div class='testcase'>test_restrict_tags</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft20.26')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id='div_ft20.26' class="popup_window test_output" style="display:none;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
+                                onclick="document.getElementById('div_ft20.26').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File "/home/matthias/Entwicklung/calibre-web-test/test/test_visiblilitys.py", line 466, in test_restrict_tags
+    self.assertEqual(len(self.get_books_displayed()[1]), 7)
+AssertionError: 6 != 7</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
     
-        <tr id='pt20.25' class='hiddenRow bg-success'>
+        <tr id='pt20.27' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_search_functions</div>
             </td>
@@ -2457,7 +2600,7 @@ AssertionError: '' != 'access.log'
     
     
     
-        <tr id='pt20.26' class='hiddenRow bg-success'>
+        <tr id='pt20.28' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_search_string</div>
             </td>
@@ -2466,7 +2609,7 @@ AssertionError: '' != 'access.log'
     
     
     
-        <tr id='pt20.27' class='hiddenRow bg-success'>
+        <tr id='pt20.29' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_user_email_available</div>
             </td>
@@ -2475,21 +2618,41 @@ AssertionError: '' != 'access.log'
     
     
     
-        <tr id='pt20.28' class='hiddenRow bg-success'>
+        <tr id='et20.30' class='none bg-info'>
             <td>
                 <div class='testcase'>test_user_visibility_sidebar</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et20.30')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id='div_et20.30' class="popup_window test_output" style="display:none;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
+                                onclick="document.getElementById('div_et20.30').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File "/home/matthias/Entwicklung/calibre-web-test/test/test_visiblilitys.py", line 137, in test_user_visibility_sidebar
+    list_element[0].click()
+IndexError: list index out of range</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
 
     <tr id='total_row' class="text-center bg-grey">
         <td>Total</td>
-        <td>216</td>
-        <td>208</td>
-        <td>2</td>
-        <td>0</td>
+        <td>218</td>
+        <td>203</td>
+        <td>4</td>
+        <td>5</td>
         <td>6</td>
         <td>&nbsp;</td>
     </tr>
@@ -2716,7 +2879,7 @@ AssertionError: '' != 'access.log'
 </div>
 
 <script>
-    drawCircle(208, 2, 0, 6);
+    drawCircle(203, 4, 5, 6);
 </script>
 
 </div>
