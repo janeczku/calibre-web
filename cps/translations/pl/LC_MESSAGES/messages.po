@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Calibre Web - polski (POT: 2019-08-06 18:35)\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-05-25 21:52+0200\n"
+"POT-Creation-Date: 2020-05-28 18:49+0200\n"
 "PO-Revision-Date: 2020-03-31 21:50+0200\n"
 "Last-Translator: Jerzy Piątek <jerzy.piatek@gmail.com>\n"
 "Language: pl\n"
@@ -305,7 +305,8 @@ msgstr ""
 msgid "Book Successfully Deleted"
 msgstr ""
 
-#: cps/editbooks.py:254 cps/editbooks.py:548
+#: cps/editbooks.py:254 cps/editbooks.py:548 cps/web.py:1644 cps/web.py:1685
+#: cps/web.py:1747
 msgid "Error opening eBook. File does not exist or file is not accessible"
 msgstr "Błąd podczas otwierania e-booka. Plik nie istnieje lub jest niedostępny"
 
@@ -504,63 +505,67 @@ msgstr "Nie znaleziono pliku %(file)s na Google Drive"
 msgid "Book path %(path)s not found on Google Drive"
 msgstr "Nie znaleziono ścieżki do książki %(path)s na Google Drive"
 
-#: cps/helper.py:551
+#: cps/helper.py:542
+msgid "Error Downloading Cover"
+msgstr ""
+
+#: cps/helper.py:558
 msgid "Failed to create path for cover"
 msgstr "Nie udało się utworzyć ścieżki dla okładki"
 
-#: cps/helper.py:556
+#: cps/helper.py:563
 msgid "Cover-file is not a valid image file, or could not be stored"
 msgstr ""
 
-#: cps/helper.py:567
+#: cps/helper.py:574
 msgid "Only jpg/jpeg/png/webp files are supported as coverfile"
 msgstr "Jako plik okładki dopuszczalne są jedynie pliki jpg/jpeg/png/webp"
 
-#: cps/helper.py:581
+#: cps/helper.py:588
 msgid "Only jpg/jpeg files are supported as coverfile"
 msgstr "Jako plik okładki dopuszczalne są jedynie pliki jpg/jpeg"
 
-#: cps/helper.py:630
+#: cps/helper.py:637
 msgid "Unrar binary file not found"
 msgstr ""
 
-#: cps/helper.py:644
+#: cps/helper.py:651
 msgid "Error excecuting UnRar"
 msgstr ""
 
-#: cps/helper.py:700
+#: cps/helper.py:707
 msgid "Waiting"
 msgstr "Oczekiwanie"
 
-#: cps/helper.py:702
+#: cps/helper.py:709
 msgid "Failed"
 msgstr "Nieudane"
 
-#: cps/helper.py:704
+#: cps/helper.py:711
 msgid "Started"
 msgstr "Rozpoczynanie"
 
-#: cps/helper.py:706
+#: cps/helper.py:713
 msgid "Finished"
 msgstr "Zakończone"
 
-#: cps/helper.py:708
+#: cps/helper.py:715
 msgid "Unknown Status"
 msgstr "Ststus nieznany"
 
-#: cps/helper.py:713
+#: cps/helper.py:720
 msgid "E-mail: "
 msgstr "E-mail: "
 
-#: cps/helper.py:715 cps/helper.py:719
+#: cps/helper.py:722 cps/helper.py:726
 msgid "Convert: "
 msgstr "Konwertowanie: "
 
-#: cps/helper.py:717
+#: cps/helper.py:724
 msgid "Upload: "
 msgstr "Wyślij: "
 
-#: cps/helper.py:721
+#: cps/helper.py:728
 msgid "Unknown Task: "
 msgstr "Nieznane zadanie: "
 
@@ -1087,35 +1092,27 @@ msgstr "Profil użytkownika %(name)s"
 msgid "Profile updated"
 msgstr "Zaktualizowano profil"
 
-#: cps/web.py:1644 cps/web.py:1747
-msgid "Error opening eBook. File does not exist or file is not accessible:"
-msgstr "Błąd podczas otwierania e-booka. Plik nie istnieje lub jest niedostępny:"
-
 #: cps/web.py:1656 cps/web.py:1659 cps/web.py:1662 cps/web.py:1669
 #: cps/web.py:1674
 msgid "Read a Book"
 msgstr "Czytaj książkę"
 
-#: cps/web.py:1685
-msgid "Error opening eBook. File does not exist or file is not accessible."
-msgstr "Błąd podczas otwierania e-booka. Plik nie istnieje lub jest niedostępny."
-
-#: cps/worker.py:310
+#: cps/worker.py:313
 #, python-format
 msgid "Calibre ebook-convert %(tool)s not found"
 msgstr ""
 
-#: cps/worker.py:370
+#: cps/worker.py:373
 #, python-format
 msgid "Ebook-converter failed: %(error)s"
 msgstr "Konwertowanie nie powiodło się: %(error)s"
 
-#: cps/worker.py:403
+#: cps/worker.py:406
 #, python-format
 msgid "Kepubify-converter failed: %(error)s"
 msgstr ""
 
-#: cps/worker.py:427
+#: cps/worker.py:430
 #, python-format
 msgid "Converted file not found or more than one file in folder %(folder)s"
 msgstr ""

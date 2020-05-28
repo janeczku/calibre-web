@@ -20,7 +20,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-05-25 21:52+0200\n"
+"POT-Creation-Date: 2020-05-28 18:49+0200\n"
 "PO-Revision-Date: 2020-05-08 14:36+0200\n"
 "Last-Translator: Dekani <dekani1500@gmail.com>\n"
 "Language: fr\n"
@@ -314,7 +314,8 @@ msgstr "Le format du livre a été supprimé avec succès"
 msgid "Book Successfully Deleted"
 msgstr "Le livre a été supprimé avec succès"
 
-#: cps/editbooks.py:254 cps/editbooks.py:548
+#: cps/editbooks.py:254 cps/editbooks.py:548 cps/web.py:1644 cps/web.py:1685
+#: cps/web.py:1747
 msgid "Error opening eBook. File does not exist or file is not accessible"
 msgstr "Erreur à l’ouverture du livre. Le fichier n’existe pas ou n’est pas accessible"
 
@@ -511,63 +512,67 @@ msgstr "Le fichier %(file)s n'a pas été trouvé dans Google Drive"
 msgid "Book path %(path)s not found on Google Drive"
 msgstr "Le chemin du livre %(path)s n'a pas été trouvé dans Google Drive"
 
-#: cps/helper.py:551
+#: cps/helper.py:542
+msgid "Error Downloading Cover"
+msgstr ""
+
+#: cps/helper.py:558
 msgid "Failed to create path for cover"
 msgstr "Impossible de créer le chemin pour la couverture"
 
-#: cps/helper.py:556
+#: cps/helper.py:563
 msgid "Cover-file is not a valid image file, or could not be stored"
 msgstr "Le fichier couverture n'est pas un fichier image valide, ou ne peut pas être stocké"
 
-#: cps/helper.py:567
+#: cps/helper.py:574
 msgid "Only jpg/jpeg/png/webp files are supported as coverfile"
 msgstr "Seuls les fichiers jpg/jpeg/png/webp sont supportés comme fichier de couverture"
 
-#: cps/helper.py:581
+#: cps/helper.py:588
 msgid "Only jpg/jpeg files are supported as coverfile"
 msgstr "Seuls les fichiers jpg/jpeg sont supportés comme fichier de couverture"
 
-#: cps/helper.py:630
+#: cps/helper.py:637
 msgid "Unrar binary file not found"
 msgstr "Fichier binaire Unrar non trouvé"
 
-#: cps/helper.py:644
+#: cps/helper.py:651
 msgid "Error excecuting UnRar"
 msgstr "Une erreur est survenue lors de l'exécution d'UnRar"
 
-#: cps/helper.py:700
+#: cps/helper.py:707
 msgid "Waiting"
 msgstr "En attente"
 
-#: cps/helper.py:702
+#: cps/helper.py:709
 msgid "Failed"
 msgstr "Echoué"
 
-#: cps/helper.py:704
+#: cps/helper.py:711
 msgid "Started"
 msgstr "Débuté"
 
-#: cps/helper.py:706
+#: cps/helper.py:713
 msgid "Finished"
 msgstr "Terminé"
 
-#: cps/helper.py:708
+#: cps/helper.py:715
 msgid "Unknown Status"
 msgstr "Statut inconnu"
 
-#: cps/helper.py:713
+#: cps/helper.py:720
 msgid "E-mail: "
 msgstr "Courriel : "
 
-#: cps/helper.py:715 cps/helper.py:719
+#: cps/helper.py:722 cps/helper.py:726
 msgid "Convert: "
 msgstr "Convertir vers : "
 
-#: cps/helper.py:717
+#: cps/helper.py:724
 msgid "Upload: "
 msgstr "Téléverser : "
 
-#: cps/helper.py:721
+#: cps/helper.py:728
 msgid "Unknown Task: "
 msgstr "Tâche inconnue : "
 
@@ -1093,35 +1098,27 @@ msgstr "Profil de %(name)s"
 msgid "Profile updated"
 msgstr "Profil mis à jour"
 
-#: cps/web.py:1644 cps/web.py:1747
-msgid "Error opening eBook. File does not exist or file is not accessible:"
-msgstr "Erreur lors de l'ouverture du livre. Le fichier n'existe pas ou le fichier est inaccessible:"
-
 #: cps/web.py:1656 cps/web.py:1659 cps/web.py:1662 cps/web.py:1669
 #: cps/web.py:1674
 msgid "Read a Book"
 msgstr "Lire un livre"
 
-#: cps/web.py:1685
-msgid "Error opening eBook. File does not exist or file is not accessible."
-msgstr "Erreur lors de l’ouverture d’un eBook. Le fichier n’existe pas ou le fichier n’est pas accessible."
-
-#: cps/worker.py:310
+#: cps/worker.py:313
 #, python-format
 msgid "Calibre ebook-convert %(tool)s not found"
 msgstr ""
 
-#: cps/worker.py:370
+#: cps/worker.py:373
 #, python-format
 msgid "Ebook-converter failed: %(error)s"
 msgstr "La commande ebook-convert a échouée : %(error)s"
 
-#: cps/worker.py:403
+#: cps/worker.py:406
 #, python-format
 msgid "Kepubify-converter failed: %(error)s"
 msgstr ""
 
-#: cps/worker.py:427
+#: cps/worker.py:430
 #, python-format
 msgid "Converted file not found or more than one file in folder %(folder)s"
 msgstr ""

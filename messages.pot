@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-05-26 18:39+0200\n"
+"POT-Creation-Date: 2020-05-28 18:49+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -300,7 +300,8 @@ msgstr ""
 msgid "Book Successfully Deleted"
 msgstr ""
 
-#: cps/editbooks.py:254 cps/editbooks.py:548
+#: cps/editbooks.py:254 cps/editbooks.py:548 cps/web.py:1644 cps/web.py:1685
+#: cps/web.py:1747
 msgid "Error opening eBook. File does not exist or file is not accessible"
 msgstr ""
 
@@ -497,63 +498,67 @@ msgstr ""
 msgid "Book path %(path)s not found on Google Drive"
 msgstr ""
 
-#: cps/helper.py:551
+#: cps/helper.py:542
+msgid "Error Downloading Cover"
+msgstr ""
+
+#: cps/helper.py:558
 msgid "Failed to create path for cover"
 msgstr ""
 
-#: cps/helper.py:556
+#: cps/helper.py:563
 msgid "Cover-file is not a valid image file, or could not be stored"
 msgstr ""
 
-#: cps/helper.py:567
+#: cps/helper.py:574
 msgid "Only jpg/jpeg/png/webp files are supported as coverfile"
 msgstr ""
 
-#: cps/helper.py:581
+#: cps/helper.py:588
 msgid "Only jpg/jpeg files are supported as coverfile"
 msgstr ""
 
-#: cps/helper.py:630
+#: cps/helper.py:637
 msgid "Unrar binary file not found"
 msgstr ""
 
-#: cps/helper.py:644
+#: cps/helper.py:651
 msgid "Error excecuting UnRar"
 msgstr ""
 
-#: cps/helper.py:700
+#: cps/helper.py:707
 msgid "Waiting"
 msgstr ""
 
-#: cps/helper.py:702
+#: cps/helper.py:709
 msgid "Failed"
 msgstr ""
 
-#: cps/helper.py:704
+#: cps/helper.py:711
 msgid "Started"
 msgstr ""
 
-#: cps/helper.py:706
+#: cps/helper.py:713
 msgid "Finished"
 msgstr ""
 
-#: cps/helper.py:708
+#: cps/helper.py:715
 msgid "Unknown Status"
 msgstr ""
 
-#: cps/helper.py:713
+#: cps/helper.py:720
 msgid "E-mail: "
 msgstr ""
 
-#: cps/helper.py:715 cps/helper.py:719
+#: cps/helper.py:722 cps/helper.py:726
 msgid "Convert: "
 msgstr ""
 
-#: cps/helper.py:717
+#: cps/helper.py:724
 msgid "Upload: "
 msgstr ""
 
-#: cps/helper.py:721
+#: cps/helper.py:728
 msgid "Unknown Task: "
 msgstr ""
 
@@ -1079,17 +1084,9 @@ msgstr ""
 msgid "Profile updated"
 msgstr ""
 
-#: cps/web.py:1644 cps/web.py:1747
-msgid "Error opening eBook. File does not exist or file is not accessible:"
-msgstr ""
-
 #: cps/web.py:1656 cps/web.py:1659 cps/web.py:1662 cps/web.py:1669
 #: cps/web.py:1674
 msgid "Read a Book"
-msgstr ""
-
-#: cps/web.py:1685
-msgid "Error opening eBook. File does not exist or file is not accessible."
 msgstr ""
 
 #: cps/worker.py:313
