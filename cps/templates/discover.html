@@ -21,7 +21,7 @@
             {% if loop.index > g.config_authors_max and g.config_authors_max != 0 %}
               {% if not loop.first %}
                 <span class="author-hidden-divider">&amp;</span>
-			  {% endif %}
+			        {% endif %}
               <a class="author-name author-hidden" href="{{url_for('web.books_list',  data='author', sort='new', book_id=author.id) }}">{{author.name.replace('|',',')|shortentitle(30)}}</a>
               {% if loop.last %}
                 <a href="#" class="author-expand" data-authors-max="{{g.config_authors_max}}" data-collapse-caption="({{_('reduce')}})">(...)</a>
@@ -34,6 +34,14 @@
             {% endif %}
           {% endfor %}
         </p>
+        {% if entry.series.__len__() > 0 %}
+        <p class="series">
+          <a href="{{url_for('web.books_list', data='series', sort='new', book_id=entry.series[0].id )}}">
+            {{entry.series[0].name}}
+          </a> 
+          ({{entry.series_index}})
+        </p>
+        {% endif %}
         {% if entry.ratings.__len__() > 0 %}
         <div class="rating">
           {% for number in range((entry.ratings[0].rating/2)|int(2)) %}
