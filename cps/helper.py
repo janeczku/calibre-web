@@ -31,8 +31,6 @@ from datetime import datetime, timedelta
 from tempfile import gettempdir
 
 import requests
-from babel import Locale as LC
-from babel.core import UnknownLocaleError
 from babel.dates import format_datetime
 from babel.units import format_unit
 from flask import send_from_directory, make_response, redirect, abort
@@ -56,6 +54,7 @@ except ImportError:
 
 try:
     from PIL import Image as PILImage
+    from PIL import UnidentifiedImageError
     use_PIL = True
 except ImportError:
     use_PIL = False
@@ -535,12 +534,16 @@ def save_cover_from_url(url, book_path):
     try:
         img = requests.get(url, timeout=(10, 200))      # ToDo: Error Handling
         img.raise_for_status()
+        return save_cover(img, book_path)
     except (requests.exceptions.HTTPError,
             requests.exceptions.ConnectionError,
             requests.exceptions.Timeout) as ex:
         log.info(u'Cover Download Error %s', ex)
         return False, _("Error Downloading Cover")
-    return save_cover(img, book_path)
+    except UnidentifiedImageError as ex:
+        log.info(u'File Format Error %s', ex)
+        return False, _("Cover Format Error")
+
 
 
 def save_cover_from_filestorage(filepath, saved_filename, img):
