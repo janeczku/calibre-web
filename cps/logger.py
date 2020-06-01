@@ -157,12 +157,12 @@ def create_access_log(log_file, log_name, formatter):
         if log_file == DEFAULT_ACCESS_LOG:
             raise
         file_handler = RotatingFileHandler(DEFAULT_ACCESS_LOG, maxBytes=50000, backupCount=2)
-        log_file = "access.log"
+        log_file = ""
 
     file_handler.setFormatter(formatter)
     access_log.addHandler(file_handler)
     return access_log, \
-           "access.log" if _absolute_log_file(log_file, DEFAULT_ACCESS_LOG) == DEFAULT_ACCESS_LOG else log_file
+           "" if _absolute_log_file(log_file, DEFAULT_ACCESS_LOG) == DEFAULT_ACCESS_LOG else log_file
 
 
 # Enable logging of smtp lib debug output

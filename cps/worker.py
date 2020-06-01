@@ -24,7 +24,10 @@ import smtplib
 import socket
 import time
 import threading
-import queue
+try:
+    import queue
+except ImportError:
+    import Queue as queue
 from glob import glob
 from shutil import copyfile
 from datetime import datetime
@@ -278,18 +281,6 @@ class WorkerThread(threading.Thread):
         self.doLock.acquire()
         index = self.current
         self.doLock.release()
-        '''dbpath = os.path.join(config.config_calibre_dir, "metadata.db")
-        engine = create_engine('sqlite://',
-                               echo=False,
-                               isolation_level="SERIALIZABLE",
-                               connect_args={'check_same_thread': True})
-        engine.execute("attach database '{}' as calibre;".format(dbpath))
-        conn = engine.connect()
-        Session = scoped_session(sessionmaker(autocommit=False,
-                                              autoflush=False,
-                                              bind=engine))
-        w_session = Session()
-        engine.execute("attach database '{}' as calibre;".format(dbpath))'''
         file_path = self.queue[index]['file_path']
         book_id = self.queue[index]['bookid']
         format_old_ext = u'.' + self.queue[index]['settings']['old_book_format'].lower()
