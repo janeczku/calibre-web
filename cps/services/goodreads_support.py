@@ -57,7 +57,7 @@ def connect(key=None, secret=None, enabled=True):
 
 def get_author_info(author_name):
     now = time.time()
-    author_info = None # _AUTHORS_CACHE.get(author_name, None)
+    author_info = _AUTHORS_CACHE.get(author_name, None)
     if author_info:
         if now < author_info._timestamp + _CACHE_TIMEOUT:
             return author_info

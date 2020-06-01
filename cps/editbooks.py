@@ -278,7 +278,7 @@ def render_edit_book(book_id):
 
     # Determine what formats don't already exist
     if config.config_converterpath:
-        allowed_conversion_formats = constants.EXTENSIONS_CONVERT.copy()
+        allowed_conversion_formats = constants.EXTENSIONS_CONVERT[:]
         for file in book.data:
             if file.format.lower() in allowed_conversion_formats:
                 allowed_conversion_formats.remove(file.format.lower())

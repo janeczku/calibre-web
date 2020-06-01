@@ -683,9 +683,10 @@ def _configuration_update_helper():
     reboot_required |= reboot
     # Rarfile Content configuration
     _config_string(to_save, "config_rarfile_location")
-    unrar_status = helper.check_unrar(config.config_rarfile_location)
-    if unrar_status:
-        return _configuration_result(unrar_status, gdriveError)
+    if "config_rarfile_location" in to_save:
+        unrar_status = helper.check_unrar(config.config_rarfile_location)
+        if unrar_status:
+            return _configuration_result(unrar_status, gdriveError)
 
     try:
         metadata_db = os.path.join(config.config_calibre_dir, "metadata.db")
