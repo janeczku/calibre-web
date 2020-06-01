@@ -778,7 +778,7 @@ def get_download_link(book_id, book_format, client):
     book_format = book_format.split(".")[0]
     book = calibre_db.get_filtered_book(book_id)
     if book:
-        data1 = data = calibre_db.get_book_format(book.id, book_format.upper())
+        data1 = calibre_db.get_book_format(book.id, book_format.upper())
     else:
         abort(404)
     if data1:
