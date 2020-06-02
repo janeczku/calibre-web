@@ -262,7 +262,7 @@ msgstr "Aggiornamento completato, per favore premi ok e ricarica la pagina"
 #: cps/admin.py:1041 cps/admin.py:1042 cps/admin.py:1043 cps/admin.py:1044
 #: cps/admin.py:1045
 msgid "Update failed:"
-msgstr "Aggiornamento fallito:"
+msgstr "Aggiornamento non riuscito:"
 
 #: cps/admin.py:1041 cps/updater.py:319 cps/updater.py:520 cps/updater.py:522
 msgid "HTTP Error"
@@ -500,7 +500,7 @@ msgstr "Non ho trovato la cartella %(path)s del libro su Google Drive"
 
 #: cps/helper.py:542
 msgid "Error Downloading Cover"
-msgstr ""
+msgstr "Errore nello scaricare la copertina"
 
 #: cps/helper.py:558
 msgid "Failed to create path for cover"
