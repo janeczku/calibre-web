@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2020-05-28 18:49+0200\n"
+"POT-Creation-Date: 2020-06-02 20:57+0200\n"
 "PO-Revision-Date: 2017-04-04 15:09+0200\n"
 "Last-Translator: ElQuimm <quimm@webtaste.com>\n"
 "Language: it\n"
@@ -60,7 +60,7 @@ msgstr "Pagina di amministrazione"
 msgid "UI Configuration"
 msgstr "Configurazione dell'interfaccia utente"
 
-#: cps/admin.py:189 cps/admin.py:705
+#: cps/admin.py:189 cps/admin.py:706
 msgid "Calibre-Web configuration updated"
 msgstr "La configurazione di Calibre-Web è stata aggiornata"
 
@@ -120,167 +120,167 @@ msgstr "La posizione del Keyfile non è valida, per favore indica il percorso co
 msgid "Certfile Location is not Valid, Please Enter Correct Path"
 msgstr "La posizione del Certfile non è valida, per favore indica il percorso corretto"
 
-#: cps/admin.py:700
+#: cps/admin.py:701
 msgid "DB Location is not Valid, Please Enter Correct Path"
 msgstr "La posizione del DB non è valida, per favore indica il percorso corretto"
 
-#: cps/admin.py:702
+#: cps/admin.py:703
 msgid "DB is not Writeable"
 msgstr "Il DB non è scrivibile"
 
-#: cps/admin.py:735
+#: cps/admin.py:736
 msgid "Basic Configuration"
 msgstr "Configurazione di base"
 
-#: cps/admin.py:750 cps/web.py:1337
+#: cps/admin.py:751 cps/web.py:1337
 msgid "Please fill out all fields!"
 msgstr "Per favore compila tutti i campi!"
 
-#: cps/admin.py:753 cps/admin.py:765 cps/admin.py:771 cps/admin.py:891
+#: cps/admin.py:754 cps/admin.py:766 cps/admin.py:772 cps/admin.py:892
 msgid "Add new user"
 msgstr "Aggiungi un nuovo utente"
 
-#: cps/admin.py:762 cps/web.py:1578
+#: cps/admin.py:763 cps/web.py:1578
 msgid "E-mail is not from valid domain"
 msgstr "L'e-mail non proviene da un dominio valido"
 
-#: cps/admin.py:769 cps/admin.py:784
+#: cps/admin.py:770 cps/admin.py:785
 msgid "Found an existing account for this e-mail address or nickname."
 msgstr "Trovato un account esistente con questo e-mail o nome di utente"
 
-#: cps/admin.py:780
+#: cps/admin.py:781
 #, python-format
 msgid "User '%(user)s' created"
 msgstr "Creato l'utente '%(user)s'"
 
-#: cps/admin.py:793
+#: cps/admin.py:794
 #, python-format
 msgid "User '%(nick)s' deleted"
 msgstr "Utente '%(nick)s' eliminato"
 
-#: cps/admin.py:796
+#: cps/admin.py:797
 msgid "No admin user remaining, can't delete user"
 msgstr "Non rimarrebbe nessun utente amministratore, non posso eliminare l'utente"
 
-#: cps/admin.py:802
+#: cps/admin.py:803
 msgid "No admin user remaining, can't remove admin role"
 msgstr "Non rimarrebbe nessun utente amministratore, non posso rimuovere il ruolo di amministratore"
 
-#: cps/admin.py:838 cps/web.py:1621
+#: cps/admin.py:839 cps/web.py:1621
 msgid "Found an existing account for this e-mail address."
 msgstr "Ho trovato un account creato in precedenza con questo e-mail."
 
-#: cps/admin.py:848 cps/admin.py:863 cps/admin.py:966 cps/web.py:1596
+#: cps/admin.py:849 cps/admin.py:864 cps/admin.py:967 cps/web.py:1596
 #, python-format
 msgid "Edit User %(nick)s"
 msgstr "Modifica l'utente %(nick)s"
 
-#: cps/admin.py:854 cps/web.py:1588
+#: cps/admin.py:855 cps/web.py:1588
 msgid "This username is already taken"
 msgstr "Questo nome di utente è già utilizzato"
 
-#: cps/admin.py:870
+#: cps/admin.py:871
 #, python-format
 msgid "User '%(nick)s' updated"
 msgstr "Utente '%(nick)s' aggiornato"
 
-#: cps/admin.py:873
+#: cps/admin.py:874
 msgid "An unknown error occured."
 msgstr "Si è verificato un errore imprevisto."
 
-#: cps/admin.py:900 cps/templates/admin.html:71
+#: cps/admin.py:901 cps/templates/admin.html:71
 msgid "Edit E-mail Server Settings"
 msgstr "Modifica le impostazioni SMTP"
 
-#: cps/admin.py:924
+#: cps/admin.py:925
 #, python-format
 msgid "Test e-mail successfully send to %(kindlemail)s"
 msgstr "E-mail di test inviato con successo a %(kindlemail)s"
 
-#: cps/admin.py:927
+#: cps/admin.py:928
 #, python-format
 msgid "There was an error sending the Test e-mail: %(res)s"
 msgstr "Si è verificato un errore nell'invio dell'e-mail di test: %(res)s"
 
-#: cps/admin.py:929
+#: cps/admin.py:930
 msgid "Please configure your e-mail address first..."
 msgstr "Per favore prima configura il tuo indirizzo e-mail..."
 
-#: cps/admin.py:931
+#: cps/admin.py:932
 msgid "E-mail server settings updated"
 msgstr "Configurazione del server e-mail aggiornata"
 
-#: cps/admin.py:942
+#: cps/admin.py:943
 msgid "User not found"
 msgstr "Utente non trovato"
 
-#: cps/admin.py:977
+#: cps/admin.py:978
 #, python-format
 msgid "Password for user %(user)s reset"
 msgstr "La password dell'utente %(user)s è stata resettata"
 
-#: cps/admin.py:980 cps/web.py:1361 cps/web.py:1425
+#: cps/admin.py:981 cps/web.py:1361 cps/web.py:1425
 msgid "An unknown error occurred. Please try again later."
 msgstr "Si è verificato un errore sconosciuto: per favore riprova."
 
-#: cps/admin.py:983 cps/web.py:1299
+#: cps/admin.py:984 cps/web.py:1299
 msgid "Please configure the SMTP mail settings first..."
 msgstr "Configura dapprima le impostazioni del server SMTP..."
 
-#: cps/admin.py:995
+#: cps/admin.py:996
 msgid "Logfile viewer"
 msgstr "Visualizzatore del Logfile"
 
-#: cps/admin.py:1034
+#: cps/admin.py:1035
 msgid "Requesting update package"
 msgstr "Richiedo il pacchetto di aggiornamento"
 
-#: cps/admin.py:1035
+#: cps/admin.py:1036
 msgid "Downloading update package"
 msgstr "Scarico il pacchetto di aggiornamento"
 
-#: cps/admin.py:1036
+#: cps/admin.py:1037
 msgid "Unzipping update package"
 msgstr "Decomprimo il pacchetto di aggiornamento"
 
-#: cps/admin.py:1037
+#: cps/admin.py:1038
 msgid "Replacing files"
 msgstr "Sostituisco i file"
 
-#: cps/admin.py:1038
+#: cps/admin.py:1039
 msgid "Database connections are closed"
 msgstr "Le connessioni al database sono chiuse"
 
-#: cps/admin.py:1039
+#: cps/admin.py:1040
 msgid "Stopping server"
 msgstr "Arresto il server"
 
-#: cps/admin.py:1040
+#: cps/admin.py:1041
 msgid "Update finished, please press okay and reload page"
 msgstr "Aggiornamento completato, per favore premi ok e ricarica la pagina"
 
-#: cps/admin.py:1041 cps/admin.py:1042 cps/admin.py:1043 cps/admin.py:1044
-#: cps/admin.py:1045
+#: cps/admin.py:1042 cps/admin.py:1043 cps/admin.py:1044 cps/admin.py:1045
+#: cps/admin.py:1046
 msgid "Update failed:"
-msgstr "Aggiornamento fallito:"
+msgstr "Aggiornamento non riuscito:"
 
-#: cps/admin.py:1041 cps/updater.py:319 cps/updater.py:520 cps/updater.py:522
+#: cps/admin.py:1042 cps/updater.py:319 cps/updater.py:520 cps/updater.py:522
 msgid "HTTP Error"
 msgstr "Errore HTTP"
 
-#: cps/admin.py:1042 cps/updater.py:321 cps/updater.py:524
+#: cps/admin.py:1043 cps/updater.py:321 cps/updater.py:524
 msgid "Connection error"
 msgstr "Errore di connessione"
 
-#: cps/admin.py:1043 cps/updater.py:323 cps/updater.py:526
+#: cps/admin.py:1044 cps/updater.py:323 cps/updater.py:526
 msgid "Timeout while establishing connection"
 msgstr "Tempo scaduto nello stabilire la connessione"
 
-#: cps/admin.py:1044 cps/updater.py:325 cps/updater.py:528
+#: cps/admin.py:1045 cps/updater.py:325 cps/updater.py:528
 msgid "General error"
 msgstr "Errore generale"
 
-#: cps/admin.py:1045
+#: cps/admin.py:1046
 msgid "Update File Could Not be Saved in Temp Dir"
 msgstr "Il file di aggiornamento non può essere salvato nella cartella temporanea"
 
@@ -397,168 +397,172 @@ msgstr "La configurazione di Google Drive non è stata completata correttamente.
 msgid "Callback domain is not verified, please follow steps to verify domain in google developer console"
 msgstr "Callback domain non è stato verificato. Per favore intraprendi il necessario per verificare il dominio nella developer console di Google"
 
-#: cps/helper.py:80
+#: cps/helper.py:79
 #, python-format
 msgid "%(format)s format not found for book id: %(book)d"
 msgstr "Formato %(format)s non trovato per il libro: %(book)d"
 
-#: cps/helper.py:92
+#: cps/helper.py:91
 #, python-format
 msgid "%(format)s not found on Google Drive: %(fn)s"
 msgstr "%(format)s non trovato su Google Drive: %(fn)s"
 
-#: cps/helper.py:99 cps/helper.py:227 cps/templates/detail.html:41
+#: cps/helper.py:98 cps/helper.py:226 cps/templates/detail.html:41
 #: cps/templates/detail.html:45
 msgid "Send to Kindle"
 msgstr "Invia a Kindle"
 
-#: cps/helper.py:100 cps/helper.py:118 cps/helper.py:229
+#: cps/helper.py:99 cps/helper.py:117 cps/helper.py:228
 msgid "This e-mail has been sent via Calibre-Web."
 msgstr "Questo e-mail è stato spedito tramite Calibre-Web."
 
-#: cps/helper.py:111
+#: cps/helper.py:110
 #, python-format
 msgid "%(format)s not found: %(fn)s"
 msgstr "%(format)s non trovato: %(fn)s"
 
-#: cps/helper.py:116
+#: cps/helper.py:115
 msgid "Calibre-Web test e-mail"
 msgstr "E-mail di test da Calibre-Web"
 
-#: cps/helper.py:118
+#: cps/helper.py:117
 msgid "Test e-mail"
 msgstr "E-mail di test"
 
-#: cps/helper.py:133
+#: cps/helper.py:132
 msgid "Get Started with Calibre-Web"
 msgstr "Inizia con Calibre-Web"
 
-#: cps/helper.py:135
+#: cps/helper.py:134
 #, python-format
 msgid "Registration e-mail for user: %(name)s"
 msgstr "E-mail di registrazione dell'utente: %(name)s"
 
-#: cps/helper.py:152 cps/helper.py:156 cps/helper.py:160 cps/helper.py:169
-#: cps/helper.py:173 cps/helper.py:177
+#: cps/helper.py:151 cps/helper.py:155 cps/helper.py:159 cps/helper.py:168
+#: cps/helper.py:172 cps/helper.py:176
 #, python-format
 msgid "Send %(format)s to Kindle"
 msgstr "Invia %(format)s a Kindle"
 
-#: cps/helper.py:182 cps/helper.py:188
+#: cps/helper.py:181 cps/helper.py:187
 #, python-format
 msgid "Convert %(orig)s to %(format)s and send to Kindle"
 msgstr "Converti %(orig)s in %(format)s e spedisci a Kindle"
 
-#: cps/helper.py:229
+#: cps/helper.py:228
 #, python-format
 msgid "E-mail: %(book)s"
 msgstr "E-mail: %(book)s"
 
-#: cps/helper.py:231
+#: cps/helper.py:230
 msgid "The requested file could not be read. Maybe wrong permissions?"
 msgstr "Il file richiesto non può essere letto. I permessi sono corretti?"
 
-#: cps/helper.py:301
+#: cps/helper.py:300
 #, python-format
 msgid "Deleting book %(id)s failed, path has subfolders: %(path)s"
 msgstr "L'eliminazione del libro %(id)s non è riuscita, poiché il percorso ha delle sottocartelle: %(path)s"
 
-#: cps/helper.py:311
+#: cps/helper.py:310
 #, python-format
 msgid "Deleting book %(id)s failed: %(message)s"
 msgstr "L'eliminazione del libro %(id)s non è riuscita: %(message)s"
 
-#: cps/helper.py:321
+#: cps/helper.py:320
 #, python-format
 msgid "Deleting book %(id)s, book path not valid: %(path)s"
 msgstr "Eliminazione del libro %(id)s. Il percorso del libro non è valido: %(path)s"
 
-#: cps/helper.py:356
+#: cps/helper.py:355
 #, python-format
 msgid "Rename title from: '%(src)s' to '%(dest)s' failed with error: %(error)s"
 msgstr "La modifica del titolo da '%(src)s' a '%(dest)s' è terminata con l'errore: %(error)s"
 
-#: cps/helper.py:366
+#: cps/helper.py:365
 #, python-format
 msgid "Rename author from: '%(src)s' to '%(dest)s' failed with error: %(error)s"
 msgstr "La modifica dell'autore da '%(src)s' a '%(dest)s' è terminata con l'errore: %(error)s"
 
-#: cps/helper.py:380
+#: cps/helper.py:379
 #, python-format
 msgid "Rename file in path '%(src)s' to '%(dest)s' failed with error: %(error)s"
 msgstr "La modifica del file nella cartella da '%(src)s' a '%(dest)s' è terminata con l'errore: %(error)s"
 
-#: cps/helper.py:406 cps/helper.py:416 cps/helper.py:424
+#: cps/helper.py:405 cps/helper.py:415 cps/helper.py:423
 #, python-format
 msgid "File %(file)s not found on Google Drive"
 msgstr "File %(file)s non trovato su Google Drive"
 
-#: cps/helper.py:445
+#: cps/helper.py:444
 #, python-format
 msgid "Book path %(path)s not found on Google Drive"
 msgstr "Non ho trovato la cartella %(path)s del libro su Google Drive"
 
 #: cps/helper.py:542
 msgid "Error Downloading Cover"
+msgstr "Errore nello scaricare la copertina"
+
+#: cps/helper.py:545
+msgid "Cover Format Error"
 msgstr ""
 
-#: cps/helper.py:558
+#: cps/helper.py:561
 msgid "Failed to create path for cover"
 msgstr "Errore nel creare la cartella per la copertina"
 
-#: cps/helper.py:563
+#: cps/helper.py:566
 msgid "Cover-file is not a valid image file, or could not be stored"
 msgstr "Il file della copertina non è in un formato immagine valido o non può essere salvato"
 
-#: cps/helper.py:574
+#: cps/helper.py:577
 msgid "Only jpg/jpeg/png/webp files are supported as coverfile"
 msgstr "Solamente i file nei formati jpg/jpeg/png/webp sono supportati per le copertine"
 
-#: cps/helper.py:588
+#: cps/helper.py:591
 msgid "Only jpg/jpeg files are supported as coverfile"
 msgstr "Solamente i file nei formati jpg/jpeg sono supportati per le copertine"
 
-#: cps/helper.py:637
+#: cps/helper.py:640
 msgid "Unrar binary file not found"
 msgstr "Non ho trovato il file binario di UnRar"
 
-#: cps/helper.py:651
+#: cps/helper.py:654
 msgid "Error excecuting UnRar"
 msgstr "Errore nell'eseguire UnRar"
 
-#: cps/helper.py:707
+#: cps/helper.py:710
 msgid "Waiting"
 msgstr "Attendi"
 
-#: cps/helper.py:709
+#: cps/helper.py:712
 msgid "Failed"
 msgstr "Non riuscito"
 
-#: cps/helper.py:711
+#: cps/helper.py:714
 msgid "Started"
 msgstr "Avviato"
 
-#: cps/helper.py:713
+#: cps/helper.py:716
 msgid "Finished"
 msgstr "Terminato"
 
-#: cps/helper.py:715
+#: cps/helper.py:718
 msgid "Unknown Status"
 msgstr "Stato sconosciuto"
 
-#: cps/helper.py:720
+#: cps/helper.py:723
 msgid "E-mail: "
 msgstr "E-mail: "
 
-#: cps/helper.py:722 cps/helper.py:726
+#: cps/helper.py:725 cps/helper.py:729
 msgid "Convert: "
 msgstr "Conversione: "
 
-#: cps/helper.py:724
+#: cps/helper.py:727
 msgid "Upload: "
 msgstr "Upload: "
 
-#: cps/helper.py:728
+#: cps/helper.py:731
 msgid "Unknown Task: "
 msgstr "Processo sconosciuto: "
 
