@@ -39,11 +39,11 @@ msgstr "Vypínám server, zavřete okno"
 
 #: cps/admin.py:103
 msgid "Reconnect successful"
-msgstr ""
+msgstr "Úspěšně obnovené připojení"
 
 #: cps/admin.py:106
 msgid "Unknown command"
-msgstr ""
+msgstr "Neznámý příkaz"
 
 #: cps/admin.py:116 cps/editbooks.py:563 cps/editbooks.py:573
 #: cps/editbooks.py:667 cps/editbooks.py:669 cps/editbooks.py:730
@@ -67,12 +67,12 @@ msgstr "Konfigurace Calibre-Web aktualizována"
 #: cps/admin.py:434 cps/admin.py:440 cps/admin.py:451 cps/admin.py:462
 #: cps/templates/modal_restriction.html:29
 msgid "Deny"
-msgstr ""
+msgstr "Zakázat"
 
 #: cps/admin.py:436 cps/admin.py:442 cps/admin.py:453 cps/admin.py:464
 #: cps/templates/modal_restriction.html:28
 msgid "Allow"
-msgstr ""
+msgstr "Povolit"
 
 #: cps/admin.py:510
 msgid "client_secrets.json Is Not Configured For Web Application"
@@ -80,11 +80,11 @@ msgstr ""
 
 #: cps/admin.py:549
 msgid "Logfile Location is not Valid, Please Enter Correct Path"
-msgstr ""
+msgstr "Umístění zápisového souboru není platné. Určete prosím platnou polohu."
 
 #: cps/admin.py:554
 msgid "Access Logfile Location is not Valid, Please Enter Correct Path"
-msgstr ""
+msgstr "Umístění zápisového souboru pro přístup není platné. Určete prosím platnou polohu."
 
 #: cps/admin.py:580
 msgid "Please Enter a LDAP Provider, Port, DN and User Object Identifier"
@@ -122,11 +122,11 @@ msgstr ""
 
 #: cps/admin.py:700
 msgid "DB Location is not Valid, Please Enter Correct Path"
-msgstr ""
+msgstr "Poloha databáze není platná, opravte prosím polohu"
 
 #: cps/admin.py:702
 msgid "DB is not Writeable"
-msgstr ""
+msgstr "Databáze není psatelná"
 
 #: cps/admin.py:735
 msgid "Basic Configuration"
@@ -212,7 +212,7 @@ msgstr "Nastavení e-mailového serveru aktualizováno"
 
 #: cps/admin.py:942
 msgid "User not found"
-msgstr ""
+msgstr "Uživatel nenalezen"
 
 #: cps/admin.py:977
 #, python-format
@@ -290,15 +290,15 @@ msgstr "není nakonfigurováno"
 
 #: cps/converter.py:34
 msgid "Execution permissions missing"
-msgstr ""
+msgstr "Chybí povolení k exekuci"
 
 #: cps/editbooks.py:242
 msgid "Book Format Successfully Deleted"
-msgstr ""
+msgstr "Formát knihy úspěšně vymazán"
 
 #: cps/editbooks.py:245
 msgid "Book Successfully Deleted"
-msgstr ""
+msgstr "Kniha úspěšně vymazána"
 
 #: cps/editbooks.py:254 cps/editbooks.py:548 cps/web.py:1644 cps/web.py:1685
 #: cps/web.py:1747
@@ -336,7 +336,7 @@ msgstr "Uložení souboru %(file)s se nezdařilo."
 #: cps/editbooks.py:506 cps/editbooks.py:864
 #, python-format
 msgid "Database error: %(error)s."
-msgstr ""
+msgstr "Error databáze: %(error)s. "
 
 #: cps/editbooks.py:510
 #, python-format
@@ -1787,15 +1787,15 @@ msgstr "Externí binární soubory"
 
 #: cps/templates/config_edit.html:348
 msgid "Path to Calibre E-Book Converter"
-msgstr ""
+msgstr "Poloha Calibre E-Book Converteru"
 
 #: cps/templates/config_edit.html:356
 msgid "Calibre E-Book Converter Settings"
-msgstr ""
+msgstr "Nastevní Calibre E-Book Converter"
 
 #: cps/templates/config_edit.html:359
 msgid "Path to Kepubify E-Book Converter"
-msgstr ""
+msgstr "Poloha Kepubify E-Book Converter"
 
 #: cps/templates/config_edit.html:367
 msgid "Location of Unrar binary"
@@ -1844,7 +1844,7 @@ msgstr "Propojit stav čtení/nepřečtení do sloupce Calibre"
 
 #: cps/templates/config_view_edit.html:59
 msgid "View Restrictions based on Calibre column"
-msgstr ""
+msgstr "Zobrazit omezení podle sloupku Calibre"
 
 #: cps/templates/config_view_edit.html:68
 msgid "Regular Expression for Title Sorting"
@@ -1896,7 +1896,7 @@ msgstr "Zobrazit náhodné knihy v podrobném zobrazení"
 
 #: cps/templates/config_view_edit.html:144 cps/templates/user_edit.html:85
 msgid "Add Allowed/Denied Tags"
-msgstr ""
+msgstr "Přidat povolené/zakázané štítky"
 
 #: cps/templates/config_view_edit.html:145
 msgid "Add Allowed/Denied custom column values"
@@ -1920,7 +1920,7 @@ msgstr "z"
 
 #: cps/templates/detail.html:165
 msgid "Published"
-msgstr ""
+msgstr "Publikováno"
 
 #: cps/templates/detail.html:200
 msgid "Mark As Unread"
@@ -1936,15 +1936,15 @@ msgstr "Přečteno"
 
 #: cps/templates/detail.html:209
 msgid "Restore from archive"
-msgstr ""
+msgstr "Obnovit z archivu"
 
 #: cps/templates/detail.html:209
 msgid "Add to archive"
-msgstr ""
+msgstr "Archívovat"
 
 #: cps/templates/detail.html:210
 msgid "Archived"
-msgstr ""
+msgstr "Archivováno"
 
 #: cps/templates/detail.html:221
 msgid "Description:"
@@ -1958,7 +1958,7 @@ msgstr "Přidat do police"
 #: cps/templates/feed.xml:79 cps/templates/layout.html:137
 #: cps/templates/layout.html:141 cps/templates/search.html:20
 msgid "(Public)"
-msgstr ""
+msgstr "(Veřejné)"
 
 #: cps/templates/detail.html:276
 msgid "Edit Metadata"
@@ -1978,7 +1978,7 @@ msgstr "SMTP heslo"
 
 #: cps/templates/email_edit.html:38
 msgid "Attachment Size Limit"
-msgstr ""
+msgstr "Limit velikosti souboru:"
 
 #: cps/templates/email_edit.html:46
 msgid "Save and Send Test E-mail"
@@ -2014,7 +2014,7 @@ msgstr "Další"
 
 #: cps/templates/generate_kobo_auth_url.html:5
 msgid "Open the .kobo/Kobo eReader.conf file in a text editor and add (or edit):"
-msgstr ""
+msgstr "Otevřte soubor .kobo/Kobo eReader.conf v textovém editoru a vložte (nebo upravte):"
 
 #: cps/templates/http_error.html:38
 msgid "Create Issue"
@@ -2078,7 +2078,7 @@ msgstr "Knihy seřazené podle jazyků"
 
 #: cps/templates/index.xml:100
 msgid "Books ordered by Rating"
-msgstr ""
+msgstr "Knihy řazené podle hodnocení"
 
 #: cps/templates/index.xml:108
 msgid "Books ordered by file formats"
@@ -2086,11 +2086,11 @@ msgstr "Knihy seřazené podle soboru formátů"
 
 #: cps/templates/index.xml:111 cps/templates/layout.html:135
 msgid "Shelves"
-msgstr ""
+msgstr "Police"
 
 #: cps/templates/index.xml:115
 msgid "Books organized in shelves"
-msgstr ""
+msgstr "Knihy organizované v policích"
 
 #: cps/templates/layout.html:29
 msgid "Home"
@@ -2107,7 +2107,7 @@ msgstr "Přepnout navigaci"
 
 #: cps/templates/layout.html:46
 msgid "Search Library"
-msgstr ""
+msgstr "Hledat ve knihovně"
 
 #: cps/templates/layout.html:56
 msgid "Advanced Search"
@@ -2212,11 +2212,11 @@ msgstr ""
 
 #: cps/templates/modal_restriction.html:15
 msgid "Enter Tag"
-msgstr ""
+msgstr "Vložte štítek"
 
 #: cps/templates/modal_restriction.html:24
 msgid "Add View Restriction"
-msgstr ""
+msgstr "Přidat omezení náhledu"
 
 #: cps/templates/osd.xml:5
 msgid "Calibre-Web eBook Catalog"
@@ -2344,7 +2344,7 @@ msgstr "Vaše e-mailová adresa"
 
 #: cps/templates/remote_login.html:4
 msgid "Magic Link - Authorise New Device"
-msgstr ""
+msgstr "Kouzelný odkaz - Schválit nové zařízení"
 
 #: cps/templates/remote_login.html:6
 msgid "On another device, login and visit:"
@@ -2364,7 +2364,7 @@ msgstr "Žádné výsledky pro:"
 
 #: cps/templates/search.html:6
 msgid "Search Term:"
-msgstr ""
+msgstr "Termín vyhledávání:"
 
 #: cps/templates/search.html:8
 msgid "Results for:"
@@ -2420,7 +2420,7 @@ msgstr "Změnit řazení"
 
 #: cps/templates/shelf.html:67
 msgid "Are you sure you want to delete this shelf?"
-msgstr ""
+msgstr "Jste si jisti, že chcete odstranit tuto polici?"
 
 #: cps/templates/shelf.html:70
 msgid "Shelf will be deleted for all users"
@@ -2524,11 +2524,11 @@ msgstr "Odpojit"
 
 #: cps/templates/user_edit.html:63
 msgid "Kobo Sync Token"
-msgstr ""
+msgstr "Kobo Sync TOken"
 
 #: cps/templates/user_edit.html:65
 msgid "Create/View"
-msgstr ""
+msgstr "Nové/Otevřít"
 
 #: cps/templates/user_edit.html:86
 msgid "Add allowed/Denied Custom Column Values"
@@ -2544,9 +2544,9 @@ msgstr "Nedávná stahování"
 
 #: cps/templates/user_edit.html:162
 msgid "Generate Kobo Auth URL"
-msgstr ""
+msgstr "Vygenerovat URL pro Kobo Auth"
 
 #: cps/templates/user_edit.html:178
 msgid "Do you really want to delete the Kobo Token?"
-msgstr ""
+msgstr "Chcete opravdu odstranit Kobo Token?"
 
