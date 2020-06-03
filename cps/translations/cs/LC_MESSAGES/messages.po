@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2020-05-28 18:49+0200\n"
+"POT-Creation-Date: 2020-06-02 20:57+0200\n"
 "PO-Revision-Date: 2020-01-08 11:37+0000\n"
 "Last-Translator: Lukas Heroudek <lukas.heroudek@gmail.com>\n"
 "Language: cs_CZ\n"
@@ -39,11 +39,11 @@ msgstr "Vypínám server, zavřete okno"
 
 #: cps/admin.py:103
 msgid "Reconnect successful"
-msgstr ""
+msgstr "Úspěšně obnovené připojení"
 
 #: cps/admin.py:106
 msgid "Unknown command"
-msgstr ""
+msgstr "Neznámý příkaz"
 
 #: cps/admin.py:116 cps/editbooks.py:563 cps/editbooks.py:573
 #: cps/editbooks.py:667 cps/editbooks.py:669 cps/editbooks.py:730
@@ -60,19 +60,19 @@ msgstr "Stránka správce"
 msgid "UI Configuration"
 msgstr "Konfigurace uživatelského rozhraní"
 
-#: cps/admin.py:189 cps/admin.py:705
+#: cps/admin.py:189 cps/admin.py:706
 msgid "Calibre-Web configuration updated"
 msgstr "Konfigurace Calibre-Web aktualizována"
 
 #: cps/admin.py:434 cps/admin.py:440 cps/admin.py:451 cps/admin.py:462
 #: cps/templates/modal_restriction.html:29
 msgid "Deny"
-msgstr ""
+msgstr "Zakázat"
 
 #: cps/admin.py:436 cps/admin.py:442 cps/admin.py:453 cps/admin.py:464
 #: cps/templates/modal_restriction.html:28
 msgid "Allow"
-msgstr ""
+msgstr "Povolit"
 
 #: cps/admin.py:510
 msgid "client_secrets.json Is Not Configured For Web Application"
@@ -80,11 +80,11 @@ msgstr ""
 
 #: cps/admin.py:549
 msgid "Logfile Location is not Valid, Please Enter Correct Path"
-msgstr ""
+msgstr "Umístění zápisového souboru není platné. Určete prosím platnou polohu."
 
 #: cps/admin.py:554
 msgid "Access Logfile Location is not Valid, Please Enter Correct Path"
-msgstr ""
+msgstr "Umístění zápisového souboru pro přístup není platné. Určete prosím platnou polohu."
 
 #: cps/admin.py:580
 msgid "Please Enter a LDAP Provider, Port, DN and User Object Identifier"
@@ -120,167 +120,167 @@ msgstr ""
 msgid "Certfile Location is not Valid, Please Enter Correct Path"
 msgstr ""
 
-#: cps/admin.py:700
+#: cps/admin.py:701
 msgid "DB Location is not Valid, Please Enter Correct Path"
-msgstr ""
+msgstr "Poloha databáze není platná, opravte prosím polohu"
 
-#: cps/admin.py:702
+#: cps/admin.py:703
 msgid "DB is not Writeable"
-msgstr ""
+msgstr "Databáze není psatelná"
 
-#: cps/admin.py:735
+#: cps/admin.py:736
 msgid "Basic Configuration"
 msgstr "Základní konfigurace"
 
-#: cps/admin.py:750 cps/web.py:1337
+#: cps/admin.py:751 cps/web.py:1337
 msgid "Please fill out all fields!"
 msgstr "Vyplňte všechna pole!"
 
-#: cps/admin.py:753 cps/admin.py:765 cps/admin.py:771 cps/admin.py:891
+#: cps/admin.py:754 cps/admin.py:766 cps/admin.py:772 cps/admin.py:892
 msgid "Add new user"
 msgstr "Přidat nového uživatele"
 
-#: cps/admin.py:762 cps/web.py:1578
+#: cps/admin.py:763 cps/web.py:1578
 msgid "E-mail is not from valid domain"
 msgstr "E-mail není z platné domény"
 
-#: cps/admin.py:769 cps/admin.py:784
+#: cps/admin.py:770 cps/admin.py:785
 msgid "Found an existing account for this e-mail address or nickname."
 msgstr "Byl nalezen existující účet pro tuto e-mailovou adresu nebo přezdívku."
 
-#: cps/admin.py:780
+#: cps/admin.py:781
 #, python-format
 msgid "User '%(user)s' created"
 msgstr "Uživatel '%(user)s' vytvořen"
 
-#: cps/admin.py:793
+#: cps/admin.py:794
 #, python-format
 msgid "User '%(nick)s' deleted"
 msgstr "Uživatel '%(nick)s' smazán"
 
-#: cps/admin.py:796
+#: cps/admin.py:797
 msgid "No admin user remaining, can't delete user"
 msgstr "Nezbývá žádný správce, nemůžete jej odstranit"
 
-#: cps/admin.py:802
+#: cps/admin.py:803
 msgid "No admin user remaining, can't remove admin role"
 msgstr ""
 
-#: cps/admin.py:838 cps/web.py:1621
+#: cps/admin.py:839 cps/web.py:1621
 msgid "Found an existing account for this e-mail address."
 msgstr "Byl nalezen existující účet pro tuto e-mailovou adresu."
 
-#: cps/admin.py:848 cps/admin.py:863 cps/admin.py:966 cps/web.py:1596
+#: cps/admin.py:849 cps/admin.py:864 cps/admin.py:967 cps/web.py:1596
 #, python-format
 msgid "Edit User %(nick)s"
 msgstr "Upravit uživatele %(nick)s"
 
-#: cps/admin.py:854 cps/web.py:1588
+#: cps/admin.py:855 cps/web.py:1588
 msgid "This username is already taken"
 msgstr "Toto uživatelské jméno je již použito"
 
-#: cps/admin.py:870
+#: cps/admin.py:871
 #, python-format
 msgid "User '%(nick)s' updated"
 msgstr "Uživatel '%(nick)s' aktualizován"
 
-#: cps/admin.py:873
+#: cps/admin.py:874
 msgid "An unknown error occured."
 msgstr "Došlo k neznámé chybě."
 
-#: cps/admin.py:900 cps/templates/admin.html:71
+#: cps/admin.py:901 cps/templates/admin.html:71
 msgid "Edit E-mail Server Settings"
 msgstr "Změnit SMTP nastavení"
 
-#: cps/admin.py:924
+#: cps/admin.py:925
 #, python-format
 msgid "Test e-mail successfully send to %(kindlemail)s"
 msgstr "Zkušební e-mail úspěšně odeslán na %(kindlemail)s"
 
-#: cps/admin.py:927
+#: cps/admin.py:928
 #, python-format
 msgid "There was an error sending the Test e-mail: %(res)s"
 msgstr "Při odesílání zkušebního e-mailu došlo k chybě: %(res)s"
 
-#: cps/admin.py:929
+#: cps/admin.py:930
 msgid "Please configure your e-mail address first..."
 msgstr "Prvně nastavte svou e-mailovou adresu..."
 
-#: cps/admin.py:931
+#: cps/admin.py:932
 msgid "E-mail server settings updated"
 msgstr "Nastavení e-mailového serveru aktualizováno"
 
-#: cps/admin.py:942
+#: cps/admin.py:943
 msgid "User not found"
-msgstr ""
+msgstr "Uživatel nenalezen"
 
-#: cps/admin.py:977
+#: cps/admin.py:978
 #, python-format
 msgid "Password for user %(user)s reset"
 msgstr "Heslo pro uživatele %(user)s resetováno"
 
-#: cps/admin.py:980 cps/web.py:1361 cps/web.py:1425
+#: cps/admin.py:981 cps/web.py:1361 cps/web.py:1425
 msgid "An unknown error occurred. Please try again later."
 msgstr "Neznámá chyba. Opakujte prosím později."
 
-#: cps/admin.py:983 cps/web.py:1299
+#: cps/admin.py:984 cps/web.py:1299
 msgid "Please configure the SMTP mail settings first..."
 msgstr "Nejprve nakonfigurujte nastavení pošty SMTP..."
 
-#: cps/admin.py:995
+#: cps/admin.py:996
 msgid "Logfile viewer"
 msgstr "Prohlížeč log souborů"
 
-#: cps/admin.py:1034
+#: cps/admin.py:1035
 msgid "Requesting update package"
 msgstr "Požadování balíčku aktualizace"
 
-#: cps/admin.py:1035
+#: cps/admin.py:1036
 msgid "Downloading update package"
 msgstr "Stahování balíčku aktualizace"
 
-#: cps/admin.py:1036
+#: cps/admin.py:1037
 msgid "Unzipping update package"
 msgstr "Rozbalování balíčku aktualizace"
 
-#: cps/admin.py:1037
+#: cps/admin.py:1038
 msgid "Replacing files"
 msgstr "Nahrazování souborů"
 
-#: cps/admin.py:1038
+#: cps/admin.py:1039
 msgid "Database connections are closed"
 msgstr "Databázová připojení jsou uzavřena"
 
-#: cps/admin.py:1039
+#: cps/admin.py:1040
 msgid "Stopping server"
 msgstr "Zastavuji server"
 
-#: cps/admin.py:1040
+#: cps/admin.py:1041
 msgid "Update finished, please press okay and reload page"
 msgstr "Aktualizace dokončena, klepněte na tlačítko OK a znovu načtěte stránku"
 
-#: cps/admin.py:1041 cps/admin.py:1042 cps/admin.py:1043 cps/admin.py:1044
-#: cps/admin.py:1045
+#: cps/admin.py:1042 cps/admin.py:1043 cps/admin.py:1044 cps/admin.py:1045
+#: cps/admin.py:1046
 msgid "Update failed:"
 msgstr "Aktualizace selhala:"
 
-#: cps/admin.py:1041 cps/updater.py:319 cps/updater.py:520 cps/updater.py:522
+#: cps/admin.py:1042 cps/updater.py:319 cps/updater.py:520 cps/updater.py:522
 msgid "HTTP Error"
 msgstr "HTTP chyba"
 
-#: cps/admin.py:1042 cps/updater.py:321 cps/updater.py:524
+#: cps/admin.py:1043 cps/updater.py:321 cps/updater.py:524
 msgid "Connection error"
 msgstr "Chyba připojení"
 
-#: cps/admin.py:1043 cps/updater.py:323 cps/updater.py:526
+#: cps/admin.py:1044 cps/updater.py:323 cps/updater.py:526
 msgid "Timeout while establishing connection"
 msgstr "Vypršel časový limit při navazování spojení"
 
-#: cps/admin.py:1044 cps/updater.py:325 cps/updater.py:528
+#: cps/admin.py:1045 cps/updater.py:325 cps/updater.py:528
 msgid "General error"
 msgstr "Všeobecná chyba"
 
-#: cps/admin.py:1045
+#: cps/admin.py:1046
 msgid "Update File Could Not be Saved in Temp Dir"
 msgstr ""
 
@@ -290,15 +290,15 @@ msgstr "není nakonfigurováno"
 
 #: cps/converter.py:34
 msgid "Execution permissions missing"
-msgstr ""
+msgstr "Chybí povolení k exekuci"
 
 #: cps/editbooks.py:242
 msgid "Book Format Successfully Deleted"
-msgstr ""
+msgstr "Formát knihy úspěšně vymazán"
 
 #: cps/editbooks.py:245
 msgid "Book Successfully Deleted"
-msgstr ""
+msgstr "Kniha úspěšně vymazána"
 
 #: cps/editbooks.py:254 cps/editbooks.py:548 cps/web.py:1644 cps/web.py:1685
 #: cps/web.py:1747
@@ -336,7 +336,7 @@ msgstr "Uložení souboru %(file)s se nezdařilo."
 #: cps/editbooks.py:506 cps/editbooks.py:864
 #, python-format
 msgid "Database error: %(error)s."
-msgstr ""
+msgstr "Error databáze: %(error)s. "
 
 #: cps/editbooks.py:510
 #, python-format
@@ -397,103 +397,103 @@ msgstr "Google Drive nastavení nebylo dokončeno, zkuste  znovu deaktivovat a a
 msgid "Callback domain is not verified, please follow steps to verify domain in google developer console"
 msgstr "Doména zpětného volání není ověřena, postupujte podle pokynů k ověření domény v konzole pro vývojáře google"
 
-#: cps/helper.py:80
+#: cps/helper.py:79
 #, python-format
 msgid "%(format)s format not found for book id: %(book)d"
 msgstr "%(format)s formát pro knihu: %(book)d nenalezen"
 
-#: cps/helper.py:92
+#: cps/helper.py:91
 #, python-format
 msgid "%(format)s not found on Google Drive: %(fn)s"
 msgstr "%(format)s nenalezen na Google Drive: %(fn)s"
 
-#: cps/helper.py:99 cps/helper.py:227 cps/templates/detail.html:41
+#: cps/helper.py:98 cps/helper.py:226 cps/templates/detail.html:41
 #: cps/templates/detail.html:45
 msgid "Send to Kindle"
 msgstr "Poslat do Kindle"
 
-#: cps/helper.py:100 cps/helper.py:118 cps/helper.py:229
+#: cps/helper.py:99 cps/helper.py:117 cps/helper.py:228
 msgid "This e-mail has been sent via Calibre-Web."
 msgstr "Tento e-mail byl odeslán přes Calibre-Web."
 
-#: cps/helper.py:111
+#: cps/helper.py:110
 #, python-format
 msgid "%(format)s not found: %(fn)s"
 msgstr "%(format)s nenalezen: %(fn)s"
 
-#: cps/helper.py:116
+#: cps/helper.py:115
 msgid "Calibre-Web test e-mail"
 msgstr "Calibre-Web zkušební e-mail"
 
-#: cps/helper.py:118
+#: cps/helper.py:117
 msgid "Test e-mail"
 msgstr "Zkušební e-mail"
 
-#: cps/helper.py:133
+#: cps/helper.py:132
 msgid "Get Started with Calibre-Web"
 msgstr "Začínáme s Calibre-Web"
 
-#: cps/helper.py:135
+#: cps/helper.py:134
 #, python-format
 msgid "Registration e-mail for user: %(name)s"
 msgstr "Registrační e-mail pro uživatele: %(name)s"
 
-#: cps/helper.py:152 cps/helper.py:156 cps/helper.py:160 cps/helper.py:169
-#: cps/helper.py:173 cps/helper.py:177
+#: cps/helper.py:151 cps/helper.py:155 cps/helper.py:159 cps/helper.py:168
+#: cps/helper.py:172 cps/helper.py:176
 #, python-format
 msgid "Send %(format)s to Kindle"
 msgstr "Poslat %(format)s do Kindle"
 
-#: cps/helper.py:182 cps/helper.py:188
+#: cps/helper.py:181 cps/helper.py:187
 #, python-format
 msgid "Convert %(orig)s to %(format)s and send to Kindle"
 msgstr "Převést %(orig)s do %(format)s a poslat do Kindle"
 
-#: cps/helper.py:229
+#: cps/helper.py:228
 #, python-format
 msgid "E-mail: %(book)s"
 msgstr "E-mail: %(book)s"
 
-#: cps/helper.py:231
+#: cps/helper.py:230
 msgid "The requested file could not be read. Maybe wrong permissions?"
 msgstr "Požadovaný soubor nelze přečíst. Možná nesprávná oprávnění?"
 
-#: cps/helper.py:301
+#: cps/helper.py:300
 #, python-format
 msgid "Deleting book %(id)s failed, path has subfolders: %(path)s"
 msgstr ""
 
-#: cps/helper.py:311
+#: cps/helper.py:310
 #, python-format
 msgid "Deleting book %(id)s failed: %(message)s"
 msgstr ""
 
-#: cps/helper.py:321
+#: cps/helper.py:320
 #, python-format
 msgid "Deleting book %(id)s, book path not valid: %(path)s"
 msgstr ""
 
-#: cps/helper.py:356
+#: cps/helper.py:355
 #, python-format
 msgid "Rename title from: '%(src)s' to '%(dest)s' failed with error: %(error)s"
 msgstr "Přejmenování názvu z: '%(src)s' na '%(dest)s'  selhalo chybou: %(error)s"
 
-#: cps/helper.py:366
+#: cps/helper.py:365
 #, python-format
 msgid "Rename author from: '%(src)s' to '%(dest)s' failed with error: %(error)s"
 msgstr "Přejmenovat autora z: '%(src)s' na '%(dest)s' selhalo chybou: %(error)s"
 
-#: cps/helper.py:380
+#: cps/helper.py:379
 #, python-format
 msgid "Rename file in path '%(src)s' to '%(dest)s' failed with error: %(error)s"
 msgstr "Přejmenování souboru v cestě '%(src)s' na '%(dest)s' selhalo  chybou: %(error)s"
 
-#: cps/helper.py:406 cps/helper.py:416 cps/helper.py:424
+#: cps/helper.py:405 cps/helper.py:415 cps/helper.py:423
 #, python-format
 msgid "File %(file)s not found on Google Drive"
 msgstr "Soubor %(file)s nenalezen na Google Drive"
 
-#: cps/helper.py:445
+#: cps/helper.py:444
 #, python-format
 msgid "Book path %(path)s not found on Google Drive"
 msgstr "Cesta ke knize %(path)s nebyla nalezena na Google Drive"
@@ -502,63 +502,67 @@ msgstr "Cesta ke knize %(path)s nebyla nalezena na Google Drive"
 msgid "Error Downloading Cover"
 msgstr ""
 
-#: cps/helper.py:558
+#: cps/helper.py:545
+msgid "Cover Format Error"
+msgstr ""
+
+#: cps/helper.py:561
 msgid "Failed to create path for cover"
 msgstr ""
 
-#: cps/helper.py:563
+#: cps/helper.py:566
 msgid "Cover-file is not a valid image file, or could not be stored"
 msgstr ""
 
-#: cps/helper.py:574
+#: cps/helper.py:577
 msgid "Only jpg/jpeg/png/webp files are supported as coverfile"
 msgstr ""
 
-#: cps/helper.py:588
+#: cps/helper.py:591
 msgid "Only jpg/jpeg files are supported as coverfile"
 msgstr ""
 
-#: cps/helper.py:637
+#: cps/helper.py:640
 msgid "Unrar binary file not found"
 msgstr ""
 
-#: cps/helper.py:651
+#: cps/helper.py:654
 msgid "Error excecuting UnRar"
 msgstr ""
 
-#: cps/helper.py:707
+#: cps/helper.py:710
 msgid "Waiting"
 msgstr "Čekám"
 
-#: cps/helper.py:709
+#: cps/helper.py:712
 msgid "Failed"
 msgstr "Selhalo"
 
-#: cps/helper.py:711
+#: cps/helper.py:714
 msgid "Started"
 msgstr "Spuštěno"
 
-#: cps/helper.py:713
+#: cps/helper.py:716
 msgid "Finished"
 msgstr "Dokončeno"
 
-#: cps/helper.py:715
+#: cps/helper.py:718
 msgid "Unknown Status"
 msgstr "Neznámý stav"
 
-#: cps/helper.py:720
+#: cps/helper.py:723
 msgid "E-mail: "
 msgstr "E-mail: "
 
-#: cps/helper.py:722 cps/helper.py:726
+#: cps/helper.py:725 cps/helper.py:729
 msgid "Convert: "
 msgstr "Převést:"
 
-#: cps/helper.py:724
+#: cps/helper.py:727
 msgid "Upload: "
 msgstr "Nahrát:"
 
-#: cps/helper.py:728
+#: cps/helper.py:731
 msgid "Unknown Task: "
 msgstr "Neznámá úloha:"
 
@@ -1787,15 +1791,15 @@ msgstr "Externí binární soubory"
 
 #: cps/templates/config_edit.html:348
 msgid "Path to Calibre E-Book Converter"
-msgstr ""
+msgstr "Poloha Calibre E-Book Converteru"
 
 #: cps/templates/config_edit.html:356
 msgid "Calibre E-Book Converter Settings"
-msgstr ""
+msgstr "Nastevní Calibre E-Book Converter"
 
 #: cps/templates/config_edit.html:359
 msgid "Path to Kepubify E-Book Converter"
-msgstr ""
+msgstr "Poloha Kepubify E-Book Converter"
 
 #: cps/templates/config_edit.html:367
 msgid "Location of Unrar binary"
@@ -1844,7 +1848,7 @@ msgstr "Propojit stav čtení/nepřečtení do sloupce Calibre"
 
 #: cps/templates/config_view_edit.html:59
 msgid "View Restrictions based on Calibre column"
-msgstr ""
+msgstr "Zobrazit omezení podle sloupku Calibre"
 
 #: cps/templates/config_view_edit.html:68
 msgid "Regular Expression for Title Sorting"
@@ -1896,7 +1900,7 @@ msgstr "Zobrazit náhodné knihy v podrobném zobrazení"
 
 #: cps/templates/config_view_edit.html:144 cps/templates/user_edit.html:85
 msgid "Add Allowed/Denied Tags"
-msgstr ""
+msgstr "Přidat povolené/zakázané štítky"
 
 #: cps/templates/config_view_edit.html:145
 msgid "Add Allowed/Denied custom column values"
@@ -1920,7 +1924,7 @@ msgstr "z"
 
 #: cps/templates/detail.html:165
 msgid "Published"
-msgstr ""
+msgstr "Publikováno"
 
 #: cps/templates/detail.html:200
 msgid "Mark As Unread"
@@ -1936,15 +1940,15 @@ msgstr "Přečteno"
 
 #: cps/templates/detail.html:209
 msgid "Restore from archive"
-msgstr ""
+msgstr "Obnovit z archivu"
 
 #: cps/templates/detail.html:209
 msgid "Add to archive"
-msgstr ""
+msgstr "Archívovat"
 
 #: cps/templates/detail.html:210
 msgid "Archived"
-msgstr ""
+msgstr "Archivováno"
 
 #: cps/templates/detail.html:221
 msgid "Description:"
@@ -1958,7 +1962,7 @@ msgstr "Přidat do police"
 #: cps/templates/feed.xml:79 cps/templates/layout.html:137
 #: cps/templates/layout.html:141 cps/templates/search.html:20
 msgid "(Public)"
-msgstr ""
+msgstr "(Veřejné)"
 
 #: cps/templates/detail.html:276
 msgid "Edit Metadata"
@@ -1978,7 +1982,7 @@ msgstr "SMTP heslo"
 
 #: cps/templates/email_edit.html:38
 msgid "Attachment Size Limit"
-msgstr ""
+msgstr "Limit velikosti souboru:"
 
 #: cps/templates/email_edit.html:46
 msgid "Save and Send Test E-mail"
@@ -2014,7 +2018,7 @@ msgstr "Další"
 
 #: cps/templates/generate_kobo_auth_url.html:5
 msgid "Open the .kobo/Kobo eReader.conf file in a text editor and add (or edit):"
-msgstr ""
+msgstr "Otevřte soubor .kobo/Kobo eReader.conf v textovém editoru a vložte (nebo upravte):"
 
 #: cps/templates/http_error.html:38
 msgid "Create Issue"
@@ -2078,7 +2082,7 @@ msgstr "Knihy seřazené podle jazyků"
 
 #: cps/templates/index.xml:100
 msgid "Books ordered by Rating"
-msgstr ""
+msgstr "Knihy řazené podle hodnocení"
 
 #: cps/templates/index.xml:108
 msgid "Books ordered by file formats"
@@ -2086,11 +2090,11 @@ msgstr "Knihy seřazené podle soboru formátů"
 
 #: cps/templates/index.xml:111 cps/templates/layout.html:135
 msgid "Shelves"
-msgstr ""
+msgstr "Police"
 
 #: cps/templates/index.xml:115
 msgid "Books organized in shelves"
-msgstr ""
+msgstr "Knihy organizované v policích"
 
 #: cps/templates/layout.html:29
 msgid "Home"
@@ -2107,7 +2111,7 @@ msgstr "Přepnout navigaci"
 
 #: cps/templates/layout.html:46
 msgid "Search Library"
-msgstr ""
+msgstr "Hledat ve knihovně"
 
 #: cps/templates/layout.html:56
 msgid "Advanced Search"
@@ -2212,11 +2216,11 @@ msgstr ""
 
 #: cps/templates/modal_restriction.html:15
 msgid "Enter Tag"
-msgstr ""
+msgstr "Vložte štítek"
 
 #: cps/templates/modal_restriction.html:24
 msgid "Add View Restriction"
-msgstr ""
+msgstr "Přidat omezení náhledu"
 
 #: cps/templates/osd.xml:5
 msgid "Calibre-Web eBook Catalog"
@@ -2344,7 +2348,7 @@ msgstr "Vaše e-mailová adresa"
 
 #: cps/templates/remote_login.html:4
 msgid "Magic Link - Authorise New Device"
-msgstr ""
+msgstr "Kouzelný odkaz - Schválit nové zařízení"
 
 #: cps/templates/remote_login.html:6
 msgid "On another device, login and visit:"
@@ -2364,7 +2368,7 @@ msgstr "Žádné výsledky pro:"
 
 #: cps/templates/search.html:6
 msgid "Search Term:"
-msgstr ""
+msgstr "Termín vyhledávání:"
 
 #: cps/templates/search.html:8
 msgid "Results for:"
@@ -2420,7 +2424,7 @@ msgstr "Změnit řazení"
 
 #: cps/templates/shelf.html:67
 msgid "Are you sure you want to delete this shelf?"
-msgstr ""
+msgstr "Jste si jisti, že chcete odstranit tuto polici?"
 
 #: cps/templates/shelf.html:70
 msgid "Shelf will be deleted for all users"
@@ -2524,11 +2528,11 @@ msgstr "Odpojit"
 
 #: cps/templates/user_edit.html:63
 msgid "Kobo Sync Token"
-msgstr ""
+msgstr "Kobo Sync TOken"
 
 #: cps/templates/user_edit.html:65
 msgid "Create/View"
-msgstr ""
+msgstr "Nové/Otevřít"
 
 #: cps/templates/user_edit.html:86
 msgid "Add allowed/Denied Custom Column Values"
@@ -2544,9 +2548,9 @@ msgstr "Nedávná stahování"
 
 #: cps/templates/user_edit.html:162
 msgid "Generate Kobo Auth URL"
-msgstr ""
+msgstr "Vygenerovat URL pro Kobo Auth"
 
 #: cps/templates/user_edit.html:178
 msgid "Do you really want to delete the Kobo Token?"
-msgstr ""
+msgstr "Chcete opravdu odstranit Kobo Token?"
 
