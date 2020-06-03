@@ -133,8 +133,9 @@ a { color: #45b29d; }
 }
 
 .container-fluid .book .meta .rating { margin-top: 5px; }
-.rating .glyphicon-star { color: #999; }
-.rating .glyphicon-star.good { color: #45b29d; }
+.rating .glyphicon-star-empty { color: #444; }
+.rating .glyphicon-star.good { color: #444; }
+.rating-clear .glyphicon-remove { color: #333  }
 
 .container-fluid .author .author-hidden, .container-fluid .author .author-hidden-divider { display: none; }
 
