@@ -834,8 +834,27 @@ def render_language_books(page, name, order):
 @web.route("/table")
 @login_required_if_no_ano
 def books_table():
-    return render_title_template('index.html', random=random, entries=entries, pagination=pagination, id=name,
-                                 title=_(u"Language: %(name)s", name=lang_name), page="language")
+    return render_title_template('book_table.html', title=_(u"Books list"), page="table")
+
+@web.route("/ajax/listbooks")
+@login_required_if_no_ano
+def list_books():
+    order = [db.Books.timestamp.desc()]
+    entries, __, __ = calibre_db.fill_indexpage(1, db.Books, True, order)
+    js_list = json.dumps(entries, cls=db.AlchemyEncoder)
+    response = make_response(js_list)
+    response.headers["Content-Type"] = "application/json; charset=utf-8"
+    return response
+
+@web.route("/ajax/editbooks")
+@login_required_if_no_ano
+def edit_list_book():
+    pass
+
+@web.route("/ajax/editbooks")
+@login_required_if_no_ano
+def delete_list_book():
+    pass
 
 @web.route("/author")
 @login_required_if_no_ano
