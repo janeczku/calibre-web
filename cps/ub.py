@@ -109,7 +109,7 @@ def get_sidebar_config(kwargs=None):
          "visibility": constants.SIDEBAR_ARCHIVED, 'public': (not g.user.is_anonymous), "page": "archived",
          "show_text": _('Show archived books'), "config_show": content})
     sidebar.append(
-        {"glyph": "glyphicon-th-list", "text": _('Books List'), "link": 'web.books_list', "id": "list",
+        {"glyph": "glyphicon-th-list", "text": _('Books List'), "link": 'web.books_table', "id": "list",
          "visibility": constants.SIDEBAR_LIST, 'public': (not g.user.is_anonymous), "page": "list",
          "show_text": _('Show Books List'), "config_show": content})
 

@@ -269,7 +269,7 @@ class Books(Base):
     sort = Column(String(collation='NOCASE'))
     author_sort = Column(String(collation='NOCASE'))
     timestamp = Column(TIMESTAMP, default=datetime.utcnow)
-    pubdate = Column(String) # , default=datetime.utcnow)
+    pubdate = Column(TIMESTAMP, default=DEFAULT_PUBDATE)
     series_index = Column(String, nullable=False, default="1.0")
     last_modified = Column(TIMESTAMP, default=datetime.utcnow)
     path = Column(String, default="", nullable=False)
