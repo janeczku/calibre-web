@@ -160,7 +160,7 @@
       </div>
       {% endif %}
 
-      {% if entry.pubdate[:10] != '0101-01-01' %}
+      {% if (entry.pubdate|string)[:10] != '0101-01-01' %}
       <div class="publishing-date">
         <p>{{_('Published')}}: {{entry.pubdate|formatdate}} </p>
       </div>
