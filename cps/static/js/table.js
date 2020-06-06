@@ -15,9 +15,15 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* exported TableActions, RestrictionActions*/
+/* exported TableActions, RestrictionActions, EbookActions*/
 
 $(function() {
+
+    $("#books-table").bootstrapTable({
+        formatNoMatches: function () {
+            return "";
+        }
+    });
 
     $("#domain_allow_submit").click(function(event) {
         event.preventDefault();
@@ -213,3 +219,13 @@ function RestrictionActions (value, row) {
         "</div>"
     ].join("");
 }
+
+/* Function for deleting books */
+function EbookActions (value, row) {
+    return [
+        "<div class=\"danger remove\" listbook-id=\"" + row.id + "\" title=\"Remove\">",
+        "<i class=\"glyphicon glyphicon-trash\"></i>",
+        "</div>"
+    ].join("");
+}
+

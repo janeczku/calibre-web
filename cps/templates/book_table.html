@@ -1,59 +1,55 @@
 {% extends "layout.html" %}
+{% block header %}
+<link href="{{ url_for('static', filename='css/libs/bootstrap-table.min.css') }}" rel="stylesheet">
+<link href="{{ url_for('static', filename='css/libs/bootstrap-editable.css') }}" rel="stylesheet">
+{% endblock %}
 {% block body %}
-<h1 class="{{page}}">{{_(title)}}</h1>
+<h2 class="{{page}}">{{_(title)}}</h2>
+<!--
 
-    <div class="filterheader hidden-xs hidden-sm">
-      {% if entries.__len__() %}
-       {% if data == 'author' %}
-        <button id="sort_name" class="btn btn-primary"><b>B,A <-> A B</b></button>
-       {% endif %}
-      {% endif %}
-      <button id="desc" class="btn btn-primary"><span class="glyphicon glyphicon-sort-by-alphabet"></span></button>
-      <button id="asc" class="btn btn-primary"><span class="glyphicon glyphicon-sort-by-alphabet-alt"></span></button>
-      {% if charlist|length %}
-      <button id="all" class="btn btn-primary">{{_('All')}}</button>
-      {% endif %}
-      <div class="btn-group character" role="group">
-        {% for char in charlist%}
-        <button class="btn btn-primary char">{{char.char}}</button>
-        {% endfor %}
-      </div>
 
-      {% if title == "Series" %}
-      <button class="update-view btn btn-primary" href="#" data-target="series_view" data-view="grid">Grid</button>
-      {% endif %}
-    </div>
-  <div class="container">
-    <div id="list" class="col-xs-12 col-sm-6">
-    {% for entry in entries %}
-      {% if loop.index0 == (loop.length/2+loop.length%2)|int and loop.length > 20 %}
-        </div>
-        <div id="second" class="col-xs-12 col-sm-6">
-      {% endif %}
-      <div class="row" {% if entry[0].sort %}data-name="{{entry[0].name}}"{% endif %} data-id="{% if entry[0].sort %}{{entry[0].sort}}{% else %}{% if entry.name %}{{entry.name}}{% else %}{{entry[0].name}}{% endif %}{% endif %}">
-        <div class="col-xs-2 col-sm-2 col-md-1" align="left"><span class="badge">{{entry.count}}</span></div>
-        <div class="col-xs-10 col-sm-10 col-md-11"><a id="list_{{loop.index0}}" href="{% if entry.format %}{{url_for('web.books_list', data=data, sort='new', book_id=entry.format )}}{% else %}{{url_for('web.books_list', data=data, sort='new', book_id=entry[0].id )}}{% endif %}">
-          {% if entry.name %}
-          <div class="rating">
-          {% for number in range(entry.name) %}
-            <span class="glyphicon glyphicon-star good"></span>
-            {% if loop.last and loop.index < 5 %}
-              {% for numer in range(5 - loop.index) %}
-                <span class="glyphicon glyphicon-star"></span>
-              {% endfor %}
-            {% endif %}
-          {% endfor %}
-          </div>
-          {% else %}
-          {% if entry.format %}
-            {{entry.format}}
-          {% else %}
-            {{entry[0].name}}{% endif %}{% endif %}</a></div>
-      </div>
-    {% endfor %}
-    </div>
-  </div>
+           -->
+    <table class="table table-no-bordered table-striped"
+           data-toggle="table"
+           data-side-pagination="server"
+           data-pagination="true"
+           data-pagination-detail-h-align=" hidden"
+           data-pagination-h-align="left"
+           id="books-table"
+           data-url="{{url_for('web.list_books')}}"
+           data-id-field="id"
+           data-editable-mode="inline"
+           data-show-columns="true"
+           data-search="true"
+           data-search-align="left"
+           data-show-search-button="false"
+           data-checkbox-header="false"
+           data-maintain-meta-data="true">
+      <thead>
+        <tr>
+            <!--th data-field="title" id="title" data-editable-type="text" data-editable-url="{{ url_for('web.edit_list_book')}}" data-editable="true" data-editable-title="{{_('Enter title')}}"></th-->
+            <th data-checkbox="true" data-sortable="true"></th>
+            <th data-field="id" id="id" data-visible="false" data-switchable="false"></th>
+            <th data-field="title" id="title" data-sortable="true">Title</th>
+            <th data-field="sort" id="sort" data-sortable="true">Sort</th>
+            <th data-field="author_sort" id="author_sort" data-sortable="true">Authors Sort</th>
+            <th data-field="authors" id="authors" data-sortable="true">Authors</th>
+            <th data-field="tags" id="tags" data-sortable="true">Tags</th>
+            <th data-field="series" id="series" data-sortable="true">Series</th>
+            <th data-field="series_index" id="series_index" data-sortable="true">Series Index</th>
+            <th data-field="languages" id="languages" data-sortable="true">Language</th>
+            <th data-field="pubdate" id="pubdate" data-sortable="true">Publishing Date</th>
+            <th data-field="publishers" id="publishers" data-sortable="true">Publishers</th>
+          {% if g.user.role_edit() %}
+            <th data-align="right" data-formatter="EbookActions" data-switchable="false"></th>
+          {% endif %}
+        </tr>
+      </thead>
+    </table>
 {% endblock %}
 {% block js %}
-<script src="{{ url_for('static', filename='js/filter_list.js') }}"></script>
+<script src="{{ url_for('static', filename='js/libs/bootstrap-table/bootstrap-table.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/libs/bootstrap-table/bootstrap-table-editable.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/libs/bootstrap-table/bootstrap-editable.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/table.js') }}"></script>
 {% endblock %}
