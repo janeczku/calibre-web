@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Calibre Web - polski (POT: 2019-08-06 18:35)\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-06-02 20:57+0200\n"
+"POT-Creation-Date: 2020-06-07 06:47+0200\n"
 "PO-Revision-Date: 2020-03-31 21:50+0200\n"
 "Last-Translator: Jerzy Piątek <jerzy.piatek@gmail.com>\n"
 "Language: pl\n"
@@ -721,20 +721,20 @@ msgstr "Półka %(title)s została zmieniona"
 msgid "Edit a shelf"
 msgstr "Edytuj półkę"
 
-#: cps/shelf.py:331
+#: cps/shelf.py:332
 #, python-format
 msgid "Shelf: '%(name)s'"
 msgstr "Półka: „%(name)s”"
 
-#: cps/shelf.py:334
+#: cps/shelf.py:335
 msgid "Error opening shelf. Shelf does not exist or is not accessible"
 msgstr "Błąd otwierania półki. Półka nie istnieje lub jest niedostępna"
 
-#: cps/shelf.py:367
+#: cps/shelf.py:368
 msgid "Hidden Book"
 msgstr "Ukryta książka"
 
-#: cps/shelf.py:372
+#: cps/shelf.py:373
 #, python-format
 msgid "Change order of Shelf: '%(name)s'"
 msgstr "Zmieniono kolejność półki: '%(name)s'"

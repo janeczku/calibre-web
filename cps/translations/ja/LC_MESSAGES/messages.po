@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2020-06-02 20:57+0200\n"
+"POT-Creation-Date: 2020-06-07 06:47+0200\n"
 "PO-Revision-Date: 2018-02-07 02:20-0500\n"
 "Last-Translator: white <space_white@yahoo.com>\n"
 "Language: ja\n"
@@ -714,20 +714,20 @@ msgstr "%(title)s を変更しました"
 msgid "Edit a shelf"
 msgstr "本棚を編集する"
 
-#: cps/shelf.py:331
+#: cps/shelf.py:332
 #, python-format
 msgid "Shelf: '%(name)s'"
 msgstr "本棚: '%(name)s'"
 
-#: cps/shelf.py:334
+#: cps/shelf.py:335
 msgid "Error opening shelf. Shelf does not exist or is not accessible"
 msgstr "本棚を開けません。この本棚は存在しないかアクセスできません"
 
-#: cps/shelf.py:367
+#: cps/shelf.py:368
 msgid "Hidden Book"
 msgstr ""
 
-#: cps/shelf.py:372
+#: cps/shelf.py:373
 #, python-format
 msgid "Change order of Shelf: '%(name)s'"
 msgstr "'%(name)s' 内の本の順番を変更する"

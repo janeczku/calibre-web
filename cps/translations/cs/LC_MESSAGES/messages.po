@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2020-06-02 20:57+0200\n"
+"POT-Creation-Date: 2020-06-07 06:47+0200\n"
 "PO-Revision-Date: 2020-01-08 11:37+0000\n"
 "Last-Translator: Lukas Heroudek <lukas.heroudek@gmail.com>\n"
 "Language: cs_CZ\n"
@@ -713,20 +713,20 @@ msgstr "Police %(title)s změněna"
 msgid "Edit a shelf"
 msgstr "Upravit polici"
 
-#: cps/shelf.py:331
+#: cps/shelf.py:332
 #, python-format
 msgid "Shelf: '%(name)s'"
 msgstr "Police: '%(name)s'"
 
-#: cps/shelf.py:334
+#: cps/shelf.py:335
 msgid "Error opening shelf. Shelf does not exist or is not accessible"
 msgstr "Chyba otevírání police. Police neexistuje nebo není přístupná"
 
-#: cps/shelf.py:367
+#: cps/shelf.py:368
 msgid "Hidden Book"
 msgstr ""
 
-#: cps/shelf.py:372
+#: cps/shelf.py:373
 #, python-format
 msgid "Change order of Shelf: '%(name)s'"
 msgstr "Změnit  pořadí Police: '%(name)s'"

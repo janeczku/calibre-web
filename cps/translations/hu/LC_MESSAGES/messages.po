@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-06-02 20:57+0200\n"
+"POT-Creation-Date: 2020-06-07 06:47+0200\n"
 "PO-Revision-Date: 2019-04-06 23:36+0200\n"
 "Last-Translator: \n"
 "Language: hu\n"
@@ -714,20 +714,20 @@ msgstr "A következő polc megváltoztatva: %(title)s"
 msgid "Edit a shelf"
 msgstr "Polc szerkesztése"
 
-#: cps/shelf.py:331
+#: cps/shelf.py:332
 #, python-format
 msgid "Shelf: '%(name)s'"
 msgstr "Polc: '%(name)s'"
 
-#: cps/shelf.py:334
+#: cps/shelf.py:335
 msgid "Error opening shelf. Shelf does not exist or is not accessible"
 msgstr "Hiba a polc megnyitásakor. A polc nem létezik vagy nem elérhető."
 
-#: cps/shelf.py:367
+#: cps/shelf.py:368
 msgid "Hidden Book"
 msgstr ""
 
-#: cps/shelf.py:372
+#: cps/shelf.py:373
 #, python-format
 msgid "Change order of Shelf: '%(name)s'"
 msgstr "A következő polc átrendezése: %(name)s"
