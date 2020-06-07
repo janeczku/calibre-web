@@ -40,7 +40,7 @@ try:
         from comicapi import __version__ as comic_version
     except (ImportError):
         comic_version = ''
-except ImportError as e:
+except (ImportError, LookupError) as e:
     log.debug('Cannot import comicapi, extracting comic metadata will not work: %s', e)
     import zipfile
     import tarfile
