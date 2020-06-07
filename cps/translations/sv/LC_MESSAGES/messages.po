@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2020-06-02 20:57+0200\n"
+"POT-Creation-Date: 2020-06-07 06:47+0200\n"
 "PO-Revision-Date: 2020-03-14 09:30+0100\n"
 "Last-Translator: Jonatan Nyberg <jonatan.nyberg.karl@gmail.com>\n"
 "Language: sv\n"
@@ -714,20 +714,20 @@ msgstr "Hyllan %(title)s ändrad"
 msgid "Edit a shelf"
 msgstr "Redigera en hylla"
 
-#: cps/shelf.py:331
+#: cps/shelf.py:332
 #, python-format
 msgid "Shelf: '%(name)s'"
 msgstr "Hylla: '%(name)s'"
 
-#: cps/shelf.py:334
+#: cps/shelf.py:335
 msgid "Error opening shelf. Shelf does not exist or is not accessible"
 msgstr "Fel vid öppning av hyllan. Hylla finns inte eller är inte tillgänglig"
 
-#: cps/shelf.py:367
+#: cps/shelf.py:368
 msgid "Hidden Book"
 msgstr "Dold bok"
 
-#: cps/shelf.py:372
+#: cps/shelf.py:373
 #, python-format
 msgid "Change order of Shelf: '%(name)s'"
 msgstr "Ändra ordning på hyllan: '%(name)s'"
