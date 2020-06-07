@@ -16,12 +16,13 @@
 # Ptit Prince <leporello1791@gmail.com>, 2015
 # Ptit Prince <leporello1791@gmail.com>, 2016
 # Xotes <alois.glibert@gmail.com>, 2014
+# Dekani <dekani1500@gmail.com>, 2020
 msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-06-02 20:57+0200\n"
-"PO-Revision-Date: 2020-05-08 14:36+0200\n"
+"POT-Creation-Date: 2020-06-07 06:47+0200\n"
+"PO-Revision-Date: 2020-06-07 06:47+0200\n"
 "Last-Translator: Dekani <dekani1500@gmail.com>\n"
 "Language: fr\n"
 "Language-Team: \n"
@@ -140,7 +141,7 @@ msgstr "L'emplacement DB est incorrect, veuillez saisir un chemin valide"
 
 #: cps/admin.py:703
 msgid "DB is not Writeable"
-msgstr ""
+msgstr "La DB n'est pas accessible en écriture"
 
 #: cps/admin.py:736
 msgid "Basic Configuration"
@@ -263,7 +264,7 @@ msgstr "Remplacement des fichiers"
 
 #: cps/admin.py:1039
 msgid "Database connections are closed"
-msgstr "Les connexions à la base de donnée ont été fermées"
+msgstr "Les connexions à la base de données ont été fermées"
 
 #: cps/admin.py:1040
 msgid "Stopping server"
@@ -304,7 +305,7 @@ msgstr "non configuré"
 
 #: cps/converter.py:34
 msgid "Execution permissions missing"
-msgstr ""
+msgstr "Les permissions d'exécutions manquantes"
 
 #: cps/editbooks.py:242
 msgid "Book Format Successfully Deleted"
@@ -340,17 +341,17 @@ msgstr "Pour être déposé le fichier doit avoir une extension"
 #: cps/editbooks.py:483 cps/editbooks.py:773
 #, python-format
 msgid "Failed to create path %(path)s (Permission denied)."
-msgstr "Impossible de créer le chemin %(path)s (Permission refusée)"
+msgstr "Impossible de créer le chemin %(path)s (Permission refusée)."
 
 #: cps/editbooks.py:488
 #, python-format
 msgid "Failed to store file %(file)s."
-msgstr "Echec de la sauvegarde du fichier %(file)s."
+msgstr "Échec de la sauvegarde du fichier %(file)s."
 
 #: cps/editbooks.py:506 cps/editbooks.py:864
 #, python-format
 msgid "Database error: %(error)s."
-msgstr ""
+msgstr "Erreur de la base de données: %(error)s."
 
 #: cps/editbooks.py:510
 #, python-format
@@ -359,7 +360,7 @@ msgstr "Le format de fichier %(ext)s a été ajouté à %(book)s"
 
 #: cps/editbooks.py:653
 msgid "Metadata successfully updated"
-msgstr "Les métadonnées ont bien été mise à jour"
+msgstr "Les métadonnées ont bien été mises à jour"
 
 #: cps/editbooks.py:662
 msgid "Error editing book, please check logfile for details"
@@ -377,12 +378,12 @@ msgstr "Le fichier téléchargé existe probablement dans la librairie, veuillez
 #: cps/editbooks.py:780
 #, python-format
 msgid "Failed to Move File %(file)s: %(error)s"
-msgstr ""
+msgstr "Impossible de déplacer le fichier %(file)s: %(error)s"
 
 #: cps/editbooks.py:836
 #, python-format
 msgid "Failed to Move Cover File %(file)s: %(error)s"
-msgstr ""
+msgstr "Impossible de déplacer le fichier de couverture %(file)s: %(error)s"
 
 #: cps/editbooks.py:850
 #, python-format
@@ -405,7 +406,7 @@ msgstr "Une erreur est survenue au cours de la conversion du livre : %(res)s"
 
 #: cps/gdrive.py:61
 msgid "Google Drive setup not completed, try to deactivate and activate Google Drive again"
-msgstr "La configuration de Google Drive n’est pas terminée, essayez de désactiver et d’activer à nouveau Google Drive."
+msgstr "La configuration de Google Drive n’est pas terminée, essayez de désactiver et d’activer à nouveau Google Drive"
 
 #: cps/gdrive.py:103
 msgid "Callback domain is not verified, please follow steps to verify domain in google developer console"
@@ -475,7 +476,7 @@ msgstr "Le fichier demandé n’a pu être lu. Problème de permission d’accè
 #: cps/helper.py:300
 #, python-format
 msgid "Deleting book %(id)s failed, path has subfolders: %(path)s"
-msgstr "La suppression du livre %(id)s a échoué, le chemin a des sous-répertoires: %(path)s"
+msgstr "La suppression du livre %(id)s a échoué, le chemin a des sous-répertoires : %(path)s"
 
 #: cps/helper.py:310
 #, python-format
@@ -485,7 +486,7 @@ msgstr "La suppression du livre %(id)s a échoué: %(message)s"
 #: cps/helper.py:320
 #, python-format
 msgid "Deleting book %(id)s, book path not valid: %(path)s"
-msgstr ""
+msgstr "Suppression du livre %(id)s, le chemin du livre est invalide : %(path)s"
 
 #: cps/helper.py:355
 #, python-format
@@ -514,11 +515,11 @@ msgstr "Le chemin du livre %(path)s n'a pas été trouvé dans Google Drive"
 
 #: cps/helper.py:542
 msgid "Error Downloading Cover"
-msgstr ""
+msgstr "Erreur lors du téléchargement de la couverture"
 
 #: cps/helper.py:545
 msgid "Cover Format Error"
-msgstr ""
+msgstr "Erreur de format de couverture"
 
 #: cps/helper.py:561
 msgid "Failed to create path for cover"
@@ -612,7 +613,7 @@ msgstr "Impossible d’obtenir les informations d’utilisateur avec Google."
 #: cps/oauth_bb.py:225 cps/web.py:1397 cps/web.py:1537
 #, python-format
 msgid "you are now logged in as: '%(nickname)s'"
-msgstr "vous êtes maintenant connecté sous : '%(nickname)s'"
+msgstr "vous êtes maintenant connecté comme : '%(nickname)s'"
 
 #: cps/oauth_bb.py:235
 #, python-format
@@ -668,7 +669,7 @@ msgstr "Le livre a bien été ajouté à l'étagère : %(sname)s"
 #: cps/shelf.py:115
 #, python-format
 msgid "You are not allowed to add a book to the the shelf: %(name)s"
-msgstr "Vous n’êtes pas autorisé à ajouter un livre dans l’étagère %(name)s"
+msgstr "Vous n’êtes pas autorisé à ajouter un livre dans l’étagère : %(name)s"
 
 #: cps/shelf.py:133
 #, python-format
@@ -727,20 +728,20 @@ msgstr "L’étagère %(title)s a été modifiée"
 msgid "Edit a shelf"
 msgstr "Modifier une étagère"
 
-#: cps/shelf.py:331
+#: cps/shelf.py:332
 #, python-format
 msgid "Shelf: '%(name)s'"
 msgstr "Étagère : '%(name)s'"
 
-#: cps/shelf.py:334
+#: cps/shelf.py:335
 msgid "Error opening shelf. Shelf does not exist or is not accessible"
 msgstr "Erreur à l’ouverture de l’étagère. Elle n’existe plus ou n’est plus accessible"
 
-#: cps/shelf.py:367
+#: cps/shelf.py:368
 msgid "Hidden Book"
 msgstr "Livre caché"
 
-#: cps/shelf.py:372
+#: cps/shelf.py:373
 #, python-format
 msgid "Change order of Shelf: '%(name)s'"
 msgstr "Modifier l’arrangement de l’étagère : ‘%(name)s’"
@@ -822,7 +823,7 @@ msgstr "Montrer la sélection par auteur"
 
 #: cps/templates/index.xml:68 cps/ub.py:94 cps/web.py:869
 msgid "Publishers"
-msgstr "Editeurs"
+msgstr "Éditeurs"
 
 #: cps/ub.py:96
 msgid "Show publisher selection"
@@ -893,11 +894,11 @@ msgstr "Téléchargez la dernière version en cliquant sur le bouton ci-dessous.
 #: cps/web.py:322
 #, python-format
 msgid "Error: %(ldaperror)s"
-msgstr "Erreur: %(ldaperror)s"
+msgstr "Erreur : %(ldaperror)s"
 
 #: cps/web.py:326
 msgid "Error: No user returned in response of LDAP server"
-msgstr "Erreur: Aucun utilisateur renvoyé dans la réponse LDAP du serveur"
+msgstr "Erreur : Aucun utilisateur renvoyé dans la réponse LDAP du serveur"
 
 #: cps/web.py:374
 msgid "Failed to Create at Least One LDAP User"
@@ -934,7 +935,7 @@ msgstr "Erreur d'ouverture du livre numérique. Le fichier n'existe pas ou n'est
 #: cps/web.py:745
 #, python-format
 msgid "Author: %(name)s"
-msgstr "Auteur: %(name)s"
+msgstr "Auteur : %(name)s"
 
 #: cps/web.py:759
 #, python-format
@@ -949,12 +950,12 @@ msgstr "Séries : %(serie)s"
 #: cps/web.py:785
 #, python-format
 msgid "Rating: %(rating)s stars"
-msgstr "Évaluation: %(rating)s étoiles"
+msgstr "Évaluation : %(rating)s étoiles"
 
 #: cps/web.py:798
 #, python-format
 msgid "File format: %(format)s"
-msgstr "Format de fichier: %(format)s"
+msgstr "Format de fichier : %(format)s"
 
 #: cps/web.py:812
 #, python-format
@@ -1009,7 +1010,7 @@ msgstr "recherche"
 #: cps/web.py:1213
 #, python-format
 msgid "Custom Column No.%(column)d is not existing in calibre database"
-msgstr ""
+msgstr "La colonne personnalisée No.%(column)d n'existe pas dans la base de données calibre"
 
 #: cps/web.py:1304
 #, python-format
@@ -1110,7 +1111,7 @@ msgstr "Lire un livre"
 #: cps/worker.py:313
 #, python-format
 msgid "Calibre ebook-convert %(tool)s not found"
-msgstr ""
+msgstr "ebook-convert calibre %(tool)s non trouvé"
 
 #: cps/worker.py:373
 #, python-format
@@ -1120,12 +1121,12 @@ msgstr "La commande ebook-convert a échouée : %(error)s"
 #: cps/worker.py:406
 #, python-format
 msgid "Kepubify-converter failed: %(error)s"
-msgstr ""
+msgstr "La commande Kepubify-converter a échouée : %(error)s"
 
 #: cps/worker.py:430
 #, python-format
 msgid "Converted file not found or more than one file in folder %(folder)s"
-msgstr ""
+msgstr "Fichier converti non trouvé ou plus d'un fichier dans le chemin %(folder)s"
 
 #: cps/templates/admin.html:9
 msgid "Users"
@@ -1185,7 +1186,7 @@ msgstr "Supprimer"
 
 #: cps/templates/admin.html:23
 msgid "Public Shelf"
-msgstr ""
+msgstr "Étagère publique"
 
 #: cps/templates/admin.html:44
 msgid "Add New User"
@@ -1225,7 +1226,7 @@ msgstr "Configuration"
 
 #: cps/templates/admin.html:80
 msgid "Calibre Database Directory"
-msgstr "Répertoire de la base de donnée Calibre"
+msgstr "Répertoire de la base de données Calibre"
 
 #: cps/templates/admin.html:84 cps/templates/config_edit.html:129
 msgid "Log Level"
@@ -1281,7 +1282,7 @@ msgstr "Afficher les fichiers journaux"
 
 #: cps/templates/admin.html:133
 msgid "Reconnect Calibre Database"
-msgstr "Se reconnecter à Calibre-Web"
+msgstr "Reconnecter la base de données Calibre"
 
 #: cps/templates/admin.html:134
 msgid "Restart"
@@ -1549,7 +1550,7 @@ msgstr "Configuration de la Bibliothèque"
 
 #: cps/templates/config_edit.html:19
 msgid "Location of Calibre Database"
-msgstr "Emplacement de la base de donnée Calibre"
+msgstr "Emplacement de la base de données Calibre"
 
 #: cps/templates/config_edit.html:28
 msgid "Use Google Drive?"
@@ -1637,7 +1638,7 @@ msgstr "Autoriser le téléversement de fichier"
 
 #: cps/templates/config_edit.html:169
 msgid "Allowed Upload Fileformats"
-msgstr ""
+msgstr "Formats de fichiers à télécharger autorisés"
 
 #: cps/templates/config_edit.html:175
 msgid "Enable Anonymous Browsing"
@@ -1649,7 +1650,7 @@ msgstr "Autoriser l’inscription publique"
 
 #: cps/templates/config_edit.html:184
 msgid "Use E-Mail as Username"
-msgstr ""
+msgstr "Utiliser l'e-mail comme nom d'utilisateur"
 
 #: cps/templates/config_edit.html:189
 msgid "Enable Magic Link Remote Login"
@@ -1805,15 +1806,15 @@ msgstr "Configuration des outils de conversion externes"
 
 #: cps/templates/config_edit.html:348
 msgid "Path to Calibre E-Book Converter"
-msgstr ""
+msgstr "Chemin vers le convertisseur de livres Calibre"
 
 #: cps/templates/config_edit.html:356
 msgid "Calibre E-Book Converter Settings"
-msgstr ""
+msgstr "Paramètres du convertisseur de livres Calibre"
 
 #: cps/templates/config_edit.html:359
 msgid "Path to Kepubify E-Book Converter"
-msgstr ""
+msgstr "Chemin vers le convertisseur de livres Kepubify"
 
 #: cps/templates/config_edit.html:367
 msgid "Location of Unrar binary"
@@ -1996,7 +1997,7 @@ msgstr "Mot de passe SMTP"
 
 #: cps/templates/email_edit.html:38
 msgid "Attachment Size Limit"
-msgstr ""
+msgstr "Limite de la taille de la pièce jointe"
 
 #: cps/templates/email_edit.html:46
 msgid "Save and Send Test E-mail"
@@ -2125,7 +2126,7 @@ msgstr "Basculer la navigation"
 
 #: cps/templates/layout.html:46
 msgid "Search Library"
-msgstr "Chercher une librairie"
+msgstr "Chercher dans librairie"
 
 #: cps/templates/layout.html:56
 msgid "Advanced Search"
@@ -2190,7 +2191,7 @@ msgstr "Se rappeler de moi"
 
 #: cps/templates/login.html:22
 msgid "Forgot Password?"
-msgstr "Mot de passe oublié?"
+msgstr "Mot de passe oublié ?"
 
 #: cps/templates/login.html:25
 msgid "Log in with Magic Link"
@@ -2198,11 +2199,11 @@ msgstr "Se connecter avec Magic Link"
 
 #: cps/templates/logviewer.html:6
 msgid "Show Calibre-Web Log: "
-msgstr "Afficher le journal Calibre-Web: "
+msgstr "Afficher le journal Calibre-Web : "
 
 #: cps/templates/logviewer.html:8
 msgid "Calibre-Web Log: "
-msgstr "Journal Calibre-Web: "
+msgstr "Journal Calibre-Web : "
 
 #: cps/templates/logviewer.html:8
 msgid "Stream output, can't be displayed"
@@ -2210,7 +2211,7 @@ msgstr "Le flux de sortie ne peut pas être affiché"
 
 #: cps/templates/logviewer.html:12
 msgid "Show Access Log: "
-msgstr "Afficher le journal d'accès: "
+msgstr "Afficher le journal d'accès : "
 
 #: cps/templates/modal_restriction.html:6
 msgid "Select Allowed/Denied Tags"
@@ -2398,7 +2399,7 @@ msgstr "Date de publication (jusqu’à)"
 
 #: cps/templates/search_form.html:43
 msgid "Exclude Tags"
-msgstr "Exclure des étiquettes"
+msgstr "Exclure les étiquettes"
 
 #: cps/templates/search_form.html:63
 msgid "Exclude Series"
