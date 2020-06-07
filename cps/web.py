@@ -986,7 +986,7 @@ def get_tasks_status():
 
 @app.route("/reconnect")
 def reconnect():
-    db.reconnect_db(config, ub.app_DB_path)
+    calibre_db.reconnect_db(config, ub.app_DB_path)
     return json.dumps({})
 
 
