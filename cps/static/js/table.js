@@ -100,6 +100,33 @@ $(function() {
         $(e.currentTarget).find("#btndeletedomain").data("domainId", domainId);
     });
 
+    $("#delete_confirm").click(function() {
+        //get data-id attribute of the clicked element
+        var deleteId = $(this).data("deleteid");
+        $.ajax({
+            method:"get",
+            url: window.location.pathname + "/../../delete"/+deleteId,
+        });
+    });
+
+    //triggered when modal is about to be shown
+    $("#deleteModal").on("show.bs.modal", function(e) {
+        //get data-id attribute of the clicked element and store in button
+        var bookId = $(e.relatedTarget).data("delete-id");
+        $(e.currentTarget).find("#delete_confirm").data("deleteid", bookId);
+    });
+    // receive result from request, dismiss modal dialog, show flash message
+    // insert after navbar
+    /*$("#deleteModal").on("hidden.bs.modal", function () {
+      <div class="row-fluid text-center" style="margin-top: -20px;">
+        <div id="flash_success" class="alert alert-success">{{ message[1] }}</div>
+      </div>*/
+
+    // to save current setting
+    // coresponding event: onColumnSwitch
+    //$table.bootstrapTable('getVisibleColumns')
+    //$table.bootstrapTable('getHiddenColumns').
+
     $("#restrictModal").on("hidden.bs.modal", function () {
         // Destroy table and remove hooks for buttons
         $("#restrict-elements-table").unbind();
@@ -223,9 +250,8 @@ function RestrictionActions (value, row) {
 /* Function for deleting books */
 function EbookActions (value, row) {
     return [
-        "<div class=\"danger remove\" listbook-id=\"" + row.id + "\" title=\"Remove\">",
+        "<div class='danger remove' data-toggle='modal' data-target=\"#deleteModal\" data-delete-id=\"" + row.id + "\" title=\"Remove\">",
         "<i class=\"glyphicon glyphicon-trash\"></i>",
         "</div>"
     ].join("");
 }
-
