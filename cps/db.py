@@ -631,21 +631,26 @@ class CalibreDB(threading.Thread):
             .filter(and_(Books.authors.any(and_(*q)), func.lower(Books.title).ilike("%" + title + "%"))).first()
 
     # read search results from calibre-database and return it (function is used for feed and simple search
-    def get_search_results(self, term, order=None, limit=-1):
+    def get_search_results(self, term, offset=None, order=None, limit=None):
         order = order or [Books.sort]
+        if offset != None and limit != None:
+            offset = int(offset)
+            limit = offset + int(limit)
         term.strip().lower()
         self.session.connection().connection.connection.create_function("lower", 1, lcase)
         q = list()
         authorterms = re.split("[, ]+", term)
         for authorterm in authorterms:
             q.append(Books.authors.any(func.lower(Authors.name).ilike("%" + authorterm + "%")))
-        return self.session.query(Books).filter(self.common_filters(True)).filter(
+        result = self.session.query(Books).filter(self.common_filters(True)).filter(
             or_(Books.tags.any(func.lower(Tags.name).ilike("%" + term + "%")),
                 Books.series.any(func.lower(Series.name).ilike("%" + term + "%")),
                 Books.authors.any(and_(*q)),
                 Books.publishers.any(func.lower(Publishers.name).ilike("%" + term + "%")),
                 func.lower(Books.title).ilike("%" + term + "%")
-                )).order_by(*order).limit(limit).all()
+                )).order_by(*order).all()
+        result_count = len(result)
+        return result[offset:limit], result_count
 
     # Creates for all stored languages a translated speaking name in the array for the UI
     def speaking_language(self, languages=None):

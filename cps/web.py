@@ -832,13 +832,13 @@ def render_language_books(page, name, order):
 
 
 @web.route("/table")
-@login_required_if_no_ano
+@login_required
 def books_table():
     # __, __, pagination = calibre_db.fill_indexpage(1, 0, db.Books, True, [db.Books.timestamp.asc()])
     return render_title_template('book_table.html', title=_(u"Books list"), page="book_table") #, pagination=pagination)
 
 @web.route("/ajax/listbooks")
-@login_required_if_no_ano
+@login_required
 def list_books():
     off = request.args.get("offset") or 0
     limit = request.args.get("limit") or config.config_books_per_page
@@ -850,9 +850,7 @@ def list_books():
     search = request.args.get("search")
     total_count = calibre_db.session.query(db.Books).count()
     if search:
-        entries = calibre_db.get_search_results(search, order, limit)
-        #ToDo not right web.py 1259
-        filtered_count = len(entries)
+        entries, filtered_count = calibre_db.get_search_results(search, off, order, limit)
     else:
         entries, __, __ = calibre_db.fill_indexpage((int(off) / (int(limit)) + 1), limit, db.Books, True, order)
         filtered_count = total_count
@@ -1035,7 +1033,7 @@ def reconnect():
 def search():
     term = request.args.get("query")
     if term:
-        entries = calibre_db.get_search_results(term)
+        entries, result_count = calibre_db.get_search_results(term)
         ids = list()
         for element in entries:
             ids.append(element.id)
@@ -1044,11 +1042,13 @@ def search():
                                      searchterm=term,
                                      adv_searchterm=term,
                                      entries=entries,
+                                     result_count=result_count,
                                      title=_(u"Search"),
                                      page="search")
     else:
         return render_title_template('search.html',
                                      searchterm="",
+                                     result_count=0,
                                      title=_(u"Search"),
                                      page="search")
 
@@ -1192,7 +1192,7 @@ def advanced_search():
             ids.append(element.id)
         searched_ids[current_user.id] = ids
         return render_title_template('search.html', adv_searchterm=searchterm,
-                                     entries=q, title=_(u"search"), page="search")
+                                     entries=q, result_count=len(q), title=_(u"search"), page="search")
     # prepare data for search-form
     tags = calibre_db.session.query(db.Tags)\
         .join(db.books_tags_link)\

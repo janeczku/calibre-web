@@ -5,12 +5,7 @@
 {% endblock %}
 {% block body %}
 <h2 class="{{page}}">{{_(title)}}</h2>
-<!--
-
-
-           -->
     <table class="table table-no-bordered table-striped"
-           data-toggle="table"
            data-side-pagination="server"
            data-pagination="true"
            data-pagination-detail-h-align=" hidden"
@@ -23,6 +18,7 @@
            data-search="true"
            data-search-align="left"
            data-show-search-button="false"
+           data-search-on-enter-key="true"
            data-checkbox-header="false"
            data-maintain-meta-data="true">
       <thead>
@@ -46,6 +42,9 @@
         </tr>
       </thead>
     </table>
+{% endblock %}
+{% block modal %}
+{{ delete_book(0) }}
 {% endblock %}
 {% block js %}
 <script src="{{ url_for('static', filename='js/libs/bootstrap-table/bootstrap-table.min.js') }}"></script>

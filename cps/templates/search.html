@@ -5,7 +5,7 @@
       <h2>{{_('No Results Found')}} {{adv_searchterm}}</h2>
       <p>{{_('Search Term:')}} {{adv_searchterm}}</p>
     {% else %}
-      <h2>{{entries|length}} {{_('Results for:')}} {{adv_searchterm}}</h2>
+      <h2>{{result_count}} {{_('Results for:')}} {{adv_searchterm}}</h2>
       {% if g.user.is_authenticated %}
         {% if g.user.shelf.all() or g.shelves_access %}
           <div id="shelf-actions" class="btn-toolbar" role="toolbar">
