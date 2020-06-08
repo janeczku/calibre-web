@@ -111,10 +111,10 @@ except ValueError:
 del env_CALIBRE_PORT
 
 
-EXTENSIONS_AUDIO    = {'mp3', 'mp4', 'ogg', 'opus', 'wav', 'flac'}
+EXTENSIONS_AUDIO    = {'mp3', 'mp4', 'ogg', 'opus', 'wav', 'flac', 'm4a', 'm4b'}
 EXTENSIONS_CONVERT  = ['pdf', 'epub', 'mobi', 'azw3', 'docx', 'rtf', 'fb2', 'lit', 'lrf', 'txt', 'htmlz', 'rtf', 'odt']
 EXTENSIONS_UPLOAD   = {'txt', 'pdf', 'epub', 'kepub', 'mobi', 'azw', 'azw3', 'cbr', 'cbz', 'cbt', 'djvu', 'prc', 'doc', 'docx',
-                       'fb2', 'html', 'rtf', 'lit', 'odt', 'mp3', 'mp4', 'ogg', 'opus', 'wav', 'flac'}
+                       'fb2', 'html', 'rtf', 'lit', 'odt', 'mp3', 'mp4', 'ogg', 'opus', 'wav', 'flac', 'm4a', 'm4b'}
 
 
 def has_flag(value, bit_flag):
