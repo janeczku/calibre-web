@@ -66,7 +66,7 @@
                     </ul>
               </div>
             {% endif %}
-            {% if audioentries|length > 0 %}
+            {% if audioentries|length > 0 and g.user.role_viewer() %}
               <div class="btn-group" role="group">
                 <button id="listen-in-browser" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   <span class="glyphicon glyphicon-music"></span> {{_('Listen in Browser')}}
