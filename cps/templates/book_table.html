@@ -20,7 +20,9 @@
            data-show-search-button="false"
            data-search-on-enter-key="true"
            data-checkbox-header="false"
-           data-maintain-meta-data="true">
+           data-maintain-meta-data="true"
+           data-editable-emptytext="<span class='glyphicon glyphicon-plus'></span>">
+
       <thead>
         <tr>
             <!--th data-field="title" id="title" data-editable-type="text" data-editable-url="{{ url_for('web.edit_list_book')}}" data-editable="true" data-editable-title="{{_('Enter title')}}"></th-->
@@ -34,7 +36,7 @@
             <th data-field="authors" id="authors" data-sortable="true" {% if g.user.role_edit() %}data-editable-type="text" data-editable-url="{{ url_for('web.edit_list_book')}}" data-editable="true" data-editable-title="{{_('Enter title')}}"{% endif %}>Authors</th>
             <th data-field="tags" id="tags" data-sortable="true" {% if g.user.role_edit() %}data-editable-type="text" data-editable-url="{{ url_for('web.edit_list_book')}}" data-editable="true" data-editable-title="{{_('Enter title')}}"{% endif %}>Tags</th>
             <th data-field="series" id="series" data-sortable="true" {% if g.user.role_edit() %}data-editable-type="text" data-editable-url="{{ url_for('web.edit_list_book')}}" data-editable="true" data-editable-title="{{_('Enter title')}}"{% endif %}>Series</th>
-            <th data-field="series_index" id="series_index" data-sortable="true" >Series Index</th>
+            <th data-field="series_index" id="series_index" data-sortable="true" {% if g.user.role_edit() %} data-editable-type="number" data-editable-placeholder="1" data-editable-step="0.01" data-editable-min="0" data-editable-url="{{ url_for('web.edit_list_book')}}" data-editable="true" data-editable-title="{{_('Enter title')}}"{% endif %}>Series Index</th>
             <th data-field="languages" id="languages" data-sortable="true" {% if g.user.role_edit() %}data-editable-type="text" data-editable-url="{{ url_for('web.edit_list_book')}}" data-editable="true" data-editable-title="{{_('Enter title')}}"{% endif %}>Language</th>
             <th data-field="pubdate" id="pubdate" data-sortable="true">Publishing Date</th>
             <th data-field="publishers" id="publishers" data-sortable="true" {% if g.user.role_edit() %}data-editable-type="text" data-editable-url="{{ url_for('web.edit_list_book')}}" data-editable="true" data-editable-title="{{_('Enter title')}}"{% endif %}>Publishers</th>

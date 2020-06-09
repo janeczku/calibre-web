@@ -250,7 +250,7 @@ function RestrictionActions (value, row) {
 /* Function for deleting books */
 function EbookActions (value, row) {
     return [
-        "<div class='danger remove' data-toggle='modal' data-target=\"#deleteModal\" data-delete-id=\"" + row.id + "\" title=\"Remove\">",
+        "<div class=\"danger remove\" data-toggle=\"modal\" data-target=\"#deleteModal\" data-delete-id=\"" + row.id + "\" title=\"Remove\">",
         "<i class=\"glyphicon glyphicon-trash\"></i>",
         "</div>"
     ].join("");

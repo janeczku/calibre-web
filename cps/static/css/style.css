@@ -51,7 +51,22 @@ body h2 {
   color:#444;
 }
 
-a { color: #45b29d; }
+a, .danger, .editable-empty, .editable-empty:hover { color: #45b29d; }
+
+.danger:hover { color: #23527c; }
+
+.btn-default a { color: #444; }
+
+.btn-default a:hover {
+    color: #45b29d;
+    text-decoration: None;
+}
+
+.btn-default:hover {
+    color: #45b29d;
+}
+
+.editable-click, a.editable-click, a.editable-click:hover  { border-bottom: None; }
 
 .navigation .nav-head {
   text-transform: uppercase;
@@ -63,6 +78,7 @@ a { color: #45b29d; }
   border-top: 1px solid #ccc;
   padding-top: 20px;
 }
+
 .navigation li a {
   color: #444;
   text-decoration: none;
