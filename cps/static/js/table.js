@@ -56,49 +56,31 @@ $(function() {
             }
         });
     });
-    /*$("#books-table").bootstrapTable({
-    });
-    test = $("#books-table").bootstrapTable('getOptions');
-    var column = test.columns[0]
-    column.forEach(function(item){
-        if ('editableValidate' in item) {
-            item.editable =  {
-                mode: 'inline',
-                validate: function (value) { if($.trim(value) == '') return 'This field is required'; },
-            }
-        }
-    });
-    $("#books-table").bootstrapTable('refreshOptions', {columns: [column]});*/
 
     var column = [];
-    $('#table1 > thead > tr > th').each(function(){
-        if ($(this).attr('data-edit')) {
-            if ($(this).attr('data-edit-validate')) {
-                column.push({
-                    editable: {
-                        mode: 'inline',
-                        emptytext: "<span class='glyphicon glyphicon-plus'></span>",
-                        validate: function (value) { if($.trim(value) == '') return 'This field is required'; },
-                    }
-                });
-            } else {
-                column.push({
-                    editable: {
-                        mode: 'inline',
-                        emptytext: "<span class='glyphicon glyphicon-plus'></span>",
-                    }
-                });
-            }
-        } else {
-            column.push({});
+    $("#books-table > thead > tr > th").each(function() {
+        var element = {};
+        if ($(this).attr("data-edit")) {
+            element = {
+                editable: {
+                    mode: "inline",
+                    emptytext: "<span class='glyphicon glyphicon-plus'></span>",
+                }
+            };
         }
+        var validateText = $(this).attr("data-edit-validate");
+        if (validateText) {
+            element.editable.validate = function (value) {
+                if ($.trim(value) === "") return validateText;
+            };
+        }
+        column.push(element);
     });
-    $("#table1").bootstrapTable({
+    $("#books-table").bootstrapTable({
         sidePagination: "server",
         pagination: true,
         paginationDetailHAlign: " hidden",
         paginationHAlign: "left",
-        /*url: window.location.pathname + "/../../ajax/listbooks",*/
         idField: "id",
         search: true,
         showColumns: true,
@@ -109,55 +91,10 @@ $(function() {
         maintainMetaData: true,
         responseHandler: responseHandler,
         columns: column,
-        /*editable-mode="inline"
-        editable-emptytext="<span class='glyphicon glyphicon-plus'></span>">*/
-        /*columns: [
-            {},
-            {}, {
-            editable: {
-                mode: 'inline',
-                emptytext: "<span class='glyphicon glyphicon-plus'></span>",
-                validate: function (value) { if($.trim(value) == '') return 'This field is required'; },
-            },
-        }, {
-            editable: {
-                mode: 'inline',
-                validate: function (value) { if($.trim(value) == '') return 'This field is required'; },
-            },
-        }, {
-            editable: {
-                mode: 'inline',
-                validate: function (value) { if($.trim(value) == '') return 'This field is required'; },
-            }
-        }, {
-            editable: {
-                mode: 'inline',
-                emptytext: "<span class='glyphicon glyphicon-plus'></span>",
-                validate: function (value) { if($.trim(value) == '') return 'This field is required'; },
-            },
-        }, {
-            editable: {
-                mode: 'inline',
-                emptytext: "<span class='glyphicon glyphicon-plus'></span>",
-                validate: function (value) { if($.trim(value) == '') return 'This field is required'; },
-            },
-        }, {
-            editable: {
-                mode: 'inline',
-                emptytext: "<span class='glyphicon glyphicon-plus'></span>",
-                validate: function (value) { if($.trim(value) == '') return 'This field is required'; },
-            },
-        }],*/
         formatNoMatches: function () {
             return "";
         },
     });
-
-    /*var $table = $('#books-table');
-    $('#books-table').bootstrapTable('getOptions')*/
-    /*$('#books-table').bootstrapTable('editable')*/
-    /*{ field: 'aimValue', title: 'Aim<br>Value', class: 'danger',editable: { mode: 'inline', validate: function (v) { return validateData(this, v); }, }, },*/
-
 
     $("#domain_allow_submit").click(function(event) {
         event.preventDefault();
@@ -173,6 +110,7 @@ $(function() {
             }
         });
     });
+
     $("#domain-allow-table").bootstrapTable({
         formatNoMatches: function () {
             return "";
@@ -398,9 +336,3 @@ function responseHandler(res) {
     });
     return res;
 }
-
-function validato(value) {
-    if($.trim(value) == '') return 'This field is required';
-}
-
-/*function validateVal(value) { if($.trim(value) == '') return 'This field is required'; }*/
