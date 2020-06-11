@@ -887,3 +887,39 @@ def convert_bookformat(book_id):
     else:
         flash(_(u"There was an error converting this book: %(res)s", res=rtn), category="error")
     return redirect(url_for('editbook.edit_book', book_id=book_id))
+
+@editbook.route("/ajax/editbooks/<param>", methods=['POST'])
+@login_required_if_no_ano
+def edit_list_book(param):
+    vals = request.form.to_dict()
+    #calibre_db.update_title_sort(config)
+    #calibre_db.session.connection().connection.connection.create_function('uuid4', 0, lambda: str(uuid4()))
+    book = calibre_db.get_book(vals['pk'])
+    if param =='series_index':
+        edit_book_series_index(vals['value'], book)
+    elif param =='tags':
+        edit_book_tags(vals['value'], book)
+    elif param =='series':
+        edit_book_series(vals['value'], book)
+    elif param =='publishers':
+        edit_book_publisher(vals['value'], book)
+    # ToDo: edit books
+    elif param =='languages':
+        edit_book_languages(vals['value'], book)
+    elif param =='title':
+        edit_book_languages(vals['value'], book)
+    elif param =='sort':
+        edit_book_languages(vals['value'], book)
+    elif param =='author_sort':
+        edit_book_languages(vals['value'], book)
+    elif param =='authors':
+        edit_book_languages(vals['value'], book)
+
+    book.last_modified = datetime.utcnow()
+    calibre_db.session.commit()
+    return ""
+
+@editbook.route("/ajax/deletebooks")
+@login_required_if_no_ano
+def delete_list_book():
+    pass
