@@ -77,11 +77,6 @@ try:
 except ImportError:
     pass  # We're not using Python 3
 
-#try:
-#    import rarfile
-#    feature_support['rar'] = True
-#except ImportError:
-#    feature_support['rar'] = False
 
 try:
     from natsort import natsorted as sort
@@ -862,15 +857,6 @@ def list_books():
     response.headers["Content-Type"] = "application/json; charset=utf-8"
     return response
 
-@web.route("/ajax/editbooks")
-@login_required_if_no_ano
-def edit_list_book():
-    pass
-
-@web.route("/ajax/editbooks")
-@login_required_if_no_ano
-def delete_list_book():
-    pass
 
 @web.route("/author")
 @login_required_if_no_ano

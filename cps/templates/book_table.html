@@ -1,4 +1,8 @@
 {% extends "layout.html" %}
+{% macro text_table_row(parameter, edit_text, show_text) -%}
+<th data-field="{{ parameter }}"  id="{{ parameter }}" data-sortable="true" {% if g.user.role_edit() %}data-editable-type="text" data-editable-url="{{ url_for('editbook.edit_list_book', param=parameter)}}" data-editable="true" data-editable-title="{{ edit_text}}"{% endif %}>{{ show_text }}</th>
+{%- endmacro %}
+
 {% block header %}
 <link href="{{ url_for('static', filename='css/libs/bootstrap-table.min.css') }}" rel="stylesheet">
 <link href="{{ url_for('static', filename='css/libs/bootstrap-editable.css') }}" rel="stylesheet">
@@ -21,25 +25,25 @@
            data-search-on-enter-key="true"
            data-checkbox-header="false"
            data-maintain-meta-data="true"
+           data-response-handler="responseHandler"
            data-editable-emptytext="<span class='glyphicon glyphicon-plus'></span>">
 
       <thead>
         <tr>
-            <!--th data-field="title" id="title" data-editable-type="text" data-editable-url="{{ url_for('web.edit_list_book')}}" data-editable="true" data-editable-title="{{_('Enter title')}}"></th-->
           {% if g.user.role_edit() %}
-            <th data-checkbox="true" data-sortable="true"></th>
+            <th data-field="state" data-checkbox="true" data-sortable="true"></th>
           {% endif %}
             <th data-field="id" id="id" data-visible="false" data-switchable="false"></th>
-            <th data-field="title" id="title" data-sortable="true" {% if g.user.role_edit() %}data-editable-type="text" data-editable-url="{{ url_for('web.edit_list_book')}}" data-editable="true" data-editable-title="{{_('Enter title')}}"{% endif %}>Title</th>
-            <th data-field="sort" id="sort" data-sortable="true" {% if g.user.role_edit() %}data-editable-type="text" data-editable-url="{{ url_for('web.edit_list_book')}}" data-editable="true" data-editable-title="{{_('Enter title')}}"{% endif %}>Sort</th>
-            <th data-field="author_sort" id="author_sort" data-sortable="true" {% if g.user.role_edit() %}data-editable-type="text" data-editable-url="{{ url_for('web.edit_list_book')}}" data-editable="true" data-editable-title="{{_('Enter title')}}"{% endif %}>Authors Sort</th>
-            <th data-field="authors" id="authors" data-sortable="true" {% if g.user.role_edit() %}data-editable-type="text" data-editable-url="{{ url_for('web.edit_list_book')}}" data-editable="true" data-editable-title="{{_('Enter title')}}"{% endif %}>Authors</th>
-            <th data-field="tags" id="tags" data-sortable="true" {% if g.user.role_edit() %}data-editable-type="text" data-editable-url="{{ url_for('web.edit_list_book')}}" data-editable="true" data-editable-title="{{_('Enter title')}}"{% endif %}>Tags</th>
-            <th data-field="series" id="series" data-sortable="true" {% if g.user.role_edit() %}data-editable-type="text" data-editable-url="{{ url_for('web.edit_list_book')}}" data-editable="true" data-editable-title="{{_('Enter title')}}"{% endif %}>Series</th>
-            <th data-field="series_index" id="series_index" data-sortable="true" {% if g.user.role_edit() %} data-editable-type="number" data-editable-placeholder="1" data-editable-step="0.01" data-editable-min="0" data-editable-url="{{ url_for('web.edit_list_book')}}" data-editable="true" data-editable-title="{{_('Enter title')}}"{% endif %}>Series Index</th>
-            <th data-field="languages" id="languages" data-sortable="true" {% if g.user.role_edit() %}data-editable-type="text" data-editable-url="{{ url_for('web.edit_list_book')}}" data-editable="true" data-editable-title="{{_('Enter title')}}"{% endif %}>Language</th>
+            {{ text_table_row('title', _('Enter Title'),_('Title')) }}
+            {{ text_table_row('sort', _('Enter Titlesort'),_('Sort')) }}
+            {{ text_table_row('author_sort', _('Enter Authorsort'),_('Authors Sort')) }}
+            {{ text_table_row('authors', _('Enter Authors'),_('Authors')) }}
+            {{ text_table_row('tags', _('Enter Tags'),_('Tags')) }}
+            {{ text_table_row('series', _('Enter Series'),_('Series')) }}
+            <th data-field="series_index" id="series_index" data-sortable="true" {% if g.user.role_edit() %} data-editable-type="number" data-editable-placeholder="1" data-editable-step="0.01" data-editable-min="0" data-editable-url="{{ url_for('editbook.edit_list_book', param='series_index')}}" data-editable="true" data-editable-title="{{_('Enter title')}}"{% endif %}>{{_('Series Index')}}</th>
+            {{ text_table_row('languages', _('Enter Languages'),_('Languages')) }}
             <th data-field="pubdate" id="pubdate" data-sortable="true">Publishing Date</th>
-            <th data-field="publishers" id="publishers" data-sortable="true" {% if g.user.role_edit() %}data-editable-type="text" data-editable-url="{{ url_for('web.edit_list_book')}}" data-editable="true" data-editable-title="{{_('Enter title')}}"{% endif %}>Publishers</th>
+            {{ text_table_row('publishers', _('Enter Publishers'),_('Publishers')) }}
           {% if g.user.role_edit() %}
             <th data-align="right" data-formatter="EbookActions" data-switchable="false"></th>
           {% endif %}
@@ -55,4 +59,33 @@
 <script src="{{ url_for('static', filename='js/libs/bootstrap-table/bootstrap-table-editable.min.js') }}"></script>
 <script src="{{ url_for('static', filename='js/libs/bootstrap-table/bootstrap-editable.min.js') }}"></script>
 <script src="{{ url_for('static', filename='js/table.js') }}"></script>
+<script>
+  var $table = $('#books-table')
+  var selections = []
+
+  function responseHandler(res) {
+    $.each(res.rows, function (i, row) {
+      row.state = $.inArray(row.id, selections) !== -1
+    })
+    return res
+  }
+
+  $(function() {
+    $table.on('check.bs.table check-all.bs.table uncheck.bs.table uncheck-all.bs.table',
+      function (e, rowsAfter, rowsBefore) {
+        var rows = rowsAfter
+
+        if (e.type === 'uncheck-all') {
+          rows = rowsBefore
+        }
+
+        var ids = $.map(!$.isArray(rows) ? [rows] : rows, function (row) {
+          return row.id
+        })
+
+        var func = $.inArray(e.type, ['check', 'check-all']) > -1 ? 'union' : 'difference'
+        selections = window._[func](selections, ids)
+      })
+  })
+</script>
 {% endblock %}
