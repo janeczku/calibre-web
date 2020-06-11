@@ -51,9 +51,9 @@ body h2 {
   color:#444;
 }
 
-a, .danger, .editable-empty, .editable-empty:hover { color: #45b29d; }
+a, .danger,.book-remove, .editable-empty, .editable-empty:hover { color: #45b29d; }
 
-.danger:hover { color: #23527c; }
+.book-remove:hover { color: #23527c; }
 
 .btn-default a { color: #444; }
 

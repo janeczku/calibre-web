@@ -15,15 +15,149 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* exported TableActions, RestrictionActions, EbookActions*/
+/* exported TableActions, RestrictionActions, EbookActions, responseHandler */
+
+var selections = [];
 
 $(function() {
 
-    $("#books-table").bootstrapTable({
-        formatNoMatches: function () {
-            return "";
+    $("#books-table").on("check.bs.table check-all.bs.table uncheck.bs.table uncheck-all.bs.table",
+        function (e, rowsAfter, rowsBefore) {
+            var rows = rowsAfter;
+
+            if (e.type === "uncheck-all") {
+                rows = rowsBefore;
+            }
+
+            var ids = $.map(!$.isArray(rows) ? [rows] : rows, function (row) {
+                return row.id;
+            });
+
+            var func = $.inArray(e.type, ["check", "check-all"]) > -1 ? "union" : "difference";
+            selections = window._[func](selections, ids);
+            if (selections.length >= 2) {
+                $("#merge_books").removeClass("disabled");
+                $("#merge_books").attr("aria-disabled", false);
+            } else {
+                $("#merge_books").addClass("disabled");
+                $("#merge_books").attr("aria-disabled", true);
+            }
+        });
+
+    $("#merge_books").click(function() {
+        $.ajax({
+            method:"post",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            url: window.location.pathname + "/../../ajax/mergebooks",
+            data: JSON.stringify({"Merge_books":selections}),
+            success: function success() {
+                // ToDo:
+            }
+        });
+    });
+    /*$("#books-table").bootstrapTable({
+    });
+    test = $("#books-table").bootstrapTable('getOptions');
+    var column = test.columns[0]
+    column.forEach(function(item){
+        if ('editableValidate' in item) {
+            item.editable =  {
+                mode: 'inline',
+                validate: function (value) { if($.trim(value) == '') return 'This field is required'; },
+            }
         }
     });
+    $("#books-table").bootstrapTable('refreshOptions', {columns: [column]});*/
+
+    var column = [];
+    $('#table1 > thead > tr > th').each(function(){
+        if ($(this).attr('data-edit')) {
+            if ($(this).attr('data-edit-validate')) {
+                column.push({
+                    editable: {
+                        mode: 'inline',
+                        emptytext: "<span class='glyphicon glyphicon-plus'></span>",
+                        validate: function (value) { if($.trim(value) == '') return 'This field is required'; },
+                    }
+                });
+            } else {
+                column.push({
+                    editable: {
+                        mode: 'inline',
+                        emptytext: "<span class='glyphicon glyphicon-plus'></span>",
+                    }
+                });
+            }
+        } else {
+            column.push({});
+        }
+    });
+    $("#table1").bootstrapTable({
+        sidePagination: "server",
+        pagination: true,
+        paginationDetailHAlign: " hidden",
+        paginationHAlign: "left",
+        /*url: window.location.pathname + "/../../ajax/listbooks",*/
+        idField: "id",
+        search: true,
+        showColumns: true,
+        searchAlign: "left",
+        showSearchButton : false,
+        searchOnEnterKey: true,
+        checkboxHeader: false,
+        maintainMetaData: true,
+        responseHandler: responseHandler,
+        columns: column,
+        /*editable-mode="inline"
+        editable-emptytext="<span class='glyphicon glyphicon-plus'></span>">*/
+        /*columns: [
+            {},
+            {}, {
+            editable: {
+                mode: 'inline',
+                emptytext: "<span class='glyphicon glyphicon-plus'></span>",
+                validate: function (value) { if($.trim(value) == '') return 'This field is required'; },
+            },
+        }, {
+            editable: {
+                mode: 'inline',
+                validate: function (value) { if($.trim(value) == '') return 'This field is required'; },
+            },
+        }, {
+            editable: {
+                mode: 'inline',
+                validate: function (value) { if($.trim(value) == '') return 'This field is required'; },
+            }
+        }, {
+            editable: {
+                mode: 'inline',
+                emptytext: "<span class='glyphicon glyphicon-plus'></span>",
+                validate: function (value) { if($.trim(value) == '') return 'This field is required'; },
+            },
+        }, {
+            editable: {
+                mode: 'inline',
+                emptytext: "<span class='glyphicon glyphicon-plus'></span>",
+                validate: function (value) { if($.trim(value) == '') return 'This field is required'; },
+            },
+        }, {
+            editable: {
+                mode: 'inline',
+                emptytext: "<span class='glyphicon glyphicon-plus'></span>",
+                validate: function (value) { if($.trim(value) == '') return 'This field is required'; },
+            },
+        }],*/
+        formatNoMatches: function () {
+            return "";
+        },
+    });
+
+    /*var $table = $('#books-table');
+    $('#books-table').bootstrapTable('getOptions')*/
+    /*$('#books-table').bootstrapTable('editable')*/
+    /*{ field: 'aimValue', title: 'Aim<br>Value', class: 'danger',editable: { mode: 'inline', validate: function (v) { return validateData(this, v); }, }, },*/
+
 
     $("#domain_allow_submit").click(function(event) {
         event.preventDefault();
@@ -105,7 +239,7 @@ $(function() {
         var deleteId = $(this).data("deleteid");
         $.ajax({
             method:"get",
-            url: window.location.pathname + "/../../delete"/+deleteId,
+            url: window.location.pathname + "/../../delete/" + deleteId,
         });
     });
 
@@ -238,6 +372,7 @@ function TableActions (value, row) {
     ].join("");
 }
 
+
 /* Function for deleting domain restrictions */
 function RestrictionActions (value, row) {
     return [
@@ -250,8 +385,22 @@ function RestrictionActions (value, row) {
 /* Function for deleting books */
 function EbookActions (value, row) {
     return [
-        "<div class=\"danger remove\" data-toggle=\"modal\" data-target=\"#deleteModal\" data-delete-id=\"" + row.id + "\" title=\"Remove\">",
+        "<div class=\"book-remove\" data-toggle=\"modal\" data-target=\"#deleteModal\" data-delete-id=\"" + row.id + "\" title=\"Remove\">",
         "<i class=\"glyphicon glyphicon-trash\"></i>",
         "</div>"
     ].join("");
 }
+
+/* Function for keeping checked rows */
+function responseHandler(res) {
+    $.each(res.rows, function (i, row) {
+        row.state = $.inArray(row.id, selections) !== -1;
+    });
+    return res;
+}
+
+function validato(value) {
+    if($.trim(value) == '') return 'This field is required';
+}
+
+/*function validateVal(value) { if($.trim(value) == '') return 'This field is required'; }*/

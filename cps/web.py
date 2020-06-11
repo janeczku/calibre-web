@@ -30,8 +30,8 @@ import traceback
 import binascii
 import re
 
-from babel import Locale as LC
 from babel.dates import format_date
+from babel import Locale as LC
 from babel.core import UnknownLocaleError
 from flask import Blueprint
 from flask import render_template, request, redirect, send_from_directory, make_response, g, flash, abort, url_for
@@ -849,6 +849,14 @@ def list_books():
     else:
         entries, __, __ = calibre_db.fill_indexpage((int(off) / (int(limit)) + 1), limit, db.Books, True, order)
         filtered_count = total_count
+    for entry in entries:
+        for index in range(0, len(entry.languages)):
+            try:
+                entry.languages[index].language_name = LC.parse(entry.languages[index].lang_code)\
+                    .get_language_name(get_locale())
+            except UnknownLocaleError:
+                entry.languages[index].language_name = _(
+                    isoLanguages.get(part3=entry.languages[index].lang_code).name)
     table_entries = {'totalNotFiltered': total_count, 'total': filtered_count, "rows": entries}
     js_list = json.dumps(table_entries, cls=db.AlchemyEncoder)
     #js_list = json.dumps(entries, cls=db.AlchemyEncoder)
