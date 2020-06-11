@@ -240,7 +240,10 @@ class Languages(Base):
         self.lang_code = lang_code
 
     def get(self):
-        return self.lang_code
+        if self.language_name:
+            return self.language_name
+        else:
+            return self.lang_code
 
     def __repr__(self):
         return u"<Languages('{0}')>".format(self.lang_code)

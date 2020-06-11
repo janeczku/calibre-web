@@ -27,6 +27,7 @@ import json
 from shutil import copyfile
 from uuid import uuid4
 
+from babel import Locale as LC
 from flask import Blueprint, request, flash, redirect, url_for, abort, Markup, Response
 from flask_babel import gettext as _
 from flask_login import current_user, login_required
@@ -892,7 +893,7 @@ def convert_bookformat(book_id):
 @login_required_if_no_ano
 def edit_list_book(param):
     vals = request.form.to_dict()
-    #calibre_db.update_title_sort(config)
+    # calibre_db.update_title_sort(config)
     #calibre_db.session.connection().connection.connection.create_function('uuid4', 0, lambda: str(uuid4()))
     book = calibre_db.get_book(vals['pk'])
     if param =='series_index':
@@ -902,16 +903,17 @@ def edit_list_book(param):
     elif param =='series':
         edit_book_series(vals['value'], book)
     elif param =='publishers':
-        edit_book_publisher(vals['value'], book)
-    # ToDo: edit books
+        vals['publisher'] = vals['value']
+        edit_book_publisher(vals, book)
     elif param =='languages':
         edit_book_languages(vals['value'], book)
-    elif param =='title':
-        edit_book_languages(vals['value'], book)
-    elif param =='sort':
-        edit_book_languages(vals['value'], book)
     elif param =='author_sort':
-        edit_book_languages(vals['value'], book)
+        book.author_sort = vals['value']
+    elif param =='title':
+        book.title = vals['value']
+    elif param =='sort':
+        book.sort = vals['value']
+    # ToDo: edit books
     elif param =='authors':
         edit_book_languages(vals['value'], book)
 
@@ -919,7 +921,18 @@ def edit_list_book(param):
     calibre_db.session.commit()
     return ""
 
+@editbook.route("/ajax/sort_value")
+@login_required
+def get_sorted_entry():
+    pass
+
 @editbook.route("/ajax/deletebooks")
-@login_required_if_no_ano
+@login_required
 def delete_list_book():
     pass
+
+@editbook.route("/ajax/mergebooks", methods=['POST'])
+@login_required
+def merge_list_book():
+    vals = request.get_json()
+    return ""

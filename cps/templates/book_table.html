@@ -1,6 +1,14 @@
 {% extends "layout.html" %}
-{% macro text_table_row(parameter, edit_text, show_text) -%}
-<th data-field="{{ parameter }}"  id="{{ parameter }}" data-sortable="true" {% if g.user.role_edit() %}data-editable-type="text" data-editable-url="{{ url_for('editbook.edit_list_book', param=parameter)}}" data-editable="true" data-editable-title="{{ edit_text}}"{% endif %}>{{ show_text }}</th>
+{% macro text_table_row(parameter, edit_text, show_text, validate) -%}
+<th data-field="{{ parameter }}" id="{{ parameter }}" data-sortable="true"
+    {% if g.user.role_edit() %}
+        data-editable-type="text"
+        data-editable-url="{{ url_for('editbook.edit_list_book', param=parameter)}}"
+        data-editable-title="{{ edit_text}}"
+        data-edit="true"
+        {% if validate %}data-edit-validate="true" {% endif %}
+    {% endif %}
+>{{ show_text }}</th>
 {%- endmacro %}
 
 {% block header %}
@@ -9,13 +17,14 @@
 {% endblock %}
 {% block body %}
 <h2 class="{{page}}">{{_(title)}}</h2>
-    <table class="table table-no-bordered table-striped"
+    <!--table id="table1"></table-->
+    <!--a href="{{url_for('editbook.merge_list_book')}}" class="btn btn-default disabled" id="merge_book" role="button" aria-disabled="true">{{_('Merge selected books')}}
            data-side-pagination="server"
            data-pagination="true"
            data-pagination-detail-h-align=" hidden"
            data-pagination-h-align="left"
            id="books-table"
-           data-url="{{url_for('web.list_books')}}"
+
            data-id-field="id"
            data-editable-mode="inline"
            data-show-columns="true"
@@ -26,24 +35,27 @@
            data-checkbox-header="false"
            data-maintain-meta-data="true"
            data-response-handler="responseHandler"
-           data-editable-emptytext="<span class='glyphicon glyphicon-plus'></span>">
-
+           data-editable-emptytext="<span class='glyphicon glyphicon-plus'></span>"
+    </a-->
+    <div class="btn btn-default disabled" id="merge_books" aria-disabled="true">{{_('Merge selected books')}}</div>
+    <table id="table1" class="table table-no-bordered table-striped"
+           data-url="{{url_for('web.list_books')}}">
       <thead>
         <tr>
           {% if g.user.role_edit() %}
             <th data-field="state" data-checkbox="true" data-sortable="true"></th>
           {% endif %}
             <th data-field="id" id="id" data-visible="false" data-switchable="false"></th>
-            {{ text_table_row('title', _('Enter Title'),_('Title')) }}
-            {{ text_table_row('sort', _('Enter Titlesort'),_('Sort')) }}
-            {{ text_table_row('author_sort', _('Enter Authorsort'),_('Authors Sort')) }}
-            {{ text_table_row('authors', _('Enter Authors'),_('Authors')) }}
-            {{ text_table_row('tags', _('Enter Tags'),_('Tags')) }}
-            {{ text_table_row('series', _('Enter Series'),_('Series')) }}
+            {{ text_table_row('title', _('Enter Title'),_('Title'), true) }}
+            {{ text_table_row('sort', _('Enter Titlesort'),_('Sort'), false) }}
+            {{ text_table_row('author_sort', _('Enter Authorsort'),_('Authors Sort'), false) }}
+            {{ text_table_row('authors', _('Enter Authors'),_('Authors'), false) }}
+            {{ text_table_row('tags', _('Enter Tags'),_('Tags'), false) }}
+            {{ text_table_row('series', _('Enter Series'),_('Series'), false) }}
             <th data-field="series_index" id="series_index" data-sortable="true" {% if g.user.role_edit() %} data-editable-type="number" data-editable-placeholder="1" data-editable-step="0.01" data-editable-min="0" data-editable-url="{{ url_for('editbook.edit_list_book', param='series_index')}}" data-editable="true" data-editable-title="{{_('Enter title')}}"{% endif %}>{{_('Series Index')}}</th>
-            {{ text_table_row('languages', _('Enter Languages'),_('Languages')) }}
-            <th data-field="pubdate" id="pubdate" data-sortable="true">Publishing Date</th>
-            {{ text_table_row('publishers', _('Enter Publishers'),_('Publishers')) }}
+            {{ text_table_row('languages', _('Enter Languages'),_('Languages'), false) }}
+            <th data-field="pubdate" data-type="date" data-viewformat="dd.mm.yyyy" id="pubdate" data-sortable="true">Publishing Date</th>
+            {{ text_table_row('publishers', _('Enter Publishers'),_('Publishers'), false) }}
           {% if g.user.role_edit() %}
             <th data-align="right" data-formatter="EbookActions" data-switchable="false"></th>
           {% endif %}
@@ -60,32 +72,5 @@
 <script src="{{ url_for('static', filename='js/libs/bootstrap-table/bootstrap-editable.min.js') }}"></script>
 <script src="{{ url_for('static', filename='js/table.js') }}"></script>
 <script>
-  var $table = $('#books-table')
-  var selections = []
-
-  function responseHandler(res) {
-    $.each(res.rows, function (i, row) {
-      row.state = $.inArray(row.id, selections) !== -1
-    })
-    return res
-  }
-
-  $(function() {
-    $table.on('check.bs.table check-all.bs.table uncheck.bs.table uncheck-all.bs.table',
-      function (e, rowsAfter, rowsBefore) {
-        var rows = rowsAfter
-
-        if (e.type === 'uncheck-all') {
-          rows = rowsBefore
-        }
-
-        var ids = $.map(!$.isArray(rows) ? [rows] : rows, function (row) {
-          return row.id
-        })
-
-        var func = $.inArray(e.type, ['check', 'check-all']) > -1 ? 'union' : 'difference'
-        selections = window._[func](selections, ids)
-      })
-  })
 </script>
 {% endblock %}
