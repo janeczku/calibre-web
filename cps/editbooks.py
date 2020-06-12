@@ -911,20 +911,41 @@ def edit_list_book(param):
         book.author_sort = vals['value']
     elif param =='title':
         book.title = vals['value']
+        helper.update_dir_stucture(book.id, config.config_calibre_dir)
     elif param =='sort':
         book.sort = vals['value']
     # ToDo: edit books
     elif param =='authors':
-        edit_book_languages(vals['value'], book)
-
+        input_authors = vals['value'].split('&')
+        input_authors = list(map(lambda it: it.strip().replace(',', '|'), input_authors))
+        modify_database_object(input_authors, book.authors, db.Authors, calibre_db.session, 'author')
+        sort_authors_list = list()
+        for inp in input_authors:
+            stored_author = calibre_db.session.query(db.Authors).filter(db.Authors.name == inp).first()
+            if not stored_author:
+                stored_author = helper.get_sorted_author(inp)
+            else:
+                stored_author = stored_author.sort
+            sort_authors_list.append(helper.get_sorted_author(stored_author))
+        sort_authors = ' & '.join(sort_authors_list)
+        if book.author_sort != sort_authors:
+            book.author_sort = sort_authors
+        helper.update_dir_stucture(book.id, config.config_calibre_dir, input_authors[0])
     book.last_modified = datetime.utcnow()
     calibre_db.session.commit()
     return ""
 
-@editbook.route("/ajax/sort_value")
+@editbook.route("/ajax/sort_value/<field>/<int:bookid>")
 @login_required
-def get_sorted_entry():
-    pass
+def get_sorted_entry(field, bookid):
+    if field == 'title' or field == 'authors':
+        book = calibre_db.get_filtered_book(bookid)
+        if book:
+            if field == 'title':
+                return json.dumps({'sort': book.sort})
+            elif field == 'authors':
+                return json.dumps({'author_sort': book.author_sort})
+    return ''
 
 @editbook.route("/ajax/deletebooks")
 @login_required

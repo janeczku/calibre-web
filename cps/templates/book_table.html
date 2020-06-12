@@ -17,27 +17,10 @@
 {% endblock %}
 {% block body %}
 <h2 class="{{page}}">{{_(title)}}</h2>
-    <!--table id="table1"></table-->
-    <!--a href="{{url_for('editbook.merge_list_book')}}" class="btn btn-default disabled" id="merge_book" role="button" aria-disabled="true">{{_('Merge selected books')}}
-           data-side-pagination="server"
-           data-pagination="true"
-           data-pagination-detail-h-align=" hidden"
-           data-pagination-h-align="left"
-           id="books-table"
-
-           data-id-field="id"
-           data-editable-mode="inline"
-           data-show-columns="true"
-           data-search="true"
-           data-search-align="left"
-           data-show-search-button="false"
-           data-search-on-enter-key="true"
-           data-checkbox-header="false"
-           data-maintain-meta-data="true"
-           data-response-handler="responseHandler"
-           data-editable-emptytext="<span class='glyphicon glyphicon-plus'></span>"
-    </a-->
     <div class="btn btn-default disabled" id="merge_books" aria-disabled="true">{{_('Merge selected books')}}</div>
+    <div class="btn btn-default" id="delete_selection" aria-disabled="false">{{_('Remove Selections')}}</div>
+    <div class="btn btn-default" id="autoupdate_titlesort" aria-disabled="false">{{_('Update Title Sort automatically')}}</div>
+    <div class="btn btn-default" id="autoupdate_autorsort" aria-disabled="false">{{_('Update Author Sort automatically')}}</div>
     <table id="books-table" class="table table-no-bordered table-striped"
            data-url="{{url_for('web.list_books')}}">
       <thead>
@@ -47,14 +30,14 @@
           {% endif %}
             <th data-field="id" id="id" data-visible="false" data-switchable="false"></th>
             {{ text_table_row('title', _('Enter Title'),_('Title'), true) }}
-            {{ text_table_row('sort', _('Enter Titlesort'),_('Sort'), false) }}
-            {{ text_table_row('author_sort', _('Enter Authorsort'),_('Authors Sort'), false) }}
-            {{ text_table_row('authors', _('Enter Authors'),_('Authors'), false) }}
-            {{ text_table_row('tags', _('Enter Tags'),_('Tags'), false) }}
+            {{ text_table_row('sort', _('Enter Title Sort'),_('Title Sort'), false) }}
+            {{ text_table_row('author_sort', _('Enter Author Sort'),_('Author Sort'), false) }}
+            {{ text_table_row('authors', _('Enter Authors'),_('Authors'), true) }}
+            {{ text_table_row('tags', _('Enter Categories'),_('Categories'), false) }}
             {{ text_table_row('series', _('Enter Series'),_('Series'), false) }}
-            <th data-field="series_index" id="series_index" data-sortable="true" {% if g.user.role_edit() %} data-editable-type="number" data-editable-placeholder="1" data-editable-step="0.01" data-editable-min="0" data-editable-url="{{ url_for('editbook.edit_list_book', param='series_index')}}" data-editable="true" data-editable-title="{{_('Enter title')}}"{% endif %}>{{_('Series Index')}}</th>
+            <th data-field="series_index" id="series_index" data-edit-validate="{{ _('This Field is Required') }}" data-sortable="true" {% if g.user.role_edit() %} data-editable-type="number" data-editable-placeholder="1" data-editable-step="0.01" data-editable-min="0" data-editable-url="{{ url_for('editbook.edit_list_book', param='series_index')}}" data-edit="true" data-editable-title="{{_('Enter title')}}"{% endif %}>{{_('Series Index')}}</th>
             {{ text_table_row('languages', _('Enter Languages'),_('Languages'), false) }}
-            <th data-field="pubdate" data-type="date" data-viewformat="dd.mm.yyyy" id="pubdate" data-sortable="true">_('Publishing Date')</th>
+            <th data-field="pubdate" data-type="date" data-viewformat="dd.mm.yyyy" id="pubdate" data-sortable="true">{{_('Publishing Date')}}</th>
             {{ text_table_row('publishers', _('Enter Publishers'),_('Publishers'), false) }}
           {% if g.user.role_edit() %}
             <th data-align="right" data-formatter="EbookActions" data-switchable="false"></th>

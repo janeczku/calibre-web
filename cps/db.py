@@ -294,7 +294,7 @@ class Data(Base):
 class Books(Base):
     __tablename__ = 'books'
 
-    DEFAULT_PUBDATE = "0101-01-01 00:00:00+00:00"
+    DEFAULT_PUBDATE = datetime(101, 1, 1, 0, 0, 0, 0) # ("0101-01-01 00:00:00+00:00")
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     title = Column(String(collation='NOCASE'), nullable=False, default='Unknown')

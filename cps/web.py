@@ -865,6 +865,11 @@ def list_books():
     response.headers["Content-Type"] = "application/json; charset=utf-8"
     return response
 
+@web.route("/ajax/table_settings")
+@login_required
+def update_table_settings():
+    # ToDo: Save table settings
+    pass
 
 @web.route("/author")
 @login_required_if_no_ano
