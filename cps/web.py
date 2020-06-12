@@ -829,8 +829,12 @@ def render_language_books(page, name, order):
 @web.route("/table")
 @login_required
 def books_table():
-    # __, __, pagination = calibre_db.fill_indexpage(1, 0, db.Books, True, [db.Books.timestamp.asc()])
-    return render_title_template('book_table.html', title=_(u"Books list"), page="book_table") #, pagination=pagination)
+    try:
+        visibility = json.loads(current_user.view_settings)
+    except Exception:
+        visibility = {}
+    return render_title_template('book_table.html', title=_(u"Books list"), page="book_table",
+                                 visiblility=visibility)
 
 @web.route("/ajax/listbooks")
 @login_required
@@ -865,11 +869,14 @@ def list_books():
     response.headers["Content-Type"] = "application/json; charset=utf-8"
     return response
 
-@web.route("/ajax/table_settings")
+@web.route("/ajax/table_settings", methods=['POST'])
 @login_required
 def update_table_settings():
+    # vals = request.get_json()
     # ToDo: Save table settings
-    pass
+    current_user.view_settings = request.data
+    ub.session.commit()
+    return ""
 
 @web.route("/author")
 @login_required_if_no_ano

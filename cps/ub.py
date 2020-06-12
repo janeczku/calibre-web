@@ -218,6 +218,7 @@ class User(UserBase, Base):
     allowed_column_value = Column(String, default="")
     remote_auth_token = relationship('RemoteAuthToken', backref='user', lazy='dynamic')
     series_view = Column(String(10), default="list")
+    view_settings = Column(String, default="list")
 
 
 if oauth_support:
@@ -259,6 +260,7 @@ class Anonymous(AnonymousUserMixin, UserBase):
         self.denied_column_value = data.denied_column_value
         self.allowed_column_value = data.allowed_column_value
         self.series_view = data.series_view
+        self.view_settings = data.view_settings
 
     def role_admin(self):
         return False
@@ -570,6 +572,11 @@ def migrate_Database(session):
     except exc.OperationalError:
         conn = engine.connect()
         conn.execute("ALTER TABLE user ADD column `series_view` VARCHAR(10) DEFAULT 'list'")
+    try:
+        session.query(exists().where(User.view_settings)).scalar()
+    except exc.OperationalError:
+        conn = engine.connect()
+        conn.execute("ALTER TABLE user ADD column `view_settings` VARCHAR DEFAULT '{}'")
 
     if session.query(User).filter(User.role.op('&')(constants.ROLE_ANONYMOUS) == constants.ROLE_ANONYMOUS).first() \
         is None:
@@ -591,6 +598,7 @@ def migrate_Database(session):
                      "sidebar_view INTEGER,"
                      "default_language VARCHAR(3),"
                      "series_view VARCHAR(10),"
+                     "view_settings VARCHAR,"                     
                      "UNIQUE (nickname),"
                      "UNIQUE (email))")
         conn.execute("INSERT INTO user_id(id, nickname, email, role, password, kindle_mail,locale,"
