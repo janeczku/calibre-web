@@ -76,12 +76,14 @@ $(function() {
         }
         column.push(element);
     });
+
     $("#books-table").bootstrapTable({
         sidePagination: "server",
         pagination: true,
         paginationDetailHAlign: " hidden",
         paginationHAlign: "left",
         idField: "id",
+        uniqueId: "id",
         search: true,
         showColumns: true,
         searchAlign: "left",
@@ -94,7 +96,46 @@ $(function() {
         formatNoMatches: function () {
             return "";
         },
+        onEditableSave: function (field, row, oldvalue, $el) {
+        if (field === 'title' || field === 'authors') {
+            $.ajax({
+                method:"get",
+                dataType: "json",
+                url: window.location.pathname + "/../../ajax/sort_value/" + field + '/' + row.id,
+                success: function success(data) {
+                    var key = Object.keys(data)[0]
+                    $("#books-table").bootstrapTable('updateCellByUniqueId', {
+                        id: row.id,
+                        field: key,
+                        value: data[key]
+                    })
+                    console.log(data);
+                }
+            });
+         }
+        },
+        onColumnSwitch: function (field, checked) {
+            var visible = $("#books-table").bootstrapTable('getVisibleColumns');
+            var hidden  = $("#books-table").bootstrapTable('getHiddenColumns');
+            $.ajax({
+                method:"post",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                url: window.location.pathname + "/../../ajax/table_settings",
+                data: JSON.stringify({"Merge_books":selections}),
+                success: function success() {
+                    // ToDo:
+                }
+        });
+
+        }
     });
+
+    // to save current setting
+    // coresponding event: onColumnSwitch
+    //$table.bootstrapTable('getVisibleColumns')
+    //$table.bootstrapTable('getHiddenColumns').
+
 
     $("#domain_allow_submit").click(function(event) {
         event.preventDefault();
@@ -194,10 +235,6 @@ $(function() {
         <div id="flash_success" class="alert alert-success">{{ message[1] }}</div>
       </div>*/
 
-    // to save current setting
-    // coresponding event: onColumnSwitch
-    //$table.bootstrapTable('getVisibleColumns')
-    //$table.bootstrapTable('getHiddenColumns').
 
     $("#restrictModal").on("hidden.bs.modal", function () {
         // Destroy table and remove hooks for buttons
