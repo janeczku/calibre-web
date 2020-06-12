@@ -945,15 +945,18 @@ def get_sorted_entry(field, bookid):
                 return json.dumps({'sort': book.sort})
             elif field == 'authors':
                 return json.dumps({'author_sort': book.author_sort})
-    return ''
+    return ""
 
 @editbook.route("/ajax/deletebooks")
 @login_required
 def delete_list_book():
-    pass
+    return ""
 
 @editbook.route("/ajax/mergebooks", methods=['POST'])
 @login_required
 def merge_list_book():
     vals = request.get_json()
+
+    # load first book
+    # load every next book, append data to first book, delete 2nd book
     return ""

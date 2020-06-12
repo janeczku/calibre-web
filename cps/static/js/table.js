@@ -42,7 +42,18 @@ $(function() {
                 $("#merge_books").addClass("disabled");
                 $("#merge_books").attr("aria-disabled", true);
             }
+            if (selections.length < 1) {
+                $("#delete_selection").addClass("disabled");
+                $("#delete_selection").attr("aria-disabled", true);
+            }
+            else{
+                $("#delete_selection").removeClass("disabled");
+                $("#delete_selection").attr("aria-disabled", false);
+            }
         });
+    $("#delete_selection").click(function() {
+        $("#books-table").bootstrapTable('uncheckAll');
+    });
 
     $("#merge_books").click(function() {
         $.ajax({
@@ -108,7 +119,7 @@ $(function() {
                         id: row.id,
                         field: key,
                         value: data[key]
-                    })
+                    });
                     console.log(data);
                 }
             });
@@ -117,24 +128,38 @@ $(function() {
         onColumnSwitch: function (field, checked) {
             var visible = $("#books-table").bootstrapTable('getVisibleColumns');
             var hidden  = $("#books-table").bootstrapTable('getHiddenColumns');
+            // to save current setting
+            // coresponding event: onColumnSwitch
+            //$table.bootstrapTable('getVisibleColumns')
+            //$table.bootstrapTable('getHiddenColumns').
+            var visibility =[]
+             var st = ""
+            visible.forEach(function(item) {
+                st += "\""+ item.field + "\":\"" +"true"+ "\","
+                /*var element = {};
+                element[item.field] = "true";
+                visibility.push(element);*/
+            });
+            hidden.forEach(function(item) {
+                st += "\""+ item.field + "\":\"" +"false"+ "\","
+                /*var element = {};
+                element[item.field] = "false";
+                visibility.push(element);*/
+            });
+            /*
+            visibility.forEach(function(item) {
+                st += JSON.stringify(item) + ',';
+            });*/
+            st = st.slice(0, -1);
             $.ajax({
                 method:"post",
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
                 url: window.location.pathname + "/../../ajax/table_settings",
-                data: JSON.stringify({"Merge_books":selections}),
-                success: function success() {
-                    // ToDo:
-                }
-        });
-
-        }
+                data: "{" + st + "}",
+            });
+        },
     });
-
-    // to save current setting
-    // coresponding event: onColumnSwitch
-    //$table.bootstrapTable('getVisibleColumns')
-    //$table.bootstrapTable('getHiddenColumns').
 
 
     $("#domain_allow_submit").click(function(event) {
