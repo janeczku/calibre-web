@@ -7,14 +7,12 @@
     </div>
 {% if g.user.role_delete_books() %}
     <div class="text-center">
-      <button type="button" class="btn btn-danger" id="delete" data-toggle="modal" data-target="#deleteModal">{{_("Delete Book")}}</button>
+      <button type="button" class="btn btn-danger" id="delete" data-toggle="modal" data-delete-id="{{ book.id }}" data-target="#deleteModal">{{_("Delete Book")}}</button>
     </div>
     {% if book.data|length > 1 %}
       <div class="text-center more-stuff"><h4>{{_('Delete formats:')}}</h4>
       {% for file in book.data %}
-        <div class="form-group">
-          <a href="{{ url_for('editbook.delete_book', book_id=book.id, book_format=file.format) }}" class="btn btn-danger" type="button">{{_('Delete')}} - {{file.format}}</a>
-        </div>
+        <button type="button" class="btn btn-danger" id="delete_format" data-toggle="modal" data-delete-id="{{ book.id }}" data-delete-format="{{ file.format }}" data-target="#deleteModal">{{_('Delete')}} - {{file.format}}</button>
       {% endfor %}
       </div>
     {% endif %}

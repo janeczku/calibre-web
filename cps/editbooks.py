@@ -170,21 +170,43 @@ def modify_identifiers(input_identifiers, db_identifiers, db_session):
             changed = True
     return changed
 
-
-@editbook.route("/delete/<int:book_id>/", defaults={'book_format': ""})
-@editbook.route("/delete/<int:book_id>/<string:book_format>/")
+@editbook.route("/ajax/delete/<int:book_id>")
 @login_required
-def delete_book(book_id, book_format):
+def delete_book_from_details(book_id):
+    return delete_book(book_id,"", True)
+
+
+@editbook.route("/delete/<int:book_id>", defaults={'book_format': ""})
+@editbook.route("/delete/<int:book_id>/<string:book_format>")
+@login_required
+def delete_book_ajax(book_id, book_format):
+    return delete_book(book_id,book_format, False)
+
+def delete_book(book_id, book_format, jsonResponse):
+    warning = {}
     if current_user.role_delete_books():
         book = calibre_db.get_book(book_id)
         if book:
             try:
                 result, error = helper.delete_book(book, config.config_calibre_dir, book_format=book_format.upper())
                 if not result:
-                    flash(error, category="error")
-                    return redirect(url_for('editbook.edit_book', book_id=book_id))
+                    if jsonResponse:
+                        return Response(json.dumps({"location": url_for("editbook.edit_book"),
+                                                "type": "alert",
+                                                "format": "",
+                                                "error": error}),
+                                        mimetype='application/json')
+                    else:
+                        flash(error, category="error")
+                        return redirect(url_for('editbook.edit_book', book_id=book_id))
                 if error:
-                    flash(error, category="warning")
+                    if jsonResponse:
+                        warning = {"location": url_for("editbook.edit_book"),
+                                                "type": "warning",
+                                                "format": "",
+                                                "error": error}
+                    else:
+                        flash(error, category="warning")
                 if not book_format:
                     # delete book from Shelfs, Downloads, Read list
                     ub.session.query(ub.BookShelf).filter(ub.BookShelf.book_id == book_id).delete()
@@ -240,11 +262,25 @@ def delete_book(book_id, book_format):
             # book not found
             log.error('Book with id "%s" could not be deleted: not found', book_id)
     if book_format:
-        flash(_('Book Format Successfully Deleted'), category="success")
-        return redirect(url_for('editbook.edit_book', book_id=book_id))
+        if jsonResponse:
+            return Response(json.dumps([warning, {"location": url_for("editbook.edit_book", book_id=book_id),
+                                    "type": "success",
+                                    "format": book_format,
+                                    "message": _('Book Format Successfully Deleted')}]),
+                            mimetype='application/json')
+        else:
+            flash(_('Book Format Successfully Deleted'), category="success")
+            return redirect(url_for('editbook.edit_book', book_id=book_id))
     else:
-        flash(_('Book Successfully Deleted'), category="success")
-        return redirect(url_for('web.index'))
+        if jsonResponse:
+            return Response(json.dumps([warning, {"location": url_for('web.index'),
+                                    "type": "success",
+                                    "format": book_format,
+                                    "message": _('Book Successfully Deleted')}]),
+                            mimetype='application/json')
+        else:
+            flash(_('Book Successfully Deleted'), category="success")
+            return redirect(url_for('web.index'))
 
 
 def render_edit_book(book_id):
@@ -947,10 +983,7 @@ def get_sorted_entry(field, bookid):
                 return json.dumps({'author_sort': book.author_sort})
     return ""
 
-@editbook.route("/ajax/deletebooks")
-@login_required
-def delete_list_book():
-    return ""
+
 
 @editbook.route("/ajax/mergebooks", methods=['POST'])
 @login_required

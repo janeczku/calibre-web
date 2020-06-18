@@ -128,28 +128,14 @@ $(function() {
         onColumnSwitch: function (field, checked) {
             var visible = $("#books-table").bootstrapTable('getVisibleColumns');
             var hidden  = $("#books-table").bootstrapTable('getHiddenColumns');
-            // to save current setting
-            // coresponding event: onColumnSwitch
-            //$table.bootstrapTable('getVisibleColumns')
-            //$table.bootstrapTable('getHiddenColumns').
             var visibility =[]
              var st = ""
             visible.forEach(function(item) {
                 st += "\""+ item.field + "\":\"" +"true"+ "\","
-                /*var element = {};
-                element[item.field] = "true";
-                visibility.push(element);*/
             });
             hidden.forEach(function(item) {
                 st += "\""+ item.field + "\":\"" +"false"+ "\","
-                /*var element = {};
-                element[item.field] = "false";
-                visibility.push(element);*/
             });
-            /*
-            visibility.forEach(function(item) {
-                st += JSON.stringify(item) + ',';
-            });*/
             st = st.slice(0, -1);
             $.ajax({
                 method:"post",
@@ -237,29 +223,6 @@ $(function() {
         var domainId = $(e.relatedTarget).data("domain-id");
         $(e.currentTarget).find("#btndeletedomain").data("domainId", domainId);
     });
-
-    $("#delete_confirm").click(function() {
-        //get data-id attribute of the clicked element
-        var deleteId = $(this).data("deleteid");
-        $.ajax({
-            method:"get",
-            url: window.location.pathname + "/../../delete/" + deleteId,
-        });
-    });
-
-    //triggered when modal is about to be shown
-    $("#deleteModal").on("show.bs.modal", function(e) {
-        //get data-id attribute of the clicked element and store in button
-        var bookId = $(e.relatedTarget).data("delete-id");
-        $(e.currentTarget).find("#delete_confirm").data("deleteid", bookId);
-    });
-    // receive result from request, dismiss modal dialog, show flash message
-    // insert after navbar
-    /*$("#deleteModal").on("hidden.bs.modal", function () {
-      <div class="row-fluid text-center" style="margin-top: -20px;">
-        <div id="flash_success" class="alert alert-success">{{ message[1] }}</div>
-      </div>*/
-
 
     $("#restrictModal").on("hidden.bs.modal", function () {
         // Destroy table and remove hooks for buttons
@@ -385,7 +348,7 @@ function RestrictionActions (value, row) {
 /* Function for deleting books */
 function EbookActions (value, row) {
     return [
-        "<div class=\"book-remove\" data-toggle=\"modal\" data-target=\"#deleteModal\" data-delete-id=\"" + row.id + "\" title=\"Remove\">",
+        "<div class=\"book-remove\" data-toggle=\"modal\" data-target=\"#deleteModal\" data-ajax=\"1\" data-delete-id=\"" + row.id + "\" title=\"Remove\">",
         "<i class=\"glyphicon glyphicon-trash\"></i>",
         "</div>"
     ].join("");
