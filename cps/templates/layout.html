@@ -222,9 +222,11 @@
             });
             $(document).ready(function() {
               var inp = $('#query').first()
-              var val = inp.val()
-              if (val.length) {
+              if (inp.length) {
+                var val = inp.val()
+                if (val.length) {
                   inp.val('').blur().focus().val(val)
+                }
               }
             });
         });
