@@ -36,7 +36,7 @@ from babel.core import UnknownLocaleError
 from flask import Blueprint
 from flask import render_template, request, redirect, send_from_directory, make_response, g, flash, abort, url_for
 from flask_babel import gettext as _
-from flask_login import login_user, logout_user, login_required, current_user
+from flask_login import login_user, logout_user, login_required, current_user, confirm_login
 from sqlalchemy.exc import IntegrityError, InvalidRequestError, OperationalError
 from sqlalchemy.sql.expression import text, func, true, false, not_, and_, or_
 from werkzeug.exceptions import default_exceptions, InternalServerError
@@ -77,11 +77,6 @@ try:
 except ImportError:
     pass  # We're not using Python 3
 
-#try:
-#    import rarfile
-#    feature_support['rar'] = True
-#except ImportError:
-#    feature_support['rar'] = False
 
 try:
     from natsort import natsorted as sort
@@ -299,6 +294,8 @@ def render_title_template(*args, **kwargs):
 
 @web.before_app_request
 def before_request():
+    if current_user.is_authenticated:
+        confirm_login()
     g.user = current_user
     g.allow_registration = config.config_public_reg
     g.allow_anonymous = config.config_anonbrowse
@@ -1392,14 +1389,14 @@ def login():
         if config.config_login_type == constants.LOGIN_LDAP and services.ldap and user and form['password'] != "":
             login_result, error = services.ldap.bind_user(form['username'], form['password'])
             if login_result:
-                login_user(user, remember=True)
+                login_user(user, remember=bool(form.get('remember_me')))
                 log.debug(u"You are now logged in as: '%s'", user.nickname)
                 flash(_(u"you are now logged in as: '%(nickname)s'", nickname=user.nickname),
                       category="success")
                 return redirect_back(url_for("web.index"))
             elif login_result is None and user and check_password_hash(str(user.password), form['password']) \
                 and user.nickname != "Guest":
-                login_user(user, remember=True)
+                login_user(user, remember=bool(form.get('remember_me')))
                 log.info("Local Fallback Login as: '%s'", user.nickname)
                 flash(_(u"Fallback Login as: '%(nickname)s', LDAP Server not reachable, or user not known",
                         nickname=user.nickname),
@@ -1428,7 +1425,7 @@ def login():
                     log.info('Username missing for password reset IP-adress: %s', ipAdress)
             else:
                 if user and check_password_hash(str(user.password), form['password']) and user.nickname != "Guest":
-                    login_user(user, remember=True)
+                    login_user(user, remember=bool(form.get('remember_me')))
                     log.debug(u"You are now logged in as: '%s'", user.nickname)
                     flash(_(u"You are now logged in as: '%(nickname)s'", nickname=user.nickname), category="success")
                     config.config_is_initial = False
