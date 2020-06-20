@@ -1437,14 +1437,14 @@ def login():
         if config.config_login_type == constants.LOGIN_LDAP and services.ldap and user and form['password'] != "":
             login_result, error = services.ldap.bind_user(form['username'], form['password'])
             if login_result:
-                login_user(user, remember=True)
+                login_user(user, remember=bool(form.get('remember_me')))
                 log.debug(u"You are now logged in as: '%s'", user.nickname)
                 flash(_(u"you are now logged in as: '%(nickname)s'", nickname=user.nickname),
                       category="success")
                 return redirect_back(url_for("web.index"))
             elif login_result is None and user and check_password_hash(str(user.password), form['password']) \
                 and user.nickname != "Guest":
-                login_user(user, remember=True)
+                login_user(user, remember=bool(form.get('remember_me')))
                 log.info("Local Fallback Login as: '%s'", user.nickname)
                 flash(_(u"Fallback Login as: '%(nickname)s', LDAP Server not reachable, or user not known",
                         nickname=user.nickname),
@@ -1473,7 +1473,7 @@ def login():
                     log.info('Username missing for password reset IP-adress: %s', ipAdress)
             else:
                 if user and check_password_hash(str(user.password), form['password']) and user.nickname != "Guest":
-                    login_user(user, remember=True)
+                    login_user(user, remember=bool(form.get('remember_me')))
                     log.debug(u"You are now logged in as: '%s'", user.nickname)
                     flash(_(u"You are now logged in as: '%(nickname)s'", nickname=user.nickname), category="success")
                     config.config_is_initial = False
