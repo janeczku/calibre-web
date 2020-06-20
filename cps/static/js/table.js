@@ -55,7 +55,7 @@ $(function() {
         $("#books-table").bootstrapTable('uncheckAll');
     });
 
-    $("#merge_books").click(function() {
+    $("#merge_confirm").click(function() {
         $.ajax({
             method:"post",
             contentType: "application/json; charset=utf-8",

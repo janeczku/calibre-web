@@ -36,7 +36,7 @@ from babel.core import UnknownLocaleError
 from flask import Blueprint
 from flask import render_template, request, redirect, send_from_directory, make_response, g, flash, abort, url_for
 from flask_babel import gettext as _
-from flask_login import login_user, logout_user, login_required, current_user
+from flask_login import login_user, logout_user, login_required, current_user, confirm_login
 from sqlalchemy.exc import IntegrityError, InvalidRequestError, OperationalError
 from sqlalchemy.sql.expression import text, func, true, false, not_, and_, or_
 from werkzeug.exceptions import default_exceptions, InternalServerError
@@ -294,6 +294,8 @@ def render_title_template(*args, **kwargs):
 
 @web.before_app_request
 def before_request():
+    if current_user.is_authenticated:
+        confirm_login()
     g.user = current_user
     g.allow_registration = config.config_public_reg
     g.allow_anonymous = config.config_anonbrowse
