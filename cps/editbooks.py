@@ -317,7 +317,8 @@ def edit_book_ratings(to_save, book):
 def edit_book_tags(tags, book):
     input_tags = tags.split(',')
     input_tags = list(map(lambda it: it.strip(), input_tags))
-    # if input_tags[0] !="": ??
+    # Remove duplicates
+    input_tags = helper.uniq(input_tags)
     return modify_database_object(input_tags, book.tags, db.Tags, calibre_db.session, 'tags')
 
 
@@ -331,8 +332,6 @@ def edit_book_series_index(series_index, book):
     # Add default series_index to book
     modif_date = False
     series_index = series_index or '1'
-    #if series_index == '':
-    #    series_index = '1'
     if book.series_index != series_index:
         book.series_index = series_index
         modif_date = True
@@ -366,6 +365,8 @@ def edit_book_languages(languages, book, upload=False):
         if input_l[0] != current_user.filter_language() and current_user.filter_language() != "all":
             input_l[0] = calibre_db.session.query(db.Languages). \
                 filter(db.Languages.lang_code == current_user.filter_language()).first()
+    # Remove duplicates
+    input_l = helper.uniq(input_l)
     return modify_database_object(input_l, book.languages, db.Languages, calibre_db.session, 'languages')
 
 
@@ -568,6 +569,8 @@ def edit_book(book_id):
         # handle author(s)
         input_authors = to_save["author_name"].split('&')
         input_authors = list(map(lambda it: it.strip().replace(',', '|'), input_authors))
+        # Remove duplicates in authors list
+        input_authors = helper.uniq(input_authors)
         # we have all author names now
         if input_authors == ['']:
             input_authors = [_(u'Unknown')]  # prevent empty Author
@@ -738,6 +741,9 @@ def upload():
                 input_authors = authr.split('&')
                 # handle_authors(input_authors)
                 input_authors = list(map(lambda it: it.strip().replace(',', '|'), input_authors))
+                # Remove duplicates in authors list
+                input_authors = helper.uniq(input_authors)
+
                 # we have all author names now
                 if input_authors == ['']:
                     input_authors = [_(u'Unknown')]  # prevent empty Author

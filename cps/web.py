@@ -446,7 +446,7 @@ def toggle_read(book_id):
                 new_cc = cc_class(value=1, book=book_id)
                 calibre_db.session.add(new_cc)
                 calibre_db.session.commit()
-        except KeyError:
+        except (KeyError, AttributeError):
             log.error(u"Custom Column No.%d is not exisiting in calibre database", config.config_read_column)
         except OperationalError as e:
             calibre_db.session.rollback()
@@ -1204,7 +1204,7 @@ def render_read_books(page, are_read, as_xml=False, order=None, *args, **kwargs)
                                                                     db_filter,
                                                                     order,
                                                                     db.cc_classes[config.config_read_column])
-        except KeyError:
+        except (KeyError, AttributeError):
             log.error("Custom Column No.%d is not existing in calibre database", config.config_read_column)
             if not as_xml:
                 flash(_("Custom Column No.%(column)d is not existing in calibre database",
@@ -1711,7 +1711,7 @@ def show_book(book_id):
                 try:
                     matching_have_read_book = getattr(entries, 'custom_column_' + str(config.config_read_column))
                     have_read = len(matching_have_read_book) > 0 and matching_have_read_book[0].value
-                except KeyError:
+                except (KeyError, AttributeError):
                     log.error("Custom Column No.%d is not existing in calibre database", config.config_read_column)
                     have_read = None
 

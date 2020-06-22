@@ -468,6 +468,14 @@ def generate_random_password():
     passlen = 8
     return "".join(s[c % len(s)] for c in os.urandom(passlen))
 
+
+def uniq(input):
+  output = []
+  for x in input:
+    if x not in output:
+      output.append(x)
+  return output
+
 ################################## External interface
 
 
