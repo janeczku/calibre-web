@@ -228,7 +228,7 @@
             $(document).ready(function() {
               var inp = $('#query').first()
               var val = inp.val()
-              if (val.length) {
+              if (val !== "undefined") {
                   inp.val('').blur().focus().val(val)
               }
             });
