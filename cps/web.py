@@ -841,8 +841,9 @@ def books_table():
 @login_required_if_no_ano
 def author_list():
     if current_user.check_visibility(constants.SIDEBAR_AUTHOR):
-        entries = calibre_db.session.query(db.Authors, func.count('books_authors_link.book').label('count')) \
+        entries = calibre_db.session.query(db.Authors, func.count('books_authors_link.book').label('count'), db.Series) \
             .join(db.books_authors_link).join(db.Books).filter(calibre_db.common_filters()) \
+            .join(db.books_series_link).join(db.Series).filter(calibre_db.common_filters()) \
             .group_by(text('books_authors_link.author')).order_by(db.Authors.sort).all()
         charlist = calibre_db.session.query(func.upper(func.substr(db.Authors.sort, 1, 1)).label('char')) \
             .join(db.books_authors_link).join(db.Books).filter(calibre_db.common_filters()) \
