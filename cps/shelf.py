@@ -27,8 +27,9 @@ from flask import Blueprint, request, flash, redirect, url_for
 from flask_babel import gettext as _
 from flask_login import login_required, current_user
 from sqlalchemy.sql.expression import func
+from sqlalchemy.exc import OperationalError, InvalidRequestError
 
-from . import logger, ub, searched_ids, db, calibre_db
+from . import logger, ub, searched_ids, calibre_db
 from .web import render_title_template
 
 
@@ -91,8 +92,16 @@ def add_to_shelf(shelf_id, book_id):
 
     shelf.books.append(ub.BookShelf(shelf=shelf.id, book_id=book_id, order=maxOrder + 1))
     shelf.last_modified = datetime.utcnow()
-    ub.session.merge(shelf)
-    ub.session.commit()
+    try:
+        ub.session.merge(shelf)
+        ub.session.commit()
+    except (OperationalError, InvalidRequestError):
+        ub.session.rollback()
+        flash(_(u"Settings DB is not Writeable"), category="error")
+        if "HTTP_REFERER" in request.environ:
+            return redirect(request.environ["HTTP_REFERER"])
+        else:
+            return redirect(url_for('web.index'))
     if not xhr:
         flash(_(u"Book has been added to shelf: %(sname)s", sname=shelf.name), category="success")
         if "HTTP_REFERER" in request.environ:
@@ -143,9 +152,13 @@ def search_to_shelf(shelf_id):
             maxOrder = maxOrder + 1
             shelf.books.append(ub.BookShelf(shelf=shelf.id, book_id=book, order=maxOrder))
         shelf.last_modified = datetime.utcnow()
-        ub.session.merge(shelf)
-        ub.session.commit()
-        flash(_(u"Books have been added to shelf: %(sname)s", sname=shelf.name), category="success")
+        try:
+            ub.session.merge(shelf)
+            ub.session.commit()
+            flash(_(u"Books have been added to shelf: %(sname)s", sname=shelf.name), category="success")
+        except (OperationalError, InvalidRequestError):
+            ub.session.rollback()
+            flash(_(u"Settings DB is not Writeable"), category="error")
     else:
         flash(_(u"Could not add books to shelf: %(sname)s", sname=shelf.name), category="error")
     return redirect(url_for('web.index'))
@@ -180,10 +193,17 @@ def remove_from_shelf(shelf_id, book_id):
                 return redirect(url_for('web.index'))
             return "Book already removed from shelf", 410
 
-        ub.session.delete(book_shelf)
-        shelf.last_modified = datetime.utcnow()
-        ub.session.commit()
-
+        try:
+            ub.session.delete(book_shelf)
+            shelf.last_modified = datetime.utcnow()
+            ub.session.commit()
+        except (OperationalError, InvalidRequestError):
+            ub.session.rollback()
+            flash(_(u"Settings DB is not Writeable"), category="error")
+            if "HTTP_REFERER" in request.environ:
+                return redirect(request.environ["HTTP_REFERER"])
+            else:
+                return redirect(url_for('web.index'))
         if not xhr:
             flash(_(u"Book has been removed from shelf: %(sname)s", sname=shelf.name), category="success")
             if "HTTP_REFERER" in request.environ:
@@ -235,7 +255,11 @@ def create_shelf():
                 ub.session.commit()
                 flash(_(u"Shelf %(title)s created", title=to_save["title"]), category="success")
                 return redirect(url_for('shelf.show_shelf', shelf_id=shelf.id))
+            except (OperationalError, InvalidRequestError):
+                ub.session.rollback()
+                flash(_(u"Settings DB is not Writeable"), category="error")
             except Exception:
+                ub.session.rollback()
                 flash(_(u"There was an error"), category="error")
         return render_title_template('shelf_edit.html', shelf=shelf, title=_(u"Create a Shelf"), page="shelfcreate")
     else:
@@ -280,7 +304,11 @@ def edit_shelf(shelf_id):
             try:
                 ub.session.commit()
                 flash(_(u"Shelf %(title)s changed", title=to_save["title"]), category="success")
+            except (OperationalError, InvalidRequestError):
+                ub.session.rollback()
+                flash(_(u"Settings DB is not Writeable"), category="error")
             except Exception:
+                ub.session.rollback()
                 flash(_(u"There was an error"), category="error")
         return render_title_template('shelf_edit.html', shelf=shelf, title=_(u"Edit a shelf"), page="shelfedit")
     else:
@@ -298,11 +326,16 @@ def delete_shelf_helper(cur_shelf):
     log.info("successfully deleted %s", cur_shelf)
 
 
+
 @shelf.route("/shelf/delete/<int:shelf_id>")
 @login_required
 def delete_shelf(shelf_id):
     cur_shelf = ub.session.query(ub.Shelf).filter(ub.Shelf.id == shelf_id).first()
-    delete_shelf_helper(cur_shelf)
+    try:
+        delete_shelf_helper(cur_shelf)
+    except (OperationalError, InvalidRequestError):
+        ub.session.rollback()
+        flash(_(u"Settings DB is not Writeable"), category="error")
     return redirect(url_for('web.index'))
 
 
@@ -327,8 +360,12 @@ def show_shelf(shelf_type, shelf_id):
                 cur_book = calibre_db.get_book(book.book_id)
                 if not cur_book:
                     log.info('Not existing book %s in %s deleted', book.book_id, shelf)
-                    ub.session.query(ub.BookShelf).filter(ub.BookShelf.book_id == book.book_id).delete()
-                    ub.session.commit()
+                    try:
+                        ub.session.query(ub.BookShelf).filter(ub.BookShelf.book_id == book.book_id).delete()
+                        ub.session.commit()
+                    except (OperationalError, InvalidRequestError):
+                        ub.session.rollback()
+                        flash(_(u"Settings DB is not Writeable"), category="error")
         return render_title_template(page, entries=result, title=_(u"Shelf: '%(name)s'", name=shelf.name),
                                      shelf=shelf, page="shelf")
     else:
@@ -348,7 +385,11 @@ def order_shelf(shelf_id):
             setattr(book, 'order', to_save[str(book.book_id)])
             counter += 1
             # if order diffrent from before -> shelf.last_modified = datetime.utcnow()
-        ub.session.commit()
+        try:
+            ub.session.commit()
+        except (OperationalError, InvalidRequestError):
+            ub.session.rollback()
+            flash(_(u"Settings DB is not Writeable"), category="error")
 
     shelf = ub.session.query(ub.Shelf).filter(ub.Shelf.id == shelf_id).first()
     result = list()
