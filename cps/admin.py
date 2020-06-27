@@ -724,7 +724,7 @@ def _configuration_result(error_flash=None, gdriveError=None):
         gdriveError = _(gdriveError)
     else:
         # if config.config_use_google_drive and\
-        if not gdrive_authenticate:
+        if not gdrive_authenticate and gdrive_support:
             gdrivefolders = gdriveutils.listRootFolders()
 
     show_back_button = current_user.is_authenticated
