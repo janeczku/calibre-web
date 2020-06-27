@@ -1434,7 +1434,7 @@ def login():
                     log.info('Login failed for user "%s" IP-adress: %s', form['username'], ipAdress)
                     flash(_(u"Wrong Username or Password"), category="error")
 
-    next_url = url_for('web.index')
+    next_url = request.args.get('next', default=url_for("web.index"), type=str)
     return render_title_template('login.html',
                                  title=_(u"login"),
                                  next_url=next_url,
