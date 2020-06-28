@@ -122,9 +122,14 @@ def get_epub_info(tmp_file_path, original_file_name, original_file_extension):
                 markupTree = etree.fromstring(markup)
                 # no matter xhtml or html with no namespace
                 imgsrc = markupTree.xpath("//*[local-name() = 'img']/@src")
-                # imgsrc maybe startwith "../"" so fullpath join then relpath to cwd
-                filename = os.path.relpath(os.path.join(os.path.dirname(os.path.join(coverpath, coversection[0])), imgsrc[0]))
-                coverfile = extractCover(epubZip, filename, "", tmp_file_path)
+                # Alternative image source
+                if not len(imgsrc):
+                    imgsrc = markupTree.xpath("//attribute::*[contains(local-name(), 'href')]")
+                if len(imgsrc):
+                    # imgsrc maybe startwith "../"" so fullpath join then relpath to cwd
+                    filename = os.path.relpath(os.path.join(os.path.dirname(os.path.join(coverpath, coversection[0])),
+                                                            imgsrc[0]))
+                    coverfile = extractCover(epubZip, filename, "", tmp_file_path)
             else:
                 coverfile = extractCover(epubZip, coversection[0], coverpath, tmp_file_path)
 

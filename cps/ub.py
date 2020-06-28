@@ -19,6 +19,7 @@
 
 from __future__ import division, print_function, unicode_literals
 import os
+import sys
 import datetime
 import itertools
 import uuid
@@ -611,9 +612,13 @@ def migrate_Database(session):
         session.commit()
 
     # Remove login capability of user Guest
-    conn = engine.connect()
-    conn.execute("UPDATE user SET password='' where nickname = 'Guest' and password !=''")
-    session.commit()
+    try:
+        conn = engine.connect()
+        conn.execute("UPDATE user SET password='' where nickname = 'Guest' and password !=''")
+        session.commit()
+    except exc.OperationalError:
+        print('Settings database is not writeable. Exiting...')
+        sys.exit(1)
 
 
 def clean_database(session):

@@ -64,7 +64,6 @@ def init_app(app, config):
     app.config['LDAP_OPENLDAP'] = bool(config.config_ldap_openldap)
     app.config['LDAP_GROUP_OBJECT_FILTER'] = config.config_ldap_group_object_filter
     app.config['LDAP_GROUP_MEMBERS_FIELD'] = config.config_ldap_group_members_field
-    # app.config['LDAP_CUSTOM_OPTIONS'] = {'OPT_NETWORK_TIMEOUT': 10}
 
     _ldap.init_app(app)
 

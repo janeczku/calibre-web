@@ -5,7 +5,7 @@
     {{_('Open the .kobo/Kobo eReader.conf file in a text editor and add (or edit):')}}</a>
   </p>
   <p>
-    {% if not warning %}'api_endpoint='{{kobo_auth_url}}{% else %}{{warning}}{% endif %}</a>
+    {% if not warning %}api_endpoint={{kobo_auth_url}}{% else %}{{warning}}{% endif %}</a>
   </p>
   <p>
 </div>
