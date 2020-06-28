@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-06-20 13:54+0200\n"
+"POT-Creation-Date: 2020-06-28 09:31+0200\n"
 "PO-Revision-Date: 2020-04-23 22:47+0300\n"
 "Last-Translator: iz <iz7iz7iz@protonmail.ch>\n"
 "Language: tr\n"
@@ -46,9 +46,9 @@ msgstr ""
 msgid "Unknown command"
 msgstr ""
 
-#: cps/admin.py:116 cps/editbooks.py:563 cps/editbooks.py:573
-#: cps/editbooks.py:667 cps/editbooks.py:669 cps/editbooks.py:730
-#: cps/editbooks.py:743 cps/updater.py:509 cps/uploader.py:97
+#: cps/admin.py:116 cps/editbooks.py:564 cps/editbooks.py:576
+#: cps/editbooks.py:670 cps/editbooks.py:672 cps/editbooks.py:733
+#: cps/editbooks.py:749 cps/updater.py:509 cps/uploader.py:97
 #: cps/uploader.py:107
 msgid "Unknown"
 msgstr "Bilinmeyen"
@@ -61,7 +61,7 @@ msgstr "Yönetim sayfası"
 msgid "UI Configuration"
 msgstr "Arayüz Ayarları"
 
-#: cps/admin.py:189 cps/admin.py:706
+#: cps/admin.py:189 cps/admin.py:711
 msgid "Calibre-Web configuration updated"
 msgstr "Calibre-Web yapılandırması güncellendi"
 
@@ -113,175 +113,181 @@ msgstr ""
 msgid "LDAP Certificate Location is not Valid, Please Enter Correct Path"
 msgstr ""
 
-#: cps/admin.py:627
+#: cps/admin.py:628
 msgid "Keyfile Location is not Valid, Please Enter Correct Path"
 msgstr ""
 
-#: cps/admin.py:631
+#: cps/admin.py:632
 msgid "Certfile Location is not Valid, Please Enter Correct Path"
 msgstr ""
 
-#: cps/admin.py:701
+#: cps/admin.py:694 cps/admin.py:793 cps/admin.py:885 cps/admin.py:934
+#: cps/shelf.py:100 cps/shelf.py:161 cps/shelf.py:202 cps/shelf.py:260
+#: cps/shelf.py:309 cps/shelf.py:338 cps/shelf.py:368 cps/shelf.py:392
+msgid "Settings DB is not Writeable"
+msgstr ""
+
+#: cps/admin.py:706
 msgid "DB Location is not Valid, Please Enter Correct Path"
 msgstr ""
 
-#: cps/admin.py:703
+#: cps/admin.py:708
 msgid "DB is not Writeable"
 msgstr ""
 
-#: cps/admin.py:736
+#: cps/admin.py:741
 msgid "Basic Configuration"
 msgstr "Temel Ayarlar"
 
-#: cps/admin.py:751 cps/web.py:1337
+#: cps/admin.py:756 cps/web.py:1334
 msgid "Please fill out all fields!"
 msgstr "Lütfen tüm alanları doldurun!"
 
-#: cps/admin.py:754 cps/admin.py:766 cps/admin.py:772 cps/admin.py:892
+#: cps/admin.py:759 cps/admin.py:771 cps/admin.py:777 cps/admin.py:903
 msgid "Add new user"
 msgstr "Yeni kullanıcı ekle"
 
-#: cps/admin.py:763 cps/web.py:1578
+#: cps/admin.py:768 cps/web.py:1575
 msgid "E-mail is not from valid domain"
 msgstr "E-posta izin verilen bir servisten değil"
 
-#: cps/admin.py:770 cps/admin.py:785
+#: cps/admin.py:775 cps/admin.py:790
 msgid "Found an existing account for this e-mail address or nickname."
 msgstr "Bu e-posta adresi veya kullanıcı adı için zaten bir hesap var."
 
-#: cps/admin.py:781
+#: cps/admin.py:786
 #, python-format
 msgid "User '%(user)s' created"
 msgstr "'%(user)s' kullanıcısı oluşturuldu"
 
-#: cps/admin.py:794
+#: cps/admin.py:802
 #, python-format
 msgid "User '%(nick)s' deleted"
 msgstr "Kullanıcı '%(nick)s' silindi"
 
-#: cps/admin.py:797
+#: cps/admin.py:805
 msgid "No admin user remaining, can't delete user"
 msgstr "Başka yönetici kullanıcı olmadığından silinemedi"
 
-#: cps/admin.py:803
+#: cps/admin.py:811
 msgid "No admin user remaining, can't remove admin role"
 msgstr ""
 
-#: cps/admin.py:839 cps/web.py:1621
+#: cps/admin.py:847 cps/web.py:1618
 msgid "Found an existing account for this e-mail address."
 msgstr "Bu e-posta adresi için bir hesap mevcut."
 
-#: cps/admin.py:849 cps/admin.py:864 cps/admin.py:967 cps/web.py:1596
+#: cps/admin.py:857 cps/admin.py:872 cps/admin.py:983 cps/web.py:1593
 #, python-format
 msgid "Edit User %(nick)s"
 msgstr "%(nick)s kullanıcısını düzenle"
 
-#: cps/admin.py:855 cps/web.py:1588
+#: cps/admin.py:863 cps/web.py:1585
 msgid "This username is already taken"
 msgstr "Bu kullanıcı adı zaten alındı"
 
-#: cps/admin.py:871
+#: cps/admin.py:879
 #, python-format
 msgid "User '%(nick)s' updated"
 msgstr "'%(nick)s' kullanıcısı güncellendi"
 
-#: cps/admin.py:874
+#: cps/admin.py:882
 msgid "An unknown error occured."
 msgstr "Bilinmeyen bir hata oluştu."
 
-#: cps/admin.py:901 cps/templates/admin.html:71
+#: cps/admin.py:912 cps/templates/admin.html:71
 msgid "Edit E-mail Server Settings"
 msgstr ""
 
-#: cps/admin.py:925
+#: cps/admin.py:941
 #, python-format
 msgid "Test e-mail successfully send to %(kindlemail)s"
 msgstr "Deneme e-postası başarıyla %(kindlemail)s adresine gönderildi"
 
-#: cps/admin.py:928
+#: cps/admin.py:944
 #, python-format
 msgid "There was an error sending the Test e-mail: %(res)s"
 msgstr "Deneme e-postası gönderilirken bir hata oluştu: %(res)s"
 
-#: cps/admin.py:930
+#: cps/admin.py:946
 msgid "Please configure your e-mail address first..."
 msgstr "Lütfen önce e-posta adresinizi ayarlayın..."
 
-#: cps/admin.py:932
+#: cps/admin.py:948
 msgid "E-mail server settings updated"
 msgstr "E-posta sunucusu ayarları güncellendi"
 
-#: cps/admin.py:943
+#: cps/admin.py:959
 msgid "User not found"
 msgstr ""
 
-#: cps/admin.py:978
+#: cps/admin.py:994
 #, python-format
 msgid "Password for user %(user)s reset"
 msgstr "%(user)s kullanıcısının şifresi sıfırlandı"
 
-#: cps/admin.py:981 cps/web.py:1361 cps/web.py:1425
+#: cps/admin.py:997 cps/web.py:1358 cps/web.py:1422
 msgid "An unknown error occurred. Please try again later."
 msgstr "Bilinmeyen bir hata oluştu. Lütfen daha sonra tekrar deneyiniz."
 
-#: cps/admin.py:984 cps/web.py:1299
+#: cps/admin.py:1000 cps/web.py:1296
 msgid "Please configure the SMTP mail settings first..."
 msgstr "Lütfen önce SMTP e-posta ayarlarını ayarlayın..."
 
-#: cps/admin.py:996
+#: cps/admin.py:1012
 msgid "Logfile viewer"
 msgstr "Log dosyası görüntüleyici"
 
-#: cps/admin.py:1035
+#: cps/admin.py:1051
 msgid "Requesting update package"
 msgstr "Güncelleme paketi isteniyor"
 
-#: cps/admin.py:1036
+#: cps/admin.py:1052
 msgid "Downloading update package"
 msgstr "Güncelleme paketi indiriliyor"
 
-#: cps/admin.py:1037
+#: cps/admin.py:1053
 msgid "Unzipping update package"
 msgstr "Güncelleme paketi ayıklanıyor"
 
-#: cps/admin.py:1038
+#: cps/admin.py:1054
 msgid "Replacing files"
 msgstr "Dosyalar değiştiriliyor"
 
-#: cps/admin.py:1039
+#: cps/admin.py:1055
 msgid "Database connections are closed"
 msgstr "Veritabanı bağlantıları kapalı"
 
-#: cps/admin.py:1040
+#: cps/admin.py:1056
 msgid "Stopping server"
 msgstr "Sunucu durduruyor"
 
-#: cps/admin.py:1041
+#: cps/admin.py:1057
 msgid "Update finished, please press okay and reload page"
 msgstr "Güncelleme tamamlandı, sayfayı yenilemek için lütfen Tamam'a tıklayınız"
 
-#: cps/admin.py:1042 cps/admin.py:1043 cps/admin.py:1044 cps/admin.py:1045
-#: cps/admin.py:1046
+#: cps/admin.py:1058 cps/admin.py:1059 cps/admin.py:1060 cps/admin.py:1061
+#: cps/admin.py:1062
 msgid "Update failed:"
 msgstr "Güncelleme başarısız:"
 
-#: cps/admin.py:1042 cps/updater.py:319 cps/updater.py:520 cps/updater.py:522
+#: cps/admin.py:1058 cps/updater.py:319 cps/updater.py:520 cps/updater.py:522
 msgid "HTTP Error"
 msgstr "HTTP Hatası"
 
-#: cps/admin.py:1043 cps/updater.py:321 cps/updater.py:524
+#: cps/admin.py:1059 cps/updater.py:321 cps/updater.py:524
 msgid "Connection error"
 msgstr "Bağlantı hatası"
 
-#: cps/admin.py:1044 cps/updater.py:323 cps/updater.py:526
+#: cps/admin.py:1060 cps/updater.py:323 cps/updater.py:526
 msgid "Timeout while establishing connection"
 msgstr "Bağlantı kurulmaya çalışırken zaman aşımına uğradı"
 
-#: cps/admin.py:1045 cps/updater.py:325 cps/updater.py:528
+#: cps/admin.py:1061 cps/updater.py:325 cps/updater.py:528
 msgid "General error"
 msgstr "Genel hata"
 
-#: cps/admin.py:1046
+#: cps/admin.py:1062
 msgid "Update File Could Not be Saved in Temp Dir"
 msgstr ""
 
@@ -301,8 +307,8 @@ msgstr ""
 msgid "Book Successfully Deleted"
 msgstr ""
 
-#: cps/editbooks.py:254 cps/editbooks.py:548 cps/web.py:1644 cps/web.py:1685
-#: cps/web.py:1747
+#: cps/editbooks.py:254 cps/editbooks.py:549 cps/web.py:1641 cps/web.py:1682
+#: cps/web.py:1744
 msgid "Error opening eBook. File does not exist or file is not accessible"
 msgstr "eKitap açılırken hata oluştu. Dosya mevcut değil veya erişilemiyor"
 
@@ -310,82 +316,82 @@ msgstr "eKitap açılırken hata oluştu. Dosya mevcut değil veya erişilemiyor
 msgid "edit metadata"
 msgstr "metaveri düzenle"
 
-#: cps/editbooks.py:361
+#: cps/editbooks.py:360
 #, python-format
 msgid "%(langname)s is not a valid language"
 msgstr "%(langname)s geçerli bir dil değil"
 
-#: cps/editbooks.py:467 cps/editbooks.py:712
+#: cps/editbooks.py:468 cps/editbooks.py:715
 #, python-format
 msgid "File extension '%(ext)s' is not allowed to be uploaded to this server"
 msgstr "'%(ext)s' uzantılı dosyaların bu sunucuya yüklenmesine izin verilmiyor"
 
-#: cps/editbooks.py:471 cps/editbooks.py:716
+#: cps/editbooks.py:472 cps/editbooks.py:719
 msgid "File to be uploaded must have an extension"
 msgstr "Yüklenecek dosyanın mutlaka bir uzantısı olması gerekli"
 
-#: cps/editbooks.py:483 cps/editbooks.py:773
+#: cps/editbooks.py:484 cps/editbooks.py:779
 #, python-format
 msgid "Failed to create path %(path)s (Permission denied)."
 msgstr "%(path)s dizini oluşturulamadı. (İzin reddedildi)"
 
-#: cps/editbooks.py:488
+#: cps/editbooks.py:489
 #, python-format
 msgid "Failed to store file %(file)s."
 msgstr "%(file)s dosyası kaydedilemedi."
 
-#: cps/editbooks.py:506 cps/editbooks.py:864
+#: cps/editbooks.py:507 cps/editbooks.py:870
 #, python-format
 msgid "Database error: %(error)s."
 msgstr ""
 
-#: cps/editbooks.py:510
+#: cps/editbooks.py:511
 #, python-format
 msgid "File format %(ext)s added to %(book)s"
 msgstr "%(book)s kitabına %(ext)s dosya biçimi eklendi"
 
-#: cps/editbooks.py:653
+#: cps/editbooks.py:656
 msgid "Metadata successfully updated"
 msgstr "Metaveri başarıyla güncellendi"
 
-#: cps/editbooks.py:662
+#: cps/editbooks.py:665
 msgid "Error editing book, please check logfile for details"
 msgstr "eKitap düzenlenirken hata oluştu, detaylar için lütfen log dosyasını kontrol edin"
 
-#: cps/editbooks.py:724
+#: cps/editbooks.py:727
 #, python-format
 msgid "File %(filename)s could not saved to temp dir"
 msgstr "%(filename)s dosyası geçici dizine kaydedilemedi"
 
-#: cps/editbooks.py:734
+#: cps/editbooks.py:737
 msgid "Uploaded book probably exists in the library, consider to change before upload new: "
 msgstr "Yüklenen eKitap muhtemelen kitaplıkta zaten var. Yenisini yüklemeden değiştirmeyi düşünün: "
 
-#: cps/editbooks.py:780
+#: cps/editbooks.py:786
 #, python-format
 msgid "Failed to Move File %(file)s: %(error)s"
 msgstr ""
 
-#: cps/editbooks.py:836
+#: cps/editbooks.py:842
 #, python-format
 msgid "Failed to Move Cover File %(file)s: %(error)s"
 msgstr ""
 
-#: cps/editbooks.py:850
+#: cps/editbooks.py:856
 #, python-format
 msgid "File %(file)s uploaded"
 msgstr "%(file)s dosyası yüklendi"
 
-#: cps/editbooks.py:876
+#: cps/editbooks.py:882
 msgid "Source or destination format for conversion missing"
 msgstr "Dönüştürme için kaynak ya da hedef biçimi eksik"
 
-#: cps/editbooks.py:884
+#: cps/editbooks.py:890
 #, python-format
 msgid "Book successfully queued for converting to %(book_format)s"
 msgstr "eKitap %(book_format)s formatlarına dönüştürülmek üzere başarıyla sıraya alındı"
 
-#: cps/editbooks.py:888
+#: cps/editbooks.py:894
 #, python-format
 msgid "There was an error converting this book: %(res)s"
 msgstr "Bu eKitabı dönüştürürken bir hata oluştu: %(res)s"
@@ -499,71 +505,71 @@ msgstr "%(file)s dosyası Google Drive'da bulunamadı"
 msgid "Book path %(path)s not found on Google Drive"
 msgstr "eKitap yolu %(path)s Google Drive'da bulunamadı"
 
-#: cps/helper.py:542
+#: cps/helper.py:550
 msgid "Error Downloading Cover"
 msgstr ""
 
-#: cps/helper.py:545
+#: cps/helper.py:553
 msgid "Cover Format Error"
 msgstr ""
 
-#: cps/helper.py:561
+#: cps/helper.py:569
 msgid "Failed to create path for cover"
 msgstr ""
 
-#: cps/helper.py:566
+#: cps/helper.py:574
 msgid "Cover-file is not a valid image file, or could not be stored"
 msgstr ""
 
-#: cps/helper.py:577
+#: cps/helper.py:585
 msgid "Only jpg/jpeg/png/webp files are supported as coverfile"
 msgstr ""
 
-#: cps/helper.py:591
+#: cps/helper.py:599
 msgid "Only jpg/jpeg files are supported as coverfile"
 msgstr ""
 
-#: cps/helper.py:640
+#: cps/helper.py:648
 msgid "Unrar binary file not found"
 msgstr ""
 
-#: cps/helper.py:654
+#: cps/helper.py:662
 msgid "Error excecuting UnRar"
 msgstr ""
 
-#: cps/helper.py:710
+#: cps/helper.py:718
 msgid "Waiting"
 msgstr "Bekleniyor"
 
-#: cps/helper.py:712
+#: cps/helper.py:720
 msgid "Failed"
 msgstr "Başarısız"
 
-#: cps/helper.py:714
+#: cps/helper.py:722
 msgid "Started"
 msgstr "Başladı"
 
-#: cps/helper.py:716
+#: cps/helper.py:724
 msgid "Finished"
 msgstr "Bitti"
 
-#: cps/helper.py:718
+#: cps/helper.py:726
 msgid "Unknown Status"
 msgstr "Bilinmeyen Durum"
 
-#: cps/helper.py:723
+#: cps/helper.py:731
 msgid "E-mail: "
 msgstr "e-Posta: "
 
-#: cps/helper.py:725 cps/helper.py:729
+#: cps/helper.py:733 cps/helper.py:737
 msgid "Convert: "
 msgstr "Dönüştür: "
 
-#: cps/helper.py:727
+#: cps/helper.py:735
 msgid "Upload: "
 msgstr "Yükle: "
 
-#: cps/helper.py:731
+#: cps/helper.py:739
 msgid "Unknown Task: "
 msgstr "Bilinmeyen Görev: "
 
@@ -596,7 +602,7 @@ msgstr "Google ile giriş yapılamadı."
 msgid "Failed to fetch user info from Google."
 msgstr "Google'dan kullanıcı bilgileri alınamadı."
 
-#: cps/oauth_bb.py:225 cps/web.py:1397 cps/web.py:1537
+#: cps/oauth_bb.py:225 cps/web.py:1394 cps/web.py:1534
 #, python-format
 msgid "you are now logged in as: '%(nickname)s'"
 msgstr "giriş yaptınız: '%(nickname)s'"
@@ -633,218 +639,218 @@ msgstr "GitHub Oauth hatası, lütfen tekrar deneyin."
 msgid "Google Oauth error, please retry later."
 msgstr "Google Oauth hatası, lütfen tekrar deneyin."
 
-#: cps/shelf.py:66 cps/shelf.py:111
+#: cps/shelf.py:67 cps/shelf.py:120
 msgid "Invalid shelf specified"
 msgstr "Geçersiz kitaplık seçildi"
 
-#: cps/shelf.py:72
+#: cps/shelf.py:73
 #, python-format
 msgid "Sorry you are not allowed to add a book to the the shelf: %(shelfname)s"
 msgstr "Maalesef bu kitaplığa eKitap eklemenize izin verilmiyor: %(shelfname)s"
 
-#: cps/shelf.py:82
+#: cps/shelf.py:83
 #, python-format
 msgid "Book is already part of the shelf: %(shelfname)s"
 msgstr "eKitap zaten bu kitaplıkta bulunuyor: %(shelfname)s"
 
-#: cps/shelf.py:97
+#: cps/shelf.py:106
 #, python-format
 msgid "Book has been added to shelf: %(sname)s"
 msgstr "eKitap kitaplığa eklendi: %(sname)s"
 
-#: cps/shelf.py:115
+#: cps/shelf.py:124
 #, python-format
 msgid "You are not allowed to add a book to the the shelf: %(name)s"
 msgstr "Bu kitaplığa eKitap eklemenize izin verilmiyor: %(name)s"
 
-#: cps/shelf.py:133
+#: cps/shelf.py:142
 #, python-format
 msgid "Books are already part of the shelf: %(name)s"
 msgstr "eKitaplar zaten bu kitaplıkta bulunuyor: %(name)s"
 
-#: cps/shelf.py:148
+#: cps/shelf.py:158
 #, python-format
 msgid "Books have been added to shelf: %(sname)s"
 msgstr "eKitaplar kitaplığa eklendi: %(sname)s"
 
-#: cps/shelf.py:150
+#: cps/shelf.py:163
 #, python-format
 msgid "Could not add books to shelf: %(sname)s"
 msgstr "eKitaplar kitaplığa eklenemedi: %(sname)s"
 
-#: cps/shelf.py:188
+#: cps/shelf.py:208
 #, python-format
 msgid "Book has been removed from shelf: %(sname)s"
 msgstr "eKitap kitaplıktan silindi: %(sname)s"
 
-#: cps/shelf.py:196
+#: cps/shelf.py:216
 #, python-format
 msgid "Sorry you are not allowed to remove a book from this shelf: %(sname)s"
 msgstr "Maalesef bu kitaplıktan eKitap silmenize izin verilmiyor: %(sname)s"
 
-#: cps/shelf.py:220 cps/shelf.py:260
+#: cps/shelf.py:240 cps/shelf.py:284
 #, python-format
 msgid "A public shelf with the name '%(title)s' already exists."
 msgstr ""
 
-#: cps/shelf.py:229 cps/shelf.py:270
+#: cps/shelf.py:249 cps/shelf.py:294
 #, python-format
 msgid "A private shelf with the name '%(title)s' already exists."
 msgstr ""
 
-#: cps/shelf.py:236
+#: cps/shelf.py:256
 #, python-format
 msgid "Shelf %(title)s created"
 msgstr "%(title)s kitaplığı oluşturuldu."
 
-#: cps/shelf.py:239 cps/shelf.py:284
+#: cps/shelf.py:263 cps/shelf.py:312
 msgid "There was an error"
 msgstr "Bir hata oluştu"
 
-#: cps/shelf.py:240 cps/shelf.py:242 cps/templates/layout.html:144
+#: cps/shelf.py:264 cps/shelf.py:266 cps/templates/layout.html:144
 msgid "Create a Shelf"
 msgstr "Kitaplık oluştur"
 
-#: cps/shelf.py:282
+#: cps/shelf.py:306
 #, python-format
 msgid "Shelf %(title)s changed"
 msgstr "%(title)s kitaplığı değiştirildi"
 
-#: cps/shelf.py:285 cps/shelf.py:287
+#: cps/shelf.py:313 cps/shelf.py:315
 msgid "Edit a shelf"
 msgstr "Kitaplığı düzenle"
 
-#: cps/shelf.py:332
+#: cps/shelf.py:369
 #, python-format
 msgid "Shelf: '%(name)s'"
 msgstr "Kitaplık: '%(name)s'"
 
-#: cps/shelf.py:335
+#: cps/shelf.py:372
 msgid "Error opening shelf. Shelf does not exist or is not accessible"
 msgstr "Kitaplık açılırken hata oluştu. Kitaplık mevcut değil ya da erişilebilir değil"
 
-#: cps/shelf.py:368
+#: cps/shelf.py:409
 msgid "Hidden Book"
 msgstr ""
 
-#: cps/shelf.py:373
+#: cps/shelf.py:414
 #, python-format
 msgid "Change order of Shelf: '%(name)s'"
 msgstr "Kitaplık sıralamasını değiştir: '%(name)s'"
 
-#: cps/ub.py:64
+#: cps/ub.py:65
 msgid "Recently Added"
 msgstr "Yeni"
 
-#: cps/ub.py:66
+#: cps/ub.py:67
 msgid "Show recent books"
 msgstr "Son eKitapları göster"
 
-#: cps/templates/index.xml:17 cps/ub.py:67
+#: cps/templates/index.xml:17 cps/ub.py:68
 msgid "Hot Books"
 msgstr "Popüler"
 
-#: cps/ub.py:69
+#: cps/ub.py:70
 msgid "Show Hot Books"
 msgstr ""
 
-#: cps/templates/index.xml:24 cps/ub.py:71 cps/web.py:655
+#: cps/templates/index.xml:24 cps/ub.py:72 cps/web.py:652
 msgid "Top Rated Books"
 msgstr ""
 
-#: cps/ub.py:73
+#: cps/ub.py:74
 msgid "Show Top Rated Books"
 msgstr ""
 
-#: cps/templates/index.xml:46 cps/templates/index.xml:50 cps/ub.py:74
-#: cps/web.py:1222
+#: cps/templates/index.xml:46 cps/templates/index.xml:50 cps/ub.py:75
+#: cps/web.py:1219
 msgid "Read Books"
 msgstr "Okunanlar"
 
-#: cps/ub.py:76
+#: cps/ub.py:77
 msgid "Show read and unread"
 msgstr "Okunan ve okunmayanları göster"
 
-#: cps/templates/index.xml:53 cps/templates/index.xml:57 cps/ub.py:78
-#: cps/web.py:1225
+#: cps/templates/index.xml:53 cps/templates/index.xml:57 cps/ub.py:79
+#: cps/web.py:1222
 msgid "Unread Books"
 msgstr "Okunmamışlar"
 
-#: cps/ub.py:80
+#: cps/ub.py:81
 msgid "Show unread"
 msgstr "Okunmamışları göster"
 
-#: cps/ub.py:81
+#: cps/ub.py:82
 msgid "Discover"
 msgstr "Keşfet"
 
-#: cps/ub.py:83
+#: cps/ub.py:84
 msgid "Show random books"
 msgstr "Rastgele eKitap göster"
 
-#: cps/templates/index.xml:75 cps/ub.py:84 cps/web.py:970
+#: cps/templates/index.xml:75 cps/ub.py:85 cps/web.py:967
 msgid "Categories"
 msgstr "Kategoriler"
 
-#: cps/ub.py:86
+#: cps/ub.py:87
 msgid "Show category selection"
 msgstr "Kategori seçimini göster"
 
 #: cps/templates/book_edit.html:84 cps/templates/index.xml:82
-#: cps/templates/search_form.html:53 cps/ub.py:87 cps/web.py:886 cps/web.py:896
+#: cps/templates/search_form.html:53 cps/ub.py:88 cps/web.py:883 cps/web.py:893
 msgid "Series"
 msgstr "Seriler"
 
-#: cps/ub.py:89
+#: cps/ub.py:90
 msgid "Show series selection"
 msgstr "Seri seçimini göster"
 
-#: cps/templates/index.xml:61 cps/ub.py:90
+#: cps/templates/index.xml:61 cps/ub.py:91
 msgid "Authors"
 msgstr "Yazarlar"
 
-#: cps/ub.py:92
+#: cps/ub.py:93
 msgid "Show author selection"
 msgstr "Yazar seçimini göster"
 
-#: cps/templates/index.xml:68 cps/ub.py:94 cps/web.py:869
+#: cps/templates/index.xml:68 cps/ub.py:95 cps/web.py:866
 msgid "Publishers"
 msgstr "Yayıncılar"
 
-#: cps/ub.py:96
+#: cps/ub.py:97
 msgid "Show publisher selection"
 msgstr "Yayıncı seçimini göster"
 
-#: cps/templates/index.xml:89 cps/templates/search_form.html:74 cps/ub.py:97
-#: cps/web.py:953
+#: cps/templates/index.xml:89 cps/templates/search_form.html:74 cps/ub.py:98
+#: cps/web.py:950
 msgid "Languages"
 msgstr "Diller"
 
-#: cps/ub.py:100
+#: cps/ub.py:101
 msgid "Show language selection"
 msgstr "Dil seçimini göster"
 
-#: cps/templates/index.xml:96 cps/ub.py:101
+#: cps/templates/index.xml:96 cps/ub.py:102
 msgid "Ratings"
 msgstr "Değerlendirmeler"
 
-#: cps/ub.py:103
+#: cps/ub.py:104
 msgid "Show ratings selection"
 msgstr "Değerlendirme seçimini göster"
 
-#: cps/templates/index.xml:104 cps/ub.py:104
+#: cps/templates/index.xml:104 cps/ub.py:105
 msgid "File formats"
 msgstr "Biçimler"
 
-#: cps/ub.py:106
+#: cps/ub.py:107
 msgid "Show file formats selection"
 msgstr "Dosya biçimi seçimini göster"
 
-#: cps/ub.py:108 cps/web.py:1249
+#: cps/ub.py:109 cps/web.py:1246
 msgid "Archived Books"
 msgstr ""
 
-#: cps/ub.py:110
+#: cps/ub.py:111
 msgid "Show archived books"
 msgstr ""
 
@@ -877,220 +883,220 @@ msgstr "Yeni bir güncelleme mevcut. Son sürüme güncellemek için aşağıdak
 msgid "Click on the button below to update to the latest stable version."
 msgstr "Son kararlı sürüme güncellemek için aşağıdaki düğmeye tıklayın."
 
-#: cps/web.py:322
+#: cps/web.py:319
 #, python-format
 msgid "Error: %(ldaperror)s"
 msgstr ""
 
-#: cps/web.py:326
+#: cps/web.py:323
 msgid "Error: No user returned in response of LDAP server"
 msgstr ""
 
-#: cps/web.py:374
+#: cps/web.py:371
 msgid "Failed to Create at Least One LDAP User"
 msgstr ""
 
-#: cps/web.py:377
+#: cps/web.py:374
 msgid "At Least One LDAP User Not Found in Database"
 msgstr ""
 
-#: cps/web.py:379
+#: cps/web.py:376
 msgid "User Successfully Imported"
 msgstr ""
 
-#: cps/web.py:625
+#: cps/web.py:622
 msgid "Recently Added Books"
 msgstr "Yeni Eklenen eKitaplar"
 
-#: cps/templates/index.html:5 cps/web.py:663
+#: cps/templates/index.html:5 cps/web.py:660
 msgid "Discover (Random Books)"
 msgstr "Keşfet (Rastgele)"
 
-#: cps/web.py:691
+#: cps/web.py:688
 msgid "Books"
 msgstr "eKitaplar"
 
-#: cps/web.py:718
+#: cps/web.py:715
 msgid "Hot Books (Most Downloaded)"
 msgstr ""
 
-#: cps/web.py:731
+#: cps/web.py:728
 msgid "Oops! Selected book title is unavailable. File does not exist or is not accessible"
 msgstr ""
 
-#: cps/web.py:745
+#: cps/web.py:742
 #, python-format
 msgid "Author: %(name)s"
 msgstr "Yazar: %(name)s"
 
-#: cps/web.py:759
+#: cps/web.py:756
 #, python-format
 msgid "Publisher: %(name)s"
 msgstr "Yayınevi: %(name)s"
 
-#: cps/web.py:772
+#: cps/web.py:769
 #, python-format
 msgid "Series: %(serie)s"
 msgstr "Seri: %(serie)s"
 
-#: cps/web.py:785
+#: cps/web.py:782
 #, python-format
 msgid "Rating: %(rating)s stars"
 msgstr "Değerlendirme: %(rating)s yıldız"
 
-#: cps/web.py:798
+#: cps/web.py:795
 #, python-format
 msgid "File format: %(format)s"
 msgstr "Biçim: %(format)s"
 
-#: cps/web.py:812
+#: cps/web.py:809
 #, python-format
 msgid "Category: %(name)s"
 msgstr "Kategori: %(name)s"
 
-#: cps/web.py:831
+#: cps/web.py:828
 #, python-format
 msgid "Language: %(name)s"
 msgstr "Dil: %(name)s"
 
-#: cps/web.py:910
+#: cps/web.py:907
 msgid "Ratings list"
 msgstr "Değerlendirme listesi"
 
-#: cps/web.py:925
+#: cps/web.py:922
 msgid "File formats list"
 msgstr "Biçim listesi"
 
-#: cps/templates/layout.html:74 cps/templates/tasks.html:7 cps/web.py:984
+#: cps/templates/layout.html:74 cps/templates/tasks.html:7 cps/web.py:981
 msgid "Tasks"
 msgstr "Görevler"
 
 #: cps/templates/book_edit.html:235 cps/templates/feed.xml:33
 #: cps/templates/layout.html:45 cps/templates/layout.html:48
-#: cps/templates/search_form.html:174 cps/web.py:1010 cps/web.py:1015
+#: cps/templates/search_form.html:174 cps/web.py:1007 cps/web.py:1012
 msgid "Search"
 msgstr "Ara"
 
-#: cps/web.py:1066
+#: cps/web.py:1063
 msgid "Published after "
 msgstr "Yayınlanma (sonra)"
 
-#: cps/web.py:1073
+#: cps/web.py:1070
 msgid "Published before "
 msgstr "Yayınlanma (önce)"
 
-#: cps/web.py:1087
+#: cps/web.py:1084
 #, python-format
 msgid "Rating <= %(rating)s"
 msgstr "Değerlendirme <= %(rating)s"
 
-#: cps/web.py:1089
+#: cps/web.py:1086
 #, python-format
 msgid "Rating >= %(rating)s"
 msgstr "Değerlendirme >= %(rating)s"
 
-#: cps/web.py:1158 cps/web.py:1183
+#: cps/web.py:1155 cps/web.py:1180
 msgid "search"
 msgstr "ara"
 
-#: cps/web.py:1213
+#: cps/web.py:1210
 #, python-format
 msgid "Custom Column No.%(column)d is not existing in calibre database"
 msgstr ""
 
-#: cps/web.py:1304
+#: cps/web.py:1301
 #, python-format
 msgid "Book successfully queued for sending to %(kindlemail)s"
 msgstr "%(kindlemail)s'a gönderilmek üzere başarıyla sıraya alındı"
 
-#: cps/web.py:1308
+#: cps/web.py:1305
 #, python-format
 msgid "Oops! There was an error sending this book: %(res)s"
 msgstr ""
 
-#: cps/web.py:1310
+#: cps/web.py:1307
 msgid "Please update your profile with a valid Send to Kindle E-mail Address."
 msgstr ""
 
-#: cps/web.py:1327
+#: cps/web.py:1324
 msgid "E-Mail server is not configured, please contact your administrator!"
 msgstr "E-Posta sunucusu ayarlanmadı, lütfen yöneticinizle iletişime geçin!"
 
-#: cps/web.py:1328 cps/web.py:1338 cps/web.py:1362 cps/web.py:1366
-#: cps/web.py:1371 cps/web.py:1375
+#: cps/web.py:1325 cps/web.py:1335 cps/web.py:1359 cps/web.py:1363
+#: cps/web.py:1368 cps/web.py:1372
 msgid "register"
 msgstr "kaydol"
 
-#: cps/web.py:1364
+#: cps/web.py:1361
 msgid "Your e-mail is not allowed to register"
 msgstr "E-posta adresinizle kaydolunmasına izin verilmiyor"
 
-#: cps/web.py:1367
+#: cps/web.py:1364
 msgid "Confirmation e-mail was send to your e-mail account."
 msgstr "Onay e-Postası hesabınıza gönderildi."
 
-#: cps/web.py:1370
+#: cps/web.py:1367
 msgid "This username or e-mail address is already in use."
 msgstr "Kullanıcı adı ya da e-Posta adresi zaten kullanımda."
 
-#: cps/web.py:1387
+#: cps/web.py:1384
 msgid "Cannot activate LDAP authentication"
 msgstr "LDAP Kimlik Doğrulaması etkinleştirilemiyor"
 
-#: cps/web.py:1404
+#: cps/web.py:1401
 #, python-format
 msgid "Fallback Login as: '%(nickname)s', LDAP Server not reachable, or user not known"
 msgstr ""
 
-#: cps/web.py:1410
+#: cps/web.py:1407
 #, python-format
 msgid "Could not login: %(message)s"
 msgstr ""
 
-#: cps/web.py:1414 cps/web.py:1438
+#: cps/web.py:1411 cps/web.py:1435
 msgid "Wrong Username or Password"
 msgstr "Yanlış Kullanıcı adı ya da Şifre"
 
-#: cps/web.py:1421
+#: cps/web.py:1418
 msgid "New Password was send to your email address"
 msgstr "Yeni şifre e-Posta adresinize gönderildi"
 
-#: cps/web.py:1427
+#: cps/web.py:1424
 msgid "Please enter valid username to reset password"
 msgstr "Şifrenizi sıfırlayabilmek için lütfen geçerli bir kullanıcı adı giriniz"
 
-#: cps/web.py:1433
+#: cps/web.py:1430
 #, python-format
 msgid "You are now logged in as: '%(nickname)s'"
 msgstr "Giriş yaptınız: '%(nickname)s'"
 
-#: cps/web.py:1442 cps/web.py:1469
+#: cps/web.py:1439 cps/web.py:1466
 msgid "login"
 msgstr "giriş"
 
-#: cps/web.py:1481 cps/web.py:1515
+#: cps/web.py:1478 cps/web.py:1512
 msgid "Token not found"
 msgstr "Token bulunamadı"
 
-#: cps/web.py:1490 cps/web.py:1523
+#: cps/web.py:1487 cps/web.py:1520
 msgid "Token has expired"
 msgstr "Token süresi doldu"
 
-#: cps/web.py:1499
+#: cps/web.py:1496
 msgid "Success! Please return to your device"
 msgstr "Başarılı! Lütfen cihazınıza dönün"
 
-#: cps/web.py:1580 cps/web.py:1625 cps/web.py:1631
+#: cps/web.py:1577 cps/web.py:1622 cps/web.py:1628
 #, python-format
 msgid "%(name)s's profile"
 msgstr "%(name)s Profili"
 
-#: cps/web.py:1627
+#: cps/web.py:1624
 msgid "Profile updated"
 msgstr "Profil güncellendi"
 
-#: cps/web.py:1656 cps/web.py:1659 cps/web.py:1662 cps/web.py:1669
-#: cps/web.py:1674
+#: cps/web.py:1653 cps/web.py:1656 cps/web.py:1659 cps/web.py:1666
+#: cps/web.py:1671
 msgid "Read a Book"
 msgstr "Kitap Oku"
 
