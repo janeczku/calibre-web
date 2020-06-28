@@ -613,6 +613,7 @@ def _configuration_update_helper():
     reboot_required = False
     db_change = False
     to_save = request.form.to_dict()
+    gdriveError = None
 
     to_save['config_calibre_dir'] = re.sub('[\\/]metadata\.db$', '', to_save['config_calibre_dir'], flags=re.IGNORECASE)
     try:
