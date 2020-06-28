@@ -34,7 +34,7 @@ from flask import Blueprint, flash, redirect, url_for, abort, request, make_resp
 from flask_login import login_required, current_user, logout_user
 from flask_babel import gettext as _
 from sqlalchemy import and_
-from sqlalchemy.exc import IntegrityError
+from sqlalchemy.exc import IntegrityError, OperationalError, InvalidRequestError
 from sqlalchemy.sql.expression import func
 
 from . import constants, logger, helper, services
@@ -613,80 +613,86 @@ def _configuration_update_helper():
     reboot_required = False
     db_change = False
     to_save = request.form.to_dict()
+    gdriveError = None
 
     to_save['config_calibre_dir'] = re.sub('[\\/]metadata\.db$', '', to_save['config_calibre_dir'], flags=re.IGNORECASE)
-    db_change |= _config_string(to_save, "config_calibre_dir")
+    try:
+        db_change |= _config_string(to_save, "config_calibre_dir")
 
-    # Google drive setup
-    gdriveError = _configuration_gdrive_helper(to_save)
+        # Google drive setup
+        gdriveError = _configuration_gdrive_helper(to_save)
 
-    reboot_required |= _config_int(to_save, "config_port")
+        reboot_required |= _config_int(to_save, "config_port")
 
-    reboot_required |= _config_string(to_save, "config_keyfile")
-    if config.config_keyfile and not os.path.isfile(config.config_keyfile):
-        return _configuration_result(_('Keyfile Location is not Valid, Please Enter Correct Path'), gdriveError)
+        reboot_required |= _config_string(to_save, "config_keyfile")
+        if config.config_keyfile and not os.path.isfile(config.config_keyfile):
+            return _configuration_result(_('Keyfile Location is not Valid, Please Enter Correct Path'), gdriveError)
 
-    reboot_required |= _config_string(to_save, "config_certfile")
-    if config.config_certfile and not os.path.isfile(config.config_certfile):
-        return _configuration_result(_('Certfile Location is not Valid, Please Enter Correct Path'), gdriveError)
+        reboot_required |= _config_string(to_save, "config_certfile")
+        if config.config_certfile and not os.path.isfile(config.config_certfile):
+            return _configuration_result(_('Certfile Location is not Valid, Please Enter Correct Path'), gdriveError)
 
-    _config_checkbox_int(to_save, "config_uploading")
-    _config_checkbox_int(to_save, "config_anonbrowse")
-    _config_checkbox_int(to_save, "config_public_reg")
-    _config_checkbox_int(to_save, "config_register_email")
-    reboot_required |= _config_checkbox_int(to_save, "config_kobo_sync")
-    _config_checkbox_int(to_save, "config_kobo_proxy")
+        _config_checkbox_int(to_save, "config_uploading")
+        _config_checkbox_int(to_save, "config_anonbrowse")
+        _config_checkbox_int(to_save, "config_public_reg")
+        _config_checkbox_int(to_save, "config_register_email")
+        reboot_required |= _config_checkbox_int(to_save, "config_kobo_sync")
+        _config_checkbox_int(to_save, "config_kobo_proxy")
 
-    _config_string(to_save, "config_upload_formats")
-    constants.EXTENSIONS_UPLOAD = [x.lstrip().rstrip() for x in config.config_upload_formats.split(',')]
+        _config_string(to_save, "config_upload_formats")
+        constants.EXTENSIONS_UPLOAD = [x.lstrip().rstrip() for x in config.config_upload_formats.split(',')]
 
-    _config_string(to_save, "config_calibre")
-    _config_string(to_save, "config_converterpath")
-    _config_string(to_save, "config_kepubifypath")
+        _config_string(to_save, "config_calibre")
+        _config_string(to_save, "config_converterpath")
+        _config_string(to_save, "config_kepubifypath")
 
-    reboot_required |= _config_int(to_save, "config_login_type")
+        reboot_required |= _config_int(to_save, "config_login_type")
 
-    #LDAP configurator,
-    if config.config_login_type == constants.LOGIN_LDAP:
-        reboot, message = _configuration_ldap_helper(to_save, gdriveError)
+        #LDAP configurator,
+        if config.config_login_type == constants.LOGIN_LDAP:
+            reboot, message = _configuration_ldap_helper(to_save, gdriveError)
+            if message:
+                return message
+            reboot_required |= reboot
+
+        # Remote login configuration
+
+        _config_checkbox(to_save, "config_remote_login")
+        if not config.config_remote_login:
+            ub.session.query(ub.RemoteAuthToken).filter(ub.RemoteAuthToken.token_type==0).delete()
+
+        # Goodreads configuration
+        _config_checkbox(to_save, "config_use_goodreads")
+        _config_string(to_save, "config_goodreads_api_key")
+        _config_string(to_save, "config_goodreads_api_secret")
+        if services.goodreads_support:
+            services.goodreads_support.connect(config.config_goodreads_api_key,
+                                               config.config_goodreads_api_secret,
+                                               config.config_use_goodreads)
+
+        _config_int(to_save, "config_updatechannel")
+
+        # Reverse proxy login configuration
+        _config_checkbox(to_save, "config_allow_reverse_proxy_header_login")
+        _config_string(to_save, "config_reverse_proxy_login_header_name")
+
+        # OAuth configuration
+        if config.config_login_type == constants.LOGIN_OAUTH:
+            reboot_required |= _configuration_oauth_helper(to_save)
+
+        reboot, message = _configuration_logfile_helper(to_save, gdriveError)
         if message:
             return message
         reboot_required |= reboot
-
-    # Remote login configuration
-    _config_checkbox(to_save, "config_remote_login")
-    if not config.config_remote_login:
-        ub.session.query(ub.RemoteAuthToken).filter(ub.RemoteAuthToken.token_type==0).delete()
-
-    # Goodreads configuration
-    _config_checkbox(to_save, "config_use_goodreads")
-    _config_string(to_save, "config_goodreads_api_key")
-    _config_string(to_save, "config_goodreads_api_secret")
-    if services.goodreads_support:
-        services.goodreads_support.connect(config.config_goodreads_api_key,
-                                           config.config_goodreads_api_secret,
-                                           config.config_use_goodreads)
-
-    _config_int(to_save, "config_updatechannel")
-
-    # Reverse proxy login configuration
-    _config_checkbox(to_save, "config_allow_reverse_proxy_header_login")
-    _config_string(to_save, "config_reverse_proxy_login_header_name")
-
-    # OAuth configuration
-    if config.config_login_type == constants.LOGIN_OAUTH:
-        reboot_required |= _configuration_oauth_helper(to_save)
-
-    reboot, message = _configuration_logfile_helper(to_save, gdriveError)
-    if message:
-        return message
-    reboot_required |= reboot
-    # Rarfile Content configuration
-    _config_string(to_save, "config_rarfile_location")
-    if "config_rarfile_location" in to_save:
-        unrar_status = helper.check_unrar(config.config_rarfile_location)
-        if unrar_status:
-            return _configuration_result(unrar_status, gdriveError)
+        # Rarfile Content configuration
+        _config_string(to_save, "config_rarfile_location")
+        if "config_rarfile_location" in to_save:
+            unrar_status = helper.check_unrar(config.config_rarfile_location)
+            if unrar_status:
+                return _configuration_result(unrar_status, gdriveError)
+    except (OperationalError, InvalidRequestError):
+        ub.session.rollback()
+        _configuration_result(_(u"Settings DB is not Writeable"), gdriveError)
 
     try:
         metadata_db = os.path.join(config.config_calibre_dir, "metadata.db")
@@ -719,7 +725,7 @@ def _configuration_result(error_flash=None, gdriveError=None):
         gdriveError = _(gdriveError)
     else:
         # if config.config_use_google_drive and\
-        if not gdrive_authenticate:
+        if not gdrive_authenticate and gdrive_support:
             gdrivefolders = gdriveutils.listRootFolders()
 
     show_back_button = current_user.is_authenticated
@@ -783,6 +789,9 @@ def _handle_new_user(to_save, content,languages, translations, kobo_support):
     except IntegrityError:
         ub.session.rollback()
         flash(_(u"Found an existing account for this e-mail address or nickname."), category="error")
+    except OperationalError:
+        ub.session.rollback()
+        flash(_(u"Settings DB is not Writeable"), category="error")
 
 
 def _handle_edit_user(to_save, content,languages, translations, kobo_support, downloads):
@@ -872,6 +881,9 @@ def _handle_edit_user(to_save, content,languages, translations, kobo_support, do
     except IntegrityError:
         ub.session.rollback()
         flash(_(u"An unknown error occured."), category="error")
+    except OperationalError:
+        ub.session.rollback()
+        flash(_(u"Settings DB is not Writeable"), category="error")
 
 
 @admi.route("/admin/user/new", methods=["GET", "POST"])
@@ -916,7 +928,12 @@ def update_mailsettings():
     _config_string(to_save, "mail_password")
     _config_string(to_save, "mail_from")
     _config_int(to_save, "mail_size", lambda y: int(y)*1024*1024)
-    config.save()
+    try:
+        config.save()
+    except (OperationalError, InvalidRequestError):
+        ub.session.rollback()
+        flash(_(u"Settings DB is not Writeable"), category="error")
+        return edit_mailsettings()
 
     if to_save.get("test"):
         if current_user.email:
