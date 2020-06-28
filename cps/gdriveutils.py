@@ -27,6 +27,7 @@ from sqlalchemy import Column, UniqueConstraint
 from sqlalchemy import String, Integer
 from sqlalchemy.orm import sessionmaker, scoped_session
 from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.exc import OperationalError, InvalidRequestError
 
 try:
     from pydrive.auth import GoogleAuth
@@ -479,8 +480,13 @@ def getChangeById (drive, change_id):
 
 # Deletes the local hashes database to force search for new folder names
 def deleteDatabaseOnChange():
-    session.query(GdriveId).delete()
-    session.commit()
+    try:
+        session.query(GdriveId).delete()
+        session.commit()
+    except (OperationalError, InvalidRequestError):
+        session.rollback()
+        log.info(u"GDrive DB is not Writeable")
+
 
 def updateGdriveCalibreFromLocal():
     copyToDrive(Gdrive.Instance().drive, config.config_calibre_dir, False, True)
