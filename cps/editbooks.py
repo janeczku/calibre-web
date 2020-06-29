@@ -173,7 +173,7 @@ def modify_identifiers(input_identifiers, db_identifiers, db_session):
 @editbook.route("/ajax/delete/<int:book_id>")
 @login_required
 def delete_book_from_details(book_id):
-    return delete_book(book_id,"", True)
+    return Response(delete_book(book_id,"", True), mimetype='application/json')
 
 
 @editbook.route("/delete/<int:book_id>", defaults={'book_format': ""})
@@ -191,11 +191,10 @@ def delete_book(book_id, book_format, jsonResponse):
                 result, error = helper.delete_book(book, config.config_calibre_dir, book_format=book_format.upper())
                 if not result:
                     if jsonResponse:
-                        return Response(json.dumps({"location": url_for("editbook.edit_book"),
-                                                "type": "alert",
-                                                "format": "",
-                                                "error": error}),
-                                        mimetype='application/json')
+                        return json.dumps({"location": url_for("editbook.edit_book"),
+                                           "type": "alert",
+                                           "format": "",
+                                           "error": error}),
                     else:
                         flash(error, category="error")
                         return redirect(url_for('editbook.edit_book', book_id=book_id))
@@ -263,21 +262,19 @@ def delete_book(book_id, book_format, jsonResponse):
             log.error('Book with id "%s" could not be deleted: not found', book_id)
     if book_format:
         if jsonResponse:
-            return Response(json.dumps([warning, {"location": url_for("editbook.edit_book", book_id=book_id),
-                                    "type": "success",
-                                    "format": book_format,
-                                    "message": _('Book Format Successfully Deleted')}]),
-                            mimetype='application/json')
+            return json.dumps([warning, {"location": url_for("editbook.edit_book", book_id=book_id),
+                                         "type": "success",
+                                         "format": book_format,
+                                         "message": _('Book Format Successfully Deleted')}])
         else:
             flash(_('Book Format Successfully Deleted'), category="success")
             return redirect(url_for('editbook.edit_book', book_id=book_id))
     else:
         if jsonResponse:
-            return Response(json.dumps([warning, {"location": url_for('web.index'),
-                                    "type": "success",
-                                    "format": book_format,
-                                    "message": _('Book Successfully Deleted')}]),
-                            mimetype='application/json')
+            return json.dumps([warning, {"location": url_for('web.index'),
+                                         "type": "success",
+                                         "format": book_format,
+                                         "message": _('Book Successfully Deleted')}])
         else:
             flash(_('Book Successfully Deleted'), category="success")
             return redirect(url_for('web.index'))
@@ -994,8 +991,33 @@ def get_sorted_entry(field, bookid):
 @editbook.route("/ajax/mergebooks", methods=['POST'])
 @login_required
 def merge_list_book():
-    vals = request.get_json()
-
-    # load first book
-    # load every next book, append data to first book, delete 2nd book
+    vals = request.get_json().get('Merge_books')
+    to_file= list()
+    if vals:
+        # load all formats from target book
+        to_book = calibre_db.get_book(vals[0])
+        vals.pop(0)
+        if to_book:
+            for file in to_book.data:
+                to_file.append(file.format)
+            to_name = helper.get_valid_filename(to_book.title) + ' - ' + \
+                      helper.get_valid_filename(to_book.authors[0].name)
+            for book_id in vals:
+                from_book = calibre_db.get_book(book_id)
+                if from_book:
+                    for element in from_book.data:
+                        if element.format not in to_file:
+                            # create new data entry with: book_id, book_format, uncompressed_size, name
+                            filepath_new = os.path.normpath(os.path.join(config.config_calibre_dir,
+                                                                         to_book.path,
+                                                                         to_name + "." + element.format.lower()))
+                            filepath_old = os.path.normpath(os.path.join(config.config_calibre_dir,
+                                                                         from_book.path,
+                                                                         element.name + "." + element.format.lower()))
+                            copyfile(filepath_old, filepath_new)
+                            to_book.data.append(db.Data(to_book.id,
+                                                        element.format,
+                                                        element.uncompressed_size,
+                                                        to_name))
+                    delete_book(from_book.id,"", True) # json_resp =
     return ""
