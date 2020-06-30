@@ -48,7 +48,7 @@
           <a href="{{url_for('web.books_list', data='series', sort='new', book_id=entry.series[0].id )}}">
             {{entry.series[0].name}}
           </a> 
-          ({{entry.series_index|int}})
+          ({{entry.series_index|formatseriesindex}})
         </p>
         {% endif %}
         {% if entry.ratings.__len__() > 0 %}

@@ -111,3 +111,10 @@ def timestamptodate(date, fmt=None):
 @jinjia.app_template_filter('yesno')
 def yesno(value, yes, no):
     return yes if value else no
+
+@jinjia.app_template_filter('formatseriesindex')
+def formatseriesindex_filter(series_index):
+    if int(series_index) - series_index == 0:
+        return int(series_index)
+    else:
+        return series_index
