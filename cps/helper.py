@@ -466,7 +466,10 @@ def reset_password(user_id):
 def generate_random_password():
     s = "abcdefghijklmnopqrstuvwxyz01234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%&*()?"
     passlen = 8
-    return "".join(s[c % len(s)] for c in os.urandom(passlen))
+    if sys.version_info < (3, 0):
+        return "".join(s[ord(c) % len(s)] for c in os.urandom(passlen))
+    else:
+        return "".join(s[c % len(s)] for c in os.urandom(passlen))
 
 
 def uniq(input):
