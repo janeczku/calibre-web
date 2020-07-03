@@ -623,6 +623,7 @@ def _configuration_update_helper():
         gdriveError = _configuration_gdrive_helper(to_save)
 
         reboot_required |= _config_int(to_save, "config_port")
+        reboot_required |= _config_int(to_save, "config_external_port")
 
         reboot_required |= _config_string(to_save, "config_keyfile")
         if config.config_keyfile and not os.path.isfile(config.config_keyfile):
