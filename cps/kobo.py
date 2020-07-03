@@ -267,14 +267,15 @@ def HandleMetadataRequest(book_uuid):
 
 def get_download_url_for_book(book, book_format):
     if not current_app.wsgi_app.is_proxied:
-        if ':' in request.host and not request.host.endswith(']') :
+        if ':' in request.host and not request.host.endswith(']'):
             host = "".join(request.host.split(':')[:-1])
         else:
             host = request.host
+
         return "{url_scheme}://{url_base}:{url_port}/download/{book_id}/{book_format}".format(
             url_scheme=request.scheme,
             url_base=host,
-            url_port=config.config_port,
+            url_port=config.config_external_port,
             book_id=book.id,
             book_format=book_format.lower()
         )
@@ -925,7 +926,7 @@ def HandleInitRequest():
         calibre_web_url = "{url_scheme}://{url_base}:{url_port}".format(
             url_scheme=request.scheme,
             url_base=host,
-            url_port=config.config_port
+            url_port=config.config_external_port
         )
         kobo_resources["image_host"] = calibre_web_url
         kobo_resources["image_url_quality_template"] = unquote(calibre_web_url +
@@ -935,16 +936,14 @@ def HandleInitRequest():
                                                                        width="{width}",
                                                                        height="{height}",
                                                                        Quality='{Quality}',
-                                                                       isGreyscale='isGreyscale'
-                                                               ))
+                                                                       isGreyscale='isGreyscale'))
         kobo_resources["image_url_template"] = unquote(calibre_web_url +
                                                        url_for("kobo.HandleCoverImageRequest",
                                                                auth_token=kobo_auth.get_auth_token(),
                                                                book_uuid="{ImageId}",
                                                                width="{width}",
                                                                height="{height}",
-                                                               isGreyscale='false'
-                                                       ))
+                                                               isGreyscale='false'))
     else:
         kobo_resources["image_host"] = url_for("web.index", _external=True).strip("/")
         kobo_resources["image_url_quality_template"] = unquote(url_for("kobo.HandleCoverImageRequest",
@@ -962,7 +961,6 @@ def HandleInitRequest():
                                                                height="{height}",
                                                                isGreyscale='false',
                                                                _external=True))
-
 
     response = make_response(jsonify({"Resources": kobo_resources}))
     response.headers["x-kobo-apitoken"] = "e30="
