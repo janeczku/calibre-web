@@ -1256,6 +1256,9 @@ def render_archived_books(page, order):
 def get_cover(book_id):
     return get_book_cover(book_id)
 
+@web.route("/robots.txt")
+def get_robots():
+    return send_from_directory(constants.STATIC_DIR, "robots.txt")
 
 @web.route("/show/<int:book_id>/<book_format>", defaults={'anyname': 'None'})
 @web.route("/show/<int:book_id>/<book_format>/<anyname>")
