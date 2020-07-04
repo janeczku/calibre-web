@@ -19,8 +19,6 @@
 
 import base64
 import datetime
-import itertools
-import json
 import sys
 import os
 import uuid
@@ -267,7 +265,7 @@ def HandleMetadataRequest(book_uuid):
 
 def get_download_url_for_book(book, book_format):
     if not current_app.wsgi_app.is_proxied:
-        if ':' in request.host and not request.host.endswith(']') :
+        if ':' in request.host and not request.host.endswith(']'):
             host = "".join(request.host.split(':')[:-1])
         else:
             host = request.host
