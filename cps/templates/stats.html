@@ -25,6 +25,7 @@
     </tr>
   </tbody>
 </table>
+{% if g.user.role_admin() %}
   <h3>{{_('Linked Libraries')}}</h3>
 <table id="libs" class="table">
   <thead>
@@ -44,4 +45,5 @@
   {% endfor %}
   </tbody>
 </table>
+{% endif %}
 {% endblock %}
