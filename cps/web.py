@@ -1142,7 +1142,7 @@ def advanced_search():
                         db.cc_classes[c.id].value == custom_query))
                 elif c.datatype == 'rating':
                     q = q.filter(getattr(db.Books, 'custom_column_' + str(c.id)).any(
-                        db.cc_classes[c.id].value == int(custom_query) * 2))
+                        db.cc_classes[c.id].value == int(float(custom_query) * 2)))
                 else:
                     q = q.filter(getattr(db.Books, 'custom_column_' + str(c.id)).any(
                         func.lower(db.cc_classes[c.id].value).ilike("%" + custom_query + "%")))
