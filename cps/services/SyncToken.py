@@ -48,7 +48,7 @@ def to_epoch_timestamp(datetime_object):
 def get_datetime_from_json(json_object, field_name):
     try:
         return datetime.utcfromtimestamp(json_object[field_name])
-    except (KeyError, OSError):
+    except (KeyError, OSError, OverflowError):
         # OSError is thrown on Windows if timestamp is <1970 or >2038
         return datetime.min
 
