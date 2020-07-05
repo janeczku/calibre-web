@@ -27,7 +27,10 @@ except ImportError:
     from urllib.parse import unquote
 
 from flask import json
-from .. import logger as log
+from .. import logger
+
+
+log = logger.create()
 
 
 def b64encode_json(json_data):
