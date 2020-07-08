@@ -23,6 +23,7 @@ import sys
 import datetime
 import itertools
 import uuid
+import json
 from binascii import hexlify
 
 from flask import g
@@ -41,7 +42,7 @@ except ImportError:
         oauth_support = False
 from sqlalchemy import create_engine, exc, exists, event
 from sqlalchemy import Column, ForeignKey
-from sqlalchemy import String, Integer, SmallInteger, Boolean, DateTime, Float
+from sqlalchemy import String, Integer, SmallInteger, Boolean, DateTime, Float, JSON
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import backref, relationship, sessionmaker, Session
 from werkzeug.security import generate_password_hash
@@ -218,8 +219,9 @@ class User(UserBase, Base):
     denied_column_value = Column(String, default="")
     allowed_column_value = Column(String, default="")
     remote_auth_token = relationship('RemoteAuthToken', backref='user', lazy='dynamic')
-    series_view = Column(String(10), default="list")
-    view_settings = Column(String, default="list")
+    #series_view = Column(String(10), default="list")
+    view_settings = Column(JSON, default={})
+
 
 
 if oauth_support:
@@ -260,8 +262,8 @@ class Anonymous(AnonymousUserMixin, UserBase):
         self.allowed_tags = data.allowed_tags
         self.denied_column_value = data.denied_column_value
         self.allowed_column_value = data.allowed_column_value
-        self.series_view = data.series_view
-        self.view_settings = data.view_settings
+        # self.series_view = data.series_view
+
 
     def role_admin(self):
         return False
@@ -568,16 +570,17 @@ def migrate_Database(session):
         conn.execute("ALTER TABLE user ADD column `denied_column_value` DEFAULT ''")
         conn.execute("ALTER TABLE user ADD column `allowed_column_value` DEFAULT ''")
         session.commit()
-    try:
-        session.query(exists().where(User.series_view)).scalar()
-    except exc.OperationalError:
-        conn = engine.connect()
-        conn.execute("ALTER TABLE user ADD column `series_view` VARCHAR(10) DEFAULT 'list'")
+    #try:
+    #    session.query(exists().where(User.series_view)).scalar()
+    #except exc.OperationalError:
+    #    conn = engine.connect()
+    #    conn.execute("ALTER TABLE user ADD column `series_view` VARCHAR(10) DEFAULT 'list'")
     try:
         session.query(exists().where(User.view_settings)).scalar()
     except exc.OperationalError:
         conn = engine.connect()
-        conn.execute("ALTER TABLE user ADD column `view_settings` VARCHAR DEFAULT '{}'")
+        conn.execute("ALTER TABLE user ADD column `view_settings` JSON default '{}'")
+        session.commit()
 
     if session.query(User).filter(User.role.op('&')(constants.ROLE_ANONYMOUS) == constants.ROLE_ANONYMOUS).first() \
         is None:
@@ -598,12 +601,13 @@ def migrate_Database(session):
                      "locale VARCHAR(2),"
                      "sidebar_view INTEGER,"
                      "default_language VARCHAR(3),"
-                     "series_view VARCHAR(10),"
+                     # "series_view VARCHAR(10),"
                      "view_settings VARCHAR,"                     
                      "UNIQUE (nickname),"
                      "UNIQUE (email))")
         conn.execute("INSERT INTO user_id(id, nickname, email, role, password, kindle_mail,locale,"
-                     "sidebar_view, default_language, series_view) "
+                     # "sidebar_view, default_language, series_view) "
+                     "sidebar_view, default_language) "
                      "SELECT id, nickname, email, role, password, kindle_mail, locale,"
                      "sidebar_view, default_language FROM user")
         # delete old user table and rename new user_id table to user:

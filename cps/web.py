@@ -39,6 +39,7 @@ from flask_babel import gettext as _
 from flask_login import login_user, logout_user, login_required, current_user, confirm_login
 from sqlalchemy.exc import IntegrityError, InvalidRequestError, OperationalError
 from sqlalchemy.sql.expression import text, func, true, false, not_, and_, or_
+from sqlalchemy.orm.attributes import flag_modified
 from werkzeug.exceptions import default_exceptions, InternalServerError
 from sqlalchemy.sql.functions import coalesce
 try:
@@ -476,15 +477,20 @@ def update_view():
     to_save = request.form.to_dict()
     allowed_view = ['grid', 'list']
     if "series_view" in to_save and to_save["series_view"] in allowed_view:
-        current_user.series_view = to_save["series_view"]
+        try:
+            #visibility = json.loads(current_user.view_settings)
+            current_user.view_settings['series_view'] = to_save["series_view"]
+            # current_user.view_settings = json.dumps(visibility)
+            flag_modified(current_user, "view_settings")
+            ub.session.commit()
+        except InvalidRequestError:
+            log.error("Invalid request received: %r ", request, )
+            return "Invalid request", 400
+        except Exception:
+            log.error("Could not save series_view_settings: %r %r", request, to_save)
+            return "Invalid request", 400
     else:
         log.error("Invalid request received: %r %r", request, to_save)
-        return "Invalid request", 400
-
-    try:
-        ub.session.commit()
-    except InvalidRequestError:
-        log.error("Invalid request received: %r ", request, )
         return "Invalid request", 400
     return "", 200
 
@@ -831,10 +837,7 @@ def render_language_books(page, name, order):
 @web.route("/table")
 @login_required
 def books_table():
-    try:
-        visibility = json.loads(current_user.view_settings)
-    except Exception:
-        visibility = {}
+    visibility = current_user.view_settings.get('table', {})
     return render_title_template('book_table.html', title=_(u"Books list"), page="book_table",
                                  visiblility=visibility)
 
@@ -876,8 +879,13 @@ def list_books():
 def update_table_settings():
     # vals = request.get_json()
     # ToDo: Save table settings
-    current_user.view_settings = request.data
-    ub.session.commit()
+    current_user.view_settings['table'] = json.loads(request.data)
+    try:
+        flag_modified(current_user, "view_settings")
+        ub.session.commit()
+    except InvalidRequestError:
+        log.error("Invalid request received: %r ", request, )
+        return "Invalid request", 400
     return ""
 
 @web.route("/author")
@@ -918,7 +926,8 @@ def publisher_list():
 @login_required_if_no_ano
 def series_list():
     if current_user.check_visibility(constants.SIDEBAR_SERIES):
-        if current_user.series_view == 'list':
+        # visibility = json.loads(current_user.view_settings)
+        if current_user.view_settings.get('series_view') == 'list':
             entries = calibre_db.session.query(db.Series, func.count('books_series_link.book').label('count')) \
                 .join(db.books_series_link).join(db.Books).filter(calibre_db.common_filters()) \
                 .group_by(text('books_series_link.series')).order_by(db.Series.sort).all()
