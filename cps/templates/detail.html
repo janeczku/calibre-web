@@ -174,7 +174,7 @@
             {{ c.name }}:
             {% for column in entry['custom_column_' ~ c.id] %}
               {% if c.datatype == 'rating' %}
-                {{ '%d' % (column.value / 2) }}
+                {{ '%d' % (column.value / 2) }}{% if ((column.value /2) % 1) != 0 %}{{ '.%d' % (((column.value /2) % 1)*10) }} {% endif %}
               {% else %}
                 {% if c.datatype == 'bool' %}
                   {% if column.value == true %}
