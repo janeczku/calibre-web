@@ -19,8 +19,6 @@
 
 import base64
 import datetime
-import itertools
-import json
 import sys
 import os
 import uuid
@@ -318,8 +316,15 @@ def get_description(book):
 # TODO handle multiple authors
 def get_author(book):
     if not book.authors:
-        return None
-    return book.authors[0].name
+        return {"Contributors": None}
+    if len(book.authors) > 1:
+        author_list = []
+        autor_roles = []
+        for author in book.authors:
+            autor_roles.append({"Name":author.name, "Role":"Author"})
+            author_list.append(author.name)
+        return {"ContributorRoles": autor_roles, "Contributors":author_list}
+    return {"ContributorRoles": [{"Name":book.authors[0].name, "Role":"Author"}], "Contributors": book.authors[0].name}
 
 
 def get_publisher(book):
@@ -358,7 +363,7 @@ def get_metadata(book):
     book_uuid = book.uuid
     metadata = {
         "Categories": ["00000000-0000-0000-0000-000000000001",],
-        "Contributors": get_author(book),
+        # "Contributors": get_author(book),
         "CoverImageId": book_uuid,
         "CrossRevisionId": book_uuid,
         "CurrentDisplayPrice": {"CurrencyCode": "USD", "TotalAmount": 0},
@@ -382,6 +387,7 @@ def get_metadata(book):
         "Title": book.title,
         "WorkId": book_uuid,
     }
+    metadata.update(get_author(book))
 
     if get_series(book):
         if sys.version_info < (3, 0):
@@ -400,7 +406,7 @@ def get_metadata(book):
 
 
 @kobo.route("/v1/library/tags", methods=["POST", "DELETE"])
-@login_required
+@requires_kobo_auth
 # Creates a Shelf with the given items, and returns the shelf's uuid.
 def HandleTagCreate():
     # catch delete requests, otherwise the are handeld in the book delete handler
@@ -435,6 +441,7 @@ def HandleTagCreate():
 
 
 @kobo.route("/v1/library/tags/<tag_id>", methods=["DELETE", "PUT"])
+@requires_kobo_auth
 def HandleTagUpdate(tag_id):
     shelf = ub.session.query(ub.Shelf).filter(ub.Shelf.uuid == tag_id,
                                               ub.Shelf.user_id == current_user.id).one_or_none()
@@ -489,7 +496,7 @@ def add_items_to_shelf(items, shelf):
 
 
 @kobo.route("/v1/library/tags/<tag_id>/items", methods=["POST"])
-@login_required
+@requires_kobo_auth
 def HandleTagAddItem(tag_id):
     items = None
     try:
@@ -519,7 +526,7 @@ def HandleTagAddItem(tag_id):
 
 
 @kobo.route("/v1/library/tags/<tag_id>/items/delete", methods=["POST"])
-@login_required
+@requires_kobo_auth
 def HandleTagRemoveItem(tag_id):
     items = None
     try:
@@ -628,7 +635,7 @@ def create_kobo_tag(shelf):
 
 
 @kobo.route("/v1/library/<book_uuid>/state", methods=["GET", "PUT"])
-@login_required
+@requires_kobo_auth
 def HandleStateRequest(book_uuid):
     book = calibre_db.get_book_by_uuid(book_uuid)
     if not book or not book.data:
@@ -802,7 +809,7 @@ def TopLevelEndpoint():
 
 
 @kobo.route("/v1/library/<book_uuid>", methods=["DELETE"])
-@login_required
+@requires_kobo_auth
 def HandleBookDeletionRequest(book_uuid):
     log.info("Kobo book deletion request received for book %s" % book_uuid)
     book = calibre_db.get_book_by_uuid(book_uuid)

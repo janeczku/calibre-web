@@ -77,6 +77,7 @@ class ReverseProxied(object):
         servr = environ.get('HTTP_X_FORWARDED_HOST', '')
         if servr:
             environ['HTTP_HOST'] = servr
+            self.proxied = True
         return self.app(environ, start_response)
 
     @property

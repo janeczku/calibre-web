@@ -295,15 +295,16 @@ def delete_book_file(book, calibrepath, book_format=None):
             return True, None
         else:
             if os.path.isdir(path):
-                if len(next(os.walk(path))[1]):
-                    log.error("Deleting book %s failed, path has subfolders: %s", book.id, book.path)
-                    return False , _("Deleting book %(id)s failed, path has subfolders: %(path)s",
-                                     id=book.id,
-                                     path=book.path)
                 try:
-                    for root, __, files in os.walk(path):
+                    for root, folders, files in os.walk(path):
                         for f in files:
                             os.unlink(os.path.join(root, f))
+                        if len(folders):
+                            log.warning("Deleting book {} failed, path {} has subfolders: {}".format(book.id,
+                                        book.path, folders))
+                            return True, _("Deleting bookfolder for book %(id)s failed, path has subfolders: %(path)s",
+                                            id=book.id,
+                                            path=book.path)
                     shutil.rmtree(path)
                 except (IOError, OSError) as e:
                     log.error("Deleting book %s failed: %s", book.id, e)
