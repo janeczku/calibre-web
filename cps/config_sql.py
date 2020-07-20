@@ -102,7 +102,6 @@ class _Settings(_Base):
 
     config_kobo_proxy = Column(Boolean, default=False)
 
-
     config_ldap_provider_url = Column(String, default='example.org')
     config_ldap_port = Column(SmallInteger, default=389)
     config_ldap_authentication = Column(SmallInteger, default=constants.LDAP_AUTH_SIMPLE)
@@ -215,8 +214,13 @@ class _ConfigSQL(object):
         return self.show_element_new_user(constants.DETAIL_RANDOM)
 
     def list_denied_tags(self):
-        mct = self.config_denied_tags.split(",")
-        return [t.strip() for t in mct]
+        try:
+            mct = self.config_denied_tags.split(",")
+            return [t.strip() for t in mct]
+        except AttributeError:
+            # Fix for improper migrated database with config_mature_content_tags NULL instead of ""
+            self.config_denied_tags = ""
+            return ['']
 
     def list_allowed_tags(self):
         mct = self.config_allowed_tags.split(",")

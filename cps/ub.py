@@ -176,8 +176,14 @@ class UserBase:
         return self.check_visibility(constants.DETAIL_RANDOM)
 
     def list_denied_tags(self):
-        mct = self.denied_tags.split(",")
-        return [t.strip() for t in mct]
+        try:
+            mct = self.denied_tags.split(",")
+            return [t.strip() for t in mct]
+        except AttributeError:
+            # Fix for improper migrated database with config_mature_content_tags NULL instead of ""
+            self.denied_tags=""
+            return ['']
+
 
     def list_allowed_tags(self):
         mct = self.allowed_tags.split(",")
@@ -563,8 +569,8 @@ def migrate_Database(session):
         conn = engine.connect()
         conn.execute("ALTER TABLE user ADD column `denied_tags` String DEFAULT ''")
         conn.execute("ALTER TABLE user ADD column `allowed_tags` String DEFAULT ''")
-        conn.execute("ALTER TABLE user ADD column `denied_column_value` DEFAULT ''")
-        conn.execute("ALTER TABLE user ADD column `allowed_column_value` DEFAULT ''")
+        conn.execute("ALTER TABLE user ADD column `denied_column_value` String DEFAULT ''")
+        conn.execute("ALTER TABLE user ADD column `allowed_column_value` String DEFAULT ''")
         session.commit()
     try:
         session.query(exists().where(User.series_view)).scalar()
