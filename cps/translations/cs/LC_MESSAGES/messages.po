@@ -1556,7 +1556,7 @@ msgid "Authenticate Google Drive"
 msgstr "Ověřit Google Drive"
 
 #: cps/templates/config_edit.html:44
-msgid "Please hit submit to continue with setup"
+msgid "Please hit save to continue with setup"
 msgstr "Klikněte na odeslat pro pokračování v nastavení"
 
 #: cps/templates/config_edit.html:47

@@ -1557,7 +1557,7 @@ msgid "Authenticate Google Drive"
 msgstr "认证 Google Drive"
 
 #: cps/templates/config_edit.html:44
-msgid "Please hit submit to continue with setup"
+msgid "Please hit save to continue with setup"
 msgstr "请点击提交以继续设置"
 
 #: cps/templates/config_edit.html:47
