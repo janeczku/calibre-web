@@ -116,8 +116,8 @@ def default_meta(tmp_file_path, original_file_name, original_file_extension):
 def pdf_meta(tmp_file_path, original_file_name, original_file_extension):
     doc_info = None
     if use_pdf_meta:
-        doc_info = PdfFileReader(open(tmp_file_path, 'rb')).getDocumentInfo()
-
+        with open(tmp_file_path, 'rb') as f:
+            doc_info = PdfFileReader(f).getDocumentInfo()
     if doc_info:
         author = doc_info.author if doc_info.author else u'Unknown'
         title = doc_info.title if doc_info.title else original_file_name
@@ -156,6 +156,7 @@ def pdf_preview(tmp_file_path, tmp_dir):
         return None
     except Exception as ex:
         log.warning('Cannot extract cover image, using default: %s', ex)
+        log.warning('On Windows this error could be caused by missing ghostscript')
         return None
 
 
