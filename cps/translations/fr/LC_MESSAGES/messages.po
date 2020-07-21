@@ -1571,7 +1571,7 @@ msgid "Authenticate Google Drive"
 msgstr "Authentification Google Drive"
 
 #: cps/templates/config_edit.html:44
-msgid "Please hit submit to continue with setup"
+msgid "Please hit save to continue with setup"
 msgstr "Veuillez cliquer sur soumettre pour continuer l’initialisation"
 
 #: cps/templates/config_edit.html:47

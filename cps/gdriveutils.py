@@ -36,7 +36,9 @@ try:
     from apiclient import errors
     from httplib2 import ServerNotFoundError
     gdrive_support = True
-except ImportError:
+    importError = None
+except ImportError as err:
+    importError = err
     gdrive_support = False
 
 from . import logger, cli, config
@@ -52,6 +54,8 @@ if gdrive_support:
     logger.get('googleapiclient.discovery_cache').setLevel(logger.logging.ERROR)
     if not logger.is_debug_enabled():
         logger.get('googleapiclient.discovery').setLevel(logger.logging.ERROR)
+else:
+    log.debug("Cannot import pydrive,httplib2, using gdrive will not work: %s", importError)
 
 
 class Singleton:
@@ -99,7 +103,11 @@ class Singleton:
 @Singleton
 class Gauth:
     def __init__(self):
-        self.auth = GoogleAuth(settings_file=SETTINGS_YAML)
+        try:
+            self.auth = GoogleAuth(settings_file=SETTINGS_YAML)
+        except NameError as error:
+            log.error(error)
+            self.auth = None
 
 
 @Singleton

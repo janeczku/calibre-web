@@ -41,7 +41,7 @@
           </div>
         {% else %}
             {% if show_authenticate_google_drive and g.user.is_authenticated and not config.config_use_google_drive %}
-            <div >{{_('Please hit submit to continue with setup')}}</div>
+            <div >{{_('Please hit save to continue with setup')}}</div>
             {% endif %}
           {% if not g.user.is_authenticated %}
           <div >{{_('Please finish Google Drive setup after login')}}</div>
