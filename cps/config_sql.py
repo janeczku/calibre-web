@@ -214,25 +214,20 @@ class _ConfigSQL(object):
         return self.show_element_new_user(constants.DETAIL_RANDOM)
 
     def list_denied_tags(self):
-        try:
-            mct = self.config_denied_tags.split(",")
-            return [t.strip() for t in mct]
-        except AttributeError:
-            # Fix for improper migrated database with config_mature_content_tags NULL instead of ""
-            self.config_denied_tags = ""
-            return ['']
+        mct = self.config_denied_tags or ""
+        return [t.strip() for t in mct.split(",")]
 
     def list_allowed_tags(self):
-        mct = self.config_allowed_tags.split(",")
-        return [t.strip() for t in mct]
+        mct = self.config_allowed_tags or ""
+        return [t.strip() for t in mct.split(",")]
 
     def list_denied_column_values(self):
-        mct = self.config_denied_column_value.split(",")
-        return [t.strip() for t in mct]
+        mct = self.config_denied_column_value or ""
+        return [t.strip() for t in mct.split(",")]
 
     def list_allowed_column_values(self):
-        mct = self.config_allowed_column_value.split(",")
-        return [t.strip() for t in mct]
+        mct = self.config_allowed_column_value or ""
+        return [t.strip() for t in mct.split(",")]
 
     def get_log_level(self):
         return logger.get_level_name(self.config_log_level)

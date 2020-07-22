@@ -176,26 +176,20 @@ class UserBase:
         return self.check_visibility(constants.DETAIL_RANDOM)
 
     def list_denied_tags(self):
-        try:
-            mct = self.denied_tags.split(",")
-            return [t.strip() for t in mct]
-        except AttributeError:
-            # Fix for improper migrated database with config_mature_content_tags NULL instead of ""
-            self.denied_tags=""
-            return ['']
-
+        mct = self.denied_tags or ""
+        return [t.strip() for t in mct.split(",")]
 
     def list_allowed_tags(self):
-        mct = self.allowed_tags.split(",")
-        return [t.strip() for t in mct]
+        mct = self.allowed_tags or ""
+        return [t.strip() for t in mct.split(",")]
 
     def list_denied_column_values(self):
-        mct = self.denied_column_value.split(",")
-        return [t.strip() for t in mct]
+        mct = self.denied_column_value or ""
+        return [t.strip() for t in mct.split(",")]
 
     def list_allowed_column_values(self):
-        mct = self.allowed_column_value.split(",")
-        return [t.strip() for t in mct]
+        mct = self.allowed_column_value or ""
+        return [t.strip() for t in mct.split(",")]
 
     def __repr__(self):
         return '<User %r>' % self.nickname
