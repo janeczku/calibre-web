@@ -183,7 +183,11 @@
                     <span class="glyphicon glyphicon-remove"></span>
                   {% endif %}
                 {% else %}
+                {% if c.datatype == 'float' %}
+                  {{ '%d' % (column.value) }}{% if (column.value % 1) != 0 %}{{ '.%d' % ((column.value % 1)*100) }} {% endif %}
+                {% else %}
                   {{ column.value }}
+                {% endif %}
                 {% endif %}
               {% endif %}
             {% endfor %}
