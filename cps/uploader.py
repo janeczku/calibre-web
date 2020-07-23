@@ -36,6 +36,7 @@ except ImportError:
 
 try:
     from wand.image import Image
+    from wand.image import Color
     from wand import version as ImageVersion
     from wand.exceptions import PolicyError
     use_generic_pdf_cover = False
@@ -149,6 +150,8 @@ def pdf_preview(tmp_file_path, tmp_dir):
             img.options["pdf:use-cropbox"] = "true"
             img.read(filename=tmp_file_path + '[0]', resolution=150)
             img.compression_quality = 88
+            img.background_color = Color("white")
+            img.alpha_channel = "remove"
             img.save(filename=os.path.join(tmp_dir, cover_file_name))
         return cover_file_name
     except PolicyError as ex:
