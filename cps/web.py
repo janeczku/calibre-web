@@ -319,28 +319,30 @@ def import_ldap_users():
     for username in new_users:
         user = username.decode('utf-8')
         if '=' in user:
-            match = re.search("([a-zA-Z0-9-]+)=%s", config.config_ldap_user_object, re.IGNORECASE | re.UNICODE)
-            if match:
-                match_filter = match.group(1)
-                match = re.search(match_filter + "=([\d\s\w-]+)", user, re.IGNORECASE | re.UNICODE)
-                if match:
-                    user = match.group(1)
-                else:
-                    log.warning("Could Not Parse LDAP User: %s", user)
-                    continue
+            if config.config_ldap_member_user_object:
+                query_filter = config.config_ldap_member_user_object
             else:
-                log.warning("Could Not Parse LDAP User: %s", user)
+                query_filter = config.config_ldap_user_object
+
+            try:
+                user_identifier = extract_user_identifier_from_ldap_with_filter(user, query_filter)
+            except Exception as e:
+                log.warning(e)
                 continue
-        if ub.session.query(ub.User).filter(ub.User.nickname == user.lower()).first():
-            log.warning("LDAP User: %s Already in Database", user)
+        else:
+            user_identifier = user
+
+        if ub.session.query(ub.User).filter(ub.User.nickname == user_identifier.lower()).first():
+            log.warning("LDAP User: %s Already in Database", user_identifier)
             continue
-        user_data = services.ldap.get_object_details(user=user,
+        user_data = services.ldap.get_object_details(user=user_identifier,
                                                      group=None,
-                                                     query_filter=None,
+                                                     query_filter=query_filter,
                                                      dn_only=False)
         if user_data:
             content = ub.User()
-            content.nickname = user
+            user_login_field = extract_dynamic_field_from_filter(user, config.config_ldap_user_object)
+            content.nickname = user_data[user_login_field][0].decode('utf-8')
             content.password = ''  # dummy password which will be replaced by ldap one
             if 'mail' in user_data:
                 content.email = user_data['mail'][0].decode('utf-8')
@@ -368,6 +370,27 @@ def import_ldap_users():
     if not showtext:
         showtext['text'] = _(u'User Successfully Imported')
     return json.dumps(showtext)
+
+
+def extract_user_data_from_field(user, field):
+    match = re.search(field + "=([\d\s\w-]+)", user, re.IGNORECASE | re.UNICODE)
+    if match:
+        return match.group(1)
+    else:
+        raise Exception("Could Not Parse LDAP User: %s", user)
+
+
+def extract_dynamic_field_from_filter(user, filter):
+    match = re.search("([a-zA-Z0-9-]+)=%s", filter, re.IGNORECASE | re.UNICODE)
+    if match:
+        return match.group(1)
+    else:
+        raise Exception("Could Not Parse LDAP User: %s", user)
+
+
+def extract_user_identifier_from_ldap_with_filter(user, filter):
+    dynamic_field = extract_dynamic_field_from_filter(user, filter)
+    return extract_user_data_from_field(user, dynamic_field)
 
 
 # ################################### data provider functions #########################################################

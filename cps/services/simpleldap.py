@@ -64,6 +64,7 @@ def init_app(app, config):
     app.config['LDAP_OPENLDAP'] = bool(config.config_ldap_openldap)
     app.config['LDAP_GROUP_OBJECT_FILTER'] = config.config_ldap_group_object_filter
     app.config['LDAP_GROUP_MEMBERS_FIELD'] = config.config_ldap_group_members_field
+    app.config['LDAP_MEMBER_USER_OBJECT_FILTER'] = config.config_ldap_member_user_object
 
     _ldap.init_app(app)
 
