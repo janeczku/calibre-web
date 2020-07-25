@@ -174,7 +174,7 @@
             {{ c.name }}:
             {% for column in entry['custom_column_' ~ c.id] %}
               {% if c.datatype == 'rating' %}
-                {{ '%d' % (column.value / 2) }}{% if ((column.value /2) % 1) != 0 %}{{ '.%d' % (((column.value /2) % 1)*10) }} {% endif %}
+                {{ (column.value / 2)|formatfloat }}
               {% else %}
                 {% if c.datatype == 'bool' %}
                   {% if column.value == true %}
@@ -184,9 +184,13 @@
                   {% endif %}
                 {% else %}
                 {% if c.datatype == 'float' %}
-                  {{ '%d' % (column.value) }}{% if (column.value % 1) != 0 %}{{ '.%d' % ((column.value % 1)*100) }} {% endif %}
+                  {{ column.value|formatfloat(2) }}
+                {% else %}
+                {% if c.datatype == 'series' %}
+                  {{ '%s [%s]' % (column.value, column.extra|formatfloat(2)) }}
                 {% else %}
                   {{ column.value }}
+                {% endif %}
                 {% endif %}
                 {% endif %}
               {% endif %}

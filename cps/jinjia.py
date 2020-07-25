@@ -111,3 +111,10 @@ def timestamptodate(date, fmt=None):
 @jinjia.app_template_filter('yesno')
 def yesno(value, yes, no):
     return yes if value else no
+
+@jinjia.app_template_filter('formatfloat')
+def formatfloat(value, decimals=1):
+    formatedstring = '%d' % value
+    if (value % 1) != 0:
+        formatedstring = ('%s.%d' % (formatedstring, (value % 1) * 10**decimals)).rstrip('0')
+    return formatedstring

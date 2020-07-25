@@ -34,6 +34,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.exc import OperationalError
 from flask_login import current_user
 from sqlalchemy.sql.expression import and_, true, false, text, func, or_
+from sqlalchemy.ext.associationproxy import association_proxy
 from babel import Locale as LC
 from babel.core import UnknownLocaleError
 from flask_babel import gettext as _
@@ -48,7 +49,7 @@ except ImportError:
     use_unidecode = False
 
 
-cc_exceptions = ['datetime', 'comments', 'composite', 'series']
+cc_exceptions = ['datetime', 'comments', 'composite']
 cc_classes = {}
 
 Base = declarative_base()
@@ -280,7 +281,7 @@ class Books(Base):
     flags = Column(Integer, nullable=False, default=1)
 
     authors = relationship('Authors', secondary=books_authors_link, backref='books')
-    tags = relationship('Tags', secondary=books_tags_link, backref='books',order_by="Tags.name")
+    tags = relationship('Tags', secondary=books_tags_link, backref='books', order_by="Tags.name")
     comments = relationship('Comments', backref='books')
     data = relationship('Data', backref='books')
     series = relationship('Series', secondary=books_series_link, backref='books')
@@ -406,33 +407,45 @@ class CalibreDB(threading.Thread):
             books_custom_column_links = {}
             for row in cc:
                 if row.datatype not in cc_exceptions:
-                    books_custom_column_links[row.id] = Table('books_custom_column_' + str(row.id) + '_link', Base.metadata,
-                                                              Column('book', Integer, ForeignKey('books.id'),
-                                                                     primary_key=True),
-                                                              Column('value', Integer,
-                                                                     ForeignKey('custom_column_' + str(row.id) + '.id'),
-                                                                     primary_key=True)
-                                                              )
-                    cc_ids.append([row.id, row.datatype])
-                    if row.datatype == 'bool':
-                        ccdict = {'__tablename__': 'custom_column_' + str(row.id),
-                                  'id': Column(Integer, primary_key=True),
-                                  'book': Column(Integer, ForeignKey('books.id')),
-                                  'value': Column(Boolean)}
-                    elif row.datatype == 'int':
-                        ccdict = {'__tablename__': 'custom_column_' + str(row.id),
-                                  'id': Column(Integer, primary_key=True),
-                                  'book': Column(Integer, ForeignKey('books.id')),
-                                  'value': Column(Integer)}
-                    elif row.datatype == 'float':
-                        ccdict = {'__tablename__': 'custom_column_' + str(row.id),
-                                  'id': Column(Integer, primary_key=True),
-                                  'book': Column(Integer, ForeignKey('books.id')),
-                                  'value': Column(Float)}
+                    if row.datatype == 'series':
+                        dicttable = {'__tablename__': 'books_custom_column_' + str(row.id) + '_link',
+                                     'id': Column(Integer, primary_key=True),
+                                     'book': Column(Integer, ForeignKey('books.id'),
+                                                    primary_key=True),
+                                     'map_value': Column('value', Integer,
+                                                     ForeignKey('custom_column_' +
+                                                                str(row.id) + '.id'),
+                                                     primary_key=True),
+                                     'extra': Column(Float),
+                                     'asoc' : relationship('Custom_Column_' + str(row.id), uselist=False),
+                                     'value' : association_proxy('asoc', 'value')
+                                     }
+                        books_custom_column_links[row.id] = type(str('Books_Custom_Column_' + str(row.id) + '_link'),
+                                                                 (Base,), dicttable)
                     else:
-                        ccdict = {'__tablename__': 'custom_column_' + str(row.id),
-                                  'id': Column(Integer, primary_key=True),
-                                  'value': Column(String)}
+                        books_custom_column_links[row.id] = Table('books_custom_column_' + str(row.id) + '_link',
+                                                                  Base.metadata,
+                                                                  Column('book', Integer, ForeignKey('books.id'),
+                                                                         primary_key=True),
+                                                                  Column('value', Integer,
+                                                                         ForeignKey('custom_column_' +
+                                                                                    str(row.id) + '.id'),
+                                                                         primary_key=True)
+                                                                  )
+                    cc_ids.append([row.id, row.datatype])
+
+                    ccdict = {'__tablename__': 'custom_column_' + str(row.id),
+                              'id': Column(Integer, primary_key=True)}
+                    if row.datatype == 'float':
+                        ccdict['value'] = Column(Float)
+                    elif row.datatype == 'int':
+                        ccdict['value'] = Column(Integer)
+                    elif row.datatype == 'bool':
+                        ccdict['value'] = Column(Boolean)
+                    else:
+                        ccdict['value'] = Column(String)
+                    if row.datatype in ['float', 'int', 'bool']:
+                        ccdict['book'] = Column(Integer, ForeignKey('books.id'))
                     cc_classes[row.id] = type(str('Custom_Column_' + str(row.id)), (Base,), ccdict)
 
             for cc_id in cc_ids:
@@ -440,8 +453,13 @@ class CalibreDB(threading.Thread):
                     setattr(Books,
                             'custom_column_' + str(cc_id[0]),
                             relationship(cc_classes[cc_id[0]],
-                                         primaryjoin=(
+                                         primaryjoin=(                              # ToDo: Check Remove
                                          Books.id == cc_classes[cc_id[0]].book),
+                                         backref='books'))
+                elif (cc_id[1] == 'series'):
+                    setattr(Books,
+                            'custom_column_' + str(cc_id[0]),
+                            relationship(books_custom_column_links[cc_id[0]],
                                          backref='books'))
                 else:
                     setattr(Books,
