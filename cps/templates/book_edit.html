@@ -132,18 +132,19 @@
 	    <input type="number" step="{% if c.datatype == 'float' %}0.01{% else %}1{% endif %}" class="form-control" name="{{ 'custom_column_' ~ c.id }}" id="{{ 'custom_column_' ~ c.id }}" value="{% if book['custom_column_' ~ c.id]|length > 0 %}{{ book['custom_column_' ~ c.id][0].value }}{% endif %}">
             {% endif %}
 
-            {% if c.datatype in ['text', 'series'] and not c.is_multiple %}
-              <input type="text" class="form-control" name="{{ 'custom_column_' ~ c.id }}" id="{{ 'custom_column_' ~ c.id }}"
-              {% if book['custom_column_' ~ c.id]|length > 0 %}
-                value="{{ book['custom_column_' ~ c.id][0].value }}"
-              {% endif %}>
-            {% endif %}
-
-            {% if c.datatype in ['text', 'series'] and c.is_multiple %}
+            {% if c.datatype == 'text' %}
               <input type="text" class="form-control" name="{{ 'custom_column_' ~ c.id }}" id="{{ 'custom_column_' ~ c.id }}"
               {% if book['custom_column_' ~ c.id]|length > 0 %}
               value="{% for column in book['custom_column_' ~ c.id] %}{{ column.value.strip() }}{% if not loop.last %}, {% endif %}{% endfor %}"{% endif %}>
             {% endif %}
+
+            {% if c.datatype == 'series' %}
+              <input type="text" class="form-control" name="{{ 'custom_column_' ~ c.id }}" id="{{ 'custom_column_' ~ c.id }}"
+              {% if book['custom_column_' ~ c.id]|length > 0 %}
+                value="{% for column in book['custom_column_' ~ c.id] %} {{ '%s [%s]' % (book['custom_column_' ~ c.id][0].value, book['custom_column_' ~ c.id][0].extra|formatfloat(2)) }}{% if not loop.last %}, {% endif %}{% endfor %}"
+              {% endif %}>
+            {% endif %}
+
 
             {% if c.datatype == 'enumeration' %}
               <select class="form-control" name="{{ 'custom_column_' ~ c.id }}" id="{{ 'custom_column_' ~ c.id }}">
