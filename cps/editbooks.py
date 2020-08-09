@@ -223,7 +223,6 @@ def delete_book(book_id, book_format):
                                     getattr(book, cc_string).remove(del_cc)
                                     log.debug('remove ' + str(c.id))
                                     calibre_db.session.delete(del_cc)
-                                    calibre_db.session.commit()
                         else:
                             modify_database_object([u''], getattr(book, cc_string), db.cc_classes[c.id],
                                                    calibre_db.session, 'custom')
@@ -833,8 +832,8 @@ def upload():
 
                 # move cover to final directory, including book id
                 if has_cover:
+                    new_coverpath = os.path.join(config.config_calibre_dir, db_book.path, "cover.jpg")
                     try:
-                        new_coverpath = os.path.join(config.config_calibre_dir, db_book.path, "cover.jpg")
                         copyfile(meta.cover, new_coverpath)
                         os.unlink(meta.cover)
                     except OSError as e:
