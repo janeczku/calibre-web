@@ -223,6 +223,7 @@ def delete_book(book_id, book_format):
                                     getattr(book, cc_string).remove(del_cc)
                                     log.debug('remove ' + str(c.id))
                                     calibre_db.session.delete(del_cc)
+                                    calibre_db.session.commit()
                         else:
                             modify_database_object([u''], getattr(book, cc_string), db.cc_classes[c.id],
                                                    calibre_db.session, 'custom')
