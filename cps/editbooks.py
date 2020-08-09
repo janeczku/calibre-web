@@ -833,8 +833,8 @@ def upload():
 
                 # move cover to final directory, including book id
                 if has_cover:
+                    new_coverpath = os.path.join(config.config_calibre_dir, db_book.path, "cover.jpg")
                     try:
-                        new_coverpath = os.path.join(config.config_calibre_dir, db_book.path, "cover.jpg")
                         copyfile(meta.cover, new_coverpath)
                         os.unlink(meta.cover)
                     except OSError as e:
