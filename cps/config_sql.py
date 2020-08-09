@@ -360,10 +360,10 @@ def _migrate_table(session, orm_class):
 
 def autodetect_calibre_binary():
     if sys.platform == "win32":
-        calibre_path = ["C:\\program files\calibre\ebook-convert.exe",
-                        "C:\\program files(x86)\calibre\ebook-convert.exe",
-                        "C:\\program files(x86)\calibre2\ebook-convert.exe",
-                        "C:\\program files\calibre2\ebook-convert.exe"]
+        calibre_path = ["C:\\program files\\calibre\\ebook-convert.exe",
+                        "C:\\program files(x86)\\calibre\\ebook-convert.exe",
+                        "C:\\program files(x86)\\calibre2\\ebook-convert.exe",
+                        "C:\\program files\\calibre2\\ebook-convert.exe"]
     else:
         calibre_path = ["/opt/calibre/ebook-convert"]
     for element in calibre_path:
