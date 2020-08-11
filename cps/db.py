@@ -32,6 +32,7 @@ from sqlalchemy import String, Integer, Boolean, TIMESTAMP, Float
 from sqlalchemy.orm import relationship, sessionmaker, scoped_session
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.exc import OperationalError
+from sqlalchemy.pool import StaticPool
 from flask_login import current_user
 from sqlalchemy.sql.expression import and_, true, false, text, func, or_
 from babel import Locale as LC
@@ -386,7 +387,8 @@ class CalibreDB(threading.Thread):
             self.engine = create_engine('sqlite://',
                                    echo=False,
                                    isolation_level="SERIALIZABLE",
-                                   connect_args={'check_same_thread': False})
+                                   connect_args={'check_same_thread': False},
+                                   poolclass=StaticPool)
             self.engine.execute("attach database '{}' as calibre;".format(dbpath))
             self.engine.execute("attach database '{}' as app_settings;".format(app_db_path))
 
