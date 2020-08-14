@@ -49,7 +49,7 @@ except ImportError:
     use_unidecode = False
 
 
-cc_exceptions = ['datetime', 'comments', 'composite']
+cc_exceptions = ['datetime', 'comments', 'composite', 'series']
 cc_classes = {}
 
 Base = declarative_base()
@@ -453,7 +453,7 @@ class CalibreDB(threading.Thread):
                     setattr(Books,
                             'custom_column_' + str(cc_id[0]),
                             relationship(cc_classes[cc_id[0]],
-                                         primaryjoin=(                              # ToDo: Check Remove
+                                         primaryjoin=(
                                          Books.id == cc_classes[cc_id[0]].book),
                                          backref='books'))
                 elif (cc_id[1] == 'series'):
