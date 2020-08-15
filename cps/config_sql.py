@@ -22,7 +22,7 @@ import os
 import json
 import sys
 
-from sqlalchemy import exc, Column, String, Integer, SmallInteger, Boolean, BLOB
+from sqlalchemy import exc, Column, String, Integer, SmallInteger, Boolean, BLOB, JSON
 from sqlalchemy.ext.declarative import declarative_base
 
 from . import constants, cli, logger, ub
@@ -92,7 +92,7 @@ class _Settings(_Base):
 
     config_use_google_drive = Column(Boolean, default=False)
     config_google_drive_folder = Column(String)
-    config_google_drive_watch_changes_response = Column(String)
+    config_google_drive_watch_changes_response = Column(JSON, default={})
 
     config_use_goodreads = Column(Boolean, default=False)
     config_goodreads_api_key = Column(String)
@@ -280,10 +280,6 @@ class _ConfigSQL(object):
                         v = column.default.arg
                 setattr(self, k, v)
 
-        if self.config_google_drive_watch_changes_response:
-            self.config_google_drive_watch_changes_response = \
-                json.loads(self.config_google_drive_watch_changes_response)
-
         have_metadata_db = bool(self.config_calibre_dir)
         if have_metadata_db:
             if not self.config_use_google_drive:
@@ -301,10 +297,6 @@ class _ConfigSQL(object):
     def save(self):
         '''Apply all configuration values to the underlying storage.'''
         s = self._read_from_storage()  # type: _Settings
-
-        if self.config_google_drive_watch_changes_response:
-            self.config_google_drive_watch_changes_response = json.dumps(
-                self.config_google_drive_watch_changes_response)
 
         for k, v in self.__dict__.items():
             if k[0] == '_':
