@@ -32,6 +32,7 @@ from sqlalchemy import String, Integer, Boolean, TIMESTAMP, Float
 from sqlalchemy.orm import relationship, sessionmaker, scoped_session
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.exc import OperationalError
+from sqlalchemy.pool import StaticPool
 from flask_login import current_user
 from sqlalchemy.sql.expression import and_, true, false, text, func, or_
 from sqlalchemy.ext.associationproxy import association_proxy
@@ -371,7 +372,6 @@ class CalibreDB(threading.Thread):
     def setup_db(self, config, app_db_path):
         self.config = config
         self.dispose()
-        # global engine
 
         if not config.config_calibre_dir:
             config.invalidate()
@@ -383,11 +383,11 @@ class CalibreDB(threading.Thread):
             return False
 
         try:
-            #engine = create_engine('sqlite:///{0}'.format(dbpath),
             self.engine = create_engine('sqlite://',
                                    echo=False,
                                    isolation_level="SERIALIZABLE",
-                                   connect_args={'check_same_thread': False})
+                                   connect_args={'check_same_thread': False},
+                                   poolclass=StaticPool)
             self.engine.execute("attach database '{}' as calibre;".format(dbpath))
             self.engine.execute("attach database '{}' as app_settings;".format(app_db_path))
 
@@ -417,10 +417,10 @@ class CalibreDB(threading.Thread):
                                                                 str(row.id) + '.id'),
                                                      primary_key=True),
                                      'extra': Column(Float),
-                                     'asoc' : relationship('Custom_Column_' + str(row.id), uselist=False),
+                                     'asoc' : relationship('custom_column_' + str(row.id), uselist=False),
                                      'value' : association_proxy('asoc', 'value')
                                      }
-                        books_custom_column_links[row.id] = type(str('Books_Custom_Column_' + str(row.id) + '_link'),
+                        books_custom_column_links[row.id] = type(str('books_custom_column_' + str(row.id) + '_link'),
                                                                  (Base,), dicttable)
                     else:
                         books_custom_column_links[row.id] = Table('books_custom_column_' + str(row.id) + '_link',
@@ -446,7 +446,7 @@ class CalibreDB(threading.Thread):
                         ccdict['value'] = Column(String)
                     if row.datatype in ['float', 'int', 'bool']:
                         ccdict['book'] = Column(Integer, ForeignKey('books.id'))
-                    cc_classes[row.id] = type(str('Custom_Column_' + str(row.id)), (Base,), ccdict)
+                    cc_classes[row.id] = type(str('custom_column_' + str(row.id)), (Base,), ccdict)
 
             for cc_id in cc_ids:
                 if (cc_id[1] == 'bool') or (cc_id[1] == 'int') or (cc_id[1] == 'float'):

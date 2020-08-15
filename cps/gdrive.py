@@ -154,7 +154,7 @@ def on_received_watch_confirmation():
                         log.info('Setting up new DB')
                         # prevent error on windows, as os.rename does on exisiting files
                         move(os.path.join(tmpDir, "tmp_metadata.db"), dbpath)
-                        calibre_db.setup_db(config, ub.app_DB_path)
+                        calibre_db.reconnect_db(config, ub.app_DB_path)
             except Exception as e:
                 log.exception(e)
         updateMetaData()
