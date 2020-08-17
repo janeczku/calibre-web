@@ -344,7 +344,9 @@ def get_seriesindex(book):
 
 def get_metadata(book):
     download_urls = []
-    for book_data in book.data:
+    kepub = [data for data in book.data if data.format == 'KEPUB']
+
+    for book_data in kepub if len(kepub) > 0 else book.data:
         if book_data.format not in KOBO_FORMATS:
             continue
         for kobo_format in KOBO_FORMATS[book_data.format]:
