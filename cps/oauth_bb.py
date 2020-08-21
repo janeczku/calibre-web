@@ -287,7 +287,7 @@ if ub.oauth_support:
                     flash(_(u"Unlink to %(oauth)s Failed", oauth=oauth_check[provider]), category="error")
         except NoResultFound:
             log.warning("oauth %s for user %d not found", provider, current_user.id)
-            flash(_(u"Not Linked to %(oauth)s.", oauth=oauth_check[provider]), category="error")
+            flash(_(u"Not Linked to %(oauth)s", oauth=provider), category="error")
         return redirect(url_for('web.profile'))
 
 
@@ -355,4 +355,4 @@ if ub.oauth_support:
     @oauth.route('/unlink/google', methods=["GET"])
     @login_required
     def google_login_unlink():
-        return unlink_oauth(oauthblueprints[1]['blueprint'].name)
+        return unlink_oauth(oauthblueprints[1]['id'])
