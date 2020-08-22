@@ -17,7 +17,7 @@
                     {{entry['series_index']}} - {{entry['series'][0].name}}
                   {% endif %}
                   <br>
-                  {% for author in entry['authors'] %}
+                  {% for author in entry['author'] %}
                     {{author.name.replace('|',',')}}
                     {% if not loop.last %}
                       &amp;
