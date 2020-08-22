@@ -987,12 +987,26 @@ def get_sorted_entry(field, bookid):
     return ""
 
 
+@editbook.route("/ajax/simulatemerge", methods=['POST'])
+@login_required
+def simulate_merge_list_book():
+    vals = request.get_json().get('Merge_books')
+    if vals:
+        to_book = calibre_db.get_book(vals[0]).title
+        vals.pop(0)
+        if to_book:
+            for book_id in vals:
+                from_book = []
+                from_book.append(calibre_db.get_book(book_id).title)
+            return json.dumps({'to': to_book, 'from': from_book})
+    return ""
+
 
 @editbook.route("/ajax/mergebooks", methods=['POST'])
 @login_required
 def merge_list_book():
     vals = request.get_json().get('Merge_books')
-    to_file= list()
+    to_file = list()
     if vals:
         # load all formats from target book
         to_book = calibre_db.get_book(vals[0])
@@ -1020,4 +1034,5 @@ def merge_list_book():
                                                         element.uncompressed_size,
                                                         to_name))
                     delete_book(from_book.id,"", True) # json_resp =
+                    return json.dumps({'success': True})
     return ""

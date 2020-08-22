@@ -574,7 +574,8 @@ def migrate_Database(session):
         session.query(exists().where(User.view_settings)).scalar()
     except exc.OperationalError:
         with engine.connect() as conn:
-            conn.execute("ALTER TABLE user ADD column `series_view` VARCHAR(10) DEFAULT 'list'")
+            conn.execute("ALTER TABLE user ADD column `view_settings` VARCHAR(10) DEFAULT '{}'")
+        session.commit()
 
     if session.query(User).filter(User.role.op('&')(constants.ROLE_ANONYMOUS) == constants.ROLE_ANONYMOUS).first() \
         is None:
@@ -600,7 +601,7 @@ def migrate_Database(session):
                      "UNIQUE (nickname),"
                      "UNIQUE (email))")
             conn.execute("INSERT INTO user_id(id, nickname, email, role, password, kindle_mail,locale,"
-                     "sidebar_view, default_language, series_view) "
+                     "sidebar_view, default_language, view_settings) "
                      "SELECT id, nickname, email, role, password, kindle_mail, locale,"
                      "sidebar_view, default_language FROM user")
             # delete old user table and rename new user_id table to user:
