@@ -1570,7 +1570,7 @@ msgid "Authenticate Google Drive"
 msgstr "Uwierzytelnij Dysk Google"
 
 #: cps/templates/config_edit.html:44
-msgid "Please hit submit to continue with setup"
+msgid "Please hit save to continue with setup"
 msgstr "Kliknij przycisk, aby kontynuować instalację"
 
 #: cps/templates/config_edit.html:47

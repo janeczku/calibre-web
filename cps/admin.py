@@ -99,7 +99,7 @@ def shutdown():
 
     if task == 2:
         log.warning("reconnecting to calibre database")
-        calibre_db.setup_db(config, ub.app_DB_path)
+        calibre_db.reconnect_db(config, ub.app_DB_path)
         showtext['text'] = _(u'Reconnect successful')
         return json.dumps(showtext)
 
