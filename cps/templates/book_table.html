@@ -69,10 +69,15 @@
       <div class="modal-header bg-danger text-center">
           <span>{{_('Are you really sure?')}}</span>
       </div>
-        <div class="modal-body text-center">
-          <p>
-            <span id="">{{_('This books will merged together with the first selected book')}}</span>
-    		  </p>
+        <div class="modal-body">
+          <p></p>
+            <div class="text-left">{{_('Books with Title will be merged from:')}}</div>
+          <p></p>
+            <div class=text-left" id="merge_from"></div>
+          <p></p>
+            <div class="text-left">{{_('Into Book with Title:')}}</div>
+          <p></p>
+            <div class=text-left" id="merge_to"></div>
         </div>
       <div class="modal-footer">
         <input type="button" class="btn btn-danger" value="{{_('Merge')}}" name="merge_confirm" id="merge_confirm" data-dismiss="modal">

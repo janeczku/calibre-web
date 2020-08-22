@@ -1,5 +1,5 @@
 /* This file is part of the Calibre-Web (https://github.com/janeczku/calibre-web)
- *    Copyright (C) 2018 OzzieIsaacs
+ *    Copyright (C) 2020 OzzieIsaacs
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -63,7 +63,25 @@ $(function() {
             url: window.location.pathname + "/../../ajax/mergebooks",
             data: JSON.stringify({"Merge_books":selections}),
             success: function success() {
-                // ToDo:
+                $('#books-table').bootstrapTable('refresh');
+                $("#books-table").bootstrapTable('uncheckAll');
+            }
+        });
+    });
+
+    $("#merge_books").click(function() {
+        $.ajax({
+            method:"post",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            url: window.location.pathname + "/../../ajax/simulatemerge",
+            data: JSON.stringify({"Merge_books":selections}),
+            success: function success(book_titles) {
+                $.each(book_titles.from, function(i, item) {
+                    $("<span>- " + item + "</span>").appendTo("#merge_from");
+                });
+                $('#merge_to').text("- " + book_titles.to);
+
             }
         });
     });

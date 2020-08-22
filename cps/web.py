@@ -1645,10 +1645,11 @@ def profile():
     languages = calibre_db.speaking_language()
     translations = babel.list_translations() + [LC('en')]
     kobo_support = feature_support['kobo'] and config.config_kobo_sync
-    if feature_support['oauth']:
+    if feature_support['oauth'] and config.config_login_type == 2:
         oauth_status = get_oauth_status()
     else:
         oauth_status = None
+        oauth_check = {}
 
     for book in current_user.downloads:
         downloadBook = calibre_db.get_book(book.book_id)
