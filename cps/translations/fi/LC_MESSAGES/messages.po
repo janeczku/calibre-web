@@ -1557,7 +1557,7 @@ msgid "Authenticate Google Drive"
 msgstr "Autentikoi Google Drive"
 
 #: cps/templates/config_edit.html:44
-msgid "Please hit submit to continue with setup"
+msgid "Please hit save to continue with setup"
 msgstr "Ole hyvä ja paina lähetä jatkaaksesi asennusta"
 
 #: cps/templates/config_edit.html:47

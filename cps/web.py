@@ -1316,7 +1316,7 @@ def advanced_search():
                         db.cc_classes[c.id].value == custom_query))
                 elif c.datatype == 'rating':
                     q = q.filter(getattr(db.Books, 'custom_column_' + str(c.id)).any(
-                        db.cc_classes[c.id].value == int(custom_query) * 2))
+                        db.cc_classes[c.id].value == int(float(custom_query) * 2)))
                 else:
                     q = q.filter(getattr(db.Books, 'custom_column_' + str(c.id)).any(
                         func.lower(db.cc_classes[c.id].value).ilike("%" + custom_query + "%")))
@@ -1349,6 +1349,9 @@ def advanced_search_form():
 def get_cover(book_id):
     return get_book_cover(book_id)
 
+@web.route("/robots.txt")
+def get_robots():
+    return send_from_directory(constants.STATIC_DIR, "robots.txt")
 
 @web.route("/show/<int:book_id>/<book_format>", defaults={'anyname': 'None'})
 @web.route("/show/<int:book_id>/<book_format>/<anyname>")

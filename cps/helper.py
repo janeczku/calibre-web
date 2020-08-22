@@ -295,15 +295,16 @@ def delete_book_file(book, calibrepath, book_format=None):
             return True, None
         else:
             if os.path.isdir(path):
-                if len(next(os.walk(path))[1]):
-                    log.error("Deleting book %s failed, path has subfolders: %s", book.id, book.path)
-                    return False , _("Deleting book %(id)s failed, path has subfolders: %(path)s",
-                                     id=book.id,
-                                     path=book.path)
                 try:
-                    for root, __, files in os.walk(path):
+                    for root, folders, files in os.walk(path):
                         for f in files:
                             os.unlink(os.path.join(root, f))
+                        if len(folders):
+                            log.warning("Deleting book {} failed, path {} has subfolders: {}".format(book.id,
+                                        book.path, folders))
+                            return True, _("Deleting bookfolder for book %(id)s failed, path has subfolders: %(path)s",
+                                            id=book.id,
+                                            path=book.path)
                     shutil.rmtree(path)
                 except (IOError, OSError) as e:
                     log.error("Deleting book %s failed: %s", book.id, e)
@@ -339,13 +340,13 @@ def update_dir_structure_file(book_id, calibrepath, first_author):
         new_title_path = os.path.join(os.path.dirname(path), new_titledir)
         try:
             if not os.path.exists(new_title_path):
-                os.renames(path, new_title_path)
+                os.renames(os.path.normcase(path), os.path.normcase(new_title_path))
             else:
                 log.info("Copying title: %s into existing: %s", path, new_title_path)
                 for dir_name, __, file_list in os.walk(path):
                     for file in file_list:
-                        os.renames(os.path.join(dir_name, file),
-                                   os.path.join(new_title_path + dir_name[len(path):], file))
+                        os.renames(os.path.normcase(os.path.join(dir_name, file)),
+                                   os.path.normcase(os.path.join(new_title_path + dir_name[len(path):], file)))
             path = new_title_path
             localbook.path = localbook.path.split('/')[0] + '/' + new_titledir
         except OSError as ex:
@@ -356,7 +357,7 @@ def update_dir_structure_file(book_id, calibrepath, first_author):
     if authordir != new_authordir:
         new_author_path = os.path.join(calibrepath, new_authordir, os.path.basename(path))
         try:
-            os.renames(path, new_author_path)
+            os.renames(os.path.normcase(path), os.path.normcase(new_author_path))
             localbook.path = new_authordir + '/' + localbook.path.split('/')[1]
         except OSError as ex:
             log.error("Rename author from: %s to %s: %s", path, new_author_path, ex)
@@ -369,8 +370,9 @@ def update_dir_structure_file(book_id, calibrepath, first_author):
             new_name = get_valid_filename(localbook.title) + ' - ' + get_valid_filename(new_authordir)
             path_name = os.path.join(calibrepath, new_authordir, os.path.basename(path))
             for file_format in localbook.data:
-                os.renames(os.path.join(path_name, file_format.name + '.' + file_format.format.lower()),
-                           os.path.join(path_name, new_name + '.' + file_format.format.lower()))
+                os.renames(os.path.normcase(
+                    os.path.join(path_name, file_format.name + '.' + file_format.format.lower())),
+                           os.path.normcase(os.path.join(path_name, new_name + '.' + file_format.format.lower())))
                 file_format.name = new_name
         except OSError as ex:
             log.error("Rename file in path %s to %s: %s", path, new_name, ex)

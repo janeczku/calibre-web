@@ -36,17 +36,17 @@
       <div class="col-xs-12 col-sm-6">
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3" style="margin-top:50px;">
-            <p class='text-justify attribute'><strong>Start Time: </strong>2020-06-28 20:44:31</p>
+            <p class='text-justify attribute'><strong>Start Time: </strong>2020-08-14 19:46:42</p>
         </div>
       </div>
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3">
-            <p class='text-justify attribute'><strong>Stop Time: </strong>2020-06-28 21:48:11</p>
+            <p class='text-justify attribute'><strong>Stop Time: </strong>2020-08-14 21:02:08</p>
         </div>
       </div>
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3">
-           <p class='text-justify attribute'><strong>Duration: </strong>53:53 min</p>
+           <p class='text-justify attribute'><strong>Duration: </strong>1h 243 min</p>
         </div>
       </div>
       </div>
@@ -570,8 +570,8 @@ AssertionError: False is not true</pre>
     <tr class="result['header']['style']">
         <td>test_edit_books.TestEditBooks</td>
         <td class="text-center">33</td>
-        <td class="text-center">30</td>
-        <td class="text-center">1</td>
+        <td class="text-center">29</td>
+        <td class="text-center">2</td>
         <td class="text-center">0</td>
         <td class="text-center">2</td>
         <td class="text-center">
@@ -894,11 +894,33 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt7.32' class='hiddenRow bg-success'>
+        <tr id='ft7.32' class='none bg-danger'>
             <td>
                 <div class='testcase'>test_upload_book_pdf</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft7.32')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id='div_ft7.32' class="popup_window test_output" style="display:none;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
+                                onclick="document.getElementById('div_ft7.32').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File "/home/matthias/Entwicklung/calibre-web-test/test/test_edit_books.py", line 751, in test_upload_book_pdf
+    self.assertEqual('23390', resp.headers['Content-Length'])
+AssertionError: '23390' != '23427'
+- 23390
++ 23427</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
@@ -1070,13 +1092,13 @@ AssertionError: False is not true : Browser-Cache Problem: Old Cover is displaye
 
     <tr class="result['header']['style']">
         <td>test_helper.CalibreHelper</td>
-        <td class="text-center">13</td>
-        <td class="text-center">13</td>
+        <td class="text-center">15</td>
+        <td class="text-center">15</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c11', 13)">Detail</a>
+            <a onclick="showClassDetail('c11', 15)">Detail</a>
         </td>
     </tr>
 
@@ -1198,6 +1220,24 @@ AssertionError: False is not true : Browser-Cache Problem: Old Cover is displaye
         </tr>
     
     
+    
+        <tr id='pt11.14' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>test_random_password</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt11.15' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>test_whitespaces</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
 
 
     <tr class="result['header']['style']">
@@ -1289,13 +1329,13 @@ AssertionError: False is not true : Browser-Cache Problem: Old Cover is displaye
 
     <tr class="result['header']['style']">
         <td>test_ldap.test_ldap_login</td>
-        <td class="text-center">9</td>
-        <td class="text-center">9</td>
+        <td class="text-center">10</td>
+        <td class="text-center">10</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c13', 9)">Detail</a>
+            <a onclick="showClassDetail('c13', 10)">Detail</a>
         </td>
     </tr>
 
@@ -1374,6 +1414,15 @@ AssertionError: False is not true : Browser-Cache Problem: Old Cover is displaye
     
     
         <tr id='pt13.9' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>test_ldap_kobo_sync</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt13.10' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_ldap_opds_download_book</div>
             </td>
@@ -1480,13 +1529,13 @@ AssertionError: False is not true : Browser-Cache Problem: Old Cover is displaye
 
     <tr class="result['header']['style']">
         <td>test_login.test_Login</td>
-        <td class="text-center">10</td>
-        <td class="text-center">10</td>
+        <td class="text-center">11</td>
+        <td class="text-center">11</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c15', 10)">Detail</a>
+            <a onclick="showClassDetail('c15', 11)">Detail</a>
         </td>
     </tr>
 
@@ -1576,6 +1625,15 @@ AssertionError: False is not true : Browser-Cache Problem: Old Cover is displaye
         <tr id='pt15.10' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_login_user_with_space_password_end_space</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt15.11' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>test_robots</div>
             </td>
             <td colspan='6' align='center'>PASS</td>
         </tr>
@@ -1813,13 +1871,13 @@ AssertionError: False is not true : Browser-Cache Problem: Old Cover is displaye
 
     <tr class="result['header']['style']">
         <td>test_register.test_register</td>
-        <td class="text-center">6</td>
-        <td class="text-center">6</td>
+        <td class="text-center">7</td>
+        <td class="text-center">7</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c18', 6)">Detail</a>
+            <a onclick="showClassDetail('c18', 7)">Detail</a>
         </td>
     </tr>
 
@@ -1854,7 +1912,7 @@ AssertionError: False is not true : Browser-Cache Problem: Old Cover is displaye
     
         <tr id='pt18.4' class='hiddenRow bg-success'>
             <td>
-                <div class='testcase'>test_registering_user</div>
+                <div class='testcase'>test_registering_only_email</div>
             </td>
             <td colspan='6' align='center'>PASS</td>
         </tr>
@@ -1863,7 +1921,7 @@ AssertionError: False is not true : Browser-Cache Problem: Old Cover is displaye
     
         <tr id='pt18.5' class='hiddenRow bg-success'>
             <td>
-                <div class='testcase'>test_registering_user_fail</div>
+                <div class='testcase'>test_registering_user</div>
             </td>
             <td colspan='6' align='center'>PASS</td>
         </tr>
@@ -1871,6 +1929,15 @@ AssertionError: False is not true : Browser-Cache Problem: Old Cover is displaye
     
     
         <tr id='pt18.6' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>test_registering_user_fail</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt18.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_user_change_password</div>
             </td>
@@ -2578,9 +2645,9 @@ AssertionError: False is not true : Browser-Cache Problem: Old Cover is displaye
 
     <tr id='total_row' class="text-center bg-grey">
         <td>Total</td>
-        <td>223</td>
-        <td>215</td>
-        <td>2</td>
+        <td>228</td>
+        <td>219</td>
+        <td>3</td>
         <td>0</td>
         <td>6</td>
         <td>&nbsp;</td>
@@ -2610,13 +2677,13 @@ AssertionError: False is not true : Browser-Cache Problem: Old Cover is displaye
           
             <tr>
               <th>Platform</th>
-              <td>Linux 5.3.0-59-generic #53~18.04.1-Ubuntu SMP Thu Jun 4 14:58:26 UTC 2020 x86_64 x86_64</td>
+              <td>Linux 5.4.0-42-generic #46-Ubuntu SMP Fri Jul 10 00:24:02 UTC 2020 x86_64 x86_64</td>
               <td>Basic</td>
             </tr>
           
             <tr>
               <th>Python</th>
-              <td>3.7.5</td>
+              <td>3.8.2</td>
               <td>Basic</td>
             </tr>
           
@@ -2730,7 +2797,7 @@ AssertionError: False is not true : Browser-Cache Problem: Old Cover is displaye
           
             <tr>
               <th>Pillow</th>
-              <td>7.1.2</td>
+              <td>7.2.0</td>
               <td>testCoverEditBooks</td>
             </tr>
           
@@ -2742,31 +2809,31 @@ AssertionError: False is not true : Browser-Cache Problem: Old Cover is displaye
           
             <tr>
               <th>lxml</th>
-              <td>4.5.1</td>
+              <td>4.5.2</td>
               <td>TestEditAdditionalBooks</td>
             </tr>
           
             <tr>
               <th>Pillow</th>
-              <td>7.1.2</td>
+              <td>7.2.0</td>
               <td>TestEditAdditionalBooks</td>
             </tr>
           
             <tr>
               <th>rarfile</th>
-              <td>3.1</td>
+              <td>4.0</td>
               <td>TestEditAdditionalBooks</td>
             </tr>
           
             <tr>
               <th>lxml</th>
-              <td>4.5.1</td>
+              <td>4.5.2</td>
               <td>TestEditBooks</td>
             </tr>
           
             <tr>
               <th>Pillow</th>
-              <td>7.1.2</td>
+              <td>7.2.0</td>
               <td>TestEditBooks</td>
             </tr>
           
@@ -2789,8 +2856,14 @@ AssertionError: False is not true : Browser-Cache Problem: Old Cover is displaye
             </tr>
           
             <tr>
+              <th>jsonschema</th>
+              <td>3.2.0</td>
+              <td>test_ldap_login</td>
+            </tr>
+          
+            <tr>
               <th>python-ldap</th>
-              <td>3.3.0</td>
+              <td>3.3.1</td>
               <td>test_ldap_login</td>
             </tr>
           
@@ -2802,7 +2875,7 @@ AssertionError: False is not true : Browser-Cache Problem: Old Cover is displaye
           
             <tr>
               <th>SQLAlchemy-Utils</th>
-              <td>0.36.6</td>
+              <td>0.36.8</td>
               <td>test_OAuth_login</td>
             </tr>
           
@@ -2814,7 +2887,7 @@ AssertionError: False is not true : Browser-Cache Problem: Old Cover is displaye
 </div>
 
 <script>
-    drawCircle(215, 2, 0, 6);
+    drawCircle(219, 3, 0, 6);
 </script>
 
 </div>
