@@ -33,7 +33,7 @@ import re
 from babel import Locale as LC
 from babel.dates import format_date
 from babel.core import UnknownLocaleError
-from flask import Blueprint
+from flask import Blueprint, jsonify
 from flask import render_template, request, redirect, send_from_directory, make_response, g, flash, abort, url_for
 from flask_babel import gettext as _
 from flask_login import login_user, logout_user, login_required, current_user, confirm_login
@@ -48,7 +48,7 @@ except ImportError:
 from werkzeug.datastructures import Headers
 from werkzeug.security import generate_password_hash, check_password_hash
 
-from . import constants, logger, isoLanguages, services, worker, cli
+from . import constants, logger, isoLanguages, services, worker, worker2, cli
 from . import searched_ids, lm, babel, db, ub, config, get_locale, app
 from . import calibre_db
 from .gdriveutils import getFileFromEbooksFolder, do_gdrive_download
@@ -383,12 +383,8 @@ def import_ldap_users():
 @web.route("/ajax/emailstat")
 @login_required
 def get_email_status_json():
-    tasks = worker.get_taskstatus()
-    answer = render_task_status(tasks)
-    js = json.dumps(answer, default=json_serial)
-    response = make_response(js)
-    response.headers["Content-Type"] = "application/json; charset=utf-8"
-    return response
+    tasks = worker2._worker2.tasks
+    return jsonify(render_task_status(tasks))
 
 
 @web.route("/ajax/bookmark/<int:book_id>/<book_format>", methods=['POST'])
