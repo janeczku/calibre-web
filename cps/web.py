@@ -466,7 +466,7 @@ def toggle_archived(book_id):
 @web.route("/ajax/view", methods=["POST"])
 @login_required
 def update_view():
-    to_save = request.form.to_dict()
+    to_save = request.get_json()
     allowed_view = ['grid', 'list']
     if "series_view" in to_save and to_save["series_view"] in allowed_view:
         try:
@@ -481,10 +481,12 @@ def update_view():
         except Exception:
             log.error("Could not save series_view_settings: %r %r", request, to_save)
             return "Invalid request", 400
+    elif "authorslist" in to_save:
+        pass
     else:
         log.error("Invalid request received: %r %r", request, to_save)
         return "Invalid request", 400
-    return "", 200
+    return "1", 200
 
 
 '''

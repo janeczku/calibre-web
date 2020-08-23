@@ -378,16 +378,19 @@ $(function() {
     });
 
     $(".update-view").click(function(e) {
-        var target = $(this).data("target");
         var view = $(this).data("view");
 
         e.preventDefault();
         e.stopPropagation();
-        var data = {};
-        data[target] = view;
-        console.debug("Updating view data: ", data);
-        $.post( "/ajax/view", data).done(function( ) {
-            location.reload();
+        $.ajax({
+            method:"post",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            url: window.location.pathname + "/../../ajax/view",
+            data: JSON.stringify({"series_view":view}),
+            success: function success() {
+                location.reload();
+            }
         });
     });
 });
