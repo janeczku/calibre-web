@@ -347,7 +347,7 @@ class CalibreDB(threading.Thread):
         self.log = logger.create()
 
     def run(self):
-        while True:
+        while False:
             i = self.queue.get()
             if i == 'dummy':
                 self.queue.task_done()

@@ -27,11 +27,11 @@ from cps import gdriveutils
 
 log = logger.create()
 
-chunksize = 8192
+CHUNKSIZE = 8192
 
 
 # Class for sending email with ability to get current progress
-class EmailBase():
+class EmailBase:
 
     transferSize = 0
     progress = 0
@@ -52,11 +52,11 @@ class EmailBase():
                     lock.acquire()
                     self.transferSize = len(strg)
                     lock.release()
-                    for i in range(0, self.transferSize, chunksize):
+                    for i in range(0, self.transferSize, CHUNKSIZE):
                         if isinstance(strg, bytes):
-                            self.sock.send((strg[i:i+chunksize]))
+                            self.sock.send((strg[i:i + CHUNKSIZE]))
                         else:
-                            self.sock.send((strg[i:i + chunksize]).encode('utf-8'))
+                            self.sock.send((strg[i:i + CHUNKSIZE]).encode('utf-8'))
                         lock.acquire()
                         self.progress = i
                         lock.release()
@@ -69,7 +69,7 @@ class EmailBase():
             raise smtplib.SMTPServerDisconnected('please run connect() first')
 
     @classmethod
-    def _print_debug(self, *args):
+    def _print_debug(cls, *args):
         log.debug(args)
 
     def getTransferStatus(self):
@@ -78,9 +78,9 @@ class EmailBase():
             lock2.acquire()
             value = int((float(self.progress) / float(self.transferSize))*100)
             lock2.release()
-            return str(value) + ' %'
+            return value / 100
         else:
-            return "100 %"
+            return 1
 
 
 # Class for sending email with ability to get current progress, derived from emailbase class
@@ -106,6 +106,7 @@ class TaskEmail(CalibreTask):
         self.filepath = filepath
         self.recipent = recipient
         self.text = text
+        self.asyncSMTP = None
 
         self.results = dict()
 
@@ -118,7 +119,7 @@ class TaskEmail(CalibreTask):
         text = self.text
         msg.attach(MIMEText(text.encode('UTF-8'), 'plain', 'UTF-8'))
         if self.attachment:
-            result = self.get_attachment(self.filepath, self.attachment)
+            result = self._get_attachment(self.filepath, self.attachment)
             if result:
                 msg.attach(result)
             else:
@@ -183,7 +184,15 @@ class TaskEmail(CalibreTask):
             self._handleError(u'Socket Error sending email: ' + e.strerror)
             return None
 
-    def _get_attachment(bookpath, filename):
+    @property
+    def progress(self):
+        if self.asyncSMTP is not None:
+            return self.asyncSMTP.getTransferStatus()
+        else:
+            return 0
+
+    @classmethod
+    def _get_attachment(cls, bookpath, filename):
         """Get file as MIMEBase message"""
         calibrepath = config.config_calibre_dir
         if config.config_use_google_drive:

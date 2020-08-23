@@ -8,6 +8,7 @@ class TaskUpload(CalibreTask):
         super().__init__(taskMessage)
         self.start_time = self.end_time = datetime.now()
         self.stat = STAT_FINISH_SUCCESS
+        self.progress = 1
 
     def run(self, worker_thread):
         """Upload task doesn't have anything to do, it's simply a way to add information to the task list"""
