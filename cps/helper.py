@@ -237,22 +237,22 @@ def get_valid_filename(value, replace_whitespace=True):
         value = value[:-1]+u'_'
     value = value.replace("/", "_").replace(":", "_").strip('\0')
     if use_unidecode:
-        value = (unidecode.unidecode(value)).strip()
+        value = (unidecode.unidecode(value))
     else:
         value = value.replace(u'§', u'SS')
         value = value.replace(u'ß', u'ss')
         value = unicodedata.normalize('NFKD', value)
         re_slugify = re.compile(r'[\W\s-]', re.UNICODE)
         if isinstance(value, str):  # Python3 str, Python2 unicode
-            value = re_slugify.sub('', value).strip()
+            value = re_slugify.sub('', value)
         else:
-            value = unicode(re_slugify.sub('', value).strip())
+            value = unicode(re_slugify.sub('', value))
     if replace_whitespace:
         #  *+:\"/<>? are replaced by _
-        value = re.sub(r'[\*\+:\\\"/<>\?]+', u'_', value, flags=re.U)
+        value = re.sub(r'[*+:\\\"/<>?]+', u'_', value, flags=re.U)
         # pipe has to be replaced with comma
-        value = re.sub(r'[\|]+', u',', value, flags=re.U)
-    value = value[:128]
+        value = re.sub(r'[|]+', u',', value, flags=re.U)
+    value = value[:128].strip()
     if not value:
         raise ValueError("Filename cannot be empty")
     if sys.version_info.major == 3:
@@ -269,11 +269,11 @@ def split_authors(values):
             commas = author.count(',')
             if commas == 1:
                 author_split = author.split(',')
-                authors_list.append(author_split[1] + ' ' + author_split[0])
+                authors_list.append(author_split[1].strip() + ' ' + author_split[0].strip())
             elif commas > 1:
-                authors_list.append(author.split(','))
+                authors_list.extend([x.strip() for x in author.split(',')])
             else:
-                authors_list.append(author)
+                authors_list.append(author.strip())
     return authors_list
 
 
@@ -284,7 +284,10 @@ def get_sorted_author(value):
             combined = "(" + ")|(".join(regexes) + ")"
             value = value.split(" ")
             if re.match(combined, value[-1].upper()):
-                value2 = value[-2] + ", " + " ".join(value[:-2]) + " " + value[-1]
+                if len(value) > 1:
+                    value2 = value[-2] + ", " + " ".join(value[:-2]) + " " + value[-1]
+                else:
+                    value2 = value[0]
             elif len(value) == 1:
                 value2 = value[0]
             else:
@@ -293,7 +296,10 @@ def get_sorted_author(value):
             value2 = value
     except Exception as ex:
         log.error("Sorting author %s failed: %s", value, ex)
-        value2 = value
+        if isinstance(list, value2):
+            value2 = value[0]
+        else:
+            value2 = value
     return value2
 
 
