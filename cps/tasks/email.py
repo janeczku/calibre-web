@@ -189,7 +189,15 @@ class TaskEmail(CalibreTask):
         if self.asyncSMTP is not None:
             return self.asyncSMTP.getTransferStatus()
         else:
-            return 0
+            return self._progress
+
+    @progress.setter
+    def progress(self, x):
+        """This gets explicitly set when handle(Success|Error) are called. In this case, remove the SMTP connection"""
+        if x == 1:
+            self.asyncSMTP = None
+            self._progress = x
+
 
     @classmethod
     def _get_attachment(cls, bookpath, filename):
