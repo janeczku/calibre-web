@@ -24,6 +24,7 @@ from flask_babel import gettext as _
 
 from . import logger, comic
 from .constants import BookMeta
+from .helper import split_authors
 
 
 log = logger.create()
@@ -131,7 +132,7 @@ def pdf_meta(tmp_file_path, original_file_name, original_file_extension):
         file_path=tmp_file_path,
         extension=original_file_extension,
         title=title,
-        author=author,
+        author=' & '.join(split_authors([author])),
         cover=pdf_preview(tmp_file_path, original_file_name),
         description=subject,
         tags="",
