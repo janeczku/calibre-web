@@ -6,6 +6,8 @@ import re
 from glob import glob
 from shutil import copyfile
 
+from sqlalchemy.exc import SQLAlchemyError
+
 from cps.services.worker import CalibreTask
 from cps import calibre_db, db
 from cps import logger, config
@@ -84,9 +86,15 @@ class TaskConvert(CalibreTask):
                                          book=book_id, uncompressed_size=os.path.getsize(file_path + format_new_ext))
 
                 # todo: this may not be needed anymore, might be able to access the DB directly now. See #1565
-                task = {'task':'add_format','id': book_id, 'format': new_format}
-                self.worker_thread.db_queue.put(task)
-                # To Do how to handle error?
+                cur_book = calibre_db.session.query(db.Books).filter(db.Books.id == book_id).first()
+                cur_book.data.append(new_format)
+
+                try:
+                    # db.session.merge(cur_book)
+                    calibre_db.session.commit()
+                except SQLAlchemyError as e:
+                    calibre_db.session.rollback()
+                    log.error("Database error: %s", e)
 
                 '''cur_book.data.append(new_format)
                 try:

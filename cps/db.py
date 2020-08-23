@@ -352,19 +352,7 @@ class CalibreDB(threading.Thread):
             if i == 'dummy':
                 self.queue.task_done()
                 break
-            if i['task'] == 'add_format':
-                cur_book = self.session.query(Books).filter(Books.id == i['id']).first()
-                cur_book.data.append(i['format'])
-                try:
-                    # db.session.merge(cur_book)
-                    self.session.commit()
-                except OperationalError as e:
-                    self.session.rollback()
-                    self.log.error("Database error: %s", e)
-                    # self._handleError(_(u"Database error: %(error)s.", error=e))
-                    # return
             self.queue.task_done()
-
 
     def stop(self):
         self.queue.put('dummy')
