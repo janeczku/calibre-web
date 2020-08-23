@@ -68,6 +68,7 @@ from .subproc_wrapper import process_wait
 from .worker import STAT_WAITING, STAT_FAIL, STAT_STARTED, STAT_FINISH_SUCCESS
 from .worker import TASK_EMAIL, TASK_CONVERT, TASK_UPLOAD, TASK_CONVERT_ANY
 from .services.worker import WorkerThread
+from .tasks.email import TaskEmail
 from . import tasks
 
 
@@ -115,9 +116,9 @@ def convert_book_format(book_id, calibrepath, old_book_format, new_book_format, 
 
 
 def send_test_mail(kindle_mail, user_name):
-    worker.add_email(_(u'Calibre-Web test e-mail'), None, None,
-                     config.get_mail_settings(), kindle_mail, user_name,
-                     _(u"Test e-mail"), _(u'This e-mail has been sent via Calibre-Web.'))
+    WorkerThread.add(user_name, TaskEmail(_(u'Calibre-Web test e-mail'), None, None,
+                     config.get_mail_settings(), kindle_mail, _(u"Test e-mail"),
+                               _(u'This e-mail has been sent via Calibre-Web.')))
     return
 
 
@@ -132,9 +133,9 @@ def send_registration_mail(e_mail, user_name, default_password, resend=False):
     text += "Don't forget to change your password after first login.\r\n"
     text += "Sincerely\r\n\r\n"
     text += "Your Calibre-Web team"
-    worker.add_email(_(u'Get Started with Calibre-Web'), None, None,
+    WorkerThread.add(None, TaskEmail(_(u'Get Started with Calibre-Web'), None, None,
                      config.get_mail_settings(), e_mail, None,
-                     _(u"Registration e-mail for user: %(name)s", name=user_name), text)
+                     _(u"Registration e-mail for user: %(name)s", name=user_name), text))
     return
 
 
@@ -226,9 +227,9 @@ def send_mail(book_id, book_format, convert, kindle_mail, calibrepath, user_id):
     for entry in iter(book.data):
         if entry.format.upper() == book_format.upper():
             converted_file_name = entry.name + '.' + book_format.lower()
-            worker.add_email(_(u"Send to Kindle"), book.path, converted_file_name,
-                             config.get_mail_settings(), kindle_mail, user_id,
-                             _(u"E-mail: %(book)s", book=book.title), _(u'This e-mail has been sent via Calibre-Web.'))
+            WorkerThread.add(user_id, TaskEmail(_(u"Send to Kindle"), book.path, converted_file_name,
+                             config.get_mail_settings(), kindle_mail,
+                             _(u"E-mail: %(book)s", book=book.title), _(u'This e-mail has been sent via Calibre-Web.')))
             return
     return _(u"The requested file could not be read. Maybe wrong permissions?")
 

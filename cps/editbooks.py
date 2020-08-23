@@ -35,6 +35,8 @@ from sqlalchemy.exc import OperationalError
 from . import constants, logger, isoLanguages, gdriveutils, uploader, helper
 from . import config, get_locale, ub, worker, db
 from . import calibre_db
+from .services.worker import WorkerThread
+from .tasks.upload import TaskUpload
 from .web import login_required_if_no_ano, render_title_template, edit_required, upload_required
 
 
@@ -509,8 +511,8 @@ def upload_single_file(request, book, book_id):
 
             # Queue uploader info
             uploadText=_(u"File format %(ext)s added to %(book)s", ext=file_ext.upper(), book=book.title)
-            worker.add_upload(current_user.nickname,
-                "<a href=\"" + url_for('web.show_book', book_id=book.id) + "\">" + uploadText + "</a>")
+            WorkerThread.add(current_user.nickname, TaskUpload(
+                "<a href=\"" + url_for('web.show_book', book_id=book.id) + "\">" + uploadText + "</a>"))
 
             return uploader.process(
                 saved_filename, *os.path.splitext(requested_file.filename),
@@ -854,8 +856,8 @@ def upload():
                 if error:
                     flash(error, category="error")
                 uploadText=_(u"File %(file)s uploaded", file=title)
-                worker.add_upload(current_user.nickname,
-                    "<a href=\"" + url_for('web.show_book', book_id=book_id) + "\">" + uploadText + "</a>")
+                WorkerThread.add(current_user.nickname, TaskUpload(
+                    "<a href=\"" + url_for('web.show_book', book_id=book_id) + "\">" + uploadText + "</a>"))
 
                 if len(request.files.getlist("btn-upload")) < 2:
                     if current_user.role_edit() or current_user.role_admin():

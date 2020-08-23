@@ -41,6 +41,9 @@ from sqlalchemy.exc import IntegrityError, InvalidRequestError, OperationalError
 from sqlalchemy.sql.expression import text, func, true, false, not_, and_, or_
 from werkzeug.exceptions import default_exceptions, InternalServerError
 from sqlalchemy.sql.functions import coalesce
+
+from .services.worker import WorkerThread
+
 try:
     from werkzeug.exceptions import FailedDependency
 except ImportError:
@@ -48,7 +51,7 @@ except ImportError:
 from werkzeug.datastructures import Headers
 from werkzeug.security import generate_password_hash, check_password_hash
 
-from . import constants, logger, isoLanguages, services, worker, worker2, cli
+from . import constants, logger, isoLanguages, services, worker, cli
 from . import searched_ids, lm, babel, db, ub, config, get_locale, app
 from . import calibre_db
 from .gdriveutils import getFileFromEbooksFolder, do_gdrive_download
@@ -383,7 +386,8 @@ def import_ldap_users():
 @web.route("/ajax/emailstat")
 @login_required
 def get_email_status_json():
-    tasks = worker2._worker2.tasks
+
+    tasks = WorkerThread.getInstance().tasks
     return jsonify(render_task_status(tasks))
 
 

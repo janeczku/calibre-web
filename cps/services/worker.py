@@ -67,7 +67,7 @@ class ImprovedQueue(queue.Queue):
 
 #Class for all worker tasks in the background
 class WorkerThread(threading.Thread):
-    __instance = None
+    _instance = None
 
     @classmethod
     def getInstance(cls):
@@ -112,11 +112,12 @@ class WorkerThread(threading.Thread):
             with self.doLock:
                 self.finished.append((user, item))
 
-            try:
-                item.start(self)
-                print(item)
-            except Exception as e:
-                log.exception(e)
+            # sometimes tasks (like Upload) don't actually have work to do and are created as already finished
+            if item.stat is STAT_WAITING:
+                try:
+                    item.start(self)
+                except Exception as e:
+                    log.exception(e)
 
             self.queue.task_done()
 
@@ -161,6 +162,7 @@ class CalibreTask(metaclass=abc.ABCMeta):
 
     def start(self, *args):
         self.start_time = datetime.now()
+        self.stat = STAT_STARTED
         self.run(*args)
         self.end_time = datetime.now()
 
