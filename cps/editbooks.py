@@ -33,7 +33,7 @@ from flask_login import current_user, login_required
 from sqlalchemy.exc import OperationalError
 
 from . import constants, logger, isoLanguages, gdriveutils, uploader, helper
-from . import config, get_locale, ub, worker, db
+from . import config, get_locale, ub, db
 from . import calibre_db
 from .services.worker import WorkerThread
 from .tasks.upload import TaskUpload

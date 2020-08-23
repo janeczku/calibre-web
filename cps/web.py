@@ -51,11 +51,11 @@ except ImportError:
 from werkzeug.datastructures import Headers
 from werkzeug.security import generate_password_hash, check_password_hash
 
-from . import constants, logger, isoLanguages, services, worker, cli
+from . import constants, logger, isoLanguages, services
 from . import searched_ids, lm, babel, db, ub, config, get_locale, app
 from . import calibre_db
 from .gdriveutils import getFileFromEbooksFolder, do_gdrive_download
-from .helper import check_valid_domain, render_task_status, json_serial, \
+from .helper import check_valid_domain, render_task_status, \
     get_cc_columns, get_book_cover, get_download_link, send_mail, generate_random_password, \
     send_registration_mail, check_send_to_kindle, check_read_formats, tags_filters, reset_password
 from .pagination import Pagination
@@ -386,7 +386,6 @@ def import_ldap_users():
 @web.route("/ajax/emailstat")
 @login_required
 def get_email_status_json():
-
     tasks = WorkerThread.getInstance().tasks
     return jsonify(render_task_status(tasks))
 
@@ -976,7 +975,7 @@ def category_list():
 @login_required
 def get_tasks_status():
     # if current user admin, show all email, otherwise only own emails
-    tasks = worker.get_taskstatus()
+    tasks = WorkerThread.getInstance().tasks
     answer = render_task_status(tasks)
     return render_title_template('tasks.html', entries=answer, title=_(u"Tasks"), page="tasks")
 

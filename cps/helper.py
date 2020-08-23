@@ -60,16 +60,13 @@ try:
 except ImportError:
     use_PIL = False
 
-from . import logger, config, get_locale, db, ub, isoLanguages, worker
+from . import logger, config, get_locale, db, ub, isoLanguages
 from . import gdriveutils as gd
 from .constants import STATIC_DIR as _STATIC_DIR
 from .pagination import Pagination
 from .subproc_wrapper import process_wait
-from .worker import STAT_WAITING, STAT_FAIL, STAT_STARTED, STAT_FINISH_SUCCESS
-from .worker import TASK_EMAIL, TASK_CONVERT, TASK_UPLOAD, TASK_CONVERT_ANY
-from .services.worker import WorkerThread
+from .services.worker import WorkerThread, STAT_WAITING, STAT_FAIL, STAT_STARTED, STAT_FINISH_SUCCESS
 from .tasks.email import TaskEmail
-from . import tasks
 
 
 log = logger.create()
