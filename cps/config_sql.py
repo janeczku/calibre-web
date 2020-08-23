@@ -57,6 +57,7 @@ class _Settings(_Base):
 
     config_calibre_dir = Column(String)
     config_port = Column(Integer, default=constants.DEFAULT_PORT)
+    config_external_port = Column(Integer, default=constants.DEFAULT_PORT)
     config_certfile = Column(String)
     config_keyfile = Column(String)
 
