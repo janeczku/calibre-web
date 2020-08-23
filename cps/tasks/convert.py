@@ -85,8 +85,6 @@ class TaskConvert(CalibreTask):
                                          book_format=self.settings['new_book_format'].upper(),
                                          book=book_id, uncompressed_size=os.path.getsize(file_path + format_new_ext))
 
-                # todo: this may not be needed anymore, might be able to access the DB directly now. See #1565
-                cur_book = calibre_db.session.query(db.Books).filter(db.Books.id == book_id).first()
                 cur_book.data.append(new_format)
 
                 try:
@@ -95,16 +93,7 @@ class TaskConvert(CalibreTask):
                 except SQLAlchemyError as e:
                     calibre_db.session.rollback()
                     log.error("Database error: %s", e)
-
-                '''cur_book.data.append(new_format)
-                try:
-                    # db.session.merge(cur_book)
-                    calibre_db.session.commit()
-                except OperationalError as e:
-                    calibre_db.session.rollback()
-                    log.error("Database error: %s", e)
-                    self._handleError(_(u"Database error: %(error)s.", error=e))
-                    return'''
+                    return
 
                 self.results['path'] = cur_book.path
                 self.results['title'] = cur_book.title
