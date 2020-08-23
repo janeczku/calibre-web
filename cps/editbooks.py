@@ -375,7 +375,8 @@ def edit_book_publisher(to_save, book):
     if to_save["publisher"]:
         publisher = to_save["publisher"].rstrip().strip()
         if len(book.publishers) == 0 or (len(book.publishers) > 0 and publisher != book.publishers[0].name):
-            changed |= modify_database_object([publisher], book.publishers, db.Publishers, calibre_db.session, 'publisher')
+            changed |= modify_database_object([publisher], book.publishers, db.Publishers, calibre_db.session,
+                                              'publisher')
     elif len(book.publishers):
         changed |= modify_database_object([], book.publishers, db.Publishers, calibre_db.session, 'publisher')
     return changed
