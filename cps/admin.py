@@ -132,6 +132,7 @@ def admin():
     allUser = ub.session.query(ub.User).all()
     email_settings = config.get_mail_settings()
     return render_title_template("admin.html", allUser=allUser, email=email_settings, config=config, commit=commit,
+                                 feature_support=feature_support,
                                  title=_(u"Admin page"), page="admin")
 
 
@@ -637,6 +638,7 @@ def _configuration_update_helper():
         _config_checkbox_int(to_save, "config_public_reg")
         _config_checkbox_int(to_save, "config_register_email")
         reboot_required |= _config_checkbox_int(to_save, "config_kobo_sync")
+        _config_int(to_save, "config_external_port")
         _config_checkbox_int(to_save, "config_kobo_proxy")
 
         _config_string(to_save, "config_upload_formats")

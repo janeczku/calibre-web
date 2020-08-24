@@ -22,6 +22,7 @@ import zipfile
 from lxml import etree
 
 from . import isoLanguages
+from .helper import split_authors
 from .constants import BookMeta
 
 
@@ -64,9 +65,9 @@ def get_epub_info(tmp_file_path, original_file_name, original_file_extension):
         tmp = p.xpath('dc:%s/text()' % s, namespaces=ns)
         if len(tmp) > 0:
             if s == 'creator':
-                 epub_metadata[s] = ' & '.join(p.xpath('dc:%s/text()' % s, namespaces=ns))
+                epub_metadata[s] = ' & '.join(split_authors(p.xpath('dc:%s/text()' % s, namespaces=ns)))
             elif s == 'subject':
-                 epub_metadata[s] = ', '.join(p.xpath('dc:%s/text()' % s, namespaces=ns))
+                epub_metadata[s] = ', '.join(p.xpath('dc:%s/text()' % s, namespaces=ns))
             else:
                 epub_metadata[s] = p.xpath('dc:%s/text()' % s, namespaces=ns)[0]
         else:
