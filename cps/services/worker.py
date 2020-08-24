@@ -1,42 +1,15 @@
 
 from __future__ import division, print_function, unicode_literals
-import sys
-import os
-import re
-import smtplib
-import socket
-import time
 import threading
+
 try:
     import queue
 except ImportError:
     import Queue as queue
-from glob import glob
-from shutil import copyfile
 from datetime import datetime
 
-try:
-    from StringIO import StringIO
-    from email.MIMEBase import MIMEBase
-    from email.MIMEMultipart import MIMEMultipart
-    from email.MIMEText import MIMEText
-except ImportError:
-    from io import StringIO
-    from email.mime.base import MIMEBase
-    from email.mime.multipart import MIMEMultipart
-    from email.mime.text import MIMEText
-
-from email import encoders
-from email.utils import formatdate
-from email.utils import make_msgid
-from email.generator import Generator
-from flask_babel import gettext as _
-
-from cps import calibre_db, db
-from cps import logger, config
-from cps.subproc_wrapper import process_open
-from cps import gdriveutils
-from flask_babel import gettext as _
+from cps import calibre_db
+from cps import logger
 import abc
 
 log = logger.create()
@@ -86,9 +59,6 @@ class WorkerThread(threading.Thread):
         self.doLock = threading.Lock()
         self.queue = ImprovedQueue()
 
-        # todo: figure this stuff out and where it should goes
-        self.asyncSMTP = None
-
         self.start()
 
     @classmethod
@@ -121,13 +91,6 @@ class WorkerThread(threading.Thread):
 
             self.queue.task_done()
 
-    def get_send_status(self):
-        raise NotImplementedError
-        # if self.asyncSMTP:
-        #     return self.asyncSMTP.getTransferStatus()
-        # else:
-        #     return "0 %"
-
     def _delete_completed_tasks(self):
         raise NotImplementedError()
         # for index, task in reversed(list(enumerate(self.UIqueue))):
@@ -140,7 +103,8 @@ class WorkerThread(threading.Thread):
         #             self.current -= 1
         # self.last = len(self.queue)
 
-class CalibreTask(metaclass=abc.ABCMeta):
+class CalibreTask:
+    __metaclass__ = abc.ABCMeta
 
     def __init__(self, message):
         self._progress = 0
