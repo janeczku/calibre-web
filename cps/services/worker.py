@@ -84,10 +84,8 @@ class WorkerThread(threading.Thread):
 
             # sometimes tasks (like Upload) don't actually have work to do and are created as already finished
             if item.stat is STAT_WAITING:
-                try:
-                    item.start(self)
-                except Exception as e:
-                    log.exception(e)
+                # CalibreTask.start() should wrap all exceptions in it's own error handling
+                item.start(self)
 
             self.queue.task_done()
 
@@ -127,7 +125,14 @@ class CalibreTask:
     def start(self, *args):
         self.start_time = datetime.now()
         self.stat = STAT_STARTED
-        self.run(*args)
+
+        # catch any unhandled exceptions in a task and automatically fail it
+        try:
+            self.run(*args)
+        except Exception as e:
+            self._handleError(str(e))
+            log.exception(e)
+
         self.end_time = datetime.now()
 
     @property
@@ -144,7 +149,8 @@ class CalibreTask:
 
     @progress.setter
     def progress(self, x):
-        # todo: throw error if outside of [0,1]
+        if not 0 <= x <= 1:
+            raise ValueError("Task progress should within [0, 1] range")
         self._progress = x
 
     @property
