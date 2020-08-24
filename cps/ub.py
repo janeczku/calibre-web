@@ -262,7 +262,7 @@ class Anonymous(AnonymousUserMixin, UserBase):
         self.allowed_tags = data.allowed_tags
         self.denied_column_value = data.denied_column_value
         self.allowed_column_value = data.allowed_column_value
-        # self.series_view = data.series_view
+        self.view_settings = data.view_settings
 
 
     def role_admin(self):
