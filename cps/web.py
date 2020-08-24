@@ -473,7 +473,10 @@ def update_view():
             #visibility = json.loads(current_user.view_settings)
             current_user.view_settings['series_view'] = to_save["series_view"]
             # current_user.view_settings = json.dumps(visibility)
-            flag_modified(current_user, "view_settings")
+            try:
+                flag_modified(current_user, "view_settings")
+            except AttributeError:
+                pass
             ub.session.commit()
         except InvalidRequestError:
             log.error("Invalid request received: %r ", request, )
@@ -626,7 +629,10 @@ def render_books_list(data, sort, book_id, page):
     else:
         try:
             current_user.view_settings[data] = sort
-            flag_modified(current_user, "view_settings")
+            try:
+                flag_modified(current_user, "view_settings")
+            except AttributeError:
+                pass
             ub.session.commit()
         except InvalidRequestError:
             log.error("Invalid request received: %r ", request, )
@@ -1015,7 +1021,10 @@ def update_table_settings():
     # ToDo: Save table settings
     current_user.view_settings['table'] = json.loads(request.data)
     try:
-        flag_modified(current_user, "view_settings")
+        try:
+            flag_modified(current_user, "view_settings")
+        except AttributeError:
+            pass
         ub.session.commit()
     except InvalidRequestError:
         log.error("Invalid request received: %r ", request, )
