@@ -338,24 +338,8 @@ class CalibreDB(threading.Thread):
         threading.Thread.__init__(self)
         self.engine = None
         self.session = None
-        self.queue = None
         self.log = None
         self.config = None
-
-    def add_queue(self,queue):
-        self.queue = queue
-        self.log = logger.create()
-
-    def run(self):
-        while False:
-            i = self.queue.get()
-            if i == 'dummy':
-                self.queue.task_done()
-                break
-            self.queue.task_done()
-
-    def stop(self):
-        self.queue.put('dummy')
 
     def setup_db(self, config, app_db_path):
         self.config = config
