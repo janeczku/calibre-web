@@ -5,7 +5,7 @@ from cps.services.worker import CalibreTask, STAT_FINISH_SUCCESS
 
 class TaskUpload(CalibreTask):
     def __init__(self, taskMessage):
-        super().__init__(taskMessage)
+        super(TaskUpload, self).__init__(taskMessage)
         self.start_time = self.end_time = datetime.now()
         self.stat = STAT_FINISH_SUCCESS
         self.progress = 1

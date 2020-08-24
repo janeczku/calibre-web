@@ -14,12 +14,14 @@ from cps import logger, config
 from cps.subproc_wrapper import process_open
 from flask_babel import gettext as _
 
+from cps.tasks.email import TaskEmail
+from cps import gdriveutils
 log = logger.create()
 
 
 class TaskConvert(CalibreTask):
     def __init__(self, file_path, bookid, taskMessage, settings, kindle_mail):
-        super().__init__(taskMessage)
+        super(TaskConvert, self).__init__(taskMessage)
         self.file_path = file_path
         self.bookid = bookid
         self.settings = settings
@@ -31,14 +33,16 @@ class TaskConvert(CalibreTask):
         self.worker_thread = worker_thread
         filename = self._convert_ebook_format()
         # todo: re-enable this (need to set up gdrive to test with)
-        # if filename:
-        #     if config.config_use_google_drive:
-        #         gdriveutils.updateGdriveCalibreFromLocal()
-        #     if curr_task == TASK_CONVERT:
-        #         self.add_email(self.queue[index]['settings']['subject'], self.queue[index]['path'],
-        #                        filename, self.queue[index]['settings'], self.queue[index]['kindle'],
-        #                        self.UIqueue[index]['user'], self.queue[index]['title'],
-        #                        self.queue[index]['settings']['body'], internal=True)
+        if filename:
+            if config.config_use_google_drive:
+                gdriveutils.updateGdriveCalibreFromLocal()
+            if self.kindle_mail:
+                # if we're sending to kindle after converting, create a one-off task and run it immediately
+                # todo: figure out how to incorporate this into the progress
+                task = TaskEmail(self.settings['subject'], self.results["path"],
+                               filename, self.settings, self.kindle_mail,
+                               self.settings['subject'], self.settings['body'], internal=True)
+                task.start()
 
         self._handleSuccess()
         pass
