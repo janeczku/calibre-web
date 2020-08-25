@@ -8,7 +8,7 @@ from shutil import copyfile
 
 from sqlalchemy.exc import SQLAlchemyError
 
-from cps.services.worker import CalibreTask
+from cps.services.worker import CalibreTask, STAT_FINISH_SUCCESS
 from cps import calibre_db, db
 from cps import logger, config
 from cps.subproc_wrapper import process_open
@@ -43,7 +43,11 @@ class TaskConvert(CalibreTask):
                     task = TaskEmail(self.settings['subject'], self.results["path"],
                                filename, self.settings, self.kindle_mail,
                                self.settings['subject'], self.settings['body'], internal=True)
-                    task.start()
+                    task.start(worker_thread)
+
+                    # even though the convert task might be finished, if this task fails, fail the whole thing
+                    if task.stat != STAT_FINISH_SUCCESS:
+                        raise Exception(task.error)
                 except Exception as e:
                     return self._handleError(str(e))
 
