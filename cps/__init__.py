@@ -102,7 +102,6 @@ def create_app():
 
     web_server.init_app(app, config)
     calibre_db.setup_db(config, cli.settingspath)
-    calibre_db.start()
 
     babel.init_app(app)
     _BABEL_TRANSLATIONS.update(str(item) for item in babel.list_translations())

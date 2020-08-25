@@ -24,14 +24,12 @@ import re
 import ast
 import json
 from datetime import datetime
-import threading
 
 from sqlalchemy import create_engine
 from sqlalchemy import Table, Column, ForeignKey, CheckConstraint
 from sqlalchemy import String, Integer, Boolean, TIMESTAMP, Float
 from sqlalchemy.orm import relationship, sessionmaker, scoped_session
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.exc import OperationalError
 from sqlalchemy.pool import StaticPool
 from flask_login import current_user
 from sqlalchemy.sql.expression import and_, true, false, text, func, or_
@@ -332,10 +330,9 @@ class Custom_Columns(Base):
         return display_dict
 
 
-class CalibreDB(threading.Thread):
+class CalibreDB():
 
     def __init__(self):
-        threading.Thread.__init__(self)
         self.engine = None
         self.session = None
         self.log = None
