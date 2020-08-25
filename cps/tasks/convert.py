@@ -47,9 +47,6 @@ class TaskConvert(CalibreTask):
                 except Exception as e:
                     return self._handleError(str(e))
 
-        self._handleSuccess()
-        pass
-
     def _convert_ebook_format(self):
         error_message = None
         file_path = self.file_path
