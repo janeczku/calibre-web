@@ -128,9 +128,16 @@ def send_registration_mail(e_mail, user_name, default_password, resend=False):
     text += "Don't forget to change your password after first login.\r\n"
     text += "Sincerely\r\n\r\n"
     text += "Your Calibre-Web team"
-    WorkerThread.add(None, TaskEmail(_(u'Get Started with Calibre-Web'), None, None,
-                     config.get_mail_settings(), e_mail, None,
-                     _(u"Registration e-mail for user: %(name)s", name=user_name), text))
+    WorkerThread.add(None, TaskEmail(
+        subject=(u'Get Started with Calibre-Web'),
+        filepath=None,
+        attachment=None,
+        settings=config.get_mail_settings(),
+        recipient=e_mail,
+        taskMessage=_(u"Registration e-mail for user: %(name)s", name=user_name),
+        text=text
+    ))
+    
     return
 
 
