@@ -19,6 +19,17 @@ var direction = 0;  // Descending order
 var sort = 0;       // Show sorted entries
 
 $("#sort_name").click(function() {
+    var class_name = $("h1").attr('Class') + "_sort_name";
+    var obj = {};
+    obj[class_name] = sort;
+    $.ajax({
+        method:"post",
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        url: window.location.pathname + "/../../ajax/view",
+        data: JSON.stringify({obj}),
+    });
+
     var count = 0;
     var index = 0;
     var store;
@@ -40,9 +51,7 @@ $("#sort_name").click(function() {
             count++;
         }
     });
-    /*listItems.sort(function(a,b){
-        return $(a).children()[1].innerText.localeCompare($(b).children()[1].innerText)
-    });*/
+
     // Find count of middle element
     if (count > 20) {
         var middle = parseInt(count / 2, 10) + (count % 2);

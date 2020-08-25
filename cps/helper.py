@@ -137,7 +137,7 @@ def send_registration_mail(e_mail, user_name, default_password, resend=False):
         taskMessage=_(u"Registration e-mail for user: %(name)s", name=user_name),
         text=text
     ))
-    
+
     return
 
 
