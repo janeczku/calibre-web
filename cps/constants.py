@@ -81,10 +81,10 @@ SIDEBAR_PUBLISHER       = 1 << 12
 SIDEBAR_RATING          = 1 << 13
 SIDEBAR_FORMAT          = 1 << 14
 SIDEBAR_ARCHIVED        = 1 << 15
-# SIDEBAR_LIST            = 1 << 16
+SIDEBAR_LIST            = 1 << 16
 
 ADMIN_USER_ROLES        = sum(r for r in ALL_ROLES.values()) & ~ROLE_ANONYMOUS
-ADMIN_USER_SIDEBAR      = (SIDEBAR_ARCHIVED << 1) - 1
+ADMIN_USER_SIDEBAR      = (SIDEBAR_LIST << 1) - 1
 
 UPDATE_STABLE       = 0 << 0
 AUTO_UPDATE_STABLE  = 1 << 0

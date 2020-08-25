@@ -27,6 +27,7 @@ import json
 from shutil import copyfile
 from uuid import uuid4
 
+from babel import Locale as LC
 from flask import Blueprint, request, flash, redirect, url_for, abort, Markup, Response
 from flask_babel import gettext as _
 from flask_login import current_user, login_required
@@ -171,21 +172,42 @@ def modify_identifiers(input_identifiers, db_identifiers, db_session):
             changed = True
     return changed
 
-
-@editbook.route("/delete/<int:book_id>/", defaults={'book_format': ""})
-@editbook.route("/delete/<int:book_id>/<string:book_format>/")
+@editbook.route("/ajax/delete/<int:book_id>")
 @login_required
-def delete_book(book_id, book_format):
+def delete_book_from_details(book_id):
+    return Response(delete_book(book_id,"", True), mimetype='application/json')
+
+
+@editbook.route("/delete/<int:book_id>", defaults={'book_format': ""})
+@editbook.route("/delete/<int:book_id>/<string:book_format>")
+@login_required
+def delete_book_ajax(book_id, book_format):
+    return delete_book(book_id,book_format, False)
+
+def delete_book(book_id, book_format, jsonResponse):
+    warning = {}
     if current_user.role_delete_books():
         book = calibre_db.get_book(book_id)
         if book:
             try:
                 result, error = helper.delete_book(book, config.config_calibre_dir, book_format=book_format.upper())
                 if not result:
-                    flash(error, category="error")
-                    return redirect(url_for('editbook.edit_book', book_id=book_id))
+                    if jsonResponse:
+                        return json.dumps({"location": url_for("editbook.edit_book"),
+                                           "type": "alert",
+                                           "format": "",
+                                           "error": error}),
+                    else:
+                        flash(error, category="error")
+                        return redirect(url_for('editbook.edit_book', book_id=book_id))
                 if error:
-                    flash(error, category="warning")
+                    if jsonResponse:
+                        warning = {"location": url_for("editbook.edit_book"),
+                                                "type": "warning",
+                                                "format": "",
+                                                "error": error}
+                    else:
+                        flash(error, category="warning")
                 if not book_format:
                     # delete book from Shelfs, Downloads, Read list
                     ub.session.query(ub.BookShelf).filter(ub.BookShelf.book_id == book_id).delete()
@@ -241,11 +263,23 @@ def delete_book(book_id, book_format):
             # book not found
             log.error('Book with id "%s" could not be deleted: not found', book_id)
     if book_format:
-        flash(_('Book Format Successfully Deleted'), category="success")
-        return redirect(url_for('editbook.edit_book', book_id=book_id))
+        if jsonResponse:
+            return json.dumps([warning, {"location": url_for("editbook.edit_book", book_id=book_id),
+                                         "type": "success",
+                                         "format": book_format,
+                                         "message": _('Book Format Successfully Deleted')}])
+        else:
+            flash(_('Book Format Successfully Deleted'), category="success")
+            return redirect(url_for('editbook.edit_book', book_id=book_id))
     else:
-        flash(_('Book Successfully Deleted'), category="success")
-        return redirect(url_for('web.index'))
+        if jsonResponse:
+            return json.dumps([warning, {"location": url_for('web.index'),
+                                         "type": "success",
+                                         "format": book_format,
+                                         "message": _('Book Successfully Deleted')}])
+        else:
+            flash(_('Book Successfully Deleted'), category="success")
+            return redirect(url_for('web.index'))
 
 
 def render_edit_book(book_id):
@@ -896,3 +930,112 @@ def convert_bookformat(book_id):
     else:
         flash(_(u"There was an error converting this book: %(res)s", res=rtn), category="error")
     return redirect(url_for('editbook.edit_book', book_id=book_id))
+
+@editbook.route("/ajax/editbooks/<param>", methods=['POST'])
+@login_required_if_no_ano
+def edit_list_book(param):
+    vals = request.form.to_dict()
+    # calibre_db.update_title_sort(config)
+    #calibre_db.session.connection().connection.connection.create_function('uuid4', 0, lambda: str(uuid4()))
+    book = calibre_db.get_book(vals['pk'])
+    if param =='series_index':
+        edit_book_series_index(vals['value'], book)
+    elif param =='tags':
+        edit_book_tags(vals['value'], book)
+    elif param =='series':
+        edit_book_series(vals['value'], book)
+    elif param =='publishers':
+        vals['publisher'] = vals['value']
+        edit_book_publisher(vals, book)
+    elif param =='languages':
+        edit_book_languages(vals['value'], book)
+    elif param =='author_sort':
+        book.author_sort = vals['value']
+    elif param =='title':
+        book.title = vals['value']
+        helper.update_dir_stucture(book.id, config.config_calibre_dir)
+    elif param =='sort':
+        book.sort = vals['value']
+    # ToDo: edit books
+    elif param =='authors':
+        input_authors = vals['value'].split('&')
+        input_authors = list(map(lambda it: it.strip().replace(',', '|'), input_authors))
+        modify_database_object(input_authors, book.authors, db.Authors, calibre_db.session, 'author')
+        sort_authors_list = list()
+        for inp in input_authors:
+            stored_author = calibre_db.session.query(db.Authors).filter(db.Authors.name == inp).first()
+            if not stored_author:
+                stored_author = helper.get_sorted_author(inp)
+            else:
+                stored_author = stored_author.sort
+            sort_authors_list.append(helper.get_sorted_author(stored_author))
+        sort_authors = ' & '.join(sort_authors_list)
+        if book.author_sort != sort_authors:
+            book.author_sort = sort_authors
+        helper.update_dir_stucture(book.id, config.config_calibre_dir, input_authors[0])
+    book.last_modified = datetime.utcnow()
+    calibre_db.session.commit()
+    return ""
+
+@editbook.route("/ajax/sort_value/<field>/<int:bookid>")
+@login_required
+def get_sorted_entry(field, bookid):
+    if field == 'title' or field == 'authors':
+        book = calibre_db.get_filtered_book(bookid)
+        if book:
+            if field == 'title':
+                return json.dumps({'sort': book.sort})
+            elif field == 'authors':
+                return json.dumps({'author_sort': book.author_sort})
+    return ""
+
+
+@editbook.route("/ajax/simulatemerge", methods=['POST'])
+@login_required
+def simulate_merge_list_book():
+    vals = request.get_json().get('Merge_books')
+    if vals:
+        to_book = calibre_db.get_book(vals[0]).title
+        vals.pop(0)
+        if to_book:
+            for book_id in vals:
+                from_book = []
+                from_book.append(calibre_db.get_book(book_id).title)
+            return json.dumps({'to': to_book, 'from': from_book})
+    return ""
+
+
+@editbook.route("/ajax/mergebooks", methods=['POST'])
+@login_required
+def merge_list_book():
+    vals = request.get_json().get('Merge_books')
+    to_file = list()
+    if vals:
+        # load all formats from target book
+        to_book = calibre_db.get_book(vals[0])
+        vals.pop(0)
+        if to_book:
+            for file in to_book.data:
+                to_file.append(file.format)
+            to_name = helper.get_valid_filename(to_book.title) + ' - ' + \
+                      helper.get_valid_filename(to_book.authors[0].name)
+            for book_id in vals:
+                from_book = calibre_db.get_book(book_id)
+                if from_book:
+                    for element in from_book.data:
+                        if element.format not in to_file:
+                            # create new data entry with: book_id, book_format, uncompressed_size, name
+                            filepath_new = os.path.normpath(os.path.join(config.config_calibre_dir,
+                                                                         to_book.path,
+                                                                         to_name + "." + element.format.lower()))
+                            filepath_old = os.path.normpath(os.path.join(config.config_calibre_dir,
+                                                                         from_book.path,
+                                                                         element.name + "." + element.format.lower()))
+                            copyfile(filepath_old, filepath_new)
+                            to_book.data.append(db.Data(to_book.id,
+                                                        element.format,
+                                                        element.uncompressed_size,
+                                                        to_name))
+                    delete_book(from_book.id,"", True) # json_resp =
+                    return json.dumps({'success': True})
+    return ""

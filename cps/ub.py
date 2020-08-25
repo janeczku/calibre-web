@@ -23,6 +23,7 @@ import sys
 import datetime
 import itertools
 import uuid
+import json
 from binascii import hexlify
 
 from flask import g
@@ -41,7 +42,7 @@ except ImportError:
         oauth_support = False
 from sqlalchemy import create_engine, exc, exists, event
 from sqlalchemy import Column, ForeignKey
-from sqlalchemy import String, Integer, SmallInteger, Boolean, DateTime, Float
+from sqlalchemy import String, Integer, SmallInteger, Boolean, DateTime, Float, JSON
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import backref, relationship, sessionmaker, Session
 from werkzeug.security import generate_password_hash
@@ -109,10 +110,10 @@ def get_sidebar_config(kwargs=None):
         {"glyph": "glyphicon-trash", "text": _('Archived Books'), "link": 'web.books_list', "id": "archived",
          "visibility": constants.SIDEBAR_ARCHIVED, 'public': (not g.user.is_anonymous), "page": "archived",
          "show_text": _('Show archived books'), "config_show": content})
-    '''sidebar.append(
-        {"glyph": "glyphicon-th-list", "text": _('Books List'), "link": 'web.books_list', "id": "list",
+    sidebar.append(
+        {"glyph": "glyphicon-th-list", "text": _('Books List'), "link": 'web.books_table', "id": "list",
          "visibility": constants.SIDEBAR_LIST, 'public': (not g.user.is_anonymous), "page": "list",
-         "show_text": _('Show Books List'), "config_show": content})'''
+         "show_text": _('Show Books List'), "config_show": content})
 
     return sidebar
 
@@ -218,7 +219,9 @@ class User(UserBase, Base):
     denied_column_value = Column(String, default="")
     allowed_column_value = Column(String, default="")
     remote_auth_token = relationship('RemoteAuthToken', backref='user', lazy='dynamic')
-    series_view = Column(String(10), default="list")
+    #series_view = Column(String(10), default="list")
+    view_settings = Column(JSON, default={})
+
 
 
 if oauth_support:
@@ -259,7 +262,8 @@ class Anonymous(AnonymousUserMixin, UserBase):
         self.allowed_tags = data.allowed_tags
         self.denied_column_value = data.denied_column_value
         self.allowed_column_value = data.allowed_column_value
-        self.series_view = data.series_view
+        self.view_settings = data.view_settings
+
 
     def role_admin(self):
         return False
@@ -567,10 +571,11 @@ def migrate_Database(session):
             conn.execute("ALTER TABLE user ADD column `allowed_column_value` String DEFAULT ''")
         session.commit()
     try:
-        session.query(exists().where(User.series_view)).scalar()
+        session.query(exists().where(User.view_settings)).scalar()
     except exc.OperationalError:
         with engine.connect() as conn:
-            conn.execute("ALTER TABLE user ADD column `series_view` VARCHAR(10) DEFAULT 'list'")
+            conn.execute("ALTER TABLE user ADD column `view_settings` VARCHAR(10) DEFAULT '{}'")
+        session.commit()
 
     if session.query(User).filter(User.role.op('&')(constants.ROLE_ANONYMOUS) == constants.ROLE_ANONYMOUS).first() \
         is None:
@@ -591,14 +596,15 @@ def migrate_Database(session):
                      "locale VARCHAR(2),"
                      "sidebar_view INTEGER,"
                      "default_language VARCHAR(3),"
-                     "series_view VARCHAR(10),"
+                     # "series_view VARCHAR(10),"
+                     "view_settings VARCHAR,"                     
                      "UNIQUE (nickname),"
                      "UNIQUE (email))")
             conn.execute("INSERT INTO user_id(id, nickname, email, role, password, kindle_mail,locale,"
-                     "sidebar_view, default_language, series_view) "
+                     "sidebar_view, default_language, view_settings) "
                      "SELECT id, nickname, email, role, password, kindle_mail, locale,"
                      "sidebar_view, default_language FROM user")
-        # delete old user table and rename new user_id table to user:
+            # delete old user table and rename new user_id table to user:
             conn.execute("DROP TABLE user")
             conn.execute("ALTER TABLE user_id RENAME TO user")
         session.commit()

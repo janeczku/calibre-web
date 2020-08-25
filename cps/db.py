@@ -29,7 +29,8 @@ from sqlalchemy import create_engine
 from sqlalchemy import Table, Column, ForeignKey, CheckConstraint
 from sqlalchemy import String, Integer, Boolean, TIMESTAMP, Float
 from sqlalchemy.orm import relationship, sessionmaker, scoped_session
-from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm.collections import InstrumentedList
+from sqlalchemy.ext.declarative import declarative_base, DeclarativeMeta
 from sqlalchemy.pool import StaticPool
 from flask_login import current_user
 from sqlalchemy.sql.expression import and_, true, false, text, func, or_
@@ -97,6 +98,9 @@ class Identifiers(Base):
         self.type = id_type
         self.book = book
 
+    #def get(self):
+    #    return {self.type: self.val}
+
     def formatType(self):
         if self.type == "amazon":
             return u"Amazon"
@@ -149,6 +153,9 @@ class Comments(Base):
         self.text = text
         self.book = book
 
+    def get(self):
+        return self.text
+
     def __repr__(self):
         return u"<Comments({0})>".format(self.text)
 
@@ -161,6 +168,9 @@ class Tags(Base):
 
     def __init__(self, name):
         self.name = name
+
+    def get(self):
+        return self.name
 
     def __repr__(self):
         return u"<Tags('{0})>".format(self.name)
@@ -179,6 +189,9 @@ class Authors(Base):
         self.sort = sort
         self.link = link
 
+    def get(self):
+        return self.name
+
     def __repr__(self):
         return u"<Authors('{0},{1}{2}')>".format(self.name, self.sort, self.link)
 
@@ -194,6 +207,9 @@ class Series(Base):
         self.name = name
         self.sort = sort
 
+    def get(self):
+        return self.name
+
     def __repr__(self):
         return u"<Series('{0},{1}')>".format(self.name, self.sort)
 
@@ -207,6 +223,9 @@ class Ratings(Base):
     def __init__(self, rating):
         self.rating = rating
 
+    def get(self):
+        return self.rating
+
     def __repr__(self):
         return u"<Ratings('{0}')>".format(self.rating)
 
@@ -219,6 +238,12 @@ class Languages(Base):
 
     def __init__(self, lang_code):
         self.lang_code = lang_code
+
+    def get(self):
+        if self.language_name:
+            return self.language_name
+        else:
+            return self.lang_code
 
     def __repr__(self):
         return u"<Languages('{0}')>".format(self.lang_code)
@@ -234,6 +259,9 @@ class Publishers(Base):
     def __init__(self, name, sort):
         self.name = name
         self.sort = sort
+
+    def get(self):
+        return self.name
 
     def __repr__(self):
         return u"<Publishers('{0},{1}')>".format(self.name, self.sort)
@@ -255,6 +283,10 @@ class Data(Base):
         self.uncompressed_size = uncompressed_size
         self.name = name
 
+    # ToDo: Check
+    def get(self):
+        return self.name
+
     def __repr__(self):
         return u"<Data('{0},{1}{2}{3}')>".format(self.book, self.format, self.uncompressed_size, self.name)
 
@@ -262,14 +294,14 @@ class Data(Base):
 class Books(Base):
     __tablename__ = 'books'
 
-    DEFAULT_PUBDATE = "0101-01-01 00:00:00+00:00"
+    DEFAULT_PUBDATE = datetime(101, 1, 1, 0, 0, 0, 0) # ("0101-01-01 00:00:00+00:00")
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     title = Column(String(collation='NOCASE'), nullable=False, default='Unknown')
     sort = Column(String(collation='NOCASE'))
     author_sort = Column(String(collation='NOCASE'))
     timestamp = Column(TIMESTAMP, default=datetime.utcnow)
-    pubdate = Column(String) # , default=datetime.utcnow)
+    pubdate = Column(TIMESTAMP, default=DEFAULT_PUBDATE)
     series_index = Column(String, nullable=False, default="1.0")
     last_modified = Column(TIMESTAMP, default=datetime.utcnow)
     path = Column(String, default="", nullable=False)
@@ -301,6 +333,9 @@ class Books(Base):
         self.path = path
         self.has_cover = has_cover
 
+    #def as_dict(self):
+    #    return {c.name: getattr(self, c.name) for c in self.__table__.columns}
+
     def __repr__(self):
         return u"<Books('{0},{1}{2}{3}{4}{5}{6}{7}{8}')>".format(self.title, self.sort, self.author_sort,
                                                                  self.timestamp, self.pubdate, self.series_index,
@@ -328,6 +363,39 @@ class Custom_Columns(Base):
         if sys.version_info < (3, 0):
             display_dict['enum_values'] = [x.decode('unicode_escape') for x in display_dict['enum_values']]
         return display_dict
+
+class AlchemyEncoder(json.JSONEncoder):
+
+    def default(self, obj):
+        if isinstance(obj.__class__, DeclarativeMeta):
+            # an SQLAlchemy class
+            fields = {}
+            for field in [x for x in dir(obj) if not x.startswith('_') and x != 'metadata']:
+                if field == 'books':
+                    continue
+                data = obj.__getattribute__(field)
+                try:
+                    if isinstance(data, str):
+                        data = data.replace("'","\'")
+                    elif isinstance(data, InstrumentedList):
+                        el =list()
+                        for ele in data:
+                            if ele.get:
+                                el.append(ele.get())
+                            else:
+                                el.append(json.dumps(ele, cls=AlchemyEncoder))
+                        data =",".join(el)
+                        if data == '[]':
+                            data = ""
+                    else:
+                        json.dumps(data)
+                    fields[field] = data
+                except:
+                    fields[field] = ""
+            # a json-encodable dict
+            return fields
+
+        return json.JSONEncoder.default(self, obj)
 
 
 class CalibreDB():
@@ -494,10 +562,11 @@ class CalibreDB():
                     pos_content_cc_filter, ~neg_content_cc_filter, archived_filter)
 
     # Fill indexpage with all requested data from database
-    def fill_indexpage(self, page, database, db_filter, order, *join):
-        return self.fill_indexpage_with_archived_books(page, database, db_filter, order, False, *join)
+    def fill_indexpage(self, page, pagesize, database, db_filter, order, *join):
+        return self.fill_indexpage_with_archived_books(page, pagesize, database, db_filter, order, False, *join)
 
-    def fill_indexpage_with_archived_books(self, page, database, db_filter, order, allow_show_archived, *join):
+    def fill_indexpage_with_archived_books(self, page, pagesize, database, db_filter, order, allow_show_archived, *join):
+        pagesize = pagesize or self.config.config_books_per_page
         if current_user.show_detail_random():
             randm = self.session.query(Books) \
                 .filter(self.common_filters(allow_show_archived)) \
@@ -505,14 +574,14 @@ class CalibreDB():
                 .limit(self.config.config_random_books)
         else:
             randm = false()
-        off = int(int(self.config.config_books_per_page) * (page - 1))
+        off = int(int(pagesize) * (page - 1))
         query = self.session.query(database) \
             .join(*join, isouter=True) \
             .filter(db_filter) \
             .filter(self.common_filters(allow_show_archived))
-        pagination = Pagination(page, self.config.config_books_per_page,
+        pagination = Pagination(page, pagesize,
                                 len(query.all()))
-        entries = query.order_by(*order).offset(off).limit(self.config.config_books_per_page).all()
+        entries = query.order_by(*order).offset(off).limit(pagesize).all()
         for book in entries:
             book = self.order_authors(book)
         return entries, randm, pagination
@@ -552,20 +621,26 @@ class CalibreDB():
             .filter(and_(Books.authors.any(and_(*q)), func.lower(Books.title).ilike("%" + title + "%"))).first()
 
     # read search results from calibre-database and return it (function is used for feed and simple search
-    def get_search_results(self, term):
+    def get_search_results(self, term, offset=None, order=None, limit=None):
+        order = order or [Books.sort]
+        if offset != None and limit != None:
+            offset = int(offset)
+            limit = offset + int(limit)
         term.strip().lower()
         self.session.connection().connection.connection.create_function("lower", 1, lcase)
         q = list()
         authorterms = re.split("[, ]+", term)
         for authorterm in authorterms:
             q.append(Books.authors.any(func.lower(Authors.name).ilike("%" + authorterm + "%")))
-        return self.session.query(Books).filter(self.common_filters(True)).filter(
+        result = self.session.query(Books).filter(self.common_filters(True)).filter(
             or_(Books.tags.any(func.lower(Tags.name).ilike("%" + term + "%")),
                 Books.series.any(func.lower(Series.name).ilike("%" + term + "%")),
                 Books.authors.any(and_(*q)),
                 Books.publishers.any(func.lower(Publishers.name).ilike("%" + term + "%")),
                 func.lower(Books.title).ilike("%" + term + "%")
-                )).order_by(Books.sort).all()
+                )).order_by(*order).all()
+        result_count = len(result)
+        return result[offset:limit], result_count
 
     # Creates for all stored languages a translated speaking name in the array for the UI
     def speaking_language(self, languages=None):

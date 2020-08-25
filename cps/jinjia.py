@@ -76,22 +76,18 @@ def mimetype_filter(val):
 @jinjia.app_template_filter('formatdate')
 def formatdate_filter(val):
     try:
-        conformed_timestamp = re.sub(r"[:]|([-](?!((\d{2}[:]\d{2})|(\d{4}))$))", '', val)
-        formatdate = datetime.datetime.strptime(conformed_timestamp[:15], "%Y%m%d %H%M%S")
-        return format_date(formatdate, format='medium', locale=get_locale())
+        return format_date(val, format='medium', locale=get_locale())
     except AttributeError as e:
         log.error('Babel error: %s, Current user locale: %s, Current User: %s', e,
                   current_user.locale,
                   current_user.nickname
                   )
-        return formatdate
+        return val
 
 
 @jinjia.app_template_filter('formatdateinput')
 def format_date_input(val):
-    conformed_timestamp = re.sub(r"[:]|([-](?!((\d{2}[:]\d{2})|(\d{4}))$))", '', val)
-    date_obj = datetime.datetime.strptime(conformed_timestamp[:15], "%Y%m%d %H%M%S")
-    input_date = date_obj.isoformat().split('T', 1)[0]  # Hack to support dates <1900
+    input_date = val.isoformat().split('T', 1)[0]  # Hack to support dates <1900
     return '' if input_date == "0101-01-01" else input_date
 
 

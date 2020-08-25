@@ -1,4 +1,4 @@
-{% from 'modal_restriction.html' import restrict_modal %}
+{% from 'modal_dialogs.html' import restrict_modal, delete_book %}
 <!DOCTYPE html>
 <html lang="{{ g.user.locale }}">
   <head>
@@ -128,7 +128,7 @@
               <li class="nav-head hidden-xs">{{_('Browse')}}</li>
               {% for element in sidebar %}
                 {% if g.user.check_visibility(element['visibility']) and element['public'] %}
-                    <li id="nav_{{element['id']}}" {% if page == element['page'] %}class="active"{% endif %}><a href="{{url_for(element['link'], data=element['page'], sort='new')}}"><span class="glyphicon {{element['glyph']}}"></span>{{_(element['text'])}}</a></li>
+                    <li id="nav_{{element['id']}}" {% if page == element['page'] %}class="active"{% endif %}><a href="{{url_for(element['link'], data=element['page'], sort_param='stored')}}"><span class="glyphicon {{element['glyph']}}"></span>{{_(element['text'])}}</a></li>
                 {% endif %}
               {% endfor %}
               {% if g.user.is_authenticated or g.allow_anonymous %}
@@ -136,10 +136,6 @@
                 {% for shelf in g.shelves_access %}
                   <li><a href="{{url_for('shelf.show_shelf', shelf_id=shelf.id)}}"><span class="glyphicon glyphicon-list shelf"></span>{{shelf.name|shortentitle(40)}}{% if shelf.is_public == 1 %} {{_('(Public)')}}{% endif %}</a></li>
                 {% endfor %}
-                <!--li class="nav-head hidden-xs your-shelves">{{_('Your Shelves')}}</li>
-                {% for shelf in g.user.shelf %}
-                  <li><a href="{{url_for('shelf.show_shelf', shelf_id=shelf.id)}}"><span class="glyphicon glyphicon-list private_shelf"></span>{{shelf.name|shortentitle(40)}}{% if shelf.is_public == 1 %} {{_('(Public)')}}{% endif %}</a></li>
-                {% endfor %}-->
               {% if not g.user.is_anonymous %}
                 <li id="nav_createshelf" class="create-shelf"><a href="{{url_for('shelf.create_shelf')}}">{{_('Create a Shelf')}}</a></li>
                 <li id="nav_about" {% if page == 'stat' %}class="active"{% endif %}><a href="{{url_for('about.stats')}}"><span class="glyphicon glyphicon-info-sign"></span> {{_('About')}}</a></li>
@@ -155,29 +151,29 @@
           {% if pagination and (pagination.has_next or pagination.has_prev) %}
             <div class="pagination">
               {% if pagination.has_prev %}
-              <a class="previous" href="{{ (pagination.page - 1)|url_for_other_page
-                }}">&laquo; {{_('Previous')}}</a>
+              <li class="page-item page-next"><a class="page-link" aria-label="next page" href="{{ (pagination.page - 1)|url_for_other_page
+                }}">&laquo; {{_('Previous')}}</a></li>
               {% endif %}
             {% for page in pagination.iter_pages() %}
               {% if page %}
                 {% if page != pagination.page %}
-                  <a href="{{ (page)|url_for_other_page }}">{{ page }}</a>
+                  <li class="page-item"><a class="page-link" aria-label="to page {{ page }}" href="{{ (page)|url_for_other_page }}">{{ page }}</a></li>
                 {% else %}
-                  <strong>{{ page }}</strong>
+                  <li class="page-item active"><a class="page-link" aria-label="to page {{ page }}" href="{{ (page)|url_for_other_page }}">{{ page }}</a></li>
                 {% endif %}
               {% else %}
-                <span class="ellipsis">…</span>
+                <li class="page-item page-last-separator disabled"><a class="page-link" aria-label="">…</a></li>
               {% endif %}
             {% endfor %}
             {% if pagination.has_next %}
-              <a class="next" href="{{ (pagination.page + 1)|url_for_other_page
-                }}">{{_('Next')}} &raquo;</a>
+              <li class="page-item page-next"><a class="page-link" aria-label="next page" href="{{ (pagination.page + 1)|url_for_other_page
+                }}">{{_('Next')}} &raquo;</a></li>
             {% endif %}
             </div>
           {% endif %}
-        </div>
       </div>
     </div>
+  </div>
     <div class="modal fade" id="bookDetailsModal" tabindex="-1" role="dialog" aria-labelledby="bookDetailsModalLabel">
       <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
@@ -196,7 +192,6 @@
 
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <!--script src="https://code.jquery.com/jquery.js"></script-->
     <script src="{{ url_for('static', filename='js/libs/jquery.min.js') }}"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="{{ url_for('static', filename='js/libs/bootstrap.min.js') }}"></script>
@@ -227,9 +222,11 @@
             });
             $(document).ready(function() {
               var inp = $('#query').first()
-              var val = inp.val()
-              if (val !== "undefined") {
+              if (inp.length) {
+                var val = inp.val()
+                if (val.length) {
                   inp.val('').blur().focus().val(val)
+                }
               }
             });
         });
