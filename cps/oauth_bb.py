@@ -125,7 +125,7 @@ if ub.oauth_support:
                 scope=["https://www.googleapis.com/auth/plus.me", "https://www.googleapis.com/auth/userinfo.email"],
                 oauth_client_id=oauth_ids[1].oauth_client_id,
                 oauth_client_secret=oauth_ids[1].oauth_client_secret,
-                obtain_link='https://github.com/settings/developers')
+                obtain_link='https://console.developers.google.com/apis/credentials')
     oauthblueprints.append(ele1)
     oauthblueprints.append(ele2)
 
