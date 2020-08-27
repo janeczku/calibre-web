@@ -36,17 +36,17 @@
       <div class="col-xs-12 col-sm-6">
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3" style="margin-top:50px;">
-            <p class='text-justify attribute'><strong>Start Time: </strong>2020-08-26 20:05:39</p>
+            <p class='text-justify attribute'><strong>Start Time: </strong>2020-08-27 21:16:40</p>
         </div>
       </div>
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3">
-            <p class='text-justify attribute'><strong>Stop Time: </strong>2020-08-26 21:23:04</p>
+            <p class='text-justify attribute'><strong>Stop Time: </strong>2020-08-27 22:23:41</p>
         </div>
       </div>
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3">
-           <p class='text-justify attribute'><strong>Duration: </strong>1h 314 min</p>
+           <p class='text-justify attribute'><strong>Duration: </strong>55:29 min</p>
         </div>
       </div>
       </div>
@@ -101,9 +101,9 @@
     <tr class="result['header']['style']">
         <td>test_anonymous.testAnonymous</td>
         <td class="text-center">13</td>
-        <td class="text-center">12</td>
+        <td class="text-center">13</td>
         <td class="text-center">0</td>
-        <td class="text-center">1</td>
+        <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
             <a onclick="showClassDetail('c1', 13)">Detail</a>
@@ -220,31 +220,11 @@
     
     
     
-        <tr id='et1.13' class='none bg-info'>
+        <tr id='pt1.13' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_guest_visibility_sidebar</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et1.13')">ERROR</a>
-                </div>
-                <!--css div popup start-->
-                <div id='div_et1.13' class="popup_window test_output" style="display:none;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                                onclick="document.getElementById('div_et1.13').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File "C:\Entwicklung\calibre-web-test\test\test_anonymous.py", line 177, in test_guest_visibility_sidebar
-    self.assertIsNotNone(list_element)
-TypeError: 'FirefoxWebElement' object is not subscriptable</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -349,8 +329,8 @@ TypeError: 'FirefoxWebElement' object is not subscriptable</pre>
         <td>test_cover_edit_books.testCoverEditBooks</td>
         <td class="text-center">1</td>
         <td class="text-center">0</td>
-        <td class="text-center">1</td>
         <td class="text-center">0</td>
+        <td class="text-center">1</td>
         <td class="text-center">0</td>
         <td class="text-center">
             <a onclick="showClassDetail('c3', 1)">Detail</a>
@@ -359,30 +339,28 @@ TypeError: 'FirefoxWebElement' object is not subscriptable</pre>
 
     
     
-        <tr id='ft3.1' class='none bg-danger'>
+        <tr id='et3.1' class='none bg-info'>
             <td>
                 <div class='testcase'>test_upload_jpg</div>
             </td>
             <td colspan='6'>
                 <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft3.1')">FAIL</a>
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et3.1')">ERROR</a>
                 </div>
                 <!--css div popup start-->
-                <div id='div_ft3.1' class="popup_window test_output" style="display:none;">
+                <div id='div_et3.1' class="popup_window test_output" style="display:none;">
                     <div class='close_button pull-right'>
                         <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                                onclick="document.getElementById('div_ft3.1').style.display='none'"><span
+                                onclick="document.getElementById('div_et3.1').style.display='none'"><span
                                 aria-hidden="true">&times;</span></button>
                     </div>
                     <div class="text-left pull-left">
                         <pre class="text-left">Traceback (most recent call last):
   File "C:\Entwicklung\calibre-web-test\test\test_cover_edit_books.py", line 77, in test_upload_jpg
-    self.assertEqual('17420', resp.headers['Content-Length'])
-AssertionError: '17420' != '17403'
-- 17420
-?    -
-+ 17403
-?     +</pre>
+    self.assertAlmostEqual('17420', resp.headers['Content-Length'], delta=300)
+  File "C:\python38\lib\unittest\case.py", line 943, in assertAlmostEqual
+    diff = abs(first - second)
+TypeError: unsupported operand type(s) for -: 'str' and 'str'</pre>
                     </div>
                     <div class="clearfix"></div>
                 </div>
@@ -532,59 +510,46 @@ AssertionError: '17420' != '17403'
 
 
     <tr class="result['header']['style']">
-        <td>test_edit_additional_books.TestEditAdditionalBooks</td>
-        <td class="text-center">5</td>
-        <td class="text-center">3</td>
+        <td>unittest.loader._FailedTest</td>
         <td class="text-center">2</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
+        <td class="text-center">2</td>
+        <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c6', 5)">Detail</a>
+            <a onclick="showClassDetail('c6', 2)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt6.1' class='hiddenRow bg-success'>
+        <tr id='et6.1' class='none bg-info'>
             <td>
-                <div class='testcase'>test_delete_book</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt6.2' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>test_upload_metadata_cbt</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='ft6.3' class='none bg-danger'>
-            <td>
-                <div class='testcase'>test_upload_metadate_cbr</div>
+                <div class='testcase'>unittestloader_FailedTest)</div>
             </td>
             <td colspan='6'>
                 <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft6.3')">FAIL</a>
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et6.1')">ERROR</a>
                 </div>
                 <!--css div popup start-->
-                <div id='div_ft6.3' class="popup_window test_output" style="display:none;">
+                <div id='div_et6.1' class="popup_window test_output" style="display:none;">
                     <div class='close_button pull-right'>
                         <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                                onclick="document.getElementById('div_ft6.3').style.display='none'"><span
+                                onclick="document.getElementById('div_et6.1').style.display='none'"><span
                                 aria-hidden="true">&times;</span></button>
                     </div>
                     <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File "C:\Entwicklung\calibre-web-test\test\test_edit_additional_books.py", line 62, in test_upload_metadate_cbr
-    self.assertEqual('Test 执book', details['title'])
-AssertionError: 'Test 执book' != 'book'
-- Test 执book
-+ book</pre>
+                        <pre class="text-left">ImportError: Failed to import test module: test_edit_additional_books
+Traceback (most recent call last):
+  File "C:\python38\lib\unittest\loader.py", line 436, in _find_test_path
+    module = self._get_module_from_name(name)
+  File "C:\python38\lib\unittest\loader.py", line 377, in _get_module_from_name
+    __import__(name)
+  File "C:\Entwicklung\calibre-web-test\test\test_edit_additional_books.py", line 19, in <module>
+    class TestEditAdditionalBooks(TestCase, ui_class):
+  File "C:\Entwicklung\calibre-web-test\test\test_edit_additional_books.py", line 154, in TestEditAdditionalBooks
+    @skipif(os.name == 'nt', 'writeonly database on windows is not checked')
+NameError: name 'skipif' is not defined</pre>
                     </div>
                     <div class="clearfix"></div>
                 </div>
@@ -594,35 +559,33 @@ AssertionError: 'Test 执book' != 'book'
     
     
     
-        <tr id='pt6.4' class='hiddenRow bg-success'>
+        <tr id='et6.2' class='none bg-info'>
             <td>
-                <div class='testcase'>test_writeonly_database</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='ft6.5' class='none bg-danger'>
-            <td>
-                <div class='testcase'>test_writeonly_path</div>
+                <div class='testcase'>unittestloader_FailedTest)</div>
             </td>
             <td colspan='6'>
                 <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft6.5')">FAIL</a>
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et6.2')">ERROR</a>
                 </div>
                 <!--css div popup start-->
-                <div id='div_ft6.5' class="popup_window test_output" style="display:none;">
+                <div id='div_et6.2' class="popup_window test_output" style="display:none;">
                     <div class='close_button pull-right'>
                         <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                                onclick="document.getElementById('div_ft6.5').style.display='none'"><span
+                                onclick="document.getElementById('div_et6.2').style.display='none'"><span
                                 aria-hidden="true">&times;</span></button>
                     </div>
                     <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File "C:\Entwicklung\calibre-web-test\test\test_edit_additional_books.py", line 173, in test_writeonly_path
-    self.assertTrue(self.check_element_on_page((By.ID, "flash_alert")))
-AssertionError: False is not true</pre>
+                        <pre class="text-left">ImportError: Failed to import test module: test_ldap
+Traceback (most recent call last):
+  File "C:\python38\lib\unittest\loader.py", line 436, in _find_test_path
+    module = self._get_module_from_name(name)
+  File "C:\python38\lib\unittest\loader.py", line 377, in _get_module_from_name
+    __import__(name)
+  File "C:\Entwicklung\calibre-web-test\test\test_ldap.py", line 11, in <module>
+    from helper_ldap import TestLDAPServer
+  File "C:\Entwicklung\calibre-web-test\test\helper_ldap.py", line 10, in <module>
+    from ldaptor.inmemory import fromLDIFFile
+ModuleNotFoundError: No module named 'ldaptor'</pre>
                     </div>
                     <div class="clearfix"></div>
                 </div>
@@ -636,8 +599,8 @@ AssertionError: False is not true</pre>
     <tr class="result['header']['style']">
         <td>test_edit_books.TestEditBooks</td>
         <td class="text-center">33</td>
-        <td class="text-center">29</td>
-        <td class="text-center">1</td>
+        <td class="text-center">28</td>
+        <td class="text-center">2</td>
         <td class="text-center">1</td>
         <td class="text-center">2</td>
         <td class="text-center">
@@ -897,20 +860,64 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt7.25' class='hiddenRow bg-success'>
+        <tr id='ft7.25' class='none bg-danger'>
             <td>
                 <div class='testcase'>test_upload_book_cbr</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft7.25')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id='div_ft7.25' class="popup_window test_output" style="display:none;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
+                                onclick="document.getElementById('div_ft7.25').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File "C:\Entwicklung\calibre-web-test\test\test_edit_books.py", line 896, in test_upload_book_cbr
+    self.assertEqual('book', details['title'])
+AssertionError: 'book' != 'Test 执book'
+- book
++ Test 执book</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
     
-        <tr id='pt7.26' class='hiddenRow bg-success'>
+        <tr id='ft7.26' class='none bg-danger'>
             <td>
                 <div class='testcase'>test_upload_book_cbt</div>
             </td>
-            <td colspan='6' align='center'>PASS</td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft7.26')">FAIL</a>
+                </div>
+                <!--css div popup start-->
+                <div id='div_ft7.26' class="popup_window test_output" style="display:none;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
+                                onclick="document.getElementById('div_ft7.26').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File "C:\Entwicklung\calibre-web-test\test\test_edit_books.py", line 874, in test_upload_book_cbt
+    self.assertEqual('book', details['title'])
+AssertionError: 'book' != 'Test 执 to'
+- book
++ Test 执 to</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
         </tr>
     
     
@@ -924,31 +931,11 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='et7.28' class='none bg-info'>
+        <tr id='pt7.28' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_upload_book_epub</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et7.28')">ERROR</a>
-                </div>
-                <!--css div popup start-->
-                <div id='div_et7.28' class="popup_window test_output" style="display:none;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                                onclick="document.getElementById('div_et7.28').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File "C:\Entwicklung\calibre-web-test\test\test_edit_books.py", line 830, in test_upload_book_epub
-    self.check_element_on_page((By.ID, 'edit_cancel')).click()
-AttributeError: 'bool' object has no attribute 'click'</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -989,28 +976,28 @@ AttributeError: 'bool' object has no attribute 'click'</pre>
     
     
     
-        <tr id='ft7.33' class='none bg-danger'>
+        <tr id='et7.33' class='none bg-info'>
             <td>
                 <div class='testcase'>test_upload_cover_hdd</div>
             </td>
             <td colspan='6'>
                 <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft7.33')">FAIL</a>
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et7.33')">ERROR</a>
                 </div>
                 <!--css div popup start-->
-                <div id='div_ft7.33' class="popup_window test_output" style="display:none;">
+                <div id='div_et7.33' class="popup_window test_output" style="display:none;">
                     <div class='close_button pull-right'>
                         <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                                onclick="document.getElementById('div_ft7.33').style.display='none'"><span
+                                onclick="document.getElementById('div_et7.33').style.display='none'"><span
                                 aria-hidden="true">&times;</span></button>
                     </div>
                     <div class="text-left pull-left">
                         <pre class="text-left">Traceback (most recent call last):
   File "C:\Entwicklung\calibre-web-test\test\test_edit_books.py", line 723, in test_upload_cover_hdd
-    self.assertEqual('20317', resp.headers['Content-Length'])
-AssertionError: '20317' != '20130'
-- 20317
-+ 20130</pre>
+    self.assertAlmostEqual('20317', resp.headers['Content-Length'], delta=300)
+  File "C:\python38\lib\unittest\case.py", line 943, in assertAlmostEqual
+    diff = abs(first - second)
+TypeError: unsupported operand type(s) for -: 'str' and 'str'</pre>
                     </div>
                     <div class="clearfix"></div>
                 </div>
@@ -1068,9 +1055,9 @@ AssertionError: False is not true</pre>
     <tr class="result['header']['style']">
         <td>test_email_STARTTLS.test_STARTTLS</td>
         <td class="text-center">3</td>
-        <td class="text-center">0</td>
-        <td class="text-center">0</td>
         <td class="text-center">3</td>
+        <td class="text-center">0</td>
+        <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
             <a onclick="showClassDetail('c9', 3)">Detail</a>
@@ -1079,55 +1066,116 @@ AssertionError: False is not true</pre>
 
     
     
-        <tr id='et9.1' class='none bg-info'>
+        <tr id='pt9.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_STARTTLS</div>
             </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et9.1')">ERROR</a>
-                </div>
-                <!--css div popup start-->
-                <div id='div_et9.1' class="popup_window test_output" style="display:none;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                                onclick="document.getElementById('div_et9.1').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File "C:\Entwicklung\calibre-web-test\test\test_email_STARTTLS.py", line 59, in test_STARTTLS
-    task_len = len(self.check_tasks())
-TypeError: object of type 'bool' has no len()</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
     
-        <tr id='et9.2' class='none bg-info'>
+        <tr id='pt9.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_STARTTLS_SSL_setup_error</div>
             </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt9.3' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>test_STARTTLS_resend_password</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+
+
+    <tr class="result['header']['style']">
+        <td>test_email_ssl.test_SSL</td>
+        <td class="text-center">4</td>
+        <td class="text-center">4</td>
+        <td class="text-center">0</td>
+        <td class="text-center">0</td>
+        <td class="text-center">0</td>
+        <td class="text-center">
+            <a onclick="showClassDetail('c10', 4)">Detail</a>
+        </td>
+    </tr>
+
+    
+    
+        <tr id='pt10.1' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>test_SSL_None_setup_error</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt10.2' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>test_SSL_STARTTLS_setup_error</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt10.3' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>test_SSL_logging_email</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt10.4' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>test_SSL_only</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+
+
+    <tr class="result['header']['style']">
+        <td>test_goodreads.TestGoodreads</td>
+        <td class="text-center">3</td>
+        <td class="text-center">0</td>
+        <td class="text-center">0</td>
+        <td class="text-center">0</td>
+        <td class="text-center">3</td>
+        <td class="text-center">
+            <a onclick="showClassDetail('c11', 3)">Detail</a>
+        </td>
+    </tr>
+
+    
+    
+        <tr id='st11.1' class='none bg-warning'>
+            <td>
+                <div class='testcase'>test_author_page</div>
+            </td>
             <td colspan='6'>
                 <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et9.2')">ERROR</a>
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st11.1')">SKIP</a>
                 </div>
                 <!--css div popup start-->
-                <div id='div_et9.2' class="popup_window test_output" style="display:none;">
+                <div id='div_st11.1' class="popup_window test_output" style="display:none;">
                     <div class='close_button pull-right'>
                         <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                                onclick="document.getElementById('div_et9.2').style.display='none'"><span
+                                onclick="document.getElementById('div_st11.1').style.display='none'"><span
                                 aria-hidden="true">&times;</span></button>
                     </div>
                     <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File "C:\Entwicklung\calibre-web-test\test\test_email_STARTTLS.py", line 80, in test_STARTTLS_SSL_setup_error
-    task_len = len(self.check_tasks())
-TypeError: object of type 'bool' has no len()</pre>
+                        <pre class="text-left">Skipping Goodread Test, no config file found</pre>
                     </div>
                     <div class="clearfix"></div>
                 </div>
@@ -1137,90 +1185,49 @@ TypeError: object of type 'bool' has no len()</pre>
     
     
     
-        <tr id='et9.3' class='none bg-info'>
+        <tr id='st11.2' class='none bg-warning'>
             <td>
-                <div class='testcase'>test_STARTTLS_resend_password</div>
+                <div class='testcase'>test_author_page_invalid</div>
             </td>
             <td colspan='6'>
                 <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et9.3')">ERROR</a>
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st11.2')">SKIP</a>
                 </div>
                 <!--css div popup start-->
-                <div id='div_et9.3' class="popup_window test_output" style="display:none;">
+                <div id='div_st11.2' class="popup_window test_output" style="display:none;">
                     <div class='close_button pull-right'>
                         <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                                onclick="document.getElementById('div_et9.3').style.display='none'"><span
+                                onclick="document.getElementById('div_st11.2').style.display='none'"><span
                                 aria-hidden="true">&times;</span></button>
                     </div>
                     <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File "C:\python38\lib\site-packages\urllib3\connection.py", line 156, in _new_conn
-    conn = connection.create_connection(
-  File "C:\python38\lib\site-packages\urllib3\util\connection.py", line 84, in create_connection
-    raise err
-  File "C:\python38\lib\site-packages\urllib3\util\connection.py", line 74, in create_connection
-    sock.connect(sa)
-ConnectionRefusedError: [WinError 10061] Es konnte keine Verbindung hergestellt werden, da der Zielcomputer die Verbindung verweigerte
-
-During handling of the above exception, another exception occurred:
-
-Traceback (most recent call last):
-  File "C:\python38\lib\site-packages\urllib3\connectionpool.py", line 665, in urlopen
-    httplib_response = self._make_request(
-  File "C:\python38\lib\site-packages\urllib3\connectionpool.py", line 387, in _make_request
-    conn.request(method, url, **httplib_request_kw)
-  File "C:\python38\lib\http\client.py", line 1240, in request
-    self._send_request(method, url, body, headers, encode_chunked)
-  File "C:\python38\lib\http\client.py", line 1286, in _send_request
-    self.endheaders(body, encode_chunked=encode_chunked)
-  File "C:\python38\lib\http\client.py", line 1235, in endheaders
-    self._send_output(message_body, encode_chunked=encode_chunked)
-  File "C:\python38\lib\http\client.py", line 1006, in _send_output
-    self.send(msg)
-  File "C:\python38\lib\http\client.py", line 946, in send
-    self.connect()
-  File "C:\python38\lib\site-packages\urllib3\connection.py", line 184, in connect
-    conn = self._new_conn()
-  File "C:\python38\lib\site-packages\urllib3\connection.py", line 168, in _new_conn
-    raise NewConnectionError(
-urllib3.exceptions.NewConnectionError: <urllib3.connection.HTTPConnection object at 0x0689C2F8>: Failed to establish a new connection: [WinError 10061] Es konnte keine Verbindung hergestellt werden, da der Zielcomputer die Verbindung verweigerte
-
-During handling of the above exception, another exception occurred:
-
-Traceback (most recent call last):
-  File "C:\Entwicklung\calibre-web-test\test\test_email_STARTTLS.py", line 100, in test_STARTTLS_resend_password
-    self.create_user('paswd_resend', {'password': '123', 'email': 'a@b.com', 'edit_role': 1})
-  File "C:\Entwicklung\calibre-web-test\test\helper_ui.py", line 856, in create_user
-    return cls.change_user(config)
-  File "C:\Entwicklung\calibre-web-test\test\helper_ui.py", line 895, in change_user
-    ele = cls.driver.find_element_by_id(checkbox)
-  File "C:\python38\lib\site-packages\selenium\webdriver\remote\webdriver.py", line 360, in find_element_by_id
-    return self.find_element(by=By.ID, value=id_)
-  File "C:\python38\lib\site-packages\selenium\webdriver\remote\webdriver.py", line 976, in find_element
-    return self.execute(Command.FIND_ELEMENT, {
-  File "C:\python38\lib\site-packages\selenium\webdriver\remote\webdriver.py", line 319, in execute
-    response = self.command_executor.execute(driver_command, params)
-  File "C:\python38\lib\site-packages\selenium\webdriver\remote\remote_connection.py", line 374, in execute
-    return self._request(command_info[0], url, body=data)
-  File "C:\python38\lib\site-packages\selenium\webdriver\remote\remote_connection.py", line 397, in _request
-    resp = self._conn.request(method, url, body=body, headers=headers)
-  File "C:\python38\lib\site-packages\urllib3\request.py", line 79, in request
-    return self.request_encode_body(
-  File "C:\python38\lib\site-packages\urllib3\request.py", line 171, in request_encode_body
-    return self.urlopen(method, url, **extra_kw)
-  File "C:\python38\lib\site-packages\urllib3\poolmanager.py", line 330, in urlopen
-    response = conn.urlopen(method, u.request_uri, **kw)
-  File "C:\python38\lib\site-packages\urllib3\connectionpool.py", line 747, in urlopen
-    return self.urlopen(
-  File "C:\python38\lib\site-packages\urllib3\connectionpool.py", line 747, in urlopen
-    return self.urlopen(
-  File "C:\python38\lib\site-packages\urllib3\connectionpool.py", line 747, in urlopen
-    return self.urlopen(
-  File "C:\python38\lib\site-packages\urllib3\connectionpool.py", line 719, in urlopen
-    retries = retries.increment(
-  File "C:\python38\lib\site-packages\urllib3\util\retry.py", line 436, in increment
-    raise MaxRetryError(_pool, url, error or ResponseError(cause))
-urllib3.exceptions.MaxRetryError: HTTPConnectionPool(host='127.0.0.1', port=62268): Max retries exceeded with url: /session/7c8a9979-87a1-4689-b4d4-ffb1b45e3f56/element (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x0689C2F8>: Failed to establish a new connection: [WinError 10061] Es konnte keine Verbindung hergestellt werden, da der Zielcomputer die Verbindung verweigerte'))</pre>
+                        <pre class="text-left">Skipping Goodread Test, no config file found</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
+        </tr>
+    
+    
+    
+        <tr id='st11.3' class='none bg-warning'>
+            <td>
+                <div class='testcase'>test_goodreads_about</div>
+            </td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st11.3')">SKIP</a>
+                </div>
+                <!--css div popup start-->
+                <div id='div_st11.3' class="popup_window test_output" style="display:none;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
+                                onclick="document.getElementById('div_st11.3').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Skipping Goodread Test, no config file found</pre>
                     </div>
                     <div class="clearfix"></div>
                 </div>
@@ -1232,101 +1239,285 @@ urllib3.exceptions.MaxRetryError: HTTPConnectionPool(host='127.0.0.1', port=6226
 
 
     <tr class="result['header']['style']">
-        <td>unittest.suite._ErrorHolder</td>
-        <td class="text-center">2</td>
+        <td>test_helper.CalibreHelper</td>
+        <td class="text-center">16</td>
+        <td class="text-center">16</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
-        <td class="text-center">2</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c10', 2)">Detail</a>
+            <a onclick="showClassDetail('c12', 16)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='et10.1' class='none bg-info'>
+        <tr id='pt12.1' class='hiddenRow bg-success'>
             <td>
-                <div class='testcase'>tearDownClass (test_email_STARTTLS)</div>
+                <div class='testcase'>test_author_sort</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt12.2' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>test_author_sort_comma</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt12.3' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>test_author_sort_junior</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt12.4' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>test_author_sort_oneword</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt12.5' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>test_author_sort_roman</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt12.6' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>test_check_Limit_Length</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt12.7' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>test_check_char_replacement</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt12.8' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>test_check_chinese_Characters</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt12.9' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>test_check_deg_eur_replacement</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt12.10' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>test_check_doubleS</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt12.11' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>test_check_finish_Dot</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt12.12' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>test_check_high23</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt12.13' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>test_check_umlauts</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt12.14' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>test_random_password</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt12.15' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>test_split_authors</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt12.16' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>test_whitespaces</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+
+
+    <tr class="result['header']['style']">
+        <td>test_kobo_sync.TestKoboSync</td>
+        <td class="text-center">8</td>
+        <td class="text-center">8</td>
+        <td class="text-center">0</td>
+        <td class="text-center">0</td>
+        <td class="text-center">0</td>
+        <td class="text-center">
+            <a onclick="showClassDetail('c13', 8)">Detail</a>
+        </td>
+    </tr>
+
+    
+    
+        <tr id='pt13.1' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>test_kobo_about</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt13.2' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>test_shelves_add_remove_books</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt13.3' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>test_sync_changed_book</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt13.4' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>test_sync_invalid</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt13.5' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>test_sync_reading_state</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt13.6' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>test_sync_shelf</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt13.7' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>test_sync_unchanged</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt13.8' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>test_sync_upload</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+
+
+    <tr class="result['header']['style']">
+        <td>test_logging.test_logging</td>
+        <td class="text-center">7</td>
+        <td class="text-center">4</td>
+        <td class="text-center">1</td>
+        <td class="text-center">1</td>
+        <td class="text-center">1</td>
+        <td class="text-center">
+            <a onclick="showClassDetail('c14', 7)">Detail</a>
+        </td>
+    </tr>
+
+    
+    
+        <tr id='ft14.1' class='none bg-danger'>
+            <td>
+                <div class='testcase'>test_access_log_recover</div>
             </td>
             <td colspan='6'>
                 <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et10.1')">ERROR</a>
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft14.1')">FAIL</a>
                 </div>
                 <!--css div popup start-->
-                <div id='div_et10.1' class="popup_window test_output" style="display:none;">
+                <div id='div_ft14.1' class="popup_window test_output" style="display:none;">
                     <div class='close_button pull-right'>
                         <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                                onclick="document.getElementById('div_et10.1').style.display='none'"><span
+                                onclick="document.getElementById('div_ft14.1').style.display='none'"><span
                                 aria-hidden="true">&times;</span></button>
                     </div>
                     <div class="text-left pull-left">
                         <pre class="text-left">Traceback (most recent call last):
-  File "C:\python38\lib\site-packages\urllib3\connection.py", line 156, in _new_conn
-    conn = connection.create_connection(
-  File "C:\python38\lib\site-packages\urllib3\util\connection.py", line 84, in create_connection
-    raise err
-  File "C:\python38\lib\site-packages\urllib3\util\connection.py", line 74, in create_connection
-    sock.connect(sa)
-ConnectionRefusedError: [WinError 10061] Es konnte keine Verbindung hergestellt werden, da der Zielcomputer die Verbindung verweigerte
-
-During handling of the above exception, another exception occurred:
-
-Traceback (most recent call last):
-  File "C:\python38\lib\site-packages\urllib3\connectionpool.py", line 665, in urlopen
-    httplib_response = self._make_request(
-  File "C:\python38\lib\site-packages\urllib3\connectionpool.py", line 387, in _make_request
-    conn.request(method, url, **httplib_request_kw)
-  File "C:\python38\lib\http\client.py", line 1240, in request
-    self._send_request(method, url, body, headers, encode_chunked)
-  File "C:\python38\lib\http\client.py", line 1286, in _send_request
-    self.endheaders(body, encode_chunked=encode_chunked)
-  File "C:\python38\lib\http\client.py", line 1235, in endheaders
-    self._send_output(message_body, encode_chunked=encode_chunked)
-  File "C:\python38\lib\http\client.py", line 1006, in _send_output
-    self.send(msg)
-  File "C:\python38\lib\http\client.py", line 946, in send
-    self.connect()
-  File "C:\python38\lib\site-packages\urllib3\connection.py", line 184, in connect
-    conn = self._new_conn()
-  File "C:\python38\lib\site-packages\urllib3\connection.py", line 168, in _new_conn
-    raise NewConnectionError(
-urllib3.exceptions.NewConnectionError: <urllib3.connection.HTTPConnection object at 0x06895D78>: Failed to establish a new connection: [WinError 10061] Es konnte keine Verbindung hergestellt werden, da der Zielcomputer die Verbindung verweigerte
-
-During handling of the above exception, another exception occurred:
-
-Traceback (most recent call last):
-  File "C:\Entwicklung\calibre-web-test\test\test_email_STARTTLS.py", line 49, in tearDownClass
-    cls.stop_calibre_web()
-  File "C:\Entwicklung\calibre-web-test\test\helper_ui.py", line 385, in stop_calibre_web
-    cls.driver.find_element_by_id('admin_stop').click()
-  File "C:\python38\lib\site-packages\selenium\webdriver\remote\webdriver.py", line 360, in find_element_by_id
-    return self.find_element(by=By.ID, value=id_)
-  File "C:\python38\lib\site-packages\selenium\webdriver\remote\webdriver.py", line 976, in find_element
-    return self.execute(Command.FIND_ELEMENT, {
-  File "C:\python38\lib\site-packages\selenium\webdriver\remote\webdriver.py", line 319, in execute
-    response = self.command_executor.execute(driver_command, params)
-  File "C:\python38\lib\site-packages\selenium\webdriver\remote\remote_connection.py", line 374, in execute
-    return self._request(command_info[0], url, body=data)
-  File "C:\python38\lib\site-packages\selenium\webdriver\remote\remote_connection.py", line 397, in _request
-    resp = self._conn.request(method, url, body=body, headers=headers)
-  File "C:\python38\lib\site-packages\urllib3\request.py", line 79, in request
-    return self.request_encode_body(
-  File "C:\python38\lib\site-packages\urllib3\request.py", line 171, in request_encode_body
-    return self.urlopen(method, url, **extra_kw)
-  File "C:\python38\lib\site-packages\urllib3\poolmanager.py", line 330, in urlopen
-    response = conn.urlopen(method, u.request_uri, **kw)
-  File "C:\python38\lib\site-packages\urllib3\connectionpool.py", line 747, in urlopen
-    return self.urlopen(
-  File "C:\python38\lib\site-packages\urllib3\connectionpool.py", line 747, in urlopen
-    return self.urlopen(
-  File "C:\python38\lib\site-packages\urllib3\connectionpool.py", line 747, in urlopen
-    return self.urlopen(
-  File "C:\python38\lib\site-packages\urllib3\connectionpool.py", line 719, in urlopen
-    retries = retries.increment(
-  File "C:\python38\lib\site-packages\urllib3\util\retry.py", line 436, in increment
-    raise MaxRetryError(_pool, url, error or ResponseError(cause))
-urllib3.exceptions.MaxRetryError: HTTPConnectionPool(host='127.0.0.1', port=62268): Max retries exceeded with url: /session/7c8a9979-87a1-4689-b4d4-ffb1b45e3f56/element (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x06895D78>: Failed to establish a new connection: [WinError 10061] Es konnte keine Verbindung hergestellt werden, da der Zielcomputer die Verbindung verweigerte'))</pre>
+  File "C:\Entwicklung\calibre-web-test\test\test_logging.py", line 155, in test_access_log_recover
+    self.assertFalse(os.path.isfile(os.path.join(CALIBRE_WEB_PATH, 'hö lo', 'lü g')))
+AssertionError: True is not false</pre>
                     </div>
                     <div class="clearfix"></div>
                 </div>
@@ -1336,19 +1527,773 @@ urllib3.exceptions.MaxRetryError: HTTPConnectionPool(host='127.0.0.1', port=6226
     
     
     
-        <tr id='et10.2' class='none bg-info'>
+        <tr id='pt14.2' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>test_debug_log</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt14.3' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>test_failed_login</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='st14.4' class='none bg-warning'>
+            <td>
+                <div class='testcase'>test_failed_register</div>
+            </td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st14.4')">SKIP</a>
+                </div>
+                <!--css div popup start-->
+                <div id='div_st14.4' class="popup_window test_output" style="display:none;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
+                                onclick="document.getElementById('div_st14.4').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Not Implemented</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
+        </tr>
+    
+    
+    
+        <tr id='pt14.5' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>test_logfile_change</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='et14.6' class='none bg-info'>
+            <td>
+                <div class='testcase'>test_logfile_recover</div>
+            </td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et14.6')">ERROR</a>
+                </div>
+                <!--css div popup start-->
+                <div id='div_et14.6' class="popup_window test_output" style="display:none;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
+                                onclick="document.getElementById('div_et14.6').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Traceback (most recent call last):
+  File "C:\Entwicklung\calibre-web-test\test\test_logging.py", line 120, in test_logfile_recover
+    os.makedirs(os.path.join(CALIBRE_WEB_PATH, 'hü lo'))
+  File "C:\python38\lib\os.py", line 223, in makedirs
+    mkdir(name, mode)
+FileExistsError: [WinError 183] Eine Datei kann nicht erstellt werden, wenn sie bereits vorhanden ist: 'C:\\Entwicklung\\calibre-web\\hü lo'</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
+        </tr>
+    
+    
+    
+        <tr id='pt14.7' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>test_logviewer</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+
+
+    <tr class="result['header']['style']">
+        <td>test_login.test_Login</td>
+        <td class="text-center">11</td>
+        <td class="text-center">11</td>
+        <td class="text-center">0</td>
+        <td class="text-center">0</td>
+        <td class="text-center">0</td>
+        <td class="text-center">
+            <a onclick="showClassDetail('c15', 11)">Detail</a>
+        </td>
+    </tr>
+
+    
+    
+        <tr id='pt15.1' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>test_digest_login</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt15.2' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>test_login_capital_letters_user_unicode_password</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt15.3' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>test_login_delete_admin</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt15.4' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>test_login_empty_password</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt15.5' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>test_login_locale_select</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt15.6' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>test_login_protected</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt15.7' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>test_login_remember_me</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt15.8' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>test_login_rename_user</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt15.9' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>test_login_unicode_user_space_end_password</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt15.10' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>test_login_user_with_space_password_end_space</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt15.11' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>test_robots</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+
+
+    <tr class="result['header']['style']">
+        <td>test_oauth.test_OAuth_login</td>
+        <td class="text-center">2</td>
+        <td class="text-center">2</td>
+        <td class="text-center">0</td>
+        <td class="text-center">0</td>
+        <td class="text-center">0</td>
+        <td class="text-center">
+            <a onclick="showClassDetail('c16', 2)">Detail</a>
+        </td>
+    </tr>
+
+    
+    
+        <tr id='pt16.1' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>test_oauth_about</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt16.2' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>test_visible_oauth</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+
+
+    <tr class="result['header']['style']">
+        <td>test_opds_feed.test_opds_feed</td>
+        <td class="text-center">20</td>
+        <td class="text-center">20</td>
+        <td class="text-center">0</td>
+        <td class="text-center">0</td>
+        <td class="text-center">0</td>
+        <td class="text-center">
+            <a onclick="showClassDetail('c17', 20)">Detail</a>
+        </td>
+    </tr>
+
+    
+    
+        <tr id='pt17.1' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>test_opds</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt17.2' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>test_opds_author</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt17.3' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>test_opds_calibre_companion</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt17.4' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>test_opds_cover</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt17.5' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>test_opds_download_book</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt17.6' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>test_opds_formats</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt17.7' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>test_opds_guest_user</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt17.8' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>test_opds_hot</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt17.9' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>test_opds_language</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt17.10' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>test_opds_non_admin</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt17.11' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>test_opds_publisher</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt17.12' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>test_opds_random</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt17.13' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>test_opds_ratings</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt17.14' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>test_opds_read_unread</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt17.15' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>test_opds_search</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt17.16' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>test_opds_series</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt17.17' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>test_opds_shelf_access</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt17.18' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>test_opds_tags</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt17.19' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>test_opds_top_rated</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt17.20' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>test_recently_added</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+
+
+    <tr class="result['header']['style']">
+        <td>test_register.test_register</td>
+        <td class="text-center">7</td>
+        <td class="text-center">7</td>
+        <td class="text-center">0</td>
+        <td class="text-center">0</td>
+        <td class="text-center">0</td>
+        <td class="text-center">
+            <a onclick="showClassDetail('c18', 7)">Detail</a>
+        </td>
+    </tr>
+
+    
+    
+        <tr id='pt18.1' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>test_forgot_password</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt18.2' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>test_limit_domain</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt18.3' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>test_register_no_server</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt18.4' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>test_registering_only_email</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt18.5' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>test_registering_user</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt18.6' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>test_registering_user_fail</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt18.7' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>test_user_change_password</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+
+
+    <tr class="result['header']['style']">
+        <td>test_shelf.test_shelf</td>
+        <td class="text-center">10</td>
+        <td class="text-center">9</td>
+        <td class="text-center">0</td>
+        <td class="text-center">0</td>
+        <td class="text-center">1</td>
+        <td class="text-center">
+            <a onclick="showClassDetail('c19', 10)">Detail</a>
+        </td>
+    </tr>
+
+    
+    
+        <tr id='pt19.1' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>test_add_shelf_from_search</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt19.2' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>test_arrange_shelf</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt19.3' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>test_delete_book_of_shelf</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt19.4' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>test_private_shelf</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt19.5' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>test_public_private_shelf</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt19.6' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>test_public_shelf</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt19.7' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>test_rename_shelf</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt19.8' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>test_shelf_action_non_shelf_edit_role</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='st19.9' class='none bg-warning'>
+            <td>
+                <div class='testcase'>test_shelf_database_change</div>
+            </td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st19.9')">SKIP</a>
+                </div>
+                <!--css div popup start-->
+                <div id='div_st19.9' class="popup_window test_output" style="display:none;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
+                                onclick="document.getElementById('div_st19.9').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Change Database Not Implemented</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
+        </tr>
+    
+    
+    
+        <tr id='pt19.10' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>test_shelf_long_name</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+
+
+    <tr class="result['header']['style']">
+        <td>test_updater.TestUpdater</td>
+        <td class="text-center">8</td>
+        <td class="text-center">7</td>
+        <td class="text-center">0</td>
+        <td class="text-center">0</td>
+        <td class="text-center">1</td>
+        <td class="text-center">
+            <a onclick="showClassDetail('c20', 8)">Detail</a>
+        </td>
+    </tr>
+
+    
+    
+        <tr id='pt20.1' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>test_check_update_nightly_errors</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt20.2' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>test_check_update_nightly_request_errors</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt20.3' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>test_check_update_stable_errors</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt20.4' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>test_check_update_stable_versions</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt20.5' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>test_perform_update</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt20.6' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>test_perform_update_stable_errors</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='st20.7' class='none bg-warning'>
+            <td>
+                <div class='testcase'>test_perform_update_timeout</div>
+            </td>
+            <td colspan='6'>
+                <div class="text-center">
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st20.7')">SKIP</a>
+                </div>
+                <!--css div popup start-->
+                <div id='div_st20.7' class="popup_window test_output" style="display:none;">
+                    <div class='close_button pull-right'>
+                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
+                                onclick="document.getElementById('div_st20.7').style.display='none'"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="text-left pull-left">
+                        <pre class="text-left">Takes too long</pre>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <!--css div popup end-->
+            </td>
+        </tr>
+    
+    
+    
+        <tr id='pt20.8' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>test_reconnect_database</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+
+
+    <tr class="result['header']['style']">
+        <td>unittest.suite._ErrorHolder</td>
+        <td class="text-center">1</td>
+        <td class="text-center">0</td>
+        <td class="text-center">0</td>
+        <td class="text-center">1</td>
+        <td class="text-center">0</td>
+        <td class="text-center">
+            <a onclick="showClassDetail('c21', 1)">Detail</a>
+        </td>
+    </tr>
+
+    
+    
+        <tr id='et21.1' class='none bg-info'>
             <td>
                 <div class='testcase'>tearDownClass (test_updater)</div>
             </td>
             <td colspan='6'>
                 <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et10.2')">ERROR</a>
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et21.1')">ERROR</a>
                 </div>
                 <!--css div popup start-->
-                <div id='div_et10.2' class="popup_window test_output" style="display:none;">
+                <div id='div_et21.1' class="popup_window test_output" style="display:none;">
                     <div class='close_button pull-right'>
                         <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                                onclick="document.getElementById('div_et10.2').style.display='none'"><span
+                                onclick="document.getElementById('div_et21.1').style.display='none'"><span
                                 aria-hidden="true">&times;</span></button>
                     </div>
                     <div class="text-left pull-left">
@@ -1381,1274 +2326,6 @@ PermissionError: [WinError 5] Zugriff verweigert: 'C:\\Entwicklung\\calibre-web\
 
 
     <tr class="result['header']['style']">
-        <td>test_email_ssl.test_SSL</td>
-        <td class="text-center">4</td>
-        <td class="text-center">4</td>
-        <td class="text-center">0</td>
-        <td class="text-center">0</td>
-        <td class="text-center">0</td>
-        <td class="text-center">
-            <a onclick="showClassDetail('c11', 4)">Detail</a>
-        </td>
-    </tr>
-
-    
-    
-        <tr id='pt11.1' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>test_SSL_None_setup_error</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt11.2' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>test_SSL_STARTTLS_setup_error</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt11.3' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>test_SSL_logging_email</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt11.4' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>test_SSL_only</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-
-
-    <tr class="result['header']['style']">
-        <td>test_goodreads.TestGoodreads</td>
-        <td class="text-center">3</td>
-        <td class="text-center">0</td>
-        <td class="text-center">0</td>
-        <td class="text-center">0</td>
-        <td class="text-center">3</td>
-        <td class="text-center">
-            <a onclick="showClassDetail('c12', 3)">Detail</a>
-        </td>
-    </tr>
-
-    
-    
-        <tr id='st12.1' class='none bg-warning'>
-            <td>
-                <div class='testcase'>test_author_page</div>
-            </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st12.1')">SKIP</a>
-                </div>
-                <!--css div popup start-->
-                <div id='div_st12.1' class="popup_window test_output" style="display:none;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                                onclick="document.getElementById('div_st12.1').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Skipping Goodread Test, no config file found</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
-        </tr>
-    
-    
-    
-        <tr id='st12.2' class='none bg-warning'>
-            <td>
-                <div class='testcase'>test_author_page_invalid</div>
-            </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st12.2')">SKIP</a>
-                </div>
-                <!--css div popup start-->
-                <div id='div_st12.2' class="popup_window test_output" style="display:none;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                                onclick="document.getElementById('div_st12.2').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Skipping Goodread Test, no config file found</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
-        </tr>
-    
-    
-    
-        <tr id='st12.3' class='none bg-warning'>
-            <td>
-                <div class='testcase'>test_goodreads_about</div>
-            </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st12.3')">SKIP</a>
-                </div>
-                <!--css div popup start-->
-                <div id='div_st12.3' class="popup_window test_output" style="display:none;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                                onclick="document.getElementById('div_st12.3').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Skipping Goodread Test, no config file found</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
-        </tr>
-    
-    
-
-
-    <tr class="result['header']['style']">
-        <td>test_helper.CalibreHelper</td>
-        <td class="text-center">16</td>
-        <td class="text-center">16</td>
-        <td class="text-center">0</td>
-        <td class="text-center">0</td>
-        <td class="text-center">0</td>
-        <td class="text-center">
-            <a onclick="showClassDetail('c13', 16)">Detail</a>
-        </td>
-    </tr>
-
-    
-    
-        <tr id='pt13.1' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>test_author_sort</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt13.2' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>test_author_sort_comma</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt13.3' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>test_author_sort_junior</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt13.4' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>test_author_sort_oneword</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt13.5' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>test_author_sort_roman</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt13.6' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>test_check_Limit_Length</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt13.7' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>test_check_char_replacement</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt13.8' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>test_check_chinese_Characters</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt13.9' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>test_check_deg_eur_replacement</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt13.10' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>test_check_doubleS</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt13.11' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>test_check_finish_Dot</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt13.12' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>test_check_high23</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt13.13' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>test_check_umlauts</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt13.14' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>test_random_password</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt13.15' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>test_split_authors</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt13.16' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>test_whitespaces</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-
-
-    <tr class="result['header']['style']">
-        <td>test_kobo_sync.TestKoboSync</td>
-        <td class="text-center">8</td>
-        <td class="text-center">8</td>
-        <td class="text-center">0</td>
-        <td class="text-center">0</td>
-        <td class="text-center">0</td>
-        <td class="text-center">
-            <a onclick="showClassDetail('c14', 8)">Detail</a>
-        </td>
-    </tr>
-
-    
-    
-        <tr id='pt14.1' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>test_kobo_about</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt14.2' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>test_shelves_add_remove_books</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt14.3' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>test_sync_changed_book</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt14.4' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>test_sync_invalid</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt14.5' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>test_sync_reading_state</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt14.6' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>test_sync_shelf</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt14.7' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>test_sync_unchanged</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt14.8' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>test_sync_upload</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-
-
-    <tr class="result['header']['style']">
-        <td>unittest.loader._FailedTest</td>
-        <td class="text-center">1</td>
-        <td class="text-center">0</td>
-        <td class="text-center">0</td>
-        <td class="text-center">1</td>
-        <td class="text-center">0</td>
-        <td class="text-center">
-            <a onclick="showClassDetail('c15', 1)">Detail</a>
-        </td>
-    </tr>
-
-    
-    
-        <tr id='et15.1' class='none bg-info'>
-            <td>
-                <div class='testcase'>unittestloader_FailedTest)</div>
-            </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et15.1')">ERROR</a>
-                </div>
-                <!--css div popup start-->
-                <div id='div_et15.1' class="popup_window test_output" style="display:none;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                                onclick="document.getElementById('div_et15.1').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">ImportError: Failed to import test module: test_ldap
-Traceback (most recent call last):
-  File "C:\python38\lib\unittest\loader.py", line 436, in _find_test_path
-    module = self._get_module_from_name(name)
-  File "C:\python38\lib\unittest\loader.py", line 377, in _get_module_from_name
-    __import__(name)
-  File "C:\Entwicklung\calibre-web-test\test\test_ldap.py", line 11, in <module>
-    from helper_ldap import TestLDAPServer
-  File "C:\Entwicklung\calibre-web-test\test\helper_ldap.py", line 10, in <module>
-    from ldaptor.inmemory import fromLDIFFile
-ModuleNotFoundError: No module named 'ldaptor'</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
-        </tr>
-    
-    
-
-
-    <tr class="result['header']['style']">
-        <td>test_logging.test_logging</td>
-        <td class="text-center">7</td>
-        <td class="text-center">4</td>
-        <td class="text-center">1</td>
-        <td class="text-center">1</td>
-        <td class="text-center">1</td>
-        <td class="text-center">
-            <a onclick="showClassDetail('c16', 7)">Detail</a>
-        </td>
-    </tr>
-
-    
-    
-        <tr id='ft16.1' class='none bg-danger'>
-            <td>
-                <div class='testcase'>test_access_log_recover</div>
-            </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft16.1')">FAIL</a>
-                </div>
-                <!--css div popup start-->
-                <div id='div_ft16.1' class="popup_window test_output" style="display:none;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                                onclick="document.getElementById('div_ft16.1').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File "C:\Entwicklung\calibre-web-test\test\test_logging.py", line 155, in test_access_log_recover
-    self.assertFalse(os.path.isfile(os.path.join(CALIBRE_WEB_PATH, 'hö lo', 'lü g')))
-AssertionError: True is not false</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
-        </tr>
-    
-    
-    
-        <tr id='pt16.2' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>test_debug_log</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt16.3' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>test_failed_login</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='st16.4' class='none bg-warning'>
-            <td>
-                <div class='testcase'>test_failed_register</div>
-            </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st16.4')">SKIP</a>
-                </div>
-                <!--css div popup start-->
-                <div id='div_st16.4' class="popup_window test_output" style="display:none;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                                onclick="document.getElementById('div_st16.4').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Not Implemented</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
-        </tr>
-    
-    
-    
-        <tr id='pt16.5' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>test_logfile_change</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='et16.6' class='none bg-info'>
-            <td>
-                <div class='testcase'>test_logfile_recover</div>
-            </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et16.6')">ERROR</a>
-                </div>
-                <!--css div popup start-->
-                <div id='div_et16.6' class="popup_window test_output" style="display:none;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                                onclick="document.getElementById('div_et16.6').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File "C:\Entwicklung\calibre-web-test\test\test_logging.py", line 120, in test_logfile_recover
-    os.makedirs(os.path.join(CALIBRE_WEB_PATH, 'hü lo'))
-  File "C:\python38\lib\os.py", line 223, in makedirs
-    mkdir(name, mode)
-FileExistsError: [WinError 183] Eine Datei kann nicht erstellt werden, wenn sie bereits vorhanden ist: 'C:\\Entwicklung\\calibre-web\\hü lo'</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
-        </tr>
-    
-    
-    
-        <tr id='pt16.7' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>test_logviewer</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-
-
-    <tr class="result['header']['style']">
-        <td>test_login.test_Login</td>
-        <td class="text-center">11</td>
-        <td class="text-center">10</td>
-        <td class="text-center">1</td>
-        <td class="text-center">0</td>
-        <td class="text-center">0</td>
-        <td class="text-center">
-            <a onclick="showClassDetail('c17', 11)">Detail</a>
-        </td>
-    </tr>
-
-    
-    
-        <tr id='pt17.1' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>test_digest_login</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt17.2' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>test_login_capital_letters_user_unicode_password</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt17.3' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>test_login_delete_admin</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt17.4' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>test_login_empty_password</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt17.5' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>test_login_locale_select</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt17.6' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>test_login_protected</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt17.7' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>test_login_remember_me</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt17.8' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>test_login_rename_user</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt17.9' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>test_login_unicode_user_space_end_password</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt17.10' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>test_login_user_with_space_password_end_space</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='ft17.11' class='none bg-danger'>
-            <td>
-                <div class='testcase'>test_robots</div>
-            </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft17.11')">FAIL</a>
-                </div>
-                <!--css div popup start-->
-                <div id='div_ft17.11' class="popup_window test_output" style="display:none;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                                onclick="document.getElementById('div_ft17.11').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File "C:\Entwicklung\calibre-web-test\test\test_login.py", line 372, in test_robots
-    self.assertEqual('This is a robÄtsfile', r.text)
-AssertionError: 'This is a robÄtsfile' != 'This is a rob�tsfile'
-- This is a robÄtsfile
-?              ^
-+ This is a rob�tsfile
-?              ^</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
-        </tr>
-    
-    
-
-
-    <tr class="result['header']['style']">
-        <td>test_oauth.test_OAuth_login</td>
-        <td class="text-center">2</td>
-        <td class="text-center">2</td>
-        <td class="text-center">0</td>
-        <td class="text-center">0</td>
-        <td class="text-center">0</td>
-        <td class="text-center">
-            <a onclick="showClassDetail('c18', 2)">Detail</a>
-        </td>
-    </tr>
-
-    
-    
-        <tr id='pt18.1' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>test_oauth_about</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt18.2' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>test_visible_oauth</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-
-
-    <tr class="result['header']['style']">
-        <td>test_opds_feed.test_opds_feed</td>
-        <td class="text-center">20</td>
-        <td class="text-center">20</td>
-        <td class="text-center">0</td>
-        <td class="text-center">0</td>
-        <td class="text-center">0</td>
-        <td class="text-center">
-            <a onclick="showClassDetail('c19', 20)">Detail</a>
-        </td>
-    </tr>
-
-    
-    
-        <tr id='pt19.1' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>test_opds</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt19.2' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>test_opds_author</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt19.3' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>test_opds_calibre_companion</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt19.4' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>test_opds_cover</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt19.5' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>test_opds_download_book</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt19.6' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>test_opds_formats</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt19.7' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>test_opds_guest_user</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt19.8' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>test_opds_hot</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt19.9' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>test_opds_language</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt19.10' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>test_opds_non_admin</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt19.11' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>test_opds_publisher</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt19.12' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>test_opds_random</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt19.13' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>test_opds_ratings</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt19.14' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>test_opds_read_unread</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt19.15' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>test_opds_search</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt19.16' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>test_opds_series</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt19.17' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>test_opds_shelf_access</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt19.18' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>test_opds_tags</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt19.19' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>test_opds_top_rated</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt19.20' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>test_recently_added</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-
-
-    <tr class="result['header']['style']">
-        <td>test_register.test_register</td>
-        <td class="text-center">7</td>
-        <td class="text-center">6</td>
-        <td class="text-center">1</td>
-        <td class="text-center">0</td>
-        <td class="text-center">0</td>
-        <td class="text-center">
-            <a onclick="showClassDetail('c20', 7)">Detail</a>
-        </td>
-    </tr>
-
-    
-    
-        <tr id='ft20.1' class='none bg-danger'>
-            <td>
-                <div class='testcase'>test_forgot_password</div>
-            </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_ft20.1')">FAIL</a>
-                </div>
-                <!--css div popup start-->
-                <div id='div_ft20.1' class="popup_window test_output" style="display:none;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                                onclick="document.getElementById('div_ft20.1').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File "C:\Entwicklung\calibre-web-test\test\test_register.py", line 200, in test_forgot_password
-    self.assertTrue(self.check_user_logged_in('forget', noCompare=True))
-AssertionError: False is not true</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
-        </tr>
-    
-    
-    
-        <tr id='pt20.2' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>test_limit_domain</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt20.3' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>test_register_no_server</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt20.4' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>test_registering_only_email</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt20.5' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>test_registering_user</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt20.6' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>test_registering_user_fail</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt20.7' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>test_user_change_password</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-
-
-    <tr class="result['header']['style']">
-        <td>test_shelf.test_shelf</td>
-        <td class="text-center">10</td>
-        <td class="text-center">9</td>
-        <td class="text-center">0</td>
-        <td class="text-center">0</td>
-        <td class="text-center">1</td>
-        <td class="text-center">
-            <a onclick="showClassDetail('c21', 10)">Detail</a>
-        </td>
-    </tr>
-
-    
-    
-        <tr id='pt21.1' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>test_add_shelf_from_search</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt21.2' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>test_arrange_shelf</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt21.3' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>test_delete_book_of_shelf</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt21.4' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>test_private_shelf</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt21.5' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>test_public_private_shelf</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt21.6' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>test_public_shelf</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt21.7' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>test_rename_shelf</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt21.8' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>test_shelf_action_non_shelf_edit_role</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='st21.9' class='none bg-warning'>
-            <td>
-                <div class='testcase'>test_shelf_database_change</div>
-            </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st21.9')">SKIP</a>
-                </div>
-                <!--css div popup start-->
-                <div id='div_st21.9' class="popup_window test_output" style="display:none;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                                onclick="document.getElementById('div_st21.9').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Change Database Not Implemented</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
-        </tr>
-    
-    
-    
-        <tr id='pt21.10' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>test_shelf_long_name</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-
-
-    <tr class="result['header']['style']">
-        <td>test_updater.TestUpdater</td>
-        <td class="text-center">8</td>
-        <td class="text-center">7</td>
-        <td class="text-center">0</td>
-        <td class="text-center">0</td>
-        <td class="text-center">1</td>
-        <td class="text-center">
-            <a onclick="showClassDetail('c22', 8)">Detail</a>
-        </td>
-    </tr>
-
-    
-    
-        <tr id='pt22.1' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>test_check_update_nightly_errors</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt22.2' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>test_check_update_nightly_request_errors</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt22.3' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>test_check_update_stable_errors</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt22.4' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>test_check_update_stable_versions</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt22.5' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>test_perform_update</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='pt22.6' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>test_perform_update_stable_errors</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-    
-        <tr id='st22.7' class='none bg-warning'>
-            <td>
-                <div class='testcase'>test_perform_update_timeout</div>
-            </td>
-            <td colspan='6'>
-                <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st22.7')">SKIP</a>
-                </div>
-                <!--css div popup start-->
-                <div id='div_st22.7' class="popup_window test_output" style="display:none;">
-                    <div class='close_button pull-right'>
-                        <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                                onclick="document.getElementById('div_st22.7').style.display='none'"><span
-                                aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="text-left pull-left">
-                        <pre class="text-left">Takes too long</pre>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <!--css div popup end-->
-            </td>
-        </tr>
-    
-    
-    
-        <tr id='pt22.8' class='hiddenRow bg-success'>
-            <td>
-                <div class='testcase'>test_reconnect_database</div>
-            </td>
-            <td colspan='6' align='center'>PASS</td>
-        </tr>
-    
-    
-
-
-    <tr class="result['header']['style']">
         <td>test_user_template.test_user_template</td>
         <td class="text-center">19</td>
         <td class="text-center">19</td>
@@ -2656,13 +2333,13 @@ AssertionError: False is not true</pre>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c23', 19)">Detail</a>
+            <a onclick="showClassDetail('c22', 19)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt23.1' class='hiddenRow bg-success'>
+        <tr id='pt22.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_allow_column_restriction</div>
             </td>
@@ -2671,7 +2348,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt23.2' class='hiddenRow bg-success'>
+        <tr id='pt22.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_allow_tag_restriction</div>
             </td>
@@ -2680,7 +2357,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt23.3' class='hiddenRow bg-success'>
+        <tr id='pt22.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_archived_format_template</div>
             </td>
@@ -2689,7 +2366,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt23.4' class='hiddenRow bg-success'>
+        <tr id='pt22.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_author_user_template</div>
             </td>
@@ -2698,7 +2375,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt23.5' class='hiddenRow bg-success'>
+        <tr id='pt22.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_best_user_template</div>
             </td>
@@ -2707,7 +2384,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt23.6' class='hiddenRow bg-success'>
+        <tr id='pt22.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_category_user_template</div>
             </td>
@@ -2716,7 +2393,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt23.7' class='hiddenRow bg-success'>
+        <tr id='pt22.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_deny_column_restriction</div>
             </td>
@@ -2725,7 +2402,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt23.8' class='hiddenRow bg-success'>
+        <tr id='pt22.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_deny_tag_restriction</div>
             </td>
@@ -2734,7 +2411,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt23.9' class='hiddenRow bg-success'>
+        <tr id='pt22.9' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_detail_random_user_template</div>
             </td>
@@ -2743,7 +2420,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt23.10' class='hiddenRow bg-success'>
+        <tr id='pt22.10' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_format_user_template</div>
             </td>
@@ -2752,7 +2429,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt23.11' class='hiddenRow bg-success'>
+        <tr id='pt22.11' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_hot_user_template</div>
             </td>
@@ -2761,7 +2438,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt23.12' class='hiddenRow bg-success'>
+        <tr id='pt22.12' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_language_user_template</div>
             </td>
@@ -2770,7 +2447,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt23.13' class='hiddenRow bg-success'>
+        <tr id='pt22.13' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_limit_book_languages</div>
             </td>
@@ -2779,7 +2456,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt23.14' class='hiddenRow bg-success'>
+        <tr id='pt22.14' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_publisher_user_template</div>
             </td>
@@ -2788,7 +2465,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt23.15' class='hiddenRow bg-success'>
+        <tr id='pt22.15' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_random_user_template</div>
             </td>
@@ -2797,7 +2474,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt23.16' class='hiddenRow bg-success'>
+        <tr id='pt22.16' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_read_user_template</div>
             </td>
@@ -2806,7 +2483,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt23.17' class='hiddenRow bg-success'>
+        <tr id='pt22.17' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_recent_user_template</div>
             </td>
@@ -2815,7 +2492,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt23.18' class='hiddenRow bg-success'>
+        <tr id='pt22.18' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_series_user_template</div>
             </td>
@@ -2824,7 +2501,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt23.19' class='hiddenRow bg-success'>
+        <tr id='pt22.19' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_ui_language_settings</div>
             </td>
@@ -2842,13 +2519,13 @@ AssertionError: False is not true</pre>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c24', 30)">Detail</a>
+            <a onclick="showClassDetail('c23', 30)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id='pt24.1' class='hiddenRow bg-success'>
+        <tr id='pt23.1' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_about</div>
             </td>
@@ -2857,7 +2534,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt24.2' class='hiddenRow bg-success'>
+        <tr id='pt23.2' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_admin_SMTP_Settings</div>
             </td>
@@ -2866,7 +2543,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt24.3' class='hiddenRow bg-success'>
+        <tr id='pt23.3' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_admin_add_user</div>
             </td>
@@ -2875,7 +2552,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt24.4' class='hiddenRow bg-success'>
+        <tr id='pt23.4' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_admin_change_password</div>
             </td>
@@ -2884,7 +2561,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt24.5' class='hiddenRow bg-success'>
+        <tr id='pt23.5' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_admin_change_visibility_archived</div>
             </td>
@@ -2893,7 +2570,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt24.6' class='hiddenRow bg-success'>
+        <tr id='pt23.6' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_admin_change_visibility_authors</div>
             </td>
@@ -2902,7 +2579,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt24.7' class='hiddenRow bg-success'>
+        <tr id='pt23.7' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_admin_change_visibility_category</div>
             </td>
@@ -2911,7 +2588,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt24.8' class='hiddenRow bg-success'>
+        <tr id='pt23.8' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_admin_change_visibility_file_formats</div>
             </td>
@@ -2920,7 +2597,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt24.9' class='hiddenRow bg-success'>
+        <tr id='pt23.9' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_admin_change_visibility_hot</div>
             </td>
@@ -2929,7 +2606,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt24.10' class='hiddenRow bg-success'>
+        <tr id='pt23.10' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_admin_change_visibility_language</div>
             </td>
@@ -2938,7 +2615,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt24.11' class='hiddenRow bg-success'>
+        <tr id='pt23.11' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_admin_change_visibility_publisher</div>
             </td>
@@ -2947,7 +2624,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt24.12' class='hiddenRow bg-success'>
+        <tr id='pt23.12' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_admin_change_visibility_random</div>
             </td>
@@ -2956,7 +2633,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt24.13' class='hiddenRow bg-success'>
+        <tr id='pt23.13' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_admin_change_visibility_rated</div>
             </td>
@@ -2965,7 +2642,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt24.14' class='hiddenRow bg-success'>
+        <tr id='pt23.14' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_admin_change_visibility_rating</div>
             </td>
@@ -2974,7 +2651,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt24.15' class='hiddenRow bg-success'>
+        <tr id='pt23.15' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_admin_change_visibility_read</div>
             </td>
@@ -2983,7 +2660,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt24.16' class='hiddenRow bg-success'>
+        <tr id='pt23.16' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_admin_change_visibility_series</div>
             </td>
@@ -2992,7 +2669,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt24.17' class='hiddenRow bg-success'>
+        <tr id='pt23.17' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_allow_columns</div>
             </td>
@@ -3001,7 +2678,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt24.18' class='hiddenRow bg-success'>
+        <tr id='pt23.18' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_allow_tags</div>
             </td>
@@ -3010,7 +2687,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt24.19' class='hiddenRow bg-success'>
+        <tr id='pt23.19' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_archive_books</div>
             </td>
@@ -3019,7 +2696,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt24.20' class='hiddenRow bg-success'>
+        <tr id='pt23.20' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_authors_max_settings</div>
             </td>
@@ -3028,7 +2705,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt24.21' class='hiddenRow bg-success'>
+        <tr id='pt23.21' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_checked_logged_in</div>
             </td>
@@ -3037,7 +2714,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt24.22' class='hiddenRow bg-success'>
+        <tr id='pt23.22' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_hide_custom_column</div>
             </td>
@@ -3046,7 +2723,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt24.23' class='hiddenRow bg-success'>
+        <tr id='pt23.23' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_link_column_to_read_status</div>
             </td>
@@ -3055,7 +2732,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt24.24' class='hiddenRow bg-success'>
+        <tr id='pt23.24' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_random_books_available</div>
             </td>
@@ -3064,7 +2741,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt24.25' class='hiddenRow bg-success'>
+        <tr id='pt23.25' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_restrict_columns</div>
             </td>
@@ -3073,7 +2750,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt24.26' class='hiddenRow bg-success'>
+        <tr id='pt23.26' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_restrict_tags</div>
             </td>
@@ -3082,7 +2759,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt24.27' class='hiddenRow bg-success'>
+        <tr id='pt23.27' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_search_functions</div>
             </td>
@@ -3091,7 +2768,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt24.28' class='hiddenRow bg-success'>
+        <tr id='pt23.28' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_search_string</div>
             </td>
@@ -3100,7 +2777,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt24.29' class='hiddenRow bg-success'>
+        <tr id='pt23.29' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_user_email_available</div>
             </td>
@@ -3109,7 +2786,7 @@ AssertionError: False is not true</pre>
     
     
     
-        <tr id='pt24.30' class='hiddenRow bg-success'>
+        <tr id='pt23.30' class='hiddenRow bg-success'>
             <td>
                 <div class='testcase'>test_user_visibility_sidebar</div>
             </td>
@@ -3120,10 +2797,10 @@ AssertionError: False is not true</pre>
 
     <tr id='total_row' class="text-center bg-grey">
         <td>Total</td>
-        <td>223</td>
-        <td>197</td>
-        <td>8</td>
-        <td>9</td>
+        <td>218</td>
+        <td>199</td>
+        <td>4</td>
+        <td>6</td>
         <td>9</td>
         <td>&nbsp;</td>
     </tr>
@@ -3211,8 +2888,20 @@ AssertionError: False is not true</pre>
             </tr>
           
             <tr>
+              <th>lxml</th>
+              <td>4.5.2</td>
+              <td>Basic</td>
+            </tr>
+          
+            <tr>
               <th>natsort</th>
               <td>7.0.1</td>
+              <td>Basic</td>
+            </tr>
+          
+            <tr>
+              <th>Pillow</th>
+              <td>7.2.0</td>
               <td>Basic</td>
             </tr>
           
@@ -3237,6 +2926,12 @@ AssertionError: False is not true</pre>
             <tr>
               <th>pytz</th>
               <td>2020.1</td>
+              <td>Basic</td>
+            </tr>
+          
+            <tr>
+              <th>rarfile</th>
+              <td>4.0</td>
               <td>Basic</td>
             </tr>
           
@@ -3307,30 +3002,6 @@ AssertionError: False is not true</pre>
             </tr>
           
             <tr>
-              <th>comicapi</th>
-              <td>2.1.1</td>
-              <td>TestEditAdditionalBooks</td>
-            </tr>
-          
-            <tr>
-              <th>lxml</th>
-              <td>4.5.2</td>
-              <td>TestEditAdditionalBooks</td>
-            </tr>
-          
-            <tr>
-              <th>Pillow</th>
-              <td>7.2.0</td>
-              <td>TestEditAdditionalBooks</td>
-            </tr>
-          
-            <tr>
-              <th>rarfile</th>
-              <td>4.0</td>
-              <td>TestEditAdditionalBooks</td>
-            </tr>
-          
-            <tr>
               <th>lxml</th>
               <td>4.5.2</td>
               <td>TestEditBooks</td>
@@ -3398,7 +3069,7 @@ AssertionError: False is not true</pre>
 </div>
 
 <script>
-    drawCircle(197, 8, 9, 9);
+    drawCircle(199, 4, 6, 9);
 </script>
 
 </div>
