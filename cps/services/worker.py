@@ -8,7 +8,7 @@ try:
     import queue
 except ImportError:
     import Queue as queue
-from datetime import datetime
+from datetime import datetime, timedelta
 from collections import namedtuple
 
 from cps import calibre_db
@@ -23,9 +23,9 @@ STAT_STARTED = 2
 STAT_FINISH_SUCCESS = 3
 
 # Only retain this many tasks in dequeued list
-TASK_CLEANUP_TRIGGER = 20
+TASK_CLEANUP_TRIGGER = 5
 
-QueuedTask = namedtuple('QueuedTask', 'user, added, task')
+QueuedTask = namedtuple('QueuedTask', 'num, user, added, task')
 
 
 def _get_main_thread():
@@ -62,13 +62,15 @@ class WorkerThread(threading.Thread):
 
         self.doLock = threading.Lock()
         self.queue = ImprovedQueue()
-
+        self.num = 0
         self.start()
 
     @classmethod
     def add(cls, user, task):
         ins = cls.getInstance()
+        ins.num += 1
         ins.queue.put(QueuedTask(
+            num=ins.num,
             user=user,
             added=datetime.now(),
             task=task,
@@ -77,8 +79,9 @@ class WorkerThread(threading.Thread):
     @property
     def tasks(self):
         with self.doLock:
-            tasks = list(self.queue.to_list()) + self.dequeued
-        return sorted(tasks, key=lambda x: x.added)
+            tasks = self.queue.to_list() + self.dequeued
+            return sorted(tasks, key=lambda x: x.num)
+
 
     # Main thread loop starting the different tasks
     def run(self):
@@ -86,22 +89,33 @@ class WorkerThread(threading.Thread):
         while main_thread.is_alive():
             item = self.queue.get()
 
-            # add to list so that in-progress tasks show up
             with self.doLock:
-                # Remove completed tasks if needed
+                # once we hit our trigger, start cleaning up dead tasks
                 if len(self.dequeued) > TASK_CLEANUP_TRIGGER:
-                    # sort first (just to be certain), then lob off the extra
-                    self.dequeued = sorted(self.dequeued, key=lambda x: x.added)[-1 * TASK_CLEANUP_TRIGGER:]
+                    dead = []
+                    alive = []
+                    for x in self.dequeued:
+                        (dead if x.task.dead else alive).append(x)
+
+                    # if the ones that we need to keep are within the trigger, do nothing else
+                    delta = len(self.dequeued) - len(dead)
+                    if delta > TASK_CLEANUP_TRIGGER:
+                        ret = alive
+                    else:
+                        # otherwise, lop off the oldest dead tasks until we hit the target trigger
+                        ret = sorted(dead, key=lambda x: x.task.end_time)[-TASK_CLEANUP_TRIGGER:] + alive
+
+                    self.dequeued = sorted(ret, key=lambda x: x.num)
+                # add to list so that in-progress tasks show up
                 self.dequeued.append(item)
 
-            user, added, task = item
-
             # sometimes tasks (like Upload) don't actually have work to do and are created as already finished
-            if task.stat is STAT_WAITING:
+            if item.task.stat is STAT_WAITING:
                 # CalibreTask.start() should wrap all exceptions in it's own error handling
-                task.start(self)
+                item.task.start(self)
 
             self.queue.task_done()
+
 
 class CalibreTask:
     __metaclass__ = abc.ABCMeta
@@ -167,6 +181,15 @@ class CalibreTask:
     @property
     def runtime(self):
         return (self.end_time or datetime.now()) - self.start_time
+
+    @property
+    def dead(self):
+        """Determines whether or not this task can be garbage collected
+
+        We have a separate dictating this because there may be certain tasks that want to override this
+        """
+        # By default, we're good to clean a task if it's "Done"
+        return self.stat in (STAT_FINISH_SUCCESS, STAT_FAIL)
 
     @progress.setter
     def progress(self, x):

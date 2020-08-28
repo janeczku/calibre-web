@@ -730,7 +730,7 @@ def format_runtime(runtime):
 # helper function to apply localize status information in tasklist entries
 def render_task_status(tasklist):
     renderedtasklist = list()
-    for user, added, task in tasklist:
+    for num, user, added, task in tasklist:
         if user == current_user.nickname or current_user.role_admin():
             ret = {}
             if task.start_time:
