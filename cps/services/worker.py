@@ -23,7 +23,7 @@ STAT_STARTED = 2
 STAT_FINISH_SUCCESS = 3
 
 # Only retain this many tasks in dequeued list
-TASK_CLEANUP_TRIGGER = 5
+TASK_CLEANUP_TRIGGER = 20
 
 QueuedTask = namedtuple('QueuedTask', 'num, user, added, task')
 
