@@ -24,7 +24,6 @@ import re
 import ast
 import json
 from datetime import datetime
-import threading
 
 from sqlalchemy import create_engine
 from sqlalchemy import Table, Column, ForeignKey, CheckConstraint
@@ -32,7 +31,6 @@ from sqlalchemy import String, Integer, Boolean, TIMESTAMP, Float
 from sqlalchemy.orm import relationship, sessionmaker, scoped_session
 from sqlalchemy.orm.collections import InstrumentedList
 from sqlalchemy.ext.declarative import declarative_base, DeclarativeMeta
-from sqlalchemy.exc import OperationalError
 from sqlalchemy.pool import StaticPool
 from flask_login import current_user
 from sqlalchemy.sql.expression import and_, true, false, text, func, or_
@@ -400,42 +398,13 @@ class AlchemyEncoder(json.JSONEncoder):
         return json.JSONEncoder.default(self, obj)
 
 
-class CalibreDB(threading.Thread):
+class CalibreDB():
 
     def __init__(self):
-        threading.Thread.__init__(self)
         self.engine = None
         self.session = None
-        self.queue = None
         self.log = None
         self.config = None
-
-    def add_queue(self,queue):
-        self.queue = queue
-        self.log = logger.create()
-
-    def run(self):
-        while True:
-            i = self.queue.get()
-            if i == 'dummy':
-                self.queue.task_done()
-                break
-            if i['task'] == 'add_format':
-                cur_book = self.session.query(Books).filter(Books.id == i['id']).first()
-                cur_book.data.append(i['format'])
-                try:
-                    # db.session.merge(cur_book)
-                    self.session.commit()
-                except OperationalError as e:
-                    self.session.rollback()
-                    self.log.error("Database error: %s", e)
-                    # self._handleError(_(u"Database error: %(error)s.", error=e))
-                    # return
-            self.queue.task_done()
-
-
-    def stop(self):
-        self.queue.put('dummy')
 
     def setup_db(self, config, app_db_path):
         self.config = config

@@ -39,6 +39,7 @@ from sqlalchemy.sql.expression import true, false, and_, text, func
 from werkzeug.datastructures import Headers
 from werkzeug.security import generate_password_hash
 from . import calibre_db
+from .tasks.convert import TaskConvert
 
 try:
     from urllib.parse import quote
@@ -58,12 +59,12 @@ try:
 except ImportError:
     use_PIL = False
 
-from . import logger, config, get_locale, db, ub, worker
+from . import logger, config, get_locale, db, ub
 from . import gdriveutils as gd
 from .constants import STATIC_DIR as _STATIC_DIR
 from .subproc_wrapper import process_wait
-from .worker import STAT_WAITING, STAT_FAIL, STAT_STARTED, STAT_FINISH_SUCCESS
-from .worker import TASK_EMAIL, TASK_CONVERT, TASK_UPLOAD, TASK_CONVERT_ANY
+from .services.worker import WorkerThread, STAT_WAITING, STAT_FAIL, STAT_STARTED, STAT_FINISH_SUCCESS
+from .tasks.email import TaskEmail
 
 
 log = logger.create()
@@ -101,7 +102,7 @@ def convert_book_format(book_id, calibrepath, old_book_format, new_book_format, 
         txt = (u"%s -> %s: %s" % (old_book_format, new_book_format, book.title))
         settings['old_book_format'] = old_book_format
         settings['new_book_format'] = new_book_format
-        worker.add_convert(file_path, book.id, user_id, txt, settings, kindle_mail)
+        WorkerThread.add(user_id, TaskConvert(file_path, book.id, txt, settings, kindle_mail))
         return None
     else:
         error_message = _(u"%(format)s not found: %(fn)s",
@@ -110,9 +111,9 @@ def convert_book_format(book_id, calibrepath, old_book_format, new_book_format, 
 
 
 def send_test_mail(kindle_mail, user_name):
-    worker.add_email(_(u'Calibre-Web test e-mail'), None, None,
-                     config.get_mail_settings(), kindle_mail, user_name,
-                     _(u"Test e-mail"), _(u'This e-mail has been sent via Calibre-Web.'))
+    WorkerThread.add(user_name, TaskEmail(_(u'Calibre-Web test e-mail'), None, None,
+                     config.get_mail_settings(), kindle_mail, _(u"Test e-mail"),
+                               _(u'This e-mail has been sent via Calibre-Web.')))
     return
 
 
@@ -127,9 +128,16 @@ def send_registration_mail(e_mail, user_name, default_password, resend=False):
     text += "Don't forget to change your password after first login.\r\n"
     text += "Sincerely\r\n\r\n"
     text += "Your Calibre-Web team"
-    worker.add_email(_(u'Get Started with Calibre-Web'), None, None,
-                     config.get_mail_settings(), e_mail, None,
-                     _(u"Registration e-mail for user: %(name)s", name=user_name), text)
+    WorkerThread.add(None, TaskEmail(
+        subject=_(u'Get Started with Calibre-Web'),
+        filepath=None,
+        attachment=None,
+        settings=config.get_mail_settings(),
+        recipient=e_mail,
+        taskMessage=_(u"Registration e-mail for user: %(name)s", name=user_name),
+        text=text
+    ))
+
     return
 
 
@@ -221,9 +229,9 @@ def send_mail(book_id, book_format, convert, kindle_mail, calibrepath, user_id):
     for entry in iter(book.data):
         if entry.format.upper() == book_format.upper():
             converted_file_name = entry.name + '.' + book_format.lower()
-            worker.add_email(_(u"Send to Kindle"), book.path, converted_file_name,
-                             config.get_mail_settings(), kindle_mail, user_id,
-                             _(u"E-mail: %(book)s", book=book.title), _(u'This e-mail has been sent via Calibre-Web.'))
+            WorkerThread.add(user_id, TaskEmail(_(u"Send to Kindle"), book.path, converted_file_name,
+                             config.get_mail_settings(), kindle_mail,
+                             _(u"E-mail: %(book)s", book=book.title), _(u'This e-mail has been sent via Calibre-Web.')))
             return
     return _(u"The requested file could not be read. Maybe wrong permissions?")
 
@@ -722,47 +730,30 @@ def format_runtime(runtime):
 # helper function to apply localize status information in tasklist entries
 def render_task_status(tasklist):
     renderedtasklist = list()
-    for task in tasklist:
-        if task['user'] == current_user.nickname or current_user.role_admin():
-            if task['formStarttime']:
-                task['starttime'] = format_datetime(task['formStarttime'], format='short', locale=get_locale())
-            # task2['formStarttime'] = ""
-            else:
-                if 'starttime' not in task:
-                    task['starttime'] = ""
-
-            if 'formRuntime' not in task:
-                task['runtime'] = ""
-            else:
-                task['runtime'] = format_runtime(task['formRuntime'])
+    for num, user, added, task in tasklist:
+        if user == current_user.nickname or current_user.role_admin():
+            ret = {}
+            if task.start_time:
+                ret['starttime'] = format_datetime(task.start_time, format='short', locale=get_locale())
+                ret['runtime'] = format_runtime(task.runtime)
 
             # localize the task status
-            if isinstance(task['stat'], int):
-                if task['stat'] == STAT_WAITING:
-                    task['status'] = _(u'Waiting')
-                elif task['stat'] == STAT_FAIL:
-                    task['status'] = _(u'Failed')
-                elif task['stat'] == STAT_STARTED:
-                    task['status'] = _(u'Started')
-                elif task['stat'] == STAT_FINISH_SUCCESS:
-                    task['status'] = _(u'Finished')
+            if isinstance(task.stat, int):
+                if task.stat == STAT_WAITING:
+                    ret['status'] = _(u'Waiting')
+                elif task.stat == STAT_FAIL:
+                    ret['status'] = _(u'Failed')
+                elif task.stat == STAT_STARTED:
+                    ret['status'] = _(u'Started')
+                elif task.stat == STAT_FINISH_SUCCESS:
+                    ret['status'] = _(u'Finished')
                 else:
-                    task['status'] = _(u'Unknown Status')
+                    ret['status'] = _(u'Unknown Status')
 
-            # localize the task type
-            if isinstance(task['taskType'], int):
-                if task['taskType'] == TASK_EMAIL:
-                    task['taskMessage'] = _(u'E-mail: ') + task['taskMess']
-                elif task['taskType'] == TASK_CONVERT:
-                    task['taskMessage'] = _(u'Convert: ') + task['taskMess']
-                elif task['taskType'] == TASK_UPLOAD:
-                    task['taskMessage'] = _(u'Upload: ') + task['taskMess']
-                elif task['taskType'] == TASK_CONVERT_ANY:
-                    task['taskMessage'] = _(u'Convert: ') + task['taskMess']
-                else:
-                    task['taskMessage'] = _(u'Unknown Task: ') + task['taskMess']
-
-            renderedtasklist.append(task)
+            ret['taskMessage'] = "{}: {}".format(_(task.name), task.message)
+            ret['progress'] = "{} %".format(int(task.progress * 100))
+            ret['user'] = user
+            renderedtasklist.append(ret)
 
     return renderedtasklist
 

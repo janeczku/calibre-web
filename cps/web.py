@@ -33,7 +33,7 @@ import re
 from babel.dates import format_date
 from babel import Locale as LC
 from babel.core import UnknownLocaleError
-from flask import Blueprint
+from flask import Blueprint, jsonify
 from flask import render_template, request, redirect, send_from_directory, make_response, g, flash, abort, url_for
 from flask_babel import gettext as _
 from flask_login import login_user, logout_user, login_required, current_user, confirm_login
@@ -42,6 +42,9 @@ from sqlalchemy.sql.expression import text, func, true, false, not_, and_, or_
 from sqlalchemy.orm.attributes import flag_modified
 from werkzeug.exceptions import default_exceptions, InternalServerError
 from sqlalchemy.sql.functions import coalesce
+
+from .services.worker import WorkerThread
+
 try:
     from werkzeug.exceptions import FailedDependency
 except ImportError:
@@ -49,11 +52,11 @@ except ImportError:
 from werkzeug.datastructures import Headers
 from werkzeug.security import generate_password_hash, check_password_hash
 
-from . import constants, logger, isoLanguages, services, worker, cli
+from . import constants, logger, isoLanguages, services
 from . import searched_ids, lm, babel, db, ub, config, get_locale, app
 from . import calibre_db
 from .gdriveutils import getFileFromEbooksFolder, do_gdrive_download
-from .helper import check_valid_domain, render_task_status, json_serial, \
+from .helper import check_valid_domain, render_task_status, \
     get_cc_columns, get_book_cover, get_download_link, send_mail, generate_random_password, \
     send_registration_mail, check_send_to_kindle, check_read_formats, tags_filters, reset_password
 from .pagination import Pagination
@@ -376,12 +379,8 @@ def import_ldap_users():
 @web.route("/ajax/emailstat")
 @login_required
 def get_email_status_json():
-    tasks = worker.get_taskstatus()
-    answer = render_task_status(tasks)
-    js = json.dumps(answer, default=json_serial)
-    response = make_response(js)
-    response.headers["Content-Type"] = "application/json; charset=utf-8"
-    return response
+    tasks = WorkerThread.getInstance().tasks
+    return jsonify(render_task_status(tasks))
 
 
 @web.route("/ajax/bookmark/<int:book_id>/<book_format>", methods=['POST'])
@@ -1173,7 +1172,7 @@ def category_list():
 @login_required
 def get_tasks_status():
     # if current user admin, show all email, otherwise only own emails
-    tasks = worker.get_taskstatus()
+    tasks = WorkerThread.getInstance().tasks
     answer = render_task_status(tasks)
     return render_title_template('tasks.html', entries=answer, title=_(u"Tasks"), page="tasks")
 
@@ -1686,6 +1685,7 @@ def profile():
                                              title=_(u"%(name)s's profile", name=current_user.nickname), page="me",
                                              kobo_support=kobo_support,
                                              registered_oauth=local_oauth_check, oauth_status=oauth_status)
+            current_user.email = to_save["email"]
         if "nickname" in to_save and to_save["nickname"] != current_user.nickname:
             # Query User nickname, if not existing, change
             if not ub.session.query(ub.User).filter(ub.User.nickname == to_save["nickname"]).scalar():
@@ -1702,7 +1702,6 @@ def profile():
                                              title=_(u"Edit User %(nick)s",
                                                      nick=current_user.nickname),
                                              page="edituser")
-            current_user.email = to_save["email"]
         if "show_random" in to_save and to_save["show_random"] == "on":
             current_user.random_books = 1
         if "default_language" in to_save:
