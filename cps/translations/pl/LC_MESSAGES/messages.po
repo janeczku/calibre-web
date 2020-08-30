@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: Calibre Web - polski (POT: 2019-08-06 18:35)\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2020-06-28 09:31+0200\n"
-"PO-Revision-Date: 2020-03-31 21:50+0200\n"
+"PO-Revision-Date: 2020-08-30 21:05+0200\n"
 "Last-Translator: Jerzy Piątek <jerzy.piatek@gmail.com>\n"
 "Language: pl\n"
 "Language-Team: \n"
@@ -41,11 +41,11 @@ msgstr "Wykonano wyłączenie serwera, proszę zamknąć okno"
 
 #: cps/admin.py:103
 msgid "Reconnect successful"
-msgstr ""
+msgstr "Ponowne połączenie zakończono sukcesem"
 
 #: cps/admin.py:106
 msgid "Unknown command"
-msgstr ""
+msgstr "Nieznane polecenie"
 
 # ???
 #: cps/admin.py:116 cps/editbooks.py:564 cps/editbooks.py:576
@@ -79,63 +79,63 @@ msgstr "Zezwalaj"
 
 #: cps/admin.py:510
 msgid "client_secrets.json Is Not Configured For Web Application"
-msgstr ""
+msgstr "client_secrets.json nie został skonfigurowany dla aplikacji webowej"
 
 #: cps/admin.py:549
 msgid "Logfile Location is not Valid, Please Enter Correct Path"
-msgstr ""
+msgstr "Lokalizacja pliku dziennika jest nieprawidłowa, wprowadź poprawną ścieżkę"
 
 #: cps/admin.py:554
 msgid "Access Logfile Location is not Valid, Please Enter Correct Path"
-msgstr ""
+msgstr "Lokalizacja pliku dziennika dostępu jest nieprawidłowa, wprowadź poprawną ścieżkę"
 
 #: cps/admin.py:580
 msgid "Please Enter a LDAP Provider, Port, DN and User Object Identifier"
-msgstr ""
+msgstr "Wprowadź dostawcę LDAP, port, nazwę wyróżniającą i identyfikator obiektu użytkownika"
 
 #: cps/admin.py:593
 #, python-format
 msgid "LDAP Group Object Filter Needs to Have One \"%s\" Format Identifier"
-msgstr ""
+msgstr "Filtr obiektów grupy LDAP musi mieć jeden identyfikator formatu \"% s\""
 
 #: cps/admin.py:596
 msgid "LDAP Group Object Filter Has Unmatched Parenthesis"
-msgstr ""
+msgstr "Filtr obiektów grupy LDAP ma niedopasowany nawias"
 
 #: cps/admin.py:600
 #, python-format
 msgid "LDAP User Object Filter needs to Have One \"%s\" Format Identifier"
-msgstr ""
+msgstr "Filtr obiektów użytkownika LDAP musi mieć jeden identyfikator formatu \"% s\""
 
 #: cps/admin.py:603
 msgid "LDAP User Object Filter Has Unmatched Parenthesis"
-msgstr ""
+msgstr "Filtr obiektów użytkownika LDAP ma niedopasowany nawias"
 
 #: cps/admin.py:607
 msgid "LDAP Certificate Location is not Valid, Please Enter Correct Path"
-msgstr ""
+msgstr "Lokalizacja certyfikatu LDAP jest nieprawidłowa, wprowadź poprawną ścieżkę"
 
 #: cps/admin.py:628
 msgid "Keyfile Location is not Valid, Please Enter Correct Path"
-msgstr ""
+msgstr "Lokalizacja pliku klucza jest nieprawidłowa, wprowadź poprawną ścieżkę"
 
 #: cps/admin.py:632
 msgid "Certfile Location is not Valid, Please Enter Correct Path"
-msgstr ""
+msgstr "Lokalizacja pliku certyfikatu jest nieprawidłowa, wprowadź poprawną ścieżkę"
 
 #: cps/admin.py:694 cps/admin.py:793 cps/admin.py:885 cps/admin.py:934
 #: cps/shelf.py:100 cps/shelf.py:161 cps/shelf.py:202 cps/shelf.py:260
 #: cps/shelf.py:309 cps/shelf.py:338 cps/shelf.py:368 cps/shelf.py:392
 msgid "Settings DB is not Writeable"
-msgstr ""
+msgstr "Baza danych ustawień nie jest zapisywalna"
 
 #: cps/admin.py:706
 msgid "DB Location is not Valid, Please Enter Correct Path"
-msgstr ""
+msgstr "Lokalizacja bazy danych jest nieprawidłowa, wprowadź poprawną ścieżkę"
 
 #: cps/admin.py:708
 msgid "DB is not Writeable"
-msgstr ""
+msgstr "Baza danych nie jest zapisywalna"
 
 #: cps/admin.py:741
 msgid "Basic Configuration"
@@ -173,7 +173,7 @@ msgstr "Nie można usunąć użytkownika. Brak na serwerze innego konta z prawam
 
 #: cps/admin.py:811
 msgid "No admin user remaining, can't remove admin role"
-msgstr ""
+msgstr "Nie można odebrać praw administratora. Brak na serwerze innego konta z prawami administratora"
 
 #: cps/admin.py:847 cps/web.py:1618
 msgid "Found an existing account for this e-mail address."
@@ -221,7 +221,7 @@ msgstr "Zaktualizowano ustawienia serwera poczty e-mail"
 
 #: cps/admin.py:959
 msgid "User not found"
-msgstr ""
+msgstr "Nie znaleziono użytkownika"
 
 # ???
 #: cps/admin.py:994
@@ -293,7 +293,7 @@ msgstr "Błąd ogólny"
 
 #: cps/admin.py:1062
 msgid "Update File Could Not be Saved in Temp Dir"
-msgstr ""
+msgstr "Plik aktualizacji nie mógł zostać zapisany w katalogu tymczasowym"
 
 #: cps/converter.py:32
 msgid "not configured"
@@ -301,15 +301,15 @@ msgstr "nie skonfigurowane"
 
 #: cps/converter.py:34
 msgid "Execution permissions missing"
-msgstr ""
+msgstr "Brak uprawnienia do wykonywania pliku"
 
 #: cps/editbooks.py:242
 msgid "Book Format Successfully Deleted"
-msgstr ""
+msgstr "Plik książki w wybranym formacie został usunięty"
 
 #: cps/editbooks.py:245
 msgid "Book Successfully Deleted"
-msgstr ""
+msgstr "Książka została usunięta"
 
 #: cps/editbooks.py:254 cps/editbooks.py:549 cps/web.py:1641 cps/web.py:1682
 #: cps/web.py:1744
@@ -347,7 +347,7 @@ msgstr "Nie można zapisać pliku %(file)s."
 #: cps/editbooks.py:507 cps/editbooks.py:870
 #, python-format
 msgid "Database error: %(error)s."
-msgstr ""
+msgstr "Błąd bazy danych: %(error)s."
 
 #: cps/editbooks.py:511
 #, python-format
@@ -374,12 +374,12 @@ msgstr "Wysłana książka prawdopodobnie istnieje w bibliotece, rozważ zmianę
 #: cps/editbooks.py:786
 #, python-format
 msgid "Failed to Move File %(file)s: %(error)s"
-msgstr ""
+msgstr "Nie udało się przenieść pliku %(file)s:%(error)s"
 
 #: cps/editbooks.py:842
 #, python-format
 msgid "Failed to Move Cover File %(file)s: %(error)s"
-msgstr ""
+msgstr "Nie udało się przenieść pliku okładki %(file)s:%(error)s"
 
 #: cps/editbooks.py:856
 #, python-format
@@ -474,22 +474,22 @@ msgstr "Żądany plik nie mógł zostać odczytany. Sprawdź uprawnienia?"
 #: cps/helper.py:300
 #, python-format
 msgid "Deleting book %(id)s failed, path has subfolders: %(path)s"
-msgstr ""
+msgstr "Usuwanie książki %(id)s zakończyło się błędem, ścieżka posiada podkatalogi: %(path)s"
 
 #: cps/helper.py:310
 #, python-format
 msgid "Deleting book %(id)s failed: %(message)s"
-msgstr ""
+msgstr "Usuwanie książki %(id)s zakończyło się błędem: %(message)s"
 
 #: cps/helper.py:320
 #, python-format
 msgid "Deleting book %(id)s, book path not valid: %(path)s"
-msgstr ""
+msgstr "Usuwanie książki %(id)s, ścieżka książki jest niepoprawna: %(path)s"
 
 #: cps/helper.py:355
 #, python-format
 msgid "Rename title from: '%(src)s' to '%(dest)s' failed with error: %(error)s"
-msgstr "Zmiana nazwy tytułu z: „%(src)s” na „%(dest)s” zakończyła się niepowodzeniem z błędem: %(error)s"
+msgstr "Zmiana nazwy tytułu z: „%(src)s” na „%(dest)s” zakończyła się błędem: %(error)s"
 
 #: cps/helper.py:365
 #, python-format
@@ -513,11 +513,11 @@ msgstr "Nie znaleziono ścieżki do książki %(path)s na Google Drive"
 
 #: cps/helper.py:550
 msgid "Error Downloading Cover"
-msgstr ""
+msgstr "Błąd przy pobieraniu okładki"
 
 #: cps/helper.py:553
 msgid "Cover Format Error"
-msgstr ""
+msgstr "Błędny format okładki"
 
 #: cps/helper.py:569
 msgid "Failed to create path for cover"
@@ -525,7 +525,7 @@ msgstr "Nie udało się utworzyć ścieżki dla okładki"
 
 #: cps/helper.py:574
 msgid "Cover-file is not a valid image file, or could not be stored"
-msgstr ""
+msgstr "Plik okładki nie jest poprawnym plikiem obrazu lub nie mógł zostać zapisany"
 
 #: cps/helper.py:585
 msgid "Only jpg/jpeg/png/webp files are supported as coverfile"
@@ -537,11 +537,11 @@ msgstr "Jako plik okładki dopuszczalne są jedynie pliki jpg/jpeg"
 
 #: cps/helper.py:648
 msgid "Unrar binary file not found"
-msgstr ""
+msgstr "Plik wykonywalny programu unrar nie znaleziony"
 
 #: cps/helper.py:662
 msgid "Error excecuting UnRar"
-msgstr ""
+msgstr "Błąd przy wykonywaniu unrar"
 
 #: cps/helper.py:718
 msgid "Waiting"
@@ -581,7 +581,7 @@ msgstr "Nieznane zadanie: "
 
 #: cps/kobo_auth.py:130
 msgid "PLease access calibre-web from non localhost to get valid api_endpoint for kobo device"
-msgstr "Aby uzyskać prawidłowy api_endpoint dla urządzenia kobo, należy skorzystać z dostępu do calibre-web spoza localhost"
+msgstr "Aby uzyskać prawidłowy api_endpoint dla urządzenia Kobo, należy skorzystać z dostępu do calibre-web spoza localhost"
 
 #: cps/kobo_auth.py:133 cps/kobo_auth.py:153
 msgid "Kobo Setup"
@@ -617,26 +617,26 @@ msgstr "zalogowałeś się jako: '%(nickname)s'"
 #: cps/oauth_bb.py:235
 #, python-format
 msgid "Link to %(oauth)s Succeeded"
-msgstr ""
+msgstr "Łączenie z %(oauth)s zakończono sukcesem"
 
 #: cps/oauth_bb.py:241
 msgid "Login failed, No User Linked With OAuth Account"
-msgstr ""
+msgstr "Błąd logowania, użytkownik niepołączony z kontem OAuth"
 
 #: cps/oauth_bb.py:283
 #, python-format
 msgid "Unlink to %(oauth)s Succeeded"
-msgstr ""
+msgstr "Rozłączanie z %(oauth)s zakończono sukcesem"
 
 #: cps/oauth_bb.py:287
 #, python-format
 msgid "Unlink to %(oauth)s Failed"
-msgstr ""
+msgstr "Rozłączanie z %(oauth)s zakończono porażką"
 
 #: cps/oauth_bb.py:290
 #, python-format
 msgid "Not Linked to %(oauth)s."
-msgstr ""
+msgstr "Brak połączonych %(oauth)s."
 
 #: cps/oauth_bb.py:318
 msgid "GitHub Oauth error, please retry later."
@@ -698,12 +698,12 @@ msgstr "Niestety nie możesz usunąć książki z tej półki %(sname)s"
 #: cps/shelf.py:240 cps/shelf.py:284
 #, python-format
 msgid "A public shelf with the name '%(title)s' already exists."
-msgstr ""
+msgstr "Publiczna półka o nazwie '%(title)s' już istnieje."
 
 #: cps/shelf.py:249 cps/shelf.py:294
 #, python-format
 msgid "A private shelf with the name '%(title)s' already exists."
-msgstr ""
+msgstr "Prywatna półka o nazwie '%(title)s' już istnieje."
 
 #: cps/shelf.py:256
 #, python-format
@@ -716,7 +716,7 @@ msgstr "Wystąpił błąd"
 
 #: cps/shelf.py:264 cps/shelf.py:266 cps/templates/layout.html:144
 msgid "Create a Shelf"
-msgstr "utwórz półkę"
+msgstr "Utwórz półkę"
 
 #: cps/shelf.py:306
 #, python-format
@@ -855,11 +855,11 @@ msgstr "Pokaż menu formatu plików"
 
 #: cps/ub.py:109 cps/web.py:1246
 msgid "Archived Books"
-msgstr ""
+msgstr "Zarchiwizowane książki"
 
 #: cps/ub.py:111
 msgid "Show archived books"
-msgstr ""
+msgstr "Pokaż zarchiwizowane książki"
 
 #: cps/updater.py:294 cps/updater.py:305 cps/updater.py:406 cps/updater.py:420
 msgid "Unexpected data while reading update information"
@@ -893,23 +893,23 @@ msgstr "Kliknij przycisk poniżej, aby zaktualizować do najnowszej stabilnej we
 #: cps/web.py:319
 #, python-format
 msgid "Error: %(ldaperror)s"
-msgstr ""
+msgstr "Błąd: %(ldaperror)s"
 
 #: cps/web.py:323
 msgid "Error: No user returned in response of LDAP server"
-msgstr ""
+msgstr "Błąd. LDAP nie zwrócił żadnego użytkownika"
 
 #: cps/web.py:371
 msgid "Failed to Create at Least One LDAP User"
-msgstr ""
+msgstr "Błąd przy tworzeniu przynajmniej jednego użytkownika LDAP"
 
 #: cps/web.py:374
 msgid "At Least One LDAP User Not Found in Database"
-msgstr ""
+msgstr "Przynajmniej jeden użytkownik LDAP nie został znaleziony w bazie danych"
 
 #: cps/web.py:376
 msgid "User Successfully Imported"
-msgstr ""
+msgstr "Użytkownik pomyślnie zaimportowany"
 
 #: cps/web.py:622
 msgid "Recently Added Books"
@@ -1009,7 +1009,7 @@ msgstr "szukaj"
 #: cps/web.py:1210
 #, python-format
 msgid "Custom Column No.%(column)d is not existing in calibre database"
-msgstr ""
+msgstr "Niestandardowa kolumna No.%(column)d nie istnieje w bazie calibre"
 
 #: cps/web.py:1301
 #, python-format
@@ -1053,12 +1053,12 @@ msgstr "Nie można aktywować uwierzytelniania LDAP"
 #: cps/web.py:1401
 #, python-format
 msgid "Fallback Login as: '%(nickname)s', LDAP Server not reachable, or user not known"
-msgstr ""
+msgstr "Fallback Login as: '%(nickname)s', LDAP Server not reachable, or user not known"
 
 #: cps/web.py:1407
 #, python-format
 msgid "Could not login: %(message)s"
-msgstr ""
+msgstr "Nie można zalogować: %(message)s"
 
 #: cps/web.py:1411 cps/web.py:1435
 msgid "Wrong Username or Password"
@@ -1110,7 +1110,7 @@ msgstr "Czytaj książkę"
 #: cps/worker.py:313
 #, python-format
 msgid "Calibre ebook-convert %(tool)s not found"
-msgstr ""
+msgstr "Nie znaleziono narzędzia calibre %(tool)s do konwertowania"
 
 #: cps/worker.py:373
 #, python-format
@@ -1120,12 +1120,12 @@ msgstr "Konwertowanie nie powiodło się: %(error)s"
 #: cps/worker.py:406
 #, python-format
 msgid "Kepubify-converter failed: %(error)s"
-msgstr ""
+msgstr "Kepubify-converter spowodowało błąd: %(error)s"
 
 #: cps/worker.py:430
 #, python-format
 msgid "Converted file not found or more than one file in folder %(folder)s"
-msgstr ""
+msgstr "Konwertowany plik nie został znaleziony, lub więcej niż jeden plik w folderze %(folder)s"
 
 #: cps/templates/admin.html:9
 msgid "Users"
@@ -1188,7 +1188,7 @@ msgstr "Usuń"
 
 #: cps/templates/admin.html:23
 msgid "Public Shelf"
-msgstr ""
+msgstr "Półka publiczna"
 
 #: cps/templates/admin.html:44
 msgid "Add New User"
@@ -1196,7 +1196,7 @@ msgstr "Dodaj nowego użytkownika"
 
 #: cps/templates/admin.html:46 cps/templates/admin.html:47
 msgid "Import LDAP Users"
-msgstr ""
+msgstr "Importuj użytkowników LDAP"
 
 #: cps/templates/admin.html:54
 msgid "E-mail Server Settings"
@@ -1415,23 +1415,23 @@ msgstr "Opis"
 
 #: cps/templates/book_edit.html:66
 msgid "Identifiers"
-msgstr ""
+msgstr "Identyfikatory"
 
 #: cps/templates/book_edit.html:70 cps/templates/book_edit.html:308
 msgid "Identifier Type"
-msgstr ""
+msgstr "Rodzaj identyfikatora"
 
 #: cps/templates/book_edit.html:71 cps/templates/book_edit.html:309
 msgid "Identifier Value"
-msgstr ""
+msgstr "Wartość identyfikatora"
 
 #: cps/templates/book_edit.html:72 cps/templates/book_edit.html:310
 msgid "Remove"
-msgstr ""
+msgstr "Usuń"
 
 #: cps/templates/book_edit.html:76
 msgid "Add Identifier"
-msgstr ""
+msgstr "Dodaj identyfikator"
 
 #: cps/templates/book_edit.html:80 cps/templates/search_form.html:33
 msgid "Tags"
@@ -1509,11 +1509,11 @@ msgstr "i z dysku twardego"
 
 #: cps/templates/book_edit.html:209
 msgid "Important Kobo Note: deleted books will remain on any paired Kobo device."
-msgstr ""
+msgstr "Ważne dla Kobo: usunięte książki pozostaną na każdym połączonym urządzeniu Kobo."
 
 #: cps/templates/book_edit.html:210
 msgid "Books must first be archived and the device synced before a book can safely be deleted."
-msgstr ""
+msgstr "Książki muszą najpierw zostać zarchiwizowane a urządzenie zsynchronizowane, zanim książka będzie mogła zostać bezpiecznie usunięta."
 
 #: cps/templates/book_edit.html:232
 msgid "Keyword"
@@ -1644,7 +1644,7 @@ msgstr "Włącz wysyłanie"
 
 #: cps/templates/config_edit.html:169
 msgid "Allowed Upload Fileformats"
-msgstr ""
+msgstr "Dozwolone formaty przesyłania"
 
 #: cps/templates/config_edit.html:175
 msgid "Enable Anonymous Browsing"
@@ -1656,7 +1656,7 @@ msgstr "Włącz publiczną rejestrację"
 
 #: cps/templates/config_edit.html:184
 msgid "Use E-Mail as Username"
-msgstr ""
+msgstr "Użyj e-maila jako nazwy użytkownika"
 
 #: cps/templates/config_edit.html:189
 msgid "Enable Magic Link Remote Login"
@@ -1720,7 +1720,7 @@ msgstr "Port serwera LDAP"
 
 #: cps/templates/config_edit.html:255
 msgid "LDAP Encryption"
-msgstr ""
+msgstr "Szyfrowanie LDAP"
 
 #: cps/templates/config_edit.html:257 cps/templates/config_view_edit.html:61
 #: cps/templates/email_edit.html:21
@@ -1729,31 +1729,31 @@ msgstr "Brak"
 
 #: cps/templates/config_edit.html:258
 msgid "TLS"
-msgstr ""
+msgstr "TLS"
 
 #: cps/templates/config_edit.html:259
 msgid "SSL"
-msgstr ""
+msgstr "SSL"
 
 #: cps/templates/config_edit.html:264
 msgid "LDAP Certificate Path"
-msgstr ""
+msgstr "Ścieżka certyfikatu LDAP"
 
 #: cps/templates/config_edit.html:269
 msgid "LDAP Authentication"
-msgstr ""
+msgstr "Uwierzytelnianie LDAP"
 
 #: cps/templates/config_edit.html:271
 msgid "Anonymous"
-msgstr ""
+msgstr "Anonim"
 
 #: cps/templates/config_edit.html:272
 msgid "Unauthenticated"
-msgstr ""
+msgstr "Nieuwierzytelniony"
 
 #: cps/templates/config_edit.html:273
 msgid "Simple"
-msgstr ""
+msgstr "Proste"
 
 #: cps/templates/config_edit.html:278
 msgid "LDAP Administrator Username"
@@ -1777,19 +1777,19 @@ msgstr "Serwer LDAP to OpenLDAP?"
 
 #: cps/templates/config_edit.html:300
 msgid "Following Settings are Needed For User Import"
-msgstr ""
+msgstr "Następujące ustawienia są niezbędne dla zaimportowania użytkowników"
 
 #: cps/templates/config_edit.html:302
 msgid "LDAP Group Object Filter"
-msgstr ""
+msgstr "Filtr obiektów grupy LDAP"
 
 #: cps/templates/config_edit.html:306
 msgid "LDAP Group Name"
-msgstr ""
+msgstr "Nazwa grupy LDAP"
 
 #: cps/templates/config_edit.html:310
 msgid "LDAP Group Members Field"
-msgstr ""
+msgstr "Pola członków grupy LDAP"
 
 #: cps/templates/config_edit.html:319
 #, python-format
@@ -1812,15 +1812,15 @@ msgstr "Zewnętrzne pliki"
 
 #: cps/templates/config_edit.html:348
 msgid "Path to Calibre E-Book Converter"
-msgstr ""
+msgstr "Ścieżka do konwertera Calibre"
 
 #: cps/templates/config_edit.html:356
 msgid "Calibre E-Book Converter Settings"
-msgstr ""
+msgstr "Ustawienia konwertera calibre"
 
 #: cps/templates/config_edit.html:359
 msgid "Path to Kepubify E-Book Converter"
-msgstr ""
+msgstr "Ścieżka do konwertera Kepubify"
 
 #: cps/templates/config_edit.html:367
 msgid "Location of Unrar binary"
@@ -1849,7 +1849,7 @@ msgstr "Liczba autorów do pokazania przed ukryciem (0=wyłącza ukrywanie)"
 
 #: cps/templates/config_view_edit.html:39 cps/templates/readcbr.html:112
 msgid "Theme"
-msgstr "Motyw (Theme)"
+msgstr "Motyw"
 
 #: cps/templates/config_view_edit.html:41
 msgid "Standard Theme"
@@ -1961,15 +1961,15 @@ msgstr "Przeczytana"
 
 #: cps/templates/detail.html:209
 msgid "Restore from archive"
-msgstr ""
+msgstr "Przywróć z archiwum"
 
 #: cps/templates/detail.html:209
 msgid "Add to archive"
-msgstr ""
+msgstr "Dodaj do archiwum"
 
 #: cps/templates/detail.html:210
 msgid "Archived"
-msgstr ""
+msgstr "Zarchiwizowane"
 
 #: cps/templates/detail.html:221
 msgid "Description:"
@@ -1983,7 +1983,7 @@ msgstr "Dodaj do półki"
 #: cps/templates/feed.xml:79 cps/templates/layout.html:137
 #: cps/templates/layout.html:141 cps/templates/search.html:20
 msgid "(Public)"
-msgstr ""
+msgstr "(publiczna)"
 
 #: cps/templates/detail.html:276
 msgid "Edit Metadata"
@@ -2003,7 +2003,7 @@ msgstr "Hasło SMTP"
 
 #: cps/templates/email_edit.html:38
 msgid "Attachment Size Limit"
-msgstr ""
+msgstr "Limit rozmiaru załącznika"
 
 #: cps/templates/email_edit.html:46
 msgid "Save and Send Test E-mail"
@@ -2113,11 +2113,11 @@ msgstr "Ksiązki sortowane według formatu"
 
 #: cps/templates/index.xml:111 cps/templates/layout.html:135
 msgid "Shelves"
-msgstr ""
+msgstr "Półki"
 
 #: cps/templates/index.xml:115
 msgid "Books organized in shelves"
-msgstr ""
+msgstr "Książki ułożone na półkach"
 
 #: cps/templates/layout.html:29
 msgid "Home"
@@ -2581,4 +2581,3 @@ msgstr "Generuj Kobo Auth URL"
 #: cps/templates/user_edit.html:178
 msgid "Do you really want to delete the Kobo Token?"
 msgstr "Czy na pewno chcesz usunąć Token Kobo?"
-
