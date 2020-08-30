@@ -194,7 +194,7 @@ class WebServer(object):
         os.execv(sys.executable, arguments)
         return True
 
-    def _killServer(self, ignored_signum, ignored_frame):
+    def _killServer(self, __, ___):
         self.stop()
 
     def stop(self, restart=False):

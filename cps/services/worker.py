@@ -8,7 +8,7 @@ try:
     import queue
 except ImportError:
     import Queue as queue
-from datetime import datetime, timedelta
+from datetime import datetime
 from collections import namedtuple
 
 from cps import logger
