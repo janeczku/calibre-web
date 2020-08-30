@@ -644,6 +644,10 @@ def books_list(data, sort, book_id, page):
         order = [db.Books.timestamp.desc()]
     if sort == 'old':
         order = [db.Books.timestamp]
+    if sort == 'authaz':
+        order = [db.Books.author_sort.asc()]
+    if sort == 'authza':
+        order = [db.Books.author_sort.desc()]
 
     if data == "rated":
         if current_user.check_visibility(constants.SIDEBAR_BEST_RATED):
