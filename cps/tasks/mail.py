@@ -175,6 +175,8 @@ class TaskEmail(CalibreTask):
                 text = e.smtp_error.decode('utf-8').replace("\n", '. ')
             elif hasattr(e, "message"):
                 text = e.message
+            elif hasattr(e, "args"):
+                text = '\n'.join(e.args)
             else:
                 log.exception(e)
                 text = ''
