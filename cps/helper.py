@@ -32,7 +32,7 @@ from tempfile import gettempdir
 import requests
 from babel.dates import format_datetime
 from babel.units import format_unit
-from flask import send_from_directory, make_response, redirect, abort
+from flask import send_from_directory, make_response, redirect, abort, url_for
 from flask_babel import gettext as _
 from flask_login import current_user
 from sqlalchemy.sql.expression import true, false, and_, text, func
@@ -98,7 +98,12 @@ def convert_book_format(book_id, calibrepath, old_book_format, new_book_format, 
             # text = _(u"%(format)s: %(book)s", format=new_book_format, book=book.title)
         else:
             settings = dict()
-        txt = (u"%s -> %s: %s" % (old_book_format, new_book_format, book.title))
+
+        txt = (u"%s -> %s: %s" % (
+            old_book_format,
+            new_book_format,
+            "<a href=\"" + url_for('web.show_book', book_id=book.id) + "\">" + book.title + "</a>"))
+
         settings['old_book_format'] = old_book_format
         settings['new_book_format'] = new_book_format
         worker.add_convert(file_path, book.id, user_id, txt, settings, kindle_mail)
