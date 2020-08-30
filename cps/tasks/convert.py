@@ -14,7 +14,7 @@ from cps import logger, config
 from cps.subproc_wrapper import process_open
 from flask_babel import gettext as _
 
-from cps.tasks.email import TaskEmail
+from cps.tasks.mail import TaskEmail
 from cps import gdriveutils
 log = logger.create()
 
