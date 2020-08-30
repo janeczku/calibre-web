@@ -11,7 +11,6 @@ except ImportError:
 from datetime import datetime, timedelta
 from collections import namedtuple
 
-from cps import calibre_db
 from cps import logger
 
 log = logger.create()
