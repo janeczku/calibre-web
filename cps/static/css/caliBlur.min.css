@@ -1939,7 +1939,6 @@ body > div.container-fluid > div > div.col-sm-10 > div.discover > form > .btn.bt
     z-index: 99999
 }
 
-.pagination:after,
 body > div.container-fluid > div > div.col-sm-10 > div.pagination .page-next > a,
 body > div.container-fluid > div > div.col-sm-10 > div.pagination .page-previous > a
 {
@@ -1984,57 +1983,33 @@ body > div.container-fluid > div > div.col-sm-10 > div.pagination > .page-previo
     width: 65px;
     padding: 0;
     font-size: 15px;
-    position: absolute;
     display: block !important;
     border: none;
 }
 
-body > div.container-fluid > div > div.col-sm-10 > div.pagination > .page-next > a {
-    right: 0
-}
-
-body > div.container-fluid > div > div.col-sm-10 > div.pagination > .page-previous > a {
-    right: 65px
-}
-
-body > div.container-fluid > div > div.col-sm-10 > div.pagination > .page-next > a:before {
-    content: "\EA32";
+body > div.container-fluid > div > div.col-sm-10 > div.pagination > .page-next > a:before,
+body > div.container-fluid > div > div.col-sm-10 > div.pagination > .page-previous > a:before {
     visibility: visible;
     color: hsla(0, 0%, 100%, .35);
     height: 60px;
     line-height: 60px;
     border-left: 2px solid transparent;
     font-size: 20px;
-    padding: 20px 0 20px 20px;
+    padding: 20px 25px;
     margin-right: -27px;
+}
 
+body > div.container-fluid > div > div.col-sm-10 > div.pagination > .page-next > a:before {
+    content: "\EA32";
 }
 
 body > div.container-fluid > div > div.col-sm-10 > div.pagination > .page-previous > a:before {
     content: "\EA33";
-    visibility: visible;
-    color: hsla(0, 0%, 100%, .65);
-    height: 60px;
-    line-height: 60px;
-    font-size: 20px;
-    padding: 20px 25px
 }
 
 body > div.container-fluid > div > div.col-sm-10 > div.pagination > .page-next > a:hover:before,
 body > div.container-fluid > div > div.col-sm-10 > div.pagination > .page-previous > a:hover:before {
     color: #fff
-}
-
-.pagination:after {
-    content: "\EA32";
-    position: relative;
-    right: 0;
-    display: inline-block;
-    color: hsla(0, 0%, 100%, .55);
-    font-size: 20px;
-    padding: 0 23px;
-    margin-left: 20px;
-    z-index: -1
 }
 
 .pagination > .ellipsis, .pagination > a:nth-last-of-type(2) {
