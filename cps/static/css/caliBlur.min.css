@@ -585,7 +585,7 @@ div.btn-group[role=group][aria-label="Download, send to Kindle, reading"] > .dow
     border-left: 2px solid rgba(0, 0, 0, .15)
 }
 
-div[aria-label="Edit/Delete book"] > .btn-warning {
+div[aria-label="Edit/Delete book"] > .btn {
     width: 50px;
     height: 60px;
     margin: 0;
@@ -600,7 +600,7 @@ div[aria-label="Edit/Delete book"] > .btn-warning {
     color: transparent
 }
 
-div[aria-label="Edit/Delete book"] > .btn-warning > span {
+div[aria-label="Edit/Delete book"] > .btn > span {
     visibility: visible;
     position: relative;
     display: inline-block;
@@ -616,7 +616,7 @@ div[aria-label="Edit/Delete book"] > .btn-warning > span {
     margin: auto
 }
 
-div[aria-label="Edit/Delete book"] > .btn-warning > span:before {
+div[aria-label="Edit/Delete book"] > .btn > span:before {
     content: "\EA5d";
     font-family: plex-icons;
     font-size: 20px;
@@ -625,7 +625,7 @@ div[aria-label="Edit/Delete book"] > .btn-warning > span:before {
     height: 60px
 }
 
-div[aria-label="Edit/Delete book"] > .btn-warning > span:hover {
+div[aria-label="Edit/Delete book"] > .btn > span:hover {
     color: #fff
 }
 
