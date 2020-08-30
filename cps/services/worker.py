@@ -59,7 +59,7 @@ class WorkerThread(threading.Thread):
         threading.Thread.__init__(self)
 
         self.dequeued = list()
-
+        self.daemon = True
         self.doLock = threading.Lock()
         self.queue = ImprovedQueue()
         self.num = 0
@@ -101,24 +101,23 @@ class WorkerThread(threading.Thread):
 
     # Main thread loop starting the different tasks
     def run(self):
-        main_thread = _get_main_thread()
-        while main_thread.is_alive():
-            # this blocks until something is available
-            item = self.queue.get()
-            with self.doLock:
-                # add to list so that in-progress tasks show up
-                self.dequeued.append(item)
+        # this blocks until something is available
+        item = self.queue.get()
 
-            # once we hit our trigger, start cleaning up dead tasks
-            if len(self.dequeued) > TASK_CLEANUP_TRIGGER:
-                self.cleanup_tasks()
+        with self.doLock:
+            # add to list so that in-progress tasks show up
+            self.dequeued.append(item)
 
-            # sometimes tasks (like Upload) don't actually have work to do and are created as already finished
-            if item.task.stat is STAT_WAITING:
-                # CalibreTask.start() should wrap all exceptions in it's own error handling
-                item.task.start(self)
+        # once we hit our trigger, start cleaning up dead tasks
+        if len(self.dequeued) > TASK_CLEANUP_TRIGGER:
+            self.cleanup_tasks()
 
-            self.queue.task_done()
+        # sometimes tasks (like Upload) don't actually have work to do and are created as already finished
+        if item.task.stat is STAT_WAITING:
+            # CalibreTask.start() should wrap all exceptions in it's own error handling
+            item.task.start(self)
+
+        self.queue.task_done()
 
 
 class CalibreTask:
