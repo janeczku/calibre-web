@@ -151,7 +151,7 @@
           {% if pagination and (pagination.has_next or pagination.has_prev) %}
             <div class="pagination">
               {% if pagination.has_prev %}
-              <li class="page-item page-next"><a class="page-link" aria-label="next page" href="{{ (pagination.page - 1)|url_for_other_page
+              <li class="page-item page-previous"><a class="page-link" aria-label="next page" href="{{ (pagination.page - 1)|url_for_other_page
                 }}">&laquo; {{_('Previous')}}</a></li>
               {% endif %}
             {% for page in pagination.iter_pages() %}
