@@ -3,6 +3,7 @@ from __future__ import division, print_function, unicode_literals
 import threading
 import abc
 import uuid
+import time
 
 try:
     import queue
@@ -102,8 +103,17 @@ class WorkerThread(threading.Thread):
     def run(self):
         main_thread = _get_main_thread()
         while main_thread.is_alive():
-            # this blocks until something is available
-            item = self.queue.get()
+            try:
+                # this blocks until something is available. This can cause issues when the main thread dies - this
+                # thread will remain alive. We implement a timeout to unblock every second which allows us to check if
+                # the main thread is still alive.
+                # We don't use a daemon here because we don't want the tasks to just be abruptly halted, leading to
+                # possible file / database corruption
+                item = self.queue.get(timeout=1)
+            except queue.Empty as ex:
+                time.sleep(1)
+                continue
+
             with self.doLock:
                 # add to list so that in-progress tasks show up
                 self.dequeued.append(item)
