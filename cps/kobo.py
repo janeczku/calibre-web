@@ -178,6 +178,10 @@ def HandleSyncRequest():
 
     reading_states_in_new_entitlements = []
     for book in changed_entries:
+        formats = [data.format for data in book.data]
+        if not 'KEPUB' in formats and config.config_kepubifypath and 'EPUB' in formats:
+            helper.convert_book_format(book.id, config.config_calibre_dir, 'EPUB', 'KEPUB', current_user.nickname)
+
         kobo_reading_state = get_or_create_reading_state(book.id)
         entitlement = {
             "BookEntitlement": create_book_entitlement(book, archived=(book.id in archived_book_ids)),
