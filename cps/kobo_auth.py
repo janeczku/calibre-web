@@ -64,10 +64,10 @@ from datetime import datetime
 from os import urandom
 
 from flask import g, Blueprint, url_for, abort, request
-from flask_login import login_user, login_required
+from flask_login import current_user, login_user, login_required
 from flask_babel import gettext as _
 
-from . import logger, ub, lm
+from . import logger, config, calibre_db, db, helper, ub, lm
 from .web import render_title_template
 
 try:
@@ -148,6 +148,14 @@ def generate_auth_token(user_id):
 
             ub.session.add(auth_token)
             ub.session.commit()
+
+        books = calibre_db.session.query(db.Books).join(db.Data).all()
+
+        for book in books:
+            formats = [data.format for data in book.data]
+            if not 'KEPUB' in formats and config.config_kepubifypath and 'EPUB' in formats:
+                helper.convert_book_format(book.id, config.config_calibre_dir, 'EPUB', 'KEPUB', current_user.nickname)
+
         return render_title_template(
             "generate_kobo_auth_url.html",
             title=_(u"Kobo Setup"),
