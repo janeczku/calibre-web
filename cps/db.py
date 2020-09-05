@@ -593,13 +593,16 @@ class CalibreDB():
         sort_authors = entry.author_sort.split('&')
         authors_ordered = list()
         error = False
+        ids = [a.id for a in entry.authors]
         for auth in sort_authors:
+            results = self.session.query(Authors).filter(Authors.sort == auth.lstrip().strip()).all()
             # ToDo: How to handle not found authorname
-            result = self.session.query(Authors).filter(Authors.sort == auth.lstrip().strip()).first()
-            if not result:
+            if not len(results):
                 error = True
                 break
-            authors_ordered.append(result)
+            for r in results:
+                if r.id in ids:
+                    authors_ordered.append(r)
         if not error:
             entry.authors = authors_ordered
         return entry
