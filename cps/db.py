@@ -48,6 +48,7 @@ try:
 except ImportError:
     use_unidecode = False
 
+Session = None
 
 cc_exceptions = ['datetime', 'comments', 'composite', 'series']
 cc_classes = {}
@@ -409,6 +410,7 @@ class CalibreDB():
     def setup_db(self, config, app_db_path):
         self.config = config
         self.dispose()
+        global Session
 
         if not config.config_calibre_dir:
             config.invalidate()
@@ -506,7 +508,7 @@ class CalibreDB():
                                          backref='books'))
 
         Session = scoped_session(sessionmaker(autocommit=False,
-                                              autoflush=False,
+                                              autoflush=True,
                                               bind=self.engine))
         self.session = Session()
         return True
