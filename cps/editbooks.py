@@ -151,8 +151,11 @@ def modify_identifiers(input_identifiers, db_identifiers, db_session):
        input_identifiers is a list of read-to-persist Identifiers objects.
        db_identifiers is a list of already persisted list of Identifiers objects."""
     changed = False
-    input_dict = dict([ (identifier.type.lower(), identifier) for identifier in input_identifiers ])
-    db_dict = dict([ (identifier.type.lower(), identifier) for identifier in db_identifiers ])
+    error = False
+    input_dict = dict([(identifier.type.lower(), identifier) for identifier in input_identifiers])
+    if len(input_identifiers) != len(input_dict):
+        error = True
+    db_dict = dict([(identifier.type.lower(), identifier) for identifier in db_identifiers ])
     # delete db identifiers not present in input or modify them with input val
     for identifier_type, identifier in db_dict.items():
         if identifier_type not in input_dict.keys():
@@ -167,7 +170,7 @@ def modify_identifiers(input_identifiers, db_identifiers, db_session):
         if identifier_type not in db_dict.keys():
             db_session.add(identifier)
             changed = True
-    return changed
+    return changed, error
 
 
 @editbook.route("/delete/<int:book_id>/", defaults={'book_format': ""})
@@ -616,10 +619,12 @@ def edit_book(book_id):
             # Handle book comments/description
             modif_date |= edit_book_comments(to_save["description"], book)
 
-                    # Handle identifiers
+            # Handle identifiers
             input_identifiers = identifier_list(to_save, book)
-            modif_date |= modify_identifiers(input_identifiers, book.identifiers, calibre_db.session)
-
+            modification, warning = modify_identifiers(input_identifiers, book.identifiers, calibre_db.session)
+            if warning:
+                flash(_("Identifiers are not Case Sensitive, Overwriting Old Identifier"), category="warning")
+            modif_date |= modification
             # Handle book tags
             modif_date |= edit_book_tags(to_save['tags'], book)
 
@@ -691,7 +696,7 @@ def identifier_list(to_save, book):
         val_key = id_val_prefix + type_key[len(id_type_prefix):]
         if val_key not in to_save.keys():
             continue
-        result.append( db.Identifiers(to_save[val_key], type_value, book.id) )
+        result.append(db.Identifiers(to_save[val_key], type_value, book.id))
     return result
 
 @editbook.route("/upload", methods=["GET", "POST"])
