@@ -53,7 +53,7 @@ class TaskConvert(CalibreTask):
 
     def _convert_ebook_format(self):
         error_message = None
-        local_session = db.Session()
+        # local_session = db.Session()
         file_path = self.file_path
         book_id = self.bookid
         format_old_ext = u'.' + self.settings['old_book_format'].lower()
@@ -94,10 +94,10 @@ class TaskConvert(CalibreTask):
                                          book_format=self.settings['new_book_format'].upper(),
                                          book=book_id, uncompressed_size=os.path.getsize(file_path + format_new_ext))
                 try:
-                    local_session.merge(new_format)
-                    local_session.commit()
+                    calibre_db.session.merge(new_format)
+                    calibre_db.session.commit()
                 except SQLAlchemyError as e:
-                    local_session.rollback()
+                    calibre_db.session.rollback()
                     log.error("Database error: %s", e)
                     return
                 self.results['path'] = cur_book.path

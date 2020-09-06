@@ -48,7 +48,6 @@ try:
 except ImportError:
     use_unidecode = False
 
-Session = None
 
 cc_exceptions = ['datetime', 'comments', 'composite', 'series']
 cc_classes = {}
@@ -410,7 +409,6 @@ class CalibreDB():
     def setup_db(self, config, app_db_path):
         self.config = config
         self.dispose()
-        global Session
 
         if not config.config_calibre_dir:
             config.invalidate()
@@ -680,7 +678,6 @@ class CalibreDB():
         conn.create_function("title_sort", 1, _title_sort)
 
     def dispose(self):
-        # global session
 
         old_session = self.session
         self.session = None
