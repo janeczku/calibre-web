@@ -106,7 +106,7 @@ def default_meta(tmp_file_path, original_file_name, original_file_extension):
         extension=original_file_extension,
         title=original_file_name,
         author=_(u'Unknown'),
-        cover=None,
+        cover=pdf_preview(tmp_file_path, original_file_name),
         description="",
         tags="",
         series="",
