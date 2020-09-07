@@ -64,7 +64,7 @@ from . import gdriveutils as gd
 from .constants import STATIC_DIR as _STATIC_DIR
 from .subproc_wrapper import process_wait
 from .services.worker import WorkerThread, STAT_WAITING, STAT_FAIL, STAT_STARTED, STAT_FINISH_SUCCESS
-from .tasks.email import TaskEmail
+from .tasks.mail import TaskEmail
 
 
 log = logger.create()

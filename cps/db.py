@@ -48,6 +48,7 @@ try:
 except ImportError:
     use_unidecode = False
 
+Session = None
 
 cc_exceptions = ['datetime', 'comments', 'composite', 'series']
 cc_classes = {}
@@ -102,41 +103,49 @@ class Identifiers(Base):
     #    return {self.type: self.val}
 
     def formatType(self):
-        if self.type == "amazon":
+        format_type = self.type.lower()
+        if format_type == 'amazon':
             return u"Amazon"
-        elif self.type == "isbn":
+        elif format_type.startswith("amazon_"):
+            return u"Amazon.{0}".format(format_type[7:])
+        elif format_type == "isbn":
             return u"ISBN"
-        elif self.type == "doi":
+        elif format_type == "doi":
             return u"DOI"
-        elif self.type == "goodreads":
+        elif format_type == "douban":
+            return u"Douban"
+        elif format_type == "goodreads":
             return u"Goodreads"
-        elif self.type == "google":
+        elif format_type == "google":
             return u"Google Books"
-        elif self.type == "kobo":
+        elif format_type == "kobo":
             return u"Kobo"
-        if self.type == "lubimyczytac":
+        if format_type == "lubimyczytac":
             return u"Lubimyczytac"
         else:
             return self.type
 
     def __repr__(self):
-        if self.type == "amazon" or self.type == "asin":
+        format_type = self.type.lower()
+        if format_type == "amazon" or format_type == "asin":
             return u"https://amzn.com/{0}".format(self.val)
-        elif self.type == "isbn":
+        elif format_type.startswith('amazon_'):
+            return u"https://amazon.{0}/{1}".format(format_type[7:], self.val)
+        elif format_type == "isbn":
             return u"https://www.worldcat.org/isbn/{0}".format(self.val)
-        elif self.type == "doi":
+        elif format_type == "doi":
             return u"https://dx.doi.org/{0}".format(self.val)
-        elif self.type == "goodreads":
+        elif format_type == "goodreads":
             return u"https://www.goodreads.com/book/show/{0}".format(self.val)
-        elif self.type == "douban":
+        elif format_type == "douban":
             return u"https://book.douban.com/subject/{0}".format(self.val)
-        elif self.type == "google":
+        elif format_type == "google":
             return u"https://books.google.com/books?id={0}".format(self.val)
-        elif self.type == "kobo":
+        elif format_type == "kobo":
             return u"https://www.kobo.com/ebook/{0}".format(self.val)
-        elif self.type == "lubimyczytac":
+        elif format_type == "lubimyczytac":
             return u" https://lubimyczytac.pl/ksiazka/{0}".format(self.val)
-        elif self.type == "url":
+        elif format_type == "url":
             return u"{0}".format(self.val)
         else:
             return u""
@@ -409,6 +418,7 @@ class CalibreDB():
     def setup_db(self, config, app_db_path):
         self.config = config
         self.dispose()
+        global Session
 
         if not config.config_calibre_dir:
             config.invalidate()
@@ -506,7 +516,7 @@ class CalibreDB():
                                          backref='books'))
 
         Session = scoped_session(sessionmaker(autocommit=False,
-                                              autoflush=False,
+                                              autoflush=True,
                                               bind=self.engine))
         self.session = Session()
         return True
@@ -591,13 +601,16 @@ class CalibreDB():
         sort_authors = entry.author_sort.split('&')
         authors_ordered = list()
         error = False
+        ids = [a.id for a in entry.authors]
         for auth in sort_authors:
+            results = self.session.query(Authors).filter(Authors.sort == auth.lstrip().strip()).all()
             # ToDo: How to handle not found authorname
-            result = self.session.query(Authors).filter(Authors.sort == auth.lstrip().strip()).first()
-            if not result:
+            if not len(results):
                 error = True
                 break
-            authors_ordered.append(result)
+            for r in results:
+                if r.id in ids:
+                    authors_ordered.append(r)
         if not error:
             entry.authors = authors_ordered
         return entry

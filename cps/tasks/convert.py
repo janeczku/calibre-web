@@ -14,7 +14,7 @@ from cps import logger, config
 from cps.subproc_wrapper import process_open
 from flask_babel import gettext as _
 
-from cps.tasks.email import TaskEmail
+from cps.tasks.mail import TaskEmail
 from cps import gdriveutils
 log = logger.create()
 
@@ -53,6 +53,7 @@ class TaskConvert(CalibreTask):
 
     def _convert_ebook_format(self):
         error_message = None
+        local_session = db.Session()
         file_path = self.file_path
         book_id = self.bookid
         format_old_ext = u'.' + self.settings['old_book_format'].lower()
@@ -92,17 +93,13 @@ class TaskConvert(CalibreTask):
                 new_format = db.Data(name=cur_book.data[0].name,
                                          book_format=self.settings['new_book_format'].upper(),
                                          book=book_id, uncompressed_size=os.path.getsize(file_path + format_new_ext))
-
-                cur_book.data.append(new_format)
-
                 try:
-                    # db.session.merge(cur_book)
-                    calibre_db.session.commit()
+                    local_session.merge(new_format)
+                    local_session.commit()
                 except SQLAlchemyError as e:
-                    calibre_db.session.rollback()
+                    local_session.rollback()
                     log.error("Database error: %s", e)
                     return
-
                 self.results['path'] = cur_book.path
                 self.results['title'] = cur_book.title
                 if config.config_use_google_drive:
@@ -193,7 +190,7 @@ class TaskConvert(CalibreTask):
                 ele = ele.decode('utf-8')
             log.debug(ele.strip('\n'))
             if not ele.startswith('Traceback') and not ele.startswith('  File'):
-                error_message = _("Calibre failed with error: %(error)s", ele.strip('\n'))
+                error_message = _("Calibre failed with error: %(error)s", error=ele.strip('\n'))
         return check, error_message
 
     @property

@@ -3,15 +3,15 @@ from __future__ import division, print_function, unicode_literals
 import threading
 import abc
 import uuid
+import time
 
 try:
     import queue
 except ImportError:
     import Queue as queue
-from datetime import datetime, timedelta
+from datetime import datetime
 from collections import namedtuple
 
-from cps import calibre_db
 from cps import logger
 
 log = logger.create()
@@ -82,32 +82,45 @@ class WorkerThread(threading.Thread):
             tasks = self.queue.to_list() + self.dequeued
             return sorted(tasks, key=lambda x: x.num)
 
+    def cleanup_tasks(self):
+        with self.doLock:
+            dead = []
+            alive = []
+            for x in self.dequeued:
+                (dead if x.task.dead else alive).append(x)
+
+            # if the ones that we need to keep are within the trigger, do nothing else
+            delta = len(self.dequeued) - len(dead)
+            if delta > TASK_CLEANUP_TRIGGER:
+                ret = alive
+            else:
+                # otherwise, lop off the oldest dead tasks until we hit the target trigger
+                ret = sorted(dead, key=lambda x: x.task.end_time)[-TASK_CLEANUP_TRIGGER:] + alive
+
+            self.dequeued = sorted(ret, key=lambda x: x.num)
 
     # Main thread loop starting the different tasks
     def run(self):
         main_thread = _get_main_thread()
         while main_thread.is_alive():
-            item = self.queue.get()
+            try:
+                # this blocks until something is available. This can cause issues when the main thread dies - this
+                # thread will remain alive. We implement a timeout to unblock every second which allows us to check if
+                # the main thread is still alive.
+                # We don't use a daemon here because we don't want the tasks to just be abruptly halted, leading to
+                # possible file / database corruption
+                item = self.queue.get(timeout=1)
+            except queue.Empty as ex:
+                time.sleep(1)
+                continue
 
             with self.doLock:
-                # once we hit our trigger, start cleaning up dead tasks
-                if len(self.dequeued) > TASK_CLEANUP_TRIGGER:
-                    dead = []
-                    alive = []
-                    for x in self.dequeued:
-                        (dead if x.task.dead else alive).append(x)
-
-                    # if the ones that we need to keep are within the trigger, do nothing else
-                    delta = len(self.dequeued) - len(dead)
-                    if delta > TASK_CLEANUP_TRIGGER:
-                        ret = alive
-                    else:
-                        # otherwise, lop off the oldest dead tasks until we hit the target trigger
-                        ret = sorted(dead, key=lambda x: x.task.end_time)[-TASK_CLEANUP_TRIGGER:] + alive
-
-                    self.dequeued = sorted(ret, key=lambda x: x.num)
                 # add to list so that in-progress tasks show up
                 self.dequeued.append(item)
+
+            # once we hit our trigger, start cleaning up dead tasks
+            if len(self.dequeued) > TASK_CLEANUP_TRIGGER:
+                self.cleanup_tasks()
 
             # sometimes tasks (like Upload) don't actually have work to do and are created as already finished
             if item.task.stat is STAT_WAITING:
