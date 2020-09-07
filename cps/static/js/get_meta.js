@@ -74,8 +74,8 @@ $(function () {
             $("#meta-info").html("<ul id=\"book-list\" class=\"media-list\"></ul>");
         }
         if ((ggDone === 3 || (ggDone === 1 && ggResults.length === 0)) &&
-            (dbDone === 3 || (ggDone === 1 && dbResults.length === 0)) &&
-            (cvDone === 3 || (ggDone === 1 && cvResults.length === 0))) {
+            (dbDone === 3 || (dbDone === 1 && dbResults.length === 0)) &&
+            (cvDone === 3 || (cvDone === 1 && cvResults.length === 0))) {
             $("#meta-info").html("<p class=\"text-danger\">" + msg.no_result + "</p>");
             return;
         }
