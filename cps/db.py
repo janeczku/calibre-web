@@ -128,9 +128,9 @@ class Identifiers(Base):
     def __repr__(self):
         format_type = self.type.lower()
         if format_type == "amazon" or format_type == "asin":
-            return u"https://amzn.com/{0}".format(self.val)
+            return u"https://amazon.com/dp/{0}".format(self.val)
         elif format_type.startswith('amazon_'):
-            return u"https://amazon.{0}/{1}".format(format_type[7:], self.val)
+            return u"https://amazon.{0}/dp/{1}".format(format_type[7:], self.val)
         elif format_type == "isbn":
             return u"https://www.worldcat.org/isbn/{0}".format(self.val)
         elif format_type == "doi":
