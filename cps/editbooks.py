@@ -598,6 +598,7 @@ def edit_book(book_id):
         merge_metadata(to_save, meta)
         # Update book
         edited_books_id = None
+
         #handle book title
         if book.title != to_save["book_title"].rstrip().strip():
             if to_save["book_title"] == '':
@@ -805,42 +806,17 @@ def upload():
                         if not db_author:
                             db_author = stored_author
                         sort_author = stored_author.sort
-                    sort_authors_list.append(sort_author) # helper.get_sorted_author(sort_author))
+                    sort_authors_list.append(sort_author)
                 sort_authors = ' & '.join(sort_authors_list)
 
                 title_dir = helper.get_valid_filename(title)
                 author_dir = helper.get_valid_filename(db_author.name)
-                filepath = os.path.join(config.config_calibre_dir, author_dir, title_dir)
-                saved_filename = os.path.join(filepath, title_dir + meta.extension.lower())
-
-                # check if file path exists, otherwise create it, copy file to calibre path and delete temp file
-                if not os.path.exists(filepath):
-                    try:
-                        os.makedirs(filepath)
-                    except OSError:
-                        log.error("Failed to create path %s (Permission denied)", filepath)
-                        flash(_(u"Failed to create path %(path)s (Permission denied).", path=filepath), category="error")
-                        return Response(json.dumps({"location": url_for("web.index")}), mimetype='application/json')
-                try:
-                    copyfile(meta.file_path, saved_filename)
-                    os.unlink(meta.file_path)
-                except OSError as e:
-                    log.error("Failed to move file %s: %s", saved_filename, e)
-                    flash(_(u"Failed to Move File %(file)s: %(error)s", file=saved_filename, error=e), category="error")
-                    return Response(json.dumps({"location": url_for("web.index")}), mimetype='application/json')
-
-                if meta.cover is None:
-                    has_cover = 0
-                    copyfile(os.path.join(constants.STATIC_DIR, 'generic_cover.jpg'),
-                             os.path.join(filepath, "cover.jpg"))
-                else:
-                    has_cover = 1
 
                 # combine path and normalize path from windows systems
                 path = os.path.join(author_dir, title_dir).replace('\\', '/')
                 # Calibre adds books with utc as timezone
                 db_book = db.Books(title, "", sort_authors, datetime.utcnow(), datetime(101, 1, 1),
-                                   '1', datetime.utcnow(), path, has_cover, db_author, [], "")
+                                   '1', datetime.utcnow(), path, meta.cover, db_author, [], "")
 
                 modif_date |= modify_database_object(input_authors, db_book.authors, db.Authors, calibre_db.session,
                                                      'author')
@@ -858,7 +834,7 @@ def upload():
                 modif_date |= edit_book_series(meta.series, db_book)
 
                 # Add file to book
-                file_size = os.path.getsize(saved_filename)
+                file_size = os.path.getsize(meta.file_path)
                 db_data = db.Data(db_book, meta.extension.upper()[1:], file_size, title_dir)
                 db_book.data.append(db_data)
                 calibre_db.session.add(db_book)
@@ -866,25 +842,32 @@ def upload():
                 # flush content, get db_book.id available
                 calibre_db.session.flush()
 
-                # Comments needs book id therfore only possiblw after flush
+                # Comments needs book id therfore only possible after flush
                 modif_date |= edit_book_comments(Markup(meta.description).unescape(), db_book)
 
                 book_id = db_book.id
                 title = db_book.title
 
-                error = helper.update_dir_stucture(book_id, config.config_calibre_dir, input_authors[0])
+                error = helper.update_dir_stucture(book_id,
+                                                   config.config_calibre_dir,
+                                                   input_authors[0],
+                                                   meta.file_path,
+                                                   title_dir + meta.extension)
 
                 # move cover to final directory, including book id
-                if has_cover:
-                    new_coverpath = os.path.join(config.config_calibre_dir, db_book.path, "cover.jpg")
-                    try:
-                        copyfile(meta.cover, new_coverpath)
-                        os.unlink(meta.cover)
-                    except OSError as e:
-                        log.error("Failed to move cover file %s: %s", new_coverpath, e)
-                        flash(_(u"Failed to Move Cover File %(file)s: %(error)s", file=new_coverpath,
-                                error=e),
-                              category="error")
+                if meta.cover:
+                    coverfile = meta.cover
+                else:
+                    coverfile = os.path.join(constants.STATIC_DIR, 'generic_cover.jpg')
+                new_coverpath = os.path.join(config.config_calibre_dir, db_book.path, "cover.jpg")
+                try:
+                    copyfile(coverfile, new_coverpath)
+                    os.unlink(meta.cover)
+                except OSError as e:
+                    log.error("Failed to move cover file %s: %s", new_coverpath, e)
+                    flash(_(u"Failed to Move Cover File %(file)s: %(error)s", file=new_coverpath,
+                            error=e),
+                          category="error")
 
                 # save data to database, reread data
                 calibre_db.session.commit()

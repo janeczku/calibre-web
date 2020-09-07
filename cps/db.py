@@ -340,7 +340,7 @@ class Books(Base):
         self.series_index = series_index
         self.last_modified = last_modified
         self.path = path
-        self.has_cover = has_cover
+        self.has_cover = (has_cover != None)
 
     #def as_dict(self):
     #    return {c.name: getattr(self, c.name) for c in self.__table__.columns}
