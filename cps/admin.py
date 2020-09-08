@@ -648,6 +648,9 @@ def _configuration_update_helper():
         _config_string(to_save, "config_converterpath")
         _config_string(to_save, "config_kepubifypath")
 
+        _config_checkbox_int(to_save, "config_enable_hsts")
+        reboot_required |= _config_checkbox_int(to_save, "config_enable_hsts")
+
         reboot_required |= _config_int(to_save, "config_login_type")
 
         #LDAP configurator,

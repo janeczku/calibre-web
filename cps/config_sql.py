@@ -128,6 +128,8 @@ class _Settings(_Base):
     config_reverse_proxy_login_header_name = Column(String)
     config_allow_reverse_proxy_header_login = Column(Boolean, default=False)
 
+    config_enable_hsts = Column(Boolean, default=False)
+
     def __repr__(self):
         return self.__class__.__name__
 
