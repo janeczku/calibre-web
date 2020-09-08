@@ -862,7 +862,8 @@ def upload():
                 new_coverpath = os.path.join(config.config_calibre_dir, db_book.path, "cover.jpg")
                 try:
                     copyfile(coverfile, new_coverpath)
-                    os.unlink(meta.cover)
+                    if meta.cover:
+                        os.unlink(meta.cover)
                 except OSError as e:
                     log.error("Failed to move cover file %s: %s", new_coverpath, e)
                     flash(_(u"Failed to Move Cover File %(file)s: %(error)s", file=new_coverpath,
