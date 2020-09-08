@@ -504,7 +504,7 @@ def upload_single_file(request, book, book_id):
         if requested_file.filename != '':
             if '.' in requested_file.filename:
                 file_ext = requested_file.filename.rsplit('.', 1)[-1].lower()
-                if file_ext not in constants.EXTENSIONS_UPLOAD:
+                if file_ext not in constants.EXTENSIONS_UPLOAD and '' not in constants.EXTENSIONS_UPLOAD:
                     flash(_("File extension '%(ext)s' is not allowed to be uploaded to this server", ext=file_ext),
                           category="error")
                     return redirect(url_for('web.show_book', book_id=book.id))
@@ -754,7 +754,7 @@ def upload():
                 # check if file extension is correct
                 if '.' in requested_file.filename:
                     file_ext = requested_file.filename.rsplit('.', 1)[-1].lower()
-                    if file_ext not in constants.EXTENSIONS_UPLOAD:
+                    if file_ext not in constants.EXTENSIONS_UPLOAD and '' not in constants.EXTENSIONS_UPLOAD:
                         flash(
                             _("File extension '%(ext)s' is not allowed to be uploaded to this server",
                               ext=file_ext), category="error")

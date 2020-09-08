@@ -641,8 +641,11 @@ def _configuration_update_helper():
         _config_int(to_save, "config_external_port")
         _config_checkbox_int(to_save, "config_kobo_proxy")
 
-        _config_string(to_save, "config_upload_formats")
-        constants.EXTENSIONS_UPLOAD = [x.lstrip().rstrip() for x in config.config_upload_formats.split(',')]
+        if "config_upload_formats" in to_save:
+            to_save["config_upload_formats"] = ','.join(
+                helper.uniq([x.lstrip().rstrip().lower() for x in to_save["config_upload_formats"].split(',')]))
+            _config_string(to_save, "config_upload_formats")
+            constants.EXTENSIONS_UPLOAD = config.config_upload_formats.split(',')
 
         _config_string(to_save, "config_calibre")
         _config_string(to_save, "config_converterpath")
