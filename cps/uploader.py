@@ -119,10 +119,36 @@ def pdf_meta(tmp_file_path, original_file_name, original_file_extension):
     if use_pdf_meta:
         with open(tmp_file_path, 'rb') as f:
             doc_info = PdfFileReader(f).getDocumentInfo()
-    if doc_info:
-        author = doc_info.author if doc_info.author else u'Unknown'
-        title = doc_info.title if doc_info.title else original_file_name
-        subject = doc_info.subject
+            xmp_info = PdfFileReader(f).getXmpMetadata() 
+    if xmp_info:
+        xmp_author = xmp_info.dc_creator
+        if xmp_info.dc_title: 
+            xmp_title = xmp_info.dc_title['x-default']
+        else:
+            xmp_title = ''
+        if xmp_info.dc_description:
+            xmp_description = xmp_info.dc_description['x-default']
+        else:
+            xmp_description = ''
+        if xmp_info.dc_subject:
+            xmp_tags = ', '.join(xmp_info.dc_subject)
+        else:
+            xmp_tags = ''
+        if xmp_info.dc_language:
+            xmp_language = ', '.join(xmp_info.dc_language)
+        else:
+            xmp_language=''
+        if xmp_info.dc_publisher:
+            xmp_publisher = ', '.join(xmp_info.dc_publisher)
+        else:
+            xmp_publisher=''
+    if xmp_info or doc_info:
+        author = xmp_author or split_authors([doc_info.author]) or u'Unknown'
+        title = xmp_title or doc_info.title or original_file_name
+        subject = xmp_description or doc_info.subject
+        publisher = xmp_publisher
+        tags = xmp_tags or doc_info['/Keywords'] 
+        language = xmp_language
     else:
         author = u'Unknown'
         title = original_file_name
@@ -132,13 +158,13 @@ def pdf_meta(tmp_file_path, original_file_name, original_file_extension):
         file_path=tmp_file_path,
         extension=original_file_extension,
         title=title,
-        author=' & '.join(split_authors([author])),
+        author=' & '.join(author),
         cover=pdf_preview(tmp_file_path, original_file_name),
         description=subject,
-        tags=doc_info['/Keywords'],
+        tags=tags,
         series="",
         series_id="",
-        languages="")
+        languages=language)
 
 
 def pdf_preview(tmp_file_path, tmp_dir):
