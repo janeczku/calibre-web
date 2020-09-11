@@ -22,7 +22,7 @@ import hashlib
 from tempfile import gettempdir
 from flask_babel import gettext as _
 
-from . import logger, comic
+from . import logger, comic, isoLanguages
 from .constants import BookMeta
 from .helper import split_authors
 
@@ -118,8 +118,9 @@ def pdf_meta(tmp_file_path, original_file_name, original_file_extension):
     doc_info = None
     if use_pdf_meta:
         with open(tmp_file_path, 'rb') as f:
-            doc_info = PdfFileReader(f).getDocumentInfo()
-            xmp_info = PdfFileReader(f).getXmpMetadata() 
+            pdf_file = PdfFileReader(f)
+            doc_info = pdf_file.getDocumentInfo()
+            xmp_info = pdf_file.getXmpMetadata() 
     if xmp_info:
         xmp_author = xmp_info.dc_creator
         if xmp_info.dc_title: 
@@ -130,25 +131,26 @@ def pdf_meta(tmp_file_path, original_file_name, original_file_extension):
             xmp_description = xmp_info.dc_description['x-default']
         else:
             xmp_description = ''
-        if xmp_info.dc_subject:
-            xmp_tags = ', '.join(xmp_info.dc_subject)
-        else:
-            xmp_tags = ''
-        if xmp_info.dc_language:
-            xmp_language = ', '.join(xmp_info.dc_language)
-        else:
-            xmp_language=''
-        if xmp_info.dc_publisher:
-            xmp_publisher = ', '.join(xmp_info.dc_publisher)
-        else:
-            xmp_publisher=''
+        xmp_tags = ', '.join(xmp_info.dc_subject)
+        xmp_language = xmp_info.dc_language[0]
+        xmp_publisher = ', '.join(xmp_info.dc_publisher)
+
     if xmp_info or doc_info:
         author = xmp_author or split_authors([doc_info.author]) or u'Unknown'
         title = xmp_title or doc_info.title or original_file_name
         subject = xmp_description or doc_info.subject
         publisher = xmp_publisher
         tags = xmp_tags or doc_info['/Keywords'] 
-        language = xmp_language
+        if xmp_language :
+            lang = xmp_language.split('-', 1)[0].lower()
+            if len(lang) == 2:
+                language = isoLanguages.get(part1=lang).name
+            elif len(lang) == 3:
+                language = isoLanguages.get(part3=lang).name
+            else:
+                language = ''
+        else:
+            language = ''
     else:
         author = u'Unknown'
         title = original_file_name
