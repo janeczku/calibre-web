@@ -243,7 +243,7 @@ def getEbooksFolderId(drive=None):
         gDriveId.path = '/'
         session.merge(gDriveId)
         session.commit()
-        return
+        return gDriveId.gdrive_id
 
 
 def getFile(pathId, fileName, drive):
