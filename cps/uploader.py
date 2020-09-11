@@ -135,7 +135,7 @@ def pdf_meta(tmp_file_path, original_file_name, original_file_extension):
         author=' & '.join(split_authors([author])),
         cover=pdf_preview(tmp_file_path, original_file_name),
         description=subject,
-        tags="",
+        tags=doc_info['/Keywords'],
         series="",
         series_id="",
         languages="")
