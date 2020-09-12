@@ -414,7 +414,7 @@ def update_dir_structure_file(book_id, calibrepath, first_author, orignal_filepa
                      src=new_path, dest=new_name, error=str(ex))
     return False
 
-def update_dir_structure_gdrive(book_id, first_author, original_filepath):
+def update_dir_structure_gdrive(book_id, first_author):
     error = False
     book = calibre_db.get_book(book_id)
     path = book.path
@@ -518,7 +518,7 @@ def uniq(inpt):
 
 def update_dir_stucture(book_id, calibrepath, first_author=None, orignal_filepath=None, db_filename=None):
     if config.config_use_google_drive:
-        return update_dir_structure_gdrive(book_id, first_author, orignal_filepath, db_filename)
+        return update_dir_structure_gdrive(book_id, first_author)
     else:
         return update_dir_structure_file(book_id, calibrepath, first_author, orignal_filepath, db_filename)
 
