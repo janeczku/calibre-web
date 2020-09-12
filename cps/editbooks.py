@@ -848,7 +848,7 @@ def upload():
                 book_id = db_book.id
                 title = db_book.title
 
-                error = helper.update_dir_stucture(book_id,
+                error = helper.update_dir_structure_file(book_id,
                                                    config.config_calibre_dir,
                                                    input_authors[0],
                                                    meta.file_path,
@@ -872,10 +872,7 @@ def upload():
 
                 # save data to database, reread data
                 calibre_db.session.commit()
-                #calibre_db.setup_db(config, ub.app_DB_path)
-                # Reread book. It's important not to filter the result, as it could have language which hide it from
-                # current users view (tags are not stored/extracted from metadata and could also be limited)
-                #book = calibre_db.get_book(book_id)
+
                 if config.config_use_google_drive:
                     gdriveutils.updateGdriveCalibreFromLocal()
                 if error:

@@ -213,7 +213,7 @@ def listRootFolders():
 
 
 def getEbooksFolder(drive):
-    return getFolderInFolder('root',config.config_google_drive_folder,drive)
+    return getFolderInFolder('root', config.config_google_drive_folder, drive)
 
 
 def getFolderInFolder(parentId, folderName, drive):
@@ -243,7 +243,7 @@ def getEbooksFolderId(drive=None):
         gDriveId.path = '/'
         session.merge(gDriveId)
         session.commit()
-        return
+        return gDriveId.gdrive_id
 
 
 def getFile(pathId, fileName, drive):
