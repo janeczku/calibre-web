@@ -42,8 +42,11 @@ from flask_babel import gettext as _
 from . import logger, ub, isoLanguages
 from .pagination import Pagination
 
+from weakref import WeakSet
+
 try:
     import unidecode
+
     use_unidecode = True
 except ImportError:
     use_unidecode = False
@@ -56,34 +59,34 @@ cc_classes = {}
 Base = declarative_base()
 
 books_authors_link = Table('books_authors_link', Base.metadata,
-    Column('book', Integer, ForeignKey('books.id'), primary_key=True),
-    Column('author', Integer, ForeignKey('authors.id'), primary_key=True)
-    )
+                           Column('book', Integer, ForeignKey('books.id'), primary_key=True),
+                           Column('author', Integer, ForeignKey('authors.id'), primary_key=True)
+                           )
 
 books_tags_link = Table('books_tags_link', Base.metadata,
-    Column('book', Integer, ForeignKey('books.id'), primary_key=True),
-    Column('tag', Integer, ForeignKey('tags.id'), primary_key=True)
-    )
+                        Column('book', Integer, ForeignKey('books.id'), primary_key=True),
+                        Column('tag', Integer, ForeignKey('tags.id'), primary_key=True)
+                        )
 
 books_series_link = Table('books_series_link', Base.metadata,
-    Column('book', Integer, ForeignKey('books.id'), primary_key=True),
-    Column('series', Integer, ForeignKey('series.id'), primary_key=True)
-    )
+                          Column('book', Integer, ForeignKey('books.id'), primary_key=True),
+                          Column('series', Integer, ForeignKey('series.id'), primary_key=True)
+                          )
 
 books_ratings_link = Table('books_ratings_link', Base.metadata,
-    Column('book', Integer, ForeignKey('books.id'), primary_key=True),
-    Column('rating', Integer, ForeignKey('ratings.id'), primary_key=True)
-    )
+                           Column('book', Integer, ForeignKey('books.id'), primary_key=True),
+                           Column('rating', Integer, ForeignKey('ratings.id'), primary_key=True)
+                           )
 
 books_languages_link = Table('books_languages_link', Base.metadata,
-    Column('book', Integer, ForeignKey('books.id'), primary_key=True),
-    Column('lang_code', Integer, ForeignKey('languages.id'), primary_key=True)
-    )
+                             Column('book', Integer, ForeignKey('books.id'), primary_key=True),
+                             Column('lang_code', Integer, ForeignKey('languages.id'), primary_key=True)
+                             )
 
 books_publishers_link = Table('books_publishers_link', Base.metadata,
-    Column('book', Integer, ForeignKey('books.id'), primary_key=True),
-    Column('publisher', Integer, ForeignKey('publishers.id'), primary_key=True)
-    )
+                              Column('book', Integer, ForeignKey('books.id'), primary_key=True),
+                              Column('publisher', Integer, ForeignKey('publishers.id'), primary_key=True)
+                              )
 
 
 class Identifiers(Base):
@@ -99,7 +102,7 @@ class Identifiers(Base):
         self.type = id_type
         self.book = book
 
-    #def get(self):
+    # def get(self):
     #    return {self.type: self.val}
 
     def formatType(self):
@@ -278,7 +281,7 @@ class Publishers(Base):
 
 class Data(Base):
     __tablename__ = 'data'
-    __table_args__ = {'schema':'calibre'}
+    __table_args__ = {'schema': 'calibre'}
 
     id = Column(Integer, primary_key=True)
     book = Column(Integer, ForeignKey('books.id'), nullable=False)
@@ -303,7 +306,7 @@ class Data(Base):
 class Books(Base):
     __tablename__ = 'books'
 
-    DEFAULT_PUBDATE = datetime(101, 1, 1, 0, 0, 0, 0) # ("0101-01-01 00:00:00+00:00")
+    DEFAULT_PUBDATE = datetime(101, 1, 1, 0, 0, 0, 0)  # ("0101-01-01 00:00:00+00:00")
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     title = Column(String(collation='NOCASE'), nullable=False, default='Unknown')
@@ -342,7 +345,7 @@ class Books(Base):
         self.path = path
         self.has_cover = (has_cover != None)
 
-    #def as_dict(self):
+    # def as_dict(self):
     #    return {c.name: getattr(self, c.name) for c in self.__table__.columns}
 
     def __repr__(self):
@@ -353,6 +356,7 @@ class Books(Base):
     @property
     def atom_timestamp(self):
         return (self.timestamp.strftime('%Y-%m-%dT%H:%M:%S+00:00') or '')
+
 
 class Custom_Columns(Base):
     __tablename__ = 'custom_columns'
@@ -373,6 +377,7 @@ class Custom_Columns(Base):
             display_dict['enum_values'] = [x.decode('unicode_escape') for x in display_dict['enum_values']]
         return display_dict
 
+
 class AlchemyEncoder(json.JSONEncoder):
 
     def default(self, obj):
@@ -385,15 +390,15 @@ class AlchemyEncoder(json.JSONEncoder):
                 data = obj.__getattribute__(field)
                 try:
                     if isinstance(data, str):
-                        data = data.replace("'","\'")
+                        data = data.replace("'", "\'")
                     elif isinstance(data, InstrumentedList):
-                        el =list()
+                        el = list()
                         for ele in data:
                             if ele.get:
                                 el.append(ele.get())
                             else:
                                 el.append(json.dumps(ele, cls=AlchemyEncoder))
-                        data =",".join(el)
+                        data = ",".join(el)
                         if data == '[]':
                             data = ""
                     else:
@@ -408,16 +413,28 @@ class AlchemyEncoder(json.JSONEncoder):
 
 
 class CalibreDB():
+    _init = False
+    engine = None
+    log = None  # todo: ??? this isn't used, and even then, not sure if it's supposed to be per session or what
+    config = None
+    session_factory = None
+    instances = WeakSet()
 
     def __init__(self):
-        self.engine = None
-        self.session = None
-        self.log = None
-        self.config = None
+        """ Initialize a new CalibreDB session
+        """
+        if not self._init:
+            raise Exception("CalibreDB not initialized")
+        self.session = self.session_factory()
+        self.instances.add(self)
+        self.update_title_sort(self.config)
 
-    def setup_db(self, config, app_db_path):
-        self.config = config
-        self.dispose()
+    @classmethod
+    def setup_db(cls, config, app_db_path):
+        cls.config = config
+        cls.dispose()
+
+        # todo: remove...?
         global Session
 
         if not config.config_calibre_dir:
@@ -430,22 +447,21 @@ class CalibreDB():
             return False
 
         try:
-            self.engine = create_engine('sqlite://',
-                                   echo=False,
-                                   isolation_level="SERIALIZABLE",
-                                   connect_args={'check_same_thread': False},
-                                   poolclass=StaticPool)
-            self.engine.execute("attach database '{}' as calibre;".format(dbpath))
-            self.engine.execute("attach database '{}' as app_settings;".format(app_db_path))
+            cls.engine = create_engine('sqlite://',
+                                       echo=False,
+                                       isolation_level="SERIALIZABLE",
+                                       connect_args={'check_same_thread': False},
+                                       poolclass=StaticPool)
+            cls.engine.execute("attach database '{}' as calibre;".format(dbpath))
+            cls.engine.execute("attach database '{}' as app_settings;".format(app_db_path))
 
-            conn = self.engine.connect()
+            conn = cls.engine.connect()
             # conn.text_factory = lambda b: b.decode(errors = 'ignore') possible fix for #1302
         except Exception as e:
             config.invalidate(e)
             return False
 
         config.db_configured = True
-        self.update_title_sort(config, conn.connection)
 
         if not cc_classes:
             cc = conn.execute("SELECT id, datatype FROM custom_columns")
@@ -460,12 +476,12 @@ class CalibreDB():
                                      'book': Column(Integer, ForeignKey('books.id'),
                                                     primary_key=True),
                                      'map_value': Column('value', Integer,
-                                                     ForeignKey('custom_column_' +
-                                                                str(row.id) + '.id'),
-                                                     primary_key=True),
+                                                         ForeignKey('custom_column_' +
+                                                                    str(row.id) + '.id'),
+                                                         primary_key=True),
                                      'extra': Column(Float),
-                                     'asoc' : relationship('custom_column_' + str(row.id), uselist=False),
-                                     'value' : association_proxy('asoc', 'value')
+                                     'asoc': relationship('custom_column_' + str(row.id), uselist=False),
+                                     'value': association_proxy('asoc', 'value')
                                      }
                         books_custom_column_links[row.id] = type(str('books_custom_column_' + str(row.id) + '_link'),
                                                                  (Base,), dicttable)
@@ -501,7 +517,7 @@ class CalibreDB():
                             'custom_column_' + str(cc_id[0]),
                             relationship(cc_classes[cc_id[0]],
                                          primaryjoin=(
-                                         Books.id == cc_classes[cc_id[0]].book),
+                                             Books.id == cc_classes[cc_id[0]].book),
                                          backref='books'))
                 elif (cc_id[1] == 'series'):
                     setattr(Books,
@@ -515,17 +531,17 @@ class CalibreDB():
                                          secondary=books_custom_column_links[cc_id[0]],
                                          backref='books'))
 
-        Session = scoped_session(sessionmaker(autocommit=False,
-                                              autoflush=True,
-                                              bind=self.engine))
-        self.session = Session()
+        cls.session_factory = scoped_session(sessionmaker(autocommit=False,
+                                                          autoflush=True,
+                                                          bind=cls.engine))
+        cls._init = True
         return True
 
     def get_book(self, book_id):
         return self.session.query(Books).filter(Books.id == book_id).first()
 
     def get_filtered_book(self, book_id, allow_show_archived=False):
-        return self.session.query(Books).filter(Books.id == book_id).\
+        return self.session.query(Books).filter(Books.id == book_id). \
             filter(self.common_filters(allow_show_archived)).first()
 
     def get_book_by_uuid(self, book_uuid):
@@ -575,7 +591,8 @@ class CalibreDB():
     def fill_indexpage(self, page, pagesize, database, db_filter, order, *join):
         return self.fill_indexpage_with_archived_books(page, pagesize, database, db_filter, order, False, *join)
 
-    def fill_indexpage_with_archived_books(self, page, pagesize, database, db_filter, order, allow_show_archived, *join):
+    def fill_indexpage_with_archived_books(self, page, pagesize, database, db_filter, order, allow_show_archived,
+                                           *join):
         pagesize = pagesize or self.config.config_books_per_page
         if current_user.show_detail_random():
             randm = self.session.query(Books) \
@@ -630,7 +647,7 @@ class CalibreDB():
         for authorterm in authorterms:
             q.append(Books.authors.any(func.lower(Authors.name).ilike("%" + authorterm + "%")))
 
-        return self.session.query(Books)\
+        return self.session.query(Books) \
             .filter(and_(Books.authors.any(and_(*q)), func.lower(Books.title).ilike("%" + title + "%"))).first()
 
     # read search results from calibre-database and return it (function is used for feed and simple search
@@ -687,17 +704,23 @@ class CalibreDB():
         conn = conn or self.session.connection().connection.connection
         conn.create_function("title_sort", 1, _title_sort)
 
-    def dispose(self):
+    @classmethod
+    def dispose(cls):
         # global session
 
-        old_session = self.session
-        self.session = None
-        if old_session:
-            try: old_session.close()
-            except: pass
-            if old_session.bind:
-                try: old_session.bind.dispose()
-                except Exception: pass
+        for inst in cls.instances:
+            old_session = inst.session
+            inst.session = None
+            if old_session:
+                try:
+                    old_session.close()
+                except:
+                    pass
+                if old_session.bind:
+                    try:
+                        old_session.bind.dispose()
+                    except Exception:
+                        pass
 
         for attr in list(Books.__dict__.keys()):
             if attr.startswith("custom_column_"):
@@ -714,9 +737,10 @@ class CalibreDB():
                     Base.metadata.remove(table)
 
     def reconnect_db(self, config, app_db_path):
-        self.session.close()
+        self.dispose()
         self.engine.dispose()
         self.setup_db(config, app_db_path)
+
 
 def lcase(s):
     try:
