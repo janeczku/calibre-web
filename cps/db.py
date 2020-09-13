@@ -423,10 +423,15 @@ class CalibreDB():
     def __init__(self):
         """ Initialize a new CalibreDB session
         """
-        if not self._init:
-            raise Exception("CalibreDB not initialized")
-        self.session = self.session_factory()
+        self.session = None
+        if self._init:
+            self.initSession()
+
         self.instances.add(self)
+
+
+    def initSession(self):
+        self.session = self.session_factory()
         self.update_title_sort(self.config)
 
     @classmethod
@@ -534,6 +539,9 @@ class CalibreDB():
         cls.session_factory = scoped_session(sessionmaker(autocommit=False,
                                                           autoflush=True,
                                                           bind=cls.engine))
+        for inst in cls.instances:
+            inst.initSession()
+            
         cls._init = True
         return True
 
