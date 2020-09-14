@@ -51,8 +51,6 @@ try:
 except ImportError:
     use_unidecode = False
 
-Session = None
-
 cc_exceptions = ['datetime', 'comments', 'composite', 'series']
 cc_classes = {}
 
@@ -438,9 +436,6 @@ class CalibreDB():
     def setup_db(cls, config, app_db_path):
         cls.config = config
         cls.dispose()
-
-        # todo: remove...?
-        global Session
 
         if not config.config_calibre_dir:
             config.invalidate()

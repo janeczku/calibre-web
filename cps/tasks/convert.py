@@ -53,7 +53,7 @@ class TaskConvert(CalibreTask):
 
     def _convert_ebook_format(self):
         error_message = None
-        local_session = db.Session()
+        local_session = db.CalibreDB()
         file_path = self.file_path
         book_id = self.bookid
         format_old_ext = u'.' + self.settings['old_book_format'].lower()
