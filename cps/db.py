@@ -142,6 +142,8 @@ class Identifiers(Base):
             return u"https://www.kobo.com/ebook/{0}".format(self.val)
         elif format_type == "lubimyczytac":
             return u" https://lubimyczytac.pl/ksiazka/{0}".format(self.val)
+        elif format_type == "litres":
+            return u"https://www.litres.ru/{0}".format(self.val)
         elif format_type == "url":
             return u"{0}".format(self.val)
         else:
