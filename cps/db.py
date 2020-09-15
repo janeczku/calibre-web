@@ -119,6 +119,8 @@ class Identifiers(Base):
             return u"Kobo"
         elif format_type == "litres":
             return u"ЛитРес"
+        elif format_type == "issn":
+            return u"ISSN"
         if format_type == "lubimyczytac":
             return u"Lubimyczytac"
         else:
@@ -146,6 +148,8 @@ class Identifiers(Base):
             return u" https://lubimyczytac.pl/ksiazka/{0}".format(self.val)
         elif format_type == "litres":
             return u"https://www.litres.ru/{0}".format(self.val)
+        elif format_type == "issn":
+            return u"https://portal.issn.org/resource/ISSN/{0}".format(self.val)
         elif format_type == "url":
             return u"{0}".format(self.val)
         else:
