@@ -121,6 +121,8 @@ class Identifiers(Base):
             return u"ЛитРес"
         elif format_type == "issn":
             return u"ISSN"
+        elif format_type == "isfdb":
+            return u"ISFDB"
         if format_type == "lubimyczytac":
             return u"Lubimyczytac"
         else:
@@ -150,6 +152,8 @@ class Identifiers(Base):
             return u"https://www.litres.ru/{0}".format(self.val)
         elif format_type == "issn":
             return u"https://portal.issn.org/resource/ISSN/{0}".format(self.val)
+        elif format_type == "isfdb":
+            return u"http://www.isfdb.org/cgi-bin/pl.cgi?{0}".format(self.val)
         elif format_type == "url":
             return u"{0}".format(self.val)
         else:
