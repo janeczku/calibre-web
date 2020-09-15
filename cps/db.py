@@ -117,6 +117,8 @@ class Identifiers(Base):
             return u"Google Books"
         elif format_type == "kobo":
             return u"Kobo"
+        elif format_type == "litres":
+            return u"ЛитРес"
         if format_type == "lubimyczytac":
             return u"Lubimyczytac"
         else:
