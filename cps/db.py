@@ -413,9 +413,10 @@ class AlchemyEncoder(json.JSONEncoder):
 class CalibreDB():
     _init = False
     engine = None
-    log = None  # todo: ??? this isn't used, and even then, not sure if it's supposed to be per session or what
     config = None
     session_factory = None
+    # This is a WeakSet so that references here don't keep other CalibreDB
+    # instances alive once they reach the end of their respective scopes
     instances = WeakSet()
 
     def __init__(self):
