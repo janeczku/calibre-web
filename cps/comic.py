@@ -135,13 +135,7 @@ def get_comic_info(tmp_file_path, original_file_name, original_file_extension, r
             loadedMetadata = archive.readMetadata(style)
 
             lang = loadedMetadata.language
-            if lang:
-                if len(lang) == 2:
-                     loadedMetadata.language = isoLanguages.get(part1=lang).name
-                elif len(lang) == 3:
-                     loadedMetadata.language = isoLanguages.get(part3=lang).name
-            else:
-                 loadedMetadata.language = ""
+            loadedMetadata.language = isoLanguages.get_lang3(lang)
 
             return BookMeta(
                 file_path=tmp_file_path,

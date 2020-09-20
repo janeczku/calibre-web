@@ -43,7 +43,7 @@ log = logger.create()
 try:
     from googleapiclient.errors import HttpError
 except ImportError as err:
-    log.debug(("Cannot import googleapiclient, using gdrive will not work: %s", err))
+    log.debug("Cannot import googleapiclient, using GDrive will not work: %s", err)
 
 current_milli_time = lambda: int(round(time() * 1000))
 
