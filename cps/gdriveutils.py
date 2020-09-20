@@ -213,7 +213,7 @@ def listRootFolders():
 
 
 def getEbooksFolder(drive):
-    return getFolderInFolder('root',config.config_google_drive_folder,drive)
+    return getFolderInFolder('root', config.config_google_drive_folder, drive)
 
 
 def getFolderInFolder(parentId, folderName, drive):
