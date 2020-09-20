@@ -357,7 +357,10 @@ def edit_book_comments(comments, book):
 def edit_book_languages(languages, book, upload=False):
     input_languages = languages.split(',')
     unknown_languages = []
-    input_l = isoLanguages.get_language_codes(get_locale(), input_languages, unknown_languages)
+    if not upload:
+        input_l = isoLanguages.get_language_codes(get_locale(), input_languages, unknown_languages)
+    else:
+        input_l = isoLanguages.get_valid_language_codes(get_locale(), input_languages, unknown_languages)
     for l in unknown_languages:
         log.error('%s is not a valid language', l)
         flash(_(u"%(langname)s is not a valid language", langname=l), category="warning")
