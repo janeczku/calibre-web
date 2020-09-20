@@ -69,6 +69,8 @@ def get_language_codes(locale, language_names, remainder=None):
 
 def get_valid_language_codes(locale, language_names, remainder=None):
     languages = list()
+    if "" in language_names:
+        language_names.remove("")
     for k, v in get_language_names(locale).items():
         if k in language_names:
             languages.append(k)
