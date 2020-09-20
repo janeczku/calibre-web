@@ -83,3 +83,7 @@ Pre-built Docker images are available in these Docker Hub repositories:
 # Wiki
 
 For further information, How To's and FAQ please check the [Wiki](https://github.com/janeczku/calibre-web/wiki)
+
+# Contributing to Calibre-Web
+
+Please have a look at our [Contributing Guidelines](https://github.com/janeczku/calibre-web/CONTRIBUTING.md) 
