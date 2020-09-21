@@ -129,11 +129,12 @@ if feature_support['ldap']:
 @app.after_request
 def add_security_headers(resp):
     # resp.headers['Content-Security-Policy']= "script-src 'self' https://www.googleapis.com https://api.douban.com https://comicvine.gamespot.com;"
-    resp.headers['X-Content-Type-Options'] = 'nosniff'
-    resp.headers['X-Frame-Options'] = 'SAMEORIGIN'
-    resp.headers['X-XSS-Protection'] = '1; mode=block'
     if "tolino" not in request.headers.get('User-Agent'):
+        resp.headers['X-Content-Type-Options'] = 'nosniff'
+        resp.headers['X-Frame-Options'] = 'SAMEORIGIN'
+        resp.headers['X-XSS-Protection'] = '1; mode=block'
         resp.headers['Strict-Transport-Security'] = 'max-age=31536000; includeSubDomains'
+    log.debug(request.full_path)
     log.debug(request.headers)
     return resp
 
