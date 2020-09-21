@@ -61,14 +61,14 @@ Optionally, to enable on-the-fly conversion from one ebook format to another whe
 Pre-built Docker images are available in these Docker Hub repositories:
 
 #### **Technosoft2000 - x64**
-+ Docker Hub - [https://hub.docker.com/r/technosoft2000/calibre-web/](https://hub.docker.com/r/technosoft2000/calibre-web/)
++ Docker Hub - [https://hub.docker.com/r/technosoft2000/calibre-web](https://hub.docker.com/r/technosoft2000/calibre-web)
 + Github - [https://github.com/Technosoft2000/docker-calibre-web](https://github.com/Technosoft2000/docker-calibre-web) 
 
     Includes the Calibre `ebook-convert` binary.
     + The "path to convertertool" should be set to `/opt/calibre/ebook-convert`
 
 #### **LinuxServer - x64, armhf, aarch64**
-+ Docker Hub - [https://hub.docker.com/r/linuxserver/calibre-web/](https://hub.docker.com/r/linuxserver/calibre-web/)
++ Docker Hub - [https://hub.docker.com/r/linuxserver/calibre-web](https://hub.docker.com/r/linuxserver/calibre-web)
 + Github - [https://github.com/linuxserver/docker-calibre-web](https://github.com/linuxserver/docker-calibre-web)
 + Github - (Optional Calibre layer) - [https://github.com/linuxserver/docker-calibre-web/tree/calibre](https://github.com/linuxserver/docker-calibre-web/tree/calibre) 
 
@@ -86,4 +86,4 @@ For further information, How To's and FAQ please check the [Wiki](https://github
 
 # Contributing to Calibre-Web
 
-Please have a look at our [Contributing Guidelines](https://github.com/janeczku/calibre-web/CONTRIBUTING.md) 
+Please have a look at our [Contributing Guidelines](https://github.com/janeczku/calibre-web/blob/master/CONTRIBUTING.md) 
