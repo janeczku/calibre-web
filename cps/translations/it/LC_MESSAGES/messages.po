@@ -124,7 +124,7 @@ msgstr "La posizione del Certfile non è valida, per favore indica il percorso c
 #: cps/shelf.py:100 cps/shelf.py:161 cps/shelf.py:202 cps/shelf.py:260
 #: cps/shelf.py:309 cps/shelf.py:338 cps/shelf.py:368 cps/shelf.py:392
 msgid "Settings DB is not Writeable"
-msgstr ""
+msgstr "I parametri del DB non sonos scrivibili"
 
 #: cps/admin.py:709
 msgid "DB Location is not Valid, Please Enter Correct Path"
@@ -296,7 +296,7 @@ msgstr "non configurato"
 
 #: cps/converter.py:34
 msgid "Execution permissions missing"
-msgstr "Mancano i peremssi di esecuzione"
+msgstr "Mancano i permessi di esecuzione"
 
 #: cps/editbooks.py:242
 msgid "Book Format Successfully Deleted"
@@ -364,7 +364,7 @@ msgstr "Il file %(filename)s non può essere salvato nella cartella temporanea"
 
 #: cps/editbooks.py:738
 msgid "Uploaded book probably exists in the library, consider to change before upload new: "
-msgstr "Probabilmnete il libro caricato esiste già nella libreria; considera di cambiare prima di sottoporlo nuovamente: "
+msgstr "Probabilmente il libro caricato esiste già nella libreria; considera di cambiare prima di sottoporlo nuovamente: "
 
 #: cps/editbooks.py:787
 #, python-format
@@ -383,7 +383,7 @@ msgstr "Il file %(file)s è stato caricato"
 
 #: cps/editbooks.py:883
 msgid "Source or destination format for conversion missing"
-msgstr "Mancano o il formato sorgente o quello di destinazione, necessari alla conversione"
+msgstr "Mancano o il formato sorgente o quello di destinazione, entrambi necessari alla conversione"
 
 #: cps/editbooks.py:891
 #, python-format
@@ -467,7 +467,7 @@ msgstr "Il file richiesto non può essere letto. I permessi sono corretti?"
 #: cps/helper.py:325
 #, python-format
 msgid "Deleting bookfolder for book %(id)s failed, path has subfolders: %(path)s"
-msgstr ""
+msgstr "L'eliminazione della cartella del libro %(id)s non è riuscita, il percorso ha sottocartelle: %(path)s"
 
 #: cps/helper.py:331
 #, python-format
@@ -510,7 +510,7 @@ msgstr "Errore nello scaricare la copertina"
 
 #: cps/helper.py:579
 msgid "Cover Format Error"
-msgstr ""
+msgstr "Errore di formato della copertina"
 
 #: cps/helper.py:594
 msgid "Failed to create path for cover"
@@ -628,7 +628,7 @@ msgstr "Scollegamento da  %(oauth)s non riuscito"
 #: cps/oauth_bb.py:290
 #, python-format
 msgid "Not Linked to %(oauth)s"
-msgstr ""
+msgstr "Non collegato a %(oauth)s"
 
 #: cps/oauth_bb.py:318
 msgid "GitHub Oauth error, please retry later."
@@ -859,7 +859,7 @@ msgstr "Dati inattesi durante il processo di aggiornamento"
 
 #: cps/updater.py:301 cps/updater.py:412
 msgid "No update available. You already have the latest version installed"
-msgstr "Nessun aggiornamento disponibile. Hai già installata l'ultima versione disponibile"
+msgstr "Nessun aggiornamento disponibile. Hai già installato l'ultima versione"
 
 #: cps/updater.py:333
 msgid "A new update is available. Click on the button below to update to the latest version."
@@ -1229,7 +1229,7 @@ msgstr "Porta"
 
 #: cps/templates/admin.html:93
 msgid "External Port"
-msgstr ""
+msgstr "Porta esterna"
 
 #: cps/templates/admin.html:100 cps/templates/config_view_edit.html:27
 msgid "Books per Page"
@@ -1438,7 +1438,7 @@ msgstr "Valutazione"
 
 #: cps/templates/book_edit.html:96
 msgid "Fetch Cover from URL (JPEG - Image will be downloaded and stored in database)"
-msgstr "Carica la copertina da URL (jpg, la copertina viene caricata e salvata nel database)"
+msgstr "Carica la copertina da URL (jpg, l'immagine della copertina viene caricata e salvata nel database)"
 
 #: cps/templates/book_edit.html:100
 msgid "Upload Cover from Local Disk"
@@ -1503,7 +1503,7 @@ msgstr "Oservazione importante riguardo Kobo: i libri eliminati, rimarranno in o
 
 #: cps/templates/book_edit.html:211
 msgid "Books must first be archived and the device synced before a book can safely be deleted."
-msgstr "Prima di poter elimnare in sicurezza un libro, prima occorre che il libro venga archiviato e che l'apparecchio venga sincronizzato."
+msgstr "Prima di poter eliminare in sicurezza un libro, occorre che il libro venga archiviato e che l'apparecchio venga sincronizzato."
 
 #: cps/templates/book_edit.html:233
 msgid "Keyword"
@@ -1661,7 +1661,7 @@ msgstr "Richieste proxy sconosciute allo store di Kobo"
 
 #: cps/templates/config_edit.html:202
 msgid "Server External Port (for port forwarded API calls)"
-msgstr ""
+msgstr "Porta esterna del server (per chiamate API alle porte inoltrate)"
 
 #: cps/templates/config_edit.html:210
 msgid "Use Goodreads"
@@ -2036,7 +2036,7 @@ msgstr "Apri il file .kobo/Kobo eReader.conf in un editore di testi e aggiungi (
 
 #: cps/templates/http_error.html:38
 msgid "Create Issue"
-msgstr "Crea-segnala un problema"
+msgstr "Crea un rapporto di segnalazione di un problema"
 
 #: cps/templates/http_error.html:45
 msgid "Return to Home"
@@ -2052,11 +2052,11 @@ msgstr "Inizio"
 
 #: cps/templates/index.xml:21
 msgid "Popular publications from this catalog based on Downloads."
-msgstr "Pubblicazioni popolari di questo catalogo in base ai download."
+msgstr "Pubblicazioni popolari in questo catalogo in base ai download."
 
 #: cps/templates/index.xml:28
 msgid "Popular publications from this catalog based on Rating."
-msgstr "Pubblicazioni popolari di questo catalogo in base alle valutazioni."
+msgstr "Pubblicazioni popolari in questo catalogo in base alle valutazioni."
 
 #: cps/templates/index.xml:31
 msgid "Recently added Books"
@@ -2518,7 +2518,7 @@ msgstr "Nascondi tutte le operazioni"
 
 #: cps/templates/user_edit.html:19
 msgid "Reset user Password"
-msgstr "Resetta la password dell'utente"
+msgstr "Reimposta la password dell'utente"
 
 #: cps/templates/user_edit.html:42
 msgid "Language of Books"
