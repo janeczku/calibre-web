@@ -466,62 +466,64 @@ def edit_cc_data(book_id, book, to_save):
 def upload_single_file(request, book, book_id):
     # Check and handle Uploaded file
     if 'btn-upload-format' in request.files:
-        requested_file = request.files['btn-upload-format']
-        # check for empty request
-        if requested_file.filename != '':
-            if '.' in requested_file.filename:
-                file_ext = requested_file.filename.rsplit('.', 1)[-1].lower()
-                if file_ext not in constants.EXTENSIONS_UPLOAD and '' not in constants.EXTENSIONS_UPLOAD:
-                    flash(_("File extension '%(ext)s' is not allowed to be uploaded to this server", ext=file_ext),
-                          category="error")
+            requested_file = request.files['btn-upload-format']
+            # check for empty request
+            if requested_file.filename != '':
+                if not current_user.role_upload():
+                    abort(403)
+                if '.' in requested_file.filename:
+                    file_ext = requested_file.filename.rsplit('.', 1)[-1].lower()
+                    if file_ext not in constants.EXTENSIONS_UPLOAD and '' not in constants.EXTENSIONS_UPLOAD:
+                        flash(_("File extension '%(ext)s' is not allowed to be uploaded to this server", ext=file_ext),
+                              category="error")
+                        return redirect(url_for('web.show_book', book_id=book.id))
+                else:
+                    flash(_('File to be uploaded must have an extension'), category="error")
                     return redirect(url_for('web.show_book', book_id=book.id))
-            else:
-                flash(_('File to be uploaded must have an extension'), category="error")
-                return redirect(url_for('web.show_book', book_id=book.id))
 
-            file_name = book.path.rsplit('/', 1)[-1]
-            filepath = os.path.normpath(os.path.join(config.config_calibre_dir, book.path))
-            saved_filename = os.path.join(filepath, file_name + '.' + file_ext)
+                file_name = book.path.rsplit('/', 1)[-1]
+                filepath = os.path.normpath(os.path.join(config.config_calibre_dir, book.path))
+                saved_filename = os.path.join(filepath, file_name + '.' + file_ext)
 
-            # check if file path exists, otherwise create it, copy file to calibre path and delete temp file
-            if not os.path.exists(filepath):
+                # check if file path exists, otherwise create it, copy file to calibre path and delete temp file
+                if not os.path.exists(filepath):
+                    try:
+                        os.makedirs(filepath)
+                    except OSError:
+                        flash(_(u"Failed to create path %(path)s (Permission denied).", path=filepath), category="error")
+                        return redirect(url_for('web.show_book', book_id=book.id))
                 try:
-                    os.makedirs(filepath)
+                    requested_file.save(saved_filename)
                 except OSError:
-                    flash(_(u"Failed to create path %(path)s (Permission denied).", path=filepath), category="error")
-                    return redirect(url_for('web.show_book', book_id=book.id))
-            try:
-                requested_file.save(saved_filename)
-            except OSError:
-                flash(_(u"Failed to store file %(file)s.", file=saved_filename), category="error")
-                return redirect(url_for('web.show_book', book_id=book.id))
-
-            file_size = os.path.getsize(saved_filename)
-            is_format = calibre_db.get_book_format(book_id, file_ext.upper())
-
-            # Format entry already exists, no need to update the database
-            if is_format:
-                log.warning('Book format %s already existing', file_ext.upper())
-            else:
-                try:
-                    db_format = db.Data(book_id, file_ext.upper(), file_size, file_name)
-                    calibre_db.session.add(db_format)
-                    calibre_db.session.commit()
-                    calibre_db.update_title_sort(config)
-                except OperationalError as e:
-                    calibre_db.session.rollback()
-                    log.error('Database error: %s', e)
-                    flash(_(u"Database error: %(error)s.", error=e), category="error")
+                    flash(_(u"Failed to store file %(file)s.", file=saved_filename), category="error")
                     return redirect(url_for('web.show_book', book_id=book.id))
 
-            # Queue uploader info
-            uploadText=_(u"File format %(ext)s added to %(book)s", ext=file_ext.upper(), book=book.title)
-            worker.add_upload(current_user.nickname,
-                "<a href=\"" + url_for('web.show_book', book_id=book.id) + "\">" + uploadText + "</a>")
+                file_size = os.path.getsize(saved_filename)
+                is_format = calibre_db.get_book_format(book_id, file_ext.upper())
 
-            return uploader.process(
-                saved_filename, *os.path.splitext(requested_file.filename),
-                rarExecutable=config.config_rarfile_location)
+                # Format entry already exists, no need to update the database
+                if is_format:
+                    log.warning('Book format %s already existing', file_ext.upper())
+                else:
+                    try:
+                        db_format = db.Data(book_id, file_ext.upper(), file_size, file_name)
+                        calibre_db.session.add(db_format)
+                        calibre_db.session.commit()
+                        calibre_db.update_title_sort(config)
+                    except OperationalError as e:
+                        calibre_db.session.rollback()
+                        log.error('Database error: %s', e)
+                        flash(_(u"Database error: %(error)s.", error=e), category="error")
+                        return redirect(url_for('web.show_book', book_id=book.id))
+
+                # Queue uploader info
+                uploadText=_(u"File format %(ext)s added to %(book)s", ext=file_ext.upper(), book=book.title)
+                worker.add_upload(current_user.nickname,
+                    "<a href=\"" + url_for('web.show_book', book_id=book.id) + "\">" + uploadText + "</a>")
+
+                return uploader.process(
+                    saved_filename, *os.path.splitext(requested_file.filename),
+                    rarExecutable=config.config_rarfile_location)
 
 
 def upload_cover(request, book):
@@ -529,6 +531,8 @@ def upload_cover(request, book):
         requested_file = request.files['btn-upload-cover']
         # check for empty request
         if requested_file.filename != '':
+            if not current_user.role_upload():
+                abort(403)
             ret, message = helper.save_cover(requested_file, book.path)
             if ret is True:
                 return True
@@ -609,6 +613,8 @@ def edit_book(book_id):
 
         if not error:
             if to_save["cover_url"]:
+                if not current_user.role_upload() and to_save["cover_url"] != "":
+                    return "", (403)
                 result, error = helper.save_cover_from_url(to_save["cover_url"], book.path)
                 if result is True:
                     book.has_cover = 1
