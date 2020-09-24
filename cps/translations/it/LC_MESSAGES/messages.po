@@ -124,7 +124,7 @@ msgstr "La posizione del Certfile non è valida, per favore indica il percorso c
 #: cps/shelf.py:100 cps/shelf.py:161 cps/shelf.py:202 cps/shelf.py:260
 #: cps/shelf.py:309 cps/shelf.py:338 cps/shelf.py:368 cps/shelf.py:392
 msgid "Settings DB is not Writeable"
-msgstr "I parametri del DB non sonos scrivibili"
+msgstr "I parametri del DB non sono scrivibili"
 
 #: cps/admin.py:709
 msgid "DB Location is not Valid, Please Enter Correct Path"
