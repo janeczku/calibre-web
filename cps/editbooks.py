@@ -612,7 +612,7 @@ def edit_book(book_id):
             error = helper.update_dir_stucture(edited_books_id, config.config_calibre_dir, input_authors[0])
 
         if not error:
-            if to_save["cover_url"]:
+            if "cover_url" in to_save:
                 if not current_user.role_upload() and to_save["cover_url"] != "":
                     return "", (403)
                 result, error = helper.save_cover_from_url(to_save["cover_url"], book.path)
