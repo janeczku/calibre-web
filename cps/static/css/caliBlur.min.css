@@ -2949,7 +2949,6 @@ body > div.container-fluid > div > div.col-sm-10 > div > div > div.col-sm-3.col-
 #bookDetailsModal > .modal-dialog.modal-lg > .modal-content > .modal-body > div > div > div > div.col-sm-3.col-lg-3.col-xs-5 > div.cover, body > div.container-fluid > div > div.col-sm-10 > div > div > div.col-sm-3.col-lg-3.col-xs-5 > div.cover {
     margin: 0;
     width: 100%;
-    height: 100%
 }
 
 #bookDetailsModal > .modal-dialog.modal-lg > .modal-content > .modal-body > div > div > div > div.col-sm-3.col-lg-3.col-xs-5 > div.cover > img, body > div.container-fluid > div > div.col-sm-10 > div > div > div.col-sm-3.col-lg-3.col-xs-5 > div.cover > img {
