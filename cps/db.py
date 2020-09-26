@@ -120,6 +120,12 @@ class Identifiers(Base):
             return u"Google Books"
         elif format_type == "kobo":
             return u"Kobo"
+        elif format_type == "litres":
+            return u"ЛитРес"
+        elif format_type == "issn":
+            return u"ISSN"
+        elif format_type == "isfdb":
+            return u"ISFDB"
         if format_type == "lubimyczytac":
             return u"Lubimyczytac"
         else:
@@ -144,7 +150,13 @@ class Identifiers(Base):
         elif format_type == "kobo":
             return u"https://www.kobo.com/ebook/{0}".format(self.val)
         elif format_type == "lubimyczytac":
-            return u" https://lubimyczytac.pl/ksiazka/{0}".format(self.val)
+            return u" https://lubimyczytac.pl/ksiazka/{0}/ksiazka".format(self.val)
+        elif format_type == "litres":
+            return u"https://www.litres.ru/{0}".format(self.val)
+        elif format_type == "issn":
+            return u"https://portal.issn.org/resource/ISSN/{0}".format(self.val)
+        elif format_type == "isfdb":
+            return u"http://www.isfdb.org/cgi-bin/pl.cgi?{0}".format(self.val)
         elif format_type == "url":
             return u"{0}".format(self.val)
         else:

@@ -81,7 +81,7 @@
 
               {% for format in entry.data %}
                   {% if format.format|lower in audioentries %}
-                    <li><a target="_blank" href="{{ url_for('web.read_book', book_id=entry.id, book_format=format.format|lower) }}">{{format.format}}</a></li>
+                    <li><a target="_blank" href="{{ url_for('web.read_book', book_id=entry.id, book_format=format.format|lower) }}">{{format.format|lower }}</a></li>
                     {% endif %}
               {% endfor %}
                   </ul>

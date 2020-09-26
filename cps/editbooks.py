@@ -505,6 +505,8 @@ def upload_single_file(request, book, book_id):
         requested_file = request.files['btn-upload-format']
         # check for empty request
         if requested_file.filename != '':
+            if not current_user.role_upload():
+                abort(403)
             if '.' in requested_file.filename:
                 file_ext = requested_file.filename.rsplit('.', 1)[-1].lower()
                 if file_ext not in constants.EXTENSIONS_UPLOAD and '' not in constants.EXTENSIONS_UPLOAD:
@@ -555,9 +557,9 @@ def upload_single_file(request, book, book_id):
             WorkerThread.add(current_user.nickname, TaskUpload(
                 "<a href=\"" + url_for('web.show_book', book_id=book.id) + "\">" + uploadText + "</a>"))
 
-            return uploader.process(
-                saved_filename, *os.path.splitext(requested_file.filename),
-                rarExecutable=config.config_rarfile_location)
+                return uploader.process(
+                    saved_filename, *os.path.splitext(requested_file.filename),
+                    rarExecutable=config.config_rarfile_location)
 
 
 def upload_cover(request, book):
@@ -565,6 +567,8 @@ def upload_cover(request, book):
         requested_file = request.files['btn-upload-cover']
         # check for empty request
         if requested_file.filename != '':
+            if not current_user.role_upload():
+                abort(403)
             ret, message = helper.save_cover(requested_file, book.path)
             if ret is True:
                 return True
@@ -645,13 +649,16 @@ def edit_book(book_id):
             error = helper.update_dir_stucture(edited_books_id, config.config_calibre_dir, input_authors[0])
 
         if not error:
-            if to_save["cover_url"]:
-                result, error = helper.save_cover_from_url(to_save["cover_url"], book.path)
-                if result is True:
-                    book.has_cover = 1
-                    modif_date = True
-                else:
-                    flash(error, category="error")
+            if "cover_url" in to_save:
+                if to_save["cover_url"]:
+                    if not current_user.role_upload():
+                        return "", (403)
+                    result, error = helper.save_cover_from_url(to_save["cover_url"], book.path)
+                    if result is True:
+                        book.has_cover = 1
+                        modif_date = True
+                    else:
+                        flash(error, category="error")
 
             # Add default series_index to book
             modif_date |= edit_book_series_index(to_save["series_index"], book)
