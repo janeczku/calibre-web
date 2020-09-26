@@ -134,7 +134,7 @@ def get_comic_info(tmp_file_path, original_file_name, original_file_extension, r
             # if style is not None:
             loadedMetadata = archive.readMetadata(style)
 
-            lang = loadedMetadata.language
+            lang = loadedMetadata.language or ""
             loadedMetadata.language = isoLanguages.get_lang3(lang)
 
             return BookMeta(

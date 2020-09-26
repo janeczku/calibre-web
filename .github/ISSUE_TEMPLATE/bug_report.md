@@ -6,6 +6,7 @@ labels: ''
 assignees: ''
 
 ---
+<!-- Please have a look at our [Contributing Guidelines](https://github.com/janeczku/calibre-web/blob/master/CONTRIBUTING.md) -->
 
 **Describe the bug/problem**
 A clear and concise description of what the bug is. If you are asking for support, please check our [Wiki](https://github.com/janeczku/calibre-web/wiki) if your question is already answered there.
