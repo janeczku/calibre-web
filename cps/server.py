@@ -27,6 +27,8 @@ try:
     from gevent.pywsgi import WSGIServer
     from gevent.pool import Pool
     from gevent import __version__ as _version
+    from greenlet import GreenletExit
+    import ssl
     VERSION = 'Gevent ' + _version
     _GEVENT = True
 except ImportError:
@@ -143,6 +145,16 @@ class WebServer(object):
                 output = _readable_listen_address(self.listen_address, self.listen_port)
             log.info('Starting Gevent server on %s', output)
             self.wsgiserver = WSGIServer(sock, self.app, log=self.access_logger, spawn=Pool(), **ssl_args)
+            if ssl_args:
+                wrap_socket = self.wsgiserver.wrap_socket
+                def my_wrap_socket(*args, **kwargs):
+                    try:
+                        return wrap_socket(*args, **kwargs)
+                    except (ssl.SSLError) as ex:
+                        log.warning('Gevent SSL Error: %s', ex)
+                        raise GreenletExit
+
+                self.wsgiserver.wrap_socket = my_wrap_socket
             self.wsgiserver.serve_forever()
         finally:
             if self.unix_socket_file:
