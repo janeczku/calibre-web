@@ -23,7 +23,7 @@ import sys
 import datetime
 import itertools
 import uuid
-import json
+from flask import session as flask_session
 from binascii import hexlify
 
 from flask import g
@@ -71,15 +71,16 @@ def get_sidebar_config(kwargs=None):
                     "visibility": constants.SIDEBAR_HOT, 'public': True, "page": "hot",
                     "show_text": _('Show Hot Books'), "config_show": True})
     sidebar.append({"glyph": "glyphicon-download", "text": _('Downloaded Books'), "link": 'web.books_list',
-                    "id": "download", "visibility": constants.SIDEBAR_DOWNLOAD, 'public': True, "page": "download",
-                    "show_text": _('Show Downloaded Books'), "config_show": True})
+                    "id": "download", "visibility": constants.SIDEBAR_DOWNLOAD, 'public': (not g.user.is_anonymous),
+                    "page": "download", "show_text": _('Show Downloaded Books'),
+                    "config_show": content})
     sidebar.append(
         {"glyph": "glyphicon-star", "text": _('Top Rated Books'), "link": 'web.books_list', "id": "rated",
          "visibility": constants.SIDEBAR_BEST_RATED, 'public': True, "page": "rated",
          "show_text": _('Show Top Rated Books'), "config_show": True})
     sidebar.append({"glyph": "glyphicon-eye-open", "text": _('Read Books'), "link": 'web.books_list', "id": "read",
-                    "visibility": constants.SIDEBAR_READ_AND_UNREAD, 'public': (not g.user.is_anonymous), "page": "read",
-                    "show_text": _('Show read and unread'), "config_show": content})
+                    "visibility": constants.SIDEBAR_READ_AND_UNREAD, 'public': (not g.user.is_anonymous),
+                    "page": "read", "show_text": _('Show read and unread'), "config_show": content})
     sidebar.append(
         {"glyph": "glyphicon-eye-close", "text": _('Unread Books'), "link": 'web.books_list', "id": "unread",
          "visibility": constants.SIDEBAR_READ_AND_UNREAD, 'public': (not g.user.is_anonymous), "page": "unread",
@@ -242,7 +243,6 @@ class User(UserBase, Base):
     denied_column_value = Column(String, default="")
     allowed_column_value = Column(String, default="")
     remote_auth_token = relationship('RemoteAuthToken', backref='user', lazy='dynamic')
-    #series_view = Column(String(10), default="list")
     view_settings = Column(JSON, default={})
 
 
@@ -286,6 +286,9 @@ class Anonymous(AnonymousUserMixin, UserBase):
         self.denied_column_value = data.denied_column_value
         self.allowed_column_value = data.allowed_column_value
         self.view_settings = data.view_settings
+        # Initialize flask_session once
+        if 'view' not in flask_session:
+            flask_session['view']={}
 
 
     def role_admin(self):
@@ -302,6 +305,16 @@ class Anonymous(AnonymousUserMixin, UserBase):
     @property
     def is_authenticated(self):
         return False
+
+    def get_view_property(self, page, prop):
+        if not flask_session['view'].get(page):
+            return None
+        return flask_session['view'][page].get(prop)
+
+    def set_view_property(self, page, prop, value):
+        if not flask_session['view'].get(page):
+            flask_session['view'][page] = dict()
+        flask_session['view'][page][prop] = value
 
 
 # Baseclass representing Shelfs in calibre-web in app.db

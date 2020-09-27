@@ -234,9 +234,8 @@ def admin_required(f):
 
 def unconfigured(f):
     """
-    Checks if current_user.role == 1
+    Checks if calibre-web instance is not configured
     """
-
     @wraps(f)
     def inner(*args, **kwargs):
         if not config.db_configured:
@@ -464,25 +463,15 @@ def toggle_archived(book_id):
 
 
 @web.route("/ajax/view", methods=["POST"])
-@login_required
+@login_required_if_no_ano
 def update_view():
     to_save = request.get_json()
     try:
         for element in to_save:
-            if not current_user.view_settings.get(element):
-                current_user.view_settings[element]=dict()
             for param in to_save[element]:
-                current_user.view_settings[element][param] = to_save[element][param]
-        try:
-            flag_modified(current_user, "view_settings")
-        except AttributeError:
-            pass
-        ub.session.commit()
-    except InvalidRequestError:
-        log.error("Invalid request received: %r ", request, )
-        return "Invalid request", 400
+                current_user.set_view_property(element, param, to_save[element][param])
     except Exception as e:
-        log.error("Could not save series_view_settings: %r %r", request, to_save)
+        log.error("Could not save view_settings: %r %r: e", request, to_save, e)
         return "Invalid request", 400
     return "1", 200
 
