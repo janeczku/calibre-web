@@ -24,6 +24,7 @@ var $list = $("#list").isotope({
 });
 
 $("#desc").click(function() {
+    var page = $(this).data("id");
     $.ajax({
         method:"post",
         contentType: "application/json; charset=utf-8",
@@ -39,6 +40,7 @@ $("#desc").click(function() {
 });
 
 $("#asc").click(function() {
+    var page = $(this).data("id");
     $.ajax({
         method:"post",
         contentType: "application/json; charset=utf-8",
