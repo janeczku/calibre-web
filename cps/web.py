@@ -467,27 +467,22 @@ def toggle_archived(book_id):
 @login_required
 def update_view():
     to_save = request.get_json()
-    allowed_view = ['grid', 'list']
-    if "series_view" in to_save and to_save["series_view"] in allowed_view:
+    try:
+        for element in to_save:
+            if not current_user.view_settings.get(element):
+                current_user.view_settings[element]=dict()
+            for param in to_save[element]:
+                current_user.view_settings[element][param] = to_save[element][param]
         try:
-            #visibility = json.loads(current_user.view_settings)
-            current_user.view_settings['series_view'] = to_save["series_view"]
-            # current_user.view_settings = json.dumps(visibility)
-            try:
-                flag_modified(current_user, "view_settings")
-            except AttributeError:
-                pass
-            ub.session.commit()
-        except InvalidRequestError:
-            log.error("Invalid request received: %r ", request, )
-            return "Invalid request", 400
-        except Exception:
-            log.error("Could not save series_view_settings: %r %r", request, to_save)
-            return "Invalid request", 400
-    elif "authorslist" in to_save:
-        pass
-    else:
-        log.error("Invalid request received: %r %r", request, to_save)
+            flag_modified(current_user, "view_settings")
+        except AttributeError:
+            pass
+        ub.session.commit()
+    except InvalidRequestError:
+        log.error("Invalid request received: %r ", request, )
+        return "Invalid request", 400
+    except Exception as e:
+        log.error("Could not save series_view_settings: %r %r", request, to_save)
         return "Invalid request", 400
     return "1", 200
 
@@ -624,18 +619,9 @@ def render_title_template(*args, **kwargs):
 def render_books_list(data, sort, book_id, page):
     order = [db.Books.timestamp.desc()]
     if sort == 'stored':
-        view = current_user.view_settings.get(data)
-        sort = view
+        sort = current_user.get_view_property(data, 'stored')
     else:
-        try:
-            current_user.view_settings[data] = sort
-            try:
-                flag_modified(current_user, "view_settings")
-            except AttributeError:
-                pass
-            ub.session.commit()
-        except InvalidRequestError:
-            log.error("Invalid request received: %r ", request, )
+        current_user.set_view_property(data, 'stored', sort)
     if sort == 'pubnew':
         order = [db.Books.pubdate.desc()]
     if sort == 'pubold':
@@ -1035,9 +1021,13 @@ def update_table_settings():
 @login_required_if_no_ano
 def author_list():
     if current_user.check_visibility(constants.SIDEBAR_AUTHOR):
+        if current_user.get_view_property('author', 'dir') == 'asc':
+            order = db.Authors.sort.asc()
+        else:
+            order = db.Authors.sort.desc()
         entries = calibre_db.session.query(db.Authors, func.count('books_authors_link.book').label('count')) \
             .join(db.books_authors_link).join(db.Books).filter(calibre_db.common_filters()) \
-            .group_by(text('books_authors_link.author')).order_by(db.Authors.sort).all()
+            .group_by(text('books_authors_link.author')).order_by(order).all()
         charlist = calibre_db.session.query(func.upper(func.substr(db.Authors.sort, 1, 1)).label('char')) \
             .join(db.books_authors_link).join(db.Books).filter(calibre_db.common_filters()) \
             .group_by(func.upper(func.substr(db.Authors.sort, 1, 1))).all()
@@ -1052,10 +1042,14 @@ def author_list():
 @web.route("/publisher")
 @login_required_if_no_ano
 def publisher_list():
+    if current_user.get_view_property('publisher', 'dir') == 'asc':
+        order = db.Publishers.name.asc()
+    else:
+        order = db.Publishers.name.desc()
     if current_user.check_visibility(constants.SIDEBAR_PUBLISHER):
         entries = calibre_db.session.query(db.Publishers, func.count('books_publishers_link.book').label('count')) \
             .join(db.books_publishers_link).join(db.Books).filter(calibre_db.common_filters()) \
-            .group_by(text('books_publishers_link.publisher')).order_by(db.Publishers.name).all()
+            .group_by(text('books_publishers_link.publisher')).order_by(order).all()
         charlist = calibre_db.session.query(func.upper(func.substr(db.Publishers.name, 1, 1)).label('char')) \
             .join(db.books_publishers_link).join(db.Books).filter(calibre_db.common_filters()) \
             .group_by(func.upper(func.substr(db.Publishers.name, 1, 1))).all()
@@ -1069,10 +1063,14 @@ def publisher_list():
 @login_required_if_no_ano
 def series_list():
     if current_user.check_visibility(constants.SIDEBAR_SERIES):
-        if current_user.view_settings.get('series_view') == 'list':
+        if current_user.get_view_property('series', 'dir') == 'asc':
+            order = db.Series.sort.asc()
+        else:
+            order = db.Series.sort.desc()
+        if current_user.get_view_property('series', 'series_view') == 'list':
             entries = calibre_db.session.query(db.Series, func.count('books_series_link.book').label('count')) \
                 .join(db.books_series_link).join(db.Books).filter(calibre_db.common_filters()) \
-                .group_by(text('books_series_link.series')).order_by(db.Series.sort).all()
+                .group_by(text('books_series_link.series')).order_by(order).all()
             charlist = calibre_db.session.query(func.upper(func.substr(db.Series.sort, 1, 1)).label('char')) \
                 .join(db.books_series_link).join(db.Books).filter(calibre_db.common_filters()) \
                 .group_by(func.upper(func.substr(db.Series.sort, 1, 1))).all()
@@ -1081,7 +1079,7 @@ def series_list():
         else:
             entries = calibre_db.session.query(db.Books, func.count('books_series_link').label('count')) \
                 .join(db.books_series_link).join(db.Series).filter(calibre_db.common_filters()) \
-                .group_by(text('books_series_link.series')).order_by(db.Series.sort).all()
+                .group_by(text('books_series_link.series')).order_by(order).all()
             charlist = calibre_db.session.query(func.upper(func.substr(db.Series.sort, 1, 1)).label('char')) \
                 .join(db.books_series_link).join(db.Books).filter(calibre_db.common_filters()) \
                 .group_by(func.upper(func.substr(db.Series.sort, 1, 1))).all()
@@ -1096,10 +1094,14 @@ def series_list():
 @login_required_if_no_ano
 def ratings_list():
     if current_user.check_visibility(constants.SIDEBAR_RATING):
+        if current_user.get_view_property('ratings', 'dir') == 'asc':
+            order = db.Ratings.rating.asc()
+        else:
+            order = db.Ratings.rating.desc()
         entries = calibre_db.session.query(db.Ratings, func.count('books_ratings_link.book').label('count'),
                                    (db.Ratings.rating / 2).label('name')) \
             .join(db.books_ratings_link).join(db.Books).filter(calibre_db.common_filters()) \
-            .group_by(text('books_ratings_link.rating')).order_by(db.Ratings.rating).all()
+            .group_by(text('books_ratings_link.rating')).order_by(order).all()
         return render_title_template('list.html', entries=entries, folder='web.books_list', charlist=list(),
                                      title=_(u"Ratings list"), page="ratingslist", data="ratings")
     else:
@@ -1110,11 +1112,15 @@ def ratings_list():
 @login_required_if_no_ano
 def formats_list():
     if current_user.check_visibility(constants.SIDEBAR_FORMAT):
+        if current_user.get_view_property('ratings', 'dir') == 'asc':
+            order = db.Data.format.asc()
+        else:
+            order = db.Data.format.desc()
         entries = calibre_db.session.query(db.Data,
                                            func.count('data.book').label('count'),
                                            db.Data.format.label('format')) \
             .join(db.Books).filter(calibre_db.common_filters()) \
-            .group_by(db.Data.format).order_by(db.Data.format).all()
+            .group_by(db.Data.format).order_by(order).all()
         return render_title_template('list.html', entries=entries, folder='web.books_list', charlist=list(),
                                      title=_(u"File formats list"), page="formatslist", data="formats")
     else:
@@ -1154,8 +1160,12 @@ def language_overview():
 @login_required_if_no_ano
 def category_list():
     if current_user.check_visibility(constants.SIDEBAR_CATEGORY):
+        if current_user.get_view_property('category', 'dir') == 'asc':
+            order = db.Tags.name.asc()
+        else:
+            order = db.Tags.name.desc()
         entries = calibre_db.session.query(db.Tags, func.count('books_tags_link.book').label('count')) \
-            .join(db.books_tags_link).join(db.Books).order_by(db.Tags.name).filter(calibre_db.common_filters()) \
+            .join(db.books_tags_link).join(db.Books).order_by(order).filter(calibre_db.common_filters()) \
             .group_by(text('books_tags_link.tag')).all()
         charlist = calibre_db.session.query(func.upper(func.substr(db.Tags.name, 1, 1)).label('char')) \
             .join(db.books_tags_link).join(db.Books).filter(calibre_db.common_filters()) \

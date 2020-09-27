@@ -22,13 +22,13 @@ $("#sort_name").click(function() {
     var class_name = $("h1").attr('Class') + "_sort_name";
     var obj = {};
     obj[class_name] = sort;
-    $.ajax({
+    /*$.ajax({
         method:"post",
         contentType: "application/json; charset=utf-8",
         dataType: "json",
         url: window.location.pathname + "/../../ajax/view",
         data: JSON.stringify({obj}),
-    });
+    });*/
 
     var count = 0;
     var index = 0;
@@ -75,6 +75,14 @@ $("#desc").click(function() {
     if (direction === 0) {
         return;
     }
+    var page = $(this).data("id");
+    $.ajax({
+        method:"post",
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        url: window.location.pathname + "/../../ajax/view",
+        data: "{\"" + page + "\": {\"dir\": \"desc\"}}",
+    });
     var index = 0;
     var list = $("#list");
     var second = $("#second");
@@ -111,9 +119,18 @@ $("#desc").click(function() {
 
 
 $("#asc").click(function() {
+
     if (direction === 1) {
         return;
     }
+    var page = $(this).data("id");
+    $.ajax({
+        method:"post",
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        url: window.location.pathname + "/../../ajax/view",
+        data: "{\"" + page + "\": {\"dir\": \"asc\"}}",
+    });
     var index = 0;
     var list = $("#list");
     var second = $("#second");
@@ -140,7 +157,6 @@ $("#asc").click(function() {
         });
 
         // middle = parseInt(elementLength / 2) + (elementLength % 2);
-
         list.append(reversed.slice(0, index));
         second.append(reversed.slice(index, elementLength));
     } else {
