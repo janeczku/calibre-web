@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-09-26 16:18+0200\n"
-"PO-Revision-Date: 2020-06-20 19:06+0800\n"
+"POT-Creation-Date: 2020-09-27 19:21+0200\n"
+"PO-Revision-Date: 2020-09-27 22:18+0800\n"
 "Last-Translator: dalin <dalin.lin@gmail.com>\n"
 "Language: zh_CN\n"
 "Language-Team: zh_Hans_CN <LL@li.org>\n"
@@ -59,7 +59,7 @@ msgstr "管理页"
 
 #: cps/admin.py:158
 msgid "UI Configuration"
-msgstr "UI配置"
+msgstr "界面配置"
 
 #: cps/admin.py:190 cps/admin.py:717
 msgid "Calibre-Web configuration updated"
@@ -125,7 +125,7 @@ msgstr "证书文件路径无效，请输入正确的路径"
 #: cps/shelf.py:100 cps/shelf.py:161 cps/shelf.py:202 cps/shelf.py:260
 #: cps/shelf.py:309 cps/shelf.py:338 cps/shelf.py:368 cps/shelf.py:392
 msgid "Settings DB is not Writeable"
-msgstr ""
+msgstr "设置数据库不可写入"
 
 #: cps/admin.py:712
 msgid "DB Location is not Valid, Please Enter Correct Path"
@@ -352,7 +352,7 @@ msgstr "已添加 %(ext)s 格式到 %(book)s"
 
 #: cps/editbooks.py:636
 msgid "Identifiers are not Case Sensitive, Overwriting Old Identifier"
-msgstr ""
+msgstr "标识符不区分大小写，覆盖旧标识符"
 
 #: cps/editbooks.py:673
 msgid "Metadata successfully updated"
@@ -472,7 +472,7 @@ msgstr "无法读取请求的文件。可能有错误的权限设置？"
 #: cps/helper.py:325
 #, python-format
 msgid "Deleting bookfolder for book %(id)s failed, path has subfolders: %(path)s"
-msgstr ""
+msgstr "删除书的文件夹%(id)s失败，路径有子文件夹：%(path)s"
 
 #: cps/helper.py:331
 #, python-format
@@ -633,7 +633,7 @@ msgstr "取消链接到%(oauth)s失败"
 #: cps/oauth_bb.py:290
 #, python-format
 msgid "Not Linked to %(oauth)s"
-msgstr ""
+msgstr "为连接到%(oauth)s"
 
 #: cps/oauth_bb.py:318
 msgid "GitHub Oauth error, please retry later."
@@ -1154,7 +1154,7 @@ msgstr "管理权限"
 #: cps/templates/admin.html:17 cps/templates/login.html:12
 #: cps/templates/login.html:13 cps/templates/user_edit.html:22
 msgid "Password"
-msgstr "有无密码"
+msgstr "密码"
 
 #: cps/templates/admin.html:18 cps/templates/layout.html:66
 msgid "Upload"
@@ -1234,7 +1234,7 @@ msgstr "端口"
 
 #: cps/templates/admin.html:93
 msgid "External Port"
-msgstr ""
+msgstr "扩展端口"
 
 #: cps/templates/admin.html:100 cps/templates/config_view_edit.html:27
 msgid "Books per Page"
@@ -1666,7 +1666,7 @@ msgstr "代理未知请求到Kobo商店"
 
 #: cps/templates/config_edit.html:202
 msgid "Server External Port (for port forwarded API calls)"
-msgstr ""
+msgstr "服务器扩展端口(用于转发的API调用的端口)"
 
 #: cps/templates/config_edit.html:210
 msgid "Use Goodreads"
@@ -1797,12 +1797,12 @@ msgstr "获取 %(provider)s OAuth凭证"
 #: cps/templates/config_edit.html:326
 #, python-format
 msgid "%(provider)s OAuth Client Id"
-msgstr "%(provider)s OAuth Client Secret"
+msgstr "%(provider)s OAuth 客户端 Secret"
 
 #: cps/templates/config_edit.html:330
 #, python-format
 msgid "%(provider)s OAuth Client Secret"
-msgstr "%(provider)s OAuth Client Secret"
+msgstr "%(provider)s OAuth 客户端 Secret"
 
 #: cps/templates/config_edit.html:346
 msgid "External binaries"
