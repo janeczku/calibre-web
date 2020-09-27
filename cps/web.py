@@ -659,6 +659,8 @@ def render_books_list(data, sort, book_id, page):
         return render_read_books(page, True, order=order)
     elif data == "hot":
         return render_hot_books(page)
+    elif data == "download":
+        return render_downloaded_books(page, order)
     elif data == "author":
         return render_author_books(page, book_id, order)
     elif data == "publisher":
@@ -718,6 +720,42 @@ def render_hot_books(page):
         abort(404)
 
 
+def render_downloaded_books(page, order):
+    if current_user.check_visibility(constants.SIDEBAR_DOWNLOAD):
+        # order = order or []
+        if current_user.show_detail_random():
+            random = calibre_db.session.query(db.Books).filter(calibre_db.common_filters()) \
+                .order_by(func.random()).limit(config.config_random_books)
+        else:
+            random = false()
+        # off = int(int(config.config_books_per_page) * (page - 1))
+        '''entries, random, pagination = calibre_db.fill_indexpage(page, 0,
+                                                                db.Books,
+                                                                db_filter,
+                                                                order,
+                                                                ub.ReadBook, db.Books.id==ub.ReadBook.book_id)'''
+
+        entries, __, pagination = calibre_db.fill_indexpage(page,
+                                                            0,
+                                                            db.Books,
+                                                            ub.Downloads.user_id == int(current_user.id),
+                                                            order,
+                                                            ub.Downloads, db.Books.id == ub.Downloads.book_id)
+        for book in entries:
+            if not calibre_db.session.query(db.Books).filter(calibre_db.common_filters()) \
+                             .filter(db.Books.id == book.id).first():
+                ub.delete_download(book.id)
+
+        return render_title_template('index.html',
+                                     random=random,
+                                     entries=entries,
+                                     pagination=pagination,
+                                     title=_(u"Downloaded books by %(user)s",user=current_user.nickname),
+                                     page="download")
+    else:
+        abort(404)
+
+
 def render_author_books(page, author_id, order):
     entries, __, pagination = calibre_db.fill_indexpage(page, 0,
                                                         db.Books,
@@ -765,7 +803,7 @@ def render_series_books(page, book_id, order):
         entries, random, pagination = calibre_db.fill_indexpage(page, 0,
                                                                 db.Books,
                                                                 db.Books.series.any(db.Series.id == book_id),
-                                                                [db.Books.series_index, order[0]])
+                                                                [order[0]])
         return render_title_template('index.html', random=random, pagination=pagination, entries=entries, id=book_id,
                                      title=_(u"Series: %(serie)s", serie=name.name), page="series")
     else:
@@ -994,7 +1032,6 @@ def list_books():
                     isoLanguages.get(part3=entry.languages[index].lang_code).name)
     table_entries = {'totalNotFiltered': total_count, 'total': filtered_count, "rows": entries}
     js_list = json.dumps(table_entries, cls=db.AlchemyEncoder)
-    #js_list = json.dumps(entries, cls=db.AlchemyEncoder)
 
     response = make_response(js_list)
     response.headers["Content-Type"] = "application/json; charset=utf-8"
@@ -1664,7 +1701,7 @@ def token_verified():
 @web.route("/me", methods=["GET", "POST"])
 @login_required
 def profile():
-    downloads = list()
+    # downloads = list()
     languages = calibre_db.speaking_language()
     translations = babel.list_translations() + [LC('en')]
     kobo_support = feature_support['kobo'] and config.config_kobo_sync
@@ -1675,12 +1712,13 @@ def profile():
         oauth_status = None
         local_oauth_check = {}
 
-    for book in current_user.downloads:
-        downloadBook = calibre_db.get_book(book.book_id)
-        if downloadBook:
-            downloads.append(downloadBook)
-        else:
-            ub.delete_download(book.book_id)
+    '''entries, __, pagination = calibre_db.fill_indexpage(page,
+                                                        0,
+                                                        db.Books,
+                                                        ub.Downloads.user_id == int(current_user.id), # True,
+                                                        [],
+                                                        ub.Downloads, db.Books.id == ub.Downloads.book_id)'''
+
     if request.method == "POST":
         to_save = request.form.to_dict()
         current_user.random_books = 0
@@ -1694,7 +1732,7 @@ def profile():
         if "email" in to_save and to_save["email"] != current_user.email:
             if config.config_public_reg and not check_valid_domain(to_save["email"]):
                 flash(_(u"E-mail is not from valid domain"), category="error")
-                return render_title_template("user_edit.html", content=current_user, downloads=downloads,
+                return render_title_template("user_edit.html", content=current_user,
                                              title=_(u"%(name)s's profile", name=current_user.nickname), page="me",
                                              kobo_support=kobo_support,
                                              registered_oauth=local_oauth_check, oauth_status=oauth_status)
@@ -1710,7 +1748,6 @@ def profile():
                                              languages=languages,
                                              kobo_support=kobo_support,
                                              new_user=0, content=current_user,
-                                             downloads=downloads,
                                              registered_oauth=local_oauth_check,
                                              title=_(u"Edit User %(nick)s",
                                                      nick=current_user.nickname),
@@ -1730,24 +1767,32 @@ def profile():
         if "Show_detail_random" in to_save:
             current_user.sidebar_view += constants.DETAIL_RANDOM
 
-        # current_user.mature_content = "Show_mature_content" in to_save
-
         try:
             ub.session.commit()
+            flash(_(u"Profile updated"), category="success")
+            log.debug(u"Profile updated")
         except IntegrityError:
             ub.session.rollback()
             flash(_(u"Found an existing account for this e-mail address."), category="error")
             log.debug(u"Found an existing account for this e-mail address.")
-            return render_title_template("user_edit.html", content=current_user, downloads=downloads,
-                                         translations=translations, kobo_support=kobo_support,
-                                         title=_(u"%(name)s's profile", name=current_user.nickname), page="me",
-                                         registered_oauth=local_oauth_check, oauth_status=oauth_status)
-        flash(_(u"Profile updated"), category="success")
-        log.debug(u"Profile updated")
-    return render_title_template("user_edit.html", translations=translations, profile=1, languages=languages,
-                                 content=current_user, downloads=downloads, kobo_support=kobo_support,
+            '''return render_title_template("user_edit.html",
+                                         content=current_user,
+                                         translations=translations,
+                                         kobo_support=kobo_support,
+                                         title=_(u"%(name)s's profile", name=current_user.nickname),
+                                         page="me",
+                                         registered_oauth=local_oauth_check,
+                                         oauth_status=oauth_status)'''
+    return render_title_template("user_edit.html",
+                                 translations=translations,
+                                 profile=1,
+                                 languages=languages,
+                                 content=current_user,
+                                 kobo_support=kobo_support,
                                  title=_(u"%(name)s's profile", name=current_user.nickname),
-                                 page="me", registered_oauth=local_oauth_check, oauth_status=oauth_status)
+                                 page="me",
+                                 registered_oauth=local_oauth_check,
+                                 oauth_status=oauth_status)
 
 
 # ###################################Show single book ##################################################################
