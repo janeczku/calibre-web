@@ -24,6 +24,13 @@ var $list = $("#list").isotope({
 });
 
 $("#desc").click(function() {
+    $.ajax({
+        method:"post",
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        url: window.location.pathname + "/../../ajax/view",
+        data: "{\"" + page + "\": {\"dir\": \"desc\"}}",
+    });
     $list.isotope({
         sortBy: "name",
         sortAscending: true
@@ -32,6 +39,13 @@ $("#desc").click(function() {
 });
 
 $("#asc").click(function() {
+    $.ajax({
+        method:"post",
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        url: window.location.pathname + "/../../ajax/view",
+        data: "{\"" + page + "\": {\"dir\": \"asc\"}}",
+    });
     $list.isotope({
         sortBy: "name",
         sortAscending: false

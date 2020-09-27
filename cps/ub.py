@@ -44,6 +44,7 @@ from sqlalchemy import create_engine, exc, exists, event
 from sqlalchemy import Column, ForeignKey
 from sqlalchemy import String, Integer, SmallInteger, Boolean, DateTime, Float, JSON
 from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm.attributes import flag_modified
 from sqlalchemy.orm import backref, relationship, sessionmaker, Session
 from werkzeug.security import generate_password_hash
 
@@ -191,6 +192,25 @@ class UserBase:
     def list_allowed_column_values(self):
         mct = self.allowed_column_value or ""
         return [t.strip() for t in mct.split(",")]
+
+    def get_view_property(self, page, property):
+        if not self.view_settings.get(page):
+            return None
+        return self.view_settings[page].get(property)
+
+    def set_view_property(self, page, property, value):
+        if not self.view_settings.get(page):
+            self.view_settings[page] = dict()
+        self.view_settings[page][property] = value
+        try:
+            flag_modified(self, "view_settings")
+        except AttributeError:
+            pass
+        try:
+            session.commit()
+        except (exc.OperationalError, exc.InvalidRequestError):
+            session.rollback()
+            # ToDo: Error message
 
     def __repr__(self):
         return '<User %r>' % self.nickname

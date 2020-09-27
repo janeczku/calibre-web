@@ -387,7 +387,7 @@ $(function() {
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             url: window.location.pathname + "/../../ajax/view",
-            data: JSON.stringify({"series_view":view}),
+            data: "{\"series\": {\"series_view\": \""+ view +"\"}}",
             success: function success() {
                 location.reload();
             }
