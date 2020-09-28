@@ -999,11 +999,11 @@ def books_table():
 def list_books():
     off = request.args.get("offset") or 0
     limit = request.args.get("limit") or config.config_books_per_page
-    sort = request.args.get("sort")
-    if request.args.get("order") == 'asc':
-        order = [db.Books.timestamp.asc()]
-    else:
+    # sort = request.args.get("sort")
+    if request.args.get("order") == 'desc':
         order = [db.Books.timestamp.desc()]
+    else:
+        order = [db.Books.timestamp.asc()]
     search = request.args.get("search")
     total_count = calibre_db.session.query(db.Books).count()
     if search:
@@ -1047,10 +1047,10 @@ def update_table_settings():
 @login_required_if_no_ano
 def author_list():
     if current_user.check_visibility(constants.SIDEBAR_AUTHOR):
-        if current_user.get_view_property('author', 'dir') == 'asc':
-            order = db.Authors.sort.asc()
-        else:
+        if current_user.get_view_property('author', 'dir') == 'desc':
             order = db.Authors.sort.desc()
+        else:
+            order = db.Authors.sort.asc()
         entries = calibre_db.session.query(db.Authors, func.count('books_authors_link.book').label('count')) \
             .join(db.books_authors_link).join(db.Books).filter(calibre_db.common_filters()) \
             .group_by(text('books_authors_link.author')).order_by(order).all()
@@ -1068,10 +1068,10 @@ def author_list():
 @web.route("/publisher")
 @login_required_if_no_ano
 def publisher_list():
-    if current_user.get_view_property('publisher', 'dir') == 'asc':
-        order = db.Publishers.name.asc()
-    else:
+    if current_user.get_view_property('publisher', 'dir') == 'desc':
         order = db.Publishers.name.desc()
+    else:
+        order = db.Publishers.name.asc()
     if current_user.check_visibility(constants.SIDEBAR_PUBLISHER):
         entries = calibre_db.session.query(db.Publishers, func.count('books_publishers_link.book').label('count')) \
             .join(db.books_publishers_link).join(db.Books).filter(calibre_db.common_filters()) \
@@ -1089,10 +1089,10 @@ def publisher_list():
 @login_required_if_no_ano
 def series_list():
     if current_user.check_visibility(constants.SIDEBAR_SERIES):
-        if current_user.get_view_property('series', 'dir') == 'asc':
-            order = db.Series.sort.asc()
-        else:
+        if current_user.get_view_property('series', 'dir') == 'desc':
             order = db.Series.sort.desc()
+        else:
+            order = db.Series.sort.asc()
         if current_user.get_view_property('series', 'series_view') == 'list':
             entries = calibre_db.session.query(db.Series, func.count('books_series_link.book').label('count')) \
                 .join(db.books_series_link).join(db.Books).filter(calibre_db.common_filters()) \
@@ -1120,10 +1120,10 @@ def series_list():
 @login_required_if_no_ano
 def ratings_list():
     if current_user.check_visibility(constants.SIDEBAR_RATING):
-        if current_user.get_view_property('ratings', 'dir') == 'asc':
-            order = db.Ratings.rating.asc()
-        else:
+        if current_user.get_view_property('ratings', 'dir') == 'desc':
             order = db.Ratings.rating.desc()
+        else:
+            order = db.Ratings.rating.asc()
         entries = calibre_db.session.query(db.Ratings, func.count('books_ratings_link.book').label('count'),
                                    (db.Ratings.rating / 2).label('name')) \
             .join(db.books_ratings_link).join(db.Books).filter(calibre_db.common_filters()) \
@@ -1138,10 +1138,10 @@ def ratings_list():
 @login_required_if_no_ano
 def formats_list():
     if current_user.check_visibility(constants.SIDEBAR_FORMAT):
-        if current_user.get_view_property('ratings', 'dir') == 'asc':
-            order = db.Data.format.asc()
-        else:
+        if current_user.get_view_property('ratings', 'dir') == 'desc':
             order = db.Data.format.desc()
+        else:
+            order = db.Data.format.asc()
         entries = calibre_db.session.query(db.Data,
                                            func.count('data.book').label('count'),
                                            db.Data.format.label('format')) \
@@ -1186,10 +1186,10 @@ def language_overview():
 @login_required_if_no_ano
 def category_list():
     if current_user.check_visibility(constants.SIDEBAR_CATEGORY):
-        if current_user.get_view_property('category', 'dir') == 'asc':
-            order = db.Tags.name.asc()
-        else:
+        if current_user.get_view_property('category', 'dir') == 'desc':
             order = db.Tags.name.desc()
+        else:
+            order = db.Tags.name.asc()
         entries = calibre_db.session.query(db.Tags, func.count('books_tags_link.book').label('count')) \
             .join(db.books_tags_link).join(db.Books).order_by(order).filter(calibre_db.common_filters()) \
             .group_by(text('books_tags_link.tag')).all()

@@ -141,30 +141,6 @@
     </div>
   </form>
 </div>
-  {% if downloads %}
-<div class="col-md-12 col-lg-12">
-   <div class="discover1 load-more1">
-    <h2>{{_('Recent Downloads')}}</h2>
-     <div class="row">
-    {% for entry in downloads %}
-    <div class="col-sm-3 col-lg-2 col-xs-6 book" id="books">
-      <div class="cover">
-          <a href="{{ url_for('web.show_book', book_id=entry.id) }}" data-toggle="modal" data-target="#bookDetailsModal" data-remote="false">
-              <img src="{{ url_for('web.get_cover', book_id=entry.id) }}" alt="{{ entry.title }}"/>
-          </a>
-      </div>
-      <div class="meta">
-        <a href="{{ url_for('web.show_book', book_id=entry.id) }}" data-toggle="modal" data-target="#bookDetailsModal" data-remote="false">
-          <p class="title">{{entry.title|shortentitle}}</p>
-        </a>
-      </div>
-    </div>
-    {% endfor %}
-     </div>
-   </div>
-</div>
-  {% endif %}
-
 
     <div class="modal fade" id="modal_kobo_token" tabindex="-1" role="dialog" aria-labelledby="kobo_tokenModalLabel">
       <div class="modal-dialog modal-lg" role="document">
@@ -204,5 +180,4 @@
 <script src="{{ url_for('static', filename='js/libs/bootstrap-table/bootstrap-table-editable.min.js') }}"></script>
 <script src="{{ url_for('static', filename='js/libs/bootstrap-table/bootstrap-editable.min.js') }}"></script>
 <script src="{{ url_for('static', filename='js/table.js') }}"></script>
-<script src="{{ url_for('static', filename='js/libs/plugins.js') }}"></script>
 {% endblock %}
