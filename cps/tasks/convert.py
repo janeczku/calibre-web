@@ -52,7 +52,6 @@ class TaskConvert(CalibreTask):
                     return self._handleError(str(e))
 
     def _convert_ebook_format(self):
-        error_message = None
         local_session = db.Session()
         file_path = self.file_path
         book_id = self.bookid
@@ -68,7 +67,7 @@ class TaskConvert(CalibreTask):
             self.results['path'] = file_path
             self.results['title'] = cur_book.title
             self._handleSuccess()
-            return file_path + format_new_ext
+            return os.path.basename(file_path + format_new_ext)
         else:
             log.info("Book id %d - target format of %s does not exist. Moving forward with convert.",
                      book_id,
@@ -105,7 +104,7 @@ class TaskConvert(CalibreTask):
                 if config.config_use_google_drive:
                     os.remove(file_path + format_old_ext)
                 self._handleSuccess()
-                return file_path + format_new_ext
+                return os.path.basename(file_path + format_new_ext)
             else:
                 error_message = _('%(format)s format not found on disk', format=format_new_ext.upper())
         log.info("ebook converter failed with error while converting book")
