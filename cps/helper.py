@@ -102,7 +102,7 @@ def convert_book_format(book_id, calibrepath, old_book_format, new_book_format, 
         txt = (u"%s -> %s: %s" % (old_book_format, new_book_format, book.title))
         settings['old_book_format'] = old_book_format
         settings['new_book_format'] = new_book_format
-        WorkerThread.add(user_id, TaskConvert(file_path, book.id, txt, settings, kindle_mail))
+        WorkerThread.add(user_id, TaskConvert(file_path, book.id, txt, settings, kindle_mail, user_id))
         return None
     else:
         error_message = _(u"%(format)s not found: %(fn)s",
