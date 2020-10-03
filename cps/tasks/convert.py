@@ -20,12 +20,13 @@ log = logger.create()
 
 
 class TaskConvert(CalibreTask):
-    def __init__(self, file_path, bookid, taskMessage, settings, kindle_mail):
+    def __init__(self, file_path, bookid, taskMessage, settings, kindle_mail, user=None):
         super(TaskConvert, self).__init__(taskMessage)
         self.file_path = file_path
         self.bookid = bookid
         self.settings = settings
         self.kindle_mail = kindle_mail
+        self.user = user
 
         self.results = dict()
 
@@ -40,14 +41,9 @@ class TaskConvert(CalibreTask):
                 # if we're sending to kindle after converting, create a one-off task and run it immediately
                 # todo: figure out how to incorporate this into the progress
                 try:
-                    task = TaskEmail(self.settings['subject'], self.results["path"],
+                    worker_thread.add(self.user, TaskEmail(self.settings['subject'], self.results["path"],
                                filename, self.settings, self.kindle_mail,
-                               self.settings['subject'], self.settings['body'], internal=True)
-                    task.start(worker_thread)
-
-                    # even though the convert task might be finished, if this task fails, fail the whole thing
-                    if task.stat != STAT_FINISH_SUCCESS:
-                        raise Exception(task.error)
+                               self.settings['subject'], self.settings['body'], internal=True))
                 except Exception as e:
                     return self._handleError(str(e))
 
