@@ -51,6 +51,8 @@ class TaskConvert(CalibreTask):
                 return error_message
 
         filename = self._convert_ebook_format()
+        if config.config_use_google_drive:
+            os.remove(self.file_path + u'.' + self.settings['old_book_format'].lower())
 
         if filename:
             if config.config_use_google_drive:
@@ -117,9 +119,7 @@ class TaskConvert(CalibreTask):
                     return
                 self.results['path'] = cur_book.path
                 self.results['title'] = cur_book.title
-                if config.config_use_google_drive:
-                    os.remove(file_path + format_old_ext)
-                else:
+                if not config.config_use_google_drive:
                     self._handleSuccess()
                 return os.path.basename(file_path + format_new_ext)
             else:
