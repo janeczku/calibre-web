@@ -210,7 +210,7 @@ class CalibreTask:
         self._progress = x
 
     def _handleError(self, error_message):
-        log.error(error_message)
+        log.exception(error_message)
         self.stat = STAT_FAIL
         self.progress = 1
         self.error = error_message
