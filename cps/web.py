@@ -35,6 +35,7 @@ from babel import Locale as LC
 from babel.core import UnknownLocaleError
 from flask import Blueprint, jsonify
 from flask import render_template, request, redirect, send_from_directory, make_response, g, flash, abort, url_for
+from flask import session as flask_session
 from flask_babel import gettext as _
 from flask_login import login_user, logout_user, login_required, current_user, confirm_login
 from sqlalchemy.exc import IntegrityError, InvalidRequestError, OperationalError
@@ -669,10 +670,11 @@ def render_books_list(data, sort, book_id, page):
     elif data == "search":
         term = (request.args.get('query') or '')
         offset = int(int(config.config_books_per_page) * (page - 1))
-        if '&' not in term:
-            return render_search_results(term, offset, order, config.config_books_per_page)
-        else:
-            return render_adv_search_results(term, offset, order, config.config_books_per_page)
+        return render_search_results(term, offset, order, config.config_books_per_page)
+    elif data == "advsearch":
+        term = json.loads(flask_session['query'])
+        offset = int(int(config.config_books_per_page) * (page - 1))
+        return render_adv_search_results(term, offset, order, config.config_books_per_page)
     else:
         website = data or "newest"
         entries, random, pagination = calibre_db.fill_indexpage(page, 0, db.Books, True, order)
@@ -953,19 +955,21 @@ def render_prepare_search_form(cc):
 
 
 def render_search_results(term, offset=None, order=None, limit=None):
-    entries, result_count = calibre_db.get_search_results(term, offset, order, limit)
+    entries, result_count, pagination = calibre_db.get_search_results(term, offset, order, limit)
     ids = list()
     for element in entries:
         ids.append(element.id)
     searched_ids[current_user.id] = ids
     return render_title_template('search.html',
                                  searchterm=term,
+                                 pagination=pagination,
                                  query=term,
                                  adv_searchterm=term,
                                  entries=entries,
                                  result_count=result_count,
                                  title=_(u"Search"),
                                  page="search")
+
 
 # ################################### View Books list ##################################################################
 
@@ -1007,7 +1011,7 @@ def list_books():
     search = request.args.get("search")
     total_count = calibre_db.session.query(db.Books).count()
     if search:
-        entries, filtered_count = calibre_db.get_search_results(search, off, order, limit)
+        entries, filtered_count, pagination = calibre_db.get_search_results(search, off, order, limit)
     else:
         entries, __, __ = calibre_db.fill_indexpage((int(off) / (int(limit)) + 1), limit, db.Books, True, order)
         filtered_count = total_count
@@ -1227,7 +1231,7 @@ def reconnect():
 def search():
     term = request.args.get("query")
     if term:
-        return render_search_results(term)
+        return render_search_results(term, 0, None, config.config_books_per_page)
     else:
         return render_title_template('search.html',
                                      searchterm="",
@@ -1238,9 +1242,19 @@ def search():
 @web.route("/advanced_search", methods=['POST'])
 @login_required_if_no_ano
 def advanced_search():
+    term = request.form
+    return render_adv_search_results(term, 0, None, config.config_books_per_page)
+
+def render_adv_search_results(term, offset=None, order=None, limit=None):
+    order = order or [db.Books.sort]
+    pagination = None
+    if offset != None and limit != None:
+        offset = int(offset)
+        limit_all = offset + int(limit)
+
     cc = get_cc_columns(filter_config_custom_read=True)
     calibre_db.session.connection().connection.connection.create_function("lower", 1, db.lcase)
-    q = calibre_db.session.query(db.Books).filter(calibre_db.common_filters(True)).order_by(db.Books.sort)
+    q = calibre_db.session.query(db.Books).filter(calibre_db.common_filters(True))
 
     include_tag_inputs = request.form.getlist('include_tag')
     exclude_tag_inputs = request.form.getlist('exclude_tag')
@@ -1251,14 +1265,14 @@ def advanced_search():
     include_extension_inputs = request.form.getlist('include_extension')
     exclude_extension_inputs = request.form.getlist('exclude_extension')
 
-    author_name = request.form.get("author_name")
-    book_title = request.form.get("book_title")
-    publisher = request.form.get("publisher")
-    pub_start = request.form.get("Publishstart")
-    pub_end = request.form.get("Publishend")
-    rating_low = request.form.get("ratinghigh")
-    rating_high = request.form.get("ratinglow")
-    description = request.form.get("comment")
+    author_name = term.get("author_name")
+    book_title = term.get("book_title")
+    publisher = term.get("publisher")
+    pub_start = term.get("Publishstart")
+    pub_end = term.get("Publishend")
+    rating_low = term.get("ratinghigh")
+    rating_high = term.get("ratinglow")
+    description = term.get("comment")
     if author_name:
         author_name = author_name.strip().lower().replace(',', '|')
     if book_title:
@@ -1367,17 +1381,25 @@ def advanced_search():
                 else:
                     q = q.filter(getattr(db.Books, 'custom_column_' + str(c.id)).any(
                         func.lower(db.cc_classes[c.id].value).ilike("%" + custom_query + "%")))
-        q = q.all()
+        q = q.order_by(*order).all()
+        flask_session['query'] = json.dumps(term)
+        # ToDo: Check saved ids mechanism ?
         ids = list()
         for element in q:
             ids.append(element.id)
         searched_ids[current_user.id] = ids
-        return render_title_template('search.html',
-                                     adv_searchterm=searchterm,
-                                     query=request.form,
-                                     entries=q,
-                                     result_count=len(q),
-                                     title=_(u"search"), page="search")
+        # entries, result_count, pagination = calibre_db.get_search_results(term, offset, order, limit)
+        result_count = len(q)
+        if offset != None and limit != None:
+            pagination = Pagination((offset / (int(limit)) + 1), limit, result_count)
+    return render_title_template('search.html',
+                                 adv_searchterm=searchterm,
+                                 pagination=pagination,
+                                 # query=request.form,
+                                 entries=q[offset:limit_all],
+                                 result_count=result_count,
+                                 title=_(u"search"), page="advsearch")
+
 
 
 @web.route("/advanced_search", methods=['GET'])
