@@ -20,34 +20,52 @@ log = logger.create()
 
 
 class TaskConvert(CalibreTask):
-    def __init__(self, file_path, bookid, taskMessage, settings, kindle_mail):
+    def __init__(self, file_path, bookid, taskMessage, settings, kindle_mail, user=None):
         super(TaskConvert, self).__init__(taskMessage)
         self.file_path = file_path
         self.bookid = bookid
         self.settings = settings
         self.kindle_mail = kindle_mail
+        self.user = user
 
         self.results = dict()
 
     def run(self, worker_thread):
         self.worker_thread = worker_thread
+        if config.config_use_google_drive:
+            cur_book = calibre_db.get_book(self.bookid)
+            data = calibre_db.get_book_format(self.bookid, self.settings['old_book_format'])
+            df = gdriveutils.getFileFromEbooksFolder(cur_book.path,
+                                                     data.name + "." + self.settings['old_book_format'].lower())
+            if df:
+                datafile = os.path.join(config.config_calibre_dir,
+                                        cur_book.path,
+                                        data.name + u"." + self.settings['old_book_format'].lower())
+                if not os.path.exists(os.path.join(config.config_calibre_dir, cur_book.path)):
+                    os.makedirs(os.path.join(config.config_calibre_dir, cur_book.path))
+                df.GetContentFile(datafile)
+            else:
+                error_message = _(u"%(format)s not found on Google Drive: %(fn)s",
+                                  format=self.settings['old_book_format'],
+                                  fn=data.name + "." + self.settings['old_book_format'].lower())
+                return error_message
+
         filename = self._convert_ebook_format()
+        if config.config_use_google_drive:
+            os.remove(self.file_path + u'.' + self.settings['old_book_format'].lower())
 
         if filename:
             if config.config_use_google_drive:
+                # Upload files to gdrive
                 gdriveutils.updateGdriveCalibreFromLocal()
+                self._handleSuccess()
             if self.kindle_mail:
                 # if we're sending to kindle after converting, create a one-off task and run it immediately
                 # todo: figure out how to incorporate this into the progress
                 try:
-                    task = TaskEmail(self.settings['subject'], self.results["path"],
+                    worker_thread.add(self.user, TaskEmail(self.settings['subject'], self.results["path"],
                                filename, self.settings, self.kindle_mail,
-                               self.settings['subject'], self.settings['body'], internal=True)
-                    task.start(worker_thread)
-
-                    # even though the convert task might be finished, if this task fails, fail the whole thing
-                    if task.stat != STAT_FINISH_SUCCESS:
-                        raise Exception(task.error)
+                               self.settings['subject'], self.settings['body'], internal=True))
                 except Exception as e:
                     return self._handleError(str(e))
 
@@ -101,9 +119,8 @@ class TaskConvert(CalibreTask):
                     return
                 self.results['path'] = cur_book.path
                 self.results['title'] = cur_book.title
-                if config.config_use_google_drive:
-                    os.remove(file_path + format_old_ext)
-                self._handleSuccess()
+                if not config.config_use_google_drive:
+                    self._handleSuccess()
                 return os.path.basename(file_path + format_new_ext)
             else:
                 error_message = _('%(format)s format not found on disk', format=format_new_ext.upper())
@@ -179,6 +196,8 @@ class TaskConvert(CalibreTask):
             progress = re.search(r"(\d+)%\s.*", nextline)
             if progress:
                 self.progress = int(progress.group(1)) / 100
+                if config.config_use_google_drive:
+                    self.progress *= 0.9
 
         # process returncode
         check = p.returncode
