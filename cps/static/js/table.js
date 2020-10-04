@@ -109,6 +109,7 @@ $(function() {
     $("#books-table").bootstrapTable({
         sidePagination: "server",
         pagination: true,
+        paginationLoop: false,
         paginationDetailHAlign: " hidden",
         paginationHAlign: "left",
         idField: "id",
