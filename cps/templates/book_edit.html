@@ -12,7 +12,9 @@
     {% if book.data|length > 1 %}
       <div class="text-center more-stuff"><h4>{{_('Delete formats:')}}</h4>
       {% for file in book.data %}
-        <button type="button" class="btn btn-danger" id="delete_format" data-toggle="modal" data-delete-id="{{ book.id }}" data-delete-format="{{ file.format }}" data-target="#deleteModal">{{_('Delete')}} - {{file.format}}</button>
+        <div class="form-group">
+          <button type="button" class="btn btn-danger" id="delete_format" data-toggle="modal" data-delete-id="{{ book.id }}" data-delete-format="{{ file.format }}" data-target="#deleteModal">{{_('Delete')}} - {{file.format}}</button>
+        </div>
       {% endfor %}
       </div>
     {% endif %}

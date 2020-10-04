@@ -74,40 +74,33 @@ log = logger.create()
 def convert_book_format(book_id, calibrepath, old_book_format, new_book_format, user_id, kindle_mail=None):
     book = calibre_db.get_book(book_id)
     data = calibre_db.get_book_format(book.id, old_book_format)
+    file_path = os.path.join(calibrepath, book.path, data.name)
     if not data:
         error_message = _(u"%(format)s format not found for book id: %(book)d", format=old_book_format, book=book_id)
         log.error("convert_book_format: %s", error_message)
         return error_message
     if config.config_use_google_drive:
-        df = gd.getFileFromEbooksFolder(book.path, data.name + "." + old_book_format.lower())
-        if df:
-            datafile = os.path.join(calibrepath, book.path, data.name + u"." + old_book_format.lower())
-            if not os.path.exists(os.path.join(calibrepath, book.path)):
-                os.makedirs(os.path.join(calibrepath, book.path))
-            df.GetContentFile(datafile)
-        else:
+        if not gd.getFileFromEbooksFolder(book.path, data.name + "." + old_book_format.lower()):
             error_message = _(u"%(format)s not found on Google Drive: %(fn)s",
                               format=old_book_format, fn=data.name + "." + old_book_format.lower())
             return error_message
-    file_path = os.path.join(calibrepath, book.path, data.name)
-    if os.path.exists(file_path + "." + old_book_format.lower()):
-        # read settings and append converter task to queue
-        if kindle_mail:
-            settings = config.get_mail_settings()
-            settings['subject'] = _('Send to Kindle')  # pretranslate Subject for e-mail
-            settings['body'] = _(u'This e-mail has been sent via Calibre-Web.')
-            # text = _(u"%(format)s: %(book)s", format=new_book_format, book=book.title)
-        else:
-            settings = dict()
-        txt = (u"%s -> %s: %s" % (old_book_format, new_book_format, book.title))
-        settings['old_book_format'] = old_book_format
-        settings['new_book_format'] = new_book_format
-        WorkerThread.add(user_id, TaskConvert(file_path, book.id, txt, settings, kindle_mail, user_id))
-        return None
     else:
-        error_message = _(u"%(format)s not found: %(fn)s",
-                          format=old_book_format, fn=data.name + "." + old_book_format.lower())
-        return error_message
+        if not os.path.exists(file_path + "." + old_book_format.lower()):
+            error_message = _(u"%(format)s not found: %(fn)s",
+                              format=old_book_format, fn=data.name + "." + old_book_format.lower())
+            return error_message
+    # read settings and append converter task to queue
+    if kindle_mail:
+        settings = config.get_mail_settings()
+        settings['subject'] = _('Send to Kindle')  # pretranslate Subject for e-mail
+        settings['body'] = _(u'This e-mail has been sent via Calibre-Web.')
+    else:
+        settings = dict()
+    txt = (u"%s -> %s: %s" % (old_book_format, new_book_format, book.title))
+    settings['old_book_format'] = old_book_format
+    settings['new_book_format'] = new_book_format
+    WorkerThread.add(user_id, TaskConvert(file_path, book.id, txt, settings, kindle_mail, user_id))
+    return None
 
 
 def send_test_mail(kindle_mail, user_name):
