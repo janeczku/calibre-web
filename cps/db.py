@@ -46,7 +46,6 @@ from weakref import WeakSet
 
 try:
     import unidecode
-
     use_unidecode = True
 except ImportError:
     use_unidecode = False
@@ -99,9 +98,6 @@ class Identifiers(Base):
         self.val = val
         self.type = id_type
         self.book = book
-
-    # def get(self):
-    #    return {self.type: self.val}
 
     def formatType(self):
         format_type = self.type.lower()
@@ -355,8 +351,6 @@ class Books(Base):
         self.path = path
         self.has_cover = (has_cover != None)
 
-    # def as_dict(self):
-    #    return {c.name: getattr(self, c.name) for c in self.__table__.columns}
 
     def __repr__(self):
         return u"<Books('{0},{1}{2}{3}{4}{5}{6}{7}{8}')>".format(self.title, self.sort, self.author_sort,
