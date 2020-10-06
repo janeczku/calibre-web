@@ -37,20 +37,20 @@
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3" style="margin-top:50px;">
             
-            <p class='text-justify attribute'><strong>Start Time: </strong>2020-10-04 19:26:20</p>
+            <p class='text-justify attribute'><strong>Start Time: </strong>2020-10-09 21:55:15</p>
             
         </div>
       </div>
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3">
             
-            <p class='text-justify attribute'><strong>Stop Time: </strong>2020-10-04 21:13:13</p>
+            <p class='text-justify attribute'><strong>Stop Time: </strong>2020-10-09 23:56:21</p>
             
         </div>
       </div>
       <div class="row">
         <div class="col-xs-6 col-md-6 col-sm-offset-3">
-           <p class='text-justify attribute'><strong>Duration: </strong>1h 26 min</p>
+           <p class='text-justify attribute'><strong>Duration: </strong>1h 36 min</p>
         </div>
       </div>
       </div>
@@ -1768,60 +1768,132 @@ AssertionError: False is not true : Browser-Cache Problem: Old Cover is displaye
     
 
 
-    <tr id="su" class="errorClass">
-        <td>_ErrorHolder</td>
-        <td class="text-center">1</td>
+    <tr id="su" class="skipClass">
+        <td>TestLdapLogin</td>
+        <td class="text-center">11</td>
+        <td class="text-center">10</td>
         <td class="text-center">0</td>
         <td class="text-center">0</td>
         <td class="text-center">1</td>
-        <td class="text-center">0</td>
         <td class="text-center">
-            <a onclick="showClassDetail('c17', 1)">Detail</a>
+            <a onclick="showClassDetail('c17', 11)">Detail</a>
         </td>
     </tr>
 
     
     
-        <tr id="et17.1" class="none bg-info">
+        <tr id='pt17.1' class='hiddenRow bg-success'>
             <td>
-                <div class='testcase'>setUpClass (test_ldap)</div>
+                <div class='testcase'>TestLdapLogin - test_LDAP_SSL</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id="st17.2" class="none bg-warning">
+            <td>
+                <div class='testcase'>TestLdapLogin - test_LDAP_SSL_CERTIFICATE</div>
             </td>
             <td colspan='6'>
                 <div class="text-center">
-                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_et17.1')">ERROR</a>
+                    <a class="popup_link text-center" onfocus='blur()' onclick="showTestDetail('div_st17.2')">SKIP</a>
                 </div>
                 <!--css div popup start-->
-                <div id="div_et17.1" class="popup_window test_output" style="display:none;">
+                <div id="div_st17.2" class="popup_window test_output" style="display:none;">
                     <div class='close_button pull-right'>
                         <button type="button" class="close" aria-label="Close" onfocus='this.blur();'
-                                onclick='document.getElementById('div_et17.1').style.display='none'"><span
+                                onclick='document.getElementById('div_st17.2').style.display='none'"><span
                                 aria-hidden="true">&times;</span></button>
                     </div>
                     <div class="text-left pull-left">
-                        <pre class="text-left">Traceback (most recent call last):
-  File "/home/matthias/Entwicklung/calibre-web-test/test/test_ldap.py", line 32, in setUpClass
-    cls.server = TestLDAPServer(config=4, port=3268, encrypt="SSL", validate=True) # encrypt=None)
-  File "/home/matthias/Entwicklung/calibre-web-test/test/helper_ldap.py", line 426, in __init__
-    self._createListner(port, encrypt, config, auth, validate)
-  File "/home/matthias/Entwicklung/calibre-web-test/test/helper_ldap.py", line 451, in _createListner
-    ctx.load_verify_locations('./files/ca.pem')
-  File "/home/matthias/Entwicklung/calibre-web-test/test/venv/lib/python3.8/site-packages/OpenSSL/SSL.py", line 792, in load_verify_locations
-    _raise_current_error()
-  File "/home/matthias/Entwicklung/calibre-web-test/test/venv/lib/python3.8/site-packages/OpenSSL/_util.py", line 54, in exception_from_error_queue
-    raise exception_type(errors)
-OpenSSL.SSL.Error: [('system library', 'fopen', 'No such file or directory'), ('BIO routines', 'BIO_new_file', 'no such file'), ('x509 certificate routines', 'X509_load_cert_crl_file', 'system lib')]
-
-During handling of the above exception, another exception occurred:
-
-Traceback (most recent call last):
-  File "/home/matthias/Entwicklung/calibre-web-test/test/test_ldap.py", line 38, in setUpClass
-    cls.driver.quit()
-AttributeError: 'NoneType' object has no attribute 'quit'</pre>
+                        <pre class="text-left">Unknown how to test certificate</pre>
                     </div>
                     <div class="clearfix"></div>
                 </div>
                 <!--css div popup end-->
             </td>
+        </tr>
+    
+    
+    
+        <tr id='pt17.3' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestLdapLogin - test_LDAP_STARTTLS</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt17.4' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestLdapLogin - test_LDAP_fallback_Login</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt17.5' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestLdapLogin - test_LDAP_import</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt17.6' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestLdapLogin - test_LDAP_login</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt17.7' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestLdapLogin - test_invalid_LDAP</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt17.8' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestLdapLogin - test_ldap_about</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt17.9' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestLdapLogin - test_ldap_authentication</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt17.10' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestLdapLogin - test_ldap_kobo_sync</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
+        </tr>
+    
+    
+    
+        <tr id='pt17.11' class='hiddenRow bg-success'>
+            <td>
+                <div class='testcase'>TestLdapLogin - test_ldap_opds_download_book</div>
+            </td>
+            <td colspan='6' align='center'>PASS</td>
         </tr>
     
     
@@ -2941,7 +3013,7 @@ selenium.common.exceptions.InvalidElementStateException: Message: Unable to clea
                         <pre class="text-left">Traceback (most recent call last):
   File "/home/matthias/Entwicklung/calibre-web-test/test/test_user_template.py", line 83, in test_recent_user_template
     self.assertFalse(self.check_element_on_page((By.ID, "nav_download")))
-AssertionError: <selenium.webdriver.firefox.webelement.FirefoxWebElement (session="fc2ac063-1f9e-4189-8f57-7d0a53a0e469", element="4c440158-a899-4ee5-b33e-021fad0538a5")> is not false</pre>
+AssertionError: <selenium.webdriver.firefox.webelement.FirefoxWebElement (session="d0c8c8dd-716d-4c30-abca-f355980f3fac", element="d3643d4e-6555-4fef-8d63-af301305d631")> is not false</pre>
                     </div>
                     <div class="clearfix"></div>
                 </div>
@@ -3404,11 +3476,11 @@ AssertionError: <selenium.webdriver.firefox.webelement.FirefoxWebElement (sessio
 
     <tr id='total_row' class="text-center bg-grey">
         <td>Total</td>
-        <td>273</td>
-        <td>251</td>
+        <td>283</td>
+        <td>261</td>
         <td>6</td>
-        <td>4</td>
-        <td>12</td>
+        <td>3</td>
+        <td>13</td>
         <td>&nbsp;</td>
     </tr>
 </table>
@@ -3760,7 +3832,7 @@ AssertionError: <selenium.webdriver.firefox.webelement.FirefoxWebElement (sessio
 </div>
 
 <script>
-    drawCircle(251, 6, 4, 12);
+    drawCircle(261, 6, 3, 13);
 </script>
 
 </div>
