@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  Calibre-Web\n"
 "Report-Msgid-Bugs-To: https://github.com/janeczku/Calibre-Web\n"
-"POT-Creation-Date: 2020-09-26 16:18+0200\n"
+"POT-Creation-Date: 2020-10-06 21:47+0200\n"
 "PO-Revision-Date: 2020-05-25 17:22+0200\n"
 "Last-Translator: minakmostoles <xxx@xxx.com>\n"
 "Language: es\n"
@@ -128,7 +128,7 @@ msgstr "La ruta de Certfile no es válida, por favor, introduzca la ruta correct
 #: cps/shelf.py:100 cps/shelf.py:161 cps/shelf.py:202 cps/shelf.py:260
 #: cps/shelf.py:309 cps/shelf.py:338 cps/shelf.py:368 cps/shelf.py:392
 msgid "Settings DB is not Writeable"
-msgstr ""
+msgstr "La base de datos de configuración no es modificable"
 
 #: cps/admin.py:712
 msgid "DB Location is not Valid, Please Enter Correct Path"
@@ -136,7 +136,7 @@ msgstr "La ruta de la base de datos no es válida. Por favor, introduzca la ruta
 
 #: cps/admin.py:714
 msgid "DB is not Writeable"
-msgstr ""
+msgstr "La base de datos no es modificable"
 
 #: cps/admin.py:747
 msgid "Basic Configuration"
@@ -300,7 +300,7 @@ msgstr "no configurado"
 
 #: cps/converter.py:34
 msgid "Execution permissions missing"
-msgstr ""
+msgstr "Faltan permisos de ejecución"
 
 #: cps/editbooks.py:245
 msgid "Book Format Successfully Deleted"
@@ -346,7 +346,7 @@ msgstr "Fallo al guardar el archivo %(file)s."
 #: cps/editbooks.py:516 cps/editbooks.py:887
 #, python-format
 msgid "Database error: %(error)s."
-msgstr ""
+msgstr "Error en la base de datos: %(error)s."
 
 #: cps/editbooks.py:520
 #, python-format
@@ -475,7 +475,7 @@ msgstr "El archivo solicitado no puede ser leído. ¿Quizás existen problemas c
 #: cps/helper.py:325
 #, python-format
 msgid "Deleting bookfolder for book %(id)s failed, path has subfolders: %(path)s"
-msgstr ""
+msgstr "Fallo al intentar borrar la carpeta del libro %(id)s, la ruta tiene subcarpetas: %(path)s"
 
 #: cps/helper.py:331
 #, python-format
@@ -514,11 +514,11 @@ msgstr "La ruta %(path)s del libro no fue encontrada en Google Drive"
 
 #: cps/helper.py:576
 msgid "Error Downloading Cover"
-msgstr ""
+msgstr "Error al descargar la cubierta"
 
 #: cps/helper.py:579
 msgid "Cover Format Error"
-msgstr ""
+msgstr "Error en el formato de la cubierta"
 
 #: cps/helper.py:594
 msgid "Failed to create path for cover"
@@ -636,7 +636,7 @@ msgstr "Error al desenlazar %(oauth)s"
 #: cps/oauth_bb.py:290
 #, python-format
 msgid "Not Linked to %(oauth)s"
-msgstr ""
+msgstr "No vinculado con %(oauth)s"
 
 #: cps/oauth_bb.py:318
 msgid "GitHub Oauth error, please retry later."
@@ -1185,7 +1185,7 @@ msgstr "Borrar"
 
 #: cps/templates/admin.html:23
 msgid "Public Shelf"
-msgstr ""
+msgstr "Estantería pública"
 
 #: cps/templates/admin.html:44
 msgid "Add New User"
@@ -1237,7 +1237,7 @@ msgstr "Puerto"
 
 #: cps/templates/admin.html:93
 msgid "External Port"
-msgstr ""
+msgstr "Puerto externo"
 
 #: cps/templates/admin.html:100 cps/templates/config_view_edit.html:27
 msgid "Books per Page"
@@ -1641,7 +1641,7 @@ msgstr "Permitir subidas"
 
 #: cps/templates/config_edit.html:169
 msgid "Allowed Upload Fileformats"
-msgstr ""
+msgstr "Formatos de archivo permitidos para subida"
 
 #: cps/templates/config_edit.html:175
 msgid "Enable Anonymous Browsing"
@@ -1653,7 +1653,7 @@ msgstr "Permitir registro público"
 
 #: cps/templates/config_edit.html:184
 msgid "Use E-Mail as Username"
-msgstr ""
+msgstr "Utilizar eMail como nombre de usuario"
 
 #: cps/templates/config_edit.html:189
 msgid "Enable Magic Link Remote Login"
@@ -1669,7 +1669,7 @@ msgstr "Peticiones proxy a la tienda Kobo desconocidas"
 
 #: cps/templates/config_edit.html:202
 msgid "Server External Port (for port forwarded API calls)"
-msgstr ""
+msgstr "Puerto externo del servidor (para peticiones API)"
 
 #: cps/templates/config_edit.html:210
 msgid "Use Goodreads"
@@ -1813,15 +1813,15 @@ msgstr "Binarios externos"
 
 #: cps/templates/config_edit.html:352
 msgid "Path to Calibre E-Book Converter"
-msgstr ""
+msgstr "Ruta para Calibre E-Book Converter"
 
 #: cps/templates/config_edit.html:360
 msgid "Calibre E-Book Converter Settings"
-msgstr ""
+msgstr "Configuración de Calibre E-Book Converter"
 
 #: cps/templates/config_edit.html:363
 msgid "Path to Kepubify E-Book Converter"
-msgstr ""
+msgstr "Ruta para Kepubify E-Book Converter"
 
 #: cps/templates/config_edit.html:371
 msgid "Location of Unrar binary"
