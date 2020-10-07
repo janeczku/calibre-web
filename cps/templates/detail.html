@@ -81,7 +81,7 @@
 
               {% for format in entry.data %}
                   {% if format.format|lower in audioentries %}
-                    <li><a target="_blank" href="{{ url_for('web.read_book', book_id=entry.id, book_format=format.format|lower) }}">{{format.format}}</a></li>
+                    <li><a target="_blank" href="{{ url_for('web.read_book', book_id=entry.id, book_format=format.format|lower) }}">{{format.format|lower }}</a></li>
                     {% endif %}
               {% endfor %}
                   </ul>
@@ -174,7 +174,7 @@
             {{ c.name }}:
             {% for column in entry['custom_column_' ~ c.id] %}
               {% if c.datatype == 'rating' %}
-                {{ '%d' % (column.value / 2) }}
+                {{ (column.value / 2)|formatfloat }}
               {% else %}
                 {% if c.datatype == 'bool' %}
                   {% if column.value == true %}
@@ -183,7 +183,15 @@
                     <span class="glyphicon glyphicon-remove"></span>
                   {% endif %}
                 {% else %}
+                {% if c.datatype == 'float' %}
+                  {{ column.value|formatfloat(2) }}
+                {% else %}
+                {% if c.datatype == 'series' %}
+                  {{ '%s [%s]' % (column.value, column.extra|formatfloat(2)) }}
+                {% else %}
                   {{ column.value }}
+                {% endif %}
+                {% endif %}
                 {% endif %}
               {% endif %}
             {% endfor %}

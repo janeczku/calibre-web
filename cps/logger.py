@@ -126,11 +126,11 @@ def setup(log_file, log_level=None):
             file_handler.baseFilename = log_file
     else:
         try:
-            file_handler = RotatingFileHandler(log_file, maxBytes=50000, backupCount=2)
+            file_handler = RotatingFileHandler(log_file, maxBytes=50000, backupCount=2, encoding='utf-8')
         except IOError:
             if log_file == DEFAULT_LOG_FILE:
                 raise
-            file_handler = RotatingFileHandler(DEFAULT_LOG_FILE, maxBytes=50000, backupCount=2)
+            file_handler = RotatingFileHandler(DEFAULT_LOG_FILE, maxBytes=50000, backupCount=2, encoding='utf-8')
             log_file = ""
     file_handler.setFormatter(FORMATTER)
 
@@ -152,11 +152,11 @@ def create_access_log(log_file, log_name, formatter):
     access_log.propagate = False
     access_log.setLevel(logging.INFO)
     try:
-        file_handler = RotatingFileHandler(log_file, maxBytes=50000, backupCount=2)
+        file_handler = RotatingFileHandler(log_file, maxBytes=50000, backupCount=2, encoding='utf-8')
     except IOError:
         if log_file == DEFAULT_ACCESS_LOG:
             raise
-        file_handler = RotatingFileHandler(DEFAULT_ACCESS_LOG, maxBytes=50000, backupCount=2)
+        file_handler = RotatingFileHandler(DEFAULT_ACCESS_LOG, maxBytes=50000, backupCount=2, encoding='utf-8')
         log_file = ""
 
     file_handler.setFormatter(formatter)

@@ -34,17 +34,16 @@ from flask import Blueprint, flash, request, redirect, url_for, abort
 from flask_babel import gettext as _
 from flask_login import login_required
 
-try:
-    from googleapiclient.errors import HttpError
-except ImportError:
-    pass
-
 from . import logger, gdriveutils, config, ub, calibre_db
 from .web import admin_required
 
-
 gdrive = Blueprint('gdrive', __name__)
 log = logger.create()
+
+try:
+    from googleapiclient.errors import HttpError
+except ImportError as err:
+    log.debug("Cannot import googleapiclient, using GDrive will not work: %s", err)
 
 current_milli_time = lambda: int(round(time() * 1000))
 
@@ -73,7 +72,7 @@ def google_drive_callback():
         credentials = gdriveutils.Gauth.Instance().auth.flow.step2_exchange(auth_code)
         with open(gdriveutils.CREDENTIALS, 'w') as f:
             f.write(credentials.to_json())
-    except ValueError as error:
+    except (ValueError, AttributeError) as error:
         log.error(error)
     return redirect(url_for('admin.configuration'))
 
@@ -94,8 +93,7 @@ def watch_gdrive():
         try:
             result = gdriveutils.watchChange(gdriveutils.Gdrive.Instance().drive, notification_id,
                                'web_hook', address, gdrive_watch_callback_token, current_milli_time() + 604800*1000)
-            config.config_google_drive_watch_changes_response = json.dumps(result)
-            # after save(), config_google_drive_watch_changes_response will be a json object, not string
+            config.config_google_drive_watch_changes_response = result
             config.save()
         except HttpError as e:
             reason=json.loads(e.content)['error']['errors'][0]
@@ -118,7 +116,7 @@ def revoke_watch_gdrive():
                                     last_watch_response['resourceId'])
         except HttpError:
             pass
-        config.config_google_drive_watch_changes_response = None
+        config.config_google_drive_watch_changes_response = {}
         config.save()
     return redirect(url_for('admin.configuration'))
 
@@ -155,7 +153,7 @@ def on_received_watch_confirmation():
                         log.info('Setting up new DB')
                         # prevent error on windows, as os.rename does on exisiting files
                         move(os.path.join(tmpDir, "tmp_metadata.db"), dbpath)
-                        calibre_db.setup_db(config, ub.app_DB_path)
+                        calibre_db.reconnect_db(config, ub.app_DB_path)
             except Exception as e:
                 log.exception(e)
         updateMetaData()

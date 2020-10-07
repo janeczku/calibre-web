@@ -122,10 +122,10 @@ if ub.oauth_support:
     ele2 = dict(provider_name='google',
                 id=oauth_ids[1].id,
                 active=oauth_ids[1].active,
-                scope=["https://www.googleapis.com/auth/plus.me", "https://www.googleapis.com/auth/userinfo.email"],
+                scope=["https://www.googleapis.com/auth/userinfo.email"],
                 oauth_client_id=oauth_ids[1].oauth_client_id,
                 oauth_client_secret=oauth_ids[1].oauth_client_secret,
-                obtain_link='https://github.com/settings/developers')
+                obtain_link='https://console.developers.google.com/apis/credentials')
     oauthblueprints.append(ele1)
     oauthblueprints.append(ele2)
 
@@ -287,7 +287,7 @@ if ub.oauth_support:
                     flash(_(u"Unlink to %(oauth)s Failed", oauth=oauth_check[provider]), category="error")
         except NoResultFound:
             log.warning("oauth %s for user %d not found", provider, current_user.id)
-            flash(_(u"Not Linked to %(oauth)s.", oauth=oauth_check[provider]), category="error")
+            flash(_(u"Not Linked to %(oauth)s", oauth=provider), category="error")
         return redirect(url_for('web.profile'))
 
 
@@ -355,4 +355,4 @@ if ub.oauth_support:
     @oauth.route('/unlink/google', methods=["GET"])
     @login_required
     def google_login_unlink():
-        return unlink_oauth(oauthblueprints[1]['blueprint'].name)
+        return unlink_oauth(oauthblueprints[1]['id'])

@@ -30,20 +30,20 @@
     <div data-related="gdrive_settings">
       {% if gdriveError %}
         <div class="form-group">
-          <label>
+          <label id="gdrive_error">
             {{_('Google Drive config problem')}}: {{ gdriveError }}
           </label>
         </div>
       {% else %}
         {% if show_authenticate_google_drive and g.user.is_authenticated and config.config_use_google_drive %}
           <div class="form-group required">
-            <a href="{{ url_for('gdrive.authenticate_google_drive') }}" class="btn btn-primary">{{_('Authenticate Google Drive')}}</a>
+            <a href="{{ url_for('gdrive.authenticate_google_drive') }}" id="gdrive_auth" class="btn btn-primary">{{_('Authenticate Google Drive')}}</a>
           </div>
         {% else %}
             {% if show_authenticate_google_drive and g.user.is_authenticated and not config.config_use_google_drive %}
-            <div >{{_('Please hit submit to continue with setup')}}</div>
+            <div >{{_('Please hit save to continue with setup')}}</div>
             {% endif %}
-          {% if not g.user.is_authenticated %}
+          {% if not g.user.is_authenticated and show_login_button %}
           <div >{{_('Please finish Google Drive setup after login')}}</div>
             {% endif %}
           {% if g.user.is_authenticated %}
@@ -194,9 +194,13 @@
       <label for="config_kobo_sync">{{_('Enable Kobo sync')}}</label>
     </div>
     <div data-related="kobo-settings">
-      <div class="form-group" style="text-indent:10px;">
+      <div class="form-group" style="margin-left:10px;">
         <input type="checkbox" id="config_kobo_proxy" name="config_kobo_proxy"  {% if config.config_kobo_proxy %}checked{% endif %}>
         <label for="config_kobo_proxy">{{_('Proxy unknown requests to Kobo Store')}}</label>
+      </div>
+      <div class="form-group" style="margin-left:10px;">
+        <label for="config_external_port">{{_('Server External Port (for port forwarded API calls)')}}</label>
+        <input type="number" min="1" max="65535" class="form-control" name="config_external_port" id="config_external_port" value="{% if config.config_external_port != None %}{{ config.config_external_port }}{% endif %}" autocomplete="off" required>
       </div>
     </div>
     {% endif %}

@@ -64,9 +64,11 @@ def init_app(app, config):
     app.config['LDAP_OPENLDAP'] = bool(config.config_ldap_openldap)
     app.config['LDAP_GROUP_OBJECT_FILTER'] = config.config_ldap_group_object_filter
     app.config['LDAP_GROUP_MEMBERS_FIELD'] = config.config_ldap_group_members_field
-    # app.config['LDAP_CUSTOM_OPTIONS'] = {'OPT_NETWORK_TIMEOUT': 10}
 
-    _ldap.init_app(app)
+    try:
+        _ldap.init_app(app)
+    except RuntimeError as e:
+        log.error(e)
 
 
 def get_object_details(user=None, group=None, query_filter=None, dn_only=False):

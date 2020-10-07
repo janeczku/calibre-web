@@ -27,14 +27,18 @@ from sqlalchemy import Column, UniqueConstraint
 from sqlalchemy import String, Integer
 from sqlalchemy.orm import sessionmaker, scoped_session
 from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.exc import OperationalError, InvalidRequestError
 
 try:
     from pydrive.auth import GoogleAuth
     from pydrive.drive import GoogleDrive
     from pydrive.auth import RefreshError
     from apiclient import errors
+    from httplib2 import ServerNotFoundError
     gdrive_support = True
-except ImportError:
+    importError = None
+except ImportError as err:
+    importError = err
     gdrive_support = False
 
 from . import logger, cli, config
@@ -50,6 +54,8 @@ if gdrive_support:
     logger.get('googleapiclient.discovery_cache').setLevel(logger.logging.ERROR)
     if not logger.is_debug_enabled():
         logger.get('googleapiclient.discovery').setLevel(logger.logging.ERROR)
+else:
+    log.debug("Cannot import pydrive,httplib2, using gdrive will not work: %s", importError)
 
 
 class Singleton:
@@ -97,7 +103,11 @@ class Singleton:
 @Singleton
 class Gauth:
     def __init__(self):
-        self.auth = GoogleAuth(settings_file=SETTINGS_YAML)
+        try:
+            self.auth = GoogleAuth(settings_file=SETTINGS_YAML)
+        except NameError as error:
+            log.error(error)
+            self.auth = None
 
 
 @Singleton
@@ -192,14 +202,18 @@ def getDrive(drive=None, gauth=None):
     return drive
 
 def listRootFolders():
-    drive = getDrive(Gdrive.Instance().drive)
-    folder = "'root' in parents and mimeType = 'application/vnd.google-apps.folder' and trashed = false"
-    fileList = drive.ListFile({'q': folder}).GetList()
+    try:
+        drive = getDrive(Gdrive.Instance().drive)
+        folder = "'root' in parents and mimeType = 'application/vnd.google-apps.folder' and trashed = false"
+        fileList = drive.ListFile({'q': folder}).GetList()
+    except ServerNotFoundError as e:
+        log.info("GDrive Error %s" % e)
+        fileList = []
     return fileList
 
 
 def getEbooksFolder(drive):
-    return getFolderInFolder('root',config.config_google_drive_folder,drive)
+    return getFolderInFolder('root', config.config_google_drive_folder, drive)
 
 
 def getFolderInFolder(parentId, folderName, drive):
@@ -229,7 +243,7 @@ def getEbooksFolderId(drive=None):
         gDriveId.path = '/'
         session.merge(gDriveId)
         session.commit()
-        return
+        return gDriveId.gdrive_id
 
 
 def getFile(pathId, fileName, drive):
@@ -474,8 +488,13 @@ def getChangeById (drive, change_id):
 
 # Deletes the local hashes database to force search for new folder names
 def deleteDatabaseOnChange():
-    session.query(GdriveId).delete()
-    session.commit()
+    try:
+        session.query(GdriveId).delete()
+        session.commit()
+    except (OperationalError, InvalidRequestError):
+        session.rollback()
+        log.info(u"GDrive DB is not Writeable")
+
 
 def updateGdriveCalibreFromLocal():
     copyToDrive(Gdrive.Instance().drive, config.config_calibre_dir, False, True)
@@ -583,8 +602,12 @@ def get_error_text(client_secrets=None):
     if not os.path.isfile(CLIENT_SECRETS):
         return 'client_secrets.json is missing or not readable'
 
-    with open(CLIENT_SECRETS, 'r') as settings:
-        filedata = json.load(settings)
+    try:
+        with open(CLIENT_SECRETS, 'r') as settings:
+            filedata = json.load(settings)
+    except PermissionError:
+        return 'client_secrets.json is missing or not readable'
+
     if 'web' not in filedata:
         return 'client_secrets.json is not configured for web application'
     if 'redirect_uris' not in filedata['web']:

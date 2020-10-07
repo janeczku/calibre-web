@@ -22,6 +22,7 @@ import zipfile
 from lxml import etree
 
 from . import isoLanguages
+from .helper import split_authors
 from .constants import BookMeta
 
 
@@ -64,9 +65,9 @@ def get_epub_info(tmp_file_path, original_file_name, original_file_extension):
         tmp = p.xpath('dc:%s/text()' % s, namespaces=ns)
         if len(tmp) > 0:
             if s == 'creator':
-                 epub_metadata[s] = ' & '.join(p.xpath('dc:%s/text()' % s, namespaces=ns))
+                epub_metadata[s] = ' & '.join(split_authors(p.xpath('dc:%s/text()' % s, namespaces=ns)))
             elif s == 'subject':
-                 epub_metadata[s] = ', '.join(p.xpath('dc:%s/text()' % s, namespaces=ns))
+                epub_metadata[s] = ', '.join(p.xpath('dc:%s/text()' % s, namespaces=ns))
             else:
                 epub_metadata[s] = p.xpath('dc:%s/text()' % s, namespaces=ns)[0]
         else:
@@ -82,16 +83,8 @@ def get_epub_info(tmp_file_path, original_file_name, original_file_extension):
         else:
             epub_metadata['description'] = ""
 
-    if epub_metadata['language'] == u'Unknown':
-        epub_metadata['language'] = ""
-    else:
-        lang = epub_metadata['language'].split('-', 1)[0].lower()
-        if len(lang) == 2:
-            epub_metadata['language'] = isoLanguages.get(part1=lang).name
-        elif len(lang) == 3:
-            epub_metadata['language'] = isoLanguages.get(part3=lang).name
-        else:
-            epub_metadata['language'] = ""
+    lang = epub_metadata['language'].split('-', 1)[0].lower()
+    epub_metadata['language'] = isoLanguages.get_lang3(lang)
 
     series = tree.xpath("/pkg:package/pkg:metadata/pkg:meta[@name='calibre:series']/@content", namespaces=ns)
     if len(series) > 0:
