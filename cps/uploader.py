@@ -24,6 +24,7 @@ from flask_babel import gettext as _
 
 from . import logger, comic
 from .constants import BookMeta
+from .helper import split_authors
 
 
 log = logger.create()
@@ -35,7 +36,7 @@ except ImportError:
     lxmlversion = None
 
 try:
-    from wand.image import Image
+    from wand.image import Image, Color
     from wand import version as ImageVersion
     from wand.exceptions import PolicyError
     use_generic_pdf_cover = False
@@ -116,8 +117,8 @@ def default_meta(tmp_file_path, original_file_name, original_file_extension):
 def pdf_meta(tmp_file_path, original_file_name, original_file_extension):
     doc_info = None
     if use_pdf_meta:
-        doc_info = PdfFileReader(open(tmp_file_path, 'rb')).getDocumentInfo()
-
+        with open(tmp_file_path, 'rb') as f:
+            doc_info = PdfFileReader(f).getDocumentInfo()
     if doc_info:
         author = doc_info.author if doc_info.author else u'Unknown'
         title = doc_info.title if doc_info.title else original_file_name
@@ -131,7 +132,7 @@ def pdf_meta(tmp_file_path, original_file_name, original_file_extension):
         file_path=tmp_file_path,
         extension=original_file_extension,
         title=title,
-        author=author,
+        author=' & '.join(split_authors([author])),
         cover=pdf_preview(tmp_file_path, original_file_name),
         description=subject,
         tags="",
@@ -149,6 +150,9 @@ def pdf_preview(tmp_file_path, tmp_dir):
             img.options["pdf:use-cropbox"] = "true"
             img.read(filename=tmp_file_path + '[0]', resolution=150)
             img.compression_quality = 88
+            if img.alpha_channel:
+                img.alpha_channel = 'remove'
+                img.background_color = Color('white')
             img.save(filename=os.path.join(tmp_dir, cover_file_name))
         return cover_file_name
     except PolicyError as ex:
@@ -156,6 +160,7 @@ def pdf_preview(tmp_file_path, tmp_dir):
         return None
     except Exception as ex:
         log.warning('Cannot extract cover image, using default: %s', ex)
+        log.warning('On Windows this error could be caused by missing ghostscript')
         return None
 
 

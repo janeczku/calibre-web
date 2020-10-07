@@ -37,7 +37,7 @@
     </div>
     <label for="mail_size">{{_('Attachment Size Limit')}}</label>
      <div class="form-group input-group">
-      <input type="number" min="1" max="600" step="1" class="form-control" name="mail_size" id="mail_size" value="{% if content.mail_size != None %}{{ (content.mail_size / 1024 / 1024)|int }}{% endif %}">
+      <input type="number" min="1" max="600" step="1" class="form-control" name="mail_size" id="mail_size" value="{% if content.mail_size != None %}{{ (content.mail_size / 1024 / 1024)|int }}{% endif %}" required>
       <span class="input-group-btn">
         <button type="button" id="attachement_size" class="btn btn-default" disabled>MB</button>
       </span>

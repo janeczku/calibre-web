@@ -66,3 +66,27 @@ def get_language_codes(locale, language_names, remainder=None):
     if remainder is not None:
         remainder.extend(language_names)
     return languages
+
+def get_valid_language_codes(locale, language_names, remainder=None):
+    languages = list()
+    if "" in language_names:
+        language_names.remove("")
+    for k, v in get_language_names(locale).items():
+        if k in language_names:
+            languages.append(k)
+            language_names.remove(k)
+    if remainder is not None and len(language_names):
+        remainder.extend(language_names)
+    return languages
+
+def get_lang3(lang):
+    try:
+        if len(lang) == 2:
+            ret_value = get(part1=lang).part3
+        elif len(lang) == 3:
+            ret_value = lang
+        else:
+            ret_value = ""
+    except KeyError:
+        ret_value = lang
+    return ret_value

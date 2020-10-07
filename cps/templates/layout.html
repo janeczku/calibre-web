@@ -64,7 +64,7 @@
                     <form id="form-upload" class="navbar-form" action="{{ url_for('editbook.upload') }}" method="post" enctype="multipart/form-data">
                       <div class="form-group">
                         <span class="btn btn-default btn-file">{{_('Upload')}}<input id="btn-upload" name="btn-upload"
-                        type="file" accept="{% for format in accept %}.{{format}}{{ ',' if not loop.last }}{% endfor %}" multiple></span>
+                        type="file" accept="{% for format in accept %}.{% if format != ''%}{{format}}{% else %}*{% endif %}{{ ',' if not loop.last }}{% endfor %}" multiple></span>
                       </div>
                     </form>
                   </li>

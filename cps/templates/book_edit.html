@@ -67,7 +67,7 @@
       <table class="table" id="identifier-table">
 	{% for identifier in book.identifiers %}
 	<tr>
-          <td><input type="text" class="form-control" name="identifier-type-{{identifier.type}}" value="{{identifier.type}}" required="required" placeholder="{{_('Identifier Type')}}"></td>
+      <td><input type="text" class="form-control" name="identifier-type-{{identifier.type}}" value="{{identifier.type}}" required="required" placeholder="{{_('Identifier Type')}}"></td>
 	  <td><input type="text" class="form-control" name="identifier-val-{{identifier.type}}" value="{{identifier.val}}" required="required" placeholder="{{_('Identifier Value')}}"></td>
 	  <td><a class="btn btn-default" onclick="removeIdentifierLine(this)">{{_('Remove')}}</a></td>
 	</tr>
@@ -92,15 +92,19 @@
       <label for="rating">{{_('Rating')}}</label>
       <input type="number"  name="rating" id="rating" class="rating input-lg" data-clearable="" value="{% if book.ratings %}{{(book.ratings[0].rating / 2)|int}}{% endif %}">
     </div>
+    {% if g.user.role_upload() or g.user.role_admin()%}
+      {% if g.allow_upload %}
     <div class="form-group">
       <label for="cover_url">{{_('Fetch Cover from URL (JPEG - Image will be downloaded and stored in database)')}}</label>
       <input type="text" class="form-control" name="cover_url" id="cover_url" value="">
     </div>
-    <div class="form-group" aria-label="Upload cover from local drive">
+      <div class="form-group" aria-label="Upload cover from local drive">
         <label class="btn btn-primary btn-file" for="btn-upload-cover">{{ _('Upload Cover from Local Disk') }}</label>
         <div class="upload-cover-input-text" id="upload-cover"></div>
         <input id="btn-upload-cover" name="btn-upload-cover" type="file" accept=".jpg, .jpeg, .png, .webp">
-    </div>
+      </div>
+      {% endif %}
+    {% endif %}
     <div class="form-group">
       <label for="pubdate">{{_('Published Date')}}</label>
       <div style="position: relative">
@@ -132,18 +136,19 @@
 	    <input type="number" step="{% if c.datatype == 'float' %}0.01{% else %}1{% endif %}" class="form-control" name="{{ 'custom_column_' ~ c.id }}" id="{{ 'custom_column_' ~ c.id }}" value="{% if book['custom_column_' ~ c.id]|length > 0 %}{{ book['custom_column_' ~ c.id][0].value }}{% endif %}">
             {% endif %}
 
-            {% if c.datatype in ['text', 'series'] and not c.is_multiple %}
-              <input type="text" class="form-control" name="{{ 'custom_column_' ~ c.id }}" id="{{ 'custom_column_' ~ c.id }}"
-              {% if book['custom_column_' ~ c.id]|length > 0 %}
-                value="{{ book['custom_column_' ~ c.id][0].value }}"
-              {% endif %}>
-            {% endif %}
-
-            {% if c.datatype in ['text', 'series'] and c.is_multiple %}
+            {% if c.datatype == 'text' %}
               <input type="text" class="form-control" name="{{ 'custom_column_' ~ c.id }}" id="{{ 'custom_column_' ~ c.id }}"
               {% if book['custom_column_' ~ c.id]|length > 0 %}
               value="{% for column in book['custom_column_' ~ c.id] %}{{ column.value.strip() }}{% if not loop.last %}, {% endif %}{% endfor %}"{% endif %}>
             {% endif %}
+
+            {% if c.datatype == 'series' %}
+              <input type="text" class="form-control" name="{{ 'custom_column_' ~ c.id }}" id="{{ 'custom_column_' ~ c.id }}"
+              {% if book['custom_column_' ~ c.id]|length > 0 %}
+                value="{% for column in book['custom_column_' ~ c.id] %} {{ '%s [%s]' % (book['custom_column_' ~ c.id][0].value, book['custom_column_' ~ c.id][0].extra|formatfloat(2)) }}{% if not loop.last %}, {% endif %}{% endfor %}"
+              {% endif %}>
+            {% endif %}
+
 
             {% if c.datatype == 'enumeration' %}
               <select class="form-control" name="{{ 'custom_column_' ~ c.id }}" id="{{ 'custom_column_' ~ c.id }}">
@@ -159,9 +164,9 @@
             {% endif %}
 
             {% if c.datatype == 'rating' %}
-              <input type="number" min="1" max="5" step="1" class="form-control" name="{{ 'custom_column_' ~ c.id }}" id="{{ 'custom_column_' ~ c.id }}"
+              <input type="number" min="1" max="5" step="0.5" class="form-control" name="{{ 'custom_column_' ~ c.id }}" id="{{ 'custom_column_' ~ c.id }}"
                 {% if book['custom_column_' ~ c.id]|length > 0 %}
-                    value="{{ '%d' %  (book['custom_column_' ~ c.id][0].value / 2) }}"
+                    value="{{ '%.1f' %  (book['custom_column_' ~ c.id][0].value / 2) }}"
                 {% endif %}>
             {% endif %}
           </div>

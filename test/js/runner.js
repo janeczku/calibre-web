@@ -42,6 +42,15 @@ function showCase(level) {
                 row.classList.add('hiddenRow');
             }
         }
+        // Show error if all or error or summary problems  selected
+        if (id.substr(0,2) == 'su') {
+            if (level == 0 || level == 2) { 
+                row.classList.remove('hiddenRow');
+            }
+            else {
+                row.classList.add('hiddenRow');
+            }
+        }
 		
     }
 }

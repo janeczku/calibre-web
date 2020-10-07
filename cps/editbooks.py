@@ -151,8 +151,11 @@ def modify_identifiers(input_identifiers, db_identifiers, db_session):
        input_identifiers is a list of read-to-persist Identifiers objects.
        db_identifiers is a list of already persisted list of Identifiers objects."""
     changed = False
-    input_dict = dict([ (identifier.type.lower(), identifier) for identifier in input_identifiers ])
-    db_dict = dict([ (identifier.type.lower(), identifier) for identifier in db_identifiers ])
+    error = False
+    input_dict = dict([(identifier.type.lower(), identifier) for identifier in input_identifiers])
+    if len(input_identifiers) != len(input_dict):
+        error = True
+    db_dict = dict([(identifier.type.lower(), identifier) for identifier in db_identifiers ])
     # delete db identifiers not present in input or modify them with input val
     for identifier_type, identifier in db_dict.items():
         if identifier_type not in input_dict.keys():
@@ -167,7 +170,7 @@ def modify_identifiers(input_identifiers, db_identifiers, db_session):
         if identifier_type not in db_dict.keys():
             db_session.add(identifier)
             changed = True
-    return changed
+    return changed, error
 
 
 @editbook.route("/delete/<int:book_id>/", defaults={'book_format': ""})
@@ -354,7 +357,10 @@ def edit_book_comments(comments, book):
 def edit_book_languages(languages, book, upload=False):
     input_languages = languages.split(',')
     unknown_languages = []
-    input_l = isoLanguages.get_language_codes(get_locale(), input_languages, unknown_languages)
+    if not upload:
+        input_l = isoLanguages.get_language_codes(get_locale(), input_languages, unknown_languages)
+    else:
+        input_l = isoLanguages.get_valid_language_codes(get_locale(), input_languages, unknown_languages)
     for l in unknown_languages:
         log.error('%s is not a valid language', l)
         flash(_(u"%(langname)s is not a valid language", langname=l), category="warning")
@@ -375,7 +381,8 @@ def edit_book_publisher(to_save, book):
     if to_save["publisher"]:
         publisher = to_save["publisher"].rstrip().strip()
         if len(book.publishers) == 0 or (len(book.publishers) > 0 and publisher != book.publishers[0].name):
-            changed |= modify_database_object([publisher], book.publishers, db.Publishers, calibre_db.session, 'publisher')
+            changed |= modify_database_object([publisher], book.publishers, db.Publishers, calibre_db.session,
+                                              'publisher')
     elif len(book.publishers):
         changed |= modify_database_object([], book.publishers, db.Publishers, calibre_db.session, 'publisher')
     return changed
@@ -459,62 +466,64 @@ def edit_cc_data(book_id, book, to_save):
 def upload_single_file(request, book, book_id):
     # Check and handle Uploaded file
     if 'btn-upload-format' in request.files:
-        requested_file = request.files['btn-upload-format']
-        # check for empty request
-        if requested_file.filename != '':
-            if '.' in requested_file.filename:
-                file_ext = requested_file.filename.rsplit('.', 1)[-1].lower()
-                if file_ext not in constants.EXTENSIONS_UPLOAD:
-                    flash(_("File extension '%(ext)s' is not allowed to be uploaded to this server", ext=file_ext),
-                          category="error")
+            requested_file = request.files['btn-upload-format']
+            # check for empty request
+            if requested_file.filename != '':
+                if not current_user.role_upload():
+                    abort(403)
+                if '.' in requested_file.filename:
+                    file_ext = requested_file.filename.rsplit('.', 1)[-1].lower()
+                    if file_ext not in constants.EXTENSIONS_UPLOAD and '' not in constants.EXTENSIONS_UPLOAD:
+                        flash(_("File extension '%(ext)s' is not allowed to be uploaded to this server", ext=file_ext),
+                              category="error")
+                        return redirect(url_for('web.show_book', book_id=book.id))
+                else:
+                    flash(_('File to be uploaded must have an extension'), category="error")
                     return redirect(url_for('web.show_book', book_id=book.id))
-            else:
-                flash(_('File to be uploaded must have an extension'), category="error")
-                return redirect(url_for('web.show_book', book_id=book.id))
 
-            file_name = book.path.rsplit('/', 1)[-1]
-            filepath = os.path.normpath(os.path.join(config.config_calibre_dir, book.path))
-            saved_filename = os.path.join(filepath, file_name + '.' + file_ext)
+                file_name = book.path.rsplit('/', 1)[-1]
+                filepath = os.path.normpath(os.path.join(config.config_calibre_dir, book.path))
+                saved_filename = os.path.join(filepath, file_name + '.' + file_ext)
 
-            # check if file path exists, otherwise create it, copy file to calibre path and delete temp file
-            if not os.path.exists(filepath):
+                # check if file path exists, otherwise create it, copy file to calibre path and delete temp file
+                if not os.path.exists(filepath):
+                    try:
+                        os.makedirs(filepath)
+                    except OSError:
+                        flash(_(u"Failed to create path %(path)s (Permission denied).", path=filepath), category="error")
+                        return redirect(url_for('web.show_book', book_id=book.id))
                 try:
-                    os.makedirs(filepath)
+                    requested_file.save(saved_filename)
                 except OSError:
-                    flash(_(u"Failed to create path %(path)s (Permission denied).", path=filepath), category="error")
-                    return redirect(url_for('web.show_book', book_id=book.id))
-            try:
-                requested_file.save(saved_filename)
-            except OSError:
-                flash(_(u"Failed to store file %(file)s.", file=saved_filename), category="error")
-                return redirect(url_for('web.show_book', book_id=book.id))
-
-            file_size = os.path.getsize(saved_filename)
-            is_format = calibre_db.get_book_format(book_id, file_ext.upper())
-
-            # Format entry already exists, no need to update the database
-            if is_format:
-                log.warning('Book format %s already existing', file_ext.upper())
-            else:
-                try:
-                    db_format = db.Data(book_id, file_ext.upper(), file_size, file_name)
-                    calibre_db.session.add(db_format)
-                    calibre_db.session.commit()
-                    calibre_db.update_title_sort(config)
-                except OperationalError as e:
-                    calibre_db.session.rollback()
-                    log.error('Database error: %s', e)
-                    flash(_(u"Database error: %(error)s.", error=e), category="error")
+                    flash(_(u"Failed to store file %(file)s.", file=saved_filename), category="error")
                     return redirect(url_for('web.show_book', book_id=book.id))
 
-            # Queue uploader info
-            uploadText=_(u"File format %(ext)s added to %(book)s", ext=file_ext.upper(), book=book.title)
-            worker.add_upload(current_user.nickname,
-                "<a href=\"" + url_for('web.show_book', book_id=book.id) + "\">" + uploadText + "</a>")
+                file_size = os.path.getsize(saved_filename)
+                is_format = calibre_db.get_book_format(book_id, file_ext.upper())
 
-            return uploader.process(
-                saved_filename, *os.path.splitext(requested_file.filename),
-                rarExecutable=config.config_rarfile_location)
+                # Format entry already exists, no need to update the database
+                if is_format:
+                    log.warning('Book format %s already existing', file_ext.upper())
+                else:
+                    try:
+                        db_format = db.Data(book_id, file_ext.upper(), file_size, file_name)
+                        calibre_db.session.add(db_format)
+                        calibre_db.session.commit()
+                        calibre_db.update_title_sort(config)
+                    except OperationalError as e:
+                        calibre_db.session.rollback()
+                        log.error('Database error: %s', e)
+                        flash(_(u"Database error: %(error)s.", error=e), category="error")
+                        return redirect(url_for('web.show_book', book_id=book.id))
+
+                # Queue uploader info
+                uploadText=_(u"File format %(ext)s added to %(book)s", ext=file_ext.upper(), book=book.title)
+                worker.add_upload(current_user.nickname,
+                    "<a href=\"" + url_for('web.show_book', book_id=book.id) + "\">" + uploadText + "</a>")
+
+                return uploader.process(
+                    saved_filename, *os.path.splitext(requested_file.filename),
+                    rarExecutable=config.config_rarfile_location)
 
 
 def upload_cover(request, book):
@@ -522,6 +531,8 @@ def upload_cover(request, book):
         requested_file = request.files['btn-upload-cover']
         # check for empty request
         if requested_file.filename != '':
+            if not current_user.role_upload():
+                abort(403)
             ret, message = helper.save_cover(requested_file, book.path)
             if ret is True:
                 return True
@@ -601,13 +612,16 @@ def edit_book(book_id):
             error = helper.update_dir_stucture(edited_books_id, config.config_calibre_dir, input_authors[0])
 
         if not error:
-            if to_save["cover_url"]:
-                result, error = helper.save_cover_from_url(to_save["cover_url"], book.path)
-                if result is True:
-                    book.has_cover = 1
-                    modif_date = True
-                else:
-                    flash(error, category="error")
+            if "cover_url" in to_save:
+                if to_save["cover_url"]:
+                    if not current_user.role_upload():
+                        return "", (403)
+                    result, error = helper.save_cover_from_url(to_save["cover_url"], book.path)
+                    if result is True:
+                        book.has_cover = 1
+                        modif_date = True
+                    else:
+                        flash(error, category="error")
 
             # Add default series_index to book
             modif_date |= edit_book_series_index(to_save["series_index"], book)
@@ -615,10 +629,12 @@ def edit_book(book_id):
             # Handle book comments/description
             modif_date |= edit_book_comments(to_save["description"], book)
 
-                    # Handle identifiers
+            # Handle identifiers
             input_identifiers = identifier_list(to_save, book)
-            modif_date |= modify_identifiers(input_identifiers, book.identifiers, calibre_db.session)
-
+            modification, warning = modify_identifiers(input_identifiers, book.identifiers, calibre_db.session)
+            if warning:
+                flash(_("Identifiers are not Case Sensitive, Overwriting Old Identifier"), category="warning")
+            modif_date |= modification
             # Handle book tags
             modif_date |= edit_book_tags(to_save['tags'], book)
 
@@ -647,6 +663,7 @@ def edit_book(book_id):
 
             if modif_date:
                 book.last_modified = datetime.utcnow()
+            calibre_db.session.merge(book)
             calibre_db.session.commit()
             if config.config_use_google_drive:
                 gdriveutils.updateGdriveCalibreFromLocal()
@@ -690,7 +707,7 @@ def identifier_list(to_save, book):
         val_key = id_val_prefix + type_key[len(id_type_prefix):]
         if val_key not in to_save.keys():
             continue
-        result.append( db.Identifiers(to_save[val_key], type_value, book.id) )
+        result.append(db.Identifiers(to_save[val_key], type_value, book.id))
     return result
 
 @editbook.route("/upload", methods=["GET", "POST"])
@@ -710,7 +727,7 @@ def upload():
                 # check if file extension is correct
                 if '.' in requested_file.filename:
                     file_ext = requested_file.filename.rsplit('.', 1)[-1].lower()
-                    if file_ext not in constants.EXTENSIONS_UPLOAD:
+                    if file_ext not in constants.EXTENSIONS_UPLOAD and '' not in constants.EXTENSIONS_UPLOAD:
                         flash(
                             _("File extension '%(ext)s' is not allowed to be uploaded to this server",
                               ext=file_ext), category="error")
@@ -833,8 +850,8 @@ def upload():
 
                 # move cover to final directory, including book id
                 if has_cover:
+                    new_coverpath = os.path.join(config.config_calibre_dir, db_book.path, "cover.jpg")
                     try:
-                        new_coverpath = os.path.join(config.config_calibre_dir, db_book.path, "cover.jpg")
                         copyfile(meta.cover, new_coverpath)
                         os.unlink(meta.cover)
                     except OSError as e:

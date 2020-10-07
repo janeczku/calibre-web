@@ -74,10 +74,10 @@ def _cover_processing(tmp_file_name, img, extension):
 
 
 
-def _extractCover(tmp_file_name, original_file_extension, rarExceutable):
+def _extractCover(tmp_file_name, original_file_extension, rarExecutable):
     cover_data = extension = None
     if use_comic_meta:
-        archive = ComicArchive(tmp_file_name)
+        archive = ComicArchive(tmp_file_name, rar_exe_path=rarExecutable)
         for index, name in enumerate(archive.getPageNameList()):
             ext = os.path.splitext(name)
             if len(ext) > 1:
@@ -106,7 +106,7 @@ def _extractCover(tmp_file_name, original_file_extension, rarExceutable):
                         break
         elif original_file_extension.upper() == '.CBR' and use_rarfile:
             try:
-                rarfile.UNRAR_TOOL = rarExceutable
+                rarfile.UNRAR_TOOL = rarExecutable
                 cf = rarfile.RarFile(tmp_file_name)
                 for name in cf.getnames():
                     ext = os.path.splitext(name)
@@ -120,9 +120,9 @@ def _extractCover(tmp_file_name, original_file_extension, rarExceutable):
     return _cover_processing(tmp_file_name, cover_data, extension)
 
 
-def get_comic_info(tmp_file_path, original_file_name, original_file_extension, rarExceutable):
+def get_comic_info(tmp_file_path, original_file_name, original_file_extension, rarExecutable):
     if use_comic_meta:
-        archive = ComicArchive(tmp_file_path, rar_exe_path=rarExceutable)
+        archive = ComicArchive(tmp_file_path, rar_exe_path=rarExecutable)
         if archive.seemsToBeAComicArchive():
             if archive.hasMetadata(MetaDataStyle.CIX):
                 style = MetaDataStyle.CIX
@@ -134,21 +134,15 @@ def get_comic_info(tmp_file_path, original_file_name, original_file_extension, r
             # if style is not None:
             loadedMetadata = archive.readMetadata(style)
 
-            lang = loadedMetadata.language
-            if lang:
-                if len(lang) == 2:
-                     loadedMetadata.language = isoLanguages.get(part1=lang).name
-                elif len(lang) == 3:
-                     loadedMetadata.language = isoLanguages.get(part3=lang).name
-            else:
-                 loadedMetadata.language = ""
+            lang = loadedMetadata.language or ""
+            loadedMetadata.language = isoLanguages.get_lang3(lang)
 
             return BookMeta(
                 file_path=tmp_file_path,
                 extension=original_file_extension,
                 title=loadedMetadata.title or original_file_name,
                 author=" & ".join([credit["person"] for credit in loadedMetadata.credits if credit["role"] == "Writer"]) or u'Unknown',
-                cover=_extractCover(tmp_file_path, original_file_extension, rarExceutable),
+                cover=_extractCover(tmp_file_path, original_file_extension, rarExecutable),
                 description=loadedMetadata.comments or "",
                 tags="",
                 series=loadedMetadata.series or "",
@@ -160,7 +154,7 @@ def get_comic_info(tmp_file_path, original_file_name, original_file_extension, r
         extension=original_file_extension,
         title=original_file_name,
         author=u'Unknown',
-        cover=_extractCover(tmp_file_path, original_file_extension, rarExceutable),
+        cover=_extractCover(tmp_file_path, original_file_extension, rarExecutable),
         description="",
         tags="",
         series="",

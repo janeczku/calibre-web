@@ -132,7 +132,8 @@ def add_security_headers(resp):
     resp.headers['X-Content-Type-Options'] = 'nosniff'
     resp.headers['X-Frame-Options'] = 'SAMEORIGIN'
     resp.headers['X-XSS-Protection'] = '1; mode=block'
-    # resp.headers['Strict-Transport-Security'] = 'max-age=31536000; includeSubDomains'
+    resp.headers['Strict-Transport-Security'] = 'max-age=31536000; includeSubDomains'
+    # log.debug(request.full_path)
     return resp
 
 web = Blueprint('web', __name__)
@@ -1142,7 +1143,7 @@ def advanced_search():
                         db.cc_classes[c.id].value == custom_query))
                 elif c.datatype == 'rating':
                     q = q.filter(getattr(db.Books, 'custom_column_' + str(c.id)).any(
-                        db.cc_classes[c.id].value == int(custom_query) * 2))
+                        db.cc_classes[c.id].value == int(float(custom_query) * 2)))
                 else:
                     q = q.filter(getattr(db.Books, 'custom_column_' + str(c.id)).any(
                         func.lower(db.cc_classes[c.id].value).ilike("%" + custom_query + "%")))
@@ -1256,6 +1257,9 @@ def render_archived_books(page, order):
 def get_cover(book_id):
     return get_book_cover(book_id)
 
+@web.route("/robots.txt")
+def get_robots():
+    return send_from_directory(constants.STATIC_DIR, "robots.txt")
 
 @web.route("/show/<int:book_id>/<book_format>", defaults={'anyname': 'None'})
 @web.route("/show/<int:book_id>/<book_format>/<anyname>")
@@ -1359,7 +1363,7 @@ def register():
                     return render_title_template('register.html', title=_(u"register"), page="register")
             else:
                 flash(_(u"Your e-mail is not allowed to register"), category="error")
-                log.info('Registering failed for user "%s" e-mail adress: %s', to_save['nickname'], to_save["email"])
+                log.warning('Registering failed for user "%s" e-mail address: %s', to_save['nickname'], to_save["email"])
                 return render_title_template('register.html', title=_(u"register"), page="register")
             flash(_(u"Confirmation e-mail was send to your e-mail account."), category="success")
             return redirect(url_for('web.login'))
@@ -1407,7 +1411,7 @@ def login():
                 flash(_(u"Could not login: %(message)s", message=error), category="error")
             else:
                 ipAdress = request.headers.get('X-Forwarded-For', request.remote_addr)
-                log.info('LDAP Login failed for user "%s" IP-adress: %s', form['username'], ipAdress)
+                log.warning('LDAP Login failed for user "%s" IP-address: %s', form['username'], ipAdress)
                 flash(_(u"Wrong Username or Password"), category="error")
         else:
             ipAdress = request.headers.get('X-Forwarded-For', request.remote_addr)
@@ -1416,13 +1420,13 @@ def login():
                     ret, __ = reset_password(user.id)
                     if ret == 1:
                         flash(_(u"New Password was send to your email address"), category="info")
-                        log.info('Password reset for user "%s" IP-adress: %s', form['username'], ipAdress)
+                        log.info('Password reset for user "%s" IP-address: %s', form['username'], ipAdress)
                     else:
-                        log.info(u"An unknown error occurred. Please try again later")
+                        log.error(u"An unknown error occurred. Please try again later")
                         flash(_(u"An unknown error occurred. Please try again later."), category="error")
                 else:
                     flash(_(u"Please enter valid username to reset password"), category="error")
-                    log.info('Username missing for password reset IP-adress: %s', ipAdress)
+                    log.warning('Username missing for password reset IP-address: %s', ipAdress)
             else:
                 if user and check_password_hash(str(user.password), form['password']) and user.nickname != "Guest":
                     login_user(user, remember=bool(form.get('remember_me')))
@@ -1431,10 +1435,12 @@ def login():
                     config.config_is_initial = False
                     return redirect_back(url_for("web.index"))
                 else:
-                    log.info('Login failed for user "%s" IP-adress: %s', form['username'], ipAdress)
+                    log.warning('Login failed for user "%s" IP-address: %s', form['username'], ipAdress)
                     flash(_(u"Wrong Username or Password"), category="error")
 
-    next_url = url_for('web.index')
+    next_url = request.args.get('next', default=url_for("web.index"), type=str)
+    if url_for("web.logout") == next_url:
+        next_url = url_for("web.index")
     return render_title_template('login.html',
                                  title=_(u"login"),
                                  next_url=next_url,

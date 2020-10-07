@@ -19,8 +19,6 @@
 
 import base64
 import datetime
-import itertools
-import json
 import sys
 import os
 import uuid
@@ -131,7 +129,7 @@ def HandleSyncRequest():
     sync_token = SyncToken.SyncToken.from_headers(request.headers)
     log.info("Kobo library sync request received.")
     if not current_app.wsgi_app.is_proxied:
-        log.debug('Kobo: Received unproxied request, changed request port to server port')
+        log.debug('Kobo: Received unproxied request, changed request port to external server port')
 
     # TODO: Limit the number of books return per sync call, and rely on the sync-continuatation header
     # instead so that the device triggers another sync.
@@ -254,7 +252,7 @@ def generate_sync_response(sync_token, sync_results):
 @download_required
 def HandleMetadataRequest(book_uuid):
     if not current_app.wsgi_app.is_proxied:
-        log.debug('Kobo: Received unproxied request, changed request port to server port')
+        log.debug('Kobo: Received unproxied request, changed request port to external server port')
     log.info("Kobo library metadata request received for book %s" % book_uuid)
     book = calibre_db.get_book_by_uuid(book_uuid)
     if not book or not book.data:
@@ -267,14 +265,15 @@ def HandleMetadataRequest(book_uuid):
 
 def get_download_url_for_book(book, book_format):
     if not current_app.wsgi_app.is_proxied:
-        if ':' in request.host and not request.host.endswith(']') :
+        if ':' in request.host and not request.host.endswith(']'):
             host = "".join(request.host.split(':')[:-1])
         else:
             host = request.host
+
         return "{url_scheme}://{url_base}:{url_port}/download/{book_id}/{book_format}".format(
             url_scheme=request.scheme,
             url_base=host,
-            url_port=config.config_port,
+            url_port=config.config_external_port,
             book_id=book.id,
             book_format=book_format.lower()
         )
@@ -317,8 +316,15 @@ def get_description(book):
 # TODO handle multiple authors
 def get_author(book):
     if not book.authors:
-        return None
-    return book.authors[0].name
+        return {"Contributors": None}
+    if len(book.authors) > 1:
+        author_list = []
+        autor_roles = []
+        for author in book.authors:
+            autor_roles.append({"Name":author.name, "Role":"Author"})
+            author_list.append(author.name)
+        return {"ContributorRoles": autor_roles, "Contributors":author_list}
+    return {"ContributorRoles": [{"Name":book.authors[0].name, "Role":"Author"}], "Contributors": book.authors[0].name}
 
 
 def get_publisher(book):
@@ -357,7 +363,7 @@ def get_metadata(book):
     book_uuid = book.uuid
     metadata = {
         "Categories": ["00000000-0000-0000-0000-000000000001",],
-        "Contributors": get_author(book),
+        # "Contributors": get_author(book),
         "CoverImageId": book_uuid,
         "CrossRevisionId": book_uuid,
         "CurrentDisplayPrice": {"CurrencyCode": "USD", "TotalAmount": 0},
@@ -381,6 +387,7 @@ def get_metadata(book):
         "Title": book.title,
         "WorkId": book_uuid,
     }
+    metadata.update(get_author(book))
 
     if get_series(book):
         if sys.version_info < (3, 0):
@@ -399,7 +406,7 @@ def get_metadata(book):
 
 
 @kobo.route("/v1/library/tags", methods=["POST", "DELETE"])
-@login_required
+@requires_kobo_auth
 # Creates a Shelf with the given items, and returns the shelf's uuid.
 def HandleTagCreate():
     # catch delete requests, otherwise the are handeld in the book delete handler
@@ -434,6 +441,7 @@ def HandleTagCreate():
 
 
 @kobo.route("/v1/library/tags/<tag_id>", methods=["DELETE", "PUT"])
+@requires_kobo_auth
 def HandleTagUpdate(tag_id):
     shelf = ub.session.query(ub.Shelf).filter(ub.Shelf.uuid == tag_id,
                                               ub.Shelf.user_id == current_user.id).one_or_none()
@@ -488,7 +496,7 @@ def add_items_to_shelf(items, shelf):
 
 
 @kobo.route("/v1/library/tags/<tag_id>/items", methods=["POST"])
-@login_required
+@requires_kobo_auth
 def HandleTagAddItem(tag_id):
     items = None
     try:
@@ -518,7 +526,7 @@ def HandleTagAddItem(tag_id):
 
 
 @kobo.route("/v1/library/tags/<tag_id>/items/delete", methods=["POST"])
-@login_required
+@requires_kobo_auth
 def HandleTagRemoveItem(tag_id):
     items = None
     try:
@@ -627,7 +635,7 @@ def create_kobo_tag(shelf):
 
 
 @kobo.route("/v1/library/<book_uuid>/state", methods=["GET", "PUT"])
-@login_required
+@requires_kobo_auth
 def HandleStateRequest(book_uuid):
     book = calibre_db.get_book_by_uuid(book_uuid)
     if not book or not book.data:
@@ -801,7 +809,7 @@ def TopLevelEndpoint():
 
 
 @kobo.route("/v1/library/<book_uuid>", methods=["DELETE"])
-@login_required
+@requires_kobo_auth
 def HandleBookDeletionRequest(book_uuid):
     log.info("Kobo book deletion request received for book %s" % book_uuid)
     book = calibre_db.get_book_by_uuid(book_uuid)
@@ -917,7 +925,7 @@ def HandleInitRequest():
         kobo_resources = NATIVE_KOBO_RESOURCES()
 
     if not current_app.wsgi_app.is_proxied:
-        log.debug('Kobo: Received unproxied request, changed request port to server port')
+        log.debug('Kobo: Received unproxied request, changed request port to external server port')
         if ':' in request.host and not request.host.endswith(']'):
             host = "".join(request.host.split(':')[:-1])
         else:
@@ -925,8 +933,9 @@ def HandleInitRequest():
         calibre_web_url = "{url_scheme}://{url_base}:{url_port}".format(
             url_scheme=request.scheme,
             url_base=host,
-            url_port=config.config_port
+            url_port=config.config_external_port
         )
+        log.debug('Kobo: Received unproxied request, changed request url to %s', calibre_web_url)
         kobo_resources["image_host"] = calibre_web_url
         kobo_resources["image_url_quality_template"] = unquote(calibre_web_url +
                                                                url_for("kobo.HandleCoverImageRequest",
@@ -935,16 +944,14 @@ def HandleInitRequest():
                                                                        width="{width}",
                                                                        height="{height}",
                                                                        Quality='{Quality}',
-                                                                       isGreyscale='isGreyscale'
-                                                               ))
+                                                                       isGreyscale='isGreyscale'))
         kobo_resources["image_url_template"] = unquote(calibre_web_url +
                                                        url_for("kobo.HandleCoverImageRequest",
                                                                auth_token=kobo_auth.get_auth_token(),
                                                                book_uuid="{ImageId}",
                                                                width="{width}",
                                                                height="{height}",
-                                                               isGreyscale='false'
-                                                       ))
+                                                               isGreyscale='false'))
     else:
         kobo_resources["image_host"] = url_for("web.index", _external=True).strip("/")
         kobo_resources["image_url_quality_template"] = unquote(url_for("kobo.HandleCoverImageRequest",
@@ -962,7 +969,6 @@ def HandleInitRequest():
                                                                height="{height}",
                                                                isGreyscale='false',
                                                                _external=True))
-
 
     response = make_response(jsonify({"Resources": kobo_resources}))
     response.headers["x-kobo-apitoken"] = "e30="

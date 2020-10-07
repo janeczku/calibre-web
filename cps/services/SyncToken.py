@@ -27,7 +27,10 @@ except ImportError:
     from urllib.parse import unquote
 
 from flask import json
-from .. import logger as log
+from .. import logger
+
+
+log = logger.create()
 
 
 def b64encode_json(json_data):
@@ -45,7 +48,8 @@ def to_epoch_timestamp(datetime_object):
 def get_datetime_from_json(json_object, field_name):
     try:
         return datetime.utcfromtimestamp(json_object[field_name])
-    except KeyError:
+    except (KeyError, OSError, OverflowError):
+        # OSError is thrown on Windows if timestamp is <1970 or >2038
         return datetime.min
 
 

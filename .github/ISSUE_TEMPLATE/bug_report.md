@@ -6,6 +6,7 @@ labels: ''
 assignees: ''
 
 ---
+<!-- Please have a look at our [Contributing Guidelines](https://github.com/janeczku/calibre-web/blob/master/CONTRIBUTING.md) -->
 
 **Describe the bug/problem**
 A clear and concise description of what the bug is. If you are asking for support, please check our [Wiki](https://github.com/janeczku/calibre-web/wiki) if your question is already answered there.
@@ -27,12 +28,12 @@ A clear and concise description of what you expected to happen.
 If applicable, add screenshots to help explain your problem.
 
 **Environment (please complete the following information):**
- - OS: [e.g. Windows 10/raspian]
- - Python version [e.g. python2.7]
- - Calibre-Web version [e.g. 0.6.5 or master@16.02.20, 19:55 ]:
- - Docker container [ None/Technosoft2000/Linuxuser]:
- - Special Hardware [e.g. Rasperry Pi Zero]
- - Browser [e.g. chrome, safari]
+ - OS: [e.g. Windows 10/Raspberry Pi OS]
+ - Python version: [e.g. python2.7]
+ - Calibre-Web version: [e.g. 0.6.8 or 087c4c59 (git rev-parse --short HEAD)]:
+ - Docker container: [None/Technosoft2000/Linuxuser]:
+ - Special Hardware: [e.g. Rasperry Pi Zero]
+ - Browser: [e.g. Chrome 83.0.4103.97, Safari 13.3.7, Firefox 68.0.1 ESR]
 
 **Additional context**
-Add any other context about the problem here. [e.g. access via reverse proxy]
+Add any other context about the problem here. [e.g. access via reverse proxy, database background sync, special database location]
