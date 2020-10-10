@@ -687,9 +687,7 @@ class CalibreDB():
             limit_all = result_count
 
         ub.store_ids(result)
-
-
-        return result[offset:limit_all], result_count, pagination,
+        return result[offset:limit_all], result_count, pagination
 
     # Creates for all stored languages a translated speaking name in the array for the UI
     def speaking_language(self, languages=None):
