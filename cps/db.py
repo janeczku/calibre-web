@@ -664,9 +664,6 @@ class CalibreDB():
     def get_search_results(self, term, offset=None, order=None, limit=None):
         order = order or [Books.sort]
         pagination = None
-        if offset != None and limit != None:
-            offset = int(offset)
-            limit_all = offset + int(limit)
         term.strip().lower()
         self.session.connection().connection.connection.create_function("lower", 1, lcase)
         q = list()
@@ -682,7 +679,12 @@ class CalibreDB():
                 )).order_by(*order).all()
         result_count = len(result)
         if offset != None and limit != None:
+            offset = int(offset)
+            limit_all = offset + int(limit)
             pagination = Pagination((offset / (int(limit)) + 1), limit, result_count)
+        else:
+            offset = 0
+            limit_all = result_count
         return result[offset:limit_all], result_count, pagination
 
     # Creates for all stored languages a translated speaking name in the array for the UI

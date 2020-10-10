@@ -1248,9 +1248,6 @@ def advanced_search():
 def render_adv_search_results(term, offset=None, order=None, limit=None):
     order = order or [db.Books.sort]
     pagination = None
-    if offset != None and limit != None:
-        offset = int(offset)
-        limit_all = offset + int(limit)
 
     cc = get_cc_columns(filter_config_custom_read=True)
     calibre_db.session.connection().connection.connection.create_function("lower", 1, db.lcase)
@@ -1391,11 +1388,15 @@ def render_adv_search_results(term, offset=None, order=None, limit=None):
         # entries, result_count, pagination = calibre_db.get_search_results(term, offset, order, limit)
         result_count = len(q)
         if offset != None and limit != None:
+            offset = int(offset)
+            limit_all = offset + int(limit)
             pagination = Pagination((offset / (int(limit)) + 1), limit, result_count)
+        else:
+            offset = 0
+            limit_all = result_count
     return render_title_template('search.html',
                                  adv_searchterm=searchterm,
                                  pagination=pagination,
-                                 # query=request.form,
                                  entries=q[offset:limit_all],
                                  result_count=result_count,
                                  title=_(u"search"), page="advsearch")
