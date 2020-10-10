@@ -58,6 +58,60 @@ $(document).on("change", "select[data-controlall]", function() {
     }
 });
 
+$("#delete_confirm").click(function() {
+    //get data-id attribute of the clicked element
+    var pathname = document.getElementsByTagName("script"), src = pathname[pathname.length - 1].src;
+    var path = src.substring(0, src.lastIndexOf("/"));
+    var deleteId = $(this).data("delete-id");
+    var bookFormat = $(this).data("delete-format");
+    if (bookFormat) {
+        window.location.href = path + "/../../delete/" + deleteId + "/" + bookFormat;
+    } else {
+        if ($(this).data("delete-format")) {
+            path = path + "/../../ajax/delete/" + deleteId;
+            $.ajax({
+                method:"get",
+                url: path,
+                timeout: 900,
+                success:function(data) {
+                    data.forEach(function(item) {
+                        if (!jQuery.isEmptyObject(item)) {
+                            if (item.format != "") {
+                                $("button[data-delete-format='"+item.format+"']").addClass('hidden');
+                            }
+                            $( ".navbar" ).after( '<div class="row-fluid text-center" style="margin-top: -20px;">' +
+                                '<div id="flash_'+item.type+'" class="alert alert-'+item.type+'">'+item.message+'</div>' +
+                                '</div>');
+
+                        }
+                    });
+                }
+            });
+        } else {
+            window.location.href = path + "/../../delete/" + deleteId;
+
+        }
+    }
+
+});
+
+//triggered when modal is about to be shown
+$("#deleteModal").on("show.bs.modal", function(e) {
+    //get data-id attribute of the clicked element and store in button
+    var bookId = $(e.relatedTarget).data("delete-id");
+    var bookfomat = $(e.relatedTarget).data("delete-format");
+    if (bookfomat) {
+        $("#book_format").removeClass('hidden');
+        $("#book_complete").addClass('hidden');
+    } else {
+        $("#book_complete").removeClass('hidden');
+        $("#book_format").addClass('hidden');
+    }
+    $(e.currentTarget).find("#delete_confirm").data("delete-id", bookId);
+    $(e.currentTarget).find("#delete_confirm").data("delete-format", bookfomat);
+});
+
+
 
 $(function() {
     var updateTimerID;
@@ -324,16 +378,19 @@ $(function() {
     });
 
     $(".update-view").click(function(e) {
-        var target = $(this).data("target");
         var view = $(this).data("view");
 
         e.preventDefault();
         e.stopPropagation();
-        var data = {};
-        data[target] = view;
-        console.debug("Updating view data: ", data);
-        $.post( "/ajax/view", data).done(function( ) {
-            location.reload();
+        $.ajax({
+            method:"post",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            url: window.location.pathname + "/../../ajax/view",
+            data: "{\"series\": {\"series_view\": \""+ view +"\"}}",
+            success: function success() {
+                location.reload();
+            }
         });
     });
 });

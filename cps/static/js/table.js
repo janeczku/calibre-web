@@ -1,5 +1,5 @@
 /* This file is part of the Calibre-Web (https://github.com/janeczku/calibre-web)
- *    Copyright (C) 2018 OzzieIsaacs
+ *    Copyright (C) 2020 OzzieIsaacs
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -15,9 +15,157 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* exported TableActions, RestrictionActions*/
+/* exported TableActions, RestrictionActions, EbookActions, responseHandler */
+
+var selections = [];
 
 $(function() {
+
+    $("#books-table").on("check.bs.table check-all.bs.table uncheck.bs.table uncheck-all.bs.table",
+        function (e, rowsAfter, rowsBefore) {
+            var rows = rowsAfter;
+
+            if (e.type === "uncheck-all") {
+                rows = rowsBefore;
+            }
+
+            var ids = $.map(!$.isArray(rows) ? [rows] : rows, function (row) {
+                return row.id;
+            });
+
+            var func = $.inArray(e.type, ["check", "check-all"]) > -1 ? "union" : "difference";
+            selections = window._[func](selections, ids);
+            if (selections.length >= 2) {
+                $("#merge_books").removeClass("disabled");
+                $("#merge_books").attr("aria-disabled", false);
+            } else {
+                $("#merge_books").addClass("disabled");
+                $("#merge_books").attr("aria-disabled", true);
+            }
+            if (selections.length < 1) {
+                $("#delete_selection").addClass("disabled");
+                $("#delete_selection").attr("aria-disabled", true);
+            }
+            else{
+                $("#delete_selection").removeClass("disabled");
+                $("#delete_selection").attr("aria-disabled", false);
+            }
+        });
+    $("#delete_selection").click(function() {
+        $("#books-table").bootstrapTable('uncheckAll');
+    });
+
+    $("#merge_confirm").click(function() {
+        $.ajax({
+            method:"post",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            url: window.location.pathname + "/../../ajax/mergebooks",
+            data: JSON.stringify({"Merge_books":selections}),
+            success: function success() {
+                $('#books-table').bootstrapTable('refresh');
+                $("#books-table").bootstrapTable('uncheckAll');
+            }
+        });
+    });
+
+    $("#merge_books").click(function() {
+        $.ajax({
+            method:"post",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            url: window.location.pathname + "/../../ajax/simulatemerge",
+            data: JSON.stringify({"Merge_books":selections}),
+            success: function success(book_titles) {
+                $.each(book_titles.from, function(i, item) {
+                    $("<span>- " + item + "</span>").appendTo("#merge_from");
+                });
+                $('#merge_to').text("- " + book_titles.to);
+
+            }
+        });
+    });
+
+    var column = [];
+    $("#books-table > thead > tr > th").each(function() {
+        var element = {};
+        if ($(this).attr("data-edit")) {
+            element = {
+                editable: {
+                    mode: "inline",
+                    emptytext: "<span class='glyphicon glyphicon-plus'></span>",
+                }
+            };
+        }
+        var validateText = $(this).attr("data-edit-validate");
+        if (validateText) {
+            element.editable.validate = function (value) {
+                if ($.trim(value) === "") return validateText;
+            };
+        }
+        column.push(element);
+    });
+
+    $("#books-table").bootstrapTable({
+        sidePagination: "server",
+        pagination: true,
+        paginationLoop: false,
+        paginationDetailHAlign: " hidden",
+        paginationHAlign: "left",
+        idField: "id",
+        uniqueId: "id",
+        search: true,
+        showColumns: true,
+        searchAlign: "left",
+        showSearchButton : false,
+        searchOnEnterKey: true,
+        checkboxHeader: false,
+        maintainMetaData: true,
+        responseHandler: responseHandler,
+        columns: column,
+        formatNoMatches: function () {
+            return "";
+        },
+        onEditableSave: function (field, row, oldvalue, $el) {
+        if (field === 'title' || field === 'authors') {
+            $.ajax({
+                method:"get",
+                dataType: "json",
+                url: window.location.pathname + "/../../ajax/sort_value/" + field + '/' + row.id,
+                success: function success(data) {
+                    var key = Object.keys(data)[0]
+                    $("#books-table").bootstrapTable('updateCellByUniqueId', {
+                        id: row.id,
+                        field: key,
+                        value: data[key]
+                    });
+                    console.log(data);
+                }
+            });
+         }
+        },
+        onColumnSwitch: function (field, checked) {
+            var visible = $("#books-table").bootstrapTable('getVisibleColumns');
+            var hidden  = $("#books-table").bootstrapTable('getHiddenColumns');
+            var visibility =[]
+             var st = ""
+            visible.forEach(function(item) {
+                st += "\""+ item.field + "\":\"" +"true"+ "\","
+            });
+            hidden.forEach(function(item) {
+                st += "\""+ item.field + "\":\"" +"false"+ "\","
+            });
+            st = st.slice(0, -1);
+            $.ajax({
+                method:"post",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                url: window.location.pathname + "/../../ajax/table_settings",
+                data: "{" + st + "}",
+            });
+        },
+    });
+
 
     $("#domain_allow_submit").click(function(event) {
         event.preventDefault();
@@ -33,6 +181,7 @@ $(function() {
             }
         });
     });
+
     $("#domain-allow-table").bootstrapTable({
         formatNoMatches: function () {
             return "";
@@ -205,6 +354,7 @@ function TableActions (value, row) {
     ].join("");
 }
 
+
 /* Function for deleting domain restrictions */
 function RestrictionActions (value, row) {
     return [
@@ -212,4 +362,21 @@ function RestrictionActions (value, row) {
         "<i class=\"glyphicon glyphicon-trash\"></i>",
         "</div>"
     ].join("");
+}
+
+/* Function for deleting books */
+function EbookActions (value, row) {
+    return [
+        "<div class=\"book-remove\" data-toggle=\"modal\" data-target=\"#deleteModal\" data-ajax=\"1\" data-delete-id=\"" + row.id + "\" title=\"Remove\">",
+        "<i class=\"glyphicon glyphicon-trash\"></i>",
+        "</div>"
+    ].join("");
+}
+
+/* Function for keeping checked rows */
+function responseHandler(res) {
+    $.each(res.rows, function (i, row) {
+        row.state = $.inArray(row.id, selections) !== -1;
+    });
+    return res;
 }

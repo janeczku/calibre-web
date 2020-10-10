@@ -212,9 +212,6 @@ class WebServer(object):
     def stop(self, restart=False):
         from . import updater_thread
         updater_thread.stop()
-        from . import calibre_db
-        calibre_db.stop()
-
 
         log.info("webserver stop (restart=%s)", restart)
         self.restart = restart

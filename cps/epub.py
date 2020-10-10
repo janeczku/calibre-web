@@ -26,6 +26,7 @@ from .helper import split_authors
 from .constants import BookMeta
 
 
+
 def extractCover(zipFile, coverFile, coverpath, tmp_file_name):
     if coverFile is None:
         return None

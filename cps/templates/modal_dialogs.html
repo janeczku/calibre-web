@@ -37,3 +37,34 @@
   </div>
 </div>
 {% endmacro %}
+{% macro delete_book(bookid) %}
+{% if g.user.role_delete_books() %}
+<div class="modal fade" id="deleteModal" role="dialog" aria-labelledby="metaDeleteLabel">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header bg-danger text-center">
+          <span>{{_('Are you really sure?')}}</span>
+      </div>
+        <div class="modal-body text-center">
+          <p>
+          <span class="hidden" id="book_format">{{_('This book format will be permanently erased from database')}}</span>
+          <span class="hidden" id="book_complete">{{_('This book will be permanently erased from database')}}</span>
+          <span>{{_('and hard disk')}}</span>
+		  </p>
+          {% if config.config_kobo_sync %}
+          <p>
+            <span>{{_('Important Kobo Note: deleted books will remain on any paired Kobo device.')}}</span>
+            <span>{{_('Books must first be archived and the device synced before a book can safely be deleted.')}}</span>
+          </p>
+          {% endif %}
+        </div>
+
+      <div class="modal-footer">
+        <input type="button" class="btn btn-danger" value="{{_('Delete')}}" name="delete_confirm" id="delete_confirm" data-dismiss="modal">
+        <button type="button" class="btn btn-default" data-dismiss="modal">{{_('Cancel')}}</button>
+      </div>
+    </div>
+  </div>
+</div>
+{% endif %}
+{% endmacro %}
