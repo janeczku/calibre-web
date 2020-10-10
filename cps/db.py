@@ -543,7 +543,7 @@ class CalibreDB():
                                                           bind=cls.engine))
         for inst in cls.instances:
             inst.initSession()
-            
+
         cls._init = True
         return True
 
@@ -685,7 +685,11 @@ class CalibreDB():
         else:
             offset = 0
             limit_all = result_count
-        return result[offset:limit_all], result_count, pagination
+
+        ub.store_ids(result)
+
+
+        return result[offset:limit_all], result_count, pagination,
 
     # Creates for all stored languages a translated speaking name in the array for the UI
     def speaking_language(self, languages=None):

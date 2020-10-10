@@ -54,7 +54,7 @@ from werkzeug.datastructures import Headers
 from werkzeug.security import generate_password_hash, check_password_hash
 
 from . import constants, logger, isoLanguages, services
-from . import searched_ids, lm, babel, db, ub, config, get_locale, app
+from . import lm, babel, db, ub, config, get_locale, app
 from . import calibre_db
 from .gdriveutils import getFileFromEbooksFolder, do_gdrive_download
 from .helper import check_valid_domain, render_task_status, \
@@ -956,10 +956,6 @@ def render_prepare_search_form(cc):
 
 def render_search_results(term, offset=None, order=None, limit=None):
     entries, result_count, pagination = calibre_db.get_search_results(term, offset, order, limit)
-    ids = list()
-    for element in entries:
-        ids.append(element.id)
-    searched_ids[current_user.id] = ids
     return render_title_template('search.html',
                                  searchterm=term,
                                  pagination=pagination,
@@ -1239,6 +1235,7 @@ def search():
                                      title=_(u"Search"),
                                      page="search")
 
+
 @web.route("/advanced_search", methods=['POST'])
 @login_required_if_no_ano
 def advanced_search():
@@ -1380,11 +1377,7 @@ def render_adv_search_results(term, offset=None, order=None, limit=None):
                         func.lower(db.cc_classes[c.id].value).ilike("%" + custom_query + "%")))
         q = q.order_by(*order).all()
         flask_session['query'] = json.dumps(term)
-        # ToDo: Check saved ids mechanism ?
-        ids = list()
-        for element in q:
-            ids.append(element.id)
-        searched_ids[current_user.id] = ids
+        ub.store_ids(q)
         # entries, result_count, pagination = calibre_db.get_search_results(term, offset, order, limit)
         result_count = len(q)
         if offset != None and limit != None:
