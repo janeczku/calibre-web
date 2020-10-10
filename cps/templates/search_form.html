@@ -1,5 +1,6 @@
 {% extends "layout.html" %}
 {% block body %}
+<h1 class="{{page}}">{{title}}</h1>
 <div class="col-md-10 col-lg-6">
   <form role="form" id="search" action="{{ url_for('web.advanced_search_form') }}" method="POST">
     <div class="form-group">
